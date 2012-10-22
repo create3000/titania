@@ -1,5 +1,11 @@
 2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* test:
+	* main.o:
+	* main.d: 
+
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Test.h:
 	* main.cpp:
 	* misc.cpp:

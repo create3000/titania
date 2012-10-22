@@ -1,5 +1,10 @@
 2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-opengl-drawingarea.md.pc:
+	* libtitania-opengl-canvas.so: 
+
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* info.h:
 	* ChangeLog:
 	* GLContext.o:

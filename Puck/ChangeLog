@@ -1,5 +1,55 @@
 2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* puck:
+	* main.o:
+	* main.d:
+	* X3DConsoleUI.o:
+	* X3DConsoleUI.d:
+	* OutlineEditor.d:
+	* OutlineEditor.o:
+	* BrowserWidget.d:
+	* HistoryEditor.o:
+	* BrowserWidget.o:
+	* HistoryEditor.d:
+	* BrowserWindow.d:
+	* BrowserWindow.o:
+	* ViewpointEditor.o:
+	* OutlineTreeView.d:
+	* OutlineTreeView.o:
+	* ViewpointEditor.d:
+	* X3DBrowserWidget.d:
+	* OutlineTreeModel.d:
+	* X3DBrowserWidget.o:
+	* MotionBlurEditor.o:
+	* MotionBlurEditor.d:
+	* X3DUserInterface.d:
+	* X3DBaseInterface.o:
+	* X3DBaseInterface.d:
+	* OutlineTreeModel.o:
+	* X3DUserInterface.o:
+	* ViewpointMenuItem.o:
+	* ViewpointMenuItem.d:
+	* X3DBrowserWindow .o:
+	* X3DBrowserWindow .d:
+	* X3DOutlineEditorUI.o:
+	* X3DOutlineEditorUI.d:
+	* X3DHistoryEditorUI.o:
+	* X3DHistoryEditorUI.d:
+	* X3DBrowserWindowUI.d:
+	* X3DBrowserWidgetUI.o:
+	* X3DBrowserWidgetUI.d:
+	* X3DBrowserWindowUI.o:
+	* X3DBrowserInterface.o:
+	* X3DBrowserInterface.d:
+	* X3DViewpointEditorUI.o:
+	* X3DViewpointEditorUI.d:
+	* X3DMotionBlurEditorUI.o:
+	* X3DMotionBlurEditorUI.d:
+	* X3DBrowserUserInterface.d:
+	* X3DBrowserUserInterface.o: 
+
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Puck.pidb:
 	* ChangeLog:
 	* Puck.cproj:

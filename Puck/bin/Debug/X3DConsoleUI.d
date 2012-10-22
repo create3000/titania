@@ -997,6 +997,9 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Widgets/../Browser/../Browser/Properties/../Properties/QuadSphereProperties.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Widgets/../Browser/../Browser/Properties/../Properties/../Properties/X3DSpherePropertyNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Widgets/../Browser/../Browser/Properties/../Properties/../Properties/../../Components/Core/X3DPropertyNode.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/SystemTimer.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/TimerBase.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/Now.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Widgets/../Browser/../Browser/Properties/BrowserOptions.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Widgets/../Browser/../Browser/Properties/../../Execution/X3DExecutionContext.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Widgets/../Browser/../Browser/HitArray.h \

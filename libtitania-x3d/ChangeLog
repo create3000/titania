@@ -1,5 +1,11 @@
 2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowser.o:
+	* libtitania-x3d.so:
+	* RenderingProperties.cpp: 
+
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* RenderingProperties.cpp: 
 
 2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
