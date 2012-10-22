@@ -7,7 +7,7 @@
       <File FileName="Puck/puck/Browser/X3DBrowserWidget.h" Line="160" Column="29" />
       <File FileName="Puck/puck/Browser/X3DBrowserWidget.cpp" Line="80" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.h" Line="143" Column="8" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp" Line="96" Column="55" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp" Line="40" Column="30" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="414" Column="42" />
     </Files>
     <Pads>

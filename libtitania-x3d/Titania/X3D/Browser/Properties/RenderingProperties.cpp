@@ -114,6 +114,7 @@ RenderingProperties::create (X3DExecutionContext* const executionContext)  const
 void
 RenderingProperties::initialize ()
 {
+/*
 	X3DBasicNode::initialize ();
 
 	if (glXGetCurrentContext ())
@@ -155,6 +156,7 @@ RenderingProperties::initialize ()
 	reset ();
 
 	getBrowser () -> world .addInterest (this, &RenderingProperties::set_world);
+*/
 }
 
 //
