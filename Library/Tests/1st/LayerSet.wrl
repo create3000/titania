@@ -1,0 +1,91 @@
+#VRML V2.0 utf8
+
+DEF Nav0 NavigationInfo {
+  headlight FALSE
+}
+LayerSet {
+  activeLayer 2
+  order [ 1, 2, 3, 4 ]
+  layers [
+    DEF Layer0 Layer {
+      children [
+        DEF Nav1 NavigationInfo {
+          headlight FALSE
+        }
+        Transform {
+          translation 1 0 0
+          children DEF S0 Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 1 0 0
+              }
+            }
+            geometry DEF G0 Box { }
+          }
+        }
+      ]
+    }
+    DEF Layer1 Layer {
+      children [
+        DEF Nav2 NavigationInfo { }
+        Transform {
+          translation 0 1 0
+          children DEF S1 Shape {
+            appearance Appearance {
+              material Material { }
+            }
+            geometry DEF G1 Box { }
+          }
+        }
+      ]
+    }
+    DEF Layer2 Layer {
+      children [
+        DEF Nav3 NavigationInfo {
+          headlight FALSE
+        }
+        DirectionalLight { }
+        Transform {
+          translation -1 0 0
+          children DEF S2 Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 1 0 0
+              }
+            }
+            geometry DEF G2 Box { }
+          }
+        }
+        Transform {
+          translation 1 0 0
+          children DEF S3 Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 1 0 0
+              }
+            }
+            geometry DEF G3 Box { }
+          }
+        }
+      ]
+    }
+    DEF Layer3 Layer {
+      children [
+        DEF Nav4 NavigationInfo {
+          headlight FALSE
+        }
+        Transform {
+          translation 1 0 0
+          children DEF S4 Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0 0 1
+              }
+            }
+            geometry DEF G4 Box { }
+          }
+        }
+      ]
+    }
+  ]
+}

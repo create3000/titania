@@ -1,0 +1,429 @@
+/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
+/*******************************************************************************
+ *
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ *
+ * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
+ *
+ * THIS IS UNPUBLISHED SOURCE CODE OF create3000.
+ *
+ * The copyright notice above does not evidence any actual of intended
+ * publication of such source code, and is an unpublished work by create3000.
+ * This material contains CONFIDENTIAL INFORMATION that is the property of
+ * create3000.
+ *
+ * No permission is granted to copy, distribute, or create derivative works from
+ * the contents of this software, in whole or in part, without the prior written
+ * permission of create3000.
+ *
+ * NON-MILITARY USE ONLY
+ *
+ * All create3000 software are effectively free software with a non-military use
+ * restriction. It is free. Well commented source is provided. You may reuse the
+ * source in any way you please with the exception anything that uses it must be
+ * marked to indicate is contains 'non-military use only' components.
+ *
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
+ *
+ * This file is part of the Titania Project.
+ *
+ * Titania is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License version 3 only, as published by the
+ * Free Software Foundation.
+ *
+ * Titania is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License version 3 for more
+ * details (a copy is included in the LICENSE file that accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
+ * copy of the GPLv3 License.
+ *
+ ******************************************************************************/
+
+#ifndef __TITANIA_X3D_FIELDS_SFMATRIX4_H__
+#define __TITANIA_X3D_FIELDS_SFMATRIX4_H__
+
+#include "../Basic/X3DField.h"
+#include "../Types/Numbers.h"
+#include "SFRotation4.h"
+#include "SFVec3.h"
+
+namespace titania {
+namespace X3D {
+
+extern template class X3DField <Matrix4d>;
+extern template class X3DField <Matrix4f>;
+
+template <class ValueType>
+class SFMatrix4 :
+	public X3DField <ValueType>
+{
+public:
+
+	typedef typename ValueType::size_type size_type;
+
+	typedef typename ValueType::value_type scalar_type;
+
+	typedef SFVec3 <typename ValueType::vector3_type> vector3_type;
+
+	typedef SFRotation4 <typename ValueType::rotation4_type> rotation4_type;
+
+	using X3DField <ValueType>::setValue;
+	using X3DField <ValueType>::getValue;
+	using X3DField <ValueType>::operator =;
+
+	SFMatrix4 ();
+
+	SFMatrix4 (const SFMatrix4 &);
+
+	explicit
+	SFMatrix4 (const ValueType &);
+
+	SFMatrix4 (const scalar_type &, const scalar_type &, const scalar_type &, const scalar_type &,
+	           const scalar_type &, const scalar_type &, const scalar_type &, const scalar_type &,
+	           const scalar_type &, const scalar_type &, const scalar_type &, const scalar_type &,
+	           const scalar_type &, const scalar_type &, const scalar_type &, const scalar_type &);
+
+	virtual
+	SFMatrix4*
+	copy () const;
+
+	void
+	set1Value (const size_type &, const scalar_type &);
+
+	scalar_type
+	get1Value (const size_type &) const;
+
+	void
+	setValue (const scalar_type &, const scalar_type &, const scalar_type &, const scalar_type &,
+	          const scalar_type &, const scalar_type &, const scalar_type &, const scalar_type &,
+	          const scalar_type &, const scalar_type &, const scalar_type &, const scalar_type &,
+	          const scalar_type &, const scalar_type &, const scalar_type &, const scalar_type &);
+
+	void
+	getValue (scalar_type &, scalar_type &, scalar_type &, scalar_type &,
+	          scalar_type &, scalar_type &, scalar_type &, scalar_type &,
+	          scalar_type &, scalar_type &, scalar_type &, scalar_type &,
+	          scalar_type &, scalar_type &, scalar_type &, scalar_type &) const;
+
+	void
+	setTransform ();
+
+	void
+	setTransform (const vector3_type &);
+
+	void
+	setTransform (const vector3_type &,
+	              const rotation4_type &);
+
+	void
+	setTransform (const vector3_type &,
+	              const rotation4_type &,
+	              const vector3_type &);
+
+	void
+	setTransform (const vector3_type &,
+	              const rotation4_type &,
+	              const vector3_type &,
+	              const rotation4_type &);
+
+	void
+	setTransform (const vector3_type &,
+	              const rotation4_type &,
+	              const vector3_type &,
+	              const rotation4_type &,
+	              const vector3_type &);
+
+	void
+	getTransform (vector3_type &,
+	              rotation4_type &,
+	              vector3_type &) const;
+
+	void
+	getTransform (vector3_type &,
+	              rotation4_type &,
+	              vector3_type &,
+	              rotation4_type &) const;
+
+	void
+	getTransform (vector3_type &,
+	              rotation4_type &,
+	              vector3_type &,
+	              rotation4_type &,
+	              vector3_type &) const;
+
+	SFMatrix4*
+	inverse () const;
+
+	SFMatrix4*
+	transpose () const;
+
+	SFMatrix4*
+	multLeft (const SFMatrix4 &) const;
+
+	SFMatrix4*
+	multRight (const SFMatrix4 &) const;
+
+	vector3_type*
+	multMatrixVec (const vector3_type &) const;
+
+	vector3_type*
+	multVecMatrix (const vector3_type &) const;
+
+	vector3_type*
+	multDirMatrix (const vector3_type &) const;
+
+
+private:
+
+	using X3DField <ValueType>::notifyParents;
+	using X3DField <ValueType>::get;
+
+};
+
+template <class ValueType>
+SFMatrix4 <ValueType>::SFMatrix4 () :
+	X3DField <ValueType> ()
+{ }
+
+template <class ValueType>
+SFMatrix4 <ValueType>::SFMatrix4 (const SFMatrix4 & field) :
+	X3DField <ValueType> (field)
+{ }
+
+template <class ValueType>
+SFMatrix4 <ValueType>::SFMatrix4 (const ValueType & value) :
+	X3DField <ValueType> (value)
+{ }
+
+template <class ValueType>
+SFMatrix4 <ValueType>::SFMatrix4 (const scalar_type & e11, const scalar_type & e12, const scalar_type & e13, const scalar_type & e14,
+                                  const scalar_type & e21, const scalar_type & e22, const scalar_type & e23, const scalar_type & e24,
+                                  const scalar_type & e31, const scalar_type & e32, const scalar_type & e33, const scalar_type & e34,
+                                  const scalar_type & e41, const scalar_type & e42, const scalar_type  & e43, const scalar_type & e44) :
+	X3DField <ValueType> (ValueType (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44))
+{ }
+
+template <class ValueType>
+SFMatrix4 <ValueType>*
+SFMatrix4 <ValueType>::copy () const
+{
+	return new SFMatrix4 (*this);
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::set1Value (const size_type & index, const scalar_type & value)
+{
+	get () .data () [index] = value;
+	notifyParents ();
+}
+
+template <class ValueType>
+typename SFMatrix4 <ValueType>::scalar_type
+SFMatrix4 <ValueType>::get1Value (const size_type & index) const
+{
+	return getValue () .data () [index];
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::setValue (const scalar_type & e11, const scalar_type & e12, const scalar_type & e13, const scalar_type & e14,
+                                 const scalar_type & e21, const scalar_type & e22, const scalar_type & e23, const scalar_type & e24,
+                                 const scalar_type & e31, const scalar_type & e32, const scalar_type & e33, const scalar_type & e34,
+                                 const scalar_type & e41, const scalar_type & e42, const scalar_type & e43, const scalar_type & e44)
+{
+	setValue (ValueType (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44));
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::getValue (scalar_type & e11, scalar_type & e12, scalar_type & e13, scalar_type & e14,
+                                 scalar_type & e21, scalar_type & e22, scalar_type & e23, scalar_type & e24,
+                                 scalar_type & e31, scalar_type & e32, scalar_type & e33, scalar_type & e34,
+                                 scalar_type & e41, scalar_type & e42, scalar_type & e43, scalar_type & e44) const
+{
+	getValue () .get (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44);
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::setTransform ()
+{
+	get () .set ();
+	notifyParents ();
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::setTransform (const vector3_type & translation)
+{
+	get () .set (translation);
+	notifyParents ();
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::setTransform (const vector3_type & translation,
+                                     const rotation4_type & rotation)
+{
+	get () .set (translation, rotation);
+	notifyParents ();
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::setTransform (const vector3_type & translation,
+                                     const rotation4_type & rotation,
+                                     const vector3_type & scale)
+{
+	get () .set (translation, rotation, scale);
+	notifyParents ();
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::setTransform (const vector3_type & translation,
+                                     const rotation4_type & rotation,
+                                     const vector3_type & scale,
+                                     const rotation4_type & scaleOrientation)
+{
+	get () .set (translation, rotation, scale, scaleOrientation);
+	notifyParents ();
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::setTransform (const vector3_type & translation,
+                                     const rotation4_type & rotation,
+                                     const vector3_type & scale,
+                                     const rotation4_type & scaleOrientation,
+                                     const vector3_type & center)
+{
+	get () .set (translation, rotation, scale, scaleOrientation, center);
+	notifyParents ();
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::getTransform (vector3_type & translation,
+                                     rotation4_type & rotation,
+                                     vector3_type & scale) const
+{
+	typename vector3_type::value_type t, s;
+	typename rotation4_type::value_type r;
+
+	getValue () .get (t, r, s);
+
+	translation = t;
+	rotation    = r;
+	scale       = s;
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::getTransform (vector3_type & translation,
+                                     rotation4_type & rotation,
+                                     vector3_type & scale,
+                                     rotation4_type & scaleOrientation) const
+{
+	typename vector3_type::value_type t, s;
+	typename rotation4_type::value_type r, so;
+
+	getValue () .get (t, r, s, so);
+
+	translation      = t;
+	rotation         = r;
+	scale            = s;
+	scaleOrientation = so;
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::getTransform (vector3_type & translation,
+                                     rotation4_type & rotation,
+                                     vector3_type & scale,
+                                     rotation4_type & scaleOrientation,
+                                     vector3_type & center) const
+{
+	typename vector3_type::value_type t, s, c;
+	typename rotation4_type::value_type r, so;
+
+	getValue () .get (t, r, s, so, c);
+
+	translation      = t;
+	rotation         = r;
+	scale            = s;
+	scaleOrientation = so;
+	center           = c;
+}
+
+template <class ValueType>
+SFMatrix4 <ValueType>*
+SFMatrix4 <ValueType>::inverse () const
+{
+	return new SFMatrix4 (getValue () .inverse ());
+}
+
+template <class ValueType>
+SFMatrix4 <ValueType>*
+SFMatrix4 <ValueType>::transpose () const
+{
+	return new SFMatrix4 (getValue () .transpose ());
+}
+
+template <class ValueType>
+SFMatrix4 <ValueType>*
+SFMatrix4 <ValueType>::multLeft (const SFMatrix4 & value) const
+{
+	return new SFMatrix4 (getValue () .multLeft (value .getValue ()));
+}
+
+template <class ValueType>
+SFMatrix4 <ValueType>*
+SFMatrix4 <ValueType>::multRight (const SFMatrix4 & value) const
+{
+	return new SFMatrix4 (getValue () .multRight (value .getValue ()));
+}
+
+template <class ValueType>
+typename SFMatrix4 <ValueType>::vector3_type*
+SFMatrix4 <ValueType>::multMatrixVec (const vector3_type & value) const
+{
+	return new vector3_type (getValue () .multMatrixVec (value .getValue ()));
+}
+
+template <class ValueType>
+typename SFMatrix4 <ValueType>::vector3_type*
+SFMatrix4 <ValueType>::multVecMatrix (const vector3_type & value) const
+{
+	return new vector3_type (getValue () .multVecMatrix (value .getValue ()));
+}
+
+template <class ValueType>
+typename SFMatrix4 <ValueType>::vector3_type*
+SFMatrix4 <ValueType>::multDirMatrix (const vector3_type & value) const
+{
+	return new vector3_type (getValue () .multDirMatrix (value .getValue ()));
+}
+
+//extern template class X3DField <Matrix4d>;
+//extern template class X3DField <Matrix4f>;
+
+// SFMatrix4d and SFMatrix4f
+extern template class SFMatrix4 <Matrix4d>;
+extern template class SFMatrix4 <Matrix4f>;
+
+typedef SFMatrix4 <Matrix4d> SFMatrix4d;
+typedef SFMatrix4 <Matrix4f> SFMatrix4f;
+
+} // X3D
+} // titania
+
+#endif

@@ -1,0 +1,241 @@
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* info.h:
+	* ChangeLog:
+	* GLContext.o:
+	* GLContext.d:
+	* GLSurface.o:
+	* GLSurface.d:
+	* GdkContext.o:
+	* GdkContext.d:
+	* GLXContext.o:
+	* X3DContext.d:
+	* X3DSurface.o:
+	* X3DSurface.d:
+	* X3DContext.o:
+	* DrawingArea.o:
+	* DrawingArea.d:
+	* WindowContext.o:
+	* WindowContext.d:
+	* GLDrawingArea.o:
+	* GLDrawingArea.d:
+	* GLSurface.h:
+	* GLSurface.cpp:
+	* libtitania-opengl-canvas.pidb:
+	* GLContext.h:
+	* libtitania-opengl-drawingarea.cproj:
+	* libtitania-opengl-drawingarea.md.pc:
+	* GLContext.cpp:
+	* libtitania-opengl-canvas.so:
+	* WindowContext.h:
+	* WindowContext.cpp: 
+
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* info.h:
+	* ChangeLog:
+	* GLContext.o:
+	* GLContext.d:
+	* GLSurface.o:
+	* GLSurface.d:
+	* GdkContext.o:
+	* GdkContext.d:
+	* GLXContext.o:
+	* X3DContext.d:
+	* X3DSurface.o:
+	* X3DSurface.d:
+	* X3DContext.o:
+	* DrawingArea.o:
+	* DrawingArea.d:
+	* WindowContext.o:
+	* WindowContext.d:
+	* GLDrawingArea.o:
+	* GLDrawingArea.d:
+	* GLSurface.h:
+	* GLSurface.cpp:
+	* libtitania-opengl-canvas.pidb:
+	* GLContext.h:
+	* libtitania-opengl-drawingarea.cproj:
+	* libtitania-opengl-drawingarea.md.pc:
+	* GLContext.cpp:
+	* libtitania-opengl-canvas.so:
+	* WindowContext.h:
+	* WindowContext.cpp: 
+
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-drawingarea.md.pc:
+	* libtitania-opengl-drawingarea.cproj: 
+
+2012-10-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.cpp: 
+
+2012-10-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.cpp: 
+
+2012-10-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.cpp:
+	* libtitania-opengl-drawingarea.cproj: 
+
+2012-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.cpp: 
+
+2012-10-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-drawingarea.cproj: 
+
+2012-10-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.h:
+	* DrawingArea.cpp: 
+
+2012-10-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.h:
+	* DrawingArea.cpp: 
+
+2012-10-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-drawingarea.cproj: 
+
+2012-09-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.h:
+	* DrawingArea.cpp: 
+
+2012-09-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.h:
+	* DrawingArea.cpp: 
+
+2012-09-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.h:
+	* DrawingArea.cpp: 
+
+2012-09-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.cpp: 
+
+2012-09-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.h: 
+
+2012-09-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-canvas.md.pc:
+	* libtitania-opengl-drawingarea.cproj: 
+
+2012-09-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.cpp: 
+
+2012-09-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.h: 
+
+2012-09-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.cpp: 
+
+2012-09-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DrawingArea.h: 
+
+2012-09-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-canvas.pidb: 
+
+2012-09-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Canvas.h:
+	* Canvas.cpp:
+	* DrawingArea.h:
+	* libtitania-opengl-canvas.cproj:
+	* DrawingArea.cpp:
+	* libtitania-opengl-drawingarea.cproj: 
+
+2012-07-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-canvas.md.pc: 
+
+2012-07-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-canvas.md.pc: 
+
+2012-07-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-canvas.md.pc: 
+
+2012-07-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-canvas.md.pc: 
+
+2012-07-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-canvas.md.pc: 
+
+2012-07-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-canvas.md.pc: 
+
+2012-07-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-canvas.md.pc: 
+
+2012-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-canvas.md.pc: 
+
+2012-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-canvas.md.pc: 
+
+2012-07-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Canvas.h:
+	* libtitania-opengl-canvas.md.pc: 
+
+2012-07-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-canvas.md.pc:
+	* libtitania-opengl-canvas.cproj: 
+
+2012-07-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Canvas.h: 
+
+2012-07-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-opengl-canvas.pidb: 
+
+2012-06-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Canvas.h:
+	* Canvas.cpp: 
+
+2012-06-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* info.h: 
+
+2012-06-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Canvas.h:
+	* Canvas.cpp:
+	* libtitania-opengl-canvas.md.pc:
+	* libtitania-opengl-canvas.cproj: 
+
+2012-06-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* .:
+	* info.h:
+	* Titania:
+	* OpenGL:
+	* Canvas.h:
+	* Canvas.cpp:
+	* libtitania-opengl-canvas.cproj: 
+

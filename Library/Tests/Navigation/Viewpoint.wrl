@@ -1,0 +1,42 @@
+#X3D V3.0 utf8 Titania
+
+Background { }
+
+DEF Home Viewpoint {
+  position 0 0 34
+  description "Home"
+}
+
+DEF Far Viewpoint {
+  position 0 0 68
+  description "Far"
+}
+
+LayerSet {
+  order [ 1 ]
+  activeLayer 1
+  layers [
+    DEF _0 Layer {
+      children [
+
+	      USE Home
+	      USE Far
+
+			Transform {
+				translation 0 3 0
+				children DEF Boxes Inline {
+					url "Inline.wrl"
+				}
+			}
+
+			Transform {
+				translation 0 -3 0
+				children USE Boxes
+			}
+
+
+      ]
+    }
+  ]
+}
+

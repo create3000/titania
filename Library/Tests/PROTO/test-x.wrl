@@ -1,0 +1,40 @@
+#X3D V3.0 utf8
+
+EXTERNPROTO Rotor [
+  inputOutput SFTime     cycleInterval
+  inputOutput SFBool     loop
+  outputOnly  SFRotation value_changed
+]
+"Rotor.wrl"
+
+PROTO GoldenSphereAnimation [
+  inputOutput SFVec3f translation 0 0 0
+]
+{
+  DEF SphereA Transform {
+    translation IS translation
+    rotation 1 0 0 1.5708
+    scale 1 1 1
+    bboxSize -1 -1 -1
+    children DEF Inline Inline {
+      load TRUE
+      url "GoldenSphere.wrl"
+      bboxSize -1 -1 -1
+    }
+  }
+
+  DEF Rotor Rotor {
+    cycleInterval 10
+    loop TRUE
+  }
+
+
+  IMPORT Inline.GoldenSphere AS Sphere
+
+  EXPORT Sphere AS GoldenSphere
+
+  ROUTE Rotor.value_changed TO Sphere.rotation
+}
+
+GoldenSphereAnimation { }
+

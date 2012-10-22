@@ -1,0 +1,7 @@
+#VRML V2.0 utf8
+
+META "title" "DemoTerminal"
+
+Inline {
+  url "stage/index.wrl"
+}

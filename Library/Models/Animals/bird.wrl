@@ -1,0 +1,323 @@
+#VRML V2.0 utf8 CosmoWorlds V1.0
+
+Group {
+  children	  Transform {
+    children	[
+      DEF _0 NavigationInfo {
+	avatarSize	0
+	type	[ "EXAMINE",
+		  "ANY" ]
+      }
+      Group {
+	children	[
+	  DEF Home Viewpoint {
+	    position	0.08 -0.036 0.89058
+	    description	"Home"
+	  }
+	  Collision {
+	    children	Group {
+	      children	[
+		DEF Cameras Switch {
+		  whichChoice	-1
+		  choice	[
+		  ]
+		}
+		Transform {
+		  children	Group {
+		    children	Group {
+		      children	[
+			Transform {
+			  children	Shape {
+			    appearance	Appearance {
+			      material	DEF _DefMat_1 Material {
+			      }
+
+			    }
+
+			    geometry	IndexedFaceSet {
+			      coord	Coordinate {
+				point	[ 0 0 0.4,
+					  1.8 0 0.3,
+					  1.8 0 -0.3,
+					  0 0 -0.4,
+					  0.2 -1 0,
+					  1.7 -0.8 0 ]
+			      }
+
+			      coordIndex	[ 0, 1, 2, 3, -1, 0, 4, 5,
+				        1, -1, 2, 5, 4, 3, -1, 0,
+				        3, 4, -1, 1, 5, 2, -1 ]
+			      normal	Normal {
+				vector	[ 0 1 0,
+					  0 -0.5 1,
+					  0 -0.5 -1,
+					  -1 -0.2 0,
+					  1 0.2 0 ]
+			      }
+
+			      normalPerVertex	FALSE
+			      solid	FALSE
+			      creaseAngle	0.5
+			    }
+
+			  }
+
+			  translation	0 0 0
+			}
+			Group {
+			  children	Shape {
+			    appearance	Appearance {
+			      material	USE _DefMat_1
+
+			    }
+
+			    geometry	IndexedFaceSet {
+			      coord	Coordinate {
+				point	[ 0 0 0.4,
+					  0 0 -0.4,
+					  -1.2 -0.6 0,
+					  -0.2 -1.1 0 ]
+			      }
+
+			      coordIndex	[ 0, 1, 2, -1, 3, 0, 2, -1,
+				        1, 3, 2, -1, 3, 1, 0, -1 ]
+			      normal	Normal {
+				vector	[ -0.5 1 0,
+					  0 -0.5 1,
+					  0 -0.5 -1,
+					  0.5 -0.5 0 ]
+			      }
+
+			      normalPerVertex	FALSE
+			      solid	FALSE
+			      creaseAngle	0.5
+			    }
+
+			  }
+
+			}
+			Transform {
+			  children	Shape {
+			    appearance	Appearance {
+			      material	USE _DefMat_1
+
+			    }
+
+			    geometry	IndexedFaceSet {
+			      coord	Coordinate {
+				point	[ 0 0 0.3,
+					  1.4 -0.6 0.7,
+					  1.4 -0.6 -0.7,
+					  0 0 -0.3,
+					  0.2 -0.8 0 ]
+			      }
+
+			      coordIndex	[ 0, 1, 2, 3, -1, 0, 4, 1,
+				        -1, 1, 4, 2, -1, 2, 4, 3,
+				        -1, 0, 3, 4, -1 ]
+			      normal	Normal {
+				vector	[ 0.3 1 0,
+					  -0.1 -0.5 1,
+					  0.25 -1 0,
+					  -0.1 -0.5 -1,
+					  -0.5 -0.5 0 ]
+			      }
+
+			      normalPerVertex	FALSE
+			      solid	FALSE
+			      creaseAngle	0.5
+			    }
+
+			  }
+
+			  translation	1.8 0 0
+			}
+			Transform {
+			  children	[
+			    Shape {
+			      appearance	Appearance {
+				material	USE _DefMat_1
+
+			      }
+
+			      geometry	IndexedFaceSet {
+				coord	Coordinate {
+				  point	[ 0 0 0,
+					    1.8 0 -0.1,
+					    1.4 0.2 2,
+					    0 0.2 2,
+					    0 -0.02 0,
+					    1.8 -0.02 -0.1,
+					    1.4 0.18 2,
+					    0 0.18 2 ]
+				}
+
+				coordIndex	[ 3, 2, 1, 0, -1, 4, 5, 6,
+					  7, -1, 0, 1, 5, 4, -1, 1,
+					  2, 6, 5, -1, 2, 3, 7, 6,
+					  -1, 3, 0, 4, 7, -1 ]
+				normal	Normal {
+				  vector	[ 0 1 -0.1,
+					    0 -1 -0.1,
+					    0 0 1,
+					    1 0 0,
+					    0 0 -1,
+					    -1 0 0 ]
+				}
+
+				normalPerVertex	FALSE
+				solid	FALSE
+				creaseAngle	0.5
+			      }
+
+			    }
+			    Transform {
+			      children	Shape {
+				appearance	Appearance {
+				  material	USE _DefMat_1
+
+				}
+
+				geometry	IndexedFaceSet {
+				  coord	Coordinate {
+				    point	[ 0 0 0,
+					      1.4 0 0,
+					      1.8 -0.1 1.6,
+					      1 -0.1 1.4,
+					      0 -0.02 0,
+					      1.4 -0.02 0,
+					      1.8 -0.12 1.6,
+					      1 -0.12 1.4 ]
+				  }
+
+				  coordIndex	[ 3, 2, 1, 0, -1, 4, 5, 6,
+					    7, -1, 0, 1, 5, 4, -1, 1,
+					    2, 6, 5, -1, 2, 3, 7, 6,
+					    -1, 3, 0, 4, 7, -1 ]
+				  normal	Normal {
+				    vector	[ 0 1 0.05,
+					      0 -1 0.05,
+					      0 0 1,
+					      1 0 0,
+					      0 0 -1,
+					      -1 0 0 ]
+				  }
+
+				  normalPerVertex	FALSE
+				  solid	FALSE
+				  creaseAngle	0.5
+				}
+
+			      }
+
+			      translation	0 0.2 2
+			      rotation	0 0 1  0
+			    }
+			  ]
+			  translation	0 0 0.4
+			  rotation	0 0 1  0
+			}
+			Transform {
+			  children	[
+			    Shape {
+			      appearance	Appearance {
+				material	USE _DefMat_1
+
+			      }
+
+			      geometry	IndexedFaceSet {
+				coord	Coordinate {
+				  point	[ 0 0 0,
+					    1.8 0 0.1,
+					    1.4 0.2 -2,
+					    0 0.2 -2,
+					    0 -0.02 0,
+					    1.8 -0.02 0.1,
+					    1.4 0.18 -2,
+					    0 0.18 -2 ]
+				}
+
+				coordIndex	[ 0, 1, 2, 3, -1, 7, 6, 5,
+					  4, -1, 4, 5, 1, 0, -1, 5,
+					  6, 2, 1, -1, 6, 7, 3, 2,
+					  -1, 7, 4, 0, 3, -1 ]
+				normal	Normal {
+				  vector	[ 0 1 0.1,
+					    0 -1 0.1,
+					    0 0 1,
+					    1 0 0,
+					    0 0 -1,
+					    -1 0 0 ]
+				}
+
+				normalPerVertex	FALSE
+				solid	FALSE
+				creaseAngle	0.5
+			      }
+
+			    }
+			    Transform {
+			      children	Shape {
+				appearance	Appearance {
+				  material	USE _DefMat_1
+
+				}
+
+				geometry	IndexedFaceSet {
+				  coord	Coordinate {
+				    point	[ 0 0 0,
+					      1.4 0 0,
+					      1.8 -0.1 -1.6,
+					      1 -0.1 -1.4,
+					      0 -0.02 0,
+					      1.4 -0.02 0,
+					      1.8 -0.12 -1.6,
+					      1 -0.12 -1.4 ]
+				  }
+
+				  coordIndex	[ 0, 1, 2, 3, -1, 7, 6, 5,
+					    4, -1, 4, 5, 1, 0, -1, 5,
+					    6, 2, 1, -1, 6, 7, 3, 2,
+					    -1, 7, 4, 0, 3, -1 ]
+				  normal	Normal {
+				    vector	[ 0 1 -0.05,
+					      0 -1 -0.05,
+					      0 0 1,
+					      1 0 0,
+					      0 0 -1,
+					      -1 0 0 ]
+				  }
+
+				  normalPerVertex	FALSE
+				  solid	FALSE
+				  creaseAngle	0.5
+				}
+
+			      }
+
+			      translation	0 0.2 -2
+			      rotation	0 0 1  0
+			    }
+			  ]
+			  translation	0 0 -0.4
+			  rotation	0 0 1  0
+			}
+		      ]
+		    }
+
+		  }
+
+		  translation	0 0 0
+		  scale	0.08 0.08 0.08
+		}
+	      ]
+	    }
+
+	    collide	FALSE
+	  }
+	]
+      }
+    ]
+  }
+
+}

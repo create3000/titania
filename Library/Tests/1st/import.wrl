@@ -1,0 +1,11 @@
+#VRML V2.0 utf8
+
+DEF Inline Inline {
+  url "export.wrl"
+}
+DEF t2 Transform { }
+
+IMPORT Inline.Transform AS t
+IMPORT Inline.transform
+
+ROUTE t.scale TO t2.scale

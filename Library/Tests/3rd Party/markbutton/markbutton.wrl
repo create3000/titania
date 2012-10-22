@@ -1,0 +1,146 @@
+#VRML V2.0 utf8
+
+PROTO MarkButton [
+  eventOut SFBool   isState
+  field    SFBool   StateON TRUE
+  field    SFColor  ColorOfCross 0 0 0
+  field    MFString labelText ""
+]
+{
+  DEF BUTTON Group {
+    children [
+      DEF BORDER Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.25 0.25 0.25
+          }
+        }
+        geometry Box {
+          size 1 0.1 0.05
+        }
+      }
+      Transform {
+        translation 0 -0.9 0
+        children USE BORDER
+      }
+      Transform {
+        translation -0.45 -0.45 0
+        rotation 0 0 1 1.57
+        children USE BORDER
+      }
+      Transform {
+        translation 0.45 -0.45 0
+        rotation 0 0 1 1.57
+        children USE BORDER
+      }
+      DEF BACK Transform {
+        translation 0 -0.45 -0.02
+        children Shape {
+          appearance Appearance {
+            material Material { }
+          }
+          geometry Box {
+            size 1 1 0.01
+          }
+        }
+      }
+      Transform {
+        children [
+          DEF CROSSPIN Transform {
+            translation 0 -0.45 0.01
+            rotation 0 0 1 0.78
+            children Shape {
+              appearance Appearance {
+                material DEF CROSS Material { }
+              }
+              geometry Box {
+                size 0.7 0.1 0.05
+              }
+            }
+          }
+          Transform {
+            translation 0.45 -0.45 0
+            rotation -0 -0 -1 1.57
+            children USE CROSSPIN
+          }
+        ]
+      }
+      DEF TSENSOR TouchSensor { }
+      DEF ButtonScript Script {
+        eventIn  SFBool  PressedButton
+        eventIn  SFBool  OverButton
+        eventOut SFColor CrossColor
+        eventOut SFBool  isState IS isState
+        field    SFBool  ButtonStateON IS StateON
+        field    SFBool  IsOver FALSE
+        field    SFColor ActiveColor IS ColorOfCross
+        url "vrmlscript:
+function PressedButton(value)
+{
+  if (IsOver == FALSE)
+  {
+	 if (ButtonStateON == TRUE)
+	 {
+		 CrossColor[0] = 0.8;
+		 CrossColor[1] = 0.8;
+		 CrossColor[2] = 0.8;
+		 
+		 ButtonStateON = FALSE;
+		 IsOver        = TRUE;
+		 isState       = FALSE;
+	 }
+	 else
+	 {
+		 CrossColor    = ActiveColor;
+		 ButtonStateON = TRUE;
+		 IsOver        = TRUE;
+		 isState       = TRUE;
+	 }
+  }
+}
+
+function OverButton(value)
+{
+	IsOver = FALSE;
+}
+
+function initialize()
+{
+	 if (ButtonStateON == FALSE)
+	 {
+		 CrossColor[0] = 0.8;
+		 CrossColor[1] = 0.8;
+		 CrossColor[2] = 0.8;
+	 }
+	 else
+	 {
+		 CrossColor=ActiveColor;
+	 }
+}
+"
+      }
+      Transform {
+        translation 0.7 -0.8 0.01
+        children Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.1 0.1 0.1
+            }
+          }
+          geometry Text {
+            fontStyle FontStyle {
+              family "SANS"
+              justify "LEFT"
+            }
+            string IS labelText
+          }
+        }
+      }
+    ]
+  }
+
+  ROUTE TSENSOR.isActive TO ButtonScript.PressedButton
+  ROUTE ButtonScript.CrossColor TO CROSS.diffuseColor
+  ROUTE TSENSOR.isOver TO ButtonScript.OverButton
+}
+

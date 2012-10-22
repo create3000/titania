@@ -1,0 +1,78 @@
+#VRML V2.0 utf8 CosmoWorlds V1.0
+
+Group {
+  children	  Transform {
+    children	[
+      DEF _0 NavigationInfo {
+	avatarSize	0
+	type	[ "EXAMINE",
+		  "ANY" ]
+      }
+      Group {
+	children	[
+	  DEF Home Viewpoint {
+	    position	0 0 4.18154
+	    description	"Home"
+	  }
+	  Collision {
+	    children	Group {
+	      children	[
+		DEF Cameras Switch {
+		  whichChoice	-1
+		  choice	[
+		  ]
+		}
+		Group {
+		  children	[
+		  ]
+		}
+		Group {
+		  children	[
+		  ]
+		}
+		Group {
+		  children	[
+		  ]
+		}
+		Group {
+		  children	[
+		  ]
+		}
+		Group {
+		  children	[
+		  ]
+		}
+		Group {
+		  children	[
+		  ]
+		}
+		Group {
+		  children	[
+		  ]
+		}
+		Group {
+		  children	[
+		  ]
+		}
+		Shape {
+		  appearance	Appearance {
+		    material	DEF _DefMat Material {
+		    }
+
+		  }
+
+		  geometry	Box {
+		  }
+
+		}
+	      ]
+	    }
+
+	    collide	FALSE
+	  }
+	]
+      }
+    ]
+  }
+
+}

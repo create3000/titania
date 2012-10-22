@@ -1,0 +1,28 @@
+#VRML V2.0 utf8
+
+PROFILE Full
+
+COMPONENT Core:2
+COMPONENT Navigation:3
+
+META "A" "A"
+META "B" "B"
+META "Title" "test
+meta\""
+
+DEF Script Script {
+  exposedField SFVec3f test 0 0 0
+  exposedField SFVec3f test2 0 0 0
+  field        SFNode  self USE Script
+  field        MFNode  selfs USE Script
+  field        MFNode  self2s [
+    USE Script
+    USE Script
+  ]
+}
+
+EXPORT Script AS script
+EXPORT Script
+
+ROUTE Script.test TO Script.test2
+ROUTE Script.test2 TO Script.test

@@ -1,0 +1,13 @@
+#VRML V2.0 utf8
+
+EXTERNPROTO MyProto [
+  field SFBool sfbool
+  field MFNode mfnode
+]
+"../PROTO/proto2.wrl#Proto"
+
+MyProto { }
+Transform {
+  rotation 0.00220765 0.999881 0.0152696 0.876864
+  children MyProto { }
+}

@@ -1,0 +1,5 @@
+Name: libtitania-opengl-drawingarea
+Description: 
+Version: 0.3
+Libs: -L"/home/holger/Projekte/Titania/libtitania-opengl-canvas/bin/Debug" -ltitania-opengl-canvas
+Cflags: -I"/home/holger/Projekte/Titania/libtitania-opengl-canvas" -I"/home/holger/Projekte/Titania/libtitania-opengl-canvas/Titania/OpenGL" -I"/home/holger/Projekte/Titania/libtitania-opengl-canvas/Titania/OpenGL/Context"

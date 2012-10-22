@@ -1,0 +1,85 @@
+#X3D V3.0 utf8
+
+EXTERNPROTO Rotor [
+  exposedField SFTime     cycleInterval
+  exposedField SFBool     loop
+  eventOut     SFRotation value_changed
+]
+"Rotor.wrl"
+
+PROTO GoldenSphereAnimation [
+  inputOutput SFVec3f translation 0 0 0
+]
+{
+  DEF SphereA Transform {
+    rotation 1 0 0 1.5707963
+    translation IS translation
+    children DEF Inline Inline {
+      url "GoldenSphere.wrl"
+    }
+  }
+
+	DEF Rotor Rotor {
+		cycleInterval 10
+		loop TRUE
+	}
+
+  IMPORT Inline.GoldenSphere AS Sphere
+
+  ROUTE Rotor.value_changed TO Sphere.set_rotation
+}
+
+DEF SphereRotor Rotor {
+	cycleInterval 7
+	loop TRUE
+}
+
+DEF GoldenRotor Rotor {
+	cycleInterval 9
+	loop TRUE
+}
+
+DEF RedRotor Rotor {
+	cycleInterval 11
+	loop TRUE
+}
+
+Transform {
+  children Transform {
+    children [
+      GoldenSphereAnimation { }
+		Transform {
+        rotation 1 0 0 1.5707963
+		  children
+			DEF Golden Transform {
+			  translation 4 0 0
+			  scale 0.3 0.3 0.3
+			  center -4 0 0
+			  children DEF GoldenInline Inline {
+			    url "GoldenSphere.wrl"
+			  }
+			}
+		}
+		Transform {
+        rotation 1 0 0 1.5707963
+		  children
+			DEF Red Transform {
+			  translation 5 0 0
+			  scale 0.4 0.4 0.4
+			  center -5 0 0
+			  children DEF RedInline Inline {
+			    url "Geometry.wrl"
+			  }
+			}
+		}
+	]
+  }
+}
+
+IMPORT GoldenInline.GoldenSphere
+IMPORT RedInline.RedSphere
+
+ROUTE SphereRotor.value_changed TO GoldenSphere.set_rotation
+ROUTE SphereRotor.value_changed TO RedSphere.set_rotation
+ROUTE GoldenRotor.value_changed TO Golden.set_rotation
+ROUTE RedRotor.value_changed TO Red.set_rotation

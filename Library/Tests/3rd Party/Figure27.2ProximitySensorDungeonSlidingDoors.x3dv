@@ -1,0 +1,152 @@
+#X3D V3.0 utf8
+
+PROFILE Immersive
+
+META "created" "26 October 2000"
+META "creator" "Figure 27.2, The VRML 2.0 Sourcebook, Copyright [1997] By Andrea L. Ames, David R. Nadeau, and John L. Moreland"
+META "description" "A dungeon door that slides open when the ProximitySensor detects the viewer close enough. Later the doors close when the viewer moves out of range from the ProximitySensor."
+META "generator" "X3D-Edit 3.2, https://savage.nps.edu/X3D-Edit"
+META "identifier" "http://www.web3d.org/x3d/content/examples/Vrml2.0Sourcebook/Chapter27-VisibilityProximityCollisionSensing/Figure27.2ProximitySensorDungeonSlidingDoors.x3d"
+META "license" "../../license.html"
+META "modified" "27 September 2009"
+META "title" "Figure27.2ProximitySensorDungeonSlidingDoors.x3d"
+META "translator" "Don Brutzman"
+
+Viewpoint {
+  fieldOfView 1.05
+  position 0 2 10
+  description "Now you see doors closed, because they are far away"
+}
+Viewpoint {
+  fieldOfView 1.05
+  position 0 2 -1
+  description "Now you see doors opened, because you are close"
+}
+DEF _0 NavigationInfo {
+  avatarSize [ 0.5, 1.6, 0.5 ]
+  headlight FALSE
+  speed 2
+  transitionType "ANIMATE"
+  type [ "WALK", "EXAMINE", "ANY" ]
+}
+Group {
+  children [
+    LOD {
+      range 20
+      level [
+        DEF DungeonRoom Inline {
+          url [ "../Chapter25-LevelOfDetail/Figure25.08DungeonRoom.wrl", "http://www.web3d.org/x3d/content/examples/Vrml2.0Sourcebook/Chapter25-LevelOfDetail/Figure25.08DungeonRoom.wrl", "../Chapter25-LevelOfDetail/Figure25.08DungeonRoom.x3d", "http://www.web3d.org/x3d/content/examples/Vrml2.0Sourcebook/Chapter25-LevelOfDetail/Figure25.08DungeonRoom.x3d" ]
+        }
+        WorldInfo {
+          info "null node"
+        }
+      ]
+    }
+    Transform {
+      translation 0 0 -10
+      children LOD {
+        range 20
+        level [
+          USE DungeonRoom
+          WorldInfo {
+            info "null node"
+          }
+        ]
+      }
+    }
+    Transform {
+      translation 0 0 -5
+      children Inline {
+        url [ "../Chapter25-LevelOfDetail/Figure25.10DungeonWallWithDoorway.wrl", "http://www.web3d.org/x3d/content/examples/Vrml2.0Sourcebook/Chapter25-LevelOfDetail/Figure25.10DungeonWallWithDoorway.wrl", "../Chapter25-LevelOfDetail/Figure25.10DungeonWallWithDoorway.x3d", "http://www.web3d.org/x3d/content/examples/Vrml2.0Sourcebook/Chapter25-LevelOfDetail/Figure25.10DungeonWallWithDoorway.x3d" ]
+      }
+    }
+    Transform {
+      translation 0 0 -15
+      rotation 0 1 0 1.57
+      scale 1 1 2
+      children Inline {
+        url [ "../Chapter25-LevelOfDetail/Figure25.07DungeonRoomWall.wrl", "http://www.web3d.org/x3d/content/examples/Vrml2.0Sourcebook/Chapter25-LevelOfDetail/Figure25.07DungeonRoomWall.wrl", "../Chapter25-LevelOfDetail/Figure25.07DungeonRoomWall.x3d", "http://www.web3d.org/x3d/content/examples/Vrml2.0Sourcebook/Chapter25-LevelOfDetail/Figure25.07DungeonRoomWall.x3d" ]
+      }
+    }
+    Transform {
+      translation 0 0 -4.95
+      children [
+        DEF LeftDoor Transform {
+          children Transform {
+            translation -0.75 0 0
+            children DEF Door Inline {
+              url [ "../Chapter25-LevelOfDetail/Figure25.11DungeonDoor.wrl", "http://www.web3d.org/x3d/content/examples/Vrml2.0Sourcebook/Chapter25-LevelOfDetail/Figure25.11DungeonDoor.wrl", "../Chapter25-LevelOfDetail/Figure25.11DungeonDoor.x3d", "http://www.web3d.org/x3d/content/examples/Vrml2.0Sourcebook/Chapter25-LevelOfDetail/Figure25.11DungeonDoor.x3d" ]
+            }
+          }
+        }
+        DEF RightDoor Transform {
+          children Transform {
+            translation 0.75 0 0
+            children USE Door
+          }
+        }
+        DEF DoorSense ProximitySensor {
+          size 6 3.5 8
+          center 0 1.75 0
+        }
+      ]
+    }
+    Sound {
+      maxBack 60
+      maxFront 60
+      minBack 20
+      minFront 20
+      source DEF OpenSound AudioClip {
+        url [ "clunk1.wav", "../Chapter27-VisibilityProximityCollisionSensing/clunk1.wav", "http://www.web3d.org/x3d/content/examples/Vrml2.0Sourcebook/Chapter27-VisibilityProximityCollisionSensing/clunk1.wav" ]
+        description "clunk!"
+      }
+    }
+    Sound {
+      maxBack 60
+      maxFront 60
+      minBack 20
+      minFront 20
+      source DEF CloseSound AudioClip {
+        url [ "clunk1.wav", "../Chapter27-VisibilityProximityCollisionSensing/clunk1.wav", "http://www.web3d.org/x3d/content/examples/Vrml2.0Sourcebook/Chapter27-VisibilityProximityCollisionSensing/clunk1.wav" ]
+        description "clunk!"
+      }
+    }
+    DEF OpenClock TimeSensor {
+      cycleInterval 0.5
+    }
+    DEF CloseClock TimeSensor { }
+    DEF LeftOpen PositionInterpolator {
+      key [ 0, 1 ]
+      keyValue [ 0 0 0, -1.3 0 0 ]
+    }
+    DEF LeftClose PositionInterpolator {
+      key [ 0, 1 ]
+      keyValue [ -1.3 0 0, 0 0 0 ]
+    }
+    DEF RightOpen PositionInterpolator {
+      key [ 0, 1 ]
+      keyValue [ 0 0 0, 1.3 0 0 ]
+    }
+    DEF RightClose PositionInterpolator {
+      key [ 0, 1 ]
+      keyValue [ 1.3 0 0, 0 0 0 ]
+    }
+  ]
+}
+
+ROUTE DoorSense.enterTime TO OpenSound.set_startTime
+ROUTE DoorSense.exitTime TO OpenSound.set_stopTime
+ROUTE DoorSense.enterTime TO OpenClock.set_startTime
+ROUTE DoorSense.exitTime TO OpenClock.set_stopTime
+ROUTE DoorSense.exitTime TO CloseSound.set_startTime
+ROUTE DoorSense.enterTime TO CloseSound.set_stopTime
+ROUTE DoorSense.exitTime TO CloseClock.set_startTime
+ROUTE DoorSense.enterTime TO CloseClock.set_stopTime
+ROUTE OpenClock.fraction_changed TO LeftOpen.set_fraction
+ROUTE OpenClock.fraction_changed TO RightOpen.set_fraction
+ROUTE CloseClock.fraction_changed TO LeftClose.set_fraction
+ROUTE CloseClock.fraction_changed TO RightClose.set_fraction
+ROUTE LeftOpen.value_changed TO LeftDoor.set_translation
+ROUTE RightOpen.value_changed TO RightDoor.set_translation
+ROUTE LeftClose.value_changed TO LeftDoor.set_translation
+ROUTE RightClose.value_changed TO RightDoor.set_translation

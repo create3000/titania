@@ -1,0 +1,1860 @@
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* info.h:
+	* main.h:
+	* main.cpp:
+	* ChangeLog:
+	* OS.h:
+	* LOG.h:
+	* Id.d:
+	* Id.o:
+	* Env.d:
+	* CWD.o:
+	* CWD.d:
+	* URI.d:
+	* URI.o:
+	* Env.o:
+	* Env.h:
+	* CWD.h:
+	* Home.d:
+	* Home.o:
+	* Box3.d:
+	* Box3.o:
+	* Line3.d:
+	* Line3.o:
+	* Split.d:
+	* Home.h:
+	* Image.d:
+	* Image.o:
+	* Timer.d:
+	* Timer.o:
+	* Split.o:
+	* Color3.d:
+	* Color3.o:
+	* CWD.cpp:
+	* Env.cpp:
+	* Id.h:
+	* Color4.d:
+	* System.d:
+	* Plane3.d:
+	* System.o:
+	* Color4.o:
+	* Plane3.o:
+	* Sphere3.o:
+	* Sphere3.d:
+	* Vector2.d:
+	* URI.h:
+	* Matrix3.o:
+	* Matrix3.d:
+	* Matrix4.o:
+	* Matrix4.d:
+	* System.h:
+	* Vector4.o:
+	* Math.h:
+	* Home.cpp:
+	* Vector3.d:
+	* Vector2.o:
+	* Vector4.d:
+	* Vector3.o:
+	* Id.cpp:
+	* strfsize.o:
+	* strfsize.d:
+	* Now.h:
+	* Image.h:
+	* Generator.o:
+	* URI.cpp:
+	* System.cpp:
+	* Generator.d:
+	* ClockBase.o:
+	* ClockBase.d:
+	* String.h:
+	* Rotation4.o:
+	* Rotation4.d:
+	* TimerBase.o:
+	* TimerBase.d:
+	* IndexedMap.d:
+	* IndexedMap.o:
+	* Quaternion.o:
+	* Quaternion.d:
+	* ClockTimer.o:
+	* Image.cpp:
+	* Utility.h:
+	* SteadyTimer.o:
+	* SystemTimer.o:
+	* SteadyTimer.d:
+	* SteadyClock.o:
+	* SystemClock.d:
+	* SystemClock.o:
+	* SystemTimer.d:
+	* SteadyClock.d:
+	* Algorithm.h:
+	* FindDataFile.d:
+	* FindDataFile.o:
+	* FindDataFile.h:
+	* libtitania-standard.md.pc:
+	* libtitania-standard.cproj:
+	* BindStack.h:
+	* IndexedMap.h:
+	* TimerBase.h:
+	* Join.h:
+	* FindDataFile.cpp:
+	* Split.h:
+	* Pass.h:
+	* IndexedMap.cpp:
+	* SteadyTimer.h:
+	* SystemTimer.h:
+	* Value.h:
+	* Box3.h:
+	* TimerBase.cpp:
+	* Color3.h:
+	* Split.cpp:
+	* Line3.h:
+	* Color4.h:
+	* SteadyTimer.cpp:
+	* Vector3.h:
+	* Matrix4.h:
+	* Plane3.h:
+	* strfsize.h:
+	* Vector4.h:
+	* Vector2.h:
+	* SystemTimer.cpp:
+	* Matrix3.h:
+	* Box3.cpp:
+	* Remove.h:
+	* Line3.cpp:
+	* Sphere3.h:
+	* Color4.cpp:
+	* Color3.cpp:
+	* Matrix3.cpp:
+	* libtitania-standard.so:
+	* Matrix4.cpp:
+	* Vector4.cpp:
+	* Vector3.cpp:
+	* strfsize.cpp:
+	* Plane3.cpp:
+	* Vector2.cpp:
+	* Rotation4.h:
+	* Quaternion.h:
+	* Sphere3.cpp:
+	* MemberValue.h:
+	* Rotation4.cpp:
+	* Quaternion.cpp:
+	* Generator.h:
+	* Generator.cpp: 
+
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* info.h:
+	* main.h:
+	* main.cpp:
+	* ChangeLog:
+	* OS.h:
+	* LOG.h:
+	* Id.d:
+	* Id.o:
+	* Env.d:
+	* CWD.o:
+	* CWD.d:
+	* URI.d:
+	* URI.o:
+	* Env.o:
+	* Env.h:
+	* CWD.h:
+	* Home.d:
+	* Home.o:
+	* Box3.d:
+	* Box3.o:
+	* Line3.d:
+	* Line3.o:
+	* Split.d:
+	* Home.h:
+	* Image.d:
+	* Image.o:
+	* Timer.d:
+	* Timer.o:
+	* Split.o:
+	* Color3.d:
+	* Color3.o:
+	* CWD.cpp:
+	* Env.cpp:
+	* Id.h:
+	* Color4.d:
+	* System.d:
+	* Plane3.d:
+	* System.o:
+	* Color4.o:
+	* Plane3.o:
+	* Sphere3.o:
+	* Sphere3.d:
+	* Vector2.d:
+	* URI.h:
+	* Matrix3.o:
+	* Matrix3.d:
+	* Matrix4.o:
+	* Matrix4.d:
+	* System.h:
+	* Vector4.o:
+	* Math.h:
+	* Home.cpp:
+	* Vector3.d:
+	* Vector2.o:
+	* Vector4.d:
+	* Vector3.o:
+	* Id.cpp:
+	* strfsize.o:
+	* strfsize.d:
+	* Now.h:
+	* Image.h:
+	* Generator.o:
+	* URI.cpp:
+	* System.cpp:
+	* Generator.d:
+	* ClockBase.o:
+	* ClockBase.d:
+	* String.h:
+	* Rotation4.o:
+	* Rotation4.d:
+	* TimerBase.o:
+	* TimerBase.d:
+	* IndexedMap.d:
+	* IndexedMap.o:
+	* Quaternion.o:
+	* Quaternion.d:
+	* ClockTimer.o:
+	* Image.cpp:
+	* Utility.h:
+	* SteadyTimer.o:
+	* SystemTimer.o:
+	* SteadyTimer.d:
+	* SteadyClock.o:
+	* SystemClock.d:
+	* SystemClock.o:
+	* SystemTimer.d:
+	* SteadyClock.d:
+	* Algorithm.h:
+	* FindDataFile.d:
+	* FindDataFile.o:
+	* FindDataFile.h:
+	* libtitania-standard.md.pc:
+	* libtitania-standard.cproj:
+	* BindStack.h:
+	* IndexedMap.h:
+	* TimerBase.h:
+	* Join.h:
+	* FindDataFile.cpp:
+	* Split.h:
+	* Pass.h:
+	* IndexedMap.cpp:
+	* SteadyTimer.h:
+	* SystemTimer.h:
+	* Value.h:
+	* Box3.h:
+	* TimerBase.cpp:
+	* Color3.h:
+	* Split.cpp:
+	* Line3.h:
+	* Color4.h:
+	* SteadyTimer.cpp:
+	* Vector3.h:
+	* Matrix4.h:
+	* Plane3.h:
+	* strfsize.h:
+	* Vector4.h:
+	* Vector2.h:
+	* SystemTimer.cpp:
+	* Matrix3.h:
+	* Box3.cpp:
+	* Remove.h:
+	* Line3.cpp:
+	* Sphere3.h:
+	* Color4.cpp:
+	* Color3.cpp:
+	* Matrix3.cpp:
+	* libtitania-standard.so:
+	* Matrix4.cpp:
+	* Vector4.cpp:
+	* Vector3.cpp:
+	* strfsize.cpp:
+	* Plane3.cpp:
+	* Vector2.cpp:
+	* Rotation4.h:
+	* Quaternion.h:
+	* Sphere3.cpp:
+	* MemberValue.h:
+	* Rotation4.cpp:
+	* Quaternion.cpp:
+	* Generator.h:
+	* Generator.cpp: 
+
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SystemTimer.d:
+	* SteadyTimer.d:
+	* libtitania-standard.cproj:
+	* SystemTimer.h:
+	* SteadyTimer.h: 
+
+2012-10-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-standard.cproj: 
+
+2012-10-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URI.h:
+	* System.cpp:
+	* libtitania-standard.cproj:
+	* Split.h: 
+
+2012-10-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-standard.cproj: 
+
+2012-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Sphere3.h: 
+
+2012-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.h:
+	* main.cpp:
+	* libtitania-standard.md.pc:
+	* libtitania-standard.cproj: 
+
+2012-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.md.pc: 
+
+2012-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Id.d:
+	* CWD.d:
+	* Env.d:
+	* Home.d:
+	* Box3.d:
+	* Line3.d:
+	* Timer.d:
+	* Image.d:
+	* Color3.d:
+	* Color4.d:
+	* Plane3.d:
+	* System.d:
+	* Vector3.d:
+	* Vector2.d:
+	* Sphere3.d:
+	* Matrix4.d:
+	* Vector4.d:
+	* URI.h:
+	* Matrix3.d:
+	* Rotation4.d:
+	* Generator.d:
+	* Quaternion.d:
+	* Timer.h:
+	* SystemTimer.d:
+	* SteadyTimer.d:
+	* FindDataFile.d:
+	* libtitania-standard.md.pc:
+	* SystemTimer.h:
+	* Box3.h:
+	* Line3.h:
+	* Color4.h:
+	* Color3.h:
+	* Matrix4.h:
+	* Plane3.h:
+	* Vector4.h:
+	* Vector2.h:
+	* Vector3.h:
+	* Sphere3.h:
+	* Quaternion.h: 
+
+2012-10-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URI.h: 
+
+2012-10-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URI.h: 
+
+2012-10-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Id.h:
+	* URI.h: 
+
+2012-10-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URI.h: 
+
+2012-10-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h:
+	* URI.h:
+	* URI.cpp:
+	* URL.cpp:
+	* libtitania-standard.cproj: 
+
+2012-10-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-standard.cproj: 
+
+2012-10-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-standard.pidb: 
+
+2012-10-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h: 
+
+2012-10-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Now.h:
+	* SystemTimer.d:
+	* libtitania-standard.cproj:
+	* SystemTimer.h: 
+
+2012-10-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-standard.cproj: 
+
+2012-10-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* CWD.cpp:
+	* Id.h:
+	* System.d:
+	* Home.cpp:
+	* Math.h:
+	* System.h:
+	* Matrix4.d:
+	* Image.h:
+	* Rotation4.d:
+	* System.cpp:
+	* Timer.h:
+	* BindStack.h:
+	* IndexedMap.h:
+	* Box3.h:
+	* SteadyTimer.h:
+	* SystemTimer.h:
+	* Color4.h:
+	* Color3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Vector4.h:
+	* Matrix4.h:
+	* Matrix3.h:
+	* Sphere3.h:
+	* Rotation4.h:
+	* Quaternion.h: 
+
+2012-10-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Box3.d:
+	* Image.d:
+	* Color3.d:
+	* Color4.d:
+	* Matrix4.d:
+	* Image.h:
+	* Rotation4.d:
+	* Image.h:
+	* System.cpp:
+	* Image.cpp:
+	* Image.cpp:
+	* IndexMap.h:
+	* libtitania-standard.cproj:
+	* IndexMap.cpp:
+	* IndexedMap.h:
+	* IndexedMap.cpp: 
+
+2012-10-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Line3.d:
+	* Timer.d:
+	* Plane3.d:
+	* Matrix3.d:
+	* Vector4.d:
+	* Math.h:
+	* Sphere3.d:
+	* Vector3.d:
+	* Vector2.d:
+	* Quaternion.d:
+	* SteadyTimer.d:
+	* SystemTimer.d:
+	* IndexMap.h:
+	* libtitania-standard.cproj:
+	* libtitania-standard.md.pc:
+	* Join.h:
+	* Split.h:
+	* Pass.h:
+	* Value.h:
+	* Remove.h:
+	* Rotation4.h:
+	* MemberValue.h: 
+
+2012-10-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Math:
+	* Chrono:
+	* CWD.cpp:
+	* Pass.h:
+	* Numbers:
+	* Image.h:
+	* Geometry:
+	* Timer.h:
+	* Image.cpp:
+	* Timer.cpp:
+	* libtitania-standard.pidb:
+	* libtitania-standard.cproj:
+	* Join.h:
+	* Timer.h:
+	* Split.h:
+	* Pass.h:
+	* Box3.h:
+	* SystemTimer.h:
+	* SteadyTimer.h:
+	* Value.h:
+	* Box3.h:
+	* Timer.cpp:
+	* Color3.h:
+	* Line3.h:
+	* Color4.h:
+	* Color3.h:
+	* Color4.h:
+	* Box3.cpp:
+	* Line3.h:
+	* Vector2.h:
+	* Vector3.h:
+	* SystemTimer.cpp:
+	* SteadyTimer.cpp:
+	* Plane3.h:
+	* Matrix4.h:
+	* Vector4.h:
+	* Matrix3.h:
+	* Box3.cpp:
+	* Matrix4.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Matrix3.h:
+	* Vector4.h:
+	* Line3.cpp:
+	* Sphere3.h:
+	* Color3.cpp:
+	* Color4.cpp:
+	* Plane3.h:
+	* Remove.h:
+	* Rotation4.h:
+	* Matrix4.cpp:
+	* Vector4.cpp:
+	* Vector3.cpp:
+	* Matrix3.cpp:
+	* Vector2.cpp:
+	* Plane3.cpp:
+	* Sphere3.h:
+	* Color4.cpp:
+	* Line3.cpp:
+	* Color3.cpp:
+	* SystemTimer.h:
+	* SteadyTimer.h:
+	* Vector4.cpp:
+	* Plane3.cpp:
+	* Vector2.cpp:
+	* Vector3.cpp:
+	* Matrix3.cpp:
+	* Matrix4.cpp:
+	* Quaternion.h:
+	* Sphere3.cpp:
+	* Rotation4.h:
+	* Sphere3.cpp:
+	* Rotation4.cpp:
+	* Quaternion.h:
+	* MemberValue.h:
+	* Quaternion.cpp:
+	* SystemTimer.cpp:
+	* Rotation4.cpp:
+	* SteadyTimer.cpp:
+	* Quaternion.cpp: 
+
+2012-10-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Id.d:
+	* Env.d:
+	* CWD.d:
+	* URL.d:
+	* Box3.d:
+	* Home.d:
+	* Image.d:
+	* Timer.d:
+	* Line3.d:
+	* Color4.d:
+	* Color3.d:
+	* Plane3.d:
+	* System.d:
+	* Matrix4.d:
+	* Sphere3.d:
+	* Matrix3.d:
+	* Vector3.d:
+	* Vector2.d:
+	* Vector4.d:
+	* IndexMap.d:
+	* Generator.d:
+	* Rotation4.d:
+	* Quaternion.d:
+	* SystemTimer.d:
+	* SteadyTimer.d:
+	* FindDataFile.d:
+	* libtitania-standard.md.pc:
+	* libtitania-standard.cproj:
+	* BindStack.h: 
+
+2012-10-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Rotation4.h: 
+
+2012-10-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.cproj:
+	* Vector3.h:
+	* Vector4.h:
+	* Vector2.h:
+	* Rotation4.h:
+	* MemberValue.h:
+	* Quaternion.h: 
+
+2012-10-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb:
+	* libtitania-basic.cproj:
+	* BindStack.h:
+	* Vector4.h:
+	* Matrix4.h:
+	* Vector2.h:
+	* Vector3.h:
+	* Rotation4.h:
+	* Quaternion.h: 
+
+2012-10-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Math.h:
+	* libtitania-basic.pidb:
+	* libtitania-basic.md.pc:
+	* Timer.h:
+	* Timer.cpp:
+	* SystemTimer.h:
+	* SteadyTimer.h:
+	* SystemTimer.cpp:
+	* SteadyTimer.cpp: 
+
+2012-10-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Timer:
+	* libtitania-basic.cproj:
+	* Timer.h:
+	* Timer.cpp:
+	* SteadyTimer.h:
+	* SystemTimer.h:
+	* SystemTimer.cpp:
+	* SteadyTimer.cpp: 
+
+2012-09-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* OS.h:
+	* CWD.h:
+	* Home.h:
+	* Env.cpp:
+	* CWD.cpp:
+	* System.h:
+	* Home.cpp:
+	* System.cpp:
+	* libtitania-basic.cproj:
+	* Split.h:
+	* Matrix3.h:
+	* Matrix4.h: 
+
+2012-09-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* OS.h:
+	* Env.h:
+	* System.h:
+	* FindDataFile.h:
+	* IndexMap.cpp:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Remove.h: 
+
+2012-09-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* OS:
+	* OS.h:
+	* System:
+	* Env.h:
+	* System.h:
+	* System.cpp:
+	* Env.cpp:
+	* URL.h:
+	* System.h:
+	* System.cpp:
+	* libtitania-basic.md.pc:
+	* libtitania-basic.cproj:
+	* FindDataFile.h:
+	* FindDataFile.cpp: 
+
+2012-09-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Id.h:
+	* IndexMap.h: 
+
+2012-09-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* IndexMap.h: 
+
+2012-09-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Id.h:
+	* URL.h:
+	* Id.cpp:
+	* libtitania-basic.pidb:
+	* libtitania-basic.cproj: 
+
+2012-09-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Utility:
+	* libtitania-basic.md.pc:
+	* Utility.h:
+	* libtitania-basic.cproj:
+	* IndexMap.h:
+	* Value.h:
+	* Remove.h: 
+
+2012-09-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Remove.h: 
+
+2012-09-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb:
+	* libtitania-basic.cproj:
+	* libtitania-basic.md.pc:
+	* Algorithm:
+	* IndexMap.h:
+	* Algorithm.h:
+	* IndexMap.cpp:
+	* Remove.h: 
+
+2012-09-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Matrix4.h:
+	* Matrix3.h: 
+
+2012-09-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h: 
+
+2012-09-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Matrix4.h:
+	* Matrix3.h: 
+
+2012-09-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.md.pc: 
+
+2012-09-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* String.h:
+	* libtitania-basic.cproj:
+	* Join.h:
+	* Split.h: 
+
+2012-09-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Join.h:
+	* String:
+	* String:
+	* String.h:
+	* libtitania-basic.cproj: 
+
+2012-09-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h: 
+
+2012-09-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h: 
+
+2012-09-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h: 
+
+2012-09-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Pass.h:
+	* Image.h:
+	* Matrix4.h:
+	* Matrix3.h: 
+
+2012-09-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb:
+	* URL.cpp: 
+
+2012-09-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Join.h: 
+
+2012-09-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Bits:
+	* Join.h:
+	* Pass.h:
+	* Pass.h:
+	* Join.h:
+	* libtitania-basic.md.pc:
+	* libtitania-basic.cproj: 
+
+2012-09-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Join.h:
+	* Pass.h:
+	* libtitania-basic.cproj: 
+
+2012-09-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Vector3.h: 
+
+2012-09-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Math.h: 
+
+2012-09-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb:
+	* Image.h:
+	* libtitania-basic.cproj:
+	* Image.cpp: 
+
+2012-09-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* System.h:
+	* URL.h:
+	* URL.cpp:
+	* Box3.h:
+	* Line3.h:
+	* Matrix4.h:
+	* Matrix3.h:
+	* geturl.cpp:
+	* uncompress.cpp: 
+
+2012-09-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Vector4.h:
+	* Vector3.h:
+	* Vector2.h: 
+
+2012-09-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h:
+	* URL.cpp: 
+
+2012-09-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h:
+	* libtitania-basic.pidb: 
+
+2012-09-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Box3.h:
+	* Plane3.h:
+	* Matrix3.h:
+	* Matrix4.h: 
+
+2012-09-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb:
+	* libtitania-basic.cproj:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Box3.cpp:
+	* Line3.cpp:
+	* Sphere3.h:
+	* Plane3.cpp:
+	* Sphere3.cpp: 
+
+2012-09-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.cproj:
+	* Line3.h:
+	* Line3.cpp: 
+
+2012-09-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Box3.cpp:
+	* Line3.cpp:
+	* Plane3.cpp: 
+
+2012-09-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Plane3.cpp: 
+
+2012-09-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Array.h:
+	* Geometry:
+	* libtitania-basic.md.pc:
+	* libtitania-basic.cproj:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Box3.cpp:
+	* Matrix3.h:
+	* Box3.h:
+	* Matrix4.h:
+	* Line3.h:
+	* Line3.cpp:
+	* Sphere3.h:
+	* Plane3.h:
+	* Plane3.cpp:
+	* Sphere3.h: 
+
+2012-09-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h:
+	* Math.h:
+	* Color3.h:
+	* Color4.h:
+	* Vector2.h:
+	* Vector3.h:
+	* Rotation4.h:
+	* Quaternion.h: 
+
+2012-09-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h: 
+
+2012-09-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Matrix4.h:
+	* Matrix3.h:
+	* Sphere3.h: 
+
+2012-09-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb: 
+
+2012-09-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Color3.h:
+	* Color4.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Vector4.h:
+	* Matrix4.h:
+	* Matrix3.h:
+	* Rotation4.h:
+	* Sphere3.h:
+	* Quaternion.h: 
+
+2012-09-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb:
+	* libtitania-basic.cproj:
+	* Color4.h:
+	* Color3.h:
+	* Matrix4.h:
+	* Matrix3.h:
+	* Vector4.h:
+	* Vector2.h:
+	* Vector3.h:
+	* ColorRGB.h:
+	* Color4.cpp:
+	* Color3.cpp:
+	* Rotation4.h:
+	* Vector3.cpp:
+	* Vector2.cpp:
+	* ColorRGBA.h:
+	* Matrix3.cpp:
+	* Matrix4.cpp:
+	* Vector4.cpp:
+	* Quaternion.h:
+	* ColorRGB.cpp:
+	* ColorRGBA.cpp:
+	* Rotation4.cpp:
+	* Quaternion.cpp: 
+
+2012-09-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Vector4.h:
+	* Matrix4.h:
+	* Vector2.h:
+	* Vector3.h: 
+
+2012-09-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h:
+	* Vector4.h:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Matrix3.cpp:
+	* Matrix4.cpp: 
+
+2012-09-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* System.h:
+	* URL.h:
+	* Math.h:
+	* Array.h:
+	* Exception.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Box3.h:
+	* Vector4.h:
+	* Matrix3.h:
+	* Matrix4.h:
+	* ColorRGB.h:
+	* Line3.h:
+	* Plane3.h:
+	* Rotation4.h:
+	* ColorRGBA.h:
+	* geturl.h:
+	* Quaternion.h:
+	* Sphere3.h:
+	* Generator.h:
+	* uncompress.h: 
+
+2012-09-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb: 
+
+2012-09-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.cproj:
+	* Generato.h:
+	* Generator.h:
+	* Generato.cpp:
+	* Generator.cpp: 
+
+2012-09-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.cproj:
+	* Generato.h:
+	* Generator.h:
+	* Generato.cpp:
+	* Generator.cpp: 
+
+2012-09-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Time.h:
+	* Math.h:
+	* Array.h:
+	* libtitania-basic.cproj:
+	* libtitania-basic.md.pc:
+	* InputOutput:
+	* Exception.h:
+	* Exception.cpp:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Vector4.h:
+	* ColorRGB.h:
+	* ColorRGBA.h:
+	* Rotation4.h:
+	* geturl.h:
+	* Quaternion.h:
+	* Sphere3.h:
+	* geturl.cpp:
+	* Generator.h:
+	* uncompress.h:
+	* Generator.cpp:
+	* uncompress.cpp: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h:
+	* libtitania-basic.pidb:
+	* libtitania-basic.cproj: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h:
+	* URL.cpp:
+	* libtitania-basic.md.pc:
+	* Exception.cpp:
+	* ColorRGB.h:
+	* ColorRGBA.h:
+	* Rotation4.h: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Titania:
+	* Basic:
+	* Time.h:
+	* System.h:
+	* System.cpp:
+	* URL.h:
+	* Math.h:
+	* Numbers:
+	* URL.cpp:
+	* libtitania-basic.pidb:
+	* libtitania-basic.cproj:
+	* libtitania-basic.md.pc:
+	* Primitives:
+	* Exception.h:
+	* Exception.cpp:
+	* Matrix4.h:
+	* Vector4.h:
+	* Matrix3.h:
+	* Vector2.h:
+	* Box3.h:
+	* Vector3.h:
+	* Line3.h:
+	* ColorRGB.h:
+	* Rotation4.h:
+	* Matrix4.cpp:
+	* Vector2.cpp:
+	* ColorRGBA.h:
+	* Plane3.h:
+	* Vector3.cpp:
+	* Vector4.cpp:
+	* Matrix3.cpp:
+	* Sphere3.h:
+	* Quaternion.h:
+	* ColorRGB.cpp:
+	* Rotation4.cpp:
+	* ColorRGBA.cpp:
+	* Quaternion.cpp: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.cproj: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h:
+	* libtitania-basic.pidb:
+	* URL.cpp: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h:
+	* URL.cpp: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h:
+	* libtitania-basic.cproj: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL:
+	* URL.h:
+	* URL.cpp:
+	* libtitania-basic.cproj: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h: 
+
+2012-09-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URL.h: 
+
+2012-09-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	Added BasicURL and URL.
+
+	* URL.h:
+	* URL.cpp:
+	* Error.h:
+	* libtitania-basic.cproj:
+	* Error.cpp: 
+
+2012-09-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Math.h:
+	* URL.h:
+	* Math.h:
+	* URL.cpp:
+	* libtitania-basic.md.pc:
+	* libtitania-basic.cproj: 
+
+2012-09-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.cproj:
+	* Output.h:
+	* Output.cpp:
+	* Matrix4.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Matrix3.h:
+	* Vector4.h:
+	* OutputProvider.h:
+	* OutputProvider.cpp:
+	* Sphere3.h: 
+
+2012-09-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Box3.h:
+	* Output.h:
+	* libtitania-basic.cproj:
+	* Line3.h:
+	* Output.cpp:
+	* Plane3.h:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Requester.h:
+	* Vector4.h:
+	* Vector2.h:
+	* Vector3.h:
+	* ColorRGB.h:
+	* Rotation4.h:
+	* ColorRGBA.h:
+	* Quaternion.h:
+	* RequesterArray.h:
+	* Box3.h:
+	* Line3.h:
+	* RequesterArray.cpp:
+	* Plane3.h:
+	* Sphere3.h: 
+
+2012-09-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.md.pc: 
+
+2012-09-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.cproj:
+	* Output.h:
+	* Emitter.h:
+	* Output.cpp:
+	* Emitter.cpp: 
+
+2012-09-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb: 
+
+2012-09-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Emitter.h: 
+
+2012-09-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.md.pc:
+	* libtitania-basic.cproj:
+	* Emitter.h:
+	* Primitives:
+	* Box3.h:
+	* Emitter.cpp:
+	* Line3.h:
+	* Plane3.h:
+	* Sphere3.h:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Sphere3.h: 
+
+2012-09-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Matrix4.h:
+	* Matrix3.h:
+	* Sphere3.h: 
+
+2012-09-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Matrix4.h:
+	* Matrix3.h:
+	* Sphere3.h: 
+
+2012-09-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Vector4.h:
+	* Vector3.h:
+	* Matrix4.h:
+	* Matrix3.h:
+	* Vector2.h:
+	* Sphere3.h:
+	* ColorRGB.h:
+	* ColorRGBA.h:
+	* Rotation4.h:
+	* Quaternion.h: 
+
+2012-08-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Math.h:
+	* Matrix3.h:
+	* Vector4.h:
+	* Sphere3.h:
+	* Matrix4.h:
+	* Vector2.h:
+	* Vector3.h:
+	* ColorRGB.h:
+	* ColorRGBA.h:
+	* Rotation4.h:
+	* Quaternion.h: 
+
+2012-08-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb: 
+
+2012-08-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Time.h:
+	* libtitania-basic.cproj: 
+
+2012-08-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Rotation4.h:
+	* Quaternion.h: 
+
+2012-07-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Math.h:
+	* Vector4.h:
+	* Matrix4.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Rotation4.h:
+	* Quaternion.h: 
+
+2012-07-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Math.h:
+	* Vector4.h:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Vector3.h:
+	* Vector2.h:
+	* ColorRGB.h:
+	* ColorRGBA.h:
+	* Rotation4.h:
+	* Quaternion.h:
+	* Rotation4.cpp:
+	* Quaternion.cpp: 
+
+2012-07-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Vector3.h:
+	* Vector4.h:
+	* Vector2.h:
+	* Rotation4.h: 
+
+2012-07-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.md.pc: 
+
+2012-07-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb:
+	* libtitania-basic.md.pc: 
+
+2012-07-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Neuer Ordner:
+	* libtitania-basic.cproj: 
+
+2012-07-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.md.pc: 
+
+2012-07-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Matrix4.h:
+	* Matrix3.h:
+	* ColorRGBA.h:
+	* Rotation4.h:
+	* Quaternion.h: 
+
+2012-07-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Sphere3.h:
+	* Matrix4.h:
+	* Matrix3.h: 
+
+2012-07-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Line3.h:
+	* Sphere3.h:
+	* Matrix3.h:
+	* Matrix4.h: 
+
+2012-07-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.md.pc: 
+
+2012-07-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.md.pc: 
+
+2012-07-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.md.pc: 
+
+2012-07-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb: 
+
+2012-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.md.pc: 
+
+2012-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Line3.h:
+	* libtitania-basic.md.pc:
+	* Plane3.h: 
+
+2012-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Sphere3.h:
+	* Matrix4.h:
+	* Matrix3.h: 
+
+2012-07-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Time.h:
+	* Math.h:
+	* System.h:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* libtitania-basic.md.pc:
+	* Vector4.h:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Sphere3.h:
+	* ColorRGB.h:
+	* ColorRGBA.h:
+	* Rotation4.h:
+	* Quaternion.h: 
+
+2012-07-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.cproj:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Matrix4.cpp: 
+
+2012-07-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb:
+	* libtitania-basic.md.pc:
+	* Vector4.h:
+	* Matrix3.h:
+	* Sphere3.h:
+	* ColorRGB.h:
+	* ColorRGBA.h:
+	* Rotation4.h:
+	* Quaternion.h: 
+
+2012-07-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.cproj:
+	* Matrix3.h:
+	* SbColor.h:
+	* ColorRGB.h:
+	* SbColor.cpp:
+	* Rotation4.h:
+	* ColorRGBA.h:
+	* SbMatrix3.h:
+	* Matrix3.cpp:
+	* ColorRGB.cpp:
+	* Quaternion.h:
+	* SbMatrix3.cpp:
+	* ColorRGBA.cpp:
+	* SbColorRGBA.h:
+	* Rotation4.cpp:
+	* Quaternion.cpp:
+	* SbColorRGBA.cpp:
+	* SbRotation4.cpp:
+	* SbQuaternion.cpp: 
+
+2012-07-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.cproj:
+	* SbColor.h:
+	* ColorRGB.h:
+	* ColorRGBA.h:
+	* SbMatrix3.h:
+	* SbColor.cpp:
+	* SbMatrix3.cpp:
+	* SbColorRGBA.h:
+	* SbRotation4.h:
+	* SbQuaternion.h:
+	* SbRotation4.cpp:
+	* SbColorRGBA.cpp:
+	* SbQuaternion.cpp: 
+
+2012-07-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Basic:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* libtitania-basic.cproj:
+	* libtitania-basic.md.pc:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Sphere3.h:
+	* Vector4.h:
+	* Vector2.h:
+	* Vector3.h:
+	* ColorRGB.h:
+	* Vector4.cpp:
+	* Vector3.cpp:
+	* Vector2.cpp:
+	* Rotation4.h:
+	* ColorRGBA.h:
+	* Quaternion.h:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Vector4.h:
+	* Sphere3.h:
+	* Matrix4.h:
+	* Matrix3.h:
+	* ColorRGB.h:
+	* Vector2.cpp:
+	* ColorRGBA.h:
+	* Vector3.cpp:
+	* Rotation4.h:
+	* Vector4.cpp:
+	* Quaternion.h: 
+
+2012-07-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb: 
+
+2012-07-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Math.h:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Vector3.h:
+	* Matrix3.h:
+	* Vector4.h:
+	* Vector2.h:
+	* Sphere3.h:
+	* Matrix4.h:
+	* ColorRGB.h:
+	* ColorRGBA.h:
+	* Rotation4.h:
+	* Quaternion.h: 
+
+2012-07-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Vector4.h:
+	* Vector3.h:
+	* Vector2.h: 
+
+2012-07-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Box3.h:
+	* Line3.h:
+	* Vector4.h:
+	* Vector3.h:
+	* Vector2.h: 
+
+2012-07-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Math.h:
+	* libtitania-basic.cproj:
+	* Vector3.h:
+	* Vector4.h:
+	* Vector2.h:
+	* Vector2.cpp:
+	* Vector3.cpp:
+	* Vector4.cpp: 
+
+2012-07-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Vector4.h:
+	* Vector3.h:
+	* Vector2.h: 
+
+2012-07-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.cproj:
+	* libtitania-basic.md.pc:
+	* Vector3.h:
+	* Vector4.h:
+	* Vector2.h:
+	* Vector2.cpp:
+	* Vector3.cpp:
+	* Vector4.cpp: 
+
+2012-07-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Basic:
+	* libtitania-basic.cproj:
+	* LinearAlgebra:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Sphere3.h:
+	* Vector2.h:
+	* Vector3.h:
+	* Vector4.h:
+	* ColorRGB.h:
+	* Vector4.O.h:
+	* Rotation4.h:
+	* ColorRGBA.h:
+	* Quaternion.h: 
+
+2012-07-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* LinearAlgebra:
+	* libtitania-basic.cproj:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Sphere3.h:
+	* Vector2.h:
+	* Vector3.h:
+	* Vector4.h:
+	* ColorRGB.h:
+	* ColorRGBA.h:
+	* Rotation4.h:
+	* Quaternion.h: 
+
+2012-07-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Sphere3.h:
+	* Matrix4.h:
+	* Matrix3.h: 
+
+2012-07-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.pidb: 
+
+2012-07-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Time.h: 
+
+2012-07-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Time.h: 
+
+2012-06-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Sphere3.h:
+	* Matrix4.h:
+	* Matrix3.h: 
+
+2012-06-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Matrix4.h:
+	* Sphere3.h:
+	* Matrix3.h:
+	* Vector4.O.h: 
+
+2012-06-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* info.h:
+	* config.h:
+	* libtitania-basic.cproj: 
+
+2012-06-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.md.pc: 
+
+2012-06-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Sphere3.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Vector4.h:
+	* ColorRGB.h:
+	* Rotation4.h:
+	* ColorRGBA.h:
+	* Quaternion.h: 
+
+2012-06-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.cproj: 
+
+2012-06-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.cproj:
+	* Vector4.h:
+	* Vector4N.h:
+	* Vector4.O.h: 
+
+2012-06-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Sphere3.h:
+	* Vector4.h:
+	* Vector2.h:
+	* Vector3.h:
+	* Vector4N.h:
+	* ColorRGB.h:
+	* Rotation4.h:
+	* ColorRGBA.h:
+	* Quaternion.h: 
+
+2012-06-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+Copyright notice changed
+
+	* Time.h:
+	* System.h:
+	* System.cpp:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Sphere3.h:
+	* Vector4.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Vector4N.h:
+	* ColorRGB.h:
+	* ColorRGBA.h:
+	* Rotation4.h:
+	* Quaternion.h: 
+
+2012-06-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+Improved Generator interface
+
+	* Time.h:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Matrix3.h:
+	* Vector4.h:
+	* Matrix4.h:
+	* Sphere3.h:
+	* ColorRGB.h:
+	* Vector4N.h:
+	* Rotation4.h:
+	* ColorRGBA.h:
+	* Quaternion.h: 
+
+2012-06-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* config.h:
+	* Time.h:
+	* System.h:
+	* System.cpp:
+	* libtitania-basic.cproj:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Matrix4.h:
+	* Sphere3.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Vector4.h:
+	* Matrix3.h:
+	* Vector4N.h:
+	* ColorRGB.h:
+	* ColorRGBA.h:
+	* Rotation4.h:
+	* Quaternion.h: 
+
+2012-06-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* config.h:
+	* libtitania-basic.cproj: 
+
+2012-06-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.h:
+	* libtitania-basic.md.pc:
+	* libtitania-basic.cproj: 
+
+2012-06-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* config.h:
+	* System.h:
+	* libtitania-basic.h:
+	* System.cpp:
+	* libtitania-basic.cproj:
+	* Vector4.h: 
+
+2012-06-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Vector4.h: 
+
+2012-06-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.h:
+	* config.h:
+	* main.cpp:
+	* libtitania-basic.cproj:
+	* Vector4.h: 
+
+2012-06-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-basic.cproj:
+	* Vector4.h:
+	* Vector4N.h: 
+
+2012-06-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Time.h:
+	* libtitania-basic.cproj:
+	* Vector4.h:
+	* Vector4N.h: 
+
+2012-06-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* .:
+	* main.h:
+	* Titania:
+	* main.cpp:
+	* Basic:
+	* libtitania-basic.cproj:
+	* LinearAlgebra:
+	* Box3.h:
+	* Line3.h:
+	* Plane3.h:
+	* Matrix4.h:
+	* Sphere3.h:
+	* Matrix3.h:
+	* Vector3.h:
+	* Vector2.h:
+	* Vector4.h:
+	* Vector4N.h:
+	* ColorRGB.h:
+	* Rotation4.h:
+	* ColorRGBA.h:
+	* Quaternion.h: 
+

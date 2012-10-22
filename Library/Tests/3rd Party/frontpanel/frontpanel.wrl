@@ -1,0 +1,222 @@
+#VRML V2.0 utf8
+
+# A Frontpanel that can be moved and resized
+# af Thomas Kolenda 2.4.97
+
+
+PROTO FrontPanel [
+  field           MFNode  	panelObjects []
+  exposedField    SFVec3f	startPosition 0 -1 -6.2
+  exposedField    MFString 	headerText ""
+]
+{
+
+
+
+Group {
+  children [
+     DEF WORLD_PSENSOR ProximitySensor {
+       size 1000 1000 1000
+     }
+
+
+     DEF PANEL Transform {
+       children [
+         Transform {
+           # Position of panel
+           translation IS startPosition
+           children [
+             # Panel window
+             DEF PANELWINDOV Transform {
+               translation 0 0 0
+               children [
+                 Transform {
+                   translation 0 -0.6 0
+                   children [
+                     Shape {
+                       appearance Appearance {
+                         material DEF PANELBOX Material { 
+                           diffuseColor .5 .5 .5
+                           transparency .1
+                         }
+                       } 
+                       geometry Box {
+                         size 3 1 0.1
+                       }
+
+	             }
+
+	             Transform {
+                       translation 0 0 0.12
+                       scale 1 1 1
+                       children IS panelObjects
+                     }
+
+                   ]
+                 }
+               ]
+             }
+             # Menubar on panel box
+             Group {
+               children [
+                 DEF PANELBAR Transform {
+                   translation 0 0 0
+                   children [
+                     # Header text
+		     Transform {
+                       translation 0 -0.07 0.101
+                       scale .18 .18 .18
+                       children [
+                         Shape {
+                           appearance Appearance {
+                             material Material { diffuseColor .1 .1 .1}
+                           }     
+                           geometry Text {
+                             fontStyle FontStyle {
+                               justify "MIDDLE"
+                               family "SANS"
+                               style "BOLD"
+                             }
+                             string IS headerText
+                           }
+                         }
+                       ]
+                     }
+		     Shape {   
+                       appearance Appearance {
+                         material Material { diffuseColor .6 .6 .8}
+                       }     
+                       geometry Box {
+                         size 3 0.2 0.2
+                       }
+                     }
+
+  	             Transform {
+                       translation -1.4 0 0.1
+                       children [
+                         DEF TURNOFFBUTTONPOS Transform {
+                           translation 0 0 0
+                           children [
+                             DEF TURNOFFBUTTON TouchSensor {}
+                             Shape {
+                               appearance Appearance {
+                                 material Material { diffuseColor .2 .2 .3}
+                               } 
+                               geometry Box {
+                                 size 0.16 0.16 0.08
+                               }
+                             }
+                           ]
+                         }
+                       ]
+                     }
+
+  	             Transform {
+                       translation -1.4 0 0.1
+                       children [
+                         DEF TURNONBUTTONPOS Transform {
+                           translation 0 0 -0.1
+                           children [
+                             DEF TURNONBUTTON TouchSensor {}
+                             Shape {
+                               appearance Appearance {
+                                 material Material { diffuseColor .2 .2 .3}
+                               } 
+                               geometry Box {
+                                 size 0.16 0.16 0.08
+                               }
+                             }
+                           ]
+                         }
+                       ]
+                     }
+                   
+
+                   ]
+                 }
+                 # Menubar drag sensor
+                 DEF PANELDRAG PlaneSensor {
+                   offset 0 0 0
+                 }
+               ]
+             }
+           ]
+         }
+       ]
+     }
+
+
+   
+   DEF TURNONSI PositionInterpolator {
+     key [0 1]
+     keyValue [1 0 0, 1 1 1]
+   }
+
+   DEF TURNONBUTTONSIOUT PositionInterpolator {
+     key [0 1]
+     keyValue [0 0 -0.1, 0 0 0]
+   }
+
+
+   DEF TURNONBUTTONSIIN PositionInterpolator {
+     key [0 1]
+     keyValue [0 0 0, 0 0 -0.1]
+   }
+
+   DEF TURNONTIMER TimeSensor {
+     cycleInterval 0.5
+   } 
+
+
+
+   DEF TURNOFFSI PositionInterpolator {
+     key [0 1]
+     keyValue [1 1 1, 1 0 0]
+   }
+
+   DEF TURNOFFBUTTONSIIN PositionInterpolator {
+     key [0 1]
+     keyValue [0 0 0, 0 0 -0.1]
+   }
+
+   DEF TURNOFFBUTTONSIOUT PositionInterpolator {
+     key [0 1]
+     keyValue [0 0 -0.1, 0 0 0]
+   }
+
+   DEF TURNOFFTIMER TimeSensor {
+     cycleInterval 0.5
+   } 
+
+
+   ]
+}
+
+#Position panel with movement
+ROUTE WORLD_PSENSOR.orientation_changed TO PANEL.rotation
+ROUTE WORLD_PSENSOR.position_changed TO PANEL.translation
+
+#Drag panel
+ROUTE PANELDRAG.translation_changed TO PANELBAR.translation
+ROUTE PANELBAR.translation_changed TO PANELWINDOV.translation
+
+#Mini and maximize panel
+ROUTE TURNOFFBUTTON.touchTime TO TURNOFFTIMER.startTime
+ROUTE TURNOFFTIMER.fraction_changed TO TURNOFFSI.set_fraction
+ROUTE TURNOFFSI.value_changed TO PANELWINDOV.scale
+ROUTE TURNOFFTIMER.fraction_changed TO TURNOFFBUTTONSIIN.set_fraction
+ROUTE TURNOFFBUTTONSIIN.value_changed TO TURNOFFBUTTONPOS.translation
+ROUTE TURNOFFTIMER.fraction_changed TO TURNONBUTTONSIOUT.set_fraction
+ROUTE TURNONBUTTONSIOUT.value_changed TO TURNONBUTTONPOS.translation
+
+
+ROUTE TURNONBUTTON.touchTime TO TURNONTIMER.startTime
+ROUTE TURNONTIMER.fraction_changed TO TURNONSI.set_fraction
+ROUTE TURNONSI.value_changed TO PANELWINDOV.scale
+ROUTE TURNONTIMER.fraction_changed TO TURNONBUTTONSIIN.set_fraction
+ROUTE TURNONBUTTONSIIN.value_changed TO TURNONBUTTONPOS.translation
+ROUTE TURNONTIMER.fraction_changed TO TURNOFFBUTTONSIOUT.set_fraction
+ROUTE TURNOFFBUTTONSIOUT.value_changed TO TURNOFFBUTTONPOS.translation
+
+
+}

@@ -1,0 +1,502 @@
+#VRML V2.0 utf8 CosmoWorlds V1.0
+
+Group {
+  children [
+    Transform {
+      translation -4.80974 5.89731 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 2.70769
+            diffuseColor 0.331633 0.296582 0.279057
+            specularColor 0.489796 0.396323 0.209378
+            shininess 0.979592
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -2.48639 5.96696 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.25
+            diffuseColor 0.864256 0.833788 0.330482
+            specularColor 0.0955906 0.0940254 0.0681705
+            shininess 0.078125
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -0.352332 6.14232 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.254777
+            diffuseColor 0.799639 0.0813426 0.125842
+            specularColor 0.913265 0.373179 0.373179
+            shininess 0.959184
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 2.04699 6.23663 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.254777
+            diffuseColor 0.685208 0.0893143 0.027172
+            specularColor 0.913265 0.373179 0.373179
+            shininess 0.959184
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 4.81969 6.41054 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.254777
+            diffuseColor 0.685208 0.134679 0.332385
+            specularColor 0.122449 0.0500352 0.0500352
+            shininess 0.0714286
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 6.7802 6.7124 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.25
+            diffuseColor 0.904409 0.315531 0.544386
+            specularColor 0.0955906 0.0955906 0.0955906
+            shininess 0.078125
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -4.76354 3.3702 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.237501
+            diffuseColor 0.484848 0.377104 0.433123
+            specularColor 0.436364 0.243939 0.298678
+            shininess 0.0242424
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -2.4402 3.43985 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.25
+            diffuseColor 0.894461 0.382776 0.904409
+            specularColor 0.0955906 0.0955906 0.0955906
+            shininess 0.078125
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -0.306138 3.61521 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.243902
+            diffuseColor 0.630959 0.368649 0.745454
+            specularColor 0.278788 0.278788 0.278788
+            shininess 0.0909091
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 2.09319 3.70952 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.253731
+            diffuseColor 0.355416 0.133428 0.350088
+            specularColor 0.680294 0.314997 0.841837
+            shininess 0.107143
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 4.86588 3.88343 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.252525
+            diffuseColor 0.432445 0.200235 0.535135
+            specularColor 0.30577 0.141581 0.378378
+            shininess 0.567568
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 6.8264 4.18529 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.25
+            diffuseColor 0.455896 0.749706 0.904409
+            specularColor 0.0955906 0.0955906 0.0955906
+            shininess 0.078125
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -4.95181 1.03279 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.253968
+            diffuseColor 1 0.900511 0.314236
+            specularColor 0.872449 0.247119 0.254214
+            shininess 1
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -2.62847 1.10243 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.258064
+            diffuseColor 0.453686 0.462806 0.613468
+            specularColor 0.101243 0.093899 0.0914149
+            shininess 0.0432432
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -0.494409 1.2778 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.25
+            diffuseColor 0.278066 0.283655 0.375996
+            specularColor 0.248796 0.253797 0.336418
+            shininess 0.0432432
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 1.90492 1.3721 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.25
+            diffuseColor 0.35102 0.255782 0.732203
+            specularColor 0.374738 0.273065 0.781677
+            shininess 0.0702703
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 4.67761 1.54602 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.25
+            diffuseColor 0.35102 0.255782 0.732203
+            specularColor 0.101986 0.0743151 0.212735
+            shininess 0.0702703
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 6.63813 1.84787 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.25
+            diffuseColor 0.455896 0.749706 0.904409
+            specularColor 0.0955906 0.0955906 0.0955906
+            shininess 0.078125
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -5.00301 -1.38329 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.25
+            diffuseColor 0.261641 0.748016 0.725916
+            specularColor 0.490909 0.490909 0.490909
+            shininess 0.593939
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -2.67966 -1.31364 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.247422
+            diffuseColor 0.130807 0.502591 0.479904
+            specularColor 0.330429 0.336788 0.23505
+            shininess 0.0569948
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -0.545606 -1.13828 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.247422
+            diffuseColor 0.130807 0.502591 0.479904
+            specularColor 0.330429 0.336788 0.23505
+            shininess 0.585492
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 1.85372 -1.04397 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.244898
+            diffuseColor 0.0164076 0.299131 0.281455
+            specularColor 0.479592 0.428903 0.403559
+            shininess 0.25
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 4.62642 -0.870059 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.244898
+            diffuseColor 0.0164076 0.299131 0.281455
+            specularColor 0.168367 0.150572 0.141675
+            shininess 0.0867347
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 6.58693 -0.568204 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.253968
+            diffuseColor 1 0.854922 0
+            specularColor 0.872449 0.247119 0.254214
+            shininess 1
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -5.04715 -3.61722 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.243055
+            diffuseColor 0.0402987 0.592577 0.305278
+            specularColor 0.0447285 0.612254 0.0843031
+            shininess 0.678571
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -2.7238 -3.54757 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.243243
+            diffuseColor 0.37066 0.672727 0.369066
+            specularColor 0.355787 0.642424 0.355787
+            shininess 0.909091
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -0.589743 -3.3722 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.254777
+            diffuseColor 0.215415 0.533093 0.177391
+            specularColor 0 0.272814 0
+            shininess 0.0714286
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 1.80958 -3.2779 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.254777
+            diffuseColor 0.215415 0.533093 0.177391
+            specularColor 0 0.591097 0
+            shininess 0.0765306
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 4.58228 -3.10398 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.280488
+            diffuseColor 0 0.49697 0
+            specularColor 0.585714 0.6 0
+            shininess 0.109091
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 6.54279 -2.80213 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.25
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -4.9772 -6.02449 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.25
+            diffuseColor 0.904409 0.549305 0.224283
+            specularColor 0.0955906 0.0955906 0.0955906
+            shininess 0.078125
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -2.65385 -5.95485 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.256411
+            diffuseColor 0.795918 0.505869 0.0933146
+            specularColor 0.304961 0.131827 0.00788694
+            shininess 0.97449
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation -0.519796 -5.77948 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.25
+            diffuseColor 0.904409 0.457768 0.341109
+            specularColor 0.0955906 0.0955906 0.0955906
+            shininess 0.078125
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 1.87953 -5.68518 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.254777
+            diffuseColor 0.799639 0.256286 0.158549
+            specularColor 0.20373 0.0832482 0.0832482
+            shininess 0.0714286
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 4.65223 -5.51126 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.25
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    Transform {
+      translation 6.61274 -5.2094 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            ambientIntensity 0.25
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+  ]
+}
+

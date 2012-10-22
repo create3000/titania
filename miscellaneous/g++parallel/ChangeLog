@@ -1,0 +1,127 @@
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++:
+	* ChangeLog:
+	* process-server:
+	* g++parallel.pidb:
+	* g++parallel.mdproj:
+	* com.ProcessServer.service: 
+
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++:
+	* process-server:
+	* com.ProcessServer.service: 
+
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++parallel.pidb:
+	* g++parallel.mdproj: 
+
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++:
+	* process-server:
+	* com.ProcessServer.service: 
+
+2012-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++: 
+
+2012-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++: 
+
+2012-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++parallel.mdproj: 
+
+2012-10-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++: 
+
+2012-09-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	BUG: catch Queue .Empty exception
+
+	* g++:
+	* process-server: 
+
+2012-07-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++: 
+
+2012-07-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++parallel.mdproj: 
+
+2012-07-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++parallel.mdproj: 
+
+2012-06-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++: 
+
+2012-06-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++parallel.mdproj: 
+
+2012-06-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++: 
+
+2012-06-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++:
+	* g++parallel.mdproj: 
+
+2012-06-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++parallel.pidb: 
+
+2012-06-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++:
+	* process-server: 
+
+2012-06-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++: 
+
+2012-06-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* process-server:
+	* g++parallel.mdproj: 
+
+2012-06-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++parallel.mdproj: 
+
+2012-06-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++:
+	* process-server: 
+
+2012-06-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++parallel.mdproj:
+	* com.ProcessServer.service:
+	* com.bin.ExecParallel.service: 
+
+2012-06-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++:
+	* process-server: 
+
+2012-06-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++parallel.mdproj: 
+
+2012-06-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* g++:
+	* process-server:
+	* g++parallel.pidb:
+	* g++parallel.mdproj: 
+

@@ -1,0 +1,7 @@
+
+@import url(standard.css);
+
+.memproto,
+.memdoc {
+	border-radius: 0;
+}

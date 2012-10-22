@@ -1,0 +1,118 @@
+#VRML V2.0 utf8
+
+PROTO rail [
+  field SFVec3f placement 0 1 0
+]
+{
+  Transform {
+    translation 0 -9.6 0
+    scale 1 3.2 1
+    children Transform {
+      translation IS placement
+      children Transform {
+        scale 1 0.3125 1
+        children Inline {
+          url "http://ovrt.nist.gov/gseidman/rail2.wrl"
+        }
+      }
+    }
+  }
+}
+
+WorldInfo {
+  info [ "Author: Gregory Seidman <gregory.seidman@nist.gov>", "created entirely using the vi editor" ]
+  title "The VRML2 Abacus"
+}
+Shape {
+  appearance Appearance {
+    texture ImageTexture {
+      url "http://ovrt.nist.gov/gseidman/abacus4.wrl"
+    }
+  }
+  geometry Box {
+    size 1e-20 1e-20 1e-20
+  }
+}
+DEF VIEW Viewpoint {
+  position 0 0 2
+  description "Entry"
+}
+NavigationInfo {
+  type "EXAMINE"
+}
+Transform {
+  scale 0.06 0.06 0.06
+  children [
+    rail { }
+    rail {
+      placement 0 2 0
+    }
+    rail {
+      placement 0 3 0
+    }
+    rail {
+      placement 0 4 0
+    }
+    rail {
+      placement 0 5 0
+    }
+    Group {
+      children [
+        Transform {
+          translation 0 8 0
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0.25 0.175 0.125
+              }
+            }
+            geometry Box {
+              size 12.3 0.3 1
+            }
+          }
+        }
+        Transform {
+          translation 0 -8 0
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0.25 0.175 0.125
+              }
+            }
+            geometry Box {
+              size 12.3 0.3 1
+            }
+          }
+        }
+        Transform {
+          translation 6 0 0
+          scale 1 5 1
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0.25 0.175 0.125
+              }
+            }
+            geometry Box {
+              size 0.3 3.2 1
+            }
+          }
+        }
+        Transform {
+          translation -6 0 0
+          scale 1 5 1
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0.25 0.175 0.125
+              }
+            }
+            geometry Box {
+              size 0.3 3.2 1
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

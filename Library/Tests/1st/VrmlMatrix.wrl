@@ -1,0 +1,32 @@
+#VRML V2.0 utf8
+
+Script {
+  url "vrmlscript:
+function initialize()
+{
+	t  = new SFVec3f(1,2,3);
+	r  = new SFRotation(1,2,3,4);
+	s  = new SFVec3f(1,2,3);
+	//so = new SFRotation(1,2,3,4);
+
+	m = new VrmlMatrix();
+
+	m.setTransform(t, r, s);
+
+	print(t);
+	print(r);
+	print(s);
+	//print(so);
+	print(m);
+
+	m.getTransform(t, r, s);
+
+	print(t);
+	print(r);
+	print(s);
+	
+	print(m.multLeft(m));
+	print(m.inverse());
+}
+"
+}

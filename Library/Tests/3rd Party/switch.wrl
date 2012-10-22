@@ -1,0 +1,96 @@
+#VRML V2.0 utf8
+
+PROTO Slide [
+  field MFString url [ ]
+]
+{
+  Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url IS url
+      }
+    }
+    geometry IndexedFaceSet {
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+      }
+      texCoord TextureCoordinate {
+        point [ 0 1, 0 0, 1 0, 1 1 ]
+      }
+      coordIndex [ 0, 1, 2, 3, -1 ]
+      texCoordIndex [ 1, 2, 3, 0, -1 ]
+    }
+  }
+}
+
+Group {
+  children [
+    WorldInfo {
+      info "Author     : Bob Crispen
+	 Email      : vrmlworks@crispen.org
+	 Date       : 23 March 1998
+	 Description: Demonstrates the Switch node"
+      title "Switch Test"
+    }
+    NavigationInfo {
+      headlight FALSE
+    }
+    Viewpoint {
+      position 0 0 5
+      description "Entry"
+    }
+    DirectionalLight {
+      intensity 0.7
+      direction 0 -1 -1
+    }
+    DirectionalLight {
+      intensity 0.7
+      direction -1 -1 -1
+    }
+    Background {
+      skyAngle [ 0.9, 1.5, 1.57 ]
+      skyColor [ 0.21 0.18 0.66, 0.2 0.44 0.85, 0.51 0.81 0.95, 0.77 0.8 0.82 ]
+      groundAngle [ 0.9, 1.5, 1.57 ]
+      groundColor [ 0 0.333 0, 0 0.4 0, 0 0.5 0, 0.62 0.67 0.6 ]
+    }
+    Group {
+      children [
+        Group {
+          children [
+            DEF TSwitch Switch {
+              whichChoice 0
+              choice [
+                Slide {
+                  url "aereal.gif"
+                }
+                Slide {
+                  url "bath.gif"
+                }
+                Slide {
+                  url "caffeine.gif"
+                }
+              ]
+            }
+            DEF TSensor TouchSensor { }
+          ]
+        }
+        DEF TScript Script {
+          eventIn  SFBool  touch
+          eventOut SFInt32 nextChoice
+          field    SFInt32 thisChoice 0
+          url "javascript:
+	    function touch(value) {
+	      if (value) {
+		if (++thisChoice > 2) thisChoice = 0;
+		nextChoice = thisChoice;
+	      }
+	    }
+	  "
+        }
+      ]
+    }
+  ]
+}
+
+ROUTE TSensor.isActive TO TScript.touch
+ROUTE TScript.nextChoice TO TSwitch.set_whichChoice

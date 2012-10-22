@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4978BF53-C409-4F1D-A898-AC2ADA52EFB7}</ProjectGuid>
+    <Target>Bin</Target>
+    <Language>CPP</Language>
+    <Compiler>
+      <Compiler ctype="GppCompiler" />
+    </Compiler>
+    <Packages>
+      <Packages>
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glibmm-2.4.pc" name="glibmm" IsProject="false" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/giomm-2.4.pc" name="giomm" IsProject="false" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/cairomm-1.0.pc" name="cairomm" IsProject="false" />
+      </Packages>
+    </Packages>
+    <ReleaseVersion>0.3</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OutputName>libtitania-standard</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <WarningLevel>All</WarningLevel>
+    <OptimizationLevel>3</OptimizationLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OptimizationLevel>3</OptimizationLevel>
+    <OutputName>libtitania-standard</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <WarningLevel>All</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Parallel|AnyCPU' ">
+    <OutputPath>.</OutputPath>
+    <WarningLevel>All</WarningLevel>
+    <OptimizationLevel>3</OptimizationLevel>
+    <OutputName />
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="ChangeLog" />
+    <None Include="info.h" />
+    <None Include="Titania\OS.h" />
+    <None Include="Titania\Basic\InputOutput\Generator.h" />
+    <None Include="Titania\Basic\Id.h" />
+    <None Include="Titania\Basic\BindStack.h" />
+    <None Include="Titania\Basic\IndexedMap.h" />
+    <None Include="Titania\Basic\URI.h" />
+    <None Include="Titania\Bits\String.h" />
+    <None Include="Titania\Bits\String\Join.h" />
+    <None Include="Titania\Bits\String\Split.h" />
+    <None Include="Titania\Bits\Algorithm\Remove.h" />
+    <None Include="Titania\Bits\Algorithm.h" />
+    <None Include="Titania\Bits\Utility\Value.h" />
+    <None Include="Titania\Bits\Utility.h" />
+    <None Include="Titania\Bits\Utility\MemberValue.h" />
+    <None Include="Titania\Bits\Utility\Pass.h" />
+    <None Include="Titania\Chrono\Now.h" />
+    <None Include="Titania\Math\Numbers\Color3.h" />
+    <None Include="Titania\Math\Numbers\Color4.h" />
+    <None Include="Titania\Math\Numbers\Matrix3.h" />
+    <None Include="Titania\Math\Numbers\Matrix4.h" />
+    <None Include="Titania\Math\Numbers\Quaternion.h" />
+    <None Include="Titania\Math\Numbers\Rotation4.h" />
+    <None Include="Titania\Math\Numbers\Vector2.h" />
+    <None Include="Titania\Math\Numbers\Vector3.h" />
+    <None Include="Titania\Math\Numbers\Vector4.h" />
+    <None Include="Titania\Math\Geometry\Box3.h" />
+    <None Include="Titania\Math\Geometry\Line3.h" />
+    <None Include="Titania\Math\Geometry\Plane3.h" />
+    <None Include="Titania\Math\Geometry\Sphere3.h" />
+    <None Include="Titania\Math\Math.h" />
+    <None Include="Titania\Math\Image.h" />
+    <None Include="Titania\OS\Env.h" />
+    <None Include="Titania\OS\FindDataFile.h" />
+    <None Include="Titania\OS\System.h" />
+    <None Include="Titania\OS\CWD.h" />
+    <None Include="Titania\OS\Home.h" />
+    <None Include="Titania\LOG.h" />
+    <None Include="Titania\Bits\String\strfsize.h" />
+    <None Include="Titania\Chrono\SteadyTimer.h" />
+    <None Include="Titania\Chrono\SystemTimer.h" />
+    <None Include="Titania\Chrono\TimerBase.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
+    <Compile Include="Titania\Basic\Id.cpp" />
+    <Compile Include="Titania\Basic\IndexedMap.cpp" />
+    <Compile Include="Titania\Basic\URI.cpp" />
+    <Compile Include="Titania\Math\Numbers\Color3.cpp" />
+    <Compile Include="Titania\Math\Numbers\Color4.cpp" />
+    <Compile Include="Titania\Math\Numbers\Matrix3.cpp" />
+    <Compile Include="Titania\Math\Numbers\Matrix4.cpp" />
+    <Compile Include="Titania\Math\Numbers\Quaternion.cpp" />
+    <Compile Include="Titania\Math\Numbers\Rotation4.cpp" />
+    <Compile Include="Titania\Math\Numbers\Vector2.cpp" />
+    <Compile Include="Titania\Math\Numbers\Vector3.cpp" />
+    <Compile Include="Titania\Math\Numbers\Vector4.cpp" />
+    <Compile Include="Titania\Math\Geometry\Box3.cpp" />
+    <Compile Include="Titania\Math\Geometry\Line3.cpp" />
+    <Compile Include="Titania\Math\Geometry\Plane3.cpp" />
+    <Compile Include="Titania\Math\Geometry\Sphere3.cpp" />
+    <Compile Include="Titania\Math\Image.cpp" />
+    <Compile Include="Titania\OS\Env.cpp" />
+    <Compile Include="Titania\OS\FindDataFile.cpp" />
+    <Compile Include="Titania\OS\System.cpp" />
+    <Compile Include="Titania\OS\CWD.cpp" />
+    <Compile Include="Titania\OS\Home.cpp" />
+    <Compile Include="Titania\Bits\String\Split.cpp" />
+    <Compile Include="Titania\Bits\String\strfsize.cpp" />
+    <Compile Include="Titania\Chrono\SteadyTimer.cpp" />
+    <Compile Include="Titania\Chrono\SystemTimer.cpp" />
+    <Compile Include="Titania\Chrono\TimerBase.cpp" />
+  </ItemGroup>
+</Project>

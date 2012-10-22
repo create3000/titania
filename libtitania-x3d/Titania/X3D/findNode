@@ -1,0 +1,67 @@
+void
+Browser::setEditMode(X3DBasicNode* node, BasicNodeArray parents)
+{
+	if (!node)
+		return;
+
+	BasicNodeArray::const_iterator iter;
+	for( iter = parents.begin(); iter != parents.end(); ++iter )
+	{
+		if (node == *iter)
+			return;
+	}
+	
+	parents.push_back(node);
+
+	FieldDefinitionArray::const_iterator field;
+	for( field = node->getFieldDefinitions().begin(); field != node->getFieldDefinitions().end(); ++field )
+	{
+		if (dynamic_cast<SFNode <X3DBasicNode>*>(*field))
+		{
+			SFNode <X3DBasicNode>* sfnode = dynamic_cast<SFNode <X3DBasicNode>*>(*field);
+			setEditMode(sfnode->getValue(), parents);
+		}
+		else if (dynamic_cast<MFNode <X3DBasicNode>*>(*field))
+		{
+			MFNode <X3DBasicNode>* mfnode = dynamic_cast<MFNode <X3DBasicNode>*>(*field);
+			MFNode::const_iterator sfnode;
+			for( sfnode = mfnode->begin(); sfnode != mfnode->end(); ++sfnode )
+			{
+				setEditMode((*sfnode).getValue(), parents);
+			}
+		}
+	}
+}
+
+template <class Type>
+std::deque <Type>
+X3DObject::findParents () const
+{
+	ObjectSet seen;
+
+	std::deque <Type> parents;
+
+	for (const auto & object : getParents ())
+		object -> findParents <Type> (parents, seen);
+
+	return parents;
+}
+
+template <class Type>
+void
+X3DObject::findParents (std::deque <Type> & parents, ObjectSet & seen)
+{
+	if (not seen .insert (this) .second)
+		return;
+
+	Type parent = dynamic_cast <Type> (this);
+
+	if (parent)
+	{
+		parents .push_back (parent);
+		return;
+	}
+
+	for (const auto & object : getParents ())
+		object -> findParents (parents, seen);
+}

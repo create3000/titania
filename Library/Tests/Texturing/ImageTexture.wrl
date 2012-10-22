@@ -1,0 +1,165 @@
+#VRML V2.0 utf8 Comment
+
+Transform {
+  translation -3 -4 -10
+  children [
+    Transform {
+      children Shape {
+        appearance Appearance {
+          material Material { }
+          texture ImageTexture {
+            url "images/colors/red.png"
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 3 0 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+          texture ImageTexture {
+            url "images/colors/green.png"
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 6 0 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+          texture ImageTexture {
+            url "images/colors/blue.png"
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 0 3 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+          texture ImageTexture {
+            url "images/colors/cyan.png"
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 3 3 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+          texture ImageTexture {
+            url "images/colors/magenta.png"
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 6 3 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+          texture ImageTexture {
+            url "images/colors/yellow.png"
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 0 6 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+          texture ImageTexture {
+            url "images/colors/orange.png"
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 3 6 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+          texture ImageTexture {
+            url "images/colors/lila.png"
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 6 6 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+          texture ImageTexture {
+            url "images/colors/blue50.png"
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 0 9 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+          texture ImageTexture {
+            url "images/colors/white.png"
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 3 9 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+          texture ImageTexture {
+            url "images/colors/grey50.png"
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 6 9 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+          texture ImageTexture {
+            url "images/colors/black.png"
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      metadata MetadataString {
+         value "RGB Texture"
+      }
+      translation 9 0 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+          texture ImageTexture {
+            url "images/wasser01.png"
+          }
+        }
+        geometry Box { }
+      }
+    }
+  ]
+}

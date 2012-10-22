@@ -1,0 +1,151 @@
+#VRML V2.0 utf8 CosmoWorlds V1.0
+
+Group {
+  children	  Transform {
+    children	[
+      DEF _0 NavigationInfo {
+	avatarSize	0
+	type	[ "EXAMINE",
+		  "ANY" ]
+      }
+      Group {
+	children	[
+	  DEF Home Viewpoint {
+	    position	0.943776 1.89968 16.9344
+	    description	"Home"
+	  }
+	  Collision {
+	    children	Group {
+	      children	[
+		DEF Cameras Switch {
+		  whichChoice	-1
+		  choice	[
+		  ]
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	DEF _DefMat_1 Material {
+		      }
+
+		      texture	DEF _v2%0 PixelTexture {
+			image	4 2 3
+			  0xffffff 0xff0000 0xff00 0xff
+			  0x80 0x8080f 0x800000 0x8000
+			  
+		      }
+
+		    }
+
+		    geometry	Box {
+		    }
+
+		  }
+
+		  translation	0 0 0
+		  rotation	-0.436436 -0.218218 -0.872872  0.5
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _DefMat_1
+
+		      texture	USE _v2%0
+
+		    }
+
+		    geometry	Cylinder {
+		    }
+
+		  }
+
+		  translation	2 0 0
+		  rotation	0.447214 0 0.894427  0.399999
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _DefMat_1
+
+		      texture	USE _v2%0
+
+		    }
+
+		    geometry	Cone {
+		    }
+
+		  }
+
+		  translation	2 2 0
+		  rotation	-0.242536 -0.970142 0  0.399999
+		}
+		Transform {
+		  children	Group {
+		    children	Shape {
+		      appearance	Appearance {
+			material	USE _DefMat_1
+
+			texture	USE _v2%0
+
+		      }
+
+		      geometry	IndexedFaceSet {
+			coord	Coordinate {
+			  point	[ -1 -1 0,
+				    1 -1 0,
+				    1 1 0,
+				    -1 1 0 ]
+			}
+
+			coordIndex	[ 0, 1, 2, 3, -1 ]
+			normal	Normal {
+			  vector	0 0 1
+			}
+
+			texCoord	TextureCoordinate {
+			  point	[ 0 0,
+				    1 0,
+				    1 1,
+				    0 1 ]
+			}
+
+			texCoordIndex	[ 0, 1, 2, 3, -1 ]
+			solid	FALSE
+			creaseAngle	0.5
+		      }
+
+		    }
+
+		  }
+
+		  translation	0 2 0
+		  rotation	-0.486664 -0.324443 -0.811107  0.399999
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _DefMat_1
+
+		      texture	USE _v2%0
+
+		    }
+
+		    geometry	Sphere {
+		    }
+
+		  }
+
+		  translation	0 4 0
+		  rotation	-0.140181 -0.934539 0.327089  0.5
+		}
+	      ]
+	    }
+
+	    collide	FALSE
+	  }
+	]
+      }
+    ]
+  }
+
+}

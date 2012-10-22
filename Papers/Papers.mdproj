@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ItemType>GenericProject</ItemType>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E29E81C4-20D1-4FF3-A932-202A4D23FACE}</ProjectGuid>
+    <ReleaseVersion>0.3</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Default|AnyCPU' ">
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="matrixanhang.pdf" />
+    <None Include="VertexNormals.pdf" />
+    <None Include="ARB_texture_compression.pdf" />
+    <None Include="AVL.pdf" />
+    <None Include="glspec31.20090324.pdf" />
+    <None Include="OGLmipmap.pdf" />
+    <None Include="uri.pdf" />
+    <None Include="Matrix.odt" />
+    <None Include="quaternion.cpp" />
+    <None Include="gtk-opengl.cpp" />
+  </ItemGroup>
+</Project>

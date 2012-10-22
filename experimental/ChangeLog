@@ -1,0 +1,455 @@
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URI.h:
+	* main.cpp:
+	* ChangeLog:
+	* Id.o:
+	* Id.d:
+	* Type.o:
+	* Type.d:
+	* main.o:
+	* main.d:
+	* Input.o:
+	* Input.d:
+	* experimental.pidb:
+	* CType.d:
+	* CType.o:
+	* experimental.cproj:
+	* Output.o:
+	* Output.d:
+	* NumPunct.d:
+	* NumPunct.o:
+	* experimental:
+	* ClassicVrml.o:
+	* ClassicVrml.d:
+	* AccessTypes.d:
+	* AccessTypes.o:
+	* Type.h:
+	* Type.cpp:
+	* Input.h:
+	* Output.h:
+	* Id.h:
+	* Input.cpp:
+	* Id.cpp:
+	* Output.cpp:
+	* InputOutput.h:
+	* AccessType.h:
+	* ClassicVrml.h:
+	* ClassicVrml.cpp:
+	* CType.h:
+	* CType.cpp:
+	* NumPunct.h:
+	* NumPunct.cpp:
+	* AccessTypes.h:
+	* AccessTypes.cpp: 
+
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URI.h:
+	* main.cpp:
+	* ChangeLog:
+	* Id.o:
+	* Id.d:
+	* Type.o:
+	* Type.d:
+	* main.o:
+	* main.d:
+	* Input.o:
+	* Input.d:
+	* experimental.pidb:
+	* CType.d:
+	* CType.o:
+	* experimental.cproj:
+	* Output.o:
+	* Output.d:
+	* NumPunct.d:
+	* NumPunct.o:
+	* experimental:
+	* ClassicVrml.o:
+	* ClassicVrml.d:
+	* AccessTypes.d:
+	* AccessTypes.o:
+	* Type.h:
+	* Type.cpp:
+	* Input.h:
+	* Output.h:
+	* Id.h:
+	* Input.cpp:
+	* Id.cpp:
+	* Output.cpp:
+	* InputOutput.h:
+	* AccessType.h:
+	* ClassicVrml.h:
+	* ClassicVrml.cpp:
+	* CType.h:
+	* CType.cpp:
+	* NumPunct.h:
+	* NumPunct.cpp:
+	* AccessTypes.h:
+	* AccessTypes.cpp: 
+
+2012-10-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URI.h:
+	* main.cpp:
+	* experimental.cproj: 
+
+2012-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* experimental.cproj: 
+
+2012-10-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URI.h: 
+
+2012-10-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URI.h:
+	* main.cpp: 
+
+2012-10-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URI.h:
+	* main.cpp:
+	* experimental.cproj: 
+
+2012-10-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp:
+	* experimental.cproj: 
+
+2012-10-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp:
+	* experimental.cproj: 
+
+2012-10-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp:
+	* experimental.cproj: 
+
+2012-10-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp:
+	* Type.h:
+	* Input.h:
+	* Id.h:
+	* Output.h:
+	* InputOutput.h:
+	* AccessType.h:
+	* ClassicVrml.h:
+	* CType.h:
+	* NumPunct.h:
+	* AccessTypes.h: 
+
+2012-10-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp:
+	* experimental.pidb:
+	* Type.h: 
+
+2012-10-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-10-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp: 
+
+2012-09-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* experimental.pidb: 
+
+2012-09-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp:
+	* experimental.cproj: 
+
+2012-08-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+
+
+	* main.cpp: 
+
+2012-08-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* .:
+	* main.cpp:
+	* experimental.cproj: 
+

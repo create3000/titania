@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}</ProjectGuid>
+    <Target>SharedLibrary</Target>
+    <Language>CPP</Language>
+    <Compiler>
+      <Compiler ctype="GppCompiler" />
+    </Compiler>
+    <Packages>
+      <Packages>
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/zlib.pc" name="zlib" IsProject="false" />
+      </Packages>
+    </Packages>
+    <ReleaseVersion>0.3</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OutputName>libtitania-gzstream</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <WarningLevel>All</WarningLevel>
+    <OptimizationLevel>3</OptimizationLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Parallel|AnyCPU' ">
+    <OutputPath>bin\Parallel</OutputPath>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <OutputName>libtitania-gzstream</OutputName>
+    <WarningLevel>All</WarningLevel>
+    <OptimizationLevel>3</OptimizationLevel>
+    <DefineSymbols>MONODEVELOP _GLIBCXX_PARALLEL</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OptimizationLevel>3</OptimizationLevel>
+    <OutputName>libtitania-gzstream</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <WarningLevel>All</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Titania\COPYING.LIB" />
+    <None Include="Titania\gzstream.h" />
+    <None Include="Titania\index.html" />
+    <None Include="Titania\logo.gif" />
+    <None Include="Titania\README" />
+    <None Include="Titania\version" />
+    <None Include="info.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Titania\gzstream.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Titania\" />
+  </ItemGroup>
+</Project>

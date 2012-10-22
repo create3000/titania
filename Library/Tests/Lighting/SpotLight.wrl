@@ -1,0 +1,19 @@
+#VRML V2.0 utf8 Comment
+
+NavigationInfo {
+  headlight FALSE
+}
+SpotLight {
+  attenuation 1 1 0
+  location 12 0 0
+  radius 1
+  direction -1 0 0
+}
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box { }
+  }
+}

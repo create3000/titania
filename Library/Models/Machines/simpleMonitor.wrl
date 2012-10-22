@@ -1,0 +1,178 @@
+#VRML V2.0 utf8 CosmoWorlds V1.0
+
+Group {
+  children	  Transform {
+    children	[
+      DEF _0 NavigationInfo {
+	avatarSize	0
+	type	[ "EXAMINE",
+		  "ANY" ]
+      }
+      Group {
+	children	[
+	  DEF Home Viewpoint {
+	    position	4.16672 0.825625 4.68492
+	    description	"Home"
+	  }
+	  Collision {
+	    children	Group {
+	      children	[
+		DEF Cameras Switch {
+		  whichChoice	-1
+		  choice	[
+		  ]
+		}
+		Group {
+		  children	Transform {
+		    children	Shape {
+		      appearance	Appearance {
+			material	Material {
+			  diffuseColor	0.5 0.5 1
+			}
+
+		      }
+
+		      geometry	Box {
+			size	1.5 1.25 0.5
+		      }
+
+		    }
+
+		    translation	4.2791 0.86 3.76855
+		    rotation	0 1 0  1.15
+		    scale	0.25 0.25 0.25
+		  }
+
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	DEF _DefMat_1 Material {
+		      }
+
+		    }
+
+		    geometry	Box {
+		      size	1.3 1.05 1.3
+		    }
+
+		  }
+
+		  translation	4.14218 0.86 3.7073
+		  rotation	0 1 0  1.15
+		  scale	0.25 0.25 0.25
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _DefMat_1
+
+		    }
+
+		    geometry	Box {
+		      size	0.9 0.2 1
+		    }
+
+		  }
+
+		  translation	4.18783 0.705 3.7277
+		  rotation	0.0768943 0.995793 -0.0498309  1.15385
+		  scale	0.25 0.25 0.25
+		  scaleOrientation	-0.400699 -0.913099 0.0754402  0.625105
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _DefMat_1
+
+		    }
+
+		    geometry	Box {
+		      size	0.08 1.25 0.03
+		    }
+
+		  }
+
+		  translation	4.40865 0.86 3.63208
+		  rotation	0 1 0  1.15
+		  scale	0.25 0.25 0.25
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _DefMat_1
+
+		    }
+
+		    geometry	Box {
+		      size	0.08 1.25 0.03
+		    }
+
+		  }
+
+		  translation	4.26363 0.86 3.9561
+		  rotation	0 1 0  1.15
+		  scale	0.25 0.25 0.25
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _DefMat_1
+
+		    }
+
+		    geometry	Box {
+		      size	1.5 0.08 0.03
+		    }
+
+		  }
+
+		  translation	4.33615 1.00625 3.7941
+		  rotation	0 1 0  1.15
+		  scale	0.25 0.25 0.25
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _DefMat_1
+
+		    }
+
+		    geometry	Box {
+		      size	1.5 0.08 0.03
+		    }
+
+		  }
+
+		  translation	4.33615 0.71375 3.7941
+		  rotation	0 1 0  1.15
+		  scale	0.25 0.25 0.25
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _DefMat_1
+
+		    }
+
+		    geometry	Box {
+		      size	0.95 0.08 0.95
+		    }
+
+		  }
+
+		  translation	4.165 0.645 3.7175
+		  rotation	0 1 0  1.15
+		  scale	0.25 0.25 0.25
+		}
+	      ]
+	    }
+
+	    collide	FALSE
+	  }
+	]
+      }
+    ]
+  }
+
+}

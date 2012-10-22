@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DFF8F332-1B93-48CB-85E3-FDFE35CB177D}</ProjectGuid>
+    <Target>Bin</Target>
+    <Language>CPP</Language>
+    <Compiler>
+      <Compiler ctype="GppCompiler" />
+    </Compiler>
+    <ReleaseVersion>0.3</ReleaseVersion>
+    <Packages>
+      <Packages>
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/libcurl.pc" name="libcurl" IsProject="false" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="true" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="true" />
+      </Packages>
+    </Packages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OutputName>experimental</OutputName>
+    <CompileTarget>Bin</CompileTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OptimizationLevel>3</OptimizationLevel>
+    <OutputName>experimental</OutputName>
+    <CompileTarget>Bin</CompileTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="main.cpp" />
+    <Compile Include="General\X3D\InputOutput\Output.cpp" />
+    <Compile Include="General\X3D\InputOutput\Input.cpp" />
+    <Compile Include="General\X3D\Basic\Type.cpp" />
+    <Compile Include="General\X3D\LexicalElements\Id.cpp" />
+    <Compile Include="General\X3D\InputOutput\Encodings\ClassicVrml.cpp" />
+    <Compile Include="General\X3D\InputOutput\Encodings\ClassicVrml\NumPunct.cpp" />
+    <Compile Include="General\X3D\InputOutput\Encodings\ClassicVrml\CType.cpp" />
+    <Compile Include="General\X3D\InputOutput\Encodings\ClassicVrml\AccessTypes.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="General\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="General\X3D\InputOutput\InputOutput.h" />
+    <None Include="General\X3D\InputOutput\Output.h" />
+    <None Include="General\X3D\InputOutput\Input.h" />
+    <None Include="General\X3D\Basic\Type.h" />
+    <None Include="General\X3D\LexicalElements\Id.h" />
+    <None Include="General\X3D\LexicalElements\AccessType.h" />
+    <None Include="General\X3D\InputOutput\Encodings\ClassicVrml.h" />
+    <None Include="General\X3D\InputOutput\Encodings\ClassicVrml\NumPunct.h" />
+    <None Include="General\X3D\InputOutput\Encodings\ClassicVrml\CType.h" />
+    <None Include="General\X3D\InputOutput\Encodings\ClassicVrml\AccessTypes.h" />
+    <None Include="URI.h" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,260 @@
+#VRML V2.0 utf8 CosmoWorlds V1.0
+
+Group {
+  children	  Transform {
+    children	[
+      DEF _0 NavigationInfo {
+	avatarSize	0
+	type	[ "EXAMINE",
+		  "ANY" ]
+      }
+      Group {
+	children	[
+	  DEF Home Viewpoint {
+	    position	9.5 0 462.533
+	    description	"Home"
+	  }
+	  Collision {
+	    children	Group {
+	      children	[
+		DEF Cameras Switch {
+		  whichChoice	-1
+		  choice	[
+		  ]
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	DEF _v2%0_1 Material {
+			ambientIntensity	0.0786667
+			diffuseColor	0.3 0.02 0.029
+			specularColor	0.265 0.046 0.08
+			shininess	0.938
+		      }
+
+		    }
+
+		    geometry	Cylinder {
+		    }
+
+		  }
+
+		  translation	-114 0 -120
+		  scale	10 200 20
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _v2%0_1
+
+		    }
+
+		    geometry	Cylinder {
+		    }
+
+		  }
+
+		  translation	-95 0 -120
+		  scale	10 200 20
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _v2%0_1
+
+		    }
+
+		    geometry	Cylinder {
+		    }
+
+		  }
+
+		  translation	-76 0 -120
+		  scale	10 200 20
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _v2%0_1
+
+		    }
+
+		    geometry	Cylinder {
+		    }
+
+		  }
+
+		  translation	-57 0 -120
+		  scale	10 200 20
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _v2%0_1
+
+		    }
+
+		    geometry	Cylinder {
+		    }
+
+		  }
+
+		  translation	-38 0 -120
+		  scale	10 200 20
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _v2%0_1
+
+		    }
+
+		    geometry	Cylinder {
+		    }
+
+		  }
+
+		  translation	-19 0 -120
+		  scale	10 200 20
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _v2%0_1
+
+		    }
+
+		    geometry	Cylinder {
+		    }
+
+		  }
+
+		  translation	0 0 -120
+		  scale	10 200 20
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _v2%0_1
+
+		    }
+
+		    geometry	Cylinder {
+		    }
+
+		  }
+
+		  translation	19 0 -120
+		  scale	10 200 20
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _v2%0_1
+
+		    }
+
+		    geometry	Cylinder {
+		    }
+
+		  }
+
+		  translation	38 0 -120
+		  scale	10 200 20
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _v2%0_1
+
+		    }
+
+		    geometry	Cylinder {
+		    }
+
+		  }
+
+		  translation	57 0 -120
+		  scale	10 200 20
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _v2%0_1
+
+		    }
+
+		    geometry	Cylinder {
+		    }
+
+		  }
+
+		  translation	76 0 -120
+		  scale	10 200 20
+		}
+		Group {
+		  children	Transform {
+		    children	Shape {
+		      appearance	Appearance {
+			material	Material {
+			  ambientIntensity	0.0453333
+			  diffuseColor	0.3 0.02 0.029
+			  specularColor	0.265 0.046 0.08
+			  emissiveColor	0 0 0
+			  shininess	0.938
+			  transparency	0
+			}
+
+		      }
+
+		      geometry	Cylinder {
+		      }
+
+		    }
+
+		    translation	95 0 -120
+		    scale	10 200 20
+		  }
+
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _v2%0_1
+
+		    }
+
+		    geometry	Cylinder {
+		    }
+
+		  }
+
+		  translation	114 0 -120
+		  scale	10 200 20
+		}
+		Transform {
+		  children	Shape {
+		    appearance	Appearance {
+		      material	USE _v2%0_1
+
+		    }
+
+		    geometry	Cylinder {
+		    }
+
+		  }
+
+		  translation	133 0 -120
+		  scale	10 200 20
+		}
+	      ]
+	    }
+
+	    collide	FALSE
+	  }
+	]
+      }
+    ]
+  }
+
+}

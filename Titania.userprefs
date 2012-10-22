@@ -1,0 +1,54 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp">
+    <Files>
+      <File FileName="Puck/puck/Browser/X3DBrowserWindow.h" Line="135" Column="1" />
+      <File FileName="Puck/puck/Browser/X3DBrowserWindow .cpp" Line="64" Column="2" />
+      <File FileName="Puck/puck/Browser/X3DBrowserWidget.h" Line="160" Column="29" />
+      <File FileName="Puck/puck/Browser/X3DBrowserWidget.cpp" Line="80" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.h" Line="143" Column="8" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp" Line="96" Column="55" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="414" Column="42" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="miscellaneous" expanded="True">
+            <Node name="benchmarks" expanded="True" />
+            <Node name="g++parallel" expanded="True">
+              <Node name="com.ProcessServer.service" selected="True" />
+            </Node>
+          </Node>
+          <Node name="Documentation" expanded="True" />
+          <Node name="experimental" expanded="True" />
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+      <Pad Id="ConnectionManagerPad">
+        <State selected="True" />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.x3dtidy>
+    <MonoDevelop.Ide.CustomExecutionModes>
+      <Data Name="GNU Debugger (GDB) (Benutzerdefiniert)" Id="727a9f31-537f-4476-abe4-672e4dc38e45" ModeId="GNU Debugger (GDB)">
+        <CommandData>
+          <Item Key="MonoDevelop.Ide.Execution.CustomArgsCustomizer">
+            <Value Arguments="/home/holger/Projekte/Titania/Library/Examples/treasure-island/stage/Bonus_proto__2.wrl" ctype="CustomArgsExecutionModeData">
+              <EnvironmentVariables />
+            </Value>
+          </Item>
+        </CommandData>
+      </Data>
+    </MonoDevelop.Ide.CustomExecutionModes>
+  </MonoDevelop.Ide.ItemProperties.x3dtidy>
+</Properties>

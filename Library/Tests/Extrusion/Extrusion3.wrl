@@ -1,0 +1,33 @@
+#VRML V2.0 utf8 CosmoWorlds V1.0
+
+Group {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "Pixi.png"
+      }
+    }
+    geometry Extrusion {
+      beginCap FALSE
+      endCap FALSE
+      ccw FALSE
+      creaseAngle 3.14159
+      crossSection [ 1 0, 0.92388 0.382683, 0.707107 0.707106, 0.382684 0.923879, 0 1, -0.382682 0.92388, -0.707105 0.707108, -0.923879 0.382685, -1 0, -0.923881 -0.382681, -0.707109 -0.707105, -0.382687 -0.923878, 0 -1, 0.38268 -0.923881, 0.707104 -0.70711, 0.923878 -0.382688, 1 0 ]
+      orientation [ 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0 ]
+      scale [ 1 1, 1 1, 1 1, 1 1, 1 1, 1 1, 1 1, 1 1, 1 1, 1 1, 1 1, 1 1, 1 1, 1 1, 1 1, 1 1, 1 1 ]
+      spine [ 1 0 0, 0.92388 0.382683 0, 0.707107 0.707106 0, 0.382684 0.923879 0, 0 1 0, -0.382682 0.92388 0, -0.707105 0.707108 0, -0.923879 0.382685 0, -1 0 0, -0.923881 -0.382681 0, -0.707109 -0.707105 0, -0.382687 -0.923878 0, 0 -1 0, 0.38268 -0.923881 0, 0.707104 -0.70711 0, 0.923878 -0.382688 0, 1 0 0 ]
+    }
+  }
+}
+#Extrusion.cpp line 512: 0
+#Extrusion.cpp line 513: 0
+#Extrusion.cpp line 514: 1
+
+#Extrusion.cpp line 516: -1
+#Extrusion.cpp line 517: 1.24604e-06
+#Extrusion.cpp line 518: 0
+
+#Extrusion.cpp line 520: 0
+#Extrusion.cpp line 521: 0
+#Extrusion.cpp line 522: 1

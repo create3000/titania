@@ -1,0 +1,32 @@
+#X3D V3.0 utf8
+
+
+META "creator" "http://www.itl.nist.gov/div897/ctg/vrml/members.html"
+META "description" "This test attempts to draw an Extrusion using the minimum required number of points. The number of points in crossSection * number of points in spine <= 2500 (100 * 25 = 2500). The test should generate a \"U\" shaped like extrusion."
+META "disclaimer" "This file was provided by the National Institute of Standards and Technology, and is part of the X3D Conformance Test Suite, available at http://www.nist.gov/vrml.html The information contained within this file is provided for use in establishing conformance to the ISO VRML97 Specification. Conformance to this test does not imply recommendation or endorsement by the National Institute of Standards and Technology. This software can be redistributed and/or modified freely provided that any derivative works bear some notice that they are derived from it, and any modified versions bear some notice that they have been modified."
+META "generator" "X3D-Edit 3.2, https://savage.nps.edu/X3D-Edit"
+META "identifier" "http://www.web3d.org/x3d/content/examples/ConformanceNist/Geometry/Extrusion/2500points.x3d"
+META "image" "2500points-right.jpg"
+META "license" "../../license.html"
+META "modified" "12 June 2002"
+META "title" "2500points.x3d"
+META "translated" "21 January 2001"
+META "translator" "Michael Kass NIST, Don Brutzman NPS"
+
+NavigationInfo {
+  transitionType "ANIMATE"
+  type [ "EXAMINE", "WALK", "FLY", "ANY" ]
+}
+Transform {
+  translation 0 0 -10
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Extrusion {
+      crossSection [ 1.5 0, 1.44 0.42, 1.38 0.5879, 1.32 0.7125, 1.26 0.8139, 1.2 0.9, 1.14 0.9749, 1.08 1.041, 1.02 1.0998, 0.96 1.1526, 0.9 1.2, 0.84 1.2427, 0.78 1.2812, 0.72 1.3159, 0.66 1.347, 0.6 1.3748, 0.54 1.3994, 0.48 1.4211, 0.42 1.44, 0.36 1.4562, 0.3 1.4697, 0.24 1.4807, 0.18 1.4892, 0.12 1.4952, 0.06 1.4988, 0 1.5, -0.06 1.4988, -0.12 1.4952, -0.18 1.4892, -0.24 1.4807, -0.3 1.4697, -0.36 1.4562, -0.42 1.44, -0.48 1.4211, -0.54 1.3994, -0.6 1.3748, -0.66 1.347, -0.72 1.3159, -0.78 1.2812, -0.84 1.2427, -0.9 1.2, -0.96 1.1526, -1.02 1.0998, -1.08 1.041, -1.14 0.9749, -1.2 0.9, -1.26 0.8139, -1.32 0.7125, -1.38 0.5879, -1.44 0.42, -1.5 0.0012, -1.44 -0.42, -1.38 -0.5879, -1.32 -0.7125, -1.26 -0.8139, -1.2 -0.9, -1.14 -0.9749, -1.08 -1.041, -1.02 -1.0998, -0.96 -1.1526, -0.9 -1.2, -0.84 -1.2427, -0.78 -1.2812, -0.72 -1.3159, -0.66 -1.347, -0.54 -1.3994, -0.48 -1.4211, -0.42 -1.44, -0.36 -1.4562, -0.3 -1.4697, -0.24 -1.4807, -0.18 -1.4892, -0.12 -1.4952, -0.06 -1.4988, 0 -1.5, 0.06 -1.4988, 0.12 -1.4952, 0.18 -1.4892, 0.24 -1.4807, 0.3 -1.4697, 0.36 -1.4562, 0.42 -1.44, 0.48 -1.4211, 0.54 -1.3994, 0.6 -1.3748, 0.66 -1.347, 0.72 -1.3159, 0.78 -1.2812, 0.84 -1.2427, 0.9 -1.2, 0.96 -1.1526, 1.02 -1.0998, 1.08 -1.041, 1.14 -0.9749, 1.2 -0.9, 1.26 -0.8139, 1.32 -0.7125, 1.38 -0.5879, 1.44 -0.42, 1.5 0 ]
+      spine [ -4 6 0, -4 5 0, -4 4 0, -4 3 0, -4 2 0, -4 1 0, -4 0 0, -3 -1 0, -2 -1 0, -1 -1 0, 0 -1 0, 1 -1 0, 2 -1 0, 3 -1 0, 4 -1 0, 5 -1 0, 6 0 0, 6 1 0, 6 2 0, 6 3 0, 6 4 0, 6 5 0, 6 5 0, 6 5.5 0, 6 6 0 ]
+      solid FALSE
+    }
+  }
+}

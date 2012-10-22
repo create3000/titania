@@ -1,0 +1,98 @@
+#VRML V2.0 utf8
+
+PROTO Cubes [
+  exposedField SFRotation rotation 0 0 1 0
+]
+{
+  PROTO CubeGreen [ ]
+  {
+    Transform {
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0 1 0
+          }
+        }
+        geometry Box { }
+      }
+    }
+  }
+
+  PROTO CubesNested [
+    exposedField SFRotation rotation 0 0 1 0
+  ]
+  {
+    PROTO CubeBlue [ ]
+    {
+      Transform {
+        children Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 0 1
+            }
+          }
+          geometry Box { }
+        }
+      }
+    }
+
+    Group {
+      children [
+        DEF T Transform {
+          rotation IS rotation
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 1 0 0
+              }
+            }
+            geometry Box { }
+          }
+        }
+        Transform {
+          translation 3 0 0
+          children USE T
+        }
+        Transform {
+          translation -3 0 0
+          children USE T
+        }
+        Transform {
+          translation 0 0 3
+          rotation IS rotation
+          children CubeBlue { }
+        }
+        Transform {
+          translation 0 0 -3
+          rotation IS rotation
+          children CubeBlue { }
+        }
+        Transform {
+          translation 0 3 0
+          rotation IS rotation
+          children CubeGreen { }
+        }
+        Transform {
+          translation 0 -3 0
+          rotation IS rotation
+          children CubeGreen { }
+        }
+      ]
+    }
+  }
+
+  CubesNested {
+    rotation IS rotation
+  }
+}
+
+DEF ProximitySensor ProximitySensor {
+  size 100 100 100
+}
+Group {
+  children DEF Cubes Cubes {
+    rotation 0.872872 0.436436 0.218218 4
+  }
+}
+
+ROUTE ProximitySensor.orientation_changed TO Cubes.set_rotation

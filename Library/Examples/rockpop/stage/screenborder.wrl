@@ -1,0 +1,27 @@
+#VRML V2.0 utf8
+
+WorldInfo {
+  info	[ "Created in CosmoWorlds",
+	    "Packaged by CosmoPackage" ]
+}
+Transform {
+  children	Shape {
+    appearance	NULL
+
+    geometry	IndexedLineSet {
+      coord	Coordinate {
+	point	[ 0.5 0.5 0,
+		  0.5 -0.5 0,
+		  -0.5 -0.5 0,
+		  -0.5 0.5 0 ]
+      }
+
+      color	NULL
+
+      coordIndex	[ 0, 1, 2, 3, 0, -1 ]
+    }
+
+  }
+
+  scale	1.33 1 1
+}

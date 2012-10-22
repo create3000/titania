@@ -1,0 +1,50 @@
+#VRML V2.0 utf8
+
+PROTO CircleExtrusion [
+  eventIn SFFloat    set_crossSectionRadius
+  eventIn SFInt32    set_crossSectionSides
+  eventIn MFRotation set_orientation
+  eventIn MFVec2f    set_scale
+  eventIn MFVec3f    set_spine
+  field   SFBool     beginCap TRUE
+  field   SFBool     ccw TRUE
+  field   SFFloat    creaseAngle 1.5708
+  field   SFFloat    crossSectionRadius 1
+  field   SFInt32    crossSectionSides 16
+  field   SFBool     endCap TRUE
+  field   MFRotation orientation 0 0 1 0
+  field   MFVec2f    scale 1 1
+  field   SFBool     solid TRUE
+  field   MFVec3f    spine [ 0 0 0, 0 1 0 ]
+]
+{
+  DEF CIRCLE-EXTRUSION Extrusion {
+    set_orientation IS set_orientation
+    set_scale IS set_scale
+    set_spine IS set_spine
+    beginCap IS beginCap
+    endCap IS endCap
+    ccw IS ccw
+    creaseAngle IS creaseAngle
+    orientation IS orientation
+    scale IS scale
+    spine IS spine
+    solid IS solid
+  }
+
+  DEF X-SECTION-SCRIPT Script {
+    eventIn  SFFloat set_radius IS set_crossSectionRadius
+    eventIn  SFInt32 set_sides IS set_crossSectionSides
+    field    SFFloat radius IS crossSectionRadius
+    field    SFInt32 sides IS crossSectionSides
+    eventOut MFVec2f crossSection_changed
+    url [ "CircularCrossSection.js", "CircularCrossSection.vs" ]
+  }
+
+  ROUTE X-SECTION-SCRIPT.crossSection_changed TO CIRCLE-EXTRUSION.set_crossSection
+}
+
+WorldInfo {
+  info [ "Copyright (c) 1998, Braden N. McDaniel", "Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose is hereby granted without fee, provided that the copyright notice appear in all copies and that both that copyright notice and this permission notice appear in supporting documentation. Braden N. McDaniel makes no representations about the suitability of this software for any purpose. It is provided \"as is\" without express or implied warranty.", "author: Braden N. McDaniel", "e-mail: braden@endoframe.com", "last revised: 14 November, 1998" ]
+  title "CircleExtrusion"
+}

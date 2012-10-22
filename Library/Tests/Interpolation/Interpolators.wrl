@@ -1,0 +1,84 @@
+#VRML V2.0 utf8 CosmoWorlds V1.0
+
+Group {
+  children [
+    DEF StartTouchSensor TouchSensor { }
+    Transform {
+      translation -2 0 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0 1 0
+          }
+        }
+        geometry Box { }
+      }
+    }
+  ]
+}
+
+Group {
+  children [
+    DEF StopTouchSensor TouchSensor { }
+    Transform {
+      translation 2 0 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 0 0
+          }
+        }
+        geometry Box { }
+      }
+    }
+  ]
+}
+
+DEF TimeSensor TimeSensor {
+  cycleInterval 20
+  loop TRUE
+#  stopTime 1
+}
+
+DEF ScalarInterpolator ScalarInterpolator {
+  key [ 0, 0.5, 1 ]
+  keyValue [ 0, 1, 0 ]
+}
+
+DEF PositionInterpolator PositionInterpolator {
+  key [ 0, 1 ]
+  keyValue [ -2 -2 0, 2 -2 0 ]
+}
+
+DEF OrientationInterpolator OrientationInterpolator {
+  key [ 0, 0.25, 0.26, 0.5, 0.75, 1 ]
+  keyValue [ 0 0 1 0, 0 1 0 1.5708, 0 1 0 1.5708, 0 1 0 3.14159, 0 1 0 4.71239, 0 0 1 0 ]
+}
+
+DEF ColorInterpolator ColorInterpolator {
+  key [ 0, 1 ]
+  keyValue [ 1 0 0, 0 1 0 ]
+}
+
+DEF Box Transform {
+  translation -2 -2 0
+  children Shape {
+    appearance Appearance {
+      material DEF Material Material {
+        diffuseColor 1 0 0
+      }
+    }
+    geometry Box { }
+  }
+}
+
+
+ROUTE StartTouchSensor.touchTime TO TimeSensor.set_startTime
+ROUTE StopTouchSensor.touchTime TO TimeSensor.set_stopTime
+ROUTE TimeSensor.fraction_changed TO ScalarInterpolator.set_fraction
+ROUTE ScalarInterpolator.value_changed TO PositionInterpolator.set_fraction
+ROUTE ScalarInterpolator.value_changed TO OrientationInterpolator.set_fraction
+ROUTE ScalarInterpolator.value_changed TO ColorInterpolator.set_fraction
+ROUTE PositionInterpolator.value_changed TO Box.set_translation
+ROUTE OrientationInterpolator.value_changed TO Box.set_rotation
+ROUTE ColorInterpolator.value_changed TO Material.set_diffuseColor

@@ -1,0 +1,221 @@
+#VRML V2.0 utf8
+
+PROTO GeoTriangle [
+  field SFInt32 order 0
+  field SFBool  solid TRUE
+]
+{
+  DEF geometry IndexedFaceSet {
+    coord Coordinate { }
+    normal Normal { }
+    solid IS solid
+  }
+
+  DEF GeoTriangle Script {
+    field SFInt32 order IS order
+    field MFVec3f coord [ 0 1.61803 1, -1 0 1.61803, 1 0 1.61803 ]
+    field SFNode  geometry USE geometry
+    url "javascript:
+
+function initialize()
+{
+	var ci = new MFInt32();
+	var vertex = new MFVec3f();
+
+	var p12 = coord[2].subtract(coord[1]).multiply(1./(order+1));
+	var p1 = coord[1].subtract(coord[0]).multiply(1./(order+1));
+	var p2 = coord[2].subtract(coord[0]).multiply(1./(order+1));
+	var p0 = coord[0];
+	var vcount = 0;
+	var ccount = 0;
+
+	for(var j = 0; j <= order; j++)
+	{
+		var pz = p0.add(p1.multiply(j));
+		for(var i = 0; i <= j; i++)
+		{
+			var p = pz.add(p12.multiply(i));
+			vertex[vcount] = p.normalize();
+			vertex[vcount+1] = p.add(p1).normalize();
+			vertex[vcount+2] = p.add(p2).normalize();
+			ci[ccount++] = vcount;
+			ci[ccount++] = vcount+1;
+			ci[ccount++] = vcount+2;
+			ci[ccount++] = -1;
+			vcount+= 3;
+		}
+	}
+ 
+	for(var j = 0; j < order; j++)
+	{
+		var pz = p0.add(p1.multiply(j+1));
+		for(var i = 0; i <= j; i++)
+		{
+			var p = pz.add(p12.multiply(i));
+			vertex[vcount] = p.normalize();
+			vertex[vcount+1] = p.add(p2).normalize();
+			vertex[vcount+2] = p.add(p12).normalize();
+			ci[ccount++] = vcount;
+			ci[ccount++] = vcount+1;
+			ci[ccount++] = vcount+2;
+			ci[ccount++] = -1;
+			vcount+= 3;
+		}
+	}
+ 
+	// There are some Transforms and USEs commented out below.
+	// We duplicate their effect here. You will observe that
+	// all mathematical elegance disappears at this point.
+	// I'm to blame for the following.  -- Bob
+
+	var vm = new VrmlMatrix();
+	vm.setTransform(
+		new SFVec3f(0,0,0),
+		new SFRotation(1, 0, 1.61803398, 1.256637061)
+	);
+	for (var i = 0; i < vcount; i+=3)
+	{
+		vertex[i+vcount] = vm.multVecMatrix(vertex[i]);
+		vertex[i+vcount+1] = vm.multVecMatrix(vertex[i+1]);
+		vertex[i+vcount+2] = vm.multVecMatrix(vertex[i+2]);
+		ci[ccount++] = i+vcount;
+		ci[ccount++] = i+vcount+1;
+		ci[ccount++] = i+vcount+2;
+		ci[ccount++] = -1;
+	}
+	vcount *=2;
+
+	vm.setTransform(
+		new SFVec3f(0,0,0),
+		new SFRotation(0, 1.61803398, 1, 1.256637061)
+	);
+	for (var i = 0; i < vcount; i+=3)
+	{
+		vertex[i+vcount] = vm.multVecMatrix(vertex[i]);
+		vertex[i+vcount+1] = vm.multVecMatrix(vertex[i+1]);
+		vertex[i+vcount+2] = vm.multVecMatrix(vertex[i+2]);
+		ci[ccount++] = i+vcount;
+		ci[ccount++] = i+vcount+1;
+		ci[ccount++] = i+vcount+2;
+		ci[ccount++] = -1;
+	}
+
+	vm.setTransform(
+		new SFVec3f(0,0,0),
+		new SFRotation(0, 1.61803398, 1, -1.256637061)
+	);
+	for (var i = 0; i < vcount; i+=3)
+	{
+		vertex[i+2*vcount] = vm.multVecMatrix(vertex[i]);
+		vertex[i+2*vcount+1] = vm.multVecMatrix(vertex[i+1]);
+		vertex[i+2*vcount+2] = vm.multVecMatrix(vertex[i+2]);
+		ci[ccount++] = i+2*vcount;
+		ci[ccount++] = i+2*vcount+1;
+		ci[ccount++] = i+2*vcount+2;
+		ci[ccount++] = -1;
+	}
+
+	vm.setTransform(
+		new SFVec3f(0,0,0),
+		new SFRotation(0, 1.61803398, 1, -2.513274122)
+	);
+	for (var i = 0; i < vcount; i+=3)
+	{
+		vertex[i+3*vcount] = vm.multVecMatrix(vertex[i]);
+		vertex[i+3*vcount+1] = vm.multVecMatrix(vertex[i+1]);
+		vertex[i+3*vcount+2] = vm.multVecMatrix(vertex[i+2]);
+		ci[ccount++] = i+3*vcount;
+		ci[ccount++] = i+3*vcount+1;
+		ci[ccount++] = i+3*vcount+2;
+		ci[ccount++] = -1;
+	}
+
+	vm.setTransform(
+		new SFVec3f(0,0,0),
+		new SFRotation(0, 1.61803398, 1, 2.513274122)
+	);
+	for (var i = 0; i < vcount; i+=3)
+	{
+		vertex[i+4*vcount] = vm.multVecMatrix(vertex[i]);
+		vertex[i+4*vcount+1] = vm.multVecMatrix(vertex[i+1]);
+		vertex[i+4*vcount+2] = vm.multVecMatrix(vertex[i+2]);
+		ci[ccount++] = i+4*vcount;
+		ci[ccount++] = i+4*vcount+1;
+		ci[ccount++] = i+4*vcount+2;
+		ci[ccount++] = -1;
+	}
+
+	vcount *=5;
+
+	vm.setTransform(
+		new SFVec3f(0,0,0),
+		new SFRotation(1, 0, 0, 3.1415926)
+	);
+	for (var i = 0; i < vcount; i+=3)
+	{
+		vertex[i+vcount] = vm.multVecMatrix(vertex[i]);
+		vertex[i+vcount+1] = vm.multVecMatrix(vertex[i+1]);
+		vertex[i+vcount+2] = vm.multVecMatrix(vertex[i+2]);
+		ci[ccount++] = i+vcount;
+		ci[ccount++] = i+vcount+1;
+		ci[ccount++] = i+vcount+2;
+		ci[ccount++] = -1;
+	}
+
+	vcount *= 2;
+
+
+	// That takes care of all 20 patches.  Now let's fix
+	// the problem that the half-dome doesn't line up well
+	// with they y=0 plane for odd-numbered orders.  We'll
+	// rotate them by -arctan((sqrt(5)-1)/2) -- Vladimir's
+	// number.  Alas, there's no geodesic for even-numbered
+	// orders.
+
+	if (order % 2)
+	{
+		vm.setTransform(
+			new SFVec3f(0,0,0),
+			new SFRotation(0, 0, 1, -1.0172219678)
+		);
+		for (var i = 0; i < vcount; i++) {
+			vertex[i] = vm.multVecMatrix(vertex[i]);
+		}
+	}
+
+
+	// Make a static world by uncommenting these lines and
+	// cutting and pasting the results into the Coordinate
+	// node and coordIndex field of an geometry.
+
+	// print('Vertices = ' + vcount);
+	// print('Indices = ' + ccount);
+	// for (var i=0; i < vcount; i++) {
+	// print ('' + vertex[i]);
+	// }
+	// for (var i=0; i < ccount; i+=4) {
+	// print ('' + ci[i] + ', ' + ci[i+1] + ', ' + ci[i+2] + ', ' + ci[i+3]);
+	// }
+	// print('Done');
+
+	geometry.coord.set_point = vertex;
+	geometry.set_coordIndex = ci;
+  
+	geometry.normal.set_normal = vertex;
+	geometry.set_normalIndex = ci;	    
+}
+"
+  }
+}
+
+Viewpoint {
+  position 0 0 4
+}
+DEF IcosahedronFromTriangle Shape {
+  appearance Appearance {
+    material Material { }
+  }
+  geometry GeoTriangle {
+    order 1
+  }
+}

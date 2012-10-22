@@ -1,0 +1,397 @@
+#VRML V2.0 utf8
+
+EXTERNPROTO CheckBox [
+	    exposedField SFBool enabled 
+	    exposedField SFBool on 
+	    exposedField SFTime touchTime 
+	    eventOut     SFBool isActive 
+	    exposedField SFInt32 whichChoice 
+	    exposedField MFNode choice 
+	  ]
+	"CheckBox_proto.wrl"
+EXTERNPROTO Button [
+	    exposedField SFBool enabled 
+	    eventOut     SFBool isActive 
+	    eventOut     SFBool isOver 
+	    eventOut     SFBool isOut 
+	    eventOut     SFTime touchTime 
+	    eventOut     SFTime downTime 
+	    eventOut     SFTime overTime 
+	    eventOut     SFTime outTime 
+	    exposedField MFNode choice 
+	  ]
+	"ButtonProto.wrl"
+EXTERNPROTO Gateway [
+	    exposedField SFBool enabled 
+	    exposedField MFNode children 
+	  ]
+	"Gateway_proto.wrl"
+EXTERNPROTO BoolField [
+	    exposedField SFBool keyValue 
+	    exposedField SFTime startTime 
+	    eventOut     SFBool value_changed 
+	  ]
+	"BoolFieldProto.wrl"
+EXTERNPROTO TimeField [
+	    exposedField SFTime keyValue 
+	    exposedField SFTime startTime 
+	    eventOut     SFTime value_changed 
+	  ]
+	"TimeFieldProto.wrl"
+WorldInfo {
+  info	[ "Created in CosmoWorlds",
+	    "Packaged by CosmoPackage" ]
+}
+DEF rahmen Transform {
+  children	[
+    Transform {
+      children	Shape {
+	appearance	Appearance {
+	  material	DEF _0 Material {
+	    ambientIntensity	0.16
+	    diffuseColor	1 1 1
+	    specularColor	0 0 0
+	    emissiveColor	0 0 0
+	    shininess	0.2
+	    transparency	0
+	  }
+
+	  texture	DEF _1 ImageTexture {
+	    url	"lichtschalter.png"
+	  }
+
+	  textureTransform	NULL
+
+	}
+
+	geometry	IndexedFaceSet {
+	  coord	Coordinate {
+	    point	[ -0.1 0.087195 0.0163695,
+		      0.1 0.087195 0.0163695,
+		      -0.0855269 -0.1 0.0163695,
+		      -0.085527 0.087195 0.1,
+		      0.086536 0.087195 0.1,
+		      0.086536 -0.1 0.0163695,
+		      0.086536 -0.0880068 0.1,
+		      -0.0855269 -0.0880068 0.1,
+		      -0.085527 0.1 0.0163695,
+		      -0.0967848 0.0968747 0.0163695,
+		      0.086536 0.1 0.0163695,
+		      0.094721 0.0967825 0.0163695,
+		      0.1 -0.0880068 0.0163695,
+		      0.0957435 -0.0968561 0.0163695,
+		      -0.1 -0.0880068 0.0163695,
+		      -0.0968431 -0.0957628 0.0163695,
+		      -0.0915476 -0.1 0.0163695,
+		      -0.085527 0.0583713 0.1,
+		      0.086536 0.0583713 0.1,
+		      -0.085527 0.0339557 0.1,
+		      0.086536 0.0339557 0.1,
+		      -0.085527 0.0461635 0.1,
+		      0.086536 0.0461635 0.1,
+		      0.086536 0.087195 0.0861516,
+		      0.086536 0.0583713 0.0861516,
+		      -0.085527 0.087195 0.0861516,
+		      -0.085527 0.0583713 0.0861516,
+		      0.086536 -0.0880068 0.0144362,
+		      0.086536 0.0339557 0.0144362,
+		      -0.085527 0.0339557 0.0144362,
+		      -0.0855269 -0.0880068 0.0144362 ]
+	  }
+
+	  color	NULL
+
+	  coordIndex	[ 2, 5, 6, 7, -1, 0, 3, 8,
+		    9, -1, 3, 4, 10, 8, -1, 4,
+		    1, 11, 10, -1, 12, 1, 4, 18,
+		    22, 20, 6, -1, 5, 13, 12, 6,
+		    -1, 0, 14, 7, 19, 21, 17, 3,
+		    -1, 14, 15, 16, 2, 7, -1, 24,
+		    23, 25, 26, -1, 23, 24, 18, 4,
+		    -1, 25, 23, 4, 3, -1, 26, 25,
+		    3, 17, -1, 24, 26, 17, 18, -1,
+		    28, 27, 6, 20, -1, 29, 28, 20,
+		    19, -1, 30, 29, 19, 7, -1, 27,
+		    30, 7, 6, -1 ]
+	  colorIndex	[  ]
+	  normal	NULL
+
+	  texCoord	TextureCoordinate {
+	    point	[ 0 0.935975,
+		      1 0.935975,
+		      0.0723654 0,
+		      0.0726699 0.946016,
+		      0.0548755 0.936206,
+		      0.932985 0.946016,
+		      0.943886 0.93731,
+		      0.93268 0,
+		      0.93268 0.0599659,
+		      0.949766 0.0598305,
+		      0.0548757 0.0601965,
+		      0.0726681 0.0544885,
+		      0.0723652 1,
+		      0.0160762 0.984373,
+		      0.93268 1,
+		      0.973605 0.983912,
+		      1 0.0599659,
+		      0.978717 0.0157197,
+		      0 0.059966,
+		      0.0157845 0.0211862,
+		      0.0422621 0,
+		      0.0723652 0.791856,
+		      0.0548755 0.792086,
+		      0.93268 0.791856,
+		      0.943886 0.79319,
+		      0.0548755 0.670008,
+		      0.0723652 0.669779,
+		      0.943886 0.671112,
+		      0.93268 0.669778,
+		      0.0548755 0.731048,
+		      0.943886 0.732152 ]
+	  }
+
+	  texCoordIndex	[ 2, 7, 8, 11, -1, 0, 3, 12,
+		    13, -1, 3, 5, 14, 12, -1, 5,
+		    1, 15, 14, -1, 16, 1, 6, 24,
+		    30, 27, 9, -1, 7, 17, 16, 9,
+		    -1, 0, 18, 10, 25, 29, 22, 4,
+		    -1, 18, 19, 20, 2, 10, -1, 23,
+		    6, 4, 21, -1, 23, 6, 6, 23,
+		    -1, 4, 6, 6, 4, -1, 21, 4,
+		    4, 21, -1, 21, 2, 2, 21, -1,
+		    28, 8, 8, 28, -1, 26, 28, 28,
+		    26, -1, 11, 26, 26, 11, -1, 11,
+		    2, 2, 11, -1 ]
+	  ccw	TRUE
+	  solid	TRUE
+	  convex	TRUE
+	  creaseAngle	0.5
+	}
+
+      }
+
+      scale	0.790266 0.790266 0.119564
+      scaleOrientation	0 0 1  0
+    }
+    DEF led Transform {
+      children	Shape {
+	appearance	Appearance {
+	  material	NULL
+
+	  texture	USE _1
+
+	  textureTransform	NULL
+
+	}
+
+	geometry	IndexedFaceSet {
+	  coord	Coordinate {
+	    point	[ 0.086536 0.0461635 0.1,
+		      0.086536 0.0583713 0.1,
+		      -0.085527 0.0583713 0.1,
+		      -0.085527 0.0461635 0.1,
+		      0.086536 0.0339557 0.1,
+		      -0.085527 0.0339557 0.1 ]
+	  }
+
+	  color	NULL
+
+	  coordIndex	[ 0, 1, 2, 3, -1, 4, 0, 3,
+		    5, -1 ]
+	  normal	NULL
+
+	  texCoord	TextureCoordinate {
+	    point	[ 0.93268 0.730817,
+		      0.93268 0.791856,
+		      0.0723652 0.791856,
+		      0.0723652 0.730817,
+		      0.93268 0.669778,
+		      0.0723652 0.669779 ]
+	  }
+
+	  ccw	TRUE
+	  solid	TRUE
+	  convex	TRUE
+	  creaseAngle	0.5
+	}
+
+      }
+
+      scale	0.790266 0.790266 0.119564
+      scaleOrientation	0 0 1  0
+    }
+  ]
+  translation	0 0 -0.0138644
+  scale	1 1 2.15958
+}
+DEF CheckBox Transform {
+  children	DEF _2 CheckBox {
+    touchTime	0
+    choice	[ 	    DEF Button Transform {
+	      children	DEF _3 Button {
+		choice			Transform {
+		  children	Transform {
+		    children	Shape {
+		      appearance	Appearance {
+			material	USE _0
+
+			texture	ImageTexture {
+			  url	"lichtschalter.png"
+			}
+
+			textureTransform	NULL
+
+		      }
+
+		      geometry	IndexedFaceSet {
+			coord	Coordinate {
+			  point	[ -0.01 0.01 0.01,
+				    -0.01 -0.01 0.01,
+				    0.01 0.01 0.01,
+				    0.01 -0.01 0.01,
+				    0.01 0.01 -0.01,
+				    0.01 -0.01 -0.01,
+				    -0.01 0.01 -0.01,
+				    -0.01 -0.01 -0.01 ]
+			}
+
+			color	NULL
+
+			coordIndex	[ 0, 1, 3, 2, -1, 4, 5, 7,
+				  6, -1, 6, 7, 1, 0, -1, 2,
+				  3, 5, 4, -1, 6, 0, 2, 4,
+				  -1, 1, 7, 5, 3, -1 ]
+			colorIndex	[  ]
+			normal	NULL
+
+			texCoord	TextureCoordinate {
+			  point	[ 0.0579122 0.664525,
+				    0.0579122 0.0608016,
+				    0.504193 0.664525,
+				    0.504193 0.0608016 ]
+			}
+
+			texCoordIndex	[ 0, 1, 3, 2, -1, 0, 1, 3,
+				  2, -1, 0, 1, 3, 2, -1, 0,
+				  1, 3, 2, -1, 0, 1, 3, 2,
+				  -1, 0, 1, 3, 2, -1 ]
+			creaseAngle	0.5
+		      }
+
+		    }
+
+		    translation	0 -0.0216068 0.00269196
+		    rotation	0 0 1  0
+		    scale	6.96125 4.73044 0.335129
+		    scaleOrientation	0 0 1  0
+		  }
+
+		  translation	0 0.000153953 0.00193691
+		  rotation	1 0 0  0.0892654
+		  scale	1 1 1
+		}
+
+	      }
+
+	    }
+,
+	      	    DEF Button Transform {
+	      children	DEF _4 Button {
+		choice			Transform {
+		  children	Transform {
+		    children	Shape {
+		      appearance	Appearance {
+			material	Material {
+			  ambientIntensity	0.16
+			  diffuseColor	1 1 1
+			  specularColor	0 0 0
+			  emissiveColor	0 0 0
+			  shininess	0.2
+			  transparency	0
+			}
+
+			texture	ImageTexture {
+			  url	"lichtschalter.png"
+			}
+
+			textureTransform	NULL
+
+		      }
+
+		      geometry	IndexedFaceSet {
+			coord	Coordinate {
+			  point	[ -0.01 0.01 0.01,
+				    -0.01 -0.01 0.01,
+				    0.01 0.01 0.01,
+				    0.01 -0.01 0.01,
+				    0.01 0.01 -0.01,
+				    0.01 -0.01 -0.01,
+				    -0.01 0.01 -0.01,
+				    -0.01 -0.01 -0.01 ]
+			}
+
+			color	NULL
+
+			coordIndex	[ 0, 1, 3, 2, -1, 4, 5, 7,
+				  6, -1, 6, 7, 1, 0, -1, 2,
+				  3, 5, 4, -1, 6, 0, 2, 4,
+				  -1, 1, 7, 5, 3, -1 ]
+			colorIndex	[  ]
+			normal	NULL
+
+			texCoord	TextureCoordinate {
+			  point	[ 0.0579122 0.664525,
+				    0.0579122 0.0608016,
+				    0.504193 0.664525,
+				    0.504193 0.0608016 ]
+			}
+
+			texCoordIndex	[ 0, 1, 3, 2, -1, 0, 1, 3,
+				  2, -1, 0, 1, 3, 2, -1, 0,
+				  1, 3, 2, -1, 0, 1, 3, 2,
+				  -1, 0, 1, 3, 2, -1 ]
+			creaseAngle	0.5
+		      }
+
+		    }
+
+		    translation	0 -0.0216068 0.00269196
+		    rotation	0 0 1  0
+		    scale	6.96125 4.73044 0.335129
+		    scaleOrientation	0 0 1  0
+		  }
+
+		  translation	0 -0.000359255 -0.00206643
+		  rotation	-1 0 0  0.0963629
+		  scale	1 1 1
+		}
+
+	      }
+
+	    }
+ ]
+  }
+
+}
+DEF Gateway Transform {
+  children	Gateway {
+    children	[ 	    DEF isActive_5 BoolField {
+	      keyValue	FALSE
+	    }
+,
+	      	    DEF enter_6 TimeField {
+	      keyValue	0
+	    }
+,
+	      	    DEF exit_7 TimeField {
+	      keyValue	0
+	    }
+ ]
+  }
+
+}
+ROUTE _3.touchTime TO _2.set_touchTime
+ROUTE _4.touchTime TO _2.set_touchTime
+ROUTE _2.isActive TO isActive_5.set_keyValue
+ROUTE _3.touchTime TO enter_6.set_keyValue
+ROUTE _4.touchTime TO exit_7.set_keyValue

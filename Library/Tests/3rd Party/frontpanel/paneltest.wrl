@@ -1,0 +1,42 @@
+#VRML V2.0 utf8
+
+EXTERNPROTO FrontPanel [
+  field        MFNode   panelObjects
+  exposedField SFVec3f  startPosition
+  exposedField MFString headerText
+]
+"frontpanel.wrl"
+
+Group {
+  children [
+    FrontPanel {
+      panelObjects DEF _0 Transform {
+        translation -1 0 0
+        children Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 1 0.5 1
+            }
+          }
+          geometry Box {
+            size 0.5 0.5 0.3
+          }
+        }
+      }
+      headerText "Front Panel"
+    }
+    Transform {
+      translation -1 0 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 1 0.5
+          }
+        }
+        geometry Box {
+          size 1 1 0.2
+        }
+      }
+    }
+  ]
+}

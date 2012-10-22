@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ItemType>PackagingProject</ItemType>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9409944E-4C24-4199-A6CE-B3BB8E5BD9EC}</ProjectGuid>
+    <Packages>
+      <Packages>
+        <Package name="Pixi Linux Binärdateien">
+          <Builder targetFile="Pixi.tar.gz" platform="Linux" configuration="Debug" ctype="BinariesZipPackageBuilder">
+            <ChildEntries>
+              <SolutionItemReference path="..\libtitania\libtitania.cproj" />
+              <SolutionItemReference path="..\libtitania-anyoptions\libtitania-anyoptions.cproj" />
+              <SolutionItemReference path="..\libtitania-gzstream\libtitania-gzstream.cproj" />
+              <SolutionItemReference path="..\Pixi\Pixi.cproj" />
+              <SolutionItemReference path="..\libtitania-basic\libtitania-basic.cproj" />
+              <SolutionItemReference path="..\libtitania-x3d\libtitania-x3d.cproj" />
+            </ChildEntries>
+            <ExcludedFiles>
+              <File>libtitania-x3d,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania-x3d/libtitania-x3d.pc</File>
+              <File>libtitania-gzstream,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania-gzstream/libtitania-gzstream.pc</File>
+              <File>libtitania-basic,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania-basic/libtitania-basic.pc</File>
+              <File>libtitania-anyoptions,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania-anyoptions/libtitania-anyoptions.pc</File>
+              <File>libtitania,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania/libtitania.pc</File>
+            </ExcludedFiles>
+            <RootEntry path="..\Titania.sln" id=":root:" />
+          </Builder>
+        </Package>
+      </Packages>
+    </Packages>
+    <ReleaseVersion>0.3</ReleaseVersion>
+  </PropertyGroup>
+</Project>

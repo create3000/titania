@@ -1,0 +1,30 @@
+/home/holger/Projekte/Titania/libtitania-x3d/bin/Debug/ViewVolume.o: \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/ViewVolume.cpp \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Types/Numbers.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Types/../Types/Time.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Color3.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/../Math.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Color4.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Matrix3.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Vector2.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Vector3.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Matrix4.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Matrix3.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Rotation4.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/../../Bits/Utility/MemberValue.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Quaternion.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Vector4.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Rotation4.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Vector2.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Vector3.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Vector4.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/ViewVolume.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Types/Geometry.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box3.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/../Geometry/Line3.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/../Geometry/../Numbers/Vector3.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/../Geometry/Plane3.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/../Geometry/../Geometry/Line3.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/../Numbers/Vector3.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Line3.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Plane3.h

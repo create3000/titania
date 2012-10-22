@@ -1,0 +1,14 @@
+#VRML V2.0 utf8
+
+Script {
+  url "javascript:
+function initialize()
+{
+	print(new SFRotation());
+	r1 = new SFRotation(1,2,3,4);
+	r2 = new SFRotation(2,3,4,5);
+	print(r1.multiply(r2));
+	print(r2.multiply(r1));
+}
+"
+}

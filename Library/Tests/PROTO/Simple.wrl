@@ -1,0 +1,25 @@
+#VRML V2.0 utf8
+
+PROTO Cube [ ]
+{
+  Box { }
+}
+
+Background {
+  groundColor 1 0 0
+}
+
+DEF Home Viewpoint {
+  position 0 0 15
+  description "Home"
+}
+
+DEF Near Viewpoint {
+  position 0 0 5
+  description "Near"
+}
+
+Shape {
+  geometry Cube { }
+}
+

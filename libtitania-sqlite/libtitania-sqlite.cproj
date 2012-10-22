@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{277BAB61-D2B7-44BF-AEF2-06E328D7830F}</ProjectGuid>
+    <Target>SharedLibrary</Target>
+    <Language>CPP</Language>
+    <Compiler>
+      <Compiler ctype="GppCompiler" />
+    </Compiler>
+    <ReleaseVersion>0.3</ReleaseVersion>
+    <Packages>
+      <Packages>
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/sqlite3.pc" name="SQLite" IsProject="false" />
+      </Packages>
+    </Packages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OutputName>libtitania-sqlite</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <WarningLevel>All</WarningLevel>
+    <WarningsAsErrors>true</WarningsAsErrors>
+    <OptimizationLevel>3</OptimizationLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OptimizationLevel>3</OptimizationLevel>
+    <OutputName>libtitania-sqlite</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Parallel|AnyCPU' ">
+    <OutputPath>.</OutputPath>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <OutputName />
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Titania\" />
+    <Folder Include="Titania\SQL\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="info.h" />
+    <None Include="Titania\SQL\SQLite3.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Titania\SQL\SQLite3.cpp" />
+  </ItemGroup>
+</Project>

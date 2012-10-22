@@ -1,0 +1,21 @@
+#VRML V2.0 utf8
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry ElevationGrid {
+      creaseAngle 0
+      height [
+		0 0 0
+		0 1 0
+		0 0 0
+		]
+      xDimension 3
+      xSpacing 1
+      zDimension 3
+      zSpacing 1
+    }
+  }
+}

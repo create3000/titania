@@ -1,0 +1,47 @@
+#VRML V2.0 utf8
+
+DEF Background Transform {
+  children DEF _12 Background {
+    skyAngle [ 0.8, 1.3, 1.4, 1.5708 ]
+    skyColor [ 0.21 0.31 0.59, 0.33 0.45 0.7, 0.57 0.66 0.85, 0.6 0.73 0.89, 0.7 0.83 0.98 ]
+    groundAngle [ 0.6, 1.2, 1.3, 1.5708 ]
+    groundColor [ 0.21 0.31 0.59, 0.33 0.45 0.7, 0.57 0.66 0.85, 0.6 0.73 0.89, 0.7 0.83 0.98 ]
+  }
+}
+
+Viewpoint {
+  position 0 0 5
+  description "Start"
+}
+
+DEF TouchSensor TouchSensor {
+	enabled TRUE
+}
+
+DEF TimeSensor TimeSensor {
+  loop TRUE
+}
+
+DEF CoordinateInterpolator CoordinateInterpolator {
+  key [ 0, 1 ]
+  keyValue [ -1 1 0, -1 -1 0, 1 -1 0, 1 1 0, -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+}
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry IndexedFaceSet {
+      coord DEF Coordinate Coordinate {
+        point [ -1 1 0, -1 -1 0, 1 -1 0, 1 1 0 ]
+      }
+      coordIndex [ 0, 1, 2, 3, 0, -1 ]
+    }
+  }
+}
+
+
+ROUTE TouchSensor.touchTime TO TimeSensor.set_stopTime
+ROUTE TimeSensor.fraction_changed TO CoordinateInterpolator.set_fraction
+ROUTE CoordinateInterpolator.value_changed TO Coordinate.set_point

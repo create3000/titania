@@ -1,0 +1,23 @@
+#VRML V2.0 utf8
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+      }
+    }
+    geometry Box { }
+  }
+}
+Viewport {
+  clipBoundary [ 0, 0.5, 0, 0.5 ]
+  children Transform {
+    children Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box { }
+    }
+  }
+}

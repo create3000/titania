@@ -1,0 +1,43 @@
+#VRML V2.0 utf8
+
+DEF Script Script {
+  eventIn  SFBool  set_isActive
+  eventIn  SFTime  set_time
+  eventOut SFInt32 out
+  url "javascript:
+
+function set_isActive(value, time)
+{
+	print('set_time(' + value + ')');
+}
+function set_time(value, time)
+{
+	print('set_time(' + value + ')');
+}
+"
+}
+DEF sw Switch {
+  whichChoice 0
+  choice [
+    Shape {
+      appearance Appearance {
+        material Material {
+          emissiveColor 0.2 0.2 0.2
+        }
+      }
+      geometry Sphere { }
+    }
+    Shape {
+      appearance Appearance {
+        material Material {
+          emissiveColor 0.5 0.5 0.5
+        }
+      }
+      geometry Sphere { }
+    }
+  ]
+}
+DEF Touch TouchSensor { }
+
+ROUTE Touch.isActive TO Script.set_isActive
+ROUTE Touch.touchTime TO Script.set_time

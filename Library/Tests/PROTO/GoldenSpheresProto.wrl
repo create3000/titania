@@ -1,0 +1,245 @@
+#VRML V2.0 utf8
+
+EXTERNPROTO Rotor [
+  exposedField SFTime     cycleInterval
+  exposedField SFBool     loop
+  eventOut     SFRotation value_changed
+]
+"Rotor.wrl"
+
+PROTO Object [
+  exposedField SFVec3f    translation 0 0 0
+  exposedField SFRotation rotation 0 0 1 0
+  exposedField SFVec3f    center 0 0 0
+]
+{
+  PROTO Data [
+    exposedField SFVec3f    translation 0 0 0
+    exposedField SFRotation rotation 0 0 1 0
+  exposedField SFVec3f    center 0 0 0
+  ]
+  {
+    Group { }
+  }
+
+  PROTO Object [
+    exposedField SFVec3f    translation 0 0 0
+    exposedField SFRotation rotation 0 0 1 0
+  exposedField SFVec3f    center 0 0 0
+  ]
+  {
+    PROTO Data [
+      exposedField SFVec3f    translation 0 0 0
+      exposedField SFRotation rotation 0 0 1 0
+  exposedField SFVec3f    center 0 0 0
+    ]
+    {
+     Group { }
+   }
+
+    PROTO Object [
+      exposedField SFVec3f    translation 0 0 0
+      exposedField SFRotation rotation 0 0 1 0
+  exposedField SFVec3f    center 0 0 0
+    ]
+    {
+      PROTO Data [
+        exposedField SFVec3f    translation 0 0 0
+        exposedField SFRotation rotation 0 0 1 0
+  exposedField SFVec3f    center 0 0 0
+      ]
+      {
+    Group { }
+      }
+
+      PROTO Object [
+        exposedField SFVec3f    translation 0 0 0
+        exposedField SFRotation rotation 0 0 1 0
+  exposedField SFVec3f    center 0 0 0
+      ]
+      {
+        PROTO Data [
+          exposedField SFVec3f    translation 0 0 0
+          exposedField SFRotation rotation 0 0 1 0
+  exposedField SFVec3f    center 0 0 0
+        ]
+        {
+    Group { }
+        }
+
+        PROTO Object [
+          exposedField SFVec3f    translation 0 0 0
+          exposedField SFRotation rotation 0 0 1 0
+  exposedField SFVec3f    center 0 0 0
+        ]
+        {
+          PROTO Data [
+            exposedField SFVec3f    translation 0 0 0
+            exposedField SFRotation rotation 0 0 1 0
+  exposedField SFVec3f    center 0 0 0
+          ]
+          {
+    Group { }
+          }
+
+          PROTO Object [
+            exposedField SFVec3f    translation 0 0 0
+            exposedField SFRotation rotation 0 0 1 0
+  exposedField SFVec3f    center 0 0 0
+          ]
+          {
+            PROTO Data [
+              exposedField SFVec3f    translation 0 0 0
+              exposedField SFRotation rotation 0 0 1 0
+  exposedField SFVec3f    center 0 0 0
+            ]
+            {
+    Group { }
+            }
+
+	            DEF Box Transform {
+	              translation IS translation
+              rotation IS rotation
+	              center IS center
+	              children Inline {
+	                url "GoldenSphereAnimation.wrl"
+	              }
+	            }
+
+            DEF Data Data {
+              translation IS translation
+              rotation IS rotation
+              center IS center
+            }
+
+            ROUTE Data.translation_changed TO Box.set_translation
+            ROUTE Data.rotation_changed TO Box.set_rotation
+            ROUTE Data.center_changed TO Box.set_center
+          }
+
+          DEF Object1 Object {
+            translation IS translation
+               rotation IS rotation
+             center IS center
+          }
+
+          DEF Data Data {
+            translation IS translation
+            rotation IS rotation
+              center IS center
+          }
+
+          ROUTE Data.translation_changed TO Object1.set_translation
+          ROUTE Data.rotation_changed TO Object1.set_rotation
+            ROUTE Data.center_changed TO Object1.set_center
+        }
+
+        DEF Object1 Object {
+          translation IS translation
+              rotation IS rotation
+              center IS center
+        }
+
+        DEF Data Data {
+          translation IS translation
+          rotation IS rotation
+              rotation IS rotation
+              center IS center
+        }
+
+        ROUTE Data.translation_changed TO Object1.set_translation
+        ROUTE Data.rotation_changed TO Object1.set_rotation
+            ROUTE Data.center_changed TO Object1.set_center
+      }
+
+      DEF Object1 Object {
+        translation IS translation
+              rotation IS rotation
+              center IS center
+      }
+
+      DEF Data Data {
+        translation IS translation
+        rotation IS rotation
+              center IS center
+      }
+
+      ROUTE Data.translation_changed TO Object1.set_translation
+      ROUTE Data.rotation_changed TO Object1.set_rotation
+            ROUTE Data.center_changed TO Object1.set_center
+    }
+
+    DEF Object1 Object {
+      translation IS translation
+              rotation IS rotation
+              center IS center
+    }
+
+    DEF Data Data {
+      translation IS translation
+      rotation IS rotation
+              center IS center
+    }
+
+    ROUTE Data.translation_changed TO Object1.set_translation
+    ROUTE Data.rotation_changed TO Object1.set_rotation
+            ROUTE Data.center_changed TO Object1.set_center
+  }
+
+  DEF Object1 Object {
+    translation IS translation
+              rotation IS rotation
+              center IS center
+  }
+
+  DEF Data Data {
+    translation IS translation
+    rotation IS rotation
+              center IS center
+  }
+
+  ROUTE Data.translation_changed TO Object1.set_translation
+  ROUTE Data.rotation_changed TO Object1.set_rotation
+            ROUTE Data.center_changed TO Object1.set_center
+}
+
+Viewpoint {
+  description "Home"
+}
+
+DEF SphereRotor Rotor {
+	cycleInterval 17
+	loop TRUE
+}
+
+DEF Spheres0 Transform {
+rotation 1 0 0 1.5707963
+children DEF Billboard0 Object {
+  translation 0 0 0
+}
+}
+
+DEF Spheres1 Transform {
+rotation 1 0 0 1.5707963
+children DEF Billboard1 Object {
+  translation 3 0 0
+}
+}
+
+DEF Spheres2 Transform {
+rotation 1 0 0 1.5707963
+children DEF Billboard2 Object {
+  translation -3 0 0
+}
+}
+
+DEF ProximitySensor ProximitySensor {
+  size 100 100 100
+}
+
+#ROUTE SphereRotor.value_changed TO Spheres1.set_rotation
+#ROUTE SphereRotor.value_changed TO Spheres2.set_rotation
+
+ROUTE ProximitySensor.orientation_changed TO Billboard0.set_rotation
+ROUTE ProximitySensor.orientation_changed TO Billboard1.set_rotation
+ROUTE ProximitySensor.orientation_changed TO Billboard2.set_rotation

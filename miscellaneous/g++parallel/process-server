@@ -1,0 +1,307 @@
+#!/usr/bin/python
+
+import os
+import sys
+import subprocess
+import multiprocessing
+import Queue
+
+import gobject
+import dbus
+import dbus .service
+import dbus .mainloop .glib
+
+DBUS_NAME = "com.ProcessServer"
+DBUS_PATH = "/com/ProcessServer"
+
+
+class Process (multiprocessing .Process):
+	""" Represents a single process instance """
+
+	def __init__ (self, argv, numProcesses, lock, stdout, stderr, returncode, processed):
+		multiprocessing .Process .__init__ (self)
+		self .argv         = argv
+		self .numProcesses = numProcesses
+		self .lock         = lock
+		self .stdout       = stdout
+		self .stderr       = stderr
+		self .returncode   = returncode
+		self .processed    = processed
+
+	def run (self):
+		print "Process(%d)::run: executing command" % id (self)
+
+		print "Process(%d)::run:" % id (self), " " .join (self .argv)
+
+		process = subprocess .Popen (self .argv, stdout = subprocess .PIPE, stderr = subprocess .PIPE)
+		stdout, stderr = process .communicate ()
+
+		if process .returncode < 0:
+			print "Process(%d)::run: command was terminated by signal %d" % (id (self), -process .returncode)
+
+		#subprocess .call (["zenity", "--info", "--text=%d\n%s" % (process .returncode, stderr)])
+		self .stdout     .put (stdout)
+		self .stderr     .put (stderr)
+		self .returncode .put (process .returncode)
+
+		self .processed  .put (id (self))
+
+		print "Process(%d)::run: finished command" % id (self)
+
+		self .numProcesses .value -= 1
+
+		try:
+			self .lock .release ()
+		except:
+			pass
+
+
+
+	def __del__ (self):
+		pass
+
+
+class ProcessServer (dbus.service.Object):
+
+	def __init__ (self, path = DBUS_PATH):
+		self .processes    = { }
+		self .numProcesses = multiprocessing .Value ("i", 0)
+		self .maxProcesses = multiprocessing .Value ("i", multiprocessing .cpu_count ())
+		self .lock         = multiprocessing .Lock ()
+		self .stdout       = multiprocessing .Queue ()
+		self .stderr       = multiprocessing .Queue ()
+		self .returncode   = multiprocessing .Queue ()
+		self .processed    = multiprocessing .Queue ()
+
+		self .values = { };
+
+		dbus .mainloop .glib .DBusGMainLoop (set_as_default = True)
+		name = dbus .service .BusName (DBUS_NAME, dbus .SessionBus ())
+		dbus .service .Object .__init__ (self, name, path)
+
+		self .loop = gobject .MainLoop ()
+		pass
+
+
+	@dbus .service .method (dbus_interface = DBUS_NAME, in_signature = 'sv', out_signature = 'v')
+	def get_value (self, key, defaultValue = None):
+		if key not in self .values:
+			self .values [key] = defaultValue;
+		print "ProcessServer::get_value: %s: %s" % (key, str (self .values [key]))
+		return self .values [key];
+
+
+	@dbus .service .method (dbus_interface = DBUS_NAME, in_signature = 'sv')
+	def set_value (self, key, value):
+		self .values [key] = value;
+		print "ProcessServer::set_value: %s: %s" % (key, str (self .values [key]))
+		return self .values [key];
+
+
+	#@dbus .service .method (dbus_interface = DBUS_NAME, out_signature = 'ai')
+	def get_returncode (self):
+		values = [0]
+		try:
+			while self .returncode .qsize ():
+				values .append (self .returncode . get_nowait ())
+		except Queue .Empty:
+			pass
+		return values
+
+
+	@dbus .service .method (dbus_interface = DBUS_NAME, out_signature = 's')
+	def get_stdout (self):
+		string = ""
+		try:
+			while self .stdout .qsize ():
+				string += self .stdout . get_nowait ()
+		except Queue .Empty:
+			pass
+		return string
+
+
+	@dbus .service .method (dbus_interface = DBUS_NAME, out_signature = 's')
+	def get_stderr (self):
+		string = ""
+		try:
+			while self .stderr .qsize ():
+				string += self .stderr . get_nowait ()
+		except Queue .Empty:
+			pass
+		return string
+
+
+	@dbus .service .method (dbus_interface = DBUS_NAME, in_signature = 'i')
+	def set_max_processes (self, value):
+		if value > 0:
+			self .maxProcesses .value = value
+		else:
+			self .maxProcesses .value = multiprocessing .cpu_count ()
+
+
+	@dbus .service .method (dbus_interface = DBUS_NAME, in_signature = 'as', out_signature = 'ai')
+	def call (self, argv):
+		returncode = self .join ()
+		if max (returncode) == 0:
+			print "ProcessServer::call:", " " .join (argv)
+			process = subprocess .Popen (argv, stdout = subprocess .PIPE, stderr = subprocess .PIPE)
+			stdout, stderr = process .communicate ()
+			#subprocess .call (["zenity", "--info", "--text=%d\n%s" % (process .returncode, stderr)])
+			self .stdout .put (stdout)
+			self .stderr .put (stderr)
+			return [process .returncode]
+		return returncode
+
+
+	@dbus .service .method (dbus_interface = DBUS_NAME, in_signature = 'as', out_signature = 'ai')
+	def start (self, argv):
+		self .removeProcesses ()
+
+		returncode = self .get_returncode ()
+		if max (returncode):
+			""" wait for remaining processes to finish before returning """
+			return returncode + self .join ()
+
+		print "ProcessServer::start: receiving command number %d (%s)" % (self .numProcesses .value + 1, argv [0])
+		""" lock function if we have reached max processes, ie. if maxProcesses is 4 then the 4th processes will lock this
+		    function and the 5th processes has to wait until a processes returns """
+		if self .numProcesses .value + 1 >= self .maxProcesses .value:
+			self .lock .acquire ()
+
+		""" start processes now and return """
+		self .addProcess (argv)
+
+		return self .get_returncode ()
+
+
+	@dbus .service .method (dbus_interface = DBUS_NAME, out_signature = 'ai')
+	def join (self):
+		print "ProcessServer::join: waiting for %d commands to finish" % self .numProcesses .value
+		processes = self .processes .copy ()
+		for process in processes .itervalues ():
+			process .join ()
+		return self .get_returncode ()
+
+
+	@dbus .service .method (dbus_interface = DBUS_NAME)
+	def terminate (self):
+		print "ProcessServer::terminate: terminating %d commands" % self .numProcesses .value
+
+		processes = self .processes .copy ()
+
+		for process in processes .itervalues ():
+			process .terminate ()
+			print "ProcessServer::terminate: process %d terminated" % id (process)
+
+		self .numProcesses .value = 0
+
+		self .get_returncode ()
+		self .get_stdout ()
+		self .get_stderr ()
+
+		try:
+			self .lock .release ()
+		except:
+			pass
+
+		print "ProcessServer::terminate: %d commands left" % self .numProcesses .value
+
+
+	def addProcess (self, argv):
+		self .numProcesses .value += 1
+
+		""" create processes and add to dictionary """
+		processes = Process (argv,
+		                     self .numProcesses,
+		                     self .lock,
+		                     self .stdout,
+		                     self .stderr,
+		                     self .returncode,
+		                     self .processed)
+
+		self .processes [id (processes)] = processes
+
+		print "ProcessServer::addProcess: starting command number %d (%s)" % (self .numProcesses .value, argv [0])
+		""" start processes now and return """
+		processes .start ()
+
+
+	def removeProcesses (self):
+		try:
+			while self .processed .qsize ():
+				del self .processes [self .processed .get_nowait ()]
+		except Queue .Empty:
+			pass
+
+
+	def run (self):
+		try:
+			print "ProcessServer::run: starting main loop, waiting for commands ..."
+			self .loop .run ()
+		except KeyboardInterrupt:
+			print
+			print "You hit [Control-c]"
+
+
+	def __del__ (self):
+		self .loop .quit ()
+
+
+
+def fork ():
+	# do the UNIX double-fork magic, see Stevens' "Advanced
+	# Programming in the UNIX Environment" for details (ISBN 0201563177)
+	try: 
+		pid = os.fork()
+		if pid > 0:
+			# exit first parent
+			sys.exit(0) 
+	except OSError, e: 
+		print >>sys.stderr, "fork #1 failed: %d (%s)" % (e.errno, e.strerror) 
+		sys.exit(1)
+
+	# decouple from parent environment
+	os.chdir("/")
+	os.setsid()
+	os.umask(0)
+
+	# do second fork
+	try:
+		pid = os.fork()
+		if pid > 0:
+			# exit from second parent, print eventual PID before
+			print "Daemon PID %d" % pid 
+			sys.exit(0) 
+	except OSError, e: 
+		print >>sys.stderr, "fork #2 failed: %d (%s)" % (e.errno, e.strerror) 
+		sys.exit(1)
+
+
+
+def main ():
+	#fork ()
+	""" create ProcessServer instance """
+	print "creating ProcessServer instance"
+	gccParallel = ProcessServer ()
+
+	""" start main loop """
+	gccParallel .run ()
+
+
+if __name__ == "__main__":
+	main ()
+
+
+
+
+# END ##########################################################################
+"""
+"-D_GLIBCXX_PARALLEL" "-fopenmp"
+"-Wextra",
+"-std=c++11"
+
+
+subprocess .call (["zenity", "--info", "--text=" + str (multiprocessing .cpu_count ())])
+
+"""
+################################################################################

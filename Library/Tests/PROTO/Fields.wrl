@@ -1,0 +1,130 @@
+#X3D V3.0 utf8
+
+PROTO Proto [
+  initializeOnly SFBool      SFBool TRUE
+  initializeOnly SFColor     SFColor 0.1 0.2 0.123457
+  initializeOnly SFColorRGBA SFColorRGBA 0.1 0.2 0 0.312346
+  initializeOnly SFDouble    SFDouble 0.123457
+  initializeOnly SFFloat     SFFloat 0.123456
+  initializeOnly SFImage     SFImage 2 2 0 0x1 0x1 0x1 0x1
+  initializeOnly SFInt32     SFInt32 123456789
+  initializeOnly SFMatrix3d  SFMatrix3d 1 2 3 4 5 6 7 8 9.12346
+  initializeOnly SFMatrix3f  SFMatrix3f 1 2 3 4 5 6 7 8 9.12346
+  initializeOnly SFMatrix4d  SFMatrix4d 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1235
+  initializeOnly SFMatrix4f  SFMatrix4f 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1235
+  initializeOnly SFNode      SFNode NULL
+  initializeOnly SFRotation  SFRotation 0.267261 0.534522 0.801784 4
+  initializeOnly SFString    SFString "abc'\"'\\'abc"
+  initializeOnly SFTime      SFTime 0.123457
+  initializeOnly SFVec2d     SFVec2d 1 2.12346
+  initializeOnly SFVec2f     SFVec2f 1 2.12346
+  initializeOnly SFVec3d     SFVec3d 1 2 3.12346
+  initializeOnly SFVec3f     SFVec3f 1 2 3.12346
+  initializeOnly SFVec4d     SFVec4d 1 2 3 4.12346
+  initializeOnly SFVec4f     SFVec4f 1 2 3 4.12346
+  initializeOnly MFBool      MFBool [ TRUE, FALSE, TRUE, FALSE ]
+  initializeOnly MFColor     MFColor [ ]
+  initializeOnly MFColorRGBA MFColorRGBA [ ]
+  initializeOnly MFDouble    MFDouble [ ]
+  initializeOnly MFFloat     MFFloat [ ]
+  initializeOnly MFImage     MFImage [ ]
+  initializeOnly MFInt32     MFInt32 [ ]
+  initializeOnly MFMatrix3d  MFMatrix3d [ ]
+  initializeOnly MFMatrix3f  MFMatrix3f [ ]
+  initializeOnly MFMatrix4d  MFMatrix4d [ ]
+  initializeOnly MFMatrix4f  MFMatrix4f [ ]
+  initializeOnly MFNode      MFNode [
+    DEF _0 Group {
+      bboxSize -1 -1 -1
+    }
+    DEF _1 Group {
+      bboxSize -1 -1 -1
+    }
+  ]
+  initializeOnly MFRotation  MFRotation [ ]
+  initializeOnly MFString    MFString [ ]
+  initializeOnly MFTime      MFTime [ ]
+  initializeOnly MFVec2d     MFVec2d [ ]
+  initializeOnly MFVec2f     MFVec2f [ ]
+  initializeOnly MFVec3d     MFVec3d [ ]
+  initializeOnly MFVec3f     MFVec3f [ ]
+  initializeOnly MFVec4d     MFVec4d [ ]
+  initializeOnly MFVec4f     MFVec4f [ ]
+]
+{
+  DEF Script Script {
+    initializeOnly SFBool      SFBool IS SFBool
+    initializeOnly SFColor     SFColor IS SFColor
+    initializeOnly SFColorRGBA SFColorRGBA IS SFColorRGBA
+    initializeOnly SFDouble    SFDouble IS SFDouble
+    initializeOnly SFFloat     SFFloat IS SFFloat
+    initializeOnly SFImage     SFImage IS SFImage
+    initializeOnly SFInt32     SFInt32 IS SFInt32
+    initializeOnly SFMatrix3d  SFMatrix3d IS SFMatrix3d
+    initializeOnly SFMatrix3f  SFMatrix3f IS SFMatrix3f
+    initializeOnly SFMatrix4d  SFMatrix4d IS SFMatrix4d
+    initializeOnly SFMatrix4f  SFMatrix4f IS SFMatrix4f
+    initializeOnly SFNode      SFNode IS SFNode
+    initializeOnly SFRotation  SFRotation IS SFRotation
+    initializeOnly SFString    SFString IS SFString
+    initializeOnly SFTime      SFTime IS SFTime
+    initializeOnly SFVec2d     SFVec2d IS SFVec2d
+    initializeOnly SFVec2f     SFVec2f IS SFVec2f
+    initializeOnly SFVec3d     SFVec3d IS SFVec3d
+    initializeOnly SFVec3f     SFVec3f IS SFVec3f
+    initializeOnly SFVec4d     SFVec4d IS SFVec4d
+    initializeOnly SFVec4f     SFVec4f IS SFVec4f
+    initializeOnly MFBool      MFBool IS MFBool
+    initializeOnly MFColor     MFColor IS MFColor
+    initializeOnly MFColorRGBA MFColorRGBA IS MFColorRGBA
+    initializeOnly MFDouble    MFDouble IS MFDouble
+    initializeOnly MFFloat     MFFloat IS MFFloat
+    initializeOnly MFImage     MFImage IS MFImage
+    initializeOnly MFInt32     MFInt32 IS MFInt32
+    initializeOnly MFMatrix3d  MFMatrix3d IS MFMatrix3d
+    initializeOnly MFMatrix3f  MFMatrix3f IS MFMatrix3f
+    initializeOnly MFMatrix4d  MFMatrix4d IS MFMatrix4d
+    initializeOnly MFMatrix4f  MFMatrix4f IS MFMatrix4f
+    initializeOnly MFNode      MFNode IS MFNode
+    initializeOnly MFRotation  MFRotation IS MFRotation
+    initializeOnly MFString    MFString IS MFString
+    initializeOnly MFTime      MFTime IS MFTime
+    initializeOnly MFVec2d     MFVec2d IS MFVec2d
+    initializeOnly MFVec2f     MFVec2f IS MFVec2f
+    initializeOnly MFVec3d     MFVec3d IS MFVec3d
+    initializeOnly MFVec3f     MFVec3f IS MFVec3f
+    initializeOnly MFVec4d     MFVec4d IS MFVec4d
+    initializeOnly MFVec4f     MFVec4f IS MFVec4f
+    initializeOnly SFNode      this USE Script
+    initializeOnly SFNode      self USE Script
+  }
+}
+
+Proto {
+  SFBool TRUE
+  SFColor 0.1 0.2 0.123457
+  SFColorRGBA 0.1 0.2 0 0.312346
+  SFDouble 0.123457
+  SFFloat 0.123456
+  SFImage 2 2 0 0 0 0 0
+  SFInt32 123456789
+  SFMatrix3d 1 2 3 4 5 6 7 8 9.12346
+  SFMatrix3f 1 2 3 4 5 6 7 8 9.12346
+  SFMatrix4d 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1235
+  SFMatrix4f 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1235
+  SFRotation 0.267261 0.534522 0.801784 4
+  SFString "abc'\"'\\'abc"
+  SFTime 0.123457
+  SFVec2d 1 2.12346
+  SFVec2f 1 2.12346
+  SFVec3d 1 2 3.12346
+  SFVec3f 1 2 3.12346
+  SFVec4d 1 2 3 4.12346
+  SFVec4f 1 2 3 4.12346
+  MFBool [ TRUE, FALSE, TRUE, FALSE ]
+  MFNode [
+    USE _0
+    USE _1
+  ]
+}
+

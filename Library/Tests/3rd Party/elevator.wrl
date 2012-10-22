@@ -1,0 +1,85 @@
+#VRML V2.0 utf8
+
+DirectionalLight { }
+Transform {
+  translation 10 10 10
+  children [
+    DEF StartViewpoint Viewpoint {
+      jump FALSE
+      description "StartViewpoint"
+    }
+    Transform {
+      translation 0 0 -3.5
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0 1 0
+          }
+        }
+        geometry Cone { }
+      }
+    }
+    Transform {
+      translation 0 4 -3.5
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 0 0
+          }
+        }
+        geometry Cone { }
+      }
+    }
+    Transform {
+      translation 0 8 -3.5
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0 0 1
+          }
+        }
+        geometry Cone { }
+      }
+    }
+    Group {
+      children DEF ETransform Transform {
+        children [
+          DEF EViewpoint Viewpoint {
+            jump FALSE
+            description "EViewpoint"
+          }
+          DEF EProximity ProximitySensor {
+            size 2 5 5
+          }
+          Transform {
+            translation 0 -1 0
+            children Shape {
+              appearance Appearance {
+                material Material { }
+              }
+              geometry Box {
+                size 2 0.2 5
+              }
+            }
+          }
+        ]
+      }
+    }
+    DEF ElevatorPI PositionInterpolator {
+      key [ 0, 1 ]
+      keyValue [ 0 0 0, 0 8 0 ]
+    }
+    DEF TS TimeSensor {
+      cycleInterval 10
+    }
+    DEF JumpViewpoint Viewpoint {
+      jump FALSE
+      description "JumpViewpoint"
+    }
+  ]
+}
+
+ROUTE EProximity.enterTime TO TS.startTime
+ROUTE TS.isActive TO EViewpoint.set_bind
+ROUTE TS.fraction_changed TO ElevatorPI.set_fraction
+ROUTE ElevatorPI.value_changed TO ETransform.set_translation

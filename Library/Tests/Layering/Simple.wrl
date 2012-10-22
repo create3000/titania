@@ -1,0 +1,24 @@
+#X3D V3.0 utf8
+
+LayerSet {
+  order 1
+  layers DEF _0 Layer {
+    isPickable TRUE
+    children Shape {
+      bboxSize -1 -1 -1
+      appearance Appearance {
+        material Material {
+          ambientIntensity 0.2
+          diffuseColor 0.8 0.8 0.8
+          specularColor 1 0 0
+          shininess 0.2
+        }
+      }
+      geometry Box {
+        size 2 2 2
+        solid TRUE
+      }
+    }
+  }
+}
+

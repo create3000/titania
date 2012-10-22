@@ -1,0 +1,123 @@
+#VRML V2.0 utf8
+
+PROTO Test [ ]
+{
+}
+
+DEF S1 Script {
+  field    SFNode  timer DEF _0 Transform { }
+  field    SFNode  timer2 Transform { }
+  field    MFInt32 mi [ 1, 2, 0 ]
+  field    SFNode  node NULL
+  eventOut SFInt32 i_changed
+  eventOut SFVec3f v_changed
+  field    SFNode  t Transform {
+    children Transform { }
+  }
+  url "vrmlscript:
+function initialize()
+{
+	print('initialize');
+	print(timer);
+	print('*******************************');
+	t.test = 123;
+	print(t.test);
+	t.children[0].test = 123;
+	//t.children[0] = new SFNode('Transform{}');
+	print(t.children[0].test);
+	print('*******************************');
+	for (k in timer) print(k);
+	timer2 = timer;
+	print('------------- ' + timer2);
+	print('------------- ' + timer2.time);
+	for (k in timer2) print(k);
+	timer2 = new SFNode('Transform{}');
+	print('++++++++++++++++++++++++++++++++++++');
+	print('------------- ' + timer2.time);
+	timer2.time = 123;
+	print('------------- ' + timer2.time);
+	timer2.time2 = 123;
+	print('------------- ' + timer2.time2);
+	
+	print(timer2.toVRMLString());
+	print(mi);
+	print('** 1');
+	for (k in mi) print(k);
+	mi.length = 2;
+	print('** k in mi');
+	for (k in mi) print(k);
+	print('** k in mi');
+	print(mi[2]);
+
+	//node = new SFNode();
+	print(node);
+	if (node) print('node NULL == TRUE');
+	else  print('node NULL == FALSE');
+
+	i_changed = 123;
+	vv = v_changed;
+	vv.x = 123;
+	vv[1] = 234;
+
+	print(Browser.createVrmlFromString('Transform{}Transform{}'));
+	Browser.setDescription('my my 123');
+	print(Browser.description);
+	//print(new SFNode());
+	//print(new SFNode('a'));
+	print(new SFNode(''));
+	print(new SFNode('Group{}'));
+	print(new SFNode('Group{}Transform{}'));
+	print(parseInt('1234'));
+	print(parseFloat('1234.123'));
+	print(new SFVec3f());
+	print(new SFVec3f(1));
+	print(new SFVec3f(1,2));
+	print(new SFVec3f(1,2,3));
+	print(new SFVec3f(1,2,3,4));
+
+	print(new SFRotation(1,2,3,4));
+	print(new SFRotation(new SFVec3f(1,2,3), 4));
+	print(new SFRotation(new SFVec3f(1,2,3), new SFVec3f(2,3,4)));
+}
+"
+}
+DEF S2 Script {
+  eventIn SFInt32 set_i
+  eventIn SFVec3f set_v
+  url "vrmlscript:
+function set_i(value)
+{
+	print('S2.set_i: ' + value);
+}
+function set_v(value)
+{
+	print('S2.set_v: ' + value);
+}
+"
+}
+Transform {
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url "Pixi.png"
+      }
+    }
+    geometry Box { }
+  }
+}
+DEF T TouchSensor { }
+DEF S3 Script {
+  eventIn SFTime set_t
+  url "vrmlscript:
+function set_t(value)
+{
+	print('++1');
+	Browser.loadURL(new MFString('http://www.3dtrue.com/vrml/character.wrl'), new MFString());
+	print('++2');
+}
+"
+}
+
+ROUTE S1.i_changed TO S2.set_i
+ROUTE S1.v_changed TO S2.set_v
+ROUTE T.touchTime TO S3.set_t

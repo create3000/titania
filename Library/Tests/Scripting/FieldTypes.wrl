@@ -1,0 +1,68 @@
+#VRML V2.0 utf8
+
+DEF Script Script {
+  eventIn      SFImage     in
+  eventOut     SFVec3f     out
+  field        SFBool      true TRUE
+  field        SFBool      false TRUE
+  exposedField SFInt32     i 52
+  exposedField SFNode      self USE Script
+  exposedField SFRotation  r 0 0 1 4
+  field        SFBool      SFBool TRUE
+  field        SFColor     SFColor 0.1 0.2 0
+  field        SFColorRGBA SFColorRGBA 0.1 0.2 0 0.3
+  field        SFDouble    SFDouble 0.123457
+  field        SFFloat     SFFloat 0.123456
+  field        SFImage     SFImage 2 2 0
+    0x1 0x1
+    0x1 0x1
+  field        SFInt32     SFInt32 123456789
+  field        SFMatrix3d  SFMatrix3d 1 2 3 4 5 6 7 8 9.12346
+  field        SFMatrix3f  SFMatrix3f 1 2 3 4 5 6 7 8 9
+  field        SFMatrix4d  SFMatrix4d 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1235
+  field        SFMatrix4f  SFMatrix4f 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+  field        SFNode      SFNode NULL
+  field        SFRotation  SFRotation 0.267261 0.534522 0.801784 4
+  field        SFString    SFString "abc'abc"
+  field        SFTime      SFTime 0.123457
+  field        SFVec2d     SFVec2d 1 2.12346
+  field        SFVec2f     SFVec2f 1 2.12346
+  field        SFVec3d     SFVec3d 1 2 3.12346
+  field        SFVec3f     SFVec3f 1 2 3.12346
+  field        SFVec4d     SFVec4d 1 2 3 4.12346
+  field        SFVec4f     SFVec4f 1 2 3 4.12346
+  field        MFBool      MFBool [
+    TRUE,
+    FALSE,
+    TRUE,
+    FALSE
+  ]
+  field        MFColor     MFColor [ ]
+  field        MFColorRGBA MFColorRGBA [ ]
+  field        MFDouble    MFDouble [ ]
+  field        MFFloat     MFFloat [ ]
+  field        MFImage     MFImage [ ]
+  field        MFInt32     MFInt32 [ ]
+  field        MFMatrix3d  MFMatrix3d [ ]
+  field        MFMatrix3f  MFMatrix3f [ ]
+  field        MFMatrix4d  MFMatrix4d [ ]
+  field        MFMatrix4f  MFMatrix4f [ ]
+  field        MFNode      MFNode [
+    Group { }
+    Group { }
+  ]
+  field        MFRotation  MFRotation [ ]
+  field        MFString    MFString [ ]
+  field        MFTime      MFTime [ ]
+  field        MFVec2d     MFVec2d [ ]
+  field        MFVec2f     MFVec2f [ ]
+  field        MFVec3d     MFVec3d [ ]
+  field        MFVec3f     MFVec3f [ ]
+  field        MFVec4d     MFVec4d [ ]
+  field        MFVec4f     MFVec4f [ ]
+  url "vrmlscript:
+  ''\'"
+}
+
+Group { }
+

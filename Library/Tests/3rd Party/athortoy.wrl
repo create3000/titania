@@ -1,0 +1,268 @@
+#VRML V2.0 utf8
+
+WorldInfo {
+  info [
+    "Title = athortoy.wrl",
+    "Subject = VRML 2.0 & JavaScript test program",
+    "Author = YON - Jan C. Hardenbergh",
+    "Form = VRML 2.0",
+    "Copyright 1997 Jan Hardenbergh, permission to copy and use is granted if this
+	WorldInfo is maintained"
+  ]
+  title "http://www.jch.com/jch/vrml/athortoy.html"
+}
+DEF ROOT Transform {
+  children [
+    DEF UI Transform {
+      children [
+        Transform {
+          translation 1 1 0
+          children [
+            Shape {
+              appearance Appearance {
+                material DEF CANVASCOLOR Material {
+                  diffuseColor 1 1 1
+                }
+              }
+              geometry Box {
+                size 2 2 0.1
+              }
+            }
+            DEF CANVAS TouchSensor { }
+          ]
+        }
+        Transform {
+          translation 0 0.7 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 1 0.7 0.9
+                }
+              }
+              geometry Cone {
+                height 0.3
+                bottomRadius 0.1
+              }
+            }
+            DEF TOGGLER TouchSensor { }
+          ]
+        }
+        Transform {
+          translation 0 1 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 1 0 0
+                }
+              }
+              geometry Box {
+                size 0.2 0.2 0.2
+              }
+            }
+            DEF ZAPPER TouchSensor { }
+          ]
+        }
+        Transform {
+          translation -0.16 1.2 0.16
+          rotation -1 -0 -0 1.57
+          scale 0.16 0.16 0.16
+          children [
+            Shape {
+              appearance Appearance {
+                material DEF COLOR Material {
+                  diffuseColor 1 0 1
+                }
+              }
+              geometry IndexedFaceSet {
+                coord Coordinate {
+                  point [
+                    0 0 0,
+                    1 1.732 0,
+                    2 0 0,
+                    1 0.577 1.633
+                  ]
+                }
+                coordIndex [
+                  0,
+                  1,
+                  2,
+                  -1,
+                  0,
+                  2,
+                  3,
+                  -1,
+                  0,
+                  3,
+                  1,
+                  -1,
+                  1,
+                  3,
+                  2,
+                  -1
+                ]
+              }
+            }
+            DEF NEXTCOLOR TouchSensor { }
+          ]
+        }
+      ]
+    }
+    DEF BXFORM Transform {
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.2 0.3 1
+            }
+          }
+          geometry Sphere {
+            radius 0.1
+          }
+        }
+        DEF TRACKBALL SphereSensor { }
+      ]
+    }
+    DEF DXFORM Transform {
+      translation 0 0.3 0
+      center 0 -0.3 0
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 1 0.2 0.2
+            }
+          }
+          geometry Cylinder {
+            height 0.3
+            radius 0.1
+          }
+        }
+        DEF DRAGGER PlaneSensor { }
+      ]
+    }
+    DEF AUTHORITY Script {
+      eventIn  SFVec3f    location
+      eventIn  SFVec3f    origin
+      eventIn  SFRotation rots
+      eventIn  SFBool     click
+      eventIn  SFBool     dragon
+      eventIn  SFBool     toggle
+      eventIn  SFBool     zaplast
+      eventIn  SFBool     colorup
+      eventOut SFVec3f    currOrigin
+      field    SFVec3f    saveOrigin 0 0 0
+      field    SFRotation currOrient 0 0 1 0
+      field    SFVec3f    currPoint 0 0 0
+      field    SFColor    currColor 1 0 1
+      field    MFVec3f    points [ ]
+      field    SFInt32    pointCount 0
+      field    SFBool     doLines TRUE
+      eventOut MFNode     myNodes
+      eventOut MFNode     killNodes
+      eventOut SFVec3f    originDXFORM
+      eventOut SFColor    colorOut
+      url "javascript: 
+            
+            function location(point) {
+                currPoint = point;
+            }
+            function toggle(down) {
+                if (!down)
+                {
+                    if (doLines)
+                        doLines = FALSE;
+                    else
+                        doLines = TRUE;
+
+                    pointCount = 0;
+                }   
+            }
+            function dragon(down) {
+                if (!down)
+                {
+                    originDXFORM = new SFVec3f(currOrigin.x, currOrigin.y + 0.3, currOrigin.z);
+                }
+            }
+            function colorup(down) {
+                var cArray;
+                if (!down)
+                {
+                    cArray = currColor.getHSV();
+                    cArray[0] = cArray[0] + 1.047;
+                    if (cArray[0] > 6.0)
+                        cArray[0] = 0.0;
+                    currColor.setHSV(cArray[0], cArray[1], cArray[2]);
+                    for (i = 0; i < 3; i++) if (currColor[i] > 1) currColor[i] = 1; // l3d beta2 bug                   
+                    colorOut = currColor;
+                }
+            }
+            function zaplast(down) {
+                if (!down)
+                    killNodes = myNodes;
+            }
+            function click(down) {
+                if (!down)
+                {  
+                    points[pointCount] = currPoint;
+                    points[pointCount].x = points[pointCount].x + 1; // offset for touch sensor
+                    points[pointCount].y = points[pointCount].y + 1;
+                    points[pointCount].z = points[pointCount].z * 1.2;
+                    pointCount++;
+
+                    if (doLines && pointCount == 2)
+                    {
+                        var myString;
+
+                        myString = 'Transform { translation ' + currOrigin.toString();
+                        myString = myString + ' rotation ' + currOrient.toString();
+                        myString = myString + ' children Shape {  appearance Appearance {  material Material { diffuseColor 0 0 0 emissiveColor ' + currColor.toString();
+                        myString = myString + ' } }   geometry IndexedLineSet { coord Coordinate { point';
+                        myString = myString + points.toString() + ' } coordIndex [0 1] }  }   }';
+                        currOrient.toString();
+                        myNodes = Browser.createVrmlFromString( myString );
+                        pointCount = 0;
+                    }
+                    else if (pointCount >= 3)
+                    {
+                        var myString;
+
+                        myString = 'Transform { translation ' + currOrigin.toString();
+                        myString = myString + ' rotation ' + currOrient.toString();
+                        myString = myString + ' children Shape {  appearance Appearance {  material Material { diffuseColor ' + currColor.toString();
+                        myString = myString + ' } }   geometry IndexedFaceSet { solid FALSE coord Coordinate { point';
+                        myString = myString + points.toString() + ' } coordIndex [0 2 1] }  }   }';
+                        currOrient.toString();
+                        myNodes = Browser.createVrmlFromString( myString );
+                        pointCount = 0;
+                    }
+                }
+            }
+            function rots(rotater) {
+                currOrient = rotater;
+                saveOrigin = currOrigin; // this is close, but sometimes it is not right.   
+            }
+            function origin(org) {
+                currOrigin = saveOrigin.add(currOrient.multVec(org));    
+			}"
+    }
+  ]
+}
+
+ROUTE TRACKBALL.rotation_changed TO UI.rotation
+ROUTE TRACKBALL.rotation_changed TO DXFORM.rotation
+ROUTE DRAGGER.translation_changed TO AUTHORITY.origin
+ROUTE DRAGGER.isActive TO AUTHORITY.dragon
+ROUTE AUTHORITY.currOrigin TO UI.translation
+ROUTE AUTHORITY.currOrigin TO BXFORM.translation
+ROUTE UI.rotation TO AUTHORITY.rots
+ROUTE CANVAS.hitPoint_changed TO AUTHORITY.location
+ROUTE CANVAS.isActive TO AUTHORITY.click
+ROUTE AUTHORITY.myNodes TO ROOT.addChildren
+ROUTE AUTHORITY.killNodes TO ROOT.removeChildren
+ROUTE AUTHORITY.originDXFORM TO DXFORM.translation
+ROUTE AUTHORITY.colorOut TO COLOR.diffuseColor
+ROUTE TOGGLER.isActive TO AUTHORITY.toggle
+ROUTE ZAPPER.isActive TO AUTHORITY.zaplast
+ROUTE NEXTCOLOR.isActive TO AUTHORITY.colorup

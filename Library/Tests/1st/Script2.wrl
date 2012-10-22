@@ -1,0 +1,161 @@
+#VRML V2.0 utf8
+
+PROTO Test2 [
+  exposedField MFNode children [ ]
+]
+{
+  Group {
+    children IS children
+  }
+}
+
+PROTO FloatField [
+  exposedField SFFloat keyValue 0
+  exposedField SFTime  startTime 0
+  eventOut     SFFloat value_changed
+]
+{
+  PROTO Data [
+    exposedField SFFloat keyValue 0
+    exposedField SFTime  startTime 0
+    exposedField MFNode  iface [ ]
+  ]
+  {
+    Group { }
+  }
+
+  DEF _Float Script {
+    eventIn  SFTime  set_startTime
+    eventOut SFFloat value_changed IS value_changed
+    field    SFNode  data DEF Data Data {
+      keyValue IS keyValue
+      startTime IS startTime
+    }
+    url "vrmlscript:
+function set_startTime (value, time)
+{
+	print('_Float.set_startTime() ' + data.keyValue);
+	value_changed = data.keyValue;
+}
+
+function initialize ()
+{
+	print('_Float.initialize() ' + data.keyValue);
+	if (data.startTime) set_startTime(0, 0);
+	print(data.iface.length);
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Data.startTime_changed TO _Float.set_startTime
+}
+
+Test2 {
+  children DEF _0 Group { }
+}
+Transform {
+  children Shape {
+    geometry Box { }
+  }
+}
+DEF Touch TouchSensor { }
+DEF _1 FloatField {
+  keyValue 1
+  startTime 1
+}
+DEF _2 FloatField {
+  keyValue 2
+  startTime 1
+}
+DEF _3 FloatField {
+  keyValue 3
+  startTime 1
+}
+DEF Script1 Script {
+  eventIn  SFFloat set_value
+  eventOut SFFloat value_changed
+  url "vrmlscript:
+function initialize()
+{
+	print('Script1.initialize()');
+	set_value(0, 0);
+}
+
+function prepareEvents()
+{
+	print('Script1.prepareEvents');
+}
+
+function set_value(value, time)
+{
+	print('Script1.set_value (' + value + ', ' + time + ')');
+	value_changed = value;
+}
+
+function eventsProcessed()
+{
+	print('Script1.eventsProcessed');
+}
+"
+}
+DEF Script2 Script {
+  eventIn  SFFloat set_value
+  eventOut SFFloat value_changed
+  url "vrmlscript:
+function initialize()
+{
+	print('Script2.initialize()');
+}
+
+function prepareEvents()
+{
+	print('Script2.prepareEvents');
+}
+
+function set_value(value, time)
+{
+	print('Script2.set_value (' + value + ', ' + time + ')');
+	value_changed = value;
+}
+
+function eventsProcessed()
+{
+	print('Script2.eventsProcessed');
+}
+"
+}
+DEF Script3 Script {
+  eventIn  SFFloat set_value
+  eventOut SFFloat value_changed
+  url "vrmlscript:
+function initialize()
+{
+	print('Script3.initialize()');
+}
+
+function prepareEvents()
+{
+	print('Script3.prepareEvents');
+}
+
+function set_value(value, time)
+{
+	print('Script3.set_value (' + value + ', ' + time + ')');
+}
+
+function eventsProcessed()
+{
+	print('Script3.eventsProcessed');
+}
+"
+}
+
+ROUTE Touch.touchTime TO _1.startTime
+ROUTE Touch.touchTime TO _2.startTime
+ROUTE Touch.touchTime TO _3.startTime
+ROUTE _1.value_changed TO Script1.set_value
+ROUTE _2.value_changed TO Script1.set_value
+ROUTE _3.value_changed TO Script1.set_value
+ROUTE Script1.value_changed TO Script2.set_value
+ROUTE Script2.value_changed TO Script3.set_value

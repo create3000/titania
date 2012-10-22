@@ -1,0 +1,32 @@
+#VRML V2.0 utf8 Titania
+
+DEF VP Viewpoint {
+  description "Viewpoint1"
+}
+
+Anchor {
+  url [
+    "this-world-does-not-exists.wrl",
+    "LoadedWorld.wrl"
+  ]
+  children Transform {
+    translation 1 0 0
+    rotation 0.267261 0.534522 0.801784 4
+    scale 2 2 2
+    children Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url "../../images/image.png"
+        }
+        textureTransform TextureTransform {
+          translation 0.25 0.25
+          rotation 0.5
+          scale 2 2
+          center 1 1
+        }
+      }
+      geometry DEF Box Box { }
+    }
+  }
+}
+

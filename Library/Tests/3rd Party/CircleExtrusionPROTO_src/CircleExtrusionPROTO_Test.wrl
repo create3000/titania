@@ -1,0 +1,46 @@
+#VRML V2.0 utf8
+
+EXTERNPROTO CircleExtrusion [
+  eventIn SFFloat    set_crossSectionRadius
+  eventIn SFInt32    set_crossSectionSides
+  eventIn MFRotation set_orientation
+  eventIn MFVec2f    set_scale
+  eventIn MFVec3f    set_spine
+  field   SFBool     beginCap
+  field   SFBool     ccw
+  field   SFFloat    creaseAngle
+  field   SFFloat    crossSectionRadius
+  field   SFInt32    crossSectionSides
+  field   SFBool     endCap
+  field   MFRotation orientation
+  field   MFVec2f    scale
+  field   SFBool     solid
+  field   MFVec3f    spine
+]
+"CircleExtrusionPROTO_src.wrl"
+
+WorldInfo {
+  info [ "author: Braden N. McDaniel", "e-mail: braden@shadow.net" ]
+  title "CircleExtrusion Test"
+}
+Group {
+  children [
+    NavigationInfo { }
+    Background { }
+    Fog {
+      color 0 0 0
+    }
+    Viewpoint {
+      description "Entry"
+    }
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.8 0 0
+          specularColor 0.6 0.5 0.5
+        }
+      }
+      geometry CircleExtrusion { }
+    }
+  ]
+}

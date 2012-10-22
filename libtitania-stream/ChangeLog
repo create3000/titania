@@ -1,0 +1,102 @@
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* info.h:
+	* ChangeLog:
+	* libtitania-stream.pidb:
+	* libtitania-stream.md.pc:
+	* libtitania-stream.cproj:
+	* InputHTTPStream.o:
+	* InputHTTPStream.d:
+	* SocketStreamBuf.o:
+	* SocketStreamBuf.d:
+	* InputFileStream.d:
+	* InputFileStream.o:
+	* libtitania-stream.so:
+	* InputHTTPStream.h:
+	* InputFileStream.h:
+	* SocketStreamBuf.h:
+	* InputFileStream.cpp:
+	* SocketStreamBuf.cpp:
+	* InputHTTPStream.cpp: 
+
+2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* info.h:
+	* ChangeLog:
+	* libtitania-stream.pidb:
+	* libtitania-stream.md.pc:
+	* libtitania-stream.cproj:
+	* InputHTTPStream.o:
+	* InputHTTPStream.d:
+	* SocketStreamBuf.o:
+	* SocketStreamBuf.d:
+	* InputFileStream.d:
+	* InputFileStream.o:
+	* libtitania-stream.so:
+	* InputHTTPStream.h:
+	* InputFileStream.h:
+	* SocketStreamBuf.h:
+	* InputFileStream.cpp:
+	* SocketStreamBuf.cpp:
+	* InputHTTPStream.cpp: 
+
+2012-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-stream.cproj: 
+
+2012-10-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* InputFileStream.h:
+	* InputFileStream.cpp: 
+
+2012-10-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* InputHTTPStream.h:
+	* InputFileStream.h:
+	* InputHTTPStream.cpp:
+	* InputFileStream.cpp: 
+
+2012-10-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* InputHTTPStream.h:
+	* InputFileStream.h:
+	* SocketStreamBuf.h:
+	* SocketStreamBuf.cpp:
+	* InputFileStream.cpp:
+	* InputHTTPStream.cpp: 
+
+2012-10-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-stream.cproj:
+	* FileStream.h:
+	* HTTPStream.h:
+	* HTTPStream.cpp:
+	* FileStream.cpp:
+	* InputHTTPStream.h:
+	* InputFileStream.h:
+	* InputFileStream.cpp:
+	* InputHTTPStream.cpp: 
+
+2012-10-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Titania:
+	* Stream:
+	* HTTPStream.h:
+	* FileStream.h:
+	* HTTPStream.cpp:
+	* FileStream.cpp:
+	* SocketStreamBuf.h:
+	* SocketStreamBuf.cpp: 
+
+2012-10-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-stream.cproj: 
+
+2012-10-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-stream.cproj: 
+
+2012-10-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-stream.cproj: 
+

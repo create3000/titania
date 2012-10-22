@@ -1,0 +1,17 @@
+#VRML V2.0 utf8
+
+Shape {
+  appearance Appearance {
+    material Material {
+      diffuseColor 0.8 0.8 1
+    }
+  }
+  geometry Extrusion {
+    ccw FALSE
+    convex FALSE
+    crossSection [ -2 -1, -1 3, 1 3, 2 -1, -2 -1 ]
+    orientation [ 0 0.0995037 0.995037 0.5, 0 0.287348 0.957826 0.5, 0 0.573462 0.819232 0.5, 0 0.707107 0.707107 0.5 ]
+    scale [ 0.25 0.5, 1 1, 1 1, 0.5 0.25 ]
+    spine [ 0.1 0 2.1, 0 0 3, 0 0 0, 0.1 0 0.1 ]
+  }
+}

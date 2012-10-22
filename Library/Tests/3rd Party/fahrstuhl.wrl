@@ -1,0 +1,212 @@
+#VRML V2.0 utf8
+#Ascensor: Sensor de Tacte.
+
+NavigationInfo { type "FLY" headlight FALSE }
+
+DEF Obs Viewpoint {
+	jump FALSE
+	position 0 2 10
+	description "Frontal"
+}
+
+#Lum del Sol
+DirectionalLight {
+	direction -1 -1 -1
+}
+
+# Detecte si l'observador és dins l'ascensor i als baixos
+DEF SensorDinsBaixos ProximitySensor{
+	enabled TRUE
+	center 0 2 0
+	size 2 4 2
+}
+
+# Motor per a pujar l'ascensor
+DEF motorPujar TimeSensor {
+	cycleInterval 6
+}
+
+# Interpolador per a pujar l'ascensor
+DEF pujarAscensor PositionInterpolator {
+	key      [     0,      1 ]
+	keyValue [ 0 0 0, 0 12 0 ]
+}
+
+# Interpolador per a pujar l'observador
+DEF pujarObservador PositionInterpolator {
+	key      [     0,      1 ]
+	keyValue [ 0 2 10, 0 14 10 ]
+}
+
+
+
+# Detecte si l'observador és dins l'ascensor i a l'atic
+DEF SensorDinsAtic ProximitySensor {
+	enabled TRUE
+	center 0 14 0
+	size 2 4 2
+}
+
+# Motor per a baixar l'ascensor
+DEF motorBaixar TimeSensor {
+	cycleInterval 6
+}
+
+# Interpolador per a baixar l'ascensor
+DEF baixarAscensor PositionInterpolator {
+	key      [      0,     1 ]
+	keyValue [ 0 12 0, 0 0 0 ]
+}
+
+# Interpolador per a baixar l'observador
+DEF baixarObservador PositionInterpolator {
+	key      [       0,      1 ]
+	keyValue [ 0 14 10, 0 2 10 ]
+}
+
+
+PROTO Terra [
+	field SFVec3f posicio 0 0 0
+	field SFColor tcolor 0 0 0
+	]
+{
+	Transform {
+		translation IS posicio
+		children [
+			Transform {
+				translation 0 0 -3.5
+				children Shape {
+					geometry Box { size 12.2 0.1 5.2 }
+					appearance Appearance { material Material { diffuseColor IS tcolor } }
+				}
+			}
+			Transform {
+				translation 0 0 3.5
+				children Shape {
+					geometry Box { size 12.2 0.1 5.2 }
+					appearance Appearance { material Material { diffuseColor IS tcolor } }
+				}
+			}
+			Transform {
+				translation -3.5 0 0
+				children Shape {
+					geometry Box { size 5.2 0.1 12.2 }
+					appearance Appearance { material Material { diffuseColor IS tcolor } }
+				}
+			}
+			Transform {
+				translation 3.5 0 0
+				children Shape {
+					geometry Box { size 5.2 0.1 12.2 }
+					appearance Appearance { material Material { diffuseColor IS tcolor } }
+				}
+			}
+		]
+	}
+}
+
+DEF Construccio Group{
+	children[
+		Terra { posicio 0 0 0 tcolor 1 0 0 }
+		Terra { posicio 0 4 0 tcolor 1 0.5 0 }
+		Terra { posicio 0 8 0 tcolor 1 1 0 }
+		Terra { posicio 0 12 0 tcolor 0.5 1 0 }
+	]
+}
+
+DEF VidreClar Material {
+	diffuseColor 0.5 1 1
+	transparency 0.6
+}
+
+DEF VidreFosc Material {
+	diffuseColor 0 0 0.5
+	transparency 0.6
+}
+
+DEF Ascensor Transform {
+	children [
+		Transform {
+			translation 1 2 0
+			children Shape {
+				geometry Box { size 0.1 4 2 }
+				appearance Appearance { material USE VidreClar }
+			}
+		}
+		Transform {
+			translation -1 2 0
+			children Shape {
+				geometry Box { size 0.1 4 2 }
+				appearance Appearance { material USE VidreClar }
+			}
+		}
+		Transform {
+			translation 0 2 -1
+			children Shape {
+				geometry Box { size 2 4 0.1 }
+				appearance Appearance { material USE VidreClar }
+			}
+		}
+		Transform {
+			translation 0 0 0
+			children Shape {
+				geometry Box { size 2 0.2 2 }
+				appearance Appearance { material Material { diffuseColor 0 0 0.5 } }
+			}
+		}
+		Transform {
+			translation 0 4 0
+			children Shape {
+				geometry Box { size 2 0.2 2 }
+				appearance Appearance { material Material { diffuseColor 0 0 0.5 } }
+			}
+		}
+		DEF BotoPujar Transform {
+			translation -1 2.2 0.8
+			children [
+				Shape {
+					geometry Box { size 0.1 0.1 0.1 }
+					appearance Appearance { material Material { diffuseColor 0 1 0 } }
+				}
+				DEF SensorPujar TouchSensor {
+					enabled FALSE
+				}
+			]
+		}
+		DEF BotoBaixar Transform {
+			translation -1 1.8 0.8
+			children [
+				Shape {
+					geometry Box { size 0.1 0.1 0.1 }
+					appearance Appearance { material Material { diffuseColor 1 0 0 } }
+				}
+				DEF SensorBaixar TouchSensor {
+					enabled FALSE
+				}
+			]
+		}
+	]
+}
+
+
+# Un cop dins als Baixos, s'activa botó pujar
+ROUTE SensorDinsBaixos.isActive TO SensorPujar.enabled
+
+# Es prem el botó de pujar i es comença a pujar
+ROUTE SensorPujar.touchTime TO motorPujar.startTime
+ROUTE motorPujar.fraction_changed TO pujarAscensor.set_fraction
+ROUTE motorPujar.fraction_changed TO pujarObservador.set_fraction
+ROUTE pujarAscensor.value_changed TO Ascensor.translation
+ROUTE pujarObservador.value_changed TO Obs.position
+
+
+# Un cop dins a l'Atic, s'activa botó baixar
+ROUTE SensorDinsAtic.isActive TO SensorBaixar.enabled
+
+# Es prem el botó de baixar i es comença a baixar
+ROUTE SensorBaixar.touchTime TO motorBaixar.startTime
+ROUTE motorBaixar.fraction_changed TO baixarAscensor.set_fraction
+ROUTE motorBaixar.fraction_changed TO baixarObservador.set_fraction
+ROUTE baixarAscensor.value_changed TO Ascensor.translation
+ROUTE baixarObservador.value_changed TO Obs.position
+

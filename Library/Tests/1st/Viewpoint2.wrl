@@ -1,0 +1,44 @@
+#VRML V2.0 utf8
+
+Transform {
+  translation 2 0 0
+  children [
+    DEF Viewpoint1 Viewpoint {
+      description "Viewpoint1"
+    }
+    Anchor {
+      url [ "#Viewpoint", "#Viewpoint2" ]
+      children Transform {
+        children Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 1 0 0
+            }
+          }
+          geometry Box { }
+        }
+      }
+    }
+  ]
+}
+Transform {
+  translation -2 0 0
+  children [
+    DEF Viewpoint2 Viewpoint {
+      description "Viewpoint2"
+    }
+    Anchor {
+      url "#Viewpoint1"
+      children Transform {
+        children Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 1 0
+            }
+          }
+          geometry Box { }
+        }
+      }
+    }
+  ]
+}

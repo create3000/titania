@@ -1,0 +1,41 @@
+#VRML V2.0 utf8
+
+DEF switchScript Script {
+  eventIn  SFBool  in2
+  eventOut SFInt32 out
+  url "javascript:
+
+function in2(value, time)
+{
+	if (value)
+		out = 1;
+	else
+		out = 0;
+}
+"
+}
+DEF sw Switch {
+  whichChoice 0
+  choice [
+    Shape {
+      appearance Appearance {
+        material Material {
+          emissiveColor 0.2 0.2 0.2
+        }
+      }
+      geometry Sphere { }
+    }
+    Shape {
+      appearance Appearance {
+        material Material {
+          emissiveColor 0.5 0.5 0.5
+        }
+      }
+      geometry Sphere { }
+    }
+  ]
+}
+DEF ts TouchSensor { }
+
+ROUTE ts.isOver TO switchScript.in2
+ROUTE switchScript.out TO sw.set_whichChoice

@@ -1,0 +1,146 @@
+/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
+/*******************************************************************************
+ *
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ *
+ * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
+ *
+ * THIS IS UNPUBLISHED SOURCE CODE OF create3000.
+ *
+ * The copyright notice above does not evidence any actual of intended
+ * publication of such source code, and is an unpublished work by create3000.
+ * This material contains CONFIDENTIAL INFORMATION that is the property of
+ * create3000.
+ *
+ * No permission is granted to copy, distribute, or create derivative works from
+ * the contents of this software, in whole or in part, without the prior written
+ * permission of create3000.
+ *
+ * NON-MILITARY USE ONLY
+ *
+ * All create3000 software are effectively free software with a non-military use
+ * restriction. It is free. Well commented source is provided. You may reuse the
+ * source in any way you please with the exception anything that uses it must be
+ * marked to indicate is contains 'non-military use only' components.
+ *
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
+ *
+ * This file is part of the Titania Project.
+ *
+ * Titania is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License version 3 only, as published by the
+ * Free Software Foundation.
+ *
+ * Titania is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License version 3 for more
+ * details (a copy is included in the LICENSE file that accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
+ * copy of the GPLv3 License.
+ *
+ ******************************************************************************/
+
+#include "History.h"
+
+#include "../Configuration/config.h"
+#include <iostream>
+
+namespace titania {
+namespace puck {
+
+History::History () :
+	database (puck_user_data ("history.db"))
+{
+	database .query ("CREATE TABLE IF NOT EXISTS History ("
+	                 "id           INTEGER, "
+	                 "icon         BLOB,"
+	                 "title        TEXT,"
+	                 "location     TEXT,"
+	                 "visited      INTEGER   DEFAULT 1,"
+	                 "lastAccess   INTEGER   DEFAULT (DATETIME ('now')),"
+	                 "creationTime INTEGER   DEFAULT (DATETIME ('now')),"
+	                 "PRIMARY KEY (id ASC))");
+}
+
+void
+History::setItem (const std::string & title, const std::string & location)
+{
+	try
+	{
+		update (getId (location), title);
+	}
+	catch (const std::out_of_range &)
+	{
+		insert (title, location);
+	}
+}
+
+sql::sqlite3::assoc_row_type
+History::getItem (const std::string & index)
+throw (std::out_of_range)
+{
+	return database .query_assoc ("SELECT title, location FROM History ORDER BY lastAccess DESC "
+	                              "LIMIT " + index + ", 1") .at (0);
+}
+
+sql::sqlite3::assoc_type
+History::getItems ()
+{
+	return database .query_assoc ("SELECT title, location FROM History ORDER BY lastAccess DESC");
+}
+
+std::string
+History::getIndex (const std::string & location)
+throw (std::out_of_range)
+{
+	const auto index = database .query_array ("SELECT "
+	                                          "(SELECT COUNT(0) - 1 FROM History h1 WHERE h1 .lastAccess >= h2 .lastAccess) AS 'rowid' "
+	                                          "FROM History h2 "
+	                                          "WHERE location = " + database .quote (location) + " "
+	                                                                                             "ORDER BY lastAccess DESC");
+
+	return index .at (0) .at (0);
+}
+
+void
+History::insert (const std::string & title, const std::string & location)
+{
+	database .query ("INSERT INTO History "
+	                 "(title, location)"
+	                 "VALUES ("
+	                 + database .quote (title) + ","
+	                 + database .quote (location)
+	                 + ")");
+
+	std::cout << database .last_insert_rowid () << std::endl;
+}
+
+void
+History::update (const std::string & id, const std::string & title)
+{
+	database .query ("UPDATE History "
+	                 "SET "
+	                 "title      = " + database .quote (title) + "," +
+	                 "visited    = (visited + 1), " +
+	                 "lastAccess = DATETIME ('now') " +
+	                 "WHERE id = " + id);
+}
+
+std::string
+History::getId (const std::string & location)
+throw (std::out_of_range)
+{
+	auto result = database .query_array ("SELECT id FROM History WHERE "
+	                                     "location = " + database .quote (location));
+
+	return result .at (0) .at (0);
+}
+
+} // puck
+} // titania

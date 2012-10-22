@@ -1,0 +1,21 @@
+#VRML V2.0 utf8 CosmoWorlds V1.0
+
+Viewpoint {
+  position -50 0 100
+}
+Group {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Extrusion {
+      beginCap FALSE
+      endCap FALSE
+      ccw FALSE
+      creaseAngle 3.14159
+      crossSection [ 0 -1, 1 -0, 0 1, -1 0, -0 -1 ]
+      scale 10 10
+      spine [ 0 0 5, -25 5 0, -50 0 -5, -75 -5 -0, -100 -0 5 ]
+    }
+  }
+}

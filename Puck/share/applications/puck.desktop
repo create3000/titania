@@ -1,0 +1,20 @@
+
+[Desktop Entry]
+Name=Puck
+GenericName=Puck X3D Viewer
+X-GNOME-FullName=Puck X3D Viewer
+Comment=Open and show X3D worlds
+Exec=puck %U
+Terminal=false
+StartupNotify=true
+Type=Puck
+Icon=puck
+Categories=GNOME;GTK;3DGraphics;Graphics;VectorGraphics;AudioVideo;
+MimeType=model/vrml;model/x3d+vrml;x-world/x-vrml;
+X-GNOME-DocPath=puck/puck.xml
+X-GNOME-Bugzilla-Bugzilla=GNOME
+X-GNOME-Bugzilla-Product=puck
+X-GNOME-Bugzilla-Version=3.12.1
+X-GNOME-Bugzilla-Component=general
+X-Ubuntu-Gettext-Domain=puck
+Name[de]=puck.desktop

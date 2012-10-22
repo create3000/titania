@@ -1,0 +1,181 @@
+#VRML V2.0 utf8 Comment
+
+Background {
+  skyColor 1 1 1
+}
+Fog {
+  fogType "EXPONENTIAL"
+  visibilityRange 100
+}
+Transform {
+  translation -3 0 0
+  children [
+    LocalFog {
+      visibilityRange 30
+    }
+    Transform {
+      children DEF S Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 0 0
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 0 0 -3
+      children USE S
+    }
+    Transform {
+      translation 0 0 -6
+      children USE S
+    }
+    Transform {
+      translation 0 0 -9
+      children USE S
+    }
+    Transform {
+      translation 0 0 -12
+      children USE S
+    }
+    Transform {
+      translation 0 0 -15
+      children USE S
+    }
+    Transform {
+      translation 0 0 -18
+      children USE S
+    }
+    Transform {
+      translation 0 0 -21
+      children USE S
+    }
+    Transform {
+      translation 0 0 -24
+      children USE S
+    }
+    Transform {
+      translation 0 0 -27
+      children USE S
+    }
+    Transform {
+      translation 0 0 -30
+      children USE S
+    }
+  ]
+}
+Transform {
+  translation 3 0 0
+  children [
+    LocalFog {
+      fogType "EXPONENTIAL"
+      visibilityRange 30
+    }
+    Transform {
+      children DEF S Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 0 0
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 0 0 -3
+      children USE S
+    }
+    Transform {
+      translation 0 0 -6
+      children USE S
+    }
+    Transform {
+      translation 0 0 -9
+      children USE S
+    }
+    Transform {
+      translation 0 0 -12
+      children USE S
+    }
+    Transform {
+      translation 0 0 -15
+      children USE S
+    }
+    Transform {
+      translation 0 0 -18
+      children USE S
+    }
+    Transform {
+      translation 0 0 -21
+      children USE S
+    }
+    Transform {
+      translation 0 0 -24
+      children USE S
+    }
+    Transform {
+      translation 0 0 -27
+      children USE S
+    }
+    Transform {
+      translation 0 0 -30
+      children USE S
+    }
+  ]
+}
+Transform {
+  translation 0 3 0
+  children [
+    Transform {
+      children DEF S Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 0 0
+          }
+        }
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 0 0 -3
+      children USE S
+    }
+    Transform {
+      translation 0 0 -6
+      children USE S
+    }
+    Transform {
+      translation 0 0 -9
+      children USE S
+    }
+    Transform {
+      translation 0 0 -12
+      children USE S
+    }
+    Transform {
+      translation 0 0 -15
+      children USE S
+    }
+    Transform {
+      translation 0 0 -18
+      children USE S
+    }
+    Transform {
+      translation 0 0 -21
+      children USE S
+    }
+    Transform {
+      translation 0 0 -24
+      children USE S
+    }
+    Transform {
+      translation 0 0 -27
+      children USE S
+    }
+    Transform {
+      translation 0 0 -30
+      children USE S
+    }
+  ]
+}

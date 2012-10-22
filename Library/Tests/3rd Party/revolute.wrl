@@ -1,0 +1,53 @@
+#VRML V2.0 utf8
+
+PROTO REVOLUTE [
+  exposedField SFTime     cycle 0
+  exposedField SFVec3f    position 0 0 0
+  exposedField SFRotation rotation 0 0 1 0
+  exposedField MFString   link1file [ ]
+  exposedField MFString   link2file [ ]
+  exposedField MFFloat    keys [ ]
+  exposedField MFRotation keyValues [ ]
+]
+{
+  DEF LINK1 Transform {
+    children [
+      DEF TOUCH1 TouchSensor { }
+      Inline {
+        url IS link1file
+      }
+      DEF LINK2 Transform {
+        translation IS position
+        rotation IS rotation
+        children Inline {
+          url IS link2file
+        }
+      }
+    ]
+  }
+
+  DEF TIME TimeSensor {
+    cycleInterval IS cycle
+  }
+
+  DEF ROTATE OrientationInterpolator {
+    key IS keys
+    keyValue IS keyValues
+  }
+
+  ROUTE TOUCH1.touchTime TO TIME.startTime
+  ROUTE TIME.fraction_changed TO ROTATE.set_fraction
+  ROUTE ROTATE.value_changed TO LINK2.rotation
+}
+
+NavigationInfo {
+  type "EXAMINE"
+}
+DEF MYPAIR REVOLUTE {
+  cycle 2
+  position 0 0.5 0
+  link1file "http://www.itl.nist.gov/iaui/ovrt/projects/vrml/VRML2/kinematics/rev_link1.wrl"
+  link2file "http://www.itl.nist.gov/iaui/ovrt/projects/vrml/VRML2/kinematics/cylinder.wrl"
+  keys [ 0, 0.5, 1 ]
+  keyValues [ 0 0 1 0, 0 0 1 3.14, 0 0 1 0 ]
+}

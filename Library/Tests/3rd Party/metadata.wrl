@@ -1,0 +1,59 @@
+#VRML V2.0 utf8
+
+PROTO Metadata [
+  exposedField SFString title ""
+  exposedField SFString creator ""
+  exposedField SFString subject ""
+  exposedField SFString description ""
+  exposedField SFString language ""
+  exposedField SFString coordinateSystemInfo ""
+  exposedField SFString rights ""
+  exposedField SFString extendedInfo ""
+]
+{
+  WorldInfo { }
+}
+
+WorldInfo {
+  info "Published by Cosmo Worlds V2.0"
+}
+DEF my_data Metadata {
+  title "This is a test"
+}
+DEF modifier Script {
+  eventIn  SFString set_title
+  eventIn  SFTime   touchTime
+  eventOut SFString title_changed
+  url "javascript:
+// Handler for event set_title of type SFString.
+function set_title (value, timestamp)
+{             
+  //The Metadata node's title has changed; print the new title to the console.
+  print(value);
+}
+// Handler for event touchTime of type SFTime.
+function touchTime (value, timestamp)
+{
+  title_changed = \"New title\";
+}
+"
+}
+Transform {
+  children [
+    DEF sphere_touch TouchSensor { }
+    DEF sphere_xform Transform {
+      translation -0.122 -0.216 -4.5
+      scale 0.5 0.5 0.5
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Sphere { }
+      }
+    }
+  ]
+}
+
+ROUTE modifier.title_changed TO my_data.set_title
+ROUTE my_data.title_changed TO modifier.set_title
+ROUTE sphere_touch.touchTime TO modifier.touchTime

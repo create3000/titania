@@ -1,0 +1,25 @@
+#VRML V2.0 utf8
+
+EXTERNPROTO MarkButton [
+  eventOut SFBool   isState
+  field    SFColor  ColorOfCross
+  field    MFString labelText
+]
+"markbutton.wrl"
+
+Group {
+  children [
+    Transform {
+      translation -1 0 0
+      children MarkButton {
+        labelText "MarkButton"
+      }
+    }
+    Transform {
+      translation 1 0 0
+      children MarkButton {
+        labelText "MarkButton"
+      }
+    }
+  ]
+}

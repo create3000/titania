@@ -1,0 +1,42 @@
+#VRML V2.0 utf8
+
+Background {
+  skyAngle [ 0.8, 1.3, 1.4, 1.5708 ]
+  skyColor [ 0.21 0.31 0.59, 0.33 0.45 0.7, 0.57 0.66 0.85, 0.6 0.73 0.89, 0.7 0.83 0.98 ]
+  groundAngle [ 0.6, 1.2, 1.3, 1.5708 ]
+  groundColor [ 0.21 0.31 0.59, 0.33 0.45 0.7, 0.57 0.66 0.85, 0.6 0.73 0.89, 0.7 0.83 0.98 ]
+}
+DEF Transform Transform {
+  children [
+    Transform {
+	 	translation 3 0 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0 0 1
+          }
+        }
+        geometry Box { }
+      }
+    }
+    DEF Viewpoint1 Viewpoint {
+      description "Viewpoint1"
+    }
+  ]
+}
+DEF TimeSensor TimeSensor {
+  loop TRUE
+}
+DEF PositionInterpolator PositionInterpolator {
+  key [ 0, 1 ]
+  keyValue [ 0 0 0, 1000 1000 1000 ]
+}
+DEF OrientationInterpolator OrientationInterpolator {
+  key [ 0, 0.25, 0.5, 0.75, 1 ]
+  keyValue [ 0 0 1 0, 0.267261 0.534522 0.801784 4, 0.371391 0.557086 0.742781 5, 0.424264 0.565685 0.707107 6, 0 0 1 0 ]
+}
+
+ROUTE TimeSensor.fraction_changed TO PositionInterpolator.set_fraction
+ROUTE TimeSensor.fraction_changed TO OrientationInterpolator.set_fraction
+ROUTE PositionInterpolator.value_changed TO Transform.set_translation
+ROUTE OrientationInterpolator.value_changed TO Transform.set_rotation

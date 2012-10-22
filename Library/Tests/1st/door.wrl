@@ -1,0 +1,17 @@
+#VRML V2.0 utf8
+
+DEF Tuer_brett Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        ambientIntensity 1.2234
+        emissiveColor 0.404255 0.404255 0.404255
+        shininess 0
+      }
+      texture ImageTexture {
+        url "door1.png"
+      }
+    }
+    geometry Box { }
+  }
+}

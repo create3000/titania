@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8B48B982-A07F-4063-B9B9-A3E8C0A9E4B3}</ProjectGuid>
+    <Target>Bin</Target>
+    <Language>CPP</Language>
+    <Compiler>
+      <Compiler ctype="GppCompiler" />
+    </Compiler>
+    <Packages>
+      <Packages>
+        <Package file="/usr/lib/pkgconfig/mozjs185.pc" name="SpiderMonkey 1.8.5" IsProject="false" />
+        <Package file="/usr/lib/pkgconfig/ImageMagick++.pc" name="ImageMagick++" IsProject="false" />
+        <Package file="/usr/lib/pkgconfig/gtkmm-3.0.pc" name="gtkmm" IsProject="false" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-anyoptions/libtitania-anyoptions.md.pc" name="libtitania-anyoptions" IsProject="true" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-gzstream/libtitania-gzstream.md.pc" name="libtitania-gzstream" IsProject="true" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-opengl-canvas/libtitania-opengl-drawingarea.md.pc" name="libtitania-opengl-drawingarea" IsProject="true" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="true" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-x3d/libtitania-x3d.md.pc" name="libtitania-x3d" IsProject="true" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="true" />
+      </Packages>
+    </Packages>
+    <ReleaseVersion>0.3</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <CompileTarget>Bin</CompileTarget>
+    <OutputName>x3dtidy</OutputName>
+    <WarningLevel>All</WarningLevel>
+    <Commandlineparameters>-c -v /home/holger/Projekte/Titania/Library/Examples/mikroben/index.wrl</Commandlineparameters>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Parallel|AnyCPU' ">
+    <OutputPath>bin\Parallel</OutputPath>
+    <CompileTarget>Bin</CompileTarget>
+    <OutputName>x3dtidy</OutputName>
+    <WarningLevel>All</WarningLevel>
+    <OptimizationLevel>3</OptimizationLevel>
+    <DefineSymbols>MONODEVELOP _GLIBCXX_PARALLEL</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <Commandlineparameters>/home/holger/Projekte/Titania/Examples/worlds/treasure-island/stage/index.wrl</Commandlineparameters>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OptimizationLevel>3</OptimizationLevel>
+    <OutputName>x3dtidy</OutputName>
+    <CompileTarget>Bin</CompileTarget>
+    <WarningLevel>All</WarningLevel>
+    <Commandlineparameters>/home/holger/Projekte/Titania/Examples/worlds/treasure-island/stage/index.wrl</Commandlineparameters>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterExecute" />
+      </CustomCommands>
+    </CustomCommands>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="main.cpp" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ItemType>GenericProject</ItemType>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{61BC6D29-D55B-43E3-917C-D8E5B14EC6CE}</ProjectGuid>
+    <ReleaseVersion>0.3</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Default|AnyCPU' ">
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="logo.x3d" />
+    <None Include="logo.blend" />
+    <None Include="logo.svg" />
+    <None Include="titania.xcf" />
+    <None Include="logo.dxf" />
+    <None Include="icon.svg" />
+    <None Include="logo64.png" />
+    <None Include="logo192.png" />
+    <None Include="logo1024.png" />
+    <None Include="icon14.png" />
+    <None Include="icon16.png" />
+    <None Include="icon192.png" />
+    <None Include="icon64.png" />
+  </ItemGroup>
+</Project>

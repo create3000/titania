@@ -1,0 +1,20 @@
+#X3D V3.0 utf8 (Avalon V1.0)
+
+Engine {
+  jobs DEF render RenderJob {
+    windowGroups WindowGroup {
+      windows Window {
+        position 100 100
+        size 1024 576
+      }
+    }
+  }
+}
+Scene {
+  children [
+    DEF HUD Inline {
+      url "stage/index.wrl"
+    }
+  ]
+}
+

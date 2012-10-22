@@ -1,0 +1,12 @@
+<ListOfTask>
+  <Task file="" description="SFNode disposed" />
+  <Task file="" description="set_field und field zusammenfassen" />
+  <Task file="" description="in callbacks in set_fieldName umbenennen" />
+  <Task file="" description="MF Interpolatoren optimieren" />
+  <Task file="" description="alles bei array field const machen dann bei field getValue &amp; löschen" />
+  <Task file="" />
+  <Task file="" description="traverse" />
+  <Task file="" description="Sphere mit complex" />
+  <Task file="" description="vector min max" />
+  <Task file="" description="INVALID_OPERATION_TIMING ist wenn kein GL context vorhanden" />
+</ListOfTask>
