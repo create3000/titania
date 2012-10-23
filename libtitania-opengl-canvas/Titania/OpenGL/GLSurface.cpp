@@ -51,6 +51,8 @@
 #include <gdk/gdkx.h>
 #include <gtkmm/container.h>
 
+#include "Context/PixelBufferContext.h"
+
 #include <Titania/LOG.h>
 #include <stdexcept>
 
@@ -58,12 +60,11 @@ namespace titania {
 namespace OpenGL {
 
 GLSurface::GLSurface () :
-	Gtk::DrawingArea (), 
-	//	        display  (NULL),
-	//	         pbuffer (0),
-	//	          pixmap (0),
-	//	       glxPixmap (0),
-	context  (NULL)
+	Gtk::DrawingArea (),     
+	        context  (NULL), 
+	     frameBuffer (0),    
+	         texture (0),    
+	     depthBuffer (0)
 {
 	set_double_buffered (false);
 	set_app_paintable (true);
@@ -74,55 +75,6 @@ GLSurface::GLSurface () :
 	// Connect to map_event.
 	map_event = signal_map_event () .connect (sigc::mem_fun (*this, &GLSurface::set_map_event));
 }
-
-//void
-//GLSurface::createPbufferContext ()
-//{
-//	GLXContext sharingContext = NULL;
-//
-//	display = gdk_x11_display_get_xdisplay (get_display () -> gobj ());
-//
-//	static
-//	int32_t fbConfigAttributes [ ] = {
-//		GLX_DRAWABLE_TYPE, GLX_PBUFFER_BIT,
-//		GLX_RENDER_TYPE, GLX_RGBA_BIT,
-//		GLX_RED_SIZE, 1,
-//		GLX_GREEN_SIZE, 1,
-//		GLX_BLUE_SIZE, 1,
-//		GLX_ALPHA_SIZE, 1,
-//		GLX_DOUBLEBUFFER, GL_FALSE,
-//		0
-//	};
-//
-//	int          returnedElements;
-//	GLXFBConfig* configs = glXChooseFBConfig (display, 0, fbConfigAttributes, &returnedElements);
-//
-//	if (not returnedElements)
-//	{
-//		XFree (configs);
-//		return;
-//	}
-//
-//	// We will be rendering to a texture, so our pbuffer does not need to be large.
-//	static const int pbufferAttributes [ ] = { GLX_PBUFFER_WIDTH, 1, GLX_PBUFFER_HEIGHT, 1, 0 };
-//
-//	pbuffer = glXCreatePbuffer (display, configs [0], pbufferAttributes);
-//
-//	if (not pbuffer)
-//	{
-//		XFree (configs);
-//		return;
-//	}
-//
-//	context = glXCreateNewContext (display, configs [0], GLX_RGBA_TYPE, sharingContext, true);
-//	XFree (configs);
-//
-//	if (not context)
-//	{
-//		glXDestroyPbuffer (display, pbuffer);
-//		return;
-//	}
-//}
 
 //void
 //GLSurface::createPixmapContext ()
@@ -190,6 +142,75 @@ GLSurface::glew ()
 	return true;
 }
 
+void
+GLSurface::initializeTexture ()
+{
+	// Create frame buffer.
+	glGenFramebuffers (1, &frameBuffer);
+
+	__LOG__ << frameBuffer << std::endl;
+
+	// Create the texture
+	glGenTextures (1, &texture);
+
+	__LOG__ << texture << std::endl;
+
+	// Create depth buffer
+	glGenRenderbuffers (1, &depthBuffer);
+
+	__LOG__ << depthBuffer << std::endl;
+}
+
+bool
+GLSurface::bindTexture ()
+{
+	// Bind frame buffer.
+	glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer);
+
+	// "Bind" the newly created texture : all future texture functions will modify this texture
+	glBindTexture (GL_TEXTURE_2D, texture);
+
+	// Give an empty image to OpenGL ( the last "0" )
+	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, get_width (), get_height (), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+	// Poor filtering. Needed !
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	// The depth buffer
+	glBindRenderbuffer (GL_RENDERBUFFER, depthBuffer);
+	glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT, get_width (), get_height ());
+	glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+
+	// Set "texture" as our colour attachement #0
+	glFramebufferTexture (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
+
+	// Set the list of draw buffers.
+	GLenum DrawBuffers [2] = { GL_COLOR_ATTACHMENT0, 0 };
+	glDrawBuffers (1, DrawBuffers);                 // "1" is the size of DrawBuffers
+
+	// Always check that our framebuffer is ok
+	if (glCheckFramebufferStatus (GL_FRAMEBUFFER) not_eq GL_FRAMEBUFFER_COMPLETE)
+		return false;
+
+	// Render to our framebuffer
+	glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer);
+	glViewport (0, 0, get_width (), get_height ()); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+
+	return true;
+}
+
+uint32_t*
+GLSurface::getTextureArray ()
+{
+	array .resize (4 * get_width () * get_height (), 127);
+
+	glBindTexture (GL_TEXTURE_2D, texture);
+	glGetTexImage (GL_TEXTURE_2D, 0, GL_BGRA, GL_UNSIGNED_BYTE, array .data ());
+
+	return array .data ();
+}
+
 bool
 GLSurface::set_map_event (GdkEventAny* event)
 {
@@ -197,18 +218,16 @@ GLSurface::set_map_event (GdkEventAny* event)
 
 	map_event .disconnect ();
 
-	context  = std::shared_ptr <GLContext> (new WindowContext (get_window (), get_display ()));
+	context = std::shared_ptr <GLContext> (new WindowContext (get_window (), get_display ()));
 
 	if (gl ())
 	{
 		signal_configure_event () .connect (sigc::mem_fun (*this, &GLSurface::set_configure_event));
 		signal_draw ()            .connect (sigc::mem_fun (*this, &GLSurface::set_draw));
 
-		// Resize viewport.
-
-		glViewport (0, 0, get_width (), get_height ());
-
 		glewInit ();
+
+		initializeTexture ();
 
 		setup ();
 	}
@@ -219,8 +238,6 @@ GLSurface::set_map_event (GdkEventAny* event)
 bool
 GLSurface::set_configure_event (GdkEventConfigure* event)
 {
-	__LOG__ << GDK_WINDOW_XID (get_window () -> gobj ()) << std::endl;
-
 	if (gl ())
 	{
 		glViewport (0, 0, get_width (), get_height ());
@@ -236,10 +253,23 @@ GLSurface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
 	if (gl ())
 	{
+//		glViewport (0, 0, 1, 1);
+//
+//		bindTexture ();
+
 		update (cairo);
+
+//		Cairo::RefPtr <Cairo::ImageSurface> image = Cairo::ImageSurface::create  ((unsigned char*) getTextureArray (),
+//		                                                                          Cairo::FORMAT_ARGB32,
+//		                                                                          get_width (), get_height (),
+//		                                                                          Cairo::ImageSurface::format_stride_for_width (Cairo::FORMAT_ARGB32, get_width ()));
+//
+//		cairo -> set_source (image, 0, 0);
+//		cairo -> paint ();
+
 	}
 
-	return false; // Propagate the event further.
+	return false;                                                // Propagate the event further.
 }
 
 bool
@@ -256,13 +286,6 @@ GLSurface::swapBuffers ()
 
 GLSurface::~GLSurface ()
 {
-	//	if (pbuffer)
-	//	{
-	//		glXDestroyPbuffer (display, pbuffer);
-	//	}
-	//
-	//	//
-	//
 	//	if (glxPixmap)
 	//	{
 	//		glXDestroyGLXPixmap (display, glxPixmap);
@@ -278,17 +301,6 @@ GLSurface::~GLSurface ()
 } // titania
 
 /*
- *
- * // http://src.chromium.org/viewvc/chrome/trunk/src/ui/gl/gl_surface_linux.cc?revision=148710&content-type=text%2Fplain
- * // Copy the pixmap to the window.
- * XCopyArea(g_osmesa_display,
- *          pixmap_,
- *          window_,
- *          window_graphics_context_,
- *          x, y,
- *          width, height,
- *          x, y);
- *
  *
  * // http://src.chromium.org/viewvc/chrome/trunk/src/ui/gl/gl_context_glx.cc?revision=157879&content-type=text%2Fplain
  * void GLContextGLX::SetSwapInterval(int interval) {

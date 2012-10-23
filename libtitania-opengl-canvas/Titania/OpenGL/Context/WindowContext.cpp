@@ -63,8 +63,8 @@ WindowContext::WindowContext (const Glib::RefPtr <Gdk::Window> & window,
 	    window (window),                             
 	   xWindow (GDK_WINDOW_XID (window -> gobj ()))
 {
-	setDrawable (xWindow);
 	setValue    (create (sharingContext .getValue (), direct));
+	setDrawable (xWindow);
 }
 
 WindowContext::WindowContext (const Glib::RefPtr <Gdk::Window> & window,
@@ -73,8 +73,8 @@ WindowContext::WindowContext (const Glib::RefPtr <Gdk::Window> & window,
 	GLContext (display),                        
 	   xWindow (GDK_WINDOW_XID (window -> gobj ()))
 {
-	setDrawable (xWindow);
 	setValue    (create (NULL, direct));
+	setDrawable (xWindow);
 }
 
 GLXContext

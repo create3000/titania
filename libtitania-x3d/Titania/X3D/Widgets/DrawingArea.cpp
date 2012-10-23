@@ -129,9 +129,6 @@ DrawingArea::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 			<< "  " << exception .what () << std::endl;
 	}
 
-	//	if (runFree)
-	//		queue_draw ();
-
 	cairo -> set_source_rgb (0.1, 0.1, 0.1);
 
 	cairo -> select_font_face ("monospace",

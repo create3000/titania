@@ -57,7 +57,7 @@ struct X3DLightNode::Type
 {
 	Type ()
 	{
-		GLint max_lights;
+		GLint max_lights = 0;
 
 		glGetIntegerv (GL_MAX_LIGHTS, &max_lights);
 

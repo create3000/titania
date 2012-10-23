@@ -1,3 +1,45 @@
+2012-10-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* test-puck.sh:
+	* puck:
+	* main.o:
+	* X3DConsoleUI.o:
+	* BrowserWidget.o:
+	* BrowserWindow.o:
+	* HistoryEditor.o:
+	* OutlineEditor.o:
+	* OutlineTreeView.o:
+	* ViewpointEditor.o:
+	* MotionBlurEditor.o:
+	* X3DUserInterface.o:
+	* X3DBrowserWidget.o:
+	* X3DBaseInterface.o:
+	* OutlineTreeModel.o:
+	* ViewpointMenuItem.o:
+	* X3DBrowserWindow .o:
+	* X3DOutlineEditorUI.o:
+	* X3DBrowserWindowUI.o:
+	* X3DBrowserWidgetUI.o:
+	* X3DHistoryEditorUI.o:
+	* X3DBrowserInterface.o:
+	* X3DViewpointEditorUI.o:
+	* X3DMotionBlurEditorUI.o:
+	* X3DConsoleUI.h:
+	* X3DBrowserUserInterface.o:
+	* X3DConsoleUI.cpp:
+	* X3DOutlineEditorUI.h:
+	* X3DHistoryEditorUI.h:
+	* X3DBrowserWidgetUI.h:
+	* X3DBrowserWindowUI.h:
+	* X3DOutlineEditorUI.cpp:
+	* X3DViewpointEditorUI.h:
+	* X3DHistoryEditorUI.cpp:
+	* X3DBrowserWindowUI.cpp:
+	* X3DBrowserWidgetUI.cpp:
+	* X3DMotionBlurEditorUI.h:
+	* X3DViewpointEditorUI.cpp:
+	* X3DMotionBlurEditorUI.cpp: 
+
 2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* puck:

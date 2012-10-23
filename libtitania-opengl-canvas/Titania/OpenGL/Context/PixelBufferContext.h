@@ -46,98 +46,37 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OPEN_GL_DRAWING_AREA_H__
-#define __TITANIA_OPEN_GL_DRAWING_AREA_H__
+#ifndef __TITANIA_OPEN_GL_CONTEXT_PIXEL_BUFFER_CONTEXT_H__
+#define __TITANIA_OPEN_GL_CONTEXT_PIXEL_BUFFER_CONTEXT_H__
 
-// include order is important
-#include <gtkmm/drawingarea.h>
-
-extern "C"
-{
-#include <GL/glew.h>
-
-#include <GL/glu.h>
-
-#include <GL/gl.h>
-
-#include <GL/glx.h>
-}
-
-#include "Context/WindowContext.h"
-#include <memory>
+#include "GLContext.h"
 
 namespace titania {
 namespace OpenGL {
 
-class GLSurface :
-	public Gtk::DrawingArea
+class PixelBufferContext :
+	public GLContext
 {
 public:
 
-	virtual
-	~GLSurface ();
+	PixelBufferContext (const Glib::RefPtr <Gdk::Display> &,
+	                    const GLContext &,
+	                    bool = true);
 
-	bool
-	gl ();
-
-	void
-	swapBuffers ();
-
-
-protected:
-
-	GLSurface ();
-
-	bool
-	set_map_event (GdkEventAny*);
-
-	bool
-	set_configure_event (GdkEventConfigure*);
-
-	bool
-	set_draw (const Cairo::RefPtr <Cairo::Context> &);
-
-	/// @name OpenGL handler
+	PixelBufferContext (const Glib::RefPtr <Gdk::Display> &,
+	                    bool = true);
 
 	virtual
-	void
-	setup ()
-	{ }
-
-	virtual
-	void
-	set_size ()
-	{ }
-
-	virtual
-	void
-	update (const Cairo::RefPtr <Cairo::Context> &) = 0;
+	~PixelBufferContext ();
 
 
 private:
 
-	bool
-	glew ();
+	GLXContext
+	create (GLXContext, bool);
 
-	void
-	initializeTexture ();
+	GLXPbuffer xPBuffer;
 
-	bool
-	bindTexture ();
-	
-	uint32_t*
-	getTextureArray ();
-
-	sigc::connection map_event;
-	std::shared_ptr <GLContext> context;
-
-	GLuint frameBuffer;
-	GLuint texture;
-	GLuint depthBuffer;
-	std::vector <uint32_t> array;
-
-//	Pixmap    pixmap;
-//	GLXPixmap glxPixmap;
 };
 
 } // OpenGL

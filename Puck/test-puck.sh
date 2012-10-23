@@ -8,7 +8,7 @@ export XDG_DATA_DIRS=$XDG_DATA_DIRS":/home/holger/Projekte/Titania/Puck/share"
 
 if test "$1" = "-t"
 then
-	gnome-terminal -x /home/holger/Projekte/Titania/Puck/bin/Debug/puck "$@"
+	gnome-terminal -x /home/holger/Projekte/Titania/Puck/bin/Release/puck "$@"
 else
 	/home/holger/Projekte/Titania/Puck/bin/Debug/puck "$@" | /home/holger/Projekte/Titania/miscellaneous/benchmarks/save.pl
 fi

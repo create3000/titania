@@ -46,101 +46,85 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OPEN_GL_DRAWING_AREA_H__
-#define __TITANIA_OPEN_GL_DRAWING_AREA_H__
+#include "PixelBufferContext.h"
 
-// include order is important
-#include <gtkmm/drawingarea.h>
-
-extern "C"
-{
-#include <GL/glew.h>
-
-#include <GL/glu.h>
-
-#include <GL/gl.h>
-
-#include <GL/glx.h>
-}
-
-#include "Context/WindowContext.h"
-#include <memory>
+#include <gdk/gdkx.h>
+#include <gdkmm/window.h>
+#include <stdexcept>
 
 namespace titania {
 namespace OpenGL {
 
-class GLSurface :
-	public Gtk::DrawingArea
+PixelBufferContext::PixelBufferContext (const Glib::RefPtr <Gdk::Display> & display,
+                                        const GLContext & sharingContext,
+                                        bool direct) :
+	GLContext (display), 
+	 xPBuffer (0)
 {
-public:
+	setValue    (create (sharingContext .getValue (), direct));
+	setDrawable (xPBuffer);
+}
 
-	virtual
-	~GLSurface ();
+PixelBufferContext::PixelBufferContext (const Glib::RefPtr <Gdk::Display> & display,
+                                        bool direct) :
+	GLContext (display), 
+	 xPBuffer (0)
+{
+	setValue    (create (NULL, direct));
+	setDrawable (xPBuffer);
+}
 
-	bool
-	gl ();
+GLXContext
+PixelBufferContext::create (GLXContext sharingContext, bool direct)
+{
+	static
+	int32_t fbConfigAttributes [ ] = {
+		GLX_DRAWABLE_TYPE, GLX_PBUFFER_BIT,
+		GLX_RENDER_TYPE,   GLX_RGBA_BIT,
+		GLX_RED_SIZE,      1,
+		GLX_GREEN_SIZE,    1,
+		GLX_BLUE_SIZE,     1,
+		GLX_ALPHA_SIZE,    1,
+		GLX_DOUBLEBUFFER,  GL_FALSE,
+		0
+	};
 
-	void
-	swapBuffers ();
+	int          returnedElements;
+	GLXFBConfig* configs = glXChooseFBConfig (getDisplay (), 0, fbConfigAttributes, &returnedElements);
 
+	if (not returnedElements)
+	{
+		XFree (configs);
+		throw std::runtime_error ("PixelBufferContext::PixelBufferContext: Couldn't get frame buffer config.");
+	}
 
-protected:
+	// We will be rendering to a texture, so our pbuffer does not need to be large.
+	static const int pbufferAttributes [ ] = { GLX_PBUFFER_WIDTH, 1, GLX_PBUFFER_HEIGHT, 1, 0 };
 
-	GLSurface ();
+	xPBuffer = glXCreatePbuffer (getDisplay (), configs [0], pbufferAttributes);
 
-	bool
-	set_map_event (GdkEventAny*);
+	if (not xPBuffer)
+	{
+		XFree (configs);
+		throw std::runtime_error ("PixelBufferContext::PixelBufferContext: Couldn't create pixel buffer.");
+	}
 
-	bool
-	set_configure_event (GdkEventConfigure*);
+	GLXContext xContext = glXCreateNewContext (getDisplay (), configs [0], GLX_RGBA_TYPE, sharingContext, direct);
+	XFree (configs);
 
-	bool
-	set_draw (const Cairo::RefPtr <Cairo::Context> &);
+	if (not xContext)
+	{
+		glXDestroyPbuffer (getDisplay (), xPBuffer);
+		throw std::runtime_error ("PixelBufferContext::PixelBufferContext: Couldn't create context.");
+	}
 
-	/// @name OpenGL handler
+	return xContext;
+}
 
-	virtual
-	void
-	setup ()
-	{ }
-
-	virtual
-	void
-	set_size ()
-	{ }
-
-	virtual
-	void
-	update (const Cairo::RefPtr <Cairo::Context> &) = 0;
-
-
-private:
-
-	bool
-	glew ();
-
-	void
-	initializeTexture ();
-
-	bool
-	bindTexture ();
-	
-	uint32_t*
-	getTextureArray ();
-
-	sigc::connection map_event;
-	std::shared_ptr <GLContext> context;
-
-	GLuint frameBuffer;
-	GLuint texture;
-	GLuint depthBuffer;
-	std::vector <uint32_t> array;
-
-//	Pixmap    pixmap;
-//	GLXPixmap glxPixmap;
-};
+PixelBufferContext::~PixelBufferContext ()
+{
+	glXDestroyPbuffer (getDisplay (), xPBuffer);
+}
 
 } // OpenGL
 } // titania
-
-#endif

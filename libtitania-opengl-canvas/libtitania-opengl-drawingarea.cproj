@@ -58,11 +58,13 @@
     <Compile Include="Titania\OpenGL\Context\WindowContext.cpp" />
     <Compile Include="Titania\OpenGL\GLSurface.cpp" />
     <Compile Include="Titania\OpenGL\Context\GLContext.cpp" />
+    <Compile Include="Titania\OpenGL\Context\PixelBufferContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="info.h" />
     <None Include="Titania\OpenGL\Context\WindowContext.h" />
     <None Include="Titania\OpenGL\GLSurface.h" />
     <None Include="Titania\OpenGL\Context\GLContext.h" />
+    <None Include="Titania\OpenGL\Context\PixelBufferContext.h" />
   </ItemGroup>
 </Project>
