@@ -187,6 +187,8 @@ X3DTexture2DNode::scaleImage (Magick::Image & image)
 
 	if (needs_scaling)
 	{
+		std::clog << "Info: Texture needs scaling: scaling texture to " << new_width << " × " << new_height << " pixel." << std::endl;
+	
 		image .filterType (Magick::LanczosFilter);
 		Magick::Geometry geometry (new_width, new_height);
 		geometry .aspect (true);
@@ -305,7 +307,7 @@ X3DTexture2DNode::draw ()
 			case GL_COMPRESSED_RGBA:
 				getBrowser () -> getObjectAlpha (glFrontDiffuseColor [3], glBackDiffuseColor [3]);
 				glMaterialfv (GL_FRONT, GL_DIFFUSE, &glFrontDiffuseColor [0]);
-				glMaterialfv (GL_BACK, GL_DIFFUSE, &glBackDiffuseColor [0]);
+				glMaterialfv (GL_BACK,  GL_DIFFUSE, &glBackDiffuseColor  [0]);
 				break;
 			default:
 				break;
@@ -331,6 +333,7 @@ X3DTexture2DNode::draw ()
 				glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 				break;
 		}
+		
 	}
 
 	glEnable (GL_TEXTURE_2D);

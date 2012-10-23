@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,72 +46,62 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_CHRONO_SYSTEM_TIMER_H__
-#define __TITANIA_CHRONO_SYSTEM_TIMER_H__
+#ifndef __TITANIA_OPEN_GL_CONTEXT_TEXTURE_CONTEXT_H__
+#define __TITANIA_OPEN_GL_CONTEXT_TEXTURE_CONTEXT_H__
 
-#include "TimerBase.h"
-#include "Now.h"
+#include <gtkmm.h>
 
-#include <chrono>
+#include "GLContext.h"
+#include <memory>
 
 namespace titania {
-namespace chrono {
+namespace OpenGL {
 
-using namespace std::chrono;
-
-template <class Type>
-class system_timer :
-	public timer_base <Type>
+class TextureContext :
+	public GLContext
 {
 public:
 
-	///  Default constructor.  Sets cycle to current system time, in seconds,
-	///  and for interval to the tick interval of the system clock, in seconds.
-	system_timer () :
-		timer_base <Type> (count (), duration_cast <duration <Type>> (duration <high_resolution_clock::rep,
-		                                                                         high_resolution_clock::period> ()) .count ())
-	{ }
+	TextureContext (const Glib::RefPtr <Gdk::Window> &,
+	                const Glib::RefPtr <Gdk::Display> &,
+	                const GLContext &,
+	                bool = true);
 
-	///  Copy constructor.
-	constexpr
-	system_timer (const system_timer & clock) :
-		timer_base <Type> (clock) { }
+	TextureContext (const Glib::RefPtr <Gdk::Window> &,
+	                const Glib::RefPtr <Gdk::Display> &,
+	                bool = true);
+
+	virtual
+	~TextureContext ();
 
 	virtual
 	bool
-	// should be constexpr
-	before (const Type & value) const
-	{
-		return system_timer::cycle () < value;
-	}
+	makeCurrent ();
 
-	///  Advance this clock.
-	virtual
 	void
-	advance ()
-	{
-		Type prior = system_timer::cycle ();
+	swapBuffers ();
 
-		timer_base <Type>::advance ();
-
-		this -> interval (system_timer::cycle () - prior);
-	}
 
 private:
 
-	///  Get the current count of this clock.
-	virtual
-	Type
-	count () const
-	{
-		return now <Type> ();
-	}
+	GLXContext
+	create (const Glib::RefPtr <Gdk::Window>&,
+	        const Glib::RefPtr <Gdk::Display>&,
+	        GLXContext,
+	        bool);
+
+	Glib::RefPtr <Gdk::Window>  window;
+	std::shared_ptr <GLContext> context;
+
+	GLuint frameBuffer;
+	GLuint texture;
+	GLuint depthBuffer;
+
+	std::vector <unsigned char> array;
 
 };
 
-extern template class system_timer <double>;
-
-} // chrono
+} // OpenGL
 } // titania
 
 #endif

@@ -46,12 +46,12 @@
  *
  ******************************************************************************/
 
-#include "SystemTimer.h"
+#include "CountingClock.h"
 
 namespace titania {
 namespace chrono {
 
-template class system_timer <double>;
+template class counting_clock <double>;
 
 } // chrono
 } // titania

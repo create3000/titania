@@ -110,6 +110,7 @@ X3DBrowserWidgetUI::create (const std::string & filename)
 	m_builder -> get_widget ("MotionBlurMenuItem", m_motionBlurMenuItem);
 	m_builder -> get_widget ("ConsoleMenuItem", m_consoleMenuItem);
 	m_builder -> get_widget ("HelpMenuItem", m_helpMenuItem);
+	m_builder -> get_widget ("InfoMenuItem", m_infoMenuItem);
 	m_builder -> get_widget ("Toolbar", m_toolbar);
 	m_builder -> get_widget ("NewButton", m_newButton);
 	m_builder -> get_widget ("OpenButton", m_openButton);
@@ -123,7 +124,9 @@ X3DBrowserWidgetUI::create (const std::string & filename)
 	m_builder -> get_widget ("ReloadButton", m_reloadButton);
 	m_builder -> get_widget ("HomeButton", m_homeButton);
 	m_builder -> get_widget ("LocationEntry", m_locationEntry);
-	m_builder -> get_widget ("DrawingAreaBox", m_drawingAreaBox);
+	m_builder -> get_widget ("VPaned", m_vPaned);
+	m_builder -> get_widget ("HPaned", m_hPaned);
+	m_builder -> get_widget ("SurfaceBox", m_surfaceBox);
 	m_builder -> get_widget ("ArrowButton", m_arrowButton);
 	m_builder -> get_widget ("HandButton", m_handButton);
 	m_builder -> get_widget ("ShowAllButton", m_showAllButton);
@@ -185,6 +188,9 @@ X3DBrowserWidgetUI::create (const std::string & filename)
 	m_outlineEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_outline_editor_activate));
 	m_viewpointEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_viewpoint_editor_activate));
 	m_motionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_motion_blur_editor_activate));
+
+	// Connect object Gtk::ImageMenuItem with id 'InfoMenuItem'.
+	m_infoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_info));
 
 	// Connect object Gtk::ToolButton with id 'NewButton'.
 	m_newButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_new));

@@ -1,14 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-opengl-canvas/Titania/OpenGL/GLSurface.cpp">
     <Files>
       <File FileName="Puck/puck/Browser/X3DBrowserWindow.h" Line="135" Column="1" />
-      <File FileName="Puck/puck/Browser/X3DBrowserWindow .cpp" Line="64" Column="2" />
-      <File FileName="Puck/puck/Browser/X3DBrowserWidget.h" Line="160" Column="29" />
-      <File FileName="Puck/puck/Browser/X3DBrowserWidget.cpp" Line="80" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.h" Line="143" Column="8" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp" Line="129" Column="20" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="414" Column="42" />
+      <File FileName="Puck/puck/Browser/X3DBrowserWindow .cpp" Line="72" Column="37" />
+      <File FileName="Puck/puck/Browser/X3DBrowserWidget.h" Line="96" Column="1" />
+      <File FileName="Puck/puck/Browser/X3DBrowserWidget.cpp" Line="79" Column="24" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.h" Line="54" Column="37" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp" Line="116" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Widgets/Surface.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Widgets/Surface.cpp" Line="131" Column="12" />
+      <File FileName="libtitania-opengl-canvas/Titania/OpenGL/GLSurface.cpp" Line="114" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,9 +18,65 @@
           <Node name="miscellaneous" expanded="True">
             <Node name="benchmarks" expanded="True" />
             <Node name="g++parallel" expanded="True" />
+            <Node name="logo" expanded="True" />
           </Node>
           <Node name="Documentation" expanded="True" />
           <Node name="experimental" expanded="True" />
+          <Node name="Library" expanded="True">
+            <Node name="Tests" expanded="True">
+              <Node name="Geometry3D" expanded="True" />
+              <Node name="Texturing" expanded="True">
+                <Node name="images" expanded="True">
+                  <Node name="colors" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+          <Node name="libtitania-opengl-drawingarea" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="OpenGL" expanded="True">
+                <Node name="Context" expanded="True" />
+                <Node name="GLSurface.cpp" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+          <Node name="libtitania-x3d" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="X3D" expanded="True">
+                <Node name="Browser" expanded="True">
+                  <Node name="Properties" expanded="True" />
+                </Node>
+                <Node name="Components" expanded="True">
+                  <Node name="EnvironmentalEffects" expanded="True" />
+                  <Node name="EnvironmentalSensor" expanded="True" />
+                  <Node name="Geometry3D" expanded="True" />
+                  <Node name="Lighting" expanded="True" />
+                  <Node name="Rendering" expanded="True" />
+                  <Node name="Shape" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
+                  <Node name="Time" expanded="True" />
+                </Node>
+                <Node name="Widgets" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+          <Node name="Puck" expanded="True">
+            <Node name="puck" expanded="True">
+              <Node name="Browser" expanded="True" />
+            </Node>
+            <Node name="share" expanded="True">
+              <Node name="applications" expanded="True" />
+              <Node name="titania" expanded="True">
+                <Node name="puck" expanded="True">
+                  <Node name="pages" expanded="True">
+                    <Node name="about" expanded="True">
+                      <Node name="info" expanded="True" />
+                    </Node>
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+          </Node>
         </State>
       </Pad>
       <Pad Id="ClassPad">

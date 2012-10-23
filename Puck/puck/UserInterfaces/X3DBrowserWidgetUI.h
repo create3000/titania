@@ -215,6 +215,9 @@ public:
 	Gtk::MenuItem &
 	getHelpMenuItem () const { return *m_helpMenuItem; }
 
+	Gtk::ImageMenuItem &
+	getInfoMenuItem () const { return *m_infoMenuItem; }
+
 	Gtk::Toolbar &
 	getToolbar () const { return *m_toolbar; }
 
@@ -254,8 +257,14 @@ public:
 	Gtk::Entry &
 	getLocationEntry () const { return *m_locationEntry; }
 
+	Gtk::Paned &
+	getVPaned () const { return *m_vPaned; }
+
+	Gtk::Paned &
+	getHPaned () const { return *m_hPaned; }
+
 	Gtk::HBox &
-	getDrawingAreaBox () const { return *m_drawingAreaBox; }
+	getSurfaceBox () const { return *m_surfaceBox; }
 
 	Gtk::RadioToolButton &
 	getArrowButton () const { return *m_arrowButton; }
@@ -417,6 +426,10 @@ public:
 
 	virtual
 	void
+	on_info () = 0;
+
+	virtual
+	void
 	on_reload () = 0;
 
 	virtual
@@ -496,6 +509,7 @@ private:
 	Gtk::MenuItem*                   m_motionBlurMenuItem;
 	Gtk::MenuItem*                   m_consoleMenuItem;
 	Gtk::MenuItem*                   m_helpMenuItem;
+	Gtk::ImageMenuItem*              m_infoMenuItem;
 	Gtk::Toolbar*                    m_toolbar;
 	Gtk::ToolButton*                 m_newButton;
 	Gtk::ToolButton*                 m_openButton;
@@ -509,7 +523,9 @@ private:
 	Gtk::ToolButton*                 m_reloadButton;
 	Gtk::ToolButton*                 m_homeButton;
 	Gtk::Entry*                      m_locationEntry;
-	Gtk::HBox*                       m_drawingAreaBox;
+	Gtk::Paned*                      m_vPaned;
+	Gtk::Paned*                      m_hPaned;
+	Gtk::HBox*                       m_surfaceBox;
 	Gtk::RadioToolButton*            m_arrowButton;
 	Gtk::RadioToolButton*            m_handButton;
 	Gtk::ToolButton*                 m_showAllButton;

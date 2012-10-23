@@ -51,19 +51,7 @@
 
 // include order is important
 #include <gtkmm/drawingarea.h>
-
-extern "C"
-{
-#include <GL/glew.h>
-
-#include <GL/glu.h>
-
-#include <GL/gl.h>
-
-#include <GL/glx.h>
-}
-
-#include "Context/WindowContext.h"
+#include "Context/GLContext.h"
 #include <memory>
 
 namespace titania {
@@ -78,7 +66,7 @@ public:
 	~GLSurface ();
 
 	bool
-	gl ();
+	makeCurrent ();
 
 	void
 	swapBuffers ();
@@ -119,22 +107,8 @@ private:
 	bool
 	glew ();
 
-	void
-	initializeTexture ();
-
-	bool
-	bindTexture ();
-	
-	uint32_t*
-	getTextureArray ();
-
 	sigc::connection map_event;
 	std::shared_ptr <GLContext> context;
-
-	GLuint frameBuffer;
-	GLuint texture;
-	GLuint depthBuffer;
-	std::vector <uint32_t> array;
 
 //	Pixmap    pixmap;
 //	GLXPixmap glxPixmap;

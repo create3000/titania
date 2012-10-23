@@ -51,6 +51,7 @@
 #include <gdk/gdkx.h>
 #include <gtkmm/container.h>
 
+#include "Context/WindowContext.h"
 #include "Context/PixelBufferContext.h"
 
 #include <Titania/LOG.h>
@@ -61,10 +62,7 @@ namespace OpenGL {
 
 GLSurface::GLSurface () :
 	Gtk::DrawingArea (),     
-	        context  (NULL), 
-	     frameBuffer (0),    
-	         texture (0),    
-	     depthBuffer (0)
+	        context  (NULL)
 {
 	set_double_buffered (false);
 	set_app_paintable (true);
@@ -142,92 +140,19 @@ GLSurface::glew ()
 	return true;
 }
 
-void
-GLSurface::initializeTexture ()
-{
-	// Create frame buffer.
-	glGenFramebuffers (1, &frameBuffer);
-
-	__LOG__ << frameBuffer << std::endl;
-
-	// Create the texture
-	glGenTextures (1, &texture);
-
-	__LOG__ << texture << std::endl;
-
-	// Create depth buffer
-	glGenRenderbuffers (1, &depthBuffer);
-
-	__LOG__ << depthBuffer << std::endl;
-}
-
-bool
-GLSurface::bindTexture ()
-{
-	// Bind frame buffer.
-	glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer);
-
-	// "Bind" the newly created texture : all future texture functions will modify this texture
-	glBindTexture (GL_TEXTURE_2D, texture);
-
-	// Give an empty image to OpenGL ( the last "0" )
-	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, get_width (), get_height (), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-
-	// Poor filtering. Needed !
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	// The depth buffer
-	glBindRenderbuffer (GL_RENDERBUFFER, depthBuffer);
-	glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT, get_width (), get_height ());
-	glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
-
-	// Set "texture" as our colour attachement #0
-	glFramebufferTexture (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
-
-	// Set the list of draw buffers.
-	GLenum DrawBuffers [2] = { GL_COLOR_ATTACHMENT0, 0 };
-	glDrawBuffers (1, DrawBuffers);                 // "1" is the size of DrawBuffers
-
-	// Always check that our framebuffer is ok
-	if (glCheckFramebufferStatus (GL_FRAMEBUFFER) not_eq GL_FRAMEBUFFER_COMPLETE)
-		return false;
-
-	// Render to our framebuffer
-	glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer);
-	glViewport (0, 0, get_width (), get_height ()); // Render on the whole framebuffer, complete from the lower left corner to the upper right
-
-	return true;
-}
-
-uint32_t*
-GLSurface::getTextureArray ()
-{
-	array .resize (4 * get_width () * get_height (), 127);
-
-	glBindTexture (GL_TEXTURE_2D, texture);
-	glGetTexImage (GL_TEXTURE_2D, 0, GL_BGRA, GL_UNSIGNED_BYTE, array .data ());
-
-	return array .data ();
-}
-
 bool
 GLSurface::set_map_event (GdkEventAny* event)
 {
-	__LOG__ << std::endl;
-
 	map_event .disconnect ();
 
 	context = std::shared_ptr <GLContext> (new WindowContext (get_window (), get_display ()));
 
-	if (gl ())
+	if (makeCurrent ())
 	{
 		signal_configure_event () .connect (sigc::mem_fun (*this, &GLSurface::set_configure_event));
 		signal_draw ()            .connect (sigc::mem_fun (*this, &GLSurface::set_draw));
 
 		glewInit ();
-
-		initializeTexture ();
 
 		setup ();
 	}
@@ -238,7 +163,7 @@ GLSurface::set_map_event (GdkEventAny* event)
 bool
 GLSurface::set_configure_event (GdkEventConfigure* event)
 {
-	if (gl ())
+	if (makeCurrent ())
 	{
 		glViewport (0, 0, get_width (), get_height ());
 
@@ -251,29 +176,16 @@ GLSurface::set_configure_event (GdkEventConfigure* event)
 bool
 GLSurface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
-	if (gl ())
+	if (makeCurrent ())
 	{
-//		glViewport (0, 0, 1, 1);
-//
-//		bindTexture ();
-
 		update (cairo);
-
-//		Cairo::RefPtr <Cairo::ImageSurface> image = Cairo::ImageSurface::create  ((unsigned char*) getTextureArray (),
-//		                                                                          Cairo::FORMAT_ARGB32,
-//		                                                                          get_width (), get_height (),
-//		                                                                          Cairo::ImageSurface::format_stride_for_width (Cairo::FORMAT_ARGB32, get_width ()));
-//
-//		cairo -> set_source (image, 0, 0);
-//		cairo -> paint ();
-
 	}
 
 	return false;                                                // Propagate the event further.
 }
 
 bool
-GLSurface::gl ()
+GLSurface::makeCurrent ()
 {
 	return context -> makeCurrent ();
 }

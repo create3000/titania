@@ -66,19 +66,19 @@ MotionBlurEditor::initialize ()
 {
 	X3DMotionBlurEditorUI::initialize ();
 
-//	getIntensity () .set_value (drawingArea .motionBlur -> intensity);
+//	getIntensity () .set_value (surface .motionBlur -> intensity);
 }
 
 void
 MotionBlurEditor::on_enabled_toggled ()
 {
-//	drawingArea .motionBlur -> enabled = getEnabled () .get_active ();
+//	surface .motionBlur -> enabled = getEnabled () .get_active ();
 }
 
 void
 MotionBlurEditor::on_intensity_changed ()
 {
-//	drawingArea .motionBlur -> intensity = getIntensity () .get_value ();
+//	surface .motionBlur -> intensity = getIntensity () .get_value ();
 }
 
 } // puck

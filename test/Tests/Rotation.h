@@ -361,7 +361,7 @@ public:
 	void
 	test10 ()
 	{
-		std::srand (std::chrono::duration_cast <std::chrono::duration <unsigned>> (std::chrono::system_timer::now () .time_since_epoch ()) .count ());
+		std::srand (std::chrono::duration_cast <std::chrono::duration <unsigned>> (std::chrono::system_clock::now () .time_since_epoch ()) .count ());
 		std::clog << "########################################" << std::endl;
 
 		typedef titania::Obsolete::Rotation4 <float> ORotation;

@@ -51,7 +51,7 @@
 
 #include "../../Components/Core/X3DChildNode.h"
 #include "../Properties/QuadSphereProperties.h"
-#include <Titania/Chrono/SystemTimer.h>
+#include <Titania/Chrono/SystemClock.h>
 
 extern "C"
 {
@@ -142,11 +142,11 @@ private:
 
 	size_t numFrames;
 	
-	chrono::system_timer <double> timer;
+	chrono::system_clock <double> timer;
 	double fps;
 	double maxFps;
 
-	chrono::system_timer <double> drawTimer;
+	chrono::system_clock <double> drawTimer;
 	double drawTime;
 	double drawFps;
 	double maxDrawFps;

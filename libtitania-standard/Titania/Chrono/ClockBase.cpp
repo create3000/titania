@@ -46,64 +46,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_WIDGETS_DRAWING_AREA_H__
-#define __TITANIA_X3D_WIDGETS_DRAWING_AREA_H__
-
-#include "../Components/Core/X3DNode.h"
-
-#include <Titania/OpenGL/GLSurface.h>
-
-#include "../Browser/X3DBrowser.h"
-#include "MotionBlur.h"
-#include "PointingDevice.h"
-#include "Viewer.h"
+#include "ClockBase.h"
 
 namespace titania {
-namespace X3D {
+namespace chrono {
 
-class DrawingArea :
-	public OpenGL::GLSurface
-{
-public:
+template class clock_base <double>;
+template std::istream & operator >> (std::istream &, clock_base <double> &);
+template std::ostream & operator << (std::ostream &, const clock_base <double> &);
 
-	SFNode <MotionBlur> motionBlur;
-
-	DrawingArea (const SFNode <X3DBrowser> &);
-
-	const SFNode <X3DBrowser> &
-	getBrowser () { return browser; }
-
-	PointingDevice*
-	getPointingDevice () { return &pointingDevice; }
-
-	Viewer*
-	getViewer () { return &viewer; }
-
-	virtual
-	~DrawingArea ();
-
-
-private:
-
-	virtual
-	void
-	setup ();
-
-	virtual
-	void
-	set_size ();
-
-	virtual
-	void
-	update (const Cairo::RefPtr <Cairo::Context> &);
-
-	SFNode <X3DBrowser> browser;
-	PointingDevice      pointingDevice;
-	Viewer              viewer;
-
-};
-
-} // X3D
+} // chrono
 } // titania
-
-#endif

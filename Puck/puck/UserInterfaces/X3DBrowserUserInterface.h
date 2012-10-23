@@ -56,7 +56,7 @@
 #include "../UserInterfaces/X3DBrowserWidgetUI.h"
 #include "../ViewpointEditor/ViewpointEditor.h"
 
-#include <Titania/X3D/Widgets/DrawingArea.h>
+#include <Titania/X3D/Widgets/Surface.h>
 
 namespace titania {
 namespace puck {
@@ -70,11 +70,11 @@ public:
 
 	/// @name Widgets
 
-	X3D::DrawingArea &
-	getDrawingArea () { return drawingArea; }
+	X3D::Surface &
+	getSurface () { return surface; }
 
-	const X3D::DrawingArea &
-	getDrawingArea () const { return drawingArea; }
+	const X3D::Surface &
+	getSurface () const { return surface; }
 
 	MotionBlurEditor &
 	getMotionBlurEditor () { return motionBlurEditor; }
@@ -131,7 +131,7 @@ protected:
 
 private:
 
-	X3D::DrawingArea drawingArea;
+	X3D::Surface surface;
 	MotionBlurEditor motionBlurEditor;
 	ViewpointEditor  viewpointEditor;
 	HistoryEditor    historyEditor;

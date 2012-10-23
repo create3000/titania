@@ -172,7 +172,6 @@
     <None Include="share\titania\puck\pages\about\home.wrl" />
     <None Include="share\titania\puck\pages\about\home\red.orange.yellow.wrl" />
     <None Include="puck\Configuration\Configuration.h" />
-    <None Include="share\titania\puck\pages\about\info.wrl" />
     <None Include="share\titania\puck\pages\about\url_error.wrl" />
     <None Include="share\titania\puck\pages\about\blank.wrl" />
     <None Include="share\titania\puck\ui\icons\blank-icon.svg" />
@@ -201,6 +200,9 @@
     <None Include="puck\Browser\X3DBrowserWindow.h" />
     <None Include="puck\Base\X3DBrowserInterface.h" />
     <None Include="puck\UserInterfaces\X3DBrowserUserInterface.h" />
+    <None Include="share\titania\puck\pages\about\info.wrl" />
+    <None Include="share\titania\puck\pages\about\info\info.png" />
+    <None Include="share\titania\puck\pages\about\info\info.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -221,6 +223,8 @@
     <Folder Include="share\titania\puck\pages\" />
     <Folder Include="share\titania\puck\pages\about\" />
     <Folder Include="puck\UserInterfaces\" />
+    <Folder Include="share\titania\puck\pages\images\" />
+    <Folder Include="share\titania\puck\pages\about\info\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\applications\puck.desktop">

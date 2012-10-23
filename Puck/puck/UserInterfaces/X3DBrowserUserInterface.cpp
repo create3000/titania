@@ -56,7 +56,7 @@ namespace puck {
 X3DBrowserUserInterface::X3DBrowserUserInterface (const std::string & sessionKey, X3DBrowserInterface* const browserWidget) :
 	    X3DBrowserWidgetUI (puck_ui ("BrowserWidget.ui"), sessionKey),
 	X3DBrowserInterface (X3D::createBrowser ()),
-	        drawingArea (getBrowser ()),
+	        surface (getBrowser ()),
 	   motionBlurEditor (sessionKey, this),
 	    viewpointEditor (sessionKey, this),
 	      historyEditor (sessionKey, this),
@@ -102,6 +102,14 @@ X3DBrowserUserInterface::initialize ()
 void
 X3DBrowserUserInterface::restoreSession ()
 {
+	// VPaned
+	if (getConfig () .integer ("vPaned"))
+		getVPaned () .set_position (getConfig () .integer ("vPaned"));
+
+	// HPaned
+	if (getConfig () .integer ("hPaned"))
+		getHPaned () .set_position (getConfig () .integer ("hPaned"));
+
 	// ToolBar
 	if (getConfig () .boolean ("toolBar"))
 		getToolBarMenuItem () .activate ();
@@ -137,6 +145,9 @@ X3DBrowserUserInterface::saveSession ()
 	//	printStatistics ();
 	
 	getConfig () .set ("worldURL", getWorldURL ());
+	
+	getConfig () .set ("vPaned", getVPaned () .get_position ());
+	getConfig () .set ("hPaned", getHPaned () .get_position ());
 
 	getConfig () .set ("toolBar",       getToolBarMenuItem ()       .get_active ());
 	getConfig () .set ("navigationBar", getNavigationBarMenuItem () .get_active ());

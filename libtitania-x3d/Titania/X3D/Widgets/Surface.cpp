@@ -46,10 +46,12 @@
  *
  ******************************************************************************/
 
-#include "DrawingArea.h"
+#include "Surface.h"
 
 #include "../Bits/Error.h"
 #include "../Types/Time.h"
+
+#include <gtkmm/main.h>
 
 #include <csignal>
 #include <cstdlib>
@@ -73,23 +75,23 @@ signal_handler (int sig)
 	exit (1);
 }
 
-DrawingArea::DrawingArea (const SFNode <X3DBrowser> & browser) :
-    OpenGL::GLSurface (),                          
-	         motionBlur (new MotionBlur (*browser)), 
-	            browser (browser),                   
-	    pointingDevice  (*this),                     
-	            viewer  (*this)
+Surface::Surface (const SFNode <X3DBrowser> & browser) :
+	OpenGL::GLSurface (),                          
+	       motionBlur (new MotionBlur (*browser)), 
+	          browser (browser),                   
+	  pointingDevice  (*this),                     
+	          viewer  (*this)
 {
 	// install our handler
 	std::signal (SIGSEGV, signal_handler);
 
 	add_events (Gdk::BUTTON_PRESS_MASK | Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK | Gdk::SCROLL_MASK);
 
-	getBrowser () -> changed .addInterest (static_cast <Gtk::Widget*> (this), &DrawingArea::queue_draw);
+	getBrowser () -> changed .addInterest (static_cast <Gtk::Widget*> (this), &Surface::queue_draw);
 }
 
 void
-DrawingArea::setup ()
+Surface::setup ()
 {
 	__LOG__ << std::endl;
 
@@ -109,14 +111,16 @@ DrawingArea::setup ()
 }
 
 void
-DrawingArea::set_size ()
+Surface::set_size ()
 {
 	motionBlur -> clear ();
 }
 
 void
-DrawingArea::update (const Cairo::RefPtr <Cairo::Context> & cairo)
+Surface::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
+	Gtk::Main::iteration (false);
+
 	try
 	{
 		getBrowser () -> update ();
@@ -139,7 +143,7 @@ DrawingArea::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 	cairo -> show_text ("Titania");
 }
 
-DrawingArea::~DrawingArea ()
+Surface::~Surface ()
 { }
 
 } // X3D

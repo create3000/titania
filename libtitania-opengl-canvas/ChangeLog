@@ -1,5 +1,14 @@
 2012-10-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* GLSurface.h:
+	* GLSurface.cpp:
+	* GLContext.h:
+	* libtitania-opengl-drawingarea.cproj:
+	* TextureContext.h:
+	* TextureContext.cpp: 
+
+2012-10-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* GLSurface.o:
 	* WindowContext.o:
 	* GLSurface.h:

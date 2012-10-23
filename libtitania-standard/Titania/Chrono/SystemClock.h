@@ -46,45 +46,70 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_CHRONO_STEADY_TIMER_H__
-#define __TITANIA_CHRONO_STEADY_TIMER_H__
+#ifndef __TITANIA_CHRONO_SYSTEM_TIMER_H__
+#define __TITANIA_CHRONO_SYSTEM_TIMER_H__
 
-#include "TimerBase.h"
+#include "ClockBase.h"
+#include "Now.h"
+
+#include <chrono>
 
 namespace titania {
 namespace chrono {
 
+using namespace std::chrono;
+
 template <class Type>
-class steady_timer :
-	public timer_base <Type>
+class system_clock :
+	public clock_base <Type>
 {
 public:
 
-	///  Default constructor.  Sets the value for this clock to cycle to 0 and for interval to 1.
-	constexpr
-	steady_timer () :
-		timer_base <Type> (0, 1) { }
-
-	///  Component constructor.  Sets the value for this clock to @a cycle and @a interval.
-	constexpr
-	steady_timer (const Type & cycle, const Type & interval) :
-		timer_base <Type> (cycle, interval)
+	///  Default constructor.  Sets cycle to current system time, in seconds,
+	///  and for interval to the tick interval of the system clock, in seconds.
+	system_clock () :
+		clock_base <Type> (count (), duration_cast <duration <Type>> (duration <high_resolution_clock::rep,
+		                                                                         high_resolution_clock::period> ()) .count ())
 	{ }
 
 	///  Copy constructor.
 	constexpr
-	steady_timer (const steady_timer &) = default;
+	system_clock (const system_clock & clock) :
+		clock_base <Type> (clock) { }
 
+	virtual
+	bool
+	// should be constexpr
+	before (const Type & value) const
+	{
+		return system_clock::cycle () < value;
+	}
+
+	///  Advance this clock.
+	virtual
+	void
+	advance ()
+	{
+		Type prior = system_clock::cycle ();
+
+		clock_base <Type>::advance ();
+
+		this -> interval (system_clock::cycle () - prior);
+	}
 
 private:
 
 	///  Get the current count of this clock.
-	virtual Type
-	count () const { return steady_timer::cycle () + steady_timer::interval (); }
+	virtual
+	Type
+	count () const
+	{
+		return now <Type> ();
+	}
 
 };
 
-extern template class steady_timer <double>;
+extern template class system_clock <double>;
 
 } // chrono
 } // titania

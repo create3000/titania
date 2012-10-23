@@ -406,7 +406,6 @@
     <None Include="Titania\X3D\Rendering\Matrix.h" />
     <None Include="Titania\X3D\Rendering\ViewVolume.h" />
     <None Include="Titania\X3D\Fields\X3DScalar.h" />
-    <None Include="Titania\X3D\Widgets\DrawingArea.h" />
     <None Include="Titania\X3D\Widgets\Viewer.h" />
     <None Include="Titania\X3D\Widgets\PointingDevice.h" />
     <None Include="Titania\X3D\Components\Core\X3DPropertyNode.h" />
@@ -478,6 +477,7 @@
     <None Include="Titania\X3D\Browser\Properties\QuadSphereProperties.h" />
     <None Include="Titania\X3D\Browser\Properties\X3DSpherePropertyNode.h" />
     <None Include="Titania\X3D\Browser\Properties\BrowserOptions.h" />
+    <None Include="Titania\X3D\Widgets\Surface.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -543,7 +543,6 @@
     <Compile Include="Titania\X3D\Routing\Router.cpp" />
     <Compile Include="Titania\X3D\Routing\RouteSet.cpp" />
     <Compile Include="Titania\X3D\Types\Image.cpp" />
-    <Compile Include="Titania\X3D\Widgets\DrawingArea.cpp" />
     <Compile Include="Titania\X3D\Widgets\MotionBlur.cpp" />
     <Compile Include="Titania\X3D\Widgets\PointingDevice.cpp" />
     <Compile Include="Titania\X3D\Widgets\Viewer.cpp" />
@@ -842,6 +841,7 @@
     <Compile Include="Titania\X3D\Browser\Properties\QuadSphereProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\BrowserOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\BrowserProperties.cpp" />
+    <Compile Include="Titania\X3D\Widgets\Surface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

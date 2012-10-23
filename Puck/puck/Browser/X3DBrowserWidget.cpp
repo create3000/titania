@@ -76,13 +76,13 @@ X3DBrowserWidget::initialize ()
 	// Splash Screen.
 	
 	// Connect to map_event
-	map_event = getDrawingArea () .signal_map_event () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::on_map_event));
+	map_event = getSurface () .signal_map_event () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::on_map_event));
 
-	// Insert DrawingArea, this will initialize the Browser.
-	getDrawingAreaBox () .pack_start (getDrawingArea (), true, true, 0);
+	// Insert Surface, this will initialize the Browser.
+	getSurfaceBox () .pack_start (getSurface (), true, true, 0);
 
-	// Show DrawingArea and start the X3D Main Loop.
-	getDrawingArea () .show ();
+	// Show Surface and start the X3D Main Loop.
+	getSurface () .show ();
 }
 
 bool
@@ -120,7 +120,7 @@ X3DBrowserWidget::set_initialized ()
 void
 X3DBrowserWidget::blank ()
 {
-	if (not getDrawingArea () .gl ())
+	if (not getSurface () .makeCurrent ())
 		return;
 
 	getBrowser () -> replaceWorld (getBrowser () -> createScene ());
@@ -235,7 +235,7 @@ X3DBrowserWidget::printStatistics () const
 //
 //		std::cout << "Load Time: " << loadTime << std::endl;
 //
-//		for (auto const & line : getDrawingArea () .statistics -> string)
+//		for (auto const & line : getSurface () .statistics -> string)
 //			std::cout << "  " << line .toString () << std::endl;
 //	}
 //	catch (const X3D::Error <X3D::INVALID_NAME> &)

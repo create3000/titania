@@ -1,5 +1,25 @@
 2012-10-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3D.h:
+	* libtitania-x3d.cproj:
+	* Viewer.h:
+	* Surface.h:
+	* Viewer.cpp:
+	* Surface.cpp:
+	* Browser.cpp:
+	* X3DBrowser.h:
+	* DrawingArea.h:
+	* X3DBrowser.cpp:
+	* DrawingArea.cpp:
+	* PointingDevice.h:
+	* PointingDevice.cpp:
+	* ShapeContainer.cpp:
+	* X3DShapeNode.cpp:
+	* RenderingProperties.h:
+	* X3DTexture2DNode.cpp: 
+
+2012-10-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3D.o:
 	* Viewer.o:
 	* libtitania-x3d.md.pc:

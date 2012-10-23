@@ -55,13 +55,13 @@
 namespace titania {
 namespace X3D {
 
-class DrawingArea;
+class Surface;
 
 class PointingDevice
 {
 public:
 
-	PointingDevice (DrawingArea &);
+	PointingDevice (Surface &);
 
 	const SFNode <X3DBrowser> &
 	getBrowser ();
@@ -81,7 +81,7 @@ private:
 	bool
 	pick (const size_t, const size_t);
 
-	DrawingArea &         drawingArea;
+	Surface &         surface;
 	size_t                button;
 	bool                  isOver;
 	MFNode <X3DBasicNode> hitNodes;

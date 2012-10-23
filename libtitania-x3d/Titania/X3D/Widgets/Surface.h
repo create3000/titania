@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,12 +46,64 @@
  *
  ******************************************************************************/
 
-#include "SteadyTimer.h"
+#ifndef __TITANIA_X3D_WIDGETS_SURFACE_H__
+#define __TITANIA_X3D_WIDGETS_SURFACE_H__
+
+#include "../Components/Core/X3DNode.h"
+
+#include <Titania/OpenGL/GLSurface.h>
+
+#include "../Browser/X3DBrowser.h"
+#include "MotionBlur.h"
+#include "PointingDevice.h"
+#include "Viewer.h"
 
 namespace titania {
-namespace chrono {
+namespace X3D {
 
-template class steady_timer <double>;
+class Surface :
+	public OpenGL::GLSurface
+{
+public:
 
-} // chrono
+	SFNode <MotionBlur> motionBlur;
+
+	Surface (const SFNode <X3DBrowser> &);
+
+	const SFNode <X3DBrowser> &
+	getBrowser () { return browser; }
+
+	PointingDevice*
+	getPointingDevice () { return &pointingDevice; }
+
+	Viewer*
+	getViewer () { return &viewer; }
+
+	virtual
+	~Surface ();
+
+
+private:
+
+	virtual
+	void
+	setup ();
+
+	virtual
+	void
+	set_size ();
+
+	virtual
+	void
+	update (const Cairo::RefPtr <Cairo::Context> &);
+
+	SFNode <X3DBrowser> browser;
+	PointingDevice      pointingDevice;
+	Viewer              viewer;
+
+};
+
+} // X3D
 } // titania
+
+#endif

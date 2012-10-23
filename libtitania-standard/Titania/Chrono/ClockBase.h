@@ -55,7 +55,7 @@ namespace titania {
 namespace chrono {
 
 template <class Type>
-class timer_base
+class clock_base
 {
 public:
 
@@ -66,8 +66,8 @@ public:
 	cycle () const { return value .real (); }
 
 	///  Assignment operator for clocks.
-	timer_base &
-	operator = (const timer_base & clock)
+	clock_base &
+	operator = (const clock_base & clock)
 	{
 		value = clock .value;
 		return *this;
@@ -75,7 +75,7 @@ public:
 
 	///  Compares if the cycle of this clock is before the cycle of @a clock.
 	constexpr bool
-	before (const timer_base & clock) const { return before (clock .cycle ()); }
+	before (const clock_base & clock) const { return before (clock .cycle ()); }
 
 	///  Compares if the cycle of this clock is before @a value.
 	virtual
@@ -93,18 +93,18 @@ public:
 	advance () { cycle (count ()); }
 
 	virtual
-	~timer_base () { }
+	~clock_base () { }
 
 protected:
 
 	///  Component constructor.  Sets the value for this clock to @a cycle and @a interval.
 	constexpr
-	timer_base (const Type & cycle, const Type & interval) :
+	clock_base (const Type & cycle, const Type & interval) :
 		value (cycle, interval) { }
 
 	///  Copy constructor.
 	constexpr
-	timer_base (const timer_base & clock) :
+	clock_base (const clock_base & clock) :
 		value (clock .value) { }
 
 	///  Set the last interval of this clock.
@@ -130,7 +130,7 @@ private:
 template <class Type>
 inline
 constexpr bool
-operator < (const timer_base <Type> & a, const timer_base <Type> & b)
+operator < (const clock_base <Type> & a, const clock_base <Type> & b)
 {
 	return a .before (b);
 }
@@ -138,7 +138,7 @@ operator < (const timer_base <Type> & a, const timer_base <Type> & b)
 template <class Type>
 inline
 constexpr bool
-operator < (const timer_base <Type> & a, const Type & b)
+operator < (const clock_base <Type> & a, const Type & b)
 {
 	return a .before (b);
 }
@@ -146,7 +146,7 @@ operator < (const timer_base <Type> & a, const Type & b)
 template <class Type>
 inline
 constexpr bool
-operator > (const timer_base <Type> & a, const timer_base <Type> & b)
+operator > (const clock_base <Type> & a, const clock_base <Type> & b)
 {
 	return not a .before (b);
 }
@@ -154,7 +154,7 @@ operator > (const timer_base <Type> & a, const timer_base <Type> & b)
 template <class Type>
 inline
 constexpr bool
-operator > (const timer_base <Type> & a, const Type & b)
+operator > (const clock_base <Type> & a, const Type & b)
 {
 	return not a .before (b);
 }
@@ -162,7 +162,7 @@ operator > (const timer_base <Type> & a, const Type & b)
 ///  Extraction operator for clock values.
 template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
-operator >> (std::basic_istream <CharT, Traits> & istream, timer_base <Type> & clock)
+operator >> (std::basic_istream <CharT, Traits> & istream, clock_base <Type> & clock)
 {
 	return istream;
 }
@@ -170,14 +170,14 @@ operator >> (std::basic_istream <CharT, Traits> & istream, timer_base <Type> & c
 ///  Insertion operator for clock values.
 template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const timer_base <Type> & clock)
+operator << (std::basic_ostream <CharT, Traits> & ostream, const clock_base <Type> & clock)
 {
 	return ostream << clock .cycle ();
 }
 
-extern template class timer_base <double>;
-extern template std::istream & operator >> (std::istream &, timer_base <double> &);
-extern template std::ostream & operator << (std::ostream &, const timer_base <double> &);
+extern template class clock_base <double>;
+extern template std::istream & operator >> (std::istream &, clock_base <double> &);
+extern template std::ostream & operator << (std::ostream &, const clock_base <double> &);
 
 } // basic
 } // titania

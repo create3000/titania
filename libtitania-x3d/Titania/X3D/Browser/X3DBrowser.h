@@ -29,7 +29,7 @@
 #ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_H__
 #define __TITANIA_X3D_BROWSER_X3DBROWSER_H__
 
-#include <Titania/Chrono/TimerBase.h>
+#include <Titania/Chrono/ClockBase.h>
 
 #include "../Components/Navigation/Viewpoint.h"
 #include "../Components/Networking/X3DUrlObject.h"
@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-typedef chrono::timer_base <time_type> X3DClock;
+typedef chrono::clock_base <time_type> X3DClock;
 
 enum EventType
 {

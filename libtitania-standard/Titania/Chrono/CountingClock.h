@@ -46,14 +46,47 @@
  *
  ******************************************************************************/
 
-#include "TimerBase.h"
+#ifndef __TITANIA_CHRONO_STEADY_TIMER_H__
+#define __TITANIA_CHRONO_STEADY_TIMER_H__
+
+#include "ClockBase.h"
 
 namespace titania {
 namespace chrono {
 
-template class timer_base <double>;
-template std::istream & operator >> (std::istream &, timer_base <double> &);
-template std::ostream & operator << (std::ostream &, const timer_base <double> &);
+template <class Type>
+class counting_clock :
+	public clock_base <Type>
+{
+public:
+
+	///  Default constructor.  Sets the value for this clock to cycle to 0 and for interval to 1.
+	constexpr
+	counting_clock () :
+		clock_base <Type> (0, 1) { }
+
+	///  Component constructor.  Sets the value for this clock to @a cycle and @a interval.
+	constexpr
+	counting_clock (const Type & cycle, const Type & interval) :
+		clock_base <Type> (cycle, interval)
+	{ }
+
+	///  Copy constructor.
+	constexpr
+	counting_clock (const counting_clock &) = default;
+
+
+private:
+
+	///  Get the current count of this clock.
+	virtual Type
+	count () const { return counting_clock::cycle () + counting_clock::interval (); }
+
+};
+
+extern template class counting_clock <double>;
 
 } // chrono
 } // titania
+
+#endif

@@ -30,8 +30,8 @@
 
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../InputOutput/uncompress.h"
-#include <Titania/Chrono/SteadyTimer.h>
-#include <Titania/Chrono/SystemTimer.h>
+#include <Titania/Chrono/CountingClock.h>
+#include <Titania/Chrono/SystemClock.h>
 
 namespace titania {
 namespace X3D {
@@ -41,7 +41,7 @@ const std::string X3DBrowser::version ("0.1");
 X3DBrowser::X3DBrowser () :
 	X3DExecutionContext (),                                        
 	       X3DUrlObject (),                                        
-	              clock (new chrono::system_timer <time_type> ()), 
+	              clock (new chrono::system_clock <time_type> ()), 
 	    supportedFields (this),                                    
 	     supportedNodes (this),                                    
 	supportedComponents (this),                                    

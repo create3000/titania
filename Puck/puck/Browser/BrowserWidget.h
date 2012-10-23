@@ -82,7 +82,7 @@ private:
 	void
 	on_unmap ();
 
-	/// @name File
+	/// @name File menu
 
 	virtual
 	void
@@ -135,7 +135,6 @@ private:
 
 	/// @name Bar view handling
 
-	//@{
 	virtual
 	void
 	on_navigationBar_toggled ();
@@ -154,11 +153,9 @@ private:
 
 	void
 	on_statusBar_toggled ();
-	//@}
 
-	/// @name Rending properties handling
+	/// @name Shading
 
-	//@{
 	virtual
 	void
 	phong_activate ();
@@ -178,9 +175,9 @@ private:
 	virtual
 	void
 	pointset_activate ();
-	//@}
+	
+	///  @name Rendering quality
 
-	//@{
 	virtual
 	void
 	on_low_quality_activate ();
@@ -192,25 +189,21 @@ private:
 	virtual
 	void
 	on_high_quality_activate ();
-	//@}
 
-	///
+	///  @name Rendering properties
 
-	//@{
 	virtual
 	void
 	on_rendering_properties_toggled ();
-	//@}
 
-	///
+	///  @name Fullscreen modus
 
 	virtual
 	void
 	on_fullscreen_toggled ();
 
-	///
+	///  @name HeadlLight
 
-	//@{
 	virtual
 	void
 	on_headlight_toggled ();
@@ -218,11 +211,9 @@ private:
 	virtual
 	void
 	on_show_all_toggled ();
-	//@}
 
-	/// Editor handling
+	///  @name Editor handling
 
-	//@{
 	virtual
 	void
 	on_outline_editor_activate ();
@@ -234,7 +225,6 @@ private:
 	virtual
 	void
 	on_motion_blur_editor_activate ();
-	//@}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -245,6 +235,12 @@ private:
 	virtual
 	void
 	on_hand_button_toggled ();
+	
+	///  @name Help menu
+	
+	virtual
+	void
+	on_info ();
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

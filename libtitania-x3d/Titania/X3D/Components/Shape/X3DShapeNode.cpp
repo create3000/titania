@@ -143,6 +143,7 @@ void
 X3DShapeNode::draw ()
 {
 	glColor4f (1, 1, 1, 1);
+
 	getBrowser () -> setObjectAlpha (1, 1);
 
 	glMatrixMode (GL_TEXTURE);
@@ -157,6 +158,11 @@ X3DShapeNode::draw ()
 		appearance -> display ();
 
 	geometry -> display ();
+
+	glDisable (GL_FOG);
+	glDisable (GL_LIGHTING);
+	glDisable (GL_TEXTURE_2D);
+	glDisable (GL_COLOR_MATERIAL);
 }
 
 } // X3D

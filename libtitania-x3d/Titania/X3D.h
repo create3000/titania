@@ -49,7 +49,7 @@
 #ifndef __TITANIA_X3D_H__
 #define __TITANIA_X3D_H__
 
-#include "X3D/Widgets/DrawingArea.h"
+#include "X3D/Widgets/Surface.h"
 #include "X3D/Bits/Error.h"
 #include "X3D/Browser/Browser.h"
 #include "X3D/Components.h"

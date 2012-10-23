@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ItemType>GenericProject</ItemType>
     <ProductVersion>10.0.0</ProductVersion>
@@ -9,14 +9,19 @@
     <ProjectGuid>{61BC6D29-D55B-43E3-917C-D8E5B14EC6CE}</ProjectGuid>
     <ReleaseVersion>0.3</ReleaseVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Default|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>.\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Parallel|AnyCPU' ">
+    <OutputPath>.\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <None Include="logo.x3d" />
     <None Include="logo.blend" />
     <None Include="logo.svg" />
-    <None Include="titania.xcf" />
     <None Include="logo.dxf" />
     <None Include="icon.svg" />
     <None Include="logo64.png" />
@@ -26,5 +31,6 @@
     <None Include="icon16.png" />
     <None Include="icon192.png" />
     <None Include="icon64.png" />
+    <None Include="titania.xcf" />
   </ItemGroup>
 </Project>

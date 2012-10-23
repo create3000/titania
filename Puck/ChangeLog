@@ -1,5 +1,22 @@
 2012-10-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Puck.cproj:
+	* BrowserWidget.h:
+	* BrowserWidget.cpp:
+	* X3DBrowserWidget.h:
+	* X3DBrowserWidget.cpp:
+	* BrowserWidget.ui:
+	* info.wrl:
+	* X3DBrowserWidgetUI.h:
+	* X3DBrowserWidgetUI.cpp:
+	* MotionBlurEditor.cpp:
+	* info.png:
+	* info.svg:
+	* X3DBrowserUserInterface.h:
+	* X3DBrowserUserInterface.cpp: 
+
+2012-10-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* test-puck.sh:
 	* puck:
 	* main.o:

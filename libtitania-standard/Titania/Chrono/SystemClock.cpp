@@ -1,9 +1,9 @@
-/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
- *******************************************************************************
+/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
+/*******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,70 +46,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OPEN_GL_CONTEXT_X3DCONTEXT_H__
-#define __TITANIA_OPEN_GL_CONTEXT_X3DCONTEXT_H__
-
-#include <glibmm/refptr.h>
-#include <gdkmm/display.h>
-
-extern "C"
-{
-#include <GL/glew.h>
-
-#include <GL/glu.h>
-
-#include <GL/gl.h>
-
-#include <GL/glx.h>
-}
+#include "SystemClock.h"
 
 namespace titania {
-namespace OpenGL {
+namespace chrono {
 
-class GLContext
-{
-public:
+template class system_clock <double>;
 
-	GLXContext
-	getValue () const;
-
-	virtual
-	bool
-	makeCurrent () const;
-
-	virtual
-	void
-	swapBuffers () const;
-
-	virtual
-	~GLContext ();
-
-
-protected:
-
-	GLContext (const Glib::RefPtr <Gdk::Display> &);
-
-	Display*
-	getDisplay () const;
-
-	void
-	setDrawable (GLXDrawable);
-
-	void
-	setValue (GLXContext);
-
-private:
-
-	Glib::RefPtr <Gdk::Display> display;
-
-	Display*    xDisplay;
-	GLXDrawable xDrawable;
-	GLXContext  xContext;
-
-};
-
-
-} // OpenGL
+} // chrono
 } // titania
-
-#endif

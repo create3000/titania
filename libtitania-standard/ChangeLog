@@ -1,5 +1,21 @@
 2012-10-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-standard.cproj:
+	* TimerBase.h:
+	* ClockBase.h:
+	* SteadyTimer.h:
+	* SystemTimer.h:
+	* TimerBase.cpp:
+	* ClockBase.cpp:
+	* SystemClock.h:
+	* SystemClock.cpp:
+	* CountingClock.h:
+	* SteadyTimer.cpp:
+	* SystemTimer.cpp:
+	* CountingClock.cpp: 
+
+2012-10-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-standard.md.pc: 
 
 2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>

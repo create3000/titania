@@ -48,7 +48,7 @@
 
 #include "Viewer.h"
 
-#include "DrawingArea.h"
+#include "Surface.h"
 #include <cmath>
 #include <glibmm/main.h>
 
@@ -58,24 +58,24 @@
 namespace titania {
 namespace X3D {
 
-Viewer::Viewer (DrawingArea & drawingArea) :
-	drawingArea (drawingArea), 
+Viewer::Viewer (Surface & surface) :
+	surface (surface), 
 	     button (0)
 { }
 
 const SFNode <X3DBrowser> &
 Viewer::getBrowser ()
 {
-	return drawingArea .getBrowser ();
+	return surface .getBrowser ();
 }
 
 void
 Viewer::initialize ()
 {
-	drawingArea .signal_button_press_event   () .connect (sigc::mem_fun (*this, &Viewer::on_button_press_event));
-	drawingArea .signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &Viewer::on_motion_notify_event));
-	drawingArea .signal_button_release_event () .connect (sigc::mem_fun (*this, &Viewer::on_button_release_event));
-	drawingArea .signal_scroll_event         () .connect (sigc::mem_fun (*this, &Viewer::on_scroll_event));
+	surface .signal_button_press_event   () .connect (sigc::mem_fun (*this, &Viewer::on_button_press_event));
+	surface .signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &Viewer::on_motion_notify_event));
+	surface .signal_button_release_event () .connect (sigc::mem_fun (*this, &Viewer::on_button_release_event));
+	surface .signal_scroll_event         () .connect (sigc::mem_fun (*this, &Viewer::on_scroll_event));
 
 	getBrowser () -> world .addInterest (this, &Viewer::set_scene);
 
@@ -121,8 +121,8 @@ Viewer::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
-		fromVector .x (event -> x / drawingArea .get_width () - 0.5f);
-		fromVector .y (-event -> y / drawingArea .get_height () + 0.5f);
+		fromVector .x (event -> x / surface .get_width () - 0.5f);
+		fromVector .y (-event -> y / surface .get_height () + 0.5f);
 		fromVector .z (tb_project_to_sphere (0.5f, fromVector .x (), fromVector .y ()));
 
 		deltaRotation = Rotation4f ();
@@ -154,8 +154,8 @@ Viewer::on_motion_notify_event (GdkEventMotion* event)
 		if (viewpoint)
 		{
 			Vector3f toVector;
-			toVector .x (event -> x / drawingArea .get_width () - 0.5f);
-			toVector .y (-event -> y / drawingArea .get_height () + 0.5f);
+			toVector .x (event -> x / surface .get_width () - 0.5f);
+			toVector .y (-event -> y / surface .get_height () + 0.5f);
 			toVector .z (tb_project_to_sphere (0.5, toVector .x (), toVector .y ()));
 
 			deltaRotation = ~Rotation4f (fromVector, toVector);

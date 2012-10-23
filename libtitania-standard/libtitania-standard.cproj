@@ -88,9 +88,9 @@
     <None Include="Titania\OS\Home.h" />
     <None Include="Titania\LOG.h" />
     <None Include="Titania\Bits\String\strfsize.h" />
-    <None Include="Titania\Chrono\SteadyTimer.h" />
-    <None Include="Titania\Chrono\SystemTimer.h" />
-    <None Include="Titania\Chrono\TimerBase.h" />
+    <None Include="Titania\Chrono\SystemClock.h" />
+    <None Include="Titania\Chrono\ClockBase.h" />
+    <None Include="Titania\Chrono\CountingClock.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
@@ -118,8 +118,8 @@
     <Compile Include="Titania\OS\Home.cpp" />
     <Compile Include="Titania\Bits\String\Split.cpp" />
     <Compile Include="Titania\Bits\String\strfsize.cpp" />
-    <Compile Include="Titania\Chrono\SteadyTimer.cpp" />
-    <Compile Include="Titania\Chrono\SystemTimer.cpp" />
-    <Compile Include="Titania\Chrono\TimerBase.cpp" />
+    <Compile Include="Titania\Chrono\SystemClock.cpp" />
+    <Compile Include="Titania\Chrono\ClockBase.cpp" />
+    <Compile Include="Titania\Chrono\CountingClock.cpp" />
   </ItemGroup>
 </Project>
