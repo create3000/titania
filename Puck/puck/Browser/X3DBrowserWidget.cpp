@@ -93,11 +93,17 @@ X3DBrowserWidget::on_map_event (GdkEventAny* event)
 	map_event .disconnect ();
 
 	// Register browser interests.
-	getBrowser () -> addInterest (this, &X3DBrowserWidget::set_initialized);
+	getBrowser () -> urlError .addInterest (this, &X3DBrowserWidget::set_urlError);
+	getBrowser () -> world .addInterest    (this, &X3DBrowserWidget::set_initialized);
 
-	// Load Splash Screen.
-	getBrowser () -> loadURL ({ "about:splash" });
-	
+	try
+	{
+		// Load Splash Screen.
+		loadURL ({ "about:splash" });
+	}
+	catch (...)
+	{ }
+		
 	return false; // Propagate the event further. 
 }
 
@@ -105,14 +111,14 @@ void
 X3DBrowserWidget::set_initialized ()
 {
 	__LOG__ << this << std::endl;
+	
+	updateLocation    ();
+	updateIcon        ();
 
 	// The Splash Screen is loaded.
 
-	update_location ();
-	update_icon     ();
-
-	getBrowser () -> removeInterest     (this, &X3DBrowserWidget::set_initialized);
-	getBrowser () -> world .addInterest (this, &X3DBrowserWidget::set_world);
+	getBrowser () -> world .removeInterest (this, &X3DBrowserWidget::set_initialized);
+	getBrowser () -> world .addInterest    (this, &X3DBrowserWidget::set_world);
 
 	loadURL ({ getConfig () .string ("worldURL") });
 }
@@ -137,17 +143,7 @@ X3DBrowserWidget::setDescription (const std::string & value)
 throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
        X3D::Error <X3D::DISPOSED>)
 {
-	if (value .empty ())
-		getWindow () .set_title ("Titania");
-
-	else
-		getWindow () .set_title (value + " ✩ " + "Titania");
-}
-
-const basic::uri &
-X3DBrowserWidget::getWorldURL ()
-{
-	return getBrowser () -> getWorldURL ();
+	getBrowserWidget () -> setDescription (value);
 }
 
 void
@@ -165,26 +161,8 @@ throw (X3D::Error <X3D::INVALID_URL>,
 {
 	pushStatusBar ("Opening file " + url .toString () + ".");
 
-	__LOG__ << url << std::endl;
-
-	try
-	{
-		loadTime             = chrono::now <double> ();
-		getBrowser () -> url = url;
-	}
-	catch (const X3D::X3DError & error)
-	{
-		getMessageDialog () .set_message ("Invalid X3D");
-		getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
-		                                         + std::string (error .what ())
-		                                         + "\n"
-		                                         + basic::join (getBrowser () -> URLError .cbegin (),
-		                                                        getBrowser () -> URLError .cend (),
-		                                                        "\n")
-		                                         + "</span>",
-		                                         true);
-		getMessageDialog () .show ();
-	}
+	loadTime = chrono::now ();
+	getBrowser () -> loadURL (url);
 }
 
 void
@@ -242,23 +220,38 @@ X3DBrowserWidget::printStatistics () const
 //	{ }
 }
 
-// Callbacks
+// EventIn's
+
+void
+X3DBrowserWidget::set_urlError ()
+{
+	if (getBrowser () -> urlError .empty ())
+		return;
+	
+	getMessageDialog () .set_message ("Invalid X3D");
+	getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
+	                                         + basic::join (getBrowser () -> urlError .cbegin (),
+	                                                        getBrowser () -> urlError .cend (),
+	                                                        "\n")
+	                                         + "</span>",
+	                                         true);
+	getMessageDialog () .show ();
+}
 
 void
 X3DBrowserWidget::set_world (/* X3D::SFNode <X3D::World> & world */)
 {
-	loadTime = chrono::now <double> () - loadTime;
+	loadTime = chrono::now () - loadTime;
 	std::cout << "Load Time: " << loadTime << std::endl;
 
 	saveSession ();
 
 	// Update browser widget.
 
-	update_location   ();
-	update_icon       ();
-	update_viewpoints ();
-
-	setDescription (getWorldURL ());
+	updateDescription ();
+	updateLocation    ();
+	updateIcon        ();
+	updateViewpoints  ();
 
 	// Clear statusbar.
 
@@ -266,23 +259,42 @@ X3DBrowserWidget::set_world (/* X3D::SFNode <X3D::World> & world */)
 }
 
 void
-X3DBrowserWidget::update_location ()
+X3DBrowserWidget::updateDescription ()
 {
-	getLocationEntry () .set_text (getWorldURL () .str ());
-
-	if (getWorldURL () .length () and getWorldURL () .is_local ())
+	std::string description;
+	try
 	{
-		getFileOpenDialog () .set_current_folder_uri (getWorldURL () .base () .str ());
-		getFileSaveDialog () .set_current_folder_uri (getWorldURL () .base () .str ());
+		description = getBrowser () -> getExecutionContext () -> getMetaData ("title");
 	}
+	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	{
+		description = getExecutionContext () -> getWorldURL ();
+	}
+
+	setDescription (description);
 }
 
 void
-X3DBrowserWidget::update_icon ()
+X3DBrowserWidget::updateLocation ()
 {
-	__LOG__ << getBrowser () -> getWorldURL () << std::endl;
+	const auto & worldURL = getExecutionContext () -> getWorldURL ();
 
-	Gtk::StockID                stockId = Gtk::StockID (getBrowser () -> getWorldURL () .str ());
+	getLocationEntry () .set_text (worldURL .str ());
+
+	if (worldURL .length () and worldURL .is_local ())
+	{
+		getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
+		getFileSaveDialog () .set_current_folder_uri (worldURL .base () .str ());
+	}
+
+}
+
+void
+X3DBrowserWidget::updateIcon ()
+{
+	const auto & worldURL = getExecutionContext () -> getWorldURL ();
+
+	Gtk::StockID                stockId = Gtk::StockID (worldURL .str ());
 	Glib::RefPtr <Gtk::IconSet> iconSet;
 
 	try
@@ -317,13 +329,13 @@ X3DBrowserWidget::update_icon ()
 	}
 
 	getIconFactory () -> add (stockId, iconSet);
-	Gtk::Stock::add (Gtk::StockItem (stockId, getBrowser () -> getWorldURL () .str ()));
+	Gtk::Stock::add (Gtk::StockItem (stockId, worldURL .str ()));
 
 	getLocationEntry () .property_primary_icon_stock () .set_value (stockId);
 }
 
 void
-X3DBrowserWidget::update_viewpoints (/* X3D::SFNode <X3D::World> & world */)
+X3DBrowserWidget::updateViewpoints (/* X3D::SFNode <X3D::World> & world */)
 {
 	Gtk::Menu* submenu = Gtk::manage (new Gtk::Menu ());
 

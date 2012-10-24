@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -58,8 +58,8 @@ namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 	   Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN), 
-	 X3DBrowserWindowUI (puck_ui ("BrowserWindow.ui"), gconf_dir ()), 
-	X3DBrowserInterface (NULL)                                        
+	 X3DBrowserWindowUI (puck_ui ("BrowserWindow.ui"), gconf_dir ()),                         
+	X3DBrowserInterface (NULL)
 {
 	setTransparent (true);
 
@@ -182,13 +182,32 @@ X3DBrowserWindow::getBrowser () const
 	return getBrowserWidget () -> getBrowser ();
 }
 
-// X3DURLObject
-
-const basic::uri &
-X3DBrowserWindow::getWorldURL ()
+void
+X3DBrowserWindow::setDescription (const std::string & value)
+throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
+       X3D::Error <X3D::DISPOSED>)
 {
-	return getBrowserWidget () -> getWorldURL ();
+	Gtk::HBox*  tab_label = new Gtk::HBox ();
+	Gtk::Label* label     = new Gtk::Label (value);
+	Gtk::Image* icon      = new Gtk::Image (Gtk::StockID (getExecutionContext () -> getWorldURL () .str ()),
+	                                        Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+
+	tab_label -> pack_start (*Gtk::manage (icon), false, true, 0);
+	tab_label -> pack_start (*Gtk::manage (label), true, true, 0);
+	tab_label -> set_spacing (4);
+	tab_label -> show_all ();
+
+	getNotebook () .set_tab_label (*getNotebook () .get_children () [getNotebook () .get_current_page ()],
+	                               *Gtk::manage (tab_label));
+
+	if (value .empty ())
+		getWindow () .set_title ("Titania");
+
+	else
+		getWindow () .set_title (value);
 }
+
+// X3DURLObject
 
 void
 X3DBrowserWindow::loadURL (const X3D::MFString & url, const X3D::MFString & parameter)
@@ -227,7 +246,7 @@ X3DBrowserWindow::insertPage (size_t position)
 
 	browserWidgets .insert (browserWidgets .begin () + position, browserWidget);
 
-	getNotebook () .insert_page (*Gtk::manage (box), "Title " + std::to_string (position), position);
+	getNotebook () .insert_page (*Gtk::manage (box), "", position);
 }
 
 void

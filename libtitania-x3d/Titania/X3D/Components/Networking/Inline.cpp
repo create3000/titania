@@ -151,7 +151,7 @@ Inline::requestImmediateLoad ()
 
 		std::clog << error .what () << std::endl;
 
-		std::copy (URLError.cbegin (), URLError .cend (),
+		std::copy (urlError.cbegin (), urlError .cend (),
 		           std::ostream_iterator <std::string> (std::clog, "\n"));
 	}
 }

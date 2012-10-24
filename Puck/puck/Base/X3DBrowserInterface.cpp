@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,6 +57,14 @@ X3DBrowserInterface::X3DBrowserInterface (const X3D::SFNode <X3D::X3DBrowser> & 
 	X3DBaseInterface ()
 {
 	setBrowser (browser);
+}
+
+X3D::Scene*
+X3DBrowserInterface::getExecutionContext () const
+throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
+       X3D::Error <X3D::DISPOSED>)
+{
+	return getBrowser () -> getExecutionContext ();
 }
 
 X3DBrowserInterface::~X3DBrowserInterface ()

@@ -90,7 +90,6 @@ private:
 	loadImage (Magick::Image & image);
 
 	LoadState loadState;
-	GLuint    textureId;
 
 };
 

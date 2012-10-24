@@ -59,8 +59,7 @@ ImageTexture::ImageTexture (X3DExecutionContext* const executionContext) :
 	    X3DBasicNode (executionContext -> getBrowser (), executionContext),
 	X3DTexture2DNode (),                                 
 	    X3DUrlObject (),                                 
-	       loadState (NOT_STARTED_STATE),                
-	       textureId (0)
+	       loadState (NOT_STARTED_STATE)              
 {
 	setComponent ("Texturing");
 	setTypeName ("ImageTexture");
@@ -95,6 +94,69 @@ ImageTexture::set_url ()
 	loadState = NOT_STARTED_STATE;
 
 	requestImmediateLoad ();
+}
+
+void
+ImageTexture::requestImmediateLoad ()
+{
+	if (loadState == COMPLETE_STATE or loadState == IN_PROGRESS_STATE)
+		return;
+
+	loadState = IN_PROGRESS_STATE;
+
+	// Delete previous Texture.
+
+	if (getTexture ())
+		if (getBrowser () -> removeTexture (getWorldURL (), getTexture ()));
+
+	// Get cached Texture.
+	
+	std::string cache_control;
+	
+	try
+	{
+		cache_control = getBrowser () -> getExecutionContext () -> getMetaData ("cache-control");		
+	}
+	catch (...)
+	{ }
+	
+	if (cache_control != "no-cache")
+	{
+		for (const auto & URL : transformURI (url))
+		{
+			GLint textureId = getBrowser () -> getTexture (URL);
+
+			__LOG__ << textureId << std::endl;
+
+			if (textureId)
+			{
+				setWorldURL (URL .getValue ());
+				setTexture (textureId);
+				loadState = COMPLETE_STATE;
+				return;
+			}
+		}
+	}
+
+	// Load image.
+
+	Magick::Image image;
+
+	if (not loadImage (image))
+	{
+		loadState = FAILED_STATE;
+		return;
+	}
+
+	// Set image.
+
+	setImage (image);
+
+	// Add texture to cache.
+	
+	getBrowser () -> addTexture (getWorldURL (), getTexture ());
+
+	loadState = COMPLETE_STATE;
 }
 
 bool
@@ -141,69 +203,12 @@ ImageTexture::loadImage (Magick::Image & image)
 }
 
 void
-ImageTexture::requestImmediateLoad ()
-{
-	if (loadState == COMPLETE_STATE or loadState == IN_PROGRESS_STATE)
-		return;
-
-	loadState = IN_PROGRESS_STATE;
-
-	// delete previous Texture
-
-	if (textureId)
-	{
-		if (getBrowser () -> removeTexture (getWorldURL (), textureId))
-			glDeleteTextures (1, &textureId);
-	}
-
-	// load image
-
-	Magick::Image image;
-
-	if (not loadImage (image))
-	{
-		loadState = FAILED_STATE;
-		return;
-	}
-
-	// get cached Texture
-
-	textureId = getBrowser () -> getTexture (getWorldURL ());
-
-	if (textureId)
-	{
-		rebindImage (image, textureId);
-		loadState = COMPLETE_STATE;
-		return;
-	}
-
-	// bind Texture
-
-	glGenTextures (1, &textureId);
-
-	if (not textureId)
-	{
-		setTextureId (0);
-		loadState = FAILED_STATE;
-		return;
-	}
-
-	bindImage (image, textureId);
-
-	// add Texture to cache
-
-	getBrowser () -> addTexture (getWorldURL (), textureId);
-
-	loadState = COMPLETE_STATE;
-}
-
-void
 ImageTexture::dispose ()
 {
-	if (textureId)
+	if (getBrowser () -> removeTexture (getWorldURL (), getTexture ()))
 	{
-		if (getBrowser () -> removeTexture (getWorldURL (), textureId))
-			glDeleteTextures (1, &textureId);
+		__LOG__ << getWorldURL () << std::endl;
+		deleteTexture ();
 	}
 
 	X3DTexture2DNode::dispose ();

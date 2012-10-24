@@ -58,13 +58,19 @@ using namespace std::chrono;
 
 template <class Type>
 Type
-now ()
+basic_now ()
 {
 	return duration_cast <duration <Type>> (high_resolution_clock::now () .time_since_epoch ()) .count ();
 }
 
-//extern template now <float>;
-//extern template now <double>;
+extern template double basic_now <double> ();
+
+inline
+double
+now ()
+{
+	return basic_now <double> ();
+}
 
 } // chrono
 } // titania

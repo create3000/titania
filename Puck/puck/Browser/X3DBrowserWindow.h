@@ -87,8 +87,10 @@ public:
 	///  @name X3DURLObject
 
 	virtual
-	const basic::uri &
-	getWorldURL ();
+	void
+	setDescription (const std::string & value)
+	throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
+	       X3D::Error <X3D::DISPOSED>);
 
 	virtual
 	void

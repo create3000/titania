@@ -76,14 +76,11 @@ public:
 	home ();
 
 	virtual
-	const basic::uri &
-	getWorldURL ();
-	
 	void
 	setDescription (const std::string & value)
 	throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
 	       X3D::Error <X3D::DISPOSED>);
-
+	
 	virtual
 	void
 	loadURL (const X3D::MFString &, const X3D::MFString &)
@@ -144,16 +141,22 @@ private:
 	// Callbacks
 
 	void
+	set_urlError ();
+
+	void
 	set_world ();
 
 	void
-	update_location ();
+	updateDescription ();
 
 	void
-	update_icon ();
+	updateLocation ();
 
 	void
-	update_viewpoints ();
+	updateIcon ();
+
+	void
+	updateViewpoints ();
 
 private:
 

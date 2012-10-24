@@ -53,48 +53,6 @@
 namespace titania {
 namespace X3D {
 
-struct X3DLightNode::Type
-{
-	Type ()
-	{
-		GLint max_lights = 0;
-
-		glGetIntegerv (GL_MAX_LIGHTS, &max_lights);
-
-		lightIds .reserve (max_lights);
-
-		for (GLint i = 0; i < max_lights; ++ i)
-			lightIds .push_back (GL_LIGHT0 + i);
-	}
-
-	void
-	pushLight (const GLenum lightId)
-	{
-		return;
-
-		if (lightId not_eq lightIds .front ())
-			lightIds .push_back (lightId);
-	}
-
-	GLenum
-	popLight ()
-	{
-		return GL_LIGHT0;
-
-		if (lightIds .size () > 0)
-		{
-			GLenum lightId = lightIds .back ();
-			lightIds .pop_back ();
-			return lightId;
-		}
-
-		return lightIds .front ();
-	}
-
-	std::vector <GLenum> lightIds;
-
-};
-
 X3DLightNode::X3DLightNode () :
 	    X3DChildNode (),          
 	ambientIntensity (),          // SFFloat [in,out] ambientIntensity  0            [0,1]
@@ -102,39 +60,39 @@ X3DLightNode::X3DLightNode () :
 	          global (true),      // SFBool  [in,out] global            FALSE
 	       intensity (1),         // SFFloat [in,out] intensity         1            [0,1]
 	              on (true),      // SFBool  [in,out] on                TRUE
-	         lightId (GL_LIGHT0)
+	         lightId (0)
 {
 	addNodeType (X3DLightNodeType);
 }
 
-void
-X3DLightNode::initialize ()
+GLenum
+X3DLightNode::getLight ()
 {
-	X3DChildNode::initialize ();
-
-	static X3DLightNode::Type lightNodeType;
-
-	nodeType = &lightNodeType;
+	return lightId;
 }
 
 void
 X3DLightNode::enable ()
 {
-	lightId = nodeType -> popLight ();
-	glEnable (lightId);
+	if (getBrowser () -> getLights () .size ())
+	{
+		lightId = getBrowser () -> getLights () .top ();
+		getBrowser () -> getLights () .pop ();
+		glEnable (lightId);
+	}
+	else
+		lightId = 0;
 }
 
 void
 X3DLightNode::disable ()
 {
-	glDisable (lightId);
-	nodeType -> pushLight (lightId);
-}
-
-GLenum
-X3DLightNode::light ()
-{
-	return lightId;
+	if (lightId)
+	{
+		getBrowser () -> getLights () .push (lightId);
+		glDisable (lightId);
+		lightId = 0;
+	}
 }
 
 void
@@ -150,7 +108,7 @@ X3DLightNode::draw ()
 }
 
 void
-X3DLightNode::postDisplay ()
+X3DLightNode::finish ()
 {
 	if (not global and on)
 		getCurrentLayer () -> popLocalLight ();

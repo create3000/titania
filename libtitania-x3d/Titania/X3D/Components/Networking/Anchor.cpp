@@ -94,13 +94,13 @@ Anchor::initialize ()
 void
 Anchor::requestImmediateLoad ()
 {
-	loadURL (url, parameter);
+	getBrowser () -> loadURL (transformURI (url), parameter);
 }
 
 void
 Anchor::activate ()
 {
-	loadURL (url, parameter);
+	getBrowser () -> loadURL (transformURI (url), parameter);
 }
 
 void

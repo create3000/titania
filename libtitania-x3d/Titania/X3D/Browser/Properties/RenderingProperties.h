@@ -53,6 +53,8 @@
 #include "../Properties/QuadSphereProperties.h"
 #include <Titania/Chrono/SystemClock.h>
 
+#include <stack>
+
 extern "C"
 {
 #include <GL/glx.h>
@@ -155,12 +157,12 @@ private:
 	time_type maxEventTime;
 	time_type maxTraverseTime;
 
-
 	SFString     fontFamily;
 	size_t       fontHeigth;
 	GLuint       listId;
 	GLuint       fontListBase;
 	XFontStruct* fontInfo;
+
 };
 
 } // X3D

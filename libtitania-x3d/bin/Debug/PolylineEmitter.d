@@ -131,6 +131,15 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/ParticleSystems/../../Execution/../Components/Layering/../Layering/../../Rendering/../Components/Lighting/X3DLightNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/ParticleSystems/../../Execution/../Components/Layering/../Layering/../../Rendering/../Components/Lighting/../Core/X3DChildNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/ParticleSystems/../../Execution/../Components/Layering/../Layering/../../Rendering/../Components/Lighting/../Core/../Core/X3DNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/ParticleSystems/../../Execution/../Components/Layering/../Layering/../../Rendering/../Components/Lighting/../../Browser/Properties/RenderingProperties.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/ParticleSystems/../../Execution/../Components/Layering/../Layering/../../Rendering/../Components/Lighting/../../Browser/Properties/../../Components/Core/X3DChildNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/ParticleSystems/../../Execution/../Components/Layering/../Layering/../../Rendering/../Components/Lighting/../../Browser/Properties/../Properties/QuadSphereProperties.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/ParticleSystems/../../Execution/../Components/Layering/../Layering/../../Rendering/../Components/Lighting/../../Browser/Properties/../Properties/../Properties/X3DSpherePropertyNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/ParticleSystems/../../Execution/../Components/Layering/../Layering/../../Rendering/../Components/Lighting/../../Browser/Properties/../Properties/../Properties/../../Components/Core/X3DPropertyNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/ParticleSystems/../../Execution/../Components/Layering/../Layering/../../Rendering/../Components/Lighting/../../Browser/Properties/../Properties/../Properties/../../Components/Core/../Core/X3DNode.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/SystemClock.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/ClockBase.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/Now.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/ParticleSystems/../../Execution/../Components/Layering/../Layering/../../Rendering/Matrix.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/ParticleSystems/../../Execution/../Components/Layering/../Layering/../../Rendering/../Types/Numbers.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/ParticleSystems/../../Execution/../Components/Layering/../Layering/../../Rendering/X3DRenderer.h \

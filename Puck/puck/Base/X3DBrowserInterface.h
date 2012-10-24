@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __PUCK_BROWSER_BASE_BROWSER_WIDGET_H__
-#define __PUCK_BROWSER_BASE_BROWSER_WIDGET_H__
+#ifndef __PUCK_BASE_X3DBROWSER_INTERFACE_H__
+#define __PUCK_BASE_X3DBROWSER_INTERFACE_H__
 
 #include "../Base/X3DBaseInterface.h"
 
@@ -58,6 +58,18 @@ class X3DBrowserInterface :
 	virtual public X3DBaseInterface
 {
 public:
+
+	virtual
+	void
+	setDescription (const std::string &)
+	throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
+	       X3D::Error <X3D::DISPOSED>) = 0;
+
+	virtual
+	X3D::Scene*
+	getExecutionContext () const
+	throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
+	       X3D::Error <X3D::DISPOSED>);
 
 	virtual
 	void
@@ -73,10 +85,6 @@ public:
 	       X3D::Error <X3D::URL_UNAVAILABLE>,
 	       X3D::Error <X3D::INVALID_X3D>) = 0;
 
-	virtual
-	const basic::uri &
-	getWorldURL () = 0;
-	
 	virtual
 	~X3DBrowserInterface ();
 

@@ -56,8 +56,7 @@ namespace X3D {
 PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	    X3DBasicNode (executionContext -> getBrowser (), executionContext),
 	X3DTexture2DNode (),                                 
-	           image (0, 0, 0, MFInt32 ()),              // SFImage [in,out] image  0 0 0
-	       textureId (0)
+	           image (0, 0, 0, MFInt32 ())              // SFImage [in,out] image  0 0 0
 {
 	setComponent ("Texturing");
 	setTypeName ("PixelTexture");
@@ -79,18 +78,15 @@ void
 PixelTexture::initialize ()
 {
 	X3DTexture2DNode::initialize ();
-	glGenTextures (1, &textureId);
+
 	requestImmediateLoad ();
 }
 
 void
 PixelTexture::requestImmediateLoad ()
 {
-	if (not textureId or image .getComp () < 1 or image .getComp () > 4 or image .getWidth () <= 0 or image .getHeight () <= 0)
-	{
-		setTextureId (0);
+	if (not getTexture () or image .getComp () < 1 or image .getComp () > 4 or image .getWidth () <= 0 or image .getHeight () <= 0)
 		return;
-	}
 
 	size_t pixels = image .getWidth () * image .getHeight ();
 
@@ -177,13 +173,14 @@ PixelTexture::requestImmediateLoad ()
 		mimage .read (blob);
 	}
 
-	bindImage (mimage, textureId);
+	setImage (mimage);
 }
 
 void
 PixelTexture::dispose ()
 {
-	glDeleteTextures (1, &textureId);
+	deleteTexture ();
+
 	X3DTexture2DNode::dispose ();
 }
 

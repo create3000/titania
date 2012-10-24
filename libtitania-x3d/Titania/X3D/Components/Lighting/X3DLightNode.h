@@ -50,6 +50,7 @@
 #define __TITANIA_X3D_COMPONENTS_LIGHTING_X3DLIGHT_NODE_H__
 
 #include "../Core/X3DChildNode.h"
+#include "../../Browser/Properties/RenderingProperties.h"
 
 namespace titania {
 namespace X3D {
@@ -67,38 +68,31 @@ public:
 
 	virtual
 	void
-	draw ();
-
-	void
-	postDisplay ();
-
-	virtual
-	void
 	enable ();
 
 	virtual
 	void
 	disable ();
 
+	virtual
+	void
+	draw ();
+
+	void
+	finish ();
+
 
 protected:
 
 	X3DLightNode ();
 
-	virtual
-	void
-	initialize ();
-
 	GLenum
-	light ();
+	getLight ();
 
 
 private:
 
 	GLenum lightId;
-
-	class Type;
-	Type* nodeType;
 
 };
 

@@ -50,6 +50,7 @@
 #define __TITANIA_X3D_COMPONENTS_TEXTURING_X3DTEXTURE2DNODE_H__
 
 #include "../Texturing/X3DTextureNode.h"
+#include "../Texturing/TextureProperties.h"
 #include <Magick++.h>
 
 namespace titania {
@@ -60,9 +61,9 @@ class X3DTexture2DNode :
 {
 public:
 
-	SFBool                repeatS;
-	SFBool                repeatT;
-	SFNode <X3DBasicNode> textureProperties;
+	SFBool                     repeatS;
+	SFBool                     repeatT;
+	SFNode <TextureProperties> textureProperties;
 
 	bool
 	isTransparent () { return transparency; }
@@ -71,27 +72,29 @@ public:
 	void
 	draw ();
 
-	virtual
-	void
-	dispose ();
-
 
 protected:
 
 	X3DTexture2DNode ();
 
 	void
-	setTextureId (const GLuint value) { textureId = value; }
-
-	void
-	bindImage (Magick::Image &, const GLuint);
-
-	void
-	rebindImage (Magick::Image &, const GLuint);
+	initialize ();
 
 	virtual
 	void
 	requestImmediateLoad () = 0;
+
+	GLuint
+	getTexture ();
+
+	void
+	setImage (Magick::Image &);
+
+	void
+	setTexture (const GLuint);
+
+	void
+	deleteTexture ();
 
 
 private:

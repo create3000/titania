@@ -79,34 +79,13 @@ public:
 	///  @name Fields
 
 	MFString url;
-	MFString URLError;
-
-	///  @name Element Access
-
-	virtual
-	const basic::uri &
-	getWorldURL ();
+	MFString urlError;
 
 	///  @name File operations
 
 	virtual
 	void
-	requestImmediateLoad () = 0;
-
-	///  @name Load Operations
-
-	///
-	void
-	loadURL (const MFString &, const MFString &)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_X3D>);
-
-	void
-	loadURL (const MFString &)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_X3D>);
+	requestImmediateLoad ();
 
 	///  @name X3D Creation Handling
 
@@ -184,8 +163,11 @@ public:
 	const URNIndex &
 	getURNs ();
 
+	MFString
+	transformURI (const MFString &);
+
 	basic::uri
-	resolveURI (const basic::uri &);
+	transformURI (const basic::uri &);
 
 
 protected:
@@ -195,6 +177,16 @@ protected:
 	virtual
 	void
 	initialize ();
+
+	///  @name Element Access
+
+	virtual
+	void
+	setWorldURL (const basic::uri &);
+
+	virtual
+	const basic::uri &
+	getWorldURL ();
 
 
 private:

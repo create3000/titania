@@ -121,5 +121,6 @@
     <Compile Include="Titania\Chrono\SystemClock.cpp" />
     <Compile Include="Titania\Chrono\ClockBase.cpp" />
     <Compile Include="Titania\Chrono\CountingClock.cpp" />
+    <Compile Include="Titania\Chrono\Now.cpp" />
   </ItemGroup>
 </Project>

@@ -242,7 +242,7 @@ X3DGroupingNode::lightsPostDisplay ()
 	for (auto light = lights .crbegin ();
 	     light not_eq lights .crend ();
 	     ++ light)
-		(*light) -> postDisplay ();
+		(*light) -> finish ();
 }
 
 void

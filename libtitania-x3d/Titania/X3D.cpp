@@ -87,7 +87,7 @@ throw (Error <BROWSER_UNAVAILABLE>)
 {
 	SFNode <Browser> browser = createBrowser ();
 
-	browser -> url = url;
+	browser -> loadURL (url);
 
 	return browser;
 }

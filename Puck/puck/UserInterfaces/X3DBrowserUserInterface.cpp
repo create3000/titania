@@ -144,7 +144,7 @@ X3DBrowserUserInterface::saveSession ()
 
 	//	printStatistics ();
 	
-	getConfig () .set ("worldURL", getWorldURL ());
+	getConfig () .set ("worldURL", getExecutionContext () -> getWorldURL ());
 	
 	getConfig () .set ("vPaned", getVPaned () .get_position ());
 	getConfig () .set ("hPaned", getHPaned () .get_position ());

@@ -56,20 +56,45 @@ X3DBrowser::X3DBrowser () :
 	        description (""),                                      
 	            changed (),                                        // SFTime   [out]    changed
 	              world ()                                         // SFNode   [out]    world
-{ }
+{
+	std::clog << "Constructing Browser:" << std::endl;
+
+	setComponent ("Browser");
+	setTypeName ("Browser");
+	setName ("Titania");
+
+	setChildren (url);
+	appendField (outputOnly, "urlError", urlError);
+	appendField (outputOnly, "world",    world);
+
+	replaceWorld (createScene ());
+
+	std::clog << "\tDone constructing Browser." << std::endl;
+}
 
 void
 X3DBrowser::initialize ()
 {
 	X3DExecutionContext::initialize ();
 	X3DUrlObject::initialize ();
-
+	
+	// Properties
+	
 	renderingProperties -> setup ();
 	browserProperties   -> setup ();
 	browserOptions      -> setup ();
 	javaScriptEngine    -> setup ();
 
+	// Lights
+	
+	for (int32_t i = 0; i < renderingProperties -> maxLights; ++ i)
+		lightStack .push (GL_LIGHT0 + i);
+
+	// URL
+
 	url .addInterest (this, &X3DBrowser::set_url);
+	
+	// Welcome
 
 	std::clog
 		<< std::boolalpha
@@ -236,12 +261,23 @@ throw (Error <INVALID_SCENE>)
 	std::clog << "Replacing world done." << std::endl;
 }
 
-const basic::uri &
-X3DBrowser::getWorldURL () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+void
+X3DBrowser::loadURL (const MFString & url)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>,
+       Error <INVALID_X3D>)
 {
-	return getExecutionContext () -> getWorldURL ();
+	this -> url = url;
+}
+
+void
+X3DBrowser::loadURL (const MFString & url, const MFString & parameter)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>,
+       Error <INVALID_X3D>)
+{
+	// where parameter is "target=nameOfFrame"
+	this -> url = url;
 }
 
 void
@@ -258,7 +294,10 @@ X3DBrowser::set_url ()
 void
 X3DBrowser::requestImmediateLoad ()
 {
-	loadURL (url);
+	replaceWorld (createX3DFromURL (url));
+
+	if (getExecutionContext () -> getWorldURL () .fragment () .length ())
+		changeViewpoint (getExecutionContext () -> getWorldURL () .fragment ());
 }
 
 SFNode <Scene>
@@ -364,6 +403,12 @@ throw (Error <DISPOSED>)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+LightStack &
+X3DBrowser::getLights ()
+{
+	return lightStack;
+}
 
 ////  Visibility-, Proxmity-, ... Sensor
 void

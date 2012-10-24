@@ -68,18 +68,6 @@ Browser::Browser () :
 	               x (0),          
 	               y (0)
 {
-	std::clog << "Constructing Browser:" << std::endl;
-
-	setComponent ("Browser");
-	setTypeName ("Browser");
-	setName ("Titania");
-
-	appendField (inputOutput, "url",   url);
-	appendField (outputOnly,  "world", world);
-
-	replaceWorld (createScene ());
-
-	std::clog << "\tDone constructing Browser." << std::endl;
 }
 
 X3DBasicNode*

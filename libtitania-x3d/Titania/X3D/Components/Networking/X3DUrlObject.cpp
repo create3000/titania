@@ -65,13 +65,13 @@ URNIndex X3DUrlObject::URNCache;
 X3DUrlObject::X3DUrlObject () :
 	X3DBasicNode (), 
 	         url (), // MFString [in,out] url               [ ]       [URL]
-	    URLError (), // MFString [out]    URLError                    [BrowserEvent]
+	    urlError (), // MFString [out]    urlError                    [BrowserEvent]
 	   userAgent (), 
 	    worldURL ()
 {
 	addNodeType (X3DUrlObjectType);
 
-	setChildren (URLError);
+	setChildren (urlError);
 }
 
 void
@@ -82,6 +82,12 @@ X3DUrlObject::initialize ()
 
 //  Element Access
 
+void
+X3DUrlObject::setWorldURL (const basic::uri & value)
+{
+	worldURL = value;
+}
+
 const basic::uri &
 X3DUrlObject::getWorldURL ()
 {
@@ -91,26 +97,8 @@ X3DUrlObject::getWorldURL ()
 //  Load Operations
 
 void
-X3DUrlObject::loadURL (const MFString & url, const MFString & parameter)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_X3D>)
-{
-	// where parameter is [ "target=name_of_frame" ]
-	loadURL (url);
-}
-
-void
-X3DUrlObject::loadURL (const MFString & url)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_X3D>)
-{
-	getBrowser () -> replaceWorld (createX3DFromURL (url));
-
-	if (worldURL .fragment () .length ())
-		getBrowser () -> changeViewpoint (worldURL .fragment ());
-}
+X3DUrlObject::requestImmediateLoad ()
+{ }
 
 //  X3D Creation Handling
 
@@ -148,7 +136,7 @@ throw (Error <INVALID_URL>,
 {
 	if (url .size ())
 	{
-		URLError .clear ();
+		urlError .clear ();
 
 		for (const auto & URL : url)
 		{
@@ -162,7 +150,7 @@ throw (Error <INVALID_URL>,
 			}
 			catch (const X3DError & error)
 			{
-				URLError .push_back (error .what ());
+				urlError .push_back (error .what ());
 			}
 		}
 
@@ -222,10 +210,10 @@ throw (Error <INVALID_URL>,
 {
 	std::clog << "\tTrying to load URI '" << uri << "': " << std::endl;
 
-	basic::uri resolvedURL = resolveURI (uri);
-	std::clog << "\t\tResolved URL is '" << resolvedURL << "'" << std::endl;
+	basic::uri transformedURL = transformURI (uri);
+	std::clog << "\t\tResolved URL is '" << transformedURL << "'" << std::endl;
 
-	basic::ifilestream stream (basic::http::GET, resolvedURL);
+	basic::ifilestream stream (basic::http::GET, transformedURL);
 
 	if (stream)
 	{
@@ -238,7 +226,7 @@ throw (Error <INVALID_URL>,
 			worldURL = uri;
 		}
 		else
-			worldURL = resolvedURL;
+			worldURL = transformedURL;
 
 		std::clog << "\t\tLoaded URL is '" << worldURL << "': " << std::endl;
 		std::clog << "\tDone." << std::endl;
@@ -248,7 +236,7 @@ throw (Error <INVALID_URL>,
 
 	std::clog << "\tFailed." << std::endl;
 
-	throw Error <URL_UNAVAILABLE> ("Couldn't load URL '" + resolvedURL + "'");
+	throw Error <URL_UNAVAILABLE> ("Couldn't load URL '" + transformedURL + "'");
 }
 
 //  URN Handling
@@ -282,8 +270,19 @@ X3DUrlObject::getURNs ()
 	return URNCache;
 }
 
+MFString
+X3DUrlObject::transformURI (const MFString & uri)
+{
+	MFString url;
+	
+	for (const auto & URI : uri)
+		url .push_back (transformURI (URI .getValue ()));
+
+	return url;
+}
+
 basic::uri
-X3DUrlObject::resolveURI (const basic::uri & uri)
+X3DUrlObject::transformURI (const basic::uri & uri)
 {
 	if (uri .is_absolute () and uri .is_network ())
 		return getURL (uri);
@@ -292,13 +291,13 @@ X3DUrlObject::resolveURI (const basic::uri & uri)
 
 	std::clog << "\t\tWorld URL is '" << base << "'" << std::endl;
 
-	auto resolvedURL = base .transform (uri);
+	auto transformedURL = base .transform (uri);
 
 //	print_uri (uri);
 //	print_uri (base);
-//	print_uri (resolvedURL);
+//	print_uri (transformedURL);
 
-	return resolvedURL;
+	return transformedURL;
 }
 
 static

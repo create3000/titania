@@ -143,6 +143,15 @@
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Plane3.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../Lighting/X3DLightNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../Lighting/../Core/X3DChildNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../Lighting/../../Browser/Properties/RenderingProperties.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../Lighting/../../Browser/Properties/../../Components/Core/X3DChildNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../Lighting/../../Browser/Properties/../Properties/QuadSphereProperties.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../Lighting/../../Browser/Properties/../Properties/../Properties/X3DSpherePropertyNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../Lighting/../../Browser/Properties/../Properties/../Properties/../../Components/Core/X3DPropertyNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../Lighting/../../Browser/Properties/../Properties/../Properties/../../Components/Core/../Core/X3DNode.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/SystemClock.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/ClockBase.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/Now.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../PointingDeviceSensor/X3DPointingDeviceSensorNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../PointingDeviceSensor/../../Browser/Hit.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../PointingDeviceSensor/../../Browser/../Fields.h \
@@ -162,7 +171,6 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Rendering/../Rendering/../Texturing/../Texturing/X3DTextureCoordinateNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Rendering/../Rendering/../Texturing/../Texturing/../Rendering/X3DGeometricPropertyNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Rendering/../Rendering/../Texturing/../Texturing/../Rendering/../Core/X3DPropertyNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Rendering/../Rendering/../Texturing/../Texturing/../Rendering/../Core/../Core/X3DNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/QuadSet.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/X3DProductStructureChildNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core.h \
@@ -390,7 +398,6 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Geometry3D/../Texturing/../Texturing/X3DTextureCoordinateNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Geometry3D/Sphere.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Geometry3D/../../Browser/Properties/X3DSpherePropertyNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Geometry3D/../../Browser/Properties/../../Components/Core/X3DPropertyNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Geospatial.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Geospatial/GeoCoordinate.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Geospatial/../Rendering/X3DCoordinateNode.h \
@@ -699,6 +706,8 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Texturing/../Networking/X3DUrlObject.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Texturing/../Texturing/X3DTexture2DNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Texturing/../Texturing/../Texturing/X3DTextureNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Texturing/../Texturing/../Texturing/TextureProperties.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Texturing/../Texturing/../Texturing/../Core/X3DPropertyNode.h \
  /usr/include/ImageMagick/Magick++.h \
  /usr/include/ImageMagick/Magick++/Include.h \
  /usr/include/ImageMagick/magick/magick-config.h \
@@ -832,7 +841,6 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Texturing/TextureCoordinate.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Texturing/TextureCoordinateGenerator.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Texturing/TextureProperties.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Texturing/../Core/X3DPropertyNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Texturing/TextureTransform.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Texturing/X3DTexture2DNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Texturing/X3DTextureCoordinateNode.h \

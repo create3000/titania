@@ -148,13 +148,15 @@ RenderingProperties::initialize ()
 		maxLights      = glMaxLights;
 		antiAliased    = glPolygonSmooth;
 		colorDepth     = glRedBits + glGreen + glBlueBits + glAlphaBits;
+
+		// Display
+
+		listId = glGenLists (1);
+		set_fontFamily (fontFamily);
+		reset ();
+
+		getBrowser () -> world .addInterest (this, &RenderingProperties::set_world);
 	}
-
-	listId = glGenLists (1);
-	set_fontFamily (fontFamily);
-	reset ();
-
-	getBrowser () -> world .addInterest (this, &RenderingProperties::set_world);
 }
 
 //
@@ -243,7 +245,7 @@ RenderingProperties::display ()
 	drawTimer .advance ();
 	drawTime += drawTimer .interval ();
 
-	if (chrono::now <double> () - timer .cycle () > cycleInterval)
+	if (chrono::now () - timer .cycle () > cycleInterval)
 	{
 		timer .advance ();
 
@@ -404,6 +406,8 @@ RenderingProperties::toStream (std::ostream & stream) const
 void
 RenderingProperties::dispose ()
 {
+	X3DChildNode::dispose ();
+
 	if (fontInfo)
 		glDeleteLists (fontListBase, fontInfo -> max_char_or_byte2);
 

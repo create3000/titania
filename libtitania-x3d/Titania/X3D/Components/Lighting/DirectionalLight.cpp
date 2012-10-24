@@ -113,14 +113,14 @@ DirectionalLight::enable ()
 {
 	X3DLightNode::enable ();
 
-	glLightfv (light (), GL_AMBIENT,  glAmbient);
-	glLightfv (light (), GL_DIFFUSE,  glDiffuseSpecular);
-	glLightfv (light (), GL_SPECULAR, glDiffuseSpecular);
+	glLightfv (getLight (), GL_AMBIENT,  glAmbient);
+	glLightfv (getLight (), GL_DIFFUSE,  glDiffuseSpecular);
+	glLightfv (getLight (), GL_SPECULAR, glDiffuseSpecular);
 
-	glLightf  (light (), GL_SPOT_EXPONENT, 0);
-	glLightf  (light (), GL_SPOT_CUTOFF, 180);
+	glLightf  (getLight (), GL_SPOT_EXPONENT, 0);
+	glLightf  (getLight (), GL_SPOT_CUTOFF, 180);
 
-	glLightfv (light (), GL_POSITION, glPosition);
+	glLightfv (getLight (), GL_POSITION, glPosition);
 }
 
 } // X3D

@@ -81,8 +81,6 @@ private:
 	void
 	requestImmediateLoad ();
 
-	GLuint textureId;
-
 };
 
 } // X3D

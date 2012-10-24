@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -49,11 +49,14 @@
 #include "X3DTexture2DNode.h"
 
 #include "../../Browser/Browser.h"
-#include "../Texturing/TextureProperties.h"
 #include <Titania/Math/Math.h>
 
 namespace titania {
 namespace X3D {
+
+#define RED_SATURATION_WEIGHT   0.30
+#define GREEN_SATURATION_WEIGHT 0.59
+#define BLUE_SATURATION_WEIGHT  0.11
 
 const int X3DTexture2DNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
 
@@ -67,6 +70,20 @@ X3DTexture2DNode::X3DTexture2DNode () :
 	 glBackDiffuseColor (4, 1)
 {
 	addNodeType (X3DTexture2DNodeType);
+}
+
+void
+X3DTexture2DNode::initialize ()
+{
+	X3DTextureNode::initialize ();
+
+	glGenTextures (1, &textureId);
+}
+
+GLuint
+X3DTexture2DNode::getTexture ()
+{
+	return textureId;
 }
 
 void
@@ -188,7 +205,7 @@ X3DTexture2DNode::scaleImage (Magick::Image & image)
 	if (needs_scaling)
 	{
 		std::clog << "Info: Texture needs scaling: scaling texture to " << new_width << " × " << new_height << " pixel." << std::endl;
-	
+
 		image .filterType (Magick::LanczosFilter);
 		Magick::Geometry geometry (new_width, new_height);
 		geometry .aspect (true);
@@ -197,10 +214,8 @@ X3DTexture2DNode::scaleImage (Magick::Image & image)
 }
 
 void
-X3DTexture2DNode::bindImage (Magick::Image & image, const GLuint _textureId)
+X3DTexture2DNode::setImage (Magick::Image & image)
 {
-	textureId = _textureId;
-
 	// TextureProperties
 
 	GLint level      = 0;
@@ -241,13 +256,13 @@ X3DTexture2DNode::bindImage (Magick::Image & image, const GLuint _textureId)
 
 	if (mipmap) // mipmap
 	{
-		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    GL_TRUE);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 	else
 	{
-		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
+		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    GL_FALSE);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	}
@@ -264,21 +279,39 @@ X3DTexture2DNode::bindImage (Magick::Image & image, const GLuint _textureId)
 	// calculate texture size
 
 	GLint red_size, green_size, blue_size, alpha_size, luminance_size, intensity_size;
-	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_RED_SIZE, &red_size);
-	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_GREEN_SIZE, &green_size);
-	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_BLUE_SIZE, &blue_size);
-	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_ALPHA_SIZE, &alpha_size);
+	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_RED_SIZE,       &red_size);
+	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_GREEN_SIZE,     &green_size);
+	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_BLUE_SIZE,      &blue_size);
+	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_ALPHA_SIZE,     &alpha_size);
 	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_LUMINANCE_SIZE, &luminance_size);
 	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_INTENSITY_SIZE, &intensity_size);
 }
 
 void
-X3DTexture2DNode::rebindImage (Magick::Image & image, const GLuint _textureId)
+X3DTexture2DNode::setTexture (const GLuint value)
 {
-	textureId    = _textureId;
-	transparency = image .matte ();
+	textureId = value;
 	glBindTexture (GL_TEXTURE_2D, textureId);
+
 	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, &internalFormat);
+
+	switch (internalFormat)
+	{
+		case GL_LUMINANCE:
+		case GL_COMPRESSED_LUMINANCE:
+		case GL_RGB:
+		case GL_COMPRESSED_RGB:
+			transparency = false;
+			break;
+		case GL_LUMINANCE_ALPHA:
+		case GL_COMPRESSED_LUMINANCE_ALPHA:
+		case GL_RGBA:
+		case GL_COMPRESSED_RGBA:
+			transparency = true;
+			break;
+		default:
+			break;
+	}
 }
 
 void
@@ -333,17 +366,26 @@ X3DTexture2DNode::draw ()
 				glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 				break;
 		}
-		
+
 	}
+
+	//	static
+	//	const GLfloat constant [4] = { 0.5 + 0.5 * RED_SATURATION_WEIGHT,
+	//		                            0.5 + 0.5 * GREEN_SATURATION_WEIGHT,
+	//		                            0.5 + 0.5 * BLUE_SATURATION_WEIGHT,
+	//		                            1.0 };
+	//
+	//	glTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, constant);
 
 	glEnable (GL_TEXTURE_2D);
 	glBindTexture (GL_TEXTURE_2D, textureId);
 }
 
 void
-X3DTexture2DNode::dispose ()
+X3DTexture2DNode::deleteTexture ()
 {
-	X3DTextureNode::dispose ();
+	if (textureId)
+		glDeleteTextures (1, &textureId);
 }
 
 } // X3D

@@ -111,6 +111,15 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Rendering/../Components/Lighting/../Core/../Core/../../Fields/MFNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Rendering/../Components/Lighting/../Core/../Core/../../Fields/../Fields/SFNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Rendering/../Components/Lighting/../Core/../Core/../../Fields/../InputOutput/Generator.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Rendering/../Components/Lighting/../../Browser/Properties/RenderingProperties.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Rendering/../Components/Lighting/../../Browser/Properties/../../Components/Core/X3DChildNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Rendering/../Components/Lighting/../../Browser/Properties/../Properties/QuadSphereProperties.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Rendering/../Components/Lighting/../../Browser/Properties/../Properties/../Properties/X3DSpherePropertyNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Rendering/../Components/Lighting/../../Browser/Properties/../Properties/../Properties/../../Components/Core/X3DPropertyNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Rendering/../Components/Lighting/../../Browser/Properties/../Properties/../Properties/../../Components/Core/../Core/X3DNode.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/SystemClock.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/ClockBase.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/Now.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Rendering/Matrix.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Rendering/../Types/Numbers.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Rendering/X3DRenderer.h \
@@ -198,7 +207,7 @@
  /usr/include/sigc++-2.0/sigc++/functors/slot_base.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/Browser.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/X3DBrowser.h \
- /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/TimerBase.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/ClockBase.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Components/Navigation/Viewpoint.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Components/Networking/X3DUrlObject.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Components/Networking/../../Basic/X3DBasicNode.h \
@@ -264,22 +273,15 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Execution/X3DExecutionContext.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../JavaScript/JavaScriptEngine.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../JavaScript/../Components/Core/X3DPropertyNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../JavaScript/../Components/Core/../Core/X3DNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../JavaScript/../Execution/X3DExecutionContext.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Routing/Router.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Routing/../Basic/X3DBasicNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Browser/Properties/BrowserProperties.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Browser/Properties/../../Components/Core/X3DPropertyNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Browser/Properties/RenderingProperties.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Browser/Properties/../../Components/Core/X3DChildNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Browser/Properties/../Properties/QuadSphereProperties.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Browser/Properties/../Properties/../Properties/X3DSpherePropertyNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Browser/Properties/../Properties/../Properties/../../Components/Core/X3DPropertyNode.h \
- /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/SystemTimer.h \
- /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/TimerBase.h \
- /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/Now.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Browser/Properties/BrowserOptions.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Browser/Properties/../../Execution/X3DExecutionContext.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Browser/Properties/../Properties/QuadSphereProperties.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Browser/HitArray.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Browser/Hit.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../../Browser/../Browser/../Components/Core/X3DSensorNode.h \

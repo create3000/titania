@@ -66,7 +66,7 @@ BrowserWidget::initialize ()
 void
 BrowserWidget::on_map ()
 {
-	std::clog << "Signal map received for '" << getWorldURL () << "'." << std::endl;
+	std::clog << "Signal map received for '" << getExecutionContext () -> getWorldURL () << "'." << std::endl;
 
 	getBrowser () -> beginUpdate ();
 }
@@ -74,7 +74,7 @@ BrowserWidget::on_map ()
 void
 BrowserWidget::on_unmap ()
 {
-	std::clog << "Signal unmap received for '" << getWorldURL () << "'." << std::endl;
+	std::clog << "Signal unmap received for '" << getExecutionContext () -> getWorldURL () << "'." << std::endl;
 
 	getBrowser () -> endUpdate ();
 }
@@ -102,10 +102,10 @@ BrowserWidget::on_open ()
 void
 BrowserWidget::on_save ()
 {
-	if (getWorldURL () .empty ())
+	if (getExecutionContext () -> getWorldURL () .empty ())
 		getFileSaveDialog () .present ();
 	else
-		save (getWorldURL ());
+		save (getExecutionContext () -> getWorldURL ());
 }
 
 void
@@ -122,13 +122,13 @@ BrowserWidget::on_close ()
 void
 BrowserWidget::on_revert_to_saved ()
 {
-	loadURL ({ getWorldURL () });
+	loadURL ({ getExecutionContext () -> getWorldURL () });
 }
 
 void
 BrowserWidget::on_reload ()
 {
-	loadURL ({ getWorldURL () });
+	loadURL ({ getExecutionContext () -> getWorldURL () });
 }
 
 // Dialog response handling ////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,7 +142,7 @@ BrowserWidget::on_fileOpenDialog_response (int response_id)
 		loadURL ({ getFileOpenDialog () .get_uri () });
 
 	else
-		getFileOpenDialog () .set_current_folder_uri (getWorldURL () .base () .str ());
+		getFileOpenDialog () .set_current_folder_uri (getExecutionContext () -> getWorldURL () .base () .str ());
 }
 
 void
@@ -154,7 +154,7 @@ BrowserWidget::on_fileSaveDialog_response (int response_id)
 		save (getFileSaveDialog () .get_filename ());
 
 	else
-		getFileSaveDialog () .set_current_folder_uri (getWorldURL () .base () .str ());
+		getFileSaveDialog () .set_current_folder_uri (getExecutionContext () -> getWorldURL () .base () .str ());
 }
 
 void

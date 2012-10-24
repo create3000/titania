@@ -104,7 +104,7 @@ private:
 	Type
 	count () const
 	{
-		return now <Type> ();
+		return basic_now <Type> ();
 	}
 
 };

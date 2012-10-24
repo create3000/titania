@@ -117,18 +117,18 @@ PointLight::enable ()
 {
 	X3DLightNode::enable ();
 
-	glLightfv (light (), GL_AMBIENT,  glAmbient);
-	glLightfv (light (), GL_DIFFUSE,  glDiffuseSpecular);
-	glLightfv (light (), GL_SPECULAR, glDiffuseSpecular);
+	glLightfv (getLight (), GL_AMBIENT,  glAmbient);
+	glLightfv (getLight (), GL_DIFFUSE,  glDiffuseSpecular);
+	glLightfv (getLight (), GL_SPECULAR, glDiffuseSpecular);
 
-	glLightf  (light (), GL_SPOT_EXPONENT, 0);
-	glLightf  (light (), GL_SPOT_CUTOFF, 180); // point light
+	glLightf  (getLight (), GL_SPOT_EXPONENT, 0);
+	glLightf  (getLight (), GL_SPOT_CUTOFF, 180); // point light
 
-	glLightf  (light (), GL_CONSTANT_ATTENUATION,  attenuation .getX ());
-	glLightf  (light (), GL_LINEAR_ATTENUATION,    attenuation .getY ());
-	glLightf  (light (), GL_QUADRATIC_ATTENUATION, attenuation .getZ ());
+	glLightf  (getLight (), GL_CONSTANT_ATTENUATION,  attenuation .getX ());
+	glLightf  (getLight (), GL_LINEAR_ATTENUATION,    attenuation .getY ());
+	glLightf  (getLight (), GL_QUADRATIC_ATTENUATION, attenuation .getZ ());
 
-	glLightfv (light (), GL_POSITION, glPosition);
+	glLightfv (getLight (), GL_POSITION, glPosition);
 }
 
 } // X3D

@@ -667,7 +667,6 @@
  /usr/include/gtkmm-3.0/gtkmm/widgetpath.h \
  /usr/include/giomm-2.4/giomm/actiongroup.h \
  /usr/include/glibmm-2.4/glibmm/varianttype.h \
- /home/holger/Projekte/Titania/libtitania-opengl-canvas/Titania/OpenGL/Context/WindowContext.h \
  /home/holger/Projekte/Titania/libtitania-opengl-canvas/Titania/OpenGL/Context/GLContext.h \
  /usr/include/gtk-3.0/gdk/gdkx.h \
  /usr/include/gtk-3.0/gdk/x11/gdkx11applaunchcontext.h \
@@ -689,4 +688,7 @@
  /usr/include/gtk-3.0/gdk/x11/gdkx11visual.h \
  /usr/include/gtk-3.0/gdk/x11/gdkx11window.h \
  /usr/include/gtkmm-3.0/gtkmm/container.h \
+ /home/holger/Projekte/Titania/libtitania-opengl-canvas/Titania/OpenGL/Context/WindowContext.h \
+ /home/holger/Projekte/Titania/libtitania-opengl-canvas/Titania/OpenGL/Context/GLContext.h \
+ /home/holger/Projekte/Titania/libtitania-opengl-canvas/Titania/OpenGL/Context/PixelBufferContext.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/LOG.h

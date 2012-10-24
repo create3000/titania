@@ -60,6 +60,7 @@ namespace titania {
 namespace X3D {
 
 typedef chrono::clock_base <time_type> X3DClock;
+typedef std::stack <GLenum>            LightStack;
 
 enum EventType
 {
@@ -163,15 +164,17 @@ public:
 	replaceWorld (const SFNode <Scene> &)
 	throw (Error <INVALID_SCENE>);
 
-	virtual
 	void
-	requestImmediateLoad ();
+	loadURL (const MFString &)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>,
+	       Error <INVALID_X3D>);
 
-	virtual
-	const basic::uri &
-	getWorldURL () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	void
+	loadURL (const MFString &, const MFString &)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>,
+	       Error <INVALID_X3D>);
 
 	SFNode <Scene>
 	importDocument (/*const XML DOMNode &*/)
@@ -270,6 +273,9 @@ public:
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	LightStack &
+	getLights ();
+	
 	////  pushPointingDeviceSensorNode
 	virtual
 	void
@@ -361,8 +367,14 @@ protected:
 
 private:
 
+	using X3DUrlObject::url;
+
 	void
 	set_url ();
+
+	virtual
+	void
+	requestImmediateLoad ();
 
 	virtual
 	void
@@ -401,7 +413,8 @@ private:
 
 	Vector3f  priorPosition;
 	time_type priorTime;
-
+	
+	LightStack lightStack;
 	SensorNodeSet sensors;
 
 };

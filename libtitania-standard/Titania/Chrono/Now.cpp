@@ -46,89 +46,12 @@
  *
  ******************************************************************************/
 
-#include "HistoryEditor.h"
-
-#include "../Configuration/config.h"
-#include <iostream>
+#include "Now.h"
 
 namespace titania {
-namespace puck {
+namespace chrono {
 
-static constexpr int ICON_COLUMN     = 0;
-static constexpr int TITLE_COLUMN    = 1;
-static constexpr int LOCATION_COLUMN = 2;
+template double basic_now <double> ();
 
-HistoryEditor::HistoryEditor (const std::string & sessionKey, X3DBrowserInterface* const browserWidget) :
-	X3DHistoryEditorUI (puck_ui ("HistoryEditor.ui"), sessionKey),
-	        history ()
-{
-	setBrowserWidget (browserWidget);
-	setBrowser (browserWidget -> getBrowser ());
-}
-
-void
-HistoryEditor::initialize ()
-{
-	X3DHistoryEditorUI::initialize ();
-
-	getBrowser () -> world .addInterest (this, &HistoryEditor::set_scene);
-}
-
-void
-HistoryEditor::on_map ()
-{
-	getListStore () -> clear ();
-	
-	for (const auto & item : history .getItems ())
-	{
-		auto row = getListStore () -> append ();
-		row -> set_value (ICON_COLUMN,     std::string ("BlankIcon"));
-		row -> set_value (TITLE_COLUMN,    item .at ("title"));
-		row -> set_value (LOCATION_COLUMN, item .at ("location"));
-	}
-}
-
-void
-HistoryEditor::set_scene ()
-{
-	std::string        title;
-	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
-
-	try
-	{
-		title = getBrowser () -> getExecutionContext () -> getMetaData ("title");
-	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
-	{
-		title = worldURL .filename ();
-	}
-
-	try
-	{
-		getListStore () -> erase (getListStore () -> get_iter (history .getIndex (worldURL)));
-	}
-	catch (const std::out_of_range &)
-	{ }
-
-	auto row = getListStore () -> prepend ();
-	row -> set_value (ICON_COLUMN,     worldURL .str ());
-	row -> set_value (TITLE_COLUMN,    title);
-	row -> set_value (LOCATION_COLUMN, worldURL .str ());
-	getScrolledWindow () .queue_draw ();
-
-	history .setItem (title, worldURL);
-}
-
-void
-HistoryEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
-{
-	// Open worldURL.
-
-	getBrowserWidget () -> loadURL ({ history .getItem (path .to_string ()) .at ("location") });
-}
-
-HistoryEditor::~HistoryEditor ()
-{ }
-
-} // puck
+} // chrono
 } // titania
