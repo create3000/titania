@@ -87,7 +87,7 @@ public:
 	}
 
 	// Modifiers:
-
+	
 	void
 	push (const Type & value)
 	{
@@ -128,6 +128,9 @@ public:
 
 	const Type &
 	top () const { return list .front (); }
+
+	const Type &
+	bottom () const { return list .back (); }
 
 	//	// Iterators:
 	//

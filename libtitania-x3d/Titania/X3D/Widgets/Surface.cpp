@@ -63,11 +63,11 @@ namespace X3D {
 void
 signal_handler (int sig)
 {
-	void*  array [20];
-	size_t size;
+	size_t size = 30;
+	void*  array [size];
 
 	// get void*'s for all entries on the stack
-	size = backtrace (array, 20);
+	size = backtrace (array, size);
 
 	// print out all the frames to stderr
 	std::clog << "Error: signal " << sig << ":" << std::endl;

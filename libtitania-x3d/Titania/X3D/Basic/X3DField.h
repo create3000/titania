@@ -64,7 +64,7 @@ public:
 
 	typedef ValueType value_type;
 
-	using X3DOutput::addInterest;
+	using X3DFieldDefinition::addInterest;
 
 	///  Returns a copy of this field.
 	virtual X3DField <ValueType>*

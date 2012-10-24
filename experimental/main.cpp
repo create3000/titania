@@ -42,6 +42,7 @@
 #include <Titania/Stream/InputHTTPStream.h>
 
 #include <Titania/Bits/Algorithm.h>
+#include <Titania/LOG.h>
 
 #include <array>
 #include <cassert>
@@ -55,7 +56,6 @@
 #include <map>
 #include <queue>
 #include <vector>
-
 using namespace titania;
 
 //void
@@ -839,22 +839,25 @@ typedef basic_path <std::wstring> wpath;
 } // basic
 } // titania
 
+#include <babl/babl-classes.h>
+#include <gegl.h>
+
 int
-main ()
+main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 
-	std::clog << basic::path ("/") << std::endl;
-	std::clog << basic::path ("/", "/") << std::endl;
-	std::clog << basic::path ("home", "/") << std::endl;
-	std::clog << basic::path ("/home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
-	std::clog << basic::path ("home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
-
-	std::clog << basic::path ("/") .parent () << std::endl;
-	std::clog << basic::path ("/", "/") .parent () << std::endl;
-	std::clog << basic::path ("home", "/") .parent () << std::endl;
-	std::clog << basic::path ("/home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
-	std::clog << basic::path ("home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
+		std::clog << basic::path ("/") << std::endl;
+		std::clog << basic::path ("/", "/") << std::endl;
+		std::clog << basic::path ("home", "/") << std::endl;
+		std::clog << basic::path ("/home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
+		std::clog << basic::path ("home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
+	
+		std::clog << basic::path ("/") .parent () << std::endl;
+		std::clog << basic::path ("/", "/") .parent () << std::endl;
+		std::clog << basic::path ("home", "/") .parent () << std::endl;
+		std::clog << basic::path ("/home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
+		std::clog << basic::path ("home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
 
 	//	basic::ifilestream stream = get_stream ();
 	//
@@ -913,3 +916,66 @@ main ()
 	std::clog << "Function main done." << std::endl;
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+//	gegl_init (&argc, &argv);
+//
+//	
+//	const char* path = "/home/holger/Projekte/Titania/Library/Tests/Texturing/images/colors/bw.png";
+//	std::ifstream      stream (path);
+//	std::ostringstream sstream;
+//	sstream << stream .rdbuf ();
+//
+//	auto image = sstream .str ();
+//
+//	std::clog << "############" << image .size () << std::endl;
+//
+//	GeglNode* gegl = gegl_node_new ();
+//
+//
+//	GeglNode* load = gegl_node_new_child (gegl,
+//                            "operation", "gegl:load",
+//                            "path",      path,
+//                            NULL);
+//                            
+//	//	GeglNode* scale  = gegl_node_new_child (gegl,
+//	//                                    "operation", "gegl:scale",
+//	//                                    "width", 200,
+//	//                                    "height", 50,
+//	//                                    NULL);
+//
+//	GeglBuffer* outputBuffer;
+//	GeglNode*   output = gegl_node_new_child (gegl,
+//	                                          "operation", "gegl:buffer-sink",
+//	                                          "buffer", &outputBuffer,
+//	                                          NULL);
+//
+//	gegl_node_link_many (load, output, NULL);
+//	gegl_node_process (output);
+//
+//	auto babl = gegl_buffer_get_format (outputBuffer);
+//
+//	std::clog << babl -> format .components << std::endl;
+//	std::clog << gegl_buffer_get_width (outputBuffer) << " " << gegl_buffer_get_height (outputBuffer) << std::endl;
+//
+//	std::vector <uint16_t> array (gegl_buffer_get_width (outputBuffer) * gegl_buffer_get_height (outputBuffer) * 2);
+//
+//	gegl_node_blit (load, 1, NULL
+//	                 babl_format ("Y u8"),
+//	                 array .data (),
+//	                 GEGL_AUTO_ROWSTRIDE,
+//	                 GEGL_BLIT_DEFAULT);
+//
+//	g_object_unref (outputBuffer);
+//	g_object_unref (gegl);
+//	gegl_exit ();
+

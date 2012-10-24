@@ -268,8 +268,7 @@ X3DGeometryNode::draw ()
 
 	if (glColors .size ())
 	{
-		if (glIsEnabled (GL_LIGHTING))
-			glEnable (GL_COLOR_MATERIAL);
+		glEnable (GL_COLOR_MATERIAL);
 
 		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
 		glEnableClientState (GL_COLOR_ARRAY);

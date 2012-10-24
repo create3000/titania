@@ -77,12 +77,6 @@ public:
 	const X3DRenderer*
 	getCurrentRenderer () const { return rendererStack .back (); }
 
-	void
-	setObjectAlpha (const float, const float);
-
-	void
-	getObjectAlpha (float &, float &);
-
 	////
 	void
 	pick (const size_t, const size_t);

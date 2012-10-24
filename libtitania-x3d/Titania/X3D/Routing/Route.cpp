@@ -139,7 +139,7 @@ Route::connect ()
 {
 	if (not connected)
 	{
-		sourceField -> addCallback (destinationField);
+		sourceField -> addInterest (destinationField);
 		sourceField -> addOutputRoute (this);
 		destinationField -> addInputRoute  (this);
 
@@ -152,7 +152,7 @@ Route::disconnect ()
 {
 	if (connected)
 	{
-		sourceField -> removeCallback (destinationField);
+		sourceField -> removeInterest (destinationField);
 		sourceField -> removeOutputRoute (this);
 		destinationField  -> removeInputRoute  (this);
 

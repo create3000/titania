@@ -131,7 +131,6 @@ Material::draw ()
 	glMaterialf  (GL_FRONT_AND_BACK, GL_SHININESS, glShininess);
 
 	glColor4fv (glEmissiveColor); // for lines and points
-	getBrowser () -> setObjectAlpha (alpha, alpha);
 
 }
 

@@ -75,6 +75,9 @@ public:
 	const Type*
 	top () const { return stack .top (); }
 
+	const Type*
+	bottom () const { return stack .bottom (); }
+
 	size_type
 	size () const { return stack .size (); }
 

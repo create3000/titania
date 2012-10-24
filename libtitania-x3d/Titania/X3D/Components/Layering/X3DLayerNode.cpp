@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,6 +52,11 @@
 
 namespace titania {
 namespace X3D {
+
+template class BindableNodeStack <NavigationInfo>;
+template class BindableNodeStack <X3DBackgroundNode>;
+template class BindableNodeStack <Fog>;
+template class BindableNodeStack <X3DViewpointNode>;
 
 X3DLayerNode::X3DLayerNode () :
 	             X3DNode (),                                            
@@ -255,6 +260,11 @@ X3DLayerNode::set_viewport ()
 void
 X3DLayerNode::dispose ()
 {
+//	delete navigationInfoStack .bottom ();
+//	delete backgroundStack     .bottom ();
+//	delete fogStack            .bottom ();
+//	delete viewpointStack      .bottom ();
+
 	X3DNode::dispose ();
 }
 

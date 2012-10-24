@@ -75,6 +75,9 @@ class X3DFieldDefinition :
 {
 public:
 
+	using X3DBaseNode::addInterest;
+	using X3DBaseNode::removeInterest;
+
 	virtual
 	X3DFieldDefinition*
 	copy () const = 0;
@@ -135,10 +138,16 @@ public:
 	getOutputRoutes () const;
 
 	void
-	addCallback (X3DFieldDefinition* const);
+	addInterest (X3DFieldDefinition* const);
 
 	void
-	removeCallback (X3DFieldDefinition* const);
+	addInterest (X3DFieldDefinition&);
+
+	void
+	removeInterest (X3DFieldDefinition* const);
+
+	void
+	removeInterest (X3DFieldDefinition&);
 
 	virtual
 	void
@@ -174,7 +183,7 @@ private:
 
 	RouteSet           inputRoutes;
 	RouteSet           outputRoutes;
-	FieldDefinitionSet callbacks;
+	FieldDefinitionSet interests;
 
 };
 

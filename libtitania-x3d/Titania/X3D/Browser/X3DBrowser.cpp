@@ -47,10 +47,10 @@ X3DBrowser::X3DBrowser () :
 	supportedComponents (this),                                    
 	  supportedProfiles (this, supportedComponents),               
 	renderingProperties (new RenderingProperties (this)),          
-	  browserProperties (new BrowserProperties   (this)),            
-	     browserOptions (new BrowserOptions      (this)),               
-	 browserEnvironment (new BrowserEnvironment  (this)),               
-	   javaScriptEngine (new JavaScriptEngine    (this)),             
+	  browserProperties (new BrowserProperties   (this)),          
+	     browserOptions (new BrowserOptions      (this)),          
+	 browserEnvironment (new BrowserEnvironment  (this)),          
+	   javaScriptEngine (new JavaScriptEngine    (this)),          
 	             router (),                                        
 	       currentSpeed (0),                                       
 	   currentFrameRate (0),                                       
@@ -64,7 +64,11 @@ X3DBrowser::X3DBrowser () :
 	setTypeName ("Browser");
 	setName ("Titania");
 
-	setChildren (renderingProperties,
+	setChildren (//supportedFields, // make X3DBasicNodes of this
+	             //supportedNodes,
+	             //supportedComponents,
+	             //supportedProfiles,
+	             renderingProperties,
 	             browserProperties,
 	             browserOptions,
 	             browserEnvironment,
@@ -514,8 +518,8 @@ X3DBrowser::dispose ()
 	supportedNodes      .dispose ();
 	supportedComponents .dispose ();
 	supportedProfiles   .dispose ();
-	
-	X3DBaseNode::dispose ();
+
+	//X3DBaseNode::dispose ();
 
 	getGarbageCollector () .dispose ();
 

@@ -93,8 +93,7 @@ GarbageCollector::size ()
 
 GarbageCollector::~GarbageCollector ()
 {
-	std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << ": Disposed Objects Size: " << disposedObjects .size () << std::endl;
-	assert (disposedObjects .empty ());
+	dispose ();
 }
 
 } // X3D

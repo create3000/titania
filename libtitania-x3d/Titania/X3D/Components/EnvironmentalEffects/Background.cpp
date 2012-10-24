@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,38 +56,21 @@
 namespace titania {
 namespace X3D {
 
-class Background::Textures
-{
-public:
-
-	Textures (X3DExecutionContext* const executionContext) :
-		front  (new ImageTexture (executionContext)),
-		back   (new ImageTexture (executionContext)),
-		left   (new ImageTexture (executionContext)),
-		right  (new ImageTexture (executionContext)),
-		top    (new ImageTexture (executionContext)),
-		bottom (new ImageTexture (executionContext))
-	{ }
-
-	SFNode <ImageTexture> front;
-	SFNode <ImageTexture> back;
-	SFNode <ImageTexture> left;
-	SFNode <ImageTexture> right;
-	SFNode <ImageTexture> top;
-	SFNode <ImageTexture> bottom;
-
-};
-
 Background::Background (X3DExecutionContext* const executionContext) :
-	     X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DBackgroundNode (),                                 
-	         frontUrl (),                                 // MFString [in,out] frontUrl   [ ]        [URI]
-	          backUrl (),                                 // MFString [in,out] backUrl    [ ]        [URI]
-	          leftUrl (),                                 // MFString [in,out] leftUrl    [ ]        [URI]
-	         rightUrl (),                                 // MFString [in,out] rightUrl   [ ]        [URI]
-	           topUrl (),                                 // MFString [in,out] topUrl     [ ]        [URI]
-	        bottomUrl (),                                 // MFString [in,out] bottomUrl  [ ]        [URI]
-	         textures ()
+	     X3DBasicNode (executionContext -> getBrowser (),    executionContext),
+	X3DBackgroundNode (),                                    
+	         frontUrl (),                                    // MFString [in,out] frontUrl   [ ]        [URI]
+	          backUrl (),                                    // MFString [in,out] backUrl    [ ]        [URI]
+	          leftUrl (),                                    // MFString [in,out] leftUrl    [ ]        [URI]
+	         rightUrl (),                                    // MFString [in,out] rightUrl   [ ]        [URI]
+	           topUrl (),                                    // MFString [in,out] topUrl     [ ]        [URI]
+	        bottomUrl (),                                    // MFString [in,out] bottomUrl  [ ]        [URI]
+	     frontTexture (new ImageTexture (executionContext)), 
+	      backTexture (new ImageTexture (executionContext)), 
+	      leftTexture (new ImageTexture (executionContext)), 
+	     rightTexture (new ImageTexture (executionContext)), 
+	       topTexture (new ImageTexture (executionContext)), 
+	    bottomTexture (new ImageTexture (executionContext))
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Background");
@@ -107,6 +90,13 @@ Background::Background (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput, "rightUrl",     rightUrl);
 	appendField (inputOutput, "topUrl",       topUrl);
 	appendField (inputOutput, "bottomUrl",    bottomUrl);
+
+	setChildren (frontTexture,
+	             backTexture,
+	             leftTexture,
+	             rightTexture,
+	             topTexture,
+	             bottomTexture);
 }
 
 X3DBasicNode*
@@ -120,28 +110,26 @@ Background::initialize ()
 {
 	X3DBackgroundNode::initialize ();
 
-	textures = new Textures (getExecutionContext ());
+	frontUrl  .addInterest (frontTexture  -> url);
+	backUrl   .addInterest (backTexture   -> url);
+	leftUrl   .addInterest (leftTexture   -> url);
+	rightUrl  .addInterest (rightTexture  -> url);
+	topUrl    .addInterest (topTexture    -> url);
+	bottomUrl .addInterest (bottomTexture -> url);
 
-	frontUrl  .addCallback (&textures -> front  -> url);
-	backUrl   .addCallback (&textures -> back   -> url);
-	leftUrl   .addCallback (&textures -> left   -> url);
-	rightUrl  .addCallback (&textures -> right  -> url);
-	topUrl    .addCallback (&textures -> top    -> url);
-	bottomUrl .addCallback (&textures -> bottom -> url);
+	frontTexture  -> repeatS = frontTexture  -> repeatT = false;
+	backTexture   -> repeatS = backTexture   -> repeatT = false;
+	leftTexture   -> repeatS = leftTexture   -> repeatT = false;
+	rightTexture  -> repeatS = rightTexture  -> repeatT = false;
+	topTexture    -> repeatS = topTexture    -> repeatT = false;
+	bottomTexture -> repeatS = bottomTexture -> repeatT = false;
 
-	textures -> front  -> repeatS = textures -> front  -> repeatT = false;
-	textures -> back   -> repeatS = textures -> back   -> repeatT = false;
-	textures -> left   -> repeatS = textures -> left   -> repeatT = false;
-	textures -> right  -> repeatS = textures -> right  -> repeatT = false;
-	textures -> top    -> repeatS = textures -> top    -> repeatT = false;
-	textures -> bottom -> repeatS = textures -> bottom -> repeatT = false;
-
-	textures -> front  -> url = frontUrl;
-	textures -> back   -> url = backUrl;
-	textures -> left   -> url = leftUrl;
-	textures -> right  -> url = rightUrl;
-	textures -> top    -> url = topUrl;
-	textures -> bottom -> url = bottomUrl;
+	frontTexture  -> url = frontUrl;
+	backTexture   -> url = backUrl;
+	leftTexture   -> url = leftUrl;
+	rightTexture  -> url = rightUrl;
+	topTexture    -> url = topUrl;
+	bottomTexture -> url = bottomUrl;
 }
 
 void
@@ -158,20 +146,19 @@ Background::draw ()
 	glLoadIdentity ();
 	glTranslatef (0, 1, 0);
 	glScalef (1, -1, 1);
+	
 	glMatrixMode (GL_MODELVIEW);
-
 	glFrontFace (GL_CCW);
-
 	glColor4f (1, 1, 1, 1);
 
-	if (textures -> front -> checkLoadState () == COMPLETE_STATE)
+	if (frontTexture -> checkLoadState () == COMPLETE_STATE)
 	{
-		if (textures -> front -> isTransparent ())
+		if (frontTexture -> isTransparent ())
 			glEnable (GL_BLEND);
 		else
 			glDisable (GL_BLEND);
 
-		textures -> front -> display ();
+		frontTexture -> display ();
 		glBegin (GL_QUADS);
 		glTexCoord2f (1, 1);
 		glVertex3f (s, s, -s);
@@ -184,14 +171,14 @@ Background::draw ()
 		glEnd ();
 	}
 
-	if (textures -> back -> checkLoadState () == COMPLETE_STATE)
+	if (backTexture -> checkLoadState () == COMPLETE_STATE)
 	{
-		if (textures -> front -> isTransparent ())
+		if (frontTexture -> isTransparent ())
 			glEnable (GL_BLEND);
 		else
 			glDisable (GL_BLEND);
 
-		textures -> back -> display ();
+		backTexture -> display ();
 		glBegin (GL_QUADS);
 		glTexCoord2f (0, 0);
 		glVertex3f (s, -s, s);
@@ -204,14 +191,14 @@ Background::draw ()
 		glEnd ();
 	}
 
-	if (textures -> left -> checkLoadState () == COMPLETE_STATE)
+	if (leftTexture -> checkLoadState () == COMPLETE_STATE)
 	{
-		if (textures -> front -> isTransparent ())
+		if (frontTexture -> isTransparent ())
 			glEnable (GL_BLEND);
 		else
 			glDisable (GL_BLEND);
 
-		textures -> left -> display ();
+		leftTexture -> display ();
 		glBegin (GL_QUADS);
 		glTexCoord2f (0, 1);
 		glVertex3f (-s, s, s);
@@ -224,14 +211,14 @@ Background::draw ()
 		glEnd ();
 	}
 
-	if (textures -> right -> checkLoadState () == COMPLETE_STATE)
+	if (rightTexture -> checkLoadState () == COMPLETE_STATE)
 	{
-		if (textures -> front -> isTransparent ())
+		if (frontTexture -> isTransparent ())
 			glEnable (GL_BLEND);
 		else
 			glDisable (GL_BLEND);
 
-		textures -> right -> display ();
+		rightTexture -> display ();
 		glBegin (GL_QUADS);
 		glTexCoord2f (0, 1);
 		glVertex3f (s, s, -s);
@@ -244,14 +231,14 @@ Background::draw ()
 		glEnd ();
 	}
 
-	if (textures -> top -> checkLoadState () == COMPLETE_STATE)
+	if (topTexture -> checkLoadState () == COMPLETE_STATE)
 	{
-		if (textures -> front -> isTransparent ())
+		if (frontTexture -> isTransparent ())
 			glEnable (GL_BLEND);
 		else
 			glDisable (GL_BLEND);
 
-		textures -> top -> display ();
+		topTexture -> display ();
 		glBegin (GL_QUADS);
 		glTexCoord2f (0, 1);
 		glVertex3f (-s, s, s);
@@ -264,14 +251,14 @@ Background::draw ()
 		glEnd ();
 	}
 
-	if (textures -> bottom -> checkLoadState () == COMPLETE_STATE)
+	if (bottomTexture -> checkLoadState () == COMPLETE_STATE)
 	{
-		if (textures -> front -> isTransparent ())
+		if (frontTexture -> isTransparent ())
 			glEnable (GL_BLEND);
 		else
 			glDisable (GL_BLEND);
 
-		textures -> bottom -> display ();
+		bottomTexture -> display ();
 		glBegin (GL_QUADS);
 		glTexCoord2f (1, 0);
 		glVertex3f (s, -s, s);
@@ -286,14 +273,6 @@ Background::draw ()
 
 	glDisable (GL_TEXTURE_2D);
 	glPopMatrix ();
-}
-
-void
-Background::dispose ()
-{
-	delete textures;
-
-	X3DBackgroundNode::dispose ();
 }
 
 } // X3D

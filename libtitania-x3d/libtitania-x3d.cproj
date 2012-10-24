@@ -16,7 +16,6 @@
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glibmm-2.4.pc" name="glibmm" IsProject="false" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/giomm-2.4.pc" name="giomm" IsProject="false" />
         <Package file="/usr/lib/pkgconfig/mozjs185.pc" name="SpiderMonkey 1.8.5" IsProject="false" />
-        <Package file="/usr/lib/pkgconfig/ImageMagick++.pc" name="ImageMagick++" IsProject="false" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/gl.pc" name="gl" IsProject="false" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glew.pc" name="glew" IsProject="false" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glu.pc" name="glu" IsProject="false" />
@@ -27,6 +26,7 @@
         <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="true" />
         <Package file="/home/holger/Projekte/Titania/libtitania-gzstream/libtitania-gzstream.md.pc" name="libtitania-gzstream" IsProject="true" />
         <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="true" />
+        <Package file="/usr/lib/pkgconfig/GraphicsMagick++.pc" name="GraphicsMagick++" IsProject="false" />
       </Packages>
     </Packages>
     <ReleaseVersion>0.3</ReleaseVersion>

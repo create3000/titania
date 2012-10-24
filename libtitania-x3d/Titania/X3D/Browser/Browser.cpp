@@ -125,22 +125,6 @@ Browser::initialize ()
 		<< std::endl;
 }
 
-// texture transparency
-
-void
-Browser::setObjectAlpha (const float _objectFrontAlpha, const float _objectBackAlpha)
-{
-	objectFrontAlpha = _objectFrontAlpha;
-	objectBackAlpha  = _objectBackAlpha;
-}
-
-void
-Browser::getObjectAlpha (float & _objectFrontAlpha, float & _objectBackAlpha)
-{
-	_objectFrontAlpha = objectFrontAlpha;
-	_objectBackAlpha  = objectBackAlpha;
-}
-
 //
 
 void

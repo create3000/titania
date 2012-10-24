@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -49,8 +49,8 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXTURING_X3DTEXTURE2DNODE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXTURING_X3DTEXTURE2DNODE_H__
 
-#include "../Texturing/X3DTextureNode.h"
 #include "../Texturing/TextureProperties.h"
+#include "../Texturing/X3DTextureNode.h"
 #include <Magick++.h>
 
 namespace titania {
@@ -66,7 +66,7 @@ public:
 	SFNode <TextureProperties> textureProperties;
 
 	bool
-	isTransparent () { return transparency; }
+	isTransparent ();
 
 	virtual
 	void
@@ -102,23 +102,18 @@ private:
 	static void
 	scaleImage (Magick::Image &);
 
-	static void
+	void
 	getImageFormat (Magick::Image &,
 	                GLint &,
 	                GLenum &,
-	                int32_t &,
-	                std::string &,
 	                const bool);
 
 	size_t
 	getComponents ();
 
-	static const int      wrapTypes [ ];
-	GLuint                textureId;
-	int32_t               components;
-	bool                  transparency;
-	std::vector <GLfloat> glFrontDiffuseColor;
-	std::vector <GLfloat> glBackDiffuseColor;
+	static const int wrapTypes [2];
+	GLuint           textureId;
+	bool             transparent;
 
 };
 

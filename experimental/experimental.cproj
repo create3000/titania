@@ -17,6 +17,8 @@
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/libcurl.pc" name="libcurl" IsProject="false" />
         <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="true" />
         <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="true" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/gegl-0.2.pc" name="GEGL" IsProject="false" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/babl.pc" name="babl" IsProject="false" />
       </Packages>
     </Packages>
   </PropertyGroup>

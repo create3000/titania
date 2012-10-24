@@ -144,8 +144,6 @@ X3DShapeNode::draw ()
 {
 	glColor4f (1, 1, 1, 1);
 
-	getBrowser () -> setObjectAlpha (1, 1);
-
 	glMatrixMode (GL_TEXTURE);
 	glLoadMatrixd (textureMatrix .data ());
 

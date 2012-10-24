@@ -7,8 +7,8 @@ Background {
 DEF _0 Viewpoint {
   fieldOfView 0.785398
   jump TRUE
-  position 1.5 0.5 8.22429
-  centerOfRotation 1.5 0.5 -11.5
+  position 8 -6 22.8502
+  centerOfRotation 8 -6 -10
   description "Home"
 }
 

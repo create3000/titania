@@ -2180,11 +2180,11 @@
     <None Include="Tests\PROTO\Rotor.wrl" />
     <None Include="Tests\Navigation\Viewpoint.wrl" />
     <None Include="Tests\Navigation\Inline.wrl" />
-    <None Include="Tests\Texturing\images\colors\bw.png" />
     <None Include="Tests\Texturing\images\colors\bwa.png" />
     <None Include="Tests\Geometry3D\QuadSphere.wrl" />
     <None Include="Tests\Geometry3D\TriangleSphere.wrl" />
     <None Include="Tests\Geometry3D\Cube.wrl" />
+    <None Include="Tests\Texturing\images\colors\bw.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

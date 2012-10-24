@@ -76,15 +76,15 @@ X3DFieldDefinition::setReference (X3DFieldDefinition* const value)
 			write (reference);
 			break;
 		case inputOnly:
-			reference -> addCallback (this);
+			reference -> addInterest (this);
 			break;
 		case outputOnly:
-			addCallback (reference);
+			addInterest (reference);
 			//write (reference);
 			break;
 		case inputOutput:
-			reference -> addCallback (this);
-			addCallback (reference);
+			reference -> addInterest (this);
+			addInterest (reference);
 			write (reference);
 			break;
 	}
@@ -175,15 +175,27 @@ X3DFieldDefinition::getOutputRoutes () const
 }
 
 void
-X3DFieldDefinition::addCallback (X3DFieldDefinition* const callback)
+X3DFieldDefinition::addInterest (X3DFieldDefinition* const interest)
 {
-	callbacks .insert (callback);
+	interests .insert (interest);
 }
 
 void
-X3DFieldDefinition::removeCallback (X3DFieldDefinition* const callback)
+X3DFieldDefinition::addInterest (X3DFieldDefinition& interest)
 {
-	callbacks .erase (callback);
+	interests .insert (&interest);
+}
+
+void
+X3DFieldDefinition::removeInterest (X3DFieldDefinition* const interest)
+{
+	interests .erase (interest);
+}
+
+void
+X3DFieldDefinition::removeInterest (X3DFieldDefinition& interest)
+{
+	interests .erase (&interest);
 }
 
 void
@@ -192,7 +204,7 @@ X3DFieldDefinition::processEvents (ObjectSet & sourceFields)
 	//	if (inputRoutes  .size ())
 	sourceFields .insert (this);
 
-	for (const auto & fieldDefinition : callbacks)
+	for (const auto & fieldDefinition : interests)
 	{
 		fieldDefinition -> processEvent (this, sourceFields);
 	}
@@ -226,7 +238,7 @@ X3DFieldDefinition::dispose ()
 	inputRoutes  .clear ();
 	outputRoutes .clear ();
 
-	callbacks .clear ();
+	interests .clear ();
 
 	X3DBaseNode::dispose ();
 }
