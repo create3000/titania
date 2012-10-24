@@ -1,5 +1,36 @@
 2012-10-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Id.o:
+	* Env.o:
+	* URI.o:
+	* CWD.o:
+	* Home.o:
+	* Box3.o:
+	* Image.o:
+	* Split.o:
+	* Line3.o:
+	* Color4.o:
+	* System.o:
+	* Plane3.o:
+	* Color3.o:
+	* Sphere3.o:
+	* Vector4.o:
+	* Vector2.o:
+	* Vector3.o:
+	* Matrix4.o:
+	* Matrix3.o:
+	* strfsize.o:
+	* Generator.o:
+	* ClockBase.o:
+	* Rotation4.o:
+	* Quaternion.o:
+	* IndexedMap.o:
+	* SystemClock.o:
+	* FindDataFile.o:
+	* libtitania-standard.so: 
+
+2012-10-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Now.h:
 	* ClockBase.o:
 	* Now.cpp:

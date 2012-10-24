@@ -3,6 +3,63 @@
 	* puck:
 	* main.d:
 	* main.o:
+	* config.d:
+	* config.o:
+	* History.d:
+	* History.o:
+	* X3DConsoleUI.o:
+	* X3DConsoleUI.d:
+	* BrowserWidget.d:
+	* OutlineEditor.o:
+	* BrowserWidget.o:
+	* BrowserWindow.d:
+	* BrowserWindow.o:
+	* HistoryEditor.d:
+	* HistoryEditor.o:
+	* Configuration.o:
+	* OutlineEditor.d:
+	* Configuration.d:
+	* ViewpointEditor.o:
+	* OutlineTreeView.d:
+	* OutlineTreeView.o:
+	* ViewpointEditor.d:
+	* X3DBrowserWidget.o:
+	* X3DBrowserWidget.d:
+	* OutlineTreeModel.d:
+	* OutlineTreeModel.o:
+	* MotionBlurEditor.d:
+	* MotionBlurEditor.o:
+	* X3DBaseInterface.d:
+	* X3DBaseInterface.o:
+	* X3DUserInterface.d:
+	* X3DUserInterface.o:
+	* X3DBrowserWindow .o:
+	* ViewpointMenuItem.o:
+	* ViewpointMenuItem.d:
+	* X3DBrowserWindow .d:
+	* X3DHistoryEditorUI.o:
+	* X3DOutlineEditorUI.o:
+	* X3DOutlineEditorUI.d:
+	* X3DBrowserWindowUI.o:
+	* X3DBrowserWindowUI.d:
+	* X3DBrowserWidgetUI.o:
+	* X3DHistoryEditorUI.d:
+	* X3DBrowserWidgetUI.d:
+	* X3DBrowserInterface.d:
+	* X3DBrowserInterface.o:
+	* X3DViewpointEditorUI.o:
+	* X3DViewpointEditorUI.d:
+	* X3DMotionBlurEditorUI.o:
+	* X3DMotionBlurEditorUI.d:
+	* X3DBrowserUserInterface.o:
+	* X3DBrowserUserInterface.d:
+	* HistoryEditor.cpp: 
+
+2012-10-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* puck:
+	* main.d:
+	* main.o:
 	* X3DConsoleUI.d:
 	* X3DConsoleUI.o:
 	* OutlineEditor.d:

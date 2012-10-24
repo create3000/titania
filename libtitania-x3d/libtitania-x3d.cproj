@@ -478,6 +478,7 @@
     <None Include="Titania\X3D\Browser\Properties\X3DSpherePropertyNode.h" />
     <None Include="Titania\X3D\Browser\Properties\BrowserOptions.h" />
     <None Include="Titania\X3D\Widgets\Surface.h" />
+    <None Include="Titania\X3D\Browser\BrowserEnvironment.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -842,6 +843,7 @@
     <Compile Include="Titania\X3D\Browser\Properties\BrowserOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\BrowserProperties.cpp" />
     <Compile Include="Titania\X3D\Widgets\Surface.cpp" />
+    <Compile Include="Titania\X3D\Browser\BrowserEnvironment.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

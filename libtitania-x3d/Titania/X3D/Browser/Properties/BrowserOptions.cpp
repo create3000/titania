@@ -56,8 +56,6 @@ extern "C"
 #include "../../Execution/X3DExecutionContext.h"
 #include <Titania/Bits/String/Join.h>
 
-#include <iostream>
-
 namespace titania {
 namespace X3D {
 
@@ -109,7 +107,7 @@ BrowserOptions::create (X3DExecutionContext* const executionContext)  const
 void
 BrowserOptions::initialize ()
 {
-	X3DBasicNode::initialize ();
+	X3DPropertyNode::initialize ();
 
 	quadSphere -> setup ();
 

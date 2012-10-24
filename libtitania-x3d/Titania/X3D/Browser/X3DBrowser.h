@@ -49,6 +49,7 @@
 #include "../Browser/Properties/BrowserProperties.h"
 #include "../Browser/Properties/RenderingProperties.h"
 #include "../Browser/Properties/BrowserOptions.h"
+#include "../Browser/BrowserEnvironment.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "../Browser/HitArray.h"
@@ -206,6 +207,11 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	const SFNode <BrowserEnvironment> &
+	getBrowserEnvironment () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	NavigationInfo*
 	getActiveNavigationInfo () const
 	throw (Error <DISPOSED>);
@@ -322,23 +328,6 @@ public:
 	void
 	getObjectAlpha (float &, float &) = 0;
 
-	////
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	////
-	virtual
-	GLuint
-	getTexture (const std::string &) = 0;
-
-	virtual
-	void addTexture (const std::string &, GLuint) = 0;
-
-	virtual
-	bool removeTexture (const std::string &, GLuint) = 0;
-
-	////
-
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	////  Visibility-, Proxmity-, ... Sensor
@@ -394,6 +383,7 @@ private:
 	SFNode <RenderingProperties> renderingProperties;
 	SFNode <BrowserProperties>   browserProperties;
 	SFNode <BrowserOptions>      browserOptions;
+	SFNode <BrowserEnvironment>  browserEnvironment;
 	SFNode <JavaScriptEngine>    javaScriptEngine;
 
 	Router router;

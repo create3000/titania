@@ -107,7 +107,7 @@ ImageTexture::requestImmediateLoad ()
 	// Delete previous Texture.
 
 	if (getTexture ())
-		if (getBrowser () -> removeTexture (getWorldURL (), getTexture ()));
+		if (getBrowser () -> getBrowserEnvironment () -> removeTexture (getWorldURL (), getTexture ()));
 
 	// Get cached Texture.
 	
@@ -124,12 +124,11 @@ ImageTexture::requestImmediateLoad ()
 	{
 		for (const auto & URL : transformURI (url))
 		{
-			GLint textureId = getBrowser () -> getTexture (URL);
-
-			__LOG__ << textureId << std::endl;
+			GLint textureId = getBrowser () -> getBrowserEnvironment () -> getTexture (URL);
 
 			if (textureId)
 			{
+__LOG__ << URL << std::endl;
 				setWorldURL (URL .getValue ());
 				setTexture (textureId);
 				loadState = COMPLETE_STATE;
@@ -154,7 +153,7 @@ ImageTexture::requestImmediateLoad ()
 
 	// Add texture to cache.
 	
-	getBrowser () -> addTexture (getWorldURL (), getTexture ());
+	getBrowser () -> getBrowserEnvironment () -> addTexture (getWorldURL (), getTexture ());
 
 	loadState = COMPLETE_STATE;
 }
@@ -205,11 +204,8 @@ ImageTexture::loadImage (Magick::Image & image)
 void
 ImageTexture::dispose ()
 {
-	if (getBrowser () -> removeTexture (getWorldURL (), getTexture ()))
-	{
-		__LOG__ << getWorldURL () << std::endl;
+	if (getBrowser () -> getBrowserEnvironment () -> removeTexture (getWorldURL (), getTexture ()))
 		deleteTexture ();
-	}
 
 	X3DTexture2DNode::dispose ();
 }

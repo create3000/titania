@@ -83,15 +83,6 @@ public:
 	void
 	getObjectAlpha (float &, float &);
 
-	size_t
-	getNumTextures () { return textures .size (); }
-
-	GLuint
-	getTexture (const std::string &);
-
-	void addTexture (const std::string &, GLuint);
-	bool removeTexture (const std::string &, GLuint);
-
 	////
 	void
 	pick (const size_t, const size_t);
@@ -170,16 +161,11 @@ private:
 	clearHits ();
 
 	typedef std::vector <X3DRenderer*>     RendererStack;
-	typedef std::map <std::string, GLuint> TextureMap;
-	typedef std::map <GLuint, size_t>      TextureRefCountMap;
 
 	RendererStack rendererStack;
 
 	float objectFrontAlpha;
 	float objectBackAlpha;
-
-	TextureMap         textures;
-	TextureRefCountMap textureRefCounts;
 
 	size_t x;
 	size_t y;

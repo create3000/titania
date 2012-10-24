@@ -1,6 +1,13 @@
 2012-10-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GLSurface.o:
+	* GLContext.o:
+	* WindowContext.o:
+	* libtitania-opengl-canvas.so: 
+
+2012-10-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* GLSurface.o:
 	* GLSurface.d:
 	* GLContext.o:
 	* WindowContext.o:

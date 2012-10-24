@@ -1,3 +1,15 @@
+2012-10-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
+	* Cube.wrl:
+	* QuadSphere.wrl:
+	* ImageTexture.wrl:
+	* TriangleSphere.wrl:
+	* bw.png:
+	* bwa.png:
+	* IndexedFaceSet-QuadSphere.wrl:
+	* IndexedFaceSet-TriangleSphere.wrl: 
+
 2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ChangeLog:

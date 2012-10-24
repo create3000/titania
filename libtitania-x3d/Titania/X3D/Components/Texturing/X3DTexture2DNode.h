@@ -100,19 +100,22 @@ protected:
 private:
 
 	static void
+	scaleImage (Magick::Image &);
+
+	static void
 	getImageFormat (Magick::Image &,
 	                GLint &,
 	                GLenum &,
-	                size_t &,
+	                int32_t &,
 	                std::string &,
 	                const bool);
 
-	static void
-	scaleImage (Magick::Image &);
+	size_t
+	getComponents ();
 
 	static const int      wrapTypes [ ];
 	GLuint                textureId;
-	GLint                 internalFormat;
+	int32_t               components;
 	bool                  transparency;
 	std::vector <GLfloat> glFrontDiffuseColor;
 	std::vector <GLfloat> glBackDiffuseColor;

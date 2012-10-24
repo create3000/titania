@@ -1,6 +1,6 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Texturing/ImageTexture.wrl">
     <Files>
       <File FileName="Puck/puck/Browser/X3DBrowserWindow.h" Line="135" Column="1" />
       <File FileName="Puck/puck/Browser/X3DBrowserWindow .cpp" Line="72" Column="37" />
@@ -8,6 +8,8 @@
       <File FileName="Puck/puck/Browser/X3DBrowserWidget.cpp" Line="79" Column="24" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.h" Line="54" Column="37" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp" Line="60" Column="1" />
+      <File FileName="Library/Tests/Geometry3D/Cube.wrl" Line="42" Column="4" />
+      <File FileName="Library/Tests/Texturing/ImageTexture.wrl" Line="386" Column="24" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -26,6 +28,7 @@
                 <Node name="images" expanded="True">
                   <Node name="colors" expanded="True" />
                 </Node>
+                <Node name="ImageTexture.wrl" selected="True" />
               </Node>
             </Node>
           </Node>
@@ -47,9 +50,7 @@
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Browser" expanded="True">
-                  <Node name="Properties" expanded="True">
-                    <Node name="RenderingProperties.cpp" selected="True" />
-                  </Node>
+                  <Node name="Properties" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="EnvironmentalEffects" expanded="True" />

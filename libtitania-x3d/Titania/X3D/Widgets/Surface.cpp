@@ -144,7 +144,10 @@ Surface::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 }
 
 Surface::~Surface ()
-{ }
+{
+	if (makeCurrent ())
+		browser -> dispose ();
+}
 
 } // X3D
 } // titania

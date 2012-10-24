@@ -1,3 +1,25 @@
+2012-10-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Id.d:
+	* Id.o:
+	* Type.d:
+	* main.d:
+	* main.o:
+	* Type.o:
+	* Input.o:
+	* Input.d:
+	* CType.o:
+	* CType.d:
+	* Output.d:
+	* Output.o:
+	* NumPunct.d:
+	* NumPunct.o:
+	* experimental:
+	* AccessTypes.o:
+	* AccessTypes.d:
+	* ClassicVrml.d:
+	* ClassicVrml.o: 
+
 2012-10-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* URI.h:

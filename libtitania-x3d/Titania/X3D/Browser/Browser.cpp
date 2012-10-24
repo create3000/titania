@@ -141,44 +141,6 @@ Browser::getObjectAlpha (float & _objectFrontAlpha, float & _objectBackAlpha)
 	_objectBackAlpha  = objectBackAlpha;
 }
 
-// texture
-
-GLuint
-Browser::getTexture (const std::string & URL)
-{
-	TextureMap::const_iterator iter = textures .find (URL);
-
-	if (iter not_eq textures .end ())
-	{
-		++ textureRefCounts [iter -> second];
-		return iter -> second;
-	}
-
-	return 0;
-}
-
-void
-Browser::addTexture (const std::string & URL, GLuint textureId)
-{
-	textures [URL]               = textureId;
-	textureRefCounts [textureId] = 1;
-}
-
-bool
-Browser::removeTexture (const std::string & URL, GLuint textureId)
-{
-	-- textureRefCounts [textureId];
-
-	if (textureRefCounts [textureId] == 0)
-	{
-		textures .erase (URL);
-		textureRefCounts .erase (textureId);
-		return true;
-	}
-
-	return false;
-}
-
 //
 
 void

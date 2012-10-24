@@ -1,6 +1,14 @@
 2012-10-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* test:
+	* misc.o:
+	* misc.d:
+	* main.d:
+	* main.o: 
+
+2012-10-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* test:
 	* main.o:
 	* main.d: 
 

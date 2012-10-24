@@ -47,9 +47,10 @@ X3DBrowser::X3DBrowser () :
 	supportedComponents (this),                                    
 	  supportedProfiles (this, supportedComponents),               
 	renderingProperties (new RenderingProperties (this)),          
-	  browserProperties (new BrowserProperties (this)),
-	     browserOptions (new BrowserOptions (this)),
-	   javaScriptEngine (new JavaScriptEngine (this)),
+	  browserProperties (new BrowserProperties   (this)),            
+	     browserOptions (new BrowserOptions      (this)),               
+	 browserEnvironment (new BrowserEnvironment  (this)),               
+	   javaScriptEngine (new JavaScriptEngine    (this)),             
 	             router (),                                        
 	       currentSpeed (0),                                       
 	   currentFrameRate (0),                                       
@@ -63,7 +64,13 @@ X3DBrowser::X3DBrowser () :
 	setTypeName ("Browser");
 	setName ("Titania");
 
-	setChildren (url);
+	setChildren (renderingProperties,
+	             browserProperties,
+	             browserOptions,
+	             browserEnvironment,
+	             javaScriptEngine,
+	             url);
+
 	appendField (outputOnly, "urlError", urlError);
 	appendField (outputOnly, "world",    world);
 
@@ -77,23 +84,23 @@ X3DBrowser::initialize ()
 {
 	X3DExecutionContext::initialize ();
 	X3DUrlObject::initialize ();
-	
+
 	// Properties
-	
+
 	renderingProperties -> setup ();
 	browserProperties   -> setup ();
 	browserOptions      -> setup ();
 	javaScriptEngine    -> setup ();
 
 	// Lights
-	
+
 	for (int32_t i = 0; i < renderingProperties -> maxLights; ++ i)
 		lightStack .push (GL_LIGHT0 + i);
 
 	// URL
 
 	url .addInterest (this, &X3DBrowser::set_url);
-	
+
 	// Welcome
 
 	std::clog
@@ -353,6 +360,14 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return browserOptions;
 }
 
+const SFNode <BrowserEnvironment> &
+X3DBrowser::getBrowserEnvironment () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return browserEnvironment;
+}
+
 NavigationInfo*
 X3DBrowser::getActiveNavigationInfo () const
 throw (Error <DISPOSED>)
@@ -479,7 +494,7 @@ X3DBrowser::display ()
 	router .processEvents ();
 
 	world -> display ();
-	
+
 	renderingProperties -> display ();
 
 	processInterests ();
@@ -499,6 +514,8 @@ X3DBrowser::dispose ()
 	supportedNodes      .dispose ();
 	supportedComponents .dispose ();
 	supportedProfiles   .dispose ();
+	
+	X3DBaseNode::dispose ();
 
 	getGarbageCollector () .dispose ();
 

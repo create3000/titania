@@ -86,6 +86,8 @@ HistoryEditor::on_map ()
 		row -> set_value (TITLE_COLUMN,    item .at ("title"));
 		row -> set_value (LOCATION_COLUMN, item .at ("location"));
 	}
+
+	getScrolledWindow () .queue_draw ();
 }
 
 void
@@ -114,9 +116,10 @@ HistoryEditor::set_scene ()
 	row -> set_value (ICON_COLUMN,     worldURL .str ());
 	row -> set_value (TITLE_COLUMN,    title);
 	row -> set_value (LOCATION_COLUMN, worldURL .str ());
-	getScrolledWindow () .queue_draw ();
 
 	history .setItem (title, worldURL);
+	
+	getScrolledWindow () .queue_draw ();
 }
 
 void

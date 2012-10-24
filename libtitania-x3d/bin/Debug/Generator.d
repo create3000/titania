@@ -282,6 +282,9 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/InputOutput/../Browser/../Browser/../Browser/Properties/BrowserOptions.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/InputOutput/../Browser/../Browser/../Browser/Properties/../../Execution/X3DExecutionContext.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/InputOutput/../Browser/../Browser/../Browser/Properties/../Properties/QuadSphereProperties.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/InputOutput/../Browser/../Browser/../Browser/BrowserEnvironment.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/InputOutput/../Browser/../Browser/../Browser/../Components/Core/X3DChildNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/InputOutput/../Browser/../Browser/../Browser/../Execution/X3DExecutionContext.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/InputOutput/../Browser/../Browser/../Browser/HitArray.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/InputOutput/../Browser/../Browser/../Browser/Hit.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/InputOutput/../Browser/../Browser/../Components/Core/X3DSensorNode.h \
