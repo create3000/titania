@@ -90,89 +90,80 @@ PixelTexture::requestImmediateLoad ()
 
 	size_t pixels = image .getWidth () * image .getHeight ();
 
-	std::vector <uint8_t> array;
-	Magick::Image         mimage;
+	Magick::Image mimage;
 	mimage .depth (8);
 	mimage .size (Magick::Geometry (image .getWidth (), image .getHeight ()));
 
-	if (image .getComp () == 1)
+	switch (image .getComp ())
 	{
-		array .reserve (pixels);
-
-		for (int h = image .getHeight () - 1; h >= 0; -- h)
+		case 1:
 		{
-			for (SFImage::size_type w = 0; w < image .getWidth (); ++ w)
-			{
-				size_t value = image .getArray () [(h * image .getWidth ()) + w];
-				array .push_back (value);
-			}
+			std::vector <uint8_t> array;
+			array .reserve (pixels);
+			
+			array .assign (image .getArray () .begin (),
+			               image .getArray () .end ());
+			
+			Magick::Blob blob (array .data (), array .size ());
+			mimage .magick ("GRAY");
+			mimage .read (blob);
+			
+			break;
 		}
-
-		Magick::Blob blob (&array [0], array .size ());
-		mimage .magick ("GRAY");
-		mimage .read (blob);
-	}
-	else if (image .getComp () == 2)
-	{
-		array .reserve (pixels * 4);
-
-		for (int h = image .getHeight () - 1; h >= 0; -- h)
+		case 2:
 		{
-			for (SFImage::size_type w = 0; w < image .getWidth (); ++ w)
+			std::vector <uint16_t> array;
+			array .reserve (pixels * 2);
+			
+			for (const auto & pixel : image .getArray ())
 			{
-				size_t value = image .getArray () [(h * image .getWidth ()) + w];
-				array .push_back (value >> 8);
-				array .push_back (value >> 8);
-				array .push_back (value >> 8);
-				array .push_back (value); // alpha
+				array .push_back ((pixel & 0xff00) & (pixel >> 8));
+				array .push_back (pixel);
 			}
+
+			Magick::Blob blob (array .data (), array .size ());
+			mimage .magick ("RGBA");
+			mimage .read (blob);
+
+			break;
 		}
-
-		Magick::Blob blob (&array [0], array .size ());
-		mimage .magick ("RGBA");
-		mimage .read (blob);
-		mimage .type (Magick::GrayscaleMatteType);
-	}
-	else if (image .getComp () == 3)
-	{
-		array .reserve (pixels * 3);
-
-		for (int h = image .getHeight () - 1; h >= 0; -- h)
+		case 3:
 		{
-			for (SFImage::size_type w = 0; w < image .getWidth (); ++ w)
+			std::vector <uint8_t> array;
+			array .reserve (pixels * 3);
+			
+			for (const auto & pixel : image .getArray ())
 			{
-				size_t value = image .getArray () [(h * image .getWidth ()) + w];
-				array .push_back (value >> 16);
-				array .push_back (value >> 8);
-				array .push_back (value);
+				array .push_back (pixel >> 16);
+				array .push_back (pixel >> 8);
+				array .push_back (pixel);
 			}
+
+			Magick::Blob blob (array .data (), array .size ());
+			mimage .magick ("RGB");
+			mimage .read (blob);
+			
+			break;
 		}
-
-		Magick::Blob blob (&array [0], array .size ());
-		mimage .magick ("RGB");
-		mimage .read (blob);
-	}
-	else if (image .getComp () == 4)
-	{
-		array .reserve (pixels * 4);
-
-		for (int h = image .getHeight () - 1; h >= 0; -- h)
+		case 4:
 		{
-			for (SFImage::size_type w = 0; w < image .getWidth (); ++ w)
-			{
-				size_t value = image .getArray () [(h * image .getWidth ()) + w];
-				array .push_back (value >> 24);
-				array .push_back (value >> 16);
-				array .push_back (value >> 8);
-				array .push_back (value); // alpha
-			}
-		}
+			std::vector <uint32_t> array;
+			array .reserve (pixels);
+			
+			array .assign (image .getArray () .begin (),
+			               image .getArray () .end ());
 
-		Magick::Blob blob (&array [0], array .size ());
-		mimage .magick ("RGBA");
-		mimage .read (blob);
+			Magick::Blob blob (array .data (), array .size ());
+			mimage .magick ("RGBA");
+			mimage .read (blob);
+			
+			break;
+		}
+		default:
+			break;
 	}
 
+	mimage .flip ();
 	setImage (mimage);
 }
 

@@ -1,5 +1,5 @@
 Name: libtitania-standard
 Description: 
 Version: 0.3
-Libs: -L"/home/holger/Projekte/Titania/libtitania-standard/bin/Debug" -ltitania-standard
+Libs: -L"/home/holger/Projekte/Titania/libtitania-standard/bin/Release" -ltitania-standard
 Cflags: -I"/home/holger/Projekte/Titania/libtitania-standard" -I"/home/holger/Projekte/Titania/libtitania-standard/Titania" -I"/home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/InputOutput" -I"/home/holger/Projekte/Titania/libtitania-standard/Titania/Basic" -I"/home/holger/Projekte/Titania/libtitania-standard/Titania/Bits" -I"/home/holger/Projekte/Titania/libtitania-standard/Titania/Bits/String" -I"/home/holger/Projekte/Titania/libtitania-standard/Titania/Bits/Algorithm" -I"/home/holger/Projekte/Titania/libtitania-standard/Titania/Bits/Utility" -I"/home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono" -I"/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers" -I"/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry" -I"/home/holger/Projekte/Titania/libtitania-standard/Titania/Math" -I"/home/holger/Projekte/Titania/libtitania-standard/Titania/OS"

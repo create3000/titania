@@ -144,6 +144,16 @@ public:
 
 	matrix4 (const matrix3 <Type> &);
 
+	/// @name Assignment operators
+
+	template <class Up>
+	matrix4 &
+	operator = (const matrix4 <Up> &);
+
+	template <class M>
+	matrix4 &
+	operator = (const matrix3 <M> &);
+
 	///  Returns the order of the matrix.
 	static
 	constexpr size_type
@@ -319,14 +329,6 @@ public:
 	matrix4 &
 	operator /= (const Type &);
 
-	template <class Up>
-	matrix4 &
-	operator = (const matrix4 <Up> &);
-
-	//	template <class M>
-	//	matrix4 &
-	//	operator = (const matrix3 <M> &);
-
 	static const matrix4 Identity;
 
 
@@ -371,6 +373,28 @@ template <class Type>
 matrix4 <Type>::matrix4 (const matrix3 <Type> & m)
 {
 	*this = m;
+}
+
+template <class Type>
+template <class Up>
+matrix4 <Type> &
+matrix4 <Type>::operator = (const matrix4 <Up> & matrix)
+{
+	value = matrix .vector ();
+	return *this;
+}
+
+template <class Type>
+template <class Up>
+matrix4 <Type> &
+matrix4 <Type>::operator = (const matrix3 <Up> & m)
+{
+	set (m [0], m [1], 0, m [2],
+	     m [3], m [4], 0, m [5],
+	     0, 0, 1, 0,
+	     m [6], m [7], 0, m [8]);
+
+	return *this;
 }
 
 template <class Type>
@@ -1098,28 +1122,6 @@ matrix4 <Type>::operator /= (const Type & t)
 
 	return *this;
 }
-
-template <class Type>
-template <class Up>
-matrix4 <Type> &
-matrix4 <Type>::operator = (const matrix4 <Up> & matrix)
-{
-	value = matrix .vector ();
-	return *this;
-}
-
-//template <class Type>
-//template <class M>
-//matrix4 <Type> &
-//matrix4 <Type>::operator = (const matrix3 <M> & m)
-//{
-//	set (m [0], m [1], 0, m [2],
-//	     m [3], m [4], 0, m [5],
-//	     0, 0, 1, 0,
-//	     m [6], m [7], 0, m [8]);
-//
-//	return *this;
-//}
 
 template <class Type>
 bool

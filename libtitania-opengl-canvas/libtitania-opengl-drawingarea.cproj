@@ -68,5 +68,6 @@
     <None Include="Titania\OpenGL\Context\GLContext.h" />
     <None Include="Titania\OpenGL\Context\PixelBufferContext.h" />
     <None Include="Titania\OpenGL\Context\TextureContext.h" />
+    <None Include="libtitania-opengl-drawingarea.md.pc" />
   </ItemGroup>
 </Project>

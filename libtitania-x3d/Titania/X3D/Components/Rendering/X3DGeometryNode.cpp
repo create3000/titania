@@ -268,11 +268,14 @@ X3DGeometryNode::draw ()
 
 	if (glColors .size ())
 	{
-		glEnable (GL_COLOR_MATERIAL);
+		if (glIsEnabled (GL_LIGHTING))
+		{
+			glEnable (GL_COLOR_MATERIAL);
 
-		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
-		glEnableClientState (GL_COLOR_ARRAY);
-		glColorPointer (glNumColors, GL_FLOAT, 0, 0);
+			glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
+			glEnableClientState (GL_COLOR_ARRAY);
+			glColorPointer (glNumColors, GL_FLOAT, 0, 0);
+		}
 	}
 
 	if (glIsEnabled (GL_LIGHTING))

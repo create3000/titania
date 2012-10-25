@@ -9604,7 +9604,7 @@ Group {
 		      repeatT	FALSE
 		    }
 
-		    textureTransform	TextureTransform {
+		    textureTransform	DEF AAA TextureTransform {
 		      translation	-0.1 -0.04
 		      rotation	0
 		      scale	1.23008 1.08636

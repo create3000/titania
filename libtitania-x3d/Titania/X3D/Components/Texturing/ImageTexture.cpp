@@ -128,7 +128,6 @@ ImageTexture::requestImmediateLoad ()
 
 			if (textureId)
 			{
-__LOG__ << URL << std::endl;
 				setWorldURL (URL .getValue ());
 				setTexture (textureId);
 				loadState = COMPLETE_STATE;
