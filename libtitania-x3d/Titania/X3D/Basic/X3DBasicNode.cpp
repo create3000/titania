@@ -52,7 +52,6 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Fields/MFNode.h"
 #include "../Fields/SFNode.h"
-#include <algorithm>
 #include <cassert>
 #include <iomanip>
 #include <iostream>
@@ -512,11 +511,11 @@ X3DBasicNode::processEvents (ObjectSet & sourceFields)
 	{
 		ObjectSet eventsToProcess (std::move (events));
 
-		std::for_each (eventsToProcess .cbegin (),
-		               eventsToProcess .cend (),
-		               std::bind (std::mem_fn (&X3DObject::processEvents),
-		                          std::placeholders::_1,
-		                          std::ref (sourceFields)));
+		for (const auto & event : eventsToProcess)
+		{
+			//std::clog << "Node '" << getTypeName () << "' process events from field '" << event -> getName () << "'." << (void*) this << std::endl;
+		   event -> processEvents (sourceFields);
+		}
 	}
 }
 

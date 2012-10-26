@@ -65,10 +65,6 @@ public:
 	World (X3DExecutionContext* const, const SFNode <Scene> &);
 
 	virtual
-	World*
-	create (X3DExecutionContext* const) const;
-
-	virtual
 	void
 	display ();
 
@@ -82,6 +78,10 @@ public:
 
 
 private:
+
+	virtual
+	World*
+	create (X3DExecutionContext* const) const;
 
 	virtual
 	void

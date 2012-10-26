@@ -116,10 +116,6 @@ public:
 	throw (Error <INVALID_SCENE>);
 
 	virtual
-	void
-	intersect () { world -> select (); }
-
-	virtual
 	~Browser ();
 
 

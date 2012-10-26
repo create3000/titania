@@ -141,7 +141,7 @@ Browser::pick (const size_t x, const size_t y)
 {
 	selectionBegin ();
 	setXY (x, y);
-	world -> select ();
+	select ();
 	selectionEnd ();
 }
 

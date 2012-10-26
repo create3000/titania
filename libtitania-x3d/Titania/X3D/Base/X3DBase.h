@@ -50,6 +50,7 @@
 #define __TITANIA_X3D_BASE_X3DBASE_H__
 
 #include <Titania/LOG.h>
+#include <Titania/Basic/Id.h>
 
 namespace titania {
 namespace X3D {
@@ -57,6 +58,10 @@ namespace X3D {
 class X3DBase
 {
 public:
+
+	virtual
+	const basic::id
+	getTypeName () const = 0;
 
 	virtual
 	void

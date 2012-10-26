@@ -77,7 +77,7 @@ Viewer::initialize ()
 	surface .signal_button_release_event () .connect (sigc::mem_fun (*this, &Viewer::on_button_release_event));
 	surface .signal_scroll_event         () .connect (sigc::mem_fun (*this, &Viewer::on_scroll_event));
 
-	getBrowser () -> world .addInterest (this, &Viewer::set_scene);
+	getBrowser () -> initialized .addInterest (this, &Viewer::set_scene);
 
 	set_scene ();
 }

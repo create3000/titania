@@ -155,7 +155,7 @@ RenderingProperties::initialize ()
 		set_fontFamily (fontFamily);
 		reset ();
 
-		getBrowser () -> world .addInterest (this, &RenderingProperties::set_world);
+		getBrowser () -> initialized .addInterest (this, &RenderingProperties::set_world);
 	}
 }
 

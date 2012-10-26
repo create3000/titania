@@ -136,7 +136,7 @@ throw (Error <INVALID_URL>,
 {
 	if (url .size ())
 	{
-		urlError .clear ();
+		urlError .set ({ });
 
 		for (const auto & URL : url)
 		{

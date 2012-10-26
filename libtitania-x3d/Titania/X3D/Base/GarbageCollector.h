@@ -63,6 +63,10 @@ public:
 	typedef ObjectSet::size_type size_type;
 
 	GarbageCollector ();
+	
+	virtual
+	const basic::id
+	getTypeName () const;
 
 	void
 	addObject (X3DObject*);
@@ -85,7 +89,8 @@ private:
 	operator = (const GarbageCollector &) = delete;
 
 	ObjectSet disposedObjects;
-
+	
+	static const basic::id typeName;
 };
 
 } // X3D

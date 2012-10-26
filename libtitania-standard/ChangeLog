@@ -1,6 +1,48 @@
 2012-10-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Id.o:
+	* URI.o:
+	* Env.o:
+	* CWD.o:
+	* Home.o:
+	* Box3.o:
+	* Line3.o:
+	* Timer.d:
+	* Timer.o:
+	* Split.o:
+	* Image.o:
+	* Color4.o:
+	* Plane3.o:
+	* Color3.o:
+	* System.o:
+	* Vector4.o:
+	* Vector3.o:
+	* Vector2.o:
+	* Sphere3.o:
+	* Matrix4.o:
+	* Matrix3.o:
+	* strfsize.o:
+	* TimerBase.o:
+	* Generator.o:
+	* TimerBase.d:
+	* ClockBase.o:
+	* Rotation4.o:
+	* IndexedMap.o:
+	* ClockTimer.o:
+	* Quaternion.o:
+	* SystemTimer.d:
+	* SystemTimer.o:
+	* SystemClock.o:
+	* SteadyClock.d:
+	* SteadyClock.o:
+	* SteadyTimer.o:
+	* SteadyTimer.d:
+	* FindDataFile.o:
+	* libtitania-standard.so: 
+
+2012-10-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Id.o:
 	* Env.o:
 	* URI.o:
 	* CWD.o:

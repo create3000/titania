@@ -263,6 +263,10 @@ public:
 
 	virtual
 	void
+	intersect () { world -> select (); }
+
+	virtual
+	void
 	dispose ();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -391,11 +395,10 @@ public:
 	SFTime         finished;
 	SFTime         shutdown;
 	SFTime         changed;
-	SFNode <World> world;
-
 
 private:
 
+	SFNode <World> world;
 	SFNode <Scene> scene;
 
 	void

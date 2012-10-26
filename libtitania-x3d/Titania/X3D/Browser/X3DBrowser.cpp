@@ -88,6 +88,8 @@ X3DBrowser::X3DBrowser () :
 	appendField (outputOnly, "shutdown",    shutdown);
 	appendField (outputOnly, "urlError",    urlError);
 	appendField (outputOnly, "world",       world);
+	
+	scene .setName ("scene");
 
 	world -> setup ();
 
@@ -277,29 +279,26 @@ throw (Error <INVALID_SCENE>)
 {
 	std::clog << "The browser is requested to replace the world:" << std::endl;
 	
+	if (not value)
+		throw Error <INVALID_SCENE> ("Scene is NULL.");
+	
 	scene = value;
 }
 
 void
 X3DBrowser::set_scene ()
 {
-	// Process all outstanding events.
-
-	router .processEvents ();
-	
 	// Replace world.
 
 	world = new World (this, scene);
 	world -> setup ();
-
+		
 	// Change viewpoint.
 
 	if (scene -> getWorldURL () .fragment () .length ())
 		changeViewpoint (scene -> getWorldURL () .fragment ());
-		
+
 	// Dereference scene.
-	
-	scene .set (NULL);
 	
 	// Generated initialized event immediately upon receiving this service.
 	
@@ -471,8 +470,12 @@ X3DBrowser::notify (X3DBasicNode* const node)
 
 	router .notify (node);
 
+	if (changed == getCurrentTime ())
+		return;
+	
 	ObjectSet sourceFields;
 
+	changed = getCurrentTime ();
 	changed .processEvents (sourceFields);
 }
 

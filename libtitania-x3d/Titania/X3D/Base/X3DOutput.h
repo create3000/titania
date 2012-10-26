@@ -69,14 +69,14 @@ public:
 
 	//@{
 	///  Add interest with const reference @a argument.
-	template <class Class, class Argument>
-	inline
-	void
-	addInterest (Class* object, void (Class::* memberFunction) (Argument*), Argument* argument) const
-	{
-		insertInterest (std::bind (std::mem_fn (memberFunction), object, argument),
-		                object, reinterpret_cast <void*> (object ->* memberFunction));
-	}
+//	template <class Class, class Argument>
+//	inline
+//	void
+//	addInterest (Class* object, void (Class::* memberFunction) (Argument*), Argument* argument) const
+//	{
+//		insertInterest (std::bind (std::mem_fn (memberFunction), object, argument),
+//		                object, reinterpret_cast <void*> (object ->* memberFunction));
+//	}
 
 	template <class Class, class Argument>
 	inline

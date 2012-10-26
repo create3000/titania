@@ -50,7 +50,6 @@
 #define __TITANIA_X3D_BASE_X3DTYPE_H__
 
 #include "../Base/X3DBase.h"
-#include <Titania/Basic/Id.h>
 
 namespace titania {
 namespace X3D {

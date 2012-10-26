@@ -200,17 +200,5 @@ Scene::toStream (std::ostream & ostream) const
 	ostream << std::flush;
 }
 
-void
-X3DScene::dispose ()
-{
-	std::clog << "\tDisposing X3DScene:" << std::endl;
-
-	layerSet .dispose ();
-
-	X3DExecutionContext::dispose ();
-
-	std::clog << "\tDone disposing X3DScene." << std::endl;
-}
-
 } // X3D
 } // titania

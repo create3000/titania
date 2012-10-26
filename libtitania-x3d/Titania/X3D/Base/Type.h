@@ -62,6 +62,11 @@ public:
 	explicit
 	Type (const basic::id &);
 
+	virtual
+	const basic::id
+	getTypeName () const;
+
+	static const basic::id typeName;
 };
 
 } // X3D

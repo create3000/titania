@@ -75,10 +75,6 @@ public:
 	setName (const basic::id &);
 
 	virtual
-	const basic::id
-	getTypeName () const = 0;
-
-	virtual
 	const X3DType*
 	getType () const = 0;
 

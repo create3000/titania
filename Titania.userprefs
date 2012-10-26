@@ -1,22 +1,54 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/share/titania/puck/pages/about/home/red.orange.yellow.wrl">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Basic/X3DBasicNode.cpp">
     <Files>
-      <File FileName="Titania/puck/Browser/X3DBrowserWindow.h" Line="125" Column="12" />
-      <File FileName="Titania/puck/Browser/X3DBrowserWindow .cpp" Line="254" Column="1" />
-      <File FileName="Titania/puck/Browser/X3DBrowserWidget.h" Line="116" Column="6" />
-      <File FileName="Titania/puck/Browser/X3DBrowserWidget.cpp" Line="127" Column="2" />
       <File FileName="libtitania-x3d/Titania/X3D/Widgets/Surface.cpp" Line="97" Column="1" />
-      <File FileName="Titania/share/titania/puck/pages/about/home.wrl" Line="61" Column="6" />
-      <File FileName="Titania/share/titania/puck/pages/about/home/red.orange.yellow.wrl" Line="98" Column="14" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.cpp" Line="65" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Routing/Router.cpp" Line="70" Column="6" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="507" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBasicNode.cpp" Line="482" Column="4" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="90" Column="33" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBasicNode.cpp" Line="514" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="758" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/World.cpp" Line="62" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.cpp" Line="144" Column="12" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.h" Line="401" Column="17" />
+      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DOutput.cpp" Line="105" Column="50" />
+      <File FileName="libtitania-x3d/Titania/X3D/Routing/Router.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Routing/Router.cpp" Line="78" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" />
+        <State expanded="True">
+          <Node name="libtitania-x3d" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
+                <Node name="Basic" expanded="True">
+                  <Node name="X3DBasicNode.cpp" selected="True" />
+                </Node>
+                <Node name="Browser" expanded="True">
+                  <Node name="Properties" expanded="True" />
+                </Node>
+                <Node name="Components" expanded="True">
+                  <Node name="Core" expanded="True">
+                    <Node name="X3DBindableNode" expanded="True" />
+                  </Node>
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Networking" expanded="True" />
+                </Node>
+                <Node name="Execution" expanded="True" />
+                <Node name="Fields" expanded="True" />
+                <Node name="Routing" expanded="True" />
+                <Node name="Widgets" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+          <Node name="Titania" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Browser" expanded="True" />
+              <Node name="HistoryEditor" expanded="True" />
+              <Node name="OutlineEditor" expanded="True" />
+              <Node name="ViewpointEditor" expanded="True" />
+            </Node>
+          </Node>
+        </State>
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True" selected="True" />

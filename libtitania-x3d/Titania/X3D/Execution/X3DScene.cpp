@@ -86,7 +86,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		rootLayersSet -> getLayers () [0] -> children = layerSet -> getLayers () [0] -> children;
 		layerSet                                      = rootLayersSet;
-		__LOG__ << (void*) layerSet .getValue () << std::endl;
 	}
 
 	else
@@ -133,6 +132,16 @@ void
 X3DScene::display ()
 {
 	layerSet -> display ();
+}
+
+void
+X3DScene::dispose ()
+{
+	std::clog << "\tDisposing X3DScene: " << getWorldURL () << std::endl;
+
+	X3DExecutionContext::dispose ();
+
+	std::clog << "\tDone disposing X3DScene." << std::endl;
 }
 
 } // X3D

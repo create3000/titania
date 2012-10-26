@@ -49,6 +49,7 @@
 #include "World.h"
 
 #include <iostream>
+#include <cassert>
 
 namespace titania {
 namespace X3D {
@@ -57,6 +58,8 @@ World::World (X3DExecutionContext* const executionContext, const SFNode <Scene> 
 	X3DBasicNode (executionContext -> getBrowser (), executionContext),
 	       scene (scene)
 {
+	assert (scene .getValue ());
+
 	setComponent ("Browser");
 	setTypeName ("World");
 
@@ -66,7 +69,7 @@ World::World (X3DExecutionContext* const executionContext, const SFNode <Scene> 
 World*
 World::create (X3DExecutionContext* const executionContext) const
 {
-	return new World (executionContext, NULL);
+	return new World (executionContext, scene);
 }
 
 void
