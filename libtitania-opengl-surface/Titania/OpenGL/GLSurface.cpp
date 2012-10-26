@@ -72,7 +72,13 @@ GLSurface::GLSurface () :
 
 __LOG__ << std::endl;
 	// Connect to map_event.
-	map_event = signal_map_event () .connect (sigc::mem_fun (*this, &GLSurface::set_map_event));
+	initialized_connection = signal_map_event () .connect (sigc::mem_fun (*this, &GLSurface::set_initialized));
+}
+
+const std::shared_ptr <GLContext> &
+GLSurface::getContext ()
+{
+	return context;
 }
 
 //void
@@ -142,10 +148,10 @@ GLSurface::glew ()
 }
 
 bool
-GLSurface::set_map_event (GdkEventAny* event)
+GLSurface::set_initialized (GdkEventAny* event)
 {
 __LOG__ << std::endl;
-	map_event .disconnect ();
+	initialized_connection .disconnect ();
 
 	context = std::shared_ptr <GLContext> (new WindowContext (get_window (), get_display ()));
 

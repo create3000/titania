@@ -106,6 +106,9 @@ public:
 
 	bool
 	exists ();
+	
+	void
+	remove ();
 
 	Configuration
 	getSession (size_t);

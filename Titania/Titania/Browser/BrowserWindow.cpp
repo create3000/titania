@@ -59,7 +59,32 @@ void
 BrowserWindow::on_switch_page (Gtk::Widget* page, guint page_num)
 {
 	if (page_num == (guint) getNotebook () .get_n_pages () - 1)
-		loadURL ({ "about:blank" }, { "target", "_blank" });
+	{
+		getNotebook () .set_current_page (currentPage);
+		return;
+	}
+
+	currentPage = page_num;
+}
+
+void
+BrowserWindow::on_add_tab ()
+{
+	loadURL ({ "about:blank" }, { "target", "_blank" });
+}
+
+void
+BrowserWindow::on_close_tab (Gtk::Widget & child)
+{
+	removePage (child);
+	
+	if (getNotebook () .get_n_pages () > 1)
+	{
+		currentPage = getNotebook () .get_n_pages () - 2;
+		getNotebook () .set_current_page (currentPage);
+	}
+	else
+		close ();
 }
 
 } // puck

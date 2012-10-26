@@ -66,9 +66,14 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder -> get_widget ("Window", m_window);
 	m_builder -> get_widget ("Widget", m_widget);
 	m_builder -> get_widget ("Notebook", m_notebook);
+	m_builder -> get_widget ("AddTabLabel", m_addTabLabel);
+	m_builder -> get_widget ("AddTabButton", m_addTabButton);
 
 	// Connect object Gtk::Notebook with id 'Notebook'.
 	m_notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_switch_page));
+
+	// Connect object Gtk::Button with id 'AddTabButton'.
+	m_addTabButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_add_tab));
 
 	// Call construct handler of base class.
 	construct ();

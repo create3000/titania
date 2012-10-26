@@ -75,6 +75,11 @@ public:
 protected:
 
 	GLSurface ();
+	
+	///  @name Element access
+	
+	const std::shared_ptr <GLContext> &
+	getContext ();
 
 	/// @name OpenGL handler
 
@@ -99,7 +104,7 @@ private:
 	glew ();
 
 	bool
-	set_map_event (GdkEventAny*);
+	set_initialized (GdkEventAny*);
 
 	bool
 	set_configure_event (GdkEventConfigure*);
@@ -107,7 +112,7 @@ private:
 	bool
 	set_draw (const Cairo::RefPtr <Cairo::Context> &);
 
-	sigc::connection map_event;
+	sigc::connection initialized_connection;
 
 	std::shared_ptr <GLContext> context;
 

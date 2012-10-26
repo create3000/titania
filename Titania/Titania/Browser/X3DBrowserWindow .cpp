@@ -124,6 +124,11 @@ void
 X3DBrowserWindow::initialize ()
 {
 	X3DBrowserWindowUI::initialize ();
+	
+	// AddTabLabel
+
+	getAddTabButton () .set_image (*Gtk::manage (new Gtk::Image (Gtk::StockID ("gtk-add"),
+	                                                             Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR))));
 
 	// Start with file from options or home page.
 
@@ -161,6 +166,16 @@ X3DBrowserWindow::restoreSession ()
 void
 X3DBrowserWindow::close ()
 {
+	// Remove sessions.
+
+	Configuration sessions    = getConfig () .getDirectory ("Sessions");
+	size_t        numSessions = sessions .getDirectories () .size ();
+
+	for (size_t i = browserWidgets .size (); i < numSessions; ++ i)
+		sessions .getDirectory (std::to_string (i)) .remove ();
+
+	// Save sessions.
+
 	getConfig () .setItem ("sessions",    browserWidgets .size ());
 	getConfig () .setItem ("currentPage", getNotebook () .get_current_page ());
 
@@ -265,6 +280,22 @@ X3DBrowserWindow::insertPage (size_t position)
 	setTabLabel (*box);
 }
 
+void
+X3DBrowserWindow::removePage (Gtk::Widget & child)
+{
+	size_t position = getNotebook () .page_num (child);
+	
+	__LOG__ << std::endl;
+
+	getNotebook () .remove_page (child);
+
+	__LOG__ << browserWidgets .size () << std::endl;
+	
+	browserWidgets .erase (browserWidgets .begin () + position);
+	
+	__LOG__ << browserWidgets .size () << std::endl;
+}
+
 Gtk::HBox*
 X3DBrowserWindow::setTabLabel (Gtk::Widget & child)
 {
@@ -272,9 +303,11 @@ X3DBrowserWindow::setTabLabel (Gtk::Widget & child)
 
 	Gtk::Image*  closeImage = new Gtk::Image (Gtk::StockID ("gtk-close"), Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
 	Gtk::Button* close      = new Gtk::Button ();
+	close -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserWindow::on_close_tab), sigc::ref (child)));
 
 	close     -> set_image (*Gtk::manage (closeImage));
 	tab_label -> pack_end (*Gtk::manage (close), true, true, 0);
+	tab_label -> get_style_context () -> add_class ("TabLabel");
 	tab_label -> show_all ();
 
 	getNotebook () .set_tab_label (child, *Gtk::manage (tab_label));

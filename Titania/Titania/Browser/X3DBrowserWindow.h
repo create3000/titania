@@ -114,14 +114,22 @@ protected:
 	void
 	initialize ();
 
+	void
+	removePage (Gtk::Widget &);
+
+
 private:
+
+	virtual
+	void
+	on_close_tab (Gtk::Widget &) = 0;
 
 	void
 	parseOptions (int &, char** &);
 
 	void
 	insertPage (size_t);
-
+	
 	Gtk::HBox*
 	setTabLabel (Gtk::Widget &);
 

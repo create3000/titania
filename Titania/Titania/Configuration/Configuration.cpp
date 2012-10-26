@@ -61,7 +61,6 @@ Configuration::Configuration (const std::string & path, const std::string & name
 {
 	Gnome::Conf::init ();
 	client = Gnome::Conf::Client::get_default_client ();
-
 }
 
 void
@@ -136,6 +135,12 @@ bool
 Configuration::exists ()
 {
 	return client -> dir_exists (key);
+}
+
+void
+Configuration::remove ()
+{
+	client -> remove_dir (key);
 }
 
 Configuration

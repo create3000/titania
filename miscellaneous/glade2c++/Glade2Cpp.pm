@@ -527,3 +527,4 @@ page_added
   void on_my_page_added(Widget* page, guint page_num);
 page_removed
   void on_my_page_removed(Widget* page, guint page_num);
+

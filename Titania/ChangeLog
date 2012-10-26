@@ -1,5 +1,17 @@
 2012-10-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.h:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* X3DBrowserWindow.h:
+	* Configuration.h:
+	* X3DBrowserWindow .cpp:
+	* Configuration.cpp:
+	* X3DBrowserWindowUI.h:
+	* X3DBrowserWindowUI.cpp: 
+
+2012-10-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* main.cpp:
 	* test-titania.sh:
 	* main.cpp:

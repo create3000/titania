@@ -139,7 +139,7 @@ Surface::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 
 Surface::~Surface ()
 {
-	if (makeCurrent ())
+	if (getContext () and makeCurrent ())
 		browser -> dispose ();
 }
 

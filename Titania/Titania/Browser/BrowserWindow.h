@@ -68,6 +68,16 @@ private:
 	void
 	on_switch_page (Gtk::Widget *, guint);
 
+	virtual
+	void
+	on_add_tab ();
+	
+	virtual
+	void
+	on_close_tab (Gtk::Widget &);
+
+	size_t currentPage;
+
 };
 
 } // puck

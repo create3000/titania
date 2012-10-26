@@ -83,9 +83,19 @@ public:
 	Gtk::Notebook &
 	getNotebook () const { return *m_notebook; }
 
+	Gtk::Box &
+	getAddTabLabel () const { return *m_addTabLabel; }
+
+	Gtk::Button &
+	getAddTabButton () const { return *m_addTabButton; }
+
 	virtual
 	void
 	on_switch_page (Widget* page, guint page_num) = 0;
+
+	virtual
+	void
+	on_add_tab () = 0;
 
 
 private:
@@ -100,6 +110,8 @@ private:
 	Gtk::Window*                    m_window;
 	Gtk::VBox*                      m_widget;
 	Gtk::Notebook*                  m_notebook;
+	Gtk::Box*                       m_addTabLabel;
+	Gtk::Button*                    m_addTabButton;
 
 };
 

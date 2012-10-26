@@ -20,6 +20,9 @@
     <property name="default_width">1000</property>
     <property name="default_height">618</property>
     <property name="has_resize_grip">False</property>
+    <style>
+      <class name="Titania"/>
+    </style>
     <child>
       <object class="GtkVBox" id="Widget">
         <property name="visible">True</property>
@@ -43,11 +46,28 @@
               </object>
             </child>
             <child type="tab">
-              <object class="GtkImage" id="image1">
+              <object class="GtkBox" id="AddTabLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="stock">gtk-add</property>
-                <property name="icon-size">2</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkButton" id="AddTabButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="focus_on_click">False</property>
+                    <property name="always_show_image">True</property>
+                    <style>
+                      <class name="TabLabel"/>
+                    </style>
+                    <signal name="clicked" handler="on_add_tab" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="tab_fill">False</property>
