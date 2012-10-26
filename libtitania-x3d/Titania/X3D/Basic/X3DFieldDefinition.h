@@ -86,6 +86,10 @@ public:
 	X3DFieldDefinition*
 	copy (X3DExecutionContext* const) const;
 
+	virtual
+	bool
+	hasRoots (BaseNodeSet &);
+
 	void
 	setReference (X3DFieldDefinition* const);
 
@@ -156,10 +160,6 @@ public:
 	virtual
 	void
 	processEvent (X3DObject* const, ObjectSet &);
-
-	virtual
-	bool
-	hasRoots (BaseNodeSet &);
 
 	virtual
 	void

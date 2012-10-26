@@ -1,3 +1,11 @@
+2012-10-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Image.o:
+	* Image.h:
+	* libtitania-standard.cproj:
+	* libtitania-standard.md.pc:
+	* libtitania-standard.so: 
+
 2012-10-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Matrix4.o:

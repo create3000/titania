@@ -93,17 +93,7 @@ Surface::Surface (const SFNode <X3DBrowser> & browser) :
 void
 Surface::setup ()
 {
-	__LOG__ << std::endl;
-
 	get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
-
-	//	GLenum glewErrorNum = glewInit ();
-	//
-	//	if (glewErrorNum not_eq GLEW_OK)
-	//		throw Error <BROWSER_UNAVAILABLE> (std::string ("Error in glew init: ") + (char*) glewGetErrorString (glewErrorNum));
-	//
-	//	if (not GLEW_ARB_vertex_buffer_object)
-	//		throw Error <BROWSER_UNAVAILABLE> ("The glew vertex buffer objects are not supported.");
 
 	getBrowser () -> setup ();
 	motionBlur -> setup ();
@@ -111,7 +101,7 @@ Surface::setup ()
 }
 
 void
-Surface::set_size ()
+Surface::reshape ()
 {
 	motionBlur -> clear ();
 }
@@ -123,8 +113,12 @@ Surface::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 
 	try
 	{
+		getBrowser () -> prepare ();
 		getBrowser () -> update ();
+		
 		swapBuffers ();
+		
+		getBrowser () -> finish ();
 	}
 	catch (const std::exception & exception)
 	{

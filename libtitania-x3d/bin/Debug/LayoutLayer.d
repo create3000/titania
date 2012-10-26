@@ -208,9 +208,10 @@
  /usr/include/sigc++-2.0/sigc++/functors/slot_base.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/X3DExecutionContext.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Basic/X3DContext.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Components/Layering/Layer.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Components/Layering/../Grouping/X3DBoundedObject.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Components/Layering/../Layering/X3DLayerNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Components/EnvironmentalEffects/Fog.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Components/EnvironmentalEffects/X3DBackgroundNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Components/Navigation/NavigationInfo.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Components/Navigation/X3DViewpointNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Configuration/ComponentInfoArray.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Configuration/../Configuration/ComponentInfo.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Configuration/../Configuration/../Basic/X3DBasicNode.h \
@@ -234,5 +235,4 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Routing/../Routing/../Basic/X3DBasicNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Routing/../Routing/../Fields.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Routing/../Routing/../Routing/X3DRoute.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Types/Geometry.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/URI.h

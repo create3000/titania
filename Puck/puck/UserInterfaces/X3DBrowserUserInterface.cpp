@@ -144,20 +144,20 @@ X3DBrowserUserInterface::saveSession ()
 
 	//	printStatistics ();
 	
-	getConfig () .set ("worldURL", getExecutionContext () -> getWorldURL ());
+	getConfig () .setItem ("worldURL", getExecutionContext () -> getWorldURL ());
 	
-	getConfig () .set ("vPaned", getVPaned () .get_position ());
-	getConfig () .set ("hPaned", getHPaned () .get_position ());
+	getConfig () .setItem ("vPaned", getVPaned () .get_position ());
+	getConfig () .setItem ("hPaned", getHPaned () .get_position ());
 
-	getConfig () .set ("toolBar",       getToolBarMenuItem ()       .get_active ());
-	getConfig () .set ("navigationBar", getNavigationBarMenuItem () .get_active ());
-	getConfig () .set ("sideBar",       getSideBarMenuItem ()       .get_active ());
-	getConfig () .set ("footer",        getFooterMenuItem  ()       .get_active ());
+	getConfig () .setItem ("toolBar",       getToolBarMenuItem ()       .get_active ());
+	getConfig () .setItem ("navigationBar", getNavigationBarMenuItem () .get_active ());
+	getConfig () .setItem ("sideBar",       getSideBarMenuItem ()       .get_active ());
+	getConfig () .setItem ("footer",        getFooterMenuItem  ()       .get_active ());
 
-	getConfig () .set ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
+	getConfig () .setItem ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
 	
-	getConfig () .set ("sidebarCurrentPage", getSideBarNotebook () .get_current_page ());
-	getConfig () .set ("footerCurrentPage",  getFooterNotebook  () .get_current_page ());
+	getConfig () .setItem ("sidebarCurrentPage", getSideBarNotebook () .get_current_page ());
+	getConfig () .setItem ("footerCurrentPage",  getFooterNotebook  () .get_current_page ());
 }
 
 void

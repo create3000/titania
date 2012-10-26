@@ -91,7 +91,7 @@ private:
 
 	virtual
 	void
-	set_size ();
+	reshape ();
 
 	virtual
 	void

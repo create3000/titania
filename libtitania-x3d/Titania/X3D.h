@@ -65,10 +65,6 @@ SFNode <Browser>
 createBrowser ()
 throw (Error <BROWSER_UNAVAILABLE>);
 
-SFNode <Browser>
-createBrowser (const MFString &)
-throw (Error <BROWSER_UNAVAILABLE>);
-
 } // X3D
 } // Titania
 

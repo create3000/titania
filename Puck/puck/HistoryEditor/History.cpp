@@ -118,7 +118,7 @@ History::insert (const std::string & title, const std::string & location)
 	                 + database .quote (location)
 	                 + ")");
 
-	std::cout << database .last_insert_rowid () << std::endl;
+	std::clog << database .last_insert_rowid () << std::endl;
 }
 
 void

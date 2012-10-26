@@ -59,7 +59,7 @@ namespace puck {
 X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 	   Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN), 
 	 X3DBrowserWindowUI (puck_ui ("BrowserWindow.ui"), gconf_dir ()),                         
-	X3DBrowserInterface (NULL)
+	X3DBrowserInterface (X3D::getBrowser ())
 {
 	setTransparent (true);
 
@@ -116,7 +116,7 @@ X3DBrowserWindow::parseOptions (int & argc, char** & argv)
 	}
 	catch (const Glib::Error & error)
 	{
-		std::cout << "Exception: " << error .what () << std::endl;
+		std::clog << "Exception: " << error .what () << std::endl;
 	}
 }
 
@@ -142,7 +142,11 @@ X3DBrowserWindow::restoreSession ()
 	// Start with home page when no sessions exists.
 
 	if (not getConfig () .integer ("sessions"))
-		return loadURL ({ "about:home" }, { "target", "_blank" });
+	{
+		insertPage (0);
+		getNotebook () .set_current_page (0);
+		return;
+	}
 
 	// Restore session.
 
@@ -157,8 +161,8 @@ X3DBrowserWindow::restoreSession ()
 void
 X3DBrowserWindow::close ()
 {
-	getConfig () .set ("sessions",    browserWidgets .size ());
-	getConfig () .set ("currentPage", getNotebook () .get_current_page ());
+	getConfig () .setItem ("sessions",    browserWidgets .size ());
+	getConfig () .setItem ("currentPage", getNotebook () .get_current_page ());
 
 	for (size_t i = 0; i < browserWidgets .size (); ++ i)
 		browserWidgets [i] -> saveSession (getConfig () .getSession (i) .getKey ());
@@ -187,17 +191,23 @@ X3DBrowserWindow::setDescription (const std::string & value)
 throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
        X3D::Error <X3D::DISPOSED>)
 {
-	Gtk::HBox*  tab_label = new Gtk::HBox ();
+	Gtk::Widget* child = getNotebook () .get_children () [getNotebook () .get_current_page ()];
+
+	Gtk::HBox*  tab_label = setTabLabel (*child);
 	Gtk::Label* label     = new Gtk::Label (value);
 	Gtk::Image* icon      = new Gtk::Image (Gtk::StockID (getExecutionContext () -> getWorldURL () .str ()),
-	                                        Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+	                                        Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
+
+//	Gtk::IconTheme::get_default () -> load_icon (getExecutionContext () -> getWorldURL () .str (),
+//	                                             12,
+//	                                             ICON_LOOKUP_FORCE_SIZE);
 
 	tab_label -> pack_start (*Gtk::manage (icon), false, true, 0);
 	tab_label -> pack_start (*Gtk::manage (label), true, true, 0);
 	tab_label -> set_spacing (4);
 	tab_label -> show_all ();
 
-	getNotebook () .set_tab_label (*getNotebook () .get_children () [getNotebook () .get_current_page ()],
+	getNotebook () .set_tab_label (*child,
 	                               *Gtk::manage (tab_label));
 
 	if (value .empty ())
@@ -235,6 +245,8 @@ throw (X3D::Error <X3D::INVALID_URL>,
 void
 X3DBrowserWindow::insertPage (size_t position)
 {
+	// Insert content.
+
 	Gtk::HBox* box = new Gtk::HBox ();
 
 	std::string sessionKey = getConfig () .getSession (browserWidgets .size ()) .getKey ();
@@ -247,6 +259,27 @@ X3DBrowserWindow::insertPage (size_t position)
 	browserWidgets .insert (browserWidgets .begin () + position, browserWidget);
 
 	getNotebook () .insert_page (*Gtk::manage (box), "", position);
+
+	// Set tab label.
+
+	setTabLabel (*box);
+}
+
+Gtk::HBox*
+X3DBrowserWindow::setTabLabel (Gtk::Widget & child)
+{
+	Gtk::HBox* tab_label = new Gtk::HBox ();
+
+	Gtk::Image*  closeImage = new Gtk::Image (Gtk::StockID ("gtk-close"), Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
+	Gtk::Button* close      = new Gtk::Button ();
+
+	close     -> set_image (*Gtk::manage (closeImage));
+	tab_label -> pack_end (*Gtk::manage (close), true, true, 0);
+	tab_label -> show_all ();
+
+	getNotebook () .set_tab_label (child, *Gtk::manage (tab_label));
+
+	return tab_label;
 }
 
 void

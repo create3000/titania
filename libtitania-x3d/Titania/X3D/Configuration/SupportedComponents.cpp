@@ -57,7 +57,7 @@ SupportedComponents::SupportedComponents (X3DExecutionContext* const executionCo
 	executionContext (executionContext), 
 	      components ()
 {
-	std::clog << "Creating component index:" << std::endl;
+	//std::clog << "Creating component index:" << std::endl;
 
 	add ("CADGeometry",          2);
 	add ("Core",                 2);
@@ -94,7 +94,7 @@ SupportedComponents::SupportedComponents (X3DExecutionContext* const executionCo
 	add ("Texturing3D",          2);
 	add ("Time",                 2);
 
-	std::clog << "\tDone creating component index." << std::endl;
+	//std::clog << "\tDone creating component index." << std::endl;
 }
 
 void

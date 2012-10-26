@@ -86,6 +86,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		rootLayersSet -> getLayers () [0] -> children = layerSet -> getLayers () [0] -> children;
 		layerSet                                      = rootLayersSet;
+		__LOG__ << (void*) layerSet .getValue () << std::endl;
 	}
 
 	else

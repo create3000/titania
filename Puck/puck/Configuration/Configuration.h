@@ -72,19 +72,24 @@ public:
 	std::string
 	getKey (const std::string &) const;
 
+	/// @name Key lockup
+
+	bool
+	hasItem (const std::string &) const;
+
 	/// @name Set configuration value
 
 	void
-	set (const std::string &, const bool);
+	setItem (const std::string &, const bool);
 
 	void
-	set (const std::string &, const int);
+	setItem (const std::string &, const int);
 
 	void
-	set (const std::string &, const size_t);
+	setItem (const std::string &, const size_t);
 
 	void
-	set (const std::string &, const std::string &);
+	setItem (const std::string &, const std::string &);
 
 	/// @name Get configuration value
 
@@ -116,7 +121,7 @@ private:
 
 	Glib::RefPtr <Gnome::Conf::Client> client;
 	std::string path;
-	std::string widgetName;
+	std::string name;
 	std::string key;
 };
 

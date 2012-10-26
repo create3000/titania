@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,12 +65,9 @@ namespace titania {
 namespace X3D {
 
 class X3DObject :
-	public X3DInput, protected X3DOutput, public X3DType
+	public X3DInput, public X3DOutput, public X3DType
 {
 public:
-
-	using X3DOutput::addInterest;
-	using X3DOutput::removeInterest;
 
 	///  @name Type Information
 
@@ -88,6 +85,14 @@ public:
 	///  @name Input/Output
 
 	virtual
+	void
+	write (const X3DObject &) { }
+
+	virtual
+	void
+	read (const void* &) const { }
+
+	virtual
 	bool
 	isInput () const;
 
@@ -102,14 +107,6 @@ public:
 	virtual
 	void
 	processEvent (X3DObject* const, ObjectSet &) = 0;
-
-	virtual
-	void
-	write (const X3DObject* const) { }  // = 0;
-
-	virtual
-	void
-	read (const void* &) const { }  // = 0;
 
 	///  @name Garbage Collection
 

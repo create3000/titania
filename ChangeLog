@@ -1,3 +1,42 @@
+2012-10-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Titania.sln:
+	* Titania.userprefs:
+	* info.h:
+	* ChangeLog:
+	* GLContext.o:
+	* GLContext.d:
+	* GLSurface.o:
+	* GLSurface.d:
+	* X3DContext.o:
+	* X3DSurface.d:
+	* X3DSurface.o:
+	* GLXContext.o:
+	* X3DContext.d:
+	* GdkContext.o:
+	* GdkContext.d:
+	* DrawingArea.d:
+	* DrawingArea.o:
+	* WindowContext.o:
+	* WindowContext.d:
+	* GLDrawingArea.o:
+	* GLDrawingArea.d:
+	* GLSurface.h:
+	* GLSurface.cpp:
+	* libtitania-opengl-canvas.pidb:
+	* libtitania-opengl-surface.cproj:
+	* GLContext.h:
+	* libtitania-opengl-drawingarea.md.pc:
+	* libtitania-opengl-drawingarea.cproj:
+	* GLContext.cpp:
+	* libtitania-opengl-canvas.so:
+	* WindowContext.h:
+	* TextureContext.h:
+	* WindowContext.cpp:
+	* TextureContext.cpp:
+	* PixelBufferContext.h:
+	* PixelBufferContext.cpp: 
+
 2012-10-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Titania.userprefs: 

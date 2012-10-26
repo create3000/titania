@@ -253,7 +253,13 @@ public:
 	notify (X3DBasicNode* const);
 
 	void
+	prepare ();
+
+	void
 	update ();
+
+	void
+	finish ();
 
 	virtual
 	void
@@ -347,23 +353,17 @@ protected:
 
 private:
 
-	using X3DUrlObject::url;
-
-	void
-	set_url ();
-
-	virtual
-	void
-	requestImmediateLoad ();
-
 	virtual
 	void
 	display ();
+
+	using X3DUrlObject::url;
 
 	typedef std::set <X3DSensorNode*> SensorNodeSet;
 
 	static const std::string version;
 
+	Router router;
 	std::shared_ptr <X3DClock> clock;
 
 	SupportedFields     supportedFields;
@@ -377,20 +377,29 @@ private:
 	SFNode <BrowserEnvironment>  browserEnvironment;
 	SFNode <JavaScriptEngine>    javaScriptEngine;
 
-	Router router;
-
 	float currentSpeed;
 	float currentFrameRate;
 
 	std::string description;
-
+	
+	
 public:
 
+	SFTime         initialized;
+	SFTime         prepared;
+	SFTime         displayed;
+	SFTime         finished;
+	SFTime         shutdown;
 	SFTime         changed;
 	SFNode <World> world;
 
 
 private:
+
+	SFNode <Scene> scene;
+
+	void
+	set_scene ();
 
 	Vector3f  priorPosition;
 	time_type priorTime;

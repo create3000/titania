@@ -2185,6 +2185,7 @@
     <None Include="Tests\Geometry3D\TriangleSphere.wrl" />
     <None Include="Tests\Geometry3D\Cube.wrl" />
     <None Include="Tests\Texturing\images\colors\bw.png" />
+    <None Include="Tests\Texturing\test.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

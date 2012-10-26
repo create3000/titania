@@ -38,7 +38,7 @@ Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "Packages", "Packages\Packag
 EndProject
 Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "Papers", "Papers\Papers.mdproj", "{E29E81C4-20D1-4FF3-A932-202A4D23FACE}"
 EndProject
-Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-opengl-drawingarea", "libtitania-opengl-canvas\libtitania-opengl-drawingarea.cproj", "{4D150C3C-1AA0-4470-B933-6EDA64083897}"
+Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-opengl-surface", "libtitania-opengl-surface\libtitania-opengl-surface.cproj", "{4D150C3C-1AA0-4470-B933-6EDA64083897}"
 EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "experimental", "experimental\experimental.cproj", "{DFF8F332-1B93-48CB-85E3-FDFE35CB177D}"
 EndProject

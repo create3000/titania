@@ -17,10 +17,10 @@
         <Package file="/usr/lib/pkgconfig/gtkmm-3.0.pc" name="gtkmm" IsProject="false" />
         <Package file="/home/holger/Projekte/Titania/libtitania-anyoptions/libtitania-anyoptions.md.pc" name="libtitania-anyoptions" IsProject="true" />
         <Package file="/home/holger/Projekte/Titania/libtitania-gzstream/libtitania-gzstream.md.pc" name="libtitania-gzstream" IsProject="true" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-opengl-canvas/libtitania-opengl-drawingarea.md.pc" name="libtitania-opengl-drawingarea" IsProject="true" />
         <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="true" />
         <Package file="/home/holger/Projekte/Titania/libtitania-x3d/libtitania-x3d.md.pc" name="libtitania-x3d" IsProject="true" />
         <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="true" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-opengl-surface/libtitania-opengl-surface.md.pc" name="libtitania-opengl-surface" IsProject="true" />
       </Packages>
     </Packages>
     <ReleaseVersion>0.3</ReleaseVersion>

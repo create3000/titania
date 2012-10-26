@@ -140,7 +140,7 @@ public:
 
 	virtual
 	void
-	write (const value_type &);
+	set (const value_type &);
 	
 	///  @name Boolean Operator
 
@@ -188,7 +188,7 @@ public:
 
 private:
 
-	using X3DField <X3DBasicNode*>::clear;
+	using X3DField <X3DBasicNode*>::reset;
 
 	void
 	addNode (X3DBasicNode* const);
@@ -304,10 +304,10 @@ throw (Error <INVALID_NAME>,
 
 template <class ValueType>
 void
-SFNode <ValueType>::write (const value_type & value)
+SFNode <ValueType>::set (const value_type & value)
 {
 	addNode (value);
-	X3DField <X3DBasicNode*>::write (value);
+	X3DField <X3DBasicNode*>::set (value);
 }
 
 template <class ValueType>
@@ -329,7 +329,7 @@ SFNode <ValueType>::removeNode (X3DBasicNode* const value)
 {
 	if (value)
 	{
-		clear ();
+		reset ();
 
 		value -> removeParent (this);
 	}

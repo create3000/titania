@@ -71,24 +71,7 @@ throw (Error <BROWSER_UNAVAILABLE>)
 	std::clog << "Creating Browser ..." << std::endl;
 	SFNode <Browser> browser = new Browser ();
 
-	//browser -> setup ();
-
-	// XXX
-	//browser -> replaceWorld (browser -> createScene ());
-
 	std::clog << "\tDone creating Browser." << std::endl;
-	return browser;
-}
-
-///  6.2.3 The createBrowser service creates a new instance of a browser application.
-SFNode <Browser>
-createBrowser (const MFString & url)
-throw (Error <BROWSER_UNAVAILABLE>)
-{
-	SFNode <Browser> browser = createBrowser ();
-
-	browser -> loadURL (url);
-
 	return browser;
 }
 

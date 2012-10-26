@@ -1,0 +1,31 @@
+#VRML V2.0 utf8 Comment
+
+META "title" "Texture Test"
+
+Background {
+  skyColor 0.4 0.4 0.4
+}
+
+DEF _0 Viewpoint {
+  fieldOfView 0.785398
+  jump TRUE
+  position 6 -4 -5.81846
+  centerOfRotation 6 -4 -10
+  description "Home"
+}
+
+Transform {
+  translation 6 -4 -10
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture PixelTexture {
+        image 1 3 1
+          0xff
+          0x08
+          0x00
+      }
+    }
+    geometry Box { }
+  }
+}

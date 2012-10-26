@@ -56,7 +56,7 @@ namespace X3D {
 
 SupportedFields::SupportedFields (X3DExecutionContext* const executionContext)
 {
-	std::clog << "Creating field index:" << std::endl;
+	//std::clog << "Creating field index:" << std::endl;
 
 	add (new SFBool      ());
 	add (new SFBool      ());
@@ -104,7 +104,7 @@ SupportedFields::SupportedFields (X3DExecutionContext* const executionContext)
 	add (new MFVec4d     ());
 	add (new MFVec4f     ());
 
-	std::clog << "\tDone creating field index." << std::endl;
+	//std::clog << "\tDone creating field index." << std::endl;
 }
 
 void

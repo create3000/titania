@@ -167,7 +167,7 @@ X3DBasicNode::copy (X3DExecutionContext* const executionContext) const
 				{
 					X3DFieldDefinition* copy = fieldDefinition -> copy (executionContext);
 
-					field -> write (copy);
+					field -> write (*copy);
 
 					delete copy;
 				}
@@ -724,8 +724,6 @@ X3DBasicNode::toStream (std::ostream & ostream) const
 void
 X3DBasicNode::dispose ()
 {
-	shutdown ();
-
 	events .clear ();
 
 	X3DBaseNode::dispose ();

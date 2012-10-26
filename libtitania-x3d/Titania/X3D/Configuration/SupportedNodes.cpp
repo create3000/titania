@@ -56,7 +56,7 @@ namespace X3D {
 
 SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 {
-	std::clog << "Creating node index:" << std::endl;
+	//std::clog << "Creating node index:" << std::endl;
 
 	add (new Anchor                       (executionContext));
 	add (new Appearance                   (executionContext));
@@ -275,7 +275,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 	add (new WindPhysicsModel             (executionContext));
 	add (new WorldInfo                    (executionContext));
 
-	std::clog << "\tDone creating node index." << std::endl;
+	//std::clog << "\tDone creating node index." << std::endl;
 }
 
 void

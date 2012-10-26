@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,7 +50,10 @@
 #define __TITANIA_X3D_EXECUTION_X3DEXECUTION_CONTEXT_H__
 
 #include "../Basic/X3DContext.h"
-#include "../Components/Layering/Layer.h"
+#include "../Components/EnvironmentalEffects/Fog.h"
+#include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
+#include "../Components/Navigation/NavigationInfo.h"
+#include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Configuration/ComponentInfoArray.h"
 #include "../Configuration/ProfileInfo.h"
 #include "../Execution/ExportedNodeArray.h"
@@ -58,7 +61,6 @@
 #include "../Prototype/ExternProtoArray.h"
 #include "../Prototype/ProtoArray.h"
 #include "../Routing/RouteArray.h"
-#include "../Types/Geometry.h"
 
 #include <Titania/Basic/URI.h>
 
@@ -475,11 +477,6 @@ private:
 	RouteArray        routes;
 
 	MFNode <X3DBasicNode> rootNodes;
-
-	SFNode <NavigationInfo>    defaultNavigationInfo;
-	SFNode <X3DBackgroundNode> defaultBackground;
-	SFNode <Fog>               defaultFog;
-	SFNode <X3DViewpointNode>  defaultViewpoint;
 
 	NavigationInfoList navigationInfos;
 	BackgroundList     backgrounds;

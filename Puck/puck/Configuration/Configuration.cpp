@@ -49,24 +49,26 @@
 #include "Configuration.h"
 
 #include <Titania/Bits/String.h>
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace puck {
 
-Configuration::Configuration (const std::string & path, const std::string & widgetName) :
+Configuration::Configuration (const std::string & path, const std::string & name) :
 	      path (path),                    
-	widgetName (widgetName),              
-	       key (path + '/' + widgetName)
+	      name (name),              
+	       key (path + '/' + name)
 {
 	Gnome::Conf::init ();
 	client = Gnome::Conf::Client::get_default_client ();
+
 }
 
 void
 Configuration::setPath (const std::string & value)
 {
 	path = value;
-	key  = path + '/' + widgetName;
+	key  = path + '/' + name;
 }
 
 const std::string &
@@ -81,26 +83,33 @@ Configuration::getKey (const std::string & name) const
 	return key + '/' + name;
 }
 
+bool
+Configuration::hasItem (const std::string & name) const
+{
+	auto item = client -> get_entry (getKey (name));
+	return item .get_value () .get_type () != Gnome::Conf::VALUE_INVALID;
+}
+
 void
-Configuration::set (const std::string & name, const bool value)
+Configuration::setItem (const std::string & name, const bool value)
 {
 	client -> set (getKey (name), value);
 }
 
 void
-Configuration::set (const std::string & name, const int value)
+Configuration::setItem (const std::string & name, const int value)
 {
 	client -> set (getKey (name), value);
 }
 
 void
-Configuration::set (const std::string & name, const size_t value)
+Configuration::setItem (const std::string & name, const size_t value)
 {
 	client -> set (getKey (name), (int) value);
 }
 
 void
-Configuration::set (const std::string & name, const std::string & value)
+Configuration::setItem (const std::string & name, const std::string & value)
 {
 	client -> set (getKey (name), value);
 }
@@ -136,9 +145,9 @@ Configuration::getSession (size_t id)
 }
 
 Configuration
-Configuration::getDirectory (const std::string & name)
+Configuration::getDirectory (const std::string & subdir)
 {
-	return Configuration (path, widgetName + '/' + name);
+	return Configuration (path, name + '/' + subdir);
 }
 
 Configuration::Array
@@ -146,10 +155,10 @@ Configuration::getDirectories ()
 {
 	Array directories;
 
-	for (const auto & directory : client -> all_dirs (key))
+	for (const auto & subdir : client -> all_dirs (key))
 	{
-		auto dirName = basic::split (directory, "/");
-		directories .emplace_back (path, widgetName + '/' + dirName .back ());
+		auto dirName = basic::split (subdir, "/");
+		directories .emplace_back (path, name + '/' + dirName .back ());
 	}
 
 	return directories;

@@ -1,3 +1,17 @@
+2012-10-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Puck.cproj:
+	* History.cpp:
+	* X3DUserInterface.cpp:
+	* X3DBrowserWindow.h:
+	* X3DBrowserWidget.h:
+	* X3DBrowserWidget.cpp:
+	* Configuration.h:
+	* X3DBrowserWindow .cpp:
+	* Configuration.cpp:
+	* X3DBrowserUserInterface.cpp:
+	* red.orange.yellow.wrl: 
+
 2012-10-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* test-puck.sh: 

@@ -49,6 +49,7 @@
   <ItemGroup>
     <None Include="info.h" />
     <None Include="Titania\SQL\SQLite3.h" />
+    <None Include="libtitania-sqlite.md.pc" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\SQL\SQLite3.cpp" />

@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,27 +65,31 @@ namespace titania {
 namespace X3D {
 
 X3DExecutionContext::X3DExecutionContext () :
-	         X3DBasicNode (),                          
-	             encoding ("X3D"),                     
-	 specificationVersion ("3.0"),                     
-	    characterEncoding ("utf8"),                    
-	              comment (""),                        
-	            rootNodes (),                          
-	defaultNavigationInfo (new NavigationInfo (this)), 
-	    defaultBackground (new Background     (this)), 
-	           defaultFog (new Fog            (this)), 
-	     defaultViewpoint (new Viewpoint      (this))
+	        X3DBasicNode (),       
+	            encoding ("X3D"),  
+	specificationVersion ("3.0"),  
+	   characterEncoding ("utf8"), 
+	             comment (""),     
+	            worldURL (),       
+	          components (),       
+	             profile (NULL),   
+	          namedNodes (),       
+	       exportedNodes (),       
+	       importedNodes (),       
+	              protos (),       
+	        externProtos (),       
+	              routes (),       
+	           rootNodes (),       
+	     navigationInfos (),       
+	         backgrounds (),       
+	                fogs (),       
+	          viewpoints ()
 { }
 
 void
 X3DExecutionContext::initialize ()
 {
 	X3DBasicNode::initialize ();
-
-	//	defaultNavigationInfo -> setup ();
-	//	defaultBackground     -> setup ();
-	//	defaultFog            -> setup ();
-	//	defaultViewpoint      -> setup ();
 }
 
 void

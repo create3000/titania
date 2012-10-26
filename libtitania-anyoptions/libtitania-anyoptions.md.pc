@@ -1,5 +1,5 @@
 Name: libtitania-anyoptions
 Description: 
 Version: 0.3
-Libs: -L"/home/holger/Projekte/Titania/libtitania-anyoptions/bin/Release" -ltitania-anyoptions
+Libs: -L"/home/holger/Projekte/Titania/libtitania-anyoptions/bin/Debug" -ltitania-anyoptions
 Cflags: -I"/home/holger/Projekte/Titania/libtitania-anyoptions"

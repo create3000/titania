@@ -22,11 +22,11 @@
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/libcurl.pc" name="libcurl" IsProject="false" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/libpcrecpp.pc" name="libpcrecpp" IsProject="false" />
         <Package file="/usr/lib/pkgconfig/gtkmm-3.0.pc" name="gtkmm" IsProject="false" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-opengl-canvas/libtitania-opengl-drawingarea.md.pc" name="libtitania-opengl-drawingarea" IsProject="true" />
         <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="true" />
         <Package file="/home/holger/Projekte/Titania/libtitania-gzstream/libtitania-gzstream.md.pc" name="libtitania-gzstream" IsProject="true" />
         <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="true" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/Magick++.pc" name="Magick++" IsProject="false" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-opengl-surface/libtitania-opengl-surface.md.pc" name="libtitania-opengl-surface" IsProject="true" />
       </Packages>
     </Packages>
     <ReleaseVersion>0.3</ReleaseVersion>
@@ -479,6 +479,7 @@
     <None Include="Titania\X3D\Browser\Properties\BrowserOptions.h" />
     <None Include="Titania\X3D\Widgets\Surface.h" />
     <None Include="Titania\X3D\Browser\BrowserEnvironment.h" />
+    <None Include="libtitania-x3d.md.pc" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

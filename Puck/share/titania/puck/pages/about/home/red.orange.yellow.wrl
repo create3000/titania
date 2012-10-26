@@ -133,6 +133,6 @@ DEF YellowRotor Rotor {
 }
 
 
-ROUTE RedRotor.value_changed TO Red.set_rotation
-ROUTE OrangeRotor.value_changed TO Orange.set_rotation
-ROUTE YellowRotor.value_changed TO Yellow.set_rotation
+#ROUTE RedRotor.value_changed TO Red.set_rotation
+#ROUTE OrangeRotor.value_changed TO Orange.set_rotation
+#ROUTE YellowRotor.value_changed TO Yellow.set_rotation

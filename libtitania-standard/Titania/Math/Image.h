@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -73,8 +73,8 @@ public:
 		value  (img .value)
 	{ }
 
-	image (const size_type width, const size_type height, const size_type comp, const Array & array) :
-		value  ({ width, height, comp, array })
+	image (const size_type width, const size_type height, const size_type components, const Array & array) :
+		value  ({ width, height, components, array })
 	{
 		resize ();
 	}
@@ -92,10 +92,10 @@ public:
 	height () const { return value .height; }
 
 	void
-	comp (const size_type comp) { value .comp = comp; }
+	components (const size_type components) { value .components = components; }
 
 	size_type
-	comp () const { return value .comp; }
+	components () const { return value .components; }
 
 	void
 	array (const Array &);
@@ -128,7 +128,7 @@ private:
 	{
 		size_type width;
 		size_type height;
-		size_type comp;
+		size_type components;
 
 		Array array;
 	};
@@ -166,34 +166,34 @@ image <Array>::array (const Array & array)
 
 template <class Array>
 void
-image <Array>::set (const size_type width, const size_type height, const size_type comp, const Array & array)
+image <Array>::set (const size_type width, const size_type height, const size_type components, const Array & array)
 {
-	value .width  = width;
-	value .height = height;
-	value .comp   = comp;
-	value .array  = array;
+	value .width      = width;
+	value .height     = height;
+	value .components = components;
+	value .array      = array;
 
 	resize ();
 }
 
 template <class Array>
 void
-image <Array>::get (size_type & width, size_type & height, size_type & comp, Array & array) const
+image <Array>::get (size_type & width, size_type & height, size_type & components, Array & array) const
 {
-	width  = value .width;
-	height = value .height;
-	comp   = value .comp;
-	array  = value .array;
+	width      = value .width;
+	height     = value .height;
+	components = value .components;
+	array      = value .array;
 }
 
 template <class Array>
 image <Array> &
 image <Array>::operator = (const image  <Array> & img)
 {
-	value .width  = img .width  ();
-	value .height = img .height ();
-	value .comp   = img .comp   ();
-	value .array  = img .array  ();
+	value .width      = img .width  ();
+	value .height     = img .height ();
+	value .components = img .components ();
+	value .array      = img .array  ();
 
 	return *this;
 }
@@ -203,10 +203,10 @@ bool
 operator == (const image <Array> & a, const image <Array> & b)
 {
 	return
-	   a .width ()  == b .width  () and
+	   a .width  () == b .width  () and
 	   a .height () == b .height () and
-	   a .comp ()   == b .comp   () and
-	   a .array ()  == b .array  ();
+	   a .components () == b .components () and
+	   a .array  () == b .array  ();
 }
 
 template <class Array>

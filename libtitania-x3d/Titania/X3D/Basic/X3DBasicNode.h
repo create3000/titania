@@ -223,10 +223,6 @@ protected:
 	void
 	prepareEvents () { }
 
-	virtual
-	void
-	shutdown () { }
-
 
 private:
 

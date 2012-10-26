@@ -67,57 +67,93 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+using namespace titania;
 using namespace titania::Test;
-using namespace titania::X3D;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+namespace titania {
+namespace Test {
+
+class TestSFImage
+{
+public:
+	
+	TestSFImage ()
+	{
+		__LOG__ << std::endl;
+		
+		test1 ();
+		test1 ();
+		test2 ();
+		
+		__LOG__ << std::endl;
+	}	
+
+	void
+	test1 ()
+	{
+		__LOG__ << std::endl;
+		
+		X3D::SFImage image;
+		
+		__LOG__ << image << std::endl;
+		
+		image = image;
+		
+		__LOG__ << image << std::endl;
+		
+		image .dispose ();
+		
+		__LOG__ << image << std::endl;
+	}	
+
+	void
+	test2 ()
+	{
+		__LOG__ << std::endl;
+		
+		X3D::SFImage image (1, 3, 4, { 1, 2, 3 });
+		
+		__LOG__ << image << std::endl;
+		
+		image = image;
+		
+		__LOG__ << image << std::endl;
+		
+		image .dispose ();
+		
+		__LOG__ << image << std::endl;
+	}	
+
+};
+
+} // Test
+} // titania
 
 int
 main (int argc, char* argv [ ])
 {
 	install_signal_hander ();
 
-	//for (int i = 0; i <  std::ctype<char>::table_size; ++i)
-	//	std::clog << std::hex << std::ctype <char>::classic_table () [i] << std::endl;
-
 	std::clog << "Test started ..." << std::endl << std::endl;
 	{
 		std::clog << "Start of block ..." << std::endl;
 
 		{
-			SFNode <MetadataBool> node = getBrowser () -> getExecutionContext () -> createNode ("MetadataBool");
-
-			std::clog << "X3DBasicNode 1: " << node -> getParents () .size () << std::endl;
-
-			assert (node -> getParents () .size () == 1);
-
-			assert (node -> metadata .getParents () .size () == 1);
-
-			node -> metadata = node; // ################
-
-			assert (node -> metadata .getParents () .size () == 1);
-			assert (node -> metadata .getParents () .find (node .getValue ()) not_eq node -> metadata .getParents () .end ());
-
-			std::clog << "X3DBasicNode 2: " << node -> getParents () .size () << std::endl;
-
-			assert (node -> getParents () .size () == 2);
-			assert (node -> getParents () .find (&node)             not_eq node -> getParents () .end ());
-			assert (node -> getParents () .find (&node -> metadata) not_eq node -> getParents () .end ());
-
-			MetadataBool* base = *node;
-
-			assert (base -> metadata .getParents () .size () == 1);
-			node .dispose ();
-			assert (base -> metadata .getParents () .size () == 0);
-
-			std::clog << "X3DBasicNode 3: " << base -> getParents () .size () << std::endl;
-
-			assert (base -> getParents () .size () == 0);
-
-			std::clog << "End of block 2 ..." << std::endl;
+			__LOG__ << std::endl;
+			X3D::SFNode <X3D::Browser> browser = X3D::createBrowser ();
+			
+			__LOG__ << (void*) browser .getValue () << std::endl;
+			__LOG__ << (void*) browser -> getParents () .size () << std::endl;
+			
+			
+			__LOG__ << std::endl;
+			
+			// TestSFImage ();
+		
+			// Test::AddAndRemoveNode ();
 		}
-
-		Test::AddAndRemoveNode ();
 
 		std::clog << "End of block ..." << std::endl;
 	}

@@ -73,7 +73,7 @@ X3DFieldDefinition::setReference (X3DFieldDefinition* const value)
 	switch (getAccessType () & reference -> getAccessType ())
 	{
 		case initializeOnly:
-			write (reference);
+			write (*reference);
 			break;
 		case inputOnly:
 			reference -> addInterest (this);
@@ -85,9 +85,25 @@ X3DFieldDefinition::setReference (X3DFieldDefinition* const value)
 		case inputOutput:
 			reference -> addInterest (this);
 			addInterest (reference);
-			write (reference);
+			write (*reference);
 			break;
 	}
+}
+
+bool
+X3DFieldDefinition::hasRoots (BaseNodeSet & seen)
+{
+	if (getParents () .size ())
+	{
+		for (auto & parent : getParents ())
+			if (parent -> hasRoots (seen))
+				return true;
+
+		return false;
+	}
+
+	// this is a root node
+	return true;
 }
 
 X3DFieldDefinition*
@@ -218,7 +234,7 @@ X3DFieldDefinition::processEvent (X3DObject* const field, ObjectSet & sourceFiel
 	if (sourceFields .find (this) not_eq sourceFields .end ())
 		return;
 
-	write (field);
+	write (*field);
 
 	for (const auto & parent : getParents ())
 		parent -> processEvent (this, sourceFields);
@@ -241,22 +257,6 @@ X3DFieldDefinition::dispose ()
 	interests .clear ();
 
 	X3DBaseNode::dispose ();
-}
-
-bool
-X3DFieldDefinition::hasRoots (BaseNodeSet & seen)
-{
-	if (getParents () .size ())
-	{
-		for (auto & parent : getParents ())
-			if (parent -> hasRoots (seen))
-				return true;
-
-		return false;
-	}
-
-	// this is a root node
-	return true;
 }
 
 X3DFieldDefinition::~X3DFieldDefinition ()

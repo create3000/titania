@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -90,24 +90,14 @@ public:
 	void
 	setValue (const ValueType &);
 
+	///  Set @a value to this field without notifying this field.
+	virtual
+	void
+	set (const ValueType &);
+
 	///  Returns true if this fields value is the default value for this field for this fields node.
 	bool
 	isDefaultValue () const { return value == ValueType (); }
-
-	///  Write @a field to this field without notifying this field.
-	virtual
-	void
-	write (const X3DObject* const);
-
-	///  Write @a value to this field without notifying this field.
-	virtual
-	void
-	write (const ValueType &);
-
-	///  Get a @pointer to this value.
-	virtual
-	void
-	read (const void* &) const;
 
 	///  Default assignment opeator.  Behaves the same as the 6.7.6 setValue service.
 	X3DField &
@@ -199,13 +189,23 @@ protected:
 	explicit
 	X3DField (const ValueType &);
 
+	///  Get a non const value.
 	ValueType &
 	get () { return value; }
 
-	///  Set this field to its default value.
+	///  Set @a field to this field without notifying this field.
 	virtual
 	void
-	clear ();
+	write (const X3DObject &);
+
+	///  Get a @pointer to this value.
+	virtual
+	void
+	read (const void* &) const;
+
+	///  Set this field to its default value.
+	void
+	reset ();
 
 
 private:
@@ -253,29 +253,29 @@ template <class ValueType>
 void
 X3DField <ValueType>::setValue (const ValueType & value)
 {
-	write (value);
+	set (value);
 	notifyParents ();
-}
-
-template <class ValueType>
-void
-X3DField <ValueType>::write (const X3DObject* const object)
-{
-	assert (object -> getType () == getType ());
-
-	const void* pointer = NULL;
-
-	object -> read (pointer);
-
-	write (*static_cast <const ValueType*> (pointer));
 }
 
 template <class ValueType>
 inline
 void
-X3DField <ValueType>::write (const ValueType & value)
+X3DField <ValueType>::set (const ValueType & value)
 {
 	this -> value = value;
+}
+
+template <class ValueType>
+void
+X3DField <ValueType>::write (const X3DObject & field)
+{
+	assert (field .getType () == getType ());
+
+	const void* pointer = NULL;
+
+	field .read (pointer);
+
+	set (*static_cast <const ValueType*> (pointer));
 }
 
 template <class ValueType>
@@ -305,7 +305,7 @@ X3DField <ValueType>::operator = (const ValueType & value)
 template <class ValueType>
 inline
 void
-X3DField <ValueType>::clear ()
+X3DField <ValueType>::reset ()
 {
 	value = ValueType ();
 }
@@ -335,9 +335,10 @@ inline
 void
 X3DField <ValueType>::dispose ()
 {
-	X3DField::clear ();
-
 	X3DFieldDefinition::dispose ();
+
+	// Reset as final step when parents empty.
+	X3DField::reset ();
 }
 
 //@{

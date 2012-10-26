@@ -71,12 +71,12 @@ X3DBrowserWidget::initialize ()
 {
 	X3DBrowserUserInterface::initialize ();
 
-	__LOG__ << this << std::endl;
+	__LOG__ << std::endl;
 
 	// Splash Screen.
 	
 	// Connect to map_event
-	map_event = getSurface () .signal_map_event () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::on_map_event));
+	getBrowser () -> initialized .addInterest (this, &X3DBrowserWidget::set_spashScreen);
 
 	// Insert Surface, this will initialize the Browser.
 	getSurfaceBox () .pack_start (getSurface (), true, true, 0);
@@ -85,16 +85,15 @@ X3DBrowserWidget::initialize ()
 	getSurface () .show ();
 }
 
-bool
-X3DBrowserWidget::on_map_event (GdkEventAny* event)
+void
+X3DBrowserWidget::set_spashScreen ()
 {
-	__LOG__ << this << std::endl;
+	__LOG__ << std::endl;
 	
-	map_event .disconnect ();
+	getBrowser () -> initialized .removeInterest (this, &X3DBrowserWidget::set_spashScreen);
 
 	// Register browser interests.
-	getBrowser () -> urlError .addInterest (this, &X3DBrowserWidget::set_urlError);
-	getBrowser () -> world .addInterest    (this, &X3DBrowserWidget::set_initialized);
+	getBrowser () -> finished .addInterest (this, &X3DBrowserWidget::set_initialized);
 
 	try
 	{
@@ -103,24 +102,28 @@ X3DBrowserWidget::on_map_event (GdkEventAny* event)
 	}
 	catch (...)
 	{ }
-		
-	return false; // Propagate the event further. 
 }
 
 void
 X3DBrowserWidget::set_initialized ()
 {
-	__LOG__ << this << std::endl;
+	__LOG__ << std::endl;
 	
+	updateDescription ();
 	updateLocation    ();
 	updateIcon        ();
 
 	// The Splash Screen is loaded.
 
-	getBrowser () -> world .removeInterest (this, &X3DBrowserWidget::set_initialized);
-	getBrowser () -> world .addInterest    (this, &X3DBrowserWidget::set_world);
+	getBrowser () -> finished    .removeInterest (this, &X3DBrowserWidget::set_initialized);
+	getBrowser () -> initialized .addInterest    (this, &X3DBrowserWidget::set_world);
+	getBrowser () -> urlError    .addInterest    (this, &X3DBrowserWidget::set_urlError);
 
-	loadURL ({ getConfig () .string ("worldURL") });
+	if (getConfig () .hasItem ("worldURL"))
+		loadURL ({ getConfig () .string ("worldURL") });
+	
+//	else
+//		loadURL ({ "about:home" });
 }
 
 void
@@ -162,7 +165,13 @@ throw (X3D::Error <X3D::INVALID_URL>,
 	pushStatusBar ("Opening file " + url .toString () + ".");
 
 	loadTime = chrono::now ();
-	getBrowser () -> loadURL (url);
+	
+	try
+	{
+		getBrowser () -> loadURL (url);
+	}
+	catch (...)
+	{ }
 }
 
 void
@@ -209,12 +218,12 @@ X3DBrowserWidget::printStatistics () const
 //	{
 //		std::string name = getBrowser () -> getExecutionContext () -> getMetaData ("title");
 //
-//		std::cout << "Rendering statistics for: " << name << std::endl;
+//		std::clog << "Rendering statistics for: " << name << std::endl;
 //
-//		std::cout << "Load Time: " << loadTime << std::endl;
+//		std::clog << "Load Time: " << loadTime << std::endl;
 //
 //		for (auto const & line : getSurface () .statistics -> string)
-//			std::cout << "  " << line .toString () << std::endl;
+//			std::clog << "  " << line .toString () << std::endl;
 //	}
 //	catch (const X3D::Error <X3D::INVALID_NAME> &)
 //	{ }
@@ -242,7 +251,7 @@ void
 X3DBrowserWidget::set_world (/* X3D::SFNode <X3D::World> & world */)
 {
 	loadTime = chrono::now () - loadTime;
-	std::cout << "Load Time: " << loadTime << std::endl;
+	std::clog << "Load Time: " << loadTime << std::endl;
 
 	saveSession ();
 
@@ -324,7 +333,6 @@ X3DBrowserWidget::updateIcon ()
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << "Couldn't load icon: using blank icon: " << error .what () << std::endl;
 		iconSet = Gtk::IconSet::lookup_default (Gtk::StockID ("BlankIcon"));
 	}
 

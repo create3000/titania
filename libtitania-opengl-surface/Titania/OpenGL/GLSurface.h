@@ -76,15 +76,6 @@ protected:
 
 	GLSurface ();
 
-	bool
-	set_map_event (GdkEventAny*);
-
-	bool
-	set_configure_event (GdkEventConfigure*);
-
-	bool
-	set_draw (const Cairo::RefPtr <Cairo::Context> &);
-
 	/// @name OpenGL handler
 
 	virtual
@@ -94,7 +85,7 @@ protected:
 
 	virtual
 	void
-	set_size ()
+	reshape ()
 	{ }
 
 	virtual
@@ -107,7 +98,17 @@ private:
 	bool
 	glew ();
 
+	bool
+	set_map_event (GdkEventAny*);
+
+	bool
+	set_configure_event (GdkEventConfigure*);
+
+	bool
+	set_draw (const Cairo::RefPtr <Cairo::Context> &);
+
 	sigc::connection map_event;
+
 	std::shared_ptr <GLContext> context;
 
 //	Pixmap    pixmap;

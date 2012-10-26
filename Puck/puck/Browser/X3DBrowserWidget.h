@@ -113,8 +113,8 @@ protected:
 	void
 	initialize ();
 
-	bool
-	on_map_event (GdkEventAny*);
+	void
+	set_spashScreen ();
 
 	void
 	set_initialized ();
@@ -160,7 +160,6 @@ private:
 
 private:
 
-	sigc::connection map_event;
 	double loadTime;
 
 };

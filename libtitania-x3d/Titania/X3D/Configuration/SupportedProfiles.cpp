@@ -56,7 +56,7 @@ namespace X3D {
 SupportedProfiles::SupportedProfiles (X3DExecutionContext* const executionContext, const SupportedComponents & supportedComponents) :
 	executionContext (executionContext)
 {
-	std::clog << "Creating profile index:" << std::endl;
+	//std::clog << "Creating profile index:" << std::endl;
 
 	SupportedComponents CADInterchange (executionContext);
 
@@ -194,7 +194,7 @@ SupportedProfiles::SupportedProfiles (X3DExecutionContext* const executionContex
 
 	add ("MPEG-4", MPEG4);
 
-	std::clog << "\tDone creating profile index." << std::endl;
+	//std::clog << "\tDone creating profile index." << std::endl;
 }
 
 void

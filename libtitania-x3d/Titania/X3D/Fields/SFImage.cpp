@@ -77,8 +77,8 @@ SFImage::SFImage (const Image & value) :
 	setChild (get () .array ());
 }
 
-SFImage::SFImage (const size_type width, const size_type height, const size_type comp, const MFInt32 & array) :
-	X3DField <Image> (Image (width, height, comp, array))
+SFImage::SFImage (const size_type width, const size_type height, const size_type components, const MFInt32 & array) :
+	X3DField <Image> (Image (width, height, components, array))
 {
 	setChild (get () .array ());
 }
@@ -116,16 +116,16 @@ SFImage::getHeight () const
 }
 
 void
-SFImage::setComp (const size_type value)
+SFImage::setComponents (const size_type value)
 {
-	get () .comp (value);
+	get () .components (value);
 	notifyParents ();
 }
 
 SFImage::size_type
-SFImage::getComp () const
+SFImage::getComponents () const
 {
-	return getValue () .comp ();
+	return getValue () .components ();
 }
 
 void
@@ -147,15 +147,23 @@ SFImage::getArray () const
 }
 
 void
-SFImage::setValue (const size_type width, const size_type height, const size_type comp, const MFInt32 & array)
+SFImage::setValue (const size_type width, const size_type height, const size_type components, const MFInt32 & array)
 {
-	get () .set (width, height, comp, array);
+	get () .set (width, height, components, array);
 }
 
 void
-SFImage::getValue (size_type & width, size_type & height, size_type & comp, MFInt32 & array) const
+SFImage::getValue (size_type & width, size_type & height, size_type & components, MFInt32 & array) const
 {
-	getValue () .get (width, height, comp, array);
+	getValue () .get (width, height, components, array);
+}
+
+void
+SFImage::dispose ()
+{
+	X3DField <Image>::dispose ();
+
+	get () .array () .dispose ();
 }
 
 } // X3D

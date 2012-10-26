@@ -839,25 +839,40 @@ typedef basic_path <std::wstring> wpath;
 } // basic
 } // titania
 
-#include <babl/babl-classes.h>
-#include <gegl.h>
-
 int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 
-		std::clog << basic::path ("/") << std::endl;
-		std::clog << basic::path ("/", "/") << std::endl;
-		std::clog << basic::path ("home", "/") << std::endl;
-		std::clog << basic::path ("/home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
-		std::clog << basic::path ("home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
-	
-		std::clog << basic::path ("/") .parent () << std::endl;
-		std::clog << basic::path ("/", "/") .parent () << std::endl;
-		std::clog << basic::path ("home", "/") .parent () << std::endl;
-		std::clog << basic::path ("/home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
-		std::clog << basic::path ("home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
+//	union Pixel
+//	{
+//		uint32_t uint32;
+//		uint8_t uint8 [4];
+//	};
+//
+//	Pixel value [2];
+//	value [0] .uint32 = 0x01020304;
+//	value [1] .uint32 = 0x05060708;
+//	uint8_t* pointer  = value [0] .uint8;
+//
+//
+//	std::clog << std::hex << (uint32_t) value [0] .uint32 << std::endl;
+//	std::clog << std::hex << (uint32_t) value [1] .uint8 [3] << std::endl;
+//	
+//	std::clog << std::hex << (uint32_t) pointer [0] << std::endl;
+
+
+	std::clog << basic::path ("/") << std::endl;
+//	std::clog << basic::path ("/", "/") << std::endl;
+//	std::clog << basic::path ("home", "/") << std::endl;
+//	std::clog << basic::path ("/home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
+//	std::clog << basic::path ("home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
+//
+//	std::clog << basic::path ("/") .parent () << std::endl;
+//	std::clog << basic::path ("/", "/") .parent () << std::endl;
+//	std::clog << basic::path ("home", "/") .parent () << std::endl;
+//	std::clog << basic::path ("/home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
+//	std::clog << basic::path ("home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
 
 	//	basic::ifilestream stream = get_stream ();
 	//
@@ -917,19 +932,9 @@ main (int argc, char** argv)
 	return 0;
 }
 
-
-
-
-
-
-
-
-
-
-
 //	gegl_init (&argc, &argv);
 //
-//	
+//
 //	const char* path = "/home/holger/Projekte/Titania/Library/Tests/Texturing/images/colors/bw.png";
 //	std::ifstream      stream (path);
 //	std::ostringstream sstream;
@@ -946,7 +951,7 @@ main (int argc, char** argv)
 //                            "operation", "gegl:load",
 //                            "path",      path,
 //                            NULL);
-//                            
+//
 //	//	GeglNode* scale  = gegl_node_new_child (gegl,
 //	//                                    "operation", "gegl:scale",
 //	//                                    "width", 200,
@@ -978,4 +983,3 @@ main (int argc, char** argv)
 //	g_object_unref (outputBuffer);
 //	g_object_unref (gegl);
 //	gegl_exit ();
-

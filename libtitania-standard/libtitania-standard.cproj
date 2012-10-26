@@ -91,6 +91,7 @@
     <None Include="Titania\Chrono\SystemClock.h" />
     <None Include="Titania\Chrono\ClockBase.h" />
     <None Include="Titania\Chrono\CountingClock.h" />
+    <None Include="libtitania-standard.md.pc" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />

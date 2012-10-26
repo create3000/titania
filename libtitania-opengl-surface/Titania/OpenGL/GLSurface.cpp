@@ -70,6 +70,7 @@ GLSurface::GLSurface () :
 	// Enable map_event.
 	add_events (Gdk::STRUCTURE_MASK);
 
+__LOG__ << std::endl;
 	// Connect to map_event.
 	map_event = signal_map_event () .connect (sigc::mem_fun (*this, &GLSurface::set_map_event));
 }
@@ -143,6 +144,7 @@ GLSurface::glew ()
 bool
 GLSurface::set_map_event (GdkEventAny* event)
 {
+__LOG__ << std::endl;
 	map_event .disconnect ();
 
 	context = std::shared_ptr <GLContext> (new WindowContext (get_window (), get_display ()));
@@ -153,6 +155,8 @@ GLSurface::set_map_event (GdkEventAny* event)
 		signal_draw ()            .connect (sigc::mem_fun (*this, &GLSurface::set_draw));
 
 		glewInit ();
+	
+		glViewport (0, 0, get_width (), get_height ());
 
 		setup ();
 	}
@@ -167,7 +171,7 @@ GLSurface::set_configure_event (GdkEventConfigure* event)
 	{
 		glViewport (0, 0, get_width (), get_height ());
 
-		set_size ();
+		reshape ();
 	}
 
 	return false; // Propagate the event further.

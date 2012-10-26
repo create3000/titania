@@ -1,17 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-opengl-canvas/libtitania-opengl-drawingarea.md.pc">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D.cpp">
     <Files>
-      <File FileName="Puck/puck/Browser/X3DBrowserWindow.h" Line="135" Column="1" />
-      <File FileName="Puck/puck/Browser/X3DBrowserWindow .cpp" Line="65" Column="1" />
-      <File FileName="Puck/puck/Browser/X3DBrowserWidget.h" Line="67" Column="1" />
-      <File FileName="Puck/puck/Browser/X3DBrowserWidget.cpp" Line="79" Column="24" />
-      <File FileName="Library/Tests/Texturing/ImageTexture.wrl" Line="14" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="272" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTexture2DNode.cpp" Line="254" Column="13" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTexture2DNode.h" Line="105" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="305" Column="1" />
-      <File FileName="libtitania-opengl-canvas/libtitania-opengl-drawingarea.md.pc" Line="1" Column="1" />
+      <File FileName="Puck/puck/Browser/X3DBrowserWindow.h" Line="125" Column="12" />
+      <File FileName="Puck/puck/Browser/X3DBrowserWindow .cpp" Line="141" Column="1" />
+      <File FileName="Puck/puck/Browser/X3DBrowserWidget.h" Line="116" Column="6" />
+      <File FileName="Puck/puck/Browser/X3DBrowserWidget.cpp" Line="67" Column="3" />
+      <File FileName="libtitania-opengl-canvas/Titania/OpenGL/GLSurface.cpp" Line="74" Column="1" />
+      <File FileName="libtitania-opengl-canvas/Titania/OpenGL/GLSurface.h" Line="110" Column="28" />
+      <File FileName="libtitania-x3d/Titania/X3D/Widgets/Surface.cpp" Line="96" Column="1" />
+      <File FileName="Puck/share/titania/puck/pages/about/home.wrl" Line="59" Column="10" />
+      <File FileName="Puck/puck/Base/X3DUserInterface.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Fields/SFNode.h" Line="333" Column="1" />
+      <File FileName="Puck/puck/UserInterfaces/X3DBrowserUserInterface.cpp" Line="58" Column="44" />
+      <File FileName="Puck/puck/Base/X3DBrowserInterface.cpp" Line="59" Column="1" />
+      <File FileName="Puck/puck/Base/X3DBaseInterface.h" Line="74" Column="53" />
+      <File FileName="libtitania-x3d/Titania/X3D.cpp" Line="72" Column="43" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -25,45 +29,40 @@
           <Node name="experimental" expanded="True">
             <Node name="Packages" expanded="True" />
           </Node>
-          <Node name="libtitania-opengl-drawingarea" expanded="True" selected="True">
-            <Node name="Packages" expanded="True" />
+          <Node name="libtitania-opengl-surface" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="OpenGL" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Math" expanded="True" />
+            </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
-            <Node name="Packages" expanded="True" />
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Properties" expanded="True" />
-                </Node>
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True">
-                    <Node name="X3DBindableNode" expanded="True" />
-                  </Node>
-                  <Node name="EnvironmentalEffects" expanded="True" />
-                  <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Geometry2D" expanded="True" />
-                  <Node name="Geometry3D" expanded="True" />
-                  <Node name="Layering" expanded="True" />
-                  <Node name="Lighting" expanded="True" />
-                  <Node name="Networking" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
-                  <Node name="Shape" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
-                  <Node name="Time" expanded="True" />
+                  <Node name="RigidBodyPhysics" expanded="True" />
                 </Node>
-                <Node name="Configuration" expanded="True" />
-                <Node name="Rendering" expanded="True" />
-                <Node name="Routing" expanded="True" />
+                <Node name="Execution" expanded="True" />
+                <Node name="Fields" expanded="True" />
                 <Node name="Widgets" expanded="True" />
               </Node>
+              <Node name="X3D.cpp" selected="True" />
             </Node>
           </Node>
           <Node name="Puck" expanded="True">
             <Node name="Packages" expanded="True" />
             <Node name="puck" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
+              <Node name="Configuration" expanded="True" />
+              <Node name="HistoryEditor" expanded="True" />
+              <Node name="UserInterfaces" expanded="True" />
             </Node>
             <Node name="share" expanded="True">
               <Node name="applications" expanded="True" />
@@ -74,6 +73,7 @@
                       <Node name="info" expanded="True" />
                     </Node>
                   </Node>
+                  <Node name="ui" expanded="True" />
                 </Node>
               </Node>
             </Node>

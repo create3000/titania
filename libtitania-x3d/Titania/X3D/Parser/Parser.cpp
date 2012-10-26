@@ -111,7 +111,7 @@ Parser::Parser (Scene* scene, const std::string & input) :
 std::string
 Parser::getMessageFromError (const X3DError & error)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	// still unused error message: Premature end of file after DEF
 
@@ -173,7 +173,7 @@ Parser::getMessageFromError (const X3DError & error)
 void
 Parser::pushExecutionContext (X3DExecutionContext* const executionContext)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	executionContextStack .push_back (executionContext);
 }
@@ -181,7 +181,7 @@ Parser::pushExecutionContext (X3DExecutionContext* const executionContext)
 void
 Parser::popExecutionContext ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	executionContextStack .pop_back ();
 }
@@ -189,7 +189,7 @@ Parser::popExecutionContext ()
 X3DExecutionContext*
 Parser::getExecutionContext () const
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	return executionContextStack .back ();
 }
@@ -197,7 +197,7 @@ Parser::getExecutionContext () const
 bool
 Parser::isInsideProtoDefinition () const
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	return executionContextStack .size () > 1;
 }
@@ -205,6 +205,8 @@ Parser::isInsideProtoDefinition () const
 void
 Parser::addRootNode (const SFNode <X3DBaseNode> & rootNode)
 {
+	//__LOG__ << std::endl;
+
 	for (auto & basicNode : nodeList)
 		basicNode -> setup ();
 
@@ -216,7 +218,7 @@ Parser::addRootNode (const SFNode <X3DBaseNode> & rootNode)
 void
 Parser::comments ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	std::string _comment;
 
@@ -227,7 +229,7 @@ Parser::comments ()
 bool
 Parser::comment (std::string & _comment)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	return RegEx::Comment .Consume (&string, &_comment);
 }
@@ -235,7 +237,7 @@ Parser::comment (std::string & _comment)
 void
 Parser::x3dScene ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	pushExecutionContext (scene);
 
@@ -278,7 +280,7 @@ Parser::x3dScene ()
 bool
 Parser::headerStatement (std::string & encoding, std::string & specificationVersion, std::string & characterEncoding, std::string & comment)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::Header .Consume (&string, &encoding, &specificationVersion, &characterEncoding, &comment))
 	{
@@ -292,7 +294,7 @@ Parser::headerStatement (std::string & encoding, std::string & specificationVers
 const ProfileInfo*
 Parser::profileStatement ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::PROFILE .Consume (&string))
 	{
@@ -314,7 +316,7 @@ Parser::profileStatement ()
 ComponentInfoArray
 Parser::componentStatements ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	ComponentInfoArray _componentStatements;
 
@@ -332,7 +334,7 @@ Parser::componentStatements ()
 const ComponentInfo*
 Parser::componentStatement ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::COMPONENT .Consume (&string))
 	{
@@ -368,7 +370,7 @@ Parser::componentStatement ()
 bool
 Parser::componentSupportLevel (int32_t & value)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	return _int32 (value);
 }
@@ -376,7 +378,7 @@ Parser::componentSupportLevel (int32_t & value)
 void
 Parser::unitStatements ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	while (unitStatement ())
 		;
@@ -385,7 +387,7 @@ Parser::unitStatements ()
 bool
 Parser::unitStatement ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::UNIT .Consume (&string))
 	{
@@ -422,7 +424,7 @@ Parser::unitStatement ()
 bool
 Parser::unitConversionFactor (double & _value)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	return _double (_value);
 }
@@ -430,7 +432,7 @@ Parser::unitConversionFactor (double & _value)
 bool
 Parser::exportStatement ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::EXPORT .Consume (&string))
 	{
@@ -464,7 +466,7 @@ Parser::exportStatement ()
 bool
 Parser::importStatement ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::IMPORT .Consume (&string))
 	{
@@ -519,7 +521,7 @@ Parser::importStatement ()
 void
 Parser::metaStatements ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	while (metaStatement ())
 		;
@@ -528,7 +530,7 @@ Parser::metaStatements ()
 bool
 Parser::metaStatement ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::META .Consume (&string))
 	{
@@ -558,7 +560,7 @@ Parser::metaStatement ()
 bool
 Parser::metakey (std::string & _value)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	return _string (_value);
 }
@@ -566,7 +568,7 @@ Parser::metakey (std::string & _value)
 bool
 Parser::metavalue (std::string & _value)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	return _string (_value);
 }
@@ -574,18 +576,18 @@ Parser::metavalue (std::string & _value)
 void
 Parser::statements ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	while (statement ())
 		;
 
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 }
 
 bool
 Parser::statement ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	comments ();
 
@@ -615,7 +617,7 @@ Parser::statement ()
 bool
 Parser::nodeStatement (X3DFieldDefinition & _node)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::DEF .Consume (&string))
 	{
@@ -644,7 +646,7 @@ Parser::nodeStatement (X3DFieldDefinition & _node)
 		{
 			const SFNode <X3DBasicNode> & _namedNode = getExecutionContext () -> getNamedNode (_nodeNameId);
 
-			_node .write (&_namedNode);
+			_node .write (_namedNode);
 
 			return true;
 		}
@@ -658,7 +660,7 @@ Parser::nodeStatement (X3DFieldDefinition & _node)
 
 		static SFNode <X3DBasicNode> _null;
 
-		_node .write (&_null);
+		_node .write (_null);
 
 		return true;
 	}
@@ -672,7 +674,7 @@ Parser::nodeStatement (X3DFieldDefinition & _node)
 bool
 Parser::rootNodeStatement (SFNode <X3DBasicNode> & _node)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::DEF .Consume (&string))
 	{
@@ -699,7 +701,7 @@ Parser::rootNodeStatement (SFNode <X3DBasicNode> & _node)
 bool
 Parser::protoStatement ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (proto ())
 		return true;
@@ -713,7 +715,7 @@ Parser::protoStatement ()
 void
 Parser::protoStatements ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	while (protoStatement ())
 		;
@@ -722,7 +724,7 @@ Parser::protoStatements ()
 bool
 Parser::proto ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::PROTO .Consume (&string))
 	{
@@ -781,7 +783,7 @@ Parser::proto ()
 void
 Parser::protoBody ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	protoStatements ();
 
@@ -799,7 +801,7 @@ Parser::protoBody ()
 FieldDefinitionArray
 Parser::interfaceDeclarations ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	FieldDefinitionArray _interfaceDeclarations;
 	X3DFieldDefinition*  _field = interfaceDeclaration ();
@@ -816,7 +818,7 @@ Parser::interfaceDeclarations ()
 X3DFieldDefinition*
 Parser::restrictedInterfaceDeclaration ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::inputOnly .Consume (&string))
 	{
@@ -914,7 +916,7 @@ Parser::restrictedInterfaceDeclaration ()
 X3DFieldDefinition*
 Parser::interfaceDeclaration ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	X3DFieldDefinition* _field = restrictedInterfaceDeclaration ();
 
@@ -963,7 +965,7 @@ Parser::interfaceDeclaration ()
 bool
 Parser::externproto ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::EXTERNPROTO .Consume (&string))
 	{
@@ -1010,7 +1012,7 @@ Parser::externproto ()
 FieldDefinitionArray
 Parser::externInterfaceDeclarations ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	FieldDefinitionArray _externInterfaceDeclarations;
 	X3DFieldDefinition*  _field = externInterfaceDeclaration ();
@@ -1027,7 +1029,7 @@ Parser::externInterfaceDeclarations ()
 X3DFieldDefinition*
 Parser::externInterfaceDeclaration ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::inputOnly .Consume (&string))
 	{
@@ -1143,7 +1145,7 @@ Parser::externInterfaceDeclaration ()
 bool
 Parser::routeStatement ()
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::ROUTE .Consume (&string))
 	{
@@ -1232,7 +1234,7 @@ Parser::routeStatement ()
 bool
 Parser::URLList (MFString* _value)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	return mfstringValue (_value);
 }
@@ -1242,13 +1244,13 @@ Parser::URLList (MFString* _value)
 bool
 Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << ": " << _nodeNameId << std::endl;
+	//__LOG__ << _nodeNameId << std::endl;
 
 	std::string _nodeTypeId;
 
 	if (nodeTypeId (_nodeTypeId))
 	{
-		//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << ": " << _nodeTypeId << std::endl;
+		//__LOG__ << _nodeTypeId << std::endl;
 
 		SFNode <X3DBasicNode> _newNode;
 
@@ -1260,6 +1262,8 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 		{
 			_newNode = getExecutionContext () -> createProtoInstance (_nodeTypeId);
 		}
+		
+		//__LOG__ << _nodeTypeId << " " << (void*) _newNode << std::endl;
 
 		if (_nodeNameId .length ())
 			getExecutionContext () -> updateNamedNode (_nodeNameId, _newNode);
@@ -1286,7 +1290,7 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 			{
 				comments ();
 
-				_node .write (&_newNode);
+				_node .write (_newNode);
 
 				return true;
 			}
@@ -1297,14 +1301,14 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 			throw Error <INVALID_X3D> ("Expected '{' at the beginning of node body.");
 	}
 
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 	return false;
 }
 
 void
 Parser::scriptBody (X3DBasicNode* const _basicNode)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	while (scriptBodyElement (_basicNode))
 		;
@@ -1313,7 +1317,7 @@ Parser::scriptBody (X3DBasicNode* const _basicNode)
 bool
 Parser::scriptBodyElement (X3DBasicNode* const _basicNode)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	std::string _accessType, _fieldType, _fieldId;
 
@@ -1380,7 +1384,7 @@ Parser::scriptBodyElement (X3DBasicNode* const _basicNode)
 void
 Parser::nodeBody (X3DBasicNode* const _basicNode)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	while (nodeBodyElement (_basicNode))
 		;
@@ -1389,7 +1393,7 @@ Parser::nodeBody (X3DBasicNode* const _basicNode)
 bool
 Parser::nodeBodyElement (X3DBasicNode* const _basicNode)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (protoStatement ())
 		return true;
@@ -1466,7 +1470,7 @@ Parser::nodeBodyElement (X3DBasicNode* const _basicNode)
 bool
 Parser::Id (std::string & _Id)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::Id .Consume (&string, &_Id))
 	{
@@ -1480,7 +1484,7 @@ Parser::Id (std::string & _Id)
 bool
 Parser::componentNameId (std::string & _Id)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::ComponentNameId .Consume (&string, &_Id))
 	{
@@ -1494,7 +1498,7 @@ Parser::componentNameId (std::string & _Id)
 bool
 Parser::fieldType (std::string & _fieldType)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::FieldType .Consume (&string, &_fieldType))
 	{
@@ -1508,7 +1512,7 @@ Parser::fieldType (std::string & _fieldType)
 bool
 Parser::fieldValue (X3DFieldDefinition* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	const X3DType* type = _field -> getType ();
 
@@ -1647,7 +1651,7 @@ template <class Type>
 bool
 Parser::from_string (Type & _value, const std::string & _string, std::ios_base & (*_format) (std::ios_base &))
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	std::istringstream _iss (_string);
 
@@ -1657,7 +1661,7 @@ Parser::from_string (Type & _value, const std::string & _string, std::ios_base &
 bool
 Parser::_double (double & _value)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	std::string _match;
 
@@ -1673,7 +1677,7 @@ Parser::_double (double & _value)
 bool
 Parser::_float (float & _value)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	std::string _match;
 
@@ -1689,7 +1693,7 @@ Parser::_float (float & _value)
 bool
 Parser::_int32 (int32_t & _value)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	std::string _match;
 
@@ -1720,7 +1724,7 @@ Parser::_int32 (int32_t & _value)
 bool
 Parser::_string (std::string & _value)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::_string .Consume (&string, &_value))
 	{
@@ -1735,7 +1739,7 @@ Parser::_string (std::string & _value)
 bool
 Parser::sfboolValue (SFBool* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (RegEx::_true .Consume (&string))
 	{
@@ -1757,7 +1761,7 @@ Parser::sfboolValue (SFBool* _field)
 bool
 Parser::mfboolValue (MFBool* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -1795,7 +1799,7 @@ Parser::mfboolValue (MFBool* _field)
 void
 Parser::sfboolValues (MFBool* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFBool value;
 
@@ -1806,7 +1810,7 @@ Parser::sfboolValues (MFBool* _field)
 bool
 Parser::sfcolorValue (SFColor* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	float r, g, b;
 
@@ -1828,7 +1832,7 @@ Parser::sfcolorValue (SFColor* _field)
 bool
 Parser::mfcolorValue (MFColor* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -1866,7 +1870,7 @@ Parser::mfcolorValue (MFColor* _field)
 void
 Parser::sfcolorValues (MFColor* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFColor value;
 
@@ -1877,7 +1881,7 @@ Parser::sfcolorValues (MFColor* _field)
 bool
 Parser::sfcolorRGBAValue (SFColorRGBA* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	float r, g, b, a;
 
@@ -1902,7 +1906,7 @@ Parser::sfcolorRGBAValue (SFColorRGBA* _field)
 bool
 Parser::mfcolorRGBAValue (MFColorRGBA* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -1940,7 +1944,7 @@ Parser::mfcolorRGBAValue (MFColorRGBA* _field)
 void
 Parser::sfcolorRGBAValues (MFColorRGBA* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFColorRGBA value;
 
@@ -1951,7 +1955,7 @@ Parser::sfcolorRGBAValues (MFColorRGBA* _field)
 bool
 Parser::sfdoubleValue (SFDouble* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	double value;
 
@@ -1967,7 +1971,7 @@ Parser::sfdoubleValue (SFDouble* _field)
 bool
 Parser::mfdoubleValue (MFDouble* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2005,7 +2009,7 @@ Parser::mfdoubleValue (MFDouble* _field)
 void
 Parser::sfdoubleValues (MFDouble* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFDouble value;
 
@@ -2016,7 +2020,7 @@ Parser::sfdoubleValues (MFDouble* _field)
 bool
 Parser::sffloatValue (SFFloat* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	float value;
 
@@ -2032,7 +2036,7 @@ Parser::sffloatValue (SFFloat* _field)
 bool
 Parser::mffloatValue (MFFloat* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2070,7 +2074,7 @@ Parser::mffloatValue (MFFloat* _field)
 void
 Parser::sffloatValues (MFFloat* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFFloat value;
 
@@ -2081,7 +2085,7 @@ Parser::sffloatValues (MFFloat* _field)
 bool
 Parser::sfimageValue (SFImage* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	int32_t width, height, components, size, pixel;
 	MFInt32 array;
@@ -2114,7 +2118,7 @@ Parser::sfimageValue (SFImage* _field)
 bool
 Parser::mfimageValue (MFImage* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2152,7 +2156,7 @@ Parser::mfimageValue (MFImage* _field)
 void
 Parser::sfimageValues (MFImage* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFImage value;
 
@@ -2163,7 +2167,7 @@ Parser::sfimageValues (MFImage* _field)
 bool
 Parser::sfint32Value (SFInt32* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	int32_t value;
 
@@ -2179,7 +2183,7 @@ Parser::sfint32Value (SFInt32* _field)
 bool
 Parser::mfint32Value (MFInt32* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2217,7 +2221,7 @@ Parser::mfint32Value (MFInt32* _field)
 void
 Parser::sfint32Values (MFInt32* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFInt32 value;
 
@@ -2228,7 +2232,7 @@ Parser::sfint32Values (MFInt32* _field)
 bool
 Parser::sfmatrix3dValue (SFMatrix3d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	double e11, e12, e13, e21, e22, e23, e31, e32, e33;
 
@@ -2268,7 +2272,7 @@ Parser::sfmatrix3dValue (SFMatrix3d* _field)
 bool
 Parser::mfmatrix3dValue (MFMatrix3d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2306,7 +2310,7 @@ Parser::mfmatrix3dValue (MFMatrix3d* _field)
 void
 Parser::sfmatrix3dValues (MFMatrix3d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFMatrix3d value;
 
@@ -2317,7 +2321,7 @@ Parser::sfmatrix3dValues (MFMatrix3d* _field)
 bool
 Parser::sfmatrix3fValue (SFMatrix3f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	float e11, e12, e13, e21, e22, e23, e31, e32, e33;
 
@@ -2357,7 +2361,7 @@ Parser::sfmatrix3fValue (SFMatrix3f* _field)
 bool
 Parser::mfmatrix3fValue (MFMatrix3f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2395,7 +2399,7 @@ Parser::mfmatrix3fValue (MFMatrix3f* _field)
 void
 Parser::sfmatrix3fValues (MFMatrix3f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFMatrix3f value;
 
@@ -2406,7 +2410,7 @@ Parser::sfmatrix3fValues (MFMatrix3f* _field)
 bool
 Parser::sfmatrix4dValue (SFMatrix4d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	double e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44;
 
@@ -2467,7 +2471,7 @@ Parser::sfmatrix4dValue (SFMatrix4d* _field)
 bool
 Parser::mfmatrix4dValue (MFMatrix4d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2505,7 +2509,7 @@ Parser::mfmatrix4dValue (MFMatrix4d* _field)
 void
 Parser::sfmatrix4dValues (MFMatrix4d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFMatrix4d value;
 
@@ -2516,7 +2520,7 @@ Parser::sfmatrix4dValues (MFMatrix4d* _field)
 bool
 Parser::sfmatrix4fValue (SFMatrix4f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	float e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44;
 
@@ -2577,7 +2581,7 @@ Parser::sfmatrix4fValue (SFMatrix4f* _field)
 bool
 Parser::mfmatrix4fValue (MFMatrix4f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2615,7 +2619,7 @@ Parser::mfmatrix4fValue (MFMatrix4f* _field)
 void
 Parser::sfmatrix4fValues (MFMatrix4f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFMatrix4f value;
 
@@ -2626,7 +2630,7 @@ Parser::sfmatrix4fValues (MFMatrix4f* _field)
 bool
 Parser::sfnodeValue (X3DFieldDefinition* const _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	return nodeStatement (*_field);
 }
@@ -2634,7 +2638,7 @@ Parser::sfnodeValue (X3DFieldDefinition* const _field)
 bool
 Parser::mfnodeValue (MFNode <X3DBasicNode>* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2672,7 +2676,7 @@ Parser::mfnodeValue (MFNode <X3DBasicNode>* _field)
 void
 Parser::nodeStatements (MFNode <X3DBasicNode>* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFNode <X3DBasicNode> _node;
 
@@ -2683,7 +2687,7 @@ Parser::nodeStatements (MFNode <X3DBasicNode>* _field)
 bool
 Parser::sfrotationValue (SFRotation* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	float x, y, z, angle;
 
@@ -2708,7 +2712,7 @@ Parser::sfrotationValue (SFRotation* _field)
 bool
 Parser::mfrotationValue (MFRotation* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2746,7 +2750,7 @@ Parser::mfrotationValue (MFRotation* _field)
 void
 Parser::sfrotationValues (MFRotation* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFRotation value;
 
@@ -2757,7 +2761,7 @@ Parser::sfrotationValues (MFRotation* _field)
 bool
 Parser::sfstringValue (SFString* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	std::string value;
 
@@ -2773,7 +2777,7 @@ Parser::sfstringValue (SFString* _field)
 bool
 Parser::mfstringValue (MFString* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2811,7 +2815,7 @@ Parser::mfstringValue (MFString* _field)
 void
 Parser::sfstringValues (MFString* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFString value;
 
@@ -2822,7 +2826,7 @@ Parser::sfstringValues (MFString* _field)
 bool
 Parser::sftimeValue (SFTime* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	double value;
 
@@ -2838,7 +2842,7 @@ Parser::sftimeValue (SFTime* _field)
 bool
 Parser::mftimeValue (MFTime* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2876,7 +2880,7 @@ Parser::mftimeValue (MFTime* _field)
 void
 Parser::sftimeValues (MFTime* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFTime value;
 
@@ -2887,7 +2891,7 @@ Parser::sftimeValues (MFTime* _field)
 bool
 Parser::sfvec2dValue (SFVec2d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	double x, y;
 
@@ -2906,7 +2910,7 @@ Parser::sfvec2dValue (SFVec2d* _field)
 bool
 Parser::mfvec2dValue (MFVec2d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2944,7 +2948,7 @@ Parser::mfvec2dValue (MFVec2d* _field)
 void
 Parser::sfvec2dValues (MFVec2d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFVec2d value;
 
@@ -2955,7 +2959,7 @@ Parser::sfvec2dValues (MFVec2d* _field)
 bool
 Parser::sfvec2fValue (SFVec2f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	float x, y;
 
@@ -2974,7 +2978,7 @@ Parser::sfvec2fValue (SFVec2f* _field)
 bool
 Parser::mfvec2fValue (MFVec2f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -3012,7 +3016,7 @@ Parser::mfvec2fValue (MFVec2f* _field)
 void
 Parser::sfvec2fValues (MFVec2f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFVec2f value;
 
@@ -3023,7 +3027,7 @@ Parser::sfvec2fValues (MFVec2f* _field)
 bool
 Parser::sfvec3dValue (SFVec3d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	double x, y, z;
 
@@ -3045,7 +3049,7 @@ Parser::sfvec3dValue (SFVec3d* _field)
 bool
 Parser::mfvec3dValue (MFVec3d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -3083,7 +3087,7 @@ Parser::mfvec3dValue (MFVec3d* _field)
 void
 Parser::sfvec3dValues (MFVec3d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFVec3d value;
 
@@ -3094,7 +3098,7 @@ Parser::sfvec3dValues (MFVec3d* _field)
 bool
 Parser::sfvec3fValue (SFVec3f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	float x, y, z;
 
@@ -3116,7 +3120,7 @@ Parser::sfvec3fValue (SFVec3f* _field)
 bool
 Parser::mfvec3fValue (MFVec3f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -3154,7 +3158,7 @@ Parser::mfvec3fValue (MFVec3f* _field)
 void
 Parser::sfvec3fValues (MFVec3f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFVec3f value;
 
@@ -3165,7 +3169,7 @@ Parser::sfvec3fValues (MFVec3f* _field)
 bool
 Parser::sfvec4dValue (SFVec4d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	double x, y, z, w;
 
@@ -3190,7 +3194,7 @@ Parser::sfvec4dValue (SFVec4d* _field)
 bool
 Parser::mfvec4dValue (MFVec4d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -3228,7 +3232,7 @@ Parser::mfvec4dValue (MFVec4d* _field)
 void
 Parser::sfvec4dValues (MFVec4d* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFVec4d value;
 
@@ -3239,7 +3243,7 @@ Parser::sfvec4dValues (MFVec4d* _field)
 bool
 Parser::sfvec4fValue (SFVec4f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	float x, y, z, w;
 
@@ -3264,7 +3268,7 @@ Parser::sfvec4fValue (SFVec4f* _field)
 bool
 Parser::mfvec4fValue (MFVec4f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -3302,7 +3306,7 @@ Parser::mfvec4fValue (MFVec4f* _field)
 void
 Parser::sfvec4fValues (MFVec4f* _field)
 {
-	//std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+	//__LOG__ << std::endl;
 
 	SFVec4f value;
 

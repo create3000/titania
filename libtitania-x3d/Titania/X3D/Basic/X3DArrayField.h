@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -73,7 +73,7 @@ public:
 
 	using X3DField <value_type>::addChild;
 	using X3DField <value_type>::getValue;
-	using X3DField <value_type>::write;
+	using X3DField <value_type>::set;
 	using X3DField <value_type>::operator =;
 
 	///  Default constructor.
@@ -158,13 +158,13 @@ public:
 	const ValueType &
 	get1Value (const size_type);
 
-	///  Write @a value to this field without notfying parents.
+	///  Set @a value to this field without notfying parents.
 	virtual
 	void
-	write (const value_type &);
+	set (const value_type &);
 
 	template <class InputIterator>
-	void write (InputIterator, InputIterator);
+	void set (InputIterator, InputIterator);
 
 	template <const size_t Size>
 	X3DArrayField &
@@ -226,7 +226,6 @@ public:
 
 	//size_type capacity () const { return getValue () .capacity (); };
 
-	virtual
 	void
 	clear ();
 
@@ -356,15 +355,15 @@ X3DArrayField <ValueType>::get1Value (const size_type index)
 
 template <class ValueType>
 void
-X3DArrayField <ValueType>::write (const value_type & value)
+X3DArrayField <ValueType>::set (const value_type & value)
 {
-	write (value .cbegin (), value .cend ());
+	set (value .cbegin (), value .cend ());
 }
 
 template <class ValueType>
 template <class InputIterator>
 void
-X3DArrayField <ValueType>::write (InputIterator first, InputIterator last)
+X3DArrayField <ValueType>::set (InputIterator first, InputIterator last)
 {
 	iterator current = begin ();
 
@@ -383,7 +382,7 @@ template <class InputIterator>
 void
 X3DArrayField <ValueType>::assign (InputIterator first, InputIterator last)
 {
-	write (first, last);
+	set (first, last);
 	notifyParents ();
 }
 

@@ -94,10 +94,10 @@ public:
 	getHeight () const;
 
 	void
-	setComp (const size_type);
+	setComponents (const size_type);
 
 	size_type
-	getComp () const;
+	getComponents () const;
 
 	void
 	setArray (const MFInt32 &);
@@ -113,6 +113,10 @@ public:
 
 	void
 	getValue (size_type &, size_type &, size_type &, MFInt32 &) const;
+	
+	virtual
+	void
+	dispose ();
 
 
 private:
@@ -125,7 +129,12 @@ template <class CharT, class Traits>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const Image & image)
 {
-	ostream << image .width () << Generator::Space << image .height () << Generator::Space << image .comp ();
+	ostream
+		<< image .width ()
+		<< Generator::Space
+		<< image .height ()
+		<< Generator::Space
+		<< image .components ();
 
 	if (image .width () and image .height ())
 	{

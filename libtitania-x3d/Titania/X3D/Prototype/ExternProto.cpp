@@ -139,7 +139,7 @@ ExternProto::requestImmediateLoad ()
 				{
 					if (protoField -> getType () == fieldDefinition -> getType ())
 					{
-						fieldDefinition -> write (protoField);
+						fieldDefinition -> write (*protoField);
 					}
 					else
 					{

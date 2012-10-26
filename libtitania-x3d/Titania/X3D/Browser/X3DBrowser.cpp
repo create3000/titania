@@ -41,6 +41,7 @@ const std::string X3DBrowser::version ("0.1");
 X3DBrowser::X3DBrowser () :
 	X3DExecutionContext (),                                        
 	       X3DUrlObject (),                                        
+	             router (),                                        
 	              clock (new chrono::system_clock <time_type> ()), 
 	    supportedFields (this),                                    
 	     supportedNodes (this),                                    
@@ -51,12 +52,17 @@ X3DBrowser::X3DBrowser () :
 	     browserOptions (new BrowserOptions      (this)),          
 	 browserEnvironment (new BrowserEnvironment  (this)),          
 	   javaScriptEngine (new JavaScriptEngine    (this)),          
-	             router (),                                        
 	       currentSpeed (0),                                       
 	   currentFrameRate (0),                                       
 	        description (""),                                      
+	        initialized (),                                        // SFTime   [out]    changed
+	           prepared (),                                        // SFTime   [out]    changed
+	          displayed (),                                        // SFTime   [out]    changed
+	           finished (),                                        // SFTime   [out]    changed
+	           shutdown (),                                        // SFTime   [out]    changed
 	            changed (),                                        // SFTime   [out]    changed
-	              world ()                                         // SFNode   [out]    world
+	              world (new World (this)),                        // SFNode   [out]    world
+	              scene ()
 {
 	std::clog << "Constructing Browser:" << std::endl;
 
@@ -73,12 +79,18 @@ X3DBrowser::X3DBrowser () :
 	             browserOptions,
 	             browserEnvironment,
 	             javaScriptEngine,
-	             url);
+	             scene);
 
-	appendField (outputOnly, "urlError", urlError);
-	appendField (outputOnly, "world",    world);
+	appendField (outputOnly, "initialized", initialized);
+	appendField (outputOnly, "prepared",    prepared);
+	appendField (outputOnly, "displayed",   displayed);
+	appendField (outputOnly, "finished",    finished);
+	appendField (outputOnly, "shutdown",    shutdown);
+	appendField (outputOnly, "urlError",    urlError);
+	appendField (outputOnly, "world",       world);
 
-	replaceWorld (createScene ());
+	world -> scene = createScene ();
+	world -> setup ();
 
 	std::clog << "\tDone constructing Browser." << std::endl;
 }
@@ -88,6 +100,10 @@ X3DBrowser::initialize ()
 {
 	X3DExecutionContext::initialize ();
 	X3DUrlObject::initialize ();
+	
+	// Initialize clock
+	
+	clock -> advance ();
 
 	// Properties
 
@@ -101,9 +117,9 @@ X3DBrowser::initialize ()
 	for (int32_t i = 0; i < renderingProperties -> maxLights; ++ i)
 		lightStack .push (GL_LIGHT0 + i);
 
-	// URL
+	// Replace world service.
 
-	url .addInterest (this, &X3DBrowser::set_url);
+	scene .addInterest (this, &X3DBrowser::set_scene);
 
 	// Welcome
 
@@ -125,8 +141,7 @@ X3DBrowser::initialize ()
 		<< std::string (80, '*') << std::endl
 		<< std::endl;
 
-	if (url .size ())
-		set_url ();
+	initialized = getCurrentTime ();
 }
 
 X3DBrowser*
@@ -258,16 +273,39 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-X3DBrowser::replaceWorld (const SFNode <Scene> & scene)
+X3DBrowser::replaceWorld (const SFNode <Scene> & value)
 throw (Error <INVALID_SCENE>)
 {
 	std::clog << "The browser is requested to replace the world:" << std::endl;
+	
+	scene = value;
+}
+
+void
+X3DBrowser::set_scene ()
+{
+	// Process any outstanding events.
 
 	router .processEvents ();
+	
+	// Replace world.
 
 	world          = new World (this);
 	world -> scene = scene;
 	world -> setup ();
+
+	// Change viewpoint.
+
+	if (scene -> getWorldURL () .fragment () .length ())
+		changeViewpoint (scene -> getWorldURL () .fragment ());
+		
+	// Dereference scene.
+	
+	// scene .set (NULL);
+	
+	// Generated initialized event immediately upon receiving this service.
+	
+	initialized = getCurrentTime ();
 
 	std::clog << "Replacing world done." << std::endl;
 }
@@ -278,7 +316,7 @@ throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_X3D>)
 {
-	this -> url = url;
+	loadURL (url, { });
 }
 
 void
@@ -288,27 +326,7 @@ throw (Error <INVALID_URL>,
        Error <INVALID_X3D>)
 {
 	// where parameter is "target=nameOfFrame"
-	this -> url = url;
-}
-
-void
-X3DBrowser::set_url ()
-{
-	try
-	{
-		requestImmediateLoad ();
-	}
-	catch (...)
-	{ }
-}
-
-void
-X3DBrowser::requestImmediateLoad ()
-{
 	replaceWorld (createX3DFromURL (url));
-
-	if (getExecutionContext () -> getWorldURL () .fragment () .length ())
-		changeViewpoint (getExecutionContext () -> getWorldURL () .fragment ());
 }
 
 SFNode <Scene>
@@ -461,13 +479,7 @@ X3DBrowser::notify (X3DBasicNode* const node)
 }
 
 void
-X3DBrowser::update ()
-{
-	display ();
-}
-
-void
-X3DBrowser::display ()
+X3DBrowser::prepare ()
 {
 	getGarbageCollector () .dispose ();
 
@@ -496,17 +508,32 @@ X3DBrowser::display ()
 		sensor -> activate ();
 
 	router .processEvents ();
+	prepared .processInterests ();
+}
 
-	world -> display ();
-
-	renderingProperties -> display ();
-
-	processInterests ();
+void
+X3DBrowser::update ()
+{
+	display ();
 
 	GLenum errorNum = glGetError ();
 
 	if (errorNum not_eq GL_NO_ERROR)
 		std::clog << "OpenGL Error at " << SFDouble (getCurrentTime ()) << ": " << gluErrorString (errorNum) << std::endl;
+}
+
+void
+X3DBrowser::display ()
+{
+	world -> display ();
+	renderingProperties -> display ();
+	displayed .processInterests ();
+}
+
+void
+X3DBrowser::finish ()
+{
+	finished .processInterests ();
 }
 
 void

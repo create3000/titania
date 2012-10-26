@@ -62,10 +62,10 @@ PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	setTypeName ("PixelTexture");
 
 	appendField (inputOutput,    "metadata",          metadata);
+	appendField (inputOutput,    "image",             image);
 	appendField (initializeOnly, "repeatS",           repeatS);
 	appendField (initializeOnly, "repeatT",           repeatT);
 	appendField (initializeOnly, "textureProperties", textureProperties);
-	appendField (inputOutput,    "image",             image);
 }
 
 X3DBasicNode*
@@ -85,7 +85,7 @@ PixelTexture::initialize ()
 void
 PixelTexture::requestImmediateLoad ()
 {
-	if (not getTexture () or image .getComp () < 1 or image .getComp () > 4 or image .getWidth () <= 0 or image .getHeight () <= 0)
+	if (not getTexture () or image .getComponents () < 1 or image .getComponents () > 4 or image .getWidth () <= 0 or image .getHeight () <= 0)
 		return;
 
 	size_t pixels = image .getWidth () * image .getHeight ();
@@ -94,7 +94,7 @@ PixelTexture::requestImmediateLoad ()
 	mimage .depth (8);
 	mimage .size (Magick::Geometry (image .getWidth (), image .getHeight ()));
 
-	switch (image .getComp ())
+	switch (image .getComponents ())
 	{
 		case 1:
 		{
@@ -104,7 +104,7 @@ PixelTexture::requestImmediateLoad ()
 			array .assign (image .getArray () .begin (),
 			               image .getArray () .end ());
 			
-			Magick::Blob blob (array .data (), array .size ());
+			Magick::Blob blob (array .data (), pixels);
 			mimage .magick ("GRAY");
 			mimage .read (blob);
 			
@@ -112,16 +112,19 @@ PixelTexture::requestImmediateLoad ()
 		}
 		case 2:
 		{
-			std::vector <uint16_t> array;
+			std::vector <uint8_t> array;
 			array .reserve (pixels * 2);
 			
 			for (const auto & pixel : image .getArray ())
 			{
-				array .push_back ((pixel & 0xff00) & (pixel >> 8));
+				uint8_t color = pixel >> 8;
+				array .push_back (color);
+				array .push_back (color);
+				array .push_back (color);
 				array .push_back (pixel);
 			}
 
-			Magick::Blob blob (array .data (), array .size ());
+			Magick::Blob blob (array .data (), pixels * 4);
 			mimage .magick ("RGBA");
 			mimage .read (blob);
 
@@ -139,7 +142,7 @@ PixelTexture::requestImmediateLoad ()
 				array .push_back (pixel);
 			}
 
-			Magick::Blob blob (array .data (), array .size ());
+			Magick::Blob blob (array .data (), pixels * 3);
 			mimage .magick ("RGB");
 			mimage .read (blob);
 			
@@ -147,13 +150,18 @@ PixelTexture::requestImmediateLoad ()
 		}
 		case 4:
 		{
-			std::vector <uint32_t> array;
-			array .reserve (pixels);
+			std::vector <uint8_t> array;
+			array .reserve (pixels * 4);
 			
-			array .assign (image .getArray () .begin (),
-			               image .getArray () .end ());
+			for (const auto & pixel : image .getArray ())
+			{
+				array .push_back (pixel >> 24);
+				array .push_back (pixel >> 16);
+				array .push_back (pixel >> 8);
+				array .push_back (pixel);
+			}
 
-			Magick::Blob blob (array .data (), array .size ());
+			Magick::Blob blob (array .data (), pixels * 4);
 			mimage .magick ("RGBA");
 			mimage .read (blob);
 			

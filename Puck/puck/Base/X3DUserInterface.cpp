@@ -185,12 +185,12 @@ X3DUserInterface::saveInterface ()
 	int x, y, width, height;
 
 	getWindow () .get_position (x, y);
-	getConfig ().set ("x", x);
-	getConfig ().set ("y", y);
+	getConfig ().setItem ("x", x);
+	getConfig ().setItem ("y", y);
 
 	getWindow () .get_size (width, height);
-	getConfig ().set ("width",  width);
-	getConfig ().set ("height", height);
+	getConfig ().setItem ("width",  width);
+	getConfig ().setItem ("height", height);
 }
 
 void
