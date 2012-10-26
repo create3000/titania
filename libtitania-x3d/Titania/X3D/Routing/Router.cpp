@@ -66,8 +66,8 @@ Router::processEvents ()
 
 		for (const auto & node : nodesToProcess)
 		{
-			__LOG__ << (void*) node << std::endl;
-			__LOG__ << node -> getTypeName () << std::endl;
+			//__LOG__ << (void*) node << std::endl;
+			//__LOG__ << node -> getTypeName () << std::endl;
 
 			ObjectSet sourceFields;
 

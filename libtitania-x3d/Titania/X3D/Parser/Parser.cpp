@@ -758,6 +758,7 @@ Parser::proto ()
 
 						if (RegEx::CloseBrace .Consume (&string))
 						{
+							//__LOG__ << (void*) _proto .getValue () << " " << _nodeTypeId << std::endl;
 							comments ();
 							return true;
 						}
@@ -990,7 +991,6 @@ Parser::externproto ()
 					if (URLList (&_URLList))
 					{
 						getExecutionContext () -> addExternProtoDeclaration (_nodeTypeId, _externInterfaceDeclarations, _URLList);
-
 						return true;
 					}
 					else

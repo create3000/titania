@@ -597,8 +597,8 @@ get_stream ()
 	basic::uri url0 = std::move (basic::uri ("http://titania.create3000.de"));
 	basic::uri url1 = std::move (basic::uri ("http://titania.create3000.de/documentation/examples/hello_world.wrl"));
 
-	basic::uri url2 = "file:///home/holger/Projekte/Titania/Puck/share/titania/puck/pages/about/home.wrl";
-	basic::uri url3 = "holger/Titania/Puck/share/titania/puck/pages/about/home.wrl";
+	basic::uri url2 = "file:///home/holger/Projekte/Titania/Titania/share/titania/puck/pages/about/home.wrl";
+	basic::uri url3 = "holger/Titania/Titania/share/titania/puck/pages/about/home.wrl";
 
 	basic::uri url4 = "http://lockalhost:1235";
 	basic::uri url5 = "about";
@@ -865,14 +865,14 @@ main (int argc, char** argv)
 	std::clog << basic::path ("/") << std::endl;
 //	std::clog << basic::path ("/", "/") << std::endl;
 //	std::clog << basic::path ("home", "/") << std::endl;
-//	std::clog << basic::path ("/home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
-//	std::clog << basic::path ("home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
+//	std::clog << basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
+//	std::clog << basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
 //
 //	std::clog << basic::path ("/") .parent () << std::endl;
 //	std::clog << basic::path ("/", "/") .parent () << std::endl;
 //	std::clog << basic::path ("home", "/") .parent () << std::endl;
-//	std::clog << basic::path ("/home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
-//	std::clog << basic::path ("home/holger/Projekte/Titania/Puck/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
+//	std::clog << basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
+//	std::clog << basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
 
 	//	basic::ifilestream stream = get_stream ();
 	//

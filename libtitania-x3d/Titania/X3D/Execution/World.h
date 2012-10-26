@@ -62,7 +62,7 @@ public:
 
 	SFNode <Scene> scene;
 
-	World (X3DExecutionContext* const);
+	World (X3DExecutionContext* const, const SFNode <Scene> &);
 
 	virtual
 	World*

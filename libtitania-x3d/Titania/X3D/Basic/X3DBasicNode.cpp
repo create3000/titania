@@ -479,7 +479,7 @@ X3DBasicNode::initialize ()
 void
 X3DBasicNode::notify (X3DObject* const object)
 {
-	//std::clog << "Node '" << getTypeName () << "' received an event from field '" << object -> getName () << "'." << dynamic_cast <X3DBaseNode*> (object) -> getParents () .size () << std::endl;
+	//std::clog << "Node '" << getTypeName () << "' received an event from field '" << object -> getName () << "'." << (void*) this << std::endl;
 
 	assert (object);
 

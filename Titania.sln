@@ -5,7 +5,7 @@ Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-anyoptions", "li
 EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-gzstream", "libtitania-gzstream\libtitania-gzstream.cproj", "{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}"
 EndProject
-Project("{2857B73E-F847-4B02-9238-064979017E93}") = "Puck", "Puck\Puck.cproj", "{B8162BFF-FE10-4AE2-83EF-35F6DA9300B1}"
+Project("{2857B73E-F847-4B02-9238-064979017E93}") = "Titania", "Titania\Titania.cproj", "{B8162BFF-FE10-4AE2-83EF-35F6DA9300B1}"
 EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "test", "test\test.cproj", "{F1983DAD-057F-45D5-948E-2E8E2B58EE2E}"
 EndProject
@@ -220,7 +220,7 @@ Global
 		{BF6F245D-1851-439B-B616-DC0D88440782} = {0A83A471-2425-4FE8-B816-A75033B4D27C}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Puck\Puck.cproj
+		StartupItem = Titania\Titania.cproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.inheritsSet = null

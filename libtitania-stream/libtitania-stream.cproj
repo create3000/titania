@@ -43,6 +43,7 @@
     <None Include="Titania\Stream\SocketStreamBuf.h" />
     <None Include="Titania\Stream\InputFileStream.h" />
     <None Include="Titania\Stream\InputHTTPStream.h" />
+    <None Include="libtitania-stream.md.pc" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

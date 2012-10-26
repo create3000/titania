@@ -53,20 +53,20 @@
 namespace titania {
 namespace X3D {
 
-World::World (X3DExecutionContext* const executionContext) :
+World::World (X3DExecutionContext* const executionContext, const SFNode <Scene> & scene) :
 	X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	       scene ()
+	       scene (scene)
 {
 	setComponent ("Browser");
 	setTypeName ("World");
 
-	appendField (initializeOnly, "scene", scene);
+	appendField (initializeOnly, "scene", this -> scene);
 }
 
 World*
 World::create (X3DExecutionContext* const executionContext) const
 {
-	return new World (executionContext);
+	return new World (executionContext, NULL);
 }
 
 void

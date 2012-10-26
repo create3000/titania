@@ -1,5 +1,10 @@
 2012-10-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* gzstream.o:
+	* libtitania-gzstream.so: 
+
+2012-10-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-gzstream.md.pc:
 	* libtitania-gzstream.cproj: 
 

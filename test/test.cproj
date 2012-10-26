@@ -35,7 +35,7 @@
     <WarningLevel>All</WarningLevel>
     <EnvironmentVariables>
       <EnvironmentVariables>
-        <Variable name="XDG_DATA_DIRS" value="/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/home/holger/Projekte/Titania/Puck/share" />
+        <Variable name="XDG_DATA_DIRS" value="/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/home/holger/Projekte/Titania/Titania/share" />
       </EnvironmentVariables>
     </EnvironmentVariables>
   </PropertyGroup>

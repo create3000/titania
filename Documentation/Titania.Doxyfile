@@ -658,7 +658,7 @@ WARN_LOGFILE           =
 # with spaces.
 
 INPUT                  = ../libtitania-standard \
-                         ../Puck \
+                         ../Titania \
                          ../libtitania-stream \
                          ../libtitania-sqlite
 

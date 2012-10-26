@@ -1,5 +1,13 @@
 2012-10-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-stream.cproj:
+	* SocketStreamBuf.o:
+	* InputFileStream.o:
+	* InputHTTPStream.o:
+	* libtitania-stream.so: 
+
+2012-10-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-stream.md.pc: 
 
 2012-10-25  Holger Seelig  <holger.seelig@yahoo.de>

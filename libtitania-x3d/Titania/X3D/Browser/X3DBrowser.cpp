@@ -61,7 +61,7 @@ X3DBrowser::X3DBrowser () :
 	           finished (),                                        // SFTime   [out]    changed
 	           shutdown (),                                        // SFTime   [out]    changed
 	            changed (),                                        // SFTime   [out]    changed
-	              world (new World (this)),                        // SFNode   [out]    world
+	              world (new World (this, createScene ())),        // SFNode   [out]    world
 	              scene ()
 {
 	std::clog << "Constructing Browser:" << std::endl;
@@ -89,7 +89,6 @@ X3DBrowser::X3DBrowser () :
 	appendField (outputOnly, "urlError",    urlError);
 	appendField (outputOnly, "world",       world);
 
-	world -> scene = createScene ();
 	world -> setup ();
 
 	std::clog << "\tDone constructing Browser." << std::endl;
@@ -284,14 +283,13 @@ throw (Error <INVALID_SCENE>)
 void
 X3DBrowser::set_scene ()
 {
-	// Process any outstanding events.
+	// Process all outstanding events.
 
 	router .processEvents ();
 	
 	// Replace world.
 
-	world          = new World (this);
-	world -> scene = scene;
+	world = new World (this, scene);
 	world -> setup ();
 
 	// Change viewpoint.
@@ -301,7 +299,7 @@ X3DBrowser::set_scene ()
 		
 	// Dereference scene.
 	
-	// scene .set (NULL);
+	scene .set (NULL);
 	
 	// Generated initialized event immediately upon receiving this service.
 	
@@ -481,10 +479,6 @@ X3DBrowser::notify (X3DBasicNode* const node)
 void
 X3DBrowser::prepare ()
 {
-	getGarbageCollector () .dispose ();
-
-	renderingProperties -> prepare ();
-
 	clock -> advance ();
 
 	currentFrameRate = 1 / clock -> interval ();
@@ -508,6 +502,9 @@ X3DBrowser::prepare ()
 		sensor -> activate ();
 
 	router .processEvents ();
+	getGarbageCollector () .dispose ();
+
+	renderingProperties -> prepare ();
 	prepared .processInterests ();
 }
 
