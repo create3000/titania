@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,12 +46,12 @@
  *
  ******************************************************************************/
 
-#ifndef __PUCK_USER_INTERFACES_USER_INTERFACE_H__
-#define __PUCK_USER_INTERFACES_USER_INTERFACE_H__
+#ifndef __TITANIA_BASE_X3DUSER_INTERFACE_H__
+#define __TITANIA_BASE_X3DUSER_INTERFACE_H__
 
-#include "../Configuration/Configuration.h"
-#include "../Base/X3DBrowserInterface.h"
 #include "../Base/X3DBaseInterface.h"
+#include "../Base/X3DBrowserInterface.h"
+#include "../Configuration/Configuration.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -91,6 +91,10 @@ public:
 	void
 	saveSession ();
 
+	virtual
+	~X3DUserInterface ();
+
+
 protected:
 
 	X3DUserInterface (const std::string &, const std::string &);
@@ -119,7 +123,12 @@ protected:
 
 private:
 
+	typedef std::list <X3DUserInterface*> Array;
+
 	X3DUserInterface (const X3DUserInterface &) = delete;
+
+	void
+	set_initialized ();
 
 	void
 	on_map ();
@@ -136,13 +145,12 @@ private:
 	void
 	saveInterface ();
 
-	static std::vector <X3DUserInterface*> userInterfaces;
+	Configuration         gconf;
+	sigc::connection      initialized_connection;
+	X3DBrowserInterface*  browserWidget;
+	Array::iterator       userInterface;
 
-	bool initialized;
-
-	Configuration gconf;
-	
-	X3DBrowserInterface* browserWidget;
+	static Array userInterfaces;
 
 };
 

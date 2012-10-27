@@ -78,7 +78,7 @@ public:
 
 	Viewer*
 	getViewer () { return &viewer; }
-
+	
 	virtual
 	~Surface ();
 
@@ -96,6 +96,10 @@ private:
 	virtual
 	void
 	update (const Cairo::RefPtr <Cairo::Context> &);
+
+	virtual
+	void
+	dispose ();
 
 	SFNode <X3DBrowser> browser;
 	PointingDevice      pointingDevice;

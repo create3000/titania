@@ -97,6 +97,11 @@ protected:
 	void
 	update (const Cairo::RefPtr <Cairo::Context> &) = 0;
 
+	virtual
+	void
+	dispose ()
+	{ }
+
 
 private:
 
@@ -111,6 +116,10 @@ private:
 
 	bool
 	set_draw (const Cairo::RefPtr <Cairo::Context> &);
+
+	virtual
+	void
+	on_unrealize ();
 
 	sigc::connection initialized_connection;
 

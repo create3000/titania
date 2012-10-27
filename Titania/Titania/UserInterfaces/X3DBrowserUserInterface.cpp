@@ -138,13 +138,19 @@ X3DBrowserUserInterface::restoreSession ()
 void
 X3DBrowserUserInterface::saveSession ()
 {
+__LOG__ << std::endl;
+
 	// Prevent saving when page not initialized.
 	if (not is_initialized ())
 		return;
 
+__LOG__ << std::endl;
+__LOG__ << getSideBarMenuItem () .get_active () << std::endl;
+
 	//	printStatistics ();
 	
-	getConfig () .setItem ("worldURL", getExecutionContext () -> getWorldURL ());
+	if (getExecutionContext () -> getWorldURL () .size ())
+		getConfig () .setItem ("worldURL", getExecutionContext () -> getWorldURL ());
 	
 	getConfig () .setItem ("vPaned", getVPaned () .get_position ());
 	getConfig () .setItem ("hPaned", getHPaned () .get_position ());

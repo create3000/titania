@@ -4,21 +4,23 @@ META "title" "about:info"
 META "icon"  "about:icon"
 
 
-DEF DarkBlue Background {
-  skyColor 0.231373 0.243137 0.301961
+DEF White Background {
+  skyColor 1 1 1
 }
 
 Viewpoint {
-  position 0 0 3.1
   fieldOfView 0.785398
+  position 0 0 2.39431
 }
 
 Transform {
-  scale 1.024 0.512 1
+  scale 0.752 0.576 1
   children Shape {
     appearance Appearance {
       texture ImageTexture {
         url "info/info.png"
+        repeatS FALSE
+        repeatT FALSE
       }
     }
     geometry Box { }

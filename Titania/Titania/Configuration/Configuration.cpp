@@ -140,7 +140,7 @@ Configuration::exists ()
 void
 Configuration::remove ()
 {
-	client -> remove_dir (key);
+	client -> recursive_unset (key);
 }
 
 Configuration

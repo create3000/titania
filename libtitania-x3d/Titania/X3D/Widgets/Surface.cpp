@@ -137,11 +137,19 @@ Surface::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 	cairo -> show_text ("Titania");
 }
 
-Surface::~Surface ()
+void
+Surface::dispose ()
 {
+	__LOG__ << std::endl;
+
 	if (getContext () and makeCurrent ())
 		browser -> dispose ();
+
+	__LOG__ << std::endl;
 }
+
+Surface::~Surface ()
+{ }
 
 } // X3D
 } // titania

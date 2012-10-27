@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,20 +54,37 @@
 namespace titania {
 namespace puck {
 
-std::vector <X3DUserInterface*> X3DUserInterface::userInterfaces;
+X3DUserInterface::Array X3DUserInterface::userInterfaces;
 
 X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::string & configKey) :
-	initialized (false),                 
-	      gconf (configKey, widgetName)
+	                 gconf (configKey, widgetName), 
+	initialized_connection (),                      
+	         browserWidget (),                      
+	         userInterface ()
 { }
 
 void
 X3DUserInterface::construct ()
 {
-	getWidget () .signal_map          () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
+	initialized_connection = getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::set_initialized));
+
+	getWidget () .signal_map ()          .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
 	getWindow () .signal_delete_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_delete_event));
 
+	userInterfaces .emplace_back (this);
+	userInterface = -- userInterfaces .end ();
+
 	restoreInterface ();
+}
+
+void
+X3DUserInterface::set_initialized ()
+{
+	initialized_connection .disconnect ();
+	
+	initialize ();
+
+	std::clog << "Done Initializing " << getWidgetName () << "." << std::endl;
 }
 
 void
@@ -75,22 +92,11 @@ X3DUserInterface::on_map ()
 {
 	// Restore position before window becomes visible.
 	restoreInterface ();
-	
-	if (not initialized)
-	{
-		initialized = true;
-
-		initialize ();
-
-		std::clog << "Done Initializing " << getWidgetName () << "." << std::endl;
-	}
 }
 
 bool
 X3DUserInterface::on_delete_event (GdkEventAny*)
 {
-	std::clog << "Signal delete_event received for " << getWidgetName () << "." << std::endl;
-
 	if (this == userInterfaces .front ())
 		saveInterfaces ();
 	else
@@ -105,13 +111,13 @@ X3DUserInterface::on_delete_event (GdkEventAny*)
 void
 X3DUserInterface::initialize ()
 {
-	std::clog << "Initializing " << getWidgetName () << ":" << std::endl;
+	__LOG__ << getWidgetName () << ":" << std::endl;
 }
 
 bool
 X3DUserInterface::is_initialized ()
 {
-	return initialized;
+	return not initialized_connection .connected ();
 }
 
 void
@@ -144,24 +150,8 @@ X3DUserInterface::toggleWidget (bool active, Gtk::Widget & widget)
 }
 
 void
-X3DUserInterface::saveSession (const std::string & path)
-{
-	//	printStatistics ();
-
-	getConfig () .setPath (path);
-
-	saveSession ();
-}
-
-void
-X3DUserInterface::saveSession ()
-{ }
-
-void
 X3DUserInterface::restoreInterface ()
 {
-	userInterfaces .emplace_back (this);
-
 	getWindow () .move (getConfig ().integer ("x"),
 	                    getConfig ().integer ("y"));
 
@@ -194,9 +184,28 @@ X3DUserInterface::saveInterface ()
 }
 
 void
+X3DUserInterface::saveSession (const std::string & path)
+{
+	//	printStatistics ();
+
+	getConfig () .setPath (path);
+
+	saveSession ();
+}
+
+void
+X3DUserInterface::saveSession ()
+{ }
+
+void
 X3DUserInterface::close ()
 {
 	getWindow () .hide ();
+}
+
+X3DUserInterface::~X3DUserInterface ()
+{
+	userInterfaces .erase (userInterface);
 }
 
 } // puck
