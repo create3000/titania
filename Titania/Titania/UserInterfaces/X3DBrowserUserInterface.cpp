@@ -138,14 +138,9 @@ X3DBrowserUserInterface::restoreSession ()
 void
 X3DBrowserUserInterface::saveSession ()
 {
-__LOG__ << std::endl;
-
 	// Prevent saving when page not initialized.
 	if (not is_initialized ())
 		return;
-
-__LOG__ << std::endl;
-__LOG__ << getSideBarMenuItem () .get_active () << std::endl;
 
 	//	printStatistics ();
 	

@@ -194,17 +194,6 @@ GLSurface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 	return false;                                                // Propagate the event further.
 }
 
-void
-GLSurface::on_unrealize ()
-{
-	__LOG__ << std::endl;
-	__LOG__ << GDK_WINDOW_XID (get_window () -> gobj ()) << std::endl;
-	
-	dispose ();
-	
-	Gtk::DrawingArea::on_unrealize ();
-}
-
 bool
 GLSurface::makeCurrent ()
 {

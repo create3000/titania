@@ -362,8 +362,15 @@ X3DBrowserWidget::updateViewpoints (/* X3D::SFNode <X3D::World> & world */)
 
 // Destructor
 
+void
+X3DBrowserWidget::dispose ()
+{
+	getSurface () .dispose ();
+}
+
 X3DBrowserWidget::~X3DBrowserWidget ()
-{ }
+{
+}
 
 } // puck
 } // titania

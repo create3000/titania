@@ -285,12 +285,10 @@ X3DBrowserWindow::removePage (Gtk::Widget & child)
 {
 	size_t position = getNotebook () .page_num (child);
 	
-	__LOG__ << std::endl;
-
-	getNotebook () .remove_page (child);
-
 	__LOG__ << browserWidgets .size () << std::endl;
 	
+	browserWidgets [position] -> dispose ();
+	getNotebook () .remove_page (child);
 	browserWidgets .erase (browserWidgets .begin () + position);
 	
 	__LOG__ << browserWidgets .size () << std::endl;
@@ -325,6 +323,11 @@ X3DBrowserWindow::setTransparent (bool value)
 		if (visual)
 			gtk_widget_set_visual (GTK_WIDGET (getWindow () .gobj ()), visual -> gobj ());
 	}
+}
+
+void
+X3DBrowserWindow::dispose ()
+{
 }
 
 } // puck

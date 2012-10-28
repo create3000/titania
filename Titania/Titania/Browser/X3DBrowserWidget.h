@@ -99,7 +99,11 @@ public:
 	void
 	save (const basic::uri &);
 
-	/// @name Destructor
+	/// @name Destruction
+
+	virtual
+	void
+	dispose ();
 
 	virtual
 	~X3DBrowserWidget ();

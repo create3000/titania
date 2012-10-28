@@ -80,8 +80,10 @@ BrowserWindow::on_close_tab (Gtk::Widget & child)
 	
 	if (getNotebook () .get_n_pages () > 1)
 	{
-		currentPage = getNotebook () .get_n_pages () - 2;
-		getNotebook () .set_current_page (currentPage);
+		if (getNotebook () .get_current_page () == getNotebook () .get_n_pages () - 1)
+			getNotebook () .set_current_page (getNotebook () .get_current_page () - 1);
+	
+		currentPage = getNotebook () .get_current_page ();
 	}
 	else
 		close ();

@@ -84,6 +84,10 @@ public:
 	throw (X3D::Error <X3D::INVALID_URL>,
 	       X3D::Error <X3D::URL_UNAVAILABLE>,
 	       X3D::Error <X3D::INVALID_X3D>) = 0;
+	       
+	virtual
+	void
+	dispose () = 0;
 
 	virtual
 	~X3DBrowserInterface ();

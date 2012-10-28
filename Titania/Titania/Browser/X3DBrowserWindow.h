@@ -106,6 +106,10 @@ public:
 	       X3D::Error <X3D::URL_UNAVAILABLE>,
 	       X3D::Error <X3D::INVALID_X3D>);
 
+	virtual
+	void
+	dispose ();
+
 protected:
 
 	X3DBrowserWindow (int &, char** &);

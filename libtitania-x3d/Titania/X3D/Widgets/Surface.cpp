@@ -109,8 +109,6 @@ Surface::reshape ()
 void
 Surface::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
-	Gtk::Main::iteration (false);
-
 	try
 	{
 		getBrowser () -> prepare ();
@@ -140,12 +138,8 @@ Surface::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 void
 Surface::dispose ()
 {
-	__LOG__ << std::endl;
-
 	if (getContext () and makeCurrent ())
 		browser -> dispose ();
-
-	__LOG__ << std::endl;
 }
 
 Surface::~Surface ()
