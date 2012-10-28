@@ -63,23 +63,27 @@ public:
 	void
 	setItem (const std::string &, const std::string &);
 
-	sql::sqlite3::assoc_row_type
-	getItem (const std::string &)
+	const sql::sqlite3::assoc_row_type &
+	getItemFromIndex (const std::string &) const
 	throw (std::out_of_range);
 
-	sql::sqlite3::assoc_type
-	getItems ();
-
-	std::string
-	getIndex (const std::string &)
+	const sql::sqlite3::assoc_row_type &
+	getItemFromURL (const std::string &) const
 	throw (std::out_of_range);
 
-	std::string
-	getId (const std::string &)
+	const sql::sqlite3::assoc_type &
+	getItems () const;
+
+	const std::string &
+	getIndex (const std::string &) const
 	throw (std::out_of_range);
 
 
 private:
+
+	const std::string &
+	getId (const std::string &) const
+	throw (std::out_of_range);
 
 	void
 	insert (const std::string &, const std::string &);

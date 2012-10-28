@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,7 +61,7 @@ History::History () :
 	                 "id           INTEGER, "
 	                 "icon         BLOB,"
 	                 "title        TEXT,"
-	                 "location     TEXT,"
+	                 "worldURL     TEXT,"
 	                 "visited      INTEGER   DEFAULT 1,"
 	                 "lastAccess   INTEGER   DEFAULT (DATETIME ('now')),"
 	                 "creationTime INTEGER   DEFAULT (DATETIME ('now')),"
@@ -69,53 +69,63 @@ History::History () :
 }
 
 void
-History::setItem (const std::string & title, const std::string & location)
+History::setItem (const std::string & title, const std::string & worldURL)
 {
 	try
 	{
-		update (getId (location), title);
+		update (getId (worldURL), title);
 	}
 	catch (const std::out_of_range &)
 	{
-		insert (title, location);
+		insert (title, worldURL);
 	}
 }
 
-sql::sqlite3::assoc_row_type
-History::getItem (const std::string & index)
+const sql::sqlite3::assoc_row_type &
+History::getItemFromIndex (const std::string & index) const
 throw (std::out_of_range)
 {
-	return database .query_assoc ("SELECT title, location FROM History ORDER BY lastAccess DESC "
+	return database .query_assoc ("SELECT title, worldURL FROM History "
+	                              "ORDER BY lastAccess DESC "
 	                              "LIMIT " + index + ", 1") .at (0);
 }
 
-sql::sqlite3::assoc_type
-History::getItems ()
+const sql::sqlite3::assoc_row_type &
+History::getItemFromURL (const std::string & worldURL) const
+throw (std::out_of_range)
 {
-	return database .query_assoc ("SELECT title, location FROM History ORDER BY lastAccess DESC");
+	return database .query_assoc ("SELECT title, worldURL FROM History "
+	                              "WHERE worldURL = " + database .quote (worldURL) + " " +
+	                              "ORDER BY lastAccess DESC") .at (0);
 }
 
-std::string
-History::getIndex (const std::string & location)
+const sql::sqlite3::assoc_type &
+History::getItems () const
+{
+	return database .query_assoc ("SELECT title, worldURL FROM History ORDER BY lastAccess DESC");
+}
+
+const std::string &
+History::getIndex (const std::string & worldURL) const
 throw (std::out_of_range)
 {
 	const auto index = database .query_array ("SELECT "
 	                                          "(SELECT COUNT(0) - 1 FROM History h1 WHERE h1 .lastAccess >= h2 .lastAccess) AS 'rowid' "
 	                                          "FROM History h2 "
-	                                          "WHERE location = " + database .quote (location) + " "
-	                                                                                             "ORDER BY lastAccess DESC");
+	                                          "WHERE worldURL = " + database .quote (worldURL) + " " +
+	                                          "ORDER BY lastAccess DESC");
 
 	return index .at (0) .at (0);
 }
 
 void
-History::insert (const std::string & title, const std::string & location)
+History::insert (const std::string & title, const std::string & worldURL)
 {
 	database .query ("INSERT INTO History "
-	                 "(title, location)"
+	                 "(title, worldURL)"
 	                 "VALUES ("
 	                 + database .quote (title) + ","
-	                 + database .quote (location)
+	                 + database .quote (worldURL)
 	                 + ")");
 
 	std::clog << database .last_insert_rowid () << std::endl;
@@ -126,18 +136,18 @@ History::update (const std::string & id, const std::string & title)
 {
 	database .query ("UPDATE History "
 	                 "SET "
-	                 "title      = " + database .quote (title) + "," +
-	                 "visited    = (visited + 1), " +
-	                 "lastAccess = DATETIME ('now') " +
-	                 "WHERE id = " + id);
+	                 "title      = " + database .quote (title) + ","
+	                                                             "visited    = (visited + 1), "
+	                                                             "lastAccess = DATETIME ('now') "
+	                                                             "WHERE id = " + id);
 }
 
-std::string
-History::getId (const std::string & location)
+const std::string &
+History::getId (const std::string & worldURL) const
 throw (std::out_of_range)
 {
 	auto result = database .query_array ("SELECT id FROM History WHERE "
-	                                     "location = " + database .quote (location));
+	                                     "worldURL = " + database .quote (worldURL));
 
 	return result .at (0) .at (0);
 }

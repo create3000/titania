@@ -76,8 +76,8 @@ throw (std::invalid_argument)
 	exec (statement, NULL);
 }
 
-sqlite3::array_type
-sqlite3::query_array (const std::string & statement)
+const sqlite3::array_type &
+sqlite3::query_array (const std::string & statement) const
 throw (std::invalid_argument)
 {
 	array .clear ();
@@ -87,8 +87,8 @@ throw (std::invalid_argument)
 	return array;
 }
 
-sqlite3::assoc_type
-sqlite3::query_assoc (const std::string & statement)
+const sqlite3::assoc_type &
+sqlite3::query_assoc (const std::string & statement) const
 throw (std::invalid_argument)
 {
 	array_map .clear ();
@@ -98,8 +98,8 @@ throw (std::invalid_argument)
 	return array_map;
 }
 
-std::string
-sqlite3::last_insert_rowid ()
+const std::string &
+sqlite3::last_insert_rowid () const
 throw (std::out_of_range)
 {
 	return query_array ("SELECT LAST_INSERT_ROWID ()")  .at (0) .at (0);
@@ -112,12 +112,12 @@ sqlite3::quote (const std::string & value) const
 }
 
 void
-sqlite3::exec (const std::string & statement, int (* callback) (void*, int, char**, char**))
+sqlite3::exec (const std::string & statement, int (* callback) (void*, int, char**, char**)) const
 throw (std::invalid_argument)
 {
 	char* errorMessage = NULL;
 
-	if (c::sqlite3_exec (database, statement .c_str (), callback, this, &errorMessage) not_eq SQLITE_OK)
+	if (c::sqlite3_exec (database, statement .c_str (), callback, const_cast <sqlite3*> (this), &errorMessage) not_eq SQLITE_OK)
 	{
 		error ("Can't exec query: ", errorMessage);
 

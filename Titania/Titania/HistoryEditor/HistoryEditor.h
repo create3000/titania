@@ -64,6 +64,9 @@ class HistoryEditor :
 public:
 
 	HistoryEditor (const std::string &, X3DBrowserInterface* const);
+	
+	const History &
+	getHistory ();
 
 	~HistoryEditor ();
 
@@ -73,6 +76,9 @@ private:
 	virtual
 	void
 	initialize ();
+	
+	std::string
+	getTitle (const basic::uri &);
 
 	virtual
 	void

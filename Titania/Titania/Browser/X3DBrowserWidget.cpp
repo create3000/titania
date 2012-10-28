@@ -67,6 +67,25 @@ X3DBrowserWidget::X3DBrowserWidget (const std::string & sessionKey, X3DBrowserIn
 { }
 
 void
+X3DBrowserWidget::construct ()
+{
+	X3DBrowserUserInterface::construct ();
+	
+	if (getConfig () .hasItem ("worldURL"))
+	{
+		try
+		{
+			auto item = getHistoryEditor () .getHistory () .getItemFromURL (getConfig () .string ("worldURL"));
+
+			//setDescription (item ["worldURL"]);
+		}
+		catch (...)
+		{ }
+	}
+	
+}
+
+void
 X3DBrowserWidget::initialize ()
 {
 	X3DBrowserUserInterface::initialize ();

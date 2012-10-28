@@ -84,16 +84,16 @@ public:
 	query (const std::string &)
 	throw (std::invalid_argument);
 
-	array_type
-	query_array (const std::string &)
+	const array_type &
+	query_array (const std::string &) const
 	throw (std::invalid_argument);
 
-	assoc_type
-	query_assoc (const std::string &)
+	const assoc_type &
+	query_assoc (const std::string &) const
 	throw (std::invalid_argument);
 
-	std::string
-	last_insert_rowid ()
+	const std::string &
+	last_insert_rowid () const
 	throw (std::out_of_range);
 
 	/// @name Utility funtions
@@ -113,7 +113,7 @@ private:
 	throw (std::invalid_argument);
 
 	void
-	exec (const std::string & statement, int (* callback) (void*, int, char**, char**))
+	exec (const std::string & statement, int (* callback) (void*, int, char**, char**)) const
 	throw (std::invalid_argument);
 
 	static
@@ -141,8 +141,8 @@ private:
 
 	c::sqlite3* database;
 
-	array_type array;
-	assoc_type array_map;
+	mutable array_type array;
+	mutable assoc_type array_map;
 
 };
 

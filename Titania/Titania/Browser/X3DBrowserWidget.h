@@ -115,6 +115,10 @@ protected:
 
 	virtual
 	void
+	construct ();
+
+	virtual
+	void
 	initialize ();
 
 	void

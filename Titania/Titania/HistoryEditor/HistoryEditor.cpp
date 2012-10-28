@@ -54,9 +54,9 @@
 namespace titania {
 namespace puck {
 
-static constexpr int ICON_COLUMN     = 0;
-static constexpr int TITLE_COLUMN    = 1;
-static constexpr int LOCATION_COLUMN = 2;
+static constexpr int ICON_COLUMN      = 0;
+static constexpr int TITLE_COLUMN     = 1;
+static constexpr int WORLD_URL_COLUMN = 2;
 
 HistoryEditor::HistoryEditor (const std::string & sessionKey, X3DBrowserInterface* const browserWidget) :
 	X3DHistoryEditorUI (get_ui ("HistoryEditor.ui"), sessionKey),
@@ -74,27 +74,16 @@ HistoryEditor::initialize ()
 	getBrowser () -> initialized .addInterest (this, &HistoryEditor::set_world);
 }
 
-void
-HistoryEditor::on_map ()
+const History &
+HistoryEditor::getHistory ()
 {
-	getListStore () -> clear ();
-	
-	for (const auto & item : history .getItems ())
-	{
-		auto row = getListStore () -> append ();
-		row -> set_value (ICON_COLUMN,     std::string ("BlankIcon"));
-		row -> set_value (TITLE_COLUMN,    item .at ("title"));
-		row -> set_value (LOCATION_COLUMN, item .at ("location"));
-	}
-
-	getScrolledWindow () .queue_draw ();
+	return history;
 }
 
-void
-HistoryEditor::set_world ()
+std::string
+HistoryEditor::getTitle (const basic::uri & worldURL)
 {
-	std::string        title;
-	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	std::string title;
 
 	try
 	{
@@ -105,6 +94,31 @@ HistoryEditor::set_world ()
 		title = worldURL .filename ();
 	}
 
+	return title;
+}
+
+void
+HistoryEditor::on_map ()
+{
+	getListStore () -> clear ();
+	
+	for (const auto & item : history .getItems ())
+	{
+		auto row = getListStore () -> append ();
+		row -> set_value (ICON_COLUMN,      std::string ("BlankIcon"));
+		row -> set_value (TITLE_COLUMN,     item .at ("title"));
+		row -> set_value (WORLD_URL_COLUMN, item .at ("worldURL"));
+	}
+
+	getScrolledWindow () .queue_draw ();
+}
+
+void
+HistoryEditor::set_world ()
+{
+	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	std::string        title    = getTitle (worldURL);
+
 	try
 	{
 		getListStore () -> erase (getListStore () -> get_iter (history .getIndex (worldURL)));
@@ -113,9 +127,9 @@ HistoryEditor::set_world ()
 	{ }
 
 	auto row = getListStore () -> prepend ();
-	row -> set_value (ICON_COLUMN,     worldURL .str ());
-	row -> set_value (TITLE_COLUMN,    title);
-	row -> set_value (LOCATION_COLUMN, worldURL .str ());
+	row -> set_value (ICON_COLUMN,      worldURL .str ());
+	row -> set_value (TITLE_COLUMN,     title);
+	row -> set_value (WORLD_URL_COLUMN, worldURL .str ());
 
 	history .setItem (title, worldURL);
 	
@@ -127,7 +141,7 @@ HistoryEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 {
 	// Open worldURL.
 
-	getBrowserWidget () -> loadURL ({ history .getItem (path .to_string ()) .at ("location") });
+	getBrowserWidget () -> loadURL ({ history .getItemFromIndex (path .to_string ()) .at ("worldURL") });
 }
 
 HistoryEditor::~HistoryEditor ()
