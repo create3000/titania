@@ -121,13 +121,13 @@ private:
 	initialize ();
 
 	void
-	set_world ();
+	set_enabled ();
 	
 	void
-	reset ();
+	set_fontFamily (const std::string &);
 
 	void
-	set_fontFamily (const std::string &);
+	reset ();
 
 	void
 	build ();

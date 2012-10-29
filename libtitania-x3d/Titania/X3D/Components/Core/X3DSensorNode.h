@@ -64,7 +64,7 @@ public:
 
 	virtual
 	void
-	activate () { }
+	update () = 0;
 
 
 protected:

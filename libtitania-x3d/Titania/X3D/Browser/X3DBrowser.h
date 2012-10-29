@@ -252,18 +252,19 @@ public:
 	void
 	notify (X3DBasicNode* const);
 
+	virtual
+	void
+	intersect ();
+
 	void
 	prepare ();
 
-	void
-	update ();
-
-	void
-	finish ();
-
 	virtual
 	void
-	intersect () { world -> select (); }
+	display ();
+	
+	void
+	finish ();
 
 	virtual
 	void
@@ -357,10 +358,6 @@ protected:
 
 private:
 
-	virtual
-	void
-	display ();
-
 	using X3DUrlObject::url;
 
 	typedef std::set <X3DSensorNode*> SensorNodeSet;
@@ -390,7 +387,7 @@ private:
 public:
 
 	SFTime         initialized;
-	SFTime         prepared;
+	SFTime         exposed;
 	SFTime         displayed;
 	SFTime         finished;
 	SFTime         shutdown;
@@ -405,7 +402,6 @@ private:
 	set_scene ();
 
 	Vector3f  priorPosition;
-	time_type priorTime;
 	
 	LightStack lightStack;
 	SensorNodeSet sensors;

@@ -65,10 +65,6 @@ public:
 
 	virtual
 	void
-	activate (Hit*) { }
-
-	virtual
-	void
 	draw ();
 
 	void

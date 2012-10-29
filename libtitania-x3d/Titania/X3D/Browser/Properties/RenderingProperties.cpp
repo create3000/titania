@@ -153,9 +153,9 @@ RenderingProperties::initialize ()
 
 		listId = glGenLists (1);
 		set_fontFamily (fontFamily);
-		reset ();
-
-		getBrowser () -> initialized .addInterest (this, &RenderingProperties::set_world);
+		
+		enabled .addInterest (this, &RenderingProperties::set_enabled);
+		set_enabled ();
 	}
 }
 
@@ -178,9 +178,22 @@ RenderingProperties::getAvailableTextureMemory ()
 }
 
 void
-RenderingProperties::set_world ()
+RenderingProperties::set_enabled ()
 {
-	reset ();
+	if (enabled)
+	{
+		getBrowser () -> initialized .addInterest (this, &RenderingProperties::reset);
+		getBrowser () -> exposed     .addInterest (this, &RenderingProperties::prepare);
+		getBrowser () -> displayed   .addInterest (this, &RenderingProperties::display);
+	
+		reset ();
+	}
+	else
+	{
+		getBrowser () -> initialized .removeInterest (this, &RenderingProperties::reset);
+		getBrowser () -> exposed     .removeInterest (this, &RenderingProperties::prepare);
+		getBrowser () -> displayed   .removeInterest (this, &RenderingProperties::display);
+	}
 }
 
 void
@@ -250,10 +263,7 @@ RenderingProperties::display ()
 		timer .advance ();
 
 		fps     = numFrames / timer .interval ();
-		drawFps = numFrames / drawTime;
-
-		fps        = std::max (maxFps, fps);
-		maxDrawFps = std::max (maxDrawFps, drawFps);
+		drawFps = drawTime / numFrames;
 
 		//			maxEventTime = std::max (maxEventTime,    getBrowser () -> getEventTime ());
 		//			maxTraverseTime = std::max (maxTraverseTime, getBrowser () -> getRenderer () -> getTraverseTime ());
@@ -354,7 +364,7 @@ RenderingProperties::update_string ()
 	stringstream .str (""); stringstream << "Frame Rate:                " << std::setprecision (1) << std::fixed << fps << " (" << fps << ')';
 	string .push_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Render FPS:                " << std::setprecision (1) << std::fixed << drawFps << " (" << maxDrawFps << ')';
+	stringstream .str (""); stringstream << "Render Time:               " << std::setprecision (7) << std::fixed << drawFps;
 	string .push_back (stringstream .str ());
 
 	//	stringstream .str (""); stringstream << "Event Time:    " << std::setprecision (7) << std::fixed << eventTime << " s (" << maxEventTime << ')';
@@ -363,8 +373,8 @@ RenderingProperties::update_string ()
 	//	stringstream .str (""); stringstream << "Traverse Time: " << std::setprecision (7) << std::fixed << traverseTime << " s (" << maxTraverseTime << ')';
 	// string .push_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Draw Time:                 " << std::setprecision (7) << std::fixed << drawTime << " s (" << maxDrawTime << ')';
-	string .push_back (stringstream .str ());
+	// stringstream .str (""); stringstream << "Draw Time:                 " << std::setprecision (7) << std::fixed << drawTime << " s (" << maxDrawTime << ')';
+	// string .push_back (stringstream .str ());
 
 	//	stringstream .str (""); stringstream << "Nodes:         " << getBrowser () -> getRenderer () -> getNumNodesDrawn () << " / " << getBrowser () -> getRenderer () -> getNumNodes ();
 	// string .push_back (stringstream .str ());

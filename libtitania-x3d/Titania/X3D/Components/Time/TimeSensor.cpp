@@ -203,7 +203,7 @@ TimeSensor::set_stop ()
 { }
 
 void
-TimeSensor::activate ()
+TimeSensor::update ()
 {
 	//std::clog << "###### " << getCurrentTime () - cycleTime << " " << currentCycleInterval << std::endl;
 

@@ -156,7 +156,7 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 
 					if (pointingDeviceSensorNode)
 					{
-						pointingDeviceSensorNode -> activate (hit);
+						pointingDeviceSensorNode -> update ();
 						continue;
 					}
 				}

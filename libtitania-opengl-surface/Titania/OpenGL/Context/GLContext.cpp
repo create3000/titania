@@ -95,7 +95,6 @@ GLContext::makeCurrent () const
 void
 GLContext::swapBuffers () const
 {
-	//glFlush ();
 	glXSwapBuffers (xDisplay, xDrawable);
 }
 

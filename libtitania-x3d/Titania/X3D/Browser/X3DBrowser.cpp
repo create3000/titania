@@ -55,13 +55,13 @@ X3DBrowser::X3DBrowser () :
 	       currentSpeed (0),                                       
 	   currentFrameRate (0),                                       
 	        description (""),                                      
-	        initialized (),                                        // SFTime   [out]    changed
-	           prepared (),                                        // SFTime   [out]    changed
-	          displayed (),                                        // SFTime   [out]    changed
-	           finished (),                                        // SFTime   [out]    changed
-	           shutdown (),                                        // SFTime   [out]    changed
-	            changed (),                                        // SFTime   [out]    changed
-	              world (new World (this, createScene ())),        // SFNode   [out]    world
+	        initialized (),                                        // SFTime   [out]    initialized 0
+	            exposed (),                                        // SFTime   [out]    exposed     0
+	          displayed (),                                        // SFTime   [out]    displayed   0
+	           finished (),                                        // SFTime   [out]    finished    0
+	           shutdown (),                                        // SFTime   [out]    shutdown    0
+	            changed (),                                        // SFTime   [out]    changed     0
+	              world (new World (this, createScene ())),        // SFNode   [out]    world       NULL
 	              scene ()
 {
 	std::clog << "Constructing Browser:" << std::endl;
@@ -82,7 +82,7 @@ X3DBrowser::X3DBrowser () :
 	             scene);
 
 	appendField (outputOnly, "initialized", initialized);
-	appendField (outputOnly, "prepared",    prepared);
+	appendField (outputOnly, "exposed",     exposed);
 	appendField (outputOnly, "displayed",   displayed);
 	appendField (outputOnly, "finished",    finished);
 	appendField (outputOnly, "shutdown",    shutdown);
@@ -480,60 +480,49 @@ X3DBrowser::notify (X3DBasicNode* const node)
 }
 
 void
+X3DBrowser::intersect ()
+{
+	world -> select ();
+}
+
+void
 X3DBrowser::prepare ()
 {
 	clock -> advance ();
+	exposed .processInterests ();
 
 	currentFrameRate = 1 / clock -> interval ();
 
-	// Calculate current speed every 1/100 second.
-	if (getCurrentTime () - priorTime > 0.01)
-	{
-		Vector3f position = getActiveViewpoint () -> getMatrix () .translation ();
-
-		//std::clog << (position - priorPosition) << ", " << priorPosition << ", " << position << std::endl;
-
-		currentSpeed = abs (Vector3d (position - priorPosition) / priorTime);
-
-		priorPosition = position;
-		priorTime     = getCurrentTime ();
-	}
+	Vector3f position = getActiveViewpoint () -> getMatrix () .translation ();
+	currentSpeed = abs (Vector3d (position - priorPosition)) * currentFrameRate;
+	priorPosition = position;
 
 	SensorNodeSet sensorsToActivate = sensors;
 
 	for (const auto & sensor : sensorsToActivate)
-		sensor -> activate ();
+		sensor -> update ();
 
 	router .processEvents ();
 	getGarbageCollector () .dispose ();
-
-	renderingProperties -> prepare ();
-	prepared .processInterests ();
-}
-
-void
-X3DBrowser::update ()
-{
-	display ();
-
-	GLenum errorNum = glGetError ();
-
-	if (errorNum not_eq GL_NO_ERROR)
-		std::clog << "OpenGL Error at " << SFDouble (getCurrentTime ()) << ": " << gluErrorString (errorNum) << std::endl;
 }
 
 void
 X3DBrowser::display ()
 {
 	world -> display ();
-	renderingProperties -> display ();
+		
 	displayed .processInterests ();
 }
-
+	
 void
 X3DBrowser::finish ()
 {
 	finished .processInterests ();
+
+	GLenum errorNum = glGetError ();
+
+	if (errorNum not_eq GL_NO_ERROR)
+		std::clog << "OpenGL Error at " << SFDouble (getCurrentTime ()) << ": " << gluErrorString (errorNum) << std::endl;
 }
 
 void

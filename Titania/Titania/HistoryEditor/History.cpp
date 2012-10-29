@@ -82,7 +82,7 @@ History::setItem (const std::string & title, const std::string & worldURL)
 }
 
 const sql::sqlite3::assoc_row_type &
-History::getItemFromIndex (const std::string & index) const
+History::getItemFromIndex (const std::string & index) const 
 throw (std::out_of_range)
 {
 	return database .query_assoc ("SELECT title, worldURL FROM History "
@@ -91,7 +91,7 @@ throw (std::out_of_range)
 }
 
 const sql::sqlite3::assoc_row_type &
-History::getItemFromURL (const std::string & worldURL) const
+History::getItemFromURL (const std::string & worldURL) const 
 throw (std::out_of_range)
 {
 	return database .query_assoc ("SELECT title, worldURL FROM History "
@@ -106,10 +106,10 @@ History::getItems () const
 }
 
 const std::string &
-History::getIndex (const std::string & worldURL) const
+History::getIndex (const std::string & worldURL) const 
 throw (std::out_of_range)
 {
-	const auto index = database .query_array ("SELECT "
+	const auto & index = database .query_array ("SELECT "
 	                                          "(SELECT COUNT(0) - 1 FROM History h1 WHERE h1 .lastAccess >= h2 .lastAccess) AS 'rowid' "
 	                                          "FROM History h2 "
 	                                          "WHERE worldURL = " + database .quote (worldURL) + " " +
@@ -146,7 +146,7 @@ const std::string &
 History::getId (const std::string & worldURL) const
 throw (std::out_of_range)
 {
-	auto result = database .query_array ("SELECT id FROM History WHERE "
+	const auto & result = database .query_array ("SELECT id FROM History WHERE "
 	                                     "worldURL = " + database .quote (worldURL));
 
 	return result .at (0) .at (0);

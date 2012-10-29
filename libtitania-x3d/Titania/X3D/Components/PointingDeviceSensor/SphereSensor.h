@@ -68,6 +68,10 @@ public:
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
 
+	virtual
+	void
+	update ();
+
 };
 
 } // X3D

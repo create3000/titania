@@ -90,7 +90,7 @@ WindowContext::create (GLXContext sharingContext, bool direct)
 
 	int          numReturned    = 0;
 	XVisualInfo* visualInfoList = XGetVisualInfo (getDisplay (), VisualIDMask, &visualInfo, &numReturned);
-
+	
 	GLXContext xContext = glXCreateContext (getDisplay (), visualInfoList, sharingContext, direct);
 	XFree (visualInfoList);
 

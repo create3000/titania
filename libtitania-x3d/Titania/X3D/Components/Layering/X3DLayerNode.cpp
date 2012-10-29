@@ -53,11 +53,6 @@
 namespace titania {
 namespace X3D {
 
-template class BindableNodeStack <NavigationInfo>;
-template class BindableNodeStack <X3DBackgroundNode>;
-template class BindableNodeStack <Fog>;
-template class BindableNodeStack <X3DViewpointNode>;
-
 X3DLayerNode::X3DLayerNode () :
 	             X3DNode (),                                            
 	          isPickable (true),                                        // SFBool [in,out] isPickable  TRUE

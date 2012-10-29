@@ -49,17 +49,13 @@
 #ifndef __TITANIA_X3D_COMPONENTS_LAYERING_X3DLAYER_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_LAYERING_X3DLAYER_NODE_H__
 
+#include "../../Execution/BindableNodeStack.h"
 #include "../../Rendering/LightContainerArray.h"
 #include "../../Rendering/X3DRenderer.h"
 #include "../../Types/Geometry.h"
-#include "../Core/X3DBindableNode/BindableNodeStack.h"
 #include "../Core/X3DNode.h"
-#include "../EnvironmentalEffects/Background.h"
-#include "../EnvironmentalEffects/Fog.h"
 #include "../Interpolation/PositionInterpolator.h"
 #include "../Layering/Viewport.h"
-#include "../Navigation/NavigationInfo.h"
-#include "../Navigation/Viewpoint.h"
 #include "../Time/TimeSensor.h"
 
 #include <stack>
@@ -68,11 +64,6 @@ namespace titania {
 namespace X3D {
 
 class Viewport;
-
-extern template class BindableNodeStack <NavigationInfo>;
-extern template class BindableNodeStack <X3DBackgroundNode>;
-extern template class BindableNodeStack <Fog>;
-extern template class BindableNodeStack <X3DViewpointNode>;
 
 class X3DLayerNode :
 	virtual public X3DNode, public X3DRenderer

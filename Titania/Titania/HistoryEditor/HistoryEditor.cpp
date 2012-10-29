@@ -71,7 +71,14 @@ HistoryEditor::initialize ()
 {
 	X3DHistoryEditorUI::initialize ();
 
-	getBrowser () -> initialized .addInterest (this, &HistoryEditor::set_world);
+	getBrowser () -> initialized .addInterest (this, &HistoryEditor::set_initialized);
+}
+
+void
+HistoryEditor::set_initialized ()
+{
+	getBrowser () -> initialized .removeInterest (this, &HistoryEditor::set_initialized);
+	getBrowser () -> initialized .addInterest    (this, &HistoryEditor::set_world);
 }
 
 const History &

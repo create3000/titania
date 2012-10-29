@@ -112,10 +112,8 @@ Surface::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 	try
 	{
 		getBrowser () -> prepare ();
-		getBrowser () -> update ();
-		
+		getBrowser () -> display ();
 		swapBuffers ();
-		
 		getBrowser () -> finish ();
 	}
 	catch (const std::exception & exception)

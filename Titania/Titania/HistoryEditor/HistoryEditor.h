@@ -77,6 +77,9 @@ private:
 	void
 	initialize ();
 	
+	void
+	set_initialized ();
+
 	std::string
 	getTitle (const basic::uri &);
 

@@ -64,15 +64,15 @@ public:
 	setItem (const std::string &, const std::string &);
 
 	const sql::sqlite3::assoc_row_type &
-	getItemFromIndex (const std::string &) const
+	getItemFromIndex (const std::string &) const 
 	throw (std::out_of_range);
 
 	const sql::sqlite3::assoc_row_type &
-	getItemFromURL (const std::string &) const
+	getItemFromURL (const std::string &) const 
 	throw (std::out_of_range);
 
 	const sql::sqlite3::assoc_type &
-	getItems () const;
+	getItems () const ;
 
 	const std::string &
 	getIndex (const std::string &) const

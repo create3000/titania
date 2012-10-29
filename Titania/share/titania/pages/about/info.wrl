@@ -11,6 +11,7 @@ DEF White Background {
 Viewpoint {
   fieldOfView 0.785398
   position 0 0 2.39431
+  description "Home"
 }
 
 Transform {

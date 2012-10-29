@@ -90,8 +90,10 @@ ViewpointEditor::set_viewpoints ()
 	// Fill the TreeView's model
 	for (const auto & viewpoint : getBrowser () -> getExecutionContext () -> getViewpoints ())
 	{
-		getListStore () -> append () -> set_value (0, viewpoint -> description);
+		getListStore () -> append () -> set_value (0, viewpoint -> description .getValue ());
 	}
+	
+	getTreeView () .queue_draw ();
 }
 
 void

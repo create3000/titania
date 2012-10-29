@@ -160,5 +160,10 @@ TransmitterPdu::getBBox ()
 	return Box3f ();
 }
 
+void
+TransmitterPdu::update ()
+{
+}
+
 } // X3D
 } // titania

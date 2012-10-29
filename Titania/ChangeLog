@@ -1,3 +1,14 @@
+2012-10-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* History.h:
+	* X3DUserInterface.cpp:
+	* History.cpp:
+	* info.wrl:
+	* X3DBrowserWidget.cpp:
+	* HistoryEditor.h:
+	* HistoryEditor.cpp:
+	* ViewpointEditor.cpp: 
+
 2012-10-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* History.h:

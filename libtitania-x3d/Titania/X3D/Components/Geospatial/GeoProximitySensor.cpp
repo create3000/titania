@@ -90,7 +90,7 @@ GeoProximitySensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-GeoProximitySensor::activate ()
+GeoProximitySensor::update ()
 { }
 
 } // X3D

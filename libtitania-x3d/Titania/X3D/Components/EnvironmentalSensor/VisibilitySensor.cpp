@@ -97,7 +97,7 @@ VisibilitySensor::set_enabled ()
 }
 
 void
-VisibilitySensor::activate ()
+VisibilitySensor::update ()
 {
 	if (visible)
 	{

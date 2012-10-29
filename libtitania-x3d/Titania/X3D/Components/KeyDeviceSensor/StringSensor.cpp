@@ -77,5 +77,9 @@ StringSensor::create (X3DExecutionContext* const executionContext) const
 	return new StringSensor (executionContext);
 }
 
+void
+StringSensor::update ()
+{ }
+
 } // X3D
 } // titania

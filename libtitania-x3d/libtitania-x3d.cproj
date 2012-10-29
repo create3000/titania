@@ -471,7 +471,6 @@
     <None Include="Titania\X3D\Base\ObjectSet.h" />
     <None Include="Titania\X3D\Types\Geometry.h" />
     <None Include="Titania\X3D\Types\Numbers.h" />
-    <None Include="Titania\X3D\Components\Core\X3DBindableNode\BindableNodeStack.h" />
     <None Include="Titania\X3D\Browser\Properties\BrowserProperties.h" />
     <None Include="Titania\X3D\Browser\Properties\RenderingProperties.h" />
     <None Include="Titania\X3D\Browser\Properties\QuadSphereProperties.h" />
@@ -480,6 +479,7 @@
     <None Include="Titania\X3D\Widgets\Surface.h" />
     <None Include="Titania\X3D\Browser\BrowserEnvironment.h" />
     <None Include="libtitania-x3d.md.pc" />
+    <None Include="Titania\X3D\Execution\BindableNodeStack.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -845,6 +845,7 @@
     <Compile Include="Titania\X3D\Browser\Properties\BrowserProperties.cpp" />
     <Compile Include="Titania\X3D\Widgets\Surface.cpp" />
     <Compile Include="Titania\X3D\Browser\BrowserEnvironment.cpp" />
+    <Compile Include="Titania\X3D\Execution\BindableNodeStack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -863,7 +864,6 @@
     <Folder Include="Titania\X3D\Execution\" />
     <Folder Include="Titania\X3D\Routing\" />
     <Folder Include="Titania\X3D\Parser\" />
-    <Folder Include="Titania\X3D\Components\Core\X3DBindableNode\" />
     <Folder Include="Titania\X3D\Browser\Properties\" />
   </ItemGroup>
   <ProjectExtensions>

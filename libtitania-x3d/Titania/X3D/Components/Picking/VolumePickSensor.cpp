@@ -77,5 +77,10 @@ VolumePickSensor::create (X3DExecutionContext* const executionContext) const
 	return new VolumePickSensor (executionContext);
 }
 
+void
+VolumePickSensor::update ()
+{
+}
+
 } // X3D
 } // titania

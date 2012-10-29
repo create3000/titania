@@ -81,7 +81,7 @@ TouchSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-TouchSensor::activate (Hit* hit)
+TouchSensor::update ()
 {
 	touchTime = getCurrentTime ();
 }

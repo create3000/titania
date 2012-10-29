@@ -46,36 +46,23 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_SENSOR_TRANSFORM_SENSOR_H__
-#define __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_SENSOR_TRANSFORM_SENSOR_H__
-
-#include "../EnvironmentalSensor/X3DEnvironmentalSensorNode.h"
+#include "BindableNodeStack.h"
 
 namespace titania {
 namespace X3D {
 
-class TransformSensor :
-	public X3DEnvironmentalSensorNode
-{
-public:
-
-	SFNode <X3DBasicNode> targetObject;
-	SFRotation            orientation_changed;
-	SFVec3f               position_changed;
-
-	TransformSensor (X3DExecutionContext* const);
-
-	virtual
-	X3DBasicNode*
-	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	update ();
-
-};
+//
 
 } // X3D
-} // titania
 
-#endif
+template class basic::bind_stack <X3D::NavigationInfo*>;
+template class basic::bind_stack <X3D::X3DBackgroundNode*>;
+template class basic::bind_stack <X3D::Fog*>;
+template class basic::bind_stack <X3D::X3DViewpointNode*>;
+
+template class X3D::BindableNodeStack <X3D::NavigationInfo>;
+template class X3D::BindableNodeStack <X3D::X3DBackgroundNode>;
+template class X3D::BindableNodeStack <X3D::Fog>;
+template class X3D::BindableNodeStack <X3D::X3DViewpointNode>;
+
+} // Titania

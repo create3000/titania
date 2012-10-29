@@ -75,7 +75,7 @@ X3DBrowserWidget::construct ()
 	{
 		try
 		{
-			auto item = getHistoryEditor () .getHistory () .getItemFromURL (getConfig () .string ("worldURL"));
+			//auto item = getHistoryEditor () .getHistory () .getItemFromURL (getConfig () .string ("worldURL"));
 
 			//setDescription (item ["worldURL"]);
 		}

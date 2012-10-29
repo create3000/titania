@@ -82,8 +82,9 @@ TransformSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-TransformSensor::activate ()
-{ }
+TransformSensor::update ()
+{
+}
 
 } // X3D
 } // titania

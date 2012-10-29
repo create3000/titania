@@ -58,12 +58,16 @@ perl -e '
 
 	LENGTH: # find length of indent for each member
 
+	$member_value_rx = qr/\((?:[^()]*|(?0))*\)/so;
+	$member_rx = qr/^(\t+)([\w:\s<>]+)\s*((??{$member_value_rx}))(,?)(\n|\s*)(.*?)$/so;
+
 	$lm = 0;
 	$lc = 0;
 	while ($_ = shift @_) {
-		last unless /^\t+([\w:\s<>]+)\s*(\(.*?\}\)[,\s\n]|\(.*?\)[,\s\n])/so;
-		$lm = max ($lm, length ($1));
-		$lc = max ($lc, length ($2));
+		#last unless /^\t+([\w:\s<>]+)\s*(\(.*?\}\)[,\s\n]|\(.*?\)[,\s\n])/so;
+		last unless $_ =~ $member_rx;
+		$lm = max ($lm, length ($2));
+		$lc = max ($lc, length ($3));
 	}
 
 	# print file
@@ -99,11 +103,11 @@ perl -e '
 		last unless @_;
 
 		while ($_ = shift @_) {
-			last unless /^(\t+)([\w:\s<>]+)\s*([{(].*?\)\)[,\s\n]|\(.*?[)}][,\s\n])(\s*)(.*?)$/so;
+			last unless $_ =~ $member_rx;
 			$pad1 = $lm - length ($2);
 			$pad2 = $lc - length ($3) + 1;
-			print $1, " " x $pad1, $2, $3;
-			print " " x $pad2, $5, "\n" unless $3 =~ /\n/o;
+			print $1, " " x $pad1, $2, $3, $4;
+			print " " x $pad2, $6, "\n" unless $3 =~ /\n/o;
 		}
 		print $_;
 	}

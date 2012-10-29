@@ -110,9 +110,7 @@ X3DUserInterface::on_delete_event (GdkEventAny*)
 
 void
 X3DUserInterface::initialize ()
-{
-	__LOG__ << getWidgetName () << ":" << std::endl;
-}
+{ }
 
 bool
 X3DUserInterface::is_initialized ()

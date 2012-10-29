@@ -86,5 +86,10 @@ GeoTouchSensor::create (X3DExecutionContext* const executionContext) const
 	return new GeoTouchSensor (executionContext);
 }
 
+void
+GeoTouchSensor::update ()
+{
+}
+
 } // X3D
 } // titania

@@ -106,7 +106,7 @@ ProximitySensor::set_enabled ()
 }
 
 void
-ProximitySensor::activate ()
+ProximitySensor::update ()
 {
 	if (inside)
 	{
