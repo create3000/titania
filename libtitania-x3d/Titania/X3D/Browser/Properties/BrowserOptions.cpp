@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -72,17 +72,17 @@ namespace X3D {
 // TextureQuality          Low, Medium, High                           Medium                       Quality of texture map display
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
-	          X3DBasicNode (executionContext -> getBrowser (),            executionContext),
-	       X3DPropertyNode (),                                            
-	           antialiased (),                                            
-	             dashboard (),                                            
-	enableInlineViewpoints (true),                                            // motionBlur (False),
-	      primitiveQuality ("MEDIUM"),
-	     qualityWhenMoving ("MEDIUM"),
-	               shading ("GOURAUD"),
-	          splashScreen (false),
-	        textureQuality ("MEDIUM"),
-	            quadSphere (new QuadSphereProperties (executionContext))
+	          X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	       X3DPropertyNode (),                                                    
+	           antialiased (),                                                    
+	             dashboard (),                                                    
+	enableInlineViewpoints (true),                                                // motionBlur (False),
+	      primitiveQuality ("MEDIUM"),                                            
+	     qualityWhenMoving ("MEDIUM"),                                            
+	               shading ("GOURAUD"),                                           
+	          splashScreen (false),                                               
+	        textureQuality ("MEDIUM"),                                            
+	            quadSphere (new QuadSphereProperties (executionContext))          
 {
 	setComponent ("Browser"),
 	setTypeName ("BrowserOptions");

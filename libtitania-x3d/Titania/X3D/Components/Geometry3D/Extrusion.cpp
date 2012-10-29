@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -55,7 +55,7 @@ namespace titania {
 namespace X3D {
 
 Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (),                                                       executionContext),
+	    X3DBasicNode (executionContext -> getBrowser (), executionContext),                                    
 	 X3DGeometryNode (),                                                                                       
 	set_crossSection (),                                                                                       // MFVec2f    [in] set_crossSection
 	 set_orientation (),                                                                                       // MFRotation [in] set_orientation

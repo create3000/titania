@@ -52,13 +52,12 @@ namespace titania {
 namespace X3D {
 
 BrowserEnvironment::BrowserEnvironment (X3DExecutionContext* const executionContext) :
-	          X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	         X3DChildNode (),                                            
-	     defaultViewport (new Viewport       (getExecutionContext ())), 
-	 navigationInfoStack (new NavigationInfo (getExecutionContext ())), 
-	     backgroundStack (new Background     (getExecutionContext ())), 
-	            fogStack (new Fog            (getExecutionContext ())), 
-	      viewpointStack (new Viewpoint      (getExecutionContext ()))
+	         X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	         X3DChildNode (),                                                    
+	defaultNavigationInfo (new NavigationInfo (getExecutionContext ())),         
+	    defaultBackground (new Background     (getExecutionContext ())),         
+	           defaultFog (new Fog            (getExecutionContext ())),         
+	     defaultViewpoint (new Viewpoint      (getExecutionContext ())),         
 {
 	setComponent ("Browser"),
 	setTypeName ("BrowserEnvironment");

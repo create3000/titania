@@ -57,20 +57,20 @@ namespace titania {
 namespace X3D {
 
 Background::Background (X3DExecutionContext* const executionContext) :
-	     X3DBasicNode (executionContext -> getBrowser (),    executionContext),
-	X3DBackgroundNode (),                                    
-	         frontUrl (),                                    // MFString [in,out] frontUrl   [ ]        [URI]
-	          backUrl (),                                    // MFString [in,out] backUrl    [ ]        [URI]
-	          leftUrl (),                                    // MFString [in,out] leftUrl    [ ]        [URI]
-	         rightUrl (),                                    // MFString [in,out] rightUrl   [ ]        [URI]
-	           topUrl (),                                    // MFString [in,out] topUrl     [ ]        [URI]
-	        bottomUrl (),                                    // MFString [in,out] bottomUrl  [ ]        [URI]
-	     frontTexture (new ImageTexture (executionContext)), 
-	      backTexture (new ImageTexture (executionContext)), 
-	      leftTexture (new ImageTexture (executionContext)), 
-	     rightTexture (new ImageTexture (executionContext)), 
-	       topTexture (new ImageTexture (executionContext)), 
-	    bottomTexture (new ImageTexture (executionContext))
+	     X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DBackgroundNode (),                                                    
+	         frontUrl (),                                                    // MFString [in,out] frontUrl   [ ]        [URI]
+	          backUrl (),                                                    // MFString [in,out] backUrl    [ ]        [URI]
+	          leftUrl (),                                                    // MFString [in,out] leftUrl    [ ]        [URI]
+	         rightUrl (),                                                    // MFString [in,out] rightUrl   [ ]        [URI]
+	           topUrl (),                                                    // MFString [in,out] topUrl     [ ]        [URI]
+	        bottomUrl (),                                                    // MFString [in,out] bottomUrl  [ ]        [URI]
+	     frontTexture (new ImageTexture (executionContext)),                 
+	      backTexture (new ImageTexture (executionContext)),                 
+	      leftTexture (new ImageTexture (executionContext)),                 
+	     rightTexture (new ImageTexture (executionContext)),                 
+	       topTexture (new ImageTexture (executionContext)),                 
+	    bottomTexture (new ImageTexture (executionContext))                  
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Background");
@@ -146,7 +146,7 @@ Background::draw ()
 	glLoadIdentity ();
 	glTranslatef (0, 1, 0);
 	glScalef (1, -1, 1);
-	
+
 	glMatrixMode (GL_MODELVIEW);
 	glFrontFace (GL_CCW);
 	glColor4f (1, 1, 1, 1);

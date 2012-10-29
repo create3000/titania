@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -67,7 +67,7 @@ namespace X3D {
 // TextureMemory     Float                The amount of memory in megabytes available for textures to be placed on the video card.
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
-	  X3DBasicNode (executionContext -> getBrowser (),                                 executionContext),
+	  X3DBasicNode (executionContext -> getBrowser (), executionContext),              
 	  X3DChildNode (),                                                                 
 	       enabled (),                                                                 
 	 cycleInterval (1),                                                                // SFFloat  [in,out] cycleInterval  1
@@ -85,7 +85,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	        string (),                                                                 // MFString [in,out] string
 	    fontFamily ("-schumacher-clean-medium-r-normal--12-120-75-75-c-60-iso8859-1"), // SFString [in,out] fontFamily
 	    fontHeigth (0),                                                                
-	      fontInfo (nullptr)
+	      fontInfo (nullptr)                                                           
 {
 	setComponent ("Browser"),
 	setTypeName ("RenderingProperties");
@@ -153,7 +153,7 @@ RenderingProperties::initialize ()
 
 		listId = glGenLists (1);
 		set_fontFamily (fontFamily);
-		
+
 		enabled .addInterest (this, &RenderingProperties::set_enabled);
 		set_enabled ();
 	}
@@ -185,7 +185,7 @@ RenderingProperties::set_enabled ()
 		getBrowser () -> initialized .addInterest (this, &RenderingProperties::reset);
 		getBrowser () -> exposed     .addInterest (this, &RenderingProperties::prepare);
 		getBrowser () -> displayed   .addInterest (this, &RenderingProperties::display);
-	
+
 		reset ();
 	}
 	else
@@ -219,19 +219,19 @@ void
 RenderingProperties::reset ()
 {
 	numFrames = 0;
-	
+
 	timer .advance ();
 	fps    = 0;
 	maxFps = 0;
-	
+
 	drawTime    = 0;
 	drawFps     = 0;
 	maxDrawFps  = 0;
 	maxDrawTime = 0;
-	
+
 	maxEventTime    = 0;
 	maxTraverseTime = 0;
-	
+
 	build ();
 	glCallList (listId);
 }
@@ -254,7 +254,7 @@ void
 RenderingProperties::display ()
 {
 	++ numFrames;
-	
+
 	drawTimer .advance ();
 	drawTime += drawTimer .interval ();
 

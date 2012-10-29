@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -56,18 +56,18 @@ namespace titania {
 namespace X3D {
 
 NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
-	      X3DBasicNode (executionContext -> getBrowser (),        executionContext),
-	   X3DBindableNode (),                                        
-	        avatarSize ({ 0.25, 1.6, 0.75 }),                     // MFFloat  [in,out] avatarSize         [0.25 1.6 0.75]        [0,∞)
-	         headlight (true),                                    // SFBool   [in,out] headlight          TRUE
-	             speed (1),                                       // SFFloat  [in,out] speed              1.0                    [0,∞)
-	    transitionTime (1),                                       // SFTime   [in,out] transitionTime     1.0                    [0, ∞)
-	    transitionType ({ "LINEAR" }),                            // MFString [in,out] transitionType     ["LINEAR"]             ["TELEPORT","LINEAR",
-	              type ({ "EXAMINE", "ANY" }),                    // MFString [ ]      type               { "EXAMINE", "ANY" }
-	   visibilityLimit (),                                        // SFFloat  [ ]      visibilityLimit    0
-	transitionComplete (),                                        // SFBool   [ ]      transitionComplete
-	         viewpoint (new Viewpoint (executionContext)),        
-	  directionalLight (new DirectionalLight (executionContext))
+	      X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBindableNode (),                                                    
+	        avatarSize ({ 0.25, 1.6, 0.75 }),                                 // MFFloat  [in,out] avatarSize         [0.25 1.6 0.75]        [0,∞)
+	         headlight (true),                                                // SFBool   [in,out] headlight          TRUE
+	             speed (1),                                                   // SFFloat  [in,out] speed              1.0                    [0,∞)
+	    transitionTime (1),                                                   // SFTime   [in,out] transitionTime     1.0                    [0, ∞)
+	    transitionType ({ "LINEAR" }),                                        // MFString [in,out] transitionType     ["LINEAR"]             ["TELEPORT","LINEAR",
+	              type ({ "EXAMINE", "ANY" }),                                // MFString [ ]      type               { "EXAMINE", "ANY" }
+	   visibilityLimit (),                                                    // SFFloat  [ ]      visibilityLimit    0
+	transitionComplete (),                                                    // SFBool   [ ]      transitionComplete
+	         viewpoint (new Viewpoint (executionContext)),                    
+	  directionalLight (new DirectionalLight (executionContext))              
 {
 	setComponent ("Navigation");
 	setTypeName ("NavigationInfo");

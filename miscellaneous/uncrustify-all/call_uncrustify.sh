@@ -35,10 +35,9 @@ perl -e '
 
 	@lines = <>;
 	@_ = @lines;
-
-	#while ($_ = shift @_) {
-	#	last if /^\w+(?:\:\:\w+)+\s\(.*?\)\s\:\n/so;  # find class Constructor Name::Name ():
-	#}
+	
+	#print  @_;
+	#return;
 
 	while ($_ = shift @_)
 	{
@@ -58,13 +57,12 @@ perl -e '
 
 	LENGTH: # find length of indent for each member
 
-	$member_value_rx = qr/\((?:[^()]*|(?0))*\)/so;
-	$member_rx = qr/^(\t+)([\w:\s<>]+)\s*((??{$member_value_rx}))(,?)(\n|\s*)(.*?)$/so;
+	$member_value_rx = qr/\((?:[^()]*|(?0))*\)|\{(?:[^{}]*|(?0))*\}/so;
+	$member_rx = qr/^(\t+)([\w:\s<>]+)\s*((??{$member_value_rx}),?)(\n|\s*)(.*?)$/so;
 
 	$lm = 0;
 	$lc = 0;
 	while ($_ = shift @_) {
-		#last unless /^\t+([\w:\s<>]+)\s*(\(.*?\}\)[,\s\n]|\(.*?\)[,\s\n])/so;
 		last unless $_ =~ $member_rx;
 		$lm = max ($lm, length ($2));
 		$lc = max ($lc, length ($3));
@@ -106,8 +104,8 @@ perl -e '
 			last unless $_ =~ $member_rx;
 			$pad1 = $lm - length ($2);
 			$pad2 = $lc - length ($3) + 1;
-			print $1, " " x $pad1, $2, $3, $4;
-			print " " x $pad2, $6, "\n" unless $3 =~ /\n/o;
+			print $1, " " x $pad1, $2, $3;
+			print " " x $pad2, $5, "\n" unless $3 =~ /\n/o;
 		}
 		print $_;
 	}

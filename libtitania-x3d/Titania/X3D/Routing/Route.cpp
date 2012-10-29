@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,13 +59,13 @@ namespace X3D {
 Route::Route (X3DExecutionContext* const executionContext,
               const SFNode <X3DBasicNode> & sourceNode,      X3DFieldDefinition* const sourceField,
               const SFNode <X3DBasicNode> & destinationNode, X3DFieldDefinition* const destinationField) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	        X3DRoute (),                                 
-	      sourceNode (sourceNode),                       // SFNode   [ ] sourceNode         NULL
-	 destinationNode (destinationNode),                  // SFNode   [ ] destinationNode    NULL
-	     sourceField (sourceField),                      
-	destinationField (destinationField),                 
-	       connected (false)
+	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	        X3DRoute (),                                                    
+	      sourceNode (sourceNode),                                          // SFNode   [ ] sourceNode         NULL
+	 destinationNode (destinationNode),                                     // SFNode   [ ] destinationNode    NULL
+	     sourceField (sourceField),                                         
+	destinationField (destinationField),                                    
+	       connected (false)                                               
 {
 	setTypeName ("Route");
 

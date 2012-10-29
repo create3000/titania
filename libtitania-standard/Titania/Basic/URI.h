@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -576,72 +576,76 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 	string_type T_query;
 	string_type T_fragment;
 
-   if (reference .scheme () .size ())
-   {
+	if (reference .scheme () .size ())
+	{
 		T_local     = reference .is_local ();
 		T_absolute  = reference .is_absolute ();
-      T_scheme    = reference .scheme ();
+		T_scheme    = reference .scheme ();
 		T_slashs    = reference .value .slashs;
-      T_authority = reference .authority ();
-      T_host      = reference .host ();
-      T_port      = reference .port ();
-      T_path      = reference .path (); // remove_dot_segments(reference .path);
-      T_query     = reference .query ();
-   }
-   else
-   {
-      if (reference .authority () .size ())
-      {
- 			T_local     = reference .is_local ();
+		T_authority = reference .authority ();
+		T_host      = reference .host ();
+		T_port      = reference .port ();
+		T_path      = reference .path ();    // remove_dot_segments(reference .path);
+		T_query     = reference .query ();
+	}
+	else
+	{
+		if (reference .authority () .size ())
+		{
+			T_local     = reference .is_local ();
 			T_absolute  = reference .is_absolute ();
-         T_authority = reference .authority ();
-         T_host      = reference .host ();
-         T_port      = reference .port ();
-         T_path      = reference .path (); // remove_doT_segments(reference .path);
-         T_query     = reference .query ();
-      }
-      else
-      {
-         if (reference .path () .empty ())
-         {
-            T_path = path ();
-            if (reference .query () .size ())
-               T_query = reference .query ();
-            else
-               T_query = query ();
-         }
-         else
-         {
-            if (reference .path () .front () == Signs::Slash)
-            {
-               T_path = reference .path ();// remove_dot_segments (reference .path ());
-            }
-            else
-            {
+			T_authority = reference .authority ();
+			T_host      = reference .host ();
+			T_port      = reference .port ();
+			T_path      = reference .path (); // remove_doT_segments(reference .path);
+			T_query     = reference .query ();
+		}
+		else
+		{
+			if (reference .path () .empty ())
+			{
+				T_path = path ();
+
+				if (reference .query () .size ())
+					T_query = reference .query ();
+				else
+					T_query = query ();
+			}
+			else
+			{
+				if (reference .path () .front () == Signs::Slash)
+				{
+					T_path = reference .path (); // remove_dot_segments (reference .path ());
+				}
+				else
+				{
 					// merge (Base .path (), reference .path ());
 
-               basic_uri Base = base ();
+					basic_uri Base = base ();
 
-	            if (Base .path () .empty ())
+					if (Base .path () .empty ())
 						T_path = Signs::Slash;
 					else
 						T_path += Base .path ();
 
 					T_path += reference .path ();
 
-               // T_path = remove_dot_segments (T_path);
-            }
-            T_query = reference .query ();
-         }
+					// T_path = remove_dot_segments (T_path);
+				}
+
+				T_query = reference .query ();
+			}
+
 			T_local     = is_local ();
 			T_absolute  = is_absolute ();
-         T_authority = authority ();
-         T_host      = host ();
-         T_port      = port ();
-      }
-      T_scheme = scheme ();
-      T_slashs = value .slashs;
-   }
+			T_authority = authority ();
+			T_host      = host ();
+			T_port      = port ();
+		}
+
+		T_scheme = scheme ();
+		T_slashs = value .slashs;
+	}
 
 	T_fragment = reference .fragment ();
 
@@ -785,7 +789,7 @@ basic_uri <StringT>::to_string () const
 
 template <class StringT>
 void
-basic_uri <StringT>::parser::parse (basic_uri & uri, const string_type & string, size_type first)
+basic_uri <StringT>::parser::parse (basic_uri & uri, const string_type &string, size_type first)
 {
 	if (string .size ())
 	{
@@ -850,13 +854,12 @@ basic_uri <StringT>::parser::scheme (size_type first) const
 	if (std::isalpha (string [0]))
 	{
 		size_type last = string .find (Signs::Colon, first);
-	
+
 		if (last == string_type::npos)
 			return first;
-	
-	
+
 		uri .value .scheme = std::move (string .substr (first, last - first));
-	
+
 		return last;
 	}
 
