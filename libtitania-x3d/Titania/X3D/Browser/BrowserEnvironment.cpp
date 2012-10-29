@@ -53,7 +53,7 @@ namespace X3D {
 
 BrowserEnvironment::BrowserEnvironment (X3DExecutionContext* const executionContext) :
 	          X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	         X3DChildNode ()                                            
+	         X3DChildNode (),                                            
 	     defaultViewport (new Viewport       (getExecutionContext ())), 
 	 navigationInfoStack (new NavigationInfo (getExecutionContext ())), 
 	     backgroundStack (new Background     (getExecutionContext ())), 
