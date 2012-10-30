@@ -60,18 +60,6 @@ X3DNode::X3DNode () :
 	addNodeType (X3DNodeType);
 }
 
-void
-X3DNode::setCurrentLayer (X3DLayerNode* layer)
-{
-	getBrowser () -> getExecutionContext () -> setCurrentLayer (layer);
-}
-
-X3DLayerNode*
-X3DNode::getCurrentLayer ()
-{
-	return getBrowser () -> getExecutionContext () -> getCurrentLayer ();
-}
-
 std::deque <X3DLayerNode*>
 X3DNode::getLayers () const
 {

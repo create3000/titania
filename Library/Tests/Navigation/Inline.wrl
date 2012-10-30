@@ -1,43 +1,13 @@
 #X3D V3.0 utf8 Titania
 
-Background { }
-
-DEF Home Viewpoint {
-  position 0 0 34
-  description "Home"
+DEF Inline Viewpoint {
+  position 0 0 20
+  centerOfRotation 0 0 0
+  description "Inline"
 }
 
-DEF Far Viewpoint {
-  position 0 0 68
-  description "Far"
+DEF Box Shape {
+  appearance Appearance { material Material { } }
+  geometry Box { }
 }
-
-LayerSet {
-  order [ 1, 2 ]
-  layers [
-    DEF _0 Layer {
-      children [
-        USE Home
-        USE Far
-        DEF Lesser Transform {
-          translation -3 0 0
-          children DEF Box Shape {
-            appearance Appearance { material Material { } }
-            geometry Box { }
-          }
-        }
-      ]
-    }
-    DEF _1 Layer {
-      isPickable TRUE
-      children [
-        USE Home
-        USE Far
-        DEF Greater Transform {
-          translation 3 0 0
-          children USE Box
-        }
-      ]
-    }
-  ]
-}
+ 

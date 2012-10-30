@@ -524,7 +524,7 @@ switch_page
 page_reordered
   virtual void on_page_reordered(Widget* page, guint page_num);
 page_added
-  void on_my_page_added(Widget* page, guint page_num);
+  virtual void on_page_added(Widget* page, guint page_num);
 page_removed
-  void on_my_page_removed(Widget* page, guint page_num);
+  virtual void on_page_removed(Widget* page, guint page_num);
 

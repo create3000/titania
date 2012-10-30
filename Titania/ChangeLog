@@ -1,5 +1,19 @@
 2012-10-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.ui:
+	* ViewpointEditor.ui:
+	* X3DConsoleUI.h:
+	* X3DOutlineEditorUI.h:
+	* ViewpointEditor.cpp:
+	* X3DHistoryEditorUI.h:
+	* X3DBrowserWindowUI.h:
+	* X3DBrowserWidgetUI.h:
+	* X3DViewpointEditorUI.h:
+	* X3DMotionBlurEditorUI.h:
+	* X3DViewpointEditorUI.cpp: 
+
+2012-10-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* main.cpp:
 	* Image.h:
 	* config.h:

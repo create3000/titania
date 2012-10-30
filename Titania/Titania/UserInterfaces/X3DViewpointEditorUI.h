@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_USER_INTERFACES_X3DVIEWPOINT_EDITOR_UI_H__
-#define __TITANIA_USER_INTERFACES_X3DVIEWPOINT_EDITOR_UI_H__
+#ifndef __TMP_GLAD2CPP_VIEWPOINT_EDITOR_H__
+#define __TMP_GLAD2CPP_VIEWPOINT_EDITOR_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
@@ -83,6 +83,9 @@ public:
 	Gtk::Box &
 	getWidget () const { return *m_widget; }
 
+	Gtk::ScrolledWindow &
+	getScrolledWindow () const { return *m_scrolledWindow; }
+
 	Gtk::TreeView &
 	getTreeView () const { return *m_treeView; }
 
@@ -110,6 +113,7 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn> m_descriptionColumn;
 	Gtk::Window*                       m_window;
 	Gtk::Box*                          m_widget;
+	Gtk::ScrolledWindow*               m_scrolledWindow;
 	Gtk::TreeView*                     m_treeView;
 	Gtk::HScale*                       m_fieldOfView;
 

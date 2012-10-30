@@ -79,12 +79,6 @@ protected:
 
 	X3DNode ();
 
-	void
-	setCurrentLayer (X3DLayerNode*);
-
-	X3DLayerNode*
-	getCurrentLayer ();
-
 	std::deque <X3DLayerNode*>
 	getLayers () const;
 

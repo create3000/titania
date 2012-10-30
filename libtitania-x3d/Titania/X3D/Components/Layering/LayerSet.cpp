@@ -136,9 +136,9 @@ LayerSet::intersect ()
 		{
 			X3DLayerNode* currentLayer = *children .at (index);
 
-			setCurrentLayer (currentLayer);
-
-			currentLayer -> select ();
+			getBrowser () -> pushLayer (currentLayer);
+			currentLayer  -> select ();
+			getBrowser () -> popLayer ();
 		}
 	}
 }
@@ -150,11 +150,11 @@ LayerSet::draw ()
 	{
 		if (index >= 0  and index < (int32_t) children .size ())
 		{
-			X3DLayerNode* currentLayer = *children .at (index);
+			X3DLayerNode* currentLayer = *children [index];
 
-			setCurrentLayer (currentLayer);
-
-			currentLayer -> display ();
+			getBrowser () -> pushLayer (currentLayer);
+			currentLayer  -> display ();
+			getBrowser () -> popLayer ();
 		}
 	}
 }

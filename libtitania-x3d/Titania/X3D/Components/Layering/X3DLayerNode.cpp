@@ -240,10 +240,8 @@ X3DLayerNode::display ()
 	X3DRenderer::display ();
 
 	getActiveNavigationInfo () -> disable ();
-
+	_viewport                  -> disable ();
 	clearLights ();
-
-	_viewport -> disable ();
 }
 
 void

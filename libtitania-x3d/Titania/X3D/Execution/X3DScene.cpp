@@ -110,18 +110,6 @@ X3DScene::getLayerSet () const
 	return layerSet;
 }
 
-void
-X3DScene::setCurrentLayer (X3DLayerNode* value)
-{
-	currentLayer = value;
-}
-
-X3DLayerNode*
-X3DScene::getCurrentLayer () const
-{
-	return currentLayer;
-}
-
 const SFNode <X3DLayerNode>
 X3DScene::getActiveLayer () const
 {

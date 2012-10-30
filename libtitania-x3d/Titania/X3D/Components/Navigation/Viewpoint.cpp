@@ -108,10 +108,10 @@ Viewpoint::set_jump ()
 void
 Viewpoint::display ()
 {
-	//	std::clog << "### 1: " << (void*) getCurrentLayer () << std::endl;
-	//	std::clog << "### 2: " << getCurrentLayer () -> currentViewpoint << std::endl;
+	//	std::clog << "### 1: " << (void*) getBrowser () -> getLayer () << std::endl;
+	//	std::clog << "### 2: " << getBrowser () -> getLayer () -> currentViewpoint << std::endl;
 
-	const Matrix4f & currentMatrix = getCurrentLayer () -> getActiveViewpoint () -> getCurrentMatrix ();
+	const Matrix4f & currentMatrix = getBrowser () -> getLayer () -> getActiveViewpoint () -> getCurrentMatrix ();
 	Matrix4f         matrix        = currentMatrix .multLeft (ModelViewMatrix4f ());
 
 	setTransformationMatrix (matrix);

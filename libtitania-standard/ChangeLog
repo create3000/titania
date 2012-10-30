@@ -1,5 +1,63 @@
 2012-10-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Id.d:
+	* Id.o:
+	* Env.o:
+	* Env.d:
+	* URI.d:
+	* URI.o:
+	* CWD.d:
+	* CWD.o:
+	* Home.d:
+	* Box3.d:
+	* Box3.o:
+	* Home.o:
+	* Line3.d:
+	* Image.o:
+	* Image.d:
+	* Split.d:
+	* Split.o:
+	* Line3.o:
+	* System.o:
+	* Plane3.o:
+	* System.d:
+	* Plane3.d:
+	* Color4.o:
+	* Color3.d:
+	* Color3.o:
+	* Color4.d:
+	* Vector4.d:
+	* Sphere3.d:
+	* Sphere3.o:
+	* Vector4.o:
+	* Vector3.o:
+	* Vector2.d:
+	* Vector3.d:
+	* Vector2.o:
+	* Matrix4.d:
+	* Matrix4.o:
+	* Matrix3.d:
+	* Matrix3.o:
+	* strfsize.o:
+	* strfsize.d:
+	* Rotation4.o:
+	* Generator.d:
+	* Generator.o:
+	* Rotation4.d:
+	* ClockBase.o:
+	* ClockBase.d:
+	* IndexedMap.o:
+	* Quaternion.o:
+	* IndexedMap.d:
+	* Quaternion.d:
+	* SystemClock.d:
+	* SystemClock.o:
+	* FindDataFile.d:
+	* FindDataFile.o:
+	* libtitania-standard.so: 
+
+2012-10-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Id.o:
 	* Id.d:
 	* URI.d:

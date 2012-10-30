@@ -3,13 +3,9 @@
 Background { }
 
 DEF Home Viewpoint {
-  position 0 0 34
+  position 0 0 5
+  centerOfRotation 0 0 0
   description "Home"
-}
-
-DEF Far Viewpoint {
-  position 0 0 68
-  description "Far"
 }
 
 LayerSet {
@@ -18,25 +14,13 @@ LayerSet {
   layers [
     DEF _0 Layer {
       children [
-
 	      USE Home
-	      USE Far
-
 			Transform {
-				translation 0 3 0
 				children DEF Boxes Inline {
 					url "Inline.wrl"
 				}
 			}
-
-			Transform {
-				translation 0 -3 0
-				children USE Boxes
-			}
-
-
       ]
     }
   ]
 }
-

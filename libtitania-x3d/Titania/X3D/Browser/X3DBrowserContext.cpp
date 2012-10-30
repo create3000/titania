@@ -59,6 +59,26 @@ X3DBrowserContext::X3DBrowserContext () :
 	          viewpoints ()        
 { }
 
+// Layer handling
+
+void
+X3DBrowserContext::pushLayer (X3DLayerNode* const layer)
+{
+	layers .push (layer);
+}
+
+void
+X3DBrowserContext::popLayer ()
+{
+	layers .pop ();
+}
+
+X3DLayerNode*
+X3DBrowserContext::getLayer () const
+{
+	return layers .top ();
+}
+
 // NavigationInfo list handling
 
 void

@@ -35,7 +35,6 @@
             <property name="scrollable">True</property>
             <property name="enable_popup">True</property>
             <property name="group_name">Notebook</property>
-            <signal name="page-removed" handler="on_page_removed" swapped="no"/>
             <signal name="switch-page" handler="on_switch_page" swapped="no"/>
             <child>
               <object class="GtkBox" id="box1">

@@ -85,12 +85,6 @@ public:
 	const SFNode <LayerSet> &
 	getLayerSet () const;
 
-	void
-	setCurrentLayer (X3DLayerNode*);
-
-	X3DLayerNode*
-	getCurrentLayer () const;
-
 	const SFNode <X3DLayerNode>
 	getActiveLayer () const;
 
@@ -107,8 +101,6 @@ public:
 private:
 
 	SFNode <LayerSet> layerSet;
-
-	X3DLayerNode* currentLayer;
 
 };
 

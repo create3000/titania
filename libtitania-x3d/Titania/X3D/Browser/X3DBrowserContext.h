@@ -74,7 +74,18 @@ class X3DBrowserContext :
 {
 public:
 
-	/// @name NavigationInfo list handling
+	///  @name Layer handling
+
+	void
+	pushLayer (X3DLayerNode* const);
+
+	void
+	popLayer ();
+
+	X3DLayerNode*
+	getLayer () const;
+
+	///  @name NavigationInfo list handling
 
 	void
 	addNavigationInfo (NavigationInfo* const);
@@ -85,7 +96,7 @@ public:
 	const NavigationInfoList &
 	getNavigationInfos () const;
 
-	/// @name Background list handling
+	///  @name Background list handling
 
 	void
 	addBackground (X3DBackgroundNode* const);
@@ -96,7 +107,7 @@ public:
 	const BackgroundList &
 	getBackgrounds () const;
 
-	/// @name Fog list handling
+	///  @name Fog list handling
 
 	void
 	addFog (Fog* const);
@@ -107,7 +118,7 @@ public:
 	const FogList &
 	getFogs () const;
 
-	/// @name Viewpoint list handling
+	///  @name Viewpoint list handling
 
 	void
 	addViewpoint (X3DViewpointNode* const);
@@ -130,7 +141,7 @@ public:
 	const TextureIndex &
 	getTextures () const;
 
-	/// @name Sensors
+	///  @name Sensors
 
 	void
 	addSensor (X3DSensorNode* const);
@@ -154,10 +165,11 @@ protected:
 
 private:
 
-	NavigationInfoList navigationInfos;
-	BackgroundList     backgrounds;
-	FogList            fogs;
-	ViewpointList      viewpoints;
+	std::stack <X3DLayerNode*> layers;
+	NavigationInfoList         navigationInfos;
+	BackgroundList             backgrounds;
+	FogList                    fogs;
+	ViewpointList              viewpoints;
 
 	TextureIndex textures;
 	Output       sensors;

@@ -157,7 +157,7 @@ Inline::intersect ()
 }
 
 void
-Inline::draw ()
+Inline::display ()
 {
 	for (const auto & rootNode : scene -> getRootNodes ())
 		rootNode -> display ();

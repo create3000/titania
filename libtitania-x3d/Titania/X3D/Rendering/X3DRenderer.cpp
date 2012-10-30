@@ -69,8 +69,8 @@ X3DRenderer::X3DRenderer () :
 void
 X3DRenderer::addShape (X3DShapeNode* shape, const float distance)
 {
-	const LightContainerArray & localLights = getCurrentLayer () -> getLocalLights ();
-	X3DFogObject*               fog         = getCurrentLayer () -> getActiveFog ();
+	const LightContainerArray & localLights = getBrowser () -> getLayer () -> getLocalLights ();
+	X3DFogObject*               fog         = getBrowser () -> getLayer () -> getActiveFog ();
 
 	if (shape -> isTransparent ())
 	{
@@ -118,14 +118,14 @@ X3DRenderer::redraw ()
 	numNodesDrawn            = 0;
 	numTransparentNodesDrawn = 0;
 
-	X3DViewpointNode* currentViewpoint = getCurrentLayer () -> getActiveViewpoint ();
+	X3DViewpointNode* currentViewpoint = getBrowser () -> getLayer () -> getActiveViewpoint ();
 	Matrix4d          correctionMatrix = currentViewpoint -> getMatrix () .inverse () .multLeft (currentViewpoint -> getCurrentMatrix ());
 
-	getCurrentLayer () -> correctLights (correctionMatrix);
+	getBrowser () -> getLayer () -> correctLights (correctionMatrix);
 
 	// enable global lights
 
-	const LightContainerArray & globalLights = getCurrentLayer () -> getGlobalLights ();
+	const LightContainerArray & globalLights = getBrowser () -> getLayer () -> getGlobalLights ();
 
 	if (globalLights .size ())
 	{

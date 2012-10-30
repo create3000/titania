@@ -83,14 +83,14 @@ void
 LocalFog::draw ()
 {
 	if (enabled)
-		getCurrentLayer () -> pushLocalFog (this);
+		getBrowser () -> getLayer () -> pushLocalFog (this);
 }
 
 void
 LocalFog::postDisplay ()
 {
 	if (enabled)
-		getCurrentLayer () -> popLocalFog ();
+		getBrowser () -> getLayer () -> popLocalFog ();
 }
 
 } // X3D

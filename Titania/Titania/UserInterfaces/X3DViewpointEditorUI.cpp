@@ -66,6 +66,7 @@ X3DViewpointEditorUI::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_window);
 	m_builder -> get_widget ("Widget", m_widget);
+	m_builder -> get_widget ("ScrolledWindow", m_scrolledWindow);
 	m_builder -> get_widget ("TreeView", m_treeView);
 	m_builder -> get_widget ("FieldOfView", m_fieldOfView);
 	m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DViewpointEditorUI::on_row_activated));
