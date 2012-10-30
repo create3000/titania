@@ -62,11 +62,11 @@ X3DLayerNode::X3DLayerNode () :
 	      removeChildren (),                                            // MFNode[in]      removeChildren            [ ]
 	            children (),                                            // MFNode[in,out]  children        [ ]       [X3DChildNode]
 	     defaultViewport (new Viewport (getExecutionContext ())),       
-	 navigationInfoStack (new NavigationInfo (getExecutionContext ())), 
-	     backgroundStack (new Background     (getExecutionContext ())), 
-	            fogStack (new Fog            (getExecutionContext ())), 
-	      viewpointStack (new Viewpoint      (getExecutionContext ())), 
-	       localFogStack (),                                            
+	 navigationInfoStack (new NavigationInfo   (getExecutionContext ())), 
+	     backgroundStack (new Background       (getExecutionContext ())), 
+	            fogStack (new Fog              (getExecutionContext ())), 
+	      viewpointStack (new Viewpoint        (getExecutionContext ())),
+	           localFogs (),                                            
 	          timeSensor (),                                            
 	positionInterpolator (),                                            
 	           _viewport (0)                                            
@@ -93,10 +93,10 @@ X3DLayerNode::initialize ()
 
 	defaultViewport -> setup ();
 
-//	navigationInfoStack .top () -> setup ();
-//	backgroundStack     .top () -> setup ();
-//	fogStack            .top () -> setup ();
-//	viewpointStack      .top () -> setup ();
+	navigationInfoStack .top () -> setup ();
+	backgroundStack     .top () -> setup ();
+	fogStack            .top () -> setup ();
+	viewpointStack      .top () -> setup ();
 
 	viewport .addInterest (this, &X3DLayerNode::set_viewport);
 
@@ -118,8 +118,8 @@ X3DLayerNode::getActiveBackground ()
 X3DFogObject*
 X3DLayerNode::getActiveFog ()
 {
-	if (localFogStack .size ())
-		return localFogStack .top ();
+	if (localFogs .size ())
+		return localFogs .top ();
 
 	return fogStack .top ();
 }

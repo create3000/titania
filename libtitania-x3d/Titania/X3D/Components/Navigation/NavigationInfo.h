@@ -51,7 +51,6 @@
 
 #include "../Core/X3DBindableNode.h"
 #include "../Lighting/DirectionalLight.h"
-#include "../Navigation/Viewpoint.h"
 
 namespace titania {
 namespace X3D {
@@ -69,8 +68,6 @@ public:
 	MFString type;
 	SFFloat  visibilityLimit;
 	SFBool   transitionComplete;
-
-	SFNode <Viewpoint> viewpoint;
 
 	NavigationInfo (X3DExecutionContext* const);
 

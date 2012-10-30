@@ -87,11 +87,17 @@ public:
 	setChildren (Args & ...);
 
 	void
+	setChild (X3DBaseNode* const);
+
+	void
 	setChild (X3DBaseNode &);
 
 	template <typename ... Args>
 	void
 	addChildren (Args & ...);
+
+	void
+	addChild (X3DBaseNode* const);
 
 	void
 	addChild (X3DBaseNode &);
@@ -150,6 +156,13 @@ void
 X3DBaseNode::addChildren (Args & ... args)
 {
 	basic::pass ((addChild (args), 1) ...);
+}
+
+inline
+void
+X3DBaseNode::addChild (X3DBaseNode* const child)
+{
+	child -> addParent (this);
 }
 
 inline

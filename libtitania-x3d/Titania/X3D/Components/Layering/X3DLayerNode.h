@@ -63,8 +63,6 @@
 namespace titania {
 namespace X3D {
 
-class Viewport;
-
 class X3DLayerNode :
 	virtual public X3DNode, public X3DRenderer
 {
@@ -97,6 +95,15 @@ public:
 	X3DViewpointNode*
 	getActiveViewpoint ();
 	//@}
+
+	void
+	pushLocalFog (LocalFog* fog) { localFogs .push (fog); }
+
+	void
+	popLocalFog () { localFogs .pop (); }
+
+	const std::stack <LocalFog*> &
+	getLocalFogs () { return localFogs; }
 
 	void
 	pushLocalLight (X3DLightNode*);
@@ -135,18 +142,11 @@ public:
 	void
 	dispose ();
 
-	SFNode <Viewport> defaultViewport;
-
+	SFNode <Viewport>                     defaultViewport;
 	BindableNodeStack <NavigationInfo>    navigationInfoStack;
 	BindableNodeStack <X3DBackgroundNode> backgroundStack;
 	BindableNodeStack <Fog>               fogStack;
 	BindableNodeStack <X3DViewpointNode>  viewpointStack;
-
-	std::stack <LocalFog*> localFogStack;
-
-	SFNode <TimeSensor>           timeSensor;
-	SFNode <PositionInterpolator> positionInterpolator;
-
 
 protected:
 
@@ -160,16 +160,26 @@ protected:
 private:
 
 	void
+	enableHeadlight ();
+
+	void
+	disableHeadlight ();
+
+	void
 	clearLights ();
 
 	void
 	set_viewport ();
 
-	Viewport* _viewport;
+	std::stack <LocalFog*> localFogs;
+	LightContainerArray    localLights;
+	LightContainerArray    cachedLocalLights;
+	LightContainerArray    globalLights;
 
-	LightContainerArray localLights;
-	LightContainerArray cachedLocalLights;
-	LightContainerArray globalLights;
+	SFNode <TimeSensor>           timeSensor;
+	SFNode <PositionInterpolator> positionInterpolator;
+
+	Viewport* _viewport;
 
 };
 

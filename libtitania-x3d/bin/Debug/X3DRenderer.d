@@ -161,9 +161,6 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Browser/../Components/Navigation/../Core/X3DBindableNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Browser/../Components/Navigation/../Lighting/DirectionalLight.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Browser/../Components/Navigation/../Lighting/../Lighting/X3DLightNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Browser/../Components/Navigation/../Navigation/Viewpoint.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Browser/../Components/Navigation/../Navigation/../Navigation/X3DViewpointNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Browser/../Components/Navigation/../Navigation/../Navigation/../Core/X3DBindableNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Browser/../Components/Navigation/X3DViewpointNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Browser/../Execution/X3DExecutionContext.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Browser/../Execution/../Basic/X3DContext.h \
@@ -222,6 +219,7 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Routing/Router.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Routing/../Basic/X3DBasicNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Components/Navigation/Viewpoint.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Components/Navigation/../Navigation/X3DViewpointNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Components/Networking/X3DUrlObject.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Components/Networking/../../Basic/X3DBasicNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Browser/../Browser/../Components/Networking/../../Bits/Error.h \

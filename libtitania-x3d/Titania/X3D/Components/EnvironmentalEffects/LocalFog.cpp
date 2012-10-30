@@ -83,14 +83,14 @@ void
 LocalFog::draw ()
 {
 	if (enabled)
-		getCurrentLayer () -> localFogStack .push (this);
+		getCurrentLayer () -> pushLocalFog (this);
 }
 
 void
 LocalFog::postDisplay ()
 {
 	if (enabled)
-		getCurrentLayer () -> localFogStack .pop ();
+		getCurrentLayer () -> popLocalFog ();
 }
 
 } // X3D

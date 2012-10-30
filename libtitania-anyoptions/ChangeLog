@@ -1,5 +1,10 @@
 2012-10-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* anyoption.o:
+	* anyoption.d: 
+
+2012-10-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* anyoption.h:
 	* anyoption.o:
 	* libtitania-anyoptions.so: 

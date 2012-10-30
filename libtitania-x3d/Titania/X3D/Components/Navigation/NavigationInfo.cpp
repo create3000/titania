@@ -65,8 +65,7 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 	    transitionType ({ "LINEAR" }),                                        // MFString [in,out] transitionType     ["LINEAR"]             ["TELEPORT","LINEAR",
 	              type ({ "EXAMINE", "ANY" }),                                // MFString [ ]      type               { "EXAMINE", "ANY" }
 	   visibilityLimit (),                                                    // SFFloat  [ ]      visibilityLimit    0
-	transitionComplete (),                                                    // SFBool   [ ]      transitionComplete
-	         viewpoint (new Viewpoint (executionContext)),                    
+	transitionComplete (),                                                    // SFBool   [ ]      transitionComplete                  
 	  directionalLight (new DirectionalLight (executionContext))              
 {
 	setComponent ("Navigation");
@@ -85,7 +84,7 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 	appendField (outputOnly,  "bindTime",           bindTime);
 	appendField (outputOnly,  "isBound",            isBound);
 
-	setChildren (directionalLight, viewpoint);
+	setChildren (directionalLight);
 }
 
 X3DBasicNode*
