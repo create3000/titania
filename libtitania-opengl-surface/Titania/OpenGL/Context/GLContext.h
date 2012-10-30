@@ -46,11 +46,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OPEN_GL_CONTEXT_X3DCONTEXT_H__
-#define __TITANIA_OPEN_GL_CONTEXT_X3DCONTEXT_H__
+#ifndef __TITANIA_OPEN_GL_CONTEXT_GLCONTEXT_H__
+#define __TITANIA_OPEN_GL_CONTEXT_GLCONTEXT_H__
 
-#include <glibmm/refptr.h>
 #include <gdkmm/display.h>
+#include <glibmm/refptr.h>
 
 extern "C"
 {
@@ -98,6 +98,7 @@ protected:
 	void
 	setValue (GLXContext);
 
+
 private:
 
 	Glib::RefPtr <Gdk::Display> display;
@@ -107,7 +108,6 @@ private:
 	GLXContext  xContext;
 
 };
-
 
 } // OpenGL
 } // titania

@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -58,24 +58,24 @@ namespace titania {
 namespace X3D {
 
 ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryNode (),                                 
-	     set_height (),                                 // MFFloat [in]     set_height
-	         attrib (),                                 // MFNode  [in,out] attrib           [ ]         [X3DVertexAttributeNode]
-	          color (),                                 // SFNode  [in,out] color            NULL        [X3DColorNode]
-	       fogCoord (),                                 // SFNode  [in,out] fogCoord         [ ]         [FogCoordinate]
-	         normal (),                                 // SFNode  [in,out] normal           NULL        [X3DNormalNode]
-	       texCoord (),                                 // SFNode  [in,out] texCoord         NULL        [X3DTextureCoordinateNode]
-	            ccw (true),                             // SFBool  [ ]      ccw              TRUE
-	 colorPerVertex (true),                             // SFBool  [ ]      colorPerVertex   TRUE
-	    creaseAngle (),                                 // SFFloat [ ]      creaseAngle      0           [0,∞)
-	         height (),                                 // MFFloat [ ]      height           [ ]          (-∞,∞)
-	normalPerVertex (true),                             // SFBool  [ ]      normalPerVertex  TRUE
-	          solid (true),                             // SFBool  [ ]      solid            TRUE
-	     xDimension (),                                 // SFInt32 [ ]      xDimension       0           [0,∞)
-	       xSpacing (1),                                // SFFloat [ ]      xSpacing         1.0         (0,∞)
-	     zDimension (),                                 // SFInt32 [ ]      zDimension       0           [0,∞)
-	       zSpacing (1)                                 // SFFloat [ ]      zSpacing         1.0         (0,∞)
+	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DGeometryNode (),                                                    
+	     set_height (),                                                    // MFFloat [in]     set_height
+	         attrib (),                                                    // MFNode  [in,out] attrib           [ ]         [X3DVertexAttributeNode]
+	          color (),                                                    // SFNode  [in,out] color            NULL        [X3DColorNode]
+	       fogCoord (),                                                    // SFNode  [in,out] fogCoord         [ ]         [FogCoordinate]
+	         normal (),                                                    // SFNode  [in,out] normal           NULL        [X3DNormalNode]
+	       texCoord (),                                                    // SFNode  [in,out] texCoord         NULL        [X3DTextureCoordinateNode]
+	            ccw (true),                                                // SFBool  [ ]      ccw              TRUE
+	 colorPerVertex (true),                                                // SFBool  [ ]      colorPerVertex   TRUE
+	    creaseAngle (),                                                    // SFFloat [ ]      creaseAngle      0           [0,∞)
+	         height (),                                                    // MFFloat [ ]      height           [ ]          (-∞,∞)
+	normalPerVertex (true),                                                // SFBool  [ ]      normalPerVertex  TRUE
+	          solid (true),                                                // SFBool  [ ]      solid            TRUE
+	     xDimension (),                                                    // SFInt32 [ ]      xDimension       0           [0,∞)
+	       xSpacing (1),                                                   // SFFloat [ ]      xSpacing         1.0         (0,∞)
+	     zDimension (),                                                    // SFInt32 [ ]      zDimension       0           [0,∞)
+	       zSpacing (1)                                                    // SFFloat [ ]      zSpacing         1.0         (0,∞)
 {
 	setComponent ("Geometry3D");
 	setTypeName ("ElevationGrid");

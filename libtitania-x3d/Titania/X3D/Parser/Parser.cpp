@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -97,12 +97,12 @@ throw (Error <INVALID_X3D>)
 }
 
 Parser::Parser (Scene* scene, const std::string & input) :
-	X3DBasicNode (scene -> getBrowser (),        scene),
-	   X3DParser (),                             
-	       scene (scene),                        
-	       input (input),                        
-	      string (pcrecpp::StringPiece (input)), 
-	    nodeList ()
+	X3DBasicNode (scene -> getBrowser (),        scene), 
+	   X3DParser (),                                     
+	       scene (scene),                                
+	       input (input),                                
+	      string (pcrecpp::StringPiece (input)),         
+	    nodeList ()                                      
 {
 	setComponent ("Browser");
 	setTypeName ("Parser");
@@ -1262,7 +1262,7 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 		{
 			_newNode = getExecutionContext () -> createProtoInstance (_nodeTypeId);
 		}
-		
+
 		//__LOG__ << _nodeTypeId << " " << (void*) _newNode << std::endl;
 
 		if (_nodeNameId .length ())

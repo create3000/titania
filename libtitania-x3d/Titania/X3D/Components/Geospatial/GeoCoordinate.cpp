@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,11 +54,11 @@ namespace titania {
 namespace X3D {
 
 GeoCoordinate::GeoCoordinate (X3DExecutionContext* const executionContext) :
-	     X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DCoordinateNode (),                                 
-	            point (),                                 // MFVec3d  [in,out] point      [ ]                (-∞,∞)
-	        geoOrigin (),                                 // SFNode   [ ]      geoOrigin  NULL               [GeoOrigin]
-	        geoSystem ({ "GD", "WE" })                    // MFString [ ]      geoSystem  ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
+	     X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DCoordinateNode (),                                                    
+	            point (),                                                    // MFVec3d  [in,out] point      [ ]                (-∞,∞)
+	        geoOrigin (),                                                    // SFNode   [ ]      geoOrigin  NULL               [GeoOrigin]
+	        geoSystem ({ "GD", "WE" })                                       // MFString [ ]      geoSystem  ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoCoordinate");

@@ -49,18 +49,19 @@
 #include "X3DLayerNode.h"
 
 #include "../../Browser/Browser.h"
+#include "../EnvironmentalEffects/Background.h"
 
 namespace titania {
 namespace X3D {
 
 X3DLayerNode::X3DLayerNode () :
 	             X3DNode (),                                            
-	          isPickable (true),                                        // SFBool [in,out] isPickable  TRUE
-	            viewport (),                                            // SFNode [in,out] viewport    NULL        [X3DViewportNode]
-	         addChildren (),                                            // MFNode[in]     addChildren               [ ]
-	      removeChildren (),                                            // MFNode[in]     removeChildren            [ ]
-	            children (),                                            // MFNode[in,out] children        [ ]       [X3DChildNode]
-	     defaultViewport (new Viewport       (getExecutionContext ())), 
+	          isPickable (true),                                        // SFBool [in,out] isPickable      TRUE
+	            viewport (),                                            // SFNode [in,out] viewport        NULL      [X3DViewportNode]
+	         addChildren (),                                            // MFNode[in]      addChildren               [ ]
+	      removeChildren (),                                            // MFNode[in]      removeChildren            [ ]
+	            children (),                                            // MFNode[in,out]  children        [ ]       [X3DChildNode]
+	     defaultViewport (new Viewport (getExecutionContext ())),       
 	 navigationInfoStack (new NavigationInfo (getExecutionContext ())), 
 	     backgroundStack (new Background     (getExecutionContext ())), 
 	            fogStack (new Fog            (getExecutionContext ())), 
@@ -68,17 +69,21 @@ X3DLayerNode::X3DLayerNode () :
 	       localFogStack (),                                            
 	          timeSensor (),                                            
 	positionInterpolator (),                                            
-	           _viewport (0)
+	           _viewport (0)                                            
 {
 	addNodeType (X3DLayerNodeType);
 
 	setChildren (defaultViewport,
+	             *navigationInfoStack .top (),
+	             *backgroundStack     .top (),
+	             *fogStack            .top (),
+	             *viewpointStack      .top (),
 	             timeSensor,
 	             positionInterpolator);
 
-	getActiveBackground () -> transparency = 1;
-	getActiveFog ()        -> transparency = 1;
-	getActiveViewpoint ()  -> description  = "Default Viewpoint";
+	backgroundStack     .top () -> transparency = 1;
+	fogStack            .top () -> transparency = 1;
+	viewpointStack      .top () -> description  = "Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ());
 }
 
 void
@@ -88,10 +93,10 @@ X3DLayerNode::initialize ()
 
 	defaultViewport -> setup ();
 
-	getActiveNavigationInfo () -> setup ();
-	getActiveBackground     () -> setup ();
-	getActiveFog            () -> setup ();
-	getActiveViewpoint      () -> setup ();
+//	navigationInfoStack .top () -> setup ();
+//	backgroundStack     .top () -> setup ();
+//	fogStack            .top () -> setup ();
+//	viewpointStack      .top () -> setup ();
 
 	viewport .addInterest (this, &X3DLayerNode::set_viewport);
 
@@ -228,11 +233,9 @@ X3DLayerNode::display ()
 
 	glClear (GL_DEPTH_BUFFER_BIT);
 
-	getActiveBackground () -> draw ();
-
+	getActiveBackground ()     -> draw ();
 	getActiveNavigationInfo () -> enable ();
-
-	getActiveViewpoint () -> draw ();
+	getActiveViewpoint ()      -> draw ();
 
 	X3DRenderer::display ();
 
@@ -255,10 +258,10 @@ X3DLayerNode::set_viewport ()
 void
 X3DLayerNode::dispose ()
 {
-//	delete navigationInfoStack .bottom ();
-//	delete backgroundStack     .bottom ();
-//	delete fogStack            .bottom ();
-//	delete viewpointStack      .bottom ();
+	//	delete navigationInfoStack .bottom ();
+	//	delete backgroundStack     .bottom ();
+	//	delete fogStack            .bottom ();
+	//	delete viewpointStack      .bottom ();
 
 	X3DNode::dispose ();
 }

@@ -36,7 +36,7 @@ namespace X3D {
 X3DBaseNode::X3DBaseNode () :
 	X3DObject (), 
 	  parents (), 
-	 children ()
+	 children ()  
 { }
 
 // Object

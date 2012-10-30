@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -77,7 +77,7 @@ void
 X3DGeometryNode::initialize ()
 {
 	X3DNode::initialize ();
-		
+
 	if (not GLEW_ARB_vertex_buffer_object)
 		throw std::runtime_error ("X3DGeometryNode::initialize: The glew vertex buffer objects are not supported.");
 

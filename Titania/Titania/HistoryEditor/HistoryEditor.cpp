@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,8 +59,8 @@ static constexpr int TITLE_COLUMN     = 1;
 static constexpr int WORLD_URL_COLUMN = 2;
 
 HistoryEditor::HistoryEditor (const std::string & sessionKey, X3DBrowserInterface* const browserWidget) :
-	X3DHistoryEditorUI (get_ui ("HistoryEditor.ui"), sessionKey),
-	        history ()
+	X3DHistoryEditorUI (get_ui ("HistoryEditor.ui"), sessionKey), 
+	           history ()                                         
 {
 	setBrowserWidget (browserWidget);
 	setBrowser (browserWidget -> getBrowser ());
@@ -108,7 +108,7 @@ void
 HistoryEditor::on_map ()
 {
 	getListStore () -> clear ();
-	
+
 	for (const auto & item : history .getItems ())
 	{
 		auto row = getListStore () -> append ();
@@ -139,7 +139,7 @@ HistoryEditor::set_world ()
 	row -> set_value (WORLD_URL_COLUMN, worldURL .str ());
 
 	history .setItem (title, worldURL);
-	
+
 	getScrolledWindow () .queue_draw ();
 }
 

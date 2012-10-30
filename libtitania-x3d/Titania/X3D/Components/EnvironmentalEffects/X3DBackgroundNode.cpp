@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -74,7 +74,7 @@ X3DBackgroundNode::initialize ()
 {
 	X3DBindableNode::initialize ();
 
-	getExecutionContext () -> addBackground (this);
+	getBrowser () -> addBackground (this);
 
 	build ();
 }
@@ -396,9 +396,9 @@ X3DBackgroundNode::draw ()
 void
 X3DBackgroundNode::dispose ()
 {
-	X3DBindableNode::dispose ();
+	getBrowser () -> removeBackground (this);
 
-	getExecutionContext () -> removeBackground (this);
+	X3DBindableNode::dispose ();
 }
 
 } // X3D

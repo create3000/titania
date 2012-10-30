@@ -60,7 +60,7 @@ X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::s
 	                 gconf (configKey, widgetName), 
 	initialized_connection (),                      
 	         browserWidget (),                      
-	         userInterface ()
+	         userInterface ()                       
 { }
 
 void
@@ -81,7 +81,7 @@ void
 X3DUserInterface::set_initialized ()
 {
 	initialized_connection .disconnect ();
-	
+
 	initialize ();
 
 	std::clog << "Done Initializing " << getWidgetName () << "." << std::endl;

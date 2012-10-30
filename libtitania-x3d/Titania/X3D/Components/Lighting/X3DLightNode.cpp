@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,13 +54,13 @@ namespace titania {
 namespace X3D {
 
 X3DLightNode::X3DLightNode () :
-	    X3DChildNode (),          
-	ambientIntensity (),          // SFFloat [in,out] ambientIntensity  0            [0,1]
-	           color (1, 1, 1),   // SFColor [in,out] color             1 1 1        [0,1]
-	          global (true),      // SFBool  [in,out] global            FALSE
-	       intensity (1),         // SFFloat [in,out] intensity         1            [0,1]
-	              on (true),      // SFBool  [in,out] on                TRUE
-	         lightId (0)
+	    X3DChildNode (),        
+	ambientIntensity (),        // SFFloat [in,out] ambientIntensity  0            [0,1]
+	           color (1, 1, 1), // SFColor [in,out] color             1 1 1        [0,1]
+	          global (true),    // SFBool  [in,out] global            FALSE
+	       intensity (1),       // SFFloat [in,out] intensity         1            [0,1]
+	              on (true),    // SFBool  [in,out] on                TRUE
+	         lightId (0)        
 {
 	addNodeType (X3DLightNodeType);
 }

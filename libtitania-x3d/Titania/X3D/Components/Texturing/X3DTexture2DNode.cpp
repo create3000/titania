@@ -61,12 +61,12 @@ namespace X3D {
 const int X3DTexture2DNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
 
 X3DTexture2DNode::X3DTexture2DNode () :
-	   X3DTextureNode (),      
-	          repeatS (true),  // SFBool [ ] repeatS            TRUE
-	          repeatT (true),  // SFBool [ ] repeatT            TRUE
-	textureProperties (),      // SFNode [ ] textureProperties  NULL        [TextureProperties]
-	        textureId (0),     
-	      transparent (false)
+	   X3DTextureNode (),     
+	          repeatS (true), // SFBool [ ] repeatS            TRUE
+	          repeatT (true), // SFBool [ ] repeatT            TRUE
+	textureProperties (),     // SFNode [ ] textureProperties  NULL        [TextureProperties]
+	        textureId (0),    
+	      transparent (false) 
 {
 	addNodeType (X3DTexture2DNodeType);
 }

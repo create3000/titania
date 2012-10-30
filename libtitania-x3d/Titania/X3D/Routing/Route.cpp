@@ -65,7 +65,7 @@ Route::Route (X3DExecutionContext* const executionContext,
 	 destinationNode (destinationNode),                                     // SFNode   [ ] destinationNode    NULL
 	     sourceField (sourceField),                                         
 	destinationField (destinationField),                                    
-	       connected (false)                                               
+	       connected (false)                                                
 {
 	setTypeName ("Route");
 

@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,10 +56,10 @@ namespace titania {
 namespace X3D {
 
 ImageTexture::ImageTexture (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DTexture2DNode (),                                 
-	    X3DUrlObject (),                                 
-	       loadState (NOT_STARTED_STATE)              
+	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DTexture2DNode (),                                                    
+	    X3DUrlObject (),                                                    
+	       loadState (NOT_STARTED_STATE)                                    
 {
 	setComponent ("Texturing");
 	setTypeName ("ImageTexture");
@@ -107,24 +107,24 @@ ImageTexture::requestImmediateLoad ()
 	// Delete previous Texture.
 
 	if (getTexture ())
-		if (getBrowser () -> getBrowserEnvironment () -> removeTexture (getWorldURL (), getTexture ()));
+		getBrowser () -> removeTexture (getWorldURL (), getTexture ());
 
 	// Get cached Texture.
-	
+
 	std::string cache_control;
-	
+
 	try
 	{
-		cache_control = getBrowser () -> getExecutionContext () -> getMetaData ("cache-control");		
+		cache_control = getBrowser () -> getExecutionContext () -> getMetaData ("cache-control");
 	}
 	catch (...)
 	{ }
-	
-	if (cache_control != "no-cache")
+
+	if (cache_control not_eq "no-cache")
 	{
 		for (const auto & URL : transformURI (url))
 		{
-			GLint textureId = getBrowser () -> getBrowserEnvironment () -> getTexture (URL);
+			GLint textureId = getBrowser () -> getTexture (URL);
 
 			if (textureId)
 			{
@@ -151,8 +151,8 @@ ImageTexture::requestImmediateLoad ()
 	setImage (image);
 
 	// Add texture to cache.
-	
-	getBrowser () -> getBrowserEnvironment () -> addTexture (getWorldURL (), getTexture ());
+
+	getBrowser () -> addTexture (getWorldURL (), getTexture ());
 
 	loadState = COMPLETE_STATE;
 }
@@ -203,7 +203,7 @@ ImageTexture::loadImage (Magick::Image & image)
 void
 ImageTexture::dispose ()
 {
-	if (getBrowser () -> getBrowserEnvironment () -> removeTexture (getWorldURL (), getTexture ()))
+	if (getBrowser () -> removeTexture (getWorldURL (), getTexture ()))
 		deleteTexture ();
 
 	X3DTexture2DNode::dispose ();

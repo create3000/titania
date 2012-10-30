@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -93,7 +93,7 @@ JavaScript::error (JSContext* context, const char* message, JSErrorReport* repor
 
 JavaScript::JavaScript (X3DBasicNode* node, const std::string & ecmascript) :
 	browser (node -> getBrowser ()), 
-	   node (node)
+	   node (node)                   
 {
 	// Create a JS runtime.
 	runtime = JS_NewRuntime (8L * 1024L * 1024L);

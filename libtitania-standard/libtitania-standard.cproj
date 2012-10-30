@@ -54,7 +54,6 @@
     <None Include="Titania\Basic\InputOutput\Generator.h" />
     <None Include="Titania\Basic\Id.h" />
     <None Include="Titania\Basic\BindStack.h" />
-    <None Include="Titania\Basic\IndexedMap.h" />
     <None Include="Titania\Basic\URI.h" />
     <None Include="Titania\Bits\String.h" />
     <None Include="Titania\Bits\String\Join.h" />
@@ -92,11 +91,12 @@
     <None Include="Titania\Chrono\ClockBase.h" />
     <None Include="Titania\Chrono\CountingClock.h" />
     <None Include="libtitania-standard.md.pc" />
+    <None Include="Titania\Basic\UniqueList.h" />
+    <None Include="Titania\Basic\IndexedMultiMap.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
     <Compile Include="Titania\Basic\Id.cpp" />
-    <Compile Include="Titania\Basic\IndexedMap.cpp" />
     <Compile Include="Titania\Basic\URI.cpp" />
     <Compile Include="Titania\Math\Numbers\Color3.cpp" />
     <Compile Include="Titania\Math\Numbers\Color4.cpp" />
@@ -123,5 +123,6 @@
     <Compile Include="Titania\Chrono\ClockBase.cpp" />
     <Compile Include="Titania\Chrono\CountingClock.cpp" />
     <Compile Include="Titania\Chrono\Now.cpp" />
+    <Compile Include="Titania\Basic\IndexedMultiMap.cpp" />
   </ItemGroup>
 </Project>

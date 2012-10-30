@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,90 +54,90 @@ namespace titania {
 namespace X3D {
 
 EspduTransform::EspduTransform (X3DExecutionContext* const executionContext) :
-	                              X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	                           X3DGroupingNode (),                                 
-	                             X3DSensorNode (),                                 
-	           set_articulationParameterValue0 (),                                 // SFFloat    [in]     set_articulationParameterValue0                                 (-∞,∞)
-	           set_articulationParameterValue1 (),                                 // SFFloat    [in]     set_articulationParameterValue1                                 (-∞,∞)
-	           set_articulationParameterValue2 (),                                 // SFFloat    [in]     set_articulationParameterValue2                                 (-∞,∞)
-	           set_articulationParameterValue3 (),                                 // SFFloat    [in]     set_articulationParameterValue3                                 (-∞,∞)
-	           set_articulationParameterValue4 (),                                 // SFFloat    [in]     set_articulationParameterValue4                                 (-∞,∞)
-	           set_articulationParameterValue5 (),                                 // SFFloat    [in]     set_articulationParameterValue5                                 (-∞,∞)
-	           set_articulationParameterValue6 (),                                 // SFFloat    [in]     set_articulationParameterValue6                                 (-∞,∞)
-	           set_articulationParameterValue7 (),                                 // SFFloat    [in]     set_articulationParameterValue7                                 (-∞,∞)
-	                                   address ("localhost"),                      // SFString   [in,out] address                                     "localhost"
-	                             applicationID (1),                                // SFInt32    [in,out] applicationID                               1                   [0,65535]
-	                articulationParameterCount (),                                 // SFInt32    [in,out] articulationParameterCount                  0                   [0,78]
-	      articulationParameterDesignatorArray (),                                 // MFInt32    [in,out] articulationParameterDesignatorArray        [ ]                 [0,255]
-	 articulationParameterChangeIndicatorArray (),                                 // MFInt32    [in,out] articulationParameterChangeIndicatorArray   [ ]                 [0,255]
-	articulationParameterIdPartAttachedToArray (),                                 // MFInt32    [in,out] articulationParameterIdPartAttachedToArray  [ ]                 [0,65535]
-	            articulationParameterTypeArray (),                                 // MFInt32    [in,out] articulationParameterTypeArray              [ ]                 [0,2147483647]
-	                articulationParameterArray (),                                 // MFFloat    [in,out] articulationParameterArray                  [ ]                 (-∞,∞)
-	                                    center (),                                 // SFVec3f    [in,out] center                                      0 0 0               (-∞,∞)
-	                             collisionType (),                                 // SFInt32    [in,out] collisionType                               0                   [0,255]
-	                             deadReckoning (),                                 // SFInt32    [in,out] deadReckoning                               0                   [0,255]
-	                        detonationLocation (),                                 // SFVec3f    [in,out] detonationLocation                          0 0 0               (-∞,∞)
-	                detonationRelativeLocation (),                                 // SFVec3f    [in,out] detonationRelativeLocation                  0 0 0               (-∞,∞)
-	                          detonationResult (),                                 // SFInt32    [in,out] detonationResult                            0                   [0,255]
-	                            entityCategory (),                                 // SFInt32    [in,out] entityCategory                              0                   [0,255]
-	                             entityCountry (),                                 // SFInt32    [in,out] entityCountry                               0                   [0,65535]
-	                              entityDomain (),                                 // SFInt32    [in,out] entityDomain                                0                   [0,255]
-	                               entityExtra (),                                 // SFInt32    [in,out] entityExtra                                 0                   [0,255]
-	                                  entityID (),                                 // SFInt32    [in,out] entityID                                    0                   [0,65535]
-	                                entityKind (),                                 // SFInt32    [in,out] entityKind                                  0                   [0,255]
-	                            entitySpecific (),                                 // SFInt32    [in,out] entitySpecific                              0                   [0,255]
-	                         entitySubCategory (),                                 // SFInt32    [in,out] entitySubCategory                           0                   [0,255]
-	                        eventApplicationID (1),                                // SFInt32    [in,out] eventApplicationID                          1                   [0,65535]
-	                             eventEntityID (),                                 // SFInt32    [in,out] eventEntityID                               0                   [0,65535]
-	                               eventNumber (),                                 // SFInt32    [in,out] eventNumber                                 0                   [0,65355]
-	                               eventSiteID (),                                 // SFInt32    [in,out] eventSiteID                                 0                   [0,65535]
-	                                    fired1 (),                                 // SFBool     [in,out] fired1                                      FALSE
-	                                    fired2 (),                                 // SFBool     [in,out] fired2                                      FALSE
-	                          fireMissionIndex (),                                 // SFInt32    [in,out] fireMissionIndex                            0                   [0,65535]
-	                               firingRange (),                                 // SFFloat    [in,out] firingRange                                 0.0                 (0,∞)
-	                                firingRate (),                                 // SFInt32    [in,out] firingRate                                  0                   [0,65535]
-	                                   forceID (),                                 // SFInt32    [in,out] forceID                                     0                   [0,255]
-	                                      fuse (),                                 // SFInt32    [in,out] fuse                                        0                   [0,65535]
-	                            linearVelocity (),                                 // SFVec3f    [in,out] linearVelocity                              0 0 0               (-∞,∞)
-	                        linearAcceleration (),                                 // SFVec3f    [in,out] linearAcceleration                          0 0 0               (-∞,∞)
-	                                   marking (),                                 // SFString   [in,out] marking                                     ""
-	                        multicastRelayHost (),                                 // SFString   [in,out] multicastRelayHost                          ""
-	                        multicastRelayPort (),                                 // SFInt32    [in,out] multicastRelayPort                          0                   [0,4294967295]
-	                     munitionApplicationID (1),                                // SFInt32    [in,out] munitionApplicationID                       1                   [0,65535]
-	                          munitionEndPoint (),                                 // SFVec3f    [in,out] munitionEndPoint                            0 0 0               (-∞,∞)
-	                          munitionEntityID (),                                 // SFInt32    [in,out] munitionEntityID                            0                   [0,65535]
-	                          munitionQuantity (),                                 // SFInt32    [in,out] munitionQuantity                            0                   [0,65535]
-	                            munitionSiteID (),                                 // SFInt32    [in,out] munitionSiteID                              0                   [0,65535]
-	                        munitionStartPoint (),                                 // SFVec3f    [in,out] munitionStartPoint                          0 0 0               (-∞,∞)
-	                               networkMode ("standAlone"),                     // SFString   [in,out] networkMode                                 "standAlone"        ["standAlone"|"networkReader"|"networkWriter"]
-	                                      port (),                                 // SFInt32    [in,out] port                                        0                   [0,65535]
-	                              readInterval (0.1),                              // SFTime     [in,out] readInterval                                0.1                 [0,∞)
-	                                  rotation (),                                 // SFRotation [in,out] rotation                                    0 0 1 0             (-∞,∞)|[-1,1]
-	                                     scale (1, 1, 1),                          // SFVec3f    [in,out] scale                                       1 1 1               (-∞,∞)
-	                          scaleOrientation (),                                 // SFRotation [in,out] scaleOrientation                            0 0 1 0             (-∞,∞)|[-1,1]
-	                                    siteID (),                                 // SFInt32    [in,out] siteID                                      0                   [0,65535]
-	                               translation (),                                 // SFVec3f    [in,out] translation                                 0 0 0               (-∞,∞)
-	                                   warhead (),                                 // SFInt32    [in,out] warhead                                     0                   [0,65535]
-	                             writeInterval (1),                                // SFTime     [in,out] writeInterval                               1.0                 [0,∞)
-	       articulationParameterValue0_changed (),                                 // SFFloat    [out]    articulationParameterValue0_changed
-	       articulationParameterValue1_changed (),                                 // SFFloat    [out]    articulationParameterValue1_changed
-	       articulationParameterValue2_changed (),                                 // SFFloat    [out]    articulationParameterValue2_changed
-	       articulationParameterValue3_changed (),                                 // SFFloat    [out]    articulationParameterValue3_changed
-	       articulationParameterValue4_changed (),                                 // SFFloat    [out]    articulationParameterValue4_changed
-	       articulationParameterValue5_changed (),                                 // SFFloat    [out]    articulationParameterValue5_changed
-	       articulationParameterValue6_changed (),                                 // SFFloat    [out]    articulationParameterValue6_changed
-	       articulationParameterValue7_changed (),                                 // SFFloat    [out]    articulationParameterValue7_changed
-	                               collideTime (),                                 // SFTime     [out]    collideTime
-	                              detonateTime (),                                 // SFTime     [out]    detonateTime
-	                                 firedTime (),                                 // SFTime     [out]    firedTime
-	                                isCollided (),                                 // SFBool     [out]    isCollided
-	                               isDetonated (),                                 // SFBool     [out]    isDetonated
-	                           isNetworkReader (),                                 // SFBool     [out]    isNetworkReader
-	                           isNetworkWriter (),                                 // SFBool     [out]    isNetworkWriter
-	                          isRtpHeaderHeard (),                                 // SFBool     [out]    isRtpHeaderHeard
-	                              isStandAlone (),                                 // SFBool     [out]    isStandAlone
-	                                 timestamp (),                                 // SFTime     [out]    timestamp
-	                         rtpHeaderExpected ()                                  // SFBool     [ ]      rtpHeaderExpected                           FALSE
+	                              X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	                           X3DGroupingNode (),                                                    
+	                             X3DSensorNode (),                                                    
+	           set_articulationParameterValue0 (),                                                    // SFFloat    [in]     set_articulationParameterValue0                                 (-∞,∞)
+	           set_articulationParameterValue1 (),                                                    // SFFloat    [in]     set_articulationParameterValue1                                 (-∞,∞)
+	           set_articulationParameterValue2 (),                                                    // SFFloat    [in]     set_articulationParameterValue2                                 (-∞,∞)
+	           set_articulationParameterValue3 (),                                                    // SFFloat    [in]     set_articulationParameterValue3                                 (-∞,∞)
+	           set_articulationParameterValue4 (),                                                    // SFFloat    [in]     set_articulationParameterValue4                                 (-∞,∞)
+	           set_articulationParameterValue5 (),                                                    // SFFloat    [in]     set_articulationParameterValue5                                 (-∞,∞)
+	           set_articulationParameterValue6 (),                                                    // SFFloat    [in]     set_articulationParameterValue6                                 (-∞,∞)
+	           set_articulationParameterValue7 (),                                                    // SFFloat    [in]     set_articulationParameterValue7                                 (-∞,∞)
+	                                   address ("localhost"),                                         // SFString   [in,out] address                                     "localhost"
+	                             applicationID (1),                                                   // SFInt32    [in,out] applicationID                               1                   [0,65535]
+	                articulationParameterCount (),                                                    // SFInt32    [in,out] articulationParameterCount                  0                   [0,78]
+	      articulationParameterDesignatorArray (),                                                    // MFInt32    [in,out] articulationParameterDesignatorArray        [ ]                 [0,255]
+	 articulationParameterChangeIndicatorArray (),                                                    // MFInt32    [in,out] articulationParameterChangeIndicatorArray   [ ]                 [0,255]
+	articulationParameterIdPartAttachedToArray (),                                                    // MFInt32    [in,out] articulationParameterIdPartAttachedToArray  [ ]                 [0,65535]
+	            articulationParameterTypeArray (),                                                    // MFInt32    [in,out] articulationParameterTypeArray              [ ]                 [0,2147483647]
+	                articulationParameterArray (),                                                    // MFFloat    [in,out] articulationParameterArray                  [ ]                 (-∞,∞)
+	                                    center (),                                                    // SFVec3f    [in,out] center                                      0 0 0               (-∞,∞)
+	                             collisionType (),                                                    // SFInt32    [in,out] collisionType                               0                   [0,255]
+	                             deadReckoning (),                                                    // SFInt32    [in,out] deadReckoning                               0                   [0,255]
+	                        detonationLocation (),                                                    // SFVec3f    [in,out] detonationLocation                          0 0 0               (-∞,∞)
+	                detonationRelativeLocation (),                                                    // SFVec3f    [in,out] detonationRelativeLocation                  0 0 0               (-∞,∞)
+	                          detonationResult (),                                                    // SFInt32    [in,out] detonationResult                            0                   [0,255]
+	                            entityCategory (),                                                    // SFInt32    [in,out] entityCategory                              0                   [0,255]
+	                             entityCountry (),                                                    // SFInt32    [in,out] entityCountry                               0                   [0,65535]
+	                              entityDomain (),                                                    // SFInt32    [in,out] entityDomain                                0                   [0,255]
+	                               entityExtra (),                                                    // SFInt32    [in,out] entityExtra                                 0                   [0,255]
+	                                  entityID (),                                                    // SFInt32    [in,out] entityID                                    0                   [0,65535]
+	                                entityKind (),                                                    // SFInt32    [in,out] entityKind                                  0                   [0,255]
+	                            entitySpecific (),                                                    // SFInt32    [in,out] entitySpecific                              0                   [0,255]
+	                         entitySubCategory (),                                                    // SFInt32    [in,out] entitySubCategory                           0                   [0,255]
+	                        eventApplicationID (1),                                                   // SFInt32    [in,out] eventApplicationID                          1                   [0,65535]
+	                             eventEntityID (),                                                    // SFInt32    [in,out] eventEntityID                               0                   [0,65535]
+	                               eventNumber (),                                                    // SFInt32    [in,out] eventNumber                                 0                   [0,65355]
+	                               eventSiteID (),                                                    // SFInt32    [in,out] eventSiteID                                 0                   [0,65535]
+	                                    fired1 (),                                                    // SFBool     [in,out] fired1                                      FALSE
+	                                    fired2 (),                                                    // SFBool     [in,out] fired2                                      FALSE
+	                          fireMissionIndex (),                                                    // SFInt32    [in,out] fireMissionIndex                            0                   [0,65535]
+	                               firingRange (),                                                    // SFFloat    [in,out] firingRange                                 0.0                 (0,∞)
+	                                firingRate (),                                                    // SFInt32    [in,out] firingRate                                  0                   [0,65535]
+	                                   forceID (),                                                    // SFInt32    [in,out] forceID                                     0                   [0,255]
+	                                      fuse (),                                                    // SFInt32    [in,out] fuse                                        0                   [0,65535]
+	                            linearVelocity (),                                                    // SFVec3f    [in,out] linearVelocity                              0 0 0               (-∞,∞)
+	                        linearAcceleration (),                                                    // SFVec3f    [in,out] linearAcceleration                          0 0 0               (-∞,∞)
+	                                   marking (),                                                    // SFString   [in,out] marking                                     ""
+	                        multicastRelayHost (),                                                    // SFString   [in,out] multicastRelayHost                          ""
+	                        multicastRelayPort (),                                                    // SFInt32    [in,out] multicastRelayPort                          0                   [0,4294967295]
+	                     munitionApplicationID (1),                                                   // SFInt32    [in,out] munitionApplicationID                       1                   [0,65535]
+	                          munitionEndPoint (),                                                    // SFVec3f    [in,out] munitionEndPoint                            0 0 0               (-∞,∞)
+	                          munitionEntityID (),                                                    // SFInt32    [in,out] munitionEntityID                            0                   [0,65535]
+	                          munitionQuantity (),                                                    // SFInt32    [in,out] munitionQuantity                            0                   [0,65535]
+	                            munitionSiteID (),                                                    // SFInt32    [in,out] munitionSiteID                              0                   [0,65535]
+	                        munitionStartPoint (),                                                    // SFVec3f    [in,out] munitionStartPoint                          0 0 0               (-∞,∞)
+	                               networkMode ("standAlone"),                                        // SFString   [in,out] networkMode                                 "standAlone"        ["standAlone"|"networkReader"|"networkWriter"]
+	                                      port (),                                                    // SFInt32    [in,out] port                                        0                   [0,65535]
+	                              readInterval (0.1),                                                 // SFTime     [in,out] readInterval                                0.1                 [0,∞)
+	                                  rotation (),                                                    // SFRotation [in,out] rotation                                    0 0 1 0             (-∞,∞)|[-1,1]
+	                                     scale (1, 1, 1),                                             // SFVec3f    [in,out] scale                                       1 1 1               (-∞,∞)
+	                          scaleOrientation (),                                                    // SFRotation [in,out] scaleOrientation                            0 0 1 0             (-∞,∞)|[-1,1]
+	                                    siteID (),                                                    // SFInt32    [in,out] siteID                                      0                   [0,65535]
+	                               translation (),                                                    // SFVec3f    [in,out] translation                                 0 0 0               (-∞,∞)
+	                                   warhead (),                                                    // SFInt32    [in,out] warhead                                     0                   [0,65535]
+	                             writeInterval (1),                                                   // SFTime     [in,out] writeInterval                               1.0                 [0,∞)
+	       articulationParameterValue0_changed (),                                                    // SFFloat    [out]    articulationParameterValue0_changed
+	       articulationParameterValue1_changed (),                                                    // SFFloat    [out]    articulationParameterValue1_changed
+	       articulationParameterValue2_changed (),                                                    // SFFloat    [out]    articulationParameterValue2_changed
+	       articulationParameterValue3_changed (),                                                    // SFFloat    [out]    articulationParameterValue3_changed
+	       articulationParameterValue4_changed (),                                                    // SFFloat    [out]    articulationParameterValue4_changed
+	       articulationParameterValue5_changed (),                                                    // SFFloat    [out]    articulationParameterValue5_changed
+	       articulationParameterValue6_changed (),                                                    // SFFloat    [out]    articulationParameterValue6_changed
+	       articulationParameterValue7_changed (),                                                    // SFFloat    [out]    articulationParameterValue7_changed
+	                               collideTime (),                                                    // SFTime     [out]    collideTime
+	                              detonateTime (),                                                    // SFTime     [out]    detonateTime
+	                                 firedTime (),                                                    // SFTime     [out]    firedTime
+	                                isCollided (),                                                    // SFBool     [out]    isCollided
+	                               isDetonated (),                                                    // SFBool     [out]    isDetonated
+	                           isNetworkReader (),                                                    // SFBool     [out]    isNetworkReader
+	                           isNetworkWriter (),                                                    // SFBool     [out]    isNetworkWriter
+	                          isRtpHeaderHeard (),                                                    // SFBool     [out]    isRtpHeaderHeard
+	                              isStandAlone (),                                                    // SFBool     [out]    isStandAlone
+	                                 timestamp (),                                                    // SFTime     [out]    timestamp
+	                         rtpHeaderExpected ()                                                     // SFBool     [ ]      rtpHeaderExpected                           FALSE
 {
 	setComponent ("DIS");
 	setTypeName ("EspduTransform");
@@ -241,8 +241,7 @@ EspduTransform::create (X3DExecutionContext* const executionContext) const
 
 void
 EspduTransform::update ()
-{
-}
+{ }
 
 } // X3D
 } // titania

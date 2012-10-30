@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,11 +54,11 @@ namespace titania {
 namespace X3D {
 
 TransformSensor::TransformSensor (X3DExecutionContext* const executionContext) :
-	              X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DEnvironmentalSensorNode (),                                 
-	              targetObject (),                                 // SFNode     [in,out] targetObject         NULL        [X3DGroupingNode|X3DShapeNode]
-	       orientation_changed (),                                 // SFRotation [out]    orientation_changed
-	          position_changed ()                                  // SFVec3f    [out]    position_changed
+	              X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DEnvironmentalSensorNode (),                                                    
+	              targetObject (),                                                    // SFNode     [in,out] targetObject         NULL        [X3DGroupingNode|X3DShapeNode]
+	       orientation_changed (),                                                    // SFRotation [out]    orientation_changed
+	          position_changed ()                                                     // SFVec3f    [out]    position_changed
 {
 	setComponent ("EnvironmentalSensor");
 	setTypeName ("TransformSensor");
@@ -83,8 +83,7 @@ TransformSensor::create (X3DExecutionContext* const executionContext) const
 
 void
 TransformSensor::update ()
-{
-}
+{ }
 
 } // X3D
 } // titania

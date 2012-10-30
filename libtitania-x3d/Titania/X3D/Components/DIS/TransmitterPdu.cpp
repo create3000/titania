@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,49 +54,49 @@ namespace titania {
 namespace X3D {
 
 TransmitterPdu::TransmitterPdu (X3DExecutionContext* const executionContext) :
-	                      X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	                     X3DSensorNode (),                                 
-	                  X3DBoundedObject (),                                 
-	                           address ("localhost"),                      // SFString [in,out] address                             "localhost"
-	                   antennaLocation (),                                 // SFVec3f  [in,out] antennaLocation                     0 0 0               (-∞,∞)
-	              antennaPatternLength (),                                 // SFInt32  [in,out] antennaPatternLength                0                   [0,65535]
-	                antennaPatternType (),                                 // SFInt32  [in,out] antennaPatternType                  0                   [0,65535]
-	                     applicationID (1),                                // SFInt32  [in,out] applicationID                       1                   [0,65535]
-	                       cryptoKeyID (),                                 // SFInt32  [in,out] cryptoKeyID                         0                   [0,65535]
-	                      cryptoSystem (),                                 // SFInt32  [in,out] cryptoSystem                        0                   [0,65535]
-	                          entityID (),                                 // SFInt32  [in,out] entityID                            0                   [0,65535]
-	                         frequency (),                                 // SFInt32  [in,out] frequency                           0                   [0,4294967296]
-	                       inputSource (),                                 // SFInt32  [in,out] inputSource                         0                   [0,255]
-	      lengthOfModulationParameters (),                                 // SFInt32  [in,out] lengthOfModulationParameters        0                   [0,255]
-	              modulationTypeDetail (),                                 // SFInt32  [in,out] modulationTypeDetail                0                   [0,65535]
-	               modulationTypeMajor (),                                 // SFInt32  [in,out] modulationTypeMajor                 0                   [0,65535]
-	      modulationTypeSpreadSpectrum (),                                 // SFInt32  [in,out] modulationTypeSpreadSpectrum        0                   [0,65535]
-	              modulationTypeSystem (),                                 // SFInt32  [in,out] modulationTypeSystem                0                   [0,65535]
-	                multicastRelayHost (),                                 // SFString [in,out] multicastRelayHost                  ""
-	                multicastRelayPort (),                                 // SFInt32  [in,out] multicastRelayPort                  0                   [0,4294967295]
-	                       networkMode ("standAlone"),                     // SFString [in,out] networkMode                         "standAlone"        ["standAlone"|"networkReader"|"networkWriter"]
-	                              port (),                                 // SFInt32  [in,out] port                                0                   [0,65535]
-	                             power (),                                 // SFFloat  [in,out] power                               0.0                 [0,∞)
-	           radioEntityTypeCategory (),                                 // SFInt32  [in,out] radioEntityTypeCategory             0                   [0,255]
-	            radioEntityTypeCountry (),                                 // SFInt32  [in,out] radioEntityTypeCountry              0                   [0,65535]
-	             radioEntityTypeDomain (),                                 // SFInt32  [in,out] radioEntityTypeDomain               0                   [0,255]
-	               radioEntityTypeKind (),                                 // SFInt32  [in,out] radioEntityTypeKind                 0                   [0,255]
-	       radioEntityTypeNomenclature (),                                 // SFInt32  [in,out] radioEntityTypeNomenclature         0                   [0,255]
-	radioEntityTypeNomenclatureVersion (),                                 // SFInt32  [in,out] radioEntityTypeNomenclatureVersion  0                   [0,65535]
-	                           radioID (),                                 // SFInt32  [in,out] radioID                             0                   [0,255]
-	                      readInterval (0.1),                              // SFFloat  [in,out] readInterval                        0.1                 [0,∞)
-	           relativeAntennaLocation (),                                 // SFVec3f  [in,out] relativeAntennaLocation             0 0 0               (-∞,∞)
-	                 rtpHeaderExpected (),                                 // SFBool   [in,out] rtpHeaderExpected                   FALSE
-	                            siteID (),                                 // SFInt32  [in,out] siteID                              0                   [0,65535]
-	        transmitFrequencyBandwidth (),                                 // SFFloat  [in,out] transmitFrequencyBandwidth          0.0                 (-∞,∞)
-	                     transmitState (),                                 // SFInt32  [in,out] transmitState                       0                   [0,255]
-	                     whichGeometry (1),                                // SFInt32  [in,out] whichGeometry                       1                   [-1,∞)
-	                     writeInterval (1),                                // SFFloat  [in,out] writeInterval                       1.0                 [0,∞)
-	                   isNetworkReader (),                                 // SFBool   [out]    isNetworkReader                                         FALSE
-	                   isNetworkWriter (),                                 // SFBool   [out]    isNetworkWriter                                         FALSE
-	                  isRtpHeaderHeard (),                                 // SFBool   [out]    isRtpHeaderHeard                                        FALSE
-	                      isStandAlone (),                                 // SFBool   [out]    isStandAlone                                            FALSE
-	                         timestamp ()                                  // SFTime   [out]    timestamp
+	                      X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	                     X3DSensorNode (),                                                    
+	                  X3DBoundedObject (),                                                    
+	                           address ("localhost"),                                         // SFString [in,out] address                             "localhost"
+	                   antennaLocation (),                                                    // SFVec3f  [in,out] antennaLocation                     0 0 0               (-∞,∞)
+	              antennaPatternLength (),                                                    // SFInt32  [in,out] antennaPatternLength                0                   [0,65535]
+	                antennaPatternType (),                                                    // SFInt32  [in,out] antennaPatternType                  0                   [0,65535]
+	                     applicationID (1),                                                   // SFInt32  [in,out] applicationID                       1                   [0,65535]
+	                       cryptoKeyID (),                                                    // SFInt32  [in,out] cryptoKeyID                         0                   [0,65535]
+	                      cryptoSystem (),                                                    // SFInt32  [in,out] cryptoSystem                        0                   [0,65535]
+	                          entityID (),                                                    // SFInt32  [in,out] entityID                            0                   [0,65535]
+	                         frequency (),                                                    // SFInt32  [in,out] frequency                           0                   [0,4294967296]
+	                       inputSource (),                                                    // SFInt32  [in,out] inputSource                         0                   [0,255]
+	      lengthOfModulationParameters (),                                                    // SFInt32  [in,out] lengthOfModulationParameters        0                   [0,255]
+	              modulationTypeDetail (),                                                    // SFInt32  [in,out] modulationTypeDetail                0                   [0,65535]
+	               modulationTypeMajor (),                                                    // SFInt32  [in,out] modulationTypeMajor                 0                   [0,65535]
+	      modulationTypeSpreadSpectrum (),                                                    // SFInt32  [in,out] modulationTypeSpreadSpectrum        0                   [0,65535]
+	              modulationTypeSystem (),                                                    // SFInt32  [in,out] modulationTypeSystem                0                   [0,65535]
+	                multicastRelayHost (),                                                    // SFString [in,out] multicastRelayHost                  ""
+	                multicastRelayPort (),                                                    // SFInt32  [in,out] multicastRelayPort                  0                   [0,4294967295]
+	                       networkMode ("standAlone"),                                        // SFString [in,out] networkMode                         "standAlone"        ["standAlone"|"networkReader"|"networkWriter"]
+	                              port (),                                                    // SFInt32  [in,out] port                                0                   [0,65535]
+	                             power (),                                                    // SFFloat  [in,out] power                               0.0                 [0,∞)
+	           radioEntityTypeCategory (),                                                    // SFInt32  [in,out] radioEntityTypeCategory             0                   [0,255]
+	            radioEntityTypeCountry (),                                                    // SFInt32  [in,out] radioEntityTypeCountry              0                   [0,65535]
+	             radioEntityTypeDomain (),                                                    // SFInt32  [in,out] radioEntityTypeDomain               0                   [0,255]
+	               radioEntityTypeKind (),                                                    // SFInt32  [in,out] radioEntityTypeKind                 0                   [0,255]
+	       radioEntityTypeNomenclature (),                                                    // SFInt32  [in,out] radioEntityTypeNomenclature         0                   [0,255]
+	radioEntityTypeNomenclatureVersion (),                                                    // SFInt32  [in,out] radioEntityTypeNomenclatureVersion  0                   [0,65535]
+	                           radioID (),                                                    // SFInt32  [in,out] radioID                             0                   [0,255]
+	                      readInterval (0.1),                                                 // SFFloat  [in,out] readInterval                        0.1                 [0,∞)
+	           relativeAntennaLocation (),                                                    // SFVec3f  [in,out] relativeAntennaLocation             0 0 0               (-∞,∞)
+	                 rtpHeaderExpected (),                                                    // SFBool   [in,out] rtpHeaderExpected                   FALSE
+	                            siteID (),                                                    // SFInt32  [in,out] siteID                              0                   [0,65535]
+	        transmitFrequencyBandwidth (),                                                    // SFFloat  [in,out] transmitFrequencyBandwidth          0.0                 (-∞,∞)
+	                     transmitState (),                                                    // SFInt32  [in,out] transmitState                       0                   [0,255]
+	                     whichGeometry (1),                                                   // SFInt32  [in,out] whichGeometry                       1                   [-1,∞)
+	                     writeInterval (1),                                                   // SFFloat  [in,out] writeInterval                       1.0                 [0,∞)
+	                   isNetworkReader (),                                                    // SFBool   [out]    isNetworkReader                                         FALSE
+	                   isNetworkWriter (),                                                    // SFBool   [out]    isNetworkWriter                                         FALSE
+	                  isRtpHeaderHeard (),                                                    // SFBool   [out]    isRtpHeaderHeard                                        FALSE
+	                      isStandAlone (),                                                    // SFBool   [out]    isStandAlone                                            FALSE
+	                         timestamp ()                                                     // SFTime   [out]    timestamp
 {
 	setComponent ("DIS");
 	setTypeName ("TransmitterPdu");
@@ -162,8 +162,7 @@ TransmitterPdu::getBBox ()
 
 void
 TransmitterPdu::update ()
-{
-}
+{ }
 
 } // X3D
 } // titania

@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,13 +54,13 @@ namespace titania {
 namespace X3D {
 
 LineSet::LineSet (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryNode (),                                 
-	         attrib (),                                 // MFNode  [in,out] attrib       [ ]         [X3DVertexAttributeNode]
-	          color (),                                 // SFNode  [in,out] color        NULL        [X3DColorNode]
-	          coord (),                                 // SFNode  [in,out] coord        NULL        [X3DCoordinateNode]
-	       fogCoord (),                                 // SFNode  [in,out] fogCoord     [ ]         [FogCoordinate]
-	    vertexCount ()                                  // MFInt32 [in,out] vertexCount  [ ]         [2,∞)
+	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DGeometryNode (),                                                    
+	         attrib (),                                                    // MFNode  [in,out] attrib       [ ]         [X3DVertexAttributeNode]
+	          color (),                                                    // SFNode  [in,out] color        NULL        [X3DColorNode]
+	          coord (),                                                    // SFNode  [in,out] coord        NULL        [X3DCoordinateNode]
+	       fogCoord (),                                                    // SFNode  [in,out] fogCoord     [ ]         [FogCoordinate]
+	    vertexCount ()                                                     // MFInt32 [in,out] vertexCount  [ ]         [2,∞)
 {
 	setComponent ("Rendering");
 	setTypeName ("LineSet");

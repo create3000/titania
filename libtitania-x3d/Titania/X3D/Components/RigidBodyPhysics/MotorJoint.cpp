@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,31 +54,31 @@ namespace titania {
 namespace X3D {
 
 MotorJoint::MotorJoint (X3DExecutionContext* const executionContext) :
-	        X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	   X3DRigidJointNode (),                                 
-	          axis1Angle (),                                 // SFFloat [in,out] axis1Angle            0            [-π,π]
-	         axis1Torque (),                                 // SFFloat [in,out] axis1Torque           0            (-∞,∞)
-	          axis2Angle (),                                 // SFFloat [in,out] axis2Angle            0            [-π,π]
-	         axis2Torque (),                                 // SFFloat [in,out] axis2Torque           0            (-∞,∞)
-	          axis3Angle (),                                 // SFFloat [in,out] axis3Angle            0            [-π,π]
-	         axis3Torque (),                                 // SFFloat [in,out] axis3Torque           0            (-∞,∞)
-	         enabledAxes (1),                                // SFInt32 [in,out] enabledAxes           1            [0,3]
-	          motor1Axis (),                                 // SFVec3f [in,out] motor1Axis            0 0 0
-	          motor2Axis (),                                 // SFVec3f [in,out] motor2Axis            0 0 0
-	          motor3Axis (),                                 // SFVec3f [in,out] motor3Axis            0 0 0
-	         stop1Bounce (),                                 // SFFloat [in,out] stop1Bounce           0            [0,1]
-	stop1ErrorCorrection (0.8),                              // SFFloat [in,out] stop1ErrorCorrection  0.8          [0,1]
-	         stop2Bounce (),                                 // SFFloat [in,out] stop2Bounce           0            [0,1]
-	stop2ErrorCorrection (0.8),                              // SFFloat [in,out] stop2ErrorCorrection  0.8          [0,1]
-	         stop3Bounce (),                                 // SFFloat [in,out] stop3Bounce           0            [0,1]
-	stop3ErrorCorrection (0.8),                              // SFFloat [in,out] stop3ErrorCorrection  0.8          [0,1]
-	         motor1Angle (),                                 // SFFloat [out]    motor1Angle
-	     motor1AngleRate (),                                 // SFFloat [out]    motor1AngleRate
-	         motor2Angle (),                                 // SFFloat [out]    motor2Angle
-	     motor2AngleRate (),                                 // SFFloat [out]    motor2AngleRate
-	         motor3Angle (),                                 // SFFloat [out]    motor3Angle
-	     motor3AngleRate (),                                 // SFFloat [out]    motor3AngleRate
-	            autoCalc ()                                  // SFBool  [ ]      autoCalc              FALSE
+	        X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DRigidJointNode (),                                                    
+	          axis1Angle (),                                                    // SFFloat [in,out] axis1Angle            0            [-π,π]
+	         axis1Torque (),                                                    // SFFloat [in,out] axis1Torque           0            (-∞,∞)
+	          axis2Angle (),                                                    // SFFloat [in,out] axis2Angle            0            [-π,π]
+	         axis2Torque (),                                                    // SFFloat [in,out] axis2Torque           0            (-∞,∞)
+	          axis3Angle (),                                                    // SFFloat [in,out] axis3Angle            0            [-π,π]
+	         axis3Torque (),                                                    // SFFloat [in,out] axis3Torque           0            (-∞,∞)
+	         enabledAxes (1),                                                   // SFInt32 [in,out] enabledAxes           1            [0,3]
+	          motor1Axis (),                                                    // SFVec3f [in,out] motor1Axis            0 0 0
+	          motor2Axis (),                                                    // SFVec3f [in,out] motor2Axis            0 0 0
+	          motor3Axis (),                                                    // SFVec3f [in,out] motor3Axis            0 0 0
+	         stop1Bounce (),                                                    // SFFloat [in,out] stop1Bounce           0            [0,1]
+	stop1ErrorCorrection (0.8),                                                 // SFFloat [in,out] stop1ErrorCorrection  0.8          [0,1]
+	         stop2Bounce (),                                                    // SFFloat [in,out] stop2Bounce           0            [0,1]
+	stop2ErrorCorrection (0.8),                                                 // SFFloat [in,out] stop2ErrorCorrection  0.8          [0,1]
+	         stop3Bounce (),                                                    // SFFloat [in,out] stop3Bounce           0            [0,1]
+	stop3ErrorCorrection (0.8),                                                 // SFFloat [in,out] stop3ErrorCorrection  0.8          [0,1]
+	         motor1Angle (),                                                    // SFFloat [out]    motor1Angle
+	     motor1AngleRate (),                                                    // SFFloat [out]    motor1AngleRate
+	         motor2Angle (),                                                    // SFFloat [out]    motor2Angle
+	     motor2AngleRate (),                                                    // SFFloat [out]    motor2AngleRate
+	         motor3Angle (),                                                    // SFFloat [out]    motor3Angle
+	     motor3AngleRate (),                                                    // SFFloat [out]    motor3AngleRate
+	            autoCalc ()                                                     // SFBool  [ ]      autoCalc              FALSE
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("MotorJoint");

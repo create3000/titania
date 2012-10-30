@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,18 +54,18 @@ namespace titania {
 namespace X3D {
 
 CollisionCollection::CollisionCollection (X3DExecutionContext* const executionContext) :
-	            X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	            X3DChildNode (),                                 
-	       appliedParameters ({ "BOUNCE" }),                     // MFString [in,out] appliedParameters         "BOUNCE"        [ ]
-	                  bounce (),                                 // SFFloat  [in,out] bounce                    0               [0,1]
-	             collidables (),                                 // MFNode   [in,out] collidables               NULL            [X3DNBodyCollisionSpaceNode|X3DNBodyCollidableNode]
-	                 enabled (),                                 // SFBool   [in,out] enabled                   TRUE
-	    frictionCoefficients (),                                 // SFVec2f  [in,out] frictionCoefficients      0 0             [0,∞)
-	          minBounceSpeed (),                                 // SFFloat  [in,out] minBounceSpeed            0.1             [0,∞)
-	             slipFactors (),                                 // SFVec2f  [in,out] slipFactors               0 0             (-∞,∞)
-	softnessConstantForceMix (),                                 // SFFloat  [in,out] softnessConstantForceMix  0.0001          [0,1]
-	 softnessErrorCorrection (),                                 // SFFloat  [in,out] softnessErrorCorrection   0.8             [0,1]
-	            surfaceSpeed ()                                  // SFVec2f  [in,out] surfaceSpeed              0 0             (-∞,∞)
+	            X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	            X3DChildNode (),                                                    
+	       appliedParameters ({ "BOUNCE" }),                                        // MFString [in,out] appliedParameters         "BOUNCE"        [ ]
+	                  bounce (),                                                    // SFFloat  [in,out] bounce                    0               [0,1]
+	             collidables (),                                                    // MFNode   [in,out] collidables               NULL            [X3DNBodyCollisionSpaceNode|X3DNBodyCollidableNode]
+	                 enabled (),                                                    // SFBool   [in,out] enabled                   TRUE
+	    frictionCoefficients (),                                                    // SFVec2f  [in,out] frictionCoefficients      0 0             [0,∞)
+	          minBounceSpeed (),                                                    // SFFloat  [in,out] minBounceSpeed            0.1             [0,∞)
+	             slipFactors (),                                                    // SFVec2f  [in,out] slipFactors               0 0             (-∞,∞)
+	softnessConstantForceMix (),                                                    // SFFloat  [in,out] softnessConstantForceMix  0.0001          [0,1]
+	 softnessErrorCorrection (),                                                    // SFFloat  [in,out] softnessErrorCorrection   0.8             [0,1]
+	            surfaceSpeed ()                                                     // SFVec2f  [in,out] surfaceSpeed              0 0             (-∞,∞)
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("CollisionCollection");

@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,11 +54,11 @@ namespace titania {
 namespace X3D {
 
 LineProperties::LineProperties (X3DExecutionContext* const executionContext) :
-	          X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DAppearanceChildNode (),                                 
-	               applied (true),                             // SFBool  [in,out] applied               TRUE
-	              linetype (1),                                // SFInt32 [in,out] linetype              1           [1,∞)
-	  linewidthScaleFactor ()                                  // SFFloat [in,out] linewidthScaleFactor  0           (-∞,∞)
+	          X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DAppearanceChildNode (),                                                    
+	               applied (true),                                                // SFBool  [in,out] applied               TRUE
+	              linetype (1),                                                   // SFInt32 [in,out] linetype              1           [1,∞)
+	  linewidthScaleFactor ()                                                     // SFFloat [in,out] linewidthScaleFactor  0           (-∞,∞)
 {
 	setComponent ("Shape");
 	setTypeName ("LineProperties");

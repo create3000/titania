@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,13 +54,13 @@ namespace titania {
 namespace X3D {
 
 NurbsSet::NurbsSet (X3DExecutionContext* const executionContext) :
-	     X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	     X3DChildNode (),                                 
-	 X3DBoundedObject (),                                 
-	      addGeometry (),                                 // MFNode  [in]     addGeometry                   [NurbsSurface]
-	   removeGeometry (),                                 // MFNode  [in]     removeGeometry                [NurbsSurface]
-	         geometry (),                                 // MFNode  [in,out] geometry           [ ]        [NurbsSurface]
-	tessellationScale (1)                                 // SFFloat [in,out] tessellationScale  1.0        (0,∞)
+	     X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	     X3DChildNode (),                                                    
+	 X3DBoundedObject (),                                                    
+	      addGeometry (),                                                    // MFNode  [in]     addGeometry                   [NurbsSurface]
+	   removeGeometry (),                                                    // MFNode  [in]     removeGeometry                [NurbsSurface]
+	         geometry (),                                                    // MFNode  [in,out] geometry           [ ]        [NurbsSurface]
+	tessellationScale (1)                                                    // SFFloat [in,out] tessellationScale  1.0        (0,∞)
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsSet");

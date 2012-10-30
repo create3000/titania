@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -58,14 +58,14 @@ namespace titania {
 namespace X3D {
 
 SpotLight::SpotLight (X3DExecutionContext* const executionContext) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DLightNode (),                                 
-	 attenuation (1, 0, 0),                          // SFVec3f [in,out] attenuation  1 0 0         [0,∞)
-	   beamWidth (),                                 // SFFloat [in,out] beamWidth    π/2           (0,π/2]
-	 cutOffAngle (0.785398),                         // SFFloat [in,out] cutOffAngle  π/4           (0,π/2]
-	   direction (0, 0, -1),                         // SFVec3f [in,out] direction    0 0 -1        (-∞,∞)
-	    location (),                                 // SFVec3f [in,out] location     0 0 0         (-∞,∞)
-	      radius (100)                               // SFFloat [in,out] radius       100           [0,∞)
+	X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DLightNode (),                                                    
+	 attenuation (1, 0, 0),                                             // SFVec3f [in,out] attenuation  1 0 0         [0,∞)
+	   beamWidth (),                                                    // SFFloat [in,out] beamWidth    π/2           (0,π/2]
+	 cutOffAngle (0.785398),                                            // SFFloat [in,out] cutOffAngle  π/4           (0,π/2]
+	   direction (0, 0, -1),                                            // SFVec3f [in,out] direction    0 0 -1        (-∞,∞)
+	    location (),                                                    // SFVec3f [in,out] location     0 0 0         (-∞,∞)
+	      radius (100)                                                  // SFFloat [in,out] radius       100           [0,∞)
 {
 	setComponent ("Lighting");
 	setTypeName ("SpotLight");

@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,19 +59,19 @@ namespace titania {
 namespace X3D {
 
 Appearance::Appearance (X3DExecutionContext* const executionContext) :
-	     X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DAppearanceNode (),                                 
-	   fillProperties (),                                 // SFNode [in,out] fillProperties    NULL        [FillProperties]
-	   lineProperties (),                                 // SFNode [in,out] lineProperties    NULL        [LineProperties]
-	         material (),                                 // SFNode [in,out] material          NULL        [X3DMaterialNode]
-	          shaders (),                                 // MFNode[in,out] shaders           [ ]         [X3DShaderNode]
-	          texture (),                                 // SFNode [in,out] texture           NULL        [X3DTextureNode]
-	 textureTransform (),                                 // SFNode [in,out] textureTransform  NULL        [X3DTextureTransformNode]
-	  _fillProperties (nullptr),                          
-	  _lineProperties (nullptr),                          
-	        _material (nullptr),                          
-	         _texture (nullptr),                          
-	_textureTransform (nullptr)
+	     X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DAppearanceNode (),                                                    
+	   fillProperties (),                                                    // SFNode [in,out] fillProperties    NULL        [FillProperties]
+	   lineProperties (),                                                    // SFNode [in,out] lineProperties    NULL        [LineProperties]
+	         material (),                                                    // SFNode [in,out] material          NULL        [X3DMaterialNode]
+	          shaders (),                                                    // MFNode[in,out] shaders           [ ]         [X3DShaderNode]
+	          texture (),                                                    // SFNode [in,out] texture           NULL        [X3DTextureNode]
+	 textureTransform (),                                                    // SFNode [in,out] textureTransform  NULL        [X3DTextureTransformNode]
+	  _fillProperties (nullptr),                                             
+	  _lineProperties (nullptr),                                             
+	        _material (nullptr),                                             
+	         _texture (nullptr),                                             
+	_textureTransform (nullptr)                                              
 {
 	setComponent ("Shape");
 	setTypeName ("Appearance");

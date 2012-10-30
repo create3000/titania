@@ -1,3 +1,19 @@
+2012-10-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Test.h:
+	* main.cpp:
+	* Clock.h:
+	* SFNode.h:
+	* signal.h:
+	* Rotation.h:
+	* Interest.h:
+	* Vector4.h:
+	* InputOutput.h:
+	* FieldInterest.h:
+	* AddAndRemoveNode.h:
+	* Rotation.h:
+	* Quaternion.h: 
+
 2012-10-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* test.cproj: 

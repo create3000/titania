@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,14 +54,14 @@ namespace titania {
 namespace X3D {
 
 CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
-	     X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DDragSensorNode (),                                 
-	     axisRotation (0, 1, 0, 0),                       // SFRotation [in,out] axisRotation      0 1 0 0
-	        diskAngle (),                                 // SFFloat    [in,out] diskAngle         π/12           [0,π/2]
-	         maxAngle (-1),                               // SFFloat    [in,out] maxAngle          -1             [-2π,2π]
-	         minAngle (),                                 // SFFloat    [in,out] minAngle          0              [-2π,2π]
-	           offset (),                                 // SFFloat    [in,out] offset            0              (-∞,∞)
-	 rotation_changed ()                                  // SFRotation [out]    rotation_changed
+	     X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DDragSensorNode (),                                                    
+	     axisRotation (0, 1, 0, 0),                                          // SFRotation [in,out] axisRotation      0 1 0 0
+	        diskAngle (),                                                    // SFFloat    [in,out] diskAngle         π/12           [0,π/2]
+	         maxAngle (-1),                                                  // SFFloat    [in,out] maxAngle          -1             [-2π,2π]
+	         minAngle (),                                                    // SFFloat    [in,out] minAngle          0              [-2π,2π]
+	           offset (),                                                    // SFFloat    [in,out] offset            0              (-∞,∞)
+	 rotation_changed ()                                                     // SFRotation [out]    rotation_changed
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("CylinderSensor");
@@ -89,8 +89,7 @@ CylinderSensor::create (X3DExecutionContext* const executionContext) const
 
 void
 CylinderSensor::update ()
-{
-}
+{ }
 
 } // X3D
 } // titania

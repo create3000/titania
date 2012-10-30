@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,22 +54,22 @@ namespace titania {
 namespace X3D {
 
 ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
-	     X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	     X3DShapeNode (),                                 
-	  createParticles (true),                             // SFBool   [in,out] createParticles    TRUE
-	          enabled (true),                             // SFBool   [in,out] enabled            TRUE
-	lifetimeVariation (0.25),                             // SFFloat  [in,out] lifetimeVariation  0.25             [0,1]
-	     maxParticles (200),                              // SFInt32  [in,out] maxParticles       200              [0,∞)
-	 particleLifetime (5),                                // SFFloat  [in,out] particleLifetime   5                [0,∞)
-	     particleSize (0.02, 0.02),                       // SFVec2f  [in,out] particleSize       0.02 0.02        [0,∞)
-	         isActive (),                                 // SFBool   [out]    isActive
-	        colorRamp (),                                 // SFNode   [ ]      colorRamp          NULL             [X3DColorNode]
-	         colorKey (),                                 // MFFloat  [ ]      colorKey           NULL             [0,∞)
-	          emitter (),                                 // SFNode   [ ]      emitter            NULL             [X3DParticleEmitterNode]
-	     geometryType ("QUAD"),                           // SFString [ ]      geometryType       "QUAD"           ["LINE"|"POINT"|"QUAD"|"SPRITE"|"TRIANGLE"|"GEOMETRY"|...]
-	          physics (),                                 // MFNode   [ ]      physics            [ ]               [X3DParticlePhysicsModelNode]
-	     texCoordRamp (),                                 // SFNode   [ ]      texCoordRamp       NULL             [TextureCoordinate]
-	      texCoordKey ()                                  // MFFloat  [ ]      texCoordKey        [ ]               [0,∞)
+	     X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	     X3DShapeNode (),                                                    
+	  createParticles (true),                                                // SFBool   [in,out] createParticles    TRUE
+	          enabled (true),                                                // SFBool   [in,out] enabled            TRUE
+	lifetimeVariation (0.25),                                                // SFFloat  [in,out] lifetimeVariation  0.25             [0,1]
+	     maxParticles (200),                                                 // SFInt32  [in,out] maxParticles       200              [0,∞)
+	 particleLifetime (5),                                                   // SFFloat  [in,out] particleLifetime   5                [0,∞)
+	     particleSize (0.02, 0.02),                                          // SFVec2f  [in,out] particleSize       0.02 0.02        [0,∞)
+	         isActive (),                                                    // SFBool   [out]    isActive
+	        colorRamp (),                                                    // SFNode   [ ]      colorRamp          NULL             [X3DColorNode]
+	         colorKey (),                                                    // MFFloat  [ ]      colorKey           NULL             [0,∞)
+	          emitter (),                                                    // SFNode   [ ]      emitter            NULL             [X3DParticleEmitterNode]
+	     geometryType ("QUAD"),                                              // SFString [ ]      geometryType       "QUAD"           ["LINE"|"POINT"|"QUAD"|"SPRITE"|"TRIANGLE"|"GEOMETRY"|...]
+	          physics (),                                                    // MFNode   [ ]      physics            [ ]               [X3DParticlePhysicsModelNode]
+	     texCoordRamp (),                                                    // SFNode   [ ]      texCoordRamp       NULL             [TextureCoordinate]
+	      texCoordKey ()                                                     // MFFloat  [ ]      texCoordKey        [ ]               [0,∞)
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("ParticleSystem");

@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,12 +54,12 @@ namespace titania {
 namespace X3D {
 
 PolylineEmitter::PolylineEmitter (X3DExecutionContext* const executionContext) :
-	          X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DParticleEmitterNode (),                                 
-	        set_coordinate (),                                 // SFInt32 [in]     set_coordinate
-	                 coord (),                                 // SFNode  [in,out] coord           NULL         [X3DCoordinateNode]
-	             direction (0, 1, 0),                          // SFVec3f [in,out] direction       0 1 0        [-1,1]
-	            coordIndex ({ -1 })                            // MFInt32 [ ]      coordIndex      -1           [0,∞) or -1
+	          X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DParticleEmitterNode (),                                                    
+	        set_coordinate (),                                                    // SFInt32 [in]     set_coordinate
+	                 coord (),                                                    // SFNode  [in,out] coord           NULL         [X3DCoordinateNode]
+	             direction (0, 1, 0),                                             // SFVec3f [in,out] direction       0 1 0        [-1,1]
+	            coordIndex ({ -1 })                                               // MFInt32 [ ]      coordIndex      -1           [0,∞) or -1
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("PolylineEmitter");

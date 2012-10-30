@@ -1,3 +1,13 @@
+2012-10-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* GLSurface.h:
+	* GLSurface.cpp:
+	* GLContext.h:
+	* GLContext.cpp:
+	* WindowContext.cpp:
+	* TextureContext.cpp:
+	* PixelBufferContext.cpp: 
+
 2012-10-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GLSurface.cpp:

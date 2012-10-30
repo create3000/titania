@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,16 +51,16 @@
 
 #include "../Fields/SFNode.h"
 #include "../Routing/Route.h"
-#include <Titania/Basic/IndexedMap.h>
+#include <Titania/Basic/IndexedMultiMap.h>
 
 namespace titania {
 namespace X3D {
 
-typedef basic::indexed_map <std::pair <X3DFieldDefinition*, X3DFieldDefinition*>, SFNode <Route>> RouteArray;
+typedef basic::indexed_multimap <std::pair <X3DFieldDefinition*, X3DFieldDefinition*>, SFNode <Route>> RouteArray;
 
 } // X3D
 
-extern template class basic::indexed_map <std::pair <X3D::X3DFieldDefinition*, X3D::X3DFieldDefinition*>, X3D::SFNode <X3D::Route>>;
+extern template class basic::indexed_multimap <std::pair <X3D::X3DFieldDefinition*, X3D::X3DFieldDefinition*>, X3D::SFNode <X3D::Route>>;
 
 } // titania
 

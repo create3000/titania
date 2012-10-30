@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,9 +54,9 @@ namespace titania {
 namespace X3D {
 
 PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DTexture2DNode (),                                 
-	           image (0, 0, 0, MFInt32 ())              // SFImage [in,out] image  0 0 0
+	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DTexture2DNode (),                                                    
+	           image (0, 0, 0, MFInt32 ())                                  // SFImage [in,out] image  0 0 0
 {
 	setComponent ("Texturing");
 	setTypeName ("PixelTexture");
@@ -100,21 +100,21 @@ PixelTexture::requestImmediateLoad ()
 		{
 			std::vector <uint8_t> array;
 			array .reserve (pixels);
-			
+
 			array .assign (image .getArray () .begin (),
 			               image .getArray () .end ());
-			
+
 			Magick::Blob blob (array .data (), pixels);
 			mimage .magick ("GRAY");
 			mimage .read (blob);
-			
+
 			break;
 		}
 		case 2:
 		{
 			std::vector <uint8_t> array;
 			array .reserve (pixels * 2);
-			
+
 			for (const auto & pixel : image .getArray ())
 			{
 				uint8_t color = pixel >> 8;
@@ -134,7 +134,7 @@ PixelTexture::requestImmediateLoad ()
 		{
 			std::vector <uint8_t> array;
 			array .reserve (pixels * 3);
-			
+
 			for (const auto & pixel : image .getArray ())
 			{
 				array .push_back (pixel >> 16);
@@ -145,14 +145,14 @@ PixelTexture::requestImmediateLoad ()
 			Magick::Blob blob (array .data (), pixels * 3);
 			mimage .magick ("RGB");
 			mimage .read (blob);
-			
+
 			break;
 		}
 		case 4:
 		{
 			std::vector <uint8_t> array;
 			array .reserve (pixels * 4);
-			
+
 			for (const auto & pixel : image .getArray ())
 			{
 				array .push_back (pixel >> 24);
@@ -164,7 +164,7 @@ PixelTexture::requestImmediateLoad ()
 			Magick::Blob blob (array .data (), pixels * 4);
 			mimage .magick ("RGBA");
 			mimage .read (blob);
-			
+
 			break;
 		}
 		default:

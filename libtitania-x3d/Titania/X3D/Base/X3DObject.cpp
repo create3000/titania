@@ -42,7 +42,7 @@ GarbageCollector X3DObject::garbageCollector;
 X3DObject::X3DObject () :
 	 X3DInput (), 
 	X3DOutput (), 
-	  X3DType ()
+	  X3DType ()  
 { }
 
 // Type

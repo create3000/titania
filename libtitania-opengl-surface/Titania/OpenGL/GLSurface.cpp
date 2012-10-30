@@ -61,8 +61,8 @@ namespace titania {
 namespace OpenGL {
 
 GLSurface::GLSurface () :
-	Gtk::DrawingArea (),     
-	        context  (NULL)
+	Gtk::DrawingArea (),    
+	        context  (NULL) 
 {
 	set_double_buffered (false);
 	set_app_paintable (true);

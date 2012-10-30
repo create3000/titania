@@ -1,3 +1,16 @@
+2012-10-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SocketStreamBuf.o:
+	* InputHTTPStream.o:
+	* InputFileStream.o:
+	* libtitania-stream.so:
+	* SocketStreamBuf.h:
+	* InputFileStream.h:
+	* InputHTTPStream.h:
+	* InputFileStream.cpp:
+	* InputHTTPStream.cpp:
+	* SocketStreamBuf.cpp: 
+
 2012-10-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SocketStreamBuf.o:

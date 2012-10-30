@@ -145,10 +145,10 @@ private:
 	void
 	saveInterface ();
 
-	Configuration         gconf;
-	sigc::connection      initialized_connection;
-	X3DBrowserInterface*  browserWidget;
-	Array::iterator       userInterface;
+	Configuration        gconf;
+	sigc::connection     initialized_connection;
+	X3DBrowserInterface* browserWidget;
+	Array::iterator      userInterface;
 
 	static Array userInterfaces;
 

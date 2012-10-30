@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -115,7 +115,7 @@ X3DBasicNode::X3DBasicNode (X3DBrowser* const browser, X3DExecutionContext* cons
 	    executionContext (executionContext), 
 	numUserDefinedFields (0),                
 	             prepare (true),             
-	  receivedInputEvent (false)
+	  receivedInputEvent (false)             
 {
 	assert (executionContext);
 }
@@ -514,7 +514,7 @@ X3DBasicNode::processEvents (ObjectSet & sourceFields)
 		for (const auto & event : eventsToProcess)
 		{
 			//std::clog << "Node '" << getTypeName () << "' process events from field '" << event -> getName () << "'." << (void*) this << std::endl;
-		   event -> processEvents (sourceFields);
+			event -> processEvents (sourceFields);
 		}
 	}
 }

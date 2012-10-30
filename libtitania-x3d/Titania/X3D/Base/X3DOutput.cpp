@@ -56,7 +56,7 @@ namespace X3D {
 X3DOutput::X3DOutput () :
 	       X3DBase (), 
 	    requesters (), 
-	requesterIndex ()
+	requesterIndex ()  
 { }
 
 void
@@ -109,6 +109,12 @@ X3DOutput::processInterests () const
 	{
 		(*requester ++)();
 	}
+}
+
+X3DOutput::size_type
+X3DOutput::size ()
+{
+	return requesters .size ();
 }
 
 void

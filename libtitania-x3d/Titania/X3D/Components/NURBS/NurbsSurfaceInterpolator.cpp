@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,19 +54,19 @@ namespace titania {
 namespace X3D {
 
 NurbsSurfaceInterpolator::NurbsSurfaceInterpolator (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	    X3DChildNode (),                                 
-	    set_fraction (),                                 // SFVec2f  [in]     set_fraction                (-∞,∞)
-	    controlPoint (),                                 // SFNode   [in,out] controlPoint      [ ]       [X3DCoordinateNode]
-	          weight (),                                 // MFDouble [in,out] weight            [ ]       (-∞,∞)
-	position_changed (),                                 // SFVec3f  [out]    position_changed
-	  normal_changed (),                                 // SFVec3f  [out]    normal_changed
-	      uDimension (),                                 // SFInt32  [ ]      uDimension        0         [0,∞)
-	           uKnot (),                                 // MFDouble [ ]      uKnot             [ ]        (-∞,∞)
-	          uOrder (3),                                // SFInt32  [ ]      uOrder            3         [2,∞)
-	      vDimension (),                                 // SFInt32  [ ]      vDimension        0         [0,∞)
-	           vKnot (),                                 // MFDouble [ ]      vKnot             [ ]        (-∞,∞)
-	          vOrder (3)                                 // SFInt32  [ ]      vOrder            3         [2,∞)
+	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	    X3DChildNode (),                                                    
+	    set_fraction (),                                                    // SFVec2f  [in]     set_fraction                (-∞,∞)
+	    controlPoint (),                                                    // SFNode   [in,out] controlPoint      [ ]       [X3DCoordinateNode]
+	          weight (),                                                    // MFDouble [in,out] weight            [ ]       (-∞,∞)
+	position_changed (),                                                    // SFVec3f  [out]    position_changed
+	  normal_changed (),                                                    // SFVec3f  [out]    normal_changed
+	      uDimension (),                                                    // SFInt32  [ ]      uDimension        0         [0,∞)
+	           uKnot (),                                                    // MFDouble [ ]      uKnot             [ ]        (-∞,∞)
+	          uOrder (3),                                                   // SFInt32  [ ]      uOrder            3         [2,∞)
+	      vDimension (),                                                    // SFInt32  [ ]      vDimension        0         [0,∞)
+	           vKnot (),                                                    // MFDouble [ ]      vKnot             [ ]        (-∞,∞)
+	          vOrder (3)                                                    // SFInt32  [ ]      vOrder            3         [2,∞)
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsSurfaceInterpolator");

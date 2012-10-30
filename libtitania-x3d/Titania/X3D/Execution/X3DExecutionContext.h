@@ -50,10 +50,6 @@
 #define __TITANIA_X3D_EXECUTION_X3DEXECUTION_CONTEXT_H__
 
 #include "../Basic/X3DContext.h"
-#include "../Components/EnvironmentalEffects/Fog.h"
-#include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
-#include "../Components/Navigation/NavigationInfo.h"
-#include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Configuration/ComponentInfoArray.h"
 #include "../Configuration/ProfileInfo.h"
 #include "../Execution/ExportedNodeArray.h"
@@ -71,11 +67,6 @@ class Inline;
 class Proto;
 class X3DBrowser;
 class X3DPrototypeInstance;
-
-typedef MFNode <NavigationInfo>    NavigationInfoList;
-typedef MFNode <X3DBackgroundNode> BackgroundList;
-typedef MFNode <Fog>               FogList;
-typedef MFNode <X3DViewpointNode>  ViewpointList;
 
 class X3DExecutionContext :
 	virtual public X3DBasicNode, public X3DContext
@@ -355,65 +346,6 @@ public:
 
 	///@}
 
-	/// @name NavigationInfo handling
-
-	///@{
-	void
-	addNavigationInfo (NavigationInfo* const);
-
-	void
-	removeNavigationInfo (NavigationInfo* const);
-
-	const NavigationInfoList &
-	getNavigationInfos () const;
-
-	///@}
-
-	/// @name Background handling
-
-	///@{
-	void
-	addBackground (X3DBackgroundNode* const);
-
-	void
-	removeBackground (X3DBackgroundNode* const);
-
-	const BackgroundList &
-	getBackgrounds () const;
-
-	///@}
-
-	/// @name Fog handling
-
-	///@{
-	void
-	addFog (Fog* const);
-
-	void
-	removeFog (Fog* const);
-
-	const FogList &
-	getFogs () const;
-
-	///@}
-
-	/// @name Viewpoint handling
-
-	///@{
-	void
-	addViewpoint (X3DViewpointNode* const);
-
-	void
-	removeViewpoint (X3DViewpointNode* const);
-
-	const ViewpointList &
-	getViewpoints () const;
-
-	///@}
-
-	void
-	configure ();
-
 	void
 	toStream (std::ostream &) const;
 
@@ -477,11 +409,6 @@ private:
 	RouteArray        routes;
 
 	MFNode <X3DBasicNode> rootNodes;
-
-	NavigationInfoList navigationInfos;
-	BackgroundList     backgrounds;
-	FogList            fogs;
-	ViewpointList      viewpoints;
 
 };
 

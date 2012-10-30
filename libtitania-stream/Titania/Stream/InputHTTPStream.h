@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_STREAM_HTTPSTREAM_H__
-#define __TITANIA_STREAM_HTTPSTREAM_H__
+#ifndef __TITANIA_STREAM_INPUT_HTTPSTREAM_H__
+#define __TITANIA_STREAM_INPUT_HTTPSTREAM_H__
 
 #include "../Stream/SocketStreamBuf.h"
 #include <array>
@@ -67,12 +67,13 @@ enum method
 
 };
 
-} // http
+}     // http
 
 class ihttpstream :
 	public std::istream
 {
 public:
+
 	typedef std::array <std::string, 3>                        method_array;
 	typedef std::deque <std::pair <std::string, std::string>> headers_type;
 	typedef size_t                                             status_type;

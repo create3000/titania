@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,10 +54,10 @@ namespace titania {
 namespace X3D {
 
 IndexedTriangleStripSet::IndexedTriangleStripSet (X3DExecutionContext* const executionContext) :
-	           X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DComposedGeometryNode (),                                 
-	              set_index (),                                 // MFInt32 [in] set_index            [ ]
-	                  index ()                                  // MFInt32 [ ]  index      [ ]        [0,∞) or -1
+	           X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DComposedGeometryNode (),                                                    
+	              set_index (),                                                    // MFInt32 [in] set_index            [ ]
+	                  index ()                                                     // MFInt32 [ ]  index      [ ]        [0,∞) or -1
 {
 	setComponent ("Rendering");
 	setTypeName ("IndexedTriangleStripSet");

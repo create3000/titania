@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,6 +48,7 @@
 
 #include "Fog.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layering/X3DLayerNode.h"
 
@@ -55,9 +56,9 @@ namespace titania {
 namespace X3D {
 
 Fog::Fog (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DBindableNode (),                                 
-	   X3DFogObject ()
+	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DBindableNode (),                                                    
+	   X3DFogObject ()                                                     
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Fog");
@@ -83,7 +84,7 @@ Fog::initialize ()
 	X3DBindableNode::initialize ();
 	X3DFogObject::initialize ();
 
-	getExecutionContext () -> addFog (this);
+	getBrowser () -> addFog (this);
 }
 
 void
@@ -101,9 +102,9 @@ Fog::removeFromLayer (X3DLayerNode* const layer)
 void
 Fog::dispose ()
 {
-	X3DBindableNode::dispose ();
+	getBrowser () -> removeFog (this);
 
-	getExecutionContext () -> removeFog (this);
+	X3DBindableNode::dispose ();
 }
 
 } // X3D

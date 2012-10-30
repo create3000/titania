@@ -844,35 +844,34 @@ main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 
-//	union Pixel
-//	{
-//		uint32_t uint32;
-//		uint8_t uint8 [4];
-//	};
-//
-//	Pixel value [2];
-//	value [0] .uint32 = 0x01020304;
-//	value [1] .uint32 = 0x05060708;
-//	uint8_t* pointer  = value [0] .uint8;
-//
-//
-//	std::clog << std::hex << (uint32_t) value [0] .uint32 << std::endl;
-//	std::clog << std::hex << (uint32_t) value [1] .uint8 [3] << std::endl;
-//	
-//	std::clog << std::hex << (uint32_t) pointer [0] << std::endl;
-
+	//	union Pixel
+	//	{
+	//		uint32_t uint32;
+	//		uint8_t uint8 [4];
+	//	};
+	//
+	//	Pixel value [2];
+	//	value [0] .uint32 = 0x01020304;
+	//	value [1] .uint32 = 0x05060708;
+	//	uint8_t* pointer  = value [0] .uint8;
+	//
+	//
+	//	std::clog << std::hex << (uint32_t) value [0] .uint32 << std::endl;
+	//	std::clog << std::hex << (uint32_t) value [1] .uint8 [3] << std::endl;
+	//
+	//	std::clog << std::hex << (uint32_t) pointer [0] << std::endl;
 
 	std::clog << basic::path ("/") << std::endl;
-//	std::clog << basic::path ("/", "/") << std::endl;
-//	std::clog << basic::path ("home", "/") << std::endl;
-//	std::clog << basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
-//	std::clog << basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
-//
-//	std::clog << basic::path ("/") .parent () << std::endl;
-//	std::clog << basic::path ("/", "/") .parent () << std::endl;
-//	std::clog << basic::path ("home", "/") .parent () << std::endl;
-//	std::clog << basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
-//	std::clog << basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
+	//	std::clog << basic::path ("/", "/") << std::endl;
+	//	std::clog << basic::path ("home", "/") << std::endl;
+	//	std::clog << basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
+	//	std::clog << basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
+	//
+	//	std::clog << basic::path ("/") .parent () << std::endl;
+	//	std::clog << basic::path ("/", "/") .parent () << std::endl;
+	//	std::clog << basic::path ("home", "/") .parent () << std::endl;
+	//	std::clog << basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
+	//	std::clog << basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
 
 	//	basic::ifilestream stream = get_stream ();
 	//

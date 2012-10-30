@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -49,8 +49,8 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY3D_SPHERE_H__
 #define __TITANIA_X3D_COMPONENTS_GEOMETRY3D_SPHERE_H__
 
-#include "../Rendering/X3DGeometryNode.h"
 #include "../../Browser/Properties/X3DSpherePropertyNode.h"
+#include "../Rendering/X3DGeometryNode.h"
 
 namespace titania {
 namespace X3D {
@@ -99,7 +99,6 @@ private:
 	virtual
 	void
 	build ();
-
 
 	static SFInt32 uDimension;
 	static SFInt32 vDimension;

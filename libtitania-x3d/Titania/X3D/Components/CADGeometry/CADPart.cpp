@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,14 +54,14 @@ namespace titania {
 namespace X3D {
 
 CADPart::CADPart (X3DExecutionContext* const executionContext) :
-	                X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	             X3DGroupingNode (),                                 
-	X3DProductStructureChildNode (),                                 
-	                 translation (),                                 // SFVec3f    [in,out] translation       0 0 0          (-∞,∞)
-	                    rotation (),                                 // SFRotation [in,out] rotation          0 0 1 0        [-1,1] or (-∞,∞)
-	                       scale (1, 1, 1),                          // SFVec3f    [in,out] scale             1 1 1          (0,∞)
-	            scaleOrientation (),                                 // SFRotation [in,out] scaleOrientation  0 0 1 0        [-1,1] or (-∞,∞)
-	                      center ()                                  // SFVec3f    [in,out] center            0 0 0          (-∞,∞)
+	                X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	             X3DGroupingNode (),                                                    
+	X3DProductStructureChildNode (),                                                    
+	                 translation (),                                                    // SFVec3f    [in,out] translation       0 0 0          (-∞,∞)
+	                    rotation (),                                                    // SFRotation [in,out] rotation          0 0 1 0        [-1,1] or (-∞,∞)
+	                       scale (1, 1, 1),                                             // SFVec3f    [in,out] scale             1 1 1          (0,∞)
+	            scaleOrientation (),                                                    // SFRotation [in,out] scaleOrientation  0 0 1 0        [-1,1] or (-∞,∞)
+	                      center ()                                                     // SFVec3f    [in,out] center            0 0 0          (-∞,∞)
 {
 	setComponent ("CADGeometry");
 	setTypeName ("CADPart");

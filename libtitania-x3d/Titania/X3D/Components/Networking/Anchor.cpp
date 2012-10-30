@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,11 +58,11 @@ namespace titania {
 namespace X3D {
 
 Anchor::Anchor (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DGroupingNode (),                                 
-	   X3DUrlObject (),                                 
-	      parameter (),                                 // MFString [in,out] parameter    [ ]
-	    description ()                                  // SFString [in,out] description  ""
+	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DGroupingNode (),                                                    
+	   X3DUrlObject (),                                                    
+	      parameter (),                                                    // MFString [in,out] parameter    [ ]
+	    description ()                                                     // SFString [in,out] description  ""
 {
 	setComponent ("Networking");
 	setTypeName ("Anchor");

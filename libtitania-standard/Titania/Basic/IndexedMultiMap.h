@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BASIC_INDEXED_MAP_H__
-#define __TITANIA_BASIC_INDEXED_MAP_H__
+#ifndef __TITANIA_BASIC_INDEXED_MULTI_MAP_H__
+#define __TITANIA_BASIC_INDEXED_MULTI_MAP_H__
 
 #include "../Bits/Algorithm/Remove.h"
 
@@ -59,7 +59,7 @@ namespace titania {
 namespace basic {
 
 template <class Key, class ValueType>
-class indexed_map
+class indexed_multimap
 {
 public:
 
@@ -79,7 +79,7 @@ public:
 	/// @name Constructors
 
 	///  Default constructor.
-	indexed_map () :
+	indexed_multimap () :
 		array (),
 		map ()
 	{ }
@@ -104,17 +104,13 @@ public:
 
 	//@{
 	const value_type &
-	at (const size_type & index) const
-	throw (std::out_of_range)
-	{ return array .at (index); }
+	at (const size_type & index) const { return array .at (index); }
 
 	const value_type &
-	first (const key_type &) const
-	throw (std::out_of_range);
+	first (const key_type &) const;
 
 	const value_type &
-	last (const key_type &) const
-	throw (std::out_of_range);
+	last (const key_type &) const;
 	//@}
 
 	//@{
@@ -176,7 +172,7 @@ public:
 	ValueType &
 	replace (const key_type &, const key_type &, const value_type &);
 
-	void
+	bool
 	erase (const key_type &);
 
 	void
@@ -192,34 +188,32 @@ private:
 };
 
 template <class Key, class ValueType>
-const typename indexed_map <Key, ValueType>::value_type &
-indexed_map <Key, ValueType>::first (const key_type & key) const
-throw (std::out_of_range)
+const typename indexed_multimap <Key, ValueType>::value_type &
+indexed_multimap <Key, ValueType>::first (const key_type &key) const
 {
 	const auto range = map .equal_range (key);
 
 	if (range .first not_eq range .second)
 		return range .first -> second;
 
-	throw std::out_of_range ("indexed_map::first");
+	throw std::out_of_range ("indexed_multimap::first");
 }
 
 template <class Key, class ValueType>
-const typename indexed_map <Key, ValueType>::value_type &
-indexed_map <Key, ValueType>::last (const key_type & key) const
-throw (std::out_of_range)
+const typename indexed_multimap <Key, ValueType>::value_type &
+indexed_multimap <Key, ValueType>::last (const key_type &key) const
 {
 	auto range = map .equal_range (key);
 
 	if (range .first not_eq range .second)
 		return (-- range .second) -> second;
 
-	throw std::out_of_range ("indexed_map::last");
+	throw std::out_of_range ("indexed_multimap::last");
 }
 
 template <class Key, class ValueType>
 ValueType &
-indexed_map <Key, ValueType>::push_back (const key_type & key, const value_type & value)
+indexed_multimap <Key, ValueType>::push_back (const key_type & key, const value_type & value)
 {
 	array .emplace_back (value);
 	return map .insert (std::make_pair (key, value)) -> second;
@@ -227,33 +221,41 @@ indexed_map <Key, ValueType>::push_back (const key_type & key, const value_type 
 
 template <class Key, class ValueType>
 ValueType &
-indexed_map <Key, ValueType>::replace (const key_type & currentKey, const key_type & key, const value_type & value)
+indexed_multimap <Key, ValueType>::replace (const key_type & currentKey, const key_type & key, const value_type & value)
 {
 	erase (currentKey);
 	return push_back (key, value);
 }
 
 template <class Key, class ValueType>
-void
-indexed_map <Key, ValueType>::erase (const key_type & key)
+bool
+indexed_multimap <Key, ValueType>::erase (const key_type & key)
 {
 	// find values
 
 	auto equal_range = map .equal_range (key);
 
-	// remove range from array
+	if (equal_range .first not_eq equal_range .second)
+	{
+		// remove range from array
 
-	const auto new_end = basic::remove (array .begin (), array .end (), equal_range .first, equal_range .second);
+		const auto new_end = basic::remove (array .begin (), array .end (),
+		                                    equal_range .first, equal_range .second);
 
-	// erase from map and resize array
+		// erase from map and resize array
 
-	array .erase (new_end, array .end ());
-	map .erase (equal_range .first, equal_range .second);
+		array .erase (new_end, array .end ());
+		map .erase (equal_range .first, equal_range .second);
+
+		return true;
+	}
+
+	return false;
 }
 
 template <class Key, class ValueType>
 void
-indexed_map <Key, ValueType>::clear ()
+indexed_multimap <Key, ValueType>::clear ()
 {
 	array .clear ();
 	map   .clear ();

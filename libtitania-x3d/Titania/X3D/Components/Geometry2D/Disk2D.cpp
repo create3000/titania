@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,11 +54,11 @@ namespace titania {
 namespace X3D {
 
 Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryNode (),                                 
-	    innerRadius (),                                 // SFFloat [ ]innerRadius  0            [0,∞)
-	    outerRadius (1),                                // SFFloat [ ]outerRadius  1            (0,∞)
-	          solid ()                                  // SFBool  [ ]solid        FALSE
+	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DGeometryNode (),                                                    
+	    innerRadius (),                                                    // SFFloat [ ]innerRadius  0            [0,∞)
+	    outerRadius (1),                                                   // SFFloat [ ]outerRadius  1            (0,∞)
+	          solid ()                                                     // SFBool  [ ]solid        FALSE
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Disk2D");

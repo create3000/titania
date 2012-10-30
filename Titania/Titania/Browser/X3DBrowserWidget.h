@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,13 +46,13 @@
  *
  ******************************************************************************/
 
-#ifndef __PUCK_BROWSER_BASIC_BROWSER_WIDGET_H__
-#define __PUCK_BROWSER_BASIC_BROWSER_WIDGET_H__
+#ifndef __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
+#define __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
 
-#include "../UserInterfaces/X3DBrowserUserInterface.h"
 #include "../HistoryEditor/HistoryEditor.h"
 #include "../MotionBlurEditor/MotionBlurEditor.h"
 #include "../OutlineEditor/OutlineEditor.h"
+#include "../UserInterfaces/X3DBrowserUserInterface.h"
 #include "../ViewpointEditor/ViewpointEditor.h"
 
 #include <Titania/X3D/Widgets/Surface.h>
@@ -80,7 +80,7 @@ public:
 	setDescription (const std::string & value)
 	throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
 	       X3D::Error <X3D::DISPOSED>);
-	
+
 	virtual
 	void
 	loadURL (const X3D::MFString &, const X3D::MFString &)
@@ -126,7 +126,7 @@ protected:
 
 	void
 	set_initialized ();
-	
+
 	void
 	restoreSession ();
 
@@ -165,6 +165,7 @@ private:
 
 	void
 	updateViewpoints ();
+
 
 private:
 

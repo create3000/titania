@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,9 +55,9 @@ namespace titania {
 namespace puck {
 
 Configuration::Configuration (const std::string & path, const std::string & name) :
-	      path (path),                    
-	      name (name),              
-	       key (path + '/' + name)
+	path (path),             
+	name (name),             
+	 key (path + '/' + name) 
 {
 	Gnome::Conf::init ();
 	client = Gnome::Conf::Client::get_default_client ();
@@ -86,7 +86,8 @@ bool
 Configuration::hasItem (const std::string & name) const
 {
 	auto item = client -> get_entry (getKey (name));
-	return item .get_value () .get_type () != Gnome::Conf::VALUE_INVALID;
+
+	return item .get_value () .get_type () not_eq Gnome::Conf::VALUE_INVALID;
 }
 
 void

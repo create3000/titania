@@ -58,8 +58,8 @@ namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 	   Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN), 
-	 X3DBrowserWindowUI (get_ui ("BrowserWindow.ui"), gconf_dir ()),                         
-	X3DBrowserInterface (X3D::getBrowser ())
+	 X3DBrowserWindowUI (get_ui ("BrowserWindow.ui"), gconf_dir ()),                          
+	X3DBrowserInterface (X3D::getBrowser ())                                                  
 {
 	setTransparent (true);
 
@@ -124,7 +124,7 @@ void
 X3DBrowserWindow::initialize ()
 {
 	X3DBrowserWindowUI::initialize ();
-	
+
 	// AddTabLabel
 
 	getAddTabButton () .set_image (*Gtk::manage (new Gtk::Image (Gtk::StockID ("gtk-add"),
@@ -213,9 +213,9 @@ throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
 	Gtk::Image* icon      = new Gtk::Image (Gtk::StockID (getExecutionContext () -> getWorldURL () .str ()),
 	                                        Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
 
-//	Gtk::IconTheme::get_default () -> load_icon (getExecutionContext () -> getWorldURL () .str (),
-//	                                             12,
-//	                                             ICON_LOOKUP_FORCE_SIZE);
+	//	Gtk::IconTheme::get_default () -> load_icon (getExecutionContext () -> getWorldURL () .str (),
+	//	                                             12,
+	//	                                             ICON_LOOKUP_FORCE_SIZE);
 
 	tab_label -> pack_start (*Gtk::manage (icon), false, true, 0);
 	tab_label -> pack_start (*Gtk::manage (label), true, true, 0);
@@ -284,13 +284,13 @@ void
 X3DBrowserWindow::removePage (Gtk::Widget & child)
 {
 	size_t position = getNotebook () .page_num (child);
-	
+
 	__LOG__ << browserWidgets .size () << std::endl;
-	
+
 	browserWidgets [position] -> dispose ();
 	getNotebook () .remove_page (child);
 	browserWidgets .erase (browserWidgets .begin () + position);
-	
+
 	__LOG__ << browserWidgets .size () << std::endl;
 }
 
@@ -301,6 +301,7 @@ X3DBrowserWindow::setTabLabel (Gtk::Widget & child)
 
 	Gtk::Image*  closeImage = new Gtk::Image (Gtk::StockID ("gtk-close"), Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
 	Gtk::Button* close      = new Gtk::Button ();
+
 	close -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserWindow::on_close_tab), sigc::ref (child)));
 
 	close     -> set_image (*Gtk::manage (closeImage));
@@ -327,8 +328,7 @@ X3DBrowserWindow::setTransparent (bool value)
 
 void
 X3DBrowserWindow::dispose ()
-{
-}
+{ }
 
 } // puck
 } // titania

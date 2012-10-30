@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -49,14 +49,26 @@
 #ifndef __TITANIA_LOG_H__
 #define __TITANIA_LOG_H__
 
+#include <execinfo.h>
 #include <iostream>
 
 namespace titania {
-namespace X3D {
 
 #define __LOG__ (std::clog << "########## " __FILE__ << ":" << __LINE__ << ": in function '" << __func__ << "': ")
 
-} // X3D
+inline
+void
+backtrace_fn (size_t size = 30)
+{
+	void* array [size];
+
+	// get void*'s for all entries on the stack
+	size = ::backtrace (array, size);
+
+	// print out all the frames to stderr
+	backtrace_symbols_fd (array, size, 2);
+}
+
 } // titania
 
 #endif

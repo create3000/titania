@@ -39,10 +39,10 @@ namespace X3D {
 const std::string X3DBrowser::version ("0.1");
 
 X3DBrowser::X3DBrowser () :
-	X3DExecutionContext (),                                        
+	  X3DBrowserContext (),                                        
 	       X3DUrlObject (),                                        
 	             router (),                                        
-	              clock (new chrono::system_clock <time_type> ()), 
+	              clock (new chrono::system_clock <time_type> ()),          
 	    supportedFields (this),                                    
 	     supportedNodes (this),                                    
 	supportedComponents (this),                                    
@@ -50,7 +50,6 @@ X3DBrowser::X3DBrowser () :
 	renderingProperties (new RenderingProperties (this)),          
 	  browserProperties (new BrowserProperties   (this)),          
 	     browserOptions (new BrowserOptions      (this)),          
-	 browserEnvironment (new BrowserEnvironment  (this)),          
 	   javaScriptEngine (new JavaScriptEngine    (this)),          
 	       currentSpeed (0),                                       
 	   currentFrameRate (0),                                       
@@ -62,22 +61,22 @@ X3DBrowser::X3DBrowser () :
 	           shutdown (),                                        // SFTime   [out]    shutdown    0
 	            changed (),                                        // SFTime   [out]    changed     0
 	              world (new World (this, createScene ())),        // SFNode   [out]    world       NULL
-	              scene ()
+	              scene ()                                         
 {
 	std::clog << "Constructing Browser:" << std::endl;
 
 	setComponent ("Browser");
 	setTypeName ("Browser");
 	setName ("Titania");
-
-	setChildren (//supportedFields, // make X3DBasicNodes of this
-	             //supportedNodes,
-	             //supportedComponents,
-	             //supportedProfiles,
-	             renderingProperties,
+	
+	//supportedFields, // make X3DBasicNodes of this
+	//supportedNodes,
+	//supportedComponents,
+	//supportedProfiles,
+	
+	setChildren (renderingProperties,
 	             browserProperties,
 	             browserOptions,
-	             browserEnvironment,
 	             javaScriptEngine,
 	             scene);
 
@@ -88,7 +87,7 @@ X3DBrowser::X3DBrowser () :
 	appendField (outputOnly, "shutdown",    shutdown);
 	appendField (outputOnly, "urlError",    urlError);
 	appendField (outputOnly, "world",       world);
-	
+
 	scene .setName ("scene");
 
 	world -> setup ();
@@ -99,11 +98,11 @@ X3DBrowser::X3DBrowser () :
 void
 X3DBrowser::initialize ()
 {
-	X3DExecutionContext::initialize ();
+	X3DBrowserContext::initialize ();
 	X3DUrlObject::initialize ();
-	
+
 	// Initialize clock
-	
+
 	clock -> advance ();
 
 	// Properties
@@ -278,10 +277,10 @@ X3DBrowser::replaceWorld (const SFNode <Scene> & value)
 throw (Error <INVALID_SCENE>)
 {
 	std::clog << "The browser is requested to replace the world:" << std::endl;
-	
+
 	if (not value)
 		throw Error <INVALID_SCENE> ("Scene is NULL.");
-	
+
 	scene = value;
 }
 
@@ -292,16 +291,14 @@ X3DBrowser::set_scene ()
 
 	world = new World (this, scene);
 	world -> setup ();
-		
-	// Change viewpoint.
+
+	// Bind viewpoint from URL.
 
 	if (scene -> getWorldURL () .fragment () .length ())
 		changeViewpoint (scene -> getWorldURL () .fragment ());
 
-	// Dereference scene.
-	
-	// Generated initialized event immediately upon receiving this service.
-	
+	// Generate initialized event immediately upon receiving this service.
+
 	initialized = getCurrentTime ();
 
 	std::clog << "Replacing world done." << std::endl;
@@ -379,14 +376,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return browserOptions;
 }
 
-const SFNode <BrowserEnvironment> &
-X3DBrowser::getBrowserEnvironment () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return browserEnvironment;
-}
-
 NavigationInfo*
 X3DBrowser::getActiveNavigationInfo () const
 throw (Error <DISPOSED>)
@@ -444,23 +433,6 @@ X3DBrowser::getLights ()
 	return lightStack;
 }
 
-////  Visibility-, Proxmity-, ... Sensor
-void
-X3DBrowser::addSensor (X3DSensorNode* sensor)
-{
-	std::clog << "\tAdding sensor " << sensor -> getTypeName () << " to world: " << sensors .size () << " are registered until now." << std::endl;
-	sensors .insert (sensor);
-	std::clog << "\tNow are " << sensors .size () << " registered." << std::endl;
-}
-
-void
-X3DBrowser::removeSensor (X3DSensorNode* sensor)
-{
-	std::clog << "\tRemoving sensor " << sensor -> getTypeName () << " from world: " << sensors .size () << " are registered until now." << std::endl;
-	sensors .erase (sensor);
-	std::clog << "\tNow are " << sensors .size () << " registered." << std::endl;
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
@@ -472,7 +444,7 @@ X3DBrowser::notify (X3DBasicNode* const node)
 
 	if (changed == getCurrentTime ())
 		return;
-	
+
 	ObjectSet sourceFields;
 
 	changed = getCurrentTime ();
@@ -494,13 +466,10 @@ X3DBrowser::prepare ()
 	currentFrameRate = 1 / clock -> interval ();
 
 	Vector3f position = getActiveViewpoint () -> getMatrix () .translation ();
-	currentSpeed = abs (Vector3d (position - priorPosition)) * currentFrameRate;
+	currentSpeed  = abs (Vector3d (position - priorPosition)) * currentFrameRate;
 	priorPosition = position;
 
-	SensorNodeSet sensorsToActivate = sensors;
-
-	for (const auto & sensor : sensorsToActivate)
-		sensor -> update ();
+	updateSensors ();
 
 	router .processEvents ();
 	getGarbageCollector () .dispose ();
@@ -510,10 +479,10 @@ void
 X3DBrowser::display ()
 {
 	world -> display ();
-		
+
 	displayed .processInterests ();
 }
-	
+
 void
 X3DBrowser::finish ()
 {
@@ -534,10 +503,8 @@ X3DBrowser::dispose ()
 	supportedNodes      .dispose ();
 	supportedComponents .dispose ();
 	supportedProfiles   .dispose ();
-
-	//X3DBaseNode::dispose ();
-
-	getGarbageCollector () .dispose ();
+	
+	X3DBrowserContext::dispose ();
 
 	std::clog << "Browser::dispose done ..." << std::endl;
 }

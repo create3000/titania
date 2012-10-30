@@ -100,9 +100,8 @@ NavigationInfo::initialize ()
 	X3DBindableNode::initialize ();
 
 	directionalLight -> setup ();
-	//	viewpoint        -> setup ();
 
-	getExecutionContext () -> addNavigationInfo (this);
+	getBrowser () -> addNavigationInfo (this);
 }
 
 void
@@ -142,9 +141,9 @@ NavigationInfo::disable ()
 void
 NavigationInfo::dispose ()
 {
-	X3DBindableNode::dispose ();
+	getBrowser () -> removeNavigationInfo (this);
 
-	getExecutionContext () -> removeNavigationInfo (this);
+	X3DBindableNode::dispose ();
 }
 
 } // X3D

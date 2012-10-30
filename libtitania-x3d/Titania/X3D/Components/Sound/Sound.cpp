@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,18 +54,18 @@ namespace titania {
 namespace X3D {
 
 Sound::Sound (X3DExecutionContext* const executionContext) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DSoundNode (),                                 
-	   direction (0, 0, 1),                          // SFVec3f [in,out] direction   0 0 1        (-∞,∞)
-	   intensity (1),                                // SFFloat [in,out] intensity   1            [0,1]
-	    location (),                                 // SFVec3f [in,out] location    0 0 0        (-∞,∞)
-	     maxBack (10),                               // SFFloat [in,out] maxBack     10           [0,∞)
-	    maxFront (10),                               // SFFloat [in,out] maxFront    10           [0,∞)
-	     minBack (1),                                // SFFloat [in,out] minBack     1            [0,∞)
-	    minFront (1),                                // SFFloat [in,out] minFront    1            [0,∞)
-	    priority (),                                 // SFFloat [in,out] priority    0            [0,1]
-	      source (),                                 // SFNode  [in,out] source      NULL         [X3DSoundSourceNode]
-	  spatialize (true)                              // SFBool  [ ]      spatialize  TRUE
+	X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DSoundNode (),                                                    
+	   direction (0, 0, 1),                                             // SFVec3f [in,out] direction   0 0 1        (-∞,∞)
+	   intensity (1),                                                   // SFFloat [in,out] intensity   1            [0,1]
+	    location (),                                                    // SFVec3f [in,out] location    0 0 0        (-∞,∞)
+	     maxBack (10),                                                  // SFFloat [in,out] maxBack     10           [0,∞)
+	    maxFront (10),                                                  // SFFloat [in,out] maxFront    10           [0,∞)
+	     minBack (1),                                                   // SFFloat [in,out] minBack     1            [0,∞)
+	    minFront (1),                                                   // SFFloat [in,out] minFront    1            [0,∞)
+	    priority (),                                                    // SFFloat [in,out] priority    0            [0,1]
+	      source (),                                                    // SFNode  [in,out] source      NULL         [X3DSoundSourceNode]
+	  spatialize (true)                                                 // SFBool  [ ]      spatialize  TRUE
 {
 	setComponent ("Sound");
 	setTypeName ("Sound");

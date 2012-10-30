@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -393,22 +393,22 @@ SFMatrix4 <ValueType>::multRight (const SFMatrix4 & value) const
 }
 
 template <class ValueType>
-typename SFMatrix4 <ValueType>::vector3_type*
-SFMatrix4 <ValueType>::multMatrixVec (const vector3_type & value) const
+typename SFMatrix4 <ValueType>::vector3_type *
+SFMatrix4 <ValueType>::multMatrixVec (const vector3_type &value) const
 {
 	return new vector3_type (getValue () .multMatrixVec (value .getValue ()));
 }
 
 template <class ValueType>
-typename SFMatrix4 <ValueType>::vector3_type*
-SFMatrix4 <ValueType>::multVecMatrix (const vector3_type & value) const
+typename SFMatrix4 <ValueType>::vector3_type *
+SFMatrix4 <ValueType>::multVecMatrix (const vector3_type &value) const
 {
 	return new vector3_type (getValue () .multVecMatrix (value .getValue ()));
 }
 
 template <class ValueType>
-typename SFMatrix4 <ValueType>::vector3_type*
-SFMatrix4 <ValueType>::multDirMatrix (const vector3_type & value) const
+typename SFMatrix4 <ValueType>::vector3_type *
+SFMatrix4 <ValueType>::multDirMatrix (const vector3_type &value) const
 {
 	return new vector3_type (getValue () .multDirMatrix (value .getValue ()));
 }

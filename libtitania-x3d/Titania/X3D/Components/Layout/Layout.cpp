@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,14 +54,14 @@ namespace titania {
 namespace X3D {
 
 Layout::Layout (X3DExecutionContext* const executionContext) :
-	 X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DLayoutNode (),                                 
-	        align ({ "CENTER", "CENTER" }),           // MFString [in,out] align        ["CENTER","CENTER"]        ["LEFT"|"CENTER"|"RIGHT","BOTTOM"|"CENTER"|"TOP"]
-	       offset (),                                 // MFFloat  [in,out] offset       [0,0]                      (-∞,∞)
-	  offsetUnits (),                                 // MFString [in,out] offsetUnits  ["WORLD","WORLD"]          ["WORLD","FRACTION","PIXEL"]
-	    scaleMode (),                                 // MFString [in,out] scaleMode    ["NONE","NONE"]            ["NONE","FRACTION","STRETCH","PIXEL"]
-	         size (),                                 // MFFloat  [in,out] size         [1,1]                      (0,∞)
-	    sizeUnits ()                                  // MFString [in,out] sizeUnits    ["WORLD","WORLD"]          ["WORLD","FRACTION","PIXEL"]
+	 X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DLayoutNode (),                                                    
+	        align ({ "CENTER", "CENTER" }),                              // MFString [in,out] align        ["CENTER","CENTER"]        ["LEFT"|"CENTER"|"RIGHT","BOTTOM"|"CENTER"|"TOP"]
+	       offset (),                                                    // MFFloat  [in,out] offset       [0,0]                      (-∞,∞)
+	  offsetUnits (),                                                    // MFString [in,out] offsetUnits  ["WORLD","WORLD"]          ["WORLD","FRACTION","PIXEL"]
+	    scaleMode (),                                                    // MFString [in,out] scaleMode    ["NONE","NONE"]            ["NONE","FRACTION","STRETCH","PIXEL"]
+	         size (),                                                    // MFFloat  [in,out] size         [1,1]                      (0,∞)
+	    sizeUnits ()                                                     // MFString [in,out] sizeUnits    ["WORLD","WORLD"]          ["WORLD","FRACTION","PIXEL"]
 {
 	setComponent ("Layout");
 	setTypeName ("Layout");

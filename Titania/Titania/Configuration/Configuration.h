@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __PUCK_CONFIGURATION_GCONF_H__
-#define __PUCK_CONFIGURATION_GCONF_H__
+#ifndef __TITANIA_CONFIGURATION_CONFIGURATION_H__
+#define __TITANIA_CONFIGURATION_CONFIGURATION_H__
 
 #include <gconfmm.h>
 #include <string>
@@ -106,7 +106,7 @@ public:
 
 	bool
 	exists ();
-	
+
 	void
 	remove ();
 
@@ -123,9 +123,10 @@ public:
 private:
 
 	Glib::RefPtr <Gnome::Conf::Client> client;
-	std::string path;
-	std::string name;
-	std::string key;
+	std::string                        path;
+	std::string                        name;
+	std::string                        key;
+
 };
 
 } // puck

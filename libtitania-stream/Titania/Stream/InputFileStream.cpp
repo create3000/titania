@@ -36,24 +36,24 @@ namespace titania {
 namespace basic {
 
 const ifilestream::headers_type ifilestream::file_response_headers;
-const std::string ifilestream::reasons [2] = { "OK", "FAILED" };
-const std::string ifilestream::empty_string;
+const std::string               ifilestream::reasons [2] = { "OK", "FAILED" };
+const std::string               ifilestream::empty_string;
 
 ifilestream::ifilestream (const http::method method, const basic::uri & url) :
-	std::istream (),     
-	file_istream (NULL), 
-	http_istream (NULL),
-	     istream (NULL),
-	file_request_headers ()
+	        std::istream (),     
+	        file_istream (NULL), 
+	        http_istream (NULL), 
+	             istream (NULL), 
+	file_request_headers ()      
 {
 	open (method, url);
 }
 
 ifilestream::ifilestream (ifilestream && other) :
-	std::istream (),     
-	file_istream (other .file_istream),
-	http_istream (other .http_istream),
-	     istream (other .istream),
+	        std::istream (),     
+	        file_istream (other .file_istream),
+	        http_istream (other .http_istream),
+	             istream (other .istream),
 	file_request_headers (std::move (other .file_request_headers))
 {
 	other .file_istream = NULL;
@@ -103,8 +103,7 @@ ifilestream::close ()
 		http_istream -> close ();
 		http_istream = NULL;
 	}
-	else
-	if (file_istream)
+	else if (file_istream)
 	{
 		file_istream -> close ();
 		file_istream = NULL;

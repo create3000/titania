@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,7 +55,7 @@ X3DFieldDefinition::X3DFieldDefinition () :
 	X3DBaseNode (),               
 	  reference (nullptr),        
 	 accessType (initializeOnly), 
-	  aliasName ()
+	  aliasName ()                
 { }
 
 X3DFieldDefinition*
@@ -197,7 +197,7 @@ X3DFieldDefinition::addInterest (X3DFieldDefinition* const interest)
 }
 
 void
-X3DFieldDefinition::addInterest (X3DFieldDefinition& interest)
+X3DFieldDefinition::addInterest (X3DFieldDefinition & interest)
 {
 	interests .insert (&interest);
 }
@@ -209,7 +209,7 @@ X3DFieldDefinition::removeInterest (X3DFieldDefinition* const interest)
 }
 
 void
-X3DFieldDefinition::removeInterest (X3DFieldDefinition& interest)
+X3DFieldDefinition::removeInterest (X3DFieldDefinition & interest)
 {
 	interests .erase (&interest);
 }

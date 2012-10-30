@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,13 +54,13 @@ namespace titania {
 namespace X3D {
 
 SplinePositionInterpolator2D::SplinePositionInterpolator2D (X3DExecutionContext* const executionContext) :
-	       X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DInterpolatorNode (),                                 
-	             closed (),                                 // SFBool  [in,out] closed             FALSE
-	           keyValue (),                                 // MFVec2f [in,out] keyValue           [ ]          (-∞,∞)
-	        keyVelocity (),                                 // MFVec2f [in,out] keyVelocity        [ ]          (-∞,∞)
-	  normalizeVelocity (),                                 // SFBool  [in,out] normalizeVelocity  FALSE
-	      value_changed ()                                  // SFVec2f [out]    value_changed
+	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DInterpolatorNode (),                                                    
+	             closed (),                                                    // SFBool  [in,out] closed             FALSE
+	           keyValue (),                                                    // MFVec2f [in,out] keyValue           [ ]          (-∞,∞)
+	        keyVelocity (),                                                    // MFVec2f [in,out] keyVelocity        [ ]          (-∞,∞)
+	  normalizeVelocity (),                                                    // SFBool  [in,out] normalizeVelocity  FALSE
+	      value_changed ()                                                     // SFVec2f [out]    value_changed
 {
 	setComponent ("Interpolation");
 	setTypeName ("SplinePositionInterpolator2D");

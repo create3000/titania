@@ -58,7 +58,7 @@ perl -e '
 	LENGTH: # find length of indent for each member
 
 	$member_value_rx = qr/\((?:[^()]*|(?0))*\)|\{(?:[^{}]*|(?0))*\}/so;
-	$member_rx = qr/^(\t+)([\w:\s<>]+)\s*((??{$member_value_rx}),?)(\n|\s*)(.*?)$/so;
+	$member_rx       = qr/^(\t+)([\w:\s<>]+)\s*((??{$member_value_rx}),?)(\n|\s*)(.*?)$/so;
 
 	$lm = 0;
 	$lc = 0;

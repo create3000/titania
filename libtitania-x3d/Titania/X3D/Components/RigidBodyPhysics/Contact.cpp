@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,24 +54,24 @@ namespace titania {
 namespace X3D {
 
 Contact::Contact (X3DExecutionContext* const executionContext) :
-	            X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	                 X3DNode (),                                 
-	       appliedParameters ({ "BOUNCE" }),                     // MFString [in,out] appliedParameters         "BOUNCE"        [ ]
-	                   body1 (),                                 // SFNode   [in,out] body1                     NULL            [RigidBody]
-	                   body2 (),                                 // SFNode   [in,out] body2                     NULL            [RigidBody]
-	                  bounce (),                                 // SFFloat  [in,out] bounce                    0               [0,1]
-	           contactNormal (0, 1, 0),                          // SFVec3f  [in,out] contactNormal             0 1 0           (-∞,∞)
-	                   depth (),                                 // SFFloat  [in,out] depth                     0               (-∞,∞)
-	    frictionCoefficients (),                                 // SFVec2f  [in,out] frictionCoefficients      0 0             [0,∞)
-	       frictionDirection (0, 1, 0),                          // SFVec3f  [in,out] frictionDirection         0 1 0           (-∞,∞)
-	               geometry1 (),                                 // SFNode   [in,out] geometry1                 NULL            [X3DNBodyCollidableNode]
-	               geometry2 (),                                 // SFNode   [in,out] geometry2                 NULL            [X3DNBodyCollidableNode]
-	          minbounceSpeed (),                                 // SFFloat  [in,out] minbounceSpeed            0               [0,∞)
-	                position (),                                 // SFVec3f  [in,out] position                  0 0 0           (-∞,∞)
-	        slipCoefficients (),                                 // SFVec2f  [in,out] slipCoefficients          0 0             (-∞,∞)
-	softnessConstantForceMix (0.0001),                           // SFFloat  [in,out] softnessConstantForceMix  0.0001          [0,1]
-	 softnessErrorCorrection (0.8),                              // SFFloat  [in,out] softnessErrorCorrection   0.8             [0,1]
-	            surfaceSpeed ()                                  // SFVec2f  [in,out] surfaceSpeed              0 0             (-∞,∞)
+	            X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	                 X3DNode (),                                                    
+	       appliedParameters ({ "BOUNCE" }),                                        // MFString [in,out] appliedParameters         "BOUNCE"        [ ]
+	                   body1 (),                                                    // SFNode   [in,out] body1                     NULL            [RigidBody]
+	                   body2 (),                                                    // SFNode   [in,out] body2                     NULL            [RigidBody]
+	                  bounce (),                                                    // SFFloat  [in,out] bounce                    0               [0,1]
+	           contactNormal (0, 1, 0),                                             // SFVec3f  [in,out] contactNormal             0 1 0           (-∞,∞)
+	                   depth (),                                                    // SFFloat  [in,out] depth                     0               (-∞,∞)
+	    frictionCoefficients (),                                                    // SFVec2f  [in,out] frictionCoefficients      0 0             [0,∞)
+	       frictionDirection (0, 1, 0),                                             // SFVec3f  [in,out] frictionDirection         0 1 0           (-∞,∞)
+	               geometry1 (),                                                    // SFNode   [in,out] geometry1                 NULL            [X3DNBodyCollidableNode]
+	               geometry2 (),                                                    // SFNode   [in,out] geometry2                 NULL            [X3DNBodyCollidableNode]
+	          minbounceSpeed (),                                                    // SFFloat  [in,out] minbounceSpeed            0               [0,∞)
+	                position (),                                                    // SFVec3f  [in,out] position                  0 0 0           (-∞,∞)
+	        slipCoefficients (),                                                    // SFVec2f  [in,out] slipCoefficients          0 0             (-∞,∞)
+	softnessConstantForceMix (0.0001),                                              // SFFloat  [in,out] softnessConstantForceMix  0.0001          [0,1]
+	 softnessErrorCorrection (0.8),                                                 // SFFloat  [in,out] softnessErrorCorrection   0.8             [0,1]
+	            surfaceSpeed ()                                                     // SFVec2f  [in,out] surfaceSpeed              0 0             (-∞,∞)
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("Contact");

@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,12 +54,12 @@ namespace titania {
 namespace X3D {
 
 WindPhysicsModel::WindPhysicsModel (X3DExecutionContext* const executionContext) :
-	               X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DParticlePhysicsModelNode (),                                 
-	                  direction (),                                 // SFVec3f [in,out] direction   0 0 0        (∞,∞)
-	                  gustiness (0.1),                              // SFFloat [in,out] gustiness   0.1          [0,∞)
-	                      speed (0.1),                              // SFFloat [in,out] speed       0.1          [0,∞)
-	                 turbulence ()                                  // SFFloat [in,out] turbulence  0            [0,1]
+	               X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DParticlePhysicsModelNode (),                                                    
+	                  direction (),                                                    // SFVec3f [in,out] direction   0 0 0        (∞,∞)
+	                  gustiness (0.1),                                                 // SFFloat [in,out] gustiness   0.1          [0,∞)
+	                      speed (0.1),                                                 // SFFloat [in,out] speed       0.1          [0,∞)
+	                 turbulence ()                                                     // SFFloat [in,out] turbulence  0            [0,1]
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("WindPhysicsModel");

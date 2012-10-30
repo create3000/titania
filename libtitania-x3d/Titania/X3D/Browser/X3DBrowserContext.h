@@ -46,79 +46,125 @@
  *
  ******************************************************************************/
 
-#include "BrowserEnvironment.h"
+#ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_X3DBROWSER_CONTEXT_H__
+
+#include "../Base/Output.h"
+#include "../Components/Core/X3DSensorNode.h"
+#include "../Components/EnvironmentalEffects/Fog.h"
+#include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
+#include "../Components/Navigation/NavigationInfo.h"
+#include "../Components/Navigation/X3DViewpointNode.h"
+#include "../Execution/X3DExecutionContext.h"
+
+#include "../Execution/BindableNodeList.h"
 
 namespace titania {
 namespace X3D {
 
-BrowserEnvironment::BrowserEnvironment (X3DExecutionContext* const executionContext) :
-	         X3DBasicNode (executionContext -> getBrowser (), executionContext), 
-	         X3DChildNode (),                                                    
-	defaultNavigationInfo (new NavigationInfo (getExecutionContext ())),         
-	    defaultBackground (new Background     (getExecutionContext ())),         
-	           defaultFog (new Fog            (getExecutionContext ())),         
-	     defaultViewpoint (new Viewpoint      (getExecutionContext ())),         
+typedef BindableNodeList <NavigationInfo>    NavigationInfoList;
+typedef BindableNodeList <X3DBackgroundNode> BackgroundList;
+typedef BindableNodeList <Fog>               FogList;
+typedef BindableNodeList <X3DViewpointNode>  ViewpointList;
+
+typedef std::map <std::string, std::pair <GLuint, size_t>> TextureIndex;
+
+class X3DBrowserContext :
+	public X3DExecutionContext
 {
-	setComponent ("Browser"),
-	setTypeName ("BrowserEnvironment");
-}
+public:
 
-BrowserEnvironment*
-BrowserEnvironment::create (X3DExecutionContext* const executionContext)  const
-{
-	return new BrowserEnvironment (executionContext);
-}
+	/// @name NavigationInfo list handling
 
-void
-BrowserEnvironment::initialize ()
-{
-	X3DChildNode::initialize ();
-}
+	void
+	addNavigationInfo (NavigationInfo* const);
 
-// Texture handling
+	void
+	removeNavigationInfo (NavigationInfo* const);
 
-void
-BrowserEnvironment::addTexture (const std::string & URL, GLuint textureId)
-{
-	textures [URL] = std::make_pair (textureId, 1);
-}
+	const NavigationInfoList &
+	getNavigationInfos () const;
 
-bool
-BrowserEnvironment::removeTexture (const std::string & URL, GLuint textureId)
-{
-	auto texture = textures .find (URL);
+	/// @name Background list handling
 
-	if (texture not_eq textures .end ())
-	{
-		if (-- texture -> second .second == 0)
-		{
-			textures .erase (texture);
-			return true;
-		}
-	}
+	void
+	addBackground (X3DBackgroundNode* const);
 
-	return false;
-}
+	void
+	removeBackground (X3DBackgroundNode* const);
 
-GLuint
-BrowserEnvironment::getTexture (const std::string & URL)
-{
-	auto texture = textures .find (URL);
+	const BackgroundList &
+	getBackgrounds () const;
 
-	if (texture not_eq textures .end ())
-	{
-		++ texture -> second .second;
-		return texture -> second .first;
-	}
+	/// @name Fog list handling
 
-	return 0;
-}
+	void
+	addFog (Fog* const);
 
-const TextureIndex &
-BrowserEnvironment::getTextures () const
-{
-	return textures;
-}
+	void
+	removeFog (Fog* const);
+
+	const FogList &
+	getFogs () const;
+
+	/// @name Viewpoint list handling
+
+	void
+	addViewpoint (X3DViewpointNode* const);
+
+	void
+	removeViewpoint (X3DViewpointNode* const);
+
+	const ViewpointList &
+	getViewpoints () const;
+
+	///  @name Texture handling
+
+	void addTexture (const std::string &, GLuint);
+
+	bool removeTexture (const std::string &, GLuint);
+
+	GLuint
+	getTexture (const std::string &);
+
+	const TextureIndex &
+	getTextures () const;
+
+	/// @name Sensors
+
+	void
+	addSensor (X3DSensorNode* const);
+
+	void
+	removeSensor (X3DSensorNode* const);
+
+	void
+	updateSensors ();
+
+	void
+	dispose ();
+
+
+protected:
+
+	///  @name Constructor
+
+	X3DBrowserContext ();
+
+
+private:
+
+	NavigationInfoList navigationInfos;
+	BackgroundList     backgrounds;
+	FogList            fogs;
+	ViewpointList      viewpoints;
+
+	TextureIndex textures;
+	Output       sensors;
+
+};
 
 } // X3D
 } // titania
+
+#endif

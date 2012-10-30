@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,14 +54,14 @@ namespace titania {
 namespace X3D {
 
 ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const executionContext) :
-	             X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DEnvironmentTextureNode (),                                 
-	                     back (),                                 // SFNode [in,out] back    NULL        [X3DTexture2DNode]
-	                   bottom (),                                 // SFNode [in,out] bottom  NULL        [X3DTexture2DNode]
-	                    front (),                                 // SFNode [in,out] front   NULL        [X3DTexture2DNode]
-	                     left (),                                 // SFNode [in,out] left    NULL        [X3DTexture2DNode]
-	                    right (),                                 // SFNode [in,out] right   NULL        [X3DTexture2DNode]
-	                      top ()                                  // SFNode [in,out] top     NULL        [X3DTexture2DNode]
+	             X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DEnvironmentTextureNode (),                                                    
+	                     back (),                                                    // SFNode [in,out] back    NULL        [X3DTexture2DNode]
+	                   bottom (),                                                    // SFNode [in,out] bottom  NULL        [X3DTexture2DNode]
+	                    front (),                                                    // SFNode [in,out] front   NULL        [X3DTexture2DNode]
+	                     left (),                                                    // SFNode [in,out] left    NULL        [X3DTexture2DNode]
+	                    right (),                                                    // SFNode [in,out] right   NULL        [X3DTexture2DNode]
+	                      top ()                                                     // SFNode [in,out] top     NULL        [X3DTexture2DNode]
 {
 	setComponent ("CubeMapTexturing");
 	setTypeName ("ComposedCubeMapTexture");

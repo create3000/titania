@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,17 +48,17 @@
 
 #include "QuadSphereProperties.h"
 
-#include "../../Execution/X3DExecutionContext.h"
 #include "../../Components/Geometry3D/Sphere.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
 QuadSphereProperties::QuadSphereProperties (X3DExecutionContext* const executionContext) :
-	         X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DSpherePropertyNode (),                                 
-	           uDimension (20),                               
-	           vDimension (10)
+	         X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DSpherePropertyNode (),                                                    
+	           uDimension (20),                                                  
+	           vDimension (10)                                                   
 {
 	setComponent ("Browser"),
 	setTypeName ("QuadSphereProperties");

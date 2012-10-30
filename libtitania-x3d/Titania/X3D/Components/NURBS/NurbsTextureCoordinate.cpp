@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,16 +54,16 @@ namespace titania {
 namespace X3D {
 
 NurbsTextureCoordinate::NurbsTextureCoordinate (X3DExecutionContext* const executionContext) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	     X3DNode (),                                 
-	controlPoint (),                                 // MFVec2f  [in,out] controlPoint  [ ]       (-∞,∞)
-	      weight (),                                 // MFFloat  [in,out] weight        [ ]       (0,∞)
-	  uDimension (),                                 // SFInt32  [ ]      uDimension    0         [0,∞)
-	       uKnot (),                                 // MFDouble [ ]      uKnot         [ ]        (-∞,∞)
-	      uOrder (3),                                // SFInt32  [ ]      uOrder        3         [2,∞)
-	  vDimension (),                                 // SFInt32  [ ]      vDimension    0         [0,∞)
-	       vKnot (),                                 // MFDouble [ ]      vKnot         [ ]        (-∞,∞)
-	      vOrder (3)                                 // SFInt32  [ ]      vOrder        3         [2,∞)
+	X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	     X3DNode (),                                                    
+	controlPoint (),                                                    // MFVec2f  [in,out] controlPoint  [ ]       (-∞,∞)
+	      weight (),                                                    // MFFloat  [in,out] weight        [ ]       (0,∞)
+	  uDimension (),                                                    // SFInt32  [ ]      uDimension    0         [0,∞)
+	       uKnot (),                                                    // MFDouble [ ]      uKnot         [ ]        (-∞,∞)
+	      uOrder (3),                                                   // SFInt32  [ ]      uOrder        3         [2,∞)
+	  vDimension (),                                                    // SFInt32  [ ]      vDimension    0         [0,∞)
+	       vKnot (),                                                    // MFDouble [ ]      vKnot         [ ]        (-∞,∞)
+	      vOrder (3)                                                    // SFInt32  [ ]      vOrder        3         [2,∞)
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsTextureCoordinate");

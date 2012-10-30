@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,14 +54,14 @@ namespace titania {
 namespace X3D {
 
 TextureBackground::TextureBackground (X3DExecutionContext* const executionContext) :
-	     X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DBackgroundNode (),                                 
-	      backTexture (),                                 // SFNode [in,out] backTexture    NULL        [X3DTextureNode]
-	    bottomTexture (),                                 // SFNode [in,out] bottomTexture  NULL        [X3DTextureNode]
-	     frontTexture (),                                 // SFNode [in,out] frontTexture   NULL        [X3DTextureNode]
-	      leftTexture (),                                 // SFNode [in,out] leftTexture    NULL        [X3DTextureNode]
-	     rightTexture (),                                 // SFNode [in,out] rightTexture   NULL        [X3DTextureNode]
-	       topTexture ()                                  // SFNode [in,out] topTexture     NULL        [X3DTextureNode]
+	     X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DBackgroundNode (),                                                    
+	      backTexture (),                                                    // SFNode [in,out] backTexture    NULL        [X3DTextureNode]
+	    bottomTexture (),                                                    // SFNode [in,out] bottomTexture  NULL        [X3DTextureNode]
+	     frontTexture (),                                                    // SFNode [in,out] frontTexture   NULL        [X3DTextureNode]
+	      leftTexture (),                                                    // SFNode [in,out] leftTexture    NULL        [X3DTextureNode]
+	     rightTexture (),                                                    // SFNode [in,out] rightTexture   NULL        [X3DTextureNode]
+	       topTexture ()                                                     // SFNode [in,out] topTexture     NULL        [X3DTextureNode]
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("TextureBackground");

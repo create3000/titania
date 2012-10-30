@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,14 +54,14 @@ namespace titania {
 namespace X3D {
 
 HAnimSegment::HAnimSegment (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	 X3DGroupingNode (),                                 
-	    centerOfMass (),                                 // SFVec3f  [in,out] centerOfMass      0 0 0                      (-∞,∞)
-	           coord (),                                 // SFNode   [in,out] coord             NULL                       [X3DCoordinateNode]
-	      displacers (),                                 // MFNode   [in,out] displacers        [ ]                        [HAnimDisplacer]
-	            mass (),                                 // SFFloat  [in,out] mass              0                          [0,∞)
-	momentsOfInertia ({ 0, 0, 0, 0, 0, 0, 0, 0, 0 }),    // MFFloat  [in,out] momentsOfInertia  [0 0 0 0 0 0 0 0 0]        [0,∞)
-	            name ()                                  // SFString [in,out] name              ""
+	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	 X3DGroupingNode (),                                                    
+	    centerOfMass (),                                                    // SFVec3f  [in,out] centerOfMass      0 0 0                      (-∞,∞)
+	           coord (),                                                    // SFNode   [in,out] coord             NULL                       [X3DCoordinateNode]
+	      displacers (),                                                    // MFNode   [in,out] displacers        [ ]                        [HAnimDisplacer]
+	            mass (),                                                    // SFFloat  [in,out] mass              0                          [0,∞)
+	momentsOfInertia ({ 0, 0, 0, 0, 0, 0, 0, 0, 0 }),                       // MFFloat  [in,out] momentsOfInertia  [0 0 0 0 0 0 0 0 0]        [0,∞)
+	            name ()                                                     // SFString [in,out] name              ""
 {
 	setComponent ("H-Anim");
 	setTypeName ("HAnimSegment");

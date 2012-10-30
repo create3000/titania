@@ -68,7 +68,7 @@ TextureContext::TextureContext (const Glib::RefPtr <Gdk::Window> & window,
 	frameBuffer (0),       
 	    texture (0),       
 	depthBuffer (0),       
-	      array ()
+	      array ()         
 
 {
 	setValue (create (window, display, sharingContext .getValue (), direct));
@@ -83,7 +83,7 @@ TextureContext::TextureContext (const Glib::RefPtr <Gdk::Window> & window,
 	frameBuffer (0),       
 	    texture (0),       
 	depthBuffer (0),       
-	      array ()
+	      array ()         
 {
 	setValue (create (window, display, NULL, direct));
 }

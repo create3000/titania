@@ -54,13 +54,13 @@ namespace titania {
 namespace X3D {
 
 PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
-	       X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	  X3DDragSensorNode (),                                 
-	       axisRotation (),                                 // SFRotation [in,out] axisRotation         0 0 1 0
-	        maxPosition (-1, -1),                           // SFVec2f    [in,out] maxPosition          -1 -1          (-∞,∞)
-	        minPosition (),                                 // SFVec2f    [in,out] minPosition          0 0            (-∞,∞)
-	             offset (),                                 // SFVec3f    [in,out] offset               0 0 0          (-∞,∞)
-	translation_changed ()                                  // SFVec3f    [out]    translation_changed
+	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	  X3DDragSensorNode (),                                                    
+	       axisRotation (),                                                    // SFRotation [in,out] axisRotation         0 0 1 0
+	        maxPosition (-1, -1),                                              // SFVec2f    [in,out] maxPosition          -1 -1          (-∞,∞)
+	        minPosition (),                                                    // SFVec2f    [in,out] minPosition          0 0            (-∞,∞)
+	             offset (),                                                    // SFVec3f    [in,out] offset               0 0 0          (-∞,∞)
+	translation_changed ()                                                     // SFVec3f    [out]    translation_changed
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("PlaneSensor");

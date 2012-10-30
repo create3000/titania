@@ -59,9 +59,9 @@ WindowContext::WindowContext (const Glib::RefPtr <Gdk::Window> & window,
                               const Glib::RefPtr <Gdk::Display> & display,
                               const GLContext & sharingContext,
                               bool direct) :
-	GLContext (display),                            
-	    window (window),                             
-	   xWindow (GDK_WINDOW_XID (window -> gobj ()))
+	GLContext (display),                           
+	   window (window),                            
+	  xWindow (GDK_WINDOW_XID (window -> gobj ())) 
 {
 	setValue    (create (sharingContext .getValue (), direct));
 	setDrawable (xWindow);
@@ -70,8 +70,8 @@ WindowContext::WindowContext (const Glib::RefPtr <Gdk::Window> & window,
 WindowContext::WindowContext (const Glib::RefPtr <Gdk::Window> & window,
                               const Glib::RefPtr <Gdk::Display> & display,
                               bool direct) :
-	GLContext (display),                        
-	   xWindow (GDK_WINDOW_XID (window -> gobj ()))
+	GLContext (display),                           
+	  xWindow (GDK_WINDOW_XID (window -> gobj ())) 
 {
 	setValue    (create (NULL, direct));
 	setDrawable (xWindow);
@@ -90,7 +90,7 @@ WindowContext::create (GLXContext sharingContext, bool direct)
 
 	int          numReturned    = 0;
 	XVisualInfo* visualInfoList = XGetVisualInfo (getDisplay (), VisualIDMask, &visualInfo, &numReturned);
-	
+
 	GLXContext xContext = glXCreateContext (getDisplay (), visualInfoList, sharingContext, direct);
 	XFree (visualInfoList);
 

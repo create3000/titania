@@ -156,8 +156,8 @@ Quaternion::Quaternion (const Matrix & R)
  * A positive sign has been chosen.
  */
 {
-	if ((R .Nrows () == 3) and (R .Ncols () == 3) or
-	    (R .Nrows () == 4) and (R .Ncols () == 4))
+	if ((R .Nrows () == 3)and (R .Ncols () == 3) or
+	       (R .Nrows () == 4) and (R .Ncols () == 4))
 	{
 		Real tmp = fabs (R (1, 1) + R (2, 2) + R (3, 3) + 1);
 		s_ = 0.5 * sqrt (tmp);
@@ -724,7 +724,7 @@ Slerp (const Quaternion & q0, const Quaternion & q1, const Real t)
  * by the interpolated rotations.
  */
 {
-	if ((t < 0) or (t > 1))
+	if ((t < 0)or (t > 1))
 		cerr << "Slerp(q0, q1, t): t < 0 or t > 1. t is set to 0." << endl;
 
 	if (q0 .dot_prod (q1) >= 0)
@@ -758,7 +758,7 @@ Slerp_prime (const Quaternion & q0, const Quaternion & q1,
  */
 
 {
-	if ((t < 0) or (t > 1))
+	if ((t < 0)or (t > 1))
 		cerr << "Slerp_prime(q0, q1, t): t < 0 or t > 1. t is set to 0." << endl;
 
 	if (q0 .dot_prod (q1) >= 0)
@@ -788,7 +788,7 @@ Squad (const Quaternion & p, const Quaternion & a, const Quaternion & b,
  * \f]
  */
 {
-	if ((t < 0) or (t > 1))
+	if ((t < 0)or (t > 1))
 		cerr << "Squad(p,a,b,q, t): t < 0 or t > 1. t is set to 0." << endl;
 
 	return Slerp (Slerp (p, q, t), Slerp (a, b, t), 2 * t * (1 - t));
@@ -838,7 +838,7 @@ Squad_prime (const Quaternion & p, const Quaternion & a, const Quaternion & b,
  + The result is not necessarily a unit quaternion even if all the input quaternions are unit.
  */
 {
-	if ((t < 0) or (t > 1))
+	if ((t < 0)or (t > 1))
 		cerr << "Squad_prime(p,a,b,q, t): t < 0 or t > 1. t is set to 0." << endl;
 
 	Quaternion q_squad,

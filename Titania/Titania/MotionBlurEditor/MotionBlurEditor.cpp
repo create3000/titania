@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,7 +55,7 @@ namespace titania {
 namespace puck {
 
 MotionBlurEditor::MotionBlurEditor (const std::string & sessionKey, X3DBrowserInterface* const browserWidget) :
-	X3DMotionBlurEditorUI (get_ui ("MotionBlurEditor.ui"), sessionKey)
+	X3DMotionBlurEditorUI (get_ui ("MotionBlurEditor.ui"), sessionKey) 
 {
 	setBrowserWidget (browserWidget);
 	setBrowser (browserWidget -> getBrowser ());
@@ -66,19 +66,19 @@ MotionBlurEditor::initialize ()
 {
 	X3DMotionBlurEditorUI::initialize ();
 
-//	getIntensity () .set_value (surface .motionBlur -> intensity);
+	//	getIntensity () .set_value (surface .motionBlur -> intensity);
 }
 
 void
 MotionBlurEditor::on_enabled_toggled ()
 {
-//	surface .motionBlur -> enabled = getEnabled () .get_active ();
+	//	surface .motionBlur -> enabled = getEnabled () .get_active ();
 }
 
 void
 MotionBlurEditor::on_intensity_changed ()
 {
-//	surface .motionBlur -> intensity = getIntensity () .get_value ();
+	//	surface .motionBlur -> intensity = getIntensity () .get_value ();
 }
 
 } // puck

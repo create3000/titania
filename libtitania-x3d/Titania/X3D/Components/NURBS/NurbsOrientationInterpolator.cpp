@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,14 +54,14 @@ namespace titania {
 namespace X3D {
 
 NurbsOrientationInterpolator::NurbsOrientationInterpolator (X3DExecutionContext* const executionContext) :
-	 X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	 X3DChildNode (),                                 
-	 set_fraction (),                                 // SFFloat    [in]     set_fraction             (-∞,∞)
-	 controlPoint (),                                 // SFNode     [in,out] controlPoint   [ ]       [X3DCoordinateNode]
-	         knot (),                                 // MFDouble   [in,out] knot           [ ]       (-∞,∞)
-	        order (3),                                // SFInt32    [in,out] order          3         (2,∞)
-	       weight (),                                 // MFDouble   [in,out] weight         [ ]       (-∞,∞)
-	value_changed ()                                  // SFRotation [out]    value_changed
+	 X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	 X3DChildNode (),                                                    
+	 set_fraction (),                                                    // SFFloat    [in]     set_fraction             (-∞,∞)
+	 controlPoint (),                                                    // SFNode     [in,out] controlPoint   [ ]       [X3DCoordinateNode]
+	         knot (),                                                    // MFDouble   [in,out] knot           [ ]       (-∞,∞)
+	        order (3),                                                   // SFInt32    [in,out] order          3         (2,∞)
+	       weight (),                                                    // MFDouble   [in,out] weight         [ ]       (-∞,∞)
+	value_changed ()                                                     // SFRotation [out]    value_changed
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsOrientationInterpolator");

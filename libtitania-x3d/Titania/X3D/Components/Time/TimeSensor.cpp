@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -59,13 +59,13 @@ namespace titania {
 namespace X3D {
 
 TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
-	        X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DTimeDependentNode (),                                 
-	       X3DSensorNode (),                                 
-	       cycleInterval (1),                                // SFTime  [in,out] cycleInterval     1        (0,∞)
-	           cycleTime (),                                 // SFTime  [out]    cycleTime
-	    fraction_changed (),                                 // SFFloat [out]    fraction_changed
-	                time ()                                  // SFTime  [out]    time
+	        X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DTimeDependentNode (),                                                    
+	       X3DSensorNode (),                                                    
+	       cycleInterval (1),                                                   // SFTime  [in,out] cycleInterval     1        (0,∞)
+	           cycleTime (),                                                    // SFTime  [out]    cycleTime
+	    fraction_changed (),                                                    // SFFloat [out]    fraction_changed
+	                time ()                                                     // SFTime  [out]    time
 {
 	setComponent ("Time");
 	setTypeName ("TimeSensor");

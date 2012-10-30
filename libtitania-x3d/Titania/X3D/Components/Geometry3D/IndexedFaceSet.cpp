@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -55,24 +55,24 @@ namespace titania {
 namespace X3D {
 
 IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
-	           X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DComposedGeometryNode (),                                 
-	         set_colorIndex (),                                 // MFInt32 [in] set_colorIndex
-	         set_coordIndex (),                                 // MFInt32 [in] set_coordIndex
-	        set_normalIndex (),                                 // MFInt32 [in] set_normalIndex
-	      set_texCoordIndex (),                                 // MFInt32 [in] set_texCoordIndex
-	             colorIndex (),                                 // MFInt32 [ ]  colorIndex         [ ]          [0,∞) or -1
-	                 convex (true),                             // SFBool  [ ]  convex             TRUE
-	             coordIndex (),                                 // MFInt32 [ ]  coordIndex         [ ]          [0,∞) or -1
-	            creaseAngle (),                                 // SFFloat [ ]  creaseAngle         0           [0,∞)
-	            normalIndex (),                                 // MFInt32 [ ]  normalIndex        [ ]          [0,∞) or -1
-	          texCoordIndex (),                                 // MFInt32 [ ]  texCoordIndex      [ ]          [-1,∞)
-	                   tess (0),                                
-	              numPoints (0),                                
-	               numFaces (0),                                
-	            numTexCoord (0),                                
-	              numColors (0),                                
-	             numNormals (0)
+	           X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DComposedGeometryNode (),                                                    
+	         set_colorIndex (),                                                    // MFInt32 [in] set_colorIndex
+	         set_coordIndex (),                                                    // MFInt32 [in] set_coordIndex
+	        set_normalIndex (),                                                    // MFInt32 [in] set_normalIndex
+	      set_texCoordIndex (),                                                    // MFInt32 [in] set_texCoordIndex
+	             colorIndex (),                                                    // MFInt32 [ ]  colorIndex         [ ]          [0,∞) or -1
+	                 convex (true),                                                // SFBool  [ ]  convex             TRUE
+	             coordIndex (),                                                    // MFInt32 [ ]  coordIndex         [ ]          [0,∞) or -1
+	            creaseAngle (),                                                    // SFFloat [ ]  creaseAngle         0           [0,∞)
+	            normalIndex (),                                                    // MFInt32 [ ]  normalIndex        [ ]          [0,∞) or -1
+	          texCoordIndex (),                                                    // MFInt32 [ ]  texCoordIndex      [ ]          [-1,∞)
+	                   tess (0),                                                   
+	              numPoints (0),                                                   
+	               numFaces (0),                                                   
+	            numTexCoord (0),                                                   
+	              numColors (0),                                                   
+	             numNormals (0)                                                    
 {
 	setComponent ("Geometry3D");
 	setTypeName ("IndexedFaceSet");
@@ -310,7 +310,7 @@ IndexedFaceSet::getTexCoord ()
 	float Ssize;
 	int   Sindex, Tindex;
 
-	if ((Xsize >= Ysize) and (Xsize >= Zsize))
+	if ((Xsize >= Ysize)and (Xsize >= Zsize))
 	{
 		// X size largest
 		Ssize = Xsize; Sindex = 0;
@@ -320,7 +320,7 @@ IndexedFaceSet::getTexCoord ()
 		else
 			Tindex = 2;
 	}
-	else if ((Ysize >= Xsize) and (Ysize >= Zsize))
+	else if ((Ysize >= Xsize)and (Ysize >= Zsize))
 	{
 		// Y size largest
 		Ssize = Ysize; Sindex = 1;

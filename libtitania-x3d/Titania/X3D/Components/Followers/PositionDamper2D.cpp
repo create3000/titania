@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,17 +54,17 @@ namespace titania {
 namespace X3D {
 
 PositionDamper2D::PositionDamper2D (X3DExecutionContext* const executionContext) :
-	      X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	     X3DDamperNode (),                                 
-	   set_destination (),                                 // SFVec2f [in]     set_destination
-	         set_value (),                                 // SFVec2f [in]     set_value
-	               tau (),                                 // SFTime  [in,out] tau                 0.0         [0,∞)
-	         tolerance (-1),                               // SFFloat [in,out] tolerance           -1          [0..∞] or -1
-	          isActive (),                                 // SFBool  [out]    isActive
-	     value_changed (),                                 // SFVec2f [out]    value_changed
-	initialDestination (),                                 // SFVec2f [ ]      initialDestination  0 0
-	      defaultValue (),                                 // SFVec2f [ ]      defaultValue        0 0
-	             order ()                                  // SFInt32 [ ]      order               0           [0..5]
+	      X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	     X3DDamperNode (),                                                    
+	   set_destination (),                                                    // SFVec2f [in]     set_destination
+	         set_value (),                                                    // SFVec2f [in]     set_value
+	               tau (),                                                    // SFTime  [in,out] tau                 0.0         [0,∞)
+	         tolerance (-1),                                                  // SFFloat [in,out] tolerance           -1          [0..∞] or -1
+	          isActive (),                                                    // SFBool  [out]    isActive
+	     value_changed (),                                                    // SFVec2f [out]    value_changed
+	initialDestination (),                                                    // SFVec2f [ ]      initialDestination  0 0
+	      defaultValue (),                                                    // SFVec2f [ ]      defaultValue        0 0
+	             order ()                                                     // SFInt32 [ ]      order               0           [0..5]
 {
 	setComponent ("Followers");
 	setTypeName ("PositionDamper2D");

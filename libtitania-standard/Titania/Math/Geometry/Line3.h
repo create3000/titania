@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,12 +66,14 @@ public:
 	constexpr
 	line3 (const line3 & line) :
 		value { line .point (), line .direction () }
+
 	{ }
 
 	///  Constructs a line of from @a point and @a point.
 	constexpr
 	line3 (const vector3 <Type> & point1, const vector3 <Type> & point2) :
 		value { point1, normalize (point2 - point1) }
+
 	{ }
 
 	///  Returns the point of this line.

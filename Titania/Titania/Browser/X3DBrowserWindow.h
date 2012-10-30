@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __PUCK_BROWSER_X3DBROWSER_WINDOW_H__
-#define __PUCK_BROWSER_X3DBROWSER_WINDOW_H__
+#ifndef __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
+#define __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
 
 #include "../Browser/BrowserWidget.h"
 #include "../UserInterfaces/X3DBrowserWindowUI.h"
@@ -110,6 +110,7 @@ public:
 	void
 	dispose ();
 
+
 protected:
 
 	X3DBrowserWindow (int &, char** &);
@@ -133,14 +134,14 @@ private:
 
 	void
 	insertPage (size_t);
-	
+
 	Gtk::HBox*
 	setTabLabel (Gtk::Widget &);
 
 	void
 	setTransparent (bool);
 
-	Glib::OptionGroup::vecustrings remainingOptions;
+	Glib::OptionGroup::vecustrings                remainingOptions;
 	std::deque <std::shared_ptr <BrowserWidget>> browserWidgets;
 
 };

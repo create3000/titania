@@ -46,14 +46,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DBINDABLE_NODE_BINDABLE_NODE_STACK_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DBINDABLE_NODE_BINDABLE_NODE_STACK_H__
+#ifndef __TITANIA_X3D_EXECUTION_BINDABLE_NODE_STACK_H__
+#define __TITANIA_X3D_EXECUTION_BINDABLE_NODE_STACK_H__
 
 #include "../Base/X3DOutput.h"
 #include <Titania/Basic/BindStack.h>
 #include <initializer_list>
 
-#include "../Components/EnvironmentalEffects/Background.h"
+#include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
@@ -141,7 +141,6 @@ extern template class basic::bind_stack <X3D::NavigationInfo*>;
 extern template class basic::bind_stack <X3D::X3DBackgroundNode*>;
 extern template class basic::bind_stack <X3D::Fog*>;
 extern template class basic::bind_stack <X3D::X3DViewpointNode*>;
-
 extern template class X3D::BindableNodeStack <X3D::NavigationInfo>;
 extern template class X3D::BindableNodeStack <X3D::X3DBackgroundNode>;
 extern template class X3D::BindableNodeStack <X3D::Fog>;

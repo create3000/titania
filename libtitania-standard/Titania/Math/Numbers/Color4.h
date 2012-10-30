@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -86,10 +86,13 @@ public:
 	///  Components constructor. Set values to @a x, @a y and @a z.
 	constexpr
 	color4 (const Type & r, const Type & g, const Type & b, const Type & a) :
-		value { math::clamp (r, Type (), Type (1)),
-		        math::clamp (g, Type (), Type (1)),
-		        math::clamp (b, Type (), Type (1)),
-		        math::clamp (a, Type (), Type (1)) } { }
+		value
+	{
+		math::clamp (r, Type (), Type (1)),
+		math::clamp (g, Type (), Type (1)),
+		math::clamp (b, Type (), Type (1)),
+		math::clamp (a, Type (), Type (1))
+	} { }
 
 	///  Construct a color from hsv and alpha.
 	static color4

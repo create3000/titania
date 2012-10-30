@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __PUCK_BROWSER_BROWSER_WIDGET_H__
-#define __PUCK_BROWSER_BROWSER_WIDGET_H__
+#ifndef __TITANIA_BROWSER_BROWSER_WIDGET_H__
+#define __TITANIA_BROWSER_BROWSER_WIDGET_H__
 
 #include "../Browser/X3DBrowserWidget.h"
 
@@ -132,7 +132,6 @@ private:
 	void
 	messageDialogResponse (int);
 
-
 	/// @name Bar view handling
 
 	virtual
@@ -175,7 +174,7 @@ private:
 	virtual
 	void
 	pointset_activate ();
-	
+
 	///  @name Rendering quality
 
 	virtual
@@ -235,13 +234,12 @@ private:
 	virtual
 	void
 	on_hand_button_toggled ();
-	
+
 	///  @name Help menu
-	
+
 	virtual
 	void
 	on_info ();
-
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

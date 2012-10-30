@@ -29,32 +29,29 @@
 #ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_H__
 #define __TITANIA_X3D_BROWSER_X3DBROWSER_H__
 
-#include <Titania/Chrono/ClockBase.h>
-
-#include "../Components/Navigation/Viewpoint.h"
-#include "../Components/Networking/X3DUrlObject.h"
+#include "../Browser/X3DBrowserContext.h"
+#include "../Browser/Properties/BrowserOptions.h"
+#include "../Browser/Properties/BrowserProperties.h"
+#include "../Browser/Properties/RenderingProperties.h"
 
 #include "../Configuration/SupportedComponents.h"
 #include "../Configuration/SupportedFields.h"
 #include "../Configuration/SupportedNodes.h"
 #include "../Configuration/SupportedProfiles.h"
 
-#include "../Execution/Scene.h"
-#include "../Execution/World.h"
-#include "../Execution/X3DExecutionContext.h"
-
 #include "../JavaScript/JavaScriptEngine.h"
 #include "../Routing/Router.h"
 
-#include "../Browser/Properties/BrowserProperties.h"
-#include "../Browser/Properties/RenderingProperties.h"
-#include "../Browser/Properties/BrowserOptions.h"
-#include "../Browser/BrowserEnvironment.h"
+#include "../Components/Navigation/Viewpoint.h"
+#include "../Components/Networking/X3DUrlObject.h"
+
+#include "../Execution/Scene.h"
+#include "../Execution/World.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "../Browser/HitArray.h"
-#include "../Components/Core/X3DSensorNode.h"
 
+#include <Titania/Chrono/ClockBase.h>
 #include <memory>
 
 namespace titania {
@@ -71,7 +68,7 @@ enum EventType
 };
 
 class X3DBrowser :
-	public X3DExecutionContext, public X3DUrlObject
+	public X3DBrowserContext, public X3DUrlObject
 {
 public:
 
@@ -207,11 +204,6 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const SFNode <BrowserEnvironment> &
-	getBrowserEnvironment () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
 	NavigationInfo*
 	getActiveNavigationInfo () const
 	throw (Error <DISPOSED>);
@@ -262,7 +254,7 @@ public:
 	virtual
 	void
 	display ();
-	
+
 	void
 	finish ();
 
@@ -292,7 +284,7 @@ public:
 
 	LightStack &
 	getLights ();
-	
+
 	////  pushPointingDeviceSensorNode
 	virtual
 	void
@@ -328,22 +320,6 @@ public:
 
 	////
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	////  Visibility-, Proxmity-, ... Sensor
-	void
-	addSensor (X3DSensorNode*);
-
-	void
-	removeSensor (X3DSensorNode*);
-
-	////
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 protected:
 
 	X3DBrowser ();
@@ -364,34 +340,34 @@ private:
 
 	static const std::string version;
 
-	Router router;
+	Router                     router;
 	std::shared_ptr <X3DClock> clock;
 
-	SupportedFields     supportedFields;
-	SupportedNodes      supportedNodes;
-	SupportedComponents supportedComponents;
-	SupportedProfiles   supportedProfiles;
+	SupportedFields             supportedFields;
+	SupportedNodes              supportedNodes;
+	SupportedComponents         supportedComponents;
+	SupportedProfiles           supportedProfiles;
 
 	SFNode <RenderingProperties> renderingProperties;
 	SFNode <BrowserProperties>   browserProperties;
 	SFNode <BrowserOptions>      browserOptions;
-	SFNode <BrowserEnvironment>  browserEnvironment;
 	SFNode <JavaScriptEngine>    javaScriptEngine;
 
 	float currentSpeed;
 	float currentFrameRate;
 
 	std::string description;
-	
-	
+
+
 public:
 
-	SFTime         initialized;
-	SFTime         exposed;
-	SFTime         displayed;
-	SFTime         finished;
-	SFTime         shutdown;
-	SFTime         changed;
+	SFTime initialized;
+	SFTime exposed;
+	SFTime displayed;
+	SFTime finished;
+	SFTime shutdown;
+	SFTime changed;
+
 
 private:
 
@@ -401,10 +377,9 @@ private:
 	void
 	set_scene ();
 
-	Vector3f  priorPosition;
-	
+	Vector3f priorPosition;
+
 	LightStack lightStack;
-	SensorNodeSet sensors;
 
 };
 

@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __PUCK_BROWSER_BROWSER_WINDOW_H__
-#define __PUCK_BROWSER_BROWSER_WINDOW_H__
+#ifndef __TITANIA_BROWSER_BROWSER_WINDOW_H__
+#define __TITANIA_BROWSER_BROWSER_WINDOW_H__
 
 #include "../Browser/X3DBrowserWindow.h"
 
@@ -71,7 +71,7 @@ private:
 	virtual
 	void
 	on_add_tab ();
-	
+
 	virtual
 	void
 	on_close_tab (Gtk::Widget &);

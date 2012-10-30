@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __PUCK_BROWSER_X3DBROWSER_USER_INTERFACE_H__
-#define __PUCK_BROWSER_X3DBROWSER_USER_INTERFACE_H__
+#ifndef __TITANIA_USER_INTERFACES_X3DBROWSER_USER_INTERFACE_H__
+#define __TITANIA_USER_INTERFACES_X3DBROWSER_USER_INTERFACE_H__
 
 #include "../Base/X3DBrowserInterface.h"
 #include "../HistoryEditor/HistoryEditor.h"
@@ -131,7 +131,7 @@ protected:
 
 private:
 
-	X3D::Surface surface;
+	X3D::Surface     surface;
 	MotionBlurEditor motionBlurEditor;
 	ViewpointEditor  viewpointEditor;
 	HistoryEditor    historyEditor;

@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,8 +59,8 @@ namespace X3D {
 
 PointingDevice::PointingDevice (Surface & surface) :
 	surface (surface), 
-	     button (0),           
-	     isOver (false)
+	 button (0),       
+	 isOver (false)    
 {
 	surface .signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
 	surface .signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PointingDevice::on_motion_notify_event),  false);
@@ -121,7 +121,7 @@ PointingDevice::on_motion_notify_event (GdkEventMotion* event)
 		}
 	}
 
-	else if (button == 0 or  button == 1)
+	else if (button == 0 or button == 1)
 	{ }
 
 	return false;

@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,16 +54,16 @@ namespace titania {
 namespace X3D {
 
 Text::Text (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryNode (),                                 
-	      fontStyle (),                                 // SFNode   [in,out] fontStyle   NULL         [X3FontStyleNode]
-	         length (),                                 // MFFloat  [in,out] length      [ ]          [0,∞)
-	      maxExtent (),                                 // SFFloat  [in,out] maxExtent   0.0          [0,∞)
-	         string (),                                 // MFString [in,out] string      [ ]
-	     lineBounds (),                                 // MFVec2f  [out]    lineBounds
-	         origin (),                                 // SFVec3f  [out]    origin
-	     textBounds (),                                 // SFVec2f  [out]    textBounds
-	          solid ()                                  // SFBool   [ ]      solid       FALSE
+	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DGeometryNode (),                                                    
+	      fontStyle (),                                                    // SFNode   [in,out] fontStyle   NULL         [X3FontStyleNode]
+	         length (),                                                    // MFFloat  [in,out] length      [ ]          [0,∞)
+	      maxExtent (),                                                    // SFFloat  [in,out] maxExtent   0.0          [0,∞)
+	         string (),                                                    // MFString [in,out] string      [ ]
+	     lineBounds (),                                                    // MFVec2f  [out]    lineBounds
+	         origin (),                                                    // SFVec3f  [out]    origin
+	     textBounds (),                                                    // SFVec2f  [out]    textBounds
+	          solid ()                                                     // SFBool   [ ]      solid       FALSE
 {
 	setComponent ("Text");
 	setTypeName ("Text");

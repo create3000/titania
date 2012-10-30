@@ -46,51 +46,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_BROWSER_ENVIRONMENT_H__
-#define __TITANIA_X3D_BROWSER_BROWSER_ENVIRONMENT_H__
+#ifndef __TITANIA_X3D_BASE_OUTPUT_H__
+#define __TITANIA_X3D_BASE_OUTPUT_H__
 
-#include "../Components/Core/X3DChildNode.h"
-#include "../Execution/X3DExecutionContext.h"
-#include <map>
+#include "../Base/X3DOutput.h"
 
 namespace titania {
 namespace X3D {
 
-typedef std::map <std::string, std::pair <GLuint, size_t>> TextureIndex;
-
-class BrowserEnvironment :
-	public X3DChildNode
+class Output :
+	public X3DOutput
 {
 public:
 
-	///  @name Constructor
+	Output ();
 
-	BrowserEnvironment (X3DExecutionContext* const);
+	virtual
+	const basic::id
+	getTypeName () const;
 
-	///  @name Texture handling
-
-	void addTexture (const std::string &, GLuint);
-
-	bool removeTexture (const std::string &, GLuint);
-	
-	GLuint
-	getTexture (const std::string &);
-	
-	const TextureIndex &
-	getTextures () const;
-	
+	virtual
+	~Output ();
 
 private:
 
-	virtual
-	BrowserEnvironment*
-	create (X3DExecutionContext* const)  const;
-
-	virtual
-	void
-	initialize ();
-
-	TextureIndex textures;
+	static const basic::id typeName;
 
 };
 

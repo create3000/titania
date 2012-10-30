@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,14 +54,14 @@ namespace titania {
 namespace X3D {
 
 GeoTouchSensor::GeoTouchSensor (X3DExecutionContext* const executionContext) :
-	       X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	 X3DTouchSensorNode (),                                 
-	  hitNormal_changed (),                                 // SFVec3f  [out] hitNormal_changed
-	   hitPoint_changed (),                                 // SFVec3f  [out] hitPoint_changed
-	hitTexCoord_changed (),                                 // SFVec2f  [out] hitTexCoord_changed
-	hitGeoCoord_changed (),                                 // SFVec3d  [out] hitGeoCoord_changed
-	          geoOrigin (),                                 // SFNode   [ ]   geoOrigin            NULL               [GeoOrigin]
-	          geoSystem ({ "GD", "WE" })                    // MFString [ ]   geoSystem            ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
+	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	 X3DTouchSensorNode (),                                                    
+	  hitNormal_changed (),                                                    // SFVec3f  [out] hitNormal_changed
+	   hitPoint_changed (),                                                    // SFVec3f  [out] hitPoint_changed
+	hitTexCoord_changed (),                                                    // SFVec2f  [out] hitTexCoord_changed
+	hitGeoCoord_changed (),                                                    // SFVec3d  [out] hitGeoCoord_changed
+	          geoOrigin (),                                                    // SFNode   [ ]   geoOrigin            NULL               [GeoOrigin]
+	          geoSystem ({ "GD", "WE" })                                       // MFString [ ]   geoSystem            ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoTouchSensor");
@@ -88,8 +88,7 @@ GeoTouchSensor::create (X3DExecutionContext* const executionContext) const
 
 void
 GeoTouchSensor::update ()
-{
-}
+{ }
 
 } // X3D
 } // titania

@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,21 +54,21 @@ namespace titania {
 namespace X3D {
 
 GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	    X3DChildNode (),                                 
-	X3DBoundedObject (),                                 
-	        children (),                                 // MFNode   [out] children                          [ ]
-	   level_changed (),                                 // SFInt32  [out] level_changed
-	          center (),                                 // SFVec3d  [ ]   center         0 0 0              (-∞,∞)
-	       child1Url (),                                 // MFString [ ]   child1Url      [ ]                 [URI]
-	       child2Url (),                                 // MFString [ ]   child2Url      [ ]                 [URI]
-	       child3Url (),                                 // MFString [ ]   child3Url      [ ]                 [URI]
-	       child4Url (),                                 // MFString [ ]   child4Url      [ ]                 [URI]
-	       geoOrigin (),                                 // SFNode   [ ]   geoOrigin      NULL               [GeoOrigin]
-	       geoSystem ({ "GD", "WE" }),                   // MFString [ ]   geoSystem      ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
-	           range (10),                               // SFFloat  [ ]   range          10                 [0,∞)
-	         rootUrl (),                                 // MFString [ ]   rootUrl        [ ]                 [URI]
-	        rootNode ()                                  // MFNode   [ ]   rootNode       [ ]                 [X3DChildNode]
+	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	    X3DChildNode (),                                                    
+	X3DBoundedObject (),                                                    
+	        children (),                                                    // MFNode   [out] children                          [ ]
+	   level_changed (),                                                    // SFInt32  [out] level_changed
+	          center (),                                                    // SFVec3d  [ ]   center         0 0 0              (-∞,∞)
+	       child1Url (),                                                    // MFString [ ]   child1Url      [ ]                 [URI]
+	       child2Url (),                                                    // MFString [ ]   child2Url      [ ]                 [URI]
+	       child3Url (),                                                    // MFString [ ]   child3Url      [ ]                 [URI]
+	       child4Url (),                                                    // MFString [ ]   child4Url      [ ]                 [URI]
+	       geoOrigin (),                                                    // SFNode   [ ]   geoOrigin      NULL               [GeoOrigin]
+	       geoSystem ({ "GD", "WE" }),                                      // MFString [ ]   geoSystem      ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
+	           range (10),                                                  // SFFloat  [ ]   range          10                 [0,∞)
+	         rootUrl (),                                                    // MFString [ ]   rootUrl        [ ]                 [URI]
+	        rootNode ()                                                     // MFNode   [ ]   rootNode       [ ]                 [X3DChildNode]
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoLOD");

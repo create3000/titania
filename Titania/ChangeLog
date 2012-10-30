@@ -1,3 +1,53 @@
+2012-10-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp:
+	* Image.h:
+	* config.h:
+	* BrowserWindow.h:
+	* BrowserWidget.h:
+	* X3DBaseInterface.h:
+	* History.h:
+	* X3DUserInterface.h:
+	* config.cpp:
+	* History.cpp:
+	* X3DUserInterface.cpp:
+	* X3DBaseInterface.cpp:
+	* BrowserWidget.cpp:
+	* BrowserWindow.cpp:
+	* X3DBrowserWindow.h:
+	* X3DBrowserInterface.h:
+	* X3DBrowserWidget.h:
+	* ViewpointMenuItem.h:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserInterface.cpp:
+	* X3DConsoleUI.h:
+	* HistoryEditor.h:
+	* OutlineEditor.h:
+	* X3DBrowserWindow .cpp:
+	* ViewpointMenuItem.cpp:
+	* Configuration.h:
+	* OutlineTreeView.h:
+	* OutlineEditor.cpp:
+	* HistoryEditor.cpp:
+	* Configuration.cpp:
+	* OutlineTreeModel.h:
+	* ViewpointEditor.h:
+	* OutlineTreeView.cpp:
+	* OutlineTreeModel.cpp:
+	* X3DHistoryEditorUI.h:
+	* X3DOutlineEditorUI.h:
+	* MotionBlurEditor.h:
+	* ViewpointEditor.cpp:
+	* X3DBrowserWidgetUI.h:
+	* X3DBrowserWindowUI.h:
+	* X3DViewpointEditorUI.h:
+	* MotionBlurEditor.cpp:
+	* X3DMotionBlurEditorUI.h:
+	* X3DBrowserUserInterface.h:
+	* X3DRenderingPropertiesUI.h:
+	* X3DBrowserUserInterface.cpp:
+	* X3DRenderingPropertiesUI.cpp: 
+
 2012-10-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* History.h:

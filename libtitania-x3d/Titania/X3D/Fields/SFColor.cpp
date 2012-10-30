@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,15 +58,15 @@ const Type X3DField <Color3f>::type ("SFColor");
 template class X3DField <Color3f>;
 
 SFColor::SFColor () :
-	X3DField <Color3f> (Color3f ())
+	X3DField <Color3f> (Color3f ()) 
 { }
 
 SFColor::SFColor (const SFColor & field) :
-	X3DField <Color3f> (field)
+	X3DField <Color3f> (field)      
 { }
 
 SFColor::SFColor (const Color3f & value) :
-	X3DField <Color3f> (value)
+	X3DField <Color3f> (value)      
 { }
 
 SFColor::SFColor (const scalar_type & r, const scalar_type & g, const scalar_type & b) :

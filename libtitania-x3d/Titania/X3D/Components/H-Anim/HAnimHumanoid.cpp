@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,25 +54,25 @@ namespace titania {
 namespace X3D {
 
 HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	    X3DChildNode (),                                 
-	X3DBoundedObject (),                                 
-	          center (),                                 // SFVec3f    [in,out] center            0 0 0          (-∞,∞)
-	            info (),                                 // MFString   [in,out] info              [ ]
-	          joints (),                                 // MFNode     [in,out] joints            [ ]            [HAnimJoint]
-	            name (),                                 // SFString   [in,out] name              ""
-	        rotation (),                                 // SFRotation [in,out] rotation          0 0 1 0        (-∞,∞)|[-1,1]
-	           scale (1, 1, 1),                          // SFVec3f    [in,out] scale             1 1 1          (0,∞)
-	scaleOrientation (),                                 // SFRotation [in,out] scaleOrientation  0 0 1 0        (-∞,∞)|[-1,1]
-	        segments (),                                 // MFNode     [in,out] segments          [ ]            [HAnimSegment]
-	           sites (),                                 // MFNode     [in,out] sites             [ ]            [HAnimSite]
-	        skeleton (),                                 // MFNode     [in,out] skeleton          [ ]            [HAnimJoint|HAnimSite]
-	            skin (),                                 // MFNode     [in,out] skin              [ ]            [X3DChildNode]
-	       skinCoord (),                                 // SFNode     [in,out] skinCoord         NULL           [X3DCoordinateNode]
-	      skinNormal (),                                 // SFNode     [in,out] skinNormal        NULL           [X3DNormalNode]
-	     translation (),                                 // SFVec3f    [in,out] translation       0 0 0          (-∞,∞)
-	         version (),                                 // SFString   [in,out] version           ""
-	      viewpoints ()                                  // MFNode     [in,out] viewpoints        [ ]            [HAnimSite]
+	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	    X3DChildNode (),                                                    
+	X3DBoundedObject (),                                                    
+	          center (),                                                    // SFVec3f    [in,out] center            0 0 0          (-∞,∞)
+	            info (),                                                    // MFString   [in,out] info              [ ]
+	          joints (),                                                    // MFNode     [in,out] joints            [ ]            [HAnimJoint]
+	            name (),                                                    // SFString   [in,out] name              ""
+	        rotation (),                                                    // SFRotation [in,out] rotation          0 0 1 0        (-∞,∞)|[-1,1]
+	           scale (1, 1, 1),                                             // SFVec3f    [in,out] scale             1 1 1          (0,∞)
+	scaleOrientation (),                                                    // SFRotation [in,out] scaleOrientation  0 0 1 0        (-∞,∞)|[-1,1]
+	        segments (),                                                    // MFNode     [in,out] segments          [ ]            [HAnimSegment]
+	           sites (),                                                    // MFNode     [in,out] sites             [ ]            [HAnimSite]
+	        skeleton (),                                                    // MFNode     [in,out] skeleton          [ ]            [HAnimJoint|HAnimSite]
+	            skin (),                                                    // MFNode     [in,out] skin              [ ]            [X3DChildNode]
+	       skinCoord (),                                                    // SFNode     [in,out] skinCoord         NULL           [X3DCoordinateNode]
+	      skinNormal (),                                                    // SFNode     [in,out] skinNormal        NULL           [X3DNormalNode]
+	     translation (),                                                    // SFVec3f    [in,out] translation       0 0 0          (-∞,∞)
+	         version (),                                                    // SFString   [in,out] version           ""
+	      viewpoints ()                                                     // MFNode     [in,out] viewpoints        [ ]            [HAnimSite]
 {
 	setComponent ("H-Anim");
 	setTypeName ("HAnimHumanoid");

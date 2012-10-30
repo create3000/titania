@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,15 +54,15 @@ namespace titania {
 namespace X3D {
 
 PositionChaser2D::PositionChaser2D (X3DExecutionContext* const executionContext) :
-	      X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	     X3DChaserNode (),                                 
-	   set_destination (),                                 // SFVec2f [in]     set_destination
-	         set_value (),                                 // SFVec2f [in]     set_value
-	          isActive (),                                 // SFBool  [out]    isActive
-	     value_changed (),                                 // SFVec2f [out]    value_changed
-	          duration (),                                 // SFTime  [ ]      duration            0           [0,∞)
-	initialDestination (),                                 // SFVec2f [ ]      initialDestination  0 0
-	      defaultValue ()                                  // SFVec2f [ ]      defaultValue        0 0
+	      X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	     X3DChaserNode (),                                                    
+	   set_destination (),                                                    // SFVec2f [in]     set_destination
+	         set_value (),                                                    // SFVec2f [in]     set_value
+	          isActive (),                                                    // SFBool  [out]    isActive
+	     value_changed (),                                                    // SFVec2f [out]    value_changed
+	          duration (),                                                    // SFTime  [ ]      duration            0           [0,∞)
+	initialDestination (),                                                    // SFVec2f [ ]      initialDestination  0 0
+	      defaultValue ()                                                     // SFVec2f [ ]      defaultValue        0 0
 {
 	setComponent ("Followers");
 	setTypeName ("PositionChaser2D");

@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,13 +57,13 @@ namespace titania {
 namespace X3D {
 
 Inline::Inline (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	    X3DChildNode (),                                 
-	X3DBoundedObject (),                                 
-	    X3DUrlObject (),                                 
-	            load (true),                             // SFBool [in,out] load  TRUE
-	       loadState (NOT_STARTED_STATE),                
-	           scene ()
+	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	    X3DChildNode (),                                                    
+	X3DBoundedObject (),                                                    
+	    X3DUrlObject (),                                                    
+	            load (true),                                                // SFBool [in,out] load  TRUE
+	       loadState (NOT_STARTED_STATE),                                   
+	           scene ()                                                     
 {
 	setComponent ("Networking");
 	setTypeName ("Inline");
@@ -127,21 +127,6 @@ Inline::requestImmediateLoad ()
 	try
 	{
 		scene = createX3DFromURL (url);
-
-		for (const auto & node : scene -> getNavigationInfos ())
-			getExecutionContext () -> addNavigationInfo (*node);
-
-		for (const auto & node : scene -> getBackgrounds ())
-			getExecutionContext () -> addBackground (*node);
-
-		for (const auto & node : scene -> getViewpoints ())
-			getExecutionContext () -> addViewpoint (*node);
-
-		for (const auto & node : scene -> getFogs ())
-			getExecutionContext () -> addFog (*node);
-
-		scene -> configure ();
-
 		loadState = COMPLETE_STATE;
 	}
 	catch (const X3DError & error)

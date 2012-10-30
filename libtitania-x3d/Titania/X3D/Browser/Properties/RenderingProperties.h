@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -76,9 +76,9 @@ class RenderingProperties :
 {
 public:
 
-	SFBool   enabled;
-	SFFloat  cycleInterval;
-	
+	SFBool  enabled;
+	SFFloat cycleInterval;
+
 	SFString vendor;
 	SFString renderer;
 	SFString version;
@@ -122,7 +122,7 @@ private:
 
 	void
 	set_enabled ();
-	
+
 	void
 	set_fontFamily (const std::string &);
 
@@ -138,21 +138,21 @@ private:
 
 	void
 	update_string ();
-	
+
 	void
 	dispose ();
 
 	size_t numFrames;
-	
+
 	chrono::system_clock <double> timer;
-	double fps;
-	double maxFps;
+	double                        fps;
+	double                        maxFps;
 
 	chrono::system_clock <double> drawTimer;
-	double drawTime;
-	double drawFps;
-	double maxDrawFps;
-	double maxDrawTime;
+	double                        drawTime;
+	double                        drawFps;
+	double                        maxDrawFps;
+	double                        maxDrawTime;
 
 	time_type maxEventTime;
 	time_type maxTraverseTime;

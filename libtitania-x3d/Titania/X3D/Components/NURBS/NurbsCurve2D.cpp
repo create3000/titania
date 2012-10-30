@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,13 +54,13 @@ namespace titania {
 namespace X3D {
 
 NurbsCurve2D::NurbsCurve2D (X3DExecutionContext* const executionContext) :
-	            X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DNurbsControlCurveNode (),                                 
-	            tessellation (),                                 // SFInt32  [in,out] tessellation  0            (-∞,∞)
-	                  weight (),                                 // MFDouble [in,out] weight        [ ]          (0,∞)
-	                  closed (),                                 // SFBool   [ ]      closed        FALSE
-	                    knot (),                                 // MFDouble [ ]      knot          [ ]           (-∞,∞)
-	                   order (3)                                 // SFInt32  [ ]      order         3            [2,∞)
+	            X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DNurbsControlCurveNode (),                                                    
+	            tessellation (),                                                    // SFInt32  [in,out] tessellation  0            (-∞,∞)
+	                  weight (),                                                    // MFDouble [in,out] weight        [ ]          (0,∞)
+	                  closed (),                                                    // SFBool   [ ]      closed        FALSE
+	                    knot (),                                                    // MFDouble [ ]      knot          [ ]           (-∞,∞)
+	                   order (3)                                                    // SFInt32  [ ]      order         3            [2,∞)
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsCurve2D");

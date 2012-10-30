@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,11 +54,11 @@ namespace titania {
 namespace X3D {
 
 GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const executionContext) :
-	             X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DEnvironmentTextureNode (),                                 
-	                   update ("NONE"),                           // SFString [in,out] update             "NONE"        ["NONE"|"NEXT_FRAME_ONLY"|"ALWAYS"]
-	                     size (128),                              // SFInt32  [ ]      size               128           (0,∞)
-	        textureProperties ()                                  // SFNode   [ ]      textureProperties  NULL          [TextureProperties]
+	             X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DEnvironmentTextureNode (),                                                    
+	                   update ("NONE"),                                              // SFString [in,out] update             "NONE"        ["NONE"|"NEXT_FRAME_ONLY"|"ALWAYS"]
+	                     size (128),                                                 // SFInt32  [ ]      size               128           (0,∞)
+	        textureProperties ()                                                     // SFNode   [ ]      textureProperties  NULL          [TextureProperties]
 {
 	setComponent ("CubeMapTexturing");
 	setTypeName ("GeneratedCubeMapTexture");

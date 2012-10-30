@@ -79,11 +79,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	              protos (),       
 	        externProtos (),       
 	              routes (),       
-	           rootNodes (),       
-	     navigationInfos (),       
-	         backgrounds (),       
-	                fogs (),       
-	          viewpoints ()
+	           rootNodes ()    
 { }
 
 void
@@ -677,96 +673,6 @@ throw (Error <INVALID_NODE>,
 	return std::make_pair (sourceField, destinationField);
 }
 
-// NavigationInfo handling
-
-void
-X3DExecutionContext::addNavigationInfo (NavigationInfo* const navigationInfo)
-{
-	navigationInfos .push_back (navigationInfo);
-}
-
-void
-X3DExecutionContext::removeNavigationInfo (NavigationInfo* const navigationInfo)
-{ }
-
-const NavigationInfoList &
-X3DExecutionContext::getNavigationInfos () const
-{
-	return navigationInfos;
-}
-
-// Background handling
-
-void
-X3DExecutionContext::addBackground (X3DBackgroundNode* const background)
-{
-	backgrounds .push_back (background);
-}
-
-void
-X3DExecutionContext::removeBackground (X3DBackgroundNode* const background)
-{ }
-
-const BackgroundList &
-X3DExecutionContext::getBackgrounds () const
-{
-	return backgrounds;
-}
-
-// Fog handling
-
-void
-X3DExecutionContext::addFog (Fog* const fog)
-{
-	fogs .push_back (fog);
-}
-
-void
-X3DExecutionContext::removeFog (Fog* const fog)
-{ }
-
-const FogList &
-X3DExecutionContext::getFogs () const
-{
-	return fogs;
-}
-
-// Viewpoint handling
-
-void
-X3DExecutionContext::addViewpoint (X3DViewpointNode* const viewpoint)
-{
-	viewpoints .push_back (viewpoint);
-}
-
-void
-X3DExecutionContext::removeViewpoint (X3DViewpointNode* const viewpoint)
-{ }
-
-const ViewpointList &
-X3DExecutionContext::getViewpoints () const
-{
-	return viewpoints;
-}
-
-//
-
-void
-X3DExecutionContext::configure ()
-{
-	if (navigationInfos .size () > 1)
-		navigationInfos [1] -> set_bind = true;
-
-	if (backgrounds .size () > 1)
-		backgrounds [1] -> set_bind = true;
-
-	if (fogs .size () > 1)
-		fogs [1] -> set_bind = true;
-
-	if (viewpoints .size () > 1)
-		viewpoints [1] -> set_bind = true;
-}
-
 void
 X3DExecutionContext::toStream (std::ostream & ostream) const
 {
@@ -864,11 +770,6 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 void
 X3DExecutionContext::dispose ()
 {
-	navigationInfos .clear ();
-	backgrounds     .clear ();
-	viewpoints      .clear ();
-	fogs            .clear ();
-
 	components .clear ();
 	//profile    .dispose ();
 

@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __PUCK_HISTORY_EDITOR_HISTORY_H__
-#define __PUCK_HISTORY_EDITOR_HISTORY_H__
+#ifndef __TITANIA_HISTORY_EDITOR_HISTORY_H__
+#define __TITANIA_HISTORY_EDITOR_HISTORY_H__
 
 #include <Titania/SQL/SQLite3.h>
 
@@ -64,15 +64,15 @@ public:
 	setItem (const std::string &, const std::string &);
 
 	const sql::sqlite3::assoc_row_type &
-	getItemFromIndex (const std::string &) const 
+	getItemFromIndex (const std::string &) const
 	throw (std::out_of_range);
 
 	const sql::sqlite3::assoc_row_type &
-	getItemFromURL (const std::string &) const 
+	getItemFromURL (const std::string &) const
 	throw (std::out_of_range);
 
 	const sql::sqlite3::assoc_type &
-	getItems () const ;
+	getItems () const;
 
 	const std::string &
 	getIndex (const std::string &) const

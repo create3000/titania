@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,24 +54,24 @@ namespace titania {
 namespace X3D {
 
 RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionContext) :
-	           X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	           X3DChildNode (),                                 
-	           set_contacts (),                                 // MFNode  [in]     set_contacts                             [ ]
-	            autoDisable (),                                 // SFBool  [in,out] autoDisable              FALSE
-	                 bodies (),                                 // MFNode  [in,out] bodies                   [ ]             [RigidBody]
-	       constantForceMix (0.0001),                           // SFFloat [in,out] constantForceMix         0.0001          [0,∞)
-	contactSurfaceThickness (),                                 // SFFloat [in,out] contactSurfaceThickness  0               [0,∞)
-	    disableAngularSpeed (),                                 // SFFloat [in,out] disableAngularSpeed      0               [0,∞)
-	     disableLinearSpeed (),                                 // SFFloat [in,out] disableLinearSpeed       0               [0,∞)
-	            disableTime (),                                 // SFFloat [in,out] disableTime              0               [0,∞)
-	                enabled (true),                             // SFBool  [in,out] enabled                  TRUE
-	        errorCorrection (0.8),                              // SFFloat [in,out] errorCorrection          0.8             [0,1]
-	                gravity (0, -9.8, 0),                       // SFVec3f [in,out] gravity                  0 -9.8 0
-	             iterations (10),                               // SFInt32 [in,out] iterations               10              [0,∞)
-	                 joints (),                                 // MFNode  [in,out] joints                   [ ]             [X3DRigidJointNode]
-	     maxCorrectionSpeed (-1),                               // SFFloat [in,out] maxCorrectionSpeed       -1              [0,∞) or -1
-	         preferAccuracy (),                                 // SFBool  [in,out] preferAccuracy           FALSE
-	               collider ()                                  // SFNode  [ ]      collider                 NULL            [CollisionCollection]
+	           X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	           X3DChildNode (),                                                    
+	           set_contacts (),                                                    // MFNode  [in]     set_contacts                             [ ]
+	            autoDisable (),                                                    // SFBool  [in,out] autoDisable              FALSE
+	                 bodies (),                                                    // MFNode  [in,out] bodies                   [ ]             [RigidBody]
+	       constantForceMix (0.0001),                                              // SFFloat [in,out] constantForceMix         0.0001          [0,∞)
+	contactSurfaceThickness (),                                                    // SFFloat [in,out] contactSurfaceThickness  0               [0,∞)
+	    disableAngularSpeed (),                                                    // SFFloat [in,out] disableAngularSpeed      0               [0,∞)
+	     disableLinearSpeed (),                                                    // SFFloat [in,out] disableLinearSpeed       0               [0,∞)
+	            disableTime (),                                                    // SFFloat [in,out] disableTime              0               [0,∞)
+	                enabled (true),                                                // SFBool  [in,out] enabled                  TRUE
+	        errorCorrection (0.8),                                                 // SFFloat [in,out] errorCorrection          0.8             [0,1]
+	                gravity (0, -9.8, 0),                                          // SFVec3f [in,out] gravity                  0 -9.8 0
+	             iterations (10),                                                  // SFInt32 [in,out] iterations               10              [0,∞)
+	                 joints (),                                                    // MFNode  [in,out] joints                   [ ]             [X3DRigidJointNode]
+	     maxCorrectionSpeed (-1),                                                  // SFFloat [in,out] maxCorrectionSpeed       -1              [0,∞) or -1
+	         preferAccuracy (),                                                    // SFBool  [in,out] preferAccuracy           FALSE
+	               collider ()                                                     // SFNode  [ ]      collider                 NULL            [CollisionCollection]
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("RigidBodyCollection");

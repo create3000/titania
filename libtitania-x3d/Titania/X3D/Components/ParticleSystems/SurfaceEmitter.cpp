@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,11 +54,11 @@ namespace titania {
 namespace X3D {
 
 SurfaceEmitter::SurfaceEmitter (X3DExecutionContext* const executionContext) :
-	          X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DParticleEmitterNode (),                                 
-	        set_coordinate (),                                 // SFInt32 [in] set_coordinate
-	            coordIndex ({ -1 }),                           // MFInt32 [ ]  coordIndex      -1          [0,∞) or -1
-	               surface ()                                  // SFNode  [ ]  surface         NULL        [X3DGeometryNode]
+	          X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DParticleEmitterNode (),                                                    
+	        set_coordinate (),                                                    // SFInt32 [in] set_coordinate
+	            coordIndex ({ -1 }),                                              // MFInt32 [ ]  coordIndex      -1          [0,∞) or -1
+	               surface ()                                                     // SFNode  [ ]  surface         NULL        [X3DGeometryNode]
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("SurfaceEmitter");

@@ -54,7 +54,7 @@ namespace titania {
 namespace puck {
 
 X3DBrowserInterface::X3DBrowserInterface (const X3D::SFNode <X3D::X3DBrowser> & browser) :
-	X3DBaseInterface ()
+	X3DBaseInterface () 
 {
 	setBrowser (browser);
 }

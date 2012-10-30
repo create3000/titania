@@ -55,7 +55,6 @@
 
 #include <csignal>
 #include <cstdlib>
-#include <execinfo.h>
 
 namespace titania {
 namespace X3D {
@@ -63,15 +62,9 @@ namespace X3D {
 void
 signal_handler (int sig)
 {
-	size_t size = 30;
-	void*  array [size];
-
-	// get void*'s for all entries on the stack
-	size = backtrace (array, size);
-
 	// print out all the frames to stderr
 	std::clog << "Error: signal " << sig << ":" << std::endl;
-	backtrace_symbols_fd (array, size, 2);
+	backtrace_fn (100);
 	exit (1);
 }
 
@@ -80,7 +73,7 @@ Surface::Surface (const SFNode <X3DBrowser> & browser) :
 	       motionBlur (new MotionBlur (*browser)), 
 	          browser (browser),                   
 	  pointingDevice  (*this),                     
-	          viewer  (*this)
+	          viewer  (*this)                      
 {
 	// install our handler
 	std::signal (SIGSEGV, signal_handler);

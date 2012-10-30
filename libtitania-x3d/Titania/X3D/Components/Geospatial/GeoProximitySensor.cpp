@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,15 +54,15 @@ namespace titania {
 namespace X3D {
 
 GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionContext) :
-	              X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DEnvironmentalSensorNode (),                                 
-	                 geoCenter (),                                 // SFVec3d    [in,out] geoCenter                 0 0 0              (-∞,∞)
-	  centerOfRotation_changed (),                                 // SFVec3f    [out]    centerOfRotation_changed
-	          geoCoord_changed (),                                 // SFVec3d    [out]    geoCoord_changed
-	       orientation_changed (),                                 // SFRotation [out]    orientation_changed
-	          position_changed (),                                 // SFVec3f    [out]    position_changed
-	                 geoOrigin (),                                 // SFNode     [ ]      geoOrigin                 NULL               [GeoOrigin]
-	                 geoSystem ({ "GD", "WE" })                    // MFString   [ ]      geoSystem                 ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
+	              X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DEnvironmentalSensorNode (),                                                    
+	                 geoCenter (),                                                    // SFVec3d    [in,out] geoCenter                 0 0 0              (-∞,∞)
+	  centerOfRotation_changed (),                                                    // SFVec3f    [out]    centerOfRotation_changed
+	          geoCoord_changed (),                                                    // SFVec3d    [out]    geoCoord_changed
+	       orientation_changed (),                                                    // SFRotation [out]    orientation_changed
+	          position_changed (),                                                    // SFVec3f    [out]    position_changed
+	                 geoOrigin (),                                                    // SFNode     [ ]      geoOrigin                 NULL               [GeoOrigin]
+	                 geoSystem ({ "GD", "WE" })                                       // MFString   [ ]      geoSystem                 ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoProximitySensor");

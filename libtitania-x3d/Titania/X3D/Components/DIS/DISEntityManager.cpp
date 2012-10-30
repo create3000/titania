@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,15 +54,15 @@ namespace titania {
 namespace X3D {
 
 DISEntityManager::DISEntityManager (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	   X3DChildNode (),                                 
-	        address ("localhost"),                      // SFString [in,out] address          "localhost"
-	  applicationID (1),                                // SFInt32  [in,out] applicationID    1                  [0,65535]
-	        mapping (),                                 // MFNode   [in,out] mapping          [ ]                [DISEntityTypeMapping]
-	           port (),                                 // SFInt32  [in,out] port             0                  [0,65535]
-	         siteID (),                                 // SFInt32  [in,out] siteID           0                  [0,65535]
-	  addedEntities (),                                 // MFNode   [out]    addedEntities                       [EspduTransform]
-	removedEntities ()                                  // MFNode   [out]    removedEntities                     [EspduTransform]
+	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DChildNode (),                                                    
+	        address ("localhost"),                                         // SFString [in,out] address          "localhost"
+	  applicationID (1),                                                   // SFInt32  [in,out] applicationID    1                  [0,65535]
+	        mapping (),                                                    // MFNode   [in,out] mapping          [ ]                [DISEntityTypeMapping]
+	           port (),                                                    // SFInt32  [in,out] port             0                  [0,65535]
+	         siteID (),                                                    // SFInt32  [in,out] siteID           0                  [0,65535]
+	  addedEntities (),                                                    // MFNode   [out]    addedEntities                       [EspduTransform]
+	removedEntities ()                                                     // MFNode   [out]    removedEntities                     [EspduTransform]
 {
 	setComponent ("DIS");
 	setTypeName ("DISEntityManager");

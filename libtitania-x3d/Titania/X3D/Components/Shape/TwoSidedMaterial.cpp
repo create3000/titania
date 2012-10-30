@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,21 +54,21 @@ namespace titania {
 namespace X3D {
 
 TwoSidedMaterial::TwoSidedMaterial (X3DExecutionContext* const executionContext) :
-	        X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	     X3DMaterialNode (),                                 
-	    ambientIntensity (0.2),                              // SFFloat [in,out] ambientIntensity      0.2                [0,1]
-	backAmbientIntensity (0.2),                              // SFFloat [in,out] backAmbientIntensity  0.2                [0,1]
-	    backDiffuseColor (0.8, 0.8, 0.8),                    // SFColor [in,out] backDiffuseColor      0.8 0.8 0.8        [0,1]
-	   backEmissiveColor (),                                 // SFColor [in,out] backEmissiveColor     0 0 0              [0,1]
-	       backShininess (0.2),                              // SFFloat [in,out] backShininess         0.2                [0,1]
-	   backSpecularColor (),                                 // SFColor [in,out] backSpecularColor     0 0 0              [0,1]
-	    backTransparency (),                                 // SFFloat [in,out] backTransparency      0                  [0,1]
-	        diffuseColor (0.8, 0.8, 0.8),                    // SFColor [in,out] diffuseColor          0.8 0.8 0.8        [0,1]
-	       emissiveColor (),                                 // SFColor [in,out] emissiveColor         0 0 0              [0,1]
-	           shininess (0.2),                              // SFFloat [in,out] shininess             0.2                [0,1]
-	   separateBackColor (),                                 // SFBool  [in,out] separateBackColor     FALSE
-	       specularColor (),                                 // SFColor [in,out] specularColor         0 0 0              [0,1]
-	        transparency ()                                  // SFFloat [in,out] transparency          0                  [0,1]
+	        X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	     X3DMaterialNode (),                                                    
+	    ambientIntensity (0.2),                                                 // SFFloat [in,out] ambientIntensity      0.2                [0,1]
+	backAmbientIntensity (0.2),                                                 // SFFloat [in,out] backAmbientIntensity  0.2                [0,1]
+	    backDiffuseColor (0.8, 0.8, 0.8),                                       // SFColor [in,out] backDiffuseColor      0.8 0.8 0.8        [0,1]
+	   backEmissiveColor (),                                                    // SFColor [in,out] backEmissiveColor     0 0 0              [0,1]
+	       backShininess (0.2),                                                 // SFFloat [in,out] backShininess         0.2                [0,1]
+	   backSpecularColor (),                                                    // SFColor [in,out] backSpecularColor     0 0 0              [0,1]
+	    backTransparency (),                                                    // SFFloat [in,out] backTransparency      0                  [0,1]
+	        diffuseColor (0.8, 0.8, 0.8),                                       // SFColor [in,out] diffuseColor          0.8 0.8 0.8        [0,1]
+	       emissiveColor (),                                                    // SFColor [in,out] emissiveColor         0 0 0              [0,1]
+	           shininess (0.2),                                                 // SFFloat [in,out] shininess             0.2                [0,1]
+	   separateBackColor (),                                                    // SFBool  [in,out] separateBackColor     FALSE
+	       specularColor (),                                                    // SFColor [in,out] specularColor         0 0 0              [0,1]
+	        transparency ()                                                     // SFFloat [in,out] transparency          0                  [0,1]
 {
 	setComponent ("Shape");
 	setTypeName ("TwoSidedMaterial");

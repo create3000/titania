@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -133,7 +133,6 @@ public:
 		test_uri ("http://www.web3d.org/x3d/content/examples/Basic/Vrml97Specification/ChopperRotor.wrl");
 		test_uri ("file:///home/holger/Projekte/Titania/Library/Tests/Basic/EmptyWorld.wrl");
 
-
 		std::clog << std::endl;
 		test_uri ("about:blank");
 		test_uri ("urn:fantasy:123:345");
@@ -170,8 +169,8 @@ public:
 	{
 		std::clog << std::endl;
 
-		std::clog << "string: '" << uri .str ()      << "'" << std::endl;
-		std::clog << "uri:    '" << uri              << "'" << std::endl;
+		std::clog << "string: '" << uri .str () << "'" << std::endl;
+		std::clog << "uri:    '" << uri << "'" << std::endl;
 		std::clog << "copy:   '" << basic::uri (uri) << "'" << std::endl;
 
 		std::clog << "is equal:     " << std::boolalpha << (uri == uri) << std::endl;

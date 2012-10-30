@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,12 +54,12 @@ namespace titania {
 namespace X3D {
 
 LOD::LOD (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	 X3DGroupingNode (),                                 
-	   level_changed (),                                 // SFInt32 [out] level_changed
-	          center (),                                 // SFVec3f [ ]   center            0 0 0        (-∞,∞)
-	forceTransitions (),                                 // SFBool  [ ]   forceTransitions  FALSE
-	           range ()                                  // MFFloat [ ]   range             [ ]           [0,∞) or -1
+	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	 X3DGroupingNode (),                                                    
+	   level_changed (),                                                    // SFInt32 [out] level_changed
+	          center (),                                                    // SFVec3f [ ]   center            0 0 0        (-∞,∞)
+	forceTransitions (),                                                    // SFBool  [ ]   forceTransitions  FALSE
+	           range ()                                                     // MFFloat [ ]   range             [ ]           [0,∞) or -1
 {
 	setComponent ("Navigation");
 	setTypeName ("LOD");

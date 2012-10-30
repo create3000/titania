@@ -6,8 +6,8 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Basic/../Basic/../Base/Type.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Basic/../Basic/../Base/../Base/X3DType.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Basic/../Basic/../Base/../Base/../Base/X3DBase.h \
- /home/holger/Projekte/Titania/libtitania-standard/Titania/LOG.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/Id.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/LOG.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Basic/../Basic/../Base/X3DBaseNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Basic/../Basic/../Base/../Base/BaseNodeSet.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Basic/../Basic/../Base/../Base/X3DObject.h \
@@ -37,7 +37,7 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Basic/../Basic/../Bits/X3DConstants.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Basic/../Basic/../Bits/../Base/Type.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Basic/../Basic/../Types/Time.h \
- /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/IndexedMap.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/IndexedMultiMap.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/../Bits/Algorithm/Remove.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/../Bits/Algorithm/../Utility/Value.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Bits/Error.h \
@@ -142,7 +142,6 @@
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Line3.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Plane3.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../Lighting/X3DLightNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../Lighting/../Core/X3DChildNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../Lighting/../../Browser/Properties/RenderingProperties.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../Lighting/../../Browser/Properties/../../Components/Core/X3DChildNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../Lighting/../../Browser/Properties/../Properties/QuadSphereProperties.h \
@@ -152,6 +151,7 @@
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/SystemClock.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/ClockBase.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/Now.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../Lighting/../Core/X3DChildNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../PointingDeviceSensor/X3DPointingDeviceSensorNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../PointingDeviceSensor/../../Browser/Hit.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CADGeometry/../Grouping/../PointingDeviceSensor/../../Browser/../Fields.h \
@@ -198,18 +198,6 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/X3DPrototypeInstance.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/X3DExecutionContext.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Basic/X3DContext.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Components/EnvironmentalEffects/Fog.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Components/EnvironmentalEffects/../Core/X3DBindableNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/X3DFogObject.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Components/EnvironmentalEffects/X3DBackgroundNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Components/Navigation/NavigationInfo.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Components/Navigation/../Core/X3DBindableNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Components/Navigation/../Lighting/DirectionalLight.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Components/Navigation/../Lighting/../Lighting/X3DLightNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Components/Navigation/../Navigation/Viewpoint.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Components/Navigation/../Navigation/../Navigation/X3DViewpointNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Components/Navigation/../Navigation/../Navigation/../Core/X3DBindableNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Components/Navigation/X3DViewpointNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Configuration/ComponentInfoArray.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Configuration/../Configuration/ComponentInfo.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/Core/../../Execution/../Configuration/../Configuration/../Basic/X3DBasicNode.h \
@@ -253,10 +241,17 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/BindableNodeStack.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Base/X3DOutput.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/BindStack.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Components/EnvironmentalEffects/Background.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/X3DBackgroundNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Components/EnvironmentalEffects/X3DBackgroundNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/X3DBindableNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Components/EnvironmentalEffects/Fog.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/X3DFogObject.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Components/Navigation/NavigationInfo.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Components/Navigation/../Core/X3DBindableNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Components/Navigation/../Lighting/DirectionalLight.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Components/Navigation/../Lighting/../Lighting/X3DLightNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Components/Navigation/../Navigation/Viewpoint.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Components/Navigation/../Navigation/../Navigation/X3DViewpointNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Components/Navigation/../Navigation/../Navigation/../Core/X3DBindableNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Execution/../Components/Navigation/X3DViewpointNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Rendering/LightContainerArray.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/CubeMapTexturing/../Networking/../../Execution/../Execution/../Components/Layering/../Layering/../../Rendering/LightContainer.h \
@@ -321,12 +316,12 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/DIS/TransmitterPdu.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/EnvironmentalEffects.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/EnvironmentalEffects/Background.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/EnvironmentalEffects/../EnvironmentalEffects/X3DBackgroundNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/EnvironmentalEffects/Fog.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/EnvironmentalEffects/FogCoordinate.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/EnvironmentalEffects/../Rendering/X3DGeometricPropertyNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/EnvironmentalEffects/LocalFog.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/EnvironmentalEffects/TextureBackground.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/EnvironmentalEffects/../EnvironmentalEffects/X3DBackgroundNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/EnvironmentalEffects/X3DBackgroundNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/EnvironmentalEffects/X3DFogObject.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Configuration/../Components/EnvironmentalSensor.h \

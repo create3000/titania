@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,15 +54,15 @@ namespace titania {
 namespace X3D {
 
 OrientationChaser::OrientationChaser (X3DExecutionContext* const executionContext) :
-	      X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	     X3DChaserNode (),                                 
-	   set_destination (),                                 // SFRotation [in]     set_destination
-	         set_value (),                                 // SFRotation [in]     set_value
-	          isActive (),                                 // SFBool     [out]    isActive
-	     value_changed (),                                 // SFRotation [out]    value_changed
-	          duration (),                                 // SFTime     [ ]      duration            0              [0,∞)
-	initialDestination (0, 1, 0, 0),                       // SFRotation [ ]      initialDestination  0 1 0 0
-	      defaultValue (0, 1, 0, 0)                        // SFRotation [ ]      defaultValue        0 1 0 0
+	      X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	     X3DChaserNode (),                                                    
+	   set_destination (),                                                    // SFRotation [in]     set_destination
+	         set_value (),                                                    // SFRotation [in]     set_value
+	          isActive (),                                                    // SFBool     [out]    isActive
+	     value_changed (),                                                    // SFRotation [out]    value_changed
+	          duration (),                                                    // SFTime     [ ]      duration            0              [0,∞)
+	initialDestination (0, 1, 0, 0),                                          // SFRotation [ ]      initialDestination  0 1 0 0
+	      defaultValue (0, 1, 0, 0)                                           // SFRotation [ ]      defaultValue        0 1 0 0
 {
 	setComponent ("Followers");
 	setTypeName ("OrientationChaser");

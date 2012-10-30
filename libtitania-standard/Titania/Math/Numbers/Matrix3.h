@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -247,7 +247,7 @@ public:
 
 	template <typename T>
 	matrix3
-	operator* (const matrix3 <T> &) const;
+	operator * (const matrix3 <T> &) const;
 
 	matrix3 &
 	operator /= (const Type &);
@@ -678,7 +678,7 @@ matrix3 <Type>::factor (matrix3 & r, vector2 <S> & s, matrix3 & u, vector2 <T> &
 	double det_sign = (det < 0 ? -1 : 1);
 
 	if (det_sign * det < 1e-12)
-		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          // singular
+		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // singular
 
 	/* (4) B = A * A^  (here A^ means A transpose) */
 	matrix3 b = a * a .transpose ();

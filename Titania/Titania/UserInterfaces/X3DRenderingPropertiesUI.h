@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TMP_GLAD2CPP_RENDERING_PROPERTIES_H__
-#define __TMP_GLAD2CPP_RENDERING_PROPERTIES_H__
+#ifndef __TITANIA_USER_INTERFACES_X3DRENDERING_PROPERTIES_UI_H__
+#define __TITANIA_USER_INTERFACES_X3DRENDERING_PROPERTIES_UI_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>

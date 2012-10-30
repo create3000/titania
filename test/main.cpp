@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -78,53 +78,53 @@ namespace Test {
 class TestSFImage
 {
 public:
-	
+
 	TestSFImage ()
 	{
 		__LOG__ << std::endl;
-		
+
 		test1 ();
 		test1 ();
 		test2 ();
-		
+
 		__LOG__ << std::endl;
-	}	
+	}
 
 	void
 	test1 ()
 	{
 		__LOG__ << std::endl;
-		
+
 		X3D::SFImage image;
-		
+
 		__LOG__ << image << std::endl;
-		
+
 		image = image;
-		
+
 		__LOG__ << image << std::endl;
-		
+
 		image .dispose ();
-		
+
 		__LOG__ << image << std::endl;
-	}	
+	}
 
 	void
 	test2 ()
 	{
 		__LOG__ << std::endl;
-		
+
 		X3D::SFImage image (1, 3, 4, { 1, 2, 3 });
-		
+
 		__LOG__ << image << std::endl;
-		
+
 		image = image;
-		
+
 		__LOG__ << image << std::endl;
-		
+
 		image .dispose ();
-		
+
 		__LOG__ << image << std::endl;
-	}	
+	}
 
 };
 
@@ -143,15 +143,14 @@ main (int argc, char* argv [ ])
 		{
 			__LOG__ << std::endl;
 			X3D::SFNode <X3D::Browser> browser = X3D::createBrowser ();
-			
+
 			__LOG__ << (void*) browser .getValue () << std::endl;
 			__LOG__ << (void*) browser -> getParents () .size () << std::endl;
-			
-			
+
 			__LOG__ << std::endl;
-			
+
 			// TestSFImage ();
-		
+
 			// Test::AddAndRemoveNode ();
 		}
 

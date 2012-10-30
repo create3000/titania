@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,7 +52,7 @@ namespace titania {
 namespace puck {
 
 BrowserWidget::BrowserWidget (const std::string & sessionKey, X3DBrowserInterface* const browserWidget) :
-	X3DBrowserWidget (sessionKey, browserWidget)
+	X3DBrowserWidget (sessionKey, browserWidget) 
 { }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -117,7 +117,6 @@ BrowserWidget::on_save_as ()
 void
 BrowserWidget::on_close ()
 { }
-
 
 void
 BrowserWidget::on_revert_to_saved ()
@@ -200,10 +199,10 @@ BrowserWidget::on_statusBar_toggled ()
 void
 BrowserWidget::phong_activate ()
 {
-//	if (not getPhongMenuItem () .get_active ())
-//		return;
-//
-//	getBrowser () -> getBrowserOptions () -> shading = "PHONG";
+	//	if (not getPhongMenuItem () .get_active ())
+	//		return;
+	//
+	//	getBrowser () -> getBrowserOptions () -> shading = "PHONG";
 }
 
 void
@@ -218,10 +217,10 @@ BrowserWidget::gouraud_activate ()
 void
 BrowserWidget::flat_activate ()
 {
-//	if (not getFlatMenuItem () .get_active ())
-//		return;
-//
-//	getBrowser () -> getBrowserOptions () -> shading = "FLAT";
+	//	if (not getFlatMenuItem () .get_active ())
+	//		return;
+	//
+	//	getBrowser () -> getBrowserOptions () -> shading = "FLAT";
 }
 
 void
@@ -344,7 +343,6 @@ BrowserWidget::on_info ()
 	loadURL ({ "about:info" });
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
@@ -355,8 +353,8 @@ BrowserWidget::on_arrow_button_toggled ()
 		std::clog << "Arrow button clicked." << std::endl;
 	}
 
-//	getBrowser () -> setEditMode (true);
-//	getStatusBar () .push ("Edit mode");
+	//	getBrowser () -> setEditMode (true);
+	//	getStatusBar () .push ("Edit mode");
 }
 
 void
@@ -367,8 +365,8 @@ BrowserWidget::on_hand_button_toggled ()
 		std::clog << "Hand button clicked." << std::endl;
 	}
 
-//	getBrowser () -> setEditMode (false);
-//	getStatusBar () .push ("Browser mode");
+	//	getBrowser () -> setEditMode (false);
+	//	getStatusBar () .push ("Browser mode");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

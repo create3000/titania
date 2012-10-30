@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -68,18 +68,21 @@ public:
 	constexpr
 	box3 () :
 		value { }
+
 	{ }
 
 	///  Copy constructor.
 	constexpr
 	box3 (const box3 & box) :
 		value { box .size (), box .center () }
+
 	{ }
 
 	///  Default constructor. Constructs a box of size @a size and center @a size,
 	constexpr
 	box3 (const vector3 <Type> & size, const vector3 <Type> & center) :
 		value { size, center }
+
 	{ }
 
 	///  Return the size of this box.

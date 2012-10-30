@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -135,17 +135,17 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
-	       
+
 	///  @name Set Value Services
 
 	virtual
 	void
 	set (const value_type &);
-	
+
 	///  @name Boolean Operator
 
 	operator bool () const { return getLocalNode (); }
-	
+
 	///  @name Access Operators
 
 	ValueType*
@@ -153,9 +153,9 @@ public:
 
 	ValueType*
 	operator * () const { return getLocalNode (); }
-	
+
 	///  @name 6.7.7 Add field interest.
-	
+
 	template <class Class>
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (const SFNode &)) const

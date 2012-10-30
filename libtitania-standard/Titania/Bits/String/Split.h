@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -80,12 +80,16 @@ basic_split (const StringT & string, const StringT & delimiter)
 inline
 std::deque <std::string>
 split (const std::string & string, const std::string & delimiter)
-{ return basic_split <std::string> (string, delimiter); }
+{
+	return basic_split <std::string> (string, delimiter);
+}
 
 inline
 std::deque <std::wstring>
 wsplit (const std::wstring & string, const std::wstring & delimiter)
-{ return basic_split <std::wstring> (string, delimiter); }
+{
+	return basic_split <std::wstring> (string, delimiter);
+}
 
 extern template
 std::deque <std::string>

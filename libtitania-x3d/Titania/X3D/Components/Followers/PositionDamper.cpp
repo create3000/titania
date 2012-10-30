@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,17 +54,17 @@ namespace titania {
 namespace X3D {
 
 PositionDamper::PositionDamper (X3DExecutionContext* const executionContext) :
-	      X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	     X3DDamperNode (),                                 
-	   set_destination (),                                 // SFVec3f [in]     set_destination
-	         set_value (),                                 // SFVec3f [in]     set_value
-	               tau (),                                 // SFTime  [in,out] tau                 0            [0,∞)
-	         tolerance (-1),                               // SFFloat [in,out] tolerance           -1           [0,∞) or -1
-	          isActive (),                                 // SFBool  [out]    isActive
-	     value_changed (),                                 // SFVec3f [out]    value_changed
-	initialDestination (),                                 // SFVec3f [ ]      initialDestination  0 0 0
-	      defaultValue (),                                 // SFVec3f [ ]      defaultValue        0 0 0
-	             order ()                                  // SFInt32 [ ]      order               0            [0..5]
+	      X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	     X3DDamperNode (),                                                    
+	   set_destination (),                                                    // SFVec3f [in]     set_destination
+	         set_value (),                                                    // SFVec3f [in]     set_value
+	               tau (),                                                    // SFTime  [in,out] tau                 0            [0,∞)
+	         tolerance (-1),                                                  // SFFloat [in,out] tolerance           -1           [0,∞) or -1
+	          isActive (),                                                    // SFBool  [out]    isActive
+	     value_changed (),                                                    // SFVec3f [out]    value_changed
+	initialDestination (),                                                    // SFVec3f [ ]      initialDestination  0 0 0
+	      defaultValue (),                                                    // SFVec3f [ ]      defaultValue        0 0 0
+	             order ()                                                     // SFInt32 [ ]      order               0            [0..5]
 {
 	setComponent ("Followers");
 	setTypeName ("PositionDamper");

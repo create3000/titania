@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,18 +54,18 @@ namespace titania {
 namespace X3D {
 
 SingleAxisHingeJoint::SingleAxisHingeJoint (X3DExecutionContext* const executionContext) :
-	       X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	  X3DRigidJointNode (),                                 
-	        anchorPoint (),                                 // SFVec3f [in,out] anchorPoint          0 0 0
-	               axis (),                                 // SFVec3f [in,out] axis                 0 0 0
-	           maxAngle (),                                 // SFFloat [in,out] maxAngle             π
-	           minAngle (),                                 // SFFloat [in,out] minAngle             -π
-	         stopBounce (),                                 // SFFloat [in,out] stopBounce           0            [0,1]
-	stopErrorCorrection (0.8),                              // SFFloat [in,out] stopErrorCorrection  0.8          [0,1]
-	              angle (),                                 // SFFloat [out]    angle
-	          angleRate (),                                 // SFFloat [out]    angleRate
-	   body1AnchorPoint (),                                 // SFVec3f [out]    body1AnchorPoint
-	   body2AnchorPoint ()                                  // SFVec3f [out]    body2AnchorPoint
+	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	  X3DRigidJointNode (),                                                    
+	        anchorPoint (),                                                    // SFVec3f [in,out] anchorPoint          0 0 0
+	               axis (),                                                    // SFVec3f [in,out] axis                 0 0 0
+	           maxAngle (),                                                    // SFFloat [in,out] maxAngle             π
+	           minAngle (),                                                    // SFFloat [in,out] minAngle             -π
+	         stopBounce (),                                                    // SFFloat [in,out] stopBounce           0            [0,1]
+	stopErrorCorrection (0.8),                                                 // SFFloat [in,out] stopErrorCorrection  0.8          [0,1]
+	              angle (),                                                    // SFFloat [out]    angle
+	          angleRate (),                                                    // SFFloat [out]    angleRate
+	   body1AnchorPoint (),                                                    // SFVec3f [out]    body1AnchorPoint
+	   body2AnchorPoint ()                                                     // SFVec3f [out]    body2AnchorPoint
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("SingleAxisHingeJoint");

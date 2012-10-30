@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -56,20 +56,20 @@ namespace titania {
 namespace X3D {
 
 IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryNode (),                                 
-	 set_colorIndex (),                                 // MFInt32 [in]     set_colorIndex
-	 set_coordIndex (),                                 // MFInt32 [in]     set_coordIndex
-	         attrib (),                                 // MFNode  [in,out] attrib          [ ]         [X3DVertexAttributeNode]
-	          color (),                                 // SFNode  [in,out] color           NULL        [X3DColorNode]
-	          coord (),                                 // SFNode  [in,out] coord           NULL        [X3DCoordinateNode]
-	       fogCoord (),                                 // SFNode  [in,out] fogCoord        [ ]         [FogCoordinate]
-	     colorIndex (),                                 // MFInt32 [ ]      colorIndex      [ ]         [0,∞) or -1
-	 colorPerVertex (true),                             // SFBool  [ ]      colorPerVertex  TRUE
-	     coordIndex (),                                 // MFInt32 [ ]      coordIndex      [ ]         [0,∞) or -1
-	      numPoints (0),                                
-	       numFaces (0),                                
-	      numColors (0)
+	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DGeometryNode (),                                                    
+	 set_colorIndex (),                                                    // MFInt32 [in]     set_colorIndex
+	 set_coordIndex (),                                                    // MFInt32 [in]     set_coordIndex
+	         attrib (),                                                    // MFNode  [in,out] attrib          [ ]         [X3DVertexAttributeNode]
+	          color (),                                                    // SFNode  [in,out] color           NULL        [X3DColorNode]
+	          coord (),                                                    // SFNode  [in,out] coord           NULL        [X3DCoordinateNode]
+	       fogCoord (),                                                    // SFNode  [in,out] fogCoord        [ ]         [FogCoordinate]
+	     colorIndex (),                                                    // MFInt32 [ ]      colorIndex      [ ]         [0,∞) or -1
+	 colorPerVertex (true),                                                // SFBool  [ ]      colorPerVertex  TRUE
+	     coordIndex (),                                                    // MFInt32 [ ]      coordIndex      [ ]         [0,∞) or -1
+	      numPoints (0),                                                   
+	       numFaces (0),                                                   
+	      numColors (0)                                                    
 {
 	setComponent ("Rendering");
 	setTypeName ("IndexedLineSet");

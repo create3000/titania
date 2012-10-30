@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,7 +55,7 @@ namespace titania {
 namespace puck {
 
 ViewpointEditor::ViewpointEditor (const std::string & sessionKey, X3DBrowserInterface* const browserWidget) :
-	X3DViewpointEditorUI (get_ui ("ViewpointEditor.ui"), sessionKey)
+	X3DViewpointEditorUI (get_ui ("ViewpointEditor.ui"), sessionKey) 
 {
 	setBrowserWidget (browserWidget);
 	setBrowser (browserWidget -> getBrowser ());
@@ -74,9 +74,9 @@ ViewpointEditor::initialize ()
 void
 ViewpointEditor::set_world ()
 {
-	getBrowser () -> getExecutionContext () -> getViewpoints () .addInterest (this, &ViewpointEditor::set_viewpoints);
+	//	getBrowser () -> getActiveViewpoint () .addInterest (this, &ViewpointEditor::set_currentViewpoint);
 
-//	getBrowser () -> getActiveViewpoint () .addInterest (this, &ViewpointEditor::set_currentViewpoint);
+	getBrowser () -> getViewpoints () .addInterest (this, &ViewpointEditor::set_viewpoints);
 
 	set_viewpoints ();
 }
@@ -88,11 +88,11 @@ ViewpointEditor::set_viewpoints ()
 	getListStore () -> clear ();
 
 	// Fill the TreeView's model
-	for (const auto & viewpoint : getBrowser () -> getExecutionContext () -> getViewpoints ())
+	for (const auto & viewpoint : getBrowser () -> getViewpoints ())
 	{
 		getListStore () -> append () -> set_value (0, viewpoint -> description .getValue ());
 	}
-	
+
 	getTreeView () .queue_draw ();
 }
 
@@ -108,7 +108,7 @@ ViewpointEditor::set_currentViewpoint ()
 void
 ViewpointEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
-	getBrowser () -> getExecutionContext () -> getViewpoints () [path .front ()] -> set_bind = true;
+	getBrowser () -> getViewpoints () [path .front ()] -> set_bind = true;
 }
 
 void

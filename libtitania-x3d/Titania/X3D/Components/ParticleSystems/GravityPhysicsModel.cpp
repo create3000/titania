@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,9 +54,9 @@ namespace titania {
 namespace X3D {
 
 GravityPhysicsModel::GravityPhysicsModel (X3DExecutionContext* const executionContext) :
-	               X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DParticlePhysicsModelNode (),                                 
-	                      force (0, -9.8, 0)                        // SFVec3f [in,out] force  0 -9.8 0        (∞,∞)
+	               X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DParticlePhysicsModelNode (),                                                    
+	                      force (0, -9.8, 0)                                           // SFVec3f [in,out] force  0 -9.8 0        (∞,∞)
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("GravityPhysicsModel");

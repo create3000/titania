@@ -8,8 +8,8 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../Core/../Core/../../Basic/../Base/Type.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../Core/../Core/../../Basic/../Base/../Base/X3DType.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../Core/../Core/../../Basic/../Base/../Base/../Base/X3DBase.h \
- /home/holger/Projekte/Titania/libtitania-standard/Titania/LOG.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/Id.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/LOG.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../Core/../Core/../../Basic/../Base/X3DBaseNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../Core/../Core/../../Basic/../Base/../Base/BaseNodeSet.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../Core/../Core/../../Basic/../Base/../Base/X3DObject.h \
@@ -131,7 +131,6 @@
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Line3.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Plane3.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../Lighting/X3DLightNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../Lighting/../Core/X3DChildNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../Lighting/../../Browser/Properties/RenderingProperties.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../Lighting/../../Browser/Properties/../../Components/Core/X3DChildNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../Lighting/../../Browser/Properties/../Properties/QuadSphereProperties.h \
@@ -141,6 +140,7 @@
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/SystemClock.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/ClockBase.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/Now.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../Lighting/../Core/X3DChildNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../PointingDeviceSensor/X3DPointingDeviceSensorNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../PointingDeviceSensor/../../Browser/Hit.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layering/../Grouping/../PointingDeviceSensor/../../Browser/../Fields.h \

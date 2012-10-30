@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,9 +54,9 @@ namespace titania {
 namespace X3D {
 
 TextureTransformMatrix3D::TextureTransformMatrix3D (X3DExecutionContext* const executionContext) :
-	           X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DTextureTransformNode (),                                 
-	                 matrix ()                                  // SFMatrix4f [in,out] matrix  1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1        (-∞,∞)
+	           X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DTextureTransformNode (),                                                    
+	                 matrix ()                                                     // SFMatrix4f [in,out] matrix  1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1        (-∞,∞)
 {
 	setComponent ("Texturing3D");
 	setTypeName ("TextureTransformMatrix3D");

@@ -1,3 +1,108 @@
+2012-10-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.h:
+	* main.cpp:
+	* ChangeLog:
+	* OS.h:
+	* LOG.h:
+	* Id.o:
+	* URI.o:
+	* Env.o:
+	* CWD.o:
+	* Box3.o:
+	* CWD.h:
+	* Env.h:
+	* Home.o:
+	* Split.o:
+	* Home.h:
+	* Image.o:
+	* Line3.o:
+	* Color3.o:
+	* System.o:
+	* CWD.cpp:
+	* Plane3.o:
+	* Env.cpp:
+	* Color4.o:
+	* Id.h:
+	* Matrix3.o:
+	* Matrix4.o:
+	* System.h:
+	* Math.h:
+	* Vector4.o:
+	* Vector2.o:
+	* Home.cpp:
+	* Vector3.o:
+	* Sphere3.o:
+	* Now.h:
+	* Id.cpp:
+	* strfsize.o:
+	* ClockBase.o:
+	* Generator.o:
+	* URI.cpp:
+	* String.h:
+	* Rotation4.o:
+	* System.cpp:
+	* Now.cpp:
+	* Quaternion.o:
+	* Image.cpp:
+	* Utility.h:
+	* IndexedMap.o:
+	* SystemClock.o:
+	* FindDataFile.o:
+	* Algorithm.h:
+	* FindDataFile.h:
+	* libtitania-standard.cproj:
+	* BindStack.h:
+	* UniqueList.h:
+	* IndexedMap.h:
+	* ClockBase.h:
+	* Join.h:
+	* FindDataFile.cpp:
+	* Split.h:
+	* Pass.h:
+	* Value.h:
+	* IndexedMap.cpp:
+	* ClockBase.cpp:
+	* Box3.h:
+	* SystemClock.h:
+	* Line3.h:
+	* Split.cpp:
+	* Color4.h:
+	* Color3.h:
+	* Matrix4.h:
+	* SystemClock.cpp:
+	* Box3.cpp:
+	* Plane3.h:
+	* Matrix3.h:
+	* CountingClock.h:
+	* Vector3.h:
+	* Vector4.h:
+	* strfsize.h:
+	* Sphere3.h:
+	* Line3.cpp:
+	* Remove.h:
+	* IndexedMultiMap.h:
+	* Color4.cpp:
+	* Color3.cpp:
+	* Vector2.cpp:
+	* CountingClock.cpp:
+	* strfsize.cpp:
+	* Vector4.cpp:
+	* Vector3.cpp:
+	* Matrix3.cpp:
+	* Plane3.cpp:
+	* Matrix4.cpp:
+	* Rotation4.h:
+	* libtitania-standard.so:
+	* Sphere3.cpp:
+	* IndexedMultiMap.cpp:
+	* Quaternion.h:
+	* Rotation4.cpp:
+	* MemberValue.h:
+	* Quaternion.cpp:
+	* Generator.h:
+	* Generator.cpp: 
+
 2012-10-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* URI.h:
@@ -32,7 +137,7 @@
 	* TimerBase.d:
 	* ClockBase.o:
 	* Rotation4.o:
-	* IndexedMap.o:
+	* IndexedMultiMap.o:
 	* ClockTimer.o:
 	* Quaternion.o:
 	* SystemTimer.d:
@@ -71,7 +176,7 @@
 	* ClockBase.o:
 	* Rotation4.o:
 	* Quaternion.o:
-	* IndexedMap.o:
+	* IndexedMultiMap.o:
 	* SystemClock.o:
 	* FindDataFile.o:
 	* libtitania-standard.so: 
@@ -117,7 +222,7 @@
 	* Rotation4.o:
 	* ClockBase.o:
 	* Quaternion.o:
-	* IndexedMap.o:
+	* IndexedMultiMap.o:
 	* SystemClock.o:
 	* FindDataFile.o:
 	* BindStack.h:
@@ -149,7 +254,7 @@
 	* ClockBase.o:
 	* Rotation4.o:
 	* Quaternion.o:
-	* IndexedMap.o:
+	* IndexedMultiMap.o:
 	* SystemClock.o:
 	* FindDataFile.o:
 	* libtitania-standard.so: 
@@ -263,8 +368,8 @@
 	* Rotation4.d:
 	* TimerBase.o:
 	* TimerBase.d:
-	* IndexedMap.d:
-	* IndexedMap.o:
+	* IndexedMultiMap.d:
+	* IndexedMultiMap.o:
 	* Quaternion.o:
 	* Quaternion.d:
 	* ClockTimer.o:
@@ -285,13 +390,13 @@
 	* libtitania-standard.md.pc:
 	* libtitania-standard.cproj:
 	* BindStack.h:
-	* IndexedMap.h:
+	* IndexedMultiMap.h:
 	* TimerBase.h:
 	* Join.h:
 	* FindDataFile.cpp:
 	* Split.h:
 	* Pass.h:
-	* IndexedMap.cpp:
+	* IndexedMultiMap.cpp:
 	* SteadyTimer.h:
 	* SystemTimer.h:
 	* Value.h:
@@ -407,8 +512,8 @@
 	* Rotation4.d:
 	* TimerBase.o:
 	* TimerBase.d:
-	* IndexedMap.d:
-	* IndexedMap.o:
+	* IndexedMultiMap.d:
+	* IndexedMultiMap.o:
 	* Quaternion.o:
 	* Quaternion.d:
 	* ClockTimer.o:
@@ -429,13 +534,13 @@
 	* libtitania-standard.md.pc:
 	* libtitania-standard.cproj:
 	* BindStack.h:
-	* IndexedMap.h:
+	* IndexedMultiMap.h:
 	* TimerBase.h:
 	* Join.h:
 	* FindDataFile.cpp:
 	* Split.h:
 	* Pass.h:
-	* IndexedMap.cpp:
+	* IndexedMultiMap.cpp:
 	* SteadyTimer.h:
 	* SystemTimer.h:
 	* Value.h:
@@ -622,7 +727,7 @@
 	* System.cpp:
 	* Timer.h:
 	* BindStack.h:
-	* IndexedMap.h:
+	* IndexedMultiMap.h:
 	* Box3.h:
 	* SteadyTimer.h:
 	* SystemTimer.h:
@@ -655,8 +760,8 @@
 	* IndexMap.h:
 	* libtitania-standard.cproj:
 	* IndexMap.cpp:
-	* IndexedMap.h:
-	* IndexedMap.cpp: 
+	* IndexedMultiMap.h:
+	* IndexedMultiMap.cpp: 
 
 2012-10-11  Holger Seelig  <holger.seelig@yahoo.de>
 

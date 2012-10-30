@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,13 +54,13 @@ namespace titania {
 namespace puck {
 
 X3DBrowserUserInterface::X3DBrowserUserInterface (const std::string & sessionKey, X3DBrowserInterface* const browserWidget) :
-	    X3DBrowserWidgetUI (get_ui ("BrowserWidget.ui"), sessionKey),
-	X3DBrowserInterface (X3D::createBrowser ()),
-	        surface (getBrowser ()),
-	   motionBlurEditor (sessionKey, this),
-	    viewpointEditor (sessionKey, this),
-	      historyEditor (sessionKey, this),
-	      outlineEditor (sessionKey, this)
+	 X3DBrowserWidgetUI (get_ui ("BrowserWidget.ui"), sessionKey), 
+	X3DBrowserInterface (X3D::createBrowser ()),                   
+	            surface (getBrowser ()),                           
+	   motionBlurEditor (sessionKey, this),                        
+	    viewpointEditor (sessionKey, this),                        
+	      historyEditor (sessionKey, this),                        
+	      outlineEditor (sessionKey, this)                         
 {
 	setBrowserWidget (browserWidget);
 }
@@ -94,7 +94,7 @@ X3DBrowserUserInterface::initialize ()
 
 	// OutlineEditor
 	getOutlineEditor () .reparent (getOutlineEditorBox (), getWindow ());
-	
+
 	// Restore Session.
 	restoreSession ();
 }
@@ -123,10 +123,10 @@ X3DBrowserUserInterface::restoreSession ()
 		getSideBarAction () -> activate ();
 
 	getSideBarNotebook () .set_current_page (getConfig () .integer ("sidebarCurrentPage"));
-	
+
 	// RenderingProperties
 	getRenderingPropertiesMenuItem () .set_active (getConfig () .boolean ("renderingProperties"));
-	
+
 	// Footer
 	if (getConfig () .boolean ("footer"))
 		getFooterAction () -> activate ();
@@ -143,10 +143,10 @@ X3DBrowserUserInterface::saveSession ()
 		return;
 
 	//	printStatistics ();
-	
+
 	if (getExecutionContext () -> getWorldURL () .size ())
 		getConfig () .setItem ("worldURL", getExecutionContext () -> getWorldURL ());
-	
+
 	getConfig () .setItem ("vPaned", getVPaned () .get_position ());
 	getConfig () .setItem ("hPaned", getHPaned () .get_position ());
 
@@ -156,7 +156,7 @@ X3DBrowserUserInterface::saveSession ()
 	getConfig () .setItem ("footer",        getFooterMenuItem  ()       .get_active ());
 
 	getConfig () .setItem ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
-	
+
 	getConfig () .setItem ("sidebarCurrentPage", getSideBarNotebook () .get_current_page ());
 	getConfig () .setItem ("footerCurrentPage",  getFooterNotebook  () .get_current_page ());
 }

@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -58,11 +58,11 @@ namespace titania {
 namespace X3D {
 
 PointLight::PointLight (X3DExecutionContext* const executionContext) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DLightNode (),                                 
-	 attenuation (1, 0, 0),                          // SFVec3f [in,out] attenuation  1 0 0        [0,∞)
-	    location (),                                 // SFVec3f [in,out] location     0 0 0        (-∞,∞)
-	      radius (100)                               // SFFloat [in,out] radius       100          [0,∞)
+	X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DLightNode (),                                                    
+	 attenuation (1, 0, 0),                                             // SFVec3f [in,out] attenuation  1 0 0        [0,∞)
+	    location (),                                                    // SFVec3f [in,out] location     0 0 0        (-∞,∞)
+	      radius (100)                                                  // SFFloat [in,out] radius       100          [0,∞)
 {
 	setComponent ("Lighting");
 	setTypeName ("PointLight");
@@ -109,7 +109,7 @@ PointLight::eventsProcessed ()
 	glPosition [0] = location .getX ();
 	glPosition [1] = location .getY ();
 	glPosition [2] = location .getZ ();
-	glPosition [3] = 1;                        // point light
+	glPosition [3] = 1;                           // point light
 }
 
 void

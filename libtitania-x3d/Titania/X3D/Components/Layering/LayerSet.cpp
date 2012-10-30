@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -55,12 +55,12 @@ namespace titania {
 namespace X3D {
 
 LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	     X3DNode (),                                 
-	 activeLayer (),                                 // SFInt32 [in,out] activeLayer  0          (-∞,∞)
-	       order ({ 0 }),                            // MFInt32 [in,out] order        [0]        (0,∞)
-	      layers (),                                 // MFNode  [in,out] layers       [ ]        [X3DLayerNode]
-	    children ({ new Layer (executionContext) })
+	X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	     X3DNode (),                                                    
+	 activeLayer (),                                                    // SFInt32 [in,out] activeLayer  0          (-∞,∞)
+	       order ({ 0 }),                                               // MFInt32 [in,out] order        [0]        (0,∞)
+	      layers (),                                                    // MFNode  [in,out] layers       [ ]        [X3DLayerNode]
+	    children ({ new Layer (executionContext) })                     
 {
 	setComponent ("Layering");
 	setTypeName ("LayerSet");

@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,14 +63,14 @@ namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (const std::string & sessionKey, X3DBrowserInterface* const browserWidget) :
 	X3DBrowserUserInterface (sessionKey, browserWidget), 
-	               loadTime (0)
+	               loadTime (0)                          
 { }
 
 void
 X3DBrowserWidget::construct ()
 {
 	X3DBrowserUserInterface::construct ();
-	
+
 	if (getConfig () .hasItem ("worldURL"))
 	{
 		try
@@ -82,7 +82,7 @@ X3DBrowserWidget::construct ()
 		catch (...)
 		{ }
 	}
-	
+
 }
 
 void
@@ -93,7 +93,7 @@ X3DBrowserWidget::initialize ()
 	__LOG__ << std::endl;
 
 	// Splash Screen.
-	
+
 	// Connect to map_event
 	getBrowser () -> initialized .addInterest (this, &X3DBrowserWidget::set_spashScreen);
 
@@ -108,7 +108,7 @@ void
 X3DBrowserWidget::set_spashScreen ()
 {
 	__LOG__ << std::endl;
-	
+
 	getBrowser () -> initialized .removeInterest (this, &X3DBrowserWidget::set_spashScreen);
 
 	// Register browser interests.
@@ -127,7 +127,7 @@ void
 X3DBrowserWidget::set_initialized ()
 {
 	__LOG__ << std::endl;
-	
+
 	updateDescription ();
 	updateLocation    ();
 	updateIcon        ();
@@ -184,7 +184,7 @@ throw (X3D::Error <X3D::INVALID_URL>,
 	pushStatusBar ("Opening file " + url .toString () + ".");
 
 	loadTime = chrono::now ();
-	
+
 	try
 	{
 		getBrowser () -> loadURL (url);
@@ -233,19 +233,19 @@ X3DBrowserWidget::popStatusBar ()
 void
 X3DBrowserWidget::printStatistics () const
 {
-//	try
-//	{
-//		std::string name = getBrowser () -> getExecutionContext () -> getMetaData ("title");
-//
-//		std::clog << "Rendering statistics for: " << name << std::endl;
-//
-//		std::clog << "Load Time: " << loadTime << std::endl;
-//
-//		for (auto const & line : getSurface () .statistics -> string)
-//			std::clog << "  " << line .toString () << std::endl;
-//	}
-//	catch (const X3D::Error <X3D::INVALID_NAME> &)
-//	{ }
+	//	try
+	//	{
+	//		std::string name = getBrowser () -> getExecutionContext () -> getMetaData ("title");
+	//
+	//		std::clog << "Rendering statistics for: " << name << std::endl;
+	//
+	//		std::clog << "Load Time: " << loadTime << std::endl;
+	//
+	//		for (auto const & line : getSurface () .statistics -> string)
+	//			std::clog << "  " << line .toString () << std::endl;
+	//	}
+	//	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	//	{ }
 }
 
 // EventIn's
@@ -255,7 +255,7 @@ X3DBrowserWidget::set_urlError ()
 {
 	if (getBrowser () -> urlError .empty ())
 		return;
-	
+
 	getMessageDialog () .set_message ("Invalid X3D");
 	getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
 	                                         + basic::join (getBrowser () -> urlError .cbegin (),
@@ -290,6 +290,7 @@ void
 X3DBrowserWidget::updateDescription ()
 {
 	std::string description;
+
 	try
 	{
 		description = getBrowser () -> getExecutionContext () -> getMetaData ("title");
@@ -322,7 +323,8 @@ X3DBrowserWidget::updateIcon ()
 {
 	const auto & worldURL = getExecutionContext () -> getWorldURL ();
 
-	Gtk::StockID                stockId = Gtk::StockID (worldURL .str ());
+	Gtk::StockID stockId = Gtk::StockID (worldURL .str ());
+
 	Glib::RefPtr <Gtk::IconSet> iconSet;
 
 	try
@@ -366,11 +368,9 @@ X3DBrowserWidget::updateViewpoints (/* X3D::SFNode <X3D::World> & world */)
 {
 	Gtk::Menu* submenu = Gtk::manage (new Gtk::Menu ());
 
-	for (auto const & viewpoint : getBrowser () -> getExecutionContext () -> getViewpoints ())
+	for (auto const & viewpoint : getBrowser () -> getViewpoints ())
 	{
-		X3D::X3DViewpointNode* _viewpoint = dynamic_cast <X3D::X3DViewpointNode*> (viewpoint .getValue ());
-
-		if (_viewpoint -> description .length ())
+		if (viewpoint -> description .length ())
 			submenu -> append (*Gtk::manage (new ViewpointMenuItem (viewpoint)));
 	}
 
@@ -388,8 +388,7 @@ X3DBrowserWidget::dispose ()
 }
 
 X3DBrowserWidget::~X3DBrowserWidget ()
-{
-}
+{ }
 
 } // puck
 } // titania

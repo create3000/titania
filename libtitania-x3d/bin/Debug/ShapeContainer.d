@@ -6,8 +6,8 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Components/EnvironmentalEffects/../../Basic/../Base/Type.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Components/EnvironmentalEffects/../../Basic/../Base/../Base/X3DType.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Components/EnvironmentalEffects/../../Basic/../Base/../Base/../Base/X3DBase.h \
- /home/holger/Projekte/Titania/libtitania-standard/Titania/LOG.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/Id.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/LOG.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Components/EnvironmentalEffects/../../Basic/../Base/X3DBaseNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Components/EnvironmentalEffects/../../Basic/../Base/../Base/BaseNodeSet.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Components/EnvironmentalEffects/../../Basic/../Base/../Base/X3DObject.h \
@@ -131,7 +131,6 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/LightContainerArray.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/LightContainer.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Components/Lighting/X3DLightNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Components/Lighting/../Core/X3DChildNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Components/Lighting/../../Browser/Properties/RenderingProperties.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Components/Lighting/../../Browser/Properties/../../Components/Core/X3DChildNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Components/Lighting/../../Browser/Properties/../Properties/QuadSphereProperties.h \
@@ -141,6 +140,7 @@
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/SystemClock.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/ClockBase.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/Now.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Components/Lighting/../Core/X3DChildNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/Matrix.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Types/Numbers.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Rendering/../Rendering/ViewVolume.h \

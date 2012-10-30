@@ -59,7 +59,7 @@ PixelBufferContext::PixelBufferContext (const Glib::RefPtr <Gdk::Display> & disp
                                         const GLContext & sharingContext,
                                         bool direct) :
 	GLContext (display), 
-	 xPBuffer (0)
+	 xPBuffer (0)        
 {
 	setValue    (create (sharingContext .getValue (), direct));
 	setDrawable (xPBuffer);
@@ -68,7 +68,7 @@ PixelBufferContext::PixelBufferContext (const Glib::RefPtr <Gdk::Display> & disp
 PixelBufferContext::PixelBufferContext (const Glib::RefPtr <Gdk::Display> & display,
                                         bool direct) :
 	GLContext (display), 
-	 xPBuffer (0)
+	 xPBuffer (0)        
 {
 	setValue    (create (NULL, direct));
 	setDrawable (xPBuffer);

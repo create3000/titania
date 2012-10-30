@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -52,7 +52,7 @@ namespace titania {
 namespace puck {
 
 BrowserWindow::BrowserWindow (int & argc, char** & argv) :
-	 X3DBrowserWindow (argc, argv)
+	X3DBrowserWindow (argc, argv) 
 { }
 
 void
@@ -77,12 +77,12 @@ void
 BrowserWindow::on_close_tab (Gtk::Widget & child)
 {
 	removePage (child);
-	
+
 	if (getNotebook () .get_n_pages () > 1)
 	{
 		if (getNotebook () .get_current_page () == getNotebook () .get_n_pages () - 1)
 			getNotebook () .set_current_page (getNotebook () .get_current_page () - 1);
-	
+
 		currentPage = getNotebook () .get_current_page ();
 	}
 	else

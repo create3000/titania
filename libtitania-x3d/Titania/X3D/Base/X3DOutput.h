@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -62,21 +62,19 @@ class X3DOutput :
 {
 private:
 
-	typedef std::function <void (void)> Requester;
+	typedef std::function <void (void)>       Requester;
+	typedef std::list <Requester>             RequesterArray;
+	typedef typename RequesterArray::iterator RequesterId;
+
+	typedef std::pair <const void*, const void*>  RequesterPair;
+	typedef std::map <RequesterPair, RequesterId> RequesterIndex;
 
 
 public:
 
-	//@{
-	///  Add interest with const reference @a argument.
-//	template <class Class, class Argument>
-//	inline
-//	void
-//	addInterest (Class* object, void (Class::* memberFunction) (Argument*), Argument* argument) const
-//	{
-//		insertInterest (std::bind (std::mem_fn (memberFunction), object, argument),
-//		                object, reinterpret_cast <void*> (object ->* memberFunction));
-//	}
+	typedef RequesterArray::size_type size_type;
+
+	/// @name Add interest service
 
 	template <class Class, class Argument>
 	inline
@@ -84,7 +82,7 @@ public:
 	addInterest (Class* object, void (Class::* memberFunction) (const Argument &), const Argument & argument) const
 	{
 		insertInterest (std::bind (std::mem_fn (memberFunction), object, std::cref (argument)),
-		               object, reinterpret_cast <void*> (object ->* memberFunction));
+		                object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
 	template <class Class, class Argument>
@@ -107,7 +105,6 @@ public:
 	//@}
 
 	//@{
-	///  Add interest.
 	template <class Class>
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (void)) const
@@ -125,12 +122,13 @@ public:
 	}
 	//@}
 
-	///  Add basic interest.
+	//  Add basic interest.
 	void
 	addInterest (const Requester &) const;
 
+	///  @name Remove interest service
+
 	//@{
-	///  Remove interest.
 	template <class Class>
 	void
 	removeInterest (Class* object, void (Class::* memberFunction) (void)) const
@@ -144,16 +142,21 @@ public:
 	{
 		eraseInterest (&object, reinterpret_cast <void*> (object .* memberFunction));
 	}
-	
+
 	void
 	removeInterest (const Requester &) const;
 	//@}
 
-	///  Process all interests.
+	///  @name Process interests service
 	void
 	processInterests () const;
+	
+	///  @name Capacity
+	
+	size_type
+	size ();
 
-	///  Remove all interests.
+	///  @name Dispose service 
 	virtual
 	void
 	dispose ();
@@ -168,12 +171,6 @@ protected:
 
 
 private:
-
-	typedef std::list <Requester>             RequesterArray;
-	typedef typename RequesterArray::iterator RequesterId;
-
-	typedef std::pair <const void*, const void*>  RequesterPair;
-	typedef std::map <RequesterPair, RequesterId> RequesterIndex;
 
 	///  Add basic interest.
 	void

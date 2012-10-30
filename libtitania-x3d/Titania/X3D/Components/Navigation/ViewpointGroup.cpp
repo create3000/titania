@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,14 +54,14 @@ namespace titania {
 namespace X3D {
 
 ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
-	     X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	     X3DChildNode (),                                 
-	           center (),                                 // SFVec3f  [in,out] center             0 0 0        (-∞,∞)
-	         children (),                                 // MFNode   [in,out] children           NULL         [X3DViewpointNode|ViewpointGroup]
-	      description (),                                 // SFString [in,out] description        ""
-	        displayed (true),                             // SFBool   [in,out] displayed          TRUE
-	retainUserOffsets (),                                 // SFBool   [in,out] retainUserOffsets  FALSE
-	             size ()                                  // SFVec3f  [in,out] size               0 0 0        (-∞,∞)
+	     X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	     X3DChildNode (),                                                    
+	           center (),                                                    // SFVec3f  [in,out] center             0 0 0        (-∞,∞)
+	         children (),                                                    // MFNode   [in,out] children           NULL         [X3DViewpointNode|ViewpointGroup]
+	      description (),                                                    // SFString [in,out] description        ""
+	        displayed (true),                                                // SFBool   [in,out] displayed          TRUE
+	retainUserOffsets (),                                                    // SFBool   [in,out] retainUserOffsets  FALSE
+	             size ()                                                     // SFVec3f  [in,out] size               0 0 0        (-∞,∞)
 {
 	setComponent ("Navigation");
 	setTypeName ("ViewpointGroup");

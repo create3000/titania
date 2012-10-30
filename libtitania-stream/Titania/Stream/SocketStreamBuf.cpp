@@ -43,8 +43,8 @@ socketstreambuf::socketstreambuf (const basic::uri & URL) :
 	        sockfd (-1),    
 	        buffer (),      
 	        opened (false), 
-	           URL (URL),
-   totalBytesRead (0)
+	           URL (URL),   
+	totalBytesRead (0)      
 {
 	setg (buffer + bufferSize,                    // beginning of putback area
 	      buffer + bufferSize,                    // read position

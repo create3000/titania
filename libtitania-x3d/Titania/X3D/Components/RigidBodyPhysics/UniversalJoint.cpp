@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,19 +54,19 @@ namespace titania {
 namespace X3D {
 
 UniversalJoint::UniversalJoint (X3DExecutionContext* const executionContext) :
-	        X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	   X3DRigidJointNode (),                                 
-	         anchorPoint (),                                 // SFVec3f [in,out] anchorPoint           0 0 0
-	               axis1 (),                                 // SFVec3f [in,out] axis1                 0 0 0
-	               axis2 (),                                 // SFVec3f [in,out] axis2                 0 0 0
-	         stopBounce1 (),                                 // SFFloat [in,out] stopBounce1           0            [0,1]
-	stop1ErrorCorrection (0.8),                              // SFFloat [in,out] stop1ErrorCorrection  0.8          [0,1]
-	         stop2Bounce (),                                 // SFFloat [in,out] stop2Bounce           0            [0,1]
-	stop2ErrorCorrection (0.8),                              // SFFloat [in,out] stop2ErrorCorrection  0.8          [0,1]
-	    body1AnchorPoint (),                                 // SFVec3f [out]    body1AnchorPoint
-	           body1Axis (),                                 // SFVec3f [out]    body1Axis
-	    body2AnchorPoint (),                                 // SFVec3f [out]    body2AnchorPoint
-	           body2Axis ()                                  // SFVec3f [out]    body2Axis
+	        X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DRigidJointNode (),                                                    
+	         anchorPoint (),                                                    // SFVec3f [in,out] anchorPoint           0 0 0
+	               axis1 (),                                                    // SFVec3f [in,out] axis1                 0 0 0
+	               axis2 (),                                                    // SFVec3f [in,out] axis2                 0 0 0
+	         stopBounce1 (),                                                    // SFFloat [in,out] stopBounce1           0            [0,1]
+	stop1ErrorCorrection (0.8),                                                 // SFFloat [in,out] stop1ErrorCorrection  0.8          [0,1]
+	         stop2Bounce (),                                                    // SFFloat [in,out] stop2Bounce           0            [0,1]
+	stop2ErrorCorrection (0.8),                                                 // SFFloat [in,out] stop2ErrorCorrection  0.8          [0,1]
+	    body1AnchorPoint (),                                                    // SFVec3f [out]    body1AnchorPoint
+	           body1Axis (),                                                    // SFVec3f [out]    body1Axis
+	    body2AnchorPoint (),                                                    // SFVec3f [out]    body2AnchorPoint
+	           body2Axis ()                                                     // SFVec3f [out]    body2Axis
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("UniversalJoint");

@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -77,7 +77,7 @@ X3DViewpointNode::initialize ()
 {
 	X3DBindableNode::initialize ();
 
-	getExecutionContext () -> addViewpoint (this);
+	getBrowser () -> addViewpoint (this);
 }
 
 void
@@ -103,7 +103,7 @@ X3DViewpointNode::display ()
 void
 X3DViewpointNode::draw ()
 {
-	const SFNode <NavigationInfo> & navigationInfo = getBrowser () -> getActiveNavigationInfo ();
+	NavigationInfo* navigationInfo = getBrowser () -> getActiveNavigationInfo ();
 
 	float sizeZ           = navigationInfo -> avatarSize .size () ? navigationInfo -> avatarSize .front () : 0.25;
 	float visibilityLimit = navigationInfo -> visibilityLimit ? navigationInfo -> visibilityLimit : 100000;
@@ -119,7 +119,7 @@ X3DViewpointNode::dispose ()
 {
 	X3DBindableNode::dispose ();
 
-	getExecutionContext () -> removeViewpoint (this);
+	getBrowser () -> removeViewpoint (this);
 }
 
 } // X3D

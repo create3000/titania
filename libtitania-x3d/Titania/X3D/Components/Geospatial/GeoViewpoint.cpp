@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,17 +54,17 @@ namespace titania {
 namespace X3D {
 
 GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DViewpointNode (),                                 
-	 set_orientation (),                                 // SFRotation [in]     set_orientation
-	    set_position (),                                 // SFVec3d    [in]     set_position
-	     fieldOfView (0.785398),                         // SFFloat    [in,out] fieldOfView      π/4                      (0,π)
-	       headlight (true),                             // SFBool     [in,out] headlight        TRUE
-	         navType ({ "EXAMINE", "ANY" }),             // MFString   [in,out] navType          ["EXAMINE","ANY"]
-	       geoOrigin (),                                 // SFNode     [ ]      geoOrigin        NULL                     [GeoOrigin]
-	       geoSystem ({ "GD", "WE" }),                   // MFString   [ ]      geoSystem        ["GD","WE"]              [see <a href="#Specifyingaspatialreference">25.2.3</a>]
-	        position (0, 0, 100000),                     // SFVec3d    [ ]      position         0 0 100000               (-∞,∞)
-	     speedFactor (1)                                 // SFFloat    [ ]      speedFactor      1.0                      [0,∞)
+	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DViewpointNode (),                                                    
+	 set_orientation (),                                                    // SFRotation [in]     set_orientation
+	    set_position (),                                                    // SFVec3d    [in]     set_position
+	     fieldOfView (0.785398),                                            // SFFloat    [in,out] fieldOfView      π/4                      (0,π)
+	       headlight (true),                                                // SFBool     [in,out] headlight        TRUE
+	         navType ({ "EXAMINE", "ANY" }),                                // MFString   [in,out] navType          ["EXAMINE","ANY"]
+	       geoOrigin (),                                                    // SFNode     [ ]      geoOrigin        NULL                     [GeoOrigin]
+	       geoSystem ({ "GD", "WE" }),                                      // MFString   [ ]      geoSystem        ["GD","WE"]              [see <a href="#Specifyingaspatialreference">25.2.3</a>]
+	        position (0, 0, 100000),                                        // SFVec3d    [ ]      position         0 0 100000               (-∞,∞)
+	     speedFactor (1)                                                    // SFFloat    [ ]      speedFactor      1.0                      [0,∞)
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoViewpoint");

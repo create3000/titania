@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -120,10 +120,14 @@ public:
 	explicit
 	constexpr
 	matrix4 (const array_type & matrix) :
-		array { matrix [ 0], matrix [ 1], matrix [ 2], matrix [ 3],
-		        matrix [ 4], matrix [ 5], matrix [ 6], matrix [ 7],
-		        matrix [ 8], matrix [ 9], matrix [10], matrix [11],
-		        matrix [12], matrix [13], matrix [14], matrix [15] }
+		array
+	{
+		matrix [ 0], matrix [ 1], matrix [ 2], matrix [ 3],
+		matrix [ 4], matrix [ 5], matrix [ 6], matrix [ 7],
+		matrix [ 8], matrix [ 9], matrix [10], matrix [11],
+		matrix [12], matrix [13], matrix [14], matrix [15]
+	}
+
 	{ }
 
 	///  Components constructor. Set values from @a e11 to @a e44.
@@ -132,10 +136,14 @@ public:
 	         const Type & e21, const Type & e22, const Type & e23, const Type & e24,
 	         const Type & e31, const Type & e32, const Type & e33, const Type & e34,
 	         const Type & e41, const Type & e42, const Type & e43, const Type & e44) :
-		array { e11, e12, e13, e14,
-		        e21, e22, e23, e24,
-		        e31, e32, e33, e34,
-		        e41, e42, e43, e44 }
+		array
+	{
+		e11, e12, e13, e14,
+		e21, e22, e23, e24,
+		e31, e32, e33, e34,
+		e41, e42, e43, e44
+	}
+
 	{ }
 
 	//	matrix4 (const vector3 <Type> &);
@@ -324,7 +332,7 @@ public:
 
 	template <class T>
 	matrix4
-	operator* (const matrix4 <T> &) const;
+	operator * (const matrix4 <T> &) const;
 
 	matrix4 &
 	operator /= (const Type &);
@@ -740,7 +748,7 @@ matrix4 <Type>::factor (matrix4 & r, vector3 <S> & s, matrix4 & u, vector3 <T> &
 	double det_sign = (det < 0 ? -1 : 1);
 
 	if (det_sign * det < 1e-12)
-		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   // singular
+		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        // singular
 
 	/* (4) B = A * A^  (here A^ means A transpose) */
 	matrix4 b = a * a .transpose ();

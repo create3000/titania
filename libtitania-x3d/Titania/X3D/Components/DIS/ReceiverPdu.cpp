@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,33 +54,33 @@ namespace titania {
 namespace X3D {
 
 ReceiverPdu::ReceiverPdu (X3DExecutionContext* const executionContext) :
-	            X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	           X3DSensorNode (),                                 
-	        X3DBoundedObject (),                                 
-	                 address ("localhost"),                      // SFString [in,out] address                   "localhost"
-	           applicationID (1),                                // SFInt32  [in,out] applicationID             1                   [0,65535]
-	                entityID (),                                 // SFInt32  [in,out] entityID                  0                   [0,65535]
-	      multicastRelayHost (),                                 // SFString [in,out] multicastRelayHost        ""
-	      multicastRelayPort (),                                 // SFInt32  [in,out] multicastRelayPort        0                   [0,4294967295]
-	             networkMode ("standAlone"),                     // SFString [in,out] networkMode               "standAlone"        ["standAlone"|"networkReader"|"networkWriter"]
-	                    port (),                                 // SFInt32  [in,out] port                      0                   [0,65535]
-	                 radioID (),                                 // SFInt32  [in,out] radioID                   0                   [0,65535]
-	            readInterval (0.1),                              // SFFloat  [in,out] readInterval              0.1                 [0,∞)
-	           receivedPower (),                                 // SFFloat  [in,out] receivedPower             0.0                 [0,∞)
-	           receiverState (),                                 // SFInt32  [in,out] receiverState             0                   [0,65535]
-	       rtpHeaderExpected (),                                 // SFBool   [in,out] rtpHeaderExpected         FALSE
-	                  siteID (),                                 // SFInt32  [in,out] siteID                    0                   [0,65535]
-	transmitterApplicationID (1),                                // SFInt32  [in,out] transmitterApplicationID  1                   [0,65535]
-	     transmitterEntityID (),                                 // SFInt32  [in,out] transmitterEntityID       0                   [0,65535]
-	      transmitterRadioID (),                                 // SFInt32  [in,out] transmitterRadioID        0                   [0,65535]
-	       transmitterSiteID (),                                 // SFInt32  [in,out] transmitterSiteID         0                   [0,65535]
-	           whichGeometry (1),                                // SFInt32  [in,out] whichGeometry             1                   [-1,∞)
-	           writeInterval (1),                                // SFFloat  [in,out] writeInterval             1.0                 [0,∞)
-	         isNetworkReader (),                                 // SFBool   [out]    isNetworkReader                               FALSE
-	         isNetworkWriter (),                                 // SFBool   [out]    isNetworkWriter                               FALSE
-	        isRtpHeaderHeard (),                                 // SFBool   [out]    isRtpHeaderHeard                              FALSE
-	            isStandAlone (),                                 // SFBool   [out]    isStandAlone                                  FALSE
-	               timestamp ()                                  // SFTime   [out]    timestamp
+	            X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	           X3DSensorNode (),                                                    
+	        X3DBoundedObject (),                                                    
+	                 address ("localhost"),                                         // SFString [in,out] address                   "localhost"
+	           applicationID (1),                                                   // SFInt32  [in,out] applicationID             1                   [0,65535]
+	                entityID (),                                                    // SFInt32  [in,out] entityID                  0                   [0,65535]
+	      multicastRelayHost (),                                                    // SFString [in,out] multicastRelayHost        ""
+	      multicastRelayPort (),                                                    // SFInt32  [in,out] multicastRelayPort        0                   [0,4294967295]
+	             networkMode ("standAlone"),                                        // SFString [in,out] networkMode               "standAlone"        ["standAlone"|"networkReader"|"networkWriter"]
+	                    port (),                                                    // SFInt32  [in,out] port                      0                   [0,65535]
+	                 radioID (),                                                    // SFInt32  [in,out] radioID                   0                   [0,65535]
+	            readInterval (0.1),                                                 // SFFloat  [in,out] readInterval              0.1                 [0,∞)
+	           receivedPower (),                                                    // SFFloat  [in,out] receivedPower             0.0                 [0,∞)
+	           receiverState (),                                                    // SFInt32  [in,out] receiverState             0                   [0,65535]
+	       rtpHeaderExpected (),                                                    // SFBool   [in,out] rtpHeaderExpected         FALSE
+	                  siteID (),                                                    // SFInt32  [in,out] siteID                    0                   [0,65535]
+	transmitterApplicationID (1),                                                   // SFInt32  [in,out] transmitterApplicationID  1                   [0,65535]
+	     transmitterEntityID (),                                                    // SFInt32  [in,out] transmitterEntityID       0                   [0,65535]
+	      transmitterRadioID (),                                                    // SFInt32  [in,out] transmitterRadioID        0                   [0,65535]
+	       transmitterSiteID (),                                                    // SFInt32  [in,out] transmitterSiteID         0                   [0,65535]
+	           whichGeometry (1),                                                   // SFInt32  [in,out] whichGeometry             1                   [-1,∞)
+	           writeInterval (1),                                                   // SFFloat  [in,out] writeInterval             1.0                 [0,∞)
+	         isNetworkReader (),                                                    // SFBool   [out]    isNetworkReader                               FALSE
+	         isNetworkWriter (),                                                    // SFBool   [out]    isNetworkWriter                               FALSE
+	        isRtpHeaderHeard (),                                                    // SFBool   [out]    isRtpHeaderHeard                              FALSE
+	            isStandAlone (),                                                    // SFBool   [out]    isStandAlone                                  FALSE
+	               timestamp ()                                                     // SFTime   [out]    timestamp
 {
 	setComponent ("DIS");
 	setTypeName ("ReceiverPdu");
@@ -130,8 +130,7 @@ ReceiverPdu::getBBox ()
 
 void
 ReceiverPdu::update ()
-{
-}
+{ }
 
 } // X3D
 } // titania

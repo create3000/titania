@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __PUCK_BASE_X3DBROWSER_INTERFACE_H__
-#define __PUCK_BASE_X3DBROWSER_INTERFACE_H__
+#ifndef __TITANIA_BASE_X3DBROWSER_INTERFACE_H__
+#define __TITANIA_BASE_X3DBROWSER_INTERFACE_H__
 
 #include "../Base/X3DBaseInterface.h"
 
@@ -84,7 +84,7 @@ public:
 	throw (X3D::Error <X3D::INVALID_URL>,
 	       X3D::Error <X3D::URL_UNAVAILABLE>,
 	       X3D::Error <X3D::INVALID_X3D>) = 0;
-	       
+
 	virtual
 	void
 	dispose () = 0;

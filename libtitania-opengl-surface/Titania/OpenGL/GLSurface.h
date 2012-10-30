@@ -46,12 +46,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OPEN_GL_DRAWING_AREA_H__
-#define __TITANIA_OPEN_GL_DRAWING_AREA_H__
+#ifndef __TITANIA_OPEN_GL_GLSURFACE_H__
+#define __TITANIA_OPEN_GL_GLSURFACE_H__
 
 // include order is important
 #include <gtkmm/drawingarea.h>
+
 #include "Context/GLContext.h"
+
 #include <memory>
 
 namespace titania {
@@ -75,9 +77,9 @@ public:
 protected:
 
 	GLSurface ();
-	
+
 	///  @name Element access
-	
+
 	const std::shared_ptr <GLContext> &
 	getContext ();
 
@@ -116,8 +118,9 @@ private:
 
 	std::shared_ptr <GLContext> context;
 
-//	Pixmap    pixmap;
-//	GLXPixmap glxPixmap;
+	//	Pixmap    pixmap;
+	//	GLXPixmap glxPixmap;
+
 };
 
 } // OpenGL

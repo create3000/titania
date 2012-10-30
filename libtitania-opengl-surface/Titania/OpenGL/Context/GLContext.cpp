@@ -57,9 +57,9 @@ namespace titania {
 namespace OpenGL {
 
 GLContext::GLContext (const Glib::RefPtr <Gdk::Display> & display) :
-	  display (display),
-	 xDisplay (gdk_x11_display_get_xdisplay (display -> gobj ())), 
-	 xContext (NULL)
+	 display (display),                                           
+	xDisplay (gdk_x11_display_get_xdisplay (display -> gobj ())), 
+	xContext (NULL)                                               
 { }
 
 Display*

@@ -1,9 +1,9 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,11 +54,11 @@ namespace titania {
 namespace X3D {
 
 Contour2D::Contour2D (X3DExecutionContext* const executionContext) :
-	  X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	       X3DNode (),                                 
-	   addChildren (),                                 // MFNode[in]     addChildren               [NurbsCurve2D|ContourPolyline2D]
-	removeChildren (),                                 // MFNode[in]     removeChildren            [NurbsCurve2D|ContourPolyline2D]
-	      children ()                                  // MFNode[in,out] children        [ ]       [NurbsCurve2D|ContourPolyline2D]
+	  X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	       X3DNode (),                                                    
+	   addChildren (),                                                    // MFNode[in]     addChildren               [NurbsCurve2D|ContourPolyline2D]
+	removeChildren (),                                                    // MFNode[in]     removeChildren            [NurbsCurve2D|ContourPolyline2D]
+	      children ()                                                     // MFNode[in,out] children        [ ]       [NurbsCurve2D|ContourPolyline2D]
 {
 	setComponent ("NURBS");
 	setTypeName ("Contour2D");

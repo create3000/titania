@@ -1,5 +1,5 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*******************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -54,17 +54,17 @@ namespace titania {
 namespace X3D {
 
 FontStyle::FontStyle (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext),
-	X3DFontStyleNode (),                                 
-	          family ({ "SERIF" }),                      // MFString [ ]family       "SERIF"
-	      horizontal (true),                             // SFBool   [ ]horizontal   TRUE
-	         justify ({ "BEGIN" }),                      // MFString [ ]justify      "BEGIN"        ["BEGIN","END","FIRST","MIDDLE",""]
-	        language (),                                 // SFString [ ]language     ""
-	     leftToRight (true),                             // SFBool   [ ]leftToRight  TRUE
-	            size (1),                                // SFFloat  [ ]size         1.0            (0,∞)
-	         spacing (1),                                // SFFloat  [ ]spacing      1.0            [0,∞)
-	           style ("PLAIN"),                          // SFString [ ]style        "PLAIN"        ["PLAIN"|"BOLD"|"ITALIC"|"BOLDITALIC"|""]
-	     topToBottom (true)                              // SFBool   [ ]topToBottom  TRUE
+	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DFontStyleNode (),                                                    
+	          family ({ "SERIF" }),                                         // MFString [ ]family       "SERIF"
+	      horizontal (true),                                                // SFBool   [ ]horizontal   TRUE
+	         justify ({ "BEGIN" }),                                         // MFString [ ]justify      "BEGIN"        ["BEGIN","END","FIRST","MIDDLE",""]
+	        language (),                                                    // SFString [ ]language     ""
+	     leftToRight (true),                                                // SFBool   [ ]leftToRight  TRUE
+	            size (1),                                                   // SFFloat  [ ]size         1.0            (0,∞)
+	         spacing (1),                                                   // SFFloat  [ ]spacing      1.0            [0,∞)
+	           style ("PLAIN"),                                             // SFString [ ]style        "PLAIN"        ["PLAIN"|"BOLD"|"ITALIC"|"BOLDITALIC"|""]
+	     topToBottom (true)                                                 // SFBool   [ ]topToBottom  TRUE
 {
 	setComponent ("Text");
 	setTypeName ("FontStyle");

@@ -82,7 +82,7 @@ public:
 	virtual
 	void
 	dispose ();
-	
+
 	virtual
 	~Surface ();
 

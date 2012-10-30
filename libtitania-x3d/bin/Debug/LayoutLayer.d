@@ -5,56 +5,55 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/BindableNodeStack.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Base/X3DOutput.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Base/../Base/X3DBase.h \
- /home/holger/Projekte/Titania/libtitania-standard/Titania/LOG.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/Id.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/LOG.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/BindStack.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/Background.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/X3DBackgroundNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/X3DBindableNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/X3DChildNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/X3DNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/X3DBasicNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/Type.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/X3DType.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/X3DBase.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/X3DBaseNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/BaseNodeSet.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/X3DObject.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/GarbageCollector.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/../Base/ObjectSet.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/../Base/X3DBase.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/ObjectSet.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/X3DInput.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/X3DOutput.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/X3DType.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Bits/Error.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/X3DBackgroundNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/X3DBindableNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/X3DChildNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/X3DNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/X3DBasicNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/Type.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/X3DType.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/X3DBase.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/X3DBaseNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/BaseNodeSet.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/X3DObject.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/GarbageCollector.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/../Base/ObjectSet.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/../Base/X3DBase.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/ObjectSet.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/X3DInput.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/X3DOutput.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Base/X3DType.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Base/../Base/../Bits/Error.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Bits/Utility/Pass.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/FieldDefinitionArray.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/X3DFieldDefinition.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Base/X3DBaseNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Basic/FieldDefinitionSet.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Bits/X3DConstants.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Bits/../Base/Type.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Routing/RouteSet.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Routing/../Routing/X3DRoute.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Routing/../Routing/../Base/X3DObject.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/NodeTypeArray.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/X3DContext.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Base/X3DObject.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/X3DFieldDefinition.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Bits/Error.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Bits/X3DConstants.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Bits/../Base/Type.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Types/Time.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Bits/X3DConstants.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Bits/../Base/Type.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFColor.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Basic/X3DField.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Basic/../Base/Type.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Basic/../Basic/X3DFieldDefinition.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/Numbers.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Types/Time.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/FieldDefinitionArray.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/X3DFieldDefinition.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Base/X3DBaseNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Basic/FieldDefinitionSet.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Bits/X3DConstants.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Bits/../Base/Type.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Routing/RouteSet.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Routing/../Routing/X3DRoute.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Routing/../Routing/../Base/X3DObject.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/NodeTypeArray.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/X3DContext.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/../Base/X3DObject.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Basic/X3DFieldDefinition.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Bits/Error.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Bits/X3DConstants.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Bits/../Base/Type.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Basic/../Types/Time.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Bits/X3DConstants.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Bits/../Base/Type.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFColor.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Basic/X3DField.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Basic/../Base/Type.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Basic/../Basic/X3DFieldDefinition.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/Numbers.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Types/Time.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Color3.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/../Math.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Color4.h \
@@ -71,53 +70,52 @@
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Vector2.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Vector3.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Numbers/Vector4.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFColorRGBA.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFImage.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/Image.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/MFInt32.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/../Basic/X3DArrayField.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/../Basic/../Basic/X3DField.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/../Basic/../Types/Array.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/../Basic/../Types/../InputOutput/Generator.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFColorRGBA.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFImage.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/Image.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/MFInt32.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/../Basic/X3DArrayField.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/../Basic/../Basic/X3DField.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/../Basic/../Types/Array.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/../Basic/../Types/../InputOutput/Generator.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/InputOutput/Generator.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/../Fields/X3DScalar.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/../Fields/../Basic/X3DField.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/../Fields/../Types/Numbers.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/../Fields/X3DScalar.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/../Fields/../Basic/X3DField.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Types/../Fields/../Fields/../Types/Numbers.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Image.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFMatrix3.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFVec2.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFMatrix4.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFRotation4.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFVec3.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Basic/X3DBasicNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFRotation4.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFString.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFTime.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/X3DScalar.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFVec2.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFVec3.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFVec4.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/X3DScalar.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/ArrayFields.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFColor.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFColorRGBA.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFImage.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFMatrix3.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFMatrix4.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFRotation4.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFString.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFTime.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFVec2.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFVec3.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFVec4.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Basic/X3DArrayField.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/MFInt32.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/MFNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../InputOutput/Generator.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFMatrix3.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFVec2.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFMatrix4.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFRotation4.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFVec3.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Basic/X3DBasicNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFRotation4.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFString.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFTime.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/X3DScalar.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFVec2.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFVec3.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/SFVec4.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/X3DScalar.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/ArrayFields.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFColor.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFColorRGBA.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFImage.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFMatrix3.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFMatrix4.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFRotation4.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFString.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFTime.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFVec2.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFVec3.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFVec4.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Basic/X3DArrayField.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/MFInt32.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/MFNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../Fields/SFNode.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/../Core/../Core/../../Fields/../InputOutput/Generator.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/Fog.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../Core/X3DBindableNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/X3DFogObject.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../../Basic/X3DBasicNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/EnvironmentalEffects/../EnvironmentalEffects/../../Bits/X3DConstants.h \
@@ -127,7 +125,6 @@
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/Navigation/../Core/X3DBindableNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/Navigation/../Lighting/DirectionalLight.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/Navigation/../Lighting/../Lighting/X3DLightNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/Navigation/../Lighting/../Lighting/../Core/X3DChildNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/Navigation/../Lighting/../Lighting/../../Browser/Properties/RenderingProperties.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/Navigation/../Lighting/../Lighting/../../Browser/Properties/../../Components/Core/X3DChildNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/Navigation/../Lighting/../Lighting/../../Browser/Properties/../Properties/QuadSphereProperties.h \
@@ -137,6 +134,7 @@
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/SystemClock.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/ClockBase.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Chrono/Now.h \
+ /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/Navigation/../Lighting/../Lighting/../Core/X3DChildNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/Navigation/../Navigation/Viewpoint.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/Navigation/../Navigation/../Navigation/X3DViewpointNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../Layering/../../Execution/../Components/Navigation/../Navigation/../Navigation/../Core/X3DBindableNode.h \
@@ -209,15 +207,11 @@
  /usr/include/sigc++-2.0/sigc++/functors/slot_base.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/X3DExecutionContext.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Basic/X3DContext.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Components/EnvironmentalEffects/Fog.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Components/EnvironmentalEffects/X3DBackgroundNode.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Components/Navigation/NavigationInfo.h \
- /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Components/Navigation/X3DViewpointNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Configuration/ComponentInfoArray.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Configuration/../Configuration/ComponentInfo.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Configuration/../Configuration/../Basic/X3DBasicNode.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Configuration/../Configuration/../Fields/SFNode.h \
- /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/IndexedMap.h \
+ /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/IndexedMultiMap.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/../Bits/Algorithm/Remove.h \
  /home/holger/Projekte/Titania/libtitania-standard/Titania/Basic/../Bits/Algorithm/../Utility/Value.h \
  /home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Components/Layout/../../Execution/../Configuration/ProfileInfo.h \
