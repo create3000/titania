@@ -1,25 +1,42 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/HistoryEditor/HistoryEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp">
     <Files>
       <File FileName="Titania/Titania/Browser/X3DBrowserWindow.h" Line="111" Column="12" />
       <File FileName="Titania/Titania/Browser/X3DBrowserWindow .cpp" Line="65" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="118" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.h" Line="368" Column="35" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="58" Column="21" />
-      <File FileName="Titania/Titania/HistoryEditor/HistoryEditor.cpp" Line="76" Column="1" />
-      <File FileName="Titania/Titania/HistoryEditor/HistoryEditor.h" Line="81" Column="17" />
-      <File FileName="Titania/Titania/HistoryEditor/History.cpp" Line="101" Column="1" />
-      <File FileName="Titania/Titania/HistoryEditor/History.h" Line="76" Column="1" />
-      <File FileName="libtitania-sqlite/Titania/SQL/SQLite3.cpp" Line="100" Column="1" />
-      <File FileName="libtitania-sqlite/Titania/SQL/SQLite3.h" Line="94" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="104" Column="25" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="118" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.h" Line="368" Column="18" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="58" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/World.cpp" Line="85" Column="16" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="239" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="95" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Viewpoint.cpp" Line="130" Column="1" />
+      <File FileName="Library/Tests/Navigation/Viewpoint.wrl" Line="27" Column="1" />
+      <File FileName="Library/Tests/Navigation/Inline.wrl" Line="13" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.h" Line="72" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.cpp" Line="141" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.h" Line="198" Column="48" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="220" Column="48" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.h" Line="96" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.cpp" Line="104" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/Scene.h" Line="96" Column="34" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/Scene.cpp" Line="215" Column="21" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True">
             <Node name="glade2c++" expanded="True" />
+          </Node>
+          <Node name="Documentation" expanded="True">
+            <Node name="Titania" expanded="True" />
+          </Node>
+          <Node name="Library" expanded="True">
+            <Node name="Tests" expanded="True">
+              <Node name="Navigation" expanded="True" />
+            </Node>
           </Node>
           <Node name="libtitania-opengl-surface" expanded="True">
             <Node name="Titania" expanded="True">
@@ -28,9 +45,9 @@
               </Node>
             </Node>
           </Node>
-          <Node name="libtitania-sqlite" expanded="True">
+          <Node name="libtitania-stream" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="SQL" expanded="True" />
+              <Node name="Stream" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -39,7 +56,24 @@
                 <Node name="Browser" expanded="True">
                   <Node name="Properties" expanded="True" />
                 </Node>
+                <Node name="Components" expanded="True">
+                  <Node name="Core" expanded="True" />
+                  <Node name="CubeMapTexturing" expanded="True" />
+                  <Node name="EnvironmentalEffects" expanded="True" />
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Lighting" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
+                  <Node name="Networking" expanded="True">
+                    <Node name="X3DUrlObject.cpp" selected="True" />
+                  </Node>
+                  <Node name="Scripting" expanded="True" />
+                  <Node name="Shape" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
+                </Node>
                 <Node name="Execution" expanded="True" />
+                <Node name="Parser" expanded="True" />
+                <Node name="Prototype" expanded="True" />
+                <Node name="Rendering" expanded="True" />
                 <Node name="Widgets" expanded="True" />
               </Node>
             </Node>
@@ -56,10 +90,7 @@
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
-              <Node name="HistoryEditor" expanded="True">
-                <Node name="HistoryEditor.cpp" selected="True" />
-              </Node>
-              <Node name="UserInterfaces" expanded="True" />
+              <Node name="HistoryEditor" expanded="True" />
               <Node name="ViewpointEditor" expanded="True" />
             </Node>
           </Node>

@@ -58,12 +58,15 @@ namespace X3D {
 
 Scene::Scene (X3DBrowser* const browser) :
 	X3DBasicNode (browser, browser), 
-	    X3DScene ()                  
+	    X3DScene (),                  
+	    layerSet (new LayerSet (this)) 
 {
 	std::clog << "Constructing Scene:" << std::endl;
 
 	setComponent ("Browser");
 	setTypeName ("Scene");
+	
+	appendField (initializeOnly, "layerSet", layerSet);
 
 	std::clog << "\tDone constructing Scene." << std::endl;
 }
@@ -91,25 +94,60 @@ Scene::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Scene::setMetaData (const std::string & key, const std::string & value)
+Scene::initialize ()
+{
+	X3DScene::initialize ();
+
+	layerSet -> setup ();
+}
+
+void
+Scene::addRootNode (const SFNode <X3DBasicNode> & rootNode)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	metadata .insert (std::make_pair (key, value));
+	X3DScene::addRootNode (rootNode);
+
+	SFNode <LayerSet> rootLayersSet = rootNode;
+
+	if (rootLayersSet)
+	{
+		rootLayersSet -> getLayers () [0] -> children = layerSet -> getLayers () [0] -> children;
+		layerSet                                      = rootLayersSet;
+	}
+
+	else
+		layerSet -> getLayers () [0] -> children .push_back (rootNode);
 }
 
-const std::string &
-Scene::getMetaData (const std::string & key) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
+void
+Scene::removeRootNode (const SFNode <X3DBasicNode> & rootNode)
+throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
+{ }
+
+Box3f
+Scene::getBBox ()
 {
-	MetaDataMap::const_iterator iter = metadata .find (key);
+	return getLayerSet () -> getBBox ();
+}
 
-	if (iter not_eq metadata .end ())
-		return iter -> second;
+const SFNode <LayerSet> &
+Scene::getLayerSet () const
+{
+	return layerSet;
+}
 
-	throw Error <INVALID_NAME> ("Unkown meta key '" + key + "'.");
+const SFNode <X3DLayerNode>
+Scene::getActiveLayer () const
+{
+	return layerSet -> getActiveLayer ();
+}
+
+void
+Scene::display ()
+{
+	layerSet -> display ();
 }
 
 void
@@ -171,7 +209,7 @@ Scene::toStream (std::ostream & ostream) const
 	if (getComponents () .size ())
 		ostream << Generator::TidyBreak;
 
-	for (const auto & meta : metadata)
+	for (const auto & meta : getMetaDatas ())
 	{
 		std::string key   = meta .first;
 		std::string value = meta .second;
@@ -192,12 +230,22 @@ Scene::toStream (std::ostream & ostream) const
 			<< Generator::Break;
 	}
 
-	if (metadata .size ())
+	if (getMetaDatas () .size ())
 		ostream << Generator::TidyBreak;
 
-	X3DExecutionContext::toStream (ostream);
+	X3DScene::toStream (ostream);
 
 	ostream << std::flush;
+}
+
+void
+Scene::dispose ()
+{
+	std::clog << "\tDisposing Scene: " << getWorldURL () << std::endl;
+
+	X3DScene::dispose ();
+
+	std::clog << "\tDone disposing Scene." << std::endl;
 }
 
 } // X3D

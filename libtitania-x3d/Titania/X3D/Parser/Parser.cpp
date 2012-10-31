@@ -77,7 +77,7 @@ Parser::AccessTypes::AccessTypes ()
 Parser::AccessTypes Parser::accessTypes;
 
 void
-Parser::parseIntoScene (Scene* scene, const std::string & input)
+Parser::parseIntoScene (X3DScene* scene, const std::string & input)
 throw (Error <INVALID_X3D>)
 {
 	Parser parser (scene, input);
@@ -96,7 +96,7 @@ throw (Error <INVALID_X3D>)
 	std::clog << "Done parsing into scene." << std::endl;
 }
 
-Parser::Parser (Scene* scene, const std::string & input) :
+Parser::Parser (X3DScene* scene, const std::string & input) :
 	X3DBasicNode (scene -> getBrowser (),        scene), 
 	   X3DParser (),                                     
 	       scene (scene),                                

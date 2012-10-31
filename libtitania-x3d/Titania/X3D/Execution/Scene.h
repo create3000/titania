@@ -50,6 +50,8 @@
 #define __TITANIA_X3D_EXECUTION_SCENE_H__
 
 #include "../Execution/X3DScene.h"
+#include "../Components/Layering/LayerSet.h"
+#include "../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
@@ -72,16 +74,30 @@ public:
 	Scene*
 	create (X3DExecutionContext* const) const;
 
+	virtual
 	void
-	setMetaData (const std::string &, const std::string &)
+	addRootNode (const SFNode <X3DBasicNode> &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const std::string &
-	getMetaData (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
+	virtual
+	void
+	removeRootNode (const SFNode <X3DBasicNode> &)
+	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
+
+	Box3f
+	getBBox ();
+
+	const SFNode <LayerSet> &
+	getLayerSet () const;
+
+	const SFNode <X3DLayerNode>
+	getActiveLayer () const;
+
+	virtual
+	void
+	display ();
 
 	// Input:
 	virtual
@@ -97,12 +113,19 @@ public:
 	void
 	toStream (std::ostream &) const;
 
+	// Object:
+	virtual
+	void
+	dispose ();
+
 
 private:
 
-	typedef std::map <std::string, std::string> MetaDataMap;
+	virtual
+	void
+	initialize ();
 
-	MetaDataMap metadata;
+	SFNode <LayerSet> layerSet;
 
 };
 

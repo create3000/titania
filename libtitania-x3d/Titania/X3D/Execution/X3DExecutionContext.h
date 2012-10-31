@@ -50,6 +50,7 @@
 #define __TITANIA_X3D_EXECUTION_X3DEXECUTION_CONTEXT_H__
 
 #include "../Basic/X3DContext.h"
+#include "../Components/Core/X3DChildNode.h"
 #include "../Configuration/ComponentInfoArray.h"
 #include "../Configuration/ProfileInfo.h"
 #include "../Execution/ExportedNodeArray.h"
@@ -69,12 +70,17 @@ class X3DBrowser;
 class X3DPrototypeInstance;
 
 class X3DExecutionContext :
-	virtual public X3DBasicNode, public X3DContext
+	public X3DChildNode, public X3DContext
 {
 public:
 
 	void
 	assign (const X3DExecutionContext* const);
+
+	const basic::uri &
+	getWorldURL () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	void
 	setEncoding (const std::string &);
@@ -105,11 +111,6 @@ public:
 
 	const std::string &
 	getComment () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	const basic::uri &
-	getWorldURL () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
@@ -368,6 +369,10 @@ protected:
 	void
 	setWorldURL (const basic::uri &);
 
+	virtual
+	void
+	clear ();
+
 	friend class X3DBasicNode; // addDisposedNode
 
 
@@ -388,20 +393,20 @@ private:
 	                       const SFNode <X3DBasicNode> &, const std::string &)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
+	       
 
-	typedef std::map <std::string, SFNode <X3DBasicNode>> NamedNodeMap;
+	typedef std::map <std::string, SFNode <X3DBasicNode>> NamedNodeIndex;
 
+	basic::uri  worldURL;
 	std::string encoding;
 	std::string specificationVersion;
 	std::string characterEncoding;
 	std::string comment;
-	basic::uri  worldURL;
 
 	ComponentInfoArray components;
-
 	const ProfileInfo* profile;
 
-	NamedNodeMap      namedNodes;
+	NamedNodeIndex    namedNodes;
 	ExportedNodeArray exportedNodes;
 	ImportedNodeArray importedNodes;
 	ProtoArray        protos;

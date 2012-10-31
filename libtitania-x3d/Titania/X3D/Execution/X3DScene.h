@@ -49,12 +49,12 @@
 #ifndef __TITANIA_X3D_EXECUTION_X3DSCENE_H__
 #define __TITANIA_X3D_EXECUTION_X3DSCENE_H__
 
-#include "../Components/Layering/LayerSet.h"
 #include "../Execution/X3DExecutionContext.h"
-#include "../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
+
+typedef std::map <std::string, std::string> MetaDataIndex;
 
 class X3DScene :
 	public X3DExecutionContext
@@ -63,44 +63,25 @@ public:
 
 	X3DScene ();
 
-	virtual
 	void
-	initialize ();
-
-	virtual
-	void
-	addRootNode (const SFNode <X3DBasicNode> &)
+	setMetaData (const std::string &, const std::string &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	virtual
-	void
-	removeRootNode (const SFNode <X3DBasicNode> &)
-	throw (Error <INVALID_OPERATION_TIMING>,
+	const std::string &
+	getMetaData (const std::string &) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	Box3f
-	getBBox ();
-
-	const SFNode <LayerSet> &
-	getLayerSet () const;
-
-	const SFNode <X3DLayerNode>
-	getActiveLayer () const;
-
-	virtual
-	void
-	display ();
-
-	// Object:
-	virtual
-	void
-	dispose ();
-
+	const MetaDataIndex &
+	getMetaDatas () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 private:
 
-	SFNode <LayerSet> layerSet;
+	MetaDataIndex metadatas;
 
 };
 

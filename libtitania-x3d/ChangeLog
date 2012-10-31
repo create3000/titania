@@ -1,3 +1,24 @@
+2012-10-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Parser.h:
+	* Scene.h:
+	* Parser.cpp:
+	* Scene.cpp:
+	* X3DScene.h:
+	* X3DScene.cpp:
+	* ExternProto.h:
+	* ExternProto.cpp:
+	* Inline.h:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp:
+	* ImageTexture.h:
+	* X3DUrlObject.h:
+	* ImageTexture.cpp:
+	* X3DUrlObject.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DPrototypeInstance.cpp: 
+
 2012-10-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3D.o:

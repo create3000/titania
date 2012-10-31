@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,11 +63,12 @@ namespace X3D {
 URNIndex X3DUrlObject::URNCache;
 
 X3DUrlObject::X3DUrlObject () :
-	X3DBasicNode (), 
-	         url (), // MFString [in,out] url               [ ]       [URL]
-	    urlError (), // MFString [out]    urlError                    [BrowserEvent]
-	   userAgent (), 
-	    worldURL ()  
+	X3DBasicNode (),                 
+	         url (),                 // MFString [in,out] url               [ ]       [URL]
+	    urlError (),                 // MFString [out]    urlError                    [BrowserEvent]
+	   loadState (NOT_STARTED_STATE), 
+	   userAgent (),                 
+	    worldURL ()                  
 {
 	addNodeType (X3DUrlObjectType);
 
@@ -81,6 +82,18 @@ X3DUrlObject::initialize ()
 }
 
 //  Element Access
+
+LoadState
+X3DUrlObject::checkLoadState ()
+{
+	return loadState;
+}
+
+void
+X3DUrlObject::setLoadState (LoadState value)
+{
+	loadState = value;
+}
 
 void
 X3DUrlObject::setWorldURL (const basic::uri & value)
@@ -115,13 +128,13 @@ throw (Error <INVALID_X3D>,
 }
 
 SFNode <Scene>
-X3DUrlObject::createX3DFromStream (std::istream & stream)
+X3DUrlObject::createX3DFromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::istreambuf_iterator <char> begin (stream);
+	std::istreambuf_iterator <char> begin (istream);
 	std::istreambuf_iterator <char> end;
 	std::string                     string (begin, end);
 
@@ -154,7 +167,7 @@ throw (Error <INVALID_URL>,
 			}
 		}
 
-		throw Error <INVALID_URL> ("Couldn't load no URL of " + url .toString () + ".");
+		throw Error <INVALID_URL> ("Couldn't load any URL of " + url .toString () + ".");
 	}
 	else
 		throw Error <INVALID_URL> ("No URL given.");
@@ -166,6 +179,15 @@ throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_X3D>)
 { }
+
+void
+X3DUrlObject::parseIntoScene (Scene* const, const MFString &)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>,
+       Error <INVALID_X3D>)
+{
+
+}
 
 //  Stream Handling
 

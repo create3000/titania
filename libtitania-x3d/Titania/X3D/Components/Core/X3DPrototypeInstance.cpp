@@ -61,7 +61,6 @@ namespace X3D {
 
 X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, Proto* const proto) :
 	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
-	            X3DNode (),                                                    
 	X3DExecutionContext (),                                                    
 	              proto (proto)                                                
 {
@@ -97,7 +96,7 @@ X3DPrototypeInstance::getTypeName () const
 	if (proto)
 		return proto .getNodeName ();
 
-	return X3DNode::getTypeName ();
+	return X3DExecutionContext::getTypeName ();
 
 	//throw Error <DISPOSED> ("In X3DPrototypeInstance::getTypeName: node is already disposed.");
 }
@@ -108,7 +107,7 @@ X3DPrototypeInstance::getType () const
 	if (proto)
 		return proto .getValue ();
 
-	return X3DNode::getType ();
+	return X3DExecutionContext::getType ();
 
 	//throw Error <DISPOSED> ("In X3DPrototypeInstance::getTypeName: node is already disposed.");
 }

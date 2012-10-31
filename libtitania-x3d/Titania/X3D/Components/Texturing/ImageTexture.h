@@ -66,9 +66,6 @@ public:
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
 
-	LoadState
-	checkLoadState () { return loadState; }
-
 	void
 	requestImmediateLoad ();
 
@@ -88,8 +85,6 @@ private:
 
 	bool
 	loadImage (Magick::Image & image);
-
-	LoadState loadState;
 
 };
 

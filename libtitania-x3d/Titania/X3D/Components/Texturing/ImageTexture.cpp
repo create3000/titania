@@ -58,8 +58,7 @@ namespace X3D {
 ImageTexture::ImageTexture (X3DExecutionContext* const executionContext) :
 	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DTexture2DNode (),                                                    
-	    X3DUrlObject (),                                                    
-	       loadState (NOT_STARTED_STATE)                                    
+	    X3DUrlObject ()                                                    
 {
 	setComponent ("Texturing");
 	setTypeName ("ImageTexture");
@@ -91,18 +90,17 @@ ImageTexture::initialize ()
 void
 ImageTexture::set_url ()
 {
-	loadState = NOT_STARTED_STATE;
-
+	setLoadState (NOT_STARTED_STATE);
 	requestImmediateLoad ();
 }
 
 void
 ImageTexture::requestImmediateLoad ()
 {
-	if (loadState == COMPLETE_STATE or loadState == IN_PROGRESS_STATE)
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 
-	loadState = IN_PROGRESS_STATE;
+	setLoadState (IN_PROGRESS_STATE);
 
 	// Delete previous Texture.
 
@@ -130,7 +128,7 @@ ImageTexture::requestImmediateLoad ()
 			{
 				setWorldURL (URL .getValue ());
 				setTexture (textureId);
-				loadState = COMPLETE_STATE;
+				setLoadState (COMPLETE_STATE);
 				return;
 			}
 		}
@@ -142,7 +140,7 @@ ImageTexture::requestImmediateLoad ()
 
 	if (not loadImage (image))
 	{
-		loadState = FAILED_STATE;
+		setLoadState (FAILED_STATE);
 		return;
 	}
 
@@ -154,7 +152,7 @@ ImageTexture::requestImmediateLoad ()
 
 	getBrowser () -> addTexture (getWorldURL (), getTexture ());
 
-	loadState = COMPLETE_STATE;
+	setLoadState (COMPLETE_STATE);
 }
 
 bool

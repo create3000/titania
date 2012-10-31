@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 class Inline :
-	virtual public X3DChildNode, public X3DBoundedObject, public X3DUrlObject
+	public X3DExecutionContext, public X3DBoundedObject, public X3DUrlObject
 {
 public:
 
@@ -69,12 +69,6 @@ public:
 	virtual
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
-
-	const SFNode <Scene> &
-	getScene () const { return scene; }
-
-	LoadState
-	checkLoadState () { return loadState; }
 
 	void
 	requestImmediateLoad ();
@@ -106,9 +100,6 @@ private:
 
 	void
 	set_url ();
-
-	LoadState      loadState;
-	SFNode <Scene> scene;
 
 };
 

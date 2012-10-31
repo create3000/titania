@@ -62,8 +62,7 @@ ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
 	    X3DProto (),                                                    
 	X3DUrlObject (),                                                    
 	       scene (),                                                    
-	       proto (),                                                    
-	   loadState (NOT_STARTED_STATE)                                    
+	       proto ()                                                                                       
 {
 	setTypeName ("ExternProto");
 
@@ -104,10 +103,10 @@ ExternProto::createInstance ()
 void
 ExternProto::requestImmediateLoad ()
 {
-	if (loadState == COMPLETE_STATE or loadState == IN_PROGRESS_STATE)
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 
-	loadState = IN_PROGRESS_STATE;
+	setLoadState (IN_PROGRESS_STATE);
 
 	scene = NULL;
 
@@ -117,7 +116,7 @@ ExternProto::requestImmediateLoad ()
 	}
 	catch (const Error <INVALID_URL> & error)
 	{
-		loadState = FAILED_STATE;
+		setLoadState (FAILED_STATE);
 		throw Error <URL_UNAVAILABLE> ("Couldn't load any URL specified for EXTERNPROTO '" + getName () + "'\n" + error .what ());
 	}
 
@@ -143,31 +142,30 @@ ExternProto::requestImmediateLoad ()
 					}
 					else
 					{
-						loadState = FAILED_STATE;
+						setLoadState (FAILED_STATE);
 						throw Error <INVALID_FIELD> ("EXTERNPROTO '" + getName () + "' field '" + fieldDefinition -> getName () + "' and PROTO field have different types");
 					}
 				}
 				else
 				{
-					loadState = FAILED_STATE;
+					setLoadState (FAILED_STATE);
 					throw Error <INVALID_ACCESS_TYPE> ("EXTERNPROTO '" + getName () + "' field '" + fieldDefinition -> getName () + "' and PROTO field have different access types");
 				}
 			}
 			else
 			{
-				loadState = FAILED_STATE;
+				setLoadState (FAILED_STATE);
 				throw Error <INVALID_NAME> ("EXTERNPROTO field '" + fieldDefinition -> getName () + "' not found in PROTO '" + proto .getNodeName () + "'");
 			}
 		}
 
-		loadState = COMPLETE_STATE;
+		setLoadState (COMPLETE_STATE);
 
 		return;
 	}
 	else
 	{
-		loadState = FAILED_STATE;
-
+		setLoadState (FAILED_STATE);
 		throw Error <INVALID_NAME> ("No PROTO '" + protoName + "' found for EXTERNPROTO '" + getName () + "' in url '" + getWorldURL () + "'");
 	}
 

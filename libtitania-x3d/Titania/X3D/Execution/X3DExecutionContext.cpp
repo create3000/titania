@@ -65,12 +65,12 @@ namespace titania {
 namespace X3D {
 
 X3DExecutionContext::X3DExecutionContext () :
-	        X3DBasicNode (),       
+	        X3DChildNode (),       
+	            worldURL (),       
 	            encoding ("X3D"),  
 	specificationVersion ("3.0"),  
 	   characterEncoding ("utf8"), 
 	             comment (""),     
-	            worldURL (),       
 	          components (),       
 	             profile (NULL),   
 	          namedNodes (),       
@@ -79,19 +79,29 @@ X3DExecutionContext::X3DExecutionContext () :
 	              protos (),       
 	        externProtos (),       
 	              routes (),       
-	           rootNodes ()    
+	           rootNodes ()        
 { }
 
 void
 X3DExecutionContext::initialize ()
 {
-	X3DBasicNode::initialize ();
+	X3DChildNode::initialize ();
 }
 
 void
 X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
 {
+	clear ();
+
+	setEncoding             (executionContext -> getEncoding ());
+	setSpecificationVersion (executionContext -> getSpecificationVersion ());
+	setCharacterEncoding    (executionContext -> getCharacterEncoding ());
+	setComment              (executionContext -> getComment ());
+
 	setWorldURL (executionContext -> getWorldURL ());
+
+	addComponents (components);
+	setProfile (profile);
 
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
 		updateExternProtoDeclaration (externProto .getNodeName (), externProto);
@@ -110,6 +120,20 @@ X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
 
 	for (const auto & route : executionContext -> getRoutes ())
 		route -> copy (this);
+}
+
+void
+X3DExecutionContext::setWorldURL (const basic::uri & value)
+{
+	worldURL = value;
+}
+
+const basic::uri &
+X3DExecutionContext::getWorldURL () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return worldURL;
 }
 
 void
@@ -166,20 +190,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	return comment;
-}
-
-void
-X3DExecutionContext::setWorldURL (const basic::uri & value)
-{
-	worldURL = value;
-}
-
-const basic::uri &
-X3DExecutionContext::getWorldURL () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return worldURL;
 }
 
 void
@@ -393,14 +403,12 @@ throw (Error <INVALID_NAME>,
 
 	inlineNode -> requestImmediateLoad ();
 
-	const SFNode <Scene> & scene = inlineNode -> getScene ();
-
-	if (scene)
+	if (inlineNode -> checkLoadState () == COMPLETE_STATE)
 	{
-		SFNode <X3DBasicNode> node = scene -> getExportedNode (exportedName);
+		SFNode <X3DBasicNode> node = inlineNode -> getExportedNode (exportedName);
 
 		importedNodes .push_back (localName, node) .setName ({ inlineNode .getNodeName (), exportedName, localName });
-		importedNodes .back ()                        .setName ({ inlineNode .getNodeName (), exportedName, localName });
+		importedNodes .back ()                     .setName ({ inlineNode .getNodeName (), exportedName, localName });
 	}
 	else
 		throw Error <URL_UNAVAILABLE> ("Imported node error: Could not load Inline '" + inlineNode .getNodeName () + "'.");
@@ -768,10 +776,16 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 }
 
 void
-X3DExecutionContext::dispose ()
+X3DExecutionContext::clear ()
 {
+	//	encoding             .clear ();
+	//	specificationVersion .clear ();
+	//	characterEncoding    .clear ();
+	//	comment              .clear ();
+	//	worldURL             .clear ();
+
+	profile = NULL;
 	components .clear ();
-	//profile    .dispose ();
 
 	namedNodes         .clear ();
 	exportedNodes      .clear ();
@@ -781,8 +795,14 @@ X3DExecutionContext::dispose ()
 	routes             .clear ();
 
 	rootNodes .dispose ();
+}
 
-	X3DBasicNode::dispose ();
+void
+X3DExecutionContext::dispose ()
+{
+	clear ();
+
+	X3DChildNode::dispose ();
 }
 
 X3DExecutionContext::~X3DExecutionContext ()

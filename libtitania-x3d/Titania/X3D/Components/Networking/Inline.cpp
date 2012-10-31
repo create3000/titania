@@ -57,13 +57,11 @@ namespace titania {
 namespace X3D {
 
 Inline::Inline (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
-	    X3DChildNode (),                                                    
-	X3DBoundedObject (),                                                    
-	    X3DUrlObject (),                                                    
-	            load (true),                                                // SFBool [in,out] load  TRUE
-	       loadState (NOT_STARTED_STATE),                                   
-	           scene ()                                                     
+	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DExecutionContext (),                                                    
+	   X3DBoundedObject (),                                                    
+	       X3DUrlObject (),                                                    
+	               load (true)                                                 // SFBool [in,out] load  TRUE                                                                                      
 {
 	setComponent ("Networking");
 	setTypeName ("Inline");
@@ -84,7 +82,8 @@ Inline::create (X3DExecutionContext* const executionContext) const
 void
 Inline::initialize ()
 {
-	X3DChildNode::initialize ();
+	X3DExecutionContext::initialize ();
+	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
 
 	load .addInterest (this, &Inline::set_load);
@@ -100,39 +99,38 @@ Inline::set_load ()
 		requestImmediateLoad ();
 	else
 	{
-		// remove viewpoints & backgrounds from ExecutionContext
-		loadState = NOT_STARTED_STATE;
-		scene     = getBrowser () -> createScene ();
+		setLoadState (NOT_STARTED_STATE);
+		clear ();
 	}
 }
 
 void
 Inline::set_url ()
 {
-	loadState = NOT_STARTED_STATE;
+	setLoadState (NOT_STARTED_STATE);
 	requestImmediateLoad ();
 }
 
 void
 Inline::requestImmediateLoad ()
 {
-	if (loadState == COMPLETE_STATE or loadState == IN_PROGRESS_STATE)
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 
 	if (not load)
 		return;
 
-	loadState = IN_PROGRESS_STATE;
+	setLoadState (IN_PROGRESS_STATE);
 
 	try
 	{
-		scene = createX3DFromURL (url);
-		loadState = COMPLETE_STATE;
+		assign (*createX3DFromURL (url));
+		setLoadState (COMPLETE_STATE);
 	}
 	catch (const X3DError & error)
 	{
-		loadState = FAILED_STATE;
-		scene     = getBrowser () -> createScene ();
+		setLoadState (FAILED_STATE);
+		clear ();
 
 		std::clog << error .what () << std::endl;
 
@@ -146,30 +144,27 @@ Inline::getBBox ()
 {
 	requestImmediateLoad ();
 
-	return scene -> getBBox ();
+	return Box3f ();
 }
 
 void
 Inline::intersect ()
 {
-	for (const auto & rootNode : scene -> getRootNodes ())
+	for (const auto & rootNode : getRootNodes ())
 		rootNode -> select ();
 }
 
 void
 Inline::display ()
 {
-	for (const auto & rootNode : scene -> getRootNodes ())
+	for (const auto & rootNode : getRootNodes ())
 		rootNode -> display ();
 }
 
 void
 Inline::dispose ()
 {
-	// remove viewpoints & backgrounds from ExecutionContext
-	scene .dispose ();
-
-	X3DChildNode::dispose ();
+	X3DBoundedObject::dispose ();
 }
 
 } // X3D

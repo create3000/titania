@@ -76,9 +76,6 @@ public:
 	X3DPrototypeInstance*
 	createInstance ();
 
-	LoadState
-	checkLoadState () { return loadState; }
-
 	virtual
 	void
 	requestImmediateLoad ();
@@ -103,8 +100,6 @@ private:
 
 	SFNode <Scene> scene;
 	SFNode <Proto> proto;
-
-	LoadState loadState;
 
 };
 

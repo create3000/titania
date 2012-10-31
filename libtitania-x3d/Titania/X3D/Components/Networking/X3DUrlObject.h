@@ -81,6 +81,9 @@ public:
 	MFString url;
 	MFString urlError;
 
+	LoadState
+	checkLoadState ();
+
 	///  @name File operations
 
 	virtual
@@ -188,11 +191,21 @@ protected:
 	const basic::uri &
 	getWorldURL ();
 
+	void
+	setLoadState (LoadState);
+	
+	void
+	parseIntoScene (Scene* const, const MFString &)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>,
+	       Error <INVALID_X3D>);
+
 
 private:
 
 	static URNIndex URNCache;
 
+	LoadState   loadState;
 	std::string userAgent;
 	basic::uri  worldURL;
 

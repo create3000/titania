@@ -49,87 +49,43 @@
 #include "X3DScene.h"
 
 #include "../Bits/Error.h"
-#include "../Browser/Browser.h"
-#include "../Prototype/ExternProto.h"
-#include "../Prototype/Proto.h"
-
-#include <iostream>
 
 namespace titania {
 namespace X3D {
 
 X3DScene::X3DScene () :
-	X3DExecutionContext (),                   
-	           layerSet (new LayerSet (this)) 
-{
-	appendField (initializeOnly, "layerSet", layerSet);
-}
-
-void
-X3DScene::initialize ()
-{
-	X3DExecutionContext::initialize ();
-
-	layerSet -> setup ();
-}
-
-void
-X3DScene::addRootNode (const SFNode <X3DBasicNode> & rootNode)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	X3DExecutionContext::addRootNode (rootNode);
-
-	SFNode <LayerSet> rootLayersSet = rootNode;
-
-	if (rootLayersSet)
-	{
-		rootLayersSet -> getLayers () [0] -> children = layerSet -> getLayers () [0] -> children;
-		layerSet                                      = rootLayersSet;
-	}
-
-	else
-		layerSet -> getLayers () [0] -> children .push_back (rootNode);
-}
-
-void
-X3DScene::removeRootNode (const SFNode <X3DBasicNode> & rootNode)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+	X3DExecutionContext (),
+	          metadatas ()                  
 { }
 
-Box3f
-X3DScene::getBBox ()
-{
-	return getLayerSet () -> getBBox ();
-}
-
-const SFNode <LayerSet> &
-X3DScene::getLayerSet () const
-{
-	return layerSet;
-}
-
-const SFNode <X3DLayerNode>
-X3DScene::getActiveLayer () const
-{
-	return layerSet -> getActiveLayer ();
-}
-
 void
-X3DScene::display ()
+X3DScene::setMetaData (const std::string & key, const std::string & value)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
-	layerSet -> display ();
+	metadatas .insert (std::make_pair (key, value));
 }
 
-void
-X3DScene::dispose ()
+const std::string &
+X3DScene::getMetaData (const std::string & key) const
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
-	std::clog << "\tDisposing X3DScene: " << getWorldURL () << std::endl;
+	auto metadata = metadatas .find (key);
 
-	X3DExecutionContext::dispose ();
+	if (metadata not_eq metadatas .end ())
+		return metadata -> second;
 
-	std::clog << "\tDone disposing X3DScene." << std::endl;
+	throw Error <INVALID_NAME> ("Unkown meta key '" + key + "'.");
+}
+
+const MetaDataIndex &
+X3DScene::getMetaDatas () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return metadatas;
 }
 
 } // X3D
