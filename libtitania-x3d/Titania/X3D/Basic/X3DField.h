@@ -328,25 +328,25 @@ X3DField <ValueType>::dispose ()
 template <class ValueType>
 inline
 bool
-operator == (const X3DField <ValueType> & a, const X3DField <ValueType> & b)
+operator == (const X3DField <ValueType> & lhs, const X3DField <ValueType> & rhs)
 {
-	return a .getValue () == b .getValue ();
+	return lhs .getValue () == rhs .getValue ();
 }
 
 template <class ValueType>
 inline
 bool
-operator == (const typename X3DField <ValueType>::value_type & a, const X3DField <ValueType> & b)
+operator == (const typename X3DField <ValueType>::value_type & lhs, const X3DField <ValueType> & rhs)
 {
-	return a == b .getValue ();
+	return lhs == rhs .getValue ();
 }
 
 template <class ValueType>
 inline
 bool
-operator == (const X3DField <ValueType> & a, const typename X3DField <ValueType>::value_type & b)
+operator == (const X3DField <ValueType> & lhs, const typename X3DField <ValueType>::value_type & rhs)
 {
-	return a .getValue () == b;
+	return lhs .getValue () == rhs;
 }
 //@}
 
@@ -354,24 +354,24 @@ operator == (const X3DField <ValueType> & a, const typename X3DField <ValueType>
 template <class ValueType>
 inline
 bool
-operator not_eq (const X3DField <ValueType> & a, const X3DField <ValueType> & b)
+operator not_eq (const X3DField <ValueType> & lhs, const X3DField <ValueType> & rhs)
 {
-	return a .getValue () not_eq b .getValue ();
+	return lhs .getValue () not_eq rhs .getValue ();
 }
 
 template <class ValueType>
 inline
 bool
-operator not_eq (const typename X3DField <ValueType>::value_type & a, const X3DField <ValueType> & b)
+operator not_eq (const typename X3DField <ValueType>::value_type & lhs, const X3DField <ValueType> & rhs)
 {
-	return a not_eq b .getValue ();
+	return lhs not_eq rhs .getValue ();
 }
 
 template <class ValueType>
 bool
-operator not_eq (const X3DField <ValueType> & a, const typename X3DField <ValueType>::value_type & b)
+operator not_eq (const X3DField <ValueType> & lhs, const typename X3DField <ValueType>::value_type & rhs)
 {
-	return a .getValue () not_eq b;
+	return lhs .getValue () not_eq rhs;
 }
 //@}
 
