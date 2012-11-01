@@ -71,7 +71,7 @@ class X3DBrowser;
 class X3DExecutionContext;
 
 class X3DBasicNode :
-	public X3DBaseNode
+	virtual public X3DBaseNode
 {
 public:
 

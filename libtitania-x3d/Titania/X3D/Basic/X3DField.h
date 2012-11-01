@@ -198,11 +198,6 @@ protected:
 	void
 	write (const X3DObject &);
 
-	///  Get a @pointer to this value.
-	virtual
-	void
-	read (const void* &) const;
-
 	///  Set this field to its default value.
 	void
 	reset ();
@@ -271,19 +266,7 @@ X3DField <ValueType>::write (const X3DObject & field)
 {
 	assert (field .getType () == getType ());
 
-	const void* pointer = NULL;
-
-	field .read (pointer);
-
-	set (*static_cast <const ValueType*> (pointer));
-}
-
-template <class ValueType>
-inline
-void
-X3DField <ValueType>::read (const void* & pointer) const
-{
-	pointer = &value;
+	set (static_cast <const X3DField &> (field) .getValue ());
 }
 
 template <class ValueType>

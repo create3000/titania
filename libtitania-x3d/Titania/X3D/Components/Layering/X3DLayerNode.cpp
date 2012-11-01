@@ -54,6 +54,14 @@
 namespace titania {
 namespace X3D {
 
+template <typename ... Args>
+inline
+void
+setChildrenX (Args & ... args)
+{
+
+}
+
 X3DLayerNode::X3DLayerNode () :
 	             X3DNode (),                                            
 	          isPickable (true),                                        // SFBool [in,out] isPickable      TRUE
@@ -72,7 +80,7 @@ X3DLayerNode::X3DLayerNode () :
 	           _viewport (0)                                            
 {
 	addNodeType (X3DLayerNodeType);
-
+	
 	setChildren (defaultViewport,
 	             *navigationInfoStack .top (),
 	             *backgroundStack     .top (),

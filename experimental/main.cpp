@@ -839,10 +839,22 @@ typedef basic_path <std::wstring> wpath;
 } // basic
 } // titania
 
+template <typename ... Args>
+inline
+void
+setChildren (Args & ... args)
+{
+
+}
+
 int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
+
+	int* i = new int (1);
+
+	setChildren (i);
 
 	//	union Pixel
 	//	{
@@ -861,7 +873,7 @@ main (int argc, char** argv)
 	//
 	//	std::clog << std::hex << (uint32_t) pointer [0] << std::endl;
 
-	std::clog << basic::path ("/") << std::endl;
+	//	std::clog << basic::path ("/") << std::endl;
 	//	std::clog << basic::path ("/", "/") << std::endl;
 	//	std::clog << basic::path ("home", "/") << std::endl;
 	//	std::clog << basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;

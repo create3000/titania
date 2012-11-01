@@ -1,5 +1,17 @@
 2012-11-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DField.h:
+	* X3DObject.h:
+	* X3DContext.h:
+	* X3DRoute.h:
+	* X3DBaseNode.h:
+	* X3DBasicNode.h:
+	* X3DContext.cpp:
+	* BindableNodeStack.h:
+	* X3DLayerNode.cpp: 
+
+2012-11-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Scene.h:
 	* Scene.cpp:
 	* X3DScene.h:

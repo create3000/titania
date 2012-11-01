@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 class X3DBaseNode :
-	virtual public X3DObject
+	public X3DObject
 {
 public:
 

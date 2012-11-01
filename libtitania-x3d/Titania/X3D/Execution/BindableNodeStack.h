@@ -53,8 +53,8 @@
 #include <Titania/Basic/BindStack.h>
 #include <initializer_list>
 
-#include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/EnvironmentalEffects/Fog.h"
+#include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 
@@ -67,10 +67,11 @@ class BindableNodeStack :
 {
 public:
 
-	typedef basic::bind_stack <Type*>      stack_type;
-	typedef typename stack_type::size_type size_type;
+	typedef Type*                            pointer_type;
+	typedef basic::bind_stack <pointer_type> stack_type;
+	typedef typename stack_type::size_type   size_type;
 
-	BindableNodeStack (Type* node) :
+	BindableNodeStack (const pointer_type & node) :
 		stack ({ node })
 	{ }
 
@@ -80,20 +81,17 @@ public:
 		return typeName;
 	}
 
-	Type*
-	top () { return stack .top (); }
-
-	const Type*
+	const pointer_type &
 	top () const { return stack .top (); }
 
-	const Type*
+	const pointer_type &
 	bottom () const { return stack .bottom (); }
 
 	size_type
 	size () const { return stack .size (); }
 
 	void
-	push (Type* node)
+	push (const pointer_type & node)
 	{
 		if (stack .top () not_eq node)
 		{
@@ -104,7 +102,7 @@ public:
 	}
 
 	void
-	pop (Type* node)
+	pop (const pointer_type & node)
 	{
 		if (stack .top () == node)
 		{
@@ -121,7 +119,7 @@ public:
 private:
 
 	void
-	set_bind (Type* node)
+	set_bind (const pointer_type & node)
 	{
 		stack .push (node);
 	}
