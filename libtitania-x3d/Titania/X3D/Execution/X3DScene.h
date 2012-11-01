@@ -79,6 +79,35 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	// Input:
+	void
+	fromStream (const basic::uri &, std::istream & istream)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+ 
+	virtual
+	void
+	fromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	// Output:
+	virtual
+	void
+	toStream (std::ostream &) const;
+
+
+protected:
+
+	virtual
+	void
+	clear ();
+
+
 private:
 
 	MetaDataIndex metadatas;

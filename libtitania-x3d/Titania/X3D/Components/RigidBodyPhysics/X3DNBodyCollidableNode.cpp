@@ -60,11 +60,25 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 {
 	addNodeType (X3DNBodyCollidableNodeType);
 }
+	
+void
+X3DNBodyCollidableNode::initialize ()
+{
+	X3DChildNode::initialize ();
+	X3DBoundedObject::initialize ();
+}
 
 Box3f
 X3DNBodyCollidableNode::getBBox ()
 {
 	return Box3f ();
+}
+
+void
+X3DNBodyCollidableNode::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DChildNode::dispose ();
 }
 
 } // X3D

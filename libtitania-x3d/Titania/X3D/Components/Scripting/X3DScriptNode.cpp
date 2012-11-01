@@ -59,8 +59,22 @@ X3DScriptNode::X3DScriptNode () :
 }
 
 void
+X3DScriptNode::initialize ()
+{
+	X3DChildNode::initialize ();
+	X3DUrlObject::initialize ();
+}
+
+void
 X3DScriptNode::requestImmediateLoad ()
 { }
+
+void
+X3DScriptNode::dispose ()
+{
+	X3DUrlObject::dispose ();
+	X3DChildNode::dispose ();
+}
 
 } // X3D
 } // titania

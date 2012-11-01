@@ -95,11 +95,25 @@ GeoLOD::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoLOD (executionContext);
 }
+	
+void
+GeoLOD::initialize ()
+{
+	X3DChildNode::initialize ();
+	X3DBoundedObject::initialize ();
+}
 
 Box3f
 GeoLOD::getBBox ()
 {
 	return Box3f ();
+}
+
+void
+GeoLOD::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DChildNode::dispose ();
 }
 
 } // X3D

@@ -81,11 +81,11 @@ GarbageCollector::dispose ()
 	{
 		ObjectSet objectsToDelete (std::move (disposedObjects));
 
-		std::clog << __FILE__ << ':' << __LINE__ << ": " << __func__ << ": " << objectsToDelete .size () << " objects to delete: " << std::flush;
+		__LOG__ << objectsToDelete .size () << " objects to delete: " << std::flush;
 
 		for (const auto & object : objectsToDelete)
 		{
-			//std::clog << __FILE__ << ':' << __LINE__ << ": " << __func__ << ": " << object -> getTypeName () << " " << object -> getName () << std::endl;
+			//__LOG__ << (void*) object << " " << object -> getTypeName () << " " << object -> getName () << std::endl;
 
 			delete object;
 		}

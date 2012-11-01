@@ -204,6 +204,7 @@ ImageTexture::dispose ()
 	if (getBrowser () -> removeTexture (getWorldURL (), getTexture ()))
 		deleteTexture ();
 
+	X3DUrlObject::dispose ();
 	X3DTexture2DNode::dispose ();
 }
 

@@ -49,6 +49,8 @@
 #include "X3DScene.h"
 
 #include "../Bits/Error.h"
+#include "../Parser/Parser.h"
+#include "../Parser/RegEx.h"
 
 namespace titania {
 namespace X3D {
@@ -86,6 +88,115 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	return metadatas;
+}
+
+void
+X3DScene::fromStream (const basic::uri & worldURL, std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	setWorldURL (worldURL);
+	fromStream (istream);
+}
+
+void
+X3DScene::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	clear ();
+
+	std::ostringstream ostringstream;
+
+	ostringstream << istream .rdbuf ();
+
+	Parser::parseIntoScene (this, ostringstream .str ());
+}
+
+void
+X3DScene::toStream (std::ostream & ostream) const
+{
+	Generator::PushLevel ();
+
+	bool X3D = (getEncoding () == "X3D");
+	Generator::X3DAccessTypes (X3D);
+	Generator::X3DFieldNames (X3D);
+
+	ostream
+		<< '#'
+		<< getEncoding ()
+		<< Generator::Space
+		<< 'V'
+		<< getSpecificationVersion ()
+		<< Generator::Space
+		<< getCharacterEncoding ();
+
+	if (getComment () .length ())
+	{
+		ostream
+			<< Generator::Space
+			<< getComment ();
+	}
+
+	ostream << std::endl << std::endl;
+
+	if (getProfile ())
+	{
+		ostream
+			<< getProfile ()
+			<< Generator::Break
+			<< Generator::TidyBreak;
+	}
+
+	for (const auto & component : getComponents ())
+	{
+		ostream
+			<< component
+			<< Generator::Break;
+	}
+
+	if (getComponents () .size ())
+		ostream << Generator::TidyBreak;
+
+	for (const auto & meta : getMetaDatas ())
+	{
+		std::string key   = meta .first;
+		std::string value = meta .second;
+
+		RegEx::QuotationMark .GlobalReplace ("\\\\\"", &key);
+		RegEx::QuotationMark .GlobalReplace ("\\\\\"", &value);
+
+		ostream
+			<< "META"
+			<< Generator::Space
+			<< '"'
+			<< key
+			<< '"'
+			<< Generator::Space
+			<< '"'
+			<< value
+			<< '"'
+			<< Generator::Break;
+	}
+
+	if (getMetaDatas () .size ())
+		ostream << Generator::TidyBreak;
+
+	X3DExecutionContext::toStream (ostream);
+
+	ostream << std::flush;
+}
+
+void
+X3DScene::clear ()
+{
+	metadatas .clear ();
+
+	X3DExecutionContext::clear ();
 }
 
 } // X3D

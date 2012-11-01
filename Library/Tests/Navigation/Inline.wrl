@@ -1,6 +1,6 @@
 #X3D V3.0 utf8 Titania
 
-DEF Inline Viewpoint {
+DEF InlineViewpoint Viewpoint {
   position 0 0 20
   centerOfRotation 0 0 0
   description "Inline"
@@ -10,4 +10,3 @@ DEF Box Shape {
   appearance Appearance { material Material { } }
   geometry Box { }
 }
- 

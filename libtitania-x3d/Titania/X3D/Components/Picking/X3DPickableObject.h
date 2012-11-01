@@ -68,6 +68,14 @@ public:
 protected:
 
 	X3DPickableObject ();
+	
+	virtual
+	void
+	initialize ();
+	
+	virtual
+	void
+	dispose ();
 
 };
 

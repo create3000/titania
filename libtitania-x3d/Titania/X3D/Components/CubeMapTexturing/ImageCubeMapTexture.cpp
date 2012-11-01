@@ -84,5 +84,12 @@ void
 ImageCubeMapTexture::requestImmediateLoad ()
 { }
 
+void
+ImageCubeMapTexture::dispose ()
+{
+	X3DUrlObject::dispose ();
+	X3DEnvironmentTextureNode::dispose ();
+}
+
 } // X3D
 } // titania

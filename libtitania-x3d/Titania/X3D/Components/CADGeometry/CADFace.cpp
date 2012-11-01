@@ -74,11 +74,25 @@ CADFace::create (X3DExecutionContext* const executionContext) const
 {
 	return new CADFace (executionContext);
 }
+	
+void
+CADFace::initialize ()
+{
+	X3DProductStructureChildNode::initialize ();
+	X3DBoundedObject::initialize ();
+}
 
 Box3f
 CADFace::getBBox ()
 {
 	return Box3f ();
+}
+
+void
+CADFace::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DProductStructureChildNode::dispose ();
 }
 
 } // X3D

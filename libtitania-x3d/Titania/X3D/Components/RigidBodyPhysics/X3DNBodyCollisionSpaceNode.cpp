@@ -64,6 +64,20 @@ X3DNBodyCollisionSpaceNode::getBBox ()
 {
 	return Box3f ();
 }
+	
+void
+X3DNBodyCollisionSpaceNode::initialize ()
+{
+	X3DNode::initialize ();
+	X3DBoundedObject::initialize ();
+}
+
+void
+X3DNBodyCollisionSpaceNode::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DNode::dispose ();
+}
 
 } // X3D
 } // titania

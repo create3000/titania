@@ -74,6 +74,15 @@ protected:
 
 	X3DBoundedObject ();
 
+	virtual
+	void
+	initialize ();
+	
+	virtual
+	void
+	dispose ();
+
+
 };
 
 } // X3D

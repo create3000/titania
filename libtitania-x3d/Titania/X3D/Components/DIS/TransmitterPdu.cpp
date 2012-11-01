@@ -153,6 +153,13 @@ TransmitterPdu::create (X3DExecutionContext* const executionContext) const
 {
 	return new TransmitterPdu (executionContext);
 }
+	
+void
+TransmitterPdu::initialize ()
+{
+	X3DSensorNode::initialize ();
+	X3DBoundedObject::initialize ();
+}
 
 Box3f
 TransmitterPdu::getBBox ()
@@ -163,6 +170,13 @@ TransmitterPdu::getBBox ()
 void
 TransmitterPdu::update ()
 { }
+
+void
+TransmitterPdu::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DSensorNode::dispose ();
+}
 
 } // X3D
 } // titania

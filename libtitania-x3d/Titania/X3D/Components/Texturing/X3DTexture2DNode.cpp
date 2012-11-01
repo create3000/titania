@@ -197,9 +197,12 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image,
 void
 X3DTexture2DNode::scaleImage (Magick::Image & image)
 {
-	bool   needs_scaling = false;
-	size_t new_width     = image .size () .width ();
-	size_t new_height    = image .size () .height ();
+	bool needs_scaling = false;
+
+	size_t width      = image .size () .width ();
+	size_t height     = image .size () .height ();
+	size_t new_width  = width;
+	size_t new_height = height;
 
 	GLint max_texture_size;
 
@@ -219,7 +222,11 @@ X3DTexture2DNode::scaleImage (Magick::Image & image)
 
 	if (needs_scaling)
 	{
-		std::clog << "Warning: Texture needs scaling: scaling texture to " << new_width << " × " << new_height << " pixel." << std::endl;
+		std::clog
+			<< "Warning: Texture needs scaling: scaling texture from "
+			<< width << " × " << height
+			<< " to " << new_width << " × " << new_height << " pixel."
+			<< std::endl;
 
 		image .filterType (Magick::LanczosFilter);
 		Magick::Geometry geometry (new_width, new_height);

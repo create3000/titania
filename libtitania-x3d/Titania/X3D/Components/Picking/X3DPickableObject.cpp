@@ -59,5 +59,13 @@ X3DPickableObject::X3DPickableObject () :
 	addNodeType (X3DPickableObjectType);
 }
 
+void
+X3DPickableObject::initialize ()
+{ }
+
+void
+X3DPickableObject::dispose ()
+{ }
+
 } // X3D
 } // titania

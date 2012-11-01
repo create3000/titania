@@ -80,6 +80,13 @@ LocalFog::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+LocalFog::initialize ()
+{
+	X3DChildNode::initialize ();
+	X3DFogObject::initialize ();
+}
+
+void
 LocalFog::draw ()
 {
 	if (enabled)
@@ -91,6 +98,13 @@ LocalFog::postDisplay ()
 {
 	if (enabled)
 		getBrowser () -> getLayer () -> popLocalFog ();
+}
+
+void
+LocalFog::dispose ()
+{
+	X3DFogObject::dispose ();
+	X3DChildNode::dispose ();
 }
 
 } // X3D

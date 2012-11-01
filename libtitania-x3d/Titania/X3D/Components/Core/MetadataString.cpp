@@ -74,5 +74,19 @@ MetadataString::create (X3DExecutionContext* const executionContext) const
 	return new MetadataString (executionContext);
 }
 
+void
+MetadataString::initialize ()
+{
+	X3DNode::initialize ();
+	X3DMetadataObject::initialize ();
+}
+
+void
+MetadataString::dispose ()
+{
+	X3DMetadataObject::dispose ();
+	X3DNode::dispose ();
+}
+
 } // X3D
 } // titania

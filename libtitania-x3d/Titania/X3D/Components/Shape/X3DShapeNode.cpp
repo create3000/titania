@@ -70,6 +70,13 @@ X3DShapeNode::X3DShapeNode () :
 {
 	addNodeType (X3DShapeNodeType);
 }
+	
+void
+X3DShapeNode::initialize ()
+{
+	X3DChildNode::initialize ();
+	X3DBoundedObject::initialize ();
+}
 
 Box3f
 X3DShapeNode::getBBox ()
@@ -161,6 +168,13 @@ X3DShapeNode::draw ()
 	glDisable (GL_LIGHTING);
 	glDisable (GL_TEXTURE_2D);
 	glDisable (GL_COLOR_MATERIAL);
+}
+
+void
+X3DShapeNode::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DChildNode::dispose ();
 }
 
 } // X3D

@@ -125,5 +125,9 @@ X3DFogObject::enable ()
 	}
 }
 
+void
+X3DFogObject::dispose ()
+{ }
+
 } // X3D
 } // titania

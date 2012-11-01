@@ -66,6 +66,10 @@ public:
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
 
+	virtual
+	void
+	dispose ();
+
 
 private:
 
@@ -80,10 +84,6 @@ private:
 	virtual
 	void
 	removeFromLayer (X3DLayerNode*);
-
-	virtual
-	void
-	dispose ();
 
 };
 

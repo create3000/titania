@@ -86,5 +86,12 @@ void
 ImageTexture3D::requestImmediateLoad ()
 { }
 
+void
+ImageTexture3D::dispose ()
+{
+	X3DUrlObject::dispose ();
+	X3DTexture3DNode::dispose ();
+}
+
 } // X3D
 } // titania

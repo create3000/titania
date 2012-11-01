@@ -93,5 +93,12 @@ void
 AudioClip::requestImmediateLoad ()
 { }
 
+void
+AudioClip::dispose ()
+{
+	X3DUrlObject::dispose ();
+	X3DSoundSourceNode::dispose ();
+}
+
 } // X3D
 } // titania

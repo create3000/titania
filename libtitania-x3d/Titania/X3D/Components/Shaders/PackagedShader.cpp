@@ -88,5 +88,13 @@ void
 PackagedShader::requestImmediateLoad ()
 { }
 
+void
+PackagedShader::dispose ()
+{
+	X3DProgrammableShaderObject::dispose ();
+	X3DUrlObject::dispose ();
+	X3DShaderNode::dispose ();
+}
+
 } // X3D
 } // titania

@@ -84,6 +84,10 @@ protected:
 	virtual
 	void
 	initialize ();
+	
+	virtual
+	void
+	dispose ();
 
 
 private:

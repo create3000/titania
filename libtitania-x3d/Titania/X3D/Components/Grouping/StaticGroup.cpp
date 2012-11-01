@@ -73,11 +73,25 @@ StaticGroup::create (X3DExecutionContext* const executionContext) const
 {
 	return new StaticGroup (executionContext);
 }
+	
+void
+StaticGroup::initialize ()
+{
+	X3DChildNode::initialize ();
+	X3DBoundedObject::initialize ();
+}
 
 Box3f
 StaticGroup::getBBox ()
 {
 	return Box3f ();
+}
+
+void
+StaticGroup::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DChildNode::dispose ();
 }
 
 } // X3D

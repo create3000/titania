@@ -76,9 +76,14 @@ public:
 	bool
 	isTransparent () { return false; }
 
+	virtual
+	void
+	dispose ();
+
 
 private:
 
+	virtual
 	void
 	initialize ();
 

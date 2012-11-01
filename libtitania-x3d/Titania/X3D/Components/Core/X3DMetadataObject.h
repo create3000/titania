@@ -68,6 +68,14 @@ public:
 protected:
 
 	X3DMetadataObject ();
+	
+	virtual
+	void
+	initialize ();
+	
+	virtual
+	void
+	dispose ();
 
 };
 

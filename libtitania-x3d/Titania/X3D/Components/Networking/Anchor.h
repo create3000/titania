@@ -60,6 +60,9 @@ class Anchor :
 {
 public:
 
+	MFString parameter;
+	SFString description;
+
 	Anchor (X3DExecutionContext* const);
 
 	virtual
@@ -77,8 +80,9 @@ public:
 	void
 	intersect ();
 
-	MFString parameter;
-	SFString description;
+	virtual
+	void
+	dispose ();
 
 
 private:

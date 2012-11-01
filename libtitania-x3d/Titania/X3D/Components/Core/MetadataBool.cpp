@@ -74,5 +74,19 @@ MetadataBool::create (X3DExecutionContext* const executionContext) const
 	return new MetadataBool (executionContext);
 }
 
+void
+MetadataBool::initialize ()
+{
+	X3DNode::initialize ();
+	X3DMetadataObject::initialize ();
+}
+
+void
+MetadataBool::dispose ()
+{
+	X3DMetadataObject::dispose ();
+	X3DNode::dispose ();
+}
+
 } // X3D
 } // titania

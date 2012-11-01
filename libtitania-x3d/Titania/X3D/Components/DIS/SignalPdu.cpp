@@ -121,6 +121,13 @@ SignalPdu::create (X3DExecutionContext* const executionContext) const
 {
 	return new SignalPdu (executionContext);
 }
+	
+void
+SignalPdu::initialize ()
+{
+	X3DSensorNode::initialize ();
+	X3DBoundedObject::initialize ();
+}
 
 Box3f
 SignalPdu::getBBox ()
@@ -131,6 +138,13 @@ SignalPdu::getBBox ()
 void
 SignalPdu::update ()
 { }
+
+void
+SignalPdu::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DSensorNode::dispose ();
+}
 
 } // X3D
 } // titania

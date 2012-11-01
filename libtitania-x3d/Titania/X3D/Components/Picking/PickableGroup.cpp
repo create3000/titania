@@ -77,5 +77,19 @@ PickableGroup::create (X3DExecutionContext* const executionContext) const
 	return new PickableGroup (executionContext);
 }
 
+void
+PickableGroup::initialize ()
+{
+	X3DGroupingNode::initialize ();
+	X3DPickableObject::initialize ();
+}
+
+void
+PickableGroup::dispose ()
+{
+	X3DPickableObject::dispose ();
+	X3DGroupingNode::dispose ();
+}
+
 } // X3D
 } // titania

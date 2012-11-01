@@ -62,6 +62,14 @@ class X3DProgrammableShaderObject :
 protected:
 
 	X3DProgrammableShaderObject ();
+	
+	virtual
+	void
+	initialize ();
+	
+	virtual
+	void
+	dispose ();
 
 };
 

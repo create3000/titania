@@ -59,5 +59,13 @@ X3DMetadataObject::X3DMetadataObject () :
 	addNodeType (X3DMetadataObjectType);
 }
 
+void
+X3DMetadataObject::initialize ()
+{ }
+
+void
+X3DMetadataObject::dispose ()
+{ }
+
 } // X3D
 } // titania

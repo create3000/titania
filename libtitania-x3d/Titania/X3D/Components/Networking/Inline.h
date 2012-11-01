@@ -49,8 +49,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
 #define __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
 
-#include "../../Execution/Scene.h"
-#include "../Core/X3DChildNode.h"
+#include "../../Execution/X3DScene.h"
 #include "../Grouping/X3DBoundedObject.h"
 #include "../Networking/X3DUrlObject.h"
 
@@ -58,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class Inline :
-	public X3DExecutionContext, public X3DBoundedObject, public X3DUrlObject
+	public X3DScene, public X3DBoundedObject, public X3DUrlObject
 {
 public:
 

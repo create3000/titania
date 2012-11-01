@@ -115,5 +115,12 @@ Anchor::intersect ()
 	getBrowser () -> popSensitiveNode ();
 }
 
+void
+Anchor::dispose ()
+{
+	X3DUrlObject::dispose ();
+	X3DGroupingNode::dispose ();
+}
+
 } // X3D
 } // titania

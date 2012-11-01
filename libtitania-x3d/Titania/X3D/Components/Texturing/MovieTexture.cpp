@@ -96,5 +96,13 @@ MovieTexture::initialize ()
 	X3DUrlObject::initialize ();
 }
 
+void
+MovieTexture::dispose ()
+{
+	X3DUrlObject::dispose ();
+	X3DSoundSourceNode::dispose ();
+	X3DTexture2DNode::dispose ();
+}
+
 } // X3D
 } // titania

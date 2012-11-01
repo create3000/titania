@@ -79,6 +79,10 @@ public:
 	void
 	draw ();
 
+	virtual
+	void
+	dispose ();
+
 
 protected:
 

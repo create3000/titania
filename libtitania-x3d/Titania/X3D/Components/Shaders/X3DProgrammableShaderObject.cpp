@@ -57,5 +57,13 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	addNodeType (X3DProgrammableShaderObjectType);
 }
 
+void
+X3DProgrammableShaderObject::initialize ()
+{ }
+
+void
+X3DProgrammableShaderObject::dispose ()
+{ }
+
 } // X3D
 } // titania

@@ -59,5 +59,13 @@ X3DBoundedObject::X3DBoundedObject () :
 	addNodeType (X3DBoundedObjectType);
 }
 
+void
+X3DBoundedObject::initialize ()
+{ }
+
+void
+X3DBoundedObject::dispose ()
+{ }
+
 } // X3D
 } // titania

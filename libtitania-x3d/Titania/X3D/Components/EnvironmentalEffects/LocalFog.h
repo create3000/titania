@@ -75,6 +75,17 @@ public:
 	void
 	postDisplay ();
 
+	virtual
+	void
+	dispose ();
+
+private:
+
+	virtual
+	void
+	initialize ();
+
+
 };
 
 } // X3D

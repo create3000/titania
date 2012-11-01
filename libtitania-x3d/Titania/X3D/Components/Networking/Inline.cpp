@@ -58,7 +58,7 @@ namespace X3D {
 
 Inline::Inline (X3DExecutionContext* const executionContext) :
 	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
-	X3DExecutionContext (),                                                    
+	X3DScene (),                                                    
 	   X3DBoundedObject (),                                                    
 	       X3DUrlObject (),                                                    
 	               load (true)                                                 // SFBool [in,out] load  TRUE                                                                                      
@@ -82,7 +82,7 @@ Inline::create (X3DExecutionContext* const executionContext) const
 void
 Inline::initialize ()
 {
-	X3DExecutionContext::initialize ();
+	X3DScene::initialize ();
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
 
@@ -124,7 +124,7 @@ Inline::requestImmediateLoad ()
 
 	try
 	{
-		assign (*createX3DFromURL (url));
+		loadURL (this, url);
 		setLoadState (COMPLETE_STATE);
 	}
 	catch (const X3DError & error)
@@ -164,7 +164,9 @@ Inline::display ()
 void
 Inline::dispose ()
 {
+	X3DUrlObject::dispose ();
 	X3DBoundedObject::dispose ();
+	X3DScene::dispose ();
 }
 
 } // X3D

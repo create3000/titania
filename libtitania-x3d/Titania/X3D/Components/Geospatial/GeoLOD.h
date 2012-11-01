@@ -81,6 +81,17 @@ public:
 
 	Box3f
 	getBBox ();
+	
+	virtual
+	void
+	dispose ();
+
+
+private:
+
+	virtual
+	void
+	initialize ();
 
 };
 

@@ -67,10 +67,18 @@ public:
 	Box3f
 	getBBox ();
 
+	virtual
+	void
+	dispose ();
+
 
 protected:
 
 	X3DNBodyCollidableNode ();
+
+	virtual
+	void
+	initialize ();
 
 };
 

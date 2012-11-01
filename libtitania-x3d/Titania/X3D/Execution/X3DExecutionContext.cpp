@@ -80,7 +80,10 @@ X3DExecutionContext::X3DExecutionContext () :
 	        externProtos (),       
 	              routes (),       
 	           rootNodes ()        
-{ }
+{
+	rootNodes .setName ("rootNodes");
+	setChildren (rootNodes);
+}
 
 void
 X3DExecutionContext::initialize ()
@@ -794,7 +797,7 @@ X3DExecutionContext::clear ()
 	externProtos       .clear ();
 	routes             .clear ();
 
-	rootNodes .dispose ();
+	rootNodes .set ({ });
 }
 
 void

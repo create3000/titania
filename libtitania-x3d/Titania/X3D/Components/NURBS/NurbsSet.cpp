@@ -79,11 +79,25 @@ NurbsSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new NurbsSet (executionContext);
 }
+	
+void
+NurbsSet::initialize ()
+{
+	X3DChildNode::initialize ();
+	X3DBoundedObject::initialize ();
+}
 
 Box3f
 NurbsSet::getBBox ()
 {
 	return Box3f ();
+}
+
+void
+NurbsSet::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DChildNode::dispose ();
 }
 
 } // X3D

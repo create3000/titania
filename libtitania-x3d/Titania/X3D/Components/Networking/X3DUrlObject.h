@@ -109,15 +109,15 @@ public:
 	       Error <DISPOSED>);
 
 	///
-	SFNode <Scene>
-	createX3DFromURL (const MFString &)
+	void
+	createX3DFromURL (const MFString &, const SFNode <X3DBaseNode> &, const basic::id &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_X3D>);
 
 	///
-	void
-	createX3DFromURL (const MFString &, const SFNode <X3DBaseNode> &, const basic::id &)
+	SFNode <Scene>
+	createX3DFromURL (const MFString &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_X3D>);
@@ -195,10 +195,14 @@ protected:
 	setLoadState (LoadState);
 	
 	void
-	parseIntoScene (Scene* const, const MFString &)
+	loadURL (X3DScene* const, const MFString &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_X3D>);
+	
+	virtual
+	void
+	dispose ();
 
 
 private:

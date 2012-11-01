@@ -64,10 +64,18 @@ public:
 	void
 	requestImmediateLoad ();
 
+	virtual
+	void
+	dispose ();
+
 
 protected:
 
 	X3DScriptNode ();
+
+	virtual
+	void
+	initialize ();
 
 };
 

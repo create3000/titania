@@ -103,11 +103,25 @@ HAnimHumanoid::create (X3DExecutionContext* const executionContext) const
 {
 	return new HAnimHumanoid (executionContext);
 }
+	
+void
+HAnimHumanoid::initialize ()
+{
+	X3DChildNode::initialize ();
+	X3DBoundedObject::initialize ();
+}
 
 Box3f
 HAnimHumanoid::getBBox ()
 {
 	return Box3f ();
+}
+
+void
+HAnimHumanoid::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DChildNode::dispose ();
 }
 
 } // X3D

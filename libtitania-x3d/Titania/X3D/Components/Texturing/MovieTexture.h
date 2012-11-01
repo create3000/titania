@@ -69,12 +69,18 @@ public:
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
 
+	virtual
 	bool
 	isTransparent () { return false; }
+
+	virtual
+	void
+	dispose ();
 
 
 private:
 
+	virtual
 	void
 	initialize ();
 

@@ -121,6 +121,13 @@ ReceiverPdu::create (X3DExecutionContext* const executionContext) const
 {
 	return new ReceiverPdu (executionContext);
 }
+	
+void
+ReceiverPdu::initialize ()
+{
+	X3DSensorNode::initialize ();
+	X3DBoundedObject::initialize ();
+}
 
 Box3f
 ReceiverPdu::getBBox ()
@@ -131,6 +138,13 @@ ReceiverPdu::getBBox ()
 void
 ReceiverPdu::update ()
 { }
+
+void
+ReceiverPdu::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DSensorNode::dispose ();
+}
 
 } // X3D
 } // titania

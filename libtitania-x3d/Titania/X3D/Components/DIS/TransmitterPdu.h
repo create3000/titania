@@ -115,6 +115,17 @@ public:
 	void
 	update ();
 
+	virtual
+	void
+	dispose ();
+
+
+private:
+
+	virtual
+	void
+	initialize ();
+
 };
 
 } // X3D

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,12 +63,12 @@ namespace X3D {
 URNIndex X3DUrlObject::URNCache;
 
 X3DUrlObject::X3DUrlObject () :
-	X3DBasicNode (),                 
-	         url (),                 // MFString [in,out] url               [ ]       [URL]
-	    urlError (),                 // MFString [out]    urlError                    [BrowserEvent]
+	X3DBasicNode (),                  
+	         url (),                  // MFString [in,out] url               [ ]       [URL]
+	    urlError (),                  // MFString [out]    urlError                    [BrowserEvent]
 	   loadState (NOT_STARTED_STATE), 
-	   userAgent (),                 
-	    worldURL ()                  
+	   userAgent (),                  
+	    worldURL ()                   
 {
 	addNodeType (X3DUrlObjectType);
 
@@ -134,15 +134,31 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::istreambuf_iterator <char> begin (istream);
-	std::istreambuf_iterator <char> end;
-	std::string                     string (begin, end);
-
-	return createX3DFromString (uncompress (string));
+	return getBrowser () -> getExecutionContext () -> create (worldURL, istream);
 }
+
+void
+X3DUrlObject::createX3DFromURL (const MFString & url, const SFNode <X3DBaseNode> & node, const basic::id & fieldName)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>,
+       Error <INVALID_X3D>)
+{ }
 
 SFNode <Scene>
 X3DUrlObject::createX3DFromURL (const MFString & url)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>,
+       Error <INVALID_X3D>)
+{
+	SFNode <Scene> scene = getBrowser () -> createScene ();
+
+	loadURL (*scene, url);
+
+	return scene;
+}
+
+void
+X3DUrlObject::loadURL (X3DScene* const scene, const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_X3D>)
@@ -157,9 +173,9 @@ throw (Error <INVALID_URL>,
 			{
 				basic::ifilestream stream = loadStream (URL);
 
-				//std::istringstream istringstream (uncompress (string));
+				scene -> fromStream (worldURL, stream);
 
-				return getBrowser () -> getExecutionContext () -> create (worldURL, stream);
+				return;
 			}
 			catch (const X3DError & error)
 			{
@@ -167,26 +183,10 @@ throw (Error <INVALID_URL>,
 			}
 		}
 
-		throw Error <INVALID_URL> ("Couldn't load any URL of " + url .toString () + ".");
+		throw Error <INVALID_URL> ("Couldn't load no URL of " + url .toString () + ".");
 	}
 	else
 		throw Error <INVALID_URL> ("No URL given.");
-}
-
-void
-X3DUrlObject::createX3DFromURL (const MFString & url, const SFNode <X3DBaseNode> & node, const basic::id & fieldName)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_X3D>)
-{ }
-
-void
-X3DUrlObject::parseIntoScene (Scene* const, const MFString &)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_X3D>)
-{
-
 }
 
 //  Stream Handling
@@ -321,6 +321,10 @@ X3DUrlObject::transformURI (const basic::uri & uri)
 
 	return transformedURL;
 }
+
+void
+X3DUrlObject::dispose ()
+{ }
 
 static
 void

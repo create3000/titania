@@ -104,6 +104,7 @@ Fog::dispose ()
 {
 	getBrowser () -> removeFog (this);
 
+	X3DFogObject::dispose ();
 	X3DBindableNode::dispose ();
 }
 

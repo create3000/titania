@@ -70,12 +70,18 @@ public:
 	void
 	requestImmediateLoad ();
 
+	virtual
 	bool
 	isTransparent () { return false; }
+
+	virtual
+	void
+	dispose ();
 
 
 private:
 
+	virtual
 	void
 	initialize ();
 

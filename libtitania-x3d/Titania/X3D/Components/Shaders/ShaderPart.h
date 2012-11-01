@@ -72,6 +72,10 @@ public:
 	void
 	requestImmediateLoad ();
 
+	virtual
+	void
+	dispose ();
+
 
 private:
 

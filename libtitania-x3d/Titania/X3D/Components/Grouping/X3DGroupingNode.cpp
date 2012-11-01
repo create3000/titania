@@ -60,12 +60,18 @@ X3DGroupingNode::X3DGroupingNode () :
 	        children ()  // MFNode[in,out] children        [ ]       [X3DChildNode]
 {
 	addNodeType (X3DGroupingNodeType);
+
+	setChildren (pointingDeviceSensors,
+	             lights,
+	             localFogs,
+	             childNodes);
 }
 
 void
 X3DGroupingNode::initialize ()
 {
 	X3DChildNode::initialize ();
+	X3DBoundedObject::initialize ();
 
 	children .addInterest (this, &X3DGroupingNode::set_children);
 	set_children ();
@@ -256,6 +262,13 @@ X3DGroupingNode::pointingDeviceSensorsPostDisplay ()
 		(*pointingDeviceSensor) -> postDisplay ();
 
 	//	}
+}
+
+void
+X3DGroupingNode::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DChildNode::dispose ();
 }
 
 } // X3D

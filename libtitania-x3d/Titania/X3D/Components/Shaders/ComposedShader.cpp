@@ -76,5 +76,19 @@ ComposedShader::create (X3DExecutionContext* const executionContext) const
 	return new ComposedShader (executionContext);
 }
 
+void
+ComposedShader::initialize ()
+{
+	X3DShaderNode::initialize ();
+	X3DProgrammableShaderObject::initialize ();
+}
+
+void
+ComposedShader::dispose ()
+{
+	X3DProgrammableShaderObject::dispose ();
+	X3DShaderNode::dispose ();
+}
+
 } // X3D
 } // titania

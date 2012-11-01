@@ -2,25 +2,14 @@
 
 Background { }
 
-DEF Home Viewpoint {
+DEF HomeViewpoint Viewpoint {
   position 0 0 5
   centerOfRotation 0 0 0
   description "Home"
 }
 
-LayerSet {
-  order [ 1 ]
-  activeLayer 1
-  layers [
-    DEF _0 Layer {
-      children [
-	      USE Home
-			Transform {
-				children DEF Boxes Inline {
-					url "Inline.wrl"
-				}
-			}
-      ]
-    }
-  ]
+Transform {
+  children Inline {
+	  url "Inline.wrl"
+  }
 }

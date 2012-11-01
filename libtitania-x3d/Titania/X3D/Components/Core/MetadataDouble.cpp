@@ -74,5 +74,19 @@ MetadataDouble::create (X3DExecutionContext* const executionContext) const
 	return new MetadataDouble (executionContext);
 }
 
+void
+MetadataDouble::initialize ()
+{
+	X3DNode::initialize ();
+	X3DMetadataObject::initialize ();
+}
+
+void
+MetadataDouble::dispose ()
+{
+	X3DMetadataObject::dispose ();
+	X3DNode::dispose ();
+}
+
 } // X3D
 } // titania

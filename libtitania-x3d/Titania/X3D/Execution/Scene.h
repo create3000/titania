@@ -99,20 +99,6 @@ public:
 	void
 	display ();
 
-	// Input:
-	virtual
-	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	// Output:
-	virtual
-	void
-	toStream (std::ostream &) const;
-
 	// Object:
 	virtual
 	void
@@ -124,6 +110,10 @@ private:
 	virtual
 	void
 	initialize ();
+	
+	virtual
+	void
+	clear ();
 
 	SFNode <LayerSet> layerSet;
 
