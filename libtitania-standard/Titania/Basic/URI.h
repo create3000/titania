@@ -802,6 +802,9 @@ template <class StringT>
 void
 basic_uri <StringT>::parser::uriString (size_type first) const
 {
+	// URI Generic Syntax
+	// ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
+	
 	first = scheme (first);
 
 	// Network path

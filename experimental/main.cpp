@@ -30,6 +30,7 @@
 
 #include "URI.h"
 #include <Titania/Basic/URI.h>
+#include <Titania/Basic/Path.h>
 #include <Titania/Math/Geometry/Box3.h>
 #include <Titania/Math/Math.h>
 #include <Titania/Math/Numbers/Matrix4.h>
@@ -659,185 +660,15 @@ get_stream ()
 	return stream;
 }
 
-#include <Titania/Bits/String/Split.h>
-#include <algorithm>
-#include <iterator>
-#include <list>
-
-namespace titania {
-namespace basic {
-
-/**
- *  Template to represent paths.
- *  This can be file system paths or even urn paths.
- */
-template <class StringT>
-class basic_path :
-	public std::list <StringT>
+void
+test_path (const basic::path & path)
 {
-public:
-
-	typedef StringT                      string_type;
-	typedef typename StringT::value_type char_type;
-	typedef typename StringT::size_type  size_type;
-	typedef std::list <StringT>          array_type;
-
-	typedef typename array_type::const_iterator const_iterator;
-
-	using array_type::size;
-	using array_type::begin;
-	using array_type::end;
-	using array_type::front;
-	using array_type::back;
-	using array_type::pop_front;
-	using array_type::pop_back;
-
-	///  @name Constructors
-
-	explicit
-	basic_path (const StringT & separator) :
-		std::list <StringT> (),
-		value ({ separator, false, false })
-	{ }
-
-	basic_path (const StringT & path, const StringT & separator);
-
-	///  @name Element access
-
-	const string_type &
-	separator () const { return value .separator; }
-
-	bool
-	leading_separator () const { return value .leading_separator; }
-
-	bool
-	trailing_separator () const { return value .trailing_separator; }
-
-	basic_path
-	root () const;
-
-	basic_path
-	parent () const;
-
-
-private:
-
-	struct Value
-	{
-		string_type separator;
-		bool leading_separator;
-		bool trailing_separator;
-	};
-
-	basic_path (const Value & value) :
-		std::list <StringT> (),
-		value (value)
-	{ }
-
-	basic_path (array_type && array, const Value & value) :
-		std::list <StringT> (array),
-		value (value)
-	{ }
-
-	basic_path (const_iterator first, const_iterator last, const Value & value) :
-		std::list <StringT> (first, last),
-		value (value)
-	{ }
-
-	Value value;
-
-};
-
-template <class StringT>
-basic_path <StringT>::basic_path (const StringT & path, const StringT & separator) :
-	std::list <StringT> (std::move (basic_split <StringT, std::list> (path, separator))),
-	value ({ separator, false, false })
-{
-	if (size ())
-	{
-		if (front () == string_type ())
-		{
-			pop_front ();
-			value .leading_separator = true;
-		}
-	}
-
-	if (size () > 1)
-	{
-		if (back () == string_type ())
-		{
-			pop_back ();
-			value .trailing_separator = true;
-		}
-	}
+	std::clog << std::endl;
+	std::clog << "path:   " << path << std::endl;
+	std::clog << "parent: " << path .remove_dot_segments () .parent () << std::endl;
+	std::clog << "remove: " << path .remove_dot_segments () << std::endl;
+	
 }
-
-template <class StringT>
-basic_path <StringT>
-basic_path <StringT>::root () const
-{
-	return basic_path (Value { separator (), true, false });
-}
-
-template <class StringT>
-basic_path <StringT>
-basic_path <StringT>::parent () const
-{
-	switch (size ())
-	{
-		case 0:
-		case 1:
-		{
-			if (leading_separator ())
-				return root ();
-
-			return basic_path (array_type { ".." }, { separator (), false, false });
-		}
-
-		default:
-			return basic_path (begin (), -- end (), { separator (), leading_separator (), true });
-	}
-
-}
-
-///  @relates basic_path
-///  @name Input/Output operations
-
-///@{
-///  Insertion operator for URI values.
-template <class StringT, class Traits>
-inline
-std::basic_ostream <typename StringT::value_type, Traits> &
-operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream, const basic_path <StringT> & path)
-{
-	if (path .leading_separator ())
-		ostream << path .separator ();
-
-	if (path .size ())
-	{
-		if (path .size () > 1)
-		{
-			std::copy (path .begin (),
-			           -- path .end (),
-			           std::ostream_iterator <StringT> (ostream, path .separator () .c_str ()));
-		}
-
-		ostream << path .back ();
-	}
-
-	if (path .trailing_separator ())
-		ostream << path .separator ();
-
-	return ostream;
-}
-
-///@}
-
-typedef basic_path <std::string>  path;
-typedef basic_path <std::wstring> wpath;
-
-} // basic
-} // titania
 
 int
 main (int argc, char** argv)
@@ -861,18 +692,13 @@ main (int argc, char** argv)
 	//
 	//	std::clog << std::hex << (uint32_t) pointer [0] << std::endl;
 
-	std::clog << basic::path ("/") << std::endl;
-	std::clog << basic::path ("/", "/") << std::endl;
-	std::clog << basic::path ("home", "/") << std::endl;
-	std::clog << basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
-	std::clog << basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") << std::endl;
+	test_path (basic::path ("/"));
+	test_path (basic::path ("/", "/"));
+	test_path (basic::path ("home", "/"));
+	test_path (basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
+	test_path (basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
+	test_path (basic::path ("/home/holger/Projekte/../../../.././pages/about/home.wrl/..", "/"));
 	
-	std::clog << basic::path ("/") .parent () << std::endl;
-	std::clog << basic::path ("/", "/") .parent () << std::endl;
-	std::clog << basic::path ("home", "/") .parent () << std::endl;
-	std::clog << basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
-	std::clog << basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/") .parent () << std::endl;
-
 	//	basic::ifilestream stream = get_stream ();
 	//
 	//	if (stream)

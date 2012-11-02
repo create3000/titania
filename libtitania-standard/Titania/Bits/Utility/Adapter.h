@@ -46,18 +46,43 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BITS_UTILITY_PASS_H__
-#define __TITANIA_BITS_UTILITY_PASS_H__
+#ifndef __TITANIA_BITS_UTILITY_ADAPTER_H__
+#define __TITANIA_BITS_UTILITY_ADAPTER_H__
 
 namespace titania {
 namespace basic {
 
-struct pass
+template <class Iterator>
+class container_adapter
 {
-	template <typename ... T>
-	pass (T ...) { }
+public:
+
+	container_adapter (const Iterator & begin, const Iterator & end) :
+		m_begin (begin),
+		m_end (end)
+	{ }
+
+	Iterator
+	begin () { return m_begin; }
+
+	Iterator
+	end () { return m_end; }
+
+
+private:
+
+	Iterator m_begin;
+	Iterator m_end;
 
 };
+
+template <class Iterator>
+inline
+container_adapter <Iterator>
+adapter (const Iterator & begin, const Iterator & end)
+{
+	return container_adapter <Iterator> (begin, end);
+}
 
 } // basic
 } // titania

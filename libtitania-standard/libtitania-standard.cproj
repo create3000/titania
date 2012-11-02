@@ -93,6 +93,8 @@
     <None Include="libtitania-standard.md.pc" />
     <None Include="Titania\Basic\UniqueList.h" />
     <None Include="Titania\Basic\IndexedMultiMap.h" />
+    <None Include="Titania\Basic\Path.h" />
+    <None Include="Titania\Bits\Utility\Adapter.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
@@ -124,5 +126,6 @@
     <Compile Include="Titania\Chrono\CountingClock.cpp" />
     <Compile Include="Titania\Chrono\Now.cpp" />
     <Compile Include="Titania\Basic\IndexedMultiMap.cpp" />
+    <Compile Include="Titania\Basic\Path.cpp" />
   </ItemGroup>
 </Project>
