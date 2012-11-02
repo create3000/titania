@@ -60,6 +60,17 @@ X3DNode::X3DNode () :
 	addNodeType (X3DNodeType);
 }
 
+Scene*
+X3DNode::getScene ()
+{
+	X3DExecutionContext* scene = getExecutionContext ();
+
+	while (scene not_eq scene -> getExecutionContext ())
+		scene = scene -> getExecutionContext ();
+
+	return static_cast <Scene*> (scene);
+}
+
 std::deque <X3DLayerNode*>
 X3DNode::getLayers () const
 {

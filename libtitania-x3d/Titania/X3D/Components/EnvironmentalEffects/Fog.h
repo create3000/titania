@@ -60,7 +60,7 @@ class Fog :
 {
 public:
 
-	Fog (X3DExecutionContext* const);
+	Fog (X3DExecutionContext* const, bool = true);
 
 	virtual
 	X3DBasicNode*
@@ -84,6 +84,8 @@ private:
 	virtual
 	void
 	removeFromLayer (X3DLayerNode*);
+	
+	bool addToList;
 
 };
 

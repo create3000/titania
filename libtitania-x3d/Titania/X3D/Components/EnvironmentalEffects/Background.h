@@ -68,7 +68,7 @@ public:
 	MFString topUrl;
 	MFString bottomUrl;
 
-	Background (X3DExecutionContext* const);
+	Background (X3DExecutionContext* const, bool = true);
 
 	virtual
 	X3DBasicNode*

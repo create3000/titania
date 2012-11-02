@@ -1,3 +1,8 @@
+2012-11-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBrowserWidget.cpp:
+	* ViewpointEditor.cpp: 
+
 2012-10-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.ui:

@@ -58,13 +58,14 @@
 namespace titania {
 namespace X3D {
 
-X3DBackgroundNode::X3DBackgroundNode () :
+X3DBackgroundNode::X3DBackgroundNode (bool addToList) :
 	X3DBindableNode (),               
 	    groundAngle (),               // MFFloat [in,out] groundAngle   [ ]           [0,π/2]
 	    groundColor (),               // MFColor [in,out] groundColor   [ ]           [0,1]
 	       skyAngle (),               // MFFloat [in,out] skyAngle      [ ]           [0,π]
 	       skyColor ({ SFColor () }), // MFColor [in,out] skyColor      0 0 0         [0,1]
-	   transparency ()                // SFFloat [in,out] transparency  0             [0,1]
+	   transparency (),               // SFFloat [in,out] transparency  0             [0,1]
+	      addToList (addToList)
 {
 	addNodeType (X3DBackgroundNodeType);
 }
@@ -74,7 +75,8 @@ X3DBackgroundNode::initialize ()
 {
 	X3DBindableNode::initialize ();
 
-	getBrowser () -> addBackground (this);
+	if (addToList)
+		getScene () -> addBackground (this);
 
 	build ();
 }
@@ -396,7 +398,7 @@ X3DBackgroundNode::draw ()
 void
 X3DBackgroundNode::dispose ()
 {
-	getBrowser () -> removeBackground (this);
+	getScene () -> removeBackground (this);
 
 	X3DBindableNode::dispose ();
 }

@@ -1,3 +1,4 @@
+
 /* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
  *******************************************************************************
  *
@@ -49,17 +50,29 @@
 #ifndef __TITANIA_X3D_EXECUTION_SCENE_H__
 #define __TITANIA_X3D_EXECUTION_SCENE_H__
 
-#include "../Execution/X3DScene.h"
+#include "../Components/EnvironmentalEffects/Fog.h"
+#include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Layering/LayerSet.h"
+#include "../Components/Navigation/NavigationInfo.h"
+#include "../Components/Navigation/X3DViewpointNode.h"
+#include "../Execution/BindableNodeList.h"
+#include "../Execution/X3DScene.h"
 #include "../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
 
+typedef BindableNodeList <NavigationInfo>    NavigationInfoList;
+typedef BindableNodeList <X3DBackgroundNode> BackgroundList;
+typedef BindableNodeList <Fog>               FogList;
+typedef BindableNodeList <X3DViewpointNode>  ViewpointList;
+
 class Scene :
 	public X3DScene
 {
 public:
+
+	///  @name Construction
 
 	Scene (X3DBrowser* const);
 
@@ -74,6 +87,57 @@ public:
 	Scene*
 	create (X3DExecutionContext* const) const;
 
+	///  @name BBox
+
+	Box3f
+	getBBox ();
+
+	///  @name NavigationInfo list handling
+
+	void
+	addNavigationInfo (NavigationInfo* const);
+
+	void
+	removeNavigationInfo (NavigationInfo* const);
+
+	const NavigationInfoList &
+	getNavigationInfos () const;
+
+	///  @name Background list handling
+
+	void
+	addBackground (X3DBackgroundNode* const);
+
+	void
+	removeBackground (X3DBackgroundNode* const);
+
+	const BackgroundList &
+	getBackgrounds () const;
+
+	///  @name Fog list handling
+
+	void
+	addFog (Fog* const);
+
+	void
+	removeFog (Fog* const);
+
+	const FogList &
+	getFogs () const;
+
+	///  @name Viewpoint list handling
+
+	void
+	addViewpoint (X3DViewpointNode* const);
+
+	void
+	removeViewpoint (X3DViewpointNode* const);
+
+	const ViewpointList &
+	getViewpoints () const;
+
+	///  @name Root node handling
+
 	virtual
 	void
 	addRootNode (const SFNode <X3DBasicNode> &)
@@ -86,8 +150,7 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	Box3f
-	getBBox ();
+	///  @name Layer handling
 
 	const SFNode <LayerSet> &
 	getLayerSet () const;
@@ -95,9 +158,13 @@ public:
 	const SFNode <X3DLayerNode>
 	getActiveLayer () const;
 
+	///  @name Display
+
 	virtual
 	void
 	display ();
+
+	///  @name Dispose
 
 	// Object:
 	virtual
@@ -110,10 +177,15 @@ private:
 	virtual
 	void
 	initialize ();
-	
+
 	virtual
 	void
 	clear ();
+
+	NavigationInfoList navigationInfos;
+	BackgroundList     backgrounds;
+	FogList            fogs;
+	ViewpointList      viewpoints;
 
 	SFNode <LayerSet> layerSet;
 

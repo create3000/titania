@@ -53,9 +53,9 @@
 namespace titania {
 namespace X3D {
 
-GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
+GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext, bool addToList) :
 	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
-	X3DViewpointNode (),                                                    
+	X3DViewpointNode (addToList),                                                    
 	 set_orientation (),                                                    // SFRotation [in]     set_orientation
 	    set_position (),                                                    // SFVec3d    [in]     set_position
 	     fieldOfView (0.785398),                                            // SFFloat    [in,out] fieldOfView      π/4                      (0,π)
@@ -92,7 +92,7 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 X3DBasicNode*
 GeoViewpoint::create (X3DExecutionContext* const executionContext) const
 {
-	return new GeoViewpoint (executionContext);
+	return new GeoViewpoint (executionContext, true);
 }
 
 } // X3D

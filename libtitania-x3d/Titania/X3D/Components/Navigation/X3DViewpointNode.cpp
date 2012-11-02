@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-X3DViewpointNode::X3DViewpointNode () :
+X3DViewpointNode::X3DViewpointNode (bool addToList) :
 	  X3DBindableNode (),     
 	             jump (true), // SFBool     [in,out] jump              TRUE
 	retainUserOffsets (),     // SFBool     [ ]      retainUserOffsets
@@ -67,7 +67,8 @@ X3DViewpointNode::X3DViewpointNode () :
 	matrix (1,  0,  0,  0,
 	        0,  1,  0,  0,
 	        0,  0,  1,  0,
-	        0,  0, 10,  1)
+	        0,  0, 10,  1),
+	addToList (addToList)
 {
 	addNodeType (X3DViewpointNodeType);
 }
@@ -77,7 +78,8 @@ X3DViewpointNode::initialize ()
 {
 	X3DBindableNode::initialize ();
 
-	getBrowser () -> addViewpoint (this);
+	if (addToList)
+		getScene () -> addViewpoint (this);
 }
 
 void
@@ -119,7 +121,7 @@ X3DViewpointNode::dispose ()
 {
 	X3DBindableNode::dispose ();
 
-	getBrowser () -> removeViewpoint (this);
+	getScene () -> removeViewpoint (this);
 }
 
 } // X3D

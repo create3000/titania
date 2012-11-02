@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
+NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, bool addToList) :
 	      X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	   X3DBindableNode (),                                                    
 	        avatarSize ({ 0.25, 1.6, 0.75 }),                                 // MFFloat  [in,out] avatarSize         [0.25 1.6 0.75]        [0,∞)
@@ -66,7 +66,8 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 	              type ({ "EXAMINE", "ANY" }),                                // MFString [ ]      type               { "EXAMINE", "ANY" }
 	   visibilityLimit (),                                                    // SFFloat  [ ]      visibilityLimit    0
 	transitionComplete (),                                                    // SFBool   [ ]      transitionComplete                  
-	  directionalLight (new DirectionalLight (executionContext))              
+	  directionalLight (new DirectionalLight (executionContext)),
+	         addToList (addToList)         
 {
 	setComponent ("Navigation");
 	setTypeName ("NavigationInfo");
@@ -90,7 +91,7 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 X3DBasicNode*
 NavigationInfo::create (X3DExecutionContext* const executionContext) const
 {
-	return new NavigationInfo (executionContext);
+	return new NavigationInfo (executionContext, true);
 }
 
 void
@@ -100,7 +101,8 @@ NavigationInfo::initialize ()
 
 	directionalLight -> setup ();
 
-	getBrowser () -> addNavigationInfo (this);
+	if (addToList)
+		getScene () -> addNavigationInfo (this);
 }
 
 void
@@ -140,7 +142,7 @@ NavigationInfo::disable ()
 void
 NavigationInfo::dispose ()
 {
-	getBrowser () -> removeNavigationInfo (this);
+	getScene () -> removeNavigationInfo (this);
 
 	X3DBindableNode::dispose ();
 }

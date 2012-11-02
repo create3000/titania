@@ -76,7 +76,7 @@ public:
 
 protected:
 
-	X3DBackgroundNode ();
+	X3DBackgroundNode (bool);
 
 	virtual
 	void
@@ -107,6 +107,8 @@ private:
 	std::vector <GLfloat> glColors;
 	std::vector <GLfloat> glPoints;
 	GLsizei               glIndices;
+	
+	bool addToList;
 
 };
 

@@ -105,7 +105,7 @@ public:
 
 protected:
 
-	X3DViewpointNode ();
+	X3DViewpointNode (bool);
 
 	virtual
 	void
@@ -130,6 +130,8 @@ private:
 	Matrix4f matrix;
 	Matrix4f currentMatrix;
 	Matrix4f differenceMatrix;
+	
+	bool addToList;
 
 };
 

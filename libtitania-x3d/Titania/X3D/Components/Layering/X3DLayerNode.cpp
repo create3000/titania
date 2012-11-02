@@ -54,14 +54,6 @@
 namespace titania {
 namespace X3D {
 
-template <typename ... Args>
-inline
-void
-setChildrenX (Args & ... args)
-{
-
-}
-
 X3DLayerNode::X3DLayerNode () :
 	             X3DNode (),                                            
 	          isPickable (true),                                        // SFBool [in,out] isPickable      TRUE
@@ -70,10 +62,10 @@ X3DLayerNode::X3DLayerNode () :
 	      removeChildren (),                                            // MFNode[in]      removeChildren            [ ]
 	            children (),                                            // MFNode[in,out]  children        [ ]       [X3DChildNode]
 	     defaultViewport (new Viewport (getExecutionContext ())),       
-	 navigationInfoStack (new NavigationInfo   (getExecutionContext ())), 
-	     backgroundStack (new Background       (getExecutionContext ())), 
-	            fogStack (new Fog              (getExecutionContext ())), 
-	      viewpointStack (new Viewpoint        (getExecutionContext ())),
+	 navigationInfoStack (new NavigationInfo (getExecutionContext (), false)), 
+	     backgroundStack (new Background     (getExecutionContext (), false)), 
+	            fogStack (new Fog            (getExecutionContext (), false)), 
+	      viewpointStack (new Viewpoint      (getExecutionContext (), false)),
 	           localFogs (),                                            
 	          timeSensor (),                                            
 	positionInterpolator (),                                            

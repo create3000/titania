@@ -62,7 +62,7 @@ public:
 	MFFloat fieldOfView;
 	SFVec3f position;
 
-	OrthoViewpoint (X3DExecutionContext* const);
+	OrthoViewpoint (X3DExecutionContext* const, bool = true);
 
 	virtual
 	X3DBasicNode*

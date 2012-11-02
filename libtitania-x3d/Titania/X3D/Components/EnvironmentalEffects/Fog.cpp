@@ -55,10 +55,11 @@
 namespace titania {
 namespace X3D {
 
-Fog::Fog (X3DExecutionContext* const executionContext) :
+Fog::Fog (X3DExecutionContext* const executionContext, bool addToList) :
 	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DBindableNode (),                                                    
-	   X3DFogObject ()                                                     
+	   X3DFogObject (),
+	      addToList (addToList)                                                     
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Fog");
@@ -75,7 +76,7 @@ Fog::Fog (X3DExecutionContext* const executionContext) :
 X3DBasicNode*
 Fog::create (X3DExecutionContext* const executionContext) const
 {
-	return new Fog (executionContext);
+	return new Fog (executionContext, true);
 }
 
 void
@@ -84,7 +85,8 @@ Fog::initialize ()
 	X3DBindableNode::initialize ();
 	X3DFogObject::initialize ();
 
-	getBrowser () -> addFog (this);
+	if (addToList)
+		getScene () -> addFog (this);
 }
 
 void
@@ -102,7 +104,7 @@ Fog::removeFromLayer (X3DLayerNode* const layer)
 void
 Fog::dispose ()
 {
-	getBrowser () -> removeFog (this);
+	getScene () -> removeFog (this);
 
 	X3DFogObject::dispose ();
 	X3DBindableNode::dispose ();

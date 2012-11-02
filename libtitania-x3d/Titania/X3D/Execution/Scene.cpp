@@ -55,15 +55,19 @@ namespace titania {
 namespace X3D {
 
 Scene::Scene (X3DBrowser* const browser) :
-	X3DBasicNode (browser, browser), 
-	    X3DScene (),                  
-	    layerSet (new LayerSet (this)) 
+	   X3DBasicNode (browser, this),      
+	       X3DScene (),                   
+	navigationInfos (),                   
+	    backgrounds (),                   
+	           fogs (),                   
+	     viewpoints (),                   
+	       layerSet (new LayerSet (this)) 
 {
 	std::clog << "Constructing Scene:" << std::endl;
 
 	setComponent ("Browser");
 	setTypeName ("Scene");
-	
+
 	appendField (initializeOnly, "layerSet", layerSet);
 
 	std::clog << "\tDone constructing Scene." << std::endl;
@@ -98,6 +102,96 @@ Scene::initialize ()
 	layerSet -> setup ();
 }
 
+// BBox
+
+Box3f
+Scene::getBBox ()
+{
+	return getLayerSet () -> getBBox ();
+}
+
+// NavigationInfo list handling
+
+void
+Scene::addNavigationInfo (NavigationInfo* const navigationInfo)
+{
+	navigationInfos .push_back (navigationInfo);
+}
+
+void
+Scene::removeNavigationInfo (NavigationInfo* const navigationInfo)
+{
+	navigationInfos .erase (navigationInfo);
+}
+
+const NavigationInfoList &
+Scene::getNavigationInfos () const
+{
+	return navigationInfos;
+}
+
+// Background list handling
+
+void
+Scene::addBackground (X3DBackgroundNode* const background)
+{
+	backgrounds .push_back (background);
+}
+
+void
+Scene::removeBackground (X3DBackgroundNode* const background)
+{
+	backgrounds .erase (background);
+}
+
+const BackgroundList &
+Scene::getBackgrounds () const
+{
+	return backgrounds;
+}
+
+// Fog list handling
+
+void
+Scene::addFog (Fog* const fog)
+{
+	fogs .push_back (fog);
+}
+
+void
+Scene::removeFog (Fog* const fog)
+{
+	fogs .erase (fog);
+}
+
+const FogList &
+Scene::getFogs () const
+{
+	return fogs;
+}
+
+// Viewpoint list handling
+
+void
+Scene::addViewpoint (X3DViewpointNode* const viewpoint)
+{
+	viewpoints .push_back (viewpoint);
+}
+
+void
+Scene::removeViewpoint (X3DViewpointNode* const viewpoint)
+{
+	viewpoints .erase (viewpoint);
+}
+
+const ViewpointList &
+Scene::getViewpoints () const
+{
+	return viewpoints;
+}
+
+// Root node handling
+
 void
 Scene::addRootNode (const SFNode <X3DBasicNode> & rootNode)
 throw (Error <INVALID_OPERATION_TIMING>,
@@ -123,11 +217,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 { }
 
-Box3f
-Scene::getBBox ()
-{
-	return getLayerSet () -> getBBox ();
-}
+// Layer handling
 
 const SFNode <LayerSet> &
 Scene::getLayerSet () const
@@ -141,11 +231,15 @@ Scene::getActiveLayer () const
 	return layerSet -> getActiveLayer ();
 }
 
+// Display
+
 void
 Scene::display ()
 {
 	layerSet -> display ();
 }
+
+// Dispose
 
 void
 Scene::clear ()
@@ -160,6 +254,11 @@ void
 Scene::dispose ()
 {
 	std::clog << "\tDisposing Scene: " << getWorldURL () << std::endl;
+
+	navigationInfos .dispose ();
+	backgrounds     .dispose ();
+	viewpoints      .dispose ();
+	fogs            .dispose ();
 
 	X3DScene::dispose ();
 

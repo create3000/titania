@@ -76,6 +76,18 @@ void
 World::initialize ()
 {
 	X3DBasicNode::initialize ();
+	
+	if (scene -> getNavigationInfos () .size ())
+		scene -> getNavigationInfos () [0] -> set_bind = true;
+		
+	if (scene -> getBackgrounds () .size ())
+		scene -> getBackgrounds () [0] -> set_bind = true;
+		
+	if (scene -> getFogs () .size ())
+		scene -> getFogs () [0] -> set_bind = true;
+		
+	if (scene -> getViewpoints () .size ())
+		scene -> getViewpoints () [0] -> set_bind = true;
 }
 
 void

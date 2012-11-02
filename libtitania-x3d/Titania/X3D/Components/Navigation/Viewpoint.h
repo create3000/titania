@@ -62,7 +62,7 @@ public:
 	SFFloat fieldOfView;
 	SFVec3f position;
 
-	Viewpoint (X3DExecutionContext* const);
+	Viewpoint (X3DExecutionContext* const, bool = true);
 
 	virtual
 	X3DBasicNode*

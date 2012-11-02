@@ -66,7 +66,7 @@ public:
 	SFNode <X3DBasicNode> rightTexture;
 	SFNode <X3DBasicNode> topTexture;
 
-	TextureBackground (X3DExecutionContext* const);
+	TextureBackground (X3DExecutionContext* const, bool = true);
 
 	virtual
 	X3DBasicNode*

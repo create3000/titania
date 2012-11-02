@@ -76,7 +76,7 @@ ViewpointEditor::set_world ()
 {
 	//	getBrowser () -> getActiveViewpoint () .addInterest (this, &ViewpointEditor::set_currentViewpoint);
 
-	getBrowser () -> getViewpoints () .addInterest (this, &ViewpointEditor::set_viewpoints);
+	getBrowser () -> getExecutionContext () -> getViewpoints () .addInterest (this, &ViewpointEditor::set_viewpoints);
 
 	set_viewpoints ();
 }
@@ -88,7 +88,7 @@ ViewpointEditor::set_viewpoints ()
 	getListStore () -> clear ();
 
 	// Fill the TreeView's model
-	for (const auto & viewpoint : getBrowser () -> getViewpoints ())
+	for (const auto & viewpoint : getBrowser () -> getExecutionContext () -> getViewpoints ())
 	{
 		getListStore () -> append () -> set_value (0, viewpoint -> description .getValue ());
 	}
@@ -108,7 +108,7 @@ ViewpointEditor::set_currentViewpoint ()
 void
 ViewpointEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
-	getBrowser () -> getViewpoints () [path .front ()] -> set_bind = true;
+	getBrowser () -> getExecutionContext () -> getViewpoints () [path .front ()] -> set_bind = true;
 }
 
 void

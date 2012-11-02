@@ -69,7 +69,7 @@ public:
 	SFFloat  visibilityLimit;
 	SFBool   transitionComplete;
 
-	NavigationInfo (X3DExecutionContext* const);
+	NavigationInfo (X3DExecutionContext* const, bool = true);
 
 	virtual
 	X3DBasicNode*
@@ -101,6 +101,7 @@ private:
 	removeFromLayer (X3DLayerNode* const);
 
 	SFNode <DirectionalLight> directionalLight;
+	bool                      addToList;
 
 };
 

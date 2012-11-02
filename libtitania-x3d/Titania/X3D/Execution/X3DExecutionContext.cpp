@@ -50,13 +50,9 @@
 
 #include "../Browser/Browser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
-#include "../Components/Layering/Layer.h"
 #include "../Components/Networking/Inline.h"
 #include "../Prototype/ExternProto.h"
 #include "../Prototype/Proto.h"
-
-#include "../Components/EnvironmentalEffects/Fog.h"
-#include "../Components/Navigation/X3DViewpointNode.h"
 
 #include <algorithm>
 #include <iostream>

@@ -65,6 +65,7 @@ extern "C"
 namespace titania {
 namespace X3D {
 
+class Scene;
 class X3DLayerNode;
 
 class X3DNode :
@@ -78,6 +79,9 @@ public:
 protected:
 
 	X3DNode ();
+	
+	Scene*
+	getScene ();
 
 	std::deque <X3DLayerNode*>
 	getLayers () const;

@@ -122,9 +122,6 @@ public:
 	void
 	push_back (Type* node)
 	{
-		if (size () == 1)
-			node -> set_bind = true;
-		
 		if (list .push_back (node, node))
 			processInterests ();
 	}

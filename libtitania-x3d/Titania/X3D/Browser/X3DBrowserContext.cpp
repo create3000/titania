@@ -52,11 +52,10 @@ namespace titania {
 namespace X3D {
 
 X3DBrowserContext::X3DBrowserContext () :
-	X3DExecutionContext (),
-	     navigationInfos (),       
-	         backgrounds (),       
-	                fogs (),       
-	          viewpoints ()        
+	X3DExecutionContext (), 
+	             layers (), 
+	           textures (), 
+	            sensors ()  
 { }
 
 // Layer handling
@@ -77,86 +76,6 @@ X3DLayerNode*
 X3DBrowserContext::getLayer () const
 {
 	return layers .top ();
-}
-
-// NavigationInfo list handling
-
-void
-X3DBrowserContext::addNavigationInfo (NavigationInfo* const navigationInfo)
-{
-	navigationInfos .push_back (navigationInfo);
-}
-
-void
-X3DBrowserContext::removeNavigationInfo (NavigationInfo* const navigationInfo)
-{
-	navigationInfos .erase (navigationInfo);
-}
-
-const NavigationInfoList &
-X3DBrowserContext::getNavigationInfos () const
-{
-	return navigationInfos;
-}
-
-// Background list handling
-
-void
-X3DBrowserContext::addBackground (X3DBackgroundNode* const background)
-{
-	backgrounds .push_back (background);
-}
-
-void
-X3DBrowserContext::removeBackground (X3DBackgroundNode* const background)
-{
-	backgrounds .erase (background);
-}
-
-const BackgroundList &
-X3DBrowserContext::getBackgrounds () const
-{
-	return backgrounds;
-}
-
-// Fog list handling
-
-void
-X3DBrowserContext::addFog (Fog* const fog)
-{
-	fogs .push_back (fog);
-}
-
-void
-X3DBrowserContext::removeFog (Fog* const fog)
-{
-	fogs .erase (fog);
-}
-
-const FogList &
-X3DBrowserContext::getFogs () const
-{
-	return fogs;
-}
-
-// Viewpoint list handling
-
-void
-X3DBrowserContext::addViewpoint (X3DViewpointNode* const viewpoint)
-{
-	viewpoints .push_back (viewpoint);
-}
-
-void
-X3DBrowserContext::removeViewpoint (X3DViewpointNode* const viewpoint)
-{
-	viewpoints .erase (viewpoint);
-}
-
-const ViewpointList &
-X3DBrowserContext::getViewpoints () const
-{
-	return viewpoints;
 }
 
 // Texture list handling
@@ -231,11 +150,6 @@ X3DBrowserContext::updateSensors ()
 void
 X3DBrowserContext::dispose ()
 {
-	navigationInfos .dispose ();
-	backgrounds     .dispose ();
-	viewpoints      .dispose ();
-	fogs            .dispose ();
-
 	//X3DBaseNode::dispose ();
 	//X3DExecutionContext::dispose ();
 }

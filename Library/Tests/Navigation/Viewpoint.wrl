@@ -1,15 +1,17 @@
 #X3D V3.0 utf8 Titania
 
-Background { }
-
-DEF HomeViewpoint Viewpoint {
-  position 0 0 5
-  centerOfRotation 0 0 0
-  description "Home"
+Background {
+	skyColor 1 0 0
 }
 
 Transform {
   children Inline {
 	  url "Inline.wrl"
   }
+}
+
+DEF HomeViewpoint Viewpoint {
+  position 0 0 5
+  centerOfRotation 0 0 0
+  description "Home"
 }

@@ -1,3 +1,34 @@
+2012-11-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Scene.h:
+	* World.cpp:
+	* Scene.cpp:
+	* X3DNode.h:
+	* X3DBrowserContext.h:
+	* X3DNode.cpp:
+	* BindableNodeList.h:
+	* X3DBrowserContext.cpp:
+	* Viewpoint.h:
+	* X3DExecutionContext.cpp:
+	* Viewpoint.cpp:
+	* GeoViewpoint.h:
+	* X3DLayerNode.cpp:
+	* Fog.h:
+	* NavigationInfo.h:
+	* OrthoViewpoint.h:
+	* GeoViewpoint.cpp:
+	* Fog.cpp:
+	* X3DViewpointNode.h:
+	* OrthoViewpoint.cpp:
+	* NavigationInfo.cpp:
+	* X3DViewpointNode.cpp:
+	* Background.h:
+	* Background.cpp:
+	* X3DBackgroundNode.h:
+	* TextureBackground.h:
+	* TextureBackground.cpp:
+	* X3DBackgroundNode.cpp: 
+
 2012-11-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DField.h: 

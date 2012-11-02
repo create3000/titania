@@ -53,9 +53,9 @@
 namespace titania {
 namespace X3D {
 
-TextureBackground::TextureBackground (X3DExecutionContext* const executionContext) :
+TextureBackground::TextureBackground (X3DExecutionContext* const executionContext, bool addToList) :
 	     X3DBasicNode (executionContext -> getBrowser (), executionContext), 
-	X3DBackgroundNode (),                                                    
+	X3DBackgroundNode (addToList),                                                    
 	      backTexture (),                                                    // SFNode [in,out] backTexture    NULL        [X3DTextureNode]
 	    bottomTexture (),                                                    // SFNode [in,out] bottomTexture  NULL        [X3DTextureNode]
 	     frontTexture (),                                                    // SFNode [in,out] frontTexture   NULL        [X3DTextureNode]
@@ -86,7 +86,7 @@ TextureBackground::TextureBackground (X3DExecutionContext* const executionContex
 X3DBasicNode*
 TextureBackground::create (X3DExecutionContext* const executionContext) const
 {
-	return new TextureBackground (executionContext);
+	return new TextureBackground (executionContext, true);
 }
 
 } // X3D

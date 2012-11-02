@@ -69,7 +69,7 @@ public:
 	SFVec3d               position;
 	SFFloat               speedFactor;
 
-	GeoViewpoint (X3DExecutionContext* const);
+	GeoViewpoint (X3DExecutionContext* const, bool = true);
 
 	virtual
 	X3DBasicNode*
