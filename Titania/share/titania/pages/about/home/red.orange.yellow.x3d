@@ -7,22 +7,22 @@ EXTERNPROTO Rotor [
   exposedField SFBool     loop
   eventOut     SFRotation value_changed
 ]
-"../../Library/Rotor.wrl"
+"../../Library/Rotor.x3d"
 
 EXTERNPROTO Red [
   exposedField SFFloat transparency
 ]
-"../../Library/Colors.wrl"
+"../../Library/Colors.x3d"
 
 EXTERNPROTO Orange [
   exposedField SFFloat transparency
 ]
-"../../Library/Colors.wrl"
+"../../Library/Colors.x3d"
 
 EXTERNPROTO Yellow [
   exposedField SFFloat transparency
 ]
-"../../Library/Colors.wrl"
+"../../Library/Colors.x3d"
 
 DEF NavigationInfo NavigationInfo {
   headlight FALSE

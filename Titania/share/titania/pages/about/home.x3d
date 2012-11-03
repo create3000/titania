@@ -8,7 +8,7 @@ EXTERNPROTO Rotor [
   inputOutput SFBool     loop
   outputOnly  SFRotation value_changed
 ]
-"../Library/Rotor.wrl"
+"../Library/Rotor.x3d"
 
 DEF NavigationInfo NavigationInfo {
   headlight FALSE
@@ -54,7 +54,7 @@ LayerSet {
         USE Far
         DEF Lesser Transform {
           children DEF loops Inline {
-            url "home/red.orange.yellow.wrl"
+            url "home/red.orange.yellow.x3d"
           }
         }
       ]

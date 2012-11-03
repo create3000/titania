@@ -5,7 +5,7 @@ META "icon"  "about:icon"
 
 
 EXTERNPROTO LogoBlackAndWhite [ ]
-"../Library/Logo.wrl"
+"../Library/Logo.x3d"
 
 Background {
 	skyColor 1 1 1

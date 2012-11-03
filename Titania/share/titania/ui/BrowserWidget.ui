@@ -8,11 +8,12 @@
       <mime-type>x-world/x-vrml</mime-type>
     </mime-types>
     <patterns>
-      <pattern>*.wrl</pattern>
-      <pattern>*.wrl.gz</pattern>
+      <pattern>*.x3d</pattern>
+      <pattern>*.x3d.gz</pattern>
       <pattern>*.x3dv</pattern>
       <pattern>*.x3dvz</pattern>
-      <pattern>*.x3d.gz</pattern>
+      <pattern>*.wrl</pattern>
+      <pattern>*.wrl.gz</pattern>
       <pattern>*.wrz</pattern>
     </patterns>
   </object>
