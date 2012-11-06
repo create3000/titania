@@ -1,0 +1,12 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libtitania-gzstream
+Description: 
+Version: 0.3
+Requires: zlib
+Conflicts: 
+Libs: -L${libdir} -ltitania-gzstream
+Cflags: -I${includedir}/libtitania-gzstream -DDEBUG -DMONODEVELOP

@@ -1,0 +1,29 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "about:info"
+META "icon"  "about:icon"
+
+
+DEF White Background {
+  skyColor 1 1 1
+}
+
+Viewpoint {
+  fieldOfView 0.785398
+  position 0 0 2.39431
+  description "Home"
+}
+
+Transform {
+  scale 0.752 0.576 1
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url "info/info.png"
+        repeatS FALSE
+        repeatT FALSE
+      }
+    }
+    geometry Box { }
+  }
+}

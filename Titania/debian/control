@@ -1,0 +1,14 @@
+Source: hallowelt
+Section: doc
+Priority: extra
+Maintainer: Martin Rabeneck <martinrabeneck@gmx.net>
+Build-Depends: debhelper (>= 5)
+
+Package: hallowelt
+Architecture: all
+Depends:
+Conflicts:
+Replaces:
+Provides: hallowelt
+Description: hallowelt says hello world!
+ hallowelt is just an example

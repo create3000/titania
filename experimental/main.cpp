@@ -697,7 +697,7 @@ main (int argc, char** argv)
 	test_path (basic::path ("home", "/"));
 	test_path (basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
 	test_path (basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
-	test_path (basic::path ("/home/holger/Projekte/../../../.././pages/about/home.wrl/..", "/"));
+	test_path (basic::path ("/home/holger/Projekte/../../../.././${Version}/pages/about/home.wrl/..", "/"));
 	
 	//	basic::ifilestream stream = get_stream ();
 	//
