@@ -152,7 +152,7 @@ public:
 
 	///  Constructs a matrix4 from a matrix3.
 	matrix4 (const matrix3 <Type> & matrix)
-	{ *this = matrix;	}
+	{ *this = matrix; }
 
 	///  @name Assignment operators
 
@@ -344,9 +344,11 @@ public:
 
 private:
 
-	template <class T, class S>
 	bool
-	factor (matrix4 &, vector3 <S> &, matrix4 &, vector3 <T> &, matrix4 &) const;
+	factor (vector3 <Type> & translation,
+	        matrix4 & rotation,
+	        vector3 <Type> & scale,
+	        matrix4 & scaleOrientation) const;
 
 	Type
 	det3 () const;
@@ -616,8 +618,8 @@ matrix4 <Type>::get (vector3 <T> & translation,
                      rotation4 <R> & rotation,
                      vector3 <S> & scaleFactor) const
 {
-	matrix4 <Type> so, rot, proj;
-	factor (so, scaleFactor, rot, translation, proj);
+	matrix4 <Type> so, rot;
+	factor (translation, rot, scaleFactor, so);
 	rotation = rot .rotation ();
 }
 
@@ -629,8 +631,8 @@ matrix4 <Type>::get (vector3 <T> & translation,
                      vector3 <S> & scaleFactor,
                      rotation4 <SO> & scaleOrientation) const
 {
-	matrix4 <Type> so, rot, proj;
-	factor (so, scaleFactor, rot, translation, proj);
+	matrix4 <Type> so, rot;
+	factor (translation, rot, scaleFactor, so);
 	rotation         = rot .rotation ();
 	scaleOrientation = so .transpose () .rotation ();
 }
@@ -655,15 +657,17 @@ matrix4 <Type>::get (vector3 <T> & translation,
 }
 
 template <class Type>
-template <class T, class S>
 bool
-matrix4 <Type>::factor (matrix4 & r, vector3 <S> & s, matrix4 & u, vector3 <T> & t, matrix4 & proj) const
+matrix4 <Type>::factor (vector3 <Type> & translation,
+                        matrix4 & rotation,
+                        vector3 <Type> & scale,
+                        matrix4 & scaleOrientation) const
 {
 	matrix4 a (*this);
 
 	for (size_t i = 0; i < 3; i ++)
 	{
-		t [i]            = value [3] [i];
+		translation [i]  = value [3] [i];
 		a .value [3] [i] = a .value [i] [3] = 0;
 	}
 
@@ -674,7 +678,7 @@ matrix4 <Type>::factor (matrix4 & r, vector3 <S> & s, matrix4 & u, vector3 <T> &
 	Type det_sign = (det < 0 ? -1 : 1);
 
 	if (det_sign * det == 0)
-		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // singular
+		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      // singular
 
 	// (4) B = A * A^  (here A^ means A transpose)
 	matrix4 b = a * a .transpose ();
@@ -686,22 +690,22 @@ matrix4 <Type>::factor (matrix4 & r, vector3 <S> & s, matrix4 & u, vector3 <T> &
 
 	// find min / max eigenvalues and do ratio test to determine singularity
 
-	r = matrix4 (evectors [0] [0], evectors [0] [1], evectors [0] [2], 0,
-	             evectors [1] [0], evectors [1] [1], evectors [1] [2], 0,
-	             evectors [2] [0], evectors [2] [1], evectors [2] [2], 0,
-	             0, 0, 0, 1);
+	scaleOrientation = matrix4 (evectors [0] [0], evectors [0] [1], evectors [0] [2], 0,
+	                            evectors [1] [0], evectors [1] [1], evectors [1] [2], 0,
+	                            evectors [2] [0], evectors [2] [1], evectors [2] [2], 0,
+	                            0, 0, 0, 1);
 
 	// Compute s = sqrt(evalues), with sign. Set si = s-inverse
 	matrix4 si;
 
 	for (size_t i = 0; i < 3; i ++)
 	{
-		s [i]             = det_sign * std::sqrt (evalues [i]);
-		si .value [i] [i] = 1 / s [i];
+		scale [i]         = det_sign * std::sqrt (evalues [i]);
+		si .value [i] [i] = 1 / scale [i];
 	}
 
 	// (5) Compute U = R^ S! R A.
-	u = r * si * r .transpose () * a;
+	rotation = scaleOrientation * si * scaleOrientation .transpose () * a;
 
 	return true;
 }
@@ -973,6 +977,7 @@ operator * (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 {
 	return lhs .multRight (rhs);
 }
+
 ///@}
 
 ///  @relates matrix4
@@ -996,6 +1001,7 @@ operator not_eq (const matrix4 <Type> & a, const matrix4 <Type> & b)
 {
 	return a .vector () not_eq b .vector ();
 }
+
 ///@}
 
 ///  @relates vector4

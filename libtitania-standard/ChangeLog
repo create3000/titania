@@ -1,5 +1,9 @@
 2012-11-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Matrix4.h: 
+
+2012-11-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* main.h:
 	* main.cpp:
 	* libtitania-standard.cproj:
