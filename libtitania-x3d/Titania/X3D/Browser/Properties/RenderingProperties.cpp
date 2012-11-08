@@ -51,6 +51,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Browser.h"
 #include <Titania/Bits/String/Join.h>
+#include <Titania/Bits/String/Split.h>
 #include <Titania/Bits/String/strfsize.h>
 #include <iomanip>
 #include <iostream>
@@ -74,7 +75,6 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	        vendor (),                                                                 
 	      renderer (),                                                                 
 	       version (),                                                                 
-	    extensions (),                                                                 
 	       shading (),                                                                 
 	maxTextureSize (),                                                                 
 	  textureUnits (),                                                                 
@@ -83,6 +83,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	    colorDepth (),                                                                 
 	 textureMemory (),                                                                 
 	        string (),                                                                 // MFString [in,out] string
+	    extensions (),                                                                 
 	    fontFamily ("-schumacher-clean-medium-r-normal--12-120-75-75-c-60-iso8859-1"), // SFString [in,out] fontFamily
 	    fontHeigth (0),                                                                
 	      fontInfo (nullptr)                                                           
@@ -95,7 +96,6 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	appendField (outputOnly, "vendor",         vendor);
 	appendField (outputOnly, "renderer",       renderer);
 	appendField (outputOnly, "version",        version);
-	appendField (outputOnly, "extensions",     extensions);
 	appendField (outputOnly, "shading",        shading);                           // doppelt
 	appendField (outputOnly, "maxTextureSize", maxTextureSize);
 	appendField (outputOnly, "textureUnits",   textureUnits);
@@ -103,6 +103,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	appendField (outputOnly, "antiAliased",    antiAliased);
 	appendField (outputOnly, "colorDepth",     colorDepth);
 	appendField (outputOnly, "textureMemory",  textureMemory);
+	appendField (outputOnly, "string",         string);
 }
 
 RenderingProperties*
@@ -122,12 +123,14 @@ RenderingProperties::initialize ()
 		renderer = (const char*) glGetString (GL_RENDERER);
 		version  = (const char*) glGetString (GL_VERSION);
 
-		extensions .push_back (std::string ("GLEW ") + (const char*) glewGetString (GLEW_VERSION));
+		extensions = std::move (basic::ssplit ((char*) glGetString (GL_EXTENSIONS), " "));
+
+		//extensions .push_back (std::string ("GLEW ") + (const char*) glewGetString (GLEW_VERSION));
 
 		GLint glMaxTextureSize, glMaxLights, glTextureUnits;
 		GLint glRedBits, glGreen, glBlueBits, glAlphaBits;
 		GLint glPolygonSmooth;
-		GLint glTextureMemory;
+		GLint glTextureMemory = -1;
 
 		glGetIntegerv (GL_MAX_TEXTURE_SIZE,        &glMaxTextureSize);
 		glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS, &glTextureUnits);
@@ -163,18 +166,42 @@ RenderingProperties::initialize ()
 //http://developer.download.nvidia.com/opengl/specs/GL_NVX_gpu_memory_info.txt
 //A call to glGetString(GL_EXTENSIONS) will return a space-separated string of extension names, which your application can parse at runtime.
 
+bool
+RenderingProperties::hasExtension (const std::string & name)
+{
+	return extensions .find (name) not_eq extensions .end ();
+}
+
 size_t
 RenderingProperties::getAvailableTextureMemory ()
 {
-	//  if (HasExtension ("GL_NVX_gpu_memory_info"))
-	//  {
-	GLint kbytes = 0;
+	if (hasExtension ("GL_NVX_gpu_memory_info"))
+	{
+		GLint kbytes = 0;
 
-	glGetIntegerv (GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &kbytes); // in KBytes
-	return 1024 * kbytes;
+		glGetIntegerv (GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &kbytes); // in KBytes
+		return 1024 * kbytes;
+	}
 
-	//  }
-	//  return 0;
+	//http://www.opengl.org/registry/specs/ATI/meminfo.txt
+	if (hasExtension ("GL_ATI_meminfo"))
+	{
+		// VBO_FREE_MEMORY_ATI                     0x87FB
+		// TEXTURE_FREE_MEMORY_ATI                 0x87FC
+		// RENDERBUFFER_FREE_MEMORY_ATI            0x87FD
+		//
+		// param[0] - total memory free in the pool
+		// param[1] - largest available free block in the pool
+		// param[2] - total auxiliary memory free
+		// param[3] - largest auxiliary free block
+
+		GLint kbytes [4] = { 0, 0, 0, 0 };
+
+		// glGetIntegerv (TEXTURE_FREE_MEMORY_ATI, &kbytes); // in KBytes
+		return 1024 * kbytes [0];
+	}
+
+	return 0;
 }
 
 void
@@ -331,9 +358,6 @@ RenderingProperties::update_string ()
 	stringstream .str (""); stringstream << "  Name: " << renderer .getValue ();
 	string .push_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "  OpenGL extension version: " << version .getValue ();
-	string .push_back (stringstream .str ());
-
 	stringstream .str ("");
 	string .push_back (stringstream .str ());
 
@@ -367,44 +391,37 @@ RenderingProperties::update_string ()
 	stringstream .str (""); stringstream << "Render Time:               " << std::setprecision (7) << std::fixed << drawFps;
 	string .push_back (stringstream .str ());
 
-	//	stringstream .str (""); stringstream << "Event Time:    " << std::setprecision (7) << std::fixed << eventTime << " s (" << maxEventTime << ')';
+	//	//	stringstream .str (""); stringstream << "Event Time:    " << std::setprecision (7) << std::fixed << eventTime << " s (" << maxEventTime << ')';
+	//	//	string .push_back (stringstream .str ());
+	//
+	//	//	stringstream .str (""); stringstream << "Traverse Time: " << std::setprecision (7) << std::fixed << traverseTime << " s (" << maxTraverseTime << ')';
+	//	// string .push_back (stringstream .str ());
+	//
+	//	// stringstream .str (""); stringstream << "Draw Time:                 " << std::setprecision (7) << std::fixed << drawTime << " s (" << maxDrawTime << ')';
+	//	// string .push_back (stringstream .str ());
+	//
+	//	//	stringstream .str (""); stringstream << "Nodes:         " << getBrowser () -> getRenderer () -> getNumNodesDrawn () << " / " << getBrowser () -> getRenderer () -> getNumNodes ();
+	//	// string .push_back (stringstream .str ());
+	//
+	//	//	stringstream .str (""); stringstream << "Transparent:   " << getBrowser () -> getRenderer () -> getNumTransparentNodesDrawn () << " / " << getBrowser () -> getRenderer () -> getNumTransparentNodes ();
+	//	//	string .push_back (stringstream .str ());
+	//
+	//	//	stringstream .str (""); stringstream << "Textures:      " << getBrowser () -> getNumTextures ();
+	//	//	string .push_back (stringstream .str ());
+	//
+	//	stringstream .str (""); stringstream << "Speed:                     " << std::setprecision (3) << std::fixed << getBrowser () -> getCurrentSpeed () << " m/s";
 	//	string .push_back (stringstream .str ());
-
-	//	stringstream .str (""); stringstream << "Traverse Time: " << std::setprecision (7) << std::fixed << traverseTime << " s (" << maxTraverseTime << ')';
-	// string .push_back (stringstream .str ());
-
-	// stringstream .str (""); stringstream << "Draw Time:                 " << std::setprecision (7) << std::fixed << drawTime << " s (" << maxDrawTime << ')';
-	// string .push_back (stringstream .str ());
-
-	//	stringstream .str (""); stringstream << "Nodes:         " << getBrowser () -> getRenderer () -> getNumNodesDrawn () << " / " << getBrowser () -> getRenderer () -> getNumNodes ();
-	// string .push_back (stringstream .str ());
-
-	//	stringstream .str (""); stringstream << "Transparent:   " << getBrowser () -> getRenderer () -> getNumTransparentNodesDrawn () << " / " << getBrowser () -> getRenderer () -> getNumTransparentNodes ();
-	//	string .push_back (stringstream .str ());
-
-	//	stringstream .str (""); stringstream << "Textures:      " << getBrowser () -> getNumTextures ();
-	//	string .push_back (stringstream .str ());
-
-	stringstream .str (""); stringstream << "Speed:                     " << std::setprecision (3) << std::fixed << getBrowser () -> getCurrentSpeed () << " m/s";
-	string .push_back (stringstream .str ());
 }
 
 void
 RenderingProperties::toStream (std::ostream & stream) const
 {
-	if (vendor .length ())
-		stream
-			<< "\tCurrent Graphics Renderer" << std::endl
-			<< "\t\tName: " << vendor .getValue () << ' ' << renderer .getValue () << std::endl
-			<< "\tOpenGL extension version: " << version .getValue () << std::endl
-			<< "\tExtensions: " << std::endl
-			<< "\t\t" << basic::join (extensions .cbegin (),
-		                          extensions .cend (),
-		                          "\n\t\t") << std::endl;
-
 	stream
+		<< "\tCurrent Graphics Renderer" << std::endl
+		<< "\t\tName: " << vendor .getValue () << ' ' << renderer .getValue () << std::endl
+		<< "\tOpenGL extension version: " << version .getValue () << std::endl
+		
 		<< "\tRendering properties" << std::endl
-
 		<< "\t\tTexture units: " << textureUnits << std::endl
 		<< "\t\tMax texture size: " << maxTextureSize << " × " << maxTextureSize << " pixel" << std::endl
 		<< "\t\tMax lights: " << maxLights << std::endl

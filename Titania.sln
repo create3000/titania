@@ -26,8 +26,6 @@ Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "logo", "miscellaneous\logo\
 EndProject
 Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "glade2c++", "miscellaneous\glade2c++\glade2c++.mdproj", "{0F1D7430-6D26-479A-987A-547A23248798}"
 EndProject
-Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "website", "miscellaneous\website\website.mdproj", "{BF6F245D-1851-439B-B616-DC0D88440782}"
-EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-x3d", "libtitania-x3d\libtitania-x3d.cproj", "{DFCBA660-2306-4B2B-A18F-7CA89FDD83A3}"
 EndProject
 Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "Library", "Library\Library.mdproj", "{4E14CF17-2479-463F-BF86-128B9B5C5FAD}"
@@ -160,14 +158,6 @@ Global
 		{BD471A40-76AE-4035-B56B-E29658A0ACB3}.Parallel|Any CPU.Build.0 = Parallel|Any CPU
 		{BD471A40-76AE-4035-B56B-E29658A0ACB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD471A40-76AE-4035-B56B-E29658A0ACB3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BF6F245D-1851-439B-B616-DC0D88440782}.Debug|Any CPU.ActiveCfg = Default|Any CPU
-		{BF6F245D-1851-439B-B616-DC0D88440782}.Debug|Any CPU.Build.0 = Default|Any CPU
-		{BF6F245D-1851-439B-B616-DC0D88440782}.Default|Any CPU.ActiveCfg = Default|Any CPU
-		{BF6F245D-1851-439B-B616-DC0D88440782}.Default|Any CPU.Build.0 = Default|Any CPU
-		{BF6F245D-1851-439B-B616-DC0D88440782}.Parallel|Any CPU.ActiveCfg = Default|Any CPU
-		{BF6F245D-1851-439B-B616-DC0D88440782}.Parallel|Any CPU.Build.0 = Default|Any CPU
-		{BF6F245D-1851-439B-B616-DC0D88440782}.Release|Any CPU.ActiveCfg = Default|Any CPU
-		{BF6F245D-1851-439B-B616-DC0D88440782}.Release|Any CPU.Build.0 = Default|Any CPU
 		{C9C7696B-8393-42CC-A26E-F2ED2ADC799F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C9C7696B-8393-42CC-A26E-F2ED2ADC799F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9C7696B-8393-42CC-A26E-F2ED2ADC799F}.Default|Any CPU.ActiveCfg = Debug|Any CPU
@@ -217,7 +207,6 @@ Global
 		{87A8855F-BF45-4B19-911D-7DD1A427FA8A} = {0A83A471-2425-4FE8-B816-A75033B4D27C}
 		{61BC6D29-D55B-43E3-917C-D8E5B14EC6CE} = {0A83A471-2425-4FE8-B816-A75033B4D27C}
 		{0F1D7430-6D26-479A-987A-547A23248798} = {0A83A471-2425-4FE8-B816-A75033B4D27C}
-		{BF6F245D-1851-439B-B616-DC0D88440782} = {0A83A471-2425-4FE8-B816-A75033B4D27C}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Titania\Titania.cproj

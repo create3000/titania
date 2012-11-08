@@ -70,12 +70,12 @@ X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 
 	// Add URNs to X3D::X3DUrlObject
 	X3D::X3DUrlObject::addURN ("about:icon",        get_ui   ("icons/icon-bw.svg"));
-	X3D::X3DUrlObject::addURN ("about:blank",       get_page ("about/blank.x3d"));
-	X3D::X3DUrlObject::addURN ("about:home",        get_page ("about/home.x3d"));
-	X3D::X3DUrlObject::addURN ("about:info",        get_page ("about/info.x3d"));
-	X3D::X3DUrlObject::addURN ("about:splash",      get_page ("about/splash.x3d"));
-	X3D::X3DUrlObject::addURN ("about:url_error",   get_page ("about/url_error.x3d"));
-	X3D::X3DUrlObject::addURN ("about:hello_world", "http://titania.create3000.de/documentation/examples/hello_world.x3d");
+	X3D::X3DUrlObject::addURN ("about:blank",       get_page ("about/blank.wrl"));
+	X3D::X3DUrlObject::addURN ("about:home",        get_page ("about/home.wrl"));
+	X3D::X3DUrlObject::addURN ("about:info",        get_page ("about/info.wrl"));
+	X3D::X3DUrlObject::addURN ("about:splash",      get_page ("about/splash.wrl"));
+	X3D::X3DUrlObject::addURN ("about:url_error",   get_page ("about/url_error.wrl"));
+	X3D::X3DUrlObject::addURN ("about:hello_world", "http://titania.create3000.de/documentation/examples/hello_world.wrl");
 }
 
 // Application Handling

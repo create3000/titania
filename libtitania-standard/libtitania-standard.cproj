@@ -95,6 +95,7 @@
     <None Include="Titania\Basic\IndexedMultiMap.h" />
     <None Include="Titania\Basic\Path.h" />
     <None Include="Titania\Bits\Utility\Adapter.h" />
+    <None Include="Titania\Math\Algorithms\EigenDecomposition.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
@@ -127,5 +128,24 @@
     <Compile Include="Titania\Chrono\Now.cpp" />
     <Compile Include="Titania\Basic\IndexedMultiMap.cpp" />
     <Compile Include="Titania\Basic\Path.cpp" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" ParallelProcesses="4" IsAutotoolsProject="true" RelativeConfigureInPath="..">
+          <BuildFilesVar Sync="true" Name="libtitania_standard_la_SOURCES" />
+          <DeployFilesVar />
+          <ResourcesVar />
+          <OthersVar />
+          <GacRefVar />
+          <AsmRefVar />
+          <ProjectRefVar />
+          <MessageRegex Name="gcc" />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <Folder Include="Titania\Math\Algorithms\" />
   </ItemGroup>
 </Project>

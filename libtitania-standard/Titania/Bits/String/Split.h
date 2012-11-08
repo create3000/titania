@@ -50,31 +50,32 @@
 #define __TITANIA_BITS_STRING_SPLIT_H__
 
 #include <deque>
+#include <set>
 #include <string>
 
 namespace titania {
 namespace basic {
 
-template <class StringT, template <class, class Allocator = std::allocator <StringT>> class ArrayType = std::deque>
-ArrayType <StringT>
+template <class StringT, template <class, class Allocator = std::allocator <StringT>> class ContainerType = std::deque>
+ContainerType <StringT>
 basic_split (const StringT & string, const StringT & delimiter)
 {
-	ArrayType <StringT> array;
+	ContainerType <StringT> container;
 
 	typename StringT::size_type first = 0;
 	typename StringT::size_type last  = string .find (delimiter, first);
 
 	while (last not_eq StringT::npos)
 	{
-		array .emplace_back (string .substr (first, last - first));
+		container .emplace_back (string .substr (first, last - first));
 
 		first = last + delimiter .length ();
 		last  = string .find (delimiter, first);
 	}
 
-	array .emplace_back (string .substr (first, string .length () - first));
+	container .emplace_back (string .substr (first, string .length () - first));
 
-	return array;
+	return container;
 }
 
 inline
@@ -98,6 +99,52 @@ basic_split (const std::string &, const std::string  &);
 extern template
 std::deque <std::wstring>
 basic_split (const std::wstring &, const std::wstring  &);
+
+// Set version
+
+template <class StringT, template <class, class Compare = std::less <StringT>, class Allocator = std::allocator <StringT>> class ContainerType = std::set>
+ContainerType <StringT>
+basic_ssplit (const StringT & string, const StringT & delimiter)
+{
+	ContainerType <StringT> container;
+
+	typename StringT::size_type first = 0;
+	typename StringT::size_type last  = string .find (delimiter, first);
+
+	while (last not_eq StringT::npos)
+	{
+		container .insert (string .substr (first, last - first));
+
+		first = last + delimiter .length ();
+		last  = string .find (delimiter, first);
+	}
+
+	container .insert (string .substr (first, string .length () - first));
+
+	return container;
+}
+
+inline
+std::set <std::string>
+ssplit (const std::string & string, const std::string & delimiter)
+{
+	return basic_ssplit <std::string> (string, delimiter);
+}
+
+inline
+std::set <std::wstring>
+wssplit (const std::wstring & string, const std::wstring & delimiter)
+{
+	return basic_ssplit <std::wstring> (string, delimiter);
+}
+
+extern template
+std::set <std::string>
+basic_ssplit (const std::string &, const std::string  &);
+
+extern template
+std::set <std::wstring>
+basic_ssplit (const std::wstring &, const std::wstring  &);
 
 } // basic
 } // titania

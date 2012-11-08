@@ -1,14 +1,16 @@
-Source: hallowelt
-Section: doc
-Priority: extra
-Maintainer: Martin Rabeneck <martinrabeneck@gmx.net>
-Build-Depends: debhelper (>= 5)
+Source: titania
+Section: graphics
+Priority: optional
+Maintainer: Holger Seelig <holger.seelig@yahoo.de>
+Build-Depends: debhelper (>= 7)
 
-Package: hallowelt
+Package: titania
 Architecture: all
-Depends:
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts:
 Replaces:
-Provides: hallowelt
-Description: hallowelt says hello world!
- hallowelt is just an example
+Provides: titania
+Homepage: http://titania.create3000.de/
+Vcs-Git: https://holger.seelig@code.google.com/p/titania-x3d/
+Description: Titania X3D Browser
+ View and navigate in X3D and VRML2 worlds

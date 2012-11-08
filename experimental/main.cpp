@@ -39,8 +39,8 @@
 #include <Titania/Math/Numbers/Vector3.h>
 #include <Titania/Math/Numbers/Vector4.h>
 #include <Titania/OS.h>
-#include <Titania/Stream/InputFileStream.h>
-#include <Titania/Stream/InputHTTPStream.h>
+//#include <Titania/Stream/InputFileStream.h>
+//#include <Titania/Stream/InputHTTPStream.h>
 
 #include <Titania/Bits/Algorithm.h>
 #include <Titania/LOG.h>
@@ -590,7 +590,7 @@ using namespace titania;
 ////
 ////};
 
-basic::ifilestream
+/*basic::ifilestream
 get_stream ()
 {
 	titania::TestURI ();
@@ -659,7 +659,7 @@ get_stream ()
 
 	return stream;
 }
-
+*/
 void
 test_path (const basic::path & path)
 {

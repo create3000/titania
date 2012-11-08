@@ -12,13 +12,6 @@
       <Compiler ctype="GppCompiler" />
     </Compiler>
     <ReleaseVersion>0.3</ReleaseVersion>
-    <Packages>
-      <Packages>
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/libcurl.pc" name="libcurl" IsProject="false" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="true" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="true" />
-      </Packages>
-    </Packages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,14 +31,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="main.cpp" />
-    <Compile Include="General\X3D\InputOutput\Output.cpp" />
-    <Compile Include="General\X3D\InputOutput\Input.cpp" />
-    <Compile Include="General\X3D\Basic\Type.cpp" />
-    <Compile Include="General\X3D\LexicalElements\Id.cpp" />
-    <Compile Include="General\X3D\InputOutput\Encodings\ClassicVrml.cpp" />
-    <Compile Include="General\X3D\InputOutput\Encodings\ClassicVrml\NumPunct.cpp" />
-    <Compile Include="General\X3D\InputOutput\Encodings\ClassicVrml\CType.cpp" />
-    <Compile Include="General\X3D\InputOutput\Encodings\ClassicVrml\AccessTypes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="General\" />
@@ -63,4 +48,20 @@
     <None Include="General\X3D\InputOutput\Encodings\ClassicVrml\AccessTypes.h" />
     <None Include="URI.h" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" ExecuteTargetName="run" ParallelProcesses="4" IsAutotoolsProject="true" RelativeConfigureInPath="..">
+          <BuildFilesVar Sync="true" Name="experimental_SOURCES" />
+          <DeployFilesVar />
+          <ResourcesVar />
+          <OthersVar />
+          <GacRefVar />
+          <AsmRefVar />
+          <ProjectRefVar />
+          <MessageRegex Name="gcc" />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

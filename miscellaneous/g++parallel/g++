@@ -68,6 +68,11 @@ def get_command (argv):
 	return command
 
 
+def get_linker_command (argv):
+	command = get_command (argv)
+	return command;
+
+
 def touch (argv):
 	subprocess .call (["touch", argv [get_option_index ("-c", argv) + 2]])
 
@@ -77,10 +82,10 @@ def fraction (value, n) :
 def main ():
 	processServer = get_process_server ()
 
-	command = get_command (sys .argv);
-
 	if "-c" in sys .argv:
 		""" compile """
+		command = get_command (sys .argv);
+		
 		if processServer .get_value ("startTime", 0, timeout = 600) == 0:
 			processServer .set_value ("startTime", time .time (), timeout = 600)
 
@@ -91,6 +96,8 @@ def main ():
 		returncode = processServer .start (command, timeout = 600)
 	else:
 		""" finish all commands before linking """
+		command = get_linker_command (sys .argv);
+
 		returncode = processServer .join (timeout = 600)
 		if max (returncode) == 0:
 			if processServer .get_value ("startTime", 0, timeout = 600) == 0:

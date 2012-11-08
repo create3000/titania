@@ -59,5 +59,13 @@ template
 std::deque <std::wstring>
 basic_split (const std::wstring &, const std::wstring  &);
 
+template
+std::set <std::string>
+basic_ssplit (const std::string &, const std::string  &);
+
+template
+std::set <std::wstring>
+basic_ssplit (const std::wstring &, const std::wstring  &);
+
 } // X3D
 } // titania

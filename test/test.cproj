@@ -65,6 +65,16 @@
         <Policies>
           <StandardHeader Text=" &#xA; class ${FileName} {&#xA;public: &#xA;	 ${FileName} ()&#xA;  	{&#xA;&#xA;&#xA;}&#xA; " IncludeInNewFiles="True" />
         </Policies>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" ParallelProcesses="4" IsAutotoolsProject="true" RelativeConfigureInPath="..">
+          <BuildFilesVar Sync="true" Name="test_SOURCES" />
+          <DeployFilesVar />
+          <ResourcesVar />
+          <OthersVar />
+          <GacRefVar />
+          <AsmRefVar />
+          <ProjectRefVar />
+          <MessageRegex Name="gcc" />
+        </MonoDevelop.Autotools.MakefileInfo>
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>

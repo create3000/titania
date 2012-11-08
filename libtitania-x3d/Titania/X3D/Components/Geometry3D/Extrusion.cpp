@@ -253,7 +253,7 @@ Extrusion::createCorrectionRotations (const std::vector <Vector3f> & SCPzAxes, c
 
 			// Check that the angle is not more than PI.
 			// If it is subtract PI from angle
-			float checkAngle = correctionRotations [i] .getRotation () .angle ();
+			float checkAngle = correctionRotations [i] .rotation () .angle ();
 
 			if (checkAngle >= M_PI)
 				correctionRotations [i] = Rotation4f (0, 1, 0, checkAngle - M_PI);

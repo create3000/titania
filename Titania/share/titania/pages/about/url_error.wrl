@@ -9,22 +9,22 @@ EXTERNPROTO Rotor [
   exposedField SFBool     loop
   eventOut     SFRotation value_changed
 ]
-"../Library/Rotor.x3d"
+"../Library/Rotor.wrl"
 
 EXTERNPROTO Red [
   exposedField SFFloat transparency
 ]
-"../Library/Colors.x3d"
+"../Library/Colors.wrl"
 
 EXTERNPROTO Orange [
   exposedField SFFloat transparency
 ]
-"../Library/Colors.x3d"
+"../Library/Colors.wrl"
 
 EXTERNPROTO Yellow [
   exposedField SFFloat transparency
 ]
-"../Library/Colors.x3d"
+"../Library/Colors.wrl"
 
 
 DEF Blue Background {

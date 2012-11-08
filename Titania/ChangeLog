@@ -1,3 +1,29 @@
+2012-11-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* rules:
+	* control:
+	* test-titania.sh:
+	* copyright:
+	* changelog:
+	* format:
+	* home.wrl:
+	* info.x3d:
+	* home.x3d:
+	* blank.x3d:
+	* Logo.x3d:
+	* Logo.wrl:
+	* X3DBrowserWindow.cpp:
+	* splash.wrl:
+	* splash.x3d:
+	* Rotor.x3d:
+	* X3DBrowserWindow .cpp:
+	* Colors.x3d:
+	* url_error.x3d:
+	* url_error.wrl:
+	* X3DViewpointEditorUI.cpp:
+	* red.orange.yellow.wrl:
+	* red.orange.yellow.x3d: 
+
 2012-11-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWidget.ui:

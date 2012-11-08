@@ -82,7 +82,6 @@ public:
 	SFString vendor;
 	SFString renderer;
 	SFString version;
-	MFString extensions;
 
 	SFString shading;
 	SFInt32  maxTextureSize;
@@ -95,6 +94,9 @@ public:
 	MFString string;
 
 	RenderingProperties (X3DExecutionContext* const);
+
+	bool
+	hasExtension (const std::string &);
 
 	size_t
 	getAvailableTextureMemory ();
@@ -141,6 +143,8 @@ private:
 
 	void
 	dispose ();
+	
+	std::set <std::string> extensions;
 
 	size_t numFrames;
 

@@ -8,18 +8,29 @@
     <Packages>
       <Packages>
         <Package name="Linux Binärdateien">
-          <Builder targetFile="Titania.tar.gz" platform="Linux" configuration="Debug" ctype="BinariesZipPackageBuilder">
+          <Builder targetFile="..\Titania.tar.gz" platform="Linux" configuration="Debug" ctype="BinariesZipPackageBuilder">
             <ChildEntries>
               <SolutionItemReference path="..\libtitania-anyoptions\libtitania-anyoptions.cproj" />
               <SolutionItemReference path="..\libtitania-gzstream\libtitania-gzstream.cproj" />
               <SolutionItemReference path="..\Titania\Titania.cproj" />
+              <SolutionItemReference path="..\libtitania-x3d\libtitania-x3d.cproj" />
+              <SolutionItemReference path="..\titania-info\titania-info.cproj" />
+              <SolutionItemReference path="..\Library\Library.mdproj" />
+              <SolutionItemReference path="..\libtitania-opengl-surface\libtitania-opengl-surface.cproj" />
+              <SolutionItemReference path="..\libtitania-sqlite\libtitania-sqlite.cproj" />
+              <SolutionItemReference path="..\libtitania-stream\libtitania-stream.cproj" />
+              <SolutionItemReference path="..\libtitania-standard\libtitania-standard.cproj" />
             </ChildEntries>
             <ExcludedFiles>
               <File>libtitania-x3d,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania-x3d/libtitania-x3d.pc</File>
-              <File>libtitania-gzstream,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania-gzstream/libtitania-gzstream.pc</File>
               <File>libtitania-basic,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania-basic/libtitania-basic.pc</File>
               <File>libtitania-anyoptions,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania-anyoptions/libtitania-anyoptions.pc</File>
               <File>libtitania,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania/libtitania.pc</File>
+              <File>libtitania-opengl-surface,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania-opengl-surface/libtitania-opengl-surface.pc</File>
+              <File>libtitania-sqlite,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania-sqlite/libtitania-sqlite.pc</File>
+              <File>libtitania-standard,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.pc</File>
+              <File>libtitania-stream,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.pc</File>
+              <File>libtitania-gzstream,Linux.PkgConfig,/home/holger/Projekte/Titania/libtitania-gzstream/libtitania-gzstream.pc</File>
             </ExcludedFiles>
             <RootEntry path="..\Titania.sln" id=":root:" />
           </Builder>

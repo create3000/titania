@@ -46,7 +46,6 @@
  *
  ******************************************************************************/
 
-#include "../Math.h"
 #include "SFColorRGBA.h"
 
 namespace titania {

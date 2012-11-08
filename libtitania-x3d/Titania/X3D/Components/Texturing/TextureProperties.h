@@ -59,17 +59,17 @@ class TextureProperties :
 {
 public:
 
-	SFFloat     anisotropicDegree;
 	SFColorRGBA borderColor;
 	SFInt32     borderWidth;
 	SFString    boundaryModeS;
 	SFString    boundaryModeT;
 	SFString    boundaryModeR;
-	SFString    magnificationFilter;
 	SFString    minificationFilter;
+	SFString    magnificationFilter;
 	SFString    textureCompression;
-	SFFloat     texturePriority;
 	SFBool      generateMipMaps;
+	SFFloat     anisotropicDegree;
+	SFFloat     texturePriority;
 
 	TextureProperties (X3DExecutionContext* const);
 

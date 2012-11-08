@@ -188,7 +188,7 @@ Transform {
         appearance Appearance {
           material Material { }
           texture ImageTexture {
-            url ""
+            url "images/colors/rgba.png"
           }
         }
         geometry USE Box
@@ -373,7 +373,7 @@ Transform {
       children Shape {
         appearance Appearance {
           texture ImageTexture {
-            url ""
+            url "images/colors/rgba.png"
           }
         }
         geometry USE Box
@@ -611,7 +611,7 @@ Transform {
         appearance Appearance {
           material Material { }
           texture ImageTexture {
-            url ""
+            url "images/colors/rgba.png"
           }
         }
         geometry USE Cube
@@ -796,7 +796,7 @@ Transform {
       children Shape {
         appearance Appearance {
           texture ImageTexture {
-            url ""
+            url "images/colors/rgba.png"
           }
         }
         geometry USE Cube

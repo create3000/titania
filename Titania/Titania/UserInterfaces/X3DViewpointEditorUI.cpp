@@ -69,6 +69,8 @@ X3DViewpointEditorUI::create (const std::string & filename)
 	m_builder -> get_widget ("ScrolledWindow", m_scrolledWindow);
 	m_builder -> get_widget ("TreeView", m_treeView);
 	m_builder -> get_widget ("FieldOfView", m_fieldOfView);
+
+	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DViewpointEditorUI::on_row_activated));
 
 	// Connect object Gtk::HScale with id 'FieldOfView'.

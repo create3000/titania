@@ -1,3 +1,14 @@
+2012-11-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* SFColor.cpp:
+	* SFColorRGBA.cpp:
+	* Extrusion.cpp:
+	* RenderingProperties.h:
+	* TextureProperties.h:
+	* RenderingProperties.cpp:
+	* TextureProperties.cpp: 
+
 2012-11-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Scene.h:

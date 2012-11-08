@@ -53,36 +53,38 @@
 namespace titania {
 namespace X3D {
 
+// http://new.web3d.org/files/specifications/19775-1/V3.2/Part01/components/texturing.html#TextureProperties
+
 TextureProperties::TextureProperties (X3DExecutionContext* const executionContext) :
 	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	    X3DPropertyNode (),                                                    
-	  anisotropicDegree (1),                                                   // SFFloat [ ] anisotropicDegree 1
-	        borderColor (),                                                    // SFColorRGBA [ ] borderColor 0, 0 0 0
-	        borderWidth (),                                                    // SFInt32 [ ] borderWidth 0
-	      boundaryModeS ("REPEAT"),                                            // SFString [ ] boundaryModeS "REPEAT"
-	      boundaryModeT ("REPEAT"),                                            // SFString [ ] boundaryModeT "REPEAT"
-	      boundaryModeR ("REPEAT"),                                            // SFString [ ] boundaryModeR "REPEAT"
-	magnificationFilter ("FASTEST"),                                           // SFString [ ] magnificationFilter "FASTEST"
-	 minificationFilter ("FASTEST"),                                           // SFString [ ] minificationFilter "FASTEST"
-	 textureCompression ("FASTEST"),                                           // SFString [ ] textureCompression "FASTEST"
-	    texturePriority (),                                                    // SFFloat [ ] texturePriority 0
-	    generateMipMaps ()                                                     // SFBool [ ] generateMipMaps false
+	        borderColor (),                                                    // SFColorRGBA [ ] borderColor         0 0 0 0    [0,1]
+	        borderWidth (),                                                    // SFInt32     [ ] borderWidth         0          [0,1]
+	      boundaryModeS ("REPEAT"),                                            // SFString    [ ] boundaryModeS       "REPEAT"
+	      boundaryModeT ("REPEAT"),                                            // SFString    [ ] boundaryModeT       "REPEAT"
+	      boundaryModeR ("REPEAT"),                                            // SFString    [ ] boundaryModeR       "REPEAT"
+	 minificationFilter ("FASTEST"),                                           // SFString    [ ] minificationFilter  "FASTEST"
+	magnificationFilter ("FASTEST"),                                           // SFString    [ ] magnificationFilter "FASTEST"
+	 textureCompression ("FASTEST"),                                           // SFString    [ ] textureCompression  "FASTEST"
+	    generateMipMaps (),                                                    // SFBool      [ ] generateMipMaps      FALSE
+	  anisotropicDegree (1),                                                   // SFFloat     [ ] anisotropicDegree    1.0        [1,?)
+	    texturePriority ()                                                     // SFFloat     [ ] texturePriority      0
 {
 	setComponent ("Texturing");
 	setTypeName ("TextureProperties");
 
 	appendField (inputOutput,    "metadata",            metadata);
-	appendField (inputOutput,    "anisotropicDegree",   anisotropicDegree);
 	appendField (inputOutput,    "borderColor",         borderColor);
 	appendField (inputOutput,    "borderWidth",         borderWidth);
 	appendField (inputOutput,    "boundaryModeS",       boundaryModeS);
 	appendField (inputOutput,    "boundaryModeT",       boundaryModeT);
 	appendField (inputOutput,    "boundaryModeR",       boundaryModeR);
-	appendField (inputOutput,    "magnificationFilter", magnificationFilter);
 	appendField (inputOutput,    "minificationFilter",  minificationFilter);
+	appendField (inputOutput,    "magnificationFilter", magnificationFilter);
 	appendField (inputOutput,    "textureCompression",  textureCompression);
-	appendField (inputOutput,    "texturePriority",     texturePriority);
 	appendField (initializeOnly, "generateMipMaps",     generateMipMaps);
+	appendField (inputOutput,    "anisotropicDegree",   anisotropicDegree);
+	appendField (inputOutput,    "texturePriority",     texturePriority);
 }
 
 X3DBasicNode*

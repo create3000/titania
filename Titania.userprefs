@@ -1,29 +1,66 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Execution/World.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="test/Tests/signal.h">
     <Files>
       <File FileName="Titania/Titania/Browser/X3DBrowserWindow.h" Line="111" Column="12" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWindow .cpp" Line="65" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.cpp" Line="65" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="371" Column="71" />
       <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="118" Column="11" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.h" Line="368" Column="18" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="58" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/Scene.h" Line="75" Column="25" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/Scene.cpp" Line="64" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.cpp" Line="62" Column="1" />
-      <File FileName="experimental/main.cpp" Line="846" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="56" Column="17" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalEffects/Fog.cpp" Line="107" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/NavigationInfo.cpp" Line="145" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.cpp" Line="401" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="124" Column="10" />
-      <File FileName="Titania/Titania/ViewpointEditor/ViewpointEditor.cpp" Line="111" Column="41" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/World.cpp" Line="32" Column="31" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/Scene.h" Line="83" Column="28" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/World.cpp" Line="65" Column="1" />
+      <File FileName="experimental/main.cpp" Line="673" Column="4" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.h" Line="94" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp" Line="125" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTexture2DNode.cpp" Line="247" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTexture2DNode.h" Line="1" Column="1" />
+      <File FileName="Library/Tests/Texturing/ImageTexture.wrl" Line="799" Column="40" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/TextureProperties.h" Line="68" Column="9" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/TextureProperties.cpp" Line="75" Column="1" />
+      <File FileName="test/Tests/signal.h" Line="58" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="libtitania-gtkglext" expanded="True" selected="True" />
+          <Node name="miscellaneous" expanded="True" />
+          <Node name="experimental" expanded="True" />
+          <Node name="Library" expanded="True">
+            <Node name="Tests" expanded="True">
+              <Node name="Texturing" expanded="True">
+                <Node name="images" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+          <Node name="libtitania-x3d" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="X3D" expanded="True">
+                <Node name="Browser" expanded="True">
+                  <Node name="Properties" expanded="True" />
+                </Node>
+                <Node name="Components" expanded="True">
+                  <Node name="Texturing" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+          <Node name="test" expanded="True" selected="True">
+            <Node name="Packages" expanded="True" />
+            <Node name="Tests" expanded="True" />
+          </Node>
+          <Node name="Titania" expanded="True">
+            <Node name="Packages" expanded="True" />
+            <Node name="share" expanded="True">
+              <Node name="applications" expanded="True" />
+            </Node>
+            <Node name="Titania" expanded="True">
+              <Node name="Browser" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="titania-info" expanded="True">
+            <Node name="Packages" expanded="True" />
+          </Node>
+          <Node name="x3dtidy" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
@@ -32,13 +69,12 @@
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State />
       </Pad>
-      <Pad Id="ConnectionManagerPad">
-        <State selected="True" />
-      </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/home/holger/Projekte/Titania/miscellaneous/makefiles/generate.pl" line="64" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.x3dtidy>

@@ -876,6 +876,16 @@
         <Policies>
           <StandardHeader Text="/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */&#xA;&#xA;namespace Titania {&#xA;namespace X3D {&#xA;&#xA;} // X3D&#xA;} // Titania&#xA;" IncludeInNewFiles="True" />
         </Policies>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" ParallelProcesses="4" IsAutotoolsProject="true" RelativeConfigureInPath="..">
+          <BuildFilesVar Sync="true" Name="libtitania_x3d_la_SOURCES" />
+          <DeployFilesVar />
+          <ResourcesVar />
+          <OthersVar />
+          <GacRefVar />
+          <AsmRefVar />
+          <ProjectRefVar />
+          <MessageRegex Name="gcc" />
+        </MonoDevelop.Autotools.MakefileInfo>
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>

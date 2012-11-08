@@ -1,7 +1,6 @@
-#VRML V2.0 utf8
+titania (0.3.1-1) unstable; urgency=low
 
-META "title" "BIC Man"
+  * initial release
+   + first ppa release of Titania
 
-Inline {
-  url "stage/bicman.wrl"
-}
+ -- Holger Seelig <holger.seelig@yahoo.de>  Sat, 03 Nov 2012 10:12:32 +0100
