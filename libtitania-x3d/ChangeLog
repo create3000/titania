@@ -1,5 +1,12 @@
 2012-11-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Browser.cpp:
+	* Extrusion.h:
+	* Extrusion.cpp:
+	* X3DGeometryNode.cpp: 
+
+2012-11-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Extrusion.h:
 	* Extrusion.cpp:
 	* BrowserOptions.cpp: 

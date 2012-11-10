@@ -146,6 +146,8 @@ X3DGeometryNode::intersect (const Line3f & hitRay, Hit*) const
 void
 X3DGeometryNode::refineNormals (std::vector <Vector3f> & normals, const VertexMap & vertexMap, const float creaseAngle, const bool ccw)
 {
+	this -> ccw = ccw ? GL_CCW : GL_CW;
+
 	if (not ccw)                     // if refined normals are less then this then place this at the end
 	{
 		for (auto & normal : normals) // FIXME std::generate ???

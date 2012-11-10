@@ -87,7 +87,7 @@ Browser::initialize ()
 	GLfloat light_model_ambient [ ] = { 0, 0, 0, 1 };
 
 	glLightModelfv (GL_LIGHT_MODEL_AMBIENT,       light_model_ambient);
-	glLightModeli  (GL_LIGHT_MODEL_LOCAL_VIEWER,  0);
+	glLightModeli  (GL_LIGHT_MODEL_LOCAL_VIEWER,  GL_FALSE);
 	glLightModeli  (GL_LIGHT_MODEL_TWO_SIDE,      GL_TRUE);
 	//glLightModeli  (GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPARATE_SPECULAR_COLOR);
 
@@ -106,8 +106,8 @@ Browser::initialize ()
 
 	glEnable (GL_NORMALIZE);       // important
 
-	//glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-	//glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+	//glHint(GL_POINT_SMOOTH_HINT,   GL_NICEST);
+	//glHint(GL_LINE_SMOOTH_HINT,    GL_NICEST);
 	//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 
 	//glEnable(GL_POINT_SMOOTH);

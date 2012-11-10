@@ -117,90 +117,6 @@ Extrusion::initialize ()
 	}
 }
 
-Vector3f
-Extrusion::calculateSCPyAxis (const size_t i, const bool closed)
-{
-	Vector3f Y;
-
-	if (closed)
-	{
-		if (i > 0 and i < spine .size () - 1)
-			Y = spine .at (i + 1) - spine .at (i - 1);
-
-		else
-			Y = spine .at (1) - spine .at (spine .size () - 2);
-	}
-	else
-	{
-		if (i == 0)
-			Y = spine .at (1) - spine .at (0);
-
-		else if (i == spine .size () - 1)
-			Y = spine .at (spine .size () - 1) - spine .at (spine .size () - 2);
-
-		else
-			Y = spine .at (i + 1) - spine .at (i - 1);
-	}
-
-	return normalize (Y);
-}
-
-Vector3f
-Extrusion::calculateSCPzAxis (const size_t i, const bool closed)
-{
-	Vector3f z0, z1;
-
-	if (closed)
-	{
-		if (i > 0 and i < spine .size () - 1)
-		{
-			z0 = spine .at (i + 1) - spine .at (i);
-			z1 = spine .at (i - 1) - spine .at (i);
-		}
-		else
-		{
-			z0 = spine .at (1) - spine .at (0);
-			z1 = spine .at (spine .size () - 2) - spine .at (0);
-		}
-	}
-	else
-	{
-		if (spine .size () == 2)
-			return Vector3f ();
-		else if (i == 0)
-		{
-			z0 = spine .at (2) - spine .at (1);
-			z1 = spine .at (0) - spine .at (1);
-		}
-		else if (i == spine .size () - 1)
-		{
-			z0 = spine .at (spine .size () - 1) - spine .at (spine .size () - 2);
-			z1 = spine .at (spine .size () - 3) - spine .at (spine .size () - 2);
-		}
-		else
-		{
-			z0 = spine .at (i + 1) - spine .at (i);
-			z1 = spine .at (i - 1) - spine .at (i);
-		}
-	}
-
-	z0 = normalize (z0);
-	z1 = normalize (z1);
-
-	// test if spine segments are collinear. If they are, the cross
-	// product will not be reliable, and we should just use the previous
-	// Z-axis instead.
-	if (std::abs (dot (z0, z1)) == 1)
-		return Vector3f ();
-
-	Vector3f tmp = cross (z0, z1);
-
-	if (tmp == Vector3f ())
-		return Vector3f ();
-
-	return normalize (tmp);
-}
-
 std::vector <Vector3f>
 Extrusion::getPoints ()
 {
@@ -216,88 +132,78 @@ Extrusion::getPoints ()
 	Vector3f SCPyAxis;
 	Vector3f SCPzAxis;
 
-	bool colinear = false;
-
-	// find first non-collinear spine segments and calculate the first
-	// valid Y and Z axis
-	for (size_t i = 0; i < spine .size (); i ++)
-	{
-		SCPyAxis = calculateSCPyAxis (i, closedSpine);
-
-		if (SCPyAxis not_eq Vector3f ())
-		{
-			SCPyAxisPrevious = SCPyAxis;
-			break;
-		}
-	}
-
-	for (size_t i = 0; i < spine .size (); i ++)
-	{
-		SCPzAxis = calculateSCPzAxis (i, closedSpine);
-
-		if (SCPzAxis not_eq Vector3f ())
-		{
-			SCPzAxisPrevious = SCPzAxis;
-			break;
-		}
-	}
-
-	if (SCPyAxisPrevious == Vector3f ())
-		SCPyAxisPrevious = Vector3f (0, 1, 0);
-
-	if (SCPzAxisPrevious == Vector3f ())
-	{
-		// all spine segments are colinear, calculate constant Z axis
-		SCPzAxisPrevious = Vector3f (0, 0, 1);
-
-		if (SCPyAxisPrevious not_eq Vector3f (0, 1, 0))
-			SCPzAxisPrevious = Rotation4f (Vector3f (0, 1, 0), SCPyAxisPrevious) * SCPzAxisPrevious;
-
-		colinear = true;
-	}
-
 	// calculate SCPAxes
 
-	std::vector <Vector3f> SCPzAxes;
 	std::vector <Rotation4f> rotations;
-	SCPzAxes .reserve (spine .size ());
 	rotations .reserve (spine .size ());
-
-	for (size_t i = 0; i < spine .size (); i ++)
+	
+	// SCP for the first point:		
+	if (closedSpine)
 	{
-		if (colinear)
+		SCPyAxis = normalize (spine [1] - spine [spine .size () - 2]);
+		SCPzAxis = normalize (cross (spine [1] - spine [0], spine [spine .size () - 2] - spine [0]));
+	}
+	else
+	{
+		SCPyAxis = normalize (spine [1] - spine [0]);
+
+		// Find first defined Z-axis.
+		for (size_t i = 1; i < spine .size () - 1; i ++)
 		{
-			SCPyAxis = SCPyAxisPrevious;
+			SCPzAxis = normalize (cross (spine [i + 1] - spine [i] , spine [i - 1] - spine [i]));
+			if (SCPzAxis not_eq Vector3f ())
+				break;
+		}
+	}
+
+	// The entire spine is collinear:
+	if (SCPzAxis == Vector3f ())
+		SCPzAxis = Vector3f (0, 0, 1);
+
+	SCPxAxis = cross (SCPyAxis, SCPzAxis);
+	rotations .emplace_back (Rotation4f (Vector3f (0, 1, 0), SCPyAxis));
+
+	// For all points other than the first or last:
+
+	SCPzAxisPrevious = SCPzAxis;
+
+	for (size_t i = 1; i < spine .size () - 1; i ++)
+	{
+		SCPyAxis = normalize (spine [i + 1] - spine [i - 1]);
+		SCPzAxis = normalize (cross (spine [i + 1] - spine [i] , spine [i - 1] - spine [i]));
+		
+		// The three points used in computing the Z-axis are collinear.
+		if (SCPzAxis == Vector3f ())
 			SCPzAxis = SCPzAxisPrevious;
-		}
 		else
-		{
-			SCPyAxis = calculateSCPyAxis (i, closedSpine);
+			SCPzAxisPrevious = SCPzAxis;
+	
+		SCPxAxis = cross (SCPyAxis, SCPzAxis);
 
-			if (SCPyAxis == Vector3f ())
-				SCPyAxis = SCPyAxisPrevious;
+		rotations .emplace_back (Rotation4f (Vector3f (0, 1, 0), SCPyAxis));
 
-			SCPzAxis = calculateSCPzAxis (i, closedSpine);
+		std::cout << SCPzAxis << std::endl;
+	}
 
-			if (SCPzAxis == Vector3f ())
-				SCPzAxis = SCPzAxisPrevious;
+	// SCP for the last point
+	if (closedSpine)
+	{
+		// The SCP for the first and last points is the same.
+		rotations .emplace_back (rotations .front ());
+	}
+	else
+	{
+		SCPyAxis = normalize (spine [spine .size () - 1] - spine [spine .size () - 2]);
+		SCPzAxis = normalize (cross (spine [spine .size () - 1] - spine [spine .size () - 2] , spine [spine .size () - 3] - spine [spine .size () - 2]));
 
-			if (dot (SCPzAxis, SCPzAxisPrevious) < 0)
-				SCPzAxis = -SCPzAxis;
-		}
+		if (SCPzAxis == Vector3f ())
+			SCPzAxis = SCPzAxisPrevious;
 
-		SCPxAxis = normalize (cross (SCPyAxis, SCPzAxis));
-
-		SCPyAxisPrevious = SCPyAxis;
-		SCPzAxisPrevious = SCPzAxis;
-		
-		SCPzAxes .push_back (SCPzAxis);
-
-		
+		SCPxAxis = cross (SCPyAxis, SCPzAxis);
+	
 		rotations .emplace_back (Rotation4f (Vector3f (0, 1, 0), SCPyAxis));
 	}
 
-	// std::vector <Rotation4f> correctionRotations = createCorrectionRotations (SCPzAxes, rotations);
 
 	// calculate vertices.
 
@@ -305,19 +211,21 @@ Extrusion::getPoints ()
 	{
 		Matrix4f matrix;
 
-		matrix .translate (spine .at (i));
+		matrix .translate (spine [i]);
 
 		if (orientation .size ())
-			matrix .rotate (orientation .at (std::min (i, orientation .size () - 1)));
+			matrix .rotate (orientation [std::min (i, orientation .size () - 1)]);
 
 		matrix .rotate (rotations [i]);
 
 		if (scale .size ())
 		{
-			const Vector2f & s = scale .at (std::min (i, scale .size () - 1));
+			const Vector2f & s = scale [std::min (i, scale .size () - 1)];
 
 			matrix .scale (Vector3f (s .x (), 1, s .y ()));
 		}
+		
+		std::cout << matrix << std::endl;
 
 		for (const auto & vector : crossSection)
 			points .push_back (matrix .multVecMatrix (Vector3f (vector .getX (), 0, vector .getY ())));
@@ -335,7 +243,7 @@ Extrusion::build ()
 	if (spine .size () < 2 or crossSection .size () < 3)
 		return;
 
-	#define INDEX(a, b) ((a) * crossSection .size () + (b))
+	#define INDEX(n, k) ((n) * crossSection .size () + (k))
 
 	bool closedSpine        = spine .front () == spine .back ();
 	bool closedCrossSection = crossSection .front () == crossSection .back ();
@@ -359,13 +267,19 @@ Extrusion::build ()
 			size_t n1 = closedSpine and n == spine .size () - 2 ? 0 : n + 1;
 			size_t k1 = closedCrossSection and k == crossSection .size () - 2 ? 0 : k + 1;
 
-			// p4 - p3
-			//  | / |
-			// p1 - p2
+			
+			// k      k+1
+			// 
+			// p3 ----- p4   n+1
+			//  | \     |
+			//  |   \   |
+			//  |     \ | 
+			// p1 ----- p2   n
 
-			// (p3 - p1) x (p4 - p2)
-			Vector3f normal = normalize (cross (points [INDEX (n1, k1)] - points [INDEX (n1, k)], points [INDEX (n1, k)] - points [INDEX (n, k1)]));
+			// (p4 - p1) x (p3 - p2)
+			Vector3f normal = normalize (cross (points [INDEX (n1, k1)] - points [INDEX (n, k)], points [INDEX (n1, k)] - points [INDEX (n, k1)]));
 
+			std::cout << std::endl;
 			// tri 1
 
 			// p1
@@ -373,38 +287,50 @@ Extrusion::build ()
 			indices .push_back (INDEX (n, k));
 			vertexMap [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
+			
+			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
 
 			// p2
 			texCoords .push_back (Vector2f ((k + 1) / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1)));
 			indices .push_back (INDEX (n, k1));
 			vertexMap [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
+			
+			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
 
 			// p3
-			texCoords .push_back (Vector2f ((k + 1) / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1)));
-			indices .push_back (INDEX (n1, k1));
-			vertexMap [indices .back ()] .push_back (normals .size ());
-			normals .push_back (normal);
-
-			// tri 2
-
-			// p3
-			texCoords .push_back (Vector2f ((k + 1) / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1)));
-			indices .push_back (INDEX (n1, k1));
-			vertexMap [indices .back ()] .push_back (normals .size ());
-			normals .push_back (normal);
-
-			// p4
 			texCoords .push_back (Vector2f (k / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1)));
 			indices .push_back (INDEX (n1, k));
 			vertexMap [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
+			
+			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
 
-			// p1
-			texCoords .push_back (Vector2f (k / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1)));
-			indices .push_back (INDEX (n, k));
+			// tri 2
+
+			// p2
+			texCoords .push_back (Vector2f ((k + 1) / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1)));
+			indices .push_back (INDEX (n, k1));
 			vertexMap [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
+			
+			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
+
+			// p4
+			texCoords .push_back (Vector2f ((k + 1) / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1)));
+			indices .push_back (INDEX (n1, k1));
+			vertexMap [indices .back ()] .push_back (normals .size ());
+			normals .push_back (normal);
+			
+			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
+
+			// p3
+			texCoords .push_back (Vector2f (k / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1)));
+			indices .push_back (INDEX (n1, k));
+			vertexMap [indices .back ()] .push_back (normals .size ());
+			normals .push_back (normal);
+			
+			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
 		}
 	}
 

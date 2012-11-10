@@ -1,5 +1,13 @@
 #VRML V2.0 utf8
 
+META "title" "Octagon"
+
+Background {
+	skyColor 1 1 1
+}
+
+Viewpoint { }
+
 Transform {
   children Shape {
     appearance Appearance {
@@ -12,6 +20,7 @@ Transform {
         point [ 1 0 0, 0.70710678 0.70710678 0, 0 1 0, -0.70710678 0.70710678 0, -1 0 0, -0.70710678 -0.70710678 0, 0 -1 0, 0.70710678 -0.70710678 0 ]
       }
       coordIndex [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+      solid FALSE
     }
   }
 }

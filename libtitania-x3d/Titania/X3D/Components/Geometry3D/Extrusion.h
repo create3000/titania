@@ -91,12 +91,6 @@ private:
 	void
 	initialize ();
 
-	Vector3f
-	calculateSCPyAxis (const size_t, const bool);
-
-	Vector3f
-	calculateSCPzAxis (const size_t, const bool);
-
 	std::vector <Vector3f>
 	getPoints ();
 
