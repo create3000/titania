@@ -2186,6 +2186,8 @@
     <None Include="Tests\Geometry3D\Cube.wrl" />
     <None Include="Tests\Texturing\images\colors\bw.png" />
     <None Include="Tests\Texturing\test.wrl" />
+    <None Include="Tests\Extrusion\Cube.wrl" />
+    <None Include="Tests\Extrusion\Star.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

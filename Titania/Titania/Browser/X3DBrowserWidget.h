@@ -122,7 +122,7 @@ protected:
 	initialize ();
 
 	void
-	set_spashScreen ();
+	set_splashScreen ();
 
 	void
 	set_initialized ();

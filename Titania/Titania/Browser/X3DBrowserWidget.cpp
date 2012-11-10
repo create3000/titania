@@ -95,7 +95,7 @@ X3DBrowserWidget::initialize ()
 	// Splash Screen.
 
 	// Connect to map_event
-	getBrowser () -> initialized .addInterest (this, &X3DBrowserWidget::set_spashScreen);
+	getBrowser () -> initialized .addInterest (this, &X3DBrowserWidget::set_splashScreen);
 
 	// Insert Surface, this will initialize the Browser.
 	getSurfaceBox () .pack_start (getSurface (), true, true, 0);
@@ -105,11 +105,11 @@ X3DBrowserWidget::initialize ()
 }
 
 void
-X3DBrowserWidget::set_spashScreen ()
+X3DBrowserWidget::set_splashScreen ()
 {
 	__LOG__ << std::endl;
 
-	getBrowser () -> initialized .removeInterest (this, &X3DBrowserWidget::set_spashScreen);
+	getBrowser () -> initialized .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
 
 	// Register browser interests.
 	getBrowser () -> finished .addInterest (this, &X3DBrowserWidget::set_initialized);

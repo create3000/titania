@@ -58,6 +58,7 @@
 #include <queue>
 #include <vector>
 using namespace titania;
+using namespace titania::basic;
 
 //void
 //callback1 ()
@@ -670,34 +671,24 @@ test_path (const basic::path & path)
 	
 }
 
+typedef math::vector3 <float>   Vector3f;
+typedef math::rotation4 <float> Rotation4f;
+
 int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 
-	//	union Pixel
-	//	{
-	//		uint32_t uint32;
-	//		uint8_t uint8 [4];
-	//	};
-	//
-	//	Pixel value [2];
-	//	value [0] .uint32 = 0x01020304;
-	//	value [1] .uint32 = 0x05060708;
-	//	uint8_t* pointer  = value [0] .uint8;
-	//
-	//
-	//	std::clog << std::hex << (uint32_t) value [0] .uint32 << std::endl;
-	//	std::clog << std::hex << (uint32_t) value [1] .uint8 [3] << std::endl;
-	//
-	//	std::clog << std::hex << (uint32_t) pointer [0] << std::endl;
+	std::clog << Rotation4f (Vector3f (0, 1, 0), Vector3f (1,  0, 0)) << std::endl;
+	std::clog << Rotation4f (Vector3f (0, 1, 0), Vector3f (0, -1, 0)) << std::endl;
+	std::clog << Rotation4f (Vector3f (1, 0, 0), Vector3f (-1, 0, 0)) << std::endl;
 
-	test_path (basic::path ("/"));
-	test_path (basic::path ("/", "/"));
-	test_path (basic::path ("home", "/"));
-	test_path (basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
-	test_path (basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
-	test_path (basic::path ("/home/holger/Projekte/../../../.././${Version}/pages/about/home.wrl/..", "/"));
+//	test_path (basic::path ("/"));
+//	test_path (basic::path ("/", "/"));
+//	test_path (basic::path ("home", "/"));
+//	test_path (basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
+//	test_path (basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
+//	test_path (basic::path ("/home/holger/Projekte/../../../.././${Version}/pages/about/home.wrl/..", "/"));
 	
 	//	basic::ifilestream stream = get_stream ();
 	//

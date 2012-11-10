@@ -133,6 +133,18 @@ private:
 	parseOptions (int &, char** &);
 
 	void
+	resizeSession (size_t);
+
+	size_t
+	getNumPages () const;
+	
+	void
+	setCurrentPage (size_t);
+	
+	size_t
+	getCurrentPage () const;
+
+	void
 	insertPage (size_t);
 
 	Gtk::HBox*

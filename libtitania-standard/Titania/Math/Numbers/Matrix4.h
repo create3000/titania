@@ -107,6 +107,8 @@ public:
 
 	///  @name Constructors
 
+	///@{
+	//@{
 	///  Default constructor. A new matrix initialized with the identity matrix is created and returned.
 	constexpr
 	matrix4 () :
@@ -153,9 +155,13 @@ public:
 	///  Constructs a matrix4 from a matrix3.
 	matrix4 (const matrix3 <Type> & matrix)
 	{ *this = matrix; }
+	//@}
+	///@}
 
 	///  @name Assignment operators
 
+	///@{
+	//@{
 	template <class Up>
 	matrix4 &
 	operator = (const matrix3 <Up> &);
@@ -163,9 +169,12 @@ public:
 	template <class Up>
 	matrix4 &
 	operator = (const matrix4 <Up> &);
+	//@}
+	///@}
 
 	///  @name Element access
 
+	///@{
 	//@{
 	///  Returns pointer to the underlying array serving as element storage.
 	///  Specifically the pointer is such that range [data (); data () + size ()) is valid.
@@ -276,9 +285,11 @@ public:
 	constexpr vector4_type
 	operator [ ] (const size_type index) const { return value [index]; }
 	//@}
+	///@}
 
 	///  @name Capacity
 
+	///@{
 	///  Returns the order of the matrix.
 	static
 	constexpr size_type
@@ -288,18 +299,17 @@ public:
 	static
 	constexpr size_type
 	size () { return Size; }
+	///@}
 
 	///  @name  Arithmetic operations
-	///  All these operators modify this vector2 inplace.
+	///  All these operators modify this matrix4 inplace.
 
+	///@{
 	Type
 	determinant () const;
 
 	matrix4
 	inverse () const;
-
-	matrix4
-	operator ~ () const;
 
 	matrix4
 	transpose () const;
@@ -338,8 +348,7 @@ public:
 
 	void
 	scale (const vector3 <Type> &);
-
-	static const matrix4 Identity;
+	///@}
 
 
 private:
@@ -362,6 +371,8 @@ private:
 		array_type array;
 	};
 
+	static const matrix4 Identity;
+
 };
 
 template <class Type>
@@ -373,12 +384,12 @@ const matrix4 <Type> matrix4 <Type>::Identity = { 1, 0, 0, 0,
 template <class Type>
 template <class Up>
 matrix4 <Type> &
-matrix4 <Type>::operator = (const matrix3 <Up> & m)
+matrix4 <Type>::operator = (const matrix3 <Up> & matrix)
 {
-	set (m [0], m [1], 0, m [2],
-	     m [3], m [4], 0, m [5],
+	set (matrix [0], matrix [1], 0, matrix [2],
+	     matrix [3], matrix [4], 0, matrix [5],
 	     0, 0, 1, 0,
-	     m [6], m [7], 0, m [8]);
+	     matrix [6], matrix [7], 0, matrix [8]);
 
 	return *this;
 }
@@ -665,7 +676,7 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
 {
 	matrix4 a (*this);
 
-	for (size_t i = 0; i < 3; i ++)
+	for (size_t i = 0; i < 3; ++ i)
 	{
 		translation [i]  = value [3] [i];
 		a .value [3] [i] = a .value [i] [3] = 0;
@@ -698,7 +709,7 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
 	// Compute s = sqrt(evalues), with sign. Set si = s-inverse
 	matrix4 si;
 
-	for (size_t i = 0; i < 3; i ++)
+	for (size_t i = 0; i < 3; ++ i)
 	{
 		scale [i]         = det_sign * std::sqrt (evalues [i]);
 		si .value [i] [i] = 1 / scale [i];
@@ -773,13 +784,6 @@ matrix4 <Type>::inverse () const
 	                       det3 (0, 2, 3, 0, 1, 2) / det,
 	                       -det3 (0, 1, 3, 0, 1, 2) / det,
 	                       det3 (0, 1, 2, 0, 1, 2) / det);
-}
-
-template <class Type>
-matrix4 <Type>
-matrix4 <Type>::operator ~ () const
-{
-	return inverse ();
 }
 
 template <class Type>
@@ -970,20 +974,30 @@ matrix4 <Type>::scale (const vector3 <Type> & scaleFactor)
 ///  @name Arithmetic operations
 
 ///@{
-///  Return matrix value @a a right multiplied by @a b.
+//@{
+///  Returns the inverse of the @a matrix.
+template <class Type>
+matrix4 <Type>
+operator ~ (const matrix4 <Type> & matrix)
+{
+	return matrix .inverse ();
+}
+
+///  Return matrix value @a lhs right multiplied by @a rhs.
 template <class Type>
 matrix4 <Type>
 operator * (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 {
 	return lhs .multRight (rhs);
 }
-
+//@}
 ///@}
 
 ///  @relates matrix4
 ///  @name Comparision operations
 
 ///@{
+//@{
 ///  Compares two matrix4 numbers.
 ///  Return true if @a a is equal to @a b.
 template <class Type>
@@ -1001,10 +1015,10 @@ operator not_eq (const matrix4 <Type> & a, const matrix4 <Type> & b)
 {
 	return a .vector () not_eq b .vector ();
 }
-
+//@}
 ///@}
 
-///  @relates vector4
+///  @relates matrix4
 ///  @name Input/Output operations
 
 ///@{

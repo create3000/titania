@@ -123,6 +123,16 @@ X3DBrowserUserInterface::restoreSession ()
 		getSideBarAction () -> activate ();
 
 	getSideBarNotebook () .set_current_page (getConfig () .integer ("sidebarCurrentPage"));
+	
+	// Shading
+	if (getConfig () .string ("shading") == "GOURAUD")
+		getGouraudMenuItem () .activate ();
+	else if (getConfig () .string ("shading") == "WIREFRAME")
+		getWireFrameMenuItem () .activate ();
+	else if (getConfig () .string ("shading") == "POINTSET")
+		getPointSetMenuItem () .activate ();
+
+	getBrowser () -> getBrowserOptions () -> shading = getConfig () .string ("shading");
 
 	// RenderingProperties
 	getRenderingPropertiesMenuItem () .set_active (getConfig () .boolean ("renderingProperties"));
@@ -155,6 +165,7 @@ X3DBrowserUserInterface::saveSession ()
 	getConfig () .setItem ("sideBar",       getSideBarMenuItem ()       .get_active ());
 	getConfig () .setItem ("footer",        getFooterMenuItem  ()       .get_active ());
 
+	getConfig () .setItem ("shading", getBrowser () -> getBrowserOptions () -> shading);
 	getConfig () .setItem ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
 
 	getConfig () .setItem ("sidebarCurrentPage", getSideBarNotebook () .get_current_page ());

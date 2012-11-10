@@ -112,6 +112,8 @@ BrowserOptions::initialize ()
 	quadSphere -> setup ();
 
 	shading .addInterest (this, &BrowserOptions::set_shading);
+	
+	set_shading ();
 }
 
 void

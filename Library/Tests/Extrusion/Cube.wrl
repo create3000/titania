@@ -1,0 +1,22 @@
+#VRML V2.0 utf8 CosmoWorlds V1.0
+
+META "title" "Extrusion Cube"
+
+Viewpoint {
+  position -0.5 -0.5 2.59077
+  centerOfRotation -0.5 -0.5 0.5
+}
+
+Group {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Extrusion {
+      creaseAngle 1
+      crossSection [ 0 0, 1 0, 1 1, 0 1, 0 0  ]
+      spine [ 0 0 0, 0 -1 0 ]
+      solid FALSE
+    }
+  }
+}

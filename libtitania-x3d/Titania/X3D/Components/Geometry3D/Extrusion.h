@@ -97,9 +97,6 @@ private:
 	Vector3f
 	calculateSCPzAxis (const size_t, const bool);
 
-	std::vector <Matrix4f>
-	createCorrectionRotations (const std::vector <Vector3f> &, const std::vector <Matrix4f> &);
-
 	std::vector <Vector3f>
 	getPoints ();
 

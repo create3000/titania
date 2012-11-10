@@ -263,20 +263,17 @@ template <class Type>
 template <class T>
 rotation4 <Type>::rotation4 (const vector3 <T> & fromVector, const vector3 <T> & toVector)
 {
-	Type mod = abs (fromVector) * abs (toVector);
+	Type cos_theta = dot (normalize (fromVector), normalize (toVector));
 
-	if (mod == 0)
+	if (cos_theta > -1)
 	{
-		value = quaternion <Type> (0, 0, 0, 1);
-		return;
+		Type angle = std::acos (cos_theta);
+		*this = rotation4 (cross (fromVector, toVector), angle);
 	}
-
-	Type dotprod = dot (fromVector, toVector);
-	Type angle   = std::acos (dotprod / mod);
-
-	*this = rotation4 (cross (fromVector, toVector), angle);
+	else
+		*this = rotation4 (0, 0, 1, M_PI);
 }
-
+				
 template <class Type>
 template <class T>
 inline

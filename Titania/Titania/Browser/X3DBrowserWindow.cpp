@@ -87,6 +87,28 @@ X3DBrowserWindow::run ()
 }
 
 void
+X3DBrowserWindow::initialize ()
+{
+	X3DBrowserWindowUI::initialize ();
+
+	// AddTabLabel
+
+	getAddTabButton () .set_image (*Gtk::manage (new Gtk::Image (Gtk::StockID ("gtk-add"),
+	                                                             Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR))));
+
+	// Start with file from options or home page.
+
+	if (remainingOptions .size ())
+	{
+		resizeSession (1);
+		getConfig () .getSession (0) .getDirectory ("BrowserWidget") .setItem ("worldURL", 
+		                                                                       basic::uri ("file://", remainingOptions [0] .raw ()));
+	}
+
+	restoreSession ();
+}
+
+void
 X3DBrowserWindow::parseOptions (int & argc, char** & argv)
 {
 	// Create and intialize option parser.
@@ -121,25 +143,6 @@ X3DBrowserWindow::parseOptions (int & argc, char** & argv)
 }
 
 void
-X3DBrowserWindow::initialize ()
-{
-	X3DBrowserWindowUI::initialize ();
-
-	// AddTabLabel
-
-	getAddTabButton () .set_image (*Gtk::manage (new Gtk::Image (Gtk::StockID ("gtk-add"),
-	                                                             Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR))));
-
-	// Start with file from options or home page.
-
-	if (remainingOptions .size ())
-		loadURL ({ remainingOptions [0] });
-
-	else
-		restoreSession ();
-}
-
-void
 X3DBrowserWindow::restoreSession ()
 {
 	Configuration sessions = getConfig () .getDirectory ("Sessions");
@@ -149,7 +152,7 @@ X3DBrowserWindow::restoreSession ()
 	if (not getConfig () .integer ("sessions"))
 	{
 		insertPage (0);
-		getNotebook () .set_current_page (0);
+		setCurrentPage (0);
 		return;
 	}
 
@@ -160,24 +163,20 @@ X3DBrowserWindow::restoreSession ()
 	for (size_t position = 0; position < numSessions; ++ position)
 		insertPage (position);
 
-	getNotebook () .set_current_page (getConfig () .integer ("currentPage"));
+	setCurrentPage (getConfig () .integer ("currentPage"));
 }
 
 void
 X3DBrowserWindow::close ()
 {
 	// Remove sessions.
-
-	Configuration sessions    = getConfig () .getDirectory ("Sessions");
-	size_t        numSessions = sessions .getDirectories () .size ();
-
-	for (size_t i = browserWidgets .size (); i < numSessions; ++ i)
-		sessions .getDirectory (std::to_string (i)) .remove ();
+		
+	resizeSession (browserWidgets .size ());
 
 	// Save sessions.
 
 	getConfig () .setItem ("sessions",    browserWidgets .size ());
-	getConfig () .setItem ("currentPage", getNotebook () .get_current_page ());
+	getConfig () .setItem ("currentPage", getCurrentPage ());
 
 	for (size_t i = 0; i < browserWidgets .size (); ++ i)
 		browserWidgets [i] -> saveSession (getConfig () .getSession (i) .getKey ());
@@ -185,12 +184,22 @@ X3DBrowserWindow::close ()
 	quit ();
 }
 
+void
+X3DBrowserWindow::resizeSession (size_t size)
+{
+	Configuration sessions    = getConfig () .getDirectory ("Sessions");
+	size_t        numSessions = sessions .getDirectories () .size ();
+
+	for (size_t i = size; i < numSessions; ++ i)
+		sessions .getDirectory (std::to_string (i)) .remove ();
+}
+
 // X3DX3DBrowserWindowUserInterace
 
 const std::shared_ptr <BrowserWidget> &
 X3DBrowserWindow::getBrowserWidget () const
 {
-	return browserWidgets [getNotebook () .get_current_page ()];
+	return browserWidgets [getCurrentPage ()];
 }
 
 // X3DBaseNode
@@ -206,7 +215,7 @@ X3DBrowserWindow::setDescription (const std::string & value)
 throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
        X3D::Error <X3D::DISPOSED>)
 {
-	Gtk::Widget* child = getNotebook () .get_children () [getNotebook () .get_current_page ()];
+	Gtk::Widget* child = getNotebook () .get_children () [getCurrentPage ()];
 
 	Gtk::HBox*  tab_label = setTabLabel (*child);
 	Gtk::Label* label     = new Gtk::Label (value);
@@ -240,12 +249,18 @@ throw (X3D::Error <X3D::INVALID_URL>,
        X3D::Error <X3D::URL_UNAVAILABLE>,
        X3D::Error <X3D::INVALID_X3D>)
 {
-	size_t position = getNotebook () .get_n_pages () - 1;
-
-	insertPage (position);
-	browserWidgets [position] -> loadURL (url);
-
-	getNotebook () .set_current_page (position);
+	if (parameter .size () or not getNumPages ())
+	{
+		// Insert new page
+		size_t position = getNumPages ();
+		insertPage (position);
+		browserWidgets [position] -> loadURL (url);
+		setCurrentPage (position);
+	}
+	
+	else
+		getBrowserWidget () -> loadURL (url);
+	
 }
 
 void
@@ -254,7 +269,25 @@ throw (X3D::Error <X3D::INVALID_URL>,
        X3D::Error <X3D::URL_UNAVAILABLE>,
        X3D::Error <X3D::INVALID_X3D>)
 {
-	getBrowserWidget () -> loadURL (url);
+	loadURL (url, { });
+}
+
+size_t
+X3DBrowserWindow::getNumPages () const
+{
+	return getNotebook () .get_n_pages () - 1;
+}
+
+void
+X3DBrowserWindow::setCurrentPage (size_t position)
+{
+	getNotebook () .set_current_page (position);
+}
+
+size_t
+X3DBrowserWindow::getCurrentPage () const
+{
+	return getNotebook () .get_current_page ();
 }
 
 void

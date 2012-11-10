@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkToggleAction" id="FooterAction">
+    <signal name="toggled" handler="on_footer_toggled" swapped="no"/>
+  </object>
+  <object class="GtkIconFactory" id="IconFactory"/>
+  <object class="GtkToggleAction" id="SideBarAction">
+    <signal name="toggled" handler="on_sideBar_toggled" swapped="no"/>
+  </object>
   <object class="GtkFileFilter" id="FileFilerX3D">
     <mime-types>
       <mime-type>model/vrml</mime-type>
@@ -21,13 +28,6 @@
     <patterns>
       <pattern>*</pattern>
     </patterns>
-  </object>
-  <object class="GtkToggleAction" id="FooterAction">
-    <signal name="toggled" handler="on_footer_toggled" swapped="no"/>
-  </object>
-  <object class="GtkIconFactory" id="IconFactory"/>
-  <object class="GtkToggleAction" id="SideBarAction">
-    <signal name="toggled" handler="on_sideBar_toggled" swapped="no"/>
   </object>
   <object class="GtkFileChooserDialog" id="FileOpenDialog">
     <property name="can_focus">False</property>
@@ -415,6 +415,7 @@
                                 <property name="use_underline">True</property>
                                 <property name="active">True</property>
                                 <property name="draw_as_radio">True</property>
+                                <accelerator key="F3" signal="activate"/>
                                 <signal name="activate" handler="gouraud_activate" swapped="no"/>
                               </object>
                             </child>
@@ -426,6 +427,7 @@
                                 <property name="use_underline">True</property>
                                 <property name="draw_as_radio">True</property>
                                 <property name="group">GouraudMenuItem</property>
+                                <accelerator key="F2" signal="activate"/>
                                 <signal name="activate" handler="wireframe_activate" swapped="no"/>
                               </object>
                             </child>
@@ -437,6 +439,7 @@
                                 <property name="use_underline">True</property>
                                 <property name="draw_as_radio">True</property>
                                 <property name="group">GouraudMenuItem</property>
+                                <accelerator key="F1" signal="activate"/>
                                 <signal name="activate" handler="pointset_activate" swapped="no"/>
                               </object>
                             </child>

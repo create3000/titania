@@ -17,6 +17,9 @@ NavigationInfo {
   transitionType "ANIMATE"
   type [ "EXAMINE", "WALK", "FLY", "ANY" ]
 }
+
+Viewpoint { }
+
 Transform {
   translation 0 0 -10
   children Shape {
