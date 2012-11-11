@@ -115,7 +115,7 @@ Extrusion::initialize ()
 }
 
 std::vector <Vector3f>
-Extrusion::getPoints ()
+Extrusion::createPoints ()
 {
 	std::vector <Vector3f> points;
 	points .reserve (spine .size () * crossSection .size ());
@@ -133,8 +133,8 @@ Extrusion::getPoints ()
 
 	std::vector <Rotation4f> rotations;
 	rotations .reserve (spine .size ());
-	
-	// SCP for the first point:		
+
+	// SCP for the first point:
 	if (closedSpine)
 	{
 		SCPyAxis = normalize (spine [1] - spine [spine .size () - 2]);
@@ -147,7 +147,8 @@ Extrusion::getPoints ()
 		// Find first defined Z-axis.
 		for (size_t i = 1; i < spine .size () - 1; i ++)
 		{
-			SCPzAxis = normalize (cross (spine [i + 1] - spine [i] , spine [i - 1] - spine [i]));
+			SCPzAxis = normalize (cross (spine [i + 1] - spine [i], spine [i - 1] - spine [i]));
+
 			if (SCPzAxis not_eq Vector3f ())
 				break;
 		}
@@ -167,14 +168,14 @@ Extrusion::getPoints ()
 	for (size_t i = 1; i < spine .size () - 1; i ++)
 	{
 		SCPyAxis = normalize (spine [i + 1] - spine [i - 1]);
-		SCPzAxis = normalize (cross (spine [i + 1] - spine [i] , spine [i - 1] - spine [i]));
-		
+		SCPzAxis = normalize (cross (spine [i + 1] - spine [i], spine [i - 1] - spine [i]));
+
 		// The three points used in computing the Z-axis are collinear.
 		if (SCPzAxis == Vector3f ())
 			SCPzAxis = SCPzAxisPrevious;
 		else
 			SCPzAxisPrevious = SCPzAxis;
-	
+
 		SCPxAxis = cross (SCPyAxis, SCPzAxis);
 
 		rotations .emplace_back (Rotation4f (Vector3f (0, 1, 0), SCPyAxis));
@@ -191,16 +192,15 @@ Extrusion::getPoints ()
 	else
 	{
 		SCPyAxis = normalize (spine [spine .size () - 1] - spine [spine .size () - 2]);
-		SCPzAxis = normalize (cross (spine [spine .size () - 1] - spine [spine .size () - 2] , spine [spine .size () - 3] - spine [spine .size () - 2]));
+		SCPzAxis = normalize (cross (spine [spine .size () - 1] - spine [spine .size () - 2], spine [spine .size () - 3] - spine [spine .size () - 2]));
 
 		if (SCPzAxis == Vector3f ())
 			SCPzAxis = SCPzAxisPrevious;
 
 		SCPxAxis = cross (SCPyAxis, SCPzAxis);
-	
+
 		rotations .emplace_back (Rotation4f (Vector3f (0, 1, 0), SCPyAxis));
 	}
-
 
 	// calculate vertices.
 
@@ -221,7 +221,7 @@ Extrusion::getPoints ()
 
 			matrix .scale (Vector3f (s .x (), 1, s .y ()));
 		}
-		
+
 		std::cout << matrix << std::endl;
 
 		for (const auto & vector : crossSection)
@@ -246,7 +246,7 @@ Extrusion::build ()
 	bool closedCrossSection = crossSection .front () == crossSection .back ();
 	size_t capPoints        = closedCrossSection ? crossSection .size () - 1 : crossSection .size ();
 
-	std::vector <Vector3f> points = getPoints ();
+	std::vector <Vector3f> points = createPoints ();
 	std::vector <Vector2f> texCoords;
 	std::vector <Vector3f> normals;
 	std::vector <size_t> indices;
@@ -264,13 +264,12 @@ Extrusion::build ()
 			size_t n1 = closedSpine and n == spine .size () - 2 ? 0 : n + 1;
 			size_t k1 = closedCrossSection and k == crossSection .size () - 2 ? 0 : k + 1;
 
-			
 			// k      k+1
-			// 
+			//
 			// p3 ----- p4   n+1
 			//  | \     |
 			//  |   \   |
-			//  |     \ | 
+			//  |     \ |
 			// p1 ----- p2   n
 
 			// (p4 - p1) x (p3 - p2)
@@ -284,7 +283,7 @@ Extrusion::build ()
 			indices .push_back (INDEX (n, k));
 			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
-			
+
 			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
 
 			// p2
@@ -292,7 +291,7 @@ Extrusion::build ()
 			indices .push_back (INDEX (n, k1));
 			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
-			
+
 			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
 
 			// p3
@@ -300,7 +299,7 @@ Extrusion::build ()
 			indices .push_back (INDEX (n1, k));
 			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
-			
+
 			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
 
 			// tri 2
@@ -310,7 +309,7 @@ Extrusion::build ()
 			indices .push_back (INDEX (n, k1));
 			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
-			
+
 			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
 
 			// p4
@@ -318,7 +317,7 @@ Extrusion::build ()
 			indices .push_back (INDEX (n1, k1));
 			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
-			
+
 			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
 
 			// p3
@@ -326,18 +325,18 @@ Extrusion::build ()
 			indices .push_back (INDEX (n1, k));
 			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
-			
+
 			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
 		}
 	}
 
-	Vector2f min = crossSection .at (0);
-	Vector2f max = crossSection .at (0);
+	Vector2f min = crossSection [0];
+	Vector2f max = crossSection [0];
 
 	for (size_t k = 1; k < crossSection .size (); k ++)
 	{
-		min = math::min <float> (min, crossSection .at (k));
-		max = math::max <float> (max, crossSection .at (k));
+		min = math::min <float> (min, crossSection [k]);
+		max = math::max <float> (max, crossSection [k]);
 	}
 
 	Vector2f size = max - min;
@@ -369,7 +368,7 @@ Extrusion::build ()
 			{
 				switch (polygonElement .type)
 				{
-					case GL_TRIANGLE_FAN:
+					case GL_TRIANGLE_FAN :
 
 						for (size_t _i = 1; _i < polygonElement .vertices .size () - 1; ++ _i)
 						{
@@ -416,23 +415,23 @@ Extrusion::build ()
 			{
 				switch (polygonElement .type)
 				{
-					case GL_TRIANGLE_FAN:
+					case GL_TRIANGLE_FAN :
 
 						for (size_t _i = 1; _i < polygonElement .vertices .size () - 1; ++ _i)
 						{
-							Vector2f t = (min + crossSection .at (polygonElement .vertices [0] -> k)) / size;
+							Vector2f t = (min + crossSection [polygonElement .vertices [0] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [0] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
-							t = (min + crossSection .at (polygonElement .vertices [_i] -> k)) / size;
+							t = (min + crossSection [polygonElement .vertices [_i] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
-							t = (min + crossSection .at (polygonElement .vertices [_i + 1] -> k)) / size;
+							t = (min + crossSection [polygonElement .vertices [_i + 1] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 1] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
@@ -444,19 +443,19 @@ Extrusion::build ()
 
 						for (size_t _i = 0; _i < polygonElement .vertices .size () - 2; ++ _i)
 						{
-							Vector2f t = (min + crossSection .at (polygonElement .vertices [_i % 2 ? _i + 1 : _i] -> k)) / size;
+							Vector2f t = (min + crossSection [polygonElement .vertices [_i % 2 ? _i + 1 : _i] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i % 2 ? _i + 1 : _i] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
-							t = (min + crossSection .at (polygonElement .vertices [_i % 2 ? _i : _i + 1] -> k)) / size;
+							t = (min + crossSection [polygonElement .vertices [_i % 2 ? _i : _i + 1] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i % 2 ? _i : _i + 1] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
-							t = (min + crossSection .at (polygonElement .vertices [_i + 2] -> k)) / size;
+							t = (min + crossSection [polygonElement .vertices [_i + 2] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 2] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
@@ -468,19 +467,19 @@ Extrusion::build ()
 
 						for (size_t _i = 0; _i < polygonElement .vertices .size (); _i += 3)
 						{
-							Vector2f t = (min + crossSection .at (polygonElement .vertices [_i] -> k)) / size;
+							Vector2f t = (min + crossSection [polygonElement .vertices [_i] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
-							t = (min + crossSection .at (polygonElement .vertices [_i + 1] -> k)) / size;
+							t = (min + crossSection [polygonElement .vertices [_i + 1] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 1] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
-							t = (min + crossSection .at (polygonElement .vertices [_i + 2] -> k)) / size;
+							t = (min + crossSection [polygonElement .vertices [_i + 2] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 2] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
@@ -524,7 +523,7 @@ Extrusion::build ()
 			{
 				switch (polygonElement .type)
 				{
-					case GL_TRIANGLE_FAN:
+					case GL_TRIANGLE_FAN :
 
 						for (size_t _i = 1; _i < polygonElement .vertices .size () - 1; ++ _i)
 						{
@@ -571,23 +570,23 @@ Extrusion::build ()
 			{
 				switch (polygonElement .type)
 				{
-					case GL_TRIANGLE_FAN:
+					case GL_TRIANGLE_FAN :
 
 						for (size_t _i = 1; _i < polygonElement .vertices .size () - 1; ++ _i)
 						{
-							Vector2f t = (min + crossSection .at (polygonElement .vertices [0] -> k)) / size;
+							Vector2f t = (min + crossSection [polygonElement .vertices [0] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [0] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
-							t = (min + crossSection .at (polygonElement .vertices [_i] -> k)) / size;
+							t = (min + crossSection [polygonElement .vertices [_i] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
-							t = (min + crossSection .at (polygonElement .vertices [_i + 1] -> k)) / size;
+							t = (min + crossSection [polygonElement .vertices [_i + 1] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 1] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
@@ -599,19 +598,19 @@ Extrusion::build ()
 
 						for (size_t _i = 0; _i < polygonElement .vertices .size () - 2; ++ _i)
 						{
-							Vector2f t = (min + crossSection .at (polygonElement .vertices [_i % 2 ? _i + 1 : _i] -> k)) / size;
+							Vector2f t = (min + crossSection [polygonElement .vertices [_i % 2 ? _i + 1 : _i] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i % 2 ? _i + 1 : _i] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
-							t = (min + crossSection .at (polygonElement .vertices [_i % 2 ? _i : _i + 1] -> k)) / size;
+							t = (min + crossSection [polygonElement .vertices [_i % 2 ? _i : _i + 1] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i % 2 ? _i : _i + 1] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
-							t = (min + crossSection .at (polygonElement .vertices [_i + 2] -> k)) / size;
+							t = (min + crossSection [polygonElement .vertices [_i + 2] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 2] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
@@ -623,19 +622,19 @@ Extrusion::build ()
 
 						for (size_t _i = 0; _i < polygonElement .vertices .size (); _i += 3)
 						{
-							Vector2f t = (min + crossSection .at (polygonElement .vertices [_i] -> k)) / size;
+							Vector2f t = (min + crossSection [polygonElement .vertices [_i] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
-							t = (min + crossSection .at (polygonElement .vertices [_i + 1] -> k)) / size;
+							t = (min + crossSection [polygonElement .vertices [_i + 1] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 1] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
-							t = (min + crossSection .at (polygonElement .vertices [_i + 2] -> k)) / size;
+							t = (min + crossSection [polygonElement .vertices [_i + 2] -> k]) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 2] -> i);
 							normalIndex [indices .back ()] .push_back (normals .size ());
@@ -659,48 +658,27 @@ Extrusion::build ()
 
 	for (size_t i = 0; i < indices .size (); i += 3)
 	{
-		getGLTexCoord () -> push_back (texCoords [i] .x ());
-		getGLTexCoord () -> push_back (texCoords [i] .y ());
-
-		getGLNormals () -> push_back (normals [i] .x ());
-		getGLNormals () -> push_back (normals [i] .y ());
-		getGLNormals () -> push_back (normals [i] .z ());
-
-		getGLPoints () -> push_back (points [indices [i]] .x ());
-		getGLPoints () -> push_back (points [indices [i]] .y ());
-		getGLPoints () -> push_back (points [indices [i]] .z ());
+		getTexCoord () .emplace_back (texCoords [i]);
+		getNormals  () .emplace_back (normals [i]);
+		getVertices () .emplace_back (points [indices [i]]);
 
 		++ glIndices;
 
-		getGLTexCoord () -> push_back (texCoords [i + 1] .x ());
-		getGLTexCoord () -> push_back (texCoords [i + 1] .y ());
-
-		getGLNormals () -> push_back (normals [i + 1] .x ());
-		getGLNormals () -> push_back (normals [i + 1] .y ());
-		getGLNormals () -> push_back (normals [i + 1] .z ());
-
-		getGLPoints () -> push_back (points [indices [i + 1]] .x ());
-		getGLPoints () -> push_back (points [indices [i + 1]] .y ());
-		getGLPoints () -> push_back (points [indices [i + 1]] .z ());
+		getTexCoord () .emplace_back (texCoords [i + 1]);
+		getNormals  () .emplace_back (normals [i + 1]);
+		getVertices () .emplace_back (points [indices [i + 1]]);
 
 		++ glIndices;
 
-		getGLTexCoord () -> push_back (texCoords [i + 2] .x ());
-		getGLTexCoord () -> push_back (texCoords [i + 2] .y ());
-
-		getGLNormals () -> push_back (normals [i + 2] .x ());
-		getGLNormals () -> push_back (normals [i + 2] .y ());
-		getGLNormals () -> push_back (normals [i + 2] .z ());
-
-		getGLPoints () -> push_back (points [indices [i + 2]] .x ());
-		getGLPoints () -> push_back (points [indices [i + 2]] .y ());
-		getGLPoints () -> push_back (points [indices [i + 2]] .z ());
+		getTexCoord () .emplace_back (texCoords [i + 2]);
+		getNormals  () .emplace_back (normals [i + 2]);
+		getVertices () .emplace_back (points [indices [i + 2]]);
 
 		++ glIndices;
 	}
 
-	setGLMode (GL_TRIANGLES);
-	setGLIndices (glIndices);
+	setVertexMode (GL_TRIANGLES);
+	setNumIndices (glIndices);
 }
 
 void

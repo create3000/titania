@@ -93,7 +93,7 @@ private:
 	initialize ();
 
 	std::vector <Vector3f>
-	getPoints ();
+	createPoints ();
 
 	void
 	build ();

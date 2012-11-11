@@ -56,11 +56,11 @@ X3DGeometryNode::X3DGeometryNode () :
 	             ccw (true),  // SFBool  [ ]      ccw              TRUE
 	           solid (true),  // SFBool  [ ]      solid            TRUE
 	     creaseAngle (),      // SFFloat [ ]      creaseAngle      0           [0,∞)
-	     static_draw (false), 
 	texCoordBufferId (0),     
 	   colorBufferId (0),     
 	  normalBufferId (0),     
-	   pointBufferId (0)      
+	   pointBufferId (0),      
+	     bufferUsage (GL_STATIC_DRAW) 
 {
 	addNodeType (X3DGeometryNodeType);
 }
@@ -101,16 +101,13 @@ X3DGeometryNode::createBBox ()
 {
 	if (glIndices >= 3)
 	{
-		Vector3f min = Vector3f (glPoints [0], glPoints [1], glPoints [2]);
+		Vector3f min = glPoints [0];
 		Vector3f max = min;
 
-		int points = glIndices * 3;
-
-		for (int i = 3; i < points; i += 3)
+		for (int i = 3; i < glIndices; ++ i)
 		{
-			Vector3f point = Vector3f (glPoints [i], glPoints [i + 1], glPoints [i + 2]);
-			min = math::min (min, point);
-			max = math::max (max, point);
+			min = math::min (min, glPoints [i]);
+			max = math::max (max, glPoints [i]);
 		}
 
 		Vector3f size   = max - min;
@@ -220,12 +217,12 @@ X3DGeometryNode::clear ()
 {
 	glTexCoord .clear ();
 	textureCoordinateGenerator = nullptr;
-	glNumColors                = 3;
-	glColors  .clear ();
-	glNormals .clear ();
-	glPoints  .clear ();
+	glColors     .clear ();
+	glColorsRGBA .clear ();
+	glNormals    .clear ();
+	glPoints     .clear ();
 	glIndices = 0;
-	glMode    = GL_TRIANGLES;
+	glVertexMode    = GL_TRIANGLES;
 }
 
 void
@@ -235,23 +232,29 @@ X3DGeometryNode::build ()
 void
 X3DGeometryNode::transfer ()
 {
-	GLenum usage = static_draw ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW;
-
 	glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (GLfloat) * glTexCoord .size (), &glTexCoord [0], usage);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector2f) * glTexCoord .size (), glTexCoord .data (), bufferUsage);
 
-	glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (GLfloat) * glColors .size (), &glColors [0], usage);
-
+	if (glColors .size ())
+	{
+		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
+		glBufferData (GL_ARRAY_BUFFER, sizeof (Color3f) * glColors .size (), glColors .data (), bufferUsage);
+	}
+	else
+	{
+		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
+		glBufferData (GL_ARRAY_BUFFER, sizeof (Color4f) * glColorsRGBA .size (), glColorsRGBA .data (), bufferUsage);
+	}
+	
 	glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (GLfloat) * glNormals .size (), &glNormals [0], usage);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * glNormals .size (), glNormals .data (), bufferUsage);
 
 	glBindBuffer (GL_ARRAY_BUFFER, pointBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (GLfloat) * glPoints .size (), &glPoints [0], usage);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * glPoints .size (), glPoints .data (), bufferUsage);
 
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 
-	static_draw = false;
+	bufferUsage = GL_DYNAMIC_DRAW;
 }
 
 void
@@ -291,16 +294,14 @@ X3DGeometryNode::draw ()
 		}
 	}
 
-	if (glColors .size ())
+	if (glColors .size () or glColorsRGBA .size ())
 	{
 		if (glIsEnabled (GL_LIGHTING))
-		{
 			glEnable (GL_COLOR_MATERIAL);
 
-			glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
-			glEnableClientState (GL_COLOR_ARRAY);
-			glColorPointer (glNumColors, GL_FLOAT, 0, 0);
-		}
+		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
+		glEnableClientState (GL_COLOR_ARRAY);
+		glColorPointer (glColors .size () ? 3 : 4, GL_FLOAT, 0, 0);
 	}
 
 	if (glIsEnabled (GL_LIGHTING))
@@ -317,7 +318,7 @@ X3DGeometryNode::draw ()
 	glEnableClientState (GL_VERTEX_ARRAY);
 	glVertexPointer (3, GL_FLOAT, 0, 0);
 
-	glDrawArrays (glMode, 0, glIndices);
+	glDrawArrays (glVertexMode, 0, glIndices);
 
 	if (textureCoordinateGenerator)
 		textureCoordinateGenerator -> disable ();

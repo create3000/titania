@@ -1935,7 +1935,6 @@
     <None Include="Tests\1st\BBox.wrl" />
     <None Include="Tests\1st\Billboard.wrl" />
     <None Include="Tests\1st\boxes-inline.wrl" />
-    <None Include="Tests\1st\ColorMaterial.wrl" />
     <None Include="Tests\1st\compress.wrl.gz" />
     <None Include="Tests\1st\DirectionalLight.wrl" />
     <None Include="Tests\1st\door.wrl" />
@@ -1946,13 +1945,11 @@
     <None Include="Tests\1st\export.wrl" />
     <None Include="Tests\1st\file.wrl" />
     <None Include="Tests\1st\import.wrl" />
-    <None Include="Tests\1st\IndexedLineSet.wrl" />
     <None Include="Tests\1st\inline.wrl" />
     <None Include="Tests\1st\LayerSet.wrl" />
     <None Include="Tests\1st\PixelTexture.wrl" />
     <None Include="Tests\1st\PixelTexture1.wrl" />
     <None Include="Tests\1st\Pixi.png" />
-    <None Include="Tests\1st\PointSet.wrl" />
     <None Include="Tests\1st\Script2.wrl" />
     <None Include="Tests\1st\Script3.wrl" />
     <None Include="Tests\1st\SFMatrix3f.wrl" />
@@ -2188,6 +2185,9 @@
     <None Include="Tests\Texturing\test.wrl" />
     <None Include="Tests\Extrusion\Cube.wrl" />
     <None Include="Tests\Extrusion\Star.wrl" />
+    <None Include="Tests\Geometry3D\ColorMaterial.wrl" />
+    <None Include="Tests\Rendering\IndexedLineSet.wrl" />
+    <None Include="Tests\Rendering\PointSet.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />
@@ -2225,5 +2225,6 @@
     <Folder Include="Tests\Texturing\images\colors\" />
     <Folder Include="Tests\Layering\" />
     <Folder Include="Tests\Navigation\" />
+    <Folder Include="Tests\Rendering\" />
   </ItemGroup>
 </Project>

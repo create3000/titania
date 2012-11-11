@@ -69,7 +69,7 @@ public:
 	intersect (const Line3f &, Hit*) const;
 
 	bool
-	isTransparent () { return glNumColors == 4; }
+	isTransparent () { return glColorsRGBA .size (); }
 
 	virtual
 	void
@@ -98,32 +98,29 @@ protected:
 
 	typedef std::map <size_t, std::vector <size_t>> NormalIndex;
 
-	std::vector <GLfloat>*
-	getGLTexCoord () { return &glTexCoord; }
+	std::vector <Vector2f> &
+	getTexCoord () { return glTexCoord; }
 
 	void
 	setTextureCoordinateGenerator (TextureCoordinateGenerator* value) { textureCoordinateGenerator = value; }
 
-	void
-	setGLNumColors (const GLint value) { glNumColors = value; }
+	std::vector <Color3f> &
+	getColors () { return glColors; }
 
-	std::vector <GLfloat>*
-	getGLColors () { return &glColors; }
+	std::vector <Color4f> &
+	getColorsRGBA () { return glColorsRGBA; }
 
-	std::vector <GLfloat>*
-	getGLNormals () { return &glNormals; }
+	std::vector <Vector3f> &
+	getNormals () { return glNormals; }
 
-	std::vector <GLfloat>*
-	getGLPoints () { return &glPoints; }
-
-	void
-	setGLMode (const GLenum value) { glMode = value; }
+	std::vector <Vector3f> &
+	getVertices () { return glPoints; }
 
 	void
-	setGLIndices (const GLsizei value) { glIndices = value; }
+	setVertexMode (const GLenum value) { glVertexMode = value; }
 
-	GLsizei
-	getGLIndices () { return glIndices; }
+	void
+	setNumIndices (const GLsizei value) { glIndices = value; }
 
 	virtual
 	Box3f
@@ -152,20 +149,22 @@ private:
 	void
 	transfer ();
 
-	bool                        static_draw;
 	Box3f                       bbox;
-	std::vector <GLfloat>       glTexCoord;
+	std::vector <Vector2f>      glTexCoord;
 	TextureCoordinateGenerator* textureCoordinateGenerator;
-	GLint                       glNumColors;
-	std::vector <GLfloat>       glColors;
-	std::vector <GLfloat>       glNormals;
-	std::vector <GLfloat>       glPoints;
-	GLenum                      glMode;
+	std::vector <Color3f>       glColors;
+	std::vector <Color4f>       glColorsRGBA;
+	std::vector <Vector3f>      glNormals;
+	std::vector <Vector3f>      glPoints;
+	GLenum                      glVertexMode;
 	GLsizei                     glIndices;
-	GLuint                      texCoordBufferId;
-	GLuint                      colorBufferId;
-	GLuint                      normalBufferId;
-	GLuint                      pointBufferId;
+
+	GLuint texCoordBufferId;
+	GLuint colorBufferId;
+	GLuint normalBufferId;
+	GLuint pointBufferId;
+
+	GLenum bufferUsage;
 
 };
 

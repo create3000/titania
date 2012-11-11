@@ -9,7 +9,8 @@ DEF Background Transform {
   }
 }
 Viewpoint {
-  position 0 0 7
+  position 0 -1.5 11.3878
+  centerOfRotation 0 -1.5 0
   description "Start"
 }
 Transform {

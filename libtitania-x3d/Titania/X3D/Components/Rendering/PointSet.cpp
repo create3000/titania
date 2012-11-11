@@ -95,65 +95,31 @@ PointSet::build ()
 
 	if (_color)
 	{
-		setGLNumColors (3);
-
-		float r, g, b;
-
-		size_t i;
-
-		for (i = 0; i < _color -> color .size (); i ++)
-		{
-			_color -> color .at (i) .getValue (r, g, b);
-			getGLColors () -> push_back (r);
-			getGLColors () -> push_back (g);
-			getGLColors () -> push_back (b);
-		}
-
-		for ( ; i < _coord -> point .size (); i ++)
-		{
-			getGLColors () -> push_back (1);
-			getGLColors () -> push_back (1);
-			getGLColors () -> push_back (1);
-		}
+		getColors () .reserve (_coord -> point .size ());
+		getColors () .assign  (_color -> color .begin (), _color -> color .end ());		
+		getColors () .resize  (_coord -> point .size (), Color3f (1, 1, 1));
 	}
 	else if (_colorRGBA)
 	{
-		setGLNumColors (4);
-
-		float r, g, b, a;
-
-		size_t i;
-
-		for (i = 0; i < _color -> color .size (); i ++)
+		getColorsRGBA () .reserve (_coord -> point .size ());
+		
+		for (size_t i = 0; i < _color -> color .size (); ++ i)
 		{
-			_colorRGBA -> color .at (i) .getValue (r, g, b, a);
-			getGLColors () -> push_back (r);
-			getGLColors () -> push_back (g);
-			getGLColors () -> push_back (b);
-			getGLColors () -> push_back (a);
+			float r, g, b, a;
+			_colorRGBA -> color [i] .getValue (r, g, b, a);
+			getColorsRGBA () .emplace_back (r, g, b, 1 - a);
 		}
 
-		for ( ; i < _coord -> point .size (); i ++)
-		{
-			getGLColors () -> push_back (1);
-			getGLColors () -> push_back (1);
-			getGLColors () -> push_back (1);
-			getGLColors () -> push_back (1);
-		}
+		getColorsRGBA () .resize (_coord -> point .size (), Color4f (1, 1, 1, 1));
 	}
-
-	float x, y, z;
 
 	for (const auto & point : _coord -> point)
 	{
-		point .getValue (x, y, z);
-		getGLPoints () -> push_back (x);
-		getGLPoints () -> push_back (y);
-		getGLPoints () -> push_back (z);
+		getVertices () .emplace_back (point);
 	}
 
-	setGLMode (GL_POINTS);
-	setGLIndices (_coord -> point .size ());
+	setVertexMode (GL_POINTS);
+	setNumIndices (_coord -> point .size ());
 }
 
 void

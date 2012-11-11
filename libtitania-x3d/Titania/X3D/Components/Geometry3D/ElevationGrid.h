@@ -91,16 +91,16 @@ private:
 	createBBox ();
 
 	std::vector <Vector2f>
-	getTexCoord ();
+	createTexCoord ();
 
 	std::vector <Vector3f>
-	getNormals (const std::vector <Vector3f> &, const std::vector <size_t> &);
+	createNormals (const std::vector <Vector3f> &, const std::vector <size_t> &);
 
 	std::vector <size_t>
-	getCoordIndex ();
+	createCoordIndex ();
 
 	std::vector <Vector3f>
-	getPoints ();
+	createPoints ();
 
 	void
 	build ();

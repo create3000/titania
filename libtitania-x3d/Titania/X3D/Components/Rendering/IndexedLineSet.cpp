@@ -155,7 +155,7 @@ IndexedLineSet::_set_colorIndex (const MFInt32::value_type & value)
 		{
 			for (size_t i = colorIndex .size (); i < coordIndex .size (); ++ i)
 			{
-				colorIndex .push_back (coordIndex .at (i));
+				colorIndex .push_back (coordIndex [i]);
 			}
 		}
 		else
@@ -222,19 +222,13 @@ IndexedLineSet::build ()
 		{
 			if (_color -> color .size () < (size_t) numColors)
 				_color -> color .resize (numColors);
-
-			setGLNumColors (3);
 		}
 		else if (_colorRGBA)
 		{
 			if (_colorRGBA -> color .size () < (size_t) numColors)
 				_colorRGBA -> color .resize (numColors);
-
-			setGLNumColors (4);
 		}
 	}
-
-	float r = 0, g = 0, b = 0, a = 0, x, y, z;
 
 	GLsizei glIndices = 0;
 
@@ -258,6 +252,7 @@ IndexedLineSet::build ()
 			{
 				if (_color and colorIndex [face] >= 0)
 					faceColor = _color -> color [colorIndex [face]];
+					
 				else if (_colorRGBA and colorIndex [face] >= 0)
 					faceColorRGBA = _colorRGBA -> color [colorIndex [face]];
 			}
@@ -267,62 +262,46 @@ IndexedLineSet::build ()
 				if (_color)
 				{
 					if (colorPerVertex and colorIndex [i] >= 0)
-						_color -> color [colorIndex [i]] .getValue (r, g, b);
+						getColors () .emplace_back (_color -> color [colorIndex [i]]);
 					else
-						faceColor .getValue (r, g, b);
-
-					getGLColors () -> push_back (r);
-					getGLColors () -> push_back (g);
-					getGLColors () -> push_back (b);
+						getColors () .emplace_back (faceColor);
 				}
 				else if (_colorRGBA)
 				{
+					float r = 0, g = 0, b = 0, a = 0;
+
 					if (colorPerVertex and colorIndex [i] >= 0)
 						_colorRGBA -> color [colorIndex [i]] .getValue (r, g, b, a);
 					else
 						faceColorRGBA .getValue (r, g, b, a);
 
-					getGLColors () -> push_back (r);
-					getGLColors () -> push_back (g);
-					getGLColors () -> push_back (b);
-					getGLColors () -> push_back (1 - a);
+					getColorsRGBA () .emplace_back (r, g, b, 1 - a);
 				}
 
-				_coord -> point .at (coordIndex [i]) .getValue (x, y, z);
-				getGLPoints () -> push_back (x);
-				getGLPoints () -> push_back (y);
-				getGLPoints () -> push_back (z);
+				getVertices () .emplace_back (_coord -> point [coordIndex [i]]);
 
 				++ glIndices;
 
 				if (_color)
 				{
 					if (colorPerVertex and colorIndex [i + 1] >= 0)
-						_color -> color [colorIndex [i + 1]] .getValue (r, g, b);
+						getColors () .emplace_back (_color -> color [colorIndex [i + 1]]);
 					else
-						faceColor .getValue (r, g, b);
-
-					getGLColors () -> push_back (r);
-					getGLColors () -> push_back (g);
-					getGLColors () -> push_back (b);
+						getColors () .emplace_back (faceColor);
 				}
 				else if (_colorRGBA)
 				{
+					float r = 0, g = 0, b = 0, a = 0;
+					
 					if (colorPerVertex and colorIndex [i + 1] >= 0)
 						_colorRGBA -> color [colorIndex [i + 1]] .getValue (r, g, b, a);
 					else
 						faceColorRGBA .getValue (r, g, b, a);
 
-					getGLColors () -> push_back (r);
-					getGLColors () -> push_back (g);
-					getGLColors () -> push_back (b);
-					getGLColors () -> push_back (1 - a);
+					getColorsRGBA () .emplace_back (r, g, b, 1 - a);
 				}
 
-				_coord -> point .at (coordIndex [i + 1]) .getValue (x, y, z);
-				getGLPoints () -> push_back (x);
-				getGLPoints () -> push_back (y);
-				getGLPoints () -> push_back (z);
+				getVertices () .emplace_back (_coord -> point [coordIndex [i + 1]]);
 
 				++ glIndices;
 			}
@@ -335,8 +314,8 @@ IndexedLineSet::build ()
 		}
 	}
 
-	setGLMode (GL_LINES);
-	setGLIndices (glIndices);
+	setVertexMode (GL_LINES);
+	setNumIndices (glIndices);
 }
 
 void

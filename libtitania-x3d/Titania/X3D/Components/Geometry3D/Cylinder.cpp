@@ -128,44 +128,23 @@ Cylinder::build ()
 			 */
 
 			// p1
-			getGLTexCoord () -> push_back (0.5);
-			getGLTexCoord () -> push_back (0.5);
-
-			getGLNormals () -> push_back (0);
-			getGLNormals () -> push_back (1);
-			getGLNormals () -> push_back (0);
-
-			getGLPoints () -> push_back (0);
-			getGLPoints () -> push_back (y1);
-			getGLPoints () -> push_back (0);
+			getTexCoord () .emplace_back (0.5, 0.5);
+			getNormals  () .emplace_back (0, 1, 0);
+			getVertices () .emplace_back (0, y1, 0);
 
 			++ glIndices;
 
 			// p2
-			getGLTexCoord () -> push_back (+(x1 + 1) / 2);
-			getGLTexCoord () -> push_back (-(z1 - 1) / 2);
-
-			getGLNormals () -> push_back (0);
-			getGLNormals () -> push_back (1);
-			getGLNormals () -> push_back (0);
-
-			getGLPoints () -> push_back (x1 * _radius);
-			getGLPoints () -> push_back (y1);
-			getGLPoints () -> push_back (z1 * _radius);
+			getTexCoord () .emplace_back (+(x1 + 1) / 2, -(z1 - 1) / 2);
+			getNormals  () .emplace_back (0, 1, 0);
+			getVertices () .emplace_back (x1 * _radius, y1, z1 * _radius);
 
 			++ glIndices;
 
 			// p3
-			getGLTexCoord () -> push_back (+(x2 + 1) / 2);
-			getGLTexCoord () -> push_back (-(z2 - 1) / 2);
-
-			getGLNormals () -> push_back (0);
-			getGLNormals () -> push_back (1);
-			getGLNormals () -> push_back (0);
-
-			getGLPoints () -> push_back (x2 * _radius);
-			getGLPoints () -> push_back (y1);
-			getGLPoints () -> push_back (z2 * _radius);
+			getTexCoord () .emplace_back (+(x2 + 1) / 2, -(z2 - 1) / 2);
+			getNormals  () .emplace_back (0, 1, 0);
+			getVertices () .emplace_back (x2 * _radius, y1, z2 * _radius);
 
 			++ glIndices;
 		}
@@ -177,86 +156,44 @@ Cylinder::build ()
 			// p2 - p3
 
 			// p1
-			getGLTexCoord () -> push_back (u1);
-			getGLTexCoord () -> push_back (1);
-
-			getGLNormals () -> push_back (x1);
-			getGLNormals () -> push_back (0);
-			getGLNormals () -> push_back (z1);
-
-			getGLPoints () -> push_back (x1 * _radius);
-			getGLPoints () -> push_back (y1);
-			getGLPoints () -> push_back (z1 * _radius);
+			getTexCoord () .emplace_back (u1, 1);
+			getNormals  () .emplace_back (x1, 0, z1);
+			getVertices () .emplace_back (x1 * _radius, y1, z1 * _radius);
 
 			++ glIndices;
 
 			// p2
-			getGLTexCoord () -> push_back (u1);
-			getGLTexCoord () -> push_back (0);
-
-			getGLNormals () -> push_back (x1);
-			getGLNormals () -> push_back (0);
-			getGLNormals () -> push_back (z1);
-
-			getGLPoints () -> push_back (x1 * _radius);
-			getGLPoints () -> push_back (y2);
-			getGLPoints () -> push_back (z1 * _radius);
+			getTexCoord () .emplace_back (u1, 0);
+			getNormals  () .emplace_back (x1, 0, z1);
+			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
 
 			++ glIndices;
 
 			// p3
-			getGLTexCoord () -> push_back (u2);
-			getGLTexCoord () -> push_back (0);
-
-			getGLNormals () -> push_back (x2);
-			getGLNormals () -> push_back (0);
-			getGLNormals () -> push_back (z2);
-
-			getGLPoints () -> push_back (x2 * _radius);
-			getGLPoints () -> push_back (y2);
-			getGLPoints () -> push_back (z2 * _radius);
+			getTexCoord () .emplace_back (u2, 0);
+			getNormals  () .emplace_back (x2, 0, z2);
+			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
 
 			++ glIndices;
 
 			// p4
-			getGLTexCoord () -> push_back (u2);
-			getGLTexCoord () -> push_back (1);
-
-			getGLNormals () -> push_back (x2);
-			getGLNormals () -> push_back (0);
-			getGLNormals () -> push_back (z2);
-
-			getGLPoints () -> push_back (x2 * _radius);
-			getGLPoints () -> push_back (y1);
-			getGLPoints () -> push_back (z2 * _radius);
+			getTexCoord () .emplace_back (u2, 1);
+			getNormals  () .emplace_back (x2, 0, z2);
+			getVertices () .emplace_back (x2 * _radius, y1, z2 * _radius);
 
 			++ glIndices;
 
 			// p1
-			getGLTexCoord () -> push_back (u1);
-			getGLTexCoord () -> push_back (1);
-
-			getGLNormals () -> push_back (x1);
-			getGLNormals () -> push_back (0);
-			getGLNormals () -> push_back (z1);
-
-			getGLPoints () -> push_back (x1 * _radius);
-			getGLPoints () -> push_back (y1);
-			getGLPoints () -> push_back (z1 * _radius);
+			getTexCoord () .emplace_back (u1, 1);
+			getNormals  () .emplace_back (x1, 0, z1);
+			getVertices () .emplace_back (x1 * _radius, y1, z1 * _radius);
 
 			++ glIndices;
 
 			// p3
-			getGLTexCoord () -> push_back (u2);
-			getGLTexCoord () -> push_back (0);
-
-			getGLNormals () -> push_back (x2);
-			getGLNormals () -> push_back (0);
-			getGLNormals () -> push_back (z2);
-
-			getGLPoints () -> push_back (x2 * _radius);
-			getGLPoints () -> push_back (y2);
-			getGLPoints () -> push_back (z2 * _radius);
+			getTexCoord () .emplace_back (u2, 0);
+			getNormals  () .emplace_back (x2, 0, z2);
+			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
 
 			++ glIndices;
 		}
@@ -269,51 +206,30 @@ Cylinder::build ()
 			 */
 
 			// p1
-			getGLTexCoord () -> push_back (0.5);
-			getGLTexCoord () -> push_back (0.5);
-
-			getGLNormals () -> push_back (0);
-			getGLNormals () -> push_back (-1);
-			getGLNormals () -> push_back (0);
-
-			getGLPoints () -> push_back (0);
-			getGLPoints () -> push_back (y2);
-			getGLPoints () -> push_back (0);
+			getTexCoord () .emplace_back (0.5, 0.5);
+			getNormals  () .emplace_back (0, -1, 0);
+			getVertices () .emplace_back (0, y2, 0);
 
 			++ glIndices;
 
 			// p3
-			getGLTexCoord () -> push_back ((x2 + 1) / 2);
-			getGLTexCoord () -> push_back ((z2 + 1) / 2);
-
-			getGLNormals () -> push_back (0);
-			getGLNormals () -> push_back (-1);
-			getGLNormals () -> push_back (0);
-
-			getGLPoints () -> push_back (x2 * _radius);
-			getGLPoints () -> push_back (y2);
-			getGLPoints () -> push_back (z2 * _radius);
+			getTexCoord () .emplace_back ((x2 + 1) / 2, (z2 + 1) / 2);
+			getNormals  () .emplace_back (0, -1, 0);
+			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
 
 			++ glIndices;
 
 			// p2
-			getGLTexCoord () -> push_back ((x1 + 1) / 2);
-			getGLTexCoord () -> push_back ((z1 + 1) / 2);
-
-			getGLNormals () -> push_back (0);
-			getGLNormals () -> push_back (-1);
-			getGLNormals () -> push_back (0);
-
-			getGLPoints () -> push_back (x1 * _radius);
-			getGLPoints () -> push_back (y2);
-			getGLPoints () -> push_back (z1 * _radius);
+			getTexCoord () .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2);
+			getNormals  () .emplace_back (0, -1, 0);
+			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
 
 			++ glIndices;
 		}
 	}
 
-	setGLMode (GL_TRIANGLES);
-	setGLIndices (glIndices);
+	setVertexMode (GL_TRIANGLES);
+	setNumIndices (glIndices);
 }
 
 } // X3D

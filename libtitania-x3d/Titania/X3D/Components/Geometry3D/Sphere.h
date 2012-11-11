@@ -86,16 +86,16 @@ private:
 	createBBox ();
 
 	static MFInt32
-	getIndices ();
+	createIndices ();
 
 	static MFInt32
-	getTexIndices ();
+	createTexIndices ();
 
 	static MFVec2f
-	getTexCoord ();
+	createTexCoord ();
 
 	static MFVec3f
-	getPoints ();
+	createPoints ();
 
 	virtual
 	void

@@ -110,10 +110,10 @@ private:
 	createBBox ();
 
 	std::vector <Vector2f>
-	getTexCoord ();
+	createTexCoord ();
 
 	std::vector <Vector3f>
-	getNormals ();
+	createNormals ();
 
 	void
 	build ();

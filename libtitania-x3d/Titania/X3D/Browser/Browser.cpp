@@ -84,37 +84,32 @@ Browser::initialize ()
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	GLfloat light_model_ambient [ ] = { 0, 0, 0, 1 };
-
+	glClearColor (0, 0, 0, 0);
+	glClearDepth (1);
+	glDepthFunc (GL_LEQUAL);       // important
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
 	glCullFace (GL_BACK);
+	glEnable (GL_NORMALIZE);       // important
+
+	GLfloat light_model_ambient [ ] = { 0, 0, 0, 1 };
 
 	glLightModelfv (GL_LIGHT_MODEL_AMBIENT,       light_model_ambient);
 	glLightModeli  (GL_LIGHT_MODEL_LOCAL_VIEWER,  GL_FALSE);
 	glLightModeli  (GL_LIGHT_MODEL_TWO_SIDE,      GL_TRUE);
 	//glLightModeli  (GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPARATE_SPECULAR_COLOR);
 
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
-
 	glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glHint (GL_GENERATE_MIPMAP_HINT,        GL_NICEST);
 	glHint (GL_FOG_HINT,                    GL_NICEST);
 
-	glClearColor (0, 0, 0, 0);
-
-	glClearDepth (1);
-	glDepthFunc (GL_LEQUAL);       // important
-
-	glEnable (GL_NORMALIZE);       // important
-
-	//glHint(GL_POINT_SMOOTH_HINT,   GL_NICEST);
-	//glHint(GL_LINE_SMOOTH_HINT,    GL_NICEST);
-	//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-
-	//glEnable(GL_POINT_SMOOTH);
-	//glEnable(GL_LINE_SMOOTH);
-	//glEnable(GL_POLYGON_SMOOTH);
+//	glHint (GL_POINT_SMOOTH_HINT,   GL_NICEST);
+//	glHint (GL_LINE_SMOOTH_HINT,    GL_NICEST);
+//	glHint (GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+//
+//	glEnable (GL_POINT_SMOOTH);
+//	glEnable (GL_LINE_SMOOTH);
+//	glEnable (GL_POLYGON_SMOOTH);
 
 	glLineWidth (1);
 	glPointSize (1);

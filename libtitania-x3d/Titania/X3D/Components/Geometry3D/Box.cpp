@@ -84,9 +84,9 @@ Box::build ()
 	X3DGeometryNode::build ();
 
 	GLsizei glIndices = 24;
-	getGLTexCoord () -> reserve (glIndices * 2);
-	getGLNormals ()  -> reserve (glIndices * 3);
-	getGLPoints ()   -> reserve (glIndices * 3);
+	getTexCoord () .reserve (glIndices);
+	getNormals ()  .reserve (glIndices);
+	getVertices () .reserve (glIndices);
 
 	auto size_2 = size * 0.5f;
 
@@ -95,277 +95,109 @@ Box::build ()
 	float z = size_2 .z ();
 
 	// Front Face
-	getGLTexCoord () -> push_back (0);
-	getGLTexCoord () -> push_back (0);
+	getTexCoord () .emplace_back (0, 0);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (-x, -y, z);
 
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (1);
+	getTexCoord () .emplace_back (1, 0);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (x, -y, z);
 
-	getGLPoints () -> push_back (-x);
-	getGLPoints () -> push_back (-y);
-	getGLPoints () -> push_back  (z);
+	getTexCoord () .emplace_back (1, 1);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (x, y, z);
 
-	getGLTexCoord () -> push_back (1);
-	getGLTexCoord () -> push_back (0);
-
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (1);
-
-	getGLPoints () -> push_back  (x);
-	getGLPoints () -> push_back (-y);
-	getGLPoints () -> push_back  (z);
-
-	getGLTexCoord () -> push_back (1);
-	getGLTexCoord () -> push_back (1);
-
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (1);
-
-	getGLPoints () -> push_back (x);
-	getGLPoints () -> push_back (y);
-	getGLPoints () -> push_back (z);
-
-	getGLTexCoord () -> push_back (0);
-	getGLTexCoord () -> push_back (1);
-
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (1);
-
-	getGLPoints () -> push_back (-x);
-	getGLPoints () -> push_back  (y);
-	getGLPoints () -> push_back  (z);
+	getTexCoord () .emplace_back (0, 1);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (-x, y, z);
 
 	// Back Face
-	getGLTexCoord () -> push_back (1);
-	getGLTexCoord () -> push_back (0);
+	getTexCoord () .emplace_back (1, 0);
+	getNormals  () .emplace_back (0, 0, -1);
+	getVertices () .emplace_back (-x, -y, -z);
 
-	getGLNormals () -> push_back  (0);
-	getGLNormals () -> push_back  (0);
-	getGLNormals () -> push_back (-1);
+	getTexCoord () .emplace_back (1, 1);
+	getNormals  () .emplace_back  (0, 0, -1);
+	getVertices () .emplace_back (-x, y, -z);
 
-	getGLPoints () -> push_back (-x);
-	getGLPoints () -> push_back (-y);
-	getGLPoints () -> push_back (-z);
+	getTexCoord () .emplace_back (0, 1);
+	getNormals  () .emplace_back (0, 0, -1);
+	getVertices () .emplace_back (x, y, -z);
 
-	getGLTexCoord () -> push_back (1);
-	getGLTexCoord () -> push_back (1);
-
-	getGLNormals () -> push_back  (0);
-	getGLNormals () -> push_back  (0);
-	getGLNormals () -> push_back (-1);
-
-	getGLPoints () -> push_back (-x);
-	getGLPoints () -> push_back (y);
-	getGLPoints () -> push_back (-z);
-
-	getGLTexCoord () -> push_back (0);
-	getGLTexCoord () -> push_back (1);
-
-	getGLNormals () -> push_back  (0);
-	getGLNormals () -> push_back  (0);
-	getGLNormals () -> push_back (-1);
-
-	getGLPoints () -> push_back  (x);
-	getGLPoints () -> push_back  (y);
-	getGLPoints () -> push_back (-z);
-
-	getGLTexCoord () -> push_back (0);
-	getGLTexCoord () -> push_back (0);
-
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (-1);
-
-	getGLPoints () -> push_back  (x);
-	getGLPoints () -> push_back (-y);
-	getGLPoints () -> push_back (-z);
+	getTexCoord () .emplace_back (0, 0);
+	getNormals  () .emplace_back (0, 0, -1);
+	getVertices () .emplace_back (x, -y, -z);
 
 	// Top Face
-	getGLTexCoord () -> push_back (0);
-	getGLTexCoord () -> push_back (1);
+	getTexCoord () .emplace_back (0, 1);
+	getNormals  () .emplace_back (0, 1, 0);
+	getVertices () .emplace_back (-x, y, -z);
 
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (1);
-	getGLNormals () -> push_back (0);
+	getTexCoord () .emplace_back (0, 0);
+	getNormals  () .emplace_back (0, 1, 0);
+	getVertices () .emplace_back (-x, y, z);
 
-	getGLPoints () -> push_back (-x);
-	getGLPoints () -> push_back  (y);
-	getGLPoints () -> push_back (-z);
+	getTexCoord () .emplace_back (1, 0);
+	getNormals  () .emplace_back (0, 1, 0);
+	getVertices () .emplace_back (x, y, z);
 
-	getGLTexCoord () -> push_back (0);
-	getGLTexCoord () -> push_back (0);
-
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (1);
-	getGLNormals () -> push_back (0);
-
-	getGLPoints () -> push_back (-x);
-	getGLPoints () -> push_back  (y);
-	getGLPoints () -> push_back  (z);
-
-	getGLTexCoord () -> push_back (1);
-	getGLTexCoord () -> push_back (0);
-
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (1);
-	getGLNormals () -> push_back (0);
-
-	getGLPoints () -> push_back (x);
-	getGLPoints () -> push_back (y);
-	getGLPoints () -> push_back (z);
-
-	getGLTexCoord () -> push_back (1);
-	getGLTexCoord () -> push_back (1);
-
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (1);
-	getGLNormals () -> push_back (0);
-
-	getGLPoints () -> push_back  (x);
-	getGLPoints () -> push_back  (y);
-	getGLPoints () -> push_back (-z);
+	getTexCoord () .emplace_back (1, 1);
+	getNormals  () .emplace_back (0, 1, 0);
+	getVertices () .emplace_back  (x, y, -z);
 
 	// Bottom Face
-	getGLTexCoord () -> push_back (0);
-	getGLTexCoord () -> push_back (0);
+	getTexCoord () .emplace_back (0, 0);
+	getNormals  () .emplace_back (0, -1, 0);
+	getVertices () .emplace_back (-x, -y, -z);
 
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (-1);
-	getGLNormals () -> push_back (0);
+	getTexCoord () .emplace_back (1, 0);
+	getNormals  () .emplace_back (0, -1, 0);
+	getVertices () .emplace_back (x, -y, -z);
 
-	getGLPoints () -> push_back (-x);
-	getGLPoints () -> push_back (-y);
-	getGLPoints () -> push_back (-z);
+	getTexCoord () .emplace_back (1, 1);
+	getNormals  () .emplace_back (0, -1, 0);
+	getVertices () .emplace_back (x, -y, z);
 
-	getGLTexCoord () -> push_back (1);
-	getGLTexCoord () -> push_back (0);
-
-	getGLNormals () -> push_back  (0);
-	getGLNormals () -> push_back (-1);
-	getGLNormals () -> push_back  (0);
-
-	getGLPoints () -> push_back  (x);
-	getGLPoints () -> push_back (-y);
-	getGLPoints () -> push_back (-z);
-
-	getGLTexCoord () -> push_back (1);
-	getGLTexCoord () -> push_back (1);
-
-	getGLNormals () -> push_back  (0);
-	getGLNormals () -> push_back (-1);
-	getGLNormals () -> push_back  (0);
-
-	getGLPoints () -> push_back  (x);
-	getGLPoints () -> push_back (-y);
-	getGLPoints () -> push_back  (z);
-
-	getGLTexCoord () -> push_back (0);
-	getGLTexCoord () -> push_back (1);
-
-	getGLNormals () -> push_back  (0);
-	getGLNormals () -> push_back (-1);
-	getGLNormals () -> push_back  (0);
-
-	getGLPoints () -> push_back (-x);
-	getGLPoints () -> push_back (-y);
-	getGLPoints () -> push_back  (z);
+	getTexCoord () .emplace_back (0, 1);
+	getNormals  () .emplace_back (0, -1, 0);
+	getVertices () .emplace_back (-x, -y, z);
 
 	// Right face
-	getGLTexCoord () -> push_back (1);
-	getGLTexCoord () -> push_back (0);
+	getTexCoord () .emplace_back (1, 0);
+	getNormals  () .emplace_back (1, 0, 0);
+	getVertices () .emplace_back (x, -y, -z);
 
-	getGLNormals () -> push_back (1);
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (0);
+	getTexCoord () .emplace_back (1, 1);
+	getNormals  () .emplace_back (1, 0, 0);
+	getVertices () .emplace_back (x, y, -z);
 
-	getGLPoints () -> push_back  (x);
-	getGLPoints () -> push_back (-y);
-	getGLPoints () -> push_back (-z);
+	getTexCoord () .emplace_back (0, 1);
+	getNormals  () .emplace_back (1, 0, 0);
+	getVertices () .emplace_back (x, y, z);
 
-	getGLTexCoord () -> push_back (1);
-	getGLTexCoord () -> push_back (1);
-
-	getGLNormals () -> push_back (1);
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (0);
-
-	getGLPoints () -> push_back  (x);
-	getGLPoints () -> push_back  (y);
-	getGLPoints () -> push_back (-z);
-
-	getGLTexCoord () -> push_back (0);
-	getGLTexCoord () -> push_back (1);
-
-	getGLNormals () -> push_back (1);
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (0);
-
-	getGLPoints () -> push_back (x);
-	getGLPoints () -> push_back (y);
-	getGLPoints () -> push_back (z);
-
-	getGLTexCoord () -> push_back (0);
-	getGLTexCoord () -> push_back (0);
-
-	getGLNormals () -> push_back (1);
-	getGLNormals () -> push_back (0);
-	getGLNormals () -> push_back (0);
-
-	getGLPoints () -> push_back  (x);
-	getGLPoints () -> push_back (-y);
-	getGLPoints () -> push_back  (z);
+	getTexCoord () .emplace_back (0, 0);
+	getNormals  () .emplace_back (1, 0, 0);
+	getVertices () .emplace_back (x, -y, z);
 
 	// Left Face
-	getGLTexCoord () -> push_back (0);
-	getGLTexCoord () -> push_back (0);
+	getTexCoord () .emplace_back (0, 0);
+	getNormals  () .emplace_back (-1, 0, 0);
+	getVertices () .emplace_back (-x, -y, -z);
 
-	getGLNormals () -> push_back (-1);
-	getGLNormals () -> push_back  (0);
-	getGLNormals () -> push_back  (0);
+	getTexCoord () .emplace_back (1, 0);
+	getNormals  () .emplace_back (-1, 0, 0);
+	getVertices () .emplace_back (-x, -y, z);
 
-	getGLPoints () -> push_back (-x);
-	getGLPoints () -> push_back (-y);
-	getGLPoints () -> push_back (-z);
+	getTexCoord () .emplace_back (1, 1);
+	getNormals  () .emplace_back (-1, 0, 0);
+	getVertices () .emplace_back (-x, y, z);
 
-	getGLTexCoord () -> push_back (1);
-	getGLTexCoord () -> push_back (0);
+	getTexCoord () .emplace_back (0, 1);
+	getNormals  () .emplace_back (-1, 0, 0);
+	getVertices () .emplace_back (-x, y, -z);
 
-	getGLNormals () -> push_back (-1);
-	getGLNormals () -> push_back  (0);
-	getGLNormals () -> push_back  (0);
-
-	getGLPoints () -> push_back (-x);
-	getGLPoints () -> push_back (-y);
-	getGLPoints () -> push_back  (z);
-
-	getGLTexCoord () -> push_back (1);
-	getGLTexCoord () -> push_back (1);
-
-	getGLNormals () -> push_back (-1);
-	getGLNormals () -> push_back  (0);
-	getGLNormals () -> push_back  (0);
-
-	getGLPoints () -> push_back (-x);
-	getGLPoints () -> push_back  (y);
-	getGLPoints () -> push_back  (z);
-
-	getGLTexCoord () -> push_back (0);
-	getGLTexCoord () -> push_back (1);
-
-	getGLNormals () -> push_back (-1);
-	getGLNormals () -> push_back  (0);
-	getGLNormals () -> push_back  (0);
-
-	getGLPoints () -> push_back (-x);
-	getGLPoints () -> push_back  (y);
-	getGLPoints () -> push_back (-z);
-
-	setGLMode (GL_QUADS);
-	setGLIndices (glIndices);
+	setVertexMode (GL_QUADS);
+	setNumIndices (glIndices);
 }
 
 } // X3D

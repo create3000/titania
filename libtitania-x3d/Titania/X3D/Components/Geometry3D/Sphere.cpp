@@ -60,15 +60,15 @@ namespace X3D {
 SFInt32 Sphere::uDimension (20);
 SFInt32 Sphere::vDimension (10);
 
-MFInt32 Sphere::indices    = getIndices    ();
-MFInt32 Sphere::texIndices = getTexIndices ();
-MFVec2f Sphere::texCoord   = getTexCoord   ();
-MFVec3f Sphere::points     = getPoints     ();
+MFInt32 Sphere::indices    = createIndices    ();
+MFInt32 Sphere::texIndices = createTexIndices ();
+MFVec2f Sphere::texCoord   = createTexCoord   ();
+MFVec3f Sphere::points     = createPoints     ();
 
 Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	         radius (1)                                                   // SFFloat [ ] radius  1           (0,∞)
+	         radius (1)                                                    // SFFloat [ ] radius  1           (0,∞)
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Sphere");
@@ -101,10 +101,10 @@ Sphere::setProperties (const SFNode <X3DSpherePropertyNode> & properties)
 			<< "\tuDimension: " << uDimension << std::endl
 			<< "\tvDimension: " << vDimension << std::endl;
 
-		indices    = getIndices    ();
-		texIndices = getTexIndices ();
-		texCoord   = getTexCoord   ();
-		points     = getPoints     ();
+		indices    = createIndices    ();
+		texIndices = createTexIndices ();
+		texCoord   = createTexCoord   ();
+		points     = createPoints     ();
 	}
 }
 
@@ -117,7 +117,7 @@ Sphere::createBBox ()
 }
 
 MFInt32
-Sphere::getIndices ()
+Sphere::createIndices ()
 {
 	MFInt32 indices;
 
@@ -141,7 +141,7 @@ Sphere::getIndices ()
 }
 
 MFInt32
-Sphere::getTexIndices ()
+Sphere::createTexIndices ()
 {
 	MFInt32 indices;
 
@@ -160,7 +160,7 @@ Sphere::getTexIndices ()
 }
 
 MFVec2f
-Sphere::getTexCoord ()
+Sphere::createTexCoord ()
 {
 	MFVec2f texCoord;
 
@@ -181,7 +181,7 @@ Sphere::getTexCoord ()
 }
 
 MFVec3f
-Sphere::getPoints ()
+Sphere::createPoints ()
 {
 	MFVec3f points;
 
@@ -221,35 +221,16 @@ Sphere::build ()
 	{
 		for (int i = 0; i < 4; ++ i, ++ index, ++ texIndex)
 		{
-			float nx, ny, nz, tx, ty;
+			auto point = points [*index] * radius;
 
-			int32_t _index    = *index;
-			int32_t _texIndex = *texIndex;
-
-			texCoord [_texIndex] .getValue (tx, ty);
-			points [_index] .getValue (nx, ny, nz);
-
-			auto point = points [_index] * radius;
-
-			float x = point .x ();
-			float y = point .y ();
-			float z = point .z ();
-
-			getGLTexCoord () -> push_back (tx);
-			getGLTexCoord () -> push_back (ty);
-
-			getGLNormals () -> push_back (nx);
-			getGLNormals () -> push_back (ny);
-			getGLNormals () -> push_back (nz);
-
-			getGLPoints () -> push_back (x);
-			getGLPoints () -> push_back (y);
-			getGLPoints () -> push_back (z);
+			getTexCoord () .emplace_back (texCoord [*texIndex]);
+			getNormals  () .emplace_back (points [*index]);
+			getVertices () .emplace_back (point);
 		}
 	}
 
-	setGLMode (GL_QUADS);
-	setGLIndices (indices .size ());
+	setVertexMode (GL_QUADS);
+	setNumIndices (indices .size ());
 }
 
 void

@@ -136,7 +136,7 @@ ElevationGrid::createBBox ()
 }
 
 std::vector <Vector2f>
-ElevationGrid::getTexCoord ()
+ElevationGrid::createTexCoord ()
 {
 	std::vector <Vector2f> texCoord;
 	texCoord .reserve (xDimension * zDimension);
@@ -155,7 +155,7 @@ ElevationGrid::getTexCoord ()
 }
 
 std::vector <Vector3f>
-ElevationGrid::getNormals (const std::vector <Vector3f> & points, const std::vector <size_t> & coordIndex)
+ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::vector <size_t> & coordIndex)
 {
 	std::vector <Vector3f> normals;
 	normals .reserve (coordIndex .size ());
@@ -185,7 +185,7 @@ ElevationGrid::getNormals (const std::vector <Vector3f> & points, const std::vec
 }
 
 std::vector <size_t>
-ElevationGrid::getCoordIndex ()
+ElevationGrid::createCoordIndex ()
 {
 	std::vector <size_t> _coordIndex;
 	_coordIndex .reserve ((xDimension - 1) * (zDimension - 1) * 6);
@@ -223,7 +223,7 @@ ElevationGrid::getCoordIndex ()
 }
 
 std::vector <Vector3f>
-ElevationGrid::getPoints ()
+ElevationGrid::createPoints ()
 {
 	std::vector <Vector3f> points;
 	points .reserve (xDimension * zDimension);
@@ -255,10 +255,30 @@ ElevationGrid::build ()
 	if (height .size () < vertices)
 		height .resize (vertices);
 
-	std::vector <size_t>   coordIndex = getCoordIndex ();
-	std::vector <Vector3f> points     = getPoints ();
+	std::vector <size_t>   coordIndex = createCoordIndex ();
+	std::vector <Vector3f> points     = createPoints ();
 
-	getGLPoints () -> reserve (coordIndex .size () * 3);
+	getVertices () .reserve (coordIndex .size ());
+
+	std::vector <Vector2f> _texCoord;
+
+	SFNode <TextureCoordinate>          _textureCoordinate          = texCoord;
+	SFNode <TextureCoordinateGenerator> _textureCoordinateGenerator = texCoord;
+
+	if (_textureCoordinate)
+	{
+		if (_textureCoordinate -> point .size () < vertices)
+			_textureCoordinate -> point .resize (vertices);
+
+		getTexCoord () .reserve (coordIndex .size ());
+	}
+	else if (_textureCoordinateGenerator)
+	{ }
+	else
+	{
+		_texCoord = createTexCoord ();
+		getTexCoord () .reserve (coordIndex .size ());
+	}
 
 	SFNode <Color> _color = color;
 
@@ -275,8 +295,7 @@ ElevationGrid::build ()
 				_color -> color .resize (faces);
 		}
 
-		setGLNumColors (3);
-		getGLColors () -> reserve (coordIndex .size () * 3);
+		getColors () .reserve (coordIndex .size ());
 	}
 
 	SFNode <ColorRGBA> _colorRGBA = color;
@@ -294,28 +313,7 @@ ElevationGrid::build ()
 				_colorRGBA -> color .resize (faces);
 		}
 
-		setGLNumColors (4);
-		getGLColors () -> reserve (coordIndex .size () * 4);
-	}
-
-	std::vector <Vector2f> _texCoord;
-
-	SFNode <TextureCoordinate>          _textureCoordinate          = texCoord;
-	SFNode <TextureCoordinateGenerator> _textureCoordinateGenerator = texCoord;
-
-	if (_textureCoordinate)
-	{
-		if (_textureCoordinate -> point .size () < vertices)
-			_textureCoordinate -> point .resize (vertices);
-
-		getGLTexCoord () -> reserve (coordIndex .size () * 2);
-	}
-	else if (_textureCoordinateGenerator)
-	{ }
-	else
-	{
-		_texCoord = getTexCoord ();
-		getGLTexCoord () -> reserve (coordIndex .size () * 2);
+		getColorsRGBA () .reserve (coordIndex .size ());
 	}
 
 	std::vector <Vector3f> normals;
@@ -335,11 +333,9 @@ ElevationGrid::build ()
 		}
 	}
 	else
-		normals = getNormals (points, coordIndex);
+		normals = createNormals (points, coordIndex);
 
-	getGLNormals () -> reserve (coordIndex .size () * 3);
-
-	float tx, ty, nx = 0, ny = 0, nz = 0, r = 0, g = 0, b = 0, a = 0, x, y, z;
+	getNormals () .reserve (coordIndex .size ());
 
 	size_t  i         = 0;
 	int32_t face      = 0;
@@ -354,86 +350,63 @@ ElevationGrid::build ()
 		if (_normal)
 		{
 			if (not normalPerVertex)
-				_normal -> vector [face] .getValue (nx, ny, nz);
-		}
-
-		if (not colorPerVertex)
-		{
-			if (_color)
-				_color -> color [face] .getValue (r, g, b);
-			else if (_colorRGBA)
-				_colorRGBA -> color [face] .getValue (r, g, b, a);
+				getNormals () .emplace_back (_normal -> vector [face]);
 		}
 
 		for (int32_t p = 0; p < 6; ++ p, ++ index, ++ i)
 		{
 			if (_textureCoordinate)
 			{
-				_textureCoordinate -> point .at (*index) .getValue (tx, ty);
-				getGLTexCoord () -> push_back (tx);
-				getGLTexCoord () -> push_back (ty);
+				getTexCoord () .emplace_back (_textureCoordinate -> point [*index]);
 			}
 			else if (_textureCoordinateGenerator)
 			{ }
 			else
 			{
-				tx = _texCoord [*index] .x ();
-				ty = _texCoord [*index] .y ();
-				getGLTexCoord () -> push_back (tx);
-				getGLTexCoord () -> push_back (ty);
-			}
-
-			if (_normal)
-			{
-				if (normalPerVertex)
-					_normal -> vector [*index] .getValue (nx, ny, nz);
-			}
-			else
-			{
-				nx = normals [i] .x ();
-				ny = normals [i] .y ();
-				nz = normals [i] .z ();
+				getTexCoord () .emplace_back (_texCoord [*index]);
 			}
 
 			if (_color)
 			{
 				if (colorPerVertex)
-					_color -> color [*index] .getValue (r, g, b);
-
-				getGLColors () -> push_back (r);
-				getGLColors () -> push_back (g);
-				getGLColors () -> push_back (b);
+					getColors () .emplace_back (_color -> color [*index]);
+				
+				else
+					getColors () .emplace_back (_color -> color [face]);
+				
 			}
 			else if (_colorRGBA)
 			{
+				float r = 0, g = 0, b = 0, a = 0;
+
 				if (colorPerVertex)
 					_colorRGBA -> color [*index] .getValue (r, g, b, a);
-
-				getGLColors () -> push_back (r);
-				getGLColors () -> push_back (g);
-				getGLColors () -> push_back (b);
-				getGLColors () -> push_back (1 - a);
+				
+				else
+					_colorRGBA -> color [face] .getValue (r, g, b, a);
+					
+				getColorsRGBA () .emplace_back (r, g, b, 1 - a);
 			}
 
-			getGLNormals () -> push_back (nx);
-			getGLNormals () -> push_back (ny);
-			getGLNormals () -> push_back (nz);
+			if (_normal)
+			{
+				if (normalPerVertex)
+					getNormals () .emplace_back (_normal -> vector [*index]);
+			}
+			else
+			{
+				getNormals () .emplace_back (normals [i]);
+			}
 
-			x = points [*index] .x ();
-			y = points [*index] .y ();
-			z = points [*index] .z ();
-
-			getGLPoints () -> push_back (x);
-			getGLPoints () -> push_back (y);
-			getGLPoints () -> push_back (z);
+			getVertices  () .emplace_back (points [*index]);
 
 			++ glIndices;
 		}
 	}
 
 	setTextureCoordinateGenerator (*_textureCoordinateGenerator);
-	setGLMode (GL_TRIANGLES);
-	setGLIndices (glIndices);
+	setVertexMode (GL_TRIANGLES);
+	setNumIndices (glIndices);
 }
 
 } // X3D

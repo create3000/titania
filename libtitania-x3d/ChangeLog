@@ -1,5 +1,26 @@
 2012-11-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Browser.cpp:
+	* Box.cpp:
+	* Sphere.h:
+	* Cone.cpp:
+	* Sphere.cpp:
+	* PointSet.cpp:
+	* Extrusion.h:
+	* Cylinder.cpp:
+	* Extrusion.cpp:
+	* ElevationGrid.h:
+	* IndexedFaceSet.h:
+	* X3DGeometryNode.h:
+	* ElevationGrid.cpp:
+	* IndexedLineSet.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp:
+	* X3DComposedGeometryNode.h: 
+
+2012-11-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Browser.cpp:
 	* Text.h:
 	* Text.cpp:
