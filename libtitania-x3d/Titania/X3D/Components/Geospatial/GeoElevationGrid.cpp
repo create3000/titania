@@ -61,7 +61,6 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	         normal (),                                                    // SFNode   [in,out] normal           NULL               [X3DNormalNode]
 	       texCoord (),                                                    // SFNode   [in,out] texCoord         NULL               [X3DTextureCoordinateNode]
 	         yScale (1),                                                   // SFFloat  [in,out] yScale           1.0                [0,∞)
-	            ccw (true),                                                // SFBool   [ ]      ccw              TRUE
 	 colorPerVertex (true),                                                // SFBool   [ ]      colorPerVertex   TRUE
 	    creaseAngle (),                                                    // SFDouble [ ]      creaseAngle      0                  [0,∞)
 	  geoGridOrigin (),                                                    // SFVec3d  [ ]      geoGridOrigin    0 0 0              (-∞,∞)
@@ -69,7 +68,6 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	      geoSystem ({ "GD", "WE" }),                                      // MFString [ ]      geoSystem        ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
 	         height ({ 0, 0 }),                                            // MFDouble [ ]      height           [0 0]              (-∞,∞)
 	normalPerVertex (true),                                                // SFBool   [ ]      normalPerVertex  TRUE
-	          solid (true),                                                // SFBool   [ ]      solid            TRUE
 	     xDimension (),                                                    // SFInt32  [ ]      xDimension       0                  (0,∞)
 	       xSpacing (1),                                                   // SFDouble [ ]      xSpacing         1.0                [0,∞)
 	     zDimension (),                                                    // SFInt32  [ ]      zDimension       0                  (0,∞)

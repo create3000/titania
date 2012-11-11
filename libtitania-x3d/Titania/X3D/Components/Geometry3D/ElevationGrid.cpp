@@ -66,12 +66,9 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	       fogCoord (),                                                    // SFNode  [in,out] fogCoord         [ ]         [FogCoordinate]
 	         normal (),                                                    // SFNode  [in,out] normal           NULL        [X3DNormalNode]
 	       texCoord (),                                                    // SFNode  [in,out] texCoord         NULL        [X3DTextureCoordinateNode]
-	            ccw (true),                                                // SFBool  [ ]      ccw              TRUE
 	 colorPerVertex (true),                                                // SFBool  [ ]      colorPerVertex   TRUE
-	    creaseAngle (),                                                    // SFFloat [ ]      creaseAngle      0           [0,∞)
 	         height (),                                                    // MFFloat [ ]      height           [ ]          (-∞,∞)
 	normalPerVertex (true),                                                // SFBool  [ ]      normalPerVertex  TRUE
-	          solid (true),                                                // SFBool  [ ]      solid            TRUE
 	     xDimension (),                                                    // SFInt32 [ ]      xDimension       0           [0,∞)
 	       xSpacing (1),                                                   // SFFloat [ ]      xSpacing         1.0         (0,∞)
 	     zDimension (),                                                    // SFInt32 [ ]      zDimension       0           [0,∞)
@@ -117,6 +114,7 @@ ElevationGrid::createBBox ()
 		height .resize (vertices);
 
 	float x = xSpacing * (xDimension - 1);
+	float z = zSpacing * (zDimension - 1);
 
 	float miny = height [0];
 	float maxy = height [0];
@@ -128,8 +126,6 @@ ElevationGrid::createBBox ()
 	}
 
 	float y = maxy - miny;
-
-	float z = creaseAngle * (zDimension - 1);
 
 	Vector3f size   = Vector3f (x, y, z);
 	Vector3f center = Vector3f (x / 2, miny + y / 2, z / 2);
@@ -164,7 +160,7 @@ ElevationGrid::getNormals (const std::vector <Vector3f> & points, const std::vec
 	std::vector <Vector3f> normals;
 	normals .reserve (coordIndex .size ());
 
-	VertexMap vertexMap;
+	NormalIndex normalIndex;
 
 	for (auto index = coordIndex .cbegin (); index not_eq coordIndex .cend (); index += 6)
 	{
@@ -178,12 +174,12 @@ ElevationGrid::getNormals (const std::vector <Vector3f> & points, const std::vec
 		Vector3f normal = cross (p3 - p1, p4 - p2);
 
 		for (size_t i = 0; i < 6; ++ i)
-			vertexMap [*(index + i)] .push_back (normals .size () + i);
+			normalIndex [*(index + i)] .push_back (normals .size () + i);
 
 		normals .resize (normals .size () + 6, normalize (normal));
 	}
 
-	refineNormals (normals, vertexMap, creaseAngle, ccw);
+	refineNormals (normalIndex, normals);
 
 	return normals;
 }
@@ -435,8 +431,6 @@ ElevationGrid::build ()
 		}
 	}
 
-	setGLSolid (solid);
-	setGLCCW (ccw ? GL_CCW : GL_CW);
 	setTextureCoordinateGenerator (*_textureCoordinateGenerator);
 	setGLMode (GL_TRIANGLES);
 	setGLIndices (glIndices);

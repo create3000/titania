@@ -682,6 +682,13 @@ main (int argc, char** argv)
 	std::clog << Rotation4f (Vector3f (0, 1, 0), Vector3f (1,  0, 0)) << std::endl;
 	std::clog << Rotation4f (Vector3f (0, 1, 0), Vector3f (0, -1, 0)) << std::endl;
 	std::clog << Rotation4f (Vector3f (1, 0, 0), Vector3f (-1, 0, 0)) << std::endl;
+	
+	float fv1 [3];
+	Vector3f fv2;
+	
+	std::clog << sizeof (fv1) << std::endl;
+	std::clog << sizeof (fv2) << std::endl;
+	
 
 //	test_path (basic::path ("/"));
 //	test_path (basic::path ("/", "/"));

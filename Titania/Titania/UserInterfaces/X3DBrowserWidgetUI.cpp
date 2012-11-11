@@ -64,8 +64,8 @@ X3DBrowserWidgetUI::create (const std::string & filename)
 	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
 	m_footerAction       = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FooterAction"));
 	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
-	m_sideBarAction      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SideBarAction"));
 	m_menuAccelGroup     = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
+	m_sideBarAction      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SideBarAction"));
 
 	// Get widgets.
 	m_builder -> get_widget ("FileOpenDialog", m_fileOpenDialog);
@@ -90,7 +90,9 @@ X3DBrowserWidgetUI::create (const std::string & filename)
 	m_builder -> get_widget ("FooterMenuItem", m_footerMenuItem);
 	m_builder -> get_widget ("StatusBarMenuItem", m_statusBarMenuItem);
 	m_builder -> get_widget ("ShadingMenuItem", m_shadingMenuItem);
+	m_builder -> get_widget ("PhongMenuItem", m_phongMenuItem);
 	m_builder -> get_widget ("GouraudMenuItem", m_gouraudMenuItem);
+	m_builder -> get_widget ("FlatMenuItem", m_flatMenuItem);
 	m_builder -> get_widget ("WireFrameMenuItem", m_wireFrameMenuItem);
 	m_builder -> get_widget ("PointSetMenuItem", m_pointSetMenuItem);
 	m_builder -> get_widget ("RenderQualtityMenuItem", m_renderQualtityMenuItem);
@@ -144,11 +146,13 @@ X3DBrowserWidgetUI::create (const std::string & filename)
 
 	// Connect object Gtk::ToggleAction with id 'FooterAction'.
 	m_footerAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_footer_toggled));
-	m_sideBarAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_sideBar_toggled));
 
 	// Connect object Gtk::FileChooserDialog with id 'FileOpenDialog'.
 	m_fileOpenDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_fileOpenDialog_response));
 	m_fileSaveDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_fileSaveDialog_response));
+
+	// Connect object Gtk::ToggleAction with id 'SideBarAction'.
+	m_sideBarAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_sideBar_toggled));
 
 	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
 	m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::messageDialogResponse));
@@ -170,8 +174,10 @@ X3DBrowserWidgetUI::create (const std::string & filename)
 	m_navigationBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_navigationBar_toggled));
 	m_statusBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_statusBar_toggled));
 
-	// Connect object Gtk::RadioMenuItem with id 'GouraudMenuItem'.
+	// Connect object Gtk::RadioMenuItem with id 'PhongMenuItem'.
+	m_phongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::phong_activate));
 	m_gouraudMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::gouraud_activate));
+	m_flatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::flat_activate));
 	m_wireFrameMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::wireframe_activate));
 	m_pointSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::pointset_activate));
 	m_lowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_low_quality_activate));

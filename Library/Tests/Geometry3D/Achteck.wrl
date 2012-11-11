@@ -9,7 +9,7 @@ Background {
 Viewpoint { }
 
 Transform {
-  children Shape {
+  children DEF Shape Shape {
     appearance Appearance {
       material Material {
         diffuseColor 1 0 0
@@ -21,6 +21,13 @@ Transform {
       }
       coordIndex [ 0, 1, 2, 3, 4, 5, 6, 7 ]
       solid FALSE
+      ccw TRUE
     }
   }
+}
+
+Transform {
+  translation 2 0 0
+  rotation 0 1 0 3.415
+  children USE Shape
 }

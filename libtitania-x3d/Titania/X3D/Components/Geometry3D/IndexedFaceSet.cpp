@@ -64,7 +64,6 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	             colorIndex (),                                                    // MFInt32 [ ]  colorIndex         [ ]          [0,∞) or -1
 	                 convex (true),                                                // SFBool  [ ]  convex             TRUE
 	             coordIndex (),                                                    // MFInt32 [ ]  coordIndex         [ ]          [0,∞) or -1
-	            creaseAngle (),                                                    // SFFloat [ ]  creaseAngle         0           [0,∞)
 	            normalIndex (),                                                    // MFInt32 [ ]  normalIndex        [ ]          [0,∞) or -1
 	          texCoordIndex (),                                                    // MFInt32 [ ]  texCoordIndex      [ ]          [-1,∞)
 	                   tess (0),                                                   
@@ -365,7 +364,7 @@ IndexedFaceSet::getNormals ()
 	std::vector <Vector3f> normals;
 	normals .reserve (coordIndex .size ());
 
-	VertexMap vertexMap;
+	NormalIndex normalIndex;
 
 	SFNode <Coordinate> _coord = coord;
 
@@ -389,7 +388,7 @@ IndexedFaceSet::getNormals ()
 			normal = cross (p3 - p2, p1 - p2);
 
 			for (int i = 0; i < 3; ++ i)
-				vertexMap [*(index + i)] .push_back (normals .size () + i);
+				normalIndex [*(index + i)] .push_back (normals .size () + i);
 		}
 		else if (numIndices > 3)
 		{
@@ -413,7 +412,7 @@ IndexedFaceSet::getNormals ()
 				//normal += p3 .subtract(p2) .cross(p1 .subtract(p2)) .normalize();
 
 				for (int i = 0; i < numIndices - end + 1; ++ i)
-					vertexMap [*(index + i)] .push_back (normals .size () + i);
+					normalIndex [*(index + i)] .push_back (normals .size () + i);
 			}
 			else if (tess)
 			{
@@ -487,7 +486,7 @@ IndexedFaceSet::getNormals ()
 					delete vertices [_i];
 
 				for (int i = 0; i < numIndices - end; ++ i)
-					vertexMap [*(index + i)] .push_back (normals .size () + i);
+					normalIndex [*(index + i)] .push_back (normals .size () + i);
 			}
 		}
 
@@ -499,7 +498,7 @@ IndexedFaceSet::getNormals ()
 			break;
 	}
 
-	refineNormals (normals, vertexMap, creaseAngle, ccw);
+	refineNormals (normalIndex, normals);
 
 	return normals;
 }
@@ -889,8 +888,6 @@ IndexedFaceSet::build ()
 			break;
 	}
 
-	setGLSolid (solid);
-	setGLCCW (ccw ? GL_CCW : GL_CW);
 	setTextureCoordinateGenerator (*_textureCoordinateGenerator);
 	setGLMode (GL_TRIANGLES);
 	setGLIndices (glIndices);

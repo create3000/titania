@@ -68,8 +68,7 @@ MFVec3f Sphere::points     = getPoints     ();
 Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	         radius (1),                                                   // SFFloat [ ] radius  1           (0,∞)
-	          solid (true)                                                 // SFBool  [ ] solid   TRUE
+	         radius (1)                                                   // SFFloat [ ] radius  1           (0,∞)
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Sphere");
@@ -249,8 +248,6 @@ Sphere::build ()
 		}
 	}
 
-	setGLSolid (solid);
-	setGLCCW (GL_CCW);
 	setGLMode (GL_QUADS);
 	setGLIndices (indices .size ());
 }

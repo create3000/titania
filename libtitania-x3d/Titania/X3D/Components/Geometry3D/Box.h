@@ -57,23 +57,27 @@ namespace X3D {
 class Box :
 	public X3DGeometryNode
 {
-	Box3f
-	createBBox ();
-
-	void
-	build ();
-
-
 public:
 
+	using X3DGeometryNode::solid;
+
 	SFVec3f size;
-	SFBool  solid;
 
 	Box (X3DExecutionContext* const);
 
 	virtual
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
+
+
+private:
+
+	Box3f
+	createBBox ();
+
+	void
+	build ();
+
 
 };
 

@@ -199,10 +199,10 @@ BrowserWidget::on_statusBar_toggled ()
 void
 BrowserWidget::phong_activate ()
 {
-	//	if (not getPhongMenuItem () .get_active ())
-	//		return;
-	//
-	//	getBrowser () -> getBrowserOptions () -> shading = "PHONG";
+	if (not getPhongMenuItem () .get_active ())
+			return;
+		
+	getBrowser () -> getBrowserOptions () -> shading = "PHONG";
 }
 
 void
@@ -217,10 +217,10 @@ BrowserWidget::gouraud_activate ()
 void
 BrowserWidget::flat_activate ()
 {
-	//	if (not getFlatMenuItem () .get_active ())
-	//		return;
-	//
-	//	getBrowser () -> getBrowserOptions () -> shading = "FLAT";
+	if (not getFlatMenuItem () .get_active ())
+		return;
+
+	getBrowser () -> getBrowserOptions () -> shading = "FLAT";
 }
 
 void

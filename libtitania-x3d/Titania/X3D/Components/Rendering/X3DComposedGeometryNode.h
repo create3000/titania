@@ -59,16 +59,17 @@ class X3DComposedGeometryNode :
 {
 public:
 
+	using X3DGeometryNode::ccw;
+	using X3DGeometryNode::solid;
+
 	MFNode <X3DBasicNode> attrib;
 	SFNode <X3DBasicNode> color;
 	SFNode <X3DBasicNode> coord;
 	SFNode <X3DBasicNode> fogCoord;
 	SFNode <X3DBasicNode> normal;
 	SFNode <X3DBasicNode> texCoord;
-	SFBool                ccw;
 	SFBool                colorPerVertex;
 	SFBool                normalPerVertex;
-	SFBool                solid;
 
 
 protected:

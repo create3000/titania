@@ -59,19 +59,20 @@ class Extrusion :
 {
 public:
 
+	using X3DGeometryNode::ccw;
+	using X3DGeometryNode::solid;
+	using X3DGeometryNode::creaseAngle;
+
 	MFVec2f    set_crossSection;
 	MFRotation set_orientation;
 	MFVec2f    set_scale;
 	MFVec3f    set_spine;
 	SFBool     beginCap;
-	SFBool     ccw;
 	SFBool     convex;
-	SFFloat    creaseAngle;
 	MFVec2f    crossSection;
 	SFBool     endCap;
 	MFRotation orientation;
 	MFVec2f    scale;
-	SFBool     solid;
 	MFVec3f    spine;
 
 	Extrusion (X3DExecutionContext* const);

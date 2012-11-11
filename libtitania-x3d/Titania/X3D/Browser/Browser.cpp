@@ -86,6 +86,8 @@ Browser::initialize ()
 
 	GLfloat light_model_ambient [ ] = { 0, 0, 0, 1 };
 
+	glCullFace (GL_BACK);
+
 	glLightModelfv (GL_LIGHT_MODEL_AMBIENT,       light_model_ambient);
 	glLightModeli  (GL_LIGHT_MODEL_LOCAL_VIEWER,  GL_FALSE);
 	glLightModeli  (GL_LIGHT_MODEL_TWO_SIDE,      GL_TRUE);

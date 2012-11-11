@@ -59,12 +59,14 @@ class GeoElevationGrid :
 {
 public:
 
+	using X3DGeometryNode::ccw;
+	using X3DGeometryNode::solid;
+
 	MFDouble              set_height;
 	SFNode <X3DBasicNode> color;
 	SFNode <X3DBasicNode> normal;
 	SFNode <X3DBasicNode> texCoord;
 	SFFloat               yScale;
-	SFBool                ccw;
 	SFBool                colorPerVertex;
 	SFDouble              creaseAngle;
 	SFVec3d               geoGridOrigin;
@@ -72,7 +74,6 @@ public:
 	MFString              geoSystem;
 	MFDouble              height;
 	SFBool                normalPerVertex;
-	SFBool                solid;
 	SFInt32               xDimension;
 	SFDouble              xSpacing;
 	SFInt32               zDimension;

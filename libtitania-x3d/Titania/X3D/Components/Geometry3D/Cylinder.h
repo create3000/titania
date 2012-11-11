@@ -57,20 +57,14 @@ namespace X3D {
 class Cylinder :
 	public X3DGeometryNode
 {
-	Box3f
-	createBBox ();
-
-	void
-	build ();
-
-
 public:
+
+	using X3DGeometryNode::solid;
 
 	SFBool  bottom;
 	SFFloat height;
 	SFFloat radius;
 	SFBool  side;
-	SFBool  solid;
 	SFBool  top;
 
 	Cylinder (X3DExecutionContext* const);
@@ -78,6 +72,16 @@ public:
 	virtual
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
+
+
+private:
+
+	Box3f
+	createBBox ();
+
+	void
+	build ();
+
 
 };
 

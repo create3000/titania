@@ -56,11 +56,10 @@ namespace X3D {
 ArcClose2D::ArcClose2D (X3DExecutionContext* const executionContext) :
 	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	    closureType ("PIE"),                                               // SFString [ ]closureType  "PIE"        ["PIE"|"CHORD"]
-	       endAngle (),                                                    // SFFloat  [ ]endAngle     π/2          [-2π,2π]
-	         radius (1),                                                   // SFFloat  [ ]radius       1            (0,∞)
-	          solid (),                                                    // SFBool   [ ]solid        FALSE
-	     startAngle ()                                                     // SFFloat  [ ]startAngle   0            [-2π,2π]
+	    closureType ("PIE"),                                               // SFString [ ] closureType  "PIE"        ["PIE"|"CHORD"]
+	       endAngle (),                                                    // SFFloat  [ ] endAngle     π/2          [-2π,2π]
+	         radius (1),                                                   // SFFloat  [ ] radius       1            (0,∞)
+	     startAngle ()                                                     // SFFloat  [ ] startAngle   0            [-2π,2π]
 {
 	setComponent ("Geometry2D");
 	setTypeName ("ArcClose2D");

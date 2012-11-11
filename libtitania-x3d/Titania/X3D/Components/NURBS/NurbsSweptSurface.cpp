@@ -57,9 +57,7 @@ NurbsSweptSurface::NurbsSweptSurface (X3DExecutionContext* const executionContex
 	             X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DParametricGeometryNode (),                                                    
 	        crossSectionCurve (),                                                    // SFNode [in,out] crossSectionCurve  [ ]         [X3DNurbsControlCurveNode]
-	          trajectoryCurve (),                                                    // SFNode [in,out] trajectoryCurve    [ ]         [NurbsCurve]
-	                      ccw (true),                                                // SFBool [ ]      ccw                TRUE
-	                    solid (true)                                                 // SFBool [ ]      solid              TRUE
+	          trajectoryCurve ()                                                     // SFNode [in,out] trajectoryCurve    [ ]         [NurbsCurve]
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsSweptSurface");

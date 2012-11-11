@@ -86,18 +86,17 @@ public:
 
 protected:
 
+	SFBool  ccw;
+	SFBool  solid;
+	SFFloat creaseAngle;
+
 	X3DGeometryNode ();
 
 	virtual
 	void
 	initialize ();
 
-	typedef std::map <size_t, std::vector <size_t>> VertexMap;
-	void
-	setGLSolid (const bool value) { solid = value; }
-
-	void
-	setGLCCW (const GLenum value) { ccw = value; }
+	typedef std::map <size_t, std::vector <size_t>> NormalIndex;
 
 	std::vector <GLfloat>*
 	getGLTexCoord () { return &glTexCoord; }
@@ -131,7 +130,7 @@ protected:
 	createBBox ();
 
 	void
-	refineNormals (std::vector <Vector3f> &, const VertexMap &, const float, const bool);
+	refineNormals (const NormalIndex &, std::vector <Vector3f> &);
 
 	void
 	clear ();
@@ -155,8 +154,6 @@ private:
 
 	bool                        static_draw;
 	Box3f                       bbox;
-	bool                        solid;
-	GLenum                      ccw;
 	std::vector <GLfloat>       glTexCoord;
 	TextureCoordinateGenerator* textureCoordinateGenerator;
 	GLint                       glNumColors;

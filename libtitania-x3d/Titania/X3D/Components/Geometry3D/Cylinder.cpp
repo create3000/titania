@@ -58,12 +58,11 @@ namespace X3D {
 Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
 	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	         bottom (true),                                                // SFBool  [ ]bottom  TRUE
-	         height (2),                                                   // SFFloat [ ]height  2           (0,∞)
-	         radius (1),                                                   // SFFloat [ ]radius  1           (0,∞)
-	           side (true),                                                // SFBool  [ ]side    TRUE
-	          solid (true),                                                // SFBool  [ ]solid   TRUE
-	            top (true)                                                 // SFBool  [ ]top     TRUE
+	         bottom (true),                                                // SFBool  [ ] bottom  TRUE
+	         height (2),                                                   // SFFloat [ ] height  2           (0,∞)
+	         radius (1),                                                   // SFFloat [ ] radius  1           (0,∞)
+	           side (true),                                                // SFBool  [ ] side    TRUE
+	            top (true)                                                 // SFBool  [ ] top     TRUE
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Cylinder");
@@ -313,8 +312,6 @@ Cylinder::build ()
 		}
 	}
 
-	setGLSolid (solid);
-	setGLCCW (GL_CCW);
 	setGLMode (GL_TRIANGLES);
 	setGLIndices (glIndices);
 }

@@ -60,8 +60,9 @@ class Sphere :
 {
 public:
 
+	using X3DGeometryNode::solid;
+
 	SFFloat radius;
-	SFBool  solid;
 
 	Sphere (X3DExecutionContext* const);
 

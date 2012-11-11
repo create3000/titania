@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkToggleAction" id="FooterAction">
-    <signal name="toggled" handler="on_footer_toggled" swapped="no"/>
-  </object>
-  <object class="GtkIconFactory" id="IconFactory"/>
-  <object class="GtkToggleAction" id="SideBarAction">
-    <signal name="toggled" handler="on_sideBar_toggled" swapped="no"/>
-  </object>
   <object class="GtkFileFilter" id="FileFilerX3D">
     <mime-types>
       <mime-type>model/vrml</mime-type>
@@ -29,6 +22,10 @@
       <pattern>*</pattern>
     </patterns>
   </object>
+  <object class="GtkToggleAction" id="FooterAction">
+    <signal name="toggled" handler="on_footer_toggled" swapped="no"/>
+  </object>
+  <object class="GtkIconFactory" id="IconFactory"/>
   <object class="GtkFileChooserDialog" id="FileOpenDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -126,6 +123,9 @@
     </child>
   </object>
   <object class="GtkAccelGroup" id="MenuAccelGroup"/>
+  <object class="GtkToggleAction" id="SideBarAction">
+    <signal name="toggled" handler="on_sideBar_toggled" swapped="no"/>
+  </object>
   <object class="GtkMessageDialog" id="MessageDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -408,6 +408,18 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
+                              <object class="GtkRadioMenuItem" id="PhongMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Phong</property>
+                                <property name="use_underline">True</property>
+                                <property name="draw_as_radio">True</property>
+                                <property name="group">GouraudMenuItem</property>
+                                <accelerator key="F5" signal="activate"/>
+                                <signal name="activate" handler="phong_activate" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
                               <object class="GtkRadioMenuItem" id="GouraudMenuItem">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
@@ -415,8 +427,20 @@
                                 <property name="use_underline">True</property>
                                 <property name="active">True</property>
                                 <property name="draw_as_radio">True</property>
-                                <accelerator key="F3" signal="activate"/>
+                                <accelerator key="F4" signal="activate"/>
                                 <signal name="activate" handler="gouraud_activate" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkRadioMenuItem" id="FlatMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Flat</property>
+                                <property name="use_underline">True</property>
+                                <property name="draw_as_radio">True</property>
+                                <property name="group">GouraudMenuItem</property>
+                                <accelerator key="F3" signal="activate"/>
+                                <signal name="activate" handler="flat_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>

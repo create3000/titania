@@ -58,7 +58,6 @@ X3DNurbsSurfaceGeometryNode::X3DNurbsSurfaceGeometryNode () :
 	            uTessellation (),     // SFInt32  [in,out] uTessellation  0            (-∞,∞)
 	            vTessellation (),     // SFInt32  [in,out] vTessellation  0            (-∞,∞)
 	                   weight (),     // MFDouble [in,out] weight         [ ]          (0,∞)
-	                    solid (true), // SFBool   [ ]      solid          TRUE
 	                  uClosed (),     // SFBool   [ ]      uClosed        FALSE
 	               uDimension (),     // SFInt32  [ ]      uDimension     0            [0,∞)
 	                    uKnot (),     // MFDouble [ ]      uKnot          [ ]           (-∞,∞)

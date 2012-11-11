@@ -231,7 +231,6 @@ ProximitySensor::drawHandle ()
 	float z = size_2 .z ();
 
 	glEnable (GL_CULL_FACE);
-	glCullFace (GL_BACK);
 
 	glFrontFace (GL_CCW);
 

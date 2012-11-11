@@ -1,3 +1,46 @@
+2012-11-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Browser.cpp:
+	* Text.h:
+	* Text.cpp:
+	* Box.h:
+	* Cone.h:
+	* Box.cpp:
+	* Sphere.h:
+	* Cone.cpp:
+	* Disk2D.h:
+	* Sphere.cpp:
+	* Disk2D.cpp:
+	* Cylinder.h:
+	* Extrusion.h:
+	* ArcClose2D.h:
+	* Cylinder.cpp:
+	* Extrusion.cpp:
+	* Rectangle2D.h:
+	* NurbsSwungSurface.h:
+	* ArcClose2D.cpp:
+	* NurbsSweptSurface.h:
+	* TriangleSet2D.h:
+	* Rectangle2D.cpp:
+	* BrowserOptions.cpp:
+	* ElevationGrid.h:
+	* NurbsSweptSurface.cpp:
+	* NurbsSwungSurface.cpp:
+	* X3DGeometryNode.h:
+	* IndexedFaceSet.h:
+	* TriangleSet2D.cpp:
+	* ElevationGrid.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp:
+	* GeoElevationGrid.h:
+	* GeoElevationGrid.cpp:
+	* X3DComposedGeometryNode.h:
+	* X3DNurbsSurfaceGeometryNode.h:
+	* X3DNurbsSurfaceGeometryNode.cpp:
+	* X3DComposedGeometryNode.cpp:
+	* ProximitySensor.cpp:
+	* X3DBackgroundNode.cpp: 
+
 2012-11-10  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Browser.cpp:

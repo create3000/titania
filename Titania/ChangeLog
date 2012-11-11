@@ -1,3 +1,10 @@
+2012-11-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWidget.ui:
+	* BrowserWidget.cpp:
+	* X3DBrowserWidgetUI.h:
+	* X3DBrowserWidgetUI.cpp: 
+
 2012-11-10  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWidget.ui:

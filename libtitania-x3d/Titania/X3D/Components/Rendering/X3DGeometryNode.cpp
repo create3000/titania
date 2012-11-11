@@ -52,23 +52,15 @@ namespace titania {
 namespace X3D {
 
 X3DGeometryNode::X3DGeometryNode () :
-	X3DNode (), 
-	//	     creaseAngle (),             // SFFloat [ ]      creaseAngle      0           [0,∞)
-	//	           solid (true)          // SFBool  [ ]      solid            TRUE
-	//	             ccw (true),         // SFBool  [ ]      ccw              TRUE
-	//	  colorPerVertex (true),         // SFBool  [ ]      colorPerVertex   TRUE
-	//	 normalPerVertex (true),         // SFBool  [ ]      normalPerVertex  TRUE
-	//	           color (),             // SFNode [in,out] color            NULL        [X3DColorObject]
-	//	           coord (),             // SFNode [in,out] coord            NULL        [X3DCoordinateNode]
-	//	        fogCoord (),             // SFNode [in,out] fogCoord         [ ]         [FogCoordinate]
-	//	          normal (),             // SFNode [in,out] normal           NULL        [X3DNormalNode]
-	//	        texCoord (),             // SFNode [in,out] texCoord         NULL        [X3DTextureCoordinateNode]
-	//	         polygon (GL_TRIANGLES),
-	static_draw (false),
-	texCoordBufferId (0),
-	colorBufferId (0),
-	normalBufferId (0),
-	pointBufferId (0)
+	         X3DNode (),      
+	             ccw (true),  // SFBool  [ ]      ccw              TRUE
+	           solid (true),  // SFBool  [ ]      solid            TRUE
+	     creaseAngle (),      // SFFloat [ ]      creaseAngle      0           [0,∞)
+	     static_draw (false), 
+	texCoordBufferId (0),     
+	   colorBufferId (0),     
+	  normalBufferId (0),     
+	   pointBufferId (0)      
 {
 	addNodeType (X3DGeometryNodeType);
 }
@@ -143,38 +135,71 @@ X3DGeometryNode::intersect (const Line3f & hitRay, Hit*) const
 	return false;
 }
 
-void
-X3DGeometryNode::refineNormals (std::vector <Vector3f> & normals, const VertexMap & vertexMap, const float creaseAngle, const bool ccw)
-{
-	this -> ccw = ccw ? GL_CCW : GL_CW;
+/*
+ *  normalIndex: a map of vertices with an array of the normals associated to this vertex
+ *
+ *    [vertexIndex] -> [normalIndex1, normalIndex2, ... ]
+ *
+ *  normals: an array of a face normal for each vertex
+ *
+ *  Assume we have two polygons where two points (p2, p3) share more than one vertex. 
+ * 
+ *  p1                        p3
+ *     v1 ------------- v3 v5
+ *      | n1         n3  /|
+ *      |              /  |
+ *      |            / n5 |
+ *      |          /      |
+ *      |        /        |
+ *      |      /          |
+ *      | n2 /            |
+ *      |  /  n4          |
+ *      |/            n6  |
+ *     v2 v4 ------------- v6
+ *  p2                        p4                     
+ *
+ *  For these two polygons the normalIndex and the normal array would look like this:
+ *
+ *  normalIndex:
+ *    [p1] -> [n1]
+ *    [p2] -> [n2, n4]
+ *    [p3] -> [n3, n5]
+ *    [p4] -> [n6]
+ *
+ *  normals:	
+ *    [n1, n2, n3, n4, n5, n6]
+ */
 
-	if (not ccw)                     // if refined normals are less then this then place this at the end
+void
+X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Vector3f> & normals)
+{
+	if (creaseAngle == 0.0f)
+		return;
+
+	if (not ccw)
 	{
-		for (auto & normal : normals) // FIXME std::generate ???
+		for (auto & normal : normals)
 			normal = -normal;
 	}
-
-	if (creaseAngle == 0)            // FIXME why generate normals if creaseAngle == 0
-		return;
 
 	float cosCreaseAngle = std::cos (creaseAngle);
 
 	std::vector <Vector3f> _normals (normals .size ());
 
-	for (const auto & index : vertexMap)
+	for (const auto & vertex : normalIndex)
 	{
-		for (const auto & vertex : index .second)
+		for (const auto & index : vertex .second)
 		{
 			Vector3f         n;
-			const Vector3f & m = normals [vertex];
+			const Vector3f & m = normals [index];
 
-			for (const auto & triangle : index .second)
+			for (const auto & index : vertex .second)
 			{
-				if (dot (normals [triangle], m) > cosCreaseAngle)
-					n += normals [triangle];
+				if (dot (normals [index], m) > cosCreaseAngle)
+					n += normals [index];
 			}
 
-			_normals [vertex] = normalize (n);
+			_normals [index] = normalize (n);
 		}
 	}
 
@@ -193,8 +218,6 @@ X3DGeometryNode::update ()
 void
 X3DGeometryNode::clear ()
 {
-	solid = true;
-	ccw   = GL_CCW;
 	glTexCoord .clear ();
 	textureCoordinateGenerator = nullptr;
 	glNumColors                = 3;
@@ -249,17 +272,17 @@ X3DGeometryNode::draw ()
 	if (solid)
 	{
 		glEnable (GL_CULL_FACE);
-		glCullFace (GL_BACK);
 	}
 	else
 		glDisable (GL_CULL_FACE);
 
-	glFrontFace (ccw);
+	glFrontFace (ccw ? GL_CCW : GL_CW);
 
 	if (glIsEnabled (GL_TEXTURE_2D))
 	{
 		if (textureCoordinateGenerator)
 			textureCoordinateGenerator -> enable ();
+			
 		else if (glTexCoord .size ())
 		{
 			glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferId);

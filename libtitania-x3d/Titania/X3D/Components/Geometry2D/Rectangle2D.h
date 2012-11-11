@@ -59,8 +59,9 @@ class Rectangle2D :
 {
 public:
 
+	using X3DGeometryNode::solid;
+
 	SFVec2f size;
-	SFBool  solid;
 
 	Rectangle2D (X3DExecutionContext* const);
 

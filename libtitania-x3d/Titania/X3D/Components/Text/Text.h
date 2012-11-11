@@ -59,6 +59,8 @@ class Text :
 {
 public:
 
+	using X3DGeometryNode::solid;
+
 	SFNode <X3DBasicNode> fontStyle;
 	MFFloat               length;
 	SFFloat               maxExtent;
@@ -66,7 +68,6 @@ public:
 	MFVec2f               lineBounds;
 	SFVec3f               origin;
 	SFVec2f               textBounds;
-	SFBool                solid;
 
 	Text (X3DExecutionContext* const);
 

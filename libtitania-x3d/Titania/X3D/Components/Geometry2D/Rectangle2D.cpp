@@ -56,8 +56,7 @@ namespace X3D {
 Rectangle2D::Rectangle2D (X3DExecutionContext* const executionContext) :
 	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	           size (2, 2),                                                // SFVec2f [ ]size   2 2          (0,∞)
-	          solid ()                                                     // SFBool  [ ]solid  FALSE
+	           size (2, 2)                                                // SFVec2f [ ]size   2 2          (0,∞)
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Rectangle2D");

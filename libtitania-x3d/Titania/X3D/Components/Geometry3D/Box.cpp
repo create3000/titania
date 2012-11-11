@@ -56,8 +56,7 @@ namespace X3D {
 Box::Box (X3DExecutionContext* const executionContext) :
 	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	           size (2, 2, 2),                                             // SFVec3f [ ]size   2 2 2        (0,∞)
-	          solid (true)                                                 // SFBool  [ ]solid  TRUE
+	           size (2, 2, 2)                                             // SFVec3f [ ]size   2 2 2        (0,∞)
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Box");
@@ -365,8 +364,6 @@ Box::build ()
 	getGLPoints () -> push_back  (y);
 	getGLPoints () -> push_back (-z);
 
-	setGLSolid (solid);
-	setGLCCW (GL_CCW);
 	setGLMode (GL_QUADS);
 	setGLIndices (glIndices);
 }

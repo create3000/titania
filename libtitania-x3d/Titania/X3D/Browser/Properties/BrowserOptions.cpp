@@ -122,19 +122,30 @@ BrowserOptions::set_shading ()
 	std::clog << "Setting shading to " << shading << "." << std::endl;
 
 	if (shading == "PHONG")
+	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-
+		glShadeModel (GL_SMOOTH);
+	}
 	else if (shading == "GOURAUD")
+	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-
+		glShadeModel (GL_SMOOTH);
+	}
 	else if (shading == "FLAT")
+	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-
+		glShadeModel (GL_FLAT);
+	}
 	else if (shading == "WIREFRAME")
+	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
-
+		glShadeModel (GL_SMOOTH);
+	}
 	else if (shading == "POINTSET")
+	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
+		glShadeModel (GL_SMOOTH);
+	}
 }
 
 } // X3D

@@ -65,6 +65,8 @@ class IndexedFaceSet :
 {
 public:
 
+	using X3DGeometryNode::creaseAngle;
+
 	MFInt32 set_colorIndex;
 	MFInt32 set_coordIndex;
 	MFInt32 set_normalIndex;
@@ -72,7 +74,6 @@ public:
 	MFInt32 colorIndex;
 	SFBool  convex;
 	MFInt32 coordIndex;
-	SFFloat creaseAngle;
 	MFInt32 normalIndex;
 	MFInt32 texCoordIndex;
 

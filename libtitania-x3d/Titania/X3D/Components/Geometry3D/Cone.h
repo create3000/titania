@@ -57,26 +57,30 @@ namespace X3D {
 class Cone :
 	public X3DGeometryNode
 {
-	Box3f
-	createBBox ();
-
-	void
-	build ();
-
-
 public:
+
+	using X3DGeometryNode::solid;
 
 	SFBool  bottom;
 	SFFloat bottomRadius;
 	SFFloat height;
 	SFBool  side;
-	SFBool  solid;
 
 	Cone (X3DExecutionContext* const);
 
 	virtual
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
+
+
+private:
+
+	Box3f
+	createBBox ();
+
+	void
+	build ();
+
 
 };
 

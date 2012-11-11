@@ -58,6 +58,35 @@ namespace X3D {
 class ElevationGrid :
 	public X3DGeometryNode
 {
+public:
+
+	using X3DGeometryNode::ccw;
+	using X3DGeometryNode::solid;
+	using X3DGeometryNode::creaseAngle;
+
+	MFFloat               set_height;
+	MFNode <X3DBasicNode> attrib;
+	SFNode <X3DBasicNode> color;
+	SFNode <X3DBasicNode> fogCoord;
+	SFNode <X3DBasicNode> normal;
+	SFNode <X3DBasicNode> texCoord;
+	SFBool                colorPerVertex;
+	MFFloat               height;
+	SFBool                normalPerVertex;
+	SFInt32               xDimension;
+	SFFloat               xSpacing;
+	SFInt32               zDimension;
+	SFFloat               zSpacing;
+
+	ElevationGrid (X3DExecutionContext* const);
+
+	virtual
+	X3DBasicNode*
+	create (X3DExecutionContext* const) const;
+
+
+private:
+
 	Box3f
 	createBBox ();
 
@@ -76,31 +105,6 @@ class ElevationGrid :
 	void
 	build ();
 
-
-public:
-
-	MFFloat               set_height;
-	MFNode <X3DBasicNode> attrib;
-	SFNode <X3DBasicNode> color;
-	SFNode <X3DBasicNode> fogCoord;
-	SFNode <X3DBasicNode> normal;
-	SFNode <X3DBasicNode> texCoord;
-	SFBool                ccw;
-	SFBool                colorPerVertex;
-	SFFloat               creaseAngle;
-	MFFloat               height;
-	SFBool                normalPerVertex;
-	SFBool                solid;
-	SFInt32               xDimension;
-	SFFloat               xSpacing;
-	SFInt32               zDimension;
-	SFFloat               zSpacing;
-
-	ElevationGrid (X3DExecutionContext* const);
-
-	virtual
-	X3DBasicNode*
-	create (X3DExecutionContext* const) const;
 
 };
 

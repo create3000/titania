@@ -83,11 +83,11 @@ public:
 	const Glib::RefPtr <Gtk::IconFactory> &
 	getIconFactory () const { return m_iconFactory; }
 
-	const Glib::RefPtr <Gtk::ToggleAction> &
-	getSideBarAction () const { return m_sideBarAction; }
-
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const { return m_menuAccelGroup; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getSideBarAction () const { return m_sideBarAction; }
 
 	Gtk::FileChooserDialog &
 	getFileOpenDialog () const { return *m_fileOpenDialog; }
@@ -156,7 +156,13 @@ public:
 	getShadingMenuItem () const { return *m_shadingMenuItem; }
 
 	Gtk::RadioMenuItem &
+	getPhongMenuItem () const { return *m_phongMenuItem; }
+
+	Gtk::RadioMenuItem &
 	getGouraudMenuItem () const { return *m_gouraudMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getFlatMenuItem () const { return *m_flatMenuItem; }
 
 	Gtk::RadioMenuItem &
 	getWireFrameMenuItem () const { return *m_wireFrameMenuItem; }
@@ -314,15 +320,15 @@ public:
 
 	virtual
 	void
-	on_sideBar_toggled () = 0;
-
-	virtual
-	void
 	on_fileOpenDialog_response (int response_id) = 0;
 
 	virtual
 	void
 	on_fileSaveDialog_response (int response_id) = 0;
+
+	virtual
+	void
+	on_sideBar_toggled () = 0;
 
 	virtual
 	void
@@ -374,7 +380,15 @@ public:
 
 	virtual
 	void
+	phong_activate () = 0;
+
+	virtual
+	void
 	gouraud_activate () = 0;
+
+	virtual
+	void
+	flat_activate () = 0;
 
 	virtual
 	void
@@ -465,8 +479,8 @@ private:
 	Glib::RefPtr <Gtk::FileFilter>   m_fileFilterAllFiles;
 	Glib::RefPtr <Gtk::ToggleAction> m_footerAction;
 	Glib::RefPtr <Gtk::IconFactory>  m_iconFactory;
-	Glib::RefPtr <Gtk::ToggleAction> m_sideBarAction;
 	Glib::RefPtr <Gtk::AccelGroup>   m_menuAccelGroup;
+	Glib::RefPtr <Gtk::ToggleAction> m_sideBarAction;
 	Gtk::FileChooserDialog*          m_fileOpenDialog;
 	Gtk::FileChooserDialog*          m_fileSaveDialog;
 	Gtk::CheckButton*                m_saveCompressedButton;
@@ -489,7 +503,9 @@ private:
 	Gtk::CheckMenuItem*              m_footerMenuItem;
 	Gtk::CheckMenuItem*              m_statusBarMenuItem;
 	Gtk::MenuItem*                   m_shadingMenuItem;
+	Gtk::RadioMenuItem*              m_phongMenuItem;
 	Gtk::RadioMenuItem*              m_gouraudMenuItem;
+	Gtk::RadioMenuItem*              m_flatMenuItem;
 	Gtk::RadioMenuItem*              m_wireFrameMenuItem;
 	Gtk::RadioMenuItem*              m_pointSetMenuItem;
 	Gtk::MenuItem*                   m_renderQualtityMenuItem;

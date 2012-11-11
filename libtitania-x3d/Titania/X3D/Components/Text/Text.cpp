@@ -62,8 +62,7 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	         string (),                                                    // MFString [in,out] string      [ ]
 	     lineBounds (),                                                    // MFVec2f  [out]    lineBounds
 	         origin (),                                                    // SFVec3f  [out]    origin
-	     textBounds (),                                                    // SFVec2f  [out]    textBounds
-	          solid ()                                                     // SFBool   [ ]      solid       FALSE
+	     textBounds ()                                                     // SFVec2f  [out]    textBounds
 {
 	setComponent ("Text");
 	setTypeName ("Text");

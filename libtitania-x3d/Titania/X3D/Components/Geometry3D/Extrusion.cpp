@@ -62,14 +62,11 @@ Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
 	       set_scale (),                                                                                       // MFVec2f    [in] set_scale
 	       set_spine (),                                                                                       // MFVec3f    [in] set_spine
 	        beginCap (true),                                                                                   // SFBool     [ ]  beginCap          TRUE
-	             ccw (true),                                                                                   // SFBool     [ ]  ccw               TRUE
 	          convex (true),                                                                                   // SFBool     [ ]  convex            TRUE
-	     creaseAngle (),                                                                                       // SFFloat    [ ]  creaseAngle       0                                [0,∞)
 	    crossSection ({ SFVec2f (1, 1), SFVec2f (1, -1), SFVec2f (-1, -1), SFVec2f (-1, 1), SFVec2f (1, 1) }), // MFVec2f    [ ]  crossSection      [1 1 1 -1 -1 -1 -1 1 1 1]        (-∞,∞)
 	          endCap (true),                                                                                   // SFBool     [ ]  endCap            TRUE
 	     orientation ({ SFRotation () }),                                                                      // MFRotation [ ]  orientation       0 0 1 0                          [-1,1] or (-∞,∞)
 	           scale ({ SFVec2f (1, 1) }),                                                                     // MFVec2f    [ ]  scale             1 1                              (0,∞)
-	           solid (true),                                                                                   // SFBool     [ ]  solid             TRUE
 	           spine ({ SFVec3f (), SFVec3f (0, 1, 0) })                                                       // MFVec3f    [ ]  spine             [0 0 0 0 1 0]                    (-∞,∞)
 {
 	setComponent ("Geometry3D");
@@ -253,7 +250,7 @@ Extrusion::build ()
 	std::vector <Vector2f> texCoords;
 	std::vector <Vector3f> normals;
 	std::vector <size_t> indices;
-	VertexMap vertexMap;
+	NormalIndex normalIndex;
 
 	size_t reserve = (spine .size () - 1) * (crossSection .size () - 1) * 6 + (beginCap ? (capPoints - 2) * 3 : 0) + (endCap ? (capPoints - 2) * 3 : 0);
 	texCoords .reserve (reserve);
@@ -285,7 +282,7 @@ Extrusion::build ()
 			// p1
 			texCoords .push_back (Vector2f (k / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1)));
 			indices .push_back (INDEX (n, k));
-			vertexMap [indices .back ()] .push_back (normals .size ());
+			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
 			
 			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
@@ -293,7 +290,7 @@ Extrusion::build ()
 			// p2
 			texCoords .push_back (Vector2f ((k + 1) / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1)));
 			indices .push_back (INDEX (n, k1));
-			vertexMap [indices .back ()] .push_back (normals .size ());
+			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
 			
 			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
@@ -301,7 +298,7 @@ Extrusion::build ()
 			// p3
 			texCoords .push_back (Vector2f (k / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1)));
 			indices .push_back (INDEX (n1, k));
-			vertexMap [indices .back ()] .push_back (normals .size ());
+			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
 			
 			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
@@ -311,7 +308,7 @@ Extrusion::build ()
 			// p2
 			texCoords .push_back (Vector2f ((k + 1) / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1)));
 			indices .push_back (INDEX (n, k1));
-			vertexMap [indices .back ()] .push_back (normals .size ());
+			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
 			
 			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
@@ -319,7 +316,7 @@ Extrusion::build ()
 			// p4
 			texCoords .push_back (Vector2f ((k + 1) / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1)));
 			indices .push_back (INDEX (n1, k1));
-			vertexMap [indices .back ()] .push_back (normals .size ());
+			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
 			
 			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
@@ -327,7 +324,7 @@ Extrusion::build ()
 			// p3
 			texCoords .push_back (Vector2f (k / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1)));
 			indices .push_back (INDEX (n1, k));
-			vertexMap [indices .back ()] .push_back (normals .size ());
+			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
 			
 			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
@@ -426,19 +423,19 @@ Extrusion::build ()
 							Vector2f t = (min + crossSection .at (polygonElement .vertices [0] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [0] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
 							t = (min + crossSection .at (polygonElement .vertices [_i] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
 							t = (min + crossSection .at (polygonElement .vertices [_i + 1] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 1] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 						}
 
@@ -450,19 +447,19 @@ Extrusion::build ()
 							Vector2f t = (min + crossSection .at (polygonElement .vertices [_i % 2 ? _i + 1 : _i] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i % 2 ? _i + 1 : _i] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
 							t = (min + crossSection .at (polygonElement .vertices [_i % 2 ? _i : _i + 1] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i % 2 ? _i : _i + 1] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
 							t = (min + crossSection .at (polygonElement .vertices [_i + 2] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 2] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 						}
 
@@ -474,19 +471,19 @@ Extrusion::build ()
 							Vector2f t = (min + crossSection .at (polygonElement .vertices [_i] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
 							t = (min + crossSection .at (polygonElement .vertices [_i + 1] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 1] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
 							t = (min + crossSection .at (polygonElement .vertices [_i + 2] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 2] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 						}
 
@@ -581,19 +578,19 @@ Extrusion::build ()
 							Vector2f t = (min + crossSection .at (polygonElement .vertices [0] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [0] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
 							t = (min + crossSection .at (polygonElement .vertices [_i] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
 							t = (min + crossSection .at (polygonElement .vertices [_i + 1] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 1] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 						}
 
@@ -605,19 +602,19 @@ Extrusion::build ()
 							Vector2f t = (min + crossSection .at (polygonElement .vertices [_i % 2 ? _i + 1 : _i] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i % 2 ? _i + 1 : _i] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
 							t = (min + crossSection .at (polygonElement .vertices [_i % 2 ? _i : _i + 1] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i % 2 ? _i : _i + 1] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
 							t = (min + crossSection .at (polygonElement .vertices [_i + 2] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 2] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 						}
 
@@ -629,19 +626,19 @@ Extrusion::build ()
 							Vector2f t = (min + crossSection .at (polygonElement .vertices [_i] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
 							t = (min + crossSection .at (polygonElement .vertices [_i + 1] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 1] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 
 							t = (min + crossSection .at (polygonElement .vertices [_i + 2] -> k)) / size;
 							texCoords .push_back (Vector2f (t .x (), 1 - t .y ()));
 							indices .push_back (polygonElement .vertices [_i + 2] -> i);
-							vertexMap [indices .back ()] .push_back (normals .size ());
+							normalIndex [indices .back ()] .push_back (normals .size ());
 							normals .push_back (normal);
 						}
 
@@ -656,7 +653,7 @@ Extrusion::build ()
 		}
 	}
 
-	refineNormals (normals, vertexMap, creaseAngle, ccw);
+	refineNormals (normalIndex, normals);
 
 	GLsizei glIndices = 0;
 
@@ -702,8 +699,6 @@ Extrusion::build ()
 		++ glIndices;
 	}
 
-	setGLSolid (solid);
-	setGLCCW (ccw ? GL_CCW : GL_CW);
 	setGLMode (GL_TRIANGLES);
 	setGLIndices (glIndices);
 }

@@ -61,8 +61,7 @@ Cone::Cone (X3DExecutionContext* const executionContext) :
 	         bottom (true),                                                // SFBool  [ ]bottom        TRUE
 	   bottomRadius (1),                                                   // SFFloat [ ]bottomRadius  1           (0,∞)
 	         height (2),                                                   // SFFloat [ ]height        2           (0,∞)
-	           side (true),                                                // SFBool  [ ]side          TRUE
-	          solid (true)                                                 // SFBool  [ ]solid         TRUE
+	           side (true)                                                 // SFBool  [ ]side          TRUE
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Cone");
@@ -224,8 +223,6 @@ Cone::build ()
 		}
 	}
 
-	setGLSolid (solid);
-	setGLCCW (GL_CCW);
 	setGLMode (GL_TRIANGLES);
 	setGLIndices (glIndices);
 }

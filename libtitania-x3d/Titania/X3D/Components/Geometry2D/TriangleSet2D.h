@@ -59,8 +59,9 @@ class TriangleSet2D :
 {
 public:
 
+	using X3DGeometryNode::solid;
+
 	MFVec2f vertices;
-	SFBool  solid;
 
 	TriangleSet2D (X3DExecutionContext* const);
 
