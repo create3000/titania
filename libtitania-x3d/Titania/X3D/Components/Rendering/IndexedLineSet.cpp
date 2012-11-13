@@ -230,20 +230,18 @@ IndexedLineSet::build ()
 		}
 	}
 
-	GLsizei glIndices = 0;
-
 	for (size_t i = 0, face = 0; i < coordIndex .size (); ++ i, ++ face)
 	{
-		int numIndices = 0;
+		int numVertices = 0;
 
 		for (
 		   size_t _i = i;
 		   coordIndex [_i] >= 0 and _i < coordIndex .size ();
-		   ++ _i, ++ numIndices
+		   ++ _i, ++ numVertices
 		   )
 			;
 
-		if (numIndices > 1)
+		if (numVertices > 1)
 		{
 			SFColor     faceColor;
 			SFColorRGBA faceColorRGBA;
@@ -257,7 +255,7 @@ IndexedLineSet::build ()
 					faceColorRGBA = _colorRGBA -> color [colorIndex [face]];
 			}
 
-			for (int _i = 0; _i < numIndices - 1; ++ _i, ++ i)
+			for (int _i = 0; _i < numVertices - 1; ++ _i, ++ i)
 			{
 				if (_color)
 				{
@@ -280,8 +278,6 @@ IndexedLineSet::build ()
 
 				getVertices () .emplace_back (_coord -> point [coordIndex [i]]);
 
-				++ glIndices;
-
 				if (_color)
 				{
 					if (colorPerVertex and colorIndex [i + 1] >= 0)
@@ -303,19 +299,17 @@ IndexedLineSet::build ()
 
 				getVertices () .emplace_back (_coord -> point [coordIndex [i + 1]]);
 
-				++ glIndices;
 			}
 
 			++ i;
 		}
 		else
 		{
-			i += numIndices;
+			i += numVertices;
 		}
 	}
 
 	setVertexMode (GL_LINES);
-	setNumIndices (glIndices);
 }
 
 void

@@ -96,7 +96,7 @@ Transform::getBBox ()
 {
 	Box3f bbox = X3DGroupingNode::getBBox ();
 
-	return Box3f (scale * bbox .size (), matrix .multVecMatrix (bbox .center ()));
+	return Box3f (scale * bbox .size (), matrix * bbox .center ());
 }
 
 void

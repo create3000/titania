@@ -735,7 +735,6 @@
     <None Include="Tests\Extrusion\image4.png" />
     <None Include="Tests\Extrusion\test-XYZextrusion.x3dv" />
     <None Include="Tests\Extrusion\wrong1.wrl" />
-    <None Include="Tests\Extrusion\wrong2-1.wrl" />
     <None Include="Tests\Extrusion\wrong2.wrl" />
     <None Include="Tests\images\earth.png" />
     <None Include="Tests\images\image.png" />
@@ -1914,7 +1913,6 @@
     <None Include="Tests\3rd Party\jeh-triangulate.wrl" />
     <None Include="Tests\3rd Party\metadata.wrl" />
     <None Include="Tests\3rd Party\oldanim.wrl" />
-    <None Include="Tests\3rd Party\pipe.wrl" />
     <None Include="Tests\3rd Party\revolute.wrl" />
     <None Include="Tests\3rd Party\switch.wrl" />
     <None Include="Tests\3rd Party\test_ecmaScript.wrl" />
@@ -2188,6 +2186,10 @@
     <None Include="Tests\Geometry3D\ColorMaterial.wrl" />
     <None Include="Tests\Rendering\IndexedLineSet.wrl" />
     <None Include="Tests\Rendering\PointSet.wrl" />
+    <None Include="Tests\Geometry3D\test.wrl" />
+    <None Include="Tests\Extrusion\wrong2-1-ok.wrl" />
+    <None Include="Tests\Extrusion\wrong2.png" />
+    <None Include="Tests\Extrusion\pipe.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

@@ -89,10 +89,13 @@ Cylinder::createBBox ()
 
 	if (not top and not side and not bottom)
 		return Box3f ();
+		
 	else if (not top and not side)
 		return Box3f (Vector3f (diameter, 0, diameter), Vector3f (0, -height / 2, 0));
+		
 	else if (not bottom and not side)
 		return Box3f (Vector3f (diameter, 0, diameter), Vector3f (0, height / 2, 0));
+		
 	else
 		return Box3f (Vector3f (diameter, height, diameter), Vector3f ());
 }
@@ -101,8 +104,6 @@ void
 Cylinder::build ()
 {
 	X3DGeometryNode::build ();
-
-	GLsizei glIndices = 0;
 
 	float y1      = height / 2;
 	float y2      = -y1;
@@ -132,21 +133,15 @@ Cylinder::build ()
 			getNormals  () .emplace_back (0, 1, 0);
 			getVertices () .emplace_back (0, y1, 0);
 
-			++ glIndices;
-
 			// p2
 			getTexCoord () .emplace_back (+(x1 + 1) / 2, -(z1 - 1) / 2);
 			getNormals  () .emplace_back (0, 1, 0);
 			getVertices () .emplace_back (x1 * _radius, y1, z1 * _radius);
 
-			++ glIndices;
-
 			// p3
 			getTexCoord () .emplace_back (+(x2 + 1) / 2, -(z2 - 1) / 2);
 			getNormals  () .emplace_back (0, 1, 0);
 			getVertices () .emplace_back (x2 * _radius, y1, z2 * _radius);
-
-			++ glIndices;
 		}
 
 		if (side)
@@ -160,42 +155,30 @@ Cylinder::build ()
 			getNormals  () .emplace_back (x1, 0, z1);
 			getVertices () .emplace_back (x1 * _radius, y1, z1 * _radius);
 
-			++ glIndices;
-
 			// p2
 			getTexCoord () .emplace_back (u1, 0);
 			getNormals  () .emplace_back (x1, 0, z1);
 			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
 
-			++ glIndices;
-
 			// p3
 			getTexCoord () .emplace_back (u2, 0);
 			getNormals  () .emplace_back (x2, 0, z2);
 			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
-
-			++ glIndices;
 
 			// p4
 			getTexCoord () .emplace_back (u2, 1);
 			getNormals  () .emplace_back (x2, 0, z2);
 			getVertices () .emplace_back (x2 * _radius, y1, z2 * _radius);
 
-			++ glIndices;
-
 			// p1
 			getTexCoord () .emplace_back (u1, 1);
 			getNormals  () .emplace_back (x1, 0, z1);
 			getVertices () .emplace_back (x1 * _radius, y1, z1 * _radius);
 
-			++ glIndices;
-
 			// p3
 			getTexCoord () .emplace_back (u2, 0);
 			getNormals  () .emplace_back (x2, 0, z2);
 			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
-
-			++ glIndices;
 		}
 
 		if (bottom)
@@ -210,26 +193,19 @@ Cylinder::build ()
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (0, y2, 0);
 
-			++ glIndices;
-
 			// p3
 			getTexCoord () .emplace_back ((x2 + 1) / 2, (z2 + 1) / 2);
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
 
-			++ glIndices;
-
 			// p2
 			getTexCoord () .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2);
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
-
-			++ glIndices;
 		}
 	}
 
 	setVertexMode (GL_TRIANGLES);
-	setNumIndices (glIndices);
 }
 
 } // X3D

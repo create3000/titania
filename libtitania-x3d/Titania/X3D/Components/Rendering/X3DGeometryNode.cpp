@@ -52,14 +52,14 @@ namespace titania {
 namespace X3D {
 
 X3DGeometryNode::X3DGeometryNode () :
-	         X3DNode (),      
-	             ccw (true),  // SFBool  [ ]      ccw              TRUE
-	           solid (true),  // SFBool  [ ]      solid            TRUE
-	     creaseAngle (),      // SFFloat [ ]      creaseAngle      0           [0,∞)
-	texCoordBufferId (0),     
-	   colorBufferId (0),     
-	  normalBufferId (0),     
-	   pointBufferId (0),      
+	         X3DNode (),              
+	             ccw (true),          // SFBool  [ ]      ccw              TRUE
+	           solid (true),          // SFBool  [ ]      solid            TRUE
+	     creaseAngle (),              // SFFloat [ ]      creaseAngle      0           [0,∞)
+	texCoordBufferId (0),             
+	   colorBufferId (0),             
+	  normalBufferId (0),             
+	   pointBufferId (0),             
 	     bufferUsage (GL_STATIC_DRAW) 
 {
 	addNodeType (X3DGeometryNodeType);
@@ -90,7 +90,7 @@ X3DGeometryNode::eventsProcessed ()
 const Box3f
 X3DGeometryNode::getBBox ()
 {
-	if (not glPoints  .size ())
+	if (not glVertices  .size ())
 		update ();
 
 	return bbox;
@@ -99,21 +99,19 @@ X3DGeometryNode::getBBox ()
 Box3f
 X3DGeometryNode::createBBox ()
 {
-	if (glIndices >= 3)
+	if (glVertices .size ())
 	{
-		Vector3f min = glPoints [0];
-		Vector3f max = min;
+		Vector3f min = glVertices [0];
+		Vector3f max = glVertices [0];
 
-		for (int i = 3; i < glIndices; ++ i)
+		for (const auto & vertex : glVertices)
 		{
-			min = math::min (min, glPoints [i]);
-			max = math::max (max, glPoints [i]);
+			min = math::min (min, vertex);
+			max = math::max (max, vertex);
 		}
 
 		Vector3f size   = max - min;
 		Vector3f center = min + size * 0.5f;
-
-		//size = size .max(Vector3f(1e-5, 1e-5, 1e-5));
 
 		return Box3f (size, center);
 	}
@@ -139,8 +137,8 @@ X3DGeometryNode::intersect (const Line3f & hitRay, Hit*) const
  *
  *  normals: an array of a face normal for each vertex
  *
- *  Assume we have two polygons where two points (p2, p3) share more than one vertex. 
- * 
+ *  Assume we have two polygons where two points (p2, p3) share more than one vertex.
+ *
  *  p1                        p3
  *     v1 ------------- v3 v5
  *      | n1         n3  /|
@@ -153,7 +151,7 @@ X3DGeometryNode::intersect (const Line3f & hitRay, Hit*) const
  *      |  /  n4          |
  *      |/            n6  |
  *     v2 v4 ------------- v6
- *  p2                        p4                     
+ *  p2                        p4
  *
  *  For these two polygons the normalIndex and the normal array would look like this:
  *
@@ -163,7 +161,7 @@ X3DGeometryNode::intersect (const Line3f & hitRay, Hit*) const
  *    [p3] -> [n3, n5]
  *    [p4] -> [n6]
  *
- *  normals:	
+ *  normals:
  *    [n1, n2, n3, n4, n5, n6]
  */
 
@@ -176,7 +174,7 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 	if (not ccw)
 	{
 		for (auto & normal : normals)
-			normal = -normal;
+			normal .negate ();
 	}
 
 	float cosCreaseAngle = std::cos (creaseAngle);
@@ -196,7 +194,7 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 					n += normals [index];
 			}
 
-			_normals [index] = normalize (n);
+			_normals [index] = n .normalize ();
 		}
 	}
 
@@ -220,9 +218,8 @@ X3DGeometryNode::clear ()
 	glColors     .clear ();
 	glColorsRGBA .clear ();
 	glNormals    .clear ();
-	glPoints     .clear ();
-	glIndices = 0;
-	glVertexMode    = GL_TRIANGLES;
+	glVertices   .clear ();
+	glVertexMode = GL_TRIANGLES;
 }
 
 void
@@ -240,17 +237,17 @@ X3DGeometryNode::transfer ()
 		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
 		glBufferData (GL_ARRAY_BUFFER, sizeof (Color3f) * glColors .size (), glColors .data (), bufferUsage);
 	}
-	else
+	else if (glColorsRGBA .size ())
 	{
 		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
 		glBufferData (GL_ARRAY_BUFFER, sizeof (Color4f) * glColorsRGBA .size (), glColorsRGBA .data (), bufferUsage);
 	}
-	
+
 	glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
 	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * glNormals .size (), glNormals .data (), bufferUsage);
 
 	glBindBuffer (GL_ARRAY_BUFFER, pointBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * glPoints .size (), glPoints .data (), bufferUsage);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * glVertices .size (), glVertices .data (), bufferUsage);
 
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 
@@ -260,7 +257,7 @@ X3DGeometryNode::transfer ()
 void
 X3DGeometryNode::display ()
 {
-	if (not glPoints  .size ())
+	if (not glVertices  .size ())
 		update ();
 
 	draw ();
@@ -269,7 +266,7 @@ X3DGeometryNode::display ()
 void
 X3DGeometryNode::draw ()
 {
-	if (not glIndices or not glPoints .size ())
+	if (not glVertices .size ())
 		return;
 
 	if (solid)
@@ -285,7 +282,7 @@ X3DGeometryNode::draw ()
 	{
 		if (textureCoordinateGenerator)
 			textureCoordinateGenerator -> enable ();
-			
+
 		else if (glTexCoord .size ())
 		{
 			glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferId);
@@ -318,7 +315,7 @@ X3DGeometryNode::draw ()
 	glEnableClientState (GL_VERTEX_ARRAY);
 	glVertexPointer (3, GL_FLOAT, 0, 0);
 
-	glDrawArrays (glVertexMode, 0, glIndices);
+	glDrawArrays (glVertexMode, 0, glVertices .size ());
 
 	if (textureCoordinateGenerator)
 		textureCoordinateGenerator -> disable ();

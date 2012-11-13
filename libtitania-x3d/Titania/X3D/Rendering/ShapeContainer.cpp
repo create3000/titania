@@ -84,7 +84,7 @@ ShapeContainer::operator < (const ShapeContainer & container) const
 int
 ShapeContainer::redraw (const Matrix4d & correctionMatrix)
 {
-	glLoadMatrixd (correctionMatrix .multLeft (matrix) .data ());
+	glLoadMatrixd ((correctionMatrix * matrix) .data ());
 
 	if (ViewVolume () .intersect (shape -> getBBox ()))
 	{

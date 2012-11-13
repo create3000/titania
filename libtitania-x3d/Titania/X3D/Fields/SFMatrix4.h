@@ -366,30 +366,30 @@ SFMatrix4 <ValueType>::getTransform (vector3_type & translation,
 
 template <class ValueType>
 SFMatrix4 <ValueType>*
-SFMatrix4 <ValueType>::inverse () const
+SFMatrix4 <ValueType>::transpose () const
 {
-	return new SFMatrix4 (getValue () .inverse ());
+	return new SFMatrix4 (!getValue ());
 }
 
 template <class ValueType>
 SFMatrix4 <ValueType>*
-SFMatrix4 <ValueType>::transpose () const
+SFMatrix4 <ValueType>::inverse () const
 {
-	return new SFMatrix4 (getValue () .transpose ());
+	return new SFMatrix4 (~getValue ());
 }
 
 template <class ValueType>
 SFMatrix4 <ValueType>*
 SFMatrix4 <ValueType>::multLeft (const SFMatrix4 & value) const
 {
-	return new SFMatrix4 (getValue () .multLeft (value .getValue ()));
+	return new SFMatrix4 (ValueType (getValue ()) .multLeft (value .getValue ()));
 }
 
 template <class ValueType>
 SFMatrix4 <ValueType>*
 SFMatrix4 <ValueType>::multRight (const SFMatrix4 & value) const
 {
-	return new SFMatrix4 (getValue () .multRight (value .getValue ()));
+	return new SFMatrix4 (ValueType (getValue ()) .multRight (value .getValue ()));
 }
 
 template <class ValueType>

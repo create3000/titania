@@ -1,3 +1,30 @@
+2012-11-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFMatrix4.h:
+	* SFMatrix3.h:
+	* Browser.cpp:
+	* X3DRenderer.cpp:
+	* LightContainer.h:
+	* ShapeContainer.cpp:
+	* Box.cpp:
+	* Cone.cpp:
+	* Sphere.cpp:
+	* Transform.cpp:
+	* PointSet.cpp:
+	* Cylinder.cpp:
+	* Extrusion.cpp:
+	* Viewpoint.cpp:
+	* X3DGeometryNode.h:
+	* ElevationGrid.cpp:
+	* IndexedLineSet.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp:
+	* RenderingProperties.cpp:
+	* X3DViewpointNode.cpp:
+	* ProximitySensor.cpp:
+	* X3DBackgroundNode.h:
+	* X3DBackgroundNode.cpp: 
+
 2012-11-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

@@ -114,13 +114,10 @@ protected:
 	getNormals () { return glNormals; }
 
 	std::vector <Vector3f> &
-	getVertices () { return glPoints; }
+	getVertices () { return glVertices; }
 
 	void
 	setVertexMode (const GLenum value) { glVertexMode = value; }
-
-	void
-	setNumIndices (const GLsizei value) { glIndices = value; }
 
 	virtual
 	Box3f
@@ -155,9 +152,8 @@ private:
 	std::vector <Color3f>       glColors;
 	std::vector <Color4f>       glColorsRGBA;
 	std::vector <Vector3f>      glNormals;
-	std::vector <Vector3f>      glPoints;
+	std::vector <Vector3f>      glVertices;
 	GLenum                      glVertexMode;
-	GLsizei                     glIndices;
 
 	GLuint texCoordBufferId;
 	GLuint colorBufferId;

@@ -33,6 +33,7 @@
 #include <Titania/Basic/Path.h>
 #include <Titania/Math/Geometry/Box3.h>
 #include <Titania/Math/Math.h>
+#include <Titania/Math/Numbers/Matrix3.h>
 #include <Titania/Math/Numbers/Matrix4.h>
 #include <Titania/Math/Numbers/Rotation4.h>
 #include <Titania/Math/Numbers/Vector2.h>

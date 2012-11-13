@@ -83,10 +83,9 @@ Box::build ()
 {
 	X3DGeometryNode::build ();
 
-	GLsizei glIndices = 24;
-	getTexCoord () .reserve (glIndices);
-	getNormals ()  .reserve (glIndices);
-	getVertices () .reserve (glIndices);
+	getTexCoord () .reserve (24);
+	getNormals ()  .reserve (24);
+	getVertices () .reserve (24);
 
 	auto size_2 = size * 0.5f;
 
@@ -197,7 +196,6 @@ Box::build ()
 	getVertices () .emplace_back (-x, y, -z);
 
 	setVertexMode (GL_QUADS);
-	setNumIndices (glIndices);
 }
 
 } // X3D

@@ -67,7 +67,7 @@ public:
 	void
 	correct (const Matrix4d & correctionMatrix)
 	{
-		matrix = correctionMatrix .multLeft (matrix);
+		matrix = correctionMatrix * matrix;
 	}
 
 	void

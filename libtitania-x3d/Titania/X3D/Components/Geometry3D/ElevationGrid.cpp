@@ -339,7 +339,6 @@ ElevationGrid::build ()
 
 	size_t  i         = 0;
 	int32_t face      = 0;
-	GLsizei glIndices = 0;
 
 	std::vector <size_t>::const_iterator index;
 
@@ -399,14 +398,11 @@ ElevationGrid::build ()
 			}
 
 			getVertices  () .emplace_back (points [*index]);
-
-			++ glIndices;
 		}
 	}
 
 	setTextureCoordinateGenerator (*_textureCoordinateGenerator);
 	setVertexMode (GL_TRIANGLES);
-	setNumIndices (glIndices);
 }
 
 } // X3D

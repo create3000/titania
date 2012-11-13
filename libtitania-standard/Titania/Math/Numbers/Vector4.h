@@ -164,23 +164,19 @@ public:
 	///  All these operators modify this vector2 inplace.
 
 	///@{
+	///  Negates this vector.
+	vector4 &
+	negate ();
+	
 	///  Add @a vector to this vector.
 	template <class T>
 	vector4 &
 	operator += (const vector4 <T> &);
 
-	///  Add @a t to this vector.
-	vector4 &
-	operator += (const Type &);
-
 	///  Subtract @a vector from this vector.
 	template <class T>
 	vector4 &
 	operator -= (const vector4 <T> &);
-
-	///  Subtract @a t from this vector.
-	vector4 &
-	operator -= (const Type &);
 
 	///  Multiply this vector by @a vector.
 	template <class T>
@@ -226,6 +222,17 @@ vector4 <Type>::operator = (const vector4 <T> & vector)
 }
 
 template <class Type>
+vector4 <Type> &
+vector4 <Type>::negate ()
+{
+	value [0] = -value [0];
+	value [1] = -value [1];
+	value [2] = -value [2];
+	value [3] = -value [3];
+	return *this;
+}
+
+template <class Type>
 template <class T>
 vector4 <Type> &
 vector4 <Type>::operator += (const vector4 <T> & vector)
@@ -238,17 +245,6 @@ vector4 <Type>::operator += (const vector4 <T> & vector)
 }
 
 template <class Type>
-vector4 <Type> &
-vector4 <Type>::operator += (const Type & t)
-{
-	value [0] += t;
-	value [1] += t;
-	value [2] += t;
-	value [3] += t;
-	return *this;
-}
-
-template <class Type>
 template <class T>
 vector4 <Type> &
 vector4 <Type>::operator -= (const vector4 <T> & vector)
@@ -257,17 +253,6 @@ vector4 <Type>::operator -= (const vector4 <T> & vector)
 	value [1] -= vector .y ();
 	value [2] -= vector .z ();
 	value [3] -= vector .w ();
-	return *this;
-}
-
-template <class Type>
-vector4 <Type> &
-vector4 <Type>::operator -= (const Type & t)
-{
-	value [0] -= t;
-	value [1] -= t;
-	value [2] -= t;
-	value [3] -= t;
 	return *this;
 }
 
@@ -336,29 +321,29 @@ vector4 <Type>::normalize ()
 ///@{
 //@{
 ///  Compares two vector4 numbers.
-///  Return true if @a a is equal to @a b.
+///  Return true if @a lhs is equal to @a rhs.
 template <class Type>
 constexpr bool
-operator == (const vector4 <Type> & a, const vector4 <Type> & b)
+operator == (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 {
 	return
-	   a .x () == b .x () and
-	   a .y () == b .y () and
-	   a .z () == b .z () and
-	   a .w () == b .w ();
+	   lhs .x () == rhs .x () and
+	   lhs .y () == rhs .y () and
+	   lhs .z () == rhs .z () and
+	   lhs .w () == rhs .w ();
 }
 
 ///  Compares two vector4 numbers.
-///  Return false if @a a is not equal to @a b.
+///  Return false if @a lhs is not equal to @a rhs.
 template <class Type>
 constexpr bool
-operator not_eq (const vector4 <Type> & a, const vector4 <Type> & b)
+operator not_eq (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 {
 	return
-	   a .x () not_eq b .x () or
-	   a .y () not_eq b .y () or
-	   a .z () not_eq b .z () or
-	   a .w () not_eq b .w ();
+	   lhs .x () not_eq rhs .x () or
+	   lhs .y () not_eq rhs .y () or
+	   lhs .z () not_eq rhs .z () or
+	   lhs .w () not_eq rhs .w ();
 }
 //@}
 ///@}
@@ -368,162 +353,117 @@ operator not_eq (const vector4 <Type> & a, const vector4 <Type> & b)
 
 ///@{
 //@{
-///  Return @a a.
+///  Return @a lhs.
 template <class Type>
 constexpr vector4 <Type>
-operator + (const vector4 <Type> & a)
+operator + (const vector4 <Type> & vector)
 {
-	return vector4 <Type> (+a .x (),
-	                       +a .y (),
-	                       +a .z (),
-	                       +a .w ());
+	return vector;
 }
 
-///  Return vector negation of @a a.
+///  Return vector negation of @a lhs.
 template <class Type>
 constexpr vector4 <Type>
-operator - (const vector4 <Type> & a)
+operator - (const vector4 <Type> & vector)
 {
-	return vector4 <Type> (-a .x (),
-	                       -a .y (),
-	                       -a .z (),
-	                       -a .w ());
+	return vector4 <Type> (vector) .negate ();
 }
 //@}
 
 //@{
-///  Return new vector value @a a plus @a b.
+///  Return new vector value @a lhs plus @a rhs.
 template <class Type>
 inline
 vector4 <Type>
-operator + (const vector4 <Type> & a, const vector4 <Type> & b)
+operator + (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 {
-	return vector4 <Type> (a) += b;
-}
-
-///  Return new vector value @a a plus @a b.
-template <class Type>
-inline
-vector4 <Type>
-operator + (const vector4 <Type> & a, const Type & b)
-{
-	return vector4 <Type> (a) += b;
-}
-
-///  Return new vector value @a a plus @a b.
-template <class Type>
-inline
-vector4 <Type>
-operator + (const Type & a, const vector4 <Type> & b)
-{
-	return vector4 <Type> (b) += a;
+	return vector4 <Type> (lhs) += rhs;
 }
 //@}
 
 //@{
-///  Return new vector value @a a minus @a b.
+///  Return new vector value @a lhs minus @a rhs.
 template <class Type>
 inline
 vector4 <Type>
-operator - (const vector4 <Type> & a, const vector4 <Type> & b)
+operator - (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 {
-	return vector4 <Type> (a) -= b;
-}
-
-///  Return new vector value @a a minus @a b.
-template <class Type>
-inline
-vector4 <Type>
-operator - (const vector4 <Type> & a, const Type & b)
-{
-	return vector4 <Type> (a) -= b;
-}
-
-///  Return new vector value @a a minus @a b.
-template <class Type>
-inline
-constexpr vector4 <Type>
-operator - (const Type & a, const vector4 <Type> & b)
-{
-	return vector4 <Type> (a - b .x (),
-	                       a - b .y (),
-	                       a - b .z (),
-	                       a - b .w ());
+	return vector4 <Type> (lhs) -= rhs;
 }
 //@}
 
 //@{
-///  Return new vector value @a a times @a b.
+///  Return new vector value @a lhs times @a rhs.
 template <class Type>
 inline
 vector4 <Type>
-operator * (const vector4 <Type> & a, const vector4 <Type> & b)
+operator * (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 {
-	return vector4 <Type> (a) *= b;
+	return vector4 <Type> (lhs) *= rhs;
 }
 
-///  Return new vector value @a a times @a b.
+///  Return new vector value @a lhs times @a rhs.
 template <class Type>
 inline
 vector4 <Type>
-operator * (const vector4 <Type> & a, const Type & b)
+operator * (const vector4 <Type> & lhs, const Type & rhs)
 {
-	return vector4 <Type> (a) *= b;
+	return vector4 <Type> (lhs) *= rhs;
 }
 
-///  Return new vector value @a a times @a b.
+///  Return new vector value @a lhs times @a rhs.
 template <class Type>
 inline
 vector4 <Type>
-operator * (const Type & a, const vector4 <Type> & b)
+operator * (const Type & lhs, const vector4 <Type> & rhs)
 {
-	return vector4 <Type> (b) *= a;
+	return vector4 <Type> (rhs) *= lhs;
 }
 //@}
 
 //@{
-///  Return new vector value @a a divided by @a b.
+///  Return new vector value @a lhs divided by @a rhs.
 template <class Type>
 inline
 vector4 <Type>
-operator / (const vector4 <Type> & a, const vector4 <Type> & b)
+operator / (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 {
-	return vector4 <Type> (a) /= b;
+	return vector4 <Type> (lhs) /= rhs;
 }
 
-///  Return new vector value @a a divided by @a b.
+///  Return new vector value @a lhs divided by @a rhs.
 template <class Type>
 inline
 vector4 <Type>
-operator / (const vector4 <Type> & a, const Type & b)
+operator / (const vector4 <Type> & lhs, const Type & rhs)
 {
-	return vector4 <Type> (a) /= b;
+	return vector4 <Type> (lhs) /= rhs;
 }
 
-///  Return new vector value @a a divided by @a b.
+///  Return new vector value @a lhs divided by @a rhs.
 template <class Type>
 constexpr vector4 <Type>
-operator / (const Type & a, const vector4 <Type> & b)
+operator / (const Type & lhs, const vector4 <Type> & rhs)
 {
 	return vector4 <Type> (
-	          a / b .x (),
-	          a / b .y (),
-	          a / b .z (),
-	          a / b .w ());
+	          lhs / rhs .x (),
+	          lhs / rhs .y (),
+	          lhs / rhs .z (),
+	          lhs / rhs .w ());
 }
 //@}
 
 //@{
-///  Return new vector value @a a dot @a b.
+///  Return new vector value @a lhs dot @a rhs.
 template <class Type>
 constexpr Type
-dot (const vector4 <Type> & a, const vector4 <Type> & b)
+dot (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 {
 	return
-	   a .x () * b .x ()
-	   + a .y () * b .y ()
-	   + a .z () * b .z ()
-	   + a .w () * b .w ();
+	   lhs .x () * rhs .x () +
+	   lhs .y () * rhs .y () +
+	   lhs .z () * rhs .z () +
+	   lhs .w () * rhs .w ();
 }
 
 ///  Return the @a vector magnitude.
@@ -563,12 +503,12 @@ normalize (const vector4 <Type> & vector)
 
 template <class Type>
 vector4 <Type>
-min (const vector4 <Type> & a, const vector4 <Type> & b)
+min (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 {
-	return vector4 <Type> (std::min (a .x (), b .x ()),
-	                       std::min (a .y (), b .y ()),
-	                       std::min (a .z (), b .z ()),
-	                       std::min (a .w (), b .w ()));
+	return vector4 <Type> (std::min (lhs .x (), rhs .x ()),
+	                       std::min (lhs .y (), rhs .y ()),
+	                       std::min (lhs .z (), rhs .z ()),
+	                       std::min (lhs .w (), rhs .w ()));
 }
 
 /**
@@ -579,12 +519,12 @@ min (const vector4 <Type> & a, const vector4 <Type> & b)
 
 template <class Type>
 vector4 <Type>
-max (const vector4 <Type> & a, const vector4 <Type> & b)
+max (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 {
-	return vector4 <Type> (std::max (a .x (), b .x ()),
-	                       std::max (a .y (), b .y ()),
-	                       std::max (a .z (), b .z ()),
-	                       std::max (a .w (), b .w ()));
+	return vector4 <Type> (std::max (lhs .x (), rhs .x ()),
+	                       std::max (lhs .y (), rhs .y ()),
+	                       std::max (lhs .z (), rhs .z ()),
+	                       std::max (lhs .w (), rhs .w ()));
 }
 //@}
 ///@}

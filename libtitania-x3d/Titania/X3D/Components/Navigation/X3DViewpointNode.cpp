@@ -112,7 +112,7 @@ X3DViewpointNode::draw ()
 
 	reshape (sizeZ / 2, visibilityLimit);
 
-	glLoadMatrixf (getMatrix () .inverse () .data ());
+	glLoadMatrixf (inverse (getMatrix ()) .data ());
 	setCurrentMatrix (getMatrix ());
 }
 

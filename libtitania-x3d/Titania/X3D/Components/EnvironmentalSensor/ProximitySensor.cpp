@@ -110,13 +110,13 @@ ProximitySensor::update ()
 {
 	if (inside)
 	{
-		matrix = viewpoint -> getMatrix () .inverse () .multLeft (matrix);
+		matrix = ~viewpoint -> getMatrix () * matrix;
 
 		Vector3f   translation, scale;
 		Rotation4f rotation;
 		matrix .get (translation, rotation, scale);
 
-		Vector3f   position    = matrix .inverse () .translation ();
+		Vector3f   position    = inverse (matrix) .translation ();
 		Rotation4f orientation = ~rotation;
 
 		if (not isActive)
@@ -165,7 +165,7 @@ ProximitySensor::draw ()
 	if (isInside (centerMatrix))
 	{
 		viewpoint = getBrowser () -> getActiveViewpoint ();
-		matrix    = viewpoint -> getCurrentMatrix () .multLeft (ModelViewMatrix4f ());
+		matrix    = viewpoint -> getCurrentMatrix () * ModelViewMatrix4f ();
 		inside    = true;
 	}
 
@@ -182,12 +182,12 @@ ProximitySensor::isInside (const Matrix4f & matrix) const
 	float z = size_2 .z ();
 
 	Vector3f points [6] = {
-		matrix .multVecMatrix (Vector3f (0,  0,  z)),
-		matrix .multVecMatrix (Vector3f (0,  0, -z)),
-		matrix .multVecMatrix (Vector3f (0,  y,  0)),
-		matrix .multVecMatrix (Vector3f (0, -y,  0)),
-		matrix .multVecMatrix (Vector3f (x,  0,  0)),
-		matrix .multVecMatrix (Vector3f (-x,  0,  0))
+		matrix * Vector3f (0,  0,  z),
+		matrix * Vector3f (0,  0, -z),
+		matrix * Vector3f (0,  y,  0),
+		matrix * Vector3f (0, -y,  0),
+		matrix * Vector3f (x,  0,  0),
+		matrix * Vector3f (-x,  0,  0)
 	};
 
 	Vector3f normals [6] = {

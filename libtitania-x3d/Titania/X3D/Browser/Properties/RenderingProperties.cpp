@@ -143,7 +143,8 @@ RenderingProperties::initialize ()
 
 		glGetIntegerv (GL_POLYGON_SMOOTH, &glPolygonSmooth);
 
-		glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory); // in KBytes
+		if (hasExtension ("GL_NVX_gpu_memory_info"))
+			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory); // in KBytes
 
 		textureUnits   = glTextureUnits;
 		maxTextureSize = glMaxTextureSize;
@@ -376,7 +377,7 @@ RenderingProperties::update_string ()
 	stringstream .str (""); stringstream << "Color depth:               " << colorDepth << " bits";
 	string .push_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Texture Memory:            " << strfsize (textureMemory);
+	stringstream .str (""); stringstream << "Texture Memory:            " << (textureMemory > 0 ? strfsize (textureMemory) : "n/a");
 	string .push_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Available Texture Memory:  " << strfsize (getAvailableTextureMemory ());
@@ -422,12 +423,12 @@ RenderingProperties::toStream (std::ostream & stream) const
 		<< "\tOpenGL extension version: " << version .getValue () << std::endl
 		
 		<< "\tRendering properties" << std::endl
-		<< "\t\tTexture units: " << textureUnits << std::endl
+		<< "\t\tTexture units: "    << textureUnits << std::endl
 		<< "\t\tMax texture size: " << maxTextureSize << " × " << maxTextureSize << " pixel" << std::endl
-		<< "\t\tMax lights: " << maxLights << std::endl
-		<< "\t\tAntialiased: " << antiAliased .getValue () << std::endl
-		<< "\t\tColor depth: " << colorDepth << " bits" << std::endl
-		<< "\t\tTexture memory: " << strfsize (textureMemory);
+		<< "\t\tMax lights: "       << maxLights << std::endl
+		<< "\t\tAntialiased: "      << antiAliased .getValue () << std::endl
+		<< "\t\tColor depth: "      << colorDepth << " bits" << std::endl
+		<< "\t\tTexture memory: "   << (textureMemory > 0 ? strfsize (textureMemory) : "n/a");
 }
 
 void

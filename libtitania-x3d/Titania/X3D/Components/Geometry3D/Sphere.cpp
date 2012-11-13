@@ -230,7 +230,6 @@ Sphere::build ()
 	}
 
 	setVertexMode (GL_QUADS);
-	setNumIndices (indices .size ());
 }
 
 void

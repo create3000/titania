@@ -131,7 +131,7 @@ Extrusion::createPoints ()
 
 	// calculate SCPAxes
 
-	std::vector <Rotation4f> rotations;
+	std::vector <Matrix4f> rotations;
 	rotations .reserve (spine .size ());
 
 	// SCP for the first point:
@@ -156,10 +156,14 @@ Extrusion::createPoints ()
 
 	// The entire spine is collinear:
 	if (SCPzAxis == Vector3f ())
-		SCPzAxis = Vector3f (0, 0, 1);
+		SCPzAxis = Rotation4f (Vector3f (0, 1, 0), SCPyAxis) * Vector3f (0, 0, 1);
 
 	SCPxAxis = cross (SCPyAxis, SCPzAxis);
-	rotations .emplace_back (Rotation4f (Vector3f (0, 1, 0), SCPyAxis));
+
+	rotations .emplace_back (SCPxAxis .x (), SCPxAxis .y (), SCPxAxis .z (), 0,
+	                         SCPyAxis .x (), SCPyAxis .y (), SCPyAxis .z (), 0,
+	                         SCPzAxis .x (), SCPzAxis .y (), SCPzAxis .z (), 0,
+	                         0,              0,              0,              1);
 
 	// For all points other than the first or last:
 
@@ -170,6 +174,10 @@ Extrusion::createPoints ()
 		SCPyAxis = normalize (spine [i + 1] - spine [i - 1]);
 		SCPzAxis = normalize (cross (spine [i + 1] - spine [i], spine [i - 1] - spine [i]));
 
+		// d.
+		if (dot (SCPzAxisPrevious, SCPzAxis) < 0)
+			SCPzAxis = -SCPzAxis;
+
 		// The three points used in computing the Z-axis are collinear.
 		if (SCPzAxis == Vector3f ())
 			SCPzAxis = SCPzAxisPrevious;
@@ -178,9 +186,10 @@ Extrusion::createPoints ()
 
 		SCPxAxis = cross (SCPyAxis, SCPzAxis);
 
-		rotations .emplace_back (Rotation4f (Vector3f (0, 1, 0), SCPyAxis));
-
-		std::cout << SCPzAxis << std::endl;
+		rotations .emplace_back (SCPxAxis .x (), SCPxAxis .y (), SCPxAxis .z (), 0,
+		                         SCPyAxis .x (), SCPyAxis .y (), SCPyAxis .z (), 0,
+		                         SCPzAxis .x (), SCPzAxis .y (), SCPzAxis .z (), 0,
+		                         0,              0,              0,              1);
 	}
 
 	// SCP for the last point
@@ -192,14 +201,24 @@ Extrusion::createPoints ()
 	else
 	{
 		SCPyAxis = normalize (spine [spine .size () - 1] - spine [spine .size () - 2]);
-		SCPzAxis = normalize (cross (spine [spine .size () - 1] - spine [spine .size () - 2], spine [spine .size () - 3] - spine [spine .size () - 2]));
 
+		if (spine .size () > 2)
+			SCPzAxis = normalize (cross (spine [spine .size () - 1] - spine [spine .size () - 2], spine [spine .size () - 3] - spine [spine .size () - 2]));
+
+		// d.
+		if (dot (SCPzAxisPrevious, SCPzAxis) < 0)
+			SCPzAxis = -SCPzAxis;
+
+		// The three points used in computing the Z-axis are collinear.
 		if (SCPzAxis == Vector3f ())
 			SCPzAxis = SCPzAxisPrevious;
 
 		SCPxAxis = cross (SCPyAxis, SCPzAxis);
 
-		rotations .emplace_back (Rotation4f (Vector3f (0, 1, 0), SCPyAxis));
+		rotations .emplace_back (SCPxAxis .x (), SCPxAxis .y (), SCPxAxis .z (), 0,
+		                         SCPyAxis .x (), SCPyAxis .y (), SCPyAxis .z (), 0,
+		                         SCPzAxis .x (), SCPzAxis .y (), SCPzAxis .z (), 0,
+		                         0,              0,              0,              1);
 	}
 
 	// calculate vertices.
@@ -213,7 +232,7 @@ Extrusion::createPoints ()
 		if (orientation .size ())
 			matrix .rotate (orientation [std::min (i, orientation .size () - 1)]);
 
-		matrix .rotate (rotations [i]);
+		matrix .multLeft (rotations [i]);
 
 		if (scale .size ())
 		{
@@ -222,10 +241,8 @@ Extrusion::createPoints ()
 			matrix .scale (Vector3f (s .x (), 1, s .y ()));
 		}
 
-		std::cout << matrix << std::endl;
-
 		for (const auto & vector : crossSection)
-			points .push_back (matrix .multVecMatrix (Vector3f (vector .getX (), 0, vector .getY ())));
+			points .push_back (matrix * Vector3f (vector .getX (), 0, vector .getY ()));
 
 	}
 
@@ -275,7 +292,6 @@ Extrusion::build ()
 			// (p4 - p1) x (p3 - p2)
 			Vector3f normal = normalize (cross (points [INDEX (n1, k1)] - points [INDEX (n, k)], points [INDEX (n1, k)] - points [INDEX (n, k1)]));
 
-			std::cout << std::endl;
 			// tri 1
 
 			// p1
@@ -284,23 +300,17 @@ Extrusion::build ()
 			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
 
-			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
-
 			// p2
 			texCoords .push_back (Vector2f ((k + 1) / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1)));
 			indices .push_back (INDEX (n, k1));
 			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
 
-			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
-
 			// p3
 			texCoords .push_back (Vector2f (k / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1)));
 			indices .push_back (INDEX (n1, k));
 			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
-
-			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
 
 			// tri 2
 
@@ -310,23 +320,17 @@ Extrusion::build ()
 			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
 
-			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
-
 			// p4
 			texCoords .push_back (Vector2f ((k + 1) / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1)));
 			indices .push_back (INDEX (n1, k1));
 			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
 
-			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
-
 			// p3
 			texCoords .push_back (Vector2f (k / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1)));
 			indices .push_back (INDEX (n1, k));
 			normalIndex [indices .back ()] .push_back (normals .size ());
 			normals .push_back (normal);
-
-			std::cout << indices .back () << " " << points [indices .back ()] << std::endl;
 		}
 	}
 
@@ -654,31 +658,22 @@ Extrusion::build ()
 
 	refineNormals (normalIndex, normals);
 
-	GLsizei glIndices = 0;
-
 	for (size_t i = 0; i < indices .size (); i += 3)
 	{
 		getTexCoord () .emplace_back (texCoords [i]);
 		getNormals  () .emplace_back (normals [i]);
 		getVertices () .emplace_back (points [indices [i]]);
 
-		++ glIndices;
-
 		getTexCoord () .emplace_back (texCoords [i + 1]);
 		getNormals  () .emplace_back (normals [i + 1]);
 		getVertices () .emplace_back (points [indices [i + 1]]);
 
-		++ glIndices;
-
 		getTexCoord () .emplace_back (texCoords [i + 2]);
 		getNormals  () .emplace_back (normals [i + 2]);
 		getVertices () .emplace_back (points [indices [i + 2]]);
-
-		++ glIndices;
 	}
 
 	setVertexMode (GL_TRIANGLES);
-	setNumIndices (glIndices);
 }
 
 void

@@ -370,16 +370,16 @@ IndexedFaceSet::createNormals ()
 
 	for (MFInt32::const_iterator index = coordIndex .begin (); index not_eq coordIndex .end (); ++ index)
 	{
-		int numIndices = 0;
+		int numVertices = 0;
 
 		for (MFInt32::const_iterator iter = index;
 		     *iter >= 0 and iter not_eq coordIndex .end ();
-		     ++ iter, ++ numIndices)
+		     ++ iter, ++ numVertices)
 			;
 
 		Vector3f normal;
 
-		if (numIndices == 3)
+		if (numVertices == 3)
 		{
 			const Vector3f & p1 = _coord -> point [*index];
 			const Vector3f & p2 = _coord -> point [*(index + 1)];
@@ -390,13 +390,13 @@ IndexedFaceSet::createNormals ()
 			for (int i = 0; i < 3; ++ i)
 				normalIndex [*(index + i)] .push_back (normals .size () + i);
 		}
-		else if (numIndices > 3)
+		else if (numVertices > 3)
 		{
 			if (convex)
 			{
-				int end = *index == *(index + (numIndices - 1)) ? 2 : 1;
+				int end = *index == *(index + (numVertices - 1)) ? 2 : 1;
 
-				for (int _i = 1; _i < numIndices - end; ++ _i)
+				for (int _i = 1; _i < numVertices - end; ++ _i)
 				{
 					const Vector3f & p1 = _coord -> point [*index];
 					const Vector3f & p2 = _coord -> point [*(index + _i)];
@@ -405,31 +405,31 @@ IndexedFaceSet::createNormals ()
 					normal += normalize (cross (p3 - p2, p1 - p2));
 				}
 
-				//const Vector3f& p1 = _coord -> point .at((index + (numIndices - end - 1)) -> getValue()) .getValue();
+				//const Vector3f& p1 = _coord -> point .at((index + (numVertices - end - 1)) -> getValue()) .getValue();
 				//const Vector3f& p2 = _coord -> point .at(index -> getValue()) .getValue();
 				//const Vector3f& p3 = _coord -> point .at((index + 1) -> getValue()) .getValue();
 
 				//normal += p3 .subtract(p2) .cross(p1 .subtract(p2)) .normalize();
 
-				for (int i = 0; i < numIndices - end + 1; ++ i)
+				for (int i = 0; i < numVertices - end + 1; ++ i)
 					normalIndex [*(index + i)] .push_back (normals .size () + i);
 			}
 			else if (tess)
 			{
-				int end = *index == *(index + (numIndices - 1)) ? 1 : 0;
+				int end = *index == *(index + (numVertices - 1)) ? 1 : 0;
 
 				Polygon polygon;
 
 				std::vector <Vertex*> vertices;
-				vertices .reserve ((numIndices - end) * 3);
+				vertices .reserve ((numVertices - end) * 3);
 
-				for (int _i = 0; _i < numIndices - end; ++ _i)
+				for (int _i = 0; _i < numVertices - end; ++ _i)
 					vertices .push_back (new Vertex (&_coord -> point, index + _i, 0));
 
 				gluTessBeginPolygon (tess, &polygon);
 				gluTessBeginContour (tess);
 
-				for (int _i = 0; _i < numIndices - end; ++ _i)
+				for (int _i = 0; _i < numVertices - end; ++ _i)
 					gluTessVertex (tess, &vertices [_i] -> location [0], vertices [_i]);
 
 				//gluTessEndContour(tess);
@@ -482,17 +482,17 @@ IndexedFaceSet::createNormals ()
 					}
 				}
 
-				for (int _i = 0; _i < numIndices - end; ++ _i)
+				for (int _i = 0; _i < numVertices - end; ++ _i)
 					delete vertices [_i];
 
-				for (int i = 0; i < numIndices - end; ++ i)
+				for (int i = 0; i < numVertices - end; ++ i)
 					normalIndex [*(index + i)] .push_back (normals .size () + i);
 			}
 		}
 
-		normals .resize (normals .size () + numIndices + 1, normalize (normal));
+		normals .resize (normals .size () + numVertices + 1, normalize (normal));
 
-		index += numIndices;
+		index += numVertices;
 
 		if (index == coordIndex .end ())
 			break;
@@ -560,21 +560,19 @@ IndexedFaceSet::build ()
 		_normals = createNormals ();
 	}
 
-	GLsizei glIndices = 0;
-
 	MFInt32::const_iterator index;
 	int                     face, i;
 
 	for (index = coordIndex .begin (), face = 0, i = 0; index not_eq coordIndex .end (); ++ index, ++ face, ++ i)
 	{
-		int numIndices = 0;
+		int numVertices = 0;
 
-		for (MFInt32::const_iterator iter = index;
+		for (auto iter = index;
 		     *iter >= 0 and iter not_eq coordIndex .end ();
-		     ++ iter, ++ numIndices)
+		     ++ iter, ++ numVertices)
 			;
 
-		if (numIndices > 2)
+		if (numVertices > 2)
 		{
 			Vector3f    faceNormal;
 			SFColor     faceColor;
@@ -594,9 +592,9 @@ IndexedFaceSet::build ()
 					faceColorRGBA = _colorRGBA -> color [colorIndex [face]];
 			}
 
-			if (numIndices == 3)
+			if (numVertices == 3)
 			{
-				for (int _i = 0; _i < numIndices; ++ _i, ++ index, ++ i)
+				for (int _i = 0; _i < numVertices; ++ _i, ++ index, ++ i)
 				{
 					setPoint (index,
 					          i,
@@ -611,17 +609,15 @@ IndexedFaceSet::build ()
 					          faceColor,
 					          faceColorRGBA,
 					          _coord);
-
-					++ glIndices;
 				}
 			}
-			else if (numIndices > 3)
+			else if (numVertices > 3)
 			{
 				if (convex)
 				{
-					int end = *index == *(index + (numIndices - 1)) ? 2 : 1;
+					int end = *index == *(index + (numVertices - 1)) ? 2 : 1;
 
-					for (int _i = 1; _i < numIndices - end; ++ _i)
+					for (int _i = 1; _i < numVertices - end; ++ _i)
 					{
 						setPoint (index,
 						          i,
@@ -637,7 +633,6 @@ IndexedFaceSet::build ()
 						          faceColorRGBA,
 						          _coord);
 
-						++ glIndices;
 
 						setPoint (index + _i,
 						          i + _i,
@@ -653,7 +648,6 @@ IndexedFaceSet::build ()
 						          faceColorRGBA,
 						          _coord);
 
-						++ glIndices;
 
 						setPoint (index + _i + 1,
 						          i + _i + 1,
@@ -669,25 +663,24 @@ IndexedFaceSet::build ()
 						          faceColorRGBA,
 						          _coord);
 
-						++ glIndices;
 					}
 				}
 				else if (tess)
 				{
-					int end = *index == *(index + (numIndices - 1)) ? 1 : 0;
+					int end = *index == *(index + (numVertices - 1)) ? 1 : 0;
 
 					Polygon polygon;
 
 					std::vector <Vertex*> vertices;
-					vertices .reserve ((numIndices - end) * 3);
+					vertices .reserve ((numVertices - end) * 3);
 
-					for (int _i = 0; _i < numIndices - end; ++ _i)
+					for (int _i = 0; _i < numVertices - end; ++ _i)
 						vertices .push_back (new Vertex (&_coord -> point, index + _i, i + _i));
 
 					gluTessBeginPolygon (tess, &polygon);
 					gluTessBeginContour (tess);
 
-					for (int _i = 0; _i < numIndices - end; ++ _i)
+					for (int _i = 0; _i < numVertices - end; ++ _i)
 						gluTessVertex (tess, &vertices [_i] -> location [0], vertices [_i]);
 
 					//gluTessEndContour(tess);
@@ -717,7 +710,6 @@ IndexedFaceSet::build ()
 									          faceColorRGBA,
 									          _coord);
 
-									++ glIndices;
 
 									setPoint (polygonElement -> vertices [_i] -> index,
 									          polygonElement -> vertices [_i] -> i,
@@ -733,7 +725,6 @@ IndexedFaceSet::build ()
 									          faceColorRGBA,
 									          _coord);
 
-									++ glIndices;
 
 									setPoint (polygonElement -> vertices [_i + 1] -> index,
 									          polygonElement -> vertices [_i + 1] -> i,
@@ -749,7 +740,6 @@ IndexedFaceSet::build ()
 									          faceColorRGBA,
 									          _coord);
 
-									++ glIndices;
 								}
 
 								break;
@@ -771,7 +761,6 @@ IndexedFaceSet::build ()
 									          faceColorRGBA,
 									          _coord);
 
-									++ glIndices;
 
 									setPoint (polygonElement -> vertices [_i % 2 ? _i : _i + 1] -> index,
 									          polygonElement -> vertices [_i % 2 ? _i : _i + 1] -> i,
@@ -787,7 +776,6 @@ IndexedFaceSet::build ()
 									          faceColorRGBA,
 									          _coord);
 
-									++ glIndices;
 
 									setPoint (polygonElement -> vertices [_i + 2] -> index,
 									          polygonElement -> vertices [_i + 2] -> i,
@@ -803,7 +791,6 @@ IndexedFaceSet::build ()
 									          faceColorRGBA,
 									          _coord);
 
-									++ glIndices;
 								}
 
 								break;
@@ -825,7 +812,6 @@ IndexedFaceSet::build ()
 									          faceColorRGBA,
 									          _coord);
 
-									++ glIndices;
 
 									setPoint (polygonElement -> vertices [_i + 1] -> index,
 									          polygonElement -> vertices [_i + 1] -> i,
@@ -841,7 +827,6 @@ IndexedFaceSet::build ()
 									          faceColorRGBA,
 									          _coord);
 
-									++ glIndices;
 
 									setPoint (polygonElement -> vertices [_i + 2] -> index,
 									          polygonElement -> vertices [_i + 2] -> i,
@@ -857,7 +842,6 @@ IndexedFaceSet::build ()
 									          faceColorRGBA,
 									          _coord);
 
-									++ glIndices;
 								}
 
 								break;
@@ -866,18 +850,18 @@ IndexedFaceSet::build ()
 						}
 					}
 
-					for (int _i = 0; _i < numIndices - end; ++ _i)
+					for (int _i = 0; _i < numVertices - end; ++ _i)
 						delete vertices [_i];
 				}
 
-				index += numIndices;
-				i     += numIndices;
+				index += numVertices;
+				i     += numVertices;
 			}
 		}
 		else
 		{
-			index += numIndices;
-			i     += numIndices;
+			index += numVertices;
+			i     += numVertices;
 		}
 
 		if (index == coordIndex .end ())
@@ -886,7 +870,6 @@ IndexedFaceSet::build ()
 
 	setTextureCoordinateGenerator (*_textureCoordinateGenerator);
 	setVertexMode (GL_TRIANGLES);
-	setNumIndices (glIndices);
 }
 
 void

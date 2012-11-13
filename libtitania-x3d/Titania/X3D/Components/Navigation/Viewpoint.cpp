@@ -112,7 +112,7 @@ Viewpoint::display ()
 	//	std::clog << "### 2: " << getBrowser () -> getLayer () -> currentViewpoint << std::endl;
 
 	const Matrix4f & currentMatrix = getBrowser () -> getLayer () -> getActiveViewpoint () -> getCurrentMatrix ();
-	Matrix4f         matrix        = currentMatrix .multLeft (ModelViewMatrix4f ());
+	Matrix4f         matrix        = currentMatrix * ModelViewMatrix4f ();
 
 	setTransformationMatrix (matrix);
 
@@ -124,7 +124,7 @@ Viewpoint::display ()
 	}
 	else
 	{
-		setMatrix (matrix .multLeft (getDifferenceMatrix ()));
+		setMatrix (matrix * getDifferenceMatrix ());
 	}
 }
 

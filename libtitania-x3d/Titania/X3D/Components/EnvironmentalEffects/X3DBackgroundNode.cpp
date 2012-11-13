@@ -133,7 +133,7 @@ X3DBackgroundNode::build ()
 
 	glColors .clear ();
 	glPoints .clear ();
-	glIndices = 0;
+	numIndices = 0;
 
 	// p2 --- p1
 	//  |     |
@@ -172,7 +172,7 @@ X3DBackgroundNode::build ()
 				glPoints .push_back (p .y ());
 				glPoints .push_back (p .z ());
 
-				++ glIndices;
+				++ numIndices;
 
 				// p2
 				theta = M_PI * (v / (SPHERE_VSEG - 1));
@@ -193,7 +193,7 @@ X3DBackgroundNode::build ()
 				glPoints .push_back (p .y ());
 				glPoints .push_back (p .z ());
 
-				++ glIndices;
+				++ numIndices;
 
 				// p3
 				theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
@@ -215,7 +215,7 @@ X3DBackgroundNode::build ()
 				glPoints .push_back (p .y ());
 				glPoints .push_back (p .z ());
 
-				++ glIndices;
+				++ numIndices;
 
 				// p4
 				theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
@@ -236,7 +236,7 @@ X3DBackgroundNode::build ()
 				glPoints .push_back (p .y ());
 				glPoints .push_back (p .z ());
 
-				++ glIndices;
+				++ numIndices;
 			}
 		}
 	}
@@ -271,7 +271,7 @@ X3DBackgroundNode::build ()
 				glPoints .push_back (p .y ());
 				glPoints .push_back (p .z ());
 
-				++ glIndices;
+				++ numIndices;
 
 				// p2
 				theta = M_PI * (v / (SPHERE_VSEG - 1));
@@ -292,7 +292,7 @@ X3DBackgroundNode::build ()
 				glPoints .push_back (p .y ());
 				glPoints .push_back (p .z ());
 
-				++ glIndices;
+				++ numIndices;
 
 				// p3
 				theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
@@ -314,7 +314,7 @@ X3DBackgroundNode::build ()
 				glPoints .push_back (p .y ());
 				glPoints .push_back (p .z ());
 
-				++ glIndices;
+				++ numIndices;
 
 				// p4
 				theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
@@ -335,7 +335,7 @@ X3DBackgroundNode::build ()
 				glPoints .push_back (p .y ());
 				glPoints .push_back (p .z ());
 
-				++ glIndices;
+				++ numIndices;
 			}
 		}
 	}
@@ -388,7 +388,7 @@ X3DBackgroundNode::draw ()
 	glEnableClientState (GL_VERTEX_ARRAY);
 	glVertexPointer (3, GL_FLOAT, 0, &glPoints [0]);
 
-	glDrawArrays (GL_QUADS, 0, glIndices);
+	glDrawArrays (GL_QUADS, 0, numIndices);
 
 	glDisableClientState (GL_COLOR_ARRAY);
 	glDisableClientState (GL_VERTEX_ARRAY);

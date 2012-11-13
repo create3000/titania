@@ -98,8 +98,6 @@ Cone::build ()
 {
 	X3DGeometryNode::build ();
 
-	GLsizei glIndices = 0;
-
 	float y1      = height / 2;
 	float y2      = -y1;
 	float _height = height;
@@ -133,21 +131,15 @@ Cone::build ()
 			getNormals  () .emplace_back (x1, ny, z1);
 			getVertices () .emplace_back (0, y1, 0);
 
-			++ glIndices;
-
 			// p2
 			getTexCoord () .emplace_back (u1, 0);
 			getNormals  () .emplace_back (x1, ny, z1);
 			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
 
-			++ glIndices;
-
 			// p3
 			getTexCoord () .emplace_back (u2, 0);
 			getNormals  () .emplace_back (x2, ny, z2);
 			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
-
-			++ glIndices;
 		}
 
 		if (bottom)
@@ -163,26 +155,19 @@ Cone::build ()
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (0, y2, 0);
 
-			++ glIndices;
-
 			// p3
 			getTexCoord () .emplace_back ((x2 + 1) / 2, (z2 + 1) / 2);
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
 
-			++ glIndices;
-
 			// p2
 			getTexCoord () .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2);
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
-
-			++ glIndices;
 		}
 	}
 
 	setVertexMode (GL_TRIANGLES);
-	setNumIndices (glIndices);
 }
 
 } // X3D

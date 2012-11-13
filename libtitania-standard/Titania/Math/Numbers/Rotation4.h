@@ -460,7 +460,7 @@ operator ~ (const rotation4 <Type> & rotation)
 }
 //@}
 
-///  Multiply @a a by @a b.
+///  Left multiply @a a by @a b.
 //@{
 template <class Type>
 inline
@@ -470,7 +470,7 @@ operator * (const rotation4 <Type> & a, const rotation4 <Type> & b)
 	return rotation4 <Type> (b .quat () * a .quat ());
 }
 
-///  Returns the value of @a vector multiplied by the quaternion corresponding to this object's rotation.
+///  Returns the value of @a vector left multiplied by the quaternion corresponding to this object's rotation.
 template <class Type>
 inline
 vector3 <Type>

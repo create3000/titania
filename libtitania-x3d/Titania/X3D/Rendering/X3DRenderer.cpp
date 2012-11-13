@@ -119,7 +119,7 @@ X3DRenderer::redraw ()
 	numTransparentNodesDrawn = 0;
 
 	X3DViewpointNode* currentViewpoint = getBrowser () -> getLayer () -> getActiveViewpoint ();
-	Matrix4d          correctionMatrix = currentViewpoint -> getMatrix () .inverse () .multLeft (currentViewpoint -> getCurrentMatrix ());
+	Matrix4d          correctionMatrix = ~currentViewpoint -> getMatrix () * currentViewpoint -> getCurrentMatrix ();
 
 	getBrowser () -> getLayer () -> correctLights (correctionMatrix);
 

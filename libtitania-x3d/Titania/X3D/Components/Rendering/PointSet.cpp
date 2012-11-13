@@ -113,13 +113,9 @@ PointSet::build ()
 		getColorsRGBA () .resize (_coord -> point .size (), Color4f (1, 1, 1, 1));
 	}
 
-	for (const auto & point : _coord -> point)
-	{
-		getVertices () .emplace_back (point);
-	}
+	getVertices () .assign (_coord -> point .begin (), _coord -> point .end ());
 
 	setVertexMode (GL_POINTS);
-	setNumIndices (_coord -> point .size ());
 }
 
 void
