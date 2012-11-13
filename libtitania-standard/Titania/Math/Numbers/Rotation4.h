@@ -414,7 +414,7 @@ inline
 rotation4 <Type> &
 rotation4 <Type>::operator *= (const rotation4 <T> & rotation)
 {
-	value = rotation .quat () * value;
+	value *= rotation .quat ();
 	return *this;
 }
 
@@ -428,9 +428,9 @@ rotation4 <Type>::operator *= (const rotation4 <T> & rotation)
 template <class Type>
 inline
 constexpr bool
-operator == (const rotation4 <Type> & a, const rotation4 <Type> & b)
+operator == (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs)
 {
-	return a .quat () == b .quat ();
+	return lhs .quat () == rhs .quat ();
 }
 
 ///  Compares two rotation numbers.
@@ -438,9 +438,9 @@ operator == (const rotation4 <Type> & a, const rotation4 <Type> & b)
 template <class Type>
 inline
 constexpr bool
-operator not_eq (const rotation4 <Type> & a, const rotation4 <Type> & b)
+operator not_eq (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs)
 {
-	return a .quat () not_eq b .quat ();
+	return lhs .quat () not_eq rhs .quat ();
 }
 //@}
 ///@}
@@ -460,14 +460,14 @@ operator ~ (const rotation4 <Type> & rotation)
 }
 //@}
 
-///  Left multiply @a a by @a b.
+///  Left multiply @a lhs by @a rhs.
 //@{
 template <class Type>
 inline
 rotation4 <Type>
-operator * (const rotation4 <Type> & a, const rotation4 <Type> & b)
+operator * (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs)
 {
-	return rotation4 <Type> (b .quat () * a .quat ());
+	return rotation4 <Type> (lhs .quat () * rhs .quat ());
 }
 
 ///  Returns the value of @a vector left multiplied by the quaternion corresponding to this object's rotation.

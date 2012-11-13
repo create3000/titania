@@ -176,6 +176,10 @@ public:
 	///  All these operators modify this quaternion inplace.
 
 	///@{
+	///  Negates this quaternion in place.
+	quaternion &
+	negate ();
+
 	///  Invert this quaternion in place.
 	quaternion &
 	inverse ();
@@ -194,9 +198,24 @@ public:
 	quaternion &
 	operator *= (const Type &);
 
+	///  Left multiply this quaternion by @a quaternion.
+	template <class T>
+	quaternion &
+	operator *= (const quaternion <T> &);
+
 	///  Divide this quaternion by @a t.
 	quaternion &
 	operator /= (const Type &);
+
+	///  Left multiply this quaternion by @a quaternion.
+	template <class T>
+	quaternion &
+	multLeft (const quaternion <T> &);
+
+	///  Right multiply this quaternion by @a quaternion.
+	template <class T>
+	quaternion &
+	multRight (const quaternion <T> &);
 
 	///  Normalize this quaternion in place.
 	quaternion &
@@ -220,6 +239,17 @@ quaternion <Type>::operator = (const quaternion <T> & quat)
 	value [1] = quat .y ();
 	value [2] = quat .z ();
 	value [3] = quat .w ();
+	return *this;
+}
+
+template <class Type>
+quaternion <Type> &
+quaternion <Type>::negate ()
+{
+	value [0] = -value [0];
+	value [1] = -value [1];
+	value [2] = -value [2];
+	value [3] = -value [3];
 	return *this;
 }
 
@@ -269,6 +299,14 @@ quaternion <Type>::operator *= (const Type & t)
 }
 
 template <class Type>
+template <class T>
+quaternion <Type> &
+quaternion <Type>::operator *= (const quaternion <T> & quat)
+{
+	return multLeft (quat);
+}
+
+template <class Type>
 quaternion <Type> &
 quaternion <Type>::operator /= (const Type & t)
 {
@@ -277,6 +315,58 @@ quaternion <Type>::operator /= (const Type & t)
 	value [2] /= t;
 	value [3] /= t;
 	return *this;
+}
+
+template <class Type>
+template <class T>
+quaternion <Type> &
+quaternion <Type>::multLeft (const quaternion <T> & quat)
+{
+	return *this = quaternion <Type> (quat .w () * x () +
+	                                  quat .x () * w () +
+	                                  quat .y () * z () -
+	                                  quat .z () * y (),
+
+	                                  quat .w () * y () +
+	                                  quat .y () * w () +
+	                                  quat .z () * x () -
+	                                  quat .x () * z (),
+
+	                                  quat .w () * z () +
+	                                  quat .z () * w () +
+	                                  quat .x () * y () -
+	                                  quat .y () * x (),
+
+	                                  quat .w () * w () -
+	                                  quat .x () * x () -
+	                                  quat .y () * y () -
+	                                  quat .z () * z ());
+}
+
+template <class Type>
+template <class T>
+quaternion <Type> &
+quaternion <Type>::multRight (const quaternion <T> & quat)
+{
+	return *this = quaternion <Type> (w () * quat .x () +
+	                                  x () * quat .w () +
+	                                  y () * quat .z () -
+	                                  z () * quat .y (),
+
+	                                  w () * quat .y () +
+	                                  y () * quat .w () +
+	                                  z () * quat .x () -
+	                                  x () * quat .z (),
+
+	                                  w () * quat .z () +
+	                                  z () * quat .w () +
+	                                  x () * quat .y () -
+	                                  y () * quat .x (),
+
+	                                  w () * quat .w () -
+	                                  x () * quat .x () -
+	                                  y () * quat .y () -
+	                                  z () * quat .z ());
 }
 
 template <class Type>
@@ -322,29 +412,29 @@ imag (const quaternion <Type> & quat)
 ///@{
 //@{
 ///  Compares two quaternion numbers.
-///  Returns true if @a a is equal to @a b.
+///  Returns true if @a lhs is equal to @a rhs.
 template <class Type>
 constexpr bool
-operator == (const quaternion <Type> & a, const quaternion <Type> & b)
+operator == (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
 	return
-	   a .x () == b .x () and
-	   a .y () == b .y () and
-	   a .z () == b .z () and
-	   a .w () == b .w ();
+	   lhs .x () == rhs .x () and
+	   lhs .y () == rhs .y () and
+	   lhs .z () == rhs .z () and
+	   lhs .w () == rhs .w ();
 }
 
 ///  Compares two quaternion numbers.
-///  Returns false if @a a is not equal to @a b.
+///  Returns false if @a lhs is not equal to @a rhs.
 template <class Type>
 constexpr bool
-operator not_eq (const quaternion <Type> & a, const quaternion <Type> & b)
+operator not_eq (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
 	return
-	   a .x () not_eq b .x () or
-	   a .y () not_eq b .y () or
-	   a .z () not_eq b .z () or
-	   a .w () not_eq b .w ();
+	   lhs .x () not_eq rhs .x () or
+	   lhs .y () not_eq rhs .y () or
+	   lhs .z () not_eq rhs .z () or
+	   lhs .w () not_eq rhs .w ();
 }
 //@}
 ///@}
@@ -368,10 +458,7 @@ template <class Type>
 quaternion <Type>
 operator - (const quaternion <Type> & quat)
 {
-	return quaternion <Type> (-quat .x (),
-	                          -quat .y (),
-	                          -quat .z (),
-	                          -quat .w ());
+	return quaternion <Type> (quat) .negate ();
 }
 
 ///  Returns the inverse quaternion for @a quaternion.
@@ -384,85 +471,67 @@ operator ~ (const quaternion <Type> & quat)
 //@}
 
 //@{
-///  Returns new quaternion value @a a plus @a b.
+///  Returns new quaternion value @a lhs plus @a rhs.
 template <class Type>
 inline
 quaternion <Type>
-operator + (const quaternion <Type> & a, const quaternion <Type> & b)
+operator + (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
-	return quaternion <Type> (a) += b;
+	return quaternion <Type> (lhs) += rhs;
 }
 //@}
 
 //@{
-///  Returns new quaternion value @a a minus @a b.
+///  Returns new quaternion value @a lhs minus @a rhs.
 template <class Type>
 inline
 quaternion <Type>
-operator - (const quaternion <Type> & a, const quaternion <Type> & b)
+operator - (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
-	return quaternion <Type> (a) -= b;
+	return quaternion <Type> (lhs) -= rhs;
 }
 //@}
 
 //@{
-///  Returns new quaternion value @a x times @a y.
+///  Returns new quaternion value @a lhs left multiplied by @a rhs.
 template <class Type>
 constexpr quaternion <Type>
-operator * (const quaternion <Type> & a, const quaternion <Type> & b)
+operator * (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
-	return quaternion <Type> (a .w () * b .x ()
-	                          + a .x () * b .w ()
-	                          + a .y () * b .z ()
-	                          - a .z () * b .y (),
-
-	                          a .w () * b .y ()
-	                          + a .y () * b .w ()
-	                          + a .z () * b .x ()
-	                          - a .x () * b .z (),
-
-	                          a .w () * b .z ()
-	                          + a .z () * b .w ()
-	                          + a .x () * b .y ()
-	                          - a .y () * b .x (),
-
-	                          a .w () * b .w ()
-	                          - a .x () * b .x ()
-	                          - a .y () * b .y ()
-	                          - a .z () * b .z ());
+	return quaternion <Type> (lhs) .multLeft (rhs);
 }
 
-///  Returns new quaternion value @a x times @a y.
+///  Returns new quaternion value @a lhs times @a rhs.
 template <class Type>
 inline
 constexpr quaternion <Type>
-operator * (const quaternion <Type> & a, const Type & b)
+operator * (const quaternion <Type> & lhs, const Type & rhs)
 {
-	return quaternion <Type> (a) *= b;
+	return quaternion <Type> (lhs) *= rhs;
 }
 
-///  Returns new quaternion value @a x times @a y.
+///  Returns new quaternion value @a lhs times @a rhs.
 template <class Type>
 inline
 constexpr quaternion <Type>
-operator * (const Type & a, const quaternion <Type> & b)
+operator * (const Type & lhs, const quaternion <Type> & rhs)
 {
-	return quaternion <Type> (b) *= a;
+	return quaternion <Type> (rhs) *= lhs;
 }
 
 ///  Returns new vector value @a vector multiplied by @a quaternion.
 template <class Type>
 inline
 constexpr vector3 <Type>
-operator * (const quaternion <Type> & a, const vector3 <Type> & vector)
+operator * (const quaternion <Type> & quat, const vector3 <Type> & vector)
 {
-	return imag (a * quaternion <Type> (vector, Type ()) * ~a);
+	return imag (~quat * quaternion <Type> (vector, Type ()) * quat);
 }
 //@}
 
 //template <class Type>
 //constexpr quaternion <Type>
-//operator / (const quaternion <Type> & a, const quaternion <Type> & b)
+//operator / (const quaternion <Type> & rhs, const quaternion <Type> & lhs)
 //{
 //	return quaternion <Type> (-a .w () * b .x ()
 //	                          + a .x () * b .w ()
@@ -486,26 +555,38 @@ operator * (const quaternion <Type> & a, const vector3 <Type> & vector)
 //}
 
 //@{
-///  Returns new quaternion value @a a divided by @a b.
+///  Returns new quaternion value @a lhs divided by @a rhs.
 template <class Type>
 inline
 quaternion <Type>
-operator / (const quaternion <Type> & a, const Type & b)
+operator / (const quaternion <Type> & lhs, const Type & rhs)
 {
-	return quaternion <Type> (a) /= b;
+	return quaternion <Type> (lhs) /= rhs;
+}
+
+//@{
+///  Returns new quaternion value @a lhs divided by @a rhs.
+template <class Type>
+quaternion <Type>
+operator / (const Type & lhs, const quaternion <Type> & rhs)
+{
+	return quaternion <Type> (lhs / rhs .x (),
+	                          lhs / rhs .y (),
+	                          lhs / rhs .z (),
+	                          lhs / rhs .w ());
 }
 //@}
 
 //@{
-///  Returns new quaternion value @a x dot @a y.
+///  Returns new quaternion value @a lhs dot @a rhs.
 template <class Type>
 constexpr Type
-dot (const quaternion <Type> & a, const quaternion <Type> & b)
+dot (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
-	return a .x () * b .x ()
-	       + a .y () * b .y ()
-	       + a .z () * b .z ()
-	       + a .w () * b .w ();
+	return lhs .x () * rhs .x () +
+	       lhs .y () * rhs .y () +
+	       lhs .z () * rhs .z () +
+	       lhs .w () * rhs .w ();
 }
 
 ///  Returns @a quaternion magnitude.

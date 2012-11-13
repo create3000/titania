@@ -346,12 +346,12 @@ public:
 	matrix4 &
 	operator *= (const Type &);
 
-	matrix4 &
-	operator /= (const Type &);
-
 	template <class T>
 	matrix4 &
 	operator *= (const matrix4 <T> &);
+
+	matrix4 &
+	operator /= (const Type &);
 
 	template <class T>
 	matrix4 &
@@ -849,6 +849,14 @@ matrix4 <Type>::operator *= (const Type & t)
 	return *this;
 }
 
+template <typename Type>
+template <typename T>
+matrix4 <Type> &
+matrix4 <Type>::operator *= (const matrix4 <T> & matrix)
+{
+	return multLeft (matrix);
+}
+
 template <class Type>
 matrix4 <Type> &
 matrix4 <Type>::operator /= (const Type & t)
@@ -859,14 +867,6 @@ matrix4 <Type>::operator /= (const Type & t)
 	value [3] /= t;
 
 	return *this;
-}
-
-template <class Type>
-template <class T>
-matrix4 <Type> &
-matrix4 <Type>::operator *= (const matrix4 <T> & matrix)
-{
-	return multLeft (matrix);
 }
 
 template <class Type>
