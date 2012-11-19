@@ -86,10 +86,14 @@ public:
 	virtual
 	bool
 	isOutput () const;
+	
+	virtual
+	bool
+	operator == (const X3DFieldDefinition &) const { return true; };
 
 	virtual
 	bool
-	isDefaultValue () const;
+	operator not_eq (const X3DFieldDefinition &) const { return true; };
 
 	// Stream:
 	//@{

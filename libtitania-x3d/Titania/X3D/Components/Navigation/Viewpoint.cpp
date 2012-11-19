@@ -55,11 +55,194 @@
 namespace titania {
 namespace X3D {
 
+/*
+class FieldDefinition :
+	public X3DFieldDefinition
+{
+public:
+
+	FieldDefinition (const AccessType &, const basic::id &, const X3DFieldDefinition* const);
+	
+	virtual
+	X3DFieldDefinition*
+	copy () const;
+
+	virtual
+	const X3DType*
+	getType () const;
+
+	virtual
+	const basic::id
+	getTypeName () const { return value -> getTypeName (); }
+
+	AccessType
+	getAccessType () const;
+
+	const X3DFieldDefinition*
+	getValue () const;
+	
+	virtual
+	bool
+	isDefaultValue () const;
+
+	///  @name Stream Handling
+	virtual
+	void
+	fromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	virtual
+	void
+	toStream (std::ostream &) const;
+
+	virtual
+	~FieldDefinition ();
+
+
+private:
+
+	const AccessType                accessType;
+	const X3DFieldDefinition* const value;
+
+};
+
+FieldDefinition::FieldDefinition (const AccessType & accessType, const basic::id & name, const X3DFieldDefinition* const value) :
+	accessType (accessType), 
+	     value (value)       
+{
+	setName (name);
+}
+
+X3DFieldDefinition*
+FieldDefinition::copy () const
+{
+	return new FieldDefinition (accessType, getName (), value -> copy ());
+}
+
+const X3DType*
+FieldDefinition::getType () const
+{
+	return value -> getType ();
+}
+
+AccessType
+FieldDefinition::getAccessType () const
+{
+	return accessType;
+}
+
+const X3DFieldDefinition*
+FieldDefinition::getValue () const
+{
+	return value;
+}
+	
+bool
+FieldDefinition::isDefaultValue () const
+{
+	return true;
+}
+
+void
+FieldDefinition::fromStream (std::istream &)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{ }
+
+void
+FieldDefinition::toStream (std::ostream & stream) const
+{
+	stream
+		<< Generator::AccessTypes [this]
+		<< Generator::Space
+		<< getTypeName ()
+		<< Generator::Space
+		<< getName ();
+}
+
+FieldDefinition::~FieldDefinition ()
+{
+	delete value;
+}
+
+typedef std::vector <FieldDefinition> FieldDefinitionArrayN;
+
+class NodeTypeN :
+	public X3DType
+{
+public:
+
+	template <class ... Args>
+	NodeTypeN (const std::string &, const basic::id &, const Args & ...);
+
+	virtual
+	const basic::id
+	getTypeName () const { return type .getName (); }
+
+	template <class ... Args>
+	void
+	addFieldDefinition (const AccessType &, const basic::id &, const X3DFieldDefinition* const, const Args & ...);
+
+	void
+	addFieldDefinition (const AccessType &, const basic::id &, const X3DFieldDefinition* const);
+
+
+private:
+
+	FieldDefinitionArrayN fieldDefinitions;
+
+	static const Type type;
+
+};
+
+const Type NodeTypeN::type ("NodeType");
+
+template <class ... Args>
+NodeTypeN::NodeTypeN (const std::string & component, const basic::id & name, const Args & ... args) :
+	   X3DType (name)        
+{
+	addFieldDefinition (args ...);
+}
+
+template <class ... Args>
+void
+NodeTypeN::addFieldDefinition (const AccessType & accessType, const basic::id & name, const X3DFieldDefinition* const value, const Args & ... args)
+{
+	fieldDefinitions .emplace_back (accessType, name, value);
+}
+
+void
+NodeTypeN::addFieldDefinition (const AccessType & accessType, const basic::id & name, const X3DFieldDefinition* const value)
+{
+	fieldDefinitions .emplace_back (accessType, name, value);
+}
+
+static
+const NodeTypeN type ("Navigation",
+                      "Viewpoint",
+                      inputOutput, "metadata",          new SFNode <X3DBaseNode> (),
+                      inputOnly,   "set_bind",          new SFBool (),
+                      inputOutput, "fieldOfView",       new SFFloat (0.785398),
+                      inputOutput, "jump",              new SFBool (),
+                      inputOutput, "retainUserOffsets", new SFBool (),
+                      inputOutput, "position",          new SFVec3f (0, 0, 10),
+                      inputOutput, "orientation",       new SFRotation (),
+                      inputOutput, "centerOfRotation",  new SFVec3f (),
+                      inputOutput, "description",       new SFString (),
+                      outputOnly,  "bindTime",          new SFTime (),
+                      outputOnly,  "isBound",           new SFBool ());
+*/
+
 Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool addToList) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
-	X3DViewpointNode (addToList),                                                    
-	     fieldOfView (0.785398),                                            // SFFloat [in,out] fieldOfView        π/4           (0,π)
-	        position (0, 0, 10)                                             // SFVec3f [in,out] position           0 0 10        (-∞,∞)
+	X3DBasicNode (executionContext -> getBrowser (), executionContext),
+	X3DViewpointNode (addToList),  
+	fieldOfView (0.785398),   // SFFloat [in,out] fieldOfView        π/4           (0,π)
+	  position (0, 0, 10)    // SFVec3f [in,out] position           0 0 10        (-∞,∞)
 {
 	setComponent ("Navigation");
 	setTypeName ("Viewpoint");

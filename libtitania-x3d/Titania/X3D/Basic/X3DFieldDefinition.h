@@ -121,7 +121,11 @@ public:
 
 	virtual
 	bool
-	isDefaultValue () const = 0;
+	operator == (const X3DFieldDefinition &) const = 0;
+
+	virtual
+	bool
+	operator not_eq (const X3DFieldDefinition &) const = 0;
 
 	void
 	addInputRoute (X3DRoute* const);

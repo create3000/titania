@@ -101,12 +101,6 @@ InterfaceDeclaration::isOutput () const
 	return accessType & outputOnly;
 }
 
-bool
-InterfaceDeclaration::isDefaultValue () const
-{
-	return true;
-}
-
 // Stream:
 
 void

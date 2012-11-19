@@ -66,7 +66,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	            encoding ("X3D"),  
 	specificationVersion ("3.0"),  
 	   characterEncoding ("utf8"), 
-	             comment (""),     
+	             comment ("Titania 0.1"),     
 	          components (),       
 	             profile (NULL),   
 	          namedNodes (),       

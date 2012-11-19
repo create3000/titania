@@ -78,6 +78,10 @@ public:
 	const X3DType*
 	getType () const = 0;
 
+	virtual
+	const basic::id
+	getTypeName () const = 0;
+
 	///  @name Input/Output
 
 	virtual

@@ -1,30 +1,22 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-standard/Titania/Math/Numbers/Matrix3.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="671" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="134" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="221" Column="15" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Box.cpp" Line="86" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/ElevationGrid.cpp" Line="369" Column="5" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="238" Column="4" />
-      <File FileName="Library/Tests/Extrusion/extrude5.wrl" Line="14" Column="20" />
-      <File FileName="Library/Tests/Extrusion/extrude1.wrl" Line="17" Column="1" />
-      <File FileName="Library/Tests/Extrusion/extrude4.wrl" Line="74" Column="6" />
-      <File FileName="Library/Tests/Extrusion/wrong2.wrl" Line="57" Column="15" />
-      <File FileName="Library/Tests/Extrusion/Cube.wrl" Line="25" Column="22" />
-      <File FileName="libtitania-standard/Titania/Math/Numbers/Matrix4.h" Line="877" Column="17" />
-      <File FileName="libtitania-standard/Titania/Math/Numbers/Vector3.h" Line="285" Column="17" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/SFMatrix4.h" Line="392" Column="37" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/SFRotation4.h" Line="138" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/SFMatrix3.h" Line="373" Column="79" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="122" Column="114" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/ProximitySensor.cpp" Line="168" Column="49" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="115" Column="38" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Viewpoint.cpp" Line="115" Column="71" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/ShapeContainer.cpp" Line="87" Column="35" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/LightContainer.h" Line="70" Column="30" />
-      <File FileName="libtitania-standard/Titania/Math/Numbers/Matrix3.h" Line="227" Column="33" />
+      <File FileName="experimental/main.cpp" Line="24" Column="36" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="416" Column="22" />
+      <File FileName="libtitania-standard/Titania/Math/Numbers/Matrix3.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Numbers/Matrix4.h" Line="871" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Numbers/Matrix3.h" Line="1046" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/ProximitySensor.cpp" Line="190" Column="33" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Transform.cpp" Line="99" Column="58" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="183" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Numbers/Vector4.h" Line="175" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Numbers/Vector3.h" Line="374" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Numbers/Vector2.h" Line="165" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Numbers/Quaternion.h" Line="581" Column="52" />
+      <File FileName="libtitania-standard/Titania/Math/Numbers/Rotation4.h" Line="433" Column="28" />
+      <File FileName="libtitania-standard/Titania/Math/Math.h" Line="123" Column="45" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="92" Column="58" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -34,6 +26,7 @@
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="1st" expanded="True" />
+              <Node name="3rd Party" expanded="True" />
               <Node name="Extrusion" expanded="True" />
               <Node name="Geometry3D" expanded="True" />
             </Node>
@@ -43,12 +36,11 @@
               <Node name="Basic" expanded="True" />
               <Node name="Bits" expanded="True">
                 <Node name="String" expanded="True" />
+                <Node name="Utility" expanded="True" />
               </Node>
               <Node name="Math" expanded="True">
                 <Node name="Algorithms" expanded="True" />
-                <Node name="Numbers" expanded="True">
-                  <Node name="Matrix3.h" selected="True" />
-                </Node>
+                <Node name="Numbers" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -65,7 +57,11 @@
                   <Node name="EnvironmentalSensor" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
                   <Node name="Geospatial" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Navigation" expanded="True">
+                    <Node name="X3DViewpointNode.cpp" selected="True" />
+                  </Node>
                   <Node name="Rendering" expanded="True" />
                   <Node name="Text" expanded="True" />
                   <Node name="Texturing" expanded="True" />

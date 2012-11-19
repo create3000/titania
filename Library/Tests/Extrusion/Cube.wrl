@@ -3,27 +3,27 @@
 META "title" "Extrusion Cube"
 
 Background {
-	skyColor 1 1 1
+  skyColor 1 1 1
 }
 
-DEF _0 Viewpoint {
-  fieldOfView 0.785398
-  jump TRUE
+Viewpoint {
   position 5.78159 1.80128 3.56698
   orientation -0.0442888 0.998334 0.0369939 0.93152
   centerOfRotation 1 1.5 0
 }
 
-Group {
+Transform {
   children Shape {
     appearance Appearance {
       material Material { }
     }
     geometry Extrusion {
       creaseAngle 1
-      crossSection [ 0 0, 1 0, 0.5 0.25, 1 0.5, 0 0.5, 0 0  ]
+      crossSection [ 0 0, 1 0, 0.5 0.25, 1 0.5, 0 0.5, 0 0 ]
       spine [ 0 0 0, 1 1 0, 1 2 0, 2 3 0 ]
       solid FALSE
     }
   }
 }
+
+

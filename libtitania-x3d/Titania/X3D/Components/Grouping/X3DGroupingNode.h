@@ -122,10 +122,10 @@ private:
 	void
 	pointingDeviceSensorsPostDisplay ();
 
-	MFNode <X3DPointingDeviceSensorNode> pointingDeviceSensors;
-	MFNode <X3DLightNode>                lights;
-	MFNode <LocalFog>                    localFogs;
-	MFNode <X3DBasicNode>                childNodes;
+	std::deque <X3DPointingDeviceSensorNode*> pointingDeviceSensors;
+	std::deque <X3DLightNode*>                lights;
+	std::deque <LocalFog*>                    localFogs;
+	std::deque <X3DBasicNode*>                childNodes;
 
 };
 

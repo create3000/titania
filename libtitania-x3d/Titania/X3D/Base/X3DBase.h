@@ -60,10 +60,6 @@ class X3DBase
 public:
 
 	virtual
-	const basic::id
-	getTypeName () const = 0;
-
-	virtual
 	void
 	dispose () = 0;
 

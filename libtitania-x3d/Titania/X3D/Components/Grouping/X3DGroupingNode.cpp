@@ -60,11 +60,6 @@ X3DGroupingNode::X3DGroupingNode () :
 	        children ()  // MFNode[in,out] children        [ ]       [X3DChildNode]
 {
 	addNodeType (X3DGroupingNodeType);
-
-	setChildren (pointingDeviceSensors,
-	             lights,
-	             localFogs,
-	             childNodes);
 }
 
 void
@@ -145,24 +140,24 @@ X3DGroupingNode::set_children ()
 		SFNode <X3DPointingDeviceSensorNode> pointingDeviceSensorNode = child;
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensors .push_back (pointingDeviceSensorNode);
+			pointingDeviceSensors .push_back (*pointingDeviceSensorNode);
 
 		else
 		{
 			SFNode <X3DLightNode> lightNode = child;
 
 			if (lightNode)
-				lights .push_back (lightNode);
+				lights .push_back (*lightNode);
 
 			else
 			{
 				SFNode <LocalFog> localFogNode = child;
 
 				if (localFogNode)
-					localFogs .push_back (localFogNode);
+					localFogs .push_back (*localFogNode);
 
 				else
-					childNodes .push_back (child);
+					childNodes .push_back (*child);
 			}
 		}
 	}

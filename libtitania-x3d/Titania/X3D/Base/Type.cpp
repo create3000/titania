@@ -51,17 +51,9 @@
 namespace titania {
 namespace X3D {
 
-const basic::id Type::typeName = "Type";
-
 Type::Type (const basic::id & name) :
 	X3DType (name) 
 { }
-
-const basic::id
-Type::getTypeName () const
-{
-	return typeName;
-}
 
 } // X3D
 } // Titania

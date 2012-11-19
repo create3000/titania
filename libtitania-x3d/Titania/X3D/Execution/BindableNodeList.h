@@ -81,13 +81,6 @@ public:
 		list ()
 	{ }
 
-	virtual
-	const basic::id
-	getTypeName () const
-	{
-		return typeName;
-	}
-
 	/// @name Iterators
 
 	const_iterator
@@ -147,12 +140,7 @@ private:
 
 	list_type list;
 
-	static const basic::id typeName;
-
 };
-
-template <class Type>
-const basic::id BindableNodeList <Type>::typeName = "BindableNodeList";
 
 } // X3D
 

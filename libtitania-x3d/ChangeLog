@@ -1,3 +1,26 @@
+2012-11-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Type.h:
+	* Output.h:
+	* Type.cpp:
+	* X3DBase.h:
+	* Output.cpp:
+	* X3DObject.h:
+	* X3DField.h:
+	* X3DBasicNode.cpp:
+	* GarbageCollector.h:
+	* X3DFieldDefinition.h:
+	* GarbargeCollector.cpp:
+	* BindableNodeList.h:
+	* InterfaceDeclaration.h:
+	* BindableNodeStack.h:
+	* InterfaceDeclaration.cpp:
+	* X3DExecutionContext.cpp:
+	* Viewpoint.cpp:
+	* X3DGroupingNode.h:
+	* X3DGroupingNode.cpp:
+	* X3DGeometryNode.cpp: 
+
 2012-11-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SFMatrix4.h:

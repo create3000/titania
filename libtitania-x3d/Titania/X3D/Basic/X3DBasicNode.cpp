@@ -234,13 +234,13 @@ X3DBasicNode::getNumClones () const
 				{
 					for (const auto & parentNode : mfnode -> getParents ())
 					{
-						if (parentNode)
+						if (parentNode and not dynamic_cast <X3DExecutionContext*> (parentNode))
 							++ numClones;
 					}
 				}
 				else
 				{
-					if (parentNode)
+					if (parentNode and not dynamic_cast <X3DExecutionContext*> (parentNode))
 						++ numClones;
 				}
 			}
@@ -419,6 +419,8 @@ FieldDefinitionArray
 X3DBasicNode::getInitializeableFields (const bool all) const
 {
 	FieldDefinitionArray changedFields;
+	
+	const X3DBasicNode* factory = getBrowser () -> getNode (getTypeName ());
 
 	for (auto field = fieldDefinitions .begin ();
 	     field not_eq fieldDefinitions .end () - numUserDefinedFields;
@@ -429,7 +431,7 @@ X3DBasicNode::getInitializeableFields (const bool all) const
 			if (not (*field) -> isInitializeable ())
 				continue;
 
-			if (not all and (*field) -> isDefaultValue ())
+			if (not all and **field == *factory -> getField ((*field) -> getName ()))
 				continue;
 		}
 

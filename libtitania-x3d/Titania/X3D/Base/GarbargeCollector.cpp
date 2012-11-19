@@ -56,17 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const basic::id GarbageCollector::typeName = "GarbageCollector";
-
 GarbageCollector::GarbageCollector () :
 	X3DBase () 
 { }
-
-const basic::id
-GarbageCollector::getTypeName () const
-{
-	return typeName;
-}
 
 void
 GarbageCollector::addObject (X3DObject* object)

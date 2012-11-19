@@ -75,12 +75,6 @@ public:
 		stack ({ node })
 	{ }
 
-	const basic::id
-	getTypeName () const
-	{
-		return typeName;
-	}
-
 	const pointer_type &
 	top () const { return stack .top (); }
 
@@ -126,12 +120,7 @@ private:
 
 	stack_type stack;
 
-	static const basic::id typeName;
-
 };
-
-template <class Type>
-const basic::id BindableNodeStack <Type>::typeName = "BindableNodeStack";
 
 } // X3D
 

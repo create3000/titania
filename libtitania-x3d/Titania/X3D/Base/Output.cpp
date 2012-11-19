@@ -31,17 +31,9 @@
 namespace titania {
 namespace X3D {
 
-const basic::id Output::typeName = "Output";
-
 Output::Output () :
 	X3DOutput ()
 { }
-
-const basic::id
-Output::getTypeName () const
-{
-	return typeName;
-}
 
 Output::~Output ()
 { }

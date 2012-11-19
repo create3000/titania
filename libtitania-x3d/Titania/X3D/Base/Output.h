@@ -62,15 +62,9 @@ public:
 	Output ();
 
 	virtual
-	const basic::id
-	getTypeName () const;
-
-	virtual
 	~Output ();
 
 private:
-
-	static const basic::id typeName;
 
 };
 

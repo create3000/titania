@@ -70,6 +70,14 @@ public:
 	virtual X3DField <ValueType>*
 	copy () const;
 
+	///  Default assignment opeator.  Behaves the same as the 6.7.6 setValue service.
+	X3DField &
+	operator = (const X3DField &);
+
+	///  Assignment operator for field values.  Behaves the same as the 6.7.6 setValue service.
+	X3DField &
+	operator = (const ValueType &);
+
 	virtual
 	const X3DType*
 	getType () const { return &type; }
@@ -95,20 +103,18 @@ public:
 	void
 	set (const ValueType &);
 
-	///  Returns true if this fields value is the default value for this field for this fields node.
-	bool
-	isDefaultValue () const { return value == ValueType (); }
-
-	///  Default assignment opeator.  Behaves the same as the 6.7.6 setValue service.
-	X3DField &
-	operator = (const X3DField &);
-
-	///  Assignment operator for field values.  Behaves the same as the 6.7.6 setValue service.
-	X3DField &
-	operator = (const ValueType &);
-
 	///  Conversion operator.
 	operator const ValueType & () const { return value; }
+	
+	///  Returns true if the type and the value of both fields are equal.
+	virtual
+	bool
+	operator == (const X3DFieldDefinition &) const;
+
+	///  Returns true if the type or the value of both fields are not equal.
+	virtual
+	bool
+	operator not_eq (const X3DFieldDefinition & field) const { return not (*this == field); }
 
 	//@{
 	///  6.7.7 Add field interest.
@@ -245,6 +251,22 @@ X3DField <ValueType>::copy () const
 }
 
 template <class ValueType>
+X3DField <ValueType> &
+X3DField <ValueType>::operator = (const X3DField & value)
+{
+	setValue (value .getValue ());
+	return *this;
+}
+
+template <class ValueType>
+X3DField <ValueType> &
+X3DField <ValueType>::operator = (const ValueType & value)
+{
+	setValue (value);
+	return *this;
+}
+
+template <class ValueType>
 void
 X3DField <ValueType>::setValue (const ValueType & value)
 {
@@ -264,25 +286,21 @@ template <class ValueType>
 void
 X3DField <ValueType>::write (const X3DObject & field)
 {
-	assert (field .getType () == getType ());
+	assert (getType () == field .getType ());
 
 	set (static_cast <const X3DField &> (field) .getValue ());
 }
 
 template <class ValueType>
-X3DField <ValueType> &
-X3DField <ValueType>::operator = (const X3DField & value)
+bool
+X3DField <ValueType>::operator == (const X3DFieldDefinition & field) const
 {
-	setValue (value .getValue ());
-	return *this;
-}
+	if (getType () == field .getType ())
+	{
+		return getValue () == static_cast <const X3DField &> (field) .getValue ();
+	}
 
-template <class ValueType>
-X3DField <ValueType> &
-X3DField <ValueType>::operator = (const ValueType & value)
-{
-	setValue (value);
-	return *this;
+	return false;
 }
 
 template <class ValueType>
