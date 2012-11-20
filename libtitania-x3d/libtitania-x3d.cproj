@@ -481,6 +481,7 @@
     <None Include="Titania\X3D\Base\Output.h" />
     <None Include="Titania\X3D\Browser\X3DBrowserContext.h" />
     <None Include="Titania\X3D\Execution\BindableNodeList.h" />
+    <None Include="Titania\X3D\Rendering\Normal.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

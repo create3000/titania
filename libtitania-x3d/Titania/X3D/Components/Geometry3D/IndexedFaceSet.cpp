@@ -49,6 +49,7 @@
 #include "IndexedFaceSet.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/Normal.h"
 #include <iostream>
 
 namespace titania {
@@ -57,15 +58,11 @@ namespace X3D {
 IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	           X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DComposedGeometryNode (),                                                    
-	         set_colorIndex (),                                                    // MFInt32 [in] set_colorIndex
-	         set_coordIndex (),                                                    // MFInt32 [in] set_coordIndex
-	        set_normalIndex (),                                                    // MFInt32 [in] set_normalIndex
-	      set_texCoordIndex (),                                                    // MFInt32 [in] set_texCoordIndex
-	             colorIndex (),                                                    // MFInt32 [ ]  colorIndex         [ ]          [0,∞) or -1
-	                 convex (true),                                                // SFBool  [ ]  convex             TRUE
-	             coordIndex (),                                                    // MFInt32 [ ]  coordIndex         [ ]          [0,∞) or -1
-	            normalIndex (),                                                    // MFInt32 [ ]  normalIndex        [ ]          [0,∞) or -1
 	          texCoordIndex (),                                                    // MFInt32 [ ]  texCoordIndex      [ ]          [-1,∞)
+	             colorIndex (),                                                    // MFInt32 [ ]  colorIndex         [ ]          [0,∞) or -1
+	            normalIndex (),                                                    // MFInt32 [ ]  normalIndex        [ ]          [0,∞) or -1
+	             coordIndex (),                                                    // MFInt32 [ ]  coordIndex         [ ]          [0,∞) or -1
+	                 convex (true),                                                // SFBool  [ ]  convex             TRUE
 	                   tess (0),                                                   
 	               polygons ()                                                     
 {
@@ -73,26 +70,26 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	setTypeName ("IndexedFaceSet");
 
 	appendField (inputOutput,    "metadata",          metadata);
-	appendField (inputOnly,      "set_coordIndex",    set_coordIndex);
-	appendField (inputOnly,      "set_texCoordIndex", set_texCoordIndex);
-	appendField (inputOnly,      "set_colorIndex",    set_colorIndex);
-	appendField (inputOnly,      "set_normalIndex",   set_normalIndex);
+	appendField (inputOnly,      "set_texCoordIndex", texCoordIndex);
+	appendField (inputOnly,      "set_colorIndex",    colorIndex);
+	appendField (inputOnly,      "set_normalIndex",   normalIndex);
+	appendField (inputOnly,      "set_coordIndex",    coordIndex);
+	appendField (initializeOnly, "texCoordIndex",     texCoordIndex);
+	appendField (initializeOnly, "colorIndex",        colorIndex);
+	appendField (initializeOnly, "normalIndex",       normalIndex);
+	appendField (initializeOnly, "coordIndex",        coordIndex);
+	appendField (initializeOnly, "colorPerVertex",    colorPerVertex);
+	appendField (initializeOnly, "normalPerVertex",   normalPerVertex);
 	appendField (initializeOnly, "solid",             solid);
 	appendField (initializeOnly, "ccw",               ccw);
 	appendField (initializeOnly, "convex",            convex);
 	appendField (initializeOnly, "creaseAngle",       creaseAngle);
-	appendField (initializeOnly, "colorPerVertex",    colorPerVertex);
-	appendField (initializeOnly, "normalPerVertex",   normalPerVertex);
-	appendField (initializeOnly, "coordIndex",        coordIndex);
-	appendField (initializeOnly, "texCoordIndex",     texCoordIndex);
-	appendField (initializeOnly, "colorIndex",        colorIndex);
-	appendField (initializeOnly, "normalIndex",       normalIndex);
 	appendField (inputOutput,    "attrib",            attrib);
-	appendField (inputOutput,    "coord",             coord);
+	appendField (inputOutput,    "fogCoord",          fogCoord);
 	appendField (inputOutput,    "texCoord",          texCoord);
 	appendField (inputOutput,    "color",             color);
 	appendField (inputOutput,    "normal",            normal);
-	appendField (inputOutput,    "fogCoord",          fogCoord);
+	appendField (inputOutput,    "coord",             coord);
 }
 
 X3DBasicNode*
@@ -119,26 +116,23 @@ IndexedFaceSet::initialize ()
 		gluTessCallback (tess, GLU_TESS_ERROR, (_GLUfuncptr) & IndexedFaceSet::tessError);
 	}
 
-	set_coordIndex    .addInterest (this, &IndexedFaceSet::_set_coordIndex);
-	set_texCoordIndex .addInterest (this, &IndexedFaceSet::_set_texCoordIndex);
-	set_colorIndex    .addInterest (this, &IndexedFaceSet::_set_colorIndex);
-	set_normalIndex   .addInterest (this, &IndexedFaceSet::_set_normalIndex);
+	coordIndex    .addInterest (this, &IndexedFaceSet::set_coordIndex);
+	texCoordIndex .addInterest (this, &IndexedFaceSet::set_texCoordIndex);
+	colorIndex    .addInterest (this, &IndexedFaceSet::set_colorIndex);
+	normalIndex   .addInterest (this, &IndexedFaceSet::set_normalIndex);
 
-	_set_coordIndex (coordIndex);
+	set_coordIndex ();
 }
 
 void
-IndexedFaceSet::_set_coordIndex (const MFInt32::value_type & value)
+IndexedFaceSet::set_coordIndex ()
 {
-	if (coordIndex not_eq value)
-		coordIndex = value;
-
 	polygons .clear ();
 
 	if (coordIndex .size ())
 	{
 		// Construct polygon area and determine the number of used points.
-		size_t i          = 0;
+		size_t  i         = 0;
 		int32_t numPoints = -1;
 
 		// Add a polygon if it look like we have one.
@@ -167,11 +161,17 @@ IndexedFaceSet::_set_coordIndex (const MFInt32::value_type & value)
 						// Discard last polygon if number of vertices less then 3.
 						polygons .back () .clear ();
 					else
+					{
+						if (polygons .back () .size () > 3)
+							// Tesselate polygons.
+							polygons .back () = tesselate (polygons .back ());
+
 						// Add new polygon.
 						polygons .emplace_back ();
+					}
 				}
 			}
-			
+
 			++ i;
 		}
 
@@ -194,20 +194,130 @@ IndexedFaceSet::_set_coordIndex (const MFInt32::value_type & value)
 				// Calculate bbox for texture coordinate calculation.
 				bbox = createBBox ();
 
-				_set_texCoordIndex (texCoordIndex);
-				_set_colorIndex    (colorIndex);
-				_set_normalIndex   (normalIndex);
+				set_texCoordIndex ();
+				set_colorIndex    ();
+				set_normalIndex   ();
 			}
 		}
 	}
 }
 
-void
-IndexedFaceSet::_set_texCoordIndex (const MFInt32::value_type & value)
+class Vertex
 {
-	if (texCoordIndex not_eq value)
-		texCoordIndex = value;
+public:
 
+	Vertex (const Vector3f & vertex, const int i) :
+		vertex (vertex),
+		i (i)
+	{ }
+
+	Vector3d vertex;
+	size_t   i;
+
+};
+
+class PolygonElement
+{
+public:
+
+	PolygonElement (GLenum type) :
+		type (type)
+	{ }
+
+	GLenum               type;
+	std::deque <Vertex*> vertices;
+
+};
+
+typedef std::deque <PolygonElement> Polygon;
+
+std::deque <size_t>
+IndexedFaceSet::tesselate (const std::deque <size_t> & polygon)
+{
+	SFNode <Coordinate> _coord = coord;
+
+	std::deque <size_t> tesselatedPolygon;
+
+	if (convex)
+	{
+		for (size_t i = 1; i < polygon .size () - 1; ++ i)
+		{
+			tesselatedPolygon .emplace_back (polygon [0]);
+			tesselatedPolygon .emplace_back (polygon [i]);
+			tesselatedPolygon .emplace_back (polygon [i + 1]);
+		}
+	}
+	else if (tess)
+	{
+		Polygon tesselator;
+
+		std::vector <Vertex*> vertices;
+		vertices .reserve (polygon .size () * 3);
+
+		for (const auto & i : polygon)
+			vertices .emplace_back (new Vertex (_coord -> point [coordIndex [i]], i));
+
+		gluTessBeginPolygon (tess, &tesselator);
+		gluTessBeginContour (tess);
+
+		for (size_t i = 0; i < polygon .size (); ++ i)
+			gluTessVertex (tess, vertices [i] -> vertex .data (), vertices [i]);
+
+		//gluTessEndContour(tess);
+		gluEndPolygon (tess);
+
+		for (const auto & polygonElement : tesselator)
+		{
+			switch (polygonElement .type)
+			{
+				case GL_TRIANGLE_FAN :
+					{
+						for (size_t i = 1; i < polygonElement .vertices .size () - 1; ++ i)
+						{
+							tesselatedPolygon .emplace_back (polygonElement .vertices [0] -> i);
+							tesselatedPolygon .emplace_back (polygonElement .vertices [i] -> i);
+							tesselatedPolygon .emplace_back (polygonElement .vertices [i + 1] -> i);
+						}
+
+						break;
+					}
+				case GL_TRIANGLE_STRIP:
+				{
+					for (size_t i = 0; i < polygonElement .vertices .size () - 2; ++ i)
+					{
+						tesselatedPolygon .emplace_back (polygonElement .vertices [i % 2 ? i + 1 : i] -> i);
+						tesselatedPolygon .emplace_back (polygonElement .vertices [i % 2 ? i : i + 1] -> i);
+						tesselatedPolygon .emplace_back (polygonElement .vertices [i + 2] -> i);
+					}
+
+					break;
+				}
+				case GL_TRIANGLES:
+				{
+					for (size_t i = 0; i < polygonElement .vertices .size (); i += 3)
+					{
+						tesselatedPolygon .emplace_back (polygonElement .vertices [i] -> i);
+						tesselatedPolygon .emplace_back (polygonElement .vertices [i + 1] -> i);
+						tesselatedPolygon .emplace_back (polygonElement .vertices [i + 2] -> i);
+					}
+
+					break;
+				}
+				default:
+					break;
+			}
+		}
+
+		for (size_t i = 0; i < polygon .size (); ++ i)
+			delete vertices [i];
+	}
+
+	return tesselatedPolygon;
+}
+
+void
+IndexedFaceSet::set_texCoordIndex ()
+{
 	SFNode <TextureCoordinate> _textureCoordinate = texCoord;
 
 	if (_textureCoordinate)
@@ -236,11 +346,8 @@ IndexedFaceSet::_set_texCoordIndex (const MFInt32::value_type & value)
 }
 
 void
-IndexedFaceSet::_set_colorIndex (const MFInt32::value_type & value)
+IndexedFaceSet::set_colorIndex ()
 {
-	if (colorIndex not_eq value)
-		colorIndex = value;
-
 	SFNode <Color>     _color     = color;
 	SFNode <ColorRGBA> _colorRGBA = color;
 
@@ -288,11 +395,8 @@ IndexedFaceSet::_set_colorIndex (const MFInt32::value_type & value)
 }
 
 void
-IndexedFaceSet::_set_normalIndex (const MFInt32::value_type & value)
+IndexedFaceSet::set_normalIndex ()
 {
-	if (normalIndex not_eq value)
-		normalIndex = value;
-
 	SFNode <Normal> _normal = normal;
 
 	if (_normal)
@@ -417,19 +521,12 @@ IndexedFaceSet::createTexCoord ()
 			texCoord .emplace_back ((point [Sindex] - min [Sindex]) / Ssize,
 			                        (point [Tindex] - min [Tindex]) / Ssize);
 		}
-		
+
 		// Add one extra texCoord for -1.
 		texCoord .emplace_back ();
 	}
 
 	return texCoord;
-}
-
-inline
-Vector3f
-vertexNormal (const Vector3f & v1, const Vector3f & v2, const Vector3f & v3)
-{
-	return normalize (cross (v3 - v2, v1 - v2));
 }
 
 std::vector <Vector3f>
@@ -486,17 +583,17 @@ IndexedFaceSet::createNormals ()
 				{
 					switch (polygonElement .type)
 					{
-						case GL_TRIANGLE_FAN:
-						{
-							for (size_t i = 1; i < polygonElement .vertices .size () - 1; ++ i)
+						case GL_TRIANGLE_FAN :
 							{
-								normal += vertexNormal (_coord -> point [coordIndex [polygonElement .vertices [0] -> i]],
-								                        _coord -> point [coordIndex [polygonElement .vertices [i] -> i]],
-								                        _coord -> point [coordIndex [polygonElement .vertices [i + 1] -> i]]);
-							}
+								for (size_t i = 1; i < polygonElement .vertices .size () - 1; ++ i)
+								{
+									normal += vertexNormal (_coord -> point [coordIndex [polygonElement .vertices [0] -> i]],
+									                        _coord -> point [coordIndex [polygonElement .vertices [i] -> i]],
+									                        _coord -> point [coordIndex [polygonElement .vertices [i + 1] -> i]]);
+								}
 
-							break;
-						}
+								break;
+							}
 						case GL_TRIANGLE_STRIP:
 						{
 							for (size_t i = 0; i < polygonElement .vertices .size () - 2; ++ i)
@@ -674,8 +771,6 @@ IndexedFaceSet::build ()
 
 				//gluTessEndContour(tess);
 				gluEndPolygon (tess);
-
-				Polygon::const_iterator polygonElement;
 
 				for (const auto & polygonElement : tesselatedPolygon)
 				{
@@ -966,4 +1061,5 @@ IndexedFaceSet::dispose ()
 }
 
 } // X3D
+
 } // titania

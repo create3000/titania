@@ -84,6 +84,4 @@ ModelViewMatrix4f ()
 } // X3D
 } // titania
 
-#undef INDEX4
-
 #endif

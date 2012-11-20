@@ -59,11 +59,11 @@ namespace X3D {
 
 X3DViewpointNode::X3DViewpointNode (bool addToList) :
 	  X3DBindableNode (),     
-	             jump (true), // SFBool     [in,out] jump              TRUE
-	retainUserOffsets (),     // SFBool     [ ]      retainUserOffsets
+	      description (),     // SFString   [in,out] description       ""
 	      orientation (),     // SFRotation [in,out] orientation       0 0 1 0        [-1,1],(-∞,∞)
 	 centerOfRotation (),     // SFVec3f    [in,out] centerOfRotation  0 0 0          (-∞,∞)
-	      description (),     // SFString   [in,out] description       ""
+	             jump (true), // SFBool     [in,out] jump              TRUE
+	retainUserOffsets (),     // SFBool     [ ]      retainUserOffsets
 	matrix (1,  0,  0,  0,
 	        0,  1,  0,  0,
 	        0,  0,  1,  0,

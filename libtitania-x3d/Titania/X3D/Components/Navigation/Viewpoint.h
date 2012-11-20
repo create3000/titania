@@ -59,8 +59,8 @@ class Viewpoint :
 {
 public:
 
-	SFFloat fieldOfView;
 	SFVec3f position;
+	SFFloat fieldOfView;
 
 	Viewpoint (X3DExecutionContext* const, bool = true);
 

@@ -46,109 +46,20 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY3D_INDEXED_FACE_SET_H__
-#define __TITANIA_X3D_COMPONENTS_GEOMETRY3D_INDEXED_FACE_SET_H__
+#ifndef __TITANIA_X3D_RENDERING_NORMAL_H__
+#define __TITANIA_X3D_RENDERING_NORMAL_H__
 
-#include "../Rendering/Color.h"
-#include "../Rendering/ColorRGBA.h"
-#include "../Rendering/Coordinate.h"
-#include "../Rendering/Normal.h"
-#include "../Rendering/X3DComposedGeometryNode.h"
-#include "../Texturing/TextureCoordinate.h"
-#include "../Texturing/TextureCoordinateGenerator.h"
+#include "../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
 
-class IndexedFaceSet :
-	public X3DComposedGeometryNode
+inline
+Vector3f
+vertexNormal (const Vector3f & v1, const Vector3f & v2, const Vector3f & v3)
 {
-public:
-
-	using X3DGeometryNode::creaseAngle;
-
-	MFInt32 texCoordIndex;
-	MFInt32 colorIndex;
-	MFInt32 normalIndex;
-	MFInt32 coordIndex;
-	SFBool  convex;
-
-	IndexedFaceSet (X3DExecutionContext* const);
-
-	virtual
-	X3DBasicNode*
-	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	dispose ();
-
-
-private:
-
-	virtual
-	void
-	initialize ();
-
-	void
-	set_coordIndex ();
-
-	void
-	set_texCoordIndex ();
-
-	void
-	set_colorIndex ();
-
-	void
-	set_normalIndex ();
-
-	Box3f
-	createBBox ();
-
-	std::vector <Vector2f>
-	createTexCoord ();
-
-	std::vector <Vector3f>
-	createNormals ();
-
-	void
-	build ();
-
-	void
-	setPoint (const int32_t,
-	          const SFNode <TextureCoordinate> &,
-	          const SFNode <TextureCoordinateGenerator> &,
-	          const std::vector <Vector2f> &,
-	          const SFNode <Normal> &,
-	          const Vector3f &,
-	          const std::vector <Vector3f> &,
-	          const SFNode <Color> &,
-	          const SFNode <ColorRGBA> &,
-	          const SFColor &,
-	          const SFColorRGBA,
-	          const SFNode <Coordinate> &);
-	          
-	std::deque <size_t>
-	tesselate (const std::deque <size_t> & polygon);
-
-	static void tessBeginData (GLenum, void*);
-
-	static void
-	tessVertexData (void*, void*);
-
-	static void tessCombineData (GLdouble [3], void* [4], GLfloat [4], void**, void*);
-
-	static void
-	tessEndData (void*);
-
-	static void tessError (GLenum);
-
-	GLUtesselator* tess;
-
-	std::deque <std::deque <size_t>> polygons;
-	Box3f          bbox;
-
-};
+	return normalize (cross (v3 - v2, v1 - v2));
+}
 
 } // X3D
 } // titania

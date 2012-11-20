@@ -60,11 +60,11 @@ class X3DViewpointNode :
 {
 public:
 
-	SFBool     jump;
-	SFBool     retainUserOffsets;
+	SFString   description;
 	SFRotation orientation;
 	SFVec3f    centerOfRotation;
-	SFString   description;
+	SFBool     jump;
+	SFBool     retainUserOffsets;
 
 	void
 	setTransformationMatrix (const Matrix4f & value) { transformationMatrix = value; }

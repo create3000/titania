@@ -1,6 +1,18 @@
 2012-11-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:
+	* Matrix.h:
+	* Normal.h:
+	* Viewpoint.h:
+	* Viewpoint.cpp:
+	* IndexedFaceSet.h:
+	* IndexedFaceSet.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp: 
+
+2012-11-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
 	* X3DBasicNode.cpp:
 	* InterfaceDeclaration.h:
 	* InterfaceDeclaration.cpp:

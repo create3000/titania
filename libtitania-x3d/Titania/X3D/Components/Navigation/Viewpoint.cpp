@@ -222,21 +222,21 @@ const NodeTypeN type ("Navigation",
 Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool addToList) :
 	X3DBasicNode (executionContext -> getBrowser (), executionContext),
 	X3DViewpointNode (addToList),  
-	fieldOfView (0.785398),   // SFFloat [in,out] fieldOfView        π/4           (0,π)
-	  position (0, 0, 10)    // SFVec3f [in,out] position           0 0 10        (-∞,∞)
+	        position (0, 0, 10),  // SFVec3f [in,out] position           0 0 10        (-∞,∞)
+	     fieldOfView (0.785398)   // SFFloat [in,out] fieldOfView        π/4           (0,π)
 {
 	setComponent ("Navigation");
 	setTypeName ("Viewpoint");
 
 	appendField (inputOutput, "metadata",          metadata);
+	appendField (inputOutput, "description",       description);
 	appendField (inputOnly,   "set_bind",          set_bind);
-	appendField (inputOutput, "fieldOfView",       fieldOfView);
-	appendField (inputOutput, "jump",              jump);
-	appendField (inputOutput, "retainUserOffsets", retainUserOffsets);
 	appendField (inputOutput, "position",          position);
 	appendField (inputOutput, "orientation",       orientation);
 	appendField (inputOutput, "centerOfRotation",  centerOfRotation);
-	appendField (inputOutput, "description",       description);
+	appendField (inputOutput, "fieldOfView",       fieldOfView);
+	appendField (inputOutput, "jump",              jump);
+	appendField (inputOutput, "retainUserOffsets", retainUserOffsets);
 	appendField (outputOnly,  "bindTime",          bindTime);
 	appendField (outputOnly,  "isBound",           isBound);
 }

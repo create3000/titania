@@ -2192,6 +2192,7 @@
     <None Include="Tests\Extrusion\pipe.wrl" />
     <None Include="Examples\mushrooms\stage\BodenT.wrl" />
     <None Include="Tests\Geometry3D\U.wrl" />
+    <None Include="Tests\Interpolation\warp.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />
