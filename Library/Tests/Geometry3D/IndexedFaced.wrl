@@ -10,9 +10,9 @@ DEF Background Transform {
 }
 
 Viewpoint {
+  description "Start"
   position 0.5 0.5 6.64134
   centerOfRotation 0.5 0.5 -0.5
-  description "Start"
 }
 
 Transform {
@@ -37,7 +37,9 @@ Transform {
 Transform {
   children Shape {
     appearance Appearance {
-      material Material { }
+      material Material {
+        diffuseColor 0 1 0
+      }
       texture ImageTexture {
         url "earth.png"
       }

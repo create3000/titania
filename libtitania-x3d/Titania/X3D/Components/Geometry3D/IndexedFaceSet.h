@@ -113,22 +113,8 @@ private:
 
 	void
 	build ();
-
-	void
-	setPoint (const int32_t,
-	          const SFNode <TextureCoordinate> &,
-	          const SFNode <TextureCoordinateGenerator> &,
-	          const std::vector <Vector2f> &,
-	          const SFNode <Normal> &,
-	          const Vector3f &,
-	          const std::vector <Vector3f> &,
-	          const SFNode <Color> &,
-	          const SFNode <ColorRGBA> &,
-	          const SFColor &,
-	          const SFColorRGBA,
-	          const SFNode <Coordinate> &);
 	          
-	std::deque <size_t>
+	void
 	tesselate (const std::deque <size_t> & polygon);
 
 	static void tessBeginData (GLenum, void*);
@@ -146,7 +132,7 @@ private:
 	GLUtesselator* tess;
 
 	std::deque <std::deque <size_t>> polygons;
-	Box3f          bbox;
+	Box3f                            bbox;
 
 };
 

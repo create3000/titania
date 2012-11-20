@@ -4,7 +4,11 @@ Background {
   skyColor 1 1 1
 }
 
-Viewpoint { }
+Viewpoint {
+  position -269.13 168.057 111.997
+  orientation -0.313694 -0.925713 -0.21131 1.16291
+  centerOfRotation -44.9715 55.6785 -5.276
+}
 
 DEF Light1 PointLight {
   location -25.2659 148.231 -17.3406
