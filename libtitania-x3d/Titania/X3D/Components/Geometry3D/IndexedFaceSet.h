@@ -119,8 +119,7 @@ private:
 	build ();
 
 	void
-	setPoint (const MFInt32::const_iterator &,
-	          const int,
+	setPoint (const int32_t,
 	          const SFNode <TextureCoordinate> &,
 	          const SFNode <TextureCoordinateGenerator> &,
 	          const std::vector <Vector2f> &,
@@ -149,22 +148,13 @@ private:
 	{
 	public:
 
-		Vertex (MFVec3f* point, const MFInt32::const_iterator & index, const int i) :
-			index (index),
+		Vertex (const Vector3f & vertex, const int i) :
+			vertex (vertex),
 			i (i)
-		{
-			float x, y, z;
+		{ }
 
-			point -> at (*index) .getValue (x, y, z);
-			location .reserve (3);
-			location .push_back (x);
-			location .push_back (y);
-			location .push_back (z);
-		}
-
-		std::vector <GLdouble>  location;
-		MFInt32::const_iterator index;
-		int                     i;
+		Vector3d  vertex;
+		size_t    i;
 	};
 
 	class PolygonElement
@@ -182,11 +172,8 @@ private:
 	typedef std::deque <PolygonElement> Polygon;
 
 	GLUtesselator* tess;
-	int            numPoints;
-	int            numFaces;
-	int            numTexCoord;
-	int            numColors;
-	int            numNormals;
+
+	std::deque <std::deque <size_t>> polygons;
 	Box3f          bbox;
 
 };

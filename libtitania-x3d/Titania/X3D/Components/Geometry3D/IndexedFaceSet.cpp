@@ -67,11 +67,7 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	            normalIndex (),                                                    // MFInt32 [ ]  normalIndex        [ ]          [0,∞) or -1
 	          texCoordIndex (),                                                    // MFInt32 [ ]  texCoordIndex      [ ]          [-1,∞)
 	                   tess (0),                                                   
-	              numPoints (0),                                                   
-	               numFaces (0),                                                   
-	            numTexCoord (0),                                                   
-	              numColors (0),                                                   
-	             numNormals (0)                                                    
+	               polygons ()                                                     
 {
 	setComponent ("Geometry3D");
 	setTypeName ("IndexedFaceSet");
@@ -137,38 +133,72 @@ IndexedFaceSet::_set_coordIndex (const MFInt32::value_type & value)
 	if (coordIndex not_eq value)
 		coordIndex = value;
 
-	numPoints = -1;
-	numFaces  = -1;
+	polygons .clear ();
 
-	for (const auto & index : coordIndex)
+	if (coordIndex .size ())
 	{
-		numPoints = std::max <size_t> (numPoints, index);
+		// Construct polygon area and determine the number of used points.
+		size_t i          = 0;
+		int32_t numPoints = -1;
 
-		if (index < 0)
-			++ numFaces;
-	}
+		// Add a polygon if it look like we have one.
+		if (coordIndex [0] >= 0)
+			polygons .emplace_back ();
 
-	++ numPoints;
-	++ numFaces;
+		for (const auto & index : coordIndex)
+		{
+			numPoints = std::max <int32_t> (numPoints, index);
 
-	if (numPoints)
-	{
-		if (coordIndex .back () >= 0)
-			++ numFaces;
+			if (index >= 0)
+				// Add vertex.
+				polygons .back () .emplace_back (i);
 
-		SFNode <Coordinate> _coord = coord;
+			else
+			{
+				// Negativ index.
 
-		if (not _coord or not _coord -> point .size ())
-			return;
+				if (polygons .back () .size ())
+				{
+					// Closed polygon.
+					if (polygons .back () .front () == polygons .back () .back ())
+						polygons .back () .pop_back ();
 
-		if (_coord -> point .size () < (size_t) numPoints)
-			_coord -> point .resize (numPoints);
+					if (polygons .back () .size () < 3)
+						// Discard last polygon if number of vertices less then 3.
+						polygons .back () .clear ();
+					else
+						// Add new polygon.
+						polygons .emplace_back ();
+				}
+			}
+			
+			++ i;
+		}
 
-		bbox = createBBox ();
+		++ numPoints;
 
-		_set_texCoordIndex (texCoordIndex);
-		_set_colorIndex    (colorIndex);
-		_set_normalIndex   (normalIndex);
+		// Discard last polygon if number of vertices less then 3.
+		if (polygons .back () .size () < 3)
+			polygons .pop_back ();
+
+		if (polygons .size ())
+		{
+			SFNode <Coordinate> _coord = coord;
+
+			if (_coord)
+			{
+				// Resize coord .point if to small
+				if (_coord -> point .size () < (size_t) numPoints)
+					_coord -> point .resize (numPoints);
+
+				// Calculate bbox for texture coordinate calculation.
+				bbox = createBBox ();
+
+				_set_texCoordIndex (texCoordIndex);
+				_set_colorIndex    (colorIndex);
+				_set_normalIndex   (normalIndex);
+			}
+		}
 	}
 }
 
@@ -182,19 +212,26 @@ IndexedFaceSet::_set_texCoordIndex (const MFInt32::value_type & value)
 
 	if (_textureCoordinate)
 	{
+		// Fill up texCoordIndex if to small.
 		for (size_t i = texCoordIndex .size (); i < coordIndex .size (); ++ i)
 		{
 			texCoordIndex .push_back (coordIndex [i]);
 		}
 
-		numTexCoord = -1;
+		// Determine number of used texCoords.
+
+		int numTexCoord = -1;
 
 		for (const auto & index : texCoordIndex)
 		{
-			numTexCoord = std::max <size_t> (numTexCoord, index);
+			numTexCoord = std::max <int32_t> (numTexCoord, index);
 		}
 
 		++ numTexCoord;
+
+		// Resize textureCoordinate .point if to small.
+		if (_textureCoordinate -> point .size () < (size_t) numTexCoord)
+			_textureCoordinate -> point .resize (numTexCoord);
 	}
 }
 
@@ -209,6 +246,7 @@ IndexedFaceSet::_set_colorIndex (const MFInt32::value_type & value)
 
 	if (_color or _colorRGBA)
 	{
+		// Fill up colorIndex if to small.
 		if (colorPerVertex)
 		{
 			for (size_t i = colorIndex .size (); i < coordIndex .size (); ++ i)
@@ -218,20 +256,34 @@ IndexedFaceSet::_set_colorIndex (const MFInt32::value_type & value)
 		}
 		else
 		{
-			for (size_t i = colorIndex .size (); i < (size_t) numFaces; ++ i)
+			for (size_t i = colorIndex .size (); i < polygons .size (); ++ i)
 			{
 				colorIndex .push_back (i);
 			}
 		}
 
-		numColors = -1;
+		// Determine number of used colors.
+
+		int numColors = -1;
 
 		for (const auto & index : colorIndex)
 		{
-			numColors = std::max <size_t> (numColors, index);
+			numColors = std::max <int32_t> (numColors, index);
 		}
 
 		++ numColors;
+
+		// Resize color .color if to small.
+		if (_color)
+		{
+			if (_color -> color .size () < (size_t) numColors)
+				_color -> color .resize (numColors);
+		}
+		else if (_colorRGBA)
+		{
+			if (_colorRGBA -> color .size () < (size_t) numColors)
+				_colorRGBA -> color .resize (numColors);
+		}
 	}
 }
 
@@ -245,6 +297,7 @@ IndexedFaceSet::_set_normalIndex (const MFInt32::value_type & value)
 
 	if (_normal)
 	{
+		// Fill up normalIndex if to small.
 		if (normalPerVertex)
 		{
 			for (size_t i = normalIndex .size (); i < coordIndex .size (); ++ i)
@@ -254,20 +307,26 @@ IndexedFaceSet::_set_normalIndex (const MFInt32::value_type & value)
 		}
 		else
 		{
-			for (size_t i = normalIndex .size (); i < (size_t) numFaces; ++ i)
+			for (size_t i = normalIndex .size (); i < polygons .size (); ++ i)
 			{
 				normalIndex .push_back (i);
 			}
 		}
 
-		numNormals = -1;
+		// Determine number of used normals.
+
+		int numNormals = -1;
 
 		for (const auto & index : normalIndex)
 		{
-			numNormals = std::max <size_t> (numNormals, index);
+			numNormals = std::max <int32_t> (numNormals, index);
 		}
 
 		++ numNormals;
+
+		// Resize normal .vector if to small.
+		if (_normal -> vector .size () < (size_t) numNormals)
+			_normal -> vector .resize (numNormals);
 	}
 }
 
@@ -276,22 +335,29 @@ IndexedFaceSet::createBBox ()
 {
 	SFNode <Coordinate> _coord = coord;
 
-	if (not _coord or not _coord -> point .size ())
-		return Box3f ();
-
-	Vector3f min = _coord -> point [0];
-	Vector3f max = _coord -> point [0];
-
-	for (const auto & point : _coord -> point)
+	if (polygons .size ())
 	{
-		min = math::min <float> (min, point);
-		max = math::max <float> (max, point);
+		Vector3f min = _coord -> point [coordIndex [polygons .front () [0]]];
+		Vector3f max = min;
+
+		for (const auto & polygon : polygons)
+		{
+			for (const auto & i : polygon)
+			{
+				const auto & vertex = _coord -> point [coordIndex [i]];
+
+				min = math::min <float> (min, vertex);
+				max = math::max <float> (max, vertex);
+			}
+		}
+
+		Vector3f size   = max - min;
+		Vector3f center = min + size * 0.5f;
+
+		return Box3f (size, center);
 	}
 
-	Vector3f size   = max - min;
-	Vector3f center = min + size * 0.5f;
-
-	return Box3f (size, center);
+	return Box3f ();
 }
 
 std::vector <Vector2f>
@@ -342,20 +408,28 @@ IndexedFaceSet::createTexCoord ()
 
 	SFNode <Coordinate> _coord = coord;
 
-	for (const auto & index : coordIndex)
+	for (const auto & polygon : polygons)
 	{
-		if (index >= 0)
+		for (const auto & i : polygon)
 		{
-			const Vector3f & point = _coord -> point [index];
+			const Vector3f & point = _coord -> point [coordIndex [i]];
 
-			texCoord .push_back (Vector2f ((point [Sindex] - min [Sindex]) / Ssize,
-			                               (point [Tindex] - min [Tindex]) / Ssize));
+			texCoord .emplace_back ((point [Sindex] - min [Sindex]) / Ssize,
+			                        (point [Tindex] - min [Tindex]) / Ssize);
 		}
-		else
-			texCoord .push_back (Vector2f ());
+		
+		// Add one extra texCoord for -1.
+		texCoord .emplace_back ();
 	}
 
 	return texCoord;
+}
+
+inline
+Vector3f
+vertexNormal (const Vector3f & v1, const Vector3f & v2, const Vector3f & v3)
+{
+	return normalize (cross (v3 - v2, v1 - v2));
 }
 
 std::vector <Vector3f>
@@ -368,134 +442,107 @@ IndexedFaceSet::createNormals ()
 
 	SFNode <Coordinate> _coord = coord;
 
-	for (MFInt32::const_iterator index = coordIndex .begin (); index not_eq coordIndex .end (); ++ index)
+	for (const auto & polygon : polygons)
 	{
-		int numVertices = 0;
+		Vector3f normal; // faceNormal
 
-		for (MFInt32::const_iterator iter = index;
-		     *iter >= 0 and iter not_eq coordIndex .end ();
-		     ++ iter, ++ numVertices)
-			;
-
-		Vector3f normal;
-
-		if (numVertices == 3)
-		{
-			const Vector3f & p1 = _coord -> point [*index];
-			const Vector3f & p2 = _coord -> point [*(index + 1)];
-			const Vector3f & p3 = _coord -> point [*(index + 2)];
-
-			normal = cross (p3 - p2, p1 - p2);
-
-			for (int i = 0; i < 3; ++ i)
-				normalIndex [*(index + i)] .push_back (normals .size () + i);
-		}
-		else if (numVertices > 3)
+		if (polygon .size () > 3)
 		{
 			if (convex)
 			{
-				int end = *index == *(index + (numVertices - 1)) ? 2 : 1;
+				// Calculate face normal for this polygon.
 
-				for (int _i = 1; _i < numVertices - end; ++ _i)
+				for (size_t i = 1; i < polygon .size () - 1; ++ i)
 				{
-					const Vector3f & p1 = _coord -> point [*index];
-					const Vector3f & p2 = _coord -> point [*(index + _i)];
-					const Vector3f & p3 = _coord -> point [*(index + _i + 1)];
-
-					normal += normalize (cross (p3 - p2, p1 - p2));
+					normal += vertexNormal (_coord -> point [coordIndex [polygon [0]]],
+					                        _coord -> point [coordIndex [polygon [i]]],
+					                        _coord -> point [coordIndex [polygon [i + 1]]]);
 				}
 
-				//const Vector3f& p1 = _coord -> point .at((index + (numVertices - end - 1)) -> getValue()) .getValue();
-				//const Vector3f& p2 = _coord -> point .at(index -> getValue()) .getValue();
-				//const Vector3f& p3 = _coord -> point .at((index + 1) -> getValue()) .getValue();
-
-				//normal += p3 .subtract(p2) .cross(p1 .subtract(p2)) .normalize();
-
-				for (int i = 0; i < numVertices - end + 1; ++ i)
-					normalIndex [*(index + i)] .push_back (normals .size () + i);
+				// Add normal index to the normalIndex for each vertex.
+				for (size_t i = 0; i < polygon .size (); ++ i)
+					normalIndex [coordIndex [polygon [i]]] .emplace_back (normals .size () + i);
 			}
 			else if (tess)
 			{
-				int end = *index == *(index + (numVertices - 1)) ? 1 : 0;
-
-				Polygon polygon;
+				Polygon tesselatedPolygon;
 
 				std::vector <Vertex*> vertices;
-				vertices .reserve ((numVertices - end) * 3);
+				vertices .reserve (polygon .size () * 3);
 
-				for (int _i = 0; _i < numVertices - end; ++ _i)
-					vertices .push_back (new Vertex (&_coord -> point, index + _i, 0));
+				for (const auto & i : polygon)
+					vertices .emplace_back (new Vertex (_coord -> point [coordIndex [i]], i));
 
-				gluTessBeginPolygon (tess, &polygon);
+				gluTessBeginPolygon (tess, &tesselatedPolygon);
 				gluTessBeginContour (tess);
 
-				for (int _i = 0; _i < numVertices - end; ++ _i)
-					gluTessVertex (tess, &vertices [_i] -> location [0], vertices [_i]);
+				for (size_t i = 0; i < polygon .size (); ++ i)
+					gluTessVertex (tess, vertices [i] -> vertex .data (), vertices [i]);
 
 				//gluTessEndContour(tess);
 				gluEndPolygon (tess);
 
-				Polygon::const_iterator polygonElement;
-
-				for (polygonElement = polygon .begin (); polygonElement not_eq polygon .end (); ++ polygonElement)
+				for (const auto & polygonElement : tesselatedPolygon)
 				{
-					switch (polygonElement -> type)
+					switch (polygonElement .type)
 					{
 						case GL_TRIANGLE_FAN:
-
-							for (size_t _i = 1; _i < polygonElement -> vertices .size () - 1; ++ _i)
+						{
+							for (size_t i = 1; i < polygonElement .vertices .size () - 1; ++ i)
 							{
-								const Vector3f & p1 = _coord -> point [*polygonElement -> vertices [0] -> index];
-								const Vector3f & p2 = _coord -> point [*polygonElement -> vertices [_i] -> index];
-								const Vector3f & p3 = _coord -> point [*polygonElement -> vertices [_i + 1] -> index];
-
-								normal += normalize (cross (p3 - p2, p1 - p2));
+								normal += vertexNormal (_coord -> point [coordIndex [polygonElement .vertices [0] -> i]],
+								                        _coord -> point [coordIndex [polygonElement .vertices [i] -> i]],
+								                        _coord -> point [coordIndex [polygonElement .vertices [i + 1] -> i]]);
 							}
 
 							break;
+						}
 						case GL_TRIANGLE_STRIP:
-
-							for (size_t _i = 0; _i < polygonElement -> vertices .size () - 2; ++ _i)
+						{
+							for (size_t i = 0; i < polygonElement .vertices .size () - 2; ++ i)
 							{
-								const Vector3f & p1 = _coord -> point [*polygonElement -> vertices [_i % 2 ? _i + 1 : _i] -> index];
-								const Vector3f & p2 = _coord -> point [*polygonElement -> vertices [_i % 2 ? _i : _i + 1] -> index];
-								const Vector3f & p3 = _coord -> point [*polygonElement -> vertices [_i + 2] -> index];
-
-								normal += normalize (cross (p3 - p2, p1 - p2));
+								normal += vertexNormal (_coord -> point [coordIndex [polygonElement .vertices [i % 2 ? i + 1 : i] -> i]],
+								                        _coord -> point [coordIndex [polygonElement .vertices [i % 2 ? i : i + 1] -> i]],
+								                        _coord -> point [coordIndex [polygonElement .vertices [i + 2] -> i]]);
 							}
 
 							break;
+						}
 						case GL_TRIANGLES:
-
-							for (size_t _i = 0; _i < polygonElement -> vertices .size (); _i += 3)
+						{
+							for (size_t i = 0; i < polygonElement .vertices .size (); i += 3)
 							{
-								const Vector3f & p1 = _coord -> point [*polygonElement -> vertices [_i] -> index];
-								const Vector3f & p2 = _coord -> point [*polygonElement -> vertices [_i + 1] -> index];
-								const Vector3f & p3 = _coord -> point [*polygonElement -> vertices [_i + 2] -> index];
-
-								normal += normalize (cross (p3 - p2, p1 - p2));
+								normal += vertexNormal (_coord -> point [coordIndex [polygonElement .vertices [i] -> i]],
+								                        _coord -> point [coordIndex [polygonElement .vertices [i + 1] -> i]],
+								                        _coord -> point [coordIndex [polygonElement .vertices [i + 2] -> i]]);
 							}
 
 							break;
+						}
 						default:
 							break;
 					}
 				}
 
-				for (int _i = 0; _i < numVertices - end; ++ _i)
-					delete vertices [_i];
+				for (size_t i = 0; i < polygon .size (); ++ i)
+					delete vertices [i];
 
-				for (int i = 0; i < numVertices - end; ++ i)
-					normalIndex [*(index + i)] .push_back (normals .size () + i);
+				for (size_t i = 0; i < polygon .size (); ++ i)
+					normalIndex [coordIndex [polygon [i]]] .emplace_back (normals .size () + i);
 			}
 		}
+		else
+		{
+			normal = vertexNormal (_coord -> point [coordIndex [polygon [0]]],
+			                       _coord -> point [coordIndex [polygon [1]]],
+			                       _coord -> point [coordIndex [polygon [2]]]);
 
-		normals .resize (normals .size () + numVertices + 1, normalize (normal));
+			for (int i = 0; i < 3; ++ i)
+				normalIndex [coordIndex [polygon [i]]] .emplace_back (normals .size () + i);
+		}
 
-		index += numVertices;
-
-		if (index == coordIndex .end ())
-			break;
+		// Add this normal for each vertex and one extra normal for -1.
+		normals .resize (normals .size () + polygon .size () + 1, normalize (normal));
 	}
 
 	refineNormals (normalIndex, normals);
@@ -510,94 +557,65 @@ IndexedFaceSet::build ()
 
 	SFNode <Coordinate> _coord = coord;
 
-	if (not _coord or not _coord -> point .size ())
+	if (not _coord or not polygons .size ())
 		return;
+
+	// TextureCoordinate
 
 	std::vector <Vector2f> _texCoord;
 
 	SFNode <TextureCoordinate>          _textureCoordinate          = texCoord;
 	SFNode <TextureCoordinateGenerator> _textureCoordinateGenerator = texCoord;
 
-	if (_textureCoordinate)
-	{
-		if (_textureCoordinate -> point .size () < (size_t) numTexCoord)
-			_textureCoordinate -> point .resize (numTexCoord);
-
-	}
-	else if (_textureCoordinateGenerator)
-	{ }
-	else
+	if (not _textureCoordinate and not _textureCoordinateGenerator)
 		_texCoord = createTexCoord ();
+
+	// Color
 
 	SFNode <Color>     _color     = color;
 	SFNode <ColorRGBA> _colorRGBA = color;
 
-	if (_color or _colorRGBA)
-	{
-		if (_color)
-		{
-			if (_color -> color .size () < (size_t) numColors)
-				_color -> color .resize (numColors);
-		}
-		else if (_colorRGBA)
-		{
-			if (_colorRGBA -> color .size () < (size_t) numColors)
-				_colorRGBA -> color .resize (numColors);
-		}
-	}
+	// Normal
 
 	std::vector <Vector3f> _normals;
 
 	SFNode <Normal> _normal = normal;
 
-	if (_normal)
-	{
-		if (_normal -> vector .size () < (size_t) numNormals)
-			_normal -> vector .resize (numNormals);
-	}
-	else
-	{
+	if (not _normal)
 		_normals = createNormals ();
-	}
 
-	MFInt32::const_iterator index;
-	int                     face, i;
+	// Fill GeometryNode
 
-	for (index = coordIndex .begin (), face = 0, i = 0; index not_eq coordIndex .end (); ++ index, ++ face, ++ i)
+	int face = 0;
+
+	for (const auto polygon : polygons)
 	{
-		int numVertices = 0;
+		Vector3f    faceNormal;
+		SFColor     faceColor;
+		SFColorRGBA faceColorRGBA;
 
-		for (auto iter = index;
-		     *iter >= 0 and iter not_eq coordIndex .end ();
-		     ++ iter, ++ numVertices)
-			;
-
-		if (numVertices > 2)
+		if (_normal)
 		{
-			Vector3f    faceNormal;
-			SFColor     faceColor;
-			SFColorRGBA faceColorRGBA;
+			if (not normalPerVertex and normalIndex [face] >= 0)
+				faceNormal = _normal -> vector [normalIndex [face]];
+		}
 
-			if (_normal)
-			{
-				if (not normalPerVertex and normalIndex [face] >= 0)
-					faceNormal = _normal -> vector [normalIndex [face]];
-			}
+		if (not colorPerVertex)
+		{
+			if (_color and colorIndex [face] >= 0)
+				faceColor = _color -> color [colorIndex [face]];
 
-			if (not colorPerVertex)
-			{
-				if (_color and colorIndex [face] >= 0)
-					faceColor = _color -> color [colorIndex [face]];
-				else if (_colorRGBA and colorIndex [face] >= 0)
-					faceColorRGBA = _colorRGBA -> color [colorIndex [face]];
-			}
+			else if (_colorRGBA and colorIndex [face] >= 0)
+				faceColorRGBA = _colorRGBA -> color [colorIndex [face]];
+		}
 
-			if (numVertices == 3)
+		if (polygon .size () > 3)
+		{
+			if (convex)
 			{
-				for (int _i = 0; _i < numVertices; ++ _i, ++ index, ++ i)
+				for (size_t i = 1; i < polygon .size () - 1; ++ i)
 				{
-					setPoint (index,
-					          i,
+					setPoint (polygon [0],
 					          _textureCoordinate,
 					          _textureCoordinateGenerator,
 					          _texCoord,
@@ -609,263 +627,228 @@ IndexedFaceSet::build ()
 					          faceColor,
 					          faceColorRGBA,
 					          _coord);
+
+					setPoint (polygon [i],
+					          _textureCoordinate,
+					          _textureCoordinateGenerator,
+					          _texCoord,
+					          _normal,
+					          faceNormal,
+					          _normals,
+					          _color,
+					          _colorRGBA,
+					          faceColor,
+					          faceColorRGBA,
+					          _coord);
+
+					setPoint (polygon [i + 1],
+					          _textureCoordinate,
+					          _textureCoordinateGenerator,
+					          _texCoord,
+					          _normal,
+					          faceNormal,
+					          _normals,
+					          _color,
+					          _colorRGBA,
+					          faceColor,
+					          faceColorRGBA,
+					          _coord);
+
 				}
 			}
-			else if (numVertices > 3)
+			else if (tess)
 			{
-				if (convex)
+				Polygon tesselatedPolygon;
+
+				std::vector <Vertex*> vertices;
+				vertices .reserve (polygon .size () * 3);
+
+				for (const auto & i : polygon)
+					vertices .emplace_back (new Vertex (_coord -> point [coordIndex [i]], i));
+
+				gluTessBeginPolygon (tess, &tesselatedPolygon);
+				gluTessBeginContour (tess);
+
+				for (size_t i = 0; i < polygon .size (); ++ i)
+					gluTessVertex (tess, vertices [i] -> vertex .data (), vertices [i]);
+
+				//gluTessEndContour(tess);
+				gluEndPolygon (tess);
+
+				Polygon::const_iterator polygonElement;
+
+				for (const auto & polygonElement : tesselatedPolygon)
 				{
-					int end = *index == *(index + (numVertices - 1)) ? 2 : 1;
-
-					for (int _i = 1; _i < numVertices - end; ++ _i)
+					switch (polygonElement .type)
 					{
-						setPoint (index,
-						          i,
-						          _textureCoordinate,
-						          _textureCoordinateGenerator,
-						          _texCoord,
-						          _normal,
-						          faceNormal,
-						          _normals,
-						          _color,
-						          _colorRGBA,
-						          faceColor,
-						          faceColorRGBA,
-						          _coord);
+						case GL_TRIANGLE_FAN :
+							{
+								for (size_t i = 1; i < polygonElement .vertices .size () - 1; ++ i)
+								{
+									setPoint (polygonElement .vertices [0] -> i,
+									          _textureCoordinate,
+									          _textureCoordinateGenerator,
+									          _texCoord,
+									          _normal,
+									          faceNormal,
+									          _normals,
+									          _color,
+									          _colorRGBA,
+									          faceColor,
+									          faceColorRGBA,
+									          _coord);
 
+									setPoint (polygonElement .vertices [i] -> i,
+									          _textureCoordinate,
+									          _textureCoordinateGenerator,
+									          _texCoord,
+									          _normal,
+									          faceNormal,
+									          _normals,
+									          _color,
+									          _colorRGBA,
+									          faceColor,
+									          faceColorRGBA,
+									          _coord);
 
-						setPoint (index + _i,
-						          i + _i,
-						          _textureCoordinate,
-						          _textureCoordinateGenerator,
-						          _texCoord,
-						          _normal,
-						          faceNormal,
-						          _normals,
-						          _color,
-						          _colorRGBA,
-						          faceColor,
-						          faceColorRGBA,
-						          _coord);
+									setPoint (polygonElement .vertices [i + 1] -> i,
+									          _textureCoordinate,
+									          _textureCoordinateGenerator,
+									          _texCoord,
+									          _normal,
+									          faceNormal,
+									          _normals,
+									          _color,
+									          _colorRGBA,
+									          faceColor,
+									          faceColorRGBA,
+									          _coord);
 
+								}
 
-						setPoint (index + _i + 1,
-						          i + _i + 1,
-						          _textureCoordinate,
-						          _textureCoordinateGenerator,
-						          _texCoord,
-						          _normal,
-						          faceNormal,
-						          _normals,
-						          _color,
-						          _colorRGBA,
-						          faceColor,
-						          faceColorRGBA,
-						          _coord);
-
-					}
-				}
-				else if (tess)
-				{
-					int end = *index == *(index + (numVertices - 1)) ? 1 : 0;
-
-					Polygon polygon;
-
-					std::vector <Vertex*> vertices;
-					vertices .reserve ((numVertices - end) * 3);
-
-					for (int _i = 0; _i < numVertices - end; ++ _i)
-						vertices .push_back (new Vertex (&_coord -> point, index + _i, i + _i));
-
-					gluTessBeginPolygon (tess, &polygon);
-					gluTessBeginContour (tess);
-
-					for (int _i = 0; _i < numVertices - end; ++ _i)
-						gluTessVertex (tess, &vertices [_i] -> location [0], vertices [_i]);
-
-					//gluTessEndContour(tess);
-					gluEndPolygon (tess);
-
-					Polygon::const_iterator polygonElement;
-
-					for (polygonElement = polygon .begin (); polygonElement not_eq polygon .end (); ++ polygonElement)
-					{
-						switch (polygonElement -> type)
+								break;
+							}
+						case GL_TRIANGLE_STRIP:
 						{
-							case GL_TRIANGLE_FAN:
+							for (size_t i = 0; i < polygonElement .vertices .size () - 2; ++ i)
+							{
+								setPoint (polygonElement .vertices [i % 2 ? i + 1 : i] -> i,
+								          _textureCoordinate,
+								          _textureCoordinateGenerator,
+								          _texCoord,
+								          _normal,
+								          faceNormal,
+								          _normals,
+								          _color,
+								          _colorRGBA,
+								          faceColor,
+								          faceColorRGBA,
+								          _coord);
 
-								for (size_t _i = 1; _i < polygonElement -> vertices .size () - 1; ++ _i)
-								{
-									setPoint (polygonElement -> vertices [0] -> index,
-									          polygonElement -> vertices [0] -> i,
-									          _textureCoordinate,
-									          _textureCoordinateGenerator,
-									          _texCoord,
-									          _normal,
-									          faceNormal,
-									          _normals,
-									          _color,
-									          _colorRGBA,
-									          faceColor,
-									          faceColorRGBA,
-									          _coord);
+								setPoint (polygonElement .vertices [i % 2 ? i : i + 1] -> i,
+								          _textureCoordinate,
+								          _textureCoordinateGenerator,
+								          _texCoord,
+								          _normal,
+								          faceNormal,
+								          _normals,
+								          _color,
+								          _colorRGBA,
+								          faceColor,
+								          faceColorRGBA,
+								          _coord);
 
+								setPoint (polygonElement .vertices [i + 2] -> i,
+								          _textureCoordinate,
+								          _textureCoordinateGenerator,
+								          _texCoord,
+								          _normal,
+								          faceNormal,
+								          _normals,
+								          _color,
+								          _colorRGBA,
+								          faceColor,
+								          faceColorRGBA,
+								          _coord);
 
-									setPoint (polygonElement -> vertices [_i] -> index,
-									          polygonElement -> vertices [_i] -> i,
-									          _textureCoordinate,
-									          _textureCoordinateGenerator,
-									          _texCoord,
-									          _normal,
-									          faceNormal,
-									          _normals,
-									          _color,
-									          _colorRGBA,
-									          faceColor,
-									          faceColorRGBA,
-									          _coord);
+							}
 
-
-									setPoint (polygonElement -> vertices [_i + 1] -> index,
-									          polygonElement -> vertices [_i + 1] -> i,
-									          _textureCoordinate,
-									          _textureCoordinateGenerator,
-									          _texCoord,
-									          _normal,
-									          faceNormal,
-									          _normals,
-									          _color,
-									          _colorRGBA,
-									          faceColor,
-									          faceColorRGBA,
-									          _coord);
-
-								}
-
-								break;
-							case GL_TRIANGLE_STRIP:
-
-								for (size_t _i = 0; _i < polygonElement -> vertices .size () - 2; ++ _i)
-								{
-									setPoint (polygonElement -> vertices [_i % 2 ? _i + 1 : _i] -> index,
-									          polygonElement -> vertices [_i % 2 ? _i + 1 : _i] -> i,
-									          _textureCoordinate,
-									          _textureCoordinateGenerator,
-									          _texCoord,
-									          _normal,
-									          faceNormal,
-									          _normals,
-									          _color,
-									          _colorRGBA,
-									          faceColor,
-									          faceColorRGBA,
-									          _coord);
-
-
-									setPoint (polygonElement -> vertices [_i % 2 ? _i : _i + 1] -> index,
-									          polygonElement -> vertices [_i % 2 ? _i : _i + 1] -> i,
-									          _textureCoordinate,
-									          _textureCoordinateGenerator,
-									          _texCoord,
-									          _normal,
-									          faceNormal,
-									          _normals,
-									          _color,
-									          _colorRGBA,
-									          faceColor,
-									          faceColorRGBA,
-									          _coord);
-
-
-									setPoint (polygonElement -> vertices [_i + 2] -> index,
-									          polygonElement -> vertices [_i + 2] -> i,
-									          _textureCoordinate,
-									          _textureCoordinateGenerator,
-									          _texCoord,
-									          _normal,
-									          faceNormal,
-									          _normals,
-									          _color,
-									          _colorRGBA,
-									          faceColor,
-									          faceColorRGBA,
-									          _coord);
-
-								}
-
-								break;
-							case GL_TRIANGLES:
-
-								for (size_t _i = 0; _i < polygonElement -> vertices .size (); _i += 3)
-								{
-									setPoint (polygonElement -> vertices [_i] -> index,
-									          polygonElement -> vertices [_i] -> i,
-									          _textureCoordinate,
-									          _textureCoordinateGenerator,
-									          _texCoord,
-									          _normal,
-									          faceNormal,
-									          _normals,
-									          _color,
-									          _colorRGBA,
-									          faceColor,
-									          faceColorRGBA,
-									          _coord);
-
-
-									setPoint (polygonElement -> vertices [_i + 1] -> index,
-									          polygonElement -> vertices [_i + 1] -> i,
-									          _textureCoordinate,
-									          _textureCoordinateGenerator,
-									          _texCoord,
-									          _normal,
-									          faceNormal,
-									          _normals,
-									          _color,
-									          _colorRGBA,
-									          faceColor,
-									          faceColorRGBA,
-									          _coord);
-
-
-									setPoint (polygonElement -> vertices [_i + 2] -> index,
-									          polygonElement -> vertices [_i + 2] -> i,
-									          _textureCoordinate,
-									          _textureCoordinateGenerator,
-									          _texCoord,
-									          _normal,
-									          faceNormal,
-									          _normals,
-									          _color,
-									          _colorRGBA,
-									          faceColor,
-									          faceColorRGBA,
-									          _coord);
-
-								}
-
-								break;
-							default:
-								break;
+							break;
 						}
-					}
+						case GL_TRIANGLES:
+						{
+							for (size_t i = 0; i < polygonElement .vertices .size (); i += 3)
+							{
+								setPoint (polygonElement .vertices [i] -> i,
+								          _textureCoordinate,
+								          _textureCoordinateGenerator,
+								          _texCoord,
+								          _normal,
+								          faceNormal,
+								          _normals,
+								          _color,
+								          _colorRGBA,
+								          faceColor,
+								          faceColorRGBA,
+								          _coord);
 
-					for (int _i = 0; _i < numVertices - end; ++ _i)
-						delete vertices [_i];
+								setPoint (polygonElement .vertices [i + 1] -> i,
+								          _textureCoordinate,
+								          _textureCoordinateGenerator,
+								          _texCoord,
+								          _normal,
+								          faceNormal,
+								          _normals,
+								          _color,
+								          _colorRGBA,
+								          faceColor,
+								          faceColorRGBA,
+								          _coord);
+
+								setPoint (polygonElement .vertices [i + 2] -> i,
+								          _textureCoordinate,
+								          _textureCoordinateGenerator,
+								          _texCoord,
+								          _normal,
+								          faceNormal,
+								          _normals,
+								          _color,
+								          _colorRGBA,
+								          faceColor,
+								          faceColorRGBA,
+								          _coord);
+
+							}
+
+							break;
+						}
+						default:
+							break;
+					}
 				}
 
-				index += numVertices;
-				i     += numVertices;
+				for (size_t i = 0; i < polygon .size (); ++ i)
+					delete vertices [i];
 			}
 		}
 		else
 		{
-			index += numVertices;
-			i     += numVertices;
+			for (const auto & i : polygon)
+			{
+				setPoint (i,
+				          _textureCoordinate,
+				          _textureCoordinateGenerator,
+				          _texCoord,
+				          _normal,
+				          faceNormal,
+				          _normals,
+				          _color,
+				          _colorRGBA,
+				          faceColor,
+				          faceColorRGBA,
+				          _coord);
+			}
 		}
-
-		if (index == coordIndex .end ())
-			break;
 	}
 
 	setTextureCoordinateGenerator (*_textureCoordinateGenerator);
@@ -873,8 +856,7 @@ IndexedFaceSet::build ()
 }
 
 void
-IndexedFaceSet::setPoint (const MFInt32::const_iterator & index,
-                          const int i,
+IndexedFaceSet::setPoint (const int32_t i,
                           const SFNode <TextureCoordinate> & _textureCoordinate,
                           const SFNode <TextureCoordinateGenerator> & _textureCoordinateGenerator,
                           const std::vector <Vector2f> & _texCoord,
@@ -912,10 +894,9 @@ IndexedFaceSet::setPoint (const MFInt32::const_iterator & index,
 	{
 		if (texCoordIndex [i] >= 0)
 			getTexCoord () .emplace_back (_textureCoordinate -> point [texCoordIndex [i]]);
-		
+
 		else
 			getTexCoord () .emplace_back (0, 0);
-			
 	}
 	else if (_textureCoordinateGenerator)
 	{ }
@@ -937,7 +918,7 @@ IndexedFaceSet::setPoint (const MFInt32::const_iterator & index,
 		getNormals () .emplace_back (_normals [i]);
 	}
 
-	getVertices () .emplace_back (_coord -> point [*index]);
+	getVertices () .emplace_back (_coord -> point [coordIndex [i]]);
 }
 
 void

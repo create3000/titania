@@ -456,7 +456,6 @@
     <None Include="Titania\X3D\Parser\Parser.h" />
     <None Include="Titania\X3D\Parser\RegEx.h" />
     <None Include="Titania\X3D\Parser\X3DParser.h" />
-    <None Include="Titania\X3D\Basic\InterfaceDeclaration.h" />
     <None Include="Titania\X3D\Bits\X3DConstants.h" />
     <None Include="Titania\X3D\Configuration\ComponentInfoArray.h" />
     <None Include="Titania\X3D\Configuration\ProfileInfoArray.h" />
@@ -512,7 +511,6 @@
     <Compile Include="Titania\X3D\Base\X3DType.cpp" />
     <Compile Include="Titania\X3D\Basic\FieldDefinitionArray.cpp" />
     <Compile Include="Titania\X3D\Basic\FieldDefinitionSet.cpp" />
-    <Compile Include="Titania\X3D\Basic\InterfaceDeclaration.cpp" />
     <Compile Include="Titania\X3D\Basic\NodeTypeArray.cpp" />
     <Compile Include="Titania\X3D\Basic\X3DContext.cpp" />
     <Compile Include="Titania\X3D\Basic\X3DFieldDefinition.cpp" />

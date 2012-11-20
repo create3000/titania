@@ -1,0 +1,30 @@
+#VRML V2.0 utf8
+
+META "title" "U"
+
+Background {
+	skyColor 1 1 1
+}
+
+Viewpoint {
+  position 3 2.5 9.42781
+  centerOfRotation 3 2.5 0
+}
+
+Transform {
+  children DEF Shape Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+      }
+    }
+    geometry IndexedFaceSet {
+      coord Coordinate {
+        point [ 0 5 0, 0 1 0, 1 0 0, 5 0 0, 6 1 0, 6 5 0, 4 5 0, 4 2 0, 2 2 0, 2 5 0 ]
+      }
+      coordIndex [ 0, 1, 2, 3, 4, 5, 6, 7 8 9 ]
+      solid FALSE
+      convex FALSE
+    }
+  }
+}

@@ -61,7 +61,7 @@ class FieldDefinition :
 {
 public:
 
-	FieldDefinition (const AccessType &, const basic::id &, const X3DFieldDefinition* const);
+	FieldDefinition (const AccessType &, const basic::id &);
 	
 	virtual
 	X3DFieldDefinition*
@@ -77,13 +77,6 @@ public:
 
 	AccessType
 	getAccessType () const;
-
-	const X3DFieldDefinition*
-	getValue () const;
-	
-	virtual
-	bool
-	isDefaultValue () const;
 
 	///  @name Stream Handling
 	virtual
@@ -109,9 +102,8 @@ private:
 
 };
 
-FieldDefinition::FieldDefinition (const AccessType & accessType, const basic::id & name, const X3DFieldDefinition* const value) :
-	accessType (accessType), 
-	     value (value)       
+FieldDefinition::FieldDefinition (const AccessType & accessType, const basic::id & name) :
+	accessType (accessType)
 {
 	setName (name);
 }
@@ -119,31 +111,19 @@ FieldDefinition::FieldDefinition (const AccessType & accessType, const basic::id
 X3DFieldDefinition*
 FieldDefinition::copy () const
 {
-	return new FieldDefinition (accessType, getName (), value -> copy ());
+	return new FieldDefinition (accessType, getName ());
 }
 
 const X3DType*
 FieldDefinition::getType () const
 {
-	return value -> getType ();
+	return type;
 }
 
 AccessType
 FieldDefinition::getAccessType () const
 {
 	return accessType;
-}
-
-const X3DFieldDefinition*
-FieldDefinition::getValue () const
-{
-	return value;
-}
-	
-bool
-FieldDefinition::isDefaultValue () const
-{
-	return true;
 }
 
 void
@@ -186,10 +166,10 @@ public:
 
 	template <class ... Args>
 	void
-	addFieldDefinition (const AccessType &, const basic::id &, const X3DFieldDefinition* const, const Args & ...);
+	addFieldDefinition (const AccessType &, const basic::id &const Args & ...);
 
 	void
-	addFieldDefinition (const AccessType &, const basic::id &, const X3DFieldDefinition* const);
+	addFieldDefinition (const AccessType &, const basic::id &);
 
 
 private:
@@ -213,29 +193,30 @@ template <class ... Args>
 void
 NodeTypeN::addFieldDefinition (const AccessType & accessType, const basic::id & name, const X3DFieldDefinition* const value, const Args & ... args)
 {
-	fieldDefinitions .emplace_back (accessType, name, value);
+	fieldDefinitions .emplace_back (accessType, name);
 }
 
 void
 NodeTypeN::addFieldDefinition (const AccessType & accessType, const basic::id & name, const X3DFieldDefinition* const value)
 {
-	fieldDefinitions .emplace_back (accessType, name, value);
+	fieldDefinitions .emplace_back (accessType, name);
 }
 
 static
 const NodeTypeN type ("Navigation",
                       "Viewpoint",
-                      inputOutput, "metadata",          new SFNode <X3DBaseNode> (),
-                      inputOnly,   "set_bind",          new SFBool (),
-                      inputOutput, "fieldOfView",       new SFFloat (0.785398),
-                      inputOutput, "jump",              new SFBool (),
-                      inputOutput, "retainUserOffsets", new SFBool (),
-                      inputOutput, "position",          new SFVec3f (0, 0, 10),
-                      inputOutput, "orientation",       new SFRotation (),
-                      inputOutput, "centerOfRotation",  new SFVec3f (),
-                      inputOutput, "description",       new SFString (),
-                      outputOnly,  "bindTime",          new SFTime (),
-                      outputOnly,  "isBound",           new SFBool ());
+                      inputOutput, "metadata",          SFNode <X3DBaseNode> ::type,
+                      inputOnly,   "set_bind",          SFBool::type,
+                      inputOutput, "fieldOfView",       SFFloat::type,
+                      inputOutput, "jump",              SFBool::type,
+                      inputOutput, "retainUserOffsets", SFBool::type,
+                      inputOutput, "position",          SFVec3f::type,
+                      inputOutput, "orientation",       SFRotation::type,
+                      inputOutput, "centerOfRotation",  SFVec3f::type,
+                      inputOutput, "description",       SFString::type,
+                      outputOnly,  "bindTime",          SFTime::type,
+                      outputOnly,  "isBound",           SFBool::type);
+
 */
 
 Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool addToList) :

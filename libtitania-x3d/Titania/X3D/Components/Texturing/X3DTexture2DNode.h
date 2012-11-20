@@ -113,7 +113,9 @@ private:
 
 	static const int wrapTypes [2];
 	GLuint           textureId;
-	bool             transparent;
+
+	int32_t components;
+	bool    transparent;
 
 };
 

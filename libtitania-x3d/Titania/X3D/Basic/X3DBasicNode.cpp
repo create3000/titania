@@ -52,6 +52,7 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Fields/MFNode.h"
 #include "../Fields/SFNode.h"
+#include <Titania/Bits/Utility/Adapter.h>
 #include <cassert>
 #include <iomanip>
 #include <iostream>
@@ -422,20 +423,18 @@ X3DBasicNode::getInitializeableFields (const bool all) const
 	
 	const X3DBasicNode* factory = getBrowser () -> getNode (getTypeName ());
 
-	for (auto field = fieldDefinitions .begin ();
-	     field not_eq fieldDefinitions .end () - numUserDefinedFields;
-	     ++ field)
+	for (const auto & field : basic::adapter (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
 	{
-		if (not (*field) -> getReference ())
+		if (not field -> getReference ())
 		{
-			if (not (*field) -> isInitializeable ())
+			if (not field -> isInitializeable ())
 				continue;
 
-			if (not all and **field == *factory -> getField ((*field) -> getName ()))
+			if (not all and *field == *factory -> getField (field -> getName ()))
 				continue;
 		}
 
-		changedFields .push_back (*field);
+		changedFields .push_back (field);
 	}
 
 	return changedFields;

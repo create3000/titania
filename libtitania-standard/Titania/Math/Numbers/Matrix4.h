@@ -204,25 +204,6 @@ public:
 
 	///@{
 	//@{
-	///  Returns pointer to the underlying array serving as element storage.
-	///  Specifically the pointer is such that range [data (); data () + size ()) is valid.
-	Type*
-	data () { return array; }
-
-	const Type*
-	data () const { return array; }
-	//@}
-
-	//@{
-	///  Get access to the underlying vector representation of this matrix.
-	void
-	vector (const vector_type & vector) { value = vector; }
-
-	constexpr vector_type
-	vector () const { return value; }
-	//@}
-
-	//@{
 	vector3_type
 	translation () const
 	{
@@ -312,6 +293,25 @@ public:
 
 	constexpr vector4_type
 	operator [ ] (const size_type index) const { return value [index]; }
+	//@}
+	
+	//@{
+	///  Returns pointer to the underlying array serving as element storage.
+	///  Specifically the pointer is such that range [data (); data () + size ()) is valid.
+	Type*
+	data () { return array; }
+
+	const Type*
+	data () const { return array; }
+	//@}
+
+	//@{
+	///  Get access to the underlying vector representation of this matrix.
+	void
+	vector (const vector_type & vector) { value = vector; }
+
+	constexpr vector_type
+	vector () const { return value; }
 	//@}
 	///@}
 

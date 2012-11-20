@@ -8,26 +8,32 @@ DEF Background Transform {
     groundColor [ 0.21 0.31 0.59, 0.33 0.45 0.7, 0.57 0.66 0.85, 0.6 0.73 0.89, 0.7 0.83 0.98 ]
   }
 }
+
 Viewpoint {
-  position 0 0 5
+  position 0.5 0.5 6.64134
+  centerOfRotation 0.5 0.5 -0.5
   description "Start"
 }
+
 Transform {
   children Shape {
     appearance Appearance {
-      material Material { }
+      material Material {
+        diffuseColor 1 0 0
+      }
       texture ImageTexture {
         url "earth.png"
       }
     }
     geometry IndexedFaceSet {
+      coordIndex [ 0, 1, 2, -1, 3, 4, 5, 6, -1, 7, 8, 9, 10, 11, -1 ]
       coord Coordinate {
         point [ 0 0 0, 0 -1 0, 1 0 0, 0 -1 0, 0 -2 0, 1 -2 0, 1 -1 0, 0 0 0, 2 1 0, 2 2 0, 1 3 0, 0 2 0 ]
       }
-      coordIndex [ 0, 1, 2, -1, 3, 4, 5, 6, -1, 7, 8, 9, 10, 11, -1 ]
     }
   }
 }
+
 Transform {
   children Shape {
     appearance Appearance {
@@ -37,13 +43,14 @@ Transform {
       }
     }
     geometry IndexedFaceSet {
+      coordIndex [ 0, 1, 2, 3, -1, 0, 3, 4, 5, -1 ]
       coord Coordinate {
         point [ -1 0 0, 0 0 0, 0 1 0, -1 1 0, -1 1 -1, -1 0 -1 ]
       }
-      coordIndex [ 0, 1, 2, 3, -1, 0, 3, 4, 5, -1 ]
     }
   }
 }
+
 Transform {
   children Shape {
     appearance Appearance {
@@ -53,10 +60,11 @@ Transform {
       }
     }
     geometry IndexedFaceSet {
+      coordIndex [ 0, 1, 2, 3, -1 ]
       coord Coordinate {
         point [ -1 -1 0, -1 0 0, -1 0 -1, -1 -1 -1 ]
       }
-      coordIndex [ 0, 1, 2, 3, -1 ]
     }
   }
 }
+

@@ -1,3 +1,15 @@
+2012-11-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* X3DBasicNode.cpp:
+	* InterfaceDeclaration.h:
+	* InterfaceDeclaration.cpp:
+	* Viewpoint.cpp:
+	* IndexedFaceSet.h:
+	* X3DTexture2DNode.h:
+	* IndexedFaceSet.cpp:
+	* X3DTexture2DNode.cpp: 
+
 2012-11-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Type.h:

@@ -8,9 +8,11 @@ DEF Background Transform {
     groundColor [ 0.21 0.31 0.59, 0.33 0.45 0.7, 0.57 0.66 0.85, 0.6 0.73 0.89, 0.7 0.83 0.98 ]
   }
 }
+
 Viewpoint {
-position 0 -35 80
+  position 0 -35 80
 }
+
 DEF g1 Transform {
   children [
     DEF ga1 Transform {
@@ -18,8 +20,7 @@ DEF g1 Transform {
       scale 5.13207 3.06245 5.13207
       children Shape {
         appearance Appearance {
-          material DEF _4 Material {
-			 }
+          material DEF _4 Material { }
           texture DEF RGBA ImageTexture {
             url "gras.png"
           }
@@ -28,14 +29,15 @@ DEF g1 Transform {
           }
         }
         geometry IndexedFaceSet {
+          creaseAngle 0.5
+          coordIndex [ 0, 1, 2, 3, -1 ]
+          texCoordIndex [ 0, 1, 2, 3, -1 ]
           coord Coordinate {
             point [ 10 10 10, 10 0 10, -10 0 10, -10 10 10 ]
           }
           texCoord TextureCoordinate {
             point [ 1 1, 1 0.5, 0 0.5, 0 1 ]
           }
-          coordIndex [ 0, 1, 2, 3, -1 ]
-          creaseAngle 0.5
         }
       }
     }
@@ -54,29 +56,30 @@ DEF g1 Transform {
           textureTransform USE _6
         }
         geometry IndexedFaceSet {
+          creaseAngle 0.5
+          coordIndex [ 0, 1, 2, 3, -1 ]
+          texCoordIndex [ 0, 1, 2, 3, -1 ]
           coord Coordinate {
             point [ 10 0 10, 10 -10 10, -10 -10 10, -10 0 10 ]
           }
           texCoord TextureCoordinate {
             point [ 1 0.5, 1 0, 0 0, 0 0.5 ]
           }
-          coordIndex [ 0, 1, 2, 3, -1 ]
-          creaseAngle 0.5
         }
       }
     }
   ]
 }
+
 DEF g1 Transform {
-translation 0 -60 0
+  translation 0 -60 0
   children [
     DEF ga1 Transform {
       rotation 0 1 0 3.14159
       scale 5.13207 3.06245 5.13207
       children Shape {
         appearance Appearance {
-          material DEF _4 Material {
-			 }
+          material DEF _4 Material { }
           texture DEF LA ImageTexture {
             url "gras-bw.png"
           }
@@ -85,14 +88,15 @@ translation 0 -60 0
           }
         }
         geometry IndexedFaceSet {
+          creaseAngle 0.5
+          coordIndex [ 0, 1, 2, 3, -1 ]
+          texCoordIndex [ 0, 1, 2, 3, -1 ]
           coord Coordinate {
             point [ 10 10 10, 10 0 10, -10 0 10, -10 10 10 ]
           }
           texCoord TextureCoordinate {
             point [ 1 1, 1 0.5, 0 0.5, 0 1 ]
           }
-          coordIndex [ 0, 1, 2, 3, -1 ]
-          creaseAngle 0.5
         }
       }
     }
@@ -111,16 +115,18 @@ translation 0 -60 0
           textureTransform USE _6
         }
         geometry IndexedFaceSet {
+          creaseAngle 0.5
+          coordIndex [ 0, 1, 2, 3, -1 ]
+          texCoordIndex [ 0, 1, 2, 3, -1 ]
           coord Coordinate {
             point [ 10 0 10, 10 -10 10, -10 -10 10, -10 0 10 ]
           }
           texCoord TextureCoordinate {
             point [ 1 0.5, 1 0, 0 0, 0 0.5 ]
           }
-          coordIndex [ 0, 1, 2, 3, -1 ]
-          creaseAngle 0.5
         }
       }
     }
   ]
 }
+

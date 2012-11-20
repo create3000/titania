@@ -148,6 +148,15 @@ public:
 	constexpr Type
 	operator [ ] (const size_type index) const { return value [index]; }
 	//@}
+	
+	///  Returns pointer to the underlying array serving as element storage.
+	Type*
+	data () { return value; }
+
+	///  Returns pointer to the underlying array serving as element storage.
+	const Type*
+	data () const { return value; }
+	//@}
 
 	//@{
 	//  Set and get all components.

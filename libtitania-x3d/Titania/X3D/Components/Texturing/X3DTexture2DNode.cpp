@@ -49,6 +49,7 @@
 #include "X3DTexture2DNode.h"
 
 #include "../../Browser/Browser.h"
+#include <Titania/Bits/Utility/Adapter.h>
 #include <Titania/Math/Math.h>
 
 namespace titania {
@@ -66,6 +67,7 @@ X3DTexture2DNode::X3DTexture2DNode () :
 	          repeatT (true), // SFBool [ ] repeatT            TRUE
 	textureProperties (),     // SFNode [ ] textureProperties  NULL        [TextureProperties]
 	        textureId (0),    
+	       components (0),    
 	      transparent (false) 
 {
 	addNodeType (X3DTexture2DNodeType);
@@ -112,85 +114,65 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image,
 	switch (image .type ())
 	{
 		case Magick::GrayscaleType:
-			image .colorSpace (Magick::GRAYColorspace);
-
-			if (image .matte ())
+		{
+			if (not image .matte ())
 			{
-				image .type (Magick::TrueColorMatteType);
-				image .magick ("RGBA");
-				internalFormat = compressed ? GL_COMPRESSED_LUMINANCE_ALPHA : GL_LUMINANCE_ALPHA;
-				format         = GL_RGBA;
-				transparent    = true;
-			}
-			else
-			{
+				image .colorSpace (Magick::GRAYColorspace);
 				image .magick ("GRAY");
 				internalFormat = compressed ? GL_COMPRESSED_LUMINANCE : GL_LUMINANCE;
 				format         = GL_LUMINANCE;
+				components     = 1;
 				transparent    = false;
+				break;
 			}
-
-			break;
-
+		}
 		case Magick::GrayscaleMatteType:
+		{
 			image .colorSpace (Magick::GRAYColorspace);
 			image .type (Magick::TrueColorMatteType);
 			image .magick ("RGBA");
 			internalFormat = compressed ? GL_COMPRESSED_LUMINANCE_ALPHA : GL_LUMINANCE_ALPHA;
 			format         = GL_RGBA;
+			components     = 2;
 			transparent    = true;
 			break;
-
+		}
 		case Magick::TrueColorType:
-			image .colorSpace (Magick::RGBColorspace);
-
-			if (image .matte ())
+		{
+			if (not image .matte ())
 			{
-				image .type (Magick::TrueColorMatteType);
-				image .magick ("RGBA");
-				internalFormat = compressed ? GL_COMPRESSED_RGBA : GL_RGBA;
-				format         = GL_RGBA;
-				transparent    = true;
-			}
-			else
-			{
+				image .colorSpace (Magick::RGBColorspace);
 				image .magick ("RGB");
 				internalFormat = compressed ? GL_COMPRESSED_RGB : GL_RGB;
 				format         = GL_RGB;
+				components     = 3;
 				transparent    = false;
+				break;
 			}
-
-			break;
-
+		}
 		case Magick::TrueColorMatteType:
+		{
 			image .colorSpace (Magick::RGBColorspace);
 			image .magick ("RGBA");
 			internalFormat = compressed ? GL_COMPRESSED_RGBA : GL_RGBA;
 			format         = GL_RGBA;
+			components     = 4;
 			transparent    = true;
 			break;
-
+		}
 		default:
-			image .colorSpace (Magick::RGBColorspace);
-
+		{
 			if (image .matte ())
 			{
 				image .type (Magick::TrueColorMatteType);
-				image .magick ("RGBA");
-				internalFormat = compressed ? GL_COMPRESSED_RGBA : GL_RGBA;
-				format         = GL_RGBA;
-				transparent    = true;
+				return getImageFormat (image, internalFormat, format, compressed);
 			}
 			else
 			{
 				image .type (Magick::TrueColorType);
-				image .magick ("RGB");
-				internalFormat = compressed ? GL_COMPRESSED_RGB : GL_RGB;
-				format         = GL_RGB;
-				transparent    = false;
+				return getImageFormat (image, internalFormat, format, compressed);
 			}
-
-			break;
+		}
 	}
 }
 
@@ -258,14 +240,12 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 	std::string magick;
 	getImageFormat (image, internalFormat, format, compressed);
 
-	transparent = image .matte ();
-
 	// convert to blob
 
 	Magick::Blob blob;
 
-	//	image .interlaceType(Magick::NoInterlace);
-	//	image .endian(Magick::LSBEndian);
+	image .interlaceType (Magick::NoInterlace);
+	image .endian (Magick::LSBEndian);
 	image .depth (8);
 	image .write (&blob);
 
@@ -291,8 +271,8 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [repeatS]);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [repeatT]);
 
-	//glTexParameterfv(GL_TEXTURE_BORDER_COLOR, color);
-	//glTexParameterf(GL_TEXTURE_PRIORITY, priority);
+	//glTexParameterfv (GL_TEXTURE_BORDER_COLOR, color);
+	//glTexParameterf  (GL_TEXTURE_PRIORITY, priority);
 
 	glTexImage2D (GL_TEXTURE_2D, level, internalFormat,
 	              image .size () .width (), image .size () .height (),
@@ -308,9 +288,24 @@ X3DTexture2DNode::draw ()
 	glBindTexture (GL_TEXTURE_2D, textureId);
 
 	if (glIsEnabled (GL_LIGHTING))
+	{
+		// Texture color modulates material diffuse color.
 		glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	}
 	else
-		glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	{
+		switch (components)
+		{
+			case 1:
+			case 2:
+				glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+				break;
+			case 3:
+			case 4:
+				glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+				break;
+		}
+	}
 }
 
 void
