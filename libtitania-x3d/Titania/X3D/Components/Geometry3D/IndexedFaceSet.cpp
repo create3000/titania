@@ -588,12 +588,6 @@ IndexedFaceSet::build ()
 		SFColor     faceColor;
 		SFColorRGBA faceColorRGBA;
 
-		if (_normal)
-		{
-			if (not normalPerVertex and normalIndex [face] >= 0)
-				faceNormal = _normal -> vector [normalIndex [face]];
-		}
-
 		if (not colorPerVertex)
 		{
 			if (_color and colorIndex [face] >= 0)
@@ -601,6 +595,12 @@ IndexedFaceSet::build ()
 
 			else if (_colorRGBA and colorIndex [face] >= 0)
 				faceColorRGBA = _colorRGBA -> color [colorIndex [face]];
+		}
+
+		if (_normal)
+		{
+			if (not normalPerVertex and normalIndex [face] >= 0)
+				faceNormal = _normal -> vector [normalIndex [face]];
 		}
 
 		for (const auto & i : polygon)
@@ -646,6 +646,8 @@ IndexedFaceSet::build ()
 
 			getVertices () .emplace_back (_coord -> point [coordIndex [i]]);
 		}
+		
+		++ face;
 	}
 
 	setTextureCoordinateGenerator (*_textureCoordinateGenerator);

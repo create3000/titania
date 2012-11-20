@@ -92,6 +92,9 @@ private:
 
 	void
 	set_coordIndex ();
+	          
+	void
+	tesselate (const std::deque <size_t> & polygon);
 
 	void
 	set_texCoordIndex ();
@@ -113,9 +116,6 @@ private:
 
 	void
 	build ();
-	          
-	void
-	tesselate (const std::deque <size_t> & polygon);
 
 	static void tessBeginData (GLenum, void*);
 
