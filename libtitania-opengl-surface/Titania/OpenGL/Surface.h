@@ -46,70 +46,84 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OPEN_GL_CONTEXT_GLCONTEXT_H__
-#define __TITANIA_OPEN_GL_CONTEXT_GLCONTEXT_H__
+#ifndef __TITANIA_OPEN_GL_GLSURFACE_H__
+#define __TITANIA_OPEN_GL_GLSURFACE_H__
 
-#include <gdkmm/display.h>
-#include <glibmm/refptr.h>
+// include order is important
+#include <gtkmm/drawingarea.h>
 
-extern "C"
-{
-#include <GL/glew.h>
+#include "Context/Context.h"
 
-#include <GL/glu.h>
-
-#include <GL/gl.h>
-
-#include <GL/glx.h>
-}
+#include <memory>
 
 namespace titania {
-namespace OpenGL {
+namespace opengl {
 
-class GLContext
+class Surface :
+	public Gtk::DrawingArea
 {
 public:
 
-	GLXContext
-	getValue () const;
-
 	virtual
+	~Surface ();
+
 	bool
-	makeCurrent () const;
+	makeCurrent ();
 
-	virtual
 	void
-	swapBuffers () const;
-
-	virtual
-	~GLContext ();
+	swapBuffers ();
 
 
 protected:
 
-	GLContext (const Glib::RefPtr <Gdk::Display> &);
+	Surface ();
 
-	Display*
-	getDisplay () const;
+	///  @name Element access
 
+	const std::shared_ptr <Context> &
+	getContext ();
+
+	/// @name OpenGL handler
+
+	virtual
 	void
-	setDrawable (GLXDrawable);
+	setup ()
+	{ }
 
+	virtual
 	void
-	setValue (GLXContext);
+	reshape ()
+	{ }
+
+	virtual
+	void
+	update (const Cairo::RefPtr <Cairo::Context> &) = 0;
 
 
 private:
 
-	Glib::RefPtr <Gdk::Display> display;
+	bool
+	glew ();
 
-	Display*    xDisplay;
-	GLXDrawable xDrawable;
-	GLXContext  xContext;
+	bool
+	set_initialized (GdkEventAny*);
+
+	bool
+	set_configure_event (GdkEventConfigure*);
+
+	bool
+	set_draw (const Cairo::RefPtr <Cairo::Context> &);
+
+	sigc::connection initialized_connection;
+
+	std::shared_ptr <Context> context;
+
+	//	Pixmap    pixmap;
+	//	GLXPixmap glxPixmap;
 
 };
 
-} // OpenGL
+} // opengl
 } // titania
 
 #endif

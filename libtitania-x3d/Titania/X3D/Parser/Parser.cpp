@@ -251,7 +251,7 @@ Parser::x3dScene ()
 		scene -> setComment (comment);
 	}
 	else
-		std::clog << __FILE__ << ':' << __LINE__ << " in function " << __func__ << std::endl;
+		__LOG__ << std::endl;
 
 	comments ();
 	scene -> setProfile (profileStatement ());

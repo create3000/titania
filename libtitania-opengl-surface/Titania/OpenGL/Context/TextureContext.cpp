@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,13 +56,13 @@
 #include "WindowContext.h"
 
 namespace titania {
-namespace OpenGL {
+namespace opengl {
 
 TextureContext::TextureContext (const Glib::RefPtr <Gdk::Window> & window,
                                 const Glib::RefPtr <Gdk::Display> & display,
-                                const GLContext & sharingContext,
+                                const Context & sharingContext,
                                 bool direct) :
-	  GLContext (display), 
+	  Context (display), 
 	     window (window),  
 	    context (NULL),    
 	frameBuffer (0),       
@@ -77,7 +77,7 @@ TextureContext::TextureContext (const Glib::RefPtr <Gdk::Window> & window,
 TextureContext::TextureContext (const Glib::RefPtr <Gdk::Window> & window,
                                 const Glib::RefPtr <Gdk::Display> & display,
                                 bool direct) :
-	  GLContext (display), 
+	  Context (display), 
 	     window (window),  
 	    context (NULL),    
 	frameBuffer (0),       
@@ -93,7 +93,7 @@ TextureContext::create (const Glib::RefPtr <Gdk::Window> & window,
                         const Glib::RefPtr <Gdk::Display> & display,
                         GLXContext sharingContext, bool direct)
 {
-	context = std::shared_ptr <GLContext> (new PixelBufferContext (display));
+	context = std::shared_ptr <Context> (new PixelBufferContext (display));
 
 	if (context -> makeCurrent ())
 	{
@@ -174,5 +174,5 @@ TextureContext::swapBuffers ()
 TextureContext::~TextureContext ()
 { }
 
-} // OpenGL
+} // opengl
 } // titania

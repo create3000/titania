@@ -69,7 +69,7 @@ signal_handler (int sig)
 }
 
 Surface::Surface (const SFNode <X3DBrowser> & browser) :
-	OpenGL::GLSurface (),                          
+	opengl::Surface (),                          
 	       motionBlur (new MotionBlur (*browser)), 
 	          browser (browser),                   
 	  pointingDevice  (*this),                     

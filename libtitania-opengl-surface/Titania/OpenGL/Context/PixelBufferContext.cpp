@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,12 +53,12 @@
 #include <stdexcept>
 
 namespace titania {
-namespace OpenGL {
+namespace opengl {
 
 PixelBufferContext::PixelBufferContext (const Glib::RefPtr <Gdk::Display> & display,
-                                        const GLContext & sharingContext,
+                                        const Context & sharingContext,
                                         bool direct) :
-	GLContext (display), 
+	Context (display), 
 	 xPBuffer (0)        
 {
 	setValue    (create (sharingContext .getValue (), direct));
@@ -67,7 +67,7 @@ PixelBufferContext::PixelBufferContext (const Glib::RefPtr <Gdk::Display> & disp
 
 PixelBufferContext::PixelBufferContext (const Glib::RefPtr <Gdk::Display> & display,
                                         bool direct) :
-	GLContext (display), 
+	Context (display), 
 	 xPBuffer (0)        
 {
 	setValue    (create (NULL, direct));
@@ -126,5 +126,5 @@ PixelBufferContext::~PixelBufferContext ()
 	glXDestroyPbuffer (getDisplay (), xPBuffer);
 }
 
-} // OpenGL
+} // opengl
 } // titania

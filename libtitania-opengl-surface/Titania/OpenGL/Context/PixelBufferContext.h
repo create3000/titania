@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -49,18 +49,18 @@
 #ifndef __TITANIA_OPEN_GL_CONTEXT_PIXEL_BUFFER_CONTEXT_H__
 #define __TITANIA_OPEN_GL_CONTEXT_PIXEL_BUFFER_CONTEXT_H__
 
-#include "GLContext.h"
+#include "Context.h"
 
 namespace titania {
-namespace OpenGL {
+namespace opengl {
 
 class PixelBufferContext :
-	public GLContext
+	public Context
 {
 public:
 
 	PixelBufferContext (const Glib::RefPtr <Gdk::Display> &,
-	                    const GLContext &,
+	                    const Context &,
 	                    bool = true);
 
 	PixelBufferContext (const Glib::RefPtr <Gdk::Display> &,
@@ -79,7 +79,7 @@ private:
 
 };
 
-} // OpenGL
+} // opengl
 } // titania
 
 #endif

@@ -200,49 +200,49 @@ IndexedFaceSet::tesselate (const std::deque <size_t> & polygon)
 	}
 	else
 	{
-		Tesselator tesselator;
+		opengl::tesselator <size_t> tesselator;
 
 		for (const auto & i : polygon)
-			tesselator .addVertex (_coord -> point [coordIndex [i]], i);
+			tesselator .add_vertex (_coord -> point [coordIndex [i]], i);
 			
 		tesselator .tesselate ();
 
-		for (const auto & polygonElement : tesselator .getPolygon ())
+		for (const auto & polygonElement : tesselator .polygon ())
 		{
-			switch (polygonElement .type)
+			switch (polygonElement .type ())
 			{
 				case GL_TRIANGLE_FAN :
 					{
-						for (size_t i = 1; i < polygonElement .vertices .size () - 1; ++ i)
+						for (size_t i = 1; i < polygonElement .size () - 1; ++ i)
 						{
 							triangles .emplace_back ();
-							triangles .back () .emplace_back (polygonElement .vertices [0] -> i);
-							triangles .back () .emplace_back (polygonElement .vertices [i] -> i);
-							triangles .back () .emplace_back (polygonElement .vertices [i + 1] -> i);
+							triangles .back () .emplace_back (std::get <0> (polygonElement [0] .data ()));
+							triangles .back () .emplace_back (std::get <0> (polygonElement [i] .data ()));
+							triangles .back () .emplace_back (std::get <0> (polygonElement [i + 1] .data ()));
 						}
 
 						break;
 					}
 				case GL_TRIANGLE_STRIP:
 				{
-					for (size_t i = 0; i < polygonElement .vertices .size () - 2; ++ i)
+					for (size_t i = 0; i < polygonElement .size () - 2; ++ i)
 					{
 						triangles .emplace_back ();
-						triangles .back () .emplace_back (polygonElement .vertices [i % 2 ? i + 1 : i] -> i);
-						triangles .back () .emplace_back (polygonElement .vertices [i % 2 ? i : i + 1] -> i);
-						triangles .back () .emplace_back (polygonElement .vertices [i + 2] -> i);
+						triangles .back () .emplace_back (std::get <0> (polygonElement [i % 2 ? i + 1 : i] .data ()));
+						triangles .back () .emplace_back (std::get <0> (polygonElement [i % 2 ? i : i + 1] .data ()));
+						triangles .back () .emplace_back (std::get <0> (polygonElement [i + 2] .data ()));
 					}
 
 					break;
 				}
 				case GL_TRIANGLES:
 				{
-					for (size_t i = 0; i < polygonElement .vertices .size (); i += 3)
+					for (size_t i = 0; i < polygonElement .size (); i += 3)
 					{
 						triangles .emplace_back ();
-						triangles .back () .emplace_back (polygonElement .vertices [i] -> i);
-						triangles .back () .emplace_back (polygonElement .vertices [i + 1] -> i);
-						triangles .back () .emplace_back (polygonElement .vertices [i + 2] -> i);
+						triangles .back () .emplace_back (std::get <0> (polygonElement [i] .data ()));
+						triangles .back () .emplace_back (std::get <0> (polygonElement [i + 1] .data ()));
+						triangles .back () .emplace_back (std::get <0> (polygonElement [i + 2] .data ()));
 					}
 
 					break;

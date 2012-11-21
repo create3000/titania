@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,7 +46,7 @@
  *
  ******************************************************************************/
 
-#include "GLContext.h"
+#include "Context.h"
 
 #include <gdk/gdkx.h>
 
@@ -54,51 +54,51 @@
 #include <stdexcept>
 
 namespace titania {
-namespace OpenGL {
+namespace opengl {
 
-GLContext::GLContext (const Glib::RefPtr <Gdk::Display> & display) :
+Context::Context (const Glib::RefPtr <Gdk::Display> & display) :
 	 display (display),                                           
 	xDisplay (gdk_x11_display_get_xdisplay (display -> gobj ())), 
 	xContext (NULL)                                               
 { }
 
 Display*
-GLContext::getDisplay () const
+Context::getDisplay () const
 {
 	return xDisplay;
 }
 
 void
-GLContext::setDrawable (GLXDrawable value)
+Context::setDrawable (GLXDrawable value)
 {
 	xDrawable = value;
 }
 
 void
-GLContext::setValue (GLXContext value)
+Context::setValue (GLXContext value)
 {
 	xContext = value;
 }
 
 GLXContext
-GLContext::getValue () const
+Context::getValue () const
 {
 	return xContext;
 }
 
 bool
-GLContext::makeCurrent () const
+Context::makeCurrent () const
 {
 	return glXMakeCurrent (xDisplay, xDrawable, xContext);
 }
 
 void
-GLContext::swapBuffers () const
+Context::swapBuffers () const
 {
 	glXSwapBuffers (xDisplay, xDrawable);
 }
 
-GLContext::~GLContext ()
+Context::~Context ()
 {
 	if (xContext)
 	{
@@ -107,5 +107,5 @@ GLContext::~GLContext ()
 	}
 }
 
-} // OpenGL
+} // opengl
 } // titania

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,7 +46,7 @@
  *
  ******************************************************************************/
 
-#include "GLSurface.h"
+#include "Surface.h"
 
 #include <gdk/gdkx.h>
 #include <gtkmm/container.h>
@@ -58,9 +58,9 @@
 #include <stdexcept>
 
 namespace titania {
-namespace OpenGL {
+namespace opengl {
 
-GLSurface::GLSurface () :
+Surface::Surface () :
 	Gtk::DrawingArea (),    
 	        context  (NULL) 
 {
@@ -71,17 +71,17 @@ GLSurface::GLSurface () :
 	add_events (Gdk::STRUCTURE_MASK);
 
 	// Connect to map_event.
-	initialized_connection = signal_map_event () .connect (sigc::mem_fun (*this, &GLSurface::set_initialized));
+	initialized_connection = signal_map_event () .connect (sigc::mem_fun (*this, &Surface::set_initialized));
 }
 
-const std::shared_ptr <GLContext> &
-GLSurface::getContext ()
+const std::shared_ptr <Context> &
+Surface::getContext ()
 {
 	return context;
 }
 
 //void
-//GLSurface::createPixmapContext ()
+//Surface::createPixmapContext ()
 //{
 //	GLXContext sharingContext = NULL;
 //
@@ -131,7 +131,7 @@ GLSurface::getContext ()
 //}
 
 bool
-GLSurface::glew ()
+Surface::glew ()
 {
 	// Initilaize GLEW.
 
@@ -147,16 +147,16 @@ GLSurface::glew ()
 }
 
 bool
-GLSurface::set_initialized (GdkEventAny* event)
+Surface::set_initialized (GdkEventAny* event)
 {
 	initialized_connection .disconnect ();
 
-	context = std::shared_ptr <GLContext> (new WindowContext (get_window (), get_display ()));
+	context = std::shared_ptr <Context> (new WindowContext (get_window (), get_display ()));
 
 	if (makeCurrent ())
 	{
-		signal_configure_event () .connect (sigc::mem_fun (*this, &GLSurface::set_configure_event));
-		signal_draw ()            .connect (sigc::mem_fun (*this, &GLSurface::set_draw));
+		signal_configure_event () .connect (sigc::mem_fun (*this, &Surface::set_configure_event));
+		signal_draw ()            .connect (sigc::mem_fun (*this, &Surface::set_draw));
 
 		glewInit ();
 
@@ -169,7 +169,7 @@ GLSurface::set_initialized (GdkEventAny* event)
 }
 
 bool
-GLSurface::set_configure_event (GdkEventConfigure* event)
+Surface::set_configure_event (GdkEventConfigure* event)
 {
 	if (makeCurrent ())
 	{
@@ -182,7 +182,7 @@ GLSurface::set_configure_event (GdkEventConfigure* event)
 }
 
 bool
-GLSurface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
+Surface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
 	if (makeCurrent ())
 	{
@@ -193,20 +193,20 @@ GLSurface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 }
 
 bool
-GLSurface::makeCurrent ()
+Surface::makeCurrent ()
 {
 	return context -> makeCurrent ();
 }
 
 void
-GLSurface::swapBuffers ()
+Surface::swapBuffers ()
 {
 	glFinish ();
 
 	context -> swapBuffers ();
 }
 
-GLSurface::~GLSurface ()
+Surface::~Surface ()
 {
 	//	if (glxPixmap)
 	//	{
@@ -219,13 +219,13 @@ GLSurface::~GLSurface ()
 	//	}
 }
 
-} // OpenGL
+} // opengl
 } // titania
 
 /*
  *
  * // http://src.chromium.org/viewvc/chrome/trunk/src/ui/gl/gl_context_glx.cc?revision=157879&content-type=text%2Fplain
- * void GLContextGLX::SetSwapInterval(int interval) {
+ * void ContextGLX::SetSwapInterval(int interval) {
  * DCHECK(IsCurrent(NULL));
  * if (HasExtension("GLX_EXT_swap_control") && glXSwa
  * pIntervalEXT) {

@@ -46,57 +46,107 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY3D_TESSELATOR_H__
-#define __TITANIA_X3D_COMPONENTS_GEOMETRY3D_TESSELATOR_H__
+#ifndef __TITANIA_X3D_RENDERING_TESSELATOR_H__
+#define __TITANIA_X3D_RENDERING_TESSELATOR_H__
+
+#include <Titania/Math/Numbers/Vector3.h>
+#include <tuple>
+
+extern "C" {
+#include <GL/glu.h>
+}
 
 namespace titania {
-namespace X3D {
+namespace opengl {
 
-class TesselatorVertex
+typedef math::vector3 <double> vector3d;
+typedef math::vector3 <float>  vector3f;
+
+template <class ... Args>
+class tesselator;
+
+template <class ... Args>
+class tesselator_vertex
 {
 public:
 
-	TesselatorVertex (const Vector3f & point, const int i) :
-		point (point),
-		i (i)
+	typedef std::tuple <Args ...> Data;
+
+	tesselator_vertex (const vector3f & point, const std::tuple <Args ...> data) :
+		m_point (point),
+		m_data  (data)
 	{ }
 
-	Vector3d point;
-	size_t   i;
+	vector3d &
+	point () { return m_point; }
+
+	const vector3d &
+	point () const { return m_point; }
+
+	const Data &
+	data () const { return m_data; }
+
+
+private:
+
+	vector3d m_point;
+	Data     m_data;
 
 };
 
-class PolygonElements
+template <class ... Args>
+class polygon_element
 {
 public:
 
-	PolygonElements (GLenum type) :
-		type (type)
+	typedef tesselator_vertex <Args ...>    Vertex;
+	typedef std::deque <Vertex*>            VertexArray;
+	typedef typename VertexArray::size_type size_type;
+
+	polygon_element (GLenum type) :
+		m_type (type),
+		m_vertices ()
 	{ }
 
-	GLenum                         type;
-	std::deque <TesselatorVertex*> vertices;
+	const GLenum &
+	type () const { return m_type; }
+
+	const Vertex &
+	operator [ ] (size_t i) const { return *m_vertices [i]; }
+
+	size_type
+	size () const { return m_vertices .size (); }
+
+
+private:
+
+	GLenum      m_type;
+	VertexArray m_vertices;
+
+	friend class tesselator <Args ...>;
 
 };
 
-typedef std::deque <PolygonElements> TesselatedPolygon;
-
-class Tesselator
+template <class ... Args>
+class tesselator
 {
 public:
 
-	Tesselator ();
+	typedef std::deque <polygon_element <Args ...>> Polygon;
+	typedef tesselator_vertex <Args ...>             Vertex;
+
+	tesselator ();
 
 	void
-	addVertex (const Vector3f &, const int);
+	add_vertex (const vector3f &, const Args & ... args);
 
 	void
 	tesselate ();
 
-	const TesselatedPolygon &
-	getPolygon () { return tesselatedPolygon; }
+	const Polygon &
+	polygon () { return tesselatedPolygon; }
 
-	~Tesselator ();
+	~tesselator ();
 
 
 private:
@@ -113,89 +163,98 @@ private:
 
 	static void tessError (GLenum);
 
-	GLUtesselator*                tesselator;
-	std::deque <TesselatorVertex> vertices;
-	TesselatedPolygon             tesselatedPolygon;
+	GLUtesselator*      tess;
+	std::deque <Vertex> vertices;
+	Polygon             tesselatedPolygon;
 
 };
 
-Tesselator::Tesselator ()
+template <class ... Args>
+tesselator <Args ...>::tesselator ()
 {
-	tesselator = gluNewTess ();
+	tess = gluNewTess ();
 
-	if (tesselator)
+	if (tess)
 	{
-		gluTessProperty (tesselator, GLU_TESS_BOUNDARY_ONLY, GLU_FALSE);
-		gluTessCallback (tesselator, GLU_TESS_BEGIN_DATA, _GLUfuncptr (&Tesselator::tessBeginData));
-		gluTessCallback (tesselator, GLU_TESS_VERTEX_DATA, _GLUfuncptr (&Tesselator::tessVertexData));
+		gluTessProperty (tess, GLU_TESS_BOUNDARY_ONLY, GLU_FALSE);
+		gluTessCallback (tess, GLU_TESS_BEGIN_DATA, _GLUfuncptr (&tesselator::tessBeginData));
+		gluTessCallback (tess, GLU_TESS_VERTEX_DATA, _GLUfuncptr (&tesselator::tessVertexData));
 
 		//gluTessCallback(tesselator, GLU_TESS_COMBINE_DATA, (_GLUfuncptr)&IndexedFaceSet::tessCombineData);
-		gluTessCallback (tesselator, GLU_TESS_END_DATA, _GLUfuncptr (&Tesselator::tessEndData));
-		gluTessCallback (tesselator, GLU_TESS_ERROR, _GLUfuncptr (&Tesselator::tessError));
+		gluTessCallback (tess, GLU_TESS_END_DATA, _GLUfuncptr (&tesselator::tessEndData));
+		gluTessCallback (tess, GLU_TESS_ERROR, _GLUfuncptr (&tesselator::tessError));
 	}
 }
 
+template <class ... Args>
 void
-Tesselator::addVertex (const Vector3f & point, const int i)
+tesselator <Args ...>::add_vertex (const vector3f & point, const Args & ... args)
 {
-	vertices .emplace_back (point, i);
+	vertices .emplace_back (point, std::forward_as_tuple (args ...));
 }
 
+template <class ... Args>
 void
-Tesselator::tesselate ()
+tesselator <Args ...>::tesselate ()
 {
-	gluTessBeginPolygon (tesselator, &tesselatedPolygon);
-	gluTessBeginContour (tesselator);
+	gluTessBeginPolygon (tess, &tesselatedPolygon);
+	gluTessBeginContour (tess);
 
 	for (auto & vertex : vertices)
-		gluTessVertex (tesselator, vertex .point .data (), &vertex);
+		gluTessVertex (tess, vertex .point () .data (), &vertex);
 
 	//gluTessEndContour(tess);
-	gluEndPolygon (tesselator);
+	gluEndPolygon (tess);
 }
 
+template <class ... Args>
 void
-Tesselator::tessBeginData (GLenum type, void* polygon_data)
+tesselator <Args ...>::tessBeginData (GLenum type, void* polygon_data)
 {
-	TesselatedPolygon* polygon = (TesselatedPolygon*) polygon_data;
+	Polygon* polygon = (Polygon*) polygon_data;
 
 	polygon -> emplace_back (type);
 }
 
+template <class ... Args>
 void
-Tesselator::tessVertexData (void* vertex_data, void* polygon_data)
+tesselator <Args ...>::tessVertexData (void* vertex_data, void* polygon_data)
 {
-	TesselatedPolygon* polygon = (TesselatedPolygon*) polygon_data;
-	TesselatorVertex*  vertex  = (TesselatorVertex*) vertex_data;
+	Polygon* polygon = (Polygon*) polygon_data;
+	Vertex*  vertex  = (Vertex*) vertex_data;
 
-	polygon -> back () .vertices .emplace_back (vertex);
+	polygon -> back () .m_vertices .emplace_back (vertex);
 }
 
+template <class ... Args>
 void
-Tesselator::tessCombineData (GLdouble coords [3], void* vertex_data [4],
-                             GLfloat weight [4], void** outData,
-                             void* polygon_data)
+tesselator <Args ...>::tessCombineData (GLdouble coords [3], void* vertex_data [4],
+                                        GLfloat weight [4], void** outData,
+                                        void* polygon_data)
 {
 	// Not used yet
 }
 
+template <class ... Args>
 void
-Tesselator::tessEndData (void* polygon_data)
+tesselator <Args ...>::tessEndData (void* polygon_data)
 { }
 
+template <class ... Args>
 void
-Tesselator::tessError (GLenum err_no)
+tesselator <Args ...>::tessError (GLenum err_no)
 {
 	std::clog << "Warning: tesselation error: '" << (char*) gluErrorString (err_no) << "'." << std::endl;
 }
 
-Tesselator::~Tesselator ()
+template <class ... Args>
+tesselator <Args ...>::~tesselator ()
 {
-	if (tesselator)
-		gluDeleteTess (tesselator);
+	if (tess)
+		gluDeleteTess (tess);
 }
 
-} // X3D
+} // opengl
 } // titania
 
 #endif

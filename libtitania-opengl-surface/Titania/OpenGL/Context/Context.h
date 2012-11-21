@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,84 +46,70 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OPEN_GL_GLSURFACE_H__
-#define __TITANIA_OPEN_GL_GLSURFACE_H__
+#ifndef __TITANIA_OPEN_GL_CONTEXT_GLCONTEXT_H__
+#define __TITANIA_OPEN_GL_CONTEXT_GLCONTEXT_H__
 
-// include order is important
-#include <gtkmm/drawingarea.h>
+#include <gdkmm/display.h>
+#include <glibmm/refptr.h>
 
-#include "Context/GLContext.h"
+extern "C"
+{
+#include <GL/glew.h>
 
-#include <memory>
+#include <GL/glu.h>
+
+#include <GL/gl.h>
+
+#include <GL/glx.h>
+}
 
 namespace titania {
-namespace OpenGL {
+namespace opengl {
 
-class GLSurface :
-	public Gtk::DrawingArea
+class Context
 {
 public:
 
+	GLXContext
+	getValue () const;
+
 	virtual
-	~GLSurface ();
-
 	bool
-	makeCurrent ();
+	makeCurrent () const;
 
+	virtual
 	void
-	swapBuffers ();
+	swapBuffers () const;
+
+	virtual
+	~Context ();
 
 
 protected:
 
-	GLSurface ();
+	Context (const Glib::RefPtr <Gdk::Display> &);
 
-	///  @name Element access
+	Display*
+	getDisplay () const;
 
-	const std::shared_ptr <GLContext> &
-	getContext ();
-
-	/// @name OpenGL handler
-
-	virtual
 	void
-	setup ()
-	{ }
+	setDrawable (GLXDrawable);
 
-	virtual
 	void
-	reshape ()
-	{ }
-
-	virtual
-	void
-	update (const Cairo::RefPtr <Cairo::Context> &) = 0;
+	setValue (GLXContext);
 
 
 private:
 
-	bool
-	glew ();
+	Glib::RefPtr <Gdk::Display> display;
 
-	bool
-	set_initialized (GdkEventAny*);
-
-	bool
-	set_configure_event (GdkEventConfigure*);
-
-	bool
-	set_draw (const Cairo::RefPtr <Cairo::Context> &);
-
-	sigc::connection initialized_connection;
-
-	std::shared_ptr <GLContext> context;
-
-	//	Pixmap    pixmap;
-	//	GLXPixmap glxPixmap;
+	Display*    xDisplay;
+	GLXDrawable xDrawable;
+	GLXContext  xContext;
 
 };
 
-} // OpenGL
+} // opengl
 } // titania
 
 #endif

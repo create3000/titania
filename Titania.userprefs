@@ -1,34 +1,38 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="24" Column="36" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="416" Column="22" />
-      <File FileName="libtitania-standard/Titania/Math/Numbers/Matrix3.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Numbers/Matrix4.h" Line="871" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Numbers/Matrix3.h" Line="1046" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/ProximitySensor.cpp" Line="190" Column="33" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Transform.cpp" Line="99" Column="58" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="183" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Numbers/Vector4.h" Line="175" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Numbers/Vector3.h" Line="374" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Numbers/Vector2.h" Line="165" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Numbers/Quaternion.h" Line="581" Column="52" />
-      <File FileName="libtitania-standard/Titania/Math/Numbers/Rotation4.h" Line="433" Column="28" />
-      <File FileName="libtitania-standard/Titania/Math/Math.h" Line="123" Column="45" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="92" Column="58" />
+      <File FileName="experimental/main.cpp" Line="711" Column="22" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/Tesselator.h" Line="146" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.h" Line="119" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="206" Column="62" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.h" Line="100" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="276" Column="25" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True" />
-          <Node name="experimental" expanded="True" />
+          <Node name="experimental" expanded="True" selected="True" />
           <Node name="Library" expanded="True">
+            <Node name="Examples" expanded="True">
+              <Node name="icts" expanded="True" />
+              <Node name="ictspace-start" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
+              <Node name="mushrooms" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
+            </Node>
             <Node name="Tests" expanded="True">
-              <Node name="1st" expanded="True" />
-              <Node name="3rd Party" expanded="True" />
               <Node name="Extrusion" expanded="True" />
               <Node name="Geometry3D" expanded="True" />
+              <Node name="Interpolation" expanded="True" />
+              <Node name="Texturing" expanded="True">
+                <Node name="images" expanded="True">
+                  <Node name="colors" expanded="True" />
+                </Node>
+              </Node>
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
@@ -48,27 +52,24 @@
             <Node name="Packages" expanded="True" />
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Properties" expanded="True" />
-                </Node>
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="EnvironmentalEffects" expanded="True" />
+                  <Node name="Core" expanded="True" />
                   <Node name="EnvironmentalSensor" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
-                  <Node name="Geospatial" expanded="True" />
                   <Node name="Grouping" expanded="True" />
-                  <Node name="Layering" expanded="True" />
-                  <Node name="Navigation" expanded="True">
-                    <Node name="X3DViewpointNode.cpp" selected="True" />
-                  </Node>
+                  <Node name="Navigation" expanded="True" />
                   <Node name="Rendering" expanded="True" />
-                  <Node name="Text" expanded="True" />
+                  <Node name="RigidBodyPhysics" expanded="True" />
                   <Node name="Texturing" expanded="True" />
                 </Node>
+                <Node name="Configuration" expanded="True" />
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
                 <Node name="Rendering" expanded="True" />
+                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>

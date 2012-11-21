@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,13 +53,13 @@
 #include <stdexcept>
 
 namespace titania {
-namespace OpenGL {
+namespace opengl {
 
 WindowContext::WindowContext (const Glib::RefPtr <Gdk::Window> & window,
                               const Glib::RefPtr <Gdk::Display> & display,
-                              const GLContext & sharingContext,
+                              const Context & sharingContext,
                               bool direct) :
-	GLContext (display),                           
+	Context (display),                           
 	   window (window),                            
 	  xWindow (GDK_WINDOW_XID (window -> gobj ())) 
 {
@@ -70,7 +70,7 @@ WindowContext::WindowContext (const Glib::RefPtr <Gdk::Window> & window,
 WindowContext::WindowContext (const Glib::RefPtr <Gdk::Window> & window,
                               const Glib::RefPtr <Gdk::Display> & display,
                               bool direct) :
-	GLContext (display),                           
+	Context (display),                           
 	  xWindow (GDK_WINDOW_XID (window -> gobj ())) 
 {
 	setValue    (create (NULL, direct));
@@ -103,5 +103,5 @@ WindowContext::create (GLXContext sharingContext, bool direct)
 WindowContext::~WindowContext ()
 { }
 
-} // OpenGL
+} // opengl
 } // titania

@@ -1,3 +1,20 @@
+2012-11-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Surface.h:
+	* Surface.cpp:
+	* GLSurface.h:
+	* GLSurface.cpp:
+	* Context.h:
+	* GLContext.h:
+	* Context.cpp:
+	* GLContext.cpp:
+	* WindowContext.h:
+	* TextureContext.h:
+	* WindowContext.cpp:
+	* TextureContext.cpp:
+	* PixelBufferContext.h:
+	* PixelBufferContext.cpp: 
+
 2012-10-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GLSurface.h:

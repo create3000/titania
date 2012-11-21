@@ -101,57 +101,6 @@ private:
 	void
 	build ();
 
-	static void tessBeginData (GLenum, void*);
-
-	static void
-	tessVertexData (void*, void*);
-
-	static void tessCombineData (GLdouble [3], void* [4], GLfloat [4], void**, void*);
-
-	static void
-	tessEndData (void*);
-
-	static void tessError (GLenum);
-
-	class Vertex
-	{
-	public:
-
-		std::vector <GLdouble> location;
-		int                    i;
-		int                    k;
-		Vertex (const std::vector <Vector3f> & points, const int i, const int k) :
-			i (i),
-			k (k)
-		{
-			float x = points [i] .x ();
-			float y = points [i] .y ();
-			float z = points [i] .z ();
-
-			location .reserve (3);
-			location .push_back (x);
-			location .push_back (y);
-			location .push_back (z);
-		}
-
-	};
-
-	class PolygonElement
-	{
-	public:
-
-		GLenum               type;
-		std::deque <Vertex*> vertices;
-		PolygonElement (GLenum type) :
-			type (type)
-		{ }
-
-	};
-
-	typedef std::deque <PolygonElement> Polygon;
-
-	GLUtesselator* tess;
-
 };
 
 } // X3D

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,20 +51,20 @@
 
 #include <gtkmm.h>
 
-#include "GLContext.h"
+#include "Context.h"
 #include <memory>
 
 namespace titania {
-namespace OpenGL {
+namespace opengl {
 
 class TextureContext :
-	public GLContext
+	public Context
 {
 public:
 
 	TextureContext (const Glib::RefPtr <Gdk::Window> &,
 	                const Glib::RefPtr <Gdk::Display> &,
-	                const GLContext &,
+	                const Context &,
 	                bool = true);
 
 	TextureContext (const Glib::RefPtr <Gdk::Window> &,
@@ -91,7 +91,7 @@ private:
 	        bool);
 
 	Glib::RefPtr <Gdk::Window>  window;
-	std::shared_ptr <GLContext> context;
+	std::shared_ptr <Context> context;
 
 	GLuint frameBuffer;
 	GLuint texture;
@@ -101,7 +101,7 @@ private:
 
 };
 
-} // OpenGL
+} // opengl
 } // titania
 
 #endif

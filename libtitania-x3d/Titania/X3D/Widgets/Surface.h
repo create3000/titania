@@ -51,7 +51,7 @@
 
 #include "../Components/Core/X3DNode.h"
 
-#include <Titania/OpenGL/GLSurface.h>
+#include <Titania/OpenGL/Surface.h>
 
 #include "../Browser/X3DBrowser.h"
 #include "MotionBlur.h"
@@ -62,7 +62,7 @@ namespace titania {
 namespace X3D {
 
 class Surface :
-	public OpenGL::GLSurface
+	public opengl::Surface
 {
 public:
 
