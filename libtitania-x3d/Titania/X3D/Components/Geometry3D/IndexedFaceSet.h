@@ -117,21 +117,7 @@ private:
 	void
 	build ();
 
-	static void tessBeginData (GLenum, void*);
-
-	static void
-	tessVertexData (void*, void*);
-
-	static void tessCombineData (GLdouble [3], void* [4], GLfloat [4], void**, void*);
-
-	static void
-	tessEndData (void*);
-
-	static void tessError (GLenum);
-
-	GLUtesselator* tess;
-
-	std::deque <std::deque <size_t>> polygons;
+	std::deque <std::deque <size_t>> triangles;
 	Box3f                            bbox;
 
 };

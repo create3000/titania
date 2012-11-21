@@ -54,11 +54,34 @@
 namespace titania {
 namespace X3D {
 
+// v1
+//  | 
+//  |
+//  |
+//  |
+//  ---------- 
+// v2         v3
+
 inline
 Vector3f
 vertexNormal (const Vector3f & v1, const Vector3f & v2, const Vector3f & v3)
 {
 	return normalize (cross (v3 - v2, v1 - v2));
+}
+
+
+// v4 ----- v3
+//  |       |
+//  |       |
+//  |       |
+// v1 ----- v2
+
+inline
+Vector3f
+vertexNormal (const Vector3f & v1, const Vector3f & v2, const Vector3f & v3, const Vector3f & v4)
+{
+   // (p3 - p1) x (p4 - p2)
+	return normalize (cross (v3 - v1, v4 - v1));
 }
 
 } // X3D

@@ -482,6 +482,7 @@
     <None Include="Titania\X3D\Browser\X3DBrowserContext.h" />
     <None Include="Titania\X3D\Execution\BindableNodeList.h" />
     <None Include="Titania\X3D\Rendering\Normal.h" />
+    <None Include="Titania\X3D\Rendering\Tesselator.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

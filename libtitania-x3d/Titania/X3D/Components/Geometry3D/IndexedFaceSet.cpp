@@ -50,6 +50,7 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/Normal.h"
+#include "../../Rendering/Tesselator.h"
 #include <iostream>
 
 namespace titania {
@@ -63,8 +64,7 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	            normalIndex (),                                                    // MFInt32 [ ]  normalIndex        [ ]          [0,∞) or -1
 	             coordIndex (),                                                    // MFInt32 [ ]  coordIndex         [ ]          [0,∞) or -1
 	                 convex (true),                                                // SFBool  [ ]  convex             TRUE
-	                   tess (0),                                                   
-	               polygons ()                                                     
+	              triangles ()                                                     
 {
 	setComponent ("Geometry3D");
 	setTypeName ("IndexedFaceSet");
@@ -99,19 +99,6 @@ IndexedFaceSet::initialize ()
 {
 	X3DComposedGeometryNode::initialize ();
 
-	tess = gluNewTess ();
-
-	if (tess)
-	{
-		gluTessProperty (tess, GLU_TESS_BOUNDARY_ONLY, GLU_FALSE);
-		gluTessCallback (tess, GLU_TESS_BEGIN_DATA, (_GLUfuncptr) & IndexedFaceSet::tessBeginData);
-		gluTessCallback (tess, GLU_TESS_VERTEX_DATA, (_GLUfuncptr) & IndexedFaceSet::tessVertexData);
-
-		//gluTessCallback(tess, GLU_TESS_COMBINE_DATA, (_GLUfuncptr)&IndexedFaceSet::tessCombineData);
-		gluTessCallback (tess, GLU_TESS_END_DATA, (_GLUfuncptr) & IndexedFaceSet::tessEndData);
-		gluTessCallback (tess, GLU_TESS_ERROR, (_GLUfuncptr) & IndexedFaceSet::tessError);
-	}
-
 	coordIndex    .addInterest (this, &IndexedFaceSet::set_coordIndex);
 	texCoordIndex .addInterest (this, &IndexedFaceSet::set_texCoordIndex);
 	colorIndex    .addInterest (this, &IndexedFaceSet::set_colorIndex);
@@ -123,20 +110,20 @@ IndexedFaceSet::initialize ()
 void
 IndexedFaceSet::set_coordIndex ()
 {
-	polygons .clear ();
+	triangles .clear ();
 
 	if (coordIndex .size ())
 	{
 		// Add -1 (polygon end marker) to coordIndex if not present.
 		if (coordIndex .back () >= 0)
 			coordIndex .push_back (-1);
-		
-		// Construct polygon area and determine the number of used points.
+
+		// Construct triangle array and determine the number of used points.
 		size_t  i         = 0;
 		int32_t numPoints = -1;
-		
+
 		std::deque <size_t> polygon;
-			
+
 		for (const auto & index : coordIndex)
 		{
 			numPoints = std::max <int32_t> (numPoints, index);
@@ -158,14 +145,14 @@ IndexedFaceSet::set_coordIndex ()
 					if (polygon .size () == 3)
 					{
 						// Add triangle.
-						polygons .emplace_back (polygon);
+						triangles .emplace_back (polygon);
 					}
 					else if (polygon .size () > 3)
 					{
 						// Tesselate polygons.
 						tesselate (polygon);
 					}
-					
+
 					polygon .clear ();
 				}
 			}
@@ -175,7 +162,7 @@ IndexedFaceSet::set_coordIndex ()
 
 		++ numPoints;
 
-		if (polygons .size ())
+		if (triangles .size ())
 		{
 			SFNode <Coordinate> _coord = coord;
 
@@ -196,35 +183,6 @@ IndexedFaceSet::set_coordIndex ()
 	}
 }
 
-class Vertex
-{
-public:
-
-	Vertex (const Vector3f & vertex, const int i) :
-		vertex (vertex),
-		i (i)
-	{ }
-
-	Vector3d vertex;
-	size_t   i;
-
-};
-
-class PolygonElement
-{
-public:
-
-	PolygonElement (GLenum type) :
-		type (type)
-	{ }
-
-	GLenum               type;
-	std::deque <Vertex*> vertices;
-
-};
-
-typedef std::deque <PolygonElement> Polygon;
-
 void
 IndexedFaceSet::tesselate (const std::deque <size_t> & polygon)
 {
@@ -234,32 +192,22 @@ IndexedFaceSet::tesselate (const std::deque <size_t> & polygon)
 	{
 		for (size_t i = 1; i < polygon .size () - 1; ++ i)
 		{
-			polygons .emplace_back ();
-			polygons .back () .emplace_back (polygon [0]);
-			polygons .back () .emplace_back (polygon [i]);
-			polygons .back () .emplace_back (polygon [i + 1]);
+			triangles .emplace_back ();
+			triangles .back () .emplace_back (polygon [0]);
+			triangles .back () .emplace_back (polygon [i]);
+			triangles .back () .emplace_back (polygon [i + 1]);
 		}
 	}
 	else
 	{
-		Polygon tesselator;
-
-		std::vector <Vertex*> vertices;
-		vertices .reserve (polygon .size () * 3);
+		Tesselator tesselator;
 
 		for (const auto & i : polygon)
-			vertices .emplace_back (new Vertex (_coord -> point [coordIndex [i]], i));
+			tesselator .addVertex (_coord -> point [coordIndex [i]], i);
+			
+		tesselator .tesselate ();
 
-		gluTessBeginPolygon (tess, &tesselator);
-		gluTessBeginContour (tess);
-
-		for (size_t i = 0; i < polygon .size (); ++ i)
-			gluTessVertex (tess, vertices [i] -> vertex .data (), vertices [i]);
-
-		//gluTessEndContour(tess);
-		gluEndPolygon (tess);
-
-		for (const auto & polygonElement : tesselator)
+		for (const auto & polygonElement : tesselator .getPolygon ())
 		{
 			switch (polygonElement .type)
 			{
@@ -267,10 +215,10 @@ IndexedFaceSet::tesselate (const std::deque <size_t> & polygon)
 					{
 						for (size_t i = 1; i < polygonElement .vertices .size () - 1; ++ i)
 						{
-							polygons .emplace_back ();
-							polygons .back () .emplace_back (polygonElement .vertices [0] -> i);
-							polygons .back () .emplace_back (polygonElement .vertices [i] -> i);
-							polygons .back () .emplace_back (polygonElement .vertices [i + 1] -> i);
+							triangles .emplace_back ();
+							triangles .back () .emplace_back (polygonElement .vertices [0] -> i);
+							triangles .back () .emplace_back (polygonElement .vertices [i] -> i);
+							triangles .back () .emplace_back (polygonElement .vertices [i + 1] -> i);
 						}
 
 						break;
@@ -279,10 +227,10 @@ IndexedFaceSet::tesselate (const std::deque <size_t> & polygon)
 				{
 					for (size_t i = 0; i < polygonElement .vertices .size () - 2; ++ i)
 					{
-						polygons .emplace_back ();
-						polygons .back () .emplace_back (polygonElement .vertices [i % 2 ? i + 1 : i] -> i);
-						polygons .back () .emplace_back (polygonElement .vertices [i % 2 ? i : i + 1] -> i);
-						polygons .back () .emplace_back (polygonElement .vertices [i + 2] -> i);
+						triangles .emplace_back ();
+						triangles .back () .emplace_back (polygonElement .vertices [i % 2 ? i + 1 : i] -> i);
+						triangles .back () .emplace_back (polygonElement .vertices [i % 2 ? i : i + 1] -> i);
+						triangles .back () .emplace_back (polygonElement .vertices [i + 2] -> i);
 					}
 
 					break;
@@ -291,10 +239,10 @@ IndexedFaceSet::tesselate (const std::deque <size_t> & polygon)
 				{
 					for (size_t i = 0; i < polygonElement .vertices .size (); i += 3)
 					{
-						polygons .emplace_back ();
-						polygons .back () .emplace_back (polygonElement .vertices [i] -> i);
-						polygons .back () .emplace_back (polygonElement .vertices [i + 1] -> i);
-						polygons .back () .emplace_back (polygonElement .vertices [i + 2] -> i);
+						triangles .emplace_back ();
+						triangles .back () .emplace_back (polygonElement .vertices [i] -> i);
+						triangles .back () .emplace_back (polygonElement .vertices [i + 1] -> i);
+						triangles .back () .emplace_back (polygonElement .vertices [i + 2] -> i);
 					}
 
 					break;
@@ -304,8 +252,8 @@ IndexedFaceSet::tesselate (const std::deque <size_t> & polygon)
 			}
 		}
 
-		for (size_t i = 0; i < polygon .size (); ++ i)
-			delete vertices [i];
+//		for (size_t i = 0; i < polygon .size (); ++ i)
+//			delete vertices [i];
 	}
 }
 
@@ -357,7 +305,7 @@ IndexedFaceSet::set_colorIndex ()
 		}
 		else
 		{
-			for (size_t i = colorIndex .size (); i < polygons .size (); ++ i)
+			for (size_t i = colorIndex .size (); i < triangles .size (); ++ i)
 			{
 				colorIndex .push_back (i);
 			}
@@ -405,7 +353,7 @@ IndexedFaceSet::set_normalIndex ()
 		}
 		else
 		{
-			for (size_t i = normalIndex .size (); i < polygons .size (); ++ i)
+			for (size_t i = normalIndex .size (); i < triangles .size (); ++ i)
 			{
 				normalIndex .push_back (i);
 			}
@@ -433,14 +381,14 @@ IndexedFaceSet::createBBox ()
 {
 	SFNode <Coordinate> _coord = coord;
 
-	if (polygons .size ())
+	if (triangles .size ())
 	{
-		Vector3f min = _coord -> point [coordIndex [polygons .front () [0]]];
+		Vector3f min = _coord -> point [coordIndex [triangles .front () [0]]];
 		Vector3f max = min;
 
-		for (const auto & polygon : polygons)
+		for (const auto & triangle : triangles)
 		{
-			for (const auto & i : polygon)
+			for (const auto & i : triangle)
 			{
 				const auto & vertex = _coord -> point [coordIndex [i]];
 
@@ -506,9 +454,9 @@ IndexedFaceSet::createTexCoord ()
 
 	SFNode <Coordinate> _coord = coord;
 
-	for (const auto & polygon : polygons)
+	for (const auto & triangle : triangles)
 	{
-		for (const auto & i : polygon)
+		for (const auto & i : triangle)
 		{
 			const Vector3f & point = _coord -> point [coordIndex [i]];
 
@@ -530,17 +478,17 @@ IndexedFaceSet::createNormals ()
 
 	SFNode <Coordinate> _coord = coord;
 
-	for (const auto & polygon : polygons)
+	for (const auto & triangle : triangles)
 	{
-		Vector3f normal = vertexNormal (_coord -> point [coordIndex [polygon [0]]],
-			                             _coord -> point [coordIndex [polygon [1]]],
-			                             _coord -> point [coordIndex [polygon [2]]]);
+		Vector3f normal = vertexNormal (_coord -> point [coordIndex [triangle [0]]],
+		                                _coord -> point [coordIndex [triangle [1]]],
+		                                _coord -> point [coordIndex [triangle [2]]]);
 
 		for (int i = 0; i < 3; ++ i)
-			normalIndex [coordIndex [polygon [i]]] .emplace_back (normals .size () + i);
+			normalIndex [coordIndex [triangle [i]]] .emplace_back (normals .size () + i);
 
 		// Add this normal for each vertex and one extra normal for -1.
-		normals .resize (normals .size () + polygon .size (), normalize (normal));
+		normals .resize (normals .size () + triangle .size (), normalize (normal));
 	}
 
 	refineNormals (normalIndex, normals);
@@ -555,7 +503,7 @@ IndexedFaceSet::build ()
 
 	SFNode <Coordinate> _coord = coord;
 
-	if (not _coord or not polygons .size ())
+	if (not _coord or not triangles .size ())
 		return;
 
 	// TextureCoordinate
@@ -582,7 +530,7 @@ IndexedFaceSet::build ()
 
 	int face = 0;
 
-	for (const auto polygon : polygons)
+	for (const auto triangle : triangles)
 	{
 		Vector3f    faceNormal;
 		SFColor     faceColor;
@@ -603,7 +551,7 @@ IndexedFaceSet::build ()
 				faceNormal = _normal -> vector [normalIndex [face]];
 		}
 
-		for (const auto & i : polygon)
+		for (const auto & i : triangle)
 		{
 			if (_color)
 			{
@@ -646,7 +594,7 @@ IndexedFaceSet::build ()
 
 			getVertices () .emplace_back (_coord -> point [coordIndex [i]]);
 		}
-		
+
 		++ face;
 	}
 
@@ -655,46 +603,8 @@ IndexedFaceSet::build ()
 }
 
 void
-IndexedFaceSet::tessBeginData (GLenum type, void* polygon_data)
-{
-	Polygon* polygon = (Polygon*) polygon_data;
-
-	polygon -> push_back (PolygonElement (type));
-}
-
-void
-IndexedFaceSet::tessVertexData (void* vertex_data, void* polygon_data)
-{
-	Polygon* polygon = (Polygon*) polygon_data;
-	Vertex*  vertex  = (Vertex*) vertex_data;
-
-	polygon -> back () .vertices .push_back (vertex);
-}
-
-void
-IndexedFaceSet::tessCombineData (GLdouble coords [3], void* vertex_data [4],
-                                 GLfloat weight [4], void** outData,
-                                 void* polygon_data)
-{
-	// not used yet
-}
-
-void
-IndexedFaceSet::tessEndData (void* polygon_data)
-{ }
-
-void
-IndexedFaceSet::tessError (GLenum err_no)
-{
-	std::clog << "Warning: in function " << __func__ << " '" << (char*) gluErrorString (err_no) << "'." << std::endl;
-}
-
-void
 IndexedFaceSet::dispose ()
 {
-	if (tess)
-		gluDeleteTess (tess);
-
 	X3DComposedGeometryNode::dispose ();
 }
 

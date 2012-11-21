@@ -67,13 +67,13 @@ public:
 	MFRotation set_orientation;
 	MFVec2f    set_scale;
 	MFVec3f    set_spine;
-	SFBool     beginCap;
-	SFBool     convex;
 	MFVec2f    crossSection;
-	SFBool     endCap;
 	MFRotation orientation;
 	MFVec2f    scale;
 	MFVec3f    spine;
+	SFBool     beginCap;
+	SFBool     endCap;
+	SFBool     convex;
 
 	Extrusion (X3DExecutionContext* const);
 
@@ -94,6 +94,9 @@ private:
 
 	std::vector <Vector3f>
 	createPoints ();
+	
+	std::vector <Matrix4f>
+	createRotations ();
 
 	void
 	build ();

@@ -1,5 +1,15 @@
 2012-11-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Normal.h:
+	* Tesselator.h:
+	* Extrusion.h:
+	* Extrusion.cpp:
+	* IndexedFaceSet.h:
+	* IndexedFaceSet.cpp: 
+
+2012-11-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* IndexedFaceSet.h:
 	* IndexedFaceSet.cpp: 
 
