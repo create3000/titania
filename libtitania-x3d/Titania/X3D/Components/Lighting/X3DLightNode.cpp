@@ -101,9 +101,9 @@ X3DLightNode::draw ()
 	if (on)
 	{
 		if (global)
-			getBrowser () -> getLayer () -> addGlobalLight (this);
+			getCurrentLayer () -> addGlobalLight (this);
 		else
-			getBrowser () -> getLayer () -> pushLocalLight (this);
+			getCurrentLayer () -> pushLocalLight (this);
 	}
 }
 
@@ -111,7 +111,7 @@ void
 X3DLightNode::finish ()
 {
 	if (not global and on)
-		getBrowser () -> getLayer () -> popLocalLight ();
+		getCurrentLayer () -> popLocalLight ();
 }
 
 } // X3D

@@ -49,6 +49,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY3D_EXTRUSION_H__
 #define __TITANIA_X3D_COMPONENTS_GEOMETRY3D_EXTRUSION_H__
 
+#include "../../Rendering/Tesselator.h"
 #include "../Rendering/X3DGeometryNode.h"
 
 namespace titania {
@@ -88,18 +89,29 @@ public:
 
 private:
 
+	typedef opengl::tesselator <size_t, size_t> Tesselator;
+
 	virtual
 	void
 	initialize ();
 
 	std::vector <Vector3f>
 	createPoints ();
-	
+
 	std::vector <Matrix4f>
 	createRotations ();
 
+	virtual
 	void
 	build ();
+
+	void
+	buildCap (const Tesselator &,
+	          std::vector <Vector3f> &,
+	          std::vector <size_t> &,
+	          NormalIndex &,
+	          const Vector2f &,
+	          const Vector2f &);
 
 };
 

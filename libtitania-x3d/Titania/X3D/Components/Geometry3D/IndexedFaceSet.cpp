@@ -283,7 +283,7 @@ IndexedFaceSet::set_texCoordIndex ()
 
 		// Resize textureCoordinate .point if to small.
 		if (_textureCoordinate -> point .size () < (size_t) numTexCoord)
-			_textureCoordinate -> point .resize (numTexCoord);
+			_textureCoordinate -> point .resize (numTexCoord, _textureCoordinate -> point .back ());
 	}
 }
 
@@ -326,12 +326,12 @@ IndexedFaceSet::set_colorIndex ()
 		if (_color)
 		{
 			if (_color -> color .size () < (size_t) numColors)
-				_color -> color .resize (numColors);
+				_color -> color .resize (numColors, _color -> color .back ());
 		}
 		else if (_colorRGBA)
 		{
 			if (_colorRGBA -> color .size () < (size_t) numColors)
-				_colorRGBA -> color .resize (numColors);
+				_colorRGBA -> color .resize (numColors, _colorRGBA -> color .back ());
 		}
 	}
 }
@@ -372,7 +372,7 @@ IndexedFaceSet::set_normalIndex ()
 
 		// Resize normal .vector if to small.
 		if (_normal -> vector .size () < (size_t) numNormals)
-			_normal -> vector .resize (numNormals);
+			_normal -> vector .resize (numNormals, _normal -> vector .back ());
 	}
 }
 
@@ -406,96 +406,6 @@ IndexedFaceSet::createBBox ()
 	return Box3f ();
 }
 
-std::vector <Vector2f>
-IndexedFaceSet::createTexCoord ()
-{
-	std::vector <Vector2f> texCoord;
-	texCoord .reserve (coordIndex .size ());
-
-	Vector3f min = bbox .center () - bbox .size () * 0.5f;
-
-	float Xsize = bbox .size () .x ();
-	float Ysize = bbox .size () .y ();
-	float Zsize = bbox .size () .z ();
-
-	float Ssize;
-	int   Sindex, Tindex;
-
-	if ((Xsize >= Ysize)and (Xsize >= Zsize))
-	{
-		// X size largest
-		Ssize = Xsize; Sindex = 0;
-
-		if (Ysize >= Zsize)
-			Tindex = 1;
-		else
-			Tindex = 2;
-	}
-	else if ((Ysize >= Xsize)and (Ysize >= Zsize))
-	{
-		// Y size largest
-		Ssize = Ysize; Sindex = 1;
-
-		if (Xsize >= Zsize)
-			Tindex = 0;
-		else
-			Tindex = 2;
-	}
-	else
-	{
-		// Z is the largest
-		Ssize = Zsize; Sindex = 2;
-
-		if (Xsize >= Ysize)
-			Tindex = 0;
-		else
-			Tindex = 1;
-	}
-
-	SFNode <Coordinate> _coord = coord;
-
-	for (const auto & triangle : triangles)
-	{
-		for (const auto & i : triangle)
-		{
-			const Vector3f & point = _coord -> point [coordIndex [i]];
-
-			texCoord .emplace_back ((point [Sindex] - min [Sindex]) / Ssize,
-			                        (point [Tindex] - min [Tindex]) / Ssize);
-		}
-	}
-
-	return texCoord;
-}
-
-std::vector <Vector3f>
-IndexedFaceSet::createNormals ()
-{
-	std::vector <Vector3f> normals;
-	normals .reserve (coordIndex .size ());
-
-	NormalIndex normalIndex;
-
-	SFNode <Coordinate> _coord = coord;
-
-	for (const auto & triangle : triangles)
-	{
-		Vector3f normal = vertexNormal (_coord -> point [coordIndex [triangle [0]]],
-		                                _coord -> point [coordIndex [triangle [1]]],
-		                                _coord -> point [coordIndex [triangle [2]]]);
-
-		for (int i = 0; i < 3; ++ i)
-			normalIndex [coordIndex [triangle [i]]] .emplace_back (normals .size () + i);
-
-		// Add this normal for each vertex and one extra normal for -1.
-		normals .resize (normals .size () + triangle .size (), normalize (normal));
-	}
-
-	refineNormals (normalIndex, normals);
-
-	return normals;
-}
-
 void
 IndexedFaceSet::build ()
 {
@@ -512,7 +422,7 @@ IndexedFaceSet::build ()
 	SFNode <TextureCoordinateGenerator> _textureCoordinateGenerator = texCoord;
 
 	if (not _textureCoordinate and not _textureCoordinateGenerator)
-		getTexCoord () = createTexCoord ();
+		buildTexCoord ();
 
 	// Color
 
@@ -524,7 +434,7 @@ IndexedFaceSet::build ()
 	SFNode <Normal> _normal = normal;
 
 	if (not _normal)
-		getNormals () = createNormals ();
+		buildNormals ();
 
 	// Fill GeometryNode
 
@@ -600,6 +510,90 @@ IndexedFaceSet::build ()
 
 	setTextureCoordinateGenerator (*_textureCoordinateGenerator);
 	setVertexMode (GL_TRIANGLES);
+}
+
+void
+IndexedFaceSet::buildTexCoord ()
+{
+	getTexCoord () .reserve (coordIndex .size ());
+
+	Vector3f min = bbox .center () - bbox .size () * 0.5f;
+
+	float Xsize = bbox .size () .x ();
+	float Ysize = bbox .size () .y ();
+	float Zsize = bbox .size () .z ();
+
+	float Ssize;
+	int   Sindex, Tindex;
+
+	if ((Xsize >= Ysize)and (Xsize >= Zsize))
+	{
+		// X size largest
+		Ssize = Xsize; Sindex = 0;
+
+		if (Ysize >= Zsize)
+			Tindex = 1;
+		else
+			Tindex = 2;
+	}
+	else if ((Ysize >= Xsize)and (Ysize >= Zsize))
+	{
+		// Y size largest
+		Ssize = Ysize; Sindex = 1;
+
+		if (Xsize >= Zsize)
+			Tindex = 0;
+		else
+			Tindex = 2;
+	}
+	else
+	{
+		// Z is the largest
+		Ssize = Zsize; Sindex = 2;
+
+		if (Xsize >= Ysize)
+			Tindex = 0;
+		else
+			Tindex = 1;
+	}
+
+	SFNode <Coordinate> _coord = coord;
+
+	for (const auto & triangle : triangles)
+	{
+		for (const auto & i : triangle)
+		{
+			const Vector3f & point = _coord -> point [coordIndex [i]];
+
+			getTexCoord () .emplace_back ((point [Sindex] - min [Sindex]) / Ssize,
+			                             (point [Tindex] - min [Tindex]) / Ssize);
+		}
+	}
+}
+
+void
+IndexedFaceSet::buildNormals ()
+{
+	getNormals () .reserve (coordIndex .size ());
+
+	NormalIndex normalIndex;
+
+	SFNode <Coordinate> _coord = coord;
+
+	for (const auto & triangle : triangles)
+	{
+		Vector3f normal = vertexNormal (_coord -> point [coordIndex [triangle [0]]],
+		                                _coord -> point [coordIndex [triangle [1]]],
+		                                _coord -> point [coordIndex [triangle [2]]]);
+
+		for (int i = 0; i < 3; ++ i)
+			normalIndex [coordIndex [triangle [i]]] .emplace_back (getNormals () .size () + i);
+
+		// Add this normal for each vertex and one extra normal for -1.
+		getNormals () .resize (getNormals () .size () + triangle .size (), normalize (normal));
+	}
+
+	refineNormals (normalIndex, getNormals ());
 }
 
 void

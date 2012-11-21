@@ -74,7 +74,7 @@ public:
 	popLayer ();
 
 	X3DLayerNode*
-	getLayer () const;
+	getCurrentLayer () const;
 
 	///  @name Texture handling
 

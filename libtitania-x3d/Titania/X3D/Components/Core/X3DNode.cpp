@@ -71,6 +71,13 @@ X3DNode::getScene ()
 	return static_cast <Scene*> (scene);
 }
 
+X3DLayerNode*
+X3DNode::getCurrentLayer ()
+{
+	return getBrowser () -> getCurrentLayer ();
+}
+
+
 std::deque <X3DLayerNode*>
 X3DNode::getLayers () const
 {

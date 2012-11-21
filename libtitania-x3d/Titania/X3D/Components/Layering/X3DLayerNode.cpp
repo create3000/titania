@@ -104,19 +104,19 @@ X3DLayerNode::initialize ()
 }
 
 NavigationInfo*
-X3DLayerNode::getActiveNavigationInfo ()
+X3DLayerNode::getNavigationInfo ()
 {
 	return navigationInfoStack .top ();
 }
 
 X3DBackgroundNode*
-X3DLayerNode::getActiveBackground ()
+X3DLayerNode::getBackground ()
 {
 	return backgroundStack .top ();
 }
 
 X3DFogObject*
-X3DLayerNode::getActiveFog ()
+X3DLayerNode::getFog ()
 {
 	if (localFogs .size ())
 		return localFogs .top ();
@@ -125,7 +125,7 @@ X3DLayerNode::getActiveFog ()
 }
 
 X3DViewpointNode*
-X3DLayerNode::getActiveViewpoint ()
+X3DLayerNode::getViewpoint ()
 {
 	return viewpointStack .top ();
 }
@@ -167,7 +167,7 @@ void
 X3DLayerNode::showAllObjects ()
 {
 	{
-		SFNode <Viewpoint> viewpoint = getActiveViewpoint ();
+		SFNode <Viewpoint> viewpoint = getViewpoint ();
 
 		if (viewpoint)
 		{
@@ -208,7 +208,7 @@ X3DLayerNode::showAllObjects ()
 			throw Error <INVALID_X3D> ("No current viewpoint available!");
 	}
 
-	std::clog << getActiveViewpoint () << std::endl;
+	std::clog << getViewpoint () << std::endl;
 }
 
 void
@@ -219,7 +219,7 @@ X3DLayerNode::select ()
 
 	_viewport -> enable ();
 
-	getActiveViewpoint () -> draw ();
+	getViewpoint () -> draw ();
 
 	intersect ();
 
@@ -233,14 +233,14 @@ X3DLayerNode::display ()
 
 	glClear (GL_DEPTH_BUFFER_BIT);
 
-	getActiveBackground ()     -> draw ();
-	getActiveNavigationInfo () -> enable ();
-	getActiveViewpoint ()      -> draw ();
+	getBackground ()     -> draw ();
+	getNavigationInfo () -> enable ();
+	getViewpoint ()      -> draw ();
 
 	X3DRenderer::display ();
 
-	getActiveNavigationInfo () -> disable ();
-	_viewport                  -> disable ();
+	getNavigationInfo () -> disable ();
+	_viewport            -> disable ();
 	clearLights ();
 }
 

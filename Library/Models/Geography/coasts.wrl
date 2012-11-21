@@ -11,9 +11,12 @@ Group {
       Group {
 	children	[
 	  DEF Home Viewpoint {
-	    position	0 0 4.18154
-	    description	"Home"
-	  }
+  description "Home"
+  position 3.29415 1.1682 2.4781
+  orientation 0.320345 0.411095 0.853452 2.14839
+  centerOfRotation 0.015 -0.00322902 -0.00162792
+}
+
 	  Collision {
 	    children	Group {
 	      children	[
@@ -459,6 +462,7 @@ Group {
 
 		}
 		Transform {
+		  scale 1.06 1.06 1.06
 		  children	Group {
 		    children	Shape {
 		      appearance	Appearance {

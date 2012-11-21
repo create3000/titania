@@ -84,16 +84,16 @@ public:
 
 	//@{
 	NavigationInfo*
-	getActiveNavigationInfo ();
+	getNavigationInfo ();
 
 	X3DBackgroundNode*
-	getActiveBackground ();
+	getBackground ();
 
 	X3DFogObject*
-	getActiveFog ();
+	getFog ();
 
 	X3DViewpointNode*
-	getActiveViewpoint ();
+	getViewpoint ();
 	//@}
 
 	void

@@ -380,7 +380,7 @@ NavigationInfo*
 X3DBrowser::getActiveNavigationInfo () const
 throw (Error <DISPOSED>)
 {
-	return getExecutionContext () -> getActiveLayer () -> getActiveNavigationInfo ();
+	return getExecutionContext () -> getActiveLayer () -> getNavigationInfo ();
 }
 
 void
@@ -408,7 +408,7 @@ X3DViewpointNode*
 X3DBrowser::getActiveViewpoint ()
 throw (Error <DISPOSED>)
 {
-	return getExecutionContext () -> getActiveLayer () -> getActiveViewpoint ();
+	return getExecutionContext () -> getActiveLayer () -> getViewpoint ();
 }
 
 void

@@ -51,9 +51,16 @@
 
 #include <Titania/Math/Numbers/Vector3.h>
 #include <tuple>
+#include <deque>
+#include <iostream>
 
-extern "C" {
+extern "C"
+{
+#include <GL/glew.h>
+
 #include <GL/glu.h>
+
+#include <GL/gl.h>
 }
 
 namespace titania {
@@ -144,7 +151,7 @@ public:
 	tesselate ();
 
 	const Polygon &
-	polygon () { return tesselatedPolygon; }
+	polygon () const{ return tesselatedPolygon; }
 
 	~tesselator ();
 

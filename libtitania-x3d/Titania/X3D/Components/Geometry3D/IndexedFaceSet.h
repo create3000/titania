@@ -108,14 +108,15 @@ private:
 	Box3f
 	createBBox ();
 
-	std::vector <Vector2f>
-	createTexCoord ();
-
-	std::vector <Vector3f>
-	createNormals ();
-
+	virtual
 	void
 	build ();
+
+	void
+	buildTexCoord ();
+
+	void
+	buildNormals ();
 
 	std::deque <std::deque <size_t>> triangles;
 	Box3f                            bbox;

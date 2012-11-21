@@ -1,5 +1,29 @@
 2012-11-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Tesselator.h:
+	* X3DBrowser.cpp:
+	* X3DNode.h:
+	* X3DRenderer.cpp:
+	* X3DBrowserContext.h:
+	* X3DNode.cpp:
+	* X3DBrowserContext.cpp:
+	* LayerSet.cpp:
+	* Extrusion.h:
+	* X3DLayerNode.h:
+	* Viewpoint.cpp:
+	* Extrusion.cpp:
+	* X3DLightNode.cpp:
+	* X3DLayerNode.cpp:
+	* IndexedLineSet.h:
+	* IndexedFaceSet.h:
+	* IndexedLineSet.cpp:
+	* IndexedFaceSet.cpp:
+	* X3DViewpointNode.cpp:
+	* LocalFog.cpp:
+	* X3DBackgroundNode.cpp: 
+
+2012-11-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.cpp:
 	* Surface.h:
 	* Surface.cpp:

@@ -4,7 +4,6 @@ Group {
   children	  Transform {
     children	[
       DEF _0 NavigationInfo {
-	avatarSize	0
 	type	[ "EXAMINE",
 		  "ANY" ]
       }

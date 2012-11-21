@@ -73,7 +73,7 @@ X3DBrowserContext::popLayer ()
 }
 
 X3DLayerNode*
-X3DBrowserContext::getLayer () const
+X3DBrowserContext::getCurrentLayer () const
 {
 	return layers .top ();
 }

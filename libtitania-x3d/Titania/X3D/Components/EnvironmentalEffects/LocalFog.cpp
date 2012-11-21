@@ -90,14 +90,14 @@ void
 LocalFog::draw ()
 {
 	if (enabled)
-		getBrowser () -> getLayer () -> pushLocalFog (this);
+		getCurrentLayer () -> pushLocalFog (this);
 }
 
 void
 LocalFog::postDisplay ()
 {
 	if (enabled)
-		getBrowser () -> getLayer () -> popLocalFog ();
+		getCurrentLayer () -> popLocalFog ();
 }
 
 void

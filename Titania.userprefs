@@ -1,19 +1,22 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Parser/Parser.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="711" Column="22" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/Tesselator.h" Line="146" Column="1" />
+      <File FileName="experimental/main.cpp" Line="692" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/Tesselator.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.h" Line="119" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="206" Column="62" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.h" Line="100" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="276" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="211" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.h" Line="103" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="139" Column="3" />
+      <File FileName="Library/Tests/Extrusion/Extrusion2.wrl" Line="3" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="403" Column="8" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="235" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True" />
-          <Node name="experimental" expanded="True" selected="True" />
+          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
               <Node name="icts" expanded="True" />
@@ -32,6 +35,13 @@
                 <Node name="images" expanded="True">
                   <Node name="colors" expanded="True" />
                 </Node>
+              </Node>
+            </Node>
+          </Node>
+          <Node name="libtitania-opengl-surface" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="OpenGL" expanded="True">
+                <Node name="Context" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -68,8 +78,12 @@
                 <Node name="Configuration" expanded="True" />
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
+                <Node name="Parser" expanded="True">
+                  <Node name="Parser.cpp" selected="True" />
+                </Node>
                 <Node name="Rendering" expanded="True" />
                 <Node name="Types" expanded="True" />
+                <Node name="Widgets" expanded="True" />
               </Node>
             </Node>
           </Node>

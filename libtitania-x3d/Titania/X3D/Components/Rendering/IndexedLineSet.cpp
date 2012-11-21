@@ -58,32 +58,26 @@ namespace X3D {
 IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	 set_colorIndex (),                                                    // MFInt32 [in]     set_colorIndex
-	 set_coordIndex (),                                                    // MFInt32 [in]     set_coordIndex
+	     colorIndex (),                                                    // MFInt32 [ ]      colorIndex      [ ]         [0,∞) or -1
+	     coordIndex (),                                                    // MFInt32 [ ]      coordIndex      [ ]         [0,∞) or -1                                               
+	 colorPerVertex (true),                                                // SFBool  [ ]      colorPerVertex  TRUE
 	         attrib (),                                                    // MFNode  [in,out] attrib          [ ]         [X3DVertexAttributeNode]
+	       fogCoord (),                                                    // SFNode  [in,out] fogCoord        [ ]         [FogCoordinate]
 	          color (),                                                    // SFNode  [in,out] color           NULL        [X3DColorNode]
 	          coord (),                                                    // SFNode  [in,out] coord           NULL        [X3DCoordinateNode]
-	       fogCoord (),                                                    // SFNode  [in,out] fogCoord        [ ]         [FogCoordinate]
-	     colorIndex (),                                                    // MFInt32 [ ]      colorIndex      [ ]         [0,∞) or -1
-	 colorPerVertex (true),                                                // SFBool  [ ]      colorPerVertex  TRUE
-	     coordIndex (),                                                    // MFInt32 [ ]      coordIndex      [ ]         [0,∞) or -1
-	      numPoints (0),                                                   
-	       numFaces (0),                                                   
-	      numColors (0)                                                    
+	      polylines ()                                                    
 {
 	setComponent ("Rendering");
 	setTypeName ("IndexedLineSet");
 
 	appendField (inputOutput,    "metadata",       metadata);
-	appendField (inputOnly,      "set_coordIndex", set_coordIndex);
-	appendField (inputOnly,      "set_colorIndex", set_colorIndex);
-	appendField (inputOutput,    "attrib",         attrib);
-	appendField (inputOutput,    "coord",          coord);
-	appendField (inputOutput,    "color",          color);
-	appendField (inputOutput,    "fogCoord",       fogCoord);
-	appendField (initializeOnly, "coordIndex",     coordIndex);
 	appendField (initializeOnly, "colorIndex",     colorIndex);
+	appendField (initializeOnly, "coordIndex",     coordIndex);
 	appendField (initializeOnly, "colorPerVertex", colorPerVertex);
+	appendField (inputOutput,    "attrib",         attrib);
+	appendField (inputOutput,    "fogCoord",       fogCoord);
+	appendField (inputOutput,    "color",          color);
+	appendField (inputOutput,    "coord",          coord);
 }
 
 X3DBasicNode*
@@ -97,60 +91,83 @@ IndexedLineSet::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	set_coordIndex .addInterest (this, &IndexedLineSet::_set_coordIndex);
-	set_colorIndex .addInterest (this, &IndexedLineSet::_set_colorIndex);
+	coordIndex .addInterest (this, &IndexedLineSet::set_coordIndex);
+	colorIndex .addInterest (this, &IndexedLineSet::set_colorIndex);
 
-	_set_coordIndex (coordIndex);
+	set_coordIndex ();
 }
 
 void
-IndexedLineSet::_set_coordIndex (const MFInt32::value_type & value)
+IndexedLineSet::set_coordIndex ()
 {
-	if (coordIndex not_eq value)
-		coordIndex = value;
+	polylines .clear ();
 
-	numPoints = -1;
-	numFaces  = -1;
-
-	for (const auto & index : coordIndex)
+	if (coordIndex .size ())
 	{
-		numPoints = std::max <size_t> (numPoints, index);
-
-		if (index < 0)
-			++ numFaces;
-	}
-
-	++ numPoints;
-	++ numFaces;
-
-	if (numPoints)
-	{
+		// Add -1 (polylines end marker) to coordIndex if not present.
 		if (coordIndex .back () >= 0)
-			++ numFaces;
+			coordIndex .push_back (-1);
 
-		SFNode <Coordinate> _coord = coord;
+		// Construct polylines array and determine the number of used points.
+		size_t  i         = 0;
+		int32_t numPoints = -1;
 
-		if (not _coord or not _coord -> point .size ())
-			return;
+		std::deque <size_t> polyline;
 
-		if (_coord -> point .size () < (size_t) numPoints)
-			_coord -> point .resize (numPoints);
+		for (const auto & index : coordIndex)
+		{
+			numPoints = std::max <int32_t> (numPoints, index);
 
-		_set_colorIndex (colorIndex);
+			if (index >= 0)
+				// Add vertex.
+				polyline .emplace_back (i);
+
+			else
+			{
+				// Negativ index.
+
+				if (polyline .size ())
+				{
+					if (polyline .size () > 1)
+					{
+						// Add polylines.
+						polylines .emplace_back (polyline);
+					}
+
+					polyline .clear ();
+				}
+			}
+
+			++ i;
+		}
+
+		++ numPoints;
+
+		if (polylines .size ())
+		{
+			SFNode <Coordinate> _coord = coord;
+
+			if (_coord)
+			{
+				// Resize coord .point if to small
+				if (_coord -> point .size () < (size_t) numPoints)
+					_coord -> point .resize (numPoints);
+
+				set_colorIndex ();
+			}
+		}
 	}
 }
 
 void
-IndexedLineSet::_set_colorIndex (const MFInt32::value_type & value)
+IndexedLineSet::set_colorIndex ()
 {
-	if (colorIndex not_eq value)
-		colorIndex = value;
-
 	SFNode <Color>     _color     = color;
 	SFNode <ColorRGBA> _colorRGBA = color;
 
 	if (_color or _colorRGBA)
 	{
+		// Fill up colorIndex if to small.
 		if (colorPerVertex)
 		{
 			for (size_t i = colorIndex .size (); i < coordIndex .size (); ++ i)
@@ -160,44 +177,35 @@ IndexedLineSet::_set_colorIndex (const MFInt32::value_type & value)
 		}
 		else
 		{
-			for (size_t i = colorIndex .size (); i < (size_t) numFaces; ++ i)
+			for (size_t i = colorIndex .size (); i < polylines .size (); ++ i)
 			{
 				colorIndex .push_back (i);
 			}
 		}
 
-		numColors = -1;
+		// Determine number of used colors.
+
+		int numColors = -1;
 
 		for (const auto & index : colorIndex)
 		{
-			numColors = std::max <size_t> (numColors, index);
+			numColors = std::max <int32_t> (numColors, index);
 		}
 
 		++ numColors;
+		
+		// Resize color .color if to small.
+		if (_color)
+		{
+			if (_color -> color .size () < (size_t) numColors)
+				_color -> color .resize (numColors, _color -> color .back ());
+		}
+		else if (_colorRGBA)
+		{
+			if (_colorRGBA -> color .size () < (size_t) numColors)
+				_colorRGBA -> color .resize (numColors, _colorRGBA -> color .back ());
+		}
 	}
-}
-
-Box3f
-IndexedLineSet::createBBox ()
-{
-	SFNode <Coordinate> _coord = coord;
-
-	if (not _coord or not _coord -> point .size ())
-		return Box3f ();
-
-	Vector3f min = _coord -> point .front ();
-	Vector3f max = _coord -> point .front ();
-
-	for (const auto & point : _coord -> point)
-	{
-		min = math::min <float> (min, point);
-		max = math::max <float> (max, point);
-	}
-
-	Vector3f size   = max - min;
-	Vector3f center = min + size * 0.5f;
-
-	return Box3f (size, center);
 }
 
 void
@@ -210,57 +218,42 @@ IndexedLineSet::build ()
 	if (not _coord or not _coord -> point .size ())
 		return;
 
-	if (_coord -> point .size () < (size_t) numPoints)
-		_coord -> point .resize (numPoints);
+	// Color
 
 	SFNode <Color>     _color     = color;
 	SFNode <ColorRGBA> _colorRGBA = color;
 
-	if (_color or _colorRGBA)
+	// Fill GeometryNode
+
+	int face = 0;
+
+	for (const auto polyline : polylines)
 	{
-		if (_color)
+		SFColor     faceColor;
+		SFColorRGBA faceColorRGBA;
+
+		if (not colorPerVertex)
 		{
-			if (_color -> color .size () < (size_t) numColors)
-				_color -> color .resize (numColors);
+			if (_color and colorIndex [face] >= 0)
+				faceColor = _color -> color [colorIndex [face]];
+
+			else if (_colorRGBA and colorIndex [face] >= 0)
+				faceColorRGBA = _colorRGBA -> color [colorIndex [face]];
 		}
-		else if (_colorRGBA)
+
+		// Create two vertices for each line.
+
+		for (size_t line = 0, end = polyline .size () - 1; line < end; ++ line)
 		{
-			if (_colorRGBA -> color .size () < (size_t) numColors)
-				_colorRGBA -> color .resize (numColors);
-		}
-	}
-
-	for (size_t i = 0, face = 0; i < coordIndex .size (); ++ i, ++ face)
-	{
-		int numVertices = 0;
-
-		for (
-		   size_t _i = i;
-		   coordIndex [_i] >= 0 and _i < coordIndex .size ();
-		   ++ _i, ++ numVertices
-		   )
-			;
-
-		if (numVertices > 1)
-		{
-			SFColor     faceColor;
-			SFColorRGBA faceColorRGBA;
-
-			if (not colorPerVertex)
+			for (size_t index = line, end = line + 2; index < end; ++ index)
 			{
-				if (_color and colorIndex [face] >= 0)
-					faceColor = _color -> color [colorIndex [face]];
-					
-				else if (_colorRGBA and colorIndex [face] >= 0)
-					faceColorRGBA = _colorRGBA -> color [colorIndex [face]];
-			}
-
-			for (int _i = 0; _i < numVertices - 1; ++ _i, ++ i)
-			{
+				auto i = polyline [index];
+				
 				if (_color)
 				{
 					if (colorPerVertex and colorIndex [i] >= 0)
 						getColors () .emplace_back (_color -> color [colorIndex [i]]);
+						
 					else
 						getColors () .emplace_back (faceColor);
 				}
@@ -270,6 +263,7 @@ IndexedLineSet::build ()
 
 					if (colorPerVertex and colorIndex [i] >= 0)
 						_colorRGBA -> color [colorIndex [i]] .getValue (r, g, b, a);
+						
 					else
 						faceColorRGBA .getValue (r, g, b, a);
 
@@ -277,36 +271,10 @@ IndexedLineSet::build ()
 				}
 
 				getVertices () .emplace_back (_coord -> point [coordIndex [i]]);
-
-				if (_color)
-				{
-					if (colorPerVertex and colorIndex [i + 1] >= 0)
-						getColors () .emplace_back (_color -> color [colorIndex [i + 1]]);
-					else
-						getColors () .emplace_back (faceColor);
-				}
-				else if (_colorRGBA)
-				{
-					float r = 0, g = 0, b = 0, a = 0;
-					
-					if (colorPerVertex and colorIndex [i + 1] >= 0)
-						_colorRGBA -> color [colorIndex [i + 1]] .getValue (r, g, b, a);
-					else
-						faceColorRGBA .getValue (r, g, b, a);
-
-					getColorsRGBA () .emplace_back (r, g, b, 1 - a);
-				}
-
-				getVertices () .emplace_back (_coord -> point [coordIndex [i + 1]]);
-
 			}
+		}
 
-			++ i;
-		}
-		else
-		{
-			i += numVertices;
-		}
+		++ face;
 	}
 
 	setVertexMode (GL_LINES);

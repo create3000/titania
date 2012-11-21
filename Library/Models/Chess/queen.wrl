@@ -4,7 +4,7 @@ Group {
   children	  Transform {
     children	[
       DEF _0 NavigationInfo {
-	avatarSize	0
+	avatarSize	0.1
 	type	[ "EXAMINE",
 		  "ANY" ]
       }

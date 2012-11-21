@@ -59,15 +59,13 @@ class IndexedLineSet :
 {
 public:
 
-	MFInt32               set_colorIndex;
-	MFInt32               set_coordIndex;
+	MFInt32               colorIndex;
+	MFInt32               coordIndex;
+	SFBool                colorPerVertex;
 	MFNode <X3DBasicNode> attrib;
+	SFNode <X3DBasicNode> fogCoord;
 	SFNode <X3DBasicNode> color;
 	SFNode <X3DBasicNode> coord;
-	SFNode <X3DBasicNode> fogCoord;
-	MFInt32               colorIndex;
-	SFBool                colorPerVertex;
-	MFInt32               coordIndex;
 
 	IndexedLineSet (X3DExecutionContext* const);
 
@@ -87,20 +85,16 @@ private:
 	initialize ();
 
 	void
-	_set_coordIndex (const MFInt32::value_type &);
+	set_coordIndex ();
 
 	void
-	_set_colorIndex (const MFInt32::value_type &);
+	set_colorIndex ();
 
-	Box3f
-	createBBox ();
-
+	virtual
 	void
 	build ();
 
-	int numPoints;
-	int numFaces;
-	int numColors;
+	std::deque <std::deque <size_t>> polylines;
 
 };
 

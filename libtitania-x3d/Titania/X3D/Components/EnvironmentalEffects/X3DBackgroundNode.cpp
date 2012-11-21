@@ -363,7 +363,7 @@ X3DBackgroundNode::draw ()
 
 	//
 
-	getBrowser () -> getLayer () -> getActiveViewpoint () -> reshape (1, 20000);
+	getCurrentLayer () -> getViewpoint () -> reshape (1, 20000);
 
 	//
 

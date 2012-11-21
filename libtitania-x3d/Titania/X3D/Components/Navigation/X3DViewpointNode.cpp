@@ -52,7 +52,7 @@
 #include "../Layering/X3DLayerNode.h"
 #include "../Navigation/NavigationInfo.h"
 
-#include <iostream>      //
+#include <limits>
 
 namespace titania {
 namespace X3D {
@@ -105,10 +105,13 @@ X3DViewpointNode::display ()
 void
 X3DViewpointNode::draw ()
 {
-	NavigationInfo* navigationInfo = getBrowser () -> getActiveNavigationInfo ();
+	NavigationInfo* navigationInfo = getCurrentLayer () -> getNavigationInfo ();
 
 	float sizeZ           = navigationInfo -> avatarSize .size () ? navigationInfo -> avatarSize .front () : 0.25;
 	float visibilityLimit = navigationInfo -> visibilityLimit ? navigationInfo -> visibilityLimit : 100000;
+	
+	if (sizeZ == 0)
+		sizeZ = std::numeric_limits <float> ::epsilon () * 100;
 
 	reshape (sizeZ / 2, visibilityLimit);
 

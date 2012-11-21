@@ -1,140 +1,96 @@
 #VRML V2.0 utf8 CosmoWorlds V1.0
 
 Group {
-  children	  Transform {
-    children	[
+  children Transform {
+    children [
       DEF _0 NavigationInfo {
-	avatarSize	0
-	type	[ "EXAMINE",
-		  "ANY" ]
+        avatarSize 0.1
       }
       Group {
-	children	[
-	  DEF Home Viewpoint {
-	    position	0.5125 0.5125 2.86462
-	    description	"Home"
-	  }
-	  Collision {
-	    children	Group {
-	      children	[
-		DEF Cameras Switch {
-		  whichChoice	-1
-		  choice	[
-		  ]
-		}
-		Group {
-		  children	Shape {
-		    appearance	Appearance {
-		      material	Material {
-			ambientIntensity	0.2
-			diffuseColor	1 0 0
-			specularColor	0 0 0
-			emissiveColor	0 0 0
-			transparency	0
-		      }
-
-		    }
-
-		    geometry	IndexedLineSet {
-		      coord	Coordinate {
-			point	[ 0 0 0,
-				  1 0 0,
-				  0 1 0,
-				  0 0 1 ]
-		      }
-
-		      color	Color {
-			color	[ 1 0 0,
-				  0 1 0,
-				  0 0 1 ]
-		      }
-
-		      coordIndex	[ 1, 0, 2, -1, 0, 3 ]
-		      colorPerVertex	FALSE
-		    }
-
-		  }
-
-		}
-		Transform {
-		  children	Transform {
-		    children	Shape {
-		      appearance	Appearance {
-			material	Material {
-			  ambientIntensity	0.2
-			  diffuseColor	1 0 0
-			  specularColor	0 0 0
-			  emissiveColor	0 0 0
-			}
-
-		      }
-
-		      geometry	Cone {
-			bottomRadius	0.05
-			height	0.15
-		      }
-
-		    }
-
-		    rotation	0 0 1  4.71239
-		  }
-
-		  translation	1 0 0
-		}
-		Transform {
-		  children	Shape {
-		    appearance	Appearance {
-		      material	Material {
-			ambientIntensity	0.2
-			diffuseColor	0 1 0
-			specularColor	0 0 0
-			emissiveColor	0 0 0
-		      }
-
-		    }
-
-		    geometry	Cone {
-		      bottomRadius	0.05
-		      height	0.15
-		    }
-
-		  }
-
-		  translation	0 1 0
-		}
-		Transform {
-		  children	Transform {
-		    children	Shape {
-		      appearance	Appearance {
-			material	Material {
-			  ambientIntensity	0.2
-			  diffuseColor	0 0 1
-			  specularColor	0 0 0
-			  emissiveColor	0 0 0
-			}
-
-		      }
-
-		      geometry	Cone {
-			bottomRadius	0.05
-			height	0.15
-		      }
-
-		    }
-
-		    rotation	1 0 0  1.5708
-		  }
-
-		  translation	0 0 1
-		}
-	      ]
-	    }
-
-	    collide	FALSE
-	  }
-	]
+        children [
+          DEF Home Viewpoint {
+            description "Home"
+            position 0.5125 0.5125 2.86462
+          }
+          Collision {
+            collide FALSE
+            children Group {
+              children [
+                DEF Cameras Switch { }
+                Group {
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 1 0 0
+                      }
+                    }
+                    geometry IndexedLineSet {
+                      colorIndex [ 0, 1, 2 ]
+                      coordIndex [ 1, 0, -1, 0, 2, -1, 0, 3, -1 ]
+                      colorPerVertex FALSE
+                      color Color {
+                        color [ 1 0 0, 0 1 0, 0 0 1 ]
+                      }
+                      coord Coordinate {
+                        point [ 0 0 0, 1 0 0, 0 1 0, 0 0 1 ]
+                      }
+                    }
+                  }
+                }
+                Transform {
+                  translation 1 0 0
+                  children Transform {
+                    rotation 0 0 1 4.71239
+                    children Shape {
+                      appearance Appearance {
+                        material Material {
+                          diffuseColor 1 0 0
+                        }
+                      }
+                      geometry Cone {
+                        height 0.15
+                        bottomRadius 0.05
+                      }
+                    }
+                  }
+                }
+                Transform {
+                  translation 0 1 0
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 0 1 0
+                      }
+                    }
+                    geometry Cone {
+                      height 0.15
+                      bottomRadius 0.05
+                    }
+                  }
+                }
+                Transform {
+                  translation 0 0 1
+                  children Transform {
+                    rotation 1 0 0 1.5708
+                    children Shape {
+                      appearance Appearance {
+                        material Material {
+                          diffuseColor 0 0 1
+                        }
+                      }
+                      geometry Cone {
+                        height 0.15
+                        bottomRadius 0.05
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
       }
     ]
   }
-
 }
+

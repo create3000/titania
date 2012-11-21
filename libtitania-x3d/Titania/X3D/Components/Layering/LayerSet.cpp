@@ -72,7 +72,7 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 
 	setChildren (children);
 
-	children [0] -> getActiveBackground () -> transparency = 0; // XXX
+	children [0] -> getBackground () -> transparency = 0; // XXX
 }
 
 X3DBasicNode*
