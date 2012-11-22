@@ -127,8 +127,6 @@ History::insert (const std::string & title, const std::string & worldURL)
 	                 + database .quote (title) + ","
 	                 + database .quote (worldURL)
 	                 + ")");
-
-	std::clog << database .last_insert_rowid () << std::endl;
 }
 
 void

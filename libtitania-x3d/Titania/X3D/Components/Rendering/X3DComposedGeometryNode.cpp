@@ -52,15 +52,15 @@ namespace titania {
 namespace X3D {
 
 X3DComposedGeometryNode::X3DComposedGeometryNode () :
-	X3DGeometryNode (),     
-	         attrib (),     // MFNode[in,out] attrib           [ ]         [X3DVertexAttributeNode]
-	          color (),     // SFNode [in,out] color            NULL        [X3DColorObject]
-	          coord (),     // SFNode [in,out] coord            NULL        [X3DCoordinateNode]
-	       fogCoord (),     // SFNode [in,out] fogCoord         [ ]         [FogCoordinate]
-	         normal (),     // SFNode [in,out] normal           NULL        [X3DNormalNode]
-	       texCoord (),     // SFNode [in,out] texCoord         NULL        [X3DTextureCoordinateNode]
+	X3DGeometryNode (),  
 	 colorPerVertex (true), // SFBool [ ]      colorPerVertex   TRUE
-	normalPerVertex (true)  // SFBool [ ]      normalPerVertex  TRUE
+	normalPerVertex (true), // SFBool [ ]      normalPerVertex  TRUE
+	         attrib (),     // MFNode [in,out] attrib           [ ]         [X3DVertexAttributeNode]   
+	       fogCoord (),     // SFNode [in,out] fogCoord         [ ]         [FogCoordinate]
+	       texCoord (),     // SFNode [in,out] texCoord         NULL        [X3DTextureCoordinateNode]	         
+	          color (),     // SFNode [in,out] color            NULL        [X3DColorObject]
+	         normal (),     // SFNode [in,out] normal           NULL        [X3DNormalNode]
+	          coord ()      // SFNode [in,out] coord            NULL        [X3DCoordinateNode]
 {
 	addNodeType (X3DComposedGeometryNodeType);
 }

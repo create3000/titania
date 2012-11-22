@@ -65,7 +65,7 @@ public:
 	X3DPrototypeInstance (X3DExecutionContext* const, Proto* const);
 
 	virtual
-	const basic::id
+	const basic::id &
 	getTypeName () const;
 
 	virtual

@@ -53,8 +53,8 @@ namespace X3D {
 
 X3DGeometryNode::X3DGeometryNode () :
 	         X3DNode (),              
-	             ccw (true),          // SFBool  [ ]      ccw              TRUE
 	           solid (true),          // SFBool  [ ]      solid            TRUE
+	             ccw (true),          // SFBool  [ ]      ccw              TRUE
 	     creaseAngle (),              // SFFloat [ ]      creaseAngle      0           [0,∞)
 	texCoordBufferId (0),             
 	   colorBufferId (0),             
@@ -183,14 +183,14 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 
 	std::vector <Vector3f> _normals (normals .size ());
 
-	for (const auto & vertex : normalIndex)
+	for (const auto & point : normalIndex)
 	{
-		for (const auto & index : vertex .second)
+		for (const auto & index : point .second)
 		{
 			Vector3f         n;
 			const Vector3f & m = normals [index];
 
-			for (const auto & index : vertex .second)
+			for (const auto & index : point .second)
 			{
 				if (dot (normals [index], m) > cosCreaseAngle)
 					n += normals [index];

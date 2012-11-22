@@ -46,7 +46,7 @@
  *
  ******************************************************************************/
 
-#include "../Base/Type.h"
+#include "../Basic/FieldType.h"
 
 #ifndef __TITANIA_X3D_BITS_X3DCONSTANTS_H__
 #define __TITANIA_X3D_BITS_X3DCONSTANTS_H__
@@ -67,53 +67,53 @@ public:
 
 	};
 
-	static const Type* const SFBool;
-	static const Type* const SFColor;
-	static const Type* const SFColorRGBA;
-	static const Type* const SFDouble;
-	static const Type* const SFFloat;
-	static const Type* const SFImage;
-	static const Type* const SFInt32;
-	static const Type* const SFMatrix3d;
-	static const Type* const SFMatrix3f;
-	static const Type* const SFMatrix4d;
-	static const Type* const SFMatrix4f;
-	static const Type* const SFNode;
-	static const Type* const SFRotation;
-	static const Type* const SFString;
-	static const Type* const SFTime;
-	static const Type* const SFVec2d;
-	static const Type* const SFVec2f;
-	static const Type* const SFVec3d;
-	static const Type* const SFVec3f;
-	static const Type* const SFVec4d;
-	static const Type* const SFVec4f;
+	static const FieldType* const SFBool;
+	static const FieldType* const SFColor;
+	static const FieldType* const SFColorRGBA;
+	static const FieldType* const SFDouble;
+	static const FieldType* const SFFloat;
+	static const FieldType* const SFImage;
+	static const FieldType* const SFInt32;
+	static const FieldType* const SFMatrix3d;
+	static const FieldType* const SFMatrix3f;
+	static const FieldType* const SFMatrix4d;
+	static const FieldType* const SFMatrix4f;
+	static const FieldType* const SFNode;
+	static const FieldType* const SFRotation;
+	static const FieldType* const SFString;
+	static const FieldType* const SFTime;
+	static const FieldType* const SFVec2d;
+	static const FieldType* const SFVec2f;
+	static const FieldType* const SFVec3d;
+	static const FieldType* const SFVec3f;
+	static const FieldType* const SFVec4d;
+	static const FieldType* const SFVec4f;
 
-	static const Type* const MFBool;
-	static const Type* const MFColor;
-	static const Type* const MFColorRGBA;
-	static const Type* const MFDouble;
-	static const Type* const MFFloat;
-	static const Type* const MFImage;
-	static const Type* const MFInt32;
-	static const Type* const MFMatrix3d;
-	static const Type* const MFMatrix3f;
-	static const Type* const MFMatrix4d;
-	static const Type* const MFMatrix4f;
-	static const Type* const MFNode;
-	static const Type* const MFRotation;
-	static const Type* const MFString;
-	static const Type* const MFTime;
-	static const Type* const MFVec2d;
-	static const Type* const MFVec2f;
-	static const Type* const MFVec3d;
-	static const Type* const MFVec3f;
-	static const Type* const MFVec4d;
-	static const Type* const MFVec4f;
+	static const FieldType* const MFBool;
+	static const FieldType* const MFColor;
+	static const FieldType* const MFColorRGBA;
+	static const FieldType* const MFDouble;
+	static const FieldType* const MFFloat;
+	static const FieldType* const MFImage;
+	static const FieldType* const MFInt32;
+	static const FieldType* const MFMatrix3d;
+	static const FieldType* const MFMatrix3f;
+	static const FieldType* const MFMatrix4d;
+	static const FieldType* const MFMatrix4f;
+	static const FieldType* const MFNode;
+	static const FieldType* const MFRotation;
+	static const FieldType* const MFString;
+	static const FieldType* const MFTime;
+	static const FieldType* const MFVec2d;
+	static const FieldType* const MFVec2f;
+	static const FieldType* const MFVec3d;
+	static const FieldType* const MFVec3f;
+	static const FieldType* const MFVec4d;
+	static const FieldType* const MFVec4f;
 
 };
 
-enum NodeType
+enum NodeTypes
 {
 	X3DAppearanceChildNodeType,
 	X3DAppearanceNodeType,

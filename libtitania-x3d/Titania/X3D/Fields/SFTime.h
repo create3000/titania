@@ -75,10 +75,10 @@ public:
 	copy () const;
 
 	virtual
-	const X3DType*
+	const FieldType*
 	getType () const;
 
-	static const Type type;
+	static const FieldType type;
 
 };
 

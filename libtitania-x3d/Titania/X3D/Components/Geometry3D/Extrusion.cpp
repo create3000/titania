@@ -62,13 +62,13 @@ Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
 	 set_orientation (),                                                                                       // MFRotation [in] set_orientation
 	       set_scale (),                                                                                       // MFVec2f    [in] set_scale
 	       set_spine (),                                                                                       // MFVec3f    [in] set_spine
+	        beginCap (true),                                                                                   // SFBool     [ ]  beginCap          TRUE
+	          endCap (true),                                                                                   // SFBool     [ ]  endCap            TRUE
+	          convex (true),                                                                                   // SFBool     [ ]  convex            TRUE
 	    crossSection ({ SFVec2f (1, 1), SFVec2f (1, -1), SFVec2f (-1, -1), SFVec2f (-1, 1), SFVec2f (1, 1) }), // MFVec2f    [ ]  crossSection      [1 1 1 -1 -1 -1 -1 1 1 1]        (-∞,∞)
 	     orientation ({ SFRotation () }),                                                                      // MFRotation [ ]  orientation       0 0 1 0                          [-1,1] or (-∞,∞)
 	           scale ({ SFVec2f (1, 1) }),                                                                     // MFVec2f    [ ]  scale             1 1                              (0,∞)
-	           spine ({ SFVec3f (), SFVec3f (0, 1, 0) }),                                                      // MFVec3f    [ ]  spine             [0 0 0 0 1 0]                    (-∞,∞)
-	        beginCap (true),                                                                                   // SFBool     [ ]  beginCap          TRUE
-	          endCap (true),                                                                                   // SFBool     [ ]  endCap            TRUE
-	          convex (true)                                                                                    // SFBool     [ ]  convex            TRUE
+	           spine ({ SFVec3f (), SFVec3f (0, 1, 0) })                                                       // MFVec3f    [ ]  spine             [0 0 0 0 1 0]                    (-∞,∞)
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Extrusion");
@@ -78,16 +78,18 @@ Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
 	appendField (inputOnly,      "set_orientation",  set_orientation);
 	appendField (inputOnly,      "set_scale",        set_scale);
 	appendField (inputOnly,      "set_spine",        set_spine);
-	appendField (initializeOnly, "crossSection",     crossSection);
-	appendField (initializeOnly, "orientation",      orientation);
-	appendField (initializeOnly, "scale",            scale);
-	appendField (initializeOnly, "spine",            spine);
+		
 	appendField (initializeOnly, "beginCap",         beginCap);
 	appendField (initializeOnly, "endCap",           endCap);
 	appendField (initializeOnly, "solid",            solid);
 	appendField (initializeOnly, "ccw",              ccw);
 	appendField (initializeOnly, "convex",           convex);
 	appendField (initializeOnly, "creaseAngle",      creaseAngle);
+
+	appendField (initializeOnly, "crossSection",     crossSection);
+	appendField (initializeOnly, "orientation",      orientation);
+	appendField (initializeOnly, "scale",            scale);
+	appendField (initializeOnly, "spine",            spine);
 }
 
 X3DBasicNode*

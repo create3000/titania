@@ -59,9 +59,9 @@ class IndexedLineSet :
 {
 public:
 
+	SFBool                colorPerVertex;
 	MFInt32               colorIndex;
 	MFInt32               coordIndex;
-	SFBool                colorPerVertex;
 	MFNode <X3DBasicNode> attrib;
 	SFNode <X3DBasicNode> fogCoord;
 	SFNode <X3DBasicNode> color;

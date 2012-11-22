@@ -52,7 +52,7 @@ namespace titania {
 namespace X3D {
 
 template <>
-const Type X3DField <Image>::type ("SFImage");
+const FieldType X3DField <Image>::type ("SFImage");
 
 template class X3DField <Image>;
 template

@@ -175,7 +175,7 @@ OutlineTreeModel::get_value_vfunc (const OutlineTreeModel::iterator & iter, int 
 						val .set (iter -> second);
 					}
 				}
-				else if (data -> object == 0 and dynamic_cast <const X3D::SFNode <X3D::X3DBasicNode>*> (data -> sfnode))
+				else if (data -> object == 0 and dynamic_cast <const X3D::X3DField <X3D::X3DBasicNode*>*> (data -> sfnode))
 					val .set (baseNodeImage);
 
 				value .init (icon_column_type::ValueType::value_type ());
@@ -217,7 +217,7 @@ OutlineTreeModel::get_value_vfunc (const OutlineTreeModel::iterator & iter, int 
 				else if (dynamic_cast <const X3D::X3DFieldDefinition*> (data -> object))
 					val .set (dynamic_cast <const X3D::X3DFieldDefinition*> (data -> object) -> getName () .first ());
 
-				else if (data -> object == NULL and dynamic_cast <const X3D::SFNode <X3D::X3DBasicNode>*> (data -> sfnode))
+				else if (data -> object == NULL and dynamic_cast <const X3D::X3DField <X3D::X3DBasicNode*>*> (data -> sfnode))
 					val .set ("NULL");
 
 				value .init (debug_column_type::ValueType::value_type ());
@@ -271,7 +271,7 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 
 		if (dynamic_cast <const X3D::X3DBasicNode*> (parent))
 		{
-			const X3D::X3DBasicNode* node = dynamic_cast <const X3D::X3DBasicNode*> (parent);
+			const auto node = dynamic_cast <const X3D::X3DBasicNode*> (parent);
 
 			if ((size_t) i < node -> getFieldDefinitions () .size ())
 			{
@@ -282,7 +282,7 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 		}
 		else if (dynamic_cast <const X3D::MFNode <X3D::X3DBasicNode>*> (parent))
 		{
-			const X3D::MFNode <X3D::X3DBasicNode>* mfnode = dynamic_cast <const X3D::MFNode <X3D::X3DBasicNode>*> (parent);
+			const auto mfnode = dynamic_cast <const X3D::MFNode <X3D::X3DBasicNode>*> (parent);
 
 			if ((size_t) i < mfnode -> size ())
 			{
@@ -291,9 +291,9 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 				return true;
 			}
 		}
-		else if (dynamic_cast <const X3D::SFNode <X3D::X3DBasicNode>*> (parent))
+		else if (dynamic_cast <const X3D::X3DField <X3D::X3DBasicNode*>*> (parent))
 		{
-			const X3D::SFNode <X3D::X3DBasicNode>* sfnode = dynamic_cast <const X3D::SFNode <X3D::X3DBasicNode>*> (parent);
+			const auto sfnode = dynamic_cast <const X3D::X3DField <X3D::X3DBasicNode*>*> (parent);
 
 			if (i < 1)
 			{
@@ -352,7 +352,7 @@ OutlineTreeModel::iter_n_children_vfunc (const iterator & iter) const
 			const X3D::MFNode <X3D::X3DBasicNode>* mfnode = dynamic_cast <const X3D::MFNode <X3D::X3DBasicNode>*> (data -> object);
 			return mfnode -> size ();
 		}
-		else if (dynamic_cast <const X3D::SFNode <X3D::X3DBasicNode>*> (data -> object))
+		else if (dynamic_cast <const X3D::X3DField <X3D::X3DBasicNode*>*> (data -> object))
 		{
 			return 1;
 		}
@@ -384,7 +384,7 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int n, iterator
 
 		if (dynamic_cast <const X3D::X3DBasicNode*> (data -> object))
 		{
-			const X3D::X3DBasicNode* node = dynamic_cast <const X3D::X3DBasicNode*> (data -> object);
+			const auto node = dynamic_cast <const X3D::X3DBasicNode*> (data -> object);
 
 			if ((size_t) n < node -> getFieldDefinitions () .size ())
 			{
@@ -395,7 +395,7 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int n, iterator
 		}
 		else if (dynamic_cast <const X3D::MFNode <X3D::X3DBasicNode>*> (data -> object))
 		{
-			const X3D::MFNode <X3D::X3DBasicNode>* mfnode = dynamic_cast <const X3D::MFNode <X3D::X3DBasicNode>*> (data -> object);
+			const auto mfnode = dynamic_cast <const X3D::MFNode <X3D::X3DBasicNode>*> (data -> object);
 
 			if ((size_t) n < mfnode -> size ())
 			{
@@ -404,9 +404,9 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int n, iterator
 				return true;
 			}
 		}
-		else if (dynamic_cast <const X3D::SFNode <X3D::X3DBasicNode>*> (data -> object))
+		else if (dynamic_cast <const X3D::X3DField <X3D::X3DBasicNode*>*> (data -> object))
 		{
-			const X3D::SFNode <X3D::X3DBasicNode>* sfnode = dynamic_cast <const X3D::SFNode <X3D::X3DBasicNode>*> (data -> object);
+			const auto sfnode = dynamic_cast <const X3D::X3DField <X3D::X3DBasicNode*>*> (data -> object);
 
 			if (n < 1)
 			{

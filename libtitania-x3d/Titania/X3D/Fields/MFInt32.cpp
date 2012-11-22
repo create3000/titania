@@ -52,7 +52,7 @@ namespace titania {
 namespace X3D {
 
 template <>
-const Type X3DField <Array <SFInt32>>::type ("MFInt32");
+const FieldType X3DField <Array <SFInt32>>::type ("MFInt32");
 
 template class Array <SFInt32>;
 template class X3DField <Array <SFInt32>>;

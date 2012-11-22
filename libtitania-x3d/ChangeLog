@@ -1,3 +1,52 @@
+2012-11-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* Type.h:
+	* Type.h:
+	* Type.cpp:
+	* MFNode.h:
+	* SFTime.h:
+	* SFNode.h:
+	* X3DField.h:
+	* X3DObject.h:
+	* SFVec3.cpp:
+	* SFVec2.cpp:
+	* SFTime.cpp:
+	* SFVec4.cpp:
+	* MFNode.cpp:
+	* SFNode.cpp:
+	* SFImage.cpp:
+	* SFColor.cpp:
+	* NodeType.cpp:
+	* MFInt32.cpp:
+	* FieldType.cpp:
+	* X3DConstants.h:
+	* SFString.cpp:
+	* SFMatrix3.cpp:
+	* X3DBasicNode.h:
+	* X3DScalar.cpp:
+	* SFMatrix4.cpp:
+	* NodeTypeArray.h:
+	* X3DConstants.cpp:
+	* ArrayFields.cpp:
+	* SFRotation4.cpp:
+	* X3DBasicNode.cpp:
+	* SFColorRGBA.cpp:
+	* NodeTypeArray.cpp:
+	* FieldType (Kopie).h:
+	* Extrusion.h:
+	* Extrusion.cpp:
+	* IndexedLineSet.h:
+	* IndexedFaceSet.h:
+	* X3DGeometryNode.h:
+	* X3DPrototypeInstance.h:
+	* IndexedLineSet.cpp:
+	* X3DPrototypeInstance.cpp:
+	* IndexedFaceSet.cpp:
+	* X3DGeometryNode.cpp:
+	* X3DComposedGeometryNode.h:
+	* X3DComposedGeometryNode.cpp: 
+
 2012-11-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Tesselator.h:

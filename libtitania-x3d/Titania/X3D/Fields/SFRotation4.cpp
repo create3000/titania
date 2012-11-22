@@ -52,10 +52,10 @@ namespace titania {
 namespace X3D {
 
 template <>
-const Type X3DField <Rotation4d>::type ("SFRotation");
+const FieldType X3DField <Rotation4d>::type ("SFRotation");
 
 template <>
-const Type X3DField <Rotation4f>::type ("SFRotation");
+const FieldType X3DField <Rotation4f>::type ("SFRotation");
 
 template class X3DField <Rotation4d>;
 template class X3DField <Rotation4f>;

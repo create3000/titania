@@ -2194,6 +2194,10 @@
     <None Include="Tests\Geometry3D\U.wrl" />
     <None Include="Tests\Interpolation\warp.wrl" />
     <None Include="Examples\mushrooms\stage\plantT.wrl" />
+    <None Include="N-Eck.py" />
+    <None Include="Tests\Geometry3D\three.wrl" />
+    <None Include="Tests\Geometry3D\Beethoven.N.wrl" />
+    <None Include="Tests\Geometry3D\Beethoven.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

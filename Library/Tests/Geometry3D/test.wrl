@@ -3,21 +3,21 @@
 META "title" "Geometry3d Test"
 
 Background {
-	skyColor 1 1 1
+  skyColor 1 1 1
 }
 
 Viewpoint { }
 
-DirectionalLight {
-	direction -1 0 0
+Shape {
+  appearance Appearance {
+    material Material { }
+  }
+  geometry IndexedFaceSet {
+    coordIndex [ 0, 1, 2, 3, -1, 2, 4, 5, 3, -1 ]
+    creaseAngle 3.14
+    coord Coordinate {
+      point [ 0 1 -1, 0 0 -1, 0 0 0, 0 1 0, 1 0 0, 1 1 0 ]
+    }
+  }
 }
 
-Shape {
-	appearance Appearance {
-		material Material { }
-	}
-    geometry Cone {
-      bottom FALSE
-      solid FALSE
-    }
-}

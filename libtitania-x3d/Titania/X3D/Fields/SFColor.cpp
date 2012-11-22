@@ -52,7 +52,7 @@ namespace titania {
 namespace X3D {
 
 template <>
-const Type X3DField <Color3f>::type ("SFColor");
+const FieldType X3DField <Color3f>::type ("SFColor");
 
 template class X3DField <Color3f>;
 

@@ -57,6 +57,8 @@
 #include "../Texturing/TextureCoordinate.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
 
+#include <array>
+
 namespace titania {
 namespace X3D {
 
@@ -65,13 +67,13 @@ class IndexedFaceSet :
 {
 public:
 
+	SFBool convex;
 	using X3DGeometryNode::creaseAngle;
 
 	MFInt32 texCoordIndex;
 	MFInt32 colorIndex;
 	MFInt32 normalIndex;
 	MFInt32 coordIndex;
-	SFBool  convex;
 
 	IndexedFaceSet (X3DExecutionContext* const);
 
@@ -86,15 +88,26 @@ public:
 
 private:
 
+	typedef std::deque <size_t>    Vertices;
+	typedef std::array <size_t, 3> Triangle;
+	typedef std::deque <Triangle>  TriangleArray;
+	typedef struct
+	{
+		Vertices vertices;
+		TriangleArray triangles;
+	}
+	Polygon;
+	typedef std::deque <Polygon> PolygonArray;
+
 	virtual
 	void
 	initialize ();
 
 	void
 	set_coordIndex ();
-	          
-	void
-	tesselate (const std::deque <size_t> & polygon);
+
+	TriangleArray
+	tesselate (const Vertices & polygon);
 
 	void
 	set_texCoordIndex ();
@@ -118,8 +131,8 @@ private:
 	void
 	buildNormals ();
 
-	std::deque <std::deque <size_t>> triangles;
-	Box3f                            bbox;
+	PolygonArray polygons;
+	Box3f        bbox;
 
 };
 

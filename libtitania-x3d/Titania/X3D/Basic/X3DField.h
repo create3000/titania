@@ -49,7 +49,7 @@
 #ifndef __TITANIA_X3D_BASIC_X3DFIELD_H__
 #define __TITANIA_X3D_BASIC_X3DFIELD_H__
 
-#include "../Base/Type.h"
+#include "../Basic/FieldType.h"
 #include "../Basic/X3DFieldDefinition.h"
 #include <cassert>
 
@@ -79,11 +79,11 @@ public:
 	operator = (const ValueType &);
 
 	virtual
-	const X3DType*
+	const FieldType*
 	getType () const { return &type; }
 
 	virtual
-	const basic::id
+	const basic::id &
 	getTypeName () const
 	{
 		return getType () -> getName ();
@@ -180,7 +180,7 @@ public:
 	dispose ();
 
 	///  Type identifer for X3DFields.
-	static const Type type;
+	static const FieldType type;
 
 
 protected:
@@ -217,7 +217,7 @@ private:
 };
 
 template <class ValueType>
-const Type X3DField <ValueType>::type ("X3DField");
+const FieldType X3DField <ValueType>::type ("X3DField");
 
 template <class ValueType>
 X3DField <ValueType>::X3DField () :

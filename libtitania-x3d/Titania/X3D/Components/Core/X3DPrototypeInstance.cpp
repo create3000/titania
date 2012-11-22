@@ -90,7 +90,7 @@ X3DPrototypeInstance::initialize ()
 	assign (*proto);
 }
 
-const basic::id
+const basic::id &
 X3DPrototypeInstance::getTypeName () const
 {
 	if (proto)

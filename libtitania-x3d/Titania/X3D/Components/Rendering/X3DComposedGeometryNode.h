@@ -67,15 +67,17 @@ public:
 
 	using X3DGeometryNode::ccw;
 	using X3DGeometryNode::solid;
-
-	MFNode <X3DVertexAttributeNode>   attrib;
-	SFNode <X3DColorNode>             color;
-	SFNode <X3DCoordinateNode>        coord;
-	SFNode <FogCoordinate>            fogCoord;
-	SFNode <X3DNormalNode>            normal;
-	SFNode <X3DTextureCoordinateNode> texCoord;
+	
 	SFBool                            colorPerVertex;
 	SFBool                            normalPerVertex;
+	
+	MFNode <X3DVertexAttributeNode>   attrib;
+	SFNode <FogCoordinate>            fogCoord;
+
+	SFNode <X3DTextureCoordinateNode> texCoord;
+	SFNode <X3DColorNode>             color;
+	SFNode <X3DNormalNode>            normal;
+	SFNode <X3DCoordinateNode>        coord;
 
 
 protected:

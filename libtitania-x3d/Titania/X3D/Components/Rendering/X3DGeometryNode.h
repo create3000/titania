@@ -86,8 +86,8 @@ public:
 
 protected:
 
-	SFBool  ccw;
 	SFBool  solid;
+	SFBool  ccw;
 	SFFloat creaseAngle;
 
 	X3DGeometryNode ();

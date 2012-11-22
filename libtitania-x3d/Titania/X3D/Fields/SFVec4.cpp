@@ -52,10 +52,10 @@ namespace titania {
 namespace X3D {
 
 template <>
-const Type X3DField <Vector4d>::type ("SFVec4d");
+const FieldType X3DField <Vector4d>::type ("SFVec4d");
 
 template <>
-const Type X3DField <Vector4f>::type ("SFVec4f");
+const FieldType X3DField <Vector4f>::type ("SFVec4f");
 
 template class X3DField <Vector4d>;
 template class X3DField <Vector4f>;

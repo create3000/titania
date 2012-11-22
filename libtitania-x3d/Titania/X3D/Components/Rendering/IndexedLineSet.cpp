@@ -58,9 +58,9 @@ namespace X3D {
 IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
+	 colorPerVertex (true),                                                // SFBool  [ ]      colorPerVertex  TRUE
 	     colorIndex (),                                                    // MFInt32 [ ]      colorIndex      [ ]         [0,∞) or -1
 	     coordIndex (),                                                    // MFInt32 [ ]      coordIndex      [ ]         [0,∞) or -1                                               
-	 colorPerVertex (true),                                                // SFBool  [ ]      colorPerVertex  TRUE
 	         attrib (),                                                    // MFNode  [in,out] attrib          [ ]         [X3DVertexAttributeNode]
 	       fogCoord (),                                                    // SFNode  [in,out] fogCoord        [ ]         [FogCoordinate]
 	          color (),                                                    // SFNode  [in,out] color           NULL        [X3DColorNode]
@@ -71,9 +71,9 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	setTypeName ("IndexedLineSet");
 
 	appendField (inputOutput,    "metadata",       metadata);
+	appendField (initializeOnly, "colorPerVertex", colorPerVertex);
 	appendField (initializeOnly, "colorIndex",     colorIndex);
 	appendField (initializeOnly, "coordIndex",     coordIndex);
-	appendField (initializeOnly, "colorPerVertex", colorPerVertex);
 	appendField (inputOutput,    "attrib",         attrib);
 	appendField (inputOutput,    "fogCoord",       fogCoord);
 	appendField (inputOutput,    "color",          color);
@@ -101,6 +101,15 @@ void
 IndexedLineSet::set_coordIndex ()
 {
 	polylines .clear ();
+	
+	SFNode <Coordinate> _coord = coord;
+
+	// Fill up coordIndex if there are no indices.
+	if (coordIndex .empty ())
+	{
+		for (size_t i = 0; i < _coord -> point .size (); ++ i)
+			coordIndex .push_back (i);
+	}
 
 	if (coordIndex .size ())
 	{
@@ -145,8 +154,6 @@ IndexedLineSet::set_coordIndex ()
 
 		if (polylines .size ())
 		{
-			SFNode <Coordinate> _coord = coord;
-
 			if (_coord)
 			{
 				// Resize coord .point if to small

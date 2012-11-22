@@ -428,7 +428,6 @@
     <None Include="Titania\X3D\Basic\FieldDefinitionSet.h" />
     <None Include="Titania\X3D\Basic\FieldDefinitionArray.h" />
     <None Include="Titania\X3D\Base\GarbageCollector.h" />
-    <None Include="Titania\X3D\Base\Type.h" />
     <None Include="Titania\X3D\Types\Array.h" />
     <None Include="Titania\X3D\Types\Image.h" />
     <None Include="Titania\X3D\Types\Time.h" />
@@ -483,6 +482,8 @@
     <None Include="Titania\X3D\Execution\BindableNodeList.h" />
     <None Include="Titania\X3D\Rendering\Normal.h" />
     <None Include="Titania\X3D\Rendering\Tesselator.h" />
+    <None Include="Titania\X3D\Basic\FieldType.h" />
+    <None Include="Titania\X3D\Basic\NodeType.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -505,7 +506,6 @@
     <Compile Include="Titania\X3D\Fields\SFVec3.cpp" />
     <Compile Include="Titania\X3D\Fields\SFVec4.cpp" />
     <Compile Include="Titania\X3D\Base\GarbargeCollector.cpp" />
-    <Compile Include="Titania\X3D\Base\Type.cpp" />
     <Compile Include="Titania\X3D\Base\X3DBase.cpp" />
     <Compile Include="Titania\X3D\Base\X3DInput.cpp" />
     <Compile Include="Titania\X3D\Base\X3DObject.cpp" />
@@ -850,6 +850,8 @@
     <Compile Include="Titania\X3D\Base\Output.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DBrowserContext.cpp" />
     <Compile Include="Titania\X3D\Execution\BindableNodeList.cpp" />
+    <Compile Include="Titania\X3D\Basic\FieldType.cpp" />
+    <Compile Include="Titania\X3D\Basic\NodeType.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

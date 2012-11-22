@@ -277,17 +277,17 @@ X3DBasicNode::setTypeName (const basic::id & value)
 const X3DType*
 X3DBasicNode::getType () const
 {
-	return reinterpret_cast <const X3DType*> (&typeid (*this));
+	return reinterpret_cast <const X3DType*> (this);
 }
 
-const basic::id
+const basic::id &
 X3DBasicNode::getTypeName () const
 {
 	return typeName;
 }
 
 void
-X3DBasicNode::addNodeType (const NodeType value)
+X3DBasicNode::addNodeType (const NodeTypes value)
 {
 	//	std::clog << __FILE__ << ":" << __LINE__ << ": in function " << __func__ << ": " << Generator::NodeTypes .at (value) << std::endl;
 	nodeType .push_back (value);

@@ -95,7 +95,7 @@ public:
 	{ }
 
 	virtual
-	const X3DType*
+	const FieldType*
 	getType () const { return &X3DField <Array <SFNode <X3DBasicNode>>>::type; }
 
 	virtual

@@ -52,10 +52,10 @@ namespace titania {
 namespace X3D {
 
 template <>
-const Type X3DField <Matrix3d>::type ("SFMatrix3d");
+const FieldType X3DField <Matrix3d>::type ("SFMatrix3d");
 
 template <>
-const Type X3DField <Matrix3f>::type ("SFMatrix3f");
+const FieldType X3DField <Matrix3f>::type ("SFMatrix3f");
 
 template class X3DField <Matrix3d>;
 template class X3DField <Matrix3f>;
