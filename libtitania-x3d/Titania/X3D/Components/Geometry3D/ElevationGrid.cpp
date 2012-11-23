@@ -244,8 +244,6 @@ ElevationGrid::createPoints ()
 void
 ElevationGrid::build ()
 {
-	X3DGeometryNode::build ();
-
 	if (xDimension < 2 or zDimension < 2)
 		return;
 

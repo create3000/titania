@@ -83,8 +83,6 @@ PointSet::create (X3DExecutionContext* const executionContext) const
 void
 PointSet::build ()
 {
-	X3DGeometryNode::build ();
-
 	SFNode <Coordinate> _coord = coord;
 
 	if (not _coord or not _coord -> point .size ())

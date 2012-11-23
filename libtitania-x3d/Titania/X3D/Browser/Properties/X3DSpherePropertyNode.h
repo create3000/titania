@@ -59,9 +59,42 @@ class X3DSpherePropertyNode :
 {
 public:
 
-	X3DSpherePropertyNode () :
-		X3DPropertyNode ()
-	{ }
+	X3DSpherePropertyNode ();
+
+	const std::vector <Vector2f> &
+	getTexCoord () const { return texCoord; }
+
+	const std::vector <Vector3f> &
+	getNormals () const { return normals; }
+
+	const std::vector <Vector3f> &
+	getVertices () const { return vertices; }
+
+
+protected:
+
+	std::vector <Vector2f> &
+	getTexCoord () { return texCoord; }
+
+	std::vector <Vector3f> &
+	getNormals () { return normals; }
+
+	std::vector <Vector3f> &
+	getVertices () { return vertices; }
+
+	void
+	update ();
+
+	virtual
+	void
+	build () = 0;
+
+
+private:
+
+	std::vector <Vector2f> texCoord;
+	std::vector <Vector3f> normals;
+	std::vector <Vector3f> vertices;
 
 };
 

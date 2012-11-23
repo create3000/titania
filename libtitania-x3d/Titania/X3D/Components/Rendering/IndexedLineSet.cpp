@@ -218,8 +218,6 @@ IndexedLineSet::set_colorIndex ()
 void
 IndexedLineSet::build ()
 {
-	X3DGeometryNode::build ();
-
 	SFNode <Coordinate> _coord = coord;
 
 	if (not _coord or not _coord -> point .size ())

@@ -51,6 +51,8 @@
 #include "../Configuration/config.h"
 #include <Titania/X3D/Components/Networking/X3DUrlObject.h>
 
+#include <Titania/gzstream.h>
+#include <fstream>
 #include <iostream>
 
 namespace titania {
@@ -90,6 +92,16 @@ void
 X3DBrowserWindow::initialize ()
 {
 	X3DBrowserWindowUI::initialize ();
+
+	// FileOpenDialog
+	getFileOpenDialog () .set_default_response (Gtk::RESPONSE_OK);
+	getFileOpenDialog () .add_button ("gtk-open", Gtk::RESPONSE_OK);
+	getFileOpenDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
+
+	// FileSaveDialog
+	getFileSaveDialog () .set_default_response (Gtk::RESPONSE_OK);
+	getFileSaveDialog () .add_button ("gtk-save", Gtk::RESPONSE_OK);
+	getFileSaveDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
 
 	// AddTabLabel
 
@@ -147,6 +159,8 @@ X3DBrowserWindow::restoreSession ()
 {
 	Configuration sessions = getConfig () .getDirectory ("Sessions");
 
+	// Notebook
+
 	// Start with home page when no sessions exists.
 
 	if (not getConfig () .integer ("sessions"))
@@ -164,11 +178,67 @@ X3DBrowserWindow::restoreSession ()
 		insertPage (position);
 
 	setCurrentPage (getConfig () .integer ("currentPage"));
+	
+	// Restore Menu Configuration
+	// from Config
+	
+	//	// ToolBar
+	//	if (getConfig () .boolean ("toolBar"))
+	//		getToolBarMenuItem () .activate ();
+
+	// Naviagtion
+	if (getConfig () .boolean ("navigationBar"))
+		getNavigationBarMenuItem () .activate ();
+
+	// SideBar
+	if (getConfig () .boolean ("sideBar"))
+		getSideBarMenuItem () .activate ();
+
+	// Footer
+	if (getConfig () .boolean ("footer"))
+		getFooterMenuItem () .activate ();
+
+	// Shading
+	if (getConfig () .string ("shading") == "PHONG")
+		getPhongMenuItem () .activate ();
+	else if (getConfig () .string ("shading") == "GOURAUD")
+		getGouraudMenuItem () .activate ();
+	else if (getConfig () .string ("shading") == "FLAT")
+		getFlatMenuItem () .activate ();
+	else if (getConfig () .string ("shading") == "WIREFRAME")
+		getWireFrameMenuItem () .activate ();
+	else if (getConfig () .string ("shading") == "POINTSET")
+		getPointSetMenuItem () .activate ();
+
+	getBrowser () -> getBrowserOptions () -> shading = getConfig () .string ("shading");
+
+	// PrimitiveQuality
+	if (getConfig () .string ("primitiveQuality") == "HIGH")
+		getHighQualityMenuItem () .activate ();
+	else if (getConfig () .string ("primitiveQuality") == "MEDIUM")
+		getMediumQualityMenuItem () .activate ();
+	else if (getConfig () .string ("primitiveQuality") == "LOW")
+		getLowQualityMenuItem () .activate ();
+
+	getBrowser () -> getBrowserOptions () -> primitiveQuality = getConfig () .string ("primitiveQuality");
+	
+	// RenderingProperties
+	getRenderingPropertiesMenuItem () .set_active (getConfig () .boolean ("renderingProperties"));
 }
 
 void
-X3DBrowserWindow::close ()
+X3DBrowserWindow::saveSession ()
 {
+	getConfig () .setItem ("navigationBar", getNavigationBarMenuItem () .get_active ());
+	getConfig () .setItem ("sideBar",       getSideBarMenuItem ()       .get_active ());
+	getConfig () .setItem ("footer",        getFooterMenuItem  ()       .get_active ());
+
+	getConfig () .setItem ("shading",          getBrowser () -> getBrowserOptions () -> shading);
+	getConfig () .setItem ("primitiveQuality", getBrowser () -> getBrowserOptions () -> primitiveQuality);
+	getConfig () .setItem ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
+	
+	// Notebook
+
 	// Remove sessions.
 		
 	resizeSession (browserWidgets .size ());
@@ -180,8 +250,6 @@ X3DBrowserWindow::close ()
 
 	for (size_t i = 0; i < browserWidgets .size (); ++ i)
 		browserWidgets [i] -> saveSession (getConfig () .getSession (i) .getKey ());
-
-	quit ();
 }
 
 void
@@ -192,6 +260,33 @@ X3DBrowserWindow::resizeSession (size_t size)
 
 	for (size_t i = size; i < numSessions; ++ i)
 		sessions .getDirectory (std::to_string (i)) .remove ();
+}
+
+void
+X3DBrowserWindow::save (const basic::uri & worldURL)
+{
+	if (getSaveCompressedButton () .get_active ())
+	{
+		ogzstream file (worldURL);
+		file << X3D::CleanStyle << getBrowser () -> getExecutionContext () << std::flush;
+		file .close ();
+	}
+	else
+	{
+		std::ofstream file (worldURL);
+		file << X3D::CompactStyle << getBrowser () -> getExecutionContext () << std::flush;
+		file .close ();
+	}
+
+	//update_location ();
+}
+
+void
+X3DBrowserWindow::close ()
+{
+	X3DBrowserWindowUI::close ();
+
+	quit ();
 }
 
 // X3DX3DBrowserWindowUserInterace
@@ -311,6 +406,21 @@ X3DBrowserWindow::insertPage (size_t position)
 	// Set tab label.
 
 	setTabLabel (*box);
+	
+	// Apply Menu Configuration
+
+	// Naviagtion
+	if (getConfig () .boolean ("navigationBar"))
+		browserWidget -> getNavigationBar () .show ();
+
+	// SideBar
+	if (getConfig () .boolean ("sideBar"))
+		browserWidget -> getSideBar () .show ();
+
+	// Footer
+	if (getConfig () .boolean ("footer"))
+		browserWidget -> getFooter () .show ();
+
 }
 
 void
@@ -338,7 +448,7 @@ X3DBrowserWindow::setTabLabel (Gtk::Widget & child)
 	close -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserWindow::on_close_tab), sigc::ref (child)));
 
 	close     -> set_image (*Gtk::manage (closeImage));
-	tab_label -> pack_end (*Gtk::manage (close), true, true, 0);
+	tab_label -> pack_end (*Gtk::manage (close), true, false, 0);
 	tab_label -> get_style_context () -> add_class ("TabLabel");
 	tab_label -> show_all ();
 

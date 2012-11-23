@@ -48,13 +48,14 @@
 
 #include "BrowserOptions.h"
 
-extern "C"
-{
-#include <GL/glx.h>
-}
-
+#include "../Properties/QuadSphereProperties.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include <Titania/Bits/String/Join.h>
+
+extern "C"
+{
+#include <GL/gl.h>
+}
 
 namespace titania {
 namespace X3D {
@@ -82,7 +83,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	               shading ("GOURAUD"),                                           
 	          splashScreen (false),                                               
 	        textureQuality ("MEDIUM"),                                            
-	            quadSphere (new QuadSphereProperties (executionContext))          
+	      sphereProperties (new QuadSphereProperties (executionContext))          
 {
 	setComponent ("Browser"),
 	setTypeName ("BrowserOptions");
@@ -95,7 +96,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput, "shading",                shading);
 	appendField (inputOutput, "splashScreen",           splashScreen);
 	appendField (inputOutput, "textureQuality",         textureQuality);
-	appendField (inputOutput, "quadSphere",             quadSphere);
+	appendField (inputOutput, "sphereProperties",       sphereProperties);
 }
 
 BrowserOptions*
@@ -109,11 +110,50 @@ BrowserOptions::initialize ()
 {
 	X3DPropertyNode::initialize ();
 
-	quadSphere -> setup ();
+	sphereProperties -> setup ();
 
-	shading .addInterest (this, &BrowserOptions::set_shading);
+	primitiveQuality .addInterest (this, &BrowserOptions::set_primitiveQuality);
+	shading          .addInterest (this, &BrowserOptions::set_shading);
 	
+	set_primitiveQuality ();
 	set_shading ();
+}
+
+void
+BrowserOptions::set_primitiveQuality ()
+{
+	std::clog << "Setting primitive quality to " << primitiveQuality << "." << std::endl;
+
+	if (primitiveQuality == "LOW")
+	{
+		SFNode <QuadSphereProperties> quadSphereProperties = sphereProperties;
+		
+		if (quadSphereProperties)
+		{
+			quadSphereProperties -> uDimension = 20;
+			quadSphereProperties -> vDimension = 10;
+		}
+	}
+	else if (primitiveQuality == "MEDIUM")
+	{
+		SFNode <QuadSphereProperties> quadSphereProperties = sphereProperties;
+		
+		if (quadSphereProperties)
+		{
+			quadSphereProperties -> uDimension = 40;
+			quadSphereProperties -> vDimension = 20;
+		}
+	}
+	else if (primitiveQuality == "HIGH")
+	{
+		SFNode <QuadSphereProperties> quadSphereProperties = sphereProperties;
+		
+		if (quadSphereProperties)
+		{
+			quadSphereProperties -> uDimension = 80;
+			quadSphereProperties -> vDimension = 40;
+		}
+	}
 }
 
 void

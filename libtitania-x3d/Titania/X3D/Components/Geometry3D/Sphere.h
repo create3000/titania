@@ -60,19 +60,14 @@ class Sphere :
 {
 public:
 
-	using X3DGeometryNode::solid;
-
 	SFFloat radius;
+	using X3DGeometryNode::solid;
 
 	Sphere (X3DExecutionContext* const);
 
 	virtual
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
-
-	static
-	void
-	setProperties (const SFNode <X3DSpherePropertyNode> &);
 
 	virtual
 	void
@@ -82,32 +77,19 @@ public:
 private:
 
 	virtual
+	void
+	initialize ();
+
+	void
+	set_properties ();
+
+	virtual
 	Box3f
 	createBBox ();
-
-	static MFInt32
-	createIndices ();
-
-	static MFInt32
-	createTexIndices ();
-
-	static MFVec2f
-	createTexCoord ();
-
-	static MFVec3f
-	createPoints ();
 
 	virtual
 	void
 	build ();
-
-	static SFInt32 uDimension;
-	static SFInt32 vDimension;
-
-	static MFInt32 indices;
-	static MFInt32 texIndices;
-	static MFVec2f texCoord;
-	static MFVec3f points;
 
 };
 

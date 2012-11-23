@@ -51,7 +51,7 @@
 
 #include "../../Components/Core/X3DPropertyNode.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Properties/QuadSphereProperties.h"
+#include "../Properties/X3DSpherePropertyNode.h"
 
 namespace titania {
 namespace X3D {
@@ -82,7 +82,8 @@ public:
 	SFString                      shading;
 	SFBool                        splashScreen;
 	SFString                      textureQuality;
-	SFNode <QuadSphereProperties> quadSphere;
+	
+	SFNode <X3DSpherePropertyNode> sphereProperties;
 
 	BrowserOptions (X3DExecutionContext* const);
 
@@ -96,6 +97,9 @@ private:
 	virtual
 	void
 	initialize ();
+
+	void
+	set_primitiveQuality ();
 
 	void
 	set_shading ();

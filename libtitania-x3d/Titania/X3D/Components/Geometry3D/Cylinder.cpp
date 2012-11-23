@@ -103,8 +103,6 @@ Cylinder::createBBox ()
 void
 Cylinder::build ()
 {
-	X3DGeometryNode::build ();
-
 	float y1      = height / 2;
 	float y2      = -y1;
 	float _radius = radius;

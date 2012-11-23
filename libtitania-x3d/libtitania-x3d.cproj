@@ -852,6 +852,7 @@
     <Compile Include="Titania\X3D\Execution\BindableNodeList.cpp" />
     <Compile Include="Titania\X3D\Basic\FieldType.cpp" />
     <Compile Include="Titania\X3D\Basic\NodeType.cpp" />
+    <Compile Include="Titania\X3D\Browser\Properties\X3DSpherePropertyNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

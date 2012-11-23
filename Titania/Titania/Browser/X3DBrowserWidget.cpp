@@ -53,9 +53,6 @@
 #include <Titania/Bits/String.h>
 #include <Titania/Chrono/Now.h>
 
-#include <Titania/gzstream.h>
-#include <fstream>
-
 #include "Image.h"
 
 namespace titania {
@@ -161,6 +158,12 @@ X3DBrowserWidget::home ()
 }
 
 void
+X3DBrowserWidget::reload ()
+{
+	loadURL ({ getExecutionContext () -> getWorldURL () });
+}
+
+void
 X3DBrowserWidget::setDescription (const std::string & value)
 throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
        X3D::Error <X3D::DISPOSED>)
@@ -191,25 +194,6 @@ throw (X3D::Error <X3D::INVALID_URL>,
 	}
 	catch (...)
 	{ }
-}
-
-void
-X3DBrowserWidget::save (const basic::uri & worldURL)
-{
-	if (getSaveCompressedButton () .get_active ())
-	{
-		ogzstream file (worldURL);
-		file << X3D::CleanStyle << getBrowser () -> getExecutionContext () << std::flush;
-		file .close ();
-	}
-	else
-	{
-		std::ofstream file (worldURL);
-		file << X3D::CompactStyle << getBrowser () -> getExecutionContext () << std::flush;
-		file .close ();
-	}
-
-	//update_location ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -309,13 +293,6 @@ X3DBrowserWidget::updateLocation ()
 	const auto & worldURL = getExecutionContext () -> getWorldURL ();
 
 	getLocationEntry () .set_text (worldURL .str ());
-
-	if (worldURL .length () and worldURL .is_local ())
-	{
-		getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
-		getFileSaveDialog () .set_current_folder_uri (worldURL .base () .str ());
-	}
-
 }
 
 void
@@ -376,7 +353,7 @@ X3DBrowserWidget::updateViewpoints (/* X3D::SFNode <X3D::World> & world */)
 
 	submenu -> show_all ();
 
-	getViewpointsMenuItem () .set_submenu (*submenu);
+	//getViewpointsMenuItem () .set_submenu (*submenu);
 }
 
 // Destructor

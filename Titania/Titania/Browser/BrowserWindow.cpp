@@ -55,6 +55,268 @@ BrowserWindow::BrowserWindow (int & argc, char** & argv) :
 	X3DBrowserWindow (argc, argv) 
 { }
 
+// File menu
+
+void
+BrowserWindow::on_new ()
+{
+	getBrowserWidget () -> blank ();
+}
+
+void
+BrowserWindow::on_home ()
+{
+	getBrowserWidget () -> home ();
+}
+
+void
+BrowserWindow::on_open ()
+{
+	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+
+	if (worldURL .length () and worldURL .is_local ())
+		getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
+
+	getFileOpenDialog () .present ();
+}
+
+void
+BrowserWindow::on_save ()
+{
+	if (getExecutionContext () -> getWorldURL () .empty ())
+		on_save_as ();
+
+	else
+		save (getExecutionContext () -> getWorldURL ());
+}
+
+void
+BrowserWindow::on_save_as ()
+{
+	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	
+	if (worldURL .length () and worldURL .is_local ())
+		getFileSaveDialog () .set_current_folder_uri (worldURL .base () .str ());
+
+	getFileSaveDialog () .present ();
+}
+
+void
+BrowserWindow::on_close ()
+{ }
+
+void
+BrowserWindow::on_revert_to_saved ()
+{
+	getBrowserWidget () -> reload ();
+}
+
+void
+BrowserWindow::on_reload ()
+{
+	getBrowserWidget () -> reload ();
+}
+
+// Dialog response handling
+
+void
+BrowserWindow::on_fileOpenDialog_response (int response_id)
+{
+	getFileOpenDialog () .hide ();
+
+	if (response_id == Gtk::RESPONSE_OK)
+		getBrowserWidget () -> loadURL ({ getFileOpenDialog () .get_uri () });
+
+	else
+		getFileOpenDialog () .set_current_folder_uri (getExecutionContext () -> getWorldURL () .base () .str ());
+}
+
+void
+BrowserWindow::on_fileSaveDialog_response (int response_id)
+{
+	getFileSaveDialog () .hide ();
+
+	if (response_id == Gtk::RESPONSE_OK)
+		save (getFileSaveDialog () .get_filename ());
+
+	else
+		getFileSaveDialog () .set_current_folder_uri (getExecutionContext () -> getWorldURL () .base () .str ());
+}
+
+// View menu
+
+void
+BrowserWindow::on_toolBar_toggled ()
+{
+	//toggleWidget (getToolBarMenuItem () .get_active (), getBrowserWidget () -> getToolbar ());
+}
+
+void
+BrowserWindow::on_navigationBar_toggled ()
+{
+	toggleWidget (getNavigationBarMenuItem () .get_active (), getBrowserWidget () -> getNavigationBar ());
+}
+
+void
+BrowserWindow::on_sideBar_toggled ()
+{
+	toggleWidget (getSideBarMenuItem () .get_active (), getBrowserWidget () -> getSideBar ());
+}
+
+void
+BrowserWindow::on_footer_toggled ()
+{
+	toggleWidget (getFooterMenuItem () .get_active (), getBrowserWidget () -> getFooter ());
+}
+
+void
+BrowserWindow::on_statusBar_toggled ()
+{
+	toggleWidget (getStatusBarMenuItem () .get_active (), getBrowserWidget () -> getStatusBar ());
+}
+
+// Shading menu
+
+void
+BrowserWindow::phong_activate ()
+{
+	if (not getPhongMenuItem () .get_active ())
+			return;
+		
+	getBrowser () -> getBrowserOptions () -> shading = "PHONG";
+}
+
+void
+BrowserWindow::gouraud_activate ()
+{
+	if (not getGouraudMenuItem () .get_active ())
+		return;
+
+	getBrowser () -> getBrowserOptions () -> shading = "GOURAUD";
+}
+
+void
+BrowserWindow::flat_activate ()
+{
+	if (not getFlatMenuItem () .get_active ())
+		return;
+
+	getBrowser () -> getBrowserOptions () -> shading = "FLAT";
+}
+
+void
+BrowserWindow::wireframe_activate ()
+{
+	if (not getWireFrameMenuItem () .get_active ())
+		return;
+
+	getBrowser () -> getBrowserOptions () -> shading = "WIREFRAME";
+}
+
+void
+BrowserWindow::pointset_activate ()
+{
+	if (not getPointSetMenuItem () .get_active ())
+		return;
+
+	getBrowser () -> getBrowserOptions () -> shading = "POINTSET";
+}
+
+// Primitive Quality
+
+void
+BrowserWindow::on_low_quality_activate ()
+{
+	if (not getLowQualityMenuItem () .get_active ())
+		return;
+
+	getBrowser () -> getBrowserOptions () -> primitiveQuality = "LOW";
+}
+
+void
+BrowserWindow::on_medium_quality_activate ()
+{
+	if (not getMediumQualityMenuItem () .get_active ())
+		return;
+
+	getBrowser () -> getBrowserOptions () -> primitiveQuality = "MEDIUM";
+}
+
+void
+BrowserWindow::on_high_quality_activate ()
+{
+	if (not getHighQualityMenuItem () .get_active ())
+		return;
+
+	getBrowser () -> getBrowserOptions () -> primitiveQuality = "HIGH";
+}
+
+// RenderingProperties
+
+void
+BrowserWindow::on_rendering_properties_toggled ()
+{
+	getBrowser () -> getRenderingProperties () -> enabled = getRenderingPropertiesMenuItem () .get_active ();
+}
+
+// Fullscreen
+
+void
+BrowserWindow::on_fullscreen_toggled ()
+{
+	if (getFullScreenMenuItem () .get_active ())
+		getWindow () .fullscreen ();
+
+	else
+		getWindow () .unfullscreen ();
+}
+
+// Navigation menu
+
+void
+BrowserWindow::on_headlight_toggled ()
+{
+	const X3D::SFNode <X3D::NavigationInfo> & navigationInfo = getBrowser () -> getActiveNavigationInfo ();
+
+	navigationInfo -> headlight = getHeadlightMenuItem () .get_active ();
+}
+
+void
+BrowserWindow::on_show_all_toggled ()
+{
+	getBrowser () -> getExecutionContext () -> getActiveLayer () -> showAllObjects ();
+}
+
+// Editor handling
+
+void
+BrowserWindow::on_outline_editor_activate ()
+{
+	//getOutlineEditor () .getWindow () .present ();
+}
+
+void
+BrowserWindow::on_viewpoint_editor_activate ()
+{
+	//getViewpointEditor () .getWindow () .present ();
+}
+
+void
+BrowserWindow::on_motion_blur_editor_activate ()
+{
+	//getMotionBlurEditor () .getWindow () .present ();
+}
+
+// Help menu
+
+void
+BrowserWindow::on_info ()
+{
+	getBrowserWidget () -> loadURL ({ "about:info" });
+}
+
+// Notebook handling
+
 void
 BrowserWindow::on_switch_page (Gtk::Widget* page, guint page_num)
 {

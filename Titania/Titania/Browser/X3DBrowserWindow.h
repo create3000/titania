@@ -71,6 +71,12 @@ public:
 	void
 	restoreSession ();
 
+	void
+	saveSession ();
+
+	void
+	save (const basic::uri &);
+
 	virtual
 	void
 	close ();

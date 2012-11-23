@@ -73,16 +73,6 @@ X3DBrowserUserInterface::initialize ()
 	// Add IconFactory to the list of icon factories searched by Gtk::Style::lookup_icon_set ().
 	getIconFactory () -> add_default ();
 
-	// FileOpenDialog
-	getFileOpenDialog () .set_default_response (Gtk::RESPONSE_OK);
-	getFileOpenDialog () .add_button ("gtk-open", Gtk::RESPONSE_OK);
-	getFileOpenDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
-
-	// FileSaveDialog
-	getFileSaveDialog () .set_default_response (Gtk::RESPONSE_OK);
-	getFileSaveDialog () .add_button ("gtk-save", Gtk::RESPONSE_OK);
-	getFileSaveDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
-
 	// MotionBlurEditor
 	getMotionBlurEditor () .getWindow () .set_transient_for (getWindow ());
 
@@ -110,39 +100,8 @@ X3DBrowserUserInterface::restoreSession ()
 	if (getConfig () .integer ("hPaned"))
 		getHPaned () .set_position (getConfig () .integer ("hPaned"));
 
-	// ToolBar
-	if (getConfig () .boolean ("toolBar"))
-		getToolBarMenuItem () .activate ();
-
-	// Naviagtion
-	if (getConfig () .boolean ("navigationBar"))
-		getNavigationBarMenuItem () .activate ();
-
-	// SideBar
-	if (getConfig () .boolean ("sideBar"))
-		getSideBarAction () -> activate ();
-
 	getSideBarNotebook () .set_current_page (getConfig () .integer ("sidebarCurrentPage"));
-	
-	// Shading
-	if (getConfig () .string ("shading") == "GOURAUD")
-		getGouraudMenuItem () .activate ();
-	else if (getConfig () .string ("shading") == "WIREFRAME")
-		getWireFrameMenuItem () .activate ();
-	else if (getConfig () .string ("shading") == "POINTSET")
-		getPointSetMenuItem () .activate ();
-
-	getBrowser () -> getBrowserOptions () -> shading = getConfig () .string ("shading");
-
-	// RenderingProperties
-	getRenderingPropertiesMenuItem () .set_active (getConfig () .boolean ("renderingProperties"));
-
-	// Footer
-	if (getConfig () .boolean ("footer"))
-		getFooterAction () -> activate ();
-
-	getFooterNotebook () .set_current_page (getConfig () .integer ("footerCurrentPage"));
-
+	getFooterNotebook ()  .set_current_page (getConfig () .integer ("footerCurrentPage"));
 }
 
 void
@@ -159,14 +118,6 @@ X3DBrowserUserInterface::saveSession ()
 
 	getConfig () .setItem ("vPaned", getVPaned () .get_position ());
 	getConfig () .setItem ("hPaned", getHPaned () .get_position ());
-
-	getConfig () .setItem ("toolBar",       getToolBarMenuItem ()       .get_active ());
-	getConfig () .setItem ("navigationBar", getNavigationBarMenuItem () .get_active ());
-	getConfig () .setItem ("sideBar",       getSideBarMenuItem ()       .get_active ());
-	getConfig () .setItem ("footer",        getFooterMenuItem  ()       .get_active ());
-
-	getConfig () .setItem ("shading", getBrowser () -> getBrowserOptions () -> shading);
-	getConfig () .setItem ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
 
 	getConfig () .setItem ("sidebarCurrentPage", getSideBarNotebook () .get_current_page ());
 	getConfig () .setItem ("footerCurrentPage",  getFooterNotebook  () .get_current_page ());

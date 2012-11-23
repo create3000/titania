@@ -81,8 +81,6 @@ Box::createBBox ()
 void
 Box::build ()
 {
-	X3DGeometryNode::build ();
-
 	getTexCoord () .reserve (24);
 	getNormals ()  .reserve (24);
 	getVertices () .reserve (24);

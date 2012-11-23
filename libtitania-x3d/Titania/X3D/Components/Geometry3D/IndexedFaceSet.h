@@ -118,6 +118,7 @@ private:
 	void
 	set_normalIndex ();
 
+	virtual
 	Box3f
 	createBBox ();
 

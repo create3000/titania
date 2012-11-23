@@ -198,6 +198,7 @@ X3DUserInterface::saveSession ()
 void
 X3DUserInterface::close ()
 {
+	saveSession ();
 	getWindow () .hide ();
 }
 

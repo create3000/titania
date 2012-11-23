@@ -55,7 +55,7 @@ BrowserWidget::BrowserWidget (const std::string & sessionKey, X3DBrowserInterfac
 	X3DBrowserWidget (sessionKey, browserWidget) 
 { }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Init
 
 void
 BrowserWidget::initialize ()
@@ -79,13 +79,29 @@ BrowserWidget::on_unmap ()
 	getBrowser () -> endUpdate ();
 }
 
-// File ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Dialog response handling
 
 void
-BrowserWidget::on_new ()
+BrowserWidget::messageDialogResponse (int response_id)
 {
-	blank ();
+	getMessageDialog () .hide ();
 }
+
+// Bar view handling
+
+void
+BrowserWidget::on_footer_toggled ()
+{
+
+}
+
+void
+BrowserWidget::on_sideBar_toggled ()
+{
+
+}
+
+// Toolbar handling
 
 void
 BrowserWidget::on_home ()
@@ -94,256 +110,12 @@ BrowserWidget::on_home ()
 }
 
 void
-BrowserWidget::on_open ()
-{
-	getFileOpenDialog () .present ();
-}
-
-void
-BrowserWidget::on_save ()
-{
-	if (getExecutionContext () -> getWorldURL () .empty ())
-		getFileSaveDialog () .present ();
-	else
-		save (getExecutionContext () -> getWorldURL ());
-}
-
-void
-BrowserWidget::on_save_as ()
-{
-	getFileSaveDialog () .present ();
-}
-
-void
-BrowserWidget::on_close ()
-{ }
-
-void
-BrowserWidget::on_revert_to_saved ()
-{
-	loadURL ({ getExecutionContext () -> getWorldURL () });
-}
-
-void
 BrowserWidget::on_reload ()
 {
-	loadURL ({ getExecutionContext () -> getWorldURL () });
+	reload ();
 }
 
-// Dialog response handling ////////////////////////////////////////////////////////////////////////////////////////////
-
-void
-BrowserWidget::on_fileOpenDialog_response (int response_id)
-{
-	getFileOpenDialog () .hide ();
-
-	if (response_id == Gtk::RESPONSE_OK)
-		loadURL ({ getFileOpenDialog () .get_uri () });
-
-	else
-		getFileOpenDialog () .set_current_folder_uri (getExecutionContext () -> getWorldURL () .base () .str ());
-}
-
-void
-BrowserWidget::on_fileSaveDialog_response (int response_id)
-{
-	getFileSaveDialog () .hide ();
-
-	if (response_id == Gtk::RESPONSE_OK)
-		save (getFileSaveDialog () .get_filename ());
-
-	else
-		getFileSaveDialog () .set_current_folder_uri (getExecutionContext () -> getWorldURL () .base () .str ());
-}
-
-void
-BrowserWidget::messageDialogResponse (int response_id)
-{
-	getMessageDialog () .hide ();
-}
-
-// View ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void
-BrowserWidget::on_toolBar_toggled ()
-{
-	toggleWidget (getToolBarMenuItem () .get_active (), getToolbar ());
-}
-
-void
-BrowserWidget::on_navigationBar_toggled ()
-{
-	toggleWidget (getNavigationBarMenuItem () .get_active (), getNavigationBar ());
-}
-
-void
-BrowserWidget::on_sideBar_toggled ()
-{
-	toggleWidget (getSideBarAction () -> get_active (), getSideBar ());
-}
-
-void
-BrowserWidget::on_footer_toggled ()
-{
-	toggleWidget (getFooterAction () -> get_active (), getFooter ());
-}
-
-void
-BrowserWidget::on_statusBar_toggled ()
-{
-	toggleWidget (getStatusBarMenuItem () .get_active (), getStatusBar ());
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void
-BrowserWidget::phong_activate ()
-{
-	if (not getPhongMenuItem () .get_active ())
-			return;
-		
-	getBrowser () -> getBrowserOptions () -> shading = "PHONG";
-}
-
-void
-BrowserWidget::gouraud_activate ()
-{
-	if (not getGouraudMenuItem () .get_active ())
-		return;
-
-	getBrowser () -> getBrowserOptions () -> shading = "GOURAUD";
-}
-
-void
-BrowserWidget::flat_activate ()
-{
-	if (not getFlatMenuItem () .get_active ())
-		return;
-
-	getBrowser () -> getBrowserOptions () -> shading = "FLAT";
-}
-
-void
-BrowserWidget::wireframe_activate ()
-{
-	if (not getWireFrameMenuItem () .get_active ())
-		return;
-
-	getBrowser () -> getBrowserOptions () -> shading = "WIREFRAME";
-}
-
-void
-BrowserWidget::pointset_activate ()
-{
-	if (not getPointSetMenuItem () .get_active ())
-		return;
-
-	getBrowser () -> getBrowserOptions () -> shading = "POINTSET";
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void
-BrowserWidget::on_low_quality_activate ()
-{
-	if (not getLowQualityMenuItem () .get_active ())
-		return;
-
-	std::clog << "Setting render quality to low." << std::endl;
-
-	getBrowser () -> getBrowserOptions () -> quadSphere -> uDimension = 20;
-	getBrowser () -> getBrowserOptions () -> quadSphere -> vDimension = 10;
-}
-
-void
-BrowserWidget::on_medium_quality_activate ()
-{
-	if (not getMediumQualityMenuItem () .get_active ())
-		return;
-
-	std::clog << "Setting render quality to medium." << std::endl;
-
-	getBrowser () -> getBrowserOptions () -> quadSphere -> uDimension = 40;
-	getBrowser () -> getBrowserOptions () -> quadSphere -> vDimension = 20;
-}
-
-void
-BrowserWidget::on_high_quality_activate ()
-{
-	if (not getHighQualityMenuItem () .get_active ())
-		return;
-
-	std::clog << "Setting render quality to high." << std::endl;
-
-	getBrowser () -> getBrowserOptions () -> quadSphere -> uDimension = 60;
-	getBrowser () -> getBrowserOptions () -> quadSphere -> vDimension = 30;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void
-BrowserWidget::on_rendering_properties_toggled ()
-{
-	getBrowser () -> getRenderingProperties () -> enabled = getRenderingPropertiesMenuItem () .get_active ();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void
-BrowserWidget::on_fullscreen_toggled ()
-{
-	if (getFullScreenMenuItem () .get_active ())
-		getWindow () .fullscreen ();
-
-	else
-		getWindow () .unfullscreen ();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void
-BrowserWidget::on_headlight_toggled ()
-{
-	const X3D::SFNode <X3D::NavigationInfo> & navigationInfo = getBrowser () -> getActiveNavigationInfo ();
-
-	navigationInfo -> headlight = getHeadlightMenuItem () .get_active ();
-}
-
-void
-BrowserWidget::on_show_all_toggled ()
-{
-	getBrowser () -> getExecutionContext () -> getActiveLayer () -> showAllObjects ();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void
-BrowserWidget::on_outline_editor_activate ()
-{
-	getOutlineEditor () .getWindow () .present ();
-}
-
-void
-BrowserWidget::on_viewpoint_editor_activate ()
-{
-	getViewpointEditor () .getWindow () .present ();
-}
-
-void
-BrowserWidget::on_motion_blur_editor_activate ()
-{
-	getMotionBlurEditor () .getWindow () .present ();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void
-BrowserWidget::on_info ()
-{
-	loadURL ({ "about:info" });
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Browser toolbar handling
 
 void
 BrowserWidget::on_arrow_button_toggled ()
@@ -367,6 +139,12 @@ BrowserWidget::on_hand_button_toggled ()
 
 	//	getBrowser () -> setEditMode (false);
 	//	getStatusBar () .push ("Browser mode");
+}
+
+void
+BrowserWidget::on_show_all_toggled ()
+{
+	getBrowser () -> getExecutionContext () -> getActiveLayer () -> showAllObjects ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -400,7 +178,7 @@ BrowserWidget::on_locationEntryIcon_activate (Gtk::EntryIconPosition icon_positi
 			{
 				case 1: // Left Button
 				{
-					getFileOpenDialog () .present ();
+					//getFileOpenDialog () .present ();
 					break;
 				}
 			}

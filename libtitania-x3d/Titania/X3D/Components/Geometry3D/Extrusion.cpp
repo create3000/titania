@@ -252,8 +252,6 @@ Extrusion::createRotations ()
 void
 Extrusion::build ()
 {
-	X3DGeometryNode::build ();
-
 	if (spine .size () < 2 or crossSection .size () < 3)
 		return;
 

@@ -49,21 +49,11 @@
 #include "Sphere.h"
 
 #include "../../Browser/Properties/QuadSphereProperties.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include <Titania/Math/Math.h>
-#include <complex>
-#include <iostream>
 
 namespace titania {
 namespace X3D {
-
-SFInt32 Sphere::uDimension (20);
-SFInt32 Sphere::vDimension (10);
-
-MFInt32 Sphere::indices    = createIndices    ();
-MFInt32 Sphere::texIndices = createTexIndices ();
-MFVec2f Sphere::texCoord   = createTexCoord   ();
-MFVec3f Sphere::points     = createPoints     ();
 
 Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
@@ -76,8 +66,6 @@ Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput,    "metadata", metadata);
 	appendField (initializeOnly, "radius",   radius);
 	appendField (initializeOnly, "solid",    solid);
-
-	setChildren (uDimension, vDimension);
 }
 
 X3DBasicNode*
@@ -87,25 +75,17 @@ Sphere::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Sphere::setProperties (const SFNode <X3DSpherePropertyNode> & properties)
+Sphere::initialize ()
 {
-	SFNode <QuadSphereProperties> quadSphereProperties = properties;
+	X3DGeometryNode::initialize ();
 
-	if (quadSphereProperties)
-	{
-		uDimension = quadSphereProperties -> uDimension;
-		vDimension = quadSphereProperties -> vDimension;
+	getBrowser () -> getBrowserOptions () -> sphereProperties .addInterest (this, &Sphere::set_properties);
+}
 
-		std::clog
-			<< "Configuring Sphere" << std::endl
-			<< "\tuDimension: " << uDimension << std::endl
-			<< "\tvDimension: " << vDimension << std::endl;
-
-		indices    = createIndices    ();
-		texIndices = createTexIndices ();
-		texCoord   = createTexCoord   ();
-		points     = createPoints     ();
-	}
+void
+Sphere::set_properties ()
+{
+	update ();
 }
 
 Box3f
@@ -116,125 +96,32 @@ Sphere::createBBox ()
 	return Box3f (Vector3f (diameter, diameter, diameter), Vector3f ());
 }
 
-MFInt32
-Sphere::createIndices ()
-{
-	MFInt32 indices;
-
-	for (int32_t p = 0, v = 0; v < vDimension - 1; ++ v, ++ p)
-	{
-		for (int32_t u = 0; u < uDimension - 2; ++ u, ++ p)
-		{
-			indices .push_back (p);
-			indices .push_back (p + uDimension - 1);
-			indices .push_back (p + uDimension);
-			indices .push_back (p + 1);
-		}
-
-		indices .push_back (p);
-		indices .push_back (p + uDimension - 1);
-		indices .push_back (p + 1);
-		indices .push_back (p - uDimension + 2);
-	}
-
-	return indices;
-}
-
-MFInt32
-Sphere::createTexIndices ()
-{
-	MFInt32 indices;
-
-	for (int32_t p = 0, v = 0; v < vDimension - 1; ++ v, ++ p)
-	{
-		for (int32_t u = 0; u < uDimension - 1; ++ u, ++ p)
-		{
-			indices .push_back (p);
-			indices .push_back (p + uDimension);
-			indices .push_back (p + uDimension + 1);
-			indices .push_back (p + 1);
-		}
-	}
-
-	return indices;
-}
-
-MFVec2f
-Sphere::createTexCoord ()
-{
-	MFVec2f texCoord;
-
-	for (int32_t v = 0; v < vDimension; ++ v)
-	{
-		float y = v / float (vDimension - 1);
-
-		for (int u = 0; u < uDimension - 1; ++ u)
-		{
-			float x = u / float (uDimension - 1);
-			texCoord .push_back (SFVec2f (x, 1 - y));
-		}
-
-		texCoord .push_back (SFVec2f (1, 1 - y));
-	}
-
-	return texCoord;
-}
-
-MFVec3f
-Sphere::createPoints ()
-{
-	MFVec3f points;
-
-	// north pole
-	for (int32_t u = 0; u < uDimension - 1; ++ u)
-		points .push_back (SFVec3f (0, 1, 0));
-
-	// sphere segments
-	for (int32_t v = 1; v < vDimension - 1; ++ v)
-	{
-		std::complex <float> zPlane = std::polar <float> (1, -M_PI * (v / float (vDimension - 1)));
-
-		for (int32_t u = 0; u < uDimension - 1; ++ u)
-		{
-			std::complex <float> yPlane = std::polar <float> (zPlane .imag (), (2 * M_PI) * (u / float (uDimension - 1)));
-
-			points .push_back (SFVec3f (yPlane .imag (), zPlane .real (), yPlane .real ()));
-		}
-	}
-
-	// south pole
-	for (int32_t u = 0; u < uDimension - 1; ++ u)
-		points .push_back (SFVec3f (0, -1, 0));
-
-	return points;
-}
-
 void
 Sphere::build ()
 {
-	X3DGeometryNode::build ();
+	const X3DSpherePropertyNode* sphereProperties = *getBrowser () -> getBrowserOptions () -> sphereProperties;
 
-	MFInt32::const_iterator index;
-	MFInt32::const_iterator texIndex;
+	getTexCoord () = sphereProperties -> getTexCoord ();
+	getNormals  () = sphereProperties -> getNormals  ();
 
-	for (index = indices .begin (), texIndex = texIndices .begin (); index not_eq indices .end ();)
+	if (radius == 1.0f)
+		getVertices () = sphereProperties -> getVertices ();
+
+	else
 	{
-		for (int i = 0; i < 4; ++ i, ++ index, ++ texIndex)
-		{
-			auto point = points [*index] * radius;
-
-			getTexCoord () .emplace_back (texCoord [*texIndex]);
-			getNormals  () .emplace_back (points [*index]);
-			getVertices () .emplace_back (point);
-		}
+		for (const auto & vertex : sphereProperties -> getVertices ())
+			getVertices () .emplace_back (vertex * radius .getValue ());
 	}
-
-	setVertexMode (GL_QUADS);
+	
+	if (SFNode <QuadSphereProperties> (getBrowser () -> getBrowserOptions () -> sphereProperties))
+		setVertexMode (GL_QUADS);
 }
 
 void
 Sphere::dispose ()
 {
+	getBrowser () -> getBrowserOptions () -> sphereProperties .removeInterest (this, &Sphere::set_properties);
+
 	X3DGeometryNode::dispose ();
 }
 

@@ -60,14 +60,102 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_iconFactory = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
+	m_fileFilerX3D       = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilerX3D"));
+	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
+	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
+	m_menuAccelGroup     = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
 
 	// Get widgets.
+	m_builder -> get_widget ("FileOpenDialog", m_fileOpenDialog);
+	m_builder -> get_widget ("FileSaveDialog", m_fileSaveDialog);
+	m_builder -> get_widget ("SaveCompressedButton", m_saveCompressedButton);
 	m_builder -> get_widget ("Window", m_window);
 	m_builder -> get_widget ("Widget", m_widget);
+	m_builder -> get_widget ("MenuBar", m_menuBar);
+	m_builder -> get_widget ("FileMenuItem", m_fileMenuItem);
+	m_builder -> get_widget ("NewMenuItem", m_newMenuItem);
+	m_builder -> get_widget ("OpenMenuItem", m_openMenuItem);
+	m_builder -> get_widget ("SaveMenuItem", m_saveMenuItem);
+	m_builder -> get_widget ("SaveAsMenuItem", m_saveAsMenuItem);
+	m_builder -> get_widget ("RevertMenuItem", m_revertMenuItem);
+	m_builder -> get_widget ("QuitMenuItem", m_quitMenuItem);
+	m_builder -> get_widget ("EditMenuItem", m_editMenuItem);
+	m_builder -> get_widget ("ViewMenuItem", m_viewMenuItem);
+	m_builder -> get_widget ("ToolBarMenuItem", m_toolBarMenuItem);
+	m_builder -> get_widget ("NavigationBarMenuItem", m_navigationBarMenuItem);
+	m_builder -> get_widget ("SideBarMenuItem", m_sideBarMenuItem);
+	m_builder -> get_widget ("FooterMenuItem", m_footerMenuItem);
+	m_builder -> get_widget ("StatusBarMenuItem", m_statusBarMenuItem);
+	m_builder -> get_widget ("ShadingMenuItem", m_shadingMenuItem);
+	m_builder -> get_widget ("PhongMenuItem", m_phongMenuItem);
+	m_builder -> get_widget ("GouraudMenuItem", m_gouraudMenuItem);
+	m_builder -> get_widget ("FlatMenuItem", m_flatMenuItem);
+	m_builder -> get_widget ("WireFrameMenuItem", m_wireFrameMenuItem);
+	m_builder -> get_widget ("PointSetMenuItem", m_pointSetMenuItem);
+	m_builder -> get_widget ("PrimitiveQualtityMenuItem", m_primitiveQualtityMenuItem);
+	m_builder -> get_widget ("HighQualityMenuItem", m_highQualityMenuItem);
+	m_builder -> get_widget ("MediumQualityMenuItem", m_mediumQualityMenuItem);
+	m_builder -> get_widget ("LowQualityMenuItem", m_lowQualityMenuItem);
+	m_builder -> get_widget ("RenderingPropertiesMenuItem", m_renderingPropertiesMenuItem);
+	m_builder -> get_widget ("FullScreenMenuItem", m_fullScreenMenuItem);
+	m_builder -> get_widget ("NavigationMenuItem", m_navigationMenuItem);
+	m_builder -> get_widget ("HeadlightMenuItem", m_headlightMenuItem);
+	m_builder -> get_widget ("ShowAllMenuItem", m_showAllMenuItem);
+	m_builder -> get_widget ("ViewpointsMenuItem", m_viewpointsMenuItem);
+	m_builder -> get_widget ("HistoryMenuItem", m_historyMenuItem);
+	m_builder -> get_widget ("ToolsMenuItem", m_toolsMenuItem);
+	m_builder -> get_widget ("OutlineEditorMenuItem", m_outlineEditorMenuItem);
+	m_builder -> get_widget ("ViewpointEditorMenuItem", m_viewpointEditorMenuItem);
+	m_builder -> get_widget ("MotionBlurMenuItem", m_motionBlurMenuItem);
+	m_builder -> get_widget ("ConsoleMenuItem", m_consoleMenuItem);
+	m_builder -> get_widget ("HelpMenuItem", m_helpMenuItem);
+	m_builder -> get_widget ("InfoMenuItem", m_infoMenuItem);
 	m_builder -> get_widget ("Notebook", m_notebook);
 	m_builder -> get_widget ("AddTabLabel", m_addTabLabel);
 	m_builder -> get_widget ("AddTabButton", m_addTabButton);
+
+	// Connect object Gtk::FileChooserDialog with id 'FileOpenDialog'.
+	m_fileOpenDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_fileOpenDialog_response));
+	m_fileSaveDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_fileSaveDialog_response));
+
+	// Connect object Gtk::ImageMenuItem with id 'NewMenuItem'.
+	m_newMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_new));
+	m_openMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_open));
+	m_saveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_save));
+	m_saveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_save_as));
+	m_revertMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_revert_to_saved));
+	m_quitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_close));
+
+	// Connect object Gtk::CheckMenuItem with id 'ToolBarMenuItem'.
+	m_toolBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_toolBar_toggled));
+	m_navigationBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_navigationBar_toggled));
+	m_sideBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_sideBar_toggled));
+	m_footerMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_footer_toggled));
+	m_statusBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_statusBar_toggled));
+
+	// Connect object Gtk::RadioMenuItem with id 'PhongMenuItem'.
+	m_phongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::phong_activate));
+	m_gouraudMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::gouraud_activate));
+	m_flatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::flat_activate));
+	m_wireFrameMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::wireframe_activate));
+	m_pointSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::pointset_activate));
+	m_highQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_high_quality_activate));
+	m_mediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_medium_quality_activate));
+	m_lowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_low_quality_activate));
+
+	// Connect object Gtk::CheckMenuItem with id 'RenderingPropertiesMenuItem'.
+	m_renderingPropertiesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_rendering_properties_toggled));
+	m_fullScreenMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_fullscreen_toggled));
+	m_headlightMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_headlight_toggled));
+
+	// Connect object Gtk::MenuItem with id 'ShowAllMenuItem'.
+	m_showAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_show_all_toggled));
+	m_outlineEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_outline_editor_activate));
+	m_viewpointEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_viewpoint_editor_activate));
+	m_motionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_motion_blur_editor_activate));
+
+	// Connect object Gtk::ImageMenuItem with id 'InfoMenuItem'.
+	m_infoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_info));
 
 	// Connect object Gtk::Notebook with id 'Notebook'.
 	m_notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_switch_page));

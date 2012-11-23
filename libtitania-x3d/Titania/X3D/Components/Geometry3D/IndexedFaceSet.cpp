@@ -186,7 +186,7 @@ IndexedFaceSet::set_coordIndex ()
 					_coord -> point .resize (numPoints);
 
 				// Calculate bbox for texture coordinate calculation.
-				bbox = createBBox ();
+				bbox = getBBox ();
 
 				set_texCoordIndex ();
 				set_colorIndex    ();
@@ -426,8 +426,6 @@ IndexedFaceSet::createBBox ()
 void
 IndexedFaceSet::build ()
 {
-	X3DComposedGeometryNode::build ();
-
 	SFNode <Coordinate> _coord = coord;
 
 	if (not _coord or not polygons .size ())

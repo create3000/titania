@@ -1,3 +1,25 @@
+2012-11-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* Box.cpp:
+	* Cone.cpp:
+	* Sphere.h:
+	* Sphere.cpp:
+	* PointSet.cpp:
+	* Cylinder.cpp:
+	* BrowserOptions.h:
+	* Extrusion.cpp:
+	* BrowserOptions.cpp:
+	* IndexedFaceSet.h:
+	* X3DGeometryNode.h:
+	* IndexedLineSet.cpp:
+	* ElevationGrid.cpp:
+	* IndexedFaceSet.cpp:
+	* QuadSphereProperties.h:
+	* X3DSpherePropertyNode.h:
+	* QuadSphereProperties.cpp:
+	* X3DSpherePropertyNode.cpp: 
+
 2012-11-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

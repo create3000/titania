@@ -1,3 +1,22 @@
+2012-11-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWidget.h:
+	* BrowserWindow.h:
+	* BrowserWindow.ui:
+	* BrowserWidget.ui:
+	* X3DUserInterface.cpp:
+	* BrowserWidget.cpp:
+	* BrowserWindow.cpp:
+	* X3DBrowserWindow.h:
+	* X3DBrowserWidget.h:
+	* X3DBrowserWindow.cpp:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserWindowUI.h:
+	* X3DBrowserWidgetUI.h:
+	* X3DBrowserWidgetUI.cpp:
+	* X3DBrowserWindowUI.cpp:
+	* X3DBrowserUserInterface.cpp: 
+
 2012-11-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* History.cpp:

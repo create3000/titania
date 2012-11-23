@@ -64,6 +64,154 @@ public:
 
 private:
 
+	/// @name File menu
+
+	virtual
+	void
+	on_new ();
+
+	virtual
+	void
+	on_home ();
+
+	virtual
+	void
+	on_open ();
+
+	virtual
+	void
+	on_save ();
+
+	virtual
+	void
+	on_save_as ();
+
+	virtual
+	void
+	on_revert_to_saved ();
+
+	virtual
+	void
+	on_reload ();
+
+	virtual
+	void
+	on_close ();
+
+	/// @name File open dialog response
+
+	virtual
+	void
+	on_fileOpenDialog_response (int);
+
+	/// @name File save dialog response
+
+	virtual
+	void
+	on_fileSaveDialog_response (int);
+
+	/// @name Bar view handling
+
+	virtual
+	void
+	on_navigationBar_toggled ();
+
+	virtual
+	void
+	on_toolBar_toggled ();
+
+	virtual
+	void
+	on_sideBar_toggled ();
+
+	virtual
+	void
+	on_footer_toggled ();
+
+	virtual
+	void
+	on_statusBar_toggled ();
+
+	/// @name Shading
+
+	virtual
+	void
+	phong_activate ();
+
+	virtual
+	void
+	gouraud_activate ();
+
+	virtual
+	void
+	flat_activate ();
+
+	virtual
+	void
+	wireframe_activate ();
+
+	virtual
+	void
+	pointset_activate ();
+
+	///  @name Rendering quality
+
+	virtual
+	void
+	on_low_quality_activate ();
+
+	virtual
+	void
+	on_medium_quality_activate ();
+
+	virtual
+	void
+	on_high_quality_activate ();
+
+	///  @name Rendering properties
+
+	virtual
+	void
+	on_rendering_properties_toggled ();
+
+	///  @name Fullscreen modus
+
+	virtual
+	void
+	on_fullscreen_toggled ();
+
+	///  @name HeadlLight
+
+	virtual
+	void
+	on_headlight_toggled ();
+
+	virtual
+	void
+	on_show_all_toggled ();
+
+	///  @name Editor handling
+
+	virtual
+	void
+	on_outline_editor_activate ();
+
+	virtual
+	void
+	on_viewpoint_editor_activate ();
+
+	virtual
+	void
+	on_motion_blur_editor_activate ();
+
+	///  @name Help menu
+
+	virtual
+	void
+	on_info ();
+
+	///  @name Notebook handling
+	
 	virtual
 	void
 	on_switch_page (Gtk::Widget *, guint);

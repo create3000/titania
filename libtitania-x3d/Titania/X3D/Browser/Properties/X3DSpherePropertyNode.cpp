@@ -46,65 +46,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_PROPERTIES_QUAD_SPHERE_PROPERTIES_H__
-#define __TITANIA_X3D_BROWSER_PROPERTIES_QUAD_SPHERE_PROPERTIES_H__
-
-#include "../Properties/X3DSpherePropertyNode.h"
+#include "X3DSpherePropertyNode.h"
 
 namespace titania {
 namespace X3D {
 
-//	Property Name           Value data type      Description
-//	U_DIMESIONS             Boolean              The browser implementation supports the ab
-//	V_DIMESIONS             Boolean              The browser implementation supports the ab
-
-class QuadSphereProperties :
-	public X3DSpherePropertyNode
+X3DSpherePropertyNode::X3DSpherePropertyNode () :
+	X3DPropertyNode (), 
+	       texCoord (), 
+	        normals (), 
+	       vertices ()  
+{ }
+	
+void
+X3DSpherePropertyNode::update ()
 {
-public:
-
-	SFInt32 uDimension;
-	SFInt32 vDimension;
-
-	QuadSphereProperties (X3DExecutionContext* const);
-
-
-private:
-
-	virtual
-	QuadSphereProperties*
-	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	initialize ();
-
-	virtual
-	void
-	eventsProcessed ();
-
-	std::deque <int32_t>
-	createTexIndices ();
-
-	std::deque <Vector2f>
-	createTexCoord ();
+	texCoord .clear ();
+	normals  .clear ();
+	vertices .clear ();
 	
-	std::deque <int32_t>
-	createIndices ();
-
-	std::deque <Vector3f>
-	createPoints ();
-	
-	virtual
-	void
 	build ();
-
-	std::vector <Vector3f> normals;
-	std::vector <Vector3f> vertices;
-
-};
+}
 
 } // X3D
 } // titania
-
-#endif

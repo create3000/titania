@@ -86,6 +86,8 @@ public:
 
 protected:
 
+	typedef std::map <size_t, std::vector <size_t>> NormalIndex;
+
 	SFBool  solid;
 	SFBool  ccw;
 	SFFloat creaseAngle;
@@ -95,8 +97,6 @@ protected:
 	virtual
 	void
 	initialize ();
-
-	typedef std::map <size_t, std::vector <size_t>> NormalIndex;
 
 	std::vector <Vector2f> &
 	getTexCoord () { return glTexCoord; }
@@ -127,7 +127,7 @@ protected:
 	refineNormals (const NormalIndex &, std::vector <Vector3f> &);
 
 	void
-	clear ();
+	update ();
 
 	virtual
 	void
@@ -141,7 +141,7 @@ protected:
 private:
 
 	void
-	update ();
+	clear ();
 
 	void
 	transfer ();

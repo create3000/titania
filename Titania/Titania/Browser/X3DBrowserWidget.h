@@ -77,6 +77,10 @@ public:
 
 	virtual
 	void
+	reload ();
+
+	virtual
+	void
 	setDescription (const std::string & value)
 	throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
 	       X3D::Error <X3D::DISPOSED>);
@@ -94,10 +98,6 @@ public:
 	throw (X3D::Error <X3D::INVALID_URL>,
 	       X3D::Error <X3D::URL_UNAVAILABLE>,
 	       X3D::Error <X3D::INVALID_X3D>);
-
-	virtual
-	void
-	save (const basic::uri &);
 
 	/// @name Destruction
 
