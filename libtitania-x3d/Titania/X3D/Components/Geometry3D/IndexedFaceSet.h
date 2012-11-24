@@ -133,7 +133,6 @@ private:
 	buildNormals ();
 
 	PolygonArray polygons;
-	Box3f        bbox;
 
 };
 

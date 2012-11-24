@@ -142,7 +142,7 @@ LOD::intersect ()
 }
 
 void
-LOD::draw ()
+LOD::display ()
 {
 	if (not children .size ())
 		return;

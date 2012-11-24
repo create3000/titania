@@ -89,7 +89,10 @@ void
 Viewport::intersect ()
 {
 	enable ();
-	X3DViewportNode::intersect ();
+	
+	for (const auto & child : children)
+		child -> intersect ();
+
 	disable ();
 }
 
@@ -101,6 +104,13 @@ Viewport::display ()
 	X3DRenderer::display ();
 
 	disable ();
+}
+
+void
+Viewport::traverse ()
+{
+	for (const auto & child : children)
+		child -> display ();
 }
 
 void

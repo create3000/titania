@@ -1,3 +1,73 @@
+2012-11-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* SFNode.h:
+	* MFNode.h:
+	* X3DBasicNode.h:
+	* X3DArrayField.h:
+	* X3DBasicNode.cpp:
+	* X3DRenderer.h:
+	* X3DRenderer.cpp:
+	* LOD.h:
+	* Layer.h:
+	* Material.h:
+	* Switch.h:
+	* Layer.cpp:
+	* LOD.cpp:
+	* Material.cpp:
+	* Appearance.h:
+	* Viewport.h:
+	* LayerSet.h:
+	* LineSet.h:
+	* Cone.cpp:
+	* Switch.cpp:
+	* Appearance.cpp:
+	* PointSet.h:
+	* LayoutLayer.h:
+	* Transform.h:
+	* Viewport.cpp:
+	* LayerSet.cpp:
+	* Inline.cpp:
+	* LineSet.cpp:
+	* Billboard.h:
+	* LayoutLayer.cpp:
+	* Transform.cpp:
+	* PointSet.cpp:
+	* X3DShapeNode.cpp:
+	* X3DLightNode.h:
+	* X3DLayerNode.h:
+	* Billboard.cpp:
+	* X3DLayerNode.cpp:
+	* X3DLightNode.cpp:
+	* IndexedLineSet.h:
+	* X3DGroupingNode.h:
+	* X3DPrototypeInstance.h:
+	* IndexedFaceSet.h:
+	* X3DGeometryNode.h:
+	* X3DBoundedObject.h:
+	* X3DTexture2DNode.h:
+	* ElevationGrid.cpp:
+	* X3DGroupingNode.cpp:
+	* IndexedLineSet.cpp:
+	* TextureTransform.h:
+	* RenderingProperties.h:
+	* X3DPrototypeInstance.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp:
+	* X3DBoundedObject.cpp:
+	* TextureTransform.cpp:
+	* X3DTexture2DNode.cpp:
+	* RenderingProperties.cpp:
+	* LocalFog.h:
+	* LocalFog.cpp:
+	* ProximitySensor.h:
+	* VisibilitySensor.h:
+	* ProximitySensor.cpp:
+	* VisibilitySensor.cpp:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorNode.cpp: 
+
 2012-11-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

@@ -154,7 +154,7 @@ ProximitySensor::update ()
 }
 
 void
-ProximitySensor::draw ()
+ProximitySensor::display ()
 {
 	if (inside /* or getBrowser () -> getEditMode () */)
 		return;

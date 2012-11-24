@@ -674,21 +674,28 @@ test_path (const basic::path & path)
 
 typedef math::vector3 <float>   Vector3f;
 typedef math::rotation4 <float> Rotation4f;
+typedef math::box3 <float>      Box3f;
 
 int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 
-	std::clog << Rotation4f (Vector3f (0, 1, 0), Vector3f (1,  0, 0)) << std::endl;
-	std::clog << Rotation4f (Vector3f (0, 1, 0), Vector3f (0, -1, 0)) << std::endl;
-	std::clog << Rotation4f (Vector3f (1, 0, 0), Vector3f (-1, 0, 0)) << std::endl;
+	Box3f b1 (Vector3f (1,1,1), Vector3f (1,1,1));
+	Box3f b2 (Vector3f (1,1,1), Vector3f ());
+		
+	std::clog << std::endl;
+	std::clog << b1 << std::endl;
+	std::clog << b1 .min () << std::endl;
+	std::clog << b1 .max () << std::endl;
 	
-	float fv1 [3];
-	Vector3f fv2;
+	std::clog << std::endl;
+	std::clog << b2 << std::endl;
+	std::clog << b2 .min () << std::endl;
+	std::clog << b2 .max () << std::endl;
 	
-	std::clog << sizeof (fv1) << std::endl;
-	std::clog << sizeof (fv2) << std::endl;
+	std::clog << std::endl;
+	std::clog << (b1 += b2) << std::endl;
 	
 
 //	test_path (basic::path ("/"));

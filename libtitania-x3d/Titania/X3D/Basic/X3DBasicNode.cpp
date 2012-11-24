@@ -458,10 +458,7 @@ X3DBasicNode::getFieldDefinitions () const
 
 void
 X3DBasicNode::setup ()
-throw (Error <NODE_IN_USE>)
 {
-	assert (getExecutionContext ());
-
 	for (const auto & field : fields)
 		setChild (*field .second);
 
@@ -548,12 +545,6 @@ X3DBasicNode::intersect ()
 
 void
 X3DBasicNode::display ()
-{
-	draw ();
-}
-
-void
-X3DBasicNode::draw ()
 {
 	// This is only a virtual function and left empty.
 }

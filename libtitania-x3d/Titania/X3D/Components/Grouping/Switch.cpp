@@ -88,7 +88,7 @@ Switch::intersect ()
 }
 
 void
-Switch::draw ()
+Switch::display ()
 {
 	if (whichChoice >= 0 and whichChoice < (int32_t) children .size ())
 	{

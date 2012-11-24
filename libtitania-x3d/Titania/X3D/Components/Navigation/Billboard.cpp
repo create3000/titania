@@ -128,13 +128,13 @@ Billboard::intersect ()
 }
 
 void
-Billboard::draw ()
+Billboard::display ()
 {
 	glPushMatrix ();
 
 	transform ();
 
-	X3DGroupingNode::draw ();
+	X3DGroupingNode::display ();
 
 	glPopMatrix ();
 }

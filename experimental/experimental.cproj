@@ -47,6 +47,7 @@
     <None Include="General\X3D\InputOutput\Encodings\ClassicVrml\CType.h" />
     <None Include="General\X3D\InputOutput\Encodings\ClassicVrml\AccessTypes.h" />
     <None Include="URI.h" />
+    <None Include="Makefile.am" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

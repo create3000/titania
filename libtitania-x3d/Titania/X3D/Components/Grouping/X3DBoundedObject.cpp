@@ -63,6 +63,49 @@ void
 X3DBoundedObject::initialize ()
 { }
 
+Box3f
+X3DBoundedObject::getBBox (const MFNode <X3DBoundedObject> & boundedObjects)
+{
+	Box3f bbox;
+	
+	// Find first non zero bounding box
+
+	auto first = boundedObjects .begin ();
+
+	for (; first not_eq boundedObjects .end (); ++ first)
+	{
+		const auto & boundedObject = *first;
+		
+		if (boundedObject)
+		{
+			Box3f _bbox = boundedObject -> getBBox ();
+
+			if (_bbox .min () not_eq _bbox .max ())
+			{
+				bbox = _bbox;
+				break;
+			}
+		}
+	}
+
+	// Add bounding boxes
+	
+	if (first not_eq boundedObjects .end ())
+	{
+		for (++ first; first not_eq boundedObjects .end (); ++ first)
+		{
+			const auto & boundedObject = *first;
+
+			if (boundedObject)
+			{
+				bbox += boundedObject -> getBBox ();
+			}
+		}
+	}
+
+	return bbox;
+}
+
 void
 X3DBoundedObject::dispose ()
 { }

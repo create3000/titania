@@ -144,7 +144,7 @@ LayerSet::intersect ()
 }
 
 void
-LayerSet::draw ()
+LayerSet::display ()
 {
 	for (const auto & index : order)
 	{

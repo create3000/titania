@@ -44,6 +44,7 @@
     <None Include="Titania\Stream\InputFileStream.h" />
     <None Include="Titania\Stream\InputHTTPStream.h" />
     <None Include="libtitania-stream.md.pc" />
+    <None Include="Makefile.am" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

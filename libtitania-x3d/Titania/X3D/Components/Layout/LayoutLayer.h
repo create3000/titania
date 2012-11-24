@@ -67,8 +67,13 @@ public:
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
 
+	virtual
 	Box3f
 	getBBox ();
+	
+	virtual
+	void
+	traverse ();
 
 };
 

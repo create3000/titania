@@ -130,8 +130,6 @@ ElevationGrid::createBBox ()
 	Vector3f size   = Vector3f (x, y, z);
 	Vector3f center = Vector3f (x / 2, miny + y / 2, z / 2);
 
-	//size = size .max (Vector3f (1e-5, 1e-5, 1e-5));
-
 	return Box3f (size, center);
 }
 

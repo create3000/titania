@@ -55,24 +55,25 @@ namespace titania {
 namespace X3D {
 
 X3DLayerNode::X3DLayerNode () :
-	             X3DNode (),                                            
-	          isPickable (true),                                        // SFBool [in,out] isPickable      TRUE
-	            viewport (),                                            // SFNode [in,out] viewport        NULL      [X3DViewportNode]
-	         addChildren (),                                            // MFNode[in]      addChildren               [ ]
-	      removeChildren (),                                            // MFNode[in]      removeChildren            [ ]
-	            children (),                                            // MFNode[in,out]  children        [ ]       [X3DChildNode]
-	     defaultViewport (new Viewport (getExecutionContext ())),       
+	             X3DNode (),                                                   
+	         X3DRenderer (),                                                   
+	          isPickable (true),                                               // SFBool [in,out] isPickable      TRUE
+	            viewport (),                                                   // SFNode [in,out] viewport        NULL      [X3DViewportNode]
+	         addChildren (),                                                   // MFNode[in]      addChildren               [ ]
+	      removeChildren (),                                                   // MFNode[in]      removeChildren            [ ]
+	            children (),                                                   // MFNode[in,out]  children        [ ]       [X3DChildNode]
+	     defaultViewport (new Viewport (getExecutionContext ())),              
 	 navigationInfoStack (new NavigationInfo (getExecutionContext (), false)), 
 	     backgroundStack (new Background     (getExecutionContext (), false)), 
 	            fogStack (new Fog            (getExecutionContext (), false)), 
-	      viewpointStack (new Viewpoint      (getExecutionContext (), false)),
-	           localFogs (),                                            
-	          timeSensor (),                                            
-	positionInterpolator (),                                            
-	           _viewport (0)                                            
+	      viewpointStack (new Viewpoint      (getExecutionContext (), false)), 
+	           localFogs (),                                                   
+	          timeSensor (),                                                   
+	positionInterpolator (),                                                   
+	           _viewport (0)                                                   
 {
 	addNodeType (X3DLayerNodeType);
-	
+
 	setChildren (defaultViewport,
 	             *navigationInfoStack .top (),
 	             *backgroundStack     .top (),

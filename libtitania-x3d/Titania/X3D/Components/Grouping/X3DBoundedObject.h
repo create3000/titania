@@ -68,6 +68,10 @@ public:
 	virtual
 	Box3f
 	getBBox () = 0;
+	
+	static
+	Box3f
+	getBBox (const MFNode <X3DBoundedObject> &);
 
 
 protected:
@@ -77,7 +81,7 @@ protected:
 	virtual
 	void
 	initialize ();
-	
+
 	virtual
 	void
 	dispose ();

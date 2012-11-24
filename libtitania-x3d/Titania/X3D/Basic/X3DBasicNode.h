@@ -131,9 +131,9 @@ public:
 	FieldDefinitionArray
 	getUserDefinedFields () const;
 
+	virtual
 	void
-	setup ()
-	throw (Error <NODE_IN_USE>);
+	setup ();
 
 	virtual
 	void
@@ -159,10 +159,6 @@ public:
 	virtual
 	void
 	display ();
-
-	virtual
-	void
-	draw ();
 
 	///  Input operator.
 	virtual

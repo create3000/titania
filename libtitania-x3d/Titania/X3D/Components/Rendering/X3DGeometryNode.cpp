@@ -52,17 +52,37 @@ namespace titania {
 namespace X3D {
 
 X3DGeometryNode::X3DGeometryNode () :
-	         X3DNode (),              
-	           solid (true),          // SFBool  [ ]      solid            TRUE
-	             ccw (true),          // SFBool  [ ]      ccw              TRUE
-	     creaseAngle (),              // SFFloat [ ]      creaseAngle      0           [0,∞)
-	texCoordBufferId (0),             
-	   colorBufferId (0),             
-	  normalBufferId (0),             
-	   pointBufferId (0),             
-	     bufferUsage (GL_STATIC_DRAW) 
+	                   X3DNode (),              
+	                     solid (true),          // SFBool  [ ]      solid            TRUE
+	                       ccw (true),          // SFBool  [ ]      ccw              TRUE
+	               creaseAngle (),              // SFFloat [ ]      creaseAngle      0           [0,∞)
+	                      bbox (),              
+	                  texCoord (),              
+	textureCoordinateGenerator (),              
+	                    colors (),              
+	                colorsRGBA (),              
+	                   normals (),              
+	                  vertices (),              
+	                vertexMode (),              
+	          texCoordBufferId (0),             
+	             colorBufferId (0),             
+	            normalBufferId (0),             
+	             pointBufferId (0),             
+	               bufferUsage (GL_STATIC_DRAW) 
 {
 	addNodeType (X3DGeometryNodeType);
+}
+
+void
+X3DGeometryNode::setup ()
+{
+	X3DNode::setup ();
+
+	if (GLEW_ARB_vertex_buffer_object)
+		update ();
+
+	//else
+	//	std::clog << "Warning: X3DGeometryNode::setup: The glew vertex buffer objects are not supported." << std::endl;
 }
 
 void
@@ -77,8 +97,6 @@ X3DGeometryNode::initialize ()
 		glGenBuffers (1, &normalBufferId);
 		glGenBuffers (1, &pointBufferId);
 	}
-	
-	//throw std::runtime_error ("X3DGeometryNode::initialize: The glew vertex buffer objects are not supported.");
 }
 
 void
@@ -92,28 +110,25 @@ X3DGeometryNode::eventsProcessed ()
 const Box3f
 X3DGeometryNode::getBBox ()
 {
-	if (not glVertices  .size ())
-		update ();
-
 	return bbox;
 }
 
 Box3f
 X3DGeometryNode::createBBox ()
 {
-	if (glVertices .size ())
+	if (vertices .size ())
 	{
-		Vector3f min = glVertices [0];
-		Vector3f max = glVertices [0];
+		Vector3f min = vertices [0];
+		Vector3f max = min;
 
-		for (const auto & vertex : glVertices)
+		for (const auto & vertex : vertices)
 		{
 			min = math::min (min, vertex);
 			max = math::max (max, vertex);
 		}
 
 		Vector3f size   = max - min;
-		Vector3f center = min + size * 0.5f;
+		Vector3f center = max - size * 0.5f;
 
 		return Box3f (size, center);
 	}
@@ -215,13 +230,13 @@ X3DGeometryNode::update ()
 void
 X3DGeometryNode::clear ()
 {
-	glTexCoord .clear ();
+	texCoord .clear ();
 	textureCoordinateGenerator = nullptr;
-	glColors     .clear ();
-	glColorsRGBA .clear ();
-	glNormals    .clear ();
-	glVertices   .clear ();
-	glVertexMode = GL_TRIANGLES;
+	colors     .clear ();
+	colorsRGBA .clear ();
+	normals    .clear ();
+	vertices   .clear ();
+	vertexMode = GL_TRIANGLES;
 }
 
 void
@@ -232,24 +247,24 @@ void
 X3DGeometryNode::transfer ()
 {
 	glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector2f) * glTexCoord .size (), glTexCoord .data (), bufferUsage);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector2f) * texCoord .size (), texCoord .data (), bufferUsage);
 
-	if (glColors .size ())
+	if (colors .size ())
 	{
 		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
-		glBufferData (GL_ARRAY_BUFFER, sizeof (Color3f) * glColors .size (), glColors .data (), bufferUsage);
+		glBufferData (GL_ARRAY_BUFFER, sizeof (Color3f) * colors .size (), colors .data (), bufferUsage);
 	}
-	else if (glColorsRGBA .size ())
+	else if (colorsRGBA .size ())
 	{
 		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
-		glBufferData (GL_ARRAY_BUFFER, sizeof (Color4f) * glColorsRGBA .size (), glColorsRGBA .data (), bufferUsage);
+		glBufferData (GL_ARRAY_BUFFER, sizeof (Color4f) * colorsRGBA .size (), colorsRGBA .data (), bufferUsage);
 	}
 
 	glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * glNormals .size (), glNormals .data (), bufferUsage);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * normals .size (), normals .data (), bufferUsage);
 
 	glBindBuffer (GL_ARRAY_BUFFER, pointBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * glVertices .size (), glVertices .data (), bufferUsage);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * vertices .size (), vertices .data (), bufferUsage);
 
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 
@@ -259,16 +274,7 @@ X3DGeometryNode::transfer ()
 void
 X3DGeometryNode::display ()
 {
-	if (not glVertices  .size ())
-		update ();
-
-	draw ();
-}
-
-void
-X3DGeometryNode::draw ()
-{
-	if (not glVertices .size ())
+	if (not vertices .size ())
 		return;
 
 	if (solid)
@@ -285,7 +291,7 @@ X3DGeometryNode::draw ()
 		if (textureCoordinateGenerator)
 			textureCoordinateGenerator -> enable ();
 
-		else if (glTexCoord .size ())
+		else if (texCoord .size ())
 		{
 			glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferId);
 			glEnableClientState (GL_TEXTURE_COORD_ARRAY);
@@ -293,19 +299,19 @@ X3DGeometryNode::draw ()
 		}
 	}
 
-	if (glColors .size () or glColorsRGBA .size ())
+	if (colors .size () or colorsRGBA .size ())
 	{
 		if (glIsEnabled (GL_LIGHTING))
 			glEnable (GL_COLOR_MATERIAL);
 
 		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
 		glEnableClientState (GL_COLOR_ARRAY);
-		glColorPointer (glColors .size () ? 3 : 4, GL_FLOAT, 0, 0);
+		glColorPointer (colors .size () ? 3 : 4, GL_FLOAT, 0, 0);
 	}
 
 	if (glIsEnabled (GL_LIGHTING))
 	{
-		if (glNormals .size ())
+		if (normals .size ())
 		{
 			glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
 			glEnableClientState (GL_NORMAL_ARRAY);
@@ -317,7 +323,7 @@ X3DGeometryNode::draw ()
 	glEnableClientState (GL_VERTEX_ARRAY);
 	glVertexPointer (3, GL_FLOAT, 0, 0);
 
-	glDrawArrays (glVertexMode, 0, glVertices .size ());
+	glDrawArrays (vertexMode, 0, vertices .size ());
 
 	if (textureCoordinateGenerator)
 		textureCoordinateGenerator -> disable ();

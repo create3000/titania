@@ -117,10 +117,10 @@ PointSet::build ()
 }
 
 void
-PointSet::draw ()
+PointSet::display ()
 {
 	glDisable (GL_LIGHTING);
-	X3DGeometryNode::draw ();
+	X3DGeometryNode::display ();
 }
 
 } // X3D

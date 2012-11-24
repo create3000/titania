@@ -101,18 +101,18 @@ X3DRenderer::display ()
 	getBrowser () -> pushRenderer (this);
 
 	time_type t0 = getCurrentTime ();
-	draw ();
+	traverse ();
 	traverseTime = getCurrentTime () - t0;
 
 	t0 = getCurrentTime ();
-	redraw ();
+	draw ();
 	drawTime = getCurrentTime () - t0;
 
 	getBrowser () -> popRenderer ();
 }
 
 void
-X3DRenderer::redraw ()
+X3DRenderer::draw ()
 {
 	numNodes                 = numOpaqueNodes + numTransparentNodes;
 	numNodesDrawn            = 0;

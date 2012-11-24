@@ -47,6 +47,7 @@
   <ItemGroup>
     <None Include="anyoption.h" />
     <None Include="libtitania-anyoptions.md.pc" />
+    <None Include="Makefile.am" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -70,10 +70,10 @@ public:
 
 	virtual
 	void
-	draw ();
+	display ();
 
 	void
-	postDisplay ();
+	finish ();
 
 	virtual
 	void

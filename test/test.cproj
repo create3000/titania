@@ -95,6 +95,7 @@
     <None Include="Tests\SFNode.h" />
     <None Include="Tests\Clock.h" />
     <None Include="Tests\Interest.h" />
+    <None Include="Makefile.am" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="obsolete\" />

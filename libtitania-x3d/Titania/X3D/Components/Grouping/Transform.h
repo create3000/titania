@@ -83,7 +83,7 @@ public:
 
 	virtual
 	void
-	draw ();
+	display ();
 
 
 private:

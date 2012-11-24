@@ -144,7 +144,7 @@ Inline::getBBox ()
 {
 	requestImmediateLoad ();
 
-	return Box3f ();
+	return X3DBoundedObject::getBBox (getRootNodes ());
 }
 
 void

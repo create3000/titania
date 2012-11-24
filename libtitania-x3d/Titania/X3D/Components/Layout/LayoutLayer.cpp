@@ -82,5 +82,11 @@ LayoutLayer::getBBox ()
 	return Box3f ();
 }
 
+void
+LayoutLayer::traverse ()
+{
+
+}
+
 } // X3D
 } // titania

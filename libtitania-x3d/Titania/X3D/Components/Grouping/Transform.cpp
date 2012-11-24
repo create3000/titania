@@ -130,13 +130,13 @@ Transform::intersect ()
 }
 
 void
-Transform::draw ()
+Transform::display ()
 {
 	glPushMatrix ();
 
 	glMultMatrixf (matrix .data ());
 
-	X3DGroupingNode::draw ();
+	X3DGroupingNode::display ();
 
 	glPopMatrix ();
 }

@@ -64,49 +64,64 @@ public:
 	///  Value typedef.
 	typedef Type value_type;
 
+	///  @name Constructors
+
 	///  Default constructor. Constructs a box of size 0 0 0 and center 0 0 0,
 	constexpr
 	box3 () :
-		value { }
-
+		value ({ { } })
 	{ }
 
 	///  Copy constructor.
+	template <class Up>
 	constexpr
-	box3 (const box3 & box) :
-		value { box .size (), box .center () }
-
+	box3 (const box3 <Up> & box) :
+		value ({ { box .min (), box .max () } })
 	{ }
 
-	///  Default constructor. Constructs a box of size @a size and center @a size,
-	constexpr
-	box3 (const vector3 <Type> & size, const vector3 <Type> & center) :
-		value { size, center }
+	///  Constructs a box of size @a size and center @a size,
+	box3 (const vector3 <Type> & size, const vector3 <Type> & center)
+	{
+		vector3 <Type> size_1_2 = size / Type (2);
+		value .min = center - size_1_2;
+		value .max = center + size_1_2;
+	}
 
-	{ }
+	///  @name Element access
+
+	///  Return the center of this box.
+	const vector3 <Type> &
+	min () const { return value .min; }
+
+	const vector3 <Type> &
+	max () const { return value .max; }
 
 	///  Return the size of this box.
-	const vector3 <Type> &
-	size () const { return value .size; }
-
-	///  Return the center of this box.
-	const vector3 <Type> &
-	center () const { return value .center; }
+	constexpr vector3 <Type>
+	size () const { return max () - min (); }
 
 	///  Return the center of this box.
 	constexpr vector3 <Type>
-	min () const { return center () - size () / Type (2); }
+	center () const { return max () - size () / Type (2); }
 
-	constexpr vector3 <Type>
-	max () const { return center () + size () / Type (2); }
+	///  @name  Arithmetic operations
+	///  All these operators modify this vector2 inplace.
 
-	void
-	minmax (vector3 <Type> & min, vector3 <Type> & max) const
+	///  Add @a box3 to this box.
+	template <class Up>
+	box3 &
+	operator += (const box3 <Up> & box)
 	{
-		vector3 <Type> size_1_2 = size () / Type (2);
-		min = center () - size_1_2;
-		max = center () + size_1_2;
+		if (box .min () not_eq box .max ())
+		{
+			value .min = math::min (value .min, box .min ());
+			value .max = math::max (value .max, box .max ());
+		}
+
+		return *this;
 	}
+
+	///  @name Intersection
 
 	///  Returns true if @a line intersects with this box.
 	bool
@@ -117,8 +132,8 @@ private:
 
 	struct Value
 	{
-		vector3 <Type> size;
-		vector3 <Type> center;
+		vector3 <Type> min;
+		vector3 <Type> max;
 	};
 
 	Value value;
@@ -129,20 +144,17 @@ template <class Type>
 bool
 box3 <Type>::intersect (const line3 <Type> & line) const
 {
-	vector3 <Type> min;
-	vector3 <Type> max;
-
-	minmax (min, max);
+	vector3 <Type> center = this -> center ();
 
 	vector3 <Type> points [6] = {
-		vector3 <Type> (center () .x (), center () .y (), max .z ()), // right
-		vector3 <Type> (center () .x (), center () .y (), min .z ()), // left
+		vector3 <Type> (center .x (), center .y (), max () .z ()), // right
+		vector3 <Type> (center .x (), center .y (), min () .z ()), // left
 
-		vector3 <Type> (center () .x (), max .y (), center () .z ()), // top
-		vector3 <Type> (center () .x (), min .y (), center () .z ()), // bottom
+		vector3 <Type> (center .x (), max () .y (), center .z ()), // top
+		vector3 <Type> (center .x (), min () .y (), center .z ()), // bottom
 
-		vector3 <Type> (max .x (), center () .y (), center () .z ()), // front
-		vector3 <Type> (min .x (), center () .y (), center () .z ())  // back
+		vector3 <Type> (max () .x (), center .y (), center .z ()), // front
+		vector3 <Type> (min () .x (), center .y (), center .z ())  // back
 	};
 
 	static const vector3 <Type> normals [6] = {
@@ -165,24 +177,24 @@ box3 <Type>::intersect (const line3 <Type> & line) const
 				case 0:
 				case 1:
 
-					if (intersection .x () >= min .x () and intersection .x () <= max .x () and
-					    intersection .y () >= min .y () and intersection .y () <= max .y ())
+					if (intersection .x () >= min () .x () and intersection .x () <= max () .x () and
+					    intersection .y () >= min () .y () and intersection .y () <= max () .y ())
 						return true;
 
 					break;
 				case 2:
 				case 3:
 
-					if (intersection .x () >= min .x () and intersection .x () <= max .x () and
-					    intersection .z () >= min .z () and intersection .z () <= max .z ())
+					if (intersection .x () >= min () .x () and intersection .x () <= max () .x () and
+					    intersection .z () >= min () .z () and intersection .z () <= max () .z ())
 						return true;
 
 					break;
 				case 4:
 				case 5:
 
-					if (intersection .y () >= min .y () and intersection .y () <= max .y () and
-					    intersection .z () >= min .z () and intersection .z () <= max .z ())
+					if (intersection .y () >= min () .y () and intersection .y () <= max () .y () and
+					    intersection .z () >= min () .z () and intersection .z () <= max () .z ())
 						return true;
 
 					break;
@@ -193,6 +205,25 @@ box3 <Type>::intersect (const line3 <Type> & line) const
 	return false;
 }
 
+///  @relates box3
+///  @name Arithmetic operations
+
+///@{
+///  Return new vector value @a lhs plus @a rhs.
+template <class Type>
+inline
+box3 <Type>
+operator + (const box3 <Type> & lhs, const box3 <Type> & rhs)
+{
+	return box3 <Type> (lhs) += rhs;
+}
+
+///@}
+
+///  @relates box3
+///  @name Input/Output operations
+
+///@{
 ///  Extraction operator for vector values.
 template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
@@ -216,6 +247,8 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const box3 <Type> & b
 {
 	return ostream << box .size () << ", " << box .center ();
 }
+
+///@}
 
 extern template class box3 <float>;
 extern template class box3 <double>;

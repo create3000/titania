@@ -46,8 +46,10 @@
  *
  ******************************************************************************/
 
-#include "../../Browser/Browser.h"
 #include "X3DGroupingNode.h"
+
+#include "../../Browser/Browser.h"
+#include <Titania/Bits/Utility/Adapter.h>
 
 namespace titania {
 namespace X3D {
@@ -72,58 +74,22 @@ X3DGroupingNode::initialize ()
 	set_children ();
 }
 
+static int c = 0;
+
 Box3f
 X3DGroupingNode::getBBox ()
 {
+__LOG__ << "++ " << ++ c << " " << (void*) this << " " << getName () << " " << getTypeName () << std::endl;
+
 	if (bboxSize == Vector3f (-1, -1, -1))
 	{
-		// Find bounding box objects
+		auto bbox = X3DBoundedObject::getBBox (children);
 
-		MFNode <X3DBoundedObject> boundedObjects;
-
-		for (const auto & child : children)
-		{
-			SFNode <X3DBoundedObject> boundedObject = child;
-
-			if (boundedObject)
-				boundedObjects .push_back (boundedObject);
-		}
-
-		// Find first non zero bounding box
-
-		Vector3f min;
-		Vector3f max;
-
-		for (const auto & boundedObject : boundedObjects)
-		{
-			const Box3f & bbox = boundedObject -> getBBox ();
-
-			if (bbox .size () not_eq Vector3f ())
-			{
-				bbox .minmax (min, max);
-				break;
-			}
-		}
-
-		// Add bounding boxes
-
-		for (const auto & boundedObject : boundedObjects)
-		{
-			const Box3f & bbox = boundedObject -> getBBox ();
-
-			if (bbox .size () not_eq Vector3f ())
-			{
-				min = math::min (min, bbox .min ());
-				max = math::max (max, bbox .max ());
-			}
-		}
-
-		Vector3f size   = max - min;
-		Vector3f center = min + size * 0.5f;
-
-		return Box3f (size, center);
+__LOG__ << "- " << c -- << " " << (void*) this << " " << getName () << " " << getTypeName () << std::endl;
+		return bbox;
 	}
 
+__LOG__ << "- " << c -- << " " << (void*) this << " " << getName () << " " << getTypeName () << std::endl;
 	return Box3f (bboxSize, bboxCenter);
 }
 
@@ -176,7 +142,7 @@ X3DGroupingNode::intersect ()
 }
 
 void
-X3DGroupingNode::draw ()
+X3DGroupingNode::display ()
 {
 	if (lights .size ())
 		lightsDisplay ();
@@ -234,16 +200,14 @@ X3DGroupingNode::childrenDisplay ()
 void
 X3DGroupingNode::localFogsPostDisplay ()
 {
-	localFogs .back () -> postDisplay ();
+	localFogs .back () -> finish ();
 }
 
 void
 X3DGroupingNode::lightsPostDisplay ()
 {
-	for (auto light = lights .crbegin ();
-	     light not_eq lights .crend ();
-	     ++ light)
-		(*light) -> finish ();
+	for (const auto & light : basic::adapter (lights .crbegin (), lights .crend ()))
+		light -> finish ();
 }
 
 void
@@ -251,10 +215,8 @@ X3DGroupingNode::pointingDeviceSensorsPostDisplay ()
 {
 	//	if (not getBrowser () -> getEditMode ())
 	//	{
-	for (auto pointingDeviceSensor = pointingDeviceSensors .crbegin ();
-	     pointingDeviceSensor not_eq pointingDeviceSensors .crend ();
-	     ++ pointingDeviceSensor)
-		(*pointingDeviceSensor) -> postDisplay ();
+	for (const auto & pointingDeviceSensor : basic::adapter (pointingDeviceSensors .crbegin (), pointingDeviceSensors .crend ()))
+		pointingDeviceSensor -> finish ();
 
 	//	}
 }

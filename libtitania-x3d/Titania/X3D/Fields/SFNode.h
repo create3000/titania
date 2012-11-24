@@ -68,7 +68,8 @@ public:
 	using X3DField <X3DBasicNode*>::getValue;
 	using X3DField <X3DBasicNode*>::operator =;
 
-	typedef typename X3DField <X3DBasicNode*>::value_type value_type;
+	typedef ValueType* value_type;
+	typedef typename X3DField <X3DBasicNode*>::value_type basic_type;
 
 	///  @name Constructors
 
@@ -140,7 +141,7 @@ public:
 
 	virtual
 	void
-	set (const value_type &);
+	set (const basic_type &);
 
 	///  @name Boolean Operator
 
@@ -304,7 +305,7 @@ throw (Error <INVALID_NAME>,
 
 template <class ValueType>
 void
-SFNode <ValueType>::set (const value_type & value)
+SFNode <ValueType>::set (const basic_type & value)
 {
 	addNode (value);
 	X3DField <X3DBasicNode*>::set (value);

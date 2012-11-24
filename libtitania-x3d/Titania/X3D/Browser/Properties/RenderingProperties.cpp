@@ -268,7 +268,38 @@ void
 RenderingProperties::build ()
 {
 	glNewList (listId, GL_COMPILE);
-	draw ();
+	
+	GLfloat viewport [4];
+
+	glGetFloatv (GL_VIEWPORT, viewport);
+
+	GLfloat width  = viewport [2];
+	GLfloat height = viewport [3];
+
+	glMatrixMode (GL_PROJECTION);
+	glLoadIdentity ();
+	glOrtho (0, width, 0, height, -1, 1);
+	glMatrixMode (GL_MODELVIEW);
+
+	glDisable (GL_DEPTH_TEST);
+	glColor3f (197.0 / 255.0, 96.0 / 255.0, 0);
+
+	// Display stats.
+
+	int i = 0;
+	update_string ();
+
+	for (const auto & line : string)
+	{
+		glPushMatrix ();
+		glLoadIdentity ();
+		glRasterPos2f (10, 10 + (string .size () - i - 1) * fontHeigth);
+		glListBase (fontListBase);
+		glCallLists (line .length (), GL_UNSIGNED_BYTE, line .getValue () .c_str ());
+		glPopMatrix ();
+		++ i;
+	}
+
 	glEndList ();
 }
 
@@ -304,41 +335,6 @@ RenderingProperties::display ()
 	}
 
 	glCallList (listId);
-}
-
-void
-RenderingProperties::draw ()
-{
-	GLfloat viewport [4];
-
-	glGetFloatv (GL_VIEWPORT, viewport);
-
-	GLfloat width  = viewport [2];
-	GLfloat height = viewport [3];
-
-	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity ();
-	glOrtho (0, width, 0, height, -1, 1);
-	glMatrixMode (GL_MODELVIEW);
-
-	glDisable (GL_DEPTH_TEST);
-	glColor3f (197.0 / 255.0, 96.0 / 255.0, 0);
-
-	// Display stats.
-
-	int i = 0;
-	update_string ();
-
-	for (const auto & line : string)
-	{
-		glPushMatrix ();
-		glLoadIdentity ();
-		glRasterPos2f (10, 10 + (string .size () - i - 1) * fontHeigth);
-		glListBase (fontListBase);
-		glCallLists (line .length (), GL_UNSIGNED_BYTE, line .getValue () .c_str ());
-		glPopMatrix ();
-		++ i;
-	}
 }
 
 void

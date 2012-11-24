@@ -185,9 +185,6 @@ IndexedFaceSet::set_coordIndex ()
 				if (_coord -> point .size () < (size_t) numPoints)
 					_coord -> point .resize (numPoints);
 
-				// Calculate bbox for texture coordinate calculation.
-				bbox = getBBox ();
-
 				set_texCoordIndex ();
 				set_colorIndex    ();
 				set_normalIndex   ();
@@ -535,7 +532,8 @@ IndexedFaceSet::buildTexCoord ()
 {
 	getTexCoord () .reserve (coordIndex .size ());
 
-	Vector3f min = bbox .center () - bbox .size () * 0.5f;
+	Box3f bbox = getBBox ();
+	Vector3f min = bbox .min ();
 
 	float Xsize = bbox .size () .x ();
 	float Ysize = bbox .size () .y ();

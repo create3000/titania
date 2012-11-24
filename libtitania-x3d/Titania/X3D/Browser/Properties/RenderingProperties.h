@@ -134,10 +134,6 @@ private:
 	void
 	build ();
 
-	virtual
-	void
-	draw ();
-
 	void
 	update_string ();
 

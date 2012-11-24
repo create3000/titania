@@ -1,16 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Parser/Parser.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-standard/Titania/Math/Geometry/Box3.h">
     <Files>
-      <File FileName="experimental/main.cpp" Line="692" Column="1" />
+      <File FileName="experimental/main.cpp" Line="698" Column="4" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/Tesselator.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.h" Line="119" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="211" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.h" Line="103" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="139" Column="3" />
-      <File FileName="Library/Tests/Extrusion/Extrusion2.wrl" Line="3" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="403" Column="8" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="235" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="139" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="77" Column="4" />
+      <File FileName="Library/Tests/Geometry3D/test.wrl" Line="441" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Geometry/Box3.h" Line="15" Column="15" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -18,24 +18,11 @@
           <Node name="miscellaneous" expanded="True" />
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True">
-              <Node name="icts" expanded="True" />
-              <Node name="ictspace-start" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
-              <Node name="mushrooms" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
+            <Node name="Models" expanded="True">
+              <Node name="Robots" expanded="True" />
             </Node>
             <Node name="Tests" expanded="True">
-              <Node name="Extrusion" expanded="True" />
               <Node name="Geometry3D" expanded="True" />
-              <Node name="Interpolation" expanded="True" />
-              <Node name="Texturing" expanded="True">
-                <Node name="images" expanded="True">
-                  <Node name="colors" expanded="True" />
-                </Node>
-              </Node>
             </Node>
           </Node>
           <Node name="libtitania-opengl-surface" expanded="True">
@@ -54,7 +41,9 @@
               </Node>
               <Node name="Math" expanded="True">
                 <Node name="Algorithms" expanded="True" />
-                <Node name="Numbers" expanded="True" />
+                <Node name="Geometry" expanded="True">
+                  <Node name="Box3.h" selected="True" />
+                </Node>
               </Node>
             </Node>
           </Node>
@@ -70,17 +59,14 @@
                   <Node name="EnvironmentalSensor" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
                   <Node name="Grouping" expanded="True" />
+                  <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                   <Node name="Rendering" expanded="True" />
-                  <Node name="RigidBodyPhysics" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
                 </Node>
                 <Node name="Configuration" expanded="True" />
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
-                <Node name="Parser" expanded="True">
-                  <Node name="Parser.cpp" selected="True" />
-                </Node>
+                <Node name="Parser" expanded="True" />
                 <Node name="Rendering" expanded="True" />
                 <Node name="Types" expanded="True" />
                 <Node name="Widgets" expanded="True" />

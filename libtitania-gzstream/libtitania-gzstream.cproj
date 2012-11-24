@@ -55,6 +55,7 @@
     <None Include="Titania\version" />
     <None Include="info.h" />
     <None Include="libtitania-gzstream.md.pc" />
+    <None Include="Makefile.am" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\gzstream.cpp" />

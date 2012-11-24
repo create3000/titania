@@ -54,6 +54,7 @@
 #include "../../Rendering/X3DRenderer.h"
 #include "../../Types/Geometry.h"
 #include "../Core/X3DNode.h"
+#include "../Grouping/X3DGroupingNode.h"
 #include "../Interpolation/PositionInterpolator.h"
 #include "../Layering/Viewport.h"
 #include "../Time/TimeSensor.h"
@@ -73,12 +74,6 @@ public:
 	MFNode <X3DBasicNode>    addChildren;
 	MFNode <X3DBasicNode>    removeChildren;
 	MFNode <X3DBasicNode>    children;
-
-	X3DRenderer*
-	getRenderer () { return this; }
-
-	const X3DRenderer*
-	getRenderer () const { return this; }
 
 	// Bindable node stack handling
 

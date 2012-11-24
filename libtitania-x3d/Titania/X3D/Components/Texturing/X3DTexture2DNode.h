@@ -70,7 +70,7 @@ public:
 
 	virtual
 	void
-	draw ();
+	display ();
 
 
 protected:

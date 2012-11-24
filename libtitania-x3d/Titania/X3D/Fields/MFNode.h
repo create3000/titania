@@ -71,10 +71,12 @@ private:
 
 public:
 
-	using ArrayField::size;
+	using ArrayField::operator =;
+	using ArrayField::assign;
 	using ArrayField::front;
 	using ArrayField::cbegin;
 	using ArrayField::cend;
+	using ArrayField::size;
 
 	MFNode () :
 		ArrayField ()
@@ -82,6 +84,11 @@ public:
 
 	MFNode (const MFNode & field) :
 		ArrayField (field)
+	{ }
+
+	template <class Up>
+	MFNode (const MFNode <Up> & field) :
+		ArrayField (field .begin (), field .end ())
 	{ }
 
 	explicit
@@ -93,10 +100,6 @@ public:
 	MFNode (std::initializer_list <typename SFNode <Type>::value_type> initializer_list) :
 		ArrayField (initializer_list)
 	{ }
-
-	virtual
-	const FieldType*
-	getType () const { return &X3DField <Array <SFNode <X3DBasicNode>>>::type; }
 
 	virtual
 	MFNode*
@@ -117,6 +120,18 @@ public:
 
 		return field;
 	}
+	
+	template <class Up>
+	MFNode &
+	operator = (const MFNode <Up> & field)
+	{
+		assign (field .begin (), field .end ());
+		return *this;
+	}
+
+	virtual
+	const FieldType*
+	getType () const { return &X3DField <Array <SFNode <X3DBasicNode>>>::type; }
 
 	virtual
 	void

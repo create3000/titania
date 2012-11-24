@@ -70,12 +70,13 @@ public:
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
 
+	virtual
 	void
 	eventsProcessed ();
 
 	virtual
 	void
-	draw ();
+	display ();
 
 
 private:

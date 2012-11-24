@@ -62,7 +62,7 @@ public:
 
 	SFInt32               activeLayer;
 	MFInt32               order;
-	MFNode <X3DBasicNode> layers;
+	MFNode <X3DLayerNode> layers;
 
 	LayerSet (X3DExecutionContext* const);
 
@@ -85,7 +85,7 @@ public:
 
 	virtual
 	void
-	draw ();
+	display ();
 
 	virtual
 	void

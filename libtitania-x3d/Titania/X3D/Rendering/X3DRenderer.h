@@ -105,8 +105,12 @@ private:
 	ShapeContainerArray shapes;
 	ShapeContainerArray transparentShapes;
 
+	virtual
 	void
-	redraw ();
+	traverse () = 0;
+
+	void
+	draw ();
 
 	void
 	clear ();

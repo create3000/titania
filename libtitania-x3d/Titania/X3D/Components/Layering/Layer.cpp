@@ -46,9 +46,11 @@
  *
  ******************************************************************************/
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../Layering/Viewport.h"
 #include "Layer.h"
+
+#include "../../Execution/X3DExecutionContext.h"
+#include "../Grouping/X3DBoundedObject.h"
+#include "../Layering/Viewport.h"
 
 namespace titania {
 namespace X3D {
@@ -77,47 +79,7 @@ Layer::create (X3DExecutionContext* const executionContext) const
 Box3f
 Layer::getBBox ()
 {
-	// Find bounding box objects
-
-	MFNode <X3DBoundedObject> boundedObjects;
-
-	for (const auto & child : children)
-	{
-		SFNode <X3DBoundedObject> boundedObject = child;
-
-		if (boundedObject)
-			boundedObjects .push_back (boundedObject);
-	}
-
-	// Find first non zero bounding box
-
-	Vector3f min;
-	Vector3f max;
-
-	for (const auto & boundedObject : boundedObjects)
-	{
-		const Box3f & bbox = boundedObject -> getBBox ();
-
-		if (bbox .size () not_eq Vector3f ())
-		{
-			bbox .minmax (min, max);
-			break;
-		}
-	}
-
-	// Add bounding boxes
-
-	for (const auto & boundedObject : boundedObjects)
-	{
-		Box3f bbox = boundedObject -> getBBox ();
-		min = math::min (min, bbox .min ());
-		max = math::max (max, bbox .max ());
-	}
-
-	Vector3f size   = max - min;
-	Vector3f center = min + size * 0.5f;
-
-	return Box3f (size, center);
+	return X3DBoundedObject::getBBox (children);
 }
 
 void
@@ -128,7 +90,7 @@ Layer::intersect ()
 }
 
 void
-Layer::draw ()
+Layer::traverse ()
 {
 	for (const auto & child : children)
 		child -> display ();

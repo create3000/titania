@@ -14,7 +14,6 @@
     <Packages>
       <Packages>
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glibmm-2.4.pc" name="glibmm" IsProject="false" />
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/giomm-2.4.pc" name="giomm" IsProject="false" />
         <Package file="/usr/lib/pkgconfig/mozjs185.pc" name="SpiderMonkey 1.8.5" IsProject="false" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/gl.pc" name="gl" IsProject="false" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glew.pc" name="glew" IsProject="false" />
@@ -484,6 +483,7 @@
     <None Include="Titania\X3D\Rendering\Tesselator.h" />
     <None Include="Titania\X3D\Basic\FieldType.h" />
     <None Include="Titania\X3D\Basic\NodeType.h" />
+    <None Include="Makefile.am" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

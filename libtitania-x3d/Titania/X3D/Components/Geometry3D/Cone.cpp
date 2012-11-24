@@ -87,8 +87,10 @@ Cone::createBBox ()
 
 	if (not side and not bottom)
 		return Box3f ();
+		
 	else if (not side)
 		return Box3f (Vector3f (diameter, 0, diameter), Vector3f (0, -height / 2, 0));
+		
 	else
 		return Box3f (Vector3f (diameter, height, diameter), Vector3f ());
 }

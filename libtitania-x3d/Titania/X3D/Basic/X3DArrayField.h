@@ -171,6 +171,7 @@ public:
 	operator = (const ValueType (&value) [Size])
 	{
 		assign (value, value + Size);
+		return *this;
 	}
 
 	template <const size_t Size>
@@ -178,6 +179,7 @@ public:
 	operator = (const typename ValueType::value_type (&value) [Size])
 	{
 		assign (value, value + Size);
+		return *this;
 	}
 
 	X3DArrayField &

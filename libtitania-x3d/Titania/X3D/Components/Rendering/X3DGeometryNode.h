@@ -66,14 +66,15 @@ public:
 	getBBox ();
 
 	bool
-	intersect (const Line3f &, Hit*) const;
-
-	bool
-	isTransparent () { return glColorsRGBA .size (); }
+	isTransparent () { return colorsRGBA .size (); }
 
 	virtual
 	void
-	draw ();
+	setup ();
+
+	virtual
+	bool
+	intersect (const Line3f &, Hit*) const;
 
 	virtual
 	void
@@ -99,25 +100,25 @@ protected:
 	initialize ();
 
 	std::vector <Vector2f> &
-	getTexCoord () { return glTexCoord; }
+	getTexCoord () { return texCoord; }
 
 	void
 	setTextureCoordinateGenerator (TextureCoordinateGenerator* value) { textureCoordinateGenerator = value; }
 
 	std::vector <Color3f> &
-	getColors () { return glColors; }
+	getColors () { return colors; }
 
 	std::vector <Color4f> &
-	getColorsRGBA () { return glColorsRGBA; }
+	getColorsRGBA () { return colorsRGBA; }
 
 	std::vector <Vector3f> &
-	getNormals () { return glNormals; }
+	getNormals () { return normals; }
 
 	std::vector <Vector3f> &
-	getVertices () { return glVertices; }
+	getVertices () { return vertices; }
 
 	void
-	setVertexMode (const GLenum value) { glVertexMode = value; }
+	setVertexMode (const GLenum value) { vertexMode = value; }
 
 	virtual
 	Box3f
@@ -147,13 +148,13 @@ private:
 	transfer ();
 
 	Box3f                       bbox;
-	std::vector <Vector2f>      glTexCoord;
+	std::vector <Vector2f>      texCoord;
 	TextureCoordinateGenerator* textureCoordinateGenerator;
-	std::vector <Color3f>       glColors;
-	std::vector <Color4f>       glColorsRGBA;
-	std::vector <Vector3f>      glNormals;
-	std::vector <Vector3f>      glVertices;
-	GLenum                      glVertexMode;
+	std::vector <Color3f>       colors;
+	std::vector <Color4f>       colorsRGBA;
+	std::vector <Vector3f>      normals;
+	std::vector <Vector3f>      vertices;
+	GLenum                      vertexMode;
 
 	GLuint texCoordBufferId;
 	GLuint colorBufferId;

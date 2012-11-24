@@ -96,7 +96,7 @@ X3DLightNode::disable ()
 }
 
 void
-X3DLightNode::draw ()
+X3DLightNode::display ()
 {
 	if (on)
 	{

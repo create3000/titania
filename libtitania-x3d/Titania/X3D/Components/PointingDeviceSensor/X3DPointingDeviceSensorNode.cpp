@@ -61,14 +61,14 @@ X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
 }
 
 void
-X3DPointingDeviceSensorNode::draw ()
+X3DPointingDeviceSensorNode::display ()
 {
 	if (enabled)
 		getBrowser () -> pushSensitiveNode (this);
 }
 
 void
-X3DPointingDeviceSensorNode::postDisplay ()
+X3DPointingDeviceSensorNode::finish ()
 {
 	if (enabled)
 		getBrowser () -> popSensitiveNode ();

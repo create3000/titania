@@ -85,7 +85,7 @@ public:
 
 	virtual
 	void
-	draw ();
+	display ();
 
 	void
 	toStream (std::ostream &) const;

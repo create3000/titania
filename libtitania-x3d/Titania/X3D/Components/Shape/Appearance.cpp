@@ -61,17 +61,12 @@ namespace X3D {
 Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	     X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DAppearanceNode (),                                                    
-	   fillProperties (),                                                    // SFNode [in,out] fillProperties    NULL        [FillProperties]
 	   lineProperties (),                                                    // SFNode [in,out] lineProperties    NULL        [LineProperties]
+	   fillProperties (),                                                    // SFNode [in,out] fillProperties    NULL        [FillProperties]
 	         material (),                                                    // SFNode [in,out] material          NULL        [X3DMaterialNode]
-	          shaders (),                                                    // MFNode[in,out] shaders           [ ]         [X3DShaderNode]
 	          texture (),                                                    // SFNode [in,out] texture           NULL        [X3DTextureNode]
 	 textureTransform (),                                                    // SFNode [in,out] textureTransform  NULL        [X3DTextureTransformNode]
-	  _fillProperties (nullptr),                                             
-	  _lineProperties (nullptr),                                             
-	        _material (nullptr),                                             
-	         _texture (nullptr),                                             
-	_textureTransform (nullptr)                                              
+	          shaders ()                                                     // MFNode[in,out]  shaders           [ ]         [X3DShaderNode]
 {
 	setComponent ("Shape");
 	setTypeName ("Appearance");
@@ -95,100 +90,40 @@ void
 Appearance::initialize ()
 {
 	X3DAppearanceNode::initialize ();
-
-	fillProperties   .addInterest (this, &Appearance::set_fillProperties);
-	lineProperties   .addInterest (this, &Appearance::set_lineProperties);
-	material         .addInterest (this, &Appearance::set_material);
-	texture          .addInterest (this, &Appearance::set_texture);
-	textureTransform .addInterest (this, &Appearance::set_textureTransform);
-	shaders          .addInterest (this, &Appearance::set_shaders);
-
-	set_fillProperties   ();
-	set_lineProperties   ();
-	set_material         ();
-	set_texture          ();
-	set_textureTransform ();
-	set_shaders          ();
-}
-
-void
-Appearance::set_fillProperties ()
-{
-	_fillProperties = *SFNode <FillProperties> (fillProperties);
-}
-
-void
-Appearance::set_lineProperties ()
-{
-	_lineProperties = *SFNode <LineProperties> (lineProperties);
-}
-
-void
-Appearance::set_material ()
-{
-	_material = *SFNode <X3DMaterialNode> (material);
-}
-
-void
-Appearance::set_texture ()
-{
-	_texture = *SFNode <X3DTextureNode> (texture);
-}
-
-void
-Appearance::set_textureTransform ()
-{
-	_textureTransform = *SFNode <X3DTextureTransformNode> (textureTransform);
-}
-
-void
-Appearance::set_shaders ()
-{
-	_shaders .clear ();
-
-	for (const auto & shader : shaders)
-	{
-		SFNode <X3DShaderNode> _shader = shader;
-
-		if (_shader)
-			_shaders .push_back (*_shader);
-	}
 }
 
 bool
 Appearance::isTransparent ()
 {
-	if (_material and _material -> isTransparent ())
+	if (material and material -> isTransparent ())
 		return true;
 
-	if (_texture and _texture -> isTransparent ())
+	if (texture and texture -> isTransparent ())
 		return true;
 
 	return false;
 }
 
 void
-Appearance::draw ()
+Appearance::display ()
 {
-	if (_fillProperties)
-		_fillProperties -> display ();
+	if (lineProperties)
+		lineProperties -> display ();
 
-	if (_lineProperties)
-		_lineProperties -> display ();
+	if (fillProperties)
+		fillProperties -> display ();
 
-	if (_material)
-		_material -> display ();
+	if (material)
+		material -> display ();
 
-	if (_texture)
-		_texture -> display ();
+	if (texture)
+		texture -> display ();
 
-	if (_textureTransform)
-		_textureTransform -> display ();
+	if (textureTransform)
+		textureTransform -> display ();
 
-	for (const auto & _shader : _shaders)
-	{
-		_shader -> display ();
-	}
+	for (const auto & shader : shaders)
+		shader -> display ();
 }
 
 } // X3D

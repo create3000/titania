@@ -120,7 +120,7 @@ VisibilitySensor::update ()
 }
 
 void
-VisibilitySensor::draw ()
+VisibilitySensor::display ()
 {
 	if (not enabled or visible)
 		return;

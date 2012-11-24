@@ -1,0 +1,41 @@
+## Process this file with automake to produce Makefile.in
+
+
+lib_LTLIBRARIES =  \
+	libtitania-standard.la
+
+libtitania_standard_la_SOURCES =  \
+	Titania/Basic/Id.cpp \
+	Titania/Basic/IndexedMultiMap.cpp \
+	Titania/Basic/InputOutput/Generator.cpp \
+	Titania/Basic/Path.cpp \
+	Titania/Basic/URI.cpp \
+	Titania/Bits/String/Split.cpp \
+	Titania/Bits/String/strfsize.cpp \
+	Titania/Chrono/ClockBase.cpp \
+	Titania/Chrono/CountingClock.cpp \
+	Titania/Chrono/Now.cpp \
+	Titania/Chrono/SystemClock.cpp \
+	Titania/Math/Geometry/Box3.cpp \
+	Titania/Math/Geometry/Line3.cpp \
+	Titania/Math/Geometry/Plane3.cpp \
+	Titania/Math/Geometry/Sphere3.cpp \
+	Titania/Math/Image.cpp \
+	Titania/Math/Numbers/Color3.cpp \
+	Titania/Math/Numbers/Color4.cpp \
+	Titania/Math/Numbers/Matrix3.cpp \
+	Titania/Math/Numbers/Matrix4.cpp \
+	Titania/Math/Numbers/Quaternion.cpp \
+	Titania/Math/Numbers/Rotation4.cpp \
+	Titania/Math/Numbers/Vector2.cpp \
+	Titania/Math/Numbers/Vector3.cpp \
+	Titania/Math/Numbers/Vector4.cpp \
+	Titania/OS/CWD.cpp \
+	Titania/OS/Env.cpp \
+	Titania/OS/FindDataFile.cpp \
+	Titania/OS/Home.cpp \
+	Titania/OS/System.cpp
+
+libtitania_standard_la_LIBADD = $(TITANIA_STANDARD_LIBS) 
+
+AM_CPPFLAGS = $(TITANIA_STANDARD_CFLAGS) 

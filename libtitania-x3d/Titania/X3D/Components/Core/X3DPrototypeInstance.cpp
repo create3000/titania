@@ -133,7 +133,7 @@ X3DPrototypeInstance::intersect ()
 }
 
 void
-X3DPrototypeInstance::draw ()
+X3DPrototypeInstance::display ()
 {
 	getRootNode () -> display ();
 }

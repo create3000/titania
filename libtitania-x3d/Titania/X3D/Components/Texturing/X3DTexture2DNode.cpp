@@ -282,7 +282,7 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 }
 
 void
-X3DTexture2DNode::draw ()
+X3DTexture2DNode::display ()
 {
 	glEnable (GL_TEXTURE_2D);
 	glBindTexture (GL_TEXTURE_2D, textureId);

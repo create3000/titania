@@ -120,7 +120,7 @@ Material::eventsProcessed ()
 }
 
 void
-Material::draw ()
+Material::display ()
 {
 	glEnable (GL_LIGHTING);
 

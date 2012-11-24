@@ -85,6 +85,7 @@ X3DShapeNode::getBBox ()
 	{
 		if (geometry)
 			return geometry -> getBBox ();
+		
 		else
 			return Box3f ();
 	}

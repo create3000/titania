@@ -96,6 +96,7 @@
     <None Include="Titania\Basic\Path.h" />
     <None Include="Titania\Bits\Utility\Adapter.h" />
     <None Include="Titania\Math\Algorithms\EigenDecomposition.h" />
+    <None Include="Makefile.am" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
