@@ -1,23 +1,440 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 CosmoWorlds V1.0
 
-META "title" "Geometry3d Test"
+Group {
+  children	  Transform {
+    children	[
+      DEF _0 NavigationInfo {
+	type	[ "EXAMINE",
+		  "ANY" ]
+      }
+      Group {
+	children	[
+	  DEF Home Viewpoint {
+	    position	0 -0.0961999 2.33595
+	    description	"Home"
+	  }
+	  Collision {
+	    children	Group {
+	      children	[
+		DEF Cameras Switch {
+		  whichChoice	-1
+		  choice	[
+		  ]
+		}
+		Transform {
+		  children	Group {
+		    children	Group {
+		      children	Transform {
+			children	Transform {
+			  children	[
+			    Transform {
+			      children	Shape {
+				appearance	Appearance {
+				  material	DEF _v2%0 Material {
+				  }
 
-Background {
-  skyColor 1 1 1
-}
+				}
 
-Viewpoint { }
+				geometry	Sphere {
+				}
 
-Shape {
-  appearance Appearance {
-    material Material { }
+			      }
+
+			      scale	6.75 4.5 4.5
+			    }
+			    Transform {
+			      children	[
+				Transform {
+				  children	Shape {
+				    appearance	Appearance {
+				      material	USE _v2%0
+
+				    }
+
+				    geometry	Sphere {
+				    }
+
+				  }
+
+				  translation	0 -12 0
+				  scale	3.25 12 2.5
+				}
+				Transform {
+				  children	[
+				    Transform {
+				      children	Shape {
+					appearance	Appearance {
+					  material	USE _v2%0
+
+					}
+
+					geometry	Sphere {
+					}
+
+				      }
+
+				      translation	0 -10.5 0
+				      scale	2.5 10.5 2
+				    }
+				    Transform {
+				      children	Transform {
+					children	Shape {
+					  appearance	Appearance {
+					    material	USE _v2%0
+
+					  }
+
+					  geometry	Sphere {
+					  }
+
+					}
+
+					translation	0 0 6
+					scale	2.25 1.75 6
+				      }
+
+				      translation	0 -21 0
+				      center	0 0 0
+				    }
+				  ]
+				  translation	0 -24 0
+				  center	0 0 0
+				}
+			      ]
+			      translation	-3.5 0 1.3
+			      center	0 0 0
+			    }
+			    Transform {
+			      children	[
+				Transform {
+				  children	Shape {
+				    appearance	Appearance {
+				      material	USE _v2%0
+
+				    }
+
+				    geometry	Sphere {
+				    }
+
+				  }
+
+				  translation	0 -12 0
+				  scale	3.25 12 2.5
+				}
+				Transform {
+				  children	[
+				    Transform {
+				      children	Shape {
+					appearance	Appearance {
+					  material	USE _v2%0
+
+					}
+
+					geometry	Sphere {
+					}
+
+				      }
+
+				      translation	0 -10.5 0
+				      scale	2.5 10.5 2
+				    }
+				    Transform {
+				      children	Transform {
+					children	Shape {
+					  appearance	Appearance {
+					    material	USE _v2%0
+
+					  }
+
+					  geometry	Sphere {
+					  }
+
+					}
+
+					translation	0 0 6
+					scale	2.25 1.75 6
+				      }
+
+				      translation	0 -21 0
+				      center	0 0 0
+				    }
+				  ]
+				  translation	0 -24 0
+				  center	0 0 0
+				}
+			      ]
+			      translation	3.5 0 1.3
+			      center	0 0 0
+			    }
+			    Transform {
+			      children	[
+				Transform {
+				  children	Shape {
+				    appearance	Appearance {
+				      material	USE _v2%0
+
+				    }
+
+				    geometry	Sphere {
+				    }
+
+				  }
+
+				  translation	0 3.25 0
+				  scale	5.5 3.25 3
+				}
+				Transform {
+				  children	[
+				    Transform {
+				      children	Shape {
+					appearance	Appearance {
+					  material	USE _v2%0
+
+					}
+
+					geometry	Sphere {
+					}
+
+				      }
+
+				      translation	0 6 0
+				      scale	7 6 3.5
+				    }
+				    Transform {
+				      children	[
+					Transform {
+					  children	Shape {
+					    appearance	Appearance {
+					      material	USE _v2%0
+
+					    }
+
+					    geometry	Sphere {
+					    }
+
+					  }
+
+					  translation	0 2.25 0
+					  scale	2.25 2.25 2.25
+					}
+					Transform {
+					  children	Transform {
+					    children	Shape {
+					      appearance	Appearance {
+						material	USE _v2%0
+
+					      }
+
+					      geometry	Sphere {
+					      }
+
+					    }
+
+					    translation	0 5 0
+					    scale	3 5 3.5
+					  }
+
+					  translation	0 4.5 0
+					  center	0 0 0
+					}
+				      ]
+				      translation	0 12 0
+				      center	0 0 0
+				    }
+				    Transform {
+				      children	[
+					Transform {
+					  children	Shape {
+					    appearance	Appearance {
+					      material	USE _v2%0
+
+					    }
+
+					    geometry	Sphere {
+					    }
+
+					  }
+
+					  translation	-6 0 0
+					  scale	6 1 2.25
+					}
+					Transform {
+					  children	[
+					    Transform {
+					      children	Shape {
+						appearance	Appearance {
+						  material	USE _v2%0
+
+						}
+
+						geometry	Sphere {
+						}
+
+					      }
+
+					      translation	0 -6.5 0
+					      scale	2.25 6.5 2.25
+					    }
+					    Transform {
+					      children	[
+						Transform {
+						  children	Shape {
+						    appearance	Appearance {
+						      material	USE _v2%0
+
+						    }
+
+						    geometry	Sphere {
+						    }
+
+						  }
+
+						  translation	0 -6 0
+						  scale	1.6 6 1.2
+						}
+						Transform {
+						  children	Transform {
+						    children	Shape {
+						      appearance	Appearance {
+							material	USE _v2%0
+
+						      }
+
+						      geometry	Sphere {
+						      }
+
+						    }
+
+						    translation	0 -1.8 0
+						    scale	1.75 3.6 0.5
+						  }
+
+						  translation	0 -12 0
+						  center	0 0 0
+						}
+					      ]
+					      translation	0 -13 0
+					      center	0 0 0
+					    }
+					  ]
+					  translation	-9.75 0 0
+					  center	0 0 0
+					}
+				      ]
+				      translation	0 12 0
+				      center	0 0 0
+				    }
+				    Transform {
+				      children	[
+					Transform {
+					  children	Shape {
+					    appearance	Appearance {
+					      material	USE _v2%0
+
+					    }
+
+					    geometry	Sphere {
+					    }
+
+					  }
+
+					  translation	6 0 0
+					  scale	6 1 2.25
+					}
+					Transform {
+					  children	[
+					    Transform {
+					      children	Shape {
+						appearance	Appearance {
+						  material	USE _v2%0
+
+						}
+
+						geometry	Sphere {
+						}
+
+					      }
+
+					      translation	0 -6.5 0
+					      scale	2.25 6.5 2.25
+					    }
+					    Transform {
+					      children	[
+						Transform {
+						  children	Shape {
+						    appearance	Appearance {
+						      material	USE _v2%0
+
+						    }
+
+						    geometry	Sphere {
+						    }
+
+						  }
+
+						  translation	0 -6 0
+						  scale	1.6 6 1.2
+						}
+						Transform {
+						  children	Transform {
+						    children	Shape {
+						      appearance	Appearance {
+							material	USE _v2%0
+
+						      }
+
+						      geometry	Sphere {
+						      }
+
+						    }
+
+						    translation	0 -1.8 0
+						    scale	1.75 3.6 0.5
+						  }
+
+						  translation	0 -12 0
+						  center	0 0 0
+						}
+					      ]
+					      translation	0 -13 0
+					      center	0 0 0
+					    }
+					  ]
+					  translation	9.75 0 0
+					  center	0 0 0
+					}
+				      ]
+				      translation	0 12 0
+				      center	0 0 0
+				    }
+				  ]
+				  translation	0 6.5 0
+				  center	0 0 0
+				}
+			      ]
+			      translation	0 4.5 1.3
+			      center	0 0 0
+			    }
+			  ]
+			}
+
+		      }
+
+		    }
+
+		  }
+
+		  translation	0 0 0
+		  scale	0.0208 0.0208 0.0208
+		}
+	      ]
+	    }
+
+	    collide	FALSE
+	  }
+	]
+      }
+    ]
   }
-  geometry IndexedFaceSet {
-    coordIndex [ 0, 1, 2, 3, -1, 2, 4, 5, 3, -1 ]
-    creaseAngle 3.14
-    coord Coordinate {
-      point [ 0 1 -1, 0 0 -1, 0 0 0, 0 1 0, 1 0 0, 1 1 0 ]
-    }
-  }
-}
 
+}
