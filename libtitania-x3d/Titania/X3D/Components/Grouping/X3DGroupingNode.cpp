@@ -89,8 +89,8 @@ void
 X3DGroupingNode::set_children ()
 {
 	pointingDeviceSensors .clear ();
-	lights .clear ();
-	localFogs .clear ();
+	lights     .clear ();
+	localFogs  .clear ();
 	childNodes .clear ();
 
 	for (const auto & child : children)
@@ -115,7 +115,12 @@ X3DGroupingNode::set_children ()
 					localFogs .push_back (*localFogNode);
 
 				else
-					childNodes .push_back (*child);
+				{
+					SFNode <X3DChildNode> childNode = child;
+					
+					if (childNode)
+						childNodes .push_back (*childNode);
+				}
 			}
 		}
 	}

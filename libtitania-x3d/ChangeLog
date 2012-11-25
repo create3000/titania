@@ -1,3 +1,13 @@
+2012-11-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBasicNode.h:
+	* X3DBasicNode.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DGroupingNode.h:
+	* X3DPrototypeInstance.h:
+	* X3DGroupingNode.cpp:
+	* X3DPrototypeInstance.cpp: 
+
 2012-11-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.h:

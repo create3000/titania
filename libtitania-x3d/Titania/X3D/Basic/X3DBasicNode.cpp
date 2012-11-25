@@ -274,10 +274,10 @@ X3DBasicNode::setTypeName (const basic::id & value)
 	typeName = value;
 }
 
-const X3DType*
+const X3DBasicNode*
 X3DBasicNode::getType () const
 {
-	return reinterpret_cast <const X3DType*> (this);
+	return getBrowser () -> getNode (getTypeName ());
 }
 
 const basic::id &
@@ -421,7 +421,7 @@ X3DBasicNode::getInitializeableFields (const bool all) const
 {
 	FieldDefinitionArray changedFields;
 	
-	const X3DBasicNode* factory = getBrowser () -> getNode (getTypeName ());
+	const X3DBasicNode* declaration = getType ();
 
 	for (const auto & field : basic::adapter (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
 	{
@@ -430,7 +430,7 @@ X3DBasicNode::getInitializeableFields (const bool all) const
 			if (not field -> isInitializeable ())
 				continue;
 
-			if (not all and *field == *factory -> getField (field -> getName ()))
+			if (not all and *field == *declaration -> getField (field -> getName ()))
 				continue;
 		}
 

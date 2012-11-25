@@ -125,7 +125,7 @@ private:
 	std::deque <X3DPointingDeviceSensorNode*> pointingDeviceSensors;
 	std::deque <X3DLightNode*>                lights;
 	std::deque <LocalFog*>                    localFogs;
-	std::deque <X3DBasicNode*>                childNodes;
+	std::deque <X3DChildNode*>                childNodes;
 
 };
 

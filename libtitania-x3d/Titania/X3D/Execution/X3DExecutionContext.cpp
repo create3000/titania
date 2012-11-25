@@ -275,7 +275,7 @@ throw (Error <INVALID_NAME>,
 			if (getExecutionContext () -> getExecutionContext () not_eq this)
 				return getExecutionContext () -> createProtoInstance (name);
 
-			throw Error <INVALID_NAME> ("Unknown node type '" + name + "'.");
+			throw Error <INVALID_NAME> ("Unknown proto type '" + name + "'.");
 		}
 	}
 }

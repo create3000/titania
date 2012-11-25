@@ -102,7 +102,7 @@ public:
 	getComponentName () const;
 
 	virtual
-	const X3DType*
+	const X3DBasicNode*
 	getType () const;
 
 	virtual
