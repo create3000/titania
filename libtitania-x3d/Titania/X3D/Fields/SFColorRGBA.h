@@ -62,9 +62,8 @@ class SFColorRGBA :
 {
 public:
 
-	typedef size_t size_type;
-
 	typedef Color3f::value_type scalar_type;
+	typedef size_t              size_type;
 
 	using X3DField <Color4f>::setValue;
 	using X3DField <Color4f>::getValue;
@@ -124,6 +123,11 @@ public:
 
 	void
 	getHSV (scalar_type &, scalar_type &, scalar_type &) const;
+
+	///  Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const;
 
 
 private:

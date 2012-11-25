@@ -155,5 +155,11 @@ SFColor::getHSV (scalar_type & h, scalar_type & s, scalar_type & v) const
 	getValue () .getHSV (h, s, v);
 }
 
+void
+SFColor::toStream (std::ostream & ostream) const
+{
+	ostream << Generator::Precision <scalar_type> << getValue ();
+}
+
 } // X3D
 } // titania

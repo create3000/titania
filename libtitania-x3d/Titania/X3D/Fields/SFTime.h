@@ -61,6 +61,8 @@ class SFTime :
 {
 public:
 
+	typedef time_type scalar_type;
+
 	using X3DField <time_type>::operator =;
 
 	SFTime ();
@@ -77,6 +79,11 @@ public:
 	virtual
 	const FieldType*
 	getType () const;
+
+	///  Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const;
 
 	static const FieldType type;
 

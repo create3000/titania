@@ -43,7 +43,7 @@
 //#include <Titania/Stream/InputFileStream.h>
 //#include <Titania/Stream/InputHTTPStream.h>
 
-#include <Titania/Bits/Algorithm.h>
+#include <Titania/Algorithm.h>
 #include <Titania/LOG.h>
 
 #include <array>

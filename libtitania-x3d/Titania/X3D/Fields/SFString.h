@@ -62,11 +62,11 @@ class SFString :
 {
 public:
 
-	using X3DField <std::string>::operator =;
-
-	typedef value_type::size_type size_type;
-
 	typedef value_type::value_type char_type;
+	typedef value_type::value_type scalar_type;
+	typedef value_type::size_type  size_type;
+
+	using X3DField <std::string>::operator =;
 
 	SFString ();
 

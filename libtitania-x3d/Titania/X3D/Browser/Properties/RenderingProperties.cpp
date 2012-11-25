@@ -50,9 +50,9 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Browser.h"
-#include <Titania/Bits/String/Join.h>
-#include <Titania/Bits/String/Split.h>
-#include <Titania/Bits/String/strfsize.h>
+#include <Titania/String/Join.h>
+#include <Titania/String/Split.h>
+#include <Titania/String/strfsize.h>
 #include <iomanip>
 #include <iostream>
 

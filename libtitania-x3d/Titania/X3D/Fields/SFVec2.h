@@ -64,9 +64,8 @@ class SFVec2 :
 {
 public:
 
-	typedef typename ValueType::size_type size_type;
-
 	typedef typename ValueType::value_type scalar_type;
+	typedef typename ValueType::size_type size_type;
 
 	using X3DField <ValueType>::setValue;
 	using X3DField <ValueType>::getValue;
@@ -148,6 +147,11 @@ public:
 
 	scalar_type
 	length () const;
+
+	///  Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const;
 
 
 private:
@@ -291,6 +295,13 @@ typename SFVec2 <ValueType>::scalar_type
 SFVec2 <ValueType>::length () const
 {
 	return abs (getValue ());
+}
+
+template <class ValueType>
+void
+SFVec2 <ValueType>::toStream (std::ostream & ostream) const
+{
+	ostream << Generator::Precision <scalar_type> << getValue ();
 }
 
 // Aritmetic operators.

@@ -4,7 +4,7 @@
 from cmath import *
 from colorsys import *
 
-n = 6
+n = 8
 
 print "Shape {"
 print "geometry IndexedFaceSet {"

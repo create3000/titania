@@ -49,7 +49,7 @@
 #include "X3DTexture2DNode.h"
 
 #include "../../Browser/Browser.h"
-#include <Titania/Bits/Utility/Adapter.h>
+#include <Titania/Utility/Adapter.h>
 #include <Titania/Math/Math.h>
 
 namespace titania {

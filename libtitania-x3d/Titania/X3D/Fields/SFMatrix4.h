@@ -66,13 +66,10 @@ class SFMatrix4 :
 {
 public:
 
-	typedef typename ValueType::size_type size_type;
-
-	typedef typename ValueType::value_type scalar_type;
-
-	typedef SFVec3 <typename ValueType::vector3_type> vector3_type;
-
+	typedef typename ValueType::value_type                   scalar_type;
+	typedef SFVec3 <typename ValueType::vector3_type>        vector3_type;
 	typedef SFRotation4 <typename ValueType::rotation4_type> rotation4_type;
+	typedef typename ValueType::size_type                    size_type;
 
 	using X3DField <ValueType>::setValue;
 	using X3DField <ValueType>::getValue;
@@ -178,6 +175,11 @@ public:
 
 	vector3_type*
 	multDirMatrix (const vector3_type &) const;
+
+	///  Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const;
 
 
 private:
@@ -368,7 +370,7 @@ template <class ValueType>
 SFMatrix4 <ValueType>*
 SFMatrix4 <ValueType>::transpose () const
 {
-	return new SFMatrix4 (!getValue ());
+	return new SFMatrix4 (! getValue ());
 }
 
 template <class ValueType>
@@ -411,6 +413,13 @@ typename SFMatrix4 <ValueType>::vector3_type *
 SFMatrix4 <ValueType>::multDirMatrix (const vector3_type &value) const
 {
 	return new vector3_type (getValue () .multDirMatrix (value .getValue ()));
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::toStream (std::ostream & ostream) const
+{
+	ostream << Generator::Precision <scalar_type> << getValue ();
 }
 
 //extern template class X3DField <Matrix4d>;

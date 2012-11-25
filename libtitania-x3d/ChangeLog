@@ -1,3 +1,32 @@
+2012-11-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFVec2.h:
+	* SFVec3.h:
+	* SFTime.h:
+	* SFNode.h:
+	* MFNode.h:
+	* SFVec4.h:
+	* SFColor.h:
+	* SFImage.h:
+	* X3DField.h:
+	* SFString.h:
+	* SFTime.cpp:
+	* SFMatrix3.h:
+	* SFMatrix4.h:
+	* X3DBaseNode.h:
+	* SFColor.cpp:
+	* X3DScalar.h:
+	* SFRotation4.h:
+	* SFColorRGBA.h:
+	* X3DArrayField.h:
+	* X3DBasicNode.cpp:
+	* SFColorRGBA.cpp:
+	* X3DExecutionContext.cpp:
+	* BrowserOptions.cpp:
+	* X3DGroupingNode.cpp:
+	* X3DTexture2DNode.cpp:
+	* RenderingProperties.cpp: 
+
 2012-11-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

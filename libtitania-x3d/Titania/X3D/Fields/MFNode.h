@@ -53,6 +53,8 @@
 #include "../Fields/SFNode.h"
 #include "../InputOutput/Generator.h"
 
+#include <Titania/Utility/Adapter.h>
+
 namespace titania {
 namespace X3D {
 
@@ -74,6 +76,7 @@ public:
 	using ArrayField::operator =;
 	using ArrayField::assign;
 	using ArrayField::front;
+	using ArrayField::back;
 	using ArrayField::cbegin;
 	using ArrayField::cend;
 	using ArrayField::size;
@@ -169,19 +172,17 @@ MFNode <Type>::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak
 			<< Generator::IncIndent;
 
-		const auto last = cend () - 1;
-
-		for (auto value = cbegin (); value not_eq last; ++ value)
+		for (const auto & value : basic::adapter (cbegin (), cend () - 1))
 		{
 			ostream
 				<< Generator::Indent
-				<< *value
+				<< value
 				<< Generator::TidyBreak;
 		}
 
 		ostream
 			<< Generator::Indent
-			<< *last
+			<< back ()
 			<< Generator::TidyBreak
 			<< Generator::DecIndent
 			<< Generator::Indent

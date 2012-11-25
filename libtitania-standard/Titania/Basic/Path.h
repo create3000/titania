@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -49,8 +49,8 @@
 #ifndef __TITANIA_BASIC_PATH_H__
 #define __TITANIA_BASIC_PATH_H__
 
-#include "../Bits/String/Split.h"
-#include "../Bits/Utility/Adapter.h"
+#include "../String/Split.h"
+#include "../Utility/Adapter.h"
 #include <algorithm>
 #include <iterator>
 #include <list>

@@ -51,6 +51,8 @@
 
 #include <ostream>
 #include <string>
+#include <limits>
+#include <iomanip>
 
 namespace titania {
 namespace basic {
@@ -64,11 +66,13 @@ public:
 
 	basic_generator (const basic_generator &) = delete;
 
-	static std::basic_ostream <CharT, Traits> &
+	static 
+	std::basic_ostream <CharT, Traits> &
 	Space (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << space; }
 
-	static std::basic_ostream <CharT, Traits> &
+	static 
+	std::basic_ostream <CharT, Traits> &
 	TidySpace (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << tidySpace; }
 
@@ -76,34 +80,41 @@ public:
 	Break (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << endl; }
 
-	static std::basic_ostream <CharT, Traits> &
+	static 
+	std::basic_ostream <CharT, Traits> &
 	TidyBreak (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << tidyBreak; }
 
-	static std::basic_ostream <CharT, Traits> &
+	static 
+	std::basic_ostream <CharT, Traits> &
 	ListBreak (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << listBreak; }
 
-	static std::basic_ostream <CharT, Traits> &
+	static 
+	std::basic_ostream <CharT, Traits> &
 	Comma (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << comma; }
 
-	static const bool &
+	static 
+	const bool &
 	HasListBreak ()
 	{ return hasListBreak; }
 
-	static std::basic_ostream <CharT, Traits> &
+	static 
+	std::basic_ostream <CharT, Traits> &
 	Indent (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << indent; }
 
-	static std::basic_ostream <CharT, Traits> &
+	static 
+	std::basic_ostream <CharT, Traits> &
 	IncIndent (std::basic_ostream <CharT, Traits> & ostream)
 	{
 		indent += indentChar;
 		return ostream;
 	}
 
-	static std::basic_ostream <CharT, Traits> &
+	static
+	std::basic_ostream <CharT, Traits> &
 	DecIndent (std::basic_ostream <CharT, Traits> & ostream)
 	{
 		indent = std::string (indent, 0, indent .length () - indentChar .length ());
@@ -154,15 +165,35 @@ public:
 
 	};
 
-	static std::basic_ostream <CharT, Traits> &
+	static
+	std::basic_ostream <CharT, Traits> &
 	OpenBracket (std::basic_ostream <CharT, Traits> &);
 
-	static std::basic_ostream <CharT, Traits> &
+	static
+	std::basic_ostream <CharT, Traits> &
 	CloseBracket (std::basic_ostream <CharT, Traits> &);
 
-	static std::basic_ostream <CharT, Traits> &
+	static
+	std::basic_ostream <CharT, Traits> &
 	EmptyBrackets (std::basic_ostream <CharT, Traits> &);
+	
+	template <class Type>
+	static
+	void
+	Precision (size_t value)
+	{ NumericLimits <Type> ::digits10 = value; }
 
+	template <class Type>
+	static
+	size_t
+	Precision ()
+	{ return NumericLimits <Type> ::digits10; }
+
+	template <class Type>
+	static
+	std::basic_ostream <CharT, Traits> &
+	Precision (std::basic_ostream <CharT, Traits> &);
+	
 
 protected:
 
@@ -176,6 +207,12 @@ protected:
 
 	static std::string indent;
 	static std::string indentChar;
+
+	template <class Type>
+	struct NumericLimits
+	{
+		static size_t digits10;
+	};
 
 };
 
@@ -198,6 +235,10 @@ template <class CharT, class Traits>
 std::string basic_generator <CharT, Traits>::indent = "";
 template <class CharT, class Traits>
 std::string basic_generator <CharT, Traits>::indentChar = "  ";
+
+template <class CharT, class Traits>
+template <class Type>
+size_t basic_generator <CharT, Traits>::NumericLimits <Type>::digits10 = std::numeric_limits <Type>::digits10;
 
 template <class CharT, class Traits>
 std::basic_ostream <CharT, Traits> &
@@ -236,22 +277,31 @@ basic_generator <CharT, Traits>::EmptyBrackets (std::basic_ostream <CharT, Trait
 	return stream;
 }
 
-//extern template std::ostream & basic_generator <char>::Space         (std::ostream &);
-//extern template std::ostream & basic_generator <char>::TidySpace     (std::ostream &);
-//extern template std::ostream & basic_generator <char>::Break         (std::ostream &);
-//extern template std::ostream & basic_generator <char>::TidyBreak     (std::ostream &);
-//extern template std::ostream & basic_generator <char>::ListBreak     (std::ostream &);
-//extern template std::ostream & basic_generator <char>::Comma         (std::ostream &);
-//extern template std::ostream & basic_generator <char>::Indent        (std::ostream &);
-//extern template std::ostream & basic_generator <char>::IncIndent     (std::ostream &);
-//extern template std::ostream & basic_generator <char>::DecIndent     (std::ostream &);
-//extern template std::ostream & basic_generator <char>::OpenBracket   (std::ostream &);
-//extern template std::ostream & basic_generator <char>::CloseBracket  (std::ostream &);
-//extern template std::ostream & basic_generator <char>::EmptyBrackets (std::ostream &);
+template <class CharT, class Traits>
+template <class Type>
+std::basic_ostream <CharT, Traits> &
+basic_generator <CharT, Traits>::Precision (std::basic_ostream <CharT, Traits> & stream)
+{
+	return stream << std::setprecision (NumericLimits <Type>::digits10);
+}
+
 
 typedef basic_generator <char> Generator;
 
 } // basic
 } // titania
+
+extern template std::ostream & titania::basic::Generator::Space         (std::ostream &);
+extern template std::ostream & titania::basic::Generator::TidySpace     (std::ostream &);
+extern template std::ostream & titania::basic::Generator::Break         (std::ostream &);
+extern template std::ostream & titania::basic::Generator::TidyBreak     (std::ostream &);
+extern template std::ostream & titania::basic::Generator::ListBreak     (std::ostream &);
+extern template std::ostream & titania::basic::Generator::Comma         (std::ostream &);
+extern template std::ostream & titania::basic::Generator::Indent        (std::ostream &);
+extern template std::ostream & titania::basic::Generator::IncIndent     (std::ostream &);
+extern template std::ostream & titania::basic::Generator::DecIndent     (std::ostream &);
+extern template std::ostream & titania::basic::Generator::OpenBracket   (std::ostream &);
+extern template std::ostream & titania::basic::Generator::CloseBracket  (std::ostream &);
+extern template std::ostream & titania::basic::Generator::EmptyBrackets (std::ostream &);
 
 #endif

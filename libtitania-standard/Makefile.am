@@ -10,8 +10,6 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Basic/InputOutput/Generator.cpp \
 	Titania/Basic/Path.cpp \
 	Titania/Basic/URI.cpp \
-	Titania/Bits/String/Split.cpp \
-	Titania/Bits/String/strfsize.cpp \
 	Titania/Chrono/ClockBase.cpp \
 	Titania/Chrono/CountingClock.cpp \
 	Titania/Chrono/Now.cpp \
@@ -34,7 +32,9 @@ libtitania_standard_la_SOURCES =  \
 	Titania/OS/Env.cpp \
 	Titania/OS/FindDataFile.cpp \
 	Titania/OS/Home.cpp \
-	Titania/OS/System.cpp
+	Titania/OS/System.cpp \
+	Titania/String/Split.cpp \
+	Titania/String/strfsize.cpp
 
 libtitania_standard_la_LIBADD = $(TITANIA_STANDARD_LIBS) 
 

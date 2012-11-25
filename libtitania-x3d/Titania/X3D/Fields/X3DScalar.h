@@ -64,29 +64,44 @@ extern template class X3DField <Double>;
 extern template class X3DField <Float>;
 extern template class X3DField <Int32>;
 
-template <class Type>
+template <class ValueType>
 class X3DScalar :
-	public X3DField <Type>
+	public X3DField <ValueType>
 {
 public:
 
-	using X3DField <Type>::operator =;
+	typedef ValueType scalar_type;
+
+	using X3DField <ValueType>::operator =;
+	using X3DField <ValueType>::getValue;
 
 	X3DScalar () :
-		X3DField <Type> () { }
+		X3DField <ValueType> () { }
 
 	X3DScalar (const X3DScalar & field) :
-		X3DField <Type> (field) { }
+		X3DField <ValueType> (field) { }
 
 	explicit
-	X3DScalar (const Type & value) :
-		X3DField <Type> (value) { }
+	X3DScalar (const ValueType & value) :
+		X3DField <ValueType> (value) { }
 
 	virtual
 	X3DScalar*
-	copy () const { return new X3DScalar <Type> (*this); }
+	copy () const { return new X3DScalar <ValueType> (*this); }
+
+	///  Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const;
 
 };
+
+template <class ValueType>
+void
+X3DScalar <ValueType>::toStream (std::ostream & ostream) const
+{
+	ostream << Generator::Precision <scalar_type> << getValue ();
+}
 
 extern template class X3DScalar <Bool>;
 extern template class X3DScalar <Double>;

@@ -1,3 +1,43 @@
+2012-11-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* String.h:
+	* Utility.h:
+	* Algorithm.h:
+	* Path.h:
+	* Image.h:
+	* String.h:
+	* System.cpp:
+	* Join.h:
+	* Pass.h:
+	* Utility.h:
+	* Split.h:
+	* Value.h:
+	* Algorithm.h:
+	* Split.cpp:
+	* libtitania-standard.cproj:
+	* strfsize.h:
+	* Adapter.h:
+	* libtitania-standard.md.pc:
+	* Join.h:
+	* Remove.h:
+	* UniqueList.h:
+	* Split.h:
+	* strfsize.cpp:
+	* Pass.h:
+	* Value.h:
+	* Split.cpp:
+	* MemberValue.h:
+	* strfsize.h:
+	* Adapter.h:
+	* Remove.h:
+	* IndexedMultiMap.h:
+	* strfsize.cpp:
+	* Rotation4.h:
+	* MemberValue.h:
+	* Generator.h:
+	* Generator.cpp: 
+
 2012-11-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

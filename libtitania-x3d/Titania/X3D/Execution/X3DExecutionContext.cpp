@@ -54,6 +54,8 @@
 #include "../Prototype/ExternProto.h"
 #include "../Prototype/Proto.h"
 
+#include <Titania/Utility/Adapter.h>
+
 #include <algorithm>
 #include <iostream>
 
@@ -703,12 +705,20 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak;
 	}
 
-	for (const auto & child : getRootNodes ())
+	if (getRootNodes () .size ())
 	{
+		for (const auto & child : basic::adapter (getRootNodes () .cbegin (), getRootNodes () .cend () - 1))
+		{
+			ostream
+				<< Generator::Indent
+				<< child
+				<< Generator::TidyBreak
+				<< Generator::TidyBreak;
+		}
+		
 		ostream
 			<< Generator::Indent
-			<< child
-			<< Generator::TidyBreak
+			<< getRootNodes () .back ()
 			<< Generator::TidyBreak;
 	}
 

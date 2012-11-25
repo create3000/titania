@@ -55,15 +55,6 @@
     <None Include="Titania\Basic\Id.h" />
     <None Include="Titania\Basic\BindStack.h" />
     <None Include="Titania\Basic\URI.h" />
-    <None Include="Titania\Bits\String.h" />
-    <None Include="Titania\Bits\String\Join.h" />
-    <None Include="Titania\Bits\String\Split.h" />
-    <None Include="Titania\Bits\Algorithm\Remove.h" />
-    <None Include="Titania\Bits\Algorithm.h" />
-    <None Include="Titania\Bits\Utility\Value.h" />
-    <None Include="Titania\Bits\Utility.h" />
-    <None Include="Titania\Bits\Utility\MemberValue.h" />
-    <None Include="Titania\Bits\Utility\Pass.h" />
     <None Include="Titania\Chrono\Now.h" />
     <None Include="Titania\Math\Numbers\Color3.h" />
     <None Include="Titania\Math\Numbers\Color4.h" />
@@ -86,7 +77,6 @@
     <None Include="Titania\OS\CWD.h" />
     <None Include="Titania\OS\Home.h" />
     <None Include="Titania\LOG.h" />
-    <None Include="Titania\Bits\String\strfsize.h" />
     <None Include="Titania\Chrono\SystemClock.h" />
     <None Include="Titania\Chrono\ClockBase.h" />
     <None Include="Titania\Chrono\CountingClock.h" />
@@ -94,9 +84,19 @@
     <None Include="Titania\Basic\UniqueList.h" />
     <None Include="Titania\Basic\IndexedMultiMap.h" />
     <None Include="Titania\Basic\Path.h" />
-    <None Include="Titania\Bits\Utility\Adapter.h" />
     <None Include="Titania\Math\Algorithms\EigenDecomposition.h" />
     <None Include="Makefile.am" />
+    <None Include="Titania\Algorithm\Remove.h" />
+    <None Include="Titania\String\Join.h" />
+    <None Include="Titania\String\Split.h" />
+    <None Include="Titania\String\strfsize.h" />
+    <None Include="Titania\Utility\Value.h" />
+    <None Include="Titania\Utility\MemberValue.h" />
+    <None Include="Titania\Utility\Pass.h" />
+    <None Include="Titania\Utility\Adapter.h" />
+    <None Include="Titania\Algorithm.h" />
+    <None Include="Titania\String.h" />
+    <None Include="Titania\Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
@@ -121,14 +121,14 @@
     <Compile Include="Titania\OS\System.cpp" />
     <Compile Include="Titania\OS\CWD.cpp" />
     <Compile Include="Titania\OS\Home.cpp" />
-    <Compile Include="Titania\Bits\String\Split.cpp" />
-    <Compile Include="Titania\Bits\String\strfsize.cpp" />
     <Compile Include="Titania\Chrono\SystemClock.cpp" />
     <Compile Include="Titania\Chrono\ClockBase.cpp" />
     <Compile Include="Titania\Chrono\CountingClock.cpp" />
     <Compile Include="Titania\Chrono\Now.cpp" />
     <Compile Include="Titania\Basic\IndexedMultiMap.cpp" />
     <Compile Include="Titania\Basic\Path.cpp" />
+    <Compile Include="Titania\String\Split.cpp" />
+    <Compile Include="Titania\String\strfsize.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

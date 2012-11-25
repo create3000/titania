@@ -65,11 +65,9 @@ class SFRotation4 :
 {
 public:
 
-	typedef typename ValueType::size_type size_type;
-
-	typedef typename ValueType::value_type scalar_type;
-
+	typedef typename ValueType::value_type            scalar_type;
 	typedef SFVec3 <typename ValueType::vector3_type> vector3_type;
+	typedef typename ValueType::size_type             size_type;
 
 	using X3DField <ValueType>::setValue;
 	using X3DField <ValueType>::getValue;
@@ -145,6 +143,11 @@ public:
 
 	SFRotation4*
 	slerp (const SFRotation4 &, const scalar_type &) const;
+
+	///  Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const;
 
 
 private:
@@ -321,6 +324,13 @@ SFRotation4 <ValueType>*
 SFRotation4 <ValueType>::slerp (const SFRotation4 & dest, const scalar_type & t) const
 {
 	return new SFRotation4 (math::slerp (getValue (), dest .getValue (), t));
+}
+
+template <class ValueType>
+void
+SFRotation4 <ValueType>::toStream (std::ostream & ostream) const
+{
+	ostream << Generator::Precision <scalar_type> << getValue ();
 }
 
 // Aritmetic operators.

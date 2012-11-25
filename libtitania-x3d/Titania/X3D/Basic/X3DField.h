@@ -51,6 +51,7 @@
 
 #include "../Basic/FieldType.h"
 #include "../Basic/X3DFieldDefinition.h"
+#include "../InputOutput/Generator.h"
 #include <cassert>
 
 namespace titania {

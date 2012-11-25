@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -49,7 +49,7 @@
 #ifndef __TITANIA_BASIC_UNIQUE_LIST_H__
 #define __TITANIA_BASIC_UNIQUE_LIST_H__
 
-#include "../Bits/Algorithm/Remove.h"
+#include "../Algorithm/Remove.h"
 
 #include <list>
 #include <map>

@@ -3,24 +3,23 @@
 META "title" "Octagon"
 
 Background {
-	skyColor 1 1 1
+  skyColor 1 1 1
 }
 
 Viewpoint { }
 
 Transform {
-  children DEF Shape Shape {
-    appearance Appearance {
-      material Material {
-        diffuseColor 1 0 0
-      }
-    }
+  children Shape {
     geometry IndexedFaceSet {
-      coord Coordinate {
-        point [ 1 0 0, 0.70710678 0.70710678 0, 0 1 0, -0.70710678 0.70710678 0, -1 0 0, -0.70710678 -0.70710678 0, 0 -1 0, 0.70710678 -0.70710678 0 ]
-      }
-      coordIndex [ 0, 1, 2, 3, 4, 5, 6, 7 ]
       solid FALSE
+      colorIndex [ 0, 1, 2, 3, 4, 5, 6, 7, -1 ]
+      coordIndex [ 0, 1, 2, 3, 4, 5, 6, 7, -1 ]
+      color Color {
+        color [ 1 0 0, 1 0.75 0, 0.5 1 0, 0 1 0.25, 0 1 1, 0 0.25 1, 0.5 0 1, 1 0 0.75 ]
+      }
+      coord Coordinate {
+        point [ 1 0 0, 0.707107 0.707107 0, 0 1 0, -0.707107 0.707107 0, -1 0 0, -0.707107 -0.707107 0, -0 -1 0, 0.707107 -0.707107 0 ]
+      }
     }
   }
 }

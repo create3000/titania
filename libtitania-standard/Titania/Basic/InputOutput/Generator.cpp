@@ -51,19 +51,21 @@
 namespace titania {
 namespace basic {
 
-// Implicit template instantiations.
-//template std::ostream & basic_generator <char>::Space         (std::ostream &);
-//template std::ostream & basic_generator <char>::TidySpace     (std::ostream &);
-//template std::ostream & basic_generator <char>::Break         (std::ostream &);
-//template std::ostream & basic_generator <char>::TidyBreak     (std::ostream &);
-//template std::ostream & basic_generator <char>::ListBreak     (std::ostream &);
-//template std::ostream & basic_generator <char>::Comma         (std::ostream &);
-//template std::ostream & basic_generator <char>::Indent        (std::ostream &);
-//template std::ostream & basic_generator <char>::IncIndent     (std::ostream &);
-//template std::ostream & basic_generator <char>::DecIndent     (std::ostream &);
-//template std::ostream & basic_generator <char>::OpenBracket   (std::ostream &);
-//template std::ostream & basic_generator <char>::CloseBracket  (std::ostream &);
-//template std::ostream & basic_generator <char>::EmptyBrackets (std::ostream &);
+//
 
 } // basic
 } // titania
+
+// Implicit template instantiations.
+template std::ostream & titania::basic::Generator::Space         (std::ostream &);
+template std::ostream & titania::basic::Generator::TidySpace     (std::ostream &);
+template std::ostream & titania::basic::Generator::Break         (std::ostream &);
+template std::ostream & titania::basic::Generator::TidyBreak     (std::ostream &);
+template std::ostream & titania::basic::Generator::ListBreak     (std::ostream &);
+template std::ostream & titania::basic::Generator::Comma         (std::ostream &);
+template std::ostream & titania::basic::Generator::Indent        (std::ostream &);
+template std::ostream & titania::basic::Generator::IncIndent     (std::ostream &);
+template std::ostream & titania::basic::Generator::DecIndent     (std::ostream &);
+template std::ostream & titania::basic::Generator::OpenBracket   (std::ostream &);
+template std::ostream & titania::basic::Generator::CloseBracket  (std::ostream &);
+template std::ostream & titania::basic::Generator::EmptyBrackets (std::ostream &);

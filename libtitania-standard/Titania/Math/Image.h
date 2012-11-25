@@ -61,9 +61,8 @@ class image
 {
 public:
 
+	typedef Array  array_type;
 	typedef size_t size_type;
-
-	typedef Array array_type;
 
 	image () :
 		value  ({ 0, 0, 0, Array () })

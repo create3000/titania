@@ -62,7 +62,8 @@ class X3DArrayField :
 {
 public:
 
-	typedef Array <ValueType> value_type;
+	typedef typename ValueType::scalar_type scalar_type;
+	typedef Array <ValueType>               value_type;
 
 	typedef typename value_type::iterator               iterator;
 	typedef typename value_type::const_iterator         const_iterator;
@@ -267,22 +268,30 @@ public:
 	max_size () const { return getValue () .max_size (); }
 
 	void
-	pop_back ();
-
-	void
 	pop_front ();
 
 	void
-	push_back (const ValueType &);
-
-	void
-	push_back (const typename ValueType::value_type &);
+	pop_back ();
 
 	void
 	push_front (const ValueType &);
 
 	void
 	push_front (const typename ValueType::value_type &);
+	
+	void
+	push_back (const ValueType &);
+
+	void
+	push_back (const typename ValueType::value_type &);
+
+	template <class ... Args>
+	void
+	emplace_front (Args && ... args);
+
+	template <class ... Args>
+	void
+	emplace_back (Args && ... args);
 
 	reverse_iterator
 	rbegin () { return get () .rbegin (); }
@@ -474,6 +483,14 @@ X3DArrayField <ValueType>::erase (iterator first, iterator last)
 
 template <class ValueType>
 void
+X3DArrayField <ValueType>::pop_front ()
+{
+	get () .pop_front ();
+	notifyParents ();
+}
+
+template <class ValueType>
+void
 X3DArrayField <ValueType>::pop_back ()
 {
 	get () .pop_back ();
@@ -482,9 +499,19 @@ X3DArrayField <ValueType>::pop_back ()
 
 template <class ValueType>
 void
-X3DArrayField <ValueType>::pop_front ()
+X3DArrayField <ValueType>::push_front (const ValueType & field)
 {
-	get () .pop_front ();
+	get () .emplace_front (field);
+	addChild (get () .front ());
+	notifyParents ();
+}
+
+template <class ValueType>
+void
+X3DArrayField <ValueType>::push_front (const typename ValueType::value_type & value)
+{
+	get () .emplace_front (value);
+	addChild (get () .front ());
 	notifyParents ();
 }
 
@@ -507,20 +534,22 @@ X3DArrayField <ValueType>::push_back (const typename ValueType::value_type & val
 }
 
 template <class ValueType>
+template <class ... Args>
 void
-X3DArrayField <ValueType>::push_front (const ValueType & field)
+X3DArrayField <ValueType>::emplace_front (Args && ... args)
 {
-	get () .emplace_front (field);
+	get () .emplace_front (args ...);
 	addChild (get () .front ());
 	notifyParents ();
 }
 
 template <class ValueType>
+template <class ... Args>
 void
-X3DArrayField <ValueType>::push_front (const typename ValueType::value_type & value)
+X3DArrayField <ValueType>::emplace_back (Args && ... args)
 {
-	get () .emplace_front (value);
-	addChild (get () .front ());
+	get () .emplace_back (args ...);
+	addChild (get () .back ());
 	notifyParents ();
 }
 

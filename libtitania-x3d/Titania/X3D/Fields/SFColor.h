@@ -62,9 +62,8 @@ class SFColor :
 {
 public:
 
-	typedef Color3f::size_type size_type;
-
 	typedef Color3f::value_type scalar_type;
+	typedef Color3f::size_type  size_type;
 
 	using X3DField <Color3f>::setValue;
 	using X3DField <Color3f>::getValue;
@@ -118,6 +117,11 @@ public:
 
 	void
 	getHSV (scalar_type &, scalar_type &, scalar_type &) const;
+
+	///  Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const;
 
 
 private:

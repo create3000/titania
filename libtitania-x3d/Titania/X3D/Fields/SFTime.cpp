@@ -78,5 +78,11 @@ SFTime::getType () const
 	return &type;
 }
 
+void
+SFTime::toStream (std::ostream & ostream) const
+{
+	ostream << Generator::Precision <scalar_type> << getValue ();
+}
+
 } // X3D
 } // titania

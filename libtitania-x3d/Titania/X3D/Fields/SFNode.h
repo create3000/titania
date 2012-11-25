@@ -63,13 +63,14 @@ class SFNode :
 {
 public:
 
+	typedef ValueType* value_type;
+	typedef ValueType* scalar_type;
+	typedef typename X3DField <X3DBasicNode*>::value_type basic_type;
+
 	using X3DField <X3DBasicNode*>::addInterest;
 	using X3DField <X3DBasicNode*>::setValue;
 	using X3DField <X3DBasicNode*>::getValue;
 	using X3DField <X3DBasicNode*>::operator =;
-
-	typedef ValueType* value_type;
-	typedef typename X3DField <X3DBasicNode*>::value_type basic_type;
 
 	///  @name Constructors
 

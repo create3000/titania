@@ -50,7 +50,7 @@
 
 #include "../Properties/QuadSphereProperties.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include <Titania/Bits/String/Join.h>
+#include <Titania/String/Join.h>
 
 extern "C"
 {
