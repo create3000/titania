@@ -156,12 +156,11 @@ private:
 	std::vector <Vector3f>      vertices;
 	GLenum                      vertexMode;
 
+	GLenum bufferUsage;
 	GLuint texCoordBufferId;
 	GLuint colorBufferId;
 	GLuint normalBufferId;
 	GLuint pointBufferId;
-
-	GLenum bufferUsage;
 
 };
 

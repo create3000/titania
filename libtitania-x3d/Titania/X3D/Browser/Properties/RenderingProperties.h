@@ -159,9 +159,9 @@ private:
 
 	SFString     fontFamily;
 	size_t       fontHeigth;
-	GLuint       listId;
 	GLuint       fontListBase;
 	XFontStruct* fontInfo;
+	GLuint       listId;
 
 };
 

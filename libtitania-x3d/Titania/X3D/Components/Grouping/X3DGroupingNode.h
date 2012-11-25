@@ -63,9 +63,9 @@ class X3DGroupingNode :
 {
 public:
 
-	MFNode <X3DBasicNode> addChildren;
-	MFNode <X3DBasicNode> removeChildren;
-	MFNode <X3DBasicNode> children;
+	MFNode <X3DChildNode> addChildren;
+	MFNode <X3DChildNode> removeChildren;
+	MFNode <X3DChildNode> children;
 
 	virtual
 	Box3f

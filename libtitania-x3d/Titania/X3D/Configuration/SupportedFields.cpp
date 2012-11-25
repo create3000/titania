@@ -118,7 +118,7 @@ SupportedFields::add (X3DFieldDefinition* field)
 }
 
 const X3DFieldDefinition*
-SupportedFields::getField (const std::string & name) const
+SupportedFields::get (const std::string & name) const
 throw (Error <INVALID_NAME>)
 {
 	try
@@ -132,7 +132,7 @@ throw (Error <INVALID_NAME>)
 }
 
 const FieldTypesArray &
-SupportedFields::getFields () const
+SupportedFields::get () const
 {
 	return fields;
 }

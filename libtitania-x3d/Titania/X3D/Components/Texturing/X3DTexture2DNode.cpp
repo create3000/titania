@@ -225,7 +225,7 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 	GLint level      = 0;
 	GLint border     = 0;
 	bool  mipmap     = true;
-	bool  compressed = true;
+	bool  compressed = false;
 
 	SFNode <TextureProperties> _textureProperties = textureProperties;
 

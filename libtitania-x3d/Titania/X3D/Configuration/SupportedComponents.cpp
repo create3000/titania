@@ -114,10 +114,10 @@ SupportedComponents::add (const ComponentInfo* component)
 }
 
 const ComponentInfo*
-SupportedComponents::getComponent (const std::string & name, const size_t level) const
+SupportedComponents::get (const std::string & name, const size_t level) const
 throw (Error <NOT_SUPPORTED>)
 {
-	const ComponentInfo* component = getComponent (name);
+	const ComponentInfo* component = get (name);
 
 	if (level <= component -> getLevel ())
 		return component;
@@ -127,7 +127,7 @@ throw (Error <NOT_SUPPORTED>)
 }
 
 const ComponentInfo*
-SupportedComponents::getComponent (const std::string & name) const
+SupportedComponents::get (const std::string & name) const
 throw (Error <NOT_SUPPORTED>)
 {
 	try
@@ -141,7 +141,7 @@ throw (Error <NOT_SUPPORTED>)
 }
 
 const ComponentInfoArray &
-SupportedComponents::getComponents () const
+SupportedComponents::get () const
 {
 	return components;
 }

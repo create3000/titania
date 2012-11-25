@@ -289,7 +289,7 @@ SupportedNodes::add (X3DBasicNode* node)
 }
 
 const X3DBasicNode*
-SupportedNodes::getNode (const std::string & name) const
+SupportedNodes::get (const std::string & name) const
 throw (Error <INVALID_NAME>)
 {
 	try
@@ -303,7 +303,7 @@ throw (Error <INVALID_NAME>)
 }
 
 const BasicNodeArray &
-SupportedNodes::getNodes () const
+SupportedNodes::get () const
 {
 	return nodes;
 }

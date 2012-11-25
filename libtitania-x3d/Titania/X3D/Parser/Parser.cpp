@@ -203,7 +203,7 @@ Parser::isInsideProtoDefinition () const
 }
 
 void
-Parser::addRootNode (const SFNode <X3DBaseNode> & rootNode)
+Parser::addRootNode (const SFNode <X3DBasicNode> & rootNode)
 {
 	//__LOG__ << std::endl;
 
@@ -1613,7 +1613,7 @@ Parser::fieldValue (X3DFieldDefinition* _field)
 		return mfmatrix4fValue (dynamic_cast <MFMatrix4f*> (_field));
 
 	if (type == getBrowser () -> getFieldType ("MFNode") -> getType ())
-		return mfnodeValue (dynamic_cast <MFNode <X3DBasicNode>*> (_field));
+		return mfnodeValue (_field);
 
 	if (type == getBrowser () -> getFieldType ("MFRotation") -> getType ())
 		return mfrotationValue (dynamic_cast <MFRotation*> (_field));
@@ -2636,17 +2636,17 @@ Parser::sfnodeValue (X3DFieldDefinition* const _field)
 }
 
 bool
-Parser::mfnodeValue (MFNode <X3DBasicNode>* _field)
+Parser::mfnodeValue (X3DFieldDefinition* const _fieldDefinition)
 {
 	//__LOG__ << std::endl;
 
-	_field -> clear ();
-
+	MFNode <X3DBasicNode> field;
 	SFNode <X3DBasicNode> value;
 
 	if (nodeStatement (value))
 	{
-		_field -> push_back (value);
+		field .push_back (value);
+		_fieldDefinition -> write (field);
 		return true;
 	}
 
@@ -2659,10 +2659,11 @@ Parser::mfnodeValue (MFNode <X3DBasicNode>* _field)
 	if (RegEx::OpenBracket .Consume (&string))
 	{
 		comments ();
-		nodeStatements (_field);
+		nodeStatements (&field);
 
 		if (RegEx::CloseBracket .Consume (&string))
 		{
+			_fieldDefinition -> write (field);
 			comments ();
 			return true;
 		}

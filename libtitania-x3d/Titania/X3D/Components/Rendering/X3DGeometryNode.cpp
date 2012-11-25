@@ -64,11 +64,11 @@ X3DGeometryNode::X3DGeometryNode () :
 	                   normals (),              
 	                  vertices (),              
 	                vertexMode (),              
+	               bufferUsage (GL_STATIC_DRAW),
 	          texCoordBufferId (0),             
 	             colorBufferId (0),             
 	            normalBufferId (0),             
-	             pointBufferId (0),             
-	               bufferUsage (GL_STATIC_DRAW) 
+	             pointBufferId (0)
 {
 	addNodeType (X3DGeometryNodeType);
 }

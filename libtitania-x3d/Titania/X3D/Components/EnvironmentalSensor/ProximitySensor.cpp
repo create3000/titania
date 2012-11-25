@@ -149,7 +149,7 @@ ProximitySensor::update ()
 		}
 	}
 
-	viewpoint = nullptr;
+	viewpoint = NULL;
 	inside    = false;
 }
 

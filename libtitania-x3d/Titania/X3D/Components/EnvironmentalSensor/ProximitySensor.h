@@ -98,9 +98,9 @@ private:
 	void
 	drawHandle ();
 
-	SFNode <X3DViewpointNode> viewpoint;
-	Matrix4f                  matrix;
-	bool                      inside;
+	X3DViewpointNode* viewpoint;
+	Matrix4f          matrix;
+	bool              inside;
 
 };
 

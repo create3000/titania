@@ -83,11 +83,13 @@ BrowserWindow::on_open ()
 void
 BrowserWindow::on_save ()
 {
-	if (getExecutionContext () -> getWorldURL () .empty ())
+	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	
+	if (worldURL .empty () or worldURL .is_network ())
 		on_save_as ();
 
 	else
-		save (getExecutionContext () -> getWorldURL ());
+		save (worldURL);
 }
 
 void
@@ -96,7 +98,7 @@ BrowserWindow::on_save_as ()
 	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 	
 	if (worldURL .length () and worldURL .is_local ())
-		getFileSaveDialog () .set_current_folder_uri (worldURL .base () .str ());
+		getFileSaveDialog () .set_uri (worldURL .str ());
 
 	getFileSaveDialog () .present ();
 }

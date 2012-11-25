@@ -84,8 +84,7 @@ public:
 	//explicit
 	SFNode (ValueType* const);
 
-	template <class Up>
-	SFNode (Up* const);
+	SFNode (X3DObject* const);
 
 	///  @name Copy
 
@@ -107,11 +106,10 @@ public:
 		return *this;
 	}
 
-	template <class Up>
 	SFNode &
-	operator = (Up* const value)
+	operator = (X3DObject* const value)
 	{
-		setValue (value);
+		setValue (dynamic_cast <X3DBasicNode*> (value));
 		return *this;
 	}
 
@@ -240,9 +238,8 @@ SFNode <ValueType>::SFNode (ValueType* const value) :
 }
 
 template <class ValueType>
-template <class Up>
-SFNode <ValueType>::SFNode (Up* const value) :
-	X3DField <X3DBasicNode*> (value)
+SFNode <ValueType>::SFNode (X3DObject* const value) :
+	X3DField <X3DBasicNode*> (dynamic_cast <X3DBasicNode*> (value))
 {
 	if (getValue ())
 		getValue () -> addParent (this);

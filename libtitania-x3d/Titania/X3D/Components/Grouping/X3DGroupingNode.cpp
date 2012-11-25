@@ -74,22 +74,14 @@ X3DGroupingNode::initialize ()
 	set_children ();
 }
 
-static int c = 0;
-
 Box3f
 X3DGroupingNode::getBBox ()
 {
-__LOG__ << "++ " << ++ c << " " << (void*) this << " " << getName () << " " << getTypeName () << std::endl;
-
 	if (bboxSize == Vector3f (-1, -1, -1))
 	{
-		auto bbox = X3DBoundedObject::getBBox (children);
-
-__LOG__ << "- " << c -- << " " << (void*) this << " " << getName () << " " << getTypeName () << std::endl;
-		return bbox;
+		return X3DBoundedObject::getBBox (children);
 	}
 
-__LOG__ << "- " << c -- << " " << (void*) this << " " << getName () << " " << getTypeName () << std::endl;
 	return Box3f (bboxSize, bboxCenter);
 }
 

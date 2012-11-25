@@ -63,16 +63,31 @@ const FieldType X3DField <Float>::type ("SFFloat");
 template <>
 const FieldType X3DField <Int32>::type ("SFInt32");
 
-template class X3DField <Bool>;
-template class X3DField <Double>;
-template class X3DField <Float>;
-template class X3DField <Int32>;
 template <>
 void
 X3DField <Bool>::toStream (std::ostream & ostream) const
 {
 	ostream << (getValue () ? "TRUE" : "FALSE");
 }
+
+template <>
+void
+X3DField <Double>::toStream (std::ostream & ostream) const
+{
+	ostream << Generator::Precision <Double> << getValue ();
+}
+
+template <>
+void
+X3DField <Float>::toStream (std::ostream & ostream) const
+{
+	ostream << Generator::Precision <Float> << getValue ();
+}
+
+template class X3DField <Bool>;
+template class X3DField <Double>;
+template class X3DField <Float>;
+template class X3DField <Int32>;
 
 // SFBool, SFDouble, SFFloat and SFInt32
 template class X3DScalar <Bool>;

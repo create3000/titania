@@ -59,8 +59,8 @@ X3DLayerNode::X3DLayerNode () :
 	         X3DRenderer (),                                                   
 	          isPickable (true),                                               // SFBool [in,out] isPickable      TRUE
 	            viewport (),                                                   // SFNode [in,out] viewport        NULL      [X3DViewportNode]
-	         addChildren (),                                                   // MFNode[in]      addChildren               [ ]
-	      removeChildren (),                                                   // MFNode[in]      removeChildren            [ ]
+	         addChildren (),                                                   // MFNode[in]      addChildren               [X3DChildNode]
+	      removeChildren (),                                                   // MFNode[in]      removeChildren            [X3DChildNode]
 	            children (),                                                   // MFNode[in,out]  children        [ ]       [X3DChildNode]
 	     defaultViewport (new Viewport (getExecutionContext ())),              
 	 navigationInfoStack (new NavigationInfo (getExecutionContext (), false)), 

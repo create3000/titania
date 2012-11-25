@@ -65,11 +65,11 @@ public:
 	add (X3DFieldDefinition*);
 
 	const X3DFieldDefinition*
-	getField (const std::string &) const
+	get (const std::string &) const
 	throw (Error <INVALID_NAME>);
 
 	const FieldTypesArray &
-	getFields () const;
+	get () const;
 
 	void
 	dispose ();

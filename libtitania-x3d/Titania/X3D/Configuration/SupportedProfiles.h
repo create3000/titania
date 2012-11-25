@@ -68,11 +68,11 @@ public:
 	add (const ProfileInfo*);
 
 	const ProfileInfo*
-	getProfile (const std::string &) const
+	get (const std::string &) const
 	throw (Error <NOT_SUPPORTED>);
 
 	const ProfileInfoArray &
-	getProfiles () const;
+	get () const;
 
 	void
 	dispose ();

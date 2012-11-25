@@ -65,48 +65,8 @@ OutlineTreeModel::OutlineTreeModel (const X3D::SFNode <X3D::X3DBrowser> & browse
 
 	baseNodeImage = Gdk::Pixbuf::create_from_file (get_icon ("Node.png"));
 
-	fieldTypeImages [X3D::X3DConstants::SFBool]      = Gdk::Pixbuf::create_from_file (get_icon ("SFBool.png"));
-	fieldTypeImages [X3D::X3DConstants::SFColor]     = Gdk::Pixbuf::create_from_file (get_icon ("SFColor.png"));
-	fieldTypeImages [X3D::X3DConstants::SFColorRGBA] = Gdk::Pixbuf::create_from_file (get_icon ("SFColorRGBA.png"));
-	fieldTypeImages [X3D::X3DConstants::SFDouble]    = Gdk::Pixbuf::create_from_file (get_icon ("SFDouble.png"));
-	fieldTypeImages [X3D::X3DConstants::SFFloat]     = Gdk::Pixbuf::create_from_file (get_icon ("SFFloat.png"));
-	fieldTypeImages [X3D::X3DConstants::SFImage]     = Gdk::Pixbuf::create_from_file (get_icon ("SFImage.png"));
-	fieldTypeImages [X3D::X3DConstants::SFInt32]     = Gdk::Pixbuf::create_from_file (get_icon ("SFInt32.png"));
-	fieldTypeImages [X3D::X3DConstants::SFMatrix3d]  = Gdk::Pixbuf::create_from_file (get_icon ("SFMatrix3d.png"));
-	fieldTypeImages [X3D::X3DConstants::SFMatrix3f]  = Gdk::Pixbuf::create_from_file (get_icon ("SFMatrix3f.png"));
-	fieldTypeImages [X3D::X3DConstants::SFMatrix4d]  = Gdk::Pixbuf::create_from_file (get_icon ("SFMatrix4d.png"));
-	fieldTypeImages [X3D::X3DConstants::SFMatrix4f]  = Gdk::Pixbuf::create_from_file (get_icon ("SFMatrix4f.png"));
-	fieldTypeImages [X3D::X3DConstants::SFNode]      = Gdk::Pixbuf::create_from_file (get_icon ("SFNode.png"));
-	fieldTypeImages [X3D::X3DConstants::SFRotation]  = Gdk::Pixbuf::create_from_file (get_icon ("SFRotation.png"));
-	fieldTypeImages [X3D::X3DConstants::SFString]    = Gdk::Pixbuf::create_from_file (get_icon ("SFString.png"));
-	fieldTypeImages [X3D::X3DConstants::SFTime]      = Gdk::Pixbuf::create_from_file (get_icon ("SFTime.png"));
-	fieldTypeImages [X3D::X3DConstants::SFVec2d]     = Gdk::Pixbuf::create_from_file (get_icon ("SFVec2d.png"));
-	fieldTypeImages [X3D::X3DConstants::SFVec2f]     = Gdk::Pixbuf::create_from_file (get_icon ("SFVec2f.png"));
-	fieldTypeImages [X3D::X3DConstants::SFVec3d]     = Gdk::Pixbuf::create_from_file (get_icon ("SFVec3d.png"));
-	fieldTypeImages [X3D::X3DConstants::SFVec3f]     = Gdk::Pixbuf::create_from_file (get_icon ("SFVec3f.png"));
-	fieldTypeImages [X3D::X3DConstants::SFVec4d]     = Gdk::Pixbuf::create_from_file (get_icon ("SFVec4d.png"));
-	fieldTypeImages [X3D::X3DConstants::SFVec4f]     = Gdk::Pixbuf::create_from_file (get_icon ("SFVec4f.png"));
-	fieldTypeImages [X3D::X3DConstants::MFBool]      = Gdk::Pixbuf::create_from_file (get_icon ("MFBool.png"));
-	fieldTypeImages [X3D::X3DConstants::MFColor]     = Gdk::Pixbuf::create_from_file (get_icon ("MFColor.png"));
-	fieldTypeImages [X3D::X3DConstants::MFColorRGBA] = Gdk::Pixbuf::create_from_file (get_icon ("MFColorRGBA.png"));
-	fieldTypeImages [X3D::X3DConstants::MFDouble]    = Gdk::Pixbuf::create_from_file (get_icon ("MFDouble.png"));
-	fieldTypeImages [X3D::X3DConstants::MFFloat]     = Gdk::Pixbuf::create_from_file (get_icon ("MFFloat.png"));
-	fieldTypeImages [X3D::X3DConstants::MFImage]     = Gdk::Pixbuf::create_from_file (get_icon ("MFImage.png"));
-	fieldTypeImages [X3D::X3DConstants::MFInt32]     = Gdk::Pixbuf::create_from_file (get_icon ("MFInt32.png"));
-	fieldTypeImages [X3D::X3DConstants::MFMatrix3d]  = Gdk::Pixbuf::create_from_file (get_icon ("MFMatrix3d.png"));
-	fieldTypeImages [X3D::X3DConstants::MFMatrix3f]  = Gdk::Pixbuf::create_from_file (get_icon ("MFMatrix3f.png"));
-	fieldTypeImages [X3D::X3DConstants::MFMatrix4d]  = Gdk::Pixbuf::create_from_file (get_icon ("MFMatrix4d.png"));
-	fieldTypeImages [X3D::X3DConstants::MFMatrix4f]  = Gdk::Pixbuf::create_from_file (get_icon ("MFMatrix4f.png"));
-	fieldTypeImages [X3D::X3DConstants::MFNode]      = Gdk::Pixbuf::create_from_file (get_icon ("MFNode.png"));
-	fieldTypeImages [X3D::X3DConstants::MFRotation]  = Gdk::Pixbuf::create_from_file (get_icon ("MFRotation.png"));
-	fieldTypeImages [X3D::X3DConstants::MFString]    = Gdk::Pixbuf::create_from_file (get_icon ("MFString.png"));
-	fieldTypeImages [X3D::X3DConstants::MFTime]      = Gdk::Pixbuf::create_from_file (get_icon ("MFTime.png"));
-	fieldTypeImages [X3D::X3DConstants::MFVec2d]     = Gdk::Pixbuf::create_from_file (get_icon ("MFVec2d.png"));
-	fieldTypeImages [X3D::X3DConstants::MFVec2f]     = Gdk::Pixbuf::create_from_file (get_icon ("MFVec2f.png"));
-	fieldTypeImages [X3D::X3DConstants::MFVec3d]     = Gdk::Pixbuf::create_from_file (get_icon ("MFVec3d.png"));
-	fieldTypeImages [X3D::X3DConstants::MFVec3f]     = Gdk::Pixbuf::create_from_file (get_icon ("MFVec3f.png"));
-	fieldTypeImages [X3D::X3DConstants::MFVec4d]     = Gdk::Pixbuf::create_from_file (get_icon ("MFVec4d.png"));
-	fieldTypeImages [X3D::X3DConstants::MFVec4f]     = Gdk::Pixbuf::create_from_file (get_icon ("MFVec4f.png"));
+	for (const auto & field : browser -> getSupportedFields ())
+		fieldTypeImages [field -> getType ()] = Gdk::Pixbuf::create_from_file (get_icon (field -> getTypeName () + ".png"));
 }
 
 Glib::RefPtr <OutlineTreeModel>

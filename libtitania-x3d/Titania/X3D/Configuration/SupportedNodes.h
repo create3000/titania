@@ -65,11 +65,11 @@ public:
 	add (X3DBasicNode*);
 
 	const X3DBasicNode*
-	getNode (const std::string &) const
+	get (const std::string &) const
 	throw (Error <INVALID_NAME>);
 
 	const BasicNodeArray &
-	getNodes () const;
+	get () const;
 
 	void
 	dispose ();

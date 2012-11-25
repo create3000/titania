@@ -67,15 +67,15 @@ public:
 	add (const ComponentInfo*);
 
 	const ComponentInfo*
-	getComponent (const std::string &, const size_t) const
+	get (const std::string &, const size_t) const
 	throw (Error <NOT_SUPPORTED>);
 
 	const ComponentInfo*
-	getComponent (const std::string &) const
+	get (const std::string &) const
 	throw (Error <NOT_SUPPORTED>);
 
 	const ComponentInfoArray &
-	getComponents () const;
+	get () const;
 
 	void
 	dispose ();

@@ -74,9 +74,12 @@ private:
 public:
 
 	using ArrayField::operator =;
+	using ArrayField::set;
 	using ArrayField::assign;
 	using ArrayField::front;
 	using ArrayField::back;
+	using ArrayField::begin;
+	using ArrayField::end;
 	using ArrayField::cbegin;
 	using ArrayField::cend;
 	using ArrayField::size;
@@ -133,6 +136,14 @@ public:
 	}
 
 	virtual
+	void
+	write (const X3DObject &);
+	
+	virtual
+	void
+	read (std::vector <X3DObject*> &) const;
+
+	virtual
 	const FieldType*
 	getType () const { return &X3DField <Array <SFNode <X3DBasicNode>>>::type; }
 
@@ -149,6 +160,35 @@ public:
 	toStream (std::ostream &) const;
 
 };
+
+template <class Type>
+void
+MFNode <Type>::write (const X3DObject & field)
+{
+	assert (getType () == field .getType ());
+
+	const MFNode* same_type = dynamic_cast <const MFNode*> (&field);
+	
+	if (same_type)
+		set (same_type -> getValue ());
+
+	else
+	{
+		std::vector <X3DObject*> values;
+
+		field .read (values);
+
+		set (values .begin (), values .end ());
+	}
+}
+	
+template <class Type>
+void
+MFNode <Type>::read (std::vector <X3DObject*> & values) const
+{
+	values .reserve (size ());
+	values .assign (begin (), end ());
+}
 
 template <class Type>
 void

@@ -59,6 +59,14 @@ template <>
 void
 X3DField <Bool>::toStream (std::ostream & ostream) const;
 
+template <>
+void
+X3DField <Double>::toStream (std::ostream & ostream) const;
+
+template <>
+void
+X3DField <Float>::toStream (std::ostream & ostream) const;
+
 extern template class X3DField <Bool>;
 extern template class X3DField <Double>;
 extern template class X3DField <Float>;
@@ -89,19 +97,7 @@ public:
 	X3DScalar*
 	copy () const { return new X3DScalar <ValueType> (*this); }
 
-	///  Output operator.
-	virtual
-	void
-	toStream (std::ostream &) const;
-
 };
-
-template <class ValueType>
-void
-X3DScalar <ValueType>::toStream (std::ostream & ostream) const
-{
-	ostream << Generator::Precision <scalar_type> << getValue ();
-}
 
 extern template class X3DScalar <Bool>;
 extern template class X3DScalar <Double>;

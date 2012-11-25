@@ -110,7 +110,7 @@ public:
 
 	///
 	void
-	createX3DFromURL (const MFString &, const SFNode <X3DBaseNode> &, const basic::id &)
+	createX3DFromURL (const MFString &, const SFNode <X3DBasicNode> &, const basic::id &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_X3D>);

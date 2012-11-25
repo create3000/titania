@@ -108,15 +108,16 @@ ExternProto::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	scene = NULL;
-
 	try
 	{
 		scene = createX3DFromURL (url);
 	}
 	catch (const Error <INVALID_URL> & error)
 	{
+		scene .setValue (NULL);
+		
 		setLoadState (FAILED_STATE);
+		
 		throw Error <URL_UNAVAILABLE> ("Couldn't load any URL specified for EXTERNPROTO '" + getName () + "'\n" + error .what ());
 	}
 

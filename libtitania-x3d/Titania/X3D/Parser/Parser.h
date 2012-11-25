@@ -117,7 +117,7 @@ private:
 	isInsideProtoDefinition () const;
 
 	void
-	addRootNode (const SFNode <X3DBaseNode> &);
+	addRootNode (const SFNode <X3DBasicNode> &);
 
 	void
 	comments ();
@@ -396,7 +396,7 @@ private:
 	sfnodeValue (X3DFieldDefinition* const);
 
 	bool
-	mfnodeValue (MFNode <X3DBasicNode>*);
+	mfnodeValue (X3DFieldDefinition* const);
 
 	void
 	nodeStatements (MFNode <X3DBasicNode>*);

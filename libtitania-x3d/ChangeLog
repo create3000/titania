@@ -1,5 +1,40 @@
 2012-11-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.h:
+	* MFNode.h:
+	* SFNode.h:
+	* X3DObject.h:
+	* Parser.cpp:
+	* X3DScalar.h:
+	* X3DScalar.cpp:
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* ExternProto.cpp:
+	* SupportedNodes.h:
+	* SupportedFields.h:
+	* SupportedNodes.cpp:
+	* SupportedProfiles.h:
+	* SupportedFields.cpp:
+	* X3DLayerNode.h:
+	* SupportedComponents.h:
+	* Viewpoint.cpp:
+	* SupportedProfiles.cpp:
+	* X3DLayerNode.cpp:
+	* X3DUrlObject.h:
+	* X3DGroupingNode.h:
+	* SupportedComponents.cpp:
+	* X3DUrlObject.cpp:
+	* X3DGeometryNode.h:
+	* X3DGroupingNode.cpp:
+	* RenderingProperties.h:
+	* X3DGeometryNode.cpp:
+	* X3DTexture2DNode.cpp:
+	* RenderingProperties.cpp:
+	* ProximitySensor.h:
+	* ProximitySensor.cpp: 
+
+2012-11-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFVec2.h:
 	* SFVec3.h:
 	* SFTime.h:

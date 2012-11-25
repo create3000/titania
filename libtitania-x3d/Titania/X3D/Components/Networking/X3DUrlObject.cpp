@@ -138,7 +138,7 @@ throw (Error <INVALID_X3D>,
 }
 
 void
-X3DUrlObject::createX3DFromURL (const MFString & url, const SFNode <X3DBaseNode> & node, const basic::id & fieldName)
+X3DUrlObject::createX3DFromURL (const MFString & url, const SFNode <X3DBasicNode> & node, const basic::id & fieldName)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_X3D>)

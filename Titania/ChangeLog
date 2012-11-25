@@ -1,5 +1,12 @@
 2012-11-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* X3DBrowserWindow.cpp:
+	* OutlineTreeModel.cpp: 
+
+2012-11-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserWidget.cpp:
 	* Configuration.cpp: 
 

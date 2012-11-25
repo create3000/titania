@@ -106,7 +106,7 @@ public:
 
 	virtual
 	const FieldTypesArray &
-	getSupportedFieldTypes () const
+	getSupportedFields () const
 	throw (Error <DISPOSED>);
 
 	virtual

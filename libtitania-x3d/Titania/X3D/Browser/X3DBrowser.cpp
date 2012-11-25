@@ -188,59 +188,59 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 const FieldTypesArray &
-X3DBrowser::getSupportedFieldTypes () const
+X3DBrowser::getSupportedFields () const
 throw (Error <DISPOSED>)
 {
-	return supportedFields .getFields ();
+	return supportedFields .get ();
 }
 
 const BasicNodeArray &
 X3DBrowser::getSupportedNodes () const
 throw (Error <DISPOSED>)
 {
-	return supportedNodes .getNodes ();
+	return supportedNodes .get ();
 }
 
 const ComponentInfoArray &
 X3DBrowser::getSupportedComponents () const
 throw (Error <DISPOSED>)
 {
-	return supportedComponents .getComponents ();
+	return supportedComponents .get ();
 }
 
 const ProfileInfoArray &
 X3DBrowser::getSupportedProfiles () const
 throw (Error <DISPOSED>)
 {
-	return supportedProfiles .getProfiles ();
+	return supportedProfiles .get ();
 }
 
 const X3DFieldDefinition*
 X3DBrowser::getFieldType (const std::string & name) const
 throw (Error <INVALID_NAME>)
 {
-	return supportedFields .getField (name);
+	return supportedFields .get (name);
 }
 
 const X3DBasicNode*
 X3DBrowser::getNode (const std::string & name) const
 throw (Error <INVALID_NAME>)
 {
-	return supportedNodes .getNode (name);
+	return supportedNodes .get (name);
 }
 
 const ComponentInfo*
 X3DBrowser::getComponent (const std::string & name, const size_t level) const
 throw (Error <NOT_SUPPORTED>)
 {
-	return supportedComponents .getComponent (name, level);
+	return supportedComponents .get (name, level);
 }
 
 const ProfileInfo*
 X3DBrowser::getProfile (const std::string & name) const
 throw (Error <NOT_SUPPORTED>)
 {
-	return supportedProfiles .getProfile (name);
+	return supportedProfiles .get (name);
 }
 
 Scene*

@@ -60,137 +60,137 @@ SupportedProfiles::SupportedProfiles (X3DExecutionContext* const executionContex
 
 	SupportedComponents CADInterchange (executionContext);
 
-	CADInterchange .add (supportedComponents .getComponent ("Core"));
-	CADInterchange .add (supportedComponents .getComponent ("Networking"));
-	CADInterchange .add (supportedComponents .getComponent ("Grouping"));
-	CADInterchange .add (supportedComponents .getComponent ("Rendering"));
-	CADInterchange .add (supportedComponents .getComponent ("Shape"));
-	CADInterchange .add (supportedComponents .getComponent ("Lighting"));
-	CADInterchange .add (supportedComponents .getComponent ("Texturing"));
-	CADInterchange .add (supportedComponents .getComponent ("Navigation"));
-	CADInterchange .add (supportedComponents .getComponent ("Shaders"));
-	CADInterchange .add (supportedComponents .getComponent ("CADGeometry"));
+	CADInterchange .add (supportedComponents .get ("Core"));
+	CADInterchange .add (supportedComponents .get ("Networking"));
+	CADInterchange .add (supportedComponents .get ("Grouping"));
+	CADInterchange .add (supportedComponents .get ("Rendering"));
+	CADInterchange .add (supportedComponents .get ("Shape"));
+	CADInterchange .add (supportedComponents .get ("Lighting"));
+	CADInterchange .add (supportedComponents .get ("Texturing"));
+	CADInterchange .add (supportedComponents .get ("Navigation"));
+	CADInterchange .add (supportedComponents .get ("Shaders"));
+	CADInterchange .add (supportedComponents .get ("CADGeometry"));
 
 	add ("CADInterchange", CADInterchange);
 
 	SupportedComponents Core (executionContext);
-	Core .add (supportedComponents .getComponent ("Core"));
+	Core .add (supportedComponents .get ("Core"));
 
 	add ("Core", Core);
 
 	SupportedComponents Full (executionContext);
-	Full .add (supportedComponents .getComponent ("Core"));
-	Full .add (supportedComponents .getComponent ("Time"));
-	Full .add (supportedComponents .getComponent ("Networking"));
-	Full .add (supportedComponents .getComponent ("Grouping"));
-	Full .add (supportedComponents .getComponent ("Rendering"));
-	Full .add (supportedComponents .getComponent ("Shape"));
-	Full .add (supportedComponents .getComponent ("Geometry3D"));
-	Full .add (supportedComponents .getComponent ("Geometry2D"));
-	Full .add (supportedComponents .getComponent ("Text"));
-	Full .add (supportedComponents .getComponent ("Sound"));
-	Full .add (supportedComponents .getComponent ("Lighting"));
-	Full .add (supportedComponents .getComponent ("Texturing"));
-	Full .add (supportedComponents .getComponent ("Interpolation"));
-	Full .add (supportedComponents .getComponent ("PointingDeviceSensor"));
-	Full .add (supportedComponents .getComponent ("KeyDeviceSensor"));
-	Full .add (supportedComponents .getComponent ("EnvironmentalSensor"));
-	Full .add (supportedComponents .getComponent ("Navigation"));
-	Full .add (supportedComponents .getComponent ("EnvironmentalEffects"));
-	Full .add (supportedComponents .getComponent ("Geospatial"));
-	Full .add (supportedComponents .getComponent ("H-Anim"));
-	Full .add (supportedComponents .getComponent ("NURBS"));
-	Full .add (supportedComponents .getComponent ("DIS"));
-	Full .add (supportedComponents .getComponent ("Scripting"));
-	Full .add (supportedComponents .getComponent ("EventUtilities"));
-	Full .add (supportedComponents .getComponent ("Shaders"));
-	Full .add (supportedComponents .getComponent ("CADGeometry"));
-	Full .add (supportedComponents .getComponent ("Texturing3D"));
-	Full .add (supportedComponents .getComponent ("CubeMapTexturing"));
-	Full .add (supportedComponents .getComponent ("Layering"));
-	Full .add (supportedComponents .getComponent ("Layout"));
-	Full .add (supportedComponents .getComponent ("RigidBodyPhysics"));
-	Full .add (supportedComponents .getComponent ("Picking"));
-	Full .add (supportedComponents .getComponent ("Followers"));
-	Full .add (supportedComponents .getComponent ("ParticleSystems"));
+	Full .add (supportedComponents .get ("Core"));
+	Full .add (supportedComponents .get ("Time"));
+	Full .add (supportedComponents .get ("Networking"));
+	Full .add (supportedComponents .get ("Grouping"));
+	Full .add (supportedComponents .get ("Rendering"));
+	Full .add (supportedComponents .get ("Shape"));
+	Full .add (supportedComponents .get ("Geometry3D"));
+	Full .add (supportedComponents .get ("Geometry2D"));
+	Full .add (supportedComponents .get ("Text"));
+	Full .add (supportedComponents .get ("Sound"));
+	Full .add (supportedComponents .get ("Lighting"));
+	Full .add (supportedComponents .get ("Texturing"));
+	Full .add (supportedComponents .get ("Interpolation"));
+	Full .add (supportedComponents .get ("PointingDeviceSensor"));
+	Full .add (supportedComponents .get ("KeyDeviceSensor"));
+	Full .add (supportedComponents .get ("EnvironmentalSensor"));
+	Full .add (supportedComponents .get ("Navigation"));
+	Full .add (supportedComponents .get ("EnvironmentalEffects"));
+	Full .add (supportedComponents .get ("Geospatial"));
+	Full .add (supportedComponents .get ("H-Anim"));
+	Full .add (supportedComponents .get ("NURBS"));
+	Full .add (supportedComponents .get ("DIS"));
+	Full .add (supportedComponents .get ("Scripting"));
+	Full .add (supportedComponents .get ("EventUtilities"));
+	Full .add (supportedComponents .get ("Shaders"));
+	Full .add (supportedComponents .get ("CADGeometry"));
+	Full .add (supportedComponents .get ("Texturing3D"));
+	Full .add (supportedComponents .get ("CubeMapTexturing"));
+	Full .add (supportedComponents .get ("Layering"));
+	Full .add (supportedComponents .get ("Layout"));
+	Full .add (supportedComponents .get ("RigidBodyPhysics"));
+	Full .add (supportedComponents .get ("Picking"));
+	Full .add (supportedComponents .get ("Followers"));
+	Full .add (supportedComponents .get ("ParticleSystems"));
 
 	add ("Full", Full);
 
 	SupportedComponents Immersive (executionContext);
-	Immersive .add (supportedComponents .getComponent ("Core"));
-	Immersive .add (supportedComponents .getComponent ("Time"));
-	Immersive .add (supportedComponents .getComponent ("Networking"));
-	Immersive .add (supportedComponents .getComponent ("Grouping"));
-	Immersive .add (supportedComponents .getComponent ("Rendering"));
-	Immersive .add (supportedComponents .getComponent ("Shape"));
-	Immersive .add (supportedComponents .getComponent ("Geometry3D"));
-	Immersive .add (supportedComponents .getComponent ("Geometry2D"));
-	Immersive .add (supportedComponents .getComponent ("Text"));
-	Immersive .add (supportedComponents .getComponent ("Sound"));
-	Immersive .add (supportedComponents .getComponent ("Lighting"));
-	Immersive .add (supportedComponents .getComponent ("Texturing"));
-	Immersive .add (supportedComponents .getComponent ("Interpolation"));
-	Immersive .add (supportedComponents .getComponent ("PointingDeviceSensor"));
-	Immersive .add (supportedComponents .getComponent ("KeyDeviceSensor"));
-	Immersive .add (supportedComponents .getComponent ("EnvironmentalSensor"));
-	Immersive .add (supportedComponents .getComponent ("Navigation"));
-	Immersive .add (supportedComponents .getComponent ("EnvironmentalEffects"));
-	Immersive .add (supportedComponents .getComponent ("Scripting"));
-	Immersive .add (supportedComponents .getComponent ("EventUtilities"));
+	Immersive .add (supportedComponents .get ("Core"));
+	Immersive .add (supportedComponents .get ("Time"));
+	Immersive .add (supportedComponents .get ("Networking"));
+	Immersive .add (supportedComponents .get ("Grouping"));
+	Immersive .add (supportedComponents .get ("Rendering"));
+	Immersive .add (supportedComponents .get ("Shape"));
+	Immersive .add (supportedComponents .get ("Geometry3D"));
+	Immersive .add (supportedComponents .get ("Geometry2D"));
+	Immersive .add (supportedComponents .get ("Text"));
+	Immersive .add (supportedComponents .get ("Sound"));
+	Immersive .add (supportedComponents .get ("Lighting"));
+	Immersive .add (supportedComponents .get ("Texturing"));
+	Immersive .add (supportedComponents .get ("Interpolation"));
+	Immersive .add (supportedComponents .get ("PointingDeviceSensor"));
+	Immersive .add (supportedComponents .get ("KeyDeviceSensor"));
+	Immersive .add (supportedComponents .get ("EnvironmentalSensor"));
+	Immersive .add (supportedComponents .get ("Navigation"));
+	Immersive .add (supportedComponents .get ("EnvironmentalEffects"));
+	Immersive .add (supportedComponents .get ("Scripting"));
+	Immersive .add (supportedComponents .get ("EventUtilities"));
 
 	add ("Immersive", Immersive);
 
 	SupportedComponents Interactive (executionContext);
-	Interactive .add (supportedComponents .getComponent ("Core"));
-	Interactive .add (supportedComponents .getComponent ("Time"));
-	Interactive .add (supportedComponents .getComponent ("Networking"));
-	Interactive .add (supportedComponents .getComponent ("Grouping"));
-	Interactive .add (supportedComponents .getComponent ("Rendering"));
-	Interactive .add (supportedComponents .getComponent ("Shape"));
-	Interactive .add (supportedComponents .getComponent ("Geometry3D"));
-	Interactive .add (supportedComponents .getComponent ("Lighting"));
-	Interactive .add (supportedComponents .getComponent ("Texturing"));
-	Interactive .add (supportedComponents .getComponent ("Interpolation"));
-	Interactive .add (supportedComponents .getComponent ("PointingDeviceSensor"));
-	Interactive .add (supportedComponents .getComponent ("KeyDeviceSensor"));
-	Interactive .add (supportedComponents .getComponent ("EnvironmentalSensor"));
-	Interactive .add (supportedComponents .getComponent ("Navigation"));
-	Interactive .add (supportedComponents .getComponent ("EnvironmentalEffects"));
-	Interactive .add (supportedComponents .getComponent ("EventUtilities"));
+	Interactive .add (supportedComponents .get ("Core"));
+	Interactive .add (supportedComponents .get ("Time"));
+	Interactive .add (supportedComponents .get ("Networking"));
+	Interactive .add (supportedComponents .get ("Grouping"));
+	Interactive .add (supportedComponents .get ("Rendering"));
+	Interactive .add (supportedComponents .get ("Shape"));
+	Interactive .add (supportedComponents .get ("Geometry3D"));
+	Interactive .add (supportedComponents .get ("Lighting"));
+	Interactive .add (supportedComponents .get ("Texturing"));
+	Interactive .add (supportedComponents .get ("Interpolation"));
+	Interactive .add (supportedComponents .get ("PointingDeviceSensor"));
+	Interactive .add (supportedComponents .get ("KeyDeviceSensor"));
+	Interactive .add (supportedComponents .get ("EnvironmentalSensor"));
+	Interactive .add (supportedComponents .get ("Navigation"));
+	Interactive .add (supportedComponents .get ("EnvironmentalEffects"));
+	Interactive .add (supportedComponents .get ("EventUtilities"));
 
 	add ("Interactive", Interactive);
 
 	SupportedComponents Interchange (executionContext);
-	Interchange .add (supportedComponents .getComponent ("Core"));
-	Interchange .add (supportedComponents .getComponent ("Time"));
-	Interchange .add (supportedComponents .getComponent ("Networking"));
-	Interchange .add (supportedComponents .getComponent ("Grouping"));
-	Interchange .add (supportedComponents .getComponent ("Rendering"));
-	Interchange .add (supportedComponents .getComponent ("Shape"));
-	Interchange .add (supportedComponents .getComponent ("Geometry3D"));
-	Interchange .add (supportedComponents .getComponent ("Lighting"));
-	Interchange .add (supportedComponents .getComponent ("Texturing"));
-	Interchange .add (supportedComponents .getComponent ("Interpolation"));
-	Interchange .add (supportedComponents .getComponent ("Navigation"));
-	Interchange .add (supportedComponents .getComponent ("EnvironmentalEffects"));
+	Interchange .add (supportedComponents .get ("Core"));
+	Interchange .add (supportedComponents .get ("Time"));
+	Interchange .add (supportedComponents .get ("Networking"));
+	Interchange .add (supportedComponents .get ("Grouping"));
+	Interchange .add (supportedComponents .get ("Rendering"));
+	Interchange .add (supportedComponents .get ("Shape"));
+	Interchange .add (supportedComponents .get ("Geometry3D"));
+	Interchange .add (supportedComponents .get ("Lighting"));
+	Interchange .add (supportedComponents .get ("Texturing"));
+	Interchange .add (supportedComponents .get ("Interpolation"));
+	Interchange .add (supportedComponents .get ("Navigation"));
+	Interchange .add (supportedComponents .get ("EnvironmentalEffects"));
 
 	add ("Interchange", Interchange);
 
 	SupportedComponents MPEG4 (executionContext);
-	MPEG4 .add (supportedComponents .getComponent ("Core"));
-	MPEG4 .add (supportedComponents .getComponent ("Time"));
-	MPEG4 .add (supportedComponents .getComponent ("Networking"));
-	MPEG4 .add (supportedComponents .getComponent ("Grouping"));
-	MPEG4 .add (supportedComponents .getComponent ("Rendering"));
-	MPEG4 .add (supportedComponents .getComponent ("Shape"));
-	MPEG4 .add (supportedComponents .getComponent ("Geometry3D"));
-	MPEG4 .add (supportedComponents .getComponent ("Lighting"));
-	MPEG4 .add (supportedComponents .getComponent ("Texturing"));
-	MPEG4 .add (supportedComponents .getComponent ("Interpolation"));
-	MPEG4 .add (supportedComponents .getComponent ("PointingDeviceSensor"));
-	MPEG4 .add (supportedComponents .getComponent ("EnvironmentalSensor"));
-	MPEG4 .add (supportedComponents .getComponent ("Navigation"));
-	MPEG4 .add (supportedComponents .getComponent ("EnvironmentalEffects"));
+	MPEG4 .add (supportedComponents .get ("Core"));
+	MPEG4 .add (supportedComponents .get ("Time"));
+	MPEG4 .add (supportedComponents .get ("Networking"));
+	MPEG4 .add (supportedComponents .get ("Grouping"));
+	MPEG4 .add (supportedComponents .get ("Rendering"));
+	MPEG4 .add (supportedComponents .get ("Shape"));
+	MPEG4 .add (supportedComponents .get ("Geometry3D"));
+	MPEG4 .add (supportedComponents .get ("Lighting"));
+	MPEG4 .add (supportedComponents .get ("Texturing"));
+	MPEG4 .add (supportedComponents .get ("Interpolation"));
+	MPEG4 .add (supportedComponents .get ("PointingDeviceSensor"));
+	MPEG4 .add (supportedComponents .get ("EnvironmentalSensor"));
+	MPEG4 .add (supportedComponents .get ("Navigation"));
+	MPEG4 .add (supportedComponents .get ("EnvironmentalEffects"));
 
 	add ("MPEG-4", MPEG4);
 
@@ -202,7 +202,7 @@ SupportedProfiles::add (const std::string & name, const SupportedComponents & su
 {
 	//std::clog << "\tAdding profile " << name << ": " << std::flush;
 
-	add (new ProfileInfo (executionContext, name, supportedComponents .getComponents ()));
+	add (new ProfileInfo (executionContext, name, supportedComponents .get ()));
 
 	//std::clog << "Done." << std::endl;
 }
@@ -214,7 +214,7 @@ SupportedProfiles::add (const ProfileInfo* profile)
 }
 
 const ProfileInfo*
-SupportedProfiles::getProfile (const std::string & name) const
+SupportedProfiles::get (const std::string & name) const
 throw (Error <NOT_SUPPORTED>)
 {
 	try
@@ -228,7 +228,7 @@ throw (Error <NOT_SUPPORTED>)
 }
 
 const ProfileInfoArray &
-SupportedProfiles::getProfiles () const
+SupportedProfiles::get () const
 {
 	return profiles;
 }

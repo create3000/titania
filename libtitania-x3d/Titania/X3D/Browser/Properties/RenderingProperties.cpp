@@ -86,7 +86,8 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	    extensions (),                                                                 
 	    fontFamily ("-schumacher-clean-medium-r-normal--12-120-75-75-c-60-iso8859-1"), // SFString [in,out] fontFamily
 	    fontHeigth (0),                                                                
-	      fontInfo (nullptr)                                                           
+	      fontInfo (nullptr),
+	        listId (0)                                                  
 {
 	setComponent ("Browser"),
 	setTypeName ("RenderingProperties");
@@ -435,7 +436,8 @@ RenderingProperties::dispose ()
 	if (fontInfo)
 		glDeleteLists (fontListBase, fontInfo -> max_char_or_byte2);
 
-	glDeleteLists (listId, 1);
+	if (listId)
+		glDeleteLists (listId, 1);
 }
 
 } // X3D
