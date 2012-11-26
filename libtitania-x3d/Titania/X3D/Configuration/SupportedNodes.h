@@ -62,7 +62,7 @@ public:
 	SupportedNodes (X3DExecutionContext* const);
 
 	void
-	add (X3DBasicNode*);
+	add (const std::string &, X3DBasicNode*);
 
 	const X3DBasicNode*
 	get (const std::string &) const

@@ -1,6 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Fields/MFNode.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="46" Column="19" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/Tesselator.h" Line="1" Column="1" />
@@ -10,23 +10,14 @@
       <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="76" Column="13" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="78" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="71" Column="32" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DBoundedObject.cpp" Line="95" Column="18" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DObject.h" Line="94" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DField.h" Line="293" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.cpp" Line="218" Column="28" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DBaseNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DBaseNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="382" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/MFNode.h" Line="147" Column="18" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/SFNode.h" Line="234" Column="33" />
-      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ExternProto.cpp" Line="117" Column="24" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True" />
-          <Node name="experimental" expanded="True" />
+          <Node name="experimental" expanded="True">
+            <Node name="main.cpp" selected="True" />
+          </Node>
           <Node name="Library" expanded="True">
             <Node name="Models" expanded="True">
               <Node name="Robots" expanded="True" />
@@ -59,12 +50,7 @@
                 </Node>
                 <Node name="Configuration" expanded="True" />
                 <Node name="Execution" expanded="True" />
-                <Node name="Fields" expanded="True">
-                  <Node name="MFNode.h" selected="True" />
-                </Node>
-                <Node name="InputOutput" expanded="True" />
-                <Node name="Parser" expanded="True" />
-                <Node name="Prototype" expanded="True" />
+                <Node name="JavaScript" expanded="True" />
               </Node>
             </Node>
           </Node>

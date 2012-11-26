@@ -676,27 +676,15 @@ typedef math::vector3 <float>   Vector3f;
 typedef math::rotation4 <float> Rotation4f;
 typedef math::box3 <float>      Box3f;
 
+#include <v8.h>
 int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 
-	Box3f b1 (Vector3f (1,1,1), Vector3f (1,1,1));
-	Box3f b2 (Vector3f (1,1,1), Vector3f ());
-		
-	std::clog << std::endl;
-	std::clog << b1 << std::endl;
-	std::clog << b1 .min () << std::endl;
-	std::clog << b1 .max () << std::endl;
 	
-	std::clog << std::endl;
-	std::clog << b2 << std::endl;
-	std::clog << b2 .min () << std::endl;
-	std::clog << b2 .max () << std::endl;
-	
-	std::clog << std::endl;
-	std::clog << (b1 += b2) << std::endl;
-	
+	std::clog << "V8 " << v8::V8::GetVersion () << std::endl;
+
 
 //	test_path (basic::path ("/"));
 //	test_path (basic::path ("/", "/"));

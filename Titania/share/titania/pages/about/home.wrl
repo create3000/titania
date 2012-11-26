@@ -1,7 +1,7 @@
 #X3D V3.0 utf8 Titania
 
+META "icon" "about:icon"
 META "title" "about:home"
-META "icon"  "about:icon"
 
 EXTERNPROTO Rotor [
   inputOutput SFTime     cycleInterval
@@ -15,13 +15,13 @@ DEF NavigationInfo NavigationInfo {
 }
 
 DEF Home Viewpoint {
-  position 0 0 34
   description "Home"
+  position 0 0 34
 }
 
 DEF Far Viewpoint {
-  position 0 0 68
   description "Far"
+  position 0 0 68
 }
 
 DEF White Background {
@@ -72,6 +72,3 @@ LayerSet {
     }
   ]
 }
-
-
-#ROUTE Fastener.value_changed TO Lesser.rotation

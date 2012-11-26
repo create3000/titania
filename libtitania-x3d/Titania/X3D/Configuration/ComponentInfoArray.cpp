@@ -57,4 +57,4 @@ namespace X3D {
 
 template class basic::indexed_multimap <std::string, const X3D::ComponentInfo*>;
 
-} // Titania
+} // titania

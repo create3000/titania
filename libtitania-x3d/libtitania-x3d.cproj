@@ -408,8 +408,6 @@
     <None Include="Titania\X3D\Widgets\Viewer.h" />
     <None Include="Titania\X3D\Widgets\PointingDevice.h" />
     <None Include="Titania\X3D\Components\Core\X3DPropertyNode.h" />
-    <None Include="Titania\X3D\JavaScript.h" />
-    <None Include="Titania\X3D\JavaScript.cpp" />
     <None Include="Titania\X3D\Widgets\MotionBlur.h" />
     <None Include="Titania\X3D\Browser\X3DBrowser.h" />
     <None Include="Titania\X3D\Rendering\X3DRenderer.h" />
@@ -484,6 +482,15 @@
     <None Include="Titania\X3D\Basic\FieldType.h" />
     <None Include="Titania\X3D\Basic\NodeType.h" />
     <None Include="Makefile.am" />
+    <None Include="Titania\X3D\JavaScript\JavaScript.cpp" />
+    <None Include="Titania\X3D\JavaScript\JavaScript.h" />
+    <None Include="Titania\X3D\JavaScript\JaegerMonkey\Fields\jsMFBool.h" />
+    <None Include="Titania\X3D\JavaScript\JaegerMonkey\jsfield.h" />
+    <None Include="Titania\X3D\JavaScript\JaegerMonkey\jsstring.h" />
+    <None Include="Titania\X3D\JavaScript\JaegerMonkey\jsX3DArrayField.h" />
+    <None Include="Titania\X3D\JavaScript\JaegerMonkey\jsX3DObject.h" />
+    <None Include="Titania\X3D\JavaScript\JaegerMonkey\jsX3DFieldDefinition.h" />
+    <None Include="Titania\X3D\JavaScript\JaegerMonkey\jsX3DField.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -853,6 +860,12 @@
     <Compile Include="Titania\X3D\Basic\FieldType.cpp" />
     <Compile Include="Titania\X3D\Basic\NodeType.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\X3DSpherePropertyNode.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\JaegerMonkey\Fields\jsMFBool.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\JaegerMonkey\jsfield.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\JaegerMonkey\jsstring.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\JaegerMonkey\jsX3DObject.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\JaegerMonkey\jsX3DFieldDefinition.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\JaegerMonkey\jsX3DField.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -872,6 +885,7 @@
     <Folder Include="Titania\X3D\Routing\" />
     <Folder Include="Titania\X3D\Parser\" />
     <Folder Include="Titania\X3D\Browser\Properties\" />
+    <Folder Include="Titania\X3D\JavaScript\JaegerMonkey\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

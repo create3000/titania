@@ -48,6 +48,8 @@ Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-stream", "libtit
 EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-standard", "libtitania-standard\libtitania-standard.cproj", "{4978BF53-C409-4F1D-A898-AC2ADA52EFB7}"
 EndProject
+Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "build", "build\build.mdproj", "{ADFD852E-EC3F-463B-B5F9-30812AB9890B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -146,6 +148,14 @@ Global
 		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Parallel|Any CPU.Build.0 = Parallel|Any CPU
 		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADFD852E-EC3F-463B-B5F9-30812AB9890B}.Debug|Any CPU.ActiveCfg = Default|Any CPU
+		{ADFD852E-EC3F-463B-B5F9-30812AB9890B}.Debug|Any CPU.Build.0 = Default|Any CPU
+		{ADFD852E-EC3F-463B-B5F9-30812AB9890B}.Default|Any CPU.ActiveCfg = Default|Any CPU
+		{ADFD852E-EC3F-463B-B5F9-30812AB9890B}.Default|Any CPU.Build.0 = Default|Any CPU
+		{ADFD852E-EC3F-463B-B5F9-30812AB9890B}.Parallel|Any CPU.ActiveCfg = Default|Any CPU
+		{ADFD852E-EC3F-463B-B5F9-30812AB9890B}.Parallel|Any CPU.Build.0 = Default|Any CPU
+		{ADFD852E-EC3F-463B-B5F9-30812AB9890B}.Release|Any CPU.ActiveCfg = Default|Any CPU
+		{ADFD852E-EC3F-463B-B5F9-30812AB9890B}.Release|Any CPU.Build.0 = Default|Any CPU
 		{B8162BFF-FE10-4AE2-83EF-35F6DA9300B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8162BFF-FE10-4AE2-83EF-35F6DA9300B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8162BFF-FE10-4AE2-83EF-35F6DA9300B1}.Parallel|Any CPU.ActiveCfg = Parallel|Any CPU

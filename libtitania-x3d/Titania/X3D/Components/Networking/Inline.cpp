@@ -57,11 +57,11 @@ namespace titania {
 namespace X3D {
 
 Inline::Inline (X3DExecutionContext* const executionContext) :
-	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
-	X3DScene (),                                                    
-	   X3DBoundedObject (),                                                    
-	       X3DUrlObject (),                                                    
-	               load (true)                                                 // SFBool [in,out] load  TRUE                                                                                      
+	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	        X3DScene (),                                                    
+	X3DBoundedObject (),                                                    
+	    X3DUrlObject (),                                                    
+	            load (true)                                                 // SFBool [in,out] load  TRUE
 {
 	setComponent ("Networking");
 	setTypeName ("Inline");
@@ -159,6 +159,12 @@ Inline::display ()
 {
 	for (const auto & rootNode : getRootNodes ())
 		rootNode -> display ();
+}
+
+void
+Inline::toStream (std::ostream & ostream) const
+{
+	X3DChildNode::toStream (ostream);
 }
 
 void

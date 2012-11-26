@@ -3,24 +3,24 @@
 META "title" "Titania ✩ Red, Orange & Yellow"
 
 EXTERNPROTO Rotor [
-  exposedField SFTime     cycleInterval
-  exposedField SFBool     loop
-  eventOut     SFRotation value_changed
+  inputOutput SFTime     cycleInterval
+  inputOutput SFBool     loop
+  outputOnly  SFRotation value_changed
 ]
 "../../Library/Rotor.wrl"
 
 EXTERNPROTO Red [
-  exposedField SFFloat transparency
+  inputOutput SFFloat transparency
 ]
 "../../Library/Colors.wrl"
 
 EXTERNPROTO Orange [
-  exposedField SFFloat transparency
+  inputOutput SFFloat transparency
 ]
 "../../Library/Colors.wrl"
 
 EXTERNPROTO Yellow [
-  exposedField SFFloat transparency
+  inputOutput SFFloat transparency
 ]
 "../../Library/Colors.wrl"
 
@@ -34,18 +34,18 @@ Background {
 }
 
 DEF Viewpoint1 Viewpoint {
-  position 0 0 34
   description "Red Orange Yellow Viewpoint 1"
+  position 0 0 34
 }
 
 DEF Viewpoint2 Viewpoint {
-  position 0 0 23
   description "Red Orange Yellow Viewpoint 2"
+  position 0 0 23
 }
 
 DEF Viewpoint3 Viewpoint {
-  position 0 0 17
   description "Red Orange Yellow Viewpoint 3"
+  position 0 0 17
 }
 
 LayerSet {
@@ -131,7 +131,6 @@ DEF YellowRotor Rotor {
   cycleInterval 16.1803
   loop TRUE
 }
-
 
 ROUTE RedRotor.value_changed TO Red.set_rotation
 ROUTE OrangeRotor.value_changed TO Orange.set_rotation

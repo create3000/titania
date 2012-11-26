@@ -172,10 +172,14 @@ Route::toStream (std::ostream & ostream) const
 	else
 		ostream << Generator::GetName (sourceNode);
 
-	ostream
-		<< '.'
-		<< sourceField -> getName ()
+	ostream << '.';
 
+	ostream << sourceField -> getName ();
+	
+	if (sourceField -> getAccessType () == inputOutput)
+		ostream << "_changed";
+
+	ostream
 		<< Generator::Space
 		<< "TO"
 		<< Generator::Space;
@@ -185,9 +189,12 @@ Route::toStream (std::ostream & ostream) const
 	else
 		ostream << Generator::GetName (destinationNode);
 
-	ostream
-		<< '.'
-		<< destinationField -> getName ();
+	ostream << '.';
+	
+	if (destinationField -> getAccessType () == inputOutput)
+		ostream << "set_";
+
+	ostream << destinationField -> getName ();
 }
 
 void

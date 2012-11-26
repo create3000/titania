@@ -1,23 +1,20 @@
 #X3D V3.0 utf8 Titania
 
+META "icon" "about:icon"
 META "title" "about:splash"
-META "icon"  "about:icon"
-
 
 EXTERNPROTO LogoBlackAndWhite [ ]
 "../Library/Logo.wrl"
 
 Background {
-	skyColor 1 1 1
+  skyColor 1 1 1
 }
 
 NavigationInfo {
-	type "NONE"
+  type "NONE"
 }
 
 Viewpoint {
-  fieldOfView 0.785398
-  jump TRUE
   position 5.93602 -5.08562 15.6001
   centerOfRotation 5.93602 -5.08562 0
 }

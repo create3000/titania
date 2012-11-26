@@ -351,6 +351,12 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Fields/X3DScalar.cpp \
 	Titania/X3D/InputOutput/Generator.cpp \
 	Titania/X3D/InputOutput/uncompress.cpp \
+	Titania/X3D/JavaScript/JaegerMonkey/Fields/jsMFBool.cpp \
+	Titania/X3D/JavaScript/JaegerMonkey/jsfield.cpp \
+	Titania/X3D/JavaScript/JaegerMonkey/jsstring.cpp \
+	Titania/X3D/JavaScript/JaegerMonkey/jsX3DField.cpp \
+	Titania/X3D/JavaScript/JaegerMonkey/jsX3DFieldDefinition.cpp \
+	Titania/X3D/JavaScript/JaegerMonkey/jsX3DObject.cpp \
 	Titania/X3D/JavaScript/JavaScriptEngine.cpp \
 	Titania/X3D/Parser/Parser.cpp \
 	Titania/X3D/Parser/RegEx.cpp \

@@ -231,13 +231,13 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const X3DBasicNode* factory = getBrowser () -> getNode (name);
+	const X3DBasicNode* declaration = getBrowser () -> getNode (name);
 
 	if (getComponents () .size ())
 	{
 		try
 		{
-			components .last (factory -> getComponentName ());
+			components .last (declaration -> getComponentName ());
 		}
 		catch (const std::out_of_range &)
 		{
@@ -245,7 +245,7 @@ throw (Error <INVALID_NAME>,
 		}
 	}
 
-	SFNode <X3DBasicNode> node = factory -> create (this);
+	SFNode <X3DBasicNode> node = declaration -> create (this);
 
 	if (setup)
 		node -> setup ();

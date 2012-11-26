@@ -82,6 +82,11 @@ public:
 	virtual
 	void
 	display ();
+	
+	///  Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const;
 
 	virtual
 	void

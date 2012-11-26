@@ -12,6 +12,11 @@
       <Compiler ctype="GppCompiler" />
     </Compiler>
     <ReleaseVersion>0.3</ReleaseVersion>
+    <Packages>
+      <Packages>
+        <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="true" />
+      </Packages>
+    </Packages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

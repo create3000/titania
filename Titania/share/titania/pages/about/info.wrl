@@ -1,17 +1,15 @@
 #X3D V3.0 utf8 Titania
 
+META "icon" "about:icon"
 META "title" "about:info"
-META "icon"  "about:icon"
-
 
 DEF White Background {
   skyColor 1 1 1
 }
 
 Viewpoint {
-  fieldOfView 0.785398
-  position 0 0 2.39431
   description "Home"
+  position 0 0 2.39431
 }
 
 Transform {
