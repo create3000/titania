@@ -67,13 +67,19 @@ JSClass jsSFNode::static_class = {
 };
 
 JSFunctionSpec jsSFNode::functions [ ] = {
+	{ "getName",             getName,             0, 0 },
+	{ "getTypeName",         getTypeName,         0, 0 },
+	{ "getType",             getType,             0, 0 },
+	
 	{ "getNodeName",         getNodeName,         0, 0 },
 	{ "getNodeType",         getNodeType,         0, 0 },
 	{ "getFieldDefinitions", getFieldDefinitions, 0, 0 },
+	
 	{ "toVRMLString",        toVRMLString,        0, 0 },
 	{ "toXMLString",         toXMLString,         0, 0 },
 	{ "toString",            toString,            0, 0 },
-	{ 0, 0, 0, 0 }
+	
+	{ 0 }
 
 };
 
@@ -238,7 +244,7 @@ jsSFNode::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 		}
 	}
 
-	return JS_PropertyStub (context, obj, id, vp);
+	return JS_FALSE;
 }
 
 JSBool
@@ -269,7 +275,7 @@ jsSFNode::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict
 		}
 	}
 
-	return JS_PropertyStub (context, obj, id, vp);
+	return JS_FALSE;
 }
 
 JSBool

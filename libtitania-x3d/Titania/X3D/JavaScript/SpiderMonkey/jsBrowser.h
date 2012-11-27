@@ -83,15 +83,15 @@ private:
 	};
 
 	// X3D properties
-	static JSBool getName                (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool getVersion             (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool getCurrentSpeed        (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool getCurrentFrameRate    (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool getDescription         (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool setDescription         (JSContext*, JSObject*, jsid, JSBool, jsval*);
-	static JSBool getSupportedComponents (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool getSupportedProfiles   (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool getCurrentScene        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool name                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool version             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool currentSpeed        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool currentFrameRate    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool description         (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool description         (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool supportedComponents (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool supportedProfiles   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool currentScene        (JSContext*, JSObject*, jsid, jsval*);
 
 	// VRML97 functions
 	static JSBool getName              (JSContext*, uintN, jsval*);

@@ -75,6 +75,8 @@ public:
 
 private:
 
+	enum Property {R, G, B, A};
+	
 	static JSBool construct (JSContext*, uintN, jsval*);
 	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
 	
@@ -84,7 +86,6 @@ private:
 	static JSBool getHSV (JSContext*, uintN, jsval*);
 	static JSBool setHSV (JSContext*, uintN, jsval*);
 
-	enum Property {R, G, B, A};
 	static const size_t   size;
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

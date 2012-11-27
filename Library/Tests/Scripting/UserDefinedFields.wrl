@@ -1,0 +1,104 @@
+#X3D V3.0 utf8
+
+Script {
+  initializeOnly SFBool      sfBool TRUE
+  initializeOnly SFColor     sfColor 0.1 0.2 0
+  initializeOnly SFColorRGBA sfColorRGBA 0.1 0.2 0 0.3
+  initializeOnly SFDouble    sfDouble 0.123467890123457
+  initializeOnly SFFloat     sfFloat 0.123468
+  initializeOnly SFImage     sfImage 0 0 0
+  initializeOnly SFInt32     sfInt32 123456789
+  initializeOnly SFMatrix3d  sfMatrix3d 1 2 3 4 5 6 7 8 9.12346789012346
+  initializeOnly SFMatrix3f  sfMatrix3f 1 2 3 4 5 6 7 8 9.12347
+  initializeOnly SFMatrix4d  sfMatrix4d 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1234678901235
+  initializeOnly SFMatrix4f  sfMatrix4f 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1235
+  initializeOnly SFNode      sfNode NULL
+  initializeOnly SFRotation  sfRotation 0.267261 0.534522 0.801784 4
+  initializeOnly SFString    sfString "abc'abc"
+  initializeOnly SFTime      sfTime 0.123467890123457
+  initializeOnly SFVec2d     sfVec2d 1 2.12346789012346
+  initializeOnly SFVec2f     sfVec2f 1 2.12347
+  initializeOnly SFVec3d     sfVec3d 1 2 3.12346789012346
+  initializeOnly SFVec3f     sfVec3f 1 2 3.12347
+  initializeOnly SFVec4d     sfVec4d 1 2 3 4.12346789012346
+  initializeOnly SFVec4f     sfVec4f 1 2 3 4.12347
+  initializeOnly MFBool      mfBool [ ]
+  initializeOnly MFColor     mfColor [ ]
+  initializeOnly MFColorRGBA mfColorRGBA [ ]
+  initializeOnly MFDouble    mfDouble [ ]
+  initializeOnly MFFloat     mfFloat [ ]
+  initializeOnly MFImage     mfImage [ ]
+  initializeOnly MFInt32     mfInt32 [ ]
+  initializeOnly MFMatrix3d  mfMatrix3d [ ]
+  initializeOnly MFMatrix3f  mfMatrix3f [ ]
+  initializeOnly MFMatrix4d  mfMatrix4d [ ]
+  initializeOnly MFMatrix4f  mfMatrix4f [ ]
+  initializeOnly MFNode      mfNode [ ]
+  initializeOnly MFRotation  mfRotation [ ]
+  initializeOnly MFString    mfString [ ]
+  initializeOnly MFTime      mfTime [ ]
+  initializeOnly MFVec2d     mfVec2d [ ]
+  initializeOnly MFVec2f     mfVec2f [ ]
+  initializeOnly MFVec3d     mfVec3d [ ]
+  initializeOnly MFVec3f     mfVec3f [ ]
+  initializeOnly MFVec4d     mfVec4d [ ]
+  initializeOnly MFVec4f     mfVec4f [ ]
+
+  url "vrmlscript:
+
+function initialize ()
+{
+	print ('+ User defined fields +++++++++++++++++++++++++++++++++');	
+
+	print ('SFBool: '      + sfBool);
+	print ('SFColor: '     + sfColor);
+   print ('SFColorRGBA: ' + sfColorRGBA);
+   print ('SFDouble: '    + sfDouble);
+   print ('SFFloat: '     + sfFloat);
+   print ('SFImage: '     + sfImage);
+   print ('SFInt32: '     + sfInt32);
+   print ('SFMatrix3d: '  + sfMatrix3d);
+   print ('SFMatrix3f: '  + sfMatrix3f);
+   print ('SFMatrix4d: '  + sfMatrix4d);
+   print ('SFMatrix4f: '  + sfMatrix4f);
+   print ('SFNode: '      + sfNode);
+   print ('SFRotation: '  + sfRotation);
+   print ('SFString: '    + sfString);
+   print ('SFTime: '      + sfTime);
+   print ('SFVec2d: '     + sfVec2d);
+   print ('SFVec2f: '     + sfVec2f);
+   print ('SFVec3d: '     + sfVec3d);
+   print ('SFVec3f: '     + sfVec3f);
+   print ('SFVec4d: '     + sfVec4d);
+   print ('SFVec4f: '     + sfVec4f);
+   print ('MFBool: '      + mfBool);
+   print ('MFColor: '     + mfColor);
+   print ('MFColorRGBA: ' + mfColorRGBA);
+   print ('MFDouble: '    + mfDouble);
+   print ('MFFloat: '     + mfFloat);
+   print ('MFImage: '     + mfImage);
+   print ('MFInt32: '     + mfInt32);
+   print ('MFMatrix3d: '  + mfMatrix3d);
+   print ('MFMatrix3f: '  + mfMatrix3f);
+   print ('MFMatrix4d: '  + mfMatrix4d);
+   print ('MFMatrix4f: '  + mfMatrix4f);
+   print ('MFNode: '      + mfNode);
+   print ('MFRotation: '  + mfRotation);
+   print ('MFString: '    + mfString);
+   print ('MFTime: '      + mfTime);
+   print ('MFVec2d: '     + mfVec2d);
+   print ('MFVec2f: '     + mfVec2f);
+   print ('MFVec3d: '     + mfVec3d);
+   print ('MFVec3f: '     + mfVec3f);
+   print ('MFVec4d: '     + mfVec4d);
+   print ('MFVec4f: '     + mfVec4f);
+
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
+}
+
+function print_field (field)
+{
+
+}
+  "
+}

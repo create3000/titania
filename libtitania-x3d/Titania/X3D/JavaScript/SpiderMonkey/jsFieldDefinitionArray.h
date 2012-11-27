@@ -70,6 +70,8 @@ public:
 
 private:
 
+	enum Property {LENGTH};
+	
 	static
 	void
 	initObject (JSContext*, JSObject*);
@@ -79,10 +81,9 @@ private:
 	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
-	static JSBool getLength (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool setLength (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool length (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool length (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
-	enum Property {LENGTH};
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
 

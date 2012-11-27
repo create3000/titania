@@ -71,10 +71,15 @@ JSPropertySpec jsSFColorRGBA::properties [ ] = {
 };
 
 JSFunctionSpec jsSFColorRGBA::functions [ ] = {
-	{ "getHSV",   getHSV,   0, 0 },
-	{ "setHSV",   setHSV,   3, 0 },
-	{ "toString", toString, 0, 0 },
-	{ 0, 0, 0, 0 }
+	{ "getName",     getName,     0, 0 },
+	{ "getTypeName", getTypeName, 0, 0 },
+	{ "getType",     getType,     0, 0 },
+
+	{ "getHSV",      getHSV,      0, 0 },
+	{ "setHSV",      setHSV,      3, 0 },
+	{ "toString",    toString,    0, 0 },
+	
+	{ 0 }
 
 };
 

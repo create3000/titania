@@ -1,0 +1,29 @@
+#VRML V2.0 utf8
+
+Script {
+  url "vrmlscript:
+
+function initialize ()
+{
+	print ('+ Browser +++++++++++++++++++++++++++++++++++++++++++++');	
+	print ('Hello Wörld!');	
+	
+	print (Browser);	
+	print ('Name: '                + Browser .name);	
+	print ('Version: '             + Browser .version);
+	print ('CurrentSpeed: '        + Browser .currentSpeed);
+	print ('CurrentFrameRate: '    + Browser .currentFrameRate);
+	print ('Description: '         + Browser .description);
+	print ('SupportedComponents: ' + Browser .supportedComponents);
+	print ('SupportedProfiles: '   + Browser .supportedProfiles);
+	print ('CurrentScene: '        + Browser .currentScene);
+
+	print ('+ VRML Browser ++++++++++++++++++++++++++++++++++++++++');	
+
+	// VRML  
+	print ('WorldURL: ' + Browser .getWorldURL ());
+
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
+}
+"
+}

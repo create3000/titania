@@ -70,10 +70,6 @@ class jsX3DFieldDefinition :
 	void
 	initObject (JSContext*, JSObject*);
 
-	static JSBool getName       (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool getAccessType (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool getDataType   (JSContext *, JSObject *, jsid, jsval*);
-
 
 protected:
 
@@ -90,6 +86,10 @@ public:
 	static
 	JSClass*
 	getClass () { return &static_class; }
+
+	static JSBool name       (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool accessType (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool dataType   (JSContext *, JSObject *, jsid, jsval*);
 
 };
 

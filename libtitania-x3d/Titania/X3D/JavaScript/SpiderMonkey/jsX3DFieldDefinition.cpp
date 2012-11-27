@@ -60,9 +60,9 @@ JSClass jsX3DFieldDefinition::static_class = {
 };
 
 JSPropertySpec jsX3DFieldDefinition::properties [ ] = {
-	{ "name",       NAME,       JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, getName,       NULL },
-	{ "accessType", ACCESSTYPE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, getAccessType, NULL },
-	{ "dataType",   DATATYPE,   JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, getDataType,   NULL },
+	{ "name",       NAME,       JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, name,       NULL },
+	{ "accessType", ACCESSTYPE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, accessType, NULL },
+	{ "dataType",   DATATYPE,   JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, dataType,   NULL },
 	{ 0 }
 
 };
@@ -94,7 +94,7 @@ jsX3DFieldDefinition::create (JSContext* context, X3DFieldDefinition* field, jsv
 }
 
 JSBool
-jsX3DFieldDefinition::getName (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DFieldDefinition::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	X3DFieldDefinition* field = (X3DFieldDefinition*) JS_GetPrivate (context, obj);
 
@@ -102,7 +102,7 @@ jsX3DFieldDefinition::getName (JSContext* context, JSObject* obj, jsid id, jsval
 }
 
 JSBool
-jsX3DFieldDefinition::getAccessType (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DFieldDefinition::accessType (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	X3DFieldDefinition* field = (X3DFieldDefinition*) JS_GetPrivate (context, obj);
 
@@ -110,7 +110,7 @@ jsX3DFieldDefinition::getAccessType (JSContext* context, JSObject* obj, jsid id,
 }
 
 JSBool
-jsX3DFieldDefinition::getDataType (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DFieldDefinition::dataType (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	X3DFieldDefinition* field = (X3DFieldDefinition*) JS_GetPrivate (context, obj);
 

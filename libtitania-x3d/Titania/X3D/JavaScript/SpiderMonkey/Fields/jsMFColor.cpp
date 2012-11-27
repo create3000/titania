@@ -87,12 +87,9 @@ jsMFColor::create (JSContext* context, MFColor* field, jsval* vp, const bool sea
 JSBool
 jsMFColor::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new MFColor ());
-		return JS_TRUE;
+		return create (context, new MFColor (), &JS_RVAL (context, vp));
 	}
 	else
 	{
@@ -116,9 +113,7 @@ jsMFColor::construct (JSContext* context, uintN argc, jsval* vp)
 			values [i] = *(SFColor*) JS_GetPrivate (context, obj2);
 		}
 
-		JS_SetPrivate (context, obj, new MFColor (values, values + argc));
-
-		return JS_TRUE;
+		return create (context, new MFColor (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;

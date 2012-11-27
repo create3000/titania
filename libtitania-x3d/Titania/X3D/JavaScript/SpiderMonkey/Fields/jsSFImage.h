@@ -79,17 +79,17 @@ private:
 	
 	static JSBool construct (JSContext*, uintN, jsval*);
 	
-	static JSBool getWidth (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool setWidth (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool width (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool width (JSContext*, JSObject*, jsid, JSBool, jsval*);
 	
-	static JSBool getHeight (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool setHeight (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool height (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool height (JSContext*, JSObject*, jsid, JSBool, jsval*);
 	
-	static JSBool getComp (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool setComp (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool comp (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool comp (JSContext*, JSObject*, jsid, JSBool, jsval*);
 	
-	static JSBool getArray (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool setArray (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool array (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool array (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

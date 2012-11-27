@@ -87,12 +87,9 @@ jsMFBool::create (JSContext* context, MFBool* field, jsval* vp, const bool seal)
 JSBool
 jsMFBool::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new MFBool ());
-		return JS_TRUE;
+		return create (context, new MFBool (), &JS_RVAL (context, vp));
 	}
 	else
 	{
@@ -110,9 +107,7 @@ jsMFBool::construct (JSContext* context, uintN argc, jsval* vp)
 			values [i] = number;
 		}
 
-		JS_SetPrivate (context, obj, new MFBool (values, values + argc));
-
-		return JS_TRUE;
+		return create (context, new MFBool (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;

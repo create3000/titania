@@ -87,12 +87,9 @@ jsMFRotation::create (JSContext* context, MFRotation* field, jsval* vp, const bo
 JSBool
 jsMFRotation::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new MFRotation ());
-		return JS_TRUE;
+		return create (context, new MFRotation (), &JS_RVAL (context, vp));
 	}
 	else
 	{
@@ -116,9 +113,7 @@ jsMFRotation::construct (JSContext* context, uintN argc, jsval* vp)
 			values [i] = *(SFRotation4f*) JS_GetPrivate (context, obj2);
 		}
 
-		JS_SetPrivate (context, obj, new MFRotation (values, values + argc));
-
-		return JS_TRUE;
+		return create (context, new MFRotation (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;

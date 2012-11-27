@@ -165,57 +165,16 @@ JavaScript::initContext ()
 }
 
 void
-JavaScript::defineProperty (JSContext* context,
-                            JSObject* obj,
-                            const std::string & name,
-                            int8 tinyid,
-                            X3DFieldDefinition* field,
-                            JSPropertyOp sharedGetter,
-                            JSStrictPropertyOp sharedSetter,
-                            JSStrictPropertyOp setter,
-                            uintN attrs)
-{
-	const X3DType* type = field -> getType ();
-
-	if (type == X3DConstants::SFBool or
-	    type == X3DConstants::SFDouble or
-	    type == X3DConstants::SFFloat or
-	    type == X3DConstants::SFInt32 or
-	    type == X3DConstants::SFString or
-	    type == X3DConstants::SFTime)
-	{
-		JS_DefinePropertyWithTinyId (context, obj, name .c_str (), tinyid, JSVAL_VOID, sharedGetter, sharedSetter, JSPROP_SHARED | attrs);
-	}
-
-	else
-	{
-		jsval value;
-		JS_NewFieldValue (context, field, &value);
-		JS_DefinePropertyWithTinyId (context, obj, name .c_str (), tinyid, value, NULL, setter, attrs);
-	}
-}
-
-void
 JavaScript::initNode ()
 {
-	size_t                               i = 0;
-	FieldDefinitionArray::const_iterator field;
-
-	// for (auto & field : node -> getCustomFields ())
-
-	for (const auto & fieldDefinition : node -> getFieldDefinitions ())
+	for (auto & field : node -> getUserDefinedFields ())
 	{
-		X3DFieldDefinition* field = node -> getField (fieldDefinition -> getName ());
-	
-//		if (not (*field) -> getCustom ())
-//			continue;
-
 		switch (field -> getAccessType ())
 		{
 			case initializeOnly:
 			case outputOnly:
 			{
-				defineProperty (context, global, field -> getName (), i, field, getSharedProperty, setSharedProperty, setProperty, JSPROP_ENUMERATE | JSPROP_PERMANENT);
+				defineProperty (context, global, field -> getName (), JSPROP_ENUMERATE);
 				break;
 			}
 			case inputOnly:
@@ -225,47 +184,61 @@ JavaScript::initNode ()
 			}
 			case inputOutput:
 			{
-				defineProperty (context, global, field -> getName (),              i, field, getSharedProperty, setSharedProperty, setProperty, JSPROP_ENUMERATE | JSPROP_PERMANENT);
-				defineProperty (context, global, "set_" + field -> getName (),     i, field, getSharedProperty, setSharedProperty, setProperty, JSPROP_PERMANENT);
-				defineProperty (context, global, field -> getName () + "_changed", i, field, getSharedProperty, setSharedProperty, setProperty, JSPROP_PERMANENT);
+				defineProperty (context, global, field -> getName (),              JSPROP_ENUMERATE);
+				defineProperty (context, global, "set_" + field -> getName (),     0);
+				defineProperty (context, global, field -> getName () + "_changed", 0);
 				break;
 			}
 		}
-	
-		++ i;
 	}
 }
 
-JSBool
-JavaScript::getSharedProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+void
+JavaScript::defineProperty (JSContext* context,
+                            JSObject* obj,
+                            const std::string & name,
+                            uintN attrs)
 {
-	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
-
-	X3DFieldDefinition* field = node -> getFieldDefinitions () [JSVAL_TO_INT (id)];
-
-	return JS_NewFieldValue (context, field, vp);
+	JS_DefineProperty (context,
+	                   obj, name .c_str (),
+	                   JSVAL_VOID,
+	                   getProperty, setProperty,
+	                   JSPROP_PERMANENT | attrs);
 }
 
 JSBool
-JavaScript::setSharedProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+JavaScript::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
+__LOG__ << std::endl;
 
-	X3DFieldDefinition* field = node -> getFieldDefinitions () [JSVAL_TO_INT (id)];
+	if (JSVAL_IS_STRING (id))
+	{
+		X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
-	return JS_ValueToField (context, field, vp);
+		X3DFieldDefinition* field = node -> getField (JS_EncodeString (context, JS_ValueToString (context, id)));
+
+		if (field)
+			return JS_NewFieldValue (context, field, vp);
+	}
+	
+__LOG__ << JS_EncodeString (context, JS_ValueToString (context, id)) << std::endl;
+	return JS_FALSE;
 }
 
 JSBool
 JavaScript::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
+	if (JSVAL_IS_STRING (id))
+	{
+		X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
-	X3DFieldDefinition* field = node -> getFieldDefinitions () [JSVAL_TO_INT (id)];
+		X3DFieldDefinition* field = node -> getField (JS_EncodeString (context, JS_ValueToString (context, id)));
 
-	return
-	   JS_ValueToField (context, field, vp) and
-	   JS_LookupProperty (context, obj, field -> getName () [0] .c_str (), vp); // JS_LookupPropertyById(context, obj, id, vp); (not jet released)
+		if (field)
+			return JS_ValueToField (context, field, vp);
+	}
+	
+	return JS_FALSE;
 }
 
 void

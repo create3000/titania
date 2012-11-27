@@ -87,12 +87,9 @@ jsMFDouble::create (JSContext* context, MFDouble* field, jsval* vp, const bool s
 JSBool
 jsMFDouble::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new MFDouble ());
-		return JS_TRUE;
+		return create (context, new MFDouble (), &JS_RVAL (context, vp));
 	}
 	else
 	{
@@ -110,9 +107,7 @@ jsMFDouble::construct (JSContext* context, uintN argc, jsval* vp)
 			values [i] = number;
 		}
 
-		JS_SetPrivate (context, obj, new MFDouble (values, values + argc));
-
-		return JS_TRUE;
+		return create (context, new MFDouble (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;

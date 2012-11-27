@@ -89,8 +89,8 @@ private:
 		ROUTES
 	};
 
-	static JSBool getRootNodes (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool setRootNodes (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool rootNodes (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool rootNodes (JSContext *, JSObject *, jsid, JSBool, jsval*);
 	
 	static JSBool createNode (JSContext*, uintN, jsval*);
 

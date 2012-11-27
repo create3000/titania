@@ -61,7 +61,7 @@ JSClass jsFieldDefinitionArray::static_class = {
 };
 
 JSPropertySpec jsFieldDefinitionArray::properties [ ] = {
-	{ "length", LENGTH, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, getLength, setLength },
+	{ "length", LENGTH, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, length, length },
 	{ 0 }
 
 };
@@ -181,7 +181,7 @@ jsFieldDefinitionArray::set1Value (JSContext *context, JSObject *obj, jsid id, J
 }
 
 JSBool
-jsFieldDefinitionArray::getLength (JSContext *context, JSObject *obj, jsid id, jsval *vp)
+jsFieldDefinitionArray::length (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 {
 	FieldDefinitionArray* array = (FieldDefinitionArray*) JS_GetPrivate (context, obj);
 
@@ -189,7 +189,7 @@ jsFieldDefinitionArray::getLength (JSContext *context, JSObject *obj, jsid id, j
 }
 
 JSBool
-jsFieldDefinitionArray::setLength (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
+jsFieldDefinitionArray::length (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
 {
 	return JS_TRUE;
 }

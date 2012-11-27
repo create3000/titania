@@ -5,6 +5,27 @@ Script {
 
 function initialize ()
 {
+	print ('+ Browser +++++++++++++++++++++++++++++++++++++++++++++');	
+	print ('Hello Wörld!');	
+	
+	print (Browser);	
+	print ('Name: '                + Browser .name);	
+	print ('Version: '             + Browser .version);
+	print ('CurrentSpeed: '        + Browser .currentSpeed);
+	print ('CurrentFrameRate: '    + Browser .currentFrameRate);
+	print ('Description: '         + Browser .description);
+	print ('SupportedComponents: ' + Browser .supportedComponents);
+	print ('SupportedProfiles: '   + Browser .supportedProfiles);
+	print ('CurrentScene: '        + Browser .currentScene);
+
+	// VRML  
+	print (Browser .getWorldURL ());
+	
+	print ('+ Globals +++++++++++++++++++++++++++++++++++++++++++++');	
+
+	print (FALSE);	
+	print (TRUE);	
+
 	print ('+ X3DFields +++++++++++++++++++++++++++++++++++++++++++');	
 
 	print (new SFColor     ());

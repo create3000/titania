@@ -87,12 +87,9 @@ jsMFMatrix3f::create (JSContext* context, MFMatrix3f* field, jsval* vp, const bo
 JSBool
 jsMFMatrix3f::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new MFMatrix3f ());
-		return JS_TRUE;
+		return create (context, new MFMatrix3f (), &JS_RVAL (context, vp));
 	}
 	else
 	{
@@ -116,9 +113,7 @@ jsMFMatrix3f::construct (JSContext* context, uintN argc, jsval* vp)
 			values [i] = *(SFMatrix3f*) JS_GetPrivate (context, obj2);
 		}
 
-		JS_SetPrivate (context, obj, new MFMatrix3f (values, values + argc));
-
-		return JS_TRUE;
+		return create (context, new MFMatrix3f (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;

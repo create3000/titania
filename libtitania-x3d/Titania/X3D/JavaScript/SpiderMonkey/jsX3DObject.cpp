@@ -55,6 +55,51 @@ namespace titania {
 namespace X3D {
 
 JSBool
+jsX3DObject::getName (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		X3DObject* value = (X3DObject*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+
+		return JS_NewStringValue (context, value -> getName (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsX3DObject::getTypeName (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		X3DObject* value = (X3DObject*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+
+		return JS_NewStringValue (context, value -> getTypeName (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsX3DObject::getType (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		X3DObject* value = (X3DObject*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+
+		return JS_NewNumberValue (context, (size_t) value -> getType (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
 jsX3DObject::toString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)

@@ -55,8 +55,8 @@ namespace titania {
 namespace X3D {
 
 JSPropertySpec jsGlobals::properties [ ] = {
-	{ "FALSE", false, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, getFalse, NULL },
-	{ "TRUE",  true,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, getTrue,  NULL },
+	{ "FALSE", false, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _false, NULL },
+	{ "TRUE",  true,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _true,  NULL },
 	{ 0 }
 
 };
@@ -75,14 +75,14 @@ jsGlobals::init (JSContext* context, JSObject* global)
 }
 
 JSBool
-jsGlobals::getFalse (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsGlobals::_false (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	*vp = JSVAL_FALSE;
 	return JS_TRUE;
 }
 
 JSBool
-jsGlobals::getTrue (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsGlobals::_true (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	*vp = JSVAL_TRUE;
 	return JS_TRUE;

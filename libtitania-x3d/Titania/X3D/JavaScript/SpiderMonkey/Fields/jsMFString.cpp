@@ -89,12 +89,9 @@ jsMFString::create (JSContext* context, MFString* field, jsval* vp, const bool s
 JSBool
 jsMFString::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new MFString ());
-		return JS_TRUE;
+		return create (context, new MFString (), &JS_RVAL (context, vp));
 	}
 	else
 	{
@@ -107,9 +104,7 @@ jsMFString::construct (JSContext* context, uintN argc, jsval* vp)
 			values [i] = std::string (JS_EncodeString (context, JS_ValueToString (context, argv [i])));
 		}
 
-		JS_SetPrivate (context, obj, new MFString (values, values + argc));
-
-		return JS_TRUE;
+		return create (context, new MFString (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;

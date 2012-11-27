@@ -87,12 +87,9 @@ jsMFInt32::create (JSContext* context, MFInt32* field, jsval* vp, const bool sea
 JSBool
 jsMFInt32::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new MFInt32 ());
-		return JS_TRUE;
+		return create (context, new MFInt32 (), &JS_RVAL (context, vp));
 	}
 	else
 	{
@@ -110,9 +107,7 @@ jsMFInt32::construct (JSContext* context, uintN argc, jsval* vp)
 			values [i] = number;
 		}
 
-		JS_SetPrivate (context, obj, new MFInt32 (values, values + argc));
-
-		return JS_TRUE;
+		return create (context, new MFInt32 (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;

@@ -94,18 +94,14 @@ private:
 	void
 	initContext ();
 
-	static void defineProperty (JSContext*, JSObject*, const std::string &, int8, X3DFieldDefinition*, JSPropertyOp, JSStrictPropertyOp, JSStrictPropertyOp, uintN);
-
 	void
 	initNode ();
 
 	void
 	evaluate (const std::string &, const std::string & = "<inline>");
 
-	static JSBool getSharedProperty (JSContext*, JSObject*, jsid, jsval*);
-
-	static JSBool setSharedProperty (JSContext*, JSObject*, jsid, JSBool, jsval*);
-
+	static void defineProperty (JSContext*, JSObject*, const std::string &, uintN);
+	static JSBool getProperty (JSContext*, JSObject*, jsid, jsval*);
 	static JSBool setProperty (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
 	void

@@ -73,14 +73,21 @@ JSPropertySpec jsSFRotation::properties [ ] = {
 };
 
 JSFunctionSpec jsSFRotation::functions [ ] = {
-	{ "getAxis",   getAxis,  0, 0 },
-	{ "setAxis",   getAxis,  0, 0 },
-	{ "inverse",   inverse,  0, 0 },
-	{ "multiply",  multiply, 1, 0 },
-	{ "multVec",   multVec,  1, 0 },
-	{ "slerp",     slerp,    2, 0 },
-	{ "toString",  toString, 0, 0 },
-	{ 0, 0, 0, 0 }
+	{ "getName",     getName,     0, 0 },
+	{ "getTypeName", getTypeName, 0, 0 },
+	{ "getType",     getType,     0, 0 },
+	
+	{ "getAxis",     getAxis,     0, 0 },
+	{ "setAxis",     getAxis,     0, 0 },
+						  			     
+	{ "inverse",     inverse,     0, 0 },
+	{ "multiply",    multiply,    1, 0 },
+	{ "multVec",     multVec,     1, 0 },
+	{ "slerp",       slerp,       2, 0 },
+	
+	{ "toString",    toString,    0, 0 },
+	
+	{ 0 }
 
 };
 

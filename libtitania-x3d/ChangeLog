@@ -1,5 +1,64 @@
 2012-11-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBasicNode.cpp:
+	* jsGlobals.h:
+	* jsBrowser.h:
+	* JavaScript.h:
+	* jsBrowser.cpp:
+	* jsGlobals.cpp:
+	* jsX3DObject.h:
+	* JavaScript.cpp:
+	* jsX3DObject.cpp:
+	* jsX3DArrayField.h:
+	* jsMFVec4f.h:
+	* jsSFImage.h:
+	* jsMFTime.cpp:
+	* jsSFNode.cpp:
+	* jsMFBool.cpp:
+	* jsMFNode.cpp:
+	* jsMFInt32.cpp:
+	* jsMFImage.cpp:
+	* jsSFImage.cpp:
+	* jsMFFloat.cpp:
+	* jsSFVec2d.cpp:
+	* jsSFVec4d.cpp:
+	* jsSFVec4f.cpp:
+	* jsSFVec3f.cpp:
+	* jsSFVec2f.cpp:
+	* jsSFVec3d.cpp:
+	* jsMFVec3f.cpp:
+	* jsMFVec4d.cpp:
+	* jsMFVec4f.cpp:
+	* jsMFVec2d.cpp:
+	* jsMFVec2f.cpp:
+	* jsMFVec3d.cpp:
+	* jsSFColor.cpp:
+	* jsMFColor.cpp:
+	* jsMFDouble.cpp:
+	* jsMFString.cpp:
+	* jsSFColorRGBA.h:
+	* jsX3DFieldDefinition.h:
+	* jsMFMatrix3f.cpp:
+	* jsX3DExecutionContext.h:
+	* jsMFMatrix3d.cpp:
+	* jsSFMatrix3d.cpp:
+	* jsSFMatrix3f.cpp:
+	* jsMFMatrix4d.cpp:
+	* jsMFRotation.cpp:
+	* jsMFMatrix4f.cpp:
+	* jsSFRotation.cpp:
+	* jsSFMatrix4f.cpp:
+	* jsSFMatrix4d.cpp:
+	* jsVrmlMatrix.cpp:
+	* jsSFColorRGBA.cpp:
+	* jsX3DFieldDefinition.cpp:
+	* jsFieldDefinitionArray.h:
+	* jsMFColorRGBA.cpp:
+	* jsX3DExecutionContext.cpp:
+	* jsFieldDefinitionArray.cpp: 
+
+2012-11-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DBrowser.h:

@@ -58,6 +58,10 @@ class jsX3DObject
 {
 protected:
 
+	static JSBool getName     (JSContext*, uintN, jsval*);
+	static JSBool getTypeName (JSContext*, uintN, jsval*);
+	static JSBool getType     (JSContext*, uintN, jsval*);
+
 	static JSBool toString (JSContext*, uintN, jsval*);
 
 };

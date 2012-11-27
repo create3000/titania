@@ -76,7 +76,6 @@ public:
 
 private:
 
-
 	static JSClass static_class;
 	static JSBool  construct (JSContext*, uintN, jsval*);
 	static JSBool  enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);

@@ -87,12 +87,9 @@ jsMFTime::create (JSContext* context, MFTime* field, jsval* vp, const bool seal)
 JSBool
 jsMFTime::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new MFTime ());
-		return JS_TRUE;
+		return create (context, new MFTime (), &JS_RVAL (context, vp));
 	}
 	else
 	{
@@ -110,9 +107,7 @@ jsMFTime::construct (JSContext* context, uintN argc, jsval* vp)
 			values [i] = number;
 		}
 
-		JS_SetPrivate (context, obj, new MFTime (values, values + argc));
-
-		return JS_TRUE;
+		return create (context, new MFTime (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;

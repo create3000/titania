@@ -64,7 +64,7 @@ JSClass jsX3DExecutionContext::static_class = {
 };
 
 JSPropertySpec jsX3DExecutionContext::properties [ ] = {
-	{ "rootNodes", ROOTNODES, JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, getRootNodes, setRootNodes },
+	{ "rootNodes", ROOTNODES, JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, rootNodes, rootNodes },
 	{ 0 }
 
 };
@@ -103,7 +103,7 @@ jsX3DExecutionContext::create (JSContext* context, X3DExecutionContext* executio
 }
 
 JSBool
-jsX3DExecutionContext::getRootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 //	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
 
@@ -112,7 +112,7 @@ jsX3DExecutionContext::getRootNodes (JSContext* context, JSObject* obj, jsid id,
 }
 
 JSBool
-jsX3DExecutionContext::setRootNodes (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 //	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
 //

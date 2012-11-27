@@ -61,19 +61,24 @@ JSClass jsSFImage::static_class = {
 };
 
 JSPropertySpec jsSFImage::properties [ ] = {
-	{ "width",  WIDTH,  JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, getWidth,  setWidth },
-	{ "x",      WIDTH,                     JSPROP_SHARED | JSPROP_PERMANENT, getWidth,  setWidth },  // VRML
-	{ "height", HEIGHT, JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, getHeight, setHeight },
-	{ "y",      HEIGHT,                    JSPROP_SHARED | JSPROP_PERMANENT, getHeight, setHeight }, // VRML
-	{ "comp",   COMP,   JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, getComp,   setComp },
-	{ "array",  ARRAY,  JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, getArray,  setArray },
+	{ "width",  WIDTH,  JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, width,  width },
+	{ "x",      WIDTH,                     JSPROP_SHARED | JSPROP_PERMANENT, width,  width },  // VRML
+	{ "height", HEIGHT, JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, height, height },
+	{ "y",      HEIGHT,                    JSPROP_SHARED | JSPROP_PERMANENT, height, height }, // VRML
+	{ "comp",   COMP,   JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, comp,   comp },
+	{ "array",  ARRAY,  JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, array,  array },
 	{ 0 }
 
 };
 
 JSFunctionSpec jsSFImage::functions [ ] = {
-	{ "toString", toString, 0, 0 },
-	{ 0, 0, 0, 0 }
+	{ "getName",     getName,     0, 0 },
+	{ "getTypeName", getTypeName, 0, 0 },
+	{ "getType",     getType,     0, 0 },
+	
+	{ "toString",    toString,    0, 0 },
+	
+	{ 0 }
 
 };
 
@@ -136,7 +141,7 @@ jsSFImage::construct (JSContext* context, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFImage::getWidth (JSContext *context, JSObject *obj, jsid id, jsval *vp)
+jsSFImage::width (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
@@ -144,7 +149,7 @@ jsSFImage::getWidth (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 }
 
 JSBool
-jsSFImage::setWidth (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
+jsSFImage::width (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
@@ -159,7 +164,7 @@ jsSFImage::setWidth (JSContext *context, JSObject *obj, jsid id, JSBool strict, 
 }
 
 JSBool
-jsSFImage::getHeight (JSContext *context, JSObject *obj, jsid id, jsval *vp)
+jsSFImage::height (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
@@ -167,7 +172,7 @@ jsSFImage::getHeight (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 }
 
 JSBool
-jsSFImage::setHeight (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
+jsSFImage::height (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
@@ -182,7 +187,7 @@ jsSFImage::setHeight (JSContext *context, JSObject *obj, jsid id, JSBool strict,
 }
 
 JSBool
-jsSFImage::getComp (JSContext *context, JSObject *obj, jsid id, jsval *vp)
+jsSFImage::comp (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
@@ -190,7 +195,7 @@ jsSFImage::getComp (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 }
 
 JSBool
-jsSFImage::setComp (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
+jsSFImage::comp (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
@@ -205,7 +210,7 @@ jsSFImage::setComp (JSContext *context, JSObject *obj, jsid id, JSBool strict, j
 }
 
 JSBool
-jsSFImage::getArray (JSContext *context, JSObject *obj, jsid id, jsval *vp)
+jsSFImage::array (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
@@ -213,7 +218,7 @@ jsSFImage::getArray (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 }
 
 JSBool
-jsSFImage::setArray (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsSFImage::array (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 

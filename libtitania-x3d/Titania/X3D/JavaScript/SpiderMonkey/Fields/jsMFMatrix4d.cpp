@@ -87,12 +87,9 @@ jsMFMatrix4d::create (JSContext* context, MFMatrix4d* field, jsval* vp, const bo
 JSBool
 jsMFMatrix4d::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new MFMatrix4d ());
-		return JS_TRUE;
+		return create (context, new MFMatrix4d (), &JS_RVAL (context, vp));
 	}
 	else
 	{
@@ -116,9 +113,7 @@ jsMFMatrix4d::construct (JSContext* context, uintN argc, jsval* vp)
 			values [i] = *(SFMatrix4d*) JS_GetPrivate (context, obj2);
 		}
 
-		JS_SetPrivate (context, obj, new MFMatrix4d (values, values + argc));
-
-		return JS_TRUE;
+		return create (context, new MFMatrix4d (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;

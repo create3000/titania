@@ -87,12 +87,9 @@ jsMFVec4f::create (JSContext* context, MFVec4f* field, jsval* vp, const bool sea
 JSBool
 jsMFVec4f::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new MFVec4f ());
-		return JS_TRUE;
+		return create (context, new MFVec4f (), &JS_RVAL (context, vp));
 	}
 	else
 	{
@@ -116,9 +113,7 @@ jsMFVec4f::construct (JSContext* context, uintN argc, jsval* vp)
 			values [i] = *(SFVec4f*) JS_GetPrivate (context, obj2);
 		}
 
-		JS_SetPrivate (context, obj, new MFVec4f (values, values + argc));
-
-		return JS_TRUE;
+		return create (context, new MFVec4f (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;

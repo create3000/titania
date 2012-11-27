@@ -61,41 +61,57 @@ class jsX3DArrayField :
 {
 protected:
 
-	enum Property {LENGTH};
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
-	static JSBool         getLength (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool         setLength (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
+
+private:
+
+	enum Property {LENGTH};
+
+	static JSBool length (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool length (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	
 };
 
 template <class Type>
-JSPropertySpec jsX3DArrayField <Type>::properties [ ] = { { "length", LENGTH, JSPROP_SHARED | JSPROP_PERMANENT, getLength, setLength }, { 0 } };
+JSPropertySpec jsX3DArrayField <Type>::properties [ ] = {
+	{ "length", LENGTH, JSPROP_SHARED | JSPROP_PERMANENT, length, length },
+	{ 0 }
+};
 
 template <class Type>
-JSFunctionSpec jsX3DArrayField <Type>::functions [ ] = { { "toString", toString, 0, 0 },  { 0, 0, 0, 0 } };
+JSFunctionSpec jsX3DArrayField <Type>::functions [ ] = {
+	{ "getName",     getName,     0, 0 },
+	{ "getTypeName", getTypeName, 0, 0 },
+	{ "getType",     getType,     0, 0 },
+	
+	{ "toString",    toString,    0, 0 },
+	
+	{ 0 }
+};
 
 template <class Type>
 JSBool
-jsX3DArrayField <Type>::getLength (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DArrayField <Type>::length (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DArrayField <Type>* x3darrayfield = (X3DArrayField <Type>*)JS_GetPrivate (context, obj);
+	X3DArrayField <Type>* field = (X3DArrayField <Type>*) JS_GetPrivate (context, obj);
 
-	return JS_NewNumberValue (context, x3darrayfield -> size (), vp);
+	return JS_NewNumberValue (context, field -> size (), vp);
 }
 
 template <class Type>
 JSBool
-jsX3DArrayField <Type>::setLength (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsX3DArrayField <Type>::length (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	X3DArrayField <Type>* x3darrayfield = (X3DArrayField <Type>*)JS_GetPrivate (context, obj);
+	X3DArrayField <Type>* field = (X3DArrayField <Type>*) JS_GetPrivate (context, obj);
 
 	uint32 value;
 
 	if (not JS_ValueToECMAUint32 (context, *vp, &value))
 		return JS_FALSE;
 
-	x3darrayfield -> resize (value);
+	field -> resize (value);
 
 	return JS_TRUE;
 }

@@ -87,12 +87,9 @@ jsMFImage::create (JSContext* context, MFImage* field, jsval* vp, const bool sea
 JSBool
 jsMFImage::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new MFImage ());
-		return JS_TRUE;
+		return create (context, new MFImage (), &JS_RVAL (context, vp));
 	}
 	else
 	{
@@ -116,9 +113,7 @@ jsMFImage::construct (JSContext* context, uintN argc, jsval* vp)
 			values [i] = *(SFImage*) JS_GetPrivate (context, obj2);
 		}
 
-		JS_SetPrivate (context, obj, new MFImage (values, values + argc));
-
-		return JS_TRUE;
+		return create (context, new MFImage (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;

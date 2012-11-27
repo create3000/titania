@@ -87,12 +87,9 @@ jsMFNode::create (JSContext* context, X3DFieldDefinition* field, jsval* vp, cons
 JSBool
 jsMFNode::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new MFNode <X3DBasicNode> ());
-		return JS_TRUE;
+		return create (context, new MFNode <X3DBasicNode> (), &JS_RVAL (context, vp));
 	}
 	else
 	{
@@ -116,9 +113,7 @@ jsMFNode::construct (JSContext* context, uintN argc, jsval* vp)
 			values [i] = *(X3DField <X3DBaseNode*>*) JS_GetPrivate (context, obj2);
 		}
 
-		JS_SetPrivate (context, obj, new MFNode <X3DBasicNode> (values, values + argc));
-
-		return JS_TRUE;
+		return create (context, new MFNode <X3DBasicNode> (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;

@@ -70,17 +70,23 @@ JSPropertySpec jsSFVec3f::properties [ ] = {
 };
 
 JSFunctionSpec jsSFVec3f::functions [ ] = {
-	{ "negate",    normalize, 0, 0 },
-	{ "add",       add,       1, 0 },
-	{ "subtract",  subtract,  1, 0 },
-	{ "multiply",  multiply,  1, 0 },
-	{ "divide",    divide,    1, 0 },
-	{ "cross",     cross,     1, 0 },
-	{ "normalize", normalize, 0, 0 },
-	{ "dot",       dot,       1, 0 },
-	{ "length",    length,    0, 0 },
-	{ "toString",  toString,  0, 0 },
-	{ 0, 0, 0, 0 }
+	{ "getName",     getName,     0, 0 },
+	{ "getTypeName", getTypeName, 0, 0 },
+	{ "getType",     getType,     0, 0 },
+	
+	{ "negate",      normalize,   0, 0 },
+	{ "add",         add,         1, 0 },
+	{ "subtract",    subtract,    1, 0 },
+	{ "multiply",    multiply,    1, 0 },
+	{ "divide",      divide,      1, 0 },
+	{ "cross",       cross,       1, 0 },
+	{ "normalize",   normalize,   0, 0 },
+	{ "dot",         dot,         1, 0 },
+	{ "length",      length,      0, 0 },
+						  			      
+	{ "toString",    toString,    0, 0 },
+	
+	{ 0 }
 
 };
 

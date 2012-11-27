@@ -657,7 +657,9 @@ X3DBasicNode::toStream (std::ostream & ostream) const
 			ostream << Generator::Break;
 		}
 
-		ostream << Generator::DecIndent;
+		ostream
+			<< Generator::DecIndent
+			<< Generator::TidyBreak;
 	}
 
 	FieldDefinitionArray fields = getInitializeableFields (Generator::ExpandNodes ());

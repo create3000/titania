@@ -65,8 +65,8 @@ public:
 
 private:
 
-	static JSBool getFalse (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool getTrue  (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool _false (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool _true  (JSContext *, JSObject *, jsid, jsval*);
 
 	static JSBool print  (JSContext *, uintN, jsval*);
 

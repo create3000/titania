@@ -1895,7 +1895,6 @@
     <None Include="Tests\Basic\NodeIndex.wrl" />
     <None Include="Tests\Basic\FieldTypes.wrl" />
     <None Include="Tests\Scripting\Script-vrmlscript1.wrl" />
-    <None Include="Tests\Scripting\FieldTypes.wrl" />
     <None Include="Models\Beethoven.wrl" />
     <None Include="Models\gift.wrl" />
     <None Include="Tests\3rd Party\5000faces.x3dv" />
@@ -2199,6 +2198,10 @@
     <None Include="Tests\Geometry3D\Beethoven.wrl" />
     <None Include="RegularPolygon.py" />
     <None Include="Tests\Scripting\test.wrl" />
+    <None Include="Tests\Scripting\Browser.wrl" />
+    <None Include="Tests\Scripting\Globals.wrl" />
+    <None Include="Tests\Scripting\Fields.wrl" />
+    <None Include="Tests\Scripting\UserDefinedFields.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

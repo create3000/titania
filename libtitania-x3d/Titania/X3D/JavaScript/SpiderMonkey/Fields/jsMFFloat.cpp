@@ -87,12 +87,9 @@ jsMFFloat::create (JSContext* context, MFFloat* field, jsval* vp, const bool sea
 JSBool
 jsMFFloat::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new MFFloat ());
-		return JS_TRUE;
+		return create (context, new MFFloat (), &JS_RVAL (context, vp));
 	}
 	else
 	{
@@ -110,9 +107,7 @@ jsMFFloat::construct (JSContext* context, uintN argc, jsval* vp)
 			values [i] = number;
 		}
 
-		JS_SetPrivate (context, obj, new MFFloat (values, values + argc));
-
-		return JS_TRUE;
+		return create (context, new MFFloat (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;

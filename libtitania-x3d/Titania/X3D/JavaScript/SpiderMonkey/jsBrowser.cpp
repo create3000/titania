@@ -71,14 +71,14 @@ JSClass jsBrowser::static_class = {
 };
 
 JSPropertySpec jsBrowser::properties [ ] = {
-	{ "name",                NAME,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, getName,                NULL },
-	{ "version",             VERSION,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, getVersion,             NULL },
-	{ "currentSpeed",        CURRENTSPEED,        JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, getCurrentSpeed,        NULL },
-	{ "currentFrameRate",    CURRENTFRAMERATE,    JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, getCurrentFrameRate,    NULL },
-	{ "description",         DESCRIPTION,         JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT,                   getDescription,         setDescription },
-	{ "supportedComponents", SUPPORTEDCOMPONENTS, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, getSupportedComponents, NULL },
-	{ "supportedProfiles",   SUPPORTEDPROFILES,   JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, getSupportedProfiles,   NULL },
-	{ "currentScene",        CURRENTSCENE,        JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, getCurrentScene,        NULL },
+	{ "name",                NAME,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, name,                NULL },
+	{ "version",             VERSION,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, version,             NULL },
+	{ "currentSpeed",        CURRENTSPEED,        JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentSpeed,        NULL },
+	{ "currentFrameRate",    CURRENTFRAMERATE,    JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentFrameRate,    NULL },
+	{ "description",         DESCRIPTION,         JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT,                   description,         description },
+	{ "supportedComponents", SUPPORTEDCOMPONENTS, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, supportedComponents, NULL },
+	{ "supportedProfiles",   SUPPORTEDPROFILES,   JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, supportedProfiles,   NULL },
+	{ "currentScene",        CURRENTSCENE,        JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentScene,        NULL },
 	{ 0 }
 
 };
@@ -113,7 +113,7 @@ jsBrowser::defineObject (JSContext* context, JSObject* global)
 // X3D properties
 
 JSBool
-jsBrowser::getName (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsBrowser::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
@@ -121,7 +121,7 @@ jsBrowser::getName (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
-jsBrowser::getVersion (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsBrowser::version (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
@@ -129,7 +129,7 @@ jsBrowser::getVersion (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
-jsBrowser::getCurrentSpeed (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsBrowser::currentSpeed (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
@@ -137,7 +137,7 @@ jsBrowser::getCurrentSpeed (JSContext* context, JSObject* obj, jsid id, jsval* v
 }
 
 JSBool
-jsBrowser::getCurrentFrameRate (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsBrowser::currentFrameRate (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
@@ -145,7 +145,7 @@ jsBrowser::getCurrentFrameRate (JSContext* context, JSObject* obj, jsid id, jsva
 }
 
 JSBool
-jsBrowser::getDescription (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsBrowser::description (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
@@ -153,7 +153,7 @@ jsBrowser::getDescription (JSContext* context, JSObject* obj, jsid id, jsval* vp
 }
 
 JSBool
-jsBrowser::setDescription (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsBrowser::description (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
@@ -162,21 +162,21 @@ jsBrowser::setDescription (JSContext* context, JSObject* obj, jsid id, JSBool st
 }
 
 JSBool
-jsBrowser::getSupportedComponents (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsBrowser::supportedComponents (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	//node -> getBrowser() -> getSupportedComponents()
 	return jsComponentInfoArray::create (context, NULL, vp);
 }
 
 JSBool
-jsBrowser::getSupportedProfiles (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsBrowser::supportedProfiles (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	//node -> getBrowser() -> getSupportedProfiles();
 	return jsProfileInfoArray::create (context, NULL, vp);
 }
 
 JSBool
-jsBrowser::getCurrentScene (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsBrowser::currentScene (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
