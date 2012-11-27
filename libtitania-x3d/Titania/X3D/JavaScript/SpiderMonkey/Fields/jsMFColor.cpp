@@ -180,10 +180,10 @@ jsMFColor::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, js
 JSBool
 jsMFColor::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	if (not JSVAL_IS_INT (id))
+	if (not JSID_IS_INT (id))
 		return JS_TRUE;
 
-	int32 index = JSVAL_TO_INT (id);
+	int32 index = JSID_TO_INT (id);
 
 	if (index < 0)
 	{
@@ -199,10 +199,10 @@ jsMFColor::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsMFColor::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	if (not JSVAL_IS_INT (id))
+	if (not JSID_IS_INT (id))
 		return JS_TRUE;
 
-	int32 index = JSVAL_TO_INT (id);
+	int32 index = JSID_TO_INT (id);
 
 	if (index < 0)
 	{

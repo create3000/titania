@@ -124,13 +124,13 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "S", &vrmlSyntax))
 			return JS_FALSE;
 
-		X3DScriptNode* script = (X3DScriptNode*) JS_GetContextPrivate (context);
+		X3DScriptNode* script = (X3DScriptNode*) JS_GetContextPrivate (context); // XXX
 
 		SFNode <Scene> scene;
 
 		try
 		{
-			scene = script -> createX3DFromString (JS_EncodeString (context, vrmlSyntax));
+			scene = script -> createX3DFromString (JS_EncodeString (context, vrmlSyntax)); // XXX X3DBasicNode::createX3DFromString
 		}
 		catch (const X3DError & error)
 		{

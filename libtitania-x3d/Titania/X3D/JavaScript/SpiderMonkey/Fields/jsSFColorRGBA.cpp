@@ -192,7 +192,7 @@ jsSFColorRGBA::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	SFColorRGBA* sfcolorrgba = (SFColorRGBA*) JS_GetPrivate (context, obj);
 
-	return JS_NewNumberValue (context, sfcolorrgba -> get1Value (JSVAL_TO_INT (id)), vp);
+	return JS_NewNumberValue (context, sfcolorrgba -> get1Value (JSID_TO_INT (id)), vp);
 }
 
 JSBool
@@ -205,7 +205,7 @@ jsSFColorRGBA::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool str
 	if (not JS_ValueToNumber (context, *vp, &value))
 		return JS_FALSE;
 
-	sfcolorrgba -> set1Value (JSVAL_TO_INT (id), value);
+	sfcolorrgba -> set1Value (JSID_TO_INT (id), value);
 
 	return JS_TRUE;
 }

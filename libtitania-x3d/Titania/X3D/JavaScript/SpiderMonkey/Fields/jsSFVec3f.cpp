@@ -134,7 +134,7 @@ jsSFVec3f::construct (JSContext* context, uintN argc, jsval* vp)
 	
 		jsval* argv = JS_ARGV (context, vp);
 
-		if (not JS_ConvertArguments (context, argc, argv, "ddd", &x, &y))
+		if (not JS_ConvertArguments (context, argc, argv, "ddd", &x, &y, &z))
 			return JS_FALSE;
 			
 		return create (context, new SFVec3f (x, y, z), &JS_RVAL (context, vp));
@@ -200,7 +200,7 @@ jsSFVec3f::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	SFVec3f* sfvec3f = (SFVec3f*) JS_GetPrivate (context, obj);
 
-	return JS_NewNumberValue (context, sfvec3f -> get1Value (JSVAL_TO_INT (id)), vp);
+	return JS_NewNumberValue (context, sfvec3f -> get1Value (JSID_TO_INT (id)), vp);
 }
 
 JSBool
@@ -213,7 +213,7 @@ jsSFVec3f::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict,
 	if (not JS_ValueToNumber (context, *vp, &value))
 		return JS_FALSE;
 
-	sfvec3f -> set1Value (JSVAL_TO_INT (id), value);
+	sfvec3f -> set1Value (JSID_TO_INT (id), value);
 
 	return JS_TRUE;
 }

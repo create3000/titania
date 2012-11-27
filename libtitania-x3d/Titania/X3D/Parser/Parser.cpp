@@ -1195,6 +1195,8 @@ Parser::routeStatement ()
 											{
 												getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
 
+												comments ();
+									
 												return true;
 											}
 											else

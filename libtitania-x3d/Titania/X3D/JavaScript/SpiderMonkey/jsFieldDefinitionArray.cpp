@@ -158,12 +158,12 @@ jsFieldDefinitionArray::enumerate (JSContext* context, JSObject* obj, JSIterateO
 JSBool
 jsFieldDefinitionArray::get1Value (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 {
-	if (not JSVAL_IS_INT (id))
+	if (not JSID_IS_INT (id))
 		return JS_TRUE;
 
 	FieldDefinitionArray* array = (FieldDefinitionArray*) JS_GetPrivate (context, obj);
 
-	int32 index = JSVAL_TO_INT (id);
+	int32 index = JSID_TO_INT (id);
 
 	if (index >= 0 and index < (int32) array -> size ())
 		return jsX3DFieldDefinition::create (context, array -> at (index), vp);
@@ -174,7 +174,7 @@ jsFieldDefinitionArray::get1Value (JSContext *context, JSObject *obj, jsid id, j
 JSBool
 jsFieldDefinitionArray::set1Value (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
 {
-	if (not JSVAL_IS_INT (id))
+	if (not JSID_IS_INT (id))
 		return JS_TRUE;
 
 	return JS_TRUE;

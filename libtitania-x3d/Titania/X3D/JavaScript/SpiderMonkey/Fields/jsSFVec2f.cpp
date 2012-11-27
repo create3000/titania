@@ -196,7 +196,7 @@ jsSFVec2f::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	SFVec2f* sfvec2f = (SFVec2f*) JS_GetPrivate (context, obj);
 
-	return JS_NewNumberValue (context, sfvec2f -> get1Value (JSVAL_TO_INT (id)), vp);
+	return JS_NewNumberValue (context, sfvec2f -> get1Value (JSID_TO_INT (id)), vp);
 }
 
 JSBool
@@ -209,7 +209,7 @@ jsSFVec2f::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict,
 	if (not JS_ValueToNumber (context, *vp, &value))
 		return JS_FALSE;
 
-	sfvec2f -> set1Value (JSVAL_TO_INT (id), value);
+	sfvec2f -> set1Value (JSID_TO_INT (id), value);
 
 	return JS_TRUE;
 }

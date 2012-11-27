@@ -188,10 +188,10 @@ jsSFMatrix3d::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op,
 JSBool
 jsSFMatrix3d::resolve (JSContext* context, JSObject* obj, jsid id)
 {
-	if (not JSVAL_IS_INT (id))
-		return JS_ResolveStub (context, obj, id);
+	if (not JSID_IS_INT (id))
+		return JS_TRUE;
 
-	size_t index = JSVAL_TO_INT (id);
+	size_t index = JSID_TO_INT (id);
 
 	if (index >= 0 and index < size)
 	{
@@ -211,7 +211,7 @@ jsSFMatrix3d::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	SFMatrix3d* sfmatrix3d = (SFMatrix3d*) JS_GetPrivate (context, obj);
 
-	return JS_NewNumberValue (context, sfmatrix3d -> get1Value (JSVAL_TO_INT (id)), vp);
+	return JS_NewNumberValue (context, sfmatrix3d -> get1Value (JSID_TO_INT (id)), vp);
 }
 
 JSBool
@@ -224,7 +224,7 @@ jsSFMatrix3d::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool stri
 	if (not JS_ValueToNumber (context, *vp, &value))
 		return JS_FALSE;
 
-	sfmatrix3d -> set1Value (JSVAL_TO_INT (id), value);
+	sfmatrix3d -> set1Value (JSID_TO_INT (id), value);
 
 	return JS_TRUE;
 }

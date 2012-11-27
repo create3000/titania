@@ -14634,7 +14634,7 @@ DEF Top Group {
                   url "vrmlscript:
 function set_translation(value, time)
 {
-	translation_changed = new SFVec3f(value.x, 0, value.z);
+	translation_changed = new SFVec3f (value.x, 0, value.z);
 }
 "
                 }

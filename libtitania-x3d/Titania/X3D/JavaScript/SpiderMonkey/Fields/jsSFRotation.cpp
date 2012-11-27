@@ -240,7 +240,7 @@ jsSFRotation::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, obj);
 
-	return JS_NewNumberValue (context, sfrotation -> get1Value (JSVAL_TO_INT (id)), vp);
+	return JS_NewNumberValue (context, sfrotation -> get1Value (JSID_TO_INT (id)), vp);
 }
 
 JSBool
@@ -253,7 +253,7 @@ jsSFRotation::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool stri
 	if (not JS_ValueToNumber (context, *vp, &value))
 		return JS_FALSE;
 
-	sfrotation -> set1Value (JSVAL_TO_INT (id), value);
+	sfrotation -> set1Value (JSID_TO_INT (id), value);
 
 	return JS_TRUE;
 }

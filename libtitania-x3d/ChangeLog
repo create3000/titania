@@ -1,5 +1,48 @@
 2012-11-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* RegEx.cpp:
+	* Parser.cpp:
+	* JavaScript.cpp:
+	* jsMFNode.cpp:
+	* jsMFTime.cpp:
+	* jsMFBool.cpp:
+	* jsSFNode.cpp:
+	* jsSFColor.cpp:
+	* jsMFVec3f.cpp:
+	* jsMFVec4d.cpp:
+	* jsMFVec4f.cpp:
+	* jsSFVec3f.cpp:
+	* jsSFVec4d.cpp:
+	* jsSFVec4f.cpp:
+	* jsSFVec2d.cpp:
+	* jsSFVec2f.cpp:
+	* jsSFVec3d.cpp:
+	* jsMFVec3d.cpp:
+	* jsMFColor.cpp:
+	* jsMFImage.cpp:
+	* jsMFFloat.cpp:
+	* jsMFVec2f.cpp:
+	* jsMFVec2d.cpp:
+	* jsMFInt32.cpp:
+	* jsMFString.cpp:
+	* jsMFDouble.cpp:
+	* jsMFMatrix3f.cpp:
+	* jsMFMatrix3d.cpp:
+	* jsVrmlMatrix.cpp:
+	* jsMFMatrix4d.cpp:
+	* jsSFMatrix3f.cpp:
+	* jsSFMatrix3d.cpp:
+	* jsMFRotation.cpp:
+	* jsSFMatrix4d.cpp:
+	* jsSFRotation.cpp:
+	* jsMFMatrix4f.cpp:
+	* jsSFMatrix4f.cpp:
+	* jsMFColorRGBA.cpp:
+	* jsSFColorRGBA.cpp:
+	* jsFieldDefinitionArray.cpp: 
+
+2012-11-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* jsBrowser.h:
 	* JavaScript.h:
 	* JavaScript.cpp:

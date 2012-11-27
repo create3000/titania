@@ -1,54 +1,42 @@
 #VRML V2.0 utf8
 
-Script {
-  url "vrmlscript:
+DEF Timer TimeSensor {
+  loop TRUE
+}
 
+DEF Interpolator PositionInterpolator {
+  key [ 0, 1 ]
+  keyValue [ 1 2 3, 1 2 3 ]
+}
+
+DEF From Script {
+  eventIn  SFVec3f set_translation
+  eventOut SFVec3f translation_changed
+
+  url "vrmlscript:
 function initialize ()
 {
-	print ('+ X3DFields +++++++++++++++++++++++++++++++++++++++++++');	
+	print ('_schatten');
+}                  
 
-	print (new SFColor     ());
-	print (new SFColorRGBA ());
-	print (new SFImage     ());
-	print (new SFMatrix3d  ());
-	print (new SFMatrix3f  ());
-	print (new SFMatrix4d  ());
-	print (new SFMatrix4f  ());
-	print (new SFNode      ());
-	print (new SFRotation  ());
-	print (new SFVec2d     ());
-	print (new SFVec2f     ());
-	print (new SFVec3d     ());
-	print (new SFVec3f     ());
-	print (new SFVec4d     ());
-	print (new SFVec4f     ());
-	print (new VrmlMatrix  ());
-
-	print ('+ X3DArrayFields ++++++++++++++++++++++++++++++++++++++');	
-	
-   print (new MFBool      ());
-   print (new MFColor     ());
-   print (new MFColorRGBA ());
-   print (new MFDouble    ());
-   print (new MFFloat     ());
-   print (new MFImage     ());
-   print (new MFInt32     ());
-   print (new MFMatrix3d  ());
-   print (new MFMatrix3f  ());
-   print (new MFMatrix4d  ());
-   print (new MFMatrix4f  ());
-   print (new MFNode      ());
-   print (new MFRotation  ());
-   print (new MFString    ());
-   print (new MFTime      ());
-   print (new MFVec2d     ());
-   print (new MFVec2f     ());
-   print (new MFVec3d     ());
-   print (new MFVec3f     ());
-   print (new MFVec4d     ());
-   print (new MFVec4f     ());
-
-	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
+function set_translation (value, time)
+{
+	translation_changed = new SFVec3f (value.x, 0, value.z);
 }
 "
 }
+
+DEF Print Script {
+  eventIn  SFVec3f set_translation
+
+  url "vrmlscript:
+function set_translation (value, time)
+{
+	print (value);
+}
+"
+}
+
+ROUTE Timer.fraction_changed TO Interpolator.set_fraction
+ROUTE Interpolator.value_changed TO From.set_translation
+ROUTE From .translation_changed TO Print.set_translation

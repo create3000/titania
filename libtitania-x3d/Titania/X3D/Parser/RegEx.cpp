@@ -53,7 +53,7 @@ namespace X3D {
 
 const pcrecpp::RE RegEx::Header      ("\\A#(VRML|X3D) V(.*?) (utf8)(?: (.*?))?[\\n\\r]");
 const pcrecpp::RE RegEx::Whitespaces ("[\\x20\\n,\\t\\r]*");
-const pcrecpp::RE RegEx::Comment     ("[\\x20\\n,\\t\\r]*#(.*?)(?=[\\n\\r])");
+const pcrecpp::RE RegEx::Comment     ("[\\x20\\n,\\t\\r]*#(.*?)(?=[\\n\\r]|$)");
 
 const pcrecpp::RE RegEx::AS          ("[\\x20\\n,\\t\\r]+AS[\\x20\\n,\\t\\r]+");
 const pcrecpp::RE RegEx::COMPONENT   ("[\\x20\\n,\\t\\r]*COMPONENT[\\x20\\n,\\t\\r]+");

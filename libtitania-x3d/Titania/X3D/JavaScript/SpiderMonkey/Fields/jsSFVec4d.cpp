@@ -136,7 +136,7 @@ jsSFVec4d::construct (JSContext* context, uintN argc, jsval* vp)
 	
 		jsval* argv = JS_ARGV (context, vp);
 
-		if (not JS_ConvertArguments (context, argc, argv, "dddd", &x, &y))
+		if (not JS_ConvertArguments (context, argc, argv, "dddd", &x, &y, &z, &w))
 			return JS_FALSE;
 			
 		return create (context, new SFVec4d (x, y, z, w), &JS_RVAL (context, vp));
@@ -202,7 +202,7 @@ jsSFVec4d::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	SFVec4d* sfvec4d = (SFVec4d*) JS_GetPrivate (context, obj);
 
-	return JS_NewNumberValue (context, sfvec4d -> get1Value (JSVAL_TO_INT (id)), vp);
+	return JS_NewNumberValue (context, sfvec4d -> get1Value (JSID_TO_INT (id)), vp);
 }
 
 JSBool
@@ -215,7 +215,7 @@ jsSFVec4d::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict,
 	if (not JS_ValueToNumber (context, *vp, &value))
 		return JS_FALSE;
 
-	sfvec4d -> set1Value (JSVAL_TO_INT (id), value);
+	sfvec4d -> set1Value (JSID_TO_INT (id), value);
 
 	return JS_TRUE;
 }

@@ -263,13 +263,20 @@ JavaScript::set_field (const X3DFieldDefinition & field)
 
 	if (not result or JSVAL_IS_VOID (func_val))
 		return;
-
+		
 	jsval argv [2];
 	JS_NewFieldValue (context, const_cast <X3DFieldDefinition*> (&field), &argv [0], true);
-	JS_NewNumberValue (context, 0 /* time */, &argv [1]);
+	JS_NewNumberValue (context, browser -> getCurrentTime (), &argv [1]);
+
+//__LOG__ << std::endl;
+//__LOG__ << node -> getExecutionContext () -> getWorldURL () << std::endl;
+//__LOG__ << node -> getName () << std::endl;
+//__LOG__ << field .getName () << std::endl;
 
 	jsval rval;
 	JS_CallFunctionValue (context, global, func_val, 2, argv, &rval);
+
+//__LOG__ << std::endl;
 
 	JS_GC (context);
 }

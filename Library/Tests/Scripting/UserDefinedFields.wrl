@@ -22,27 +22,27 @@ Script {
   initializeOnly SFVec3f     sfVec3f 1 2 3.12347
   initializeOnly SFVec4d     sfVec4d 1 2 3 4.12346789012346
   initializeOnly SFVec4f     sfVec4f 1 2 3 4.12347
-  initializeOnly MFBool      mfBool [ ]
-  initializeOnly MFColor     mfColor [ ]
-  initializeOnly MFColorRGBA mfColorRGBA [ ]
-  initializeOnly MFDouble    mfDouble [ ]
-  initializeOnly MFFloat     mfFloat [ ]
-  initializeOnly MFImage     mfImage [ ]
-  initializeOnly MFInt32     mfInt32 [ ]
-  initializeOnly MFMatrix3d  mfMatrix3d [ ]
-  initializeOnly MFMatrix3f  mfMatrix3f [ ]
-  initializeOnly MFMatrix4d  mfMatrix4d [ ]
-  initializeOnly MFMatrix4f  mfMatrix4f [ ]
-  initializeOnly MFNode      mfNode [ ]
-  initializeOnly MFRotation  mfRotation [ ]
-  initializeOnly MFString    mfString [ ]
-  initializeOnly MFTime      mfTime [ ]
-  initializeOnly MFVec2d     mfVec2d [ ]
-  initializeOnly MFVec2f     mfVec2f [ ]
-  initializeOnly MFVec3d     mfVec3d [ ]
-  initializeOnly MFVec3f     mfVec3f [ ]
-  initializeOnly MFVec4d     mfVec4d [ ]
-  initializeOnly MFVec4f     mfVec4f [ ]
+  initializeOnly MFBool      mfBool [ TRUE ]
+  initializeOnly MFColor     mfColor [ 0 0 0 ]
+  initializeOnly MFColorRGBA mfColorRGBA [ 0 0 0 0 ]
+  initializeOnly MFDouble    mfDouble [ 0 ]
+  initializeOnly MFFloat     mfFloat [ 0 ]
+  initializeOnly MFImage     mfImage [ 0 0 0 ]
+  initializeOnly MFInt32     mfInt32 [ 0 ]
+  initializeOnly MFMatrix3d  mfMatrix3d [ 0 0 0 0 0 0 0 0 0 ]
+  initializeOnly MFMatrix3f  mfMatrix3f [ 0 0 0 0 0 0 0 0 0 ]
+  initializeOnly MFMatrix4d  mfMatrix4d [ 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+  initializeOnly MFMatrix4f  mfMatrix4f [ 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+  initializeOnly MFNode      mfNode [ NULL ]
+  initializeOnly MFRotation  mfRotation [ 0 0 0 0 ]
+  initializeOnly MFString    mfString [ "" ]
+  initializeOnly MFTime      mfTime [ 0 ]
+  initializeOnly MFVec2d     mfVec2d [ 0 0 ]
+  initializeOnly MFVec2f     mfVec2f [ 0 0 ]
+  initializeOnly MFVec3d     mfVec3d [ 0 0 0 ]
+  initializeOnly MFVec3f     mfVec3f [ 0 0 0 ]
+  initializeOnly MFVec4d     mfVec4d [ 0 0 0 0 ]
+  initializeOnly MFVec4f     mfVec4f [ 0 0 0 0 ]
 
   url "vrmlscript:
 
@@ -92,6 +92,9 @@ function initialize ()
    print ('MFVec3f: '     + mfVec3f);
    print ('MFVec4d: '     + mfVec4d);
    print ('MFVec4f: '     + mfVec4f);
+   
+   print (mfVec4f .length);
+   print (mfVec4f [0]);
 
 	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
 }
