@@ -106,6 +106,11 @@ public:
 	MFNode (std::initializer_list <typename SFNode <Type>::value_type> initializer_list) :
 		ArrayField (initializer_list)
 	{ }
+	
+	template <class InputIterator>
+	MFNode (InputIterator first, InputIterator last) :
+		ArrayField (first, last)
+	{ }
 
 	virtual
 	MFNode*

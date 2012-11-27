@@ -46,125 +46,54 @@
  *
  ******************************************************************************/
 
-#include "SFImage.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFCOLOR_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFCOLOR_H__
+
+#include "../../../Fields/SFColor.h"
+#include "../jsX3DField.h"
 
 namespace titania {
 namespace X3D {
 
-template <>
-const FieldType X3DField <Image>::type ("SFImage");
-
-template class X3DField <Image>;
-template
-std::ostream &
-operator << (std::ostream & ostream, const Image & image);
-
-SFImage::SFImage () :
-	X3DField <Image> () 
+class jsSFColor :
+	public jsX3DField
 {
-	setChild (get () .array ());
-}
+public:
 
-SFImage::SFImage (const SFImage & field) :
-	X3DField <Image> (field)
-{
-	setChild (get () .array ());
-}
+	static
+	void
+	init (JSContext*, JSObject*);
 
-SFImage::SFImage (const Image & value) :
-	X3DField <Image> (value)
-{
-	setChild (get () .array ());
-}
+	static
+	JSBool
+	create (JSContext*, SFColor*, jsval*, const bool = false);
 
-SFImage::SFImage (const size_type width, const size_type height, const size_type components, const MFInt32 & array) :
-	X3DField <Image> (Image (width, height, components, array))
-{
-	setChild (get () .array ());
-}
+	static
+	JSClass*
+	getClass () { return &static_class; }
 
-SFImage*
-SFImage::copy () const
-{
-	return new SFImage (*this);
-}
 
-void
-SFImage::setWidth (const size_type value)
-{
-	get () .width (value);
-	notifyParents ();
-}
+private:
 
-SFImage::size_type
-SFImage::getWidth () const
-{
-	return getValue () .width ();
-}
+	enum Property {R, G, B};
 
-void
-SFImage::setHeight (const size_type value)
-{
-	get () .height (value);
-	notifyParents ();
-}
+	static JSBool construct (JSContext *, uintN, jsval*);
+	static JSBool enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
 
-SFImage::size_type
-SFImage::getHeight () const
-{
-	return getValue () .height ();
-}
+	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
-void
-SFImage::setComponents (const size_type value)
-{
-	get () .components (value);
-	notifyParents ();
-}
+	static JSBool getHSV (JSContext *, uintN, jsval*);
+	static JSBool setHSV (JSContext *, uintN, jsval*);
 
-SFImage::size_type
-SFImage::getComponents () const
-{
-	return getValue () .components ();
-}
+	static const size_t   size;
+	static JSClass        static_class;
+	static JSPropertySpec properties [ ];
+	static JSFunctionSpec functions [ ];
 
-void
-SFImage::setArray (const MFInt32 & value)
-{
-	get () .array (value);
-}
-
-MFInt32 &
-SFImage::getArray ()
-{
-	return get () .array ();
-}
-
-const MFInt32 &
-SFImage::getArray () const
-{
-	return getValue () .array ();
-}
-
-void
-SFImage::setValue (const size_type width, const size_type height, const size_type components, const MFInt32 & array)
-{
-	get () .set (width, height, components, array);
-}
-
-void
-SFImage::getValue (size_type & width, size_type & height, size_type & components, MFInt32 & array) const
-{
-	getValue () .get (width, height, components, array);
-}
-
-void
-SFImage::dispose ()
-{
-	X3DField <Image>::dispose ();
-
-	get () .array () .dispose ();
-}
+};
 
 } // X3D
 } // titania
+
+#endif

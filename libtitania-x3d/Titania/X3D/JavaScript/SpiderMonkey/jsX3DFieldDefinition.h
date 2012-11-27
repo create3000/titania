@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,125 +46,54 @@
  *
  ******************************************************************************/
 
-#include "SFImage.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_JAEGER_MONKEY_JS_X3DFIELD_DEFINITION_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_JAEGER_MONKEY_JS_X3DFIELD_DEFINITION_H__
+
+#include "../../Basic/X3DFieldDefinition.h"
+#include "jsX3DObject.h"
 
 namespace titania {
 namespace X3D {
 
-template <>
-const FieldType X3DField <Image>::type ("SFImage");
-
-template class X3DField <Image>;
-template
-std::ostream &
-operator << (std::ostream & ostream, const Image & image);
-
-SFImage::SFImage () :
-	X3DField <Image> () 
+class jsX3DFieldDefinition :
+	public jsX3DObject
 {
-	setChild (get () .array ());
-}
+	enum Property {NAME, ACCESSTYPE, DATATYPE};
 
-SFImage::SFImage (const SFImage & field) :
-	X3DField <Image> (field)
-{
-	setChild (get () .array ());
-}
+	static
+	JSClass static_class;
 
-SFImage::SFImage (const Image & value) :
-	X3DField <Image> (value)
-{
-	setChild (get () .array ());
-}
+	static
+	JSPropertySpec properties [ ];
 
-SFImage::SFImage (const size_type width, const size_type height, const size_type components, const MFInt32 & array) :
-	X3DField <Image> (Image (width, height, components, array))
-{
-	setChild (get () .array ());
-}
+	static
+	void
+	initObject (JSContext*, JSObject*);
 
-SFImage*
-SFImage::copy () const
-{
-	return new SFImage (*this);
-}
+	static JSBool getName       (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool getAccessType (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool getDataType   (JSContext *, JSObject *, jsid, jsval*);
 
-void
-SFImage::setWidth (const size_type value)
-{
-	get () .width (value);
-	notifyParents ();
-}
 
-SFImage::size_type
-SFImage::getWidth () const
-{
-	return getValue () .width ();
-}
+protected:
 
-void
-SFImage::setHeight (const size_type value)
-{
-	get () .height (value);
-	notifyParents ();
-}
+	static void
+	finalize (JSContext*, JSObject*);
 
-SFImage::size_type
-SFImage::getHeight () const
-{
-	return getValue () .height ();
-}
 
-void
-SFImage::setComponents (const size_type value)
-{
-	get () .components (value);
-	notifyParents ();
-}
+public:
 
-SFImage::size_type
-SFImage::getComponents () const
-{
-	return getValue () .components ();
-}
+	static
+	JSBool
+	create (JSContext*, X3DFieldDefinition*, jsval*, const bool = false);
 
-void
-SFImage::setArray (const MFInt32 & value)
-{
-	get () .array (value);
-}
+	static
+	JSClass*
+	getClass () { return &static_class; }
 
-MFInt32 &
-SFImage::getArray ()
-{
-	return get () .array ();
-}
-
-const MFInt32 &
-SFImage::getArray () const
-{
-	return getValue () .array ();
-}
-
-void
-SFImage::setValue (const size_type width, const size_type height, const size_type components, const MFInt32 & array)
-{
-	get () .set (width, height, components, array);
-}
-
-void
-SFImage::getValue (size_type & width, size_type & height, size_type & components, MFInt32 & array) const
-{
-	getValue () .get (width, height, components, array);
-}
-
-void
-SFImage::dispose ()
-{
-	X3DField <Image>::dispose ();
-
-	get () .array () .dispose ();
-}
+};
 
 } // X3D
 } // titania
+
+#endif

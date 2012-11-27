@@ -156,7 +156,7 @@ public:
 	void
 	set1Value (const size_type index, const ValueType &);
 
-	const ValueType &
+	ValueType &
 	get1Value (const size_type);
 
 	///  Set @a value to this field without notfying parents.
@@ -355,13 +355,13 @@ X3DArrayField <ValueType>::set1Value (const size_type index, const ValueType & v
 }
 
 template <class ValueType>
-const ValueType &
+ValueType &
 X3DArrayField <ValueType>::get1Value (const size_type index)
 {
 	if (index >= size ())
 		resize (index + 1);
 
-	return getValue () [index];
+	return get () [index];
 }
 
 template <class ValueType>

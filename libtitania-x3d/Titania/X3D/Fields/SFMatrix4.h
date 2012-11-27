@@ -69,6 +69,7 @@ public:
 	typedef typename ValueType::value_type                   scalar_type;
 	typedef SFVec3 <typename ValueType::vector3_type>        vector3_type;
 	typedef SFRotation4 <typename ValueType::rotation4_type> rotation4_type;
+	typedef SFRotation4 <Rotation4f>                         rotation4f_type;
 	typedef typename ValueType::size_type                    size_type;
 
 	using X3DField <ValueType>::setValue;
@@ -117,42 +118,42 @@ public:
 
 	void
 	setTransform (const vector3_type &,
-	              const rotation4_type &);
+	              const rotation4f_type &);
 
 	void
 	setTransform (const vector3_type &,
-	              const rotation4_type &,
+	              const rotation4f_type &,
 	              const vector3_type &);
 
 	void
 	setTransform (const vector3_type &,
-	              const rotation4_type &,
+	              const rotation4f_type &,
 	              const vector3_type &,
-	              const rotation4_type &);
+	              const rotation4f_type &);
 
 	void
 	setTransform (const vector3_type &,
-	              const rotation4_type &,
+	              const rotation4f_type &,
 	              const vector3_type &,
-	              const rotation4_type &,
+	              const rotation4f_type &,
 	              const vector3_type &);
 
 	void
 	getTransform (vector3_type &,
-	              rotation4_type &,
+	              rotation4f_type &,
 	              vector3_type &) const;
 
 	void
 	getTransform (vector3_type &,
-	              rotation4_type &,
+	              rotation4f_type &,
 	              vector3_type &,
-	              rotation4_type &) const;
+	              rotation4f_type &) const;
 
 	void
 	getTransform (vector3_type &,
-	              rotation4_type &,
+	              rotation4f_type &,
 	              vector3_type &,
-	              rotation4_type &,
+	              rotation4f_type &,
 	              vector3_type &) const;
 
 	SFMatrix4*
@@ -273,49 +274,49 @@ SFMatrix4 <ValueType>::setTransform (const vector3_type & translation)
 template <class ValueType>
 void
 SFMatrix4 <ValueType>::setTransform (const vector3_type & translation,
-                                     const rotation4_type & rotation)
+                                     const rotation4f_type & rotation)
 {
-	get () .set (translation, rotation);
+	get () .set (translation, rotation .getValue ());
 	notifyParents ();
 }
 
 template <class ValueType>
 void
 SFMatrix4 <ValueType>::setTransform (const vector3_type & translation,
-                                     const rotation4_type & rotation,
+                                     const rotation4f_type & rotation,
                                      const vector3_type & scale)
 {
-	get () .set (translation, rotation, scale);
+	get () .set (translation, rotation .getValue (), scale);
 	notifyParents ();
 }
 
 template <class ValueType>
 void
 SFMatrix4 <ValueType>::setTransform (const vector3_type & translation,
-                                     const rotation4_type & rotation,
+                                     const rotation4f_type & rotation,
                                      const vector3_type & scale,
-                                     const rotation4_type & scaleOrientation)
+                                     const rotation4f_type & scaleOrientation)
 {
-	get () .set (translation, rotation, scale, scaleOrientation);
+	get () .set (translation, rotation .getValue (), scale, scaleOrientation .getValue ());
 	notifyParents ();
 }
 
 template <class ValueType>
 void
 SFMatrix4 <ValueType>::setTransform (const vector3_type & translation,
-                                     const rotation4_type & rotation,
+                                     const rotation4f_type & rotation,
                                      const vector3_type & scale,
-                                     const rotation4_type & scaleOrientation,
+                                     const rotation4f_type & scaleOrientation,
                                      const vector3_type & center)
 {
-	get () .set (translation, rotation, scale, scaleOrientation, center);
+	get () .set (translation, rotation .getValue (), scale, scaleOrientation .getValue (), center);
 	notifyParents ();
 }
 
 template <class ValueType>
 void
 SFMatrix4 <ValueType>::getTransform (vector3_type & translation,
-                                     rotation4_type & rotation,
+                                     rotation4f_type & rotation,
                                      vector3_type & scale) const
 {
 	typename vector3_type::value_type t, s;
@@ -331,9 +332,9 @@ SFMatrix4 <ValueType>::getTransform (vector3_type & translation,
 template <class ValueType>
 void
 SFMatrix4 <ValueType>::getTransform (vector3_type & translation,
-                                     rotation4_type & rotation,
+                                     rotation4f_type & rotation,
                                      vector3_type & scale,
-                                     rotation4_type & scaleOrientation) const
+                                     rotation4f_type & scaleOrientation) const
 {
 	typename vector3_type::value_type t, s;
 	typename rotation4_type::value_type r, so;
@@ -349,9 +350,9 @@ SFMatrix4 <ValueType>::getTransform (vector3_type & translation,
 template <class ValueType>
 void
 SFMatrix4 <ValueType>::getTransform (vector3_type & translation,
-                                     rotation4_type & rotation,
+                                     rotation4f_type & rotation,
                                      vector3_type & scale,
-                                     rotation4_type & scaleOrientation,
+                                     rotation4f_type & scaleOrientation,
                                      vector3_type & center) const
 {
 	typename vector3_type::value_type t, s, c;

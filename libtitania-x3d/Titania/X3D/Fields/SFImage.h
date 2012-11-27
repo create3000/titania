@@ -103,8 +103,8 @@ public:
 	void
 	setArray (const MFInt32 &);
 
-	//	MFInt32 &
-	//	getArray ();
+	MFInt32 &
+	getArray ();
 
 	const MFInt32 &
 	getArray () const;

@@ -248,7 +248,7 @@ JavaScript::getSharedProperty (JSContext* context, JSObject* obj, jsid id, jsval
 {
 	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
-	X3DFieldDefinition* field = node -> getFieldDefinitions () .at (JSVAL_TO_INT (id));
+	X3DFieldDefinition* field = node -> getFieldDefinitions () [JSVAL_TO_INT (id)];
 
 	return JS_NewFieldValue (context, field, vp);
 }
@@ -258,7 +258,7 @@ JavaScript::setSharedProperty (JSContext* context, JSObject* obj, jsid id, jsval
 {
 	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
-	X3DFieldDefinition* field = node -> getFieldDefinitions () .at (JSVAL_TO_INT (id));
+	X3DFieldDefinition* field = node -> getFieldDefinitions () [JSVAL_TO_INT (id)];
 
 	return JS_ValueToField (context, field, vp);
 }
@@ -268,7 +268,7 @@ JavaScript::setProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
-	X3DFieldDefinition* field = node -> getFieldDefinitions () .at (JSVAL_TO_INT (id));
+	X3DFieldDefinition* field = node -> getFieldDefinitions () [JSVAL_TO_INT (id)];
 
 	return
 	   JS_ValueToField (context, field, vp) and

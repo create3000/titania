@@ -46,125 +46,45 @@
  *
  ******************************************************************************/
 
-#include "SFImage.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_MFROTATION_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_MFROTATION_H__
+
+#include "../../../Fields/ArrayFields.h"
+#include "../jsX3DArrayField.h"
+#include "jsSFRotation.h"
 
 namespace titania {
 namespace X3D {
 
-template <>
-const FieldType X3DField <Image>::type ("SFImage");
-
-template class X3DField <Image>;
-template
-std::ostream &
-operator << (std::ostream & ostream, const Image & image);
-
-SFImage::SFImage () :
-	X3DField <Image> () 
+class jsMFRotation :
+	public jsX3DArrayField <SFRotation>
 {
-	setChild (get () .array ());
-}
+public:
 
-SFImage::SFImage (const SFImage & field) :
-	X3DField <Image> (field)
-{
-	setChild (get () .array ());
-}
+	static 
+	void
+	init (JSContext*, JSObject*);
 
-SFImage::SFImage (const Image & value) :
-	X3DField <Image> (value)
-{
-	setChild (get () .array ());
-}
+	static 
+	JSBool
+	create (JSContext*, MFRotation*, jsval*, const bool = false);
 
-SFImage::SFImage (const size_type width, const size_type height, const size_type components, const MFInt32 & array) :
-	X3DField <Image> (Image (width, height, components, array))
-{
-	setChild (get () .array ());
-}
+	static 
+	JSClass*
+	getClass () { return &static_class; }
 
-SFImage*
-SFImage::copy () const
-{
-	return new SFImage (*this);
-}
 
-void
-SFImage::setWidth (const size_type value)
-{
-	get () .width (value);
-	notifyParents ();
-}
+private:
 
-SFImage::size_type
-SFImage::getWidth () const
-{
-	return getValue () .width ();
-}
+	static JSClass static_class;
+	static JSBool  construct (JSContext*, uintN, jsval*);
+	static JSBool  enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
+	static JSBool  get1Value (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool  set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
-void
-SFImage::setHeight (const size_type value)
-{
-	get () .height (value);
-	notifyParents ();
-}
-
-SFImage::size_type
-SFImage::getHeight () const
-{
-	return getValue () .height ();
-}
-
-void
-SFImage::setComponents (const size_type value)
-{
-	get () .components (value);
-	notifyParents ();
-}
-
-SFImage::size_type
-SFImage::getComponents () const
-{
-	return getValue () .components ();
-}
-
-void
-SFImage::setArray (const MFInt32 & value)
-{
-	get () .array (value);
-}
-
-MFInt32 &
-SFImage::getArray ()
-{
-	return get () .array ();
-}
-
-const MFInt32 &
-SFImage::getArray () const
-{
-	return getValue () .array ();
-}
-
-void
-SFImage::setValue (const size_type width, const size_type height, const size_type components, const MFInt32 & array)
-{
-	get () .set (width, height, components, array);
-}
-
-void
-SFImage::getValue (size_type & width, size_type & height, size_type & components, MFInt32 & array) const
-{
-	getValue () .get (width, height, components, array);
-}
-
-void
-SFImage::dispose ()
-{
-	X3DField <Image>::dispose ();
-
-	get () .array () .dispose ();
-}
+};
 
 } // X3D
 } // titania
+
+#endif
