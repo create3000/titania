@@ -48,7 +48,8 @@
 
 #include "jsSFNode.h"
 
-#include "../../Browser.h"
+#include "../../../Browser/Browser.h"
+#include "../../../Components/Scripting/X3DScriptNode.h"
 #include "../jsFieldDefinitionArray.h"
 #include "../jsFields.h"
 #include "../jsfield.h"
@@ -66,13 +67,13 @@ JSClass jsSFNode::static_class = {
 };
 
 JSFunctionSpec jsSFNode::functions [ ] = {
-	{ "getNodeName",         getNodeName,         0, 0, 0 },
-	{ "getNodeType",         getNodeType,         0, 0, 0 },
-	{ "getFieldDefinitions", getFieldDefinitions, 0, 0, 0 },
-	{ "toVRMLString",        toVRMLString,        0, 0, 0 },
-	{ "toXMLString",         toXMLString,         0, 0, 0 },
-	{ "toString",            toString,            0, 0, 0 },
-	{ 0, 0, 0, 0, 0 }
+	{ "getNodeName",         getNodeName,         0, 0 },
+	{ "getNodeType",         getNodeType,         0, 0 },
+	{ "getFieldDefinitions", getFieldDefinitions, 0, 0 },
+	{ "toVRMLString",        toVRMLString,        0, 0 },
+	{ "toXMLString",         toXMLString,         0, 0 },
+	{ "toString",            toString,            0, 0 },
+	{ 0, 0, 0, 0 }
 
 };
 
@@ -93,8 +94,8 @@ jsSFNode::create (JSContext* context, X3DField <X3DBasicNode*>* field, jsval* vp
 
 	JS_SetPrivate (context, result, field);
 
-	if (seal)
-		JS_SealObject (context, result, JS_FALSE);
+	//if (seal)
+	//	JS_SealObject (context, result, JS_FALSE);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
@@ -102,42 +103,41 @@ jsSFNode::create (JSContext* context, X3DField <X3DBasicNode*>* field, jsval* vp
 }
 
 JSBool
-jsSFNode::construct (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new SFNode ());
-		return JS_TRUE;
+		return create (context, new SFNode <X3DBasicNode> (), &JS_RVAL (context, vp));
 	}
 	else if (argc == 1)
 	{
-		char* vrmlSyntax;
+		JSString* vrmlSyntax;
+		
+		jsval* argv = JS_ARGV (context, vp);
 
-		if (not JS_ConvertArguments (context, argc, argv, "s", &vrmlSyntax))
+		if (not JS_ConvertArguments (context, argc, argv, "S", &vrmlSyntax))
 			return JS_FALSE;
 
-		X3DBaseNode* node = (X3DBaseNode*) JS_GetContextPrivate (context);
+		X3DScriptNode* script = (X3DScriptNode*) JS_GetContextPrivate (context);
 
-		RefPtr <Scene*> scene;
+		SFNode <Scene> scene;
 
-		node -> getBrowser () -> pushExecutionContext (node -> getExecutionContext ());
 		try
 		{
-			scene = node -> getBrowser () -> createX3DFromString (vrmlSyntax);
+			scene = script -> createX3DFromString (JS_EncodeString (context, vrmlSyntax));
 		}
-		catch (const Error & error)
+		catch (const X3DError & error)
 		{
 			std::cerr << "Warning Browser: " << std::endl << error .what () << std::endl;
 		}
-		node -> getBrowser () -> popExecutionContext ();
 
-		JS_SetPrivate (context, obj,
-		               scene and scene -> getRootNodes () -> size () ?
-		               new SFNode (scene -> getRootNodes () -> at (0)) :
-		               new SFNode ()
-		               );
-
-		return JS_TRUE;
+		// XXX save X3DExecutionContext for generated nodes.
+		
+		return create (context,
+		               scene and scene -> getRootNodes () .size ()
+		               ? new SFNode <X3DBasicNode> (scene -> getRootNodes () [0])
+		               : new SFNode <X3DBasicNode> (),
+		               &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -148,9 +148,9 @@ jsSFNode::construct (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 JSBool
 jsSFNode::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
-	SFNode* sfnode = (SFNode*) JS_GetPrivate (context, obj);
+	X3DField <X3DBasicNode*>* sfnode = (X3DField <X3DBasicNode*>*) JS_GetPrivate (context, obj);
 
-	if (not sfnode or not * sfnode or not sfnode -> getValue () -> getFieldDefinitions () -> size ())
+	if (not sfnode or not *sfnode or not sfnode -> getValue () -> getFieldDefinitions () .size ())
 	{
 		*statep = JSVAL_NULL;
 		return JS_TRUE;
@@ -161,23 +161,33 @@ jsSFNode::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsv
 	switch (enum_op)
 	{
 		case JSENUMERATE_INIT:
+		case JSENUMERATE_INIT_ALL:
+		{
 			index   = new size_t (0);
 			*statep = PRIVATE_TO_JSVAL (index);
 
 			if (idp)
-				*idp = INT_TO_JSVAL (sfnode -> getValue () -> getFieldDefinitions () -> size ());
+				*idp = INT_TO_JSVAL (sfnode -> getValue () -> getFieldDefinitions () .size ());
 
 			break;
+		}
 		case JSENUMERATE_NEXT:
+		{
 			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
 
-			if (*index < sfnode -> getValue () -> getFieldDefinitions () -> size ())
+			if (*index < sfnode -> getValue () -> getFieldDefinitions () .size ())
 			{
-				X3DFieldDefinition* field = sfnode -> getValue () -> getFieldDefinitions () -> at (*index);
+				X3DFieldDefinition* field = sfnode -> getValue () -> getFieldDefinitions () [*index];
 				const std::string & name  = field -> getName ();
 
 				if (field -> getAccessType () == outputOnly or field -> getAccessType () == inputOutput)
-					JS_DefineProperty (context, obj, name .c_str (), JSVAL_VOID, getProperty, setProperty, JSPROP_PERMANENT);
+				{					
+					JS_DefineProperty (context,
+					                   obj, name .c_str (),
+					                   JSVAL_VOID,
+					                   getProperty, setProperty,
+					                   JSPROP_PERMANENT);
+				}
 
 				jsval id;
 				JS_NewStringValue (context, name, &id);
@@ -190,10 +200,13 @@ jsSFNode::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsv
 			}
 
 		//else done -- cleanup.
+		}
 		case JSENUMERATE_DESTROY:
+		{
 			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
 			delete index;
 			*statep = JSVAL_NULL;
+		}
 	}
 
 	return JS_TRUE;
@@ -204,11 +217,11 @@ jsSFNode::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	if (JSVAL_IS_STRING (id))
 	{
-		SFNode* sfnode = (SFNode*) JS_GetPrivate (context, obj);
+		X3DField <X3DBasicNode*>* sfnode = (X3DField <X3DBasicNode*>*) JS_GetPrivate (context, obj);
 
 		if (*sfnode)
 		{
-			char* name = JS_GetStringBytes (JS_ValueToString (context, id));
+			char* name = JS_EncodeString (context, JS_ValueToString (context, id));
 
 			X3DFieldDefinition* field = sfnode -> getValue () -> getField (name);
 
@@ -229,15 +242,15 @@ jsSFNode::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
-jsSFNode::setProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsSFNode::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	if (JSVAL_IS_STRING (id))
 	{
-		SFNode* sfnode = (SFNode*) JS_GetPrivate (context, obj);
+		X3DField <X3DBasicNode*>* sfnode = (X3DField <X3DBasicNode*>*) JS_GetPrivate (context, obj);
 
 		if (*sfnode)
 		{
-			char* name = JS_GetStringBytes (JS_ValueToString (context, id));
+			char* name = JS_EncodeString (context, JS_ValueToString (context, id));
 
 			X3DFieldDefinition* field = sfnode -> getValue () -> getField (name);
 
@@ -260,13 +273,13 @@ jsSFNode::setProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
-jsSFNode::getNodeName (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFNode::getNodeName (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFNode* sfnode = (SFNode*) JS_GetPrivate (context, obj);
+		X3DField <X3DBasicNode*>* sfnode = (X3DField <X3DBasicNode*>*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		return JS_NewStringValue (context, *sfnode ? sfnode -> getValue () -> getName () : "", vp);
+		return JS_NewStringValue (context, *sfnode ? sfnode -> getValue () -> getName () : "", &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -275,34 +288,34 @@ jsSFNode::getNodeName (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFNode::getNodeType (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFNode::getNodeType (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFNode* sfnode = (SFNode*) JS_GetPrivate (context, obj);
+		X3DField <X3DBasicNode*>* sfnode = (X3DField <X3DBasicNode*>*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* result;
 
 		if (*sfnode)
 		{
-			X3DBaseNode* node = sfnode -> getValue ();
+			X3DBasicNode* node = sfnode -> getValue ();
 
-			jsval array [node -> getNodeType () -> size ()];
+			jsval array [node -> getNodeType () .size ()];
 
 			NodeTypeArray::size_type i;
 
-			for (i = 0; i < node -> getNodeType () -> size (); ++ i)
-				if (not JS_NewDoubleValue (context, node -> getNodeType () -> at (i), &array [i]))
+			for (i = 0; i < node -> getNodeType () .size (); ++ i)
+				if (not JS_NewNumberValue (context, (size_t) node -> getNodeType () [i], &array [i]))
 					return JS_FALSE;
 
-			result = JS_NewArrayObject (context, node -> getNodeType () -> size (), array);
+			result = JS_NewArrayObject (context, node -> getNodeType () .size (), array);
 		}
 		else
 		{
 			result = JS_NewArrayObject (context, 0, NULL);
 		}
 
-		*rval = OBJECT_TO_JSVAL (result);
+		JS_SET_RVAL (context, vp, OBJECT_TO_JSVAL (result));
 
 		return JS_TRUE;
 	}
@@ -313,16 +326,16 @@ jsSFNode::getNodeType (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFNode::getFieldDefinitions (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFNode::getFieldDefinitions (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFNode* sfnode = (SFNode*) JS_GetPrivate (context, obj);
+		X3DField <X3DBasicNode*>* sfnode = (X3DField <X3DBasicNode*>*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		if (*sfnode)
-			return jsFieldDefinitionArray::create (context, const_cast <FieldDefinitionArray*> (sfnode -> getValue () -> getFieldDefinitions ()), rval);
+			return jsFieldDefinitionArray::create (context, &sfnode -> getValue () -> getFieldDefinitions (), &JS_RVAL (context, vp));
 		else
-			return jsFieldDefinitionArray::create (context, NULL, rval);
+			return jsFieldDefinitionArray::create (context, NULL, &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -331,13 +344,13 @@ jsSFNode::getFieldDefinitions (JSContext* context, JSObject* obj, uintN argc, js
 }
 
 JSBool
-jsSFNode::toVRMLString (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFNode::toVRMLString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFNode* sfnode = (SFNode*) JS_GetPrivate (context, obj);
+		X3DField <X3DBasicNode*>* sfnode = (X3DField <X3DBasicNode*>*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		return JS_NewStringValue (context, *sfnode, vp);
+		return JS_NewStringValue (context, sfnode -> toString (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -346,13 +359,13 @@ jsSFNode::toVRMLString (JSContext* context, JSObject* obj, uintN argc, jsval* vp
 }
 
 JSBool
-jsSFNode::toXMLString (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFNode::toXMLString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFNode* sfnode = (SFNode*) JS_GetPrivate (context, obj);
+		//X3DField <X3DBasicNode*>* sfnode = (X3DField <X3DBasicNode*>*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		return JS_NewStringValue (context, "", vp);
+		return JS_NewStringValue (context, "", &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -361,16 +374,17 @@ jsSFNode::toXMLString (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFNode::toString (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFNode::toString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFNode* sfnode = (SFNode*) JS_GetPrivate (context, obj);
+		X3DField <X3DBasicNode*>* sfnode = (X3DField <X3DBasicNode*>*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		if (*sfnode)
 			return JS_NewStringValue (context, sfnode -> getValue () -> getTypeName () + " { }", vp);
+			
 		else
-			return JS_NewStringValue (context, *sfnode, vp);
+			return JS_NewStringValue (context, "NULL", &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");

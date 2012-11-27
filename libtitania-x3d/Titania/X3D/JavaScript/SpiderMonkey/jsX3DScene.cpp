@@ -53,21 +53,19 @@ namespace X3D {
 
 JSClass jsX3DScene::static_class = {
 	"X3DScene", JSCLASS_HAS_PRIVATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_PropertyStub,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 JSPropertySpec jsX3DScene::properties [ ] = {
-	//	{"rootNodes", ROOTNODES, JSPROP_ENUMERATE | JSPROP_PERMANENT, getRootNodes, setRootNodes},
 	{ 0 }
 
 };
 
 JSFunctionSpec jsX3DScene::functions [ ] = {
-	//	{"add",       jsX3DScene::add,        1, 0, 0},
-	{ 0, 0, 0, 0, 0 }
+	{ 0, 0, 0, 0 }
 
 };
 
@@ -92,8 +90,8 @@ jsX3DScene::create (JSContext* context, Scene* scene, jsval* vp, const bool seal
 
 	initObject (context, result);
 
-	if (seal)
-		JS_SealObject (context, result, JS_FALSE);
+	//if (seal)
+	//	JS_SealObject (context, result, JS_FALSE);
 
 	*vp = OBJECT_TO_JSVAL (result);
 

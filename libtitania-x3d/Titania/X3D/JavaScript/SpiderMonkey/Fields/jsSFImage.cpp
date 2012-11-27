@@ -105,12 +105,9 @@ jsSFImage::create (JSContext* context, SFImage* field, jsval* vp, const bool sea
 JSBool
 jsSFImage::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new SFImage ());
-		return JS_TRUE;
+		return create (context, new SFImage (), &JS_RVAL (context, vp));
 	}
 	else if (argc == 4)
 	{
@@ -130,9 +127,7 @@ jsSFImage::construct (JSContext* context, uintN argc, jsval* vp)
 
 		MFInt32* array = (MFInt32*) JS_GetPrivate (context, obj2);
 
-		JS_SetPrivate (context, obj, new SFImage (width, height, comp, *array));
-
-		return JS_TRUE;
+		return create (context, new SFImage (width, height, comp, *array), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");

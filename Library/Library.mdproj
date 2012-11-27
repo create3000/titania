@@ -2198,6 +2198,7 @@
     <None Include="Tests\Geometry3D\Beethoven.N.wrl" />
     <None Include="Tests\Geometry3D\Beethoven.wrl" />
     <None Include="RegularPolygon.py" />
+    <None Include="Tests\Scripting\test.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

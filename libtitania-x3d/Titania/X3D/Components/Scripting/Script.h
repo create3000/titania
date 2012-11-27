@@ -50,8 +50,7 @@
 #define __TITANIA_X3D_COMPONENTS_SCRIPTING_SCRIPT_H__
 
 #include "../Scripting/X3DScriptNode.h"
-
-//#include "../../JavaScript.h"
+#include "../../JavaScript/SpiderMonkey/JavaScript.h"
 
 namespace titania {
 namespace X3D {
@@ -59,9 +58,6 @@ namespace X3D {
 class Script :
 	public X3DScriptNode
 {
-	//JavaScript* javaScript;
-
-
 public:
 
 	SFBool directOutput;
@@ -89,6 +85,8 @@ private:
 
 	void
 	prepareEvents ();
+	
+	JavaScript* javaScript;
 
 };
 

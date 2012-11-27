@@ -49,7 +49,7 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_JS_X3DSCENE_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_JS_X3DSCENE_H__
 
-#include "../../Scene.h"
+#include "../../Execution/Scene.h"
 #include "jsX3DExecutionContext.h"
 #include <jsapi.h>
 
@@ -59,23 +59,29 @@ namespace X3D {
 class jsX3DScene :
 	public jsX3DExecutionContext
 {
-	static JSClass        static_class;
-	static JSPropertySpec properties [ ];
-	static JSFunctionSpec functions [ ];
+public:
+
+	static 
+	void
+	init (JSContext*, JSObject*) { }
+
+	static 
+	JSBool
+	create (JSContext*, Scene*, jsval*, const bool = false);
+
+	static 
+	JSClass*
+	getClass () { return &static_class; }
+
+
+private:
+
 	static void
 	initObject (JSContext*, JSObject*);
 
-
-public:
-
-	static void
-	init (JSContext*, JSObject*) { }
-
-	static JSBool
-	create (JSContext*, Scene*, jsval*, const bool = false);
-
-	static JSClass*
-	getClass () { return &static_class; }
+	static JSClass        static_class;
+	static JSPropertySpec properties [ ];
+	static JSFunctionSpec functions [ ];
 
 };
 

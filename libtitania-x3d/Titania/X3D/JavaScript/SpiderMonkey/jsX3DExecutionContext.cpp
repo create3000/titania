@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#include "../Error.h"
-#include "../Scene.h"
+#include "../../Bits/Error.h"
+#include "../../Execution/Scene.h"
 #include "Fields/jsMFNode.h"
 #include "Fields/jsSFNode.h"
 #include "jsX3DExecutionContext.h"
@@ -57,7 +57,7 @@ namespace X3D {
 
 JSClass jsX3DExecutionContext::static_class = {
 	"X3DExecutionContext", JSCLASS_HAS_PRIVATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_PropertyStub,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
@@ -70,8 +70,8 @@ JSPropertySpec jsX3DExecutionContext::properties [ ] = {
 };
 
 JSFunctionSpec jsX3DExecutionContext::functions [ ] = {
-	{ "createNode", createNode, 1, 0, 0 },
-	{ 0, 0, 0, 0, 0 }
+	{ "createNode", createNode, 1, 0 },
+	{ 0, 0, 0, 0 }
 
 };
 
@@ -94,8 +94,8 @@ jsX3DExecutionContext::create (JSContext* context, X3DExecutionContext* executio
 
 	initObject (context, result);
 
-	if (seal)
-		JS_SealObject (context, result, JS_FALSE);
+	//if (seal)
+	//	JS_SealObject (context, result, JS_FALSE);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
@@ -105,59 +105,59 @@ jsX3DExecutionContext::create (JSContext* context, X3DExecutionContext* executio
 JSBool
 jsX3DExecutionContext::getRootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
+//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
 
-	return jsMFNode::create (context, executionContext -> getRootNodes (), vp, not dynamic_cast <Scene*> (executionContext));
+//	return jsMFNode::create (context, const_cast <X3DExecutionContext*> (&executionContext -> getRootNodes ()), vp, true);
+	return JS_TRUE;
 }
 
 JSBool
-jsX3DExecutionContext::setRootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DExecutionContext::setRootNodes (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
-
-	if (not dynamic_cast <Scene*> (executionContext))
-		return JS_TRUE;
-
-	JSObject* obj2;
-
-	if (not JS_ValueToObject (context, *vp, &obj2))
-		return JS_FALSE;
-
-	if (JS_GetClass (context, obj2) not_eq jsMFNode::getClass ())
-	{
-		JS_ReportError (context, "Type of argument is invalid - should be MFNode, is %s", JS_GetClass (context, obj2) -> name);
-		return JS_FALSE;
-	}
-
-	MFNode* mfnode = (MFNode*) JS_GetPrivate (context, obj2);
-
-	*executionContext -> getRootNodes () = *mfnode;
+//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
+//
+//	if (not dynamic_cast <Scene*> (executionContext))
+//		return JS_TRUE;
+//
+//	JSObject* obj2;
+//
+//	if (not JS_ValueToObject (context, *vp, &obj2))
+//		return JS_FALSE;
+//
+//	if (JS_GetClass (context, obj2) not_eq jsMFNode::getClass ())
+//	{
+//		JS_ReportError (context, "Type of argument is invalid - should be MFNode, is %s", JS_GetClass (context, obj2) -> name);
+//		return JS_FALSE;
+//	}
+//
+//	MFNode* mfnode = (MFNode*) JS_GetPrivate (context, obj2);
+//
+//	*executionContext -> getRootNodes () = *mfnode;
 
 	return JS_TRUE;
 }
 
 JSBool
-jsX3DExecutionContext::createNode (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsX3DExecutionContext::createNode (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
 		try
 		{
-			char* name;
+			JSString* name;
 
-			if (not JS_ConvertArguments (context, argc, argv, "s", &name))
+			jsval* argv = JS_ARGV (context, vp);
+		
+			if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 				return JS_FALSE;
 
-			X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
+			X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-			SFNode* node = new SFNode (executionContext -> createNode (name));
+			SFNode <X3DBasicNode> * node = new SFNode <X3DBasicNode> (executionContext -> createNode (JS_EncodeString (context, name)));
 
-			if (*node)
-				node -> getValue () -> initialize ();
-
-			return jsSFNode::create (context, node, rval);
+			return jsSFNode::create (context, node, &JS_RVAL (context, vp));
 		}
-		catch (const Error & exception)
+		catch (const X3DError & exception)
 		{
 			JS_ReportError (context, exception .what ());
 			return JS_FALSE;

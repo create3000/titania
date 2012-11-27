@@ -104,6 +104,11 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	const std::string &
+	getDescription ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	virtual
 	const FieldTypesArray &
 	getSupportedFields () const

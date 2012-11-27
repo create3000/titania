@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_SFROTATION_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_SFROTATION_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFROTATION_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFROTATION_H__
 
 #include "../../../Fields/SFRotation4.h"
 #include "../jsX3DField.h"
@@ -58,33 +58,43 @@ namespace X3D {
 class jsSFRotation :
 	public jsX3DField
 {
+public:
+
+	static
+	void
+	init (JSContext*, JSObject*);
+
+	static
+	JSBool
+	create (JSContext*, SFRotation4f*, jsval*, const bool = false);
+
+	static
+	JSClass*
+	getClass () { return &static_class; }
+
+
+private:
+
 	enum Property {X, Y, Z, ANGLE};
+
+	static JSBool construct (JSContext *, uintN, jsval*);
+	static JSBool enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
+
+	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+
+	static JSBool getAxis (JSContext *, uintN, jsval*);
+	static JSBool setAxis (JSContext *, uintN, jsval*);
+
+	static JSBool inverse  (JSContext *, uintN, jsval*);
+	static JSBool multiply (JSContext *, uintN, jsval*);
+	static JSBool multVec  (JSContext *, uintN, jsval*);
+	static JSBool slerp    (JSContext *, uintN, jsval*);
+
 	static const size_t   size;
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
-	static JSBool         construct (JSContext*, JSObject*, uintN, jsval*);
-	static JSBool         get1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool         set1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool         enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
-	static JSBool         getAxis (JSContext*, JSObject*, uintN, jsval*);
-	static JSBool         setAxis (JSContext*, JSObject*, uintN, jsval*);
-	static JSBool         inverse (JSContext*, JSObject*, uintN, jsval*);
-	static JSBool         multiply (JSContext*, JSObject*, uintN, jsval*);
-	static JSBool         multVec (JSContext*, JSObject*, uintN, jsval*);
-	static JSBool         slerp (JSContext*, JSObject*, uintN, jsval*);
-
-
-public:
-
-	static void
-	init (JSContext*, JSObject*);
-
-	static JSBool
-	create (JSContext*, SFRotation*, jsval*, const bool = false);
-
-	static JSClass*
-	getClass () { return &static_class; }
 
 };
 

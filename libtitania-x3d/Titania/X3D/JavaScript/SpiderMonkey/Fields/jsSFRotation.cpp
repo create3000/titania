@@ -57,7 +57,7 @@ const size_t jsSFRotation::size = 4;
 
 JSClass jsSFRotation::static_class = {
 	"SFRotation", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_PropertyStub,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
@@ -73,14 +73,14 @@ JSPropertySpec jsSFRotation::properties [ ] = {
 };
 
 JSFunctionSpec jsSFRotation::functions [ ] = {
-	{ "getAxis",   getAxis,  0, 0, 0 },
-	{ "setAxis",   getAxis,  0, 0, 0 },
-	{ "inverse",   inverse,  0, 0, 0 },
-	{ "multiply",  multiply, 1, 0, 0 },
-	{ "multVec",   multVec,  1, 0, 0 },
-	{ "slerp",     slerp,    2, 0, 0 },
-	{ "toString",  toString, 0, 0, 0 },
-	{ 0, 0, 0, 0, 0 }
+	{ "getAxis",   getAxis,  0, 0 },
+	{ "setAxis",   getAxis,  0, 0 },
+	{ "inverse",   inverse,  0, 0 },
+	{ "multiply",  multiply, 1, 0 },
+	{ "multVec",   multVec,  1, 0 },
+	{ "slerp",     slerp,    2, 0 },
+	{ "toString",  toString, 0, 0 },
+	{ 0, 0, 0, 0 }
 
 };
 
@@ -90,14 +90,14 @@ jsSFRotation::init (JSContext* context, JSObject* global)
 	JSObject* proto = JS_InitClass (context, global, NULL, &static_class, construct,
 	                                0, properties, functions, NULL, NULL);
 
-	JS_DefineProperty (context, proto, (char*) X,     NULL, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
-	JS_DefineProperty (context, proto, (char*) Y,     NULL, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
-	JS_DefineProperty (context, proto, (char*) Z,     NULL, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
-	JS_DefineProperty (context, proto, (char*) ANGLE, NULL, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (context, proto, (char*) X,     JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (context, proto, (char*) Y,     JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (context, proto, (char*) Z,     JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (context, proto, (char*) ANGLE, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 }
 
 JSBool
-jsSFRotation::create (JSContext* context, SFRotation* field, jsval* vp, const bool seal)
+jsSFRotation::create (JSContext* context, SFRotation4f* field, jsval* vp, const bool seal)
 {
 	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 
@@ -106,8 +106,8 @@ jsSFRotation::create (JSContext* context, SFRotation* field, jsval* vp, const bo
 
 	JS_SetPrivate (context, result, field);
 
-	if (seal)
-		JS_SealObject (context, result, JS_FALSE);
+	//if (seal)
+	//	JS_SealObject (context, result, JS_FALSE);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
@@ -115,16 +115,17 @@ jsSFRotation::create (JSContext* context, SFRotation* field, jsval* vp, const bo
 }
 
 JSBool
-jsSFRotation::construct (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFRotation::construct (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new SFRotation ());
-		return JS_TRUE;
+		return create (context, new SFRotation (), &JS_RVAL (context, vp));
 	}
 	else if (argc == 2)
 	{
 		JSObject* obj2;
+		
+		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ValueToObject (context, argv [0], &obj2))
 			return JS_FALSE;
@@ -152,56 +153,29 @@ jsSFRotation::construct (JSContext* context, JSObject* obj, uintN argc, jsval* v
 
 			SFVec3f* vector = (SFVec3f*) JS_GetPrivate (context, obj2);
 
-			JS_SetPrivate (context, obj, new SFRotation (*vector, angle));
-
-			return JS_TRUE;
+			return create (context, new SFRotation (*vector, angle), &JS_RVAL (context, vp));
 		}
 
 		SFVec3f* fromVec = (SFVec3f*) JS_GetPrivate (context, obj2);
 		SFVec3f* toVec   = (SFVec3f*) JS_GetPrivate (context, obj3);
 
-		JS_SetPrivate (context, obj, new SFRotation (*fromVec, *toVec));
-
-		return JS_TRUE;
+		return create (context, new SFRotation (*fromVec, *toVec), &JS_RVAL (context, vp));
 	}
 	else if (argc == 4)
 	{
 		jsdouble x, y, z, angle;
 
+		jsval* argv = JS_ARGV (context, vp);
+		
 		if (not JS_ConvertArguments (context, argc, argv, "dddd", &x, &y, &z, &angle))
 			return JS_FALSE;
 
-		JS_SetPrivate (context, obj, new SFRotation (x, y, z, angle));
-
-		return JS_TRUE;
+		return create (context, new SFRotation (x, y, z, angle), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
 
 	return JS_FALSE;
-}
-
-JSBool
-jsSFRotation::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	SFRotation* sfrotation = (SFRotation*) JS_GetPrivate (context, obj);
-
-	return JS_NewDoubleValue (context, sfrotation -> get1Value (JSVAL_TO_INT (id)), vp);
-}
-
-JSBool
-jsSFRotation::set1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	SFRotation* sfrotation = (SFRotation*) JS_GetPrivate (context, obj);
-
-	jsdouble value;
-
-	if (not JS_ValueToNumber (context, *vp, &value))
-		return JS_FALSE;
-
-	sfrotation -> set1Value (JSVAL_TO_INT (id), value);
-
-	return JS_TRUE;
 }
 
 JSBool
@@ -218,6 +192,8 @@ jsSFRotation::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op,
 	switch (enum_op)
 	{
 		case JSENUMERATE_INIT:
+		case JSENUMERATE_INIT_ALL:
+		{
 			index   = new size_t (0);
 			*statep = PRIVATE_TO_JSVAL (index);
 
@@ -225,7 +201,9 @@ jsSFRotation::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op,
 				*idp = INT_TO_JSVAL (size);
 
 			break;
+		}
 		case JSENUMERATE_NEXT:
+		{
 			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
 
 			if (*index < size)
@@ -238,23 +216,49 @@ jsSFRotation::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op,
 			}
 
 		//else done -- cleanup.
+		}
 		case JSENUMERATE_DESTROY:
+		{
 			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
 			delete index;
 			*statep = JSVAL_NULL;
+		}
 	}
 
 	return JS_TRUE;
 }
 
 JSBool
-jsSFRotation::getAxis (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFRotation::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, obj);
+
+	return JS_NewNumberValue (context, sfrotation -> get1Value (JSVAL_TO_INT (id)), vp);
+}
+
+JSBool
+jsSFRotation::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+{
+	SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, obj);
+
+	jsdouble value;
+
+	if (not JS_ValueToNumber (context, *vp, &value))
+		return JS_FALSE;
+
+	sfrotation -> set1Value (JSVAL_TO_INT (id), value);
+
+	return JS_TRUE;
+}
+
+JSBool
+jsSFRotation::getAxis (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFRotation* sfrotation = (SFRotation*) JS_GetPrivate (context, obj);
+		SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		return jsSFVec3f::create (context, sfrotation -> getAxis (), rval);
+		return jsSFVec3f::create (context, sfrotation -> getAxis (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -263,13 +267,15 @@ jsSFRotation::getAxis (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFRotation::setAxis (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFRotation::setAxis (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFRotation* sfrotation = (SFRotation*) JS_GetPrivate (context, obj);
+		SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* obj2;
+
+		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
 			return JS_FALSE;
@@ -284,7 +290,7 @@ jsSFRotation::setAxis (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 
 		sfrotation -> setAxis (*sfvec3f);
 
-		*rval = JSVAL_VOID;
+		JS_SET_RVAL (context, vp, JSVAL_VOID);
 
 		return JS_TRUE;
 	}
@@ -295,13 +301,13 @@ jsSFRotation::setAxis (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFRotation::inverse (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFRotation::inverse (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFRotation* sfrotation = (SFRotation*) JS_GetPrivate (context, obj);
+		SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		return create (context, sfrotation -> inverse (), rval);
+		return create (context, sfrotation -> inverse (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -310,13 +316,15 @@ jsSFRotation::inverse (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFRotation::multiply (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFRotation::multiply (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFRotation* sfrotation1 = (SFRotation*) JS_GetPrivate (context, obj);
+		SFRotation4f* sfrotation1 = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* obj2;
+
+		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
 			return JS_FALSE;
@@ -327,9 +335,9 @@ jsSFRotation::multiply (JSContext* context, JSObject* obj, uintN argc, jsval* vp
 			return JS_FALSE;
 		}
 
-		SFRotation* sfrotation2 = (SFRotation*) JS_GetPrivate (context, obj2);
+		SFRotation4f* sfrotation2 = (SFRotation4f*) JS_GetPrivate (context, obj2);
 
-		return create (context, sfrotation1 -> multiply (*sfrotation2), rval);
+		return create (context, sfrotation1 -> multiply (*sfrotation2), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -338,13 +346,15 @@ jsSFRotation::multiply (JSContext* context, JSObject* obj, uintN argc, jsval* vp
 }
 
 JSBool
-jsSFRotation::multVec (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFRotation::multVec (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFRotation* sfrotation = (SFRotation*) JS_GetPrivate (context, obj);
+		SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* obj2;
+
+		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
 			return JS_FALSE;
@@ -357,7 +367,7 @@ jsSFRotation::multVec (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 
 		SFVec3f* sfvec3f = (SFVec3f*) JS_GetPrivate (context, obj2);
 
-		return jsSFVec3f::create (context, sfrotation -> multVec (*sfvec3f), rval);
+		return jsSFVec3f::create (context, sfrotation -> multVec (*sfvec3f), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -366,14 +376,16 @@ jsSFRotation::multVec (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFRotation::slerp (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFRotation::slerp (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 2)
 	{
-		SFRotation* sfrotation = (SFRotation*) JS_GetPrivate (context, obj);
+		SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* obj2;
 		jsdouble  t;
+
+		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "od", &obj2, &t))
 			return JS_FALSE;
@@ -384,9 +396,9 @@ jsSFRotation::slerp (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		SFRotation* dest = (SFRotation*) JS_GetPrivate (context, obj2);
+		SFRotation4f* dest = (SFRotation4f*) JS_GetPrivate (context, obj2);
 
-		return create (context, sfrotation -> slerp (*dest, t), rval);
+		return create (context, sfrotation -> slerp (*dest, t), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");

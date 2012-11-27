@@ -1,0 +1,45 @@
+#VRML V2.0 utf8
+
+Script {
+  url "vrmlscript:
+
+function initialize ()
+{
+	print ('+ Browser +++++++++++++++++++++++++++++++++++++++++++++');	
+	print ('Hello Wörld!');	
+	
+	print (Browser);	
+	print (Browser .name);	
+	print (Browser .version);
+	print (Browser .getWorldURL ());
+	
+	print ('+ Globals +++++++++++++++++++++++++++++++++++++++++++++');	
+
+	print (FALSE);	
+	print (TRUE);	
+
+	print ('+ X3DFields +++++++++++++++++++++++++++++++++++++++++++');	
+
+	print (new SFColor     ());
+	print (new SFColorRGBA ());
+	print (new SFImage     ());
+	print (new SFMatrix3d  ());
+	print (new SFMatrix3f  ());
+	print (new SFMatrix4d  ());
+	print (new SFMatrix4f  ());
+	print (new SFNode      ());
+	print (new SFRotation  ());
+	print (new SFVec2d     ());
+	print (new SFVec2f     ());
+	print (new SFVec3d     ());
+	print (new SFVec3f     ());
+	print (new SFVec4d     ());
+	print (new SFVec4f     ());
+	print (new VrmlMatrix  ());
+
+	print ('+ X3DArrayFields ++++++++++++++++++++++++++++++++++++++');	
+
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
+}
+"
+}

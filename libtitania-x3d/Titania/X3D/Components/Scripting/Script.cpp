@@ -58,10 +58,9 @@ namespace X3D {
 Script::Script (X3DExecutionContext* const executionContext) :
 	 X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DScriptNode (),                                                    
-
-	//javaScript(NULL),
-	directOutput (), // SFBool [ ]directOutput  FALSE
-	mustEvaluate ()  // SFBool [ ]mustEvaluate  FALSE
+	 directOutput (),                                                    // SFBool [ ]directOutput  FALSE
+	 mustEvaluate (),                                                    // SFBool [ ]mustEvaluate  FALSE
+	   javaScript (NULL)                                                 
 {
 	setComponent ("Scripting");
 	setTypeName ("Script");
@@ -89,12 +88,13 @@ Script::initialize ()
 
 		if (RegEx::ECMAScript .FullMatch (URL .getValue (), &ecmascript))
 		{
-			//javaScript = new JavaScript (this, ecmascript);
+			javaScript = new JavaScript (this, ecmascript);
 			break;
 		}
 	}
 
-	//if (javaScript) javaScript -> initialize();
+	if (javaScript)
+		javaScript -> initialize ();
 }
 
 void
@@ -102,7 +102,8 @@ Script::prepareEvents ()
 {
 	X3DScriptNode::prepareEvents ();
 
-	//if (javaScript) javaScript -> prepareEvents();
+	if (javaScript)
+		javaScript -> prepareEvents ();
 }
 
 void
@@ -110,17 +111,18 @@ Script::eventsProcessed ()
 {
 	X3DScriptNode::eventsProcessed ();
 
-	//if (javaScript) javaScript -> eventsProcessed();
+	if (javaScript)
+		javaScript -> eventsProcessed ();
 }
 
 void
 Script::dispose ()
 {
-	//if (javaScript)
-	//{
-	//	javaScript -> shutdown();
-	//	delete javaScript;
-	//}
+	if (javaScript)
+	{
+		javaScript -> shutdown ();
+		delete javaScript;
+	}
 
 	X3DScriptNode::dispose ();
 }

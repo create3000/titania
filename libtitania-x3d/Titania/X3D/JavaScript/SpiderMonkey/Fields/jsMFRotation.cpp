@@ -158,7 +158,7 @@ jsMFRotation::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op,
 			{
 				JS_DefineProperty (context,
 				                   obj, (char*) *index,
-				                   JSVAL_NULL,
+				                   JSVAL_VOID,
 				                   get1Value, set1Value,
 				                   JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT);
 

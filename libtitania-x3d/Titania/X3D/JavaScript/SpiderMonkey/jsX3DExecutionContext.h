@@ -46,10 +46,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_JS_X3DEXECUTION_CONTEXT_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_JS_X3DEXECUTION_CONTEXT_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DEXECUTION_CONTEXT_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DEXECUTION_CONTEXT_H__
 
-#include "../../X3DExecutionContext.h"
+#include "../../Execution/X3DExecutionContext.h"
 #include <jsapi.h>
 
 namespace titania {
@@ -57,6 +57,25 @@ namespace X3D {
 
 class jsX3DExecutionContext
 {
+public:
+
+	static 
+	JSBool
+	create (JSContext*, X3DExecutionContext*, jsval*, const bool = false);
+
+	static 
+	JSClass*
+	getClass () { return &static_class; }
+
+
+protected:
+
+	static void
+	initObject (JSContext*, JSObject*);
+
+
+private:
+
 	enum Property
 	{
 		SPECIFICATIONVERSION,
@@ -69,27 +88,15 @@ class jsX3DExecutionContext
 		EXTERNPROTOS,
 		ROUTES
 	};
+
+	static JSBool getRootNodes (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool setRootNodes (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	
+	static JSBool createNode (JSContext*, uintN, jsval*);
+
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
-	static JSBool         getRootNodes (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool         setRootNodes (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool         createNode (JSContext*, JSObject*, uintN, jsval*);
-
-
-protected:
-
-	static void
-	initObject (JSContext*, JSObject*);
-
-
-public:
-
-	static JSBool
-	create (JSContext*, X3DExecutionContext*, jsval*, const bool = false);
-
-	static JSClass*
-	getClass () { return &static_class; }
 
 };
 

@@ -83,9 +83,9 @@ jsSFColor::init (JSContext* context, JSObject* global)
 	JSObject* proto = JS_InitClass (context, global, NULL, &static_class, construct,
 	                                0, properties, functions, NULL, NULL);
 
-	JS_DefineProperty (context, proto, (char*) R, JSVAL_NULL, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
-	JS_DefineProperty (context, proto, (char*) G, JSVAL_NULL, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
-	JS_DefineProperty (context, proto, (char*) B, JSVAL_NULL, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (context, proto, (char*) R, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (context, proto, (char*) G, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (context, proto, (char*) B, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 }
 
 JSBool
@@ -109,12 +109,9 @@ jsSFColor::create (JSContext* context, SFColor* field, jsval* vp, const bool sea
 JSBool
 jsSFColor::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new SFColor ());
-		return JS_TRUE;
+		return create (context, new SFColor (), &JS_RVAL (context, vp));
 	}
 	else if (argc == size)
 	{
@@ -125,9 +122,7 @@ jsSFColor::construct (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "ddd", &r, &g, &b))
 			return JS_FALSE;
 
-		JS_SetPrivate (context, obj, new SFColor (r, g, b));
-
-		return JS_TRUE;
+		return create (context, new SFColor (r, g, b), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");

@@ -48,21 +48,22 @@
 
 #include "jsGlobals.h"
 
-#include "../Generator.h"
+#include "../../InputOutput/Generator.h"
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace X3D {
 
 JSPropertySpec jsGlobals::properties [ ] = {
-	{ "FALSE", _FALSE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, getFalse, NULL },
-	{ "TRUE",  _TRUE,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, getTrue,  NULL },
+	{ "FALSE", false, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, getFalse, NULL },
+	{ "TRUE",  true,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, getTrue,  NULL },
 	{ 0 }
 
 };
 
 JSFunctionSpec jsGlobals::functions [ ] = {
-	{ "print", jsGlobals::print, 1, 0, 0 },
-	{ 0, 0, 0, 0, 0 }
+	{ "print", jsGlobals::print, 1, 0 },
+	{ 0, 0, 0, 0 }
 
 };
 
@@ -88,18 +89,18 @@ jsGlobals::getTrue (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
-jsGlobals::print (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsGlobals::print  (JSContext* context, uintN argc, jsval* vp)
 {
-	char* string;
+	JSString* string;
 
-	if (not JS_ConvertArguments (context, argc, argv, "s", &string))
+	jsval* argv = JS_ARGV (context, vp);
+
+	if (not JS_ConvertArguments (context, argc, argv, "S", &string))
 		return JS_FALSE;
 
-	Generator::setStyle ("compact");
+	std::cerr << CompactStyle << JS_EncodeString (context, string) << std::endl;
 
-	std::cerr << string << std::endl;
-
-	*rval = JSVAL_VOID;
+	JS_SET_RVAL (context, vp, JSVAL_VOID);
 	return JS_TRUE;
 }
 

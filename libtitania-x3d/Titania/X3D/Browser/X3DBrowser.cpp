@@ -187,6 +187,22 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return currentFrameRate;
 }
 
+void
+X3DBrowser::setDescription (const std::string & value)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	description = value;
+}
+
+const std::string &
+X3DBrowser::getDescription ()
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return description;
+}
+
 const FieldTypesArray &
 X3DBrowser::getSupportedFields () const
 throw (Error <DISPOSED>)

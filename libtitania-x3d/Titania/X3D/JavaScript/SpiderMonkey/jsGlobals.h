@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_JS_GLOBALS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_JS_GLOBALS_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_GLOBALS_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_GLOBALS_H__
 
 #include <iostream>
 #include <jsapi.h>
@@ -57,23 +57,21 @@ namespace X3D {
 
 class jsGlobals
 {
-	enum Property
-	{
-		_FALSE,
-		_TRUE
-	};
-	static JSPropertySpec properties [ ];
-	static JSFunctionSpec functions [ ];
-	static JSBool         getFalse (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool         getTrue  (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool
-	print (JSContext* context, JSObject* obj, uintN argc, jsval* vp);
-
-
 public:
 
 	static void
 	init (JSContext*, JSObject*);
+
+
+private:
+
+	static JSBool getFalse (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool getTrue  (JSContext *, JSObject *, jsid, jsval*);
+
+	static JSBool print  (JSContext *, uintN, jsval*);
+
+	static JSPropertySpec properties [ ];
+	static JSFunctionSpec functions [ ];
 
 };
 

@@ -49,7 +49,9 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_H__
 
-#include "../Browser/X3DFieldDefinition.h"
+#include "../../Basic/X3DFieldDefinition.h"
+#include "../../Browser/X3DBrowser.h"
+#include "../../Types/Time.h"
 #include <iostream>
 #include <jsapi.h>
 #include <string>
@@ -65,12 +67,6 @@ class JavaScript
 public:
 
 	JavaScript (X3DBasicNode*, const std::string &);
-
-	std::string
-	getVersion ();
-
-	static std::string
-	getImplementationVersion ();
 
 	virtual
 	void
@@ -98,7 +94,7 @@ private:
 	void
 	initContext ();
 
-	static void defineProperty (JSContext*, JSObject*, const std::string &, int8, X3DFieldDefinition*, JSPropertyOp, JSPropertyOp, JSPropertyOp, uintN);
+	static void defineProperty (JSContext*, JSObject*, const std::string &, int8, X3DFieldDefinition*, JSPropertyOp, JSStrictPropertyOp, JSStrictPropertyOp, uintN);
 
 	void
 	initNode ();
@@ -108,22 +104,21 @@ private:
 
 	static JSBool getSharedProperty (JSContext*, JSObject*, jsid, jsval*);
 
-	static JSBool setSharedProperty (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool setSharedProperty (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
-	static JSBool setProperty (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool setProperty (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
 	void
 	callFunction (const std::string &);
 
 	void
-	set_field (X3DFieldDefinition* const, const time_type);
+	set_field (const X3DFieldDefinition &);
 
-	/* The class of the global object. */
 	static JSClass global_class;
 	JSRuntime*     runtime;
 	JSContext*     context;
 	JSObject*      global;
-	Browser*       browser;
+	X3DBrowser*    browser;
 	X3DBasicNode*  node;
 
 };

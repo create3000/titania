@@ -106,12 +106,9 @@ jsSFMatrix4f::create (JSContext* context, SFMatrix4f* field, jsval* vp, const bo
 JSBool
 jsSFMatrix4f::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	JSObject* obj = JS_THIS_OBJECT (context, vp);
-	
 	if (argc == 0)
 	{
-		JS_SetPrivate (context, obj, new SFMatrix4f ());
-		return JS_TRUE;
+		return create (context, new SFMatrix4f (), &JS_RVAL (context, vp));
 	}
 	else if (argc == size)
 	{
@@ -123,9 +120,7 @@ jsSFMatrix4f::construct (JSContext* context, uintN argc, jsval* vp)
 		                             &m11, &m12, &m13, &m14, &m21, &m22, &m23, &m24, &m31, &m32, &m33, &m34, &m41, &m42, &m43, &m44))
 			return JS_FALSE;
 
-		JS_SetPrivate (context, obj, new SFMatrix4f (m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44));
-
-		return JS_TRUE;
+		return create (context, new SFMatrix4f (m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -194,7 +189,7 @@ jsSFMatrix4f::resolve (JSContext* context, JSObject* obj, jsid id)
 	if (index >= 0 and index < size)
 	{
 		// Define the indexed property
-		JS_DefineProperty (context, obj, (char*) index, JSVAL_NULL, get1Value, set1Value, JSPROP_PERMANENT | JSPROP_INDEX);
+		JS_DefineProperty (context, obj, (char*) index, JSVAL_VOID, get1Value, set1Value, JSPROP_PERMANENT | JSPROP_INDEX);
 
 		return JS_TRUE;
 	}
@@ -381,7 +376,7 @@ jsSFMatrix4f::transpose (JSContext* context, uintN argc, jsval* vp)
 	{
 		SFMatrix4f* sfmatrix4f = (SFMatrix4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		return create (context, sfmatrix4f -> transpose (), &JS_RVAL (cx, vp));
+		return create (context, sfmatrix4f -> transpose (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -396,7 +391,7 @@ jsSFMatrix4f::inverse (JSContext* context, uintN argc, jsval* vp)
 	{
 		SFMatrix4f* sfmatrix4f = (SFMatrix4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		return create (context, sfmatrix4f -> inverse (), &JS_RVAL (cx, vp));
+		return create (context, sfmatrix4f -> inverse (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -426,7 +421,7 @@ jsSFMatrix4f::multLeft (JSContext* context, uintN argc, jsval* vp)
 
 		SFMatrix4f* sfmatrix4f2 = (SFMatrix4f*) JS_GetPrivate (context, obj2);
 
-		return create (context, sfmatrix4f1 -> multLeft (*sfmatrix4f2), &JS_RVAL (cx, vp));
+		return create (context, sfmatrix4f1 -> multLeft (*sfmatrix4f2), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -456,7 +451,7 @@ jsSFMatrix4f::multRight (JSContext* context, uintN argc, jsval* vp)
 
 		SFMatrix4f* sfmatrix4f2 = (SFMatrix4f*) JS_GetPrivate (context, obj2);
 
-		return create (context, sfmatrix4f1 -> multRight (*sfmatrix4f2), &JS_RVAL (cx, vp));
+		return create (context, sfmatrix4f1 -> multRight (*sfmatrix4f2), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -486,7 +481,7 @@ jsSFMatrix4f::multVecMatrix (JSContext* context, uintN argc, jsval* vp)
 
 		SFVec3f* vec = (SFVec3f*) JS_GetPrivate (context, obj2);
 
-		return jsSFVec3f::create (context, sfmatrix4f -> multVecMatrix (*vec), &JS_RVAL (cx, vp));
+		return jsSFVec3f::create (context, sfmatrix4f -> multVecMatrix (*vec), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -516,7 +511,7 @@ jsSFMatrix4f::multMatrixVec (JSContext* context, uintN argc, jsval* vp)
 
 		SFVec3f* vec = (SFVec3f*) JS_GetPrivate (context, obj2);
 
-		return jsSFVec3f::create (context, sfmatrix4f -> multMatrixVec (*vec), &JS_RVAL (cx, vp));
+		return jsSFVec3f::create (context, sfmatrix4f -> multMatrixVec (*vec), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");

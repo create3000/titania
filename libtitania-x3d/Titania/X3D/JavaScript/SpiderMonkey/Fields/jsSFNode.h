@@ -75,7 +75,7 @@ public:
 
 private:
 
-	static JSBool construct (JSContext *, JSObject *, uintN, jsval*);
+	static JSBool construct (JSContext *, uintN, jsval*);
 	static JSBool enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
 
 	static JSBool getProperty (JSContext *, JSObject *, jsid, jsval*);

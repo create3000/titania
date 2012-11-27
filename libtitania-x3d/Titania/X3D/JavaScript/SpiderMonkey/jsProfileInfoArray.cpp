@@ -53,23 +53,19 @@ namespace X3D {
 
 JSClass jsProfileInfoArray::static_class = {
 	"ProfileInfoArray", JSCLASS_HAS_PRIVATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_PropertyStub,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 JSPropertySpec jsProfileInfoArray::properties [ ] = {
-	//	{"x", X, JSPROP_PERMANENT, getProperty, setProperty},
-	//	{"y", Y, JSPROP_PERMANENT, getProperty, setProperty},
-	//	{"z", Z, JSPROP_PERMANENT, getProperty, setProperty},
 	{ 0 }
 
 };
 
 JSFunctionSpec jsProfileInfoArray::functions [ ] = {
-	//	{"add",    jsProfileInfoArray::add,        1, 0, 0},
-	{ 0, 0, 0, 0, 0 }
+	{ 0, 0, 0, 0 }
 
 };
 
@@ -83,8 +79,8 @@ jsProfileInfoArray::create (JSContext* context, ProfileInfoArray* profileInfoArr
 
 	JS_SetPrivate (context, result, profileInfoArray);
 
-	if (seal)
-		JS_SealObject (context, result, JS_FALSE);
+	//if (seal)
+	//	JS_SealObject (context, result, JS_FALSE);
 
 	*vp = OBJECT_TO_JSVAL (result);
 

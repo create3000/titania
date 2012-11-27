@@ -49,7 +49,7 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_JS_PROFILE_INFO_ARRAY_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_JS_PROFILE_INFO_ARRAY_H__
 
-#include "../../ProfileInfoArray.h"
+#include "../../Configuration/ProfileInfoArray.h"
 #include <jsapi.h>
 
 namespace titania {
@@ -57,22 +57,26 @@ namespace X3D {
 
 class jsProfileInfoArray
 {
-	enum Property {X, Y, Z};
+public:
+
+	static 
+	void
+	init (JSContext*, JSObject*);
+
+	static 
+	JSBool
+	create (JSContext*, ProfileInfoArray*, jsval*, const bool = false);
+
+	static 
+	JSClass*
+	getClass () { return &static_class; }
+
+
+private:
+
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
-
-
-public:
-
-	static void
-	init (JSContext*, JSObject*);
-
-	static JSBool
-	create (JSContext*, ProfileInfoArray*, jsval*, const bool = false);
-
-	static JSClass*
-	getClass () { return &static_class; }
 
 };
 

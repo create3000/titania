@@ -55,7 +55,7 @@ const size_t jsSFVec2f::size = 2;
 
 JSClass jsSFVec2f::static_class = {
 	"SFVec2f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_PropertyStub,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
@@ -69,16 +69,16 @@ JSPropertySpec jsSFVec2f::properties [ ] = {
 };
 
 JSFunctionSpec jsSFVec2f::functions [ ] = {
-	{ "negate",    normalize, 0, 0, 0 },
-	{ "add",       add,       1, 0, 0 },
-	{ "subtract",  subtract,  1, 0, 0 },
-	{ "multiply",  multiply,  1, 0, 0 },
-	{ "divide",    divide,    1, 0, 0 },
-	{ "normalize", normalize, 0, 0, 0 },
-	{ "dot",       dot,       1, 0, 0 },
-	{ "length",    length,    0, 0, 0 },
-	{ "toString",  toString,  0, 0, 0 },
-	{ 0, 0, 0, 0, 0 }
+	{ "negate",    normalize, 0, 0 },
+	{ "add",       add,       1, 0 },
+	{ "subtract",  subtract,  1, 0 },
+	{ "multiply",  multiply,  1, 0 },
+	{ "divide",    divide,    1, 0 },
+	{ "normalize", normalize, 0, 0 },
+	{ "dot",       dot,       1, 0 },
+	{ "length",    length,    0, 0 },
+	{ "toString",  toString,  0, 0 },
+	{ 0, 0, 0, 0 }
 
 };
 
@@ -88,8 +88,8 @@ jsSFVec2f::init (JSContext* context, JSObject* global)
 	JSObject* proto = JS_InitClass (context, global, NULL, &static_class, construct,
 	                                0, properties, functions, NULL, NULL);
 
-	JS_DefineProperty (context, proto, (char*) X, NULL, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
-	JS_DefineProperty (context, proto, (char*) Y, NULL, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (context, proto, (char*) X, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (context, proto, (char*) Y, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 }
 
 JSBool
@@ -102,8 +102,8 @@ jsSFVec2f::create (JSContext* context, SFVec2f* field, jsval* vp, const bool sea
 
 	JS_SetPrivate (context, result, field);
 
-	if (seal)
-		JS_SealObject (context, result, JS_FALSE);
+	//if (seal)
+	//	JS_SealObject (context, result, JS_FALSE);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
@@ -111,48 +111,28 @@ jsSFVec2f::create (JSContext* context, SFVec2f* field, jsval* vp, const bool sea
 }
 
 JSBool
-jsSFVec2f::construct (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFVec2f::construct (JSContext* context, uintN argc, jsval* vp)
 {
-	jsdouble x = 0;
-	jsdouble y = 0;
-
-	if (argc == 1)
+	if (argc == 0)
 	{
-		if (not JS_ConvertArguments (context, argc, argv, "d", &x))
-			return JS_FALSE;
+		return create (context, new SFVec2f (), &JS_RVAL (context, vp));
 	}
-	else if (argc > 1)
+	else if (argc == 2)
 	{
+		jsdouble x = 0;
+		jsdouble y = 0;
+	
+		jsval* argv = JS_ARGV (context, vp);
+
 		if (not JS_ConvertArguments (context, argc, argv, "dd", &x, &y))
 			return JS_FALSE;
+			
+		return create (context, new SFVec2f (x, y), &JS_RVAL (context, vp));
 	}
 
-	JS_SetPrivate (context, obj, new SFVec2f (x, y));
+	JS_ReportError (context, "wrong number of arguments");
 
-	return JS_TRUE;
-}
-
-JSBool
-jsSFVec2f::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	SFVec2f* sfvec2f = (SFVec2f*) JS_GetPrivate (context, obj);
-
-	return JS_NewDoubleValue (context, sfvec2f -> get1Value (JSVAL_TO_INT (id)), vp);
-}
-
-JSBool
-jsSFVec2f::set1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	SFVec2f* sfvec2f = (SFVec2f*) JS_GetPrivate (context, obj);
-
-	jsdouble value;
-
-	if (not JS_ValueToNumber (context, *vp, &value))
-		return JS_FALSE;
-
-	sfvec2f -> set1Value (JSVAL_TO_INT (id), value);
-
-	return JS_TRUE;
+	return JS_FALSE;
 }
 
 JSBool
@@ -169,6 +149,8 @@ jsSFVec2f::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, js
 	switch (enum_op)
 	{
 		case JSENUMERATE_INIT:
+		case JSENUMERATE_INIT_ALL:
+		{
 			index   = new size_t (0);
 			*statep = PRIVATE_TO_JSVAL (index);
 
@@ -176,7 +158,9 @@ jsSFVec2f::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, js
 				*idp = INT_TO_JSVAL (size);
 
 			break;
+		}
 		case JSENUMERATE_NEXT:
+		{
 			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
 
 			if (*index < size)
@@ -189,23 +173,49 @@ jsSFVec2f::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, js
 			}
 
 		//else done -- cleanup.
+		}
 		case JSENUMERATE_DESTROY:
+		{
 			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
 			delete index;
 			*statep = JSVAL_NULL;
+		}
 	}
 
 	return JS_TRUE;
 }
 
 JSBool
-jsSFVec2f::negate (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFVec2f::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	SFVec2f* sfvec2f = (SFVec2f*) JS_GetPrivate (context, obj);
+
+	return JS_NewNumberValue (context, sfvec2f -> get1Value (JSVAL_TO_INT (id)), vp);
+}
+
+JSBool
+jsSFVec2f::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+{
+	SFVec2f* sfvec2f = (SFVec2f*) JS_GetPrivate (context, obj);
+
+	jsdouble value;
+
+	if (not JS_ValueToNumber (context, *vp, &value))
+		return JS_FALSE;
+
+	sfvec2f -> set1Value (JSVAL_TO_INT (id), value);
+
+	return JS_TRUE;
+}
+
+JSBool
+jsSFVec2f::negate (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFVec2f* sfvec2f = (SFVec2f*) JS_GetPrivate (context, obj);
-
-		return create (context, sfvec2f -> negate (), rval);
+		SFVec2f* sfvec2f = (SFVec2f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		
+		return create (context, sfvec2f -> negate (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -214,13 +224,15 @@ jsSFVec2f::negate (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFVec2f::add (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFVec2f::add (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFVec2f* sfvec2f1 = (SFVec2f*) JS_GetPrivate (context, obj);
+		SFVec2f* sfvec2f1 = (SFVec2f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* obj2;
+
+		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
 			return JS_FALSE;
@@ -233,7 +245,7 @@ jsSFVec2f::add (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 
 		SFVec2f* sfvec2f2 = (SFVec2f*) JS_GetPrivate (context, obj2);
 
-		return create (context, sfvec2f1 -> add (*sfvec2f2), rval);
+		return create (context, sfvec2f1 -> add (*sfvec2f2), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -242,13 +254,15 @@ jsSFVec2f::add (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFVec2f::subtract (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFVec2f::subtract (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFVec2f* sfvec2f1 = (SFVec2f*) JS_GetPrivate (context, obj);
+		SFVec2f* sfvec2f1 = (SFVec2f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* obj2;
+
+		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
 			return JS_FALSE;
@@ -261,7 +275,7 @@ jsSFVec2f::subtract (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 
 		SFVec2f* sfvec2f2 = (SFVec2f*) JS_GetPrivate (context, obj2);
 
-		return create (context, sfvec2f1 -> subtract (*sfvec2f2), rval);
+		return create (context, sfvec2f1 -> subtract (*sfvec2f2), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -270,18 +284,20 @@ jsSFVec2f::subtract (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFVec2f::multiply (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFVec2f::multiply (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFVec2f* sfvec2f1 = (SFVec2f*) JS_GetPrivate (context, obj);
+		SFVec2f* sfvec2f1 = (SFVec2f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		jsdouble sfvec2f2;
+		jsdouble value;
 
-		if (not JS_ConvertArguments (context, argc, argv, "d", &sfvec2f2))
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "d", &value))
 			return JS_FALSE;
 
-		return create (context, sfvec2f1 -> multiply (sfvec2f2), rval);
+		return create (context, sfvec2f1 -> multiply (value), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -290,18 +306,20 @@ jsSFVec2f::multiply (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFVec2f::divide (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFVec2f::divide (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFVec2f* sfvec2f1 = (SFVec2f*) JS_GetPrivate (context, obj);
+		SFVec2f* sfvec2f1 = (SFVec2f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		jsdouble sfvec2f2;
+		jsdouble value;
 
-		if (not JS_ConvertArguments (context, argc, argv, "d", &sfvec2f2))
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "d", &value))
 			return JS_FALSE;
 
-		return create (context, sfvec2f1 -> divide (sfvec2f2), rval);
+		return create (context, sfvec2f1 -> divide (value), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -310,13 +328,15 @@ jsSFVec2f::divide (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFVec2f::dot (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFVec2f::dot (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFVec2f* sfvec2f1 = (SFVec2f*) JS_GetPrivate (context, obj);
+		SFVec2f* sfvec2f1 = (SFVec2f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* obj2;
+
+		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
 			return JS_FALSE;
@@ -329,7 +349,7 @@ jsSFVec2f::dot (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 
 		SFVec2f* sfvec2f2 = (SFVec2f*) JS_GetPrivate (context, obj2);
 
-		return JS_NewDoubleValue (context, sfvec2f1 -> dot (*sfvec2f2), rval);
+		return JS_NewNumberValue (context, sfvec2f1 -> dot (*sfvec2f2), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -338,13 +358,13 @@ jsSFVec2f::dot (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFVec2f::normalize (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFVec2f::normalize (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFVec2f* sfvec2f = (SFVec2f*) JS_GetPrivate (context, obj);
+		SFVec2f* sfvec2f = (SFVec2f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		return create (context, sfvec2f -> normalize (), rval);
+		return create (context, sfvec2f -> normalize (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -353,13 +373,13 @@ jsSFVec2f::normalize (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFVec2f::length (JSContext* context, JSObject* obj, uintN argc, jsval* vp)
+jsSFVec2f::length (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFVec2f* sfvec2f = (SFVec2f*) JS_GetPrivate (context, obj);
+		SFVec2f* sfvec2f = (SFVec2f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		return JS_NewDoubleValue (context, sfvec2f -> length (), rval);
+		return JS_NewNumberValue (context, sfvec2f -> length (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");

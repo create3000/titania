@@ -74,7 +74,7 @@ jsFieldDefinitionArray::initObject (JSContext* context, JSObject* obj)
 	if (array)
 	{
 		for (size_t i = 0; i < array -> size (); ++ i)
-			JS_DefineProperty (context, obj, (char*) i, NULL, get1Value, set1Value,
+			JS_DefineProperty (context, obj, (char*) i, JSVAL_VOID, get1Value, set1Value,
 			                   JSPROP_INDEX | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 	}
 
@@ -82,46 +82,21 @@ jsFieldDefinitionArray::initObject (JSContext* context, JSObject* obj)
 }
 
 JSBool
-jsFieldDefinitionArray::create (JSContext* context, FieldDefinitionArray* fieldDefinitionArray, jsval* vp, const bool seal)
+jsFieldDefinitionArray::create (JSContext* context, const FieldDefinitionArray* fieldDefinitionArray, jsval* vp, const bool seal)
 {
 	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 
 	if (result == NULL)
 		return JS_FALSE;
 
-	JS_SetPrivate (context, result, fieldDefinitionArray);
+	JS_SetPrivate (context, result, const_cast <FieldDefinitionArray*> (fieldDefinitionArray));
 
 	initObject (context, result);
 
-	if (seal)
-		JS_SealObject (context, result, JS_FALSE);
+	//if (seal)
+	//	JS_SealObject (context, result, JS_FALSE);
 
 	*vp = OBJECT_TO_JSVAL (result);
-
-	return JS_TRUE;
-}
-
-JSBool
-jsFieldDefinitionArray::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	if (not JSVAL_IS_INT (id))
-		return JS_PropertyStub (context, obj, id, vp);
-
-	FieldDefinitionArray* array = (FieldDefinitionArray*) JS_GetPrivate (context, obj);
-
-	int32 index = JSVAL_TO_INT (id);
-
-	if (index >= 0 and index < (int32) array -> size ())
-		return jsX3DFieldDefinition::create (context, array -> at (index), vp);
-
-	return JS_FALSE;
-}
-
-JSBool
-jsFieldDefinitionArray::set1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	if (not JSVAL_IS_INT (id))
-		return JS_PropertyStub (context, obj, id, vp);
 
 	return JS_TRUE;
 }
@@ -144,6 +119,8 @@ jsFieldDefinitionArray::enumerate (JSContext* context, JSObject* obj, JSIterateO
 	switch (enum_op)
 	{
 		case JSENUMERATE_INIT:
+		case JSENUMERATE_INIT_ALL:
+		{
 			index   = new size_t (0);
 			*statep = PRIVATE_TO_JSVAL (index);
 
@@ -151,7 +128,9 @@ jsFieldDefinitionArray::enumerate (JSContext* context, JSObject* obj, JSIterateO
 				JS_ValueToId (context, INT_TO_JSVAL (size), idp);
 
 			break;
+		}
 		case JSENUMERATE_NEXT:
+		{
 			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
 
 			if (*index < size)
@@ -164,17 +143,45 @@ jsFieldDefinitionArray::enumerate (JSContext* context, JSObject* obj, JSIterateO
 			}
 
 		//else done -- cleanup.
+		}
 		case JSENUMERATE_DESTROY:
+		{
 			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
 			delete index;
 			*statep = JSVAL_NULL;
+		}
 	}
 
 	return JS_TRUE;
 }
 
 JSBool
-jsFieldDefinitionArray::getLength (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsFieldDefinitionArray::get1Value (JSContext *context, JSObject *obj, jsid id, jsval *vp)
+{
+	if (not JSVAL_IS_INT (id))
+		return JS_PropertyStub (context, obj, id, vp);
+
+	FieldDefinitionArray* array = (FieldDefinitionArray*) JS_GetPrivate (context, obj);
+
+	int32 index = JSVAL_TO_INT (id);
+
+	if (index >= 0 and index < (int32) array -> size ())
+		return jsX3DFieldDefinition::create (context, array -> at (index), vp);
+
+	return JS_FALSE;
+}
+
+JSBool
+jsFieldDefinitionArray::set1Value (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
+{
+	if (not JSVAL_IS_INT (id))
+		return JS_PropertyStub (context, obj, id, vp);
+
+	return JS_TRUE;
+}
+
+JSBool
+jsFieldDefinitionArray::getLength (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 {
 	FieldDefinitionArray* array = (FieldDefinitionArray*) JS_GetPrivate (context, obj);
 
@@ -182,7 +189,7 @@ jsFieldDefinitionArray::getLength (JSContext* context, JSObject* obj, jsid id, j
 }
 
 JSBool
-jsFieldDefinitionArray::setLength (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsFieldDefinitionArray::setLength (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
 {
 	return JS_TRUE;
 }

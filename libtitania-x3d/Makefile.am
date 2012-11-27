@@ -381,12 +381,27 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4d.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4f.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFNode.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFRotation.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec2d.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec2f.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec3d.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec3f.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec4d.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec4f.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsVrmlMatrix.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/JavaScript.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/jsBrowser.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/jsComponentInfoArray.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsfield.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/jsFieldDefinitionArray.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/jsGlobals.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/jsProfileInfoArray.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsstring.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/jsX3DExecutionContext.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DFieldDefinition.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DObject.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/jsX3DScene.cpp \
 	Titania/X3D/Parser/Parser.cpp \
 	Titania/X3D/Parser/RegEx.cpp \
 	Titania/X3D/Parser/X3DParser.cpp \

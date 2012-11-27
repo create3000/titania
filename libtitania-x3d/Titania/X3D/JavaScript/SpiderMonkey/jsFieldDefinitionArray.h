@@ -46,10 +46,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_JS_FIELD_DEFINITION_ARRAY_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_JS_FIELD_DEFINITION_ARRAY_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_FIELD_DEFINITION_ARRAY_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_FIELD_DEFINITION_ARRAY_H__
 
-#include "../../FieldDefinitionArray.h"
+#include "../../Basic/FieldDefinitionArray.h"
 #include <jsapi.h>
 
 namespace titania {
@@ -57,26 +57,34 @@ namespace X3D {
 
 class jsFieldDefinitionArray
 {
+public:
+
+	static
+	JSClass*
+	getClass () { return &static_class; }
+
+	static
+	JSBool
+	create (JSContext*, const FieldDefinitionArray*, jsval*, const bool = false);
+
+
+private:
+
+	static
+	void
+	initObject (JSContext*, JSObject*);
+
+	static JSBool enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
+
+	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+
+	static JSBool getLength (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool setLength (JSContext *, JSObject *, jsid, JSBool, jsval*);
+
 	enum Property {LENGTH};
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
-	static void
-	initObject (JSContext*, JSObject*);
-
-	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool set1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
-	static JSBool getLength (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool setLength (JSContext*, JSObject*, jsid, jsval*);
-
-
-public:
-
-	static JSClass*
-	getClass () { return &static_class; }
-
-	static JSBool
-	create (JSContext*, FieldDefinitionArray*, jsval*, const bool = false);
 
 };
 

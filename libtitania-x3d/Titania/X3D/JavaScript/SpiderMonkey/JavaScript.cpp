@@ -48,34 +48,21 @@
 
 #include "JavaScript.h"
 
-#include "../Browser.h"
-//#include "JavaScript/jsBrowser.h"
-//#include "JavaScript/jsFields.h"
-//#include "JavaScript/jsGlobals.h"
-//#include "JavaScript/jsfield.h"
+#include "jsBrowser.h"
+#include "jsFields.h"
+#include "jsGlobals.h"
+#include "jsfield.h"
 
 namespace titania {
 namespace X3D {
 
 JSClass JavaScript::global_class = {
 	"global", JSCLASS_GLOBAL_FLAGS,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_PropertyStub,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
-
-std::string
-JavaScript::getVersion ()
-{
-	return JS_VersionToString (JS_GetVersion (context));
-}
-
-std::string
-JavaScript::getImplementationVersion ()
-{
-	return JS_GetImplementationVersion ();
-}
 
 /*
  * The error reporter callback.
@@ -107,12 +94,12 @@ JavaScript::JavaScript (X3DBasicNode* node, const std::string & ecmascript) :
 	if (context == NULL)
 		return;
 
-	JS_SetOptions (context, JSOPTION_VAROBJFIX);
+	JS_SetOptions (context, JSOPTION_VAROBJFIX | JSOPTION_METHODJIT);
 	JS_SetVersion (context, JSVERSION_LATEST);
 	JS_SetErrorReporter (context, error);
 
 	// Create the global object.
-	global = JS_NewObject (context, &global_class, NULL, NULL);
+	global = JS_NewCompartmentAndGlobalObject (context, &global_class, NULL);
 
 	if (global == NULL)
 		return;
@@ -144,7 +131,7 @@ JavaScript::initContext ()
 	jsSFMatrix3f::init (context, global);
 	jsSFMatrix4d::init (context, global);
 	jsSFMatrix4f::init (context, global);
-	jsSFNode <X3DBasicNode>::init (context, global);
+	jsSFNode::init (context, global);
 	jsSFRotation::init (context, global);
 	jsSFVec2d::init (context, global);
 	jsSFVec2f::init (context, global);
@@ -178,33 +165,33 @@ JavaScript::initContext ()
 }
 
 void
-JavaScript::defineProperty (
-   JSContext* context,
-   JSObject* obj,
-   const std::string & name,
-   int8 tinyid,
-   X3DFieldDefinition* field,
-   JSPropertyOp sharedGetter,
-   JSPropertyOp sharedSetter,
-   JSPropertyOp setter,
-   uintN attrs
-   )
+JavaScript::defineProperty (JSContext* context,
+                            JSObject* obj,
+                            const std::string & name,
+                            int8 tinyid,
+                            X3DFieldDefinition* field,
+                            JSPropertyOp sharedGetter,
+                            JSStrictPropertyOp sharedSetter,
+                            JSStrictPropertyOp setter,
+                            uintN attrs)
 {
-	switch (field -> getType ())
+	const X3DType* type = field -> getType ();
+
+	if (type == X3DConstants::SFBool or
+	    type == X3DConstants::SFDouble or
+	    type == X3DConstants::SFFloat or
+	    type == X3DConstants::SFInt32 or
+	    type == X3DConstants::SFString or
+	    type == X3DConstants::SFTime)
 	{
-		case SFBoolType:
-		case SFDoubleType:
-		case SFFloatType:
-		case SFInt32Type:
-		case SFStringType:
-		case SFTimeType:
-			JS_DefinePropertyWithTinyId (context, obj, name .c_str (), tinyid, JSVAL_VOID, sharedGetter, sharedSetter, JSPROP_SHARED | attrs);
-			break;
-		default:
-			jsval value;
-			JS_NewFieldValue (context, field, &value);
-			JS_DefinePropertyWithTinyId (context, obj, name .c_str (), tinyid, value, NULL, setter, attrs);
-			break;
+		JS_DefinePropertyWithTinyId (context, obj, name .c_str (), tinyid, JSVAL_VOID, sharedGetter, sharedSetter, JSPROP_SHARED | attrs);
+	}
+
+	else
+	{
+		jsval value;
+		JS_NewFieldValue (context, field, &value);
+		JS_DefinePropertyWithTinyId (context, obj, name .c_str (), tinyid, value, NULL, setter, attrs);
 	}
 }
 
@@ -214,32 +201,38 @@ JavaScript::initNode ()
 	size_t                               i = 0;
 	FieldDefinitionArray::const_iterator field;
 
-	for (field = node -> getFieldDefinitions () .begin (); field not_eq node -> getFieldDefinitions () .end (); ++ field, ++ i)
-	{
-		if (not (*field) -> getCustom ())
-			continue;
+	// for (auto & field : node -> getCustomFields ())
 
-		switch ((*field) -> getAccessType ())
+	for (const auto & fieldDefinition : node -> getFieldDefinitions ())
+	{
+		X3DFieldDefinition* field = node -> getField (fieldDefinition -> getName ());
+	
+//		if (not (*field) -> getCustom ())
+//			continue;
+
+		switch (field -> getAccessType ())
 		{
 			case initializeOnly:
 			case outputOnly:
 			{
-				defineProperty (context, global, (*field) -> getName (), i, *field, getSharedProperty, setSharedProperty, setProperty, JSPROP_ENUMERATE | JSPROP_PERMANENT);
+				defineProperty (context, global, field -> getName (), i, field, getSharedProperty, setSharedProperty, setProperty, JSPROP_ENUMERATE | JSPROP_PERMANENT);
 				break;
 			}
 			case inputOnly:
 			{
-				field -> addInterest (this, &JavaScript::set_field);
+				field -> addInterest (this, &JavaScript::set_field, *field);
 				break;
 			}
 			case inputOutput:
 			{
-				defineProperty (context, global, (*field) -> getName (), i, *field, getSharedProperty, setSharedProperty, setProperty, JSPROP_ENUMERATE | JSPROP_PERMANENT);
-				defineProperty (context, global, "set_" + (*field) -> getName (), i, *field, getSharedProperty, setSharedProperty, setProperty, JSPROP_PERMANENT);
-				defineProperty (context, global, (*field) -> getName () + "_changed", i, *field, getSharedProperty, setSharedProperty, setProperty, JSPROP_PERMANENT);
+				defineProperty (context, global, field -> getName (),              i, field, getSharedProperty, setSharedProperty, setProperty, JSPROP_ENUMERATE | JSPROP_PERMANENT);
+				defineProperty (context, global, "set_" + field -> getName (),     i, field, getSharedProperty, setSharedProperty, setProperty, JSPROP_PERMANENT);
+				defineProperty (context, global, field -> getName () + "_changed", i, field, getSharedProperty, setSharedProperty, setProperty, JSPROP_PERMANENT);
 				break;
 			}
 		}
+	
+		++ i;
 	}
 }
 
@@ -254,7 +247,7 @@ JavaScript::getSharedProperty (JSContext* context, JSObject* obj, jsid id, jsval
 }
 
 JSBool
-JavaScript::setSharedProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+JavaScript::setSharedProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
@@ -264,7 +257,7 @@ JavaScript::setSharedProperty (JSContext* context, JSObject* obj, jsid id, jsval
 }
 
 JSBool
-JavaScript::setProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+JavaScript::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
@@ -272,18 +265,14 @@ JavaScript::setProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 
 	return
 	   JS_ValueToField (context, field, vp) and
-	   JS_LookupProperty (context, obj, field -> getName () .c_str (), vp); // JS_LookupPropertyById(context, obj, id, vp); (not jet released)
+	   JS_LookupProperty (context, obj, field -> getName () [0] .c_str (), vp); // JS_LookupPropertyById(context, obj, id, vp); (not jet released)
 }
 
 void
 JavaScript::evaluate (const std::string & string, const std::string & filename)
 {
-	browser -> pushExecutionContext (node -> getExecutionContext ());
-
 	jsval rval;
 	JS_EvaluateScript (context, global, string .c_str (), string .length (), filename .c_str (), 1, &rval);
-
-	browser -> popExecutionContext ();
 
 	JS_GC (context);                                                        // Garbage Collector
 }
@@ -311,14 +300,14 @@ JavaScript::set_field (const X3DFieldDefinition & field)
 	jsval     func_val = JSVAL_VOID;
 	JSObject* objp;
 
-	JSBool result = JS_GetMethod (context, global, field .getName () .c_str (), &objp, &func_val);
+	JSBool result = JS_GetMethod (context, global, field .getName () [0] .c_str (), &objp, &func_val);
 
 	if (not result or JSVAL_IS_VOID (func_val))
 		return;
 
 	jsval argv [2];
-	JS_NewFieldValue (context, &field, &argv [0], true);
-	JS_NewDoubleValue (context, X3D::Browser () -> getCurrentTime (), &argv [1]);
+	JS_NewFieldValue (context, const_cast <X3DFieldDefinition*> (&field), &argv [0], true);
+	JS_NewNumberValue (context, 0 /* time */, &argv [1]);
 
 	jsval rval;
 	JS_CallFunctionValue (context, global, func_val, 2, argv, &rval);

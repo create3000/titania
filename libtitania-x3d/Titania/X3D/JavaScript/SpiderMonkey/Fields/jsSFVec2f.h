@@ -58,35 +58,44 @@ namespace X3D {
 class jsSFVec2f :
 	public jsX3DField
 {
+public:
+
+	static
+	void
+	init (JSContext*, JSObject*);
+
+	static
+	JSBool
+	create (JSContext*, SFVec2f*, jsval*, const bool = false);
+
+	static
+	JSClass*
+	getClass () { return &static_class; }
+
+
+private:
+
 	enum Property {X, Y};
+
+	static JSBool construct (JSContext *, uintN, jsval*);
+	static JSBool enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
+
+	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+
+	static JSBool negate    (JSContext *, uintN, jsval*);
+	static JSBool add       (JSContext *, uintN, jsval*);
+	static JSBool subtract  (JSContext *, uintN, jsval*);
+	static JSBool multiply  (JSContext *, uintN, jsval*);
+	static JSBool divide    (JSContext *, uintN, jsval*);
+	static JSBool dot       (JSContext *, uintN, jsval*);
+	static JSBool normalize (JSContext *, uintN, jsval*);
+	static JSBool length    (JSContext *, uintN, jsval*);
+
 	static const size_t   size;
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
-	static JSBool         construct (JSContext*, JSObject*, uintN, jsval*);
-	static JSBool         get1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool         set1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool         enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
-	static JSBool         negate (JSContext*, JSObject*, uintN, jsval*);
-	static JSBool         add (JSContext*, JSObject*, uintN, jsval*);
-	static JSBool         subtract (JSContext*, JSObject*, uintN, jsval*);
-	static JSBool         multiply (JSContext*, JSObject*, uintN, jsval*);
-	static JSBool         divide (JSContext*, JSObject*, uintN, jsval*);
-	static JSBool         dot (JSContext*, JSObject*, uintN, jsval*);
-	static JSBool         normalize (JSContext*, JSObject*, uintN, jsval*);
-	static JSBool         length (JSContext*, JSObject*, uintN, jsval*);
-
-
-public:
-
-	static void
-	init (JSContext*, JSObject*);
-
-	static JSBool
-	create (JSContext*, SFVec2f*, jsval*, const bool = false);
-
-	static JSClass*
-	getClass () { return &static_class; }
 
 };
 
