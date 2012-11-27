@@ -2202,6 +2202,7 @@
     <None Include="Tests\Scripting\Globals.wrl" />
     <None Include="Tests\Scripting\Fields.wrl" />
     <None Include="Tests\Scripting\UserDefinedFields.wrl" />
+    <None Include="Tests\EnvironmentalSensors\VisibilitySensor.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />
@@ -2240,5 +2241,6 @@
     <Folder Include="Tests\Layering\" />
     <Folder Include="Tests\Navigation\" />
     <Folder Include="Tests\Rendering\" />
+    <Folder Include="Tests\EnvironmentalSensors\" />
   </ItemGroup>
 </Project>

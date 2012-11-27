@@ -113,7 +113,12 @@ TimeSensor::initialize ()
 void
 TimeSensor::set_enabled ()
 {
-	if (not enabled)
+	if (enabled)
+	{
+		if (loop)
+			start = getCurrentTime ();
+	}
+	else
 	{
 		if (isActive)
 		{

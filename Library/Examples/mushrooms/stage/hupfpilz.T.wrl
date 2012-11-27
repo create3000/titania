@@ -14744,3 +14744,31 @@ ROUTE _11.enterTime TO _27.startTime
 ROUTE PilzTouch.touchTime TO _27.startTime
 ROUTE jumpForwardTimer_28.isActive TO _27.set_animating
 ROUTE jumpBackTimer_29.isActive TO _27.set_animating
+
+
+DEF X Script {
+	eventIn SFBool set_active
+	eventIn SFFloat set_fraction
+	eventIn SFInt32 set_whichChoice
+
+	url "vrmlscript:
+function set_active (value, time)
+{
+	print (value);
+}
+
+function set_fraction (value, time)
+{
+	print (value);
+}
+
+function set_whichChoice (value, time)
+{
+	//print (value);
+}
+	"
+} 
+
+ROUTE _20.isActive TO X.set_active
+ROUTE Time.fraction_changed TO X.set_fraction
+ROUTE _16.value_changed TO X.set_whichChoice
