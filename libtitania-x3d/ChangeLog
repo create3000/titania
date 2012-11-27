@@ -1,5 +1,34 @@
 2012-11-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* jsBrowser.h:
+	* JavaScript.h:
+	* JavaScript.cpp:
+	* jsSFNode.cpp:
+	* jsMFNode.cpp:
+	* jsMFTime.cpp:
+	* jsMFBool.cpp:
+	* jsMFVec2d.cpp:
+	* jsMFVec4d.cpp:
+	* jsMFVec3f.cpp:
+	* jsMFVec3d.cpp:
+	* jsMFVec2f.cpp:
+	* jsMFImage.cpp:
+	* jsMFFloat.cpp:
+	* jsMFVec4f.cpp:
+	* jsMFColor.cpp:
+	* jsMFInt32.cpp:
+	* jsMFString.cpp:
+	* jsMFDouble.cpp:
+	* jsMFMatrix3f.cpp:
+	* jsMFMatrix3d.cpp:
+	* jsMFMatrix4d.cpp:
+	* jsMFRotation.cpp:
+	* jsMFMatrix4f.cpp:
+	* jsMFColorRGBA.cpp:
+	* jsFieldDefinitionArray.cpp: 
+
+2012-11-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBasicNode.cpp:
 	* jsGlobals.h:
 	* jsBrowser.h:

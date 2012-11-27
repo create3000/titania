@@ -110,7 +110,7 @@ jsMFNode::construct (JSContext* context, uintN argc, jsval* vp)
 				return JS_FALSE;
 			}
 
-			values [i] = *(X3DField <X3DBaseNode*>*) JS_GetPrivate (context, obj2);
+			values [i] = *(X3DField <X3DBasicNode*>*) JS_GetPrivate (context, obj2);
 		}
 
 		return create (context, new MFNode <X3DBasicNode> (values, values + argc), &JS_RVAL (context, vp));
@@ -181,7 +181,7 @@ JSBool
 jsMFNode::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	if (not JSVAL_IS_INT (id))
-		return JS_PropertyStub (context, obj, id, vp);
+		return JS_TRUE;
 
 	int32 index = JSVAL_TO_INT (id);
 
@@ -202,7 +202,7 @@ JSBool
 jsMFNode::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	if (not JSVAL_IS_INT (id))
-		return JS_PropertyStub (context, obj, id, vp);
+		return JS_TRUE;
 
 	int32 index = JSVAL_TO_INT (id);
 

@@ -55,8 +55,6 @@
 namespace titania {
 namespace X3D {
 
-class X3DBaseNode;
-
 class jsBrowser
 {
 public:

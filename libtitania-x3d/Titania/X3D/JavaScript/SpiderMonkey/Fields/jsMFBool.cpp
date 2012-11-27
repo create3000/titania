@@ -147,7 +147,7 @@ jsMFBool::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsv
 			{
 				JS_DefineProperty (context,
 				                   obj, (char*) *index,
-				                   BOOLEAN_TO_JSVAL (x3darrayfield -> get1Value (*index)),
+				                   JSVAL_VOID,
 				                   get1Value, set1Value,
 				                   JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT);
 
@@ -175,7 +175,7 @@ JSBool
 jsMFBool::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	if (not JSVAL_IS_INT (id))
-		return JS_PropertyStub (context, obj, id, vp);
+		return JS_TRUE;
 
 	int32 index = JSVAL_TO_INT (id);
 
@@ -196,7 +196,7 @@ JSBool
 jsMFBool::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	if (not JSVAL_IS_INT (id))
-		return JS_PropertyStub (context, obj, id, vp);
+		return JS_TRUE;
 
 	int32 index = JSVAL_TO_INT (id);
 

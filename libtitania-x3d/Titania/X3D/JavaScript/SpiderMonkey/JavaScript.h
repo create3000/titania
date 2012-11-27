@@ -88,9 +88,6 @@ public:
 
 private:
 
-	static void
-	error (JSContext* context, const char* message, JSErrorReport* report);
-
 	void
 	initContext ();
 
@@ -100,7 +97,10 @@ private:
 	void
 	evaluate (const std::string &, const std::string & = "<inline>");
 
-	static void defineProperty (JSContext*, JSObject*, const std::string &, uintN);
+	static
+	void
+	defineProperty (JSContext*, JSObject*, const std::string &, uintN);
+	
 	static JSBool getProperty (JSContext*, JSObject*, jsid, jsval*);
 	static JSBool setProperty (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
@@ -109,6 +109,10 @@ private:
 
 	void
 	set_field (const X3DFieldDefinition &);
+
+	static
+	void
+	error (JSContext* context, const char* message, JSErrorReport* report);
 
 	static JSClass global_class;
 	JSRuntime*     runtime;

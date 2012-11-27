@@ -221,14 +221,14 @@ jsSFNode::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsv
 JSBool
 jsSFNode::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	if (JSVAL_IS_STRING (id))
+	if (JSID_IS_STRING (id))
 	{
 		X3DField <X3DBasicNode*>* sfnode = (X3DField <X3DBasicNode*>*) JS_GetPrivate (context, obj);
 
-		if (*sfnode)
-		{
-			char* name = JS_EncodeString (context, JS_ValueToString (context, id));
+		char* name = JS_EncodeString (context, JSVAL_TO_STRING (id));
 
+		if (sfnode -> getValue ())
+		{
 			X3DFieldDefinition* field = sfnode -> getValue () -> getField (name);
 
 			if (field)
@@ -244,20 +244,20 @@ jsSFNode::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 		}
 	}
 
-	return JS_FALSE;
+	return JS_TRUE;
 }
 
 JSBool
 jsSFNode::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	if (JSVAL_IS_STRING (id))
+	if (JSID_IS_STRING (id))
 	{
 		X3DField <X3DBasicNode*>* sfnode = (X3DField <X3DBasicNode*>*) JS_GetPrivate (context, obj);
 
-		if (*sfnode)
-		{
-			char* name = JS_EncodeString (context, JS_ValueToString (context, id));
+		char* name = JS_EncodeString (context, JSVAL_TO_STRING (id));
 
+		if (sfnode -> getValue ())
+		{
 			X3DFieldDefinition* field = sfnode -> getValue () -> getField (name);
 
 			if (field)
@@ -275,7 +275,7 @@ jsSFNode::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict
 		}
 	}
 
-	return JS_FALSE;
+	return JS_TRUE;
 }
 
 JSBool
@@ -387,7 +387,7 @@ jsSFNode::toString (JSContext* context, uintN argc, jsval* vp)
 		X3DField <X3DBasicNode*>* sfnode = (X3DField <X3DBasicNode*>*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		if (*sfnode)
-			return JS_NewStringValue (context, sfnode -> getValue () -> getTypeName () + " { }", vp);
+			return JS_NewStringValue (context, sfnode -> getValue () -> getTypeName () + " { }", &JS_RVAL (context, vp));
 			
 		else
 			return JS_NewStringValue (context, "NULL", &JS_RVAL (context, vp));

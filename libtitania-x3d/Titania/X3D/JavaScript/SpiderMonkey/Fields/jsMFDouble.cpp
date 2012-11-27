@@ -175,7 +175,7 @@ JSBool
 jsMFDouble::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	if (not JSVAL_IS_INT (id))
-		return JS_PropertyStub (context, obj, id, vp);
+		return JS_TRUE;
 
 	int32 index = JSVAL_TO_INT (id);
 
@@ -194,7 +194,7 @@ JSBool
 jsMFDouble::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	if (not JSVAL_IS_INT (id))
-		return JS_PropertyStub (context, obj, id, vp);
+		return JS_TRUE;
 
 	int32 index = JSVAL_TO_INT (id);
 

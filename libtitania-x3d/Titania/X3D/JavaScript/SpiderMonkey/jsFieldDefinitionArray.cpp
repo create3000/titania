@@ -159,7 +159,7 @@ JSBool
 jsFieldDefinitionArray::get1Value (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 {
 	if (not JSVAL_IS_INT (id))
-		return JS_PropertyStub (context, obj, id, vp);
+		return JS_TRUE;
 
 	FieldDefinitionArray* array = (FieldDefinitionArray*) JS_GetPrivate (context, obj);
 
@@ -175,7 +175,7 @@ JSBool
 jsFieldDefinitionArray::set1Value (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
 {
 	if (not JSVAL_IS_INT (id))
-		return JS_PropertyStub (context, obj, id, vp);
+		return JS_TRUE;
 
 	return JS_TRUE;
 }

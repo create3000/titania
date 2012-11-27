@@ -64,20 +64,6 @@ JSClass JavaScript::global_class = {
 
 };
 
-/*
- * The error reporter callback.
- */
-
-void
-JavaScript::error (JSContext* context, const char* message, JSErrorReport* report)
-{
-	std::clog << "# Javascript: runtime error on line "
-	          << (unsigned int) report -> lineno
-	          << " in "
-	          << (*report -> filename ? report -> filename : "<no filename>") << ": "
-	          << message << std::endl;
-}
-
 JavaScript::JavaScript (X3DBasicNode* node, const std::string & ecmascript) :
 	browser (node -> getBrowser ()), 
 	   node (node)                   
@@ -209,33 +195,32 @@ JavaScript::defineProperty (JSContext* context,
 JSBool
 JavaScript::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-__LOG__ << std::endl;
-
-	if (JSVAL_IS_STRING (id))
+	jsval name;
+	
+	if (JS_IdToValue (context, id, &name))
 	{
 		X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
-		X3DFieldDefinition* field = node -> getField (JS_EncodeString (context, JS_ValueToString (context, id)));
+		X3DFieldDefinition* field = node -> getField (JS_EncodeString (context, JSVAL_TO_STRING (name)));
 
-		if (field)
-			return JS_NewFieldValue (context, field, vp);
+		return JS_NewFieldValue (context, field, vp);
 	}
-	
-__LOG__ << JS_EncodeString (context, JS_ValueToString (context, id)) << std::endl;
+
 	return JS_FALSE;
 }
 
 JSBool
 JavaScript::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	if (JSVAL_IS_STRING (id))
+	jsval name;
+	
+	if (JS_IdToValue (context, id, &name))
 	{
 		X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
-		X3DFieldDefinition* field = node -> getField (JS_EncodeString (context, JS_ValueToString (context, id)));
+		X3DFieldDefinition* field = node -> getField (JS_EncodeString (context, JSVAL_TO_STRING (name)));
 
-		if (field)
-			return JS_ValueToField (context, field, vp);
+		return JS_ValueToField (context, field, vp);
 	}
 	
 	return JS_FALSE;
@@ -245,9 +230,10 @@ void
 JavaScript::evaluate (const std::string & string, const std::string & filename)
 {
 	jsval rval;
+
 	JS_EvaluateScript (context, global, string .c_str (), string .length (), filename .c_str (), 1, &rval);
 
-	JS_GC (context);                                                        // Garbage Collector
+	JS_GC (context); // Garbage Collector
 }
 
 void
@@ -312,9 +298,19 @@ JavaScript::shutdown ()
 	callFunction ("shutdown");
 }
 
+void
+JavaScript::error (JSContext* context, const char* message, JSErrorReport* report)
+{
+	std::clog << "# Javascript: runtime error on line "
+	          << (unsigned int) report -> lineno
+	          << " in "
+	          << (*report -> filename ? report -> filename : "<no filename>") << ": "
+	          << message << std::endl;
+}
+
 JavaScript::~JavaScript ()
 {
-	/* Cleanup. */
+	// Cleanup.
 	JS_GC (context);
 	JS_DestroyContext (context);
 	JS_DestroyRuntime (runtime);
