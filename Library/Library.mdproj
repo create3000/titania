@@ -2203,6 +2203,13 @@
     <None Include="Tests\Scripting\Fields.wrl" />
     <None Include="Tests\Scripting\UserDefinedFields.wrl" />
     <None Include="Tests\EnvironmentalSensors\VisibilitySensor.wrl" />
+    <None Include="Models\Household\Vase.wrl" />
+    <None Include="Models\Household\pipe.wrl" />
+    <None Include="Models\Vehicles\rocket.wrl" />
+    <None Include="Models\Backgrounds\blue-green.wrl" />
+    <None Include="Models\Backgrounds\sunny.wrl" />
+    <None Include="Models\People\woman.wrl" />
+    <None Include="Tests\Scripting\Felület.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />
@@ -2242,5 +2249,6 @@
     <Folder Include="Tests\Navigation\" />
     <Folder Include="Tests\Rendering\" />
     <Folder Include="Tests\EnvironmentalSensors\" />
+    <Folder Include="Models\Backgrounds\" />
   </ItemGroup>
 </Project>

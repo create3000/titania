@@ -79,6 +79,8 @@ PixelTexture::initialize ()
 {
 	X3DTexture2DNode::initialize ();
 
+	image .addInterest (this, &PixelTexture::requestImmediateLoad);
+
 	requestImmediateLoad ();
 }
 

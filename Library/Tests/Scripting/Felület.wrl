@@ -1,0 +1,148 @@
+#VRML V2.0 utf8
+
+NavigationInfo {
+  speed 2
+}
+
+Viewpoint {
+  position 5.22404 1.30773 1.99337
+  orientation 0.0966588 -0.965436 -0.242056 5.02906
+}
+
+DirectionalLight {
+  direction -1 -1 -1
+}
+
+DEF Timer TimeSensor {
+  loop TRUE
+}
+
+Transform {
+  rotation 0.707107 0.707107 0 0.3
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.4 0.6 0.4
+      }
+      texture DEF Kep PixelTexture {
+        image 4 4 1 0 0 0 0xff 0 0 0xff 0 0 0xff 0 0 0xff 0 0 0
+        textureProperties TextureProperties {
+          boundaryModeS "CLAMP"
+          boundaryModeT "CLAMP"
+          boundaryModeR "CLAMP"
+          minificationFilter "nearest"
+          magnificationFilter "nearest"
+        }
+      }
+    }
+    geometry Box { }
+  }
+}
+
+DEF Felulet Script {
+  eventIn  SFTime set_time
+  eventOut SFImage image_changed
+  field    SFInt32 size 32
+  field    MFInt32 sample1 [ 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 ]
+  field    MFInt32 sample2 [ 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 ]
+
+  url "javascript:
+
+function initialize()
+{
+	print ('*** Initializing Felület ...');
+
+	sample1 .length = size;
+	sample2 .length = size;
+	
+	for (i = 0; i < size*size; i++)
+	{
+		sample1[i] = 100;
+		sample2[i] = 100;
+	}
+
+//	for (x = 1; x < size-2; x++)
+//	{
+//		for (y = 1; y < size-2; y++)
+//		{
+//			k = Math.random();   
+//			if (k > 0.5)
+//	         set_sample1(x,y);
+//		}
+//	}
+
+	image_changed.x = size;
+	image_changed.y = size;
+	image_changed.comp = 1;
+	
+	print ('*** Done initializing Felület ...');
+}
+
+function set_time (value, time)
+{
+	// Randomly set n new points
+	
+	for (i = 0; i < size; i++)
+		set_sample1 (Math .floor (1 + Math .random () * (size - 3)), 1 + Math .floor (Math .random () * (size - 3)));   
+
+	for (x = 1; x < size - 1; ++ x)
+	{
+		for (y = 1; y < size - 1; ++ y)
+		{
+			piece = 0;
+
+			xe = x-1;
+			xu = x+1;
+			ye = y-1;
+			yu = y+1;
+		
+			if (get_sample1 (xe, ye) > 100) { ++ piece; }
+			if (get_sample1 (xe, y)  > 100) { ++ piece; }
+			if (get_sample1 (xe, yu) > 100) { ++ piece; }
+															  
+			if (get_sample1 (xu, ye) > 100) { ++ piece; }
+			if (get_sample1 (xu, y)  > 100) { ++ piece; }
+			if (get_sample1 (xu, yu) > 100) { ++ piece; }
+															  
+			if (get_sample1 (x, ye)  > 100) { ++ piece; }
+			if (get_sample1 (x, yu)  > 100) { ++ piece; }
+	
+			// counting new cells
+		
+
+			if (get_sample1 (x, y) == 100) 
+			{
+		  
+				if (piece == 3)
+					set_sample2 (x, y); 
+				else
+					clear_sample2 (x, y); 
+			}
+	
+			if (get_sample1 (x, y) > 100) 
+			{
+			 	if (piece < 2 || piece > 3)
+					clear_sample2 (x, y);
+				else
+					set_sample2 (x, y);
+			}
+		}
+	}
+
+	image_changed .array = sample2;
+
+	sample1 = sample2;
+}
+
+function get_sample1 (x, y) { return sample1 [x + y * size]; }
+
+function set_sample1 (x, y) { sample1 [x + y * size] = 255; }
+
+function set_sample2 (x, y) { sample2 [x + y * size] = 255; }
+
+function clear_sample2 (x, y) { sample2 [x + y * size] = 100; }
+"
+}
+
+ROUTE Timer .time TO Felulet .set_time
+ROUTE Felulet .image_changed TO Kep .set_image
