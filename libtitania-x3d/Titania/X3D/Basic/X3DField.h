@@ -66,10 +66,15 @@ public:
 	typedef ValueType value_type;
 
 	using X3DFieldDefinition::addInterest;
+	
+	/// @name Copy
 
 	///  Returns a copy of this field.
-	virtual X3DField <ValueType>*
+	virtual 
+	X3DField <ValueType>*
 	copy () const;
+	
+	/// @name Assignment operators
 
 	///  Default assignment opeator.  Behaves the same as the 6.7.6 setValue service.
 	X3DField &
@@ -78,6 +83,8 @@ public:
 	///  Assignment operator for field values.  Behaves the same as the 6.7.6 setValue service.
 	X3DField &
 	operator = (const ValueType &);
+
+	/// @name Elements access
 
 	virtual
 	const FieldType*
@@ -186,6 +193,8 @@ public:
 
 protected:
 
+	/// @name Constructors
+	
 	///  Default constructor.
 	X3DField ();
 
@@ -195,6 +204,8 @@ protected:
 	///  Value constructor.
 	explicit
 	X3DField (const ValueType &);
+	
+	/// @name Element access
 
 	///  Get a non const value.
 	ValueType &

@@ -52,6 +52,7 @@
 #include "jsFields.h"
 #include "jsGlobals.h"
 #include "jsfield.h"
+#include "String.h"
 
 namespace titania {
 namespace X3D {
@@ -189,7 +190,7 @@ JavaScript::defineProperty (JSContext* context,
 	                   obj, name .c_str (),
 	                   JSVAL_VOID,
 	                   getProperty, setProperty,
-	                   JSPROP_PERMANENT | attrs);
+	                   JSPROP_PERMANENT | JSPROP_SHARED | attrs);
 }
 
 JSBool
@@ -201,12 +202,12 @@ JavaScript::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 	{
 		X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
-		X3DFieldDefinition* field = node -> getField (JS_EncodeString (context, JSVAL_TO_STRING (name)));
+		X3DFieldDefinition* field = node -> getField (JS_GetString (context, name));
 
 		return JS_NewFieldValue (context, field, vp);
 	}
 
-	return JS_FALSE;
+	return JS_TRUE;
 }
 
 JSBool
@@ -218,12 +219,12 @@ JavaScript::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool stri
 	{
 		X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
-		X3DFieldDefinition* field = node -> getField (JS_EncodeString (context, JSVAL_TO_STRING (name)));
+		X3DFieldDefinition* field = node -> getField (JS_GetString (context, name));
 
 		return JS_ValueToField (context, field, vp);
 	}
 	
-	return JS_FALSE;
+	return JS_TRUE;
 }
 
 void

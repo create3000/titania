@@ -1,3 +1,11 @@
+2012-11-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-standard.cproj:
+	* ClockBase.h:
+	* StopWatch.h:
+	* StopWatch.cpp: 
+
 2012-11-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-standard.md.pc: 

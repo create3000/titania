@@ -87,6 +87,11 @@ public:
 	constexpr Type
 	interval () const { return value .imag (); }
 
+	///  Get the current interval of this clock.  This is the amount of time between now and the last cycle.
+	constexpr Type
+	current () const
+	{ return count () - cycle (); }
+
 	///  Advance this clock.  This will set the cycle of this clock to the new count.
 	virtual
 	void

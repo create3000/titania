@@ -125,7 +125,7 @@ jsFieldDefinitionArray::enumerate (JSContext* context, JSObject* obj, JSIterateO
 			*statep = PRIVATE_TO_JSVAL (index);
 
 			if (idp)
-				JS_ValueToId (context, INT_TO_JSVAL (size), idp);
+				*idp = INT_TO_JSID (size);
 
 			break;
 		}
@@ -136,7 +136,7 @@ jsFieldDefinitionArray::enumerate (JSContext* context, JSObject* obj, JSIterateO
 			if (*index < size)
 			{
 				if (idp)
-					JS_ValueToId (context, INT_TO_JSVAL (*index), idp);
+					*idp = INT_TO_JSID (size);
 
 				*index = *index + 1;
 				break;

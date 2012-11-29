@@ -46,44 +46,81 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_MFCOLOR_RGBA_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_MFCOLOR_RGBA_H__
+#ifndef __TITANIA_CHRONO_STOP_WATCH_H__
+#define __TITANIA_CHRONO_STOP_WATCH_H__
 
-#include "../../../Fields/ArrayFields.h"
-#include "../jsX3DArrayField.h"
-#include "jsSFColorRGBA.h"
+#include <Titania/Chrono/SystemClock.h>
 
 namespace titania {
-namespace X3D {
+namespace chrono {
 
-class jsMFColorRGBA :
-	public jsX3DArrayField <SFColorRGBA>
+template <class Type>
+class stopwatch
 {
 public:
 
-	static 
+	typedef size_t size_type;
+
+	///  @name Constructor
+
+	stopwatch () :
+		value ()
+	{ }
+
+	///  @name Element access
+
+	const chrono::system_clock <Type> &
+	clock () const
+	{ return value .clock; }
+
+	const size_type &
+	cycles () const
+	{ return value .cycles; }
+
+	const Type &
+	interval () const
+	{ return value .interval; }
+
+	constexpr Type
+	average () const
+	{ return value .interval / value .cycles; }
+
+	///  @name Clock handling
+
 	void
-	init (JSContext*, JSObject*);
+	start ()
+	{ value .clock .advance (); }
 
-	static 
-	JSBool
-	create (JSContext*, MFColorRGBA*, jsval*, const bool = false);
+	void
+	stop ()
+	{
+		value .clock .advance ();
 
-	static 
-	JSClass*
-	getClass () { return &static_class; }
+		++ value .cycles;
+		value .interval += value .clock .interval ();
+	}
+
+	void
+	reset ()
+	{ value = Value (); }
 
 
 private:
 
-	static JSClass static_class;
-	static JSBool  construct (JSContext*, uintN, jsval*);
-	static JSBool  get1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool  set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	struct Value
+	{
+		chrono::system_clock <Type> clock;
+
+		size_type cycles;
+		Type interval;
+	}
+	value;
 
 };
 
-} // X3D
+extern template class stopwatch <double>;
+
+} // chrono
 } // titania
 
 #endif

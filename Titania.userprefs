@@ -1,30 +1,37 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Scripting/test.wrl">
     <Files>
-      <File FileName="experimental/main.cpp" Line="46" Column="19" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/Tesselator.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.h" Line="119" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="211" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.h" Line="103" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="76" Column="13" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="78" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="71" Column="32" />
+      <File FileName="experimental/main.cpp" Line="716" Column="7" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="54" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArray.h" Line="51" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Scripting/Script.h" Line="90" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Scripting/Script.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/JavaScript.h" Line="102" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/JavaScript.cpp" Line="279" Column="3" />
+      <File FileName="Library/Tests/Scripting/UserDefinedFields.wrl" Line="97" Column="21" />
+      <File FileName="Library/Tests/Scripting/test.wrl" Line="82" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/Widgets/Surface.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.cpp" Line="120" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True" />
-          <Node name="experimental" expanded="True">
-            <Node name="main.cpp" selected="True" />
-          </Node>
+          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
-            <Node name="Models" expanded="True">
-              <Node name="Robots" expanded="True" />
+            <Node name="Examples" expanded="True">
+              <Node name="mushrooms" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
             </Node>
             <Node name="Tests" expanded="True">
               <Node name="Basic" expanded="True" />
+              <Node name="EnvironmentalSensors" expanded="True" />
               <Node name="Geometry3D" expanded="True" />
+              <Node name="Scripting" expanded="True">
+                <Node name="test.wrl" selected="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
@@ -47,10 +54,21 @@
                   <Node name="Navigation" expanded="True" />
                   <Node name="Networking" expanded="True" />
                   <Node name="Rendering" expanded="True" />
+                  <Node name="Scripting" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
+                  <Node name="Time" expanded="True" />
                 </Node>
                 <Node name="Configuration" expanded="True" />
                 <Node name="Execution" expanded="True" />
-                <Node name="JavaScript" expanded="True" />
+                <Node name="Fields" expanded="True" />
+                <Node name="JavaScript" expanded="True">
+                  <Node name="SpiderMonkey" expanded="True">
+                    <Node name="Fields" expanded="True" />
+                  </Node>
+                </Node>
+                <Node name="Parser" expanded="True" />
+                <Node name="Types" expanded="True" />
+                <Node name="Widgets" expanded="True" />
               </Node>
             </Node>
           </Node>

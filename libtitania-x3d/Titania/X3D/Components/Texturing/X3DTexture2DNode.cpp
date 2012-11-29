@@ -49,8 +49,8 @@
 #include "X3DTexture2DNode.h"
 
 #include "../../Browser/Browser.h"
-#include <Titania/Utility/Adapter.h>
 #include <Titania/Math/Math.h>
+#include <Titania/Utility/Adapter.h>
 
 namespace titania {
 namespace X3D {
@@ -107,7 +107,6 @@ X3DTexture2DNode::getTexture ()
 
 void
 X3DTexture2DNode::getImageFormat (Magick::Image & image,
-                                  GLint & internalFormat,
                                   GLenum & format,
                                   const bool compressed)
 {
@@ -119,7 +118,6 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image,
 			{
 				image .colorSpace (Magick::GRAYColorspace);
 				image .magick ("GRAY");
-				internalFormat = compressed ? GL_COMPRESSED_LUMINANCE : GL_LUMINANCE;
 				format         = GL_LUMINANCE;
 				components     = 1;
 				transparent    = false;
@@ -131,7 +129,6 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image,
 			image .colorSpace (Magick::GRAYColorspace);
 			image .type (Magick::TrueColorMatteType);
 			image .magick ("RGBA");
-			internalFormat = compressed ? GL_COMPRESSED_LUMINANCE_ALPHA : GL_LUMINANCE_ALPHA;
 			format         = GL_RGBA;
 			components     = 2;
 			transparent    = true;
@@ -143,7 +140,6 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image,
 			{
 				image .colorSpace (Magick::RGBColorspace);
 				image .magick ("RGB");
-				internalFormat = compressed ? GL_COMPRESSED_RGB : GL_RGB;
 				format         = GL_RGB;
 				components     = 3;
 				transparent    = false;
@@ -154,7 +150,6 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image,
 		{
 			image .colorSpace (Magick::RGBColorspace);
 			image .magick ("RGBA");
-			internalFormat = compressed ? GL_COMPRESSED_RGBA : GL_RGBA;
 			format         = GL_RGBA;
 			components     = 4;
 			transparent    = true;
@@ -165,12 +160,12 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image,
 			if (image .matte ())
 			{
 				image .type (Magick::TrueColorMatteType);
-				return getImageFormat (image, internalFormat, format, compressed);
+				return getImageFormat (image, format, compressed);
 			}
 			else
 			{
 				image .type (Magick::TrueColorType);
-				return getImageFormat (image, internalFormat, format, compressed);
+				return getImageFormat (image, format, compressed);
 			}
 		}
 	}
@@ -222,12 +217,12 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 {
 	// TextureProperties
 
-	GLint level      = 0;
-	GLint border     = 0;
-	bool  mipmap     = true;
+	GLint level = 0; // This texture is level 0 in mimpap generation.
 	bool  compressed = false;
 
-	SFNode <TextureProperties> _textureProperties = textureProperties;
+	const SFNode <TextureProperties> & textureProperties = this -> textureProperties
+	                                                       ? this -> textureProperties
+																			 : getBrowser () -> getBrowserOptions () -> textureProperties;
 
 	// scale image
 
@@ -235,10 +230,9 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 
 	// get image properties
 
-	GLint       internalFormat;
 	GLenum      format;
 	std::string magick;
-	getImageFormat (image, internalFormat, format, compressed);
+	getImageFormat (image, format, compressed);
 
 	// convert to blob
 
@@ -254,31 +248,36 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 	glBindTexture (GL_TEXTURE_2D, textureId);
 
 	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
+	
+	applyTextureProperties (textureProperties);
 
-	if (mipmap) // mipmap
+	glTexImage2D (GL_TEXTURE_2D, level, textureProperties -> getInternalFormat (components),
+	              image .size () .width (), image .size () .height (),
+	              false, // border
+	              format, GL_UNSIGNED_BYTE,
+	              blob .data ());
+}
+
+void
+X3DTexture2DNode::applyTextureProperties (const SFNode <TextureProperties> & textureProperties) const
+{
+	glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureProperties -> getMagnificationFilter ());
+
+	if (this -> textureProperties)
 	{
-		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    GL_TRUE);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());	
 	}
 	else
 	{
-		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    GL_FALSE);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [repeatS]);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [repeatT]);
 	}
 
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [repeatS]);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [repeatT]);
-
-	//glTexParameterfv (GL_TEXTURE_BORDER_COLOR, color);
-	//glTexParameterf  (GL_TEXTURE_PRIORITY, priority);
-
-	glTexImage2D (GL_TEXTURE_2D, level, internalFormat,
-	              image .size () .width (), image .size () .height (),
-	              border,
-	              format, GL_UNSIGNED_BYTE,
-	              blob .data ());
+	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, textureProperties -> borderColor .getValue () .data ());
+	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,     textureProperties -> texturePriority);
 }
 
 void

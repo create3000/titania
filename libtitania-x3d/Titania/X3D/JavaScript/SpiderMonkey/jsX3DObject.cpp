@@ -49,7 +49,7 @@
 #include "jsX3DObject.h"
 
 #include "../../Base/X3DObject.h"
-#include "jsstring.h"
+#include "String.h"
 
 namespace titania {
 namespace X3D {

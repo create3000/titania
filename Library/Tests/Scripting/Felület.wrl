@@ -30,8 +30,9 @@ Transform {
           boundaryModeS "CLAMP"
           boundaryModeT "CLAMP"
           boundaryModeR "CLAMP"
-          minificationFilter "nearest"
-          magnificationFilter "nearest"
+          minificationFilter "NICEST"
+          magnificationFilter "NICEST"
+          generateMipMaps TRUE
         }
       }
     }
@@ -82,7 +83,7 @@ function set_time (value, time)
 {
 	// Randomly set n new points
 	
-	for (i = 0; i < size; i++)
+	for (i = 0; i < size/2; i++)
 		set_sample1 (Math .floor (1 + Math .random () * (size - 3)), 1 + Math .floor (Math .random () * (size - 3)));   
 
 	for (x = 1; x < size - 1; ++ x)

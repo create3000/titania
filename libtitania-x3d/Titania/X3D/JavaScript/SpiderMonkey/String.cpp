@@ -46,7 +46,7 @@
  *
  ******************************************************************************/
 
-#include "jsstring.h"
+#include "String.h"
 
 #include <cstring>
 
@@ -74,6 +74,18 @@ JS_NewStringValue (JSContext* context, const std::string & string, jsval* vp)
 	JS_SET_RVAL (context, vp, STRING_TO_JSVAL (result));
 
 	return JS_TRUE;
+}
+
+std::string
+JS_GetString (JSContext* context, JSString* jsstring)
+{
+	char* chars = JS_EncodeString (context, jsstring);
+	
+	std::string string = chars;
+	
+	JS_free (context, chars);
+
+	return string;
 }
 
 } // X3D

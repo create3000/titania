@@ -89,12 +89,12 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	float
+	double
 	getCurrentSpeed () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	float
+	double
 	getCurrentFrameRate () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -104,8 +104,14 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const std::string &
+	const SFString &
 	getDescription ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	virtual
+	const basic::uri &
+	getWorldURL () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
@@ -152,7 +158,7 @@ public:
 	getExecutionContext () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
-
+	       
 	SFNode <Scene>
 	createScene () const
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -358,10 +364,9 @@ private:
 	SFNode <BrowserOptions>      browserOptions;
 	SFNode <JavaScriptEngine>    javaScriptEngine;
 
-	float currentSpeed;
-	float currentFrameRate;
-
-	std::string description;
+	double   currentSpeed;
+	double   currentFrameRate;
+	SFString description;
 
 
 public:
@@ -382,7 +387,7 @@ private:
 	void
 	set_scene ();
 
-	Vector3f priorPosition;
+	Vector3d priorPosition;
 
 	LightStack lightStack;
 

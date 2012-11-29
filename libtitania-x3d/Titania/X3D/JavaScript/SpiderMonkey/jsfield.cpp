@@ -48,7 +48,7 @@
 
 #include "jsFields.h"
 #include "jsfield.h"
-#include "jsstring.h"
+#include "String.h"
 
 namespace titania {
 namespace X3D {
@@ -231,7 +231,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 	}
 	else if (type == X3DConstants::SFString)
 	{
-		*(SFString*) field = std::string (JS_EncodeString (context, JS_ValueToString (context, *vp)));
+		*(SFString*) field = JS_GetString (context, *vp);
 	}
 	else if (type == X3DConstants::SFTime)
 	{

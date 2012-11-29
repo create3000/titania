@@ -161,7 +161,7 @@ jsSFVec2d::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, js
 			*statep = PRIVATE_TO_JSVAL (index);
 
 			if (idp)
-				*idp = INT_TO_JSVAL (size);
+				*idp = INT_TO_JSID (size);
 
 			break;
 		}
@@ -172,7 +172,7 @@ jsSFVec2d::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, js
 			if (*index < size)
 			{
 				if (idp)
-					*idp = INT_TO_JSVAL (*index);
+					*idp = INT_TO_JSID (*index);
 
 				*index = *index + 1;
 				break;

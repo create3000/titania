@@ -78,7 +78,6 @@ private:
 
 	static JSClass static_class;
 	static JSBool  construct (JSContext*, uintN, jsval*);
-	static JSBool  enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
 	static JSBool  get1Value (JSContext*, JSObject*, jsid, jsval*);
 	static JSBool  set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
 

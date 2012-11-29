@@ -53,7 +53,7 @@ X3DBrowser::X3DBrowser () :
 	   javaScriptEngine (new JavaScriptEngine    (this)),          
 	       currentSpeed (0),                                       
 	   currentFrameRate (0),                                       
-	        description (""),                                      
+	        description (),                                      
 	        initialized (),                                        // SFTime   [out]    initialized 0
 	            exposed (),                                        // SFTime   [out]    exposed     0
 	          displayed (),                                        // SFTime   [out]    displayed   0
@@ -85,6 +85,8 @@ X3DBrowser::X3DBrowser () :
 	appendField (outputOnly, "displayed",   displayed);
 	appendField (outputOnly, "finished",    finished);
 	appendField (outputOnly, "shutdown",    shutdown);
+
+	appendField (outputOnly, "description", description);
 	appendField (outputOnly, "urlError",    urlError);
 	appendField (outputOnly, "world",       world);
 
@@ -171,7 +173,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return clock -> cycle ();
 }
 
-float
+double
 X3DBrowser::getCurrentSpeed () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -179,7 +181,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return currentSpeed;
 }
 
-float
+double
 X3DBrowser::getCurrentFrameRate () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -195,12 +197,20 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	description = value;
 }
 
-const std::string &
+const SFString &
 X3DBrowser::getDescription ()
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	return description;
+}
+
+const basic::uri &
+X3DBrowser::getWorldURL () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return getExecutionContext () -> getWorldURL ();
 }
 
 const FieldTypesArray &
@@ -481,8 +491,8 @@ X3DBrowser::prepare ()
 
 	currentFrameRate = 1 / clock -> interval ();
 
-	Vector3f position = getActiveViewpoint () -> getMatrix () .translation ();
-	currentSpeed  = abs (Vector3d (position - priorPosition)) * currentFrameRate;
+	Vector3d position = getActiveViewpoint () -> getMatrix () .translation ();
+	currentSpeed  = abs (position - priorPosition) * currentFrameRate;
 	priorPosition = position;
 
 	updateSensors ();
@@ -507,7 +517,7 @@ X3DBrowser::finish ()
 	GLenum errorNum = glGetError ();
 
 	if (errorNum not_eq GL_NO_ERROR)
-		std::clog << "OpenGL Error at " << SFDouble (getCurrentTime ()) << ": " << gluErrorString (errorNum) << std::endl;
+		std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toLocaleString () << ": " << gluErrorString (errorNum) << std::endl;
 }
 
 void

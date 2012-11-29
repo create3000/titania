@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,7 +51,7 @@
 
 #include "../../Components/Core/X3DChildNode.h"
 #include "../Properties/QuadSphereProperties.h"
-#include <Titania/Chrono/SystemClock.h>
+#include <Titania/Chrono/StopWatch.h>
 
 #include <stack>
 
@@ -142,20 +142,8 @@ private:
 	
 	std::set <std::string> extensions;
 
-	size_t numFrames;
-
-	chrono::system_clock <double> timer;
-	double                        fps;
-	double                        maxFps;
-
-	chrono::system_clock <double> drawTimer;
-	double                        drawTime;
-	double                        drawFps;
-	double                        maxDrawFps;
-	double                        maxDrawTime;
-
-	time_type maxEventTime;
-	time_type maxTraverseTime;
+	chrono::stopwatch <double> clock;
+	chrono::stopwatch <double> renderClock;
 
 	SFString     fontFamily;
 	size_t       fontHeigth;

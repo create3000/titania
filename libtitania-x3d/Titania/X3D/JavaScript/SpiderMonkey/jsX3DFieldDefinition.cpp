@@ -47,7 +47,7 @@
  ******************************************************************************/
 
 #include "jsX3DFieldDefinition.h"
-#include "jsstring.h"
+#include "String.h"
 
 namespace titania {
 namespace X3D {

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,19 +46,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_JSSTRING_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_JSSTRING_H__
-
-#include <jsapi.h>
-#include <string>
+#include "StopWatch.h"
 
 namespace titania {
-namespace X3D {
+namespace chrono {
 
-JSBool
-JS_NewStringValue (JSContext*, const std::string &, jsval*);
+template class stopwatch <double>;
 
-} // X3D
+} // chrono
 } // titania
-
-#endif

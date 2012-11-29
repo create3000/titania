@@ -56,6 +56,8 @@
 #include <iomanip>
 #include <iostream>
 
+#include <sys/resource.h>
+
 namespace titania {
 namespace X3D {
 
@@ -86,8 +88,8 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	    extensions (),                                                                 
 	    fontFamily ("-schumacher-clean-medium-r-normal--12-120-75-75-c-60-iso8859-1"), // SFString [in,out] fontFamily
 	    fontHeigth (0),                                                                
-	      fontInfo (nullptr),
-	        listId (0)                                                  
+	      fontInfo (nullptr),                                                          
+	        listId (0)                                                                 
 {
 	setComponent ("Browser"),
 	setTypeName ("RenderingProperties");
@@ -145,7 +147,7 @@ RenderingProperties::initialize ()
 		glGetIntegerv (GL_POLYGON_SMOOTH, &glPolygonSmooth);
 
 		if (hasExtension ("GL_NVX_gpu_memory_info"))
-			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory); // in KBytes
+			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);  // in KBytes
 
 		textureUnits   = glTextureUnits;
 		maxTextureSize = glMaxTextureSize;
@@ -247,19 +249,8 @@ RenderingProperties::set_fontFamily (const std::string & fontFamily)
 void
 RenderingProperties::reset ()
 {
-	numFrames = 0;
-
-	timer .advance ();
-	fps    = 0;
-	maxFps = 0;
-
-	drawTime    = 0;
-	drawFps     = 0;
-	maxDrawFps  = 0;
-	maxDrawTime = 0;
-
-	maxEventTime    = 0;
-	maxTraverseTime = 0;
+	clock       .reset ();
+	renderClock .reset ();
 
 	build ();
 	glCallList (listId);
@@ -269,7 +260,7 @@ void
 RenderingProperties::build ()
 {
 	glNewList (listId, GL_COMPILE);
-	
+
 	GLfloat viewport [4];
 
 	glGetFloatv (GL_VIEWPORT, viewport);
@@ -307,32 +298,25 @@ RenderingProperties::build ()
 void
 RenderingProperties::prepare ()
 {
-	drawTimer .advance ();
+	renderClock .start ();
 }
 
 void
 RenderingProperties::display ()
 {
-	++ numFrames;
+	clock       .stop ();
+	renderClock .stop ();
 
-	drawTimer .advance ();
-	drawTime += drawTimer .interval ();
-
-	if (chrono::now () - timer .cycle () > cycleInterval)
+	if (clock .interval () > cycleInterval)
 	{
-		timer .advance ();
-
-		fps     = numFrames / timer .interval ();
-		drawFps = drawTime / numFrames;
-
 		//			maxEventTime = std::max (maxEventTime,    getBrowser () -> getEventTime ());
 		//			maxTraverseTime = std::max (maxTraverseTime, getBrowser () -> getRenderer () -> getTraverseTime ());
 		//			maxDrawTime     = std::max (maxDrawTime,     getBrowser () -> getRenderer () -> getDrawTime ());
 
-		numFrames = 0;
-		drawTime  = 0;
-
 		build ();
+
+		clock       .reset ();
+		renderClock .reset ();
 	}
 
 	glCallList (listId);
@@ -344,7 +328,7 @@ RenderingProperties::update_string ()
 	//	   time_type
 	//       eventTime = getBrowser () -> getEventTime (),
 	//	      traverseTime = getBrowser () -> getRenderer () -> getTraverseTime (),
-	//	      drawTime     = getBrowser () -> getRenderer () -> getDrawTime ();
+	//	      renderInterval     = getBrowser () -> getRenderer () -> getDrawTime ();
 
 	string .clear ();
 
@@ -380,13 +364,19 @@ RenderingProperties::update_string ()
 	stringstream .str (""); stringstream << "Available Texture Memory:  " << strfsize (getAvailableTextureMemory ());
 	string .push_back (stringstream .str ());
 
+	struct rusage usage;
+	getrusage (RUSAGE_SELF, &usage);
+
+	stringstream .str (""); stringstream << "Memory Usage:              " << strfsize (usage .ru_maxrss * 1024);
+	string .push_back (stringstream .str ());
+
 	stringstream .str ("");
 	string .push_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Frame Rate:                " << std::setprecision (1) << std::fixed << fps << " (" << fps << ')';
+	stringstream .str (""); stringstream << "Frame Rate:                " << std::setprecision (1) << std::fixed << 1 / clock .average ();
 	string .push_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Render Time:               " << std::setprecision (7) << std::fixed << drawFps;
+	stringstream .str (""); stringstream << "Render Time:               " << std::setprecision (7) << std::fixed << renderClock .average ();
 	string .push_back (stringstream .str ());
 
 	//	//	stringstream .str (""); stringstream << "Event Time:    " << std::setprecision (7) << std::fixed << eventTime << " s (" << maxEventTime << ')';
@@ -395,7 +385,7 @@ RenderingProperties::update_string ()
 	//	//	stringstream .str (""); stringstream << "Traverse Time: " << std::setprecision (7) << std::fixed << traverseTime << " s (" << maxTraverseTime << ')';
 	//	// string .push_back (stringstream .str ());
 	//
-	//	// stringstream .str (""); stringstream << "Draw Time:                 " << std::setprecision (7) << std::fixed << drawTime << " s (" << maxDrawTime << ')';
+	//	// stringstream .str (""); stringstream << "Draw Time:                 " << std::setprecision (7) << std::fixed << renderInterval << " s (" << maxDrawTime << ')';
 	//	// string .push_back (stringstream .str ());
 	//
 	//	//	stringstream .str (""); stringstream << "Nodes:         " << getBrowser () -> getRenderer () -> getNumNodesDrawn () << " / " << getBrowser () -> getRenderer () -> getNumNodes ();
@@ -418,14 +408,14 @@ RenderingProperties::toStream (std::ostream & stream) const
 		<< "\tCurrent Graphics Renderer" << std::endl
 		<< "\t\tName: " << vendor .getValue () << ' ' << renderer .getValue () << std::endl
 		<< "\tOpenGL extension version: " << version .getValue () << std::endl
-		
+
 		<< "\tRendering properties" << std::endl
-		<< "\t\tTexture units: "    << textureUnits << std::endl
+		<< "\t\tTexture units: " << textureUnits << std::endl
 		<< "\t\tMax texture size: " << maxTextureSize << " × " << maxTextureSize << " pixel" << std::endl
-		<< "\t\tMax lights: "       << maxLights << std::endl
-		<< "\t\tAntialiased: "      << antiAliased .getValue () << std::endl
-		<< "\t\tColor depth: "      << colorDepth << " bits" << std::endl
-		<< "\t\tTexture memory: "   << (textureMemory > 0 ? strfsize (textureMemory) : "n/a");
+		<< "\t\tMax lights: " << maxLights << std::endl
+		<< "\t\tAntialiased: " << antiAliased .getValue () << std::endl
+		<< "\t\tColor depth: " << colorDepth << " bits" << std::endl
+		<< "\t\tTexture memory: " << (textureMemory > 0 ? strfsize (textureMemory) : "n/a");
 }
 
 void

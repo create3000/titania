@@ -57,7 +57,7 @@
 #include "jsProfileInfoArray.h"
 #include "jsX3DExecutionContext.h"
 #include "jsX3DScene.h"
-#include "jsstring.h"
+#include "String.h"
 
 namespace titania {
 namespace X3D {
@@ -157,7 +157,7 @@ jsBrowser::description (JSContext* context, JSObject* obj, jsid id, JSBool stric
 {
 	X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
 
-	node -> getBrowser () -> setDescription (JS_EncodeString (context, JS_ValueToString (context, *vp)));
+	node -> getBrowser () -> setDescription (JS_GetString (context, *vp));
 	return JS_TRUE;
 }
 
@@ -257,7 +257,7 @@ jsBrowser::getWorldURL (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 0)
 	{
 		X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
-		return JS_NewStringValue (context, node -> getBrowser () -> getExecutionContext () -> getWorldURL (), &JS_RVAL (context, vp));
+		return JS_NewStringValue (context, node -> getBrowser () -> getWorldURL (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -301,7 +301,7 @@ jsBrowser::createVrmlFromString (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			scene = node -> getBrowser () -> createX3DFromString (JS_EncodeString (context, vrmlSyntax));
+			scene = node -> getBrowser () -> createX3DFromString (JS_GetString (context, vrmlSyntax));
 		}
 		catch (const X3DError & error)
 		{
@@ -354,7 +354,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 
 		if (*sfnode)
 		{
-			X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_EncodeString (context, event));
+			X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, event));
 
 			if (field)
 			{
@@ -373,13 +373,13 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 						return JS_TRUE;
 					}
 					else
-						JS_ReportError (context, (std::string ("Browser .createVrmlFromURL: field '") + JS_EncodeString (context, event) + "' is not a MFNode") .c_str ());
+						JS_ReportError (context, (std::string ("Browser .createVrmlFromURL: field '") + JS_GetString (context, event) + "' is not a MFNode") .c_str ());
 				}
 				else
-					JS_ReportError (context, (std::string ("Browser .createVrmlFromURL: field '") + JS_EncodeString (context, event) + "' is not an eventIn") .c_str ());
+					JS_ReportError (context, (std::string ("Browser .createVrmlFromURL: field '") + JS_GetString (context, event) + "' is not an eventIn") .c_str ());
 			}
 			else
-				JS_ReportError (context, (std::string ("Browser .createVrmlFromURL: no such field '") + JS_EncodeString (context, event) + "'") .c_str ());
+				JS_ReportError (context, (std::string ("Browser .createVrmlFromURL: no such field '") + JS_GetString (context, event) + "'") .c_str ());
 		}
 		else
 			JS_ReportError (context, "Browser .createVrmlFromURL: node is null");
@@ -426,8 +426,8 @@ jsBrowser::addRoute (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			node -> getExecutionContext () -> addRoute (fromNode -> getValue (), JS_EncodeString (context, fromEventOut), 
-			                                            toNode -> getValue (),   JS_EncodeString (context, toEventIn));
+			node -> getExecutionContext () -> addRoute (fromNode -> getValue (), JS_GetString (context, fromEventOut), 
+			                                            toNode -> getValue (),   JS_GetString (context, toEventIn));
 			
 			JS_SET_RVAL (context, vp, JSVAL_VOID);
 			
@@ -479,8 +479,8 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			node -> getExecutionContext () -> deleteRoute (fromNode -> getValue (), JS_EncodeString (context, fromEventOut),
-			                                               toNode -> getValue (),   JS_EncodeString (context, toEventIn));
+			node -> getExecutionContext () -> deleteRoute (fromNode -> getValue (), JS_GetString (context, fromEventOut),
+			                                               toNode -> getValue (),   JS_GetString (context, toEventIn));
 			
 			JS_SET_RVAL (context, vp, JSVAL_VOID);
 			
@@ -554,7 +554,7 @@ jsBrowser::setDescription (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "S", &description))
 			return JS_FALSE;
 
-		node -> getBrowser () -> setDescription (JS_EncodeString (context, description));
+		node -> getBrowser () -> setDescription (JS_GetString (context, description));
 
 		JS_SET_RVAL (context, vp, JSVAL_VOID);
 

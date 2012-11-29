@@ -48,7 +48,7 @@
 
 #include "jsMFString.h"
 
-#include "../jsstring.h"
+#include "../String.h"
 
 namespace titania {
 namespace X3D {
@@ -101,71 +101,13 @@ jsMFString::construct (JSContext* context, uintN argc, jsval* vp)
 
 		for (uintN i = 0; i < argc; ++ i)
 		{
-			values [i] = std::string (JS_EncodeString (context, JS_ValueToString (context, argv [i])));
+			values [i] = JS_GetString (context, argv [i]);
 		}
 
 		return create (context, new MFString (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;
-}
-
-JSBool
-jsMFString::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
-{
-	MFString* x3darrayfield = (MFString*) JS_GetPrivate (context, obj);
-
-	if (not x3darrayfield)
-	{
-		*statep = JSVAL_NULL;
-		return JS_TRUE;
-	}
-
-	size_t* index;
-
-	switch (enum_op)
-	{
-		case JSENUMERATE_INIT:
-		case JSENUMERATE_INIT_ALL:
-		{
-			index   = new size_t (0);
-			*statep = PRIVATE_TO_JSVAL (index);
-
-			if (idp)
-				JS_ValueToId (context, INT_TO_JSVAL (x3darrayfield -> size ()), idp);
-
-			break;
-		}
-		case JSENUMERATE_NEXT:
-		{
-			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
-
-			if (*index < x3darrayfield -> size ())
-			{
-				JS_DefineProperty (context,
-				                   obj, (char*) *index,
-				                   JSVAL_VOID,
-				                   get1Value, set1Value,
-				                   JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT);
-
-				if (idp)
-					JS_ValueToId (context, INT_TO_JSVAL (*index), idp);
-
-				*index = *index + 1;
-				break;
-			}
-
-		//else done -- cleanup.
-		}
-		case JSENUMERATE_DESTROY:
-		{
-			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
-			delete index;
-			*statep = JSVAL_NULL;
-		}
-	}
-
-	return JS_TRUE;
 }
 
 JSBool
@@ -203,7 +145,7 @@ jsMFString::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict
 
 	MFString* mfstring = (MFString*) JS_GetPrivate (context, obj);
 
-	mfstring -> set1Value (index, SFString (JS_EncodeString (context, JS_ValueToString (context, *vp))));
+	mfstring -> set1Value (index, SFString (JS_GetString (context, *vp)));
 
 	*vp = JSVAL_VOID;
 

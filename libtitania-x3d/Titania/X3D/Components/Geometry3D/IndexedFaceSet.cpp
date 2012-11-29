@@ -487,15 +487,11 @@ IndexedFaceSet::build ()
 				}
 				else if (_colorRGBA)
 				{
-					float r = 0, g = 0, b = 0, a = 0;
-
 					if (colorPerVertex and colorIndex [i] >= 0)
-						_colorRGBA -> color [colorIndex [i]] .getValue (r, g, b, a);
+						getColorsRGBA () .emplace_back (_colorRGBA -> color [colorIndex [i]]);
 
 					else
-						faceColorRGBA .getValue (r, g, b, a);
-
-					getColorsRGBA () .emplace_back (r, g, b, 1 - a);
+						getColorsRGBA () .emplace_back (faceColorRGBA);
 				}
 
 				if (_textureCoordinate)

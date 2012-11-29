@@ -53,7 +53,7 @@
 #include "../jsFieldDefinitionArray.h"
 #include "../jsFields.h"
 #include "../jsfield.h"
-#include "../jsstring.h"
+#include "../String.h"
 
 namespace titania {
 namespace X3D {
@@ -130,7 +130,7 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			scene = script -> createX3DFromString (JS_EncodeString (context, vrmlSyntax)); // XXX X3DBasicNode::createX3DFromString
+			scene = script -> createX3DFromString (JS_GetString (context, vrmlSyntax)); // XXX X3DBasicNode::createX3DFromString
 		}
 		catch (const X3DError & error)
 		{
@@ -173,7 +173,7 @@ jsSFNode::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsv
 			*statep = PRIVATE_TO_JSVAL (index);
 
 			if (idp)
-				*idp = INT_TO_JSVAL (sfnode -> getValue () -> getFieldDefinitions () .size ());
+				*idp = INT_TO_JSID (sfnode -> getValue () -> getFieldDefinitions () .size ());
 
 			break;
 		}
@@ -225,11 +225,9 @@ jsSFNode::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 	{
 		X3DField <X3DBasicNode*>* sfnode = (X3DField <X3DBasicNode*>*) JS_GetPrivate (context, obj);
 
-		char* name = JS_EncodeString (context, JSVAL_TO_STRING (id));
-
 		if (sfnode -> getValue ())
 		{
-			X3DFieldDefinition* field = sfnode -> getValue () -> getField (name);
+			X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, id));
 
 			if (field)
 			{
@@ -254,11 +252,9 @@ jsSFNode::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict
 	{
 		X3DField <X3DBasicNode*>* sfnode = (X3DField <X3DBasicNode*>*) JS_GetPrivate (context, obj);
 
-		char* name = JS_EncodeString (context, JSVAL_TO_STRING (id));
-
 		if (sfnode -> getValue ())
 		{
-			X3DFieldDefinition* field = sfnode -> getValue () -> getField (name);
+			X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, id));
 
 			if (field)
 			{

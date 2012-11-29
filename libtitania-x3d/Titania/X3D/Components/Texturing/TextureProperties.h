@@ -54,6 +54,15 @@
 namespace titania {
 namespace X3D {
 
+enum CompressionMode {
+	LOW,
+	MEDIUM,
+	HIGH,
+	DEFAULT,
+	FASTEST,
+	NICEST
+};
+
 class TextureProperties :
 	public X3DPropertyNode
 {
@@ -76,6 +85,37 @@ public:
 	virtual
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
+	
+	virtual
+	void
+	initialize ();
+	
+	GLenum
+	getBoundaryModeS () const;
+	
+	GLenum
+	getBoundaryModeT () const;
+	
+	GLenum
+	getBoundaryModeR () const;
+	
+	GLenum
+	getMinificationFilter () const;
+
+	GLenum
+	getMagnificationFilter () const;
+
+	CompressionMode
+	getTextureCompression () const;
+	
+	GLenum
+	getInternalFormat (int32_t) const;
+
+
+private:
+	
+	GLenum
+	getBoundaryMode (const std::string &) const;
 
 };
 

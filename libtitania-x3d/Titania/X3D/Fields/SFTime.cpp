@@ -78,10 +78,40 @@ SFTime::getType () const
 	return &type;
 }
 
+std::string
+SFTime::toLocaleString () const
+{
+	time_t time = getValue ();
+
+	char   buffer [80];
+	size_t size = std::strftime (buffer, 80, "%a, %d %b %Y %H:%M:%S %Z", std::localtime (&time));
+
+	std::string string (buffer, buffer + size);
+
+	return string;
+}
+
+std::string
+SFTime::toUTCString () const
+{
+	auto locale = std::locale::global (std::locale::classic ());
+
+	time_t time = getValue ();
+
+	char   buffer [80];
+	size_t size = std::strftime (buffer, 80, "%a, %d %b %Y %H:%M:%S %Z", std::gmtime (&time));
+
+	std::string string (buffer, buffer + size);
+
+	std::locale::global (locale);
+
+	return string;
+}
+
 void
 SFTime::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <scalar_type> << getValue ();
+	ostream << Generator::Precision <scalar_type><< getValue ();
 }
 
 } // X3D

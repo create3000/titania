@@ -7,191 +7,243 @@ DEF Script Script {
 
 function test(value)
 {
-	print('test: ' + value);
+	print ('test: ' + value);
 };
 
 function initialize()
 {
-	print('');
-	print('***********************************************************************');
-	print('initialize');
-	print(Math.PI);
+	print ('');
+	print ('***********************************************************************');
+	print ('initialize');
+	print (Math.PI);
 	var x=10;
-	print('x = ' + x);
-	print(true);
-	print(new SFVec3f());
-	print(new SFVec3f(1,2,3));
-	v = new SFVec3f(1,2,3); print(v.length()); print(v = v.multiply(3)); print(v.cross(v)); v[1] = 999; v.z = 444; print(v); print('y = ' + v.y + ' ' + v[1]); print('z = ' + v.z + ' ' + v[2]); print(v);
-	print('----------------');
-	for (var i in v) { print(i + ' = ' + v[i]); };
-	print('----------------');
+	print ('x = ' + x);
+	print (true);
+	print (new SFVec3f());
+	print (new SFVec3f(1,2,3));
+	
+	v = new SFVec3f(1,2,3); print (v.length());
+	print (v = v.multiply(3));
+	print (v.cross(v));
+	
+	
+	
+	v[1] = 999; v.z = 444;
+	print (v);
+	print ('y = ' + v.y + ' ' + v[1]);
+	print ('z = ' + v.z + ' ' + v[2]);
+	print (v);
+	
+	print ('----------------');
+	
+	for (var i in v) { print (i + ' = ' + v[i]); };
+
+	print ('----------------');
+	
 	test('dot ' + v.dot(new SFVec3f(1, 2, 3)));
 	test(v.length());
-	a = v; a.x = 111; print(a); print(v);
-	print(Browser);
-	for (key in Browser) { print(key + ': ' + Browser[key]); };
+	a = v; a.x = 111; print (a); print (v);
+
+
+	print ('++++++++++++++++++++++++++++++++++');
+	var a = new MFInt32 (1,2,3,4,5);
+	for (var i in a) {  print (i + ' = ' + a [i]) }
+	print (a);
+
+return;
+
+	print (Browser);
+	for (key in Browser) { print (key + ': ' + Browser[key]); };
 	scene = Browser.currentScene;
-	print(scene);
-	for (key in scene) { print(key + ': ' + scene[key]); };
+	print (scene);
+	for (key in scene) { print (key + ': ' + scene[key]); };
 	node = scene.createNode('Transform');
-	print(node.children.length);
+	print (node.children.length);
 	node.children.length = 2;
-	print(node.children.length);
-	print(node);
-	for (key in node) { print(key + ': ' + node[key]); };
+	print (node.children.length);
+	print (node);
+	for (key in node) { print (key + ': ' + node[key]); };
 	node.addChildren = new MFNode();
-	print(node.addChildren);
-	print(new SFRotation());
-	r1 = new SFRotation(1,2,3,4); print(r1); print(r1.getAxis()); print(r1.inverse()); print(r1.multiply(new SFRotation(1,2,3,4)));
-	print('0.378798 0.513364 0.770045 4.00529 = ' + r1.slerp(new SFRotation(2,2,3,4), 0.5));
-	print(new SFRotation(new SFVec3f(1,2,3), 4));
-	print(new SFRotation(new SFVec3f(1,2,3), new SFVec3f(2,3,4)));
+	print (node.addChildren);
+	print (new SFRotation());
+	r1 = new SFRotation(1,2,3,4); print (r1); print (r1.getAxis()); print (r1.inverse()); print (r1.multiply(new SFRotation(1,2,3,4)));
+	print ('0.378798 0.513364 0.770045 4.00529 = ' + r1.slerp(new SFRotation(2,2,3,4), 0.5));
+	print (new SFRotation(new SFVec3f(1,2,3), 4));
+	print (new SFRotation(new SFVec3f(1,2,3), new SFVec3f(2,3,4)));
 	node = scene.createNode('TouchSensor');
-	print(node);
-	for (key in node) { print(key + ': ' + node[key]); };
-	print('#######################################');
+	print (node);
+	for (key in node) { print (key + ': ' + node[key]); };
+	
+	print ('#######################################');
 	node = scene.createNode('Material');
-	print(node);
-	for (key in node) { print(key + ': ' + node[key]); };
-	print(node.diffuseColor.getHSV());
+	print (node);
+	for (key in node) { print (key + ': ' + node[key]); };
+	print (node.diffuseColor.getHSV());
 	node.diffuseColor.setHSV(0.8, 0.8, 0.8);
-	print(node.diffuseColor);
-	print(node.diffuseColor.getHSV());
-	print('#######################################');
+	print (node.diffuseColor);
+	print (node.diffuseColor.getHSV());
+	
+	print ('#######################################');
 	node = scene.createNode('NavigationInfo');
-	print(node);
-	for (key in node) { print(key + ': ' + node[key]); };
-	values = new MFFloat(1,2,3,4);
-	print(values);
-	print(values[1]);
-	nodes = new MFNode(new SFNode(), node, node);
-	print(nodes);
-	print(nodes);
-	print(nodes[1]);
-	nodes[0] = nodes[1];
-	print(nodes);
-	nodes[0] = new SFNode();
-	print(nodes);
+	print (node);
+	
+
+	for (key in node) { print (key); };
+	
+	node .avatarSize;	
+	for (key in node) { print (key + ': ' + node[key]); };
+
+	print ('#######################################');
+	values = new MFFloat (1,2,3,4);
+	print (values);
+	print (values[1]);
+	
+	
+	print ('#######################################');
+	nodes = new MFNode (new SFNode(), node, node);
+	print (nodes);
+	print (nodes);
+	
+	print ('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+
+return;
+return;
+return;
+	var a = nodes [1];
+	
+	
+
+return;
+	print ('#######################################');
+
+	print (nodes [1]);
+
+	nodes [0] = nodes [1];
+	print (nodes);
+
+	nodes [0] = new SFNode ();
+	print (nodes);
+	
 	node.headlight = false;
 	for (key in node) { node[key] = node[key]; };
-	for (key in node) { print(key + ': ' + node[key]); };
-	print(new SFColorRGBA(0.1, 0.2, 0.3, 0.4));
-	print(new MFInt32(1.1, 2.2, 3.3, 4.4));
-	print(new SFImage(2,2,3,new MFInt32(1.1, 2.2, 3.3, 4.4)));
-	print(node.getNodeType());
-	print('getFieldDefinitions()');
-	print(node.getFieldDefinitions());
-	print(node.toVRMLString());
-	print(node.toXMLString());
-	print(new SFVec4f(1,2,3,4));
-	print(new SFMatrix4f());
-	print(matrix = new SFMatrix4f(1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4));
-	print(matrix.inverse());
-	print(matrix.transpose());
-	print(new MFBool(true, false, false));
-	print(new MFColor(new SFColor(), new SFColor(0.1,0.2,0.3)));
-	print(new MFColorRGBA(new SFColorRGBA(), new SFColorRGBA(0.1,0.2,0.3,0.4)));
-	print(new MFImage(new SFImage(), new SFImage(2,2,3,new MFInt32(1.1, 2.2, 3.3, 4.4))));
-	print(new MFMatrix3d(new SFMatrix3d(), new SFMatrix3d()));
-	print(new MFMatrix3f(new SFMatrix3f(), new SFMatrix3f()));
-	print(new MFMatrix4d(new SFMatrix4d(), new SFMatrix4d()));
-	print(new MFMatrix4f(new SFMatrix4f(), new SFMatrix4f()));
-	print(new MFRotation(new SFRotation(), new SFRotation()));
-	print(new MFVec2d(new SFVec2d(), new SFVec2d()));
-	print(new MFVec2f(new SFVec2f(), new SFVec2f()));
-	print(new MFVec3d(new SFVec3d(), new SFVec3d()));
-	print(new MFVec3f(new SFVec3f(), new SFVec3f()));
-	print(new MFVec4d(new SFVec4d(), new SFVec4d()));
-	print(new MFVec4f(new SFVec4f(), new SFVec4f()));
+	for (key in node) { print (key + ': ' + node[key]); };
+	print (new SFColorRGBA(0.1, 0.2, 0.3, 0.4));
+	print (new MFInt32(1.1, 2.2, 3.3, 4.4));
+	print (new SFImage(2,2,3,new MFInt32(1.1, 2.2, 3.3, 4.4)));
+	print (node.getNodeType());
+	print ('getFieldDefinitions()');
+	print (node.getFieldDefinitions());
+	print (node.toVRMLString());
+	print (node.toXMLString());
+	print (new SFVec4f(1,2,3,4));
+	print (new SFMatrix4f());
+	print (matrix = new SFMatrix4f(1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4));
+	print (matrix.inverse());
+	print (matrix.transpose());
+	print (new MFBool(true, false, false));
+	print (new MFColor(new SFColor(), new SFColor(0.1,0.2,0.3)));
+	print (new MFColorRGBA(new SFColorRGBA(), new SFColorRGBA(0.1,0.2,0.3,0.4)));
+	print (new MFImage(new SFImage(), new SFImage(2,2,3,new MFInt32(1.1, 2.2, 3.3, 4.4))));
+	print (new MFMatrix3d(new SFMatrix3d(), new SFMatrix3d()));
+	print (new MFMatrix3f(new SFMatrix3f(), new SFMatrix3f()));
+	print (new MFMatrix4d(new SFMatrix4d(), new SFMatrix4d()));
+	print (new MFMatrix4f(new SFMatrix4f(), new SFMatrix4f()));
+	print (new MFRotation(new SFRotation(), new SFRotation()));
+	print (new MFVec2d(new SFVec2d(), new SFVec2d()));
+	print (new MFVec2f(new SFVec2f(), new SFVec2f()));
+	print (new MFVec3d(new SFVec3d(), new SFVec3d()));
+	print (new MFVec3f(new SFVec3f(), new SFVec3f()));
+	print (new MFVec4d(new SFVec4d(), new SFVec4d()));
+	print (new MFVec4f(new SFVec4f(), new SFVec4f()));
 	f = new MFBool(true, false);
-	print(f[0]);
-	print(f[1]);
-	print(f[2]);
-	for (key in node) { print(key + ': ' + node[key]); };
+	print (f[0]);
+	print (f[1]);
+	print (f[2]);
+	for (key in node) { print (key + ': ' + node[key]); };
 
-	print('');
-	print('getFieldDefinitions().length');
-	print(node.getFieldDefinitions());
-	print(node.getFieldDefinitions().length);
-	print(node.getFieldDefinitions()[0]);
-	print('-- 1 ');
-	for (key in node.getFieldDefinitions()) { print(key); };
-	print('-- 2 ');
-	for (key in node.getFieldDefinitions()) { print(key + ': ' + node.getFieldDefinitions()[key].name + ' ' + node.getFieldDefinitions()[key].accessType + ' ' + node.getFieldDefinitions()[key].dataType); };
-	print('-- 3 ');
+	print ('');
+	print ('getFieldDefinitions().length');
+	print (node.getFieldDefinitions());
+	print (node.getFieldDefinitions().length);
+	print (node.getFieldDefinitions()[0]);
+	print ('-- 1 ');
+	for (key in node.getFieldDefinitions()) { print (key); };
+	print ('-- 2 ');
+	for (key in node.getFieldDefinitions()) { print (key + ': ' + node.getFieldDefinitions()[key].name + ' ' + node.getFieldDefinitions()[key].accessType + ' ' + node.getFieldDefinitions()[key].dataType); };
+	print ('-- 3 ');
 
-	print('');
+	print ('');
 	node = new SFNode();
-	print(node.getFieldDefinitions().length);
-	for (key in node.getFieldDefinitions()) { print(key + ': ' + node.getFieldDefinitions()[key].name + ' ' + node.getFieldDefinitions()[key].accessType + ' ' + node.getFieldDefinitions()[key].dataType); };
+	print (node.getFieldDefinitions().length);
+	for (key in node.getFieldDefinitions()) { print (key + ': ' + node.getFieldDefinitions()[key].name + ' ' + node.getFieldDefinitions()[key].accessType + ' ' + node.getFieldDefinitions()[key].dataType); };
 	colors = new MFColor(new SFColor(), new SFColor(0.1,0.2,0.3));
-	print(colors);
+	print (colors);
 	color = colors[0];
 	color.g = 0.5;
 	colors.length = 0;
 	colors[0].r = 0.5;
 	colors[1] = colors[0];
 	
-	print(colors);
-	print(color);
+	print (colors);
+	print (color);
 	color = colors[0];
-	print(new MFImage(new SFImage(), new SFImage(2,2,3,new MFInt32(1.1, 2.2, 3.3, 4.4))));
-	print(node.getNodeType());
+	print (new MFImage(new SFImage(), new SFImage(2,2,3,new MFInt32(1.1, 2.2, 3.3, 4.4))));
+	print (node.getNodeType());
 	node = scene.createNode('NavigationInfo');
-	print(node);
-	print(node.getNodeType());
-	print(node.getNodeName());
+	print (node);
+	print (node.getNodeType());
+	print (node.getNodeName());
 	node = scene.createNode('TouchSensor');
-	print(node);
-	print(node.getNodeType());
-	print(node.getNodeName());
-	print(scene);
-	print(new SFNode() == 'NULL' ? true : false);
+	print (node);
+	print (node.getNodeType());
+	print (node.getNodeName());
+	print (scene);
+	print (new SFNode() == 'NULL' ? true : false);
 
 	mf = new MFInt32(1,2,3);
 	mf.i = 123;
-	print(mf.i);
-	print(mf);
-	print('key in mf');
-	for (key in mf) { print(key + ' = ' + mf[key]); };
-	print('key in mf');
+	print (mf.i);
+	print (mf);
+	print ('key in mf');
+	for (key in mf) { print (key + ' = ' + mf[key]); };
+	print ('key in mf');
 	
 	v = new SFVec3f(1,2,3);
-	print(v.x);
-	print(v.y);
-	print(v.z);
-	print(v[0]);
-	print(v[1]);
-	print(v[2]);
-	print(v[3]);
-	for (key in v) { print(key + ' = ' + v[key]); };
+	print (v.x);
+	print (v.y);
+	print (v.z);
+	print (v[0]);
+	print (v[1]);
+	print (v[2]);
+	print (v[3]);
+	for (key in v) { print (key + ' = ' + v[key]); };
 	
-	print('***************');
-	print(f1);
-	print(f2);
+	print ('***************');
+	print (f1);
+	print (f2);
 	f1 = f2;
-	print(f1);
-	print(f2);
+	print (f1);
+	print (f2);
 	f1 = new MFInt32(1,1,1);
-	print(f1);
-	print(f2);
+	print (f1);
+	print (f2);
 	f1 = f2;
 	f1[0] = 3333;
-	print(f1);
-	print(f2);
+	print (f1);
+	print (f2);
 	
-	print('***************');
-	print('');
+	print ('***************');
+	print ('');
 	r = new SFRotation(1,2,3,4);
-	print(r);
-	print(r[0]);
-	print(r[1]);
-	print(r[2]);
-	print(r[3]);
-	print(r.x);
-	print(r.y);
-	print(r.z);
-	print(r.angle);
+	print (r);
+	print (r[0]);
+	print (r[1]);
+	print (r[2]);
+	print (r[3]);
+	print (r.x);
+	print (r.y);
+	print (r.z);
+	print (r.angle);
 	
 }
 "

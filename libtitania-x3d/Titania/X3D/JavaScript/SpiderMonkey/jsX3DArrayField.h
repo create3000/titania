@@ -61,6 +61,10 @@ class jsX3DArrayField :
 {
 protected:
 
+	static
+	JSBool
+	enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
+
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
 
@@ -90,6 +94,59 @@ JSFunctionSpec jsX3DArrayField <Type>::functions [ ] = {
 	
 	{ 0 }
 };
+
+template <class Type>
+JSBool
+jsX3DArrayField <Type>::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+{
+	X3DArrayField <Type>* x3darrayfield = (X3DArrayField <Type>*) JS_GetPrivate (context, obj);
+
+	if (not x3darrayfield)
+	{
+		*statep = JSVAL_NULL;
+		return JS_TRUE;
+	}
+
+	size_t* index;
+
+	switch (enum_op)
+	{
+		case JSENUMERATE_INIT:
+		case JSENUMERATE_INIT_ALL:
+		{
+			index   = new size_t (0);
+			*statep = PRIVATE_TO_JSVAL (index);
+
+			if (idp)
+				*idp = INT_TO_JSID (x3darrayfield -> size ());
+
+			break;
+		}
+		case JSENUMERATE_NEXT:
+		{
+			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+
+			if (*index < x3darrayfield -> size ())
+			{
+				if (idp)
+					*idp = INT_TO_JSID (*index);
+
+				*index = *index + 1;
+				break;
+			}
+
+		//else done -- cleanup.
+		}
+		case JSENUMERATE_DESTROY:
+		{
+			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+			delete index;
+			*statep = JSVAL_NULL;
+		}
+	}
+
+	return JS_TRUE;
+}
 
 template <class Type>
 JSBool

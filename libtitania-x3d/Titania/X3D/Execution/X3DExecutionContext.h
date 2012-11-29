@@ -77,6 +77,7 @@ public:
 	void
 	assign (const X3DExecutionContext* const);
 
+	virtual
 	const basic::uri &
 	getWorldURL () const
 	throw (Error <INVALID_OPERATION_TIMING>,

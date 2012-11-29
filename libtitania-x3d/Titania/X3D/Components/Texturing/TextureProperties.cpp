@@ -48,6 +48,7 @@
 
 #include "TextureProperties.h"
 
+#include "../../Browser/Browser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -91,6 +92,190 @@ X3DBasicNode*
 TextureProperties::create (X3DExecutionContext* const executionContext) const
 {
 	return new TextureProperties (executionContext);
+}
+
+void
+TextureProperties::initialize ()
+{
+	X3DPropertyNode::initialize ();
+}
+
+GLenum
+TextureProperties::getBoundaryMode (const std::string & boundaryMode) const
+{
+	if (boundaryMode == "CLAMP")
+		return GL_CLAMP;
+
+	if (boundaryMode == "CLAMP_TO_EDGE")
+		return GL_CLAMP_TO_EDGE;
+
+	if (boundaryMode == "CLAMP_TO_BOUNDARY")
+		return GL_CLAMP_TO_BORDER;
+
+	if (boundaryMode == "MIRRORED_REPEAT")
+		return GL_MIRRORED_REPEAT;
+		
+	//if (boundaryMode == "REPEAT")
+		return GL_REPEAT;
+}
+
+GLenum
+TextureProperties::getBoundaryModeS () const
+{
+	return getBoundaryMode (boundaryModeS);
+}
+
+GLenum
+TextureProperties::getBoundaryModeT () const
+{
+	return getBoundaryMode (boundaryModeT);
+}
+
+GLenum
+TextureProperties::getBoundaryModeR () const
+{
+	return getBoundaryMode (boundaryModeR);
+}
+
+GLenum
+TextureProperties::getMinificationFilter () const
+{
+	if (minificationFilter == "AVG_PIXEL")
+		return GL_LINEAR;
+
+	if (minificationFilter == "AVG_PIXEL_AVG_MIPMAP")
+		return GL_LINEAR_MIPMAP_LINEAR;
+
+	if (minificationFilter == "AVG_PIXEL_NEAREST_MIPMAP")
+		return GL_LINEAR_MIPMAP_NEAREST;
+
+	if (minificationFilter == "NEAREST_PIXEL")
+		return GL_NEAREST;
+
+	if (minificationFilter == "NEAREST_PIXEL_AVG_MIPMAP")
+		return GL_NEAREST_MIPMAP_LINEAR;
+
+	if (minificationFilter == "NEAREST_PIXEL_NEAREST_MIPMAP")
+		return GL_NEAREST_MIPMAP_NEAREST;
+
+	if (minificationFilter == "DEFAULT")
+		return getBrowser () -> getBrowserOptions () -> textureProperties -> getMinificationFilter ();
+
+	if (minificationFilter == "FASTEST")
+		return GL_NEAREST;
+
+	// if (minificationFilter == "NICEST")
+	return generateMipMaps
+	       ? GL_LINEAR_MIPMAP_LINEAR
+			 : GL_LINEAR;
+}
+
+GLenum
+TextureProperties::getMagnificationFilter () const
+{
+	if (magnificationFilter == "AVG_PIXEL")
+		return GL_LINEAR;
+		
+	if (magnificationFilter == "NEAREST_PIXEL")
+		return GL_NEAREST;
+
+	if (magnificationFilter == "DEFAULT")
+		return getBrowser () -> getBrowserOptions () -> textureProperties -> getMagnificationFilter ();
+
+	if (magnificationFilter == "FASTEST")
+		return GL_NEAREST;
+
+	// if (magnificationFilter == "NICEST")
+	return GL_LINEAR;
+}
+
+CompressionMode
+TextureProperties::getTextureCompression () const
+{
+	if (textureCompression == "LOW")
+		return CompressionMode::LOW;
+
+	if (textureCompression == "MEDIUM")
+		return CompressionMode::MEDIUM;
+	
+	if (textureCompression == "HIGH")
+		return CompressionMode::HIGH;
+	
+	if (textureCompression == "DEFAULT")
+		return getBrowser () -> getBrowserOptions () -> textureProperties -> getTextureCompression ();
+	
+	if (textureCompression == "FASTEST")
+		return CompressionMode::FASTEST;
+
+	//if (textureCompression == "NICEST")
+	return CompressionMode::NICEST;
+	
+}
+
+GLenum
+TextureProperties::getInternalFormat (int32_t components) const
+{
+	switch (components)
+	{
+		case 1:
+		{
+			switch (getTextureCompression ())
+			{
+				case LOW:
+				case MEDIUM:
+				case HIGH:
+					return GL_COMPRESSED_LUMINANCE;
+				case DEFAULT:
+				case FASTEST:
+				case NICEST:
+					return GL_LUMINANCE;
+			}
+		}
+		case 2:
+		{
+			switch (getTextureCompression ())
+			{
+				case LOW:
+				case MEDIUM:
+				case HIGH:
+					return GL_COMPRESSED_LUMINANCE_ALPHA;
+				case DEFAULT:
+				case FASTEST:
+				case NICEST:
+					return GL_LUMINANCE_ALPHA;
+			}
+		}
+		case 3:
+		{
+			switch (getTextureCompression ())
+			{
+				case LOW:
+				case MEDIUM:
+				case HIGH:
+					return GL_COMPRESSED_RGB;
+				case DEFAULT:
+				case FASTEST:
+				case NICEST:
+					return GL_RGB;
+			}
+		}
+		case 4:
+		{
+			switch (getTextureCompression ())
+			{
+				case LOW:
+				case MEDIUM:
+				case HIGH:
+					return GL_COMPRESSED_RGBA;
+				case DEFAULT:
+				case FASTEST:
+				case NICEST:
+					return GL_RGBA;
+			}
+		}
+	}	
+
+	return GL_RGBA;
 }
 
 } // X3D

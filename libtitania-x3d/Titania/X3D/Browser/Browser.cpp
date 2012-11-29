@@ -91,7 +91,7 @@ Browser::initialize ()
 	glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
 	glCullFace (GL_BACK);
 	glEnable (GL_NORMALIZE);       // important
-
+	
 	GLfloat light_model_ambient [ ] = { 0, 0, 0, 1 };
 
 	glLightModelfv (GL_LIGHT_MODEL_AMBIENT,       light_model_ambient);

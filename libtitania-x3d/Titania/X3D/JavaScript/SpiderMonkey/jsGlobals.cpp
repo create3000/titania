@@ -48,6 +48,7 @@
 
 #include "jsGlobals.h"
 
+#include "String.h"
 #include "../../InputOutput/Generator.h"
 #include <Titania/LOG.h>
 
@@ -77,7 +78,7 @@ jsGlobals::init (JSContext* context, JSObject* global)
 JSBool
 jsGlobals::_false (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	*vp = JSVAL_FALSE;
+	*vp = JSVAL_FALSE;void JS_free(JSContext *cx, void *p);
 	return JS_TRUE;
 }
 
@@ -89,7 +90,7 @@ jsGlobals::_true (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
-jsGlobals::print  (JSContext* context, uintN argc, jsval* vp)
+jsGlobals::print (JSContext* context, uintN argc, jsval* vp)
 {
 	JSString* string;
 
@@ -98,7 +99,7 @@ jsGlobals::print  (JSContext* context, uintN argc, jsval* vp)
 	if (not JS_ConvertArguments (context, argc, argv, "S", &string))
 		return JS_FALSE;
 
-	std::cerr << CompactStyle << JS_EncodeString (context, string) << std::endl;
+	std::clog << JS_GetString (context, string) << std::endl;
 
 	JS_SET_RVAL (context, vp, JSVAL_VOID);
 	return JS_TRUE;

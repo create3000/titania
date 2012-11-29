@@ -141,7 +141,7 @@ jsMFNode::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsv
 			*statep = PRIVATE_TO_JSVAL (index);
 
 			if (idp)
-				JS_ValueToId (context, INT_TO_JSVAL (x3darrayfield -> size ()), idp);
+				*idp = INT_TO_JSID (x3darrayfield -> size ());
 
 			break;
 		}
@@ -158,7 +158,7 @@ jsMFNode::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsv
 //				                   JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT);
 //
 //				if (idp)
-//					JS_ValueToId (context, INT_TO_JSVAL (*index), idp);
+//					*idp = INT_TO_JSID (*index);
 //
 //				*index = *index + 1;
 //				break;
@@ -195,7 +195,7 @@ jsMFNode::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 
 //	return jsSFNode::create (context, new SFNode (mfnode -> get1Value (index)), vp);
 
-	return JS_FALSE;
+	return JS_TRUE;
 }
 
 JSBool
@@ -229,9 +229,7 @@ jsMFNode::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, 
 
 	*vp = JSVAL_VOID;
 
-	//return JS_TRUE;
-
-	return JS_FALSE;
+	return JS_TRUE;
 }
 
 } // X3D

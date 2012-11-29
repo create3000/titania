@@ -79,6 +79,12 @@ public:
 	virtual
 	const FieldType*
 	getType () const;
+	
+	std::string
+	toLocaleString () const;
+
+	std::string
+	toUTCString () const;
 
 	///  Output operator.
 	virtual

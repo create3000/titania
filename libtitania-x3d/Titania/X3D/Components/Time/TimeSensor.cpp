@@ -115,7 +115,7 @@ TimeSensor::set_enabled ()
 {
 	if (enabled)
 	{
-		if (loop)
+		if (loop and stopTime <= startTime)
 			start = getCurrentTime ();
 	}
 	else

@@ -100,15 +100,8 @@ PointSet::build ()
 	else if (_colorRGBA)
 	{
 		getColorsRGBA () .reserve (_coord -> point .size ());
-		
-		for (size_t i = 0; i < _color -> color .size (); ++ i)
-		{
-			float r, g, b, a;
-			_colorRGBA -> color [i] .getValue (r, g, b, a);
-			getColorsRGBA () .emplace_back (r, g, b, 1 - a);
-		}
-
-		getColorsRGBA () .resize (_coord -> point .size (), Color4f (1, 1, 1, 1));
+		getColorsRGBA () .assign  (_colorRGBA -> color .begin (), _colorRGBA -> color .end ());		
+		getColorsRGBA () .resize  (_coord -> point .size (), Color4f (1, 1, 1, 1));
 	}
 
 	getVertices () .assign (_coord -> point .begin (), _coord -> point .end ());

@@ -120,64 +120,6 @@ jsMFVec2d::construct (JSContext* context, uintN argc, jsval* vp)
 }
 
 JSBool
-jsMFVec2d::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
-{
-	MFVec2d* x3darrayfield = (MFVec2d*) JS_GetPrivate (context, obj);
-
-	if (not x3darrayfield)
-	{
-		*statep = JSVAL_NULL;
-		return JS_TRUE;
-	}
-
-	size_t* index;
-
-	switch (enum_op)
-	{
-		case JSENUMERATE_INIT:
-		case JSENUMERATE_INIT_ALL:
-		{
-			index   = new size_t (0);
-			*statep = PRIVATE_TO_JSVAL (index);
-
-			if (idp)
-				JS_ValueToId (context, INT_TO_JSVAL (x3darrayfield -> size ()), idp);
-
-			break;
-		}
-		case JSENUMERATE_NEXT:
-		{
-			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
-
-			if (*index < x3darrayfield -> size ())
-			{
-				JS_DefineProperty (context,
-				                   obj, (char*) *index,
-				                   JSVAL_VOID,
-				                   get1Value, set1Value,
-				                   JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT);
-
-				if (idp)
-					JS_ValueToId (context, INT_TO_JSVAL (*index), idp);
-
-				*index = *index + 1;
-				break;
-			}
-
-		//else done -- cleanup.
-		}
-		case JSENUMERATE_DESTROY:
-		{
-			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
-			delete index;
-			*statep = JSVAL_NULL;
-		}
-	}
-
-	return JS_TRUE;
-}
-
-JSBool
 jsMFVec2d::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	if (not JSID_IS_INT (id))

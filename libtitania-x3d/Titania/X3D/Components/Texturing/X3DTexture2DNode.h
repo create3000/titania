@@ -104,12 +104,11 @@ private:
 
 	void
 	getImageFormat (Magick::Image &,
-	                GLint &,
 	                GLenum &,
 	                const bool);
 
-	size_t
-	getComponents ();
+	void
+	applyTextureProperties (const SFNode <TextureProperties> &) const;
 
 	static const int wrapTypes [2];
 	GLuint           textureId;

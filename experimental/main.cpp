@@ -676,15 +676,44 @@ typedef math::vector3 <float>   Vector3f;
 typedef math::rotation4 <float> Rotation4f;
 typedef math::box3 <float>      Box3f;
 
+class A
+{
+public:
+	A ()
+	{ std::clog << "A" << std::endl; }
+};
+
+class B :
+	public A
+{
+public:
+	B ()
+	{ std::clog << "B" << std::endl; }
+};
+
+class C :
+	public A
+{
+public:
+	C ()
+	{ std::clog << "C" << std::endl; }
+};
+
+class D :
+	virtual public B, virtual public C
+{
+public:
+	D ()
+	{ std::clog << "D" << std::endl; }
+};
+
 #include <v8.h>
 int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 
-	
-	std::clog << "V8 " << v8::V8::GetVersion () << std::endl;
-
+	D ();
 
 //	test_path (basic::path ("/"));
 //	test_path (basic::path ("/", "/"));

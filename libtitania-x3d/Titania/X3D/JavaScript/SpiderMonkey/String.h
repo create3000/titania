@@ -46,42 +46,34 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_MFCOLOR_RGBA_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_MFCOLOR_RGBA_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_JSSTRING_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_JSSTRING_H__
 
-#include "../../../Fields/ArrayFields.h"
-#include "../jsX3DArrayField.h"
-#include "jsSFColorRGBA.h"
+#include <jsapi.h>
+#include <string>
 
 namespace titania {
 namespace X3D {
 
-class jsMFColorRGBA :
-	public jsX3DArrayField <SFColorRGBA>
+JSBool
+JS_NewStringValue (JSContext*, const std::string &, jsval*);
+
+std::string
+JS_GetString (JSContext*, JSString*);
+
+inline
+std::string
+JS_GetString (JSContext* context, jsval & value)
 {
-public:
+	return JS_GetString (context, JS_ValueToString (context, value));
+}
 
-	static 
-	void
-	init (JSContext*, JSObject*);
-
-	static 
-	JSBool
-	create (JSContext*, MFColorRGBA*, jsval*, const bool = false);
-
-	static 
-	JSClass*
-	getClass () { return &static_class; }
-
-
-private:
-
-	static JSClass static_class;
-	static JSBool  construct (JSContext*, uintN, jsval*);
-	static JSBool  get1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool  set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
-
-};
+inline
+std::string
+JS_GetString (JSContext* context, jsid & value)
+{
+	return JS_GetString (context, JSID_TO_STRING (value));
+}
 
 } // X3D
 } // titania
