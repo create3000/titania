@@ -56,12 +56,15 @@
     <None Include="info.h" />
     <None Include="libtitania-gzstream.md.pc" />
     <None Include="Makefile.am" />
+    <None Include="Titania\Stream\GZStream.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\gzstream.cpp" />
+    <Compile Include="Titania\Stream\GZStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
+    <Folder Include="Titania\Stream\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

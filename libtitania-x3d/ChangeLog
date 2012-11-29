@@ -1,5 +1,10 @@
 2012-11-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* X3DGeometryNode.cpp: 
+
+2012-11-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.md.pc:
 	* libtitania-x3d.cproj:

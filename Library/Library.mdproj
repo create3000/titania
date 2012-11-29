@@ -2210,6 +2210,8 @@
     <None Include="Models\Backgrounds\sunny.wrl" />
     <None Include="Models\People\woman.wrl" />
     <None Include="Tests\Scripting\Felület.wrl" />
+    <None Include="Tests\Basic\GZipEncoded.wrl" />
+    <None Include="Tests\Basic\GZipEncoded.wrl.gz" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

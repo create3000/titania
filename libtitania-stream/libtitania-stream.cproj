@@ -16,6 +16,7 @@
       <Packages>
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/libcurl.pc" name="libcurl" IsProject="false" />
         <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="true" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/zlib.pc" name="zlib" IsProject="false" />
       </Packages>
     </Packages>
   </PropertyGroup>
@@ -49,6 +50,7 @@
   <ItemGroup>
     <Folder Include="Titania\" />
     <Folder Include="Titania\Stream\" />
+    <Folder Include="Titania\Stream\Zlib\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Stream\SocketStreamBuf.cpp" />

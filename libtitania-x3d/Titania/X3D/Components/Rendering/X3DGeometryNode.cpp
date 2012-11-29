@@ -230,13 +230,11 @@ X3DGeometryNode::update ()
 void
 X3DGeometryNode::clear ()
 {
-	texCoord .clear ();
-	textureCoordinateGenerator = nullptr;
+	texCoord   .clear ();
 	colors     .clear ();
 	colorsRGBA .clear ();
 	normals    .clear ();
 	vertices   .clear ();
-	vertexMode = GL_TRIANGLES;
 }
 
 void
