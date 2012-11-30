@@ -1,5 +1,10 @@
 2012-11-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TimeSensor.h:
+	* TimeSensor.cpp: 
+
+2012-11-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DField.h:
 	* PointSet.cpp:
 	* IndexedLineSet.cpp:

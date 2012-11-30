@@ -112,12 +112,12 @@ private:
 	void
 	set_stop ();
 
-	time_type currentCycleInterval;
+	time_type cycle;
+	time_type interval;
 	SFTime    start;
 	SFTime    stop;
 
-	sigc::connection startTimeoutId;
-	sigc::connection timeout_id;
+	sigc::connection startTimeout;
 
 };
 

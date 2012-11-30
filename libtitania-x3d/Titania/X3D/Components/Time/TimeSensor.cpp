@@ -66,6 +66,11 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	           cycleTime (),                                                    // SFTime  [out]    cycleTime
 	    fraction_changed (),                                                    // SFFloat [out]    fraction_changed
 	                time ()                                                     // SFTime  [out]    time
+	               cycle (),                                                    
+	            interval (),                                                    
+	               start (),                                                    
+	                stop (),                                                    
+	        startTimeout ()                                                     
 {
 	setComponent ("Time");
 	setTypeName ("TimeSensor");
@@ -144,12 +149,12 @@ TimeSensor::set_startTime ()
 void
 TimeSensor::addStartTimeout (const time_type interval)
 {
-	if (startTimeoutId .connected ())
+	if (startTimeout .connected ())
 		removeStartTimeout ();
 
-	startTimeoutId = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &TimeSensor::do_start),
-	                                                   interval * 1000,
-	                                                   GDK_PRIORITY_REDRAW);
+	startTimeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &TimeSensor::do_start),
+	                                                 interval * 1000,
+	                                                 GDK_PRIORITY_REDRAW);
 }
 
 void
@@ -157,7 +162,8 @@ TimeSensor::set_start ()
 {
 	if (enabled and not isActive)
 	{
-		currentCycleInterval = cycleInterval;
+		cycle    = getCurrentTime ();
+		interval = cycleInterval;
 
 		cycleTime        = getCurrentTime ();
 		isActive         = true;
@@ -171,7 +177,7 @@ TimeSensor::set_start ()
 void
 TimeSensor::removeStartTimeout ()
 {
-	startTimeoutId .disconnect ();
+	startTimeout .disconnect ();
 }
 
 bool
@@ -210,12 +216,13 @@ TimeSensor::set_stop ()
 void
 TimeSensor::update ()
 {
-	//std::clog << "###### " << getCurrentTime () - cycleTime << " " << currentCycleInterval << std::endl;
+	//std::clog << "###### " << getCurrentTime () - cycleTime << " " << interval << std::endl;
 
-	if (getCurrentTime () - cycleTime >= currentCycleInterval)
+	if (getCurrentTime () - cycle >= interval)
 	{
 		if (loop)
 		{
+			cycle           += interval;
 			cycleTime        = getCurrentTime ();
 			fraction_changed = 0;
 		}
@@ -229,7 +236,7 @@ TimeSensor::update ()
 	else
 	{
 		static time_type intpart;
-		fraction_changed = std::modf ((getCurrentTime () - cycleTime) / currentCycleInterval, &intpart);
+		fraction_changed = std::modf ((getCurrentTime () - cycle) / interval, &intpart);
 	}
 
 	time = getCurrentTime ();
