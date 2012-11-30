@@ -11,14 +11,16 @@ EXTERNPROTO Rotor [
 "../Library/Rotor.wrl"
 
 PROTO Gear [
-  inputOutput SFFloat teeth 10
-  inputOutput SFFloat toothDepth 2
-  inputOutput SFFloat innerRadius 1
-  inputOutput SFFloat outerRadius 4
-  inputOutput SFFloat width 1
+  inputOutput    SFFloat teeth 10
+  inputOutput    SFFloat toothDepth 2
+  inputOutput    SFFloat innerRadius 1
+  inputOutput    SFFloat outerRadius 4
+  inputOutput    SFFloat width 1
+  initializeOnly SFFloat creaseAngle 0.6
 ]
 {
   DEF Gear IndexedFaceSet {
+    creaseAngle IS creaseAngle
     coord Coordinate { }
   }
 
@@ -36,8 +38,8 @@ function initialize ()
 {
 	print ('### Generating gear ...');
 
-	var points  = new MFVec3f ();
-	var indices = new MFInt32 ();
+	var indices = gear .set_coordIndex
+	var points  = gear .coord .point;
 
 	var cos = Math .cos;
 	var sin = Math .sin;
@@ -172,6 +174,9 @@ function initialize ()
 		indices [indices .length] = points .length + index + 2;
 		indices [indices .length] = -1;
 	}
+
+	indices [indices .length - 3] = points .length + 1;
+	indices [indices .length - 2] = points .length;
 	
 	// Generate outward faces of teeth points
 	
@@ -192,9 +197,6 @@ function initialize ()
 		points [points .length] = new SFVec3f (r1 * cos (angle + 3 * da), r1 * sin (angle + 3 * da), -width * 0.5);
 	}
 
-	points [points .length] = new SFVec3f  (r1 * cos (0), r1 * sin (0),  width * 0.5);
-	points [points .length] = new SFVec3f  (r1 * cos (0), r1 * sin (0), -width * 0.5);
-
 
 	// Generate inside radius cylinder points
 	
@@ -209,6 +211,9 @@ function initialize ()
 		indices [indices .length] = -1;
 	}
 	
+	indices [indices .length - 3] = points .length + 1;
+	indices [indices .length - 2] = points .length;
+		
 	// Generate inside radius cylinder indices
 	
 	for (var i = 0; i < teeth + 1; ++ i)
@@ -217,9 +222,6 @@ function initialize ()
 		points [points .length] = new SFVec3f (r0 * cos (angle), r0 * sin (angle), -width * 0.5);
 		points [points .length] = new SFVec3f (r0 * cos (angle), r0 * sin (angle),  width * 0.5);
 	}
-
-	gear .set_coordIndex = indices;
-	gear .coord .point   = points;
 
 	print ('### Generating gear done.');
 }

@@ -65,7 +65,7 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	       cycleInterval (1),                                                   // SFTime  [in,out] cycleInterval     1        (0,∞)
 	           cycleTime (),                                                    // SFTime  [out]    cycleTime
 	    fraction_changed (),                                                    // SFFloat [out]    fraction_changed
-	                time ()                                                     // SFTime  [out]    time
+	                time (),                                                    // SFTime  [out]    time
 	               cycle (),                                                    
 	            interval (),                                                    
 	               start (),                                                    
