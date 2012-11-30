@@ -235,25 +235,19 @@ template <class ValueType>
 X3DField <ValueType>::X3DField () :
 	X3DFieldDefinition (),
 	value ()
-{
-	assert (value == ValueType ());
-}
+{ }
 
 template <class ValueType>
 X3DField <ValueType>::X3DField (const X3DField & field) :
 	X3DFieldDefinition (),
 	value (field .getValue ())
-{
-	assert (value == field .getValue ());
-}
+{ }
 
 template <class ValueType>
 X3DField <ValueType>::X3DField (const ValueType & value) :
 	X3DFieldDefinition (),
 	value (value)
-{
-	assert (this -> value == value);
-}
+{ }
 
 template <class ValueType>
 X3DField <ValueType>*
@@ -308,9 +302,7 @@ bool
 X3DField <ValueType>::operator == (const X3DFieldDefinition & field) const
 {
 	if (getType () == field .getType ())
-	{
 		return getValue () == static_cast <const X3DField &> (field) .getValue ();
-	}
 
 	return false;
 }

@@ -1,14 +1,18 @@
 #X3D V2.0 utf8 Titania
 
 PROTO Rotor [
-  inputOutput SFTime     cycleInterval 1
-  inputOutput SFBool     loop FALSE
-  outputOnly  SFRotation value_changed
+  inputOutput    SFTime     cycleInterval 1
+  inputOutput    SFBool     loop FALSE
+  inputOutput    SFTime     startTime 0
+  inputOutput    SFTime     stopTime 0
+  outputOnly     SFRotation value_changed
 ]
 {
   DEF Timer TimeSensor {
     cycleInterval IS cycleInterval
     loop IS loop
+    startTime IS startTime
+    stopTime IS stopTime
   }
 
   DEF Rotator OrientationInterpolator {

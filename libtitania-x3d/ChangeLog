@@ -1,3 +1,11 @@
+2012-11-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DField.h:
+	* PointSet.cpp:
+	* IndexedLineSet.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp: 
+
 2012-11-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

@@ -100,9 +100,12 @@ IndexedLineSet::initialize ()
 void
 IndexedLineSet::set_coordIndex ()
 {
-	polylines .clear ();
-	
 	SFNode <Coordinate> _coord = coord;
+	
+	if (not _coord)
+		return;
+
+	polylines .clear ();
 
 	// Fill up coordIndex if there are no indices.
 	if (coordIndex .empty ())
@@ -154,14 +157,11 @@ IndexedLineSet::set_coordIndex ()
 
 		if (polylines .size ())
 		{
-			if (_coord)
-			{
-				// Resize coord .point if to small
-				if (_coord -> point .size () < (size_t) numPoints)
-					_coord -> point .resize (numPoints);
+			// Resize coord .point if to small
+			if (_coord -> point .size () < (size_t) numPoints)
+				_coord -> point .resize (numPoints);
 
-				set_colorIndex ();
-			}
+			set_colorIndex ();
 		}
 	}
 }

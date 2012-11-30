@@ -85,7 +85,7 @@ PointSet::build ()
 {
 	SFNode <Coordinate> _coord = coord;
 
-	if (not _coord or not _coord -> point .size ())
+	if (not _coord)
 		return;
 
 	SFNode <Color>     _color     = color;

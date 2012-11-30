@@ -113,9 +113,12 @@ IndexedFaceSet::initialize ()
 void
 IndexedFaceSet::set_coordIndex ()
 {
-	polygons .clear ();
-
 	SFNode <Coordinate> _coord = coord;
+	
+	if (not _coord)
+		return;
+
+	polygons .clear ();
 
 	// Fill up coordIndex if there are no indices.
 	if (coordIndex .empty ())
@@ -179,16 +182,13 @@ IndexedFaceSet::set_coordIndex ()
 
 		if (polygons .size ())
 		{
-			if (_coord)
-			{
-				// Resize coord .point if to small
-				if (_coord -> point .size () < (size_t) numPoints)
-					_coord -> point .resize (numPoints);
+			// Resize coord .point if to small
+			if (_coord -> point .size () < (size_t) numPoints)
+				_coord -> point .resize (numPoints);
 
-				set_texCoordIndex ();
-				set_colorIndex    ();
-				set_normalIndex   ();
-			}
+			set_texCoordIndex ();
+			set_colorIndex    ();
+			set_normalIndex   ();
 		}
 	}
 }
@@ -395,7 +395,7 @@ IndexedFaceSet::createBBox ()
 {
 	SFNode <Coordinate> _coord = coord;
 
-	if (polygons .size ())
+	if (_coord and polygons .size ())
 	{
 		Vector3f min = _coord -> point [coordIndex [polygons [0] .vertices [0]]];
 		Vector3f max = min;

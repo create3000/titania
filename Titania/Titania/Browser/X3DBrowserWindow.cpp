@@ -73,6 +73,7 @@ X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 	// Add URNs to X3D::X3DUrlObject
 	X3D::X3DUrlObject::addURN ("about:icon",        get_ui   ("icons/icon-bw.svg"));
 	X3D::X3DUrlObject::addURN ("about:blank",       get_page ("about/blank.wrl"));
+	X3D::X3DUrlObject::addURN ("about:gears",       get_page ("about/gears.wrl"));
 	X3D::X3DUrlObject::addURN ("about:home",        get_page ("about/home.wrl"));
 	X3D::X3DUrlObject::addURN ("about:info",        get_page ("about/info.wrl"));
 	X3D::X3DUrlObject::addURN ("about:splash",      get_page ("about/splash.wrl"));

@@ -58,7 +58,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	               creaseAngle (),              // SFFloat [ ]      creaseAngle      0           [0,∞)
 	                      bbox (),              
 	                  texCoord (),              
-	textureCoordinateGenerator (),              
+	textureCoordinateGenerator (NULL),              
 	                    colors (),              
 	                colorsRGBA (),              
 	                   normals (),              
@@ -230,7 +230,8 @@ X3DGeometryNode::update ()
 void
 X3DGeometryNode::clear ()
 {
-	texCoord   .clear ();
+	texCoord .clear ();
+	textureCoordinateGenerator = NULL;
 	colors     .clear ();
 	colorsRGBA .clear ();
 	normals    .clear ();
