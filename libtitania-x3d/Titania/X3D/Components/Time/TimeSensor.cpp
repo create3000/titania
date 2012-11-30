@@ -143,18 +143,14 @@ TimeSensor::set_startTime ()
 		start = getCurrentTime ();
 
 	else
-		addStartTimeout (startTime - getCurrentTime ());
+		addTimeout (startTimeout, &TimeSensor::do_start, startTime);
 }
 
-void
-TimeSensor::addStartTimeout (const time_type interval)
+bool
+TimeSensor::do_start ()
 {
-	if (startTimeout .connected ())
-		removeStartTimeout ();
-
-	startTimeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &TimeSensor::do_start),
-	                                                 interval * 1000,
-	                                                 GDK_PRIORITY_REDRAW);
+	start = getCurrentTime ();
+	return false;
 }
 
 void
@@ -172,19 +168,6 @@ TimeSensor::set_start ()
 
 		getBrowser () -> addSensor (this);
 	}
-}
-
-void
-TimeSensor::removeStartTimeout ()
-{
-	startTimeout .disconnect ();
-}
-
-bool
-TimeSensor::do_start ()
-{
-	start = getCurrentTime ();
-	return false;
 }
 
 void
@@ -243,9 +226,20 @@ TimeSensor::update ()
 }
 
 void
+TimeSensor::addTimeout (sigc::connection & timeout, TimeoutHandler callback, const time_type time)
+{
+	if (timeout .connected ())
+		timeout .disconnect ();
+
+	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, callback),
+	                                            time - getCurrentTime () * 1000,
+	                                            GDK_PRIORITY_REDRAW);
+}
+
+void
 TimeSensor::dispose ()
 {
-	removeStartTimeout ();
+	startTimeout .disconnect ();
 
 	if (isActive)
 		getBrowser () -> removeSensor (this);

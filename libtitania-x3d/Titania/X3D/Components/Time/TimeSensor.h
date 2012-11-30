@@ -84,6 +84,8 @@ public:
 
 private:
 
+	typedef bool (TimeSensor::*TimeoutHandler) ();
+
 	virtual
 	void
 	initialize ();
@@ -94,23 +96,20 @@ private:
 	void
 	set_startTime ();
 
-	void
-	set_start ();
-
-	void
-	addStartTimeout (const time_type);
-
-	void
-	removeStartTimeout ();
-
 	bool
 	do_start ();
+
+	void
+	set_start ();
 
 	void
 	set_stopTime ();
 
 	void
 	set_stop ();
+
+	void
+	addTimeout (sigc::connection &, TimeoutHandler, const time_type);
 
 	time_type cycle;
 	time_type interval;
