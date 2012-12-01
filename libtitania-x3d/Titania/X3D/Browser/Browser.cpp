@@ -82,39 +82,40 @@ Browser::initialize ()
 
 	X3DBrowser::initialize ();
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	if (glXGetCurrentContext ())
+	{
+		glClearColor (0, 0, 0, 0);
+		glClearDepth (1);
 
-	glClearColor (0, 0, 0, 0);
-	glClearDepth (1);
-	glDepthFunc (GL_LEQUAL);       // important
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
-	glCullFace (GL_BACK);
-	glEnable (GL_NORMALIZE);       // important
-	
-	GLfloat light_model_ambient [ ] = { 0, 0, 0, 1 };
+		glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
+		glCullFace (GL_BACK);
+		glEnable (GL_NORMALIZE);
 
-	glLightModelfv (GL_LIGHT_MODEL_AMBIENT,       light_model_ambient);
-	glLightModeli  (GL_LIGHT_MODEL_LOCAL_VIEWER,  GL_FALSE);
-	glLightModeli  (GL_LIGHT_MODEL_TWO_SIDE,      GL_TRUE);
-	glLightModeli  (GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPARATE_SPECULAR_COLOR);
+		glDepthFunc (GL_LEQUAL);
 
-	glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	glHint (GL_GENERATE_MIPMAP_HINT,        GL_NICEST);
-	glHint (GL_FOG_HINT,                    GL_NICEST);
+		//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
 
-//	glHint (GL_POINT_SMOOTH_HINT,   GL_NICEST);
-//	glHint (GL_LINE_SMOOTH_HINT,    GL_NICEST);
-//	glHint (GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-//
-//	glEnable (GL_POINT_SMOOTH);
-//	glEnable (GL_LINE_SMOOTH);
-//	glEnable (GL_POLYGON_SMOOTH);
+		GLfloat light_model_ambient [ ] = { 0, 0, 0, 1 };
 
-	glLineWidth (1);
-	glPointSize (1);
+		glLightModelfv (GL_LIGHT_MODEL_AMBIENT,       light_model_ambient);
+		glLightModeli  (GL_LIGHT_MODEL_LOCAL_VIEWER,  GL_FALSE);
+		glLightModeli  (GL_LIGHT_MODEL_TWO_SIDE,      GL_TRUE);
+		glLightModeli  (GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPARATE_SPECULAR_COLOR);
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+		glHint (GL_GENERATE_MIPMAP_HINT,        GL_NICEST);
+		glHint (GL_FOG_HINT,                    GL_NICEST);
+
+		//	glHint (GL_POINT_SMOOTH_HINT,   GL_NICEST);
+		//	glHint (GL_LINE_SMOOTH_HINT,    GL_NICEST);
+		//	glHint (GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+		//
+		//	glEnable (GL_POINT_SMOOTH);
+		//	glEnable (GL_LINE_SMOOTH);
+		//	glEnable (GL_POLYGON_SMOOTH);
+	}
 
 	std::clog
 		<< "\tDone initializing Browser." << std::endl

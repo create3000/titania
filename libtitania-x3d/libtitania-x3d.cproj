@@ -25,6 +25,8 @@
         <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="true" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/Magick++.pc" name="Magick++" IsProject="false" />
         <Package file="/home/holger/Projekte/Titania/libtitania-opengl-surface/libtitania-opengl-surface.md.pc" name="libtitania-opengl-surface" IsProject="true" />
+        <Package file="/usr/lib/pkgconfig/ftgl.pc" name="FTGL" IsProject="false" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/fontconfig.pc" name="Fontconfig" IsProject="false" />
       </Packages>
     </Packages>
     <ReleaseVersion>0.3</ReleaseVersion>
@@ -533,6 +535,8 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DExecutionContext.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DScene.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\String.h" />
+    <None Include="Titania\X3D\Rendering\OpenGL.h" />
+    <None Include="Titania\X3D\Basic\X3DArray.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

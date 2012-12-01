@@ -50,6 +50,8 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
+#include <fontconfig/fontconfig.h>
+
 namespace titania {
 namespace X3D {
 
@@ -85,6 +87,29 @@ X3DBasicNode*
 FontStyle::create (X3DExecutionContext* const executionContext) const
 {
 	return new FontStyle (executionContext);
+}
+
+std::string
+FontStyle::getFilename () const
+{
+	FcPattern* pattern = family .size ()
+	                     ? FcNameParse ((FcChar8*) (family [0] .getValue () .c_str ()))
+								: FcPatternCreate ();
+
+	FcConfigSubstitute (NULL, pattern, FcMatchPattern);
+	FcDefaultSubstitute (pattern);
+
+	FcResult   result;
+	FcPattern* match = FcFontMatch (NULL, pattern, &result);
+
+	FcChar8* file;
+
+	FcPatternGetString (match, FC_FILE, 0, &file);
+
+	FcPatternDestroy (pattern);
+
+	__LOG__ << file << std::endl;
+	return std::string ((char*) file);
 }
 
 } // X3D

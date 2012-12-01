@@ -260,10 +260,20 @@ public:
 	path () const
 	{ return value .path; }
 
+	///  Set the query of this URI.
+	void
+	query (const string_type & query)
+	{ value .query = query; }
+
 	///  Returns the query of this URI.
 	const string_type &
 	query () const
 	{ return value .query; }
+
+	///  Set the fragment of this URI.
+	void
+	fragment (const string_type & fragment)
+	{ value .fragment = fragment; }
 
 	///  Returns the fragment of this URI.
 	const string_type &
@@ -325,15 +335,19 @@ public:
 	/// @name Filename Operations
 
 	//@{
-	///  Returns the full filename of this URI.
-	string_type
+	///  Returns the full basename of this URI.
+	basic_uri
 	filename () const;
 
-	///  Returns the basename of this URI's filename.
+	///  Returns the full basename of this URI.
+	string_type
+	basename () const;
+
+	///  Returns the basename of this URI.
 	string_type
 	basename (const string_type &) const;
 
-	///  Returns the basename of this URI's filename stript of @a list of suffixes.
+	///  Returns the basename of this URI stript of @a list of suffixes.
 	string_type
 	basename (std::initializer_list <string_type>) const;
 
@@ -705,10 +719,24 @@ basic_uri <StringT>::relative_path (const basic_uri & descendant) const
 // Filename operations
 
 template <class StringT>
-typename basic_uri <StringT>::string_type
+basic_uri <StringT>
 basic_uri <StringT>::filename () const
 {
-	if (path () .length () and is_file ())
+	return basic_uri ({ is_local (),
+	                    is_absolute (),
+	                    scheme (),
+	                    value .slashs,
+	                    authority (),
+	                    host (),
+	                    port (),
+	                    path () });
+}
+
+template <class StringT>
+typename basic_uri <StringT>::string_type
+basic_uri <StringT>::basename () const
+{
+	if (path () .length ())
 		return path () .substr (path (). rfind (Signs::Slash) + 1);
 
 	return string_type ();
@@ -720,11 +748,11 @@ basic_uri <StringT>::basename (const string_type & suffix) const
 {
 	if (path () .length () and is_file () and path () .substr (path () .size () - suffix .length (), suffix .length ()) == suffix)
 	{
-		string_type basename = filename ();
+		string_type basename = this -> basename ();
 		return basename .substr (0, basename .size () - suffix .length ());
 	}
 
-	return filename ();
+	return basename ();
 }
 
 template <class StringT>
@@ -733,14 +761,15 @@ basic_uri <StringT>::basename (std::initializer_list <string_type> suffixes) con
 {
 	for (const auto & suffix : suffixes)
 	{
+		string_type basename = this -> basename ();
+
 		if (path () .length () and is_file () and path () .substr (path () .size () - suffix .length (), suffix .length ()) == suffix)
 		{
-			string_type basename = filename ();
 			return basename .substr (0, basename .size () - suffix .length ());
 		}
 	}
 
-	return filename ();
+	return basename ();
 }
 
 template <class StringT>
@@ -804,7 +833,7 @@ basic_uri <StringT>::parser::uriString (size_type first) const
 {
 	// URI Generic Syntax
 	// ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
-	
+
 	first = scheme (first);
 
 	// Network path

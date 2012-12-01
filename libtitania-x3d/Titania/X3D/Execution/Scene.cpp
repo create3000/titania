@@ -253,7 +253,7 @@ Scene::clear ()
 void
 Scene::dispose ()
 {
-	std::clog << "\tDisposing Scene: " << getWorldURL () << std::endl;
+	//std::clog << "\tDisposing Scene: " << getWorldURL () << std::endl;
 
 	navigationInfos .dispose ();
 	backgrounds     .dispose ();
@@ -262,7 +262,7 @@ Scene::dispose ()
 
 	X3DScene::dispose ();
 
-	std::clog << "\tDone disposing Scene." << std::endl;
+	//std::clog << "\tDone disposing Scene." << std::endl;
 }
 
 } // X3D

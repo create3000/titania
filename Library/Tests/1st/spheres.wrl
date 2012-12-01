@@ -1,0 +1,100 @@
+#VRML V2.0 utf8
+
+Background {
+	transparency 1
+}
+
+NavigationInfo {
+  type [ "EXAMINE", "NONE" ]
+}
+
+Viewpoint {}
+
+Transform {
+  rotation 0.267261 0.534522 0.801784 4
+  scale 0.398721 0.398721 0.39872
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.6 0.6 0.8
+        transparency 0.4
+      }
+    }
+    geometry DEF Sphere Sphere {
+      solid FALSE
+    }
+  }
+}
+Transform {
+  translation 3 0 0
+  children DEF Shape Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.6 0.6 0.8
+        transparency 0.4
+      }
+    }
+    geometry USE Sphere
+  }
+}
+Transform {
+  translation -3 0 0
+  children USE Shape
+}
+Transform {
+  translation 0 3 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "earth.png"
+      }
+    }
+    geometry USE Sphere
+  }
+}
+Transform {
+  translation 0 -3 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "earth.png"
+      }
+    }
+    geometry USE Sphere
+  }
+}
+Transform {
+  translation 0 0 -3
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry USE Sphere
+  }
+}
+Transform {
+  translation 0 0 3
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry USE Sphere
+  }
+}
+Transform {
+  translation 3 -3 3
+  children DEF Shape_1 Shape {
+    appearance Appearance {
+      material Material {
+        transparency 0.2
+      }
+    }
+    geometry Sphere { }
+  }
+}
+Transform {
+  translation -3 3 -3
+  children USE Shape_1
+}

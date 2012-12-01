@@ -74,6 +74,9 @@ public:
 	virtual
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
+	
+	std::string
+	getFilename () const;
 
 };
 

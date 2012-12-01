@@ -148,6 +148,15 @@ public:
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
 
+
+	/// URI Handling
+	
+	MFString
+	transformURI (const MFString &);
+
+	basic::uri
+	transformURI (const basic::uri &);
+
 	/// URN Handling
 
 	static
@@ -159,18 +168,12 @@ public:
 	removeURN (const basic::uri &);
 
 	static
-	const basic::uri &
+	basic::uri
 	getURL (const basic::uri & uri);
 
 	static
 	const URNIndex &
 	getURNs ();
-
-	MFString
-	transformURI (const MFString &);
-
-	basic::uri
-	transformURI (const basic::uri &);
 
 
 protected:

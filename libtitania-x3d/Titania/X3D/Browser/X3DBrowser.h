@@ -72,6 +72,13 @@ class X3DBrowser :
 {
 public:
 
+	SFTime initialized;
+	SFTime exposed;
+	SFTime displayed;
+	SFTime finished;
+	SFTime shutdown;
+	SFTime changed;
+
 	virtual
 	X3DBrowser*
 	getBrowser () const;
@@ -368,21 +375,8 @@ private:
 	double   currentFrameRate;
 	SFString description;
 
-
-public:
-
-	SFTime initialized;
-	SFTime exposed;
-	SFTime displayed;
-	SFTime finished;
-	SFTime shutdown;
-	SFTime changed;
-
-
-private:
-
-	SFNode <World> world;
 	SFNode <Scene> scene;
+	SFNode <World> world;
 
 	void
 	set_scene ();

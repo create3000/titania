@@ -1,0 +1,44 @@
+#VRML V2.0 utf8
+
+META "icon" "about:icon"
+META "title" "about:date"
+
+Viewpoint {
+  position -1.38477 0.122227 8.74054
+  centerOfRotation -1.38477 0.122227 0
+}
+
+Transform {
+  translation -5 0 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+      }
+    }
+    geometry DEF Time Text {
+      fontStyle FontStyle {
+        family "Ubuntu Mono"
+        size 0.5
+      }
+    }
+  }
+}
+
+DEF Timer TimeSensor {
+  loop TRUE
+}
+
+DEF RandomText Script {
+  eventIn SFTime set_time
+  field   SFNode time USE Time
+
+  url "vrmlscript:
+function set_time (value)
+{
+	time .string = new MFString (new Date (value * 1000) .toUTCString ());
+}
+  "
+}
+
+ROUTE Timer.time TO RandomText.set_time

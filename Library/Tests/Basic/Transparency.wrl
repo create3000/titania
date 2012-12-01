@@ -1,0 +1,46 @@
+#X3D V3.0 utf8
+
+Background {
+  transparency 1
+}
+
+Viewpoint { }
+
+Transform {
+  translation -1 0 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+        transparency 0.5
+      }
+    }
+    geometry Box { }
+  }
+}
+
+Transform {
+  translation -4 0 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0 1 0
+        transparency 0.5
+      }
+    }
+    geometry Box { }
+  }
+}
+
+Transform {
+  translation -7 0 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0 0 1
+        transparency 0.5
+      }
+    }
+    geometry Box { }
+  }
+}

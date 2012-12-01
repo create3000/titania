@@ -128,17 +128,17 @@ X3DBrowserContext::getTextures () const
 void
 X3DBrowserContext::addSensor (X3DSensorNode* const sensor)
 {
-	std::clog << "\tAdding sensor " << sensor -> getTypeName () << " to world: " << sensors .size () << " are registered until now." << std::endl;
+	std::clog << "\tAdding sensor " << sensor -> getTypeName () << " to world: " << sensors .getRequesters () .size () << " are registered until now." << std::endl;
 	sensors .addInterest (sensor, &X3DSensorNode::update);
-	std::clog << "\tNow are " << sensors .size () << " registered." << std::endl;
+	std::clog << "\tNow are " << sensors .getRequesters () .size () << " registered." << std::endl;
 }
 
 void
 X3DBrowserContext::removeSensor (X3DSensorNode* const sensor)
 {
-	std::clog << "\tRemoving sensor " << sensor -> getTypeName () << " from world: " << sensors .size () << " are registered until now." << std::endl;
+	std::clog << "\tRemoving sensor " << sensor -> getTypeName () << " from world: " << sensors .getRequesters () .size () << " are registered until now." << std::endl;
 	sensors .removeInterest (sensor, &X3DSensorNode::update);
-	std::clog << "\tNow are " << sensors .size () << " registered." << std::endl;
+	std::clog << "\tNow are " << sensors .getRequesters () .size () << " registered." << std::endl;
 }
 
 void

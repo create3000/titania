@@ -2,4 +2,4 @@ Name: libtitania-gzstream
 Description: 
 Version: 0.3
 Libs: -L"/home/holger/Projekte/Titania/libtitania-gzstream/bin/Debug" -ltitania-gzstream
-Cflags: -I"/home/holger/Projekte/Titania/libtitania-gzstream/Titania" -I"/home/holger/Projekte/Titania/libtitania-gzstream"
+Cflags: -I"/home/holger/Projekte/Titania/libtitania-gzstream/Titania" -I"/home/holger/Projekte/Titania/libtitania-gzstream" -I"/home/holger/Projekte/Titania/libtitania-gzstream/Titania/Stream"

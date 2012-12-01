@@ -2212,6 +2212,12 @@
     <None Include="Tests\Scripting\Felület.wrl" />
     <None Include="Tests\Basic\GZipEncoded.wrl" />
     <None Include="Tests\Basic\GZipEncoded.wrl.gz" />
+    <None Include="Tests\1st\earth.png" />
+    <None Include="Tests\1st\spheres.wrl" />
+    <None Include="Tests\1st\spheres-inline.wrl" />
+    <None Include="Tests\Basic\Transparency.wrl" />
+    <None Include="Tests\Text\test.wrl" />
+    <None Include="Tests\Text\RandomText.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />
@@ -2252,5 +2258,6 @@
     <Folder Include="Tests\Rendering\" />
     <Folder Include="Tests\EnvironmentalSensors\" />
     <Folder Include="Models\Backgrounds\" />
+    <Folder Include="Tests\Text\" />
   </ItemGroup>
 </Project>

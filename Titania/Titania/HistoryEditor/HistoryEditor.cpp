@@ -98,7 +98,7 @@ HistoryEditor::getTitle (const basic::uri & worldURL)
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{
-		title = worldURL .filename ();
+		title = worldURL .basename ();
 	}
 
 	return title;

@@ -59,6 +59,12 @@ X3DOutput::X3DOutput () :
 	requesterIndex ()  
 { }
 
+const RequesterArray &
+X3DOutput::getRequesters () const
+{
+	return requesters;
+}
+
 void
 X3DOutput::addInterest (const Requester & function) const
 {
@@ -109,12 +115,6 @@ X3DOutput::processInterests () const
 	{
 		(*requester ++)();
 	}
-}
-
-X3DOutput::size_type
-X3DOutput::size ()
-{
-	return requesters .size ();
 }
 
 void

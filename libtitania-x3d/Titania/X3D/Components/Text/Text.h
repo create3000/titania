@@ -50,6 +50,9 @@
 #define __TITANIA_X3D_COMPONENTS_TEXT_TEXT_H__
 
 #include "../Rendering/X3DGeometryNode.h"
+#include "../Text/X3DFontStyleNode.h"
+#include <FTGL/ftgl.h>
+#include <memory>
 
 namespace titania {
 namespace X3D {
@@ -61,19 +64,47 @@ public:
 
 	using X3DGeometryNode::solid;
 
-	SFNode <X3DBasicNode> fontStyle;
-	MFFloat               length;
-	SFFloat               maxExtent;
-	MFString              string;
-	MFVec2f               lineBounds;
-	SFVec3f               origin;
-	SFVec2f               textBounds;
+	MFString                  string;
+	MFFloat                   length;
+	SFFloat                   maxExtent;
+	SFVec3f                   origin;
+	MFVec2f                   lineBounds;
+	SFVec2f                   textBounds;
+	SFNode <X3DFontStyleNode> fontStyle;
 
 	Text (X3DExecutionContext* const);
 
 	virtual
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
+
+	virtual
+	void
+	display ();
+
+	virtual
+	void
+	dispose ();
+
+
+private:
+
+	virtual
+	void
+	initialize ();
+
+	virtual
+	Box3f
+	createBBox ();
+
+	void
+	set_fontStyle ();
+
+	virtual
+	void
+	build ();
+
+	std::unique_ptr <FTPolygonFont> font;
 
 };
 

@@ -242,9 +242,7 @@ X3DBrowserWidget::set_urlError ()
 
 	getMessageDialog () .set_message ("Invalid X3D");
 	getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
-	                                         + basic::join (getBrowser () -> urlError .cbegin (),
-	                                                        getBrowser () -> urlError .cend (),
-	                                                        "\n")
+	                                         + basic::join (getBrowser () -> urlError, "\n")
 	                                         + "</span>",
 	                                         true);
 	getMessageDialog () .show ();

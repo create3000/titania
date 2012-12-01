@@ -1,0 +1,31 @@
+#VRML V2.0 utf8
+
+META "title" "Text test"
+
+Viewpoint { }
+
+Shape {
+  appearance Appearance {
+    material Material { diffuseColor 1 0 0 }
+  }
+  geometry Text {
+    string [
+      "Hällö Wörld!",
+      "This is a test!"
+    ]
+    fontStyle FontStyle {
+      family "Ubuntu Mono"
+      size 1
+    }
+  }
+}
+
+Transform {
+  translation 0 0.5 0
+  children Shape {
+    geometry Box {
+      size 1 1 1
+    }
+  }
+}
+

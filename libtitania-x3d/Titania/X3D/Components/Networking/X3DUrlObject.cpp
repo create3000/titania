@@ -261,36 +261,7 @@ throw (Error <INVALID_URL>,
 	throw Error <URL_UNAVAILABLE> ("Couldn't load URL '" + transformedURL + "'");
 }
 
-//  URN Handling
-
-void
-X3DUrlObject::addURN (const basic::uri & urn, const basic::uri & uri)
-{
-	URNCache .insert (std::make_pair (urn, uri));
-}
-
-void
-X3DUrlObject::removeURN (const basic::uri & urn)
-{
-	URNCache .erase (urn);
-}
-
-const basic::uri &
-X3DUrlObject::getURL (const basic::uri & uri)
-{
-	const auto urn = URNCache .find (uri);
-
-	if (urn not_eq URNCache .end ())
-		return urn -> second;
-
-	return uri;
-}
-
-const URNIndex &
-X3DUrlObject::getURNs ()
-{
-	return URNCache;
-}
+//  URI Handling
 
 MFString
 X3DUrlObject::transformURI (const MFString & uri)
@@ -320,6 +291,42 @@ X3DUrlObject::transformURI (const basic::uri & uri)
 	//	print_uri (transformedURL);
 
 	return transformedURL;
+}
+
+//  URN Handling
+
+void
+X3DUrlObject::addURN (const basic::uri & urn, const basic::uri & uri)
+{
+	URNCache .insert (std::make_pair (urn .filename (), uri));
+}
+
+void
+X3DUrlObject::removeURN (const basic::uri & urn)
+{
+	URNCache .erase (urn .filename ());
+}
+
+basic::uri
+X3DUrlObject::getURL (const basic::uri & uri)
+{
+	const auto urn = URNCache .find (uri .filename ());
+
+	if (urn not_eq URNCache .end ())
+	{
+		basic::uri url = urn -> second;
+		url .query    (uri .query ());
+		url .fragment (uri .fragment ());
+		return url;
+	}
+
+	return uri;
+}
+
+const URNIndex &
+X3DUrlObject::getURNs ()
+{
+	return URNCache;
 }
 
 void
@@ -356,6 +363,7 @@ print_uri (const basic::uri & uri)
 	std::clog << "Parent:   " << uri .parent () << std::endl;
 
 	std::clog << "Filename: " << uri .filename () << std::endl;
+	std::clog << "Basename: " << uri .basename () << std::endl;
 	std::clog << "Suffix:   " << uri .suffix () << std::endl;
 }
 

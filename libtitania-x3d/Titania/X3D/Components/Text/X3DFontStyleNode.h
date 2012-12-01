@@ -49,13 +49,13 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 
-#include "../Core/X3DNode.h"
+#include "../Core/X3DPropertyNode.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DFontStyleNode :
-	virtual public X3DNode
+	public X3DPropertyNode
 {
 protected:
 

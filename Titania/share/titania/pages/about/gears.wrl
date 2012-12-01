@@ -16,7 +16,7 @@ PROTO Gear [
   inputOutput    SFFloat innerRadius 1
   inputOutput    SFFloat outerRadius 4
   inputOutput    SFFloat width 1
-  initializeOnly SFFloat creaseAngle 0.6
+  initializeOnly SFFloat creaseAngle 0
 ]
 {
   DEF Gear IndexedFaceSet {
@@ -38,17 +38,30 @@ function initialize ()
 {
 	print ('### Generating gear ...');
 
-	var indices = gear .set_coordIndex
+	var indices = gear .set_coordIndex;
 	var points  = gear .coord .point;
 
 	var cos = Math .cos;
 	var sin = Math .sin;
+	
+	// Radien and tooth angle
 
-	var r0 = innerRadius;
-	var r1 = outerRadius - toothDepth / 2;
-	var r2 = outerRadius + toothDepth / 2;
+	var radius0 = innerRadius;
+	var radius1 = outerRadius - toothDepth / 2;
+	var radius2 = outerRadius + toothDepth / 2;
 	var da = 2 * Math .PI / teeth / 4;
 
+	// Front vectors
+	
+	var vectorf0 = new SFVec3f (radius0, 0, width * 0.5);
+	var vectorf1 = new SFVec3f (radius1, 0, width * 0.5);
+	var vectorf2 = new SFVec3f (radius2, 0, width * 0.5);
+
+	// Back vectors
+
+	var vectorb0 = new SFVec3f (radius0, 0, -width * 0.5);
+	var vectorb1 = new SFVec3f (radius1, 0, -width * 0.5);
+	var vectorb2 = new SFVec3f (radius2, 0, -width * 0.5);
 
 	// Generate front face indices
 	
@@ -70,9 +83,9 @@ function initialize ()
 	{
 		var angle = i * 2 * Math .PI / teeth;
 
-		points [points .length] = new SFVec3f (r0 * cos (angle), r0 * sin (angle), width * 0.5);
-		points [points .length] = new SFVec3f (r1 * cos (angle), r1 * sin (angle), width * 0.5);
-		points [points .length] = new SFVec3f (r1 * cos (angle + 3 * da), r1 * sin (angle + 3 * da), width * 0.5);
+		points [points .length] = new SFRotation (0, 0, 1, angle)          .multVec (vectorf0);
+		points [points .length] = new SFRotation (0, 0, 1, angle)          .multVec (vectorf1);
+		points [points .length] = new SFRotation (0, 0, 1, angle + 3 * da) .multVec (vectorf1);
 	}
 	
 	points .length = points .length - 1;
@@ -101,10 +114,10 @@ function initialize ()
 	{
 		var angle = i * 2 * Math .PI / teeth;
 		
-		points [points .length] = new SFVec3f (r1 * cos (angle),          r1 * sin (angle),          width * 0.5);
-		points [points .length] = new SFVec3f (r2 * cos (angle + da),     r2 * sin (angle + da),     width * 0.5);
-		points [points .length] = new SFVec3f (r2 * cos (angle + 2 * da), r2 * sin (angle + 2 * da), width * 0.5);
-		points [points .length] = new SFVec3f (r1 * cos (angle + 3 * da), r1 * sin (angle + 3 * da), width * 0.5);
+		points [points .length] = new SFRotation (0, 0, 1, angle)          .multVec (vectorf1);
+		points [points .length] = new SFRotation (0, 0, 1, angle + da)     .multVec (vectorf2);
+		points [points .length] = new SFRotation (0, 0, 1, angle + 2 * da) .multVec (vectorf2);
+		points [points .length] = new SFRotation (0, 0, 1, angle + 3 * da) .multVec (vectorf1);
 	}
 
 
@@ -128,9 +141,9 @@ function initialize ()
 	{
 		var angle = i * 2 * Math .PI / teeth;
 
-		points [points .length] = new SFVec3f (r0 * cos (angle), r0 * sin (angle), -width * 0.5);
-		points [points .length] = new SFVec3f (r1 * cos (angle), r1 * sin (angle), -width * 0.5);
-		points [points .length] = new SFVec3f (r1 * cos (angle + 3 * da), r1 * sin (angle + 3 * da), -width * 0.5);
+		points [points .length] = new SFRotation (0, 0, 1, angle)          .multVec (vectorb0);
+		points [points .length] = new SFRotation (0, 0, 1, angle)          .multVec (vectorb1);
+		points [points .length] = new SFRotation (0, 0, 1, angle + 3 * da) .multVec (vectorb1);
 	}
 
 	points .length = points .length - 1;
@@ -155,10 +168,10 @@ function initialize ()
 	{
 		var angle = i * 2 * Math .PI / teeth;
 		
-		points [points .length] = new SFVec3f (r1 * cos (angle + 3 * da), r1 * sin (angle + 3 * da), -width * 0.5);
-		points [points .length] = new SFVec3f (r2 * cos (angle + 2 * da), r2 * sin (angle + 2 * da), -width * 0.5);
-		points [points .length] = new SFVec3f (r2 * cos (angle + da),     r2 * sin (angle + da),     -width * 0.5);
-		points [points .length] = new SFVec3f (r1 * cos (angle),          r1 * sin (angle),          -width * 0.5);	
+		points [points .length] = new SFRotation (0, 0, 1, angle + 3 * da) .multVec (vectorb1);
+		points [points .length] = new SFRotation (0, 0, 1, angle + 2 * da) .multVec (vectorb2);
+		points [points .length] = new SFRotation (0, 0, 1, angle + da)     .multVec (vectorb2);
+		points [points .length] = new SFRotation (0, 0, 1, angle)          .multVec (vectorb1);
 	}
 
 
@@ -184,17 +197,17 @@ function initialize ()
 	{
 	   var angle = i * 2 * Math .PI / teeth;
 	   
-		points [points .length] = new SFVec3f (r1 * cos (angle), r1 * sin (angle),  width * 0.5);
-		points [points .length] = new SFVec3f (r1 * cos (angle), r1 * sin (angle), -width * 0.5);
+		points [points .length] = new SFRotation (0, 0, 1, angle) .multVec (vectorf1);
+		points [points .length] = new SFRotation (0, 0, 1, angle) .multVec (vectorb1);
 
-		points [points .length] = new SFVec3f (r2 * cos (angle + da),   r2 * sin (angle + da),   width * 0.5);
-		points [points .length] = new SFVec3f (r2 * cos (angle + da),   r2 * sin (angle + da),  -width * 0.5);
+		points [points .length] = new SFRotation (0, 0, 1, angle + da) .multVec (vectorf2);
+		points [points .length] = new SFRotation (0, 0, 1, angle + da) .multVec (vectorb2);
 
-		points [points .length] = new SFVec3f (r2 * cos (angle + 2 * da), r2 * sin (angle + 2 * da),  width * 0.5);
-		points [points .length] = new SFVec3f (r2 * cos (angle + 2 * da), r2 * sin (angle + 2 * da), -width * 0.5);
+		points [points .length] = new SFRotation (0, 0, 1, angle + 2 * da) .multVec (vectorf2);
+		points [points .length] = new SFRotation (0, 0, 1, angle + 2 * da) .multVec (vectorb2);
 
-		points [points .length] = new SFVec3f (r1 * cos (angle + 3 * da), r1 * sin (angle + 3 * da),  width * 0.5);
-		points [points .length] = new SFVec3f (r1 * cos (angle + 3 * da), r1 * sin (angle + 3 * da), -width * 0.5);
+		points [points .length] = new SFRotation (0, 0, 1, angle + 3 * da) .multVec (vectorf1);
+		points [points .length] = new SFRotation (0, 0, 1, angle + 3 * da) .multVec (vectorb1);
 	}
 
 
@@ -219,8 +232,8 @@ function initialize ()
 	for (var i = 0; i < teeth + 1; ++ i)
 	{
 		var angle = i * 2 * Math .PI / teeth;
-		points [points .length] = new SFVec3f (r0 * cos (angle), r0 * sin (angle), -width * 0.5);
-		points [points .length] = new SFVec3f (r0 * cos (angle), r0 * sin (angle),  width * 0.5);
+		points [points .length] = new SFRotation (0, 0, 1, angle) .multVec (vectorb0);
+		points [points .length] = new SFRotation (0, 0, 1, angle) .multVec (vectorf0);
 	}
 
 	print ('### Generating gear done.');
@@ -266,6 +279,7 @@ Transform {
             geometry Gear {
               teeth 20
               toothDepth 0.7
+              creaseAngle 0.6
             }
           }
         }
@@ -287,6 +301,7 @@ Transform {
                 innerRadius 0.5
                 outerRadius 2
                 width 2
+                creaseAngle 0.7
               }
             }
           }

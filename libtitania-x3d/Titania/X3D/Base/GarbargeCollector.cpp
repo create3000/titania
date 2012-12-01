@@ -73,7 +73,7 @@ GarbageCollector::dispose ()
 	{
 		ObjectSet objectsToDelete (std::move (disposedObjects));
 
-		__LOG__ << objectsToDelete .size () << " objects to delete: " << std::flush;
+		//__LOG__ << objectsToDelete .size () << " objects to delete: " << std::flush;
 
 		for (const auto & object : objectsToDelete)
 		{
@@ -82,7 +82,7 @@ GarbageCollector::dispose ()
 			delete object;
 		}
 
-		std::clog << "Done." << std::endl;
+		//std::clog << "Done." << std::endl;
 	}
 }
 

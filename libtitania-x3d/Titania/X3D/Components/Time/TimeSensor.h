@@ -105,6 +105,9 @@ private:
 	void
 	set_stopTime ();
 
+	bool
+	do_stop ();
+	
 	void
 	set_stop ();
 
@@ -113,10 +116,9 @@ private:
 
 	time_type cycle;
 	time_type interval;
-	SFTime    start;
-	SFTime    stop;
 
 	sigc::connection startTimeout;
+	sigc::connection stopTimeout;
 
 };
 

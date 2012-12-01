@@ -60,7 +60,7 @@ escape_argument (const std::string & argument)
 {
 	const auto array = basic::split (argument, " ");
 
-	return basic::join (array .begin (), array .end (), "\\ ");
+	return basic::join (array, "\\ ");
 }
 
 } // system_utility

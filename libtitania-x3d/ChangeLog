@@ -1,3 +1,27 @@
+2012-12-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* X3DOutput.h:
+	* X3DArray.h:
+	* OpenGL.h:
+	* X3DOutput.cpp:
+	* Scene.cpp:
+	* Browser.cpp:
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* Text.h:
+	* Text.cpp:
+	* GarbargeCollector.cpp:
+	* FontStyle.h:
+	* TimeSensor.h:
+	* X3DBrowserContext.cpp:
+	* FontStyle.cpp:
+	* TimeSensor.cpp:
+	* X3DFontStyleNode.h:
+	* X3DUrlObject.h:
+	* X3DUrlObject.cpp:
+	* X3DBackgroundNode.cpp: 
+
 2012-11-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* TimeSensor.h:

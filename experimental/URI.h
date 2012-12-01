@@ -195,6 +195,7 @@ public:
 		std::clog << "Parent:   " << uri .parent () << std::endl;
 
 		std::clog << "Filename: " << uri .filename () << std::endl;
+		std::clog << "Basename: " << uri .basename () << std::endl;
 		std::clog << "Basename: " << uri .basename (".html") << std::endl;
 		std::clog << "Basename: " << uri .basename ({ ".wrl", ".html" }) << std::endl;
 		std::clog << "Suffix:   " << uri .suffix () << std::endl;

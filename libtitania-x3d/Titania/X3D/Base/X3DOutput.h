@@ -57,22 +57,16 @@
 namespace titania {
 namespace X3D {
 
+typedef std::function <void (void)>       Requester;
+typedef std::list <Requester>             RequesterArray;
+
 class X3DOutput :
 	virtual public X3DBase
 {
-private:
-
-	typedef std::function <void (void)>       Requester;
-	typedef std::list <Requester>             RequesterArray;
-	typedef typename RequesterArray::iterator RequesterId;
-
-	typedef std::pair <const void*, const void*>  RequesterPair;
-	typedef std::map <RequesterPair, RequesterId> RequesterIndex;
-
-
 public:
 
-	typedef RequesterArray::size_type size_type;
+	const RequesterArray &
+	getRequesters () const;	
 
 	/// @name Add interest service
 
@@ -150,11 +144,6 @@ public:
 	///  @name Process interests service
 	void
 	processInterests () const;
-	
-	///  @name Capacity
-	
-	size_type
-	size ();
 
 	///  @name Dispose service 
 	virtual
@@ -171,6 +160,12 @@ protected:
 
 
 private:
+
+	typedef typename RequesterArray::iterator RequesterId;
+
+	typedef std::pair <const void*, const void*>  RequesterPair;
+	typedef std::map <RequesterPair, RequesterId> RequesterIndex;
+
 
 	///  Add basic interest.
 	void

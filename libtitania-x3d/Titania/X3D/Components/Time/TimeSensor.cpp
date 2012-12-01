@@ -68,9 +68,8 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	                time (),                                                    // SFTime  [out]    time
 	               cycle (),                                                    
 	            interval (),                                                    
-	               start (),                                                    
-	                stop (),                                                    
-	        startTimeout ()                                                     
+	        startTimeout (),
+	         stopTimeout ()                                                   
 {
 	setComponent ("Time");
 	setTypeName ("TimeSensor");
@@ -89,8 +88,6 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	appendField (outputOnly,  "cycleTime",        cycleTime);
 	appendField (outputOnly,  "fraction_changed", fraction_changed);
 	appendField (outputOnly,  "time",             time);
-
-	setChildren (start);
 }
 
 X3DBasicNode*
@@ -108,11 +105,11 @@ TimeSensor::initialize ()
 	startTime .addInterest (this, &TimeSensor::set_startTime);
 	stopTime  .addInterest (this, &TimeSensor::set_stopTime);
 
-	start .addInterest (this, &TimeSensor::set_start);
-	stop  .addInterest (this, &TimeSensor::set_stop);
-
-	if ((loop or startTime <= getCurrentTime ()) and stopTime <= startTime)
-		start = getCurrentTime ();
+	if (enabled)
+	{
+		if ((loop or startTime <= getCurrentTime ()) and stopTime <= startTime)
+			set_start ();
+	}
 }
 
 void
@@ -121,7 +118,7 @@ TimeSensor::set_enabled ()
 	if (enabled)
 	{
 		if (loop and stopTime <= startTime)
-			start = getCurrentTime ();
+			set_start ();
 	}
 	else
 	{
@@ -140,7 +137,7 @@ TimeSensor::set_startTime ()
 		return;
 
 	if (getCurrentTime () >= startTime)
-		start = getCurrentTime ();
+		set_start ();
 
 	else
 		addTimeout (startTimeout, &TimeSensor::do_start, startTime);
@@ -149,14 +146,16 @@ TimeSensor::set_startTime ()
 bool
 TimeSensor::do_start ()
 {
-	start = getCurrentTime ();
+	if (enabled)
+		set_start ();
+
 	return false;
 }
 
 void
 TimeSensor::set_start ()
 {
-	if (enabled and not isActive)
+	if (not isActive)
 	{
 		cycle    = getCurrentTime ();
 		interval = cycleInterval;
@@ -173,28 +172,36 @@ TimeSensor::set_start ()
 void
 TimeSensor::set_stopTime ()
 {
-	if (not enabled or not isActive)
+	if (not enabled)
 		return;
 
-	if (stopTime <= getCurrentTime () and stopTime > startTime)
+	if (stopTime <= getCurrentTime ())
 	{
 		if (stopTime > startTime)
-		{
-			isActive = false;
-			getBrowser () -> removeSensor (this);
-		}
+			set_stop ();
 	}
+	else
+		addTimeout (stopTimeout, &TimeSensor::do_stop, stopTime);
+}
 
-	//	not in spec
-	//	else
-	//	{
-	//		stop_timeout_start (stopTime -> getValue() - getCurrentTime ());
-	//	}
+bool
+TimeSensor::do_stop ()
+{
+	if (enabled)
+		set_stop ();
+
+	return false;
 }
 
 void
 TimeSensor::set_stop ()
-{ }
+{
+	if (isActive)
+	{
+		isActive = false;
+		getBrowser () -> removeSensor (this);
+	}
+}
 
 void
 TimeSensor::update ()

@@ -29,8 +29,8 @@
 //#include <Titania/Basic/Geometry/Line3.h>
 
 #include "URI.h"
-#include <Titania/Basic/URI.h>
 #include <Titania/Basic/Path.h>
+#include <Titania/Basic/URI.h>
 #include <Titania/Math/Geometry/Box3.h>
 #include <Titania/Math/Math.h>
 #include <Titania/Math/Numbers/Matrix3.h>
@@ -593,75 +593,75 @@ using namespace titania::basic;
 ////};
 
 /*basic::ifilestream
-get_stream ()
-{
-	titania::TestURI ();
-
-	basic::uri url0 = std::move (basic::uri ("http://titania.create3000.de"));
-	basic::uri url1 = std::move (basic::uri ("http://titania.create3000.de/documentation/examples/hello_world.wrl"));
-
-	basic::uri url2 = "file:///home/holger/Projekte/Titania/Titania/share/titania/puck/pages/about/home.wrl";
-	basic::uri url3 = "holger/Titania/Titania/share/titania/puck/pages/about/home.wrl";
-
-	basic::uri url4 = "http://lockalhost:1235";
-	basic::uri url5 = "about";
-
-	basic::uri url6 = "urn:iso:std:iso:9999:-1:ed-2:en:amd:1";
-
-	//
-
-	//
-
-	//
-
-	std::clog << "resolve: " << basic::uri ("h1.wrl",    url0) << std::endl;
-	std::clog << "resolve: " << basic::uri ("../h1.wrl", url0) << std::endl;
-	std::clog << "resolve: " << basic::uri ("/h1.wrl",   url0) << std::endl;
-	std::clog << "resolve: " << basic::uri ("/h1.wrl",   url0) << std::endl;
-
-	std::clog << "resolve: " << basic::uri ("h1.wrl",    url1) << std::endl;
-	std::clog << "resolve: " << basic::uri ("../h1.wrl", url1) << std::endl;
-	std::clog << "resolve: " << basic::uri ("/h1.wrl",   url1) << std::endl;
-
-	std::clog << "resolve: " << basic::uri ("h1.wrl",    url2) << std::endl;
-	std::clog << "resolve: " << basic::uri ("../h1.wrl", url2) << std::endl;
-	std::clog << "resolve: " << basic::uri ("/h1.wrl",   url2) << std::endl;
-
-	std::clog << "resolve: " << basic::uri ("h1.wrl",    url3) << std::endl;
-	std::clog << "resolve: " << basic::uri ("../h1.wrl", url3) << std::endl;
-	std::clog << "resolve: " << basic::uri ("/h1.wrl",   url3) << std::endl;
-
-	std::clog << "box: " << math::box3 <float> () .max () << std::endl;
-	std::clog << "box: " << math::box3 <float> () .size () << std::endl;
-
-	//
-
-	basic::uri         url = "urn:iso:std:iso:9999:-1:ed-2:en:amd:1";
-	basic::ifilestream stream (basic::http::method::GET, url5);
-
-	if (stream)
-	{
-		// Request Headers
-
-		stream .request_header ("User-Agent", "Horst Jochen Scholz Graupner");
-
-		std::clog << "Request Headers" << std::endl;
-
-		for (const auto & request_header : stream .request_headers ())
-			std::clog << request_header .first << ": " << request_header .second << std::endl;
-
-		std::clog << std::endl;
-
-		// Send
-
-		stream .send ();
-	}
-	else
-		std::clog << "Open fails." << std::endl;
-
-	return stream;
-}
-*/
+ * get_stream ()
+ * {
+ * titania::TestURI ();
+ *
+ * basic::uri url0 = std::move (basic::uri ("http://titania.create3000.de"));
+ * basic::uri url1 = std::move (basic::uri ("http://titania.create3000.de/documentation/examples/hello_world.wrl"));
+ *
+ * basic::uri url2 = "file:///home/holger/Projekte/Titania/Titania/share/titania/puck/pages/about/home.wrl";
+ * basic::uri url3 = "holger/Titania/Titania/share/titania/puck/pages/about/home.wrl";
+ *
+ * basic::uri url4 = "http://lockalhost:1235";
+ * basic::uri url5 = "about";
+ *
+ * basic::uri url6 = "urn:iso:std:iso:9999:-1:ed-2:en:amd:1";
+ *
+ * //
+ *
+ * //
+ *
+ * //
+ *
+ * std::clog << "resolve: " << basic::uri ("h1.wrl",    url0) << std::endl;
+ * std::clog << "resolve: " << basic::uri ("../h1.wrl", url0) << std::endl;
+ * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url0) << std::endl;
+ * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url0) << std::endl;
+ *
+ * std::clog << "resolve: " << basic::uri ("h1.wrl",    url1) << std::endl;
+ * std::clog << "resolve: " << basic::uri ("../h1.wrl", url1) << std::endl;
+ * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url1) << std::endl;
+ *
+ * std::clog << "resolve: " << basic::uri ("h1.wrl",    url2) << std::endl;
+ * std::clog << "resolve: " << basic::uri ("../h1.wrl", url2) << std::endl;
+ * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url2) << std::endl;
+ *
+ * std::clog << "resolve: " << basic::uri ("h1.wrl",    url3) << std::endl;
+ * std::clog << "resolve: " << basic::uri ("../h1.wrl", url3) << std::endl;
+ * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url3) << std::endl;
+ *
+ * std::clog << "box: " << math::box3 <float> () .max () << std::endl;
+ * std::clog << "box: " << math::box3 <float> () .size () << std::endl;
+ *
+ * //
+ *
+ * basic::uri         url = "urn:iso:std:iso:9999:-1:ed-2:en:amd:1";
+ * basic::ifilestream stream (basic::http::method::GET, url5);
+ *
+ * if (stream)
+ * {
+ *    // Request Headers
+ *
+ *    stream .request_header ("User-Agent", "Horst Jochen Scholz Graupner");
+ *
+ *    std::clog << "Request Headers" << std::endl;
+ *
+ *    for (const auto & request_header : stream .request_headers ())
+ *       std::clog << request_header .first << ": " << request_header .second << std::endl;
+ *
+ *    std::clog << std::endl;
+ *
+ *    // Send
+ *
+ *    stream .send ();
+ * }
+ * else
+ *    std::clog << "Open fails." << std::endl;
+ *
+ * return stream;
+ * }
+ */
 void
 test_path (const basic::path & path)
 {
@@ -669,7 +669,7 @@ test_path (const basic::path & path)
 	std::clog << "path:   " << path << std::endl;
 	std::clog << "parent: " << path .remove_dot_segments () .parent () << std::endl;
 	std::clog << "remove: " << path .remove_dot_segments () << std::endl;
-	
+
 }
 
 typedef math::vector3 <float>   Vector3f;
@@ -679,32 +679,40 @@ typedef math::box3 <float>      Box3f;
 class A
 {
 public:
+
 	A ()
 	{ std::clog << "A" << std::endl; }
+
 };
 
 class B :
 	public A
 {
 public:
+
 	B ()
 	{ std::clog << "B" << std::endl; }
+
 };
 
 class C :
 	public A
 {
 public:
+
 	C ()
 	{ std::clog << "C" << std::endl; }
+
 };
 
 class D :
 	virtual public B, virtual public C
 {
 public:
+
 	D ()
 	{ std::clog << "D" << std::endl; }
+
 };
 
 #include <v8.h>
@@ -713,15 +721,18 @@ main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 
-	D ();
+	std::clog << basic::uri ("http://example.com") .filename () << std::endl;
+	std::clog << basic::uri ("http://example.com?url=test") .filename () << std::endl;
+	std::clog << basic::uri ("file:///test.wrl") .filename () << std::endl;
+	std::clog << basic::uri ("/test.wrl") .filename () << std::endl;
 
-//	test_path (basic::path ("/"));
-//	test_path (basic::path ("/", "/"));
-//	test_path (basic::path ("home", "/"));
-//	test_path (basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
-//	test_path (basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
-//	test_path (basic::path ("/home/holger/Projekte/../../../.././${Version}/pages/about/home.wrl/..", "/"));
-	
+	//	test_path (basic::path ("/"));
+	//	test_path (basic::path ("/", "/"));
+	//	test_path (basic::path ("home", "/"));
+	//	test_path (basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
+	//	test_path (basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
+	//	test_path (basic::path ("/home/holger/Projekte/../../../.././${Version}/pages/about/home.wrl/..", "/"));
+
 	//	basic::ifilestream stream = get_stream ();
 	//
 	//	if (stream)

@@ -49,6 +49,9 @@
 #include "Text.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Text/FontStyle.h"
+
+#include <Titania/String/Join.h>
 
 namespace titania {
 namespace X3D {
@@ -56,32 +59,131 @@ namespace X3D {
 Text::Text (X3DExecutionContext* const executionContext) :
 	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	      fontStyle (),                                                    // SFNode   [in,out] fontStyle   NULL         [X3FontStyleNode]
+	         string (),                                                    // MFString [in,out] string      [ ]
 	         length (),                                                    // MFFloat  [in,out] length      [ ]          [0,∞)
 	      maxExtent (),                                                    // SFFloat  [in,out] maxExtent   0.0          [0,∞)
-	         string (),                                                    // MFString [in,out] string      [ ]
-	     lineBounds (),                                                    // MFVec2f  [out]    lineBounds
 	         origin (),                                                    // SFVec3f  [out]    origin
-	     textBounds ()                                                     // SFVec2f  [out]    textBounds
+	     lineBounds (),                                                    // MFVec2f  [out]    lineBounds
+	     textBounds (),                                                    // SFVec2f  [out]    textBounds
+	      fontStyle (),                                                    // SFNode   [in,out] fontStyle   NULL         [X3FontStyleNode]
+	         font   ()                                                    
 {
 	setComponent ("Text");
 	setTypeName ("Text");
 
 	appendField (inputOutput,    "metadata",   metadata);
-	appendField (inputOutput,    "fontStyle",  fontStyle);
+	appendField (inputOutput,    "string",     string);
 	appendField (inputOutput,    "length",     length);
 	appendField (inputOutput,    "maxExtent",  maxExtent);
-	appendField (inputOutput,    "string",     string);
-	appendField (outputOnly,     "lineBounds", lineBounds);
-	appendField (outputOnly,     "origin",     origin);
-	appendField (outputOnly,     "textBounds", textBounds);
 	appendField (initializeOnly, "solid",      solid);
+	appendField (outputOnly,     "origin",     origin);
+	appendField (outputOnly,     "lineBounds", lineBounds);
+	appendField (outputOnly,     "textBounds", textBounds);
+	appendField (inputOutput,    "fontStyle",  fontStyle);
 }
 
 X3DBasicNode*
 Text::create (X3DExecutionContext* const executionContext) const
 {
 	return new Text (executionContext);
+}
+
+void
+Text::initialize ()
+{
+	X3DGeometryNode::initialize ();
+
+	fontStyle .addInterest (this, &Text::set_fontStyle);
+
+	set_fontStyle ();
+}
+
+void
+Text::set_fontStyle ()
+{
+	SFNode <FontStyle> fontStyle = this -> fontStyle
+	                               ? this -> fontStyle
+											 : new FontStyle (getExecutionContext ());
+
+	// Create a pixmap font from a TrueType file.
+	font .reset (new FTPolygonFont (fontStyle -> getFilename () .c_str ()));
+
+	// If something went wrong, bail out.
+	if (font -> Error ())
+		return;
+
+	font -> CharMap (ft_encoding_unicode);
+	font -> UseDisplayList (true);
+
+	// Set the font size and render a small text.
+	font -> FaceSize (100);
+}
+
+Box3f
+Text::createBBox ()
+{
+	Box3f bbox;
+
+	SFNode <FontStyle> fontStyle = this -> fontStyle
+	                               ? this -> fontStyle
+											 : new FontStyle (getExecutionContext ());
+
+	float scale = fontStyle -> size / font -> LineHeight ();
+
+	// Calculate BBoxes.
+	size_t i = 0;
+
+	for (const auto & line : string)
+	{
+		FTBBox  ftbbox = font -> BBox (line .getValue () .c_str ());
+		FTPoint min    = ftbbox .Lower ();
+		FTPoint max    = ftbbox .Upper ();
+		FTPoint size   = max - min;
+		FTPoint center = max - size * 0.5;
+
+		Vector3f translation (0, -i * font -> LineHeight () * fontStyle -> spacing, 0);
+
+		bbox += Box3f (Vector3f (size .X (), size .Y (), size .Z ()) * scale,
+		               (Vector3f (center .X (), center .Y (), center .Z ()) + translation) * scale);
+
+		++ i;
+	}
+
+	return bbox;
+}
+
+void
+Text::build ()
+{
+}
+
+void
+Text::display ()
+{
+	SFNode <FontStyle> fontStyle = this -> fontStyle
+	                               ? this -> fontStyle
+											 : new FontStyle (getExecutionContext ());
+
+	float scale = fontStyle -> size / font -> LineHeight ();
+	glScalef (scale, scale, scale);
+
+	// Render lines.
+	size_t i = 0;
+
+	for (const auto & line : string)
+	{
+		glTranslatef (0, -i * font -> LineHeight () * fontStyle -> spacing, 0);
+
+		font -> Render (line .getValue () .c_str ());
+
+		++ i;
+	}
+}
+
+void
+Text::dispose ()
+{
+	X3DGeometryNode::dispose ();
 }
 
 } // X3D

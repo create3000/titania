@@ -51,6 +51,7 @@
 #include "../../Browser/Browser.h"
 #include "../Layering/X3DLayerNode.h"
 #include "../Navigation/X3DViewpointNode.h"
+#include "../../Rendering/OpenGL.h"
 
 #define SPHERE_USEG 16.0
 #define SPHERE_VSEG 15.0
@@ -65,7 +66,7 @@ X3DBackgroundNode::X3DBackgroundNode (bool addToList) :
 	       skyAngle (),               // MFFloat [in,out] skyAngle      [ ]           [0,π]
 	       skyColor ({ SFColor () }), // MFColor [in,out] skyColor      0 0 0         [0,1]
 	   transparency (),               // SFFloat [in,out] transparency  0             [0,1]
-	      addToList (addToList)
+	      addToList (addToList)       
 {
 	addNodeType (X3DBackgroundNodeType);
 }
@@ -350,48 +351,53 @@ X3DBackgroundNode::display ()
 void
 X3DBackgroundNode::draw ()
 {
-	//	if (isTainted ())
-	//		build ();
+	GLint polygonMode [2] = { 0, 0 }; // Front and back value.
+	glGetIntegerv (GL_POLYGON_MODE, polygonMode);
 
-	Vector3d   translation, scale;
-	Rotation4f rotation;
+	glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+	{
+		Vector3d   translation, scale;
+		Rotation4f rotation;
 
-	matrix .get (translation, rotation, scale);
+		matrix .get (translation, rotation, scale);
 
-	float x, y, z, angle;
-	rotation .get (x, y, z, angle);
+		float x, y, z, angle;
+		rotation .get (x, y, z, angle);
 
-	//
+		//
 
-	getCurrentLayer () -> getViewpoint () -> reshape (1, 20000);
+		getCurrentLayer () -> getViewpoint () -> reshape (1, 20000);
 
-	//
+		//
 
-	glDisable (GL_DEPTH_TEST);
-	glDepthMask (GL_FALSE);
+		glDisable (GL_DEPTH_TEST);
+		glDepthMask (GL_FALSE);
 
-	if (transparency)
-		glEnable (GL_BLEND);
-	else
-		glDisable (GL_BLEND);
+		if (transparency)
+			glEnable (GL_BLEND);
+		else
+			glDisable (GL_BLEND);
 
-	glEnable (GL_CULL_FACE);
+		glEnable (GL_CULL_FACE);
 
-	glFrontFace (GL_CW);
+		glFrontFace (GL_CW);
 
-	glLoadIdentity ();
-	glRotatef (math::degree (angle), x, y, z);
+		glLoadIdentity ();
+		glRotatef (math::degree (angle), x, y, z);
 
-	glEnableClientState (GL_COLOR_ARRAY);
-	glColorPointer (4, GL_FLOAT, 0, &glColors [0]);
+		glEnableClientState (GL_COLOR_ARRAY);
+		glColorPointer (4, GL_FLOAT, 0, &glColors [0]);
 
-	glEnableClientState (GL_VERTEX_ARRAY);
-	glVertexPointer (3, GL_FLOAT, 0, &glPoints [0]);
+		glEnableClientState (GL_VERTEX_ARRAY);
+		glVertexPointer (3, GL_FLOAT, 0, &glPoints [0]);
 
-	glDrawArrays (GL_QUADS, 0, numIndices);
+		glDrawArrays (GL_QUADS, 0, numIndices);
 
-	glDisableClientState (GL_COLOR_ARRAY);
-	glDisableClientState (GL_VERTEX_ARRAY);
+		glDisableClientState (GL_COLOR_ARRAY);
+		glDisableClientState (GL_VERTEX_ARRAY);
+	}
+
+	glPolygonMode (GL_FRONT_AND_BACK, polygonMode [0]);
 }
 
 void

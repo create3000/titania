@@ -72,6 +72,14 @@ join (InputIterator first, InputIterator last, const std::string & delimiter)
 	return value;
 }
 
+template <class Container>
+inline
+std::string
+join (Container & container, const std::string & delimiter)
+{
+	return join (container .begin (), container .end (), delimiter);
+}
+
 } // basic
 } // titania
 

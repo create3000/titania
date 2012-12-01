@@ -41,6 +41,12 @@ const std::string X3DBrowser::version ("0.1");
 X3DBrowser::X3DBrowser () :
 	  X3DBrowserContext (),                                        
 	       X3DUrlObject (),                                        
+	        initialized (),                                        // SFTime   [out]    initialized
+	            exposed (),                                        // SFTime   [out]    exposed
+	          displayed (),                                        // SFTime   [out]    displayed
+	           finished (),                                        // SFTime   [out]    finished
+	           shutdown (),                                        // SFTime   [out]    shutdown
+	            changed (),                                        // SFTime   [out]    changed
 	             router (),                                        
 	              clock (new chrono::system_clock <time_type> ()),          
 	    supportedFields (this),                                    
@@ -53,15 +59,9 @@ X3DBrowser::X3DBrowser () :
 	   javaScriptEngine (new JavaScriptEngine    (this)),          
 	       currentSpeed (0),                                       
 	   currentFrameRate (0),                                       
-	        description (),                                      
-	        initialized (),                                        // SFTime   [out]    initialized 0
-	            exposed (),                                        // SFTime   [out]    exposed     0
-	          displayed (),                                        // SFTime   [out]    displayed   0
-	           finished (),                                        // SFTime   [out]    finished    0
-	           shutdown (),                                        // SFTime   [out]    shutdown    0
-	            changed (),                                        // SFTime   [out]    changed     0
-	              world (new World (this, createScene ())),        // SFNode   [out]    world       NULL
-	              scene ()                                         
+	        description (),                                        // SFSting  [in,out] description ""
+	              scene (createScene ()),                          // SFNode   [in,out] world       NULL
+	              world (new World (this, scene))                  // SFNode   [out]    world
 {
 	std::clog << "Constructing Browser:" << std::endl;
 
@@ -274,7 +274,7 @@ X3DBrowser::getExecutionContext () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return *world -> scene;
+	return *scene;
 }
 
 SFNode <Scene>
@@ -346,7 +346,11 @@ throw (Error <INVALID_URL>,
        Error <INVALID_X3D>)
 {
 	// where parameter is "target=nameOfFrame"
-	replaceWorld (createX3DFromURL (url));
+	//replaceWorld (createX3DFromURL (url));
+	
+	SFNode <Scene> scene = createScene ();
+	replaceWorld (scene);
+	X3DUrlObject::loadURL (*scene, url);
 }
 
 SFNode <Scene>
