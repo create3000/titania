@@ -96,7 +96,7 @@ jsX3DFieldDefinition::create (JSContext* context, X3DFieldDefinition* field, jsv
 JSBool
 jsX3DFieldDefinition::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DFieldDefinition* field = (X3DFieldDefinition*) JS_GetPrivate (context, obj);
+	X3DFieldDefinition* field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, field -> getName (), vp);
 }
@@ -104,7 +104,7 @@ jsX3DFieldDefinition::name (JSContext* context, JSObject* obj, jsid id, jsval* v
 JSBool
 jsX3DFieldDefinition::accessType (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DFieldDefinition* field = (X3DFieldDefinition*) JS_GetPrivate (context, obj);
+	X3DFieldDefinition* field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
 
 	return JS_NewNumberValue (context, field -> getAccessType (), vp);
 }
@@ -112,7 +112,7 @@ jsX3DFieldDefinition::accessType (JSContext* context, JSObject* obj, jsid id, js
 JSBool
 jsX3DFieldDefinition::dataType (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DFieldDefinition* field = (X3DFieldDefinition*) JS_GetPrivate (context, obj);
+	X3DFieldDefinition* field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
 
 	return JS_NewNumberValue (context, (double) (long int) field -> getType (), vp);
 }
@@ -120,7 +120,7 @@ jsX3DFieldDefinition::dataType (JSContext* context, JSObject* obj, jsid id, jsva
 void
 jsX3DFieldDefinition::finalize (JSContext* context, JSObject* obj)
 {
-	X3DFieldDefinition* field = (X3DFieldDefinition*) JS_GetPrivate (context, obj);
+	X3DFieldDefinition* field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
 
 	if (field)
 	{

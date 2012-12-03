@@ -64,7 +64,7 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	     lineBounds (),                                                    // MFVec2f  [out]    lineBounds
 	     textBounds (),                                                    // SFVec2f  [out]    textBounds
 	      fontStyle (),                                                    // SFNode   [in,out] fontStyle   NULL         [X3FontStyleNode]
-	         font   (),                                                    
+	           font (),                                                    
 	     lineHeight (),                                                    
 	   charSpacings (),                                                    
 	    translation (),                                                    
@@ -103,7 +103,10 @@ Text::initialize ()
 float
 Text::getLength (const size_t index)
 {
-	return length [std::min (index, length .size () - 1)];
+	if (length .size ())
+		return length [std::min (index, length .size () - 1)];
+		
+	return 0;
 }
 
 const SFNode <X3DFontStyleNode> &
@@ -152,7 +155,7 @@ Text::createBBox ()
 {
 	const SFNode <X3DFontStyleNode> & fontStyle = getFontStyle ();
 
-	Box3f bbox;
+	Box2f bbox;
 
 	charSpacings .clear ();
 	lineBounds   .clear ();
@@ -167,17 +170,16 @@ Text::createBBox ()
 		FTPoint min    = ftbbox .Lower ();
 		FTPoint max    = ftbbox .Upper ();
 
-		Vector3f size   = Vector3f (max .X (), max .Y (), max .Z ()) - Vector3f (min .X (), min .Y (), min .Z ());
-		Vector3f center = Vector3f (max .X (), max .Y (), max .Z ()) - size / 2.0f;
+		Vector2f size   = Vector2f (max .X (), max .Y ()) - Vector2f (min .X (), min .Y ());
 
 		// Calculate charSpacing and lineBounds.
 
 		float    charSpacing = 0;
-		Vector2f lineBound   = Vector2f (size .x (), size .y ()) *= scale;
-
-		if (length .size ())
+		Vector2f lineBound   = size * scale;
+		float    length      = getLength (i);
+	
+		if (length)
 		{
-			float length = getLength (i);
 			charSpacing = (length - lineBound .x ()) / (line .length () - 1) / scale;
 			lineBound .x (length);
 			size .x (length / scale);
@@ -191,24 +193,33 @@ Text::createBBox ()
 		switch (fontStyle -> getJustify (i))
 		{
 			case FontStyle::Justify::BEGIN:
-				translation .emplace_back (0, -i * lineHeight, 0);
+				translation .emplace_back (0, -i * lineHeight);
 				break;
 			case FontStyle::Justify::MIDDLE:
-				translation .emplace_back (-size .x () / 2, -i * lineHeight, 0);
+				translation .emplace_back (-min .X () - size .x () / 2, -i * lineHeight);
 				break;
 			case FontStyle::Justify::END:
-				translation .emplace_back (-size .x (), -i * lineHeight, 0);
+				translation .emplace_back (-min .X () - size .x (), -i * lineHeight);
 				break;
 		}
+		
+		// Calculate center.
 
+		Vector2f center = Vector2f (min .X (), min .Y ()) + size / 2.0f;
+		
 		// Add bbox.
-
-		bbox += Box3f (size, center + translation [i]) * scale;
+		
+		bbox += Box2f (size, center + translation [i]) * scale;
 
 		++ i;
 	}
+	
+	origin     = Vector3f (bbox .min () .x (), bbox .max () .y (), 0);
+	textBounds = bbox .size ();
 
-	return bbox;
+	return Box3f (Vector3f (bbox .min () .x (), bbox .min () .y (), 0),
+	              Vector3f (bbox .max () .x (), bbox .max () .y (), 0),
+	              true);
 }
 
 void
@@ -236,7 +247,7 @@ Text::display ()
 	{
 		font -> Render (line .getValue () .c_str (),
 		                -1,
-		                FTPoint (translation [i] .x (), translation [i] .y (), translation [i] .z ()),
+		                FTPoint (translation [i] .x (), translation [i] .y (), 0),
 		                FTPoint (charSpacings [i], 0, 0),
 		                FTGL::RENDER_ALL);
 

@@ -59,7 +59,7 @@ jsX3DObject::getName (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DObject* value = (X3DObject*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		X3DObject* value = static_cast <X3DObject*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 		return JS_NewStringValue (context, value -> getName (), vp);
 	}
@@ -74,7 +74,7 @@ jsX3DObject::getTypeName (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DObject* value = (X3DObject*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		X3DObject* value = static_cast <X3DObject*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 		return JS_NewStringValue (context, value -> getTypeName (), vp);
 	}
@@ -89,7 +89,7 @@ jsX3DObject::getType (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DObject* value = (X3DObject*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		X3DObject* value = static_cast <X3DObject*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 		return JS_NewNumberValue (context, (size_t) value -> getType (), vp);
 	}
@@ -104,7 +104,7 @@ jsX3DObject::toString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DObject* value = (X3DObject*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		X3DObject* value = static_cast <X3DObject*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 		return JS_NewStringValue (context, value -> toString (), vp);
 	}

@@ -1,5 +1,9 @@
 2012-12-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Box3.h: 
+
+2012-12-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-standard.cproj:
 	* Box3.h:

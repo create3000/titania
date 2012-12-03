@@ -2,16 +2,26 @@
 
 META "title" "Text test"
 
+PROTO LineRectangle2D [ ]
+{
+  IndexedLineSet {
+    coordIndex [ 0, 1, 2, 3, 0, -1 ]
+    coord Coordinate {
+      point [ -0.5 -0.5 0, 0.5 -0.5 0, 0.5 0.5 0, -0.5 0.5 0 ]
+    }
+  }
+}
+
 Viewpoint { }
 
-Shape {
+DEF Lines Shape {
   appearance Appearance {
     material Material {
       diffuseColor 1 0 0
     }
   }
-  geometry Text {
-    string [ "Hällö Wörld!", "This is a test!", "This is another test!" ]
+  geometry DEF Text Text {
+    string [ "Hällö Wörld!", "This is my line!", "Yet another crazy line!" ]
     length 12
     fontStyle FontStyle {
       family "Ubuntu Mono"
@@ -20,8 +30,22 @@ Shape {
   }
 }
 
-Transform {
+DEF RedBox Transform {
   translation -0.5 0.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+      }
+    }
+    geometry Box {
+      size 1 1 1
+    }
+  }
+}
+
+DEF GreenBox Transform {
+  translation -0.5 -0.5 0
   children Shape {
     appearance Appearance {
       material Material {
@@ -34,8 +58,8 @@ Transform {
   }
 }
 
-Transform {
-  translation -0.5 -0.5 0
+DEF BlueBox Transform {
+  translation -0.5 -1.5 0
   children Shape {
     appearance Appearance {
       material Material {
@@ -47,3 +71,73 @@ Transform {
     }
   }
 }
+
+DEF YellowBox Transform {
+  translation 6 1.5 0
+  scale 12 1 1
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 1 0
+      }
+    }
+    geometry Box {
+      size 1 1 1
+    }
+  }
+}
+
+Transform {
+  children DEF LineBounds Transform {
+    translation 0.5 -0.5 0
+  }
+}
+
+DEF TextBounds Transform {
+  children Transform {
+    translation 0.5 -0.5 0
+    children Shape {
+      geometry LineRectangle2D { }
+    }
+  }
+}
+
+DEF Bounds Script {
+  eventIn  MFVec2f set_lineBounds
+  eventIn  SFVec2f set_textBounds
+  eventOut SFVec3f scale_changed
+  field SFNode lineBounds USE LineBounds
+
+  url "vrmlscript:
+
+function set_lineBounds (value, time)
+{
+	print (value);
+	
+	var transforms = new MFNode ();
+		
+	for (var lineBound in value)
+	{	
+		var transform                     = Browser .currentScene .createNode ('Transform');
+		transform .children [0]           = Browser .currentScene .createNode ('Shape');
+		transform .children [0] .geometry = Browser .currentScene .createNode ('LineRectangle2D');
+
+		transforms [transforms .length] = transform;
+		break;
+	}
+	
+	lineBounds .children = transforms;
+}
+
+function set_textBounds (value, time)
+{
+	scale_changed = new SFVec3f (value .x, value .y, 1);
+}
+	"
+}
+
+ROUTE Text.origin TO LineBounds.set_translation
+ROUTE Text.origin TO TextBounds.set_translation
+ROUTE Text.lineBounds TO Bounds.set_lineBounds
+ROUTE Text.textBounds TO Bounds.set_textBounds
+ROUTE Bounds.scale_changed TO TextBounds.set_scale

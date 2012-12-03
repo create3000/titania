@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_JAEGER_MONKEY_JS_X3DFIELD_DEFINITION_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_JAEGER_MONKEY_JS_X3DFIELD_DEFINITION_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DFIELD_DEFINITION_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DFIELD_DEFINITION_H__
 
 #include "../../Basic/X3DFieldDefinition.h"
 #include "jsX3DObject.h"
@@ -58,25 +58,6 @@ namespace X3D {
 class jsX3DFieldDefinition :
 	public jsX3DObject
 {
-	enum Property {NAME, ACCESSTYPE, DATATYPE};
-
-	static
-	JSClass static_class;
-
-	static
-	JSPropertySpec properties [ ];
-
-	static
-	void
-	initObject (JSContext*, JSObject*);
-
-
-protected:
-
-	static void
-	finalize (JSContext*, JSObject*);
-
-
 public:
 
 	static
@@ -90,6 +71,27 @@ public:
 	static JSBool name       (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool accessType (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool dataType   (JSContext *, JSObject *, jsid, jsval*);
+
+
+protected:
+
+	static void
+	finalize (JSContext*, JSObject*);
+
+
+private:
+
+	enum Property {NAME, ACCESSTYPE, DATATYPE};
+
+	static
+	JSClass static_class;
+
+	static
+	JSPropertySpec properties [ ];
+
+	static
+	void
+	initObject (JSContext*, JSObject*);
 
 };
 

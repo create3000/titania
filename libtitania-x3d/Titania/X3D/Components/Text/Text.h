@@ -113,7 +113,7 @@ private:
 	std::unique_ptr <FTPolygonFont> font;
 	float                           lineHeight;
 	std::vector <float>             charSpacings;
-	std::vector <Vector3f>          translation;
+	std::vector <Vector2f>          translation;
 	float                           scale;
 
 };

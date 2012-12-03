@@ -71,8 +71,9 @@ JSPropertySpec jsX3DExecutionContext::properties [ ] = {
 };
 
 JSFunctionSpec jsX3DExecutionContext::functions [ ] = {
-	{ "createNode", createNode, 1, 0 },
-	{ 0, 0, 0, 0 }
+	{ "createNode",  createNode,  1, 0 },
+	{ "createProto", createProto, 1, 0 },
+	{ 0 }
 
 };
 
@@ -155,6 +156,38 @@ jsX3DExecutionContext::createNode (JSContext* context, uintN argc, jsval* vp)
 			X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 			SFNode <X3DBasicNode> * node = new SFNode <X3DBasicNode> (executionContext -> createNode (JS_GetString (context, name)));
+
+			return jsSFNode::create (context, node, &JS_RVAL (context, vp));
+		}
+		catch (const X3DError & exception)
+		{
+			JS_ReportError (context, exception .what ());
+			return JS_FALSE;
+		}
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsX3DExecutionContext::createProto (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		try
+		{
+			JSString* name;
+
+			jsval* argv = JS_ARGV (context, vp);
+		
+			if (not JS_ConvertArguments (context, argc, argv, "S", &name))
+				return JS_FALSE;
+
+			X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+
+			SFNode <X3DBasicNode> * node = new SFNode <X3DBasicNode> (executionContext -> createProtoInstance (JS_GetString (context, name)));
 
 			return jsSFNode::create (context, node, &JS_RVAL (context, vp));
 		}

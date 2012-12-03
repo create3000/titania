@@ -49,12 +49,16 @@
 #ifndef __TITANIA_X3D_TYPES_GEOMETRY_H__
 #define __TITANIA_X3D_TYPES_GEOMETRY_H__
 
+#include <Titania/Math/Geometry/Box2.h>
 #include <Titania/Math/Geometry/Box3.h>
 #include <Titania/Math/Geometry/Line3.h>
 #include <Titania/Math/Geometry/Plane3.h>
 
 namespace titania {
 namespace X3D {
+
+typedef math::box2 <double> Box2d;
+typedef math::box2 <float>  Box2f;
 
 typedef math::box3 <double> Box3d;
 typedef math::box3 <float>  Box3f;

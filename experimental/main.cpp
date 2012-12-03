@@ -683,35 +683,43 @@ public:
 	A ()
 	{ std::clog << "A" << std::endl; }
 
+	int a;
+
 };
 
 class B :
-	public A
+	virtual public A
 {
 public:
 
 	B ()
 	{ std::clog << "B" << std::endl; }
 
+	int b;
+
 };
 
 class C :
-	public A
+	virtual public A
 {
 public:
 
 	C ()
 	{ std::clog << "C" << std::endl; }
 
+	int c;
+
 };
 
 class D :
-	virtual public B, virtual public C
+	public B, public C
 {
 public:
 
 	D ()
 	{ std::clog << "D" << std::endl; }
+
+	int d;
 
 };
 
@@ -720,11 +728,15 @@ int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
+	
+	D*    d = new D ();
+	B*    b = d;
+	void* v = (B*) d;
 
-	std::clog << basic::uri ("http://example.com") .filename () << std::endl;
-	std::clog << basic::uri ("http://example.com?url=test") .filename () << std::endl;
-	std::clog << basic::uri ("file:///test.wrl") .filename () << std::endl;
-	std::clog << basic::uri ("/test.wrl") .filename () << std::endl;
+	std::clog << d << std::endl;
+	std::clog << v << std::endl;
+	std::clog << static_cast <C*> (d) << std::endl;
+	std::clog << static_cast <C*> (b) << std::endl;
 
 	//	test_path (basic::path ("/"));
 	//	test_path (basic::path ("/", "/"));

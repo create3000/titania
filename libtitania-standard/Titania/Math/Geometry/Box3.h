@@ -79,11 +79,11 @@ public:
 		value ({ { box .min (), box .max () } })
 	{ }
 
-	//	///  Constructs a box of min @a min and max @a max.
-	//	constexpr
-	//	box3 (const vector3 <Type> & min, const vector3 <Type> & max, bool) :
-	//		value ({ min, max })
-	//	{ }
+	///  Constructs a box of min @a min and max @a max.
+	constexpr
+	box3 (const vector3 <Type> & min, const vector3 <Type> & max, bool) :
+		value ({ min, max })
+	{ }
 
 	///  Constructs a box of size @a size and center @a size.
 	box3 (const vector3 <Type> & size, const vector3 <Type> & center)
@@ -117,7 +117,7 @@ public:
 
 	///  Return the center of this box.
 	constexpr vector3 <Type>
-	center () const { return max () - size () / Type (2); }
+	center () const { return min () + size () / Type (2); }
 
 
 	///  @name  Arithmetic operations

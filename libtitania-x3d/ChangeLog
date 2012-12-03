@@ -1,5 +1,16 @@
 2012-12-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Geometry.h:
+	* Text.h:
+	* Text.cpp:
+	* jsX3DObject.cpp:
+	* jsX3DFieldDefinition.h:
+	* jsX3DExecutionContext.h:
+	* jsX3DFieldDefinition.cpp:
+	* jsX3DExecutionContext.cpp: 
+
+2012-12-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* String.h:
 	* Numbers.h:
