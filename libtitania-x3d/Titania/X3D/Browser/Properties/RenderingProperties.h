@@ -126,7 +126,7 @@ private:
 	set_enabled ();
 
 	void
-	set_fontFamily (const std::string &);
+	set_fontFamily ();
 
 	void
 	reset ();

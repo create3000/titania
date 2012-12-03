@@ -159,7 +159,7 @@ RenderingProperties::initialize ()
 		// Display
 
 		listId = glGenLists (1);
-		set_fontFamily (fontFamily);
+		set_fontFamily ();
 
 		enabled .addInterest (this, &RenderingProperties::set_enabled);
 		set_enabled ();
@@ -228,13 +228,13 @@ RenderingProperties::set_enabled ()
 }
 
 void
-RenderingProperties::set_fontFamily (const std::string & fontFamily)
+RenderingProperties::set_fontFamily ()
 {
 	if (fontInfo)
 		glDeleteLists (fontListBase, fontInfo -> max_char_or_byte2);
 
 	Display* display = XOpenDisplay (nullptr);
-	fontInfo = XLoadQueryFont (display, fontFamily .c_str ());
+	fontInfo = XLoadQueryFont (display, fontFamily .getValue () .c_str ());
 
 	if (fontInfo)
 	{

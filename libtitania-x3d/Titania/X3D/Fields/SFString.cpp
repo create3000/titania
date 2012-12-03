@@ -54,24 +54,24 @@ namespace titania {
 namespace X3D {
 
 template <>
-const FieldType X3DField <std::string>::type ("SFString");
+const FieldType X3DField <String>::type ("SFString");
 
-template class X3DField <std::string>;
+template class X3DField <String>;
 
 SFString::SFString () :
-	X3DField <std::string> () 
+	X3DField <String> () 
 { }
 
 SFString::SFString (const SFString & field) :
-	X3DField <std::string> (field)
+	X3DField <String> (field)
 { }
 
-SFString::SFString (const std::string & value) :
-	X3DField <std::string> (value)
+SFString::SFString (const String & value) :
+	X3DField <String> (value)
 { }
 
 SFString::SFString (const char_type* value) :
-	X3DField <std::string> (value)
+	X3DField <String> (value)
 { }
 
 SFString*
@@ -85,6 +85,17 @@ SFString::operator = (const char_type* value)
 {
 	setValue (value);
 	return *this;
+}
+
+SFString::operator const std::string & () const
+{
+	return getValue () .raw ();
+}
+
+const std::string &
+SFString::str () const
+{
+	return getValue () .raw ();
 }
 
 SFString::size_type

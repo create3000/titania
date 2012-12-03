@@ -98,6 +98,7 @@
     <None Include="Titania\String.h" />
     <None Include="Titania\Utility.h" />
     <None Include="Titania\Chrono\StopWatch.h" />
+    <None Include="Titania\Math\Geometry\Box2.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
@@ -131,6 +132,7 @@
     <Compile Include="Titania\String\Split.cpp" />
     <Compile Include="Titania\String\strfsize.cpp" />
     <Compile Include="Titania\Chrono\StopWatch.cpp" />
+    <Compile Include="Titania\Math\Geometry\Box2.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

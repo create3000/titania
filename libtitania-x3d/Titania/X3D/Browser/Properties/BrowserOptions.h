@@ -50,6 +50,7 @@
 #define __TITANIA_X3D_BROWSER_PROPERTIES_BROWSER_OPTIONS_H__
 
 #include "../../Components/Core/X3DPropertyNode.h"
+#include "../../Components/Text/FontStyle.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Properties/X3DSpherePropertyNode.h"
@@ -78,14 +79,15 @@ public:
 	SFBool   dashboard;
 	SFBool   enableInlineViewpoints;
 	SFBool   antialiased;
-	SFString shading;
+	SFString textureQuality;
 	SFString primitiveQuality;
 	SFString qualityWhenMoving;
-	SFString textureQuality;
+	SFString shading;
 
 	//SFNode <MotionBlur> motionBlur;
-	SFNode <X3DSpherePropertyNode> sphereProperties;
 	SFNode <TextureProperties>     textureProperties;
+	SFNode <X3DSpherePropertyNode> sphereProperties;
+	SFNode <X3DFontStyleNode>      fontStyle;
 
 	BrowserOptions (X3DExecutionContext* const);
 
@@ -101,13 +103,13 @@ private:
 	initialize ();
 
 	void
-	set_shading ();
-	
+	set_textureQuality ();
+
 	void
 	set_primitiveQuality ();
 
 	void
-	set_textureQuality ();
+	set_shading ();
 
 };
 

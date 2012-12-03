@@ -59,21 +59,17 @@ class ScreenFontStyle :
 {
 public:
 
-	MFString family;
-	SFBool   horizontal;
-	MFString justify;
-	SFString language;
-	SFBool   leftToRight;
 	SFFloat  pointSize;
-	SFFloat  spacing;
-	SFString style;
-	SFBool   topToBottom;
 
 	ScreenFontStyle (X3DExecutionContext* const);
 
 	virtual
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
+
+	virtual
+	float
+	getSize () const;
 
 };
 

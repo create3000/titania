@@ -56,35 +56,33 @@ namespace X3D {
 ScreenFontStyle::ScreenFontStyle (X3DExecutionContext* const executionContext) :
 	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DFontStyleNode (),                                                    
-	          family ({ "SERIF" }),                                         // MFString [ ]family       "SERIF"
-	      horizontal (true),                                                // SFBool   [ ]horizontal   TRUE
-	         justify ({ "BEGIN" }),                                         // MFString [ ]justify      "BEGIN"        ["BEGIN","END","FIRST","MIDDLE",""]
-	        language (),                                                    // SFString [ ]language     ""
-	     leftToRight (true),                                                // SFBool   [ ]leftToRight  TRUE
-	       pointSize (12),                                                  // SFFloat  [ ]pointSize    12.0           (0,∞)
-	         spacing (1),                                                   // SFFloat  [ ]spacing      1.0            [0,∞)
-	           style ("PLAIN"),                                             // SFString [ ]style        "PLAIN"        ["PLAIN"|"BOLD"|"ITALIC"|"BOLDITALIC"|""]
-	     topToBottom (true)                                                 // SFBool   [ ]topToBottom  TRUE
+	       pointSize (12)                                                   // SFFloat  [ ]pointSize    12.0           (0,∞)
 {
 	setComponent ("Layout");
 	setTypeName ("ScreenFontStyle");
 
 	appendField (inputOutput,    "metadata",    metadata);
 	appendField (initializeOnly, "family",      family);
-	appendField (initializeOnly, "horizontal",  horizontal);
-	appendField (initializeOnly, "justify",     justify);
-	appendField (initializeOnly, "language",    language);
-	appendField (initializeOnly, "leftToRight", leftToRight);
+	appendField (initializeOnly, "style",       style);
 	appendField (initializeOnly, "pointSize",   pointSize);
 	appendField (initializeOnly, "spacing",     spacing);
-	appendField (initializeOnly, "style",       style);
+	appendField (initializeOnly, "horizontal",  horizontal);
+	appendField (initializeOnly, "justify",     justify);
 	appendField (initializeOnly, "topToBottom", topToBottom);
+	appendField (initializeOnly, "leftToRight", leftToRight);
+	appendField (initializeOnly, "language",    language);
 }
 
 X3DBasicNode*
 ScreenFontStyle::create (X3DExecutionContext* const executionContext) const
 {
 	return new ScreenFontStyle (executionContext);
+}
+
+float
+ScreenFontStyle::getSize () const
+{
+	return pointSize;
 }
 
 } // X3D

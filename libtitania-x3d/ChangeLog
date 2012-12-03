@@ -1,3 +1,29 @@
+2012-12-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* String.h:
+	* Numbers.h:
+	* SFString.h:
+	* SFString.cpp:
+	* Text.h:
+	* Text.cpp:
+	* FontStyle.h:
+	* FontStyle.cpp:
+	* Script.cpp:
+	* Inline.cpp:
+	* X3DFontStyleNode.h:
+	* ScreenFontStyle.h:
+	* BrowserOptions.h:
+	* X3DFontStyleNode.cpp:
+	* BrowserOptions.cpp:
+	* jsGlobals.cpp:
+	* ImageTexture.cpp:
+	* ScreenFontStyle.cpp:
+	* X3DUrlObject.cpp:
+	* X3DGeometryNode.cpp:
+	* RenderingProperties.h:
+	* RenderingProperties.cpp: 
+
 2012-12-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

@@ -92,14 +92,12 @@ jsGlobals::_true (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsGlobals::print (JSContext* context, uintN argc, jsval* vp)
 {
-	JSString* string;
-
 	jsval* argv = JS_ARGV (context, vp);
 
-	if (not JS_ConvertArguments (context, argc, argv, "S", &string))
-		return JS_FALSE;
-
-	std::clog << JS_GetString (context, string) << std::endl;
+	for (uintN i = 0; i < argc; ++ i)
+		std::clog << JS_GetString (context, argv [i]);
+	
+	std::clog << std::endl;
 
 	JS_SET_RVAL (context, vp, JSVAL_VOID);
 	return JS_TRUE;

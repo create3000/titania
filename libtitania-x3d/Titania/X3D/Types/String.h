@@ -46,77 +46,15 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_TEXT_TEXT_H__
-#define __TITANIA_X3D_COMPONENTS_TEXT_TEXT_H__
+#ifndef __TITANIA_X3D_TYPES_STRING_H__
+#define __TITANIA_X3D_TYPES_STRING_H__
 
-#include "../Rendering/X3DGeometryNode.h"
-#include "../Text/X3DFontStyleNode.h"
-#include <FTGL/ftgl.h>
-#include <memory>
+#include <glibmm/ustring.h>
 
 namespace titania {
 namespace X3D {
 
-class Text :
-	public X3DGeometryNode
-{
-public:
-
-	using X3DGeometryNode::solid;
-
-	MFString                  string;
-	MFFloat                   length;
-	SFFloat                   maxExtent;
-	SFVec3f                   origin;
-	MFVec2f                   lineBounds;
-	SFVec2f                   textBounds;
-	SFNode <X3DFontStyleNode> fontStyle;
-
-	Text (X3DExecutionContext* const);
-
-	virtual
-	X3DBasicNode*
-	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	display ();
-
-	virtual
-	void
-	dispose ();
-
-
-private:
-
-	virtual
-	void
-	initialize ();
-
-	float
-	getLength (const size_t);
-
-	const SFNode <X3DFontStyleNode> &
-	getFontStyle () const;
-
-	void
-	set_fontStyle ();
-
-	virtual
-	Box3f
-	createBBox ();
-
-	virtual
-	void
-	build ();
-
-	std::unique_ptr <FTPolygonFont> font;
-	float                           lineHeight;
-	std::vector <float>             charSpacings;
-	std::vector <Vector3f>          translation;
-	float                           scale;
-
-};
+typedef Glib::ustring String;
 
 } // X3D
 } // titania

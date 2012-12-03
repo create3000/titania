@@ -59,15 +59,7 @@ class FontStyle :
 {
 public:
 
-	MFString family;
-	SFBool   horizontal;
-	MFString justify;
-	SFString language;
-	SFBool   leftToRight;
-	SFFloat  size;
-	SFFloat  spacing;
-	SFString style;
-	SFBool   topToBottom;
+	SFFloat size;
 
 	FontStyle (X3DExecutionContext* const);
 
@@ -75,8 +67,9 @@ public:
 	X3DBasicNode*
 	create (X3DExecutionContext* const) const;
 	
-	std::string
-	getFilename () const;
+	virtual
+	float
+	getSize () const;
 
 };
 

@@ -157,7 +157,7 @@ BrowserWidget::on_locationEntry_activate ()
 	if (worldURL .is_absolute () and worldURL .scheme () .empty ())
 		worldURL = basic::uri ("file://", worldURL);
 
-	loadURL ({ worldURL });
+	loadURL ({ worldURL .str () });
 }
 
 void

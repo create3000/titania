@@ -110,6 +110,9 @@ X3DGeometryNode::eventsProcessed ()
 const Box3f
 X3DGeometryNode::getBBox ()
 {
+	if (bbox == Box3f ())
+		return bbox = createBBox ();
+	
 	return bbox;
 }
 
@@ -224,12 +227,13 @@ X3DGeometryNode::update ()
 	clear ();
 	build ();
 	transfer ();
-	bbox = createBBox ();
 }
 
 void
 X3DGeometryNode::clear ()
 {
+	bbox = Box3f ();
+
 	texCoord .clear ();
 	textureCoordinateGenerator = NULL;
 	colors     .clear ();
@@ -277,9 +281,8 @@ X3DGeometryNode::display ()
 		return;
 
 	if (solid)
-	{
 		glEnable (GL_CULL_FACE);
-	}
+
 	else
 		glDisable (GL_CULL_FACE);
 

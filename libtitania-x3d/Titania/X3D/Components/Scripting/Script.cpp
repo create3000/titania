@@ -86,7 +86,7 @@ Script::initialize ()
 	{
 		std::string ecmascript;
 
-		if (RegEx::ECMAScript .FullMatch (URL .getValue (), &ecmascript))
+		if (RegEx::ECMAScript .FullMatch (URL .str (), &ecmascript))
 		{
 			javaScript = new JavaScript (this, ecmascript);
 			break;

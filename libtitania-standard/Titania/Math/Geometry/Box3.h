@@ -79,13 +79,28 @@ public:
 		value ({ { box .min (), box .max () } })
 	{ }
 
-	///  Constructs a box of size @a size and center @a size,
+	//	///  Constructs a box of min @a min and max @a max.
+	//	constexpr
+	//	box3 (const vector3 <Type> & min, const vector3 <Type> & max, bool) :
+	//		value ({ min, max })
+	//	{ }
+
+	///  Constructs a box of size @a size and center @a size.
 	box3 (const vector3 <Type> & size, const vector3 <Type> & center)
 	{
 		vector3 <Type> size_1_2 = size / Type (2);
 		value .min = center - size_1_2;
 		value .max = center + size_1_2;
 	}
+	
+	
+	///  @name Assignment operator
+
+	///  Assign @a vector to this vector.
+	template <class Up>
+	box3 &
+	operator = (const box3 <Up> &);
+
 
 	///  @name Element access
 
@@ -104,6 +119,7 @@ public:
 	constexpr vector3 <Type>
 	center () const { return max () - size () / Type (2); }
 
+
 	///  @name  Arithmetic operations
 	///  All these operators modify this vector2 inplace.
 
@@ -120,6 +136,26 @@ public:
 
 		return *this;
 	}
+
+	///  Translate this box by @a translation.
+	template <class Up>
+	box3 &
+	operator += (const vector3 <Up> & translation)
+	{
+		value .min += translation;
+		value .max += translation;
+		return *this;
+	}
+
+	///  Scale this box by @a scale.
+	box3 &
+	operator *= (const Type & scale)
+	{
+		value .min *= scale;
+		value .max *= scale;
+		return *this;
+	}
+
 
 	///  @name Intersection
 
@@ -139,6 +175,16 @@ private:
 	Value value;
 
 };
+
+template <class Type>
+template <class Up>
+box3 <Type> &
+box3 <Type>::operator = (const box3 <Up> & box)
+{
+	value .min = box .min ();
+	value .max = box .max ();
+	return *this;
+}
 
 template <class Type>
 bool
@@ -206,10 +252,34 @@ box3 <Type>::intersect (const line3 <Type> & line) const
 }
 
 ///  @relates box3
+///  @name Comparision operations
+
+///  Compares two box3 numbers.
+///  Return true if @a lhs is equal to @a rhs.
+template <class Type>
+constexpr bool
+operator == (const box3 <Type> & lhs, const box3 <Type> & rhs)
+{
+	return
+	   lhs .min () == rhs .min () and
+	   lhs .max () == rhs .max ();
+}
+
+///  Compares two box3 numbers.
+///  Return false if @a lhs is not equal to @a rhs.
+template <class Type>
+constexpr bool
+operator not_eq (const box3 <Type> & lhs, const box3 <Type> & rhs)
+{
+	return
+	   lhs .min () not_eq rhs .min () or
+	   lhs .max () not_eq rhs .max ();
+}
+
+///  @relates box3
 ///  @name Arithmetic operations
 
-///@{
-///  Return new vector value @a lhs plus @a rhs.
+///  Return new box value @a lhs plus @a rhs.
 template <class Type>
 inline
 box3 <Type>
@@ -218,12 +288,45 @@ operator + (const box3 <Type> & lhs, const box3 <Type> & rhs)
 	return box3 <Type> (lhs) += rhs;
 }
 
-///@}
+///  Return new box value @a lhs translated @a rhs.
+template <class Type>
+inline
+box3 <Type>
+operator + (const box3 <Type> & lhs, const vector3 <Type> & rhs)
+{
+	return box3 <Type> (lhs) += rhs;
+}
+
+///  Return new box value @a rhs translated @a lhs.
+template <class Type>
+inline
+box3 <Type>
+operator + (const vector3 <Type> & lhs, const box3 <Type> & rhs)
+{
+	return box3 <Type> (rhs) += lhs;
+}
+
+///  Return new box value @a lhs scaled @a rhs.
+template <class Type>
+inline
+box3 <Type>
+operator * (const box3 <Type> & lhs, const Type & rhs)
+{
+	return box3 <Type> (lhs) *= rhs;
+}
+
+///  Return new box value @a rhs scaled @a lhs.
+template <class Type>
+inline
+box3 <Type>
+operator * (const Type & lhs, const box3 <Type> & rhs)
+{
+	return box3 <Type> (rhs) *= lhs;
+}
 
 ///  @relates box3
 ///  @name Input/Output operations
 
-///@{
 ///  Extraction operator for vector values.
 template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
@@ -247,8 +350,6 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const box3 <Type> & b
 {
 	return ostream << box .size () << ", " << box .center ();
 }
-
-///@}
 
 extern template class box3 <float>;
 extern template class box3 <double>;

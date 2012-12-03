@@ -50,37 +50,27 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
-#include <fontconfig/fontconfig.h>
-
 namespace titania {
 namespace X3D {
 
 FontStyle::FontStyle (X3DExecutionContext* const executionContext) :
 	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
 	X3DFontStyleNode (),                                                    
-	          family ({ "SERIF" }),                                         // MFString [ ]family       "SERIF"
-	      horizontal (true),                                                // SFBool   [ ]horizontal   TRUE
-	         justify ({ "BEGIN" }),                                         // MFString [ ]justify      "BEGIN"        ["BEGIN","END","FIRST","MIDDLE",""]
-	        language (),                                                    // SFString [ ]language     ""
-	     leftToRight (true),                                                // SFBool   [ ]leftToRight  TRUE
-	            size (1),                                                   // SFFloat  [ ]size         1.0            (0,∞)
-	         spacing (1),                                                   // SFFloat  [ ]spacing      1.0            [0,∞)
-	           style ("PLAIN"),                                             // SFString [ ]style        "PLAIN"        ["PLAIN"|"BOLD"|"ITALIC"|"BOLDITALIC"|""]
-	     topToBottom (true)                                                 // SFBool   [ ]topToBottom  TRUE
+	            size (1)                                                    // SFFloat  [ ] size         1.0            (0,∞)
 {
 	setComponent ("Text");
 	setTypeName ("FontStyle");
 
 	appendField (inputOutput,    "metadata",    metadata);
 	appendField (initializeOnly, "family",      family);
-	appendField (initializeOnly, "horizontal",  horizontal);
-	appendField (initializeOnly, "justify",     justify);
-	appendField (initializeOnly, "language",    language);
-	appendField (initializeOnly, "leftToRight", leftToRight);
+	appendField (initializeOnly, "style",       style);
 	appendField (initializeOnly, "size",        size);
 	appendField (initializeOnly, "spacing",     spacing);
-	appendField (initializeOnly, "style",       style);
+	appendField (initializeOnly, "horizontal",  horizontal);
+	appendField (initializeOnly, "justify",     justify);
 	appendField (initializeOnly, "topToBottom", topToBottom);
+	appendField (initializeOnly, "leftToRight", leftToRight);
+	appendField (initializeOnly, "language",    language);
 }
 
 X3DBasicNode*
@@ -89,27 +79,10 @@ FontStyle::create (X3DExecutionContext* const executionContext) const
 	return new FontStyle (executionContext);
 }
 
-std::string
-FontStyle::getFilename () const
+float
+FontStyle::getSize () const
 {
-	FcPattern* pattern = family .size ()
-	                     ? FcNameParse ((FcChar8*) (family [0] .getValue () .c_str ()))
-								: FcPatternCreate ();
-
-	FcConfigSubstitute (NULL, pattern, FcMatchPattern);
-	FcDefaultSubstitute (pattern);
-
-	FcResult   result;
-	FcPattern* match = FcFontMatch (NULL, pattern, &result);
-
-	FcChar8* file;
-
-	FcPatternGetString (match, FC_FILE, 0, &file);
-
-	FcPatternDestroy (pattern);
-
-	__LOG__ << file << std::endl;
-	return std::string ((char*) file);
+	return size;
 }
 
 } // X3D

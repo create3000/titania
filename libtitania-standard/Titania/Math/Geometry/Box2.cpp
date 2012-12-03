@@ -46,79 +46,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_TEXT_TEXT_H__
-#define __TITANIA_X3D_COMPONENTS_TEXT_TEXT_H__
-
-#include "../Rendering/X3DGeometryNode.h"
-#include "../Text/X3DFontStyleNode.h"
-#include <FTGL/ftgl.h>
-#include <memory>
+#include "Box2.h"
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-class Text :
-	public X3DGeometryNode
-{
-public:
+template class box2 <float>;
+template class box2 <double>;
+template class box2 <long double>;
 
-	using X3DGeometryNode::solid;
+//
+template std::istream & operator >> (std::istream &, box2 <float> &);
+template std::istream & operator >> (std::istream &, box2 <double> &);
+template std::istream & operator >> (std::istream &, box2 <long double> &);
 
-	MFString                  string;
-	MFFloat                   length;
-	SFFloat                   maxExtent;
-	SFVec3f                   origin;
-	MFVec2f                   lineBounds;
-	SFVec2f                   textBounds;
-	SFNode <X3DFontStyleNode> fontStyle;
+//
+template std::ostream & operator << (std::ostream &, const box2 <float> &);
+template std::ostream & operator << (std::ostream &, const box2 <double> &);
+template std::ostream & operator << (std::ostream &, const box2 <long double> &);
 
-	Text (X3DExecutionContext* const);
-
-	virtual
-	X3DBasicNode*
-	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	display ();
-
-	virtual
-	void
-	dispose ();
-
-
-private:
-
-	virtual
-	void
-	initialize ();
-
-	float
-	getLength (const size_t);
-
-	const SFNode <X3DFontStyleNode> &
-	getFontStyle () const;
-
-	void
-	set_fontStyle ();
-
-	virtual
-	Box3f
-	createBBox ();
-
-	virtual
-	void
-	build ();
-
-	std::unique_ptr <FTPolygonFont> font;
-	float                           lineHeight;
-	std::vector <float>             charSpacings;
-	std::vector <Vector3f>          translation;
-	float                           scale;
-
-};
-
-} // X3D
+} // math
 } // titania
-
-#endif

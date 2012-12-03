@@ -50,30 +50,30 @@
 #define __TITANIA_X3D_FIELDS_SFSTRING_H__
 
 #include "../Basic/X3DField.h"
-#include "../Types/Numbers.h"
+#include "../Types/String.h"
 
 namespace titania {
 namespace X3D {
 
-extern template class X3DField <std::string>;
+extern template class X3DField <String>;
 
 class SFString :
-	public X3DField <std::string>
+	public X3DField <String>
 {
 public:
 
-	typedef value_type::value_type char_type;
+	typedef std::string::value_type char_type;
 	typedef value_type::value_type scalar_type;
 	typedef value_type::size_type  size_type;
 
-	using X3DField <std::string>::operator =;
+	using X3DField <String>::operator =;
 
 	SFString ();
 
 	SFString (const SFString &);
 
 	explicit
-	SFString (const std::string &);
+	SFString (const String &);
 
 	explicit
 	SFString (const char_type*);
@@ -84,6 +84,11 @@ public:
 
 	SFString &
 	operator = (const char_type*);
+
+	operator const std::string & () const;
+	
+	const std::string &
+	str () const;
 
 	size_type
 	length () const;
@@ -101,16 +106,16 @@ public:
 //@{
 inline
 bool
-operator == (const SFString & a, const char* b)
+operator == (const SFString & lhs, const char* rhs)
 {
-	return a .getValue () == b;
+	return lhs .getValue () == rhs;
 }
 
 inline
 bool
-operator == (const char* a, const SFString & b)
+operator == (const char* lhs, const SFString & rhs)
 {
-	return a == b .getValue ();
+	return lhs == rhs .getValue ();
 }
 //@}
 

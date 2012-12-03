@@ -15,6 +15,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Chrono/Now.cpp \
 	Titania/Chrono/StopWatch.cpp \
 	Titania/Chrono/SystemClock.cpp \
+	Titania/Math/Geometry/Box2.cpp \
 	Titania/Math/Geometry/Box3.cpp \
 	Titania/Math/Geometry/Line3.cpp \
 	Titania/Math/Geometry/Plane3.cpp \

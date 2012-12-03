@@ -126,7 +126,7 @@ ImageTexture::requestImmediateLoad ()
 
 			if (textureId)
 			{
-				setWorldURL (URL .getValue ());
+				setWorldURL (URL .str ());
 				setTexture (textureId);
 				setLoadState (COMPLETE_STATE);
 				return;

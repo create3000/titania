@@ -6,26 +6,44 @@ Viewpoint { }
 
 Shape {
   appearance Appearance {
-    material Material { diffuseColor 1 0 0 }
+    material Material {
+      diffuseColor 1 0 0
+    }
   }
   geometry Text {
-    string [
-      "Hällö Wörld!",
-      "This is a test!"
-    ]
+    string [ "Hällö Wörld!", "This is a test!", "This is another test!" ]
+    length 12
     fontStyle FontStyle {
       family "Ubuntu Mono"
-      size 1
+      justify "END"
     }
   }
 }
 
 Transform {
-  translation 0 0.5 0
+  translation -0.5 0.5 0
   children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0 1 0
+      }
+    }
     geometry Box {
       size 1 1 1
     }
   }
 }
 
+Transform {
+  translation -0.5 -0.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0 0 1
+      }
+    }
+    geometry Box {
+      size 1 1 1
+    }
+  }
+}

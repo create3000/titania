@@ -57,9 +57,49 @@ namespace X3D {
 class X3DFontStyleNode :
 	public X3DPropertyNode
 {
+public:
+
+	enum Justify
+	{
+		BEGIN,
+		MIDDLE,
+		END
+	};
+
+	MFString family;
+	SFString style;
+	SFFloat  spacing;
+	SFBool   horizontal;
+	MFString justify;
+	SFBool   topToBottom;
+	SFBool   leftToRight;
+	SFString language;
+
+	Justify
+	getJustify (const size_t);
+
+	virtual
+	float
+	getSize () const = 0;
+
+	std::string
+	getFilename () const;
+
+
 protected:
 
 	X3DFontStyleNode ();
+
+
+private:
+
+	void
+	initialize ();
+
+	void
+	set_justify ();
+
+	std::deque <Justify> justifies;
 
 };
 

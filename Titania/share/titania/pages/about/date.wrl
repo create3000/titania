@@ -8,7 +8,6 @@ Inline {
 }
 
 Transform {
-  translation -5 0 0
   children Shape {
     appearance Appearance {
       material Material {
@@ -16,9 +15,12 @@ Transform {
       }
     }
     geometry DEF Time Text {
+      length 10
       fontStyle FontStyle {
         family "Ubuntu Mono"
+        style "BOLD"
         size 0.735
+        justify "MIDDLE"
       }
     }
   }
@@ -40,4 +42,4 @@ function set_time (value)
   "
 }
 
-ROUTE Timer.cycleTime TO RandomText.set_time
+ROUTE Timer.time TO RandomText.set_time

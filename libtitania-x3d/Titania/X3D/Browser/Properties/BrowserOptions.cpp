@@ -79,12 +79,13 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	             dashboard (),                                                    
 	enableInlineViewpoints (true),                                                // motionBlur (False),
 	           antialiased (),                                                    
-	               shading ("GOURAUD"),                                           
+	        textureQuality ("MEDIUM"),                                            
 	      primitiveQuality ("MEDIUM"),                                            
 	     qualityWhenMoving ("MEDIUM"),                                            
-	        textureQuality ("MEDIUM"),                                            
+	               shading ("GOURAUD"),                                           
+	     textureProperties (new TextureProperties (executionContext)),        
 	      sphereProperties (new QuadSphereProperties (executionContext)),
-	     textureProperties (new TextureProperties (executionContext))        
+	             fontStyle (new FontStyle (executionContext))
 {
 	setComponent ("Browser"),
 	setTypeName ("BrowserOptions");
@@ -93,13 +94,14 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput, "dashboard",              dashboard);
 	appendField (inputOutput, "enableInlineViewpoints", enableInlineViewpoints);
 	appendField (inputOutput, "antialiased",            antialiased);
-	appendField (inputOutput, "shading",                shading);
+	appendField (inputOutput, "textureQuality",         textureQuality);
 	appendField (inputOutput, "primitiveQuality",       primitiveQuality);
 	appendField (inputOutput, "qualityWhenMoving",      qualityWhenMoving);
-	appendField (inputOutput, "textureQuality",         textureQuality);
+	appendField (inputOutput, "shading",                shading);
 
-	appendField (inputOutput, "sphereProperties",       sphereProperties);
 	appendField (inputOutput, "textureProperties",      textureProperties);
+	appendField (inputOutput, "sphereProperties",       sphereProperties);
+	appendField (inputOutput, "fontStyle",              fontStyle);
 }
 
 BrowserOptions*
@@ -113,47 +115,26 @@ BrowserOptions::initialize ()
 {
 	X3DPropertyNode::initialize ();
 
-	sphereProperties  -> setup ();
 	textureProperties -> setup ();
+	sphereProperties  -> setup ();
+	fontStyle         -> setup ();
 
 	primitiveQuality .addInterest (this, &BrowserOptions::set_primitiveQuality);
 	shading          .addInterest (this, &BrowserOptions::set_shading);
 	
-	set_shading ();
-	set_primitiveQuality ();
 	set_textureQuality ();
+	set_primitiveQuality ();
+	set_shading ();
 }
 
 void
-BrowserOptions::set_shading ()
+BrowserOptions::set_textureQuality ()
 {
-	std::clog << "Setting shading to " << shading << "." << std::endl;
-
-	if (shading == "PHONG")
-	{
-		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-		glShadeModel (GL_SMOOTH);
-	}
-	else if (shading == "GOURAUD")
-	{
-		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-		glShadeModel (GL_SMOOTH);
-	}
-	else if (shading == "FLAT")
-	{
-		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-		glShadeModel (GL_FLAT);
-	}
-	else if (shading == "WIREFRAME")
-	{
-		glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
-		glShadeModel (GL_SMOOTH);
-	}
-	else if (shading == "POINTSET")
-	{
-		glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
-		glShadeModel (GL_SMOOTH);
-	}
+	textureProperties -> magnificationFilter = "NICEST";
+	textureProperties -> minificationFilter  = "NICEST";
+	textureProperties -> textureCompression  = "NICEST";
+	textureProperties -> generateMipMaps     = true;
+	
 }
 
 void
@@ -194,13 +175,35 @@ BrowserOptions::set_primitiveQuality ()
 }
 
 void
-BrowserOptions::set_textureQuality ()
+BrowserOptions::set_shading ()
 {
-	textureProperties -> magnificationFilter = "NICEST";
-	textureProperties -> minificationFilter  = "NICEST";
-	textureProperties -> textureCompression  = "NICEST";
-	textureProperties -> generateMipMaps     = true;
-	
+	std::clog << "Setting shading to " << shading << "." << std::endl;
+
+	if (shading == "PHONG")
+	{
+		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+		glShadeModel (GL_SMOOTH);
+	}
+	else if (shading == "GOURAUD")
+	{
+		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+		glShadeModel (GL_SMOOTH);
+	}
+	else if (shading == "FLAT")
+	{
+		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+		glShadeModel (GL_FLAT);
+	}
+	else if (shading == "WIREFRAME")
+	{
+		glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
+		glShadeModel (GL_SMOOTH);
+	}
+	else if (shading == "POINTSET")
+	{
+		glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
+		glShadeModel (GL_SMOOTH);
+	}
 }
 
 } // X3D

@@ -48,10 +48,8 @@
 
 #include "Text.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Text/FontStyle.h"
-
-#include <Titania/String/Join.h>
 
 namespace titania {
 namespace X3D {
@@ -66,7 +64,11 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	     lineBounds (),                                                    // MFVec2f  [out]    lineBounds
 	     textBounds (),                                                    // SFVec2f  [out]    textBounds
 	      fontStyle (),                                                    // SFNode   [in,out] fontStyle   NULL         [X3FontStyleNode]
-	         font   ()                                                    
+	         font   (),                                                    
+	     lineHeight (),                                                    
+	   charSpacings (),                                                    
+	    translation (),                                                    
+	          scale ()                                                     
 {
 	setComponent ("Text");
 	setTypeName ("Text");
@@ -98,12 +100,25 @@ Text::initialize ()
 	set_fontStyle ();
 }
 
+float
+Text::getLength (const size_t index)
+{
+	return length [std::min (index, length .size () - 1)];
+}
+
+const SFNode <X3DFontStyleNode> &
+Text::getFontStyle () const
+{
+	if (this -> fontStyle)
+		return this -> fontStyle;
+
+	return getBrowser () -> getBrowserOptions () -> fontStyle;
+}
+
 void
 Text::set_fontStyle ()
 {
-	SFNode <FontStyle> fontStyle = this -> fontStyle
-	                               ? this -> fontStyle
-											 : new FontStyle (getExecutionContext ());
+	const SFNode <X3DFontStyleNode> & fontStyle = getFontStyle ();
 
 	// Create a pixmap font from a TrueType file.
 	font .reset (new FTPolygonFont (fontStyle -> getFilename () .c_str ()));
@@ -115,20 +130,33 @@ Text::set_fontStyle ()
 	font -> CharMap (ft_encoding_unicode);
 	font -> UseDisplayList (true);
 
-	// Set the font size and render a small text.
+	// Set the font size to large text.
 	font -> FaceSize (100);
+
+	// Calculate lineHeight.
+	lineHeight = font -> LineHeight () * fontStyle -> spacing;
+
+	// Reserve charSpacings.
+	charSpacings .reserve (string .size ());
+
+	// Reserve translations.
+	translation .reserve (string .size ());
+
+	// Calculate scale.
+	scale = fontStyle -> getSize () / font -> LineHeight ();
+
 }
 
 Box3f
 Text::createBBox ()
 {
+	const SFNode <X3DFontStyleNode> & fontStyle = getFontStyle ();
+
 	Box3f bbox;
 
-	SFNode <FontStyle> fontStyle = this -> fontStyle
-	                               ? this -> fontStyle
-											 : new FontStyle (getExecutionContext ());
-
-	float scale = fontStyle -> size / font -> LineHeight ();
+	charSpacings .clear ();
+	lineBounds   .clear ();
+	translation  .clear ();
 
 	// Calculate BBoxes.
 	size_t i = 0;
@@ -138,13 +166,44 @@ Text::createBBox ()
 		FTBBox  ftbbox = font -> BBox (line .getValue () .c_str ());
 		FTPoint min    = ftbbox .Lower ();
 		FTPoint max    = ftbbox .Upper ();
-		FTPoint size   = max - min;
-		FTPoint center = max - size * 0.5;
 
-		Vector3f translation (0, -i * font -> LineHeight () * fontStyle -> spacing, 0);
+		Vector3f size   = Vector3f (max .X (), max .Y (), max .Z ()) - Vector3f (min .X (), min .Y (), min .Z ());
+		Vector3f center = Vector3f (max .X (), max .Y (), max .Z ()) - size / 2.0f;
 
-		bbox += Box3f (Vector3f (size .X (), size .Y (), size .Z ()) * scale,
-		               (Vector3f (center .X (), center .Y (), center .Z ()) + translation) * scale);
+		// Calculate charSpacing and lineBounds.
+
+		float    charSpacing = 0;
+		Vector2f lineBound   = Vector2f (size .x (), size .y ()) *= scale;
+
+		if (length .size ())
+		{
+			float length = getLength (i);
+			charSpacing = (length - lineBound .x ()) / (line .length () - 1) / scale;
+			lineBound .x (length);
+			size .x (length / scale);
+		}
+
+		charSpacings .emplace_back (charSpacing);
+		lineBounds   .emplace_back (lineBound);
+
+		// Calculate line translation.
+
+		switch (fontStyle -> getJustify (i))
+		{
+			case FontStyle::Justify::BEGIN:
+				translation .emplace_back (0, -i * lineHeight, 0);
+				break;
+			case FontStyle::Justify::MIDDLE:
+				translation .emplace_back (-size .x () / 2, -i * lineHeight, 0);
+				break;
+			case FontStyle::Justify::END:
+				translation .emplace_back (-size .x (), -i * lineHeight, 0);
+				break;
+		}
+
+		// Add bbox.
+
+		bbox += Box3f (size, center + translation [i]) * scale;
 
 		++ i;
 	}
@@ -154,27 +213,32 @@ Text::createBBox ()
 
 void
 Text::build ()
-{
-}
+{ }
 
 void
 Text::display ()
 {
-	SFNode <FontStyle> fontStyle = this -> fontStyle
-	                               ? this -> fontStyle
-											 : new FontStyle (getExecutionContext ());
+	if (solid)
+		glEnable (GL_CULL_FACE);
 
-	float scale = fontStyle -> size / font -> LineHeight ();
+	else
+		glDisable (GL_CULL_FACE);
+
 	glScalef (scale, scale, scale);
+
+	// Calculate translations and lineBounds if needed.
+	getBBox ();
 
 	// Render lines.
 	size_t i = 0;
 
 	for (const auto & line : string)
 	{
-		glTranslatef (0, -i * font -> LineHeight () * fontStyle -> spacing, 0);
-
-		font -> Render (line .getValue () .c_str ());
+		font -> Render (line .getValue () .c_str (),
+		                -1,
+		                FTPoint (translation [i] .x (), translation [i] .y (), translation [i] .z ()),
+		                FTPoint (charSpacings [i], 0, 0),
+		                FTGL::RENDER_ALL);
 
 		++ i;
 	}

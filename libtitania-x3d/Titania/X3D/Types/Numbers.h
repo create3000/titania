@@ -86,8 +86,6 @@ typedef math::matrix4 <Float>  Matrix4f;
 typedef math::rotation4 <Double> Rotation4d;
 typedef math::rotation4 <Float>  Rotation4f;
 
-typedef std::string String;
-
 // time_type is defined in Time.h
 
 typedef math::vector2 <Double> Vector2d;

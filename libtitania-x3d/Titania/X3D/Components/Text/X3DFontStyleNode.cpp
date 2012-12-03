@@ -48,13 +48,86 @@
 
 #include "X3DFontStyleNode.h"
 
+#include <fontconfig/fontconfig.h>
+
 namespace titania {
 namespace X3D {
 
 X3DFontStyleNode::X3DFontStyleNode () :
-	X3DNode () 
+	X3DPropertyNode (),             
+	         family ({ "SERIF" }), // MFString [ ] family       "SERIF"
+	          style ("PLAIN"),     // SFString [ ] style        "PLAIN"        ["PLAIN"|"BOLD"|"ITALIC"|"BOLDITALIC"|""]
+	        spacing (1),           // SFFloat  [ ] spacing      1.0            [0,?)
+	     horizontal (true),        // SFBool   [ ] horizontal   TRUE
+	        justify ({ "BEGIN" }), // MFString [ ] justify      "BEGIN"        ["BEGIN","END","FIRST","MIDDLE",""]
+	    topToBottom (true),        // SFBool   [ ] topToBottom  TRUE
+	    leftToRight (true),        // SFBool   [ ] leftToRight  TRUE
+	       language (),            // SFString [ ] language     ""
+	      justifies ()             
 {
 	addNodeType (X3DFontStyleNodeType);
+}
+
+void
+X3DFontStyleNode::initialize ()
+{
+	X3DPropertyNode::initialize ();
+
+	justify .addInterest (this, &X3DFontStyleNode::set_justify);
+
+	set_justify ();
+}
+
+void
+X3DFontStyleNode::set_justify ()
+{
+	justifies .clear ();
+
+	for (const auto & value : justify)
+	{
+		if (value == "MIDDLE")
+			justifies .emplace_back (Justify::MIDDLE);
+
+		else if (value == "END")
+			justifies .emplace_back (Justify::END);
+
+		else
+			justifies .emplace_back (Justify::BEGIN);
+	}
+}
+
+X3DFontStyleNode::Justify
+X3DFontStyleNode::getJustify (const size_t index)
+{
+	if (justifies .size ())
+		return justifies [std::min (index, justifies .size () - 1)];
+
+	return Justify::BEGIN;
+}
+
+std::string
+X3DFontStyleNode::getFilename () const
+{
+	FcPattern* pattern = family .size ()
+	                     ? FcNameParse ((FcChar8*) (family [0] .getValue () .c_str ()))
+								: FcPatternCreate ();
+
+	FcPatternAddString (pattern, "style", (FcChar8*) style .getValue () .c_str ());
+
+	FcConfigSubstitute (NULL, pattern, FcMatchPattern);
+	FcDefaultSubstitute (pattern);
+
+	FcResult   result;
+	FcPattern* match = FcFontMatch (NULL, pattern, &result);
+
+	FcChar8* file;
+
+	FcPatternGetString (match, FC_FILE, 0, &file);
+
+	FcPatternDestroy (pattern);
+
+	__LOG__ << file << std::endl;
+	return std::string ((char*) file);
 }
 
 } // X3D

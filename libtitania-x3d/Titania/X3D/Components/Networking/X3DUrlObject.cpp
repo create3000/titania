@@ -196,7 +196,7 @@ X3DUrlObject::loadDocument (const SFString & URL)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	return loadDocument (URL .getValue ());
+	return loadDocument (URL .str ());
 }
 
 std::string
@@ -222,7 +222,7 @@ X3DUrlObject::loadStream (const SFString & URL)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	return loadStream (URL .getValue ());
+	return loadStream (URL .str ());
 }
 
 basic::ifilestream
@@ -269,7 +269,7 @@ X3DUrlObject::transformURI (const MFString & uri)
 	MFString url;
 
 	for (const auto & URI : uri)
-		url .push_back (transformURI (URI .getValue ()));
+		url .push_back (transformURI (URI .str ()) .str ());
 
 	return url;
 }
