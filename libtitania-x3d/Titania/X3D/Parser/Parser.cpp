@@ -1262,7 +1262,7 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 		}
 		catch (const Error <INVALID_NAME> &)
 		{
-			_newNode = getExecutionContext () -> createProtoInstance (_nodeTypeId);
+			_newNode = getExecutionContext () -> createProtoInstance (_nodeTypeId, false);
 		}
 
 		//__LOG__ << _nodeTypeId << " " << (void*) _newNode << std::endl;

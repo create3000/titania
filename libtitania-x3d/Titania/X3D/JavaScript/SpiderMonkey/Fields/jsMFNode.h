@@ -67,7 +67,7 @@ public:
 
 	static 
 	JSBool
-	create (JSContext*, X3DFieldDefinition*, jsval*, const bool = false);
+	create (JSContext*, X3DArray*, jsval*, const bool = false);
 
 	static 
 	JSClass*

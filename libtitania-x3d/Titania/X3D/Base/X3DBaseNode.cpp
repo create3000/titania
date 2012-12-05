@@ -128,14 +128,14 @@ X3DBaseNode::hasRoots (BaseNodeSet & seen)
 void
 X3DBaseNode::setChild (X3DBaseNode* const child)
 {
-	addChild (child);
+	child -> addParent (this);
 	children .insert (child);
 }
 
 void
 X3DBaseNode::setChild (X3DBaseNode & child)
 {
-	addChild (child);
+	child .addParent (this);
 	children .insert (&child);
 }
 

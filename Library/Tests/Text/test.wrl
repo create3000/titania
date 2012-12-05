@@ -12,7 +12,29 @@ PROTO LineRectangle2D [ ]
   }
 }
 
-Viewpoint { }
+PROTO BBox2 [
+  exposedField SFVec3f translation 0 0 0
+  exposedField SFVec3f scale 1 1 1
+  exposedField SFColor color 1 1 1
+]
+{
+  Transform {
+    translation IS translation
+    scale IS scale
+    children Transform {
+      translation 0.5 -0.5 0
+      children Shape {
+        appearance Appearance { material Material { emissiveColor IS color } }
+        geometry LineRectangle2D { }
+      }
+    }
+  }
+}
+
+Viewpoint {
+  position 0 -0.0839844 21.8746
+  centerOfRotation 0 -0.0839844 0
+}
 
 DEF Lines Shape {
   appearance Appearance {
@@ -21,11 +43,12 @@ DEF Lines Shape {
     }
   }
   geometry DEF Text Text {
-    string [ "Hällö Wörld!", "This is my line!", "Yet another crazy line!" ]
-    length 12
+    string [ "Hällö Wörld!", "This is my line!", "now a new one." ]
+    length [12, 0, 10]
     fontStyle FontStyle {
       family "Ubuntu Mono"
-      justify "END"
+      style "BOLDITALIC"
+      justify ["BEGIN", "BEGIN" ]
     }
   }
 }
@@ -87,45 +110,52 @@ DEF YellowBox Transform {
   }
 }
 
-Transform {
-  children DEF LineBounds Transform {
-    translation 0.5 -0.5 0
-  }
-}
+DEF LineBounds Transform { }
 
 DEF TextBounds Transform {
-  children Transform {
-    translation 0.5 -0.5 0
-    children Shape {
-      geometry LineRectangle2D { }
-    }
-  }
+  children BBox2 { }
 }
 
 DEF Bounds Script {
   eventIn  MFVec2f set_lineBounds
   eventIn  SFVec2f set_textBounds
   eventOut SFVec3f scale_changed
-  field SFNode lineBounds USE LineBounds
+  field    SFNode  lineBounds USE LineBounds
+  field    MFColor color [ 1 0 0, 0 1 0, 0 0 1 ]
+  field    SFNode  text USE Text
 
   url "vrmlscript:
 
+function get_majorAlignment (index)
+{
+	if (text .fontStyle .justify [0] == 'END')
+		return text .textBounds .x - text .lineBounds [index] .x;
+		
+	if (text .fontStyle .justify [0] == 'MIDDLE')
+		return (text .textBounds .x - text .lineBounds [index] .x) / 2;
+		
+	return 0;
+}
+
 function set_lineBounds (value, time)
 {
-	print (value);
-	
 	var transforms = new MFNode ();
+	
+	var y = 0;
 		
-	for (var lineBound in value)
-	{	
-		var transform                     = Browser .currentScene .createNode ('Transform');
-		transform .children [0]           = Browser .currentScene .createNode ('Shape');
-		transform .children [0] .geometry = Browser .currentScene .createNode ('LineRectangle2D');
+	for (var i in value)
+	{
+		var transform = Browser .currentScene .createProto ('BBox2');
+		
+		transform .translation = new SFVec3f (get_majorAlignment (i), y, 0);
+		transform .scale       = new SFVec3f (value [i] .x, value [i] .y, 1);
+		transform .color       = color [i % color .length];
 
 		transforms [transforms .length] = transform;
-		break;
-	}
 	
+		y += -value [i] .y ;
+	}
+
 	lineBounds .children = transforms;
 }
 
@@ -133,11 +163,11 @@ function set_textBounds (value, time)
 {
 	scale_changed = new SFVec3f (value .x, value .y, 1);
 }
-	"
+  "
 }
 
+#ROUTE Text.origin TO TextBounds.set_translation
 ROUTE Text.origin TO LineBounds.set_translation
-ROUTE Text.origin TO TextBounds.set_translation
 ROUTE Text.lineBounds TO Bounds.set_lineBounds
 ROUTE Text.textBounds TO Bounds.set_textBounds
 ROUTE Bounds.scale_changed TO TextBounds.set_scale

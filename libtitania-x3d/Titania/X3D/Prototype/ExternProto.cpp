@@ -93,11 +93,16 @@ ExternProto::initialize ()
 }
 
 X3DPrototypeInstance*
-ExternProto::createInstance ()
+ExternProto::createInstance (bool setup)
 {
 	requestImmediateLoad ();
 
-	return new X3DPrototypeInstance (getExecutionContext (), *proto);
+	X3DPrototypeInstance* instance = new X3DPrototypeInstance (getExecutionContext (), *proto);
+
+	if (setup)
+		instance -> setup ();
+		
+	return instance;
 }
 
 void

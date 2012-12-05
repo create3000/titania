@@ -254,7 +254,7 @@ throw (Error <INVALID_NAME>,
 }
 
 SFNode <X3DPrototypeInstance>
-X3DExecutionContext::createProtoInstance (const std::string & name)
+X3DExecutionContext::createProtoInstance (const std::string & name, bool setup)
 throw (Error <INVALID_NAME>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>,
@@ -262,18 +262,18 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return protos .last (name) -> createInstance ();
+		return protos .last (name) -> createInstance (setup);
 	}
 	catch (const std::out_of_range &)
 	{
 		try
 		{
-			return externProtos .last (name) -> createInstance ();
+			return externProtos .last (name) -> createInstance (setup);
 		}
 		catch (const std::out_of_range &)
 		{
 			if (getExecutionContext () -> getExecutionContext () not_eq this)
-				return getExecutionContext () -> createProtoInstance (name);
+				return getExecutionContext () -> createProtoInstance (name, setup);
 
 			throw Error <INVALID_NAME> ("Unknown proto type '" + name + "'.");
 		}

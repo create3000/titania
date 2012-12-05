@@ -17,7 +17,7 @@ Transform {
   children Shape {
     appearance Appearance {
       texture ImageTexture {
-        url "info/info.png"
+        url "info/info.svg"
         repeatS FALSE
         repeatT FALSE
       }

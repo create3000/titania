@@ -140,7 +140,7 @@ public:
 	       Error <DISPOSED>);
 
 	SFNode <X3DPrototypeInstance>
-	createProtoInstance (const std::string &)
+	createProtoInstance (const std::string &, bool = true)
 	throw (Error <INVALID_NAME>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,

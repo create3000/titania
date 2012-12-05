@@ -71,19 +71,7 @@ jsMFString::init (JSContext* context, JSObject* global)
 JSBool
 jsMFString::create (JSContext* context, MFString* field, jsval* vp, const bool seal)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
-
-	if (result == NULL)
-		return JS_FALSE;
-
-	JS_SetPrivate (context, result, field);
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
-
-	*vp = OBJECT_TO_JSVAL (result);
-
-	return JS_TRUE;
+	return jsX3DArrayField::create (context, &static_class, field, vp, seal);
 }
 
 JSBool
@@ -124,9 +112,9 @@ jsMFString::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 		return JS_FALSE;
 	}
 
-	MFString* mfstring = (MFString*) JS_GetPrivate (context, obj);
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	return JS_NewStringValue (context, mfstring -> get1Value (index), vp);
+	return JS_NewStringValue (context, *(SFString*) &field -> get1Value (index), vp);
 }
 
 JSBool
@@ -143,9 +131,9 @@ jsMFString::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict
 		return JS_FALSE;
 	}
 
-	MFString* mfstring = (MFString*) JS_GetPrivate (context, obj);
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	mfstring -> set1Value (index, SFString (JS_GetString (context, *vp)));
+	field -> set1Value (index, SFString (JS_GetString (context, *vp)));
 
 	*vp = JSVAL_VOID;
 

@@ -69,19 +69,7 @@ jsMFBool::init (JSContext* context, JSObject* global)
 JSBool
 jsMFBool::create (JSContext* context, MFBool* field, jsval* vp, const bool seal)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
-
-	if (result == NULL)
-		return JS_FALSE;
-
-	JS_SetPrivate (context, result, field);
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
-
-	*vp = OBJECT_TO_JSVAL (result);
-
-	return JS_TRUE;
+	return jsX3DArrayField::create (context, &static_class, field, vp, seal);
 }
 
 JSBool
@@ -127,9 +115,9 @@ jsMFBool::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 		return JS_FALSE;
 	}
 
-	MFBool* mfbool = (MFBool*) JS_GetPrivate (context, obj);
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	*vp = mfbool -> get1Value (index) ? JSVAL_TRUE : JSVAL_FALSE;
+	*vp = *(SFBool*) &field -> get1Value (index) ? JSVAL_TRUE : JSVAL_FALSE;
 
 	return JS_TRUE;
 }
@@ -148,14 +136,14 @@ jsMFBool::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, 
 		return JS_FALSE;
 	}
 
-	MFBool* mfbool = (MFBool*) JS_GetPrivate (context, obj);
-
 	JSBool number;
 
 	if (not JS_ValueToBoolean (context, *vp, &number))
 		return JS_FALSE;
 
-	mfbool -> set1Value (index, SFBool (number));
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
+	
+	field -> set1Value (index, SFBool (number));
 
 	*vp = JSVAL_VOID;
 

@@ -49,7 +49,6 @@
 #include "jsX3DObject.h"
 
 #include "../../Base/X3DObject.h"
-#include "String.h"
 
 namespace titania {
 namespace X3D {
@@ -102,16 +101,7 @@ jsX3DObject::getType (JSContext* context, uintN argc, jsval* vp)
 JSBool
 jsX3DObject::toString (JSContext* context, uintN argc, jsval* vp)
 {
-	if (argc == 0)
-	{
-		X3DObject* value = static_cast <X3DObject*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
-
-		return JS_NewStringValue (context, value -> toString (), vp);
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
+	return toStringImpl <X3DObject> (context, argc, vp);
 }
 
 } // X3D

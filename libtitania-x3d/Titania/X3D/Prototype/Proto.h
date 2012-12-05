@@ -66,7 +66,7 @@ public:
 
 	virtual
 	X3DPrototypeInstance*
-	createInstance ();
+	createInstance (bool);
 
 	virtual
 	bool

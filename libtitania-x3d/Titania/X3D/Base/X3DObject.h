@@ -89,10 +89,6 @@ public:
 	write (const X3DObject &) { }
 
 	virtual
-	void
-	read (std::vector <X3DObject*> &) const { }
-
-	virtual
 	bool
 	isInput () const;
 

@@ -219,7 +219,7 @@ Global
 		{0F1D7430-6D26-479A-987A-547A23248798} = {0A83A471-2425-4FE8-B816-A75033B4D27C}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = experimental\experimental.cproj
+		StartupItem = Titania\Titania.cproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.inheritsSet = null

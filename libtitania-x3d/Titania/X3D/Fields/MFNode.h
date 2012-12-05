@@ -73,7 +73,10 @@ private:
 
 public:
 
+	typedef typename ArrayField::size_type size_type;
+
 	using ArrayField::operator =;
+	using ArrayField::set1Value;
 	using ArrayField::set;
 	using ArrayField::assign;
 	using ArrayField::front;
@@ -83,6 +86,7 @@ public:
 	using ArrayField::cbegin;
 	using ArrayField::cend;
 	using ArrayField::size;
+	using ArrayField::resize;
 
 	MFNode () :
 		ArrayField ()
@@ -106,7 +110,7 @@ public:
 	MFNode (std::initializer_list <typename SFNode <Type>::value_type> initializer_list) :
 		ArrayField (initializer_list)
 	{ }
-	
+
 	template <class InputIterator>
 	MFNode (InputIterator first, InputIterator last) :
 		ArrayField (first, last)
@@ -118,20 +122,8 @@ public:
 
 	virtual
 	MFNode*
-	copy (X3DExecutionContext* const executionContext) const
-	{
-		MFNode* field = new MFNode ();
+	copy (X3DExecutionContext* const executionContext) const;
 
-		for (const auto & node :* this)
-		{
-			field -> push_back (node .getValue ()
-			                    ? node .getValue () -> copy (executionContext)
-									  : NULL);
-		}
-
-		return field;
-	}
-	
 	template <class Up>
 	MFNode &
 	operator = (const MFNode <Up> & field)
@@ -139,14 +131,14 @@ public:
 		assign (field .begin (), field .end ());
 		return *this;
 	}
+	
+	virtual
+	void
+	set1Field (const size_type, const X3DFieldDefinition &);
 
 	virtual
 	void
 	write (const X3DObject &);
-	
-	virtual
-	void
-	read (std::vector <X3DObject*> &) const;
 
 	virtual
 	const FieldType*
@@ -164,7 +156,39 @@ public:
 	void
 	toStream (std::ostream &) const;
 
+
+private:
+
+	using ArrayField::get;
+
 };
+
+template <class Type>
+MFNode <Type>*
+MFNode <Type>::copy (X3DExecutionContext* const executionContext) const
+{
+	MFNode* field = new MFNode ();
+
+	for (const auto & node :* this)
+	{
+		field -> push_back (node .getValue ()
+		                    ? node .getValue () -> copy (executionContext)
+								  : NULL);
+	}
+
+	return field;
+}
+
+template <class Type>
+void
+MFNode <Type>::set1Field (const size_type index, const X3DFieldDefinition & value)
+{
+	if (index >= size ())
+		resize (index + 1);
+
+	get () [index] = static_cast <const X3DField <X3DBasicNode*> &> (value);
+}
+
 
 template <class Type>
 void
@@ -172,27 +196,20 @@ MFNode <Type>::write (const X3DObject & field)
 {
 	assert (getType () == field .getType ());
 
-	const MFNode* same_type = dynamic_cast <const MFNode*> (&field);
-	
-	if (same_type)
-		set (same_type -> getValue ());
+//	const MFNode* same_type = dynamic_cast <const MFNode*> (&field);
+//
+//	if (same_type)
+//		set (same_type -> getValue ());
+//
+//	else
+//	{
+		const X3DArray* array = dynamic_cast <const X3DArray*> (&field);
 
-	else
-	{
-		std::vector <X3DObject*> values;
+		resize (array -> size ());
 
-		field .read (values);
-
-		set (values .begin (), values .end ());
-	}
-}
-	
-template <class Type>
-void
-MFNode <Type>::read (std::vector <X3DObject*> & values) const
-{
-	values .reserve (size ());
-	values .assign (begin (), end ());
+		for (size_type i = 0; i < array -> size (); ++ i)
+			get () [i] = static_cast <const X3DField <X3DBasicNode*> &> (array -> get1 (i));
+//	}
 }
 
 template <class Type>

@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 class X3DArray :
-	public X3DBase
+	virtual public X3DBase
 {
 public:
 
@@ -64,11 +64,15 @@ public:
 
 	virtual
 	void
-	set1Value (const size_type index, const X3DFieldDefinition &) = 0;
+	set1Value (const size_type, const X3DFieldDefinition &) = 0;
 
 	virtual
 	X3DFieldDefinition &
-	get1Value (const size_type) = 0;
+	get1Value (const size_type index) = 0;
+
+	virtual
+	const X3DFieldDefinition &
+	get1 (const size_type) const = 0;
 
 	virtual
 	void
@@ -97,14 +101,22 @@ public:
 	virtual
 	size_type
 	size () const = 0;
+	
+	// String:
+	virtual
+	std::string
+	toString () const = 0;
 
 	virtual
-	~X3DArray ();
+	~X3DArray ()
+	{ }
 
 
 protected:
 
-	X3DArray ();
+	X3DArray () :
+		X3DBase ()
+	{ }
 
 };
 

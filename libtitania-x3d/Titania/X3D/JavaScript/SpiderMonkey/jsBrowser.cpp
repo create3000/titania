@@ -365,7 +365,10 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 						SFNode <Scene> scene = node -> getBrowser () -> createX3DFromURL (*url);
 
 						if (scene)
+						{
 							field -> write (scene -> getRootNodes ());
+							field -> notifyParents ();
+						}
 
 						//std::cout << "createVrmlFromURL " << *url << std::endl;
 						JS_SET_RVAL (context, vp, JSVAL_VOID);

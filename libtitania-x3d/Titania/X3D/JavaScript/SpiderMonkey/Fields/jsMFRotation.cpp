@@ -69,19 +69,7 @@ jsMFRotation::init (JSContext* context, JSObject* global)
 JSBool
 jsMFRotation::create (JSContext* context, MFRotation* field, jsval* vp, const bool seal)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
-
-	if (result == NULL)
-		return JS_FALSE;
-
-	JS_SetPrivate (context, result, field);
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
-
-	*vp = OBJECT_TO_JSVAL (result);
-
-	return JS_TRUE;
+	return jsX3DArrayField::create (context, &static_class, field, vp, seal);
 }
 
 JSBool
@@ -99,18 +87,18 @@ jsMFRotation::construct (JSContext* context, uintN argc, jsval* vp)
 
 		for (uintN i = 0; i < argc; ++ i)
 		{
-			JSObject* obj2;
+			JSObject* value;
 
-			if (not JS_ValueToObject (context, argv [i], &obj2))
+			if (not JS_ValueToObject (context, argv [i], &value))
 				return JS_FALSE;
 
-			if (not JS_InstanceOf (context, obj2, jsSFRotation::getClass (), NULL))
+			if (not JS_InstanceOf (context, value, jsSFRotation::getClass (), NULL))
 			{
-				JS_ReportError (context, "Type of argument %d is invalid - should be SFRotation, is %s", i, JS_GetClass (context, obj2) -> name);
+				JS_ReportError (context, "Type of argument %d is invalid - should be SFRotation, is %s", i, JS_GetClass (context, value) -> name);
 				return JS_FALSE;
 			}
 
-			values [i] = *(SFRotation4f*) JS_GetPrivate (context, obj2);
+			values [i] = *(SFRotation4f*) JS_GetPrivate (context, value);
 		}
 
 		return create (context, new MFRotation (values, values + argc), &JS_RVAL (context, vp));
@@ -133,9 +121,9 @@ jsMFRotation::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 		return JS_FALSE;
 	}
 
-	MFRotation* mfrotation = (MFRotation*) JS_GetPrivate (context, obj);
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	return jsSFRotation::create (context, &mfrotation -> get1Value (index), vp);
+	return jsSFRotation::create (context, (SFRotation4f*) &field -> get1Value (index), vp);
 }
 
 JSBool
@@ -152,20 +140,20 @@ jsMFRotation::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool stri
 		return JS_FALSE;
 	}
 
-	MFRotation* mfrotation = (MFRotation*) JS_GetPrivate (context, obj);
+	JSObject* value;
 
-	JSObject* obj2;
-
-	if (not JS_ValueToObject (context, *vp, &obj2))
+	if (not JS_ValueToObject (context, *vp, &value))
 		return JS_FALSE;
 
-	if (not JS_InstanceOf (context, obj2, jsSFRotation::getClass (), NULL))
+	if (not JS_InstanceOf (context, value, jsSFRotation::getClass (), NULL))
 	{
-		JS_ReportError (context, "Type of argument is invalid - should be SFRotation, is %s", JS_GetClass (context, obj2) -> name);
+		JS_ReportError (context, "Type of argument is invalid - should be SFRotation, is %s", JS_GetClass (context, value) -> name);
 		return JS_FALSE;
 	}
 
-	mfrotation -> set1Value (index, *(SFRotation4f*) JS_GetPrivate (context, obj2));
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
+	
+	field -> set1Value (index, *(SFRotation4f*) JS_GetPrivate (context, value));
 
 	*vp = JSVAL_VOID;
 

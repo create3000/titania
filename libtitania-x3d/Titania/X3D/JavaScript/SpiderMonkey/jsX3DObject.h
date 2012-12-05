@@ -50,6 +50,7 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_JS_X3DOBJECT_H__
 
 #include <jsapi.h>
+#include "String.h"
 
 namespace titania {
 namespace X3D {
@@ -63,8 +64,27 @@ protected:
 	static JSBool getType     (JSContext*, uintN, jsval*);
 
 	static JSBool toString (JSContext*, uintN, jsval*);
+	
+	template <class Type>
+	static JSBool toStringImpl (JSContext*, uintN, jsval*);
 
 };
+
+template <class Type>
+JSBool
+jsX3DObject::toStringImpl (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		Type* value = static_cast <Type*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+
+		return JS_NewStringValue (context, value -> toString (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
 
 } // X3D
 } // titania

@@ -62,7 +62,8 @@ class X3DBaseNode :
 {
 public:
 
-	//@{
+	///  @name Parent handling
+	
 	bool
 	addParent (X3DBaseNode* const);
 
@@ -79,7 +80,9 @@ public:
 	template <class Type>
 	std::deque <Type*>
 	findClosestParents () const;
-	//@}
+	
+	
+	///  @name Children handling
 
 	//@{
 	template <typename ... Args>
@@ -92,21 +95,16 @@ public:
 	void
 	setChild (X3DBaseNode &);
 
-	template <typename ... Args>
-	void
-	addChildren (Args & ...);
-
-	void
-	addChild (X3DBaseNode* const);
-
-	void
-	addChild (X3DBaseNode &);
-
 	const BaseNodeSet &
 	getChildren () const;
-	//@}
 
-	// Object:
+
+	///  @name Object
+	
+	virtual
+	void
+	notifyParents ();
+
 	virtual
 	void
 	dispose ();
@@ -116,16 +114,9 @@ protected:
 
 	X3DBaseNode ();
 
-	// Object:
-	//@{
 	virtual
 	void
 	notify (X3DObject* const);
-
-	virtual
-	void
-	notifyParents ();
-	//@}
 
 	virtual
 	~X3DBaseNode ();
@@ -148,28 +139,6 @@ void
 X3DBaseNode::setChildren (Args & ... args)
 {
 	basic::pass ((setChild (args), 1) ...);
-}
-
-template <typename ... Args>
-inline
-void
-X3DBaseNode::addChildren (Args & ... args)
-{
-	basic::pass ((addChild (args), 1) ...);
-}
-
-inline
-void
-X3DBaseNode::addChild (X3DBaseNode* const child)
-{
-	child -> addParent (this);
-}
-
-inline
-void
-X3DBaseNode::addChild (X3DBaseNode & child)
-{
-	child .addParent (this);
 }
 
 template <class Type>

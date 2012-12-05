@@ -130,10 +130,7 @@ X3DGeometryNode::createBBox ()
 			max = math::max (max, vertex);
 		}
 
-		Vector3f size   = max - min;
-		Vector3f center = max - size * 0.5f;
-
-		return Box3f (size, center);
+		return Box3f (min, max, true);
 	}
 
 	return Box3f ();

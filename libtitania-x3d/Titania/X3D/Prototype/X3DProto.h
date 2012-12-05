@@ -67,7 +67,7 @@ public:
 
 	virtual
 	X3DPrototypeInstance*
-	createInstance () = 0;
+	createInstance (bool) = 0;
 
 
 protected:

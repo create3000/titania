@@ -69,33 +69,33 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 	}
 	else if (type == X3DConstants::SFColor)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFColor::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFColor::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFColor, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFColor, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(SFColor*) field = *(SFColor*) JS_GetPrivate (context, obj2);
+		*(SFColor*) field = *(SFColor*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFColorRGBA)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFColorRGBA::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFColorRGBA::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFColorRGBA, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFColorRGBA, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(SFColorRGBA*) field = *(SFColorRGBA*) JS_GetPrivate (context, obj2);
+		*(SFColorRGBA*) field = *(SFColorRGBA*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFDouble)
 	{
@@ -126,108 +126,108 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 	}
 	else if (type == X3DConstants::SFImage)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFImage::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFImage::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFImage, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFImage, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(SFImage*) field = *(SFImage*) JS_GetPrivate (context, obj2);
+		*(SFImage*) field = *(SFImage*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFMatrix3f)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFMatrix3f::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFMatrix3f::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFMatrix3f, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFMatrix3f, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(SFMatrix3f*) field = *(SFMatrix3f*) JS_GetPrivate (context, obj2);
+		*(SFMatrix3f*) field = *(SFMatrix3f*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFMatrix3d)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFMatrix3d::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFMatrix3d::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFMatrix3d, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFMatrix3d, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(SFMatrix3d*) field = *(SFMatrix3d*) JS_GetPrivate (context, obj2);
+		*(SFMatrix3d*) field = *(SFMatrix3d*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFMatrix4d)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFMatrix4d::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFMatrix4d::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFMatrix4d, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFMatrix4d, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(SFMatrix4d*) field = *(SFMatrix4d*) JS_GetPrivate (context, obj2);
+		*(SFMatrix4d*) field = *(SFMatrix4d*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFMatrix4f)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFMatrix4f::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFMatrix4f::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFMatrix4f, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFMatrix4f, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(SFMatrix4f*) field = *(SFMatrix4f*) JS_GetPrivate (context, obj2);
+		*(SFMatrix4f*) field = *(SFMatrix4f*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFNode)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFNode::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFNode::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFNode, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFNode, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(X3DField <X3DBasicNode*>*) field = *(SFNode <X3DBasicNode>*) JS_GetPrivate (context, obj2);
+		*(X3DField <X3DBasicNode*>*) field = *(SFNode <X3DBasicNode>*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFRotation)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFRotation::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFRotation::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFRotation, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFRotation, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(SFRotation*) field = *(SFRotation*) JS_GetPrivate (context, obj2);
+		*(SFRotation*) field = *(SFRotation*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFString)
 	{
@@ -244,408 +244,409 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 	}
 	else if (type == X3DConstants::SFVec2d)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFVec2d::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFVec2d::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFVec2d, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFVec2d, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(SFVec2d*) field = *(SFVec2d*) JS_GetPrivate (context, obj2);
+		*(SFVec2d*) field = *(SFVec2d*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFVec2f)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFVec2f::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFVec2f::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFVec2f, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFVec2f, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(SFVec2f*) field = *(SFVec2f*) JS_GetPrivate (context, obj2);
+		*(SFVec2f*) field = *(SFVec2f*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFVec3d)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFVec3d::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFVec3d::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFVec3d, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFVec3d, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(SFVec3d*) field = *(SFVec3d*) JS_GetPrivate (context, obj2);
+		*(SFVec3d*) field = *(SFVec3d*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFVec3f)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFVec3f::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFVec3f::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFVec3f, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFVec3f, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(SFVec3f*) field = *(SFVec3f*) JS_GetPrivate (context, obj2);
+		*(SFVec3f*) field = *(SFVec3f*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFVec4d)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFVec4d::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFVec4d::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFVec4d, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFVec4d, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(SFVec4d*) field = *(SFVec4d*) JS_GetPrivate (context, obj2);
+		*(SFVec4d*) field = *(SFVec4d*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFVec4f)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFVec4f::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsSFVec4f::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be SFVec4f, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be SFVec4f, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(SFVec4f*) field = *(SFVec4f*) JS_GetPrivate (context, obj2);
+		*(SFVec4f*) field = *(SFVec4f*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFBool)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFBool::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFBool::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFBool, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFBool, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFBool*) field = *(MFBool*) JS_GetPrivate (context, obj2);
+		*(MFBool*) field = *(MFBool*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFColor)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFColor::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFColor::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFColor, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFColor, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFColor*) field = *(MFColor*) JS_GetPrivate (context, obj2);
+		*(MFColor*) field = *(MFColor*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFColorRGBA)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFColorRGBA::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFColorRGBA::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFColorRGBA, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFColorRGBA, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFColorRGBA*) field = *(MFColorRGBA*) JS_GetPrivate (context, obj2);
+		*(MFColorRGBA*) field = *(MFColorRGBA*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFDouble)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFDouble::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFDouble::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFDouble, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFDouble, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFDouble*) field = *(MFDouble*) JS_GetPrivate (context, obj2);
+		*(MFDouble*) field = *(MFDouble*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFFloat)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFFloat::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFFloat::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFFloat, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFFloat, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFFloat*) field = *(MFFloat*) JS_GetPrivate (context, obj2);
+		*(MFFloat*) field = *(MFFloat*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFImage)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFImage::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFImage::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFImage, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFImage, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFImage*) field = *(MFImage*) JS_GetPrivate (context, obj2);
+		*(MFImage*) field = *(MFImage*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFInt32)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFInt32::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFInt32::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFInt32, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFInt32, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFInt32*) field = *(MFInt32*) JS_GetPrivate (context, obj2);
+		*(MFInt32*) field = *(MFInt32*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFMatrix3d)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFMatrix3d::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFMatrix3d::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFMatrix3d, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFMatrix3d, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFMatrix3d*) field = *(MFMatrix3d*) JS_GetPrivate (context, obj2);
+		*(MFMatrix3d*) field = *(MFMatrix3d*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFMatrix3f)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFMatrix3f::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFMatrix3f::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFMatrix3f, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFMatrix3f, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFMatrix3f*) field = *(MFMatrix3f*) JS_GetPrivate (context, obj2);
+		*(MFMatrix3f*) field = *(MFMatrix3f*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFMatrix4d)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFMatrix4d::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFMatrix4d::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFMatrix4d, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFMatrix4d, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFMatrix4d*) field = *(MFMatrix4d*) JS_GetPrivate (context, obj2);
+		*(MFMatrix4d*) field = *(MFMatrix4d*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFMatrix4f)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFMatrix4f::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFMatrix4f::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFMatrix4f, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFMatrix4f, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFMatrix4f*) field = *(MFMatrix4f*) JS_GetPrivate (context, obj2);
+		*(MFMatrix4f*) field = *(MFMatrix4f*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFNode)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFNode::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFNode::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFNode, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFNode, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		field -> write (*(X3DObject*) JS_GetPrivate (context, obj2));
+		field -> write (*dynamic_cast <X3DObject*> ((X3DArray*) JS_GetPrivate (context, value)));
+		field -> notifyParents ();
 	}
 	else if (type == X3DConstants::MFRotation)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFRotation::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFRotation::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFRotation, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFRotation, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFRotation*) field = *(MFRotation*) JS_GetPrivate (context, obj2);
+		*(MFRotation*) field = *(MFRotation*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFString)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFString::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFString::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFString, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFString, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFString*) field = *(MFString*) JS_GetPrivate (context, obj2);
+		*(MFString*) field = *(MFString*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFTime)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFTime::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFTime::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFTime, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFTime, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFTime*) field = *(MFTime*) JS_GetPrivate (context, obj2);
+		*(MFTime*) field = *(MFTime*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFVec2d)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFVec2d::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFVec2d::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFVec2d, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFVec2d, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFVec2d*) field = *(MFVec2d*) JS_GetPrivate (context, obj2);
+		*(MFVec2d*) field = *(MFVec2d*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFVec2f)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFVec2f::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFVec2f::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFVec2f, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFVec2f, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFVec2f*) field = *(MFVec2f*) JS_GetPrivate (context, obj2);
+		*(MFVec2f*) field = *(MFVec2f*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFVec3d)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFVec3d::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFVec3d::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFVec3d, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFVec3d, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFVec3d*) field = *(MFVec3d*) JS_GetPrivate (context, obj2);
+		*(MFVec3d*) field = *(MFVec3d*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFVec3f)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFVec3f::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFVec3f::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFVec3f, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFVec3f, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFVec3f*) field = *(MFVec3f*) JS_GetPrivate (context, obj2);
+		*(MFVec3f*) field = *(MFVec3f*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFVec4d)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFVec4d::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFVec4d::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFVec4d, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFVec4d, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFVec4d*) field = *(MFVec4d*) JS_GetPrivate (context, obj2);
+		*(MFVec4d*) field = *(MFVec4d*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::MFVec4f)
 	{
-		JSObject* obj2;
+		JSObject* value;
 
-		if (not JS_ValueToObject (context, *vp, &obj2))
+		if (not JS_ValueToObject (context, *vp, &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFVec4f::getClass (), NULL))
+		if (not JS_InstanceOf (context, value, jsMFVec4f::getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument is invalid - should be MFVec4f, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument is invalid - should be MFVec4f, is %s", JS_GetClass (context, value) -> name);
 			return JS_FALSE;
 		}
 
-		*(MFVec4f*) field = *(MFVec4f*) JS_GetPrivate (context, obj2);
+		*(MFVec4f*) field = *(MFVec4f*) JS_GetPrivate (context, value);
 	}
 
 	*vp = JSVAL_VOID;
@@ -758,7 +759,7 @@ JS_NewFieldValue (JSContext* context, X3DFieldDefinition* field, jsval* vp, cons
 		return jsMFMatrix4f::create (context, (MFMatrix4f*) field, vp, seal);
 		
 	else if (type == X3DConstants::MFNode)
-		return jsMFNode::create (context, field, vp, seal);
+		return jsMFNode::create (context, dynamic_cast <X3DArray*> (field), vp, seal);
 		
 	else if (type == X3DConstants::MFRotation)
 		return jsMFRotation::create (context, (MFRotation*) field, vp, seal);

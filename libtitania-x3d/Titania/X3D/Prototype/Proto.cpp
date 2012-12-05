@@ -72,9 +72,14 @@ Proto::create (X3DExecutionContext* executionContext) const
 }
 
 X3DPrototypeInstance*
-Proto::createInstance ()
+Proto::createInstance (bool setup)
 {
-	return new X3DPrototypeInstance (getExecutionContext (), this);
+	X3DPrototypeInstance* instance = new X3DPrototypeInstance (getExecutionContext (), this);
+
+	if (setup)
+		instance -> setup ();
+		
+	return instance;
 }
 
 void

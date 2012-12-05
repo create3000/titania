@@ -59,9 +59,10 @@ class X3DFontStyleNode :
 {
 public:
 
-	enum Justify
+	enum Alignment
 	{
 		BEGIN,
+		FIRST,
 		MIDDLE,
 		END
 	};
@@ -75,8 +76,11 @@ public:
 	SFBool   leftToRight;
 	SFString language;
 
-	Justify
-	getJustify (const size_t);
+	Alignment
+	getMajorAlignment () const;
+
+	Alignment
+	getMinorAlignment () const;
 
 	virtual
 	float
@@ -98,8 +102,11 @@ private:
 
 	void
 	set_justify ();
+	
+	Alignment
+	getAlignment (const size_t) const;
 
-	std::deque <Justify> justifies;
+	Alignment alignments [2];
 
 };
 

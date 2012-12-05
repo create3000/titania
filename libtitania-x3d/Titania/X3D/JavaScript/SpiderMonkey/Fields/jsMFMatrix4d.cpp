@@ -69,19 +69,7 @@ jsMFMatrix4d::init (JSContext* context, JSObject* global)
 JSBool
 jsMFMatrix4d::create (JSContext* context, MFMatrix4d* field, jsval* vp, const bool seal)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
-
-	if (result == NULL)
-		return JS_FALSE;
-
-	JS_SetPrivate (context, result, field);
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
-
-	*vp = OBJECT_TO_JSVAL (result);
-
-	return JS_TRUE;
+	return jsX3DArrayField::create (context, &static_class, field, vp, seal);
 }
 
 JSBool
@@ -99,18 +87,18 @@ jsMFMatrix4d::construct (JSContext* context, uintN argc, jsval* vp)
 
 		for (uintN i = 0; i < argc; ++ i)
 		{
-			JSObject* obj2;
+			JSObject* value;
 
-			if (not JS_ValueToObject (context, argv [i], &obj2))
+			if (not JS_ValueToObject (context, argv [i], &value))
 				return JS_FALSE;
 
-			if (not JS_InstanceOf (context, obj2, jsSFMatrix4d::getClass (), NULL))
+			if (not JS_InstanceOf (context, value, jsSFMatrix4d::getClass (), NULL))
 			{
-				JS_ReportError (context, "Type of argument %d is invalid - should be SFMatrix4d, is %s", i, JS_GetClass (context, obj2) -> name);
+				JS_ReportError (context, "Type of argument %d is invalid - should be SFMatrix4d, is %s", i, JS_GetClass (context, value) -> name);
 				return JS_FALSE;
 			}
 
-			values [i] = *(SFMatrix4d*) JS_GetPrivate (context, obj2);
+			values [i] = *(SFMatrix4d*) JS_GetPrivate (context, value);
 		}
 
 		return create (context, new MFMatrix4d (values, values + argc), &JS_RVAL (context, vp));
@@ -133,9 +121,9 @@ jsMFMatrix4d::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 		return JS_FALSE;
 	}
 
-	MFMatrix4d* mfmatrix4d = (MFMatrix4d*) JS_GetPrivate (context, obj);
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	return jsSFMatrix4d::create (context, &mfmatrix4d -> get1Value (index), vp);
+	return jsSFMatrix4d::create (context, (SFMatrix4d*) &field -> get1Value (index), vp);
 }
 
 JSBool
@@ -152,20 +140,20 @@ jsMFMatrix4d::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool stri
 		return JS_FALSE;
 	}
 
-	MFMatrix4d* mfmatrix4d = (MFMatrix4d*) JS_GetPrivate (context, obj);
+	JSObject* value;
 
-	JSObject* obj2;
-
-	if (not JS_ValueToObject (context, *vp, &obj2))
+	if (not JS_ValueToObject (context, *vp, &value))
 		return JS_FALSE;
 
-	if (not JS_InstanceOf (context, obj2, jsSFMatrix4d::getClass (), NULL))
+	if (not JS_InstanceOf (context, value, jsSFMatrix4d::getClass (), NULL))
 	{
-		JS_ReportError (context, "Type of argument is invalid - should be SFMatrix4d, is %s", JS_GetClass (context, obj2) -> name);
+		JS_ReportError (context, "Type of argument is invalid - should be SFMatrix4d, is %s", JS_GetClass (context, value) -> name);
 		return JS_FALSE;
 	}
+	
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	mfmatrix4d -> set1Value (index, *(SFMatrix4d*) JS_GetPrivate (context, obj2));
+	field -> set1Value (index, *(SFMatrix4d*) JS_GetPrivate (context, value));
 
 	*vp = JSVAL_VOID;
 

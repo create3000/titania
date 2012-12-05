@@ -64,7 +64,9 @@ main (int argc, char** argv)
 		<< std::endl;
 		
 	setlocale (LC_ALL, os::env ("LANG") .c_str ());
-
+	
+	//std::locale::global (std::locale (os::env ("LANG") .c_str ()));
+#
 	try
 	{
 		BrowserWindow browserWindow (argc, argv);

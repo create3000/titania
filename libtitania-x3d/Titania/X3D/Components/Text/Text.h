@@ -68,8 +68,8 @@ public:
 	MFFloat                   length;
 	SFFloat                   maxExtent;
 	SFVec3f                   origin;
-	MFVec2f                   lineBounds;
 	SFVec2f                   textBounds;
+	MFVec2f                   lineBounds;
 	SFNode <X3DFontStyleNode> fontStyle;
 
 	Text (X3DExecutionContext* const);
@@ -105,6 +105,9 @@ private:
 	virtual
 	Box3f
 	createBBox ();
+	
+	Box2f
+	getLineBBox (const std::string &);
 
 	virtual
 	void
@@ -113,6 +116,7 @@ private:
 	std::unique_ptr <FTPolygonFont> font;
 	float                           lineHeight;
 	std::vector <float>             charSpacings;
+	Vector2f                        minorAlignment;
 	std::vector <Vector2f>          translation;
 	float                           scale;
 

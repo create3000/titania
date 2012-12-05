@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DFontStyleNode::X3DFontStyleNode () :
-	X3DPropertyNode (),             
+	X3DPropertyNode (),            
 	         family ({ "SERIF" }), // MFString [ ] family       "SERIF"
 	          style ("PLAIN"),     // SFString [ ] style        "PLAIN"        ["PLAIN"|"BOLD"|"ITALIC"|"BOLDITALIC"|""]
 	        spacing (1),           // SFFloat  [ ] spacing      1.0            [0,?)
@@ -63,7 +63,7 @@ X3DFontStyleNode::X3DFontStyleNode () :
 	    topToBottom (true),        // SFBool   [ ] topToBottom  TRUE
 	    leftToRight (true),        // SFBool   [ ] leftToRight  TRUE
 	       language (),            // SFString [ ] language     ""
-	      justifies ()             
+	     alignments { Alignment::BEGIN, Alignment::BEGIN }         
 {
 	addNodeType (X3DFontStyleNodeType);
 }
@@ -81,28 +81,43 @@ X3DFontStyleNode::initialize ()
 void
 X3DFontStyleNode::set_justify ()
 {
-	justifies .clear ();
+	alignments [0] = justify .size () > 0
+	                 ? getAlignment (0)
+						  : Alignment::BEGIN;
 
-	for (const auto & value : justify)
-	{
-		if (value == "MIDDLE")
-			justifies .emplace_back (Justify::MIDDLE);
-
-		else if (value == "END")
-			justifies .emplace_back (Justify::END);
-
-		else
-			justifies .emplace_back (Justify::BEGIN);
-	}
+	alignments [1] = justify .size () > 1
+	                 ? getAlignment (1)
+						  : Alignment::FIRST;
 }
 
-X3DFontStyleNode::Justify
-X3DFontStyleNode::getJustify (const size_t index)
+X3DFontStyleNode::Alignment
+X3DFontStyleNode::getAlignment (const size_t index) const
 {
-	if (justifies .size ())
-		return justifies [std::min (index, justifies .size () - 1)];
+	if (justify [index] == "BEGIN")
+		return Alignment::BEGIN;
 
-	return Justify::BEGIN;
+	else if (justify [index] == "FIRST")
+		return Alignment::FIRST;
+
+	else if (justify [index] == "MIDDLE")
+		return Alignment::MIDDLE;
+
+	else if (justify [index] == "END")
+		return Alignment::END;
+		
+	return index ? Alignment::FIRST : Alignment::BEGIN;
+}
+
+X3DFontStyleNode::Alignment
+X3DFontStyleNode::getMajorAlignment () const
+{
+	return alignments [0];
+}
+
+X3DFontStyleNode::Alignment
+X3DFontStyleNode::getMinorAlignment () const
+{
+	return alignments [1];
 }
 
 std::string
@@ -112,7 +127,7 @@ X3DFontStyleNode::getFilename () const
 	                     ? FcNameParse ((FcChar8*) (family [0] .getValue () .c_str ()))
 								: FcPatternCreate ();
 
-	FcPatternAddString (pattern, "style", (FcChar8*) style .getValue () .c_str ());
+	FcPatternAddString (pattern, "style", (FcChar8*) (style == "BOLDITALIC" ? "bold italic" : style .getValue () .c_str ()));
 
 	FcConfigSubstitute (NULL, pattern, FcMatchPattern);
 	FcDefaultSubstitute (pattern);

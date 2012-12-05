@@ -2218,6 +2218,7 @@
     <None Include="Tests\Basic\Transparency.wrl" />
     <None Include="Tests\Text\test.wrl" />
     <None Include="Tests\Text\RandomText.wrl" />
+    <None Include="Tests\Text\HelloWorld.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

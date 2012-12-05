@@ -676,50 +676,53 @@ typedef math::vector3 <float>   Vector3f;
 typedef math::rotation4 <float> Rotation4f;
 typedef math::box3 <float>      Box3f;
 
-class A
+class Base
+{
+public:
+};
+
+class Input:
+	virtual public Base
+{public:};
+
+class Output:
+	virtual public Base
+{public:};
+
+class Object :
+	public Input, public Output
 {
 public:
 
-	A ()
-	{ std::clog << "A" << std::endl; }
+	Object ()
+	{ std::clog << "Object" << std::endl; }
 
 	int a;
 
 };
 
-class B :
-	virtual public A
+class FieldDefiniton :
+	public Object, virtual public Base
 {
 public:
-
-	B ()
-	{ std::clog << "B" << std::endl; }
-
-	int b;
-
 };
 
-class C :
-	virtual public A
+class Field :
+	virtual public FieldDefiniton
 {
 public:
-
-	C ()
-	{ std::clog << "C" << std::endl; }
-
-	int c;
-
 };
 
-class D :
-	public B, public C
+class Array :
+	virtual public FieldDefiniton
 {
 public:
+};
 
-	D ()
-	{ std::clog << "D" << std::endl; }
-
-	int d;
+class MFNode :
+	public Array, public Field
+{
+public:
 
 };
 
@@ -729,14 +732,14 @@ main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 	
-	D*    d = new D ();
-	B*    b = d;
-	void* v = (B*) d;
+	MFNode*         mf = new MFNode ();
+	FieldDefiniton* fd = mf;
+	void* v            = (FieldDefiniton*) mf;
 
-	std::clog << d << std::endl;
+	std::clog << mf << std::endl;
 	std::clog << v << std::endl;
-	std::clog << static_cast <C*> (d) << std::endl;
-	std::clog << static_cast <C*> (b) << std::endl;
+	std::clog << static_cast <Array*> (mf) << std::endl;
+	//std::clog << dynamic_cast <MFNode*> (fd) << std::endl;
 
 	//	test_path (basic::path ("/"));
 	//	test_path (basic::path ("/", "/"));

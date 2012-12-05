@@ -69,19 +69,7 @@ jsMFTime::init (JSContext* context, JSObject* global)
 JSBool
 jsMFTime::create (JSContext* context, MFTime* field, jsval* vp, const bool seal)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
-
-	if (result == NULL)
-		return JS_FALSE;
-
-	JS_SetPrivate (context, result, field);
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
-
-	*vp = OBJECT_TO_JSVAL (result);
-
-	return JS_TRUE;
+	return jsX3DArrayField::create (context, &static_class, field, vp, seal);
 }
 
 JSBool
@@ -127,9 +115,9 @@ jsMFTime::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 		return JS_FALSE;
 	}
 
-	MFTime* mftime = (MFTime*) JS_GetPrivate (context, obj);
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	return JS_NewNumberValue (context, mftime -> get1Value (index), vp);
+	return JS_NewNumberValue (context, *(SFTime*) &field -> get1Value (index), vp);
 }
 
 JSBool
@@ -146,14 +134,14 @@ jsMFTime::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, 
 		return JS_FALSE;
 	}
 
-	MFTime* mftime = (MFTime*) JS_GetPrivate (context, obj);
-
 	jsdouble number;
 
 	if (not JS_ValueToNumber (context, *vp, &number))
 		return JS_FALSE;
 
-	mftime -> set1Value (index, SFTime (number));
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
+	
+	field -> set1Value (index, SFTime (number));
 
 	*vp = JSVAL_VOID;
 

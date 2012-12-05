@@ -49,8 +49,11 @@
 #ifndef __TITANIA_X3D_BASIC_X3DARRAY_FIELD_H__
 #define __TITANIA_X3D_BASIC_X3DARRAY_FIELD_H__
 
+#include "../Basic/X3DArray.h"
 #include "../Basic/X3DField.h"
 #include "../Types/Array.h"
+
+#include <Titania/Utility/Adapter.h>
 #include <initializer_list>
 
 namespace titania {
@@ -58,7 +61,7 @@ namespace X3D {
 
 template <class ValueType>
 class X3DArrayField :
-	public X3DField <Array <ValueType>>
+	public X3DArray, public X3DField <Array <ValueType>>
 {
 public:
 
@@ -70,20 +73,20 @@ public:
 	typedef typename value_type::reverse_iterator       reverse_iterator;
 	typedef typename value_type::const_reverse_iterator const_reverse_iterator;
 	typedef typename value_type::difference_type        difference_type;
-	typedef typename value_type::size_type              size_type;
 
-	using X3DField <value_type>::addChild;
 	using X3DField <value_type>::getValue;
 	using X3DField <value_type>::set;
 	using X3DField <value_type>::operator =;
 
 	///  Default constructor.
 	X3DArrayField () :
+		X3DArray (),
 		X3DField <value_type> ()
 	{ }
 
 	///  Copy constructor.
 	X3DArrayField (const X3DArrayField & field) :
+		X3DArray (),
 		X3DField <value_type> (field)
 	{
 		addChildren (begin (), end ());
@@ -91,6 +94,7 @@ public:
 
 	//	///  Move constructor.
 	//	X3DArrayField (X3DArrayField && field) :
+	//		X3DArray (),
 	//		X3DField <value_type> (field)
 	//	{
 	//		addChildren (begin (), end ());
@@ -99,6 +103,7 @@ public:
 	///  Construct an X3DArrayField from basic type @a value.
 	explicit
 	X3DArrayField (const value_type & value) :
+		X3DArray (),
 		X3DField <value_type> (value)
 	{
 		addChildren (begin (), end ());
@@ -107,6 +112,7 @@ public:
 	///  Moves elements from basic type @a value.
 	explicit
 	X3DArrayField (value_type && value) :
+		X3DArray (),
 		X3DField <value_type> (value)
 	{
 		addChildren (begin (), end ());
@@ -114,6 +120,7 @@ public:
 
 	template <const size_t Size>
 	X3DArrayField (const ValueType (&value) [Size]) :
+		X3DArray (),
 		X3DField <value_type> (std::move (value_type (value, value + Size)))
 	{
 		addChildren (begin (), end ());
@@ -121,18 +128,21 @@ public:
 
 	template <const size_t Size>
 	X3DArrayField (const typename ValueType::value_type (&value) [Size]) :
+		X3DArray (),
 		X3DField <value_type> (std::move (value_type (value, value + Size)))
 	{
 		addChildren (begin (), end ());
 	}
 
 	X3DArrayField (std::initializer_list <ValueType> initializer_list) :
+		X3DArray (),
 		X3DField <value_type> (std::move (value_type (initializer_list .begin (), initializer_list .end ())))
 	{
 		addChildren (begin (), end ());
 	}
 
 	X3DArrayField (std::initializer_list <typename ValueType::value_type> initializer_list) :
+		X3DArray (),
 		X3DField <value_type> (std::move (value_type (initializer_list .begin (), initializer_list .end ())))
 	{
 		addChildren (begin (), end ());
@@ -140,6 +150,7 @@ public:
 
 	template <class InputIterator>
 	X3DArrayField (InputIterator first, InputIterator last) :
+		X3DArray (),
 		X3DField <value_type> (std::move (value_type (first, last)))
 	{
 		addChildren (begin (), end ());
@@ -153,11 +164,18 @@ public:
 	X3DArrayField*
 	copy (X3DExecutionContext* const) const { return copy (); }
 
+	virtual
 	void
-	set1Value (const size_type index, const ValueType &);
+	set1Value (const size_type, const X3DFieldDefinition &);
 
-	ValueType &
+	virtual
+	X3DFieldDefinition &
 	get1Value (const size_type);
+
+	virtual
+	const X3DFieldDefinition &
+	get1 (const size_type index) const
+	{ return getValue () [index]; }
 
 	///  Set @a value to this field without notfying parents.
 	virtual
@@ -229,9 +247,11 @@ public:
 
 	//size_type capacity () const { return getValue () .capacity (); };
 
+	virtual
 	void
 	clear ();
 
+	virtual
 	bool
 	empty () const { return getValue () .empty (); }
 
@@ -264,12 +284,15 @@ public:
 	//	template <class InputIterator>
 	//	void insert (const_iterator, InputIterator, InputIterator);
 
+	virtual
 	size_type
 	max_size () const { return getValue () .max_size (); }
 
+	virtual
 	void
 	pop_front ();
 
+	virtual
 	void
 	pop_back ();
 
@@ -313,14 +336,22 @@ public:
 
 	//	void reserve (size_type size) { get () .reserve (size); };
 
+	virtual
 	void
 	resize (size_type);
 
 	void
 	resize (size_type, const ValueType &);
 
+	virtual
 	size_type
 	size () const { return getValue () .size (); }
+	
+	// String:
+	virtual
+	std::string
+	toString () const
+	{ return X3DField <value_type>::toString (); }
 
 	virtual
 	~X3DArrayField ()
@@ -329,10 +360,12 @@ public:
 
 protected:
 
+	using X3DField <value_type>::get;
+
+
 private:
 
 	using X3DField <value_type>::notifyParents;
-	using X3DField <value_type>::get;
 
 	///  Inserts values in the range [@a first, @a last) to the end without notifying parents.
 	template <class InputIterator>
@@ -346,16 +379,16 @@ private:
 
 template <class ValueType>
 void
-X3DArrayField <ValueType>::set1Value (const size_type index, const ValueType & value)
+X3DArrayField <ValueType>::set1Value (const size_type index, const X3DFieldDefinition & value)
 {
 	if (index >= size ())
 		resize (index + 1);
 
-	get () [index] = value;
+	get () [index] = static_cast <const ValueType &> (value);
 }
 
 template <class ValueType>
-ValueType &
+X3DFieldDefinition &
 X3DArrayField <ValueType>::get1Value (const size_type index)
 {
 	if (index >= size ())
@@ -502,7 +535,7 @@ void
 X3DArrayField <ValueType>::push_front (const ValueType & field)
 {
 	get () .emplace_front (field);
-	addChild (get () .front ());
+	get () .front () .addParent (this);
 	notifyParents ();
 }
 
@@ -511,7 +544,7 @@ void
 X3DArrayField <ValueType>::push_front (const typename ValueType::value_type & value)
 {
 	get () .emplace_front (value);
-	addChild (get () .front ());
+	get () .front () .addParent (this);
 	notifyParents ();
 }
 
@@ -520,7 +553,7 @@ void
 X3DArrayField <ValueType>::push_back (const ValueType & field)
 {
 	get () .emplace_back (field);
-	addChild (get () .back ());
+	get () .back () .addParent (this);
 	notifyParents ();
 }
 
@@ -529,7 +562,7 @@ void
 X3DArrayField <ValueType>::push_back (const typename ValueType::value_type & value)
 {
 	get () .emplace_back (value);
-	addChild (get () .back ());
+	get () .back () .addParent (this);
 	notifyParents ();
 }
 
@@ -539,7 +572,7 @@ void
 X3DArrayField <ValueType>::emplace_front (Args && ... args)
 {
 	get () .emplace_front (args ...);
-	addChild (get () .front ());
+	get () .front () .addParent (this);
 	notifyParents ();
 }
 
@@ -549,7 +582,7 @@ void
 X3DArrayField <ValueType>::emplace_back (Args && ... args)
 {
 	get () .emplace_back (args ...);
-	addChild (get () .back ());
+	get () .back () .addParent (this);
 	notifyParents ();
 }
 
@@ -596,8 +629,8 @@ template <class ValueType>
 void
 X3DArrayField <ValueType>::addChildren (iterator first, iterator last)
 {
-	for ( ; first not_eq last; ++ first)
-		addChild (*first);
+	for (auto & child : basic::adapter (first, last))
+		child .addParent (this);
 }
 
 } // X3D

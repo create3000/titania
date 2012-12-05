@@ -69,19 +69,7 @@ jsMFColorRGBA::init (JSContext* context, JSObject* global)
 JSBool
 jsMFColorRGBA::create (JSContext* context, MFColorRGBA* field, jsval* vp, const bool seal)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
-
-	if (result == NULL)
-		return JS_FALSE;
-
-	JS_SetPrivate (context, result, field);
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
-
-	*vp = OBJECT_TO_JSVAL (result);
-
-	return JS_TRUE;
+	return jsX3DArrayField::create (context, &static_class, field, vp, seal);
 }
 
 JSBool
@@ -99,18 +87,18 @@ jsMFColorRGBA::construct (JSContext* context, uintN argc, jsval* vp)
 
 		for (uintN i = 0; i < argc; ++ i)
 		{
-			JSObject* obj2;
+			JSObject* value;
 
-			if (not JS_ValueToObject (context, argv [i], &obj2))
+			if (not JS_ValueToObject (context, argv [i], &value))
 				return JS_FALSE;
 
-			if (not JS_InstanceOf (context, obj2, jsSFColorRGBA::getClass (), NULL))
+			if (not JS_InstanceOf (context, value, jsSFColorRGBA::getClass (), NULL))
 			{
-				JS_ReportError (context, "Type of argument %d is invalid - should be SFColorRGBA, is %s", i, JS_GetClass (context, obj2) -> name);
+				JS_ReportError (context, "Type of argument %d is invalid - should be SFColorRGBA, is %s", i, JS_GetClass (context, value) -> name);
 				return JS_FALSE;
 			}
 
-			values [i] = *(SFColorRGBA*) JS_GetPrivate (context, obj2);
+			values [i] = *(SFColorRGBA*) JS_GetPrivate (context, value);
 		}
 
 		return create (context, new MFColorRGBA (values, values + argc), &JS_RVAL (context, vp));
@@ -133,9 +121,9 @@ jsMFColorRGBA::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 		return JS_FALSE;
 	}
 
-	MFColorRGBA* mfcolorrgba = (MFColorRGBA*) JS_GetPrivate (context, obj);
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	return jsSFColorRGBA::create (context, &mfcolorrgba -> get1Value (index), vp);
+	return jsSFColorRGBA::create (context, (SFColorRGBA*) &field -> get1Value (index), vp);
 }
 
 JSBool
@@ -152,20 +140,20 @@ jsMFColorRGBA::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool str
 		return JS_FALSE;
 	}
 
-	MFColorRGBA* mfcolorrgba = (MFColorRGBA*) JS_GetPrivate (context, obj);
+	JSObject* value;
 
-	JSObject* obj2;
-
-	if (not JS_ValueToObject (context, *vp, &obj2))
+	if (not JS_ValueToObject (context, *vp, &value))
 		return JS_FALSE;
 
-	if (not JS_InstanceOf (context, obj2, jsSFColorRGBA::getClass (), NULL))
+	if (not JS_InstanceOf (context, value, jsSFColorRGBA::getClass (), NULL))
 	{
-		JS_ReportError (context, "Type of argument is invalid - should be SFColorRGBA, is %s", JS_GetClass (context, obj2) -> name);
+		JS_ReportError (context, "Type of argument is invalid - should be SFColorRGBA, is %s", JS_GetClass (context, value) -> name);
 		return JS_FALSE;
 	}
 
-	mfcolorrgba -> set1Value (index, *(SFColorRGBA*) JS_GetPrivate (context, obj2));
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
+	
+	field -> set1Value (index, *(SFColorRGBA*) JS_GetPrivate (context, value));
 
 	*vp = JSVAL_VOID;
 

@@ -1,3 +1,58 @@
+2012-12-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* MFNode.h:
+	* X3DObject.h:
+	* X3DArray.h:
+	* Proto.h:
+	* Parser.cpp:
+	* X3DBaseNode.h:
+	* Proto.cpp:
+	* X3DProto.h:
+	* X3DBaseNode.cpp:
+	* X3DArrayField.h:
+	* Text.h:
+	* X3DBasicNode.cpp:
+	* X3DBase (Kopie).h:
+	* ExternProto.h:
+	* Text.cpp:
+	* ExternProto.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* X3DShapeNode.cpp:
+	* X3DFontStyleNode.h:
+	* jsfield.cpp:
+	* X3DFontStyleNode.cpp:
+	* jsBrowser.cpp:
+	* jsX3DObject.h:
+	* X3DGroupingNode.cpp:
+	* jsX3DObject.cpp:
+	* X3DGeometryNode.cpp:
+	* jsMFNode.h:
+	* jsX3DArrayField.h:
+	* jsMFTime.cpp:
+	* jsSFNode.cpp:
+	* jsMFBool.cpp:
+	* jsMFNode.cpp:
+	* jsMFVec3f.cpp:
+	* jsMFVec4d.cpp:
+	* jsMFVec4f.cpp:
+	* jsMFImage.cpp:
+	* jsMFInt32.cpp:
+	* jsMFColor.cpp:
+	* jsMFFloat.cpp:
+	* jsMFVec2f.cpp:
+	* jsMFVec3d.cpp:
+	* jsMFVec2d.cpp:
+	* jsMFString.cpp:
+	* jsMFDouble.cpp:
+	* jsMFMatrix4d.cpp:
+	* jsMFMatrix3f.cpp:
+	* jsMFMatrix3d.cpp:
+	* jsMFRotation.cpp:
+	* jsMFMatrix4f.cpp:
+	* jsMFColorRGBA.cpp:
+	* jsX3DExecutionContext.cpp: 
+
 2012-12-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Geometry.h:

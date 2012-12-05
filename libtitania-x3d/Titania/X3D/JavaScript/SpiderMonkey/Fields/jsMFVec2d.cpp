@@ -69,19 +69,7 @@ jsMFVec2d::init (JSContext* context, JSObject* global)
 JSBool
 jsMFVec2d::create (JSContext* context, MFVec2d* field, jsval* vp, const bool seal)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
-
-	if (result == NULL)
-		return JS_FALSE;
-
-	JS_SetPrivate (context, result, field);
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
-
-	*vp = OBJECT_TO_JSVAL (result);
-
-	return JS_TRUE;
+	return jsX3DArrayField::create (context, &static_class, field, vp, seal);
 }
 
 JSBool
@@ -99,18 +87,18 @@ jsMFVec2d::construct (JSContext* context, uintN argc, jsval* vp)
 
 		for (uintN i = 0; i < argc; ++ i)
 		{
-			JSObject* obj2;
+			JSObject* value;
 
-			if (not JS_ValueToObject (context, argv [i], &obj2))
+			if (not JS_ValueToObject (context, argv [i], &value))
 				return JS_FALSE;
 
-			if (not JS_InstanceOf (context, obj2, jsSFVec2d::getClass (), NULL))
+			if (not JS_InstanceOf (context, value, jsSFVec2d::getClass (), NULL))
 			{
-				JS_ReportError (context, "Type of argument %d is invalid - should be SFVec2d, is %s", i, JS_GetClass (context, obj2) -> name);
+				JS_ReportError (context, "Type of argument %d is invalid - should be SFVec2d, is %s", i, JS_GetClass (context, value) -> name);
 				return JS_FALSE;
 			}
 
-			values [i] = *(SFVec2d*) JS_GetPrivate (context, obj2);
+			values [i] = *(SFVec2d*) JS_GetPrivate (context, value);
 		}
 
 		return create (context, new MFVec2d (values, values + argc), &JS_RVAL (context, vp));
@@ -133,9 +121,9 @@ jsMFVec2d::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 		return JS_FALSE;
 	}
 
-	MFVec2d* mfvec2d = (MFVec2d*) JS_GetPrivate (context, obj);
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	return jsSFVec2d::create (context, &mfvec2d -> get1Value (index), vp);
+	return jsSFVec2d::create (context, (SFVec2d*) &field -> get1Value (index), vp);
 }
 
 JSBool
@@ -152,20 +140,20 @@ jsMFVec2d::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict,
 		return JS_FALSE;
 	}
 
-	MFVec2d* mfvec2d = (MFVec2d*) JS_GetPrivate (context, obj);
+	JSObject* value;
 
-	JSObject* obj2;
-
-	if (not JS_ValueToObject (context, *vp, &obj2))
+	if (not JS_ValueToObject (context, *vp, &value))
 		return JS_FALSE;
 
-	if (not JS_InstanceOf (context, obj2, jsSFVec2d::getClass (), NULL))
+	if (not JS_InstanceOf (context, value, jsSFVec2d::getClass (), NULL))
 	{
-		JS_ReportError (context, "Type of argument is invalid - should be SFVec2d, is %s", JS_GetClass (context, obj2) -> name);
+		JS_ReportError (context, "Type of argument is invalid - should be SFVec2d, is %s", JS_GetClass (context, value) -> name);
 		return JS_FALSE;
 	}
 
-	mfvec2d -> set1Value (index, *(SFVec2d*) JS_GetPrivate (context, obj2));
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
+	
+	field -> set1Value (index, *(SFVec2d*) JS_GetPrivate (context, value));
 
 	*vp = JSVAL_VOID;
 

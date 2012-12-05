@@ -61,12 +61,13 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	         length (),                                                    // MFFloat  [in,out] length      [ ]          [0,∞)
 	      maxExtent (),                                                    // SFFloat  [in,out] maxExtent   0.0          [0,∞)
 	         origin (),                                                    // SFVec3f  [out]    origin
-	     lineBounds (),                                                    // MFVec2f  [out]    lineBounds
 	     textBounds (),                                                    // SFVec2f  [out]    textBounds
+	     lineBounds (),                                                    // MFVec2f  [out]    lineBounds
 	      fontStyle (),                                                    // SFNode   [in,out] fontStyle   NULL         [X3FontStyleNode]
 	           font (),                                                    
 	     lineHeight (),                                                    
-	   charSpacings (),                                                    
+	   charSpacings (),
+	 minorAlignment (),                                                 
 	    translation (),                                                    
 	          scale ()                                                     
 {
@@ -79,8 +80,8 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput,    "maxExtent",  maxExtent);
 	appendField (initializeOnly, "solid",      solid);
 	appendField (outputOnly,     "origin",     origin);
-	appendField (outputOnly,     "lineBounds", lineBounds);
 	appendField (outputOnly,     "textBounds", textBounds);
+	appendField (outputOnly,     "lineBounds", lineBounds);
 	appendField (inputOutput,    "fontStyle",  fontStyle);
 }
 
@@ -103,9 +104,9 @@ Text::initialize ()
 float
 Text::getLength (const size_t index)
 {
-	if (length .size ())
-		return length [std::min (index, length .size () - 1)];
-		
+	if (index < length .size ())
+		return length [index];
+
 	return 0;
 }
 
@@ -147,7 +148,6 @@ Text::set_fontStyle ()
 
 	// Calculate scale.
 	scale = fontStyle -> getSize () / font -> LineHeight ();
-
 }
 
 Box3f
@@ -156,6 +156,8 @@ Text::createBBox ()
 	const SFNode <X3DFontStyleNode> & fontStyle = getFontStyle ();
 
 	Box2f bbox;
+
+	float y1;
 
 	charSpacings .clear ();
 	lineBounds   .clear ();
@@ -166,18 +168,21 @@ Text::createBBox ()
 
 	for (const auto & line : string)
 	{
-		FTBBox  ftbbox = font -> BBox (line .getValue () .c_str ());
-		FTPoint min    = ftbbox .Lower ();
-		FTPoint max    = ftbbox .Upper ();
+		Box2f            lineBBox = getLineBBox (line .getValue ());
+		const Vector2f & min      = lineBBox .min ();
+		const Vector2f & max      = lineBBox .max ();
 
-		Vector2f size   = Vector2f (max .X (), max .Y ()) - Vector2f (min .X (), min .Y ());
+		if (i == 1)
+			y1 = max .y ();
+
+		Vector2f size = lineBBox .size ();
 
 		// Calculate charSpacing and lineBounds.
 
 		float    charSpacing = 0;
-		Vector2f lineBound   = size * scale;
+		Vector2f lineBound   = Vector2f (size .x (), lineHeight) * scale;
 		float    length      = getLength (i);
-	
+
 		if (length)
 		{
 			charSpacing = (length - lineBound .x ()) / (line .length () - 1) / scale;
@@ -190,36 +195,84 @@ Text::createBBox ()
 
 		// Calculate line translation.
 
-		switch (fontStyle -> getJustify (i))
+		switch (fontStyle -> getMajorAlignment ())
 		{
-			case FontStyle::Justify::BEGIN:
-				translation .emplace_back (0, -i * lineHeight);
+			case FontStyle::Alignment::BEGIN:
+			case FontStyle::Alignment::FIRST:
+				translation .emplace_back (0, -(i * lineHeight));
 				break;
-			case FontStyle::Justify::MIDDLE:
-				translation .emplace_back (-min .X () - size .x () / 2, -i * lineHeight);
+			case FontStyle::Alignment::MIDDLE:
+				translation .emplace_back (-min .x () - size .x () / 2, -(i * lineHeight));
 				break;
-			case FontStyle::Justify::END:
-				translation .emplace_back (-min .X () - size .x (), -i * lineHeight);
+			case FontStyle::Alignment::END:
+				translation .emplace_back (-min .x () - size .x (), -(i * lineHeight));
 				break;
 		}
-		
+
 		// Calculate center.
 
-		Vector2f center = Vector2f (min .X (), min .Y ()) + size / 2.0f;
-		
+		Vector2f center = Vector2f (min .x (), min .y ()) + size / 2.0f;
+
 		// Add bbox.
-		
+
 		bbox += Box2f (size, center + translation [i]) * scale;
 
 		++ i;
 	}
-	
-	origin     = Vector3f (bbox .min () .x (), bbox .max () .y (), 0);
+
 	textBounds = bbox .size ();
+
+	if (string .size () > 1)
+	{
+		lineBounds .front () .setY (bbox .max () .y () + (lineHeight - y1) * scale);
+		lineBounds .back  () .setY (textBounds .getY () - (lineBounds [0] .getY () + (string .size () - 2) * fontStyle -> spacing));
+	}
+
+	switch (fontStyle -> getMinorAlignment ())
+	{
+		case FontStyle::Alignment::BEGIN:
+			minorAlignment = Vector2f (0, -bbox .max () .y ());
+			break;
+		case FontStyle::Alignment::FIRST:
+			minorAlignment = Vector2f ();
+			break;
+		case FontStyle::Alignment::MIDDLE:
+			minorAlignment = Vector2f (0, textBounds .getY () / 2 - bbox .max () .y ());
+			break;
+		case FontStyle::Alignment::END:
+			minorAlignment = Vector2f  (0, textBounds .getY () - bbox .max () .y ());
+			break;
+	}
+
+	bbox += minorAlignment;
+
+	origin = Vector3f (bbox .min () .x (), bbox .max () .y (), 0);
 
 	return Box3f (Vector3f (bbox .min () .x (), bbox .min () .y (), 0),
 	              Vector3f (bbox .max () .x (), bbox .max () .y (), 0),
 	              true);
+}
+
+Box2f
+Text::getLineBBox (const std::string & line)
+{
+	FTBBox  ftbbox = font -> BBox (line .c_str ());
+	FTPoint min    = ftbbox .Lower ();
+	FTPoint max    = ftbbox .Upper ();
+
+	switch (fontStyle -> getMajorAlignment ())
+	{
+		case FontStyle::Alignment::BEGIN:
+		case FontStyle::Alignment::FIRST:
+			return Box2f (Vector2f (0, min .Y ()), Vector2f (max .X (), max .Y ()), true);
+
+		case FontStyle::Alignment::MIDDLE:
+		case FontStyle::Alignment::END:
+			return Box2f (Vector2f (min .X (), min .Y ()), Vector2f (max .X (), max .Y ()), true);
+	}
+
+	// Control never reaches this line.
+	return Box2f ();
 }
 
 void
@@ -235,10 +288,11 @@ Text::display ()
 	else
 		glDisable (GL_CULL_FACE);
 
-	glScalef (scale, scale, scale);
-
 	// Calculate translations and lineBounds if needed.
 	getBBox ();
+
+	glTranslatef (minorAlignment .x (), minorAlignment .y (), 0);
+	glScalef (scale, scale, scale);
 
 	// Render lines.
 	size_t i = 0;

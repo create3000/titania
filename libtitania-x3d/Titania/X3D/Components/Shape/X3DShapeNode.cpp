@@ -54,6 +54,8 @@
 #include "../Shape/X3DAppearanceNode.h"
 #include "X3DShapeNode.h"
 
+#include "../Core/X3DPrototypeInstance.h"
+
 namespace titania {
 namespace X3D {
 

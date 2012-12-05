@@ -186,15 +186,6 @@ jsSFNode::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsv
 				X3DFieldDefinition* field = sfnode -> getValue () -> getFieldDefinitions () [*index];
 				const std::string & name  = field -> getName ();
 
-				if (field -> getAccessType () == outputOnly or field -> getAccessType () == inputOutput)
-				{					
-					JS_DefineProperty (context,
-					                   obj, name .c_str (),
-					                   JSVAL_VOID,
-					                   getProperty, setProperty,
-					                   JSPROP_PERMANENT);
-				}
-
 				jsval id;
 				JS_NewStringValue (context, name, &id);
 
@@ -231,7 +222,7 @@ jsSFNode::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 
 			if (field)
 			{
-				if (field -> getAccessType () == initializeOnly or field -> getAccessType () == inputOnly)
+				if (field -> getAccessType () == inputOnly)
 				{
 					*vp = JSVAL_VOID;
 					return JS_TRUE;

@@ -71,6 +71,7 @@ X3DGroupingNode::initialize ()
 	X3DBoundedObject::initialize ();
 
 	children .addInterest (this, &X3DGroupingNode::set_children);
+	
 	set_children ();
 }
 
@@ -116,10 +117,8 @@ X3DGroupingNode::set_children ()
 
 				else
 				{
-					SFNode <X3DChildNode> childNode = child;
-					
-					if (childNode)
-						childNodes .push_back (*childNode);
+					if (child)
+						childNodes .push_back (*child);
 				}
 			}
 		}

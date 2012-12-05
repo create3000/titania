@@ -70,19 +70,7 @@ jsMFInt32::init (JSContext* context, JSObject* global)
 JSBool
 jsMFInt32::create (JSContext* context, MFInt32* field, jsval* vp, const bool seal)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
-
-	if (result == NULL)
-		return JS_FALSE;
-
-	JS_SetPrivate (context, result, field);
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
-
-	*vp = OBJECT_TO_JSVAL (result);
-
-	return JS_TRUE;
+	return jsX3DArrayField::create (context, &static_class, field, vp, seal);
 }
 
 JSBool
@@ -128,9 +116,9 @@ jsMFInt32::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 		return JS_FALSE;
 	}
 
-	MFInt32* mfint32 = (MFInt32*) JS_GetPrivate (context, obj);
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	return JS_NewNumberValue (context, mfint32 -> get1Value (index), vp);
+	return JS_NewNumberValue (context, *(SFInt32*) &field -> get1Value (index), vp);
 }
 
 JSBool
@@ -147,14 +135,14 @@ jsMFInt32::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict,
 		return JS_FALSE;
 	}
 
-	MFInt32* mfint32 = (MFInt32*) JS_GetPrivate (context, obj);
-
 	int32 number;
 
 	if (not JS_ValueToECMAInt32 (context, *vp, &number))
 		return JS_FALSE;
+		
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	mfint32 -> set1Value (index, SFInt32 (number));
+	field -> set1Value (index, SFInt32 (number));
 
 	*vp = JSVAL_VOID;
 

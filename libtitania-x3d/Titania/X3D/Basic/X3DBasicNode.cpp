@@ -500,6 +500,7 @@ X3DBasicNode::processEvents (ObjectSet & sourceFields)
 {
 	if (prepare and receivedInputEvent)
 	{
+		// Call prepareEvents only if one event was from an eventIn.
 		prepare = false;
 		getBrowser () -> getRouter () .addPreparedNode (this);
 		prepareEvents ();
@@ -527,6 +528,7 @@ X3DBasicNode::processEvent (X3DObject* const field, ObjectSet & sourceFields)
 void
 X3DBasicNode::eventsProcessed ()
 {
+	// Call eventsProcessed only if one event was from an eventIn.
 	prepare            = true;
 	receivedInputEvent = false;
 }
