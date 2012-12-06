@@ -1,0 +1,6 @@
+#include <gdk/gdkgl.h>
+
+gdk_gl_config_get_type
+gdk_gl_context_get_type
+gdk_gl_drawable_get_type
+gdk_gl_window_get_type

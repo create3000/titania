@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,14 +63,14 @@ public:
 	using X3DGeometryNode::solid;
 
 	MFDouble              set_height;
-	SFNode <X3DBasicNode> color;
-	SFNode <X3DBasicNode> normal;
-	SFNode <X3DBasicNode> texCoord;
+	SFNode <X3DBaseNode> color;
+	SFNode <X3DBaseNode> normal;
+	SFNode <X3DBaseNode> texCoord;
 	SFFloat               yScale;
 	SFBool                colorPerVertex;
 	SFDouble              creaseAngle;
 	SFVec3d               geoGridOrigin;
-	SFNode <X3DBasicNode> geoOrigin;
+	SFNode <X3DBaseNode> geoOrigin;
 	MFString              geoSystem;
 	MFDouble              height;
 	SFBool                normalPerVertex;
@@ -82,7 +82,7 @@ public:
 	GeoElevationGrid (X3DExecutionContext* const);
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
 };

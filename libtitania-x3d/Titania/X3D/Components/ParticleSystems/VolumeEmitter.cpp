@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 VolumeEmitter::VolumeEmitter (X3DExecutionContext* const executionContext) :
-	          X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	          X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DParticleEmitterNode (),                                                    
 	        set_coordinate (),                                                    // SFInt32 [in]     set_coordinate
 	                 coord (),                                                    // SFNode  [in,out] coord           NULL         [X3DCoordinateNode]
@@ -77,7 +77,7 @@ VolumeEmitter::VolumeEmitter (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "internal",       internal);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 VolumeEmitter::create (X3DExecutionContext* const executionContext) const
 {
 	return new VolumeEmitter (executionContext);

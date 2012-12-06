@@ -1,0 +1,28 @@
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:gnome="http://api.gnome.org/doap-extensions#"
+         xmlns="http://usefulinc.com/ns/doap#">
+
+  <name xml:lang="en">GtkGLExt</name>
+  <shortdesc xml:lang="en">OpenGL extension to GTK+</shortdesc>
+  <homepage rdf:resource="http://projects.gnome.org/gtkglext/" />
+  <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/gtkglext-list" />
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Braden McDaniel</foaf:name>
+      <foaf:mbox rdf:resource="mailto:braden@endoframe.com" />
+      <gnome:userid>bradenmcd</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Mukund Sivaraman</foaf:name>
+      <foaf:mbox rdf:resource="mailto:muks@banu.com" />
+      <gnome:userid>muks</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+</Project>

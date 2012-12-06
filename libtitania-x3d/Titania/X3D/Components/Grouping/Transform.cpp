@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Transform::Transform (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DGroupingNode (),                                                    
 	          center (),                                                    // SFVec3f    [in,out] center            0 0 0          (-∞,∞)
 	        rotation (),                                                    // SFRotation [in,out] rotation          0 0 1 0        [-1,1] or (-∞,∞)
@@ -78,7 +78,7 @@ Transform::Transform (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput,    "children",         children);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Transform::create (X3DExecutionContext* const executionContext) const
 {
 	return new Transform (executionContext);

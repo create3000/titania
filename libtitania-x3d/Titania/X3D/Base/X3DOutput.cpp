@@ -53,8 +53,7 @@
 namespace titania {
 namespace X3D {
 
-X3DOutput::X3DOutput () :
-	       X3DBase (), 
+X3DOutput::X3DOutput () : 
 	    requesters (), 
 	requesterIndex ()  
 { }

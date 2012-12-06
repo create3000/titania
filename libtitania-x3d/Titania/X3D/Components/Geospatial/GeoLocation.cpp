@@ -53,7 +53,7 @@
 namespace titania {
 namespace X3D {
 GeoLocation::GeoLocation (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGroupingNode (),                                                    
 	      geoCoords (),                                                    // SFVec3d  [in,out] geoCoords  0 0 0              (-∞,∞)
 	      geoOrigin (),                                                    // SFNode   [ ]      geoOrigin  NULL               [GeoOrigin]
@@ -73,7 +73,7 @@ GeoLocation::GeoLocation (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "geoSystem",      geoSystem);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 GeoLocation::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoLocation (executionContext);

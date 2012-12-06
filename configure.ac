@@ -9,9 +9,68 @@ AM_INIT_AUTOMAKE([1.11])
 
 AM_SILENT_RULES([yes])
 
+AM_MAINTAINER_MODE
+
+AC_PROG_INSTALL
+
 AC_PROG_CXX
 
+
+
+dnl ***************************************************************************
+dnl Configurations
+dnl ***************************************************************************
+
+AC_ARG_ENABLE(debug,
+	AC_HELP_STRING([--enable-debug],
+		[Use 'DEBUG' Configuration [default=YES]]),
+		enable_debug=yes, enable_debug=no)
+
+AM_CONDITIONAL(ENABLE_DEBUG, test x$enable_debug = xyes)
+
+if test "x$enable_debug" = "xyes" ; then
+	CONFIG_REQUESTED="yes"
+fi
+
+
+AC_ARG_ENABLE(release,
+	AC_HELP_STRING([--enable-release],
+		[Use 'RELEASE' Configuration [default=NO]]),
+		enable_release=yes, enable_release=no)
+
+AM_CONDITIONAL(ENABLE_RELEASE, test x$enable_release = xyes)
+
+if test "x$enable_release" = "xyes" ; then
+	CONFIG_REQUESTED="yes"
+fi
+
+
+AC_ARG_ENABLE(parallel,
+	AC_HELP_STRING([--enable-parallel],
+		[Use 'PARALLE' Configuration [default=NO]]),
+		enable_parallel=yes, enable_parallel=no)
+
+AM_CONDITIONAL(ENABLE_PARALLEL, test x$enable_parallel = xyes)
+
+if test "x$enable_parallel" = "xyes" ; then
+	CONFIG_REQUESTED="yes"
+fi
+
+
+
+dnl ***************************************************************************
+dnl Compile options
+dnl ***************************************************************************
+
 CXXFLAGS="-Wall -std=c++11 -Wno-pmf-conversions"
+
+if test "x$ENABLE_RELEASE" ; then
+	CXXFLAGS=$CXXFLAGS" -O3"
+fi
+
+if test "x$ENABLE_PARALLEL" ; then
+	CXXFLAGS=$CXXFLAGS" -O3 -ftree-parallelize-loops=4 -fopenmp"
+fi
 
 
 dnl ***************************************************************************

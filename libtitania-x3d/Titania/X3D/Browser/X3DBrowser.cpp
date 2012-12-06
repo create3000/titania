@@ -69,7 +69,7 @@ X3DBrowser::X3DBrowser () :
 	setTypeName ("Browser");
 	setName ("Titania");
 	
-	//supportedFields, // make X3DBasicNodes of this
+	//supportedFields, // make X3DBaseNodes of this
 	//supportedNodes,
 	//supportedComponents,
 	//supportedProfiles,
@@ -248,7 +248,7 @@ throw (Error <INVALID_NAME>)
 	return supportedFields .get (name);
 }
 
-const X3DBasicNode*
+const X3DBaseNode*
 X3DBrowser::getNode (const std::string & name) const
 throw (Error <INVALID_NAME>)
 {
@@ -466,7 +466,7 @@ X3DBrowser::getLights ()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
-X3DBrowser::notify (X3DBasicNode* const node)
+X3DBrowser::notify (X3DBaseNode* const node)
 {
 	assert (node);
 

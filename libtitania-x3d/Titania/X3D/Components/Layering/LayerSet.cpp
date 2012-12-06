@@ -55,7 +55,7 @@ namespace titania {
 namespace X3D {
 
 LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DNode (),                                                    
 	 activeLayer (),                                                    // SFInt32 [in,out] activeLayer  0          (-∞,∞)
 	       order ({ 0 }),                                               // MFInt32 [in,out] order        [0]        (0,∞)
@@ -75,7 +75,7 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	children [0] -> getBackground () -> transparency = 0; // XXX
 }
 
-X3DBasicNode*
+X3DBaseNode*
 LayerSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new LayerSet (executionContext);

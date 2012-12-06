@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	    X3DChildNode (),                                                    
 	X3DBoundedObject (),                                                    
 	        children (),                                                    // MFNode   [out] children                          [ ]
@@ -90,7 +90,7 @@ GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "rootNode",      rootNode);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 GeoLOD::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoLOD (executionContext);

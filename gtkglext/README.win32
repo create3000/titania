@@ -1,0 +1,206 @@
+
+
+  G t k G L E x t
+
+  - OpenGL Extension to GTK
+
+
+General Information
+===================
+
+GtkGLExt is an OpenGL extension to GTK.
+
+This package is composed of GdkGLExt library and GtkGLExt library.
+GdkGLExt library provides the GDK objects which support OpenGL
+rendering in GTK. GtkGLExt library provides the GtkWidget API add-ons
+to make GTK+ widgets OpenGL-capable.
+
+The official web site is:
+  http://projects.gnome.org/gtkglext/
+
+
+Licensing
+=========
+
+GtkGLExt libraries are released under the terms of the GNU Lesser
+General Public License (GNU LGPL). While components and programs
+included with this release are licensed under the terms of the GNU
+General Public License (GNU GPL).
+
+
+Supported Platforms
+===================
+
+Currently GtkGLExt supports
+
+  * UNIX and UNIX-like platforms
+      Tested under Linux, FreeBSD, IRIX, and Mac OS X.
+
+  * Win32 platforms
+      Tested under Windows XP & 2000 Professional using MinGW/Cygwin
+      environment.
+
+
+Requirements
+============
+
+  * GNU C compiler (MinGW: http://www.mingw.org/)
+
+  * GNU make
+
+  * GTK 2.0 or later (http://www.gtk.org/)
+      You can find Win32 binaries on
+      http://www.gimp.org/~tml/gimp/win32/
+
+  * OpenGL or Mesa (http://www.mesa3d.org/)
+      OpenGL headers are also needed. You can use GL/*.h headers
+      included in Cygwin opengl package or Microsoft's PlatformSDK.
+
+  * GTK-Doc (http://www.gtk.org/rdp/)  [optional]
+
+
+Multihead Support
+=================
+
+Multihead support requires GTK+ 2.1 or above.
+
+If GtkGLExt is already installed, you can check whether installed
+GtkGLExt library supports multihead using the following command.
+
+  $ pkg-config --variable=multihead gtkglext-3.0
+
+
+Installation
+============
+
+To build and install GtkGLExt, type follows (use GNU make)
+
+  $ ./configure --prefix=/foo/bar (other options...)
+  $ make (or gmake)
+  $ make install
+
+To compile example programs, type
+
+  $ make examples
+
+Please read INSTALL or type "./configure --help" for more details.
+
+
+Configure Options
+=================
+
+OpenGL options
+
+  --with-gl-prefix=DIR      OpenGL (Mesa) is installed in DIR [default=auto]
+  --with-gl-includedir=DIR  OpenGL (Mesa) headers are in DIR [default=auto]
+  --with-gl-libdir=DIR      OpenGL (Mesa) libraries are in DIR [default=auto]
+
+Debug options
+
+  --enable-debug=[no/minimum/yes] turn on debugging [default=minimum]
+
+Window system options
+
+  --with-gdktarget=[x11/win32] select GDK target
+
+Auto-generation files options
+
+  --disable-rebuilds      disable all source autogeneration rules
+
+Documentation options
+
+  --enable-gtk-doc        use gtk-doc to build documentation [default=no]
+  --with-html-dir=PATH    path to installed docs
+
+
+Building GtkGLExt on Win32
+==========================
+
+Please note that GTK for Win32 is successfully installed and Win32-native
+(non-Cygwin) pkg-config.exe works with appropriate PKG_CONFIG_PATH.
+
+Personally I run configure like this:
+
+  (GTK is installed in C:\gtk)
+  $ ln -s /cygdrive/c/gtk /target
+  $ export PATH=/target/bin:$PATH
+  $ export PKG_CONFIG_PATH="c:/gtk/lib/pkgconfig"
+
+  (MinGW is installed in C:\mingw)
+  $ export PATH=/cygdrive/c/mingw/bin:$PATH
+
+  $ env CC='gcc -march=pentium' \
+        AR=/usr/bin/ar \
+        ./configure --prefix=c:/gtkglext \
+                    --build=i386-pc-mingw32 \
+                    --disable-static \
+                    --enable-debug=yes
+  $ make
+  $ make install
+  $ export PKG_CONFIG_PATH="${PKG_CONFIG_PATH};c:/gtkglext/lib/pkgconfig"
+  $ cd examples
+  $ make -f Makefile.mingw
+
+Notice that you should use not MinGW's ar but Cygwin's ar under Cygwin
+environment.
+
+To build the binary installer, Nullsoft's NSIS is required. About NSIS,
+see http://nsis.sourceforge.net/.
+
+  $ cp -rf examples c:/gtkglext/gtkglext-examples
+  $ cp COPYING.LIB c:/gtkglext/
+  $ cp gtkglext.nsi c:/gtkglext/
+  $ cd c:/gtkglext/
+  $ makensis gtkglext.nsi
+
+
+Building the CVS Version of GtkGLExt
+====================================
+
+GtkGLExt's SourceForge CVS repository can be checked out through
+anonymous (pserver) CVS with the following instruction set.
+When prompted for a password for anonymous, simply press the Enter key. 
+
+  $ cvs \
+      -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/gtkglext \
+      login
+  $ cvs -z3 \
+      -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/gtkglext \
+      co -r gtkglext-X-Y gtkglext
+
+  (gtkglext-X-Y is a branch name. e.g. gtkglext-1-0 is 1.0.x branch.)
+
+When you are at work on the CVS version of GtkGLExt, you can use autogen.sh
+for generating configure script and Makefiles.
+
+  $ env ACLOCAL_FLAGS='-I /target/share/aclocal' \
+        CC='gcc -march=pentium' \
+        AR=/usr/bin/ar \
+        ./autogen.sh --prefix=c:/gtkglext \
+                     --build=i386-pc-mingw32 \
+                     --disable-static \
+                     --enable-debug=yes
+  $ make
+  $ make install
+  $ export PKG_CONFIG_PATH="c:/gtkglext/lib/pkgconfig;${PKG_CONFIG_PATH}"
+  $ cd examples
+  $ make -f Makefile.mingw
+
+You may have to set ACLOCAL_FLAGS environment variable for some m4
+macros used in configure.in.
+
+The following versions of the GNU autotools are required.
+
+  autoconf 2.54 and above
+  automake 1.7.x
+  libtool  1.5
+
+
+Contact
+=======
+
+Any patches, bug fixes and improvements are always welcome ;-)
+
+  * Home: http://projects.gnome.org/gtkglext/
+  * Mailing List: http://mail.gnome.org/mailman/listinfo/gtkglext-list/
+  * Bugs & Patches: Use GNOME Bugzilla at https://bugzilla.gnome.org/enter_bug.cgi?product=gtkglext

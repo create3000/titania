@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,7 +55,7 @@ namespace titania {
 namespace X3D {
 
 Scene::Scene (X3DBrowser* const browser) :
-	   X3DBasicNode (browser, this),      
+	   X3DBaseNode (browser, this),      
 	       X3DScene (),                   
 	navigationInfos (),                   
 	    backgrounds (),                   
@@ -193,7 +193,7 @@ Scene::getViewpoints () const
 // Root node handling
 
 void
-Scene::addRootNode (const SFNode <X3DBasicNode> & rootNode)
+Scene::addRootNode (const SFNode <X3DBaseNode> & rootNode)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
@@ -212,7 +212,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-Scene::removeRootNode (const SFNode <X3DBasicNode> & rootNode)
+Scene::removeRootNode (const SFNode <X3DBaseNode> & rootNode)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 { }

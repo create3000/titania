@@ -147,7 +147,7 @@ public:
 	throw (Error <INVALID_NAME>);
 
 	virtual
-	const X3DBasicNode*
+	const X3DBaseNode*
 	getNode (const std::string &) const
 	throw (Error <INVALID_NAME>);
 
@@ -260,7 +260,7 @@ public:
 
 	virtual
 	void
-	notify (X3DBasicNode* const);
+	notify (X3DBaseNode* const);
 
 	virtual
 	void
@@ -306,14 +306,14 @@ public:
 	////  pushPointingDeviceSensorNode
 	virtual
 	void
-	pushSensitiveNode (X3DBasicNode* node) = 0;
+	pushSensitiveNode (X3DBaseNode* node) = 0;
 
 	virtual
 	void
 	popSensitiveNode () = 0;
 
 	virtual
-	const std::vector <X3DBasicNode*> &
+	const std::vector <X3DBaseNode*> &
 	getSensitiveNodes () const = 0;
 
 	virtual

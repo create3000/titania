@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -49,14 +49,14 @@
 #ifndef __TITANIA_X3D_EXECUTION_WORLD_H__
 #define __TITANIA_X3D_EXECUTION_WORLD_H__
 
-#include "../Basic/X3DBasicNode.h"
+#include "../Basic/X3DBaseNode.h"
 #include "../Execution/Scene.h"
 
 namespace titania {
 namespace X3D {
 
 class World :
-	public X3DBasicNode
+	public X3DBaseNode
 {
 public:
 

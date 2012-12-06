@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
-	              X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DEnvironmentalSensorNode (),                                                    
 	  centerOfRotation_changed (),                                                    // SFVec3f    [out] centerOfRotation_changed
 	       orientation_changed (),                                                    // SFRotation [out] orientation_changed
@@ -80,7 +80,7 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	appendField (outputOnly,  "centerOfRotation_changed", centerOfRotation_changed);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 ProximitySensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new ProximitySensor (executionContext);

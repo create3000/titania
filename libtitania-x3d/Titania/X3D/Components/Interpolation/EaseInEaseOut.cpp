@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 EaseInEaseOut::EaseInEaseOut (X3DExecutionContext* const executionContext) :
-	            X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	                 X3DNode (),                                                    
 	            set_fraction (),                                                    // SFFloat [in]     set_fraction                        (-∞,∞)
 	           easeInEaseOut (),                                                    // MFVec2f [in,out] easeInEaseOut             [ ]       (-∞,∞)
@@ -71,7 +71,7 @@ EaseInEaseOut::EaseInEaseOut (X3DExecutionContext* const executionContext) :
 	appendField (outputOnly,  "modifiedFraction_changed", modifiedFraction_changed);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 EaseInEaseOut::create (X3DExecutionContext* const executionContext) const
 {
 	return new EaseInEaseOut (executionContext);

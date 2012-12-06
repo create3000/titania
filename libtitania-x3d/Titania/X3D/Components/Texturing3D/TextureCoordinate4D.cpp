@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 TextureCoordinate4D::TextureCoordinate4D (X3DExecutionContext* const executionContext) :
-	            X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTextureCoordinateNode (),                                                    
 	                   point ()                                                     // MFVec4f [in,out] point  [ ]       (-∞,∞)
 {
@@ -65,7 +65,7 @@ TextureCoordinate4D::TextureCoordinate4D (X3DExecutionContext* const executionCo
 	appendField (inputOutput, "point",    point);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 TextureCoordinate4D::create (X3DExecutionContext* const executionContext) const
 {
 	return new TextureCoordinate4D (executionContext);

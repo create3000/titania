@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -97,7 +97,7 @@ throw (Error <INVALID_X3D>)
 }
 
 Parser::Parser (X3DScene* scene, const std::string & input) :
-	X3DBasicNode (scene -> getBrowser (),        scene), 
+	X3DBaseNode (scene -> getBrowser (),        scene), 
 	   X3DParser (),                                     
 	       scene (scene),                                
 	       input (input),                                
@@ -203,7 +203,7 @@ Parser::isInsideProtoDefinition () const
 }
 
 void
-Parser::addRootNode (const SFNode <X3DBasicNode> & rootNode)
+Parser::addRootNode (const SFNode <X3DBaseNode> & rootNode)
 {
 	//__LOG__ << std::endl;
 
@@ -603,7 +603,7 @@ Parser::statement ()
 	if (exportStatement ())
 		return true;
 
-	SFNode <X3DBasicNode> _node;
+	SFNode <X3DBaseNode> _node;
 
 	if (nodeStatement (_node))
 	{
@@ -644,7 +644,7 @@ Parser::nodeStatement (X3DFieldDefinition & _node)
 
 		if (nodeNameId (_nodeNameId))
 		{
-			const SFNode <X3DBasicNode> & _namedNode = getExecutionContext () -> getNamedNode (_nodeNameId);
+			const SFNode <X3DBaseNode> & _namedNode = getExecutionContext () -> getNamedNode (_nodeNameId);
 
 			_node .write (_namedNode);
 
@@ -658,7 +658,7 @@ Parser::nodeStatement (X3DFieldDefinition & _node)
 	{
 		comments ();
 
-		static SFNode <X3DBasicNode> _null;
+		static SFNode <X3DBaseNode> _null;
 
 		_node .write (_null);
 
@@ -672,7 +672,7 @@ Parser::nodeStatement (X3DFieldDefinition & _node)
 }
 
 bool
-Parser::rootNodeStatement (SFNode <X3DBasicNode> & _node)
+Parser::rootNodeStatement (SFNode <X3DBaseNode> & _node)
 {
 	//__LOG__ << std::endl;
 
@@ -788,7 +788,7 @@ Parser::protoBody ()
 
 	protoStatements ();
 
-	SFNode <X3DBasicNode> _rootNodeStatement;
+	SFNode <X3DBaseNode> _rootNodeStatement;
 
 	if (rootNodeStatement (_rootNodeStatement))
 		addRootNode (_rootNodeStatement);
@@ -1155,7 +1155,7 @@ Parser::routeStatement ()
 
 		if (nodeNameId (_fromNodeId))
 		{
-			const SFNode <X3DBasicNode> & _fromNode = getExecutionContext () -> getNode (_fromNodeId);
+			const SFNode <X3DBaseNode> & _fromNode = getExecutionContext () -> getNode (_fromNodeId);
 
 			if (RegEx::Period .Consume (&string))
 			{
@@ -1177,7 +1177,7 @@ Parser::routeStatement ()
 
 							if (nodeNameId (_toNodeId))
 							{
-								const SFNode <X3DBasicNode> & _toNode = getExecutionContext () -> getNode (_toNodeId);
+								const SFNode <X3DBaseNode> & _toNode = getExecutionContext () -> getNode (_toNodeId);
 
 								if (RegEx::Period .Consume (&string))
 								{
@@ -1254,7 +1254,7 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 	{
 		//__LOG__ << _nodeTypeId << std::endl;
 
-		SFNode <X3DBasicNode> _newNode;
+		SFNode <X3DBaseNode> _newNode;
 
 		try
 		{
@@ -1274,7 +1274,7 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 		{
 			comments ();
 
-			X3DBasicNode* _basicNode = _newNode .getValue ();
+			X3DBaseNode* _basicNode = _newNode .getValue ();
 
 			if (dynamic_cast <Script*> (_basicNode))
 				scriptBody (_basicNode);
@@ -1308,7 +1308,7 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 }
 
 void
-Parser::scriptBody (X3DBasicNode* const _basicNode)
+Parser::scriptBody (X3DBaseNode* const _basicNode)
 {
 	//__LOG__ << std::endl;
 
@@ -1317,7 +1317,7 @@ Parser::scriptBody (X3DBasicNode* const _basicNode)
 }
 
 bool
-Parser::scriptBodyElement (X3DBasicNode* const _basicNode)
+Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 {
 	//__LOG__ << std::endl;
 
@@ -1384,7 +1384,7 @@ Parser::scriptBodyElement (X3DBasicNode* const _basicNode)
 }
 
 void
-Parser::nodeBody (X3DBasicNode* const _basicNode)
+Parser::nodeBody (X3DBaseNode* const _basicNode)
 {
 	//__LOG__ << std::endl;
 
@@ -1393,7 +1393,7 @@ Parser::nodeBody (X3DBasicNode* const _basicNode)
 }
 
 bool
-Parser::nodeBodyElement (X3DBasicNode* const _basicNode)
+Parser::nodeBodyElement (X3DBaseNode* const _basicNode)
 {
 	//__LOG__ << std::endl;
 
@@ -2642,8 +2642,8 @@ Parser::mfnodeValue (X3DFieldDefinition* const _fieldDefinition)
 {
 	//__LOG__ << std::endl;
 
-	MFNode <X3DBasicNode> field;
-	SFNode <X3DBasicNode> value;
+	MFNode <X3DBaseNode> field;
+	SFNode <X3DBaseNode> value;
 
 	if (nodeStatement (value))
 	{
@@ -2677,11 +2677,11 @@ Parser::mfnodeValue (X3DFieldDefinition* const _fieldDefinition)
 }
 
 void
-Parser::nodeStatements (MFNode <X3DBasicNode>* _field)
+Parser::nodeStatements (MFNode <X3DBaseNode>* _field)
 {
 	//__LOG__ << std::endl;
 
-	SFNode <X3DBasicNode> _node;
+	SFNode <X3DBaseNode> _node;
 
 	while (nodeStatement (_node))
 		_field -> push_back (_node);

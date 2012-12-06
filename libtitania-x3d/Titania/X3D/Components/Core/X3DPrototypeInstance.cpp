@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 
 X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, Proto* const proto) :
-	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DExecutionContext (),                                                    
 	              proto (proto)                                                
 {
@@ -102,7 +102,7 @@ X3DPrototypeInstance::getTypeName () const
 	return X3DExecutionContext::getTypeName ();
 }
 
-const X3DBasicNode*
+const X3DBaseNode*
 X3DPrototypeInstance::getType () const
 {
 	if (proto)
@@ -114,7 +114,7 @@ X3DPrototypeInstance::getType () const
 	return X3DExecutionContext::getType ();
 }
 
-X3DBasicNode*
+X3DBaseNode*
 X3DPrototypeInstance::getRootNode ()
 {
 	//assert (getRootNodes () .size ());
@@ -122,7 +122,7 @@ X3DPrototypeInstance::getRootNode ()
 	return getRootNodes () .front ();
 }
 
-X3DBasicNode*
+X3DBaseNode*
 X3DPrototypeInstance::getLocalNode ()
 {
 	return getRootNode () -> getLocalNode ();
@@ -143,7 +143,7 @@ X3DPrototypeInstance::display ()
 void
 X3DPrototypeInstance::toStream (std::ostream & ostream) const
 {
-	X3DBasicNode::toStream (ostream);
+	X3DBaseNode::toStream (ostream);
 }
 
 void

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 GeoTouchSensor::GeoTouchSensor (X3DExecutionContext* const executionContext) :
-	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DTouchSensorNode (),                                                    
 	  hitNormal_changed (),                                                    // SFVec3f  [out] hitNormal_changed
 	   hitPoint_changed (),                                                    // SFVec3f  [out] hitPoint_changed
@@ -80,7 +80,7 @@ GeoTouchSensor::GeoTouchSensor (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "geoSystem",           geoSystem);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 GeoTouchSensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoTouchSensor (executionContext);

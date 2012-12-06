@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Switch::Switch (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGroupingNode (),                                                    
 	    whichChoice (-1)                                                   // SFInt32 [in,out] whichChoice  -1        [-1,∞)
 {
@@ -71,7 +71,7 @@ Switch::Switch (X3DExecutionContext* const executionContext) :
 	addFieldAlias ("choice", "children");
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Switch::create (X3DExecutionContext* const executionContext) const
 {
 	return new Switch (executionContext);

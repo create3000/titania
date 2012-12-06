@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Polypoint2D::Polypoint2D (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	          point ()                                                     // MFVec2f [in,out] point  [ ]       (-∞,∞)
 {
@@ -65,7 +65,7 @@ Polypoint2D::Polypoint2D (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput, "point",    point);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Polypoint2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new Polypoint2D (executionContext);

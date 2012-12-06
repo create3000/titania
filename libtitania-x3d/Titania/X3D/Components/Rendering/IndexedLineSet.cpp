@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	 colorPerVertex (true),                                                // SFBool  [ ]      colorPerVertex  TRUE
 	     colorIndex (),                                                    // MFInt32 [ ]      colorIndex      [ ]         [0,∞) or -1
@@ -80,7 +80,7 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput,    "coord",          coord);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 IndexedLineSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new IndexedLineSet (executionContext);

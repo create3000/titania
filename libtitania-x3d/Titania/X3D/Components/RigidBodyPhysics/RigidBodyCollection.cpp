@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionContext) :
-	           X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	           X3DChildNode (),                                                    
 	           set_contacts (),                                                    // MFNode  [in]     set_contacts                             [ ]
 	            autoDisable (),                                                    // SFBool  [in,out] autoDisable              FALSE
@@ -95,7 +95,7 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	appendField (initializeOnly, "collider",                collider);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 RigidBodyCollection::create (X3DExecutionContext* const executionContext) const
 {
 	return new RigidBodyCollection (executionContext);

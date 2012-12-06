@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 GeoMetadata::GeoMetadata (X3DExecutionContext* const executionContext) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DInfoNode (),                                                    
 	        data (),                                                    // MFNode   [in,out] data     [ ]       [<i>urn</i>]
 	     summary (),                                                    // MFString [in,out] summary  [ ]
@@ -69,7 +69,7 @@ GeoMetadata::GeoMetadata (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput, "url",      url);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 GeoMetadata::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoMetadata (executionContext);

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,7 +61,7 @@ namespace titania {
 namespace X3D {
 
 Browser::Browser () :
-	    X3DBasicNode (this, this), 
+	    X3DBaseNode (this, this), 
 	      X3DBrowser (),           
 	objectFrontAlpha (1),          
 	 objectBackAlpha (1),          
@@ -69,7 +69,7 @@ Browser::Browser () :
 	               y (0)           
 { }
 
-X3DBasicNode*
+X3DBaseNode*
 Browser::create (X3DExecutionContext* const) const
 {
 	return new Browser ();

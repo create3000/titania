@@ -70,7 +70,7 @@ namespace X3D {
 // TextureMemory     Float                The amount of memory in megabytes available for textures to be placed on the video card.
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
-	  X3DBasicNode (executionContext -> getBrowser (), executionContext),              
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),              
 	  X3DChildNode (),                                                                 
 	       enabled (),                                                                 
 	 cycleInterval (1),                                                                // SFFloat  [in,out] cycleInterval  1
@@ -118,7 +118,7 @@ RenderingProperties::create (X3DExecutionContext* const executionContext)  const
 void
 RenderingProperties::initialize ()
 {
-	X3DBasicNode::initialize ();
+	X3DBaseNode::initialize ();
 
 	if (glXGetCurrentContext ())
 	{

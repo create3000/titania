@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 SpotLight::SpotLight (X3DExecutionContext* const executionContext) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DLightNode (),                                                    
 	 attenuation (1, 0, 0),                                             // SFVec3f [in,out] attenuation  1 0 0         [0,∞)
 	   beamWidth (),                                                    // SFFloat [in,out] beamWidth    π/2           (0,π/2]
@@ -84,7 +84,7 @@ SpotLight::SpotLight (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput, "attenuation",      attenuation);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 SpotLight::create (X3DExecutionContext* const executionContext) const
 {
 	return new SpotLight (executionContext);

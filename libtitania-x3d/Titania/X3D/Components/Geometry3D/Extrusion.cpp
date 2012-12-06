@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext),                                    
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),                                    
 	 X3DGeometryNode (),                                                                                       
 	set_crossSection (),                                                                                       // MFVec2f    [in] set_crossSection
 	 set_orientation (),                                                                                       // MFRotation [in] set_orientation
@@ -92,7 +92,7 @@ Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "spine",            spine);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Extrusion::create (X3DExecutionContext* const executionContext) const
 {
 	return new Extrusion (executionContext);

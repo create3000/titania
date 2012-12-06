@@ -69,10 +69,6 @@ protected:
 	static
 	JSBool
 	enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
-	
-	static
-	JSBool
-	toString (JSContext*, uintN, jsval*);
 
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
@@ -95,11 +91,11 @@ JSPropertySpec jsX3DArrayField <Type>::properties [ ] = {
 
 template <class Type>
 JSFunctionSpec jsX3DArrayField <Type>::functions [ ] = {
-	{ "getName",     getName,     0, 0 },
-	{ "getTypeName", getTypeName, 0, 0 },
-	{ "getType",     getType,     0, 0 },
+	{ "getName",     getName <X3DArray>,     0, 0 },
+	{ "getTypeName", getTypeName <X3DArray>, 0, 0 },
+	{ "getType",     getType <X3DArray>,     0, 0 },
 	
-	{ "toString",    toString,    0, 0 },
+	{ "toString",    toString <X3DArray>,    0, 0 },
 	
 	{ 0 }
 };
@@ -199,13 +195,6 @@ jsX3DArrayField <Type>::length (JSContext* context, JSObject* obj, jsid id, JSBo
 	field -> resize (value);
 
 	return JS_TRUE;
-}
-
-template <class Type>
-JSBool
-jsX3DArrayField <Type>::toString (JSContext* context, uintN argc, jsval* vp)
-{
-	return toStringImpl <X3DArray> (context, argc, vp);
 }
 
 } // X3D

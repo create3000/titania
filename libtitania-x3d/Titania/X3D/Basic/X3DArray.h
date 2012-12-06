@@ -101,11 +101,6 @@ public:
 	virtual
 	size_type
 	size () const = 0;
-	
-	// String:
-	virtual
-	std::string
-	toString () const = 0;
 
 	virtual
 	~X3DArray ()

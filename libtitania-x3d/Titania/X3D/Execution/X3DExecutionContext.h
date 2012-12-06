@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -133,7 +133,7 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	SFNode <X3DBasicNode>
+	SFNode <X3DBaseNode>
 	createNode (const std::string &, bool = true)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -148,19 +148,19 @@ public:
 
 	/// @name Named node handling
 	///@{
-	const SFNode <X3DBasicNode> &
+	const SFNode <X3DBaseNode> &
 	getNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	void
-	updateNamedNode (const std::string &, const SFNode <X3DBasicNode> &)
+	updateNamedNode (const std::string &, const SFNode <X3DBaseNode> &)
 	throw (Error <IMPORTED_NODE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const SFNode <X3DBasicNode> &
+	const SFNode <X3DBaseNode> &
 	getNamedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -187,7 +187,7 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const SFNode <X3DBasicNode> &
+	const SFNode <X3DBaseNode> &
 	getExportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -224,7 +224,7 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const SFNode <X3DBasicNode> &
+	const SFNode <X3DBaseNode> &
 	getImportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -305,17 +305,17 @@ public:
 	///@{
 	virtual
 	void
-	addRootNode (const SFNode <X3DBasicNode> &)
+	addRootNode (const SFNode <X3DBaseNode> &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	virtual
 	void
-	removeRootNode (const SFNode <X3DBasicNode> &)
+	removeRootNode (const SFNode <X3DBaseNode> &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const MFNode <X3DBasicNode> &
+	const MFNode <X3DBaseNode> &
 	getRootNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -325,16 +325,16 @@ public:
 	/// @name Dynamic route node handling
 	///@{
 	const SFNode <Route> &
-	addRoute (const SFNode <X3DBasicNode> &, const std::string &,
-	          const SFNode <X3DBasicNode> &, const std::string &)
+	addRoute (const SFNode <X3DBaseNode> &, const std::string &,
+	          const SFNode <X3DBaseNode> &, const std::string &)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	void
-	deleteRoute (const SFNode <X3DBasicNode> &, const std::string &,
-	             const SFNode <X3DBasicNode> &, const std::string &)
+	deleteRoute (const SFNode <X3DBaseNode> &, const std::string &,
+	             const SFNode <X3DBaseNode> &, const std::string &)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -374,7 +374,7 @@ protected:
 	void
 	clear ();
 
-	friend class X3DBasicNode; // addDisposedNode
+	friend class X3DBaseNode; // addDisposedNode
 
 
 private:
@@ -390,13 +390,13 @@ private:
 	       Error <DISPOSED>);
 
 	std::pair <X3DFieldDefinition*, X3DFieldDefinition*>
-	createRouteFieldsPair (const SFNode <X3DBasicNode> &, const std::string &,
-	                       const SFNode <X3DBasicNode> &, const std::string &)
+	createRouteFieldsPair (const SFNode <X3DBaseNode> &, const std::string &,
+	                       const SFNode <X3DBaseNode> &, const std::string &)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 	       
 
-	typedef std::map <std::string, SFNode <X3DBasicNode>> NamedNodeIndex;
+	typedef std::map <std::string, SFNode <X3DBaseNode>> NamedNodeIndex;
 
 	basic::uri  worldURL;
 	std::string encoding;
@@ -414,7 +414,7 @@ private:
 	ExternProtoArray  externProtos;
 	RouteArray        routes;
 
-	MFNode <X3DBasicNode> rootNodes;
+	MFNode <X3DBaseNode> rootNodes;
 
 };
 

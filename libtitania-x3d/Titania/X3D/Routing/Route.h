@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -49,7 +49,7 @@
 #ifndef __TITANIA_X3D_ROUTING_ROUTE_H__
 #define __TITANIA_X3D_ROUTING_ROUTE_H__
 
-#include "../Basic/X3DBasicNode.h"
+#include "../Basic/X3DBaseNode.h"
 #include "../Fields.h"
 #include "../Routing/X3DRoute.h"
 
@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class Route :
-	virtual public X3DBasicNode, public X3DRoute
+	virtual public X3DBaseNode, public X3DRoute
 {
 public:
 
@@ -65,13 +65,13 @@ public:
 	bool
 	isConnected ();
 
-	const SFNode <X3DBasicNode> &
+	const SFNode <X3DBaseNode> &
 	getSourceNode () const;
 
 	const basic::id &
 	getSourceField () const;
 
-	const SFNode <X3DBasicNode> &
+	const SFNode <X3DBaseNode> &
 	getDestinationNode () const;
 
 	const basic::id &
@@ -95,8 +95,8 @@ protected:
 	friend class X3DExecutionContext;
 
 	Route (X3DExecutionContext* const,
-	       const SFNode <X3DBasicNode> &, X3DFieldDefinition* const,
-	       const SFNode <X3DBasicNode> &, X3DFieldDefinition* const);
+	       const SFNode <X3DBaseNode> &, X3DFieldDefinition* const,
+	       const SFNode <X3DBaseNode> &, X3DFieldDefinition* const);
 
 	virtual
 	Route*
@@ -106,7 +106,7 @@ protected:
 private:
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
 	virtual
@@ -116,8 +116,8 @@ private:
 	void
 	connect ();
 
-	const SFNode <X3DBasicNode> & sourceNode;
-	const SFNode <X3DBasicNode> & destinationNode;
+	const SFNode <X3DBaseNode> & sourceNode;
+	const SFNode <X3DBaseNode> & destinationNode;
 
 	X3DFieldDefinition* const sourceField;
 	X3DFieldDefinition* const destinationField;

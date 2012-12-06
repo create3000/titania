@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -49,28 +49,28 @@
 #ifndef __TITANIA_X3D_FIELDS_SFNODE_H__
 #define __TITANIA_X3D_FIELDS_SFNODE_H__
 
-#include "../Basic/X3DBasicNode.h"
+#include "../Basic/X3DBaseNode.h"
 #include "../Basic/X3DField.h"
 
 namespace titania {
 namespace X3D {
 
-extern template class X3DField <X3DBasicNode*>;
+extern template class X3DField <X3DBaseNode*>;
 
 template <class ValueType>
 class SFNode :
-	public X3DField <X3DBasicNode*>
+	public X3DField <X3DBaseNode*>
 {
 public:
 
 	typedef ValueType* value_type;
 	typedef ValueType* scalar_type;
-	typedef typename X3DField <X3DBasicNode*>::value_type basic_type;
+	typedef typename X3DField <X3DBaseNode*>::value_type basic_type;
 
-	using X3DField <X3DBasicNode*>::addInterest;
-	using X3DField <X3DBasicNode*>::setValue;
-	using X3DField <X3DBasicNode*>::getValue;
-	using X3DField <X3DBasicNode*>::operator =;
+	using X3DField <X3DBaseNode*>::addInterest;
+	using X3DField <X3DBaseNode*>::setValue;
+	using X3DField <X3DBaseNode*>::getValue;
+	using X3DField <X3DBaseNode*>::operator =;
 
 	///  @name Constructors
 
@@ -109,7 +109,7 @@ public:
 	SFNode &
 	operator = (X3DObject* const value)
 	{
-		setValue (dynamic_cast <X3DBasicNode*> (value));
+		setValue (dynamic_cast <X3DBaseNode*> (value));
 		return *this;
 	}
 
@@ -188,13 +188,13 @@ public:
 
 private:
 
-	using X3DField <X3DBasicNode*>::reset;
+	using X3DField <X3DBaseNode*>::reset;
 
 	void
-	addNode (X3DBasicNode* const);
+	addNode (X3DBaseNode* const);
 
 	void
-	removeNode (X3DBasicNode* const);
+	removeNode (X3DBaseNode* const);
 
 	ValueType*
 	getLocalNode () const
@@ -209,12 +209,12 @@ private:
 
 template <class ValueType>
 SFNode <ValueType>::SFNode () :
-	X3DField <X3DBasicNode*> ()
+	X3DField <X3DBaseNode*> ()
 { }
 
 template <class ValueType>
 SFNode <ValueType>::SFNode (const SFNode & field) :
-	X3DField <X3DBasicNode*> (field)
+	X3DField <X3DBaseNode*> (field)
 {
 	if (getValue ())
 		getValue () -> addParent (this);
@@ -223,7 +223,7 @@ SFNode <ValueType>::SFNode (const SFNode & field) :
 template <class ValueType>
 template <class Up>
 SFNode <ValueType>::SFNode (const SFNode <Up> & field) :
-	X3DField <X3DBasicNode*> (field)
+	X3DField <X3DBaseNode*> (field)
 {
 	if (getValue ())
 		getValue () -> addParent (this);
@@ -231,7 +231,7 @@ SFNode <ValueType>::SFNode (const SFNode <Up> & field) :
 
 template <class ValueType>
 SFNode <ValueType>::SFNode (ValueType* const value) :
-	X3DField <X3DBasicNode*> (value)
+	X3DField <X3DBaseNode*> (value)
 {
 	if (getValue ())
 		getValue () -> addParent (this);
@@ -239,7 +239,7 @@ SFNode <ValueType>::SFNode (ValueType* const value) :
 
 template <class ValueType>
 SFNode <ValueType>::SFNode (X3DObject* const value) :
-	X3DField <X3DBasicNode*> (dynamic_cast <X3DBasicNode*> (value))
+	X3DField <X3DBaseNode*> (dynamic_cast <X3DBaseNode*> (value))
 {
 	if (getValue ())
 		getValue () -> addParent (this);
@@ -306,12 +306,12 @@ void
 SFNode <ValueType>::set (const basic_type & value)
 {
 	addNode (value);
-	X3DField <X3DBasicNode*>::set (value);
+	X3DField <X3DBaseNode*>::set (value);
 }
 
 template <class ValueType>
 void
-SFNode <ValueType>::addNode (X3DBasicNode* const value)
+SFNode <ValueType>::addNode (X3DBaseNode* const value)
 {
 	if (getValue () not_eq value)
 	{
@@ -324,7 +324,7 @@ SFNode <ValueType>::addNode (X3DBasicNode* const value)
 
 template <class ValueType>
 void
-SFNode <ValueType>::removeNode (X3DBasicNode* const value)
+SFNode <ValueType>::removeNode (X3DBaseNode* const value)
 {
 	if (value)
 	{
@@ -340,7 +340,7 @@ SFNode <ValueType>::dispose ()
 {
 	removeNode (getValue ());
 
-	X3DField <X3DBasicNode*>::dispose ();
+	X3DField <X3DBaseNode*>::dispose ();
 }
 
 template <class ValueType>
@@ -350,7 +350,7 @@ SFNode <ValueType>::~SFNode ()
 }
 
 //
-extern template class SFNode <X3DBasicNode>;
+extern template class SFNode <X3DBaseNode>;
 
 } // X3D
 } // titania

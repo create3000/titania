@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,7 +52,7 @@ namespace titania {
 namespace X3D {
 
 bool
-Router::notify (X3DBasicNode* node)
+Router::notify (X3DBaseNode* node)
 {
 	return taintedNodes .insert (node) .second;
 }
@@ -62,7 +62,7 @@ Router::processEvents ()
 {
 	if (taintedNodes .size ())
 	{
-		std::set <X3DBasicNode*> nodesToProcess (std::move (taintedNodes));
+		std::set <X3DBaseNode*> nodesToProcess (std::move (taintedNodes));
 
 		for (const auto & node : nodesToProcess)
 		{
@@ -85,7 +85,7 @@ Router::eventsProcessed ()
 {
 	while (preparedNodes .size ())
 	{
-		std::deque <X3DBasicNode*> nodesToProcess (std::move (preparedNodes));
+		std::deque <X3DBaseNode*> nodesToProcess (std::move (preparedNodes));
 
 		for (const auto & node : nodesToProcess)
 		{

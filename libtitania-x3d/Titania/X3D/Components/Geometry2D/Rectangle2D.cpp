@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Rectangle2D::Rectangle2D (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	           size (2, 2)                                                // SFVec2f [ ]size   2 2          (0,∞)
 {
@@ -66,7 +66,7 @@ Rectangle2D::Rectangle2D (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "solid",    solid);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Rectangle2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new Rectangle2D (executionContext);

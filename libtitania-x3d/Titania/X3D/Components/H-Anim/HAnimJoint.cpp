@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DGroupingNode (),                                                    
 	          center (),                                                    // SFVec3f    [in,out] center            0 0 0          (-∞,∞)
 	      displacers (),                                                    // MFNode     [in,out] displacers        [ ]            [HAnimDisplacer]
@@ -94,7 +94,7 @@ HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput,    "ulimit",           ulimit);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 HAnimJoint::create (X3DExecutionContext* const executionContext) const
 {
 	return new HAnimJoint (executionContext);

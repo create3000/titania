@@ -77,11 +77,11 @@ jsMFNode::construct (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		return create (context, new MFNode <X3DBasicNode> (), &JS_RVAL (context, vp));
+		return create (context, new MFNode <X3DBaseNode> (), &JS_RVAL (context, vp));
 	}
 	else
 	{
-		SFNode <X3DBasicNode> values [argc];
+		SFNode <X3DBaseNode> values [argc];
 
 		jsval* argv = JS_ARGV (context, vp);
 
@@ -98,10 +98,10 @@ jsMFNode::construct (JSContext* context, uintN argc, jsval* vp)
 				return JS_FALSE;
 			}
 
-			values [i] = *(X3DField <X3DBasicNode*>*) JS_GetPrivate (context, value);
+			values [i] = *(X3DField <X3DBaseNode*>*) JS_GetPrivate (context, value);
 		}
 
-		return create (context, new MFNode <X3DBasicNode> (values, values + argc), &JS_RVAL (context, vp));
+		return create (context, new MFNode <X3DBaseNode> (values, values + argc), &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;
@@ -110,7 +110,7 @@ jsMFNode::construct (JSContext* context, uintN argc, jsval* vp)
 JSBool
 jsMFNode::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
-	MFNode <X3DBasicNode>* x3darrayfield = (MFNode <X3DBasicNode>*) JS_GetPrivate (context, obj); /// XXX
+	MFNode <X3DBaseNode>* x3darrayfield = (MFNode <X3DBaseNode>*) JS_GetPrivate (context, obj); /// XXX
 
 	if (not x3darrayfield)
 	{
@@ -181,7 +181,7 @@ jsMFNode::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 
 	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	return jsSFNode::create (context, new SFNode <X3DBasicNode> (*(X3DField <X3DBasicNode*>*) &field -> get1Value (index)), vp);
+	return jsSFNode::create (context, new SFNode <X3DBaseNode> (*(X3DField <X3DBaseNode*>*) &field -> get1Value (index)), vp);
 
 	return JS_TRUE;
 }
@@ -213,7 +213,7 @@ jsMFNode::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, 
 	
 	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	field -> set1Value (index, *(X3DField <X3DBasicNode*>*) JS_GetPrivate (context, value));
+	field -> set1Value (index, *(X3DField <X3DBaseNode*>*) JS_GetPrivate (context, value));
 
 	*vp = JSVAL_VOID;
 

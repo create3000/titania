@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -74,7 +74,7 @@ public:
 	void
 	test1 ()
 	{
-		SFNode <X3DBasicNode> field;
+		SFNode <X3DBaseNode> field;
 
 		std::clog << field << std::endl;
 
@@ -87,7 +87,7 @@ public:
 	void
 	test2 ()
 	{
-		SFNode <X3DBasicNode> field (new MetadataBool (executionContext));
+		SFNode <X3DBaseNode> field (new MetadataBool (executionContext));
 
 		std::clog << field << std::endl;
 

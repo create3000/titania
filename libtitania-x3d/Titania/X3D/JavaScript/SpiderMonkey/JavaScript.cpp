@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,7 +65,7 @@ JSClass JavaScript::global_class = {
 
 };
 
-JavaScript::JavaScript (X3DBasicNode* node, const std::string & ecmascript) :
+JavaScript::JavaScript (X3DBaseNode* node, const std::string & ecmascript) :
 	browser (node -> getBrowser ()), 
 	   node (node)                   
 {
@@ -200,7 +200,7 @@ JavaScript::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 	
 	if (JS_IdToValue (context, id, &name))
 	{
-		X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
+		X3DBaseNode* node = (X3DBaseNode*) JS_GetContextPrivate (context);
 
 		X3DFieldDefinition* field = node -> getField (JS_GetString (context, name));
 
@@ -217,7 +217,7 @@ JavaScript::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool stri
 	
 	if (JS_IdToValue (context, id, &name))
 	{
-		X3DBasicNode* node = (X3DBasicNode*) JS_GetContextPrivate (context);
+		X3DBaseNode* node = (X3DBaseNode*) JS_GetContextPrivate (context);
 
 		X3DFieldDefinition* field = node -> getField (JS_GetString (context, name));
 

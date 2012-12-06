@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
-	     X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DDragSensorNode (),                                                    
 	     axisRotation (0, 1, 0, 0),                                          // SFRotation [in,out] axisRotation      0 1 0 0
 	        diskAngle (),                                                    // SFFloat    [in,out] diskAngle         π/12           [0,π/2]
@@ -81,7 +81,7 @@ CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
 	appendField (outputOnly,  "rotation_changed",   rotation_changed);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 CylinderSensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new CylinderSensor (executionContext);

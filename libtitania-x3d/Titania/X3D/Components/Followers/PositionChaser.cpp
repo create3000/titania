@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 PositionChaser::PositionChaser (X3DExecutionContext* const executionContext) :
-	      X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DChaserNode (),                                                    
 	   set_destination (),                                                    // SFVec3f [in]     set_destination
 	         set_value (),                                                    // SFVec3f [in]     set_value
@@ -77,7 +77,7 @@ PositionChaser::PositionChaser (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "defaultValue",       defaultValue);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 PositionChaser::create (X3DExecutionContext* const executionContext) const
 {
 	return new PositionChaser (executionContext);

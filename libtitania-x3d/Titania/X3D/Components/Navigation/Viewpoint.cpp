@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool addToList) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext),
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DViewpointNode (addToList),  
 	        position (0, 0, 10),  // SFVec3f [in,out] position           0 0 10        (-∞,∞)
 	     fieldOfView (0.785398)   // SFFloat [in,out] fieldOfView        π/4           (0,π)
@@ -77,7 +77,7 @@ Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool addToLis
 	appendField (outputOnly,  "isBound",           isBound);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Viewpoint::create (X3DExecutionContext* const executionContext) const
 {
 	return new Viewpoint (executionContext, true);

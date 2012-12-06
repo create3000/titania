@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 LineSet::LineSet (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	         attrib (),                                                    // MFNode  [in,out] attrib       [ ]         [X3DVertexAttributeNode]
 	          color (),                                                    // SFNode  [in,out] color        NULL        [X3DColorNode]
@@ -73,7 +73,7 @@ LineSet::LineSet (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput, "vertexCount", vertexCount);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 LineSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new LineSet (executionContext);

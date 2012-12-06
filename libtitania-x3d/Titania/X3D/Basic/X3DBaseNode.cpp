@@ -46,7 +46,7 @@
  *
  ******************************************************************************/
 
-#include "X3DBasicNode.h"
+#include "X3DBaseNode.h"
 
 #include "../Bits/X3DConstants.h"
 #include "../Browser/X3DBrowser.h"
@@ -110,8 +110,8 @@ namespace X3D {
  *    shutdown ()
  */
 
-X3DBasicNode::X3DBasicNode (X3DBrowser* const browser, X3DExecutionContext* const executionContext) :
-	         X3DBaseNode (),                 
+X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const executionContext) :
+	         X3DChildObject (),                 
 	             browser (browser),          
 	    executionContext (executionContext), 
 	numUserDefinedFields (0),                
@@ -121,8 +121,8 @@ X3DBasicNode::X3DBasicNode (X3DBrowser* const browser, X3DExecutionContext* cons
 	assert (executionContext);
 }
 
-X3DBasicNode*
-X3DBasicNode::copy (X3DExecutionContext* const executionContext) const
+X3DBaseNode*
+X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 {
 	try
 	{
@@ -131,7 +131,7 @@ X3DBasicNode::copy (X3DExecutionContext* const executionContext) const
 	catch (const Error <INVALID_NAME> &)
 	{ }
 
-	X3DBasicNode* copy = create (executionContext);
+	X3DBaseNode* copy = create (executionContext);
 
 	assert (copy);
 
@@ -200,25 +200,25 @@ X3DBasicNode::copy (X3DExecutionContext* const executionContext) const
 }
 
 time_type
-X3DBasicNode::getCurrentTime () const
+X3DBaseNode::getCurrentTime () const
 {
 	return getBrowser () -> getCurrentTime ();
 }
 
 X3DBrowser*
-X3DBasicNode::getBrowser () const
+X3DBaseNode::getBrowser () const
 {
 	return browser;
 }
 
 X3DExecutionContext*
-X3DBasicNode::getExecutionContext () const
+X3DBaseNode::getExecutionContext () const
 {
 	return executionContext;
 }
 
 size_t
-X3DBasicNode::getNumClones () const
+X3DBaseNode::getNumClones () const
 {
 	// executionContext is the limit
 	size_t numClones = 0;
@@ -229,7 +229,7 @@ X3DBasicNode::getNumClones () const
 		{
 			for (const auto & parentNode : parentField -> getParents ())
 			{
-				MFNode <X3DBasicNode>* mfnode = dynamic_cast <MFNode <X3DBasicNode>*> (parentNode);
+				MFNode <X3DBaseNode>* mfnode = dynamic_cast <MFNode <X3DBaseNode>*> (parentNode);
 
 				if (mfnode)
 				{
@@ -256,57 +256,57 @@ X3DBasicNode::getNumClones () const
 }
 
 void
-X3DBasicNode::setComponent (const basic::id & value)
+X3DBaseNode::setComponent (const basic::id & value)
 {
 	component = value;
 }
 
 const basic::id &
-X3DBasicNode::getComponentName () const
+X3DBaseNode::getComponentName () const
 {
 	return component;
 }
 
 void
-X3DBasicNode::setTypeName (const basic::id & value)
+X3DBaseNode::setTypeName (const basic::id & value)
 {
 	//	std::clog << __FILE__ << ":" << __LINE__ << ": in function " << __func__ << ": " << value << std::endl;
 	typeName = value;
 }
 
-const X3DBasicNode*
-X3DBasicNode::getType () const
+const X3DBaseNode*
+X3DBaseNode::getType () const
 {
 	return getBrowser () -> getNode (getTypeName ());
 }
 
 const basic::id &
-X3DBasicNode::getTypeName () const
+X3DBaseNode::getTypeName () const
 {
 	return typeName;
 }
 
 void
-X3DBasicNode::addNodeType (const NodeTypes value)
+X3DBaseNode::addNodeType (const NodeTypes value)
 {
 	//	std::clog << __FILE__ << ":" << __LINE__ << ": in function " << __func__ << ": " << Generator::NodeTypes .at (value) << std::endl;
 	nodeType .push_back (value);
 }
 
 const NodeTypeArray &
-X3DBasicNode::getNodeType () const
+X3DBaseNode::getNodeType () const
 {
 	return nodeType;
 }
 
-X3DBasicNode*
-X3DBasicNode::getLocalNode ()
+X3DBaseNode*
+X3DBaseNode::getLocalNode ()
 {
 	return this;
 }
 
 //void
-//X3DBasicNode::addFields (std::initializer_list <X3DFieldDefinition &> fields)
+//X3DBaseNode::addFields (std::initializer_list <X3DFieldDefinition &> fields)
 //throw (Error <INVALID_FIELD>)
 //{
 //	size_t i = 0;
@@ -315,7 +315,7 @@ X3DBasicNode::getLocalNode ()
 //}
 
 //void
-//X3DBasicNode::addField (X3DFieldDefinition & field, const X3DFieldDefinition & fieldDefinition)
+//X3DBaseNode::addField (X3DFieldDefinition & field, const X3DFieldDefinition & fieldDefinition)
 //throw (Error <INVALID_FIELD>)
 //{
 //	field .setReference (fieldDefinition);
@@ -325,7 +325,7 @@ X3DBasicNode::getLocalNode ()
 //}
 
 void
-X3DBasicNode::appendField (const AccessType accessType, const basic::id & name, X3DFieldDefinition & field)
+X3DBaseNode::appendField (const AccessType accessType, const basic::id & name, X3DFieldDefinition & field)
 {
 	if (fields .find (name) not_eq fields .end ())
 		throw Error <INVALID_FIELD> ("In function " + std::string (__func__) + " 'field " + getTypeName () + "." + name + "' already exists in field set'.");
@@ -339,7 +339,7 @@ X3DBasicNode::appendField (const AccessType accessType, const basic::id & name, 
 }
 
 void
-X3DBasicNode::addFieldAlias (const std::string & name, const std::string & field)
+X3DBaseNode::addFieldAlias (const std::string & name, const std::string & field)
 {
 	FieldsMap::const_iterator iter = fields .find (field);
 
@@ -351,7 +351,7 @@ X3DBasicNode::addFieldAlias (const std::string & name, const std::string & field
 }
 
 X3DFieldDefinition*
-X3DBasicNode::getField (const std::string & name) const
+X3DBaseNode::getField (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -381,7 +381,7 @@ throw (Error <INVALID_NAME>,
 }
 
 const std::string &
-X3DBasicNode::getFieldName (const std::string & name) const
+X3DBaseNode::getFieldName (const std::string & name) const
 {
 	auto fieldAlias = fieldAliases .find (name);
 
@@ -392,7 +392,7 @@ X3DBasicNode::getFieldName (const std::string & name) const
 }
 
 //const std:string &
-//X3DBasicNode::getFieldAlias (X3DFieldDefinition* field) const
+//X3DBaseNode::getFieldAlias (X3DFieldDefinition* field) const
 //{
 //	auto fieldAlias = fieldAliases .find (field -> getName ());
 //
@@ -403,7 +403,7 @@ X3DBasicNode::getFieldName (const std::string & name) const
 //}
 
 void
-X3DBasicNode::addUserDefinedField (const AccessType accessType, const basic::id & name, X3DFieldDefinition* const field)
+X3DBaseNode::addUserDefinedField (const AccessType accessType, const basic::id & name, X3DFieldDefinition* const field)
 {
 	appendField (accessType, name, *field);
 
@@ -411,17 +411,17 @@ X3DBasicNode::addUserDefinedField (const AccessType accessType, const basic::id 
 }
 
 FieldDefinitionArray
-X3DBasicNode::getUserDefinedFields () const
+X3DBaseNode::getUserDefinedFields () const
 {
 	return FieldDefinitionArray (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end ());
 }
 
 FieldDefinitionArray
-X3DBasicNode::getInitializeableFields (const bool all) const
+X3DBaseNode::getInitializeableFields (const bool all) const
 {
 	FieldDefinitionArray changedFields;
 	
-	const X3DBasicNode* declaration = getType ();
+	const X3DBaseNode* declaration = getType ();
 
 	for (const auto & field : basic::adapter (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
 	{
@@ -441,23 +441,23 @@ X3DBasicNode::getInitializeableFields (const bool all) const
 }
 
 void
-X3DBasicNode::setFields ()
+X3DBaseNode::setFields ()
 { }
 
 const FieldsMap &
-X3DBasicNode::getFields () const
+X3DBaseNode::getFields () const
 {
 	return fields;
 }
 
 const FieldDefinitionArray &
-X3DBasicNode::getFieldDefinitions () const
+X3DBaseNode::getFieldDefinitions () const
 {
 	return fieldDefinitions;
 }
 
 void
-X3DBasicNode::setup ()
+X3DBaseNode::setup ()
 {
 	for (const auto & field : fields)
 		setChild (*field .second);
@@ -468,13 +468,13 @@ X3DBasicNode::setup ()
 }
 
 void
-X3DBasicNode::initialize ()
+X3DBaseNode::initialize ()
 {
 	// This is only a virtual function and left empty.
 }
 
 void
-X3DBasicNode::notify (X3DObject* const object)
+X3DBaseNode::notify (X3DObject* const object)
 {
 	//std::clog << "Node '" << getTypeName () << "' received an event from field '" << object -> getName () << "'." << (void*) this << std::endl;
 
@@ -490,13 +490,13 @@ X3DBasicNode::notify (X3DObject* const object)
 }
 
 bool
-X3DBasicNode::addEvent (X3DObject* const object)
+X3DBaseNode::addEvent (X3DObject* const object)
 {
 	return events .insert (object) .second;
 }
 
 void
-X3DBasicNode::processEvents (ObjectSet & sourceFields)
+X3DBaseNode::processEvents (ObjectSet & sourceFields)
 {
 	if (prepare and receivedInputEvent)
 	{
@@ -519,14 +519,14 @@ X3DBasicNode::processEvents (ObjectSet & sourceFields)
 }
 
 void
-X3DBasicNode::processEvent (X3DObject* const field, ObjectSet & sourceFields)
+X3DBaseNode::processEvent (X3DObject* const field, ObjectSet & sourceFields)
 {
 	receivedInputEvent |= field -> isInput ();
 	processEvents (sourceFields);
 }
 
 void
-X3DBasicNode::eventsProcessed ()
+X3DBaseNode::eventsProcessed ()
 {
 	// Call eventsProcessed only if one event was from an eventIn.
 	prepare            = true;
@@ -534,25 +534,25 @@ X3DBasicNode::eventsProcessed ()
 }
 
 void
-X3DBasicNode::select ()
+X3DBaseNode::select ()
 {
 	intersect ();
 }
 
 void
-X3DBasicNode::intersect ()
+X3DBaseNode::intersect ()
 {
 	// This is only a virtual function and left empty.
 }
 
 void
-X3DBasicNode::display ()
+X3DBaseNode::display ()
 {
 	// This is only a virtual function and left empty.
 }
 
 void
-X3DBasicNode::fromStream (std::istream & istream)
+X3DBaseNode::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -562,7 +562,7 @@ throw (Error <INVALID_X3D>,
 }
 
 void
-X3DBasicNode::toStream (std::ostream & ostream) const
+X3DBaseNode::toStream (std::ostream & ostream) const
 {
 	Generator::PushLevel ();
 
@@ -717,23 +717,23 @@ X3DBasicNode::toStream (std::ostream & ostream) const
 }
 
 void
-X3DBasicNode::dispose ()
+X3DBaseNode::dispose ()
 {
 	events .clear ();
 
-	X3DBaseNode::dispose ();
+	X3DChildObject::dispose ();
 
 	getGarbageCollector () .addObject (this);
 }
 
-X3DBasicNode::~X3DBasicNode ()
+X3DBaseNode::~X3DBaseNode ()
 {
 	for (const auto & field : getUserDefinedFields ())
 		delete field;
 }
 
-template std::istream & operator >> (std::istream &, X3DBasicNode*);
-template std::ostream & operator << (std::ostream &, const X3DBasicNode*);
+template std::istream & operator >> (std::istream &, X3DBaseNode*);
+template std::ostream & operator << (std::ostream &, const X3DBaseNode*);
 
 } // X3D
 } // titania

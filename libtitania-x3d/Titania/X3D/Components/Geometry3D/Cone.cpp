@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 Cone::Cone (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	         bottom (true),                                                // SFBool  [ ]bottom        TRUE
 	   bottomRadius (1),                                                   // SFFloat [ ]bottomRadius  1           (0,∞)
@@ -74,7 +74,7 @@ Cone::Cone (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "solid",        solid);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Cone::create (X3DExecutionContext* const executionContext) const
 {
 	return new Cone (executionContext);

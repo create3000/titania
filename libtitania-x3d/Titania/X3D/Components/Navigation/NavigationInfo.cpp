@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, bool addToList) :
-	      X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	   X3DBindableNode (),                                                    
 	        avatarSize ({ 0.25, 1.6, 0.75 }),                                 // MFFloat  [in,out] avatarSize         [0.25 1.6 0.75]        [0,∞)
 	         headlight (true),                                                // SFBool   [in,out] headlight          TRUE
@@ -88,7 +88,7 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, boo
 	setChildren (directionalLight);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 NavigationInfo::create (X3DExecutionContext* const executionContext) const
 {
 	return new NavigationInfo (executionContext, true);

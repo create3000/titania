@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 Fog::Fog (X3DExecutionContext* const executionContext, bool addToList) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DBindableNode (),                                                    
 	   X3DFogObject (),
 	      addToList (addToList)                                                     
@@ -73,7 +73,7 @@ Fog::Fog (X3DExecutionContext* const executionContext, bool addToList) :
 	appendField (outputOnly,  "bindTime",        bindTime);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Fog::create (X3DExecutionContext* const executionContext) const
 {
 	return new Fog (executionContext, true);

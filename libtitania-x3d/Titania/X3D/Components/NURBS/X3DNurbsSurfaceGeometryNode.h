@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,8 +61,8 @@ public:
 
 	using X3DGeometryNode::solid;
 
-	SFNode <X3DBasicNode> controlPoint;
-	SFNode <X3DBasicNode> texCoord;
+	SFNode <X3DBaseNode> controlPoint;
+	SFNode <X3DBaseNode> texCoord;
 	SFInt32               uTessellation;
 	SFInt32               vTessellation;
 	MFDouble              weight;

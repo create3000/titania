@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 
 class X3DFieldDefinition;
-class X3DBasicNode;
+class X3DBaseNode;
 
 class Generator :
 	public basic::Generator
@@ -102,7 +102,7 @@ private:
 		NodeTypesIndex ();
 
 		const std::string &
-		operator [ ] (const X3DBasicNode*) const;
+		operator [ ] (const X3DBaseNode*) const;
 
 	};
 
@@ -149,13 +149,13 @@ public:
 	PopLevel ();
 
 	static bool
-	ExistsNode (const X3DBasicNode*);
+	ExistsNode (const X3DBaseNode*);
 
 	static void
-	AddNode (const X3DBasicNode*);
+	AddNode (const X3DBaseNode*);
 
 	static std::string
-	GetName (const X3DBasicNode*);
+	GetName (const X3DBaseNode*);
 
 	static const VrmlAccessTypesIndex VrmlAccessTypes;
 	static const AccessTypesIndex     AccessTypes;
@@ -164,8 +164,8 @@ public:
 
 private:
 
-	typedef std::set <const X3DBasicNode*>              NodesSet;
-	typedef std::map <const X3DBasicNode*, std::string> NewNamesMap;
+	typedef std::set <const X3DBaseNode*>              NodesSet;
+	typedef std::map <const X3DBaseNode*, std::string> NewNamesMap;
 
 	static size_t      level;
 	static NodesSet    nodes;

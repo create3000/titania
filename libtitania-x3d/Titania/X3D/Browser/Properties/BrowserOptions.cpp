@@ -73,7 +73,7 @@ namespace X3D {
 // TextureQuality          Low, Medium, High                           Medium                       Quality of texture map display
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
-	          X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	          X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	       X3DPropertyNode (),                                                    
 	          splashScreen (false),                                               
 	             dashboard (),                                                    

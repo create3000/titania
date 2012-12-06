@@ -51,8 +51,7 @@
 namespace titania {
 namespace X3D {
 
-X3DInput::X3DInput () :
-	X3DBase () 
+X3DInput::X3DInput ()
 { }
 
 void

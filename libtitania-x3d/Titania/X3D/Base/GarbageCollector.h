@@ -50,13 +50,11 @@
 #define __TITANIA_X3D_BASE_GARBAGE_COLLECTOR_H__
 
 #include "../Base/ObjectSet.h"
-#include "../Base/X3DBase.h"
 
 namespace titania {
 namespace X3D {
 
-class GarbageCollector :
-	public X3DBase
+class GarbageCollector
 {
 public:
 

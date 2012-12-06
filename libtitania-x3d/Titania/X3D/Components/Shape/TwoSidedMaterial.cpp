@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 TwoSidedMaterial::TwoSidedMaterial (X3DExecutionContext* const executionContext) :
-	        X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DMaterialNode (),                                                    
 	    ambientIntensity (0.2),                                                 // SFFloat [in,out] ambientIntensity      0.2                [0,1]
 	backAmbientIntensity (0.2),                                                 // SFFloat [in,out] backAmbientIntensity  0.2                [0,1]
@@ -89,7 +89,7 @@ TwoSidedMaterial::TwoSidedMaterial (X3DExecutionContext* const executionContext)
 	appendField (inputOutput, "transparency",         transparency);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 TwoSidedMaterial::create (X3DExecutionContext* const executionContext) const
 {
 	return new TwoSidedMaterial (executionContext);

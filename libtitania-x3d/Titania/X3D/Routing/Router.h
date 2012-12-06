@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -49,7 +49,7 @@
 #ifndef __TITANIA_X3D_ROUTING_ROUTER_H__
 #define __TITANIA_X3D_ROUTING_ROUTER_H__
 
-#include "../Basic/X3DBasicNode.h"
+#include "../Basic/X3DBaseNode.h"
 #include <deque>
 
 namespace titania {
@@ -62,10 +62,10 @@ public:
 	Router () { }
 
 	bool
-	notify (X3DBasicNode*);
+	notify (X3DBaseNode*);
 
 	void
-	addPreparedNode (X3DBasicNode* node) { preparedNodes .push_back (node); }
+	addPreparedNode (X3DBaseNode* node) { preparedNodes .push_back (node); }
 
 	void
 	processEvents ();
@@ -81,8 +81,8 @@ private:
 	void
 	eventsProcessed ();
 
-	std::set <X3DBasicNode*>   taintedNodes;
-	std::deque <X3DBasicNode*> preparedNodes;
+	std::set <X3DBaseNode*>   taintedNodes;
+	std::deque <X3DBaseNode*> preparedNodes;
 
 };
 

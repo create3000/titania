@@ -26,14 +26,14 @@
 //  *
 //  ************************************************************************/
 
-#include "X3DBaseNode.h"
+#include "X3DChildObject.h"
 
 #include <algorithm>
 
 namespace titania {
 namespace X3D {
 
-X3DBaseNode::X3DBaseNode () :
+X3DChildObject::X3DChildObject () :
 	X3DObject (), 
 	  parents (), 
 	 children ()  
@@ -42,13 +42,13 @@ X3DBaseNode::X3DBaseNode () :
 // Object
 
 void
-X3DBaseNode::notify (X3DObject* const)
+X3DChildObject::notify (X3DObject* const)
 {
 	notifyParents ();
 }
 
 void
-X3DBaseNode::notifyParents ()
+X3DChildObject::notifyParents ()
 {
 	for (const auto & parent : getParents ())
 		parent -> notify (this);
@@ -57,13 +57,13 @@ X3DBaseNode::notifyParents ()
 // Child
 
 bool
-X3DBaseNode::addParent (X3DBaseNode* const parent)
+X3DChildObject::addParent (X3DChildObject* const parent)
 {
 	return parents .insert (parent) .second;
 }
 
 bool
-X3DBaseNode::removeParent (X3DBaseNode* const parent)
+X3DChildObject::removeParent (X3DChildObject* const parent)
 {
 	if (parents .erase (parent))
 	{
@@ -92,13 +92,13 @@ X3DBaseNode::removeParent (X3DBaseNode* const parent)
 }
 
 const BaseNodeSet &
-X3DBaseNode::getParents () const
+X3DChildObject::getParents () const
 {
 	return parents;
 }
 
 bool
-X3DBaseNode::hasRoots (BaseNodeSet & seen)
+X3DChildObject::hasRoots (BaseNodeSet & seen)
 {
 	if (getParents () .size ())
 	{
@@ -112,7 +112,7 @@ X3DBaseNode::hasRoots (BaseNodeSet & seen)
 
 			return std::any_of (getParents () .cbegin (),
 			                    getParents () .cend (),
-			                    std::bind (std::mem_fn (&X3DBaseNode::hasRoots),
+			                    std::bind (std::mem_fn (&X3DChildObject::hasRoots),
 			                               std::placeholders::_1,
 			                               std::ref (seen)));
 		}
@@ -126,21 +126,21 @@ X3DBaseNode::hasRoots (BaseNodeSet & seen)
 
 // Node:
 void
-X3DBaseNode::setChild (X3DBaseNode* const child)
+X3DChildObject::setChild (X3DChildObject* const child)
 {
 	child -> addParent (this);
 	children .insert (child);
 }
 
 void
-X3DBaseNode::setChild (X3DBaseNode & child)
+X3DChildObject::setChild (X3DChildObject & child)
 {
 	child .addParent (this);
 	children .insert (&child);
 }
 
 const BaseNodeSet &
-X3DBaseNode::getChildren () const
+X3DChildObject::getChildren () const
 {
 	return children;
 }
@@ -148,7 +148,7 @@ X3DBaseNode::getChildren () const
 // Object
 
 void
-X3DBaseNode::dispose ()
+X3DChildObject::dispose ()
 {
 	parents .clear ();
 
@@ -160,7 +160,7 @@ X3DBaseNode::dispose ()
 	X3DObject::dispose ();
 }
 
-X3DBaseNode::~X3DBaseNode ()
+X3DChildObject::~X3DChildObject ()
 { }
 
 } // X3D

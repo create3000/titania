@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
-	     X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DShapeNode (),                                                    
 	  createParticles (true),                                                // SFBool   [in,out] createParticles    TRUE
 	          enabled (true),                                                // SFBool   [in,out] enabled            TRUE
@@ -95,7 +95,7 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "texCoordKey",       texCoordKey);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 ParticleSystem::create (X3DExecutionContext* const executionContext) const
 {
 	return new ParticleSystem (executionContext);

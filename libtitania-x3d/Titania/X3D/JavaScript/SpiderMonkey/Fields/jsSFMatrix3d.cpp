@@ -65,9 +65,9 @@ JSClass jsSFMatrix3d::static_class = {
 };
 
 JSFunctionSpec jsSFMatrix3d::functions [ ] = {
-	{ "getName",       getName,       0, 0 },
-	{ "getTypeName",   getTypeName,   0, 0 },
-	{ "getType",       getType,       0, 0 },
+	{ "getName",       getName <X3DObject>,     0, 0 },
+	{ "getTypeName",   getTypeName <X3DObject>, 0, 0 },
+	{ "getType",       getType <X3DObject>,     0, 0 },
 	
 	{ "setTransform",  setTransform,  5, 0 },
 	{ "getTransform",  getTransform,  3, 0 },
@@ -78,8 +78,8 @@ JSFunctionSpec jsSFMatrix3d::functions [ ] = {
 	{ "multRight",     multRight,     1, 0 },
 	{ "multVecMatrix", multVecMatrix, 1, 0 },
 	{ "multMatrixVec", multMatrixVec, 1, 0 },
-	
-	{ "toString",      toString,      0, 0 },
+
+	{ "toString",      toString <X3DObject>, 0, 0 },
 
 	{ 0 }
 

@@ -1,0 +1,14 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+targets=x11
+api_version=3.0
+
+Name: GdkGLExt
+Description: OpenGL Extension to GDK (${targets})
+Version: 2.99.0
+Requires: gdk-3.0
+Libs: -L${libdir} -lgdkglext-${api_version} -lGL   
+Cflags: -I${includedir}/gtkglext-${api_version} -I${libdir}/gtkglext-${api_version}/include -pthread 

@@ -1,0 +1,25 @@
+
+All
+===
+
+ - Multisample antialiasing support.
+ - Pbuffer support.
+ - Overlay support.
+ - Documentations.
+
+
+GTK
+===
+
+
+X11 Target
+==========
+
+ - GLX Version 1.3 support.
+
+
+Win32 Target
+============
+
+ - RGB palette management.
+

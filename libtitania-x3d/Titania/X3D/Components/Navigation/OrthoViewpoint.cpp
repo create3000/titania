@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext, bool addToList) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DViewpointNode (addToList),                                                    
 	     fieldOfView ({ -1 }),                                              // MFFloat [in,out] fieldOfView        -1, -1, 1, 1        (-∞,∞)
 	        position (0, 0, 10)                                             // SFVec3f [in,out] position           0 0 10              (-∞,∞)
@@ -75,7 +75,7 @@ OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext, boo
 	appendField (inputOutput, "position",          position);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 OrthoViewpoint::create (X3DExecutionContext* const executionContext) const
 {
 	return new OrthoViewpoint (executionContext, true);

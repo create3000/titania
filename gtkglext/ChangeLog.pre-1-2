@@ -1,0 +1,3243 @@
+2009-03-11  Braden McDaniel <braden@endoframe.com>
+
+	* gdk/x11/gdkglfont-x11.c
+	(gdk_gl_font_use_pango_font_common): Check for null return values
+	from pango_x_font_map_get_font_cache and pango_x_font_cache_load.
+	From A C G Mennucc <mennucc@users.sourceforge.net>
+
+2009-03-10  Braden McDaniel <braden@endoframe.com>
+
+	Revert the 2009-03-07 change that removed the notions of
+	"interface age" and "binary age" and instead fix this logic to
+	bring it to parity with what modern GTK+ does.
+
+	* configure.ac: Reinstated GTKGLEXT_INTERFACE_AGE,
+	GTKGLEXT_BINARY_AGE, LT_RELEASE, LT_CURRENT, LT_REVISION, LT_AGE,
+	and LT_CURRENT_MINUS_AGE.  Note that GTKGLEXT_BINARY_AGE is now
+	computed from GTKGLEXT_MINOR_VERSION and GTKGLEXT_MICRO_VERSION.
+	* gdk/Makefile.am
+	* gdk/gdkglversion.c
+	* gdk/gdkglversion.h.in
+	* gtk/Makefile.am
+	* gtk/gtkglversion.c
+	* gtk/gtkglversion.h.in
+
+2009-03-09  Braden McDaniel <braden@endoframe.com>
+
+	Removed installed M4 macros for detecting the library.  pkg-config
+	should be used for this purpose.
+
+	* Makefile.am: Removed references to the m4macros subdirectory.
+	* configure.ac: Removed references to the m4macros subdirectory.
+	* m4macros/Makefile.am: Removed.
+	* m4macros/gtkglext.m4: Removed.
+
+2009-03-09  Braden McDaniel <braden@endoframe.com>
+
+	* AUTHORS: Note new maintainers.
+
+2009-03-09  Braden McDaniel <braden@endoframe.com>
+
+	Updated viewlw example to use GtkFileChooserDialog instead of the
+	deprecated GtkFileSelection.  The examples now compile with GTK+
+	2.14 using GTK_DISABLE_DEPRECATED.
+
+	Require at least GTK+ 2.4.  While strictly this isn't necessary
+	since we only need this 2.4-dependent feature in an example, GTK+
+	2.4 is an old enough release at this point that there seems little
+	potential harm in requiring it.
+
+	* configure.ac: Bump minimum required GTK+ version to 2.4.0.
+	* examples/viewlw.c
+	(filew_ok): Removed.
+	(select_lwobject): Create, run, and destroy the
+	GtkFileChooserDialog.
+
+2009-03-07  Braden McDaniel <braden@endoframe.com>
+
+	Removed the broken logic that translated notions of an "interface
+	age" and a "binary age" to Libtool library versions.  The Libtool
+	library versions for libgdkglext and libgtkglext are now set
+	directly in configure.ac.  Note also that the Libtool library
+	versions for these libraries can (and generally should) be updated
+	independently of eachother.
+
+	For now, the Libtool library versions for both libgdkglext and
+	libgtkglext have been reverted to their values as of the 1.0.6
+	release of GtkGLExt.
+
+	* configure.ac: Removed GTKGLEXT_INTERFACE_AGE,
+	GTKGLEXT_BINARY_AGE, and LT_RELEASE.  LT_CURRENT, LT_REVISION,
+	LT_AGE, and LT_CURRENT_MINUS_AGE have been split into separate
+	variables applying to libgdkglext and libgtkglext.
+	* gdk/Makefile.am: Use libgdkglext-specific variables.
+	* gdk/gdkglversion.c: Removed gdkglext_interface_age and
+	gdkglext_binary_age.
+	* gdk/gdkglversion.h.in: Removed preprocessor definitions
+	GDKGLEXT_INTERFACE_AGE and GDKGLEXT_BINARY_AGE along with variable
+	declarations gdkglext_interface_age and gdkglext_binary_age.
+	* gtk/Makefile.am: Use libgtkglext-specific variables.
+	* gtk/gtkglversion.c: Removed gtkglext_interface_age and
+	gtkglext_binary_age.
+	* gtk/gtkglversion.h.in: Removed preprocessor definitions
+	GTKGLEXT_INTERFACE_AGE and GTKGLEXT_BINARY_AGE along with variable
+	declarations gtkglext_interface_age and gtkglext_binary_age.
+
+2009-03-06  Braden McDaniel <braden@endoframe.com>
+
+	* configure.ac: Removed redundant usage of AM_PATH_GLIB_2_0 and
+	AM_PATH_GTK_2_0.
+
+2008-05-06  Ralf Corsépius <corsepiu@users.sourceforge.net>
+
+	* gdk/Makefile.am, gdk/win32/Makefile.am, gdk/x11/Makefile.am
+	gtk/Makefile.am: s/INCLUDES/AM_CPPFLAGS/.
+	* configure.in: Remove check for indent.
+
+2006-01-29 15:26  tshead
+
+	* GtkGLExt 1.1.0
+
+2006-01-16 22:31  tshead
+
+	* COMP: Fixed a typo - Kouhei Sutou <kou at cozmixng dot org>
+
+2006-01-14 11:46  tshead
+
+	* COMP: Applied patch to build GtkGLExt against GTK+ >= 2.8, see
+	  http://sourceforge.net/tracker/index.php?func=detail&aid=1404460&group_id=54333&atid=473436
+
+2006-01-14 11:42  tshead
+
+	* STYLE: Setup .cvsignore files for the repository
+
+2006-01-14 11:36  tshead
+
+	* STYLE: setup .cvsignore files for the repository
+
+2006-01-14 11:26  tshead
+
+	* STYLE: Updated project contact information
+
+2004-03-10 03:52  naofumi
+
+	* Version 1.0.6
+
+2004-03-10 02:37  naofumi
+
+	* Rewritten for the latest NSIS 2 beta.
+
+2004-03-10 01:37  naofumi
+
+	* Updated mailing list info.
+
+2004-02-20 10:39  naofumi
+
+	* Don't use deprecated functions in GTK+-2.3
+
+2004-02-20 10:14  naofumi
+
+	* Don't use deprecated functions in GTK+-2.3
+
+2004-02-20 03:03  naofumi
+
+	* Quote AC_DEFUN arguments to avoid warnings with automake-1.8.x.
+
+2004-02-20 02:55  naofumi
+
+	* Updated copyright.
+
+2004-02-20 02:38  naofumi
+
+	* Updated copyright.
+
+2004-02-20 02:20  naofumi
+
+	* gtk_quit_add_destroy() call is removed because it cause a problem
+	  with recursive mainloop.
+
+2004-02-20 02:09  naofumi
+
+	* gtk_quit_add_destroy() call is removed because it cause a problem
+	  with recursive mainloop.
+
+2004-01-30 02:37  naofumi
+
+	* Rewritten for new Modern UI macros of NSIS 2.
+
+2003-11-20 02:47  naofumi
+
+	* Version 1.0.5
+
+2003-11-20 02:23  naofumi
+
+	* Merged from HEAD,
+
+2003-11-20 02:20  naofumi
+
+	* Updated autotools version info.
+
+2003-11-14 01:57  naofumi
+
+	* Merged from HEAD.
+
+2003-11-14 01:44  naofumi
+
+	* Set a background of "None" on window to avoid AIX X server crash.
+
+2003-11-08 19:10  naofumi
+
+	* Merged from HEAD.
+
+2003-11-08 19:09  naofumi
+
+	* Changed connect_after() to connect().
+
+2003-11-08 18:53  naofumi
+
+	* Changed connect_after() to connect().
+
+2003-11-08 18:28  naofumi
+
+	* "size_allocate" handler checks whether GdkGLWindow is realized.
+
+2003-11-08 17:40  naofumi
+
+	* Merged from HEAD.
+
+2003-11-08 17:07  naofumi
+
+	* "size_allocate" signal handler is connected by
+	  set_gl_capability()
+
+2003-11-08 08:57  naofumi
+
+	* Merged from HEAD.
+
+2003-11-08 08:45  naofumi
+
+	* Fix in unrealize() handler.
+
+2003-11-06 12:21  naofumi
+
+	* Merged from HEAD.
+
+2003-11-06 12:03  naofumi
+
+	* low-level.c don't use gdk_window_*() extension functions.
+
+2003-11-06 11:41  naofumi
+
+	* Merged from HEAD.
+
+2003-11-06 11:04  naofumi
+
+	* gtk_container_set_resize_mode() call is unnecessary.
+
+2003-11-06 10:13  naofumi
+
+	* Examples now don't use gtk_widget_queue_draw().
+
+2003-11-06 06:39  naofumi
+
+	* Merged from HEAD.
+
+2003-11-06 06:27  naofumi
+
+	* Fixed entry.
+
+2003-11-06 06:14  naofumi
+
+	* Added "size_allocate" signal handler to sync OpenGL rendering
+	  pipeline on resizing window.
+
+2003-09-15 02:45  naofumi
+
+	* Version 1.0.4
+
+2003-09-14 03:38  naofumi
+
+	* Merged from HEAD.
+
+2003-09-14 03:23  naofumi
+
+	* Minor fix for examples.
+
+2003-09-13 03:07  naofumi
+
+	* Merged from HEAD.
+
+2003-09-13 03:05  naofumi
+
+	* Minor fix for pixmap examples.
+
+2003-09-13 03:01  naofumi
+
+	* Minor fix for pixmap examples.
+
+2003-09-13 02:42  naofumi
+
+	* Minor fix for examples.
+
+2003-09-12 03:33  naofumi
+
+	* Merged from HEAD.
+
+2003-09-12 03:23  naofumi
+
+	* Own reference to private->share_list.
+
+2003-09-10 11:02  naofumi
+
+	* 1.1.x unstable development series.
+
+2003-09-10 10:05  naofumi
+
+	* Merged from HEAD.
+
+2003-09-10 10:01  naofumi
+
+	* Cleanup.
+
+2003-09-10 10:01  naofumi
+
+	* Remove PKGCONFIG_LIBS_WITH_PANGOFT2.mak on distclean.
+
+2003-09-09 04:41  naofumi
+
+	* Fixed "realize" signal connection in
+	  gtk_widget_set_gl_capability().
+
+2003-09-09 03:50  naofumi
+
+	* Added new libglade examples.
+
+2003-09-03 06:49  awah005
+
+	* Added new example coolwave2.c
+
+2003-08-31 00:39  naofumi
+
+	* Updated source URL.
+
+2003-08-30 22:52  naofumi
+
+	* Use new function call debug macros.
+
+2003-08-30 21:58  naofumi
+
+	* Use new function call debug macros.
+
+2003-08-30 20:41  naofumi
+
+	* Fixed pixel buffer setup code.
+
+2003-08-26 11:29  naofumi
+
+	* Use new debug macros.
+
+2003-08-26 11:14  naofumi
+
+	* Removed unnecessary macros.
+
+2003-08-26 04:23  naofumi
+
+	* Removed.
+
+2003-08-26 04:22  naofumi
+
+	* Added G[DT]K_GL_NOTE_FUNC* debug macros.
+
+2003-08-26 03:41  naofumi
+
+	* Added AC_C_VAR_FUNC __func__ check.
+
+2003-08-24 13:49  naofumi
+
+	* gen-gdkgl*.pl scripts cleanup.
+
+2003-08-24 13:44  naofumi
+
+	* gen-gdkgl*.pl scripts cleanup.
+
+2003-08-24 13:35  naofumi
+
+	* Merged from HEAD.
+
+2003-08-24 13:06  naofumi
+
+	* Cleanup gen-gdkgl*.pl scripts.
+
+2003-08-24 02:59  naofumi
+
+	* Merged from HEAD.
+
+2003-08-24 02:51  naofumi
+
+	* Updated.
+
+2003-08-24 02:42  naofumi
+
+	* gen-*.pl scripts read common-header.h for common header part.
+
+2003-08-18 10:17  naofumi
+
+	* Merged from gtkglext-1-0 branch.
+
+2003-08-18 10:12  naofumi
+
+	* Version 1.0.3
+
+2003-08-18 10:09  naofumi
+
+	* Updated .PHONY target.
+
+2003-08-18 03:36  naofumi
+
+	* Merged from HEAD.
+
+2003-08-17 03:39  naofumi
+
+	* Added simple GLX_SGIX_pbuffer example.
+
+2003-08-17 01:35  naofumi
+
+	* --disable-sgi-fast-atoms configure option is no longer needed.
+
+2003-08-17 00:30  naofumi
+
+	* gdkglconfig-x11.c has been rewritten.
+
+2003-08-15 21:45  naofumi
+
+	* Use gdk_x11_get_xatom_by_name_for_display().
+
+2003-08-15 06:01  naofumi
+
+	* Merged from HEAD.
+
+2003-08-15 05:39  naofumi
+
+	* clean-examples target.
+
+2003-08-15 04:07  naofumi
+
+	* Merged from HEAD.
+
+2003-08-15 04:06  naofumi
+
+	* Updated.
+
+2003-08-15 04:02  naofumi
+
+	* Merged from HEAD.
+
+2003-08-15 04:00  naofumi
+
+	* Updated CVS pserver info.
+
+2003-08-15 03:41  naofumi
+
+	* Merged from HEAD.
+
+2003-08-15 03:12  naofumi
+
+	* Modified.
+
+2003-08-15 03:10  naofumi
+
+	* Makefile improvements.
+
+2003-08-15 02:00  naofumi
+
+	* Removed gdkinternal-win32.h.
+
+2003-08-14 21:10  naofumi
+
+	* Do DescribePixelFormat().
+
+2003-08-14 19:39  naofumi
+
+	* Don't use GdkPixmap's private data.
+
+2003-07-31 02:32  naofumi
+
+	* Merged from HEAD.
+
+2003-07-31 02:30  naofumi
+
+	* Do glClear().
+
+2003-07-30 06:14  naofumi
+
+	* Don't include gdk/gdkglprivate.h.
+
+2003-07-30 05:42  naofumi
+
+	* Don't include gdk/gdkglprivate.h.
+
+2003-07-29 11:59  naofumi
+
+	* Version 1.0.2
+
+2003-07-29 07:54  naofumi
+
+	* Merged from HEAD.
+
+2003-07-29 07:36  naofumi
+
+	* Avoid old glext.h bug.
+
+2003-07-29 04:05  naofumi
+
+	* Merged from HEAD.
+
+2003-07-29 04:04  naofumi
+
+	* Renamed gdk/GL to gdk/glext.
+
+2003-07-29 02:51  naofumi
+
+	* Merged from HEAD.
+
+2003-07-29 02:34  naofumi
+
+	* Modified button animation.
+
+2003-07-29 00:51  naofumi
+
+	* Merged from HEAD.
+
+2003-07-29 00:26  naofumi
+
+	* Added gdk/glext directory.
+
+2003-07-29 00:12  naofumi
+
+	* Ignore gdk/glext directory.
+
+2003-07-28 23:42  naofumi
+
+	* Removed unnecessary files.
+
+2003-07-28 23:36  naofumi
+
+	* Renamed gdk/GL to gdk/glext.
+
+2003-07-28 07:50  naofumi
+
+	* Improved mouse operation.
+
+2003-07-28 07:08  naofumi
+
+	* Fixed mouse operation.
+
+2003-07-28 04:20  naofumi
+
+	* Use gtk_timeout instead of gtk_idle.
+
+2003-07-28 01:47  naofumi
+
+	* Added GLX_MESA_agp_offset extension.
+
+2003-07-28 01:37  naofumi
+
+	* Added GLX_MESA_agp_offset extension.
+
+2003-07-27 23:46  naofumi
+
+	* Merged from gtkglext-1-0 branch.
+
+2003-07-27 21:22  naofumi
+
+	* Avoid including system's extension registry header.
+
+2003-07-27 20:04  naofumi
+
+	* Typedef GLhalfNV if needed.
+
+2003-07-27 10:24  naofumi
+
+	* Version 1.0.1.
+
+2003-07-27 03:38  naofumi
+
+	* Merged from HEAD.
+
+2003-07-27 03:22  naofumi
+
+	* Use GL_UNSIGNED_BYTE data type if OpenGL 1.2 is not supported.
+
+2003-07-27 01:03  naofumi
+
+	* Removed font-pangoft2* examples from win32 makefiles.
+
+2003-07-25 01:10  naofumi
+
+	* Fixed.
+
+2003-07-24 07:38  naofumi
+
+	* Merged from HEAD.
+
+2003-07-24 05:58  naofumi
+
+	* Cleanup.
+
+2003-07-23 21:54  naofumi
+
+	* Changed signal handler connection behavior.
+
+2003-07-23 19:55  naofumi
+
+	* Modified animation.
+
+2003-07-23 13:29  naofumi
+
+	* Fixed animation.
+
+2003-07-23 13:03  naofumi
+
+	* Modified.
+
+2003-07-23 12:47  naofumi
+
+	* Added font-pangoft2-tex.c example.
+
+2003-07-23 08:17  naofumi
+
+	* Changed encoding to UTF-8.
+
+2003-07-23 08:00  naofumi
+
+	* Changed encoding to UTF-8.
+
+2003-07-23 07:11  naofumi
+
+	* Merged from HEAD.
+
+2003-07-21 06:44  naofumi
+
+	* Modified makefiles for font-pangoft2 example.
+
+2003-07-21 03:25  naofumi
+
+	* Text includes UTF-8 char.
+
+2003-07-21 02:55  naofumi
+
+	* Change the text width according to the widget width.
+
+2003-07-21 02:35  naofumi
+
+	* Simplified raster pos calculation.
+
+2003-07-20 16:14  naofumi
+
+	* Fixed render position of the layout.
+
+2003-07-20 14:21  naofumi
+
+	* Suppress warnings.
+
+2003-07-20 13:53  naofumi
+
+	* Fixed gl_pango_ft2_render_layout().
+
+2003-07-20 13:43  naofumi
+
+	* Optimized gl_pango_ft2_render_layout().
+
+2003-07-19 12:08  naofumi
+
+	* Added font-pangoft2.c example.
+
+2003-07-18 19:45  awah005
+
+	* Updated to reflect the scribble-gl.c addition
+
+2003-07-18 19:29  awah005
+
+	* Added the actually scribble-gl.c file, sorry
+
+2003-07-17 10:02  naofumi
+
+	* Fixed examples/Makefile.am.
+
+2003-07-17 06:12  awah005
+
+	* Added new scribble-gl.c example
+
+2003-07-16 08:10  naofumi
+
+	* Modified idle function.
+
+2003-07-16 04:01  naofumi
+
+	* Added simple toggle button example.
+
+2003-07-14 04:35  naofumi
+
+	* Updated .def files.
+
+2003-07-14 04:33  naofumi
+
+	* Removed WGL_NV_allocate_memory.
+
+2003-07-13 01:49  naofumi
+
+	* Added extra OpenGL extensions.
+
+2003-07-12 06:42  naofumi
+
+	* Added extra OpenGL extensions.
+
+2003-07-12 02:51  naofumi
+
+	* Added extra ATI extensions.
+
+2003-07-12 01:38  naofumi
+
+	* Added list-ext.pl script.
+
+2003-07-12 00:15  naofumi
+
+	* Added extra APPLE extensions.
+
+2003-07-11 21:02  naofumi
+
+	* Added some additional OpenGL extensions.
+
+2003-07-11 06:45  naofumi
+
+	* Fixed GL_ARB_texture_mirrored_repeat extension name.
+
+2003-07-11 01:42  naofumi
+
+	* Fixed documentations.
+
+2003-07-10 22:48  naofumi
+
+	* Include glext-extra.h.
+
+2003-07-10 22:36  naofumi
+
+	* Renamed glext_extra.h to glext-extra.h.
+
+2003-07-10 22:22  naofumi
+
+	* Debug message.
+
+2003-07-10 22:02  naofumi
+
+	* Changed _procs_$extension struct initialization.
+
+2003-07-10 20:46  naofumi
+
+	* Updated .def files.
+
+2003-07-10 13:13  naofumi
+
+	* Auto-generate gdkgl*ext.[ch] sources.
+
+2003-07-10 02:07  naofumi
+
+	* Added new OpenGL extensions.
+
+2003-07-09 21:58  naofumi
+
+	* Updated OpenGL extension headers.
+
+2003-07-09 06:28  naofumi
+
+	* Cleanup the code.
+
+2003-07-08 21:33  naofumi
+
+	* Merged from HEAD.
+
+2003-07-08 13:18  naofumi
+
+	* Cleanup.
+
+2003-07-07 00:07  naofumi
+
+	* Suppress warnings.
+
+2003-06-30 14:23  naofumi
+
+	* Fixed typo.
+
+2003-06-30 13:25  naofumi
+
+	* Added Mac OS X support.
+
+2003-05-14 07:03  naofumi
+
+	* Version 1.0.0
+
+2003-05-14 06:50  naofumi
+
+	* Version 1.0.0
+
+2003-05-14 04:38  naofumi
+
+	* Documents.
+
+2003-05-13 09:03  naofumi
+
+	* Cleanup.
+
+2003-05-13 08:13  naofumi
+
+	* Clean up debug routines.
+
+2003-05-13 06:44  awah005
+
+	* Minor improvements to examples/viewlw.c
+
+2003-05-13 06:31  naofumi
+
+	* Updated email address.
+
+2003-05-13 06:29  naofumi
+
+	* Removed unnecessary parameter check.
+
+2003-05-13 06:19  awah005
+
+	* Minor console printing improvements
+
+2003-05-13 05:57  awah005
+
+	* Updated contact details
+
+2003-05-13 05:37  awah005
+
+	* Bug-fix of examples/coolwave.c
+
+2003-05-13 03:44  naofumi
+
+	* Cleaned duplicated code.
+
+2003-05-13 03:31  naofumi
+
+	* Cleaned duplicated code.
+
+2003-05-13 02:54  naofumi
+
+	* Cleanup.
+
+2003-05-13 02:51  naofumi
+
+	* Print OpenGL info on debug.
+
+2003-05-12 10:22  naofumi
+
+	* Print server GLX info on debug.
+
+2003-05-12 09:39  naofumi
+
+	* Cleanup.
+
+2003-05-12 09:02  naofumi
+
+	* Modified internal macro.
+
+2003-05-12 08:58  naofumi
+
+	* Cleaned duplicated code.
+
+2003-05-12 02:20  naofumi
+
+	* Cleanup.
+
+2003-05-12 01:53  naofumi
+
+	* Documents.
+
+2003-05-12 01:38  naofumi
+
+	* Documents.
+
+2003-05-12 00:28  naofumi
+
+	* Cleanup.
+
+2003-05-11 23:52  naofumi
+
+	* Cleanup.
+
+2003-05-11 14:10  naofumi
+
+	* Documents.
+
+2003-05-11 11:58  naofumi
+
+	* Removed doc comments.
+
+2003-05-11 11:05  naofumi
+
+	* Fixed docs.
+
+2003-05-11 10:53  naofumi
+
+	* Updated.
+
+2003-05-11 10:35  naofumi
+
+	* Updated.
+
+2003-05-11 10:30  naofumi
+
+	* Updated.
+
+2003-05-11 02:31  naofumi
+
+	* Modified.
+
+2003-05-11 02:18  naofumi
+
+	* Modified.
+
+2003-05-10 23:41  naofumi
+
+	* --disable-sgi-fast-atoms configure option is added to the
+	  documentation.
+
+2003-05-10 23:29  naofumi
+
+	* Removed --disable-standard-rgb-cmap configure option.
+
+2003-05-10 23:17  naofumi
+
+	* Added --gdk-gl-no-standard-colormap option.
+
+2003-05-10 22:36  naofumi
+
+	* Added --gdk-gl-force-indirect option.
+
+2003-05-10 22:15  naofumi
+
+	* Added --gdk-gl-force-indirect option.
+
+2003-05-09 13:53  naofumi
+
+	* Added new display list sharing example.
+
+2003-05-09 07:55  naofumi
+
+	* Don't install g[dt]kglprivate.h.
+
+2003-05-09 05:12  naofumi
+
+	* Renamed to _gtk_gl_widget_install_toplevel_cmap.
+
+2003-05-09 05:08  naofumi
+
+	* Updated.
+
+2003-05-09 04:56  naofumi
+
+	* Exclude _gtk_gl symbols.
+
+2003-05-09 00:32  naofumi
+
+	* Changed --install-gl-colormap option to
+	  --gtk-gl-install-colormap.
+
+2003-05-09 00:02  naofumi
+
+	* Don't try to set toplevel window's colormap if it is already
+	  realized.
+
+2003-05-08 23:52  naofumi
+
+	* Use g_signal_connect_after() to connect "style_set" signal
+	  handler.
+
+2003-05-08 10:26  naofumi
+
+	* Cleanup.
+
+2003-05-08 09:38  naofumi
+
+	* Check whether given proc_name has "glu" prefix.
+
+2003-05-08 09:06  naofumi
+
+	* Cleanup.
+
+2003-05-08 08:58  naofumi
+
+	* Modified bitfields.
+
+2003-05-08 00:02  naofumi
+
+	* Check whether private DC is used.
+
+2003-05-07 23:55  naofumi
+
+	* Check whether private DC is used.
+
+2003-05-07 13:17  naofumi
+
+	* Cleanup.
+
+2003-05-07 12:23  naofumi
+
+	* Cleanup.
+
+2003-05-07 12:18  naofumi
+
+	* Added --disable-standard-rgb-cmap configure option.
+
+2003-05-07 08:13  naofumi
+
+	* Fixed typo in the documentation.
+
+2003-05-07 06:18  naofumi
+
+	* Updated.
+
+2003-05-06 22:46  naofumi
+
+	* Cleanup.
+
+2003-05-06 21:31  naofumi
+
+	* Suppress linker warnings on IRIX.
+
+2003-05-06 21:05  naofumi
+
+	* Added --disable-sgi-fast-atoms configure option.
+
+2003-05-04 15:55  naofumi
+
+	* Version 0.99.1
+
+2003-05-04 00:01  naofumi
+
+	* GdkGLProc typedef is moved into gdkgltypes.h.
+
+2003-05-03 23:46  naofumi
+
+	* Cleanup.
+
+2003-05-03 23:23  naofumi
+
+	* Clean up unnecessary code.
+
+2003-05-02 13:19  naofumi
+
+	* Clean up and simplify the code.
+
+2003-05-02 12:52  naofumi
+
+	* Include gdkglconfig-win32.h.
+
+2003-05-02 11:41  naofumi
+
+	* Clean up and simplify the code.
+
+2003-05-02 04:04  naofumi
+
+	* Supress "unused variable" warinig.
+
+2003-05-02 03:35  naofumi
+
+	* Fixed type checks.
+
+2003-05-01 11:23  naofumi
+
+	* gdk_gl_get_proc_address() returns immediately if proc_address is
+	  found.
+
+2003-05-01 05:42  naofumi
+
+	* Don't call glXGetProcAddress() against GLU functions.
+
+2003-05-01 04:50  naofumi
+
+	* gdk_gl_get_proc_address has been rewritten.
+
+2003-04-30 15:42  naofumi
+
+	* Cleanup.
+
+2003-04-30 14:59  naofumi
+
+	* Check whether given gldrawable is already destroyed.
+
+2003-04-30 13:48  naofumi
+
+	* context_copy() checks whether given GdkGLContexts are valid.
+
+2003-04-30 11:35  naofumi
+
+	* Remove OpenGL-capability from widget->window if
+	  private->need_unrealize is set.
+
+2003-04-30 00:52  naofumi
+
+	* Don't check gtk-doc version if --enable-gtk-doc is not specified.
+
+2003-04-30 00:11  naofumi
+
+	* Use g_signal_connect_after() to connect "realize" signal handler.
+
+2003-04-29 20:44  naofumi
+
+	* Use g_signal_connect_after() to connect "realize" signal handler.
+
+2003-04-28 18:15  naofumi
+
+	* Fixed typo.
+
+2003-04-28 05:15  naofumi
+
+	* Version 0.99.0
+
+2003-04-27 23:23  naofumi
+
+	* Added instruction for building win32 binary installer.
+
+2003-04-27 22:24  naofumi
+
+	* Typo fix.
+
+2003-04-27 22:06  naofumi
+
+	* Fixed WriteEnv* functions.
+
+2003-04-27 21:24  naofumi
+
+	* Win32 installer improvements.
+
+2003-04-27 14:42  naofumi
+
+	* Uninstallation fix.
+
+2003-04-27 13:57  naofumi
+
+	* Modified.
+
+2003-04-26 12:08  naofumi
+
+	* Cleanup.
+
+2003-04-26 10:46  naofumi
+
+	* Updated.
+
+2003-04-26 09:00  naofumi
+
+	* Don't set resize_mode GTK_RESIZE_IMMEDIATE on Win32.
+
+2003-04-26 08:39  naofumi
+
+	* Added gdk_gl_config_setup_pfd() to construct an appropriate PFD.
+
+2003-04-25 07:24  naofumi
+
+	* Use Win32 API instead of GModule.
+
+2003-04-24 23:25  naofumi
+
+	* Fixed gdk_gl_get_proc_address() for python binding.
+
+2003-04-24 18:53  naofumi
+
+	* Updated.
+
+2003-04-24 14:38  naofumi
+
+	* Destroy GLX (WGL) resources explicitly without relying on
+	  g_object_unref().
+
+2003-04-23 03:49  naofumi
+
+	* Don't set impl->gldrawable on construction.
+
+2003-04-23 03:35  naofumi
+
+	* Don't set impl->gldrawable on construction.
+
+2003-04-23 02:45  naofumi
+
+	* Complete GL execution before destruction.
+
+2003-04-23 02:15  naofumi
+
+	* Complete GL execution before destruction.
+
+2003-04-17 18:11  naofumi
+
+	* Release the current context on destruction.
+
+2003-04-17 13:47  naofumi
+
+	* Release the current context on destruction.
+
+2003-04-17 12:22  naofumi
+
+	* Cleanup.
+
+2003-04-17 10:27  naofumi
+
+	* Updated.
+
+2003-04-17 10:01  naofumi
+
+	* Updated.
+
+2003-04-16 13:14  naofumi
+
+	* Removed 'files' target.
+
+2003-04-16 12:58  naofumi
+
+	* Cleanup.
+
+2003-04-16 11:25  naofumi
+
+	* Changed to use /config.status.
+
+2003-04-16 09:59  naofumi
+
+	* Don't call gtk_main_quit() if main_level==0.
+
+2003-04-16 01:15  naofumi
+
+	* Don't call gtk_main_quit() if main_level==0.
+
+2003-04-16 00:52  naofumi
+
+	* Cleanup.
+
+2003-04-15 23:56  naofumi
+
+	* Follow new configure.in conventions.
+
+2003-04-15 23:43  naofumi
+
+	* Follow new configure.in conventions.
+
+2003-04-15 07:25  naofumi
+
+	* install-libtool-import-lib is no longer needed.
+
+2003-04-15 04:11  naofumi
+
+	* Use new style to pass automake options.
+
+2003-04-15 03:53  naofumi
+
+	* Modified to follow the latest autoconf's configure.in style.
+
+2003-04-15 02:10  naofumi
+
+	* Use new versions of GNU autotools.
+
+2003-04-10 10:02  naofumi
+
+	* Set is_realized flag TRUE if window is already OpenGL-capable.
+
+2003-04-10 04:41  naofumi
+
+	* Weak ref the current GLDrawable.
+
+2003-04-10 03:12  naofumi
+
+	* Check whether OpenGL-capable widget is realized.
+
+2003-04-10 01:08  naofumi
+
+	* Don't disconnect configure_event handler.
+
+2003-04-03 21:27  naofumi
+
+	* Changed current test order.
+
+2003-04-03 20:35  naofumi
+
+	* Removed unnecessary sync_gdk() call.
+
+2003-03-29 13:41  naofumi
+
+	* MSVC fix.
+
+2003-03-29 13:32  naofumi
+
+	* MSVC fix.
+
+2003-03-29 13:25  naofumi
+
+	* MSVC fix.
+
+2003-03-29 13:04  naofumi
+
+	* MSVC fix.
+
+2003-03-19 07:44  naofumi
+
+	* Added start menu.
+
+2003-03-19 04:55  naofumi
+
+	* Removed.
+
+2003-03-19 04:07  naofumi
+
+	* Added uninstall registry info.
+
+2003-03-18 10:34  naofumi
+
+	* Write uninstall registry.
+
+2003-03-18 09:14  naofumi
+
+	* .pc file update fix.
+
+2003-03-18 08:26  naofumi
+
+	* Added NSIS script.
+
+2003-03-18 08:23  naofumi
+
+	* Added NSIS script.
+
+2003-03-16 23:05  naofumi
+
+	* Version 0.7.1
+
+2003-03-13 17:48  naofumi
+
+	* HDC_{GET, RELEASE} macros have been moved into
+	  gdkgl{pixmap,window}-win32.h
+
+2003-03-13 16:30  naofumi
+
+	* Modified DC management codes.
+
+2003-03-10 10:06  naofumi
+
+	* Debug message.
+
+2003-03-09 19:45  naofumi
+
+	* Set a background of None on window.
+
+2003-03-09 10:12  naofumi
+
+	* Changed frustum setting.
+
+2003-03-09 09:34  naofumi
+
+	* Updated.
+
+2003-03-08 05:27  naofumi
+
+	* Redraw if animation is turned off.
+
+2003-03-08 02:53  naofumi
+
+	* autogen.sh invokes libtoolize.
+
+2003-03-08 02:40  naofumi
+
+	* Added top-level window settings.
+
+2003-03-08 01:59  naofumi
+
+	* Set iface->gl_begin to make_context_current().
+
+2003-03-07 13:17  naofumi
+
+	* Fixed.
+
+2003-03-07 12:36  naofumi
+
+	* Fixed X server crash on AIX.
+
+2003-03-07 08:21  naofumi
+
+	* Fixed X server crash on AIX.
+
+2003-03-04 03:58  naofumi
+
+	* Added #ifndef directive to disable GLX*SGIX typedef.
+
+2003-03-03 23:02  naofumi
+
+	* gdk_gl_config_is_double_buffered() returns FALSE if
+	  as_single_mode is TRUE.
+
+2003-03-03 13:27  naofumi
+
+	* Use int* and char*** for args.
+
+2003-03-03 13:11  naofumi
+
+	* Don't use GLtypes in API.
+
+2003-02-27 18:55  naofumi
+
+	* Don't use macro in enum.
+
+2003-02-26 04:24  naofumi
+
+	* Removed source templates.
+
+2003-02-25 23:09  naofumi
+
+	* Cleanup.
+
+2003-02-24 21:14  naofumi
+
+	* Cleanup.
+
+2003-02-23 15:44  naofumi
+
+	* Fixed header installation problem.
+
+2003-02-23 14:29  naofumi
+
+	* Enabled to build static libraries as default.
+
+2003-02-23 13:56  naofumi
+
+	* Added m4 macro.
+
+2003-02-23 12:19  naofumi
+
+	* Cleanup.
+
+2003-02-22 21:30  naofumi
+
+	* Multihead check fix.
+
+2003-02-22 20:49  naofumi
+
+	* Test GTK libraries.
+
+2003-02-22 18:17  naofumi
+
+	* Added AC_GTKGLEXT_SUPPORTS_MULTIHEAD macro.
+
+2003-02-22 17:06  naofumi
+
+	* Added m4 macro.
+
+2003-02-16 01:37  naofumi
+
+	* Cleanup.
+
+2003-02-16 01:18  naofumi
+
+	* Fixed configure_event handler disconnection.
+
+2003-02-12 18:58  naofumi
+
+	* Fixed comma at end of enum list.
+
+2003-02-11 23:08  naofumi
+
+	* Print PFD_SWAP_LAYER_BUFFERS bit state.
+
+2003-02-11 21:12  naofumi
+
+	* Win32 WINDOWING_LIBS fix.
+
+2003-02-11 20:52  naofumi
+
+	* Fixed comments.
+
+2003-02-11 20:41  naofumi
+
+	* Suppress warning.
+
+2003-02-11 20:03  naofumi
+
+	* Added wglinfo.c.
+
+2003-02-04 08:44  naofumi
+
+	* Clean up.
+
+2003-02-01 00:52  naofumi
+
+	* Modified.
+
+2003-01-29 23:32  naofumi
+
+	* Removed gdk_gl_context_get_colormap().
+
+2003-01-29 23:26  naofumi
+
+	* Weak ref glparam->share_list.
+
+2003-01-29 23:13  naofumi
+
+	* Version 0.7.0
+
+2003-01-29 23:12  naofumi
+
+	* Weak ref glparam->share_list.
+
+2003-01-29 08:36  naofumi
+
+	* Version 0.7.0
+
+2003-01-29 05:32  naofumi
+
+	* Updated def files.
+
+2003-01-29 03:41  naofumi
+
+	* Added some new gdk_gl_config_*() functions.
+
+2003-01-29 01:16  naofumi
+
+	* Updated *.def files.
+
+2003-01-29 01:11  naofumi
+
+	* GTK+ 2.0 fix.
+
+2003-01-29 00:20  naofumi
+
+	* Clean up.
+
+2003-01-29 00:09  naofumi
+
+	* gtkglwidget.c has been rewritten.
+
+2003-01-28 23:54  naofumi
+
+	* gtkglwidget.c has been rewritten.
+
+2003-01-28 14:36  naofumi
+
+	* Weak ref associated GdkDrawable.
+
+2003-01-28 13:23  naofumi
+
+	* Removed GDK_GL_MODE_LUMINANCE bit mask.
+
+2003-01-28 10:28  naofumi
+
+	* Renamed query_get_proc_address() to get_proc_address().
+
+2003-01-28 01:18  naofumi
+
+	* Clean up.
+
+2003-01-28 01:16  naofumi
+
+	* Added gdk_x11_gl_config_is_mesa_glx().
+
+2003-01-28 00:24  naofumi
+
+	* Clean up.
+
+2003-01-28 00:14  naofumi
+
+	* Clean up.
+
+2003-01-28 00:03  naofumi
+
+	* Clean up.
+
+2003-01-27 23:38  naofumi
+
+	* Clean up.
+
+2003-01-27 23:30  naofumi
+
+	* Clean up.
+
+2003-01-27 10:07  naofumi
+
+	* Removed gdk_gl_context_get_colormap().
+
+2003-01-27 08:57  naofumi
+
+	* Clean up.
+
+2003-01-27 05:58  naofumi
+
+	* GdkGLContext's gldrawable* members ware moved into impl data
+	  structure.
+
+2003-01-27 04:55  naofumi
+
+	* Rewritten.
+
+2003-01-27 03:17  naofumi
+
+	* Rewritten.
+
+2003-01-27 02:39  naofumi
+
+	* Debug message.
+
+2003-01-27 01:52  naofumi
+
+	* Rewritten.
+
+2003-01-27 00:49  naofumi
+
+	* Rewritten.
+
+2003-01-26 23:42  naofumi
+
+	* Rewritten.
+
+2003-01-26 22:15  naofumi
+
+	* Rewritten.
+
+2003-01-24 21:58  naofumi
+
+	* Removed unnecessary object instantiation check.
+
+2003-01-24 20:11  naofumi
+
+	* Construct object by using property.
+
+2003-01-24 19:34  naofumi
+
+	* Create GLXPixmap in gdk_gl_pixmap_new().
+
+2003-01-24 18:36  naofumi
+
+	* Removed unnecessary object instantiation check.
+
+2003-01-24 17:50  naofumi
+
+	* Additional GLX typedef checks.
+
+2003-01-24 07:18  naofumi
+
+	* Win32 build fix.
+
+2003-01-24 05:54  naofumi
+
+	* Removed unnecessary win32 libs.
+
+2003-01-24 03:01  naofumi
+
+	* AC_SUBST MATH_LIB variable.
+
+2003-01-24 02:49  naofumi
+
+	* glxinfo compilation fix.
+
+2003-01-24 02:27  naofumi
+
+	* Added X_PRE_LIBS to XMU_LIBS
+
+2003-01-24 02:01  naofumi
+
+	* Modified Xmu check.
+
+2003-01-24 00:17  naofumi
+
+	* Modified GL checks.
+
+2003-01-24 00:05  naofumi
+
+	* Additional SGI's GLU checks.
+
+2003-01-23 22:20  naofumi
+
+	* Modified X11 library dependencies.
+
+2003-01-23 10:51  naofumi
+
+	* Suppress 'redefined' warnings on Solaris 8.
+
+2003-01-23 10:13  naofumi
+
+	* Fixed GLXPbufferSGIX typedef problem.
+
+2003-01-23 10:06  naofumi
+
+	* Fixed GLXPbufferSGIX typedef problem.
+
+2003-01-23 08:11  naofumi
+
+	* Use macros defined in config.h.
+
+2003-01-23 07:50  naofumi
+
+	* Modified gdk_x11_colormap_foreign_new check.
+
+2003-01-23 07:27  naofumi
+
+	* Modified Xmu library checks.
+
+2003-01-22 03:28  naofumi
+
+	* Removed auto-generated files.
+
+2003-01-22 03:27  naofumi
+
+	* Removed auto-generated configure script.
+
+2003-01-22 03:23  naofumi
+
+	* Added missing function checks.
+
+2003-01-22 01:23  naofumi
+
+	* Updated.
+
+2003-01-22 01:11  naofumi
+
+	* Updated.
+
+2003-01-21 22:51  naofumi
+
+	* Debug message.
+
+2003-01-21 22:42  naofumi
+
+	* Debug message.
+
+2003-01-21 22:30  naofumi
+
+	* Debug message.
+
+2003-01-21 20:27  naofumi
+
+	* glconfig argument is removed from gdk_gl_context_new().
+
+2003-01-21 03:21  naofumi
+
+	* Use G_PI instead of M_PI.
+
+2003-01-20 17:05  naofumi
+
+	* Cleanup.
+
+2003-01-20 16:51  naofumi
+
+	* Documentations.
+
+2003-01-20 16:32  naofumi
+
+	* Documentations.
+
+2003-01-20 15:26  naofumi
+
+	* Removed unnecessary destroy func.
+
+2003-01-20 15:06  naofumi
+
+	* GL context is created by gtk_widget_get_gl_context().
+
+2003-01-09 02:20  naofumi
+
+	* Tokens fix.
+
+2003-01-08 03:53  naofumi
+
+	* Display mode bit mask fix.
+
+2003-01-08 03:47  naofumi
+
+	* Fixed flags.
+
+2003-01-08 03:37  naofumi
+
+	* Fixed flags.
+
+2003-01-08 02:13  naofumi
+
+	* Tokens cleanup.
+
+2003-01-08 01:47  naofumi
+
+	* Tokens cleanup.
+
+2003-01-07 10:29  naofumi
+
+	* Tokens cleanup.
+
+2003-01-07 02:40  naofumi
+
+	* Updated.
+
+2003-01-07 02:32  naofumi
+
+	* Updated.
+
+2003-01-07 01:08  naofumi
+
+	* Copyright updates.
+
+2003-01-07 00:28  naofumi
+
+	* Removed tokens seemed unnecessary.
+
+2003-01-07 00:20  naofumi
+
+	* Removed tokens seemed unnecessary.
+
+2002-12-23 18:24  naofumi
+
+	* Added setup-gtkglext.sh.
+
+2002-12-22 00:29  naofumi
+
+	* Set gl_context_ht NULL if hash table is destroyed.
+
+2002-12-22 00:10  naofumi
+
+	* Don't destroy foreign context.
+
+2002-12-21 16:53  naofumi
+
+	* Version 0.6.1
+
+2002-12-21 16:30  naofumi
+
+	* Debug message.
+
+2002-12-21 16:17  naofumi
+
+	* Added function argument checks.
+
+2002-12-21 15:56  naofumi
+
+	* Cleanup duplicated code.
+
+2002-12-21 15:05  naofumi
+
+	* Cleanup duplicated code.
+
+2002-12-21 15:01  naofumi
+
+	* Cleanup duplicated code.
+
+2002-12-20 21:05  naofumi
+
+	* Added gdk_win32_gl_context_foreign_new().
+
+2002-12-20 18:19  naofumi
+
+	* Added gdk_win32_gl_config_new_from_pixel_format().
+
+2002-12-20 18:11  naofumi
+
+	* Added gdk_win32_gl_config_new_from_pixel_format().
+
+2002-12-20 13:17  naofumi
+
+	* Added gdk_x11_gl_context_foreign_new().
+
+2002-12-20 13:03  naofumi
+
+	* Added gdk_x11_gl_context_foreign_new().
+
+2002-12-20 11:22  naofumi
+
+	* Added gdk_x11_gl_config_new_from_visualid*().
+
+2002-12-20 10:30  naofumi
+
+	* gdk_gl_config_new*() have been rewritten.
+
+2002-12-20 01:24  naofumi
+
+	* GLConfig constructor routines have been changed.
+
+2002-12-17 17:41  naofumi
+
+	* Fixed toggle_animation() bug.
+
+2002-12-16 15:39  naofumi
+
+	* nmake hack.
+
+2002-12-16 13:16  naofumi
+
+	* A simple improvement.
+
+2002-12-16 13:02  naofumi
+
+	* A simple improvement.
+
+2002-12-15 13:19  naofumi
+
+	* Fix for gdkglext-config.h.
+
+2002-12-15 13:14  naofumi
+
+	* Fix for gdkglext-config.h.
+
+2002-12-15 13:06  naofumi
+
+	* Added multihead variable in uninstalled.pc files.
+
+2002-12-15 06:58  naofumi
+
+	* Clean up examples.
+
+2002-12-15 03:26  naofumi
+
+	* Added makefile for MSVC.
+
+2002-12-15 02:58  naofumi
+
+	* Added makefile for MSVC.
+
+2002-12-15 02:37  naofumi
+
+	* Fix for MSVC.
+
+2002-12-13 23:43  naofumi
+
+	* gdk_gl_draw_*() geometric object rendering functions.
+
+2002-12-13 18:43  naofumi
+
+	* Version 0.6.0
+
+2002-12-13 18:02  naofumi
+
+	* Version 0.6.0
+
+2002-12-13 17:04  naofumi
+
+	* Clean up examples.
+
+2002-12-13 16:07  naofumi
+
+	* Added sample makefile for compiling examples under MinGW/Cygwin.
+
+2002-12-13 13:57  naofumi
+
+	* Use gdkglext-gtk20.def if GTK doesn't support multihead.
+
+2002-12-13 13:21  naofumi
+
+	* PFD debug messages.
+
+2002-12-13 11:21  naofumi
+
+	* init_logo_view() fix.
+
+2002-12-13 10:40  naofumi
+
+	* Updated.
+
+2002-12-13 10:30  naofumi
+
+	* Updated.
+
+2002-12-13 08:40  naofumi
+
+	* Added materials menu.
+
+2002-12-13 06:59  naofumi
+
+	* Added new functions for generating 3D geometric objects.
+
+2002-12-12 18:08  naofumi
+
+	* Removed fake gettext macros.
+
+2002-12-12 17:50  naofumi
+
+	* Modified property specs.
+
+2002-12-12 17:10  naofumi
+
+	* Added GdkGLExt types to gtkglext.types.
+
+2002-12-12 15:58  naofumi
+
+	* Print debug config result.
+
+2002-12-12 15:21  naofumi
+
+	* Documentation work.
+
+2002-12-12 15:10  naofumi
+
+	* Documentation work.
+
+2002-12-12 12:39  naofumi
+
+	* Fixed bad gtk_main_quit() calls.
+
+2002-12-12 12:27  naofumi
+
+	* Debug message.
+
+2002-12-11 23:23  naofumi
+
+	* GTK_GL_INSTALL_COLORMAP environment variable support.
+
+2002-12-11 22:58  naofumi
+
+	* GTK style --enable-debug option.
+
+2002-12-11 07:57  naofumi
+
+	* Removed obsolete files.
+
+2002-12-11 07:53  naofumi
+
+	* Added new documentations.
+
+2002-12-11 05:11  naofumi
+
+	* --install-gl-colormap option support.
+
+2002-12-11 03:40  naofumi
+
+	* Bump API version to 1.0.
+
+2002-12-11 03:19  naofumi
+
+	* Documentation work.
+
+2002-12-11 02:45  naofumi
+
+	* Initialization routines have been implemented.
+
+2002-12-10 14:51  naofumi
+
+	* Removed gtk_quit_add_destroy() call.
+
+2002-12-10 14:18  naofumi
+
+	* gtk_widget_set_gl_capability() checks whether given widget is
+	  already OpenGL-capable.
+
+2002-12-10 14:02  naofumi
+
+	* gtk_widget_set_gl_capability() checks whether given widget is
+	  already OpenGL-capable.
+
+2002-12-10 12:46  naofumi
+
+	* Removed gtk_widget_destroy_gl_context().
+
+2002-12-10 12:27  naofumi
+
+	* Quit handler changes.
+
+2002-12-10 11:07  naofumi
+
+	* Clean up duplicated code.
+
+2002-12-10 09:48  naofumi
+
+	* Example codes clean up.
+
+2002-12-10 09:22  naofumi
+
+	* Example codes clean up.
+
+2002-12-09 02:59  naofumi
+
+	* Coding system is changed to unix.
+
+2002-12-09 02:53  naofumi
+
+	* Added new demos written by Alif Wahid.
+
+2002-12-08 23:57  naofumi
+
+	* alloc_colors() fix.
+
+2002-12-04 00:49  naofumi
+
+	* multiarb.c demo.
+
+2002-12-03 05:11  naofumi
+
+	* Multihead support config.
+
+2002-12-03 04:49  naofumi
+
+	* Multihead support config.
+
+2002-12-03 03:57  naofumi
+
+	* Changes for gdkglext-config.h configuration header.
+
+2002-12-02 13:30  naofumi
+
+	* Documentations.
+
+2002-12-02 13:15  naofumi
+
+	* Documentations.
+
+2002-12-02 12:38  naofumi
+
+	* Docs work.
+
+2002-12-02 11:43  naofumi
+
+	* Context hash table fix.
+
+2002-12-02 10:49  naofumi
+
+	* Added WM_COLORMAP_WINDOWS option.
+
+2002-12-01 20:07  naofumi
+
+	* color.c example fix.
+
+2002-12-01 20:00  naofumi
+
+	* colors.c example fix.
+
+2002-11-30 14:07  naofumi
+
+	* color.c example fix.
+
+2002-11-30 14:01  naofumi
+
+	* color.c example fix.
+
+2002-11-30 13:00  naofumi
+
+	* Debug message.
+
+2002-11-29 21:58  naofumi
+
+	* SOV debug messages.
+
+2002-11-29 18:13  naofumi
+
+	* GTK-2.1 fix and debug messages.
+
+2002-11-29 16:45  naofumi
+
+	* Added gdkgloverlay-x11.[ch].
+
+2002-11-28 17:58  naofumi
+
+	* Undefined tokens fix.
+
+2002-11-28 04:28  naofumi
+
+	* Modified.
+
+2002-11-28 02:13  naofumi
+
+	* Colormap config changes.
+
+2002-11-28 01:55  naofumi
+
+	* Added color index mode example.
+
+2002-11-27 03:56  naofumi
+
+	* Print visual id.
+
+2002-11-26 20:28  naofumi
+
+	* Colormap setup routines have been rewritten.
+
+2002-11-26 13:41  naofumi
+
+	* GTK multihead support check.
+
+2002-11-24 13:17  naofumi
+
+	* gdk_visual_get_best_with_depth () call is unnecessary.
+
+2002-11-24 06:31  naofumi
+
+	* Win32 fix.
+
+2002-11-24 05:56  naofumi
+
+	* Changed gdk_*_gl_context_lookup() to internal static.
+
+2002-11-24 02:45  naofumi
+
+	* Documented new functions.
+
+2002-11-24 02:19  naofumi
+
+	* Cache current context.
+
+2002-11-24 02:04  naofumi
+
+	* Check current context using gdk_gl_context_get_current ().
+
+2002-11-24 01:27  naofumi
+
+	* Added gldrawable_read member to GdkGLContext.
+
+2002-11-24 00:39  naofumi
+
+	* Added gdk_gl_drawable_get_current () function.
+
+2002-11-24 00:03  naofumi
+
+	* Added gdk_gl_context_get_current () function.
+
+2002-11-21 23:38  naofumi
+
+	* query_wgl_extension() doesn't use glconfig.
+
+2002-11-21 23:24  naofumi
+
+	* Win32 GetDC change.
+
+2002-11-21 21:38  naofumi
+
+	* gdk/glext have been moved to gdk/GL.
+
+2002-11-21 19:00  naofumi
+
+	* Added GL_WIN_swap_hint.
+
+2002-11-21 05:06  naofumi
+
+	* Fixed compilation failure.
+
+2002-11-21 04:16  naofumi
+
+	* gdk_gl_'extension' () improvement.
+
+2002-11-21 02:34  naofumi
+
+	* gdk_gl_'extension' () improvement.
+
+2002-11-21 01:43  naofumi
+
+	* gdk_gl_'extension' () improvement.
+
+2002-11-21 00:30  naofumi
+
+	* Added gdk_x11_gl_query_glx_extension () function.
+
+2002-11-20 21:16  naofumi
+
+	* Debug message.
+
+2002-11-20 21:10  naofumi
+
+	* Debug message.
+
+2002-11-20 19:23  naofumi
+
+	* Added gdk_gl_get_'extension' () functions.
+
+2002-11-20 18:43  naofumi
+
+	* Added gdk_gl_get_'extension' () functions.
+
+2002-11-20 06:29  naofumi
+
+	* Added gdk_gl_get_'extension' () functions.
+
+2002-11-20 04:49  naofumi
+
+	* Added gdk_gl_get_'extension' () functions.
+
+2002-11-20 04:39  naofumi
+
+	* Added gdk_gl_get_'extension' () functions.
+
+2002-11-20 03:00  naofumi
+
+	* GET_PROC macro changes.
+
+2002-11-20 01:31  naofumi
+
+	* Extension proc structs.
+
+2002-11-19 20:19  naofumi
+
+	* Changed GET_PROC macro.
+
+2002-11-19 02:24  naofumi
+
+	* extension types.
+
+2002-11-18 23:51  naofumi
+
+	* typdef changes.
+
+2002-11-18 19:23  naofumi
+
+	* get_proc_address() fix.
+
+2002-11-18 19:18  naofumi
+
+	* get_proc_address() fix.
+
+2002-11-18 19:12  naofumi
+
+	* get_proc_address() fix.
+
+2002-11-18 15:05  naofumi
+
+	* get_proc_address () fix.
+
+2002-11-18 14:50  naofumi
+
+	* get_proc_address() fix.
+
+2002-11-18 04:50  naofumi
+
+	* Added glext to DIST_SUBDIRS.
+
+2002-11-18 04:22  naofumi
+
+	* Try to open DLL if wglGetProcAddress() fails.
+
+2002-11-18 03:51  naofumi
+
+	* get_proc_address() bug fix.
+
+2002-11-18 02:30  naofumi
+
+	* Use GdkGLProc_* typedef.
+
+2002-11-17 23:18  naofumi
+
+	* Added OpenGL extension support.
+
+2002-11-17 02:57  naofumi
+
+	* get_proc_addredd fix.
+
+2002-11-17 02:04  naofumi
+
+	* Try g_module_symbol () if wglGetProcAddress fails.
+
+2002-11-17 02:04  naofumi
+
+	* Try g_module_symbol () is glXGetProcAddress fails.
+
+2002-11-16 03:58  naofumi
+
+	* Fixed typo.
+
+2002-11-16 03:41  naofumi
+
+	* Removed --enable-mesa-ext configure option.
+
+2002-11-16 03:25  naofumi
+
+	* Comments.
+
+2002-11-16 03:07  naofumi
+
+	* Added GLX 1.3 & 1.4 functions.
+
+2002-11-16 01:08  naofumi
+
+	* Changed to use PFN* types in glext/*.h
+
+2002-11-16 00:40  naofumi
+
+	* Includes gdk/glext/*.h headers.
+
+2002-11-16 00:17  naofumi
+
+	* Changed to install glext headers.
+
+2002-11-15 23:50  naofumi
+
+	* Location of platform-specific headers have been changed.
+
+2002-11-15 22:57  naofumi
+
+	* Added gdk/glext/* to dist.
+
+2002-11-15 21:21  naofumi
+
+	* Added WGL extension support.
+
+2002-11-15 19:18  naofumi
+
+	* Added get_proc_address function.
+
+2002-11-15 19:05  naofumi
+
+	* Include inttypes.h
+
+2002-11-15 18:57  naofumi
+
+	* Modified function macros.
+
+2002-11-15 18:45  naofumi
+
+	* Fixed gdk_gl_glXGetVideoSyncSGI macro.
+
+2002-11-15 18:34  naofumi
+
+	* Modified debug message.
+
+2002-11-15 18:17  naofumi
+
+	* Documented.
+
+2002-11-15 18:15  naofumi
+
+	* Fixed for system glxext.h.
+
+2002-11-15 17:46  naofumi
+
+	* Added GLX 1.3 specific types.
+
+2002-11-15 17:37  naofumi
+
+	* Added SGIX-specific types.
+
+2002-11-15 17:03  naofumi
+
+	* Fixed.
+
+2002-11-15 15:15  naofumi
+
+	* GTK+-2.1 fix.
+
+2002-11-15 05:17  naofumi
+
+	* GdkGLFunc -> GdkGLProc
+
+2002-11-15 04:58  naofumi
+
+	* Added GLX extension support.
+
+2002-11-14 21:37  naofumi
+
+	* Added GL_MAX_RECTANGLE_TEXTURE_SIZE_NV macro definition.
+
+2002-11-14 19:26  naofumi
+
+	* Updated glxinfo.c.
+
+2002-11-14 18:05  naofumi
+
+	* Disabled static libraries by default.
+
+2002-11-14 17:29  naofumi
+
+	* Modified for Mesa 5.0.
+
+2002-10-08 23:22  naofumi
+
+	* Added checks for win32 gcc3 "-mms-bitfields" option.
+
+2002-10-02 20:15  naofumi
+
+	* Added -lm to	for OpenGL library check.
+
+2002-09-23 05:17  naofumi
+
+	* Changed gl_begin() and gl_end() implementation.
+
+2002-09-23 03:30  naofumi
+
+	* Changed gl_begin() and gl_end() implementation.
+
+2002-09-01 02:13  naofumi
+
+	* Version 0.5.1
+
+2002-08-31 02:31  naofumi
+
+	* Fixed to use GLXDrawable.
+
+2002-08-31 00:48  naofumi
+
+	* Updated.
+
+2002-08-30 14:23  naofumi
+
+	* Some argument types have been associated with GLX.
+
+2002-08-30 13:45  naofumi
+
+	* Fixed.
+
+2002-08-30 13:14  naofumi
+
+	* Changed wrapper -> drawable.
+
+2002-08-29 12:57  naofumi
+
+	* Sources have been refined.
+
+2002-08-28 14:36  naofumi
+
+	* Def file have been updated.
+
+2002-08-28 14:06  naofumi
+
+	* Sources have been refined.
+
+2002-08-25 23:20  naofumi
+
+	* Fixed typemiss.
+
+2002-08-19 00:54  naofumi
+
+	* Added get_size() interface to GLDrawable.
+
+2002-08-19 00:37  naofumi
+
+	* Added get_size() interface to GLDrawable.
+
+2002-08-19 00:30  naofumi
+
+	* Added get_size() interface to GLDrawable.
+
+2002-08-15 22:04  naofumi
+
+	* motion_notify_event fix.
+
+2002-08-15 21:47  naofumi
+
+	* Win32 fix.
+
+2002-08-15 20:34  naofumi
+
+	* Improved logo demo.
+
+2002-08-15 00:46  naofumi
+
+	* Added popup menu.
+
+2002-08-14 15:42  naofumi
+
+	* logo-[gtk].h changed to logo-[gtk].c
+
+2002-08-14 06:59  naofumi
+
+	* Added logo demo.
+
+2002-08-10 18:35  naofumi
+
+	* Changed encoding to unix.
+
+2002-08-09 20:27  naofumi
+
+	* gdkglpixbuf.h was removed.
+
+2002-08-09 20:17  naofumi
+
+	* Version 0.5.0
+
+2002-08-09 20:05  naofumi
+
+	* gdkglpixbuf.[ch] files ware removed from Makefile.am.
+
+2002-08-09 18:23  naofumi
+
+	* Added def file generation script.
+
+2002-08-09 17:44  naofumi
+
+	* Updated.
+
+2002-08-09 15:37  naofumi
+
+	* Added version info sources.
+
+2002-08-09 14:56  naofumi
+
+	* Added version info sources.
+
+2002-08-09 14:50  naofumi
+
+	* Added version info sources.
+
+2002-08-09 09:33  naofumi
+
+	* GLPixmap make_context_current does sync_gdk().
+
+2002-08-09 09:15  naofumi
+
+	* Win32 def files have been updated.
+
+2002-08-08 21:27  naofumi
+
+	* Added gl_window_get_window() and gl_pixmap_get_pixmap().
+
+2002-08-08 18:02  naofumi
+
+	* Modified GLPixmap and GLWindow to be derived from GdkDrawable.
+
+2002-08-07 17:54  naofumi
+
+	* Modified doc.
+
+2002-08-07 09:27  naofumi
+
+	* Added query_gl_extension().
+
+2002-08-07 09:14  naofumi
+
+	* Added query_gl_extension().
+
+2002-08-07 00:01  naofumi
+
+	* Added gl_config_get_visual().
+
+2002-08-06 23:26  naofumi
+
+	* Updated documents.
+
+2002-08-06 22:57  naofumi
+
+	* Updated documents.
+
+2002-08-06 21:36  naofumi
+
+	* gdkgltokens.h is updated.
+
+2002-08-06 20:47  naofumi
+
+	* Added some frame buffer state examination stuffs to GLConfig.
+
+2002-08-06 20:20  naofumi
+
+	* Added some frame buffer state examination stuffs to GLConfig.
+
+2002-08-06 13:45  naofumi
+
+	* Modified.
+
+2002-08-06 12:48  naofumi
+
+	* Modified.
+
+2002-08-06 11:47  naofumi
+
+	* Win32 GLConfig have been rewritten.
+
+2002-08-06 07:51  naofumi
+
+	* Win32 GLPixmap fix.
+
+2002-08-06 04:00  naofumi
+
+	* Win32 implementation have been refined.
+
+2002-08-03 04:22  naofumi
+
+	* Modified.
+
+2002-08-03 04:14  naofumi
+
+	* Added gdkglpixbug.[ch].
+
+2002-08-03 03:28  naofumi
+
+	* Added gl_context_get_colormap().
+
+2002-08-03 03:06  naofumi
+
+	* Modified.
+
+2002-08-03 02:52  naofumi
+
+	* Added GLContext convenient functions.
+
+2002-08-02 18:49  naofumi
+
+	* Added some GLDrawable functions for convenience.
+
+2002-08-02 15:32  naofumi
+
+	* Added Mesa-specific GLX extensions.
+
+2002-08-02 15:24  naofumi
+
+	* Added Mesa-specific GLX extensions.
+
+2002-08-02 15:21  naofumi
+
+	* Added Mesa-specific GLX extensions.
+
+2002-08-02 14:27  naofumi
+
+	* Added Mesa-specific GLX extensions.
+
+2002-08-02 14:04  naofumi
+
+	* Added Mesa-specific GLX extensions.
+
+2002-08-02 13:49  naofumi
+
+	* Added Mesa-specific GLX extensions.
+
+2002-08-02 01:15  naofumi
+
+	* If glcontext->gldrawable == gldrawable, simply return.
+
+2002-07-29 04:35  naofumi
+
+	* Version 0.4.1
+
+2002-07-29 03:22  naofumi
+
+	* Quit handler treatment is changed.
+
+2002-07-29 01:05  naofumi
+
+	* Updated gdkglext.def file.
+
+2002-07-28 23:14  naofumi
+
+	* Fixed gtk/Makefile.am.
+
+2002-07-28 22:54  naofumi
+
+	* Modified docs.
+
+2002-07-28 22:39  naofumi
+
+	* Added enumtypes.[ch] auto-generation feature.
+
+2002-07-28 03:16  naofumi
+
+	* attrib_list argument type is changed to int pointer.
+
+2002-07-28 02:05  naofumi
+
+	* Added GLUT like config function.
+
+2002-07-27 00:13  naofumi
+
+	* Updated TODO file.
+
+2002-07-26 23:49  naofumi
+
+	* Avoid SIGSEGV in gdk_gl_config_new_by_mode().
+
+2002-07-26 23:35  naofumi
+
+	* Single-buffered treatment of double-buffered visual.
+
+2002-07-26 22:27  naofumi
+
+	* Added GLUT like config function.
+
+2002-07-26 22:06  naofumi
+
+	* Added GLUT like config function.
+
+2002-07-26 21:13  naofumi
+
+	* Removed gdkgltypes.sgml.
+
+2002-07-26 19:09  naofumi
+
+	* Added glxinfo.
+
+2002-07-26 19:02  naofumi
+
+	* Added glxinfo.
+
+2002-07-20 17:11  naofumi
+
+	* Modified.
+
+2002-07-19 23:36  naofumi
+
+	* Modified.
+
+2002-07-19 23:33  naofumi
+
+	* Fixed type miss.
+
+2002-07-18 20:26  naofumi
+
+	* Added gl_begin and gl_end statement.
+
+2002-07-18 09:17  naofumi
+
+	* Fixed type miss.
+
+2002-07-17 19:10  naofumi
+
+	* Version 0.4.0
+
+2002-07-17 18:48  naofumi
+
+	* Added gdk_gl_context_copy() to gdkglext.def.
+
+2002-07-17 05:28  naofumi
+
+	* Added gdk_gl_context_copy() function.
+
+2002-07-17 04:41  naofumi
+
+	* Added gdk_gl_context_copy() function.
+
+2002-07-16 15:32  naofumi
+
+	* Modified.
+
+2002-07-16 11:05  naofumi
+
+	* Modified.
+
+2002-07-16 07:56  naofumi
+
+	* gl_context_new and widget_set_gl_capability interfaces have been
+	  changed.
+
+2002-07-16 07:24  igorfernandez
+
+	* gdkglconfig nearly finished
+
+2002-07-15 17:49  naofumi
+
+	* Removed old docs.
+
+2002-07-15 16:56  naofumi
+
+	* Query functions have been moved into gdkglquery.h.
+
+2002-07-15 14:34  naofumi
+
+	* Added Igor into AUTHORS.
+
+2002-07-15 04:51  igorfernandez
+
+	* started documenting
+
+2002-07-04 20:03  naofumi
+
+	* Removed real_drawable() private interface.
+
+2002-07-04 19:58  naofumi
+
+	* Removed real_drawable() private interface.
+
+2002-07-04 19:41  naofumi
+
+	* Removed real_drawable() private interface.
+
+2002-07-04 04:22  naofumi
+
+	* Version 0.3.2
+
+2002-07-04 02:54  naofumi
+
+	* Multihead support functions have been implemented.
+
+2002-07-04 02:23  naofumi
+
+	* Multihead support functions have been implemented.
+
+2002-07-04 02:16  naofumi
+
+	* Multihead support functions have been implemented.
+
+2002-07-03 23:23  naofumi
+
+	* Modified to use internal macros.
+
+2002-07-03 22:37  naofumi
+
+	* GDK_MULTIHEAD_SAFE CPPFLAGS check.
+
+2002-07-03 22:03  naofumi
+
+	* Modified to use internal macros.
+
+2002-07-03 21:24  naofumi
+
+	* Modified to use internal macros.
+
+2002-07-03 17:20  naofumi
+
+	* Changed to use GDK_ macros in gdkx.h.
+
+2002-07-01 18:37  naofumi
+
+	* Version 0.3.1
+
+2002-07-01 15:38  naofumi
+
+	* Modified.
+
+2002-07-01 15:10  naofumi
+
+	* gdk_*_set_gl_capability() returns GLDrawable.
+
+2002-06-29 16:50  naofumi
+
+	* Enabled static libraries.
+
+2002-06-29 16:31  naofumi
+
+	* Modified.
+
+2002-06-22 18:26  naofumi
+
+	* Added RPM spec file.
+
+2002-06-22 18:17  naofumi
+
+	* Added RPM spec file.
+
+2002-06-22 17:58  naofumi
+
+	* Added RPM spec file.
+
+2002-06-19 19:54  naofumi
+
+	* Version 0.3.0.
+
+2002-06-19 18:56  naofumi
+
+	* Removed gtk_widget_gl_* () macros.
+
+2002-06-19 18:39  naofumi
+
+	* Deprecated codes have been cleaned.
+
+2002-06-19 17:02  naofumi
+
+	* Added gdk_gl_font_use_pango_font ().
+
+2002-06-19 15:42  naofumi
+
+	* Added gdk_gl_font_use_pango_font ().
+
+2002-06-19 15:38  naofumi
+
+	* Added gdk_gl_font_use_pango_font ().
+
+2002-06-19 15:29  naofumi
+
+	* Added gdk_gl_font_use_pango_font ().
+
+2002-06-19 11:24  naofumi
+
+	* Modified to use gdk_gl_drawable_* instead of gtk_widget_gl_*.
+
+2002-06-19 11:11  naofumi
+
+	* Modified to use gdk_gl_drawable_* instead of gtk_widget_gl_*.
+
+2002-06-18 16:35  naofumi
+
+	* Added gdk_gl_drawable_is_double_buffered ().
+
+2002-06-18 16:28  naofumi
+
+	* Added gdk_gl_drawable_is_double_buffered ().
+
+2002-06-18 14:47  naofumi
+
+	* Added gdk_gl_drawable_is_double_buffered ().
+
+2002-06-17 19:43  naofumi
+
+	* Version 0.2.1
+
+2002-06-17 18:54  naofumi
+
+	* Added map & unmap event.
+
+2002-06-15 15:04  naofumi
+
+	* Added error checks.
+
+2002-06-15 14:58  naofumi
+
+	* Added error checks.
+
+2002-06-15 12:29  naofumi
+
+	* Refined.
+
+2002-06-15 09:36  naofumi
+
+	* Refined.
+
+2002-06-15 09:30  naofumi
+
+	* gdk_gl_drawable_gl_begin() and gl_end() macros have been added.
+
+2002-06-15 09:06  naofumi
+
+	* Refined.
+
+2002-06-15 02:18  naofumi
+
+	* Modified to use gtk_widget_queue_draw().
+
+2002-06-15 01:55  naofumi
+
+	* Added examples/gears.c.
+
+2002-06-15 01:48  naofumi
+
+	* Added examples/gears.c.
+
+2002-06-15 01:01  naofumi
+
+	* Added examples/gears.c.
+
+2002-06-14 14:07  naofumi
+
+	* Added examples/gears.c.
+
+2002-06-13 22:35  naofumi
+
+	* Added wait_gl and wait_gdk to _GdkGLDrawableClass.
+
+2002-06-13 21:48  naofumi
+
+	* Modified GL checks in configure.in.
+
+2002-06-13 21:40  naofumi
+
+	* Modified GL checks in configure.in.
+
+2002-06-13 07:55  naofumi
+
+	* Added swap_buffers().
+
+2002-06-12 13:17  naofumi
+
+	* Version 0.2.0
+
+2002-06-12 00:26  naofumi
+
+	* Fixed double buffered PFD setup.
+
+2002-06-12 00:03  naofumi
+
+	* Suppress warning.
+
+2002-06-11 23:12  naofumi
+
+	* gdk_gl_config_new() interface have been changed.
+
+2002-06-11 01:38  naofumi
+
+	* Functions ware roughly documented.
+
+2002-06-10 21:41  naofumi
+
+	* gdk_window interface was changed.
+
+2002-06-10 21:21  naofumi
+
+	* gdk_window interface was changed.
+
+2002-06-10 05:06  naofumi
+
+	* Added GdkPixmap extension API.
+
+2002-06-10 05:00  naofumi
+
+	* Added GdkPixmap extension API.
+
+2002-06-10 04:51  naofumi
+
+	* Added GdkPixmap extension API.
+
+2002-06-10 02:53  naofumi
+
+	* Quark data are destructed by its destructor functions.
+
+2002-06-09 19:24  naofumi
+
+	* Added viewlw demo program.
+
+2002-06-09 19:21  naofumi
+
+	* Added viewlw demo program.
+
+2002-06-08 23:09  naofumi
+
+	* Updated.
+
+2002-06-08 20:59  naofumi
+
+	* Refined.
+
+2002-06-08 20:39  naofumi
+
+	* Refined.
+
+2002-06-08 00:39  naofumi
+
+	* [no log message]
+
+2002-06-07 13:43  naofumi
+
+	* Version 0.1.1
+
+2002-06-07 13:27  naofumi
+
+	* Version 0.1.1
+
+2002-06-07 12:33  naofumi
+
+	* Version 0.1.1
+
+2002-06-07 05:09  naofumi
+
+	* Win32 GdkGLPixmap bug have been fixed.
+
+2002-06-05 03:33  naofumi
+
+	* Doc works.
+
+2002-06-05 03:00  naofumi
+
+	* Gtk-Doc based documentations have been added.
+
+2002-06-05 02:10  naofumi
+
+	* Added doc/reference directory.
+
+2002-06-05 02:05  naofumi
+
+	* Added doc/reference directory.
+
+2002-06-05 01:33  naofumi
+
+	* Added docs/reference directory.
+
+2002-06-04 08:11  naofumi
+
+	* Modal window bug fix.
+
+2002-06-03 19:11  naofumi
+
+	* Comments fixed.
+
+2002-06-03 01:07  naofumi
+
+	* Version 0.1.0
+
+2002-06-02 22:54  naofumi
+
+	* Version 0.1.0
+
+2002-06-02 22:37  naofumi
+
+	* Win32 build configurations.
+
+2002-06-02 20:59  naofumi
+
+	* Win32 build configurations.
+
+2002-06-02 20:14  naofumi
+
+	* Config files updated.
+
+2002-06-02 13:21  naofumi
+
+	* Win32 build configurations.
+
+2002-06-02 12:26  naofumi
+
+	* Win32 build configurations.
+
+2002-06-01 21:28  naofumi
+
+	* Win32 build configuration.
+
+2002-06-01 17:36  naofumi
+
+	* Suppress warning.
+
+2002-06-01 17:13  naofumi
+
+	* Examples are refined.
+
+2002-06-01 14:58  naofumi
+
+	* *.def files updated
+
+2002-06-01 07:50  naofumi
+
+	* Win32 support related changes.
+
+2002-06-01 03:08  naofumi
+
+	* interface is changed.
+
+2002-06-01 02:51  naofumi
+
+	* finalize issue of gl_window_impl_win32 and gl_pixmap_impl_win32.
+
+2002-06-01 02:11  naofumi
+
+	* Win32 target works.
+
+2002-05-29 20:55  naofumi
+
+	* Modified Win32 implementation.
+
+2002-05-29 07:21  naofumi
+
+	* Win32 support is implemented.
+
+2002-05-28 20:58  naofumi
+
+	* Added.
+
+2002-05-28 20:51  naofumi
+
+	* Added.
+
+2002-05-28 20:46  naofumi
+
+	* Added.
+
+2002-05-28 19:19  naofumi
+
+	* Added.
+
+2002-05-28 19:12  naofumi
+
+	* Fixed.
+
+2002-05-28 19:01  naofumi
+
+	* Added gdkglext.def.
+
+2002-05-28 19:00  naofumi
+
+	* Added gtkglext.def.
+
+2002-05-27 17:04  naofumi
+
+	* Added dist-bzip2 and dist-zip.
+
+2002-05-27 16:49  naofumi
+
+	* Removed.
+
+2002-05-27 16:40  naofumi
+
+	* Removed.
+
+2002-05-27 16:35  naofumi
+
+	* Initial revision
+
+2002-05-27 16:35  naofumi
+
+	* start
+

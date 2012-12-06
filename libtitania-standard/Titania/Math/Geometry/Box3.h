@@ -147,12 +147,31 @@ public:
 		return *this;
 	}
 
+	///  Translate this box by @a translation.
+	template <class Up>
+	box3 &
+	operator -= (const vector3 <Up> & translation)
+	{
+		value .min -= translation;
+		value .max -= translation;
+		return *this;
+	}
+
 	///  Scale this box by @a scale.
 	box3 &
 	operator *= (const Type & scale)
 	{
 		value .min *= scale;
 		value .max *= scale;
+		return *this;
+	}
+
+	///  Scale this box by @a scale.
+	box3 &
+	operator /= (const Type & scale)
+	{
+		value .min /= scale;
+		value .max /= scale;
 		return *this;
 	}
 
@@ -306,6 +325,15 @@ operator + (const vector3 <Type> & lhs, const box3 <Type> & rhs)
 	return box3 <Type> (rhs) += lhs;
 }
 
+///  Return new box value @a rhs translated @a lhs.
+template <class Type>
+inline
+box3 <Type>
+operator - (const vector3 <Type> & lhs, const box3 <Type> & rhs)
+{
+	return box3 <Type> (rhs) -= lhs;
+}
+
 ///  Return new box value @a lhs scaled @a rhs.
 template <class Type>
 inline
@@ -322,6 +350,15 @@ box3 <Type>
 operator * (const Type & lhs, const box3 <Type> & rhs)
 {
 	return box3 <Type> (rhs) *= lhs;
+}
+
+///  Return new box value @a rhs scaled @a lhs.
+template <class Type>
+inline
+box3 <Type>
+operator / (const Type & lhs, const box3 <Type> & rhs)
+{
+	return box3 <Type> (rhs) /= lhs;
 }
 
 ///  @relates box3

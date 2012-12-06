@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 UniversalJoint::UniversalJoint (X3DExecutionContext* const executionContext) :
-	        X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	   X3DRigidJointNode (),                                                    
 	         anchorPoint (),                                                    // SFVec3f [in,out] anchorPoint           0 0 0
 	               axis1 (),                                                    // SFVec3f [in,out] axis1                 0 0 0
@@ -88,7 +88,7 @@ UniversalJoint::UniversalJoint (X3DExecutionContext* const executionContext) :
 	appendField (outputOnly,  "body2Axis",            body2Axis);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 UniversalJoint::create (X3DExecutionContext* const executionContext) const
 {
 	return new UniversalJoint (executionContext);

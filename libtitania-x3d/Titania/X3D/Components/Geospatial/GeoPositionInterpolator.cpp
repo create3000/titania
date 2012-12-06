@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 GeoPositionInterpolator::GeoPositionInterpolator (X3DExecutionContext* const executionContext) :
-	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
 	           keyValue (),                                                    // MFVec3d  [in,out] keyValue          [ ]
 	   geovalue_changed (),                                                    // SFVec3d  [out]    geovalue_changed
@@ -75,7 +75,7 @@ GeoPositionInterpolator::GeoPositionInterpolator (X3DExecutionContext* const exe
 	appendField (initializeOnly, "geoSystem",        geoSystem);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 GeoPositionInterpolator::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoPositionInterpolator (executionContext);

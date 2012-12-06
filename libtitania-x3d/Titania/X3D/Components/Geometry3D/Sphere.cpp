@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 Sphere::Sphere (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	         radius (1)                                                    // SFFloat [ ] radius  1           (0,∞)
 {
@@ -68,7 +68,7 @@ Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "solid",    solid);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Sphere::create (X3DExecutionContext* const executionContext) const
 {
 	return new Sphere (executionContext);

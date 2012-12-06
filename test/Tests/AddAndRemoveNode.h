@@ -90,14 +90,14 @@ public:
 	void
 	basic ()
 	{
-		MFNode <X3DBasicNode> array;
+		MFNode <X3DBaseNode> array;
 
 		assert (array .size () == 0);
 
-		SFNode <X3DBasicNode> node = getBrowser () -> createNode ("TimeSensor");
+		SFNode <X3DBaseNode> node = getBrowser () -> createNode ("TimeSensor");
 
 		std::clog << "SFNode:      " << node   .getParents () .size () << std::endl;
-		std::clog << "X3DBasicNode: " << node -> getParents () .size () << std::endl;
+		std::clog << "X3DBaseNode: " << node -> getParents () .size () << std::endl;
 
 		assert (node   .getParents () .size () == 0);
 		assert (node -> getParents () .size () == 1);
@@ -106,13 +106,13 @@ public:
 		assert (array .size () == 1);
 
 		std::clog << "SFNode:      " << array .back ()   .getParents () .size () << std::endl;
-		std::clog << "X3DBasicNode: " << array .back () -> getParents () .size () << std::endl;
+		std::clog << "X3DBaseNode: " << array .back () -> getParents () .size () << std::endl;
 
 		assert (array .back ()   .getParents () .size () == 1);
 		assert (array .back () -> getParents () .size () == 2);
 
 		std::clog << "SFNode:      " << node   .getParents () .size () << std::endl;
-		std::clog << "X3DBasicNode: " << node -> getParents () .size () << std::endl;
+		std::clog << "X3DBaseNode: " << node -> getParents () .size () << std::endl;
 
 		assert (node   .getParents () .size () == 0);
 		assert (node -> getParents () .size () == 2);
@@ -121,7 +121,7 @@ public:
 
 		std::clog << "Array:       " << array .size () << std::endl;
 		std::clog << "SFNode:      " << node   .getParents () .size () << std::endl;
-		std::clog << "X3DBasicNode: " << node -> getParents () .size () << std::endl;
+		std::clog << "X3DBaseNode: " << node -> getParents () .size () << std::endl;
 
 		assert (array .size () == 0);
 		assert (node   .getParents () .size () == 0);
@@ -130,7 +130,7 @@ public:
 		node .dispose ();
 	}
 
-	SFNode <X3DBasicNode>
+	SFNode <X3DBaseNode>
 	createNode (const std::string & name)
 	{
 		++ numNodes;

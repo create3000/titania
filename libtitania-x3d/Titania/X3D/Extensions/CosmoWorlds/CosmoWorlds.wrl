@@ -5,9 +5,9 @@ PROTO CoKeyframeAnimation [
   field        SFVec3f  bboxSize        -1 -1 -1
   field        SFFloat duration    10
   field        SFInt32 framesPerSecond 10
-  eventIn      MFNode <X3DBasicNode>   addChildren
-  eventIn      MFNode <X3DBasicNode>   removeChildren
-  exposedField MFNode <X3DBasicNode> children []
+  eventIn      MFNode <X3DBaseNode>   addChildren
+  eventIn      MFNode <X3DBaseNode>   removeChildren
+  exposedField MFNode <X3DBaseNode> children []
 ]
 {
 }
@@ -91,9 +91,9 @@ PROTO CoTextGraph [
   field        SFBool isBeveled TRUE
   field        MFVec2f bevelCoords [ 0 0, 1.44 1.2, 1.44 0 ]
   field        SFBool renderAlternateImage FALSE
-  field        SFNode <X3DBasicNode> fontStyle FontStyle {}
-  field        SFNode <X3DBasicNode> alternateImage NULL
-  field        SFNode <X3DBasicNode> alternateRep NULL
+  field        SFNode <X3DBaseNode> fontStyle FontStyle {}
+  field        SFNode <X3DBaseNode> alternateImage NULL
+  field        SFNode <X3DBaseNode> alternateRep NULL
 ]
 {
 }

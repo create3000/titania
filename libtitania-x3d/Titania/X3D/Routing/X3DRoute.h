@@ -49,13 +49,13 @@
 #ifndef __TITANIA_X3D_ROUTING_X3DROUTE_H__
 #define __TITANIA_X3D_ROUTING_X3DROUTE_H__
 
-#include "../Base/X3DBaseNode.h"
+#include "../Base/X3DBase.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DRoute :
-	virtual public X3DBaseNode
+	virtual public X3DBase
 {
 public:
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,7 +59,7 @@ class NurbsCurve :
 {
 public:
 
-	SFNode <X3DBasicNode> controlPoint;
+	SFNode <X3DBaseNode> controlPoint;
 	SFInt32               tessellation;
 	MFDouble              weight;
 	SFBool                closed;
@@ -69,7 +69,7 @@ public:
 	NurbsCurve (X3DExecutionContext* const);
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
 };

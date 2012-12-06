@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -70,7 +70,7 @@ SupportedFields::SupportedFields (X3DExecutionContext* const executionContext)
 	add (new SFMatrix3f  ());
 	add (new SFMatrix4d  ());
 	add (new SFMatrix4f  ());
-	add (new SFNode <X3DBasicNode> ());
+	add (new SFNode <X3DBaseNode> ());
 	add (new SFRotation  ());
 	add (new SFString    ());
 	add (new SFTime      ());
@@ -93,7 +93,7 @@ SupportedFields::SupportedFields (X3DExecutionContext* const executionContext)
 	add (new MFMatrix3f  ());
 	add (new MFMatrix4d  ());
 	add (new MFMatrix4f  ());
-	add (new MFNode <X3DBasicNode> ());
+	add (new MFNode <X3DBaseNode> ());
 	add (new MFRotation  ());
 	add (new MFString    ());
 	add (new MFTime      ());

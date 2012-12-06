@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 GravityPhysicsModel::GravityPhysicsModel (X3DExecutionContext* const executionContext) :
-	               X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DParticlePhysicsModelNode (),                                                    
 	                      force (0, -9.8, 0)                                           // SFVec3f [in,out] force  0 -9.8 0        (∞,∞)
 {
@@ -66,7 +66,7 @@ GravityPhysicsModel::GravityPhysicsModel (X3DExecutionContext* const executionCo
 	appendField (inputOutput, "force",    force);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 GravityPhysicsModel::create (X3DExecutionContext* const executionContext) const
 {
 	return new GravityPhysicsModel (executionContext);

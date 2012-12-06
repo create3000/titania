@@ -48,7 +48,7 @@
 
 #include "BaseNodeSet.h"
 
-#include "../Base/X3DBaseNode.h"
+#include "../Base/X3DChildObject.h"
 
 namespace titania {
 namespace X3D {
@@ -58,4 +58,4 @@ namespace X3D {
 } // X3D
 } // titania
 
-template class std::set <titania::X3D::X3DBaseNode*>;
+template class std::set <titania::X3D::X3DChildObject*>;

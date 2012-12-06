@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 TexCoordDamper2D::TexCoordDamper2D (X3DExecutionContext* const executionContext) :
-	      X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DDamperNode (),                                                    
 	   set_destination (),                                                    // MFVec2f [in]     set_destination
 	         set_value (),                                                    // MFVec2f [in]     set_value
@@ -81,7 +81,7 @@ TexCoordDamper2D::TexCoordDamper2D (X3DExecutionContext* const executionContext)
 	appendField (initializeOnly, "order",              order);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 TexCoordDamper2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new TexCoordDamper2D (executionContext);

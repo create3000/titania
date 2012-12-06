@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,9 +62,9 @@ public:
 	SupportedNodes (X3DExecutionContext* const);
 
 	void
-	add (const std::string &, X3DBasicNode*);
+	add (const std::string &, X3DBaseNode*);
 
-	const X3DBasicNode*
+	const X3DBaseNode*
 	get (const std::string &) const
 	throw (Error <INVALID_NAME>);
 

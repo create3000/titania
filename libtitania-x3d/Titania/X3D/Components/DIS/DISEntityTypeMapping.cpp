@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 DISEntityTypeMapping::DISEntityTypeMapping (X3DExecutionContext* const executionContext) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DInfoNode (),                                                    
 	         url (),                                                    // MFString [in,out] url          [ ]       [URI]
 	    category (),                                                    // SFInt32  [ ]      category     0         [0,255]
@@ -79,7 +79,7 @@ DISEntityTypeMapping::DISEntityTypeMapping (X3DExecutionContext* const execution
 	appendField (initializeOnly, "subcategory", subcategory);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 DISEntityTypeMapping::create (X3DExecutionContext* const executionContext) const
 {
 	return new DISEntityTypeMapping (executionContext);

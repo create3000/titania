@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,14 +59,14 @@ class CollisionSensor :
 {
 public:
 
-	SFNode <X3DBasicNode> collider;
-	MFNode <X3DBasicNode> intersections;
-	MFNode <X3DBasicNode> contacts;
+	SFNode <X3DBaseNode> collider;
+	MFNode <X3DBaseNode> intersections;
+	MFNode <X3DBaseNode> contacts;
 
 	CollisionSensor (X3DExecutionContext* const);
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
 	virtual

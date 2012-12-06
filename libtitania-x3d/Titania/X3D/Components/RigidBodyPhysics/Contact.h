@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,15 +60,15 @@ class Contact :
 public:
 
 	MFString              appliedParameters;
-	SFNode <X3DBasicNode> body1;
-	SFNode <X3DBasicNode> body2;
+	SFNode <X3DBaseNode> body1;
+	SFNode <X3DBaseNode> body2;
 	SFFloat               bounce;
 	SFVec3f               contactNormal;
 	SFFloat               depth;
 	SFVec2f               frictionCoefficients;
 	SFVec3f               frictionDirection;
-	SFNode <X3DBasicNode> geometry1;
-	SFNode <X3DBasicNode> geometry2;
+	SFNode <X3DBaseNode> geometry1;
+	SFNode <X3DBaseNode> geometry2;
 	SFFloat               minbounceSpeed;
 	SFVec3f               position;
 	SFVec2f               slipCoefficients;
@@ -79,7 +79,7 @@ public:
 	Contact (X3DExecutionContext* const);
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
 };

@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
-	     X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DChildNode (),                                                    
 	           center (),                                                    // SFVec3f  [in,out] center             0 0 0        (-∞,∞)
 	         children (),                                                    // MFNode   [in,out] children           NULL         [X3DViewpointNode|ViewpointGroup]
@@ -75,7 +75,7 @@ ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput, "size",              size);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 ViewpointGroup::create (X3DExecutionContext* const executionContext) const
 {
 	return new ViewpointGroup (executionContext);

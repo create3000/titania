@@ -51,11 +51,37 @@
 namespace titania {
 namespace X3D {
 
-X3DBase::X3DBase ()
+X3DBase::X3DBase () :
+	X3DType ()
 { }
+
+// Type
+
+void
+X3DBase::setName (const basic::id & value)
+{
+	X3DType::setName (value);
+}
+
+// String
+
+std::string
+X3DBase::toString () const
+{
+	std::ostringstream ostringstream;
+
+	toStream (ostringstream);
+
+	return ostringstream .str ();
+}
 
 X3DBase::~X3DBase ()
 { }
+
+template std::istream & operator >> (std::istream &, X3DBase &);
+template std::ostream & operator << (std::ostream &, const X3DBase &);
+//template std::wistream & operator >> (std::wistream &, const X3DBase &);
+//template std::wostream & operator << (std::wostream &, const X3DBase &);
 
 } // X3D
 } // titania

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,9 +57,9 @@ namespace titania {
 namespace X3D {
 
 Route::Route (X3DExecutionContext* const executionContext,
-              const SFNode <X3DBasicNode> & sourceNode,      X3DFieldDefinition* const sourceField,
-              const SFNode <X3DBasicNode> & destinationNode, X3DFieldDefinition* const destinationField) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+              const SFNode <X3DBaseNode> & sourceNode,      X3DFieldDefinition* const sourceField,
+              const SFNode <X3DBaseNode> & destinationNode, X3DFieldDefinition* const destinationField) :
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	        X3DRoute (),                                                    
 	      sourceNode (sourceNode),                                          // SFNode   [ ] sourceNode         NULL
 	 destinationNode (destinationNode),                                     // SFNode   [ ] destinationNode    NULL
@@ -72,7 +72,7 @@ Route::Route (X3DExecutionContext* const executionContext,
 	setup ();
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Route::create (X3DExecutionContext* const) const
 {
 	throw Error <NOT_SUPPORTED> ("Fabricating routes is not supported.");
@@ -85,9 +85,9 @@ Route::copy (X3DExecutionContext* const executionContext) const
 
 	try
 	{
-		const SFNode <X3DBasicNode> & sourceNode = executionContext -> getNode (getSourceNode () .getName () .last ());
+		const SFNode <X3DBaseNode> & sourceNode = executionContext -> getNode (getSourceNode () .getName () .last ());
 
-		const SFNode <X3DBasicNode> & destinationNode = executionContext -> getNode (getDestinationNode () .getName () .last ());
+		const SFNode <X3DBaseNode> & destinationNode = executionContext -> getNode (getDestinationNode () .getName () .last ());
 
 		return *executionContext -> addRoute (sourceNode, getSourceField (), destinationNode, getDestinationField ());
 	}
@@ -100,7 +100,7 @@ Route::copy (X3DExecutionContext* const executionContext) const
 void
 Route::initialize ()
 {
-	X3DBasicNode::initialize ();
+	X3DBaseNode::initialize ();
 	connect ();
 }
 
@@ -110,7 +110,7 @@ Route::isConnected ()
 	return connected;
 }
 
-const SFNode <X3DBasicNode> &
+const SFNode <X3DBaseNode> &
 Route::getSourceNode () const
 {
 	return sourceNode;
@@ -122,7 +122,7 @@ Route::getSourceField () const
 	return sourceField -> getName ();
 }
 
-const SFNode <X3DBasicNode> &
+const SFNode <X3DBaseNode> &
 Route::getDestinationNode () const
 {
 	return destinationNode;
@@ -202,7 +202,7 @@ Route::dispose ()
 {
 	disconnect ();
 
-	X3DBasicNode::dispose ();
+	X3DBaseNode::dispose ();
 }
 
 } // X3D

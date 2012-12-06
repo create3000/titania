@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 TriangleSet2D::TriangleSet2D (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	       vertices ()                                                     // MFVec2f [in,out] vertices  [ ]          (-∞,∞)
 {
@@ -66,7 +66,7 @@ TriangleSet2D::TriangleSet2D (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "solid",    solid);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 TriangleSet2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new TriangleSet2D (executionContext);

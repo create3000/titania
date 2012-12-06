@@ -1,0 +1,295 @@
+<refentry id="gtkglext-building" revision="11 Dec 2001">
+<refmeta>
+<refentrytitle>Compiling the GtkGLExt libraries</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>GtkGLExt Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Compiling the GtkGLExt Libraries</refname>
+<refpurpose>
+How to compile GtkGLExt
+</refpurpose>
+</refnamediv>
+  <refsect1 id="overview">
+    <title>Building GtkGLExt on UNIX-like systems</title>
+    <para>
+      This chapter covers building and installing GtkGLExt on UNIX and
+      UNIX-like systems such as Linux. Compiling GtkGLExt on Microsoft
+      Windows is different in detail and somewhat more difficult to
+      get going since the necessary tools aren't included with
+      the operating system.
+    </para>
+    <para>
+      On UNIX-like systems GtkGLExt uses the standard GNU build system,
+      using <application>autoconf</application> for package
+      configuration and resolving portability issues,
+      <application>automake</application> for building makefiles that
+      comply with the GNU Coding Standards, and
+      <application>libtool</application> for building shared libraries
+      on multiple platforms.
+    </para>
+    <para>
+      If you are building GtkGLExt from the distributed source packages,
+      then won't need these tools installed; the necessary pieces
+      of the tools are already included in the source packages. But
+      it's useful to know a bit about how packages that use these
+      tools work. A source package is distributed as 
+      <literal>tar.gz</literal> or <literal>tar.bz2</literal> file
+      which you unpack into a directory full of the source files as follows:
+    </para>
+    <programlisting>
+      tar zxvf gtkglext-x.y.z.tar.gz
+
+      tar jxvf gtkglext-x.y.z.tar.bz2
+    </programlisting>
+    <para>
+      In the toplevel of the directory that is created, there will be
+      a shell script called <filename>configure</filename> which
+      you then run to take the template makefiles called
+      <filename>Makefile.in</filename> in the package and create
+      makefiles customized for your operating system. The <filename>configure</filename>
+      script can be passed various command line arguments to determine how
+      the package is built and installed. The most commonly useful
+      argument is the <systemitem>--prefix</systemitem> argument which
+      determines where the package is installed. To install a package
+      in <filename>/opt/gtk</filename> you would run configure as:
+    </para>
+    <programlisting>
+      ./configure --prefix=/opt/gtk
+    </programlisting>
+    <para>
+      A full list of options can be found by running
+      <filename>configure</filename> with the
+      <systemitem>--help</systemitem> argument. In general, the defaults are
+      right and should be trusted. After you've run
+      <filename>configure</filename>, you then run the
+      <command>make</command> command to build the package and install
+      it.
+    </para>
+    <programlisting>
+      make
+      make install
+    </programlisting>
+    <para>
+      If you don't have permission to write to the directory you are
+      installing in, you may have to change to root temporarily before
+      running <literal>make install</literal>. Also, if you are
+      installing in a system directory, on some systems (such as
+      Linux), you will need to run <command>ldconfig</command> after
+      <literal>make install</literal> so that the newly installed
+      libraries will be found.
+    </para>
+    <para>
+      If you want to compile example programs shipped with the source
+      package, run the following command.
+    </para>
+    <programlisting>
+      make examples
+    </programlisting>
+    <para>
+      Several environment variables are useful to pass to set before
+      running configure. <envar>CPPFLAGS</envar> contains options to
+      pass to the C compiler, and is used to tell the compiler where
+      to look for include files. The <envar>LDFLAGS</envar> variable
+      is used in a similar fashion for the linker. Finally the
+      <envar>PKG_CONFIG_PATH</envar> environment variable contains
+      a search path that <command>pkg-config</command> (see below)
+      uses when looking for for file describing how to compile
+      programs using different libraries. If you were installing GTK+
+      and it's dependencies into <filename>/opt/gtk</filename>,
+      you might want to set these variables as:
+    </para>
+    <programlisting>
+      CPPFLAGS="-I/opt/gtk/include"
+      LDFLAGS="-L/opt/gtk/lib"
+      PKG_CONFIG_PATH="/opt/gtk/lib/pkgconfig"
+      export CPPFLAGS LDFLAGS PKG_CONFIG_PATH
+    </programlisting>
+    <para>
+      You may also need to set the <envar>LD_LIBRARY_PATH</envar>
+      environment variable so the systems dynamic linker can find
+      the newly installed libraries, and the <envar>PATH</envar>
+      environment program so that utility binaries installed by
+      the various libraries will be found.
+    </para>
+    <programlisting>
+      LD_LIBRARY_PATH="/opt/gtk/lib"
+      PATH="/opt/gtk/bin:$PATH"
+      export LD_LIBRARY_PATH PATH
+    </programlisting>
+  </refsect1>
+  <refsect1 id="dependencies">
+    <title>Dependencies</title>
+    <para>
+      Before you can compile the GtkGLExt library, you need to have
+      various other tools and libraries installed on your
+      system. The two tools needed during the build process (as
+      differentiated from the tools used in when creating GTK+
+      mentioned above such as <application>autoconf</application>)
+      are <command>pkg-config</command> and GNU make.
+    </para>
+    <itemizedlist>
+      <listitem>
+	<para>
+	  <ulink
+	  url="http://www.freedesktop.org/software/pkgconfig/">pkg-config</ulink>
+	  is a tool for tracking the compilation flags needed for
+	  libraries that is used by the GTK+ libraries. (For each
+	  library, a small <literal>.pc</literal> text file is
+	  installed in a standard location that contains the
+	  compilation flags needed for that library along with version
+	  number information.)
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+	  The GtkGLExt makefiles will mostly work with different versions
+	  of <command>make</command>, however, there tends to be
+	  a few incompatibilities, so we recommend installing
+          <ulink url="http://www.gnu.org/software/make">GNU make</ulink>
+          if you don't already have it on your system
+	  and using it. (It may be called <command>gmake</command>
+	  rather than <command>make</command>.)
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+	  <ulink url="http://www.gtk.org/">GTK+</ulink>
+          -- The GIMP Toolkit -- version 2.0 or above.
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+          OpenGL or <ulink url="http://www.mesa3d.org/">Mesa</ulink>.
+	</para>
+      </listitem>
+    </itemizedlist>
+  </refsect1>
+  <refsect1 id="extra-configuration-options">
+    <title>Extra Configuration Options</title>
+
+      <para>
+        In addition to the normal options, the
+	<command>configure</command> script for the GtkGLExt
+	supports the following additional arguments.
+
+	<cmdsynopsis>
+	  <command>configure</command>
+
+	  <group>
+	    <arg>--with-gl-prefix=DIR</arg>
+	  </group>
+	  <group>
+	    <arg>--with-gl-includedir=DIR</arg>
+	  </group>
+	  <group>
+	    <arg>--with-gl-libdir=DIR</arg>
+	  </group>
+	  <group>
+	    <arg>--enable-debug=[no|minimum|yes]</arg>
+	  </group>
+	  <group>
+	    <arg>--disable-gtk-doc</arg>
+	    <arg>--enable-gtk-doc</arg>
+	  </group>
+	  <group>
+	    <arg>--with-html-dir=PATH</arg>
+	  </group>
+	  <group>
+	    <arg>--with-gdktarget=[x11|win32]</arg>
+	  </group>
+	</cmdsynopsis>
+      </para>
+
+      <formalpara>
+        <title><systemitem>--with-gl-prefix=DIR</systemitem></title>
+          
+        <para>
+	  Directory where OpenGL (Mesa) is installed.
+	  The default is 'auto'.
+        </para>
+      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--with-gl-includedir=DIR</systemitem></title>
+          
+        <para>
+	  Directory where OpenGL (Mesa) header files are installed.
+	  The default is 'auto'.
+        </para>
+      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--with-gl-libdir=DIR</systemitem></title>
+          
+        <para>
+	  Directory where OpenGL (Mesa) libraries are installed.
+	  The default is 'auto'.
+        </para>
+      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--enable-debug</systemitem></title>
+          
+        <para>
+         Turns on various amounts of debugging support. Setting this to 'no' 
+	 disables g_assert(), g_return_if_fail(), g_return_val_if_fail() and
+         all cast checks between different object types. Setting it to 'minimum'
+         disables only cast checks. Setting it to 'yes' enables 
+         <link linkend="GTK-GL-Debug-Options">runtime debugging</link>. 
+         The default is 'minimum'.
+         Note that 'no' is fast, but dangerous as it tends to destabilize 
+         even mostly bug-free software by changing the effect of many bugs 
+         from simple warnings into fatal crashes. Thus 
+         <option>--enable-debug=no</option> should <emphasis>not</emphasis> 
+         be used for stable releases of GtkGLExt.
+        </para>
+      </formalpara>
+
+      <formalpara>
+	<title><systemitem>--disable-gtk-doc</systemitem> and
+	  <systemitem>--enable-gtk-doc</systemitem></title>
+
+	<para>
+	  The <application>gtk-doc</application> package is
+	  used to generate the reference documentation included
+	  with GtkGLExt. By default support for
+	  <application>gtk-doc</application> 
+	  is disabled because it requires various extra dependencies
+	  to be installed. If you have
+	  <application>gtk-doc</application> installed and
+	  are modifying GtkGLExt, you may want to enable
+	  <application>gtk-doc</application> support by passing
+	  in <systemitem>--enable-gtk-doc</systemitem>. If not
+	  enabled, pre-generated HTML files distributed with GtkGLExt
+	  will be installed.
+	</para>
+      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--with-html-dir</systemitem></title>
+          
+        <para>
+         Path to installed the reference documentation. The default is
+         <filename>${datadir}/gtk-doc/html</filename>.
+        </para>
+      </formalpara>
+
+      <formalpara>
+	<title><systemitem>--with-gdktarget</systemitem></title>
+
+	<para>
+          Toggles between the supported backends for GdkGLExt. 
+          The default is x11, unless the platform is Windows, in which
+	  case the default is win32.
+	</para>
+      </formalpara>
+
+    </refsect1>
+
+</refentry>
+
+<!-- Local Variables: -->
+<!-- sgml-parent-document: ("gtk-docs.sgml" "chapter" "refentry")  -->
+<!-- End: -->

@@ -56,8 +56,7 @@
 namespace titania {
 namespace X3D {
 
-GarbageCollector::GarbageCollector () :
-	X3DBase () 
+GarbageCollector::GarbageCollector ()
 { }
 
 void

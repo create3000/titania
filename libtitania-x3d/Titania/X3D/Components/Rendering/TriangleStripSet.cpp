@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 TriangleStripSet::TriangleStripSet (X3DExecutionContext* const executionContext) :
-	           X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DComposedGeometryNode (),                                                    
 	             stripCount ()                                                     // MFInt32 [in,out] stripCount  [ ]       [3,∞)
 {
@@ -75,7 +75,7 @@ TriangleStripSet::TriangleStripSet (X3DExecutionContext* const executionContext)
 	appendField (inputOutput,    "stripCount",      stripCount);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 TriangleStripSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new TriangleStripSet (executionContext);

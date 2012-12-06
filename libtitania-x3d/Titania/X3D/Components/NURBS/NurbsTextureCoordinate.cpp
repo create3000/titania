@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 NurbsTextureCoordinate::NurbsTextureCoordinate (X3DExecutionContext* const executionContext) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DNode (),                                                    
 	controlPoint (),                                                    // MFVec2f  [in,out] controlPoint  [ ]       (-∞,∞)
 	      weight (),                                                    // MFFloat  [in,out] weight        [ ]       (0,∞)
@@ -79,7 +79,7 @@ NurbsTextureCoordinate::NurbsTextureCoordinate (X3DExecutionContext* const execu
 	appendField (initializeOnly, "vOrder",       vOrder);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 NurbsTextureCoordinate::create (X3DExecutionContext* const executionContext) const
 {
 	return new NurbsTextureCoordinate (executionContext);

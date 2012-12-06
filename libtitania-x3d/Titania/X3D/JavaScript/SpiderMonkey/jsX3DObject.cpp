@@ -48,61 +48,18 @@
 
 #include "jsX3DObject.h"
 
-#include "../../Base/X3DObject.h"
-
 namespace titania {
 namespace X3D {
 
-JSBool
-jsX3DObject::getName (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 0)
-	{
-		X3DObject* value = static_cast <X3DObject*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+template JSBool jsX3DObject::getName <X3DObject>     (JSContext *, uintN, jsval*);
+template JSBool jsX3DObject::getTypeName <X3DObject> (JSContext *, uintN, jsval*);
+template JSBool jsX3DObject::getType <X3DObject>     (JSContext *, uintN, jsval*);
+template JSBool jsX3DObject::toString <X3DObject>    (JSContext *, uintN, jsval*);
 
-		return JS_NewStringValue (context, value -> getName (), vp);
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-JSBool
-jsX3DObject::getTypeName (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 0)
-	{
-		X3DObject* value = static_cast <X3DObject*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
-
-		return JS_NewStringValue (context, value -> getTypeName (), vp);
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-JSBool
-jsX3DObject::getType (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 0)
-	{
-		X3DObject* value = static_cast <X3DObject*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
-
-		return JS_NewNumberValue (context, (size_t) value -> getType (), vp);
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-JSBool
-jsX3DObject::toString (JSContext* context, uintN argc, jsval* vp)
-{
-	return toStringImpl <X3DObject> (context, argc, vp);
-}
+template JSBool jsX3DObject::getName <X3DArray>     (JSContext *, uintN, jsval*);
+template JSBool jsX3DObject::getTypeName <X3DArray> (JSContext *, uintN, jsval*);
+template JSBool jsX3DObject::getType <X3DArray>     (JSContext *, uintN, jsval*);
+template JSBool jsX3DObject::toString <X3DArray>    (JSContext *, uintN, jsval*);
 
 } // X3D
 } // titania

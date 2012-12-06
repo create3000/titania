@@ -1,0 +1,9 @@
+#!/bin/sh
+
+gtkdocize
+autoreconf -is
+
+echo Bootstrapping complete.  Now, change to your build directory and run
+echo \"configure\"\; e.g.:
+echo "    \$ cd mybuilddir"
+echo "    \$ path/to/gtkglext-srcdir/configure"

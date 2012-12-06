@@ -1,0 +1,247 @@
+# -*- Makefile -*-
+#
+# Sample makefile for GtkGLExt example programs
+#   Naofumi Yasufuku <naofumi@users.sourceforge.net>
+#
+
+# -------------------------------------------------------------------------
+# NMAKE Options
+#
+# Use the table below to determine the additional options for NMAKE to
+# generate various application debugging, profiling and performance tuning
+# information.
+#
+# Application Information Type         Invoke NMAKE
+# ----------------------------         ------------
+# For No Debugging Info                nmake nodebug=1
+# For Working Set Tuner Info           nmake tune=1
+# For Call Attributed Profiling Info   nmake profile=1
+#
+# Note: The three options above are mutually exclusive (you may use only
+#       one to compile/link the application).
+#
+# Note: creating the environment variables NODEBUG, TUNE, and PROFILE is an
+#       alternate method to setting these options via the nmake command line.
+#
+
+# Some nmake macros for Win32 apps development
+TARGETOS = BOTH
+#NODEBUG = 1
+
+!include <WIN32.MAK>
+
+# Generate makefile using 'pkg-config --cflags' command.
+PKGCONFIG_CFLAGS =
+PKGCONFIG_CFLAGS_MAK = PKGCONFIG_CFLAGS.mak
+!if [echo PKGCONFIG_CFLAGS = \> $(PKGCONFIG_CFLAGS_MAK)]
+!else
+!if [pkg-config --msvc-syntax --cflags gtkglext-3.0 pangoft2 >> $(PKGCONFIG_CFLAGS_MAK)]
+!else
+!include $(PKGCONFIG_CFLAGS_MAK)
+!endif
+!endif
+
+# Generate makefile using 'pkg-config --libs' command.
+PKGCONFIG_LIBS =
+PKGCONFIG_LIBS_MAK = PKGCONFIG_LIBS.mak
+!if [echo PKGCONFIG_LIBS = \> $(PKGCONFIG_LIBS_MAK)]
+!else
+!if [pkg-config --msvc-syntax --libs gtkglext-3.0 >> $(PKGCONFIG_LIBS_MAK)]
+!else
+!include $(PKGCONFIG_LIBS_MAK)
+!endif
+!endif
+
+# Generate makefile using 'pkg-config --libs' command.
+PKGCONFIG_LIBS_WITH_PANGOFT2 =
+PKGCONFIG_LIBS_WITH_PANGOFT2_MAK = PKGCONFIG_LIBS_WITH_PANGOFT2.mak
+!if [echo PKGCONFIG_LIBS_WITH_PANGOFT2 = \> $(PKGCONFIG_LIBS_WITH_PANGOFT2_MAK)]
+!else
+!if [pkg-config --msvc-syntax --libs gtkglext-3.0 pangoft2 >> $(PKGCONFIG_LIBS_WITH_PANGOFT2_MAK)]
+!else
+!include $(PKGCONFIG_LIBS_WITH_PANGOFT2_MAK)
+!endif
+!endif
+
+# required includes and libs
+INCLUDES = $(PKGCONFIG_CFLAGS)
+LIBS = $(PKGCONFIG_LIBS)
+LIBS_WITH_PANGOFT2 = $(PKGCONFIG_LIBS_WITH_PANGOFT2)
+DEFINES =
+
+# debug flags (from win32.mak)
+!IFDEF NODEBUG
+CDEBUG = -Ox
+!ELSE
+!IFDEF PROFILE
+CDEBUG = -Gh -Zd -Ox
+!ELSE
+!IFDEF TUNE
+CDEBUG = -Gh -Zd -Ox
+!ELSE
+CDEBUG = -Zi -Od
+!ENDIF
+!ENDIF
+!ENDIF
+
+# warning control
+WARNING = -wd4244 -wd4305
+
+# options for cl.exe
+#CFLAGS = $(cflags) $(cvars) $(cdebug) $(WARNING) $(INCLUDES) $(DEFINES)
+CFLAGS = $(cflags) $(cvars) $(CDEBUG) $(WARNING) $(INCLUDES) $(DEFINES)
+
+EXEEXT = .exe
+
+HEADERS = \
+	trackball.h		\
+	logo-model.h		\
+	readtex.h		\
+	lw.h
+
+SOURCES = \
+	low-level.c		\
+	simple.c		\
+	simple-mixed.c		\
+	share-lists.c		\
+	color.c			\
+	font.c			\
+	button.c		\
+	trackball.c		\
+	shapes.c		\
+	logo-model.c		\
+	logo.c			\
+	gears.c			\
+	readtex.c		\
+	multiarb.c		\
+	viewlw.c		\
+	lw.c			\
+	rotating-square.c	\
+	coolwave.c		\
+	coolwave2.c		\
+	template.c		\
+	scribble-gl.c		\
+	font-pangoft2.c		\
+	font-pangoft2-tex.c	\
+	wglinfo.c
+
+EXTRA_SOURCES = \
+	logo-g.c		\
+	logo-t.c		\
+	logo-k.c
+
+OBJECTS = $(SOURCES:.c=.obj)
+
+PROGRAMS = \
+	low-level$(EXEEXT)		\
+	simple$(EXEEXT)			\
+	simple-mixed$(EXEEXT)		\
+	share-lists$(EXEEXT)		\
+	color$(EXEEXT)			\
+	font$(EXEEXT)			\
+	button$(EXEEXT)			\
+	shapes$(EXEEXT)			\
+	logo$(EXEEXT)			\
+	gears$(EXEEXT)			\
+	multiarb$(EXEEXT)		\
+	viewlw$(EXEEXT)			\
+	rotating-square$(EXEEXT)	\
+	coolwave$(EXEEXT)		\
+	coolwave2$(EXEEXT)		\
+	template$(EXEEXT)		\
+	scribble-gl$(EXEEXT)		\
+	wglinfo$(EXEEXT)
+
+.SUFFIXES:
+.SUFFIXES: .c .obj
+
+all: $(PROGRAMS)
+
+#
+# Compile command
+#
+
+.c.obj:
+	$(cc) $(CFLAGS) $<
+
+#
+# Building executables
+#
+
+low-level$(EXEEXT): low-level.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+simple$(EXEEXT): simple.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+simple-mixed$(EXEEXT): simple-mixed.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+share-lists$(EXEEXT): share-lists.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+color$(EXEEXT): color.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+font$(EXEEXT): font.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+button$(EXEEXT): button.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+shapes$(EXEEXT): trackball.obj shapes.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+logo$(EXEEXT): trackball.obj logo-model.obj logo.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+gears$(EXEEXT): gears.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+multiarb$(EXEEXT): readtex.obj multiarb.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+viewlw$(EXEEXT): trackball.obj lw.obj viewlw.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+rotating-square$(EXEEXT): rotating-square.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+coolwave$(EXEEXT): coolwave.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+coolwave2$(EXEEXT): coolwave2.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+template$(EXEEXT): template.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+scribble-gl$(EXEEXT): scribble-gl.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS)
+
+font-pangoft2$(EXEEXT): font-pangoft2.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS_WITH_PANGOFT2)
+
+font-pangoft2-tex$(EXEEXT): font-pangoft2-tex.obj
+	$(link) $(linkdebug) -out:$@ $** $(LIBS_WITH_PANGOFT2)
+
+wglinfo$(EXEEXT): wglinfo.obj
+	$(link) $(linkdebug) -out:$@ $** opengl32.lib $(guilibs)
+
+#
+# Clean up
+#
+
+clean-obj:
+	-del *.obj
+	-del *.pdb
+	-del *.ilk
+
+clean: clean-obj
+	-del *$(EXEEXT)
+
+distclean: clean
+	-del $(PKGCONFIG_CFLAGS_MAK)
+	-del $(PKGCONFIG_LIBS_MAK)
+	-del $(PKGCONFIG_LIBS_WITH_PANGOFT2_MAK)
+	-del *~

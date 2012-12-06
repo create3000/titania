@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 TextureBackground::TextureBackground (X3DExecutionContext* const executionContext, bool addToList) :
-	     X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DBackgroundNode (addToList),                                                    
 	      backTexture (),                                                    // SFNode [in,out] backTexture    NULL        [X3DTextureNode]
 	    bottomTexture (),                                                    // SFNode [in,out] bottomTexture  NULL        [X3DTextureNode]
@@ -83,7 +83,7 @@ TextureBackground::TextureBackground (X3DExecutionContext* const executionContex
 	appendField (inputOutput, "topTexture",    topTexture);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 TextureBackground::create (X3DExecutionContext* const executionContext) const
 {
 	return new TextureBackground (executionContext, true);

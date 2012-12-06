@@ -49,7 +49,6 @@
 #ifndef __TITANIA_X3D_BASE_X3DOUTPUT_H__
 #define __TITANIA_X3D_BASE_X3DOUTPUT_H__
 
-#include "../Base/X3DBase.h"
 #include <functional>
 #include <list>
 #include <map>
@@ -60,8 +59,7 @@ namespace X3D {
 typedef std::function <void (void)>       Requester;
 typedef std::list <Requester>             RequesterArray;
 
-class X3DOutput :
-	virtual public X3DBase
+class X3DOutput
 {
 public:
 
@@ -146,7 +144,6 @@ public:
 	processInterests () const;
 
 	///  @name Dispose service 
-	virtual
 	void
 	dispose ();
 

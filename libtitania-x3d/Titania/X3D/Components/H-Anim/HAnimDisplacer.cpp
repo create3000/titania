@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 HAnimDisplacer::HAnimDisplacer (X3DExecutionContext* const executionContext) :
-	            X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometricPropertyNode (),                                                    
 	              coordIndex (),                                                    // MFInt32  [in,out] coordIndex     [ ]        [0,∞) or -1
 	           displacements (),                                                    // MFVec3f  [in,out] displacements  [ ]
@@ -71,7 +71,7 @@ HAnimDisplacer::HAnimDisplacer (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput, "weight",        weight);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 HAnimDisplacer::create (X3DExecutionContext* const executionContext) const
 {
 	return new HAnimDisplacer (executionContext);

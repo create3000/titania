@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -82,12 +82,12 @@ public:
 	pick (const size_t, const size_t);
 
 	void
-	pushSensitiveNode (X3DBasicNode* node) { return sensitiveNodes .push_back (node); }
+	pushSensitiveNode (X3DBaseNode* node) { return sensitiveNodes .push_back (node); }
 
 	void
 	popSensitiveNode () { return sensitiveNodes .pop_back (); }
 
-	const std::vector <X3DBasicNode*> &
+	const std::vector <X3DBaseNode*> &
 	getSensitiveNodes () const { return sensitiveNodes; }
 
 	bool
@@ -131,7 +131,7 @@ protected:
 private:
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
 	virtual
@@ -160,7 +160,7 @@ private:
 	size_t x;
 	size_t y;
 
-	std::vector <X3DBasicNode*> sensitiveNodes;
+	std::vector <X3DBaseNode*> sensitiveNodes;
 	HitArray                    hits;
 	HitComp                     hitComp;
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,15 +52,15 @@ namespace titania {
 namespace X3D {
 
 template <>
-const FieldType X3DField <Array <SFNode <X3DBasicNode>>>::type ("MFNode");
+const FieldType X3DField <Array <SFNode <X3DBaseNode>>>::type ("MFNode");
 
-template class Array <X3D::SFNode <X3DBasicNode>>;
-template class X3DField <Array <SFNode <X3DBasicNode>>>;
-template class X3DArrayField <SFNode <X3DBasicNode>>;
-template class MFNode <X3DBasicNode>;
+template class Array <X3D::SFNode <X3DBaseNode>>;
+template class X3DField <Array <SFNode <X3DBaseNode>>>;
+template class X3DArrayField <SFNode <X3DBaseNode>>;
+template class MFNode <X3DBaseNode>;
 
 } // X3D
 
-template std::ostream & X3D::operator << (std::ostream &, const Array <X3D::SFNode <X3D::X3DBasicNode>> &);
+template std::ostream & X3D::operator << (std::ostream &, const Array <X3D::SFNode <X3D::X3DBaseNode>> &);
 
 } // titania

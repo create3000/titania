@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	         bottom (true),                                                // SFBool  [ ] bottom  TRUE
 	         height (2),                                                   // SFFloat [ ] height  2           (0,∞)
@@ -76,7 +76,7 @@ Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "solid",    solid);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Cylinder::create (X3DExecutionContext* const executionContext) const
 {
 	return new Cylinder (executionContext);

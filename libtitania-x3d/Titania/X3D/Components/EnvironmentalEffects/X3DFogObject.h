@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -49,7 +49,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_EFFECTS_X3DFOG_OBJECT_H__
 #define __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_EFFECTS_X3DFOG_OBJECT_H__
 
-#include "../../Basic/X3DBasicNode.h"
+#include "../../Basic/X3DBaseNode.h"
 #include "../../Bits/X3DConstants.h"
 #include "../../Fields.h"
 
@@ -63,7 +63,7 @@ namespace titania {
 namespace X3D {
 
 class X3DFogObject :
-	virtual public X3DBasicNode
+	virtual public X3DBaseNode
 {
 public:
 

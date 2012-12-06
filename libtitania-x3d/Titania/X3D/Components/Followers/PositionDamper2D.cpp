@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 PositionDamper2D::PositionDamper2D (X3DExecutionContext* const executionContext) :
-	      X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DDamperNode (),                                                    
 	   set_destination (),                                                    // SFVec2f [in]     set_destination
 	         set_value (),                                                    // SFVec2f [in]     set_value
@@ -81,7 +81,7 @@ PositionDamper2D::PositionDamper2D (X3DExecutionContext* const executionContext)
 	appendField (initializeOnly, "order",              order);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 PositionDamper2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new PositionDamper2D (executionContext);

@@ -53,34 +53,15 @@
 #include "../Base/ObjectSet.h"
 #include "../Base/X3DInput.h"
 #include "../Base/X3DOutput.h"
-#include "../Base/X3DType.h"
-#include "../Bits/Error.h"
-
-#include <deque>
-#include <istream>
-#include <ostream>
-#include <typeinfo>
+#include "../Base/X3DBase.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DObject :
-	public X3DInput, public X3DOutput, public X3DType
+	virtual public X3DBase, public X3DInput, public X3DOutput
 {
 public:
-
-	///  @name Type Information
-
-	void
-	setName (const basic::id &);
-
-	virtual
-	const X3DType*
-	getType () const = 0;
-
-	virtual
-	const basic::id &
-	getTypeName () const = 0;
 
 	///  @name Input/Output
 
@@ -109,24 +90,6 @@ public:
 	GarbageCollector &
 	getGarbageCollector ();
 
-	// String:
-	virtual
-	std::string
-	toString () const;
-
-	///  @name Stream Handling
-	virtual
-	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
-
-	virtual
-	void
-	toStream (std::ostream &) const = 0;
-
 	///  @name Destruction Handling
 
 	virtual
@@ -151,27 +114,6 @@ private:
 	static GarbageCollector garbageCollector;
 
 };
-
-template <class CharT, class Traits>
-std::basic_istream <CharT, Traits> &
-operator >> (std::basic_istream <CharT, Traits> & istream, X3DObject & object)
-{
-	object .fromStream (istream);
-	return istream;
-}
-
-template <class CharT, class Traits>
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const X3DObject & object)
-{
-	object .toStream (ostream);
-	return ostream;
-}
-
-extern template std::istream & operator >> (std::istream &, X3DObject &);
-extern template std::ostream & operator << (std::ostream &, const X3DObject &);
-//extern template std::wistream & operator >> (std::wistream &, const X3DObject &);
-//extern template std::wostream & operator << (std::wostream &, const X3DObject &);
 
 } // X3D
 } // titania

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,13 +71,13 @@ public:
 	SFVec3f               finiteRotationAxis;
 	SFBool                fixed;
 	MFVec3f               forces;
-	MFNode <X3DBasicNode> geometry;
+	MFNode <X3DBaseNode> geometry;
 	SFMatrix3f            inertia;
 
 	RigidBody (X3DExecutionContext* const);
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
 };

@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	    innerRadius (),                                                    // SFFloat [ ]innerRadius  0            [0,∞)
 	    outerRadius (1)                                                    // SFFloat [ ]outerRadius  1            (0,∞)
@@ -68,7 +68,7 @@ Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "solid",       solid);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Disk2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new Disk2D (executionContext);

@@ -49,19 +49,50 @@
 #ifndef __TITANIA_X3D_BASE_X3DBASE_H__
 #define __TITANIA_X3D_BASE_X3DBASE_H__
 
-#include <Titania/Basic/Id.h>
+#include "../Base/X3DType.h"
+#include "../Bits/Error.h"
 #include <Titania/LOG.h>
+#include <istream>
+#include <ostream>
 
 namespace titania {
 namespace X3D {
 
-class X3DBase
+class X3DBase :
+	public X3DType
 {
 public:
 
+	///  @name Type Information
+
+	void
+	setName (const basic::id &);
+
+	virtual
+	const X3DType*
+	getType () const = 0;
+
+	virtual
+	const basic::id &
+	getTypeName () const = 0;
+
+	// String:
+	virtual
+	std::string
+	toString () const;
+
+	///  @name Stream Handling
 	virtual
 	void
-	dispose () = 0;
+	fromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
+
+	virtual
+	void
+	toStream (std::ostream &) const = 0;
 
 
 protected:
@@ -72,6 +103,28 @@ protected:
 	~X3DBase ();
 
 };
+
+template <class CharT, class Traits>
+std::basic_istream <CharT, Traits> &
+operator >> (std::basic_istream <CharT, Traits> & istream, X3DBase & object)
+{
+	object .fromStream (istream);
+	return istream;
+}
+
+template <class CharT, class Traits>
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const X3DBase & object)
+{
+	object .toStream (ostream);
+	return ostream;
+}
+
+extern template std::istream & operator >> (std::istream &, X3DBase &);
+extern template std::ostream & operator << (std::ostream &, const X3DBase &);
+//extern template std::wistream & operator >> (std::wistream &, const X3DBase &);
+//extern template std::wostream & operator << (std::wostream &, const X3DBase &);
+
 
 } // X3D
 } // titania

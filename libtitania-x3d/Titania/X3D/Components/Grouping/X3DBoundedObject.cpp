@@ -52,7 +52,7 @@ namespace titania {
 namespace X3D {
 
 X3DBoundedObject::X3DBoundedObject () :
-	X3DBasicNode (),          
+	X3DBaseNode (),          
 	  bboxCenter (),          // SFVec3f [ ]bboxCenter  0 0 0           (-∞,∞)
 	    bboxSize (-1, -1, -1) // SFVec3f [ ]bboxSize    -1 -1 -1        [0,∞) or −1 −1 −1
 {

@@ -1,0 +1,25 @@
+/*** BEGIN file-header ***/
+#if !defined (__GDKGL_H_INSIDE__) && !defined (GDK_GL_COMPILATION)
+#error "Only <gdk/gdkgl.h> can be included directly."
+#endif
+
+/* Generated data (by glib-mkenums) */
+
+#ifndef __GDK_GL_ENUM_TYPES_H__
+#define __GDK_GL_ENUM_TYPES_H__
+
+#include <glib-object.h>
+
+G_BEGIN_DECLS
+/*** END file-header ***/
+
+/*** BEGIN file-production ***/
+
+/* enumerations from "@filename@" */
+/*** END file-production ***/
+
+/*** BEGIN file-tail ***/
+G_END_DECLS
+
+#endif /* __GDK_GL_ENUM_TYPES_H__ */
+/*** END file-tail ***/

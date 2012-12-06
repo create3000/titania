@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	    X3DChildNode (),                                                    
 	X3DBoundedObject (),                                                    
 	          center (),                                                    // SFVec3f    [in,out] center            0 0 0          (-∞,∞)
@@ -98,7 +98,7 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput,    "viewpoints",       viewpoints);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 HAnimHumanoid::create (X3DExecutionContext* const executionContext) const
 {
 	return new HAnimHumanoid (executionContext);

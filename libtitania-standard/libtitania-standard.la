@@ -14,7 +14,7 @@ library_names='libtitania-standard.so.0.0.0 libtitania-standard.so.0 libtitania-
 old_library='libtitania-standard.a'
 
 # Linker flags that can not go in dependency_libs.
-inherited_linker_flags=''
+inherited_linker_flags=' -fopenmp'
 
 # Libraries that this one depends upon.
 dependency_libs=' -lgiomm-2.4 -lgio-2.0 -lglibmm-2.4 -lgobject-2.0 /usr/lib/gcc/x86_64-linux-gnu/4.7/../../../x86_64-linux-gnu/libsigc-2.0.la -lglib-2.0'

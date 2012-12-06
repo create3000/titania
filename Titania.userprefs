@@ -1,24 +1,21 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Scripting/test.wrl">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="716" Column="7" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="54" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArray.h" Line="51" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Scripting/Script.h" Line="90" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Scripting/Script.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/JavaScript.h" Line="102" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/JavaScript.cpp" Line="279" Column="3" />
-      <File FileName="Library/Tests/Scripting/UserDefinedFields.wrl" Line="97" Column="21" />
-      <File FileName="Library/Tests/Scripting/test.wrl" Line="82" Column="32" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/Surface.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.cpp" Line="120" Column="3" />
+      <File FileName="experimental/main.cpp" Line="702" Column="3" />
+      <File FileName="Library/Tests/Text/test.wrl" Line="46" Column="50" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.h" Line="72" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="224" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DArrayField.h" Line="136" Column="3" />
+      <File FileName="libtitania-standard/Titania/Basic/Id.h" Line="212" Column="1" />
+      <File FileName="libtitania-standard/Titania/Basic/URI.h" Line="127" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True" />
           <Node name="experimental" expanded="True" />
+          <Node name="gtkglext" expanded="True" selected="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
               <Node name="mushrooms" expanded="True">
@@ -26,16 +23,28 @@
               </Node>
             </Node>
             <Node name="Tests" expanded="True">
+              <Node name="1st" expanded="True" />
               <Node name="Basic" expanded="True" />
               <Node name="EnvironmentalSensors" expanded="True" />
               <Node name="Geometry3D" expanded="True" />
-              <Node name="Scripting" expanded="True">
-                <Node name="test.wrl" selected="True" />
-              </Node>
+              <Node name="images" expanded="True" />
+              <Node name="Scripting" expanded="True" />
+              <Node name="Text" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="libtitania-opengl-surface" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="OpenGL" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True" />
+            <Node name="Titania" expanded="True">
+              <Node name="Basic" expanded="True" />
+              <Node name="Math" expanded="True">
+                <Node name="Geometry" expanded="True" />
+                <Node name="Numbers" expanded="True" />
+              </Node>
+            </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
@@ -55,6 +64,8 @@
                   <Node name="Networking" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                   <Node name="Scripting" expanded="True" />
+                  <Node name="Shape" expanded="True" />
+                  <Node name="Text" expanded="True" />
                   <Node name="Texturing" expanded="True" />
                   <Node name="Time" expanded="True" />
                 </Node>
@@ -67,6 +78,7 @@
                   </Node>
                 </Node>
                 <Node name="Parser" expanded="True" />
+                <Node name="Prototype" expanded="True" />
                 <Node name="Types" expanded="True" />
                 <Node name="Widgets" expanded="True" />
               </Node>

@@ -52,12 +52,11 @@ namespace titania {
 namespace X3D {
 
 X3DType::X3DType () :
-	X3DBase (), 
-	   name ()  
+	name ()  
 { }
 
 X3DType::X3DType (const basic::id & name) :
-	   name (name)
+	name (name)
 { }
 
 const basic::id &

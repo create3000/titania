@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 DISEntityManager::DISEntityManager (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	   X3DChildNode (),                                                    
 	        address ("localhost"),                                         // SFString [in,out] address          "localhost"
 	  applicationID (1),                                                   // SFInt32  [in,out] applicationID    1                  [0,65535]
@@ -77,7 +77,7 @@ DISEntityManager::DISEntityManager (X3DExecutionContext* const executionContext)
 	appendField (outputOnly,  "removedEntities", removedEntities);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 DISEntityManager::create (X3DExecutionContext* const executionContext) const
 {
 	return new DISEntityManager (executionContext);

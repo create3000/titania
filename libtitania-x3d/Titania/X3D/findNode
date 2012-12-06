@@ -1,5 +1,5 @@
 void
-Browser::setEditMode(X3DBasicNode* node, BasicNodeArray parents)
+Browser::setEditMode(X3DBaseNode* node, BasicNodeArray parents)
 {
 	if (!node)
 		return;
@@ -16,14 +16,14 @@ Browser::setEditMode(X3DBasicNode* node, BasicNodeArray parents)
 	FieldDefinitionArray::const_iterator field;
 	for( field = node->getFieldDefinitions().begin(); field != node->getFieldDefinitions().end(); ++field )
 	{
-		if (dynamic_cast<SFNode <X3DBasicNode>*>(*field))
+		if (dynamic_cast<SFNode <X3DBaseNode>*>(*field))
 		{
-			SFNode <X3DBasicNode>* sfnode = dynamic_cast<SFNode <X3DBasicNode>*>(*field);
+			SFNode <X3DBaseNode>* sfnode = dynamic_cast<SFNode <X3DBaseNode>*>(*field);
 			setEditMode(sfnode->getValue(), parents);
 		}
-		else if (dynamic_cast<MFNode <X3DBasicNode>*>(*field))
+		else if (dynamic_cast<MFNode <X3DBaseNode>*>(*field))
 		{
-			MFNode <X3DBasicNode>* mfnode = dynamic_cast<MFNode <X3DBasicNode>*>(*field);
+			MFNode <X3DBaseNode>* mfnode = dynamic_cast<MFNode <X3DBaseNode>*>(*field);
 			MFNode::const_iterator sfnode;
 			for( sfnode = mfnode->begin(); sfnode != mfnode->end(); ++sfnode )
 			{

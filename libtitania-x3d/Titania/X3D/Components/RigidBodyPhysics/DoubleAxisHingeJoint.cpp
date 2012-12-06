@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 DoubleAxisHingeJoint::DoubleAxisHingeJoint (X3DExecutionContext* const executionContext) :
-	             X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	        X3DRigidJointNode (),                                                    
 	              anchorPoint (),                                                    // SFVec3f [in,out] anchorPoint                0 0 0
 	                    axis1 (),                                                    // SFVec3f [in,out] axis1                      0 0 0
@@ -110,7 +110,7 @@ DoubleAxisHingeJoint::DoubleAxisHingeJoint (X3DExecutionContext* const execution
 	appendField (outputOnly,  "hinge2AngleRate",           hinge2AngleRate);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 DoubleAxisHingeJoint::create (X3DExecutionContext* const executionContext) const
 {
 	return new DoubleAxisHingeJoint (executionContext);

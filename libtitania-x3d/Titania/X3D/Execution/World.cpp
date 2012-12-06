@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,7 +55,7 @@ namespace titania {
 namespace X3D {
 
 World::World (X3DExecutionContext* const executionContext, const SFNode <Scene> & scene) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	       scene (scene)                                                
 {
 	assert (scene .getValue ());
@@ -75,7 +75,7 @@ World::create (X3DExecutionContext* const executionContext) const
 void
 World::initialize ()
 {
-	X3DBasicNode::initialize ();
+	X3DBaseNode::initialize ();
 	
 	if (scene -> getNavigationInfos () .size ())
 		scene -> getNavigationInfos () [0] -> set_bind = true;

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ namespace X3D {
 URNIndex X3DUrlObject::URNCache;
 
 X3DUrlObject::X3DUrlObject () :
-	X3DBasicNode (),                  
+	X3DBaseNode (),                  
 	         url (),                  // MFString [in,out] url               [ ]       [URL]
 	    urlError (),                  // MFString [out]    urlError                    [BrowserEvent]
 	   loadState (NOT_STARTED_STATE), 
@@ -138,7 +138,7 @@ throw (Error <INVALID_X3D>,
 }
 
 void
-X3DUrlObject::createX3DFromURL (const MFString & url, const SFNode <X3DBasicNode> & node, const basic::id & fieldName)
+X3DUrlObject::createX3DFromURL (const MFString & url, const SFNode <X3DBaseNode> & node, const basic::id & fieldName)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_X3D>)

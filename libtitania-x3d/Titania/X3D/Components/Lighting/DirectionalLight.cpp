@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 DirectionalLight::DirectionalLight (X3DExecutionContext* const executionContext) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DLightNode (),                                                    
 	   direction (0, 0, -1)                                             // SFVec3f [in,out] direction  0 0 -1        (-∞,∞)
 {
@@ -74,7 +74,7 @@ DirectionalLight::DirectionalLight (X3DExecutionContext* const executionContext)
 	appendField (inputOutput, "direction",        direction);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 DirectionalLight::create (X3DExecutionContext* const executionContext) const
 {
 	return new DirectionalLight (executionContext);

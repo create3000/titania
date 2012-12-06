@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -212,7 +212,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			return JS_FALSE;
 		}
 
-		*(X3DField <X3DBasicNode*>*) field = *(SFNode <X3DBasicNode>*) JS_GetPrivate (context, value);
+		*(X3DField <X3DBaseNode*>*) field = *(SFNode <X3DBaseNode>*) JS_GetPrivate (context, value);
 	}
 	else if (type == X3DConstants::SFRotation)
 	{
@@ -696,7 +696,7 @@ JS_NewFieldValue (JSContext* context, X3DFieldDefinition* field, jsval* vp, cons
 		return jsSFMatrix4f::create (context, (SFMatrix4f*) field, vp, seal);
 		
 	else if (type == X3DConstants::SFNode)
-		return jsSFNode::create (context, (X3DField <X3DBasicNode*>*) field, vp, seal);
+		return jsSFNode::create (context, (X3DField <X3DBaseNode*>*) field, vp, seal);
 		
 	else if (type == X3DConstants::SFRotation)
 		return jsSFRotation::create (context, (SFRotation*) field, vp, seal);

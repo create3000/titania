@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B4DCAFB0-BD91-4CF1-90C7-E48E6B9BC53F}</ProjectGuid>
+    <Target>Bin</Target>
+    <Language>C</Language>
+    <Compiler>
+      <Compiler ctype="GccCompiler" />
+    </Compiler>
+    <ReleaseVersion>0.3</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OutputName>gtkglext</OutputName>
+    <CompileTarget>Bin</CompileTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OptimizationLevel>3</OptimizationLevel>
+    <OutputName>gtkglext</OutputName>
+    <CompileTarget>Bin</CompileTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="aclocal.m4" />
+    <None Include="AUTHORS" />
+    <None Include="bootstrap" />
+    <None Include="ChangeLog.pre-1-0" />
+    <None Include="ChangeLog.pre-1-2" />
+    <None Include="compile" />
+    <None Include="config.guess" />
+    <None Include="config.h" />
+    <None Include="config.h.in" />
+    <None Include="config.log" />
+    <None Include="config.status" />
+    <None Include="config.sub" />
+    <None Include="configure" />
+    <None Include="configure.ac" />
+    <None Include="COPYING" />
+    <None Include="COPYING.LIB" />
+    <None Include="depcomp" />
+    <None Include="gdkglext.pc" />
+    <None Include="gdkglext.pc.in" />
+    <None Include="gdkglext-3.0.pc" />
+    <None Include="gdkglext-3.0-uninstalled.pc" />
+    <None Include="gdkglext-uninstalled.pc" />
+    <None Include="gdkglext-uninstalled.pc.in" />
+    <None Include="gdkglext-x11-3.0.pc" />
+    <None Include="gdkglext-x11-3.0-uninstalled.pc" />
+    <None Include="gtk-doc.make" />
+    <None Include="gtkglext.doap" />
+    <None Include="gtkglext.nsi" />
+    <None Include="gtkglext.nsi.in" />
+    <None Include="gtkglext.pc" />
+    <None Include="gtkglext.pc.in" />
+    <None Include="gtkglext-3.0.pc" />
+    <None Include="gtkglext-3.0-uninstalled.pc" />
+    <None Include="gtkglext-uninstalled.pc" />
+    <None Include="gtkglext-uninstalled.pc.in" />
+    <None Include="gtkglext-x11-3.0.pc" />
+    <None Include="gtkglext-x11-3.0-uninstalled.pc" />
+    <None Include="INSTALL" />
+    <None Include="install-sh" />
+    <None Include="libtool" />
+    <None Include="ltmain.sh" />
+    <None Include="MAINTAINERS" />
+    <None Include="make-copyright.sh" />
+    <None Include="Makefile" />
+    <None Include="Makefile.am" />
+    <None Include="Makefile.in" />
+    <None Include="missing" />
+    <None Include="NEWS" />
+    <None Include="README" />
+    <None Include="README.win32" />
+    <None Include="setup-gtkglext.sh" />
+    <None Include="stamp-h1" />
+    <None Include="TODO" />
+    <None Include="autom4te.cache\output.0" />
+    <None Include="autom4te.cache\output.1" />
+    <None Include="autom4te.cache\output.2" />
+    <None Include="autom4te.cache\requests" />
+    <None Include="autom4te.cache\traces.0" />
+    <None Include="autom4te.cache\traces.1" />
+    <None Include="autom4te.cache\traces.2" />
+    <None Include="docs\Makefile" />
+    <None Include="docs\Makefile.am" />
+    <None Include="docs\Makefile.in" />
+    <None Include="docs\reference\Makefile" />
+    <None Include="docs\reference\Makefile.am" />
+    <None Include="docs\reference\Makefile.in" />
+    <None Include="docs\reference\gtkglext\.gitignore" />
+    <None Include="docs\reference\gtkglext\Makefile" />
+    <None Include="docs\reference\gtkglext\Makefile.am" />
+    <None Include="docs\reference\gtkglext\Makefile.in" />
+    <None Include="docs\reference\gtkglext\building.sgml" />
+    <None Include="docs\reference\gtkglext\gtkglext-docs.sgml" />
+    <None Include="docs\reference\gtkglext\gtkglext-sections.txt" />
+    <None Include="docs\reference\gtkglext\gtkglext.types" />
+    <None Include="docs\reference\gtkglext\running.sgml" />
+    <None Include="docs\reference\gtkglext\version.xml" />
+    <None Include="docs\reference\gtkglext\version.xml.in" />
+    <None Include="examples\.gitignore" />
+    <None Include="examples\Makefile" />
+    <None Include="examples\Makefile.am" />
+    <None Include="examples\Makefile.in" />
+    <None Include="examples\Makefile.msc" />
+    <None Include="examples\alien.lwo" />
+    <None Include="examples\drawshapes.h" />
+    <None Include="examples\girl.rgb" />
+    <None Include="examples\logo-g.h" />
+    <None Include="examples\logo-k.h" />
+    <None Include="examples\logo-model.h" />
+    <None Include="examples\logo-t.h" />
+    <None Include="examples\lw.h" />
+    <None Include="examples\penguin.lwo" />
+    <None Include="examples\readtex.h" />
+    <None Include="examples\reflect.rgb" />
+    <None Include="examples\trackball.h" />
+    <None Include="examples\.deps\button.Po" />
+    <None Include="examples\.deps\coolwave.Po" />
+    <None Include="examples\.deps\coolwave2.Po" />
+    <None Include="examples\.deps\drawshapes.Plo" />
+    <None Include="examples\.deps\dummy.Po" />
+    <None Include="examples\.deps\font_pangoft2-dummy.Po" />
+    <None Include="examples\.deps\font_pangoft2-font-pangoft2.Po" />
+    <None Include="examples\.deps\font_pangoft2_tex-dummy.Po" />
+    <None Include="examples\.deps\font_pangoft2_tex-font-pangoft2-tex.Po" />
+    <None Include="examples\.deps\gears.Po" />
+    <None Include="examples\.deps\glxinfo.Po" />
+    <None Include="examples\.deps\logo-model.Po" />
+    <None Include="examples\.deps\logo.Po" />
+    <None Include="examples\.deps\low-level.Po" />
+    <None Include="examples\.deps\ltdummy.Plo" />
+    <None Include="examples\.deps\lw.Po" />
+    <None Include="examples\.deps\multiarb.Po" />
+    <None Include="examples\.deps\readtex.Po" />
+    <None Include="examples\.deps\rotating-square.Po" />
+    <None Include="examples\.deps\scribble-gl.Po" />
+    <None Include="examples\.deps\shapes.Po" />
+    <None Include="examples\.deps\share-lists.Po" />
+    <None Include="examples\.deps\simple-mixed.Po" />
+    <None Include="examples\.deps\simple-pbuffer-sgix.Po" />
+    <None Include="examples\.deps\simple.Po" />
+    <None Include="examples\.deps\template.Po" />
+    <None Include="examples\.deps\trackball.Po" />
+    <None Include="examples\.deps\viewlw.Po" />
+    <None Include="examples\.deps\wglinfo.Po" />
+    <None Include="examples\glade\README" />
+    <None Include="examples\glade\share-lists.glade" />
+    <None Include="examples\glade\simple.glade" />
+    <None Include="examples\glsl\shiny.fsh" />
+    <None Include="examples\glsl\shiny.vsh" />
+    <None Include="examples\glsl\velvet.fsh" />
+    <None Include="examples\glsl\velvet.vsh" />
+    <None Include="examples\python\rotating-square.py" />
+    <None Include="gdk\.gitignore" />
+    <None Include="gdk\Makefile" />
+    <None Include="gdk\Makefile.am" />
+    <None Include="gdk\Makefile.in" />
+    <None Include="gdk\gdkgl.h" />
+    <None Include="gdk\gdkglconfig.h" />
+    <None Include="gdk\gdkglconfigimpl.h" />
+    <None Include="gdk\gdkglcontext.h" />
+    <None Include="gdk\gdkglcontextimpl.h" />
+    <None Include="gdk\gdkgldebug.h" />
+    <None Include="gdk\gdkgldefs.h" />
+    <None Include="gdk\gdkgldrawable.h" />
+    <None Include="gdk\gdkglenumtypes.h" />
+    <None Include="gdk\gdkglext-config.h" />
+    <None Include="gdk\gdkglext.def" />
+    <None Include="gdk\gdkglinit.h" />
+    <None Include="gdk\gdkglprivate.h" />
+    <None Include="gdk\gdkglquery.h" />
+    <None Include="gdk\gdkgltokens.h" />
+    <None Include="gdk\gdkgltypes.h" />
+    <None Include="gdk\gdkglversion.h" />
+    <None Include="gdk\gdkglversion.h.in" />
+    <None Include="gdk\gdkglwindow.h" />
+    <None Include="gdk\gdkglwindowimpl.h" />
+    <None Include="gdk\gen-def-file.sh" />
+    <None Include="gdk\gtkglenumtypes.c.template" />
+    <None Include="gdk\gtkglenumtypes.h.template" />
+    <None Include="gdk\stamp-gdkglext-config-h" />
+    <None Include="gdk\.deps\gdkglconfig.Plo" />
+    <None Include="gdk\.deps\gdkglconfigimpl.Plo" />
+    <None Include="gdk\.deps\gdkglcontext.Plo" />
+    <None Include="gdk\.deps\gdkglcontextimpl.Plo" />
+    <None Include="gdk\.deps\gdkgldrawable.Plo" />
+    <None Include="gdk\.deps\gdkglenumtypes.Plo" />
+    <None Include="gdk\.deps\gdkglinit.Plo" />
+    <None Include="gdk\.deps\gdkglquery.Plo" />
+    <None Include="gdk\.deps\gdkglversion.Plo" />
+    <None Include="gdk\.deps\gdkglwindow.Plo" />
+    <None Include="gdk\.deps\gdkglwindowimpl.Plo" />
+    <None Include="gdk\win32\Makefile" />
+    <None Include="gdk\win32\Makefile.am" />
+    <None Include="gdk\win32\Makefile.in" />
+    <None Include="gdk\win32\gdkglconfig-win32.h" />
+    <None Include="gdk\win32\gdkglcontext-win32.h" />
+    <None Include="gdk\win32\gdkglprivate-win32.h" />
+    <None Include="gdk\win32\gdkglquery-win32.h" />
+    <None Include="gdk\win32\gdkglwin32.h" />
+    <None Include="gdk\win32\gdkglwindow-win32.h" />
+    <None Include="gdk\win32\gdkwin32glconfig.h" />
+    <None Include="gdk\win32\gdkwin32glcontext.h" />
+    <None Include="gdk\win32\gdkwin32glquery.h" />
+    <None Include="gdk\win32\gdkwin32glwindow.h" />
+    <None Include="gdk\win32\.deps\gdkglconfig-win32.Plo" />
+    <None Include="gdk\win32\.deps\gdkglcontext-win32.Plo" />
+    <None Include="gdk\win32\.deps\gdkglquery-win32.Plo" />
+    <None Include="gdk\win32\.deps\gdkglwindow-win32.Plo" />
+    <None Include="gdk\win32\.deps\gdkwin32glconfig.Plo" />
+    <None Include="gdk\win32\.deps\gdkwin32glcontext.Plo" />
+    <None Include="gdk\win32\.deps\gdkwin32glwindow.Plo" />
+    <None Include="gdk\x11\Makefile" />
+    <None Include="gdk\x11\Makefile.am" />
+    <None Include="gdk\x11\Makefile.in" />
+    <None Include="gdk\x11\gdkglconfig-x11.h" />
+    <None Include="gdk\x11\gdkglcontext-x11.h" />
+    <None Include="gdk\x11\gdkglprivate-x11.h" />
+    <None Include="gdk\x11\gdkglquery-x11.h" />
+    <None Include="gdk\x11\gdkglwindow-x11.h" />
+    <None Include="gdk\x11\gdkglx.h" />
+    <None Include="gdk\x11\gdkx11glconfig.h" />
+    <None Include="gdk\x11\gdkx11glcontext.h" />
+    <None Include="gdk\x11\gdkx11glquery.h" />
+    <None Include="gdk\x11\gdkx11glwindow.h" />
+    <None Include="gdk\x11\.deps\gdkglconfig-x11.Plo" />
+    <None Include="gdk\x11\.deps\gdkglcontext-x11.Plo" />
+    <None Include="gdk\x11\.deps\gdkglquery-x11.Plo" />
+    <None Include="gdk\x11\.deps\gdkglwindow-x11.Plo" />
+    <None Include="gdk\x11\.deps\gdkx11glconfig.Plo" />
+    <None Include="gdk\x11\.deps\gdkx11glcontext.Plo" />
+    <None Include="gdk\x11\.deps\gdkx11glwindow.Plo" />
+    <None Include="gtk\.gitignore" />
+    <None Include="gtk\Makefile" />
+    <None Include="gtk\Makefile.am" />
+    <None Include="gtk\Makefile.in" />
+    <None Include="gtk\gen-def-file.sh" />
+    <None Include="gtk\gtkgl.h" />
+    <None Include="gtk\gtkgldebug.h" />
+    <None Include="gtk\gtkgldefs.h" />
+    <None Include="gtk\gtkglext.def" />
+    <None Include="gtk\gtkglinit.h" />
+    <None Include="gtk\gtkglprivate.h" />
+    <None Include="gtk\gtkglversion.h" />
+    <None Include="gtk\gtkglversion.h.in" />
+    <None Include="gtk\gtkglwidget.h" />
+    <None Include="gtk\.deps\gtkglinit.Plo" />
+    <None Include="gtk\.deps\gtkglversion.Plo" />
+    <None Include="gtk\.deps\gtkglwidget.Plo" />
+    <None Include="m4macros\.gitignore" />
+    <None Include="m4macros\ax_check_gl.m4" />
+    <None Include="m4macros\ax_check_glu.m4" />
+    <None Include="m4macros\ax_lang_compiler_ms.m4" />
+    <None Include="m4macros\ax_pthread.m4" />
+    <None Include="m4macros\gtk-doc.m4" />
+    <None Include="m4macros\libtool.m4" />
+    <None Include="m4macros\ltoptions.m4" />
+    <None Include="m4macros\ltsugar.m4" />
+    <None Include="m4macros\ltversion.m4" />
+    <None Include="m4macros\lt~obsolete.m4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="autom4te.cache\" />
+    <Folder Include="docs\" />
+    <Folder Include="examples\" />
+    <Folder Include="gdk\" />
+    <Folder Include="gtk\" />
+    <Folder Include="m4macros\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="examples\button.c" />
+    <Compile Include="examples\coolwave.c" />
+    <Compile Include="examples\coolwave2.c" />
+    <Compile Include="examples\drawshapes.c" />
+    <Compile Include="examples\font-pangoft2-tex.c" />
+    <Compile Include="examples\font-pangoft2.c" />
+    <Compile Include="examples\gears.c" />
+    <Compile Include="examples\glxinfo.c" />
+    <Compile Include="examples\logo-model.c" />
+    <Compile Include="examples\logo.c" />
+    <Compile Include="examples\low-level.c" />
+    <Compile Include="examples\lw.c" />
+    <Compile Include="examples\multiarb.c" />
+    <Compile Include="examples\readtex.c" />
+    <Compile Include="examples\rotating-square.c" />
+    <Compile Include="examples\scribble-gl.c" />
+    <Compile Include="examples\shapes.c" />
+    <Compile Include="examples\share-lists.c" />
+    <Compile Include="examples\simple-mixed.c" />
+    <Compile Include="examples\simple-pbuffer-sgix.c" />
+    <Compile Include="examples\simple.c" />
+    <Compile Include="examples\template.c" />
+    <Compile Include="examples\trackball.c" />
+    <Compile Include="examples\viewlw.c" />
+    <Compile Include="examples\wglinfo.c" />
+    <Compile Include="examples\glade\share-lists.c" />
+    <Compile Include="examples\glade\simple.c" />
+    <Compile Include="examples\glsl\gears.c" />
+    <Compile Include="gdk\gdkglconfig.c" />
+    <Compile Include="gdk\gdkglconfigimpl.c" />
+    <Compile Include="gdk\gdkglcontext.c" />
+    <Compile Include="gdk\gdkglcontextimpl.c" />
+    <Compile Include="gdk\gdkgldrawable.c" />
+    <Compile Include="gdk\gdkglenumtypes.c" />
+    <Compile Include="gdk\gdkglinit.c" />
+    <Compile Include="gdk\gdkglquery.c" />
+    <Compile Include="gdk\gdkglversion.c" />
+    <Compile Include="gdk\gdkglwindow.c" />
+    <Compile Include="gdk\gdkglwindowimpl.c" />
+    <Compile Include="gdk\win32\gdkglconfig-win32.c" />
+    <Compile Include="gdk\win32\gdkglcontext-win32.c" />
+    <Compile Include="gdk\win32\gdkglquery-win32.c" />
+    <Compile Include="gdk\win32\gdkglwindow-win32.c" />
+    <Compile Include="gdk\win32\gdkwin32glconfig.c" />
+    <Compile Include="gdk\win32\gdkwin32glcontext.c" />
+    <Compile Include="gdk\win32\gdkwin32glwindow.c" />
+    <Compile Include="gdk\x11\gdkglconfig-x11.c" />
+    <Compile Include="gdk\x11\gdkglcontext-x11.c" />
+    <Compile Include="gdk\x11\gdkglquery-x11.c" />
+    <Compile Include="gdk\x11\gdkglwindow-x11.c" />
+    <Compile Include="gdk\x11\gdkx11glconfig.c" />
+    <Compile Include="gdk\x11\gdkx11glcontext.c" />
+    <Compile Include="gdk\x11\gdkx11glwindow.c" />
+    <Compile Include="gtk\gtkglinit.c" />
+    <Compile Include="gtk\gtkglversion.c" />
+    <Compile Include="gtk\gtkglwidget.c" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" ParallelProcesses="4" IsAutotoolsProject="true" RelativeConfigureInPath=".">
+          <BuildFilesVar />
+          <DeployFilesVar />
+          <ResourcesVar />
+          <OthersVar />
+          <GacRefVar />
+          <AsmRefVar />
+          <ProjectRefVar />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+</Project>

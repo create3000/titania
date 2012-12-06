@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,17 +59,17 @@ class TextureBackground :
 {
 public:
 
-	SFNode <X3DBasicNode> backTexture;
-	SFNode <X3DBasicNode> bottomTexture;
-	SFNode <X3DBasicNode> frontTexture;
-	SFNode <X3DBasicNode> leftTexture;
-	SFNode <X3DBasicNode> rightTexture;
-	SFNode <X3DBasicNode> topTexture;
+	SFNode <X3DBaseNode> backTexture;
+	SFNode <X3DBaseNode> bottomTexture;
+	SFNode <X3DBaseNode> frontTexture;
+	SFNode <X3DBaseNode> leftTexture;
+	SFNode <X3DBaseNode> rightTexture;
+	SFNode <X3DBaseNode> topTexture;
 
 	TextureBackground (X3DExecutionContext* const, bool = true);
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
 };

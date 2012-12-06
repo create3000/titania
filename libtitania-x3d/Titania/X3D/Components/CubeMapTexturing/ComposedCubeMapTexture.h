@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,17 +59,17 @@ class ComposedCubeMapTexture :
 {
 public:
 
-	SFNode <X3DBasicNode> back;
-	SFNode <X3DBasicNode> bottom;
-	SFNode <X3DBasicNode> front;
-	SFNode <X3DBasicNode> left;
-	SFNode <X3DBasicNode> right;
-	SFNode <X3DBasicNode> top;
+	SFNode <X3DBaseNode> back;
+	SFNode <X3DBaseNode> bottom;
+	SFNode <X3DBaseNode> front;
+	SFNode <X3DBaseNode> left;
+	SFNode <X3DBaseNode> right;
+	SFNode <X3DBaseNode> top;
 
 	ComposedCubeMapTexture (X3DExecutionContext* const);
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
 	bool

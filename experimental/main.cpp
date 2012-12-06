@@ -679,52 +679,42 @@ typedef math::box3 <float>      Box3f;
 class Base
 {
 public:
+
+	virtual
+	void
+	fn () = 0;
+
 };
 
-class Input:
+
+class A :
 	virtual public Base
-{public:};
+{
+public:
+	
+	virtual
+	void
+	fn () { }
 
-class Output:
+};
+
+class B :
 	virtual public Base
-{public:};
-
-class Object :
-	public Input, public Output
-{
-public:
-
-	Object ()
-	{ std::clog << "Object" << std::endl; }
-
-	int a;
-
-};
-
-class FieldDefiniton :
-	public Object, virtual public Base
-{
-public:
-};
-
-class Field :
-	virtual public FieldDefiniton
-{
-public:
-};
-
-class Array :
-	virtual public FieldDefiniton
-{
-public:
-};
-
-class MFNode :
-	public Array, public Field
 {
 public:
 
 };
+
+
+
+class C :
+	public A, public B
+{
+public:
+
+};
+
+
 
 #include <v8.h>
 int
@@ -732,14 +722,7 @@ main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 	
-	MFNode*         mf = new MFNode ();
-	FieldDefiniton* fd = mf;
-	void* v            = (FieldDefiniton*) mf;
-
-	std::clog << mf << std::endl;
-	std::clog << v << std::endl;
-	std::clog << static_cast <Array*> (mf) << std::endl;
-	//std::clog << dynamic_cast <MFNode*> (fd) << std::endl;
+	C ();
 
 	//	test_path (basic::path ("/"));
 	//	test_path (basic::path ("/", "/"));

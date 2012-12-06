@@ -40,9 +40,9 @@ Group {
               geometry Sphere {
               }
               appearance Appearance {
-                material DEF MaterialLightBlue Material {
-                  diffuseColor 0.1 0.5 1
-                }
+                #material DEF MaterialLightBlue Material {
+                #  diffuseColor 0.1 0.5 1
+                #}
                 texture DEF ImageCloudlessEarth ImageTexture {
                   url [ "earth-topo.png" "earth-topo.jpg" "earth-topo-small.gif" "http://www.web3d.org/x3d/content/examples/Basic/earth-topo.png" "http://www.web3d.org/x3d/content/examples/Basic/earth-topo.jpg" "http://www.web3d.org/x3d/content/examples/Basic/earth-topo-small.gif" ]
                 }
@@ -61,7 +61,7 @@ Group {
                 }
               }
               appearance Appearance {
-                material USE MaterialLightBlue
+                #material USE MaterialLightBlue
               }
             }
         ]

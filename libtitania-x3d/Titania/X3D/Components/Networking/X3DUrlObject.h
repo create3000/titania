@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -49,7 +49,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_NETWORKING_X3DURL_OBJECT_H__
 #define __TITANIA_X3D_COMPONENTS_NETWORKING_X3DURL_OBJECT_H__
 
-#include "../../Basic/X3DBasicNode.h"
+#include "../../Basic/X3DBaseNode.h"
 #include "../../Bits/Error.h"
 #include "../../Bits/X3DConstants.h"
 #include "../../Execution/Scene.h"
@@ -72,7 +72,7 @@ enum LoadState
 typedef std::map <const basic::uri, basic::uri> URNIndex;
 
 class X3DUrlObject :
-	virtual public X3DBasicNode
+	virtual public X3DBaseNode
 {
 public:
 
@@ -110,7 +110,7 @@ public:
 
 	///
 	void
-	createX3DFromURL (const MFString &, const SFNode <X3DBasicNode> &, const basic::id &)
+	createX3DFromURL (const MFString &, const SFNode <X3DBaseNode> &, const basic::id &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_X3D>);

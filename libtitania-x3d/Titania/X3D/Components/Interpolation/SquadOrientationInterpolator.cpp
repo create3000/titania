@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 SquadOrientationInterpolator::SquadOrientationInterpolator (X3DExecutionContext* const executionContext) :
-	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
 	           keyValue (),                                                    // MFRotation [in,out] keyValue           [ ]          (-∞,∞)
 	  normalizeVelocity (),                                                    // SFBool     [in,out] normalizeVelocity  FALSE
@@ -71,7 +71,7 @@ SquadOrientationInterpolator::SquadOrientationInterpolator (X3DExecutionContext*
 	appendField (outputOnly,  "value_changed",     value_changed);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 SquadOrientationInterpolator::create (X3DExecutionContext* const executionContext) const
 {
 	return new SquadOrientationInterpolator (executionContext);

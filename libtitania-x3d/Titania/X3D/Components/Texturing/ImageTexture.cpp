@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 ImageTexture::ImageTexture (X3DExecutionContext* const executionContext) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTexture2DNode (),                                                    
 	    X3DUrlObject ()                                                    
 {
@@ -70,7 +70,7 @@ ImageTexture::ImageTexture (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "textureProperties", textureProperties);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 ImageTexture::create (X3DExecutionContext* const executionContext) const
 {
 	return new ImageTexture (executionContext);

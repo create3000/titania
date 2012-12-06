@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 WorldInfo::WorldInfo (X3DExecutionContext* const executionContext) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DInfoNode (),                                                    
 	        info (),                                                    // MFString [ ]info   [ ]
 	       title ()                                                     // SFString [ ]title  ""
@@ -67,7 +67,7 @@ WorldInfo::WorldInfo (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "title",    title);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 WorldInfo::create (X3DExecutionContext* const executionContext) const
 {
 	return new WorldInfo (executionContext);

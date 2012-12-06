@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 PointLight::PointLight (X3DExecutionContext* const executionContext) :
-	X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DLightNode (),                                                    
 	 attenuation (1, 0, 0),                                             // SFVec3f [in,out] attenuation  1 0 0        [0,∞)
 	    location (),                                                    // SFVec3f [in,out] location     0 0 0        (-∞,∞)
@@ -78,7 +78,7 @@ PointLight::PointLight (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput, "attenuation",      attenuation);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 PointLight::create (X3DExecutionContext* const executionContext) const
 {
 	return new PointLight (executionContext);

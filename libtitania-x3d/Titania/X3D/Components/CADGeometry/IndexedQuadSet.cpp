@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 IndexedQuadSet::IndexedQuadSet (X3DExecutionContext* const executionContext) :
-	           X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DComposedGeometryNode (),                                                    
 	              set_index (),                                                    // MFInt32 [in] set_index            [ ]
 	                  index ()                                                     // MFInt32 [ ]  index      [ ]        [0,∞)
@@ -77,7 +77,7 @@ IndexedQuadSet::IndexedQuadSet (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "index",           index);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 IndexedQuadSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new IndexedQuadSet (executionContext);

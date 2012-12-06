@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,13 +63,13 @@ public:
 	SFVec3f               hitPoint_changed;
 	SFVec2f               hitTexCoord_changed;
 	SFVec3d               hitGeoCoord_changed;
-	SFNode <X3DBasicNode> geoOrigin;
+	SFNode <X3DBaseNode> geoOrigin;
 	MFString              geoSystem;
 
 	GeoTouchSensor (X3DExecutionContext* const);
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
 	virtual

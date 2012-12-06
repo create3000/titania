@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Polyline2D::Polyline2D (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	   lineSegments ()                                                     // MFVec2f [ ]lineSegments  [ ]        (-∞,∞)
 {
@@ -65,7 +65,7 @@ Polyline2D::Polyline2D (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "lineSegments", lineSegments);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Polyline2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new Polyline2D (executionContext);

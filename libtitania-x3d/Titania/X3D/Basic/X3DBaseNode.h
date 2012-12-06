@@ -50,7 +50,7 @@
 #define __TITANIA_X3D_BASIC_X3DBASIC_NODE_H__
 
 #include "../Basic/NodeType.h"
-#include "../Base/X3DBaseNode.h"
+#include "../Base/X3DChildObject.h"
 #include "../Basic/FieldDefinitionArray.h"
 #include "../Basic/NodeTypeArray.h"
 #include "../Basic/X3DContext.h"
@@ -70,17 +70,17 @@ typedef std::map <std::string, X3DFieldDefinition*> FieldsMap;
 class X3DBrowser;
 class X3DExecutionContext;
 
-class X3DBasicNode :
-	virtual public X3DBaseNode
+class X3DBaseNode :
+	public X3DChildObject
 {
 public:
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	create (X3DExecutionContext* const) const = 0;
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	copy (X3DExecutionContext* const) const;
 
 	virtual
@@ -102,7 +102,7 @@ public:
 	getComponentName () const;
 
 	virtual
-	const X3DBasicNode*
+	const X3DBaseNode*
 	getType () const;
 
 	virtual
@@ -113,7 +113,7 @@ public:
 	getNodeType () const;
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	getLocalNode ();
 
 	X3DFieldDefinition*
@@ -182,12 +182,12 @@ public:
 	///////////////
 
 	virtual
-	~X3DBasicNode ();
+	~X3DBaseNode ();
 
 
 protected:
 
-	X3DBasicNode (X3DBrowser* const = nullptr, X3DExecutionContext* const = nullptr);
+	X3DBaseNode (X3DBrowser* const = nullptr, X3DExecutionContext* const = nullptr);
 
 	void
 	setComponent (const basic::id &);
@@ -258,7 +258,7 @@ private:
 
 template <class CharT, class Traits>
 std::basic_istream <CharT, Traits> &
-operator >> (std::basic_istream <CharT, Traits> & istream, X3DBasicNode* node)
+operator >> (std::basic_istream <CharT, Traits> & istream, X3DBaseNode* node)
 {
 	//	auto node = executionContext -> createNode ("typeId")
 	//
@@ -269,7 +269,7 @@ operator >> (std::basic_istream <CharT, Traits> & istream, X3DBasicNode* node)
 
 template <class CharT, class Traits>
 std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const X3DBasicNode* node)
+operator << (std::basic_ostream <CharT, Traits> & ostream, const X3DBaseNode* node)
 {
 	if (node)
 		node -> toStream (ostream);
@@ -279,8 +279,8 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const X3DBasicNode* n
 	return ostream;
 }
 
-extern template std::istream & operator >> (std::istream &, X3DBasicNode*);
-extern template std::ostream & operator << (std::ostream &, const X3DBasicNode*);
+extern template std::istream & operator >> (std::istream &, X3DBaseNode*);
+extern template std::ostream & operator << (std::ostream &, const X3DBaseNode*);
 
 } // X3D
 } // titania

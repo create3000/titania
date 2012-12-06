@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 NurbsPositionInterpolator::NurbsPositionInterpolator (X3DExecutionContext* const executionContext) :
-	 X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DChildNode (),                                                    
 	 set_fraction (),                                                    // SFFloat  [in]     set_fraction             (-∞,∞)
 	 controlPoint (),                                                    // SFNode   [in,out] controlPoint   [ ]       [X3DCoordinateNode]
@@ -75,7 +75,7 @@ NurbsPositionInterpolator::NurbsPositionInterpolator (X3DExecutionContext* const
 	appendField (outputOnly,  "value_changed", value_changed);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 NurbsPositionInterpolator::create (X3DExecutionContext* const executionContext) const
 {
 	return new NurbsPositionInterpolator (executionContext);

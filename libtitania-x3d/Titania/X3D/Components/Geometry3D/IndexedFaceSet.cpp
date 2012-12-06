@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
-	           X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DComposedGeometryNode (),                                                    
 	                 convex (true),                                                // SFBool  [ ]  convex             TRUE
 	          texCoordIndex (),                                                    // MFInt32 [ ]  texCoordIndex      [ ]          [-1,∞)
@@ -91,7 +91,7 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput,    "coord",             coord);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 IndexedFaceSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new IndexedFaceSet (executionContext);

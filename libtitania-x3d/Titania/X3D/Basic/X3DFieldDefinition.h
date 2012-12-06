@@ -49,7 +49,7 @@
 #ifndef __TITANIA_X3D_BASIC_X3DFIELD_DEFINITION_H__
 #define __TITANIA_X3D_BASIC_X3DFIELD_DEFINITION_H__
 
-#include "../Base/X3DBaseNode.h"
+#include "../Base/X3DChildObject.h"
 #include "../Basic/FieldDefinitionSet.h"
 #include "../Bits/X3DConstants.h"
 #include "../Routing/RouteSet.h"
@@ -71,12 +71,12 @@ enum AccessType
 class X3DExecutionContext;
 
 class X3DFieldDefinition :
-	public X3DBaseNode
+	public X3DChildObject
 {
 public:
 
-	using X3DBaseNode::addInterest;
-	using X3DBaseNode::removeInterest;
+	using X3DChildObject::addInterest;
+	using X3DChildObject::removeInterest;
 
 	virtual
 	X3DFieldDefinition*

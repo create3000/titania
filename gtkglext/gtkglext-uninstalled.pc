@@ -1,0 +1,12 @@
+targets=x11
+api_version=3.0
+
+multihead=@GDKGLEXT_MULTIHEAD_SUPPORT@
+
+Name: GtkGLExt Uninstalled
+Description: OpenGL Extension to GTK+, Not Installed
+Version: 2.99.0
+Requires: gtk+-3.0 gdkglext-${api_version}-uninstalled
+Libs: ${pc_top_builddir}${pcfiledir}/gtk/libgtkglext-${api_version}.la
+Libs.private: -lm
+Cflags: -I${pc_top_builddir}${pcfiledir} -I${pc_top_builddir}${pcfiledir}/.

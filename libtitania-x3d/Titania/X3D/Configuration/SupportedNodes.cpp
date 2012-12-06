@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -279,7 +279,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 }
 
 void
-SupportedNodes::add (const std::string & name, X3DBasicNode* node)
+SupportedNodes::add (const std::string & name, X3DBaseNode* node)
 {
 	//std::clog << "\tAdding node type " << name << ": " << std::flush;
 
@@ -290,7 +290,7 @@ SupportedNodes::add (const std::string & name, X3DBasicNode* node)
 	//std::clog << "Done." << std::endl;
 }
 
-const X3DBasicNode*
+const X3DBaseNode*
 SupportedNodes::get (const std::string & name) const
 throw (Error <INVALID_NAME>)
 {

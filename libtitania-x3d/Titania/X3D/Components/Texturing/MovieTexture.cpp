@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
-	      X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	  X3DTexture2DNode (),                                                    
 	X3DSoundSourceNode (),                                                    
 	      X3DUrlObject (),                                                    
@@ -82,7 +82,7 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput,    "speed",             speed);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 MovieTexture::create (X3DExecutionContext* const executionContext) const
 {
 	return new MovieTexture (executionContext);

@@ -70,9 +70,9 @@ JSPropertySpec jsSFVec3f::properties [ ] = {
 };
 
 JSFunctionSpec jsSFVec3f::functions [ ] = {
-	{ "getName",     getName,     0, 0 },
-	{ "getTypeName", getTypeName, 0, 0 },
-	{ "getType",     getType,     0, 0 },
+	{ "getName",     getName <X3DObject>,     0, 0 },
+	{ "getTypeName", getTypeName <X3DObject>, 0, 0 },
+	{ "getType",     getType <X3DObject>,     0, 0 },
 	
 	{ "negate",      normalize,   0, 0 },
 	{ "add",         add,         1, 0 },
@@ -83,8 +83,8 @@ JSFunctionSpec jsSFVec3f::functions [ ] = {
 	{ "normalize",   normalize,   0, 0 },
 	{ "dot",         dot,         1, 0 },
 	{ "length",      length,      0, 0 },
-						  			      
-	{ "toString",    toString,    0, 0 },
+
+	{ "toString",    toString <X3DObject>, 0, 0 },
 	
 	{ 0 }
 

@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 LineProperties::LineProperties (X3DExecutionContext* const executionContext) :
-	          X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	          X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DAppearanceChildNode (),                                                    
 	               applied (true),                                                // SFBool  [in,out] applied               TRUE
 	              linetype (1),                                                   // SFInt32 [in,out] linetype              1           [1,∞)
@@ -69,7 +69,7 @@ LineProperties::LineProperties (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput, "linewidthScaleFactor", linewidthScaleFactor);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 LineProperties::create (X3DExecutionContext* const executionContext) const
 {
 	return new LineProperties (executionContext);

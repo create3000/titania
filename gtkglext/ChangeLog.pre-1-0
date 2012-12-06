@@ -1,0 +1,1726 @@
+2003-05-14  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* ==== Released 1.0.0 ====
+
+	* configure.in: Version 1.0.0, Binary age 0, interface age 0.
+
+	* Makefile.am (EXTRA_DIST): 
+	* ChangeLog.pre-1-0: pre-1.0 ChangeLog is renamed.
+
+2003-05-13  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_new_common): 
+	* gdk/x11/gdkglquery-x11.c (_gdk_x11_gl_print_glx_info): 
+	* gdk/x11/gdkglprivate-x11.h: Clean up debug routines.
+
+2003-05-14  Alif Wahid  <awah005@users.sourceforge.net>
+
+	* examples/viewlw.c: added a "key_press_event" handler for
+	allowing the user to zoom in/out using the +/- keys. Also now
+	need to drag down with the middle mouse-button for zooming
+	in and drag up for zooming out (previously this was the other
+	way around and that was counter-intuitive).
+
+2003-05-13  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglfont-win32.c
+	(gdk_gl_font_use_pango_font_for_display): Removed unnecessary
+	parameter check.
+
+2003-05-14  Alif Wahid  <awah005@users.sourceforge.net>
+
+	* examples/template.c: minor improvement of console printouts in
+	key_press_event, map_event and unmap_event signal handlers.
+
+2003-05-13  Alif Wahid  <awah005@users.sourceforge.net>
+
+	* examples/coolwave.c:
+	* examples/rotating-square.c:
+	* examples/template.c:
+	* examples/viewlw.c: Updated my e-mail address.
+
+	* examples/coolwave.c (button_press_event): Fixed a bug concerning
+	the improper functioning of zooming drag with the middle
+	mouse-button. The beginning x and y coordinates were not being set
+	properly, so each new zooming drag started from the previous drag
+	and as a result wasn't going anywhere.
+
+2003-05-13  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglfont-win32.c
+	(gdk_gl_font_use_pango_font_for_display):
+	Cleaned duplicated code.
+
+	* gdk/x11/gdkglfont-x11.c (gdk_gl_font_use_pango_font_common)
+	(gdk_gl_font_use_pango_font)
+	(gdk_gl_font_use_pango_font_for_display):
+	Cleaned duplicated code.
+
+	* gdk/gdkglprivate.h:
+	* gdk/gdkglquery.c (_gdk_gl_print_gl_info):
+	* gdk/x11/gdkglpixmap-x11.c
+	(gdk_gl_pixmap_impl_x11_make_context_current):
+	* gdk/x11/gdkglwindow-x11.c
+	(gdk_gl_window_impl_x11_make_context_current):
+	* gdk/win32/gdkglpixmap-win32.c
+	(gdk_gl_pixmap_impl_win32_make_context_current):
+	* gdk/win32/gdkglwindow-win32.c
+	(gdk_gl_window_impl_win32_make_context_current):
+	Print OpenGL info on debug.
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_new_common): Print
+	server GLX info on debug.
+
+2003-05-12  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkglconfig.c (gdk_gl_config_new_by_mode_common)
+	(gdk_gl_config_new_by_mode, gdk_gl_config_new_by_mode_for_screen):
+	Cleaned duplicated code.
+
+2003-05-11  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gtkglext.spec.in: Remove lib*.la.bak files.
+	Removed LDFLAGS setting.
+
+	* README: 
+	* configure.in: Removed --disable-standard-rgb-cmap configure
+	option.
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_get_std_rgb_colormap): 
+	If _gdk_gl_config_no_standard_colormap is TRUE, don't try to find
+	a standard RGB colormap.
+
+	* gdk/gdkglprivate.h: 
+	* gdk/gdkglconfig.c: Added _gdk_gl_config_no_standard_colormap
+	global variable.
+
+	* gdk/gdkglinit.c (gdk_gl_parse_args): Added
+	GDK_GL_NO_STANDARD_COLORMAP environment variable and
+	--gdk-gl-no-standard-colormap option. These disable GdkGLExt
+	library to find a standard RGB colormap using
+	XmuLookupStandardColormap().
+
+	* gdk/x11/gdkglcontext-x11.c (_gdk_x11_gl_context_new): 
+	If _gdk_gl_context_force_indirect flag is set TRUE, creates
+	indirect rendering context.
+
+	* gdk/gdkglprivate.h: 
+	* gdk/gdkglcontext.c: Added _gdk_gl_context_force_indirect global
+	variable.
+
+	* gdk/gdkglinit.c (gdk_gl_parse_args): Added GDK_GL_FORCE_INDIRECT
+	environment variable and --gdk-gl-force-indirect option. These
+	enable application users to force GdkGLExt library to use indirect
+	rendering context.
+
+2003-05-10  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* examples/Makefile.am: 
+	* examples/Makefile.mingw: 
+	* examples/Makefile.msc: 
+	* examples/share-lists.c: Added new display list sharing example.
+
+2003-05-09  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/Makefile.am: 
+	* gtk/Makefile.am: Don't install g[dt]kglprivate.h.
+
+	* gtk/gtkglext.def: Removed gtk_gl_widget_install_toplevel_cmap.
+
+	* gtk/gtkglprivate.h: 
+	* gtk/gtkglinit.c (gtk_gl_parse_args): 
+	* gtk/gtkglwidget.c: Renamed gtk_gl_widget_install_toplevel_cmap
+	to _gtk_gl_widget_install_toplevel_cmap.
+
+	* docs/reference/gtkglext/running.sgml: 
+	* gtk/gtkglinit.c (gtk_gl_parse_args): Changed
+	--install-gl-colormap option to --gtk-gl-install-colormap.
+
+	* gtk/gtkglwidget.c (gtk_gl_widget_parent_set): Don't try to set
+	toplevel window's colormap if it is already realized.
+
+	* gtk/gtkglwidget.c (gtk_widget_set_gl_capability): Use
+	g_signal_connect_after() to connect "style_set" signal handler.
+
+	* gdk/win32/gdkglquery-win32.c (gdk_gl_get_proc_address): Check
+	whether given proc_name has "glu" prefix.
+
+2003-05-08  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglwindow-win32.c (gdk_gl_window_new): Check whether
+	given window has its own private DC. If private DC is used,
+	GdkGLWindow continues using the HDC which is obtained first.
+
+	* gdk/win32/gdkglwindow-win32.h (struct _GdkGLWindowImplWin32):
+	Added need_release_dc flag. This flag is set FALSE if private DC
+	is used, TRUE otherwise.
+	(GDK_GL_WINDOW_IMPL_WIN32_HDC_RELEASE): Call ReleaseDC() and set
+	impl->hdc NULL only if need_release_dc is TRUE.
+
+2003-05-08  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* README: 
+	* configure.in: Added --disable-standard-rgb-cmap configure
+	option to avoid XmuLookupStandardColormap() bug on Solaris 2.4 and
+	2.5.
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_get_std_rgb_colormap): 
+	Don't try to find a standard RGB colormap if_DISABLE_STANDARD_RGB_CMAP
+	is defined.
+
+	* configure.in: Added $(GDKGLEXT_WIN_EXTRA_DEFS) for
+	target-specific extra macro definitions.
+
+	* gdk/x11/Makefile.am (INCLUDES): 
+	* gdk/win32/Makefile.am (INCLUDES): Added $(GDKGLEXT_WIN_EXTRA_DEFS).
+
+2003-05-07  C.J. Collier  <listmail@colliertech.org>
+
+	* gdk/gdkglwindow.c (gdk_window_unset_gl_capability) 
+	(gdk_window_get_gl_window): 
+	* gdk/gdkglpixmap.c (gdk_pixmap_unset_gl_capability) 
+	(gdk_pixmap_get_gl_pixmap): Fixed typo in the documentation.
+
+2003-05-07  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* configure.in: Suppress linker warnings on IRIX.
+
+	* gdk/x11/gdkgloverlay-x11.c: Don't use XSGIFastInternAtom() if
+	_DISABLE_SGI_FAST_ATOMS is defined.
+
+	* README: 
+	* gdk/x11/Makefile.am: 
+	* configure.in: Added --disable-sgi-fast-atoms configure option.
+
+2003-05-05  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.99.1
+
+	* configure.in: Bumped version.
+
+2003-05-04  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkgltypes.h: 
+	* gdk/gdkglquery.h: GdkGLProc typedef is moved into gdkgltypes.h.
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_get_attrib): Clean up
+	the code. Fixed the document.
+
+2003-05-03  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglpixmap-win32.c
+	(gdk_gl_pixmap_impl_win32_make_context_current): 
+	* gdk/win32/gdkglwindow-win32.c
+	(gdk_gl_window_impl_win32_make_context_current): Clean up and
+	simplify the code. Don't check the current rendering context, and
+	simply call wglMakeCurrent().
+
+	* gdk/win32/gdkglcontext-win32.c: Include gdkglconfig-win32.h.
+
+	* gdk/x11/gdkglpixmap-x11.c
+	(gdk_gl_pixmap_impl_x11_make_context_current) 
+	(gdk_gl_pixmap_impl_x11_swap_buffers): 
+	* gdk/x11/gdkglwindow-x11.c
+	(gdk_gl_window_impl_x11_make_context_current) 
+	(gdk_gl_window_impl_x11_swap_buffers): Clean up and simplify the
+	code. Don't check the current rendering context, and simply call
+	glXMakeCurrent().
+
+2003-05-02  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkglinit.c (gdk_gl_parse_args): Supress "unused variable"
+	warning.
+
+	* gdk/win32/gdkglquery-win32.c: 
+	* gdk/win32/gdkglconfig-win32.c: 
+	* gdk/win32/gdkglcontext-win32.c: 
+	* gdk/win32/gdkglpixmap-win32.c: 
+	* gdk/win32/gdkglwindow-win32.c: Fixed type checks
+
+	* gdk/x11/gdkglquery-x11.c: 
+	* gdk/x11/gdkglconfig-x11.c: 
+	* gdk/x11/gdkglcontext-x11.c: 
+	* gdk/x11/gdkglpixmap-x11.c: 
+	* gdk/x11/gdkglwindow-x11.c: Fixed type checks
+
+2003-05-02  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglquery-win32.c (gdk_gl_get_proc_address): Returns
+	immediately if proc_address is found.
+
+2003-05-01  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglquery-x11.c (gdk_gl_get_proc_address): Rewritten.
+
+	* gdk/win32/gdkglwindow-win32.c (gdk_gl_window_impl_win32_make_context_current) 
+	(gdk_gl_window_impl_win32_swap_buffers): 
+	* gdk/x11/gdkglwindow-x11.c (gdk_gl_window_impl_x11_make_context_current) 
+	(gdk_gl_window_impl_x11_swap_buffers): Do nothing if given
+	GdkGLWindow is already destroyed.
+
+	* gdk/win32/gdkglpixmap-win32.c (gdk_gl_pixmap_impl_win32_make_context_current) 
+	(gdk_gl_pixmap_impl_win32_swap_buffers): 
+	* gdk/x11/gdkglpixmap-x11.c (gdk_gl_pixmap_impl_x11_make_context_current) 
+	(gdk_gl_pixmap_impl_x11_swap_buffers): Do nothing if given
+	GdkGLPixmap is already destroyed.
+
+	* gdk/win32/gdkglprivate-win32.h: 
+	* gdk/x11/gdkglprivate-x11.h: Added IS_DESTROYED() macros.
+
+2003-05-01  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglcontext-win32.c (gdk_gl_context_copy): 
+	* gdk/x11/gdkglcontext-x11.c (gdk_gl_context_copy): Check whether
+	given GdkGLContext has a valid GLXContext (or HGLRC).
+
+	* gtk/gtkglwidget.c (struct GLWidgetPrivate): 
+	(gtk_widget_set_gl_capability): Added need_unrealize flag.
+	(gtk_gl_widget_realize, gtk_gl_widget_unrealize): Call
+	gdk_window_unset_gl_capability() if private->need_unrealize flag
+	is set.
+
+2003-04-30  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* configure.in: Don't check gtk-doc version if --enable-gtk-doc
+	option is not specified. Removed unused HAVE_DOCBOOK and
+	HAVE_SGML2HTML conditionals.
+
+	* gtk/gtkglwidget.c (gtk_widget_set_gl_capability): Use
+	g_signal_connect_after() instead of g_signal_connect() to connect
+	"realize" signal handler.
+
+	* examples/low-level.c (main): 
+	* examples/simple.c (main): 
+	* examples/simple-mixed.c (main): 
+	* examples/font.c (main): 
+	* examples/shapes.c (main): 
+	* examples/gears.c (main): 
+	* examples/logo.c (main): 
+	* examples/multiarb.c (main): 
+	* examples/coolwave.c (create_window): 
+	* examples/rotating-square.c (create_window): 
+	* examples/template.c (create_window): Use g_signal_connect_after()
+	instead of g_signal_connect() to connect "realize" signal handler.
+
+2003-04-29  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglwindow-x11.c (_gdk_gl_window_destroy): Fixed Typo.
+
+2003-04-28  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.99.0
+
+	* configure.in: Bumped version.
+
+	* gtkglext.nsi.in: Changed default installation directory.
+	Fixed Uninstaller section. Output gtkglext-env.sh file.
+	Output gtkglext-env.bat batch file.
+
+2003-04-26  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* examples/low-level.c (main): 
+	* examples/simple.c (main): 
+	* examples/simple-mixed.c (main): 
+	* examples/color.c (main): 
+	* examples/font.c (main): 
+	* examples/gears.c (main): 
+	* examples/multiarb.c (main): 
+	* examples/viewlw.c (show_lwobject): 
+	* examples/rotating-square.c (create_window): 
+	* examples/coolwave.c (create_window): 
+	* examples/template.c (create_window): Don't set resize_mode
+	GTK_RESIZE_IMMEDIATE on Win32.
+
+	* gdk/win32/gdkglconfig-win32.c (gdk_gl_config_setup_pfd):
+	Added. This function tries to construct PFD for both windows and
+	bitmaps.
+	(gdk_gl_config_new_common): Use gdk_gl_config_setup_pfd().
+
+2003-04-25  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglquery-win32.c (gdk_gl_get_proc_address): Use
+	Win32 API instead of GModule.
+
+	* gdk/x11/gdkglquery-x11.c (gdk_gl_get_proc_address): Modified to
+	open the GdkGLExt shared library file. Now it works well with
+	python binding.
+
+	* gtk/gtkglwidget.c (struct GLWidgetPrivate): Added glcontext
+	field, and quark_gl_context quark data is no longer used.
+	(gtk_widget_get_gl_context): Use private->glcontext.
+	(gtk_gl_widget_destroy, gtk_widget_set_gl_capability): Connect
+	"destroy" signal hander to destroy the GdkGLContext explicitly.
+
+	* gdk/gdkglcontext.[ch] (gdk_gl_context_destroy): Added.
+
+	* gdk/win32/gdkglcontext-win32.c (_gdk_gl_context_destroy): Added.
+	(gdk_gl_context_impl_win32_finalize): Use _gdk_gl_context_destroy()
+	to release WGL resources.
+
+	* gdk/x11/gdkglcontext-x11.c (_gdk_gl_context_destroy): Added.
+	(gdk_gl_context_impl_x11_finalize): Use _gdk_gl_context_destroy()
+	to release GLX resources.
+
+	* gdk/gdkglwindow.[ch] (gdk_gl_window_destroy): Added.
+
+	* gdk/gdkglwindow.c (gdk_window_unset_gl_capability): Destroy
+	OpenGL resources explicitly.
+
+	* gdk/win32/gdkglwindow-win32.c (_gdk_gl_window_destroy): Added.
+	(gdk_gl_window_impl_win32_finalize): Use _gdk_gl_window_destroy()
+	to release WGL resources.
+
+	* gdk/x11/gdkglwindow-x11.c (_gdk_gl_window_destroy): Added.
+	(gdk_gl_window_impl_x11_finalize): Use _gdk_gl_window_destroy() to
+	release GLX resources.
+
+	* gdk/gdkglpixmap.[ch] (gdk_gl_pixmap_destroy): Added.
+
+	* gdk/gdkglpixmap.c (gdk_pixmap_unset_gl_capability): Destroy
+	OpenGL resources explicitly.
+
+	* gdk/win32/gdkglpixmap-win32.c (_gdk_gl_pixmap_destroy): Added.
+	(gdk_gl_pixmap_impl_win32_finalize): Use _gdk_gl_pixmap_destroy()
+	to release WGL resources.
+
+	* gdk/x11/gdkglpixmap-x11.c (_gdk_gl_pixmap_destroy): Added.
+	(gdk_gl_pixmap_impl_x11_finalize): Use _gdk_gl_pixmap_destroy()
+	to release GLX resources.
+
+2003-04-23  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglcontext-win32.c (gdk_gl_context_new_common): 
+	* gdk/x11/gdkglcontext-x11.c (gdk_gl_context_new_common): Don't
+	set impl->gldrawable on construction. It should be set if the
+	context is attached to a drawable.
+
+	* gdk/win32/gdkglcontext-win32.c (gdk_gl_context_impl_win32_finalize): 
+	* gdk/x11/gdkglcontext-x11.c (gdk_gl_context_impl_x11_finalize): 
+	Release the current context whether is_foreign is TRUE or not.
+
+	* gdk/win32/gdkglcontext-win32.c (gdk_gl_context_impl_win32_finalize): 
+	* gdk/win32/gdkglwindow-win32.c (gdk_gl_window_impl_win32_finalize): 
+	* gdk/win32/gdkglpixmap-win32.c (gdk_gl_pixmap_impl_win32_finalize): 
+	Call glFinish() before destruction.
+
+	* gdk/x11/gdkglcontext-x11.c (gdk_gl_context_impl_x11_finalize): 
+	* gdk/x11/gdkglwindow-x11.c (gdk_gl_window_impl_x11_finalize): 
+	* gdk/x11/gdkglpixmap-x11.c (gdk_gl_pixmap_impl_x11_finalize):
+	Call glXWaitGL() before destruction.
+
+2003-04-18  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglpixmap-x11.c (gdk_gl_pixmap_impl_x11_finalize): 
+	* gdk/x11/gdkglwindow-x11.c (gdk_gl_window_impl_x11_finalize):
+	* gdk/win32/gdkglpixmap-win32.c (gdk_gl_pixmap_impl_win32_finalize): 
+	* gdk/win32/gdkglwindow-win32.c (gdk_gl_window_impl_win32_finalize): 
+	Release the current context on destruction.
+
+2003-04-17  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Makefile.am: 
+	* gdk/Makefile.am: 
+	* gdk/GL/Makefile.am: 
+	* gdk/x11/Makefile.am: 
+	* gdk/win32/Makefile.am: 
+	* gtk/Makefile.am: 
+	* m4macros/Makefile.am: 
+	* docs/Makefile.am: 
+	* docs/reference/Makefile.am: 
+	* docs/reference/gtkglext/Makefile.am: 
+	* examples/Makefile.am: Removed 'files' target which is not used.
+
+	* Makefile.am ($(pkgconfig_DATA)): 
+	* m4macros/Makefile.am ($(m4data_DATA)): 
+	* gdk/Makefile.am (stamp-gdkglext-config-h): Changed to use
+	$(top_builddir)/config.status instead of ../config.status.
+
+2003-04-16  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* examples/pixmap-mixed.c (configure_event): 
+	* examples/pixmap.c (configure_event): Dan't call gtk_main_quit()
+	if gtk_main_level() == 0 when context instantiation fails.
+
+2003-04-15  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gtk/Makefile.am (install-libtool-import-lib) 
+	(uninstall-libtool-import-lib): 
+	* gdk/Makefile.am (install-libtool-import-lib) 
+	(uninstall-libtool-import-lib): Removed. Now MinGW import
+	libraries are installed by libtool.
+
+	* Makefile.am: Removed AUTOMAKE_OPTIONS.
+
+	* gdk/Makefile.am: Use './config.status gdk/gdkglext-config.h' to
+	update gdkglext-config.h.
+	
+	* configure.in: Modified to follow the latest autoconf's
+	configure.in style.
+
+	Now use new versions of GNU autotools.
+	
+	  - autoconf 2.54 or above
+	  - automake 1.7 or above
+	  - libtool 1.5 or above
+	
+	* autogen.sh: Use libtool-1.5 and automake-1.7.
+	* configure.in: Use autoconf 2.54 or above.
+	* Makefile.am: Use automake-1.7.
+
+2003-04-10  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglcontext-x11.c (gdk_gl_context_impl_x11_finalize) 
+	(gdk_gl_context_new_common, _gdk_gl_context_set_gl_drawable): 
+	Weak ref impl->gldrawable.
+
+	* gdk/win32/gdkglcontext-win32.c (gdk_gl_context_impl_win32_finalize) 
+	(gdk_gl_context_new_common, _gdk_gl_context_set_gl_drawable): 
+	Weak ref impl->gldrawable.
+
+	* gtk/gtkglwidget.c (struct GLWidgetParam): Renamed to
+	GLWidgetPrivate.
+	(gtk_widget_set_gl_capability, gtk_gl_widget_realize) 
+	(gtk_gl_widget_configure_event, gtk_gl_widget_unrealize): 
+	Pass private data to the signal handlers, and don't use
+	g_object_get_qdata().
+	(struct GLWidgetPrivate): Added is_realized flag.
+	(gtk_gl_widget_realize, gtk_gl_widget_configure_event) 
+	(gtk_gl_widget_unrealize): Use is_realized flag to reduce
+	unnecessary function call.
+
+2003-04-10  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gtk/gtkglwidget.c (gtk_gl_widget_configure_event): Don't
+	disconnect this "configure_event" handler to re-realize
+	OpenGL-capable DrawingArea.
+
+2003-04-04  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglpixmap-win32.c
+	(gdk_gl_pixmap_impl_win32_make_context_current): Removed
+	unnecessary sync_gdk() call.
+
+2003-03-30  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* examples/*.c: Include windows.h on Win32 platform.
+
+	* gdk/gdkglglext.h: 
+	* gdk/win32/gdkglwglext.h: Include windows.h on Win32 platform.
+
+2003-03-19  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* configure.in: 
+	* Makefile.am: 
+	* gtkglext.nsi.in: Added NSIS script for Win32 binary installer.
+
+2003-03-17  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.7.1
+
+2003-03-14  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglprivate-win32.h (GDK_GL_PIXMAP_IMPL_WIN32_HDC_GET) 
+	(GDK_GL_PIXMAP_IMPL_WIN32_HDC_RELEASE): Moved into gdkglpixmap-win32.h.
+
+	* gdk/win32/gdkglprivate-win32.h (GDK_GL_WINDOW_IMPL_WIN32_HDC_GET) 
+	(GDK_GL_WINDOW_IMPL_WIN32_HDC_RELEASE): Moved into gdkglwindow-win32.h.
+
+	* gdk/win32/gdkglwindow-win32.c
+	(gdk_gl_window_impl_win32_make_context_current): Don't release DC.
+	With some graphics card, DC owned by rendering thread will be
+	needed. (reported by Bill Souliotis)
+
+	* gdk/win32/gdkgldrawable-win32.c (gdk_win32_gl_drawable_hdc_get) 
+	(gdk_win32_gl_drawable_hdc_release): Use new HDC_GET() and
+	HDC_RELEASE() macros defined in gdkglprivate-win32.h.
+
+	* gdk/win32/gdkglpixmap-win32.c (_gdk_win32_gl_pixmap_hdc_get) 
+	(_gdk_win32_gl_pixmap_hdc_release): Removed. Use new HDC_GET() and
+	HDC_RELEASE() macros defined in gdkglprivate-win32.h.
+
+	* gdk/win32/gdkglwindow-win32.c (_gdk_win32_gl_window_hdc_get) 
+	(_gdk_win32_gl_window_hdc_release): Removed. Use new HDC_GET() and
+	HDC_RELEASE() macros defined in gdkglprivate-win32.h.
+
+	* gdk/win32/gdkglprivate-win32.h: Added new HDC_GET() and
+	HDC_RELEASE() macro.
+
+2003-03-10  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gtk/gtkglwidget.c (gtk_widget_set_gl_capability) 
+	(gtk_gl_widget_style_set): If "style_set" signal is emitted, set a
+	background of "None" on window to avoid AIX X server crash.
+
+2003-03-08  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* examples/*.c (toggle_animation): Call gtk_widget_queue_draw() if
+	animation is turned off.
+
+	* autogen.sh: Added libtoolize --force.
+
+	* examples/*.c: Set top-level window's resize_mode to
+	GTK_RESIZE_IMMEDIATE and reallocate_redraws to TRUE.
+
+	* examples/low-level.c (configure_event, expose_event): wait_gdk()
+	is unnecessary.
+
+	* gdk/win32/gdkglwindow-win32.c
+	(gdk_gl_window_impl_win32_gl_drawable_interface_init): Set
+	iface->gl_begin to gdk_gl_window_impl_win32_make_context_current.
+
+	* gdk/x11/gdkglwindow-x11.c
+	(gdk_gl_window_impl_x11_gl_drawable_interface_init): Set
+	iface->gl_begin to gdk_gl_window_impl_x11_make_context_current.
+
+	* gdk/x11/gdkglpixmap-x11.c
+	(gdk_gl_pixmap_impl_x11_gl_drawable_interface_init): Set
+	iface->gl_begin to gdk_gl_pixmap_impl_x11_make_context_current.
+
+	* gdk/x11/gdkglwindow-x11.c (gdk_gl_window_impl_x11_gl_begin):
+	_gdk_gl_drawable_impl_x11_wait_gdk() is unnecessary.
+
+2003-03-08  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkglwindow.c (gdk_window_set_gl_capability): Unset
+	window's background pixmap explicitly to avoid AIX X server crash.
+	(reported and solved by Bill Souliotis)
+
+2003-03-04  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglglxext.h: Added #ifndef directive to disable
+	GLX*SGIX typedef.
+
+	* gdk/gdkglconfig.c (gdk_gl_config_is_double_buffered): Returns
+	FALSE if as_single_mode is TRUE.
+
+	* gdk/gdkglinit.h: 
+	* gdk/gdkglinit.c: 
+	* gtk/gtkglinit.h: 
+	* gtk/gtkglinit.c: Use int* and char*** for args.
+
+	* gdk/gdkglshapes.h: 
+	* gdk/gdkglshapes.c: Don't use GLtypes in API.
+
+2003-02-24  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/GL/Makefile.am: Fixed header installation problem.
+
+	* gtkglext.spec.in: 
+	* configure.in: Re-enabled configure to build static libraries as
+	default.
+
+2003-02-23  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* configure.in: Use AM_PATH_GLIB_2_0 and AM_PATH_GTK_2_0 macros
+	for testing GTK libraries.
+
+	* m4macros/gtkglext.m4: Added AC_GTKGLEXT_SUPPORTS_MULTIHEAD macro
+	for checking whether GtkGLExt supports multihead.
+
+	* configure.in: 
+	* Makefile.am: 
+	* m4macros/Makefile.am: 
+	* m4macros/gtkglext.m4: Added AM_PATH_GTKGLEXT_1_0 macro for
+	checking GtkGLExt library.
+
+2003-02-13  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkgltokens.h (enum GdkGLBufferMask): Fixed comma at end of
+	enumerator list. (reported by Thomas Zimmermann)
+
+2003-02-12  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglconfig-win32.c (_gdk_win32_gl_print_pfd): Print
+	PFD_SWAP_LAYER_BUFFERS bit state.
+
+	* gdk/win32/gdkglwin32.h: Define PFD_SWAP_LAYER_BUFFERS (MinGW's
+	wingdi.h bug).
+
+	* examples/wglinfo.c: 
+	* examples/Makefile.am: 
+	* examples/Makefile.msc: 
+	* examples/Makefile.mingw: Added wglinfo.c provided by OpenGL.org.
+
+2003-01-30  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.7.0
+
+	* gtk/gtkglwidget.c (gtk_widget_set_gl_capability) 
+	(gl_param_destroy): Weak ref glparam->share_list.
+
+2003-01-29  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkglconfig.[ch] (gdk_gl_config_get_layer_plane): Added.
+
+	* gdk/gdkglconfig.[ch] (gdk_gl_config_get_n_sample_buffers):
+	Added.
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_init_attrib): 
+	* gdk/win32/gdkglconfig-win32.c (gdk_gl_config_init_attrib): 
+	* gdk/gdkglconfig.h (struct _GdkGLConfig): Removed is_multisample
+	flag and added n_sample_buffers member.
+
+	* gdk/gdkglconfig.[ch] (gdk_gl_config_get_n_aux_buffers): Added.
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_init_attrib): 
+	* gdk/win32/gdkglconfig-win32.c (gdk_gl_config_init_attrib): 
+	* gdk/gdkglconfig.h (struct _GdkGLConfig): Added n_aux_buffers
+	member.
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_init_attrib): 
+	* gdk/win32/gdkglconfig-win32.c (gdk_gl_config_init_attrib): 
+	* gdk/gdkglconfig.h (struct _GdkGLConfig): Removed is_luminance
+	flag.
+
+	* gtk/gtkglwidget.c (gtk_widget_set_gl_capability) 
+	(gl_param_destroy): Added and unref glparam->glconfig.
+
+	* gtk/gtkglwidget.c (gtk_widget_set_gl_capability) 
+	(gtk_widget_get_gl_config): Removed quark_gl_config and use
+	quark_gl_param qdata.
+
+	* gtk/Makefile.am (gtkglext_c_sources): 
+	* gtk/gtkglwidgetparam.[ch]: Removed.
+
+	* gtk/gtkglwidget.c (gtk_widget_set_gl_capability): Don't use
+	GBoxed GLWidgetParam.
+	(param_destroy): Removed.
+
+	* gdk/x11/gdkglpixmap-x11.c (gdk_gl_pixmap_new): 
+	* gdk/win32/gdkglpixmap-win32.c (gdk_gl_pixmap_new): 
+	* gdk/gdkglpixmap.c (gdk_gl_pixmap_finalize): Weak ref
+	glpixmap->drawable.
+
+	* gdk/x11/gdkglwindow-x11.c (gdk_gl_window_new): 
+	* gdk/win32/gdkglwindow-win32.c (gdk_gl_window_new): 
+	* gdk/gdkglwindow.c (gdk_gl_window_finalize): Weak ref
+	glwindow->drawable.
+
+	* gdk/gdkglconfig.h (GdkGLConfigMode): Removed
+	GDK_GL_MODE_LUMINANCE bit mask (it will not be supported in
+	gtkglext-1.0).
+
+	* examples/coolwave.c (realize): 
+	* gdk/gdkglglext.c: 
+	* gdk/win32/gdkglwglext.c: 
+	* gdk/x11/gdkglglxext.c: 
+	* gdk/win32/gdkglquery-win32.c (gdk_gl_get_proc_address): 
+	* gdk/x11/gdkglquery-x11.c (gdk_gl_get_proc_address): 
+	* gdk/gdkglquery.h: Renamed gdk_gl_query_get_proc_address() to
+	gdk_gl_get_proc_address().
+
+2003-01-28  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglx.h: 
+	* gdk/x11/gdkglconfig-x11.c (gdk_x11_gl_config_is_mesa_glx):
+	Added.
+
+	* gdk/win32/gdkglcontext-win32.c (gdk_gl_context_get_colormap): 
+	* gdk/x11/gdkglcontext-x11.c (gdk_gl_context_get_colormap): 
+	* gdk/gdkglcontext.h: Removed gdk_gl_context_get_colormap() function.
+
+	* gdk/win32/gdkglwindow-win32.c (gdk_win32_gl_window_make_context_current): 
+	* gdk/x11/gdkglwindow-x11.c (gdk_x11_gl_window_make_context_current): 
+	* gdk/win32/gdkglpixmap-win32.c (gdk_win32_gl_pixmap_make_context_current): 
+	* gdk/x11/gdkglpixmap-x11.c (gdk_x11_gl_pixmap_make_context_current): 
+	* gdk/win32/gdkglcontext-win32.c
+	(_gdk_gl_context_set_gl_drawable_read): 
+	* gdk/x11/gdkglcontext-x11.c
+	(_gdk_gl_context_set_gl_drawable_read): Comment out. Currently unused.
+
+	* gdk/gdkgldrawable.c (gdk_gl_drawable_get_current): Use
+	gdk_gl_context_get_gl_drawable().
+
+	* gdk/x11/gdkglcontext-win32.c
+	* gdk/x11/gdkglcontext-x11.c
+	* gdk/gdkglcontext.c (gdk_gl_context_get_gl_drawable): Moved into
+	gdkglcontext-(x11|win32).c.
+
+	* gdk/x11/gdkglcontext-win32.c
+	* gdk/x11/gdkglcontext-x11.c
+	* gdk/gdkglcontext.c (gdk_gl_context_class_init): Removed
+	gldrawable* properties.
+	(gdk_gl_context_set_property, gdk_gl_context_get_property): Removed.
+
+	* gdk/x11/gdkglcontext-win32.h (struct _GdkGLContextImplWin32): 
+	* gdk/x11/gdkglcontext-x11.h (struct _GdkGLContextImplX11): 
+	* gdk/gdkglcontext.h (struct _GdkGLContext): Moved gldrawable*
+	members into struct _GdkGLContextImpl(X11|Win32).
+
+	* gdk/win32/gdkglwindow-win32.c (gdk_gl_window_impl_win32_constructor) 
+	(gdk_gl_window_impl_win32_init): Removed.
+	(gdk_gl_window_new): Rewritten.
+
+	* gdk/win32/gdkglpixmap-win32.c (gdk_gl_pixmap_impl_win32_constructor) 
+	(gdk_gl_pixmap_impl_win32_init): Removed.
+	(gdk_gl_pixmap_new): Rewritten.
+
+	* gdk/x11/gdkglwindow-x11.c (gdk_gl_window_impl_x11_set_property) 
+	(gdk_gl_window_impl_x11_get_property): Removed.
+	(gdk_gl_window_new): Rewritten.
+
+	* gdk/gdkglwindow.c (gdk_gl_window_set_property) 
+	(gdk_gl_window_get_property): Removed.
+	(_gdk_gl_window_is_double_buffered, _gdk_gl_window_get_gl_config):
+	Moved into gdkglwindow-x11.c.
+
+	* gdk/gdkglwindow.h (struct _GdkGLWindow): 
+
+	* gdk/x11/gdkglpixmap-x11.c (gdk_gl_pixmap_new): Rewritten.
+
+	* gdk/gdkglpixmap.c (gdk_gl_pixmap_set_property) 
+	(gdk_gl_pixmap_get_property): Removed.
+
+	* gdk/x11/gdkglpixmap-x11.c (gdk_gl_pixmap_impl_x11_set_property) 
+	(gdk_gl_pixmap_impl_x11_get_property): Removed.
+
+	* gdk/gdkglpixmap.c (_gdk_gl_pixmap_is_double_buffered)
+	(_gdk_gl_pixmap_get_gl_config): Moved into gdkglpixmap-x11.c.
+
+	* gdk/gdkglpixmap.h (struct _GdkGLPixmap): Removed glconfig member.
+
+	* gdk/win32/gdkglcontext-win32.c (gdk_gl_context_impl_win32_set_property) 
+	(gdk_gl_context_impl_win32_get_property): Removed.
+	(gdk_gl_context_new_common): Rewritten.
+
+	* gdk/x11/gdkglcontext-x11.c (gdk_gl_context_new_common):
+	Rewritten.
+
+	* gdk/x11/gdkglcontext-x11.c (gdk_gl_context_impl_x11_constructor) 
+	(gdk_gl_context_impl_x11_set_property) 
+	(gdk_gl_context_impl_x11_get_property): Removed.
+
+	* gdk/gdkglcontext.c (gdk_gl_context_get_gl_config)
+	(gdk_gl_context_get_share_list, gdk_gl_context_is_direct)
+	(gdk_gl_context_get_render_type, gdk_gl_context_get_colormap):
+	Moved into gdkglcontext-x11.c
+
+	* gdk/gdkglcontext.c (gdk_gl_context_class_init) 
+	(gdk_gl_context_set_property, gdk_gl_context_finalize): 
+	* gdk/gdkglcontext.h (struct _GdkGLContext): Removed private
+	members (glconfig, share_list, is_direct, and render_type).
+
+	* gdk/win32/gdkglconfig-win32.c (gdk_gl_config_impl_win32_constructor) 
+	(gdk_gl_config_impl_win32_set_property) 
+	(gdk_gl_config_impl_win32_get_property): Removed.
+	(gdk_gl_config_new_common) 
+	(gdk_win32_gl_config_new_from_pixel_format): Rewritten.
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_new_common) 
+	(gdk_x11_gl_config_new_from_visualid_common): Rewritten.
+
+	* gdk/gdkglconfig.h (struct _GdkGLConfigClass): Removed get_attrib
+	member.
+	(struct _GdkGLConfig): Removed private members (screen, colormap,
+	depth).
+
+	* gdk/gdkglconfig.c (gdk_gl_config_get_screen) 
+	(gdk_gl_config_get_attrib, gdk_gl_config_get_colormap) 
+	(gdk_gl_config_get_visual, gdk_gl_config_get_depth): Moved into
+	gdkglconfig-(x11|win32).c
+	(gdk_gl_config_set_property, gdk_gl_config_get_property) 
+	(gdk_gl_config_class_init): Removed.
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_impl_x11_constructor) 
+	(gdk_gl_config_impl_x11_set_property) 
+	(gdk_gl_config_impl_x11_get_property): Removed.
+
+2003-01-25  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglcontext-win32.h (struct _GdkGLContextImplWin32):
+	Removed is_constructed flag.
+	* gdk/win32/gdkglcontext-win32.c (gdk_gl_context_impl_win32_init) 
+	(gdk_gl_context_impl_win32_constructor): Removed.
+	(gdk_gl_context_new_common): Removed unnecessary g_object_new()
+	object instantiation check.
+
+	* gdk/win32/gdkglconfig-win32.h (struct _GdkGLConfigImplWin32):
+	Removed is_constructed flag.
+	* gdk/win32/gdkglconfig-win32.c (gdk_gl_config_impl_win32_init):
+	Removed.
+	(gdk_gl_config_impl_win32_constructor, gdk_gl_config_new_common) 
+	(gdk_win32_gl_config_new_from_pixel_format): Removed unnecessary
+	g_object_new() object instantiation check.
+
+	* gdk/x11/gdkglwindow-x11.h (struct _GdkGLWindowImplX11): Removed
+	is_constructed flag.
+	* gdk/x11/gdkglwindow-x11.c (gdk_gl_window_impl_x11_constructor): 
+	(gdk_gl_window_impl_x11_init): Removed.
+	(gdk_gl_window_impl_x11_class_init): Added glxwindow property.
+	(gdk_gl_window_new): Construct by using glxwindow property.
+
+	* gdk/x11/gdkglpixmap-x11.h (struct _GdkGLPixmapImplX11): Removed
+	is_constructed flag.
+	* gdk/x11/gdkglpixmap-x11.c (gdk_gl_pixmap_impl_x11_constructor) 
+	(gdk_gl_pixmap_impl_x11_init): Removed.
+	(gdk_gl_pixmap_impl_x11_class_init): Added glxpixmap property.
+	(gdk_gl_pixmap_new): Create GLXPimxpa in gdk_gl_pixmap_new()
+	instead of gdk_gl_pixmap_impl_x11_constructor().
+
+	* gdk/x11/gdkglconfig-x11.h (struct _GdkGLConfigImplX11): Removed
+	is_constructed flag.
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_new_common) 
+	(gdk_x11_gl_config_new_from_visualid_common): Removed unnecessary
+	g_object_new() object instantiation check.
+	(gdk_gl_config_impl_x11_init): Removed.
+
+	* gdk/x11/gdkglcontext-x11.h (struct _GdkGLContextImplX11):
+	Removed is_constructed flag.
+	* gdk/x11/gdkglcontext-x11.c (gdk_gl_context_new_common): Removed
+	unnecessary g_object_new() object instantiation check.
+	(gdk_gl_context_impl_x11_init): Removed.
+
+	* gdk/x11/gdkglglxext.h: Added GLX_SGIX_fbconfig specific typedef.
+
+	* configure.in: Added checks for GLX_SGIX_fbconfig specific type
+	definitions.
+	Added check for __GLXextFuncPtr typedef in SGI's glxext.h.
+
+2003-01-24  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* configure.in: Modified X11 library dependencies.
+	Additional SGI's GLU checks.
+	Modified Win32 library dependencies.
+
+	(Bugs item #672485, Jussi Laako)
+
+	* gdk/x11/gdkglglxext.h: Suppress 'redefined' warnings on Solaris 8.
+
+	* gdk/x11/gdkglglxext.h: typedef GLXPbufferSGIX for some platforms
+	which provide GLX_SGIX_pbuffer support without GLXPbufferSGIX type
+	definition.
+
+	* configure.in: Check GLXPbufferSGIX typedef for some platforms
+	which have bad GLX headers (Solaris 8, etc.).
+
+2003-01-23  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglconfig-x11.c: Use macros defined in config.h.
+
+	* configure.in: Modified Xmu library checks.
+	Modified gdk_x11_colormap_foreign_new check.
+
+2003-01-22  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* examples/pixmap-mixed.c (configure_event): 
+	* examples/pixmap.c (configure_event): 
+	* examples/low-level.c (realize): Modified for new
+	gdk_gl_context_new() function.
+
+	* gtk/gtkglwidget.c (gtk_widget_create_gl_context): Modified for
+	new gdk_gl_context_new() function.
+
+	* gdk/win32/gdkglprivate-win32.h: 
+	* gdk/win32/gdkglcontext-win32.c (_gdk_win32_gl_context_new): 
+	* gdk/x11/gdkglprivate-x11.h: 
+	* gdk/x11/gdkglcontext-x11.c (_gdk_x11_gl_context_new): 
+	* gdk/gdkgldrawable.h (struct _GdkGLDrawableClass): 
+	* gdk/gdkglcontext.[ch] (gdk_gl_context_new): Removed glconfig
+	argument.
+
+2003-01-21  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* examples/shapes.c: 
+	* examples/logo.c: 
+	* examples/gears.c: 
+	* examples/coolwave.c: 
+	* gdk/gdkglshapes.c (doughnut): Use G_PI instead of M_PI.
+
+	* gdk/gdkglpixmap.c (gl_pixmap_destroy): 
+	* gdk/gdkglwindow.c (gl_window_destroy): Removed.
+
+	* gtk/gtkglwidget.c (gtk_widget_create_gl_context): Added.
+	(gtk_widget_gl_realize, gtk_widget_get_gl_context): GL context is
+	created by gtk_widget_get_gl_context() instead of
+	gtk_widget_gl_realize().
+
+2003-01-08  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkglconfig.c (gdk_gl_config_new_internal) 
+	(gdk_gl_config_new_by_mode, gdk_gl_config_new_by_mode_for_screen): 
+	* gdk/gdkglconfig.h: Fixed display mode bit mask.
+
+2003-01-08  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkgltokens.h: Cleanup.
+
+2003-01-07  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkgltokens.h: Removed tokens seemed unnecessary.
+
+2002-12-24  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* setup-gtkglext.sh: Added.
+
+2002-12-22  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.6.1
+
+	* gdk/x11/gdkglcontext-x11.c (gdk_gl_context_remove): 
+	* gdk/win32/gdkglcontext-win32.c (gdk_gl_context_remove): 
+	Set gl_context_ht NULL if hash table is destroyed.
+
+	* gdk/win32/gdkglcontext-win32.c
+	(gdk_win32_gl_context_foreign_new): 
+	* gdk/win32/gdkglconfig-win32.c (gdk_gl_config_new) 
+	(gdk_gl_config_new_for_screen): 
+	* gdk/x11/gdkglcontext-x11.c (gdk_x11_gl_context_foreign_new): 
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_new) 
+	(gdk_gl_config_new_for_screen) 
+	(gdk_x11_gl_config_new_from_visualid_for_screen): Added function
+	argument checks.
+
+2002-12-22  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_new) 
+	(gdk_gl_config_new_for_screen) 
+	(gdk_x11_gl_config_new_from_visualid) 
+	(gdk_x11_gl_config_new_from_visualid_for_screen): Cleanup
+	duplicated code.
+
+	* gdk/win32/gdkglconfig-win32.c (gdk_gl_config_new) 
+	(gdk_gl_config_new_for_screen): Cleanup duplicated code.
+
+2002-12-21  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglcontext-win32.c (_gdk_win32_gl_context_new) 
+	(gdk_gl_context_impl_win32_constructor): wglCreateContext() call
+	was moved into _gdk_win32_gl_context_new().
+	(gdk_win32_gl_context_foreign_new): Added.
+
+	* gdk/win32/gdkglconfig-win32.c
+	(gdk_win32_gl_config_new_from_pixel_format): Added
+
+	* gdk/win32/gdkglconfig-win32.c (gdk_gl_config_new) 
+	(gdk_gl_config_new_for_screen) 
+	(gdk_gl_config_impl_win32_constructor): Rewritten. Now PFD
+	construction routines ware moved into config_new*().
+
+	* gdk/x11/gdkglcontext-x11.c (_gdk_x11_gl_context_new) 
+	(gdk_gl_context_impl_x11_constructor): glXCreateContext() call was
+	moved into _gdk_x11_gl_context_new().
+	(gdk_x11_gl_context_foreign_new): Added.
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_x11_gl_config_new_from_visualid) 
+	(gdk_x11_gl_config_new_from_visualid_for_screen): Added.
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_new) 
+	(gdk_gl_config_new_for_screen): Rewritten. Now glXChooseVisual()
+	is done by these config_new() functions.
+
+2002-12-20  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglconfig-x11.c: 
+	Removed gdk_gl_config_fb_configuration() function.
+	Now glXChooseVisual() is done by gdk_gl_config_choose_visual(),
+	and other works such as colormap setup are done by
+	gdk_gl_config_impl_x11_constructor().
+
+2002-12-16  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdkglext-uninstalled.pc.in: 
+	* gtkglext-uninstalled.pc.in: Added multihead variable.
+
+2002-12-15  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* examples/Makefile.msc: 
+	* examples/Makefile.am: Added sample makefile for compiling
+	example programs using MSVC.
+
+2002-12-14  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.6.0
+
+	* examples/Makefile.mingw: Sample makefile for compiling example
+	programs under MinGW/Cygwin environment.
+
+	* gdk/gdkglext-gtk20.def: 
+	* gdk/Makefile.am: 
+	* configure.in: Added MULTIHEAD_SUPPORT AM_CONDITIONAL. On win32
+	platforms, use gdkglext-gtk20.def if GTK doesn't support multihead.
+
+	* gdk/win32/gdkglpixmap-win32.c (gdk_gl_pixmap_impl_win32_constructor): 
+	* gdk/win32/gdkglwindow-win32.c (gdk_gl_window_impl_win32_constructor): 
+	* gdk/win32/gdkglprivate-win32.h: 
+	* gdk/win32/gdkglconfig-win32.c (_gdk_win32_gl_print_pfd) 
+	(gdk_gl_config_impl_win32_constructor): Print PFD debug message.
+
+	* gdk/win32/gdkglwindow-win32.c
+	(gdk_gl_window_impl_win32_constructor): Use ChoosePixelFormat()
+	instead of _gdk_win32_gl_config_find_pixel_format().
+
+	* gdk/win32/gdkglconfig-win32.c (gdk_gl_config_setup_colormap):
+	Added new colormap setup routine (RGB palette management is not
+	implemented yet).
+
+2002-12-13  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* examples/shapes.c: Added new shapes demo.
+
+	* gdk/gdkglshapes.[ch]: Added new functions for generating easily
+	recognizable 3D geometric objects. This code is imported from
+	GLUT.
+
+2002-12-12  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* docs/reference/gtkglext/running.sgml: 
+	* gtk/gtkglinit.c (gtk_gl_parse_args): Support
+	GTK_GL_INSTALL_COLORMAP environment variable.
+
+	* configure.in: GTK style --enable-debug option.
+
+2002-12-11  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* docs/reference/gtkglext/Makefile.am: 
+	* docs/reference/gtkglext/running.sgml: 
+	* docs/reference/gtkglext/building.sgml: Added new documentations.
+
+	* gtk/gtkglinit.c (gtk_gl_parse_args): 
+	* gtk/gtkglwidget.c (gtk_widget_set_gl_capability) 
+	(gtk_widget_gl_parent_set): If --install-gl-colormap command line
+	option is given, gtk_widget_set_gl_capability() tries to set
+	OpenGL window's colormap to the top-level window. If window
+	manager doesn't watch the WM_COLORMAP_WINDOWS property on the
+	top-level window, we have to set OpenGL window's colormap to the
+	top-level window, especially in color index mode (color index mode
+	uses own private colormap).
+
+	* configure.in: Bump API version to 1.0.
+
+	* examples/low-level.c: 
+	* examples/simple.c: 
+	* examples/simple-mixed.c: 
+	* examples/pixmap.c: 
+	* examples/pixmap-mixed.c: 
+	* examples/color.c: 
+	* examples/font.c: 
+	* examples/logo.c: 
+	* examples/gears.c: 
+	* examples/multiarb.c: 
+	* examples/viewlw.c: 
+	* examples/rotating-square.c: 
+	* examples/coolwave.c: 
+	* examples/template.c: Call gtk_gl_init() to init library.
+	gdk_gl_query_extension() call is no longer needed.
+
+	* gtk/gtkgldebug.c: 
+	* gdk/gdkgldebug.c: Removed.
+
+	* gtk/gtkglinit.c (gtk_gl_parse_args, gtk_gl_init_check) 
+	(gtk_gl_init): Added GtkGLExt library initialization routines.
+	GTK style debug command line options (--gtk-gl-debug,
+	--gtk-gl-no-debug) and environment variable (GTK_GL_DEBUG) have
+	been supported.
+
+	* gdk/gdkglinit.[ch] (gdk_gl_parse_args, gdk_gl_init_check) 
+	(gdk_gl_init): Added GdkGLExt library initialization routines.
+	GTK style debug command line options (--gdk-gl-debug,
+	--gdk-gl-no-debug) and environment variable (GDK_GL_DEBUG) have
+	been supported.
+
+2002-12-11  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gtk/gtkglwidget.c (gtk_widget_set_gl_capability): Check whether
+	given widget is already OpenGL-capable.
+	(gtk_widget_gl_realize): gtk_quit_add_destroy() call has been
+	moved into gtk_widget_set_gl_capability().
+	(gtk_widget_get_gl_config): Modified for non-realized widget.
+	(gtk_widget_is_gl_capable): Use gtk_widget_get_gl_config().
+
+	* gtk/gtkglwidget.c (gtk_widget_destroy_gl_context)
+	(gtk_widget_gl_unrealize): gtk_widget_destroy_gl_context() has
+	been removed, and its destruction code has been moved into
+	gtk_widget_gl_unrealize().
+
+	* gtk/gtkglwidgetparam.h (struct _GtkGLWidgetParam): Removed
+	quit_handler_id field.
+
+	* gtk/gtkglwidget.c (gtk_widget_gl_realize) 
+	(gtk_widget_gl_unrealize): Simplify GL context destruction on
+	quit. Now use gtk_quit_add_destroy() instead of gtk_quit_add().
+	Complicated quit handler management is no longer needed.
+
+	* gtk/gtkglwidget.c (gtk_widget_gl_configure_event): Clean up
+	duplicated code.
+
+2002-12-10  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* examples/low-level.c: 
+	* examples/simple.c: 
+	* examples/simple-mixed.c: 
+	* examples/pixmap.c: 
+	* examples/pixmap-mixed.c: 
+	* examples/color.c: 
+	* examples/font.c: 
+	* examples/logo.c: 
+	* examples/gears.c: 
+	* examples/multiarb.c: 
+	* examples/viewlw.c: 
+	* examples/rotating-square.c: 
+	* examples/coolwave.c: 
+	* examples/template.c: Clean up codes. Set appropriate OpenGL
+	colormap to the top-level window.
+
+2002-12-09  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* examples/rotating-square.c: 
+	* examples/coolwave.c: 
+	* examples/template.c: Added new useful demo programs written by
+	Alif Wahid. Thank you, Alif ;-)
+
+2002-12-04  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* examples/readtex.[ch]: 
+	* examples/multiarb.c: GL_ARB_multitexture extension demo.
+	This program shows how to use gdk_gl_get_"extension_name"()
+	run-time OpenGL extension testing utilities.
+
+2002-12-03  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdkglext.pc.in: 
+	* gtkglext.pc.in: Added "multihead" variable.
+
+	* gdk/gdkgldefs.h: Include gdkglext-config.h.
+
+	* gdk/Makefile.am: 
+	* configure.in: Generates gdkglext-config.h configuration header.
+
+2002-11-30  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_setup_colormap):
+	Avoid writable colormap allocation on machines which have
+	transparent pixel < visual->map_entries.
+
+	* gdk/x11/gdkgloverlay-x11.[ch]: Added SERVER_OVERLAY_VISUALS
+	suppport inspection code.
+
+2002-11-27  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_fb_configuration) 
+	(gdk_gl_config_setup_colormap) 
+	(gdk_gl_config_get_std_rgb_colormap): Colormap setup routines have
+	been rewritten. GdkGLConfig now supports colormap sharing using ICCCM
+	convention (GTK-2.1 or above).
+
+	* configure.in: Added gdk_x11_colormap_foreign_new() function check.
+
+2002-11-24  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglpixmap-win32.c (gdk_win32_gl_pixmap_make_context_current): 
+	* gdk/win32/gdkglwindow-win32.c (gdk_win32_gl_window_make_context_current): 
+	* gdk/x11/gdkglpixmap-x11.c (gdk_x11_gl_pixmap_make_context_current): 
+	* gdk/x11/gdkglwindow-x11.c (gdk_x11_gl_window_make_context_current): 
+	* gdk/win32/gdkglcontext-win32.c (_gdk_win32_gl_context_new): 
+	* gdk/x11/gdkglcontext-x11.c (_gdk_x11_gl_context_new): 
+	* gdk/gdkglcontext.c (_gdk_gl_context_set_gl_drawable_read): 
+	* gdk/gdkglcontext.h (struct _GdkGLContext): Added gldrawable_read member.
+
+2002-11-24  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkgldrawable.[ch] (gdk_gl_drawable_get_current): Added
+	gdk_gl_drawable_get_current () function.
+
+	* gdk/win32/gdkglcontext-win32.c (gdk_gl_context_get_current): 
+	* gdk/x11/gdkglcontext-x11.c (gdk_gl_context_get_current): 
+	* gdk/gdkglcontext.h: Added gdk_gl_context_get_current () function.
+
+2002-11-21  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglquery-win32.c (gdk_win32_gl_query_wgl_extension):
+	Added.
+
+	* gdk/x11/gdkglquery-x11.c (gdk_x11_gl_query_glx_extension): Added.
+
+2002-11-18  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkglglext.[ch]: Added OpenGL extension support.
+
+2002-11-16  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* configure.in: Removed --enable-mesa-ext option.
+
+	* gdk/{x11,win32}/Makefile.am: Location of platform-specific
+	headers have been changed to ${includedir}/gdk/{x11,win32}.
+	
+	* gdk/win32/gdkglwglext.[ch]: Added WGL extension support.
+
+2002-11-16  wrobell  <wrobell@ite.pl>
+
+	* gdk/x11/gdkglconfig-x11.c (configure_gl): Fix for GTK+-2.1.
+
+	* gdk/gdkglwindow.c (gdk_gl_window_class_init) 
+	(gdk_gl_window_draw_pixbuf): 
+	* gdk/gdkglpixmap.c (gdk_gl_pixmap_class_init) 
+	(gdk_gl_pixmap_draw_pixbuf): GdkDrawableClass::draw_pixbuf() fix
+	for GTK+-2.1.
+
+2002-11-15  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglglxext.[ch]: Added GLX extension support.
+
+	* gdk/gdkglquery.h: 
+	* gdk/x11/gdkglquery-x11.c (gdk_gl_query_get_proc_address): Added
+	new get_proc_address function.
+
+	* configure.in: GLU checks have been modified for Mesa 5.0. Added
+	gmodule package to PKG_CHECK_MODULES. Disabled static libraries by
+	default.
+
+2002-10-09  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* configure.in: Added checks for win32 gcc3 "-mms-bitfields"
+	option.
+
+2002-10-03  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* configure.in: Added -lm to $LIBS for OpenGL library check.
+
+2002-09-23  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglpixmap-x11.c: 
+	* gdk/x11/gdkglwindow-x11.c: 
+	* gdk/win32/gdkglpixmap-win32.c: 
+	* gdk/win32/gdkglwindow-win32.c: Added gl_begin() and
+	gl_end(). Reduced unnecessary synchronization.
+
+	* gdk/gdkgldrawable.h (struct _GdkGLDrawableClass): 
+	* gdk/gdkgldrawable.c (gdk_gl_drawable_gl_begin) 
+	(gdk_gl_drawable_gl_end): gl_begin() and gl_end() ware changed to
+	be interface.
+
+2002-09-01  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.5.1.
+
+2002-08-31  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglpixmap-x11.c (gdk_x11_gl_pixmap_swap_buffers): 
+	* gdk/x11/gdkglwindow-x11.c (gdk_x11_gl_window_swap_buffers):
+	Fixed to use GLXDrawable.
+
+	* gtk/gtkglwidget.[ch]: 
+	* gtk/gtkglwidgetparam.h (struct _GtkGLWidgetParam): 
+	* gdk/gdkglcontext.[ch]: render_type changed gint -> int.
+
+	* gdk/x11/gdkglfont-x11.c
+	* gdk/win32/gdkglfont-win32.c
+	* gdk/gdkglfont.h: gint -> int.
+
+	* gdk/gdkglwindow.h (struct _GdkGLWindow): 
+	* gdk/gdkglpixmap.h (struct _GdkGLPixmap): wrapper -> drawable.
+
+2002-08-29  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* All sources have been refined, and unnecessary functions have
+	been removed.
+
+	* gdk/gdkglcontext.c: 
+	* gdk/gdkglconfig.c: Some return value bugs have been fixed.
+
+2002-08-19  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkgldrawable.h (struct _GdkGLDrawableClass): 
+	* gdk/gdkglpixmap.c: 
+	* gdk/gdkglwindow.c: 
+	* gdk/x11/gdkglpixmap-x11.c: 
+	* gdk/x11/gdkglwindow-x11.c: 
+	* gdk/win32/gdkglpixmap-win32.c: 
+	* gdk/win32/gdkglwindow-win32.c: Added get_size() interface.
+
+2002-08-14  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* examples/logo-model.[ch]: 
+	* examples/logo-[gtk].c: 
+	* examples/logo.c: Added logo demo.
+
+2002-08-10  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.5.0.
+
+	* gdk/gdkgldefs.h: 
+	* gdk/gdkglversion.[ch]: 
+	* gtk/gtkgldefs.h: 
+	* gtk/gtkglversion.[ch]: Added.
+
+	* gdk/win32/gdkglpixmap-win32.c
+	(gdk_win32_gl_pixmap_make_context_current): make_context_current()
+	does sync_gdk().
+
+2002-08-09  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkglwindow.[ch] (gdk_gl_window_get_window): Added.
+
+	* gdk/gdkglpixmap.[ch] (gdk_gl_pixmap_get_pixmap): Added.
+
+	* gdk/gdkgldrawable.[ch]: Removed get_drawable(), get_size(),
+	get_colormap(), get_visual(), get_depth() functions.
+
+	* Now GdkGLPixmap and GdkGLWindow are GdkDrawable.
+
+	* gdk/gdkglpixmap.[ch]
+	(struct _GdkGLPixmap) 
+	(struct _GdkGLPixmapClass): Modified GdkGLPixmap to be derived
+	from GdkDrawable.
+
+	* gdk/gdkglwindow.[ch]
+	(struct _GdkGLWindow) 
+	(struct _GdkGLWindowClass): Modified GdkGLWindow to be derived
+	from GdkDrawable.
+
+2002-08-07  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkglquery.c (gdk_gl_query_gl_extension): Added.
+
+	* gdk/gdkgltokens.h: Updated.
+
+	* gdk/gdkglconfig.[ch]
+	(gdk_gl_config_get_visual)
+	(gdk_gl_config_is_rgba) 
+	(gdk_gl_config_has_alpha)
+	(gdk_gl_config_has_depth_buffer) 
+	(gdk_gl_config_has_stencil_buffer) 
+	(gdk_gl_config_has_accum_buffer): Added.
+
+	* gdk/x11/gdkglconfig-x11.c:
+	* gdk/win32/gdkglconfig-win32.c:
+	* gdk/gdkglconfig.h (struct _GdkGLConfig): Added some frame buffer
+	attribute flags.
+
+	* gdk/win32/gdkglconfig-win32.c (gdk_gl_config_impl_win32_constructor):
+	Rewritten.
+
+2002-08-06  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkgldrawable.[ch] (gdk_gl_drawable_gl_begin): 
+	* gdk/gdkgldrawable.[ch] (gdk_gl_drawable_gl_end): Changed to function.
+
+	* Win32 implementation have been refined.
+
+	* examples/pixmap-mixed.c: 
+	* examples/simple-mixed.c: Added.
+
+2002-08-03  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkglcontext.[ch]: Added get_gl_drawable(), get_gl_config(),
+	get_share_list(), is_direct(), and get_render_type() functions.
+
+	* gdk/gdkgldrawable.[ch]: Added get_size(), get_colormap(),
+	get_visual(), and get_depth() functions for convenience.
+
+	* gdk/gdkgldrawable.[ch] (struct _GdkGLDrawableClass): Added
+	get_gl_config() and get_drawable() interfaces.
+
+	* gdk/x11/gdkglconfig-x11.h (struct _GdkGLConfigImplX11): Added
+	screen number.
+
+	* gdk/x11/gdkglwindow-x11.c (gdk_gl_window_impl_x11_finalize): 
+	* gdk/x11/gdkglpixmap-x11.c (gdk_gl_pixmap_impl_x11_constructor): 
+	Added Mesa-specific GLX extensions.
+
+2002-08-02  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkglcontext.c (_gdk_gl_context_set_gl_drawable):
+	If glcontext->gldrawable == gldrawable, simply return.
+
+2002-07-29  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.4.1.
+
+	* gtk/gtkglwidget.c (gtk_widget_set_gl_capability): Modified to
+	hold glwidgetparam as qdata, and changed to use
+	param->quit_handler_id to remove the valid quit handler.
+
+2002-07-29  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/Makefile.am: Added enumtypes.[ch] auto-generation feature.
+
+2002-07-28  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglconfig-x11.c: 
+	* gdk/win32/gdkglconfig-win32.c: 
+	* gdk/gdkglconfig.[ch]: attrib_list argument type is changed from
+	gint pointer to int pointer.
+
+2002-07-27  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkglconfig.c (gdk_gl_config_new_by_mode): Added GLUT like
+	configuration function.
+
+	* examples/glxinfo.c: Added.
+
+2002-07-18  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.4.0.
+
+2002-07-17  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglcontext-win32.c (gdk_gl_context_copy): 
+	* gdk/x11/gdkglcontext-x11.c (gdk_gl_context_copy): 
+	* gdk/gdkglcontext.h: Added gdk_gl_context_copy() function.
+
+2002-07-16  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gtk/gtkglwidget.c (gtk_widget_set_gl_capability): Argument order
+	have been changed changed.
+	
+	* gdk/win32/gdkglcontext-win32.c (_gdk_win32_gl_context_new): 
+	* gdk/x11/gdkglcontext-x11.c (_gdk_x11_gl_context_new): 
+	* gdk/gdkgldrawable.h (struct _GdkGLDrawableClass): 
+	* gdk/gdkglcontext.[hc] (gdk_gl_context_new): Argument order have
+	been changed. It is convenient for C++ wrapper GtkGLExtmm.
+
+	* gdkglext and gtkglext docs have been merged into one gtkglext
+	doc module.
+
+	* gdk/gdkgl.h: 
+	* gdk/win32/gdkglquery-win32.c: 
+	* gdk/x11/gdkglquery-x11.c: 
+	* gdk/gdkglquery.h: Query functions have been moved to gdkglquery.h.
+
+2002-07-05  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglpixmap-win32.c: 
+	* gdk/win32/gdkglwindow-win32.c: 
+	* gdk/gdkglprivate.h: 
+	* gdk/gdkglpixmap.c (_gdk_gl_pixmap_real_drawable): 
+	* gdk/gdkglwindow.c (_gdk_gl_window_real_drawable): 
+	* gdk/gdkgldrawable.h (struct _GdkGLDrawableClass): Removed
+	real_drawable interface.
+
+	* gdk/x11/gdkgldrawable-x11.c (_gdk_x11_gl_drawable_swap_buffers):
+	Removed.
+
+	* gdk/x11/gdkglpixmap-x11.c (gdk_x11_gl_pixmap_swap_buffers): 
+	* gdk/x11/gdkglwindow-x11.c (gdk_x11_gl_window_swap_buffers): Use
+	them instead of _gdk_gl_drawable_swap_buffers().
+
+2002-07-04  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.3.2.
+
+	* gdk/x11/gdkglfont-x11.c: 
+	* gdk/gdkglfont.h: 
+	* gdk/x11/gdkglconfig-x11.c: 
+	* gdk/gdkglconfig.[hc]: 
+	* gdk/x11/gdkgl-x11.c: 
+	* gdk/gdkgl.h: Multihead support functions have been implemented.
+	But they are not fully tested yet.
+
+	* gdk/win32/gdkglwindow-win32.c: 
+	* gdk/win32/gdkglpixmap-win32.c: Changed to use internal macros in
+	gdkglwin32.h.
+
+	* gdk/win32/gdkglwin32.h: Added internal use macros.
+
+	* gdk/x11/gdkglwindow-x11.c: 
+	* gdk/x11/gdkglpixmap-x11.c: 
+	* gdk/x11/gdkglcontext-x11.c: Changed to use internal macros in
+	gdkglx.h.
+
+	* gdk/x11/gdkglwindow-x11.c (gdk_x11_gl_window_get_xdisplay): 
+	* gdk/x11/gdkglpixmap-x11.c (gdk_x11_gl_pixmap_get_xdisplay): 
+	* gdk/x11/gdkglcontext-x11.c (gdk_x11_gl_context_get_xdisplay): Removed.
+
+	* gdk/x11/gdkglx.h: Added internal use macros.
+
+	* gdk/x11/gdkglfont-x11.c: 
+	* gdk/x11/gdkglconfig-x11.c: 
+	* gdk/x11/gdkgl-x11.c: GdkDisplay and GdkScreen related changes.
+
+	* configure.in: Added MULTIHEAD_SAFE.
+
+	* gdk/x11/gdkglwindow-x11.c (gdk_gl_window_impl_x11_constructor): 
+	* gdk/x11/gdkglpixmap-x11.c (gdk_gl_pixmap_impl_x11_constructor): 
+	* gdk/x11/gdkgldrawable-x11.c (_gdk_x11_gl_drawable_swap_buffers):
+	Changed to use GDK_ macros in gdkx.h.
+
+2002-07-02  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.3.1.
+
+	* gdk/gdkglwindow.c (gdk_window_set_gl_capability): 
+	* gdk/gdkglpixmap.c (gdk_pixmap_set_gl_capability): Changed to
+	return the GLDrawable used by the GdkDrawable.
+
+2002-06-23  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gtkglext.spec.in: Added.
+
+2002-06-20  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.3.0.
+
+	* gtk/gtkglwidget.h: Removed the following macros.
+	
+	    gtk_widget_gl_make_current(widget)
+	    gtk_widget_gl_is_double_buffered(widget)
+	    gtk_widget_gl_swap_buffers(widget)
+	    gtk_widget_gl_begin(widget)
+	    gtk_widget_gl_end(widget)
+
+	Use gdk_gl_drawable_* () instead of gtk_widget_gl_* ().
+
+	* The codes that contain the deprecated functions have been
+	cleaned.
+
+	* gdk/Makefile.am: 
+	* gdk/x11/Makefile.am: 
+	* gdk/win32/Makefile.am: 
+	* gtk/Makefile.am: 
+	* examples/Makefile.am: Added *_DISABLE_DEPRECATED definition.
+
+	* examples/font.c: Modified to use Pango-based font operation.
+
+	* gdk/x11/gdkglfont-x11.c (gdk_gl_font_use_pango_font): 
+	* gdk/win32/gdkglfont-win32.c (gdk_gl_font_use_pango_font): 
+	* gdk/gdkglfont.h: Added new bitmap font generator function which
+	is implemented using Pango. gdk_gl_font_use_gdk_font () have been
+	removed.
+
+	* examples/simple.c: 
+	* examples/font.c: 
+	* examples/gears.c: 
+	* examples/viewlw.c: Modified to use gdk_gl_drawable_* functions
+	instead of gtk_widget_gl_* macros.
+
+2002-06-19  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglpixmap-x11.c (gdk_gl_pixmap_impl_x11_gl_drawable_interface_init): 
+	* gdk/x11/gdkglwindow-x11.c (gdk_gl_window_impl_x11_gl_drawable_interface_init): 
+	* gdk/win32/gdkglpixmap-win32.c (gdk_gl_pixmap_impl_win32_gl_drawable_interface_init): 
+	* gdk/win32/gdkglwindow-win32.c (gdk_gl_window_impl_win32_gl_drawable_interface_init): 
+	* gdk/gdkgldrawable.[hc]: Added is_double_buffered () interface.
+
+	* gdk/gdkglconfig.[hc]: is_double_buffer -> is_double_buffered.
+
+2002-06-18  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.2.1.
+
+2002-06-16  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglfont-win32.c (gdk_gl_font_use_gdk_font): Added
+	error checks.
+
+2002-06-16  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkgldrawable.h: gdk_gl_drawable_gl_[begin end] macros ware
+	added.
+
+2002-06-15  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* examples/gears.c: Added.
+
+2002-06-14  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/x11/gdkglpixmap-x11.c (gdk_gl_pixmap_impl_x11_gl_drawable_interface_init): 
+	* gdk/x11/gdkglwindow-x11.c (gdk_gl_window_impl_x11_gl_drawable_interface_init): 
+	* gdk/x11/gdkgldrawable-x11.c: 
+	* gdk/win32/gdkglpixmap-win32.c (gdk_gl_pixmap_impl_win32_gl_drawable_interface_init): 
+	* gdk/win32/gdkglwindow-win32.c (gdk_gl_window_impl_win32_gl_drawable_interface_init): 
+	* gdk/win32/gdkgldrawable-win32.c: Modified for setting wait_gl and
+	wait_gdk interface.
+
+	* gdk/gdkgldrawable.c (gdk_gl_drawable_wait_gl) 
+	(gdk_gl_drawable_wait_gdk): Modified to use GdkGLDrawable interface.
+
+	* gdk/gdkgldrawable.h (struct _GdkGLDrawableClass): Added wait_gl
+	and wait_gdk.
+
+	* configure.in: GL checks ware modified.
+
+2002-06-13  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.2.0.
+
+2002-06-12  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglconfig-win32.c (gdk_gl_config_impl_win32_constructor): 
+	Fixed double buffered PFD setup.
+
+	* examples/*.c: Changed for new interfaces.
+
+	* gtk/gtkglwidget.c (gtk_widget_set_gl_capability): The interface
+	have been changed. Now, it takes glconfig instead of attrib_list.
+
+	* gdk/gdkglpixmap.c (gdk_pixmap_set_gl_capability): 
+	* gdk/gdkglwindow.c (gdk_window_set_gl_capability): It doesn't try
+	to set colormap.
+	
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_new): 
+	* gdk/gdkglconfig.[hc]: gdk_gl_config_new() interface have been
+	changed. Now, it doesn't take window argument.
+
+2002-06-11  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Functions ware roughly documented.
+
+	* gtk/gtkglwidget.c (gtk_widget_gl_realize) 
+	(gtk_widget_gl_configure_event): Modified for new
+	gdk_window_set_gl_capability function.
+
+	* gdk/gdkglwindow.c (gdk_window_set_gl_capability): The interface
+	was changed. Now, the function doesn't create OpenGL rendering
+	context.
+
+2002-06-10  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/gdkglwindow.c (gdk_gl_window_set_property): 
+	* gdk/gdkglpixmap.c (gdk_gl_pixmap_set_property): Don't ref
+	wrapper to avoid memory leak.
+
+	* gdk/gdkglpixmap.c: Added GdkPixmap extension API.
+
+	* gdk/gdkglwindow.c (gdk_window_set_gl_capability): Use
+	g_object_set_qdata_full to set quark data.
+
+	* examples/viewlw.c: 
+	* examples/lw.[hc]: 
+	* examples/trackball.[hc]: 
+	* examples/alien.lwo: 
+	* examples/penguin.lwo: Added new demo program viewlw,
+	the LightWave 3D object viewer, that comes with GtkGLArea.
+	Thank you, Alif ;-)
+
+2002-06-08  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Version 0.1.1.
+
+	* configure.in: OpenGL checks have been rewritten.
+
+2002-06-07  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gdk/win32/gdkglpixmap-win32.c: GdkGLPixmap bug have been fixed.
+
+2002-06-05  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Gtk-Doc based documentations have been added.
+
+2002-06-04  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* gtk/gtkglwidget.c (gtk_widget_gl_realize) 
+	(gtk_widget_gl_configure_event): gtk_quit_add (0, ...) will cause
+	a problem with modal window. I use gtk_main_level () + 1 instead
+	main_level 0. Thank you, Igor ;-)
+
+2002-06-03  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Alpha release. Version 0.1.0.
+
+2002-06-02  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* Win32 target works!
+
+	* gdk/gdkglconfig.h: 
+	* gdk/x11/gdkglconfig-x11.c (gdk_gl_config_new): 
+	* gdk/win32/gdkglconfig-win32.c (gdk_gl_config_new): It's
+	interface is changed for Win32. Win32 ChoosePixelFormat ()
+	requires target window's HDC, and now gdk_gl_config_new () needs
+	taking a realized GdkWindow instance.
+
+2002-05-27  Naofumi Yasufuku  <naofumi@users.sourceforge.net>
+
+	* First pre-alpha release.
+
+	* X11 target is implemented and tested on Linux and IRIX.
+

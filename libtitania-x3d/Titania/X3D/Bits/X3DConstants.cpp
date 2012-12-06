@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,7 +64,7 @@ const FieldType* const X3DConstants::SFMatrix3d  = &X3D::SFMatrix3d::type;
 const FieldType* const X3DConstants::SFMatrix3f  = &X3D::SFMatrix3f::type;
 const FieldType* const X3DConstants::SFMatrix4d  = &X3D::SFMatrix4d::type;
 const FieldType* const X3DConstants::SFMatrix4f  = &X3D::SFMatrix4f::type;
-const FieldType* const X3DConstants::SFNode      = &X3D::SFNode <X3DBasicNode>::type;
+const FieldType* const X3DConstants::SFNode      = &X3D::SFNode <X3DBaseNode>::type;
 const FieldType* const X3DConstants::SFRotation  = &X3D::SFRotation::type;
 const FieldType* const X3DConstants::SFString    = &X3D::SFString::type;
 const FieldType* const X3DConstants::SFTime      = &X3D::SFTime::type;
@@ -86,7 +86,7 @@ const FieldType* const X3DConstants::MFMatrix3d  = &X3D::MFMatrix3d::type;
 const FieldType* const X3DConstants::MFMatrix3f  = &X3D::MFMatrix3f::type;
 const FieldType* const X3DConstants::MFMatrix4d  = &X3D::MFMatrix4d::type;
 const FieldType* const X3DConstants::MFMatrix4f  = &X3D::MFMatrix4f::type;
-const FieldType* const X3DConstants::MFNode      = &X3D::MFNode <X3DBasicNode>::type;
+const FieldType* const X3DConstants::MFNode      = &X3D::MFNode <X3DBaseNode>::type;
 const FieldType* const X3DConstants::MFRotation  = &X3D::MFRotation::type;
 const FieldType* const X3DConstants::MFString    = &X3D::MFString::type;
 const FieldType* const X3DConstants::MFTime      = &X3D::MFTime::type;

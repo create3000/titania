@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext, bool addToList) :
-	    X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DViewpointNode (addToList),                                                    
 	 set_orientation (),                                                    // SFRotation [in]     set_orientation
 	    set_position (),                                                    // SFVec3d    [in]     set_position
@@ -89,7 +89,7 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext, bool ad
 	appendField (initializeOnly, "speedFactor",       speedFactor);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 GeoViewpoint::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoViewpoint (executionContext, true);

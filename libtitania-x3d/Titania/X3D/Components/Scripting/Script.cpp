@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 Script::Script (X3DExecutionContext* const executionContext) :
-	 X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DScriptNode (),                                                    
 	 directOutput (),                                                    // SFBool [ ]directOutput  FALSE
 	 mustEvaluate (),                                                    // SFBool [ ]mustEvaluate  FALSE
@@ -71,7 +71,7 @@ Script::Script (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "mustEvaluate", mustEvaluate);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Script::create (X3DExecutionContext* const executionContext) const
 {
 	return new Script (executionContext);

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,9 +59,9 @@ class RigidBodyCollection :
 {
 public:
 
-	MFNode <X3DBasicNode> set_contacts;
+	MFNode <X3DBaseNode> set_contacts;
 	SFBool                autoDisable;
-	MFNode <X3DBasicNode> bodies;
+	MFNode <X3DBaseNode> bodies;
 	SFFloat               constantForceMix;
 	SFFloat               contactSurfaceThickness;
 	SFFloat               disableAngularSpeed;
@@ -71,15 +71,15 @@ public:
 	SFFloat               errorCorrection;
 	SFVec3f               gravity;
 	SFInt32               iterations;
-	MFNode <X3DBasicNode> joints;
+	MFNode <X3DBaseNode> joints;
 	SFFloat               maxCorrectionSpeed;
 	SFBool                preferAccuracy;
-	SFNode <X3DBasicNode> collider;
+	SFNode <X3DBaseNode> collider;
 
 	RigidBodyCollection (X3DExecutionContext* const);
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
 };

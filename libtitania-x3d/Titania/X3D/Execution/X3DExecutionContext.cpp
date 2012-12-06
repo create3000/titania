@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -225,13 +225,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return profile;
 }
 
-SFNode <X3DBasicNode>
+SFNode <X3DBaseNode>
 X3DExecutionContext::createNode (const std::string & name, bool setup)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const X3DBasicNode* declaration = getBrowser () -> getNode (name);
+	const X3DBaseNode* declaration = getBrowser () -> getNode (name);
 
 	if (getComponents () .size ())
 	{
@@ -245,7 +245,7 @@ throw (Error <INVALID_NAME>,
 		}
 	}
 
-	SFNode <X3DBasicNode> node = declaration -> create (this);
+	SFNode <X3DBaseNode> node = declaration -> create (this);
 
 	if (setup)
 		node -> setup ();
@@ -282,7 +282,7 @@ throw (Error <INVALID_NAME>,
 
 // Named node handling
 
-const SFNode <X3DBasicNode> &
+const SFNode <X3DBaseNode> &
 X3DExecutionContext::getNode (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
@@ -306,7 +306,7 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-X3DExecutionContext::updateNamedNode (const std::string & name, const SFNode <X3DBasicNode> & node)
+X3DExecutionContext::updateNamedNode (const std::string & name, const SFNode <X3DBaseNode> & node)
 throw (Error <IMPORTED_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -322,7 +322,7 @@ throw (Error <IMPORTED_NODE>,
 	node .setNodeName (name);
 }
 
-const SFNode <X3DBasicNode> &
+const SFNode <X3DBaseNode> &
 X3DExecutionContext::getNamedNode (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
@@ -349,7 +349,7 @@ throw (Error <INVALID_NAME>,
 
 	const std::string & exportedName = exportedNameId .size () ? exportedNameId : localName;
 
-	const SFNode <X3DBasicNode> & node = getNode (localName);
+	const SFNode <X3DBaseNode> & node = getNode (localName);
 
 	exportedNodes .push_back (exportedName, node);
 	exportedNodes .back () .setName ({ localName, exportedName });
@@ -368,7 +368,7 @@ throw (Error <INVALID_NAME>,
        Error <DISPOSED>)
 { }
 
-const SFNode <X3DBasicNode> &
+const SFNode <X3DBaseNode> &
 X3DExecutionContext::getExportedNode (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
@@ -406,7 +406,7 @@ throw (Error <INVALID_NAME>,
 
 	if (inlineNode -> checkLoadState () == COMPLETE_STATE)
 	{
-		SFNode <X3DBasicNode> node = inlineNode -> getExportedNode (exportedName);
+		SFNode <X3DBaseNode> node = inlineNode -> getExportedNode (exportedName);
 
 		importedNodes .push_back (localName, node) .setName ({ inlineNode .getNodeName (), exportedName, localName });
 		importedNodes .back ()                     .setName ({ inlineNode .getNodeName (), exportedName, localName });
@@ -430,7 +430,7 @@ throw (Error <INVALID_NAME>,
        Error <DISPOSED>)
 { }
 
-const SFNode <X3DBasicNode> &
+const SFNode <X3DBaseNode> &
 X3DExecutionContext::getImportedNode (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
@@ -587,7 +587,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 // Root nodes handling
 
 void
-X3DExecutionContext::addRootNode (const SFNode <X3DBasicNode> & rootNode)
+X3DExecutionContext::addRootNode (const SFNode <X3DBaseNode> & rootNode)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
@@ -595,12 +595,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-X3DExecutionContext::removeRootNode (const SFNode <X3DBasicNode> &)
+X3DExecutionContext::removeRootNode (const SFNode <X3DBaseNode> &)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 { }
 
-const MFNode <X3DBasicNode> &
+const MFNode <X3DBaseNode> &
 X3DExecutionContext::getRootNodes () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -611,8 +611,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 //	Dynamic route handling
 
 const SFNode <Route> &
-X3DExecutionContext::addRoute (const SFNode <X3DBasicNode> & sourceNode,      const std::string & sourceFieldId,
-                               const SFNode <X3DBasicNode> & destinationNode, const std::string & destinationFieldId)
+X3DExecutionContext::addRoute (const SFNode <X3DBaseNode> & sourceNode,      const std::string & sourceFieldId,
+                               const SFNode <X3DBaseNode> & destinationNode, const std::string & destinationFieldId)
 throw (Error <INVALID_NODE>,
        Error <INVALID_FIELD>,
        Error <INVALID_OPERATION_TIMING>,
@@ -637,8 +637,8 @@ throw (Error <INVALID_NODE>,
 }
 
 void
-X3DExecutionContext::deleteRoute (const SFNode <X3DBasicNode> & sourceNode,      const std::string & sourceFieldId,
-                                  const SFNode <X3DBasicNode> & destinationNode, const std::string & destinationFieldId)
+X3DExecutionContext::deleteRoute (const SFNode <X3DBaseNode> & sourceNode,      const std::string & sourceFieldId,
+                                  const SFNode <X3DBaseNode> & destinationNode, const std::string & destinationFieldId)
 throw (Error <INVALID_NODE>,
        Error <INVALID_FIELD>,
        Error <INVALID_OPERATION_TIMING>,
@@ -658,8 +658,8 @@ throw (Error <INVALID_NODE>,
 }
 
 std::pair <X3DFieldDefinition*, X3DFieldDefinition*>
-X3DExecutionContext::createRouteFieldsPair (const SFNode <X3DBasicNode> & sourceNode,      const std::string & sourceFieldId,
-                                            const SFNode <X3DBasicNode> & destinationNode, const std::string & destinationFieldId)
+X3DExecutionContext::createRouteFieldsPair (const SFNode <X3DBaseNode> & sourceNode,      const std::string & sourceFieldId,
+                                            const SFNode <X3DBaseNode> & destinationNode, const std::string & destinationFieldId)
 throw (Error <INVALID_NODE>,
        Error <INVALID_FIELD>)
 {

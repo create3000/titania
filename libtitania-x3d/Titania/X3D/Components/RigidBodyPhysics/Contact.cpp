@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Contact::Contact (X3DExecutionContext* const executionContext) :
-	            X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	                 X3DNode (),                                                    
 	       appliedParameters ({ "BOUNCE" }),                                        // MFString [in,out] appliedParameters         "BOUNCE"        [ ]
 	                   body1 (),                                                    // SFNode   [in,out] body1                     NULL            [RigidBody]
@@ -95,7 +95,7 @@ Contact::Contact (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput, "surfaceSpeed",             surfaceSpeed);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Contact::create (X3DExecutionContext* const executionContext) const
 {
 	return new Contact (executionContext);

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,133 +46,23 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASE_X3DBASE_NODE_H__
-#define __TITANIA_X3D_BASE_X3DBASE_NODE_H__
+#ifndef __TITANIA_X3D_BASIC_NODE_TYPE_H__
+#define __TITANIA_X3D_BASIC_NODE_TYPE_H__
 
-#include "../Base/BaseNodeSet.h"
-#include "../Base/X3DObject.h"
-
-#include <Titania/Utility/Pass.h>
+#include "../Base/X3DType.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DBaseNode :
-	public X3DObject
+class NodeType :
+	public X3DType
 {
 public:
 
-	///  @name Parent handling
-	
-	bool
-	addParent (X3DBaseNode* const);
-
-	bool
-	removeParent (X3DBaseNode* const);
-
-	const BaseNodeSet &
-	getParents () const;
-
-	virtual
-	bool
-	hasRoots (BaseNodeSet &);
-
-	template <class Type>
-	std::deque <Type*>
-	findClosestParents () const;
-	
-	
-	///  @name Children handling
-
-	//@{
-	template <typename ... Args>
-	void
-	setChildren (Args & ...);
-
-	void
-	setChild (X3DBaseNode* const);
-
-	void
-	setChild (X3DBaseNode &);
-
-	const BaseNodeSet &
-	getChildren () const;
-
-
-	///  @name Object
-	
-	virtual
-	void
-	notifyParents ();
-
-	virtual
-	void
-	dispose ();
-
-
-protected:
-
-	X3DBaseNode ();
-
-	virtual
-	void
-	notify (X3DObject* const);
-
-	virtual
-	~X3DBaseNode ();
-
-
-private:
-
-	template <class Type>
-	void
-	findClosestParents (std::deque <Type*> &, BaseNodeSet &);
-
-	BaseNodeSet parents;
-	BaseNodeSet children;
+	explicit
+	NodeType (const basic::id &);
 
 };
-
-template <typename ... Args>
-inline
-void
-X3DBaseNode::setChildren (Args & ... args)
-{
-	basic::pass ((setChild (args), 1) ...);
-}
-
-template <class Type>
-std::deque <Type*>
-X3DBaseNode::findClosestParents () const
-{
-	BaseNodeSet seen;
-
-	std::deque <Type*> parents;
-
-	for (const auto & object : getParents ())
-		object -> findClosestParents (parents, seen);
-
-	return parents;
-}
-
-template <class Type>
-void
-X3DBaseNode::findClosestParents (std::deque <Type*> & parents, BaseNodeSet & seen)
-{
-	if (not seen .insert (this) .second)
-		return;
-
-	Type* parent = dynamic_cast <Type*> (this);
-
-	if (parent)
-	{
-		parents .push_back (parent);
-		return;
-	}
-
-	for (const auto & object : getParents ())
-		object -> findClosestParents (parents, seen);
-}
 
 } // X3D
 } // titania

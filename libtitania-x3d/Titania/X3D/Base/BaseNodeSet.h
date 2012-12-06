@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,13 +54,13 @@
 namespace titania {
 namespace X3D {
 
-class X3DBaseNode;
+class X3DChildObject;
 
-typedef std::set <X3DBaseNode*> BaseNodeSet;
+typedef std::set <X3DChildObject*> BaseNodeSet;
 
 } // X3D
 } // titania
 
-extern template class std::set <titania::X3D::X3DBaseNode*>;
+extern template class std::set <titania::X3D::X3DChildObject*>;
 
 #endif

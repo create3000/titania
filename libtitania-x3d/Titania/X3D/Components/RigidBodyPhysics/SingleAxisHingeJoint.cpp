@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 SingleAxisHingeJoint::SingleAxisHingeJoint (X3DExecutionContext* const executionContext) :
-	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	  X3DRigidJointNode (),                                                    
 	        anchorPoint (),                                                    // SFVec3f [in,out] anchorPoint          0 0 0
 	               axis (),                                                    // SFVec3f [in,out] axis                 0 0 0
@@ -86,7 +86,7 @@ SingleAxisHingeJoint::SingleAxisHingeJoint (X3DExecutionContext* const execution
 	appendField (outputOnly,  "body2AnchorPoint",    body2AnchorPoint);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 SingleAxisHingeJoint::create (X3DExecutionContext* const executionContext) const
 {
 	return new SingleAxisHingeJoint (executionContext);

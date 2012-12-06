@@ -59,7 +59,7 @@ namespace titania {
 namespace X3D {
 
 TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
-	        X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTimeDependentNode (),                                                    
 	       X3DSensorNode (),                                                    
 	       cycleInterval (1),                                                   // SFTime  [in,out] cycleInterval     1        (0,∞)
@@ -90,7 +90,7 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	appendField (outputOnly,  "time",             time);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 TimeSensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new TimeSensor (executionContext);

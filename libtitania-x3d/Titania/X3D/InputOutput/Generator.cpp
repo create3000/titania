@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -173,7 +173,7 @@ Generator::NodeTypesIndex::NodeTypesIndex ()
 }
 
 const std::string &
-Generator::NodeTypesIndex::operator [ ] (const X3DBasicNode* basicNode) const
+Generator::NodeTypesIndex::operator [ ] (const X3DBaseNode* basicNode) const
 {
 	return operator [ ] (basicNode -> getNodeType () .back ());
 }
@@ -282,19 +282,19 @@ Generator::PopLevel ()
 }
 
 bool
-Generator::ExistsNode (const X3DBasicNode* basicNode)
+Generator::ExistsNode (const X3DBaseNode* basicNode)
 {
 	return nodes .find (basicNode) not_eq nodes .end ();
 }
 
 void
-Generator::AddNode (const X3DBasicNode* basicNode)
+Generator::AddNode (const X3DBaseNode* basicNode)
 {
 	nodes .insert (basicNode);
 }
 
 std::string
-Generator::GetName (const X3DBasicNode* basicNode)
+Generator::GetName (const X3DBaseNode* basicNode)
 {
 	if (basicNode -> getName () .empty ())
 	{

@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 ScalarInterpolator::ScalarInterpolator (X3DExecutionContext* const executionContext) :
-	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
 	           keyValue (),                                                    // MFFloat [in,out] keyValue       [ ]       (-∞,∞)
 	      value_changed ()                                                     // SFFloat [out]    value_changed
@@ -69,7 +69,7 @@ ScalarInterpolator::ScalarInterpolator (X3DExecutionContext* const executionCont
 	appendField (outputOnly,  "value_changed", value_changed);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 ScalarInterpolator::create (X3DExecutionContext* const executionContext) const
 {
 	return new ScalarInterpolator (executionContext);

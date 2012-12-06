@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,15 +62,15 @@ public:
 	SFBool                colorPerVertex;
 	MFInt32               colorIndex;
 	MFInt32               coordIndex;
-	MFNode <X3DBasicNode> attrib;
-	SFNode <X3DBasicNode> fogCoord;
-	SFNode <X3DBasicNode> color;
-	SFNode <X3DBasicNode> coord;
+	MFNode <X3DBaseNode> attrib;
+	SFNode <X3DBaseNode> fogCoord;
+	SFNode <X3DBaseNode> color;
+	SFNode <X3DBaseNode> coord;
 
 	IndexedLineSet (X3DExecutionContext* const);
 
 	virtual
-	X3DBasicNode*
+	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
 	virtual

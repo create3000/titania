@@ -1,0 +1,56 @@
+<?xml version="1.0" standalone="no"?> <!--*- mode: xml -*-->
+<!DOCTYPE glade-interface SYSTEM "http://glade.gnome.org/glade-2.0.dtd">
+
+<glade-interface>
+
+<widget class="GtkWindow" id="window1">
+  <property name="title" translatable="yes">simple</property>
+  <property name="type">GTK_WINDOW_TOPLEVEL</property>
+  <property name="window_position">GTK_WIN_POS_NONE</property>
+  <property name="modal">False</property>
+  <property name="resizable">True</property>
+  <property name="destroy_with_parent">False</property>
+  <signal name="delete_event" handler="on_window1_delete_event" last_modification_time="Tue, 09 Sep 2003 06:39:08 GMT"/>
+
+  <child>
+    <widget class="GtkVBox" id="vbox1">
+      <property name="visible">True</property>
+      <property name="homogeneous">False</property>
+      <property name="spacing">0</property>
+
+      <child>
+	<widget class="GtkDrawingArea" id="drawingarea1">
+	  <property name="width_request">200</property>
+	  <property name="height_request">200</property>
+	  <property name="visible">True</property>
+	  <signal name="realize" handler="on_drawingarea1_realize" after="yes" last_modification_time="Tue, 09 Sep 2003 06:39:51 GMT"/>
+	  <signal name="configure_event" handler="on_drawingarea1_configure_event" after="yes" last_modification_time="Tue, 09 Sep 2003 06:39:57 GMT"/>
+	  <signal name="expose_event" handler="on_drawingarea1_expose_event" last_modification_time="Tue, 09 Sep 2003 06:40:03 GMT"/>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">True</property>
+	  <property name="fill">True</property>
+	</packing>
+      </child>
+
+      <child>
+	<widget class="GtkButton" id="button1">
+	  <property name="visible">True</property>
+	  <property name="can_focus">True</property>
+	  <property name="label" translatable="yes">Quit</property>
+	  <property name="use_underline">True</property>
+	  <property name="relief">GTK_RELIEF_NORMAL</property>
+	  <signal name="clicked" handler="on_button1_clicked" last_modification_time="Tue, 09 Sep 2003 06:40:26 GMT"/>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
+	  <property name="fill">False</property>
+	</packing>
+      </child>
+    </widget>
+  </child>
+</widget>
+
+</glade-interface>

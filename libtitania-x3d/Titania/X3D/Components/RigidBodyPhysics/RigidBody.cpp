@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
-	        X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	             X3DNode (),                                                    
 	angularDampingFactor (0.001),                                               // SFFloat    [in,out] angularDampingFactor  0.001        [0,1]
 	     angularVelocity (),                                                    // SFVec3f    [in,out] angularVelocity       0 0 0        (-∞,∞)
@@ -91,7 +91,7 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	appendField (inputOutput, "inertia",              inertia);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 RigidBody::create (X3DExecutionContext* const executionContext) const
 {
 	return new RigidBody (executionContext);

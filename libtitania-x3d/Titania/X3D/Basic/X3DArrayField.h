@@ -346,12 +346,6 @@ public:
 	virtual
 	size_type
 	size () const { return getValue () .size (); }
-	
-	// String:
-	virtual
-	std::string
-	toString () const
-	{ return X3DField <value_type>::toString (); }
 
 	virtual
 	~X3DArrayField ()

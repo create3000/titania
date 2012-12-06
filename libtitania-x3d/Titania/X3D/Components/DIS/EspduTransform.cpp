@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 EspduTransform::EspduTransform (X3DExecutionContext* const executionContext) :
-	                              X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	                              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	                           X3DGroupingNode (),                                                    
 	                             X3DSensorNode (),                                                    
 	           set_articulationParameterValue0 (),                                                    // SFFloat    [in]     set_articulationParameterValue0                                 (-∞,∞)
@@ -233,7 +233,7 @@ EspduTransform::EspduTransform (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "rtpHeaderExpected",                          rtpHeaderExpected);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 EspduTransform::create (X3DExecutionContext* const executionContext) const
 {
 	return new EspduTransform (executionContext);

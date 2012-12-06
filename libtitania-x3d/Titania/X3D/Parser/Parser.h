@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -117,7 +117,7 @@ private:
 	isInsideProtoDefinition () const;
 
 	void
-	addRootNode (const SFNode <X3DBasicNode> &);
+	addRootNode (const SFNode <X3DBaseNode> &);
 
 	void
 	comments ();
@@ -180,7 +180,7 @@ private:
 	nodeStatement (X3DFieldDefinition &);
 
 	bool
-	rootNodeStatement (SFNode <X3DBasicNode> &);
+	rootNodeStatement (SFNode <X3DBaseNode> &);
 
 	bool
 	protoStatement ();
@@ -222,16 +222,16 @@ private:
 	node (X3DFieldDefinition &, const std::string & = "");
 
 	void
-	scriptBody (X3DBasicNode* const);
+	scriptBody (X3DBaseNode* const);
 
 	bool
-	scriptBodyElement (X3DBasicNode* const);
+	scriptBodyElement (X3DBaseNode* const);
 
 	void
-	nodeBody (X3DBasicNode* const);
+	nodeBody (X3DBaseNode* const);
 
 	bool
-	nodeBodyElement (X3DBasicNode* const);
+	nodeBodyElement (X3DBaseNode* const);
 
 	bool
 	Id (std::string &);
@@ -399,7 +399,7 @@ private:
 	mfnodeValue (X3DFieldDefinition* const);
 
 	void
-	nodeStatements (MFNode <X3DBasicNode>*);
+	nodeStatements (MFNode <X3DBaseNode>*);
 
 	bool
 	sfrotationValue (SFRotation*);
@@ -490,7 +490,7 @@ private:
 	pcrecpp::StringPiece  string;
 	ExecutionContextStack executionContextStack;
 
-	std::deque <X3DBasicNode*> nodeList;
+	std::deque <X3DBaseNode*> nodeList;
 
 };
 

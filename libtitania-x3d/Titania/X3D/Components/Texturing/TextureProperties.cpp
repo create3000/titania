@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,7 +57,7 @@ namespace X3D {
 // http://new.web3d.org/files/specifications/19775-1/V3.2/Part01/components/texturing.html#TextureProperties
 
 TextureProperties::TextureProperties (X3DExecutionContext* const executionContext) :
-	       X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	    X3DPropertyNode (),                                                    
 	        borderColor (),                                                    // SFColorRGBA [ ] borderColor         0 0 0 0    [0,1]
 	        borderWidth (),                                                    // SFInt32     [ ] borderWidth         0          [0,1]
@@ -88,7 +88,7 @@ TextureProperties::TextureProperties (X3DExecutionContext* const executionContex
 	appendField (inputOutput,    "texturePriority",     texturePriority);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 TextureProperties::create (X3DExecutionContext* const executionContext) const
 {
 	return new TextureProperties (executionContext);

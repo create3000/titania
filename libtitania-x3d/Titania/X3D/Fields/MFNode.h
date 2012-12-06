@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-extern template class Array <SFNode <X3DBasicNode>>;
-extern template class X3DField <Array <SFNode <X3DBasicNode>>>;
-extern template class X3DArrayField <SFNode <X3DBasicNode>>;
+extern template class Array <SFNode <X3DBaseNode>>;
+extern template class X3DField <Array <SFNode <X3DBaseNode>>>;
+extern template class X3DArrayField <SFNode <X3DBaseNode>>;
 
 template <class Type>
 class MFNode :
@@ -142,7 +142,7 @@ public:
 
 	virtual
 	const FieldType*
-	getType () const { return &X3DField <Array <SFNode <X3DBasicNode>>>::type; }
+	getType () const { return &X3DField <Array <SFNode <X3DBaseNode>>>::type; }
 
 	virtual
 	void
@@ -186,7 +186,7 @@ MFNode <Type>::set1Field (const size_type index, const X3DFieldDefinition & valu
 	if (index >= size ())
 		resize (index + 1);
 
-	get () [index] = static_cast <const X3DField <X3DBasicNode*> &> (value);
+	get () [index] = static_cast <const X3DField <X3DBaseNode*> &> (value);
 }
 
 
@@ -208,7 +208,7 @@ MFNode <Type>::write (const X3DObject & field)
 		resize (array -> size ());
 
 		for (size_type i = 0; i < array -> size (); ++ i)
-			get () [i] = static_cast <const X3DField <X3DBasicNode*> &> (array -> get1 (i));
+			get () [i] = static_cast <const X3DField <X3DBaseNode*> &> (array -> get1 (i));
 //	}
 }
 
@@ -267,11 +267,11 @@ MFNode <Type>::toStream (std::ostream & ostream) const
 	ostream << Generator::EmptyBrackets;
 }
 
-extern template class MFNode <X3DBasicNode>;
+extern template class MFNode <X3DBaseNode>;
 
 } // X3D
 
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <SFNode <X3D::X3DBasicNode>> &);
+extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <SFNode <X3D::X3DBaseNode>> &);
 
 } // titania
 

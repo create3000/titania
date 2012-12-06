@@ -46,11 +46,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_JS_X3DOBJECT_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_JS_X3DOBJECT_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DOBJECT_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DOBJECT_H__
 
-#include <jsapi.h>
+
+#include "../../Base/X3DObject.h"
+#include "../../Basic/X3DArray.h"
 #include "String.h"
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
@@ -59,20 +62,71 @@ class jsX3DObject
 {
 protected:
 
-	static JSBool getName     (JSContext*, uintN, jsval*);
-	static JSBool getTypeName (JSContext*, uintN, jsval*);
-	static JSBool getType     (JSContext*, uintN, jsval*);
-
-	static JSBool toString (JSContext*, uintN, jsval*);
-	
 	template <class Type>
-	static JSBool toStringImpl (JSContext*, uintN, jsval*);
+	static JSBool getName (JSContext *, uintN, jsval*);
+
+	template <class Type>
+	static JSBool getTypeName (JSContext *, uintN, jsval*);
+
+	template <class Type>
+	static JSBool getType (JSContext *, uintN, jsval*);
+
+	template <class Type>
+	static JSBool toString (JSContext *, uintN, jsval*);
 
 };
 
 template <class Type>
 JSBool
-jsX3DObject::toStringImpl (JSContext* context, uintN argc, jsval* vp)
+jsX3DObject::getName (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		Type* value = static_cast <Type*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+
+		return JS_NewStringValue (context, value -> getName (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+template <class Type>
+JSBool
+jsX3DObject::getTypeName (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		Type* value = static_cast <Type*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+
+		return JS_NewStringValue (context, value -> getTypeName (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+template <class Type>
+JSBool
+jsX3DObject::getType (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		Type* value = static_cast <Type*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+
+		return JS_NewNumberValue (context, (size_t) value -> getType (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+template <class Type>
+JSBool
+jsX3DObject::toString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
@@ -85,6 +139,16 @@ jsX3DObject::toStringImpl (JSContext* context, uintN argc, jsval* vp)
 
 	return JS_FALSE;
 }
+
+extern template JSBool jsX3DObject::getName <X3DObject>     (JSContext *, uintN, jsval*);
+extern template JSBool jsX3DObject::getTypeName <X3DObject> (JSContext *, uintN, jsval*);
+extern template JSBool jsX3DObject::getType <X3DObject>     (JSContext *, uintN, jsval*);
+extern template JSBool jsX3DObject::toString <X3DObject>    (JSContext *, uintN, jsval*);
+
+extern template JSBool jsX3DObject::getName <X3DArray>     (JSContext *, uintN, jsval*);
+extern template JSBool jsX3DObject::getTypeName <X3DArray> (JSContext *, uintN, jsval*);
+extern template JSBool jsX3DObject::getType <X3DArray>     (JSContext *, uintN, jsval*);
+extern template JSBool jsX3DObject::toString <X3DArray>    (JSContext *, uintN, jsval*);
 
 } // X3D
 } // titania

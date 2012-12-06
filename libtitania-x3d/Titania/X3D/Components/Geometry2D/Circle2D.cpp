@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Circle2D::Circle2D (X3DExecutionContext* const executionContext) :
-	   X3DBasicNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	         radius (1)                                                    // SFFloat [ ]radius  1        (0,∞)
 {
@@ -65,7 +65,7 @@ Circle2D::Circle2D (X3DExecutionContext* const executionContext) :
 	appendField (initializeOnly, "radius",   radius);
 }
 
-X3DBasicNode*
+X3DBaseNode*
 Circle2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new Circle2D (executionContext);
