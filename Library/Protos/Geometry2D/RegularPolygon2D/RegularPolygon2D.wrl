@@ -1,0 +1,45 @@
+#X3D V3.0 utf8 Titania 0.1
+
+PROTO RegularPolygon2D [
+  initializeOnly SFInt32 vertices 3
+  initializeOnly SFVec2f size 2 2
+  initializeOnly SFBool  solid TRUE
+]
+{
+  DEF Polygon IndexedFaceSet {
+    solid IS solid
+    coord Coordinate { }
+  }
+
+  Script {
+    initializeOnly SFInt32 vertices IS vertices
+    initializeOnly SFVec2f size IS size
+    initializeOnly SFNode  polygon USE Polygon
+
+    url "vrmlscript:
+
+function initialize ()
+{
+	var point = new SFVec3f (1, 0, 0);
+	var scale = new SFMatrix4f (size .x,       0, 0, 0,
+	                                  0, size .y, 0, 0,
+	                                  0,       0, 0, 0,
+	                                  0,       0, 0, 1);
+
+	for (var i = 0; i < vertices; ++ i)
+	{
+		polygon .coordIndex   [i] = i;
+		polygon .coord .point [i] = scale .multMatrixVec (new SFRotation (0, 0, 1, 2 * Math. PI * i / vertices) .multVec (point));
+	}
+	
+	print (polygon .coord .getName ());
+}
+      "
+  }
+}
+
+Viewpoint { }
+
+Shape {
+  geometry RegularPolygon2D { }
+}

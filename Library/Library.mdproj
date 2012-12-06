@@ -2219,6 +2219,8 @@
     <None Include="Tests\Text\test.wrl" />
     <None Include="Tests\Text\RandomText.wrl" />
     <None Include="Tests\Text\HelloWorld.wrl" />
+    <None Include="Protos\Geometry2D\RegularPolygon2D\RegularPolygon2D.py" />
+    <None Include="Protos\Geometry2D\RegularPolygon2D\RegularPolygon2D.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />
@@ -2260,5 +2262,8 @@
     <Folder Include="Tests\EnvironmentalSensors\" />
     <Folder Include="Models\Backgrounds\" />
     <Folder Include="Tests\Text\" />
+    <Folder Include="Protos\" />
+    <Folder Include="Protos\Geometry2D\" />
+    <Folder Include="Protos\Geometry2D\RegularPolygon2D\" />
   </ItemGroup>
 </Project>

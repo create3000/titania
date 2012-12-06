@@ -1,35 +1,27 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4f.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="702" Column="3" />
+      <File FileName="experimental/main.cpp" Line="711" Column="20" />
       <File FileName="Library/Tests/Text/test.wrl" Line="46" Column="50" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.h" Line="72" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="224" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DArrayField.h" Line="136" Column="3" />
-      <File FileName="libtitania-standard/Titania/Basic/Id.h" Line="212" Column="1" />
-      <File FileName="libtitania-standard/Titania/Basic/URI.h" Line="127" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="218" Column="33" />
+      <File FileName="Titania/share/titania/pages/about/info.wrl" Line="28" Column="1" />
+      <File FileName="Library/Protos/Geometry2D/RegularPolygon/RegularPolygon.wrl" Line="27" Column="58" />
+      <File FileName="Library/Protos/Geometry2D/RegularPolygon/RegularPolygon.py" Line="28" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4f.cpp" Line="231" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4f.h" Line="19" Column="25" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True" />
           <Node name="experimental" expanded="True" />
-          <Node name="gtkglext" expanded="True" selected="True" />
           <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True">
-              <Node name="mushrooms" expanded="True">
-                <Node name="stage" expanded="True" />
+            <Node name="Protos" expanded="True">
+              <Node name="Geometry2D" expanded="True">
+                <Node name="RegularPolygon" expanded="True" />
               </Node>
-            </Node>
-            <Node name="Tests" expanded="True">
-              <Node name="1st" expanded="True" />
-              <Node name="Basic" expanded="True" />
-              <Node name="EnvironmentalSensors" expanded="True" />
-              <Node name="Geometry3D" expanded="True" />
-              <Node name="images" expanded="True" />
-              <Node name="Scripting" expanded="True" />
-              <Node name="Text" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-opengl-surface" expanded="True">
@@ -74,15 +66,19 @@
                 <Node name="Fields" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="SpiderMonkey" expanded="True">
-                    <Node name="Fields" expanded="True" />
+                    <Node name="Fields" expanded="True" selected="True" />
                   </Node>
                 </Node>
                 <Node name="Parser" expanded="True" />
                 <Node name="Prototype" expanded="True" />
+                <Node name="Routing" expanded="True" />
                 <Node name="Types" expanded="True" />
                 <Node name="Widgets" expanded="True" />
               </Node>
             </Node>
+          </Node>
+          <Node name="test" expanded="True">
+            <Node name="Tests" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">

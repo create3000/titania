@@ -461,8 +461,6 @@
     <None Include="Titania\X3D\Execution\X3DScene.h" />
     <None Include="Titania\X3D\Configuration\FieldTypesArray.h" />
     <None Include="Titania\X3D\Basic\BasicNodeArray.h" />
-    <None Include="Titania\X3D\Basic\X3DBasicNode.h" />
-    <None Include="Titania\X3D\Base\X3DBaseNode.h" />
     <None Include="Titania\X3D\Base\BaseNodeSet.h" />
     <None Include="Titania\X3D\Base\ObjectSet.h" />
     <None Include="Titania\X3D\Types\Geometry.h" />
@@ -538,6 +536,8 @@
     <None Include="Titania\X3D\Rendering\OpenGL.h" />
     <None Include="Titania\X3D\Basic\X3DArray.h" />
     <None Include="Titania\X3D\Types\String.h" />
+    <None Include="Titania\X3D\Basic\X3DBaseNode.h" />
+    <None Include="Titania\X3D\Base\X3DChildObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -891,8 +891,6 @@
     <Compile Include="Titania\X3D\Configuration\ProfileInfoArray.cpp" />
     <Compile Include="Titania\X3D\Configuration\FieldTypesArray.cpp" />
     <Compile Include="Titania\X3D\Basic\BasicNodeArray.cpp" />
-    <Compile Include="Titania\X3D\Basic\X3DBasicNode.cpp" />
-    <Compile Include="Titania\X3D\Base\X3DBaseNode.cpp" />
     <Compile Include="Titania\X3D\Base\BaseNodeSet.cpp" />
     <Compile Include="Titania\X3D\Base\ObjectSet.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\RenderingProperties.cpp" />
@@ -957,6 +955,8 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DExecutionContext.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DScene.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\String.cpp" />
+    <Compile Include="Titania\X3D\Basic\X3DBaseNode.cpp" />
+    <Compile Include="Titania\X3D\Base\X3DChildObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

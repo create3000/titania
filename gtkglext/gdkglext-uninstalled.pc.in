@@ -1,9 +1,0 @@
-targets=@GDKGLEXT_BACKENDS@
-api_version=@GTKGLEXT_API_VERSION@
-
-Name: GdkGLExt Uninstalled
-Description: OpenGL Extension to GDK (${targets}), Not Installed
-Version: @VERSION@
-Requires: gdk-3.0 pangox
-Libs: ${pc_top_builddir}${pcfiledir}/gdk/libgdkglext-${api_version}.la @GL_LIBS@ @GDKGLEXT_WIN_LIBS@
-Cflags: -I${pc_top_builddir}${pcfiledir} -I${pc_top_builddir}${pcfiledir}/@srcdir@ -I${pc_top_builddir}${pcfiledir}/gdk @GL_CFLAGS@ @GDKGLEXT_WIN_CFLAGS@
