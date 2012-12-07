@@ -48,7 +48,7 @@
 
 #include "jsSFRotation.h"
 
-#include "jsSFVec3f.h"
+#include "jsSFVec3.h"
 
 namespace titania {
 namespace X3D {

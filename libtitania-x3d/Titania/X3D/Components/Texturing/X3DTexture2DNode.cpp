@@ -55,9 +55,15 @@
 namespace titania {
 namespace X3D {
 
-#define RED_SATURATION_WEIGHT   0.30
-#define GREEN_SATURATION_WEIGHT 0.59
-#define BLUE_SATURATION_WEIGHT  0.11
+//#define RED_SATURATION_WEIGHT   0.30
+//#define GREEN_SATURATION_WEIGHT 0.59
+//#define BLUE_SATURATION_WEIGHT  0.11
+//	
+//GLfloat constant[4];
+//constant[0] = 0.5f + 0.5f * RED_SATURATION_WEIGHT;
+//constant[1] = 0.5f + 0.5f * GREEN_SATURATION_WEIGHT;
+//constant[2] = 0.5f + 0.5f * BLUE_SATURATION_WEIGHT;
+//constant[3] = 1.0;
 
 const int X3DTexture2DNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
 

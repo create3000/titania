@@ -51,7 +51,7 @@
 
 #include "../../../Fields/ArrayFields.h"
 #include "../jsX3DArrayField.h"
-#include "jsSFVec4d.h"
+#include "jsSFVec4.h"
 
 namespace titania {
 namespace X3D {

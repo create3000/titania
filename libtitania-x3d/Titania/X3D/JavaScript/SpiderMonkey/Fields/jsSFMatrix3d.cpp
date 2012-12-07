@@ -48,8 +48,8 @@
 
 #include "jsSFMatrix3d.h"
 #include "jsSFRotation.h"
-#include "jsSFVec2d.h"
-#include "jsSFVec3d.h"
+#include "jsSFVec2.h"
+#include "jsSFVec3.h"
 
 namespace titania {
 namespace X3D {

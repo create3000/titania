@@ -1,3 +1,40 @@
+2012-12-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* jsFields.h:
+	* X3DTexture2DNode.cpp:
+	* jsSFVec4.h:
+	* jsSFVec2.h:
+	* jsSFVec3f.h:
+	* jsSFVec4d.h:
+	* jsMFVec4f.h:
+	* jsSFVec2d.h:
+	* jsSFVec2f.h:
+	* jsSFVec3d.h:
+	* jsMFVec4d.h:
+	* jsMFVec2f.h:
+	* jsMFVec2d.h:
+	* jsSFVec4f.h:
+	* jsMFVec3f.h:
+	* jsMFVec3d.h:
+	* jsSFVec4.cpp:
+	* jsSFVec3.cpp:
+	* jsSFVec2.cpp:
+	* jsSFVec3d.cpp:
+	* jsSFVec2f.cpp:
+	* jsSFVec4f.cpp:
+	* jsSFVec3f.cpp:
+	* jsSFVec2d.cpp:
+	* jsSFVec4d.cpp:
+	* jsSFMatrix4d.cpp:
+	* jsSFMatrix3f.cpp:
+	* jsSFMatrix3d.cpp:
+	* jsVrmlMatrix.cpp:
+	* jsSFRotation.cpp:
+	* jsSFMatrix4f.cpp:
+	* jsSFVec3f (Kopie).h: 
+
 2012-12-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj: 

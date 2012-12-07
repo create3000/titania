@@ -382,12 +382,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4f.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFNode.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFRotation.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec2d.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec2f.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec3d.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec3f.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec4d.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec4f.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec2.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec3.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec4.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsVrmlMatrix.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/JavaScript.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsBrowser.cpp \

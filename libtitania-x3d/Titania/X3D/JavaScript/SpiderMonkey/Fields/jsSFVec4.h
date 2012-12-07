@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,22 +46,74 @@
  *
  ******************************************************************************/
 
-#include "jsSFVec4f.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_SFVEC4F_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_SFVEC4F_H__
+
+#include "../../../Fields/SFVec4.h"
+#include "../jsX3DField.h"
 
 namespace titania {
 namespace X3D {
 
-const size_t jsSFVec4f::size = 4;
+template <class Type>
+class jsSFVec4 :
+	public jsX3DField
+{
+public:
 
-JSClass jsSFVec4f::static_class = {
-	"SFVec4f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	static
+	void
+	init (JSContext*, JSObject*);
+
+	static
+	JSBool
+	create (JSContext*, Type*, jsval*, const bool = false);
+
+	static
+	JSClass*
+	getClass () { return &static_class; }
+
+
+private:
+
+	enum Property {X, Y, Z, W};
+
+	static JSBool construct (JSContext *, uintN, jsval*);
+	static JSBool enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
+
+	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+
+	static JSBool negate    (JSContext *, uintN, jsval*);
+	static JSBool add       (JSContext *, uintN, jsval*);
+	static JSBool subtract  (JSContext *, uintN, jsval*);
+	static JSBool multiply  (JSContext *, uintN, jsval*);
+	static JSBool divide    (JSContext *, uintN, jsval*);
+	static JSBool dot       (JSContext *, uintN, jsval*);
+	static JSBool normalize (JSContext *, uintN, jsval*);
+	static JSBool length    (JSContext *, uintN, jsval*);
+
+	static const size_t   size;
+	static JSClass        static_class;
+	static JSPropertySpec properties [ ];
+	static JSFunctionSpec functions [ ];
+
+};
+
+template <class Type>
+const size_t jsSFVec4 <Type>::size = 4;
+
+template <class Type>
+JSClass jsSFVec4 <Type>::static_class = {
+	"SFVec4", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
-JSPropertySpec jsSFVec4f::properties [ ] = {
+template <class Type>
+JSPropertySpec jsSFVec4 <Type>::properties [ ] = {
 	{ "x", X, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
 	{ "y", Y, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
 	{ "z", Z, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
@@ -70,7 +122,8 @@ JSPropertySpec jsSFVec4f::properties [ ] = {
 
 };
 
-JSFunctionSpec jsSFVec4f::functions [ ] = {
+template <class Type>
+JSFunctionSpec jsSFVec4 <Type>::functions [ ] = {
 	{ "getName",     getName <X3DObject>,     0, 0 },
 	{ "getTypeName", getTypeName <X3DObject>, 0, 0 },
 	{ "getType",     getType <X3DObject>,     0, 0 },
@@ -90,8 +143,9 @@ JSFunctionSpec jsSFVec4f::functions [ ] = {
 
 };
 
+template <class Type>
 void
-jsSFVec4f::init (JSContext* context, JSObject* global)
+jsSFVec4 <Type>::init (JSContext* context, JSObject* global)
 {
 	JSObject* proto = JS_InitClass (context, global, NULL, &static_class, construct,
 	                                0, properties, functions, NULL, NULL);
@@ -102,8 +156,9 @@ jsSFVec4f::init (JSContext* context, JSObject* global)
 	JS_DefineProperty (context, proto, (char*) W, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 }
 
+template <class Type>
 JSBool
-jsSFVec4f::create (JSContext* context, SFVec4f* field, jsval* vp, const bool seal)
+jsSFVec4 <Type>::create (JSContext* context, Type* field, jsval* vp, const bool seal)
 {
 	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 
@@ -120,12 +175,13 @@ jsSFVec4f::create (JSContext* context, SFVec4f* field, jsval* vp, const bool sea
 	return JS_TRUE;
 }
 
+template <class Type>
 JSBool
-jsSFVec4f::construct (JSContext* context, uintN argc, jsval* vp)
+jsSFVec4 <Type>::construct (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		return create (context, new SFVec4f (), &JS_RVAL (context, vp));
+		return create (context, new Type (), &JS_RVAL (context, vp));
 	}
 	else if (argc == 4)
 	{
@@ -139,7 +195,7 @@ jsSFVec4f::construct (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "dddd", &x, &y, &z, &w))
 			return JS_FALSE;
 			
-		return create (context, new SFVec4f (x, y, z, w), &JS_RVAL (context, vp));
+		return create (context, new Type (x, y, z, w), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -147,8 +203,9 @@ jsSFVec4f::construct (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
+template <class Type>
 JSBool
-jsSFVec4f::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+jsSFVec4 <Type>::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
 	if (not JS_GetPrivate (context, obj))
 	{
@@ -197,37 +254,40 @@ jsSFVec4f::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, js
 	return JS_TRUE;
 }
 
+template <class Type>
 JSBool
-jsSFVec4f::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsSFVec4 <Type>::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	SFVec4f* sfvec4f = (SFVec4f*) JS_GetPrivate (context, obj);
+	Type* self = (Type*) JS_GetPrivate (context, obj);
 
-	return JS_NewNumberValue (context, sfvec4f -> get1Value (JSID_TO_INT (id)), vp);
+	return JS_NewNumberValue (context, self -> get1Value (JSID_TO_INT (id)), vp);
 }
 
+template <class Type>
 JSBool
-jsSFVec4f::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsSFVec4 <Type>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	SFVec4f* sfvec4f = (SFVec4f*) JS_GetPrivate (context, obj);
+	Type* self = (Type*) JS_GetPrivate (context, obj);
 
 	jsdouble value;
 
 	if (not JS_ValueToNumber (context, *vp, &value))
 		return JS_FALSE;
 
-	sfvec4f -> set1Value (JSID_TO_INT (id), value);
+	self -> set1Value (JSID_TO_INT (id), value);
 
 	return JS_TRUE;
 }
 
+template <class Type>
 JSBool
-jsSFVec4f::negate (JSContext* context, uintN argc, jsval* vp)
+jsSFVec4 <Type>::negate (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFVec4f* sfvec4f = (SFVec4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 		
-		return create (context, sfvec4f -> negate (), &JS_RVAL (context, vp));
+		return create (context, self -> negate (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -235,29 +295,30 @@ jsSFVec4f::negate (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
+template <class Type>
 JSBool
-jsSFVec4f::add (JSContext* context, uintN argc, jsval* vp)
+jsSFVec4 <Type>::add (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFVec4f* sfvec4f1 = (SFVec4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* obj2;
+		JSObject* rhs;
 
 		jsval* argv = JS_ARGV (context, vp);
 
-		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
+		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, getClass (), NULL))
+		if (not JS_InstanceOf (context, rhs, getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFVec4f, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument 1 is invalid - should be  %s, is %s", getClass () -> name, JS_GetClass (context, rhs) -> name);
 			return JS_FALSE;
 		}
 
-		SFVec4f* sfvec4f2 = (SFVec4f*) JS_GetPrivate (context, obj2);
+		Type* vector = (Type*) JS_GetPrivate (context, rhs);
 
-		return create (context, sfvec4f1 -> add (*sfvec4f2), &JS_RVAL (context, vp));
+		return create (context, self -> add (*vector), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -265,29 +326,30 @@ jsSFVec4f::add (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
+template <class Type>
 JSBool
-jsSFVec4f::subtract (JSContext* context, uintN argc, jsval* vp)
+jsSFVec4 <Type>::subtract (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFVec4f* sfvec4f1 = (SFVec4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* obj2;
+		JSObject* rhs;
 
 		jsval* argv = JS_ARGV (context, vp);
 
-		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
+		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, getClass (), NULL))
+		if (not JS_InstanceOf (context, rhs, getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFVec4f, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument 1 is invalid - should be  %s, is %s", getClass () -> name, JS_GetClass (context, rhs) -> name);
 			return JS_FALSE;
 		}
 
-		SFVec4f* sfvec4f2 = (SFVec4f*) JS_GetPrivate (context, obj2);
+		Type* vector = (Type*) JS_GetPrivate (context, rhs);
 
-		return create (context, sfvec4f1 -> subtract (*sfvec4f2), &JS_RVAL (context, vp));
+		return create (context, self -> subtract (*vector), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -295,12 +357,13 @@ jsSFVec4f::subtract (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
+template <class Type>
 JSBool
-jsSFVec4f::multiply (JSContext* context, uintN argc, jsval* vp)
+jsSFVec4 <Type>::multiply (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFVec4f* sfvec4f1 = (SFVec4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		jsdouble value;
 
@@ -309,7 +372,7 @@ jsSFVec4f::multiply (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "d", &value))
 			return JS_FALSE;
 
-		return create (context, sfvec4f1 -> multiply (value), &JS_RVAL (context, vp));
+		return create (context, self -> multiply (value), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -317,12 +380,13 @@ jsSFVec4f::multiply (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
+template <class Type>
 JSBool
-jsSFVec4f::divide (JSContext* context, uintN argc, jsval* vp)
+jsSFVec4 <Type>::divide (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFVec4f* sfvec4f1 = (SFVec4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		jsdouble value;
 
@@ -331,7 +395,7 @@ jsSFVec4f::divide (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "d", &value))
 			return JS_FALSE;
 
-		return create (context, sfvec4f1 -> divide (value), &JS_RVAL (context, vp));
+		return create (context, self -> divide (value), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -339,29 +403,30 @@ jsSFVec4f::divide (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
+template <class Type>
 JSBool
-jsSFVec4f::dot (JSContext* context, uintN argc, jsval* vp)
+jsSFVec4 <Type>::dot (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFVec4f* sfvec4f1 = (SFVec4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* obj2;
+		JSObject* rhs;
 
 		jsval* argv = JS_ARGV (context, vp);
 
-		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
+		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, getClass (), NULL))
+		if (not JS_InstanceOf (context, rhs, getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFVec4f, is %s", JS_GetClass (context, obj2) -> name);
+			JS_ReportError (context, "Type of argument 1 is invalid -  %s, is %s", getClass () -> name, JS_GetClass (context, rhs) -> name);
 			return JS_FALSE;
 		}
 
-		SFVec4f* sfvec4f2 = (SFVec4f*) JS_GetPrivate (context, obj2);
+		Type* vector = (Type*) JS_GetPrivate (context, rhs);
 
-		return JS_NewNumberValue (context, sfvec4f1 -> dot (*sfvec4f2), &JS_RVAL (context, vp));
+		return JS_NewNumberValue (context, self -> dot (*vector), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -369,14 +434,15 @@ jsSFVec4f::dot (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
+template <class Type>
 JSBool
-jsSFVec4f::normalize (JSContext* context, uintN argc, jsval* vp)
+jsSFVec4 <Type>::normalize (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFVec4f* sfvec4f = (SFVec4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		return create (context, sfvec4f -> normalize (), &JS_RVAL (context, vp));
+		return create (context, self -> normalize (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -384,20 +450,29 @@ jsSFVec4f::normalize (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
+template <class Type>
 JSBool
-jsSFVec4f::length (JSContext* context, uintN argc, jsval* vp)
+jsSFVec4 <Type>::length (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFVec4f* sfvec4f = (SFVec4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		return JS_NewNumberValue (context, sfvec4f -> length (), &JS_RVAL (context, vp));
+		return JS_NewNumberValue (context, self -> length (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
 
 	return JS_FALSE;
 }
+
+extern template class jsSFVec4 <SFVec4d>;
+extern template class jsSFVec4 <SFVec4f>;
+
+typedef jsSFVec4 <SFVec4d> jsSFVec4d;
+typedef jsSFVec4 <SFVec4f> jsSFVec4f;
 
 } // X3D
 } // titania
+
+#endif

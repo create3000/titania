@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,60 +46,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_SFVEC4D_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_SFVEC4D_H__
-
-#include "../../../Fields/SFVec4.h"
-#include "../jsX3DField.h"
+#include "jsSFVec2.h"
 
 namespace titania {
 namespace X3D {
 
-class jsSFVec4d :
-	public jsX3DField
-{
-public:
-
-	static
-	void
-	init (JSContext*, JSObject*);
-
-	static
-	JSBool
-	create (JSContext*, SFVec4d*, jsval*, const bool = false);
-
-	static
-	JSClass*
-	getClass () { return &static_class; }
-
-
-private:
-
-	enum Property {X, Y, Z, W};
-
-	static JSBool construct (JSContext *, uintN, jsval*);
-	static JSBool enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
-
-	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
-
-	static JSBool negate    (JSContext *, uintN, jsval*);
-	static JSBool add       (JSContext *, uintN, jsval*);
-	static JSBool subtract  (JSContext *, uintN, jsval*);
-	static JSBool multiply  (JSContext *, uintN, jsval*);
-	static JSBool divide    (JSContext *, uintN, jsval*);
-	static JSBool dot       (JSContext *, uintN, jsval*);
-	static JSBool normalize (JSContext *, uintN, jsval*);
-	static JSBool length    (JSContext *, uintN, jsval*);
-
-	static const size_t   size;
-	static JSClass        static_class;
-	static JSPropertySpec properties [ ];
-	static JSFunctionSpec functions [ ];
+template <>
+JSClass jsSFVec2 <SFVec2d>::static_class = {
+	"SFVec2d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
+template <>
+JSClass jsSFVec2 <SFVec2f>::static_class = {
+	"SFVec2f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+template class jsSFVec2 <SFVec2f>;
+template class jsSFVec2 <SFVec2d>;
+
 } // X3D
 } // titania
-
-#endif
