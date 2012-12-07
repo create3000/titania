@@ -78,7 +78,7 @@ jsGlobals::init (JSContext* context, JSObject* global)
 JSBool
 jsGlobals::_false (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	*vp = JSVAL_FALSE;void JS_free(JSContext *cx, void *p);
+	*vp = JSVAL_FALSE;
 	return JS_TRUE;
 }
 

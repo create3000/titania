@@ -61,6 +61,8 @@ class jsSFVec2 :
 {
 public:
 
+	typedef Type value_type;
+
 	static
 	void
 	init (JSContext*, JSObject*);

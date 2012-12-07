@@ -60,6 +60,8 @@ class jsSFRotation :
 {
 public:
 
+	typedef SFRotation value_type;
+
 	static
 	void
 	init (JSContext*, JSObject*);

@@ -376,8 +376,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFColor.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFColorRGBA.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFImage.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix3d.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix3f.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix3.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4d.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4f.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFNode.cpp \

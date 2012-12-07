@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,59 +46,13 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFMATRI_X3D_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFMATRI_X3D_H__
-
-#include "../../../Fields/SFMatrix3.h"
-#include "../jsX3DField.h"
+#include "jsSFMatrix3.h"
 
 namespace titania {
 namespace X3D {
 
-class jsSFMatrix3d :
-	public jsX3DField
-{
-public:
-
-	static
-	void
-	init (JSContext*, JSObject*);
-
-	static
-	JSBool
-	create (JSContext*, SFMatrix3d*, jsval*, const bool = false);
-
-	static
-	JSClass*
-	getClass () { return &static_class; }
-
-
-private:
-
-	static JSBool construct (JSContext *, uintN, jsval*);
-	static JSBool enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
-	static JSBool resolve (JSContext * context, JSObject *, jsid);
-
-	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
-
-	static JSBool setTransform (JSContext *, uintN, jsval*);
-	static JSBool getTransform (JSContext *, uintN, jsval*);
-
-	static JSBool transpose     (JSContext *, uintN, jsval*);
-	static JSBool inverse       (JSContext *, uintN, jsval*);
-	static JSBool multLeft      (JSContext *, uintN, jsval*);
-	static JSBool multRight     (JSContext *, uintN, jsval*);
-	static JSBool multVecMatrix (JSContext *, uintN, jsval*);
-	static JSBool multMatrixVec (JSContext *, uintN, jsval*);
-
-	static const size_t   size;
-	static JSClass        static_class;
-	static JSFunctionSpec functions [ ];
-
-};
+template class jsSFMatrix3 <SFMatrix3d>;
+template class jsSFMatrix3 <SFMatrix3f>;
 
 } // X3D
 } // titania
-
-#endif

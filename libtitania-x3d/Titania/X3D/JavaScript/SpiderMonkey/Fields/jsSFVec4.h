@@ -61,6 +61,8 @@ class jsSFVec4 :
 {
 public:
 
+	typedef Type value_type;
+
 	static
 	void
 	init (JSContext*, JSObject*);

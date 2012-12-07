@@ -510,8 +510,6 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFColor.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFColorRGBA.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFImage.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix3d.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix3f.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix4d.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix4f.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsVrmlMatrix.h" />
@@ -535,6 +533,7 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFVec3.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFVec2.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFVec4.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix3.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -930,8 +929,6 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFColor.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFColorRGBA.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFImage.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix3d.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix3f.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix4d.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix4f.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsVrmlMatrix.cpp" />
@@ -951,6 +948,7 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFVec3.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFVec2.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFVec4.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
