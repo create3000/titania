@@ -51,7 +51,8 @@
 namespace titania {
 namespace X3D {
 
-JSClass jsMFNode::static_class = {
+template <>
+JSClass jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::static_class = {
 	"MFNode", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -59,21 +60,9 @@ JSClass jsMFNode::static_class = {
 
 };
 
-void
-jsMFNode::init (JSContext* context, JSObject* global)
-{
-	JS_InitClass (context, global, NULL, &static_class, construct,
-	              0, properties, functions, NULL, NULL);
-}
-
+template <>
 JSBool
-jsMFNode::create (JSContext* context, X3DArray* field, jsval* vp, const bool seal)
-{
-	return jsX3DArrayField::create (context, &static_class, field, vp, seal);
-}
-
-JSBool
-jsMFNode::construct (JSContext* context, uintN argc, jsval* vp)
+jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::construct (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
@@ -81,7 +70,7 @@ jsMFNode::construct (JSContext* context, uintN argc, jsval* vp)
 	}
 	else
 	{
-		SFNode <X3DBaseNode> values [argc];
+		MFNode <X3DBaseNode>* field = new MFNode <X3DBaseNode> ();
 
 		jsval* argv = JS_ARGV (context, vp);
 
@@ -98,75 +87,18 @@ jsMFNode::construct (JSContext* context, uintN argc, jsval* vp)
 				return JS_FALSE;
 			}
 
-			values [i] = *(X3DField <X3DBaseNode*>*) JS_GetPrivate (context, value);
+			field -> emplace_back (*(X3DField <X3DBaseNode*>*) JS_GetPrivate (context, value));
 		}
 
-		return create (context, new MFNode <X3DBaseNode> (values, values + argc), &JS_RVAL (context, vp));
+		return create (context, field, &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;
 }
 
+template <>
 JSBool
-jsMFNode::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
-{
-	MFNode <X3DBaseNode>* x3darrayfield = (MFNode <X3DBaseNode>*) JS_GetPrivate (context, obj); /// XXX
-
-	if (not x3darrayfield)
-	{
-		*statep = JSVAL_NULL;
-		return JS_TRUE;
-	}
-
-	size_t* index;
-
-	switch (enum_op)
-	{
-		case JSENUMERATE_INIT:
-		case JSENUMERATE_INIT_ALL:
-		{
-			index   = new size_t (0);
-			*statep = PRIVATE_TO_JSVAL (index);
-
-			if (idp)
-				*idp = INT_TO_JSID (x3darrayfield -> size ());
-
-			break;
-		}
-		case JSENUMERATE_NEXT:
-		{
-			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
-
-//			if (*index < x3darrayfield -> size ())
-//			{
-//				JS_DefineProperty (context,
-//				                   obj, (char*) *index,
-//				                   JSVAL_VOID,
-//				                   get1Value, set1Value,
-//				                   JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT);
-//
-//				if (idp)
-//					*idp = INT_TO_JSID (*index);
-//
-//				*index = *index + 1;
-//				break;
-//			}
-
-		//else done -- cleanup.
-		}
-		case JSENUMERATE_DESTROY:
-		{
-			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
-			delete index;
-			*statep = JSVAL_NULL;
-		}
-	}
-
-	return JS_TRUE;
-}
-
-JSBool
-jsMFNode::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
@@ -186,8 +118,9 @@ jsMFNode::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 	return JS_TRUE;
 }
 
+template <>
 JSBool
-jsMFNode::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
@@ -219,6 +152,8 @@ jsMFNode::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, 
 
 	return JS_TRUE;
 }
+
+template class jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>;
 
 } // X3D
 } // titania

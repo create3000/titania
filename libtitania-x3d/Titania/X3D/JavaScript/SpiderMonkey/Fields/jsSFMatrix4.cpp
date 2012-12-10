@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,44 +46,41 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_MFVEC3F_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_MFVEC3F_H__
-
-#include "../../../Fields/ArrayFields.h"
-#include "../jsX3DArrayField.h"
-#include "jsSFVec3.h"
+#include "jsSFMatrix4.h"
 
 namespace titania {
 namespace X3D {
 
-class jsMFVec3f :
-	public jsX3DArrayField <SFVec3f>
-{
-public:
-
-	static 
-	void
-	init (JSContext*, JSObject*);
-
-	static 
-	JSBool
-	create (JSContext*, MFVec3f*, jsval*, const bool = false);
-
-	static 
-	JSClass*
-	getClass () { return &static_class; }
-
-
-private:
-
-	static JSClass static_class;
-	static JSBool  construct (JSContext*, uintN, jsval*);
-	static JSBool  get1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool  set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
+template <>
+JSClass jsSFMatrix4 <SFMatrix4d>::static_class = {
+	"SFMatrix4d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
+template <>
+JSClass jsSFMatrix4 <SFMatrix4f>::static_class = {
+	"SFMatrix4f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+template <>
+JSClass jsSFMatrix4 <VrmlMatrix>::static_class = {
+	"VrmlMatrix", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+template class jsSFMatrix4 <SFMatrix4d>;
+template class jsSFMatrix4 <SFMatrix4f>;
+template class jsSFMatrix4 <VrmlMatrix>;
+
 } // X3D
 } // titania
-
-#endif

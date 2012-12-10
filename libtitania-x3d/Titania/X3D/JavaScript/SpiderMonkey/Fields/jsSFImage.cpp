@@ -46,8 +46,9 @@
  *
  ******************************************************************************/
 
-#include "jsMFInt32.h"
 #include "jsSFImage.h"
+
+#include "jsMFInt32.h"
 
 namespace titania {
 namespace X3D {
@@ -72,11 +73,11 @@ JSPropertySpec jsSFImage::properties [ ] = {
 };
 
 JSFunctionSpec jsSFImage::functions [ ] = {
-	{ "getName",     getName <X3DObject>,     0, 0 },
-	{ "getTypeName", getTypeName <X3DObject>, 0, 0 },
-	{ "getType",     getType <X3DObject>,     0, 0 },
+	{ "getName",     getName <X3DChildObject>,     0, 0 },
+	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
+	{ "getType",     getType <X3DChildObject>,     0, 0 },
 
-	{ "toString",    toString <X3DObject>, 0, 0 },
+	{ "toString",    toString <X3DChildObject>, 0, 0 },
 	
 	{ 0 }
 

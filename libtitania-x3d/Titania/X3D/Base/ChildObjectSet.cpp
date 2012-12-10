@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,42 +46,16 @@
  *
  ******************************************************************************/
 
-#include "X3DBase.h"
+#include "ChildObjectSet.h"
+
+#include "../Base/X3DObject.h"
 
 namespace titania {
 namespace X3D {
 
-X3DBase::X3DBase () :
-	X3DType ()
-{ }
-
-// Type
-
-void
-X3DBase::setName (const basic::id & value)
-{
-	X3DType::setName (value);
-}
-
-// String
-
-std::string
-X3DBase::toString () const
-{
-	std::ostringstream ostringstream;
-
-	toStream (ostringstream);
-
-	return ostringstream .str ();
-}
-
-X3DBase::~X3DBase ()
-{ }
-
-template std::istream & operator >> (std::istream &, X3DBase &);
-template std::ostream & operator << (std::ostream &, const X3DBase &);
-//template std::wistream & operator >> (std::wistream &, const X3DBase &);
-//template std::wostream & operator << (std::wostream &, const X3DBase &);
+//
 
 } // X3D
 } // titania
+
+template class std::set <titania::X3D::X3DChildObject*>;

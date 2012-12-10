@@ -60,6 +60,8 @@ class jsSFNode :
 {
 public:
 
+	typedef SFNode <X3DBaseNode*> field_type;
+
 	static
 	void
 	init (JSContext*, JSObject*);

@@ -60,6 +60,8 @@ class jsSFColorRGBA :
 {
 public:
 
+	typedef SFColorRGBA field_type;
+
 	static 
 	void
 	init (JSContext*, JSObject*);

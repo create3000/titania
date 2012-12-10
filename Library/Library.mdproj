@@ -2221,6 +2221,7 @@
     <None Include="Tests\Text\HelloWorld.wrl" />
     <None Include="Protos\Geometry2D\RegularPolygon2D\RegularPolygon2D.py" />
     <None Include="Protos\Geometry2D\RegularPolygon2D\RegularPolygon2D.wrl" />
+    <None Include="Tests\Scripting\Felület3D.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

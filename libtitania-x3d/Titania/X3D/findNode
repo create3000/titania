@@ -37,7 +37,7 @@ template <class Type>
 std::deque <Type>
 X3DObject::findParents () const
 {
-	ObjectSet seen;
+	ChildObjectSet seen;
 
 	std::deque <Type> parents;
 
@@ -49,7 +49,7 @@ X3DObject::findParents () const
 
 template <class Type>
 void
-X3DObject::findParents (std::deque <Type> & parents, ObjectSet & seen)
+X3DObject::findParents (std::deque <Type> & parents, ChildObjectSet & seen)
 {
 	if (not seen .insert (this) .second)
 		return;

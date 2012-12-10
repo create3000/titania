@@ -475,7 +475,7 @@ X3DBrowser::notify (X3DBaseNode* const node)
 	if (changed == getCurrentTime ())
 		return;
 
-	ObjectSet sourceFields;
+	ChildObjectSet sourceFields;
 
 	changed = getCurrentTime ();
 	changed .processEvents (sourceFields);

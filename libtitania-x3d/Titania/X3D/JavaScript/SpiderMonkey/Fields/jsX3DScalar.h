@@ -46,41 +46,61 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_MFMATRI_X3D_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_MFMATRI_X3D_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_X3DSCALAR_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_X3DSCALAR_H__
 
-#include "../../../Fields/ArrayFields.h"
-#include "../jsX3DArrayField.h"
-#include "jsSFMatrix3.h"
+#include "../../../Fields/SFString.h"
+#include "../../../Fields/SFTime.h"
+#include "../../../Fields/X3DScalar.h"
 
 namespace titania {
 namespace X3D {
 
-class jsMFMatrix3d :
-	public jsX3DArrayField <SFMatrix3d>
+// Dummy class for scalar field types.
+
+template <class Type>
+class jsScalar
 {
 public:
 
-	static 
-	void
-	init (JSContext*, JSObject*);
-
-	static 
+	typedef Type field_type;
+	
+	static
 	JSBool
-	create (JSContext*, MFMatrix3d*, jsval*, const bool = false);
+	create (JSContext* context, const field_type* field, jsval* vp, const bool = false)
+	{
+		return JS_NewNumberValue (context, *field, vp);
+	}
 
-	static 
+	static
 	JSClass*
-	getClass () { return &static_class; }
-
-private:
-
-	static JSClass static_class;
-	static JSBool  construct (JSContext*, uintN, jsval*);
-	static JSBool  get1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool  set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	getClass () { return NULL; }
 
 };
+
+template <>
+inline
+JSBool
+jsScalar <SFBool>::create (JSContext* context, const field_type* field, jsval* vp, const bool)
+{
+	*vp = *field ? JSVAL_TRUE : JSVAL_FALSE;
+	return JS_TRUE;
+}
+
+template <>
+inline
+JSBool
+jsScalar <SFString>::create (JSContext* context, const field_type* field, jsval* vp, const bool)
+{
+	return JS_NewStringValue (context, *field, vp);
+}
+
+typedef jsScalar <SFBool>   jsSFBool;
+typedef jsScalar <SFFloat>  jsSFFloat;
+typedef jsScalar <SFDouble> jsSFDouble;
+typedef jsScalar <SFInt32>  jsSFInt32;
+typedef jsScalar <SFString> jsSFString;
+typedef jsScalar <SFTime>   jsSFTime;
 
 } // X3D
 } // titania

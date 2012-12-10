@@ -49,13 +49,13 @@
 #ifndef __TITANIA_X3D_BASIC_X3DCONTEXT_H__
 #define __TITANIA_X3D_BASIC_X3DCONTEXT_H__
 
-#include "../Base/X3DBase.h"
+#include "../Base/X3DObject.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DContext :
-	virtual public X3DBase
+	virtual public X3DObject
 {
 public:
 

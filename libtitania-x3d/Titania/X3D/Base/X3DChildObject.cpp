@@ -42,7 +42,7 @@ X3DChildObject::X3DChildObject () :
 // Object
 
 void
-X3DChildObject::notify (X3DObject* const)
+X3DChildObject::notify (X3DChildObject* const)
 {
 	notifyParents ();
 }
@@ -69,7 +69,7 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 	{
 		if (parents .size ())
 		{
-			BaseNodeSet circle;
+			ChildObjectSet circle;
 
 			if (hasRoots (circle))
 				return false;
@@ -91,14 +91,14 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 	return false;
 }
 
-const BaseNodeSet &
+const ChildObjectSet &
 X3DChildObject::getParents () const
 {
 	return parents;
 }
 
 bool
-X3DChildObject::hasRoots (BaseNodeSet & seen)
+X3DChildObject::hasRoots (ChildObjectSet & seen)
 {
 	if (getParents () .size ())
 	{
@@ -139,7 +139,7 @@ X3DChildObject::setChild (X3DChildObject & child)
 	children .insert (&child);
 }
 
-const BaseNodeSet &
+const ChildObjectSet &
 X3DChildObject::getChildren () const
 {
 	return children;

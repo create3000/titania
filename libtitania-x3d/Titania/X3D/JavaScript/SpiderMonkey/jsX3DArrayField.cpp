@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,44 +46,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_MFCOLOR_RGBA_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_MFCOLOR_RGBA_H__
-
-#include "../../../Fields/ArrayFields.h"
-#include "../jsX3DArrayField.h"
-#include "jsSFColorRGBA.h"
+#include "jsX3DArrayField.h"
 
 namespace titania {
 namespace X3D {
 
-class jsMFColorRGBA :
-	public jsX3DArrayField <SFColorRGBA>
-{
-public:
-
-	static 
-	void
-	init (JSContext*, JSObject*);
-
-	static 
-	JSBool
-	create (JSContext*, MFColorRGBA*, jsval*, const bool = false);
-
-	static 
-	JSClass*
-	getClass () { return &static_class; }
-
-
-private:
-
-	static JSClass static_class;
-	static JSBool  construct (JSContext*, uintN, jsval*);
-	static JSBool  get1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool  set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
-
-};
+//
 
 } // X3D
 } // titania
-
-#endif

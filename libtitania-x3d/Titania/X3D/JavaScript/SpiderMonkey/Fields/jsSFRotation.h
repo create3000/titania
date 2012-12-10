@@ -60,7 +60,7 @@ class jsSFRotation :
 {
 public:
 
-	typedef SFRotation value_type;
+	typedef SFRotation field_type;
 
 	static
 	void

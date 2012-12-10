@@ -54,6 +54,8 @@
 namespace titania {
 namespace X3D {
 
+// This has to be an ordered set. See X3DGroupingNode.
+
 class X3DFieldDefinition;
 
 typedef std::set <X3DFieldDefinition*> FieldDefinitionSet;

@@ -56,33 +56,21 @@
 namespace titania {
 namespace X3D {
 
-class jsMFNode :
-	public jsX3DArrayField <SFNode <X3DBaseNode>>
-{
-public:
+template <>
+JSBool
+jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::construct (JSContext*, uintN, jsval*);
 
-	static 
-	void
-	init (JSContext*, JSObject*);
+template <>
+JSBool
+jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::get1Value (JSContext*, JSObject*, jsid, jsval*);
 
-	static 
-	JSBool
-	create (JSContext*, X3DArray*, jsval*, const bool = false);
+template <>
+JSBool
+jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
-	static 
-	JSClass*
-	getClass () { return &static_class; }
+extern template class jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>;
 
-
-private:
-
-	static JSClass static_class;
-	static JSBool  construct (JSContext*, uintN, jsval*);
-	static JSBool  enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
-	static JSBool  get1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool  set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
-
-};
+typedef jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>> jsMFNode;
 
 } // X3D
 } // titania

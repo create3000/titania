@@ -60,6 +60,8 @@ class jsSFColor :
 {
 public:
 
+	typedef SFColor field_type;
+
 	static
 	void
 	init (JSContext*, JSObject*);

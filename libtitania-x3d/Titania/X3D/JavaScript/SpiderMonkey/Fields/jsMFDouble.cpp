@@ -51,7 +51,8 @@
 namespace titania {
 namespace X3D {
 
-JSClass jsMFDouble::static_class = {
+template <>
+JSClass jsX3DArrayField <jsSFDouble, MFDouble>::static_class = {
 	"MFDouble", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -59,21 +60,9 @@ JSClass jsMFDouble::static_class = {
 
 };
 
-void
-jsMFDouble::init (JSContext* context, JSObject* global)
-{
-	JS_InitClass (context, global, NULL, &static_class, construct,
-	              0, properties, functions, NULL, NULL);
-}
-
+template <>
 JSBool
-jsMFDouble::create (JSContext* context, MFDouble* field, jsval* vp, const bool seal)
-{
-	return jsX3DArrayField::create (context, &static_class, field, vp, seal);
-}
-
-JSBool
-jsMFDouble::construct (JSContext* context, uintN argc, jsval* vp)
+jsX3DArrayField <jsSFDouble, MFDouble>::construct (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
@@ -81,7 +70,7 @@ jsMFDouble::construct (JSContext* context, uintN argc, jsval* vp)
 	}
 	else
 	{
-		SFDouble values [argc];
+		MFDouble* field = new MFDouble ();
 
 		jsval* argv = JS_ARGV (context, vp);
 
@@ -92,36 +81,18 @@ jsMFDouble::construct (JSContext* context, uintN argc, jsval* vp)
 			if (not JS_ValueToNumber (context, argv [i], &number))
 				return JS_FALSE;
 
-			values [i] = number;
+			field -> emplace_back (number);
 		}
 
-		return create (context, new MFDouble (values, values + argc), &JS_RVAL (context, vp));
+		return create (context, field, &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;
 }
 
+template <>
 JSBool
-jsMFDouble::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	if (not JSID_IS_INT (id))
-		return JS_TRUE;
-
-	int32 index = JSID_TO_INT (id);
-
-	if (index < 0)
-	{
-		JS_ReportError (context, "index out of range");
-		return JS_FALSE;
-	}
-
-	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
-
-	return JS_NewNumberValue (context, *(SFDouble*) &field -> get1Value (index), vp);
-}
-
-JSBool
-jsMFDouble::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsX3DArrayField <jsSFDouble, MFDouble>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
@@ -147,6 +118,8 @@ jsMFDouble::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict
 
 	return JS_TRUE;
 }
+
+template class jsX3DArrayField <jsSFDouble, MFDouble>;
 
 } // X3D
 } // titania

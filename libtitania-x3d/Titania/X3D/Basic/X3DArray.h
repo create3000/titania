@@ -49,14 +49,14 @@
 #ifndef __TITANIA_X3D_BASIC_X3DARRAY_H__
 #define __TITANIA_X3D_BASIC_X3DARRAY_H__
 
-#include "../Base/X3DBase.h"
+#include "../Base/X3DObject.h"
 #include "../Types/Array.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DArray :
-	virtual public X3DBase
+	virtual public X3DObject
 {
 public:
 
@@ -110,7 +110,7 @@ public:
 protected:
 
 	X3DArray () :
-		X3DBase ()
+		X3DObject ()
 	{ }
 
 };

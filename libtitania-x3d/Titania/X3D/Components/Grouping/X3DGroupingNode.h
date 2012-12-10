@@ -50,10 +50,7 @@
 #define __TITANIA_X3D_COMPONENTS_GROUPING_X3DGROUPING_NODE_H__
 
 #include "../Core/X3DChildNode.h"
-#include "../EnvironmentalEffects/LocalFog.h"
 #include "../Grouping/X3DBoundedObject.h"
-#include "../Lighting/X3DLightNode.h"
-#include "../PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
 
 namespace titania {
 namespace X3D {
@@ -63,9 +60,9 @@ class X3DGroupingNode :
 {
 public:
 
+	MFNode <X3DChildNode> children; // Declare this before add and remove, to get a lower address.
 	MFNode <X3DChildNode> addChildren;
 	MFNode <X3DChildNode> removeChildren;
-	MFNode <X3DChildNode> children;
 
 	virtual
 	Box3f
@@ -96,36 +93,24 @@ protected:
 private:
 
 	void
+	set_addChildren ();
+
+	void
+	set_removeChildren ();
+	
+	void
+	set_endChildren ();
+
+	void
 	set_children ();
-
+	
 	void
-	pointingDeviceSensorsDisplay ();
+	add (const MFNode <X3DChildNode> &, size_t);
 
-	void
-	lightsDisplay ();
-
-	void
-	localFogsDisplay ();
-
-	void
-	childrenSelect ();
-
-	void
-	childrenDisplay ();
-
-	void
-	localFogsPostDisplay ();
-
-	void
-	lightsPostDisplay ();
-
-	void
-	pointingDeviceSensorsPostDisplay ();
-
-	std::deque <X3DPointingDeviceSensorNode*> pointingDeviceSensors;
-	std::deque <X3DLightNode*>                lights;
-	std::deque <LocalFog*>                    localFogs;
-	std::deque <X3DChildNode*>                childNodes;
+	std::deque <size_t> pointingDeviceSensors;
+	std::deque <size_t> lights;
+	std::deque <size_t> localFogs;
+	std::deque <size_t> childNodes;
 
 };
 

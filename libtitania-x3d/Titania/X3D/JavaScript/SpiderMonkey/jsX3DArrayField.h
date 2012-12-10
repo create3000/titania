@@ -46,65 +46,101 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_JAEGER_MONKEY_JS_X3DARRAY_FIELD_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_JAEGER_MONKEY_JS_X3DARRAY_FIELD_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DARRAY_FIELD_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DARRAY_FIELD_H__
 
-#include "../../Fields/ArrayFields.h"
-#include "jsX3DField.h"
 #include "String.h"
+#include "jsX3DField.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
+template <class Type, class FieldType>
 class jsX3DArrayField :
 	public jsX3DField
 {
-protected:
+public:
+
+	typedef Type                            value_type;
+	typedef FieldType                       field_type;
+	typedef typename FieldType::scalar_type field_value_type;
+
+	static
+	void
+	init (JSContext*, JSObject*);
 
 	static
 	JSBool
-	create (JSContext*, JSClass*, X3DArray*, jsval*, const bool);
+	create (JSContext*, X3DArray*, jsval*, const bool = false);
 
 	static
-	JSBool
-	enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
-
-	static JSPropertySpec properties [ ];
-	static JSFunctionSpec functions [ ];
+	JSClass*
+	getClass () { return &static_class; }
 
 
 private:
 
 	enum Property {LENGTH};
 
-	static JSBool length (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool length (JSContext*, JSObject*, jsid, JSBool, jsval*);
-	
+	static JSBool construct (JSContext *, uintN, jsval*);
+
+	static
+	JSBool
+	enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
+
+	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+
+	static JSBool length (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool length (JSContext *, JSObject *, jsid, JSBool, jsval*);
+
+	static JSClass        static_class;
+	static JSPropertySpec properties [ ];
+	static JSFunctionSpec functions [ ];
+
 };
 
-template <class Type>
-JSPropertySpec jsX3DArrayField <Type>::properties [ ] = {
+template <class Type, class FieldType>
+JSClass jsX3DArrayField <Type, FieldType>::static_class = {
+	"X3DArrayField", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+template <class Type, class FieldType>
+JSPropertySpec jsX3DArrayField <Type, FieldType>::properties [ ] = {
 	{ "length", LENGTH, JSPROP_SHARED | JSPROP_PERMANENT, length, length },
 	{ 0 }
+
 };
 
-template <class Type>
-JSFunctionSpec jsX3DArrayField <Type>::functions [ ] = {
+template <class Type, class FieldType>
+JSFunctionSpec jsX3DArrayField <Type, FieldType>::functions [ ] = {
 	{ "getName",     getName <X3DArray>,     0, 0 },
 	{ "getTypeName", getTypeName <X3DArray>, 0, 0 },
 	{ "getType",     getType <X3DArray>,     0, 0 },
-	
+
 	{ "toString",    toString <X3DArray>,    0, 0 },
-	
+
 	{ 0 }
+
 };
 
-template <class Type>
-JSBool
-jsX3DArrayField <Type>::create (JSContext* context, JSClass* static_class, X3DArray* field, jsval* vp, const bool seal)
+template <class Type, class FieldType>
+void
+jsX3DArrayField <Type, FieldType>::init (JSContext* context, JSObject* global)
 {
-	JSObject* result = JS_NewObject (context, static_class, NULL, NULL);
+	JS_InitClass (context, global, NULL, &static_class, construct,
+	              0, properties, functions, NULL, NULL);
+}
+
+template <class Type, class FieldType>
+JSBool
+jsX3DArrayField <Type, FieldType>::create (JSContext* context, X3DArray* field, jsval* vp, const bool seal)
+{
+	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 
 	if (result == NULL)
 		return JS_FALSE;
@@ -119,9 +155,49 @@ jsX3DArrayField <Type>::create (JSContext* context, JSClass* static_class, X3DAr
 	return JS_TRUE;
 }
 
-template <class Type>
+template <class Type, class FieldType>
 JSBool
-jsX3DArrayField <Type>::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+jsX3DArrayField <Type, FieldType>::construct (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		return create (context, new field_type (), &JS_RVAL (context, vp));
+	}
+	else
+	{
+		field_type* field = new field_type ();
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		for (uintN i = 0; i < argc; ++ i)
+		{
+			JSObject* value;
+
+			if (not JS_ValueToObject (context, argv [i], &value))
+				return JS_FALSE;
+
+			if (not JS_InstanceOf (context, value, value_type::getClass (), NULL))
+			{
+				JS_ReportError (context, "Type of argument %d is invalid - should be %s, is %s",
+				                i,
+				                value_type::getClass () -> name,
+				                JS_GetClass (context, value) -> name);
+				                
+				return JS_FALSE;
+			}
+
+			field -> emplace_back (*(field_value_type*) JS_GetPrivate (context, value));
+		}
+
+		return create (context, field, &JS_RVAL (context, vp));
+	}
+
+	return JS_FALSE;
+}
+
+template <class Type, class FieldType>
+JSBool
+jsX3DArrayField <Type, FieldType>::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
 	X3DArray* field = static_cast <X3DArray*> (JS_GetPrivate (context, obj));
 
@@ -159,7 +235,7 @@ jsX3DArrayField <Type>::enumerate (JSContext* context, JSObject* obj, JSIterateO
 				break;
 			}
 
-		//else done -- cleanup.
+			//else done -- cleanup.
 		}
 		case JSENUMERATE_DESTROY:
 		{
@@ -172,18 +248,76 @@ jsX3DArrayField <Type>::enumerate (JSContext* context, JSObject* obj, JSIterateO
 	return JS_TRUE;
 }
 
-template <class Type>
+template <class Type, class FieldType>
 JSBool
-jsX3DArrayField <Type>::length (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DArrayField <Type, FieldType>::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	if (not JSID_IS_INT (id))
+		return JS_TRUE;
+
+	int32 index = JSID_TO_INT (id);
+
+	if (index < 0)
+	{
+		JS_ReportError (context, "index out of range");
+		return JS_FALSE;
+	}
+
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
+
+	return value_type::create (context, (field_value_type*) &field -> get1Value (index), vp);
+}
+
+template <class Type, class FieldType>
+JSBool
+jsX3DArrayField <Type, FieldType>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+{
+	if (not JSID_IS_INT (id))
+		return JS_TRUE;
+
+	int32 index = JSID_TO_INT (id);
+
+	if (index < 0)
+	{
+		JS_ReportError (context, "index out of range");
+		return JS_FALSE;
+	}
+
+	JSObject* value;
+
+	if (not JS_ValueToObject (context, *vp, &value))
+		return JS_FALSE;
+
+	if (not JS_InstanceOf (context, value, value_type::getClass (), NULL))
+	{
+		JS_ReportError (context, "Type of argument is invalid - should be %s, is %s",
+		                value_type::getClass () -> name,
+		                JS_GetClass (context, value) -> name);
+		                
+		return JS_FALSE;
+	}
+
+	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
+
+	field -> set1Value (index, *(field_value_type*) JS_GetPrivate (context, value));
+
+	*vp = JSVAL_VOID;
+
+	return JS_TRUE;
+}
+
+template <class Type, class FieldType>
+JSBool
+jsX3DArrayField <Type, FieldType>::length (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	X3DArray* field = static_cast <X3DArray*> (JS_GetPrivate (context, obj));
 
 	return JS_NewNumberValue (context, field -> size (), vp);
 }
 
-template <class Type>
+template <class Type, class FieldType>
 JSBool
-jsX3DArrayField <Type>::length (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsX3DArrayField <Type, FieldType>::length (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	X3DArray* field = static_cast <X3DArray*> (JS_GetPrivate (context, obj));
 

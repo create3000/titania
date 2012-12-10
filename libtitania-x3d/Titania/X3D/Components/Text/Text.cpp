@@ -220,7 +220,7 @@ Text::createBBox ()
 		++ i;
 	}
 
-	textBounds = bbox .size ();
+	textBounds .setValue (bbox .size ());
 
 	if (string .size () > 1)
 	{
@@ -246,7 +246,7 @@ Text::createBBox ()
 
 	bbox += minorAlignment;
 
-	origin = Vector3f (bbox .min () .x (), bbox .max () .y (), 0);
+	origin .setValue (Vector3f (bbox .min () .x (), bbox .max () .y (), 0));
 
 	return Box3f (Vector3f (bbox .min () .x (), bbox .min () .y (), 0),
 	              Vector3f (bbox .max () .x (), bbox .max () .y (), 0),

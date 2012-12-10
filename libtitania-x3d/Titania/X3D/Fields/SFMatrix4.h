@@ -209,7 +209,7 @@ template <class ValueType>
 SFMatrix4 <ValueType>::SFMatrix4 (const scalar_type & e11, const scalar_type & e12, const scalar_type & e13, const scalar_type & e14,
                                   const scalar_type & e21, const scalar_type & e22, const scalar_type & e23, const scalar_type & e24,
                                   const scalar_type & e31, const scalar_type & e32, const scalar_type & e33, const scalar_type & e34,
-                                  const scalar_type & e41, const scalar_type & e42, const scalar_type  & e43, const scalar_type & e44) :
+                                  const scalar_type & e41, const scalar_type & e42, const scalar_type & e43, const scalar_type & e44) :
 	X3DField <ValueType> (ValueType (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44))
 { }
 

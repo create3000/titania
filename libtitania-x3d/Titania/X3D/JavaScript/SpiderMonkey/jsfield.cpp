@@ -510,7 +510,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			return JS_FALSE;
 		}
 
-		field -> write (*dynamic_cast <X3DObject*> ((X3DArray*) JS_GetPrivate (context, value)));
+		field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
 		field -> notifyParents ();
 	}
 	else if (type == X3DConstants::MFRotation)

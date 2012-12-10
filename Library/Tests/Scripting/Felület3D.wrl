@@ -1,0 +1,224 @@
+#X3D V3.0 utf8 Titania 0.1
+
+PROTO Cube [
+  inputOutput SFVec3f translation 0 0 0
+  inputOutput SFVec3f scale 1 1 1
+]
+{
+  Transform {
+    translation IS translation
+    scale IS scale
+    children Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box {
+        size 1 1 1
+      }
+    }
+  }
+}
+
+Viewpoint { }
+
+DEF Space Group { }
+
+DEF Timer TimeSensor {
+  loop TRUE
+}
+
+DEF Felület Script {
+  inputOnly      SFTime  set_time
+  initializeOnly SFInt32 xDimension 32
+  initializeOnly SFInt32 yDimension 32
+  initializeOnly SFInt32 zDimension 32
+  initializeOnly SFFloat xSpacing 0.1
+  initializeOnly SFFloat ySpacing 0.1
+  initializeOnly SFFloat zSpacing 0.1
+  initializeOnly SFVec3f scale 0.03125 0.03125 0.03125
+  initializeOnly MFNode   addChildren [ ]
+  initializeOnly MFNode   removeChildren [ ]
+  initializeOnly MFNode   children [ ]
+  initializeOnly MFInt32  neighbourgs [ ]
+  initializeOnly SFNode  space USE Space
+
+  url "vrmlscript:
+
+var indices = { };
+var add     = { };
+var remove  = { };
+
+function initialize ()
+{
+	print ('*** Initialize Felület3D.');
+	
+	scale = new SFVec3f (1 / xDimension, 1 / yDimension, 1 / zDimension);
+}
+
+function set_time (value, time)
+{
+	addChildren    .length = 0;
+	removeChildren .length = 0;
+	
+	//print ('set_time: ', value);
+	addCubes ();
+	
+	for (var index in add)
+		addCube (index, add [index]);
+
+	for (var index in remove)
+		removeCube (index, remove [index]);
+		
+	space .addChildren    = addChildren;
+	space .removeChildren = removeChildren;
+}
+
+function addCubes ()
+{
+	add    = { };
+	remove = { };
+
+	var x = 1 + random (xDimension - 3);
+	var y = 1 + random (yDimension - 3);
+	var z = 1 + random (zDimension - 3);
+	
+	var index = get_index (x, y, z);
+
+	if (! indices [index])
+	{
+		addCube (index, [x, y, z]);
+		removeCube (index, [x, y, z]);
+	}
+}
+
+function addCube (index, point)
+{
+	var x = point [0];
+	var y = point [1];
+	var z = point [2];
+	
+	var cube           = Browser .currentScene .createProto ('Cube');
+	children [index]   = cube;
+	indices [index]    = point;
+	addChildren [addChildren .length] = cube;
+	
+	cube .translation = new SFVec3f (x / xDimension + xSpacing * x, y / yDimension + ySpacing * y, z / zDimension + zSpacing * z); 
+	cube .scale       = scale;
+	
+	add_neighbour (index, x, y, z, point);
+}
+
+function removeCube (index, point)
+{
+	var x = point [0];
+	var y = point [1];
+	var z = point [2];
+
+	delete indices [index];
+	
+	removeChildren [removeChildren .length] = children [index];
+	
+	remove_neighbour (x, y, z);
+}
+
+function add_neighbour (index, x, y, z, point)
+{
+	// z - 1 plane
+	
+	++ neighbourgs [get_index (x - 1, y - 1, z - 1)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x,     y - 1, z - 1)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x + 1, y - 1, z - 1)] == 3 ? add [index] = point : remove [index] = point;
+																	
+	++ neighbourgs [get_index (x - 1, y,     z - 1)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x,     y,     z - 1)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x + 1, y,     z - 1)] == 3 ? add [index] = point : remove [index] = point;
+																	
+	++ neighbourgs [get_index (x - 1, y - 1, z - 1)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x,     y - 1, z - 1)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x + 1, y - 1, z - 1)] == 3 ? add [index] = point : remove [index] = point;
+	
+	// z plane
+	
+	++ neighbourgs [get_index (x - 1, y - 1, z)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x,     y - 1, z)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x + 1, y - 1, z)] == 3 ? add [index] = point : remove [index] = point;
+																	
+	++ neighbourgs [get_index (x - 1, y,     z)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x + 1, y,     z)] == 3 ? add [index] = point : remove [index] = point;
+																	
+	++ neighbourgs [get_index (x - 1, y - 1, z)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x,     y - 1, z)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x + 1, y - 1, z)] == 3 ? add [index] = point : remove [index] = point;
+	
+	// z + 1 plane
+	
+	++ neighbourgs [get_index (x - 1, y - 1, z + 1)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x,     y - 1, z + 1)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x + 1, y - 1, z + 1)] == 3 ? add [index] = point : remove [index] = point;
+																		
+	++ neighbourgs [get_index (x - 1, y,     z + 1)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x,     y,     z + 1)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x + 1, y,     z + 1)] == 3 ? add [index] = point : remove [index] = point;
+																		
+	++ neighbourgs [get_index (x - 1, y - 1, z + 1)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x,     y - 1, z + 1)] == 3 ? add [index] = point : remove [index] = point;
+	++ neighbourgs [get_index (x + 1, y - 1, z + 1)] == 3 ? add [index] = point : remove [index] = point;
+}
+
+function remove_neighbour (x, y, z)
+{
+	// z - 1 plane
+	
+	-- neighbourgs [get_index (x - 1, y - 1, z - 1)];
+	-- neighbourgs [get_index (x,     y - 1, z - 1)];
+	-- neighbourgs [get_index (x + 1, y - 1, z - 1)];
+	
+	-- neighbourgs [get_index (x - 1, y,     z - 1)];
+	-- neighbourgs [get_index (x,     y,     z - 1)];
+	-- neighbourgs [get_index (x + 1, y,     z - 1)];
+	
+	-- neighbourgs [get_index (x - 1, y - 1, z - 1)];
+	-- neighbourgs [get_index (x,     y - 1, z - 1)];
+	-- neighbourgs [get_index (x + 1, y - 1, z - 1)];
+	
+	// z plane
+	
+	-- neighbourgs [get_index (x - 1, y - 1, z)];
+	-- neighbourgs [get_index (x,     y - 1, z)];
+	-- neighbourgs [get_index (x + 1, y - 1, z)];
+	
+	-- neighbourgs [get_index (x - 1, y,     z)];
+	-- neighbourgs [get_index (x + 1, y,     z)];
+	
+	-- neighbourgs [get_index (x - 1, y - 1, z)];
+	-- neighbourgs [get_index (x,     y - 1, z)];
+	-- neighbourgs [get_index (x + 1, y - 1, z)];
+	
+	// z + 1 plane
+	
+	-- neighbourgs [get_index (x - 1, y - 1, z + 1)];
+	-- neighbourgs [get_index (x,     y - 1, z + 1)];
+	-- neighbourgs [get_index (x + 1, y - 1, z + 1)];
+	
+	-- neighbourgs [get_index (x - 1, y,     z + 1)];
+	-- neighbourgs [get_index (x,     y,     z + 1)];
+	-- neighbourgs [get_index (x + 1, y,     z + 1)];
+	
+	-- neighbourgs [get_index (x - 1, y - 1, z + 1)];
+	-- neighbourgs [get_index (x,     y - 1, z + 1)];
+	-- neighbourgs [get_index (x + 1, y - 1, z + 1)];
+}
+
+function get_index (x, y, z)
+{
+	return (x * yDimension + y) * zDimension + z;
+}
+
+function random (value)
+{
+	return Math .round (Math .random () * value);
+}
+  "
+}
+
+ROUTE Timer.time TO Felület.set_time

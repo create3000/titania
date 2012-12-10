@@ -91,7 +91,7 @@ X3DFieldDefinition::setReference (X3DFieldDefinition* const value)
 }
 
 bool
-X3DFieldDefinition::hasRoots (BaseNodeSet & seen)
+X3DFieldDefinition::hasRoots (ChildObjectSet & seen)
 {
 	if (getParents () .size ())
 	{
@@ -215,7 +215,7 @@ X3DFieldDefinition::removeInterest (X3DFieldDefinition & interest)
 }
 
 void
-X3DFieldDefinition::processEvents (ObjectSet & sourceFields)
+X3DFieldDefinition::processEvents (ChildObjectSet & sourceFields)
 {
 	//	if (inputRoutes  .size ())
 	sourceFields .insert (this);
@@ -229,7 +229,7 @@ X3DFieldDefinition::processEvents (ObjectSet & sourceFields)
 }
 
 void
-X3DFieldDefinition::processEvent (X3DObject* const field, ObjectSet & sourceFields)
+X3DFieldDefinition::processEvent (X3DChildObject* const field, ChildObjectSet & sourceFields)
 {
 	if (sourceFields .find (this) not_eq sourceFields .end ())
 		return;

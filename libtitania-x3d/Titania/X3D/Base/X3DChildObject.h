@@ -49,7 +49,7 @@
 #ifndef __TITANIA_X3D_BASE_X3DBASE_NODE_H__
 #define __TITANIA_X3D_BASE_X3DBASE_NODE_H__
 
-#include "../Base/BaseNodeSet.h"
+#include "../Base/ChildObjectSet.h"
 #include "../Base/X3DObject.h"
 
 #include <Titania/Utility/Pass.h>
@@ -59,7 +59,7 @@ namespace titania {
 namespace X3D {
 
 class X3DChildObject :
-	public X3DObject
+	virtual public X3DObject
 {
 public:
 
@@ -71,12 +71,12 @@ public:
 	bool
 	removeParent (X3DChildObject* const);
 
-	const BaseNodeSet &
+	const ChildObjectSet &
 	getParents () const;
 
 	virtual
 	bool
-	hasRoots (BaseNodeSet &);
+	hasRoots (ChildObjectSet &);
 
 	template <class Type>
 	std::deque <Type*>
@@ -96,11 +96,15 @@ public:
 	void
 	setChild (X3DChildObject &);
 
-	const BaseNodeSet &
+	const ChildObjectSet &
 	getChildren () const;
 
 
-	///  @name Object
+	///  @name Event Handling
+
+	virtual
+	void
+	write (const X3DChildObject &) { }
 	
 	virtual
 	void
@@ -108,7 +112,18 @@ public:
 
 	virtual
 	void
+	processEvents (ChildObjectSet &) = 0; // XXX
+
+	virtual
+	void
+	processEvent (X3DChildObject* const, ChildObjectSet &) = 0;
+
+	virtual
+	void
 	dispose ();
+
+	virtual
+	~X3DChildObject ();
 
 
 protected:
@@ -117,20 +132,17 @@ protected:
 
 	virtual
 	void
-	notify (X3DObject* const);
-
-	virtual
-	~X3DChildObject ();
+	notify (X3DChildObject* const);
 
 
 private:
 
 	template <class Type>
 	void
-	findClosestParents (std::deque <Type*> &, BaseNodeSet &);
+	findClosestParents (std::deque <Type*> &, ChildObjectSet &);
 
-	BaseNodeSet parents;
-	BaseNodeSet children;
+	ChildObjectSet parents;
+	ChildObjectSet children;
 
 };
 
@@ -146,7 +158,7 @@ template <class Type>
 std::deque <Type*>
 X3DChildObject::findClosestParents () const
 {
-	BaseNodeSet seen;
+	ChildObjectSet seen;
 
 	std::deque <Type*> parents;
 
@@ -158,7 +170,7 @@ X3DChildObject::findClosestParents () const
 
 template <class Type>
 void
-X3DChildObject::findClosestParents (std::deque <Type*> & parents, BaseNodeSet & seen)
+X3DChildObject::findClosestParents (std::deque <Type*> & parents, ChildObjectSet & seen)
 {
 	if (not seen .insert (this) .second)
 		return;

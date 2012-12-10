@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -137,11 +137,11 @@ public:
 
 	virtual
 	void
-	processEvents (ObjectSet &);
+	processEvents (ChildObjectSet &);
 
 	virtual
 	void
-	processEvent (X3DObject* const, ObjectSet &);
+	processEvent (X3DChildObject* const, ChildObjectSet &);
 
 	virtual
 	void
@@ -232,10 +232,10 @@ private:
 
 	virtual
 	void
-	notify (X3DObject* const);
+	notify (X3DChildObject* const);
 
 	bool
-	addEvent (X3DObject* const);
+	addEvent (X3DChildObject* const);
 
 	X3DBrowser* const          browser;
 	X3DExecutionContext* const executionContext;
@@ -249,7 +249,7 @@ private:
 	FieldAliasesMap      fieldAliases;
 	size_t               numUserDefinedFields;
 
-	ObjectSet events;
+	ChildObjectSet events;
 
 	bool prepare;
 	bool receivedInputEvent;

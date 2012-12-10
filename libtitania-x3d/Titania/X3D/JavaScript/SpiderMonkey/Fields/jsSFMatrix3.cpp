@@ -51,6 +51,24 @@
 namespace titania {
 namespace X3D {
 
+template <>
+JSClass jsSFMatrix3 <SFMatrix3d>::static_class = {
+	"SFMatrix3d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+template <>
+JSClass jsSFMatrix3 <SFMatrix3f>::static_class = {
+	"SFMatrix3f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
 template class jsSFMatrix3 <SFMatrix3d>;
 template class jsSFMatrix3 <SFMatrix3f>;
 

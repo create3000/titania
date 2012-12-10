@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -49,6 +49,10 @@
 #include "X3DGroupingNode.h"
 
 #include "../../Browser/Browser.h"
+#include "../EnvironmentalEffects/LocalFog.h"
+#include "../Lighting/X3DLightNode.h"
+#include "../PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
+
 #include <Titania/Utility/Adapter.h>
 
 namespace titania {
@@ -57,9 +61,9 @@ namespace X3D {
 X3DGroupingNode::X3DGroupingNode () :
 	    X3DChildNode (), 
 	X3DBoundedObject (), 
+	        children (), // MFNode[in,out] children        [ ]       [X3DChildNode]
 	     addChildren (), // MFNode[in]     addChildren               [X3DChildNode]
-	  removeChildren (), // MFNode[in]     removeChildren            [X3DChildNode]
-	        children ()  // MFNode[in,out] children        [ ]       [X3DChildNode]
+	  removeChildren ()  // MFNode[in]     removeChildren            [X3DChildNode]
 {
 	addNodeType (X3DGroupingNodeType);
 }
@@ -70,8 +74,10 @@ X3DGroupingNode::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 
-	children .addInterest (this, &X3DGroupingNode::set_children);
-	
+	addChildren    .addInterest (this, &X3DGroupingNode::set_addChildren);
+	removeChildren .addInterest (this, &X3DGroupingNode::set_removeChildren);
+	children       .addInterest (this, &X3DGroupingNode::set_children);
+
 	set_children ();
 }
 
@@ -87,6 +93,33 @@ X3DGroupingNode::getBBox ()
 }
 
 void
+X3DGroupingNode::set_addChildren ()
+{
+	add (addChildren, children .size ());
+	
+	children .insert (children .end (), addChildren .begin (), addChildren .end ());
+
+	children .removeInterest (this, &X3DGroupingNode::set_children);
+	children .addInterest    (this, &X3DGroupingNode::set_endChildren);
+}
+
+void
+X3DGroupingNode::set_removeChildren ()
+{
+	children .remove (removeChildren .begin (), removeChildren .end ());
+
+	children .removeInterest (this, &X3DGroupingNode::set_children);
+	children .addInterest    (this, &X3DGroupingNode::set_endChildren);
+}
+
+void
+X3DGroupingNode::set_endChildren ()
+{
+	children .removeInterest (this, &X3DGroupingNode::set_endChildren);
+	children .addInterest    (this, &X3DGroupingNode::set_children);
+}
+
+void
 X3DGroupingNode::set_children ()
 {
 	pointingDeviceSensors .clear ();
@@ -94,31 +127,31 @@ X3DGroupingNode::set_children ()
 	localFogs  .clear ();
 	childNodes .clear ();
 
-	for (const auto & child : children)
-	{
-		SFNode <X3DPointingDeviceSensorNode> pointingDeviceSensorNode = child;
+	add (children, 0);
+}
 
-		if (pointingDeviceSensorNode)
-			pointingDeviceSensors .push_back (*pointingDeviceSensorNode);
+void
+X3DGroupingNode::add (const MFNode <X3DChildNode> & children, size_t offset)
+{
+	for (size_t i = 0; i < children .size (); ++ i)
+	{
+		if (SFNode <X3DPointingDeviceSensorNode> (children [i]))
+			pointingDeviceSensors .emplace_back (offset + i);
 
 		else
 		{
-			SFNode <X3DLightNode> lightNode = child;
-
-			if (lightNode)
-				lights .push_back (*lightNode);
+			if (SFNode <X3DLightNode> (children [i]))
+				lights .emplace_back (offset + i);
 
 			else
 			{
-				SFNode <LocalFog> localFogNode = child;
-
-				if (localFogNode)
-					localFogs .push_back (*localFogNode);
+				if (SFNode <LocalFog> (children [i]))
+					localFogs .emplace_back (offset + i);
 
 				else
 				{
-					if (child)
-						childNodes .push_back (*child);
+					if (children [i])
+						childNodes .emplace_back (offset + i);
 				}
 			}
 		}
@@ -128,93 +161,41 @@ X3DGroupingNode::set_children ()
 void
 X3DGroupingNode::intersect ()
 {
-	if (pointingDeviceSensors .size ())
-		pointingDeviceSensorsDisplay ();
+	//	if (not getBrowser () -> getEditMode ())
+	//	{
+	for (const auto & index : pointingDeviceSensors)
+		children [index] -> display ();
 
-	childrenSelect ();
+	//	}
 
-	if (pointingDeviceSensors .size ())
-		pointingDeviceSensorsPostDisplay ();
+	for (const auto & index : childNodes)
+		children [index] -> select ();
+
+	//	if (not getBrowser () -> getEditMode ())
+	//	{
+	for (const auto & index : basic::adapter (pointingDeviceSensors .crbegin (), pointingDeviceSensors .crend ()))
+		children [index] -> finish ();
+
+	//	}
 }
 
 void
 X3DGroupingNode::display ()
 {
-	if (lights .size ())
-		lightsDisplay ();
+	for (const auto & index : lights)
+		children [index] -> display ();
 
 	if (localFogs .size ())
-		localFogsDisplay ();
+		children [localFogs .front ()] -> display ();
 
-	childrenDisplay ();
+	for (const auto & index : childNodes)
+		children [index] -> display ();
 
 	if (localFogs .size ())
-		localFogsPostDisplay ();
+		children [localFogs .front ()] -> finish ();
 
-	if (lights .size ())
-		lightsPostDisplay ();
-}
-
-void
-X3DGroupingNode::pointingDeviceSensorsDisplay ()
-{
-	//	if (not getBrowser () -> getEditMode ())
-	//	{
-	for (const auto & pointingDeviceSensor : pointingDeviceSensors)
-		pointingDeviceSensor -> display ();
-
-	//	}
-}
-
-void
-X3DGroupingNode::lightsDisplay ()
-{
-	for (const auto & light : lights)
-		light -> display ();
-}
-
-void
-X3DGroupingNode::localFogsDisplay ()
-{
-	localFogs .back () -> display ();
-}
-
-void
-X3DGroupingNode::childrenSelect ()
-{
-	for (const auto & child : childNodes)
-		child -> select ();
-}
-
-void
-X3DGroupingNode::childrenDisplay ()
-{
-	for (const auto & child : childNodes)
-		child -> display ();
-}
-
-void
-X3DGroupingNode::localFogsPostDisplay ()
-{
-	localFogs .back () -> finish ();
-}
-
-void
-X3DGroupingNode::lightsPostDisplay ()
-{
-	for (const auto & light : basic::adapter (lights .crbegin (), lights .crend ()))
-		light -> finish ();
-}
-
-void
-X3DGroupingNode::pointingDeviceSensorsPostDisplay ()
-{
-	//	if (not getBrowser () -> getEditMode ())
-	//	{
-	for (const auto & pointingDeviceSensor : basic::adapter (pointingDeviceSensors .crbegin (), pointingDeviceSensors .crend ()))
-		pointingDeviceSensor -> finish ();
-
-	//	}
+	for (const auto & index : basic::adapter (lights .crbegin (), lights .crend ()))
+		children [index] -> finish ();
 }
 
 void

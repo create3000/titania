@@ -52,7 +52,7 @@ namespace titania {
 namespace X3D {
 
 X3DContext::X3DContext () :
-	X3DBase () 
+	X3DObject () 
 { }
 
 X3DContext::~X3DContext ()

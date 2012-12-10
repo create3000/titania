@@ -51,10 +51,10 @@
 namespace titania {
 namespace X3D {
 
-template JSBool jsX3DObject::getName <X3DObject>     (JSContext *, uintN, jsval*);
-template JSBool jsX3DObject::getTypeName <X3DObject> (JSContext *, uintN, jsval*);
-template JSBool jsX3DObject::getType <X3DObject>     (JSContext *, uintN, jsval*);
-template JSBool jsX3DObject::toString <X3DObject>    (JSContext *, uintN, jsval*);
+template JSBool jsX3DObject::getName <X3DChildObject>     (JSContext *, uintN, jsval*);
+template JSBool jsX3DObject::getTypeName <X3DChildObject> (JSContext *, uintN, jsval*);
+template JSBool jsX3DObject::getType <X3DChildObject>     (JSContext *, uintN, jsval*);
+template JSBool jsX3DObject::toString <X3DChildObject>    (JSContext *, uintN, jsval*);
 
 template JSBool jsX3DObject::getName <X3DArray>     (JSContext *, uintN, jsval*);
 template JSBool jsX3DObject::getTypeName <X3DArray> (JSContext *, uintN, jsval*);

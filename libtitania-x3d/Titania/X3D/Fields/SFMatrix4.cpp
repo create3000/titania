@@ -48,6 +48,9 @@
 
 #include "SFMatrix4.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnarrowing"
+
 namespace titania {
 namespace X3D {
 
@@ -66,3 +69,5 @@ template class SFMatrix4 <Matrix4f>;
 
 } // X3D
 } // titania
+
+#pragma GCC diagnostic pop

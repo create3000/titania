@@ -51,8 +51,8 @@
 namespace titania {
 namespace X3D {
 
-JSClass jsMFInt32::static_class =
-{
+template <>
+JSClass jsX3DArrayField <jsSFInt32, MFInt32>::static_class = {
 	"MFInt32", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -60,21 +60,9 @@ JSClass jsMFInt32::static_class =
 
 };
 
-void
-jsMFInt32::init (JSContext* context, JSObject* global)
-{
-	JS_InitClass (context, global, NULL, &static_class, construct,
-	              0, properties, functions, NULL, NULL);
-}
-
+template <>
 JSBool
-jsMFInt32::create (JSContext* context, MFInt32* field, jsval* vp, const bool seal)
-{
-	return jsX3DArrayField::create (context, &static_class, field, vp, seal);
-}
-
-JSBool
-jsMFInt32::construct (JSContext* context, uintN argc, jsval* vp)
+jsX3DArrayField <jsSFInt32, MFInt32>::construct (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
@@ -82,7 +70,7 @@ jsMFInt32::construct (JSContext* context, uintN argc, jsval* vp)
 	}
 	else
 	{
-		SFInt32 values [argc];
+		MFInt32* field = new MFInt32 ();
 
 		jsval* argv = JS_ARGV (context, vp);
 
@@ -93,36 +81,18 @@ jsMFInt32::construct (JSContext* context, uintN argc, jsval* vp)
 			if (not JS_ValueToECMAInt32 (context, argv [i], &number))
 				return JS_FALSE;
 
-			values [i] = number;
+			field -> emplace_back (number);
 		}
 
-		return create (context, new MFInt32 (values, values + argc), &JS_RVAL (context, vp));
+		return create (context, field, &JS_RVAL (context, vp));
 	}
 
 	return JS_FALSE;
 }
 
+template <>
 JSBool
-jsMFInt32::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	if (not JSID_IS_INT (id))
-		return JS_TRUE;
-
-	int32 index = JSID_TO_INT (id);
-
-	if (index < 0)
-	{
-		JS_ReportError (context, "index out of range");
-		return JS_FALSE;
-	}
-
-	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
-
-	return JS_NewNumberValue (context, *(SFInt32*) &field -> get1Value (index), vp);
-}
-
-JSBool
-jsMFInt32::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsX3DArrayField <jsSFInt32, MFInt32>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
@@ -148,6 +118,8 @@ jsMFInt32::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict,
 
 	return JS_TRUE;
 }
+
+template class jsX3DArrayField <jsSFInt32, MFInt32>;
 
 } // X3D
 } // titania

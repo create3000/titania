@@ -74,6 +74,14 @@ class X3DNode :
 public:
 
 	SFNode <X3DBaseNode> metadata;
+	
+	virtual
+	void
+	display () { }
+	
+	virtual
+	void
+	finish () { }
 
 
 protected:

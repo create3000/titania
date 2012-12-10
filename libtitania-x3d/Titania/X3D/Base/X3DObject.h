@@ -46,28 +46,40 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASE_X3DOBJECT_H__
-#define __TITANIA_X3D_BASE_X3DOBJECT_H__
+#ifndef __TITANIA_X3D_BASE_X3DBASE_H__
+#define __TITANIA_X3D_BASE_X3DBASE_H__
 
 #include "../Base/GarbageCollector.h"
-#include "../Base/ObjectSet.h"
 #include "../Base/X3DInput.h"
 #include "../Base/X3DOutput.h"
-#include "../Base/X3DBase.h"
+#include "../Base/X3DType.h"
+#include "../Bits/Error.h"
+#include <Titania/LOG.h>
+#include <istream>
+#include <ostream>
 
 namespace titania {
 namespace X3D {
 
 class X3DObject :
-	virtual public X3DBase, public X3DInput, public X3DOutput
+	public X3DType, public X3DInput, public X3DOutput
 {
 public:
 
-	///  @name Input/Output
+	///  @name Type Information
+
+	void
+	setName (const basic::id &);
 
 	virtual
-	void
-	write (const X3DObject &) { }
+	const X3DType*
+	getType () const = 0;
+
+	virtual
+	const basic::id &
+	getTypeName () const = 0;
+	
+	///  @name Input/Output
 
 	virtual
 	bool
@@ -77,18 +89,30 @@ public:
 	bool
 	isOutput () const;
 
-	virtual
-	void
-	processEvents (ObjectSet &) = 0; // XXX
-
-	virtual
-	void
-	processEvent (X3DObject* const, ObjectSet &) = 0;
-
 	///  @name Garbage Collection
 
 	GarbageCollector &
 	getGarbageCollector ();
+
+	///  @name String Creation
+
+	virtual
+	std::string
+	toString () const;
+
+	///  @name Stream Handling
+	
+	virtual
+	void
+	fromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
+
+	virtual
+	void
+	toStream (std::ostream &) const = 0;
 
 	///  @name Destruction Handling
 
@@ -96,17 +120,13 @@ public:
 	void
 	dispose ();
 
-	virtual
-	~X3DObject ();
-
 
 protected:
 
 	X3DObject ();
 
 	virtual
-	void
-	notify (X3DObject* const) = 0;
+	~X3DObject ();
 
 
 private:
@@ -114,6 +134,28 @@ private:
 	static GarbageCollector garbageCollector;
 
 };
+
+template <class CharT, class Traits>
+std::basic_istream <CharT, Traits> &
+operator >> (std::basic_istream <CharT, Traits> & istream, X3DObject & object)
+{
+	object .fromStream (istream);
+	return istream;
+}
+
+template <class CharT, class Traits>
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const X3DObject & object)
+{
+	object .toStream (ostream);
+	return ostream;
+}
+
+extern template std::istream & operator >> (std::istream &, X3DObject &);
+extern template std::ostream & operator << (std::ostream &, const X3DObject &);
+//extern template std::wistream & operator >> (std::wistream &, const X3DObject &);
+//extern template std::wostream & operator << (std::wostream &, const X3DObject &);
+
 
 } // X3D
 } // titania

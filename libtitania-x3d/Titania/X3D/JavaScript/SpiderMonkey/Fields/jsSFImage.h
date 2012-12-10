@@ -60,6 +60,8 @@ class jsSFImage :
 {
 public:
 
+	typedef SFImage field_type;
+
 	static 
 	void
 	init (JSContext*, JSObject*);

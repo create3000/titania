@@ -3,10 +3,14 @@
 Background {
   skyColor 1 1 1
 }
+
 Fog {
   fogType "EXPONENTIAL"
   visibilityRange 100
 }
+
+Viewpoint { }
+
 Transform {
   translation -3 0 0
   children [
@@ -65,6 +69,7 @@ Transform {
     }
   ]
 }
+
 Transform {
   translation 3 0 0
   children [
@@ -124,6 +129,7 @@ Transform {
     }
   ]
 }
+
 Transform {
   translation 0 3 0
   children [

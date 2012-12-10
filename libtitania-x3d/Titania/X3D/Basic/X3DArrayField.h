@@ -53,6 +53,7 @@
 #include "../Basic/X3DField.h"
 #include "../Types/Array.h"
 
+#include <Titania/Algorithm/Remove.h>
 #include <Titania/Utility/Adapter.h>
 #include <initializer_list>
 
@@ -65,8 +66,8 @@ class X3DArrayField :
 {
 public:
 
-	typedef typename ValueType::scalar_type scalar_type;
-	typedef Array <ValueType>               value_type;
+	typedef ValueType         scalar_type;
+	typedef Array <ValueType> value_type;
 
 	typedef typename value_type::iterator               iterator;
 	typedef typename value_type::const_iterator         const_iterator;
@@ -276,13 +277,23 @@ public:
 	const ValueType &
 	front () const { return getValue () .front (); }
 
-	//	iterator
-	//	insert (const_iterator, const ValueType &);
-	//
-	//	void insert (const_iterator, size_type, const ValueType &);
-	//
-	//	template <class InputIterator>
-	//	void insert (const_iterator, InputIterator, InputIterator);
+	iterator
+	insert (iterator, const ValueType &);
+
+	void insert (iterator, size_type, const ValueType &);
+
+	template <class InputIterator>
+	void insert (iterator, InputIterator, InputIterator);
+
+	template <class InputIterator>
+	void remove (InputIterator first, InputIterator last)
+	{
+		auto new_end = basic::remove (begin (), end (), first, last);
+		
+		erase (new_end, end ());
+		
+		notifyParents ();
+	}
 
 	virtual
 	size_type
@@ -468,45 +479,39 @@ X3DArrayField <ValueType>::erase (iterator first, iterator last)
 	return iter;
 }
 
-//template <class ValueType>
-//typename X3DArrayField <ValueType>::iterator
-//X3DArrayField <ValueType>::insert (const_iterator location, const ValueType & value)
-//{
-//	iterator iter = getValue () .insert (location, value);
-//
-//	addChildren (iter, end ());
-//
-//	notifyParents ();
-//
-//	return iter;
-//}
+template <class ValueType>
+typename X3DArrayField <ValueType>::iterator
+X3DArrayField <ValueType>::insert (iterator location, const ValueType & value)
+{
+	iterator iter = get () .insert (location, value);
 
-//template <class ValueType>
-//void
-//X3DArrayField <ValueType>::insert (const_iterator location, size_type count, const ValueType & value)
-//{
-//	difference_type i = location - begin ();
-//
-//	getValue () .insert (location, count, value);
-//
-//	addChildren (begin () + i, end ());
-//
-//	notifyParents ();
-//}
-//
-//template <class ValueType>
-//template <class InputIterator>
-//void
-//X3DArrayField <ValueType>::insert (const_iterator location, InputIterator first, InputIterator last)
-//{
-//	difference_type i = location - begin ();
-//
-//	getValue () .insert (location, first, last);
-//
-//	addChildren (begin () + i, end ());
-//
-//	notifyParents ();
-//}
+	addChildren (iter, end ());
+
+	return iter;
+}
+
+template <class ValueType>
+void
+X3DArrayField <ValueType>::insert (iterator location, size_type count, const ValueType & value)
+{
+	difference_type i = location - begin ();
+
+	get () .insert (location, count, value);
+
+	addChildren (begin () + i, end ());
+}
+
+template <class ValueType>
+template <class InputIterator>
+void
+X3DArrayField <ValueType>::insert (iterator location, InputIterator first, InputIterator last)
+{
+	difference_type i = location - begin ();
+
+	get () .insert (location, first, last);
+
+	addChildren (begin () + i, end ());
+}
 
 template <class ValueType>
 void

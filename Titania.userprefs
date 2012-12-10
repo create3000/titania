@@ -1,16 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4f.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Scripting/Felület3D.wrl">
     <Files>
       <File FileName="experimental/main.cpp" Line="711" Column="20" />
       <File FileName="Library/Tests/Text/test.wrl" Line="46" Column="50" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.h" Line="72" Column="2" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="218" Column="33" />
-      <File FileName="Titania/share/titania/pages/about/info.wrl" Line="28" Column="1" />
-      <File FileName="Library/Protos/Geometry2D/RegularPolygon/RegularPolygon.wrl" Line="27" Column="58" />
-      <File FileName="Library/Protos/Geometry2D/RegularPolygon/RegularPolygon.py" Line="28" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4f.cpp" Line="231" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4f.h" Line="19" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DArrayField.h" Line="268" Column="89" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsMFDouble.h" Line="62" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsMFDouble.cpp" Line="99" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsX3DScalar.h" Line="97" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsMFBool.cpp" Line="103" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsMFFloat.cpp" Line="92" Column="1" />
+      <File FileName="Library/Tests/Scripting/Felület3D.wrl" Line="46" Column="8" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.h" Line="108" Column="38" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.cpp" Line="137" Column="59" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="280" Column="10" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,10 +25,17 @@
           <Node name="Library" expanded="True">
             <Node name="Protos" expanded="True">
               <Node name="Geometry2D" expanded="True">
-                <Node name="RegularPolygon" expanded="True" />
+                <Node name="RegularPolygon2D" expanded="True" />
+              </Node>
+            </Node>
+            <Node name="Tests" expanded="True">
+              <Node name="EnvironmentalEffects" expanded="True" />
+              <Node name="Scripting" expanded="True">
+                <Node name="Felület3D.wrl" selected="True" />
               </Node>
             </Node>
           </Node>
+          <Node name="libtitania-anyoptions" expanded="True" />
           <Node name="libtitania-opengl-surface" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="OpenGL" expanded="True" />
@@ -48,6 +60,8 @@
                   <Node name="Properties" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="Core" expanded="True" />
+                  <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="EnvironmentalSensor" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
                   <Node name="Grouping" expanded="True" />
@@ -66,11 +80,12 @@
                 <Node name="Fields" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="SpiderMonkey" expanded="True">
-                    <Node name="Fields" expanded="True" selected="True" />
+                    <Node name="Fields" expanded="True" />
                   </Node>
                 </Node>
                 <Node name="Parser" expanded="True" />
                 <Node name="Prototype" expanded="True" />
+                <Node name="Rendering" expanded="True" />
                 <Node name="Routing" expanded="True" />
                 <Node name="Types" expanded="True" />
                 <Node name="Widgets" expanded="True" />

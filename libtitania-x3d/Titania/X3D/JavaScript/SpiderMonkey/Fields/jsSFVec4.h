@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,7 +61,7 @@ class jsSFVec4 :
 {
 public:
 
-	typedef Type value_type;
+	typedef Type field_type;
 
 	static
 	void
@@ -126,9 +126,9 @@ JSPropertySpec jsSFVec4 <Type>::properties [ ] = {
 
 template <class Type>
 JSFunctionSpec jsSFVec4 <Type>::functions [ ] = {
-	{ "getName",     getName <X3DObject>,     0, 0 },
-	{ "getTypeName", getTypeName <X3DObject>, 0, 0 },
-	{ "getType",     getType <X3DObject>,     0, 0 },
+	{ "getName",     getName <X3DChildObject>,     0, 0 },
+	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
+	{ "getType",     getType <X3DChildObject>,     0, 0 },
 	
 	{ "negate",      normalize,   0, 0 },
 	{ "add",         add,         1, 0 },
@@ -139,7 +139,7 @@ JSFunctionSpec jsSFVec4 <Type>::functions [ ] = {
 	{ "dot",         dot,         1, 0 },
 	{ "length",      length,      0, 0 },
 
-	{ "toString",    toString <X3DObject>, 0, 0 },
+	{ "toString",    toString <X3DChildObject>, 0, 0 },
 	
 	{ 0 }
 

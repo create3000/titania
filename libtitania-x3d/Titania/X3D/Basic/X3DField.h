@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -214,7 +214,7 @@ protected:
 	///  Set @a field to this field without notifying this field.
 	virtual
 	void
-	write (const X3DObject &);
+	write (const X3DChildObject &);
 
 	///  Set this field to its default value.
 	void
@@ -290,7 +290,7 @@ X3DField <ValueType>::set (const ValueType & value)
 
 template <class ValueType>
 void
-X3DField <ValueType>::write (const X3DObject & field)
+X3DField <ValueType>::write (const X3DChildObject & field)
 {
 	assert (getType () == field .getType ());
 

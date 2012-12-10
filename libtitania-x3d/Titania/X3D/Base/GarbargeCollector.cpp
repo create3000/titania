@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,7 +48,7 @@
 
 #include "GarbageCollector.h"
 
-#include "../Base/X3DObject.h"
+#include "../Base/X3DChildObject.h"
 
 #include <cassert>
 #include <iostream>
@@ -60,7 +60,7 @@ GarbageCollector::GarbageCollector ()
 { }
 
 void
-GarbageCollector::addObject (X3DObject* object)
+GarbageCollector::addObject (X3DChildObject* object)
 {
 	assert (disposedObjects .insert (object) .second);
 }
@@ -70,7 +70,7 @@ GarbageCollector::dispose ()
 {
 	while (disposedObjects .size ())
 	{
-		ObjectSet objectsToDelete (std::move (disposedObjects));
+		ChildObjectSet objectsToDelete (std::move (disposedObjects));
 
 		//__LOG__ << objectsToDelete .size () << " objects to delete: " << std::flush;
 

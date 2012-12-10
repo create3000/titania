@@ -51,36 +51,22 @@
 
 #include "../../../Fields/ArrayFields.h"
 #include "../jsX3DArrayField.h"
+#include "jsX3DScalar.h"
 
 namespace titania {
 namespace X3D {
 
-class jsMFDouble :
-	public jsX3DArrayField <SFDouble>
-{
-public:
+template <>
+JSBool
+jsX3DArrayField <jsSFDouble, MFDouble>::construct (JSContext*, uintN, jsval*);
 
-	static 
-	void
-	init (JSContext*, JSObject*);
+template <>
+JSBool
+jsX3DArrayField <jsSFDouble, MFDouble>::set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
-	static 
-	JSBool
-	create (JSContext*, MFDouble*, jsval*, const bool = false);
+extern template class jsX3DArrayField <jsSFDouble, MFDouble>;
 
-	static 
-	JSClass*
-	getClass () { return &static_class; }
-
-
-private:
-
-	static JSClass static_class;
-	static JSBool  construct (JSContext*, uintN, jsval*);
-	static JSBool  get1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool  set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
-
-};
+typedef jsX3DArrayField <jsSFDouble, MFDouble> jsMFDouble;
 
 } // X3D
 } // titania

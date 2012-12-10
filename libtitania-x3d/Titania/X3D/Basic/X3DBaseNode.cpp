@@ -474,7 +474,7 @@ X3DBaseNode::initialize ()
 }
 
 void
-X3DBaseNode::notify (X3DObject* const object)
+X3DBaseNode::notify (X3DChildObject* const object)
 {
 	//std::clog << "Node '" << getTypeName () << "' received an event from field '" << object -> getName () << "'." << (void*) this << std::endl;
 
@@ -490,13 +490,13 @@ X3DBaseNode::notify (X3DObject* const object)
 }
 
 bool
-X3DBaseNode::addEvent (X3DObject* const object)
+X3DBaseNode::addEvent (X3DChildObject* const object)
 {
 	return events .insert (object) .second;
 }
 
 void
-X3DBaseNode::processEvents (ObjectSet & sourceFields)
+X3DBaseNode::processEvents (ChildObjectSet & sourceFields)
 {
 	if (prepare and receivedInputEvent)
 	{
@@ -508,7 +508,7 @@ X3DBaseNode::processEvents (ObjectSet & sourceFields)
 
 	if (events .size ())
 	{
-		ObjectSet eventsToProcess (std::move (events));
+		ChildObjectSet eventsToProcess (std::move (events));
 
 		for (const auto & event : eventsToProcess)
 		{
@@ -519,7 +519,7 @@ X3DBaseNode::processEvents (ObjectSet & sourceFields)
 }
 
 void
-X3DBaseNode::processEvent (X3DObject* const field, ObjectSet & sourceFields)
+X3DBaseNode::processEvent (X3DChildObject* const field, ChildObjectSet & sourceFields)
 {
 	receivedInputEvent |= field -> isInput ();
 	processEvents (sourceFields);

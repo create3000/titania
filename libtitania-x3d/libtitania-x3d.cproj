@@ -412,7 +412,6 @@
     <None Include="Titania\X3D\Widgets\MotionBlur.h" />
     <None Include="Titania\X3D\Browser\X3DBrowser.h" />
     <None Include="Titania\X3D\Rendering\X3DRenderer.h" />
-    <None Include="Titania\X3D\Base\X3DObject.h" />
     <None Include="Titania\X3D\Base\X3DOutput.h" />
     <None Include="Titania\X3D\Basic\X3DArrayField.h" />
     <None Include="Titania\X3D\Basic\X3DField.h" />
@@ -420,7 +419,6 @@
     <None Include="Titania\X3D\Basic\NodeTypeArray.h" />
     <None Include="Titania\X3D\Basic\X3DContext.h" />
     <None Include="Titania\X3D\Base\X3DType.h" />
-    <None Include="Titania\X3D\Base\X3DBase.h" />
     <None Include="Titania\X3D\Bits\Error.h" />
     <None Include="Titania\X3D\Base\X3DInput.h" />
     <None Include="Titania\X3D\Basic\FieldDefinitionSet.h" />
@@ -461,8 +459,6 @@
     <None Include="Titania\X3D\Execution\X3DScene.h" />
     <None Include="Titania\X3D\Configuration\FieldTypesArray.h" />
     <None Include="Titania\X3D\Basic\BasicNodeArray.h" />
-    <None Include="Titania\X3D\Base\BaseNodeSet.h" />
-    <None Include="Titania\X3D\Base\ObjectSet.h" />
     <None Include="Titania\X3D\Types\Geometry.h" />
     <None Include="Titania\X3D\Types\Numbers.h" />
     <None Include="Titania\X3D\Browser\Properties\BrowserProperties.h" />
@@ -487,32 +483,15 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DObject.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DFieldDefinition.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DField.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFColor.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFColorRGBA.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFDouble.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFFloat.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFImage.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFInt32.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFMatrix3d.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFMatrix3f.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFMatrix4d.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFMatrix4f.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFNode.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFRotation.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFString.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFTime.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFVec2d.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFVec2f.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFVec3d.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFVec3f.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFVec4d.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFVec4f.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFColor.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFColorRGBA.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFImage.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix4d.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix4f.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsVrmlMatrix.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFNode.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsFieldDefinitionArray.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFRotation.h" />
@@ -534,6 +513,11 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFVec2.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFVec4.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix3.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix4.h" />
+    <None Include="Titania\X3D\Base\ChildObjectSet.h" />
+    <None Include="Titania\X3D\Base\X3DObject.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsX3DScalar.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsArrayFields.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -556,9 +540,7 @@
     <Compile Include="Titania\X3D\Fields\SFVec3.cpp" />
     <Compile Include="Titania\X3D\Fields\SFVec4.cpp" />
     <Compile Include="Titania\X3D\Base\GarbargeCollector.cpp" />
-    <Compile Include="Titania\X3D\Base\X3DBase.cpp" />
     <Compile Include="Titania\X3D\Base\X3DInput.cpp" />
-    <Compile Include="Titania\X3D\Base\X3DObject.cpp" />
     <Compile Include="Titania\X3D\Base\X3DOutput.cpp" />
     <Compile Include="Titania\X3D\Base\X3DType.cpp" />
     <Compile Include="Titania\X3D\Basic\FieldDefinitionArray.cpp" />
@@ -887,8 +869,6 @@
     <Compile Include="Titania\X3D\Configuration\ProfileInfoArray.cpp" />
     <Compile Include="Titania\X3D\Configuration\FieldTypesArray.cpp" />
     <Compile Include="Titania\X3D\Basic\BasicNodeArray.cpp" />
-    <Compile Include="Titania\X3D\Base\BaseNodeSet.cpp" />
-    <Compile Include="Titania\X3D\Base\ObjectSet.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\RenderingProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\QuadSphereProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\BrowserOptions.cpp" />
@@ -906,32 +886,15 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DObject.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DFieldDefinition.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DField.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFColor.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFColorRGBA.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFDouble.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFFloat.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFImage.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFInt32.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFMatrix3d.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFMatrix3f.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFMatrix4d.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFMatrix4f.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFNode.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFRotation.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFString.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFTime.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFVec2d.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFVec2f.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFVec3d.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFVec3f.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFVec4d.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFVec4f.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFColor.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFColorRGBA.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFImage.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix4d.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix4f.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsVrmlMatrix.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFNode.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsFieldDefinitionArray.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFRotation.cpp" />
@@ -949,6 +912,11 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFVec2.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFVec4.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix3.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFMatrix4.cpp" />
+    <Compile Include="Titania\X3D\Base\ChildObjectSet.cpp" />
+    <Compile Include="Titania\X3D\Base\X3DObject.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DArrayField.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsArrayFields.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -58,6 +58,7 @@
 #include "../Interpolation/PositionInterpolator.h"
 #include "../Layering/Viewport.h"
 #include "../Time/TimeSensor.h"
+#include "../EnvironmentalEffects/LocalFog.h"
 
 #include <stack>
 
