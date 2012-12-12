@@ -56,7 +56,7 @@ namespace X3D {
 GeoMetadata::GeoMetadata (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DInfoNode (),                                                    
-	        data (),                                                    // MFNode   [in,out] data     [ ]       [<i>urn</i>]
+	        data (),                                                    // MFNode   [in,out] data     [ ]       [urn]
 	     summary (),                                                    // MFString [in,out] summary  [ ]
 	         url ()                                                     // MFString [in,out] url      [ ]       [URI]
 {

@@ -53,9 +53,73 @@
 
 #include <cstddef>
 #include <utility>
+#include <set>
 
 namespace titania {
 namespace basic {
+
+/***
+ *  Removes all elements in the range [@a rfirst, @a rlast) from the list [@a first, @a last).
+ *  The Elements in the range can be in any order. The order in the list is preserved
+ *
+ *  Return value:
+ *    Iterator to the new end of the range.
+ ***/
+
+template <class ForwardIterator, class RangeIterator>
+ForwardIterator
+remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, RangeIterator rlast)
+{
+	std::multiset <typename RangeIterator::value_type> range (rfirst, rlast);
+
+	if (range .empty ())
+		return last;
+
+	size_t count = 0;
+
+	for ( ; first not_eq last; ++ first)
+	{
+		auto item = range .find (*first);
+		
+		if (item not_eq range .end ())
+		{
+			range .erase (item);
+			++ count;
+			break;
+		}
+	}
+
+	while (range .size ())
+	{
+		auto second = first + count;
+		
+		for (; second not_eq last; ++ first, ++ second)
+		{
+			auto item = range .find (*second);
+		
+			if (item not_eq range .end ())
+			{
+				range .erase (item);
+				++ count;
+				goto LOOP;
+			}
+
+			*first = std::move (*second);
+		}
+		
+		break;
+		
+		LOOP:;
+	}
+
+	for (auto second = first + count; second not_eq last; ++ first, ++ second)
+	{
+		*first = std::move (*second);
+	}
+
+	return first;
+}
+
 
 /***
  *  Removes all elements in the range [@a rfirst, @a rlast) from the list [@a first, @a last).
@@ -67,7 +131,7 @@ namespace basic {
 
 template <class ForwardIterator, class RangeIterator>
 ForwardIterator
-remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, RangeIterator rlast)
+remove_ordered (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, RangeIterator rlast)
 {
 	if (rfirst == rlast)
 		return last;

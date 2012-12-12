@@ -1,5 +1,10 @@
 2012-12-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Remove.h:
+	* IndexedMultiMap.h: 
+
+2012-12-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* UniqueList.h:
 	* Remove.h: 
 

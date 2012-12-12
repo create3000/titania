@@ -1,5 +1,14 @@
 2012-12-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DConstants.h:
+	* Generator.cpp:
+	* X3DNode.h:
+	* X3DGroupingNode.h:
+	* GeoMetadata.cpp:
+	* X3DGroupingNode.cpp: 
+
+2012-12-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFNode.h:
 	* X3DBaseNode.h:
 	* World.cpp:

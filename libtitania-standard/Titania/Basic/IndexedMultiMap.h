@@ -239,8 +239,8 @@ indexed_multimap <Key, ValueType>::erase (const key_type & key)
 	{
 		// remove range from array
 
-		const auto new_end = basic::remove (array .begin (), array .end (),
-		                                    equal_range .first, equal_range .second);
+		const auto new_end = basic::remove_ordered (array .begin (), array .end (),
+		                                            equal_range .first, equal_range .second);
 
 		// erase from map and resize array
 

@@ -49,10 +49,8 @@
 #include "X3DGroupingNode.h"
 
 #include "../../Browser/Browser.h"
-#include "../EnvironmentalEffects/LocalFog.h"
-#include "../Lighting/X3DLightNode.h"
-#include "../PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
 
+#include <Titania/Algorithm/Remove.h>
 #include <Titania/Utility/Adapter.h>
 
 namespace titania {
@@ -103,69 +101,10 @@ X3DGroupingNode::set_addChildren ()
 	children .addInterest    (this, &X3DGroupingNode::set_endChildren);
 }
 
-namespace Test
-{
-
-template <class ForwardIterator, class RangeIterator>
-ForwardIterator
-remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, RangeIterator rlast)
-{
-	std::multiset <typename RangeIterator::value_type> range (rfirst, rlast);
-
-	if (range .empty ())
-		return last;
-
-	size_t count = 0;
-
-	for ( ; first not_eq last; ++ first)
-	{
-		auto item = range .find (*first);
-		
-		if (item not_eq range .end ())
-		{
-			range .erase (item);
-			++ count;
-			break;
-		}
-	}
-
-	while (range .size ())
-	{
-		auto second = first + count;
-		
-		for (; second not_eq last; ++ first, ++ second)
-		{
-			auto item = range .find (*second);
-		
-			if (item not_eq range .end ())
-			{
-				range .erase (item);
-				++ count;
-				goto LOOP;
-			}
-
-			*first = std::move (*second);
-		}
-		
-		break;
-		
-		LOOP:;
-	}
-
-	for (auto second = first + count; second not_eq last; ++ first, ++ second)
-	{
-		*first = std::move (*second);
-	}
-
-	return first;
-}
-
-}
-
 void
 X3DGroupingNode::set_removeChildren ()
 {
-	auto new_end = Test::remove (children .begin (), children .end (), removeChildren .begin (), removeChildren .end ());
+	auto new_end = basic::remove (children .begin (), children .end (), removeChildren .begin (), removeChildren .end ());
 	children .erase (new_end, children .end ());
 }
 
@@ -190,25 +129,25 @@ X3DGroupingNode::set_children ()
 void
 X3DGroupingNode::add (const MFNode <X3DChildNode> & children, size_t offset)
 {
-	for (size_t i = 0; i < children .size (); ++ i)
+	for (const auto & child : children)
 	{
-		if (SFNode <X3DPointingDeviceSensorNode> (children [i]))
-			pointingDeviceSensors .emplace_back (offset + i);
+		if (SFNode <X3DPointingDeviceSensorNode> (child))
+			pointingDeviceSensors .emplace_back (child);
 
 		else
 		{
-			if (SFNode <X3DLightNode> (children [i]))
-				lights .emplace_back (offset + i);
+			if (SFNode <X3DLightNode> (child))
+				lights .emplace_back (child);
 
 			else
 			{
-				if (SFNode <LocalFog> (children [i]))
-					localFogs .emplace_back (offset + i);
+				if (SFNode <LocalFog> (child))
+					localFogs .emplace_back (child);
 
 				else
 				{
-					if (children [i])
-						childNodes .emplace_back (*children [i]);
+					if (child)
+						childNodes .emplace_back (child);
 				}
 			}
 		}
@@ -220,18 +159,18 @@ X3DGroupingNode::intersect ()
 {
 	//	if (not getBrowser () -> getEditMode ())
 	//	{
-	for (const auto & index : pointingDeviceSensors)
-		children [index] -> display ();
+	for (const auto & child : pointingDeviceSensors)
+		child -> display ();
 
 	//	}
 
-	for (const auto & index : childNodes)
-		children [index] -> select ();
+	for (const auto & child : childNodes)
+		child -> select ();
 
 	//	if (not getBrowser () -> getEditMode ())
 	//	{
-	for (const auto & index : basic::adapter (pointingDeviceSensors .crbegin (), pointingDeviceSensors .crend ()))
-		children [index] -> finish ();
+	for (const auto & child : basic::adapter (pointingDeviceSensors .crbegin (), pointingDeviceSensors .crend ()))
+		child -> finish ();
 
 	//	}
 }
@@ -239,20 +178,20 @@ X3DGroupingNode::intersect ()
 void
 X3DGroupingNode::display ()
 {
-	for (const auto & index : lights)
-		children [index] -> display ();
+	for (const auto & child : lights)
+		child -> display ();
 
 	if (localFogs .size ())
-		children [localFogs .front ()] -> display ();
+		child -> display ();
 
-	for (const auto & index : childNodes)
-		children [index] -> display ();
+	for (const auto & child : childNodes)
+		child -> display ();
 
 	if (localFogs .size ())
-		children [localFogs .front ()] -> finish ();
+		child -> finish ();
 
-	for (const auto & index : basic::adapter (lights .crbegin (), lights .crend ()))
-		children [index] -> finish ();
+	for (const auto & child : basic::adapter (lights .crbegin (), lights .crend ()))
+		child -> finish ();
 }
 
 void

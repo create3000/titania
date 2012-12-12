@@ -78,10 +78,6 @@ public:
 	virtual
 	void
 	display () { }
-	
-	virtual
-	void
-	finish () { }
 
 
 protected:

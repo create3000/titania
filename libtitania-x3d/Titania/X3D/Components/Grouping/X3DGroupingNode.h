@@ -52,6 +52,10 @@
 #include "../Core/X3DChildNode.h"
 #include "../Grouping/X3DBoundedObject.h"
 
+#include "../EnvironmentalEffects/LocalFog.h"
+#include "../Lighting/X3DLightNode.h"
+#include "../PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
+
 namespace titania {
 namespace X3D {
 
@@ -97,20 +101,20 @@ private:
 
 	void
 	set_removeChildren ();
-	
+
 	void
 	set_endChildren ();
 
 	void
 	set_children ();
-	
-	void
-	add (const MFNode <X3DChildNode> &, size_t);
 
-	std::deque <size_t> pointingDeviceSensors;
-	std::deque <size_t> lights;
-	std::deque <size_t> localFogs;
-	std::deque <size_t> childNodes;
+	void
+	add (const MFNode <X3DChildNode>&, size_t);
+
+	std::deque <X3DPointingDeviceSensorNode> pointingDeviceSensors;
+	std::deque <X3DLightNode*>               lights;
+	std::deque <LocalFog>                    localFogs;
+	std::deque <X3DChildNode>                childNodes;
 
 };
 
