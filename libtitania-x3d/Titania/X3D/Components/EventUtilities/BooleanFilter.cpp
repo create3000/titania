@@ -64,11 +64,11 @@ BooleanFilter::BooleanFilter (X3DExecutionContext* const executionContext) :
 	setComponent ("EventUtilities");
 	setTypeName ("BooleanFilter");
 
-	appendField (inputOutput, "metadata",    metadata);
-	appendField (inputOnly,   "set_boolean", set_boolean);
-	appendField (outputOnly,  "inputFalse",  inputFalse);
-	appendField (outputOnly,  "inputNegate", inputNegate);
-	appendField (outputOnly,  "inputTrue",   inputTrue);
+	addField (inputOutput, "metadata",    metadata);
+	addField (inputOnly,   "set_boolean", set_boolean);
+	addField (outputOnly,  "inputFalse",  inputFalse);
+	addField (outputOnly,  "inputNegate", inputNegate);
+	addField (outputOnly,  "inputTrue",   inputTrue);
 }
 
 X3DBaseNode*

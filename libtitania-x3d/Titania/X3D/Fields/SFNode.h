@@ -349,6 +349,14 @@ SFNode <ValueType>::~SFNode ()
 	removeNode (getValue ());
 }
 
+template <class Type>
+inline
+bool
+operator < (const SFNode <Type> & lhs, const SFNode <Type> & rhs)
+{
+	return lhs .getValue () < rhs .getValue ();
+}
+
 //
 extern template class SFNode <X3DBaseNode>;
 

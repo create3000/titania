@@ -62,9 +62,9 @@ ClipPlane::ClipPlane (X3DExecutionContext* const executionContext) :
 	setComponent ("Rendering");
 	setTypeName ("ClipPlane");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "enabled",  enabled);
-	appendField (inputOutput, "plane",    plane);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "enabled",  enabled);
+	addField (inputOutput, "plane",    plane);
 }
 
 X3DBaseNode*

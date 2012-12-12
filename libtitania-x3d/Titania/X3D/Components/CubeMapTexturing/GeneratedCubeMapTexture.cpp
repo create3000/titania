@@ -63,10 +63,10 @@ GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const exe
 	setComponent ("CubeMapTexturing");
 	setTypeName ("GeneratedCubeMapTexture");
 
-	appendField (inputOutput,    "metadata",          metadata);
-	appendField (inputOutput,    "update",            update);
-	appendField (initializeOnly, "size",              size);
-	appendField (initializeOnly, "textureProperties", textureProperties);
+	addField (inputOutput,    "metadata",          metadata);
+	addField (inputOutput,    "update",            update);
+	addField (initializeOnly, "size",              size);
+	addField (initializeOnly, "textureProperties", textureProperties);
 }
 
 X3DBaseNode*

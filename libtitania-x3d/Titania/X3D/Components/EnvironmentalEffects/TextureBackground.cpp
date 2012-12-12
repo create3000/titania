@@ -66,21 +66,21 @@ TextureBackground::TextureBackground (X3DExecutionContext* const executionContex
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("TextureBackground");
 
-	appendField (inputOutput, "metadata",      metadata);
-	appendField (inputOnly,   "set_bind",      set_bind);
-	appendField (outputOnly,  "bindTime",      bindTime);
-	appendField (outputOnly,  "isBound",       isBound);
-	appendField (inputOutput, "skyAngle",      skyAngle);
-	appendField (inputOutput, "skyColor",      skyColor);
-	appendField (inputOutput, "groundAngle",   groundAngle);
-	appendField (inputOutput, "groundColor",   groundColor);
-	appendField (inputOutput, "transparency",  transparency);
-	appendField (inputOutput, "backTexture",   backTexture);
-	appendField (inputOutput, "bottomTexture", bottomTexture);
-	appendField (inputOutput, "frontTexture",  frontTexture);
-	appendField (inputOutput, "leftTexture",   leftTexture);
-	appendField (inputOutput, "rightTexture",  rightTexture);
-	appendField (inputOutput, "topTexture",    topTexture);
+	addField (inputOutput, "metadata",      metadata);
+	addField (inputOnly,   "set_bind",      set_bind);
+	addField (outputOnly,  "bindTime",      bindTime);
+	addField (outputOnly,  "isBound",       isBound);
+	addField (inputOutput, "skyAngle",      skyAngle);
+	addField (inputOutput, "skyColor",      skyColor);
+	addField (inputOutput, "groundAngle",   groundAngle);
+	addField (inputOutput, "groundColor",   groundColor);
+	addField (inputOutput, "transparency",  transparency);
+	addField (inputOutput, "backTexture",   backTexture);
+	addField (inputOutput, "bottomTexture", bottomTexture);
+	addField (inputOutput, "frontTexture",  frontTexture);
+	addField (inputOutput, "leftTexture",   leftTexture);
+	addField (inputOutput, "rightTexture",  rightTexture);
+	addField (inputOutput, "topTexture",    topTexture);
 }
 
 X3DBaseNode*

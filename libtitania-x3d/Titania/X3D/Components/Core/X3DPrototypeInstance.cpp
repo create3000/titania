@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 
 X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, Proto* const proto) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DExecutionContext (),                                                    
 	              proto (proto)                                                
 {
@@ -68,11 +68,13 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	addNodeType (X3DPrototypeInstanceType);
 
+	addField (inputOutput, "metadata",  metadata);
+
 	for (const auto & userDefinedField : proto -> getUserDefinedFields ())
 	{
-		appendField (userDefinedField -> getAccessType (),
-		             userDefinedField -> getName (),
-		             *userDefinedField -> copy ());
+		addField (userDefinedField -> getAccessType (),
+		          userDefinedField -> getName (),
+		          *userDefinedField -> copy ());
 	}
 }
 
@@ -98,7 +100,7 @@ X3DPrototypeInstance::getTypeName () const
 
 	//throw Error <DISPOSED> ("In X3DPrototypeInstance::getTypeName: node is already disposed.");
 
-	// The statement below is only for testing purposes. Delete this and uncomment the above. 
+	// The statement below is only for testing purposes. Delete this and uncomment the above.
 	return X3DExecutionContext::getTypeName ();
 }
 
@@ -107,10 +109,10 @@ X3DPrototypeInstance::getType () const
 {
 	if (proto)
 		return proto .getValue ();
-	
+
 	//throw Error <DISPOSED> ("In X3DPrototypeInstance::getTypeName: node is already disposed.");
 
-	// The statement below is only for testing purposes. Delete this and uncomment the above. 
+	// The statement below is only for testing purposes. Delete this and uncomment the above.
 	return X3DExecutionContext::getType ();
 }
 
@@ -155,7 +157,12 @@ X3DPrototypeInstance::dispose ()
 }
 
 X3DPrototypeInstance::~X3DPrototypeInstance ()
-{ }
+{
+	removeField ("metadata");
+
+	for (const auto & field : getFields ())
+		delete field .second;
+}
 
 } // X3D
 } // titania

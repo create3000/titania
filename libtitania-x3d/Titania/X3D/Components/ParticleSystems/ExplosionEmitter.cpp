@@ -61,12 +61,12 @@ ExplosionEmitter::ExplosionEmitter (X3DExecutionContext* const executionContext)
 	setComponent ("ParticleSystems");
 	setTypeName ("ExplosionEmitter");
 
-	appendField (inputOutput,    "metadata",    metadata);
-	appendField (inputOutput,    "speed",       speed);
-	appendField (inputOutput,    "variation",   variation);
-	appendField (initializeOnly, "mass",        mass);
-	appendField (initializeOnly, "surfaceArea", surfaceArea);
-	appendField (inputOutput,    "position",    position);
+	addField (inputOutput,    "metadata",    metadata);
+	addField (inputOutput,    "speed",       speed);
+	addField (inputOutput,    "variation",   variation);
+	addField (initializeOnly, "mass",        mass);
+	addField (initializeOnly, "surfaceArea", surfaceArea);
+	addField (inputOutput,    "position",    position);
 }
 
 X3DBaseNode*

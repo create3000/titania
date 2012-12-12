@@ -67,13 +67,13 @@ Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
 	setComponent ("Geometry3D");
 	setTypeName ("Cylinder");
 
-	appendField (inputOutput,    "metadata", metadata);
-	appendField (initializeOnly, "top",      top);
-	appendField (initializeOnly, "bottom",   bottom);
-	appendField (initializeOnly, "side",     side);
-	appendField (initializeOnly, "height",   height);
-	appendField (initializeOnly, "radius",   radius);
-	appendField (initializeOnly, "solid",    solid);
+	addField (inputOutput,    "metadata", metadata);
+	addField (initializeOnly, "top",      top);
+	addField (initializeOnly, "bottom",   bottom);
+	addField (initializeOnly, "side",     side);
+	addField (initializeOnly, "height",   height);
+	addField (initializeOnly, "radius",   radius);
+	addField (initializeOnly, "solid",    solid);
 }
 
 X3DBaseNode*

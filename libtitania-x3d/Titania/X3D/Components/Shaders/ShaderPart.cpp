@@ -62,9 +62,9 @@ ShaderPart::ShaderPart (X3DExecutionContext* const executionContext) :
 	setComponent ("Shaders");
 	setTypeName ("ShaderPart");
 
-	appendField (inputOutput,    "metadata", metadata);
-	appendField (inputOutput,    "url",      url);
-	appendField (initializeOnly, "type",     type);
+	addField (inputOutput,    "metadata", metadata);
+	addField (inputOutput,    "url",      url);
+	addField (initializeOnly, "type",     type);
 }
 
 X3DBaseNode*

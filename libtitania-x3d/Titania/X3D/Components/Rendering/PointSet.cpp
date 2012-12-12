@@ -67,11 +67,11 @@ PointSet::PointSet (X3DExecutionContext* const executionContext) :
 	setComponent ("Rendering");
 	setTypeName ("PointSet");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "attrib",   attrib);
-	appendField (inputOutput, "color",    color);
-	appendField (inputOutput, "coord",    coord);
-	appendField (inputOutput, "fogCoord", fogCoord);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "attrib",   attrib);
+	addField (inputOutput, "color",    color);
+	addField (inputOutput, "coord",    coord);
+	addField (inputOutput, "fogCoord", fogCoord);
 }
 
 X3DBaseNode*

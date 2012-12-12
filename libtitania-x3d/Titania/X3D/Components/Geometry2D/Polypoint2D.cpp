@@ -61,8 +61,8 @@ Polypoint2D::Polypoint2D (X3DExecutionContext* const executionContext) :
 	setComponent ("Geometry2D");
 	setTypeName ("Polypoint2D");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "point",    point);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "point",    point);
 }
 
 X3DBaseNode*

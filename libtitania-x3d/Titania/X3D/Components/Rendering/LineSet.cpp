@@ -65,12 +65,12 @@ LineSet::LineSet (X3DExecutionContext* const executionContext) :
 	setComponent ("Rendering");
 	setTypeName ("LineSet");
 
-	appendField (inputOutput, "metadata",    metadata);
-	appendField (inputOutput, "attrib",      attrib);
-	appendField (inputOutput, "color",       color);
-	appendField (inputOutput, "coord",       coord);
-	appendField (inputOutput, "fogCoord",    fogCoord);
-	appendField (inputOutput, "vertexCount", vertexCount);
+	addField (inputOutput, "metadata",    metadata);
+	addField (inputOutput, "attrib",      attrib);
+	addField (inputOutput, "color",       color);
+	addField (inputOutput, "coord",       coord);
+	addField (inputOutput, "fogCoord",    fogCoord);
+	addField (inputOutput, "vertexCount", vertexCount);
 }
 
 X3DBaseNode*

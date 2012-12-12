@@ -61,11 +61,11 @@ PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	setComponent ("Texturing");
 	setTypeName ("PixelTexture");
 
-	appendField (inputOutput,    "metadata",          metadata);
-	appendField (inputOutput,    "image",             image);
-	appendField (initializeOnly, "repeatS",           repeatS);
-	appendField (initializeOnly, "repeatT",           repeatT);
-	appendField (initializeOnly, "textureProperties", textureProperties);
+	addField (inputOutput,    "metadata",          metadata);
+	addField (inputOutput,    "image",             image);
+	addField (initializeOnly, "repeatS",           repeatS);
+	addField (initializeOnly, "repeatT",           repeatT);
+	addField (initializeOnly, "textureProperties", textureProperties);
 }
 
 X3DBaseNode*

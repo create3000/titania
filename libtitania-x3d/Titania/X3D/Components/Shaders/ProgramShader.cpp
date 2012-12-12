@@ -61,12 +61,12 @@ ProgramShader::ProgramShader (X3DExecutionContext* const executionContext) :
 	setComponent ("Shaders");
 	setTypeName ("ProgramShader");
 
-	appendField (inputOutput,    "metadata",   metadata);
-	appendField (inputOnly,      "activate",   activate);
-	appendField (outputOnly,     "isSelected", isSelected);
-	appendField (outputOnly,     "isValid",    isValid);
-	appendField (initializeOnly, "language",   language);
-	appendField (inputOutput,    "programs",   programs);
+	addField (inputOutput,    "metadata",   metadata);
+	addField (inputOnly,      "activate",   activate);
+	addField (outputOnly,     "isSelected", isSelected);
+	addField (outputOnly,     "isValid",    isValid);
+	addField (initializeOnly, "language",   language);
+	addField (inputOutput,    "programs",   programs);
 }
 
 X3DBaseNode*

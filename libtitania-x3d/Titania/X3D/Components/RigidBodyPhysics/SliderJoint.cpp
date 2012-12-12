@@ -67,17 +67,17 @@ SliderJoint::SliderJoint (X3DExecutionContext* const executionContext) :
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("SliderJoint");
 
-	appendField (inputOutput, "metadata",            metadata);
-	appendField (inputOutput, "body1",               body1);
-	appendField (inputOutput, "body2",               body2);
-	appendField (inputOutput, "forceOutput",         forceOutput);
-	appendField (inputOutput, "axis",                axis);
-	appendField (inputOutput, "maxSeparation",       maxSeparation);
-	appendField (inputOutput, "minSeparation",       minSeparation);
-	appendField (inputOutput, "stopBounce",          stopBounce);
-	appendField (inputOutput, "stopErrorCorrection", stopErrorCorrection);
-	appendField (outputOnly,  "separation",          separation);
-	appendField (outputOnly,  "separationRate",      separationRate);
+	addField (inputOutput, "metadata",            metadata);
+	addField (inputOutput, "body1",               body1);
+	addField (inputOutput, "body2",               body2);
+	addField (inputOutput, "forceOutput",         forceOutput);
+	addField (inputOutput, "axis",                axis);
+	addField (inputOutput, "maxSeparation",       maxSeparation);
+	addField (inputOutput, "minSeparation",       minSeparation);
+	addField (inputOutput, "stopBounce",          stopBounce);
+	addField (inputOutput, "stopErrorCorrection", stopErrorCorrection);
+	addField (outputOnly,  "separation",          separation);
+	addField (outputOnly,  "separationRate",      separationRate);
 }
 
 X3DBaseNode*

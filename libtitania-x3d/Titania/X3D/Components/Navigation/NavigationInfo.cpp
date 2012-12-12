@@ -72,18 +72,18 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, boo
 	setComponent ("Navigation");
 	setTypeName ("NavigationInfo");
 
-	appendField (inputOutput, "metadata",           metadata);
-	appendField (inputOnly,   "set_bind",           set_bind);
-	appendField (inputOutput, "avatarSize",         avatarSize);
-	appendField (inputOutput, "headlight",          headlight);
-	appendField (inputOutput, "speed",              speed);
-	appendField (inputOutput, "transitionTime",     transitionTime);
-	appendField (inputOutput, "transitionType",     transitionType);
-	appendField (inputOutput, "type",               type);
-	appendField (inputOutput, "visibilityLimit",    visibilityLimit);
-	appendField (outputOnly,  "transitionComplete", transitionComplete);
-	appendField (outputOnly,  "bindTime",           bindTime);
-	appendField (outputOnly,  "isBound",            isBound);
+	addField (inputOutput, "metadata",           metadata);
+	addField (inputOnly,   "set_bind",           set_bind);
+	addField (inputOutput, "avatarSize",         avatarSize);
+	addField (inputOutput, "headlight",          headlight);
+	addField (inputOutput, "speed",              speed);
+	addField (inputOutput, "transitionTime",     transitionTime);
+	addField (inputOutput, "transitionType",     transitionType);
+	addField (inputOutput, "type",               type);
+	addField (inputOutput, "visibilityLimit",    visibilityLimit);
+	addField (outputOnly,  "transitionComplete", transitionComplete);
+	addField (outputOnly,  "bindTime",           bindTime);
+	addField (outputOnly,  "isBound",            isBound);
 
 	setChildren (directionalLight);
 }

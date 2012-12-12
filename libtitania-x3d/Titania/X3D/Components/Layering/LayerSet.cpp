@@ -65,10 +65,10 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	setComponent ("Layering");
 	setTypeName ("LayerSet");
 
-	appendField (inputOutput, "metadata",    metadata);
-	appendField (inputOutput, "activeLayer", activeLayer);
-	appendField (inputOutput, "order",       order);
-	appendField (inputOutput, "layers",      layers);
+	addField (inputOutput, "metadata",    metadata);
+	addField (inputOutput, "activeLayer", activeLayer);
+	addField (inputOutput, "order",       order);
+	addField (inputOutput, "layers",      layers);
 
 	setChildren (children);
 

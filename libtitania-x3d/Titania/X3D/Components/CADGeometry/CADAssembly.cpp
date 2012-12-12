@@ -61,13 +61,13 @@ CADAssembly::CADAssembly (X3DExecutionContext* const executionContext) :
 	setComponent ("CADGeometry");
 	setTypeName ("CADAssembly");
 
-	appendField (inputOutput,    "metadata",       metadata);
-	appendField (initializeOnly, "bboxSize",       bboxSize);
-	appendField (initializeOnly, "bboxCenter",     bboxCenter);
-	appendField (inputOnly,      "addChildren",    addChildren);
-	appendField (inputOnly,      "removeChildren", removeChildren);
-	appendField (inputOutput,    "children",       children);
-	appendField (inputOutput,    "name",           name);
+	addField (inputOutput,    "metadata",       metadata);
+	addField (initializeOnly, "bboxSize",       bboxSize);
+	addField (initializeOnly, "bboxCenter",     bboxCenter);
+	addField (inputOnly,      "addChildren",    addChildren);
+	addField (inputOnly,      "removeChildren", removeChildren);
+	addField (inputOutput,    "children",       children);
+	addField (inputOutput,    "name",           name);
 }
 
 X3DBaseNode*

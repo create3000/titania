@@ -76,25 +76,25 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	setComponent ("Geospatial");
 	setTypeName ("GeoElevationGrid");
 
-	appendField (inputOutput,    "metadata",        metadata);
-	appendField (inputOnly,      "set_height",      set_height);
-	appendField (inputOutput,    "color",           color);
-	appendField (inputOutput,    "normal",          normal);
-	appendField (inputOutput,    "texCoord",        texCoord);
-	appendField (inputOutput,    "yScale",          yScale);
-	appendField (initializeOnly, "ccw",             ccw);
-	appendField (initializeOnly, "colorPerVertex",  colorPerVertex);
-	appendField (initializeOnly, "creaseAngle",     creaseAngle);
-	appendField (initializeOnly, "geoGridOrigin",   geoGridOrigin);
-	appendField (initializeOnly, "geoOrigin",       geoOrigin);
-	appendField (initializeOnly, "geoSystem",       geoSystem);
-	appendField (initializeOnly, "height",          height);
-	appendField (initializeOnly, "normalPerVertex", normalPerVertex);
-	appendField (initializeOnly, "solid",           solid);
-	appendField (initializeOnly, "xDimension",      xDimension);
-	appendField (initializeOnly, "xSpacing",        xSpacing);
-	appendField (initializeOnly, "zDimension",      zDimension);
-	appendField (initializeOnly, "zSpacing",        zSpacing);
+	addField (inputOutput,    "metadata",        metadata);
+	addField (inputOnly,      "set_height",      set_height);
+	addField (inputOutput,    "color",           color);
+	addField (inputOutput,    "normal",          normal);
+	addField (inputOutput,    "texCoord",        texCoord);
+	addField (inputOutput,    "yScale",          yScale);
+	addField (initializeOnly, "ccw",             ccw);
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex);
+	addField (initializeOnly, "creaseAngle",     creaseAngle);
+	addField (initializeOnly, "geoGridOrigin",   geoGridOrigin);
+	addField (initializeOnly, "geoOrigin",       geoOrigin);
+	addField (initializeOnly, "geoSystem",       geoSystem);
+	addField (initializeOnly, "height",          height);
+	addField (initializeOnly, "normalPerVertex", normalPerVertex);
+	addField (initializeOnly, "solid",           solid);
+	addField (initializeOnly, "xDimension",      xDimension);
+	addField (initializeOnly, "xSpacing",        xSpacing);
+	addField (initializeOnly, "zDimension",      zDimension);
+	addField (initializeOnly, "zSpacing",        zSpacing);
 }
 
 X3DBaseNode*

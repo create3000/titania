@@ -61,8 +61,8 @@ MultiTextureTransform::MultiTextureTransform (X3DExecutionContext* const executi
 	setComponent ("Texturing");
 	setTypeName ("MultiTextureTransform");
 
-	appendField (inputOutput, "metadata",         metadata);
-	appendField (inputOutput, "textureTransform", textureTransform);
+	addField (inputOutput, "metadata",         metadata);
+	addField (inputOutput, "textureTransform", textureTransform);
 }
 
 X3DBaseNode*

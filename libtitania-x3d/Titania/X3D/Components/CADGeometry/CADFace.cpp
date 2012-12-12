@@ -62,11 +62,11 @@ CADFace::CADFace (X3DExecutionContext* const executionContext) :
 	setComponent ("CADGeometry");
 	setTypeName ("CADFace");
 
-	appendField (inputOutput,    "metadata",   metadata);
-	appendField (initializeOnly, "bboxSize",   bboxSize);
-	appendField (initializeOnly, "bboxCenter", bboxCenter);
-	appendField (inputOutput,    "name",       name);
-	appendField (inputOutput,    "shape",      shape);
+	addField (inputOutput,    "metadata",   metadata);
+	addField (initializeOnly, "bboxSize",   bboxSize);
+	addField (initializeOnly, "bboxCenter", bboxCenter);
+	addField (inputOutput,    "name",       name);
+	addField (inputOutput,    "shape",      shape);
 }
 
 X3DBaseNode*

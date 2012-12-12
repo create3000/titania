@@ -62,17 +62,17 @@ OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext, boo
 	setComponent ("Navigation");
 	setTypeName ("OrthoViewpoint");
 
-	appendField (inputOutput, "metadata",          metadata);
-	appendField (inputOnly,   "set_bind",          set_bind);
-	appendField (inputOutput, "jump",              jump);
-	appendField (inputOutput, "retainUserOffsets", retainUserOffsets);
-	appendField (inputOutput, "orientation",       orientation);
-	appendField (inputOutput, "centerOfRotation",  centerOfRotation);
-	appendField (inputOutput, "description",       description);
-	appendField (outputOnly,  "bindTime",          bindTime);
-	appendField (outputOnly,  "isBound",           isBound);
-	appendField (inputOutput, "fieldOfView",       fieldOfView);
-	appendField (inputOutput, "position",          position);
+	addField (inputOutput, "metadata",          metadata);
+	addField (inputOnly,   "set_bind",          set_bind);
+	addField (inputOutput, "jump",              jump);
+	addField (inputOutput, "retainUserOffsets", retainUserOffsets);
+	addField (inputOutput, "orientation",       orientation);
+	addField (inputOutput, "centerOfRotation",  centerOfRotation);
+	addField (inputOutput, "description",       description);
+	addField (outputOnly,  "bindTime",          bindTime);
+	addField (outputOnly,  "isBound",           isBound);
+	addField (inputOutput, "fieldOfView",       fieldOfView);
+	addField (inputOutput, "position",          position);
 }
 
 X3DBaseNode*

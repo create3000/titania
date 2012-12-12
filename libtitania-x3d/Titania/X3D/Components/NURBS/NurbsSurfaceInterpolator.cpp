@@ -71,18 +71,18 @@ NurbsSurfaceInterpolator::NurbsSurfaceInterpolator (X3DExecutionContext* const e
 	setComponent ("NURBS");
 	setTypeName ("NurbsSurfaceInterpolator");
 
-	appendField (inputOutput,    "metadata",         metadata);
-	appendField (inputOnly,      "set_fraction",     set_fraction);
-	appendField (inputOutput,    "controlPoint",     controlPoint);
-	appendField (inputOutput,    "weight",           weight);
-	appendField (outputOnly,     "position_changed", position_changed);
-	appendField (outputOnly,     "normal_changed",   normal_changed);
-	appendField (initializeOnly, "uDimension",       uDimension);
-	appendField (initializeOnly, "uKnot",            uKnot);
-	appendField (initializeOnly, "uOrder",           uOrder);
-	appendField (initializeOnly, "vDimension",       vDimension);
-	appendField (initializeOnly, "vKnot",            vKnot);
-	appendField (initializeOnly, "vOrder",           vOrder);
+	addField (inputOutput,    "metadata",         metadata);
+	addField (inputOnly,      "set_fraction",     set_fraction);
+	addField (inputOutput,    "controlPoint",     controlPoint);
+	addField (inputOutput,    "weight",           weight);
+	addField (outputOnly,     "position_changed", position_changed);
+	addField (outputOnly,     "normal_changed",   normal_changed);
+	addField (initializeOnly, "uDimension",       uDimension);
+	addField (initializeOnly, "uKnot",            uKnot);
+	addField (initializeOnly, "uOrder",           uOrder);
+	addField (initializeOnly, "vDimension",       vDimension);
+	addField (initializeOnly, "vKnot",            vKnot);
+	addField (initializeOnly, "vOrder",           vOrder);
 }
 
 X3DBaseNode*

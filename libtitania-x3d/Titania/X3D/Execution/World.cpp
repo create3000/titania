@@ -63,7 +63,7 @@ World::World (X3DExecutionContext* const executionContext, const SFNode <Scene> 
 	setComponent ("Browser");
 	setTypeName ("World");
 
-	appendField (initializeOnly, "scene", this -> scene);
+	addField (initializeOnly, "scene", this -> scene);
 }
 
 World*

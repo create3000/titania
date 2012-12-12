@@ -73,20 +73,20 @@ TwoSidedMaterial::TwoSidedMaterial (X3DExecutionContext* const executionContext)
 	setComponent ("Shape");
 	setTypeName ("TwoSidedMaterial");
 
-	appendField (inputOutput, "metadata",             metadata);
-	appendField (inputOutput, "ambientIntensity",     ambientIntensity);
-	appendField (inputOutput, "backAmbientIntensity", backAmbientIntensity);
-	appendField (inputOutput, "backDiffuseColor",     backDiffuseColor);
-	appendField (inputOutput, "backEmissiveColor",    backEmissiveColor);
-	appendField (inputOutput, "backShininess",        backShininess);
-	appendField (inputOutput, "backSpecularColor",    backSpecularColor);
-	appendField (inputOutput, "backTransparency",     backTransparency);
-	appendField (inputOutput, "diffuseColor",         diffuseColor);
-	appendField (inputOutput, "emissiveColor",        emissiveColor);
-	appendField (inputOutput, "shininess",            shininess);
-	appendField (inputOutput, "separateBackColor",    separateBackColor);
-	appendField (inputOutput, "specularColor",        specularColor);
-	appendField (inputOutput, "transparency",         transparency);
+	addField (inputOutput, "metadata",             metadata);
+	addField (inputOutput, "ambientIntensity",     ambientIntensity);
+	addField (inputOutput, "backAmbientIntensity", backAmbientIntensity);
+	addField (inputOutput, "backDiffuseColor",     backDiffuseColor);
+	addField (inputOutput, "backEmissiveColor",    backEmissiveColor);
+	addField (inputOutput, "backShininess",        backShininess);
+	addField (inputOutput, "backSpecularColor",    backSpecularColor);
+	addField (inputOutput, "backTransparency",     backTransparency);
+	addField (inputOutput, "diffuseColor",         diffuseColor);
+	addField (inputOutput, "emissiveColor",        emissiveColor);
+	addField (inputOutput, "shininess",            shininess);
+	addField (inputOutput, "separateBackColor",    separateBackColor);
+	addField (inputOutput, "specularColor",        specularColor);
+	addField (inputOutput, "transparency",         transparency);
 }
 
 X3DBaseNode*

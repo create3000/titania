@@ -62,10 +62,10 @@ StaticGroup::StaticGroup (X3DExecutionContext* const executionContext) :
 	setComponent ("Grouping");
 	setTypeName ("StaticGroup");
 
-	appendField (inputOutput,    "metadata",   metadata);
-	appendField (initializeOnly, "bboxSize",   bboxSize);
-	appendField (initializeOnly, "bboxCenter", bboxCenter);
-	appendField (initializeOnly, "children",   children);
+	addField (inputOutput,    "metadata",   metadata);
+	addField (initializeOnly, "bboxSize",   bboxSize);
+	addField (initializeOnly, "bboxCenter", bboxCenter);
+	addField (initializeOnly, "children",   children);
 }
 
 X3DBaseNode*

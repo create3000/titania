@@ -62,14 +62,14 @@ LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
 	setComponent ("Layout");
 	setTypeName ("LayoutGroup");
 
-	appendField (inputOutput,    "metadata",       metadata);
-	appendField (initializeOnly, "bboxSize",       bboxSize);
-	appendField (initializeOnly, "bboxCenter",     bboxCenter);
-	appendField (inputOnly,      "addChildren",    addChildren);
-	appendField (inputOnly,      "removeChildren", removeChildren);
-	appendField (inputOutput,    "children",       children);
-	appendField (inputOutput,    "layout",         layout);
-	appendField (inputOutput,    "viewport",       viewport);
+	addField (inputOutput,    "metadata",       metadata);
+	addField (initializeOnly, "bboxSize",       bboxSize);
+	addField (initializeOnly, "bboxCenter",     bboxCenter);
+	addField (inputOnly,      "addChildren",    addChildren);
+	addField (inputOnly,      "removeChildren", removeChildren);
+	addField (inputOutput,    "children",       children);
+	addField (inputOutput,    "layout",         layout);
+	addField (inputOutput,    "viewport",       viewport);
 }
 
 X3DBaseNode*

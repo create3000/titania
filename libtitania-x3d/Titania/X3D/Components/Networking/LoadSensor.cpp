@@ -65,14 +65,14 @@ LoadSensor::LoadSensor (X3DExecutionContext* const executionContext) :
 	setComponent ("Networking");
 	setTypeName ("LoadSensor");
 
-	appendField (inputOutput, "metadata",  metadata);
-	appendField (inputOutput, "enabled",   enabled);
-	appendField (outputOnly,  "isActive",  isActive);
-	appendField (inputOutput, "timeOut",   timeOut);
-	appendField (inputOutput, "watchList", watchList);
-	appendField (outputOnly,  "isLoaded",  isLoaded);
-	appendField (outputOnly,  "loadTime",  loadTime);
-	appendField (outputOnly,  "progress",  progress);
+	addField (inputOutput, "metadata",  metadata);
+	addField (inputOutput, "enabled",   enabled);
+	addField (outputOnly,  "isActive",  isActive);
+	addField (inputOutput, "timeOut",   timeOut);
+	addField (inputOutput, "watchList", watchList);
+	addField (outputOnly,  "isLoaded",  isLoaded);
+	addField (outputOnly,  "loadTime",  loadTime);
+	addField (outputOnly,  "progress",  progress);
 }
 
 X3DBaseNode*

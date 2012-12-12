@@ -61,18 +61,18 @@ TriangleFanSet::TriangleFanSet (X3DExecutionContext* const executionContext) :
 	setComponent ("Rendering");
 	setTypeName ("TriangleFanSet");
 
-	appendField (inputOutput,    "metadata",        metadata);
-	appendField (inputOutput,    "attrib",          attrib);
-	appendField (inputOutput,    "coord",           coord);
-	appendField (inputOutput,    "texCoord",        texCoord);
-	appendField (inputOutput,    "color",           color);
-	appendField (inputOutput,    "normal",          normal);
-	appendField (inputOutput,    "fogCoord",        fogCoord);
-	appendField (initializeOnly, "colorPerVertex",  colorPerVertex);
-	appendField (initializeOnly, "normalPerVertex", normalPerVertex);
-	appendField (initializeOnly, "solid",           solid);
-	appendField (initializeOnly, "ccw",             ccw);
-	appendField (inputOutput,    "fanCount",        fanCount);
+	addField (inputOutput,    "metadata",        metadata);
+	addField (inputOutput,    "attrib",          attrib);
+	addField (inputOutput,    "coord",           coord);
+	addField (inputOutput,    "texCoord",        texCoord);
+	addField (inputOutput,    "color",           color);
+	addField (inputOutput,    "normal",          normal);
+	addField (inputOutput,    "fogCoord",        fogCoord);
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex);
+	addField (initializeOnly, "normalPerVertex", normalPerVertex);
+	addField (initializeOnly, "solid",           solid);
+	addField (initializeOnly, "ccw",             ccw);
+	addField (inputOutput,    "fanCount",        fanCount);
 }
 
 X3DBaseNode*

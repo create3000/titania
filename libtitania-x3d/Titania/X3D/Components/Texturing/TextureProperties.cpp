@@ -74,18 +74,18 @@ TextureProperties::TextureProperties (X3DExecutionContext* const executionContex
 	setComponent ("Texturing");
 	setTypeName ("TextureProperties");
 
-	appendField (inputOutput,    "metadata",            metadata);
-	appendField (inputOutput,    "borderColor",         borderColor);
-	appendField (inputOutput,    "borderWidth",         borderWidth);
-	appendField (inputOutput,    "boundaryModeS",       boundaryModeS);
-	appendField (inputOutput,    "boundaryModeT",       boundaryModeT);
-	appendField (inputOutput,    "boundaryModeR",       boundaryModeR);
-	appendField (inputOutput,    "minificationFilter",  minificationFilter);
-	appendField (inputOutput,    "magnificationFilter", magnificationFilter);
-	appendField (inputOutput,    "textureCompression",  textureCompression);
-	appendField (initializeOnly, "generateMipMaps",     generateMipMaps);
-	appendField (inputOutput,    "anisotropicDegree",   anisotropicDegree);
-	appendField (inputOutput,    "texturePriority",     texturePriority);
+	addField (inputOutput,    "metadata",            metadata);
+	addField (inputOutput,    "borderColor",         borderColor);
+	addField (inputOutput,    "borderWidth",         borderWidth);
+	addField (inputOutput,    "boundaryModeS",       boundaryModeS);
+	addField (inputOutput,    "boundaryModeT",       boundaryModeT);
+	addField (inputOutput,    "boundaryModeR",       boundaryModeR);
+	addField (inputOutput,    "minificationFilter",  minificationFilter);
+	addField (inputOutput,    "magnificationFilter", magnificationFilter);
+	addField (inputOutput,    "textureCompression",  textureCompression);
+	addField (initializeOnly, "generateMipMaps",     generateMipMaps);
+	addField (inputOutput,    "anisotropicDegree",   anisotropicDegree);
+	addField (inputOutput,    "texturePriority",     texturePriority);
 }
 
 X3DBaseNode*

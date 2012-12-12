@@ -61,9 +61,9 @@ Box::Box (X3DExecutionContext* const executionContext) :
 	setComponent ("Geometry3D");
 	setTypeName ("Box");
 
-	appendField (inputOutput,    "metadata", metadata);
-	appendField (initializeOnly, "size",     size);
-	appendField (initializeOnly, "solid",    solid);
+	addField (inputOutput,    "metadata", metadata);
+	addField (initializeOnly, "size",     size);
+	addField (initializeOnly, "solid",    solid);
 }
 
 X3DBaseNode*

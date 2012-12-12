@@ -63,10 +63,10 @@ IntegerTrigger::IntegerTrigger (X3DExecutionContext* const executionContext) :
 	setComponent ("EventUtilities");
 	setTypeName ("IntegerTrigger");
 
-	appendField (inputOutput, "metadata",     metadata);
-	appendField (inputOnly,   "set_boolean",  set_boolean);
-	appendField (inputOutput, "integerKey",   integerKey);
-	appendField (outputOnly,  "triggerValue", triggerValue);
+	addField (inputOutput, "metadata",     metadata);
+	addField (inputOnly,   "set_boolean",  set_boolean);
+	addField (inputOutput, "integerKey",   integerKey);
+	addField (outputOnly,  "triggerValue", triggerValue);
 }
 
 X3DBaseNode*

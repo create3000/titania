@@ -61,8 +61,8 @@ TextureTransformMatrix3D::TextureTransformMatrix3D (X3DExecutionContext* const e
 	setComponent ("Texturing3D");
 	setTypeName ("TextureTransformMatrix3D");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "matrix",   matrix);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "matrix",   matrix);
 }
 
 X3DBaseNode*

@@ -49,8 +49,6 @@
 #ifndef __TITANIA_BASIC_UNIQUE_LIST_H__
 #define __TITANIA_BASIC_UNIQUE_LIST_H__
 
-#include "../Algorithm/Remove.h"
-
 #include <list>
 #include <map>
 

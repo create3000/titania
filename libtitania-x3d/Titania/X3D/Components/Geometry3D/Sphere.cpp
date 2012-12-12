@@ -63,9 +63,9 @@ Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	setComponent ("Geometry3D");
 	setTypeName ("Sphere");
 
-	appendField (inputOutput,    "metadata", metadata);
-	appendField (initializeOnly, "radius",   radius);
-	appendField (initializeOnly, "solid",    solid);
+	addField (inputOutput,    "metadata", metadata);
+	addField (initializeOnly, "radius",   radius);
+	addField (initializeOnly, "solid",    solid);
 }
 
 X3DBaseNode*

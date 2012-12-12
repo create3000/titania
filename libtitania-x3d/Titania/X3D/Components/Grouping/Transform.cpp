@@ -65,17 +65,17 @@ Transform::Transform (X3DExecutionContext* const executionContext) :
 	setComponent ("Grouping");
 	setTypeName ("Transform");
 
-	appendField (inputOutput,    "metadata",         metadata);
-	appendField (inputOutput,    "translation",      translation);
-	appendField (inputOutput,    "rotation",         rotation);
-	appendField (inputOutput,    "scale",            scale);
-	appendField (inputOutput,    "scaleOrientation", scaleOrientation);
-	appendField (inputOutput,    "center",           center);
-	appendField (initializeOnly, "bboxSize",         bboxSize);
-	appendField (initializeOnly, "bboxCenter",       bboxCenter);
-	appendField (inputOnly,      "addChildren",      addChildren);
-	appendField (inputOnly,      "removeChildren",   removeChildren);
-	appendField (inputOutput,    "children",         children);
+	addField (inputOutput,    "metadata",         metadata);
+	addField (inputOutput,    "translation",      translation);
+	addField (inputOutput,    "rotation",         rotation);
+	addField (inputOutput,    "scale",            scale);
+	addField (inputOutput,    "scaleOrientation", scaleOrientation);
+	addField (inputOutput,    "center",           center);
+	addField (initializeOnly, "bboxSize",         bboxSize);
+	addField (initializeOnly, "bboxCenter",       bboxCenter);
+	addField (inputOnly,      "addChildren",      addChildren);
+	addField (inputOnly,      "removeChildren",   removeChildren);
+	addField (inputOutput,    "children",         children);
 }
 
 X3DBaseNode*

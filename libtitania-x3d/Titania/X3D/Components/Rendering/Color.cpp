@@ -61,8 +61,8 @@ Color::Color (X3DExecutionContext* const executionContext) :
 	setComponent ("Rendering");
 	setTypeName ("Color");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "color",    color);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "color",    color);
 }
 
 X3DBaseNode*

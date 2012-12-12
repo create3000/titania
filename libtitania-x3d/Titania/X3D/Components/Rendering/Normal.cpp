@@ -61,8 +61,8 @@ Normal::Normal (X3DExecutionContext* const executionContext) :
 	setComponent ("Rendering");
 	setTypeName ("Normal");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "vector",   vector);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "vector",   vector);
 }
 
 X3DBaseNode*

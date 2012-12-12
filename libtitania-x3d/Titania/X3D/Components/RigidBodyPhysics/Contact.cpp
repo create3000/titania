@@ -76,23 +76,23 @@ Contact::Contact (X3DExecutionContext* const executionContext) :
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("Contact");
 
-	appendField (inputOutput, "metadata",                 metadata);
-	appendField (inputOutput, "appliedParameters",        appliedParameters);
-	appendField (inputOutput, "body1",                    body1);
-	appendField (inputOutput, "body2",                    body2);
-	appendField (inputOutput, "bounce",                   bounce);
-	appendField (inputOutput, "contactNormal",            contactNormal);
-	appendField (inputOutput, "depth",                    depth);
-	appendField (inputOutput, "frictionCoefficients",     frictionCoefficients);
-	appendField (inputOutput, "frictionDirection",        frictionDirection);
-	appendField (inputOutput, "geometry1",                geometry1);
-	appendField (inputOutput, "geometry2",                geometry2);
-	appendField (inputOutput, "minbounceSpeed",           minbounceSpeed);
-	appendField (inputOutput, "position",                 position);
-	appendField (inputOutput, "slipCoefficients",         slipCoefficients);
-	appendField (inputOutput, "softnessConstantForceMix", softnessConstantForceMix);
-	appendField (inputOutput, "softnessErrorCorrection",  softnessErrorCorrection);
-	appendField (inputOutput, "surfaceSpeed",             surfaceSpeed);
+	addField (inputOutput, "metadata",                 metadata);
+	addField (inputOutput, "appliedParameters",        appliedParameters);
+	addField (inputOutput, "body1",                    body1);
+	addField (inputOutput, "body2",                    body2);
+	addField (inputOutput, "bounce",                   bounce);
+	addField (inputOutput, "contactNormal",            contactNormal);
+	addField (inputOutput, "depth",                    depth);
+	addField (inputOutput, "frictionCoefficients",     frictionCoefficients);
+	addField (inputOutput, "frictionDirection",        frictionDirection);
+	addField (inputOutput, "geometry1",                geometry1);
+	addField (inputOutput, "geometry2",                geometry2);
+	addField (inputOutput, "minbounceSpeed",           minbounceSpeed);
+	addField (inputOutput, "position",                 position);
+	addField (inputOutput, "slipCoefficients",         slipCoefficients);
+	addField (inputOutput, "softnessConstantForceMix", softnessConstantForceMix);
+	addField (inputOutput, "softnessErrorCorrection",  softnessErrorCorrection);
+	addField (inputOutput, "surfaceSpeed",             surfaceSpeed);
 }
 
 X3DBaseNode*

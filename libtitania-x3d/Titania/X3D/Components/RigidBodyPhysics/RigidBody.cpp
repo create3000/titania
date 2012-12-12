@@ -74,21 +74,21 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("RigidBody");
 
-	appendField (inputOutput, "metadata",             metadata);
-	appendField (inputOutput, "angularDampingFactor", angularDampingFactor);
-	appendField (inputOutput, "angularVelocity",      angularVelocity);
-	appendField (inputOutput, "autoDamp",             autoDamp);
-	appendField (inputOutput, "autoDisable",          autoDisable);
-	appendField (inputOutput, "centerOfMass",         centerOfMass);
-	appendField (inputOutput, "disableAngularSpeed",  disableAngularSpeed);
-	appendField (inputOutput, "disableLinearSpeed",   disableLinearSpeed);
-	appendField (inputOutput, "disableTime",          disableTime);
-	appendField (inputOutput, "enabled",              enabled);
-	appendField (inputOutput, "finiteRotationAxis",   finiteRotationAxis);
-	appendField (inputOutput, "fixed",                fixed);
-	appendField (inputOutput, "forces",               forces);
-	appendField (inputOutput, "geometry",             geometry);
-	appendField (inputOutput, "inertia",              inertia);
+	addField (inputOutput, "metadata",             metadata);
+	addField (inputOutput, "angularDampingFactor", angularDampingFactor);
+	addField (inputOutput, "angularVelocity",      angularVelocity);
+	addField (inputOutput, "autoDamp",             autoDamp);
+	addField (inputOutput, "autoDisable",          autoDisable);
+	addField (inputOutput, "centerOfMass",         centerOfMass);
+	addField (inputOutput, "disableAngularSpeed",  disableAngularSpeed);
+	addField (inputOutput, "disableLinearSpeed",   disableLinearSpeed);
+	addField (inputOutput, "disableTime",          disableTime);
+	addField (inputOutput, "enabled",              enabled);
+	addField (inputOutput, "finiteRotationAxis",   finiteRotationAxis);
+	addField (inputOutput, "fixed",                fixed);
+	addField (inputOutput, "forces",               forces);
+	addField (inputOutput, "geometry",             geometry);
+	addField (inputOutput, "inertia",              inertia);
 }
 
 X3DBaseNode*

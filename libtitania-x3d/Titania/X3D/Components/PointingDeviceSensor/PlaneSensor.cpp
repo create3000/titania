@@ -65,18 +65,18 @@ PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("PlaneSensor");
 
-	appendField (inputOutput, "metadata",            metadata);
-	appendField (inputOutput, "enabled",             enabled);
-	appendField (inputOutput, "description",         description);
-	appendField (outputOnly,  "isActive",            isActive);
-	appendField (outputOnly,  "isOver",              isOver);
-	appendField (inputOutput, "autoOffset",          autoOffset);
-	appendField (outputOnly,  "trackPoint_changed",  trackPoint_changed);
-	appendField (inputOutput, "axisRotation",        axisRotation);
-	appendField (inputOutput, "maxPosition",         maxPosition);
-	appendField (inputOutput, "minPosition",         minPosition);
-	appendField (inputOutput, "offset",              offset);
-	appendField (outputOnly,  "translation_changed", translation_changed);
+	addField (inputOutput, "metadata",            metadata);
+	addField (inputOutput, "enabled",             enabled);
+	addField (inputOutput, "description",         description);
+	addField (outputOnly,  "isActive",            isActive);
+	addField (outputOnly,  "isOver",              isOver);
+	addField (inputOutput, "autoOffset",          autoOffset);
+	addField (outputOnly,  "trackPoint_changed",  trackPoint_changed);
+	addField (inputOutput, "axisRotation",        axisRotation);
+	addField (inputOutput, "maxPosition",         maxPosition);
+	addField (inputOutput, "minPosition",         minPosition);
+	addField (inputOutput, "offset",              offset);
+	addField (outputOnly,  "translation_changed", translation_changed);
 }
 
 X3DBaseNode*

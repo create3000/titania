@@ -62,13 +62,13 @@ VisibilitySensor::VisibilitySensor (X3DExecutionContext* const executionContext)
 	setComponent ("EnvironmentalSensor");
 	setTypeName ("VisibilitySensor");
 
-	appendField (inputOutput, "metadata",  metadata);
-	appendField (inputOutput, "enabled",   enabled);
-	appendField (inputOutput, "size",      size);
-	appendField (inputOutput, "center",    center);
-	appendField (outputOnly,  "enterTime", enterTime);
-	appendField (outputOnly,  "exitTime",  exitTime);
-	appendField (outputOnly,  "isActive",  isActive);
+	addField (inputOutput, "metadata",  metadata);
+	addField (inputOutput, "enabled",   enabled);
+	addField (inputOutput, "size",      size);
+	addField (inputOutput, "center",    center);
+	addField (outputOnly,  "enterTime", enterTime);
+	addField (outputOnly,  "exitTime",  exitTime);
+	addField (outputOnly,  "isActive",  isActive);
 }
 
 X3DBaseNode*

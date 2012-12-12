@@ -63,12 +63,12 @@ StringSensor::StringSensor (X3DExecutionContext* const executionContext) :
 	setComponent ("KeyDeviceSensor");
 	setTypeName ("StringSensor");
 
-	appendField (inputOutput, "metadata",        metadata);
-	appendField (inputOutput, "enabled",         enabled);
-	appendField (outputOnly,  "isActive",        isActive);
-	appendField (inputOutput, "deletionAllowed", deletionAllowed);
-	appendField (outputOnly,  "enteredText",     enteredText);
-	appendField (outputOnly,  "finalText",       finalText);
+	addField (inputOutput, "metadata",        metadata);
+	addField (inputOutput, "enabled",         enabled);
+	addField (outputOnly,  "isActive",        isActive);
+	addField (inputOutput, "deletionAllowed", deletionAllowed);
+	addField (outputOnly,  "enteredText",     enteredText);
+	addField (outputOnly,  "finalText",       finalText);
 }
 
 X3DBaseNode*

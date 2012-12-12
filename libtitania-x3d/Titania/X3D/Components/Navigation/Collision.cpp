@@ -63,16 +63,16 @@ Collision::Collision (X3DExecutionContext* const executionContext) :
 	setComponent ("Navigation");
 	setTypeName ("Collision");
 
-	appendField (inputOutput,    "metadata",       metadata);
-	appendField (inputOutput,    "enabled",        enabled);
-	appendField (initializeOnly, "bboxSize",       bboxSize);
-	appendField (outputOnly,     "collideTime",    collideTime);
-	appendField (initializeOnly, "proxy",          proxy);
-	appendField (initializeOnly, "bboxCenter",     bboxCenter);
-	appendField (inputOnly,      "addChildren",    addChildren);
-	appendField (inputOnly,      "removeChildren", removeChildren);
-	appendField (inputOutput,    "children",       children);
-	appendField (outputOnly,     "isActive",       isActive);
+	addField (inputOutput,    "metadata",       metadata);
+	addField (inputOutput,    "enabled",        enabled);
+	addField (initializeOnly, "bboxSize",       bboxSize);
+	addField (outputOnly,     "collideTime",    collideTime);
+	addField (initializeOnly, "proxy",          proxy);
+	addField (initializeOnly, "bboxCenter",     bboxCenter);
+	addField (inputOnly,      "addChildren",    addChildren);
+	addField (inputOnly,      "removeChildren", removeChildren);
+	addField (inputOutput,    "children",       children);
+	addField (outputOnly,     "isActive",       isActive);
 	addFieldAlias ("collide", "enabled");
 }
 

@@ -64,12 +64,12 @@ ArcClose2D::ArcClose2D (X3DExecutionContext* const executionContext) :
 	setComponent ("Geometry2D");
 	setTypeName ("ArcClose2D");
 
-	appendField (inputOutput,    "metadata",    metadata);
-	appendField (initializeOnly, "closureType", closureType);
-	appendField (initializeOnly, "endAngle",    endAngle);
-	appendField (initializeOnly, "radius",      radius);
-	appendField (initializeOnly, "solid",       solid);
-	appendField (initializeOnly, "startAngle",  startAngle);
+	addField (inputOutput,    "metadata",    metadata);
+	addField (initializeOnly, "closureType", closureType);
+	addField (initializeOnly, "endAngle",    endAngle);
+	addField (initializeOnly, "radius",      radius);
+	addField (initializeOnly, "solid",       solid);
+	addField (initializeOnly, "startAngle",  startAngle);
 }
 
 X3DBaseNode*

@@ -63,10 +63,10 @@ GeoMetadata::GeoMetadata (X3DExecutionContext* const executionContext) :
 	setComponent ("Geospatial");
 	setTypeName ("GeoMetadata");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "data",     data);
-	appendField (inputOutput, "summary",  summary);
-	appendField (inputOutput, "url",      url);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "data",     data);
+	addField (inputOutput, "summary",  summary);
+	addField (inputOutput, "url",      url);
 }
 
 X3DBaseNode*

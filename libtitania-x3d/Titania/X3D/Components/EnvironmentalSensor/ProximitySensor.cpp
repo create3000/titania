@@ -68,16 +68,16 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	setComponent ("EnvironmentalSensor");
 	setTypeName ("ProximitySensor");
 
-	appendField (inputOutput, "metadata",                 metadata);
-	appendField (inputOutput, "enabled",                  enabled);
-	appendField (inputOutput, "size",                     size);
-	appendField (inputOutput, "center",                   center);
-	appendField (outputOnly,  "enterTime",                enterTime);
-	appendField (outputOnly,  "exitTime",                 exitTime);
-	appendField (outputOnly,  "isActive",                 isActive);
-	appendField (outputOnly,  "position_changed",         position_changed);
-	appendField (outputOnly,  "orientation_changed",      orientation_changed);
-	appendField (outputOnly,  "centerOfRotation_changed", centerOfRotation_changed);
+	addField (inputOutput, "metadata",                 metadata);
+	addField (inputOutput, "enabled",                  enabled);
+	addField (inputOutput, "size",                     size);
+	addField (inputOutput, "center",                   center);
+	addField (outputOnly,  "enterTime",                enterTime);
+	addField (outputOnly,  "exitTime",                 exitTime);
+	addField (outputOnly,  "isActive",                 isActive);
+	addField (outputOnly,  "position_changed",         position_changed);
+	addField (outputOnly,  "orientation_changed",      orientation_changed);
+	addField (outputOnly,  "centerOfRotation_changed", centerOfRotation_changed);
 }
 
 X3DBaseNode*

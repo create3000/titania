@@ -66,13 +66,13 @@ ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
 	setComponent ("Navigation");
 	setTypeName ("ViewpointGroup");
 
-	appendField (inputOutput, "metadata",          metadata);
-	appendField (inputOutput, "center",            center);
-	appendField (inputOutput, "children",          children);
-	appendField (inputOutput, "description",       description);
-	appendField (inputOutput, "displayed",         displayed);
-	appendField (inputOutput, "retainUserOffsets", retainUserOffsets);
-	appendField (inputOutput, "size",              size);
+	addField (inputOutput, "metadata",          metadata);
+	addField (inputOutput, "center",            center);
+	addField (inputOutput, "children",          children);
+	addField (inputOutput, "description",       description);
+	addField (inputOutput, "displayed",         displayed);
+	addField (inputOutput, "retainUserOffsets", retainUserOffsets);
+	addField (inputOutput, "size",              size);
 }
 
 X3DBaseNode*

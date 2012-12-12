@@ -68,15 +68,15 @@ DISEntityTypeMapping::DISEntityTypeMapping (X3DExecutionContext* const execution
 	setComponent ("DIS");
 	setTypeName ("DISEntityTypeMapping");
 
-	appendField (inputOutput,    "metadata",    metadata);
-	appendField (inputOutput,    "url",         url);
-	appendField (initializeOnly, "category",    category);
-	appendField (initializeOnly, "country",     country);
-	appendField (initializeOnly, "domain",      domain);
-	appendField (initializeOnly, "extra",       extra);
-	appendField (initializeOnly, "kind",        kind);
-	appendField (initializeOnly, "specific",    specific);
-	appendField (initializeOnly, "subcategory", subcategory);
+	addField (inputOutput,    "metadata",    metadata);
+	addField (inputOutput,    "url",         url);
+	addField (initializeOnly, "category",    category);
+	addField (initializeOnly, "country",     country);
+	addField (initializeOnly, "domain",      domain);
+	addField (initializeOnly, "extra",       extra);
+	addField (initializeOnly, "kind",        kind);
+	addField (initializeOnly, "specific",    specific);
+	addField (initializeOnly, "subcategory", subcategory);
 }
 
 X3DBaseNode*

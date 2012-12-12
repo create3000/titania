@@ -58,7 +58,8 @@ namespace titania {
 namespace basic {
 
 /***
- *  Removes all elements in the range [@a rfirst, @a rlast) from the range [@a first, @a last).
+ *  Removes all elements in the range [@a rfirst, @a rlast) from the list [@a first, @a last).
+ *  The Elements in the range must be ordered as they can be found in the list.
  *
  *  Return value:
  *    Iterator to the new end of the range.

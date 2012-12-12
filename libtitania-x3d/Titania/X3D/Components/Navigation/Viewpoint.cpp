@@ -64,17 +64,17 @@ Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool addToLis
 	setComponent ("Navigation");
 	setTypeName ("Viewpoint");
 
-	appendField (inputOutput, "metadata",          metadata);
-	appendField (inputOutput, "description",       description);
-	appendField (inputOnly,   "set_bind",          set_bind);
-	appendField (inputOutput, "position",          position);
-	appendField (inputOutput, "orientation",       orientation);
-	appendField (inputOutput, "centerOfRotation",  centerOfRotation);
-	appendField (inputOutput, "fieldOfView",       fieldOfView);
-	appendField (inputOutput, "jump",              jump);
-	appendField (inputOutput, "retainUserOffsets", retainUserOffsets);
-	appendField (outputOnly,  "bindTime",          bindTime);
-	appendField (outputOnly,  "isBound",           isBound);
+	addField (inputOutput, "metadata",          metadata);
+	addField (inputOutput, "description",       description);
+	addField (inputOnly,   "set_bind",          set_bind);
+	addField (inputOutput, "position",          position);
+	addField (inputOutput, "orientation",       orientation);
+	addField (inputOutput, "centerOfRotation",  centerOfRotation);
+	addField (inputOutput, "fieldOfView",       fieldOfView);
+	addField (inputOutput, "jump",              jump);
+	addField (inputOutput, "retainUserOffsets", retainUserOffsets);
+	addField (outputOnly,  "bindTime",          bindTime);
+	addField (outputOnly,  "isBound",           isBound);
 }
 
 X3DBaseNode*

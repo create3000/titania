@@ -63,10 +63,10 @@ Arc2D::Arc2D (X3DExecutionContext* const executionContext) :
 	setComponent ("Geometry2D");
 	setTypeName ("Arc2D");
 
-	appendField (inputOutput,    "metadata",   metadata);
-	appendField (initializeOnly, "endAngle",   endAngle);
-	appendField (initializeOnly, "radius",     radius);
-	appendField (initializeOnly, "startAngle", startAngle);
+	addField (inputOutput,    "metadata",   metadata);
+	addField (initializeOnly, "endAngle",   endAngle);
+	addField (initializeOnly, "radius",     radius);
+	addField (initializeOnly, "startAngle", startAngle);
 }
 
 X3DBaseNode*

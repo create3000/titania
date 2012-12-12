@@ -69,24 +69,24 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext, bool ad
 	setComponent ("Geospatial");
 	setTypeName ("GeoViewpoint");
 
-	appendField (inputOutput,    "metadata",          metadata);
-	appendField (inputOnly,      "set_bind",          set_bind);
-	appendField (inputOutput,    "jump",              jump);
-	appendField (inputOutput,    "retainUserOffsets", retainUserOffsets);
-	appendField (inputOutput,    "centerOfRotation",  centerOfRotation);
-	appendField (inputOutput,    "description",       description);
-	appendField (outputOnly,     "bindTime",          bindTime);
-	appendField (outputOnly,     "isBound",           isBound);
-	appendField (inputOnly,      "set_orientation",   set_orientation);
-	appendField (inputOnly,      "set_position",      set_position);
-	appendField (inputOutput,    "fieldOfView",       fieldOfView);
-	appendField (inputOutput,    "headlight",         headlight);
-	appendField (inputOutput,    "navType",           navType);
-	appendField (initializeOnly, "geoOrigin",         geoOrigin);
-	appendField (initializeOnly, "geoSystem",         geoSystem);
-	appendField (initializeOnly, "position",          position);
-	appendField (initializeOnly, "orientation",       orientation);
-	appendField (initializeOnly, "speedFactor",       speedFactor);
+	addField (inputOutput,    "metadata",          metadata);
+	addField (inputOnly,      "set_bind",          set_bind);
+	addField (inputOutput,    "jump",              jump);
+	addField (inputOutput,    "retainUserOffsets", retainUserOffsets);
+	addField (inputOutput,    "centerOfRotation",  centerOfRotation);
+	addField (inputOutput,    "description",       description);
+	addField (outputOnly,     "bindTime",          bindTime);
+	addField (outputOnly,     "isBound",           isBound);
+	addField (inputOnly,      "set_orientation",   set_orientation);
+	addField (inputOnly,      "set_position",      set_position);
+	addField (inputOutput,    "fieldOfView",       fieldOfView);
+	addField (inputOutput,    "headlight",         headlight);
+	addField (inputOutput,    "navType",           navType);
+	addField (initializeOnly, "geoOrigin",         geoOrigin);
+	addField (initializeOnly, "geoSystem",         geoSystem);
+	addField (initializeOnly, "position",          position);
+	addField (initializeOnly, "orientation",       orientation);
+	addField (initializeOnly, "speedFactor",       speedFactor);
 }
 
 X3DBaseNode*

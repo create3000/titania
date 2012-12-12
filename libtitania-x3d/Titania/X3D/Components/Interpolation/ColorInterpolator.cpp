@@ -62,11 +62,11 @@ ColorInterpolator::ColorInterpolator (X3DExecutionContext* const executionContex
 	setComponent ("Interpolation");
 	setTypeName ("ColorInterpolator");
 
-	appendField (inputOutput, "metadata",      metadata);
-	appendField (inputOnly,   "set_fraction",  set_fraction);
-	appendField (inputOutput, "key",           key);
-	appendField (inputOutput, "keyValue",      keyValue);
-	appendField (outputOnly,  "value_changed", value_changed);
+	addField (inputOutput, "metadata",      metadata);
+	addField (inputOnly,   "set_fraction",  set_fraction);
+	addField (inputOutput, "key",           key);
+	addField (inputOutput, "keyValue",      keyValue);
+	addField (outputOnly,  "value_changed", value_changed);
 }
 
 X3DBaseNode*

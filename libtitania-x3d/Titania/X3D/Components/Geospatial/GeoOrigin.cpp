@@ -63,10 +63,10 @@ GeoOrigin::GeoOrigin (X3DExecutionContext* const executionContext) :
 	setComponent ("Geospatial");
 	setTypeName ("GeoOrigin");
 
-	appendField (inputOutput,    "metadata",  metadata);
-	appendField (inputOutput,    "geoCoords", geoCoords);
-	appendField (initializeOnly, "geoSystem", geoSystem);
-	appendField (initializeOnly, "rotateYUp", rotateYUp);
+	addField (inputOutput,    "metadata",  metadata);
+	addField (inputOutput,    "geoCoords", geoCoords);
+	addField (initializeOnly, "geoSystem", geoSystem);
+	addField (initializeOnly, "rotateYUp", rotateYUp);
 }
 
 X3DBaseNode*

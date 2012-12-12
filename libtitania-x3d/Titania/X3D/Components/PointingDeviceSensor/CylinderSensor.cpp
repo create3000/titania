@@ -66,19 +66,19 @@ CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("CylinderSensor");
 
-	appendField (inputOutput, "metadata",           metadata);
-	appendField (inputOutput, "enabled",            enabled);
-	appendField (inputOutput, "description",        description);
-	appendField (outputOnly,  "isActive",           isActive);
-	appendField (outputOnly,  "isOver",             isOver);
-	appendField (inputOutput, "autoOffset",         autoOffset);
-	appendField (outputOnly,  "trackPoint_changed", trackPoint_changed);
-	appendField (inputOutput, "axisRotation",       axisRotation);
-	appendField (inputOutput, "diskAngle",          diskAngle);
-	appendField (inputOutput, "maxAngle",           maxAngle);
-	appendField (inputOutput, "minAngle",           minAngle);
-	appendField (inputOutput, "offset",             offset);
-	appendField (outputOnly,  "rotation_changed",   rotation_changed);
+	addField (inputOutput, "metadata",           metadata);
+	addField (inputOutput, "enabled",            enabled);
+	addField (inputOutput, "description",        description);
+	addField (outputOnly,  "isActive",           isActive);
+	addField (outputOnly,  "isOver",             isOver);
+	addField (inputOutput, "autoOffset",         autoOffset);
+	addField (outputOnly,  "trackPoint_changed", trackPoint_changed);
+	addField (inputOutput, "axisRotation",       axisRotation);
+	addField (inputOutput, "diskAngle",          diskAngle);
+	addField (inputOutput, "maxAngle",           maxAngle);
+	addField (inputOutput, "minAngle",           minAngle);
+	addField (inputOutput, "offset",             offset);
+	addField (outputOnly,  "rotation_changed",   rotation_changed);
 }
 
 X3DBaseNode*

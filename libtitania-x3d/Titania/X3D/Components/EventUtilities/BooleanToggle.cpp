@@ -62,9 +62,9 @@ BooleanToggle::BooleanToggle (X3DExecutionContext* const executionContext) :
 	setComponent ("EventUtilities");
 	setTypeName ("BooleanToggle");
 
-	appendField (inputOutput, "metadata",    metadata);
-	appendField (inputOnly,   "set_boolean", set_boolean);
-	appendField (inputOutput, "toggle",      toggle);
+	addField (inputOutput, "metadata",    metadata);
+	addField (inputOnly,   "set_boolean", set_boolean);
+	addField (inputOutput, "toggle",      toggle);
 }
 
 X3DBaseNode*

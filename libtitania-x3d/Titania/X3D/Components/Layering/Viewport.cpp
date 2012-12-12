@@ -64,13 +64,13 @@ Viewport::Viewport (X3DExecutionContext* const executionContext) :
 	setComponent ("Layering");
 	setTypeName ("Viewport");
 
-	appendField (inputOutput,    "metadata",       metadata);
-	appendField (inputOutput,    "clipBoundary",   clipBoundary);
-	appendField (initializeOnly, "bboxSize",       bboxSize);
-	appendField (initializeOnly, "bboxCenter",     bboxCenter);
-	appendField (inputOnly,      "addChildren",    addChildren);
-	appendField (inputOnly,      "removeChildren", removeChildren);
-	appendField (inputOutput,    "children",       children);
+	addField (inputOutput,    "metadata",       metadata);
+	addField (inputOutput,    "clipBoundary",   clipBoundary);
+	addField (initializeOnly, "bboxSize",       bboxSize);
+	addField (initializeOnly, "bboxCenter",     bboxCenter);
+	addField (inputOnly,      "addChildren",    addChildren);
+	addField (inputOnly,      "removeChildren", removeChildren);
+	addField (inputOutput,    "children",       children);
 }
 
 X3DBaseNode*

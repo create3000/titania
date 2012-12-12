@@ -24,7 +24,11 @@ PROTO BBox2 [
     children Transform {
       translation 0.5 -0.5 0
       children Shape {
-        appearance Appearance { material Material { emissiveColor IS color } }
+        appearance Appearance {
+          material Material {
+            emissiveColor IS color
+          }
+        }
         geometry LineRectangle2D { }
       }
     }
@@ -44,11 +48,11 @@ DEF Lines Shape {
   }
   geometry DEF Text Text {
     string [ "Hällö Wörld!", "This is my line!", "now a new one." ]
-    length [12, 0, 10]
+    length [ 12, 0, 10 ]
     fontStyle FontStyle {
       family "Ubuntu Mono"
       style "BOLDITALIC"
-      justify ["BEGIN", "BEGIN" ]
+      justify [ "BEGIN", "BEGIN" ]
     }
   }
 }
@@ -166,7 +170,6 @@ function set_textBounds (value, time)
   "
 }
 
-#ROUTE Text.origin TO TextBounds.set_translation
 ROUTE Text.origin TO LineBounds.set_translation
 ROUTE Text.lineBounds TO Bounds.set_lineBounds
 ROUTE Text.textBounds TO Bounds.set_textBounds

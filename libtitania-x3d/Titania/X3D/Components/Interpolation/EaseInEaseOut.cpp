@@ -64,11 +64,11 @@ EaseInEaseOut::EaseInEaseOut (X3DExecutionContext* const executionContext) :
 	setComponent ("Interpolation");
 	setTypeName ("EaseInEaseOut");
 
-	appendField (inputOutput, "metadata",                 metadata);
-	appendField (inputOnly,   "set_fraction",             set_fraction);
-	appendField (inputOutput, "easeInEaseOut",            easeInEaseOut);
-	appendField (inputOutput, "key",                      key);
-	appendField (outputOnly,  "modifiedFraction_changed", modifiedFraction_changed);
+	addField (inputOutput, "metadata",                 metadata);
+	addField (inputOnly,   "set_fraction",             set_fraction);
+	addField (inputOutput, "easeInEaseOut",            easeInEaseOut);
+	addField (inputOutput, "key",                      key);
+	addField (outputOnly,  "modifiedFraction_changed", modifiedFraction_changed);
 }
 
 X3DBaseNode*

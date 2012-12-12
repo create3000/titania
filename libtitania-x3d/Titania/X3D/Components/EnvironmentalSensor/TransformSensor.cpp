@@ -63,16 +63,16 @@ TransformSensor::TransformSensor (X3DExecutionContext* const executionContext) :
 	setComponent ("EnvironmentalSensor");
 	setTypeName ("TransformSensor");
 
-	appendField (inputOutput, "metadata",            metadata);
-	appendField (inputOutput, "enabled",             enabled);
-	appendField (inputOutput, "size",                size);
-	appendField (inputOutput, "center",              center);
-	appendField (outputOnly,  "enterTime",           enterTime);
-	appendField (outputOnly,  "exitTime",            exitTime);
-	appendField (outputOnly,  "isActive",            isActive);
-	appendField (inputOutput, "targetObject",        targetObject);
-	appendField (outputOnly,  "orientation_changed", orientation_changed);
-	appendField (outputOnly,  "position_changed",    position_changed);
+	addField (inputOutput, "metadata",            metadata);
+	addField (inputOutput, "enabled",             enabled);
+	addField (inputOutput, "size",                size);
+	addField (inputOutput, "center",              center);
+	addField (outputOnly,  "enterTime",           enterTime);
+	addField (outputOnly,  "exitTime",            exitTime);
+	addField (outputOnly,  "isActive",            isActive);
+	addField (inputOutput, "targetObject",        targetObject);
+	addField (outputOnly,  "orientation_changed", orientation_changed);
+	addField (outputOnly,  "position_changed",    position_changed);
 }
 
 X3DBaseNode*

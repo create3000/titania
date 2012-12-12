@@ -62,10 +62,10 @@ MetadataDouble::MetadataDouble (X3DExecutionContext* const executionContext) :
 	setComponent ("Core");
 	setTypeName ("MetadataDouble");
 
-	appendField (inputOutput, "metadata",  metadata);
-	appendField (inputOutput, "name",      name);
-	appendField (inputOutput, "reference", reference);
-	appendField (inputOutput, "value",     value);
+	addField (inputOutput, "metadata",  metadata);
+	addField (inputOutput, "name",      name);
+	addField (inputOutput, "reference", reference);
+	addField (inputOutput, "value",     value);
 }
 
 X3DBaseNode*

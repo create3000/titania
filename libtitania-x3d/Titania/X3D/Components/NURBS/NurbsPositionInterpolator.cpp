@@ -66,13 +66,13 @@ NurbsPositionInterpolator::NurbsPositionInterpolator (X3DExecutionContext* const
 	setComponent ("NURBS");
 	setTypeName ("NurbsPositionInterpolator");
 
-	appendField (inputOutput, "metadata",      metadata);
-	appendField (inputOnly,   "set_fraction",  set_fraction);
-	appendField (inputOutput, "controlPoint",  controlPoint);
-	appendField (inputOutput, "knot",          knot);
-	appendField (inputOutput, "order",         order);
-	appendField (inputOutput, "weight",        weight);
-	appendField (outputOnly,  "value_changed", value_changed);
+	addField (inputOutput, "metadata",      metadata);
+	addField (inputOnly,   "set_fraction",  set_fraction);
+	addField (inputOutput, "controlPoint",  controlPoint);
+	addField (inputOutput, "knot",          knot);
+	addField (inputOutput, "order",         order);
+	addField (inputOutput, "weight",        weight);
+	addField (outputOnly,  "value_changed", value_changed);
 }
 
 X3DBaseNode*

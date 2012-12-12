@@ -67,20 +67,20 @@ GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionCont
 	setComponent ("Geospatial");
 	setTypeName ("GeoProximitySensor");
 
-	appendField (inputOutput,    "metadata",                 metadata);
-	appendField (inputOutput,    "enabled",                  enabled);
-	appendField (inputOutput,    "size",                     size);
-	appendField (inputOutput,    "center",                   center);
-	appendField (outputOnly,     "enterTime",                enterTime);
-	appendField (outputOnly,     "exitTime",                 exitTime);
-	appendField (outputOnly,     "isActive",                 isActive);
-	appendField (inputOutput,    "geoCenter",                geoCenter);
-	appendField (outputOnly,     "centerOfRotation_changed", centerOfRotation_changed);
-	appendField (outputOnly,     "geoCoord_changed",         geoCoord_changed);
-	appendField (outputOnly,     "orientation_changed",      orientation_changed);
-	appendField (outputOnly,     "position_changed",         position_changed);
-	appendField (initializeOnly, "geoOrigin",                geoOrigin);
-	appendField (initializeOnly, "geoSystem",                geoSystem);
+	addField (inputOutput,    "metadata",                 metadata);
+	addField (inputOutput,    "enabled",                  enabled);
+	addField (inputOutput,    "size",                     size);
+	addField (inputOutput,    "center",                   center);
+	addField (outputOnly,     "enterTime",                enterTime);
+	addField (outputOnly,     "exitTime",                 exitTime);
+	addField (outputOnly,     "isActive",                 isActive);
+	addField (inputOutput,    "geoCenter",                geoCenter);
+	addField (outputOnly,     "centerOfRotation_changed", centerOfRotation_changed);
+	addField (outputOnly,     "geoCoord_changed",         geoCoord_changed);
+	addField (outputOnly,     "orientation_changed",      orientation_changed);
+	addField (outputOnly,     "position_changed",         position_changed);
+	addField (initializeOnly, "geoOrigin",                geoOrigin);
+	addField (initializeOnly, "geoSystem",                geoSystem);
 }
 
 X3DBaseNode*

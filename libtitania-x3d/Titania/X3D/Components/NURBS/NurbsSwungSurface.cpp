@@ -62,11 +62,11 @@ NurbsSwungSurface::NurbsSwungSurface (X3DExecutionContext* const executionContex
 	setComponent ("NURBS");
 	setTypeName ("NurbsSwungSurface");
 
-	appendField (inputOutput,    "metadata",        metadata);
-	appendField (inputOutput,    "profileCurve",    profileCurve);
-	appendField (inputOutput,    "trajectoryCurve", trajectoryCurve);
-	appendField (initializeOnly, "ccw",             ccw);
-	appendField (initializeOnly, "solid",           solid);
+	addField (inputOutput,    "metadata",        metadata);
+	addField (inputOutput,    "profileCurve",    profileCurve);
+	addField (inputOutput,    "trajectoryCurve", trajectoryCurve);
+	addField (initializeOnly, "ccw",             ccw);
+	addField (initializeOnly, "solid",           solid);
 }
 
 X3DBaseNode*

@@ -61,12 +61,12 @@ ComposedTexture3D::ComposedTexture3D (X3DExecutionContext* const executionContex
 	setComponent ("Texturing3D");
 	setTypeName ("ComposedTexture3D");
 
-	appendField (inputOutput,    "metadata",          metadata);
-	appendField (initializeOnly, "repeatS",           repeatS);
-	appendField (initializeOnly, "repeatT",           repeatT);
-	appendField (initializeOnly, "repeatR",           repeatR);
-	appendField (initializeOnly, "textureProperties", textureProperties);
-	appendField (inputOutput,    "texture",           texture);
+	addField (inputOutput,    "metadata",          metadata);
+	addField (initializeOnly, "repeatS",           repeatS);
+	addField (initializeOnly, "repeatT",           repeatT);
+	addField (initializeOnly, "repeatR",           repeatR);
+	addField (initializeOnly, "textureProperties", textureProperties);
+	addField (inputOutput,    "texture",           texture);
 }
 
 X3DBaseNode*

@@ -64,11 +64,11 @@ FillProperties::FillProperties (X3DExecutionContext* const executionContext) :
 	setComponent ("Shape");
 	setTypeName ("FillProperties");
 
-	appendField (inputOutput, "metadata",   metadata);
-	appendField (inputOutput, "filled",     filled);
-	appendField (inputOutput, "hatchColor", hatchColor);
-	appendField (inputOutput, "hatched",    hatched);
-	appendField (inputOutput, "hatchStyle", hatchStyle);
+	addField (inputOutput, "metadata",   metadata);
+	addField (inputOutput, "filled",     filled);
+	addField (inputOutput, "hatchColor", hatchColor);
+	addField (inputOutput, "hatched",    hatched);
+	addField (inputOutput, "hatchStyle", hatchStyle);
 }
 
 X3DBaseNode*

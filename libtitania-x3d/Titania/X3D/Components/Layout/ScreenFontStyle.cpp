@@ -61,16 +61,16 @@ ScreenFontStyle::ScreenFontStyle (X3DExecutionContext* const executionContext) :
 	setComponent ("Layout");
 	setTypeName ("ScreenFontStyle");
 
-	appendField (inputOutput,    "metadata",    metadata);
-	appendField (initializeOnly, "family",      family);
-	appendField (initializeOnly, "style",       style);
-	appendField (initializeOnly, "pointSize",   pointSize);
-	appendField (initializeOnly, "spacing",     spacing);
-	appendField (initializeOnly, "horizontal",  horizontal);
-	appendField (initializeOnly, "justify",     justify);
-	appendField (initializeOnly, "topToBottom", topToBottom);
-	appendField (initializeOnly, "leftToRight", leftToRight);
-	appendField (initializeOnly, "language",    language);
+	addField (inputOutput,    "metadata",    metadata);
+	addField (initializeOnly, "family",      family);
+	addField (initializeOnly, "style",       style);
+	addField (initializeOnly, "pointSize",   pointSize);
+	addField (initializeOnly, "spacing",     spacing);
+	addField (initializeOnly, "horizontal",  horizontal);
+	addField (initializeOnly, "justify",     justify);
+	addField (initializeOnly, "topToBottom", topToBottom);
+	addField (initializeOnly, "leftToRight", leftToRight);
+	addField (initializeOnly, "language",    language);
 }
 
 X3DBaseNode*

@@ -63,14 +63,14 @@ SurfaceEmitter::SurfaceEmitter (X3DExecutionContext* const executionContext) :
 	setComponent ("ParticleSystems");
 	setTypeName ("SurfaceEmitter");
 
-	appendField (inputOutput,    "metadata",       metadata);
-	appendField (inputOutput,    "speed",          speed);
-	appendField (inputOutput,    "variation",      variation);
-	appendField (initializeOnly, "mass",           mass);
-	appendField (initializeOnly, "surfaceArea",    surfaceArea);
-	appendField (inputOnly,      "set_coordinate", set_coordinate);
-	appendField (initializeOnly, "coordIndex",     coordIndex);
-	appendField (initializeOnly, "surface",        surface);
+	addField (inputOutput,    "metadata",       metadata);
+	addField (inputOutput,    "speed",          speed);
+	addField (inputOutput,    "variation",      variation);
+	addField (initializeOnly, "mass",           mass);
+	addField (initializeOnly, "surfaceArea",    surfaceArea);
+	addField (inputOnly,      "set_coordinate", set_coordinate);
+	addField (initializeOnly, "coordIndex",     coordIndex);
+	addField (initializeOnly, "surface",        surface);
 }
 
 X3DBaseNode*

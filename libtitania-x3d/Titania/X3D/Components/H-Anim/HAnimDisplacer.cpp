@@ -64,11 +64,11 @@ HAnimDisplacer::HAnimDisplacer (X3DExecutionContext* const executionContext) :
 	setComponent ("H-Anim");
 	setTypeName ("HAnimDisplacer");
 
-	appendField (inputOutput, "metadata",      metadata);
-	appendField (inputOutput, "coordIndex",    coordIndex);
-	appendField (inputOutput, "displacements", displacements);
-	appendField (inputOutput, "name",          name);
-	appendField (inputOutput, "weight",        weight);
+	addField (inputOutput, "metadata",      metadata);
+	addField (inputOutput, "coordIndex",    coordIndex);
+	addField (inputOutput, "displacements", displacements);
+	addField (inputOutput, "name",          name);
+	addField (inputOutput, "weight",        weight);
 }
 
 X3DBaseNode*

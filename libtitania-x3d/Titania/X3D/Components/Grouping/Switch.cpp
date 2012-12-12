@@ -61,13 +61,13 @@ Switch::Switch (X3DExecutionContext* const executionContext) :
 	setComponent ("Grouping");
 	setTypeName ("Switch");
 
-	appendField (inputOutput,    "metadata",       metadata);
-	appendField (inputOutput,    "whichChoice",    whichChoice);
-	appendField (initializeOnly, "bboxSize",       bboxSize);
-	appendField (initializeOnly, "bboxCenter",     bboxCenter);
-	appendField (inputOnly,      "addChildren",    addChildren);
-	appendField (inputOnly,      "removeChildren", removeChildren);
-	appendField (inputOutput,    "children",       children);
+	addField (inputOutput,    "metadata",       metadata);
+	addField (inputOutput,    "whichChoice",    whichChoice);
+	addField (initializeOnly, "bboxSize",       bboxSize);
+	addField (initializeOnly, "bboxCenter",     bboxCenter);
+	addField (inputOnly,      "addChildren",    addChildren);
+	addField (inputOnly,      "removeChildren", removeChildren);
+	addField (inputOutput,    "children",       children);
 	addFieldAlias ("choice", "children");
 }
 

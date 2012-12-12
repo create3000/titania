@@ -74,20 +74,20 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	setComponent ("Time");
 	setTypeName ("TimeSensor");
 
-	appendField (inputOutput, "metadata",         metadata);
-	appendField (inputOutput, "enabled",          enabled);
-	appendField (inputOutput, "cycleInterval",    cycleInterval);
-	appendField (inputOutput, "loop",             loop);
-	appendField (inputOutput, "startTime",        startTime);
-	appendField (inputOutput, "stopTime",         stopTime);
-	appendField (inputOutput, "pauseTime",        pauseTime);
-	appendField (inputOutput, "resumeTime",       resumeTime);
-	appendField (outputOnly,  "elapsedTime",      elapsedTime);
-	appendField (outputOnly,  "isPaused",         isPaused);
-	appendField (outputOnly,  "isActive",         isActive);
-	appendField (outputOnly,  "cycleTime",        cycleTime);
-	appendField (outputOnly,  "fraction_changed", fraction_changed);
-	appendField (outputOnly,  "time",             time);
+	addField (inputOutput, "metadata",         metadata);
+	addField (inputOutput, "enabled",          enabled);
+	addField (inputOutput, "cycleInterval",    cycleInterval);
+	addField (inputOutput, "loop",             loop);
+	addField (inputOutput, "startTime",        startTime);
+	addField (inputOutput, "stopTime",         stopTime);
+	addField (inputOutput, "pauseTime",        pauseTime);
+	addField (inputOutput, "resumeTime",       resumeTime);
+	addField (outputOnly,  "elapsedTime",      elapsedTime);
+	addField (outputOnly,  "isPaused",         isPaused);
+	addField (outputOnly,  "isActive",         isActive);
+	addField (outputOnly,  "cycleTime",        cycleTime);
+	addField (outputOnly,  "fraction_changed", fraction_changed);
+	addField (outputOnly,  "time",             time);
 }
 
 X3DBaseNode*

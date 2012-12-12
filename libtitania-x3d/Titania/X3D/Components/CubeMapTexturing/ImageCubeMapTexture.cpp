@@ -62,9 +62,9 @@ ImageCubeMapTexture::ImageCubeMapTexture (X3DExecutionContext* const executionCo
 	setComponent ("CubeMapTexturing");
 	setTypeName ("ImageCubeMapTexture");
 
-	appendField (inputOutput,    "metadata",          metadata);
-	appendField (inputOutput,    "url",               url);
-	appendField (initializeOnly, "textureProperties", textureProperties);
+	addField (inputOutput,    "metadata",          metadata);
+	addField (inputOutput,    "url",               url);
+	addField (initializeOnly, "textureProperties", textureProperties);
 }
 
 X3DBaseNode*

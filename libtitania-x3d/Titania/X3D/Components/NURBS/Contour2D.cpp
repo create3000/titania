@@ -63,10 +63,10 @@ Contour2D::Contour2D (X3DExecutionContext* const executionContext) :
 	setComponent ("NURBS");
 	setTypeName ("Contour2D");
 
-	appendField (inputOutput, "metadata",       metadata);
-	appendField (inputOnly,   "addChildren",    addChildren);
-	appendField (inputOnly,   "removeChildren", removeChildren);
-	appendField (inputOutput, "children",       children);
+	addField (inputOutput, "metadata",       metadata);
+	addField (inputOnly,   "addChildren",    addChildren);
+	addField (inputOnly,   "removeChildren", removeChildren);
+	addField (inputOutput, "children",       children);
 }
 
 X3DBaseNode*

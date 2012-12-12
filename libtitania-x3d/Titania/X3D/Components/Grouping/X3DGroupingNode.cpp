@@ -103,13 +103,70 @@ X3DGroupingNode::set_addChildren ()
 	children .addInterest    (this, &X3DGroupingNode::set_endChildren);
 }
 
+namespace Test
+{
+
+template <class ForwardIterator, class RangeIterator>
+ForwardIterator
+remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, RangeIterator rlast)
+{
+	std::multiset <typename RangeIterator::value_type> range (rfirst, rlast);
+
+	if (range .empty ())
+		return last;
+
+	size_t count = 0;
+
+	for ( ; first not_eq last; ++ first)
+	{
+		auto item = range .find (*first);
+		
+		if (item not_eq range .end ())
+		{
+			range .erase (item);
+			++ count;
+			break;
+		}
+	}
+
+	while (range .size ())
+	{
+		auto second = first + count;
+		
+		for (; second not_eq last; ++ first, ++ second)
+		{
+			auto item = range .find (*second);
+		
+			if (item not_eq range .end ())
+			{
+				range .erase (item);
+				++ count;
+				goto LOOP;
+			}
+
+			*first = std::move (*second);
+		}
+		
+		break;
+		
+		LOOP:;
+	}
+
+	for (auto second = first + count; second not_eq last; ++ first, ++ second)
+	{
+		*first = std::move (*second);
+	}
+
+	return first;
+}
+
+}
+
 void
 X3DGroupingNode::set_removeChildren ()
 {
-	children .remove (removeChildren .begin (), removeChildren .end ());
-
-	children .removeInterest (this, &X3DGroupingNode::set_children);
-	children .addInterest    (this, &X3DGroupingNode::set_endChildren);
+	auto new_end = Test::remove (children .begin (), children .end (), removeChildren .begin (), removeChildren .end ());
+	children .erase (new_end, children .end ());
 }
 
 void
@@ -151,7 +208,7 @@ X3DGroupingNode::add (const MFNode <X3DChildNode> & children, size_t offset)
 				else
 				{
 					if (children [i])
-						childNodes .emplace_back (offset + i);
+						childNodes .emplace_back (*children [i]);
 				}
 			}
 		}

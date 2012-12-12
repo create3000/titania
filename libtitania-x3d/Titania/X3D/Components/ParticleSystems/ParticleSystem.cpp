@@ -74,25 +74,25 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	setComponent ("ParticleSystems");
 	setTypeName ("ParticleSystem");
 
-	appendField (inputOutput,    "metadata",          metadata);
-	appendField (initializeOnly, "bboxSize",          bboxSize);
-	appendField (initializeOnly, "bboxCenter",        bboxCenter);
-	appendField (inputOutput,    "appearance",        appearance);
-	appendField (inputOutput,    "geometry",          geometry);
-	appendField (inputOutput,    "createParticles",   createParticles);
-	appendField (inputOutput,    "enabled",           enabled);
-	appendField (inputOutput,    "lifetimeVariation", lifetimeVariation);
-	appendField (inputOutput,    "maxParticles",      maxParticles);
-	appendField (inputOutput,    "particleLifetime",  particleLifetime);
-	appendField (inputOutput,    "particleSize",      particleSize);
-	appendField (outputOnly,     "isActive",          isActive);
-	appendField (initializeOnly, "colorRamp",         colorRamp);
-	appendField (initializeOnly, "colorKey",          colorKey);
-	appendField (initializeOnly, "emitter",           emitter);
-	appendField (initializeOnly, "geometryType",      geometryType);
-	appendField (initializeOnly, "physics",           physics);
-	appendField (initializeOnly, "texCoordRamp",      texCoordRamp);
-	appendField (initializeOnly, "texCoordKey",       texCoordKey);
+	addField (inputOutput,    "metadata",          metadata);
+	addField (initializeOnly, "bboxSize",          bboxSize);
+	addField (initializeOnly, "bboxCenter",        bboxCenter);
+	addField (inputOutput,    "appearance",        appearance);
+	addField (inputOutput,    "geometry",          geometry);
+	addField (inputOutput,    "createParticles",   createParticles);
+	addField (inputOutput,    "enabled",           enabled);
+	addField (inputOutput,    "lifetimeVariation", lifetimeVariation);
+	addField (inputOutput,    "maxParticles",      maxParticles);
+	addField (inputOutput,    "particleLifetime",  particleLifetime);
+	addField (inputOutput,    "particleSize",      particleSize);
+	addField (outputOnly,     "isActive",          isActive);
+	addField (initializeOnly, "colorRamp",         colorRamp);
+	addField (initializeOnly, "colorKey",          colorKey);
+	addField (initializeOnly, "emitter",           emitter);
+	addField (initializeOnly, "geometryType",      geometryType);
+	addField (initializeOnly, "physics",           physics);
+	addField (initializeOnly, "texCoordRamp",      texCoordRamp);
+	addField (initializeOnly, "texCoordKey",       texCoordKey);
 }
 
 X3DBaseNode*

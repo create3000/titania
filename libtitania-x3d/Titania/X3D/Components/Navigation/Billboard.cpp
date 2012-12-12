@@ -65,13 +65,13 @@ Billboard::Billboard (X3DExecutionContext* const executionContext) :
 	setComponent ("Navigation");
 	setTypeName ("Billboard");
 
-	appendField (inputOutput,    "metadata",       metadata);
-	appendField (inputOutput,    "axisOfRotation", axisOfRotation);
-	appendField (initializeOnly, "bboxSize",       bboxSize);
-	appendField (initializeOnly, "bboxCenter",     bboxCenter);
-	appendField (inputOnly,      "addChildren",    addChildren);
-	appendField (inputOnly,      "removeChildren", removeChildren);
-	appendField (inputOutput,    "children",       children);
+	addField (inputOutput,    "metadata",       metadata);
+	addField (inputOutput,    "axisOfRotation", axisOfRotation);
+	addField (initializeOnly, "bboxSize",       bboxSize);
+	addField (initializeOnly, "bboxCenter",     bboxCenter);
+	addField (inputOnly,      "addChildren",    addChildren);
+	addField (inputOnly,      "removeChildren", removeChildren);
+	addField (inputOutput,    "children",       children);
 }
 
 X3DBaseNode*

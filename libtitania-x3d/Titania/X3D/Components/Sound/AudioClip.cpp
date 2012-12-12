@@ -61,19 +61,19 @@ AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	setComponent ("Sound");
 	setTypeName ("AudioClip");
 
-	appendField (inputOutput, "metadata",         metadata);
-	appendField (inputOutput, "url",              url);
-	appendField (inputOutput, "loop",             loop);
-	appendField (inputOutput, "startTime",        startTime);
-	appendField (inputOutput, "stopTime",         stopTime);
-	appendField (inputOutput, "pauseTime",        pauseTime);
-	appendField (inputOutput, "resumeTime",       resumeTime);
-	appendField (outputOnly,  "elapsedTime",      elapsedTime);
-	appendField (outputOnly,  "isPaused",         isPaused);
-	appendField (inputOutput, "description",      description);
-	appendField (inputOutput, "pitch",            pitch);
-	appendField (outputOnly,  "isActive",         isActive);
-	appendField (outputOnly,  "duration_changed", duration_changed);
+	addField (inputOutput, "metadata",         metadata);
+	addField (inputOutput, "url",              url);
+	addField (inputOutput, "loop",             loop);
+	addField (inputOutput, "startTime",        startTime);
+	addField (inputOutput, "stopTime",         stopTime);
+	addField (inputOutput, "pauseTime",        pauseTime);
+	addField (inputOutput, "resumeTime",       resumeTime);
+	addField (outputOnly,  "elapsedTime",      elapsedTime);
+	addField (outputOnly,  "isPaused",         isPaused);
+	addField (inputOutput, "description",      description);
+	addField (inputOutput, "pitch",            pitch);
+	addField (outputOnly,  "isActive",         isActive);
+	addField (outputOnly,  "duration_changed", duration_changed);
 }
 
 X3DBaseNode*

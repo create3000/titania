@@ -73,21 +73,21 @@ GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
 	setComponent ("Geospatial");
 	setTypeName ("GeoLOD");
 
-	appendField (inputOutput,    "metadata",      metadata);
-	appendField (initializeOnly, "bboxSize",      bboxSize);
-	appendField (initializeOnly, "bboxCenter",    bboxCenter);
-	appendField (outputOnly,     "children",      children);
-	appendField (outputOnly,     "level_changed", level_changed);
-	appendField (initializeOnly, "center",        center);
-	appendField (initializeOnly, "child1Url",     child1Url);
-	appendField (initializeOnly, "child2Url",     child2Url);
-	appendField (initializeOnly, "child3Url",     child3Url);
-	appendField (initializeOnly, "child4Url",     child4Url);
-	appendField (initializeOnly, "geoOrigin",     geoOrigin);
-	appendField (initializeOnly, "geoSystem",     geoSystem);
-	appendField (initializeOnly, "range",         range);
-	appendField (initializeOnly, "rootUrl",       rootUrl);
-	appendField (initializeOnly, "rootNode",      rootNode);
+	addField (inputOutput,    "metadata",      metadata);
+	addField (initializeOnly, "bboxSize",      bboxSize);
+	addField (initializeOnly, "bboxCenter",    bboxCenter);
+	addField (outputOnly,     "children",      children);
+	addField (outputOnly,     "level_changed", level_changed);
+	addField (initializeOnly, "center",        center);
+	addField (initializeOnly, "child1Url",     child1Url);
+	addField (initializeOnly, "child2Url",     child2Url);
+	addField (initializeOnly, "child3Url",     child3Url);
+	addField (initializeOnly, "child4Url",     child4Url);
+	addField (initializeOnly, "geoOrigin",     geoOrigin);
+	addField (initializeOnly, "geoSystem",     geoSystem);
+	addField (initializeOnly, "range",         range);
+	addField (initializeOnly, "rootUrl",       rootUrl);
+	addField (initializeOnly, "rootNode",      rootNode);
 }
 
 X3DBaseNode*

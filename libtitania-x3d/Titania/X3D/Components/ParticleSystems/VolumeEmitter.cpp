@@ -65,16 +65,16 @@ VolumeEmitter::VolumeEmitter (X3DExecutionContext* const executionContext) :
 	setComponent ("ParticleSystems");
 	setTypeName ("VolumeEmitter");
 
-	appendField (inputOutput,    "metadata",       metadata);
-	appendField (inputOutput,    "speed",          speed);
-	appendField (inputOutput,    "variation",      variation);
-	appendField (initializeOnly, "mass",           mass);
-	appendField (initializeOnly, "surfaceArea",    surfaceArea);
-	appendField (inputOnly,      "set_coordinate", set_coordinate);
-	appendField (inputOutput,    "coord",          coord);
-	appendField (inputOutput,    "direction",      direction);
-	appendField (initializeOnly, "coordIndex",     coordIndex);
-	appendField (initializeOnly, "internal",       internal);
+	addField (inputOutput,    "metadata",       metadata);
+	addField (inputOutput,    "speed",          speed);
+	addField (inputOutput,    "variation",      variation);
+	addField (initializeOnly, "mass",           mass);
+	addField (initializeOnly, "surfaceArea",    surfaceArea);
+	addField (inputOnly,      "set_coordinate", set_coordinate);
+	addField (inputOutput,    "coord",          coord);
+	addField (inputOutput,    "direction",      direction);
+	addField (initializeOnly, "coordIndex",     coordIndex);
+	addField (initializeOnly, "internal",       internal);
 }
 
 X3DBaseNode*

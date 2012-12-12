@@ -67,13 +67,13 @@ Material::Material (X3DExecutionContext* const executionContext) :
 	setComponent ("Shape");
 	setTypeName ("Material");
 
-	appendField (inputOutput, "metadata",         metadata);
-	appendField (inputOutput, "ambientIntensity", ambientIntensity);
-	appendField (inputOutput, "diffuseColor",     diffuseColor);
-	appendField (inputOutput, "specularColor",    specularColor);
-	appendField (inputOutput, "emissiveColor",    emissiveColor);
-	appendField (inputOutput, "shininess",        shininess);
-	appendField (inputOutput, "transparency",     transparency);
+	addField (inputOutput, "metadata",         metadata);
+	addField (inputOutput, "ambientIntensity", ambientIntensity);
+	addField (inputOutput, "diffuseColor",     diffuseColor);
+	addField (inputOutput, "specularColor",    specularColor);
+	addField (inputOutput, "emissiveColor",    emissiveColor);
+	addField (inputOutput, "shininess",        shininess);
+	addField (inputOutput, "transparency",     transparency);
 }
 
 X3DBaseNode*

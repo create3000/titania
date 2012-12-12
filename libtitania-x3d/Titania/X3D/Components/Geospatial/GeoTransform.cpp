@@ -67,19 +67,19 @@ GeoTransform::GeoTransform (X3DExecutionContext* const executionContext) :
 	setComponent ("Geospatial");
 	setTypeName ("GeoTransform");
 
-	appendField (inputOutput,    "metadata",         metadata);
-	appendField (initializeOnly, "bboxSize",         bboxSize);
-	appendField (initializeOnly, "bboxCenter",       bboxCenter);
-	appendField (inputOnly,      "addChildren",      addChildren);
-	appendField (inputOnly,      "removeChildren",   removeChildren);
-	appendField (inputOutput,    "children",         children);
-	appendField (inputOutput,    "geoCenter",        geoCenter);
-	appendField (inputOutput,    "rotation",         rotation);
-	appendField (inputOutput,    "scale",            scale);
-	appendField (inputOutput,    "scaleOrientation", scaleOrientation);
-	appendField (inputOutput,    "translation",      translation);
-	appendField (initializeOnly, "geoOrigin",        geoOrigin);
-	appendField (initializeOnly, "geoSystem",        geoSystem);
+	addField (inputOutput,    "metadata",         metadata);
+	addField (initializeOnly, "bboxSize",         bboxSize);
+	addField (initializeOnly, "bboxCenter",       bboxCenter);
+	addField (inputOnly,      "addChildren",      addChildren);
+	addField (inputOnly,      "removeChildren",   removeChildren);
+	addField (inputOutput,    "children",         children);
+	addField (inputOutput,    "geoCenter",        geoCenter);
+	addField (inputOutput,    "rotation",         rotation);
+	addField (inputOutput,    "scale",            scale);
+	addField (inputOutput,    "scaleOrientation", scaleOrientation);
+	addField (inputOutput,    "translation",      translation);
+	addField (initializeOnly, "geoOrigin",        geoOrigin);
+	addField (initializeOnly, "geoSystem",        geoSystem);
 }
 
 X3DBaseNode*

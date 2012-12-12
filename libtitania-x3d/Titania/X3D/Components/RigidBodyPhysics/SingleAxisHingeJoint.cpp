@@ -70,20 +70,20 @@ SingleAxisHingeJoint::SingleAxisHingeJoint (X3DExecutionContext* const execution
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("SingleAxisHingeJoint");
 
-	appendField (inputOutput, "metadata",            metadata);
-	appendField (inputOutput, "body1",               body1);
-	appendField (inputOutput, "body2",               body2);
-	appendField (inputOutput, "forceOutput",         forceOutput);
-	appendField (inputOutput, "anchorPoint",         anchorPoint);
-	appendField (inputOutput, "axis",                axis);
-	appendField (inputOutput, "maxAngle",            maxAngle);
-	appendField (inputOutput, "minAngle",            minAngle);
-	appendField (inputOutput, "stopBounce",          stopBounce);
-	appendField (inputOutput, "stopErrorCorrection", stopErrorCorrection);
-	appendField (outputOnly,  "angle",               angle);
-	appendField (outputOnly,  "angleRate",           angleRate);
-	appendField (outputOnly,  "body1AnchorPoint",    body1AnchorPoint);
-	appendField (outputOnly,  "body2AnchorPoint",    body2AnchorPoint);
+	addField (inputOutput, "metadata",            metadata);
+	addField (inputOutput, "body1",               body1);
+	addField (inputOutput, "body2",               body2);
+	addField (inputOutput, "forceOutput",         forceOutput);
+	addField (inputOutput, "anchorPoint",         anchorPoint);
+	addField (inputOutput, "axis",                axis);
+	addField (inputOutput, "maxAngle",            maxAngle);
+	addField (inputOutput, "minAngle",            minAngle);
+	addField (inputOutput, "stopBounce",          stopBounce);
+	addField (inputOutput, "stopErrorCorrection", stopErrorCorrection);
+	addField (outputOnly,  "angle",               angle);
+	addField (outputOnly,  "angleRate",           angleRate);
+	addField (outputOnly,  "body1AnchorPoint",    body1AnchorPoint);
+	addField (outputOnly,  "body2AnchorPoint",    body2AnchorPoint);
 }
 
 X3DBaseNode*

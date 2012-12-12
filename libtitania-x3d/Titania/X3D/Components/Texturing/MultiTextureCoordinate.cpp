@@ -61,8 +61,8 @@ MultiTextureCoordinate::MultiTextureCoordinate (X3DExecutionContext* const execu
 	setComponent ("Texturing");
 	setTypeName ("MultiTextureCoordinate");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "texCoord", texCoord);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "texCoord", texCoord);
 }
 
 X3DBaseNode*

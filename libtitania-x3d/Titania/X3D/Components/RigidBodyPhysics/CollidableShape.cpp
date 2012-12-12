@@ -61,13 +61,13 @@ CollidableShape::CollidableShape (X3DExecutionContext* const executionContext) :
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("CollidableShape");
 
-	appendField (inputOutput,    "metadata",    metadata);
-	appendField (initializeOnly, "bboxSize",    bboxSize);
-	appendField (initializeOnly, "bboxCenter",  bboxCenter);
-	appendField (inputOutput,    "enabled",     enabled);
-	appendField (inputOutput,    "rotation",    rotation);
-	appendField (inputOutput,    "translation", translation);
-	appendField (initializeOnly, "shape",       shape);
+	addField (inputOutput,    "metadata",    metadata);
+	addField (initializeOnly, "bboxSize",    bboxSize);
+	addField (initializeOnly, "bboxCenter",  bboxCenter);
+	addField (inputOutput,    "enabled",     enabled);
+	addField (inputOutput,    "rotation",    rotation);
+	addField (inputOutput,    "translation", translation);
+	addField (initializeOnly, "shape",       shape);
 }
 
 X3DBaseNode*

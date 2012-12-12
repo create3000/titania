@@ -69,26 +69,26 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	setComponent ("Geometry3D");
 	setTypeName ("IndexedFaceSet");
 
-	appendField (inputOutput,    "metadata",          metadata);
+	addField (inputOutput,    "metadata",          metadata);
 
-	appendField (initializeOnly, "solid",             solid);
-	appendField (initializeOnly, "ccw",               ccw);
-	appendField (initializeOnly, "convex",            convex);
-	appendField (initializeOnly, "creaseAngle",       creaseAngle);
-	appendField (initializeOnly, "colorPerVertex",    colorPerVertex);
-	appendField (initializeOnly, "normalPerVertex",   normalPerVertex);
+	addField (initializeOnly, "solid",             solid);
+	addField (initializeOnly, "ccw",               ccw);
+	addField (initializeOnly, "convex",            convex);
+	addField (initializeOnly, "creaseAngle",       creaseAngle);
+	addField (initializeOnly, "colorPerVertex",    colorPerVertex);
+	addField (initializeOnly, "normalPerVertex",   normalPerVertex);
 	
-	appendField (inputOutput,    "texCoordIndex",     texCoordIndex);
-	appendField (inputOutput,    "colorIndex",        colorIndex);
-	appendField (inputOutput,    "normalIndex",       normalIndex);
-	appendField (inputOutput,    "coordIndex",        coordIndex);
+	addField (inputOutput,    "texCoordIndex",     texCoordIndex);
+	addField (inputOutput,    "colorIndex",        colorIndex);
+	addField (inputOutput,    "normalIndex",       normalIndex);
+	addField (inputOutput,    "coordIndex",        coordIndex);
 	
-	appendField (inputOutput,    "attrib",            attrib);
-	appendField (inputOutput,    "fogCoord",          fogCoord);
-	appendField (inputOutput,    "texCoord",          texCoord);
-	appendField (inputOutput,    "color",             color);
-	appendField (inputOutput,    "normal",            normal);
-	appendField (inputOutput,    "coord",             coord);
+	addField (inputOutput,    "attrib",            attrib);
+	addField (inputOutput,    "fogCoord",          fogCoord);
+	addField (inputOutput,    "texCoord",          texCoord);
+	addField (inputOutput,    "color",             color);
+	addField (inputOutput,    "normal",            normal);
+	addField (inputOutput,    "coord",             coord);
 }
 
 X3DBaseNode*

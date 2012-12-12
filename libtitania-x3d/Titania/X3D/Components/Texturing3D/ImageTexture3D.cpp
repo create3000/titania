@@ -61,12 +61,12 @@ ImageTexture3D::ImageTexture3D (X3DExecutionContext* const executionContext) :
 	setComponent ("Texturing3D");
 	setTypeName ("ImageTexture3D");
 
-	appendField (inputOutput,    "metadata",          metadata);
-	appendField (inputOutput,    "url",               url);
-	appendField (initializeOnly, "repeatS",           repeatS);
-	appendField (initializeOnly, "repeatT",           repeatT);
-	appendField (initializeOnly, "repeatR",           repeatR);
-	appendField (initializeOnly, "textureProperties", textureProperties);
+	addField (inputOutput,    "metadata",          metadata);
+	addField (inputOutput,    "url",               url);
+	addField (initializeOnly, "repeatS",           repeatS);
+	addField (initializeOnly, "repeatT",           repeatT);
+	addField (initializeOnly, "repeatR",           repeatR);
+	addField (initializeOnly, "textureProperties", textureProperties);
 }
 
 X3DBaseNode*

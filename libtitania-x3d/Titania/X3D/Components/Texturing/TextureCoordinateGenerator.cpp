@@ -63,9 +63,9 @@ TextureCoordinateGenerator::TextureCoordinateGenerator (X3DExecutionContext* con
 	setComponent ("Texturing");
 	setTypeName ("TextureCoordinateGenerator");
 
-	appendField (inputOutput, "metadata",  metadata);
-	appendField (inputOutput, "mode",      mode);
-	appendField (inputOutput, "parameter", parameter);
+	addField (inputOutput, "metadata",  metadata);
+	addField (inputOutput, "mode",      mode);
+	addField (inputOutput, "parameter", parameter);
 }
 
 X3DBaseNode*

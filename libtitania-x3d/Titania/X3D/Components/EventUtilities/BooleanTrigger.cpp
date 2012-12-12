@@ -62,9 +62,9 @@ BooleanTrigger::BooleanTrigger (X3DExecutionContext* const executionContext) :
 	setComponent ("EventUtilities");
 	setTypeName ("BooleanTrigger");
 
-	appendField (inputOutput, "metadata",        metadata);
-	appendField (inputOnly,   "set_triggerTime", set_triggerTime);
-	appendField (outputOnly,  "triggerTrue",     triggerTrue);
+	addField (inputOutput, "metadata",        metadata);
+	addField (inputOnly,   "set_triggerTime", set_triggerTime);
+	addField (outputOnly,  "triggerTrue",     triggerTrue);
 }
 
 X3DBaseNode*

@@ -71,21 +71,21 @@ UniversalJoint::UniversalJoint (X3DExecutionContext* const executionContext) :
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("UniversalJoint");
 
-	appendField (inputOutput, "metadata",             metadata);
-	appendField (inputOutput, "body1",                body1);
-	appendField (inputOutput, "body2",                body2);
-	appendField (inputOutput, "forceOutput",          forceOutput);
-	appendField (inputOutput, "anchorPoint",          anchorPoint);
-	appendField (inputOutput, "axis1",                axis1);
-	appendField (inputOutput, "axis2",                axis2);
-	appendField (inputOutput, "stopBounce1",          stopBounce1);
-	appendField (inputOutput, "stop1ErrorCorrection", stop1ErrorCorrection);
-	appendField (inputOutput, "stop2Bounce",          stop2Bounce);
-	appendField (inputOutput, "stop2ErrorCorrection", stop2ErrorCorrection);
-	appendField (outputOnly,  "body1AnchorPoint",     body1AnchorPoint);
-	appendField (outputOnly,  "body1Axis",            body1Axis);
-	appendField (outputOnly,  "body2AnchorPoint",     body2AnchorPoint);
-	appendField (outputOnly,  "body2Axis",            body2Axis);
+	addField (inputOutput, "metadata",             metadata);
+	addField (inputOutput, "body1",                body1);
+	addField (inputOutput, "body2",                body2);
+	addField (inputOutput, "forceOutput",          forceOutput);
+	addField (inputOutput, "anchorPoint",          anchorPoint);
+	addField (inputOutput, "axis1",                axis1);
+	addField (inputOutput, "axis2",                axis2);
+	addField (inputOutput, "stopBounce1",          stopBounce1);
+	addField (inputOutput, "stop1ErrorCorrection", stop1ErrorCorrection);
+	addField (inputOutput, "stop2Bounce",          stop2Bounce);
+	addField (inputOutput, "stop2ErrorCorrection", stop2ErrorCorrection);
+	addField (outputOnly,  "body1AnchorPoint",     body1AnchorPoint);
+	addField (outputOnly,  "body1Axis",            body1Axis);
+	addField (outputOnly,  "body2AnchorPoint",     body2AnchorPoint);
+	addField (outputOnly,  "body2Axis",            body2Axis);
 }
 
 X3DBaseNode*

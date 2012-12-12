@@ -67,14 +67,14 @@ DISEntityManager::DISEntityManager (X3DExecutionContext* const executionContext)
 	setComponent ("DIS");
 	setTypeName ("DISEntityManager");
 
-	appendField (inputOutput, "metadata",        metadata);
-	appendField (inputOutput, "address",         address);
-	appendField (inputOutput, "applicationID",   applicationID);
-	appendField (inputOutput, "mapping",         mapping);
-	appendField (inputOutput, "port",            port);
-	appendField (inputOutput, "siteID",          siteID);
-	appendField (outputOnly,  "addedEntities",   addedEntities);
-	appendField (outputOnly,  "removedEntities", removedEntities);
+	addField (inputOutput, "metadata",        metadata);
+	addField (inputOutput, "address",         address);
+	addField (inputOutput, "applicationID",   applicationID);
+	addField (inputOutput, "mapping",         mapping);
+	addField (inputOutput, "port",            port);
+	addField (inputOutput, "siteID",          siteID);
+	addField (outputOnly,  "addedEntities",   addedEntities);
+	addField (outputOnly,  "removedEntities", removedEntities);
 }
 
 X3DBaseNode*

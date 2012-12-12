@@ -61,13 +61,13 @@ LayoutLayer::LayoutLayer (X3DExecutionContext* const executionContext) :
 	setComponent ("Layout");
 	setTypeName ("LayoutLayer");
 
-	appendField (inputOutput, "metadata",       metadata);
-	appendField (inputOutput, "isPickable",     isPickable);
-	appendField (inputOutput, "viewport",       viewport);
-	appendField (inputOutput, "layout",         layout);
-	appendField (inputOnly,   "addChildren",    addChildren);
-	appendField (inputOnly,   "removeChildren", removeChildren);
-	appendField (inputOutput, "children",       children);
+	addField (inputOutput, "metadata",       metadata);
+	addField (inputOutput, "isPickable",     isPickable);
+	addField (inputOutput, "viewport",       viewport);
+	addField (inputOutput, "layout",         layout);
+	addField (inputOnly,   "addChildren",    addChildren);
+	addField (inputOnly,   "removeChildren", removeChildren);
+	addField (inputOutput, "children",       children);
 }
 
 X3DBaseNode*

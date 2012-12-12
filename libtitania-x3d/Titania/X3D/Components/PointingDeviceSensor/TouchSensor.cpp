@@ -63,15 +63,15 @@ TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("TouchSensor");
 
-	appendField (inputOutput, "metadata",            metadata);
-	appendField (inputOutput, "enabled",             enabled);
-	appendField (inputOutput, "description",         description);
-	appendField (outputOnly,  "hitNormal_changed",   hitNormal_changed);
-	appendField (outputOnly,  "hitPoint_changed",    hitPoint_changed);
-	appendField (outputOnly,  "hitTexCoord_changed", hitTexCoord_changed);
-	appendField (outputOnly,  "isActive",            isActive);
-	appendField (outputOnly,  "isOver",              isOver);
-	appendField (outputOnly,  "touchTime",           touchTime);
+	addField (inputOutput, "metadata",            metadata);
+	addField (inputOutput, "enabled",             enabled);
+	addField (inputOutput, "description",         description);
+	addField (outputOnly,  "hitNormal_changed",   hitNormal_changed);
+	addField (outputOnly,  "hitPoint_changed",    hitPoint_changed);
+	addField (outputOnly,  "hitTexCoord_changed", hitTexCoord_changed);
+	addField (outputOnly,  "isActive",            isActive);
+	addField (outputOnly,  "isOver",              isOver);
+	addField (outputOnly,  "touchTime",           touchTime);
 }
 
 X3DBaseNode*

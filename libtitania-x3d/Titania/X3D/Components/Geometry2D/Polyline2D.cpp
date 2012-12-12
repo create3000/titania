@@ -61,8 +61,8 @@ Polyline2D::Polyline2D (X3DExecutionContext* const executionContext) :
 	setComponent ("Geometry2D");
 	setTypeName ("Polyline2D");
 
-	appendField (inputOutput,    "metadata",     metadata);
-	appendField (initializeOnly, "lineSegments", lineSegments);
+	addField (inputOutput,    "metadata",     metadata);
+	addField (initializeOnly, "lineSegments", lineSegments);
 }
 
 X3DBaseNode*

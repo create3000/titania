@@ -71,13 +71,13 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	setComponent ("Shape");
 	setTypeName ("Appearance");
 
-	appendField (inputOutput, "metadata",         metadata);
-	appendField (inputOutput, "fillProperties",   fillProperties);
-	appendField (inputOutput, "lineProperties",   lineProperties);
-	appendField (inputOutput, "material",         material);
-	appendField (inputOutput, "texture",          texture);
-	appendField (inputOutput, "textureTransform", textureTransform);
-	appendField (inputOutput, "shaders",          shaders);
+	addField (inputOutput, "metadata",         metadata);
+	addField (inputOutput, "fillProperties",   fillProperties);
+	addField (inputOutput, "lineProperties",   lineProperties);
+	addField (inputOutput, "material",         material);
+	addField (inputOutput, "texture",          texture);
+	addField (inputOutput, "textureTransform", textureTransform);
+	addField (inputOutput, "shaders",          shaders);
 }
 
 X3DBaseNode*

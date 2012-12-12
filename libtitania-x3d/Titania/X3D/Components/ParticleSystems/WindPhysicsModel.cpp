@@ -64,12 +64,12 @@ WindPhysicsModel::WindPhysicsModel (X3DExecutionContext* const executionContext)
 	setComponent ("ParticleSystems");
 	setTypeName ("WindPhysicsModel");
 
-	appendField (inputOutput, "metadata",   metadata);
-	appendField (inputOutput, "enabled",    enabled);
-	appendField (inputOutput, "direction",  direction);
-	appendField (inputOutput, "gustiness",  gustiness);
-	appendField (inputOutput, "speed",      speed);
-	appendField (inputOutput, "turbulence", turbulence);
+	addField (inputOutput, "metadata",   metadata);
+	addField (inputOutput, "enabled",    enabled);
+	addField (inputOutput, "direction",  direction);
+	addField (inputOutput, "gustiness",  gustiness);
+	addField (inputOutput, "speed",      speed);
+	addField (inputOutput, "turbulence", turbulence);
 }
 
 X3DBaseNode*

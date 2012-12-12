@@ -66,13 +66,13 @@ Layout::Layout (X3DExecutionContext* const executionContext) :
 	setComponent ("Layout");
 	setTypeName ("Layout");
 
-	appendField (inputOutput, "metadata",    metadata);
-	appendField (inputOutput, "align",       align);
-	appendField (inputOutput, "offset",      offset);
-	appendField (inputOutput, "offsetUnits", offsetUnits);
-	appendField (inputOutput, "scaleMode",   scaleMode);
-	appendField (inputOutput, "size",        size);
-	appendField (inputOutput, "sizeUnits",   sizeUnits);
+	addField (inputOutput, "metadata",    metadata);
+	addField (inputOutput, "align",       align);
+	addField (inputOutput, "offset",      offset);
+	addField (inputOutput, "offsetUnits", offsetUnits);
+	addField (inputOutput, "scaleMode",   scaleMode);
+	addField (inputOutput, "size",        size);
+	addField (inputOutput, "sizeUnits",   sizeUnits);
 }
 
 X3DBaseNode*

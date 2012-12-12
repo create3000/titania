@@ -63,12 +63,12 @@ CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("CollisionSensor");
 
-	appendField (inputOutput, "metadata",      metadata);
-	appendField (inputOutput, "enabled",       enabled);
-	appendField (outputOnly,  "isActive",      isActive);
-	appendField (inputOutput, "collider",      collider);
-	appendField (outputOnly,  "intersections", intersections);
-	appendField (outputOnly,  "contacts",      contacts);
+	addField (inputOutput, "metadata",      metadata);
+	addField (inputOutput, "enabled",       enabled);
+	addField (outputOnly,  "isActive",      isActive);
+	addField (inputOutput, "collider",      collider);
+	addField (outputOnly,  "intersections", intersections);
+	addField (outputOnly,  "contacts",      contacts);
 }
 
 X3DBaseNode*

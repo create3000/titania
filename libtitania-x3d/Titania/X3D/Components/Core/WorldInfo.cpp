@@ -62,9 +62,9 @@ WorldInfo::WorldInfo (X3DExecutionContext* const executionContext) :
 	setComponent ("Core");
 	setTypeName ("WorldInfo");
 
-	appendField (inputOutput,    "metadata", metadata);
-	appendField (initializeOnly, "info",     info);
-	appendField (initializeOnly, "title",    title);
+	addField (inputOutput,    "metadata", metadata);
+	addField (initializeOnly, "info",     info);
+	addField (initializeOnly, "title",    title);
 }
 
 X3DBaseNode*

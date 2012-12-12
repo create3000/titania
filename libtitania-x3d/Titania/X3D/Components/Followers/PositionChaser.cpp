@@ -67,14 +67,14 @@ PositionChaser::PositionChaser (X3DExecutionContext* const executionContext) :
 	setComponent ("Followers");
 	setTypeName ("PositionChaser");
 
-	appendField (inputOutput,    "metadata",           metadata);
-	appendField (inputOnly,      "set_destination",    set_destination);
-	appendField (inputOnly,      "set_value",          set_value);
-	appendField (outputOnly,     "isActive",           isActive);
-	appendField (outputOnly,     "value_changed",      value_changed);
-	appendField (initializeOnly, "duration",           duration);
-	appendField (initializeOnly, "initialDestination", initialDestination);
-	appendField (initializeOnly, "defaultValue",       defaultValue);
+	addField (inputOutput,    "metadata",           metadata);
+	addField (inputOnly,      "set_destination",    set_destination);
+	addField (inputOnly,      "set_value",          set_value);
+	addField (outputOnly,     "isActive",           isActive);
+	addField (outputOnly,     "value_changed",      value_changed);
+	addField (initializeOnly, "duration",           duration);
+	addField (initializeOnly, "initialDestination", initialDestination);
+	addField (initializeOnly, "defaultValue",       defaultValue);
 }
 
 X3DBaseNode*

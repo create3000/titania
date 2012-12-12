@@ -70,17 +70,17 @@ CollisionCollection::CollisionCollection (X3DExecutionContext* const executionCo
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("CollisionCollection");
 
-	appendField (inputOutput, "metadata",                 metadata);
-	appendField (inputOutput, "appliedParameters",        appliedParameters);
-	appendField (inputOutput, "bounce",                   bounce);
-	appendField (inputOutput, "collidables",              collidables);
-	appendField (inputOutput, "enabled",                  enabled);
-	appendField (inputOutput, "frictionCoefficients",     frictionCoefficients);
-	appendField (inputOutput, "minBounceSpeed",           minBounceSpeed);
-	appendField (inputOutput, "slipFactors",              slipFactors);
-	appendField (inputOutput, "softnessConstantForceMix", softnessConstantForceMix);
-	appendField (inputOutput, "softnessErrorCorrection",  softnessErrorCorrection);
-	appendField (inputOutput, "surfaceSpeed",             surfaceSpeed);
+	addField (inputOutput, "metadata",                 metadata);
+	addField (inputOutput, "appliedParameters",        appliedParameters);
+	addField (inputOutput, "bounce",                   bounce);
+	addField (inputOutput, "collidables",              collidables);
+	addField (inputOutput, "enabled",                  enabled);
+	addField (inputOutput, "frictionCoefficients",     frictionCoefficients);
+	addField (inputOutput, "minBounceSpeed",           minBounceSpeed);
+	addField (inputOutput, "slipFactors",              slipFactors);
+	addField (inputOutput, "softnessConstantForceMix", softnessConstantForceMix);
+	addField (inputOutput, "softnessErrorCorrection",  softnessErrorCorrection);
+	addField (inputOutput, "surfaceSpeed",             surfaceSpeed);
 }
 
 X3DBaseNode*

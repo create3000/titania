@@ -76,23 +76,23 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("RigidBodyCollection");
 
-	appendField (inputOutput,    "metadata",                metadata);
-	appendField (inputOnly,      "set_contacts",            set_contacts);
-	appendField (inputOutput,    "autoDisable",             autoDisable);
-	appendField (inputOutput,    "bodies",                  bodies);
-	appendField (inputOutput,    "constantForceMix",        constantForceMix);
-	appendField (inputOutput,    "contactSurfaceThickness", contactSurfaceThickness);
-	appendField (inputOutput,    "disableAngularSpeed",     disableAngularSpeed);
-	appendField (inputOutput,    "disableLinearSpeed",      disableLinearSpeed);
-	appendField (inputOutput,    "disableTime",             disableTime);
-	appendField (inputOutput,    "enabled",                 enabled);
-	appendField (inputOutput,    "errorCorrection",         errorCorrection);
-	appendField (inputOutput,    "gravity",                 gravity);
-	appendField (inputOutput,    "iterations",              iterations);
-	appendField (inputOutput,    "joints",                  joints);
-	appendField (inputOutput,    "maxCorrectionSpeed",      maxCorrectionSpeed);
-	appendField (inputOutput,    "preferAccuracy",          preferAccuracy);
-	appendField (initializeOnly, "collider",                collider);
+	addField (inputOutput,    "metadata",                metadata);
+	addField (inputOnly,      "set_contacts",            set_contacts);
+	addField (inputOutput,    "autoDisable",             autoDisable);
+	addField (inputOutput,    "bodies",                  bodies);
+	addField (inputOutput,    "constantForceMix",        constantForceMix);
+	addField (inputOutput,    "contactSurfaceThickness", contactSurfaceThickness);
+	addField (inputOutput,    "disableAngularSpeed",     disableAngularSpeed);
+	addField (inputOutput,    "disableLinearSpeed",      disableLinearSpeed);
+	addField (inputOutput,    "disableTime",             disableTime);
+	addField (inputOutput,    "enabled",                 enabled);
+	addField (inputOutput,    "errorCorrection",         errorCorrection);
+	addField (inputOutput,    "gravity",                 gravity);
+	addField (inputOutput,    "iterations",              iterations);
+	addField (inputOutput,    "joints",                  joints);
+	addField (inputOutput,    "maxCorrectionSpeed",      maxCorrectionSpeed);
+	addField (inputOutput,    "preferAccuracy",          preferAccuracy);
+	addField (initializeOnly, "collider",                collider);
 }
 
 X3DBaseNode*

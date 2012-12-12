@@ -68,15 +68,15 @@ NurbsTextureCoordinate::NurbsTextureCoordinate (X3DExecutionContext* const execu
 	setComponent ("NURBS");
 	setTypeName ("NurbsTextureCoordinate");
 
-	appendField (inputOutput,    "metadata",     metadata);
-	appendField (inputOutput,    "controlPoint", controlPoint);
-	appendField (inputOutput,    "weight",       weight);
-	appendField (initializeOnly, "uDimension",   uDimension);
-	appendField (initializeOnly, "uKnot",        uKnot);
-	appendField (initializeOnly, "uOrder",       uOrder);
-	appendField (initializeOnly, "vDimension",   vDimension);
-	appendField (initializeOnly, "vKnot",        vKnot);
-	appendField (initializeOnly, "vOrder",       vOrder);
+	addField (inputOutput,    "metadata",     metadata);
+	addField (inputOutput,    "controlPoint", controlPoint);
+	addField (inputOutput,    "weight",       weight);
+	addField (initializeOnly, "uDimension",   uDimension);
+	addField (initializeOnly, "uKnot",        uKnot);
+	addField (initializeOnly, "uOrder",       uOrder);
+	addField (initializeOnly, "vDimension",   vDimension);
+	addField (initializeOnly, "vKnot",        vKnot);
+	addField (initializeOnly, "vOrder",       vOrder);
 }
 
 X3DBaseNode*

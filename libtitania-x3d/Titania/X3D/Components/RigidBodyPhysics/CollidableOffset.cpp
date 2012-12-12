@@ -61,13 +61,13 @@ CollidableOffset::CollidableOffset (X3DExecutionContext* const executionContext)
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("CollidableOffset");
 
-	appendField (inputOutput,    "metadata",    metadata);
-	appendField (initializeOnly, "bboxSize",    bboxSize);
-	appendField (initializeOnly, "bboxCenter",  bboxCenter);
-	appendField (inputOutput,    "enabled",     enabled);
-	appendField (inputOutput,    "rotation",    rotation);
-	appendField (inputOutput,    "translation", translation);
-	appendField (initializeOnly, "collidable",  collidable);
+	addField (inputOutput,    "metadata",    metadata);
+	addField (initializeOnly, "bboxSize",    bboxSize);
+	addField (initializeOnly, "bboxCenter",  bboxCenter);
+	addField (inputOutput,    "enabled",     enabled);
+	addField (inputOutput,    "rotation",    rotation);
+	addField (inputOutput,    "translation", translation);
+	addField (initializeOnly, "collidable",  collidable);
 }
 
 X3DBaseNode*

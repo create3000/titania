@@ -69,16 +69,16 @@ PositionDamper2D::PositionDamper2D (X3DExecutionContext* const executionContext)
 	setComponent ("Followers");
 	setTypeName ("PositionDamper2D");
 
-	appendField (inputOutput,    "metadata",           metadata);
-	appendField (inputOnly,      "set_destination",    set_destination);
-	appendField (inputOnly,      "set_value",          set_value);
-	appendField (inputOutput,    "tau",                tau);
-	appendField (inputOutput,    "tolerance",          tolerance);
-	appendField (outputOnly,     "isActive",           isActive);
-	appendField (outputOnly,     "value_changed",      value_changed);
-	appendField (initializeOnly, "initialDestination", initialDestination);
-	appendField (initializeOnly, "defaultValue",       defaultValue);
-	appendField (initializeOnly, "order",              order);
+	addField (inputOutput,    "metadata",           metadata);
+	addField (inputOnly,      "set_destination",    set_destination);
+	addField (inputOnly,      "set_value",          set_value);
+	addField (inputOutput,    "tau",                tau);
+	addField (inputOutput,    "tolerance",          tolerance);
+	addField (outputOnly,     "isActive",           isActive);
+	addField (outputOnly,     "value_changed",      value_changed);
+	addField (initializeOnly, "initialDestination", initialDestination);
+	addField (initializeOnly, "defaultValue",       defaultValue);
+	addField (initializeOnly, "order",              order);
 }
 
 X3DBaseNode*

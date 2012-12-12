@@ -66,13 +66,13 @@ MultiTexture::MultiTexture (X3DExecutionContext* const executionContext) :
 	setComponent ("Texturing");
 	setTypeName ("MultiTexture");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "alpha",    alpha);
-	appendField (inputOutput, "color",    color);
-	appendField (inputOutput, "function", function);
-	appendField (inputOutput, "mode",     mode);
-	appendField (inputOutput, "source",   source);
-	appendField (inputOutput, "texture",  texture);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "alpha",    alpha);
+	addField (inputOutput, "color",    color);
+	addField (inputOutput, "function", function);
+	addField (inputOutput, "mode",     mode);
+	addField (inputOutput, "source",   source);
+	addField (inputOutput, "texture",  texture);
 }
 
 X3DBaseNode*

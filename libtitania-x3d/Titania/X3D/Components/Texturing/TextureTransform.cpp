@@ -64,11 +64,11 @@ TextureTransform::TextureTransform (X3DExecutionContext* const executionContext)
 	setComponent ("Texturing");
 	setTypeName ("TextureTransform");
 
-	appendField (inputOutput, "metadata",    metadata);
-	appendField (inputOutput, "translation", translation);
-	appendField (inputOutput, "rotation",    rotation);
-	appendField (inputOutput, "scale",       scale);
-	appendField (inputOutput, "center",      center);
+	addField (inputOutput, "metadata",    metadata);
+	addField (inputOutput, "translation", translation);
+	addField (inputOutput, "rotation",    rotation);
+	addField (inputOutput, "scale",       scale);
+	addField (inputOutput, "center",      center);
 }
 
 X3DBaseNode*

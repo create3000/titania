@@ -60,8 +60,8 @@ ContourPolyline2D::ContourPolyline2D (X3DExecutionContext* const executionContex
 	setComponent ("NURBS");
 	setTypeName ("ContourPolyline2D");
 
-	appendField (inputOutput, "metadata",     metadata);
-	appendField (inputOutput, "controlPoint", controlPoint);
+	addField (inputOutput, "metadata",     metadata);
+	addField (inputOutput, "controlPoint", controlPoint);
 }
 
 X3DBaseNode*

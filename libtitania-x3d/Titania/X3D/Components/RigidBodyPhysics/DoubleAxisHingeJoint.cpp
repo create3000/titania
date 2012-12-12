@@ -82,32 +82,32 @@ DoubleAxisHingeJoint::DoubleAxisHingeJoint (X3DExecutionContext* const execution
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("DoubleAxisHingeJoint");
 
-	appendField (inputOutput, "metadata",                  metadata);
-	appendField (inputOutput, "body1",                     body1);
-	appendField (inputOutput, "body2",                     body2);
-	appendField (inputOutput, "forceOutput",               forceOutput);
-	appendField (inputOutput, "anchorPoint",               anchorPoint);
-	appendField (inputOutput, "axis1",                     axis1);
-	appendField (inputOutput, "axis2",                     axis2);
-	appendField (inputOutput, "desiredAngularVelocity1",   desiredAngularVelocity1);
-	appendField (inputOutput, "desiredAngularVelocity2",   desiredAngularVelocity2);
-	appendField (inputOutput, "maxAngle1",                 maxAngle1);
-	appendField (inputOutput, "maxTorque1",                maxTorque1);
-	appendField (inputOutput, "maxTorque2",                maxTorque2);
-	appendField (inputOutput, "minAngle1",                 minAngle1);
-	appendField (inputOutput, "stopBounce1",               stopBounce1);
-	appendField (inputOutput, "stopConstantForceMix1",     stopConstantForceMix1);
-	appendField (inputOutput, "stopErrorCorrection1",      stopErrorCorrection1);
-	appendField (inputOutput, "suspensionErrorCorrection", suspensionErrorCorrection);
-	appendField (inputOutput, "suspensionForce",           suspensionForce);
-	appendField (outputOnly,  "body1AnchorPoint",          body1AnchorPoint);
-	appendField (outputOnly,  "body1Axis",                 body1Axis);
-	appendField (outputOnly,  "body2AnchorPoint",          body2AnchorPoint);
-	appendField (outputOnly,  "body2Axis",                 body2Axis);
-	appendField (outputOnly,  "hinge1Angle",               hinge1Angle);
-	appendField (outputOnly,  "hinge1AngleRate",           hinge1AngleRate);
-	appendField (outputOnly,  "hinge2Angle",               hinge2Angle);
-	appendField (outputOnly,  "hinge2AngleRate",           hinge2AngleRate);
+	addField (inputOutput, "metadata",                  metadata);
+	addField (inputOutput, "body1",                     body1);
+	addField (inputOutput, "body2",                     body2);
+	addField (inputOutput, "forceOutput",               forceOutput);
+	addField (inputOutput, "anchorPoint",               anchorPoint);
+	addField (inputOutput, "axis1",                     axis1);
+	addField (inputOutput, "axis2",                     axis2);
+	addField (inputOutput, "desiredAngularVelocity1",   desiredAngularVelocity1);
+	addField (inputOutput, "desiredAngularVelocity2",   desiredAngularVelocity2);
+	addField (inputOutput, "maxAngle1",                 maxAngle1);
+	addField (inputOutput, "maxTorque1",                maxTorque1);
+	addField (inputOutput, "maxTorque2",                maxTorque2);
+	addField (inputOutput, "minAngle1",                 minAngle1);
+	addField (inputOutput, "stopBounce1",               stopBounce1);
+	addField (inputOutput, "stopConstantForceMix1",     stopConstantForceMix1);
+	addField (inputOutput, "stopErrorCorrection1",      stopErrorCorrection1);
+	addField (inputOutput, "suspensionErrorCorrection", suspensionErrorCorrection);
+	addField (inputOutput, "suspensionForce",           suspensionForce);
+	addField (outputOnly,  "body1AnchorPoint",          body1AnchorPoint);
+	addField (outputOnly,  "body1Axis",                 body1Axis);
+	addField (outputOnly,  "body2AnchorPoint",          body2AnchorPoint);
+	addField (outputOnly,  "body2Axis",                 body2Axis);
+	addField (outputOnly,  "hinge1Angle",               hinge1Angle);
+	addField (outputOnly,  "hinge1AngleRate",           hinge1AngleRate);
+	addField (outputOnly,  "hinge2Angle",               hinge2Angle);
+	addField (outputOnly,  "hinge2AngleRate",           hinge2AngleRate);
 }
 
 X3DBaseNode*

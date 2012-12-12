@@ -66,18 +66,18 @@ GeoTouchSensor::GeoTouchSensor (X3DExecutionContext* const executionContext) :
 	setComponent ("Geospatial");
 	setTypeName ("GeoTouchSensor");
 
-	appendField (inputOutput,    "metadata",            metadata);
-	appendField (inputOutput,    "enabled",             enabled);
-	appendField (inputOutput,    "description",         description);
-	appendField (outputOnly,     "isActive",            isActive);
-	appendField (outputOnly,     "isOver",              isOver);
-	appendField (outputOnly,     "touchTime",           touchTime);
-	appendField (outputOnly,     "hitNormal_changed",   hitNormal_changed);
-	appendField (outputOnly,     "hitPoint_changed",    hitPoint_changed);
-	appendField (outputOnly,     "hitTexCoord_changed", hitTexCoord_changed);
-	appendField (outputOnly,     "hitGeoCoord_changed", hitGeoCoord_changed);
-	appendField (initializeOnly, "geoOrigin",           geoOrigin);
-	appendField (initializeOnly, "geoSystem",           geoSystem);
+	addField (inputOutput,    "metadata",            metadata);
+	addField (inputOutput,    "enabled",             enabled);
+	addField (inputOutput,    "description",         description);
+	addField (outputOnly,     "isActive",            isActive);
+	addField (outputOnly,     "isOver",              isOver);
+	addField (outputOnly,     "touchTime",           touchTime);
+	addField (outputOnly,     "hitNormal_changed",   hitNormal_changed);
+	addField (outputOnly,     "hitPoint_changed",    hitPoint_changed);
+	addField (outputOnly,     "hitTexCoord_changed", hitTexCoord_changed);
+	addField (outputOnly,     "hitGeoCoord_changed", hitGeoCoord_changed);
+	addField (initializeOnly, "geoOrigin",           geoOrigin);
+	addField (initializeOnly, "geoSystem",           geoSystem);
 }
 
 X3DBaseNode*

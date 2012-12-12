@@ -73,23 +73,23 @@ Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
 	setComponent ("Geometry3D");
 	setTypeName ("Extrusion");
 
-	appendField (inputOutput,    "metadata",         metadata);
-	appendField (inputOnly,      "set_crossSection", set_crossSection);
-	appendField (inputOnly,      "set_orientation",  set_orientation);
-	appendField (inputOnly,      "set_scale",        set_scale);
-	appendField (inputOnly,      "set_spine",        set_spine);
+	addField (inputOutput,    "metadata",         metadata);
+	addField (inputOnly,      "set_crossSection", set_crossSection);
+	addField (inputOnly,      "set_orientation",  set_orientation);
+	addField (inputOnly,      "set_scale",        set_scale);
+	addField (inputOnly,      "set_spine",        set_spine);
 		
-	appendField (initializeOnly, "beginCap",         beginCap);
-	appendField (initializeOnly, "endCap",           endCap);
-	appendField (initializeOnly, "solid",            solid);
-	appendField (initializeOnly, "ccw",              ccw);
-	appendField (initializeOnly, "convex",           convex);
-	appendField (initializeOnly, "creaseAngle",      creaseAngle);
+	addField (initializeOnly, "beginCap",         beginCap);
+	addField (initializeOnly, "endCap",           endCap);
+	addField (initializeOnly, "solid",            solid);
+	addField (initializeOnly, "ccw",              ccw);
+	addField (initializeOnly, "convex",           convex);
+	addField (initializeOnly, "creaseAngle",      creaseAngle);
 
-	appendField (initializeOnly, "crossSection",     crossSection);
-	appendField (initializeOnly, "orientation",      orientation);
-	appendField (initializeOnly, "scale",            scale);
-	appendField (initializeOnly, "spine",            spine);
+	addField (initializeOnly, "crossSection",     crossSection);
+	addField (initializeOnly, "orientation",      orientation);
+	addField (initializeOnly, "scale",            scale);
+	addField (initializeOnly, "spine",            spine);
 }
 
 X3DBaseNode*

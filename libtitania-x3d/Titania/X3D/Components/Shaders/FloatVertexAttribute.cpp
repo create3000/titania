@@ -62,10 +62,10 @@ FloatVertexAttribute::FloatVertexAttribute (X3DExecutionContext* const execution
 	setComponent ("Shaders");
 	setTypeName ("FloatVertexAttribute");
 
-	appendField (inputOutput,    "metadata",      metadata);
-	appendField (initializeOnly, "name",          name);
-	appendField (inputOutput,    "value",         value);
-	appendField (initializeOnly, "numComponents", numComponents);
+	addField (inputOutput,    "metadata",      metadata);
+	addField (initializeOnly, "name",          name);
+	addField (inputOutput,    "value",         value);
+	addField (initializeOnly, "numComponents", numComponents);
 }
 
 X3DBaseNode*

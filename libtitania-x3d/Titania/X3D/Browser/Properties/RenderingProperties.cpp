@@ -94,19 +94,19 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	setComponent ("Browser"),
 	setTypeName ("RenderingProperties");
 
-	appendField (outputOnly, "enabled",        enabled);
-	appendField (outputOnly, "cycleInterval",  cycleInterval);
-	appendField (outputOnly, "vendor",         vendor);
-	appendField (outputOnly, "renderer",       renderer);
-	appendField (outputOnly, "version",        version);
-	appendField (outputOnly, "shading",        shading);                           // doppelt
-	appendField (outputOnly, "maxTextureSize", maxTextureSize);
-	appendField (outputOnly, "textureUnits",   textureUnits);
-	appendField (outputOnly, "maxLights",      maxLights);
-	appendField (outputOnly, "antiAliased",    antiAliased);
-	appendField (outputOnly, "colorDepth",     colorDepth);
-	appendField (outputOnly, "textureMemory",  textureMemory);
-	appendField (outputOnly, "string",         string);
+	addField (outputOnly, "enabled",        enabled);
+	addField (outputOnly, "cycleInterval",  cycleInterval);
+	addField (outputOnly, "vendor",         vendor);
+	addField (outputOnly, "renderer",       renderer);
+	addField (outputOnly, "version",        version);
+	addField (outputOnly, "shading",        shading);                           // doppelt
+	addField (outputOnly, "maxTextureSize", maxTextureSize);
+	addField (outputOnly, "textureUnits",   textureUnits);
+	addField (outputOnly, "maxLights",      maxLights);
+	addField (outputOnly, "antiAliased",    antiAliased);
+	addField (outputOnly, "colorDepth",     colorDepth);
+	addField (outputOnly, "textureMemory",  textureMemory);
+	addField (outputOnly, "string",         string);
 }
 
 RenderingProperties*

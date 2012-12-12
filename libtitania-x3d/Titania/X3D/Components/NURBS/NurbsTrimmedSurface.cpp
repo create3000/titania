@@ -63,24 +63,24 @@ NurbsTrimmedSurface::NurbsTrimmedSurface (X3DExecutionContext* const executionCo
 	setComponent ("NURBS");
 	setTypeName ("NurbsTrimmedSurface");
 
-	appendField (inputOutput,    "metadata",              metadata);
-	appendField (inputOutput,    "controlPoint",          controlPoint);
-	appendField (inputOutput,    "texCoord",              texCoord);
-	appendField (inputOutput,    "uTessellation",         uTessellation);
-	appendField (inputOutput,    "vTessellation",         vTessellation);
-	appendField (inputOutput,    "weight",                weight);
-	appendField (initializeOnly, "solid",                 solid);
-	appendField (initializeOnly, "uClosed",               uClosed);
-	appendField (initializeOnly, "uDimension",            uDimension);
-	appendField (initializeOnly, "uKnot",                 uKnot);
-	appendField (initializeOnly, "uOrder",                uOrder);
-	appendField (initializeOnly, "vClosed",               vClosed);
-	appendField (initializeOnly, "vDimension",            vDimension);
-	appendField (initializeOnly, "vKnot",                 vKnot);
-	appendField (initializeOnly, "vOrder",                vOrder);
-	appendField (inputOnly,      "addTrimmingContour",    addTrimmingContour);
-	appendField (inputOnly,      "removeTrimmingContour", removeTrimmingContour);
-	appendField (inputOutput,    "trimmingContour",       trimmingContour);
+	addField (inputOutput,    "metadata",              metadata);
+	addField (inputOutput,    "controlPoint",          controlPoint);
+	addField (inputOutput,    "texCoord",              texCoord);
+	addField (inputOutput,    "uTessellation",         uTessellation);
+	addField (inputOutput,    "vTessellation",         vTessellation);
+	addField (inputOutput,    "weight",                weight);
+	addField (initializeOnly, "solid",                 solid);
+	addField (initializeOnly, "uClosed",               uClosed);
+	addField (initializeOnly, "uDimension",            uDimension);
+	addField (initializeOnly, "uKnot",                 uKnot);
+	addField (initializeOnly, "uOrder",                uOrder);
+	addField (initializeOnly, "vClosed",               vClosed);
+	addField (initializeOnly, "vDimension",            vDimension);
+	addField (initializeOnly, "vKnot",                 vKnot);
+	addField (initializeOnly, "vOrder",                vOrder);
+	addField (inputOnly,      "addTrimmingContour",    addTrimmingContour);
+	addField (inputOnly,      "removeTrimmingContour", removeTrimmingContour);
+	addField (inputOutput,    "trimmingContour",       trimmingContour);
 }
 
 X3DBaseNode*

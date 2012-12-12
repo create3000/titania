@@ -60,15 +60,15 @@ PrimitivePickSensor::PrimitivePickSensor (X3DExecutionContext* const executionCo
 	setComponent ("Picking");
 	setTypeName ("PrimitivePickSensor");
 
-	appendField (inputOutput,    "metadata",         metadata);
-	appendField (inputOutput,    "enabled",          enabled);
-	appendField (outputOnly,     "isActive",         isActive);
-	appendField (inputOutput,    "objectType",       objectType);
-	appendField (inputOutput,    "pickingGeometry",  pickingGeometry);
-	appendField (inputOutput,    "pickTarget",       pickTarget);
-	appendField (outputOnly,     "pickedGeometry",   pickedGeometry);
-	appendField (initializeOnly, "intersectionType", intersectionType);
-	appendField (initializeOnly, "sortOrder",        sortOrder);
+	addField (inputOutput,    "metadata",         metadata);
+	addField (inputOutput,    "enabled",          enabled);
+	addField (outputOnly,     "isActive",         isActive);
+	addField (inputOutput,    "objectType",       objectType);
+	addField (inputOutput,    "pickingGeometry",  pickingGeometry);
+	addField (inputOutput,    "pickTarget",       pickTarget);
+	addField (outputOnly,     "pickedGeometry",   pickedGeometry);
+	addField (initializeOnly, "intersectionType", intersectionType);
+	addField (initializeOnly, "sortOrder",        sortOrder);
 }
 
 X3DBaseNode*

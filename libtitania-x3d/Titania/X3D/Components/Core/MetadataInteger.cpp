@@ -62,10 +62,10 @@ MetadataInteger::MetadataInteger (X3DExecutionContext* const executionContext) :
 	setComponent ("Core");
 	setTypeName ("MetadataInteger");
 
-	appendField (inputOutput, "metadata",  metadata);
-	appendField (inputOutput, "name",      name);
-	appendField (inputOutput, "reference", reference);
-	appendField (inputOutput, "value",     value);
+	addField (inputOutput, "metadata",  metadata);
+	addField (inputOutput, "name",      name);
+	addField (inputOutput, "reference", reference);
+	addField (inputOutput, "value",     value);
 }
 
 X3DBaseNode*

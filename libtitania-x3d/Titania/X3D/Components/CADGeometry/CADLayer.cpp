@@ -62,14 +62,14 @@ CADLayer::CADLayer (X3DExecutionContext* const executionContext) :
 	setComponent ("CADGeometry");
 	setTypeName ("CADLayer");
 
-	appendField (inputOutput,    "metadata",       metadata);
-	appendField (initializeOnly, "bboxSize",       bboxSize);
-	appendField (initializeOnly, "bboxCenter",     bboxCenter);
-	appendField (inputOnly,      "addChildren",    addChildren);
-	appendField (inputOnly,      "removeChildren", removeChildren);
-	appendField (inputOutput,    "children",       children);
-	appendField (inputOutput,    "name",           name);
-	appendField (inputOutput,    "visible",        visible);
+	addField (inputOutput,    "metadata",       metadata);
+	addField (initializeOnly, "bboxSize",       bboxSize);
+	addField (initializeOnly, "bboxCenter",     bboxCenter);
+	addField (inputOnly,      "addChildren",    addChildren);
+	addField (inputOnly,      "removeChildren", removeChildren);
+	addField (inputOutput,    "children",       children);
+	addField (inputOutput,    "name",           name);
+	addField (inputOutput,    "visible",        visible);
 }
 
 X3DBaseNode*

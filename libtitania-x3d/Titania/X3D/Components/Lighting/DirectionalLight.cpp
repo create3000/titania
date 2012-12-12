@@ -65,13 +65,13 @@ DirectionalLight::DirectionalLight (X3DExecutionContext* const executionContext)
 	setComponent ("Lighting");
 	setTypeName ("DirectionalLight");
 
-	appendField (inputOutput, "metadata",         metadata);
-	appendField (inputOutput, "on",               on);
-	appendField (inputOutput, "global",           global);
-	appendField (inputOutput, "color",            color);
-	appendField (inputOutput, "intensity",        intensity);
-	appendField (inputOutput, "ambientIntensity", ambientIntensity);
-	appendField (inputOutput, "direction",        direction);
+	addField (inputOutput, "metadata",         metadata);
+	addField (inputOutput, "on",               on);
+	addField (inputOutput, "global",           global);
+	addField (inputOutput, "color",            color);
+	addField (inputOutput, "intensity",        intensity);
+	addField (inputOutput, "ambientIntensity", ambientIntensity);
+	addField (inputOutput, "direction",        direction);
 }
 
 X3DBaseNode*

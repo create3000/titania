@@ -65,13 +65,13 @@ QuadSphereProperties::QuadSphereProperties (X3DExecutionContext* const execution
 	setComponent ("Browser"),
 	setTypeName ("QuadSphereProperties");
 
-	appendField (inputOutput, "uDimension", uDimension);
-	appendField (inputOutput, "vDimension", vDimension);
+	addField (inputOutput, "uDimension", uDimension);
+	addField (inputOutput, "vDimension", vDimension);
 	
-	//appendField (inputOutput, "texIndices", texIndices);
-	//appendField (inputOutput, "texCoord",   texCoord);
-	//appendField (inputOutput, "indices",    indices);
-	//appendField (inputOutput, "points",     points);
+	//addField (inputOutput, "texIndices", texIndices);
+	//addField (inputOutput, "texCoord",   texCoord);
+	//addField (inputOutput, "indices",    indices);
+	//addField (inputOutput, "points",     points);
 }
 
 QuadSphereProperties*

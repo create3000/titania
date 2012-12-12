@@ -66,13 +66,13 @@ NurbsCurve::NurbsCurve (X3DExecutionContext* const executionContext) :
 	setComponent ("NURBS");
 	setTypeName ("NurbsCurve");
 
-	appendField (inputOutput,    "metadata",     metadata);
-	appendField (inputOutput,    "controlPoint", controlPoint);
-	appendField (inputOutput,    "tessellation", tessellation);
-	appendField (inputOutput,    "weight",       weight);
-	appendField (initializeOnly, "closed",       closed);
-	appendField (initializeOnly, "knot",         knot);
-	appendField (initializeOnly, "order",        order);
+	addField (inputOutput,    "metadata",     metadata);
+	addField (inputOutput,    "controlPoint", controlPoint);
+	addField (inputOutput,    "tessellation", tessellation);
+	addField (inputOutput,    "weight",       weight);
+	addField (initializeOnly, "closed",       closed);
+	addField (initializeOnly, "knot",         knot);
+	addField (initializeOnly, "order",        order);
 }
 
 X3DBaseNode*

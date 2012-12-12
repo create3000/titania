@@ -61,8 +61,8 @@ ColorRGBA::ColorRGBA (X3DExecutionContext* const executionContext) :
 	setComponent ("Rendering");
 	setTypeName ("ColorRGBA");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "color",    color);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "color",    color);
 }
 
 X3DBaseNode*

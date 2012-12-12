@@ -61,8 +61,8 @@ CoordinateDouble::CoordinateDouble (X3DExecutionContext* const executionContext)
 	setComponent ("NURBS");
 	setTypeName ("CoordinateDouble");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "point",    point);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "point",    point);
 }
 
 X3DBaseNode*

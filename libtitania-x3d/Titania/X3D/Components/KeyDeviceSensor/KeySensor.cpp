@@ -67,16 +67,16 @@ KeySensor::KeySensor (X3DExecutionContext* const executionContext) :
 	setComponent ("KeyDeviceSensor");
 	setTypeName ("KeySensor");
 
-	appendField (inputOutput, "metadata",         metadata);
-	appendField (inputOutput, "enabled",          enabled);
-	appendField (outputOnly,  "isActive",         isActive);
-	appendField (outputOnly,  "actionKeyPress",   actionKeyPress);
-	appendField (outputOnly,  "actionKeyRelease", actionKeyRelease);
-	appendField (outputOnly,  "altKey",           altKey);
-	appendField (outputOnly,  "controlKey",       controlKey);
-	appendField (outputOnly,  "keyPress",         keyPress);
-	appendField (outputOnly,  "keyRelease",       keyRelease);
-	appendField (outputOnly,  "shiftKey",         shiftKey);
+	addField (inputOutput, "metadata",         metadata);
+	addField (inputOutput, "enabled",          enabled);
+	addField (outputOnly,  "isActive",         isActive);
+	addField (outputOnly,  "actionKeyPress",   actionKeyPress);
+	addField (outputOnly,  "actionKeyRelease", actionKeyRelease);
+	addField (outputOnly,  "altKey",           altKey);
+	addField (outputOnly,  "controlKey",       controlKey);
+	addField (outputOnly,  "keyPress",         keyPress);
+	addField (outputOnly,  "keyRelease",       keyRelease);
+	addField (outputOnly,  "shiftKey",         shiftKey);
 }
 
 X3DBaseNode*

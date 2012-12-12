@@ -62,9 +62,9 @@ TimeTrigger::TimeTrigger (X3DExecutionContext* const executionContext) :
 	setComponent ("EventUtilities");
 	setTypeName ("TimeTrigger");
 
-	appendField (inputOutput, "metadata",    metadata);
-	appendField (inputOnly,   "set_boolean", set_boolean);
-	appendField (outputOnly,  "triggerTime", triggerTime);
+	addField (inputOutput, "metadata",    metadata);
+	addField (inputOnly,   "set_boolean", set_boolean);
+	addField (outputOnly,  "triggerTime", triggerTime);
 }
 
 X3DBaseNode*

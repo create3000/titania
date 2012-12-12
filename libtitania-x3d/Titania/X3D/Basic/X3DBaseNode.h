@@ -199,7 +199,10 @@ protected:
 	addNodeType (const NodeTypes);
 
 	void
-	appendField (const AccessType, const basic::id &, X3DFieldDefinition &);
+	addField (const AccessType, const basic::id &, X3DFieldDefinition &);
+
+	void
+	removeField (const basic::id &);
 
 	void
 	addFieldAlias (const std::string &, const std::string &);

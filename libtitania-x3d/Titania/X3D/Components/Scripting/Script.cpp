@@ -65,10 +65,10 @@ Script::Script (X3DExecutionContext* const executionContext) :
 	setComponent ("Scripting");
 	setTypeName ("Script");
 
-	appendField (inputOutput,    "metadata",     metadata);
-	appendField (inputOutput,    "url",          url);
-	appendField (initializeOnly, "directOutput", directOutput);
-	appendField (initializeOnly, "mustEvaluate", mustEvaluate);
+	addField (inputOutput,    "metadata",     metadata);
+	addField (inputOutput,    "url",          url);
+	addField (initializeOnly, "directOutput", directOutput);
+	addField (initializeOnly, "mustEvaluate", mustEvaluate);
 }
 
 X3DBaseNode*

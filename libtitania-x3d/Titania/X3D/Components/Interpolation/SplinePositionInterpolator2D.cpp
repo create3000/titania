@@ -65,14 +65,14 @@ SplinePositionInterpolator2D::SplinePositionInterpolator2D (X3DExecutionContext*
 	setComponent ("Interpolation");
 	setTypeName ("SplinePositionInterpolator2D");
 
-	appendField (inputOutput, "metadata",          metadata);
-	appendField (inputOnly,   "set_fraction",      set_fraction);
-	appendField (inputOutput, "key",               key);
-	appendField (inputOutput, "closed",            closed);
-	appendField (inputOutput, "keyValue",          keyValue);
-	appendField (inputOutput, "keyVelocity",       keyVelocity);
-	appendField (inputOutput, "normalizeVelocity", normalizeVelocity);
-	appendField (outputOnly,  "value_changed",     value_changed);
+	addField (inputOutput, "metadata",          metadata);
+	addField (inputOnly,   "set_fraction",      set_fraction);
+	addField (inputOutput, "key",               key);
+	addField (inputOutput, "closed",            closed);
+	addField (inputOutput, "keyValue",          keyValue);
+	addField (inputOutput, "keyVelocity",       keyVelocity);
+	addField (inputOutput, "normalizeVelocity", normalizeVelocity);
+	addField (outputOnly,  "value_changed",     value_changed);
 }
 
 X3DBaseNode*

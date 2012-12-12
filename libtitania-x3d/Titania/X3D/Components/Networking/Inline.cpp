@@ -66,11 +66,11 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	setComponent ("Networking");
 	setTypeName ("Inline");
 
-	appendField (inputOutput,    "metadata",   metadata);
-	appendField (inputOutput,    "load",       load);
-	appendField (inputOutput,    "url",        url);
-	appendField (initializeOnly, "bboxSize",   bboxSize);
-	appendField (initializeOnly, "bboxCenter", bboxCenter);
+	addField (inputOutput,    "metadata",   metadata);
+	addField (inputOutput,    "load",       load);
+	addField (inputOutput,    "url",        url);
+	addField (initializeOnly, "bboxSize",   bboxSize);
+	addField (initializeOnly, "bboxCenter", bboxCenter);
 }
 
 X3DBaseNode*

@@ -68,7 +68,7 @@ Scene::Scene (X3DBrowser* const browser) :
 	setComponent ("Browser");
 	setTypeName ("Scene");
 
-	appendField (initializeOnly, "layerSet", layerSet);
+	addField (initializeOnly, "layerSet", layerSet);
 
 	std::clog << "\tDone constructing Scene." << std::endl;
 }

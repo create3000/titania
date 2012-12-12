@@ -62,10 +62,10 @@ Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
 	setComponent ("Geometry2D");
 	setTypeName ("Disk2D");
 
-	appendField (inputOutput,    "metadata",    metadata);
-	appendField (initializeOnly, "innerRadius", innerRadius);
-	appendField (initializeOnly, "outerRadius", outerRadius);
-	appendField (initializeOnly, "solid",       solid);
+	addField (inputOutput,    "metadata",    metadata);
+	addField (initializeOnly, "innerRadius", innerRadius);
+	addField (initializeOnly, "outerRadius", outerRadius);
+	addField (initializeOnly, "solid",       solid);
 }
 
 X3DBaseNode*

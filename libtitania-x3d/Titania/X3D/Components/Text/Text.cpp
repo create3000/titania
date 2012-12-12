@@ -74,15 +74,15 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	setComponent ("Text");
 	setTypeName ("Text");
 
-	appendField (inputOutput,    "metadata",   metadata);
-	appendField (inputOutput,    "string",     string);
-	appendField (inputOutput,    "length",     length);
-	appendField (inputOutput,    "maxExtent",  maxExtent);
-	appendField (initializeOnly, "solid",      solid);
-	appendField (outputOnly,     "origin",     origin);
-	appendField (outputOnly,     "textBounds", textBounds);
-	appendField (outputOnly,     "lineBounds", lineBounds);
-	appendField (inputOutput,    "fontStyle",  fontStyle);
+	addField (inputOutput,    "metadata",   metadata);
+	addField (inputOutput,    "string",     string);
+	addField (inputOutput,    "length",     length);
+	addField (inputOutput,    "maxExtent",  maxExtent);
+	addField (initializeOnly, "solid",      solid);
+	addField (outputOnly,     "origin",     origin);
+	addField (outputOnly,     "textBounds", textBounds);
+	addField (outputOnly,     "lineBounds", lineBounds);
+	addField (inputOutput,    "fontStyle",  fontStyle);
 }
 
 X3DBaseNode*

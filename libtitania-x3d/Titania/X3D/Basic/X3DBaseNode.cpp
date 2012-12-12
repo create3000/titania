@@ -325,7 +325,7 @@ X3DBaseNode::getLocalNode ()
 //}
 
 void
-X3DBaseNode::appendField (const AccessType accessType, const basic::id & name, X3DFieldDefinition & field)
+X3DBaseNode::addField (const AccessType accessType, const basic::id & name, X3DFieldDefinition & field)
 {
 	if (fields .find (name) not_eq fields .end ())
 		throw Error <INVALID_FIELD> ("In function " + std::string (__func__) + " 'field " + getTypeName () + "." + name + "' already exists in field set'.");
@@ -336,6 +336,18 @@ X3DBaseNode::appendField (const AccessType accessType, const basic::id & name, X
 
 	fieldDefinitions .push_back (&field);
 	fields .insert (std::make_pair (name, &field));
+}
+
+void
+X3DBaseNode::removeField (const basic::id & name)
+{
+	auto field = fields .find (name);
+	
+	if (field not_eq fields .end ())
+	{
+		fieldDefinitions .erase (std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field -> second));
+		fields .erase (field);
+	}
 }
 
 void
@@ -405,7 +417,7 @@ X3DBaseNode::getFieldName (const std::string & name) const
 void
 X3DBaseNode::addUserDefinedField (const AccessType accessType, const basic::id & name, X3DFieldDefinition* const field)
 {
-	appendField (accessType, name, *field);
+	addField (accessType, name, *field);
 
 	++ numUserDefinedFields;
 }

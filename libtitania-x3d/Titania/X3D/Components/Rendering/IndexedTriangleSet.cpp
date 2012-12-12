@@ -62,19 +62,19 @@ IndexedTriangleSet::IndexedTriangleSet (X3DExecutionContext* const executionCont
 	setComponent ("Rendering");
 	setTypeName ("IndexedTriangleSet");
 
-	appendField (inputOutput,    "metadata",        metadata);
-	appendField (inputOutput,    "attrib",          attrib);
-	appendField (inputOutput,    "coord",           coord);
-	appendField (inputOutput,    "texCoord",        texCoord);
-	appendField (inputOutput,    "color",           color);
-	appendField (inputOutput,    "normal",          normal);
-	appendField (inputOutput,    "fogCoord",        fogCoord);
-	appendField (initializeOnly, "colorPerVertex",  colorPerVertex);
-	appendField (initializeOnly, "normalPerVertex", normalPerVertex);
-	appendField (initializeOnly, "solid",           solid);
-	appendField (initializeOnly, "ccw",             ccw);
-	appendField (inputOnly,      "set_index",       set_index);
-	appendField (initializeOnly, "index",           index);
+	addField (inputOutput,    "metadata",        metadata);
+	addField (inputOutput,    "attrib",          attrib);
+	addField (inputOutput,    "coord",           coord);
+	addField (inputOutput,    "texCoord",        texCoord);
+	addField (inputOutput,    "color",           color);
+	addField (inputOutput,    "normal",          normal);
+	addField (inputOutput,    "fogCoord",        fogCoord);
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex);
+	addField (initializeOnly, "normalPerVertex", normalPerVertex);
+	addField (initializeOnly, "solid",           solid);
+	addField (initializeOnly, "ccw",             ccw);
+	addField (inputOnly,      "set_index",       set_index);
+	addField (initializeOnly, "index",           index);
 }
 
 X3DBaseNode*

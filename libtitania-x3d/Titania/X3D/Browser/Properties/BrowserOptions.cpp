@@ -90,18 +90,18 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	setComponent ("Browser"),
 	setTypeName ("BrowserOptions");
 
-	appendField (inputOutput, "splashScreen",           splashScreen);
-	appendField (inputOutput, "dashboard",              dashboard);
-	appendField (inputOutput, "enableInlineViewpoints", enableInlineViewpoints);
-	appendField (inputOutput, "antialiased",            antialiased);
-	appendField (inputOutput, "textureQuality",         textureQuality);
-	appendField (inputOutput, "primitiveQuality",       primitiveQuality);
-	appendField (inputOutput, "qualityWhenMoving",      qualityWhenMoving);
-	appendField (inputOutput, "shading",                shading);
+	addField (inputOutput, "splashScreen",           splashScreen);
+	addField (inputOutput, "dashboard",              dashboard);
+	addField (inputOutput, "enableInlineViewpoints", enableInlineViewpoints);
+	addField (inputOutput, "antialiased",            antialiased);
+	addField (inputOutput, "textureQuality",         textureQuality);
+	addField (inputOutput, "primitiveQuality",       primitiveQuality);
+	addField (inputOutput, "qualityWhenMoving",      qualityWhenMoving);
+	addField (inputOutput, "shading",                shading);
 
-	appendField (inputOutput, "textureProperties",      textureProperties);
-	appendField (inputOutput, "sphereProperties",       sphereProperties);
-	appendField (inputOutput, "fontStyle",              fontStyle);
+	addField (inputOutput, "textureProperties",      textureProperties);
+	addField (inputOutput, "sphereProperties",       sphereProperties);
+	addField (inputOutput, "fontStyle",              fontStyle);
 }
 
 BrowserOptions*

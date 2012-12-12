@@ -65,14 +65,14 @@ GeoPositionInterpolator::GeoPositionInterpolator (X3DExecutionContext* const exe
 	setComponent ("Geospatial");
 	setTypeName ("GeoPositionInterpolator");
 
-	appendField (inputOutput,    "metadata",         metadata);
-	appendField (inputOnly,      "set_fraction",     set_fraction);
-	appendField (inputOutput,    "key",              key);
-	appendField (inputOutput,    "keyValue",         keyValue);
-	appendField (outputOnly,     "geovalue_changed", geovalue_changed);
-	appendField (outputOnly,     "value_changed",    value_changed);
-	appendField (initializeOnly, "geoOrigin",        geoOrigin);
-	appendField (initializeOnly, "geoSystem",        geoSystem);
+	addField (inputOutput,    "metadata",         metadata);
+	addField (inputOnly,      "set_fraction",     set_fraction);
+	addField (inputOutput,    "key",              key);
+	addField (inputOutput,    "keyValue",         keyValue);
+	addField (outputOnly,     "geovalue_changed", geovalue_changed);
+	addField (outputOnly,     "value_changed",    value_changed);
+	addField (initializeOnly, "geoOrigin",        geoOrigin);
+	addField (initializeOnly, "geoSystem",        geoSystem);
 }
 
 X3DBaseNode*

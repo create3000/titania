@@ -60,11 +60,11 @@ Shape::Shape (X3DExecutionContext* const executionContext) :
 	setComponent ("Shape");
 	setTypeName ("Shape");
 
-	appendField (inputOutput,    "metadata",   metadata);
-	appendField (initializeOnly, "bboxSize",   bboxSize);
-	appendField (initializeOnly, "bboxCenter", bboxCenter);
-	appendField (inputOutput,    "appearance", appearance);
-	appendField (inputOutput,    "geometry",   geometry);
+	addField (inputOutput,    "metadata",   metadata);
+	addField (initializeOnly, "bboxSize",   bboxSize);
+	addField (initializeOnly, "bboxCenter", bboxCenter);
+	addField (inputOutput,    "appearance", appearance);
+	addField (inputOutput,    "geometry",   geometry);
 }
 
 X3DBaseNode*

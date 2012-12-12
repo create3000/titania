@@ -63,13 +63,13 @@ BallJoint::BallJoint (X3DExecutionContext* const executionContext) :
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("BallJoint");
 
-	appendField (inputOutput, "metadata",         metadata);
-	appendField (inputOutput, "body1",            body1);
-	appendField (inputOutput, "body2",            body2);
-	appendField (inputOutput, "forceOutput",      forceOutput);
-	appendField (inputOutput, "anchorPoint",      anchorPoint);
-	appendField (outputOnly,  "body1AnchorPoint", body1AnchorPoint);
-	appendField (outputOnly,  "body2AnchorPoint", body2AnchorPoint);
+	addField (inputOutput, "metadata",         metadata);
+	addField (inputOutput, "body1",            body1);
+	addField (inputOutput, "body2",            body2);
+	addField (inputOutput, "forceOutput",      forceOutput);
+	addField (inputOutput, "anchorPoint",      anchorPoint);
+	addField (outputOnly,  "body1AnchorPoint", body1AnchorPoint);
+	addField (outputOnly,  "body2AnchorPoint", body2AnchorPoint);
 }
 
 X3DBaseNode*

@@ -64,16 +64,16 @@ LOD::LOD (X3DExecutionContext* const executionContext) :
 	setComponent ("Navigation");
 	setTypeName ("LOD");
 
-	appendField (inputOutput,    "metadata",         metadata);
-	appendField (initializeOnly, "forceTransitions", forceTransitions);
-	appendField (initializeOnly, "center",           center);
-	appendField (initializeOnly, "range",            range);
-	appendField (outputOnly,     "level_changed",    level_changed);
-	appendField (initializeOnly, "bboxSize",         bboxSize);
-	appendField (initializeOnly, "bboxCenter",       bboxCenter);
-	appendField (inputOnly,      "addChildren",      addChildren);
-	appendField (inputOnly,      "removeChildren",   removeChildren);
-	appendField (inputOutput,    "children",         children);
+	addField (inputOutput,    "metadata",         metadata);
+	addField (initializeOnly, "forceTransitions", forceTransitions);
+	addField (initializeOnly, "center",           center);
+	addField (initializeOnly, "range",            range);
+	addField (outputOnly,     "level_changed",    level_changed);
+	addField (initializeOnly, "bboxSize",         bboxSize);
+	addField (initializeOnly, "bboxCenter",       bboxCenter);
+	addField (inputOnly,      "addChildren",      addChildren);
+	addField (inputOnly,      "removeChildren",   removeChildren);
+	addField (inputOutput,    "children",         children);
 	addFieldAlias ("level", "children");
 }
 

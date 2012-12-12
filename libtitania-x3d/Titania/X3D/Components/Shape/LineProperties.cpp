@@ -63,10 +63,10 @@ LineProperties::LineProperties (X3DExecutionContext* const executionContext) :
 	setComponent ("Shape");
 	setTypeName ("LineProperties");
 
-	appendField (inputOutput, "metadata",             metadata);
-	appendField (inputOutput, "applied",              applied);
-	appendField (inputOutput, "linetype",             linetype);
-	appendField (inputOutput, "linewidthScaleFactor", linewidthScaleFactor);
+	addField (inputOutput, "metadata",             metadata);
+	addField (inputOutput, "applied",              applied);
+	addField (inputOutput, "linetype",             linetype);
+	addField (inputOutput, "linewidthScaleFactor", linewidthScaleFactor);
 }
 
 X3DBaseNode*

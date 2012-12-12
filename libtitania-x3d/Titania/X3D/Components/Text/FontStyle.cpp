@@ -61,16 +61,16 @@ FontStyle::FontStyle (X3DExecutionContext* const executionContext) :
 	setComponent ("Text");
 	setTypeName ("FontStyle");
 
-	appendField (inputOutput,    "metadata",    metadata);
-	appendField (initializeOnly, "family",      family);
-	appendField (initializeOnly, "style",       style);
-	appendField (initializeOnly, "size",        size);
-	appendField (initializeOnly, "spacing",     spacing);
-	appendField (initializeOnly, "horizontal",  horizontal);
-	appendField (initializeOnly, "justify",     justify);
-	appendField (initializeOnly, "topToBottom", topToBottom);
-	appendField (initializeOnly, "leftToRight", leftToRight);
-	appendField (initializeOnly, "language",    language);
+	addField (inputOutput,    "metadata",    metadata);
+	addField (initializeOnly, "family",      family);
+	addField (initializeOnly, "style",       style);
+	addField (initializeOnly, "size",        size);
+	addField (initializeOnly, "spacing",     spacing);
+	addField (initializeOnly, "horizontal",  horizontal);
+	addField (initializeOnly, "justify",     justify);
+	addField (initializeOnly, "topToBottom", topToBottom);
+	addField (initializeOnly, "leftToRight", leftToRight);
+	addField (initializeOnly, "language",    language);
 }
 
 X3DBaseNode*

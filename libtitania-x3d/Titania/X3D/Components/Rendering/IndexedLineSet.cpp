@@ -70,14 +70,14 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	setComponent ("Rendering");
 	setTypeName ("IndexedLineSet");
 
-	appendField (inputOutput,    "metadata",       metadata);
-	appendField (initializeOnly, "colorPerVertex", colorPerVertex);
-	appendField (initializeOnly, "colorIndex",     colorIndex);
-	appendField (initializeOnly, "coordIndex",     coordIndex);
-	appendField (inputOutput,    "attrib",         attrib);
-	appendField (inputOutput,    "fogCoord",       fogCoord);
-	appendField (inputOutput,    "color",          color);
-	appendField (inputOutput,    "coord",          coord);
+	addField (inputOutput,    "metadata",       metadata);
+	addField (initializeOnly, "colorPerVertex", colorPerVertex);
+	addField (initializeOnly, "colorIndex",     colorIndex);
+	addField (initializeOnly, "coordIndex",     coordIndex);
+	addField (inputOutput,    "attrib",         attrib);
+	addField (inputOutput,    "fogCoord",       fogCoord);
+	addField (inputOutput,    "color",          color);
+	addField (inputOutput,    "coord",          coord);
 }
 
 X3DBaseNode*

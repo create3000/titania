@@ -66,12 +66,12 @@ Cone::Cone (X3DExecutionContext* const executionContext) :
 	setComponent ("Geometry3D");
 	setTypeName ("Cone");
 
-	appendField (inputOutput,    "metadata",     metadata);
-	appendField (initializeOnly, "side",         side);
-	appendField (initializeOnly, "bottom",       bottom);
-	appendField (initializeOnly, "height",       height);
-	appendField (initializeOnly, "bottomRadius", bottomRadius);
-	appendField (initializeOnly, "solid",        solid);
+	addField (inputOutput,    "metadata",     metadata);
+	addField (initializeOnly, "side",         side);
+	addField (initializeOnly, "bottom",       bottom);
+	addField (initializeOnly, "height",       height);
+	addField (initializeOnly, "bottomRadius", bottomRadius);
+	addField (initializeOnly, "solid",        solid);
 }
 
 X3DBaseNode*

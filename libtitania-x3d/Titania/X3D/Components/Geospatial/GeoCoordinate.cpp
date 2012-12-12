@@ -63,10 +63,10 @@ GeoCoordinate::GeoCoordinate (X3DExecutionContext* const executionContext) :
 	setComponent ("Geospatial");
 	setTypeName ("GeoCoordinate");
 
-	appendField (inputOutput,    "metadata",  metadata);
-	appendField (inputOutput,    "point",     point);
-	appendField (initializeOnly, "geoOrigin", geoOrigin);
-	appendField (initializeOnly, "geoSystem", geoSystem);
+	addField (inputOutput,    "metadata",  metadata);
+	addField (inputOutput,    "point",     point);
+	addField (initializeOnly, "geoOrigin", geoOrigin);
+	addField (initializeOnly, "geoSystem", geoSystem);
 }
 
 X3DBaseNode*

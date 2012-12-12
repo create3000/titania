@@ -62,12 +62,12 @@ CollisionSpace::CollisionSpace (X3DExecutionContext* const executionContext) :
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("CollisionSpace");
 
-	appendField (inputOutput,    "metadata",    metadata);
-	appendField (inputOutput,    "enabled",     enabled);
-	appendField (inputOutput,    "useGeometry", useGeometry);
-	appendField (initializeOnly, "bboxSize",    bboxSize);
-	appendField (initializeOnly, "bboxCenter",  bboxCenter);
-	appendField (inputOutput,    "collidables", collidables);
+	addField (inputOutput,    "metadata",    metadata);
+	addField (inputOutput,    "enabled",     enabled);
+	addField (inputOutput,    "useGeometry", useGeometry);
+	addField (initializeOnly, "bboxSize",    bboxSize);
+	addField (initializeOnly, "bboxCenter",  bboxCenter);
+	addField (inputOutput,    "collidables", collidables);
 }
 
 X3DBaseNode*

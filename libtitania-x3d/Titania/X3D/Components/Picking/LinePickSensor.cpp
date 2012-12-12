@@ -63,18 +63,18 @@ LinePickSensor::LinePickSensor (X3DExecutionContext* const executionContext) :
 	setComponent ("Picking");
 	setTypeName ("LinePickSensor");
 
-	appendField (inputOutput,    "metadata",                metadata);
-	appendField (inputOutput,    "enabled",                 enabled);
-	appendField (outputOnly,     "isActive",                isActive);
-	appendField (inputOutput,    "objectType",              objectType);
-	appendField (inputOutput,    "pickingGeometry",         pickingGeometry);
-	appendField (inputOutput,    "pickTarget",              pickTarget);
-	appendField (outputOnly,     "pickedGeometry",          pickedGeometry);
-	appendField (initializeOnly, "intersectionType",        intersectionType);
-	appendField (initializeOnly, "sortOrder",               sortOrder);
-	appendField (outputOnly,     "pickedNormal",            pickedNormal);
-	appendField (outputOnly,     "pickedPoint",             pickedPoint);
-	appendField (outputOnly,     "pickedTextureCoordinate", pickedTextureCoordinate);
+	addField (inputOutput,    "metadata",                metadata);
+	addField (inputOutput,    "enabled",                 enabled);
+	addField (outputOnly,     "isActive",                isActive);
+	addField (inputOutput,    "objectType",              objectType);
+	addField (inputOutput,    "pickingGeometry",         pickingGeometry);
+	addField (inputOutput,    "pickTarget",              pickTarget);
+	addField (outputOnly,     "pickedGeometry",          pickedGeometry);
+	addField (initializeOnly, "intersectionType",        intersectionType);
+	addField (initializeOnly, "sortOrder",               sortOrder);
+	addField (outputOnly,     "pickedNormal",            pickedNormal);
+	addField (outputOnly,     "pickedPoint",             pickedPoint);
+	addField (outputOnly,     "pickedTextureCoordinate", pickedTextureCoordinate);
 }
 
 X3DBaseNode*

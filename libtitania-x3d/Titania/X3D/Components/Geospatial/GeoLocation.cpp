@@ -62,15 +62,15 @@ GeoLocation::GeoLocation (X3DExecutionContext* const executionContext) :
 	setComponent ("Geospatial");
 	setTypeName ("GeoLocation");
 
-	appendField (inputOutput,    "metadata",       metadata);
-	appendField (initializeOnly, "bboxSize",       bboxSize);
-	appendField (initializeOnly, "bboxCenter",     bboxCenter);
-	appendField (inputOnly,      "addChildren",    addChildren);
-	appendField (inputOnly,      "removeChildren", removeChildren);
-	appendField (inputOutput,    "children",       children);
-	appendField (inputOutput,    "geoCoords",      geoCoords);
-	appendField (initializeOnly, "geoOrigin",      geoOrigin);
-	appendField (initializeOnly, "geoSystem",      geoSystem);
+	addField (inputOutput,    "metadata",       metadata);
+	addField (initializeOnly, "bboxSize",       bboxSize);
+	addField (initializeOnly, "bboxCenter",     bboxCenter);
+	addField (inputOnly,      "addChildren",    addChildren);
+	addField (inputOnly,      "removeChildren", removeChildren);
+	addField (inputOutput,    "children",       children);
+	addField (inputOutput,    "geoCoords",      geoCoords);
+	addField (initializeOnly, "geoOrigin",      geoOrigin);
+	addField (initializeOnly, "geoSystem",      geoSystem);
 }
 
 X3DBaseNode*

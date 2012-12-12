@@ -285,16 +285,6 @@ public:
 	template <class InputIterator>
 	void insert (iterator, InputIterator, InputIterator);
 
-	template <class InputIterator>
-	void remove (InputIterator first, InputIterator last)
-	{
-		auto new_end = basic::remove (begin (), end (), first, last);
-		
-		erase (new_end, end ());
-		
-		notifyParents ();
-	}
-
 	virtual
 	size_type
 	max_size () const { return getValue () .max_size (); }

@@ -80,15 +80,15 @@ X3DBrowser::X3DBrowser () :
 	             javaScriptEngine,
 	             scene);
 
-	appendField (outputOnly, "initialized", initialized);
-	appendField (outputOnly, "exposed",     exposed);
-	appendField (outputOnly, "displayed",   displayed);
-	appendField (outputOnly, "finished",    finished);
-	appendField (outputOnly, "shutdown",    shutdown);
+	addField (outputOnly, "initialized", initialized);
+	addField (outputOnly, "exposed",     exposed);
+	addField (outputOnly, "displayed",   displayed);
+	addField (outputOnly, "finished",    finished);
+	addField (outputOnly, "shutdown",    shutdown);
 
-	appendField (outputOnly, "description", description);
-	appendField (outputOnly, "urlError",    urlError);
-	appendField (outputOnly, "world",       world);
+	addField (outputOnly, "description", description);
+	addField (outputOnly, "urlError",    urlError);
+	addField (outputOnly, "world",       world);
 
 	scene .setName ("scene");
 

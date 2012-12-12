@@ -70,17 +70,17 @@ Sound::Sound (X3DExecutionContext* const executionContext) :
 	setComponent ("Sound");
 	setTypeName ("Sound");
 
-	appendField (inputOutput,    "metadata",   metadata);
-	appendField (inputOutput,    "direction",  direction);
-	appendField (inputOutput,    "intensity",  intensity);
-	appendField (inputOutput,    "location",   location);
-	appendField (inputOutput,    "maxBack",    maxBack);
-	appendField (inputOutput,    "maxFront",   maxFront);
-	appendField (inputOutput,    "minBack",    minBack);
-	appendField (inputOutput,    "minFront",   minFront);
-	appendField (inputOutput,    "priority",   priority);
-	appendField (inputOutput,    "source",     source);
-	appendField (initializeOnly, "spatialize", spatialize);
+	addField (inputOutput,    "metadata",   metadata);
+	addField (inputOutput,    "direction",  direction);
+	addField (inputOutput,    "intensity",  intensity);
+	addField (inputOutput,    "location",   location);
+	addField (inputOutput,    "maxBack",    maxBack);
+	addField (inputOutput,    "maxFront",   maxFront);
+	addField (inputOutput,    "minBack",    minBack);
+	addField (inputOutput,    "minFront",   minFront);
+	addField (inputOutput,    "priority",   priority);
+	addField (inputOutput,    "source",     source);
+	addField (initializeOnly, "spatialize", spatialize);
 }
 
 X3DBaseNode*

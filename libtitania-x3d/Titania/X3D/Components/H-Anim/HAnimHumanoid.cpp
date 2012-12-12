@@ -77,25 +77,25 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	setComponent ("H-Anim");
 	setTypeName ("HAnimHumanoid");
 
-	appendField (inputOutput,    "metadata",         metadata);
-	appendField (initializeOnly, "bboxSize",         bboxSize);
-	appendField (initializeOnly, "bboxCenter",       bboxCenter);
-	appendField (inputOutput,    "center",           center);
-	appendField (inputOutput,    "info",             info);
-	appendField (inputOutput,    "joints",           joints);
-	appendField (inputOutput,    "name",             name);
-	appendField (inputOutput,    "rotation",         rotation);
-	appendField (inputOutput,    "scale",            scale);
-	appendField (inputOutput,    "scaleOrientation", scaleOrientation);
-	appendField (inputOutput,    "segments",         segments);
-	appendField (inputOutput,    "sites",            sites);
-	appendField (inputOutput,    "skeleton",         skeleton);
-	appendField (inputOutput,    "skin",             skin);
-	appendField (inputOutput,    "skinCoord",        skinCoord);
-	appendField (inputOutput,    "skinNormal",       skinNormal);
-	appendField (inputOutput,    "translation",      translation);
-	appendField (inputOutput,    "version",          version);
-	appendField (inputOutput,    "viewpoints",       viewpoints);
+	addField (inputOutput,    "metadata",         metadata);
+	addField (initializeOnly, "bboxSize",         bboxSize);
+	addField (initializeOnly, "bboxCenter",       bboxCenter);
+	addField (inputOutput,    "center",           center);
+	addField (inputOutput,    "info",             info);
+	addField (inputOutput,    "joints",           joints);
+	addField (inputOutput,    "name",             name);
+	addField (inputOutput,    "rotation",         rotation);
+	addField (inputOutput,    "scale",            scale);
+	addField (inputOutput,    "scaleOrientation", scaleOrientation);
+	addField (inputOutput,    "segments",         segments);
+	addField (inputOutput,    "sites",            sites);
+	addField (inputOutput,    "skeleton",         skeleton);
+	addField (inputOutput,    "skin",             skin);
+	addField (inputOutput,    "skinCoord",        skinCoord);
+	addField (inputOutput,    "skinNormal",       skinNormal);
+	addField (inputOutput,    "translation",      translation);
+	addField (inputOutput,    "version",          version);
+	addField (inputOutput,    "viewpoints",       viewpoints);
 }
 
 X3DBaseNode*

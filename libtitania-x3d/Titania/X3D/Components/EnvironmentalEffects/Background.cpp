@@ -75,21 +75,21 @@ Background::Background (X3DExecutionContext* const executionContext, bool addToL
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Background");
 
-	appendField (inputOutput, "metadata",     metadata);
-	appendField (inputOnly,   "set_bind",     set_bind);
-	appendField (outputOnly,  "bindTime",     bindTime);
-	appendField (outputOnly,  "isBound",      isBound);
-	appendField (inputOutput, "skyAngle",     skyAngle);
-	appendField (inputOutput, "skyColor",     skyColor);
-	appendField (inputOutput, "groundAngle",  groundAngle);
-	appendField (inputOutput, "groundColor",  groundColor);
-	appendField (inputOutput, "transparency", transparency);
-	appendField (inputOutput, "frontUrl",     frontUrl);
-	appendField (inputOutput, "backUrl",      backUrl);
-	appendField (inputOutput, "leftUrl",      leftUrl);
-	appendField (inputOutput, "rightUrl",     rightUrl);
-	appendField (inputOutput, "topUrl",       topUrl);
-	appendField (inputOutput, "bottomUrl",    bottomUrl);
+	addField (inputOutput, "metadata",     metadata);
+	addField (inputOnly,   "set_bind",     set_bind);
+	addField (outputOnly,  "bindTime",     bindTime);
+	addField (outputOnly,  "isBound",      isBound);
+	addField (inputOutput, "skyAngle",     skyAngle);
+	addField (inputOutput, "skyColor",     skyColor);
+	addField (inputOutput, "groundAngle",  groundAngle);
+	addField (inputOutput, "groundColor",  groundColor);
+	addField (inputOutput, "transparency", transparency);
+	addField (inputOutput, "frontUrl",     frontUrl);
+	addField (inputOutput, "backUrl",      backUrl);
+	addField (inputOutput, "leftUrl",      leftUrl);
+	addField (inputOutput, "rightUrl",     rightUrl);
+	addField (inputOutput, "topUrl",       topUrl);
+	addField (inputOutput, "bottomUrl",    bottomUrl);
 
 	setChildren (frontTexture,
 	             backTexture,

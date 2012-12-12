@@ -61,9 +61,9 @@ GravityPhysicsModel::GravityPhysicsModel (X3DExecutionContext* const executionCo
 	setComponent ("ParticleSystems");
 	setTypeName ("GravityPhysicsModel");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "enabled",  enabled);
-	appendField (inputOutput, "force",    force);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "enabled",  enabled);
+	addField (inputOutput, "force",    force);
 }
 
 X3DBaseNode*

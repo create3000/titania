@@ -61,8 +61,8 @@ TextureCoordinate::TextureCoordinate (X3DExecutionContext* const executionContex
 	setComponent ("Texturing");
 	setTypeName ("TextureCoordinate");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "point",    point);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "point",    point);
 }
 
 X3DBaseNode*

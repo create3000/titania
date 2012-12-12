@@ -75,14 +75,14 @@ BrowserProperties::BrowserProperties (X3DExecutionContext* const executionContex
 	 classicVrmlEncoding (),                                                    
 	      binaryEncoding ()                                                     
 {
-	appendField (initializeOnly, "abstractNodes",        abstractNodes);
-	appendField (initializeOnly, "concreteNodes",        concreteNodes);
-	appendField (initializeOnly, "externalInteractions", externalInteractions);
-	appendField (initializeOnly, "prototypeCreate",      prototypeCreate);
-	appendField (initializeOnly, "domImport",            domImport);
-	appendField (initializeOnly, "xmlEncoding",          xmlEncoding);
-	appendField (initializeOnly, "classicVrmlEncoding",  classicVrmlEncoding);
-	appendField (initializeOnly, "binaryEncoding",       binaryEncoding);
+	addField (initializeOnly, "abstractNodes",        abstractNodes);
+	addField (initializeOnly, "concreteNodes",        concreteNodes);
+	addField (initializeOnly, "externalInteractions", externalInteractions);
+	addField (initializeOnly, "prototypeCreate",      prototypeCreate);
+	addField (initializeOnly, "domImport",            domImport);
+	addField (initializeOnly, "xmlEncoding",          xmlEncoding);
+	addField (initializeOnly, "classicVrmlEncoding",  classicVrmlEncoding);
+	addField (initializeOnly, "binaryEncoding",       binaryEncoding);
 }
 
 BrowserProperties*

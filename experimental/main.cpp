@@ -29,6 +29,7 @@
 //#include <Titania/Basic/Geometry/Line3.h>
 
 #include "URI.h"
+#include <Titania/Algorithm/Remove.h>
 #include <Titania/Basic/Path.h>
 #include <Titania/Basic/URI.h>
 #include <Titania/Math/Geometry/Box3.h>
@@ -714,13 +715,81 @@ public:
 
 };
 
+namespace Test
+{
 
+template <class ForwardIterator, class RangeIterator>
+ForwardIterator
+remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, RangeIterator rlast)
+{
+	std::multiset <typename RangeIterator::value_type> range (rfirst, rlast);
+
+	if (range .empty ())
+		return last;
+
+	size_t count = 0;
+
+	for ( ; first not_eq last; ++ first)
+	{
+		auto item = range .find (*first);
+		
+		if (item not_eq range .end ())
+		{
+			range .erase (item);
+			++ count;
+			break;
+		}
+	}
+
+	while (range .size ())
+	{
+		auto second = first + count;
+		
+		for (; second not_eq last; ++ first, ++ second)
+		{
+			auto item = range .find (*second);
+		
+			if (item not_eq range .end ())
+			{
+				range .erase (item);
+				++ count;
+				goto LOOP;
+			}
+
+			*first = std::move (*second);
+		}
+		
+		break;
+		
+		LOOP:;
+	}
+
+	for (auto second = first + count; second not_eq last; ++ first, ++ second)
+	{
+		*first = std::move (*second);
+	}
+
+	return first;
+}
+
+}
 
 #include <v8.h>
 int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
+	
+	std::deque <C*> list  = { NULL };
+	std::deque <C*> range = { NULL };
+	
+	auto new_end = Test::remove (list .begin (), list .end (), range .begin (), range .end ());
+	list .erase (new_end, list .end ());
+	
+	for (const auto & item : list)
+		std::clog << item << " ";
+	std::clog << std::endl;
+	
 	
 	C ();
 

@@ -65,13 +65,13 @@ NurbsSet::NurbsSet (X3DExecutionContext* const executionContext) :
 	setComponent ("NURBS");
 	setTypeName ("NurbsSet");
 
-	appendField (inputOutput,    "metadata",          metadata);
-	appendField (initializeOnly, "bboxSize",          bboxSize);
-	appendField (initializeOnly, "bboxCenter",        bboxCenter);
-	appendField (inputOnly,      "addGeometry",       addGeometry);
-	appendField (inputOnly,      "removeGeometry",    removeGeometry);
-	appendField (inputOutput,    "geometry",          geometry);
-	appendField (inputOutput,    "tessellationScale", tessellationScale);
+	addField (inputOutput,    "metadata",          metadata);
+	addField (initializeOnly, "bboxSize",          bboxSize);
+	addField (initializeOnly, "bboxCenter",        bboxCenter);
+	addField (inputOnly,      "addGeometry",       addGeometry);
+	addField (inputOnly,      "removeGeometry",    removeGeometry);
+	addField (inputOutput,    "geometry",          geometry);
+	addField (inputOutput,    "tessellationScale", tessellationScale);
 }
 
 X3DBaseNode*

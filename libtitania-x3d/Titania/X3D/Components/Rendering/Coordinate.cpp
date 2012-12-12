@@ -61,8 +61,8 @@ Coordinate::Coordinate (X3DExecutionContext* const executionContext) :
 	setComponent ("Rendering");
 	setTypeName ("Coordinate");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "point",    point);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "point",    point);
 }
 
 X3DBaseNode*

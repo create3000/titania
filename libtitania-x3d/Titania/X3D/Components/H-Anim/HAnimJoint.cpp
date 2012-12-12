@@ -73,25 +73,25 @@ HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
 	setComponent ("H-Anim");
 	setTypeName ("HAnimJoint");
 
-	appendField (inputOutput,    "metadata",         metadata);
-	appendField (initializeOnly, "bboxSize",         bboxSize);
-	appendField (initializeOnly, "bboxCenter",       bboxCenter);
-	appendField (inputOnly,      "addChildren",      addChildren);
-	appendField (inputOnly,      "removeChildren",   removeChildren);
-	appendField (inputOutput,    "children",         children);
-	appendField (inputOutput,    "center",           center);
-	appendField (inputOutput,    "displacers",       displacers);
-	appendField (inputOutput,    "limitOrientation", limitOrientation);
-	appendField (inputOutput,    "llimit",           llimit);
-	appendField (inputOutput,    "name",             name);
-	appendField (inputOutput,    "rotation",         rotation);
-	appendField (inputOutput,    "scale",            scale);
-	appendField (inputOutput,    "scaleOrientation", scaleOrientation);
-	appendField (inputOutput,    "skinCoordIndex",   skinCoordIndex);
-	appendField (inputOutput,    "skinCoordWeight",  skinCoordWeight);
-	appendField (inputOutput,    "stiffness",        stiffness);
-	appendField (inputOutput,    "translation",      translation);
-	appendField (inputOutput,    "ulimit",           ulimit);
+	addField (inputOutput,    "metadata",         metadata);
+	addField (initializeOnly, "bboxSize",         bboxSize);
+	addField (initializeOnly, "bboxCenter",       bboxCenter);
+	addField (inputOnly,      "addChildren",      addChildren);
+	addField (inputOnly,      "removeChildren",   removeChildren);
+	addField (inputOutput,    "children",         children);
+	addField (inputOutput,    "center",           center);
+	addField (inputOutput,    "displacers",       displacers);
+	addField (inputOutput,    "limitOrientation", limitOrientation);
+	addField (inputOutput,    "llimit",           llimit);
+	addField (inputOutput,    "name",             name);
+	addField (inputOutput,    "rotation",         rotation);
+	addField (inputOutput,    "scale",            scale);
+	addField (inputOutput,    "scaleOrientation", scaleOrientation);
+	addField (inputOutput,    "skinCoordIndex",   skinCoordIndex);
+	addField (inputOutput,    "skinCoordWeight",  skinCoordWeight);
+	addField (inputOutput,    "stiffness",        stiffness);
+	addField (inputOutput,    "translation",      translation);
+	addField (inputOutput,    "ulimit",           ulimit);
 }
 
 X3DBaseNode*

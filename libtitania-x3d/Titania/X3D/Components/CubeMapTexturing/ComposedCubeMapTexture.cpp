@@ -66,13 +66,13 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	setComponent ("CubeMapTexturing");
 	setTypeName ("ComposedCubeMapTexture");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "back",     back);
-	appendField (inputOutput, "bottom",   bottom);
-	appendField (inputOutput, "front",    front);
-	appendField (inputOutput, "left",     left);
-	appendField (inputOutput, "right",    right);
-	appendField (inputOutput, "top",      top);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "back",     back);
+	addField (inputOutput, "bottom",   bottom);
+	addField (inputOutput, "front",    front);
+	addField (inputOutput, "left",     left);
+	addField (inputOutput, "right",    right);
+	addField (inputOutput, "top",      top);
 }
 
 X3DBaseNode*

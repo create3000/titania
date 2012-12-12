@@ -61,9 +61,9 @@ BoundedPhysicsModel::BoundedPhysicsModel (X3DExecutionContext* const executionCo
 	setComponent ("ParticleSystems");
 	setTypeName ("BoundedPhysicsModel");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "enabled",  enabled);
-	appendField (inputOutput, "geometry", geometry);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "enabled",  enabled);
+	addField (inputOutput, "geometry", geometry);
 }
 
 X3DBaseNode*

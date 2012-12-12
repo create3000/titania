@@ -61,8 +61,8 @@ FogCoordinate::FogCoordinate (X3DExecutionContext* const executionContext) :
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("FogCoordinate");
 
-	appendField (inputOutput, "metadata", metadata);
-	appendField (inputOutput, "depth",    depth);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "depth",    depth);
 }
 
 X3DBaseNode*

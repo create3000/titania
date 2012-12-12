@@ -66,18 +66,18 @@ HAnimSegment::HAnimSegment (X3DExecutionContext* const executionContext) :
 	setComponent ("H-Anim");
 	setTypeName ("HAnimSegment");
 
-	appendField (inputOutput,    "metadata",         metadata);
-	appendField (initializeOnly, "bboxSize",         bboxSize);
-	appendField (initializeOnly, "bboxCenter",       bboxCenter);
-	appendField (inputOnly,      "addChildren",      addChildren);
-	appendField (inputOnly,      "removeChildren",   removeChildren);
-	appendField (inputOutput,    "children",         children);
-	appendField (inputOutput,    "centerOfMass",     centerOfMass);
-	appendField (inputOutput,    "coord",            coord);
-	appendField (inputOutput,    "displacers",       displacers);
-	appendField (inputOutput,    "mass",             mass);
-	appendField (inputOutput,    "momentsOfInertia", momentsOfInertia);
-	appendField (inputOutput,    "name",             name);
+	addField (inputOutput,    "metadata",         metadata);
+	addField (initializeOnly, "bboxSize",         bboxSize);
+	addField (initializeOnly, "bboxCenter",       bboxCenter);
+	addField (inputOnly,      "addChildren",      addChildren);
+	addField (inputOnly,      "removeChildren",   removeChildren);
+	addField (inputOutput,    "children",         children);
+	addField (inputOutput,    "centerOfMass",     centerOfMass);
+	addField (inputOutput,    "coord",            coord);
+	addField (inputOutput,    "displacers",       displacers);
+	addField (inputOutput,    "mass",             mass);
+	addField (inputOutput,    "momentsOfInertia", momentsOfInertia);
+	addField (inputOutput,    "name",             name);
 }
 
 X3DBaseNode*

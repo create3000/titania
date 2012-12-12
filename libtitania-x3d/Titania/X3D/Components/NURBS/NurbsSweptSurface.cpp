@@ -62,11 +62,11 @@ NurbsSweptSurface::NurbsSweptSurface (X3DExecutionContext* const executionContex
 	setComponent ("NURBS");
 	setTypeName ("NurbsSweptSurface");
 
-	appendField (inputOutput,    "metadata",          metadata);
-	appendField (inputOutput,    "crossSectionCurve", crossSectionCurve);
-	appendField (inputOutput,    "trajectoryCurve",   trajectoryCurve);
-	appendField (initializeOnly, "ccw",               ccw);
-	appendField (initializeOnly, "solid",             solid);
+	addField (inputOutput,    "metadata",          metadata);
+	addField (inputOutput,    "crossSectionCurve", crossSectionCurve);
+	addField (inputOutput,    "trajectoryCurve",   trajectoryCurve);
+	addField (initializeOnly, "ccw",               ccw);
+	addField (initializeOnly, "solid",             solid);
 }
 
 X3DBaseNode*

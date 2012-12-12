@@ -61,9 +61,9 @@ Matrix4VertexAttribute::Matrix4VertexAttribute (X3DExecutionContext* const execu
 	setComponent ("Shaders");
 	setTypeName ("Matrix4VertexAttribute");
 
-	appendField (inputOutput,    "metadata", metadata);
-	appendField (initializeOnly, "name",     name);
-	appendField (inputOutput,    "value",    value);
+	addField (inputOutput,    "metadata", metadata);
+	addField (initializeOnly, "name",     name);
+	addField (inputOutput,    "value",    value);
 }
 
 X3DBaseNode*
