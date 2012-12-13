@@ -287,7 +287,7 @@ X3DBaseNode::getTypeName () const
 }
 
 void
-X3DBaseNode::addNodeType (const NodeTypes value)
+X3DBaseNode::addNodeType (const X3DConstants::NodeTypes value)
 {
 	//	std::clog << __FILE__ << ":" << __LINE__ << ": in function " << __func__ << ": " << Generator::NodeTypes .at (value) << std::endl;
 	nodeType .push_back (value);

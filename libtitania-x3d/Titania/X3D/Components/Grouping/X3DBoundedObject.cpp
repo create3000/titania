@@ -56,7 +56,7 @@ X3DBoundedObject::X3DBoundedObject () :
 	  bboxCenter (),          // SFVec3f [ ]bboxCenter  0 0 0           (-∞,∞)
 	    bboxSize (-1, -1, -1) // SFVec3f [ ]bboxSize    -1 -1 -1        [0,∞) or −1 −1 −1
 {
-	addNodeType (X3DBoundedObjectType);
+	addNodeType (X3DConstants::X3DBoundedObject);
 }
 
 void

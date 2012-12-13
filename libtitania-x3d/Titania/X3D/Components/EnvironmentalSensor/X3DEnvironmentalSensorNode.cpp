@@ -58,7 +58,7 @@ X3DEnvironmentalSensorNode::X3DEnvironmentalSensorNode () :
 	    enterTime (), // SFTime  [out]    enterTime
 	     exitTime ()  // SFTime  [out]    exitTime
 {
-	addNodeType (X3DEnvironmentalSensorNodeType);
+	addNodeType (X3DConstants::X3DEnvironmentalSensorNode);
 }
 
 } // X3D

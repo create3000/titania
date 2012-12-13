@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,7 +56,7 @@ X3DNBodyCollisionSpaceNode::X3DNBodyCollisionSpaceNode () :
 	X3DBoundedObject (),    
 	         enabled (true) // SFBool [in,out] enabled  TRUE
 {
-	addNodeType (X3DNBodyCollisionSpaceNodeType);
+	addNodeType (X3DConstants::X3DNBodyCollisionSpaceNode);
 }
 
 Box3f

@@ -50,7 +50,6 @@
 
 #include "../../Browser/Browser.h"
 
-#include <Titania/Algorithm/Remove.h>
 #include <Titania/Utility/Adapter.h>
 
 namespace titania {
@@ -63,7 +62,7 @@ X3DGroupingNode::X3DGroupingNode () :
 	     addChildren (), // MFNode[in]     addChildren               [X3DChildNode]
 	  removeChildren ()  // MFNode[in]     removeChildren            [X3DChildNode]
 {
-	addNodeType (X3DGroupingNodeType);
+	addNodeType (X3DConstants::X3DGroupingNode);
 }
 
 void
@@ -93,19 +92,28 @@ X3DGroupingNode::getBBox ()
 void
 X3DGroupingNode::set_addChildren ()
 {
-	add (addChildren, children .size ());
-	
-	children .insert (children .end (), addChildren .begin (), addChildren .end ());
+	if (addChildren .size ())
+	{
+		add (addChildren);
+		
+		children .insert (children .end (), addChildren .begin (), addChildren .end ());
 
-	children .removeInterest (this, &X3DGroupingNode::set_children);
-	children .addInterest    (this, &X3DGroupingNode::set_endChildren);
+		children .removeInterest (this, &X3DGroupingNode::set_children);
+		children .addInterest    (this, &X3DGroupingNode::set_endChildren);
+	}
 }
 
 void
 X3DGroupingNode::set_removeChildren ()
 {
-	auto new_end = basic::remove (children .begin (), children .end (), removeChildren .begin (), removeChildren .end ());
-	children .erase (new_end, children .end ());
+	if (removeChildren .size ())
+	{
+		auto new_end = basic::remove (children .begin (), children .end (), removeChildren .begin (), removeChildren .end ());
+		children .erase (new_end, children .end ());
+		
+		if (not children .hasInterest (this, &X3DGroupingNode::set_children))
+			set_children ();
+	}
 }
 
 void
@@ -123,31 +131,37 @@ X3DGroupingNode::set_children ()
 	localFogs  .clear ();
 	childNodes .clear ();
 
-	add (children, 0);
+	add (children);
 }
 
 void
-X3DGroupingNode::add (const MFNode <X3DChildNode> & children, size_t offset)
+X3DGroupingNode::add (const MFNode <X3DChildNode> & children)
 {
 	for (const auto & child : children)
 	{
-		if (SFNode <X3DPointingDeviceSensorNode> (child))
-			pointingDeviceSensors .emplace_back (child);
+		SFNode <X3DPointingDeviceSensorNode> pointingDeviceSensorNode (child);
+	
+		if (pointingDeviceSensorNode)
+			pointingDeviceSensors .emplace_back (*pointingDeviceSensorNode);
 
 		else
 		{
-			if (SFNode <X3DLightNode> (child))
-				lights .emplace_back (child);
+			SFNode <X3DLightNode> lightNode (child);
+		
+			if (lightNode)
+				lights .emplace_back (*lightNode);
 
 			else
 			{
-				if (SFNode <LocalFog> (child))
-					localFogs .emplace_back (child);
+				SFNode <LocalFog> localFog (child);
+			
+				if (localFog)
+					localFogs .emplace_back (*localFog);
 
 				else
 				{
 					if (child)
-						childNodes .emplace_back (child);
+						childNodes .emplace_back (*child);
 				}
 			}
 		}
@@ -182,13 +196,13 @@ X3DGroupingNode::display ()
 		child -> display ();
 
 	if (localFogs .size ())
-		child -> display ();
+		localFogs .front () -> display ();
 
 	for (const auto & child : childNodes)
 		child -> display ();
 
 	if (localFogs .size ())
-		child -> finish ();
+		localFogs .front () -> finish ();
 
 	for (const auto & child : basic::adapter (lights .crbegin (), lights .crend ()))
 		child -> finish ();

@@ -55,7 +55,7 @@ X3DNurbsControlCurveNode::X3DNurbsControlCurveNode () :
 	     X3DNode (), 
 	controlPoint ()  // MFVec2d [in,out] controlPoint  [ ]       (-∞,∞)
 {
-	addNodeType (X3DNurbsControlCurveNodeType);
+	addNodeType (X3DConstants::X3DNurbsControlCurveNode);
 }
 
 } // X3D

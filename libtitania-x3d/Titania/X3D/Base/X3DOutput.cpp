@@ -76,6 +76,14 @@ X3DOutput::removeInterest (const Requester & function) const
 	eraseInterest (nullptr, reinterpret_cast <const void*> (&function));
 }
 
+bool
+X3DOutput::hasInterest (const void* object, const void* memberFunction) const
+{
+	RequesterPair requesterPair (memberFunction, object);
+
+	return requesterIndex .find (requesterPair) not_eq requesterIndex .end ();
+}
+
 // Insert only when not in index.
 
 void

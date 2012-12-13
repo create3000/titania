@@ -76,7 +76,7 @@ X3DTexture2DNode::X3DTexture2DNode () :
 	       components (0),    
 	      transparent (false) 
 {
-	addNodeType (X3DTexture2DNodeType);
+	addNodeType (X3DConstants::X3DTexture2DNode);
 }
 
 void

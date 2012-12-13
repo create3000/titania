@@ -67,7 +67,7 @@ X3DNurbsSurfaceGeometryNode::X3DNurbsSurfaceGeometryNode () :
 	                    vKnot (),     // MFDouble [ ]      vKnot          [ ]           (-∞,∞)
 	                   vOrder (3)     // SFInt32  [ ]      vOrder         3            [2,∞)
 {
-	addNodeType (X3DNurbsSurfaceGeometryNodeType);
+	addNodeType (X3DConstants::X3DNurbsSurfaceGeometryNode);
 }
 
 } // X3D

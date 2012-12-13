@@ -66,7 +66,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 {
 	assert (proto);
 
-	addNodeType (X3DPrototypeInstanceType);
+	addNodeType (X3DConstants::X3DPrototypeInstance);
 
 	addField (inputOutput, "metadata",  metadata);
 

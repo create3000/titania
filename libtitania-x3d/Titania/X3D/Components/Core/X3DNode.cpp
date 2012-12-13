@@ -57,7 +57,7 @@ X3DNode::X3DNode () :
 	X3DBaseNode (), 
 	    metadata ()  // SFNode [in,out] metadata  NULL        [X3DMetadataObject]
 {
-	addNodeType (X3DNodeType);
+	addNodeType (X3DConstants::X3DNode);
 }
 
 Scene*

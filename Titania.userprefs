@@ -1,21 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Scripting/Felület3D.wrl">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Grouping/Add&amp;RemoveChildren.wrl">
     <Files>
-      <File FileName="experimental/main.cpp" Line="711" Column="20" />
-      <File FileName="Library/Tests/Text/test.wrl" Line="46" Column="50" />
+      <File FileName="experimental/main.cpp" Line="711" Column="10" />
+      <File FileName="Library/Tests/Text/test.wrl" Line="46" Column="25" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.h" Line="72" Column="2" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="218" Column="33" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DArrayField.h" Line="268" Column="89" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsMFDouble.h" Line="62" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsMFDouble.cpp" Line="99" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsX3DScalar.h" Line="97" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsMFBool.cpp" Line="103" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsMFFloat.cpp" Line="92" Column="1" />
-      <File FileName="Library/Tests/Scripting/Felület3D.wrl" Line="46" Column="8" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.h" Line="108" Column="38" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.cpp" Line="137" Column="59" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="280" Column="10" />
+      <File FileName="Library/Tests/Grouping/Add&amp;RemoveChildren.wrl" Line="106" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.h" Line="70" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.cpp" Line="118" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -30,9 +23,10 @@
             </Node>
             <Node name="Tests" expanded="True">
               <Node name="EnvironmentalEffects" expanded="True" />
-              <Node name="Scripting" expanded="True">
-                <Node name="Felület3D.wrl" selected="True" />
+              <Node name="Grouping" expanded="True">
+                <Node name="Add&amp;RemoveChildren.wrl" selected="True" />
               </Node>
+              <Node name="Scripting" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-anyoptions" expanded="True" />

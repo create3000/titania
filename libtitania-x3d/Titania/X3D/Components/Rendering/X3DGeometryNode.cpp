@@ -70,7 +70,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	            normalBufferId (0),             
 	             pointBufferId (0)
 {
-	addNodeType (X3DGeometryNodeType);
+	addNodeType (X3DConstants::X3DGeometryNode);
 }
 
 void

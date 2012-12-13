@@ -196,7 +196,7 @@ protected:
 	setTypeName (const basic::id &);
 
 	void
-	addNodeType (const NodeTypes);
+	addNodeType (const X3DConstants::NodeTypes);
 
 	void
 	addField (const AccessType, const basic::id &, X3DFieldDefinition &);

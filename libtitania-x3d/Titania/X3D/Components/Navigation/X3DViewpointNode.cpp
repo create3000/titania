@@ -70,7 +70,7 @@ X3DViewpointNode::X3DViewpointNode (bool addToList) :
 	        0,  0, 10,  1),
 	addToList (addToList)
 {
-	addNodeType (X3DViewpointNodeType);
+	addNodeType (X3DConstants::X3DViewpointNode);
 }
 
 void

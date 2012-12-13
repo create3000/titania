@@ -56,7 +56,7 @@ X3DInterpolatorNode::X3DInterpolatorNode () :
 	set_fraction (), // SFFloat [in]     set_fraction            (-∞,∞)
 	         key ()  // MFFloat [in,out] key           [ ]       (-∞,∞)
 {
-	addNodeType (X3DInterpolatorNodeType);
+	addNodeType (X3DConstants::X3DInterpolatorNode);
 }
 
 void

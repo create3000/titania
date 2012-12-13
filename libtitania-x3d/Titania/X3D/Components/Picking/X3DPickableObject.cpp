@@ -56,7 +56,7 @@ X3DPickableObject::X3DPickableObject () :
 	  objectType ({ "ALL" }), // MFString [in,out] objectType  "ALL"        ["ALL"|"NONE"|"TERRAIN"|...]
 	    pickable (true)       // SFBool   [in,out] pickable    TRUE
 {
-	addNodeType (X3DPickableObjectType);
+	addNodeType (X3DConstants::X3DPickableObject);
 }
 
 void

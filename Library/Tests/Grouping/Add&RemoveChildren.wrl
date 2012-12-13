@@ -34,9 +34,9 @@ DEF Timer TimeSensor {
 
 DEF Felület Script {
   inputOnly      SFTime  set_time
-  initializeOnly SFInt32 xDimension 16
-  initializeOnly SFInt32 yDimension 16
-  initializeOnly SFInt32 zDimension 16
+  initializeOnly SFInt32 xDimension 8
+  initializeOnly SFInt32 yDimension 8
+  initializeOnly SFInt32 zDimension 8
   initializeOnly SFFloat xSpacing 0.001
   initializeOnly SFFloat ySpacing 0.001
   initializeOnly SFFloat zSpacing 0.001
@@ -62,7 +62,7 @@ function initialize ()
 
 function set_time (value, time)
 {
-	print ('set_time');
+	print ('set_time: ' + space .children .length);
 	
 	addChildren    .length = 0;
 	removeChildren .length = 0;
@@ -70,7 +70,7 @@ function set_time (value, time)
 	randomCubes ();
 
 	space .addChildren    = addChildren;
-	space .removeChildren = removeChildren;
+	//space .removeChildren = removeChildren;
 }
 
 function randomCubes ()
@@ -92,6 +92,7 @@ function randomCubes ()
 				y = 0;
 				if (++ z >= zDimension)
 				{
+					print ('clear');
 					z = 0;
 					
 					addChildren     .length = 0;

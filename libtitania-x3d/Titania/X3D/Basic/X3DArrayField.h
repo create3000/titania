@@ -476,7 +476,8 @@ X3DArrayField <ValueType>::insert (iterator location, const ValueType & value)
 	iterator iter = get () .insert (location, value);
 
 	addChildren (iter, end ());
-
+	
+	notifyParents ();
 	return iter;
 }
 
@@ -489,6 +490,8 @@ X3DArrayField <ValueType>::insert (iterator location, size_type count, const Val
 	get () .insert (location, count, value);
 
 	addChildren (begin () + i, end ());
+	
+	notifyParents ();
 }
 
 template <class ValueType>
@@ -501,6 +504,8 @@ X3DArrayField <ValueType>::insert (iterator location, InputIterator first, Input
 	get () .insert (location, first, last);
 
 	addChildren (begin () + i, end ());
+	
+	notifyParents ();
 }
 
 template <class ValueType>

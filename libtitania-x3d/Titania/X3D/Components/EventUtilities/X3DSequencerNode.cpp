@@ -58,7 +58,7 @@ X3DSequencerNode::X3DSequencerNode () :
 	set_fraction (), // SFFloat [in]     set_fraction            (-∞,∞)
 	         key ()  // MFFloat [in,out] key           [ ]       (-∞,∞)
 {
-	addNodeType (X3DSequencerNodeType);
+	addNodeType (X3DConstants::X3DSequencerNode);
 }
 
 } // X3D

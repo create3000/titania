@@ -58,7 +58,7 @@ X3DSoundSourceNode::X3DSoundSourceNode () :
 	            isActive (),  // SFBool [ ] isActive
 	    duration_changed ()   // SFTime   [out]    duration_changed
 {
-	addNodeType (X3DSoundSourceNodeType);
+	addNodeType (X3DConstants::X3DSoundSourceNode);
 }
 
 } // X3D

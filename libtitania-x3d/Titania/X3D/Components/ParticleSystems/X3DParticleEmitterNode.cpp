@@ -58,7 +58,7 @@ X3DParticleEmitterNode::X3DParticleEmitterNode () :
 	       mass (),     // SFFloat [ ]      mass         0           [0,∞)
 	surfaceArea ()      // SFFloat [ ]      surfaceArea  0           [0,∞)
 {
-	addNodeType (X3DParticleEmitterNodeType);
+	addNodeType (X3DConstants::X3DParticleEmitterNode);
 }
 
 } // X3D

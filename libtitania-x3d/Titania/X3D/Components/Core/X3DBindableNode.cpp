@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,7 +62,7 @@ X3DBindableNode::X3DBindableNode () :
 	    bindTime (), // SFTime [out] bindTime
 	     isBound ()  // SFBool [out] isBound
 {
-	addNodeType (X3DBindableNodeType);
+	addNodeType (X3DConstants::X3DBindableNode);
 }
 
 void

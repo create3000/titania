@@ -58,7 +58,7 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 	        rotation (),     // SFRotation [in,out] rotation     0 0 1 0        [0,1]
 	     translation ()      // SFVec3f    [in,out] translation  0 0 0          (-∞,∞)
 {
-	addNodeType (X3DNBodyCollidableNodeType);
+	addNodeType (X3DConstants::X3DNBodyCollidableNode);
 }
 	
 void

@@ -70,7 +70,7 @@ X3DUrlObject::X3DUrlObject () :
 	   userAgent (),                  
 	    worldURL ()                   
 {
-	addNodeType (X3DUrlObjectType);
+	addNodeType (X3DConstants::X3DUrlObject);
 
 	setChildren (urlError);
 }

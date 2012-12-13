@@ -54,7 +54,7 @@ namespace X3D {
 X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	X3DBaseNode () 
 {
-	addNodeType (X3DProgrammableShaderObjectType);
+	addNodeType (X3DConstants::X3DProgrammableShaderObject);
 }
 
 void

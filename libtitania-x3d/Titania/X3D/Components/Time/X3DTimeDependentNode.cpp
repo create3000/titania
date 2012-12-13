@@ -61,7 +61,7 @@ X3DTimeDependentNode::X3DTimeDependentNode () :
 	 elapsedTime (), // SFTime [out]    elapsedTime
 	    isPaused ()  // SFBool [out]    isPaused
 {
-	addNodeType (X3DTimeDependentNodeType);
+	addNodeType (X3DConstants::X3DTimeDependentNode);
 }
 
 } // X3D

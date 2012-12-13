@@ -56,7 +56,7 @@ X3DMetadataObject::X3DMetadataObject () :
 	        name (), // SFString [in,out] name       ""
 	   reference ()  // SFString [in,out] reference  ""
 {
-	addNodeType (X3DMetadataObjectType);
+	addNodeType (X3DConstants::X3DMetadataObject);
 }
 
 void

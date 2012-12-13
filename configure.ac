@@ -7,7 +7,7 @@ AC_CONFIG_HEADERS([config.h])
 
 AM_INIT_AUTOMAKE([1.11])
 
-AM_SILENT_RULES([yes])
+AM_SILENT_RULES([no])
 
 AM_MAINTAINER_MODE
 
@@ -57,6 +57,24 @@ if test "x$enable_parallel" = "xyes" ; then
 fi
 
 
+if test -z "$CONFIG_REQUESTED" ; then
+	AM_CONDITIONAL(ENABLE_DEBUG, true)
+	enable_debug=yes
+fi
+
+
+CONFIGURATION="Debug"
+
+if test "x$enable_release" = "xyes" ; then
+	CONFIGURATION="Release"
+fi
+
+if test "x$enable_parallel" = "xyes" ; then
+	CONFIGURATION="Parallel"
+fi
+
+AC_SUBST(CONFIGURATION)
+
 
 dnl ***************************************************************************
 dnl Compile options
@@ -64,11 +82,11 @@ dnl ***************************************************************************
 
 CXXFLAGS="-Wall -std=c++11 -Wno-pmf-conversions"
 
-if test "x$ENABLE_RELEASE" ; then
+if test "x$enable_release" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -O3"
 fi
 
-if test "x$ENABLE_PARALLEL" ; then
+if test "x$enable_parallel" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -O3 -ftree-parallelize-loops=4 -fopenmp"
 fi
 

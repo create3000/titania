@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,7 +65,7 @@ X3DFontStyleNode::X3DFontStyleNode () :
 	       language (),            // SFString [ ] language     ""
 	     alignments { Alignment::BEGIN, Alignment::BEGIN }         
 {
-	addNodeType (X3DFontStyleNodeType);
+	addNodeType (X3DConstants::X3DFontStyleNode);
 }
 
 void

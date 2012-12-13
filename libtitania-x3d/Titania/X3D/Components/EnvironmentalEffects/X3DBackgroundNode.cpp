@@ -68,7 +68,7 @@ X3DBackgroundNode::X3DBackgroundNode (bool addToList) :
 	   transparency (),               // SFFloat [in,out] transparency  0             [0,1]
 	      addToList (addToList)       
 {
-	addNodeType (X3DBackgroundNodeType);
+	addNodeType (X3DConstants::X3DBackgroundNode);
 }
 
 void

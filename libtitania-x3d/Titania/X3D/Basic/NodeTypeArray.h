@@ -55,11 +55,11 @@
 namespace titania {
 namespace X3D {
 
-typedef std::deque <NodeTypes> NodeTypeArray;
+typedef std::deque <X3DConstants::NodeTypes> NodeTypeArray;
 
 } // X3D
 } // titania
 
-extern template class std::deque <titania::X3D::NodeTypes>;
+extern template class std::deque <titania::X3D::X3DConstants::NodeTypes>;
 
 #endif

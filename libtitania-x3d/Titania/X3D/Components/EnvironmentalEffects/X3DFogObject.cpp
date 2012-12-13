@@ -58,7 +58,7 @@ X3DFogObject::X3DFogObject () :
 	visibilityRange (),         // SFFloat  [in,out] visibilityRange  0               [0,-∞)
 	   transparency (0)         // SFFloat  [in,out] transparency     1               [0,1]
 {
-	addNodeType (X3DFogObjectType);
+	addNodeType (X3DConstants::X3DFogObject);
 }
 
 void

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,7 +56,7 @@ X3DSensorNode::X3DSensorNode () :
 	     enabled (true), // SFBool [in,out] enabled   TRUE
 	    isActive ()      // SFBool [out]    isActive
 {
-	addNodeType (X3DSensorNodeType);
+	addNodeType (X3DConstants::X3DSensorNode);
 }
 
 } // X3D
