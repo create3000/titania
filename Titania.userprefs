@@ -1,21 +1,32 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Grouping/Add&amp;RemoveChildren.wrl">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="711" Column="10" />
+      <File FileName="experimental/main.cpp" Line="692" Column="21" />
       <File FileName="Library/Tests/Text/test.wrl" Line="46" Column="25" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.h" Line="72" Column="2" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="218" Column="33" />
-      <File FileName="Library/Tests/Grouping/Add&amp;RemoveChildren.wrl" Line="106" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.h" Line="70" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.cpp" Line="118" Column="1" />
+      <File FileName="Library/Tests/Grouping/Add&amp;RemoveChildren.wrl" Line="70" Column="17" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.h" Line="104" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.cpp" Line="135" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DOutput.h" Line="72" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DOutput.cpp" Line="84" Column="75" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="501" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True" />
+          <Node name="build" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="debian" expanded="True" />
+            </Node>
+          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
+            <Node name="Examples" expanded="True">
+              <Node name="rockpop" selected="True" />
+            </Node>
             <Node name="Protos" expanded="True">
               <Node name="Geometry2D" expanded="True">
                 <Node name="RegularPolygon2D" expanded="True" />
@@ -23,9 +34,7 @@
             </Node>
             <Node name="Tests" expanded="True">
               <Node name="EnvironmentalEffects" expanded="True" />
-              <Node name="Grouping" expanded="True">
-                <Node name="Add&amp;RemoveChildren.wrl" selected="True" />
-              </Node>
+              <Node name="Grouping" expanded="True" />
               <Node name="Scripting" expanded="True" />
             </Node>
           </Node>
@@ -86,6 +95,7 @@
               </Node>
             </Node>
           </Node>
+          <Node name="Packages" expanded="True" />
           <Node name="test" expanded="True">
             <Node name="Tests" expanded="True" />
           </Node>
