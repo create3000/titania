@@ -46,6 +46,30 @@
     <None Include="..\debian\source\format">
       <Link>Titania\debian\source\format</Link>
     </None>
+    <None Include="..\autogen.sh">
+      <Link>autogen.sh</Link>
+    </None>
+    <None Include="..\AUTHORS">
+      <Link>AUTHORS</Link>
+    </None>
+    <None Include="..\ChangeLog">
+      <Link>ChangeLog</Link>
+    </None>
+    <None Include="..\COPYING">
+      <Link>COPYING</Link>
+    </None>
+    <None Include="..\INSTALL">
+      <Link>INSTALL</Link>
+    </None>
+    <None Include="..\LICENSE">
+      <Link>LICENSE</Link>
+    </None>
+    <None Include="..\NEWS">
+      <Link>NEWS</Link>
+    </None>
+    <None Include="..\README">
+      <Link>README</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
