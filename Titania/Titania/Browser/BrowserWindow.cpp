@@ -52,8 +52,19 @@ namespace titania {
 namespace puck {
 
 BrowserWindow::BrowserWindow (int & argc, char** & argv) :
-	X3DBrowserWindow (argc, argv) 
+	X3DBrowserWindow (argc, argv),      
+	     currentPage (-1),                
+	motionBlurEditor (getConfig () .getKey (), this) 
 { }
+
+void
+BrowserWindow::initialize ()
+{
+	X3DBrowserWindow::initialize ();
+
+	// MotionBlurEditor
+	getMotionBlurEditor () .getWindow () .set_transient_for (getWindow ());
+}
 
 // File menu
 
@@ -84,7 +95,7 @@ void
 BrowserWindow::on_save ()
 {
 	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
-	
+
 	if (worldURL .empty () or worldURL .is_network ())
 		on_save_as ();
 
@@ -96,7 +107,7 @@ void
 BrowserWindow::on_save_as ()
 {
 	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
-	
+
 	if (worldURL .length () and worldURL .is_local ())
 		getFileSaveDialog () .set_uri (worldURL .str ());
 
@@ -183,8 +194,8 @@ void
 BrowserWindow::phong_activate ()
 {
 	if (not getPhongMenuItem () .get_active ())
-			return;
-		
+		return;
+
 	getBrowser () -> getBrowserOptions () -> shading = "PHONG";
 }
 
@@ -306,7 +317,7 @@ BrowserWindow::on_viewpoint_editor_activate ()
 void
 BrowserWindow::on_motion_blur_editor_activate ()
 {
-	//getMotionBlurEditor () .getWindow () .present ();
+	getMotionBlurEditor () .getWindow () .present ();
 }
 
 // Help menu

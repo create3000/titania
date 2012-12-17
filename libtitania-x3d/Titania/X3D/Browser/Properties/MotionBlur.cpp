@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,48 +46,70 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_WIDGETS_MOTION_BLUR_H__
-#define __TITANIA_X3D_WIDGETS_MOTION_BLUR_H__
+#include "MotionBlur.h"
 
-#include "../Components/Core/X3DNode.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include "../Browser.h"
 
 namespace titania {
 namespace X3D {
 
-class MotionBlur :
-	public X3DNode
+MotionBlur::MotionBlur (X3DExecutionContext* const executionContext) :
+	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    enabled (),                                                    // SFBool  [in,out] enabled    FALSE
+	  intensity (0)                                                    // SFFloat [in,out] intensitiy 0
 {
-public:
+	setComponent ("Browser");
+	setTypeName ("MotionBlur");
 
-	SFBool  enabled;
-	SFFloat intensity;
+	addField (inputOutput, "enabled",     enabled);
+	addField (inputOutput, "intensity", intensity);
+}
 
-	MotionBlur (X3DExecutionContext* const);
+X3DBaseNode*
+MotionBlur::create (X3DExecutionContext* const executionContext) const
+{
+	return new MotionBlur (executionContext);
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
+void
+MotionBlur::initialize ()
+{
+	X3DBaseNode::initialize ();
 
-	void
-	clear ();
+	enabled .addInterest (this, &MotionBlur::set_enabled);
 
-	virtual
-	void
-	display ();
-
-
-private:
-
-	virtual
-	void
-	initialize ();
-
-	void
 	set_enabled ();
+}
 
-};
+void
+MotionBlur::set_enabled ()
+{
+	clear ();
+	
+	getBrowser () -> displayed .addInterest (this, &MotionBlur::display);
+}
+
+void
+MotionBlur::clear ()
+{
+	glClearAccum (0, 0, 0, 1);
+
+	glClear (GL_ACCUM_BUFFER_BIT);
+}
+
+void
+MotionBlur::display ()
+{
+	if (enabled)
+	{
+		glAccum (GL_MULT, intensity);
+
+		glAccum (GL_ACCUM, 1 - intensity);
+
+		glAccum (GL_RETURN, 1);
+	}
+}
 
 } // X3D
 } // titania
-
-#endif

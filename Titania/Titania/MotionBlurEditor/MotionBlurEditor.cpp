@@ -58,7 +58,12 @@ MotionBlurEditor::MotionBlurEditor (const std::string & sessionKey, X3DBrowserIn
 	X3DMotionBlurEditorUI (get_ui ("MotionBlurEditor.ui"), sessionKey) 
 {
 	setBrowserWidget (browserWidget);
-	setBrowser (browserWidget -> getBrowser ());
+}
+
+const X3D::SFNode <X3D::X3DBrowser> &
+MotionBlurEditor::getBrowser () const
+{
+	return getBrowserWidget () -> getBrowser ();
 }
 
 void
@@ -66,19 +71,19 @@ MotionBlurEditor::initialize ()
 {
 	X3DMotionBlurEditorUI::initialize ();
 
-	//	getIntensity () .set_value (surface .motionBlur -> intensity);
+	getIntensity () .set_value (getBrowser () -> getBrowserOptions () -> motionBlur -> intensity);
 }
 
 void
 MotionBlurEditor::on_enabled_toggled ()
 {
-	//	surface .motionBlur -> enabled = getEnabled () .get_active ();
+	getBrowser () -> getBrowserOptions () -> motionBlur -> enabled = getEnabled () .get_active ();
 }
 
 void
 MotionBlurEditor::on_intensity_changed ()
 {
-	//	surface .motionBlur -> intensity = getIntensity () .get_value ();
+	getBrowser () -> getBrowserOptions () -> motionBlur -> intensity = getIntensity () .get_value ();
 }
 
 } // puck

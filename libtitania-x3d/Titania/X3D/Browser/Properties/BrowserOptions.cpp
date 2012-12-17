@@ -82,7 +82,8 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	        textureQuality ("MEDIUM"),                                            
 	      primitiveQuality ("MEDIUM"),                                            
 	     qualityWhenMoving ("MEDIUM"),                                            
-	               shading ("GOURAUD"),                                           
+	               shading ("GOURAUD"),
+	            motionBlur (new MotionBlur (executionContext)),                                           
 	     textureProperties (new TextureProperties (executionContext)),            
 	         boxProperties (new BoxProperties (executionContext)),                
 	      sphereProperties (new QuadSphereProperties (executionContext)),         
@@ -100,6 +101,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "qualityWhenMoving",      qualityWhenMoving);
 	addField (inputOutput, "shading",                shading);
 
+	addField (inputOutput, "motionBlur",             motionBlur);
 	addField (inputOutput, "textureProperties",      textureProperties);
 	addField (inputOutput, "sphereProperties",       sphereProperties);
 	addField (inputOutput, "boxProperties",          boxProperties);
@@ -117,6 +119,7 @@ BrowserOptions::initialize ()
 {
 	X3DPropertyNode::initialize ();
 
+	motionBlur        -> setup ();
 	textureProperties -> setup ();
 	boxProperties     -> setup ();
 	sphereProperties  -> setup ();

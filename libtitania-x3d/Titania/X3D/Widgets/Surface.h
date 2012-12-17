@@ -54,7 +54,6 @@
 #include <Titania/OpenGL/Surface.h>
 
 #include "../Browser/X3DBrowser.h"
-#include "MotionBlur.h"
 #include "PointingDevice.h"
 #include "Viewer.h"
 
@@ -65,8 +64,6 @@ class Surface :
 	public opengl::Surface
 {
 public:
-
-	SFNode <MotionBlur> motionBlur;
 
 	Surface (const SFNode <X3DBrowser> &);
 

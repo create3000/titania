@@ -57,7 +57,6 @@ X3DBrowserUserInterface::X3DBrowserUserInterface (const std::string & sessionKey
 	 X3DBrowserWidgetUI (get_ui ("BrowserWidget.ui"), sessionKey), 
 	X3DBrowserInterface (X3D::createBrowser ()),                   
 	            surface (getBrowser ()),                           
-	   motionBlurEditor (sessionKey, this),                        
 	    viewpointEditor (sessionKey, this),                        
 	      historyEditor (sessionKey, this),                        
 	      outlineEditor (sessionKey, this)                         
@@ -72,9 +71,6 @@ X3DBrowserUserInterface::initialize ()
 
 	// Add IconFactory to the list of icon factories searched by Gtk::Style::lookup_icon_set ().
 	getIconFactory () -> add_default ();
-
-	// MotionBlurEditor
-	getMotionBlurEditor () .getWindow () .set_transient_for (getWindow ());
 
 	// ViewpointEditor
 	getViewpointEditor () .reparent (getViewpointEditorBox (), getWindow ());

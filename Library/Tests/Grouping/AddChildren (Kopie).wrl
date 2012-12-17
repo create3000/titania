@@ -1,5 +1,7 @@
 #X3D V3.0 utf8 Titania
 
+META "title" "Add Children"
+
 PROTO Cube [
   inputOutput SFVec3f translation 0 0 0
   inputOutput SFVec3f scale 0.0625 0.0625 0.0625
@@ -34,12 +36,12 @@ DEF Timer TimeSensor {
 
 DEF Felület Script {
   inputOnly      SFTime  set_time
-  initializeOnly SFInt32 xDimension 8
-  initializeOnly SFInt32 yDimension 8
-  initializeOnly SFInt32 zDimension 8
-  initializeOnly SFFloat xSpacing 0.001
-  initializeOnly SFFloat ySpacing 0.001
-  initializeOnly SFFloat zSpacing 0.001
+  initializeOnly SFInt32 xDimension 16
+  initializeOnly SFInt32 yDimension 16
+  initializeOnly SFInt32 zDimension 16
+  initializeOnly SFFloat xSpacing 0
+  initializeOnly SFFloat ySpacing 0
+  initializeOnly SFFloat zSpacing 0
   initializeOnly MFNode  addChildren [ ]
   initializeOnly MFNode  removeChildren [ ]
   initializeOnly MFNode  children [ ]

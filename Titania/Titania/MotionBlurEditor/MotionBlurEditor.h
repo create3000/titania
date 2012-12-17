@@ -72,6 +72,10 @@ private:
 	initialize ();
 
 	virtual
+	const X3D::SFNode <X3D::X3DBrowser> &
+	getBrowser () const;
+
+	virtual
 	void
 	on_enabled_toggled ();
 

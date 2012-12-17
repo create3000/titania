@@ -1,5 +1,18 @@
 2012-12-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Surface.h:
+	* Surface.cpp:
+	* MotionBlur.h:
+	* MotionBlur.cpp:
+	* MotionBlur.h:
+	* MotionBlur.cpp:
+	* BrowserOptions.h:
+	* BrowserOptions.cpp: 
+
+2012-12-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Text.cpp: 
 
 2012-12-17  Holger Seelig  <holger.seelig@yahoo.de>

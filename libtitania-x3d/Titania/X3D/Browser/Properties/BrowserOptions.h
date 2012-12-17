@@ -55,21 +55,22 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry3D/BoxProperties.h"
 #include "../Geometry3D/X3DSpherePropertyNode.h"
+#include "../Properties/MotionBlur.h"
 
 namespace titania {
 namespace X3D {
 
 // Table 9.2 — Browser options
 // Name                    Type/valid range                         Default                      Description
-// Antialiased             Boolean                                  False                        Render using hardware antialiasing if available
+// SplashScreen            Boolean                                  Implementation-dependent     Display browser splash screen on startup
 // Dashboard               Boolean                                                               Specified by bound NavigationInfo in contentDisplay browser navigation user interface
 // EnableInlineViewpoints  Boolean                                  True                         Viewpoints from Inline nodes are included in list of viewpoints if made available by the Inline node.
-// MotionBlur              Boolean                                  False                        Render animations with motion blur
+// Antialiased             Boolean                                  False                        Render using hardware antialiasing if available
+// TextureQuality          Low, Medium, High                        Medium                       Quality of texture map display
 // PrimitiveQuality        Low, Medium, High                        Medium                       Render quality (tesselation level) for Box, Cone, Cylinder, Sphere
 // QualityWhenMoving       Low, Medium, High,                       Same (as while stationary)   SameRender quality while camera is moving
 // Shading                 Point, Wireframe, Flat, Gouraud, Phong   Gouraud                      Specify shading mode for all objects
-// SplashScreen            Boolean                                  Implementation-dependent     Display browser splash screen on startup
-// TextureQuality          Low, Medium, High                        Medium                       Quality of texture map display
+// MotionBlur              Boolean                                  False                        Render animations with motion blur
 
 class BrowserOptions :
 	public X3DPropertyNode
@@ -85,7 +86,7 @@ public:
 	SFString qualityWhenMoving;
 	SFString shading;
 
-	//SFNode <MotionBlur> motionBlur;
+	SFNode <MotionBlur>            motionBlur;
 	SFNode <TextureProperties>     textureProperties;
 	SFNode <BoxProperties>         boxProperties;
 	SFNode <X3DSpherePropertyNode> sphereProperties;

@@ -46,69 +46,49 @@
  *
  ******************************************************************************/
 
-#include "MotionBlur.h"
+#ifndef __TITANIA_X3D_WIDGETS_MOTION_BLUR_H__
+#define __TITANIA_X3D_WIDGETS_MOTION_BLUR_H__
 
-#include "../Execution/X3DExecutionContext.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields.h"
 
 namespace titania {
 namespace X3D {
 
-MotionBlur::MotionBlur (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	     X3DNode (),                                                    
-	     enabled (),                                                    // SFBool  [in,out] enabled    FALSE
-	   intensity (0)                                                    // SFFloat [in,out] intensitiy 0
+class MotionBlur :
+	public X3DBaseNode
 {
-	setComponent ("Browser");
-	setTypeName ("MotionBlur");
+public:
 
-	addField (inputOutput, "metadata",   metadata);
-	addField (inputOutput, "enabled",     enabled);
-	addField (inputOutput, "intensity", intensity);
-}
+	SFBool  enabled;
+	SFFloat intensity;
 
-X3DBaseNode*
-MotionBlur::create (X3DExecutionContext* const executionContext) const
-{
-	return new MotionBlur (executionContext);
-}
+	MotionBlur (X3DExecutionContext* const);
 
-void
-MotionBlur::initialize ()
-{
-	X3DNode::initialize ();
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const;
 
-	enabled .addInterest (this, &MotionBlur::set_enabled);
-
+	void
 	clear ();
-}
 
-void
-MotionBlur::set_enabled ()
-{
-	clear ();
-}
+	virtual
+	void
+	display ();
 
-void
-MotionBlur::clear ()
-{
-	glClearAccum (0, 0, 0, 1);
 
-	glClear (GL_ACCUM_BUFFER_BIT);
-}
+private:
 
-void
-MotionBlur::display ()
-{
-	if (enabled)
-	{
-		glAccum (GL_MULT, intensity);
+	virtual
+	void
+	initialize ();
 
-		glAccum (GL_ACCUM, 1 - intensity);
+	void
+	set_enabled ();
 
-		glAccum (GL_RETURN, 1);
-	}
-}
+};
 
 } // X3D
 } // titania
+
+#endif

@@ -51,7 +51,6 @@
 
 #include "../Base/X3DBrowserInterface.h"
 #include "../HistoryEditor/HistoryEditor.h"
-#include "../MotionBlurEditor/MotionBlurEditor.h"
 #include "../OutlineEditor/OutlineEditor.h"
 #include "../UserInterfaces/X3DBrowserWidgetUI.h"
 #include "../ViewpointEditor/ViewpointEditor.h"
@@ -70,17 +69,13 @@ public:
 
 	/// @name Widgets
 
+	virtual
 	X3D::Surface &
 	getSurface () { return surface; }
 
+	virtual
 	const X3D::Surface &
 	getSurface () const { return surface; }
-
-	MotionBlurEditor &
-	getMotionBlurEditor () { return motionBlurEditor; }
-
-	const MotionBlurEditor &
-	getMotionBlurEditor () const { return motionBlurEditor; }
 
 	ViewpointEditor &
 	getViewpointEditor () { return viewpointEditor; }
@@ -132,7 +127,6 @@ protected:
 private:
 
 	X3D::Surface     surface;
-	MotionBlurEditor motionBlurEditor;
 	ViewpointEditor  viewpointEditor;
 	HistoryEditor    historyEditor;
 	OutlineEditor    outlineEditor;

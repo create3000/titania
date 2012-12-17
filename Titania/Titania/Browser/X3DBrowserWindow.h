@@ -81,8 +81,18 @@ public:
 	void
 	close ();
 
+	///  @name X3DBrowserInterface
+	
 	const std::shared_ptr <BrowserWidget> &
 	getBrowserWidget () const;
+
+	virtual
+	X3D::Surface &
+	getSurface ();
+
+	virtual
+	const X3D::Surface &
+	getSurface () const;
 
 	///  @name X3DBaseNode
 

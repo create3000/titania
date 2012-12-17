@@ -50,6 +50,7 @@
 #define __TITANIA_BROWSER_BROWSER_WINDOW_H__
 
 #include "../Browser/X3DBrowserWindow.h"
+#include "../MotionBlurEditor/MotionBlurEditor.h"
 
 namespace titania {
 namespace puck {
@@ -63,6 +64,17 @@ public:
 
 
 private:
+
+	void
+	initialize ();
+
+	/// @name Element access
+
+	MotionBlurEditor &
+	getMotionBlurEditor () { return motionBlurEditor; }
+
+	const MotionBlurEditor &
+	getMotionBlurEditor () const { return motionBlurEditor; }
 
 	/// @name File menu
 
@@ -211,7 +223,7 @@ private:
 	on_info ();
 
 	///  @name Notebook handling
-	
+
 	virtual
 	void
 	on_switch_page (Gtk::Widget *, guint);
@@ -224,7 +236,8 @@ private:
 	void
 	on_close_tab (Gtk::Widget &);
 
-	size_t currentPage;
+	size_t           currentPage;
+	MotionBlurEditor motionBlurEditor;
 
 };
 

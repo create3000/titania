@@ -69,11 +69,10 @@ signal_handler (int sig)
 }
 
 Surface::Surface (const SFNode <X3DBrowser> & browser) :
-	opengl::Surface (),                          
-	       motionBlur (new MotionBlur (*browser)), 
-	          browser (browser),                   
-	  pointingDevice  (*this),                     
-	          viewer  (*this)                      
+	opengl::Surface (),        
+	        browser (browser), 
+	pointingDevice  (*this),   
+	        viewer  (*this)    
 {
 	// install our handler
 	std::signal (SIGSEGV, signal_handler);
@@ -89,14 +88,13 @@ Surface::setup ()
 	get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
 
 	getBrowser () -> setup ();
-	motionBlur -> setup ();
 	viewer     .initialize ();
 }
 
 void
 Surface::reshape ()
 {
-	motionBlur -> clear ();
+	//motionBlur -> clear ();
 }
 
 void

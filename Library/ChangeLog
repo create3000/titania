@@ -1,6 +1,14 @@
 2012-12-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Library.mdproj:
+	* Children.wrl:
+	* AddChildren.wrl:
+	* Add&RemoveChildren.wrl:
+	* AddChildren (Kopie).wrl: 
+
+2012-12-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
 	* test.wrl:
 	* Text.wrl:
 	* Add&RemoveChildren.wrl: 

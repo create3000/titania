@@ -60,6 +60,14 @@ class X3DBrowserInterface :
 public:
 
 	virtual
+	X3D::Surface &
+	getSurface () = 0;
+
+	virtual
+	const X3D::Surface &
+	getSurface () const = 0;
+
+	virtual
 	void
 	setDescription (const std::string &)
 	throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,

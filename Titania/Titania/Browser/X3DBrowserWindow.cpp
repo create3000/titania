@@ -291,12 +291,24 @@ X3DBrowserWindow::close ()
 	quit ();
 }
 
-// X3DX3DBrowserWindowUserInterace
+// X3DBrowserInterface
 
 const std::shared_ptr <BrowserWidget> &
 X3DBrowserWindow::getBrowserWidget () const
 {
 	return browserWidgets [getCurrentPage ()];
+}
+
+X3D::Surface &
+X3DBrowserWindow::getSurface ()
+{
+	return getBrowserWidget () -> getSurface ();
+}
+
+const X3D::Surface &
+X3DBrowserWindow::getSurface () const
+{
+	return getBrowserWidget () -> getSurface ();
 }
 
 // X3DBaseNode

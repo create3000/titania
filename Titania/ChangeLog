@@ -1,5 +1,17 @@
 2012-12-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DBrowserWindow.h:
+	* X3DBrowserInterface.h:
+	* X3DBrowserWindow.cpp:
+	* MotionBlurEditor.h:
+	* MotionBlurEditor.cpp:
+	* X3DBrowserUserInterface.h:
+	* X3DBrowserUserInterface.cpp: 
+
+2012-12-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineTreeModel.h: 
 
 2012-12-16  Holger Seelig  <holger.seelig@yahoo.de>

@@ -1513,7 +1513,6 @@
     <None Include="Protos\Geometry2D\RegularPolygon2D\RegularPolygon2D.py" />
     <None Include="Protos\Geometry2D\RegularPolygon2D\RegularPolygon2D.wrl" />
     <None Include="Tests\Scripting\Felület3D.wrl" />
-    <None Include="Tests\Grouping\Add&amp;RemoveChildren.wrl" />
     <None Include="Examples\bic\stage\worlds\aussenkachel1-lo.png" />
     <None Include="Examples\bic\stage\worlds\aussenwand1.png" />
     <None Include="Examples\bic\stage\worlds\baum.wrl" />
@@ -1568,6 +1567,9 @@
     <None Include="Examples\bic\stage\worlds\tür_brett.wrl" />
     <None Include="Examples\bic\stage\worlds\wand1.png" />
     <None Include="Tests\Text\Text.wrl" />
+    <None Include="Tests\Grouping\AddChildren.wrl" />
+    <None Include="Tests\Grouping\AddChildren %28Kopie%29.wrl" />
+    <None Include="Tests\Grouping\Children.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

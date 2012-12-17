@@ -29,6 +29,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/HitArray.cpp \
 	Titania/X3D/Browser/Properties/BrowserOptions.cpp \
 	Titania/X3D/Browser/Properties/BrowserProperties.cpp \
+	Titania/X3D/Browser/Properties/MotionBlur.cpp \
 	Titania/X3D/Browser/Properties/RenderingProperties.cpp \
 	Titania/X3D/Browser/Properties/X3DGeometryPropertyNode.cpp \
 	Titania/X3D/Browser/X3DBrowser.cpp \
@@ -397,7 +398,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Routing/Router.cpp \
 	Titania/X3D/Routing/RouteSet.cpp \
 	Titania/X3D/Types/Image.cpp \
-	Titania/X3D/Widgets/MotionBlur.cpp \
 	Titania/X3D/Widgets/PointingDevice.cpp \
 	Titania/X3D/Widgets/Surface.cpp \
 	Titania/X3D/Widgets/Viewer.cpp

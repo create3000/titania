@@ -1,0 +1,135 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "Add Children"
+
+PROTO Cube [
+  inputOutput SFVec3f translation 0 0 0
+  inputOutput SFVec3f scale 0.0625 0.0625 0.0625
+]
+{
+  Transform {
+    translation IS translation
+    scale IS scale
+    children Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box {
+        size 1 1 1
+      }
+    }
+  }
+}
+
+Viewpoint {
+  position 1.93731 1.26081 1.81808
+  orientation -0.538509 0.832463 0.130435 0.862355
+  centerOfRotation 0.47625 0.09525 0
+}
+
+DEF Space Group { }
+
+DEF Timer TimeSensor {
+  cycleInterval 0.05
+  loop TRUE
+}
+
+DEF Felület Script {
+  inputOnly      SFTime  set_time
+  initializeOnly SFInt32 xDimension 16
+  initializeOnly SFInt32 yDimension 16
+  initializeOnly SFInt32 zDimension 16
+  initializeOnly SFFloat xSpacing 0
+  initializeOnly SFFloat ySpacing 0
+  initializeOnly SFFloat zSpacing 0
+  initializeOnly MFNode  addChildren [ ]
+  initializeOnly MFNode  removeChildren [ ]
+  initializeOnly MFNode  children [ ]
+  initializeOnly SFNode  space USE Space
+
+  url "vrmlscript:
+  
+var x = 0;
+var y = 0;
+var z = 0;
+
+function initialize ()
+{
+	var array = new MFString ('0', '1', '2');
+	print (array);
+	print (array [0])
+	print (array [1])
+	print (array [2])
+}
+
+function set_time (value, time)
+{
+	print ('set_time: ' + space .children .length);
+	
+	addChildren    .length = 0;
+	removeChildren .length = 0;
+	
+	randomCubes ();
+
+	space .addChildren    = addChildren;
+	//space .removeChildren = removeChildren;
+}
+
+function randomCubes ()
+{
+	for (var i = 0; i < 2; ++ i)
+	{
+		var index = get_index (x, y, z);
+
+		addCube (index, [x, y, z]);
+		
+		if (! (index % 3))
+			removeChildren [removeChildren .length] = children [index];
+	
+		if (++ x >= xDimension)
+		{
+			x = 0;
+			if (++ y >= yDimension)
+			{
+				y = 0;
+				if (++ z >= zDimension)
+				{
+					print ('clear');
+					z = 0;
+					
+					addChildren     .length = 0;
+					removeChildren  .length = 0;
+					children        .length = 0;
+					space .children .length = 0;
+				}
+			}
+		}
+	}
+}
+
+function addCube (index, point)
+{
+	var x = point [0];
+	var y = point [1];
+	var z = point [2];
+	
+	var cube = Browser .currentScene .createProto ('Cube');
+	children [index]   = cube;
+	addChildren [addChildren .length] = cube;
+	
+	cube .translation = new SFVec3f (x / xDimension + xSpacing * x, y / yDimension + ySpacing * y, z / zDimension + zSpacing * z);
+}
+
+function get_index (x, y, z)
+{
+	return (x * yDimension + y) * zDimension + z;
+}
+
+function random (value)
+{
+	return Math .round (Math .random () * value);
+}
+"
+}
+
+ROUTE Timer.time TO Felület.set_time
