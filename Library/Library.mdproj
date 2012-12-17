@@ -1567,6 +1567,7 @@
     <None Include="Examples\bic\stage\worlds\strasse03.png" />
     <None Include="Examples\bic\stage\worlds\tür_brett.wrl" />
     <None Include="Examples\bic\stage\worlds\wand1.png" />
+    <None Include="Tests\Text\Text.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

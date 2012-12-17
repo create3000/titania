@@ -1,5 +1,12 @@
 2012-12-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.cpp:
+	* X3DBrowser.cpp:
+	* Text.cpp:
+	* X3DLayerNode.cpp: 
+
+2012-12-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DType.h:

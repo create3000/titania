@@ -742,8 +742,12 @@ X3DBaseNode::dispose ()
 
 X3DBaseNode::~X3DBaseNode ()
 {
+	//__LOG__ << typeName << std::endl;
+
 	for (const auto & field : getUserDefinedFields ())
 		delete field;
+
+	//__LOG__ << typeName << std::endl;
 }
 
 template std::istream & operator >> (std::istream &, X3DBaseNode*);

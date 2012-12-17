@@ -257,11 +257,6 @@ X3DLayerNode::set_viewport ()
 void
 X3DLayerNode::dispose ()
 {
-	//	delete navigationInfoStack .bottom ();
-	//	delete backgroundStack     .bottom ();
-	//	delete fogStack            .bottom ();
-	//	delete viewpointStack      .bottom ();
-
 	X3DNode::dispose ();
 }
 

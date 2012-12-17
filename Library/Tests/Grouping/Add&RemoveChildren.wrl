@@ -115,7 +115,7 @@ function addCube (index, point)
 	children [index]   = cube;
 	addChildren [addChildren .length] = cube;
 	
-	cube .translation = new SFVec3f (x / xDimension + xSpacing * x, y / yDimension + ySpacing * y, z / zDimension + zSpacing * z); 
+	cube .translation = new SFVec3f (x / xDimension + xSpacing * x, y / yDimension + ySpacing * y, z / zDimension + zSpacing * z);
 }
 
 function get_index (x, y, z)

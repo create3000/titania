@@ -535,6 +535,8 @@ X3DBrowser::dispose ()
 	supportedProfiles   .dispose ();
 	
 	X3DBrowserContext::dispose ();
+	
+	getGarbageCollector () .dispose ();
 
 	std::clog << "Browser::dispose done ..." << std::endl;
 }
