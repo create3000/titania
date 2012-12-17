@@ -312,12 +312,8 @@ Text::display ()
 void
 Text::dispose ()
 {
-	__LOG__ << std::endl;
-
 	font .reset (NULL);
 
-	__LOG__ << std::endl;
-	
 	X3DGeometryNode::dispose ();
 }
 
