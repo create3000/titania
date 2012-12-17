@@ -46,8 +46,6 @@
  *
  ******************************************************************************/
 
-#include "../Basic/FieldType.h"
-
 #ifndef __TITANIA_X3D_BITS_X3DCONSTANTS_H__
 #define __TITANIA_X3D_BITS_X3DCONSTANTS_H__
 
@@ -58,7 +56,7 @@ class X3DConstants
 {
 public:
 
-	enum X3DAccessType
+	enum AccessType
 	{
 		initializeOnly = 1, // 0b001
 		inputOnly      = 2, // 0b010
@@ -67,51 +65,54 @@ public:
 
 	};
 
-	static const FieldType* const SFBool;
-	static const FieldType* const SFColor;
-	static const FieldType* const SFColorRGBA;
-	static const FieldType* const SFDouble;
-	static const FieldType* const SFFloat;
-	static const FieldType* const SFImage;
-	static const FieldType* const SFInt32;
-	static const FieldType* const SFMatrix3d;
-	static const FieldType* const SFMatrix3f;
-	static const FieldType* const SFMatrix4d;
-	static const FieldType* const SFMatrix4f;
-	static const FieldType* const SFNode;
-	static const FieldType* const SFRotation;
-	static const FieldType* const SFString;
-	static const FieldType* const SFTime;
-	static const FieldType* const SFVec2d;
-	static const FieldType* const SFVec2f;
-	static const FieldType* const SFVec3d;
-	static const FieldType* const SFVec3f;
-	static const FieldType* const SFVec4d;
-	static const FieldType* const SFVec4f;
+	enum FieldType
+	{
+		SFBool,
+		SFColor,
+		SFColorRGBA,
+		SFDouble,
+		SFFloat,
+		SFImage,
+		SFInt32,
+		SFMatrix3d,
+		SFMatrix3f,
+		SFMatrix4d,
+		SFMatrix4f,
+		SFNode,
+		SFRotation,
+		SFString,
+		SFTime,
+		SFVec2d,
+		SFVec2f,
+		SFVec3d,
+		SFVec3f,
+		SFVec4d,
+		SFVec4f,
 
-	static const FieldType* const MFBool;
-	static const FieldType* const MFColor;
-	static const FieldType* const MFColorRGBA;
-	static const FieldType* const MFDouble;
-	static const FieldType* const MFFloat;
-	static const FieldType* const MFImage;
-	static const FieldType* const MFInt32;
-	static const FieldType* const MFMatrix3d;
-	static const FieldType* const MFMatrix3f;
-	static const FieldType* const MFMatrix4d;
-	static const FieldType* const MFMatrix4f;
-	static const FieldType* const MFNode;
-	static const FieldType* const MFRotation;
-	static const FieldType* const MFString;
-	static const FieldType* const MFTime;
-	static const FieldType* const MFVec2d;
-	static const FieldType* const MFVec2f;
-	static const FieldType* const MFVec3d;
-	static const FieldType* const MFVec3f;
-	static const FieldType* const MFVec4d;
-	static const FieldType* const MFVec4f;
+		MFBool,
+		MFColor,
+		MFColorRGBA,
+		MFDouble,
+		MFFloat,
+		MFImage,
+		MFInt32,
+		MFMatrix3d,
+		MFMatrix3f,
+		MFMatrix4d,
+		MFMatrix4f,
+		MFNode,
+		MFRotation,
+		MFString,
+		MFTime,
+		MFVec2d,
+		MFVec2f,
+		MFVec3d,
+		MFVec3f,
+		MFVec4d,
+		MFVec4f
+	};
 
-	enum NodeTypes
+	enum NodeType
 	{
 		X3DAppearanceChildNode,
 		X3DAppearanceNode,

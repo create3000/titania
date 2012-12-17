@@ -118,7 +118,7 @@ public:
 	const basic::id &
 	getNodeTypeName () const;
 
-	const X3DType*
+	const X3DBaseNode*
 	getNodeType () const;
 
 	void
@@ -264,7 +264,7 @@ SFNode <ValueType>::getNodeTypeName () const
 }
 
 template <class ValueType>
-const X3DType*
+const X3DBaseNode*
 SFNode <ValueType>::getNodeType () const
 {
 	return getValue () -> getType ();

@@ -56,4 +56,4 @@ namespace X3D {
 } // X3D
 } // titania
 
-template class std::deque <titania::X3D::X3DConstants::NodeTypes>;
+template class std::deque <titania::X3D::X3DConstants::NodeType>;

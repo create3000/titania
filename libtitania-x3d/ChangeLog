@@ -1,3 +1,90 @@
+2012-12-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DType.h:
+	* MFNode.h:
+	* SFTime.h:
+	* SFNode.h:
+	* X3DType.cpp:
+	* X3DObject.h:
+	* X3DField.h:
+	* NodeType.h:
+	* X3DArray.h:
+	* SFTime.cpp:
+	* SFNode.cpp:
+	* MFNode.cpp:
+	* SFVec4.cpp:
+	* Parser.cpp:
+	* FieldType.h:
+	* SFVec3.cpp:
+	* SFVec2.cpp:
+	* SFColor.cpp:
+	* NodeType.cpp:
+	* SFImage.cpp:
+	* MFInt32.cpp:
+	* X3DObject.cpp:
+	* X3DConstants.h:
+	* FieldType.cpp:
+	* SFString.cpp:
+	* X3DBaseNode.h:
+	* SFMatrix4.cpp:
+	* SFMatrix3.cpp:
+	* X3DScalar.cpp:
+	* X3DConstants.cpp:
+	* X3DBaseNode.cpp:
+	* NodeTypeArray.h:
+	* ArrayFields.cpp:
+	* SFRotation4.cpp:
+	* SFColorRGBA.cpp:
+	* NodeTypeArray.cpp:
+	* X3DFieldDefinition.h:
+	* Box.h:
+	* Box.cpp:
+	* Sphere.h:
+	* Sphere.cpp:
+	* BoxProperties.h:
+	* BrowserOptions.h:
+	* jsfield.cpp:
+	* BoxProperties.cpp:
+	* jsX3DField.h:
+	* BrowserOptions.cpp:
+	* jsX3DObject.h:
+	* jsX3DField.cpp:
+	* X3DPrototypeInstance.h:
+	* jsX3DObject.cpp:
+	* RenderingProperties.h:
+	* X3DPrototypeInstance.cpp:
+	* jsSFVec2.h:
+	* jsSFVec4.h:
+	* QuadSphereProperties.h:
+	* QuadSphereProperties.h:
+	* jsSFVec3.h:
+	* X3DSpherePropertyNode.h:
+	* BoxProperties.h:
+	* X3DSpherePropertyNode.h:
+	* QuadSphereProperties.cpp:
+	* QuadSphereProperties.cpp:
+	* jsSFNode.cpp:
+	* BoxProperties.cpp:
+	* X3DSpherePropertyNode.cpp:
+	* jsSFColor.cpp:
+	* jsSFMatrix4.h:
+	* jsSFMatrix3.h:
+	* jsSFImage.cpp:
+	* X3DGeometryPropertyNode.h:
+	* X3DSpherePropertyNode.cpp:
+	* X3DGeometryPropertyNode.cpp:
+	* jsArrayFields.h:
+	* jsSFRotation.cpp:
+	* jsSFColorRGBA.cpp:
+	* jsX3DFieldDefinition.cpp:
+	* QuadSphereProperties (Kopie).h:
+	* QuadSphereProperties.h:
+	* QuadSphereProperties.cpp:
+	* X3DSpherePropertyNode.cpp:
+	* X3DGeometryPropertyNode (Kopie).h: 
+
 2012-12-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DOutput.h:

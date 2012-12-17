@@ -164,7 +164,7 @@ private:
 	typedef Gtk::TreeModelColumn <Gdk::Color>                  background_color_column_type;
 	typedef Gtk::TreeModelColumn <Glib::ustring>               debug_column_type;
 
-	typedef std::map <const X3D::X3DType*, Glib::RefPtr <Gdk::Pixbuf>> FieldTypeImagesMap;
+	typedef std::map <const X3D::X3DConstants::FieldType, Glib::RefPtr <Gdk::Pixbuf>> FieldTypeImageIndex;
 
 	X3D::SFNode <X3D::X3DExecutionContext> executionContext;
 
@@ -174,7 +174,7 @@ private:
 	debug_column_type            debug_column;
 
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
-	FieldTypeImagesMap         fieldTypeImages;
+	FieldTypeImageIndex         fieldTypeImages;
 	Gdk::Color                 selected_color;
 
 	int stamp;

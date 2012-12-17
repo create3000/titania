@@ -141,8 +141,8 @@ public:
 	write (const X3DObject &);
 
 	virtual
-	const FieldType*
-	getType () const { return &X3DField <Array <SFNode <X3DBaseNode>>>::type; }
+	X3DConstants::FieldType
+	getType () const { return X3DConstants::MFNode; }
 
 	virtual
 	void
@@ -194,7 +194,7 @@ template <class Type>
 void
 MFNode <Type>::write (const X3DObject & field)
 {
-	assert (getType () == field .getType ());
+	//assert (getType () == field .getType ());
 
 //	const MFNode* same_type = dynamic_cast <const MFNode*> (&field);
 //

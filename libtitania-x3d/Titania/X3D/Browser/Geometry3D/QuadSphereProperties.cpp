@@ -92,8 +92,6 @@ void
 QuadSphereProperties::eventsProcessed ()
 {
 	X3DSpherePropertyNode::eventsProcessed ();
-	
-	__LOG__ << std::endl;
 
 	update ();
 }

@@ -13,12 +13,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Base/X3DInput.cpp \
 	Titania/X3D/Base/X3DObject.cpp \
 	Titania/X3D/Base/X3DOutput.cpp \
-	Titania/X3D/Base/X3DType.cpp \
 	Titania/X3D/Basic/BasicNodeArray.cpp \
 	Titania/X3D/Basic/FieldDefinitionArray.cpp \
 	Titania/X3D/Basic/FieldDefinitionSet.cpp \
-	Titania/X3D/Basic/FieldType.cpp \
-	Titania/X3D/Basic/NodeType.cpp \
 	Titania/X3D/Basic/NodeTypeArray.cpp \
 	Titania/X3D/Basic/X3DBaseNode.cpp \
 	Titania/X3D/Basic/X3DContext.cpp \
@@ -26,12 +23,14 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Bits/Error.cpp \
 	Titania/X3D/Bits/X3DConstants.cpp \
 	Titania/X3D/Browser/Browser.cpp \
+	Titania/X3D/Browser/Geometry3D/BoxProperties.cpp \
+	Titania/X3D/Browser/Geometry3D/QuadSphereProperties.cpp \
+	Titania/X3D/Browser/Geometry3D/X3DSpherePropertyNode.cpp \
 	Titania/X3D/Browser/HitArray.cpp \
 	Titania/X3D/Browser/Properties/BrowserOptions.cpp \
 	Titania/X3D/Browser/Properties/BrowserProperties.cpp \
-	Titania/X3D/Browser/Properties/QuadSphereProperties.cpp \
 	Titania/X3D/Browser/Properties/RenderingProperties.cpp \
-	Titania/X3D/Browser/Properties/X3DSpherePropertyNode.cpp \
+	Titania/X3D/Browser/Properties/X3DGeometryPropertyNode.cpp \
 	Titania/X3D/Browser/X3DBrowser.cpp \
 	Titania/X3D/Browser/X3DBrowserContext.cpp \
 	Titania/X3D/Components/CADGeometry/CADAssembly.cpp \

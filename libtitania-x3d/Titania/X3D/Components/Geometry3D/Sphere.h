@@ -49,7 +49,6 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY3D_SPHERE_H__
 #define __TITANIA_X3D_COMPONENTS_GEOMETRY3D_SPHERE_H__
 
-#include "../../Browser/Properties/X3DSpherePropertyNode.h"
 #include "../Rendering/X3DGeometryNode.h"
 
 namespace titania {

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,21 +46,45 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASIC_NODE_TYPE_H__
-#define __TITANIA_X3D_BASIC_NODE_TYPE_H__
+#ifndef __TITANIA_X3D_BROWSER_PROPERTIES_BOX_PROPERTIES_H__
+#define __TITANIA_X3D_BROWSER_PROPERTIES_BOX_PROPERTIES_H__
 
-#include "../Base/X3DType.h"
+#include "../Properties/X3DGeometryPropertyNode.h"
 
 namespace titania {
 namespace X3D {
 
-class NodeType :
-	public X3DType
+//	Property Name           Value data type      Description
+
+class BoxProperties :
+	public X3DGeometryPropertyNode
 {
 public:
 
-	explicit
-	NodeType (const basic::id &);
+	BoxProperties (X3DExecutionContext* const);
+
+	virtual
+	GLenum
+	getVertexMode () const { return GL_QUADS; }
+	
+
+private:
+
+	virtual
+	BoxProperties*
+	create (X3DExecutionContext* const) const;
+
+	virtual
+	void
+	initialize ();
+
+	virtual
+	void
+	eventsProcessed ();
+
+	virtual
+	void
+	build ();
 
 };
 

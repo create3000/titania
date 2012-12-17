@@ -52,8 +52,8 @@
 #include "../Base/GarbageCollector.h"
 #include "../Base/X3DInput.h"
 #include "../Base/X3DOutput.h"
-#include "../Base/X3DType.h"
 #include "../Bits/Error.h"
+#include <Titania/Basic/Id.h>
 #include <Titania/LOG.h>
 #include <istream>
 #include <ostream>
@@ -62,7 +62,7 @@ namespace titania {
 namespace X3D {
 
 class X3DObject :
-	public X3DType, public X3DInput, public X3DOutput
+	public X3DInput, public X3DOutput
 {
 public:
 
@@ -71,9 +71,8 @@ public:
 	void
 	setName (const basic::id &);
 
-	virtual
-	const X3DType*
-	getType () const = 0;
+	const basic::id &
+	getName () const;
 
 	virtual
 	const basic::id &
@@ -130,6 +129,8 @@ protected:
 
 
 private:
+
+	basic::id name;
 
 	static GarbageCollector garbageCollector;
 

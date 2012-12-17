@@ -274,20 +274,22 @@ X3DBaseNode::setTypeName (const basic::id & value)
 	typeName = value;
 }
 
-const X3DBaseNode*
-X3DBaseNode::getType () const
-{
-	return getBrowser () -> getNode (getTypeName ());
-}
-
 const basic::id &
 X3DBaseNode::getTypeName () const
+throw (Error <DISPOSED>)
 {
 	return typeName;
 }
 
+const X3DBaseNode*
+X3DBaseNode::getType () const
+throw (Error <DISPOSED>)
+{
+	return getBrowser () -> getNode (getTypeName ());
+}
+
 void
-X3DBaseNode::addNodeType (const X3DConstants::NodeTypes value)
+X3DBaseNode::addNodeType (const X3DConstants::NodeType value)
 {
 	//	std::clog << __FILE__ << ":" << __LINE__ << ": in function " << __func__ << ": " << Generator::NodeTypes .at (value) << std::endl;
 	nodeType .push_back (value);

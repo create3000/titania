@@ -77,7 +77,11 @@ public:
 	copy () const;
 
 	virtual
-	const FieldType*
+	const basic::id &
+	getTypeName () const;
+	
+	virtual
+	X3DConstants::FieldType
 	getType () const;
 	
 	std::string
@@ -91,7 +95,12 @@ public:
 	void
 	toStream (std::ostream &) const;
 
-	static const FieldType type;
+
+private:
+
+	static const basic::id typeName;
+	
+	static const X3DConstants::FieldType type;
 
 };
 

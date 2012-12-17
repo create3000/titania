@@ -46,21 +46,59 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASIC_FIELD_TYPE_H__
-#define __TITANIA_X3D_BASIC_FIELD_TYPE_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY_PROPERTIES_X3DGEOMETRY_PROPERTY_NODE_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY_PROPERTIES_X3DGEOMETRY_PROPERTY_NODE_H__
 
-#include "../Base/X3DType.h"
+#include "../../Components/Core/X3DPropertyNode.h"
 
 namespace titania {
 namespace X3D {
 
-class FieldType :
-	public X3DType
+class X3DGeometryPropertyNode :
+	public X3DPropertyNode
 {
 public:
 
-	explicit
-	FieldType (const basic::id &);
+	X3DGeometryPropertyNode ();
+
+	const std::vector <Vector2f> &
+	getTexCoord () const { return texCoord; }
+
+	const std::vector <Vector3f> &
+	getNormals () const { return normals; }
+
+	const std::vector <Vector3f> &
+	getVertices () const { return vertices; }
+	
+	virtual
+	GLenum
+	getVertexMode () const = 0;
+
+
+protected:
+
+	std::vector <Vector2f> &
+	getTexCoord () { return texCoord; }
+
+	std::vector <Vector3f> &
+	getNormals () { return normals; }
+
+	std::vector <Vector3f> &
+	getVertices () { return vertices; }
+
+	void
+	update ();
+
+	virtual
+	void
+	build () = 0;
+
+
+private:
+
+	std::vector <Vector2f> texCoord;
+	std::vector <Vector3f> normals;
+	std::vector <Vector3f> vertices;
 
 };
 

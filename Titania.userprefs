@@ -1,16 +1,23 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/GeometryProperties/BoxProperties.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="796" Column="19" />
+      <File FileName="experimental/main.cpp" Line="768" Column="3" />
       <File FileName="Library/Tests/Text/test.wrl" Line="46" Column="25" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.h" Line="72" Column="2" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="218" Column="33" />
       <File FileName="Library/Tests/Grouping/Add&amp;RemoveChildren.wrl" Line="70" Column="17" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.h" Line="104" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.cpp" Line="135" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DOutput.h" Line="72" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DOutput.cpp" Line="84" Column="75" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Box.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Box.cpp" Line="51" Column="57" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.h" Line="52" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.cpp" Line="51" Column="43" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.h" Line="90" Column="28" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/GeometryProperties/BoxProperties.h" Line="51" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.h" Line="53" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/GeometryProperties/BoxProperties.cpp" Line="186" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -40,6 +47,9 @@
                 <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
+                  <Node name="GeometryProperties" expanded="True">
+                    <Node name="Hit.h" selected="True" />
+                  </Node>
                   <Node name="Properties" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">

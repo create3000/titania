@@ -48,8 +48,8 @@
 
 #include "BrowserOptions.h"
 
-#include "../Properties/QuadSphereProperties.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Geometry3D/QuadSphereProperties.h"
 #include <Titania/String/Join.h>
 
 extern "C"
@@ -73,7 +73,7 @@ namespace X3D {
 // TextureQuality          Low, Medium, High                           Medium                       Quality of texture map display
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
-	          X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	       X3DPropertyNode (),                                                    
 	          splashScreen (false),                                               
 	             dashboard (),                                                    
@@ -83,9 +83,10 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	      primitiveQuality ("MEDIUM"),                                            
 	     qualityWhenMoving ("MEDIUM"),                                            
 	               shading ("GOURAUD"),                                           
-	     textureProperties (new TextureProperties (executionContext)),        
-	      sphereProperties (new QuadSphereProperties (executionContext)),
-	             fontStyle (new FontStyle (executionContext))
+	     textureProperties (new TextureProperties (executionContext)),            
+	         boxProperties (new BoxProperties (executionContext)),                
+	      sphereProperties (new QuadSphereProperties (executionContext)),         
+	             fontStyle (new FontStyle (executionContext))                     
 {
 	setComponent ("Browser"),
 	setTypeName ("BrowserOptions");
@@ -101,6 +102,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "textureProperties",      textureProperties);
 	addField (inputOutput, "sphereProperties",       sphereProperties);
+	addField (inputOutput, "boxProperties",          boxProperties);
 	addField (inputOutput, "fontStyle",              fontStyle);
 }
 
@@ -116,12 +118,13 @@ BrowserOptions::initialize ()
 	X3DPropertyNode::initialize ();
 
 	textureProperties -> setup ();
+	boxProperties     -> setup ();
 	sphereProperties  -> setup ();
 	fontStyle         -> setup ();
 
 	primitiveQuality .addInterest (this, &BrowserOptions::set_primitiveQuality);
 	shading          .addInterest (this, &BrowserOptions::set_shading);
-	
+
 	set_textureQuality ();
 	set_primitiveQuality ();
 	set_shading ();
@@ -134,7 +137,7 @@ BrowserOptions::set_textureQuality ()
 	textureProperties -> minificationFilter  = "NICEST";
 	textureProperties -> textureCompression  = "NICEST";
 	textureProperties -> generateMipMaps     = true;
-	
+
 }
 
 void
@@ -145,7 +148,7 @@ BrowserOptions::set_primitiveQuality ()
 	if (primitiveQuality == "LOW")
 	{
 		SFNode <QuadSphereProperties> quadSphereProperties = sphereProperties;
-		
+
 		if (quadSphereProperties)
 		{
 			quadSphereProperties -> uDimension = 20;
@@ -155,7 +158,7 @@ BrowserOptions::set_primitiveQuality ()
 	else if (primitiveQuality == "MEDIUM")
 	{
 		SFNode <QuadSphereProperties> quadSphereProperties = sphereProperties;
-		
+
 		if (quadSphereProperties)
 		{
 			quadSphereProperties -> uDimension = 40;
@@ -165,7 +168,7 @@ BrowserOptions::set_primitiveQuality ()
 	else if (primitiveQuality == "HIGH")
 	{
 		SFNode <QuadSphereProperties> quadSphereProperties = sphereProperties;
-		
+
 		if (quadSphereProperties)
 		{
 			quadSphereProperties -> uDimension = 80;

@@ -69,8 +69,19 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	virtual
+	void
+	dispose ();
+
 
 private:
+
+	virtual
+	void
+	initialize ();
+
+	void
+	set_properties ();
 
 	Box3f
 	createBBox ();

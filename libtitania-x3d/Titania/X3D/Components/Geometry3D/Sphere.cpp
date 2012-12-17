@@ -48,7 +48,7 @@
 
 #include "Sphere.h"
 
-#include "../../Browser/Properties/QuadSphereProperties.h"
+#include "../../Browser/Geometry3D/QuadSphereProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -113,8 +113,7 @@ Sphere::build ()
 			getVertices () .emplace_back (vertex * radius .getValue ());
 	}
 	
-	if (SFNode <QuadSphereProperties> (getBrowser () -> getBrowserOptions () -> sphereProperties))
-		setVertexMode (GL_QUADS);
+	setVertexMode (sphereProperties -> getVertexMode ());
 }
 
 void

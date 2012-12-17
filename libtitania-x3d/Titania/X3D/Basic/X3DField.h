@@ -49,7 +49,6 @@
 #ifndef __TITANIA_X3D_BASIC_X3DFIELD_H__
 #define __TITANIA_X3D_BASIC_X3DFIELD_H__
 
-#include "../Basic/FieldType.h"
 #include "../Basic/X3DFieldDefinition.h"
 #include "../InputOutput/Generator.h"
 #include <cassert>
@@ -87,15 +86,12 @@ public:
 	/// @name Elements access
 
 	virtual
-	const FieldType*
-	getType () const { return &type; }
+	X3DConstants::FieldType
+	getType () const { return type; }
 
 	virtual
 	const basic::id &
-	getTypeName () const
-	{
-		return getType () -> getName ();
-	}
+	getTypeName () const { return typeName; }
 
 	///  6.7.5 getValue service.
 	const ValueType &
@@ -187,9 +183,6 @@ public:
 	void
 	dispose ();
 
-	///  Type identifer for X3DFields.
-	static const FieldType type;
-
 
 protected:
 
@@ -226,10 +219,19 @@ private:
 	///  The value for this field.
 	ValueType value;
 
+	///  TypeName identifer for X3DFields.
+	static const basic::id typeName;
+
+	///  Type identifer for X3DFields.
+	static const X3DConstants::FieldType type;
+
 };
 
 template <class ValueType>
-const FieldType X3DField <ValueType>::type ("X3DField");
+const basic::id X3DField <ValueType>::typeName = "X3DField";
+
+template <class ValueType>
+const X3DConstants::FieldType X3DField <ValueType>::type = X3DConstants::SFBool;
 
 template <class ValueType>
 X3DField <ValueType>::X3DField () :
@@ -292,7 +294,7 @@ template <class ValueType>
 void
 X3DField <ValueType>::write (const X3DChildObject & field)
 {
-	assert (getType () == field .getType ());
+	//assert (getType () == field .getType ());
 
 	set (static_cast <const X3DField &> (field) .getValue ());
 }

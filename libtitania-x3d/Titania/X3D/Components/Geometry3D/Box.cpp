@@ -48,7 +48,9 @@
 
 #include "Box.h"
 
+#include "../../Browser/Geometry3D/BoxProperties.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
@@ -72,6 +74,21 @@ Box::create (X3DExecutionContext* const executionContext) const
 	return new Box (executionContext);
 }
 
+void
+Box::initialize ()
+{
+	X3DGeometryNode::initialize ();
+
+	getBrowser () -> getBrowserOptions () -> boxProperties .addInterest (this, &Box::set_properties);
+}
+
+void
+Box::set_properties ()
+{
+	update ();
+}
+
+
 Box3f
 Box::createBBox ()
 {
@@ -81,119 +98,33 @@ Box::createBBox ()
 void
 Box::build ()
 {
-	getTexCoord () .reserve (24);
-	getNormals ()  .reserve (24);
-	getVertices () .reserve (24);
+	const BoxProperties* boxProperties = *getBrowser () -> getBrowserOptions () -> boxProperties;
 
-	auto size_2 = size * 0.5f;
+	getTexCoord () = boxProperties -> getTexCoord ();
+	getNormals  () = boxProperties -> getNormals  ();
 
-	float x = size_2 .x ();
-	float y = size_2 .y ();
-	float z = size_2 .z ();
+	if (size == Vector3f (2, 2, 2))
+		getVertices () = boxProperties -> getVertices ();
 
-	// Front Face
-	getTexCoord () .emplace_back (0, 0);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (-x, -y, z);
+	else
+	{
+		getVertices () .reserve (24);
+		
+		auto size1_2 = size * 0.5f;
 
-	getTexCoord () .emplace_back (1, 0);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (x, -y, z);
+		for (const auto & vertex : boxProperties -> getVertices ())
+			getVertices () .emplace_back (vertex * size1_2);
+	}
 
-	getTexCoord () .emplace_back (1, 1);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (x, y, z);
+	setVertexMode (boxProperties -> getVertexMode ());
+}
 
-	getTexCoord () .emplace_back (0, 1);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (-x, y, z);
+void
+Box::dispose ()
+{
+	getBrowser () -> getBrowserOptions () -> boxProperties .removeInterest (this, &Box::set_properties);
 
-	// Back Face
-	getTexCoord () .emplace_back (1, 0);
-	getNormals  () .emplace_back (0, 0, -1);
-	getVertices () .emplace_back (-x, -y, -z);
-
-	getTexCoord () .emplace_back (1, 1);
-	getNormals  () .emplace_back  (0, 0, -1);
-	getVertices () .emplace_back (-x, y, -z);
-
-	getTexCoord () .emplace_back (0, 1);
-	getNormals  () .emplace_back (0, 0, -1);
-	getVertices () .emplace_back (x, y, -z);
-
-	getTexCoord () .emplace_back (0, 0);
-	getNormals  () .emplace_back (0, 0, -1);
-	getVertices () .emplace_back (x, -y, -z);
-
-	// Top Face
-	getTexCoord () .emplace_back (0, 1);
-	getNormals  () .emplace_back (0, 1, 0);
-	getVertices () .emplace_back (-x, y, -z);
-
-	getTexCoord () .emplace_back (0, 0);
-	getNormals  () .emplace_back (0, 1, 0);
-	getVertices () .emplace_back (-x, y, z);
-
-	getTexCoord () .emplace_back (1, 0);
-	getNormals  () .emplace_back (0, 1, 0);
-	getVertices () .emplace_back (x, y, z);
-
-	getTexCoord () .emplace_back (1, 1);
-	getNormals  () .emplace_back (0, 1, 0);
-	getVertices () .emplace_back  (x, y, -z);
-
-	// Bottom Face
-	getTexCoord () .emplace_back (0, 0);
-	getNormals  () .emplace_back (0, -1, 0);
-	getVertices () .emplace_back (-x, -y, -z);
-
-	getTexCoord () .emplace_back (1, 0);
-	getNormals  () .emplace_back (0, -1, 0);
-	getVertices () .emplace_back (x, -y, -z);
-
-	getTexCoord () .emplace_back (1, 1);
-	getNormals  () .emplace_back (0, -1, 0);
-	getVertices () .emplace_back (x, -y, z);
-
-	getTexCoord () .emplace_back (0, 1);
-	getNormals  () .emplace_back (0, -1, 0);
-	getVertices () .emplace_back (-x, -y, z);
-
-	// Right face
-	getTexCoord () .emplace_back (1, 0);
-	getNormals  () .emplace_back (1, 0, 0);
-	getVertices () .emplace_back (x, -y, -z);
-
-	getTexCoord () .emplace_back (1, 1);
-	getNormals  () .emplace_back (1, 0, 0);
-	getVertices () .emplace_back (x, y, -z);
-
-	getTexCoord () .emplace_back (0, 1);
-	getNormals  () .emplace_back (1, 0, 0);
-	getVertices () .emplace_back (x, y, z);
-
-	getTexCoord () .emplace_back (0, 0);
-	getNormals  () .emplace_back (1, 0, 0);
-	getVertices () .emplace_back (x, -y, z);
-
-	// Left Face
-	getTexCoord () .emplace_back (0, 0);
-	getNormals  () .emplace_back (-1, 0, 0);
-	getVertices () .emplace_back (-x, -y, -z);
-
-	getTexCoord () .emplace_back (1, 0);
-	getNormals  () .emplace_back (-1, 0, 0);
-	getVertices () .emplace_back (-x, -y, z);
-
-	getTexCoord () .emplace_back (1, 1);
-	getNormals  () .emplace_back (-1, 0, 0);
-	getVertices () .emplace_back (-x, y, z);
-
-	getTexCoord () .emplace_back (0, 1);
-	getNormals  () .emplace_back (-1, 0, 0);
-	getVertices () .emplace_back (-x, y, -z);
-
-	setVertexMode (GL_QUADS);
+	X3DGeometryNode::dispose ();
 }
 
 } // X3D

@@ -114,7 +114,7 @@ jsX3DFieldDefinition::dataType (JSContext* context, JSObject* obj, jsid id, jsva
 {
 	X3DFieldDefinition* field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
 
-	return JS_NewNumberValue (context, (double) (long int) field -> getType (), vp);
+	return JS_NewNumberValue (context, field -> getType (), vp);
 }
 
 void

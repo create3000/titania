@@ -1516,135 +1516,136 @@ Parser::fieldValue (X3DFieldDefinition* _field)
 {
 	//__LOG__ << std::endl;
 
-	const X3DType* type = _field -> getType ();
+	switch (_field -> getType ())
+	{
+		case X3DConstants::SFBool:
+			return sfboolValue (dynamic_cast <SFBool*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFBool") -> getType ())
-		return sfboolValue (dynamic_cast <SFBool*> (_field));
+		case X3DConstants::SFColor:
+			return sfcolorValue (dynamic_cast <SFColor*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFColor") -> getType ())
-		return sfcolorValue (dynamic_cast <SFColor*> (_field));
+		case X3DConstants::SFColorRGBA:
+			return sfcolorRGBAValue (dynamic_cast <SFColorRGBA*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFColorRGBA") -> getType ())
-		return sfcolorRGBAValue (dynamic_cast <SFColorRGBA*> (_field));
+		case X3DConstants::SFDouble:
+			return sfdoubleValue (dynamic_cast <SFDouble*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFDouble") -> getType ())
-		return sfdoubleValue (dynamic_cast <SFDouble*> (_field));
+		case X3DConstants::SFFloat:
+			return sffloatValue (dynamic_cast <SFFloat*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFFloat") -> getType ())
-		return sffloatValue (dynamic_cast <SFFloat*> (_field));
+		case X3DConstants::SFImage:
+			return sfimageValue (dynamic_cast <SFImage*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFImage") -> getType ())
-		return sfimageValue (dynamic_cast <SFImage*> (_field));
+		case X3DConstants::SFInt32:
+			return sfint32Value (dynamic_cast <SFInt32*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFInt32") -> getType ())
-		return sfint32Value (dynamic_cast <SFInt32*> (_field));
+		case X3DConstants::SFMatrix3d:
+			return sfmatrix3dValue (dynamic_cast <SFMatrix3d*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFMatrix3d") -> getType ())
-		return sfmatrix3dValue (dynamic_cast <SFMatrix3d*> (_field));
+		case X3DConstants::SFMatrix3f:
+			return sfmatrix3fValue (dynamic_cast <SFMatrix3f*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFMatrix3f") -> getType ())
-		return sfmatrix3fValue (dynamic_cast <SFMatrix3f*> (_field));
+		case X3DConstants::SFMatrix4d:
+			return sfmatrix4dValue (dynamic_cast <SFMatrix4d*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFMatrix4d") -> getType ())
-		return sfmatrix4dValue (dynamic_cast <SFMatrix4d*> (_field));
+		case X3DConstants::SFMatrix4f:
+			return sfmatrix4fValue (dynamic_cast <SFMatrix4f*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFMatrix4f") -> getType ())
-		return sfmatrix4fValue (dynamic_cast <SFMatrix4f*> (_field));
+		case X3DConstants::SFNode:
+			return sfnodeValue (_field);
 
-	if (type == getBrowser () -> getFieldType ("SFNode") -> getType ())
-		return sfnodeValue (_field);
+		case X3DConstants::SFRotation:
+			return sfrotationValue (dynamic_cast <SFRotation*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFRotation") -> getType ())
-		return sfrotationValue (dynamic_cast <SFRotation*> (_field));
+		case X3DConstants::SFString:
+			return sfstringValue (dynamic_cast <SFString*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFString") -> getType ())
-		return sfstringValue (dynamic_cast <SFString*> (_field));
+		case X3DConstants::SFTime:
+			return sftimeValue (dynamic_cast <SFTime*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFTime") -> getType ())
-		return sftimeValue (dynamic_cast <SFTime*> (_field));
+		case X3DConstants::SFVec2d:
+			return sfvec2dValue (dynamic_cast <SFVec2d*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFVec2d") -> getType ())
-		return sfvec2dValue (dynamic_cast <SFVec2d*> (_field));
+		case X3DConstants::SFVec2f:
+			return sfvec2fValue (dynamic_cast <SFVec2f*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFVec2f") -> getType ())
-		return sfvec2fValue (dynamic_cast <SFVec2f*> (_field));
+		case X3DConstants::SFVec3d:
+			return sfvec3dValue (dynamic_cast <SFVec3d*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFVec3d") -> getType ())
-		return sfvec3dValue (dynamic_cast <SFVec3d*> (_field));
+		case X3DConstants::SFVec3f:
+			return sfvec3fValue (dynamic_cast <SFVec3f*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFVec3f") -> getType ())
-		return sfvec3fValue (dynamic_cast <SFVec3f*> (_field));
+		case X3DConstants::SFVec4d:
+			return sfvec4dValue (dynamic_cast <SFVec4d*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFVec4d") -> getType ())
-		return sfvec4dValue (dynamic_cast <SFVec4d*> (_field));
+		case X3DConstants::SFVec4f:
+			return sfvec4fValue (dynamic_cast <SFVec4f*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("SFVec4f") -> getType ())
-		return sfvec4fValue (dynamic_cast <SFVec4f*> (_field));
+		case X3DConstants::MFBool:
+			return mfboolValue (dynamic_cast <MFBool*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFBool") -> getType ())
-		return mfboolValue (dynamic_cast <MFBool*> (_field));
+		case X3DConstants::MFColor:
+			return mfcolorValue (dynamic_cast <MFColor*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFColor") -> getType ())
-		return mfcolorValue (dynamic_cast <MFColor*> (_field));
+		case X3DConstants::MFColorRGBA:
+			return mfcolorRGBAValue (dynamic_cast <MFColorRGBA*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFColorRGBA") -> getType ())
-		return mfcolorRGBAValue (dynamic_cast <MFColorRGBA*> (_field));
+		case X3DConstants::MFDouble:
+			return mfdoubleValue (dynamic_cast <MFDouble*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFDouble") -> getType ())
-		return mfdoubleValue (dynamic_cast <MFDouble*> (_field));
+		case X3DConstants::MFFloat:
+			return mffloatValue (dynamic_cast <MFFloat*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFFloat") -> getType ())
-		return mffloatValue (dynamic_cast <MFFloat*> (_field));
+		case X3DConstants::MFImage:
+			return mfimageValue (dynamic_cast <MFImage*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFImage") -> getType ())
-		return mfimageValue (dynamic_cast <MFImage*> (_field));
+		case X3DConstants::MFInt32:
+			return mfint32Value (dynamic_cast <MFInt32*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFInt32") -> getType ())
-		return mfint32Value (dynamic_cast <MFInt32*> (_field));
+		case X3DConstants::MFMatrix3d:
+			return mfmatrix3dValue (dynamic_cast <MFMatrix3d*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFMatrix3d") -> getType ())
-		return mfmatrix3dValue (dynamic_cast <MFMatrix3d*> (_field));
+		case X3DConstants::MFMatrix3f:
+			return mfmatrix3fValue (dynamic_cast <MFMatrix3f*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFMatrix3f") -> getType ())
-		return mfmatrix3fValue (dynamic_cast <MFMatrix3f*> (_field));
+		case X3DConstants::MFMatrix4d:
+			return mfmatrix4dValue (dynamic_cast <MFMatrix4d*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFMatrix4d") -> getType ())
-		return mfmatrix4dValue (dynamic_cast <MFMatrix4d*> (_field));
+		case X3DConstants::MFMatrix4f:
+			return mfmatrix4fValue (dynamic_cast <MFMatrix4f*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFMatrix4f") -> getType ())
-		return mfmatrix4fValue (dynamic_cast <MFMatrix4f*> (_field));
+		case X3DConstants::MFNode:
+			return mfnodeValue (_field);
 
-	if (type == getBrowser () -> getFieldType ("MFNode") -> getType ())
-		return mfnodeValue (_field);
+		case X3DConstants::MFRotation:
+			return mfrotationValue (dynamic_cast <MFRotation*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFRotation") -> getType ())
-		return mfrotationValue (dynamic_cast <MFRotation*> (_field));
+		case X3DConstants::MFString:
+			return mfstringValue (dynamic_cast <MFString*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFString") -> getType ())
-		return mfstringValue (dynamic_cast <MFString*> (_field));
+		case X3DConstants::MFTime:
+			return mftimeValue (dynamic_cast <MFTime*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFTime") -> getType ())
-		return mftimeValue (dynamic_cast <MFTime*> (_field));
+		case X3DConstants::MFVec2d:
+			return mfvec2dValue (dynamic_cast <MFVec2d*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFVec2d") -> getType ())
-		return mfvec2dValue (dynamic_cast <MFVec2d*> (_field));
+		case X3DConstants::MFVec2f:
+			return mfvec2fValue (dynamic_cast <MFVec2f*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFVec2f") -> getType ())
-		return mfvec2fValue (dynamic_cast <MFVec2f*> (_field));
+		case X3DConstants::MFVec3d:
+			return mfvec3dValue (dynamic_cast <MFVec3d*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFVec3d") -> getType ())
-		return mfvec3dValue (dynamic_cast <MFVec3d*> (_field));
+		case X3DConstants::MFVec3f:
+			return mfvec3fValue (dynamic_cast <MFVec3f*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFVec3f") -> getType ())
-		return mfvec3fValue (dynamic_cast <MFVec3f*> (_field));
+		case X3DConstants::MFVec4d:
+			return mfvec4dValue (dynamic_cast <MFVec4d*> (_field));
 
-	if (type == getBrowser () -> getFieldType ("MFVec4d") -> getType ())
-		return mfvec4dValue (dynamic_cast <MFVec4d*> (_field));
+		case X3DConstants::MFVec4f:
+			return mfvec4fValue (dynamic_cast <MFVec4f*> (_field));
+	}
 
-	if (type == getBrowser () -> getFieldType ("MFVec4f") -> getType ())
-		return mfvec4fValue (dynamic_cast <MFVec4f*> (_field));
-
-	throw Error <INVALID_X3D> ("Unknown field type '" + type -> getName () + "'.");
+	throw Error <INVALID_X3D> ("Unknown field type.");
 }
 
 // fieldValues

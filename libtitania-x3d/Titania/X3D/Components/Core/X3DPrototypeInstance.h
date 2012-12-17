@@ -66,11 +66,13 @@ public:
 
 	virtual
 	const basic::id &
-	getTypeName () const;
+	getTypeName () const
+	throw (Error <DISPOSED>);
 
 	virtual
 	const X3DBaseNode*
-	getType () const;
+	getType () const
+	throw (Error <DISPOSED>);
 
 	X3DBaseNode*
 	getRootNode ();

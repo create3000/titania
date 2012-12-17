@@ -46,17 +46,17 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFVEC2_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFVEC2_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFVEC3_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFVEC3_H__
 
-#include "../../../Fields/SFVec2.h"
+#include "../../../Fields/SFVec3.h"
 #include "../jsX3DField.h"
 
 namespace titania {
 namespace X3D {
 
 template <class Type>
-class jsSFVec2 :
+class jsSFVec3 :
 	public jsX3DField
 {
 public:
@@ -78,7 +78,7 @@ public:
 
 private:
 
-	enum Property {X, Y};
+	enum Property {X, Y, Z};
 
 	static JSBool construct (JSContext *, uintN, jsval*);
 	static JSBool enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
@@ -91,6 +91,7 @@ private:
 	static JSBool subtract  (JSContext *, uintN, jsval*);
 	static JSBool multiply  (JSContext *, uintN, jsval*);
 	static JSBool divide    (JSContext *, uintN, jsval*);
+	static JSBool cross     (JSContext *, uintN, jsval*);
 	static JSBool dot       (JSContext *, uintN, jsval*);
 	static JSBool normalize (JSContext *, uintN, jsval*);
 	static JSBool length    (JSContext *, uintN, jsval*);
@@ -103,11 +104,11 @@ private:
 };
 
 template <class Type>
-const size_t jsSFVec2 <Type>::size = 2;
+const size_t jsSFVec3 <Type>::size = 3;
 
 template <class Type>
-JSClass jsSFVec2 <Type>::static_class = {
-	"SFVec2", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+JSClass jsSFVec3 <Type>::static_class = {
+	"SFVec3", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
@@ -115,15 +116,16 @@ JSClass jsSFVec2 <Type>::static_class = {
 };
 
 template <class Type>
-JSPropertySpec jsSFVec2 <Type>::properties [ ] = {
+JSPropertySpec jsSFVec3 <Type>::properties [ ] = {
 	{ "x", X, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
 	{ "y", Y, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
+	{ "z", Z, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
 	{ 0 }
 
 };
 
 template <class Type>
-JSFunctionSpec jsSFVec2 <Type>::functions [ ] = {
+JSFunctionSpec jsSFVec3 <Type>::functions [ ] = {
 	{ "getName",     getName <X3DChildObject>,     0, 0 },
 	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
 	{ "getType",     getType <X3DFieldDefinition>, 0, 0 },
@@ -133,6 +135,7 @@ JSFunctionSpec jsSFVec2 <Type>::functions [ ] = {
 	{ "subtract",    subtract,    1, 0 },
 	{ "multiply",    multiply,    1, 0 },
 	{ "divide",      divide,      1, 0 },
+	{ "cross",       cross,       1, 0 },
 	{ "normalize",   normalize,   0, 0 },
 	{ "dot",         dot,         1, 0 },
 	{ "length",      length,      0, 0 },
@@ -145,18 +148,19 @@ JSFunctionSpec jsSFVec2 <Type>::functions [ ] = {
 
 template <class Type>
 void
-jsSFVec2 <Type>::init (JSContext* context, JSObject* global)
+jsSFVec3 <Type>::init (JSContext* context, JSObject* global)
 {
 	JSObject* proto = JS_InitClass (context, global, NULL, &static_class, construct,
 	                                0, properties, functions, NULL, NULL);
 
 	JS_DefineProperty (context, proto, (char*) X, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 	JS_DefineProperty (context, proto, (char*) Y, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (context, proto, (char*) Z, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 }
 
 template <class Type>
 JSBool
-jsSFVec2 <Type>::create (JSContext* context, Type* field, jsval* vp, const bool seal)
+jsSFVec3 <Type>::create (JSContext* context, Type* field, jsval* vp, const bool seal)
 {
 	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 
@@ -175,23 +179,24 @@ jsSFVec2 <Type>::create (JSContext* context, Type* field, jsval* vp, const bool 
 
 template <class Type>
 JSBool
-jsSFVec2 <Type>::construct (JSContext* context, uintN argc, jsval* vp)
+jsSFVec3 <Type>::construct (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
 		return create (context, new Type (), &JS_RVAL (context, vp));
 	}
-	else if (argc == 2)
+	else if (argc == 3)
 	{
 		jsdouble x = 0;
 		jsdouble y = 0;
+		jsdouble z = 0;
 
 		jsval* argv = JS_ARGV (context, vp);
 
-		if (not JS_ConvertArguments (context, argc, argv, "dd", &x, &y))
+		if (not JS_ConvertArguments (context, argc, argv, "ddd", &x, &y, &z))
 			return JS_FALSE;
 
-		return create (context, new Type (x, y), &JS_RVAL (context, vp));
+		return create (context, new Type (x, y, z), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -201,7 +206,7 @@ jsSFVec2 <Type>::construct (JSContext* context, uintN argc, jsval* vp)
 
 template <class Type>
 JSBool
-jsSFVec2 <Type>::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+jsSFVec3 <Type>::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
 	if (not JS_GetPrivate (context, obj))
 	{
@@ -252,7 +257,7 @@ jsSFVec2 <Type>::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_
 
 template <class Type>
 JSBool
-jsSFVec2 <Type>::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsSFVec3 <Type>::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	Type* self = (Type*) JS_GetPrivate (context, obj);
 
@@ -261,7 +266,7 @@ jsSFVec2 <Type>::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* v
 
 template <class Type>
 JSBool
-jsSFVec2 <Type>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsSFVec3 <Type>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	Type* self = (Type*) JS_GetPrivate (context, obj);
 
@@ -277,7 +282,7 @@ jsSFVec2 <Type>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool s
 
 template <class Type>
 JSBool
-jsSFVec2 <Type>::negate (JSContext* context, uintN argc, jsval* vp)
+jsSFVec3 <Type>::negate (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
@@ -293,7 +298,7 @@ jsSFVec2 <Type>::negate (JSContext* context, uintN argc, jsval* vp)
 
 template <class Type>
 JSBool
-jsSFVec2 <Type>::add (JSContext* context, uintN argc, jsval* vp)
+jsSFVec3 <Type>::add (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
@@ -324,7 +329,7 @@ jsSFVec2 <Type>::add (JSContext* context, uintN argc, jsval* vp)
 
 template <class Type>
 JSBool
-jsSFVec2 <Type>::subtract (JSContext* context, uintN argc, jsval* vp)
+jsSFVec3 <Type>::subtract (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
@@ -355,7 +360,7 @@ jsSFVec2 <Type>::subtract (JSContext* context, uintN argc, jsval* vp)
 
 template <class Type>
 JSBool
-jsSFVec2 <Type>::multiply (JSContext* context, uintN argc, jsval* vp)
+jsSFVec3 <Type>::multiply (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
@@ -378,7 +383,7 @@ jsSFVec2 <Type>::multiply (JSContext* context, uintN argc, jsval* vp)
 
 template <class Type>
 JSBool
-jsSFVec2 <Type>::divide (JSContext* context, uintN argc, jsval* vp)
+jsSFVec3 <Type>::divide (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
@@ -401,7 +406,38 @@ jsSFVec2 <Type>::divide (JSContext* context, uintN argc, jsval* vp)
 
 template <class Type>
 JSBool
-jsSFVec2 <Type>::dot (JSContext* context, uintN argc, jsval* vp)
+jsSFVec3 <Type>::cross (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+
+		JSObject* rhs;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
+			return JS_FALSE;
+
+		if (not JS_InstanceOf (context, rhs, getClass (), NULL))
+		{
+			JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s", getClass () -> name, JS_GetClass (context, rhs) -> name);
+			return JS_FALSE;
+		}
+
+		Type* vector = (Type*) JS_GetPrivate (context, rhs);
+
+		return create (context, self -> cross (*vector), &JS_RVAL (context, vp));
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+template <class Type>
+JSBool
+jsSFVec3 <Type>::dot (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
@@ -432,7 +468,7 @@ jsSFVec2 <Type>::dot (JSContext* context, uintN argc, jsval* vp)
 
 template <class Type>
 JSBool
-jsSFVec2 <Type>::normalize (JSContext* context, uintN argc, jsval* vp)
+jsSFVec3 <Type>::normalize (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
@@ -448,7 +484,7 @@ jsSFVec2 <Type>::normalize (JSContext* context, uintN argc, jsval* vp)
 
 template <class Type>
 JSBool
-jsSFVec2 <Type>::length (JSContext* context, uintN argc, jsval* vp)
+jsSFVec3 <Type>::length (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
@@ -462,11 +498,11 @@ jsSFVec2 <Type>::length (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
-extern template class jsSFVec2 <SFVec2d>;
-extern template class jsSFVec2 <SFVec2f>;
+extern template class jsSFVec3 <SFVec3d>;
+extern template class jsSFVec3 <SFVec3f>;
 
-typedef jsSFVec2 <SFVec2d> jsSFVec2d;
-typedef jsSFVec2 <SFVec2f> jsSFVec2f;
+typedef jsSFVec3 <SFVec3d> jsSFVec3d;
+typedef jsSFVec3 <SFVec3f> jsSFVec3f;
 
 } // X3D
 } // titania

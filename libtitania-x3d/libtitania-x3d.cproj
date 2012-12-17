@@ -418,7 +418,6 @@
     <None Include="Titania\X3D\Basic\X3DFieldDefinition.h" />
     <None Include="Titania\X3D\Basic\NodeTypeArray.h" />
     <None Include="Titania\X3D\Basic\X3DContext.h" />
-    <None Include="Titania\X3D\Base\X3DType.h" />
     <None Include="Titania\X3D\Bits\Error.h" />
     <None Include="Titania\X3D\Base\X3DInput.h" />
     <None Include="Titania\X3D\Basic\FieldDefinitionSet.h" />
@@ -463,8 +462,6 @@
     <None Include="Titania\X3D\Types\Numbers.h" />
     <None Include="Titania\X3D\Browser\Properties\BrowserProperties.h" />
     <None Include="Titania\X3D\Browser\Properties\RenderingProperties.h" />
-    <None Include="Titania\X3D\Browser\Properties\QuadSphereProperties.h" />
-    <None Include="Titania\X3D\Browser\Properties\X3DSpherePropertyNode.h" />
     <None Include="Titania\X3D\Browser\Properties\BrowserOptions.h" />
     <None Include="Titania\X3D\Widgets\Surface.h" />
     <None Include="libtitania-x3d.md.pc" />
@@ -474,8 +471,6 @@
     <None Include="Titania\X3D\Execution\BindableNodeList.h" />
     <None Include="Titania\X3D\Rendering\Normal.h" />
     <None Include="Titania\X3D\Rendering\Tesselator.h" />
-    <None Include="Titania\X3D\Basic\FieldType.h" />
-    <None Include="Titania\X3D\Basic\NodeType.h" />
     <None Include="Makefile.am" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFBool.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsfield.h" />
@@ -518,6 +513,10 @@
     <None Include="Titania\X3D\Base\X3DObject.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsX3DScalar.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsArrayFields.h" />
+    <None Include="Titania\X3D\Browser\Properties\X3DGeometryPropertyNode.h" />
+    <None Include="Titania\X3D\Browser\Geometry3D\BoxProperties.h" />
+    <None Include="Titania\X3D\Browser\Geometry3D\QuadSphereProperties.h" />
+    <None Include="Titania\X3D\Browser\Geometry3D\X3DSpherePropertyNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -542,7 +541,6 @@
     <Compile Include="Titania\X3D\Base\GarbargeCollector.cpp" />
     <Compile Include="Titania\X3D\Base\X3DInput.cpp" />
     <Compile Include="Titania\X3D\Base\X3DOutput.cpp" />
-    <Compile Include="Titania\X3D\Base\X3DType.cpp" />
     <Compile Include="Titania\X3D\Basic\FieldDefinitionArray.cpp" />
     <Compile Include="Titania\X3D\Basic\FieldDefinitionSet.cpp" />
     <Compile Include="Titania\X3D\Basic\NodeTypeArray.cpp" />
@@ -870,7 +868,6 @@
     <Compile Include="Titania\X3D\Configuration\FieldTypesArray.cpp" />
     <Compile Include="Titania\X3D\Basic\BasicNodeArray.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\RenderingProperties.cpp" />
-    <Compile Include="Titania\X3D\Browser\Properties\QuadSphereProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\BrowserOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\BrowserProperties.cpp" />
     <Compile Include="Titania\X3D\Widgets\Surface.cpp" />
@@ -878,9 +875,6 @@
     <Compile Include="Titania\X3D\Base\Output.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DBrowserContext.cpp" />
     <Compile Include="Titania\X3D\Execution\BindableNodeList.cpp" />
-    <Compile Include="Titania\X3D\Basic\FieldType.cpp" />
-    <Compile Include="Titania\X3D\Basic\NodeType.cpp" />
-    <Compile Include="Titania\X3D\Browser\Properties\X3DSpherePropertyNode.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFBool.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsfield.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DObject.cpp" />
@@ -917,6 +911,10 @@
     <Compile Include="Titania\X3D\Base\X3DObject.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DArrayField.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsArrayFields.cpp" />
+    <Compile Include="Titania\X3D\Browser\Properties\X3DGeometryPropertyNode.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry3D\BoxProperties.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry3D\QuadSphereProperties.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry3D\X3DSpherePropertyNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -937,6 +935,7 @@
     <Folder Include="Titania\X3D\Parser\" />
     <Folder Include="Titania\X3D\Browser\Properties\" />
     <Folder Include="Titania\X3D\JavaScript\SpiderMonkey\" />
+    <Folder Include="Titania\X3D\Browser\Geometry3D\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

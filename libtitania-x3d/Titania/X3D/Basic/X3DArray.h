@@ -49,6 +49,7 @@
 #ifndef __TITANIA_X3D_BASIC_X3DARRAY_H__
 #define __TITANIA_X3D_BASIC_X3DARRAY_H__
 
+#include "../Bits/X3DConstants.h"
 #include "../Base/X3DObject.h"
 #include "../Types/Array.h"
 

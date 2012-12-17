@@ -52,16 +52,28 @@ namespace titania {
 namespace X3D {
 
 template <>
-const FieldType X3DField <Bool>::type ("SFBool");
+const basic::id X3DField <Bool>::typeName ("SFBool");
 
 template <>
-const FieldType X3DField <Double>::type ("SFDouble");
+const basic::id X3DField <Double>::typeName ("SFDouble");
 
 template <>
-const FieldType X3DField <Float>::type ("SFFloat");
+const basic::id X3DField <Float>::typeName ("SFFloat");
 
 template <>
-const FieldType X3DField <Int32>::type ("SFInt32");
+const basic::id X3DField <Int32>::typeName ("SFInt32");
+
+template <>
+const X3DConstants::FieldType X3DField <Bool>::type = X3DConstants::SFBool;
+
+template <>
+const X3DConstants::FieldType X3DField <Double>::type = X3DConstants::SFDouble;
+
+template <>
+const X3DConstants::FieldType X3DField <Float>::type = X3DConstants::SFFloat;
+
+template <>
+const X3DConstants::FieldType X3DField <Int32>::type = X3DConstants::SFInt32;
 
 template <>
 void

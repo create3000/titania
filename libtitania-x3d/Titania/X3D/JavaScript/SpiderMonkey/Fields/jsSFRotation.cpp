@@ -75,7 +75,7 @@ JSPropertySpec jsSFRotation::properties [ ] = {
 JSFunctionSpec jsSFRotation::functions [ ] = {
 	{ "getName",     getName <X3DChildObject>,     0, 0 },
 	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
-	{ "getType",     getType <X3DChildObject>,     0, 0 },
+	{ "getType",     getType <X3DFieldDefinition>, 0, 0 },
 	
 	{ "getAxis",     getAxis,     0, 0 },
 	{ "setAxis",     getAxis,     0, 0 },

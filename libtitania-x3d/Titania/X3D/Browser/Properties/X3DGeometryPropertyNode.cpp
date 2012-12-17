@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,14 +46,27 @@
  *
  ******************************************************************************/
 
-#include "NodeType.h"
+#include "X3DGeometryPropertyNode.h"
 
 namespace titania {
 namespace X3D {
 
-NodeType::NodeType (const basic::id & name) :
-	X3DType (name) 
+X3DGeometryPropertyNode::X3DGeometryPropertyNode () :
+	X3DPropertyNode (), 
+	       texCoord (), 
+	        normals (), 
+	       vertices ()  
 { }
+	
+void
+X3DGeometryPropertyNode::update ()
+{
+	texCoord .clear ();
+	normals  .clear ();
+	vertices .clear ();
+	
+	build ();
+}
 
 } // X3D
 } // titania

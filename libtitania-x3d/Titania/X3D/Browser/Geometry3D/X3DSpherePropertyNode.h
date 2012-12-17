@@ -49,52 +49,18 @@
 #ifndef __TITANIA_X3D_BROWSER_PROPERTIES_X3DSPHERE_PROPERTY_NODE_H__
 #define __TITANIA_X3D_BROWSER_PROPERTIES_X3DSPHERE_PROPERTY_NODE_H__
 
-#include "../../Components/Core/X3DPropertyNode.h"
+
+#include "../Properties/X3DGeometryPropertyNode.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DSpherePropertyNode :
-	public X3DPropertyNode
+	public X3DGeometryPropertyNode
 {
-public:
-
-	X3DSpherePropertyNode ();
-
-	const std::vector <Vector2f> &
-	getTexCoord () const { return texCoord; }
-
-	const std::vector <Vector3f> &
-	getNormals () const { return normals; }
-
-	const std::vector <Vector3f> &
-	getVertices () const { return vertices; }
-
-
 protected:
 
-	std::vector <Vector2f> &
-	getTexCoord () { return texCoord; }
-
-	std::vector <Vector3f> &
-	getNormals () { return normals; }
-
-	std::vector <Vector3f> &
-	getVertices () { return vertices; }
-
-	void
-	update ();
-
-	virtual
-	void
-	build () = 0;
-
-
-private:
-
-	std::vector <Vector2f> texCoord;
-	std::vector <Vector3f> normals;
-	std::vector <Vector3f> vertices;
+	X3DSpherePropertyNode ();
 
 };
 

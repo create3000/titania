@@ -87,6 +87,10 @@ public:
 	copy (X3DExecutionContext* const) const;
 
 	virtual
+	X3DConstants::FieldType
+	getType () const = 0;
+
+	virtual
 	bool
 	hasRoots (ChildObjectSet &);
 

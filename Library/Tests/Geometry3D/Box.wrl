@@ -1,10 +1,36 @@
 #VRML V2.0 utf8 Comment
 
+Viewpoint { }
+
+Transform {
+  translation -4 0 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box {
+      size 1 1 1
+    }
+  }
+}
+
 Transform {
   children Shape {
     appearance Appearance {
       material Material { }
     }
     geometry Box { }
+  }
+}
+
+Transform {
+  translation 4 0 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box {
+      size 4 4 4
+    }
   }
 }

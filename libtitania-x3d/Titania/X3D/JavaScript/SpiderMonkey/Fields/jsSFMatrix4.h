@@ -125,7 +125,7 @@ template <class Type>
 JSFunctionSpec jsSFMatrix4 <Type>::functions [ ] = {
 	{ "getName",       getName <X3DChildObject>,     0, 0 },
 	{ "getTypeName",   getTypeName <X3DChildObject>, 0, 0 },
-	{ "getType",       getType <X3DChildObject>,     0, 0 },
+	{ "getType",       getType <X3DFieldDefinition>, 0, 0 },
 
 	{ "setTransform",  setTransform,  5, 0 },
 	{ "getTransform",  getTransform,  3, 0 },

@@ -54,9 +54,9 @@ namespace X3D {
 GarbageCollector X3DObject::garbageCollector;
 
 X3DObject::X3DObject () :
-	X3DType (), 
 	 X3DInput (), 
-	X3DOutput ()
+	X3DOutput (),
+	     name ()
 { }
 
 //const basic::id &
@@ -70,7 +70,13 @@ X3DObject::X3DObject () :
 void
 X3DObject::setName (const basic::id & value)
 {
-	X3DType::setName (value);
+	name = value;
+}
+
+const basic::id &
+X3DObject::getName () const
+{
+	return name;
 }
 
 // InputOutput
@@ -112,7 +118,6 @@ X3DObject::toString () const
 void
 X3DObject::dispose ()
 {
-	X3DType::dispose   ();
 	X3DInput::dispose  ();
 	X3DOutput::dispose ();
 }

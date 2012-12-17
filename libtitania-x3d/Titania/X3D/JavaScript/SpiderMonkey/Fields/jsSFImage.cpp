@@ -75,7 +75,7 @@ JSPropertySpec jsSFImage::properties [ ] = {
 JSFunctionSpec jsSFImage::functions [ ] = {
 	{ "getName",     getName <X3DChildObject>,     0, 0 },
 	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
-	{ "getType",     getType <X3DChildObject>,     0, 0 },
+	{ "getType",     getType <X3DFieldDefinition>, 0, 0 },
 
 	{ "toString",    toString <X3DChildObject>, 0, 0 },
 	

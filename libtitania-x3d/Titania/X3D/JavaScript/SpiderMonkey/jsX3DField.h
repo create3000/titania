@@ -56,7 +56,32 @@ namespace X3D {
 
 class jsX3DField :
 	public jsX3DFieldDefinition
-{ };
+{
+public:
+
+	template <class Type>
+	static JSBool getType (JSContext *, uintN, jsval*);
+
+};
+
+template <class Type>
+JSBool
+jsX3DField::getType (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		X3DFieldDefinition* field = dynamic_cast <X3DFieldDefinition*> ((Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+
+		return JS_NewNumberValue (context, field -> getType (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+extern template JSBool jsX3DField::getType <X3DChildObject> (JSContext *, uintN, jsval*);
+extern template JSBool jsX3DField::getType <X3DArray>       (JSContext *, uintN, jsval*);
 
 } // X3D
 } // titania

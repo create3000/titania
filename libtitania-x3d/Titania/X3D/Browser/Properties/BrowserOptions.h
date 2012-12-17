@@ -53,7 +53,8 @@
 #include "../../Components/Text/FontStyle.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Properties/X3DSpherePropertyNode.h"
+#include "../Geometry3D/BoxProperties.h"
+#include "../Geometry3D/X3DSpherePropertyNode.h"
 
 namespace titania {
 namespace X3D {
@@ -86,6 +87,7 @@ public:
 
 	//SFNode <MotionBlur> motionBlur;
 	SFNode <TextureProperties>     textureProperties;
+	SFNode <BoxProperties>         boxProperties;
 	SFNode <X3DSpherePropertyNode> sphereProperties;
 	SFNode <X3DFontStyleNode>      fontStyle;
 

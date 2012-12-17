@@ -94,26 +94,22 @@ X3DPrototypeInstance::initialize ()
 
 const basic::id &
 X3DPrototypeInstance::getTypeName () const
+throw (Error <DISPOSED>)
 {
 	if (proto)
 		return proto .getNodeName ();
 
-	//throw Error <DISPOSED> ("In X3DPrototypeInstance::getTypeName: node is already disposed.");
-
-	// The statement below is only for testing purposes. Delete this and uncomment the above.
-	return X3DExecutionContext::getTypeName ();
+	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getTypeName: node is already disposed.");
 }
 
 const X3DBaseNode*
 X3DPrototypeInstance::getType () const
+throw (Error <DISPOSED>)
 {
 	if (proto)
 		return proto .getValue ();
 
-	//throw Error <DISPOSED> ("In X3DPrototypeInstance::getTypeName: node is already disposed.");
-
-	// The statement below is only for testing purposes. Delete this and uncomment the above.
-	return X3DExecutionContext::getType ();
+	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getType: node is already disposed.");
 }
 
 X3DBaseNode*

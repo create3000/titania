@@ -50,7 +50,6 @@
 #define __TITANIA_X3D_BROWSER_PROPERTIES_RENDERING_PROPERTIES_H__
 
 #include "../../Components/Core/X3DChildNode.h"
-#include "../Properties/QuadSphereProperties.h"
 #include <Titania/Chrono/StopWatch.h>
 
 #include <stack>

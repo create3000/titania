@@ -72,7 +72,7 @@ JSPropertySpec jsSFColor::properties [ ] = {
 JSFunctionSpec jsSFColor::functions [ ] = {
 	{ "getName",     getName <X3DChildObject>,     0, 0 },
 	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
-	{ "getType",     getType <X3DChildObject>,     0, 0 },
+	{ "getType",     getType <X3DFieldDefinition>, 0, 0 },
 	
 	{ "getHSV",      getHSV,   0, 0 },
 	{ "setHSV",      setHSV,   3, 0 },

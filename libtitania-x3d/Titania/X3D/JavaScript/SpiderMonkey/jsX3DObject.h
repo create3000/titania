@@ -69,9 +69,6 @@ protected:
 	static JSBool getTypeName (JSContext *, uintN, jsval*);
 
 	template <class Type>
-	static JSBool getType (JSContext *, uintN, jsval*);
-
-	template <class Type>
 	static JSBool toString (JSContext *, uintN, jsval*);
 
 };
@@ -110,22 +107,6 @@ jsX3DObject::getTypeName (JSContext* context, uintN argc, jsval* vp)
 
 template <class Type>
 JSBool
-jsX3DObject::getType (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 0)
-	{
-		Type* value = static_cast <Type*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
-
-		return JS_NewNumberValue (context, (size_t) value -> getType (), vp);
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-template <class Type>
-JSBool
 jsX3DObject::toString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
@@ -142,12 +123,10 @@ jsX3DObject::toString (JSContext* context, uintN argc, jsval* vp)
 
 extern template JSBool jsX3DObject::getName <X3DChildObject>     (JSContext *, uintN, jsval*);
 extern template JSBool jsX3DObject::getTypeName <X3DChildObject> (JSContext *, uintN, jsval*);
-extern template JSBool jsX3DObject::getType <X3DChildObject>     (JSContext *, uintN, jsval*);
 extern template JSBool jsX3DObject::toString <X3DChildObject>    (JSContext *, uintN, jsval*);
 
 extern template JSBool jsX3DObject::getName <X3DArray>     (JSContext *, uintN, jsval*);
 extern template JSBool jsX3DObject::getTypeName <X3DArray> (JSContext *, uintN, jsval*);
-extern template JSBool jsX3DObject::getType <X3DArray>     (JSContext *, uintN, jsval*);
 extern template JSBool jsX3DObject::toString <X3DArray>    (JSContext *, uintN, jsval*);
 
 } // X3D

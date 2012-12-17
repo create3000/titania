@@ -49,7 +49,6 @@
 #ifndef __TITANIA_X3D_BASIC_X3DBASIC_NODE_H__
 #define __TITANIA_X3D_BASIC_X3DBASIC_NODE_H__
 
-#include "../Basic/NodeType.h"
 #include "../Base/X3DChildObject.h"
 #include "../Basic/FieldDefinitionArray.h"
 #include "../Basic/NodeTypeArray.h"
@@ -102,12 +101,14 @@ public:
 	getComponentName () const;
 
 	virtual
-	const X3DBaseNode*
-	getType () const;
+	const basic::id &
+	getTypeName () const
+	throw (Error <DISPOSED>);
 
 	virtual
-	const basic::id &
-	getTypeName () const;
+	const X3DBaseNode*
+	getType () const
+	throw (Error <DISPOSED>);
 
 	const NodeTypeArray &
 	getNodeType () const;
@@ -196,7 +197,7 @@ protected:
 	setTypeName (const basic::id &);
 
 	void
-	addNodeType (const X3DConstants::NodeTypes);
+	addNodeType (const X3DConstants::NodeType);
 
 	void
 	addField (const AccessType, const basic::id &, X3DFieldDefinition &);
