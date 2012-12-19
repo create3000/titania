@@ -117,6 +117,10 @@ Viewpoint::display ()
 	{
 		matrix .translate (position);
 		matrix .rotate (orientation);
+		
+		matrix .translate (translation);
+		matrix .rotate (rotation);
+		
 		setMatrix (matrix);
 	}
 	else

@@ -65,6 +65,9 @@ public:
 	SFVec3f    centerOfRotation;
 	SFBool     jump;
 	SFBool     retainUserOffsets;
+	
+	SFVec3f    translation;
+	SFRotation rotation;
 
 	void
 	setTransformationMatrix (const Matrix4f & value) { transformationMatrix = value; }

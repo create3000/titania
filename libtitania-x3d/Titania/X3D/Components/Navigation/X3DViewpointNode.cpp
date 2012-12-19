@@ -71,6 +71,9 @@ X3DViewpointNode::X3DViewpointNode (bool addToList) :
 	addToList (addToList)
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
+
+	setChildren (translation,
+	             rotation);
 }
 
 void

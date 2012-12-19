@@ -107,7 +107,7 @@ private:
 	Surface &        surface;
 	Vector3f         fromVector;
 	Rotation4f       deltaRotation;
-	Rotation4f       orientation;
+	Rotation4f       rotation;
 	Vector3f         lastTranslation;
 	Vector3f         distance;
 	guint            button;

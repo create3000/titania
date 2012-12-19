@@ -1,5 +1,13 @@
 2012-12-19  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ExamineViewer.h:
+	* ExamineViewer.cpp:
+	* Viewpoint.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp: 
+
+2012-12-19  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* SFVec3.h:

@@ -67,7 +67,7 @@ ExamineViewer::ExamineViewer (Surface & surface) :
 	                        surface (surface),                
 	                     fromVector (),                       
 	                  deltaRotation (),                       
-	                    orientation (),                       
+	                       rotation (),                       
 	                lastTranslation (),                       
 	                       distance (),                       
 	                         button (0),                      
@@ -132,25 +132,14 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 void
 ExamineViewer::set_viewpoint ()
 {
-	// Update distance and orientation.
+	// Update distance and rotation.
 
 	SFNode <Viewpoint> viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	if (viewpoint)
 	{
-		distance    = viewpoint -> position - viewpoint -> centerOfRotation;
-		orientation = viewpoint -> orientation;
-
-		//		// Assign current viewpoint to default viewpoint.
-		//		defaultViewpoint -> setTransformationMatrix (viewpoint -> getTransformationMatrix ());
-		//
-		//		defaultViewpoint -> position         = viewpoint -> position;
-		//		defaultViewpoint -> orientation      = viewpoint -> orientation;
-		//		defaultViewpoint -> centerOfRotation = viewpoint -> centerOfRotation;
-		//		defaultViewpoint -> fieldOfView      = viewpoint -> fieldOfView;
-		//
-		//		// Bind viewpoint.
-		//		defaultViewpoint -> set_bind = true;
+		rotation = viewpoint -> rotation;
+		distance = viewpoint -> translation - viewpoint -> centerOfRotation;
 	}
 }
 
@@ -170,8 +159,8 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 
 			deltaRotation = ~Rotation4f (fromVector, toVector);
 
-			viewpoint -> orientation = deltaRotation * viewpoint -> orientation;
-			viewpoint -> position    = viewpoint -> centerOfRotation + ~orientation * viewpoint -> orientation * distance;
+			viewpoint -> rotation    = deltaRotation * viewpoint -> rotation;
+			viewpoint -> translation = viewpoint -> centerOfRotation + ~rotation * viewpoint -> rotation * distance;
 
 			fromVector = toVector;
 		}
@@ -190,9 +179,9 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 			Vector3f vector = translation - lastTranslation;
 			vector = normalize (vector) * -step;
 
-			vector = viewpoint -> orientation * vector;
+			vector = viewpoint -> rotation * vector;
 
-			viewpoint -> position = viewpoint -> position + vector;
+			viewpoint -> translation = viewpoint -> translation + vector;
 
 			lastTranslation = translation;
 		}
@@ -227,22 +216,23 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 
 	if (viewpoint)
 	{
-		float step = abs (distance) / 50;
+		float distance = abs (viewpoint -> position + viewpoint -> translation - viewpoint -> centerOfRotation);
+		float step     = distance / 50;
 
-		Vector3f vector = viewpoint -> orientation * Vector3f (0, 0, step);
+		Vector3f vector = viewpoint -> rotation * Vector3f (0, 0, step);
 
-		if (event -> direction == 0)
+		if (event -> direction == 0) // Move backwards.
 		{
-			viewpoint -> position = viewpoint -> position + vector;
+			viewpoint -> translation = viewpoint -> translation + vector;
 		}
 
-		else if (event -> direction == 1)
+		else if (event -> direction == 1) // Move forwards.
 		{
-			viewpoint -> position = viewpoint -> position - vector;
+			viewpoint -> translation = viewpoint -> translation - vector;
 		}
 
-		distance    = viewpoint -> position - viewpoint -> centerOfRotation;
-		orientation = viewpoint -> orientation;
+		distance = viewpoint -> translation - viewpoint -> centerOfRotation;
+		rotation = viewpoint -> rotation;
 	}
 
 	return false;
@@ -255,8 +245,8 @@ ExamineViewer::spin ()
 
 	if (viewpoint)
 	{
-		viewpoint -> orientation = deltaRotation * viewpoint -> orientation;
-		viewpoint -> position    = viewpoint -> centerOfRotation + ~orientation * viewpoint -> orientation * distance;
+		viewpoint -> rotation    = deltaRotation * viewpoint -> rotation;
+		viewpoint -> translation = viewpoint -> centerOfRotation + ~rotation * viewpoint -> rotation * distance;
 	}
 
 	return true;
