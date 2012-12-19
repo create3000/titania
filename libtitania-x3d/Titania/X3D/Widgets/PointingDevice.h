@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -49,7 +49,7 @@
 #ifndef __TITANIA_X3D_WIDGETS_POINTING_DEVICE_H__
 #define __TITANIA_X3D_WIDGETS_POINTING_DEVICE_H__
 
-#include "../Components/Core/X3DNode.h"
+#include "../Widgets/X3DWidget.h"
 #include <gdkmm.h>
 
 namespace titania {
@@ -57,14 +57,12 @@ namespace X3D {
 
 class Surface;
 
-class PointingDevice
+class PointingDevice :
+	public X3DWidget
 {
 public:
 
 	PointingDevice (Surface &);
-
-	const SFNode <X3DBrowser> &
-	getBrowser ();
 
 
 private:
@@ -81,9 +79,9 @@ private:
 	bool
 	pick (const size_t, const size_t);
 
-	Surface &             surface;
-	size_t                button;
-	bool                  isOver;
+	Surface &            surface;
+	size_t               button;
+	bool                 isOver;
 	MFNode <X3DBaseNode> hitNodes;
 
 };

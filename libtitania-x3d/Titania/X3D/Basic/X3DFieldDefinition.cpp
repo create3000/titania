@@ -59,9 +59,9 @@ X3DFieldDefinition::X3DFieldDefinition () :
 { }
 
 X3DFieldDefinition*
-X3DFieldDefinition::copy (X3DExecutionContext* const) const
+X3DFieldDefinition::clone (X3DExecutionContext* const) const
 {
-	return copy ();
+	return clone ();
 }
 
 void

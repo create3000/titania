@@ -111,7 +111,7 @@ X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
 		updateProtoDeclaration (proto .getNodeName (), proto);
 
 	for (const auto & rootNode : executionContext -> getRootNodes ())
-		addRootNode (rootNode .getValue () -> copy (this));
+		addRootNode (rootNode .getValue () -> clone (this));
 
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
 		addImportedNode (getNamedNode (importedNode .getName () [0]), importedNode .getName () [1], importedNode .getName () [2]);
@@ -120,7 +120,7 @@ X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
 		addExportedNode (exportedNode .getName () [0], exportedNode .getName () [1]);
 
 	for (const auto & route : executionContext -> getRoutes ())
-		route -> copy (this);
+		route -> clone (this);
 }
 
 void

@@ -58,19 +58,14 @@ namespace titania {
 namespace X3D {
 
 PointingDevice::PointingDevice (Surface & surface) :
-	surface (surface), 
-	 button (0),       
-	 isOver (false)    
+	X3DWidget (surface .getBrowser ()), 
+	  surface (surface),                
+	   button (0),                      
+	   isOver (false)                   
 {
 	surface .signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
 	surface .signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PointingDevice::on_motion_notify_event),  false);
 	surface .signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
-}
-
-const SFNode <X3DBrowser> &
-PointingDevice::getBrowser ()
-{
-	return surface .getBrowser ();
 }
 
 bool

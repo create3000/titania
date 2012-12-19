@@ -100,7 +100,7 @@ protected:
 
 	virtual
 	Route*
-	copy (X3DExecutionContext* const) const;
+	clone (X3DExecutionContext* const) const;
 
 
 private:

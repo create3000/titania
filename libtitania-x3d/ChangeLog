@@ -1,3 +1,60 @@
+2012-12-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* SFVec3.h:
+	* SFVec4.h:
+	* SFVec2.h:
+	* MFNode.h:
+	* SFNode.h:
+	* SFTime.h:
+	* Route.h:
+	* SFImage.h:
+	* X3DField.h:
+	* SFColor.h:
+	* Viewer.h:
+	* SFString.h:
+	* SFTime.cpp:
+	* Parser.cpp:
+	* Route.cpp:
+	* Surface.h:
+	* SFImage.cpp:
+	* X3DScalar.h:
+	* Viewer.cpp:
+	* SFMatrix4.h:
+	* SFMatrix3.h:
+	* SFColor.cpp:
+	* X3DBaseNode.h:
+	* SFString.cpp:
+	* X3DWidget.h:
+	* X3DViewer.h:
+	* Surface.cpp:
+	* SFRotation4.h:
+	* SFColorRGBA.h:
+	* X3DBrowser.h:
+	* X3DViewer.cpp:
+	* X3DWidget.cpp:
+	* X3DArrayField.h:
+	* X3DBaseNode.cpp:
+	* X3DBrowser.cpp:
+	* SFColorRGBA.cpp:
+	* X3DRenderer.h:
+	* ExternProto.h:
+	* ExamineViewer.h:
+	* PointingDevice.h:
+	* ExamineViewer.cpp:
+	* X3DRenderer.cpp:
+	* ExternProto.cpp:
+	* PointingDevice.cpp:
+	* X3DFieldDefinition.h:
+	* X3DFieldDefinition.cpp:
+	* MotionBlur.h:
+	* MotionBlur.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DLayerNode.cpp:
+	* BrowserOptions.cpp:
+	* X3DPrototypeInstance.cpp: 
+
 2012-12-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

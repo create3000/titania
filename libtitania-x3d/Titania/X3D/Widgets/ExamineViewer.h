@@ -46,68 +46,78 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_FIELDS_X3DSCALAR_H__
-#define __TITANIA_X3D_FIELDS_X3DSCALAR_H__
+#ifndef __TITANIA_X3D_WIDGETS_EXAMINE_VIEWER_H__
+#define __TITANIA_X3D_WIDGETS_EXAMINE_VIEWER_H__
 
-#include "../Basic/X3DField.h"
-#include "../Types/Numbers.h"
+#include "../Components/Navigation/X3DViewpointNode.h"
+#include "../Fields/SFNode.h"
+#include "../Widgets/X3DViewer.h"
+
+#include <gdkmm.h>
 
 namespace titania {
 namespace X3D {
 
-template <>
-void
-X3DField <Bool>::toStream (std::ostream & ostream) const;
+class Surface;
+class Scene;
 
-template <>
-void
-X3DField <Double>::toStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DField <Float>::toStream (std::ostream & ostream) const;
-
-extern template class X3DField <Bool>;
-extern template class X3DField <Double>;
-extern template class X3DField <Float>;
-extern template class X3DField <Int32>;
-
-template <class ValueType>
-class X3DScalar :
-	public X3DField <ValueType>
+class ExamineViewer :
+	public X3DViewer
 {
 public:
 
-	typedef ValueType scalar_type;
+	ExamineViewer (Surface &);
 
-	using X3DField <ValueType>::operator =;
-	using X3DField <ValueType>::getValue;
-
-	X3DScalar () :
-		X3DField <ValueType> () { }
-
-	X3DScalar (const X3DScalar & field) :
-		X3DField <ValueType> (field) { }
-
-	explicit
-	X3DScalar (const ValueType & value) :
-		X3DField <ValueType> (value) { }
+	void
+	initialize ();
 
 	virtual
-	X3DScalar*
-	clone () const { return new X3DScalar <ValueType> (*this); }
+	~ExamineViewer ();
+
+
+private:
+
+	void
+	set_scene ();
+
+	bool
+	on_button_press_event (GdkEventButton*);
+
+	void
+	set_viewpoint ();
+
+	bool
+	on_motion_notify_event (GdkEventMotion*);
+
+	bool
+	on_button_release_event (GdkEventButton*);
+
+	bool
+	on_scroll_event (GdkEventScroll*);
+
+	bool
+	spin ();
+
+	void
+	add_spinning ();
+
+	float
+	tb_project_to_sphere (const float, const float, const float) const;
+
+	Surface &        surface;
+	Vector3f         fromVector;
+	Rotation4f       deltaRotation;
+	Rotation4f       orientation;
+	Vector3f         lastTranslation;
+	Vector3f         distance;
+	guint            button;
+	sigc::connection button_press_event_connection;
+	sigc::connection motion_notify_event_connection;
+	sigc::connection button_release_event_connection;
+	sigc::connection scroll_event_connection;
+	sigc::connection spin_id;
 
 };
-
-extern template class X3DScalar <Bool>;
-extern template class X3DScalar <Double>;
-extern template class X3DScalar <Float>;
-extern template class X3DScalar <Int32>;
-
-typedef X3DScalar <Bool>   SFBool;
-typedef X3DScalar <Double> SFDouble;
-typedef X3DScalar <Float>  SFFloat;
-typedef X3DScalar <Int32>  SFInt32;
 
 } // X3D
 } // titania

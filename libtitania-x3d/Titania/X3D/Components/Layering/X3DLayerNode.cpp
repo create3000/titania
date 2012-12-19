@@ -75,10 +75,10 @@ X3DLayerNode::X3DLayerNode () :
 	addNodeType (X3DConstants::X3DLayerNode);
 
 	setChildren (defaultViewport,
-	             *navigationInfoStack .top (),
-	             *backgroundStack     .top (),
-	             *fogStack            .top (),
-	             *viewpointStack      .top (),
+	             *navigationInfoStack .bottom (),
+	             *backgroundStack     .bottom (),
+	             *fogStack            .bottom (),
+	             *viewpointStack      .bottom (),
 	             timeSensor,
 	             positionInterpolator);
 
@@ -237,8 +237,10 @@ X3DLayerNode::display ()
 	getBackground ()     -> draw ();
 	getNavigationInfo () -> enable ();
 	getViewpoint ()      -> draw ();
+	
+	viewpointStack .bottom () -> display ();
 
-	X3DRenderer::display ();
+	render ();
 
 	getNavigationInfo () -> disable ();
 	_viewport            -> disable ();

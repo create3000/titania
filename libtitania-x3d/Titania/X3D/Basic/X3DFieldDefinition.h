@@ -80,11 +80,11 @@ public:
 
 	virtual
 	X3DFieldDefinition*
-	copy () const = 0;
+	clone () const = 0;
 
 	virtual
 	X3DFieldDefinition*
-	copy (X3DExecutionContext* const) const;
+	clone (X3DExecutionContext* const) const;
 
 	virtual
 	X3DConstants::FieldType

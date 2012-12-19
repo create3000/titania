@@ -80,7 +80,7 @@ public:
 
 	virtual
 	SFImage*
-	copy () const;
+	clone () const;
 
 	void
 	setWidth (const size_type);

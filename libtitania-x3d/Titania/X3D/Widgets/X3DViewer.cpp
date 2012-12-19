@@ -46,83 +46,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_WIDGETS_VIEWER_H__
-#define __TITANIA_X3D_WIDGETS_VIEWER_H__
-
-#include "../Components/Core/X3DNode.h"
-#include "../Components/Geospatial/GeoViewpoint.h"
-#include "../Components/Navigation/OrthoViewpoint.h"
-#include "../Components/Navigation/Viewpoint.h"
-#include "../Fields/SFNode.h"
-
-#include <gdkmm.h>
+#include "X3DViewer.h"
 
 namespace titania {
 namespace X3D {
 
-class Surface;
-class Scene;
-
-class Viewer
-{
-public:
-
-	Viewer (Surface &);
-
-	const SFNode <X3DBrowser> &
-	getBrowser ();
-
-	void
-	initialize ();
-
-	virtual
-	~Viewer ();
-
-
-private:
-
-	void
-	set_scene ();
-
-	void
-	set_viewpoint ();
-
-	bool
-	on_button_press_event (GdkEventButton*);
-
-	bool
-	on_motion_notify_event (GdkEventMotion*);
-
-	bool
-	on_button_release_event (GdkEventButton*);
-
-	bool
-	on_scroll_event (GdkEventScroll*);
-
-	bool
-	timeout ();
-
-	void
-	timeout_add ();
-
-	void
-	timeout_remove ();
-
-	float
-	tb_project_to_sphere (const float, const float, const float) const;
-
-	Surface &        surface;
-	Vector3f         fromVector;
-	Rotation4f       deltaRotation;
-	Rotation4f       orientation;
-	Vector3f         lastTranslation;
-	Vector3f         distance;
-	guint            button;
-	sigc::connection timeout_id;
-
-};
+X3DViewer::X3DViewer (const SFNode <X3DBrowser> & browser) :
+	X3DWidget (browser) 
+{ }
 
 } // X3D
 } // titania
-
-#endif

@@ -832,7 +832,7 @@ Parser::restrictedInterfaceDeclaration ()
 
 			if (inputOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> copy ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
 				_field -> setAccessType (inputOnly);
 				_field -> setName (_fieldId);
 				return _field;
@@ -859,7 +859,7 @@ Parser::restrictedInterfaceDeclaration ()
 
 			if (outputOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> copy ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
 				_field -> setAccessType (outputOnly);
 				_field -> setName (_fieldId);
 				return _field;
@@ -886,7 +886,7 @@ Parser::restrictedInterfaceDeclaration ()
 
 			if (initializeOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> copy ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
 
 				if (fieldValue (_field))
 				{
@@ -935,7 +935,7 @@ Parser::interfaceDeclaration ()
 
 			if (inputOutputId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> copy ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
 
 				if (fieldValue (_field))
 				{
@@ -1042,7 +1042,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (inputOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> copy ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
 				_field -> setAccessType (inputOnly);
 				_field -> setName (_fieldId);
 				return _field;
@@ -1069,7 +1069,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (outputOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> copy ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
 				_field -> setAccessType (outputOnly);
 				_field -> setName (_fieldId);
 				return _field;
@@ -1096,7 +1096,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (initializeOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> copy ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
 				_field -> setAccessType (initializeOnly);
 				_field -> setName (_fieldId);
 				return _field;
@@ -1123,7 +1123,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (inputOutputId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> copy ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
 				_field -> setAccessType (inputOutput);
 				_field -> setName (_fieldId);
 				return _field;
@@ -1343,7 +1343,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 					{
 						if (accessTypes [_accessType] == _reference -> getAccessType () or accessTypes [_accessType] == inputOutput)
 						{
-							X3DFieldDefinition* _field = _supportedField -> copy ();
+							X3DFieldDefinition* _field = _supportedField -> clone ();
 
 							_field -> setReference (_reference);
 

@@ -90,11 +90,11 @@ public:
 
 	virtual
 	SFNode*
-	copy () const { return new SFNode (*this); }
+	clone () const { return new SFNode (*this); }
 
 	virtual
 	SFNode*
-	copy (X3DExecutionContext* const) const;
+	clone (X3DExecutionContext* const) const;
 
 	///  @name Assignment Operator
 
@@ -247,10 +247,10 @@ SFNode <ValueType>::SFNode (X3DObject* const value) :
 
 template <class ValueType>
 SFNode <ValueType>*
-SFNode <ValueType>::copy (X3DExecutionContext* const executionContext) const
+SFNode <ValueType>::clone (X3DExecutionContext* const executionContext) const
 {
 	if (getValue ())
-		return new SFNode (getValue () -> copy (executionContext));
+		return new SFNode (getValue () -> clone (executionContext));
 
 	else
 		return new SFNode ();

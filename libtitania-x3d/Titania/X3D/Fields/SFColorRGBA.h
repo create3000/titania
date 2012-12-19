@@ -80,7 +80,7 @@ public:
 
 	virtual
 	SFColorRGBA*
-	copy () const;
+	clone () const;
 
 	void
 	setR (const scalar_type &);

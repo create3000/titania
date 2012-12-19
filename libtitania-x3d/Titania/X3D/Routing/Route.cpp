@@ -79,7 +79,7 @@ Route::create (X3DExecutionContext* const) const
 }
 
 Route*
-Route::copy (X3DExecutionContext* const executionContext) const
+Route::clone (X3DExecutionContext* const executionContext) const
 {
 	//	std::clog << __func__ << ": " << getTypeName () << " " << getName () << std::endl;
 

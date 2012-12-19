@@ -46,7 +46,11 @@
  *
  ******************************************************************************/
 
-#include "Viewer.h"
+#include "ExamineViewer.h"
+
+#include "../Components/Geospatial/GeoViewpoint.h"
+#include "../Components/Navigation/OrthoViewpoint.h"
+#include "../Components/Navigation/Viewpoint.h"
 
 #include "Surface.h"
 #include <cmath>
@@ -58,64 +62,45 @@
 namespace titania {
 namespace X3D {
 
-Viewer::Viewer (Surface & surface) :
-	surface (surface), 
-	 button (0)        
+ExamineViewer::ExamineViewer (Surface & surface) :
+	                      X3DViewer (surface .getBrowser ()), 
+	                        surface (surface),                
+	                     fromVector (),                       
+	                  deltaRotation (),                       
+	                    orientation (),                       
+	                lastTranslation (),                       
+	                       distance (),                       
+	                         button (0),                      
+	button_press_event_connection   (),                       
+	motion_notify_event_connection  (),                       
+	button_release_event_connection (),                       
+	scroll_event_connection         (),                       
+	                        spin_id ()                        
 { }
 
-const SFNode <X3DBrowser> &
-Viewer::getBrowser ()
-{
-	return surface .getBrowser ();
-}
-
 void
-Viewer::initialize ()
+ExamineViewer::initialize ()
 {
-	surface .signal_button_press_event   () .connect (sigc::mem_fun (*this, &Viewer::on_button_press_event));
-	surface .signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &Viewer::on_motion_notify_event));
-	surface .signal_button_release_event () .connect (sigc::mem_fun (*this, &Viewer::on_button_release_event));
-	surface .signal_scroll_event         () .connect (sigc::mem_fun (*this, &Viewer::on_scroll_event));
+	button_press_event_connection   = surface .signal_button_press_event   () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_press_event));
+	motion_notify_event_connection  = surface .signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event));
+	button_release_event_connection = surface .signal_button_release_event () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_release_event));
+	scroll_event_connection         = surface .signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
 
-	getBrowser () -> initialized .addInterest (this, &Viewer::set_scene);
+	getBrowser () -> initialized .addInterest (this, &ExamineViewer::set_scene);
 
 	set_scene ();
 }
 
 void
-Viewer::set_scene ()
+ExamineViewer::set_scene ()
 {
-	timeout_remove ();
-}
-
-void
-Viewer::set_viewpoint ()
-{
-	SFNode <Viewpoint> viewpoint = getBrowser () -> getActiveViewpoint ();
-
-	if (viewpoint)
-	{
-		// Save distance and orientation.
-		distance    = viewpoint -> position - viewpoint -> centerOfRotation;
-		orientation = viewpoint -> orientation;
-
-		//		// Assign current viewpoint to default viewpoint.
-		//		defaultViewpoint -> setTransformationMatrix (viewpoint -> getTransformationMatrix ());
-		//
-		//		defaultViewpoint -> position         = viewpoint -> position;
-		//		defaultViewpoint -> orientation      = viewpoint -> orientation;
-		//		defaultViewpoint -> centerOfRotation = viewpoint -> centerOfRotation;
-		//		defaultViewpoint -> fieldOfView      = viewpoint -> fieldOfView;
-		//
-		//		// Bind viewpoint.
-		//		defaultViewpoint -> set_bind = true;
-	}
+	spin_id .disconnect ();
 }
 
 bool
-Viewer::on_button_press_event (GdkEventButton* event)
+ExamineViewer::on_button_press_event (GdkEventButton* event)
 {
-	timeout_remove ();
+	spin_id .disconnect ();
 
 	button = event -> button;
 
@@ -144,8 +129,33 @@ Viewer::on_button_press_event (GdkEventButton* event)
 	return false;
 }
 
+void
+ExamineViewer::set_viewpoint ()
+{
+	// Update distance and orientation.
+
+	SFNode <Viewpoint> viewpoint = getBrowser () -> getActiveViewpoint ();
+
+	if (viewpoint)
+	{
+		distance    = viewpoint -> position - viewpoint -> centerOfRotation;
+		orientation = viewpoint -> orientation;
+
+		//		// Assign current viewpoint to default viewpoint.
+		//		defaultViewpoint -> setTransformationMatrix (viewpoint -> getTransformationMatrix ());
+		//
+		//		defaultViewpoint -> position         = viewpoint -> position;
+		//		defaultViewpoint -> orientation      = viewpoint -> orientation;
+		//		defaultViewpoint -> centerOfRotation = viewpoint -> centerOfRotation;
+		//		defaultViewpoint -> fieldOfView      = viewpoint -> fieldOfView;
+		//
+		//		// Bind viewpoint.
+		//		defaultViewpoint -> set_bind = true;
+	}
+}
+
 bool
-Viewer::on_motion_notify_event (GdkEventMotion* event)
+ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 {
 	if (button == 1)
 	{
@@ -192,7 +202,7 @@ Viewer::on_motion_notify_event (GdkEventMotion* event)
 }
 
 bool
-Viewer::on_button_release_event (GdkEventButton* event)
+ExamineViewer::on_button_release_event (GdkEventButton* event)
 {
 	if (button == 1)
 	{
@@ -201,7 +211,7 @@ Viewer::on_button_release_event (GdkEventButton* event)
 		if (angle > SPIN_ANGLE)
 		{
 			deltaRotation .angle (angle - SPIN_ANGLE);
-			timeout_add ();
+			add_spinning ();
 		}
 	}
 
@@ -211,7 +221,7 @@ Viewer::on_button_release_event (GdkEventButton* event)
 }
 
 bool
-Viewer::on_scroll_event (GdkEventScroll* event)
+ExamineViewer::on_scroll_event (GdkEventScroll* event)
 {
 	SFNode <Viewpoint> viewpoint = getBrowser () -> getActiveViewpoint ();
 
@@ -239,7 +249,7 @@ Viewer::on_scroll_event (GdkEventScroll* event)
 }
 
 bool
-Viewer::timeout ()
+ExamineViewer::spin ()
 {
 	SFNode <Viewpoint> viewpoint = getBrowser () -> getActiveViewpoint ();
 
@@ -253,20 +263,14 @@ Viewer::timeout ()
 }
 
 void
-Viewer::timeout_add ()
+ExamineViewer::add_spinning ()
 {
-	if (not timeout_id .connected ())
-		timeout_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &Viewer::timeout), TIMEOUT_INTERVAL, GDK_PRIORITY_REDRAW);
-}
-
-void
-Viewer::timeout_remove ()
-{
-	timeout_id .disconnect ();
+	if (not spin_id .connected ())
+		spin_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &ExamineViewer::spin), TIMEOUT_INTERVAL, GDK_PRIORITY_REDRAW);
 }
 
 float
-Viewer::tb_project_to_sphere (const float r, const float x, const float y) const
+ExamineViewer::tb_project_to_sphere (const float r, const float x, const float y) const
 {
 	float z = 0;
 
@@ -285,9 +289,13 @@ Viewer::tb_project_to_sphere (const float r, const float x, const float y) const
 	return z;
 }
 
-Viewer::~Viewer ()
+ExamineViewer::~ExamineViewer ()
 {
-	timeout_remove ();
+	button_press_event_connection   .disconnect ();
+	motion_notify_event_connection  .disconnect ();
+	button_release_event_connection .disconnect ();
+	scroll_event_connection         .disconnect ();
+	spin_id                         .disconnect ();
 }
 
 } // X3D

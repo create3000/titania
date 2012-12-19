@@ -71,7 +71,7 @@ public:
 	///  Returns a copy of this field.
 	virtual 
 	X3DField <ValueType>*
-	copy () const;
+	clone () const;
 	
 	/// @name Assignment operators
 
@@ -253,7 +253,7 @@ X3DField <ValueType>::X3DField (const ValueType & value) :
 
 template <class ValueType>
 X3DField <ValueType>*
-X3DField <ValueType>::copy () const
+X3DField <ValueType>::clone () const
 {
 	return new X3DField <ValueType> (*this);
 }

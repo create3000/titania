@@ -1,17 +1,15 @@
 #X3D V3.0 utf8 Titania
 
-Background {
-	skyColor 1 0 0
-}
+META "title" "Viewpoint test"
+
+DEF Home Viewpoint { }
 
 Transform {
-  children Inline {
-	  url "Inline.wrl"
+  translation 0 0 3
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box { }
   }
-}
-
-DEF HomeViewpoint Viewpoint {
-  position 0 0 5
-  centerOfRotation 0 0 0
-  description "Home"
 }

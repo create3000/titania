@@ -98,7 +98,7 @@ public:
 
 	virtual
 	SFVec2*
-	copy () const;
+	clone () const;
 
 	void
 	setX (const scalar_type &);
@@ -164,7 +164,7 @@ private:
 template <class ValueType>
 inline
 SFVec2 <ValueType>*
-SFVec2 <ValueType>::copy () const
+SFVec2 <ValueType>::clone () const
 {
 	return new SFVec2 (*this);
 }

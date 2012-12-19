@@ -73,6 +73,7 @@ class X3DBrowser :
 public:
 
 	SFTime initialized;
+	SFTime reshaped;
 	SFTime exposed;
 	SFTime displayed;
 	SFTime finished;

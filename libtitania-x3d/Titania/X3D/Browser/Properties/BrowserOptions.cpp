@@ -61,7 +61,7 @@ namespace titania {
 namespace X3D {
 
 // Table 9.2 — Browser options
-// Name                    Type/valid range                           Default                      Description
+// Name                    Type/valid range                            Default                      Description
 // Antialiased             Boolean                                     False                        Render using hardware antialiasing if available
 // Dashboard               Boolean                                                                  Specified by bound NavigationInfo in contentDisplay browser navigation user interface
 // EnableInlineViewpoints  Boolean                                     True                         Viewpoints from Inline nodes are included in list of viewpoints if made available by the Inline node.

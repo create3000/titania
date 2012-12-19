@@ -66,7 +66,7 @@ public:
 
 	virtual
 	ExternProto*
-	copy (X3DExecutionContext* const) const;
+	clone (X3DExecutionContext* const) const;
 
 	virtual
 	bool

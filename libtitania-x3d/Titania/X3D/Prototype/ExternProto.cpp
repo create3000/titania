@@ -76,9 +76,9 @@ ExternProto::create (X3DExecutionContext* const executionContext) const
 }
 
 ExternProto*
-ExternProto::copy (X3DExecutionContext* const executionContext) const
+ExternProto::clone (X3DExecutionContext* const executionContext) const
 {
-	ExternProto* copy = dynamic_cast <ExternProto*> (X3DProto::copy (executionContext));
+	ExternProto* copy = dynamic_cast <ExternProto*> (X3DProto::clone (executionContext));
 
 	copy -> proto = proto;
 

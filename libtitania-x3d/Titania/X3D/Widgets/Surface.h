@@ -49,32 +49,29 @@
 #ifndef __TITANIA_X3D_WIDGETS_SURFACE_H__
 #define __TITANIA_X3D_WIDGETS_SURFACE_H__
 
-#include "../Components/Core/X3DNode.h"
+#include "../Widgets/X3DWidget.h"
 
 #include <Titania/OpenGL/Surface.h>
 
 #include "../Browser/X3DBrowser.h"
 #include "PointingDevice.h"
-#include "Viewer.h"
+#include "X3DViewer.h"
 
 namespace titania {
 namespace X3D {
 
 class Surface :
-	public opengl::Surface
+	public X3DWidget, public opengl::Surface
 {
 public:
 
 	Surface (const SFNode <X3DBrowser> &);
 
-	const SFNode <X3DBrowser> &
-	getBrowser () { return browser; }
+	//PointingDevice*
+	//getPointingDevice () { return &pointingDevice; }
 
-	PointingDevice*
-	getPointingDevice () { return &pointingDevice; }
-
-	Viewer*
-	getViewer () { return &viewer; }
+	//const std::shared_ptr <X3DViewer> &
+	//getViewer () { return viewer; }
 
 	virtual
 	void
@@ -98,9 +95,8 @@ private:
 	void
 	update (const Cairo::RefPtr <Cairo::Context> &);
 
-	SFNode <X3DBrowser> browser;
-	PointingDevice      pointingDevice;
-	Viewer              viewer;
+	PointingDevice              pointingDevice;
+	std::shared_ptr <X3DViewer> viewer;
 
 };
 

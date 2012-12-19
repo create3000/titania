@@ -78,7 +78,7 @@ SFString::SFString (const char_type* value) :
 { }
 
 SFString*
-SFString::copy () const
+SFString::clone () const
 {
 	return new SFString (*this);
 }

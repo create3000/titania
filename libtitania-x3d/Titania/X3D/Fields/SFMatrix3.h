@@ -86,7 +86,7 @@ public:
 
 	virtual
 	SFMatrix3*
-	copy () const;
+	clone () const;
 
 	void
 	set1Value (const size_type &, const scalar_type &);
@@ -206,7 +206,7 @@ SFMatrix3 <ValueType>::SFMatrix3 (const scalar_type & e11, const scalar_type & e
 
 template <class ValueType>
 SFMatrix3 <ValueType>*
-SFMatrix3 <ValueType>::copy () const
+SFMatrix3 <ValueType>::clone () const
 {
 	return new SFMatrix3 (*this);
 }

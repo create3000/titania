@@ -49,14 +49,14 @@
 #ifndef __TITANIA_X3D_WIDGETS_MOTION_BLUR_H__
 #define __TITANIA_X3D_WIDGETS_MOTION_BLUR_H__
 
-#include "../../Basic/X3DBaseNode.h"
+#include "../../Components/Core/X3DNode.h"
 #include "../../Fields.h"
 
 namespace titania {
 namespace X3D {
 
 class MotionBlur :
-	public X3DBaseNode
+	public X3DNode
 {
 public:
 

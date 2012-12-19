@@ -62,6 +62,7 @@ MotionBlur::MotionBlur (X3DExecutionContext* const executionContext) :
 	setComponent ("Browser");
 	setTypeName ("MotionBlur");
 
+	addField (inputOutput, "metadata",   metadata);
 	addField (inputOutput, "enabled",     enabled);
 	addField (inputOutput, "intensity", intensity);
 }
@@ -75,7 +76,7 @@ MotionBlur::create (X3DExecutionContext* const executionContext) const
 void
 MotionBlur::initialize ()
 {
-	X3DBaseNode::initialize ();
+	X3DNode::initialize ();
 
 	enabled .addInterest (this, &MotionBlur::set_enabled);
 
@@ -86,8 +87,17 @@ void
 MotionBlur::set_enabled ()
 {
 	clear ();
-	
-	getBrowser () -> displayed .addInterest (this, &MotionBlur::display);
+
+	if (enabled)
+	{
+		getBrowser () -> reshaped  .addInterest (this, &MotionBlur::clear);
+		getBrowser () -> displayed .addInterest (this, &MotionBlur::display);
+	}
+	else
+	{
+		getBrowser () -> reshaped  .removeInterest (this, &MotionBlur::clear);
+		getBrowser () -> displayed .removeInterest (this, &MotionBlur::display);
+	}
 }
 
 void

@@ -83,7 +83,8 @@ MotionBlurEditor::on_enabled_toggled ()
 void
 MotionBlurEditor::on_intensity_changed ()
 {
-	getBrowser () -> getBrowserOptions () -> motionBlur -> intensity = getIntensity () .get_value ();
+	float x = getIntensity () .get_value ();
+	getBrowser () -> getBrowserOptions () -> motionBlur -> intensity = -x * x + 2 * x;
 }
 
 } // puck

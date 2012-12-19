@@ -42,6 +42,7 @@ X3DBrowser::X3DBrowser () :
 	  X3DBrowserContext (),                                        
 	       X3DUrlObject (),                                        
 	        initialized (),                                        // SFTime   [out]    initialized
+	           reshaped (),                                        // SFTime   [out]    reshape
 	            exposed (),                                        // SFTime   [out]    exposed
 	          displayed (),                                        // SFTime   [out]    displayed
 	           finished (),                                        // SFTime   [out]    finished
@@ -81,6 +82,7 @@ X3DBrowser::X3DBrowser () :
 	             scene);
 
 	addField (outputOnly, "initialized", initialized);
+	addField (outputOnly, "reshaped",    reshaped);
 	addField (outputOnly, "exposed",     exposed);
 	addField (outputOnly, "displayed",   displayed);
 	addField (outputOnly, "finished",    finished);

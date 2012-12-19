@@ -87,7 +87,7 @@ SFImage::SFImage (const size_type width, const size_type height, const size_type
 }
 
 SFImage*
-SFImage::copy () const
+SFImage::clone () const
 {
 	return new SFImage (*this);
 }

@@ -80,7 +80,7 @@ public:
 
 	virtual
 	SFString*
-	copy () const;
+	clone () const;
 
 	SFString &
 	operator = (const char_type*);

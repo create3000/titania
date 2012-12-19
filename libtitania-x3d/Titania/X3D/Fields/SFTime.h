@@ -74,7 +74,7 @@ public:
 
 	virtual
 	SFTime*
-	copy () const;
+	clone () const;
 
 	virtual
 	const basic::id &

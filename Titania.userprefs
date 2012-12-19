@@ -1,40 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Properties/MotionBlur.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Widgets/ExamineViewer.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="725" Column="51" />
       <File FileName="Library/Tests/Text/test.wrl" Line="11" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.h" Line="87" Column="9" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="317" Column="1" />
-      <File FileName="Library/Tests/Grouping/Add&amp;RemoveChildren.wrl" Line="75" Column="2" />
-      <File FileName="Library/Tests/Scripting/test.wrl" Line="118" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="752" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="539" Column="37" />
-      <File FileName="x3dtidy/main.cpp" Line="147" Column="4" />
-      <File FileName="Library/Tests/Grouping/AddChildren.wrl" Line="59" Column="16" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/Viewer.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/Surface.h" Line="57" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/Surface.cpp" Line="97" Column="4" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/Viewer.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="238" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="74" Column="30" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="76" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWidget.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.h" Line="96" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.cpp" Line="311" Column="32" />
-      <File FileName="Titania/Titania/UserInterfaces/X3DBrowserUserInterface.h" Line="80" Column="1" />
-      <File FileName="Titania/Titania/UserInterfaces/X3DBrowserUserInterface.cpp" Line="74" Column="1" />
-      <File FileName="Titania/Titania/Base/X3DUserInterface.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Configuration/Configuration.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/MotionBlurEditor/MotionBlurEditor.cpp" Line="76" Column="1" />
-      <File FileName="Titania/Titania/Base/X3DBrowserInterface.h" Line="63" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.h" Line="53" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.h" Line="74" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.cpp" Line="86" Column="61" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/MotionBlur.h" Line="36" Column="29" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/MotionBlur.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/PointingDevice.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Widgets/ExamineViewer.h" Line="102" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/Widgets/ExamineViewer.cpp" Line="283" Column="1" />
+      <File FileName="Library/Tests/Navigation/Viewpoint.wrl" Line="5" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.h" Line="78" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="241" Column="8" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -46,6 +22,7 @@
             <Node name="Tests" expanded="True">
               <Node name="Geometry3D" expanded="True" />
               <Node name="Grouping" expanded="True" />
+              <Node name="Navigation" expanded="True" />
               <Node name="Scripting" expanded="True" />
               <Node name="Text" expanded="True" />
             </Node>
@@ -70,23 +47,26 @@
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
-                <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Geometry3D" expanded="True" />
-                  <Node name="Properties" expanded="True">
-                    <Node name="MotionBlur.h" selected="True" />
-                  </Node>
-                </Node>
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
+                  <Node name="Core" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
                   <Node name="Layering" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
+                  <Node name="Networking" expanded="True" />
                   <Node name="Text" expanded="True" />
                 </Node>
-                <Node name="Configuration" expanded="True" />
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
                 <Node name="InputOutput" expanded="True" />
-                <Node name="Widgets" expanded="True" />
+                <Node name="Parser" expanded="True" />
+                <Node name="Prototype" expanded="True" />
+                <Node name="Rendering" expanded="True" />
+                <Node name="Routing" expanded="True" />
+                <Node name="Types" expanded="True" />
+                <Node name="Widgets" expanded="True">
+                  <Node name="ExamineViewer.cpp" selected="True" />
+                </Node>
               </Node>
             </Node>
           </Node>

@@ -70,7 +70,7 @@ SFTime::SFTime (const time_type value) :
 { }
 
 SFTime*
-SFTime::copy () const
+SFTime::clone () const
 {
 	return new SFTime (*this);
 }

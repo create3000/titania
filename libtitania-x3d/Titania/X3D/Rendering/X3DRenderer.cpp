@@ -93,7 +93,7 @@ X3DRenderer::addShape (X3DShapeNode* shape, const float distance)
 }
 
 void
-X3DRenderer::display ()
+X3DRenderer::render ()
 {
 	numOpaqueNodes      = 0;
 	numTransparentNodes = 0;
@@ -134,6 +134,7 @@ X3DRenderer::draw ()
 	}
 
 	glClear (GL_DEPTH_BUFFER_BIT);
+	glPushMatrix ();
 
 	// render opaque objects first
 
@@ -176,6 +177,8 @@ X3DRenderer::draw ()
 	}
 
 	numNodesDrawn += numTransparentNodesDrawn;
+	
+	glPopMatrix ();
 }
 
 void

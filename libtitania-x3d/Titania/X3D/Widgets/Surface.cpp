@@ -50,6 +50,7 @@
 
 #include "../Bits/Error.h"
 #include "../Types/Time.h"
+#include "ExamineViewer.h"
 
 #include <gtkmm/main.h>
 
@@ -69,10 +70,10 @@ signal_handler (int sig)
 }
 
 Surface::Surface (const SFNode <X3DBrowser> & browser) :
+	      X3DWidget (browser), 
 	opengl::Surface (),        
-	        browser (browser), 
 	pointingDevice  (*this),   
-	        viewer  (*this)    
+	        viewer  (new ExamineViewer (*this))    
 {
 	// install our handler
 	std::signal (SIGSEGV, signal_handler);
@@ -88,13 +89,13 @@ Surface::setup ()
 	get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
 
 	getBrowser () -> setup ();
-	viewer     .initialize ();
+	viewer        -> setup ();
 }
 
 void
 Surface::reshape ()
 {
-	//motionBlur -> clear ();
+	getBrowser () -> reshaped .processInterests ();
 }
 
 void
@@ -128,7 +129,7 @@ void
 Surface::dispose ()
 {
 	if (getContext () and makeCurrent ())
-		browser -> dispose ();
+		getBrowser () -> dispose ();
 }
 
 Surface::~Surface ()

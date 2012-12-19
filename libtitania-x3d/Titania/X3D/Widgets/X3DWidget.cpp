@@ -46,70 +46,35 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_FIELDS_X3DSCALAR_H__
-#define __TITANIA_X3D_FIELDS_X3DSCALAR_H__
+#include "X3DWidget.h"
 
-#include "../Basic/X3DField.h"
-#include "../Types/Numbers.h"
+#include "../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-template <>
-void
-X3DField <Bool>::toStream (std::ostream & ostream) const;
+X3DWidget::X3DWidget (const SFNode <X3DBrowser> & browser) :
+	browser (browser) 
+{ }
 
-template <>
-void
-X3DField <Double>::toStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DField <Float>::toStream (std::ostream & ostream) const;
-
-extern template class X3DField <Bool>;
-extern template class X3DField <Double>;
-extern template class X3DField <Float>;
-extern template class X3DField <Int32>;
-
-template <class ValueType>
-class X3DScalar :
-	public X3DField <ValueType>
+X3DBrowser*
+X3DWidget::getBrowser () const
 {
-public:
+	return *browser;
+}
 
-	typedef ValueType scalar_type;
+void
+X3DWidget::setup ()
+{
+	initialize ();
+}
 
-	using X3DField <ValueType>::operator =;
-	using X3DField <ValueType>::getValue;
+void
+X3DWidget::initialize ()
+{ }
 
-	X3DScalar () :
-		X3DField <ValueType> () { }
-
-	X3DScalar (const X3DScalar & field) :
-		X3DField <ValueType> (field) { }
-
-	explicit
-	X3DScalar (const ValueType & value) :
-		X3DField <ValueType> (value) { }
-
-	virtual
-	X3DScalar*
-	clone () const { return new X3DScalar <ValueType> (*this); }
-
-};
-
-extern template class X3DScalar <Bool>;
-extern template class X3DScalar <Double>;
-extern template class X3DScalar <Float>;
-extern template class X3DScalar <Int32>;
-
-typedef X3DScalar <Bool>   SFBool;
-typedef X3DScalar <Double> SFDouble;
-typedef X3DScalar <Float>  SFFloat;
-typedef X3DScalar <Int32>  SFInt32;
+X3DWidget::~X3DWidget ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

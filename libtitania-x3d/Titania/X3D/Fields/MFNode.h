@@ -118,11 +118,11 @@ public:
 
 	virtual
 	MFNode*
-	copy () const { return new MFNode (*this); }
+	clone () const { return new MFNode (*this); }
 
 	virtual
 	MFNode*
-	copy (X3DExecutionContext* const executionContext) const;
+	clone (X3DExecutionContext* const executionContext) const;
 
 	template <class Up>
 	MFNode &
@@ -165,14 +165,14 @@ private:
 
 template <class Type>
 MFNode <Type>*
-MFNode <Type>::copy (X3DExecutionContext* const executionContext) const
+MFNode <Type>::clone (X3DExecutionContext* const executionContext) const
 {
 	MFNode* field = new MFNode ();
 
 	for (const auto & node :* this)
 	{
 		field -> push_back (node .getValue ()
-		                    ? node .getValue () -> copy (executionContext)
+		                    ? node .getValue () -> clone (executionContext)
 								  : NULL);
 	}
 

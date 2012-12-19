@@ -122,15 +122,25 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 }
 
 X3DBaseNode*
-X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
+X3DBaseNode::clone (X3DExecutionContext* const executionContext) const
 {
+	// We first try to get a named node if this node has a name and return this named node
+	// instead of cloning this node. This is important for copying Proto nodes to create
+	// PrototypeInstances.
+
 	try
 	{
 		return executionContext -> getNamedNode (getName ());
 	}
 	catch (const Error <INVALID_NAME> &)
 	{ }
+	
+	return copy (executionContext);
+}
 
+X3DBaseNode*
+X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
+{
 	X3DBaseNode* copy = create (executionContext);
 
 	assert (copy);
@@ -165,7 +175,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 			{
 				if (fieldDefinition -> isInitializeable ())
 				{
-					X3DFieldDefinition* copy = fieldDefinition -> copy (executionContext);
+					X3DFieldDefinition* copy = fieldDefinition -> clone (executionContext);
 
 					field -> write (*copy);
 
@@ -175,7 +185,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 		}
 		else  // user defined fields (Script and Shader)
 		{
-			X3DFieldDefinition* field = fieldDefinition -> copy (executionContext);
+			X3DFieldDefinition* field = fieldDefinition -> clone (executionContext);
 
 			copy -> addUserDefinedField (fieldDefinition -> getAccessType (), fieldDefinition -> getName (), field);
 

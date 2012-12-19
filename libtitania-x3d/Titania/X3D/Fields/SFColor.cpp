@@ -76,7 +76,7 @@ SFColor::SFColor (const scalar_type & r, const scalar_type & g, const scalar_typ
 { }
 
 SFColor*
-SFColor::copy () const
+SFColor::clone () const
 {
 	return new SFColor (*this);
 }

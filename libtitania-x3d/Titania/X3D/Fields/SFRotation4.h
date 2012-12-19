@@ -88,7 +88,7 @@ public:
 
 	virtual
 	SFRotation4*
-	copy () const;
+	clone () const;
 
 	void
 	setX (const scalar_type &);
@@ -189,7 +189,7 @@ SFRotation4 <ValueType>::SFRotation4 (const vector3_type & fromVector, const vec
 
 template <class ValueType>
 SFRotation4 <ValueType>*
-SFRotation4 <ValueType>::copy () const
+SFRotation4 <ValueType>::clone () const
 {
 	return new SFRotation4 (*this);
 }

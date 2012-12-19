@@ -326,7 +326,7 @@ throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
 {
 	Gtk::Widget* child = getNotebook () .get_children () [getCurrentPage ()];
 
-	Gtk::HBox*  tab_label = setTabLabel (*child);
+	Gtk::HBox*  tab_label = getTabLabel (*child);
 	Gtk::Label* label     = new Gtk::Label (value);
 	Gtk::Image* icon      = new Gtk::Image (Gtk::StockID (getExecutionContext () -> getWorldURL () .str ()),
 	                                        Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
@@ -419,7 +419,7 @@ X3DBrowserWindow::insertPage (size_t position)
 
 	// Set tab label.
 
-	setTabLabel (*box);
+	getNotebook () .set_tab_label (*box, *Gtk::manage (getTabLabel (*box)));
 	
 	// Apply Menu Configuration
 
@@ -452,7 +452,7 @@ X3DBrowserWindow::removePage (Gtk::Widget & child)
 }
 
 Gtk::HBox*
-X3DBrowserWindow::setTabLabel (Gtk::Widget & child)
+X3DBrowserWindow::getTabLabel (Gtk::Widget & child)
 {
 	Gtk::HBox* tab_label = new Gtk::HBox ();
 

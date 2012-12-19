@@ -76,7 +76,7 @@ SFColorRGBA::SFColorRGBA (const scalar_type & r, const scalar_type & g, const sc
 { }
 
 SFColorRGBA*
-SFColorRGBA::copy () const
+SFColorRGBA::clone () const
 {
 	return new SFColorRGBA (*this);
 }

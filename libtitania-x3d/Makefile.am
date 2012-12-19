@@ -398,9 +398,11 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Routing/Router.cpp \
 	Titania/X3D/Routing/RouteSet.cpp \
 	Titania/X3D/Types/Image.cpp \
+	Titania/X3D/Widgets/ExamineViewer.cpp \
 	Titania/X3D/Widgets/PointingDevice.cpp \
 	Titania/X3D/Widgets/Surface.cpp \
-	Titania/X3D/Widgets/Viewer.cpp
+	Titania/X3D/Widgets/X3DViewer.cpp \
+	Titania/X3D/Widgets/X3DWidget.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(TITANIA_GZSTREAM_LIBS) \

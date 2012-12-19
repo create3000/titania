@@ -159,11 +159,11 @@ public:
 
 	virtual
 	X3DArrayField*
-	copy () const { return new X3DArrayField (*this); }
+	clone () const { return new X3DArrayField (*this); }
 
 	virtual
 	X3DArrayField*
-	copy (X3DExecutionContext* const) const { return copy (); }
+	clone (X3DExecutionContext* const) const { return clone (); }
 
 	virtual
 	void

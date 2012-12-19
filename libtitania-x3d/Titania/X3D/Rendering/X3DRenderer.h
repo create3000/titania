@@ -49,6 +49,7 @@
 #ifndef __TITANIA_X3D_RENDERING_X3DRENDERER_H__
 #define __TITANIA_X3D_RENDERING_X3DRENDERER_H__
 
+#include "../Base/Output.h"
 #include "../Components/Core/X3DNode.h"
 #include "../Rendering/ShapeContainer.h"
 
@@ -84,7 +85,7 @@ public:
 	addShape (X3DShapeNode*, const float);
 
 	void
-	display ();
+	render ();
 
 	virtual
 	~X3DRenderer ();
