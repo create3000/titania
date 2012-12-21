@@ -84,7 +84,9 @@ X3DLayerNode::X3DLayerNode () :
 
 	backgroundStack     .top () -> transparency = 1;
 	fogStack            .top () -> transparency = 1;
+
 	viewpointStack      .top () -> description  = "Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ());
+	viewpointStack      .top () -> setName ("Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ()));
 }
 
 void
@@ -141,16 +143,6 @@ X3DLayerNode::pushLocalLight (X3DLightNode* light)
 }
 
 void
-X3DLayerNode::correctLights (const Matrix4d & correctionMatrix)
-{
-	for (const auto & light : cachedLocalLights)
-		light -> correct (correctionMatrix);
-
-	for (const auto & light : globalLights)
-		light -> correct (correctionMatrix);
-}
-
-void
 X3DLayerNode::clearLights ()
 {
 	for (const auto & light : cachedLocalLights)
@@ -179,7 +171,7 @@ X3DLayerNode::showAllObjects ()
 			Vector3f   translation, scale;
 			Rotation4f rotation, scaleOrientation;
 
-			Matrix4f matrix = viewpoint -> getMatrix ();
+			Matrix4f matrix = viewpoint -> getTransformationMatrix ();
 			matrix .get (translation, rotation, scale, scaleOrientation);
 
 			float    radius   = abs (bbox .size ()) * 0.5f;
@@ -236,7 +228,6 @@ X3DLayerNode::display ()
 
 	getBackground ()     -> draw ();
 	getNavigationInfo () -> enable ();
-	getViewpoint ()      -> draw ();
 	
 	viewpointStack .bottom () -> display ();
 

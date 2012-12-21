@@ -500,11 +500,11 @@ X3DBaseNode::initialize ()
 void
 X3DBaseNode::notify (X3DChildObject* const object)
 {
-	//std::clog << "Node '" << getTypeName () << "' received an event from field '" << object -> getName () << "'." << (void*) this << std::endl;
+	//std::clog << "Node '" << getTypeName () << "' received an event from field '" << object -> getName () << ": " << object -> getTypeName () << "'." << (void*) this << std::endl;
 
 	assert (object);
 
-	if (not addEvent (object))
+	if (not events .insert (object) .second)
 		return;
 
 	if (events .size () == 1)
@@ -513,15 +513,12 @@ X3DBaseNode::notify (X3DChildObject* const object)
 	receivedInputEvent |= object -> isInput ();
 }
 
-bool
-X3DBaseNode::addEvent (X3DChildObject* const object)
-{
-	return events .insert (object) .second;
-}
-
 void
 X3DBaseNode::processEvents (ChildObjectSet & sourceFields)
 {
+	//if (not events .size ())
+	//	__LOG__ << (void*) this << " " << getName () << " " << getTypeName () << std::endl;
+
 	if (prepare and receivedInputEvent)
 	{
 		// Call prepareEvents only if one event was from an eventIn.
@@ -530,15 +527,14 @@ X3DBaseNode::processEvents (ChildObjectSet & sourceFields)
 		prepareEvents ();
 	}
 
-	if (events .size ())
-	{
-		ChildObjectSet eventsToProcess (std::move (events));
+	//assert (events .size ());
 
-		for (const auto & event : eventsToProcess)
-		{
-			//std::clog << "Node '" << getTypeName () << "' process events from field '" << event -> getName () << "'." << (void*) this << std::endl;
-			event -> processEvents (sourceFields);
-		}
+	ChildObjectSet eventsToProcess (std::move (events));
+
+	for (const auto & event : eventsToProcess)
+	{
+		//std::clog << "Node '" << getTypeName () << "' process events from field '" << event -> getName () << "'." << (void*) this << std::endl;
+		event -> processEvents (sourceFields);
 	}
 }
 

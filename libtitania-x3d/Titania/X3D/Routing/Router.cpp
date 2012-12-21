@@ -51,10 +51,10 @@
 namespace titania {
 namespace X3D {
 
-bool
+void
 Router::notify (X3DBaseNode* node)
 {
-	return taintedNodes .insert (node) .second;
+	taintedNodes .push_back (node);
 }
 
 void
@@ -62,7 +62,7 @@ Router::processEvents ()
 {
 	if (taintedNodes .size ())
 	{
-		std::set <X3DBaseNode*> nodesToProcess (std::move (taintedNodes));
+		std::deque <X3DBaseNode*> nodesToProcess (std::move (taintedNodes));
 
 		for (const auto & node : nodesToProcess)
 		{

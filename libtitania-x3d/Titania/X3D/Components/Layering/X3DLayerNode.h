@@ -116,9 +116,6 @@ public:
 	const LightContainerArray &
 	getGlobalLights () { return globalLights; }
 
-	void
-	correctLights (const Matrix4d &);
-
 	virtual
 	Box3f
 	getBBox () = 0;

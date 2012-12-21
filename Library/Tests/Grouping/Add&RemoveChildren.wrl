@@ -1,6 +1,6 @@
 #X3D V3.0 utf8 Titania
 
-META "title" "Add Children"
+META "title" "Add & Remove Children"
 
 PROTO Cube [
   inputOutput SFVec3f translation 0 0 0
@@ -72,7 +72,7 @@ function set_time (value, time)
 	randomCubes ();
 
 	space .addChildren    = addChildren;
-	//space .removeChildren = removeChildren;
+	space .removeChildren = removeChildren;
 }
 
 function randomCubes ()

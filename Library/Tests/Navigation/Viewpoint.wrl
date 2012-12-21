@@ -2,14 +2,44 @@
 
 META "title" "Viewpoint test"
 
-DEF Home Viewpoint { }
-
 Transform {
-  translation 0 0 3
-  children Shape {
-    appearance Appearance {
-      material Material { }
+  translation 10 10 10
+  rotation 0.391072 0.873101 0.291131 5.43424
+  scale 123 0.4543 10.345
+  children [
+    DEF Home Viewpoint {
+      description "In"
+      position 0 0 20
     }
-    geometry Box { }
-  }
+    Transform {
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Box {
+          size 1 1 1
+        }
+      }
+    }
+    Transform {
+      translation 0 0 3
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Box { }
+      }
+    }
+  ]
+}
+
+Viewpoint {
+  description "Out"
+  position -1.16483 16.8751 324.704
+  centerOfRotation -1.16483 16.8751 22.483
+}
+
+Viewpoint {
+	description "Jump"
+	jump FALSE
 }

@@ -73,7 +73,7 @@ public:
 	Box3f
 	getBBox ();
 
-	const SFNode <X3DLayerNode>
+	const SFNode <X3DLayerNode> &
 	getActiveLayer () const;
 
 	const MFNode <X3DLayerNode> &

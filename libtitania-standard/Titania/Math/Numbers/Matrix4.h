@@ -730,7 +730,7 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
 		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     // singular
 
 	// (4) B = A * !A  (here !A means A transpose)
-	matrix4 b = !a * a;
+	matrix4 b = a * !a;
 
 	Type evalues [3];
 	Type evectors [3] [3];
@@ -754,7 +754,7 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
 	}
 
 	// (5) Compute U = !R ~S R A.
-	rotation = a * !scaleOrientation * si * scaleOrientation;
+	rotation = scaleOrientation * si * !scaleOrientation * a;
 	
 	scaleOrientation .transpose ();
 
@@ -854,7 +854,7 @@ template <typename T>
 matrix4 <Type> &
 matrix4 <Type>::operator *= (const matrix4 <T> & matrix)
 {
-	return multLeft (matrix);
+	return multRight (matrix);
 }
 
 template <class Type>
@@ -1086,7 +1086,7 @@ inline
 matrix4 <Type>
 operator * (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 {
-	return matrix4 <Type> (lhs) .multLeft (rhs);
+	return matrix4 <Type> (lhs) .multRight (rhs);
 }
 
 ///  Return vector value @a rhs left multiplied by @a lhs.

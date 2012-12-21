@@ -256,6 +256,8 @@ Text::createBBox ()
 Box2f
 Text::getLineBBox (const std::string & line)
 {
+	const SFNode <X3DFontStyleNode> & fontStyle = getFontStyle ();
+
 	FTBBox  ftbbox = font -> BBox (line .c_str ());
 	FTPoint min    = ftbbox .Lower ();
 	FTPoint max    = ftbbox .Upper ();

@@ -98,34 +98,27 @@ Viewpoint::set_jump ()
 {
 	if (not jump)
 	{
-		Matrix4f differenceMatrix;
-		differenceMatrix .translate (position);
-		differenceMatrix .rotate (orientation);
-		setDifferenceMatrix (differenceMatrix);
 	}
 }
 
 void
 Viewpoint::display ()
 {
-	const Matrix4f & currentMatrix = getCurrentLayer () -> getViewpoint () -> getCurrentMatrix ();
-	Matrix4f         matrix        = currentMatrix * ModelViewMatrix4f ();
-
-	setTransformationMatrix (matrix);
+	Matrix4f transformationMatrix = ModelViewMatrix4f ();
 
 	if (jump)
 	{
-		matrix .translate (position);
-		matrix .rotate (orientation);
+		transformationMatrix .translate (position);
+		transformationMatrix .rotate (orientation);
 		
-		matrix .translate (translation);
-		matrix .rotate (rotation);
+		transformationMatrix .translate (translation);
+		transformationMatrix .rotate (rotation);
 		
-		setMatrix (matrix);
+		setTransformationMatrix (transformationMatrix);
 	}
 	else
 	{
-		setMatrix (matrix * getDifferenceMatrix ());
+		setTransformationMatrix (transformationMatrix);
 	}
 }
 

@@ -72,6 +72,8 @@ class Scene :
 {
 public:
 
+	using X3DScene::fromStream;
+
 	///  @name Construction
 
 	Scene (X3DBrowser* const);
@@ -163,6 +165,16 @@ public:
 	virtual
 	void
 	display ();
+	
+	///  @name Input/Output
+
+	virtual
+	void
+	fromStream (std::istream & istream)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	///  @name Dispose
 

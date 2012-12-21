@@ -41,60 +41,52 @@ const std::string X3DBrowser::version ("0.1");
 X3DBrowser::X3DBrowser () :
 	  X3DBrowserContext (),                                        
 	       X3DUrlObject (),                                        
-	        initialized (),                                        // SFTime   [out]    initialized
-	           reshaped (),                                        // SFTime   [out]    reshape
-	            exposed (),                                        // SFTime   [out]    exposed
-	          displayed (),                                        // SFTime   [out]    displayed
-	           finished (),                                        // SFTime   [out]    finished
-	           shutdown (),                                        // SFTime   [out]    shutdown
-	            changed (),                                        // SFTime   [out]    changed
+	        initialized (),                                        // [out]    initialized
+	           reshaped (),                                        // [out]    reshape
+	            exposed (),                                        // [out]    exposed
+	          displayed (),                                        // [out]    displayed
+	           finished (),                                        // [out]    finished
+	           shutdown (),                                        // [out]    shutdown
+	            changed (),                                        // [out]    changed
 	             router (),                                        
-	              clock (new chrono::system_clock <time_type> ()),          
+	              clock (new chrono::system_clock <time_type> ()), 
 	    supportedFields (this),                                    
 	     supportedNodes (this),                                    
 	supportedComponents (this),                                    
 	  supportedProfiles (this, supportedComponents),               
-	renderingProperties (new RenderingProperties (this)),          
-	  browserProperties (new BrowserProperties   (this)),          
-	     browserOptions (new BrowserOptions      (this)),          
-	   javaScriptEngine (new JavaScriptEngine    (this)),          
+	renderingProperties (new RenderingProperties (this)),          // SFSting  [ ] renderingProperties NULL  [RenderingProperties]
+	  browserProperties (new BrowserProperties   (this)),          // SFSting  [ ] browserProperties   NULL  [BrowserProperties]
+	     browserOptions (new BrowserOptions      (this)),          // SFSting  [ ] browserOptions      NULL  [BrowserOptions]
+	   javaScriptEngine (new JavaScriptEngine    (this)),          // SFSting  [ ] javaScriptEngine    NULL  [JavaScriptEngine]
 	       currentSpeed (0),                                       
 	   currentFrameRate (0),                                       
 	        description (),                                        // SFSting  [in,out] description ""
-	              scene (createScene ()),                          // SFNode   [in,out] world       NULL
-	              world (new World (this, scene))                  // SFNode   [out]    world
+	              scene (createScene ()),                          // SFNode   [in,out] scene       NULL
+	        changedTime (clock -> cycle ()),                       
+	      priorPosition (),                                        
+	         lightStack ()                                         
 {
 	std::clog << "Constructing Browser:" << std::endl;
 
 	setComponent ("Browser");
 	setTypeName ("Browser");
 	setName ("Titania");
-	
+
 	//supportedFields, // make X3DBaseNodes of this
 	//supportedNodes,
 	//supportedComponents,
 	//supportedProfiles,
-	
-	setChildren (renderingProperties,
-	             browserProperties,
-	             browserOptions,
-	             javaScriptEngine,
-	             scene);
 
-	addField (outputOnly, "initialized", initialized);
-	addField (outputOnly, "reshaped",    reshaped);
-	addField (outputOnly, "exposed",     exposed);
-	addField (outputOnly, "displayed",   displayed);
-	addField (outputOnly, "finished",    finished);
-	addField (outputOnly, "shutdown",    shutdown);
+	addField (initializeOnly, "renderingProperties", renderingProperties);
+	addField (initializeOnly, "browserProperties",   browserProperties);
+	addField (initializeOnly, "browserOptions",      browserOptions);
+	addField (initializeOnly, "javaScriptEngine",    javaScriptEngine);
 
 	addField (outputOnly, "description", description);
 	addField (outputOnly, "urlError",    urlError);
-	addField (outputOnly, "world",       world);
+	addField (outputOnly, "scene",       scene);
 
 	scene .setName ("scene");
-
-	world -> setup ();
 
 	std::clog << "\tDone constructing Browser." << std::endl;
 }
@@ -145,7 +137,7 @@ X3DBrowser::initialize ()
 		<< std::string (80, '*') << std::endl
 		<< std::endl;
 
-	initialized = getCurrentTime ();
+	initialized .processInterests ();
 }
 
 X3DBrowser*
@@ -304,32 +296,24 @@ void
 X3DBrowser::replaceWorld (const SFNode <Scene> & value)
 throw (Error <INVALID_SCENE>)
 {
+	// Replace world.
+
 	std::clog << "The browser is requested to replace the world:" << std::endl;
 
 	if (not value)
 		throw Error <INVALID_SCENE> ("Scene is NULL.");
 
 	scene = value;
+
+	std::clog << "Replacing world done." << std::endl;
 }
 
 void
 X3DBrowser::set_scene ()
 {
-	// Replace world.
-
-	world = new World (this, scene);
-	world -> setup ();
-
-	// Bind viewpoint from URL.
-
-	if (scene -> getWorldURL () .fragment () .length ())
-		changeViewpoint (scene -> getWorldURL () .fragment ());
-
 	// Generate initialized event immediately upon receiving this service.
 
-	initialized = getCurrentTime ();
-
-	std::clog << "Replacing world done." << std::endl;
+	initialized .processInterests ();
 }
 
 void
@@ -348,11 +332,10 @@ throw (Error <INVALID_URL>,
        Error <INVALID_X3D>)
 {
 	// where parameter is "target=nameOfFrame"
-	//replaceWorld (createX3DFromURL (url));
-	
-	SFNode <Scene> scene = createScene ();
-	replaceWorld (scene);
-	X3DUrlObject::loadURL (*scene, url);
+
+	replaceWorld (createScene ());
+
+	X3DUrlObject::loadURL (getExecutionContext (), url);
 }
 
 SFNode <Scene>
@@ -474,19 +457,17 @@ X3DBrowser::notify (X3DBaseNode* const node)
 
 	router .notify (node);
 
-	if (changed == getCurrentTime ())
+	if (changedTime == getCurrentTime ())
 		return;
 
-	ChildObjectSet sourceFields;
-
-	changed = getCurrentTime ();
-	changed .processEvents (sourceFields);
+	changedTime = getCurrentTime ();
+	changed .processInterests ();
 }
 
 void
 X3DBrowser::intersect ()
 {
-	world -> select ();
+	scene -> select ();
 }
 
 void
@@ -497,7 +478,7 @@ X3DBrowser::prepare ()
 
 	currentFrameRate = 1 / clock -> interval ();
 
-	Vector3d position = getActiveViewpoint () -> getMatrix () .translation ();
+	Vector3d position = getActiveViewpoint () -> getTransformationMatrix () .translation ();
 	currentSpeed  = abs (position - priorPosition) * currentFrameRate;
 	priorPosition = position;
 
@@ -510,7 +491,10 @@ X3DBrowser::prepare ()
 void
 X3DBrowser::display ()
 {
-	world -> display ();
+	glClear (GL_COLOR_BUFFER_BIT);
+	glLoadIdentity ();
+
+	scene -> display ();
 
 	displayed .processInterests ();
 }
@@ -531,13 +515,21 @@ X3DBrowser::dispose ()
 {
 	std::clog << "Browser::dispose ..." << std::endl;
 
+	initialized .dispose ();
+	reshaped    .dispose ();
+	exposed     .dispose ();
+	displayed   .dispose ();
+	finished    .dispose ();
+	shutdown    .dispose ();
+	changed     .dispose ();
+
 	supportedFields     .dispose ();
 	supportedNodes      .dispose ();
 	supportedComponents .dispose ();
 	supportedProfiles   .dispose ();
-	
+
 	X3DBrowserContext::dispose ();
-	
+
 	getGarbageCollector () .dispose ();
 
 	std::clog << "Browser::dispose done ..." << std::endl;

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
-	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DEnvironmentalSensorNode (),                                                    
 	  centerOfRotation_changed (),                                                    // SFVec3f    [out] centerOfRotation_changed
 	       orientation_changed (),                                                    // SFRotation [out] orientation_changed
@@ -110,8 +110,6 @@ ProximitySensor::update ()
 {
 	if (inside)
 	{
-		matrix = ~viewpoint -> getMatrix () * matrix;
-
 		Vector3f   translation, scale;
 		Rotation4f rotation;
 		matrix .get (translation, rotation, scale);
@@ -149,8 +147,7 @@ ProximitySensor::update ()
 		}
 	}
 
-	viewpoint = NULL;
-	inside    = false;
+	inside = false;
 }
 
 void
@@ -159,30 +156,32 @@ ProximitySensor::display ()
 	if (inside /* or getBrowser () -> getEditMode () */)
 		return;
 
-	Matrix4f centerMatrix = ModelViewMatrix4f ();
-	centerMatrix .translate (center);
+	matrix = ModelViewMatrix4f () * ~getCurrentLayer () -> getViewpoint () -> getTransformationMatrix (); 
 
-	if (isInside (centerMatrix))
-	{
-		viewpoint = getBrowser () -> getActiveViewpoint ();
-		matrix    = viewpoint -> getCurrentMatrix () * ModelViewMatrix4f ();
-		inside    = true;
-	}
+	Matrix4f transformationMatrix = matrix;
+	transformationMatrix .translate (center);
 
-	//drawHandle();
+	inside = isInside (transformationMatrix);
+		
+	__LOG__ << std::endl;
+	__LOG__ << getCurrentLayer () -> getViewpoint () -> getTransformationMatrix () << std::endl;
+	__LOG__ << ~getCurrentLayer () -> getViewpoint () -> getTransformationMatrix () << std::endl;
+	__LOG__ << ModelViewMatrix4f () << std::endl;
+	__LOG__ << matrix << std::endl;
+	__LOG__ << ~matrix << std::endl;
 }
 
 bool
 ProximitySensor::isInside (const Matrix4f & matrix) const
 {
-	auto size_2 = size * 0.5f;
+	auto size1_2 = size * 0.5f;
 
-	float x = size_2 .x ();
-	float y = size_2 .y ();
-	float z = size_2 .z ();
+	float x = size1_2 .x ();
+	float y = size1_2 .y ();
+	float z = size1_2 .z ();
 
 	Vector3f points [6] = {
-		matrix * Vector3f (0,  0,  z),
+		matrix* Vector3f (0,  0,  z),
 		matrix * Vector3f (0,  0, -z),
 		matrix * Vector3f (0,  y,  0),
 		matrix * Vector3f (0, -y,  0),
@@ -206,81 +205,6 @@ ProximitySensor::isInside (const Matrix4f & matrix) const
 	}
 
 	return true;
-}
-
-void
-ProximitySensor::drawHandle ()
-{
-	float cx, cy, cz;
-
-	center .getValue (cx, cy, cz);
-
-	glPushMatrix ();
-	glTranslatef (cx, cy, cz);
-
-	glDepthMask (GL_FALSE);
-	glDisable (GL_LIGHTING);
-	glColor4f (0.5, 0, 1, 0.5);
-	glEnable (GL_BLEND);
-	glDisable (GL_TEXTURE_2D);
-
-	auto size_2 = size * 0.5f;
-
-	float x = size_2 .x ();
-	float y = size_2 .y ();
-	float z = size_2 .z ();
-
-	glEnable (GL_CULL_FACE);
-
-	glFrontFace (GL_CCW);
-
-	glBegin (GL_QUADS); // Start Drawing Quads
-
-	// Front Face
-	glNormal3f (0, 0, 1);
-	glVertex3f (-x, -y,  z);
-	glVertex3f (x, -y,  z);
-	glVertex3f (x,  y,  z);
-	glVertex3f (-x,  y,  z);
-
-	// Back Face
-	glNormal3f (0, 0, -1);
-	glVertex3f (-x, -y, -z);
-	glVertex3f (-x,  y, -z);
-	glVertex3f (x,  y, -z);
-	glVertex3f (x, -y, -z);
-
-	// Top Face
-	glNormal3f (0, 1, 0);
-	glVertex3f (-x,  y, -z);
-	glVertex3f (-x,  y,  z);
-	glVertex3f (x,  y,  z);
-	glVertex3f (x,  y, -z);
-
-	// Bottom Face
-	glNormal3f (0, -1, 0);
-	glVertex3f (-x, -y, -z);
-	glVertex3f (x, -y, -z);
-	glVertex3f (x, -y,  z);
-	glVertex3f (-x, -y,  z);
-
-	// Right face
-	glNormal3f (1, 0, 0);
-	glVertex3f (x, -y, -z);
-	glVertex3f (x,  y, -z);
-	glVertex3f (x,  y,  z);
-	glVertex3f (x, -y,  z);
-
-	// Left Face
-	glNormal3f (-1, 0, 0);
-	glVertex3f (-x, -y, -z);
-	glVertex3f (-x, -y,  z);
-	glVertex3f (-x,  y,  z);
-	glVertex3f (-x,  y, -z);
-
-	glEnd (); // Done Drawing Quads
-
-	glPopMatrix ();
 }
 
 void

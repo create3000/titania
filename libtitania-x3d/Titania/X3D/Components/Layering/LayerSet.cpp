@@ -81,27 +81,6 @@ LayerSet::create (X3DExecutionContext* const executionContext) const
 	return new LayerSet (executionContext);
 }
 
-Box3f
-LayerSet::getBBox ()
-{
-	return getActiveLayer () -> getBBox ();                     // XXX get bbox from all layers;
-}
-
-const SFNode <X3DLayerNode>
-LayerSet::getActiveLayer () const
-{
-	if (activeLayer >= 0 and activeLayer < (int32_t) children .size ())
-		return children [activeLayer];
-
-	return children [0];
-}
-
-const MFNode <X3DLayerNode> &
-LayerSet::getLayers ()
-{
-	return children;
-}
-
 void
 LayerSet::initialize ()
 {
@@ -114,6 +93,27 @@ LayerSet::initialize ()
 
 	set_activeLayer ();
 	set_layers ();
+}
+
+Box3f
+LayerSet::getBBox ()
+{
+	return getActiveLayer () -> getBBox ();                     // XXX get bbox from all layers;
+}
+
+const SFNode <X3DLayerNode> &
+LayerSet::getActiveLayer () const
+{
+	if (activeLayer >= 0 and activeLayer < (int32_t) children .size ())
+		return children [activeLayer];
+
+	return children [0];
+}
+
+const MFNode <X3DLayerNode> &
+LayerSet::getLayers ()
+{
+	return children;
 }
 
 void

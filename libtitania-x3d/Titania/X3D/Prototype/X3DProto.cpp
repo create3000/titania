@@ -52,7 +52,7 @@ namespace titania {
 namespace X3D {
 
 X3DProto::X3DProto () :
-	X3DBaseNode () 
+	X3DNode () 
 { }
 
 } // X3D

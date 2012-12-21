@@ -242,9 +242,6 @@ private:
 	void
 	notify (X3DChildObject* const);
 
-	bool
-	addEvent (X3DChildObject* const);
-
 	X3DBrowser* const          browser;
 	X3DExecutionContext* const executionContext;
 

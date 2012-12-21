@@ -80,11 +80,14 @@ private:
 	void
 	set_scene ();
 
-	bool
-	on_button_press_event (GdkEventButton*);
+	void
+	set_activeLayer ();
 
 	void
 	set_viewpoint ();
+
+	bool
+	on_button_press_event (GdkEventButton*);
 
 	bool
 	on_motion_notify_event (GdkEventMotion*);
@@ -104,18 +107,19 @@ private:
 	float
 	tb_project_to_sphere (const float, const float, const float) const;
 
-	Surface &        surface;
-	Vector3f         fromVector;
-	Rotation4f       deltaRotation;
-	Rotation4f       rotation;
-	Vector3f         lastTranslation;
-	Vector3f         distance;
-	guint            button;
-	sigc::connection button_press_event_connection;
-	sigc::connection motion_notify_event_connection;
-	sigc::connection button_release_event_connection;
-	sigc::connection scroll_event_connection;
-	sigc::connection spin_id;
+	Surface &             surface;
+	Vector3f              fromVector;
+	Rotation4f            deltaRotation;
+	Rotation4f            rotation;
+	Vector3f              lastTranslation;
+	Vector3f              distance;
+	guint                 button;
+	sigc::connection      button_press_event_connection;
+	sigc::connection      motion_notify_event_connection;
+	sigc::connection      button_release_event_connection;
+	sigc::connection      scroll_event_connection;
+	sigc::connection      spin_id;
+	SFNode <X3DLayerNode> activeLayer;
 
 };
 

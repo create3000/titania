@@ -61,20 +61,16 @@ public:
 
 	LightContainer (X3DLightNode* node) :
 		node (node),
-		matrix (ModelViewMatrix4d ())
+		matrix (ModelViewMatrix4f ())
 	{ }
-
-	void
-	correct (const Matrix4d & correctionMatrix)
-	{
-		matrix = correctionMatrix * matrix;
-	}
 
 	void
 	enable ()
 	{
-		glLoadMatrixd (matrix .data ());
+		glPushMatrix ();
+		glMultMatrixf (matrix .data ());
 		node -> enable ();
+		glPopMatrix ();
 	}
 
 	void
@@ -86,7 +82,7 @@ public:
 private:
 
 	X3DLightNode* node;
-	Matrix4d      matrix;
+	Matrix4f      matrix;
 
 };
 

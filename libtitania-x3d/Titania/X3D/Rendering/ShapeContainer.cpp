@@ -59,7 +59,7 @@ ShapeContainer::ShapeContainer (X3DShapeNode* shape,
                                 X3DFogObject* fog) :
 	      shape (shape),                
 	   distance (distance),             
-	     matrix (ModelViewMatrix4d ()), 
+	     matrix (ModelViewMatrix4f ()), 
 	localLights (localLights),          
 	        fog (fog)                   
 { }
@@ -82,9 +82,18 @@ ShapeContainer::operator < (const ShapeContainer & container) const
 }
 
 int
-ShapeContainer::redraw (const Matrix4d & correctionMatrix)
+ShapeContainer::redraw (Matrix4f transformationMatix)
 {
-	glLoadMatrixd ((correctionMatrix * matrix) .data ());
+	transformationMatix .multLeft (matrix);
+	
+	if (ViewVolume (transformationMatix, ProjectionMatrix4f ()) .intersect (shape -> getBBox ()))
+	{
+		glLoadMatrixf (matrix .data ());
+
+
+
+	glPushMatrix ();
+	glMultMatrixf (matrix .data ());
 
 	if (ViewVolume () .intersect (shape -> getBBox ()))
 	{
@@ -115,9 +124,11 @@ ShapeContainer::redraw (const Matrix4d & correctionMatrix)
 				(*light) -> disable ();
 		}
 
+		glPopMatrix ();
 		return 1;
 	}
 
+	glPopMatrix ();
 	return 0;
 }
 

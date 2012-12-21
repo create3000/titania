@@ -118,10 +118,7 @@ X3DRenderer::draw ()
 	numNodesDrawn            = 0;
 	numTransparentNodesDrawn = 0;
 
-	X3DViewpointNode* currentViewpoint = getCurrentLayer () -> getViewpoint ();
-	Matrix4d          correctionMatrix = ~currentViewpoint -> getMatrix () * currentViewpoint -> getCurrentMatrix ();
-
-	getCurrentLayer () -> correctLights (correctionMatrix);
+	getCurrentLayer () -> getViewpoint () -> draw ();
 
 	// enable global lights
 
@@ -146,7 +143,7 @@ X3DRenderer::draw ()
 
 	for (auto shape = shapes .cbegin (); shape not_eq end; ++ shape)
 	{
-		numNodesDrawn += (*shape) -> redraw (correctionMatrix);
+		numNodesDrawn += (*shape) -> redraw ();
 	}
 
 	// render transparent objects
@@ -160,7 +157,7 @@ X3DRenderer::draw ()
 
 	for (auto shape = transparentShapes .begin (); shape not_eq end; ++ shape)
 	{
-		numTransparentNodesDrawn += (*shape) -> redraw (correctionMatrix);
+		numTransparentNodesDrawn += (*shape) -> redraw ();
 	}
 
 	glDepthMask (GL_TRUE);

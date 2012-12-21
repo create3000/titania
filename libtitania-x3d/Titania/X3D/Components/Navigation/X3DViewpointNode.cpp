@@ -116,10 +116,9 @@ X3DViewpointNode::draw ()
 	if (sizeZ == 0)
 		sizeZ = std::numeric_limits <float> ::epsilon () * 100;
 
-	reshape (sizeZ / 2, visibilityLimit);
+	reshape (sizeZ * 0.5f, visibilityLimit);
 
-	glLoadMatrixf (inverse (getMatrix ()) .data ());
-	setCurrentMatrix (getMatrix ());
+	glLoadMatrixf (inverse (getTransformationMatrix ()) .data ());
 }
 
 void

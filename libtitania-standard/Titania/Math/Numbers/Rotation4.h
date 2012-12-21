@@ -414,7 +414,7 @@ inline
 rotation4 <Type> &
 rotation4 <Type>::operator *= (const rotation4 <T> & rotation)
 {
-	value *= rotation .quat ();
+	value .multLeft (rotation .quat ());
 	return *this;
 }
 
@@ -467,7 +467,7 @@ inline
 rotation4 <Type>
 operator * (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs)
 {
-	return rotation4 <Type> (lhs .quat () * rhs .quat ());
+	return rotation4 <Type> (rhs .quat () * lhs .quat ());
 }
 
 ///  Returns the value of @a vector left multiplied by the quaternion corresponding to this object's rotation.

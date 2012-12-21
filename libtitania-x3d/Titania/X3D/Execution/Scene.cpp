@@ -199,12 +199,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	X3DScene::addRootNode (rootNode);
 
-	SFNode <LayerSet> rootLayersSet = rootNode;
+	SFNode <LayerSet> rootLayerSet = rootNode;
 
-	if (rootLayersSet)
+	if (rootLayerSet)
 	{
-		rootLayersSet -> getLayers () [0] -> children = layerSet -> getLayers () [0] -> children;
-		layerSet                                      = rootLayersSet;
+		rootLayerSet -> getLayers () [0] -> children = layerSet -> getLayers () [0] -> children;
+		layerSet                                     = rootLayerSet;
 	}
 
 	else
@@ -237,6 +237,35 @@ void
 Scene::display ()
 {
 	layerSet -> display ();
+}
+
+void
+Scene::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DScene::fromStream (istream);
+	
+	if (getNavigationInfos () .size ())
+		getNavigationInfos () [0] -> set_bind = true;
+		
+	if (getBackgrounds () .size ())
+		getBackgrounds () [0] -> set_bind = true;
+		
+	if (getFogs () .size ())
+		getFogs () [0] -> set_bind = true;
+
+	// Bind viewpoint from URL,
+
+	if (getWorldURL () .fragment () .length ())
+		getBrowser () -> changeViewpoint (getWorldURL () .fragment ());
+	
+	// or bind first viewpoint in viewpoint stack.
+	
+	else if (getViewpoints () .size ())
+		getViewpoints () [0] -> set_bind = true;	
 }
 
 // Dispose

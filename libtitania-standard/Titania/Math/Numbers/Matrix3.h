@@ -718,7 +718,7 @@ matrix3 <Type>::factor (matrix3 & r, vector2 <S> & s, matrix3 & u, vector2 <T> &
 		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         // singular
 
 	/* (4) B = A * !A  (here !A means A transpose) */
-	matrix3 b = !a * a;
+	matrix3 b = a * !a;
 
 	Type           evalues [2];
 	vector2 <Type> evectors [2];
@@ -741,7 +741,7 @@ matrix3 <Type>::factor (matrix3 & r, vector2 <S> & s, matrix3 & u, vector2 <T> &
 	}
 
 	/* (5) Compute U = R^ S! R A. */
-	u = a * !r * si * r;
+	u = r * si * !r * a;
 	
 	r .transpose ();
 
@@ -1052,7 +1052,7 @@ template <typename T>
 matrix3 <Type> &
 matrix3 <Type>::operator *= (const matrix3 <T> & matrix)
 {
-	return multLeft (matrix);
+	return multRight (matrix);
 }
 
 template <typename Type>
@@ -1150,7 +1150,7 @@ inline
 matrix3 <Type>
 operator * (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 {
-	return matrix3 <Type> (lhs) .multLeft (rhs);
+	return matrix3 <Type> (lhs) .multRight (rhs);
 }
 
 template <class Type>

@@ -438,7 +438,6 @@
     <None Include="Titania\X3D\Execution\ExportedNodeArray.h" />
     <None Include="Titania\X3D\Execution\ImportedNodeArray.h" />
     <None Include="Titania\X3D\Execution\Scene.h" />
-    <None Include="Titania\X3D\Execution\World.h" />
     <None Include="Titania\X3D\Execution\X3DExecutionContext.h" />
     <None Include="Titania\X3D\Routing\Route.h" />
     <None Include="Titania\X3D\Routing\RouteArray.h" />
@@ -523,7 +522,6 @@
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
     <Compile Include="Titania\X3D\Execution\Scene.cpp" />
-    <Compile Include="Titania\X3D\Execution\World.cpp" />
     <Compile Include="Titania\X3D\Execution\X3DExecutionContext.cpp" />
     <Compile Include="Titania\X3D\Fields\ArrayFields.cpp" />
     <Compile Include="Titania\X3D\Fields\MFInt32.cpp" />

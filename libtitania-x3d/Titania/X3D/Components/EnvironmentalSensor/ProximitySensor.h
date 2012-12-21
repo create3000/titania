@@ -95,10 +95,6 @@ private:
 	bool
 	isInside (const Matrix4f &) const;
 
-	void
-	drawHandle ();
-
-	X3DViewpointNode* viewpoint;
 	Matrix4f          matrix;
 	bool              inside;
 

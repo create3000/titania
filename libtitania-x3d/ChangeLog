@@ -1,3 +1,42 @@
+2012-12-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Router.h:
+	* World.h:
+	* Parser.cpp:
+	* Scene.h:
+	* Surface.h:
+	* Router.cpp:
+	* Scene.cpp:
+	* World.cpp:
+	* Proto.cpp:
+	* X3DBaseNode.h:
+	* X3DProto.h:
+	* X3DBrowser.h:
+	* X3DBaseNode.cpp:
+	* X3DProto.cpp:
+	* X3DBrowser.cpp:
+	* ExamineViewer.h:
+	* Text.cpp:
+	* ExternProto.cpp:
+	* ExamineViewer.cpp:
+	* X3DRenderer.cpp:
+	* LightContainer.h:
+	* ShapeContainer.h:
+	* ShapeContainer.cpp:
+	* LayerSet.h:
+	* LayerSet.cpp:
+	* X3DShapeNode.cpp:
+	* X3DLayerNode.h:
+	* Viewpoint.cpp:
+	* X3DLayerNode.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp:
+	* ProximitySensor.h:
+	* ProximitySensor.cpp:
+	* VisibilitySensor.cpp: 
+
 2012-12-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ExamineViewer.h:

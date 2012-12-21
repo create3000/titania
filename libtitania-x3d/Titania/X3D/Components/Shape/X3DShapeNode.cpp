@@ -115,7 +115,7 @@ X3DShapeNode::intersect ()
 
 	if (geometry)
 	{
-		if (ViewVolume () .intersect (getBBox ()))
+		if (ViewVolume (ModelViewMatrix4f (), ProjectionMatrix4f ()) .intersect (getBBox ()))
 		{
 			Line3f hitRay = getBrowser () -> getHitRay ();
 			Hit*   hit    = new Hit ();
@@ -144,7 +144,7 @@ X3DShapeNode::display ()
 
 		float radius = abs (centerMatrix .multDirMatrix (bbox .size ())) * 0.5f;
 
-		if (radius > centerMatrix [3] [2])
+		if (radius > centerMatrix [3] [2] || true)
 			getBrowser () -> getCurrentRenderer () -> addShape (this, centerMatrix [3] [2] - radius);
 	}
 }

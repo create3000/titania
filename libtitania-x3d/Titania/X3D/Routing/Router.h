@@ -61,7 +61,7 @@ public:
 
 	Router () { }
 
-	bool
+	void
 	notify (X3DBaseNode*);
 
 	void
@@ -81,7 +81,7 @@ private:
 	void
 	eventsProcessed ();
 
-	std::set <X3DBaseNode*>   taintedNodes;
+	std::deque <X3DBaseNode*> taintedNodes;
 	std::deque <X3DBaseNode*> preparedNodes;
 
 };

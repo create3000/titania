@@ -49,7 +49,7 @@
 #ifndef __TITANIA_X3D_PROTOTYPE_X3DPROTO_H__
 #define __TITANIA_X3D_PROTOTYPE_X3DPROTO_H__
 
-#include "../Basic/X3DBaseNode.h"
+#include "../Components/Core/X3DNode.h"
 
 namespace titania {
 namespace X3D {
@@ -57,7 +57,7 @@ namespace X3D {
 class X3DPrototypeInstance;
 
 class X3DProto :
-	virtual public X3DBaseNode
+	virtual public X3DNode
 {
 public:
 

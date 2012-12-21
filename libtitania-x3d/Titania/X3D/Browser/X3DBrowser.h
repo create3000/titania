@@ -46,7 +46,6 @@
 #include "../Components/Networking/X3DUrlObject.h"
 
 #include "../Execution/Scene.h"
-#include "../Execution/World.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "../Browser/HitArray.h"
@@ -72,13 +71,13 @@ class X3DBrowser :
 {
 public:
 
-	SFTime initialized;
-	SFTime reshaped;
-	SFTime exposed;
-	SFTime displayed;
-	SFTime finished;
-	SFTime shutdown;
-	SFTime changed;
+	Output initialized;
+	Output reshaped;
+	Output exposed;
+	Output displayed;
+	Output finished;
+	Output shutdown;
+	Output changed;
 
 	virtual
 	X3DBrowser*
@@ -353,9 +352,12 @@ protected:
 
 private:
 
+	typedef std::set <X3DSensorNode*> SensorNodeSet;
+
 	using X3DUrlObject::url;
 
-	typedef std::set <X3DSensorNode*> SensorNodeSet;
+	void
+	set_scene ();
 
 	static const std::string version;
 
@@ -377,12 +379,9 @@ private:
 	SFString description;
 
 	SFNode <Scene> scene;
-	SFNode <World> world;
-
-	void
-	set_scene ();
-
-	Vector3d priorPosition;
+	
+	time_type changedTime;
+	Vector3d  priorPosition;
 
 	LightStack lightStack;
 

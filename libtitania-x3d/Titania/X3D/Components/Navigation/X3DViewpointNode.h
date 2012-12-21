@@ -75,24 +75,6 @@ public:
 	const Matrix4f &
 	getTransformationMatrix () const { return transformationMatrix; }
 
-	void
-	setMatrix (const Matrix4f & value) { matrix = value; }
-
-	const Matrix4f &
-	getMatrix () const { return matrix; }
-
-	void
-	setCurrentMatrix (const Matrix4f & value) { currentMatrix = value; }
-
-	const Matrix4f &
-	getCurrentMatrix () const { return currentMatrix; }
-
-	void
-	setDifferenceMatrix (const Matrix4f & value) { differenceMatrix = value; }
-
-	const Matrix4f &
-	getDifferenceMatrix () { return differenceMatrix; }
-
 	virtual
 	void
 	reshape (const float, const float) { }

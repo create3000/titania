@@ -57,7 +57,8 @@
 #include <glibmm/main.h>
 
 #define TIMEOUT_INTERVAL 10
-#define SPIN_ANGLE 0.006
+#define SPIN_ANGLE       0.006
+#define SCOLL_FACTOR     (1.0f / 50.0f)
 
 namespace titania {
 namespace X3D {
@@ -75,7 +76,8 @@ ExamineViewer::ExamineViewer (Surface & surface) :
 	motion_notify_event_connection  (),                       
 	button_release_event_connection (),                       
 	scroll_event_connection         (),                       
-	                        spin_id ()                        
+	                        spin_id (),
+	                    activeLayer ()                      
 { }
 
 void
@@ -95,6 +97,43 @@ void
 ExamineViewer::set_scene ()
 {
 	spin_id .disconnect ();
+
+	getBrowser () -> getExecutionContext () -> getLayerSet () -> activeLayer .addInterest (this, &ExamineViewer::set_activeLayer);
+
+	set_activeLayer ();
+}
+
+void
+ExamineViewer::set_activeLayer ()
+{
+	if (activeLayer)
+		activeLayer -> viewpointStack .removeInterest (this, &ExamineViewer::set_viewpoint);
+	
+	activeLayer = getBrowser () -> getExecutionContext () -> getLayerSet () -> getActiveLayer ();
+	
+	activeLayer -> viewpointStack .addInterest (this, &ExamineViewer::set_viewpoint);
+
+	set_viewpoint ();
+}
+
+void
+ExamineViewer::set_viewpoint ()
+{
+	__LOG__ << std::endl;
+
+	// Update distance and rotation.
+
+	SFNode <Viewpoint> viewpoint = getBrowser () -> getActiveViewpoint ();
+
+	viewpoint -> translation = Vector3f ();
+	viewpoint -> rotation    = Rotation4f ();
+
+	rotation = Rotation4f ();
+
+	if (viewpoint)
+	{
+		distance = viewpoint -> position - viewpoint -> centerOfRotation;
+	}
 }
 
 bool
@@ -112,8 +151,6 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 		deltaRotation = Rotation4f ();
 
-		set_viewpoint ();
-
 		return false;
 	}
 
@@ -121,26 +158,10 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 	{
 		lastTranslation = Vector3f (event -> x, -event -> y, 0);
 
-		set_viewpoint ();
-
 		return false;
 	}
 
 	return false;
-}
-
-void
-ExamineViewer::set_viewpoint ()
-{
-	// Update distance and rotation.
-
-	SFNode <Viewpoint> viewpoint = getBrowser () -> getActiveViewpoint ();
-
-	if (viewpoint)
-	{
-		rotation = viewpoint -> rotation;
-		distance = viewpoint -> translation - viewpoint -> centerOfRotation;
-	}
 }
 
 bool
@@ -160,7 +181,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 			deltaRotation = ~Rotation4f (fromVector, toVector);
 
 			viewpoint -> rotation    = deltaRotation * viewpoint -> rotation;
-			viewpoint -> translation = viewpoint -> centerOfRotation + ~rotation * viewpoint -> rotation * distance;
+			viewpoint -> translation = viewpoint -> centerOfRotation + ~rotation * viewpoint -> rotation * distance - viewpoint -> position;
 
 			fromVector = toVector;
 		}
@@ -216,23 +237,20 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 
 	if (viewpoint)
 	{
-		float distance = abs (viewpoint -> position + viewpoint -> translation - viewpoint -> centerOfRotation);
-		float step     = distance / 50;
+		Vector3f step   = distance * SCOLL_FACTOR;
+		Vector3f vector = viewpoint -> rotation * Vector3f (0, 0, abs (step));
 
-		Vector3f vector = viewpoint -> rotation * Vector3f (0, 0, step);
-
-		if (event -> direction == 0) // Move backwards.
+		if (event -> direction == 0)      // Move backwards.
 		{
 			viewpoint -> translation = viewpoint -> translation + vector;
+			distance += step;
 		}
 
 		else if (event -> direction == 1) // Move forwards.
 		{
 			viewpoint -> translation = viewpoint -> translation - vector;
+			distance -= step;
 		}
-
-		distance = viewpoint -> translation - viewpoint -> centerOfRotation;
-		rotation = viewpoint -> rotation;
 	}
 
 	return false;
@@ -246,7 +264,7 @@ ExamineViewer::spin ()
 	if (viewpoint)
 	{
 		viewpoint -> rotation    = deltaRotation * viewpoint -> rotation;
-		viewpoint -> translation = viewpoint -> centerOfRotation + ~rotation * viewpoint -> rotation * distance;
+		viewpoint -> translation = viewpoint -> centerOfRotation + ~rotation * viewpoint -> rotation * distance - viewpoint -> position;
 	}
 
 	return true;

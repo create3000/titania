@@ -67,12 +67,6 @@ public:
 
 	Surface (const SFNode <X3DBrowser> &);
 
-	//PointingDevice*
-	//getPointingDevice () { return &pointingDevice; }
-
-	//const std::shared_ptr <X3DViewer> &
-	//getViewer () { return viewer; }
-
 	virtual
 	void
 	dispose ();
@@ -96,7 +90,7 @@ private:
 	update (const Cairo::RefPtr <Cairo::Context> &);
 
 	PointingDevice              pointingDevice;
-	std::shared_ptr <X3DViewer> viewer;
+	std::unique_ptr <X3DViewer> viewer;
 
 };
 

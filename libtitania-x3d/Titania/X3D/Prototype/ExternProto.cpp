@@ -66,7 +66,8 @@ ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
 {
 	setTypeName ("ExternProto");
 
-	addField (initializeOnly, "url", url);
+	addField (inputOutput,    "metadata", metadata);
+	addField (initializeOnly, "url",      url);
 }
 
 X3DBaseNode*

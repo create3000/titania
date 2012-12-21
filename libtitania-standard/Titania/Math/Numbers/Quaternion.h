@@ -311,7 +311,7 @@ template <class T>
 quaternion <Type> &
 quaternion <Type>::operator *= (const quaternion <T> & quat)
 {
-	return multLeft (quat);
+	return rightLeft (quat);
 }
 
 template <class Type>
@@ -506,7 +506,7 @@ template <class Type>
 constexpr quaternion <Type>
 operator * (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
-	return quaternion <Type> (lhs) .multLeft (rhs);
+	return quaternion <Type> (lhs) .multRight (rhs);
 }
 
 ///  Returns new quaternion value @a lhs times @a rhs.
@@ -533,7 +533,7 @@ inline
 constexpr vector3 <Type>
 operator * (const quaternion <Type> & quat, const vector3 <Type> & vector)
 {
-	return imag (~quat * quaternion <Type> (vector, Type ()) * quat);
+	return imag (quat * quaternion <Type> (vector, Type ()) * ~quat);
 }
 //@}
 

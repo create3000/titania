@@ -74,7 +74,7 @@ public:
 	operator < (const ShapeContainer &) const;
 
 	int
-	redraw (const Matrix4d &);
+	redraw ();
 
 
 private:
@@ -83,7 +83,7 @@ private:
 
 	float distance;
 
-	Matrix4d matrix;
+	Matrix4f matrix;
 
 	LightContainerArray localLights;
 

@@ -82,7 +82,7 @@ throw (Error <INVALID_X3D>)
 {
 	Parser parser (scene, input);
 
-	std::clog << "Parsing into scene: " << std::endl;
+	std::clog << "Parsing into scene: " << scene -> getWorldURL () << "." << std::endl;
 
 	try
 	{
@@ -93,7 +93,7 @@ throw (Error <INVALID_X3D>)
 		throw Error <INVALID_X3D> (parser .getMessageFromError (error));
 	}
 
-	std::clog << "Done parsing into scene." << std::endl;
+	std::clog << "Done parsing into scene: " << scene -> getWorldURL () << "." << std::endl;
 }
 
 Parser::Parser (X3DScene* scene, const std::string & input) :
