@@ -48,7 +48,9 @@
 
 #include "LOD.h"
 
+#include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/Matrix.h"
 
 namespace titania {
 namespace X3D {
@@ -86,18 +88,11 @@ LOD::create (X3DExecutionContext* const executionContext) const
 int32_t
 LOD::getLevel ()
 {
-	Matrix4f::array_type matrix;
+	Matrix4f matrix = ModelViewMatrix4f () * getCurrentLayer () -> getViewpoint () -> getInverseTransformationMatrix ();
 
-	float cx, cy, cz;
+	matrix .translate (center);
 
-	center .getValue (cx, cy, cz);
-
-	glPushMatrix ();
-	glTranslatef (cx, cy, cz);
-	glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
-	glPopMatrix ();
-
-	float distance = -matrix [14];
+	float distance = -matrix [3] [2];
 
 	int32_t level = -1;
 

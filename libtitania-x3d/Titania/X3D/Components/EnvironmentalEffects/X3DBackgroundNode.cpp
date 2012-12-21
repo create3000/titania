@@ -51,7 +51,6 @@
 #include "../../Browser/Browser.h"
 #include "../Layering/X3DLayerNode.h"
 #include "../Navigation/X3DViewpointNode.h"
-#include "../../Rendering/OpenGL.h"
 
 #define SPHERE_USEG 16.0
 #define SPHERE_VSEG 15.0
@@ -345,7 +344,7 @@ X3DBackgroundNode::build ()
 void
 X3DBackgroundNode::display ()
 {
-	glGetDoublev (GL_MODELVIEW_MATRIX, matrix .data ());
+	matrix = ModelViewMatrix4f () * getCurrentLayer () -> getViewpoint () -> getInverseTransformationMatrix ();
 }
 
 void

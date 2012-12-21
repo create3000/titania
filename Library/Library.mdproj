@@ -1224,7 +1224,6 @@
     <None Include="Tests\1st\A1.png" />
     <None Include="Tests\1st\A1.wrl" />
     <None Include="Tests\1st\BBox.wrl" />
-    <None Include="Tests\1st\Billboard.wrl" />
     <None Include="Tests\1st\boxes-inline.wrl" />
     <None Include="Tests\1st\compress.wrl.gz" />
     <None Include="Tests\1st\DirectionalLight.wrl" />
@@ -1571,6 +1570,7 @@
     <None Include="Tests\Grouping\Children.wrl" />
     <None Include="Tests\EnvironmentalSensors\ProximitySensor.wrl" />
     <None Include="Tests\Grouping\Add&amp;RemoveChildren.wrl" />
+    <None Include="Tests\Navigation\Billboard.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

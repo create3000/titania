@@ -50,6 +50,7 @@
 #define __TITANIA_X3D_RENDERING_VIEW_VOLUME_H__
 
 #include "../Types/Geometry.h"
+#include "../Types/Numbers.h"
 #include <vector>
 
 namespace titania {
@@ -60,6 +61,8 @@ class ViewVolume
 public:
 
 	ViewVolume ();
+
+	ViewVolume (const Matrix4d &, const Matrix4d &);
 
 	bool
 	intersect (const Box3f &) const;

@@ -16,9 +16,9 @@
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="logo.svg"
-   inkscape:export-filename="/home/holger/.gvfs/FTP als web839 auf create3000.de/html/create3000.de/titania/htdocs/images/logo-1024.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="/home/holger/Projekte/Titania/Library/Tests/images/image.png"
+   inkscape:export-xdpi="45"
+   inkscape:export-ydpi="45">
   <defs
      id="defs4047">
     <filter
@@ -398,8 +398,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.20629883"
-     inkscape:cx="596.12709"
-     inkscape:cy="351.02924"
+     inkscape:cx="114.78684"
+     inkscape:cy="1422.8329"
      inkscape:document-units="px"
      inkscape:current-layer="layer5"
      showgrid="true"
@@ -415,7 +415,7 @@
      inkscape:snap-nodes="true"
      inkscape:snap-bbox="true"
      inkscape:snap-page="true"
-     showborder="false">
+     showborder="true">
     <sodipodi:guide
        orientation="1,0"
        position="512,512"
@@ -714,7 +714,7 @@
      inkscape:groupmode="layer"
      id="layer6"
      inkscape:label="Schrift"
-     style="display:inline"
+     style="display:none"
      sodipodi:insensitive="true">
     <image
        y="165.33333"

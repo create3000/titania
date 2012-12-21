@@ -70,10 +70,13 @@ public:
 	SFRotation rotation;
 
 	void
-	setTransformationMatrix (const Matrix4f & value) { transformationMatrix = value; }
+	setTransformationMatrix (const Matrix4f &);
 
 	const Matrix4f &
 	getTransformationMatrix () const { return transformationMatrix; }
+
+	const Matrix4f &
+	getInverseTransformationMatrix () const { return inverseTransformationMatrix; }
 
 	virtual
 	void
@@ -112,9 +115,7 @@ private:
 	removeFromLayer (X3DLayerNode* const);
 
 	Matrix4f transformationMatrix;
-	Matrix4f matrix;
-	Matrix4f currentMatrix;
-	Matrix4f differenceMatrix;
+	Matrix4f inverseTransformationMatrix;
 	
 	bool addToList;
 

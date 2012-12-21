@@ -81,6 +81,26 @@ ModelViewMatrix4f ()
 	return matrix;
 }
 
+inline
+Matrix4d
+ProjectionMatrix4d ()
+{
+	Matrix4d matrix;
+
+	glGetDoublev (GL_PROJECTION_MATRIX, matrix .data ());
+	return matrix;
+}
+
+inline
+Matrix4f
+ProjectionMatrix4f ()
+{
+	Matrix4f matrix;
+
+	glGetFloatv (GL_PROJECTION_MATRIX, matrix .data ());
+	return matrix;
+}
+
 } // X3D
 } // titania
 

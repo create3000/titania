@@ -16,9 +16,7 @@ EXTERNPROTO ToggleAnim [
 ]
 "ToggleAnim_proto.wrl"
 
-Viewpoint { }
-
-DEF Top Group {
+Group {
   children [
     WorldInfo {
       info [
@@ -27,7 +25,7 @@ DEF Top Group {
         "Packaged by CosmoPackage"
       ]
     }
-    DEF TransformHupfpilz Transform {
+    Transform {
       translation 40.9576 105.774 -26.9564
       scale 0.628072 0.628071 0.628071
       children DEF hupfpilz Transform {
@@ -9794,10 +9792,14 @@ DEF Top Group {
                                   diffuseColor 0.797872 0.797872 0.797872
                                   shininess 0.202128
                                 }
+                                texture ImageTexture {
+                                  url "pilz.png"
+                                }
                               }
                               geometry DEF polyPilz_0Geo IndexedFaceSet {
                                 solid FALSE
                                 ccw FALSE
+                                convex FALSE
                                 creaseAngle 3.14159
                                 texCoordIndex [
                                   0,
@@ -10780,6 +10782,7 @@ DEF Top Group {
                                 material USE _7
                               }
                               geometry DEF polyPilz_1Geo IndexedFaceSet {
+                                convex FALSE
                                 creaseAngle 3.14159
                                 coordIndex [
                                   115,
@@ -10973,9 +10976,14 @@ DEF Top Group {
                               children Shape {
                                 appearance Appearance {
                                   material USE _7
+                                  texture ImageTexture {
+                                    url "pilz-awake.png"
+                                  }
+                                  textureTransform TextureTransform { }
                                 }
                                 geometry IndexedFaceSet {
                                   solid FALSE
+                                  convex FALSE
                                   creaseAngle 3.14159
                                   texCoordIndex [
                                     0,
@@ -12264,9 +12272,14 @@ DEF Top Group {
                                               diffuseColor 0.797872 0.797872 0.797872
                                               shininess 0.202128
                                             }
+                                            texture ImageTexture {
+                                              url "pilz-sleep.png"
+                                            }
+                                            textureTransform TextureTransform { }
                                           }
                                           geometry IndexedFaceSet {
                                             solid FALSE
+                                            convex FALSE
                                             creaseAngle 3.14159
                                             texCoordIndex [
                                               0,
@@ -13402,9 +13415,14 @@ DEF Top Group {
                                               diffuseColor 0.797872 0.797872 0.797872
                                               shininess 0.202128
                                             }
+                                            texture ImageTexture {
+                                              url "pilz-blink.png"
+                                            }
+                                            textureTransform TextureTransform { }
                                           }
                                           geometry IndexedFaceSet {
                                             solid FALSE
+                                            convex FALSE
                                             creaseAngle 3.14159
                                             texCoordIndex [
                                               0,
@@ -14631,10 +14649,11 @@ DEF Top Group {
                 children DEF _schatten Script {
                   eventOut SFVec3f translation_changed
                   eventIn  SFVec3f set_translation
+
                   url "vrmlscript:
 function set_translation(value, time)
 {
-	translation_changed = new SFVec3f (value.x, 0, value.z);
+	translation_changed = new SFVec3f(value.x, 0, value.z);
 }
 "
                 }
@@ -14645,6 +14664,9 @@ function set_translation(value, time)
                   children Shape {
                     appearance Appearance {
                       material Material { }
+                      texture ImageTexture {
+                        url "pilzshadow.png"
+                      }
                     }
                     geometry IndexedFaceSet {
                       creaseAngle 0.5
@@ -14744,31 +14766,3 @@ ROUTE _11.enterTime TO _27.startTime
 ROUTE PilzTouch.touchTime TO _27.startTime
 ROUTE jumpForwardTimer_28.isActive TO _27.set_animating
 ROUTE jumpBackTimer_29.isActive TO _27.set_animating
-
-
-DEF X Script {
-	eventIn SFBool set_active
-	eventIn SFFloat set_fraction
-	eventIn SFInt32 set_whichChoice
-
-	url "vrmlscript:
-function set_active (value, time)
-{
-	print (value);
-}
-
-function set_fraction (value, time)
-{
-	print (value);
-}
-
-function set_whichChoice (value, time)
-{
-	//print (value);
-}
-	"
-} 
-
-ROUTE _20.isActive TO X.set_active
-ROUTE Time.fraction_changed TO X.set_fraction
-ROUTE _16.value_changed TO X.set_whichChoice

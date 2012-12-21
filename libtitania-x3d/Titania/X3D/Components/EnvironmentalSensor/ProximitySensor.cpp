@@ -156,19 +156,12 @@ ProximitySensor::display ()
 	if (inside /* or getBrowser () -> getEditMode () */)
 		return;
 
-	matrix = ModelViewMatrix4f () * ~getCurrentLayer () -> getViewpoint () -> getTransformationMatrix (); 
+	matrix = ModelViewMatrix4f () * getCurrentLayer () -> getViewpoint () -> getInverseTransformationMatrix (); 
 
 	Matrix4f transformationMatrix = matrix;
 	transformationMatrix .translate (center);
 
 	inside = isInside (transformationMatrix);
-		
-	__LOG__ << std::endl;
-	__LOG__ << getCurrentLayer () -> getViewpoint () -> getTransformationMatrix () << std::endl;
-	__LOG__ << ~getCurrentLayer () -> getViewpoint () -> getTransformationMatrix () << std::endl;
-	__LOG__ << ModelViewMatrix4f () << std::endl;
-	__LOG__ << matrix << std::endl;
-	__LOG__ << ~matrix << std::endl;
 }
 
 bool

@@ -46,8 +46,9 @@
  *
  ******************************************************************************/
 
-#include "../Types/Numbers.h"
 #include "ViewVolume.h"
+
+#include "../Rendering/Matrix.h"
 
 #include <GL/glu.h>
 
@@ -68,33 +69,35 @@ namespace X3D {
  *    p3 -------- p4
  */
 
-ViewVolume::ViewVolume ()
+ViewVolume::ViewVolume () :
+	ViewVolume (ModelViewMatrix4d (), ProjectionMatrix4d ())
 {
-	GLint                viewport [4];
-	Matrix4d::array_type modelview, projection;
+}
+
+ViewVolume::ViewVolume (const Matrix4d & modelview, const Matrix4d & projection)
+{
+	GLint viewport [4];
 
 	glGetIntegerv (GL_VIEWPORT, viewport);
-	glGetDoublev (GL_MODELVIEW_MATRIX, modelview);
-	glGetDoublev (GL_PROJECTION_MATRIX, projection);
 
 	GLdouble x, y, z;
 
-	gluUnProject (0, viewport [3], 1, modelview, projection, viewport, &x, &y, &z);
+	gluUnProject (0, viewport [3], 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
 	Vector3f p1 = Vector3f (x, y, z);
 
-	gluUnProject (0, 0, 1, modelview, projection, viewport, &x, &y, &z);
+	gluUnProject (0, 0, 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
 	Vector3f p2 = Vector3f (x, y, z);
 
-	gluUnProject (0, 0, 0, modelview, projection, viewport, &x, &y, &z);
+	gluUnProject (0, 0, 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
 	Vector3f p3 = Vector3f (x, y, z);
 
-	gluUnProject (viewport [2], 0, 0, modelview, projection, viewport, &x, &y, &z);
+	gluUnProject (viewport [2], 0, 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
 	Vector3f p4 = Vector3f (x, y, z);
 
-	gluUnProject (viewport [2], viewport [3], 0, modelview, projection, viewport, &x, &y, &z);
+	gluUnProject (viewport [2], viewport [3], 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
 	Vector3f p5 = Vector3f (x, y, z);
 
-	gluUnProject (viewport [2], viewport [3], 1, modelview, projection, viewport, &x, &y, &z);
+	gluUnProject (viewport [2], viewport [3], 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
 	Vector3f p6 = Vector3f (x, y, z);
 
 	planes .reserve (6);

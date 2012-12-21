@@ -496,7 +496,6 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DExecutionContext.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DScene.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\String.h" />
-    <None Include="Titania\X3D\Rendering\OpenGL.h" />
     <None Include="Titania\X3D\Basic\X3DArray.h" />
     <None Include="Titania\X3D\Types\String.h" />
     <None Include="Titania\X3D\Basic\X3DBaseNode.h" />

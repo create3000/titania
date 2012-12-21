@@ -48,11 +48,9 @@
 
 #include "Billboard.h"
 
+#include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
-
 #include "../../Rendering/Matrix.h"
-
-#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
@@ -86,7 +84,7 @@ Billboard::transform ()
 	Vector3f   translation, scale;
 	Rotation4f rotation;
 
-	ModelViewMatrix4f () .get (translation, rotation, scale);
+	(ModelViewMatrix4f () * getCurrentLayer () -> getViewpoint () -> getInverseTransformationMatrix ()) .get (translation, rotation, scale);
 
 	Vector3f _axisOfRotation   = axisOfRotation;
 	Vector3f billboardToViewer = -translation;

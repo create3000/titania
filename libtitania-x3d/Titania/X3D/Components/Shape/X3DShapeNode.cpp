@@ -115,7 +115,7 @@ X3DShapeNode::intersect ()
 
 	if (geometry)
 	{
-		if (ViewVolume (ModelViewMatrix4f (), ProjectionMatrix4f ()) .intersect (getBBox ()))
+		if (ViewVolume () .intersect (getBBox ()))
 		{
 			Line3f hitRay = getBrowser () -> getHitRay ();
 			Hit*   hit    = new Hit ();

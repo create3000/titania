@@ -82,16 +82,8 @@ ShapeContainer::operator < (const ShapeContainer & container) const
 }
 
 int
-ShapeContainer::redraw (Matrix4f transformationMatix)
+ShapeContainer::redraw ()
 {
-	transformationMatix .multLeft (matrix);
-	
-	if (ViewVolume (transformationMatix, ProjectionMatrix4f ()) .intersect (shape -> getBBox ()))
-	{
-		glLoadMatrixf (matrix .data ());
-
-
-
 	glPushMatrix ();
 	glMultMatrixf (matrix .data ());
 

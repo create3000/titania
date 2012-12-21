@@ -64,10 +64,6 @@ X3DViewpointNode::X3DViewpointNode (bool addToList) :
 	 centerOfRotation (),     // SFVec3f    [in,out] centerOfRotation  0 0 0          (-∞,∞)
 	             jump (true), // SFBool     [in,out] jump              TRUE
 	retainUserOffsets (),     // SFBool     [ ]      retainUserOffsets
-	matrix (1,  0,  0,  0,
-	        0,  1,  0,  0,
-	        0,  0,  1,  0,
-	        0,  0, 10,  1),
 	addToList (addToList)
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
@@ -83,6 +79,13 @@ X3DViewpointNode::initialize ()
 
 	if (addToList)
 		getScene () -> addViewpoint (this);
+}
+
+void
+X3DViewpointNode::setTransformationMatrix (const Matrix4f & value)
+{
+	transformationMatrix        = value;
+	inverseTransformationMatrix = ~value;
 }
 
 void
@@ -118,7 +121,7 @@ X3DViewpointNode::draw ()
 
 	reshape (sizeZ * 0.5f, visibilityLimit);
 
-	glLoadMatrixf (inverse (getTransformationMatrix ()) .data ());
+	glLoadMatrixf (getInverseTransformationMatrix () .data ());
 }
 
 void

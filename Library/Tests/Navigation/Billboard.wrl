@@ -20,7 +20,7 @@ Billboard {
     children Shape {
       appearance Appearance {
         texture ImageTexture {
-          url "Pixi.png"
+          url "../images/image.png"
         }
       }
       geometry Box { }
