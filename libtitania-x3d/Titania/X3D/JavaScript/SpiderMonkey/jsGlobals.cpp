@@ -48,14 +48,17 @@
 
 #include "jsGlobals.h"
 
+#include "Fields/jsSFNode.h"
 #include "String.h"
 #include "../../InputOutput/Generator.h"
+
 #include <Titania/LOG.h>
 
 namespace titania {
 namespace X3D {
 
 JSPropertySpec jsGlobals::properties [ ] = {
+	{ "NULL",  0,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _null,  NULL },
 	{ "FALSE", false, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _false, NULL },
 	{ "TRUE",  true,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _true,  NULL },
 	{ 0 }
@@ -63,16 +66,28 @@ JSPropertySpec jsGlobals::properties [ ] = {
 };
 
 JSFunctionSpec jsGlobals::functions [ ] = {
-	{ "print", jsGlobals::print, 1, 0 },
-	{ 0, 0, 0, 0 }
+	{ "include", jsGlobals::include, 1, 0 },
+	{ "print",   jsGlobals::print,   0, 0 },
+	{ 0 }
 
 };
+
+jsval jsGlobals::X3D_JS_NULL = JSVAL_VOID;
 
 void
 jsGlobals::init (JSContext* context, JSObject* global)
 {
 	JS_DefineProperties (context, global, properties);
 	JS_DefineFunctions (context, global, functions);
+	
+	jsSFNode::create (context, new SFNode <X3DBaseNode> (), &X3D_JS_NULL);
+}
+
+JSBool
+jsGlobals::_null (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	*vp = X3D_JS_NULL;
+	return JS_TRUE;
 }
 
 JSBool
@@ -86,6 +101,20 @@ JSBool
 jsGlobals::_true (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	*vp = JSVAL_TRUE;
+	return JS_TRUE;
+}
+
+JSBool
+jsGlobals::include (JSContext* context, uintN argc, jsval* vp)
+{
+	jsval* argv = JS_ARGV (context, vp);
+
+	for (uintN i = 0; i < argc; ++ i)
+		std::clog << JS_GetString (context, argv [i]);
+	
+	std::clog << std::endl;
+
+	JS_SET_RVAL (context, vp, JSVAL_VOID);
 	return JS_TRUE;
 }
 

@@ -65,13 +65,17 @@ public:
 
 private:
 
+	static JSBool _null  (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool _false (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool _true  (JSContext *, JSObject *, jsid, jsval*);
 
-	static JSBool print  (JSContext *, uintN, jsval*);
+	static JSBool include (JSContext *, uintN, jsval*);
+	static JSBool print   (JSContext *, uintN, jsval*);
 
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
+	
+	static jsval X3D_JS_NULL;
 
 };
 

@@ -50,6 +50,7 @@
 
 #include "../../../Browser/Browser.h"
 #include "../../../Components/Scripting/X3DScriptNode.h"
+#include "../JavaScriptContext.h"
 #include "../jsFieldDefinitionArray.h"
 #include "../jsFields.h"
 #include "../jsfield.h"
@@ -124,7 +125,7 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "S", &vrmlSyntax))
 			return JS_FALSE;
 
-		X3DScriptNode* script = (X3DScriptNode*) JS_GetContextPrivate (context); // XXX
+		X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode (); // XXX
 
 		SFNode <Scene> scene;
 

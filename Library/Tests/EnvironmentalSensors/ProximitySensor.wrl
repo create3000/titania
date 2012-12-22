@@ -39,6 +39,11 @@ Transform {
       orientation -1 -0 -0 1.5708
       centerOfRotation 0 0 1
     }
+    Viewpoint {
+      description "Center"
+      position 2 0 5
+      centerOfRotation 0 0 1
+    }
     Transform {
       translation 0 0 1
       children [

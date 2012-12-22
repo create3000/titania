@@ -60,21 +60,27 @@ namespace titania {
 namespace X3D {
 
 class Browser;
-class X3DBaseNode;
+class X3DScriptNode;
 
-class JavaScript
+class JavaScriptContext
 {
 public:
 
-	JavaScript (X3DBaseNode*, const std::string &);
+	JavaScriptContext (X3DScriptNode*, const std::string &);
+	
+	virtual
+	X3DScriptNode*
+	getNode () const;
 
 	virtual
 	void
 	initialize ();
 
+	virtual
 	void
 	prepareEvents ();
 
+	virtual
 	void
 	eventsProcessed ();
 
@@ -83,7 +89,7 @@ public:
 	shutdown ();
 
 	virtual
-	~JavaScript ();
+	~JavaScriptContext ();
 
 
 private:
@@ -119,7 +125,7 @@ private:
 	JSContext*     context;
 	JSObject*      global;
 	X3DBrowser*    browser;
-	X3DBaseNode*  node;
+	X3DScriptNode* node;
 
 };
 

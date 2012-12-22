@@ -50,7 +50,7 @@
 #define __TITANIA_X3D_COMPONENTS_SCRIPTING_SCRIPT_H__
 
 #include "../Scripting/X3DScriptNode.h"
-#include "../../JavaScript/SpiderMonkey/JavaScript.h"
+#include "../../JavaScript/SpiderMonkey/JavaScriptContext.h"
 
 namespace titania {
 namespace X3D {
@@ -86,7 +86,7 @@ private:
 	void
 	prepareEvents ();
 	
-	JavaScript* javaScript;
+	JavaScriptContext* javaScript;
 
 };
 

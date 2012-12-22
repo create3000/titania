@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,18 +46,20 @@
  *
  ******************************************************************************/
 
-#include "JavaScript.h"
+#include "JavaScriptContext.h"
 
+#include "../../Components/Scripting/X3DScriptNode.h"
+
+#include "String.h"
 #include "jsBrowser.h"
 #include "jsFields.h"
 #include "jsGlobals.h"
 #include "jsfield.h"
-#include "String.h"
 
 namespace titania {
 namespace X3D {
 
-JSClass JavaScript::global_class = {
+JSClass JavaScriptContext::global_class = {
 	"global", JSCLASS_GLOBAL_FLAGS,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
@@ -65,7 +67,7 @@ JSClass JavaScript::global_class = {
 
 };
 
-JavaScript::JavaScript (X3DBaseNode* node, const std::string & ecmascript) :
+JavaScriptContext::JavaScriptContext (X3DScriptNode* node, const std::string & ecmascript) :
 	browser (node -> getBrowser ()), 
 	   node (node)                   
 {
@@ -99,74 +101,74 @@ JavaScript::JavaScript (X3DBaseNode* node, const std::string & ecmascript) :
 }
 
 void
-JavaScript::initContext ()
+JavaScriptContext::initContext ()
 {
 	// Populate the global object with the standard globals, like Object and Array.
 	if (not JS_InitStandardClasses (context, global))
 		return;
 
-	JS_SetContextPrivate (context, node);
-
-	jsGlobals::init (context, global);
+	JS_SetContextPrivate (context, this);
 
 	jsBrowser::defineObject (context, global);
 
-	jsSFColor::init (context, global);
+	jsSFColor::init     (context, global);
 	jsSFColorRGBA::init (context, global);
-	jsSFImage::init (context, global);
-	jsSFMatrix3d::init (context, global);
-	jsSFMatrix3f::init (context, global);
-	jsSFMatrix4d::init (context, global);
-	jsSFMatrix4f::init (context, global);
-	jsSFNode::init (context, global);
-	jsSFRotation::init (context, global);
-	jsSFVec2d::init (context, global);
-	jsSFVec2f::init (context, global);
-	jsSFVec3d::init (context, global);
-	jsSFVec3f::init (context, global);
-	jsSFVec4d::init (context, global);
-	jsSFVec4f::init (context, global);
-	jsVrmlMatrix::init (context, global);
+	jsSFImage::init     (context, global);
+	jsSFMatrix3d::init  (context, global);
+	jsSFMatrix3f::init  (context, global);
+	jsSFMatrix4d::init  (context, global);
+	jsSFMatrix4f::init  (context, global);
+	jsSFNode::init      (context, global);
+	jsSFRotation::init  (context, global);
+	jsSFVec2d::init     (context, global);
+	jsSFVec2f::init     (context, global);
+	jsSFVec3d::init     (context, global);
+	jsSFVec3f::init     (context, global);
+	jsSFVec4d::init     (context, global);
+	jsSFVec4f::init     (context, global);
+	jsVrmlMatrix::init  (context, global);
 
-	jsMFBool::init (context, global);
-	jsMFColor::init (context, global);
+	jsMFBool::init      (context, global);
+	jsMFColor::init     (context, global);
 	jsMFColorRGBA::init (context, global);
-	jsMFDouble::init (context, global);
-	jsMFFloat::init (context, global);
-	jsMFImage::init (context, global);
-	jsMFInt32::init (context, global);
-	jsMFMatrix3d::init (context, global);
-	jsMFMatrix3f::init (context, global);
-	jsMFMatrix4d::init (context, global);
-	jsMFMatrix4f::init (context, global);
-	jsMFNode::init (context, global);
-	jsMFRotation::init (context, global);
-	jsMFString::init (context, global);
-	jsMFTime::init (context, global);
-	jsMFVec2d::init (context, global);
-	jsMFVec2f::init (context, global);
-	jsMFVec3d::init (context, global);
-	jsMFVec3f::init (context, global);
-	jsMFVec4d::init (context, global);
-	jsMFVec4f::init (context, global);
+	jsMFDouble::init    (context, global);
+	jsMFFloat::init     (context, global);
+	jsMFImage::init     (context, global);
+	jsMFInt32::init     (context, global);
+	jsMFMatrix3d::init  (context, global);
+	jsMFMatrix3f::init  (context, global);
+	jsMFMatrix4d::init  (context, global);
+	jsMFMatrix4f::init  (context, global);
+	jsMFNode::init      (context, global);
+	jsMFRotation::init  (context, global);
+	jsMFString::init    (context, global);
+	jsMFTime::init      (context, global);
+	jsMFVec2d::init     (context, global);
+	jsMFVec2f::init     (context, global);
+	jsMFVec3d::init     (context, global);
+	jsMFVec3f::init     (context, global);
+	jsMFVec4d::init     (context, global);
+	jsMFVec4f::init     (context, global);
+
+	jsGlobals::init (context, global);
 }
 
 void
-JavaScript::initNode ()
+JavaScriptContext::initNode ()
 {
 	for (auto & field : node -> getUserDefinedFields ())
 	{
 		switch (field -> getAccessType ())
 		{
-			case initializeOnly:
-			case outputOnly:
-			{
-				defineProperty (context, global, field -> getName (), JSPROP_ENUMERATE);
-				break;
-			}
+			case initializeOnly :
+			case outputOnly     :
+				{
+					defineProperty (context, global, field -> getName (), JSPROP_ENUMERATE);
+					break;
+				}
 			case inputOnly:
 			{
-				field -> addInterest (this, &JavaScript::set_field, *field);
+				field -> addInterest (this, &JavaScriptContext::set_field, *field);
 				break;
 			}
 			case inputOutput:
@@ -181,10 +183,10 @@ JavaScript::initNode ()
 }
 
 void
-JavaScript::defineProperty (JSContext* context,
-                            JSObject* obj,
-                            const std::string & name,
-                            uintN attrs)
+JavaScriptContext::defineProperty (JSContext* context,
+                                   JSObject* obj,
+                                   const std::string & name,
+                                   uintN attrs)
 {
 	JS_DefineProperty (context,
 	                   obj, name .c_str (),
@@ -194,15 +196,15 @@ JavaScript::defineProperty (JSContext* context,
 }
 
 JSBool
-JavaScript::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+JavaScriptContext::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	jsval name;
-	
+
 	if (JS_IdToValue (context, id, &name))
 	{
-		X3DBaseNode* node = (X3DBaseNode*) JS_GetContextPrivate (context);
+		X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		X3DFieldDefinition* field = node -> getField (JS_GetString (context, name));
+		X3DFieldDefinition* field = script -> getField (JS_GetString (context, name));
 
 		return JS_NewFieldValue (context, field, vp);
 	}
@@ -211,24 +213,24 @@ JavaScript::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
-JavaScript::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+JavaScriptContext::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	jsval name;
-	
+
 	if (JS_IdToValue (context, id, &name))
 	{
-		X3DBaseNode* node = (X3DBaseNode*) JS_GetContextPrivate (context);
+		X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		X3DFieldDefinition* field = node -> getField (JS_GetString (context, name));
+		X3DFieldDefinition* field = script -> getField (JS_GetString (context, name));
 
 		return JS_ValueToField (context, field, vp);
 	}
-	
+
 	return JS_TRUE;
 }
 
 void
-JavaScript::evaluate (const std::string & string, const std::string & filename)
+JavaScriptContext::evaluate (const std::string & string, const std::string & filename)
 {
 	jsval rval;
 
@@ -238,7 +240,7 @@ JavaScript::evaluate (const std::string & string, const std::string & filename)
 }
 
 void
-JavaScript::callFunction (const std::string & function)
+JavaScriptContext::callFunction (const std::string & function)
 {
 	jsval     func_val = JSVAL_VOID;
 	JSObject* objp;
@@ -255,7 +257,7 @@ JavaScript::callFunction (const std::string & function)
 }
 
 void
-JavaScript::set_field (const X3DFieldDefinition & field)
+JavaScriptContext::set_field (const X3DFieldDefinition & field)
 {
 	jsval     func_val = JSVAL_VOID;
 	JSObject* objp;
@@ -264,50 +266,49 @@ JavaScript::set_field (const X3DFieldDefinition & field)
 
 	if (not result or JSVAL_IS_VOID (func_val))
 		return;
-		
+
 	jsval argv [2];
 	JS_NewFieldValue (context, const_cast <X3DFieldDefinition*> (&field), &argv [0], true);
 	JS_NewNumberValue (context, browser -> getCurrentTime (), &argv [1]);
 
-//__LOG__ << std::endl;
-//__LOG__ << node -> getExecutionContext () -> getWorldURL () << std::endl;
-//__LOG__ << node -> getName () << std::endl;
-//__LOG__ << field .getName () << std::endl;
-
 	jsval rval;
 	JS_CallFunctionValue (context, global, func_val, 2, argv, &rval);
-
-//__LOG__ << std::endl;
 
 	JS_GC (context);
 }
 
+X3DScriptNode*
+JavaScriptContext::getNode () const
+{
+	return node;
+}
+
 void
-JavaScript::initialize ()
+JavaScriptContext::initialize ()
 {
 	callFunction ("initialize");
 }
 
 void
-JavaScript::prepareEvents ()
+JavaScriptContext::prepareEvents ()
 {
 	callFunction ("prepareEvents");
 }
 
 void
-JavaScript::eventsProcessed ()
+JavaScriptContext::eventsProcessed ()
 {
 	callFunction ("eventsProcessed");
 }
 
 void
-JavaScript::shutdown ()
+JavaScriptContext::shutdown ()
 {
 	callFunction ("shutdown");
 }
 
 void
-JavaScript::error (JSContext* context, const char* message, JSErrorReport* report)
+JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport* report)
 {
 	std::clog << "# Javascript: runtime error on line "
 	          << (unsigned int) report -> lineno
@@ -316,7 +317,7 @@ JavaScript::error (JSContext* context, const char* message, JSErrorReport* repor
 	          << message << std::endl;
 }
 
-JavaScript::~JavaScript ()
+JavaScriptContext::~JavaScriptContext ()
 {
 	// Cleanup.
 	JS_GC (context);

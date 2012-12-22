@@ -488,7 +488,6 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsFieldDefinitionArray.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFRotation.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsFields.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\JavaScript.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsGlobals.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsBrowser.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsComponentInfoArray.h" />
@@ -517,6 +516,7 @@
     <None Include="Titania\X3D\Widgets\X3DWidget.h" />
     <None Include="Titania\X3D\Widgets\ExamineViewer.h" />
     <None Include="Titania\X3D\Widgets\X3DViewer.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\JavaScriptContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -889,7 +889,6 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFNode.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsFieldDefinitionArray.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFRotation.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\JavaScript.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsGlobals.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsBrowser.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsComponentInfoArray.cpp" />
@@ -916,6 +915,7 @@
     <Compile Include="Titania\X3D\Widgets\X3DWidget.cpp" />
     <Compile Include="Titania\X3D\Widgets\ExamineViewer.cpp" />
     <Compile Include="Titania\X3D\Widgets\X3DViewer.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\JavaScriptContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

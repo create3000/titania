@@ -1,5 +1,21 @@
 2012-12-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* ExamineViewer.cpp:
+	* Script.h:
+	* Script.cpp:
+	* jsGlobals.h:
+	* JavaScript.h:
+	* jsGlobals.cpp:
+	* jsBrowser.cpp:
+	* JavaScript.cpp:
+	* JavaScriptContext.h:
+	* jsSFNode.cpp:
+	* JavaScriptContext.cpp: 
+
+2012-12-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFVec2.h:
 	* SFVec3.h:
 	* SFVec4.h:

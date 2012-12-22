@@ -82,19 +82,27 @@ Script::initialize ()
 {
 	X3DScriptNode::initialize ();
 
+	// Find first working script.
+
 	for (const auto & URL : url)
 	{
 		std::string ecmascript;
 
 		if (RegEx::ECMAScript .FullMatch (URL .str (), &ecmascript))
 		{
-			javaScript = new JavaScript (this, ecmascript);
+			javaScript = new JavaScriptContext (this, ecmascript);
 			break;
 		}
 	}
+	
+	// Assign an empty script if no working script is found.
+	
+	if (not javaScript)
+		javaScript = new JavaScriptContext (this, "");
+		
+	// Initialize.
 
-	if (javaScript)
-		javaScript -> initialize ();
+	javaScript -> initialize ();
 }
 
 void
@@ -102,8 +110,7 @@ Script::prepareEvents ()
 {
 	X3DScriptNode::prepareEvents ();
 
-	if (javaScript)
-		javaScript -> prepareEvents ();
+	javaScript -> prepareEvents ();
 }
 
 void
@@ -111,18 +118,15 @@ Script::eventsProcessed ()
 {
 	X3DScriptNode::eventsProcessed ();
 
-	if (javaScript)
-		javaScript -> eventsProcessed ();
+	javaScript -> eventsProcessed ();
 }
 
 void
 Script::dispose ()
 {
-	if (javaScript)
-	{
-		javaScript -> shutdown ();
-		delete javaScript;
-	}
+	javaScript -> shutdown ();
+
+	delete javaScript;
 
 	X3DScriptNode::dispose ();
 }

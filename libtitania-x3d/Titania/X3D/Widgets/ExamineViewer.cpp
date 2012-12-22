@@ -130,7 +130,7 @@ ExamineViewer::set_viewpoint ()
 		//	viewpoint -> rotation    = Rotation4f ();
 		//
 		//	orientation = viewpoint -> orientation;
-		//	distance    = viewpoint -> position - viewpoint -> centerOfRotation;
+		//	distance    = viewpoint -> position - viewpoint -> centerOfRotation - viewpoint -> center;
 		//}
 
 		orientation = getOrientation (viewpoint);
@@ -195,8 +195,8 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 			Vector3f translation = toPoint - fromPoint;
 			translation = viewpoint -> orientation * viewpoint -> rotation * translation;
 
-			viewpoint -> translation      += translation;
-			viewpoint -> centerOfRotation += translation;
+			viewpoint -> translation += translation;
+			viewpoint -> center      += translation;
 
 			fromPoint = toPoint;
 		}
@@ -276,7 +276,7 @@ ExamineViewer::addSpinning ()
 Vector3f
 ExamineViewer::getDistance (const SFNode <Viewpoint> & viewpoint) const
 {
-	return ~viewpoint -> rotation * (viewpoint -> position + viewpoint -> translation - viewpoint -> centerOfRotation);
+	return ~viewpoint -> rotation * (viewpoint -> position + viewpoint -> translation - viewpoint -> centerOfRotation - viewpoint -> center);
 }
 
 Rotation4f
@@ -291,7 +291,7 @@ ExamineViewer::getTranslation (const SFNode <Viewpoint> & viewpoint) const
 	// The new translation is calculated here by calculating the new position and
 	// then subtracting the viewpoints position to get the new translation.
 
-	return viewpoint -> centerOfRotation
+	return viewpoint -> centerOfRotation + viewpoint -> center
 	       + viewpoint -> rotation * distance
 	       - viewpoint -> position;
 }
