@@ -106,10 +106,19 @@ private:
 	addSpinning ();
 	
 	Vector3f
+	getDistance (const SFNode <Viewpoint> &) const;
+
+	Rotation4f
+	getOrientation (const SFNode <Viewpoint> &) const;
+
+	Vector3f
 	getTranslation (const SFNode <Viewpoint> &) const;
 	
 	Rotation4f
 	getRotation (const SFNode <Viewpoint> &);
+	
+	Vector3f
+	getPoint (double x, double y);
 
 	Vector3f
 	trackballProjectToSphere (double, double) const;
@@ -118,11 +127,11 @@ private:
 	tb_project_to_sphere (const float, const float, const float) const;
 
 	Surface &             surface;
-	Vector3f              fromVector;
-	Rotation4f            orientation;
-	Rotation4f            deltaRotation;
-	Vector3f              lastTranslation;
 	Vector3f              distance;
+	Rotation4f            orientation;
+	Rotation4f            rotation;
+	Vector3f              fromVector;
+	Vector3f              fromPoint;
 	guint                 button;
 	sigc::connection      button_press_event_connection;
 	sigc::connection      motion_notify_event_connection;

@@ -123,6 +123,18 @@ public:
 
 	void
 	getValue (scalar_type &, scalar_type &) const;
+	
+	SFVec2 &
+	operator += (const SFVec2 &);
+
+	SFVec2 &
+	operator += (const ValueType &);
+
+	SFVec2 &
+	operator -= (const SFVec2 &);
+
+	SFVec2 &
+	operator -= (const ValueType &);
 
 	SFVec2*
 	negate () const;
@@ -218,6 +230,7 @@ SFVec2 <ValueType>::get1Value (const size_type & index) const
 }
 
 template <class ValueType>
+inline
 void
 SFVec2 <ValueType>::setValue (const scalar_type & x, const scalar_type & y)
 {
@@ -231,6 +244,42 @@ SFVec2 <ValueType>::getValue (scalar_type & x, scalar_type & y) const
 {
 	x = getValue () .x ();
 	y = getValue () .y ();
+}
+
+template <class ValueType>
+SFVec2 <ValueType> &
+SFVec2 <ValueType>::operator += (const SFVec2 & vector)
+{
+	get () += vector .getValue ();
+	notifyParents ();
+	return *this;
+}
+
+template <class ValueType>
+SFVec2 <ValueType> &
+SFVec2 <ValueType>::operator += (const ValueType & vector)
+{
+	get () += vector;
+	notifyParents ();
+	return *this;
+}
+
+template <class ValueType>
+SFVec2 <ValueType> &
+SFVec2 <ValueType>::operator -= (const SFVec2 & vector)
+{
+	get () -= vector .getValue ();
+	notifyParents ();
+	return *this;
+}
+
+template <class ValueType>
+SFVec2 <ValueType> &
+SFVec2 <ValueType>::operator -= (const ValueType & vector)
+{
+	get () -= vector;
+	notifyParents ();
+	return *this;
 }
 
 template <class ValueType>
@@ -298,6 +347,7 @@ SFVec2 <ValueType>::length () const
 }
 
 template <class ValueType>
+inline
 void
 SFVec2 <ValueType>::toStream (std::ostream & ostream) const
 {

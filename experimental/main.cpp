@@ -774,24 +774,23 @@ remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, Range
 
 }
 
+///  Map @a value in the interval (fromLow;fromHigh) to the interval (toLow;toHigh).
+template <class Type>
+Type project (const Type & value, const Type & fromLow, const Type & fromHigh, const Type & toLow, const Type & toHigh)
+{
+	return toLow + ((value - fromLow) / (fromHigh - fromLow)) * (toHigh - toLow);
+}
+
+
 #include <v8.h>
+
 int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 	
-	std::deque <C*> list  = { NULL };
-	std::deque <C*> range = { NULL };
-	
-	auto new_end = Test::remove (list .begin (), list .end (), range .begin (), range .end ());
-	list .erase (new_end, list .end ());
-	
-	for (const auto & item : list)
-		std::clog << item << " ";
+	std::clog << project (-0.5, 0.0, 1.0, 2.0, 4.0) << std::endl;
 	std::clog << std::endl;
-	
-	
-	C ();
 
 	//	test_path (basic::path ("/"));
 	//	test_path (basic::path ("/", "/"));

@@ -75,12 +75,13 @@ PointingDevice::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
-		surface .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::HAND1));
-
 		if (pick (event -> x, surface .get_height () - event -> y))
 		{
-			//return true;
+			surface .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::HAND1));
+			return true;
 		}
+		else
+			surface .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::FLEUR));
 	}
 
 	else if (button == 2)
@@ -116,8 +117,9 @@ PointingDevice::on_motion_notify_event (GdkEventMotion* event)
 		}
 	}
 
-	else if (button == 0 or button == 1)
-	{ }
+	else if (button == 1)
+	{
+	}
 
 	return false;
 }

@@ -74,6 +74,12 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+	
+	float
+	getZNear () const;
+
+	float
+	getZFar () const;
 
 	void
 	enable ();

@@ -12,30 +12,30 @@ Transform {
   children [
     Viewpoint {
       description "Front"
-      position 0 0 3
+      position 0 0 5
       centerOfRotation 0 0 1
     }
     Viewpoint {
       description "Right"
-      position 2 0 1
+      position 4 0 1
       orientation 0 1 0 1.5708
       centerOfRotation 0 0 1
     }
     Viewpoint {
       description "Side"
-      position 2 0 3
+      position 4 0 5
       orientation 0 1 0 0.785398
       centerOfRotation 0 0 1
     }
     Viewpoint {
       description "Back"
-      position 0 0 -1
+      position 0 0 -3
       orientation 0 1 0 3.14159
       centerOfRotation 0 0 1
     }
     Viewpoint {
       description "Top"
-      position 0 2 1
+      position 0 4 1
       orientation -1 -0 -0 1.5708
       centerOfRotation 0 0 1
     }
@@ -44,12 +44,34 @@ Transform {
       children [
         Shape {
           appearance Appearance {
+            material Material { }
+          }
+          geometry DEF Cube IndexedFaceSet {
+            solid FALSE
+            colorPerVertex FALSE
+            texCoordIndex [ 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1 ]
+            colorIndex [ 0, 1, 2, 3, 4, 5 ]
+            coordIndex [ 0, 1, 3, 2, -1, 4, 5, 7, 6, -1, 6, 7, 1, 0, -1, 2, 3, 5, 4, -1, 6, 0, 2, 4, -1, 1, 7, 5, 3, -1 ]
+            texCoord TextureCoordinate {
+              point [ 0 1, 0 0, 1 1, 1 0 ]
+            }
+            color Color {
+              color [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 0 1 1, 1 0 1 ]
+            }
+            coord Coordinate {
+              point [ -1 1 1, -1 -1 1, 1 1 1, 1 -1 1, 1 1 -1, 1 -1 -1, -1 1 -1, -1 -1 -1 ]
+            }
+          }
+        }
+        Shape {
+          appearance Appearance {
             material Material {
               diffuseColor 0.5 0 1
               transparency 0.5
             }
           }
           geometry Box {
+            size 20 20 20
             solid FALSE
           }
         }

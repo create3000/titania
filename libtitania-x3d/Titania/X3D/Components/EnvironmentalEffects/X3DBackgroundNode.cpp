@@ -109,28 +109,23 @@ X3DBackgroundNode::getColor (float theta, const MFColor & color, const MFFloat &
 
 	for (i = 0; i < angle .size (); i ++)
 	{
-		if (theta <= angle .at (i))
+		if (theta <= angle [i])
 		{
 			break;
 		}
 	}
 
 	if (i == angle .size ())
-		return color .at (i);
+		return color [i];
 
-	float weighting;
+	float weight;
 
 	if (i == 0)
-		weighting = theta / angle .at (0);
+		weight = theta / angle [0];
 	else
-		weighting = (theta - angle .at (i - 1)) / (angle .at (i) - angle .at (i - 1));
+		weight = (theta - angle [i - 1]) / (angle [i] - angle [i - 1]);
 
-	Color3f c1 = color .at (i);
-	Color3f c2 = color .at (i + 1);
-
-	return Color3f (c1 .r () + (c2 .r () - c1 .r ()) * weighting,
-	                c1 .g () + (c2 .g () - c1 .g ()) * weighting,
-	                c1 .b () + (c2 .b () - c1 .b ()) * weighting);
+	return math::clerp <float> (color [i], color [i + 1], weight);
 }
 
 void

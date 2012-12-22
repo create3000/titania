@@ -15,6 +15,10 @@ DEF Cube Transform {
       texCoord TextureCoordinate {
         point [ 0 1, 0 0, 1 1, 1 0 ]
       }
+      color Color {
+         color [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 0 1 1, 1 0 1 ]
+      }
+      colorPerVertex FALSE 
     }
   }
 }

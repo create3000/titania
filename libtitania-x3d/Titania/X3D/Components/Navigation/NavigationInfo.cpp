@@ -52,6 +52,8 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layering/X3DLayerNode.h"
 
+#include <limits>
+
 namespace titania {
 namespace X3D {
 
@@ -103,6 +105,26 @@ NavigationInfo::initialize ()
 
 	if (addToList)
 		getScene () -> addNavigationInfo (this);
+}
+
+float
+NavigationInfo::getZNear () const
+{
+	float zNear = avatarSize .size () ? avatarSize .front () : 0.25;
+	
+	if (zNear == 0)
+		zNear = std::numeric_limits <float> ::epsilon () * 100;
+		
+	else
+		zNear *= 0.5f;
+
+	return zNear;
+}
+
+float
+NavigationInfo::getZFar () const
+{
+	return visibilityLimit ? visibilityLimit : 100000;
 }
 
 void

@@ -65,11 +65,11 @@ namespace X3D {
 ExamineViewer::ExamineViewer (Surface & surface) :
 	                      X3DViewer (surface .getBrowser ()), 
 	                        surface (surface),                
-	                     fromVector (), 
-	                    orientation (),                      
-	                  deltaRotation (),                       
-	                lastTranslation (),                       
 	                       distance (),                       
+	                    orientation (),                       
+	                       rotation (),                       
+	                     fromVector (),                       
+	                      fromPoint (),                       
 	                         button (0),                      
 	button_press_event_connection   (),                       
 	motion_notify_event_connection  (),                       
@@ -118,19 +118,23 @@ ExamineViewer::set_activeLayer ()
 void
 ExamineViewer::set_viewpoint ()
 {
-	__LOG__ << std::endl;
-
 	// Update distance and rotation.
 
-	SFNode <Viewpoint> viewpoint = getBrowser () -> getActiveViewpoint ();
-
-	viewpoint -> translation = Vector3f ();
-	viewpoint -> rotation    = Rotation4f ();
+	Viewpoint* viewpoint = dynamic_cast <Viewpoint*> (getBrowser () -> getActiveViewpoint ());
 
 	if (viewpoint)
 	{
-		orientation = viewpoint -> orientation;
-		distance    = viewpoint -> position - viewpoint -> centerOfRotation;
+		//if (reset)
+		//{
+		//	viewpoint -> translation = Vector3f ();
+		//	viewpoint -> rotation    = Rotation4f ();
+		//
+		//	orientation = viewpoint -> orientation;
+		//	distance    = viewpoint -> position - viewpoint -> centerOfRotation;
+		//}
+
+		orientation = getOrientation (viewpoint);
+		distance    = getDistance (viewpoint);
 	}
 }
 
@@ -145,14 +149,14 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 	{
 		fromVector = trackballProjectToSphere (event -> x, event -> y);
 
-		deltaRotation = Rotation4f ();
+		rotation = Rotation4f ();
 
 		return false;
 	}
 
 	if (button == 2)
 	{
-		lastTranslation = Vector3f (event -> x, -event -> y, 0);
+		fromPoint = getPoint (event -> x, event -> y);
 
 		return false;
 	}
@@ -165,13 +169,13 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 {
 	if (button == 1)
 	{
-		SFNode <Viewpoint> viewpoint = getBrowser () -> getActiveViewpoint ();
+		Viewpoint* viewpoint = dynamic_cast <Viewpoint*> (getBrowser () -> getActiveViewpoint ());
 
 		if (viewpoint)
 		{
 			Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
 
-			deltaRotation = ~Rotation4f (fromVector, toVector);
+			rotation = ~Rotation4f (fromVector, toVector);
 
 			viewpoint -> rotation    = getRotation (viewpoint);
 			viewpoint -> translation = getTranslation (viewpoint);
@@ -182,22 +186,19 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 
 	else if (button == 2)
 	{
-		SFNode <Viewpoint> viewpoint = getBrowser () -> getActiveViewpoint ();
+		Viewpoint* viewpoint = dynamic_cast <Viewpoint*> (getBrowser () -> getActiveViewpoint ());
 
 		if (viewpoint)
 		{
-			float step = abs (distance) / 300;
+			Vector3f toPoint = getPoint (event -> x, event -> y);
 
-			Vector3f translation (event -> x, -event -> y, 0);
+			Vector3f translation = toPoint - fromPoint;
+			translation = viewpoint -> orientation * viewpoint -> rotation * translation;
 
-			Vector3f vector = translation - lastTranslation;
-			vector = normalize (vector) * -step;
+			viewpoint -> translation      += translation;
+			viewpoint -> centerOfRotation += translation;
 
-			vector = viewpoint -> rotation * vector;
-
-			viewpoint -> translation = viewpoint -> translation + vector;
-
-			lastTranslation = translation;
+			fromPoint = toPoint;
 		}
 	}
 
@@ -209,11 +210,11 @@ ExamineViewer::on_button_release_event (GdkEventButton* event)
 {
 	if (button == 1)
 	{
-		float angle = deltaRotation .angle ();
+		float angle = rotation .angle ();
 
 		if (angle > SPIN_ANGLE)
 		{
-			deltaRotation .angle (angle - SPIN_ANGLE);
+			rotation .angle (angle - SPIN_ANGLE);
 			addSpinning ();
 		}
 	}
@@ -226,24 +227,26 @@ ExamineViewer::on_button_release_event (GdkEventButton* event)
 bool
 ExamineViewer::on_scroll_event (GdkEventScroll* event)
 {
-	SFNode <Viewpoint> viewpoint = getBrowser () -> getActiveViewpoint ();
+	Viewpoint* viewpoint = dynamic_cast <Viewpoint*> (getBrowser () -> getActiveViewpoint ());
 
 	if (viewpoint)
 	{
-		Vector3f step   = distance * SCOLL_FACTOR;
-		Vector3f vector = viewpoint -> orientation * viewpoint -> rotation * Vector3f (0, 0, abs (step));
+		Vector3f step        = distance * SCOLL_FACTOR;
+		Vector3f translation = viewpoint -> orientation * viewpoint -> rotation * Vector3f (0, 0, abs (step));
 
 		if (event -> direction == 0)      // Move backwards.
 		{
-			viewpoint -> translation = viewpoint -> translation + vector;
-			distance                += step;
+			viewpoint -> translation += translation;
+			distance                 += step;
 		}
 
 		else if (event -> direction == 1) // Move forwards.
 		{
-			viewpoint -> translation = viewpoint -> translation - vector;
-			distance                -= step;
+			viewpoint -> translation -= translation;
+			distance                 -= step;
 		}
+
+		distance = getDistance (viewpoint);
 	}
 
 	return false;
@@ -252,7 +255,7 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 bool
 ExamineViewer::spin ()
 {
-	SFNode <Viewpoint> viewpoint = getBrowser () -> getActiveViewpoint ();
+	Viewpoint* viewpoint = dynamic_cast <Viewpoint*> (getBrowser () -> getActiveViewpoint ());
 
 	if (viewpoint)
 	{
@@ -271,8 +274,23 @@ ExamineViewer::addSpinning ()
 }
 
 Vector3f
+ExamineViewer::getDistance (const SFNode <Viewpoint> & viewpoint) const
+{
+	return ~viewpoint -> rotation * (viewpoint -> position + viewpoint -> translation - viewpoint -> centerOfRotation);
+}
+
+Rotation4f
+ExamineViewer::getOrientation (const SFNode <Viewpoint> & viewpoint) const
+{
+	return viewpoint -> orientation * viewpoint -> rotation;
+}
+
+Vector3f
 ExamineViewer::getTranslation (const SFNode <Viewpoint> & viewpoint) const
 {
+	// The new translation is calculated here by calculating the new position and
+	// then subtracting the viewpoints position to get the new translation.
+
 	return viewpoint -> centerOfRotation
 	       + viewpoint -> rotation * distance
 	       - viewpoint -> position;
@@ -281,8 +299,31 @@ ExamineViewer::getTranslation (const SFNode <Viewpoint> & viewpoint) const
 Rotation4f
 ExamineViewer::getRotation (const SFNode <Viewpoint> & viewpoint)
 {
-	orientation = deltaRotation * orientation;
+	orientation = rotation * orientation;
 	return ~viewpoint -> orientation * orientation;
+}
+
+Vector3f
+ExamineViewer::getPoint (double x, double y)
+{
+	X3DViewpointNode* viewpoint      = getBrowser () -> getActiveViewpoint ();
+	NavigationInfo*   navigationInfo = getBrowser () -> getActiveNavigationInfo ();
+
+	GLint                viewport [4]; // x, y, width, heigth
+	Matrix4d             modelview;
+	Matrix4d::array_type projection;
+
+	viewpoint -> reshape (navigationInfo -> getZNear (), navigationInfo -> getZFar ());
+	glGetDoublev (GL_PROJECTION_MATRIX, projection);
+
+	glGetIntegerv (GL_VIEWPORT, viewport);
+	GLdouble px, py, pz;
+
+	// Far plane point
+	gluUnProject (x, y, 1, modelview .data (), projection, viewport, &px, &py, &pz);
+	Vector3f direction = normalize (Vector3f (-px, py, pz));
+
+	return direction * abs (distance) / dot (direction, Vector3f (0, 0, -1));
 }
 
 Vector3f

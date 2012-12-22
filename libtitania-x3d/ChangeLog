@@ -1,5 +1,23 @@
 2012-12-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFVec2.h:
+	* SFVec3.h:
+	* SFVec4.h:
+	* SFMatrix3.h:
+	* SFMatrix4.h:
+	* Browser.cpp:
+	* SFRotation4.h:
+	* ExamineViewer.h:
+	* ExamineViewer.cpp:
+	* PointingDevice.cpp:
+	* NavigationInfo.h:
+	* X3DViewpointNode.h:
+	* NavigationInfo.cpp:
+	* X3DViewpointNode.cpp:
+	* X3DBackgroundNode.cpp: 
+
+2012-12-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.h:
 	* Parser.cpp:
 	* ExamineViewer.h:

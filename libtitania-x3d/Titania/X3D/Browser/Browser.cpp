@@ -167,13 +167,15 @@ Browser::getHitRay () const
 
 	GLdouble px, py, pz;
 
+	// Near plane point
 	gluUnProject (x, y, 0, modelview, projection, viewport, &px, &py, &pz);
-	Vector3f position = Vector3f (px, py, pz);
+	Vector3f near = Vector3f (px, py, pz);
 
+	// Far plane point
 	gluUnProject (x, y, 1, modelview, projection, viewport, &px, &py, &pz);
-	Vector3f point = Vector3f (px, py, pz);
+	Vector3f far = Vector3f (px, py, pz);
 
-	return Line3f (position, point);
+	return Line3f (near, far);
 }
 
 void

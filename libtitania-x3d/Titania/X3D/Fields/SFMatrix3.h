@@ -73,16 +73,24 @@ public:
 	using X3DField <ValueType>::getValue;
 	using X3DField <ValueType>::operator =;
 
-	SFMatrix3 ();
+	SFMatrix3 () :
+		X3DField <ValueType> ()
+	{ }
 
-	SFMatrix3 (const SFMatrix3 &);
+	SFMatrix3 (const SFMatrix3 & field) :
+		X3DField <ValueType> (field)
+	{ }
 
 	explicit
-	SFMatrix3 (const ValueType &);
+	SFMatrix3 (const ValueType & value) :
+		X3DField <ValueType> (value)
+	{ }
 
-	SFMatrix3 (const scalar_type &, const scalar_type &, const scalar_type &,
-	           const scalar_type &, const scalar_type &, const scalar_type &,
-	           const scalar_type &, const scalar_type &, const scalar_type &);
+	SFMatrix3 (const scalar_type & e11, const scalar_type & e12, const scalar_type & e13,
+	           const scalar_type & e21, const scalar_type & e22, const scalar_type & e23,
+	           const scalar_type & e31, const scalar_type & e32, const scalar_type & e33) :
+		X3DField <ValueType> (ValueType (e11, e12, e13, e21, e22, e23, e31, e32, e33))
+	{ }
 
 	virtual
 	SFMatrix3*
@@ -183,28 +191,7 @@ private:
 };
 
 template <class ValueType>
-SFMatrix3 <ValueType>::SFMatrix3 () :
-	X3DField <ValueType> ()
-{ }
-
-template <class ValueType>
-SFMatrix3 <ValueType>::SFMatrix3 (const SFMatrix3 & field) :
-	X3DField <ValueType> (field)
-{ }
-
-template <class ValueType>
-SFMatrix3 <ValueType>::SFMatrix3 (const ValueType & value) :
-	X3DField <ValueType> (value)
-{ }
-
-template <class ValueType>
-SFMatrix3 <ValueType>::SFMatrix3 (const scalar_type & e11, const scalar_type & e12, const scalar_type & e13,
-                                  const scalar_type & e21, const scalar_type & e22, const scalar_type & e23,
-                                  const scalar_type & e31, const scalar_type & e32, const scalar_type & e33) :
-	X3DField <ValueType> (ValueType (e11, e12, e13, e21, e22, e23, e31, e32, e33))
-{ }
-
-template <class ValueType>
+inline
 SFMatrix3 <ValueType>*
 SFMatrix3 <ValueType>::clone () const
 {
@@ -220,6 +207,7 @@ SFMatrix3 <ValueType>::set1Value (const size_type & index, const scalar_type & v
 }
 
 template <class ValueType>
+inline
 typename SFMatrix3 <ValueType>::scalar_type
 SFMatrix3 <ValueType>::get1Value (const size_type & index) const
 {
@@ -227,6 +215,7 @@ SFMatrix3 <ValueType>::get1Value (const size_type & index) const
 }
 
 template <class ValueType>
+inline
 void
 SFMatrix3 <ValueType>::setValue (const scalar_type & e11, const scalar_type & e12, const scalar_type & e13,
                                  const scalar_type & e21, const scalar_type & e22, const scalar_type & e23,
@@ -236,6 +225,7 @@ SFMatrix3 <ValueType>::setValue (const scalar_type & e11, const scalar_type & e1
 }
 
 template <class ValueType>
+inline
 void
 SFMatrix3 <ValueType>::getValue (scalar_type & e11, scalar_type & e12, scalar_type & e13,
                                  scalar_type & e21, scalar_type & e22, scalar_type & e23,
@@ -349,6 +339,7 @@ SFMatrix3 <ValueType>::getTransform (vector2_type & translation,
 }
 
 template <class ValueType>
+inline
 SFMatrix3 <ValueType>*
 SFMatrix3 <ValueType>::transpose () const
 {
@@ -356,6 +347,7 @@ SFMatrix3 <ValueType>::transpose () const
 }
 
 template <class ValueType>
+inline
 SFMatrix3 <ValueType>*
 SFMatrix3 <ValueType>::inverse () const
 {
@@ -363,6 +355,7 @@ SFMatrix3 <ValueType>::inverse () const
 }
 
 template <class ValueType>
+inline
 SFMatrix3 <ValueType>*
 SFMatrix3 <ValueType>::multLeft (const SFMatrix3 & value) const
 {
@@ -370,6 +363,7 @@ SFMatrix3 <ValueType>::multLeft (const SFMatrix3 & value) const
 }
 
 template <class ValueType>
+inline
 SFMatrix3 <ValueType>*
 SFMatrix3 <ValueType>::multRight (const SFMatrix3 & value) const
 {
@@ -377,6 +371,7 @@ SFMatrix3 <ValueType>::multRight (const SFMatrix3 & value) const
 }
 
 template <class ValueType>
+inline
 typename SFMatrix3 <ValueType>::vector2_type *
 SFMatrix3 <ValueType>::multMatrixVec (const vector2_type &value) const
 {
@@ -384,6 +379,7 @@ SFMatrix3 <ValueType>::multMatrixVec (const vector2_type &value) const
 }
 
 template <class ValueType>
+inline
 typename SFMatrix3 <ValueType>::vector2_type *
 SFMatrix3 <ValueType>::multVecMatrix (const vector2_type &value) const
 {
@@ -391,6 +387,7 @@ SFMatrix3 <ValueType>::multVecMatrix (const vector2_type &value) const
 }
 
 template <class ValueType>
+inline
 typename SFMatrix3 <ValueType>::vector2_type *
 SFMatrix3 <ValueType>::multDirMatrix (const vector2_type &value) const
 {
@@ -398,10 +395,11 @@ SFMatrix3 <ValueType>::multDirMatrix (const vector2_type &value) const
 }
 
 template <class ValueType>
+inline
 void
 SFMatrix3 <ValueType>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <scalar_type> << getValue ();
+	ostream << Generator::Precision <scalar_type><< getValue ();
 }
 
 //extern template class X3DField <Matrix3d>;

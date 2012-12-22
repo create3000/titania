@@ -68,6 +68,7 @@ public:
 	
 	SFVec3f    translation;
 	SFRotation rotation;
+	SFVec3f    center;
 
 	void
 	setTransformationMatrix (const Matrix4f &);
