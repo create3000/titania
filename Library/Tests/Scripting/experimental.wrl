@@ -1,0 +1,49 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "Experimental"
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box { }
+  }
+}
+
+Script {
+  url "vrmlscript:
+
+//########## Titania/X3D/Widgets/ExamineViewer.cpp:213: in function 'getTranslation': 
+//########## Titania/X3D/Widgets/ExamineViewer.cpp:214: in function 'getTranslation': 0 0 1
+//########## Titania/X3D/Widgets/ExamineViewer.cpp:215: in function 'getTranslation': 0.0555815 0.996211 0.066891 0.0660565
+//########## Titania/X3D/Widgets/ExamineViewer.cpp:216: in function 'getTranslation': 0 0 1
+//########## Titania/X3D/Widgets/ExamineViewer.cpp:217: in function 'getTranslation': 2 0 0
+//########## Titania/X3D/Widgets/ExamineViewer.cpp:218: in function 'getTranslation': 2 0 1
+
+function initialize ()
+{
+	var centerOfRotation = new SFVec3f (0, 0, 1);
+	var rotation         = new SFRotation (0, 1, 0, 1.5708);
+	var distance         = new SFVec3f (0, 0, 2);
+	var position         = new SFVec3f (0, 0, 3);
+
+	translation = centerOfRotation
+	              .add (rotation .multVec (distance))
+	              .subtract (position);
+	              
+	print (translation);
+
+	var centerOfRotation = new SFVec3f (0, 0, 1);
+	var rotation         = new SFRotation (0, 0, 1, -1.5708);
+	var distance         = new SFVec3f (0, 2, 0);
+	var position         = new SFVec3f (0, 2, 1);
+
+	translation = centerOfRotation
+	              .add (rotation .multVec (distance))
+	              .subtract (position);
+	              
+	print (translation);
+}
+  "
+}

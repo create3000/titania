@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -98,11 +98,11 @@ throw (Error <INVALID_X3D>)
 
 Parser::Parser (X3DScene* scene, const std::string & input) :
 	X3DBaseNode (scene -> getBrowser (),        scene), 
-	   X3DParser (),                                     
-	       scene (scene),                                
-	       input (input),                                
-	      string (pcrecpp::StringPiece (input)),         
-	    nodeList ()                                      
+	  X3DParser (),                                     
+	      scene (scene),                                
+	      input (input),                                
+	     string (pcrecpp::StringPiece (input)),         
+	   nodeList ()                                      
 {
 	setComponent ("Browser");
 	setTypeName ("Parser");
@@ -1196,7 +1196,7 @@ Parser::routeStatement ()
 												getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
 
 												comments ();
-									
+
 												return true;
 											}
 											else
@@ -1698,6 +1698,25 @@ Parser::_int32 (int32_t & _value)
 {
 	//__LOG__ << std::endl;
 
+	if (_hex (_value))
+		return true;
+
+	std::string _match;
+
+	if (RegEx::_int32 .Consume (&string, &_match))
+	{
+		comments ();
+		return from_string <int32_t> (_value, _match, std::dec);
+	}
+
+	return false;
+}
+
+bool
+Parser::_hex (int32_t & _value)
+{
+	//__LOG__ << std::endl;
+
 	std::string _match;
 
 	if (RegEx::_hex .Consume (&string, &_match))
@@ -1711,14 +1730,6 @@ Parser::_int32 (int32_t & _value)
 			_value = hex;
 			return true;
 		}
-
-		return false;
-	}
-
-	if (RegEx::_int32 .Consume (&string, &_match))
-	{
-		comments ();
-		return from_string <int32_t> (_value, _match, std::dec);
 	}
 
 	return false;
@@ -1814,6 +1825,16 @@ bool
 Parser::sfcolorValue (SFColor* _field)
 {
 	//__LOG__ << std::endl;
+
+	int32_t color;
+
+	if (_hex (color))
+	{
+		_field -> setValue (((color >> 16) & 0xff) / 255.0f,
+		                    ((color >> 8) & 0xff) / 255.0f,
+		                    (color & 0xff) / 255.0f);
+		return true;
+	}
 
 	float r, g, b;
 

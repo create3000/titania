@@ -509,7 +509,7 @@ operator * (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 	return quaternion <Type> (lhs) .multRight (rhs);
 }
 
-///  Returns new quaternion value @a lhs times @a rhs.
+///  Returns new quaternion value @a lhs right multiplied @a rhs.
 template <class Type>
 inline
 constexpr quaternion <Type>

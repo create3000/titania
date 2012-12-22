@@ -50,7 +50,6 @@
 
 #include "../Components/Geospatial/GeoViewpoint.h"
 #include "../Components/Navigation/OrthoViewpoint.h"
-#include "../Components/Navigation/Viewpoint.h"
 
 #include "Surface.h"
 #include <cmath>
@@ -66,9 +65,9 @@ namespace X3D {
 ExamineViewer::ExamineViewer (Surface & surface) :
 	                      X3DViewer (surface .getBrowser ()), 
 	                        surface (surface),                
-	                     fromVector (),                       
+	                     fromVector (), 
+	                    orientation (),                      
 	                  deltaRotation (),                       
-	                       rotation (),                       
 	                lastTranslation (),                       
 	                       distance (),                       
 	                         button (0),                      
@@ -76,8 +75,8 @@ ExamineViewer::ExamineViewer (Surface & surface) :
 	motion_notify_event_connection  (),                       
 	button_release_event_connection (),                       
 	scroll_event_connection         (),                       
-	                        spin_id (),
-	                    activeLayer ()                      
+	                        spin_id (),                       
+	                    activeLayer ()                        
 { }
 
 void
@@ -108,9 +107,9 @@ ExamineViewer::set_activeLayer ()
 {
 	if (activeLayer)
 		activeLayer -> viewpointStack .removeInterest (this, &ExamineViewer::set_viewpoint);
-	
+
 	activeLayer = getBrowser () -> getExecutionContext () -> getLayerSet () -> getActiveLayer ();
-	
+
 	activeLayer -> viewpointStack .addInterest (this, &ExamineViewer::set_viewpoint);
 
 	set_viewpoint ();
@@ -128,11 +127,10 @@ ExamineViewer::set_viewpoint ()
 	viewpoint -> translation = Vector3f ();
 	viewpoint -> rotation    = Rotation4f ();
 
-	rotation = Rotation4f ();
-
 	if (viewpoint)
 	{
-		distance = viewpoint -> position - viewpoint -> centerOfRotation;
+		orientation = viewpoint -> orientation;
+		distance    = viewpoint -> position - viewpoint -> centerOfRotation;
 	}
 }
 
@@ -145,9 +143,7 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
-		fromVector .x (event -> x / surface .get_width () - 0.5f);
-		fromVector .y (-event -> y / surface .get_height () + 0.5f);
-		fromVector .z (tb_project_to_sphere (0.5f, fromVector .x (), fromVector .y ()));
+		fromVector = trackballProjectToSphere (event -> x, event -> y);
 
 		deltaRotation = Rotation4f ();
 
@@ -173,15 +169,12 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 
 		if (viewpoint)
 		{
-			Vector3f toVector;
-			toVector .x (event -> x / surface .get_width () - 0.5f);
-			toVector .y (-event -> y / surface .get_height () + 0.5f);
-			toVector .z (tb_project_to_sphere (0.5, toVector .x (), toVector .y ()));
+			Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
 
 			deltaRotation = ~Rotation4f (fromVector, toVector);
 
-			viewpoint -> rotation    = deltaRotation * viewpoint -> rotation;
-			viewpoint -> translation = viewpoint -> centerOfRotation + ~rotation * viewpoint -> rotation * distance - viewpoint -> position;
+			viewpoint -> rotation    = getRotation (viewpoint);
+			viewpoint -> translation = getTranslation (viewpoint);
 
 			fromVector = toVector;
 		}
@@ -221,7 +214,7 @@ ExamineViewer::on_button_release_event (GdkEventButton* event)
 		if (angle > SPIN_ANGLE)
 		{
 			deltaRotation .angle (angle - SPIN_ANGLE);
-			add_spinning ();
+			addSpinning ();
 		}
 	}
 
@@ -238,18 +231,18 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 	if (viewpoint)
 	{
 		Vector3f step   = distance * SCOLL_FACTOR;
-		Vector3f vector = viewpoint -> rotation * Vector3f (0, 0, abs (step));
+		Vector3f vector = viewpoint -> orientation * viewpoint -> rotation * Vector3f (0, 0, abs (step));
 
 		if (event -> direction == 0)      // Move backwards.
 		{
 			viewpoint -> translation = viewpoint -> translation + vector;
-			distance += step;
+			distance                += step;
 		}
 
 		else if (event -> direction == 1) // Move forwards.
 		{
 			viewpoint -> translation = viewpoint -> translation - vector;
-			distance -= step;
+			distance                -= step;
 		}
 	}
 
@@ -263,18 +256,41 @@ ExamineViewer::spin ()
 
 	if (viewpoint)
 	{
-		viewpoint -> rotation    = deltaRotation * viewpoint -> rotation;
-		viewpoint -> translation = viewpoint -> centerOfRotation + ~rotation * viewpoint -> rotation * distance - viewpoint -> position;
+		viewpoint -> rotation    = getRotation (viewpoint);
+		viewpoint -> translation = getTranslation (viewpoint);
 	}
 
 	return true;
 }
 
 void
-ExamineViewer::add_spinning ()
+ExamineViewer::addSpinning ()
 {
 	if (not spin_id .connected ())
 		spin_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &ExamineViewer::spin), TIMEOUT_INTERVAL, GDK_PRIORITY_REDRAW);
+}
+
+Vector3f
+ExamineViewer::getTranslation (const SFNode <Viewpoint> & viewpoint) const
+{
+	return viewpoint -> centerOfRotation
+	       + viewpoint -> rotation * distance
+	       - viewpoint -> position;
+}
+
+Rotation4f
+ExamineViewer::getRotation (const SFNode <Viewpoint> & viewpoint)
+{
+	orientation = deltaRotation * orientation;
+	return ~viewpoint -> orientation * orientation;
+}
+
+Vector3f
+ExamineViewer::trackballProjectToSphere (double x, double y) const
+{
+	return Vector3f (x / surface .get_width () - 0.5f,
+	                 -y / surface .get_height () + 0.5f,
+	                 tb_project_to_sphere (0.5, 0, 0));
 }
 
 float

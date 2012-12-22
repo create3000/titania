@@ -52,8 +52,17 @@
 #include "../Layering/X3DLayerNode.h"
 #include "../Navigation/X3DViewpointNode.h"
 
+// LOW
 #define SPHERE_USEG 16.0
 #define SPHERE_VSEG 15.0
+
+// HIGH
+#define SPHERE_USEG 32.0
+#define SPHERE_VSEG 41.0
+
+// MEDIUM
+#define SPHERE_USEG 22.0
+#define SPHERE_VSEG 31.0
 
 namespace titania {
 namespace X3D {
@@ -127,13 +136,16 @@ X3DBackgroundNode::getColor (float theta, const MFColor & color, const MFFloat &
 void
 X3DBackgroundNode::build ()
 {
-	float radius  = 10000;
-	float opacity = 1 - math::clamp <float> (transparency, 0, 1);
-	float PI2     = 2 * M_PI;
-
 	glColors .clear ();
 	glPoints .clear ();
 	numIndices = 0;
+
+	if (transparency == 1.0f)
+		return;
+
+	float radius  = 10000;
+	float opacity = 1 - math::clamp <float> (transparency, 0, 1);
+	float PI2     = 2 * M_PI;
 
 	// p2 --- p1
 	//  |     |
@@ -350,6 +362,9 @@ X3DBackgroundNode::display ()
 void
 X3DBackgroundNode::draw ()
 {
+	if (transparency == 1.0f)
+		return;
+
 	GLint polygonMode [2] = { 0, 0 }; // Front and back value.
 	glGetIntegerv (GL_POLYGON_MODE, polygonMode);
 

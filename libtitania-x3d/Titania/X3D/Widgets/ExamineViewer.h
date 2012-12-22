@@ -49,6 +49,7 @@
 #ifndef __TITANIA_X3D_WIDGETS_EXAMINE_VIEWER_H__
 #define __TITANIA_X3D_WIDGETS_EXAMINE_VIEWER_H__
 
+#include "../Components/Navigation/Viewpoint.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Fields/SFNode.h"
 #include "../Widgets/X3DViewer.h"
@@ -102,15 +103,24 @@ private:
 	spin ();
 
 	void
-	add_spinning ();
+	addSpinning ();
+	
+	Vector3f
+	getTranslation (const SFNode <Viewpoint> &) const;
+	
+	Rotation4f
+	getRotation (const SFNode <Viewpoint> &);
+
+	Vector3f
+	trackballProjectToSphere (double, double) const;
 
 	float
 	tb_project_to_sphere (const float, const float, const float) const;
 
 	Surface &             surface;
 	Vector3f              fromVector;
+	Rotation4f            orientation;
 	Rotation4f            deltaRotation;
-	Rotation4f            rotation;
 	Vector3f              lastTranslation;
 	Vector3f              distance;
 	guint                 button;

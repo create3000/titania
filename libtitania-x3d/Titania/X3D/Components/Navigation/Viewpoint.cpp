@@ -108,11 +108,8 @@ Viewpoint::display ()
 
 	if (jump)
 	{
-		transformationMatrix .translate (position);
-		transformationMatrix .rotate (orientation);
-		
-		transformationMatrix .translate (translation);
-		transformationMatrix .rotate (rotation);
+		transformationMatrix .translate (position + translation);
+		transformationMatrix .rotate (orientation * rotation);
 		
 		setTransformationMatrix (transformationMatrix);
 	}

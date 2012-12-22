@@ -1571,6 +1571,10 @@
     <None Include="Tests\EnvironmentalSensors\ProximitySensor.wrl" />
     <None Include="Tests\Grouping\Add&amp;RemoveChildren.wrl" />
     <None Include="Tests\Navigation\Billboard.wrl" />
+    <None Include="Models\Backgrounds\summer.wrl" />
+    <None Include="Models\Backgrounds\city-night.wrl" />
+    <None Include="Models\Backgrounds\sunset.wrl" />
+    <None Include="Tests\Scripting\experimental.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

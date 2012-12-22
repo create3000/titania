@@ -1080,7 +1080,7 @@ inverse (const matrix4 <Type> & matrix)
 	return matrix4 <Type> (matrix) .inverse ();
 }
 
-///  Return matrix value @a lhs left multiplied by @a rhs.
+///  Return matrix value @a lhs right multiplied by @a rhs.
 template <class Type>
 inline
 matrix4 <Type>

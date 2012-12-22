@@ -291,6 +291,9 @@ private:
 	_int32 (int32_t &);
 
 	bool
+	_hex (int32_t &);
+
+	bool
 	_string (std::string &);
 
 	bool
