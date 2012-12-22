@@ -61,7 +61,7 @@ X3DNode::X3DNode () :
 }
 
 Scene*
-X3DNode::getScene ()
+X3DNode::getScene () const
 {
 	X3DExecutionContext* scene = getExecutionContext ();
 
@@ -72,11 +72,16 @@ X3DNode::getScene ()
 }
 
 X3DLayerNode*
-X3DNode::getCurrentLayer ()
+X3DNode::getCurrentLayer () const
 {
 	return getBrowser () -> getCurrentLayer ();
 }
 
+X3DViewpointNode*
+X3DNode::getCurrentViewpoint () const
+{
+	return getBrowser () -> getCurrentLayer () -> getViewpoint ();
+}
 
 std::deque <X3DLayerNode*>
 X3DNode::getLayers () const

@@ -56,10 +56,10 @@ namespace titania {
 namespace X3D {
 
 Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool addToList) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DViewpointNode (addToList),  
-	        position (0, 0, 10),  // SFVec3f [in,out] position           0 0 10        (-∞,∞)
-	     fieldOfView (0.785398)   // SFFloat [in,out] fieldOfView        π/4           (0,π)
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DViewpointNode (addToList),                                           
+	        position (0, 0, 10),                                            // SFVec3f [in,out] position           0 0 10        (-∞,∞)
+	     fieldOfView (0.785398)                                             // SFFloat [in,out] fieldOfView        π/4           (0,π)
 {
 	setComponent ("Navigation");
 	setTypeName ("Viewpoint");
@@ -88,16 +88,23 @@ Viewpoint::initialize ()
 {
 	X3DViewpointNode::initialize ();
 
-	jump .addInterest (this, &Viewpoint::set_jump);
-
-	set_jump ();
+	set_bind .addInterest (this, &Viewpoint::_set_bind);
 }
 
 void
-Viewpoint::set_jump ()
+Viewpoint::_set_bind ()
 {
-	if (not jump)
+	if (set_bind)
 	{
+		if (not jump)
+		{
+			Vector3f   t;
+			Rotation4f r;
+			differenceMatrix .get (t, r);
+
+			translation = t;
+			rotation    = r;
+		}
 	}
 }
 
@@ -106,16 +113,34 @@ Viewpoint::display ()
 {
 	Matrix4f transformationMatrix = ModelViewMatrix4f ();
 
-	if (jump)
+	if (isBound)
 	{
-		transformationMatrix .translate (position + translation);
-		transformationMatrix .rotate (orientation * rotation);
-		
-		setTransformationMatrix (transformationMatrix);
+		if (jump)
+		{
+			transformationMatrix .translate (position + translation);
+			transformationMatrix .rotate (orientation * rotation);
+
+			setTransformationMatrix (transformationMatrix);
+		}
+		else
+		{
+			transformationMatrix .translate (position + translation);
+			transformationMatrix .rotate (orientation * rotation);
+
+			setTransformationMatrix (transformationMatrix);
+		}
 	}
 	else
 	{
-		setTransformationMatrix (transformationMatrix);
+		if (not jump)
+		{
+			transformationMatrix .translate (position);
+			transformationMatrix .rotate (orientation);
+
+			setTransformationMatrix (transformationMatrix);
+
+			differenceMatrix = getCurrentViewpoint () -> getTransformationMatrix () * getInverseTransformationMatrix ();
+		}
 	}
 }
 

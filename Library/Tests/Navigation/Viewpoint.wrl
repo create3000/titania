@@ -36,7 +36,7 @@ Transform {
 Viewpoint {
   description "Out"
   position -1.16483 16.8751 324.704
-  centerOfRotation -1.16483 16.8751 22.483
+  #centerOfRotation -1.16483 16.8751 22.483
 }
 
 Viewpoint {

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -156,7 +156,7 @@ ProximitySensor::display ()
 	if (inside /* or getBrowser () -> getEditMode () */)
 		return;
 
-	matrix = ModelViewMatrix4f () * getCurrentLayer () -> getViewpoint () -> getInverseTransformationMatrix (); 
+	matrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix (); 
 
 	Matrix4f transformationMatrix = matrix;
 	transformationMatrix .translate (center);

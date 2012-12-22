@@ -60,7 +60,7 @@ Script::Script (X3DExecutionContext* const executionContext) :
 	X3DScriptNode (),                                                    
 	 directOutput (),                                                    // SFBool [ ]directOutput  FALSE
 	 mustEvaluate (),                                                    // SFBool [ ]mustEvaluate  FALSE
-	   javaScript (NULL)                                                 
+	   javaScript ()                                                 
 {
 	setComponent ("Scripting");
 	setTypeName ("Script");
@@ -90,7 +90,7 @@ Script::initialize ()
 
 		if (RegEx::ECMAScript .FullMatch (URL .str (), &ecmascript))
 		{
-			javaScript = new JavaScriptContext (this, ecmascript);
+			javaScript .reset (new JavaScriptContext (this, ecmascript));
 			break;
 		}
 	}
@@ -98,7 +98,7 @@ Script::initialize ()
 	// Assign an empty script if no working script is found.
 	
 	if (not javaScript)
-		javaScript = new JavaScriptContext (this, "");
+		javaScript .reset (new JavaScriptContext (this, ""));
 		
 	// Initialize.
 
@@ -124,9 +124,10 @@ Script::eventsProcessed ()
 void
 Script::dispose ()
 {
-	javaScript -> shutdown ();
+	if (javaScript) // Prevent uninitialized prototype instances do call this.
+		javaScript -> shutdown ();
 
-	delete javaScript;
+	javaScript .reset (NULL);
 
 	X3DScriptNode::dispose ();
 }

@@ -83,7 +83,9 @@ private:
 	initialize ();
 
 	void
-	set_jump ();
+	_set_bind ();
+	
+	Matrix4f differenceMatrix;
 
 };
 

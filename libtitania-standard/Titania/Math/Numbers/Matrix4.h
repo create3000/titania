@@ -273,6 +273,14 @@ public:
 	//@}
 
 	//@{
+	template <class T>
+	void
+	get (vector3 <T> &) const;
+
+	template <class T, class R>
+	void
+	get (vector3 <T> &, rotation4 <R> &) const;
+
 	template <class T, class R, class S>
 	void
 	get (vector3 <T> &, rotation4 <R> &, vector3 <S> &) const;
@@ -657,6 +665,26 @@ matrix4 <Type>::set (const vector3 <Type> & translation,
 
 	if (center not_eq vector3 <Type> ())
 		translate (-center);
+}
+
+template <class Type>
+template <class T>
+void
+matrix4 <Type>::get (vector3 <T> & translation) const
+{
+	translation = this -> translation ();
+}
+
+template <class Type>
+template <class T, class R>
+void
+matrix4 <Type>::get (vector3 <T> & translation,
+                     rotation4 <R> & rotation) const
+{
+	matrix4 <Type> so, rot;
+	vector3 <Type> scaleFactor;
+	factor (translation, rot, scaleFactor, so);
+	rotation = rot .rotation ();
 }
 
 template <class Type>

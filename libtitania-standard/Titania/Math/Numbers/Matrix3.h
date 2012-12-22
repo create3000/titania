@@ -182,25 +182,14 @@ public:
 	vector3 <Type>
 	getRow (const size_type) const;
 
-	template <typename T>
-	void
-	setTranslation (const vector2 <T> &);
-
 	vector2 <Type>
-	getTranslation () const;
+	translation () const;
 
 	void
-	setRotation (const Type &);
+	rotation (const Type &);
 
 	Type
-	getRotation () const;
-
-	template <typename S>
-	void
-	setScale (const vector2 <S> &);
-
-	vector2 <Type>
-	getScale () const;
+	rotation () const;
 
 	void
 	translate (const vector2 <Type> &);
@@ -228,6 +217,12 @@ public:
 
 	void
 	set (const vector2 <Type> &, const Type &, const vector2 <Type> &, const Type &, const vector2 <Type> &);
+
+	void
+	get (vector2 <Type> &) const;
+
+	void
+	get (vector2 <Type> &, Type &) const;
 
 	void
 	get (vector2 <Type> &, Type &, vector2 <Type> &) const;
@@ -343,16 +338,9 @@ matrix3 <Type>::matrix3 (const Type & e11, const Type & e12, const Type & e13,
 }
 
 template <typename Type>
-template <typename T>
-matrix3 <Type>::matrix3 (const vector2 <T> & t)
-{
-	setTranslation (t);
-}
-
-template <typename Type>
 matrix3 <Type>::matrix3 (const Type & r)
 {
-	setRotation (r);
+	rotation (r);
 }
 
 template <typename Type>
@@ -467,18 +455,8 @@ matrix3 <Type>::getRow (const size_type row) const
 }
 
 template <typename Type>
-template <typename T>
-void
-matrix3 <Type>::setTranslation (const vector2 <T> & t)
-{
-	*this     = Identity;
-	value [6] = t .x ();
-	value [7] = t .y ();
-}
-
-template <typename Type>
 vector2 <Type>
-matrix3 <Type>::getTranslation () const
+matrix3 <Type>::translation () const
 {
 	return vector2 <Type> (value [6],
 	                       value [7]);
@@ -486,7 +464,7 @@ matrix3 <Type>::getTranslation () const
 
 template <typename Type>
 void
-matrix3 <Type>::setRotation (const Type & rotation)
+matrix3 <Type>::rotation (const Type & rotation)
 {
 	Type sinAngle = std::sin (rotation);
 	Type cosAngle = std::cos (rotation);
@@ -501,27 +479,9 @@ matrix3 <Type>::setRotation (const Type & rotation)
 
 template <typename Type>
 Type
-matrix3 <Type>::getRotation () const
+matrix3 <Type>::rotation () const
 {
 	return std::atan2 (value [1], value [0]);
-}
-
-template <typename Type>
-template <typename S>
-void
-matrix3 <Type>::setScale (const vector2 <S> & s)
-{
-	*this     = Identity;
-	value [0] = s .x ();
-	value [4] = s .y ();
-}
-
-template <typename Type>
-vector2 <Type>
-matrix3 <Type>::getScale () const
-{
-	return vector2 <Type> (value [0],
-	                       value [4]);
 }
 
 template <typename Type>
@@ -570,7 +530,9 @@ template <typename Type>
 void
 matrix3 <Type>::set (const vector2 <Type> & translation)
 {
-	setTranslation (translation);
+	*this     = Identity;
+	value [6] = translation .x ();
+	value [7] = translation .y ();
 }
 
 template <typename Type>
@@ -578,7 +540,7 @@ void
 matrix3 <Type>::set (const vector2 <Type> & translation,
                      const Type & rotation)
 {
-	setTranslation (translation);
+	set (translation);
 
 	if (rotation not_eq 0)
 		rotate (rotation);
@@ -590,7 +552,7 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
                      const Type & rotation,
                      const vector2 <Type> & scaleFactor)
 {
-	setTranslation (translation);
+	set (translation);
 
 	if (rotation not_eq 0)
 		rotate (rotation);
@@ -606,7 +568,7 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
                      const vector2 <Type> & scaleFactor,
                      const Type & scaleOrientation)
 {
-	setTranslation (translation);
+	set (translation);
 
 	if (rotation not_eq 0)
 		rotate (rotation);
@@ -631,7 +593,7 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
                      const Type & scaleOrientation,
                      const vector2 <Type> & center)
 {
-	setTranslation (translation);
+	set (translation);
 
 	if (center not_eq vector2 <Type> ())
 		translate (center);
@@ -656,13 +618,31 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
 
 template <typename Type>
 void
+matrix3 <Type>::get (vector2 <Type> & translation) const
+{
+	translation = this -> translation ();
+}
+
+template <typename Type>
+void
+matrix3 <Type>::get (vector2 <Type> & translation,
+                     Type & rotation) const
+{
+	matrix3 <Type> so, rot, proj;
+	vector2 <Type> scaleFactor;
+	factor (so, scaleFactor, rot, translation, proj);
+	rotation = rot .rotation ();
+}
+
+template <typename Type>
+void
 matrix3 <Type>::get (vector2 <Type> & translation,
                      Type & rotation,
                      vector2 <Type> & scaleFactor) const
 {
 	matrix3 <Type> so, rot, proj;
 	factor (so, scaleFactor, rot, translation, proj);
-	rotation = rot .getRotation ();
+	rotation = rot .rotation ();
 }
 
 template <typename Type>
@@ -674,8 +654,8 @@ matrix3 <Type>::get (vector2 <Type> & translation,
 {
 	matrix3 <Type> so, rot, proj;
 	factor (so, scaleFactor, rot, translation, proj);
-	rotation         = rot .getRotation ();
-	scaleOrientation = so .getRotation ();
+	rotation         = rot .rotation ();
+	scaleOrientation = so .rotation ();
 }
 
 template <typename Type>
@@ -687,9 +667,9 @@ matrix3 <Type>::get (vector2 <Type> & translation,
                      vector2 <Type> & center) const
 {
 	matrix3 <Type> m, c;
-	m .setTranslation (-center);
+	m .set (-center);
 	m .multLeft (*this);
-	c .setTranslation (center);
+	c .set (center);
 	m .multLeft (c);
 
 	m .get (translation, rotation, scaleFactor, scaleOrientation);

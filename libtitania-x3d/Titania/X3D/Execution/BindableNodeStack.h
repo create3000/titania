@@ -91,7 +91,7 @@ public:
 		{
 			stack .top () -> set_bind = false;
 			stack .push (node);
-			processInterests ();
+			stack .top () -> isBound .addInterest (this, &BindableNodeStack::set_bind);
 		}
 	}
 
@@ -102,7 +102,7 @@ public:
 		{
 			stack .pop ();
 			stack .top () -> set_bind = true;
-			processInterests ();
+			stack .top () -> isBound .addInterest (this, &BindableNodeStack::set_bind);
 		}
 	}
 
@@ -113,9 +113,10 @@ public:
 private:
 
 	void
-	set_bind (const pointer_type & node)
+	set_bind ()
 	{
-		stack .push (node);
+		stack .top () -> set_bind .removeInterest (this, &BindableNodeStack::set_bind);
+		processInterests ();
 	}
 
 	stack_type stack;

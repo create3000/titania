@@ -67,6 +67,7 @@ namespace X3D {
 
 class Scene;
 class X3DLayerNode;
+class X3DViewpointNode;
 
 class X3DNode :
 	virtual public X3DBaseNode
@@ -85,10 +86,13 @@ protected:
 	X3DNode ();
 	
 	Scene*
-	getScene ();
+	getScene () const;
 
 	X3DLayerNode*
-	getCurrentLayer ();
+	getCurrentLayer () const;
+
+	X3DViewpointNode*
+	getCurrentViewpoint () const;
 
 	std::deque <X3DLayerNode*>
 	getLayers () const;

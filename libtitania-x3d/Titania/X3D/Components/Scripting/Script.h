@@ -86,7 +86,7 @@ private:
 	void
 	prepareEvents ();
 	
-	JavaScriptContext* javaScript;
+	std::unique_ptr <JavaScriptContext> javaScript;
 
 };
 

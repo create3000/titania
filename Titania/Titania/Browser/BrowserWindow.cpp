@@ -138,7 +138,7 @@ BrowserWindow::on_fileOpenDialog_response (int response_id)
 	getFileOpenDialog () .hide ();
 
 	if (response_id == Gtk::RESPONSE_OK)
-		getBrowserWidget () -> loadURL ({ getFileOpenDialog () .get_uri () });
+		getBrowserWidget () -> loadURL ({ Glib::uri_unescape_string (getFileOpenDialog () .get_uri ()) });
 
 	else
 		getFileOpenDialog () .set_current_folder_uri (getExecutionContext () -> getWorldURL () .base () .str ());
@@ -150,7 +150,7 @@ BrowserWindow::on_fileSaveDialog_response (int response_id)
 	getFileSaveDialog () .hide ();
 
 	if (response_id == Gtk::RESPONSE_OK)
-		save (getFileSaveDialog () .get_filename ());
+		save (Glib::uri_unescape_string (getFileSaveDialog () .get_filename ()));
 
 	else
 		getFileSaveDialog () .set_current_folder_uri (getExecutionContext () -> getWorldURL () .base () .str ());

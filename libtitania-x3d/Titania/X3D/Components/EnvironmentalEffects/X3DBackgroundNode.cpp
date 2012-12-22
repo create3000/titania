@@ -351,7 +351,7 @@ X3DBackgroundNode::build ()
 void
 X3DBackgroundNode::display ()
 {
-	matrix = ModelViewMatrix4f () * getCurrentLayer () -> getViewpoint () -> getInverseTransformationMatrix ();
+	matrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
 }
 
 void
@@ -375,7 +375,7 @@ X3DBackgroundNode::draw ()
 
 		//
 
-		getCurrentLayer () -> getViewpoint () -> reshape (1, 20000);
+		getCurrentViewpoint () -> reshape (1, 20000);
 
 		//
 
