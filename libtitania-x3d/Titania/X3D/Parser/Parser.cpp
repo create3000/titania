@@ -188,6 +188,8 @@ Parser::popExecutionContext ()
 
 X3DExecutionContext*
 Parser::getExecutionContext () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
 	//__LOG__ << std::endl;
 

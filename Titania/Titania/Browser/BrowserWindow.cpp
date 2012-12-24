@@ -297,7 +297,7 @@ BrowserWindow::on_headlight_toggled ()
 void
 BrowserWindow::on_show_all_toggled ()
 {
-	getBrowser () -> getExecutionContext () -> getActiveLayer () -> showAllObjects ();
+	getBrowser () -> getExecutionContext () -> getActiveLayer () -> lookAt ();
 }
 
 // Editor handling

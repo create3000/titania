@@ -50,20 +50,73 @@
 #define __TITANIA_X3D_BROWSER_X3DBROWSER_CONTEXT_H__
 
 #include "../Base/Output.h"
+#include "../Browser/Properties/BrowserOptions.h"
+#include "../Browser/Properties/BrowserProperties.h"
+#include "../Browser/Properties/RenderingProperties.h"
 #include "../Components/Core/X3DSensorNode.h"
+#include "../Components/Navigation/NavigationInfo.h"
+#include "../Components/Navigation/Viewpoint.h"
 #include "../Execution/X3DExecutionContext.h"
+#include "../Execution/Scene.h"
+#include "../JavaScript/JavaScriptEngine.h"
 
+#include "../Browser/HitArray.h"
+#include "../Rendering/X3DRenderer.h"
+#include "../Routing/Router.h"
+
+#include <Titania/Chrono/ClockBase.h>
+
+#include <memory>
 #include <stack>
 
 namespace titania {
 namespace X3D {
 
+typedef chrono::clock_base <time_type>                      X3DClock;
+typedef std::stack <GLenum>                                 LightStack;
 typedef std::map <std::string, std::pair <GLuint, size_t>> TextureIndex;
 
 class X3DBrowserContext :
 	public X3DExecutionContext
 {
 public:
+
+	Output initialized;
+	Output reshaped;
+	Output exposed;
+	Output displayed;
+	Output finished;
+	Output shutdown;
+	Output changed;
+
+	///  @name Time handling
+
+	virtual
+	time_type
+	getCurrentTime () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	double
+	getCurrentSpeed () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	double
+	getCurrentFrameRate () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+	  
+	virtual
+	Scene*
+	getExecutionContext () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
+
+	///  @name Event handling
+
+	Router &
+	getRouter ();
 
 	///  @name Layer handling
 
@@ -75,6 +128,21 @@ public:
 
 	X3DLayerNode*
 	getCurrentLayer () const;
+
+	///  @name NavigationInfo handling
+
+	NavigationInfo*
+	getActiveNavigationInfo () const;
+
+	///  @name Viewpoint handling
+
+	X3DViewpointNode*
+	getActiveViewpoint ();
+
+	///  @name Light stack handling
+
+	LightStack &
+	getLights ();
 
 	///  @name Texture handling
 
@@ -88,7 +156,7 @@ public:
 	const TextureIndex &
 	getTextures () const;
 
-	///  @name Sensors
+	///  @name Sensor handling
 
 	void
 	addSensor (X3DSensorNode* const);
@@ -99,22 +167,117 @@ public:
 	void
 	updateSensors ();
 
+	///  @name Event handling
+
+	virtual
+	void
+	notify (X3DBaseNode* const);
+
+	///  @name Rendering handling
+
+	virtual
+	void
+	intersect ();
+
+	void
+	prepare ();
+
+	virtual
+	void
+	display ();
+
+	void
+	finish ();
+
+	///  @name Dispose
+
 	void
 	dispose ();
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	virtual
+	void
+	pushRenderer (X3DRenderer*) = 0;
+
+	virtual
+	void
+	popRenderer () = 0;
+
+	virtual
+	X3DRenderer*
+	getCurrentRenderer () = 0;
+
+	virtual
+	const X3DRenderer*
+	getCurrentRenderer () const = 0;
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////  pushPointingDeviceSensorNode
+	virtual
+	void
+	pushSensitiveNode (X3DBaseNode* node) = 0;
+
+	virtual
+	void
+	popSensitiveNode () = 0;
+
+	virtual
+	const std::vector <X3DBaseNode*> &
+	getSensitiveNodes () const = 0;
+
+	virtual
+	bool
+	isSensitive () const = 0;
+
+	virtual
+	void
+	pick (const size_t, const size_t) = 0;
+
+	virtual
+	Line3f
+	getHitRay () const = 0;
+
+	virtual
+	void
+	addHit (Hit*) = 0;
+
+	virtual
+	const HitArray &
+	getHits () const = 0;
+
 
 protected:
+
+	SFNode <RenderingProperties> renderingProperties;
+	SFNode <BrowserProperties>   browserProperties;
+	SFNode <BrowserOptions>      browserOptions;
+	SFNode <JavaScriptEngine>    javaScriptEngine;
 
 	///  @name Constructor
 
 	X3DBrowserContext ();
 
+	virtual
+	void
+	initialize ();
+
 
 private:
 
+	std::shared_ptr <X3DClock> clock;
+	Router                     router;
 	std::stack <X3DLayerNode*> layers;
+	LightStack                 lights;
 	TextureIndex               textures;
 	Output                     sensors;
+	time_type                  changedTime;
+	Vector3d                   priorPosition;
+	double                     currentSpeed;
+	double                     currentFrameRate;
 
 };
 

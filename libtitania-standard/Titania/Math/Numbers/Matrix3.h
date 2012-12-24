@@ -192,15 +192,6 @@ public:
 	rotation () const;
 
 	void
-	translate (const vector2 <Type> &);
-
-	void
-	rotate (const Type &);
-
-	void
-	scale (const vector2 <Type> &);
-
-	void
 	set ();
 
 	void
@@ -232,6 +223,12 @@ public:
 
 	void
 	get (vector2 <Type> &, Type &, vector2 <Type> &, Type &, vector2 <Type> &) const;
+
+	Type &
+	operator [ ] (const size_type);
+
+	const Type &
+	operator [ ] (const size_type) const;
 
 	Type
 	determinant () const;
@@ -272,11 +269,18 @@ public:
 	vector2 <Type>
 	multDirMatrix (const vector2 <T> &) const;
 
-	Type &
-	operator [ ] (const size_type);
+	template <typename T>
+	vector2 <Type>
+	multMatrixDir (const vector2 <T> &) const;
 
-	const Type &
-	operator [ ] (const size_type) const;
+	void
+	translate (const vector2 <Type> &);
+
+	void
+	rotate (const Type &);
+
+	void
+	scale (const vector2 <Type> &);
 
 	static const Matrix Identity;
 
@@ -486,41 +490,6 @@ matrix3 <Type>::rotation () const
 
 template <typename Type>
 void
-matrix3 <Type>::translate (const vector2 <Type> & translation)
-{
-	#define TRANSLATE(i) \
-	   (value [INDEX3 (0, i)] * translation .x ()   \
-	    + value [INDEX3 (1, i)] * translation .y ())
-
-	value [INDEX3 (2, 0)] += TRANSLATE (0);
-	value [INDEX3 (2, 1)] += TRANSLATE (1);
-
-	#undef TRANSLATE
-}
-
-template <typename Type>
-void
-matrix3 <Type>::rotate (const Type & rotation)
-{
-	multLeft (matrix3 <Type> (rotation));
-}
-
-template <typename Type>
-void
-matrix3 <Type>::scale (const vector2 <Type> & scaleFactor)
-{
-	value [INDEX3 (0, 0)] *= scaleFactor .x ();
-	value [INDEX3 (1, 0)] *= scaleFactor .y ();
-
-	value [INDEX3 (0, 1)] *= scaleFactor .x ();
-	value [INDEX3 (1, 1)] *= scaleFactor .y ();
-
-	//value[INDEX3(0,2)] *= scaleFactor .x;
-	//value[INDEX3(1,2)] *= scaleFactor .y;
-}
-
-template <typename Type>
-void
 matrix3 <Type>::set ()
 {
 	set (Identity);
@@ -673,6 +642,21 @@ matrix3 <Type>::get (vector2 <Type> & translation,
 	m .multLeft (c);
 
 	m .get (translation, rotation, scaleFactor, scaleOrientation);
+}
+
+template <typename Type>
+Type &
+matrix3 <Type>::operator [ ] (const size_type index)
+{
+	return value [index];
+}
+
+template <typename Type>
+const
+Type &
+matrix3 <Type>::operator [ ] (const size_type index) const
+{
+	return value [index];
 }
 
 template <typename Type>
@@ -1009,6 +993,50 @@ matrix3 <Type>::multDirMatrix (const vector2 <T> & vector) const
 }
 
 template <typename Type>
+template <typename T>
+vector2 <Type>
+matrix3 <Type>::multMatrixDir (const vector2 <T> & vector) const
+{
+	return vector2 <Type> (vector .x () * value [0] + vector .y () * value [1],
+	                       vector .x () * value [3] + vector .y () * value [4]);
+}
+
+template <typename Type>
+void
+matrix3 <Type>::translate (const vector2 <Type> & translation)
+{
+	#define TRANSLATE(i) \
+	   (value [INDEX3 (0, i)] * translation .x ()   \
+	    + value [INDEX3 (1, i)] * translation .y ())
+
+	value [INDEX3 (2, 0)] += TRANSLATE (0);
+	value [INDEX3 (2, 1)] += TRANSLATE (1);
+
+	#undef TRANSLATE
+}
+
+template <typename Type>
+void
+matrix3 <Type>::rotate (const Type & rotation)
+{
+	multLeft (matrix3 <Type> (rotation));
+}
+
+template <typename Type>
+void
+matrix3 <Type>::scale (const vector2 <Type> & scaleFactor)
+{
+	value [INDEX3 (0, 0)] *= scaleFactor .x ();
+	value [INDEX3 (1, 0)] *= scaleFactor .y ();
+
+	value [INDEX3 (0, 1)] *= scaleFactor .x ();
+	value [INDEX3 (1, 1)] *= scaleFactor .y ();
+
+	//value[INDEX3(0,2)] *= scaleFactor .x;
+	//value[INDEX3(1,2)] *= scaleFactor .y;
+}
+
+template <typename Type>
 matrix3 <Type> &
 matrix3 <Type>::operator *= (const Type & v)
 {
@@ -1052,21 +1080,6 @@ matrix3 <Type>::operator /= (const Type & v)
 	value [8] /= v;
 
 	return *this;
-}
-
-template <typename Type>
-Type &
-matrix3 <Type>::operator [ ] (const size_type index)
-{
-	return value [index];
-}
-
-template <typename Type>
-const
-Type &
-matrix3 <Type>::operator [ ] (const size_type index) const
-{
-	return value [index];
 }
 
 template <typename Type>
@@ -1138,7 +1151,7 @@ inline
 vector2 <Type>
 operator * (const matrix3 <Type> & lhs, const vector2 <Type> & rhs)
 {
-	return lhs .multVecMatrix (rhs);
+	return lhs .multMatrixVec (rhs);
 }
 
 template <class Type>
@@ -1146,7 +1159,7 @@ inline
 vector2 <Type>
 operator * (const vector2 <Type> & lhs, const matrix3 <Type> & rhs)
 {
-	return rhs .multMatrixVec (lhs);
+	return rhs .multVecMatrix (lhs);
 }
 
 ///  Extraction operator for vector values.

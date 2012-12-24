@@ -50,7 +50,7 @@
 #define __TITANIA_X3D_COMPONENTS_NAVIGATION_X3DVIEWPOINT_NODE_H__
 
 #include "../Core/X3DBindableNode.h"
-#include <Titania/Math/Numbers/Matrix4.h>
+#include "../../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
@@ -70,6 +70,12 @@ public:
 	SFRotation rotation;
 	SFVec3f    center;
 
+	Rotation4f
+	getOrientation () const;
+
+	Vector3f
+	getCenterOfRotation () const;
+
 	void
 	setTransformationMatrix (const Matrix4f &);
 
@@ -78,6 +84,10 @@ public:
 
 	const Matrix4f &
 	getInverseTransformationMatrix () const { return inverseTransformationMatrix; }
+	
+	virtual
+	void
+	lookAt (Box3f) = 0;
 
 	virtual
 	void
@@ -95,6 +105,18 @@ public:
 protected:
 
 	X3DViewpointNode (bool);
+	
+	void
+	setModelViewMatrix (const Matrix4f & value) { modelViewMatrix = value; }
+	
+	const Matrix4f &
+	getModelViewMatrix () const { return modelViewMatrix; }
+
+	void
+	setDifferenceMatrix (const Matrix4f & value) { differenceMatrix = value; }
+	
+	const Matrix4f &
+	getDifferenceMatrix () const { return differenceMatrix; }
 
 	virtual
 	void
@@ -115,8 +137,10 @@ private:
 	void
 	removeFromLayer (X3DLayerNode* const);
 
+	Matrix4f modelViewMatrix;
 	Matrix4f transformationMatrix;
 	Matrix4f inverseTransformationMatrix;
+	Matrix4f differenceMatrix;
 	
 	bool addToList;
 

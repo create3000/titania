@@ -52,6 +52,7 @@
 #include "../Geometry/Line3.h"
 #include "../Geometry/Plane3.h"
 #include "../Numbers/Vector3.h"
+#include "../Numbers/Matrix4.h"
 
 namespace titania {
 namespace math {
@@ -174,7 +175,29 @@ public:
 		value .max /= scale;
 		return *this;
 	}
+	
+	///  Scale this box by @a scale.
+	box3 &
+	operator *= (const matrix4 <Type> & matrix)
+	{
+		return multBoxMatrix (matrix);
+	}
 
+	///  Transform this box by matrix.
+	box3 &
+	multMatrixBox (const matrix4 <Type> & matrix)
+	{
+		return *this = box3 (matrix .multMatrixDir (size ()),
+		                     matrix .multMatrixVec (center ()));
+	}
+
+	///  Transform this box by matrix.
+	box3 &
+	multBoxMatrix (const matrix4 <Type> & matrix)
+	{
+		return *this = box3 (matrix .multDirMatrix (size ()),
+		                     matrix .multVecMatrix (center ()));
+	}
 
 	///  @name Intersection
 
@@ -359,6 +382,24 @@ box3 <Type>
 operator / (const Type & lhs, const box3 <Type> & rhs)
 {
 	return box3 <Type> (rhs) /= lhs;
+}
+
+///  Return new box value @a rhs transformed by matrix @a lhs.
+template <class Type>
+inline
+box3 <Type>
+operator * (const box3 <Type> & lhs, const matrix4 <Type> & rhs)
+{
+	return box3 <Type> (lhs) .multBoxMatrix (rhs); 
+}
+
+///  Return new box value @a rhs transformed by matrix @a lhs.
+template <class Type>
+inline
+box3 <Type>
+operator * (const matrix4 <Type> & lhs, const box3 <Type> & rhs)
+{
+	return box3 <Type> (rhs) .multBoxMatrix (lhs); 
 }
 
 ///  @relates box3

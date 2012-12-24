@@ -56,13 +56,17 @@ namespace titania {
 namespace X3D {
 
 X3DViewpointNode::X3DViewpointNode (bool addToList) :
-	  X3DBindableNode (),         
-	      description (),         // SFString   [in,out] description       ""
-	      orientation (),         // SFRotation [in,out] orientation       0 0 1 0        [-1,1],(-∞,∞)
-	 centerOfRotation (),         // SFVec3f    [in,out] centerOfRotation  0 0 0          (-∞,∞)
-	             jump (true),     // SFBool     [in,out] jump              TRUE
-	retainUserOffsets (),         // SFBool     [ ]      retainUserOffsets
-	        addToList (addToList) 
+	            X3DBindableNode (),         
+	                description (),         // SFString   [in,out] description       ""
+	                orientation (),         // SFRotation [in,out] orientation       0 0 1 0        [-1,1],(-∞,∞)
+	           centerOfRotation (),         // SFVec3f    [in,out] centerOfRotation  0 0 0          (-∞,∞)
+	                       jump (true),     // SFBool     [in,out] jump              TRUE
+	          retainUserOffsets (),         // SFBool     [ ]      retainUserOffsets
+	            modelViewMatrix (),         
+	       transformationMatrix (),         
+	inverseTransformationMatrix (),         
+	           differenceMatrix (),         
+	                  addToList (addToList) 
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
 
@@ -78,6 +82,18 @@ X3DViewpointNode::initialize ()
 
 	if (addToList)
 		getScene () -> addViewpoint (this);
+}
+
+Rotation4f
+X3DViewpointNode::getOrientation () const
+{
+	return orientation * rotation;
+}
+
+Vector3f
+X3DViewpointNode::getCenterOfRotation () const
+{
+	return centerOfRotation + center;
 }
 
 void

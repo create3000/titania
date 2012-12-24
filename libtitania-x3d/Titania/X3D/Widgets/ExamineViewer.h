@@ -49,12 +49,13 @@
 #ifndef __TITANIA_X3D_WIDGETS_EXAMINE_VIEWER_H__
 #define __TITANIA_X3D_WIDGETS_EXAMINE_VIEWER_H__
 
+#include <gdkmm.h>
+
 #include "../Components/Navigation/Viewpoint.h"
+#include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Fields/SFNode.h"
 #include "../Widgets/X3DViewer.h"
-
-#include <gdkmm.h>
 
 namespace titania {
 namespace X3D {
@@ -67,7 +68,7 @@ class ExamineViewer :
 {
 public:
 
-	ExamineViewer (Surface &);
+	ExamineViewer (Surface &, NavigationInfo*);
 
 	void
 	initialize ();
@@ -77,12 +78,6 @@ public:
 
 
 private:
-
-	void
-	set_scene ();
-
-	void
-	set_activeLayer ();
 
 	void
 	set_viewpoint ();
@@ -108,9 +103,6 @@ private:
 	Vector3f
 	getDistance (const SFNode <Viewpoint> &) const;
 
-	Rotation4f
-	getOrientation (const SFNode <Viewpoint> &) const;
-
 	Vector3f
 	getTranslation (const SFNode <Viewpoint> &) const;
 	
@@ -118,15 +110,16 @@ private:
 	getRotation (const SFNode <Viewpoint> &);
 	
 	Vector3f
-	getPoint (double x, double y);
+	getPoint (const double, const double);
 
 	Vector3f
-	trackballProjectToSphere (double, double) const;
+	trackballProjectToSphere (const double, const double) const;
 
 	float
 	tb_project_to_sphere (const float, const float, const float) const;
 
 	Surface &             surface;
+	NavigationInfo*       navigationInfo;
 	Vector3f              distance;
 	Rotation4f            orientation;
 	Rotation4f            rotation;
@@ -138,7 +131,6 @@ private:
 	sigc::connection      button_release_event_connection;
 	sigc::connection      scroll_event_connection;
 	sigc::connection      spin_id;
-	SFNode <X3DLayerNode> activeLayer;
 
 };
 

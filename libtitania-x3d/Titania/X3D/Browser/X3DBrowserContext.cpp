@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,15 +48,101 @@
 
 #include "X3DBrowserContext.h"
 
+#include <Titania/Chrono/CountingClock.h>
+#include <Titania/Chrono/SystemClock.h>
+
 namespace titania {
 namespace X3D {
 
 X3DBrowserContext::X3DBrowserContext () :
-	X3DExecutionContext (), 
-	             layers (), 
-	           textures (), 
-	            sensors ()  
-{ }
+	X3DExecutionContext (),                                        
+	        initialized (),                                        // [out]    initialized
+	           reshaped (),                                        // [out]    reshape
+	            exposed (),                                        // [out]    exposed
+	          displayed (),                                        // [out]    displayed
+	           finished (),                                        // [out]    finished
+	           shutdown (),                                        // [out]    shutdown
+	            changed (),                                        // [out]    changed
+	renderingProperties (new RenderingProperties (this)),          // SFSting  [ ] renderingProperties NULL  [RenderingProperties]
+	  browserProperties (new BrowserProperties   (this)),          // SFSting  [ ] browserProperties   NULL  [BrowserProperties]
+	     browserOptions (new BrowserOptions      (this)),          // SFSting  [ ] browserOptions      NULL  [BrowserOptions]
+	   javaScriptEngine (new JavaScriptEngine    (this)),          // SFSting  [ ] javaScriptEngine    NULL  [JavaScriptEngine]
+	              clock (new chrono::system_clock <time_type> ()), 
+	             router (),                                        
+	             layers (),                                        
+	             lights (),                                        
+	           textures (),                                        
+	            sensors (),                                        
+	        changedTime (clock -> cycle ()),                       
+	      priorPosition (),                                        
+	       currentSpeed (0),                                       
+	   currentFrameRate (0)                                        
+{
+	//supportedFields, // make X3DBaseNodes of this
+	//supportedNodes,
+	//supportedComponents,
+	//supportedProfiles,
+
+	addField (initializeOnly, "renderingProperties", renderingProperties);
+	addField (initializeOnly, "browserProperties",   browserProperties);
+	addField (initializeOnly, "browserOptions",      browserOptions);
+	addField (initializeOnly, "javaScriptEngine",    javaScriptEngine);
+}
+
+void
+X3DBrowserContext::initialize ()
+{
+	X3DExecutionContext::initialize ();
+
+	// Initialize clock
+
+	clock -> advance ();
+
+	// Properties
+
+	renderingProperties -> setup ();
+	browserProperties   -> setup ();
+	browserOptions      -> setup ();
+	javaScriptEngine    -> setup ();
+
+	// Lights
+
+	for (int32_t i = 0; i < renderingProperties -> maxLights; ++ i)
+		lights .push (GL_LIGHT0 + i);
+
+}
+
+time_type
+X3DBrowserContext::getCurrentTime () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return clock -> cycle ();
+}
+
+double
+X3DBrowserContext::getCurrentSpeed () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return currentSpeed;
+}
+
+double
+X3DBrowserContext::getCurrentFrameRate () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return currentFrameRate;
+}
+
+// Event handling
+
+Router &
+X3DBrowserContext::getRouter ()
+{
+	return router;
+}
 
 // Layer handling
 
@@ -76,6 +162,30 @@ X3DLayerNode*
 X3DBrowserContext::getCurrentLayer () const
 {
 	return layers .top ();
+}
+
+// NavigationInfo handling
+
+NavigationInfo*
+X3DBrowserContext::getActiveNavigationInfo () const
+{
+	return getExecutionContext () -> getActiveLayer () -> getNavigationInfo ();
+}
+
+// Viewpoint handling
+
+X3DViewpointNode*
+X3DBrowserContext::getActiveViewpoint ()
+{
+	return getExecutionContext () -> getActiveLayer () -> getViewpoint ();
+}
+
+// Light stack handling
+
+LightStack &
+X3DBrowserContext::getLights ()
+{
+	return lights;
 }
 
 // Texture list handling
@@ -147,11 +257,83 @@ X3DBrowserContext::updateSensors ()
 	sensors .processInterests ();
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void
+X3DBrowserContext::notify (X3DBaseNode* const node)
+{
+	assert (node);
+
+	router .notify (node);
+
+	if (changedTime == getCurrentTime ())
+		return;
+
+	changedTime = getCurrentTime ();
+	changed .processInterests ();
+}
+
+void
+X3DBrowserContext::intersect ()
+{
+	getExecutionContext () -> select ();
+}
+
+void
+X3DBrowserContext::prepare ()
+{
+	clock -> advance ();
+	exposed .processInterests ();
+
+	currentFrameRate = 1 / clock -> interval ();
+
+	Vector3d position = getActiveViewpoint () -> getTransformationMatrix () .translation ();
+	currentSpeed  = abs (position - priorPosition) * currentFrameRate;
+	priorPosition = position;
+
+	updateSensors ();
+
+	router .processEvents ();
+	getGarbageCollector () .dispose ();
+}
+
+void
+X3DBrowserContext::display ()
+{
+	glClear (GL_COLOR_BUFFER_BIT);
+	glLoadIdentity ();
+
+	getExecutionContext () -> display ();
+
+	displayed .processInterests ();
+}
+
+void
+X3DBrowserContext::finish ()
+{
+	finished .processInterests ();
+
+	GLenum errorNum = glGetError ();
+
+	if (errorNum not_eq GL_NO_ERROR)
+		std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toLocaleString () << ": " << gluErrorString (errorNum) << std::endl;
+}
+
 void
 X3DBrowserContext::dispose ()
 {
+	initialized .dispose ();
+	reshaped    .dispose ();
+	exposed     .dispose ();
+	displayed   .dispose ();
+	finished    .dispose ();
+	shutdown    .dispose ();
+	changed     .dispose ();
+	
 	//X3DChildObject::dispose ();
 	//X3DExecutionContext::dispose ();
+
+	getGarbageCollector () .dispose ();
 }
 
 } // X3D

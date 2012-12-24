@@ -1,5 +1,7 @@
 #VRML V2.0 utf8
 
+META "title" "Billboard"
+
 DEF Background Transform {
   children DEF _12 Background {
     skyAngle [ 0.8, 1.3, 1.4, 1.5708 ]
@@ -14,6 +16,7 @@ DEF Background Transform {
     bottomUrl "Pixi.png"
   }
 }
+
 Billboard {
   axisOfRotation 0 0 0
   children Transform {

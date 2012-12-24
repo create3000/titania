@@ -62,9 +62,10 @@
 namespace titania {
 namespace X3D {
 
-ExamineViewer::ExamineViewer (Surface & surface) :
+ExamineViewer::ExamineViewer (Surface & surface, NavigationInfo* navigationInfo) :
 	                      X3DViewer (surface .getBrowser ()), 
 	                        surface (surface),                
+	                 navigationInfo (navigationInfo),                     
 	                       distance (),                       
 	                    orientation (),                       
 	                       rotation (),                       
@@ -75,8 +76,7 @@ ExamineViewer::ExamineViewer (Surface & surface) :
 	motion_notify_event_connection  (),                       
 	button_release_event_connection (),                       
 	scroll_event_connection         (),                       
-	                        spin_id (),                       
-	                    activeLayer ()                        
+	                        spin_id ()                       
 { }
 
 void
@@ -87,32 +87,9 @@ ExamineViewer::initialize ()
 	button_release_event_connection = surface .signal_button_release_event () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_release_event));
 	scroll_event_connection         = surface .signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
 
-	getBrowser () -> initialized .addInterest (this, &ExamineViewer::set_scene);
+	navigationInfo -> transitionComplete .addInterest (this, &ExamineViewer::set_viewpoint);
 
-	set_scene ();
-}
-
-void
-ExamineViewer::set_scene ()
-{
-	spin_id .disconnect ();
-
-	getBrowser () -> getExecutionContext () -> getLayerSet () -> activeLayer .addInterest (this, &ExamineViewer::set_activeLayer);
-
-	set_activeLayer ();
-}
-
-void
-ExamineViewer::set_activeLayer ()
-{
-	if (activeLayer)
-		activeLayer -> viewpointStack .removeInterest (this, &ExamineViewer::set_viewpoint);
-
-	activeLayer = getBrowser () -> getExecutionContext () -> getLayerSet () -> getActiveLayer ();
-
-	activeLayer -> viewpointStack .addInterest (this, &ExamineViewer::set_viewpoint);
-
-	set_viewpoint ();
+	getBrowser () -> getExecutionContext () -> getActiveLayer () -> viewpointStack .addInterest (this, &ExamineViewer::set_viewpoint);
 }
 
 void
@@ -133,9 +110,11 @@ ExamineViewer::set_viewpoint ()
 		//	distance    = viewpoint -> position - viewpoint -> centerOfRotation - viewpoint -> center;
 		//}
 
-		orientation = getOrientation (viewpoint);
+		orientation = viewpoint -> getOrientation ();
 		distance    = getDistance (viewpoint);
 	}
+
+	__LOG__ << std::endl;
 }
 
 bool
@@ -193,7 +172,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 			Vector3f toPoint = getPoint (event -> x, event -> y);
 
 			Vector3f translation = toPoint - fromPoint;
-			translation = viewpoint -> orientation * viewpoint -> rotation * translation;
+			translation = viewpoint -> getOrientation () * translation;
 
 			viewpoint -> translation += translation;
 			viewpoint -> center      += translation;
@@ -232,18 +211,16 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 	if (viewpoint)
 	{
 		Vector3f step        = distance * SCOLL_FACTOR;
-		Vector3f translation = viewpoint -> orientation * viewpoint -> rotation * Vector3f (0, 0, abs (step));
+		Vector3f translation = viewpoint -> getOrientation () * Vector3f (0, 0, abs (step));
 
 		if (event -> direction == 0)      // Move backwards.
 		{
 			viewpoint -> translation += translation;
-			distance                 += step;
 		}
 
 		else if (event -> direction == 1) // Move forwards.
 		{
 			viewpoint -> translation -= translation;
-			distance                 -= step;
 		}
 
 		distance = getDistance (viewpoint);
@@ -276,13 +253,8 @@ ExamineViewer::addSpinning ()
 Vector3f
 ExamineViewer::getDistance (const SFNode <Viewpoint> & viewpoint) const
 {
-	return ~viewpoint -> rotation * (viewpoint -> position + viewpoint -> translation - viewpoint -> centerOfRotation - viewpoint -> center);
-}
-
-Rotation4f
-ExamineViewer::getOrientation (const SFNode <Viewpoint> & viewpoint) const
-{
-	return viewpoint -> orientation * viewpoint -> rotation;
+	return ~viewpoint -> rotation * (viewpoint -> getPosition ()
+	                                 - viewpoint -> getCenterOfRotation ());
 }
 
 Vector3f
@@ -291,7 +263,7 @@ ExamineViewer::getTranslation (const SFNode <Viewpoint> & viewpoint) const
 	// The new translation is calculated here by calculating the new position and
 	// then subtracting the viewpoints position to get the new translation.
 
-	return viewpoint -> centerOfRotation + viewpoint -> center
+	return viewpoint -> getCenterOfRotation ()
 	       + viewpoint -> rotation * distance
 	       - viewpoint -> position;
 }
@@ -304,7 +276,7 @@ ExamineViewer::getRotation (const SFNode <Viewpoint> & viewpoint)
 }
 
 Vector3f
-ExamineViewer::getPoint (double x, double y)
+ExamineViewer::getPoint (const double x, const double y)
 {
 	X3DViewpointNode* viewpoint      = getBrowser () -> getActiveViewpoint ();
 	NavigationInfo*   navigationInfo = getBrowser () -> getActiveNavigationInfo ();
@@ -327,7 +299,7 @@ ExamineViewer::getPoint (double x, double y)
 }
 
 Vector3f
-ExamineViewer::trackballProjectToSphere (double x, double y) const
+ExamineViewer::trackballProjectToSphere (const double x, const double y) const
 {
 	return Vector3f (x / surface .get_width () - 0.5f,
 	                 -y / surface .get_height () + 0.5f,
@@ -356,6 +328,10 @@ ExamineViewer::tb_project_to_sphere (const float r, const float x, const float y
 
 ExamineViewer::~ExamineViewer ()
 {
+	navigationInfo -> transitionComplete .removeInterest (this, &ExamineViewer::set_viewpoint);
+
+	getBrowser () -> getExecutionContext () -> getActiveLayer () -> viewpointStack .removeInterest (this, &ExamineViewer::set_viewpoint);
+
 	button_press_event_connection   .disconnect ();
 	motion_notify_event_connection  .disconnect ();
 	button_release_event_connection .disconnect ();

@@ -77,16 +77,16 @@ X3DNode::getCurrentLayer () const
 	return getBrowser () -> getCurrentLayer ();
 }
 
-X3DViewpointNode*
-X3DNode::getCurrentViewpoint () const
-{
-	return getBrowser () -> getCurrentLayer () -> getViewpoint ();
-}
-
 std::deque <X3DLayerNode*>
 X3DNode::getLayers () const
 {
 	return findClosestParents <X3DLayerNode> ();
+}
+
+X3DViewpointNode*
+X3DNode::getCurrentViewpoint () const
+{
+	return getBrowser () -> getCurrentLayer () -> getViewpoint ();
 }
 
 } // X3D

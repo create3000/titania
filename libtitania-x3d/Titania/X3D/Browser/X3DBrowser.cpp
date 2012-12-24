@@ -30,8 +30,6 @@
 
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../InputOutput/uncompress.h"
-#include <Titania/Chrono/CountingClock.h>
-#include <Titania/Chrono/SystemClock.h>
 
 namespace titania {
 namespace X3D {
@@ -39,48 +37,20 @@ namespace X3D {
 const std::string X3DBrowser::version ("0.1");
 
 X3DBrowser::X3DBrowser () :
-	  X3DBrowserContext (),                                        
-	       X3DUrlObject (),                                        
-	        initialized (),                                        // [out]    initialized
-	           reshaped (),                                        // [out]    reshape
-	            exposed (),                                        // [out]    exposed
-	          displayed (),                                        // [out]    displayed
-	           finished (),                                        // [out]    finished
-	           shutdown (),                                        // [out]    shutdown
-	            changed (),                                        // [out]    changed
-	             router (),                                        
-	              clock (new chrono::system_clock <time_type> ()), 
-	    supportedFields (this),                                    
-	     supportedNodes (this),                                    
-	supportedComponents (this),                                    
-	  supportedProfiles (this, supportedComponents),               
-	renderingProperties (new RenderingProperties (this)),          // SFSting  [ ] renderingProperties NULL  [RenderingProperties]
-	  browserProperties (new BrowserProperties   (this)),          // SFSting  [ ] browserProperties   NULL  [BrowserProperties]
-	     browserOptions (new BrowserOptions      (this)),          // SFSting  [ ] browserOptions      NULL  [BrowserOptions]
-	   javaScriptEngine (new JavaScriptEngine    (this)),          // SFSting  [ ] javaScriptEngine    NULL  [JavaScriptEngine]
-	       currentSpeed (0),                                       
-	   currentFrameRate (0),                                       
-	        description (),                                        // SFSting  [in,out] description ""
-	              scene (createScene ()),                          // SFNode   [in,out] scene       NULL
-	        changedTime (clock -> cycle ()),                       
-	      priorPosition (),                                        
-	         lightStack ()                                         
+	  X3DBrowserContext (),                          
+	       X3DUrlObject (),                          
+	    supportedFields (this),                      
+	     supportedNodes (this),                      
+	supportedComponents (this),                      
+	  supportedProfiles (this, supportedComponents), 
+	        description (),                          // SFSting  [in,out] description ""
+	              scene (createScene ())             // SFNode   [in,out] scene       NULL
 {
 	std::clog << "Constructing Browser:" << std::endl;
 
 	setComponent ("Browser");
 	setTypeName ("Browser");
 	setName ("Titania");
-
-	//supportedFields, // make X3DBaseNodes of this
-	//supportedNodes,
-	//supportedComponents,
-	//supportedProfiles,
-
-	addField (initializeOnly, "renderingProperties", renderingProperties);
-	addField (initializeOnly, "browserProperties",   browserProperties);
-	addField (initializeOnly, "browserOptions",      browserOptions);
-	addField (initializeOnly, "javaScriptEngine",    javaScriptEngine);
 
 	addField (outputOnly, "description", description);
 	addField (outputOnly, "urlError",    urlError);
@@ -96,22 +66,6 @@ X3DBrowser::initialize ()
 {
 	X3DBrowserContext::initialize ();
 	X3DUrlObject::initialize ();
-
-	// Initialize clock
-
-	clock -> advance ();
-
-	// Properties
-
-	renderingProperties -> setup ();
-	browserProperties   -> setup ();
-	browserOptions      -> setup ();
-	javaScriptEngine    -> setup ();
-
-	// Lights
-
-	for (int32_t i = 0; i < renderingProperties -> maxLights; ++ i)
-		lightStack .push (GL_LIGHT0 + i);
 
 	// Replace world service.
 
@@ -146,41 +100,11 @@ X3DBrowser::getBrowser () const
 	return const_cast <X3DBrowser*> (this);
 }
 
-Router &
-X3DBrowser::getRouter ()
-{
-	return router;
-}
-
 const std::string &
 X3DBrowser::getVersion () const
 throw (Error <DISPOSED>)
 {
 	return version;
-}
-
-time_type
-X3DBrowser::getCurrentTime () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return clock -> cycle ();
-}
-
-double
-X3DBrowser::getCurrentSpeed () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return currentSpeed;
-}
-
-double
-X3DBrowser::getCurrentFrameRate () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return currentFrameRate;
 }
 
 void
@@ -300,6 +224,8 @@ throw (Error <INVALID_SCENE>)
 
 	std::clog << "The browser is requested to replace the world:" << std::endl;
 
+	shutdown .processInterests ();
+
 	if (not value)
 		throw Error <INVALID_SCENE> ("Scene is NULL.");
 
@@ -391,13 +317,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return browserOptions;
 }
 
-NavigationInfo*
-X3DBrowser::getActiveNavigationInfo () const
-throw (Error <DISPOSED>)
-{
-	return getExecutionContext () -> getActiveLayer () -> getNavigationInfo ();
-}
-
 void
 X3DBrowser::changeViewpoint (const std::string & name)
 throw (Error <INVALID_OPERATION_TIMING>,
@@ -419,13 +338,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
-X3DViewpointNode*
-X3DBrowser::getActiveViewpoint ()
-throw (Error <DISPOSED>)
-{
-	return getExecutionContext () -> getActiveLayer () -> getViewpoint ();
-}
-
 void
 X3DBrowser::print (const X3DObject & object) const
 throw (Error <DISPOSED>)
@@ -440,88 +352,10 @@ throw (Error <DISPOSED>)
 	std::cout << CompactStyle << object << std::endl;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-LightStack &
-X3DBrowser::getLights ()
-{
-	return lightStack;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void
-X3DBrowser::notify (X3DBaseNode* const node)
-{
-	assert (node);
-
-	router .notify (node);
-
-	if (changedTime == getCurrentTime ())
-		return;
-
-	changedTime = getCurrentTime ();
-	changed .processInterests ();
-}
-
-void
-X3DBrowser::intersect ()
-{
-	scene -> select ();
-}
-
-void
-X3DBrowser::prepare ()
-{
-	clock -> advance ();
-	exposed .processInterests ();
-
-	currentFrameRate = 1 / clock -> interval ();
-
-	Vector3d position = getActiveViewpoint () -> getTransformationMatrix () .translation ();
-	currentSpeed  = abs (position - priorPosition) * currentFrameRate;
-	priorPosition = position;
-
-	updateSensors ();
-
-	router .processEvents ();
-	getGarbageCollector () .dispose ();
-}
-
-void
-X3DBrowser::display ()
-{
-	glClear (GL_COLOR_BUFFER_BIT);
-	glLoadIdentity ();
-
-	scene -> display ();
-
-	displayed .processInterests ();
-}
-
-void
-X3DBrowser::finish ()
-{
-	finished .processInterests ();
-
-	GLenum errorNum = glGetError ();
-
-	if (errorNum not_eq GL_NO_ERROR)
-		std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toLocaleString () << ": " << gluErrorString (errorNum) << std::endl;
-}
-
 void
 X3DBrowser::dispose ()
 {
 	std::clog << "Browser::dispose ..." << std::endl;
-
-	initialized .dispose ();
-	reshaped    .dispose ();
-	exposed     .dispose ();
-	displayed   .dispose ();
-	finished    .dispose ();
-	shutdown    .dispose ();
-	changed     .dispose ();
 
 	supportedFields     .dispose ();
 	supportedNodes      .dispose ();
@@ -529,8 +363,6 @@ X3DBrowser::dispose ()
 	supportedProfiles   .dispose ();
 
 	X3DBrowserContext::dispose ();
-
-	getGarbageCollector () .dispose ();
 
 	std::clog << "Browser::dispose done ..." << std::endl;
 }

@@ -66,6 +66,7 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	           cycleTime (),                                                    // SFTime  [out]    cycleTime
 	    fraction_changed (),                                                    // SFFloat [out]    fraction_changed
 	                time (),                                                    // SFTime  [out]    time
+	                stop (),
 	               cycle (),                                                    
 	            interval (),                                                    
 	        startTimeout (),
@@ -88,6 +89,8 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "cycleTime",        cycleTime);
 	addField (outputOnly,  "fraction_changed", fraction_changed);
 	addField (outputOnly,  "time",             time);
+	
+	setChildren (stop);
 }
 
 X3DBaseNode*
@@ -104,6 +107,7 @@ TimeSensor::initialize ()
 	enabled   .addInterest (this, &TimeSensor::set_enabled);
 	startTime .addInterest (this, &TimeSensor::set_startTime);
 	stopTime  .addInterest (this, &TimeSensor::set_stopTime);
+	stop      .addInterest (this, &TimeSensor::set_stop);
 
 	if (enabled)
 	{
@@ -160,8 +164,8 @@ TimeSensor::set_start ()
 		cycle    = getCurrentTime ();
 		interval = cycleInterval;
 
-		cycleTime        = getCurrentTime ();
 		isActive         = true;
+		cycleTime        = getCurrentTime ();
 		fraction_changed = 0;
 		time             = getCurrentTime ();
 
@@ -178,7 +182,8 @@ TimeSensor::set_stopTime ()
 	if (stopTime <= getCurrentTime ())
 	{
 		if (stopTime > startTime)
-			set_stop ();
+			if (isActive)
+				set_stop ();
 	}
 	else
 		addTimeout (stopTimeout, &TimeSensor::do_stop, stopTime);
@@ -187,7 +192,7 @@ TimeSensor::set_stopTime ()
 bool
 TimeSensor::do_stop ()
 {
-	if (enabled)
+	if (enabled and isActive)
 		set_stop ();
 
 	return false;
@@ -196,11 +201,8 @@ TimeSensor::do_stop ()
 void
 TimeSensor::set_stop ()
 {
-	if (isActive)
-	{
-		isActive = false;
-		getBrowser () -> removeSensor (this);
-	}
+	isActive = false;
+	getBrowser () -> removeSensor (this);
 }
 
 void
@@ -214,13 +216,12 @@ TimeSensor::update ()
 		{
 			cycle           += interval;
 			cycleTime        = getCurrentTime ();
-			fraction_changed = 0;
+			fraction_changed = 1;
 		}
 		else
 		{
-			isActive         = false;
 			fraction_changed = 1;
-			getBrowser () -> removeSensor (this);
+			stop             = getCurrentTime ();
 		}
 	}
 	else

@@ -135,7 +135,7 @@ Extrusion::createPoints ()
 		}
 
 		for (const auto & vector : crossSection)
-			points .emplace_back (matrix * Vector3f (vector .getX (), 0, vector .getY ()));
+			points .emplace_back (Vector3f (vector .getX (), 0, vector .getY ()) * matrix);
 
 	}
 

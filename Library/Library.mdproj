@@ -1575,6 +1575,8 @@
     <None Include="Models\Backgrounds\city-night.wrl" />
     <None Include="Models\Backgrounds\sunset.wrl" />
     <None Include="Tests\Scripting\experimental.wrl" />
+    <None Include="Tests\Navigation\LookAt.wrl" />
+    <None Include="Tests\Navigation\test.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />
@@ -1617,5 +1619,8 @@
     <Folder Include="Protos\Geometry2D\" />
     <Folder Include="Protos\Geometry2D\RegularPolygon2D\" />
     <Folder Include="Examples\bic\stage\worlds\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tests\Navigation\Rotor.wrl" />
   </ItemGroup>
 </Project>

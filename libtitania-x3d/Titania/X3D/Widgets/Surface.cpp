@@ -70,17 +70,16 @@ signal_handler (int sig)
 }
 
 Surface::Surface (const SFNode <X3DBrowser> & browser) :
-	      X3DWidget (browser), 
-	opengl::Surface (),        
-	pointingDevice  (*this),   
-	        viewer  (new ExamineViewer (*this))    
+	      X3DWidget (browser),                   
+	opengl::Surface (),                          
+	pointingDevice  (*this),                     
+	        viewer  (), 
+	    activeLayer ()                           
 {
 	// install our handler
 	std::signal (SIGSEGV, signal_handler);
 
 	add_events (Gdk::BUTTON_PRESS_MASK | Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK | Gdk::SCROLL_MASK);
-
-	getBrowser () -> changed .addInterest (static_cast <Gtk::Widget*> (this), &Surface::queue_draw);
 }
 
 void
@@ -88,8 +87,45 @@ Surface::setup ()
 {
 	get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
 
+	getBrowser () -> changed .addInterest (static_cast <Gtk::Widget*> (this), &Surface::queue_draw);
+
+	getBrowser () -> initialized .addInterest (this, &Surface::set_initialized);
+	getBrowser () -> shutdown    .addInterest (this, &Surface::set_shutdown);
+
 	getBrowser () -> setup ();
-	viewer        -> setup ();
+}
+
+void
+Surface::set_initialized ()
+{
+	getBrowser () -> getExecutionContext () -> getLayerSet () -> activeLayer .addInterest (this, &Surface::set_activeLayer);
+	
+	set_activeLayer ();
+}
+
+void
+Surface::set_shutdown ()
+{
+	getBrowser () -> getExecutionContext () -> getLayerSet () -> activeLayer .removeInterest (this, &Surface::set_activeLayer);
+}
+
+void
+Surface::set_activeLayer ()
+{
+	if (activeLayer)
+		activeLayer -> navigationInfoStack .removeInterest (this, &Surface::set_navigationInfo);
+
+	activeLayer = getBrowser () -> getExecutionContext () -> getActiveLayer ();
+	activeLayer -> navigationInfoStack .addInterest (this, &Surface::set_navigationInfo);
+
+	set_navigationInfo ();
+}
+
+void
+Surface::set_navigationInfo ()
+{
+	viewer .reset (new ExamineViewer (*this, getBrowser () -> getActiveNavigationInfo ()));
+	viewer -> setup ();
 }
 
 void

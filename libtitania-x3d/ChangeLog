@@ -1,3 +1,36 @@
+2012-12-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Parser.h:
+	* Surface.h:
+	* Parser.cpp:
+	* X3DBaseNode.h:
+	* Surface.cpp:
+	* X3DBrowser.h:
+	* X3DBaseNode.cpp:
+	* X3DBrowser.cpp:
+	* ExamineViewer.h:
+	* ExamineViewer.cpp:
+	* X3DNode.h:
+	* X3DBrowserContext.h:
+	* X3DNode.cpp:
+	* TimeSensor.h:
+	* X3DBrowserContext.cpp:
+	* TimeSensor.cpp:
+	* Viewpoint.h:
+	* Transform.cpp:
+	* X3DLayerNode.h:
+	* Extrusion.cpp:
+	* Viewpoint.cpp:
+	* GeoViewpoint.h:
+	* X3DLayerNode.cpp:
+	* OrthoViewpoint.h:
+	* GeoViewpoint.cpp:
+	* X3DViewpointNode.h:
+	* OrthoViewpoint.cpp:
+	* NavigationInfo.cpp:
+	* X3DViewpointNode.cpp:
+	* ProximitySensor.cpp: 
+
 2012-12-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DRenderer.cpp:

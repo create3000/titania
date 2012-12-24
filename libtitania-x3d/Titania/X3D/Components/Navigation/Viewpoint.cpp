@@ -56,10 +56,12 @@ namespace titania {
 namespace X3D {
 
 Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool addToList) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DViewpointNode (addToList),                                           
-	        position (0, 0, 10),                                            // SFVec3f [in,out] position           0 0 10        (-∞,∞)
-	     fieldOfView (0.785398)                                             // SFFloat [in,out] fieldOfView        π/4           (0,π)
+	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DViewpointNode (addToList),                                           
+	            position (0, 0, 10),                                            // SFVec3f [in,out] position           0 0 10        (-∞,∞)
+	         fieldOfView (0.785398),                                            // SFFloat [in,out] fieldOfView        π/4           (0,π)
+	          timeSensor (),                                                    
+	positionInterpolator ()                                                     
 {
 	setComponent ("Navigation");
 	setTypeName ("Viewpoint");
@@ -75,6 +77,9 @@ Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool addToLis
 	addField (inputOutput, "retainUserOffsets", retainUserOffsets);
 	addField (outputOnly,  "bindTime",          bindTime);
 	addField (outputOnly,  "isBound",           isBound);
+
+	setChildren (timeSensor,
+	             positionInterpolator);
 }
 
 X3DBaseNode*
@@ -88,7 +93,62 @@ Viewpoint::initialize ()
 {
 	X3DViewpointNode::initialize ();
 
+	timeSensor                  = new TimeSensor (getExecutionContext ());
+	timeSensor -> stopTime      = 1;
+	timeSensor -> cycleInterval = 0.2;
+	timeSensor -> setup ();
+
+	positionInterpolator        = new PositionInterpolator (getExecutionContext ());
+	positionInterpolator -> key = { 0, 1 };
+	positionInterpolator -> setup ();
+
+	timeSensor           -> fraction_changed .addInterest (positionInterpolator -> set_fraction);
+	timeSensor           -> isActive         .addInterest (this, &Viewpoint::set_active);
+	positionInterpolator -> value_changed    .addInterest (translation);
+
 	set_bind .addInterest (this, &Viewpoint::_set_bind);
+}
+
+Vector3f
+Viewpoint::getPosition () const
+{
+	return position + translation;
+}
+
+void
+Viewpoint::lookAt (Box3f bbox)
+{
+	std::clog << "Look at using viewpoint: " << description << "." << std::endl;
+	
+	bbox *= ~getModelViewMatrix ();
+
+	float    radius   = abs (bbox .size ()) * 0.5f;
+	Vector3f translation = bbox .center ()
+	                       + getOrientation () * (Vector3f (0, 0, radius / std::tan (fieldOfView * 0.5f)))
+	                       - position;
+
+	timeSensor -> startTime          = 1;
+	positionInterpolator -> keyValue = { this -> translation, translation };
+
+	centerOfRotation = bbox .center ();
+	center           = Vector3f ();
+	set_bind         = true;
+
+	std::clog << getTypeName () << " {" << std::endl;
+	std::clog << "  position " << getPosition () << std::endl;
+	std::clog << "  orientation " << getOrientation () << std::endl;
+	std::clog << "  centerOfRotation " << getCenterOfRotation () + center << std::endl;
+	std::clog << "}" << std::endl;
+}
+
+void
+Viewpoint::set_active (const bool & value)
+{
+	if (not value)
+	{
+		for (const auto & layer : getLayers ())
+			layer -> navigationInfoStack .top () -> transitionComplete = getCurrentTime ();
+	}
 }
 
 void
@@ -100,7 +160,7 @@ Viewpoint::_set_bind ()
 		{
 			Vector3f   t;
 			Rotation4f r;
-			differenceMatrix .get (t, r);
+			getDifferenceMatrix () .get (t, r);
 
 			translation = t;
 			rotation    = r;
@@ -111,21 +171,23 @@ Viewpoint::_set_bind ()
 void
 Viewpoint::display ()
 {
+	setModelViewMatrix (ModelViewMatrix4f ());
+
 	Matrix4f transformationMatrix = ModelViewMatrix4f ();
 
 	if (isBound)
 	{
 		if (jump)
 		{
-			transformationMatrix .translate (position + translation);
-			transformationMatrix .rotate (orientation * rotation);
+			transformationMatrix .translate (getPosition ());
+			transformationMatrix .rotate (getOrientation ());
 
 			setTransformationMatrix (transformationMatrix);
 		}
 		else
 		{
-			transformationMatrix .translate (position + translation);
-			transformationMatrix .rotate (orientation * rotation);
+			transformationMatrix .translate (getPosition ());
+			transformationMatrix .rotate (getOrientation ());
 
 			setTransformationMatrix (transformationMatrix);
 		}
@@ -137,9 +199,7 @@ Viewpoint::display ()
 			transformationMatrix .translate (position);
 			transformationMatrix .rotate (orientation);
 
-			setTransformationMatrix (transformationMatrix);
-
-			differenceMatrix = getCurrentViewpoint () -> getTransformationMatrix () * getInverseTransformationMatrix ();
+			setDifferenceMatrix (getCurrentViewpoint () -> getTransformationMatrix () * ~transformationMatrix);
 		}
 	}
 }

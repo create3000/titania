@@ -1,5 +1,7 @@
 #X3D V3.0 utf8 Titania
 
+META "title" "Inline"
+
 DEF InlineViewpoint Viewpoint {
   position 0 0 20
   centerOfRotation 0 0 0

@@ -81,6 +81,18 @@ private:
 	void
 	setup ();
 
+	void
+	set_initialized ();
+
+	void
+	set_shutdown ();
+
+	void
+	set_activeLayer ();
+
+	void
+	set_navigationInfo ();
+
 	virtual
 	void
 	reshape ();
@@ -91,6 +103,7 @@ private:
 
 	PointingDevice              pointingDevice;
 	std::unique_ptr <X3DViewer> viewer;
+	SFNode <X3DLayerNode>       activeLayer;
 
 };
 

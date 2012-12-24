@@ -91,11 +91,11 @@ protected:
 	X3DLayerNode*
 	getCurrentLayer () const;
 
-	X3DViewpointNode*
-	getCurrentViewpoint () const;
-
 	std::deque <X3DLayerNode*>
 	getLayers () const;
+
+	X3DViewpointNode*
+	getCurrentViewpoint () const;
 
 	friend class X3DExecutionContext;
 

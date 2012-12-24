@@ -82,6 +82,10 @@ OrthoViewpoint::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+OrthoViewpoint::lookAt (Box3f)
+{ }
+
+void
 OrthoViewpoint::draw ()
 { }
 

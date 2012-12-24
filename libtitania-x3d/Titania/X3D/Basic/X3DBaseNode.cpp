@@ -223,6 +223,8 @@ X3DBaseNode::getBrowser () const
 
 X3DExecutionContext*
 X3DBaseNode::getExecutionContext () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
 	return executionContext;
 }

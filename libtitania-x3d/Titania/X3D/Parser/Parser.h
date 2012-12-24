@@ -111,7 +111,9 @@ private:
 	popExecutionContext ();
 
 	X3DExecutionContext*
-	getExecutionContext () const;
+	getExecutionContext () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	bool
 	isInsideProtoDefinition () const;

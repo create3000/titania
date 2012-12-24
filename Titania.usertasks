@@ -2,11 +2,15 @@
   <Task file="" description="SFNode disposed" />
   <Task file="" description="set_field und field zusammenfassen" />
   <Task file="" description="in callbacks in set_fieldName umbenennen" />
-  <Task file="" description="MF Interpolatoren optimieren" />
-  <Task file="" description="alles bei array field const machen dann bei field getValue &amp; löschen" />
-  <Task file="" />
+  <Task file="" description="MF Interpolatoren optimieren" completed="True" />
+  <Task file="" description="alles bei array field const machen dann bei field getValue &amp; löschen" completed="True" />
+  <Task file="" completed="True" />
   <Task file="" description="traverse" />
-  <Task file="" description="Sphere mit complex" />
-  <Task file="" description="vector min max" />
+  <Task file="" description="Sphere mit complex" completed="True" />
+  <Task file="" description="vector min max" completed="True" />
   <Task file="" description="INVALID_OPERATION_TIMING ist wenn kein GL context vorhanden" />
+  <Task file="" description="leise Funktionen" />
+  <Task file="" description="Sensor update nach Router" />
+  <Task file="" description="multVecMatrix &lt;-&gt; multMatrixVec in *" />
+  <Task file="" description="addChildren" />
 </ListOfTask>

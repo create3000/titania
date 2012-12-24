@@ -30,81 +30,30 @@
 #define __TITANIA_X3D_BROWSER_X3DBROWSER_H__
 
 #include "../Browser/X3DBrowserContext.h"
-#include "../Browser/Properties/BrowserOptions.h"
-#include "../Browser/Properties/BrowserProperties.h"
-#include "../Browser/Properties/RenderingProperties.h"
 
+#include "../Components/Networking/X3DUrlObject.h"
 #include "../Configuration/SupportedComponents.h"
 #include "../Configuration/SupportedFields.h"
 #include "../Configuration/SupportedNodes.h"
 #include "../Configuration/SupportedProfiles.h"
 
-#include "../JavaScript/JavaScriptEngine.h"
-#include "../Routing/Router.h"
-
-#include "../Components/Navigation/Viewpoint.h"
-#include "../Components/Networking/X3DUrlObject.h"
-
-#include "../Execution/Scene.h"
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include "../Browser/HitArray.h"
-
-#include <Titania/Chrono/ClockBase.h>
-#include <memory>
 
 namespace titania {
 namespace X3D {
-
-typedef chrono::clock_base <time_type> X3DClock;
-typedef std::stack <GLenum>            LightStack;
-
-enum EventType
-{
-	INITIALIZED_EVENT,
-	SHUTDOWN_EVENT
-
-};
 
 class X3DBrowser :
 	public X3DBrowserContext, public X3DUrlObject
 {
 public:
 
-	Output initialized;
-	Output reshaped;
-	Output exposed;
-	Output displayed;
-	Output finished;
-	Output shutdown;
-	Output changed;
-
 	virtual
 	X3DBrowser*
 	getBrowser () const;
 
-	Router &
-	getRouter ();
-
 	const std::string &
 	getVersion () const
 	throw (Error <DISPOSED>);
-
-	virtual
-	time_type
-	getCurrentTime () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	double
-	getCurrentSpeed () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	double
-	getCurrentFrameRate () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
 
 	void
 	setDescription (const std::string & value)
@@ -165,7 +114,7 @@ public:
 	getExecutionContext () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
-	       
+
 	SFNode <Scene>
 	createScene () const
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -222,18 +171,10 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	NavigationInfo*
-	getActiveNavigationInfo () const
-	throw (Error <DISPOSED>);
-
 	void
 	changeViewpoint (const std::string &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
-
-	X3DViewpointNode*
-	getActiveViewpoint ()
-	throw (Error <DISPOSED>);
 
 	//	void
 	//	changeViewpoint (SAIAction)
@@ -260,83 +201,10 @@ public:
 
 	virtual
 	void
-	notify (X3DBaseNode* const);
-
-	virtual
-	void
-	intersect ();
-
-	void
-	prepare ();
-
-	virtual
-	void
-	display ();
-
-	void
-	finish ();
-
-	virtual
-	void
 	dispose ();
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	virtual
-	void
-	pushRenderer (X3DRenderer*) = 0;
-
-	virtual
-	void
-	popRenderer () = 0;
-
-	virtual
-	X3DRenderer*
-	getCurrentRenderer () = 0;
-
-	virtual
-	const X3DRenderer*
-	getCurrentRenderer () const = 0;
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	LightStack &
-	getLights ();
-
-	////  pushPointingDeviceSensorNode
-	virtual
-	void
-	pushSensitiveNode (X3DBaseNode* node) = 0;
-
-	virtual
-	void
-	popSensitiveNode () = 0;
-
-	virtual
-	const std::vector <X3DBaseNode*> &
-	getSensitiveNodes () const = 0;
-
-	virtual
-	bool
-	isSensitive () const = 0;
-
-	virtual
-	void
-	pick (const size_t, const size_t) = 0;
-
-	virtual
-	Line3f
-	getHitRay () const = 0;
-
-	virtual
-	void
-	addHit (Hit*) = 0;
-
-	virtual
-	const HitArray &
-	getHits () const = 0;
-
 	////
+
 
 protected:
 
@@ -352,8 +220,6 @@ protected:
 
 private:
 
-	typedef std::set <X3DSensorNode*> SensorNodeSet;
-
 	using X3DUrlObject::url;
 
 	void
@@ -361,29 +227,14 @@ private:
 
 	static const std::string version;
 
-	Router                     router;
-	std::shared_ptr <X3DClock> clock;
+	SupportedFields     supportedFields;
+	SupportedNodes      supportedNodes;
+	SupportedComponents supportedComponents;
+	SupportedProfiles   supportedProfiles;
 
-	SupportedFields             supportedFields;
-	SupportedNodes              supportedNodes;
-	SupportedComponents         supportedComponents;
-	SupportedProfiles           supportedProfiles;
-
-	SFNode <RenderingProperties> renderingProperties;
-	SFNode <BrowserProperties>   browserProperties;
-	SFNode <BrowserOptions>      browserOptions;
-	SFNode <JavaScriptEngine>    javaScriptEngine;
-
-	double   currentSpeed;
-	double   currentFrameRate;
 	SFString description;
 
 	SFNode <Scene> scene;
-	
-	time_type changedTime;
-	Vector3d  priorPosition;
-
-	LightStack lightStack;
 
 };
 

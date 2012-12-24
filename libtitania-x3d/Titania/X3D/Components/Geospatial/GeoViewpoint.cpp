@@ -95,5 +95,13 @@ GeoViewpoint::create (X3DExecutionContext* const executionContext) const
 	return new GeoViewpoint (executionContext, true);
 }
 
+void
+GeoViewpoint::lookAt (Box3f)
+{ }
+
+void
+GeoViewpoint::draw ()
+{ }
+
 } // X3D
 } // titania

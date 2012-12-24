@@ -144,7 +144,7 @@ BrowserWidget::on_hand_button_toggled ()
 void
 BrowserWidget::on_show_all_toggled ()
 {
-	getBrowser () -> getExecutionContext () -> getActiveLayer () -> showAllObjects ();
+	getBrowser () -> getExecutionContext () -> getActiveLayer () -> lookAt ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

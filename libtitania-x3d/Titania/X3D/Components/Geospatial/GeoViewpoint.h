@@ -74,10 +74,14 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+	
+	virtual
+	void
+	lookAt (Box3f);
 
 	virtual
 	void
-	draw () { }
+	draw ();
 
 };
 

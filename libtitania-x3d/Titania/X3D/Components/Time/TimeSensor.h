@@ -114,6 +114,7 @@ private:
 	void
 	addTimeout (sigc::connection &, TimeoutHandler, const time_type);
 
+	SFTime    stop;
 	time_type cycle;
 	time_type interval;
 

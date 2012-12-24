@@ -9,6 +9,7 @@ Background {
 Transform {
   translation 10 10 10
   rotation -0.981245 -0.0143457 -0.192232 5.67512
+  scale 10 10 10
   children [
     Viewpoint {
       description "Front"
@@ -43,6 +44,10 @@ Transform {
       description "Center"
       position 2 0 5
       centerOfRotation 0 0 1
+    }
+    Viewpoint {
+      description "Jump"
+      jump FALSE
     }
     Transform {
       translation 0 0 1

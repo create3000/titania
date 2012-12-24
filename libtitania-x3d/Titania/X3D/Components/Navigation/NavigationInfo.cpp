@@ -65,9 +65,9 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, boo
 	             speed (1),                                                   // SFFloat  [in,out] speed              1.0                    [0,∞)
 	    transitionTime (1),                                                   // SFTime   [in,out] transitionTime     1.0                    [0, ∞)
 	    transitionType ({ "LINEAR" }),                                        // MFString [in,out] transitionType     ["LINEAR"]             ["TELEPORT","LINEAR",
-	              type ({ "EXAMINE", "ANY" }),                                // MFString [ ]      type               { "EXAMINE", "ANY" }
-	   visibilityLimit (),                                                    // SFFloat  [ ]      visibilityLimit    0
-	transitionComplete (),                                                    // SFBool   [ ]      transitionComplete                  
+	              type ({ "EXAMINE", "ANY" }),                                // MFString [in,out] type               { "EXAMINE", "ANY" }
+	   visibilityLimit (),                                                    // SFFloat  [in,out] visibilityLimit    0
+	transitionComplete (),                                                    // SFBool   [out]    transitionComplete                  
 	  directionalLight (new DirectionalLight (executionContext)),
 	         addToList (addToList)         
 {

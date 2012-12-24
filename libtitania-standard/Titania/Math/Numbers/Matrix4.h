@@ -381,6 +381,10 @@ public:
 	vector3 <Type>
 	multDirMatrix (const vector3 <T> &) const;
 
+	template <class T>
+	vector3 <Type>
+	multMatrixDir (const vector3 <T> &) const;
+
 	void
 	translate (const vector3 <Type> &);
 
@@ -1000,6 +1004,16 @@ matrix4 <Type>::multDirMatrix (const vector3 <T> & vector) const
 }
 
 template <class Type>
+template <class T>
+vector3 <Type>
+matrix4 <Type>::multMatrixDir (const vector3 <T> & vector) const
+{
+	return vector3 <Type> (vector .x () * array [0] + vector .y () * array [1] + vector .z () * array [ 2],
+	                       vector .x () * array [4] + vector .y () * array [5] + vector .z () * array [ 6],
+	                       vector .x () * array [8] + vector .y () * array [9] + vector .z () * array [10]);
+}
+
+template <class Type>
 void
 matrix4 <Type>::translate (const vector3 <Type> & translation)
 {
@@ -1123,7 +1137,7 @@ inline
 vector3 <Type>
 operator * (const matrix4 <Type> & lhs, const vector3 <Type> & rhs)
 {
-	return lhs .multVecMatrix (rhs);
+	return lhs .multMatrixVec (rhs);
 }
 
 template <class Type>
@@ -1131,7 +1145,7 @@ inline
 vector3 <Type>
 operator * (const vector3 <Type> & lhs, const matrix4 <Type> & rhs)
 {
-	return rhs .multMatrixVec (lhs);
+	return rhs .multVecMatrix (lhs);
 }
 //@}
 ///@}

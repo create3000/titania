@@ -68,8 +68,6 @@ X3DLayerNode::X3DLayerNode () :
 	            fogStack (new Fog            (getExecutionContext (), false)), 
 	      viewpointStack (new Viewpoint      (getExecutionContext (), false)), 
 	           localFogs (),                                                   
-	          timeSensor (),                                                   
-	positionInterpolator (),                                                   
 	           _viewport (0)                                                   
 {
 	addNodeType (X3DConstants::X3DLayerNode);
@@ -78,9 +76,7 @@ X3DLayerNode::X3DLayerNode () :
 	             *navigationInfoStack .bottom (),
 	             *backgroundStack     .bottom (),
 	             *fogStack            .bottom (),
-	             *viewpointStack      .bottom (),
-	             timeSensor,
-	             positionInterpolator);
+	             *viewpointStack      .bottom ());
 
 	backgroundStack     .top () -> transparency = 1;
 	fogStack            .top () -> transparency = 1;
@@ -157,51 +153,9 @@ X3DLayerNode::clearLights ()
 }
 
 void
-X3DLayerNode::showAllObjects ()
+X3DLayerNode::lookAt ()
 {
-	{
-		SFNode <Viewpoint> viewpoint = getViewpoint ();
-
-		if (viewpoint)
-		{
-			std::clog << "Show all using viewpoint: " << viewpoint -> description << "." << std::endl;
-
-			Box3f bbox = getBBox ();
-
-			Vector3f   translation, scale;
-			Rotation4f rotation, scaleOrientation;
-
-			Matrix4f matrix = viewpoint -> getTransformationMatrix ();
-			matrix .get (translation, rotation, scale, scaleOrientation);
-
-			float    radius   = abs (bbox .size ()) * 0.5f;
-			Vector3f position = bbox .center () + rotation* Vector3f (0, 0, radius / std::tan (viewpoint -> fieldOfView * 0.5f));
-
-			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//matrix [3] = Vector4f (position, 1);
-			//viewpoint -> setMatrix (matrix);
-
-			timeSensor                  = new TimeSensor (getExecutionContext ());
-			timeSensor -> cycleInterval = 0.2;
-			timeSensor -> startTime     = 1;
-			timeSensor -> setup ();
-
-			positionInterpolator             = new PositionInterpolator (getExecutionContext ());
-			positionInterpolator -> key      = { 0, 1 };
-			positionInterpolator -> keyValue = { viewpoint -> position, position };
-			positionInterpolator -> setup ();
-
-			getExecutionContext () -> addRoute (timeSensor, "fraction_changed", positionInterpolator, "set_fraction");
-			getExecutionContext () -> addRoute (positionInterpolator, "value_changed", viewpoint, "set_position");
-
-			viewpoint -> centerOfRotation = bbox .center ();
-			viewpoint -> set_bind         = true;
-		}
-		else
-			throw Error <INVALID_X3D> ("No current viewpoint available!");
-	}
-
-	std::clog << getViewpoint () << std::endl;
+	getViewpoint () -> lookAt (getBBox ());
 }
 
 void

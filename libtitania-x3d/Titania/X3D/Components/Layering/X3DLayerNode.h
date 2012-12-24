@@ -52,12 +52,9 @@
 #include "../../Execution/BindableNodeStack.h"
 #include "../../Rendering/LightContainerArray.h"
 #include "../../Rendering/X3DRenderer.h"
-#include "../../Types/Geometry.h"
 #include "../Core/X3DNode.h"
 #include "../Grouping/X3DGroupingNode.h"
-#include "../Interpolation/PositionInterpolator.h"
 #include "../Layering/Viewport.h"
-#include "../Time/TimeSensor.h"
 #include "../EnvironmentalEffects/LocalFog.h"
 
 #include <stack>
@@ -121,7 +118,7 @@ public:
 	getBBox () = 0;
 
 	void
-	showAllObjects ();
+	lookAt ();
 
 	virtual
 	void
@@ -168,9 +165,6 @@ private:
 	LightContainerArray    localLights;
 	LightContainerArray    cachedLocalLights;
 	LightContainerArray    globalLights;
-
-	SFNode <TimeSensor>           timeSensor;
-	SFNode <PositionInterpolator> positionInterpolator;
 
 	Viewport* _viewport;
 
