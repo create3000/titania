@@ -49,30 +49,31 @@
 #include "OrthoViewpoint.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/Matrix.h"
 
 namespace titania {
 namespace X3D {
 
 OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext, bool addToList) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DViewpointNode (addToList),                                                    
-	     fieldOfView ({ -1 }),                                              // MFFloat [in,out] fieldOfView        -1, -1, 1, 1        (-∞,∞)
-	        position (0, 0, 10)                                             // SFVec3f [in,out] position           0 0 10              (-∞,∞)
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DViewpointNode (addToList),                                           
+	        position (0, 0, 10),                                            // SFVec3f [in,out] position           0 0 10              (-∞,∞)
+	     fieldOfView ({ -1 })                                               // MFFloat [in,out] fieldOfView        -1, -1, 1, 1        (-∞,∞)
 {
 	setComponent ("Navigation");
 	setTypeName ("OrthoViewpoint");
 
 	addField (inputOutput, "metadata",          metadata);
+	addField (inputOutput, "description",       description);
 	addField (inputOnly,   "set_bind",          set_bind);
-	addField (inputOutput, "jump",              jump);
-	addField (inputOutput, "retainUserOffsets", retainUserOffsets);
+	addField (inputOutput, "position",          position);
 	addField (inputOutput, "orientation",       orientation);
 	addField (inputOutput, "centerOfRotation",  centerOfRotation);
-	addField (inputOutput, "description",       description);
+	addField (inputOutput, "fieldOfView",       fieldOfView);
+	addField (inputOutput, "jump",              jump);
+	addField (inputOutput, "retainUserOffsets", retainUserOffsets);
 	addField (outputOnly,  "bindTime",          bindTime);
 	addField (outputOnly,  "isBound",           isBound);
-	addField (inputOutput, "fieldOfView",       fieldOfView);
-	addField (inputOutput, "position",          position);
 }
 
 X3DBaseNode*
@@ -81,13 +82,81 @@ OrthoViewpoint::create (X3DExecutionContext* const executionContext) const
 	return new OrthoViewpoint (executionContext, true);
 }
 
+Vector3f
+OrthoViewpoint::getPosition () const
+{
+	return position + translation;
+}
+
 void
 OrthoViewpoint::lookAt (Box3f)
 { }
 
 void
-OrthoViewpoint::draw ()
-{ }
+OrthoViewpoint::reshape (const float zNear, const float zFar)
+{
+	glMatrixMode (GL_PROJECTION);
+	glLoadIdentity ();
+
+	GLfloat viewport [4];
+	glGetFloatv (GL_VIEWPORT, viewport);
+
+	GLfloat width  = viewport [2];
+	GLfloat height = viewport [3];
+
+	float ratio = std::tan (0.78 / 2) * zNear;
+
+	if (width > height)
+	{
+		float aspect = width * ratio / height;
+		glFrustum (-aspect, aspect, -ratio, ratio, zNear, zFar);
+	}
+	else
+	{
+		float aspect = height * ratio / width;
+		glFrustum (-ratio, ratio, -aspect, aspect, zNear, zFar);
+	}
+	
+	//glOrtho (-10, 10, -10, 10, zNear, zFar);
+
+	glMatrixMode (GL_MODELVIEW);
+}
+
+void
+OrthoViewpoint::display ()
+{
+	setModelViewMatrix (ModelViewMatrix4f ());
+
+	Matrix4f transformationMatrix = ModelViewMatrix4f ();
+
+	if (isBound)
+	{
+		if (jump)
+		{
+			transformationMatrix .translate (getPosition ());
+			transformationMatrix .rotate (getOrientation ());
+
+			setTransformationMatrix (transformationMatrix);
+		}
+		else
+		{
+			transformationMatrix .translate (getPosition ());
+			transformationMatrix .rotate (getOrientation ());
+
+			setTransformationMatrix (transformationMatrix);
+		}
+	}
+	else
+	{
+		if (not jump)
+		{
+			transformationMatrix .translate (position);
+			transformationMatrix .rotate (orientation);
+
+			setDifferenceMatrix (getCurrentViewpoint () -> getTransformationMatrix () * ~transformationMatrix);
+		}
+	}
+}
 
 } // X3D
 } // titania

@@ -53,25 +53,9 @@
 #include "../Geometry/Plane3.h"
 #include "../Numbers/Matrix4.h"
 #include "../Numbers/Vector3.h"
-#include <array>
 
 namespace titania {
 namespace math {
-
-/*
- *       p7              p5
- *        -------------
- *      /|            /|
- *   p1/ |        p3 / |
- *     -------------   |
- *    |  |          |  |
- *    |  | p8       |  |
- *    |  |_ _ _ _ _ |_ | p6
- *    | /           | /
- *    |/____________|/
- *   p2              p4
- *
- */
 
 template <class Type>
 class box3
@@ -86,96 +70,45 @@ public:
 	///  Default constructor. Constructs a box of size 0 0 0 and center 0 0 0,
 	constexpr
 	box3 () :
-		value ()
+		value ({ { } })
 	{ }
 
 	///  Copy constructor.
 	template <class Up>
 	constexpr
 	box3 (const box3 <Up> & box) :
-		value (box .value)
+		value ({ { box .min (), box .max () } })
 	{ }
 
 	///  Constructs a box of min @a min and max @a max.
 	constexpr
 	box3 (const vector3 <Type> & min, const vector3 <Type> & max, bool) :
-		value
-	{
-		{ vector3 <Type> (min .x (), max .y (), max .z ()),
-		  vector3 <Type> (min .x (), min .y (), max .z ()),
-		  vector3 <Type> (max .x (), max .y (), max .z ()),
-		  vector3 <Type> (max .x (), min .y (), max .z ()),
-		  vector3 <Type> (max .x (), max .y (), min .z ()),
-		  vector3 <Type> (max .x (), min .y (), min .z ()),
-		  vector3 <Type> (min .x (), max .y (), min .z ()),
-		  vector3 <Type> (min .x (), min .y (), min .z ()) }
-	}
-
+		value ({ min, max })
 	{ }
 
 	///  Constructs a box of size @a size and center @a size.
-	constexpr
-	box3 (const vector3 <Type> & size, const vector3 <Type> & center) :
-		box3 (center - size / Type (2), center + size / Type (2), true)
-	{ }
+	box3 (const vector3 <Type> & size, const vector3 <Type> & center)
+	{
+		vector3 <Type> size_1_2 = size / Type (2);
+		value .min = center - size_1_2;
+		value .max = center + size_1_2;
+	}
 
 	///  @name Assignment operator
 
 	///  Assign @a vector to this vector.
 	template <class Up>
 	box3 &
-	operator = (const box3 <Up> & box)
-	{
-		value = box .value ();
-		return *this;
-	}
+	operator = (const box3 <Up> &);
 
 	///  @name Element access
 
 	///  Return the center of this box.
-	vector3 <Type>
-	min () const
-	{
-		vector3 <Type> result = value [0];
+	const vector3 <Type> &
+	min () const { return value .min; }
 
-		for (const auto & point : value)
-			result = math::min (result, point);
-
-		return result;
-	}
-
-	vector3 <Type>
-	max () const
-	{
-		vector3 <Type> result = value [0];
-
-		for (const auto & point : value)
-			result = math::max (result, point);
-
-		return result;
-	}
-
-	///  Return the radius of the smaller sphere.
-	constexpr Type
-	radius1 () const
-	{
-		return std::min (std::min (std::min (abs (value [0] - value [5]),
-		                                     abs (value [1] - value [4])),
-		                           abs (value [2] - value [7])),
-		                 abs (value [3] - value [6]))
-		       / Type (2);
-	}
-
-	///  Return the radius of the great sphere.
-	constexpr Type
-	radius2 () const
-	{
-		return std::max (std::max (std::max (abs (value [0] - value [5]),
-		                                     abs (value [1] - value [4])),
-		                           abs (value [2] - value [7])),
-		                 abs (value [3] - value [6]))
-		       / Type (2);
-	}
+	const vector3 <Type> &
+	max () const { return value .max; }
 
 	///  Return the size of this box.
 	constexpr vector3 <Type>
@@ -183,7 +116,7 @@ public:
 
 	///  Return the center of this box.
 	constexpr vector3 <Type>
-	center () const { return value [0] + (value [5] - value [0]) / Type (2); }
+	center () const { return min () + size () / Type (2); }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this vector2 inplace.
@@ -193,21 +126,13 @@ public:
 	box3 &
 	operator += (const box3 <Up> & box)
 	{
-		vector3 <Type> min = this -> min ();
-		vector3 <Type> max = this -> max ();
-
-		vector3 <Type> box_min = box .min ();
-		vector3 <Type> box_max = box .max ();
-
-		if (min not_eq max)
+		if (box .min () not_eq box .max ())
 		{
-			if (box_min not_eq box_max)
-				return *this = box3 (math::min (min, box_min), math::max (max, box_max), true);
-
-			return *this;
+			value .min = math::min (value .min, box .min ());
+			value .max = math::max (value .max, box .max ());
 		}
 
-		return *this = box;
+		return *this;
 	}
 
 	///  Translate this box by @a translation.
@@ -215,9 +140,8 @@ public:
 	box3 &
 	operator += (const vector3 <Up> & translation)
 	{
-		for (auto & point : value)
-			point += translation;
-
+		value .min += translation;
+		value .max += translation;
 		return *this;
 	}
 
@@ -226,9 +150,8 @@ public:
 	box3 &
 	operator -= (const vector3 <Up> & translation)
 	{
-		for (auto & point : value)
-			point -= translation;
-
+		value .min -= translation;
+		value .max -= translation;
 		return *this;
 	}
 
@@ -236,9 +159,8 @@ public:
 	box3 &
 	operator *= (const Type & scale)
 	{
-		for (auto & point : value)
-			point *= scale;
-
+		value .min *= scale;
+		value .max *= scale;
 		return *this;
 	}
 
@@ -246,9 +168,8 @@ public:
 	box3 &
 	operator /= (const Type & scale)
 	{
-		for (auto & point : value)
-			point /= scale;
-
+		value .min /= scale;
+		value .max /= scale;
 		return *this;
 	}
 
@@ -263,20 +184,16 @@ public:
 	box3 &
 	multMatrixBox (const matrix4 <Type> & matrix)
 	{
-		for (auto & point : value)
-			point = matrix .multMatrixVec (point);
-
-		return *this;
+		return *this = box3 (matrix .multMatrixDir (size ()),
+		                     matrix .multMatrixVec (center ()));
 	}
 
 	///  Transform this box by matrix.
 	box3 &
 	multBoxMatrix (const matrix4 <Type> & matrix)
 	{
-		for (auto & point : value)
-			point = matrix .multVecMatrix (point);
-
-		return *this;
+		return *this = box3 (matrix .multDirMatrix (size ()),
+		                     matrix .multVecMatrix (center ()));
 	}
 
 	///  @name Intersection
@@ -288,27 +205,41 @@ public:
 
 private:
 
-	std::array <vector3 <Type>, 8> value;
+	struct Value
+	{
+		vector3 <Type> min;
+		vector3 <Type> max;
+	};
+
+	Value value;
 
 };
+
+template <class Type>
+template <class Up>
+box3 <Type> &
+box3 <Type>::operator = (const box3 <Up> & box)
+{
+	value .min = box .min ();
+	value .max = box .max ();
+	return *this;
+}
 
 template <class Type>
 bool
 box3 <Type>::intersect (const line3 <Type> & line) const
 {
-	vector3 <Type> min    = this -> min ();
-	vector3 <Type> max    = this -> max ();
 	vector3 <Type> center = this -> center ();
 
 	vector3 <Type> points [6] = {
-		vector3 <Type> (center .x (), center .y (), max .z ()), // right
-		vector3 <Type> (center .x (), center .y (), min .z ()), // left
+		vector3 <Type> (center .x (), center .y (), max () .z ()), // right
+		vector3 <Type> (center .x (), center .y (), min () .z ()), // left
 
-		vector3 <Type> (center .x (), max .y (), center .z ()), // top
-		vector3 <Type> (center .x (), min .y (), center .z ()), // bottom
+		vector3 <Type> (center .x (), max () .y (), center .z ()), // top
+		vector3 <Type> (center .x (), min () .y (), center .z ()), // bottom
 
-		vector3 <Type> (max .x (), center .y (), center .z ()), // front
-		vector3 <Type> (min .x (), center .y (), center .z ())  // back
+		vector3 <Type> (max () .x (), center .y (), center .z ()), // front
+		vector3 <Type> (min () .x (), center .y (), center .z ())  // back
 	};
 
 	static const vector3 <Type> normals [6] = {
@@ -331,24 +262,24 @@ box3 <Type>::intersect (const line3 <Type> & line) const
 				case 0:
 				case 1:
 
-					if (intersection .x () >= min .x () and intersection .x () <= max .x () and
-					    intersection .y () >= min .y () and intersection .y () <= max .y ())
+					if (intersection .x () >= min () .x () and intersection .x () <= max () .x () and
+					    intersection .y () >= min () .y () and intersection .y () <= max () .y ())
 						return true;
 
 					break;
 				case 2:
 				case 3:
 
-					if (intersection .x () >= min .x () and intersection .x () <= max .x () and
-					    intersection .z () >= min .z () and intersection .z () <= max .z ())
+					if (intersection .x () >= min () .x () and intersection .x () <= max () .x () and
+					    intersection .z () >= min () .z () and intersection .z () <= max () .z ())
 						return true;
 
 					break;
 				case 4:
 				case 5:
 
-					if (intersection .y () >= min .y () and intersection .y () <= max .y () and
-					    intersection .z () >= min .z () and intersection .z () <= max .z ())
+					if (intersection .y () >= min () .y () and intersection .y () <= max () .y () and
+					    intersection .z () >= min () .z () and intersection .z () <= max () .z ())
 						return true;
 
 					break;

@@ -1577,6 +1577,7 @@
     <None Include="Tests\Scripting\experimental.wrl" />
     <None Include="Tests\Navigation\LookAt.wrl" />
     <None Include="Tests\Navigation\test.wrl" />
+    <None Include="Tests\Navigation\OrthoViewpoint.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

@@ -69,6 +69,10 @@ public:
 	SFVec3f    translation;
 	SFRotation rotation;
 	SFVec3f    center;
+	
+	virtual
+	Vector3f
+	getPosition () const = 0;
 
 	Rotation4f
 	getOrientation () const;
@@ -91,7 +95,7 @@ public:
 
 	virtual
 	void
-	reshape (const float, const float) { }
+	reshape (const float, const float) = 0;
 
 	virtual
 	void
@@ -136,6 +140,9 @@ private:
 	virtual
 	void
 	removeFromLayer (X3DLayerNode* const);
+	
+	void
+	_set_bind ();
 
 	Matrix4f modelViewMatrix;
 	Matrix4f transformationMatrix;

@@ -56,17 +56,17 @@ namespace titania {
 namespace X3D {
 
 X3DViewpointNode::X3DViewpointNode (bool addToList) :
-	            X3DBindableNode (),         
-	                description (),         // SFString   [in,out] description       ""
-	                orientation (),         // SFRotation [in,out] orientation       0 0 1 0        [-1,1],(-∞,∞)
-	           centerOfRotation (),         // SFVec3f    [in,out] centerOfRotation  0 0 0          (-∞,∞)
-	                       jump (true),     // SFBool     [in,out] jump              TRUE
-	          retainUserOffsets (),         // SFBool     [ ]      retainUserOffsets
-	            modelViewMatrix (),         
-	       transformationMatrix (),         
-	inverseTransformationMatrix (),         
-	           differenceMatrix (),         
-	                  addToList (addToList) 
+	            X3DBindableNode (),                                                 
+	                description (),                                                 // SFString   [in,out] description       ""
+	                orientation (),                                                 // SFRotation [in,out] orientation       0 0 1 0        [-1,1],(-∞,∞)
+	           centerOfRotation (),                                                 // SFVec3f    [in,out] centerOfRotation  0 0 0          (-∞,∞)
+	                       jump (true),                                             // SFBool     [in,out] jump              TRUE
+	          retainUserOffsets (),                                                 // SFBool     [ ]      retainUserOffsets
+	            modelViewMatrix (),                                                 
+	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),                                                 
+	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1), 
+	           differenceMatrix (),                                                 
+	                  addToList (addToList)                                         
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
 
@@ -79,6 +79,8 @@ void
 X3DViewpointNode::initialize ()
 {
 	X3DBindableNode::initialize ();
+	
+	isBound .addInterest (this, &X3DViewpointNode::_set_bind);
 
 	if (addToList)
 		getScene () -> addViewpoint (this);
@@ -117,6 +119,18 @@ void
 X3DViewpointNode::removeFromLayer (X3DLayerNode* const layer)
 {
 	layer -> viewpointStack .pop (this);
+}
+
+void
+X3DViewpointNode::_set_bind ()
+{
+	if (isBound and not retainUserOffsets)
+	{
+		// Reinitialize user offsets.
+		translation = Vector3f ();
+		rotation    = Rotation4f ();
+		center      = Vector3f ();
+	}
 }
 
 void

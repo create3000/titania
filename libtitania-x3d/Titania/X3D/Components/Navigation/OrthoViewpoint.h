@@ -59,8 +59,8 @@ class OrthoViewpoint :
 {
 public:
 
-	MFFloat fieldOfView;
 	SFVec3f position;
+	MFFloat fieldOfView;
 
 	OrthoViewpoint (X3DExecutionContext* const, bool = true);
 
@@ -68,13 +68,20 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 	
+	Vector3f
+	getPosition () const;
+	
 	virtual
 	void
 	lookAt (Box3f);
 
 	virtual
 	void
-	draw ();
+	reshape (const float, const float);
+
+	virtual
+	void
+	display ();
 
 };
 

@@ -1,3 +1,17 @@
+2012-12-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BindableNodeStack.h:
+	* Viewpoint.h:
+	* Transform.cpp:
+	* Viewpoint.cpp:
+	* GeoViewpoint.h:
+	* X3DLayerNode.cpp:
+	* GeoViewpoint.cpp:
+	* OrthoViewpoint.h:
+	* X3DViewpointNode.h:
+	* OrthoViewpoint.cpp:
+	* X3DViewpointNode.cpp: 
+
 2012-12-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.h:

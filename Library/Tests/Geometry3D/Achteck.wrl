@@ -6,8 +6,6 @@ Background {
   skyColor 1 1 1
 }
 
-Viewpoint { }
-
 Transform {
   children Shape {
     geometry IndexedFaceSet {

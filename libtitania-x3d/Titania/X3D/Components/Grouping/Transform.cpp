@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Transform::Transform (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DGroupingNode (),                                                    
 	          center (),                                                    // SFVec3f    [in,out] center            0 0 0          (-∞,∞)
 	        rotation (),                                                    // SFRotation [in,out] rotation          0 0 1 0        [-1,1] or (-∞,∞)
@@ -94,9 +94,7 @@ Transform::initialize ()
 Box3f
 Transform::getBBox ()
 {
-	Box3f bbox = X3DGroupingNode::getBBox ();
-
-	return Box3f (scale * bbox .size (), bbox .center () * matrix);
+	return X3DGroupingNode::getBBox () * matrix;
 }
 
 void

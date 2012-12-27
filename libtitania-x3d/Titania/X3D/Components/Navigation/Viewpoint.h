@@ -79,10 +79,11 @@ public:
 
 	virtual
 	void
-	display ();
-
-	void
 	reshape (const float, const float);
+
+	virtual
+	void
+	display ();
 
 
 private:

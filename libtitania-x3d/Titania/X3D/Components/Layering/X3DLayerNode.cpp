@@ -78,11 +78,11 @@ X3DLayerNode::X3DLayerNode () :
 	             *fogStack            .bottom (),
 	             *viewpointStack      .bottom ());
 
-	backgroundStack     .top () -> transparency = 1;
-	fogStack            .top () -> transparency = 1;
+	backgroundStack     .bottom () -> transparency = 1;
+	fogStack            .bottom () -> transparency = 1;
 
-	viewpointStack      .top () -> description  = "Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ());
-	viewpointStack      .top () -> setName ("Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ()));
+	//viewpointStack      .bottom () -> setName ("Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ()));
+	//viewpointStack      .bottom () -> description  = "Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ());
 }
 
 void
@@ -92,14 +92,15 @@ X3DLayerNode::initialize ()
 
 	defaultViewport -> setup ();
 
-	navigationInfoStack .top () -> setup ();
-	backgroundStack     .top () -> setup ();
-	fogStack            .top () -> setup ();
-	viewpointStack      .top () -> setup ();
+	navigationInfoStack .bottom () -> setup ();
+	backgroundStack     .bottom () -> setup ();
+	fogStack            .bottom () -> setup ();
+	viewpointStack      .bottom () -> setup ();
 
 	viewport .addInterest (this, &X3DLayerNode::set_viewport);
-
 	set_viewport ();
+
+	viewpointStack .bottom () -> isBound = true;
 }
 
 NavigationInfo*

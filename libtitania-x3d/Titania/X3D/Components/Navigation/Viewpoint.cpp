@@ -120,11 +120,13 @@ Viewpoint::lookAt (Box3f bbox)
 {
 	std::clog << "Look at using viewpoint: " << description << "." << std::endl;
 	
+	__LOG__ << bbox << std::endl;
+	__LOG__ << abs (bbox .size ()) << std::endl;
+	
 	bbox *= ~getModelViewMatrix ();
 
-	float    radius   = abs (bbox .size ()) * 0.5f;
 	Vector3f translation = bbox .center ()
-	                       + getOrientation () * (Vector3f (0, 0, radius / std::tan (fieldOfView * 0.5f)))
+	                       + getOrientation () * (Vector3f (0, 0, bbox .radius2 () / std::tan (fieldOfView * 0.5f)))
 	                       - position;
 
 	timeSensor -> startTime          = 1;
@@ -169,6 +171,34 @@ Viewpoint::_set_bind ()
 }
 
 void
+Viewpoint::reshape (const float zNear, const float zFar)
+{
+	glMatrixMode (GL_PROJECTION);
+	glLoadIdentity ();
+
+	GLfloat viewport [4];
+	glGetFloatv (GL_VIEWPORT, viewport);
+
+	GLfloat width  = viewport [2];
+	GLfloat height = viewport [3];
+
+	float ratio = std::tan (fieldOfView / 2) * zNear;
+
+	if (width > height)
+	{
+		float aspect = width * ratio / height;
+		glFrustum (-aspect, aspect, -ratio, ratio, zNear, zFar);
+	}
+	else
+	{
+		float aspect = height * ratio / width;
+		glFrustum (-ratio, ratio, -aspect, aspect, zNear, zFar);
+	}
+
+	glMatrixMode (GL_MODELVIEW);
+}
+
+void
 Viewpoint::display ()
 {
 	setModelViewMatrix (ModelViewMatrix4f ());
@@ -202,34 +232,6 @@ Viewpoint::display ()
 			setDifferenceMatrix (getCurrentViewpoint () -> getTransformationMatrix () * ~transformationMatrix);
 		}
 	}
-}
-
-void
-Viewpoint::reshape (const float zNear, const float zFar)
-{
-	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity ();
-
-	GLfloat viewport [4];
-	glGetFloatv (GL_VIEWPORT, viewport);
-
-	GLfloat width  = viewport [2];
-	GLfloat height = viewport [3];
-
-	float ratio = std::tan (fieldOfView / 2) * zNear;
-
-	if (width > height)
-	{
-		float aspect = width * ratio / height;
-		glFrustum (-aspect, aspect, -ratio, ratio, zNear, zFar);
-	}
-	else
-	{
-		float aspect = height * ratio / width;
-		glFrustum (-ratio, ratio, -aspect, aspect, zNear, zFar);
-	}
-
-	glMatrixMode (GL_MODELVIEW);
 }
 
 } // X3D

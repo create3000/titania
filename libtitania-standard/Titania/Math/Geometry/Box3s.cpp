@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,54 +46,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_VIEWPOINT_H__
-#define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_VIEWPOINT_H__
-
-#include "../Navigation/X3DViewpointNode.h"
+#include "Box3.h"
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-class GeoViewpoint :
-	public X3DViewpointNode
-{
-public:
+template class box3 <float>;
+template class box3 <double>;
+template class box3 <long double>;
 
-	SFRotation            set_orientation;
-	SFVec3d               set_position;
-	SFFloat               fieldOfView;
-	SFBool                headlight;
-	MFString              navType;
-	SFNode <X3DBaseNode> geoOrigin;
-	MFString              geoSystem;
-	SFVec3d               position;
-	SFFloat               speedFactor;
+//
+template std::istream & operator >> (std::istream &, box3 <float> &);
+template std::istream & operator >> (std::istream &, box3 <double> &);
+template std::istream & operator >> (std::istream &, box3 <long double> &);
 
-	GeoViewpoint (X3DExecutionContext* const, bool = true);
+//
+template std::ostream & operator << (std::ostream &, const box3 <float> &);
+template std::ostream & operator << (std::ostream &, const box3 <double> &);
+template std::ostream & operator << (std::ostream &, const box3 <long double> &);
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
-	
-	virtual
-	Vector3f
-	getPosition () const;
-
-	virtual
-	void
-	lookAt (Box3f);
-	
-	virtual
-	void
-	reshape (const float, const float);
-
-	virtual
-	void
-	display ();
-
-};
-
-} // X3D
+} // math
 } // titania
-
-#endif

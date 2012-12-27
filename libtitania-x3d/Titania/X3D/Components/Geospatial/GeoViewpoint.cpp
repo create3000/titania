@@ -95,12 +95,22 @@ GeoViewpoint::create (X3DExecutionContext* const executionContext) const
 	return new GeoViewpoint (executionContext, true);
 }
 
+Vector3f
+GeoViewpoint::getPosition () const
+{
+	return Vector3f ();
+}
+
 void
 GeoViewpoint::lookAt (Box3f)
 { }
 
 void
-GeoViewpoint::draw ()
+GeoViewpoint::reshape (const float zNear, const float zFar)
+{ }
+
+void
+GeoViewpoint::display ()
 { }
 
 } // X3D

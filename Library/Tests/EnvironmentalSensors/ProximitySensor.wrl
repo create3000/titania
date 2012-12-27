@@ -15,6 +15,7 @@ Transform {
       description "Front"
       position 0 0 5
       centerOfRotation 0 0 1
+      retainUserOffsets TRUE
     }
     Viewpoint {
       description "Right"
@@ -115,6 +116,11 @@ function set_active (value, time)
 }
   "
 }
+    Viewpoint {
+      description "Outside"
+      position 0 0 5
+      centerOfRotation 0 0 1
+    }
 
 ROUTE Sensor.position_changed TO Debug.set_position
 ROUTE Sensor.orientation_changed TO Debug.set_orientation
