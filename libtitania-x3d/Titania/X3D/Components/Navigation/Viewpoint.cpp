@@ -104,7 +104,7 @@ Viewpoint::initialize ()
 
 	timeSensor           -> fraction_changed .addInterest (positionInterpolator -> set_fraction);
 	timeSensor           -> isActive         .addInterest (this, &Viewpoint::set_active);
-	positionInterpolator -> value_changed    .addInterest (translation);
+	positionInterpolator -> value_changed    .addInterest (positionOffset);
 
 	set_bind .addInterest (this, &Viewpoint::_set_bind);
 }
@@ -112,34 +112,34 @@ Viewpoint::initialize ()
 Vector3f
 Viewpoint::getPosition () const
 {
-	return position + translation;
+	return position + positionOffset;
 }
 
 void
 Viewpoint::lookAt (Box3f bbox)
 {
 	std::clog << "Look at using viewpoint: " << description << "." << std::endl;
-	
+
 	__LOG__ << bbox << std::endl;
 	__LOG__ << abs (bbox .size ()) << std::endl;
-	
+
 	bbox *= ~getModelViewMatrix ();
 
-	Vector3f translation = bbox .center ()
-	                       + getOrientation () * (Vector3f (0, 0, bbox .radius2 () / std::tan (fieldOfView * 0.5f)))
-	                       - position;
+	Vector3f positionOffset = bbox .center ()
+	                          + getOrientation () * (Vector3f (0, 0, bbox .radius2 () / std::tan (fieldOfView * 0.5f)))
+	                          - position;
 
 	timeSensor -> startTime          = 1;
-	positionInterpolator -> keyValue = { this -> translation, translation };
+	positionInterpolator -> keyValue = { this -> positionOffset, positionOffset };
 
-	centerOfRotation = bbox .center ();
-	center           = Vector3f ();
-	set_bind         = true;
+	centerOfRotation       = bbox .center ();
+	centerOfRotationOffset = Vector3f ();
+	set_bind               = true;
 
 	std::clog << getTypeName () << " {" << std::endl;
 	std::clog << "  position " << getPosition () << std::endl;
 	std::clog << "  orientation " << getOrientation () << std::endl;
-	std::clog << "  centerOfRotation " << getCenterOfRotation () + center << std::endl;
+	std::clog << "  centerOfRotation " << getCenterOfRotation () << std::endl;
 	std::clog << "}" << std::endl;
 }
 
@@ -164,8 +164,8 @@ Viewpoint::_set_bind ()
 			Rotation4f r;
 			getDifferenceMatrix () .get (t, r);
 
-			translation = t;
-			rotation    = r;
+			positionOffset    = t;
+			orientationOffset = r;
 		}
 	}
 }

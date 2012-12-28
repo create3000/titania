@@ -118,7 +118,7 @@ X3DRenderer::draw ()
 	numNodesDrawn            = 0;
 	numTransparentNodesDrawn = 0;
 
-	getCurrentViewpoint () -> draw ();
+	getCurrentViewpoint () -> reshape ();
 
 	// enable global lights
 

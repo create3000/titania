@@ -6,7 +6,13 @@ Background {
   skyColor 1 1 1
 }
 
-OrthoViewpoint {
+Transform {
+  translation 0 0 0
+  rotation 0 1 0 0.78
+  scale 2 2 1
+  children OrthoViewpoint {
+    fieldOfView [ -1, -1, 1, 1 ]
+  }
 }
 
 Transform {

@@ -101,13 +101,13 @@ private:
 	addSpinning ();
 	
 	Vector3f
-	getDistance (const SFNode <Viewpoint> &) const;
+	getDistance () const;
 
 	Vector3f
-	getTranslation (const SFNode <Viewpoint> &) const;
+	getPositionOffset () const;
 	
 	Rotation4f
-	getRotation (const SFNode <Viewpoint> &);
+	getOrientationOffset ();
 	
 	Vector3f
 	getPoint (const double, const double);

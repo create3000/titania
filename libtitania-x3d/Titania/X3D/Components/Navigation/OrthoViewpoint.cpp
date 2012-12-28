@@ -85,7 +85,31 @@ OrthoViewpoint::create (X3DExecutionContext* const executionContext) const
 Vector3f
 OrthoViewpoint::getPosition () const
 {
-	return position + translation;
+	return position + positionOffset;
+}
+
+std::array <float, 4>
+OrthoViewpoint::getFieldOfView ()
+{
+
+	switch (fieldOfView .size ())
+	{
+		case 0:
+			return std::array <float, 4> {{ -1, -1, 1, 1 }};
+			
+		case 1:
+			return std::array <float, 4> {{ fieldOfView [0], -1,
+			                                1, 1 }};
+		case 2:
+			return std::array <float, 4> {{ fieldOfView [0], fieldOfView [1],
+			                                1, 1 }};
+		case 3:
+			return std::array <float, 4> {{ fieldOfView [0], fieldOfView [1],
+			                                fieldOfView [2], 1 }};
+		default:
+			return std::array <float, 4> {{ fieldOfView [0], fieldOfView [1],
+			                                fieldOfView [2], fieldOfView [3] }};
+	}
 }
 
 void
@@ -104,20 +128,29 @@ OrthoViewpoint::reshape (const float zNear, const float zFar)
 	GLfloat width  = viewport [2];
 	GLfloat height = viewport [3];
 
-	float ratio = std::tan (0.78 / 2) * zNear;
+	std::array <float, 4> fieldOfView = getFieldOfView ();
+
+	Box3f    box  = Box3f (Vector3f (fieldOfView [2] - fieldOfView [0], fieldOfView [3] - fieldOfView [1], 0), Vector3f ()) * getModelViewMatrix ();
+	Vector3f size = box .size ();
+
+	__LOG__ << size << std::endl;
 
 	if (width > height)
 	{
-		float aspect = width * ratio / height;
-		glFrustum (-aspect, aspect, -ratio, ratio, zNear, zFar);
+		float x = width * size .x () / height / 2;
+		float y = size .y () / 2;
+
+		glOrtho (-x, x, -y, y, zNear, zFar);
 	}
 	else
 	{
-		float aspect = height * ratio / width;
-		glFrustum (-ratio, ratio, -aspect, aspect, zNear, zFar);
+		float x = size .x () / 2;
+		float y = height * size .y () / width / 2;
+
+		glOrtho (-x, x, -y, y, zNear, zFar);
 	}
 	
-	//glOrtho (-10, 10, -10, 10, zNear, zFar);
+	//glMultMatrixf (Matrix4f (Rotation4f (0, 1, 0, 0.1)) .data ());
 
 	glMatrixMode (GL_MODELVIEW);
 }

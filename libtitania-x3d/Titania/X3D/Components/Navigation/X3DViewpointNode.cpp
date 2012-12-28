@@ -62,24 +62,27 @@ X3DViewpointNode::X3DViewpointNode (bool addToList) :
 	           centerOfRotation (),                                                 // SFVec3f    [in,out] centerOfRotation  0 0 0          (-∞,∞)
 	                       jump (true),                                             // SFBool     [in,out] jump              TRUE
 	          retainUserOffsets (),                                                 // SFBool     [ ]      retainUserOffsets
+	             positionOffset (),                                                 
+	          orientationOffset (),                                                 
+	     centerOfRotationOffset (),                                                 
 	            modelViewMatrix (),                                                 
-	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),                                                 
+	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),  
 	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1), 
 	           differenceMatrix (),                                                 
 	                  addToList (addToList)                                         
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
 
-	setChildren (translation,
-	             rotation,
-	             center);
+	setChildren (positionOffset,
+	             orientationOffset,
+	             centerOfRotationOffset);
 }
 
 void
 X3DViewpointNode::initialize ()
 {
 	X3DBindableNode::initialize ();
-	
+
 	isBound .addInterest (this, &X3DViewpointNode::_set_bind);
 
 	if (addToList)
@@ -89,13 +92,13 @@ X3DViewpointNode::initialize ()
 Rotation4f
 X3DViewpointNode::getOrientation () const
 {
-	return orientation * rotation;
+	return orientation * orientationOffset;
 }
 
 Vector3f
 X3DViewpointNode::getCenterOfRotation () const
 {
-	return centerOfRotation + center;
+	return centerOfRotation + centerOfRotationOffset;
 }
 
 void
@@ -127,9 +130,9 @@ X3DViewpointNode::_set_bind ()
 	if (isBound and not retainUserOffsets)
 	{
 		// Reinitialize user offsets.
-		translation = Vector3f ();
-		rotation    = Rotation4f ();
-		center      = Vector3f ();
+		positionOffset         = Vector3f ();
+		orientationOffset      = Rotation4f ();
+		centerOfRotationOffset = Vector3f ();
 	}
 }
 
@@ -138,7 +141,7 @@ X3DViewpointNode::display ()
 { }
 
 void
-X3DViewpointNode::draw ()
+X3DViewpointNode::reshape ()
 {
 	NavigationInfo* navigationInfo = getCurrentLayer () -> getNavigationInfo ();
 

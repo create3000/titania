@@ -65,7 +65,6 @@
     <None Include="Titania\Math\Numbers\Vector2.h" />
     <None Include="Titania\Math\Numbers\Vector3.h" />
     <None Include="Titania\Math\Numbers\Vector4.h" />
-    <None Include="Titania\Math\Geometry\Box3.h" />
     <None Include="Titania\Math\Geometry\Line3.h" />
     <None Include="Titania\Math\Geometry\Plane3.h" />
     <None Include="Titania\Math\Geometry\Sphere3.h" />
@@ -99,7 +98,7 @@
     <None Include="Titania\Utility.h" />
     <None Include="Titania\Chrono\StopWatch.h" />
     <None Include="Titania\Math\Geometry\Box2.h" />
-    <None Include="Titania\Math\Geometry\Box3s.h" />
+    <None Include="Titania\Math\Geometry\Box3.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
@@ -134,7 +133,6 @@
     <Compile Include="Titania\String\strfsize.cpp" />
     <Compile Include="Titania\Chrono\StopWatch.cpp" />
     <Compile Include="Titania\Math\Geometry\Box2.cpp" />
-    <Compile Include="Titania\Math\Geometry\Box3s.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

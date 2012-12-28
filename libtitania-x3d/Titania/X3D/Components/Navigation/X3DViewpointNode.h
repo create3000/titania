@@ -66,9 +66,9 @@ public:
 	SFBool     jump;
 	SFBool     retainUserOffsets;
 	
-	SFVec3f    translation;
-	SFRotation rotation;
-	SFVec3f    center;
+	SFVec3f    positionOffset;
+	SFRotation orientationOffset;
+	SFVec3f    centerOfRotationOffset;
 	
 	virtual
 	Vector3f
@@ -95,15 +95,15 @@ public:
 
 	virtual
 	void
+	reshape ();
+
+	virtual
+	void
 	reshape (const float, const float) = 0;
 
 	virtual
 	void
 	display ();
-
-	virtual
-	void
-	draw ();
 
 
 protected:

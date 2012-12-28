@@ -167,7 +167,7 @@ X3DLayerNode::select ()
 
 	_viewport -> enable ();
 
-	getViewpoint () -> draw ();
+	getViewpoint () -> reshape ();
 
 	intersect ();
 

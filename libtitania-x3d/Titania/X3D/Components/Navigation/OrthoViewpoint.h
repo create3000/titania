@@ -71,6 +71,9 @@ public:
 	Vector3f
 	getPosition () const;
 	
+	std::array <float, 4>
+	getFieldOfView ();
+
 	virtual
 	void
 	lookAt (Box3f);

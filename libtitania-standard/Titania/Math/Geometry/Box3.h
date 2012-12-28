@@ -86,37 +86,34 @@ public:
 	///  Default constructor. Constructs a box of size 0 0 0 and center 0 0 0,
 	constexpr
 	box3 () :
-		value ()
+		xAxis (),
+		yAxis (),
+		zAxis (),
+		translation ()
 	{ }
 
 	///  Copy constructor.
 	template <class Up>
 	constexpr
 	box3 (const box3 <Up> & box) :
-		value (box .value)
+		xAxis (box .xAxis),
+		yAxis (box .yAxis),
+		zAxis (box .zAxis),
+		translation (box .translation)
 	{ }
 
 	///  Constructs a box of min @a min and max @a max.
 	constexpr
 	box3 (const vector3 <Type> & min, const vector3 <Type> & max, bool) :
-		value
-	{
-		{ vector3 <Type> (min .x (), max .y (), max .z ()),
-		  vector3 <Type> (min .x (), min .y (), max .z ()),
-		  vector3 <Type> (max .x (), max .y (), max .z ()),
-		  vector3 <Type> (max .x (), min .y (), max .z ()),
-		  vector3 <Type> (max .x (), max .y (), min .z ()),
-		  vector3 <Type> (max .x (), min .y (), min .z ()),
-		  vector3 <Type> (min .x (), max .y (), min .z ()),
-		  vector3 <Type> (min .x (), min .y (), min .z ()) }
-	}
-
+		box3 (max - min, min + (max - min) / Type (2))
 	{ }
 
 	///  Constructs a box of size @a size and center @a size.
-	constexpr
 	box3 (const vector3 <Type> & size, const vector3 <Type> & center) :
-		box3 (center - size / Type (2), center + size / Type (2), true)
+		xAxis (size .x () / 2, 0, 0),
+		yAxis (0, size .y () / 2, 0),
+		zAxis (0, 0, size .z () / 2),
+		translation (center .x (), center .y (), center .z ())
 	{ }
 
 	///  @name Assignment operator
@@ -126,7 +123,10 @@ public:
 	box3 &
 	operator = (const box3 <Up> & box)
 	{
-		value = box .value ();
+		xAxis       = box .xAxis ();
+		yAxis       = box .yAxis ();
+		zAxis       = box .zAxis ();
+		translation = box .translation ();
 		return *this;
 	}
 
@@ -136,54 +136,44 @@ public:
 	vector3 <Type>
 	min () const
 	{
-		vector3 <Type> result = value [0];
+		vector3 <Type> a = translation + xAxis + yAxis + zAxis;
+		vector3 <Type> b = translation - xAxis - yAxis - zAxis;
 
-		for (const auto & point : value)
-			result = math::min (result, point);
-
-		return result;
+		return math::min (a, b);
 	}
 
 	vector3 <Type>
 	max () const
 	{
-		vector3 <Type> result = value [0];
+		vector3 <Type> a = translation + xAxis + yAxis + zAxis;
+		vector3 <Type> b = translation - xAxis - yAxis - zAxis;
 
-		for (const auto & point : value)
-			result = math::max (result, point);
-
-		return result;
+		return math::max (a, b);
 	}
+
+	///  Return the size of this box.
+	vector3 <Type>
+	size () const
+	{
+		vector3 <Type> a = translation + xAxis + yAxis + zAxis;
+		vector3 <Type> b = translation - xAxis - yAxis - zAxis;
+
+		return math::max (a, b) - math::min (a, b);
+	}
+
+	///  Return the center of this box.
+	const vector3 <Type> &
+	center () const { return translation; }
 
 	///  Return the radius of the smaller sphere.
 	constexpr Type
 	radius1 () const
-	{
-		return std::min (std::min (std::min (abs (value [0] - value [5]),
-		                                     abs (value [1] - value [4])),
-		                           abs (value [2] - value [7])),
-		                 abs (value [3] - value [6]))
-		       / Type (2);
-	}
+	{ return std::min (std::min (abs (xAxis), abs (yAxis)), abs (zAxis)); }
 
 	///  Return the radius of the great sphere.
 	constexpr Type
 	radius2 () const
-	{
-		return std::max (std::max (std::max (abs (value [0] - value [5]),
-		                                     abs (value [1] - value [4])),
-		                           abs (value [2] - value [7])),
-		                 abs (value [3] - value [6]))
-		       / Type (2);
-	}
-
-	///  Return the size of this box.
-	constexpr vector3 <Type>
-	size () const { return max () - min (); }
-
-	///  Return the center of this box.
-	constexpr vector3 <Type>
-	center () const { return value [0] + (value [5] - value [0]) / Type (2); }
+	{ return abs (xAxis + yAxis + zAxis); }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this vector2 inplace.
@@ -213,22 +203,18 @@ public:
 	///  Translate this box by @a translation.
 	template <class Up>
 	box3 &
-	operator += (const vector3 <Up> & translation)
+	operator += (const vector3 <Up> & t)
 	{
-		for (auto & point : value)
-			point += translation;
-
+		translation += t;
 		return *this;
 	}
 
 	///  Translate this box by @a translation.
 	template <class Up>
 	box3 &
-	operator -= (const vector3 <Up> & translation)
+	operator -= (const vector3 <Up> & t)
 	{
-		for (auto & point : value)
-			point -= translation;
-
+		translation -= t;
 		return *this;
 	}
 
@@ -236,9 +222,9 @@ public:
 	box3 &
 	operator *= (const Type & scale)
 	{
-		for (auto & point : value)
-			point *= scale;
-
+		xAxis *= scale;
+		yAxis *= scale;
+		zAxis *= scale;
 		return *this;
 	}
 
@@ -246,9 +232,9 @@ public:
 	box3 &
 	operator /= (const Type & scale)
 	{
-		for (auto & point : value)
-			point /= scale;
-
+		xAxis /= scale;
+		yAxis /= scale;
+		zAxis /= scale;
 		return *this;
 	}
 
@@ -263,9 +249,10 @@ public:
 	box3 &
 	multMatrixBox (const matrix4 <Type> & matrix)
 	{
-		for (auto & point : value)
-			point = matrix .multMatrixVec (point);
-
+		xAxis       = matrix .multMatrixDir (xAxis);
+		yAxis       = matrix .multMatrixDir (yAxis);
+		zAxis       = matrix .multMatrixDir (zAxis);
+		translation = matrix .multMatrixVec (translation);
 		return *this;
 	}
 
@@ -273,9 +260,10 @@ public:
 	box3 &
 	multBoxMatrix (const matrix4 <Type> & matrix)
 	{
-		for (auto & point : value)
-			point = matrix .multVecMatrix (point);
-
+		xAxis       = matrix .multDirMatrix (xAxis);
+		yAxis       = matrix .multDirMatrix (yAxis);
+		zAxis       = matrix .multDirMatrix (zAxis);
+		translation = matrix .multVecMatrix (translation);
 		return *this;
 	}
 
@@ -288,7 +276,10 @@ public:
 
 private:
 
-	std::array <vector3 <Type>, 8> value;
+	vector3 <Type> xAxis;
+	vector3 <Type> yAxis;
+	vector3 <Type> zAxis;
+	vector3 <Type> translation;
 
 };
 
