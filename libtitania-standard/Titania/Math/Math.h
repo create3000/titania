@@ -84,6 +84,13 @@ clamp (const Type & value, const Type & low, const Type & high)
 	return value > low ? (value < high ? value : high) : low;
 }
 
+///  Map @a value in the interval (@a fromLow;@a fromHigh) to the interval (@a toLow;@a toHigh).
+template <class Type>
+Type project (const Type & value, const Type & fromLow, const Type & fromHigh, const Type & toLow, const Type & toHigh)
+{
+	return toLow + ((value - fromLow) / (fromHigh - fromLow)) * (toHigh - toLow);
+}
+
 ///  Linear interpolate between @a source and @a destination by an amout of @a t.
 template <class Type, class T>
 constexpr Type

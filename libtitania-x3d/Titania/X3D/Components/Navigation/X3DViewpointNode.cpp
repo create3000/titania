@@ -83,20 +83,26 @@ X3DViewpointNode::initialize ()
 {
 	X3DBindableNode::initialize ();
 
-	isBound .addInterest (this, &X3DViewpointNode::_set_bind);
+	isBound  .addInterest (this, &X3DViewpointNode::_set_bind);
 
 	if (addToList)
 		getScene () -> addViewpoint (this);
 }
 
+Vector3f
+X3DViewpointNode::getUserPosition () const
+{
+	return getPosition () + positionOffset;
+}
+
 Rotation4f
-X3DViewpointNode::getOrientation () const
+X3DViewpointNode::getUserOrientation () const
 {
 	return orientation * orientationOffset;
 }
 
 Vector3f
-X3DViewpointNode::getCenterOfRotation () const
+X3DViewpointNode::getUserCenterOfRotation () const
 {
 	return centerOfRotation + centerOfRotationOffset;
 }
@@ -127,18 +133,77 @@ X3DViewpointNode::removeFromLayer (X3DLayerNode* const layer)
 void
 X3DViewpointNode::_set_bind ()
 {
-	if (isBound and not retainUserOffsets)
+	if (isBound)
 	{
-		// Reinitialize user offsets.
-		positionOffset         = Vector3f ();
-		orientationOffset      = Rotation4f ();
-		centerOfRotationOffset = Vector3f ();
+		if (jump)
+		{
+			if (not retainUserOffsets)
+			{
+				// Reinitialize user offsets.
+				positionOffset         = Vector3f ();
+				orientationOffset      = Rotation4f ();
+				centerOfRotationOffset = Vector3f ();
+			}
+		}
+		else
+		{
+			// Apply relative transformations to previous viewpoint.
+			Vector3f   t;
+			Rotation4f r;
+			getDifferenceMatrix () .get (t, r);
+
+			positionOffset    = t;
+			orientationOffset = r;
+		}
+	}
+}
+
+// Notify NavigationInfos when transitions are complete.
+void
+X3DViewpointNode::set_active (const bool & value)
+{
+	if (not value)
+	{
+		for (const auto & layer : getLayers ())
+			layer -> navigationInfoStack .top () -> transitionComplete = getCurrentTime ();
 	}
 }
 
 void
 X3DViewpointNode::display ()
-{ }
+{
+	setModelViewMatrix (ModelViewMatrix4f ());
+
+	Matrix4f transformationMatrix = ModelViewMatrix4f ();
+
+	if (isBound)
+	{
+		if (jump)
+		{
+			transformationMatrix .translate (getUserPosition ());
+			transformationMatrix .rotate (getUserOrientation ());
+
+			setTransformationMatrix (transformationMatrix);
+		}
+		else
+		{
+			transformationMatrix .translate (getUserPosition ());
+			transformationMatrix .rotate (getUserOrientation ());
+
+			setTransformationMatrix (transformationMatrix);
+		}
+	}
+	else
+	{
+		if (not jump)
+		{
+			transformationMatrix .translate (getPosition ());
+			transformationMatrix .rotate (orientation);
+
+			setDifferenceMatrix (getCurrentViewpoint () -> getTransformationMatrix () * ~transformationMatrix);
+		}
+	}
+}
 
 void
 X3DViewpointNode::reshape ()

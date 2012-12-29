@@ -108,7 +108,7 @@ ExamineViewer::set_viewpoint ()
 	//	distance    = viewpoint -> position - viewpoint -> centerOfRotationOffsetOfRotation - viewpoint -> centerOfRotationOffset;
 	//}
 
-	orientation = viewpoint -> getOrientation ();
+	orientation = viewpoint -> getUserOrientation ();
 	distance    = getDistance ();
 
 	__LOG__ << std::endl;
@@ -164,7 +164,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 		Vector3f toPoint = getPoint (event -> x, event -> y);
 
 		Vector3f positionOffset = toPoint - fromPoint;
-		positionOffset = viewpoint -> getOrientation () * positionOffset;
+		positionOffset = viewpoint -> getUserOrientation () * positionOffset;
 
 		viewpoint -> positionOffset         += positionOffset;
 		viewpoint -> centerOfRotationOffset += positionOffset;
@@ -200,7 +200,7 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	Vector3f step           = distance * SCOLL_FACTOR;
-	Vector3f positionOffset = viewpoint -> getOrientation () * Vector3f (0, 0, abs (step));
+	Vector3f positionOffset = viewpoint -> getUserOrientation () * Vector3f (0, 0, abs (step));
 
 	if (event -> direction == 0)      // Move backwards.
 	{
@@ -240,8 +240,8 @@ ExamineViewer::getDistance () const
 {
 	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
 
-	return ~viewpoint -> orientationOffset * (viewpoint -> getPosition ()
-	                                          - viewpoint -> getCenterOfRotation ());
+	return ~viewpoint -> orientationOffset * (viewpoint -> getUserPosition ()
+	                                          - viewpoint -> getUserCenterOfRotation ());
 }
 
 Vector3f
@@ -252,9 +252,9 @@ ExamineViewer::getPositionOffset () const
 	// The new positionOffset is calculated here by calculating the new position and
 	// then subtracting the viewpoints position to get the new positionOffset.
 
-	return viewpoint -> getCenterOfRotation ()
+	return viewpoint -> getUserCenterOfRotation ()
 	       + viewpoint -> orientationOffset * distance
-	       - (viewpoint -> getPosition () - viewpoint -> positionOffset);
+	       - (viewpoint -> getUserPosition () - viewpoint -> positionOffset);
 }
 
 Rotation4f
@@ -264,13 +264,6 @@ ExamineViewer::getOrientationOffset ()
 
 	orientation = rotation * orientation;
 	return ~viewpoint -> orientation * orientation;
-}
-
-///  Map @a value in the interval (fromLow;fromHigh) to the interval (toLow;toHigh).
-template <class Type>
-Type project (const Type & value, const Type & fromLow, const Type & fromHigh, const Type & toLow, const Type & toHigh)
-{
-	return toLow + ((value - fromLow) / (fromHigh - fromLow)) * (toHigh - toLow);
 }
 
 /// Returns the picking point on the center plane.

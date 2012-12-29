@@ -98,7 +98,7 @@ GeoViewpoint::create (X3DExecutionContext* const executionContext) const
 Vector3f
 GeoViewpoint::getPosition () const
 {
-	return Vector3f ();
+	return position .getValue ();
 }
 
 void

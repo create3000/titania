@@ -50,6 +50,7 @@
 #define __TITANIA_X3D_COMPONENTS_NAVIGATION_VIEWPOINT_H__
 
 #include "../Navigation/X3DViewpointNode.h"
+
 #include "../Interpolation/PositionInterpolator.h"
 #include "../Time/TimeSensor.h"
 
@@ -70,6 +71,7 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 	
+	virtual
 	Vector3f
 	getPosition () const;
 
@@ -81,10 +83,6 @@ public:
 	void
 	reshape (const float, const float);
 
-	virtual
-	void
-	display ();
-
 
 private:
 
@@ -94,9 +92,6 @@ private:
 	
 	void
 	set_active (const bool &);
-
-	void
-	_set_bind ();
 
 	SFNode <TimeSensor>           timeSensor;
 	SFNode <PositionInterpolator> positionInterpolator;

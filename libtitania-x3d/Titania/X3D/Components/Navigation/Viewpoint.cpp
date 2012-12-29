@@ -50,7 +50,6 @@
 
 #include "../../Browser/Browser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include <iostream>
 
 namespace titania {
 namespace X3D {
@@ -105,14 +104,12 @@ Viewpoint::initialize ()
 	timeSensor           -> fraction_changed .addInterest (positionInterpolator -> set_fraction);
 	timeSensor           -> isActive         .addInterest (this, &Viewpoint::set_active);
 	positionInterpolator -> value_changed    .addInterest (positionOffset);
-
-	set_bind .addInterest (this, &Viewpoint::_set_bind);
 }
 
 Vector3f
 Viewpoint::getPosition () const
 {
-	return position + positionOffset;
+	return position;
 }
 
 void
@@ -120,13 +117,10 @@ Viewpoint::lookAt (Box3f bbox)
 {
 	std::clog << "Look at using viewpoint: " << description << "." << std::endl;
 
-	__LOG__ << bbox << std::endl;
-	__LOG__ << abs (bbox .size ()) << std::endl;
-
 	bbox *= ~getModelViewMatrix ();
 
 	Vector3f positionOffset = bbox .center ()
-	                          + getOrientation () * (Vector3f (0, 0, bbox .radius2 () / std::tan (fieldOfView * 0.5f)))
+	                          + getUserOrientation () * (Vector3f (0, 0, bbox .greater_radius () / std::tan (fieldOfView * 0.5f)))
 	                          - position;
 
 	timeSensor -> startTime          = 1;
@@ -137,9 +131,9 @@ Viewpoint::lookAt (Box3f bbox)
 	set_bind               = true;
 
 	std::clog << getTypeName () << " {" << std::endl;
-	std::clog << "  position " << getPosition () << std::endl;
-	std::clog << "  orientation " << getOrientation () << std::endl;
-	std::clog << "  centerOfRotation " << getCenterOfRotation () << std::endl;
+	std::clog << "  position " << getUserPosition () << std::endl;
+	std::clog << "  orientation " << getUserOrientation () << std::endl;
+	std::clog << "  centerOfRotation " << getUserCenterOfRotation () << std::endl;
 	std::clog << "}" << std::endl;
 }
 
@@ -150,23 +144,6 @@ Viewpoint::set_active (const bool & value)
 	{
 		for (const auto & layer : getLayers ())
 			layer -> navigationInfoStack .top () -> transitionComplete = getCurrentTime ();
-	}
-}
-
-void
-Viewpoint::_set_bind ()
-{
-	if (set_bind)
-	{
-		if (not jump)
-		{
-			Vector3f   t;
-			Rotation4f r;
-			getDifferenceMatrix () .get (t, r);
-
-			positionOffset    = t;
-			orientationOffset = r;
-		}
 	}
 }
 
@@ -196,42 +173,6 @@ Viewpoint::reshape (const float zNear, const float zFar)
 	}
 
 	glMatrixMode (GL_MODELVIEW);
-}
-
-void
-Viewpoint::display ()
-{
-	setModelViewMatrix (ModelViewMatrix4f ());
-
-	Matrix4f transformationMatrix = ModelViewMatrix4f ();
-
-	if (isBound)
-	{
-		if (jump)
-		{
-			transformationMatrix .translate (getPosition ());
-			transformationMatrix .rotate (getOrientation ());
-
-			setTransformationMatrix (transformationMatrix);
-		}
-		else
-		{
-			transformationMatrix .translate (getPosition ());
-			transformationMatrix .rotate (getOrientation ());
-
-			setTransformationMatrix (transformationMatrix);
-		}
-	}
-	else
-	{
-		if (not jump)
-		{
-			transformationMatrix .translate (position);
-			transformationMatrix .rotate (orientation);
-
-			setDifferenceMatrix (getCurrentViewpoint () -> getTransformationMatrix () * ~transformationMatrix);
-		}
-	}
 }
 
 } // X3D

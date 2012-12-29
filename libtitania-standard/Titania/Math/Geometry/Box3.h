@@ -133,30 +133,26 @@ public:
 	///  @name Element access
 
 	///  Return the center of this box.
-	vector3 <Type>
+	constexpr vector3 <Type>
 	min () const
 	{
-		vector3 <Type> a = translation + xAxis + yAxis + zAxis;
-		vector3 <Type> b = translation - xAxis - yAxis - zAxis;
-
-		return math::min (a, b);
+		return math::min (translation + xAxis + yAxis + zAxis,
+		                  translation - xAxis - yAxis - zAxis);
 	}
 
-	vector3 <Type>
+	constexpr vector3 <Type>
 	max () const
 	{
-		vector3 <Type> a = translation + xAxis + yAxis + zAxis;
-		vector3 <Type> b = translation - xAxis - yAxis - zAxis;
-
-		return math::max (a, b);
+		return math::max (translation + xAxis + yAxis + zAxis,
+		                  translation - xAxis - yAxis - zAxis);
 	}
 
 	///  Return the size of this box.
 	vector3 <Type>
 	size () const
 	{
-		vector3 <Type> a = translation + xAxis + yAxis + zAxis;
-		vector3 <Type> b = translation - xAxis - yAxis - zAxis;
+		vector3 <Type> a = xAxis + yAxis + zAxis;
+		vector3 <Type> b = - xAxis - yAxis - zAxis;
 
 		return math::max (a, b) - math::min (a, b);
 	}
@@ -167,12 +163,12 @@ public:
 
 	///  Return the radius of the smaller sphere.
 	constexpr Type
-	radius1 () const
+	lesser_radius () const
 	{ return std::min (std::min (abs (xAxis), abs (yAxis)), abs (zAxis)); }
 
 	///  Return the radius of the great sphere.
 	constexpr Type
-	radius2 () const
+	greater_radius () const
 	{ return abs (xAxis + yAxis + zAxis); }
 
 	///  @name  Arithmetic operations
@@ -183,16 +179,16 @@ public:
 	box3 &
 	operator += (const box3 <Up> & box)
 	{
-		vector3 <Type> min = this -> min ();
-		vector3 <Type> max = this -> max ();
+		vector3 <Type> lhs_min = this -> min ();
+		vector3 <Type> lhs_max = this -> max ();
 
-		vector3 <Type> box_min = box .min ();
-		vector3 <Type> box_max = box .max ();
+		vector3 <Type> rhs_min = box .min ();
+		vector3 <Type> rhs_max = box .max ();
 
-		if (min not_eq max)
+		if (lhs_min not_eq lhs_max)
 		{
-			if (box_min not_eq box_max)
-				return *this = box3 (math::min (min, box_min), math::max (max, box_max), true);
+			if (rhs_min not_eq rhs_max)
+				return *this = box3 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), true);
 
 			return *this;
 		}

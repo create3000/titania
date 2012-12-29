@@ -1578,6 +1578,7 @@
     <None Include="Tests\Navigation\LookAt.wrl" />
     <None Include="Tests\Navigation\test.wrl" />
     <None Include="Tests\Navigation\OrthoViewpoint.wrl" />
+    <None Include="Tests\Navigation\IsometricViewpoint.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

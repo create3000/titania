@@ -342,55 +342,70 @@ public:
 	///  All these operators modify this matrix4 inplace.
 
 	///@{
+	///  Returns the deteminant of this matrix.
 	Type
 	determinant () const;
 
+	///  Returns this matrix transposed.
 	matrix4 &
 	transpose ();
 
+	///  Returns this matrix inversed.
 	matrix4 &
 	inverse ();
 
+	///  Returns this matrix multiplies by @a scalar.
 	matrix4 &
 	operator *= (const Type &);
 
+	///  Returns this matrix right multiplied by @a matrix.
 	template <class T>
 	matrix4 &
 	operator *= (const matrix4 <T> &);
 
+	///  Returns this matrix divided by @a scalar.
 	matrix4 &
 	operator /= (const Type &);
 
+	///  Returns this matrix left multiplied by @a matrix.
 	template <class T>
 	matrix4 &
 	multLeft (const matrix4 <T> &);
 
+	///  Returns this matrix right multiplied by @a matrix.
 	template <class T>
 	matrix4 &
 	multRight (const matrix4 <T> &);
 
+	///  Returns a new vector that is @vector multiplies by matrix.
 	template <class T>
 	vector3 <Type>
 	multVecMatrix (const vector3 <T> &) const;
 
+	///  Returns a new vector that is matrix multiplies by @vector.
 	template <class T>
 	vector3 <Type>
 	multMatrixVec (const vector3 <T> &) const;
 
+	///  Returns a new vector that is @vector (a normal or direction vector) multiplies by matrix.
 	template <class T>
 	vector3 <Type>
 	multDirMatrix (const vector3 <T> &) const;
 
+	///  Returns a new vector that is matrix multiplies by @vector (a normal or direction vector) (a normal or direction vector) (a normal or direction vector).
 	template <class T>
 	vector3 <Type>
 	multMatrixDir (const vector3 <T> &) const;
 
+	///  Returns this matrix translated by @a translation.
 	void
 	translate (const vector3 <Type> &);
 
+	///  Returns this matrix rotated by @a rotation.
 	void
 	rotate (const rotation4 <Type> &);
 
+	///  Returns this matrix scaled by @a scale.
 	void
 	scale (const vector3 <Type> &);
 
@@ -901,6 +916,9 @@ matrix4 <Type>::operator /= (const Type & t)
 	return *this;
 }
 
+/**
+ * It takes 64 multiplies and 64 adds.
+ */
 template <class Type>
 template <class T>
 matrix4 <Type> &
@@ -935,6 +953,9 @@ matrix4 <Type>::multLeft (const matrix4 <T> & matrix)
 	#undef MULT_LEFT
 }
 
+/**
+ * It takes 64 multiplies and 64 adds.
+ */
 template <class Type>
 template <class T>
 matrix4 <Type> &
@@ -969,6 +990,9 @@ matrix4 <Type>::multRight (const matrix4 <T> & matrix)
 	#undef MULT_RIGHT
 }
 
+/**
+ * It takes 12 multiplies, 3 divs and 12 adds.
+ */
 template <class Type>
 template <class T>
 vector3 <Type>
@@ -981,6 +1005,9 @@ matrix4 <Type>::multVecMatrix (const vector3 <T> & vector) const
 	                       (vector .x () * array [2] + vector .y () * array [6] + vector .z () * array [10] + array [14]) / w);
 }
 
+/**
+ * It takes 12 multiplies, 3 divs and 12 adds.
+ */
 template <class Type>
 template <class T>
 vector3 <Type>
@@ -993,6 +1020,9 @@ matrix4 <Type>::multMatrixVec (const vector3 <T> & vector) const
 	                       (vector .x () * array [8] + vector .y () * array [9] + vector .z () * array [10] + array [11]) / w);
 }
 
+/**
+ * It takes 9 multiplies and 6 adds.
+ */
 template <class Type>
 template <class T>
 vector3 <Type>
@@ -1003,6 +1033,9 @@ matrix4 <Type>::multDirMatrix (const vector3 <T> & vector) const
 	                       vector .x () * array [2] + vector .y () * array [6] + vector .z () * array [10]);
 }
 
+/**
+ * It takes 9 multiplies and 6 adds.
+ */
 template <class Type>
 template <class T>
 vector3 <Type>
@@ -1013,6 +1046,9 @@ matrix4 <Type>::multMatrixDir (const vector3 <T> & vector) const
 	                       vector .x () * array [8] + vector .y () * array [9] + vector .z () * array [10]);
 }
 
+/**
+ * It takes 9 multiplies and 15 adds.
+ */
 template <class Type>
 void
 matrix4 <Type>::translate (const vector3 <Type> & translation)
@@ -1029,6 +1065,9 @@ matrix4 <Type>::translate (const vector3 <Type> & translation)
 	#undef TRANSLATE
 }
 
+/**
+ * Takes the same as a multLeft and a rotation (rot).
+ */
 template <class Type>
 inline
 void
@@ -1037,6 +1076,9 @@ matrix4 <Type>::rotate (const rotation4 <Type> & rotation)
 	multLeft (matrix4 <Type> (rotation));
 }
 
+/**
+ * It takes 9 multiplies.
+ */
 template <class Type>
 void
 matrix4 <Type>::scale (const vector3 <Type> & scaleFactor)

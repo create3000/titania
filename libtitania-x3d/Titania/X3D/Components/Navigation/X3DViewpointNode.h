@@ -74,11 +74,14 @@ public:
 	Vector3f
 	getPosition () const = 0;
 
+	Vector3f
+	getUserPosition () const;
+
 	Rotation4f
-	getOrientation () const;
+	getUserOrientation () const;
 
 	Vector3f
-	getCenterOfRotation () const;
+	getUserCenterOfRotation () const;
 
 	void
 	setTransformationMatrix (const Matrix4f &);
@@ -143,6 +146,9 @@ private:
 	
 	void
 	_set_bind ();
+
+	void
+	set_active (const bool &);
 
 	Matrix4f modelViewMatrix;
 	Matrix4f transformationMatrix;
