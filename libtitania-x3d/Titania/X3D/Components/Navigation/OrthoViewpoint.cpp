@@ -48,7 +48,6 @@
 
 #include "OrthoViewpoint.h"
 
-#include "../../Browser/Browser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -74,35 +73,6 @@ OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext, boo
 	addField (inputOutput, "retainUserOffsets", retainUserOffsets);
 	addField (outputOnly,  "bindTime",          bindTime);
 	addField (outputOnly,  "isBound",           isBound);
-}
-
-void
-OrthoViewpoint::initialize ()
-{
-	X3DViewpointNode::initialize ();
-
-	timeSensor                  = new TimeSensor (getExecutionContext ());
-	timeSensor -> stopTime      = 1;
-	timeSensor -> cycleInterval = 0.2;
-	timeSensor -> setup ();
-
-	positionInterpolator        = new PositionInterpolator (getExecutionContext ());
-	positionInterpolator -> key = { 0, 1 };
-	positionInterpolator -> setup ();
-
-	timeSensor           -> fraction_changed .addInterest (positionInterpolator -> set_fraction);
-	timeSensor           -> isActive         .addInterest (this, &OrthoViewpoint::set_active);
-	positionInterpolator -> value_changed    .addInterest (positionOffset);
-}
-
-void
-OrthoViewpoint::set_active (const bool & value)
-{
-	if (not value)
-	{
-		for (const auto & layer : getLayers ())
-			layer -> navigationInfoStack .top () -> transitionComplete = getCurrentTime ();
-	}
 }
 
 X3DBaseNode*
@@ -141,29 +111,12 @@ OrthoViewpoint::getFieldOfView ()
 	}
 }
 
-void
-OrthoViewpoint::lookAt (Box3f bbox)
+Vector3f
+OrthoViewpoint::lookAtPositionOffset (Box3f bbox)
 {
- 	std::clog << "Look at using viewpoint: " << description << "." << std::endl;
-
-	bbox *= ~getModelViewMatrix ();
-
-	Vector3f positionOffset = bbox .center ()
-	                          + getUserOrientation () * (Vector3f (0, 0, bbox .greater_radius () + 10))
-	                          - position;
-
-	timeSensor -> startTime          = 1;
-	positionInterpolator -> keyValue = { this -> positionOffset, positionOffset };
-
-	centerOfRotation       = bbox .center ();
-	centerOfRotationOffset = Vector3f ();
-	set_bind               = true;
-
-	std::clog << getTypeName () << " {" << std::endl;
-	std::clog << "  position " << getUserPosition () << std::endl;
-	std::clog << "  orientation " << getUserOrientation () << std::endl;
-	std::clog << "  centerOfRotation " << getUserCenterOfRotation () << std::endl;
-	std::clog << "}" << std::endl;
+	return positionOffset = bbox .center ()
+	                        + getUserOrientation () * (Vector3f (0, 0, bbox .greater_radius () + 10))
+	                        - position;
 }
 
 void

@@ -78,10 +78,6 @@ public:
 	virtual
 	Vector3f
 	getPosition () const;
-
-	virtual
-	void
-	lookAt (Box3f);
 	
 	virtual
 	void
@@ -90,6 +86,12 @@ public:
 	virtual
 	void
 	display ();
+	
+	
+private:
+
+	Vector3f
+	lookAtPositionOffset (Box3f);
 
 };
 

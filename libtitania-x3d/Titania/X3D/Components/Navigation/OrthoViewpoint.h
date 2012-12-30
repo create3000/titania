@@ -51,9 +51,6 @@
 
 #include "../Navigation/X3DViewpointNode.h"
 
-#include "../Interpolation/PositionInterpolator.h"
-#include "../Time/TimeSensor.h"
-
 namespace titania {
 namespace X3D {
 
@@ -80,24 +77,14 @@ public:
 
 	virtual
 	void
-	lookAt (Box3f);
-
-	virtual
-	void
 	reshape (const float, const float);
-
-
+	
+	
 private:
 
 	virtual
-	void
-	initialize ();
-
-	void
-	set_active (const bool &);
-
-	SFNode <TimeSensor>           timeSensor;
-	SFNode <PositionInterpolator> positionInterpolator;
+	Vector3f
+	lookAtPositionOffset (Box3f);
 
 };
 

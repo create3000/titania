@@ -52,6 +52,9 @@
 #include "../Core/X3DBindableNode.h"
 #include "../../Types/Geometry.h"
 
+#include "../Interpolation/PositionInterpolator.h"
+#include "../Time/TimeSensor.h"
+
 namespace titania {
 namespace X3D {
 
@@ -94,7 +97,7 @@ public:
 	
 	virtual
 	void
-	lookAt (Box3f) = 0;
+	lookAt (Box3f);
 
 	virtual
 	void
@@ -137,6 +140,10 @@ protected:
 private:
 
 	virtual
+	Vector3f
+	lookAtPositionOffset (Box3f) = 0;
+
+	virtual
 	void
 	bindToLayer (X3DLayerNode* const);
 
@@ -145,15 +152,18 @@ private:
 	removeFromLayer (X3DLayerNode* const);
 	
 	void
-	_set_bind ();
+	set_active (const bool &);
 
 	void
-	set_active (const bool &);
+	_set_bind ();
 
 	Matrix4f modelViewMatrix;
 	Matrix4f transformationMatrix;
 	Matrix4f inverseTransformationMatrix;
 	Matrix4f differenceMatrix;
+
+	SFNode <TimeSensor>           timeSensor;
+	SFNode <PositionInterpolator> positionInterpolator;
 	
 	bool addToList;
 

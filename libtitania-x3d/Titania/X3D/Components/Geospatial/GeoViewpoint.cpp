@@ -101,9 +101,13 @@ GeoViewpoint::getPosition () const
 	return position .getValue ();
 }
 
-void
-GeoViewpoint::lookAt (Box3f)
-{ }
+Vector3f
+GeoViewpoint::lookAtPositionOffset (Box3f bbox)
+{
+	return positionOffset = bbox .center ()
+	                        + getUserOrientation () * (Vector3f (0, 0, bbox .greater_radius () / std::tan (fieldOfView * 0.5f)))
+	                        - getPosition ();
+}
 
 void
 GeoViewpoint::reshape (const float zNear, const float zFar)

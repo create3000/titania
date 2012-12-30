@@ -69,6 +69,8 @@ X3DViewpointNode::X3DViewpointNode (bool addToList) :
 	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),  
 	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1), 
 	           differenceMatrix (),                                                 
+	                 timeSensor (),                                                    
+	       positionInterpolator (),                                                     
 	                  addToList (addToList)                                         
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
@@ -76,12 +78,28 @@ X3DViewpointNode::X3DViewpointNode (bool addToList) :
 	setChildren (positionOffset,
 	             orientationOffset,
 	             centerOfRotationOffset);
+
+	setChildren (timeSensor,
+	             positionInterpolator);
 }
 
 void
 X3DViewpointNode::initialize ()
 {
 	X3DBindableNode::initialize ();
+
+	timeSensor                  = new TimeSensor (getExecutionContext ());
+	timeSensor -> stopTime      = 1;
+	timeSensor -> cycleInterval = 0.2;
+	timeSensor -> setup ();
+
+	positionInterpolator        = new PositionInterpolator (getExecutionContext ());
+	positionInterpolator -> key = { 0, 1 };
+	positionInterpolator -> setup ();
+
+	timeSensor           -> fraction_changed .addInterest (positionInterpolator -> set_fraction);
+	timeSensor           -> isActive         .addInterest (this, &X3DViewpointNode::set_active);
+	positionInterpolator -> value_changed    .addInterest (positionOffset);
 
 	isBound  .addInterest (this, &X3DViewpointNode::_set_bind);
 
@@ -131,6 +149,38 @@ X3DViewpointNode::removeFromLayer (X3DLayerNode* const layer)
 }
 
 void
+X3DViewpointNode::lookAt (Box3f bbox)
+{
+	std::clog << "Look at using viewpoint: " << description << "." << std::endl;
+
+	bbox *= ~getModelViewMatrix ();
+
+	timeSensor -> startTime          = 1;
+	positionInterpolator -> keyValue = { this -> positionOffset, lookAtPositionOffset (bbox) };
+
+	centerOfRotation       = bbox .center ();
+	centerOfRotationOffset = Vector3f ();
+	set_bind               = true;
+
+	std::clog << getTypeName () << " {" << std::endl;
+	std::clog << "  position " << getUserPosition () << std::endl;
+	std::clog << "  orientation " << getUserOrientation () << std::endl;
+	std::clog << "  centerOfRotation " << getUserCenterOfRotation () << std::endl;
+	std::clog << "}" << std::endl;
+}
+
+// Notify NavigationInfos when transitions are complete.
+void
+X3DViewpointNode::set_active (const bool & value)
+{
+	if (not value)
+	{
+		for (const auto & layer : getLayers ())
+			layer -> navigationInfoStack .top () -> transitionComplete = getCurrentTime ();
+	}
+}
+
+void
 X3DViewpointNode::_set_bind ()
 {
 	if (isBound)
@@ -155,17 +205,6 @@ X3DViewpointNode::_set_bind ()
 			positionOffset    = t;
 			orientationOffset = r;
 		}
-	}
-}
-
-// Notify NavigationInfos when transitions are complete.
-void
-X3DViewpointNode::set_active (const bool & value)
-{
-	if (not value)
-	{
-		for (const auto & layer : getLayers ())
-			layer -> navigationInfoStack .top () -> transitionComplete = getCurrentTime ();
 	}
 }
 

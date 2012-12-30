@@ -90,6 +90,8 @@ ExamineViewer::initialize ()
 	navigationInfo -> transitionComplete .addInterest (this, &ExamineViewer::set_viewpoint);
 
 	getBrowser () -> getExecutionContext () -> getActiveLayer () -> viewpointStack .addInterest (this, &ExamineViewer::set_viewpoint);
+	
+	set_viewpoint ();
 }
 
 void
@@ -98,15 +100,6 @@ ExamineViewer::set_viewpoint ()
 	// Update distance and orientationOffset.
 
 	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
-
-	//if (reset)
-	//{
-	//	viewpoint -> positionOffset = Vector3f ();
-	//	viewpoint -> orientationOffset    = Rotation4f ();
-	//
-	//	orientation = viewpoint -> orientation;
-	//	distance    = viewpoint -> position - viewpoint -> centerOfRotationOffsetOfRotation - viewpoint -> centerOfRotationOffset;
-	//}
 
 	orientation = viewpoint -> getUserOrientation ();
 	distance    = getDistance ();
@@ -126,15 +119,11 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 		fromVector = trackballProjectToSphere (event -> x, event -> y);
 
 		rotation = Rotation4f ();
-
-		return false;
 	}
 
-	if (button == 2)
+	else if (button == 2)
 	{
 		fromPoint = getPoint (event -> x, event -> y);
-
-		return false;
 	}
 
 	return false;
@@ -161,13 +150,11 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 	{
 		X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
 
-		Vector3f toPoint = getPoint (event -> x, event -> y);
+		Vector3f toPoint     = getPoint (event -> x, event -> y);
+		Vector3f translation = viewpoint -> getUserOrientation () * (toPoint - fromPoint);
 
-		Vector3f positionOffset = toPoint - fromPoint;
-		positionOffset = viewpoint -> getUserOrientation () * positionOffset;
-
-		viewpoint -> positionOffset         += positionOffset;
-		viewpoint -> centerOfRotationOffset += positionOffset;
+		viewpoint -> positionOffset         += translation;
+		viewpoint -> centerOfRotationOffset += translation;
 
 		fromPoint = toPoint;
 	}
@@ -286,12 +273,11 @@ ExamineViewer::getPoint (const double x, const double y)
 	// Far plane point
 	gluUnProject (x, y, 1, modelview .data (), projection, viewport, &px, &py, &pz);
 	
-	OrthoViewpoint* orthoViewpoint = dynamic_cast <OrthoViewpoint*> (viewpoint);
-	if (orthoViewpoint)
+	if (dynamic_cast <OrthoViewpoint*> (viewpoint))
 		return Vector3f (-px, py, -abs (distance));
 		
 	Vector3f direction = normalize (Vector3f (-px, py, pz));
-
+		
 	return direction * abs (distance) / dot (direction, Vector3f (0, 0, -1));
 }
 

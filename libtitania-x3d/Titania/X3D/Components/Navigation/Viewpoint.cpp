@@ -48,7 +48,6 @@
 
 #include "Viewpoint.h"
 
-#include "../../Browser/Browser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -58,9 +57,7 @@ Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool addToLis
 	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	    X3DViewpointNode (addToList),                                           
 	            position (0, 0, 10),                                            // SFVec3f [in,out] position           0 0 10        (-∞,∞)
-	         fieldOfView (0.785398),                                            // SFFloat [in,out] fieldOfView        π/4           (0,π)
-	          timeSensor (),                                                    
-	positionInterpolator ()                                                     
+	         fieldOfView (0.785398)                                             // SFFloat [in,out] fieldOfView        π/4           (0,π)
 {
 	setComponent ("Navigation");
 	setTypeName ("Viewpoint");
@@ -76,9 +73,6 @@ Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool addToLis
 	addField (inputOutput, "retainUserOffsets", retainUserOffsets);
 	addField (outputOnly,  "bindTime",          bindTime);
 	addField (outputOnly,  "isBound",           isBound);
-
-	setChildren (timeSensor,
-	             positionInterpolator);
 }
 
 X3DBaseNode*
@@ -87,64 +81,18 @@ Viewpoint::create (X3DExecutionContext* const executionContext) const
 	return new Viewpoint (executionContext, true);
 }
 
-void
-Viewpoint::initialize ()
-{
-	X3DViewpointNode::initialize ();
-
-	timeSensor                  = new TimeSensor (getExecutionContext ());
-	timeSensor -> stopTime      = 1;
-	timeSensor -> cycleInterval = 0.2;
-	timeSensor -> setup ();
-
-	positionInterpolator        = new PositionInterpolator (getExecutionContext ());
-	positionInterpolator -> key = { 0, 1 };
-	positionInterpolator -> setup ();
-
-	timeSensor           -> fraction_changed .addInterest (positionInterpolator -> set_fraction);
-	timeSensor           -> isActive         .addInterest (this, &Viewpoint::set_active);
-	positionInterpolator -> value_changed    .addInterest (positionOffset);
-}
-
 Vector3f
 Viewpoint::getPosition () const
 {
 	return position;
 }
 
-void
-Viewpoint::lookAt (Box3f bbox)
+Vector3f
+Viewpoint::lookAtPositionOffset (Box3f bbox)
 {
-	std::clog << "Look at using viewpoint: " << description << "." << std::endl;
-
-	bbox *= ~getModelViewMatrix ();
-
-	Vector3f positionOffset = bbox .center ()
-	                          + getUserOrientation () * (Vector3f (0, 0, bbox .greater_radius () / std::tan (fieldOfView * 0.5f)))
-	                          - position;
-
-	timeSensor -> startTime          = 1;
-	positionInterpolator -> keyValue = { this -> positionOffset, positionOffset };
-
-	centerOfRotation       = bbox .center ();
-	centerOfRotationOffset = Vector3f ();
-	set_bind               = true;
-
-	std::clog << getTypeName () << " {" << std::endl;
-	std::clog << "  position " << getUserPosition () << std::endl;
-	std::clog << "  orientation " << getUserOrientation () << std::endl;
-	std::clog << "  centerOfRotation " << getUserCenterOfRotation () << std::endl;
-	std::clog << "}" << std::endl;
-}
-
-void
-Viewpoint::set_active (const bool & value)
-{
-	if (not value)
-	{
-		for (const auto & layer : getLayers ())
-			layer -> navigationInfoStack .top () -> transitionComplete = getCurrentTime ();
-	}
+	return positionOffset = bbox .center ()
+	                        + getUserOrientation () * (Vector3f (0, 0, bbox .greater_radius () / std::tan (fieldOfView * 0.5f)))
+	                        - position;
 }
 
 void
