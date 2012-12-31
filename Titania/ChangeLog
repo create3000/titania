@@ -1,3 +1,10 @@
+2012-12-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* HistoryEditor.cpp:
+	* OutlineTreeModel.h:
+	* OutlineTreeModel.cpp:
+	* ViewpointEditor.cpp: 
+
 2012-12-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.cpp:

@@ -31,13 +31,7 @@
 namespace titania {
 namespace basic {
 
-gzstream::gzstream () :
-	std::iostream ()
-{ }
-
-
-gzstream::~gzstream ()
-{ }
+template class basic_gzstream <char>;
 
 } // basic
 } // titania

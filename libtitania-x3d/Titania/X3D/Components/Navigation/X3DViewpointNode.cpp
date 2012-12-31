@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-X3DViewpointNode::X3DViewpointNode (bool addToList) :
+X3DViewpointNode::X3DViewpointNode (bool displayed) :
 	            X3DBindableNode (),                                                 
 	                description (),                                                 // SFString   [in,out] description       ""
 	                orientation (),                                                 // SFRotation [in,out] orientation       0 0 1 0        [-1,1],(-∞,∞)
@@ -71,7 +71,7 @@ X3DViewpointNode::X3DViewpointNode (bool addToList) :
 	           differenceMatrix (),                                                 
 	                 timeSensor (),                                                    
 	       positionInterpolator (),                                                     
-	                  addToList (addToList)                                         
+	                  displayed (displayed)                                         
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
 
@@ -103,7 +103,7 @@ X3DViewpointNode::initialize ()
 
 	isBound  .addInterest (this, &X3DViewpointNode::_set_bind);
 
-	if (addToList)
+	if (displayed)
 		getScene () -> addViewpoint (this);
 }
 
@@ -197,7 +197,7 @@ X3DViewpointNode::_set_bind ()
 		}
 		else
 		{
-			// Apply relative transformations to previous viewpoint.
+			// Apply relative transformations from previous viewpoint.
 			Vector3f   t;
 			Rotation4f r;
 			getDifferenceMatrix () .get (t, r);

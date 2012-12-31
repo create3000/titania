@@ -85,7 +85,7 @@ private:
 	void
 	removeFromLayer (X3DLayerNode*);
 	
-	bool addToList;
+	bool displayed;
 
 };
 

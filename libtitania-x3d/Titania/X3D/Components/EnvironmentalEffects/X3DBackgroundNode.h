@@ -108,7 +108,7 @@ private:
 	std::vector <GLfloat> glPoints;
 	GLsizei               numIndices;
 	
-	bool addToList;
+	bool displayed;
 
 };
 

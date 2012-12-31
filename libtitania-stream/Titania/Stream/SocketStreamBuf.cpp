@@ -157,7 +157,7 @@ socketstreambuf::wait (Direction for_recv, size_t timeout)
 socketstreambuf*
 socketstreambuf::close ()
 {
-	if (opened)
+	if (is_open ())
 	{
 		opened = false;
 
@@ -189,7 +189,7 @@ socketstreambuf::underflow ()   // used for input buffer only
 	if (gptr () && (gptr () < egptr ()))
 		return *reinterpret_cast <unsigned char*> (gptr ());
 
-	if (! opened)
+	if (! is_open ())
 		return EOF;
 
 	// Move buffer to back buffer area.
@@ -200,8 +200,8 @@ socketstreambuf::underflow ()   // used for input buffer only
 
 	wait (RECEIVE, 60000L);
 
-	size_t   bytesRead;
-	CURLcode retcode = curl_easy_recv (curl, buffer + bufferSize, bufferSize, &bytesRead);
+	size_t   bytesRead = 0;
+	CURLcode retcode   = curl_easy_recv (curl, buffer + bufferSize, bufferSize, &bytesRead);
 
 	if (retcode not_eq CURLE_OK)
 		return EOF;

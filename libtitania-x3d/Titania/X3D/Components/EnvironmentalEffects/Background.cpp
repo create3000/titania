@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-Background::Background (X3DExecutionContext* const executionContext, bool addToList) :
+Background::Background (X3DExecutionContext* const executionContext, bool displayed) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DBackgroundNode (addToList),                                                    
+	X3DBackgroundNode (displayed),                                                    
 	         frontUrl (),                                                    // MFString [in,out] frontUrl   [ ]        [URI]
 	          backUrl (),                                                    // MFString [in,out] backUrl    [ ]        [URI]
 	          leftUrl (),                                                    // MFString [in,out] leftUrl    [ ]        [URI]

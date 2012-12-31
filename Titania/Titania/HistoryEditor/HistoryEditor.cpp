@@ -117,7 +117,7 @@ HistoryEditor::on_map ()
 		row -> set_value (WORLD_URL_COLUMN, item .at ("worldURL"));
 	}
 
-	getScrolledWindow () .queue_draw ();
+	getTreeView () .queue_draw ();
 }
 
 void
@@ -140,7 +140,7 @@ HistoryEditor::set_world ()
 
 	history .setItem (title, worldURL);
 
-	getScrolledWindow () .queue_draw ();
+	getTreeView () .queue_draw ();
 }
 
 void

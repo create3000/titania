@@ -165,7 +165,7 @@ private:
 	SFNode <TimeSensor>           timeSensor;
 	SFNode <PositionInterpolator> positionInterpolator;
 	
-	bool addToList;
+	bool displayed;
 
 };
 

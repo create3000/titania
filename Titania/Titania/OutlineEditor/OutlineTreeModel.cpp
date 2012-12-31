@@ -123,19 +123,19 @@ OutlineTreeModel::get_value_vfunc (const OutlineTreeModel::iterator & iter, int 
 				icon_column_type::ValueType val;
 				val .init (icon_column_type::ValueType::value_type ());
 
-				if (dynamic_cast <const X3D::X3DBaseNode*> (data -> object))
+				if (dynamic_cast <X3D::X3DBaseNode*> (data -> object))
 					val .set (baseNodeImage);
 
-				else if (dynamic_cast <const X3D::X3DFieldDefinition*> (data -> object))
+				else if (dynamic_cast <X3D::X3DFieldDefinition*> (data -> object))
 				{
-					const auto iter = fieldTypeImages .find (dynamic_cast <const X3D::X3DFieldDefinition*> (data -> object) -> getType ());
+					auto iter = fieldTypeImages .find (dynamic_cast <X3D::X3DFieldDefinition*> (data -> object) -> getType ());
 
 					if (iter not_eq fieldTypeImages .end ())
 					{
 						val .set (iter -> second);
 					}
 				}
-				else if (data -> object == 0 and dynamic_cast <const X3D::X3DField <X3D::X3DBaseNode*>*> (data -> sfnode))
+				else if (data -> object == 0 and dynamic_cast <X3D::X3DField <X3D::X3DBaseNode*>*> (data -> sfnode))
 					val .set (baseNodeImage);
 
 				value .init (icon_column_type::ValueType::value_type ());
@@ -171,13 +171,13 @@ OutlineTreeModel::get_value_vfunc (const OutlineTreeModel::iterator & iter, int 
 				debug_column_type::ValueType val;
 				val .init (debug_column_type::ValueType::value_type ());
 
-				if (dynamic_cast <const X3D::X3DBaseNode*> (data -> object))
-					val .set (dynamic_cast <const X3D::X3DBaseNode*> (data -> object) -> getTypeName () + " " + dynamic_cast <const X3D::X3DBaseNode*> (data -> object) -> getName ());
+				if (dynamic_cast <X3D::X3DBaseNode*> (data -> object))
+					val .set (dynamic_cast <X3D::X3DBaseNode*> (data -> object) -> getTypeName () + " " + dynamic_cast <X3D::X3DBaseNode*> (data -> object) -> getName ());
 
-				else if (dynamic_cast <const X3D::X3DFieldDefinition*> (data -> object))
-					val .set (dynamic_cast <const X3D::X3DFieldDefinition*> (data -> object) -> getName () .first ());
+				else if (dynamic_cast <X3D::X3DFieldDefinition*> (data -> object))
+					val .set (dynamic_cast <X3D::X3DFieldDefinition*> (data -> object) -> getName () .first ());
 
-				else if (data -> object == NULL and dynamic_cast <const X3D::X3DField <X3D::X3DBaseNode*>*> (data -> sfnode))
+				else if (data -> object == NULL and dynamic_cast <X3D::X3DField <X3D::X3DBaseNode*>*> (data -> sfnode))
 					val .set ("NULL");
 
 				value .init (debug_column_type::ValueType::value_type ());
@@ -227,33 +227,35 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 		Data* data = (Data*) iter .gobj () -> user_data;
 		int   i    = data -> index + 1;
 
-		const X3D::X3DObject* parent = data -> parents .at (0) .object;
+		X3D::X3DObject* parent = data -> parents [0] .object;
 
-		if (dynamic_cast <const X3D::X3DBaseNode*> (parent))
+		if (dynamic_cast <X3D::X3DBaseNode*> (parent))
 		{
-			const auto node = dynamic_cast <const X3D::X3DBaseNode*> (parent);
+			auto node = dynamic_cast <X3D::X3DBaseNode*> (parent);
 
 			if ((size_t) i < node -> getFieldDefinitions () .size ())
 			{
 				iter_next .set_stamp (stamp);
-				iter_next .gobj () -> user_data = (void*) new Data (i, node -> getFieldDefinitions () .at (i), 0, data -> parents);
+				iter_next .gobj () -> user_data = (void*) new Data (i, node -> getFieldDefinitions () [i], 0, data -> parents);
 				return true;
 			}
 		}
-		else if (dynamic_cast <const X3D::MFNode <X3D::X3DBaseNode>*> (parent))
+		else if (dynamic_cast <X3D::X3DArray*> (parent))
 		{
-			const auto mfnode = dynamic_cast <const X3D::MFNode <X3D::X3DBaseNode>*> (parent);
+			auto mfnode = dynamic_cast <X3D::X3DArray*> (parent);
 
 			if ((size_t) i < mfnode -> size ())
 			{
+				auto value = dynamic_cast <X3D::X3DField <X3D::X3DBaseNode*>*> (&mfnode -> get1Value (i)) -> getValue ();
+			
 				iter_next .set_stamp (stamp);
-				iter_next .gobj () -> user_data = (void*) new Data (i, mfnode -> at (i), &mfnode -> at (i), data -> parents);
+				iter_next .gobj () -> user_data = (void*) new Data (i, value, &mfnode -> get1Value (i), data -> parents);
 				return true;
 			}
 		}
-		else if (dynamic_cast <const X3D::X3DField <X3D::X3DBaseNode*>*> (parent))
+		else if (dynamic_cast <X3D::X3DField <X3D::X3DBaseNode*>*> (parent))
 		{
-			const auto sfnode = dynamic_cast <const X3D::X3DField <X3D::X3DBaseNode*>*> (parent);
+			auto sfnode = dynamic_cast <X3D::X3DField <X3D::X3DBaseNode*>*> (parent);
 
 			if (i < 1)
 			{
@@ -292,9 +294,9 @@ OutlineTreeModel::iter_n_children_vfunc (const iterator & iter) const
 	{
 		Data* data = (Data*) iter .gobj () -> user_data;
 
-		if (dynamic_cast <const X3D::X3DBaseNode*> (data -> object))
+		if (dynamic_cast <X3D::X3DBaseNode*> (data -> object))
 		{
-			const X3D::X3DBaseNode* node = dynamic_cast <const X3D::X3DBaseNode*> (data -> object);
+			X3D::X3DBaseNode* node = dynamic_cast <X3D::X3DBaseNode*> (data -> object);
 
 			Data::parents_type::const_iterator parent;
 
@@ -307,12 +309,11 @@ OutlineTreeModel::iter_n_children_vfunc (const iterator & iter) const
 			return node -> getFieldDefinitions () .size ();
 
 		}
-		else if (dynamic_cast <const X3D::MFNode <X3D::X3DBaseNode>*> (data -> object))
+		else if (dynamic_cast <X3D::X3DArray*> (data -> object))
 		{
-			const X3D::MFNode <X3D::X3DBaseNode>* mfnode = dynamic_cast <const X3D::MFNode <X3D::X3DBaseNode>*> (data -> object);
-			return mfnode -> size ();
+			return dynamic_cast <X3D::X3DArray*> (data -> object) -> size ();
 		}
-		else if (dynamic_cast <const X3D::X3DField <X3D::X3DBaseNode*>*> (data -> object))
+		else if (dynamic_cast <X3D::X3DField <X3D::X3DBaseNode*>*> (data -> object))
 		{
 			return 1;
 		}
@@ -342,31 +343,33 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int n, iterator
 		Data::parents_type parents = data -> parents;
 		parents .push_front (Item (data -> index, data -> object, data -> sfnode));
 
-		if (dynamic_cast <const X3D::X3DBaseNode*> (data -> object))
+		if (dynamic_cast <X3D::X3DBaseNode*> (data -> object))
 		{
-			const auto node = dynamic_cast <const X3D::X3DBaseNode*> (data -> object);
+			auto node = dynamic_cast <X3D::X3DBaseNode*> (data -> object);
 
 			if ((size_t) n < node -> getFieldDefinitions () .size ())
 			{
 				iter .set_stamp (stamp);
-				iter .gobj () -> user_data = (void*) new Data (n, node -> getFieldDefinitions () .at (n), 0, parents);
+				iter .gobj () -> user_data = (void*) new Data (n, node -> getFieldDefinitions () [n], 0, parents);
 				return true;
 			}
 		}
-		else if (dynamic_cast <const X3D::MFNode <X3D::X3DBaseNode>*> (data -> object))
+		else if (dynamic_cast <X3D::X3DArray*> (data -> object))
 		{
-			const auto mfnode = dynamic_cast <const X3D::MFNode <X3D::X3DBaseNode>*> (data -> object);
+			auto mfnode = dynamic_cast <X3D::X3DArray*> (data -> object);
 
 			if ((size_t) n < mfnode -> size ())
 			{
+				auto value = dynamic_cast <X3D::X3DField <X3D::X3DBaseNode*>*> (&mfnode -> get1Value (n)) -> getValue ();
+			
 				iter .set_stamp (stamp);
-				iter .gobj () -> user_data = (void*) new Data (n, mfnode -> at (n), &mfnode -> at (n), parents);
+				iter .gobj () -> user_data = (void*) new Data (n, value, &mfnode -> get1Value (n), parents);
 				return true;
 			}
 		}
-		else if (dynamic_cast <const X3D::X3DField <X3D::X3DBaseNode*>*> (data -> object))
+		else if (dynamic_cast <X3D::X3DField <X3D::X3DBaseNode*>*> (data -> object))
 		{
-			const auto sfnode = dynamic_cast <const X3D::X3DField <X3D::X3DBaseNode*>*> (data -> object);
+			auto sfnode = dynamic_cast <X3D::X3DField <X3D::X3DBaseNode*>*> (data -> object);
 
 			if (n < 1)
 			{
@@ -393,8 +396,8 @@ OutlineTreeModel::iter_nth_root_child_vfunc (int n, iterator & iter) const
 	{
 		iter .set_stamp (stamp);
 
-		const X3D::X3DObject* object = parent -> at (n);
-		const X3D::X3DObject* data   = &parent -> at (n);
+		X3D::X3DObject* object = parent -> at (n);
+		X3D::X3DObject* data   = &parent -> at (n);
 		Data::parents_type    parents;
 		parents .push_front (Item (-1, parent, 0));
 
@@ -418,9 +421,9 @@ OutlineTreeModel::iter_parent_vfunc (const iterator & child, iterator & iter) co
 
 		Data::parents_type parents = data -> parents;
 
-		const int             i      = parents .at (0) .index;
-		const X3D::X3DObject* object = parents .at (0) .object;
-		const X3D::X3DObject* sfnode = parents .at (0) .sfnode;
+		int             i      = parents [0] .index;
+		X3D::X3DObject* object = parents [0] .object;
+		X3D::X3DObject* sfnode = parents [0] .sfnode;
 
 		if (object == &executionContext -> getRootNodes ())
 			return false;

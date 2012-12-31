@@ -93,7 +93,7 @@ ViewpointEditor::set_viewpoints ()
 		getListStore () -> append () -> set_value (0, viewpoint -> description .getValue ());
 	}
 
-	getScrolledWindow () .queue_draw ();
+	getTreeView () .queue_draw ();
 }
 
 void

@@ -131,15 +131,15 @@ private:
 	{
 	public:
 
-		Item (int index, const X3D::X3DObject* object, const X3D::X3DObject* sfnode) :
+		Item (int index, X3D::X3DObject* object, X3D::X3DObject* sfnode) :
 			index (index),
 			object (object),
 			sfnode (sfnode)
 		{ }
 
-		const int                   index;
-		const X3D::X3DObject* const object;
-		const X3D::X3DObject* const sfnode;
+		const int             index;
+		X3D::X3DObject* const object;
+		X3D::X3DObject* const sfnode;
 
 	};
 
@@ -150,12 +150,12 @@ private:
 
 		typedef std::deque <Item> parents_type;
 
-		Data (int index, const X3D::X3DObject* object, const X3D::X3DObject* sfnode, parents_type parents) :
+		Data (int index, X3D::X3DObject* object, X3D::X3DObject* sfnode, parents_type parents) :
 			Item (index, object, sfnode),
 			parents (parents)
 		{ }
 
-		const parents_type parents;
+		parents_type parents;
 
 	};
 

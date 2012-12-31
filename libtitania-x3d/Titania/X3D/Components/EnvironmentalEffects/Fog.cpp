@@ -55,11 +55,11 @@
 namespace titania {
 namespace X3D {
 
-Fog::Fog (X3DExecutionContext* const executionContext, bool addToList) :
+Fog::Fog (X3DExecutionContext* const executionContext, bool displayed) :
 	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DBindableNode (),                                                    
 	   X3DFogObject (),
-	      addToList (addToList)                                                     
+	      displayed (displayed)                                                     
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Fog");
@@ -85,7 +85,7 @@ Fog::initialize ()
 	X3DBindableNode::initialize ();
 	X3DFogObject::initialize ();
 
-	if (addToList)
+	if (displayed)
 		getScene () -> addFog (this);
 }
 

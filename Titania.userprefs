@@ -1,31 +1,32 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-standard/Titania/Math/Geometry/Box3.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="725" Column="2" />
+      <File FileName="experimental/main.cpp" Line="797" Column="38" />
+      <File FileName="libtitania-gzstream/Titania/Stream/GZStream.h" Line="75" Column="1" />
+      <File FileName="libtitania-gzstream/Titania/Stream/GZStream.cpp" Line="1" Column="1" />
       <File FileName="Library/Tests/Text/test.wrl" Line="11" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.h" Line="87" Column="9" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="317" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/ExamineViewer.h" Line="119" Column="6" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/ExamineViewer.cpp" Line="80" Column="3" />
-      <File FileName="Library/Tests/Navigation/Viewpoint.wrl" Line="3" Column="24" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.h" Line="72" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="77" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Viewpoint.h" Line="75" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Viewpoint.cpp" Line="151" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Transform.cpp" Line="99" Column="1" />
-      <File FileName="Library/Tests/EnvironmentalSensors/ProximitySensor.wrl" Line="33" Column="22" />
-      <File FileName="libtitania-standard/Titania/Math/Geometry/Box3.h" Line="240" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/ShapeContainer.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/ViewVolume.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Widgets/ExamineViewer.h" Line="100" Column="6" />
+      <File FileName="libtitania-x3d/Titania/X3D/Widgets/ExamineViewer.cpp" Line="109" Column="1" />
+      <File FileName="Library/Tests/Navigation/Viewpoint.wrl" Line="5" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.h" Line="165" Column="19" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="62" Column="66" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Viewpoint.h" Line="83" Column="29" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Viewpoint.cpp" Line="51" Column="1" />
+      <File FileName="Library/Tests/EnvironmentalSensors/ProximitySensor.wrl" Line="11" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/OrthoViewpoint.h" Line="77" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/OrthoViewpoint.cpp" Line="51" Column="1" />
+      <File FileName="Library/Tests/Navigation/OrthoViewpoint.wrl" Line="11" Column="16" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/ViewpointGroup.h" Line="65" Column="33" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True" />
           <Node name="build" expanded="True" />
-          <Node name="experimental" expanded="True" />
+          <Node name="experimental" expanded="True" selected="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
               <Node name="mushrooms" expanded="True">
@@ -33,6 +34,7 @@
               </Node>
             </Node>
             <Node name="Tests" expanded="True">
+              <Node name="EnvironmentalEffects" expanded="True" />
               <Node name="EnvironmentalSensors" expanded="True" />
               <Node name="Geometry3D" expanded="True" />
               <Node name="Grouping" expanded="True" />
@@ -41,7 +43,11 @@
               <Node name="Text" expanded="True" />
             </Node>
           </Node>
-          <Node name="libtitania-anyoptions" expanded="True" />
+          <Node name="libtitania-gzstream" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Stream" expanded="True" />
+            </Node>
+          </Node>
           <Node name="libtitania-opengl-surface" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="OpenGL" expanded="True" />
@@ -51,9 +57,7 @@
             <Node name="Titania" expanded="True">
               <Node name="Basic" expanded="True" />
               <Node name="Math" expanded="True">
-                <Node name="Geometry" expanded="True">
-                  <Node name="Box3.h" selected="True" />
-                </Node>
+                <Node name="Geometry" expanded="True" />
                 <Node name="Numbers" expanded="True" />
               </Node>
             </Node>
@@ -63,11 +67,19 @@
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
-                <Node name="Browser" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Geometry3D" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="EnvironmentalSensor" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
+                  <Node name="Geospatial" expanded="True" />
                   <Node name="Grouping" expanded="True" />
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
+                  <Node name="Shape" expanded="True" />
+                  <Node name="Text" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
@@ -93,14 +105,14 @@
                   <Node name="about" expanded="True" />
                   <Node name="Library" expanded="True" />
                 </Node>
-                <Node name="ui" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
+              <Node name="HistoryEditor" expanded="True" />
               <Node name="MotionBlurEditor" expanded="True" />
-              <Node name="UserInterfaces" expanded="True" />
+              <Node name="OutlineEditor" expanded="True" />
+              <Node name="ViewpointEditor" expanded="True" />
             </Node>
           </Node>
           <Node name="x3dtidy" expanded="True" />

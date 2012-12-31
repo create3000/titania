@@ -53,6 +53,7 @@
 #include "../../InputOutput/uncompress.h"
 
 #include <Titania/Basic/URI.h>
+
 #include <fstream>
 #include <iostream>
 #include <sstream>

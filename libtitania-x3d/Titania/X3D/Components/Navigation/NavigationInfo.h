@@ -107,7 +107,7 @@ private:
 	removeFromLayer (X3DLayerNode* const);
 
 	SFNode <DirectionalLight> directionalLight;
-	bool                      addToList;
+	bool                      displayed;
 
 };
 

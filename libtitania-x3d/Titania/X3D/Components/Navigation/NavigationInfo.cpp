@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, bool addToList) :
+NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, bool displayed) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	   X3DBindableNode (),                                                    
 	        avatarSize ({ 0.25, 1.6, 0.75 }),                                 // MFFloat  [in,out] avatarSize         [0.25 1.6 0.75]        [0,∞)
@@ -69,7 +69,7 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, boo
 	   visibilityLimit (),                                                    // SFFloat  [in,out] visibilityLimit    0
 	transitionComplete (),                                                    // SFBool   [out]    transitionComplete                  
 	  directionalLight (new DirectionalLight (executionContext)),
-	         addToList (addToList)         
+	         displayed (displayed)         
 {
 	setComponent ("Navigation");
 	setTypeName ("NavigationInfo");
@@ -103,7 +103,7 @@ NavigationInfo::initialize ()
 
 	directionalLight -> setup ();
 
-	if (addToList)
+	if (displayed)
 		getScene () -> addNavigationInfo (this);
 }
 

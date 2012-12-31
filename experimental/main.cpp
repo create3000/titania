@@ -41,7 +41,8 @@
 #include <Titania/Math/Numbers/Vector3.h>
 #include <Titania/Math/Numbers/Vector4.h>
 #include <Titania/OS.h>
-//#include <Titania/Stream/InputFileStream.h>
+#include <Titania/Stream/GZStream.h>
+#include <Titania/Stream/InputFileStream.h>
 //#include <Titania/Stream/InputHTTPStream.h>
 
 #include <Titania/Algorithm.h>
@@ -54,6 +55,7 @@
 #include <initializer_list>
 #include <iomanip>
 #include <iostream>
+#include <fstream>
 #include <iterator>
 #include <limits>
 #include <map>
@@ -790,46 +792,12 @@ main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 	
-	Matrix4f v, m1, m2, m;
+	ifilestream stream (basic::http::GET, "/home/holger/Projekte/Titania/Titania/share/titania/pages/about/gears.wrl");
+	stream .send ();
 	
-	m1 .translate (Vector3f (1, 2, 3));
-	m2 .translate (Vector3f (2, 3, 4));
-	v  .translate (Vector3f (3, 4, 5));
-	
-	m1 .rotate (Rotation4f (1, 2, 3, 4));
-	m2 .rotate (Rotation4f (2, 3, 4, 5));
-	v  .rotate (Rotation4f (3, 4, 5, 6));
-	
-	m1 .rotate (Rotation4f (1, 2, 3, 4));
-	m2 .rotate (Rotation4f (2, 3, 4, 5));
-	v  .rotate (Rotation4f (3, 4, 5, 6));
-	
-	m1 .scale (Vector3f (1, 2, 3));
-	m2 .scale (Vector3f (2, 3, 4));
-	v  .scale (Vector3f (3, 4, 5));
-
-	m1 .rotate (~Rotation4f (1, 2, 3, 4));
-	m2 .rotate (~Rotation4f (2, 3, 4, 5));
-	v  .rotate (~Rotation4f (3, 4, 5, 6));
+	std::clog << gunzip (stream) .rdbuf () << std::endl;
 	
 	
-	Box3f bbox (Vector3f (2,2,2), Vector3f (2,2,2));
-	
-	
-	
-	
-	
-	std::clog << (m2 * m1 * ~v) * bbox << std::endl;
-	std::clog << bbox * (m2 * m1 * ~v) << std::endl;
-	
-	std::clog << ((bbox * m2) * m1) * ~v << std::endl;
-	std::clog << ~v * (m1 * (m2 * bbox)) << std::endl;
-
-	std::clog << ((bbox * m2) * m1) * ~v << std::endl;
-	std::clog << ~v * (m1 * (m2 * bbox)) << std::endl;
-
-	std::clog << ((Matrix4f () .multLeft (m1) .multLeft (m2) * bbox) *= ~v) << std::endl;
-	std::clog << bbox * Matrix4f () .multLeft (~v) .multLeft (m1) .multLeft (m2) << std::endl;
 
 	//	test_path (basic::path ("/"));
 	//	test_path (basic::path ("/", "/"));

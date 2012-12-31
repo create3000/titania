@@ -49,26 +49,333 @@
 #ifndef __TITANIA_STREAM_GZSTREAM_H__
 #define __TITANIA_STREAM_GZSTREAM_H__
 
+#include <cstddef>
+#include <cstring>
 #include <iostream>
+#include <streambuf>
+
+#include <zlib.h>
 
 namespace titania {
 namespace basic {
 
-class gzstream :
-	public std::iostream
+#define __LOG__ (std::clog << "########## " __FILE__ << ":" << __LINE__ << ": in function '" << __func__ << "': ")
+
+template <class CharT,
+          class Traits = std::char_traits <CharT>>
+class basic_gzstreambuf :
+	public std::basic_streambuf <CharT, Traits>
 {
 public:
 
+	using std::basic_streambuf <CharT, Traits>::pptr;
+	using std::basic_streambuf <CharT, Traits>::pbump;
+	using std::basic_streambuf <CharT, Traits>::gptr;
+	using std::basic_streambuf <CharT, Traits>::egptr;
+	using std::basic_streambuf <CharT, Traits>::pbase;
+	using std::basic_streambuf <CharT, Traits>::setg;
+
+	basic_gzstreambuf (std::basic_streambuf <CharT, Traits>*);
+
+	bool
+	is_open () { return opened; }
+
+	basic_gzstreambuf*
+	open ();
+
+	basic_gzstreambuf*
+	close ();
+
+	virtual
+	typename Traits::int_type
+	overflow (typename Traits::int_type c = EOF);
+
+	virtual
+	typename Traits::int_type
+	underflow ();
+
+	virtual
+	int
+	sync ();
+
+	virtual
+	~basic_gzstreambuf () { close (); }
+
+
+private:
+
+	// Size of put back data buffer & data buffer.
+	static constexpr size_t bufferSize = 16384;
+
+	std::basic_streambuf <CharT, Traits>* streambuf;
+	CharT                                 buffer [2 * bufferSize]; // Data buffer
+	bool                                  opened;
+
+	z_stream zstream;
+	CharT    in [bufferSize];
+
+};
+
+template <class CharT, class Traits>
+basic_gzstreambuf <CharT, Traits>::basic_gzstreambuf (std::basic_streambuf <CharT, Traits>* streambuf) :
+	streambuf (streambuf),
+	opened (false)
+{
+	setg (buffer + bufferSize,                                     // beginning of putback area
+	      buffer + bufferSize,                                     // read position
+	      buffer + bufferSize);                                    // end position
+
+	open ();
+}
+
+template <class CharT, class Traits>
+basic_gzstreambuf <CharT, Traits>*
+basic_gzstreambuf <CharT, Traits>::open ()
+{
+	if (is_open ())
+		return NULL;
+
+	// Test for the magic two-byte gzip header.
+
+	static int GZ_MAGIC = 0x1f8b;
+
+	CharT  magic [2];
+	size_t bytesRead = streambuf -> sgetn (magic, sizeof (magic));
+
+	for (size_t i = 0; i < bytesRead; ++ i)
+		streambuf -> sungetc ();
+
+	if (bytesRead < sizeof (magic) or ((magic [0] << 8) | (magic [1] & 0xff)) not_eq GZ_MAGIC)
+		return this;
+
+	// allocate inflate state
+
+	zstream .zalloc    = Z_NULL;
+	zstream .zfree     = Z_NULL;
+	zstream .opaque    = Z_NULL;
+	zstream .avail_in  = 0;
+	zstream .avail_out = bufferSize;
+	zstream .next_in   = Z_NULL;
+
+	int ret = inflateInit2 (&zstream, 16 + MAX_WBITS);
+
+	opened = (ret == Z_OK);
+
+	//
+	return this;
+}
+
+template <class CharT, class Traits>
+basic_gzstreambuf <CharT, Traits>*
+basic_gzstreambuf <CharT, Traits>::close ()
+{
+	if (is_open ())
+	{
+		opened = false;
+
+		// Cleanup.
+		(void) inflateEnd (&zstream);
+	}
+
+	return this;
+}
+
+template <class CharT, class Traits>
+typename Traits::int_type
+basic_gzstreambuf <CharT, Traits>::overflow (typename Traits::int_type c)
+{
+	__LOG__ << std::endl;
+
+	if (c not_eq Traits::eof ())
+	{
+		*pptr () = c;
+		pbump (1);
+	}
+
+	return c;
+}
+
+template <class CharT, class Traits>
+typename Traits::int_type
+basic_gzstreambuf <CharT, Traits>::underflow () // used for input buffer only
+{
+	if (gptr () && (gptr () < egptr ()))
+		return *reinterpret_cast <CharT*> (gptr ());
+
+	// Move buffer to back buffer area.
+
+	(void) memcpy (buffer, buffer + bufferSize, bufferSize);
+
+	std::streamsize bytesRead = 0;
+
+	if (is_open ())
+	{
+		// Decompress until deflate stream ends or end of file.
+
+		// if output buffer not full.
+		if (zstream .avail_out not_eq 0)
+		{
+			zstream .avail_in = streambuf -> sgetn (in, bufferSize);
+
+			if (zstream .avail_in == 0)
+				return Traits::eof ();
+
+			zstream .next_in = reinterpret_cast <Bytef*> (in);
+		}
+
+		// Run inflate() on input
+		{
+			zstream .avail_out = bufferSize;
+			zstream .next_out  = reinterpret_cast <Bytef*> (buffer + bufferSize);
+
+			int ret = inflate (&zstream, Z_NO_FLUSH);
+
+			switch (ret)
+			{
+				case Z_STREAM_ERROR:
+				case Z_NEED_DICT:
+				case Z_DATA_ERROR:
+				case Z_MEM_ERROR:
+					__LOG__ << std::endl;
+					break;
+
+				default:
+					bytesRead = bufferSize - zstream .avail_out;
+					break;
+			}
+		}
+	}
+	else
+		bytesRead = streambuf -> sgetn (buffer + bufferSize, bufferSize);
+
+	if (bytesRead == 0)
+		return Traits::eof ();
+
+	// reset buffer pointers
+	setg (buffer,                                // beginning of putback area
+	      buffer + bufferSize,                   // read position
+	      buffer + bufferSize + bytesRead);      // end of buffer
+
+	// return next character
+	return *reinterpret_cast <CharT*> (gptr ());
+}
+
+template <class CharT, class Traits>
+int
+basic_gzstreambuf <CharT, Traits>::sync ()
+{
+	if (pptr () && pptr () > pbase ())
+	{
+		return Traits::eof ();
+	}
+
+	return 0;
+}
+
+/**
+ *  Template to represent basic gzstream handling.
+ *
+ *  Extern instantiations for char and wchar_t are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  CharT   Type of ... values.
+ *  @param  Traits  Traits ...
+ */
+
+template <class CharT,
+          class Traits = std::char_traits <CharT>>
+class basic_gzstream :
+	public std::basic_iostream <CharT, Traits>
+{
+public:
+
+	using std::basic_iostream <CharT, Traits>::rdbuf;
+
 	/// @name Constructors
 
-	gzstream ();
+	basic_gzstream ();
+
+	basic_gzstream (basic_gzstream &&);
+
+	//  @name Input operators
+
+	basic_gzstream &
+	operator << (std::basic_istream <CharT, Traits> &);
 
 	/// @name Destructor
 
 	virtual
-	~gzstream ();
+	~basic_gzstream ();
+
+
+private:
+
+	void
+	close ();
 
 };
+
+template <class CharT, class Traits>
+basic_gzstream <CharT, Traits>::basic_gzstream () :
+	std::basic_iostream <CharT, Traits> ()
+{ }
+
+template <class CharT, class Traits>
+basic_gzstream <CharT, Traits>::basic_gzstream (basic_gzstream <CharT, Traits>&& gzstream) :
+	std::basic_iostream <CharT, Traits> (gzstream .rdbuf (NULL))
+{ }
+
+template <class CharT, class Traits>
+basic_gzstream <CharT, Traits> &
+basic_gzstream <CharT, Traits>::operator << (std::basic_istream <CharT, Traits> & istream)
+{
+	close ();
+
+	rdbuf (new basic_gzstreambuf <CharT, Traits> (istream .rdbuf ()));
+
+	return *this;
+}
+
+template <class CharT, class Traits>
+void
+basic_gzstream <CharT, Traits>::close ()
+{
+	if (rdbuf ())
+		delete rdbuf ();
+}
+
+template <class CharT, class Traits>
+basic_gzstream <CharT, Traits>::~basic_gzstream ()
+{
+	close ();
+}
+
+typedef basic_gzstream <char> gzstream;
+
+extern template class basic_gzstream <char>;
+
+template <class CharT,
+          class Traits = std::char_traits <CharT>>
+inline
+basic_gzstream <CharT, Traits>
+operator >> (std::basic_istream <CharT, Traits> & istream,
+             basic_gzstream <CharT, Traits> (* pf) (std::basic_istream <CharT, Traits> &))
+{
+	return pf (istream);
+}
+
+template <class CharT,
+          class Traits = std::char_traits <CharT>>
+inline
+basic_gzstream <CharT, Traits>
+gunzip (std::basic_istream <CharT, Traits> & istream)
+{
+	basic_gzstream <CharT, Traits> igzstream;
+
+	igzstream << istream;
+
+	return igzstream;
+}
 
 } // basic
 } // titania
