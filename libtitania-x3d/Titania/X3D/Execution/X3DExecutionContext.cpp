@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,31 +63,30 @@ namespace titania {
 namespace X3D {
 
 X3DExecutionContext::X3DExecutionContext () :
-	        X3DChildNode (),       
-	            worldURL (),       
-	            encoding ("X3D"),  
-	specificationVersion ("3.0"),  
-	   characterEncoding ("utf8"), 
-	             comment ("Titania 0.1"),     
-	          components (),       
-	             profile (NULL),   
-	          namedNodes (),       
-	       exportedNodes (),       
-	       importedNodes (),       
-	              protos (),       
-	        externProtos (),       
-	              routes (),       
-	           rootNodes ()        
-{
-	rootNodes .setName ("rootNodes");
-}
+	        X3DChildNode (),              
+	            worldURL (),              
+	            encoding ("X3D"),         
+	specificationVersion ("3.0"),         
+	   characterEncoding ("utf8"),        
+	             comment ("Titania 0.1"), 
+	          components (),              
+	             profile (NULL),          
+	          namedNodes (),              
+	       exportedNodes (),              
+	       importedNodes (),              
+	              protos (),              
+	        externProtos (),              
+	              routes (),              
+	           rootNodes ()               
+{ }
 
 void
 X3DExecutionContext::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	rootNodes .addParent (this);
+	// Add rootNodes here as child. This prevents X3DProtoypeInstances from being disposed on construction.
+	setChildren (rootNodes);
 }
 
 void
@@ -121,7 +120,7 @@ X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
 		addExportedNode (exportedNode .getName () [0], exportedNode .getName () [1]);
 
 	for (const auto & route : executionContext -> getRoutes ())
-		route -> clone (this);
+		route -> add (this);
 }
 
 void
@@ -238,7 +237,7 @@ throw (Error <INVALID_NAME>,
 	{
 		try
 		{
-			components .last (declaration -> getComponentName ());
+			components .find_last (declaration -> getComponentName ());
 		}
 		catch (const std::out_of_range &)
 		{
@@ -263,13 +262,13 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return protos .last (name) -> createInstance (setup);
+		return protos .find_last (name) -> createInstance (setup);
 	}
 	catch (const std::out_of_range &)
 	{
 		try
 		{
-			return externProtos .last (name) -> createInstance (setup);
+			return externProtos .find_last (name) -> createInstance (setup);
 		}
 		catch (const std::out_of_range &)
 		{
@@ -317,6 +316,7 @@ throw (Error <IMPORTED_NODE>,
 	if (name .length ())
 	{
 		namedNodes [name] = node;
+		namedNodes [name] .addParent (this);
 		namedNodes [name] .setName (name);
 	}
 
@@ -377,7 +377,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return exportedNodes .last (name);
+		return exportedNodes .find_last (name);
 	}
 	catch (const std::out_of_range &)
 	{
@@ -439,7 +439,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return importedNodes .last (name);
+		return importedNodes .find_last (name);
 	}
 	catch (const std::out_of_range &)
 	{
@@ -455,6 +455,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	protos .push_back (name, createProtoDeclaration (name, interfaceDeclarations));
+	protos .back () .addParent (this);
 
 	return protos .back ();
 }
@@ -485,7 +486,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return protos .last (name);
+		return protos .find_last (name);
 	}
 	catch (const std::out_of_range &)
 	{
@@ -554,7 +555,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return externProtos .last (name);
+		return externProtos .find_last (name);
 	}
 	catch (const std::out_of_range &)
 	{
@@ -611,7 +612,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 //	Dynamic route handling
 
-const SFNode <Route> &
+void
 X3DExecutionContext::addRoute (const SFNode <X3DBaseNode> & sourceNode,      const std::string & sourceFieldId,
                                const SFNode <X3DBaseNode> & destinationNode, const std::string & destinationFieldId)
 throw (Error <INVALID_NODE>,
@@ -625,15 +626,16 @@ throw (Error <INVALID_NODE>,
 	{
 		// Silently return if route already exists.
 
-		return routes .last (fields);
+		routes .find_last (fields);
 	}
 	catch (const std::out_of_range &)
 	{
 		// Add route.
 
-		routes .push_back (fields, new Route (this, sourceNode, fields .first, destinationNode, fields .second));
-
-		return routes .back ();
+		auto & route = routes .push_back (fields, new Route (this, sourceNode, fields .first, destinationNode, fields .second));
+		
+		route .addParent (this);
+		routes .back () .addParent (this);
 	}
 }
 
@@ -649,7 +651,7 @@ throw (Error <INVALID_NODE>,
 
 	try
 	{
-		routes .last (fields) -> disconnect ();
+		routes .find_last (fields) -> disconnect ();
 		routes .erase (fields);
 	}
 	catch (const std::out_of_range &)
@@ -681,6 +683,14 @@ throw (Error <INVALID_NODE>,
 		throw Error <INVALID_FIELD> ("Bad ROUTE specification: Unknown eventIn '" + destinationFieldId + "' in node '" + destinationNode .getNodeName () + "'.");
 
 	return std::make_pair (sourceField, destinationField);
+}
+
+const RouteArray &
+X3DExecutionContext::getRoutes () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return routes;
 }
 
 void
@@ -716,7 +726,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 				<< Generator::TidyBreak
 				<< Generator::TidyBreak;
 		}
-		
+
 		ostream
 			<< Generator::Indent
 			<< getRootNodes () .back ()

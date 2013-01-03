@@ -123,7 +123,7 @@ throw (Error <INVALID_NAME>)
 {
 	try
 	{
-		return fields .last (name);
+		return fields .find_last (name);
 	}
 	catch (const std::out_of_range &)
 	{

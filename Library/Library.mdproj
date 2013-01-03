@@ -1580,6 +1580,7 @@
     <None Include="Examples\Mikroben\preview.gif" />
     <None Include="Examples\Mikroben\index.wrl" />
     <None Include="Examples\Mikroben\stage\indexT.wrl" />
+    <None Include="Tests\Basic\test.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

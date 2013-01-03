@@ -69,6 +69,8 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "activeLayer", activeLayer);
 	addField (inputOutput, "order",       order);
 	addField (inputOutput, "layers",      layers);
+
+	setChildren (children);
 }
 
 X3DBaseNode*
@@ -82,7 +84,6 @@ LayerSet::initialize ()
 {
 	X3DNode::initialize ();
 
-	children .addParent (this);
 	children [0] -> getBackground () -> transparency = 0;
 	children [0] -> setup ();
 

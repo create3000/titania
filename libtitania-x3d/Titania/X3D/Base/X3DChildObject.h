@@ -81,6 +81,22 @@ public:
 	template <class Type>
 	std::deque <Type*>
 	findClosestParents () const;
+	
+	
+	///  @name Children handling
+
+	//@{
+	template <typename ... Args>
+	void
+	setChildren (Args & ...);
+
+	void
+	setChild (X3DChildObject* const child)
+	{ child -> addParent (this); }
+
+	void
+	setChild (X3DChildObject & child)
+	{ child .addParent (this); }
 
 
 	///  @name Event Handling
@@ -127,6 +143,14 @@ private:
 	ChildObjectSet parents;
 
 };
+
+template <typename ... Args>
+inline
+void
+X3DChildObject::setChildren (Args & ... args)
+{
+	basic::pass ((setChild (args), 1) ...);
+}
 
 template <class Type>
 std::deque <Type*>

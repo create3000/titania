@@ -1,5 +1,26 @@
 2013-01-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Route.h:
+	* Route.cpp:
+	* X3DChildObject.h:
+	* TimeSensor.cpp:
+	* X3DExecutionContext.h:
+	* LayerSet.cpp:
+	* SupportedNodes.cpp:
+	* X3DExecutionContext.cpp:
+	* SupportedFields.cpp:
+	* SupportedProfiles.cpp:
+	* X3DLayerNode.cpp:
+	* jsBrowser.cpp:
+	* SupportedComponents.cpp:
+	* X3DUrlObject.cpp:
+	* X3DPrototypeInstance.cpp:
+	* NavigationInfo.cpp:
+	* X3DViewpointNode.cpp:
+	* Background.cpp: 
+
+2013-01-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Surface.h:
 	* Scene.h:
 	* SFImage.cpp:

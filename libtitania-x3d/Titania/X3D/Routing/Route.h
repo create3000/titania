@@ -98,9 +98,9 @@ protected:
 	       const SFNode <X3DBaseNode> &, X3DFieldDefinition* const,
 	       const SFNode <X3DBaseNode> &, X3DFieldDefinition* const);
 
-	virtual
-	Route*
-	clone (X3DExecutionContext* const) const;
+	// Only X3DExecutionContext can clone routes.
+	void
+	add (X3DExecutionContext* const) const;
 
 
 private:
@@ -108,6 +108,10 @@ private:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+	
+	virtual
+	Route*
+	clone (X3DExecutionContext* const) const;
 
 	virtual
 	void
@@ -116,8 +120,8 @@ private:
 	void
 	connect ();
 
-	const SFNode <X3DBaseNode> & sourceNode;
-	const SFNode <X3DBaseNode> & destinationNode;
+	SFNode <X3DBaseNode> sourceNode;
+	SFNode <X3DBaseNode> destinationNode;
 
 	X3DFieldDefinition* const sourceField;
 	X3DFieldDefinition* const destinationField;

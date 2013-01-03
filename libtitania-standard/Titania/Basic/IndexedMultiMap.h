@@ -107,10 +107,10 @@ public:
 	at (const size_type & index) const { return array .at (index); }
 
 	const value_type &
-	first (const key_type &) const;
+	find_first (const key_type &) const;
 
 	const value_type &
-	last (const key_type &) const;
+	find_last (const key_type &) const;
 	//@}
 
 	//@{
@@ -189,7 +189,7 @@ private:
 
 template <class Key, class ValueType>
 const typename indexed_multimap <Key, ValueType>::value_type &
-indexed_multimap <Key, ValueType>::first (const key_type &key) const
+indexed_multimap <Key, ValueType>::find_first (const key_type &key) const
 {
 	const auto range = map .equal_range (key);
 
@@ -201,7 +201,7 @@ indexed_multimap <Key, ValueType>::first (const key_type &key) const
 
 template <class Key, class ValueType>
 const typename indexed_multimap <Key, ValueType>::value_type &
-indexed_multimap <Key, ValueType>::last (const key_type &key) const
+indexed_multimap <Key, ValueType>::find_last (const key_type &key) const
 {
 	auto range = map .equal_range (key);
 

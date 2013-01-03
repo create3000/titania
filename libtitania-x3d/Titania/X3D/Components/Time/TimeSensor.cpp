@@ -89,8 +89,6 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "cycleTime",        cycleTime);
 	addField (outputOnly,  "fraction_changed", fraction_changed);
 	addField (outputOnly,  "time",             time);
-	
-	stop .addParent (this);
 }
 
 X3DBaseNode*
@@ -103,6 +101,8 @@ void
 TimeSensor::initialize ()
 {
 	X3DTimeDependentNode::initialize ();
+	
+	setChildren (stop);
 
 	enabled   .addInterest (this, &TimeSensor::set_enabled);
 	startTime .addInterest (this, &TimeSensor::set_startTime);

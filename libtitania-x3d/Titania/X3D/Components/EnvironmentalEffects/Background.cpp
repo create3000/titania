@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,8 +57,8 @@ namespace titania {
 namespace X3D {
 
 Background::Background (X3DExecutionContext* const executionContext, bool displayed) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DBackgroundNode (displayed),                                                    
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DBackgroundNode (displayed),                                           
 	         frontUrl (),                                                    // MFString [in,out] frontUrl   [ ]        [URI]
 	          backUrl (),                                                    // MFString [in,out] backUrl    [ ]        [URI]
 	          leftUrl (),                                                    // MFString [in,out] leftUrl    [ ]        [URI]
@@ -90,6 +90,14 @@ Background::Background (X3DExecutionContext* const executionContext, bool displa
 	addField (inputOutput, "rightUrl",     rightUrl);
 	addField (inputOutput, "topUrl",       topUrl);
 	addField (inputOutput, "bottomUrl",    bottomUrl);
+
+	setChildren (frontTexture,
+	             backTexture,
+	             leftTexture,
+	             rightTexture,
+	             topTexture,
+	             bottomTexture);
+
 }
 
 X3DBaseNode*
@@ -140,7 +148,7 @@ Background::draw ()
 	glTranslatef (0, 1, 0);
 	glScalef (1, -1, 1);
 	glMatrixMode (GL_MODELVIEW);
-	
+
 	glFrontFace (GL_CCW);
 	glColor4f (1, 1, 1, 1);
 
@@ -277,7 +285,7 @@ Background::dispose ()
 	rightTexture  .dispose ();
 	topTexture    .dispose ();
 	bottomTexture .dispose ();
-	
+
 	X3DBackgroundNode::dispose ();
 }
 

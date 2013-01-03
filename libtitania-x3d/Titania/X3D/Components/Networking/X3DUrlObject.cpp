@@ -73,7 +73,7 @@ X3DUrlObject::X3DUrlObject () :
 {
 	addNodeType (X3DConstants::X3DUrlObject);
 
-	urlError .addParent (this);
+	setChildren (urlError);
 }
 
 void

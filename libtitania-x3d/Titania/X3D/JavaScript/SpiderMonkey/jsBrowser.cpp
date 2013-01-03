@@ -89,7 +89,7 @@ JSPropertySpec jsBrowser::properties [ ] = {
 JSFunctionSpec jsBrowser::functions [ ] = {
 	// X3D functions
 	{ "replaceWorld",         replaceWorld,         1, 0 },
-	{ "createX3DFromString",  replaceWorld,         1, 0 },
+	{ "createX3DFromString",  createX3DFromString,  1, 0 },
 	{ "loadURL",              loadURL,              2, 0 },
 	
 	// VRML functions
@@ -235,7 +235,13 @@ jsBrowser::createX3DFromString (JSContext* context, uintN argc, jsval* vp)
 			
 		X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, x3dSyntax));
+		{
+			SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, x3dSyntax));
+			
+			__LOG__ << scene -> getParents () .size () << std::endl;
+			for (const auto & parent : scene -> getParents ())
+				__LOG__ << parent -> getTypeName () << std::endl;
+		}
 
 		JS_SET_RVAL (context, vp, JSVAL_VOID);
 

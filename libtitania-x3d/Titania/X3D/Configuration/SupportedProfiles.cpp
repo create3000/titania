@@ -219,7 +219,7 @@ throw (Error <NOT_SUPPORTED>)
 {
 	try
 	{
-		return profiles .last (name);
+		return profiles .find_last (name);
 	}
 	catch (const std::out_of_range &)
 	{

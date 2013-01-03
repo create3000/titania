@@ -59,16 +59,16 @@
 namespace titania {
 namespace X3D {
 
-X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, Proto* const proto) :
+X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, Proto* const prototype) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DExecutionContext (),                                                    
-	              proto (proto)                                                
+	              proto (prototype)                                                
 {
-	assert (proto);
-
 	addNodeType (X3DConstants::X3DPrototypeInstance);
 
 	addField (inputOutput, "metadata", metadata);
+
+	setChildren (proto);
 
 	for (const auto & userDefinedField : proto -> getUserDefinedFields ())
 	{

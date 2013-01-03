@@ -69,15 +69,17 @@ X3DViewpointNode::X3DViewpointNode (bool displayed) :
 	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),  
 	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1), 
 	           differenceMatrix (),                                                 
-	                 timeSensor (),                                                    
-	       positionInterpolator (),                                                     
+	                 timeSensor (),                                                 
+	       positionInterpolator (),                                                 
 	                  displayed (displayed)                                         
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
 
-	positionOffset         .addParent (this);
-	orientationOffset      .addParent (this);
-	centerOfRotationOffset .addParent (this);
+	setChildren (positionOffset,
+	             orientationOffset,
+	             centerOfRotationOffset,
+	             timeSensor,
+	             positionInterpolator);
 }
 
 void
@@ -98,7 +100,7 @@ X3DViewpointNode::initialize ()
 	timeSensor           -> isActive         .addInterest (this, &X3DViewpointNode::set_active);
 	positionInterpolator -> value_changed    .addInterest (positionOffset);
 
-	isBound  .addInterest (this, &X3DViewpointNode::_set_bind);
+	isBound .addInterest (this, &X3DViewpointNode::_set_bind);
 
 	if (displayed)
 		getScene () -> addViewpoint (this);
@@ -256,7 +258,7 @@ X3DViewpointNode::dispose ()
 {
 	timeSensor           .dispose ();
 	positionInterpolator .dispose ();
-	             
+
 	getScene () -> removeViewpoint (this);
 
 	X3DBindableNode::dispose ();

@@ -86,6 +86,8 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, boo
 	addField (outputOnly,  "transitionComplete", transitionComplete);
 	addField (outputOnly,  "bindTime",           bindTime);
 	addField (outputOnly,  "isBound",            isBound);
+
+	setChildren (directionalLight);
 }
 
 X3DBaseNode*

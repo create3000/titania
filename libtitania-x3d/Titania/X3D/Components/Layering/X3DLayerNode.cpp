@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,22 +55,28 @@ namespace titania {
 namespace X3D {
 
 X3DLayerNode::X3DLayerNode () :
-	             X3DNode (),                                                   
-	         X3DRenderer (),                                                   
-	          isPickable (true),                                               // SFBool [in,out] isPickable      TRUE
-	            viewport (),                                                   // SFNode [in,out] viewport        NULL      [X3DViewportNode]
-	         addChildren (),                                                   // MFNode[in]      addChildren               [X3DChildNode]
-	      removeChildren (),                                                   // MFNode[in]      removeChildren            [X3DChildNode]
-	            children (),                                                   // MFNode[in,out]  children        [ ]       [X3DChildNode]
-	 navigationInfoStack (new NavigationInfo (getExecutionContext (), false)), 
-	     backgroundStack (new Background     (getExecutionContext (), false)), 
-	            fogStack (new Fog            (getExecutionContext (), false)), 
-	      viewpointStack (new Viewpoint      (getExecutionContext (), false)), 
-	           localFogs (),                                                   
-	     defaultViewport (new Viewport (getExecutionContext ())),              
-	           _viewport (0)                                                   
+	            X3DNode (),                                                   
+	        X3DRenderer (),                                                   
+	         isPickable (true),                                               // SFBool [in,out] isPickable      TRUE
+	           viewport (),                                                   // SFNode [in,out] viewport        NULL      [X3DViewportNode]
+	        addChildren (),                                                   // MFNode[in]      addChildren               [X3DChildNode]
+	     removeChildren (),                                                   // MFNode[in]      removeChildren            [X3DChildNode]
+	           children (),                                                   // MFNode[in,out]  children        [ ]       [X3DChildNode]
+	navigationInfoStack (new NavigationInfo (getExecutionContext (), false)), 
+	    backgroundStack (new Background     (getExecutionContext (), false)), 
+	           fogStack (new Fog            (getExecutionContext (), false)), 
+	     viewpointStack (new Viewpoint      (getExecutionContext (), false)), 
+	          localFogs (),                                                   
+	    defaultViewport (new Viewport (getExecutionContext ())),              
+	          _viewport (0)                                                   
 {
 	addNodeType (X3DConstants::X3DLayerNode);
+
+	setChildren (defaultViewport,
+	             navigationInfoStack .bottom (),
+	             backgroundStack     .bottom (),
+	             fogStack            .bottom (),
+	             viewpointStack      .bottom ());
 
 	//viewpointStack .bottom () -> setName ("Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ()));
 	//viewpointStack .bottom () -> description  = "Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ());
@@ -82,7 +88,6 @@ X3DLayerNode::initialize ()
 	X3DNode::initialize ();
 
 	defaultViewport -> setup ();
-
 	navigationInfoStack .bottom () -> setup ();
 	backgroundStack     .bottom () -> setup ();
 	fogStack            .bottom () -> setup ();
@@ -174,7 +179,7 @@ X3DLayerNode::display ()
 
 	getBackground ()     -> draw ();
 	getNavigationInfo () -> enable ();
-	
+
 	viewpointStack .bottom () -> display ();
 
 	render ();
@@ -196,10 +201,10 @@ X3DLayerNode::set_viewport ()
 void
 X3DLayerNode::dispose ()
 {
-__LOG__ << (void*) this << std::endl;
+	__LOG__ << (void*) this << std::endl;
 
 	defaultViewport .dispose ();
-	
+
 	navigationInfoStack .bottom () -> dispose ();
 	backgroundStack     .bottom () -> dispose ();
 	fogStack            .bottom () -> dispose ();

@@ -57,17 +57,20 @@ namespace titania {
 namespace X3D {
 
 Route::Route (X3DExecutionContext* const executionContext,
-              const SFNode <X3DBaseNode> & sourceNode,      X3DFieldDefinition* const sourceField,
-              const SFNode <X3DBaseNode> & destinationNode, X3DFieldDefinition* const destinationField) :
+              const SFNode <X3DBaseNode> & _sourceNode,      X3DFieldDefinition* const sourceField,
+              const SFNode <X3DBaseNode> & _destinationNode, X3DFieldDefinition* const destinationField) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	        X3DRoute (),                                                    
-	      sourceNode (sourceNode),                                          // SFNode   [ ] sourceNode         NULL
-	 destinationNode (destinationNode),                                     // SFNode   [ ] destinationNode    NULL
+	      sourceNode (_sourceNode),                                          // SFNode   [ ] sourceNode         NULL
+	 destinationNode (_destinationNode),                                     // SFNode   [ ] destinationNode    NULL
 	     sourceField (sourceField),                                         
 	destinationField (destinationField),                                    
 	       connected (false)                                                
 {
 	setTypeName ("Route");
+	
+	addField (initializeOnly, "sourceNode",      sourceNode);
+	addField (initializeOnly, "destinationNode", destinationNode);
 
 	setup ();
 }
@@ -81,6 +84,12 @@ Route::create (X3DExecutionContext* const) const
 Route*
 Route::clone (X3DExecutionContext* const executionContext) const
 {
+	return NULL;
+}
+
+void
+Route::add (X3DExecutionContext* const executionContext) const
+{
 	//	std::clog << __func__ << ": " << getTypeName () << " " << getName () << std::endl;
 
 	try
@@ -89,7 +98,7 @@ Route::clone (X3DExecutionContext* const executionContext) const
 
 		const SFNode <X3DBaseNode> & destinationNode = executionContext -> getNode (getDestinationNode () .getName () .last ());
 
-		return *executionContext -> addRoute (sourceNode, getSourceField (), destinationNode, getDestinationField ());
+		executionContext -> addRoute (sourceNode, getSourceField (), destinationNode, getDestinationField ());
 	}
 	catch (const Error <INVALID_NAME> & error)
 	{

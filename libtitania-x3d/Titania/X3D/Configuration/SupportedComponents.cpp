@@ -132,7 +132,7 @@ throw (Error <NOT_SUPPORTED>)
 {
 	try
 	{
-		return components .last (name);
+		return components .find_last (name);
 	}
 	catch (const std::out_of_range &)
 	{

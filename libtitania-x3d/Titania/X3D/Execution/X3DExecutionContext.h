@@ -318,7 +318,7 @@ public:
 
 	///  @name Dynamic route node handling
 
-	const SFNode <Route> &
+	void
 	addRoute (const SFNode <X3DBaseNode> &, const std::string &,
 	          const SFNode <X3DBaseNode> &, const std::string &)
 	throw (Error <INVALID_NODE>,
@@ -337,8 +337,7 @@ public:
 	const RouteArray &
 	getRoutes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return routes; }
+	       Error <DISPOSED>);
 
 
 	///  @name Input/Output

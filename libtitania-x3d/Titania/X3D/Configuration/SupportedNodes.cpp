@@ -296,7 +296,7 @@ throw (Error <INVALID_NAME>)
 {
 	try
 	{
-		return nodes .last (name);
+		return nodes .find_last (name);
 	}
 	catch (const std::out_of_range &)
 	{
