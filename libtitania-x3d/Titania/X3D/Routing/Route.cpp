@@ -69,8 +69,11 @@ Route::Route (X3DExecutionContext* const executionContext,
 {
 	setTypeName ("Route");
 	
-	addField (initializeOnly, "sourceNode",      sourceNode);
-	addField (initializeOnly, "destinationNode", destinationNode);
+	sourceNode      .setName (_sourceNode      .getName ());
+	destinationNode .setName (_destinationNode .getName ());
+	
+	setChildren (sourceNode,
+	             destinationNode);
 
 	setup ();
 }

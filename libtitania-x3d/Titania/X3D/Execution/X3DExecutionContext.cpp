@@ -454,7 +454,9 @@ X3DExecutionContext::addProtoDeclaration (const std::string & name, const FieldD
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	protos .push_back (name, createProtoDeclaration (name, interfaceDeclarations));
+	auto & proto = protos .push_back (name, createProtoDeclaration (name, interfaceDeclarations));
+	
+	proto .addParent (this);
 	protos .back () .addParent (this);
 
 	return protos .back ();
@@ -469,11 +471,14 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-X3DExecutionContext::updateProtoDeclaration (const std::string & name, const SFNode <Proto> & proto)
+X3DExecutionContext::updateProtoDeclaration (const std::string & name, const SFNode <Proto> & protoDeclaration)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	protos .replace (proto .getNodeName (), name, proto);
+	auto & proto = protos .replace (protoDeclaration .getNodeName (), name, protoDeclaration);
+
+	proto .addParent (this);
+	protos .back () .addParent (this);
 
 	proto .setNodeName (name);
 }
@@ -522,7 +527,10 @@ X3DExecutionContext::addExternProtoDeclaration (const std::string & name, const 
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	externProtos .push_back (name, createExternProtoDeclaration (name, externInterfaceDeclarations, URLList));
+	auto & externProto = externProtos .push_back (name, createExternProtoDeclaration (name, externInterfaceDeclarations, URLList));
+
+	externProto .addParent (this);
+	externProtos .back () .addParent (this);
 
 	return externProtos .back ();
 }
@@ -536,11 +544,14 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-X3DExecutionContext::updateExternProtoDeclaration (const std::string & name, const SFNode <ExternProto> & externProto)
+X3DExecutionContext::updateExternProtoDeclaration (const std::string & name, const SFNode <ExternProto> & externProtoDeclaration)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	externProtos .replace (externProto .getNodeName (), name, externProto);
+	auto & externProto = externProtos .replace (externProtoDeclaration .getNodeName (), name, externProtoDeclaration);
+
+	externProto .addParent (this);
+	externProtos .back () .addParent (this);
 
 	externProto .setNodeName (name);
 }

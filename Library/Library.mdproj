@@ -1581,6 +1581,7 @@
     <None Include="Examples\Mikroben\index.wrl" />
     <None Include="Examples\Mikroben\stage\indexT.wrl" />
     <None Include="Tests\Basic\test.wrl" />
+    <None Include="Tests\Interpolation\PositionInterpolator.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />
