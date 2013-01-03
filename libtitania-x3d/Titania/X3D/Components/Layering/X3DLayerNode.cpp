@@ -62,27 +62,18 @@ X3DLayerNode::X3DLayerNode () :
 	         addChildren (),                                                   // MFNode[in]      addChildren               [X3DChildNode]
 	      removeChildren (),                                                   // MFNode[in]      removeChildren            [X3DChildNode]
 	            children (),                                                   // MFNode[in,out]  children        [ ]       [X3DChildNode]
-	     defaultViewport (new Viewport (getExecutionContext ())),              
 	 navigationInfoStack (new NavigationInfo (getExecutionContext (), false)), 
 	     backgroundStack (new Background     (getExecutionContext (), false)), 
 	            fogStack (new Fog            (getExecutionContext (), false)), 
 	      viewpointStack (new Viewpoint      (getExecutionContext (), false)), 
 	           localFogs (),                                                   
+	     defaultViewport (new Viewport (getExecutionContext ())),              
 	           _viewport (0)                                                   
 {
 	addNodeType (X3DConstants::X3DLayerNode);
 
-	setChildren (defaultViewport,
-	             *navigationInfoStack .bottom (),
-	             *backgroundStack     .bottom (),
-	             *fogStack            .bottom (),
-	             *viewpointStack      .bottom ());
-
-	backgroundStack     .bottom () -> transparency = 1;
-	fogStack            .bottom () -> transparency = 1;
-
-	//viewpointStack      .bottom () -> setName ("Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ()));
-	//viewpointStack      .bottom () -> description  = "Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ());
+	//viewpointStack .bottom () -> setName ("Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ()));
+	//viewpointStack .bottom () -> description  = "Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ());
 }
 
 void
@@ -196,15 +187,24 @@ X3DLayerNode::display ()
 void
 X3DLayerNode::set_viewport ()
 {
-	_viewport = dynamic_cast <Viewport*> (viewport .getValue ());
+	_viewport = *viewport;
 
 	if (not _viewport)
-		_viewport = dynamic_cast <Viewport*> (defaultViewport .getValue ());
+		_viewport = *defaultViewport;
 }
 
 void
 X3DLayerNode::dispose ()
 {
+__LOG__ << (void*) this << std::endl;
+
+	defaultViewport .dispose ();
+	
+	navigationInfoStack .bottom () -> dispose ();
+	backgroundStack     .bottom () -> dispose ();
+	fogStack            .bottom () -> dispose ();
+	viewpointStack      .bottom () -> dispose ();
+
 	X3DNode::dispose ();
 }
 

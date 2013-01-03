@@ -69,10 +69,6 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "activeLayer", activeLayer);
 	addField (inputOutput, "order",       order);
 	addField (inputOutput, "layers",      layers);
-
-	setChildren (children);
-
-	children [0] -> getBackground () -> transparency = 0; // XXX
 }
 
 X3DBaseNode*
@@ -86,6 +82,8 @@ LayerSet::initialize ()
 {
 	X3DNode::initialize ();
 
+	children .addParent (this);
+	children [0] -> getBackground () -> transparency = 0;
 	children [0] -> setup ();
 
 	activeLayer .addInterest (this, &LayerSet::set_activeLayer);
@@ -153,7 +151,9 @@ LayerSet::display ()
 			X3DLayerNode* currentLayer = *children [index];
 
 			getBrowser () -> pushLayer (currentLayer);
+
 			currentLayer  -> display ();
+
 			getBrowser () -> popLayer ();
 		}
 	}
@@ -162,6 +162,8 @@ LayerSet::display ()
 void
 LayerSet::dispose ()
 {
+	children .dispose ();
+	
 	X3DNode::dispose ();
 }
 

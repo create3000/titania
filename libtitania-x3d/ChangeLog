@@ -1,3 +1,43 @@
+2013-01-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Surface.h:
+	* Scene.h:
+	* SFImage.cpp:
+	* Scene.cpp:
+	* X3DWidget.h:
+	* Surface.cpp:
+	* X3DChildObject.h:
+	* X3DWidget.cpp:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* X3DBrowser.cpp:
+	* X3DChildObject.cpp:
+	* ExternProto.cpp:
+	* GarbargeCollector.cpp:
+	* X3DBrowserContext.cpp:
+	* TimeSensor.cpp:
+	* Viewport.h:
+	* Script.cpp:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* LayerSet.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DLayerNode.h:
+	* jsBrowser.h:
+	* X3DLayerNode.cpp:
+	* X3DViewportNode.h:
+	* jsBrowser.cpp:
+	* X3DPrototypeInstance.h:
+	* NavigationInfo.h:
+	* X3DUrlObject.cpp:
+	* X3DPrototypeInstance.cpp:
+	* NavigationInfo.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp:
+	* Background.h:
+	* Background.cpp:
+	* X3DBackgroundNode.h: 
+
 2012-12-31  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DScene.cpp:

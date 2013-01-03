@@ -35,8 +35,7 @@ namespace X3D {
 
 X3DChildObject::X3DChildObject () :
 	X3DObject (), 
-	  parents (), 
-	 children ()  
+	  parents () 
 { }
 
 // Object
@@ -80,12 +79,12 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 			for (auto & child : circle)
 				child -> dispose ();
 
-			return false;
+			return true;
 		}
 
 		dispose ();
 
-		return false;
+		return true;
 	}
 
 	return false;
@@ -110,11 +109,11 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 
 			return false;
 
-			return std::any_of (getParents () .cbegin (),
-			                    getParents () .cend (),
-			                    std::bind (std::mem_fn (&X3DChildObject::hasRoots),
-			                               std::placeholders::_1,
-			                               std::ref (seen)));
+//			return std::any_of (getParents () .cbegin (),
+//			                    getParents () .cend (),
+//			                    std::bind (std::mem_fn (&X3DChildObject::hasRoots),
+//			                               std::placeholders::_1,
+//			                               std::ref (seen)));
 		}
 
 		return false;
@@ -124,38 +123,12 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 	return true;
 }
 
-// Node:
-void
-X3DChildObject::setChild (X3DChildObject* const child)
-{
-	child -> addParent (this);
-	children .insert (child);
-}
-
-void
-X3DChildObject::setChild (X3DChildObject & child)
-{
-	child .addParent (this);
-	children .insert (&child);
-}
-
-const ChildObjectSet &
-X3DChildObject::getChildren () const
-{
-	return children;
-}
-
 // Object
 
 void
 X3DChildObject::dispose ()
 {
 	parents .clear ();
-
-	for (auto & child : children)
-		child -> dispose ();
-
-	children .clear ();
 
 	X3DObject::dispose ();
 }

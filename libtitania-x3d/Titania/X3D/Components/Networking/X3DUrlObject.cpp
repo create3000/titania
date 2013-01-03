@@ -73,7 +73,7 @@ X3DUrlObject::X3DUrlObject () :
 {
 	addNodeType (X3DConstants::X3DUrlObject);
 
-	setChildren (urlError);
+	urlError .addParent (this);
 }
 
 void
@@ -184,7 +184,7 @@ throw (Error <INVALID_URL>,
 			}
 		}
 
-		throw Error <INVALID_URL> ("Couldn't load no URL of " + url .toString () + ".");
+		throw Error <INVALID_URL> ("Couldn't load any URL of " + url .toString () + ".");
 	}
 	else
 		throw Error <INVALID_URL> ("No URL given.");

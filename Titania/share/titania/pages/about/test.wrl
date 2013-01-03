@@ -1,0 +1,12 @@
+#X3D V3.0 utf8 Titania
+
+PROTO Test [ ]
+{
+  Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box { }
+  }
+}
+

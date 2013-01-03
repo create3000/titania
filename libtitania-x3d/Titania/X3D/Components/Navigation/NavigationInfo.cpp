@@ -86,8 +86,6 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, boo
 	addField (outputOnly,  "transitionComplete", transitionComplete);
 	addField (outputOnly,  "bindTime",           bindTime);
 	addField (outputOnly,  "isBound",            isBound);
-
-	setChildren (directionalLight);
 }
 
 X3DBaseNode*
@@ -164,6 +162,8 @@ NavigationInfo::disable ()
 void
 NavigationInfo::dispose ()
 {
+	directionalLight .dispose ();
+
 	getScene () -> removeNavigationInfo (this);
 
 	X3DBindableNode::dispose ();

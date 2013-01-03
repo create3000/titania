@@ -65,25 +65,25 @@ operator << (std::ostream & ostream, const Image & image);
 SFImage::SFImage () :
 	X3DField <Image> () 
 {
-	setChild (get () .array ());
+	get () .array () .addParent (this);
 }
 
 SFImage::SFImage (const SFImage & field) :
 	X3DField <Image> (field)
 {
-	setChild (get () .array ());
+	get () .array () .addParent (this);
 }
 
 SFImage::SFImage (const Image & value) :
 	X3DField <Image> (value)
 {
-	setChild (get () .array ());
+	get () .array () .addParent (this);
 }
 
 SFImage::SFImage (const size_type width, const size_type height, const size_type components, const MFInt32 & array) :
 	X3DField <Image> (Image (width, height, components, array))
 {
-	setChild (get () .array ());
+	get () .array () .addParent (this);
 }
 
 SFImage*

@@ -90,6 +90,11 @@ private:
 	static JSBool supportedComponents (JSContext*, JSObject*, jsid, jsval*);
 	static JSBool supportedProfiles   (JSContext*, JSObject*, jsid, jsval*);
 	static JSBool currentScene        (JSContext*, JSObject*, jsid, jsval*);
+	
+	// X3D functions
+	static JSBool replaceWorld         (JSContext*, uintN, jsval*);
+	static JSBool createX3DFromString  (JSContext*, uintN, jsval*);
+	static JSBool loadURL              (JSContext*, uintN, jsval*);
 
 	// VRML97 functions
 	static JSBool getName              (JSContext*, uintN, jsval*);
@@ -98,8 +103,6 @@ private:
 	static JSBool getCurrentFrameRate  (JSContext*, uintN, jsval*);
 	static JSBool getWorldURL          (JSContext*, uintN, jsval*);
 	static JSBool setDescription       (JSContext*, uintN, jsval*);
-	static JSBool replaceWorld         (JSContext*, uintN, jsval*);
-	static JSBool loadURL              (JSContext*, uintN, jsval*);
 	static JSBool createVrmlFromString (JSContext*, uintN, jsval*);
 	static JSBool createVrmlFromURL    (JSContext*, uintN, jsval*);
 	static JSBool addRoute             (JSContext*, uintN, jsval*);

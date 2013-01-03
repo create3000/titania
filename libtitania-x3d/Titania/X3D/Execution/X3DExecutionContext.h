@@ -146,8 +146,8 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	/// @name Named node handling
-	///@{
+	///  @name Named node handling
+
 	const SFNode <X3DBaseNode> &
 	getNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
@@ -166,10 +166,9 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	///@}
 
-	/// @name Exported nodes handling
-	///@{
+	///  @name Exported nodes handling
+
 	void
 	addExportedNode (const std::string &, const std::string & = "")
 	throw (Error <INVALID_NAME>,
@@ -199,10 +198,9 @@ public:
 	       Error <DISPOSED>)
 	{ return exportedNodes; }
 
-	///@}
 
-	/// @name Imported nodes handling
-	///@{
+	///  @name Imported nodes handling
+
 	void
 	addImportedNode (const SFNode <Inline> &, const std::string &, const std::string & = "")
 	throw (Error <INVALID_NAME>,
@@ -236,10 +234,9 @@ public:
 	       Error <DISPOSED>)
 	{ return importedNodes; }
 
-	///@}
 
-	/// @name Proto declaration handling
-	///@{
+	///  @name Proto declaration handling
+
 	const SFNode <Proto> &
 	addProtoDeclaration (const std::string &, const FieldDefinitionArray &)
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -267,10 +264,9 @@ public:
 	       Error <DISPOSED>)
 	{ return protos; }
 
-	///@}
 
-	/// @name Exterproto declaration handling
-	///@{
+	///  @name Exterproto declaration handling
+
 	const SFNode <ExternProto> &
 	addExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -299,10 +295,9 @@ public:
 	       Error <DISPOSED>)
 	{ return externProtos; }
 
-	///@}
 
-	/// @name Root node handling
-	///@{
+	///  @name Root node handling
+
 	virtual
 	void
 	addRootNode (const SFNode <X3DBaseNode> &)
@@ -320,10 +315,9 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	///@}
 
-	/// @name Dynamic route node handling
-	///@{
+	///  @name Dynamic route node handling
+
 	const SFNode <Route> &
 	addRoute (const SFNode <X3DBaseNode> &, const std::string &,
 	          const SFNode <X3DBaseNode> &, const std::string &)
@@ -346,15 +340,22 @@ public:
 	       Error <DISPOSED>)
 	{ return routes; }
 
-	///@}
+
+	///  @name Input/Output
 
 	void
 	toStream (std::ostream &) const;
+
+		
+	///  @name Dispose
 
 	virtual
 	void
 	dispose ();
 
+
+	///  @name Destructor
+	
 	virtual
 	~X3DExecutionContext ();
 

@@ -46,35 +46,101 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_LAYERING_X3DVIEWPORT_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_LAYERING_X3DVIEWPORT_NODE_H__
+#ifndef __TITANIA_STREAM_GZSTREAM_H__
+#define __TITANIA_STREAM_GZSTREAM_H__
 
-#include "../Grouping/X3DGroupingNode.h"
+#include <istream>
+#include "GZStreamBuf.h"
 
 namespace titania {
-namespace X3D {
+namespace basic {
 
-class X3DViewportNode :
-	public X3DGroupingNode
+/**
+ *  Template to represent basic gzstream handling.
+ *
+ *  Extern instantiations for char and wchar_t are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  CharT   Type of ... values.
+ *  @param  Traits  Traits ...
+ */
+
+template <class CharT,
+          class Traits = std::char_traits <CharT>>
+class basic_igzstream :
+	public std::basic_istream <CharT, Traits>
 {
 public:
 
-	virtual
-	void
-	enable () = 0;
+	using std::basic_istream <CharT, Traits>::rdbuf;
+
+	/// @name Constructors
+
+	basic_igzstream (basic_igzstream &&);
+	
+	basic_igzstream (const std::basic_istream <CharT, Traits> &);
+
+	/// @name Destructor
 
 	virtual
-	void
-	disable () = 0;
-	
-	
-protected:
+	~basic_igzstream ();
 
-	X3DViewportNode ();
+
+private:
+
+	void
+	close ();
 
 };
 
-} // X3D
+template <class CharT, class Traits>
+basic_igzstream <CharT, Traits>::basic_igzstream (basic_igzstream <CharT, Traits>&& gzstream) :
+	std::basic_istream <CharT, Traits> (gzstream .rdbuf (NULL))
+{ }
+
+template <class CharT, class Traits>
+basic_igzstream <CharT, Traits>::basic_igzstream (const std::basic_istream <CharT, Traits> & istream) :
+	std::basic_istream <CharT, Traits> (new basic_gzstreambuf <CharT, Traits> (istream .rdbuf ()))
+{ }
+
+template <class CharT, class Traits>
+void
+basic_igzstream <CharT, Traits>::close ()
+{
+	if (rdbuf ())
+		delete rdbuf ();
+}
+
+template <class CharT, class Traits>
+basic_igzstream <CharT, Traits>::~basic_igzstream ()
+{
+	close ();
+}
+
+typedef basic_igzstream <char> igzstream;
+
+extern template class basic_igzstream <char>;
+
+template <class CharT,
+          class Traits = std::char_traits <CharT>>
+inline
+basic_igzstream <CharT, Traits>
+operator >> (std::basic_istream <CharT, Traits> & istream,
+             basic_igzstream <CharT, Traits> (* pf) (std::basic_istream <CharT, Traits> &))
+{
+	return pf (istream);
+}
+
+template <class CharT,
+          class Traits = std::char_traits <CharT>>
+inline
+basic_igzstream <CharT, Traits>
+gunzip (std::basic_istream <CharT, Traits> & istream)
+{
+	return igzstream (istream);
+}
+
+} // basic
 } // titania
 
 #endif

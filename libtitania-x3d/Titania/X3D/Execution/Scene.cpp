@@ -247,13 +247,13 @@ throw (Error <INVALID_X3D>,
        Error <DISPOSED>)
 {
 	X3DScene::fromStream (istream);
-	
+
 	if (getNavigationInfos () .size ())
 		getNavigationInfos () [0] -> set_bind = true;
-		
+
 	if (getBackgrounds () .size ())
 		getBackgrounds () [0] -> set_bind = true;
-		
+
 	if (getFogs () .size ())
 		getFogs () [0] -> set_bind = true;
 
@@ -261,11 +261,11 @@ throw (Error <INVALID_X3D>,
 
 	if (getWorldURL () .fragment () .length ())
 		getBrowser () -> changeViewpoint (getWorldURL () .fragment ());
-	
+
 	// or bind first viewpoint in viewpoint stack.
-	
+
 	else if (getViewpoints () .size ())
-		getViewpoints () [0] -> set_bind = true;	
+		getViewpoints () [0] -> set_bind = true;
 }
 
 // Dispose
@@ -273,6 +273,8 @@ throw (Error <INVALID_X3D>,
 void
 Scene::clear ()
 {
+	__LOG__ << getWorldURL () << std::endl;
+	
 	layerSet .set (new LayerSet (this));
 	layerSet -> setup ();
 
@@ -282,16 +284,23 @@ Scene::clear ()
 void
 Scene::dispose ()
 {
-	//std::clog << "\tDisposing Scene: " << getWorldURL () << std::endl;
+	__LOG__ << getWorldURL () << std::endl;
 
 	navigationInfos .dispose ();
 	backgrounds     .dispose ();
 	viewpoints      .dispose ();
 	fogs            .dispose ();
 
+	layerSet .dispose ();
+
 	X3DScene::dispose ();
 
-	//std::clog << "\tDone disposing Scene." << std::endl;
+	__LOG__ << std::endl;
+}
+
+Scene::~Scene ()
+{
+	__LOG__ << std::endl;
 }
 
 } // X3D

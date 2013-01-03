@@ -56,8 +56,6 @@ X3DBrowser::X3DBrowser () :
 	addField (outputOnly, "urlError",    urlError);
 	addField (outputOnly, "scene",       scene);
 
-	scene .setName ("scene");
-
 	std::clog << "\tDone constructing Browser." << std::endl;
 }
 
@@ -355,16 +353,18 @@ throw (Error <DISPOSED>)
 void
 X3DBrowser::dispose ()
 {
-	std::clog << "Browser::dispose ..." << std::endl;
+	__LOG__ << std::endl;
 
 	supportedFields     .dispose ();
 	supportedNodes      .dispose ();
 	supportedComponents .dispose ();
 	supportedProfiles   .dispose ();
+	
+	scene .dispose ();
 
 	X3DBrowserContext::dispose ();
 
-	std::clog << "Browser::dispose done ..." << std::endl;
+	__LOG__ << std::endl;
 }
 
 //

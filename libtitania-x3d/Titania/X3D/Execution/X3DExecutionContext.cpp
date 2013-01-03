@@ -80,13 +80,14 @@ X3DExecutionContext::X3DExecutionContext () :
 	           rootNodes ()        
 {
 	rootNodes .setName ("rootNodes");
-	setChildren (rootNodes);
 }
 
 void
 X3DExecutionContext::initialize ()
 {
 	X3DChildNode::initialize ();
+
+	rootNodes .addParent (this);
 }
 
 void
@@ -809,7 +810,17 @@ X3DExecutionContext::clear ()
 void
 X3DExecutionContext::dispose ()
 {
-	clear ();
+	profile = NULL;
+	components .clear ();
+
+	namedNodes         .clear ();
+	exportedNodes      .clear ();
+	importedNodes      .clear ();
+	protos             .clear ();
+	externProtos       .clear ();
+	routes             .clear ();
+
+	rootNodes .dispose ();
 
 	X3DChildNode::dispose ();
 }

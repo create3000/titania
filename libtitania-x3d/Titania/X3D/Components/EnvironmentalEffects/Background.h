@@ -77,6 +77,10 @@ public:
 	virtual
 	void
 	draw ();
+	
+	virtual
+	void
+	dispose ();
 
 
 private:

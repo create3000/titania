@@ -111,6 +111,10 @@ public:
 	void
 	display ();
 
+	virtual
+	void
+	dispose ();
+
 
 protected:
 
@@ -128,16 +132,12 @@ protected:
 	const Matrix4f &
 	getDifferenceMatrix () const { return differenceMatrix; }
 
+
+private:
+
 	virtual
 	void
 	initialize ();
-
-	virtual
-	void
-	dispose ();
-
-
-private:
 
 	virtual
 	Vector3f

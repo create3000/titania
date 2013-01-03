@@ -73,6 +73,12 @@ public:
 	void
 	setup ();
 
+	///  @name dispose
+	
+	virtual
+	void
+	dispose ();
+
 	///  @name Destructors
 	
 	virtual

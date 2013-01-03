@@ -73,6 +73,12 @@ void
 X3DWidget::initialize ()
 { }
 
+void
+X3DWidget::dispose ()
+{
+	browser .dispose ();
+}
+
 X3DWidget::~X3DWidget ()
 { }
 

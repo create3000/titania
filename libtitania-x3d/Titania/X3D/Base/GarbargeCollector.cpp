@@ -62,7 +62,10 @@ GarbageCollector::GarbageCollector ()
 void
 GarbageCollector::addObject (X3DChildObject* object)
 {
-	assert (disposedObjects .insert (object) .second);
+	__LOG__ << object -> getTypeName () << " " << (void*) object << std::endl;
+		
+	if (not disposedObjects .insert (object) .second)
+		__LOG__ << object -> getTypeName () << " " << (void*) object << std::endl;
 }
 
 void
@@ -81,7 +84,7 @@ GarbageCollector::dispose ()
 			delete object;
 		}
 
-		//std::clog << "Done." << std::endl;
+		//__LOG__ << "Done." << std::endl;
 	}
 }
 

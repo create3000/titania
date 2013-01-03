@@ -73,6 +73,10 @@ public:
 	void
 	draw ();
 
+	virtual
+	void
+	dispose ();
+
 
 protected:
 
@@ -81,10 +85,6 @@ protected:
 	virtual
 	void
 	initialize ();
-
-	virtual
-	void
-	dispose ();
 
 
 private:

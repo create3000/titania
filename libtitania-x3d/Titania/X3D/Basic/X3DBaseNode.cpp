@@ -485,8 +485,10 @@ X3DBaseNode::getFieldDefinitions () const
 void
 X3DBaseNode::setup ()
 {
+	executionContext -> addParent (this);
+	
 	for (const auto & field : fields)
-		setChild (*field .second);
+		field .second -> addParent (this);
 
 	initialize ();
 
@@ -741,9 +743,14 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 void
 X3DBaseNode::dispose ()
 {
-	events .clear ();
-
 	X3DChildObject::dispose ();
+	
+	for (const auto & field : fields)
+		field .second -> dispose ();
+	
+	executionContext -> removeParent (this);
+
+	events .clear ();
 
 	getGarbageCollector () .addObject (this);
 }

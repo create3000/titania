@@ -3,5 +3,5 @@
 META "title" "NIST Logo"
 
 Inline {
-  url "stage/index.wrl"
+  url "stage/nistlogo.wrl"
 }

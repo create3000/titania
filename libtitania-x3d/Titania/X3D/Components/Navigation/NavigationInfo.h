@@ -87,6 +87,10 @@ public:
 	void
 	disable ();
 
+	virtual
+	void
+	dispose ();
+
 
 private:
 
@@ -97,10 +101,6 @@ private:
 	virtual
 	void
 	bindToLayer (X3DLayerNode* const);
-
-	virtual
-	void
-	dispose ();
 
 	virtual
 	void

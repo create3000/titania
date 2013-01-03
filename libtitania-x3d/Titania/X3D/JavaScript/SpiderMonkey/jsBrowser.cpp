@@ -72,6 +72,7 @@ JSClass jsBrowser::static_class = {
 
 };
 
+// X3D properties
 JSPropertySpec jsBrowser::properties [ ] = {
 	{ "name",                NAME,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, name,                NULL },
 	{ "version",             VERSION,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, version,             NULL },
@@ -86,18 +87,22 @@ JSPropertySpec jsBrowser::properties [ ] = {
 };
 
 JSFunctionSpec jsBrowser::functions [ ] = {
-	{ "getName",              getName,              0, 0 }, // VRML97
-	{ "getVersion",           getVersion,           0, 0 }, // VRML97
-	{ "getCurrentSpeed",      getCurrentSpeed,      0, 0 }, // VRML97
-	{ "getCurrentFrameRate",  getCurrentFrameRate,  0, 0 }, // VRML97
-	{ "getWorldURL",          getWorldURL,          0, 0 }, // VRML97
-	{ "setDescription",       setDescription,       1, 0 }, // VRML97
-	{ "replaceWorld",         replaceWorld,         1, 0 }, // VRML97
-	{ "createVrmlFromString", createVrmlFromString, 1, 0 }, // VRML97
-	{ "createVrmlFromURL",    createVrmlFromURL,    3, 0 }, // VRML97
-	{ "addRoute",             addRoute,             4, 0 }, // VRML97
-	{ "deleteRoute",          deleteRoute,          4, 0 }, // VRML97
-	{ "loadURL",              loadURL,              2, 0 }, // VRML97
+	// X3D functions
+	{ "replaceWorld",         replaceWorld,         1, 0 },
+	{ "createX3DFromString",  replaceWorld,         1, 0 },
+	{ "loadURL",              loadURL,              2, 0 },
+	
+	// VRML functions
+	{ "getName",              getName,              0, 0 },
+	{ "getVersion",           getVersion,           0, 0 },
+	{ "getCurrentSpeed",      getCurrentSpeed,      0, 0 },
+	{ "getCurrentFrameRate",  getCurrentFrameRate,  0, 0 },
+	{ "getWorldURL",          getWorldURL,          0, 0 },
+	{ "setDescription",       setDescription,       1, 0 },
+	{ "createVrmlFromString", createVrmlFromString, 1, 0 },
+	{ "createVrmlFromURL",    createVrmlFromURL,    3, 0 },
+	{ "addRoute",             addRoute,             4, 0 },
+	{ "deleteRoute",          deleteRoute,          4, 0 },
 	{ 0, 0, 0, 0 }
 
 };
@@ -111,6 +116,8 @@ jsBrowser::defineObject (JSContext* context, JSObject* global)
 	JS_DefineProperties (context, obj, properties);
 	JS_DefineFunctions (context, obj, functions);
 }
+
+
 
 // X3D properties
 
@@ -195,6 +202,96 @@ jsBrowser::currentScene (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 	return JS_FALSE;
 }
 
+// X3D functions
+
+JSBool
+jsBrowser::replaceWorld (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		//X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode ();
+
+		JS_SET_RVAL (context, vp, JSVAL_VOID);
+
+		return JS_TRUE;
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsBrowser::createX3DFromString (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		JSString* x3dSyntax;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "S", &x3dSyntax))
+			return JS_FALSE;
+			
+		X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode ();
+
+		SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, x3dSyntax));
+
+		JS_SET_RVAL (context, vp, JSVAL_VOID);
+
+		return JS_TRUE;
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 2)
+	{
+		X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode ();
+
+		JSObject* ourl;
+		JSObject* oparameter;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "oo", &ourl, &oparameter))
+			return JS_FALSE;
+
+		if (JS_GetClass (context, ourl) not_eq jsMFString::getClass ())
+		{
+			JS_ReportError (context, "Type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, ourl) -> name);
+			return JS_FALSE;
+		}
+
+		MFString* url = (MFString*) JS_GetPrivate (context, ourl);
+
+		if (JS_GetClass (context, oparameter) not_eq jsMFString::getClass ())
+		{
+			JS_ReportError (context, "Type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, oparameter) -> name);
+			return JS_FALSE;
+		}
+
+		MFString* parameter = (MFString*) JS_GetPrivate (context, oparameter);
+
+		script -> getBrowser () -> loadURL (*url, *parameter);
+
+		JS_SET_RVAL (context, vp, JSVAL_VOID);
+
+		return JS_TRUE;
+	}
+	else
+		JS_ReportError (context, "Browser .loadURL: wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+
+
 // VRML97 functions
 
 JSBool
@@ -268,23 +365,6 @@ jsBrowser::getWorldURL (JSContext* context, uintN argc, jsval* vp)
 }
 
 JSBool
-jsBrowser::replaceWorld (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 1)
-	{
-		//X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode ();
-
-		JS_SET_RVAL (context, vp, JSVAL_VOID);
-
-		return JS_TRUE;
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-JSBool
 jsBrowser::createVrmlFromString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
@@ -298,22 +378,18 @@ jsBrowser::createVrmlFromString (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "S", &vrmlSyntax))
 			return JS_FALSE;
 
-		SFNode <Scene>        scene;
-		MFNode <X3DBaseNode>* mfnode = new MFNode <X3DBaseNode> ();
-
 		try
 		{
-			scene = script -> getBrowser () -> createX3DFromString (JS_GetString (context, vrmlSyntax));
+			SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, vrmlSyntax));
+			
+			return jsMFNode::create (context, new MFNode <X3DBaseNode> (scene -> getRootNodes ()), &JS_RVAL (context, vp));
 		}
 		catch (const X3DError & error)
 		{
-			std::cerr << "Warning Browser: " << std::endl << error .what () << std::endl;
+			JS_ReportError (context, error .what ());
+
+			return jsMFNode::create (context, new MFNode <X3DBaseNode> (), &JS_RVAL (context, vp));
 		}
-
-		if (scene)
-			*mfnode = scene -> getRootNodes ();
-
-		return jsMFNode::create (context, mfnode, &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -364,7 +440,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 				{
 					if (field -> getType () == X3DConstants::MFNode)
 					{
-						SFNode <Scene> scene = script -> getBrowser () -> createX3DFromURL (*url);
+						SFNode <Scene> scene = script -> createX3DFromURL (*url);
 
 						if (scene)
 						{
@@ -498,49 +574,6 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 	}
 	else
 		JS_ReportError (context, "Browser .deleteRoute: wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-JSBool
-jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 2)
-	{
-		X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode ();
-
-		JSObject* ourl;
-		JSObject* oparameter;
-
-		jsval* argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "oo", &ourl, &oparameter))
-			return JS_FALSE;
-
-		if (JS_GetClass (context, ourl) not_eq jsMFString::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, ourl) -> name);
-			return JS_FALSE;
-		}
-
-		MFString* url = (MFString*) JS_GetPrivate (context, ourl);
-
-		if (JS_GetClass (context, oparameter) not_eq jsMFString::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, oparameter) -> name);
-			return JS_FALSE;
-		}
-
-		MFString* parameter = (MFString*) JS_GetPrivate (context, oparameter);
-
-		script -> getBrowser () -> loadURL (*url, *parameter);
-
-		JS_SET_RVAL (context, vp, JSVAL_VOID);
-
-		return JS_TRUE;
-	}
-	else
-		JS_ReportError (context, "Browser .loadURL: wrong number of arguments");
 
 	return JS_FALSE;
 }

@@ -124,6 +124,7 @@ Inline::requestImmediateLoad ()
 
 	try
 	{
+		clear ();
 		loadURL (this, url);
 		setLoadState (COMPLETE_STATE);
 	}

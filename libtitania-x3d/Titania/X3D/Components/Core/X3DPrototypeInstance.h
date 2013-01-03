@@ -65,6 +65,10 @@ public:
 	X3DPrototypeInstance (X3DExecutionContext* const, Proto* const);
 
 	virtual
+	void
+	setup ();
+
+	virtual
 	const basic::id &
 	getTypeName () const
 	throw (Error <DISPOSED>);
@@ -89,6 +93,7 @@ public:
 	void
 	display ();
 
+	virtual
 	void
 	toStream (std::ostream &) const;
 
@@ -105,10 +110,6 @@ private:
 	virtual
 	X3DPrototypeInstance*
 	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	initialize ();
 
 	SFNode <Proto> proto;
 

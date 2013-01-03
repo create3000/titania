@@ -1,3 +1,14 @@
+2013-01-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-gzstream.cproj:
+	* GZStream.h:
+	* IGZStream.h:
+	* GZStream.cpp:
+	* GZStreamBuf.h:
+	* IGZStream.cpp:
+	* GZStreamBuf.cpp: 
+
 2012-12-31  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GZStream.h:

@@ -80,9 +80,11 @@ public:
 	void
 	traverse ();
 
+	virtual
 	void
 	enable ();
 
+	virtual
 	void
 	disable ();
 

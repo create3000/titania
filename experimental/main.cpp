@@ -41,7 +41,7 @@
 #include <Titania/Math/Numbers/Vector3.h>
 #include <Titania/Math/Numbers/Vector4.h>
 #include <Titania/OS.h>
-#include <Titania/Stream/GZStream.h>
+#include <Titania/Stream/IGZStream.h>
 #include <Titania/Stream/InputFileStream.h>
 //#include <Titania/Stream/InputHTTPStream.h>
 
@@ -795,7 +795,9 @@ main (int argc, char** argv)
 	ifilestream stream (basic::http::GET, "/home/holger/Projekte/Titania/Titania/share/titania/pages/about/gears.wrl");
 	stream .send ();
 	
-	std::clog << gunzip (stream) .rdbuf () << std::endl;
+	std::clog << igzstream (stream) .rdbuf () << std::endl;
+	
+	std::clog << (stream >> gunzip) .rdbuf () << std::endl;
 	
 	
 

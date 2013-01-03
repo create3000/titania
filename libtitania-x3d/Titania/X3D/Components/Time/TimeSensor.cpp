@@ -90,7 +90,7 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "fraction_changed", fraction_changed);
 	addField (outputOnly,  "time",             time);
 	
-	setChildren (stop);
+	stop .addParent (this);
 }
 
 X3DBaseNode*

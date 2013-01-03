@@ -56,11 +56,13 @@
     <None Include="info.h" />
     <None Include="libtitania-gzstream.md.pc" />
     <None Include="Makefile.am" />
-    <None Include="Titania\Stream\GZStream.h" />
+    <None Include="Titania\Stream\GZStreamBuf.h" />
+    <None Include="Titania\Stream\IGZStream.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\gzstream.cpp" />
-    <Compile Include="Titania\Stream\GZStream.cpp" />
+    <Compile Include="Titania\Stream\GZStreamBuf.cpp" />
+    <Compile Include="Titania\Stream\IGZStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

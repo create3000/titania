@@ -26,12 +26,12 @@
 //  *
 //  ************************************************************************/
 
-#include "GZStream.h"
+#include "IGZStream.h"
 
 namespace titania {
 namespace basic {
 
-template class basic_gzstream <char>;
+template class basic_igzstream <char>;
 
 } // basic
 } // titania

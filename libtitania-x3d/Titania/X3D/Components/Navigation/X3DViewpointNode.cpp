@@ -75,12 +75,9 @@ X3DViewpointNode::X3DViewpointNode (bool displayed) :
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
 
-	setChildren (positionOffset,
-	             orientationOffset,
-	             centerOfRotationOffset);
-
-	setChildren (timeSensor,
-	             positionInterpolator);
+	positionOffset         .addParent (this);
+	orientationOffset      .addParent (this);
+	centerOfRotationOffset .addParent (this);
 }
 
 void
@@ -257,9 +254,12 @@ X3DViewpointNode::reshape ()
 void
 X3DViewpointNode::dispose ()
 {
-	X3DBindableNode::dispose ();
-
+	timeSensor           .dispose ();
+	positionInterpolator .dispose ();
+	             
 	getScene () -> removeViewpoint (this);
+
+	X3DBindableNode::dispose ();
 }
 
 } // X3D

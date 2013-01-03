@@ -101,8 +101,8 @@ private:
 	void
 	update (const Cairo::RefPtr <Cairo::Context> &);
 
-	PointingDevice              pointingDevice;
 	std::unique_ptr <X3DViewer> viewer;
+	PointingDevice              pointingDevice;
 	SFNode <X3DLayerNode>       activeLayer;
 
 };

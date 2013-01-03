@@ -53,9 +53,9 @@
 #include "../../Rendering/LightContainerArray.h"
 #include "../../Rendering/X3DRenderer.h"
 #include "../Core/X3DNode.h"
+#include "../EnvironmentalEffects/LocalFog.h"
 #include "../Grouping/X3DGroupingNode.h"
 #include "../Layering/Viewport.h"
-#include "../EnvironmentalEffects/LocalFog.h"
 
 #include <stack>
 
@@ -132,11 +132,11 @@ public:
 	void
 	dispose ();
 
-	SFNode <Viewport>                     defaultViewport;
 	BindableNodeStack <NavigationInfo>    navigationInfoStack;
 	BindableNodeStack <X3DBackgroundNode> backgroundStack;
 	BindableNodeStack <Fog>               fogStack;
 	BindableNodeStack <X3DViewpointNode>  viewpointStack;
+
 
 protected:
 
@@ -166,7 +166,8 @@ private:
 	LightContainerArray    cachedLocalLights;
 	LightContainerArray    globalLights;
 
-	Viewport* _viewport;
+	SFNode <Viewport> defaultViewport;
+	X3DViewportNode*  _viewport;
 
 };
 

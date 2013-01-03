@@ -46,15 +46,16 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_STREAM_GZSTREAM_H__
-#define __TITANIA_STREAM_GZSTREAM_H__
+#ifndef __TITANIA_STREAM_GZSTREAM_BUF_H__
+#define __TITANIA_STREAM_GZSTREAM_BUF_H__
 
 #include <cstddef>
 #include <cstring>
-#include <iostream>
 #include <streambuf>
 
 #include <zlib.h>
+
+#include <iostream>
 
 namespace titania {
 namespace basic {
@@ -145,7 +146,7 @@ basic_gzstreambuf <CharT, Traits>::open ()
 	for (size_t i = 0; i < bytesRead; ++ i)
 		streambuf -> sungetc ();
 
-	if (bytesRead < sizeof (magic) or ((magic [0] << 8) | (magic [1] & 0xff)) not_eq GZ_MAGIC)
+	if (bytesRead < sizeof (magic)or ((magic [0] << 8) | (magic [1] & 0xff)) not_eq GZ_MAGIC)
 		return this;
 
 	// allocate inflate state
@@ -237,7 +238,7 @@ basic_gzstreambuf <CharT, Traits>::underflow () // used for input buffer only
 				case Z_DATA_ERROR:
 				case Z_MEM_ERROR:
 					__LOG__ << std::endl;
-					break;
+					return Traits::eof ();
 
 				default:
 					bytesRead = bufferSize - zstream .avail_out;
@@ -272,110 +273,7 @@ basic_gzstreambuf <CharT, Traits>::sync ()
 	return 0;
 }
 
-/**
- *  Template to represent basic gzstream handling.
- *
- *  Extern instantiations for char and wchar_t are part of the
- *  library.  Results with any other type are not guaranteed.
- *
- *  @param  CharT   Type of ... values.
- *  @param  Traits  Traits ...
- */
-
-template <class CharT,
-          class Traits = std::char_traits <CharT>>
-class basic_gzstream :
-	public std::basic_iostream <CharT, Traits>
-{
-public:
-
-	using std::basic_iostream <CharT, Traits>::rdbuf;
-
-	/// @name Constructors
-
-	basic_gzstream ();
-
-	basic_gzstream (basic_gzstream &&);
-
-	//  @name Input operators
-
-	basic_gzstream &
-	operator << (std::basic_istream <CharT, Traits> &);
-
-	/// @name Destructor
-
-	virtual
-	~basic_gzstream ();
-
-
-private:
-
-	void
-	close ();
-
-};
-
-template <class CharT, class Traits>
-basic_gzstream <CharT, Traits>::basic_gzstream () :
-	std::basic_iostream <CharT, Traits> ()
-{ }
-
-template <class CharT, class Traits>
-basic_gzstream <CharT, Traits>::basic_gzstream (basic_gzstream <CharT, Traits>&& gzstream) :
-	std::basic_iostream <CharT, Traits> (gzstream .rdbuf (NULL))
-{ }
-
-template <class CharT, class Traits>
-basic_gzstream <CharT, Traits> &
-basic_gzstream <CharT, Traits>::operator << (std::basic_istream <CharT, Traits> & istream)
-{
-	close ();
-
-	rdbuf (new basic_gzstreambuf <CharT, Traits> (istream .rdbuf ()));
-
-	return *this;
-}
-
-template <class CharT, class Traits>
-void
-basic_gzstream <CharT, Traits>::close ()
-{
-	if (rdbuf ())
-		delete rdbuf ();
-}
-
-template <class CharT, class Traits>
-basic_gzstream <CharT, Traits>::~basic_gzstream ()
-{
-	close ();
-}
-
-typedef basic_gzstream <char> gzstream;
-
-extern template class basic_gzstream <char>;
-
-template <class CharT,
-          class Traits = std::char_traits <CharT>>
-inline
-basic_gzstream <CharT, Traits>
-operator >> (std::basic_istream <CharT, Traits> & istream,
-             basic_gzstream <CharT, Traits> (* pf) (std::basic_istream <CharT, Traits> &))
-{
-	return pf (istream);
-}
-
-template <class CharT,
-          class Traits = std::char_traits <CharT>>
-inline
-basic_gzstream <CharT, Traits>
-gunzip (std::basic_istream <CharT, Traits> & istream)
-{
-	basic_gzstream <CharT, Traits> igzstream;
-
-	igzstream << istream;
-
-	return igzstream;
-}
+extern template class basic_gzstreambuf <char>;
 
 } // basic
 } // titania

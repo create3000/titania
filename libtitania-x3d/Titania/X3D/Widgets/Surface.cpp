@@ -72,8 +72,8 @@ signal_handler (int sig)
 Surface::Surface (const SFNode <X3DBrowser> & browser) :
 	      X3DWidget (browser),                   
 	opengl::Surface (),                          
-	pointingDevice  (*this),                     
 	        viewer  (), 
+	pointingDevice  (*this),                     
 	    activeLayer ()                           
 {
 	// install our handler
@@ -164,8 +164,11 @@ Surface::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 void
 Surface::dispose ()
 {
-	if (getContext () and makeCurrent ())
-		getBrowser () -> dispose ();
+	viewer -> dispose ();
+	pointingDevice .dispose ();
+	activeLayer    .dispose ();
+
+	X3DWidget::dispose ();
 }
 
 Surface::~Surface ()

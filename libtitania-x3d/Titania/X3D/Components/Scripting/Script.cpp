@@ -99,6 +99,7 @@ Script::initialize ()
 	
 	if (not javaScript)
 		javaScript .reset (new JavaScriptContext (this, ""));
+
 		
 	// Initialize.
 

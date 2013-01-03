@@ -90,13 +90,6 @@ Background::Background (X3DExecutionContext* const executionContext, bool displa
 	addField (inputOutput, "rightUrl",     rightUrl);
 	addField (inputOutput, "topUrl",       topUrl);
 	addField (inputOutput, "bottomUrl",    bottomUrl);
-
-	setChildren (frontTexture,
-	             backTexture,
-	             leftTexture,
-	             rightTexture,
-	             topTexture,
-	             bottomTexture);
 }
 
 X3DBaseNode*
@@ -273,6 +266,19 @@ Background::draw ()
 
 	glDisable (GL_TEXTURE_2D);
 	glPopMatrix ();
+}
+
+void
+Background::dispose ()
+{
+	frontTexture  .dispose ();
+	backTexture   .dispose ();
+	leftTexture   .dispose ();
+	rightTexture  .dispose ();
+	topTexture    .dispose ();
+	bottomTexture .dispose ();
+	
+	X3DBackgroundNode::dispose ();
 }
 
 } // X3D

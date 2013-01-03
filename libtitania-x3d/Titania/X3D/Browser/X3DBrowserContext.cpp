@@ -330,7 +330,7 @@ X3DBrowserContext::dispose ()
 	shutdown    .dispose ();
 	changed     .dispose ();
 	
-	//X3DChildObject::dispose ();
+	X3DChildObject::dispose ();
 	//X3DExecutionContext::dispose ();
 
 	getGarbageCollector () .dispose ();

@@ -183,6 +183,8 @@ public:
 	void
 	dispose ();
 
+	virtual
+	~Scene ();
 
 private:
 
