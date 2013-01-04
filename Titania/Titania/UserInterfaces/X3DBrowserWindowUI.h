@@ -129,10 +129,10 @@ public:
 	getViewMenuItem () const { return *m_viewMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getToolBarMenuItem () const { return *m_toolBarMenuItem; }
+	getNavigationBarMenuItem () const { return *m_navigationBarMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getNavigationBarMenuItem () const { return *m_navigationBarMenuItem; }
+	getToolBarMenuItem () const { return *m_toolBarMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getSideBarMenuItem () const { return *m_sideBarMenuItem; }
@@ -186,7 +186,10 @@ public:
 	getHeadlightMenuItem () const { return *m_headlightMenuItem; }
 
 	Gtk::MenuItem &
-	getShowAllMenuItem () const { return *m_showAllMenuItem; }
+	getLookAtAllMenuItem () const { return *m_lookAtAllMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getEnableInlineViewpointsMenuItem () const { return *m_enableInlineViewpointsMenuItem; }
 
 	Gtk::MenuItem &
 	getViewpointsMenuItem () const { return *m_viewpointsMenuItem; }
@@ -258,11 +261,11 @@ public:
 
 	virtual
 	void
-	on_toolBar_toggled () = 0;
+	on_navigationBar_toggled () = 0;
 
 	virtual
 	void
-	on_navigationBar_toggled () = 0;
+	on_toolBar_toggled () = 0;
 
 	virtual
 	void
@@ -322,7 +325,11 @@ public:
 
 	virtual
 	void
-	on_show_all_toggled () = 0;
+	on_look_at_all_activate () = 0;
+
+	virtual
+	void
+	on_enableInlineViewpoints_toggled () = 0;
 
 	virtual
 	void
@@ -376,8 +383,8 @@ private:
 	Gtk::ImageMenuItem*             m_quitMenuItem;
 	Gtk::MenuItem*                  m_editMenuItem;
 	Gtk::MenuItem*                  m_viewMenuItem;
-	Gtk::CheckMenuItem*             m_toolBarMenuItem;
 	Gtk::CheckMenuItem*             m_navigationBarMenuItem;
+	Gtk::CheckMenuItem*             m_toolBarMenuItem;
 	Gtk::CheckMenuItem*             m_sideBarMenuItem;
 	Gtk::CheckMenuItem*             m_footerMenuItem;
 	Gtk::CheckMenuItem*             m_statusBarMenuItem;
@@ -395,7 +402,8 @@ private:
 	Gtk::CheckMenuItem*             m_fullScreenMenuItem;
 	Gtk::MenuItem*                  m_navigationMenuItem;
 	Gtk::CheckMenuItem*             m_headlightMenuItem;
-	Gtk::MenuItem*                  m_showAllMenuItem;
+	Gtk::MenuItem*                  m_lookAtAllMenuItem;
+	Gtk::CheckMenuItem*             m_enableInlineViewpointsMenuItem;
 	Gtk::MenuItem*                  m_viewpointsMenuItem;
 	Gtk::MenuItem*                  m_historyMenuItem;
 	Gtk::MenuItem*                  m_toolsMenuItem;

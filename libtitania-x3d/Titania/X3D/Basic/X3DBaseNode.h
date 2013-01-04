@@ -154,20 +154,18 @@ public:
 	void
 	eventsProcessed ();
 
-	/////////////////
-	virtual
-	void
-	select ();
+	///  @name Traversal handling
 
 	virtual
 	void
-	intersect ();
+	pick ();
 
 	virtual
 	void
 	display ();
 
-	///  Input operator.
+	///  @name Input/Output
+	
 	virtual
 	void
 	fromStream (std::istream &)
@@ -175,18 +173,18 @@ public:
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
-
-	///  Output operator.
+	
 	virtual
 	void
 	toStream (std::ostream &) const;
 
-	// Object:
+	///  @name Dispose
+	
 	virtual
 	void
 	dispose ();
 
-	///////////////
+	///  @name Destructor
 
 	virtual
 	~X3DBaseNode ();

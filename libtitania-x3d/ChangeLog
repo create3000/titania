@@ -1,3 +1,54 @@
+2013-01-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Parser.h:
+	* Route.cpp:
+	* Scene.h:
+	* Parser.cpp:
+	* Browser.h:
+	* Browser.cpp:
+	* Scene.cpp:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* X3DBrowser.cpp:
+	* X3DScene.cpp:
+	* ViewVolume.cpp:
+	* PointingDevice.h:
+	* X3DRenderer.cpp:
+	* PointingDevice.cpp:
+	* LOD.h:
+	* X3DNode.cpp:
+	* X3DBrowserContext.h:
+	* Switch.h:
+	* BindableNodeList.h:
+	* X3DBrowserContext.cpp:
+	* Layer.cpp:
+	* LOD.cpp:
+	* BindableNodeList.cpp:
+	* Inline.h:
+	* Anchor.h:
+	* Switch.cpp:
+	* LayerSet.h:
+	* Viewport.h:
+	* X3DShapeNode.h:
+	* X3DExecutionContext.h:
+	* LayoutLayer.h:
+	* Transform.h:
+	* LayerSet.cpp:
+	* Anchor.cpp:
+	* Viewport.cpp:
+	* Inline.cpp:
+	* Transform.cpp:
+	* LayoutLayer.cpp:
+	* X3DShapeNode.cpp:
+	* Billboard.h:
+	* X3DLayerNode.h:
+	* Billboard.cpp:
+	* X3DLayerNode.cpp:
+	* X3DGroupingNode.h:
+	* X3DPrototypeInstance.h:
+	* X3DGroupingNode.cpp:
+	* X3DPrototypeInstance.cpp: 
+
 2013-01-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Route.cpp:

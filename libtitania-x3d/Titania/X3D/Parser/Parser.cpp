@@ -56,7 +56,7 @@
 #include "../Parser/RegEx.h"
 #include "../Prototype/ExternProto.h"
 
-#include <iostream>
+#include <Titania/Stream/IGZStream.h>
 
 namespace titania {
 namespace X3D {
@@ -76,36 +76,40 @@ Parser::AccessTypes::AccessTypes ()
 
 Parser::AccessTypes Parser::accessTypes;
 
+Parser::Parser (X3DScene* scene) :
+	X3DBaseNode (scene -> getBrowser (), scene), 
+	  X3DParser (),                                     
+	      scene (scene),                                
+	      input (),                                
+	     string (),         
+	   nodeList ()                                      
+{
+	setComponent ("Browser");
+	setTypeName ("Parser");
+}
+
 void
-Parser::parseIntoScene (X3DScene* scene, const std::string & input)
+Parser::parseIntoScene (std::istream & istream)
 throw (Error <INVALID_X3D>)
 {
-	Parser parser (scene, input);
+	std::ostringstream ostringstream;
+	ostringstream << basic::gunzip (istream) .rdbuf ();
+	
+	input  = ostringstream .str ();
+	string = pcrecpp::StringPiece (input);
 
 	std::clog << "Parsing into scene: " << scene -> getWorldURL () << "." << std::endl;
 
 	try
 	{
-		parser .x3dScene ();
+		x3dScene ();
 	}
 	catch (const X3DError & error)
 	{
-		throw Error <INVALID_X3D> (parser .getMessageFromError (error));
+		throw Error <INVALID_X3D> (getMessageFromError (error));
 	}
 
 	std::clog << "Done parsing into scene: " << scene -> getWorldURL () << "." << std::endl;
-}
-
-Parser::Parser (X3DScene* scene, const std::string & input) :
-	X3DBaseNode (scene -> getBrowser (),        scene), 
-	  X3DParser (),                                     
-	      scene (scene),                                
-	      input (input),                                
-	     string (pcrecpp::StringPiece (input)),         
-	   nodeList ()                                      
-{
-	setComponent ("Browser");
-	setTypeName ("Parser");
 }
 
 std::string

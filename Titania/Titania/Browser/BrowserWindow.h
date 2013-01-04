@@ -192,7 +192,7 @@ private:
 	void
 	on_fullscreen_toggled ();
 
-	///  @name HeadlLight
+	///  @name Navigation
 
 	virtual
 	void
@@ -200,7 +200,10 @@ private:
 
 	virtual
 	void
-	on_show_all_toggled ();
+	on_look_at_all_activate ();
+
+	void
+	on_enableInlineViewpoints_toggled ();
 
 	///  @name Editor handling
 

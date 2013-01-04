@@ -58,7 +58,7 @@
     <MonoDevelop>
       <Properties>
         <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" ExecuteTargetName="run" ParallelProcesses="4" IsAutotoolsProject="true" RelativeConfigureInPath="..">
-          <BuildFilesVar Sync="true" Name="experimental_SOURCES" />
+          <BuildFilesVar Sync="true" Name="titania_experimental_SOURCES" />
           <DeployFilesVar />
           <ResourcesVar />
           <OthersVar />

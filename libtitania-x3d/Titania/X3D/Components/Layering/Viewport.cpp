@@ -86,12 +86,12 @@ Viewport::initialize ()
 }
 
 void
-Viewport::intersect ()
+Viewport::pick ()
 {
 	enable ();
 	
 	for (const auto & child : children)
-		child -> intersect ();
+		child -> pick ();
 
 	disable ();
 }

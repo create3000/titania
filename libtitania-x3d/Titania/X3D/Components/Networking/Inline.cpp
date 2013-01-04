@@ -149,10 +149,10 @@ Inline::getBBox ()
 }
 
 void
-Inline::intersect ()
+Inline::pick ()
 {
 	for (const auto & rootNode : getRootNodes ())
-		rootNode -> select ();
+		rootNode -> pick ();
 }
 
 void

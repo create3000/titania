@@ -122,12 +122,15 @@ LayerSet::set_activeLayer ()
 void
 LayerSet::set_layers ()
 {
-	children .resize (1 + layers .size ());
-	std::copy (layers .cbegin (), layers .cend (), children .begin () + 1);
+	for (const auto & layer : layers)
+	{
+		if (layer)
+			children .emplace_back (layer);
+	}
 }
 
 void
-LayerSet::intersect ()
+LayerSet::pick ()
 {
 	for (const auto & index : order)
 	{
@@ -135,9 +138,11 @@ LayerSet::intersect ()
 		{
 			X3DLayerNode* currentLayer = *children .at (index);
 
-			getBrowser () -> pushLayer (currentLayer);
-			currentLayer  -> select ();
-			getBrowser () -> popLayer ();
+			getBrowser () -> getLayers () .push (currentLayer);
+				
+			currentLayer  -> pick ();
+				
+			getBrowser () -> getLayers () .pop ();
 		}
 	}
 }
@@ -150,12 +155,12 @@ LayerSet::display ()
 		if (index >= 0  and index < (int32_t) children .size ())
 		{
 			X3DLayerNode* currentLayer = *children [index];
-
-			getBrowser () -> pushLayer (currentLayer);
+			
+			getBrowser () -> getLayers () .push (currentLayer);
 
 			currentLayer  -> display ();
 
-			getBrowser () -> popLayer ();
+			getBrowser () -> getLayers () .pop ();
 		}
 	}
 }

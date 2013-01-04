@@ -81,8 +81,8 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder -> get_widget ("QuitMenuItem", m_quitMenuItem);
 	m_builder -> get_widget ("EditMenuItem", m_editMenuItem);
 	m_builder -> get_widget ("ViewMenuItem", m_viewMenuItem);
-	m_builder -> get_widget ("ToolBarMenuItem", m_toolBarMenuItem);
 	m_builder -> get_widget ("NavigationBarMenuItem", m_navigationBarMenuItem);
+	m_builder -> get_widget ("ToolBarMenuItem", m_toolBarMenuItem);
 	m_builder -> get_widget ("SideBarMenuItem", m_sideBarMenuItem);
 	m_builder -> get_widget ("FooterMenuItem", m_footerMenuItem);
 	m_builder -> get_widget ("StatusBarMenuItem", m_statusBarMenuItem);
@@ -100,7 +100,8 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder -> get_widget ("FullScreenMenuItem", m_fullScreenMenuItem);
 	m_builder -> get_widget ("NavigationMenuItem", m_navigationMenuItem);
 	m_builder -> get_widget ("HeadlightMenuItem", m_headlightMenuItem);
-	m_builder -> get_widget ("ShowAllMenuItem", m_showAllMenuItem);
+	m_builder -> get_widget ("LookAtAllMenuItem", m_lookAtAllMenuItem);
+	m_builder -> get_widget ("EnableInlineViewpointsMenuItem", m_enableInlineViewpointsMenuItem);
 	m_builder -> get_widget ("ViewpointsMenuItem", m_viewpointsMenuItem);
 	m_builder -> get_widget ("HistoryMenuItem", m_historyMenuItem);
 	m_builder -> get_widget ("ToolsMenuItem", m_toolsMenuItem);
@@ -126,9 +127,9 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_revertMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_revert_to_saved));
 	m_quitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_close));
 
-	// Connect object Gtk::CheckMenuItem with id 'ToolBarMenuItem'.
-	m_toolBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_toolBar_toggled));
+	// Connect object Gtk::CheckMenuItem with id 'NavigationBarMenuItem'.
 	m_navigationBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_navigationBar_toggled));
+	m_toolBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_toolBar_toggled));
 	m_sideBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_sideBar_toggled));
 	m_footerMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_footer_toggled));
 	m_statusBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_statusBar_toggled));
@@ -148,8 +149,13 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_fullScreenMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_fullscreen_toggled));
 	m_headlightMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_headlight_toggled));
 
-	// Connect object Gtk::MenuItem with id 'ShowAllMenuItem'.
-	m_showAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_show_all_toggled));
+	// Connect object Gtk::MenuItem with id 'LookAtAllMenuItem'.
+	m_lookAtAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_look_at_all_activate));
+
+	// Connect object Gtk::CheckMenuItem with id 'EnableInlineViewpointsMenuItem'.
+	m_enableInlineViewpointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_enableInlineViewpoints_toggled));
+
+	// Connect object Gtk::MenuItem with id 'OutlineEditorMenuItem'.
 	m_outlineEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_outline_editor_activate));
 	m_viewpointEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_viewpoint_editor_activate));
 	m_motionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_motion_blur_editor_activate));

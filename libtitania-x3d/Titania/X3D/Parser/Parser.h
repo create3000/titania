@@ -88,16 +88,16 @@ private:
 
 public:
 
-	static void
-	parseIntoScene (X3DScene*, const std::string &)
+	Parser (X3DScene*);
+
+	void
+	parseIntoScene (std::istream & istream)
 	throw (Error <INVALID_X3D>);
 
 	static AccessTypes accessTypes;
 
 
 private:
-
-	Parser (X3DScene*, const std::string &);
 
 	typedef std::vector <X3DExecutionContext*> ExecutionContextStack;
 
@@ -491,7 +491,7 @@ private:
 	createField (const std::type_info &);
 
 	X3DScene*             scene;
-	const std::string &   input;
+	std::string           input;
 	pcrecpp::StringPiece  string;
 	ExecutionContextStack executionContextStack;
 

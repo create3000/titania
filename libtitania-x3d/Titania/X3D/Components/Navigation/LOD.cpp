@@ -125,7 +125,7 @@ LOD::getLevel ()
 }
 
 void
-LOD::intersect ()
+LOD::pick ()
 {
 	if (not children .size ())
 		return;
@@ -133,7 +133,7 @@ LOD::intersect ()
 	int32_t level = getLevel ();
 
 	if (children [level])
-		children [level] -> select ();
+		children [level] -> pick ();
 }
 
 void

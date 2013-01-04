@@ -101,6 +101,9 @@ public:
 	Gtk::Entry &
 	getLocationEntry () const { return *m_locationEntry; }
 
+	Gtk::Toolbar &
+	getToolBar () const { return *m_toolBar; }
+
 	Gtk::Paned &
 	getVPaned () const { return *m_vPaned; }
 
@@ -117,7 +120,10 @@ public:
 	getHandButton () const { return *m_handButton; }
 
 	Gtk::ToolButton &
-	getShowAllButton () const { return *m_showAllButton; }
+	getLookAtAllButton () const { return *m_lookAtAllButton; }
+
+	Gtk::ToggleToolButton &
+	getLookAtButton () const { return *m_lookAtButton; }
 
 	Gtk::Box &
 	getFooter () const { return *m_footer; }
@@ -190,7 +196,11 @@ public:
 
 	virtual
 	void
-	on_show_all_toggled () = 0;
+	on_look_at_all_clicked () = 0;
+
+	virtual
+	void
+	on_look_at_toggled () = 0;
 
 
 private:
@@ -211,12 +221,14 @@ private:
 	Gtk::ToolButton*                m_reloadButton;
 	Gtk::ToolButton*                m_homeButton;
 	Gtk::Entry*                     m_locationEntry;
+	Gtk::Toolbar*                   m_toolBar;
 	Gtk::Paned*                     m_vPaned;
 	Gtk::Paned*                     m_hPaned;
 	Gtk::HBox*                      m_surfaceBox;
 	Gtk::RadioToolButton*           m_arrowButton;
 	Gtk::RadioToolButton*           m_handButton;
-	Gtk::ToolButton*                m_showAllButton;
+	Gtk::ToolButton*                m_lookAtAllButton;
+	Gtk::ToggleToolButton*          m_lookAtButton;
 	Gtk::Box*                       m_footer;
 	Gtk::Button*                    m_footerCloseButton;
 	Gtk::Notebook*                  m_footerNotebook;

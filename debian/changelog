@@ -1,6 +1,6 @@
-titania (0.3.1-1) unstable; urgency=low
+titania (0.1.1-1) unstable; urgency=low
 
   * initial release
    + first ppa release of Titania
 
- -- Holger Seelig <holger.seelig@yahoo.de>  Sat, 03 Nov 2012 10:12:32 +0100
+ -- Holger Seelig <holger.seelig@yahoo.de>  Sat, 03 Jan 2013 15:45:32 +0100

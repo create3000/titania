@@ -114,13 +114,13 @@ Billboard::transform ()
 }
 
 void
-Billboard::intersect ()
+Billboard::pick ()
 {
 	glPushMatrix ();
 
 	transform ();
 
-	X3DGroupingNode::intersect ();
+	X3DGroupingNode::pick ();
 
 	glPopMatrix ();
 }

@@ -127,9 +127,9 @@ X3DPrototypeInstance::getLocalNode ()
 }
 
 void
-X3DPrototypeInstance::intersect ()
+X3DPrototypeInstance::pick ()
 {
-	getRootNode () -> select ();
+	getRootNode () -> pick ();
 }
 
 void

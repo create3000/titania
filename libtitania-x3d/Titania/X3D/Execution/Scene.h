@@ -164,6 +164,10 @@ public:
 
 	virtual
 	void
+	pick ();
+	
+	virtual
+	void
 	display ();
 	
 	///  @name Input/Output

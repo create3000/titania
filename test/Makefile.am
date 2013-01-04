@@ -2,13 +2,13 @@
 
 
 bin_PROGRAMS =  \
-	test
+	titania-test
 
-test_SOURCES =  \
+titania_test_SOURCES =  \
 	main.cpp \
 	misc.cpp
 
-test_LDADD = $(TITANIA_OPENGL_SURFACE_LIBS) \
+titania_test_LDADD = $(TITANIA_OPENGL_SURFACE_LIBS) \
 	$(TITANIA_STANDARD_LIBS) \
 	$(TITANIA_STREAM_LIBS) \
 	$(TITANIA_X3D_LIBS) \

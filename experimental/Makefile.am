@@ -2,7 +2,7 @@
 
 
 bin_PROGRAMS =  \
-	experimental
+	titania-experimental
 	
 AM_CPPFLAGS = -I$(top_builddir)/libtitania-standard \
 	-I$(top_builddir)/libtitania-stream \
@@ -10,11 +10,11 @@ AM_CPPFLAGS = -I$(top_builddir)/libtitania-standard \
 
 AM_LDFLAGS = -lv8
 
-experimental_LDADD = $(top_builddir)/libtitania-standard/libtitania-standard.la \
+titania_experimental_LDADD = $(top_builddir)/libtitania-standard/libtitania-standard.la \
 	$(top_builddir)/libtitania-stream/libtitania-stream.la \
 	$(top_builddir)/libtitania-gzstream/libtitania-gzstream.la
 
-experimental_SOURCES = main.cpp
+titania_experimental_SOURCES = main.cpp
 
 all:
 	mkdir -p $(builddir)/bin/$(CONFIGURATION)

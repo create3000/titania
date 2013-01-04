@@ -32,8 +32,6 @@ Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "Library", "Library\Library.
 EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "titania-info", "titania-info\titania-info.cproj", "{8DD96774-C8E5-4420-9D28-D4C96646EBE6}"
 EndProject
-Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "Packages", "Packages\Packages.mdproj", "{9409944E-4C24-4199-A6CE-B3BB8E5BD9EC}"
-EndProject
 Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "Papers", "Papers\Papers.mdproj", "{E29E81C4-20D1-4FF3-A932-202A4D23FACE}"
 EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-opengl-surface", "libtitania-opengl-surface\libtitania-opengl-surface.cproj", "{4D150C3C-1AA0-4470-B933-6EDA64083897}"
@@ -134,12 +132,6 @@ Global
 		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Parallel|Any CPU.Build.0 = Parallel|Any CPU
 		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9409944E-4C24-4199-A6CE-B3BB8E5BD9EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9409944E-4C24-4199-A6CE-B3BB8E5BD9EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9409944E-4C24-4199-A6CE-B3BB8E5BD9EC}.Parallel|Any CPU.ActiveCfg = Parallel|Any CPU
-		{9409944E-4C24-4199-A6CE-B3BB8E5BD9EC}.Parallel|Any CPU.Build.0 = Parallel|Any CPU
-		{9409944E-4C24-4199-A6CE-B3BB8E5BD9EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9409944E-4C24-4199-A6CE-B3BB8E5BD9EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Default|Any CPU.ActiveCfg = Debug|Any CPU

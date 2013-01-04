@@ -311,21 +311,21 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkCheckMenuItem" id="ToolBarMenuItem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Werkzeugleiste</property>
-                        <property name="use_underline">True</property>
-                        <signal name="toggled" handler="on_toolBar_toggled" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkCheckMenuItem" id="NavigationBarMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Navigations-Symbolleiste</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_navigationBar_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="ToolBarMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Werkzeugleiste</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_toolBar_toggled" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -542,12 +542,27 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="ShowAllMenuItem">
+                      <object class="GtkMenuItem" id="LookAtAllMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Show All Objects</property>
+                        <property name="label" translatable="yes">Look At All Objects</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_show_all_toggled" swapped="no"/>
+                        <signal name="activate" handler="on_look_at_all_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem7">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="EnableInlineViewpointsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Enable Inline Viewpoints</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_enableInlineViewpoints_toggled" swapped="no"/>
                       </object>
                     </child>
                     <child>

@@ -1582,6 +1582,9 @@
     <None Include="Examples\Mikroben\stage\indexT.wrl" />
     <None Include="Tests\Basic\test.wrl" />
     <None Include="Tests\Interpolation\PositionInterpolator.wrl" />
+    <None Include="Tests\Networking\Anchor.wrl" />
+    <None Include="Tests\Scripting\Import_proto.wrl" />
+    <None Include="Tests\Scripting\Cube.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

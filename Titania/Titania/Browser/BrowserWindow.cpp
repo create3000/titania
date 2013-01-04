@@ -161,7 +161,7 @@ BrowserWindow::on_fileSaveDialog_response (int response_id)
 void
 BrowserWindow::on_toolBar_toggled ()
 {
-	//toggleWidget (getToolBarMenuItem () .get_active (), getBrowserWidget () -> getToolbar ());
+	toggleWidget (getToolBarMenuItem () .get_active (), getBrowserWidget () -> getToolBar ());
 }
 
 void
@@ -295,9 +295,15 @@ BrowserWindow::on_headlight_toggled ()
 }
 
 void
-BrowserWindow::on_show_all_toggled ()
+BrowserWindow::on_look_at_all_activate ()
 {
 	getBrowser () -> getExecutionContext () -> getActiveLayer () -> lookAt ();
+}
+
+void
+BrowserWindow::on_enableInlineViewpoints_toggled ()
+{
+	getBrowser () -> getBrowserOptions () -> enableInlineViewpoints = getEnableInlineViewpointsMenuItem () .get_active ();
 }
 
 // Editor handling

@@ -110,7 +110,11 @@ private:
 
 	virtual
 	void
-	on_show_all_toggled ();
+	on_look_at_all_clicked ();
+
+	virtual
+	void
+	on_look_at_toggled ();
 
 	///  @name Browser toolbar handling
 

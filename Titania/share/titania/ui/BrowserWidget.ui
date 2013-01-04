@@ -151,6 +151,16 @@
           </packing>
         </child>
         <child>
+          <object class="GtkToolbar" id="ToolBar">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -237,16 +247,33 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkToolButton" id="ShowAllButton">
+                                  <object class="GtkToolButton" id="LookAtAllButton">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="has_tooltip">True</property>
-                                    <property name="tooltip_markup" translatable="yes">Show all objects in active layer.</property>
-                                    <property name="tooltip_text" translatable="yes">Show all objects in active layer.</property>
-                                    <property name="label" translatable="yes">Show All Objects</property>
+                                    <property name="tooltip_markup" translatable="yes">Look at all objects in active layer.</property>
+                                    <property name="tooltip_text" translatable="yes">Look at all objects in active layer.</property>
+                                    <property name="label" translatable="yes">Look At All Objects</property>
                                     <property name="use_underline">True</property>
-                                    <property name="stock_id">gtk-find</property>
-                                    <signal name="clicked" handler="on_show_all_toggled" swapped="no"/>
+                                    <property name="stock_id">gtk-zoom-fit</property>
+                                    <signal name="clicked" handler="on_look_at_all_clicked" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="homogeneous">True</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkToggleToolButton" id="LookAtButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="has_tooltip">True</property>
+                                    <property name="tooltip_markup" translatable="yes">Look at.</property>
+                                    <property name="tooltip_text" translatable="yes">Look at.</property>
+                                    <property name="label" translatable="yes">Look At</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="stock_id">gtk-zoom-in</property>
+                                    <signal name="toggled" handler="on_look_at_toggled" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -302,7 +329,6 @@
                             <child>
                               <object class="GtkButton" id="FooterCloseButton">
                                 <property name="label" translatable="yes">×</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -420,8 +446,7 @@
                         <child>
                           <object class="GtkButton" id="SideBarCloseButton">
                             <property name="label" translatable="yes">×</property>
-                            <property name="use_action_appearance">False</property>
-                             <property name="visible">True</property>
+                            <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_underline">True</property>
@@ -544,7 +569,7 @@
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
@@ -555,7 +580,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">3</property>
           </packing>
         </child>
       </object>

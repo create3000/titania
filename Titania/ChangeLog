@@ -1,3 +1,17 @@
+2013-01-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWidget.h:
+	* BrowserWindow.ui:
+	* BrowserWidget.ui:
+	* BrowserWidget.cpp:
+	* BrowserWindow.cpp:
+	* X3DBrowserWindow.cpp:
+	* X3DBrowserWindowUI.h:
+	* X3DBrowserWidgetUI.h:
+	* X3DBrowserWidgetUI.cpp:
+	* X3DBrowserWindowUI.cpp: 
+
 2013-01-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* test.wrl: 

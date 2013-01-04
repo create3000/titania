@@ -108,7 +108,7 @@ X3DShapeNode::isTransparent ()
 }
 
 void
-X3DShapeNode::intersect ()
+X3DShapeNode::pick ()
 {
 	if (not getBrowser () -> isSensitive ())
 		return;
@@ -145,7 +145,7 @@ X3DShapeNode::display ()
 		float radius = abs (centerMatrix .multDirMatrix (bbox .size ())) * 0.5f;
 
 		if (radius > centerMatrix [3] [2] || true)
-			getBrowser () -> getCurrentRenderer () -> addShape (this, centerMatrix [3] [2] - radius);
+			getBrowser () -> getRenderers () .top () -> addShape (this, centerMatrix [3] [2] - radius);
 	}
 }
 

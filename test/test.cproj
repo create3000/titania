@@ -66,7 +66,7 @@
           <StandardHeader Text=" &#xA; class ${FileName} {&#xA;public: &#xA;	 ${FileName} ()&#xA;  	{&#xA;&#xA;&#xA;}&#xA; " IncludeInNewFiles="True" />
         </Policies>
         <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" ParallelProcesses="4" IsAutotoolsProject="true" RelativeConfigureInPath="..">
-          <BuildFilesVar Sync="true" Name="test_SOURCES" />
+          <BuildFilesVar Sync="true" Name="titania_test_SOURCES" />
           <DeployFilesVar />
           <ResourcesVar />
           <OthersVar />

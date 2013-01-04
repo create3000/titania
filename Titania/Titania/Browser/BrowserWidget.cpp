@@ -142,9 +142,15 @@ BrowserWidget::on_hand_button_toggled ()
 }
 
 void
-BrowserWidget::on_show_all_toggled ()
+BrowserWidget::on_look_at_all_clicked ()
 {
 	getBrowser () -> getExecutionContext () -> getActiveLayer () -> lookAt ();
+}
+
+void
+BrowserWidget::on_look_at_toggled ()
+{
+	__LOG__ << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

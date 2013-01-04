@@ -156,7 +156,7 @@ X3DLayerNode::lookAt ()
 }
 
 void
-X3DLayerNode::select ()
+X3DLayerNode::pick ()
 {
 	if (not isPickable)
 		return;
@@ -204,11 +204,8 @@ X3DLayerNode::dispose ()
 	__LOG__ << (void*) this << std::endl;
 
 	defaultViewport .dispose ();
-
-	navigationInfoStack .bottom () -> dispose ();
-	backgroundStack     .bottom () -> dispose ();
-	fogStack            .bottom () -> dispose ();
-	viewpointStack      .bottom () -> dispose ();
+	
+	// Dont't dispose stack nodes, they were automatically disposed.
 
 	X3DNode::dispose ();
 }

@@ -374,8 +374,6 @@ protected:
 	void
 	clear ();
 
-	friend class X3DBaseNode; // addDisposedNode
-
 
 private:
 

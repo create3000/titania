@@ -86,7 +86,7 @@ void
 Layer::intersect ()
 {
 	for (const auto & child : children)
-		child -> select ();
+		child -> pick ();
 }
 
 void

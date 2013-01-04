@@ -83,6 +83,12 @@ LayoutLayer::getBBox ()
 }
 
 void
+LayoutLayer::intersect ()
+{
+
+}
+
+void
 LayoutLayer::traverse ()
 {
 

@@ -98,7 +98,7 @@ X3DRenderer::render ()
 	numOpaqueNodes      = 0;
 	numTransparentNodes = 0;
 
-	getBrowser () -> pushRenderer (this);
+	getBrowser () -> getRenderers () .emplace (this);
 
 	time_type t0 = getCurrentTime ();
 	traverse ();
@@ -108,7 +108,7 @@ X3DRenderer::render ()
 	draw ();
 	drawTime = getCurrentTime () - t0;
 
-	getBrowser () -> popRenderer ();
+	getBrowser () -> getRenderers () .pop ();
 }
 
 void

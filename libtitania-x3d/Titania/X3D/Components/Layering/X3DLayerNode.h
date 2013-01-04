@@ -67,15 +67,16 @@ class X3DLayerNode :
 {
 public:
 
+	///  @name Fields
+
 	SFBool                   isPickable;
 	SFNode <X3DViewportNode> viewport;
 	MFNode <X3DChildNode>    addChildren;
 	MFNode <X3DChildNode>    removeChildren;
 	MFNode <X3DChildNode>    children;
 
-	// Bindable node stack handling
+	///  @name Bindable node stack handling
 
-	//@{
 	NavigationInfo*
 	getNavigationInfo ();
 
@@ -87,7 +88,8 @@ public:
 
 	X3DViewpointNode*
 	getViewpoint ();
-	//@}
+
+	///  @name Fog handling
 
 	void
 	pushLocalFog (LocalFog* fog) { localFogs .push (fog); }
@@ -97,6 +99,8 @@ public:
 
 	const std::stack <LocalFog*> &
 	getLocalFogs () { return localFogs; }
+
+	///  @name Light handling
 
 	void
 	pushLocalLight (X3DLightNode*);
@@ -113,6 +117,8 @@ public:
 	const LightContainerArray &
 	getGlobalLights () { return globalLights; }
 
+	///  @name ...
+
 	virtual
 	Box3f
 	getBBox () = 0;
@@ -122,7 +128,11 @@ public:
 
 	virtual
 	void
-	select ();
+	pick ();
+
+	virtual
+	void
+	intersect () = 0;
 
 	virtual
 	void

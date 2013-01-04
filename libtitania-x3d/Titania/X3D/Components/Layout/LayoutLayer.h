@@ -73,6 +73,10 @@ public:
 	
 	virtual
 	void
+	intersect ();
+
+	virtual
+	void
 	traverse ();
 
 };

@@ -69,7 +69,7 @@ public:
 
 	virtual
 	void
-	intersect ();
+	pick ();
 
 	virtual
 	void

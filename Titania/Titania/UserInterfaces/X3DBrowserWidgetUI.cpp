@@ -72,12 +72,14 @@ X3DBrowserWidgetUI::create (const std::string & filename)
 	m_builder -> get_widget ("ReloadButton", m_reloadButton);
 	m_builder -> get_widget ("HomeButton", m_homeButton);
 	m_builder -> get_widget ("LocationEntry", m_locationEntry);
+	m_builder -> get_widget ("ToolBar", m_toolBar);
 	m_builder -> get_widget ("VPaned", m_vPaned);
 	m_builder -> get_widget ("HPaned", m_hPaned);
 	m_builder -> get_widget ("SurfaceBox", m_surfaceBox);
 	m_builder -> get_widget ("ArrowButton", m_arrowButton);
 	m_builder -> get_widget ("HandButton", m_handButton);
-	m_builder -> get_widget ("ShowAllButton", m_showAllButton);
+	m_builder -> get_widget ("LookAtAllButton", m_lookAtAllButton);
+	m_builder -> get_widget ("LookAtButton", m_lookAtButton);
 	m_builder -> get_widget ("Footer", m_footer);
 	m_builder -> get_widget ("FooterCloseButton", m_footerCloseButton);
 	m_builder -> get_widget ("FooterNotebook", m_footerNotebook);
@@ -109,8 +111,11 @@ X3DBrowserWidgetUI::create (const std::string & filename)
 	m_arrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_arrow_button_toggled));
 	m_handButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_hand_button_toggled));
 
-	// Connect object Gtk::ToolButton with id 'ShowAllButton'.
-	m_showAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_show_all_toggled));
+	// Connect object Gtk::ToolButton with id 'LookAtAllButton'.
+	m_lookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_look_at_all_clicked));
+
+	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
+	m_lookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_look_at_toggled));
 
 	// Call construct handler of base class.
 	construct ();

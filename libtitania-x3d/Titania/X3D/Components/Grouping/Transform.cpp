@@ -110,7 +110,7 @@ Transform::eventsProcessed ()
 }
 
 void
-Transform::intersect ()
+Transform::pick ()
 {
 	//	if (getBrowser () -> getEditMode ())
 	//		getBrowser () -> pushSensitiveNode (this);
@@ -119,7 +119,7 @@ Transform::intersect ()
 
 	glMultMatrixf (matrix .data ());
 
-	X3DGroupingNode::intersect ();
+	X3DGroupingNode::pick ();
 
 	glPopMatrix ();
 

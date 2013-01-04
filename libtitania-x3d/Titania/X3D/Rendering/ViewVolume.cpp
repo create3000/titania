@@ -54,6 +54,8 @@
 
 #include <GL/gl.h>
 
+#include <Titania/LOG.h>
+
 namespace titania {
 namespace X3D {
 
@@ -112,13 +114,11 @@ ViewVolume::ViewVolume (const Matrix4d & modelview, const Matrix4d & projection)
 bool
 ViewVolume::intersect (const Box3f & bbox) const
 {
-	float nradius = -abs (bbox .size ()) * 0.5f;
+	float nradius = -bbox .greater_radius ();
 
-	std::vector <Plane3f>::const_iterator plane;
-
-	for (plane = planes .begin (); plane not_eq planes .end (); ++ plane)
+	for (const auto & plane : planes)
 	{
-		if (plane -> distance (bbox .center ()) < nradius)
+		if (plane .distance (bbox .center ()) < nradius)
 			return false;
 	}
 

@@ -169,7 +169,7 @@ X3DGroupingNode::add (const MFNode <X3DChildNode> & children)
 }
 
 void
-X3DGroupingNode::intersect ()
+X3DGroupingNode::pick ()
 {
 	//	if (not getBrowser () -> getEditMode ())
 	//	{
@@ -179,7 +179,7 @@ X3DGroupingNode::intersect ()
 	//	}
 
 	for (const auto & child : childNodes)
-		child -> select ();
+		child -> pick ();
 
 	//	if (not getBrowser () -> getEditMode ())
 	//	{

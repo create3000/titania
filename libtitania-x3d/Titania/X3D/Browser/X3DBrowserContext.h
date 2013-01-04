@@ -56,8 +56,8 @@
 #include "../Components/Core/X3DSensorNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/Viewpoint.h"
-#include "../Execution/X3DExecutionContext.h"
 #include "../Execution/Scene.h"
+#include "../Execution/X3DExecutionContext.h"
 #include "../JavaScript/JavaScriptEngine.h"
 
 #include "../Browser/HitArray.h"
@@ -73,6 +73,8 @@ namespace titania {
 namespace X3D {
 
 typedef chrono::clock_base <time_type>                      X3DClock;
+typedef std::stack <X3DRenderer*>                           RendererStack;
+typedef std::stack <X3DLayerNode*>                          LayerStack;
 typedef std::stack <GLenum>                                 LightStack;
 typedef std::map <std::string, std::pair <GLuint, size_t>> TextureIndex;
 
@@ -106,7 +108,7 @@ public:
 	getCurrentFrameRate () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
-	  
+
 	virtual
 	Scene*
 	getExecutionContext () const
@@ -118,16 +120,20 @@ public:
 	Router &
 	getRouter ();
 
+	///  @name Renderer handling
+
+	RendererStack &
+	getRenderers () { return renderers; }
+
 	///  @name Layer handling
+	
+	LayerStack &
+	getLayers () { return layers; }
 
-	void
-	pushLayer (X3DLayerNode* const);
+	///  @name Light stack handling
 
-	void
-	popLayer ();
-
-	X3DLayerNode*
-	getCurrentLayer () const;
+	LightStack &
+	getLights () { return lights; }
 
 	///  @name NavigationInfo handling
 
@@ -138,11 +144,6 @@ public:
 
 	X3DViewpointNode*
 	getActiveViewpoint ();
-
-	///  @name Light stack handling
-
-	LightStack &
-	getLights ();
 
 	///  @name Texture handling
 
@@ -167,6 +168,32 @@ public:
 	void
 	updateSensors ();
 
+	///  @name Picking
+
+	void
+	pick (const double, const double);
+
+	void
+	pushSensitiveNode (X3DBaseNode* node) { return sensitiveNodes .push_back (node); }
+
+	void
+	popSensitiveNode () { return sensitiveNodes .pop_back (); }
+
+	const std::vector <X3DBaseNode*> &
+	getSensitiveNodes () const { return sensitiveNodes; }
+
+	bool
+	isSensitive () const { return sensitiveNodes .size (); }
+
+	Line3f
+	getHitRay () const;
+
+	void
+	addHit (Hit* hit) { hits .push_back (hit); }
+
+	const HitArray &
+	getHits () const { return hits; }
+
 	///  @name Event handling
 
 	virtual
@@ -177,7 +204,7 @@ public:
 
 	virtual
 	void
-	intersect ();
+	pick ();
 
 	void
 	prepare ();
@@ -193,61 +220,6 @@ public:
 
 	void
 	dispose ();
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	virtual
-	void
-	pushRenderer (X3DRenderer*) = 0;
-
-	virtual
-	void
-	popRenderer () = 0;
-
-	virtual
-	X3DRenderer*
-	getCurrentRenderer () = 0;
-
-	virtual
-	const X3DRenderer*
-	getCurrentRenderer () const = 0;
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	////  pushPointingDeviceSensorNode
-	virtual
-	void
-	pushSensitiveNode (X3DBaseNode* node) = 0;
-
-	virtual
-	void
-	popSensitiveNode () = 0;
-
-	virtual
-	const std::vector <X3DBaseNode*> &
-	getSensitiveNodes () const = 0;
-
-	virtual
-	bool
-	isSensitive () const = 0;
-
-	virtual
-	void
-	pick (const size_t, const size_t) = 0;
-
-	virtual
-	Line3f
-	getHitRay () const = 0;
-
-	virtual
-	void
-	addHit (Hit*) = 0;
-
-	virtual
-	const HitArray &
-	getHits () const = 0;
 
 
 protected:
@@ -270,10 +242,16 @@ private:
 
 	std::shared_ptr <X3DClock> clock;
 	Router                     router;
-	std::stack <X3DLayerNode*> layers;
+	RendererStack              renderers;
+	LayerStack                 layers;
 	LightStack                 lights;
 	TextureIndex               textures;
 	Output                     sensors;
+	double                     x;
+	double                     y;
+	std::vector <X3DBaseNode*> sensitiveNodes;
+	HitArray                   hits;
+	HitComp                    hitComp;
 	time_type                  changedTime;
 	Vector3d                   priorPosition;
 	double                     currentSpeed;

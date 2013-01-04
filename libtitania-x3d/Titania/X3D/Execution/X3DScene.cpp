@@ -52,8 +52,6 @@
 #include "../Parser/Parser.h"
 #include "../Parser/RegEx.h"
 
-#include <Titania/Stream/IGZStream.h>
-
 namespace titania {
 namespace X3D {
 
@@ -110,11 +108,7 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::ostringstream ostringstream;
-
-	ostringstream << basic::gunzip (istream) .rdbuf ();
-
-	Parser::parseIntoScene (this, ostringstream .str ());
+	Parser (this) .parseIntoScene (istream);
 }
 
 void

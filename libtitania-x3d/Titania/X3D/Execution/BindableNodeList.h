@@ -142,17 +142,12 @@ private:
 
 };
 
+extern template class BindableNodeList <NavigationInfo>;
+extern template class BindableNodeList <X3DBackgroundNode>;
+extern template class BindableNodeList <Fog>;
+extern template class BindableNodeList <X3DViewpointNode>;
+
 } // X3D
-
-//extern template class basic::indexed_multimap <X3D::NavigationInfo*>;
-//extern template class basic::indexed_multimap <X3D::X3DBackgroundNode*>;
-//extern template class basic::indexed_multimap <X3D::Fog*>;
-//extern template class basic::indexed_multimap <X3D::X3DViewpointNode*>;
-extern template class X3D::BindableNodeList <X3D::NavigationInfo>;
-extern template class X3D::BindableNodeList <X3D::X3DBackgroundNode>;
-extern template class X3D::BindableNodeList <X3D::Fog>;
-extern template class X3D::BindableNodeList <X3D::X3DViewpointNode>;
-
 } // titania
 
 #endif

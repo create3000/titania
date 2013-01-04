@@ -192,6 +192,10 @@ X3DBrowserWindow::restoreSession ()
 	if (getConfig () .boolean ("navigationBar"))
 		getNavigationBarMenuItem () .activate ();
 
+	// ToolBar
+	if (getConfig () .boolean ("toolBar"))
+		getToolBarMenuItem () .activate ();
+
 	// SideBar
 	if (getConfig () .boolean ("sideBar"))
 		getSideBarMenuItem () .activate ();
@@ -226,18 +230,25 @@ X3DBrowserWindow::restoreSession ()
 	
 	// RenderingProperties
 	getRenderingPropertiesMenuItem () .set_active (getConfig () .boolean ("renderingProperties"));
+	
+	// EnableInlineViewpoints
+	if (getConfig () .boolean ("enableInlineViewpoints"))
+		getEnableInlineViewpointsMenuItem () .activate ();
 }
 
 void
 X3DBrowserWindow::saveSession ()
 {
 	getConfig () .setItem ("navigationBar", getNavigationBarMenuItem () .get_active ());
+	getConfig () .setItem ("toolBar",       getToolBarMenuItem ()       .get_active ());
 	getConfig () .setItem ("sideBar",       getSideBarMenuItem ()       .get_active ());
 	getConfig () .setItem ("footer",        getFooterMenuItem  ()       .get_active ());
 
 	getConfig () .setItem ("shading",          getBrowser () -> getBrowserOptions () -> shading);
 	getConfig () .setItem ("primitiveQuality", getBrowser () -> getBrowserOptions () -> primitiveQuality);
 	getConfig () .setItem ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
+
+	getConfig () .setItem ("enableInlineViewpoints", getEnableInlineViewpointsMenuItem () .get_active ());
 	
 	// Notebook
 
@@ -427,6 +438,9 @@ X3DBrowserWindow::insertPage (size_t position)
 	if (getConfig () .boolean ("navigationBar"))
 		browserWidget -> getNavigationBar () .show ();
 
+	if (getConfig () .boolean ("toolBar"))
+		browserWidget -> getToolBar () .show ();
+
 	// SideBar
 	if (getConfig () .boolean ("sideBar"))
 		browserWidget -> getSideBar () .show ();
@@ -435,6 +449,7 @@ X3DBrowserWindow::insertPage (size_t position)
 	if (getConfig () .boolean ("footer"))
 		browserWidget -> getFooter () .show ();
 
+	browserWidget -> getBrowser () -> getBrowserOptions () -> enableInlineViewpoints = getConfig () .boolean ("enableInlineViewpoints");
 }
 
 void

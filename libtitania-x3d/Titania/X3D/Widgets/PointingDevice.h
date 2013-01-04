@@ -77,7 +77,7 @@ private:
 	on_button_release_event (GdkEventButton*);
 
 	bool
-	pick (const size_t, const size_t);
+	pick (const double, const double);
 
 	Surface &            surface;
 	size_t               button;

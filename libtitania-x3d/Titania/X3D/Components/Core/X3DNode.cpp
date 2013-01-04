@@ -74,7 +74,7 @@ X3DNode::getScene () const
 X3DLayerNode*
 X3DNode::getCurrentLayer () const
 {
-	return getBrowser () -> getCurrentLayer ();
+	return getBrowser () -> getLayers () .top ();
 }
 
 std::deque <X3DLayerNode*>
@@ -86,7 +86,7 @@ X3DNode::getLayers () const
 X3DViewpointNode*
 X3DNode::getCurrentViewpoint () const
 {
-	return getBrowser () -> getCurrentLayer () -> getViewpoint ();
+	return getCurrentLayer () -> getViewpoint ();
 }
 
 } // X3D

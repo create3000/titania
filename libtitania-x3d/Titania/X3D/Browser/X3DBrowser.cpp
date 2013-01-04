@@ -43,8 +43,8 @@ X3DBrowser::X3DBrowser () :
 	     supportedNodes (this),                      
 	supportedComponents (this),                      
 	  supportedProfiles (this, supportedComponents), 
-	        description (),                          // SFSting  [in,out] description ""
-	              scene (createScene ())             // SFNode   [in,out] scene       NULL
+	        description (),                          // SFString  [in,out] description ""
+	              scene (createScene ())             // SFNode    [in,out] scene       NULL
 {
 	std::clog << "Constructing Browser:" << std::endl;
 

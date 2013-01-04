@@ -231,13 +231,21 @@ Scene::getActiveLayer () const
 	return layerSet -> getActiveLayer ();
 }
 
-// Display
+// Traveral
+
+void
+Scene::pick ()
+{
+	layerSet -> pick ();
+}
 
 void
 Scene::display ()
 {
 	layerSet -> display ();
 }
+
+// Input/Output
 
 void
 Scene::fromStream (std::istream & istream)

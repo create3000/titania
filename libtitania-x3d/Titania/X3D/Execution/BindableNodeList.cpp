@@ -51,17 +51,10 @@
 namespace titania {
 namespace X3D {
 
-//
+template class BindableNodeList <NavigationInfo>;
+template class BindableNodeList <X3DBackgroundNode>;
+template class BindableNodeList <Fog>;
+template class BindableNodeList <X3DViewpointNode>;
 
 } // X3D
-
-//template class basic::indexed_multimap <X3D::NavigationInfo*>;
-//template class basic::indexed_multimap <X3D::X3DBackgroundNode*>;
-//template class basic::indexed_multimap <X3D::Fog*>;
-//template class basic::indexed_multimap <X3D::X3DViewpointNode*>;
-template class X3D::BindableNodeList <X3D::NavigationInfo>;
-template class X3D::BindableNodeList <X3D::X3DBackgroundNode>;
-template class X3D::BindableNodeList <X3D::Fog>;
-template class X3D::BindableNodeList <X3D::X3DViewpointNode>;
-
 } // titania

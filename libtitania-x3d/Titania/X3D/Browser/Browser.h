@@ -61,64 +61,6 @@ namespace X3D {
 class Browser :
 	public X3DBrowser
 {
-public:
-
-	using X3DBrowser::getComponent;
-
-	void
-	pushRenderer (X3DRenderer* renderer) { rendererStack .push_back (renderer); }
-
-	void
-	popRenderer () { rendererStack .pop_back (); }
-
-	X3DRenderer*
-	getCurrentRenderer () { return rendererStack .back (); }
-
-	const X3DRenderer*
-	getCurrentRenderer () const { return rendererStack .back (); }
-
-	////
-	void
-	pick (const size_t, const size_t);
-
-	void
-	pushSensitiveNode (X3DBaseNode* node) { return sensitiveNodes .push_back (node); }
-
-	void
-	popSensitiveNode () { return sensitiveNodes .pop_back (); }
-
-	const std::vector <X3DBaseNode*> &
-	getSensitiveNodes () const { return sensitiveNodes; }
-
-	bool
-	isSensitive () const { return sensitiveNodes .size (); }
-
-	Line3f
-	getHitRay () const;
-
-	void
-	addHit (Hit* hit) { hits .push_back (hit); }
-
-	const HitArray &
-	getHits () const { return hits; }
-
-	////
-
-	//	void
-	//	setEditMode (const bool value) { editMode = value; update (); }
-	//
-	//	bool
-	//	getEditMode () const { return editMode; }
-
-	virtual
-	void
-	replaceWorld (const SFNode <Scene> &)
-	throw (Error <INVALID_SCENE>);
-
-	virtual
-	~Browser ();
-
-
 protected:
 
 	Browser ();
@@ -137,34 +79,6 @@ private:
 	virtual
 	void
 	initialize ();
-
-	void
-	setXY (const size_t, const size_t);
-
-	void
-	selectionBegin ();
-
-	void
-	selectionEnd ();
-
-	void
-	clearHits ();
-
-	typedef std::vector <X3DRenderer*> RendererStack;
-
-	RendererStack rendererStack;
-
-	float objectFrontAlpha;
-	float objectBackAlpha;
-
-	size_t x;
-	size_t y;
-
-	std::vector <X3DBaseNode*> sensitiveNodes;
-	HitArray                    hits;
-	HitComp                     hitComp;
-
-	//	bool             editMode;
 
 };
 

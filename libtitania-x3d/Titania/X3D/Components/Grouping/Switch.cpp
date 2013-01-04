@@ -78,12 +78,12 @@ Switch::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Switch::intersect ()
+Switch::pick ()
 {
 	if (whichChoice >= 0 and whichChoice < (int32_t) children .size ())
 	{
 		if (children [whichChoice])
-			children [whichChoice] -> select ();
+			children [whichChoice] -> pick ();
 	}
 }
 

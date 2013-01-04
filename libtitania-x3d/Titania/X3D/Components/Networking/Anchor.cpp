@@ -100,18 +100,16 @@ Anchor::requestImmediateLoad ()
 void
 Anchor::activate ()
 {
-	getBrowser () -> loadURL (transformURI (url), parameter);
+	requestImmediateLoad ();
 }
 
 void
-Anchor::intersect ()
+Anchor::pick ()
 {
-	//	if (not getBrowser () -> getEditMode ())
 	getBrowser () -> pushSensitiveNode (this);
 
-	X3DGroupingNode::intersect ();
+	X3DGroupingNode::pick ();
 
-	//	if (not getBrowser () -> getEditMode ())
 	getBrowser () -> popSensitiveNode ();
 }
 

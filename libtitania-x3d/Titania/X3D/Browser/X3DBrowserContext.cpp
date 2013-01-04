@@ -73,6 +73,10 @@ X3DBrowserContext::X3DBrowserContext () :
 	             lights (),                                        
 	           textures (),                                        
 	            sensors (),                                        
+	                  x (0),  
+	                  y (0),  
+	     sensitiveNodes (),  
+	               hits (),  
 	        changedTime (clock -> cycle ()),                       
 	      priorPosition (),                                        
 	       currentSpeed (0),                                       
@@ -110,6 +114,42 @@ X3DBrowserContext::initialize ()
 	for (int32_t i = 0; i < renderingProperties -> maxLights; ++ i)
 		lights .push (GL_LIGHT0 + i);
 
+	// Initialize OpenGL context
+	
+	if (glXGetCurrentContext ())
+	{
+		glClearColor (0, 0, 0, 0);
+		glClearDepth (1);
+
+		glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
+		glCullFace (GL_BACK);
+		glEnable (GL_NORMALIZE);
+
+		glDepthFunc (GL_LEQUAL);
+
+		//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
+
+		GLfloat light_model_ambient [ ] = { 0, 0, 0, 1 };
+
+		glLightModelfv (GL_LIGHT_MODEL_AMBIENT,       light_model_ambient);
+		glLightModeli  (GL_LIGHT_MODEL_LOCAL_VIEWER,  GL_FALSE);
+		glLightModeli  (GL_LIGHT_MODEL_TWO_SIDE,      GL_TRUE);
+		glLightModeli  (GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPARATE_SPECULAR_COLOR);
+
+		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+		glHint (GL_GENERATE_MIPMAP_HINT,        GL_NICEST);
+		glHint (GL_FOG_HINT,                    GL_NICEST);
+
+		//	glHint (GL_POINT_SMOOTH_HINT,   GL_NICEST);
+		//	glHint (GL_LINE_SMOOTH_HINT,    GL_NICEST);
+		//	glHint (GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+		//
+		//	glEnable (GL_POINT_SMOOTH);
+		//	glEnable (GL_LINE_SMOOTH);
+		//	glEnable (GL_POLYGON_SMOOTH);
+	}
 }
 
 time_type
@@ -144,26 +184,6 @@ X3DBrowserContext::getRouter ()
 	return router;
 }
 
-// Layer handling
-
-void
-X3DBrowserContext::pushLayer (X3DLayerNode* const layer)
-{
-	layers .push (layer);
-}
-
-void
-X3DBrowserContext::popLayer ()
-{
-	layers .pop ();
-}
-
-X3DLayerNode*
-X3DBrowserContext::getCurrentLayer () const
-{
-	return layers .top ();
-}
-
 // NavigationInfo handling
 
 NavigationInfo*
@@ -178,14 +198,6 @@ X3DViewpointNode*
 X3DBrowserContext::getActiveViewpoint ()
 {
 	return getExecutionContext () -> getActiveLayer () -> getViewpoint ();
-}
-
-// Light stack handling
-
-LightStack &
-X3DBrowserContext::getLights ()
-{
-	return lights;
 }
 
 // Texture list handling
@@ -257,6 +269,55 @@ X3DBrowserContext::updateSensors ()
 	sensors .processInterests ();
 }
 
+// Selection
+
+void
+X3DBrowserContext::pick (const double _x, const double _y)
+{
+	x = _x;
+	y = _y;
+	
+	// Clear hits.
+
+	for (const auto & hit : hits)
+		delete hit;
+
+	hits .clear ();
+	
+	// Pick.
+
+	pick ();
+	
+	// Selection end.
+
+	sensitiveNodes .clear ();
+
+	std::sort (hits .begin (), hits .end (), hitComp);
+}
+
+Line3f
+X3DBrowserContext::getHitRay () const
+{
+	GLint                viewport [4]; // x, y, width, heigth
+	Matrix4d::array_type modelview, projection;
+
+	glGetIntegerv (GL_VIEWPORT, viewport);
+	glGetDoublev (GL_MODELVIEW_MATRIX, modelview);
+	glGetDoublev (GL_PROJECTION_MATRIX, projection);
+
+	GLdouble px, py, pz;
+
+	// Near plane point
+	gluUnProject (x, y, 0, modelview, projection, viewport, &px, &py, &pz);
+	Vector3f near (px, py, pz);
+
+	// Far plane point
+	gluUnProject (x, y, 1, modelview, projection, viewport, &px, &py, &pz);
+	Vector3f far (px, py, pz);
+
+	return Line3f (near, far);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
@@ -274,9 +335,11 @@ X3DBrowserContext::notify (X3DBaseNode* const node)
 }
 
 void
-X3DBrowserContext::intersect ()
+X3DBrowserContext::pick ()
 {
-	getExecutionContext () -> select ();
+	glLoadIdentity ();
+
+	getExecutionContext () -> pick ();
 }
 
 void

@@ -558,13 +558,7 @@ X3DBaseNode::eventsProcessed ()
 }
 
 void
-X3DBaseNode::select ()
-{
-	intersect ();
-}
-
-void
-X3DBaseNode::intersect ()
+X3DBaseNode::pick ()
 {
 	// This is only a virtual function and left empty.
 }

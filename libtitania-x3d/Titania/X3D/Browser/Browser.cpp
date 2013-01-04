@@ -62,11 +62,7 @@ namespace X3D {
 
 Browser::Browser () :
 	    X3DBaseNode (this, this), 
-	      X3DBrowser (),           
-	objectFrontAlpha (1),          
-	 objectBackAlpha (1),          
-	               x (0),          
-	               y (0)           
+	     X3DBrowser ()           
 { }
 
 X3DBaseNode*
@@ -82,126 +78,10 @@ Browser::initialize ()
 
 	X3DBrowser::initialize ();
 
-	if (glXGetCurrentContext ())
-	{
-		glClearColor (0, 0, 0, 0);
-		glClearDepth (1);
-
-		glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
-		glCullFace (GL_BACK);
-		glEnable (GL_NORMALIZE);
-
-		glDepthFunc (GL_LEQUAL);
-
-		//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
-
-		GLfloat light_model_ambient [ ] = { 0, 0, 0, 1 };
-
-		glLightModelfv (GL_LIGHT_MODEL_AMBIENT,       light_model_ambient);
-		glLightModeli  (GL_LIGHT_MODEL_LOCAL_VIEWER,  GL_FALSE);
-		glLightModeli  (GL_LIGHT_MODEL_TWO_SIDE,      GL_TRUE);
-		glLightModeli  (GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPARATE_SPECULAR_COLOR);
-
-		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-		glHint (GL_GENERATE_MIPMAP_HINT,        GL_NICEST);
-		glHint (GL_FOG_HINT,                    GL_NICEST);
-
-		//	glHint (GL_POINT_SMOOTH_HINT,   GL_NICEST);
-		//	glHint (GL_LINE_SMOOTH_HINT,    GL_NICEST);
-		//	glHint (GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-		//
-		//	glEnable (GL_POINT_SMOOTH);
-		//	glEnable (GL_LINE_SMOOTH);
-		//	glEnable (GL_POLYGON_SMOOTH);
-	}
-
 	std::clog
 		<< "\tDone initializing Browser." << std::endl
 		<< std::endl;
 }
-
-//
-
-void
-Browser::setXY (const size_t _x, const size_t _y)
-{
-	x = _x;
-	y = _y;
-}
-
-// selection
-
-void
-Browser::pick (const size_t x, const size_t y)
-{
-	selectionBegin ();
-	setXY (x, y);
-	select ();
-	selectionEnd ();
-}
-
-void
-Browser::selectionBegin ()
-{
-	clearHits ();
-}
-
-void
-Browser::selectionEnd ()
-{
-	sensitiveNodes .clear ();
-	std::sort (hits .begin (), hits .end (), hitComp);
-}
-
-Line3f
-Browser::getHitRay () const
-{
-	GLint                viewport [4]; // x, y, width, heigth
-	Matrix4d::array_type modelview, projection;
-
-	glGetIntegerv (GL_VIEWPORT, viewport);
-	glGetDoublev (GL_MODELVIEW_MATRIX, modelview);
-	glGetDoublev (GL_PROJECTION_MATRIX, projection);
-
-	GLdouble px, py, pz;
-
-	// Near plane point
-	gluUnProject (x, y, 0, modelview, projection, viewport, &px, &py, &pz);
-	Vector3f near = Vector3f (px, py, pz);
-
-	// Far plane point
-	gluUnProject (x, y, 1, modelview, projection, viewport, &px, &py, &pz);
-	Vector3f far = Vector3f (px, py, pz);
-
-	return Line3f (near, far);
-}
-
-void
-Browser::clearHits ()
-{
-	for (const auto & hit : hits)
-		delete hit;
-
-	hits .clear ();
-}
-
-//
-
-void
-Browser::replaceWorld (const SFNode <Scene> & scene)
-throw (Error <INVALID_SCENE>)
-{
-	clearHits ();
-
-	rendererStack .clear ();
-
-	X3DBrowser::replaceWorld (scene);
-}
-
-Browser::~Browser ()
-{ }
 
 } // X3D
 } // titania

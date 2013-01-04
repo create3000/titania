@@ -213,6 +213,9 @@ void
 Route::dispose ()
 {
 	disconnect ();
+	
+	sourceNode      .dispose ();
+	destinationNode .dispose ();
 
 	X3DBaseNode::dispose ();
 }

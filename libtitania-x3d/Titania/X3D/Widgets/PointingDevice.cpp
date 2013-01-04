@@ -95,7 +95,7 @@ PointingDevice::on_button_press_event (GdkEventButton* event)
 bool
 PointingDevice::on_motion_notify_event (GdkEventMotion* event)
 {
-	if (button == 0)
+	if (button == 0 or button == 1)
 	{
 		if (pick (event -> x, surface .get_height () - event -> y))
 		{
@@ -115,10 +115,6 @@ PointingDevice::on_motion_notify_event (GdkEventMotion* event)
 				isOver = false;
 			}
 		}
-	}
-
-	else if (button == 1)
-	{
 	}
 
 	return false;
@@ -177,7 +173,7 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 }
 
 bool
-PointingDevice::pick (const size_t x, const size_t y)
+PointingDevice::pick (const double x, const double y)
 {
 	if (not surface .makeCurrent ())
 		return false;
