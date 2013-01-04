@@ -55,11 +55,11 @@ namespace X3D {
 
 ///  6.2.2 The getBrowser service returns a reference to an instance of an X3D browser through which other service
 ///  requests may be processed.  This is a unique identifier per application instance.
-const SFNode <Browser> &
+const SFNode <BrowserApplication> &
 getBrowser (/* parameter */)
 throw (Error <BROWSER_UNAVAILABLE>)
 {
-	static SFNode <Browser> browser = createBrowser ();
+	static SFNode <BrowserApplication> browser = new BrowserApplication ();
 	return browser;
 }
 

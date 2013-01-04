@@ -1,31 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="x3dtidy/main.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="44" Column="27" />
-      <File FileName="Library/Tests/Scripting/test.wrl" Line="21" Column="14" />
-      <File FileName="libtitania-x3d/Titania/X3D/Types/Numbers.h" Line="66" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.h" Line="67" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/X3DScalar.h" Line="107" Column="20" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="195" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="236" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/OrthoViewpoint.cpp" Line="111" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="52" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/SFMatrix4.cpp" Line="54" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/X3DScalar.cpp" Line="105" Column="28" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/ExamineViewer.cpp" Line="52" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/PointingDevice.h" Line="53" Column="20" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/PointingDevice.cpp" Line="67" Column="19" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/X3DWidget.cpp" Line="51" Column="22" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/X3DWidget.h" Line="51" Column="1" />
-      <File FileName="Titania/Titania/Base/X3DBrowserInterface.h" Line="61" Column="1" />
-      <File FileName="Titania/Titania/UserInterfaces/X3DBrowserUserInterface.cpp" Line="58" Column="65" />
-      <File FileName="Titania/Titania/UserInterfaces/X3DBrowserUserInterface.h" Line="129" Column="1" />
-      <File FileName="Titania/Titania/UserInterfaces/X3DBrowserWidgetUI.h" Line="114" Column="37" />
-      <File FileName="Titania/Titania/Base/X3DBaseInterface.h" Line="74" Column="38" />
-      <File FileName="Titania/Titania/Base/X3DBaseInterface.cpp" Line="58" Column="55" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeModel.cpp" Line="56" Column="68" />
-      <File FileName="libtitania-x3d/Titania/X3D.h" Line="47" Column="35" />
+      <File FileName="Library/Tests/Scripting/test.wrl" Line="15" Column="13" />
+      <File FileName="x3dtidy/main.cpp" Line="155" Column="4" />
+      <File FileName="Titania/Titania/main.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="203" Column="25" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="306" Column="48" />
+      <File FileName="Titania/Titania/Browser/BrowserWidget.h" Line="55" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -126,7 +109,7 @@
           <Node name="test" expanded="True">
             <Node name="Tests" expanded="True" />
           </Node>
-          <Node name="Titania" expanded="True" selected="True">
+          <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="applications" expanded="True" />
               <Node name="titania" expanded="True">
@@ -148,7 +131,7 @@
             </Node>
           </Node>
           <Node name="titania-info" expanded="True" />
-          <Node name="x3dtidy" expanded="True" />
+          <Node name="x3dtidy" expanded="True" selected="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

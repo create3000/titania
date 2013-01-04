@@ -515,6 +515,7 @@
     <None Include="Titania\X3D\Widgets\ExamineViewer.h" />
     <None Include="Titania\X3D\Widgets\X3DViewer.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\JavaScriptContext.h" />
+    <None Include="Titania\X3D\Browser\BrowserApplication.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

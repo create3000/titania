@@ -49,6 +49,7 @@
 #include <iostream>
 
 #include <Titania/X3D.h>
+#include <gtkmm.h>
 
 #include "anyoption.h"
 
@@ -60,7 +61,7 @@ main (int argc, char** argv)
 	AnyOption options;
 
 	options .addUsage ("SYNOPSIS");
-	options .addUsage ("       x3dtidy [optionsIONS] [FILE]");
+	options .addUsage ("       x3dtidy [OPTIONS] [FILE]");
 	options .addUsage ("");
 	options .addUsage ("DESCRIPTION");
 	options .addUsage ("       Format FILE, or standard input, to standard output");
@@ -129,6 +130,7 @@ main (int argc, char** argv)
 
 	try
 	{
+
 		auto browser = X3D::getBrowser ();
 		browser -> setup ();
 

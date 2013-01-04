@@ -46,26 +46,33 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_H__
-#define __TITANIA_X3D_H__
+#ifndef __TITANIA_X3D_BROWSER_BROWSER_APPLICATION_H__
+#define __TITANIA_X3D_BROWSER_BROWSER_APPLICATION_H__
 
-// Include Browser as first file
-#include "X3D/Browser/Browser.h"
-#include "X3D/Browser/BrowserApplication.h"
-
-#include "X3D/Bits/Error.h"
-#include "X3D/Components.h"
+#include "../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-const SFNode <BrowserApplication> &
-getBrowser (/* parameter */)
-throw (Error <BROWSER_UNAVAILABLE>);
+class BrowserApplication :
+	public X3D::X3DBrowser
+{
+public:
 
-SFNode <Browser>
-createBrowser ()
-throw (Error <BROWSER_UNAVAILABLE>);
+	BrowserApplication () :
+		X3DBaseNode (this, this),
+		X3D::X3DBrowser ()
+	{ }
+
+
+private:
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const
+	{ return new BrowserApplication (); }
+
+};
 
 } // X3D
 } // titania

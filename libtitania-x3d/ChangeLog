@@ -1,5 +1,12 @@
 2013-01-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3D.h:
+	* X3D.cpp:
+	* libtitania-x3d.cproj:
+	* BrowserApplication.h: 
+
+2013-01-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* X3D.h:
 	* X3D.cpp:
