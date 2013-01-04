@@ -1,0 +1,46 @@
+Source: titania
+Section: gnome
+Priority: extra
+Maintainer: Holger Seelig <holger.seelig@yahoo.de>
+Build-Depends: debhelper (>= 5),
+               libgtkmm-3.0-dev, 
+               libgconfmm-2.6-dev, 
+               libfontconfig1-dev, 
+               libftgl-dev, 
+               libglu1-mesa-dev, 
+               libglew-dev, 
+               libgl1-mesa-dev, 
+               libmozjs185-dev, 
+               libpcre++-dev, 
+               libmagick++-dev, 
+               libcurl4-gnutls-dev, 
+               libsqlite3-dev, 
+               zlib1g,
+               intltool,
+               gettext
+
+Homepage: https://titania.create3000.de/
+Package: titania
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         debhelper (>= 5), 
+         libgtkmm-3.0-1, 
+         libgconfmm-2.6-1c2, 
+         libfontconfig1, 
+         libftgl2, 
+         libglu1-mesa, 
+         libglew1.8, 
+         libgl1-mesa-glx, 
+         libmozjs185-1.0, 
+         libpcrecpp0, 
+         libmagick++5, 
+         libcurl4-gnutls-dev, 
+         libsqlite3-0, 
+         zlib1g
+Conflicts:
+Replaces:
+Provides: titania
+Description: Titania X3D Viewer
+ Titania aims to provide a full standard X3D/VRML viewer for the gnome platform.
+

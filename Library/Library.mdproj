@@ -1245,7 +1245,6 @@
     <None Include="Models\Backgrounds\blue-green.wrl" />
     <None Include="Models\Backgrounds\sunny.wrl" />
     <None Include="Models\People\woman.wrl" />
-    <None Include="Tests\Scripting\Felület.wrl" />
     <None Include="Tests\Basic\GZipEncoded.wrl" />
     <None Include="Tests\Basic\GZipEncoded.wrl.gz" />
     <None Include="Tests\1st\earth.png" />
@@ -1257,7 +1256,6 @@
     <None Include="Tests\Text\HelloWorld.wrl" />
     <None Include="Protos\Geometry2D\RegularPolygon2D\RegularPolygon2D.py" />
     <None Include="Protos\Geometry2D\RegularPolygon2D\RegularPolygon2D.wrl" />
-    <None Include="Tests\Scripting\Felület3D.wrl" />
     <None Include="Tests\Text\Text.wrl" />
     <None Include="Tests\Grouping\AddChildren.wrl" />
     <None Include="Tests\Grouping\Children.wrl" />
@@ -1344,7 +1342,6 @@
     <None Include="Examples\BIC\stage\worlds\steckdose1.png" />
     <None Include="Examples\BIC\stage\worlds\steckdose2.png" />
     <None Include="Examples\BIC\stage\worlds\strasse03.png" />
-    <None Include="Examples\BIC\stage\worlds\tür_brett.wrl" />
     <None Include="Examples\BIC\stage\worlds\wand1.png" />
     <None Include="Examples\Capone\stage\BoolButton_proto.wrl" />
     <None Include="Examples\Capone\stage\BoolSwitch_proto.wrl" />
@@ -1585,6 +1582,9 @@
     <None Include="Tests\Networking\Anchor.wrl" />
     <None Include="Tests\Scripting\Import_proto.wrl" />
     <None Include="Tests\Scripting\Cube.wrl" />
+    <None Include="Tests\Scripting\Feluet3D.wrl" />
+    <None Include="Tests\Scripting\Felulet.wrl" />
+    <None Include="Examples\BIC\stage\worlds\tuer_brett.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

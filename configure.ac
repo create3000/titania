@@ -129,18 +129,18 @@ glibmm-2.4)
 
 
 AC_OUTPUT([
-Makefile
-po/Makefile.in
 libtitania-standard/Makefile
-experimental/Makefile
+libtitania-sqlite/Makefile
+libtitania-stream/Makefile
 libtitania-anyoptions/Makefile
 libtitania-gzstream/Makefile
 libtitania-opengl-surface/Makefile
-libtitania-sqlite/Makefile
-libtitania-stream/Makefile
 libtitania-x3d/Makefile
 Titania/Makefile
 titania-info/Makefile
 x3dtidy/Makefile
 test/Makefile
+experimental/Makefile
+po/Makefile.in
+Makefile
 ])

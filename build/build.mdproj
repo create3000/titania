@@ -43,5 +43,26 @@
     <None Include="..\README">
       <Link>README</Link>
     </None>
+    <None Include="..\debian\changelog">
+      <Link>debian\changelog</Link>
+    </None>
+    <None Include="..\debian\compat">
+      <Link>debian\compat</Link>
+    </None>
+    <None Include="..\debian\control">
+      <Link>debian\control</Link>
+    </None>
+    <None Include="..\debian\copyright">
+      <Link>debian\copyright</Link>
+    </None>
+    <None Include="..\debian\files">
+      <Link>debian\files</Link>
+    </None>
+    <None Include="..\debian\rules">
+      <Link>debian\rules</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="debian\" />
   </ItemGroup>
 </Project>
