@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 TriangleFanSet::TriangleFanSet (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DComposedGeometryNode (),                                                    
 	               fanCount ()                                                     // MFInt32 [in,out] fanCount  [ ]       [3,∞)
 {

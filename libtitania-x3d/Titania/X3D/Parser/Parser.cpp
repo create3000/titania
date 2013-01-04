@@ -48,7 +48,7 @@
 
 #include "Parser.h"
 
-#include "../Browser/Browser.h"
+#include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Networking/Inline.h"
 #include "../Components/Scripting/Script.h"
@@ -78,11 +78,11 @@ Parser::AccessTypes Parser::accessTypes;
 
 Parser::Parser (X3DScene* scene) :
 	X3DBaseNode (scene -> getBrowser (), scene), 
-	  X3DParser (),                                     
-	      scene (scene),                                
-	      input (),                                
-	     string (),         
-	   nodeList ()                                      
+	  X3DParser (),                              
+	      scene (scene),                         
+	      input (),                              
+	     string (),                              
+	   nodeList ()                               
 {
 	setComponent ("Browser");
 	setTypeName ("Parser");
@@ -93,8 +93,9 @@ Parser::parseIntoScene (std::istream & istream)
 throw (Error <INVALID_X3D>)
 {
 	std::ostringstream ostringstream;
+
 	ostringstream << basic::gunzip (istream) .rdbuf ();
-	
+
 	input  = ostringstream .str ();
 	string = pcrecpp::StringPiece (input);
 

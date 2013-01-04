@@ -1,5 +1,18 @@
 2013-01-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* rules:
+	* compat:
+	* control:
+	* copyright:
+	* changelog:
+	* Titania.userprefs:
+	* format:
+	* titania.debhelper.log:
+	* titania.postrm.debhelper:
+	* titania.postinst.debhelper: 
+
+2013-01-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Titania.sln:
 	* Titania.usertasks:
 	* Titania.userprefs:

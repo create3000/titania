@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,7 +71,7 @@ jsX3DArrayField <jsSFTime, MFTime>::construct (JSContext* context, uintN argc, j
 	else
 	{
 		MFTime* field = new MFTime ();
-		
+
 		jsval* argv = JS_ARGV (context, vp);
 
 		for (uintN i = 0; i < argc; ++ i)
@@ -111,12 +111,12 @@ jsX3DArrayField <jsSFTime, MFTime>::set1Value (JSContext* context, JSObject* obj
 		return JS_FALSE;
 
 	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
-	
+
 	field -> set1Value (index, SFTime (number));
 
 	*vp = JSVAL_VOID;
 
-return JS_TRUE;
+	return JS_TRUE;
 }
 
 template class jsX3DArrayField <jsSFTime, MFTime>;

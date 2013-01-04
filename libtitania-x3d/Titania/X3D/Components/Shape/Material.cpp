@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,15 +46,16 @@
  *
  ******************************************************************************/
 
-#include "../../Browser/Browser.h"
-#include "../../Execution/X3DExecutionContext.h"
 #include "Material.h"
+
+#include "../../Browser/X3DBrowser.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
 Material::Material (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DMaterialNode (),                                                    
 	ambientIntensity (0.2),                                                 // SFFloat [in,out] ambientIntensity  0.2                [0,1]
 	    diffuseColor (0.8, 0.8, 0.8),                                       // SFColor [in,out] diffuseColor      0.8 0.8 0.8        [0,1]

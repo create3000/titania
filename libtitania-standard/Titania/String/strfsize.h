@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BITS_STRING_STRFSIZE_H__
-#define __TITANIA_BITS_STRING_STRFSIZE_H__
+#ifndef __TITANIA_STRING_STRFSIZE_H__
+#define __TITANIA_STRING_STRFSIZE_H__
 
 #include <string>
 

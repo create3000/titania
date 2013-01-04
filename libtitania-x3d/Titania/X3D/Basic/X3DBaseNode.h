@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASIC_X3DBASIC_NODE_H__
-#define __TITANIA_X3D_BASIC_X3DBASIC_NODE_H__
+#ifndef __TITANIA_X3D_BASIC_X3DBASE_NODE_H__
+#define __TITANIA_X3D_BASIC_X3DBASE_NODE_H__
 
 #include "../Base/X3DChildObject.h"
 #include "../Basic/FieldDefinitionArray.h"
@@ -165,7 +165,7 @@ public:
 	display ();
 
 	///  @name Input/Output
-	
+
 	virtual
 	void
 	fromStream (std::istream &)
@@ -173,13 +173,13 @@ public:
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
-	
+
 	virtual
 	void
 	toStream (std::ostream &) const;
 
 	///  @name Dispose
-	
+
 	virtual
 	void
 	dispose ();

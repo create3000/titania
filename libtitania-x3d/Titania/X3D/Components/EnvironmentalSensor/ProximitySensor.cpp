@@ -48,7 +48,7 @@
 
 #include "ProximitySensor.h"
 
-#include "../../Browser/Browser.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Types/Geometry.h"
 
@@ -174,20 +174,20 @@ ProximitySensor::isInside (const Matrix4f & matrix) const
 	float z = size1_2 .z ();
 
 	Vector3f points [6] = {
-		Vector3f ( 0,  0,  z) * matrix,
-		Vector3f ( 0,  0, -z) * matrix,
-		Vector3f ( 0,  y,  0) * matrix,
-		Vector3f ( 0, -y,  0) * matrix,
-		Vector3f ( x,  0,  0) * matrix,
+		Vector3f (0,  0,  z) * matrix,
+		Vector3f (0,  0, -z) * matrix,
+		Vector3f (0,  y,  0) * matrix,
+		Vector3f (0, -y,  0) * matrix,
+		Vector3f (x,  0,  0) * matrix,
 		Vector3f (-x,  0,  0) * matrix
 	};
 
 	Vector3f normals [6] = {
-		normalize (matrix .multDirMatrix (Vector3f ( 0,  0,  1))),
-		normalize (matrix .multDirMatrix (Vector3f ( 0,  0, -1))),
-		normalize (matrix .multDirMatrix (Vector3f ( 0,  1,  0))),
-		normalize (matrix .multDirMatrix (Vector3f ( 0, -1,  0))),
-		normalize (matrix .multDirMatrix (Vector3f ( 1,  0,  0))),
+		normalize (matrix .multDirMatrix (Vector3f (0,  0,  1))),
+		normalize (matrix .multDirMatrix (Vector3f (0,  0, -1))),
+		normalize (matrix .multDirMatrix (Vector3f (0,  1,  0))),
+		normalize (matrix .multDirMatrix (Vector3f (0, -1,  0))),
+		normalize (matrix .multDirMatrix (Vector3f (1,  0,  0))),
 		normalize (matrix .multDirMatrix (Vector3f (-1,  0,  0)))
 	};
 

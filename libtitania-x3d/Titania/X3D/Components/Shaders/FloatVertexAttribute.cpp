@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 FloatVertexAttribute::FloatVertexAttribute (X3DExecutionContext* const executionContext) :
-	          X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DVertexAttributeNode (),                                                    
 	                 value (),                                                    // MFFloat [in,out] value          [ ]       (-∞,∞)
 	         numComponents (4)                                                    // SFInt32 [ ]      numComponents  4         [1..4]

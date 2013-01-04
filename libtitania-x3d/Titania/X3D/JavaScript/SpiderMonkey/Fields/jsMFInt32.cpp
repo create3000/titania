@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -109,7 +109,7 @@ jsX3DArrayField <jsSFInt32, MFInt32>::set1Value (JSContext* context, JSObject* o
 
 	if (not JS_ValueToECMAInt32 (context, *vp, &number))
 		return JS_FALSE;
-		
+
 	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
 	field -> set1Value (index, SFInt32 (number));

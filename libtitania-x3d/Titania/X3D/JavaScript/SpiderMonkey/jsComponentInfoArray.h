@@ -59,15 +59,15 @@ class jsComponentInfoArray
 {
 public:
 
-	static 
+	static
 	void
 	init (JSContext*, JSObject*);
 
-	static 
+	static
 	JSBool
 	create (JSContext*, ComponentInfoArray*, jsval*, const bool = false);
 
-	static 
+	static
 	JSClass*
 	getClass () { return &static_class; }
 

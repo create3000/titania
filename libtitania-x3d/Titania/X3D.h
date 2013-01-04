@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -49,11 +49,10 @@
 #ifndef __TITANIA_X3D_H__
 #define __TITANIA_X3D_H__
 
-// Include Surface as first file
-#include "X3D/Widgets/Surface.h"
+// Include Browser as first file
+#include "X3D/Browser/Browser.h"
 
 #include "X3D/Bits/Error.h"
-#include "X3D/Browser/Browser.h"
 #include "X3D/Components.h"
 
 namespace titania {

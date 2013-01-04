@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Sound::Sound (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DSoundNode (),                                                    
 	   direction (0, 0, 1),                                             // SFVec3f [in,out] direction   0 0 1        (-∞,∞)
 	   intensity (1),                                                   // SFFloat [in,out] intensity   1            [0,1]

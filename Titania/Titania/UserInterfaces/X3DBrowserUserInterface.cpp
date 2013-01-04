@@ -55,8 +55,7 @@ namespace puck {
 
 X3DBrowserUserInterface::X3DBrowserUserInterface (const std::string & sessionKey, X3DBrowserInterface* const browserWidget) :
 	 X3DBrowserWidgetUI (get_ui ("BrowserWidget.ui"), sessionKey), 
-	X3DBrowserInterface (X3D::createBrowser ()),                   
-	            surface (getBrowser ()),                           
+	X3DBrowserInterface (X3D::createBrowser ()),                                            
 	    viewpointEditor (sessionKey, this),                        
 	      historyEditor (sessionKey, this),                        
 	      outlineEditor (sessionKey, this)                         

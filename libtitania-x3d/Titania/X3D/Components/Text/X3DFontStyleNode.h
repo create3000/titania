@@ -102,7 +102,7 @@ private:
 
 	void
 	set_justify ();
-	
+
 	Alignment
 	getAlignment (const size_t) const;
 

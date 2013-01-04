@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 TexCoordDamper2D::TexCoordDamper2D (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DDamperNode (),                                                    
 	   set_destination (),                                                    // MFVec2f [in]     set_destination
 	         set_value (),                                                    // MFVec2f [in]     set_value

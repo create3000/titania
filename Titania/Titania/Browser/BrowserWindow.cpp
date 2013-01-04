@@ -52,8 +52,8 @@ namespace titania {
 namespace puck {
 
 BrowserWindow::BrowserWindow (int & argc, char** & argv) :
-	X3DBrowserWindow (argc, argv),      
-	     currentPage (-1),                
+	X3DBrowserWindow (argc, argv),                   
+	     currentPage (-1),                           
 	motionBlurEditor (getConfig () .getKey (), this) 
 { }
 

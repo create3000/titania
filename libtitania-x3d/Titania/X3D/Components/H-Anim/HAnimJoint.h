@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,19 +59,19 @@ class HAnimJoint :
 {
 public:
 
-	SFVec3f               center;
+	SFVec3f              center;
 	MFNode <X3DBaseNode> displacers;
-	SFRotation            limitOrientation;
-	MFFloat               llimit;
-	SFString              name;
-	SFRotation            rotation;
-	SFVec3f               scale;
-	SFRotation            scaleOrientation;
-	MFInt32               skinCoordIndex;
-	MFFloat               skinCoordWeight;
-	MFFloat               stiffness;
-	SFVec3f               translation;
-	MFFloat               ulimit;
+	SFRotation           limitOrientation;
+	MFFloat              llimit;
+	SFString             name;
+	SFRotation           rotation;
+	SFVec3f              scale;
+	SFRotation           scaleOrientation;
+	MFInt32              skinCoordIndex;
+	MFFloat              skinCoordWeight;
+	MFFloat              stiffness;
+	SFVec3f              translation;
+	MFFloat              ulimit;
 
 	HAnimJoint (X3DExecutionContext* const);
 

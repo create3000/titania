@@ -48,24 +48,23 @@
 
 #include "PointingDevice.h"
 
+#include "../Browser/Browser.h"
 #include "../Components/Networking/Anchor.h"
 #include "../Components/PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
-#include "Surface.h"
 
 #define SELECT_BUFFER_SIZE 1024
 
 namespace titania {
 namespace X3D {
 
-PointingDevice::PointingDevice (Surface & surface) :
-	X3DWidget (surface .getBrowser ()), 
-	  surface (surface),                
-	   button (0),                      
-	   isOver (false)                   
+PointingDevice::PointingDevice (Browser* const browser) :
+	X3DWidget (browser), 
+	   button (0),       
+	   isOver (false)    
 {
-	surface .signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
-	surface .signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PointingDevice::on_motion_notify_event),  false);
-	surface .signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
+	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
+	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PointingDevice::on_motion_notify_event),  false);
+	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
 }
 
 bool
@@ -75,18 +74,18 @@ PointingDevice::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
-		if (pick (event -> x, surface .get_height () - event -> y))
+		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
 		{
-			surface .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::HAND1));
+			getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::HAND1));
 			return true;
 		}
 		else
-			surface .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::FLEUR));
+			getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::FLEUR));
 	}
 
 	else if (button == 2)
 	{
-		surface .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::FLEUR));
+		getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::FLEUR));
 	}
 
 	return false;
@@ -97,11 +96,11 @@ PointingDevice::on_motion_notify_event (GdkEventMotion* event)
 {
 	if (button == 0 or button == 1)
 	{
-		if (pick (event -> x, surface .get_height () - event -> y))
+		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
 		{
 			if (not isOver)
 			{
-				surface .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::HAND2));
+				getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::HAND2));
 				isOver = true;
 			}
 
@@ -111,7 +110,7 @@ PointingDevice::on_motion_notify_event (GdkEventMotion* event)
 		{
 			if (isOver)
 			{
-				surface .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
+				getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
 				isOver = false;
 			}
 		}
@@ -129,9 +128,9 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 	{
 		if (isOver)
 		{
-			surface .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::HAND2));
+			getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::HAND2));
 
-			if (pick (event -> x, surface .get_height () - event -> y))
+			if (pick (event -> x, getBrowser () -> get_height () - event -> y))
 			{
 				Hit* hit = getBrowser () -> getHits () .front ();
 
@@ -158,15 +157,15 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 			}
 		}
 		else
-			surface .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
+			getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
 	}
 
 	else if (event -> button == 2)
 	{
 		if (isOver)
-			surface .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::HAND2));
+			getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::HAND2));
 		else
-			surface .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
+			getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
 	}
 
 	return false;
@@ -175,7 +174,7 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 bool
 PointingDevice::pick (const double x, const double y)
 {
-	if (not surface .makeCurrent ())
+	if (not getBrowser () -> makeCurrent ())
 		return false;
 
 	getBrowser () -> pick (x, y);

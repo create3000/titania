@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,16 +59,16 @@ class CollisionCollection :
 {
 public:
 
-	MFString              appliedParameters;
-	SFFloat               bounce;
+	MFString             appliedParameters;
+	SFFloat              bounce;
 	MFNode <X3DBaseNode> collidables;
-	SFBool                enabled;
-	SFVec2f               frictionCoefficients;
-	SFFloat               minBounceSpeed;
-	SFVec2f               slipFactors;
-	SFFloat               softnessConstantForceMix;
-	SFFloat               softnessErrorCorrection;
-	SFVec2f               surfaceSpeed;
+	SFBool               enabled;
+	SFVec2f              frictionCoefficients;
+	SFFloat              minBounceSpeed;
+	SFVec2f              slipFactors;
+	SFFloat              softnessConstantForceMix;
+	SFFloat              softnessErrorCorrection;
+	SFVec2f              surfaceSpeed;
 
 	CollisionCollection (X3DExecutionContext* const);
 

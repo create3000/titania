@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),                                    
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),                                    
 	 X3DGeometryNode (),                                                                                       
 	set_crossSection (),                                                                                       // MFVec2f    [in] set_crossSection
 	 set_orientation (),                                                                                       // MFRotation [in] set_orientation
@@ -78,7 +78,7 @@ Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "set_orientation",  set_orientation);
 	addField (inputOnly,      "set_scale",        set_scale);
 	addField (inputOnly,      "set_spine",        set_spine);
-		
+
 	addField (initializeOnly, "beginCap",         beginCap);
 	addField (initializeOnly, "endCap",           endCap);
 	addField (initializeOnly, "solid",            solid);
@@ -269,7 +269,7 @@ Extrusion::build ()
 	coordIndex .reserve (reserve);
 	getTexCoord () .reserve (reserve);
 	getNormals () .reserve (reserve);
-	
+
 	// Build body.
 
 	for (size_t n = 0; n < spine .size () - 1; n ++)
@@ -331,7 +331,7 @@ Extrusion::build ()
 			getNormals () .emplace_back (normal);
 		}
 	}
-	
+
 	// Build caps
 
 	Vector2f min = crossSection [0];
@@ -357,11 +357,11 @@ Extrusion::build ()
 			tesselator .tesselate ();
 
 			buildCap (tesselator,
-                   points,
-                   coordIndex,
-                   normalIndex,
-                   min,
-                   size);
+			          points,
+			          coordIndex,
+			          normalIndex,
+			          min,
+			          size);
 		}
 
 		if (endCap)
@@ -376,15 +376,15 @@ Extrusion::build ()
 			tesselator .tesselate ();
 
 			buildCap (tesselator,
-                   points,
-                   coordIndex,
-                   normalIndex,
-                   min,
-                   size);
-			
+			          points,
+			          coordIndex,
+			          normalIndex,
+			          min,
+			          size);
+
 		}
 	}
-	
+
 	// Refine normals and build vertices.
 
 	refineNormals (normalIndex, getNormals ());
@@ -541,7 +541,7 @@ Extrusion::buildCap (const Tesselator & tesselator,
 				break;
 		}
 	}
-	
+
 	#undef I
 	#undef K
 }

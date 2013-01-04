@@ -53,7 +53,7 @@ namespace puck {
 
 ViewpointMenuItem::ViewpointMenuItem (X3D::X3DViewpointNode* const viewpoint) :
 	Gtk::MenuItem (viewpoint -> description .getValue ()), 
-	    viewpoint (viewpoint)                                                                                    
+	    viewpoint (viewpoint)                              
 { }
 
 void

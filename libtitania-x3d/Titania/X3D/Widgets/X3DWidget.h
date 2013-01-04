@@ -49,38 +49,38 @@
 #ifndef __TITANIA_X3D_WIDGETS_X3DWIDGET_H__
 #define __TITANIA_X3D_WIDGETS_X3DWIDGET_H__
 
-#include "../Components/Core/X3DNode.h"
-
 namespace titania {
 namespace X3D {
+
+class Browser;
 
 class X3DWidget
 {
 public:
 
 	///  @name Constructors
-	
-	X3DWidget (const SFNode <X3DBrowser> &);
-	
+
+	X3DWidget (Browser* const);
+
 	///  @name Element access
-	
+
 	virtual
-	X3DBrowser*
+	Browser*
 	getBrowser () const;
-	
+
 	///  @name Setup
-	
+
 	void
 	setup ();
 
 	///  @name dispose
-	
+
 	virtual
 	void
 	dispose ();
 
 	///  @name Destructors
-	
+
 	virtual
 	~X3DWidget ();
 
@@ -91,7 +91,7 @@ private:
 	void
 	initialize ();
 
-	SFNode <X3DBrowser> browser;
+	Browser* browser;
 
 };
 

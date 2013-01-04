@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,16 +54,16 @@ namespace titania {
 namespace X3D {
 
 X3DFontStyleNode::X3DFontStyleNode () :
-	X3DPropertyNode (),            
-	         family ({ "SERIF" }), // MFString [ ] family       "SERIF"
-	          style ("PLAIN"),     // SFString [ ] style        "PLAIN"        ["PLAIN"|"BOLD"|"ITALIC"|"BOLDITALIC"|""]
-	        spacing (1),           // SFFloat  [ ] spacing      1.0            [0,?)
-	     horizontal (true),        // SFBool   [ ] horizontal   TRUE
-	        justify ({ "BEGIN" }), // MFString [ ] justify      "BEGIN"        ["BEGIN","END","FIRST","MIDDLE",""]
-	    topToBottom (true),        // SFBool   [ ] topToBottom  TRUE
-	    leftToRight (true),        // SFBool   [ ] leftToRight  TRUE
-	       language (),            // SFString [ ] language     ""
-	     alignments { Alignment::BEGIN, Alignment::BEGIN }         
+	X3DPropertyNode (),                                    
+	         family ({ "SERIF" }),                         // MFString [ ] family       "SERIF"
+	          style ("PLAIN"),                             // SFString [ ] style        "PLAIN"        ["PLAIN"|"BOLD"|"ITALIC"|"BOLDITALIC"|""]
+	        spacing (1),                                   // SFFloat  [ ] spacing      1.0            [0,?)
+	     horizontal (true),                                // SFBool   [ ] horizontal   TRUE
+	        justify ({ "BEGIN" }),                         // MFString [ ] justify      "BEGIN"        ["BEGIN","END","FIRST","MIDDLE",""]
+	    topToBottom (true),                                // SFBool   [ ] topToBottom  TRUE
+	    leftToRight (true),                                // SFBool   [ ] leftToRight  TRUE
+	       language (),                                    // SFString [ ] language     ""
+	     alignments { Alignment::BEGIN, Alignment::BEGIN } 
 {
 	addNodeType (X3DConstants::X3DFontStyleNode);
 }
@@ -104,7 +104,7 @@ X3DFontStyleNode::getAlignment (const size_t index) const
 
 	else if (justify [index] == "END")
 		return Alignment::END;
-		
+
 	return index ? Alignment::FIRST : Alignment::BEGIN;
 }
 

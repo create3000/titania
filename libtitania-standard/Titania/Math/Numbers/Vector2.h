@@ -132,7 +132,7 @@ public:
 	///  Access components by @a index.
 	constexpr Type
 	operator [ ] (const size_type index) const { return value [index]; }
-	
+
 	///  Returns pointer to the underlying array serving as element storage.
 	Type*
 	data () { return value; }

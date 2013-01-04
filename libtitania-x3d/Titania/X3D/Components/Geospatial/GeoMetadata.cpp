@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,10 +55,10 @@ namespace X3D {
 
 GeoMetadata::GeoMetadata (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	 X3DInfoNode (),                                                    
-	        data (),                                                    // MFNode   [in,out] data     [ ]       [urn]
-	     summary (),                                                    // MFString [in,out] summary  [ ]
-	         url ()                                                     // MFString [in,out] url      [ ]       [URI]
+	X3DInfoNode (),                                                    
+	       data (),                                                    // MFNode   [in,out] data     [ ]       [urn]
+	    summary (),                                                    // MFString [in,out] summary  [ ]
+	        url ()                                                     // MFString [in,out] url      [ ]       [URI]
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoMetadata");

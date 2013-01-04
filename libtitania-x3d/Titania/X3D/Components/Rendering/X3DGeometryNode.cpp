@@ -52,23 +52,23 @@ namespace titania {
 namespace X3D {
 
 X3DGeometryNode::X3DGeometryNode () :
-	                   X3DNode (),              
-	                     solid (true),          // SFBool  [ ]      solid            TRUE
-	                       ccw (true),          // SFBool  [ ]      ccw              TRUE
-	               creaseAngle (),              // SFFloat [ ]      creaseAngle      0           [0,∞)
-	                      bbox (),              
-	                  texCoord (),              
-	textureCoordinateGenerator (NULL),              
-	                    colors (),              
-	                colorsRGBA (),              
-	                   normals (),              
-	                  vertices (),              
-	                vertexMode (),              
-	               bufferUsage (GL_STATIC_DRAW),
-	          texCoordBufferId (0),             
-	             colorBufferId (0),             
-	            normalBufferId (0),             
-	             pointBufferId (0)
+	                   X3DNode (),               
+	                     solid (true),           // SFBool  [ ]      solid            TRUE
+	                       ccw (true),           // SFBool  [ ]      ccw              TRUE
+	               creaseAngle (),               // SFFloat [ ]      creaseAngle      0           [0,∞)
+	                      bbox (),               
+	                  texCoord (),               
+	textureCoordinateGenerator (NULL),           
+	                    colors (),               
+	                colorsRGBA (),               
+	                   normals (),               
+	                  vertices (),               
+	                vertexMode (),               
+	               bufferUsage (GL_STATIC_DRAW), 
+	          texCoordBufferId (0),              
+	             colorBufferId (0),              
+	            normalBufferId (0),              
+	             pointBufferId (0)               
 {
 	addNodeType (X3DConstants::X3DGeometryNode);
 }
@@ -112,7 +112,7 @@ X3DGeometryNode::getBBox ()
 {
 	if (bbox == Box3f ())
 		return bbox = createBBox ();
-	
+
 	return bbox;
 }
 

@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 OrientationChaser::OrientationChaser (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DChaserNode (),                                                    
 	   set_destination (),                                                    // SFRotation [in]     set_destination
 	         set_value (),                                                    // SFRotation [in]     set_value

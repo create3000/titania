@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const executionContext) :
-	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DEnvironmentTextureNode (),                                                    
 	                     back (),                                                    // SFNode [in,out] back    NULL        [X3DTexture2DNode]
 	                   bottom (),                                                    // SFNode [in,out] bottom  NULL        [X3DTexture2DNode]

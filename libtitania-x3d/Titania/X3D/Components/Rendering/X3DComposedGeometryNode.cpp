@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,12 +52,12 @@ namespace titania {
 namespace X3D {
 
 X3DComposedGeometryNode::X3DComposedGeometryNode () :
-	X3DGeometryNode (),  
+	X3DGeometryNode (),     
 	 colorPerVertex (true), // SFBool [ ]      colorPerVertex   TRUE
 	normalPerVertex (true), // SFBool [ ]      normalPerVertex  TRUE
-	         attrib (),     // MFNode [in,out] attrib           [ ]         [X3DVertexAttributeNode]   
+	         attrib (),     // MFNode [in,out] attrib           [ ]         [X3DVertexAttributeNode]
 	       fogCoord (),     // SFNode [in,out] fogCoord         [ ]         [FogCoordinate]
-	       texCoord (),     // SFNode [in,out] texCoord         NULL        [X3DTextureCoordinateNode]	         
+	       texCoord (),     // SFNode [in,out] texCoord         NULL        [X3DTextureCoordinateNode]
 	          color (),     // SFNode [in,out] color            NULL        [X3DColorObject]
 	         normal (),     // SFNode [in,out] normal           NULL        [X3DNormalNode]
 	          coord ()      // SFNode [in,out] coord            NULL        [X3DCoordinateNode]

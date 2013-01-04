@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 SurfaceEmitter::SurfaceEmitter (X3DExecutionContext* const executionContext) :
-	          X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DParticleEmitterNode (),                                                    
 	        set_coordinate (),                                                    // SFInt32 [in] set_coordinate
 	            coordIndex ({ -1 }),                                              // MFInt32 [ ]  coordIndex      -1          [0,∞) or -1

@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 ReceiverPdu::ReceiverPdu (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	           X3DSensorNode (),                                                    
 	        X3DBoundedObject (),                                                    
 	                 address ("localhost"),                                         // SFString [in,out] address                   "localhost"
@@ -121,7 +121,7 @@ ReceiverPdu::create (X3DExecutionContext* const executionContext) const
 {
 	return new ReceiverPdu (executionContext);
 }
-	
+
 void
 ReceiverPdu::initialize ()
 {

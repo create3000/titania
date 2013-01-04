@@ -48,7 +48,7 @@
 
 #include "TimeSensor.h"
 
-#include "../../Browser/Browser.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include <gdk/gdk.h>
 #include <glibmm/main.h>
@@ -59,18 +59,18 @@ namespace titania {
 namespace X3D {
 
 TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTimeDependentNode (),                                                    
 	       X3DSensorNode (),                                                    
 	       cycleInterval (1),                                                   // SFTime  [in,out] cycleInterval     1        (0,∞)
 	           cycleTime (),                                                    // SFTime  [out]    cycleTime
 	    fraction_changed (),                                                    // SFFloat [out]    fraction_changed
 	                time (),                                                    // SFTime  [out]    time
-	                stop (),
+	                stop (),                                                    
 	               cycle (),                                                    
 	            interval (),                                                    
-	        startTimeout (),
-	         stopTimeout ()                                                   
+	        startTimeout (),                                                    
+	         stopTimeout ()                                                     
 {
 	setComponent ("Time");
 	setTypeName ("TimeSensor");
@@ -101,7 +101,7 @@ void
 TimeSensor::initialize ()
 {
 	X3DTimeDependentNode::initialize ();
-	
+
 	setChildren (stop);
 
 	enabled   .addInterest (this, &TimeSensor::set_enabled);
@@ -184,6 +184,7 @@ TimeSensor::set_stopTime ()
 		if (stopTime > startTime)
 			if (isActive)
 				set_stop ();
+
 	}
 	else
 		addTimeout (stopTimeout, &TimeSensor::do_stop, stopTime);

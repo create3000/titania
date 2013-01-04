@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,13 +59,13 @@ class GeoProximitySensor :
 {
 public:
 
-	SFVec3d               geoCenter;
-	SFVec3f               centerOfRotation_changed;
-	SFVec3d               geoCoord_changed;
-	SFRotation            orientation_changed;
-	SFVec3f               position_changed;
+	SFVec3d              geoCenter;
+	SFVec3f              centerOfRotation_changed;
+	SFVec3d              geoCoord_changed;
+	SFRotation           orientation_changed;
+	SFVec3f              position_changed;
 	SFNode <X3DBaseNode> geoOrigin;
-	MFString              geoSystem;
+	MFString             geoSystem;
 
 	GeoProximitySensor (X3DExecutionContext* const);
 

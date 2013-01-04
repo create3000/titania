@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DShapeNode (),                                                    
 	  createParticles (true),                                                // SFBool   [in,out] createParticles    TRUE
 	          enabled (true),                                                // SFBool   [in,out] enabled            TRUE

@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OPEN_GL_GLSURFACE_H__
-#define __TITANIA_OPEN_GL_GLSURFACE_H__
+#ifndef __TITANIA_OPEN_GL_SURFACE_H__
+#define __TITANIA_OPEN_GL_SURFACE_H__
 
 // include order is important
 #include <gtkmm/drawingarea.h>
@@ -87,13 +87,11 @@ protected:
 
 	virtual
 	void
-	setup ()
-	{ }
+	construct () = 0;
 
 	virtual
 	void
-	reshape ()
-	{ }
+	reshape () = 0;
 
 	virtual
 	void
@@ -106,7 +104,7 @@ private:
 	glew ();
 
 	bool
-	set_initialized (GdkEventAny*);
+	on_map (GdkEventAny*);
 
 	bool
 	set_configure_event (GdkEventConfigure*);

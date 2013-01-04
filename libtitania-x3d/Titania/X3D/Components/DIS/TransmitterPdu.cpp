@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 TransmitterPdu::TransmitterPdu (X3DExecutionContext* const executionContext) :
-	                      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	                       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	                     X3DSensorNode (),                                                    
 	                  X3DBoundedObject (),                                                    
 	                           address ("localhost"),                                         // SFString [in,out] address                             "localhost"
@@ -153,7 +153,7 @@ TransmitterPdu::create (X3DExecutionContext* const executionContext) const
 {
 	return new TransmitterPdu (executionContext);
 }
-	
+
 void
 TransmitterPdu::initialize ()
 {

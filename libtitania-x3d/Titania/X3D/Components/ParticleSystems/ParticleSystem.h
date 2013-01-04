@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,20 +59,20 @@ class ParticleSystem :
 {
 public:
 
-	SFBool                createParticles;
-	SFBool                enabled;
-	SFFloat               lifetimeVariation;
-	SFInt32               maxParticles;
-	SFFloat               particleLifetime;
-	SFVec2f               particleSize;
-	SFBool                isActive;
+	SFBool               createParticles;
+	SFBool               enabled;
+	SFFloat              lifetimeVariation;
+	SFInt32              maxParticles;
+	SFFloat              particleLifetime;
+	SFVec2f              particleSize;
+	SFBool               isActive;
 	SFNode <X3DBaseNode> colorRamp;
-	MFFloat               colorKey;
+	MFFloat              colorKey;
 	SFNode <X3DBaseNode> emitter;
-	SFString              geometryType;
+	SFString             geometryType;
 	MFNode <X3DBaseNode> physics;
 	SFNode <X3DBaseNode> texCoordRamp;
-	MFFloat               texCoordKey;
+	MFFloat              texCoordKey;
 
 	ParticleSystem (X3DExecutionContext* const);
 

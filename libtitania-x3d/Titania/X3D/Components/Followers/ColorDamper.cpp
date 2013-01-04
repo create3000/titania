@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 ColorDamper::ColorDamper (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DDamperNode (),                                                    
 	   set_destination (),                                                    // SFColor [in]     set_destination
 	         set_value (),                                                    // SFColor [in]     set_value

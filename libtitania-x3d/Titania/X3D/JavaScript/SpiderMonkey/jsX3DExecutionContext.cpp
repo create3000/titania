@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,8 +50,8 @@
 #include "../../Execution/Scene.h"
 #include "Fields/jsMFNode.h"
 #include "Fields/jsSFNode.h"
-#include "jsX3DExecutionContext.h"
 #include "String.h"
+#include "jsX3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
@@ -107,34 +107,34 @@ jsX3DExecutionContext::create (JSContext* context, X3DExecutionContext* executio
 JSBool
 jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
+	//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
 
-//	return jsMFNode::create (context, const_cast <X3DExecutionContext*> (&executionContext -> getRootNodes ()), vp, true);
+	//	return jsMFNode::create (context, const_cast <X3DExecutionContext*> (&executionContext -> getRootNodes ()), vp, true);
 	return JS_TRUE;
 }
 
 JSBool
 jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
-//
-//	if (not dynamic_cast <Scene*> (executionContext))
-//		return JS_TRUE;
-//
-//	JSObject* obj2;
-//
-//	if (not JS_ValueToObject (context, *vp, &obj2))
-//		return JS_FALSE;
-//
-//	if (JS_GetClass (context, obj2) not_eq jsMFNode::getClass ())
-//	{
-//		JS_ReportError (context, "Type of argument is invalid - should be MFNode, is %s", JS_GetClass (context, obj2) -> name);
-//		return JS_FALSE;
-//	}
-//
-//	MFNode* mfnode = (MFNode*) JS_GetPrivate (context, obj2);
-//
-//	*executionContext -> getRootNodes () = *mfnode;
+	//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
+	//
+	//	if (not dynamic_cast <Scene*> (executionContext))
+	//		return JS_TRUE;
+	//
+	//	JSObject* obj2;
+	//
+	//	if (not JS_ValueToObject (context, *vp, &obj2))
+	//		return JS_FALSE;
+	//
+	//	if (JS_GetClass (context, obj2) not_eq jsMFNode::getClass ())
+	//	{
+	//		JS_ReportError (context, "Type of argument is invalid - should be MFNode, is %s", JS_GetClass (context, obj2) -> name);
+	//		return JS_FALSE;
+	//	}
+	//
+	//	MFNode* mfnode = (MFNode*) JS_GetPrivate (context, obj2);
+	//
+	//	*executionContext -> getRootNodes () = *mfnode;
 
 	return JS_TRUE;
 }
@@ -149,7 +149,7 @@ jsX3DExecutionContext::createNode (JSContext* context, uintN argc, jsval* vp)
 			JSString* name;
 
 			jsval* argv = JS_ARGV (context, vp);
-		
+
 			if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 				return JS_FALSE;
 
@@ -181,7 +181,7 @@ jsX3DExecutionContext::createProto (JSContext* context, uintN argc, jsval* vp)
 			JSString* name;
 
 			jsval* argv = JS_ARGV (context, vp);
-		
+
 			if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 				return JS_FALSE;
 

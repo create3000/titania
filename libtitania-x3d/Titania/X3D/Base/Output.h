@@ -64,6 +64,7 @@ public:
 	virtual
 	~Output ();
 
+
 private:
 
 };

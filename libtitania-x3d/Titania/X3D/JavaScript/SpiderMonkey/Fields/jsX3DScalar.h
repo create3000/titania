@@ -64,7 +64,7 @@ class jsScalar
 public:
 
 	typedef Type field_type;
-	
+
 	static
 	JSBool
 	create (JSContext* context, const field_type* field, jsval* vp, const bool = false)

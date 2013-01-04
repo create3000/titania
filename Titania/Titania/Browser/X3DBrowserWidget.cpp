@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,8 +50,8 @@
 
 #include "../Browser/ViewpointMenuItem.h"
 
-#include <Titania/String.h>
 #include <Titania/Chrono/Now.h>
+#include <Titania/String.h>
 
 #include "Image.h"
 
@@ -94,11 +94,11 @@ X3DBrowserWidget::initialize ()
 	// Connect to map_event
 	getBrowser () -> initialized .addInterest (this, &X3DBrowserWidget::set_splashScreen);
 
-	// Insert Surface, this will initialize the Browser.
-	getSurfaceBox () .pack_start (getSurface (), true, true, 0);
+	// Insert Surface, this will initialize the Browser.;
+	getSurfaceBox () .pack_start (**getBrowser (), true, true, 0);
 
 	// Show Surface and start the X3D Main Loop.
-	getSurface () .show ();
+	getBrowser () -> show ();
 }
 
 void
@@ -145,7 +145,7 @@ X3DBrowserWidget::set_initialized ()
 void
 X3DBrowserWidget::blank ()
 {
-	if (not getSurface () .makeCurrent ())
+	if (not getBrowser () -> makeCurrent ())
 		return;
 
 	getBrowser () -> replaceWorld (getBrowser () -> createScene ());
@@ -359,7 +359,7 @@ X3DBrowserWidget::updateViewpoints (/* X3D::SFNode <X3D::World> & world */)
 void
 X3DBrowserWidget::dispose ()
 {
-	getSurface () .dispose ();
+	getBrowser () -> dispose ();
 }
 
 X3DBrowserWidget::~X3DBrowserWidget ()

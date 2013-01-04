@@ -79,11 +79,11 @@ public:
 	virtual
 	const basic::id &
 	getTypeName () const;
-	
+
 	virtual
 	X3DConstants::FieldType
 	getType () const;
-	
+
 	std::string
 	toLocaleString () const;
 
@@ -99,7 +99,7 @@ public:
 private:
 
 	static const basic::id typeName;
-	
+
 	static const X3DConstants::FieldType type;
 
 };

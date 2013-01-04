@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_SFIMAGE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_SFIMAGE_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFIMAGE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFIMAGE_H__
 
 #include "../../../Fields/SFImage.h"
 #include "../jsX3DField.h"
@@ -62,15 +62,15 @@ public:
 
 	typedef SFImage field_type;
 
-	static 
+	static
 	void
 	init (JSContext*, JSObject*);
 
-	static 
+	static
 	JSBool
 	create (JSContext*, SFImage*, jsval*, const bool = false);
 
-	static 
+	static
 	JSClass*
 	getClass () { return &static_class; }
 
@@ -78,20 +78,20 @@ public:
 private:
 
 	enum Property {WIDTH, HEIGHT, COMP, ARRAY};
-	
-	static JSBool construct (JSContext*, uintN, jsval*);
-	
-	static JSBool width (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool width (JSContext*, JSObject*, jsid, JSBool, jsval*);
-	
-	static JSBool height (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool height (JSContext*, JSObject*, jsid, JSBool, jsval*);
-	
-	static JSBool comp (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool comp (JSContext*, JSObject*, jsid, JSBool, jsval*);
-	
-	static JSBool array (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool array (JSContext*, JSObject*, jsid, JSBool, jsval*);
+
+	static JSBool construct (JSContext *, uintN, jsval*);
+
+	static JSBool width (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool width (JSContext *, JSObject *, jsid, JSBool, jsval*);
+
+	static JSBool height (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool height (JSContext *, JSObject *, jsid, JSBool, jsval*);
+
+	static JSBool comp (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool comp (JSContext *, JSObject *, jsid, JSBool, jsval*);
+
+	static JSBool array (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool array (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

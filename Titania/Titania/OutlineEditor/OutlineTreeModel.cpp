@@ -53,7 +53,7 @@
 namespace titania {
 namespace puck {
 
-OutlineTreeModel::OutlineTreeModel (const X3D::SFNode <X3D::X3DBrowser> & browser) :
+OutlineTreeModel::OutlineTreeModel (const X3D::SFNode <X3D::Browser> & browser) :
 	Glib::ObjectBase (typeid (OutlineTreeModel)),               
 	    Glib::Object (),                                        
 	  Gtk::TreeModel (),                                        
@@ -70,7 +70,7 @@ OutlineTreeModel::OutlineTreeModel (const X3D::SFNode <X3D::X3DBrowser> & browse
 }
 
 Glib::RefPtr <OutlineTreeModel>
-OutlineTreeModel::create (const X3D::SFNode <X3D::X3DBrowser> & browser)
+OutlineTreeModel::create (const X3D::SFNode <X3D::Browser> & browser)
 {
 	//std::clog << "create" << std::endl;
 	return Glib::RefPtr <OutlineTreeModel> (new OutlineTreeModel (browser));
@@ -247,7 +247,7 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 			if ((size_t) i < mfnode -> size ())
 			{
 				auto value = dynamic_cast <X3D::X3DField <X3D::X3DBaseNode*>*> (&mfnode -> get1Value (i)) -> getValue ();
-			
+
 				iter_next .set_stamp (stamp);
 				iter_next .gobj () -> user_data = (void*) new Data (i, value, &mfnode -> get1Value (i), data -> parents);
 				return true;
@@ -361,7 +361,7 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int n, iterator
 			if ((size_t) n < mfnode -> size ())
 			{
 				auto value = dynamic_cast <X3D::X3DField <X3D::X3DBaseNode*>*> (&mfnode -> get1Value (n)) -> getValue ();
-			
+
 				iter .set_stamp (stamp);
 				iter .gobj () -> user_data = (void*) new Data (n, value, &mfnode -> get1Value (n), parents);
 				return true;
@@ -396,9 +396,9 @@ OutlineTreeModel::iter_nth_root_child_vfunc (int n, iterator & iter) const
 	{
 		iter .set_stamp (stamp);
 
-		X3D::X3DObject* object = parent -> at (n);
-		X3D::X3DObject* data   = &parent -> at (n);
-		Data::parents_type    parents;
+		X3D::X3DObject*    object = parent -> at (n);
+		X3D::X3DObject*    data   = &parent -> at (n);
+		Data::parents_type parents;
 		parents .push_front (Item (-1, parent, 0));
 
 		iter .gobj () -> user_data = (void*) new Data (n, object, data, parents);

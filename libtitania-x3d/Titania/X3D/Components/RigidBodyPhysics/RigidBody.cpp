@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	             X3DNode (),                                                    
 	angularDampingFactor (0.001),                                               // SFFloat    [in,out] angularDampingFactor  0.001        [0,1]
 	     angularVelocity (),                                                    // SFVec3f    [in,out] angularVelocity       0 0 0        (-∞,∞)

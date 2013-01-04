@@ -182,7 +182,7 @@ jsX3DArrayField <Type, FieldType>::construct (JSContext* context, uintN argc, js
 				                i,
 				                value_type::getClass () -> name,
 				                JS_GetClass (context, value) -> name);
-				                
+
 				return JS_FALSE;
 			}
 
@@ -293,7 +293,7 @@ jsX3DArrayField <Type, FieldType>::set1Value (JSContext* context, JSObject* obj,
 		JS_ReportError (context, "Type of argument is invalid - should be %s, is %s",
 		                value_type::getClass () -> name,
 		                JS_GetClass (context, value) -> name);
-		                
+
 		return JS_FALSE;
 	}
 

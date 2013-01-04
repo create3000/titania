@@ -48,7 +48,7 @@
 
 #include "X3DTexture2DNode.h"
 
-#include "../../Browser/Browser.h"
+#include "../../Browser/X3DBrowser.h"
 #include <Titania/Math/Math.h>
 #include <Titania/Utility/Adapter.h>
 
@@ -58,7 +58,7 @@ namespace X3D {
 //#define RED_SATURATION_WEIGHT   0.30
 //#define GREEN_SATURATION_WEIGHT 0.59
 //#define BLUE_SATURATION_WEIGHT  0.11
-//	
+//
 //GLfloat constant[4];
 //constant[0] = 0.5f + 0.5f * RED_SATURATION_WEIGHT;
 //constant[1] = 0.5f + 0.5f * GREEN_SATURATION_WEIGHT;
@@ -124,9 +124,9 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image,
 			{
 				image .colorSpace (Magick::GRAYColorspace);
 				image .magick ("GRAY");
-				format         = GL_LUMINANCE;
-				components     = 1;
-				transparent    = false;
+				format      = GL_LUMINANCE;
+				components  = 1;
+				transparent = false;
 				break;
 			}
 		}
@@ -135,9 +135,9 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image,
 			image .colorSpace (Magick::GRAYColorspace);
 			image .type (Magick::TrueColorMatteType);
 			image .magick ("RGBA");
-			format         = GL_RGBA;
-			components     = 2;
-			transparent    = true;
+			format      = GL_RGBA;
+			components  = 2;
+			transparent = true;
 			break;
 		}
 		case Magick::TrueColorType:
@@ -146,9 +146,9 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image,
 			{
 				image .colorSpace (Magick::RGBColorspace);
 				image .magick ("RGB");
-				format         = GL_RGB;
-				components     = 3;
-				transparent    = false;
+				format      = GL_RGB;
+				components  = 3;
+				transparent = false;
 				break;
 			}
 		}
@@ -156,9 +156,9 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image,
 		{
 			image .colorSpace (Magick::RGBColorspace);
 			image .magick ("RGBA");
-			format         = GL_RGBA;
-			components     = 4;
-			transparent    = true;
+			format      = GL_RGBA;
+			components  = 4;
+			transparent = true;
 			break;
 		}
 		default:
@@ -223,7 +223,7 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 {
 	// TextureProperties
 
-	GLint level = 0; // This texture is level 0 in mimpap generation.
+	GLint level      = 0; // This texture is level 0 in mimpap generation.
 	bool  compressed = false;
 
 	const SFNode <TextureProperties> & textureProperties = this -> textureProperties
@@ -254,7 +254,7 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 	glBindTexture (GL_TEXTURE_2D, textureId);
 
 	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
-	
+
 	applyTextureProperties (textureProperties);
 
 	glTexImage2D (GL_TEXTURE_2D, level, textureProperties -> getInternalFormat (components),
@@ -274,7 +274,7 @@ X3DTexture2DNode::applyTextureProperties (const SFNode <TextureProperties> & tex
 	if (this -> textureProperties)
 	{
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());	
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
 	}
 	else
 	{

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,9 +56,9 @@ namespace X3D {
 
 ProfileInfo::ProfileInfo (X3DExecutionContext* const executionContext, const basic::id & name, const ComponentInfoArray & components) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	       title (name + " Profile"),                                   
-	 providerUrl ("http://titania.create3000.de"),                      
-	  components (components)                                           
+	      title (name + " Profile"),                                   
+	providerUrl ("http://titania.create3000.de"),                      
+	 components (components)                                           
 {
 	setTypeName ("ProfileInfo");
 	setName (name);

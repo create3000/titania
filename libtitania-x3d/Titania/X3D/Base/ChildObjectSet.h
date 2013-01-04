@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASE_OBJECT_SET_H__
-#define __TITANIA_X3D_BASE_OBJECT_SET_H__
+#ifndef __TITANIA_X3D_BASE_CHILD_OBJECT_SET_H__
+#define __TITANIA_X3D_BASE_CHILD_OBJECT_SET_H__
 
 #include <set>
 

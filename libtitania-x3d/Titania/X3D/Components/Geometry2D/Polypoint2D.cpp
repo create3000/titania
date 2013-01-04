@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Polypoint2D::Polypoint2D (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	          point ()                                                     // MFVec2f [in,out] point  [ ]       (-∞,∞)
 {

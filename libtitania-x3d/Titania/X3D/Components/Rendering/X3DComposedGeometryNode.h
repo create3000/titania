@@ -49,13 +49,13 @@
 #ifndef __TITANIA_X3D_COMPONENTS_RENDERING_X3DCOMPOSED_GEOMETRY_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_RENDERING_X3DCOMPOSED_GEOMETRY_NODE_H__
 
-#include "../Rendering/X3DGeometryNode.h"
+#include "../EnvironmentalEffects/FogCoordinate.h"
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
+#include "../Rendering/X3DGeometryNode.h"
 #include "../Rendering/X3DNormalNode.h"
-#include "../Texturing/X3DTextureCoordinateNode.h"
 #include "../Shaders/X3DVertexAttributeNode.h"
-#include "../EnvironmentalEffects/FogCoordinate.h"
+#include "../Texturing/X3DTextureCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -67,12 +67,12 @@ public:
 
 	using X3DGeometryNode::ccw;
 	using X3DGeometryNode::solid;
-	
-	SFBool                            colorPerVertex;
-	SFBool                            normalPerVertex;
-	
-	MFNode <X3DVertexAttributeNode>   attrib;
-	SFNode <FogCoordinate>            fogCoord;
+
+	SFBool colorPerVertex;
+	SFBool normalPerVertex;
+
+	MFNode <X3DVertexAttributeNode> attrib;
+	SFNode <FogCoordinate>          fogCoord;
 
 	SFNode <X3DTextureCoordinateNode> texCoord;
 	SFNode <X3DColorNode>             color;

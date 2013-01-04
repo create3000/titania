@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASE_X3DBASE_NODE_H__
-#define __TITANIA_X3D_BASE_X3DBASE_NODE_H__
+#ifndef __TITANIA_X3D_BASE_X3DCHILD_OBJECT_H__
+#define __TITANIA_X3D_BASE_X3DCHILD_OBJECT_H__
 
 #include "../Base/ChildObjectSet.h"
 #include "../Base/X3DObject.h"
@@ -64,7 +64,7 @@ class X3DChildObject :
 public:
 
 	///  @name Parent handling
-	
+
 	bool
 	addParent (X3DChildObject* const);
 
@@ -81,8 +81,7 @@ public:
 	template <class Type>
 	std::deque <Type*>
 	findClosestParents () const;
-	
-	
+
 	///  @name Children handling
 
 	//@{
@@ -98,13 +97,12 @@ public:
 	setChild (X3DChildObject & child)
 	{ child .addParent (this); }
 
-
 	///  @name Event Handling
 
 	virtual
 	void
 	write (const X3DChildObject &) { }
-	
+
 	virtual
 	void
 	notifyParents ();

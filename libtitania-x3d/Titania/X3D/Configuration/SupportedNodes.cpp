@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -284,7 +284,7 @@ SupportedNodes::add (const std::string & name, X3DBaseNode* node)
 	//std::clog << "\tAdding node type " << name << ": " << std::flush;
 
 	node -> setName (name);
-	
+
 	nodes .push_back (name, node);
 
 	//std::clog << "Done." << std::endl;

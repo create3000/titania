@@ -347,7 +347,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Fields/SFVec4.cpp \
 	Titania/X3D/Fields/X3DScalar.cpp \
 	Titania/X3D/InputOutput/Generator.cpp \
-	Titania/X3D/InputOutput/uncompress.cpp \
 	Titania/X3D/JavaScript/JavaScriptEngine.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsArrayFields.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsMFBool.cpp \
@@ -399,7 +398,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Types/Image.cpp \
 	Titania/X3D/Widgets/ExamineViewer.cpp \
 	Titania/X3D/Widgets/PointingDevice.cpp \
-	Titania/X3D/Widgets/Surface.cpp \
 	Titania/X3D/Widgets/X3DViewer.cpp \
 	Titania/X3D/Widgets/X3DWidget.cpp
 

@@ -49,8 +49,8 @@
 #ifndef __TITANIA_X3D_COMPONENTS_NAVIGATION_X3DVIEWPOINT_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_NAVIGATION_X3DVIEWPOINT_NODE_H__
 
-#include "../Core/X3DBindableNode.h"
 #include "../../Types/Geometry.h"
+#include "../Core/X3DBindableNode.h"
 
 #include "../Interpolation/PositionInterpolator.h"
 #include "../Time/TimeSensor.h"
@@ -68,11 +68,11 @@ public:
 	SFVec3f    centerOfRotation;
 	SFBool     jump;
 	SFBool     retainUserOffsets;
-	
+
 	SFVec3f    positionOffset;
 	SFRotation orientationOffset;
 	SFVec3f    centerOfRotationOffset;
-	
+
 	virtual
 	Vector3f
 	getPosition () const = 0;
@@ -94,7 +94,7 @@ public:
 
 	const Matrix4f &
 	getInverseTransformationMatrix () const { return inverseTransformationMatrix; }
-	
+
 	virtual
 	void
 	lookAt (Box3f);
@@ -119,16 +119,16 @@ public:
 protected:
 
 	X3DViewpointNode (bool);
-	
+
 	void
 	setModelViewMatrix (const Matrix4f & value) { modelViewMatrix = value; }
-	
+
 	const Matrix4f &
 	getModelViewMatrix () const { return modelViewMatrix; }
 
 	void
 	setDifferenceMatrix (const Matrix4f & value) { differenceMatrix = value; }
-	
+
 	const Matrix4f &
 	getDifferenceMatrix () const { return differenceMatrix; }
 
@@ -150,7 +150,7 @@ private:
 	virtual
 	void
 	removeFromLayer (X3DLayerNode* const);
-	
+
 	void
 	set_active (const bool &);
 
@@ -164,7 +164,7 @@ private:
 
 	SFNode <TimeSensor>           timeSensor;
 	SFNode <PositionInterpolator> positionInterpolator;
-	
+
 	bool displayed;
 
 };

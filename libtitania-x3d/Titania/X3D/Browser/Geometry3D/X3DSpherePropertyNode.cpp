@@ -52,7 +52,7 @@ namespace titania {
 namespace X3D {
 
 X3DSpherePropertyNode::X3DSpherePropertyNode () :
-	X3DGeometryPropertyNode ()
+	X3DGeometryPropertyNode () 
 { }
 
 } // X3D

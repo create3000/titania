@@ -59,7 +59,7 @@ class X3DBaseInterface
 public:
 
 	virtual
-	const X3D::SFNode <X3D::X3DBrowser> &
+	const X3D::SFNode <X3D::Browser> &
 	getBrowser () const;
 
 	virtual
@@ -71,12 +71,12 @@ protected:
 	X3DBaseInterface ();
 
 	void
-	setBrowser (const X3D::SFNode <X3D::X3DBrowser> &);
+	setBrowser (const X3D::SFNode <X3D::Browser> &);
 
 
 private:
 
-	X3D::SFNode <X3D::X3DBrowser> browser;
+	X3D::SFNode <X3D::Browser> browser;
 
 };
 

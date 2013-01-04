@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TMP_GLAD2CPP_CONSOLE_H__
-#define __TMP_GLAD2CPP_CONSOLE_H__
+#ifndef __TITANIA_USER_INTERFACES_X3DCONSOLE_UI_H__
+#define __TITANIA_USER_INTERFACES_X3DCONSOLE_UI_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>

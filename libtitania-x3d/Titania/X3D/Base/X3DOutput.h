@@ -56,24 +56,23 @@
 namespace titania {
 namespace X3D {
 
-typedef std::function <void (void)>       Requester;
-typedef std::list <Requester>             RequesterArray;
-typedef RequesterArray::iterator          RequesterId;
+typedef std::function <void (void)>           Requester;
+typedef std::list <Requester>                 RequesterArray;
+typedef RequesterArray::iterator              RequesterId;
 typedef std::pair <const void*, const void*>  RequesterPair;
 typedef std::map <RequesterPair, RequesterId> RequesterIndex;
-
 
 class X3DOutput
 {
 public:
 
 	const RequesterArray &
-	getRequesters () const;	
-	
+	getRequesters () const;
+
 	template <class Class>
 	inline
 	bool
-	hasInterest (Class* object, void (Class::* memberFunction) ()) const
+	hasInterest (Class* object, void (Class::* memberFunction)()) const
 	{
 		return hasInterest (object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
@@ -155,7 +154,7 @@ public:
 	void
 	processInterests () const;
 
-	///  @name Dispose service 
+	///  @name Dispose service
 	void
 	dispose ();
 

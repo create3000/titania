@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 NurbsSet::NurbsSet (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DChildNode (),                                                    
 	 X3DBoundedObject (),                                                    
 	      addGeometry (),                                                    // MFNode  [in]     addGeometry                   [NurbsSurface]
@@ -79,7 +79,7 @@ NurbsSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new NurbsSet (executionContext);
 }
-	
+
 void
 NurbsSet::initialize ()
 {

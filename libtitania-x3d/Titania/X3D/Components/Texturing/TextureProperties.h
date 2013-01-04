@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,13 +54,15 @@
 namespace titania {
 namespace X3D {
 
-enum CompressionMode {
+enum CompressionMode
+{
 	LOW,
 	MEDIUM,
 	HIGH,
 	DEFAULT,
 	FASTEST,
 	NICEST
+
 };
 
 class TextureProperties :
@@ -85,20 +87,20 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
-	
+
 	virtual
 	void
 	initialize ();
-	
+
 	GLenum
 	getBoundaryModeS () const;
-	
+
 	GLenum
 	getBoundaryModeT () const;
-	
+
 	GLenum
 	getBoundaryModeR () const;
-	
+
 	GLenum
 	getMinificationFilter () const;
 
@@ -107,13 +109,13 @@ public:
 
 	CompressionMode
 	getTextureCompression () const;
-	
+
 	GLenum
 	getInternalFormat (int32_t) const;
 
 
 private:
-	
+
 	GLenum
 	getBoundaryMode (const std::string &) const;
 

@@ -48,7 +48,7 @@
 
 #include "X3DExecutionContext.h"
 
-#include "../Browser/Browser.h"
+#include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Networking/Inline.h"
 #include "../Prototype/ExternProto.h"
@@ -455,7 +455,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	auto & proto = protos .push_back (name, createProtoDeclaration (name, interfaceDeclarations));
-	
+
 	proto .addParent (this);
 	protos .back () .addParent (this);
 
@@ -644,7 +644,7 @@ throw (Error <INVALID_NODE>,
 		// Add route.
 
 		auto & route = routes .push_back (fields, new Route (this, sourceNode, fields .first, destinationNode, fields .second));
-		
+
 		route .addParent (this);
 		routes .back () .addParent (this);
 	}

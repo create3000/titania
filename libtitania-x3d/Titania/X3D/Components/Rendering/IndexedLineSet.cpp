@@ -56,16 +56,16 @@ namespace titania {
 namespace X3D {
 
 IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	 colorPerVertex (true),                                                // SFBool  [ ]      colorPerVertex  TRUE
 	     colorIndex (),                                                    // MFInt32 [ ]      colorIndex      [ ]         [0,∞) or -1
-	     coordIndex (),                                                    // MFInt32 [ ]      coordIndex      [ ]         [0,∞) or -1                                               
+	     coordIndex (),                                                    // MFInt32 [ ]      coordIndex      [ ]         [0,∞) or -1
 	         attrib (),                                                    // MFNode  [in,out] attrib          [ ]         [X3DVertexAttributeNode]
 	       fogCoord (),                                                    // SFNode  [in,out] fogCoord        [ ]         [FogCoordinate]
 	          color (),                                                    // SFNode  [in,out] color           NULL        [X3DColorNode]
 	          coord (),                                                    // SFNode  [in,out] coord           NULL        [X3DCoordinateNode]
-	      polylines ()                                                    
+	      polylines ()                                                     
 {
 	setComponent ("Rendering");
 	setTypeName ("IndexedLineSet");
@@ -101,7 +101,7 @@ void
 IndexedLineSet::set_coordIndex ()
 {
 	SFNode <Coordinate> _coord = coord;
-	
+
 	if (not _coord)
 		return;
 
@@ -200,7 +200,7 @@ IndexedLineSet::set_colorIndex ()
 		}
 
 		++ numColors;
-		
+
 		// Resize color .color if to small.
 		if (_color)
 		{
@@ -253,12 +253,12 @@ IndexedLineSet::build ()
 			for (size_t index = line, end = line + 2; index < end; ++ index)
 			{
 				auto i = polyline [index];
-				
+
 				if (_color)
 				{
 					if (colorPerVertex and colorIndex [i] >= 0)
 						getColors () .emplace_back (_color -> color [colorIndex [i]]);
-						
+
 					else
 						getColors () .emplace_back (faceColor);
 				}
@@ -266,7 +266,7 @@ IndexedLineSet::build ()
 				{
 					if (colorPerVertex and colorIndex [i] >= 0)
 						getColorsRGBA () .emplace_back (_colorRGBA -> color [colorIndex [i]]);
-						
+
 					else
 						getColorsRGBA () .emplace_back (faceColorRGBA);
 				}

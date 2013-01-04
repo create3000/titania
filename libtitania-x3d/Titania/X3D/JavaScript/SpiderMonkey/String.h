@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_JSSTRING_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_JSSTRING_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_STRING_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_STRING_H__
 
 #include <jsapi.h>
 #include <string>

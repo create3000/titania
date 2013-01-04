@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASE_X3DBASE_H__
-#define __TITANIA_X3D_BASE_X3DBASE_H__
+#ifndef __TITANIA_X3D_BASE_X3DOBJECT_H__
+#define __TITANIA_X3D_BASE_X3DOBJECT_H__
 
 #include "../Base/GarbageCollector.h"
 #include "../Base/X3DInput.h"
@@ -77,7 +77,7 @@ public:
 	virtual
 	const basic::id &
 	getTypeName () const = 0;
-	
+
 	///  @name Input/Output
 
 	virtual
@@ -100,7 +100,7 @@ public:
 	toString () const;
 
 	///  @name Stream Handling
-	
+
 	virtual
 	void
 	fromStream (std::istream &)
@@ -156,7 +156,6 @@ extern template std::istream & operator >> (std::istream &, X3DObject &);
 extern template std::ostream & operator << (std::ostream &, const X3DObject &);
 //extern template std::wistream & operator >> (std::wistream &, const X3DObject &);
 //extern template std::wostream & operator << (std::wostream &, const X3DObject &);
-
 
 } // X3D
 } // titania

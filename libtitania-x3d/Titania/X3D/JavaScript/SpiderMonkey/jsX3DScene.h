@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_JS_X3DSCENE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_JS_X3DSCENE_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DSCENE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DSCENE_H__
 
 #include "../../Execution/Scene.h"
 #include "jsX3DExecutionContext.h"
@@ -61,15 +61,15 @@ class jsX3DScene :
 {
 public:
 
-	static 
+	static
 	void
 	init (JSContext*, JSObject*) { }
 
-	static 
+	static
 	JSBool
 	create (JSContext*, Scene*, jsval*, const bool = false);
 
-	static 
+	static
 	JSClass*
 	getClass () { return &static_class; }
 

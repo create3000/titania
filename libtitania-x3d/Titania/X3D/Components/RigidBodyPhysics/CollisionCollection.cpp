@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 CollisionCollection::CollisionCollection (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	            X3DChildNode (),                                                    
 	       appliedParameters ({ "BOUNCE" }),                                        // MFString [in,out] appliedParameters         "BOUNCE"        [ ]
 	                  bounce (),                                                    // SFFloat  [in,out] bounce                    0               [0,1]

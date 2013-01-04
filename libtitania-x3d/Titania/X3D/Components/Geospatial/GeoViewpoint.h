@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,26 +59,26 @@ class GeoViewpoint :
 {
 public:
 
-	SFRotation            set_orientation;
-	SFVec3d               set_position;
-	SFFloat               fieldOfView;
-	SFBool                headlight;
-	MFString              navType;
+	SFRotation           set_orientation;
+	SFVec3d              set_position;
+	SFFloat              fieldOfView;
+	SFBool               headlight;
+	MFString             navType;
 	SFNode <X3DBaseNode> geoOrigin;
-	MFString              geoSystem;
-	SFVec3d               position;
-	SFFloat               speedFactor;
+	MFString             geoSystem;
+	SFVec3d              position;
+	SFFloat              speedFactor;
 
 	GeoViewpoint (X3DExecutionContext* const, bool = true);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
-	
+
 	virtual
 	Vector3f
 	getPosition () const;
-	
+
 	virtual
 	void
 	reshape (const float, const float);
@@ -86,8 +86,8 @@ public:
 	virtual
 	void
 	display ();
-	
-	
+
+
 private:
 
 	Vector3f

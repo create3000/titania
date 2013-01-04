@@ -49,16 +49,16 @@
 #include "Box.h"
 
 #include "../../Browser/Geometry3D/BoxProperties.h"
-#include "../../Execution/X3DExecutionContext.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
 Box::Box (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	           size (2, 2, 2)                                             // SFVec3f [ ]size   2 2 2        (0,∞)
+	           size (2, 2, 2)                                              // SFVec3f [ ]size   2 2 2        (0,∞)
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Box");
@@ -88,7 +88,6 @@ Box::set_properties ()
 	update ();
 }
 
-
 Box3f
 Box::createBBox ()
 {
@@ -109,7 +108,7 @@ Box::build ()
 	else
 	{
 		getVertices () .reserve (24);
-		
+
 		auto size1_2 = size * 0.5f;
 
 		for (const auto & vertex : boxProperties -> getVertices ())

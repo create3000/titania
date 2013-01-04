@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,13 +59,13 @@ class GeoTransform :
 {
 public:
 
-	SFVec3d               geoCenter;
-	SFRotation            rotation;
-	SFVec3f               scale;
-	SFRotation            scaleOrientation;
-	SFVec3f               translation;
+	SFVec3d              geoCenter;
+	SFRotation           rotation;
+	SFVec3f              scale;
+	SFRotation           scaleOrientation;
+	SFVec3f              translation;
 	SFNode <X3DBaseNode> geoOrigin;
-	MFString              geoSystem;
+	MFString             geoSystem;
 
 	GeoTransform (X3DExecutionContext* const);
 

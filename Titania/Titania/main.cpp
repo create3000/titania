@@ -48,9 +48,9 @@
 
 #include "Browser/BrowserWindow.h"
 #include "Configuration/config.h"
+#include <Titania/OS/Env.h>
 #include <iostream>
 #include <libintl.h>
-#include <Titania/OS/Env.h>
 
 using namespace titania;
 using namespace titania::puck;
@@ -62,11 +62,11 @@ main (int argc, char** argv)
 		<< "Puck started ..." << std::endl
 		<< " Compiled at " << __DATE__ << " " << __TIME__ << std::endl
 		<< std::endl;
-		
+
 	std::setlocale (LC_ALL, os::env ("LANG") .c_str ());
-	
+
 	//std::locale::global (std::locale (os::env ("LANG") .c_str ()));
-#
+	#
 	try
 	{
 		BrowserWindow browserWindow (argc, argv);

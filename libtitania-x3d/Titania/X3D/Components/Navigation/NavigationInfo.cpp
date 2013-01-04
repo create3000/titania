@@ -48,7 +48,7 @@
 
 #include "NavigationInfo.h"
 
-#include "../../Browser/Browser.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layering/X3DLayerNode.h"
 
@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, bool displayed) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	   X3DBindableNode (),                                                    
 	        avatarSize ({ 0.25, 1.6, 0.75 }),                                 // MFFloat  [in,out] avatarSize         [0.25 1.6 0.75]        [0,∞)
 	         headlight (true),                                                // SFBool   [in,out] headlight          TRUE
@@ -67,9 +67,9 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, boo
 	    transitionType ({ "LINEAR" }),                                        // MFString [in,out] transitionType     ["LINEAR"]             ["TELEPORT","LINEAR",
 	              type ({ "EXAMINE", "ANY" }),                                // MFString [in,out] type               { "EXAMINE", "ANY" }
 	   visibilityLimit (),                                                    // SFFloat  [in,out] visibilityLimit    0
-	transitionComplete (),                                                    // SFBool   [out]    transitionComplete                  
-	  directionalLight (new DirectionalLight (executionContext)),
-	         displayed (displayed)         
+	transitionComplete (),                                                    // SFBool   [out]    transitionComplete
+	  directionalLight (new DirectionalLight (executionContext)),             
+	         displayed (displayed)                                            
 {
 	setComponent ("Navigation");
 	setTypeName ("NavigationInfo");
@@ -111,10 +111,10 @@ float
 NavigationInfo::getZNear () const
 {
 	float zNear = avatarSize .size () ? avatarSize .front () : 0.25;
-	
+
 	if (zNear == 0)
-		zNear = std::numeric_limits <float> ::epsilon () * 100;
-		
+		zNear = std::numeric_limits <float>::epsilon () * 100;
+
 	else
 		zNear *= 0.5f;
 

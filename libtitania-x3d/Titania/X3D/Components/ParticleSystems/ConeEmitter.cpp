@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 ConeEmitter::ConeEmitter (X3DExecutionContext* const executionContext) :
-	          X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DParticleEmitterNode (),                                                    
 	                 angle (0.785398),                                            // SFFloat [in,out] angle      π/4          [0,π]
 	             direction (0, 1, 0),                                             // SFVec3f [in,out] direction  0 1 0

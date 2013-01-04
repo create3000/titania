@@ -49,10 +49,10 @@
 #ifndef __TITANIA_BASIC_INPUT_OUTPUT_GENERATOR_H__
 #define __TITANIA_BASIC_INPUT_OUTPUT_GENERATOR_H__
 
+#include <iomanip>
+#include <limits>
 #include <ostream>
 #include <string>
-#include <limits>
-#include <iomanip>
 
 namespace titania {
 namespace basic {
@@ -66,12 +66,12 @@ public:
 
 	basic_generator (const basic_generator &) = delete;
 
-	static 
+	static
 	std::basic_ostream <CharT, Traits> &
 	Space (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << space; }
 
-	static 
+	static
 	std::basic_ostream <CharT, Traits> &
 	TidySpace (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << tidySpace; }
@@ -80,32 +80,32 @@ public:
 	Break (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << endl; }
 
-	static 
+	static
 	std::basic_ostream <CharT, Traits> &
 	TidyBreak (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << tidyBreak; }
 
-	static 
+	static
 	std::basic_ostream <CharT, Traits> &
 	ListBreak (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << listBreak; }
 
-	static 
+	static
 	std::basic_ostream <CharT, Traits> &
 	Comma (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << comma; }
 
-	static 
+	static
 	const bool &
 	HasListBreak ()
 	{ return hasListBreak; }
 
-	static 
+	static
 	std::basic_ostream <CharT, Traits> &
 	Indent (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << indent; }
 
-	static 
+	static
 	std::basic_ostream <CharT, Traits> &
 	IncIndent (std::basic_ostream <CharT, Traits> & ostream)
 	{
@@ -176,24 +176,24 @@ public:
 	static
 	std::basic_ostream <CharT, Traits> &
 	EmptyBrackets (std::basic_ostream <CharT, Traits> &);
-	
+
 	template <class Type>
 	static
 	void
 	Precision (size_t value)
-	{ NumericLimits <Type> ::digits10 = value; }
+	{ NumericLimits <Type>::digits10 = value; }
 
 	template <class Type>
 	static
 	size_t
 	Precision ()
-	{ return NumericLimits <Type> ::digits10; }
+	{ return NumericLimits <Type>::digits10; }
 
 	template <class Type>
 	static
 	std::basic_ostream <CharT, Traits> &
 	Precision (std::basic_ostream <CharT, Traits> &);
-	
+
 
 protected:
 
@@ -284,7 +284,6 @@ basic_generator <CharT, Traits>::Precision (std::basic_ostream <CharT, Traits> &
 {
 	return stream << std::setprecision (NumericLimits <Type>::digits10);
 }
-
 
 typedef basic_generator <char> Generator;
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,8 +63,8 @@ class SFNode :
 {
 public:
 
-	typedef ValueType* value_type;
-	typedef ValueType* scalar_type;
+	typedef ValueType*                                   value_type;
+	typedef ValueType*                                   scalar_type;
 	typedef typename X3DField <X3DBaseNode*>::value_type basic_type;
 
 	using X3DField <X3DBaseNode*>::addInterest;

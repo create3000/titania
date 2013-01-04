@@ -66,8 +66,8 @@ public:
 	virtual
 	void
 	disable () = 0;
-	
-	
+
+
 protected:
 
 	X3DViewportNode ();

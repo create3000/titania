@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Matrix3VertexAttribute::Matrix3VertexAttribute (X3DExecutionContext* const executionContext) :
-	          X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DVertexAttributeNode (),                                                    
 	                 value ()                                                     // MFMatrix3f [in,out] value  [ ]       (-∞,∞)
 {

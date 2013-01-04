@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,7 +48,7 @@
 
 #include "Viewport.h"
 
-#include "../../Browser/Browser.h"
+#include "../../Browser/X3DBrowser.h"
 
 #include <iostream>
 
@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 Viewport::Viewport (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DViewportNode (),                                                    
 	    X3DRenderer (),                                                    
 	   clipBoundary ({ 0, 1, 0, 1 })                                       // MFFloat [in,out] clipBoundary  0 1 0 1        [0,1]
@@ -89,7 +89,7 @@ void
 Viewport::pick ()
 {
 	enable ();
-	
+
 	for (const auto & child : children)
 		child -> pick ();
 

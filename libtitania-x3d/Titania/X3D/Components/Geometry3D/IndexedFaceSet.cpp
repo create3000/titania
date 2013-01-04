@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DComposedGeometryNode (),                                                    
 	                 convex (true),                                                // SFBool  [ ]  convex             TRUE
 	          texCoordIndex (),                                                    // MFInt32 [ ]  texCoordIndex      [ ]          [-1,∞)
@@ -77,12 +77,12 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "creaseAngle",       creaseAngle);
 	addField (initializeOnly, "colorPerVertex",    colorPerVertex);
 	addField (initializeOnly, "normalPerVertex",   normalPerVertex);
-	
+
 	addField (inputOutput,    "texCoordIndex",     texCoordIndex);
 	addField (inputOutput,    "colorIndex",        colorIndex);
 	addField (inputOutput,    "normalIndex",       normalIndex);
 	addField (inputOutput,    "coordIndex",        coordIndex);
-	
+
 	addField (inputOutput,    "attrib",            attrib);
 	addField (inputOutput,    "fogCoord",          fogCoord);
 	addField (inputOutput,    "texCoord",          texCoord);
@@ -114,7 +114,7 @@ void
 IndexedFaceSet::set_coordIndex ()
 {
 	SFNode <Coordinate> _coord = coord;
-	
+
 	if (not _coord)
 		return;
 
@@ -528,8 +528,8 @@ IndexedFaceSet::buildTexCoord ()
 {
 	getTexCoord () .reserve (coordIndex .size ());
 
-	Box3f bbox = getBBox ();
-	Vector3f min = bbox .min ();
+	Box3f    bbox = getBBox ();
+	Vector3f min  = bbox .min ();
 
 	float Xsize = bbox .size () .x ();
 	float Ysize = bbox .size () .y ();
@@ -600,7 +600,7 @@ IndexedFaceSet::buildNormals ()
 	{
 		// Determine polygon normal.
 		Vector3f normal;
-		
+
 		for (const auto & triangle : polygon .triangles)
 		{
 			normal += vertexNormal (_coord -> point [coordIndex [triangle [0]]],
@@ -631,7 +631,7 @@ IndexedFaceSet::buildNormals ()
 			}
 		}
 	}
-	
+
 }
 
 void

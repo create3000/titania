@@ -46,14 +46,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BITS_ALGORITHM_REMOVE_H__
-#define __TITANIA_BITS_ALGORITHM_REMOVE_H__
+#ifndef __TITANIA_ALGORITHM_REMOVE_H__
+#define __TITANIA_ALGORITHM_REMOVE_H__
 
 #include "../Utility/Value.h"
 
 #include <cstddef>
-#include <utility>
 #include <set>
+#include <utility>
 
 namespace titania {
 namespace basic {
@@ -80,7 +80,7 @@ remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, Range
 	for ( ; first not_eq last; ++ first)
 	{
 		auto item = range .find (*first);
-		
+
 		if (item not_eq range .end ())
 		{
 			range .erase (item);
@@ -92,11 +92,11 @@ remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, Range
 	while (range .size ())
 	{
 		auto second = first + count;
-		
-		for (; second not_eq last; ++ first, ++ second)
+
+		for ( ; second not_eq last; ++ first, ++ second)
 		{
 			auto item = range .find (*second);
-		
+
 			if (item not_eq range .end ())
 			{
 				range .erase (item);
@@ -106,10 +106,10 @@ remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, Range
 
 			*first = std::move (*second);
 		}
-		
+
 		break;
-		
-		LOOP:;
+
+LOOP:;
 	}
 
 	for (auto second = first + count; second not_eq last; ++ first, ++ second)
@@ -119,7 +119,6 @@ remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, Range
 
 	return first;
 }
-
 
 /***
  *  Removes all elements in the range [@a rfirst, @a rlast) from the list [@a first, @a last).

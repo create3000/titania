@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 QuadSphereProperties::QuadSphereProperties (X3DExecutionContext* const executionContext) :
-	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	          X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DSpherePropertyNode (),                                                    
 	           uDimension (40),                                                  
 	           vDimension (20)                                                   
@@ -67,7 +67,7 @@ QuadSphereProperties::QuadSphereProperties (X3DExecutionContext* const execution
 
 	addField (inputOutput, "uDimension", uDimension);
 	addField (inputOutput, "vDimension", vDimension);
-	
+
 	//addField (inputOutput, "texIndices", texIndices);
 	//addField (inputOutput, "texCoord",   texCoord);
 	//addField (inputOutput, "indices",    indices);
@@ -111,7 +111,7 @@ QuadSphereProperties::createTexIndices ()
 			texIndices .emplace_back (p + 1);
 		}
 	}
-	
+
 	return texIndices;
 }
 
@@ -132,7 +132,7 @@ QuadSphereProperties::createTexCoord ()
 
 		texCoord .emplace_back (1, 1 - y);
 	}
-	
+
 	return texCoord;
 }
 
@@ -156,7 +156,7 @@ QuadSphereProperties::createIndices ()
 		indices .emplace_back (p + 1);
 		indices .emplace_back (p - uDimension + 2);
 	}
-	
+
 	return indices;
 }
 
@@ -185,7 +185,7 @@ QuadSphereProperties::createPoints ()
 	// south pole
 	for (int32_t u = 0; u < uDimension - 1; ++ u)
 		points .emplace_back (0, -1, 0);
-		
+
 	return points;
 }
 
@@ -196,7 +196,7 @@ QuadSphereProperties::build ()
 	std::deque <Vector2f> texCoord   = createTexCoord ();
 	std::deque <int32_t>  indices    = createIndices ();
 	std::deque <Vector3f> points     = createPoints ();
-	
+
 	auto index    = indices .begin ();
 	auto texIndex = texIndices .begin ();
 

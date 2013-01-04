@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 FontStyle::FontStyle (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DFontStyleNode (),                                                    
 	            size (1)                                                    // SFFloat  [ ] size         1.0            (0,∞)
 {

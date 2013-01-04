@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,8 +60,8 @@ class TransformSensor :
 public:
 
 	SFNode <X3DBaseNode> targetObject;
-	SFRotation            orientation_changed;
-	SFVec3f               position_changed;
+	SFRotation           orientation_changed;
+	SFVec3f              position_changed;
 
 	TransformSensor (X3DExecutionContext* const);
 

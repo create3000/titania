@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -76,17 +76,17 @@ JSFunctionSpec jsSFRotation::functions [ ] = {
 	{ "getName",     getName <X3DChildObject>,     0, 0 },
 	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
 	{ "getType",     getType <X3DFieldDefinition>, 0, 0 },
-	
+
 	{ "getAxis",     getAxis,     0, 0 },
 	{ "setAxis",     getAxis,     0, 0 },
-						  			     
+
 	{ "inverse",     inverse,     0, 0 },
 	{ "multiply",    multiply,    1, 0 },
 	{ "multVec",     multVec,     1, 0 },
 	{ "slerp",       slerp,       2, 0 },
 
 	{ "toString",    toString <X3DChildObject>, 0, 0 },
-	
+
 	{ 0 }
 
 };
@@ -131,7 +131,7 @@ jsSFRotation::construct (JSContext* context, uintN argc, jsval* vp)
 	else if (argc == 2)
 	{
 		JSObject* obj2;
-		
+
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ValueToObject (context, argv [0], &obj2))
@@ -173,7 +173,7 @@ jsSFRotation::construct (JSContext* context, uintN argc, jsval* vp)
 		jsdouble x, y, z, angle;
 
 		jsval* argv = JS_ARGV (context, vp);
-		
+
 		if (not JS_ConvertArguments (context, argc, argv, "dddd", &x, &y, &z, &angle))
 			return JS_FALSE;
 
@@ -222,7 +222,7 @@ jsSFRotation::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op,
 				break;
 			}
 
-		//else done -- cleanup.
+			//else done -- cleanup.
 		}
 		case JSENUMERATE_DESTROY:
 		{

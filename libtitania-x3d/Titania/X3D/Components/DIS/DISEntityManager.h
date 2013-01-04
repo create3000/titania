@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,11 +59,11 @@ class DISEntityManager :
 {
 public:
 
-	SFString              address;
-	SFInt32               applicationID;
+	SFString             address;
+	SFInt32              applicationID;
 	MFNode <X3DBaseNode> mapping;
-	SFInt32               port;
-	SFInt32               siteID;
+	SFInt32              port;
+	SFInt32              siteID;
 	MFNode <X3DBaseNode> addedEntities;
 	MFNode <X3DBaseNode> removedEntities;
 

@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BITS_UTILITY_VALUE_H__
-#define __TITANIA_BITS_UTILITY_VALUE_H__
+#ifndef __TITANIA_UTILITY_VALUE_H__
+#define __TITANIA_UTILITY_VALUE_H__
 
 #include <utility>
 

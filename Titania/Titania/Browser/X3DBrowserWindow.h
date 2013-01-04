@@ -82,22 +82,14 @@ public:
 	close ();
 
 	///  @name X3DBrowserInterface
-	
+
 	const std::shared_ptr <BrowserWidget> &
 	getBrowserWidget () const;
-
-	virtual
-	X3D::Surface &
-	getSurface ();
-
-	virtual
-	const X3D::Surface &
-	getSurface () const;
 
 	///  @name X3DBaseNode
 
 	virtual
-	const X3D::SFNode <X3D::X3DBrowser> &
+	const X3D::SFNode <X3D::Browser> &
 	getBrowser () const;
 
 	///  @name X3DURLObject
@@ -153,10 +145,10 @@ private:
 
 	size_t
 	getNumPages () const;
-	
+
 	void
 	setCurrentPage (size_t);
-	
+
 	size_t
 	getCurrentPage () const;
 

@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_SFCOLOR_RGBA_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_SFCOLOR_RGBA_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFCOLOR_RGBA_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFCOLOR_RGBA_H__
 
 #include "../../../Fields/SFColorRGBA.h"
 #include "../jsX3DField.h"
@@ -62,15 +62,15 @@ public:
 
 	typedef SFColorRGBA field_type;
 
-	static 
+	static
 	void
 	init (JSContext*, JSObject*);
 
-	static 
+	static
 	JSBool
 	create (JSContext*, SFColorRGBA*, jsval*, const bool = false);
 
-	static 
+	static
 	JSClass*
 	getClass () { return &static_class; }
 
@@ -78,15 +78,15 @@ public:
 private:
 
 	enum Property {R, G, B, A};
-	
-	static JSBool construct (JSContext*, uintN, jsval*);
-	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
-	
-	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
-	
-	static JSBool getHSV (JSContext*, uintN, jsval*);
-	static JSBool setHSV (JSContext*, uintN, jsval*);
+
+	static JSBool construct (JSContext *, uintN, jsval*);
+	static JSBool enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
+
+	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+
+	static JSBool getHSV (JSContext *, uintN, jsval*);
+	static JSBool setHSV (JSContext *, uintN, jsval*);
 
 	static const size_t   size;
 	static JSClass        static_class;

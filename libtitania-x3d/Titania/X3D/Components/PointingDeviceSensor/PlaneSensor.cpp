@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	  X3DDragSensorNode (),                                                    
 	       axisRotation (),                                                    // SFRotation [in,out] axisRotation         0 0 1 0
 	        maxPosition (-1, -1),                                              // SFVec2f    [in,out] maxPosition          -1 -1          (-∞,∞)

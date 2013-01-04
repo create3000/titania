@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 SliderJoint::SliderJoint (X3DExecutionContext* const executionContext) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	  X3DRigidJointNode (),                                                    
 	               axis (0, 1, 0),                                             // SFVec3f [in,out] axis                 0 1 0
 	      maxSeparation (1),                                                   // SFFloat [in,out] maxSeparation        1            [0,∞)

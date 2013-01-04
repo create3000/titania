@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 Billboard::Billboard (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGroupingNode (),                                                    
 	 axisOfRotation (0, 1, 0)                                              // SFVec3f [in,out] axisOfRotation  0 1 0        (-∞,∞)
 {

@@ -48,7 +48,7 @@
 
 #include "X3DGroupingNode.h"
 
-#include "../../Browser/Browser.h"
+#include "../../Browser/X3DBrowser.h"
 
 #include <Titania/Utility/Adapter.h>
 
@@ -95,7 +95,7 @@ X3DGroupingNode::set_addChildren ()
 	if (addChildren .size ())
 	{
 		add (addChildren);
-		
+
 		children .insert (children .end (), addChildren .begin (), addChildren .end ());
 
 		children .removeInterest (this, &X3DGroupingNode::set_children);
@@ -110,7 +110,7 @@ X3DGroupingNode::set_removeChildren ()
 	{
 		auto new_end = basic::remove (children .begin (), children .end (), removeChildren .begin (), removeChildren .end ());
 		children .erase (new_end, children .end ());
-		
+
 		if (not children .hasInterest (this, &X3DGroupingNode::set_children))
 			set_children ();
 	}
@@ -140,21 +140,21 @@ X3DGroupingNode::add (const MFNode <X3DChildNode> & children)
 	for (const auto & child : children)
 	{
 		SFNode <X3DPointingDeviceSensorNode> pointingDeviceSensorNode (child);
-	
+
 		if (pointingDeviceSensorNode)
 			pointingDeviceSensors .emplace_back (*pointingDeviceSensorNode);
 
 		else
 		{
 			SFNode <X3DLightNode> lightNode (child);
-		
+
 			if (lightNode)
 				lights .emplace_back (*lightNode);
 
 			else
 			{
 				SFNode <LocalFog> localFog (child);
-			
+
 				if (localFog)
 					localFogs .emplace_back (*localFog);
 

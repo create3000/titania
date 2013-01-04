@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -111,7 +111,7 @@ namespace X3D {
  */
 
 X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const executionContext) :
-	         X3DChildObject (),                 
+	      X3DChildObject (),                 
 	             browser (browser),          
 	    executionContext (executionContext), 
 	numUserDefinedFields (0),                
@@ -134,7 +134,7 @@ X3DBaseNode::clone (X3DExecutionContext* const executionContext) const
 	}
 	catch (const Error <INVALID_NAME> &)
 	{ }
-	
+
 	return copy (executionContext);
 }
 
@@ -356,7 +356,7 @@ void
 X3DBaseNode::removeField (const basic::id & name)
 {
 	auto field = fields .find (name);
-	
+
 	if (field not_eq fields .end ())
 	{
 		fieldDefinitions .erase (std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field -> second));
@@ -446,7 +446,7 @@ FieldDefinitionArray
 X3DBaseNode::getInitializeableFields (const bool all) const
 {
 	FieldDefinitionArray changedFields;
-	
+
 	const X3DBaseNode* declaration = getType ();
 
 	for (const auto & field : basic::adapter (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
@@ -456,7 +456,7 @@ X3DBaseNode::getInitializeableFields (const bool all) const
 			if (not field -> isInitializeable ())
 				continue;
 
-			if (not all and *field == *declaration -> getField (field -> getName ()))
+			if (not all and * field == *declaration -> getField (field -> getName ()))
 				continue;
 		}
 
@@ -486,7 +486,7 @@ void
 X3DBaseNode::setup ()
 {
 	executionContext -> addParent (this);
-	
+
 	for (const auto & field : fields)
 		field .second -> addParent (this);
 
@@ -738,10 +738,10 @@ void
 X3DBaseNode::dispose ()
 {
 	X3DChildObject::dispose ();
-	
+
 	for (const auto & field : fields)
 		field .second -> dispose ();
-	
+
 	executionContext -> removeParent (this);
 
 	events .clear ();

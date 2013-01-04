@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 EspduTransform::EspduTransform (X3DExecutionContext* const executionContext) :
-	                              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	                               X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	                           X3DGroupingNode (),                                                    
 	                             X3DSensorNode (),                                                    
 	           set_articulationParameterValue0 (),                                                    // SFFloat    [in]     set_articulationParameterValue0                                 (-∞,∞)

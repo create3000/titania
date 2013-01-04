@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,10 +46,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OPEN_GL_CONTEXT_GLCONTEXT_H__
-#define __TITANIA_OPEN_GL_CONTEXT_GLCONTEXT_H__
+#ifndef __TITANIA_OPEN_GL_CONTEXT_CONTEXT_H__
+#define __TITANIA_OPEN_GL_CONTEXT_CONTEXT_H__
 
 #include <gdkmm/display.h>
+#include <glibmm/object.h>
 #include <glibmm/refptr.h>
 
 extern "C"

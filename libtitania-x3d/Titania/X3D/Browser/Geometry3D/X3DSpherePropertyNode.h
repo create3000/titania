@@ -46,9 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_PROPERTIES_X3DSPHERE_PROPERTY_NODE_H__
-#define __TITANIA_X3D_BROWSER_PROPERTIES_X3DSPHERE_PROPERTY_NODE_H__
-
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_PROPERTY_NODE_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_PROPERTY_NODE_H__
 
 #include "../Properties/X3DGeometryPropertyNode.h"
 

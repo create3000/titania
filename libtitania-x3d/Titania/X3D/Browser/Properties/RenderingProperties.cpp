@@ -49,7 +49,7 @@
 #include "RenderingProperties.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Browser.h"
+#include "../X3DBrowser.h"
 #include <Titania/String/Join.h>
 #include <Titania/String/Split.h>
 #include <Titania/String/strfsize.h>
@@ -70,7 +70,7 @@ namespace X3D {
 // TextureMemory     Float                The amount of memory in megabytes available for textures to be placed on the video card.
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext),              
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext),              
 	  X3DChildNode (),                                                                 
 	       enabled (),                                                                 
 	 cycleInterval (1),                                                                // SFFloat  [in,out] cycleInterval  1
@@ -99,7 +99,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	addField (outputOnly, "vendor",         vendor);
 	addField (outputOnly, "renderer",       renderer);
 	addField (outputOnly, "version",        version);
-	addField (outputOnly, "shading",        shading);                           // doppelt
+	addField (outputOnly, "shading",        shading);                              // doppelt
 	addField (outputOnly, "maxTextureSize", maxTextureSize);
 	addField (outputOnly, "textureUnits",   textureUnits);
 	addField (outputOnly, "maxLights",      maxLights);
@@ -147,7 +147,7 @@ RenderingProperties::initialize ()
 		glGetIntegerv (GL_POLYGON_SMOOTH, &glPolygonSmooth);
 
 		if (hasExtension ("GL_NVX_gpu_memory_info"))
-			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);  // in KBytes
+			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                       // in KBytes
 
 		textureUnits   = glTextureUnits;
 		maxTextureSize = glMaxTextureSize;

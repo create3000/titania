@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,14 +65,14 @@ public:
 	typedef ValueType value_type;
 
 	using X3DFieldDefinition::addInterest;
-	
+
 	/// @name Copy
 
 	///  Returns a copy of this field.
-	virtual 
+	virtual
 	X3DField <ValueType>*
 	clone () const;
-	
+
 	/// @name Assignment operators
 
 	///  Default assignment opeator.  Behaves the same as the 6.7.6 setValue service.
@@ -109,7 +109,7 @@ public:
 
 	///  Conversion operator.
 	operator const ValueType & () const { return value; }
-	
+
 	///  Returns true if the type and the value of both fields are equal.
 	virtual
 	bool
@@ -187,7 +187,7 @@ public:
 protected:
 
 	/// @name Constructors
-	
+
 	///  Default constructor.
 	X3DField ();
 
@@ -197,7 +197,7 @@ protected:
 	///  Value constructor.
 	explicit
 	X3DField (const ValueType &);
-	
+
 	/// @name Element access
 
 	///  Get a non const value.

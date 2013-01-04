@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,9 +48,7 @@
 
 #include "X3DUrlObject.h"
 
-#include "../../Browser/Browser.h"
-#include "../../InputOutput/geturl.h"
-#include "../../InputOutput/uncompress.h"
+#include "../../Browser/X3DBrowser.h"
 
 #include <Titania/Basic/URI.h>
 
@@ -65,11 +63,11 @@ URNIndex X3DUrlObject::URNCache;
 
 X3DUrlObject::X3DUrlObject () :
 	X3DBaseNode (),                  
-	         url (),                  // MFString [in,out] url               [ ]       [URL]
-	    urlError (),                  // MFString [out]    urlError                    [BrowserEvent]
-	   loadState (NOT_STARTED_STATE), 
-	   userAgent (),                  
-	    worldURL ()                   
+	        url (),                  // MFString [in,out] url               [ ]       [URL]
+	   urlError (),                  // MFString [out]    urlError                    [BrowserEvent]
+	  loadState (NOT_STARTED_STATE), 
+	  userAgent (),                  
+	   worldURL ()                   
 {
 	addNodeType (X3DConstants::X3DUrlObject);
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -131,7 +131,7 @@ public:
 		assign (field .begin (), field .end ());
 		return *this;
 	}
-	
+
 	virtual
 	void
 	set1Field (const size_type, const X3DFieldDefinition &);
@@ -189,27 +189,27 @@ MFNode <Type>::set1Field (const size_type index, const X3DFieldDefinition & valu
 	get () [index] = static_cast <const X3DField <X3DBaseNode*> &> (value);
 }
 
-
 template <class Type>
 void
 MFNode <Type>::write (const X3DObject & field)
 {
 	//assert (getType () == field .getType ());
 
-//	const MFNode* same_type = dynamic_cast <const MFNode*> (&field);
-//
-//	if (same_type)
-//		set (same_type -> getValue ());
-//
-//	else
-//	{
-		const X3DArray* array = dynamic_cast <const X3DArray*> (&field);
+	//	const MFNode* same_type = dynamic_cast <const MFNode*> (&field);
+	//
+	//	if (same_type)
+	//		set (same_type -> getValue ());
+	//
+	//	else
+	//	{
+	const X3DArray* array = dynamic_cast <const X3DArray*> (&field);
 
-		resize (array -> size ());
+	resize (array -> size ());
 
-		for (size_type i = 0; i < array -> size (); ++ i)
-			get () [i] = static_cast <const X3DField <X3DBaseNode*> &> (array -> get1 (i));
-//	}
+	for (size_type i = 0; i < array -> size (); ++ i)
+		get () [i] = static_cast <const X3DField <X3DBaseNode*> &> (array -> get1 (i));
+
+	//	}
 }
 
 template <class Type>

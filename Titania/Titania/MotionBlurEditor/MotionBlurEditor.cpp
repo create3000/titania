@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,7 +60,7 @@ MotionBlurEditor::MotionBlurEditor (const std::string & sessionKey, X3DBrowserIn
 	setBrowserWidget (browserWidget);
 }
 
-const X3D::SFNode <X3D::X3DBrowser> &
+const X3D::SFNode <X3D::Browser> &
 MotionBlurEditor::getBrowser () const
 {
 	return getBrowserWidget () -> getBrowser ();
@@ -84,6 +84,7 @@ void
 MotionBlurEditor::on_intensity_changed ()
 {
 	float x = getIntensity () .get_value ();
+
 	getBrowser () -> getBrowserOptions () -> motionBlur -> intensity = -x * x + 2 * x;
 }
 

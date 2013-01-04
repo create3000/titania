@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 Sphere::Sphere (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	         radius (1)                                                    // SFFloat [ ] radius  1           (0,∞)
 {
@@ -112,7 +112,7 @@ Sphere::build ()
 		for (const auto & vertex : sphereProperties -> getVertices ())
 			getVertices () .emplace_back (vertex * radius .getValue ());
 	}
-	
+
 	setVertexMode (sphereProperties -> getVertexMode ());
 }
 

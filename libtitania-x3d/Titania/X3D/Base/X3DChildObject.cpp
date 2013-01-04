@@ -35,7 +35,7 @@ namespace X3D {
 
 X3DChildObject::X3DChildObject () :
 	X3DObject (), 
-	  parents () 
+	  parents ()  
 { }
 
 // Object
@@ -109,11 +109,11 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 
 			return false;
 
-//			return std::any_of (getParents () .cbegin (),
-//			                    getParents () .cend (),
-//			                    std::bind (std::mem_fn (&X3DChildObject::hasRoots),
-//			                               std::placeholders::_1,
-//			                               std::ref (seen)));
+			//			return std::any_of (getParents () .cbegin (),
+			//			                    getParents () .cend (),
+			//			                    std::bind (std::mem_fn (&X3DChildObject::hasRoots),
+			//			                               std::placeholders::_1,
+			//			                               std::ref (seen)));
 		}
 
 		return false;

@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_JS_PROFILE_INFO_ARRAY_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_JS_PROFILE_INFO_ARRAY_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_PROFILE_INFO_ARRAY_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_PROFILE_INFO_ARRAY_H__
 
 #include "../../Configuration/ProfileInfoArray.h"
 #include <jsapi.h>
@@ -59,15 +59,15 @@ class jsProfileInfoArray
 {
 public:
 
-	static 
+	static
 	void
 	init (JSContext*, JSObject*);
 
-	static 
+	static
 	JSBool
 	create (JSContext*, ProfileInfoArray*, jsval*, const bool = false);
 
-	static 
+	static
 	JSClass*
 	getClass () { return &static_class; }
 

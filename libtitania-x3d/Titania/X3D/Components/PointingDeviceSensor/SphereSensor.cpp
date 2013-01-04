@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 SphereSensor::SphereSensor (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DDragSensorNode (),                                                    
 	           offset (0, 1, 0, 0),                                          // SFRotation [in,out] offset            0 1 0 0        [-1,1],(-∞,∞)
 	 rotation_changed ()                                                     // SFRotation [out]    rotation_changed

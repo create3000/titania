@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 MotorJoint::MotorJoint (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	   X3DRigidJointNode (),                                                    
 	          axis1Angle (),                                                    // SFFloat [in,out] axis1Angle            0            [-π,π]
 	         axis1Torque (),                                                    // SFFloat [in,out] axis1Torque           0            (-∞,∞)

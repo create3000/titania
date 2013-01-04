@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 PointSet::PointSet (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	         attrib (),                                                    // MFNode[in,out] attrib    [ ]         [X3DVertexAttributeNode]
 	          color (),                                                    // SFNode [in,out] color     NULL        [X3DColorNode]
@@ -94,13 +94,13 @@ PointSet::build ()
 	if (_color)
 	{
 		getColors () .reserve (_coord -> point .size ());
-		getColors () .assign  (_color -> color .begin (), _color -> color .end ());		
+		getColors () .assign  (_color -> color .begin (), _color -> color .end ());
 		getColors () .resize  (_coord -> point .size (), Color3f (1, 1, 1));
 	}
 	else if (_colorRGBA)
 	{
 		getColorsRGBA () .reserve (_coord -> point .size ());
-		getColorsRGBA () .assign  (_colorRGBA -> color .begin (), _colorRGBA -> color .end ());		
+		getColorsRGBA () .assign  (_colorRGBA -> color .begin (), _colorRGBA -> color .end ());
 		getColorsRGBA () .resize  (_coord -> point .size (), Color4f (1, 1, 1, 1));
 	}
 

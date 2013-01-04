@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Layout::Layout (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DLayoutNode (),                                                    
 	        align ({ "CENTER", "CENTER" }),                              // MFString [in,out] align        ["CENTER","CENTER"]        ["LEFT"|"CENTER"|"RIGHT","BOTTOM"|"CENTER"|"TOP"]
 	       offset (),                                                    // MFFloat  [in,out] offset       [0,0]                      (-∞,∞)

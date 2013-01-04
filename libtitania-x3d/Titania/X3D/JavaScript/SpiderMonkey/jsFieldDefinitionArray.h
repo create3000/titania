@@ -71,7 +71,7 @@ public:
 private:
 
 	enum Property {LENGTH};
-	
+
 	static
 	void
 	initObject (JSContext*, JSObject*);

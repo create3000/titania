@@ -65,7 +65,7 @@ class SFVec4 :
 public:
 
 	typedef typename ValueType::value_type scalar_type;
-	typedef typename ValueType::size_type size_type;
+	typedef typename ValueType::size_type  size_type;
 
 	using X3DField <ValueType>::setValue;
 	using X3DField <ValueType>::getValue;
@@ -127,7 +127,7 @@ public:
 
 	void
 	getValue (scalar_type &, scalar_type &, scalar_type &, scalar_type &) const;
-	
+
 	SFVec4 &
 	operator += (const SFVec4 &);
 
@@ -406,7 +406,7 @@ inline
 void
 SFVec4 <ValueType>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <scalar_type> << getValue ();
+	ostream << Generator::Precision <scalar_type><< getValue ();
 }
 
 //extern template class X3DField <Vector4d>;

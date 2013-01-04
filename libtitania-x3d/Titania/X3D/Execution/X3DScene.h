@@ -86,7 +86,7 @@ public:
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
- 
+
 	virtual
 	void
 	fromStream (std::istream &)

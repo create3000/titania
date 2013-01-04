@@ -302,7 +302,7 @@ public:
 	constexpr vector4_type
 	operator [ ] (const size_type index) const { return value [index]; }
 	//@}
-	
+
 	//@{
 	///  Returns pointer to the underlying array serving as element storage.
 	///  Specifically the pointer is such that range [data (); data () + size ()) is valid.
@@ -774,10 +774,10 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
 	Type det_sign = (det < 0 ? -1 : 1);
 
 	if (det_sign * det == 0)
-		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     // singular
+		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          // singular
 
 	// (4) B = A * !A  (here !A means A transpose)
-	matrix4 b = a * !a;
+	matrix4 b = a * ! a;
 
 	Type evalues [3];
 	Type evectors [3] [3];
@@ -801,8 +801,8 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
 	}
 
 	// (5) Compute U = !R ~S R A.
-	rotation = scaleOrientation * si * !scaleOrientation * a;
-	
+	rotation = scaleOrientation * si * ! scaleOrientation * a;
+
 	scaleOrientation .transpose ();
 
 	return true;
@@ -852,9 +852,9 @@ matrix4 <Type> &
 matrix4 <Type>::transpose ()
 {
 	return *this = matrix4 <Type> (array [0], array [4], array [8],  array [12],
-	                       array [1], array [5], array [9],  array [13],
-	                       array [2], array [6], array [10], array [14],
-	                       array [3], array [7], array [11], array [15]);
+	                               array [1], array [5], array [9],  array [13],
+	                               array [2], array [6], array [10], array [14],
+	                               array [3], array [7], array [11], array [15]);
 }
 
 template <class Type>

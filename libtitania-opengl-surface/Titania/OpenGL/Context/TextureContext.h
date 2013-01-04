@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -90,8 +90,8 @@ private:
 	        GLXContext,
 	        bool);
 
-	Glib::RefPtr <Gdk::Window>  window;
-	std::shared_ptr <Context> context;
+	Glib::RefPtr <Gdk::Window> window;
+	std::shared_ptr <Context>  context;
 
 	GLuint frameBuffer;
 	GLuint texture;

@@ -52,7 +52,7 @@ namespace titania {
 namespace X3D {
 
 X3DFogObject::X3DFogObject () :
-	   X3DBaseNode (),         
+	    X3DBaseNode (),         
 	          color (1, 1, 1),  // SFColor  [in,out] color            1 1 1           [0,1]
 	        fogType ("LINEAR"), // SFString [in,out] fogType          "LINEAR"        ["LINEAR"|"EXPONENTIAL"]
 	visibilityRange (),         // SFFloat  [in,out] visibilityRange  0               [0,-∞)

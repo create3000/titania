@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionContext) :
-	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DEnvironmentalSensorNode (),                                                    
 	                 geoCenter (),                                                    // SFVec3d    [in,out] geoCenter                 0 0 0              (-∞,∞)
 	  centerOfRotation_changed (),                                                    // SFVec3f    [out]    centerOfRotation_changed

@@ -402,7 +402,6 @@
     <None Include="Titania\X3D\Fields\SFRotation4.h" />
     <None Include="Titania\X3D\Fields\SFMatrix3.h" />
     <None Include="Titania\X3D\Fields\SFTime.h" />
-    <None Include="Titania\X3D\InputOutput\uncompress.h" />
     <None Include="Titania\X3D\Rendering\Matrix.h" />
     <None Include="Titania\X3D\Rendering\ViewVolume.h" />
     <None Include="Titania\X3D\Fields\X3DScalar.h" />
@@ -460,7 +459,6 @@
     <None Include="Titania\X3D\Browser\Properties\BrowserProperties.h" />
     <None Include="Titania\X3D\Browser\Properties\RenderingProperties.h" />
     <None Include="Titania\X3D\Browser\Properties\BrowserOptions.h" />
-    <None Include="Titania\X3D\Widgets\Surface.h" />
     <None Include="libtitania-x3d.md.pc" />
     <None Include="Titania\X3D\Execution\BindableNodeStack.h" />
     <None Include="Titania\X3D\Base\Output.h" />
@@ -558,7 +556,6 @@
     <Compile Include="Titania\X3D\Configuration\SupportedProfiles.cpp" />
     <Compile Include="Titania\X3D\Fields\X3DScalar.cpp" />
     <Compile Include="Titania\X3D\InputOutput\Generator.cpp" />
-    <Compile Include="Titania\X3D\InputOutput\uncompress.cpp" />
     <Compile Include="Titania\X3D\JavaScript\JavaScriptEngine.cpp" />
     <Compile Include="Titania\X3D\Parser\Parser.cpp" />
     <Compile Include="Titania\X3D\Parser\RegEx.cpp" />
@@ -867,7 +864,6 @@
     <Compile Include="Titania\X3D\Browser\Properties\RenderingProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\BrowserOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\BrowserProperties.cpp" />
-    <Compile Include="Titania\X3D\Widgets\Surface.cpp" />
     <Compile Include="Titania\X3D\Execution\BindableNodeStack.cpp" />
     <Compile Include="Titania\X3D\Base\Output.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DBrowserContext.cpp" />

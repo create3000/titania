@@ -46,11 +46,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_STREAM_GZSTREAM_H__
-#define __TITANIA_STREAM_GZSTREAM_H__
+#ifndef __TITANIA_STREAM_IGZSTREAM_H__
+#define __TITANIA_STREAM_IGZSTREAM_H__
 
-#include <istream>
 #include "GZStreamBuf.h"
+#include <istream>
 
 namespace titania {
 namespace basic {
@@ -77,7 +77,7 @@ public:
 	/// @name Constructors
 
 	basic_igzstream (basic_igzstream &&);
-	
+
 	basic_igzstream (const std::basic_istream <CharT, Traits> &);
 
 	/// @name Destructor

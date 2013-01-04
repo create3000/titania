@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -31,7 +31,7 @@
  *
  * This file is part of the Titania Project.
  *
- * Titania is free software: you can redistribute it and/or modify it under theJS_SET_RVAL(cx, vp, value)
+ * Titania is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License version 3 only, as published by the
  * Free Software Foundation.
  *
@@ -80,9 +80,9 @@ std::string
 JS_GetString (JSContext* context, JSString* jsstring)
 {
 	char* chars = JS_EncodeString (context, jsstring);
-	
+
 	std::string string = chars;
-	
+
 	JS_free (context, chars);
 
 	return string;

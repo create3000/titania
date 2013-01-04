@@ -52,7 +52,7 @@ namespace titania {
 namespace X3D {
 
 template <>
-const basic::id X3DField <Bool>::typeName ("SFBool");
+const basic::id X3DField <bool>::typeName ("SFBool");
 
 template <>
 const basic::id X3DField <Double>::typeName ("SFDouble");
@@ -64,7 +64,7 @@ template <>
 const basic::id X3DField <Int32>::typeName ("SFInt32");
 
 template <>
-const X3DConstants::FieldType X3DField <Bool>::type = X3DConstants::SFBool;
+const X3DConstants::FieldType X3DField <bool>::type = X3DConstants::SFBool;
 
 template <>
 const X3DConstants::FieldType X3DField <Double>::type = X3DConstants::SFDouble;
@@ -77,7 +77,7 @@ const X3DConstants::FieldType X3DField <Int32>::type = X3DConstants::SFInt32;
 
 template <>
 void
-X3DField <Bool>::toStream (std::ostream & ostream) const
+X3DField <bool>::toStream (std::ostream & ostream) const
 {
 	ostream << (getValue () ? "TRUE" : "FALSE");
 }
@@ -86,23 +86,23 @@ template <>
 void
 X3DField <Double>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <Double> << getValue ();
+	ostream << Generator::Precision <Double><< getValue ();
 }
 
 template <>
 void
 X3DField <Float>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <Float> << getValue ();
+	ostream << Generator::Precision <Float><< getValue ();
 }
 
-template class X3DField <Bool>;
+template class X3DField <bool>;
 template class X3DField <Double>;
 template class X3DField <Float>;
 template class X3DField <Int32>;
 
 // SFBool, SFDouble, SFFloat and SFInt32
-template class X3DScalar <Bool>;
+template class X3DScalar <bool>;
 template class X3DScalar <Double>;
 template class X3DScalar <Float>;
 template class X3DScalar <Int32>;

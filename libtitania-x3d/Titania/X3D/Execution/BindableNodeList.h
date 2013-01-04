@@ -125,10 +125,10 @@ public:
 		if (list .erase (node))
 			processInterests ();
 	}
-	
+
 	virtual
 	void
-	dispose () { list .clear ();	}
+	dispose () { list .clear ();  }
 
 	/// @name Destructor
 

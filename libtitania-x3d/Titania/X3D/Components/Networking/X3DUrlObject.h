@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -148,9 +148,8 @@ public:
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
 
-
 	/// URI Handling
-	
+
 	MFString
 	transformURI (const MFString &);
 
@@ -196,13 +195,13 @@ protected:
 
 	void
 	setLoadState (LoadState);
-	
+
 	void
 	loadURL (X3DScene* const, const MFString &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_X3D>);
-	
+
 	virtual
 	void
 	dispose ();

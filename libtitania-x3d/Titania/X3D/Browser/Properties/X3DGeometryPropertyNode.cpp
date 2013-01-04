@@ -57,14 +57,14 @@ X3DGeometryPropertyNode::X3DGeometryPropertyNode () :
 	        normals (), 
 	       vertices ()  
 { }
-	
+
 void
 X3DGeometryPropertyNode::update ()
 {
 	texCoord .clear ();
 	normals  .clear ();
 	vertices .clear ();
-	
+
 	build ();
 }
 

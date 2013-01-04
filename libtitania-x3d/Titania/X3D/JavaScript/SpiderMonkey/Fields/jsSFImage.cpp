@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -78,7 +78,7 @@ JSFunctionSpec jsSFImage::functions [ ] = {
 	{ "getType",     getType <X3DFieldDefinition>, 0, 0 },
 
 	{ "toString",    toString <X3DChildObject>, 0, 0 },
-	
+
 	{ 0 }
 
 };
@@ -142,7 +142,7 @@ jsSFImage::construct (JSContext* context, uintN argc, jsval* vp)
 }
 
 JSBool
-jsSFImage::width (JSContext *context, JSObject *obj, jsid id, jsval *vp)
+jsSFImage::width (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
@@ -150,7 +150,7 @@ jsSFImage::width (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 }
 
 JSBool
-jsSFImage::width (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
+jsSFImage::width (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
@@ -165,7 +165,7 @@ jsSFImage::width (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsv
 }
 
 JSBool
-jsSFImage::height (JSContext *context, JSObject *obj, jsid id, jsval *vp)
+jsSFImage::height (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
@@ -173,7 +173,7 @@ jsSFImage::height (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 }
 
 JSBool
-jsSFImage::height (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
+jsSFImage::height (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
@@ -188,7 +188,7 @@ jsSFImage::height (JSContext *context, JSObject *obj, jsid id, JSBool strict, js
 }
 
 JSBool
-jsSFImage::comp (JSContext *context, JSObject *obj, jsid id, jsval *vp)
+jsSFImage::comp (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
@@ -196,7 +196,7 @@ jsSFImage::comp (JSContext *context, JSObject *obj, jsid id, jsval *vp)
 }
 
 JSBool
-jsSFImage::comp (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
+jsSFImage::comp (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
@@ -211,7 +211,7 @@ jsSFImage::comp (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsva
 }
 
 JSBool
-jsSFImage::array (JSContext *context, JSObject *obj, jsid id, jsval *vp)
+jsSFImage::array (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 

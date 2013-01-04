@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BITS_UTILITY_MEMBER_VALUE_H__
-#define __TITANIA_BITS_UTILITY_MEMBER_VALUE_H__
+#ifndef __TITANIA_UTILITY_MEMBER_VALUE_H__
+#define __TITANIA_UTILITY_MEMBER_VALUE_H__
 
 namespace titania {
 namespace basic {

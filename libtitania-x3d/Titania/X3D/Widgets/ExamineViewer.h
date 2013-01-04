@@ -51,8 +51,8 @@
 
 #include <gdkmm.h>
 
-#include "../Components/Navigation/Viewpoint.h"
 #include "../Components/Navigation/NavigationInfo.h"
+#include "../Components/Navigation/Viewpoint.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Fields/SFNode.h"
 #include "../Widgets/X3DViewer.h"
@@ -68,7 +68,7 @@ class ExamineViewer :
 {
 public:
 
-	ExamineViewer (Surface &, NavigationInfo*);
+	ExamineViewer (Browser* const, NavigationInfo*);
 
 	void
 	initialize ();
@@ -99,16 +99,16 @@ private:
 
 	void
 	addSpinning ();
-	
+
 	Vector3f
 	getDistance () const;
 
 	Vector3f
 	getPositionOffset () const;
-	
+
 	Rotation4f
 	getOrientationOffset ();
-	
+
 	Vector3f
 	getPoint (const double, const double);
 
@@ -118,19 +118,18 @@ private:
 	float
 	tb_project_to_sphere (const float, const float, const float) const;
 
-	Surface &             surface;
-	NavigationInfo*       navigationInfo;
-	Vector3f              distance;
-	Rotation4f            orientation;
-	Rotation4f            rotation;
-	Vector3f              fromVector;
-	Vector3f              fromPoint;
-	guint                 button;
-	sigc::connection      button_press_event_connection;
-	sigc::connection      motion_notify_event_connection;
-	sigc::connection      button_release_event_connection;
-	sigc::connection      scroll_event_connection;
-	sigc::connection      spin_id;
+	NavigationInfo*  navigationInfo;
+	Vector3f         distance;
+	Rotation4f       orientation;
+	Rotation4f       rotation;
+	Vector3f         fromVector;
+	Vector3f         fromPoint;
+	guint            button;
+	sigc::connection button_press_event_connection;
+	sigc::connection motion_notify_event_connection;
+	sigc::connection button_release_event_connection;
+	sigc::connection scroll_event_connection;
+	sigc::connection spin_id;
 
 };
 

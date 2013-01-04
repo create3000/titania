@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	         bottom (true),                                                // SFBool  [ ] bottom  TRUE
 	         height (2),                                                   // SFFloat [ ] height  2           (0,∞)
@@ -89,13 +89,13 @@ Cylinder::createBBox ()
 
 	if (not top and not side and not bottom)
 		return Box3f ();
-		
+
 	else if (not top and not side)
 		return Box3f (Vector3f (diameter, 0, diameter), Vector3f (0, -height / 2, 0));
-		
+
 	else if (not bottom and not side)
 		return Box3f (Vector3f (diameter, 0, diameter), Vector3f (0, height / 2, 0));
-		
+
 	else
 		return Box3f (Vector3f (diameter, height, diameter), Vector3f ());
 }

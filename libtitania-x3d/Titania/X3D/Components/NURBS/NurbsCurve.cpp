@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 NurbsCurve::NurbsCurve (X3DExecutionContext* const executionContext) :
-	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DParametricGeometryNode (),                                                    
 	             controlPoint (),                                                    // SFNode    [in,out] controlPoint  [ ]          [X3DCoordinateNode]
 	             tessellation (),                                                    // SFInt32   [in,out] tessellation  0            (-∞,∞)

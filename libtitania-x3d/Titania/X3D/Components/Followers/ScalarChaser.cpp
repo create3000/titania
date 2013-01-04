@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 ScalarChaser::ScalarChaser (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DChaserNode (),                                                    
 	   set_destination (),                                                    // SFFloat [in]     set_destination
 	         set_value (),                                                    // SFFloat [in]     set_value

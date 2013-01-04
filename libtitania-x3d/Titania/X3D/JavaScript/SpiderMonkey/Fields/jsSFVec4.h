@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_SFVEC4F_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_SFVEC4F_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFVEC4_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFVEC4_H__
 
 #include "../../../Fields/SFVec4.h"
 #include "../jsX3DField.h"
@@ -129,7 +129,7 @@ JSFunctionSpec jsSFVec4 <Type>::functions [ ] = {
 	{ "getName",     getName <X3DChildObject>,     0, 0 },
 	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
 	{ "getType",     getType <X3DFieldDefinition>, 0, 0 },
-	
+
 	{ "negate",      normalize,   0, 0 },
 	{ "add",         add,         1, 0 },
 	{ "subtract",    subtract,    1, 0 },
@@ -140,7 +140,7 @@ JSFunctionSpec jsSFVec4 <Type>::functions [ ] = {
 	{ "length",      length,      0, 0 },
 
 	{ "toString",    toString <X3DChildObject>, 0, 0 },
-	
+
 	{ 0 }
 
 };
@@ -191,12 +191,12 @@ jsSFVec4 <Type>::construct (JSContext* context, uintN argc, jsval* vp)
 		jsdouble y = 0;
 		jsdouble z = 0;
 		jsdouble w = 0;
-	
+
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "dddd", &x, &y, &z, &w))
 			return JS_FALSE;
-			
+
 		return create (context, new Type (x, y, z, w), &JS_RVAL (context, vp));
 	}
 
@@ -243,7 +243,7 @@ jsSFVec4 <Type>::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_
 				break;
 			}
 
-		//else done -- cleanup.
+			//else done -- cleanup.
 		}
 		case JSENUMERATE_DESTROY:
 		{
@@ -288,7 +288,7 @@ jsSFVec4 <Type>::negate (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 0)
 	{
 		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-		
+
 		return create (context, self -> negate (), &JS_RVAL (context, vp));
 	}
 

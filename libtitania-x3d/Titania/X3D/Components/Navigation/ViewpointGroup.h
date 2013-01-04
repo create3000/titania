@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,12 +59,12 @@ class ViewpointGroup :
 {
 public:
 
-	SFVec3f               center;
+	SFVec3f              center;
 	MFNode <X3DBaseNode> children;
-	SFString              description;
-	SFBool                displayed;
-	SFBool                retainUserOffsets;
-	SFVec3f               size;
+	SFString             description;
+	SFBool               displayed;
+	SFBool               retainUserOffsets;
+	SFVec3f              size;
 
 	ViewpointGroup (X3DExecutionContext* const);
 

@@ -91,7 +91,7 @@ JSFunctionSpec jsBrowser::functions [ ] = {
 	{ "replaceWorld",         replaceWorld,         1, 0 },
 	{ "createX3DFromString",  createX3DFromString,  1, 0 },
 	{ "loadURL",              loadURL,              2, 0 },
-	
+
 	// VRML functions
 	{ "getName",              getName,              0, 0 },
 	{ "getVersion",           getVersion,           0, 0 },
@@ -116,8 +116,6 @@ jsBrowser::defineObject (JSContext* context, JSObject* global)
 	JS_DefineProperties (context, obj, properties);
 	JS_DefineFunctions (context, obj, functions);
 }
-
-
 
 // X3D properties
 
@@ -232,13 +230,14 @@ jsBrowser::createX3DFromString (JSContext* context, uintN argc, jsval* vp)
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &x3dSyntax))
 			return JS_FALSE;
-			
+
 		X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		{
 			SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, x3dSyntax));
-			
+
 			__LOG__ << scene -> getParents () .size () << std::endl;
+
 			for (const auto & parent : scene -> getParents ())
 				__LOG__ << parent -> getTypeName () << std::endl;
 		}
@@ -295,8 +294,6 @@ jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
 
 	return JS_FALSE;
 }
-
-
 
 // VRML97 functions
 
@@ -387,7 +384,7 @@ jsBrowser::createVrmlFromString (JSContext* context, uintN argc, jsval* vp)
 		try
 		{
 			SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, vrmlSyntax));
-			
+
 			return jsMFNode::create (context, new MFNode <X3DBaseNode> (scene -> getRootNodes ()), &JS_RVAL (context, vp));
 		}
 		catch (const X3DError & error)

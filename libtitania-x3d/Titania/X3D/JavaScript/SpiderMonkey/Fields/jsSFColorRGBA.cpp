@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -79,7 +79,7 @@ JSFunctionSpec jsSFColorRGBA::functions [ ] = {
 	{ "setHSV",      setHSV,   3, 0 },
 
 	{ "toString",    toString <X3DChildObject>, 0, 0 },
-	
+
 	{ 0 }
 
 };
@@ -175,7 +175,7 @@ jsSFColorRGBA::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op
 				break;
 			}
 
-		//else done -- cleanup.
+			//else done -- cleanup.
 		}
 		case JSENUMERATE_DESTROY:
 		{
@@ -253,7 +253,7 @@ jsSFColorRGBA::setHSV (JSContext* context, uintN argc, jsval* vp)
 		SFColorRGBA* sfcolorrgba = (SFColorRGBA*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		jsdouble h, s, v;
-		
+
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "ddd", &h, &s, &v))

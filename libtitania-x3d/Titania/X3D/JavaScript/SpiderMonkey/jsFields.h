@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_JS_FIELDS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_JS_FIELDS_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_FIELDS_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_FIELDS_H__
 
 #include "../../Fields.h"
 
@@ -62,6 +62,7 @@
 #include "Fields/jsSFVec3.h"
 #include "Fields/jsSFVec4.h"
 
+#include "Fields/jsArrayFields.h"
 #include "Fields/jsMFBool.h"
 #include "Fields/jsMFDouble.h"
 #include "Fields/jsMFFloat.h"
@@ -69,6 +70,5 @@
 #include "Fields/jsMFNode.h"
 #include "Fields/jsMFString.h"
 #include "Fields/jsMFTime.h"
-#include "Fields/jsArrayFields.h"
 
 #endif // jsFields_h_

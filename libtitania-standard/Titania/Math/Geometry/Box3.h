@@ -152,7 +152,7 @@ public:
 	size () const
 	{
 		vector3 <Type> a = xAxis + yAxis + zAxis;
-		vector3 <Type> b = - xAxis - yAxis - zAxis;
+		vector3 <Type> b = -xAxis - yAxis - zAxis;
 
 		return math::max (a, b) - math::min (a, b);
 	}

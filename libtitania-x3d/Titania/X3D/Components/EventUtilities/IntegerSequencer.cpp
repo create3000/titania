@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 IntegerSequencer::IntegerSequencer (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DSequencerNode (),                                                    
 	        keyValue (),                                                    // MFInt32 [in,out] keyValue       [ ]       (-∞,∞)
 	   value_changed ()                                                     // SFInt32 [out]    value_changed

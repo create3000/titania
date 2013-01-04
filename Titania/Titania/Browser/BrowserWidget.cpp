@@ -91,15 +91,11 @@ BrowserWidget::messageDialogResponse (int response_id)
 
 void
 BrowserWidget::on_footer_toggled ()
-{
-
-}
+{ }
 
 void
 BrowserWidget::on_sideBar_toggled ()
-{
-
-}
+{ }
 
 // Toolbar handling
 

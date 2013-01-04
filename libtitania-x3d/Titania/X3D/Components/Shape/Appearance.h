@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,12 +66,12 @@ class Appearance :
 {
 public:
 
-	SFNode <FillProperties> lineProperties;
-	SFNode <LineProperties> fillProperties;
-	SFNode <X3DMaterialNode> material;
-	SFNode <X3DTextureNode> texture;
+	SFNode <FillProperties>          lineProperties;
+	SFNode <LineProperties>          fillProperties;
+	SFNode <X3DMaterialNode>         material;
+	SFNode <X3DTextureNode>          texture;
 	SFNode <X3DTextureTransformNode> textureTransform;
-	MFNode <X3DShaderNode> shaders;
+	MFNode <X3DShaderNode>           shaders;
 
 	Appearance (X3DExecutionContext* const);
 

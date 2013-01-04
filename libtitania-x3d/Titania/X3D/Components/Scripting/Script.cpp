@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,7 +48,7 @@
 
 #include "Script.h"
 
-#include "../../Browser/Browser.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Parser/RegEx.h"
 
@@ -56,11 +56,11 @@ namespace titania {
 namespace X3D {
 
 Script::Script (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DScriptNode (),                                                    
 	 directOutput (),                                                    // SFBool [ ]directOutput  FALSE
 	 mustEvaluate (),                                                    // SFBool [ ]mustEvaluate  FALSE
-	   javaScript ()                                                 
+	   javaScript ()                                                     
 {
 	setComponent ("Scripting");
 	setTypeName ("Script");
@@ -94,13 +94,12 @@ Script::initialize ()
 			break;
 		}
 	}
-	
+
 	// Assign an empty script if no working script is found.
-	
+
 	if (not javaScript)
 		javaScript .reset (new JavaScriptContext (this, ""));
 
-		
 	// Initialize.
 
 	javaScript -> initialize ();

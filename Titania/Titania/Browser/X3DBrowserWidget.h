@@ -55,8 +55,6 @@
 #include "../UserInterfaces/X3DBrowserUserInterface.h"
 #include "../ViewpointEditor/ViewpointEditor.h"
 
-#include <Titania/X3D/Widgets/Surface.h>
-
 namespace titania {
 namespace puck {
 

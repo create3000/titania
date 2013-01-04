@@ -53,8 +53,8 @@ namespace X3D {
 
 X3DBoundedObject::X3DBoundedObject () :
 	X3DBaseNode (),          
-	  bboxCenter (),          // SFVec3f [ ]bboxCenter  0 0 0           (-∞,∞)
-	    bboxSize (-1, -1, -1) // SFVec3f [ ]bboxSize    -1 -1 -1        [0,∞) or −1 −1 −1
+	 bboxCenter (),          // SFVec3f [ ]bboxCenter  0 0 0           (-∞,∞)
+	   bboxSize (-1, -1, -1) // SFVec3f [ ]bboxSize    -1 -1 -1        [0,∞) or −1 −1 −1
 {
 	addNodeType (X3DConstants::X3DBoundedObject);
 }
@@ -67,15 +67,15 @@ Box3f
 X3DBoundedObject::getBBox (const MFNode <X3DBoundedObject> & boundedObjects)
 {
 	Box3f bbox;
-	
+
 	// Find first non zero bounding box
 
 	auto first = boundedObjects .begin ();
 
-	for (; first not_eq boundedObjects .end (); ++ first)
+	for ( ; first not_eq boundedObjects .end (); ++ first)
 	{
 		const auto & boundedObject = *first;
-		
+
 		if (boundedObject)
 		{
 			Box3f _bbox = boundedObject -> getBBox ();
@@ -89,7 +89,7 @@ X3DBoundedObject::getBBox (const MFNode <X3DBoundedObject> & boundedObjects)
 	}
 
 	// Add bounding boxes
-	
+
 	if (first not_eq boundedObjects .end ())
 	{
 		for (++ first; first not_eq boundedObjects .end (); ++ first)

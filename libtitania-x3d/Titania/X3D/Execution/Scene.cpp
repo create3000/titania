@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,14 +48,14 @@
 
 #include "Scene.h"
 
-#include "../Browser/Browser.h"
+#include "../Browser/X3DBrowser.h"
 #include <iostream>
 
 namespace titania {
 namespace X3D {
 
 Scene::Scene (X3DBrowser* const browser) :
-	   X3DBaseNode (browser, this),      
+	    X3DBaseNode (browser, this),      
 	       X3DScene (),                   
 	navigationInfos (),                   
 	    backgrounds (),                   
@@ -282,7 +282,7 @@ void
 Scene::clear ()
 {
 	__LOG__ << getWorldURL () << std::endl;
-	
+
 	layerSet .set (new LayerSet (this));
 	layerSet -> setup ();
 

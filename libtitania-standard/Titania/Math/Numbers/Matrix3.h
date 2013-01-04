@@ -679,10 +679,10 @@ matrix3 <Type>::factor (matrix3 & r, vector2 <S> & s, matrix3 & u, vector2 <T> &
 	double det_sign = (det < 0 ? -1 : 1);
 
 	if (det_sign * det < 1e-12)
-		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         // singular
+		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              // singular
 
 	/* (4) B = A * !A  (here !A means A transpose) */
-	matrix3 b = a * !a;
+	matrix3 b = a * ! a;
 
 	Type           evalues [2];
 	vector2 <Type> evectors [2];
@@ -705,8 +705,8 @@ matrix3 <Type>::factor (matrix3 & r, vector2 <S> & s, matrix3 & u, vector2 <T> &
 	}
 
 	/* (5) Compute U = R^ S! R A. */
-	u = r * si * !r * a;
-	
+	u = r * si * ! r * a;
+
 	r .transpose ();
 
 	return true;
@@ -899,16 +899,16 @@ matrix3 <Type>::inverse ()
 		throw std::domain_error ("matrix3::inverse: determinant is 0.");
 
 	return *this = matrix3 <Type> ((m11 * m22 - m21 * m12) / d,
-	                       -(m01 * m22 - m21 * m02) / d,
-	                       (m01 * m12 - m11 * m02) / d,
+	                               -(m01 * m22 - m21 * m02) / d,
+	                               (m01 * m12 - m11 * m02) / d,
 
-	                       -(m10 * m22 - m20 * m12) / d,
-	                       (m00 * m22 - m20 * m02) / d,
-	                       -(m00 * m12 - m10 * m02) / d,
+	                               -(m10 * m22 - m20 * m12) / d,
+	                               (m00 * m22 - m20 * m02) / d,
+	                               -(m00 * m12 - m10 * m02) / d,
 
-	                       (t10 - t14) / d,
-	                       -(t6 - t12) / d,
-	                       (t4 - t8) / d);
+	                               (t10 - t14) / d,
+	                               -(t6 - t12) / d,
+	                               (t4 - t8) / d);
 }
 
 template <typename Type>

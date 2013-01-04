@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 HAnimSegment::HAnimSegment (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DGroupingNode (),                                                    
 	    centerOfMass (),                                                    // SFVec3f  [in,out] centerOfMass      0 0 0                      (-∞,∞)
 	           coord (),                                                    // SFNode   [in,out] coord             NULL                       [X3DCoordinateNode]

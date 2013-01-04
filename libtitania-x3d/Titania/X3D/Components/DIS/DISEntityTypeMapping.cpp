@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,15 +55,15 @@ namespace X3D {
 
 DISEntityTypeMapping::DISEntityTypeMapping (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	 X3DInfoNode (),                                                    
-	         url (),                                                    // MFString [in,out] url          [ ]       [URI]
-	    category (),                                                    // SFInt32  [ ]      category     0         [0,255]
-	     country (),                                                    // SFInt32  [ ]      country      0         [0,65535]
-	      domain (),                                                    // SFInt32  [ ]      domain       0         [0,255]
-	       extra (),                                                    // SFInt32  [ ]      extra        0         [0,255]
-	        kind (),                                                    // SFInt32  [ ]      kind         0         [0,255]
-	    specific (),                                                    // SFInt32  [ ]      specific     0         [0,255]
-	 subcategory ()                                                     // SFInt32  [ ]      subcategory  0         [0,255]
+	X3DInfoNode (),                                                    
+	        url (),                                                    // MFString [in,out] url          [ ]       [URI]
+	   category (),                                                    // SFInt32  [ ]      category     0         [0,255]
+	    country (),                                                    // SFInt32  [ ]      country      0         [0,65535]
+	     domain (),                                                    // SFInt32  [ ]      domain       0         [0,255]
+	      extra (),                                                    // SFInt32  [ ]      extra        0         [0,255]
+	       kind (),                                                    // SFInt32  [ ]      kind         0         [0,255]
+	   specific (),                                                    // SFInt32  [ ]      specific     0         [0,255]
+	subcategory ()                                                     // SFInt32  [ ]      subcategory  0         [0,255]
 {
 	setComponent ("DIS");
 	setTypeName ("DISEntityTypeMapping");

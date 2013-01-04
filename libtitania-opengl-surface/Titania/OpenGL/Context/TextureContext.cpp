@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,7 +62,7 @@ TextureContext::TextureContext (const Glib::RefPtr <Gdk::Window> & window,
                                 const Glib::RefPtr <Gdk::Display> & display,
                                 const Context & sharingContext,
                                 bool direct) :
-	  Context (display), 
+	    Context (display), 
 	     window (window),  
 	    context (NULL),    
 	frameBuffer (0),       
@@ -77,7 +77,7 @@ TextureContext::TextureContext (const Glib::RefPtr <Gdk::Window> & window,
 TextureContext::TextureContext (const Glib::RefPtr <Gdk::Window> & window,
                                 const Glib::RefPtr <Gdk::Display> & display,
                                 bool direct) :
-	  Context (display), 
+	    Context (display), 
 	     window (window),  
 	    context (NULL),    
 	frameBuffer (0),       

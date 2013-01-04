@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,10 +59,10 @@ class PolylineEmitter :
 {
 public:
 
-	SFInt32               set_coordinate;
+	SFInt32              set_coordinate;
 	SFNode <X3DBaseNode> coord;
-	SFVec3f               direction;
-	MFInt32               coordIndex;
+	SFVec3f              direction;
+	MFInt32              coordIndex;
 
 	PolylineEmitter (X3DExecutionContext* const);
 

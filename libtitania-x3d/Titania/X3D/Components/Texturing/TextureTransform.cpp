@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 TextureTransform::TextureTransform (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTextureTransformNode (),                                                    
 	                 center (),                                                    // SFVec2f [in,out] center       0 0        (-∞,∞)
 	               rotation (),                                                    // SFFloat [in,out] rotation     0          (-∞,∞)

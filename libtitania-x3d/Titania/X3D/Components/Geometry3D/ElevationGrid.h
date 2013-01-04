@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,19 +64,19 @@ public:
 	using X3DGeometryNode::solid;
 	using X3DGeometryNode::creaseAngle;
 
-	MFFloat               set_height;
+	MFFloat              set_height;
 	MFNode <X3DBaseNode> attrib;
 	SFNode <X3DBaseNode> color;
 	SFNode <X3DBaseNode> fogCoord;
 	SFNode <X3DBaseNode> normal;
 	SFNode <X3DBaseNode> texCoord;
-	SFBool                colorPerVertex;
-	MFFloat               height;
-	SFBool                normalPerVertex;
-	SFInt32               xDimension;
-	SFFloat               xSpacing;
-	SFInt32               zDimension;
-	SFFloat               zSpacing;
+	SFBool               colorPerVertex;
+	MFFloat              height;
+	SFBool               normalPerVertex;
+	SFInt32              xDimension;
+	SFFloat              xSpacing;
+	SFInt32              zDimension;
+	SFFloat              zSpacing;
 
 	ElevationGrid (X3DExecutionContext* const);
 
@@ -104,7 +104,6 @@ private:
 
 	void
 	build ();
-
 
 };
 

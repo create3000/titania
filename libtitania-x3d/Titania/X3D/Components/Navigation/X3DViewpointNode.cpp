@@ -48,7 +48,7 @@
 
 #include "X3DViewpointNode.h"
 
-#include "../../Browser/Browser.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../Layering/X3DLayerNode.h"
 #include "../Navigation/NavigationInfo.h"
 

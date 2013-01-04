@@ -48,19 +48,19 @@
 
 #include "X3DWidget.h"
 
-#include "../Browser/X3DBrowser.h"
+#include "../Browser/Browser.h"
 
 namespace titania {
 namespace X3D {
 
-X3DWidget::X3DWidget (const SFNode <X3DBrowser> & browser) :
+X3DWidget::X3DWidget (Browser* const browser) :
 	browser (browser) 
 { }
 
-X3DBrowser*
+Browser*
 X3DWidget::getBrowser () const
 {
-	return *browser;
+	return browser;
 }
 
 void
@@ -76,7 +76,7 @@ X3DWidget::initialize ()
 void
 X3DWidget::dispose ()
 {
-	browser .dispose ();
+	browser -> dispose ();
 }
 
 X3DWidget::~X3DWidget ()

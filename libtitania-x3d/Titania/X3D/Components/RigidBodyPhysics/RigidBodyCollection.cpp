@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	           X3DChildNode (),                                                    
 	           set_contacts (),                                                    // MFNode  [in]     set_contacts                             [ ]
 	            autoDisable (),                                                    // SFBool  [in,out] autoDisable              FALSE

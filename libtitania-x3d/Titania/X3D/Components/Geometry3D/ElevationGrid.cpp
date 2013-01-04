@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	     set_height (),                                                    // MFFloat [in]     set_height
 	         attrib (),                                                    // MFNode  [in,out] attrib           [ ]         [X3DVertexAttributeNode]
@@ -333,8 +333,8 @@ ElevationGrid::build ()
 
 	getNormals () .reserve (coordIndex .size ());
 
-	size_t  i         = 0;
-	int32_t face      = 0;
+	size_t  i    = 0;
+	int32_t face = 0;
 
 	std::vector <size_t>::const_iterator index;
 
@@ -365,10 +365,10 @@ ElevationGrid::build ()
 			{
 				if (colorPerVertex)
 					getColors () .emplace_back (_color -> color [*index]);
-				
+
 				else
 					getColors () .emplace_back (_color -> color [face]);
-				
+
 			}
 			else if (_colorRGBA)
 			{
@@ -376,10 +376,10 @@ ElevationGrid::build ()
 
 				if (colorPerVertex)
 					_colorRGBA -> color [*index] .getValue (r, g, b, a);
-				
+
 				else
 					_colorRGBA -> color [face] .getValue (r, g, b, a);
-					
+
 				getColorsRGBA () .emplace_back (r, g, b, 1 - a);
 			}
 

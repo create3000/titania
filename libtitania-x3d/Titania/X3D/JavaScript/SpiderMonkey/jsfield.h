@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_JSFIELD_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_JSFIELD_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JSFIELD_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JSFIELD_H__
 
 #include "../../Basic/X3DFieldDefinition.h"
 #include <jsapi.h>

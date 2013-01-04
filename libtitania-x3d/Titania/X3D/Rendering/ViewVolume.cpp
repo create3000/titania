@@ -72,9 +72,8 @@ namespace X3D {
  */
 
 ViewVolume::ViewVolume () :
-	ViewVolume (ModelViewMatrix4d (), ProjectionMatrix4d ())
-{
-}
+	ViewVolume (ModelViewMatrix4d (), ProjectionMatrix4d ()) 
+{ }
 
 ViewVolume::ViewVolume (const Matrix4d & modelview, const Matrix4d & projection)
 {

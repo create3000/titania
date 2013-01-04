@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 ClipPlane::ClipPlane (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DChildNode (),                                                    
 	     enabled (true),                                                // SFBool  [in,out] enabled  TRUE
 	       plane (0, 1, 0, 0)                                           // SFVec4f [in,out] plane    0 1 0 0        [0,1]

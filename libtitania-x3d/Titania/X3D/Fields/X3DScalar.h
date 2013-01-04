@@ -57,7 +57,7 @@ namespace X3D {
 
 template <>
 void
-X3DField <Bool>::toStream (std::ostream & ostream) const;
+X3DField <bool>::toStream (std::ostream & ostream) const;
 
 template <>
 void
@@ -67,7 +67,7 @@ template <>
 void
 X3DField <Float>::toStream (std::ostream & ostream) const;
 
-extern template class X3DField <Bool>;
+extern template class X3DField <bool>;
 extern template class X3DField <Double>;
 extern template class X3DField <Float>;
 extern template class X3DField <Int32>;
@@ -99,12 +99,12 @@ public:
 
 };
 
-extern template class X3DScalar <Bool>;
+extern template class X3DScalar <bool>;
 extern template class X3DScalar <Double>;
 extern template class X3DScalar <Float>;
 extern template class X3DScalar <Int32>;
 
-typedef X3DScalar <Bool>   SFBool;
+typedef X3DScalar <bool>   SFBool;
 typedef X3DScalar <Double> SFDouble;
 typedef X3DScalar <Float>  SFFloat;
 typedef X3DScalar <Int32>  SFInt32;

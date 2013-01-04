@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 SplinePositionInterpolator::SplinePositionInterpolator (X3DExecutionContext* const executionContext) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
 	             closed (),                                                    // SFBool  [in,out] closed             FALSE
 	           keyValue (),                                                    // MFVec3f [in,out] keyValue           [ ]          (-∞,∞)

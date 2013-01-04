@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -166,7 +166,6 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-
 	///  @name Exported nodes handling
 
 	void
@@ -197,7 +196,6 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return exportedNodes; }
-
 
 	///  @name Imported nodes handling
 
@@ -234,7 +232,6 @@ public:
 	       Error <DISPOSED>)
 	{ return importedNodes; }
 
-
 	///  @name Proto declaration handling
 
 	const SFNode <Proto> &
@@ -263,7 +260,6 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return protos; }
-
 
 	///  @name Exterproto declaration handling
 
@@ -295,7 +291,6 @@ public:
 	       Error <DISPOSED>)
 	{ return externProtos; }
 
-
 	///  @name Root node handling
 
 	virtual
@@ -314,7 +309,6 @@ public:
 	getRootNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
-
 
 	///  @name Dynamic route node handling
 
@@ -339,22 +333,19 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-
 	///  @name Input/Output
 
 	void
 	toStream (std::ostream &) const;
 
-		
 	///  @name Dispose
 
 	virtual
 	void
 	dispose ();
 
-
 	///  @name Destructor
-	
+
 	virtual
 	~X3DExecutionContext ();
 
@@ -392,7 +383,6 @@ private:
 	                       const SFNode <X3DBaseNode> &, const std::string &)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
-	       
 
 	typedef std::map <std::string, SFNode <X3DBaseNode>> NamedNodeIndex;
 

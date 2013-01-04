@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	     set_height (),                                                    // MFDouble [in]     set_height
 	          color (),                                                    // SFNode   [in,out] color            NULL               [X3DColorNode]

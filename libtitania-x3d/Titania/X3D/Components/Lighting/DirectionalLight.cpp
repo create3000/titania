@@ -48,17 +48,14 @@
 
 #include "DirectionalLight.h"
 
-#include "../../Execution/X3DExecutionContext.h"
-
-#include "../../Browser/Browser.h"
-
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
 DirectionalLight::DirectionalLight (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DLightNode (),                                                    
 	   direction (0, 0, -1)                                             // SFVec3f [in,out] direction  0 0 -1        (-∞,∞)
 {

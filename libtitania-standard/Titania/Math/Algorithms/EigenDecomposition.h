@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_NUMBERS_EIGEN_DECOMPOSITION_H__
-#define __TITANIA_MATH_NUMBERS_EIGEN_DECOMPOSITION_H__
+#ifndef __TITANIA_MATH_ALGORITHMS_EIGEN_DECOMPOSITION_H__
+#define __TITANIA_MATH_ALGORITHMS_EIGEN_DECOMPOSITION_H__
 
 #include <cmath>
 
@@ -89,7 +89,7 @@ eigen_decomposition (MatrixType matrix,
 	}
 
 	// Why 50? I don't know--it's the way the folks who wrote the
-	// algorithm did it: 50 is hight enough to iterate over the 
+	// algorithm did it: 50 is hight enough to iterate over the
 	// values. The algorithm normally returns after 3 or 4 iterations.
 	for (size_t i = 0; i < 50; i ++)
 	{

@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 ArcClose2D::ArcClose2D (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	    closureType ("PIE"),                                               // SFString [ ] closureType  "PIE"        ["PIE"|"CHORD"]
 	       endAngle (),                                                    // SFFloat  [ ] endAngle     π/2          [-2π,2π]

@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 NurbsSurfaceInterpolator::NurbsSurfaceInterpolator (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	    X3DChildNode (),                                                    
 	    set_fraction (),                                                    // SFVec2f  [in]     set_fraction                (-∞,∞)
 	    controlPoint (),                                                    // SFNode   [in,out] controlPoint      [ ]       [X3DCoordinateNode]

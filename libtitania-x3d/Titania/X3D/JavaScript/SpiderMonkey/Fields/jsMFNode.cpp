@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -87,7 +87,7 @@ jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::construct (JSContext* context,
 				return JS_FALSE;
 			}
 
-			field -> emplace_back (*(X3DField <X3DBaseNode*>*) JS_GetPrivate (context, value));
+			field -> emplace_back (*(X3DField <X3DBaseNode*>*)JS_GetPrivate (context, value));
 		}
 
 		return create (context, field, &JS_RVAL (context, vp));
@@ -113,7 +113,7 @@ jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::get1Value (JSContext* context,
 
 	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	return jsSFNode::create (context, new SFNode <X3DBaseNode> (*(X3DField <X3DBaseNode*>*) &field -> get1Value (index)), vp);
+	return jsSFNode::create (context, new SFNode <X3DBaseNode> (*(X3DField <X3DBaseNode*>*) & field -> get1Value (index)), vp);
 
 	return JS_TRUE;
 }
@@ -143,10 +143,10 @@ jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::set1Value (JSContext* context,
 		JS_ReportError (context, "Type of argument is invalid - should be SFNode, is %s", JS_GetClass (context, value) -> name);
 		return JS_FALSE;
 	}
-	
+
 	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
 
-	field -> set1Value (index, *(X3DField <X3DBaseNode*>*) JS_GetPrivate (context, value));
+	field -> set1Value (index, *(X3DField <X3DBaseNode*>*)JS_GetPrivate (context, value));
 
 	*vp = JSVAL_VOID;
 

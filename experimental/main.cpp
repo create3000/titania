@@ -52,10 +52,10 @@
 #include <cassert>
 #include <complex>
 #include <deque>
+#include <fstream>
 #include <initializer_list>
 #include <iomanip>
 #include <iostream>
-#include <fstream>
 #include <iterator>
 #include <limits>
 #include <map>
@@ -690,12 +690,11 @@ public:
 
 };
 
-
 class A :
 	virtual public Base
 {
 public:
-	
+
 	virtual
 	void
 	fn () { }
@@ -709,8 +708,6 @@ public:
 
 };
 
-
-
 class C :
 	public A, public B
 {
@@ -718,8 +715,7 @@ public:
 
 };
 
-namespace Test
-{
+namespace Test {
 
 template <class ForwardIterator, class RangeIterator>
 ForwardIterator
@@ -735,7 +731,7 @@ remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, Range
 	for ( ; first not_eq last; ++ first)
 	{
 		auto item = range .find (*first);
-		
+
 		if (item not_eq range .end ())
 		{
 			range .erase (item);
@@ -747,11 +743,11 @@ remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, Range
 	while (range .size ())
 	{
 		auto second = first + count;
-		
-		for (; second not_eq last; ++ first, ++ second)
+
+		for ( ; second not_eq last; ++ first, ++ second)
 		{
 			auto item = range .find (*second);
-		
+
 			if (item not_eq range .end ())
 			{
 				range .erase (item);
@@ -761,10 +757,10 @@ remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, Range
 
 			*first = std::move (*second);
 		}
-		
+
 		break;
-		
-		LOOP:;
+
+LOOP:;
 	}
 
 	for (auto second = first + count; second not_eq last; ++ first, ++ second)
@@ -779,11 +775,11 @@ remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, Range
 
 ///  Map @a value in the interval (fromLow;fromHigh) to the interval (toLow;toHigh).
 template <class Type>
-Type project (const Type & value, const Type & fromLow, const Type & fromHigh, const Type & toLow, const Type & toHigh)
+Type
+project (const Type & value, const Type & fromLow, const Type & fromHigh, const Type & toLow, const Type & toHigh)
 {
 	return toLow + ((value - fromLow) / (fromHigh - fromLow)) * (toHigh - toLow);
 }
-
 
 #include <v8.h>
 
@@ -791,15 +787,13 @@ int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
-	
+
 	ifilestream stream (basic::http::GET, "/home/holger/Projekte/Titania/Titania/share/titania/pages/about/gears.wrl");
 	stream .send ();
-	
+
 	std::clog << igzstream (stream) .rdbuf () << std::endl;
-	
+
 	std::clog << (stream >> gunzip) .rdbuf () << std::endl;
-	
-	
 
 	//	test_path (basic::path ("/"));
 	//	test_path (basic::path ("/", "/"));

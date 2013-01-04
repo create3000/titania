@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,10 +63,10 @@ class OutlineTreeModel :
 {
 public:
 
-	OutlineTreeModel (const X3D::SFNode <X3D::X3DBrowser> &);
+	OutlineTreeModel (const X3D::SFNode <X3D::Browser> &);
 
 	static Glib::RefPtr <OutlineTreeModel>
-	create (const X3D::SFNode <X3D::X3DBrowser> &);
+	create (const X3D::SFNode <X3D::Browser> &);
 
 	virtual
 	~OutlineTreeModel ();
@@ -174,7 +174,7 @@ private:
 	debug_column_type            debug_column;
 
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
-	FieldTypeImageIndex         fieldTypeImages;
+	FieldTypeImageIndex        fieldTypeImages;
 	Gdk::Color                 selected_color;
 
 	int stamp;

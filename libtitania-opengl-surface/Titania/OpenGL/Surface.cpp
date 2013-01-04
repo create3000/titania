@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,7 +71,7 @@ Surface::Surface () :
 	add_events (Gdk::STRUCTURE_MASK);
 
 	// Connect to map_event.
-	initialized_connection = signal_map_event () .connect (sigc::mem_fun (*this, &Surface::set_initialized));
+	initialized_connection = signal_map_event () .connect (sigc::mem_fun (*this, &Surface::on_map));
 }
 
 const std::shared_ptr <Context> &
@@ -147,7 +147,7 @@ Surface::glew ()
 }
 
 bool
-Surface::set_initialized (GdkEventAny* event)
+Surface::on_map (GdkEventAny* event)
 {
 	initialized_connection .disconnect ();
 
@@ -162,7 +162,7 @@ Surface::set_initialized (GdkEventAny* event)
 
 		glViewport (0, 0, get_width (), get_height ());
 
-		setup ();
+		construct ();
 	}
 
 	return false; // Propagate the event further.

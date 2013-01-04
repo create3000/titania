@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,9 +46,9 @@
  *
  ******************************************************************************/
 
+#include "String.h"
 #include "jsFields.h"
 #include "jsfield.h"
-#include "String.h"
 
 namespace titania {
 namespace X3D {
@@ -66,7 +66,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 
 			*(SFBool*) field = value;
-			
+
 			break;
 		}
 		case X3DConstants::SFColor:
@@ -83,7 +83,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFColor*) field = *(SFColor*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::SFColorRGBA:
@@ -100,7 +100,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFColorRGBA*) field = *(SFColorRGBA*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::SFDouble:
@@ -111,7 +111,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 
 			*(SFDouble*) field = value;
-			
+
 			break;
 		}
 		case X3DConstants::SFFloat:
@@ -122,7 +122,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 
 			*(SFFloat*) field = value;
-			
+
 			break;
 		}
 		case X3DConstants::SFInt32:
@@ -133,7 +133,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 
 			*(SFInt32*) field = value;
-			
+
 			break;
 		}
 		case X3DConstants::SFImage:
@@ -150,7 +150,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFImage*) field = *(SFImage*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::SFMatrix3f:
@@ -167,7 +167,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFMatrix3f*) field = *(SFMatrix3f*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::SFMatrix3d:
@@ -184,7 +184,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFMatrix3d*) field = *(SFMatrix3d*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::SFMatrix4d:
@@ -201,7 +201,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFMatrix4d*) field = *(SFMatrix4d*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::SFMatrix4f:
@@ -218,7 +218,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFMatrix4f*) field = *(SFMatrix4f*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::SFNode:
@@ -234,8 +234,8 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			*(X3DField <X3DBaseNode*>*) field = *(SFNode <X3DBaseNode>*) JS_GetPrivate (context, value);
-			
+			*(X3DField <X3DBaseNode*>*)field = *(SFNode <X3DBaseNode>*)JS_GetPrivate (context, value);
+
 			break;
 		}
 		case X3DConstants::SFRotation:
@@ -252,13 +252,13 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFRotation*) field = *(SFRotation*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::SFString:
 		{
 			*(SFString*) field = JS_GetString (context, *vp);
-			
+
 			break;
 		}
 		case X3DConstants::SFTime:
@@ -269,7 +269,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 
 			*(SFTime*) field = value;
-			
+
 			break;
 		}
 		case X3DConstants::SFVec2d:
@@ -286,7 +286,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFVec2d*) field = *(SFVec2d*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::SFVec2f:
@@ -303,7 +303,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFVec2f*) field = *(SFVec2f*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::SFVec3d:
@@ -320,7 +320,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFVec3d*) field = *(SFVec3d*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::SFVec3f:
@@ -337,7 +337,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFVec3f*) field = *(SFVec3f*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::SFVec4d:
@@ -354,7 +354,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFVec4d*) field = *(SFVec4d*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::SFVec4f:
@@ -371,7 +371,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFVec4f*) field = *(SFVec4f*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFBool:
@@ -388,7 +388,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFBool*) field = *(MFBool*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFColor:
@@ -405,7 +405,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFColor*) field = *(MFColor*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFColorRGBA:
@@ -422,7 +422,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFColorRGBA*) field = *(MFColorRGBA*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFDouble:
@@ -439,7 +439,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFDouble*) field = *(MFDouble*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFFloat:
@@ -456,7 +456,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFFloat*) field = *(MFFloat*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFImage:
@@ -473,7 +473,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFImage*) field = *(MFImage*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFInt32:
@@ -490,7 +490,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFInt32*) field = *(MFInt32*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFMatrix3d:
@@ -507,7 +507,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFMatrix3d*) field = *(MFMatrix3d*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFMatrix3f:
@@ -524,7 +524,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFMatrix3f*) field = *(MFMatrix3f*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFMatrix4d:
@@ -541,7 +541,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFMatrix4d*) field = *(MFMatrix4d*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFMatrix4f:
@@ -558,7 +558,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFMatrix4f*) field = *(MFMatrix4f*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFNode:
@@ -576,7 +576,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 
 			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
 			field -> notifyParents ();
-			
+
 			break;
 		}
 		case X3DConstants::MFRotation:
@@ -593,7 +593,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFRotation*) field = *(MFRotation*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFString:
@@ -610,7 +610,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFString*) field = *(MFString*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFTime:
@@ -627,7 +627,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFTime*) field = *(MFTime*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFVec2d:
@@ -644,7 +644,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFVec2d*) field = *(MFVec2d*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFVec2f:
@@ -661,7 +661,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFVec2f*) field = *(MFVec2f*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFVec3d:
@@ -678,7 +678,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFVec3d*) field = *(MFVec3d*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFVec3f:
@@ -695,7 +695,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFVec3f*) field = *(MFVec3f*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFVec4d:
@@ -712,7 +712,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFVec4d*) field = *(MFVec4d*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 		case X3DConstants::MFVec4f:
@@ -729,7 +729,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(MFVec4f*) field = *(MFVec4f*) JS_GetPrivate (context, value);
-			
+
 			break;
 		}
 	}
@@ -748,7 +748,7 @@ JS_NewFieldValue (JSContext* context, X3DFieldDefinition* field, jsval* vp, cons
 		{
 			*vp = *(SFBool*) field ? JSVAL_TRUE : JSVAL_FALSE;
 			return JS_TRUE;
-		}	
+		}
 
 		case X3DConstants::SFColor:
 			return jsSFColor::create (context, (SFColor*) field, vp, seal);
@@ -758,118 +758,118 @@ JS_NewFieldValue (JSContext* context, X3DFieldDefinition* field, jsval* vp, cons
 
 		case X3DConstants::SFDouble:
 			return JS_NewNumberValue (context, ((SFDouble*) field) -> getValue (), vp);
-			
+
 		case X3DConstants::SFFloat:
 			return JS_NewNumberValue (context, ((SFFloat*) field) -> getValue (), vp);
-			
+
 		case X3DConstants::SFInt32:
 			return JS_NewNumberValue (context, ((SFInt32*) field) -> getValue (), vp);
-			
+
 		case X3DConstants::SFImage:
 			return jsSFImage::create (context, (SFImage*) field, vp, seal);
-			
+
 		case X3DConstants::SFMatrix3f:
 			return jsSFMatrix3f::create (context, (SFMatrix3f*) field, vp, seal);
-			
+
 		case X3DConstants::SFMatrix3d:
 			return jsSFMatrix3d::create (context, (SFMatrix3d*) field, vp, seal);
-			
+
 		case X3DConstants::SFMatrix4d:
 			return jsSFMatrix4d::create (context, (SFMatrix4d*) field, vp, seal);
-			
+
 		case X3DConstants::SFMatrix4f:
 			return jsSFMatrix4f::create (context, (SFMatrix4f*) field, vp, seal);
-			
+
 		case X3DConstants::SFNode:
-			return jsSFNode::create (context, (X3DField <X3DBaseNode*>*) field, vp, seal);
-			
+			return jsSFNode::create (context, (X3DField <X3DBaseNode*>*)field, vp, seal);
+
 		case X3DConstants::SFRotation:
 			return jsSFRotation::create (context, (SFRotation*) field, vp, seal);
-			
+
 		case X3DConstants::SFString:
 			return JS_NewStringValue (context, ((SFString*) field) -> getValue (), vp);
-			
+
 		case X3DConstants::SFTime:
 			return JS_NewNumberValue (context, ((SFTime*) field) -> getValue (), vp);
-			
+
 		case X3DConstants::SFVec2d:
 			return jsSFVec2d::create (context, (SFVec2d*) field, vp, seal);
-			
+
 		case X3DConstants::SFVec2f:
 			return jsSFVec2f::create (context, (SFVec2f*) field, vp, seal);
-			
+
 		case X3DConstants::SFVec3d:
 			return jsSFVec3d::create (context, (SFVec3d*) field, vp, seal);
-			
+
 		case X3DConstants::SFVec3f:
 			return jsSFVec3f::create (context, (SFVec3f*) field, vp, seal);
-			
+
 		case X3DConstants::SFVec4d:
 			return jsSFVec4d::create (context, (SFVec4d*) field, vp, seal);
-			
+
 		case X3DConstants::SFVec4f:
 			return jsSFVec4f::create (context, (SFVec4f*) field, vp, seal);
-			
+
 		case X3DConstants::MFBool:
 			return jsMFBool::create (context, (MFBool*) field, vp, seal);
-			
+
 		case X3DConstants::MFColor:
 			return jsMFColor::create (context, (MFColor*) field, vp, seal);
-			
+
 		case X3DConstants::MFColorRGBA:
 			return jsMFColorRGBA::create (context, (MFColorRGBA*) field, vp, seal);
-			
+
 		case X3DConstants::MFDouble:
 			return jsMFDouble::create (context, (MFDouble*) field, vp, seal);
-			
+
 		case X3DConstants::MFFloat:
 			return jsMFFloat::create (context, (MFFloat*) field, vp, seal);
-			
+
 		case X3DConstants::MFImage:
 			return jsMFImage::create (context, (MFImage*) field, vp, seal);
-			
+
 		case X3DConstants::MFInt32:
 			return jsMFInt32::create (context, (MFInt32*) field, vp, seal);
-			
+
 		case X3DConstants::MFMatrix3d:
 			return jsMFMatrix3d::create (context, (MFMatrix3d*) field, vp, seal);
-			
+
 		case X3DConstants::MFMatrix3f:
 			return jsMFMatrix3f::create (context, (MFMatrix3f*) field, vp, seal);
-			
+
 		case X3DConstants::MFMatrix4d:
 			return jsMFMatrix4d::create (context, (MFMatrix4d*) field, vp, seal);
-			
+
 		case X3DConstants::MFMatrix4f:
 			return jsMFMatrix4f::create (context, (MFMatrix4f*) field, vp, seal);
-			
+
 		case X3DConstants::MFNode:
 			return jsMFNode::create (context, dynamic_cast <X3DArray*> (field), vp, seal);
-			
+
 		case X3DConstants::MFRotation:
 			return jsMFRotation::create (context, (MFRotation*) field, vp, seal);
-			
+
 		case X3DConstants::MFString:
 			return jsMFString::create (context, (MFString*) field, vp, seal);
-			
+
 		case X3DConstants::MFTime:
 			return jsMFTime::create (context, (MFTime*) field, vp, seal);
-			
+
 		case X3DConstants::MFVec2d:
 			return jsMFVec2d::create (context, (MFVec2d*) field, vp, seal);
-			
+
 		case X3DConstants::MFVec2f:
 			return jsMFVec2f::create (context, (MFVec2f*) field, vp, seal);
-			
+
 		case X3DConstants::MFVec3d:
 			return jsMFVec3d::create (context, (MFVec3d*) field, vp, seal);
-			
+
 		case X3DConstants::MFVec3f:
 			return jsMFVec3f::create (context, (MFVec3f*) field, vp, seal);
-			
+
 		case X3DConstants::MFVec4d:
 			return jsMFVec4d::create (context, (MFVec4d*) field, vp, seal);
-			
+
 		case X3DConstants::MFVec4f:
 			return jsMFVec4f::create (context, (MFVec4f*) field, vp, seal);
 	}

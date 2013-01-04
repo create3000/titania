@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 OrientationInterpolator::OrientationInterpolator (X3DExecutionContext* const executionContext) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
 	           keyValue (),                                                    // MFRotation [in,out] keyValue       [ ]       [-1,1] or (-∞,∞)
 	      value_changed ()                                                     // SFRotation [out]    value_changed

@@ -55,10 +55,10 @@ namespace X3D {
 
 GeoOrigin::GeoOrigin (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	     X3DNode (),                                                    
-	   geoCoords (),                                                    // SFVec3d  [in,out] geoCoords  0 0 0              (-∞,∞)
-	   geoSystem ({ "GD", "WE" }),                                      // MFString [ ]      geoSystem  ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
-	   rotateYUp ()                                                     // SFBool   [ ]      rotateYUp  FALSE
+	    X3DNode (),                                                    
+	  geoCoords (),                                                    // SFVec3d  [in,out] geoCoords  0 0 0              (-∞,∞)
+	  geoSystem ({ "GD", "WE" }),                                      // MFString [ ]      geoSystem  ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
+	  rotateYUp ()                                                     // SFBool   [ ]      rotateYUp  FALSE
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoOrigin");

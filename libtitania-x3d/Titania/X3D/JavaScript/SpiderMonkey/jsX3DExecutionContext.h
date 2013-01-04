@@ -59,11 +59,11 @@ class jsX3DExecutionContext
 {
 public:
 
-	static 
+	static
 	JSBool
 	create (JSContext*, X3DExecutionContext*, jsval*, const bool = false);
 
-	static 
+	static
 	JSClass*
 	getClass () { return &static_class; }
 
@@ -91,9 +91,9 @@ private:
 
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, JSBool, jsval*);
-	
-	static JSBool createNode  (JSContext*, uintN, jsval*);
-	static JSBool createProto (JSContext*, uintN, jsval*);
+
+	static JSBool createNode  (JSContext *, uintN, jsval*);
+	static JSBool createProto (JSContext *, uintN, jsval*);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

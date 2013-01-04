@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 LOD::LOD (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DGroupingNode (),                                                    
 	   level_changed (),                                                    // SFInt32 [out] level_changed
 	          center (),                                                    // SFVec3f [ ]   center            0 0 0        (-∞,∞)

@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY_PROPERTIES_X3DGEOMETRY_PROPERTY_NODE_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY_PROPERTIES_X3DGEOMETRY_PROPERTY_NODE_H__
+#ifndef __TITANIA_X3D_BROWSER_PROPERTIES_X3DGEOMETRY_PROPERTY_NODE_H__
+#define __TITANIA_X3D_BROWSER_PROPERTIES_X3DGEOMETRY_PROPERTY_NODE_H__
 
 #include "../../Components/Core/X3DPropertyNode.h"
 
@@ -69,7 +69,7 @@ public:
 
 	const std::vector <Vector3f> &
 	getVertices () const { return vertices; }
-	
+
 	virtual
 	GLenum
 	getVertexMode () const = 0;

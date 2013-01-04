@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,13 +48,13 @@
 
 #include "jsSFNode.h"
 
-#include "../../../Browser/Browser.h"
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Scripting/X3DScriptNode.h"
 #include "../JavaScriptContext.h"
+#include "../String.h"
 #include "../jsFieldDefinitionArray.h"
 #include "../jsFields.h"
 #include "../jsfield.h"
-#include "../String.h"
 
 namespace titania {
 namespace X3D {
@@ -71,15 +71,15 @@ JSFunctionSpec jsSFNode::functions [ ] = {
 	{ "getName",             getName <X3DChildObject>,     0, 0 },
 	{ "getTypeName",         getTypeName <X3DChildObject>, 0, 0 },
 	{ "getType",             getType <X3DFieldDefinition>, 0, 0 },
-	
+
 	{ "getNodeName",         getNodeName,         0, 0 },
 	{ "getNodeType",         getNodeType,         0, 0 },
 	{ "getFieldDefinitions", getFieldDefinitions, 0, 0 },
-	
+
 	{ "toVRMLString",        toVRMLString,        0, 0 },
 	{ "toXMLString",         toXMLString,         0, 0 },
 	{ "toString",            toString,            0, 0 },
-	
+
 	{ 0 }
 
 };
@@ -119,7 +119,7 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 	else if (argc == 1)
 	{
 		JSString* vrmlSyntax;
-		
+
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &vrmlSyntax))
@@ -131,7 +131,7 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			scene = script -> createX3DFromString (JS_GetString (context, vrmlSyntax)); // XXX X3DBaseNode::createX3DFromString
+			scene = script -> createX3DFromString (JS_GetString (context, vrmlSyntax));                           // XXX X3DBaseNode::createX3DFromString
 		}
 		catch (const X3DError & error)
 		{
@@ -139,11 +139,11 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 		}
 
 		// XXX save X3DExecutionContext for generated nodes.
-		
+
 		return create (context,
 		               scene and scene -> getRootNodes () .size ()
 		               ? new SFNode <X3DBaseNode> (scene -> getRootNodes () [0])
-		               : new SFNode <X3DBaseNode> (),
+							: new SFNode <X3DBaseNode> (),
 		               &JS_RVAL (context, vp));
 	}
 
@@ -155,9 +155,9 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 JSBool
 jsSFNode::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
-	X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*) JS_GetPrivate (context, obj);
+	X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, obj);
 
-	if (not sfnode or not *sfnode or not sfnode -> getValue () -> getFieldDefinitions () .size ())
+	if (not sfnode or not * sfnode or not sfnode -> getValue () -> getFieldDefinitions () .size ())
 	{
 		*statep = JSVAL_NULL;
 		return JS_TRUE;
@@ -197,7 +197,7 @@ jsSFNode::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsv
 				break;
 			}
 
-		//else done -- cleanup.
+			//else done -- cleanup.
 		}
 		case JSENUMERATE_DESTROY:
 		{
@@ -215,7 +215,7 @@ jsSFNode::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	if (JSID_IS_STRING (id))
 	{
-		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*) JS_GetPrivate (context, obj);
+		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, obj);
 
 		if (sfnode -> getValue ())
 		{
@@ -242,7 +242,7 @@ jsSFNode::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict
 {
 	if (JSID_IS_STRING (id))
 	{
-		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*) JS_GetPrivate (context, obj);
+		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, obj);
 
 		if (sfnode -> getValue ())
 		{
@@ -271,7 +271,7 @@ jsSFNode::getNodeName (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		return JS_NewStringValue (context, *sfnode ? sfnode -> getValue () -> getName () : "", &JS_RVAL (context, vp));
 	}
@@ -286,7 +286,7 @@ jsSFNode::getNodeType (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* result;
 
@@ -324,7 +324,7 @@ jsSFNode::getFieldDefinitions (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		if (*sfnode)
 			return jsFieldDefinitionArray::create (context, &sfnode -> getValue () -> getFieldDefinitions (), &JS_RVAL (context, vp));
@@ -342,7 +342,7 @@ jsSFNode::toVRMLString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		return JS_NewStringValue (context, sfnode -> toString (), &JS_RVAL (context, vp));
 	}
@@ -372,11 +372,11 @@ jsSFNode::toString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		if (*sfnode)
 			return JS_NewStringValue (context, sfnode -> getValue () -> getTypeName () + " { }", &JS_RVAL (context, vp));
-			
+
 		else
 			return JS_NewStringValue (context, "NULL", &JS_RVAL (context, vp));
 	}

@@ -60,7 +60,7 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 {
 	addNodeType (X3DConstants::X3DNBodyCollidableNode);
 }
-	
+
 void
 X3DNBodyCollidableNode::initialize ()
 {

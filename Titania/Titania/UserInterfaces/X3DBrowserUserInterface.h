@@ -55,8 +55,6 @@
 #include "../UserInterfaces/X3DBrowserWidgetUI.h"
 #include "../ViewpointEditor/ViewpointEditor.h"
 
-#include <Titania/X3D/Widgets/Surface.h>
-
 namespace titania {
 namespace puck {
 
@@ -68,14 +66,6 @@ public:
 	using X3DBrowserWidgetUI::saveSession;
 
 	/// @name Widgets
-
-	virtual
-	X3D::Surface &
-	getSurface () { return surface; }
-
-	virtual
-	const X3D::Surface &
-	getSurface () const { return surface; }
 
 	ViewpointEditor &
 	getViewpointEditor () { return viewpointEditor; }
@@ -126,10 +116,9 @@ protected:
 
 private:
 
-	X3D::Surface     surface;
-	ViewpointEditor  viewpointEditor;
-	HistoryEditor    historyEditor;
-	OutlineEditor    outlineEditor;
+	ViewpointEditor viewpointEditor;
+	HistoryEditor   historyEditor;
+	OutlineEditor   outlineEditor;
 
 };
 

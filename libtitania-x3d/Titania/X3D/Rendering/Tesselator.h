@@ -50,9 +50,9 @@
 #define __TITANIA_X3D_RENDERING_TESSELATOR_H__
 
 #include <Titania/Math/Numbers/Vector3.h>
-#include <tuple>
 #include <deque>
 #include <iostream>
+#include <tuple>
 
 extern "C"
 {
@@ -151,7 +151,7 @@ public:
 	tesselate ();
 
 	const Polygon &
-	polygon () const{ return tesselatedPolygon; }
+	polygon () const { return tesselatedPolygon; }
 
 	~tesselator ();
 

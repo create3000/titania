@@ -55,7 +55,7 @@ namespace titania {
 namespace X3D {
 
 Text::Text (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	         string (),                                                    // MFString [in,out] string      [ ]
 	         length (),                                                    // MFFloat  [in,out] length      [ ]          [0,∞)
@@ -66,8 +66,8 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	      fontStyle (),                                                    // SFNode   [in,out] fontStyle   NULL         [X3FontStyleNode]
 	           font (),                                                    
 	     lineHeight (),                                                    
-	   charSpacings (),
-	 minorAlignment (),                                                 
+	   charSpacings (),                                                    
+	 minorAlignment (),                                                    
 	    translation (),                                                    
 	          scale ()                                                     
 {
@@ -295,7 +295,7 @@ Text::display ()
 
 	glTranslatef (minorAlignment .x (), minorAlignment .y (), 0);
 	glScalef (scale, scale, scale);
-	
+
 	// Render lines.
 	size_t i = 0;
 

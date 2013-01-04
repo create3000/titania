@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,11 +59,11 @@ class GeoPositionInterpolator :
 {
 public:
 
-	MFVec3d               keyValue;
-	SFVec3d               geovalue_changed;
-	SFVec3d               value_changed;
+	MFVec3d              keyValue;
+	SFVec3d              geovalue_changed;
+	SFVec3d              value_changed;
 	SFNode <X3DBaseNode> geoOrigin;
-	MFString              geoSystem;
+	MFString             geoSystem;
 
 	GeoPositionInterpolator (X3DExecutionContext* const);
 

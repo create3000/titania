@@ -111,7 +111,7 @@ jsX3DArrayField <jsSFBool, MFBool>::set1Value (JSContext* context, JSObject* obj
 		return JS_FALSE;
 
 	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
-	
+
 	field -> set1Value (index, SFBool (number));
 
 	*vp = JSVAL_VOID;

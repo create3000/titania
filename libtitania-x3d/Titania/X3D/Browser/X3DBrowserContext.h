@@ -126,7 +126,7 @@ public:
 	getRenderers () { return renderers; }
 
 	///  @name Layer handling
-	
+
 	LayerStack &
 	getLayers () { return layers; }
 
@@ -206,16 +206,6 @@ public:
 	void
 	pick ();
 
-	void
-	prepare ();
-
-	virtual
-	void
-	display ();
-
-	void
-	finish ();
-
 	///  @name Dispose
 
 	void
@@ -236,6 +226,16 @@ protected:
 	virtual
 	void
 	initialize ();
+
+	void
+	prepare ();
+
+	virtual
+	void
+	display ();
+
+	void
+	finish ();
 
 
 private:

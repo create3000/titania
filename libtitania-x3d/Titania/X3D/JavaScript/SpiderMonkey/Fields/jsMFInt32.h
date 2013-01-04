@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_MFINT32_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_FIELDS_JS_MFINT32_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_MFINT32_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_MFINT32_H__
 
 #include "../../../Fields/MFInt32.h"
 #include "../jsX3DArrayField.h"
@@ -58,11 +58,11 @@ namespace X3D {
 
 template <>
 JSBool
-jsX3DArrayField <jsSFInt32, MFInt32>::construct (JSContext*, uintN, jsval*);
+jsX3DArrayField <jsSFInt32, MFInt32>::construct (JSContext *, uintN, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFInt32, MFInt32>::set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
+jsX3DArrayField <jsSFInt32, MFInt32>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
 extern template class jsX3DArrayField <jsSFInt32, MFInt32>;
 

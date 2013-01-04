@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 PositionChaser::PositionChaser (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DChaserNode (),                                                    
 	   set_destination (),                                                    // SFVec3f [in]     set_destination
 	         set_value (),                                                    // SFVec3f [in]     set_value

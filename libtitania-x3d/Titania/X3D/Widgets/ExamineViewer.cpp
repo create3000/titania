@@ -48,10 +48,10 @@
 
 #include "ExamineViewer.h"
 
+#include "../Browser/Browser.h"
 #include "../Components/Geospatial/GeoViewpoint.h"
 #include "../Components/Navigation/OrthoViewpoint.h"
 
-#include "Surface.h"
 #include <cmath>
 #include <glibmm/main.h>
 
@@ -62,35 +62,34 @@
 namespace titania {
 namespace X3D {
 
-ExamineViewer::ExamineViewer (Surface & surface, NavigationInfo* navigationInfo) :
-	                      X3DViewer (surface .getBrowser ()), 
-	                        surface (surface),                
-	                 navigationInfo (navigationInfo),         
-	                       distance (),                       
-	                    orientation (),                       
-	                       rotation (),                       
-	                     fromVector (),                       
-	                      fromPoint (),                       
-	                         button (0),                      
-	button_press_event_connection   (),                       
-	motion_notify_event_connection  (),                       
-	button_release_event_connection (),                       
-	scroll_event_connection         (),                       
-	                        spin_id ()                        
+ExamineViewer::ExamineViewer (Browser* const browser, NavigationInfo* navigationInfo) :
+	                      X3DViewer (browser),        
+	                 navigationInfo (navigationInfo), 
+	                       distance (),               
+	                    orientation (),               
+	                       rotation (),               
+	                     fromVector (),               
+	                      fromPoint (),               
+	                         button (0),              
+	button_press_event_connection   (),               
+	motion_notify_event_connection  (),               
+	button_release_event_connection (),               
+	scroll_event_connection         (),               
+	                        spin_id ()                
 { }
 
 void
 ExamineViewer::initialize ()
 {
-	button_press_event_connection   = surface .signal_button_press_event   () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_press_event));
-	motion_notify_event_connection  = surface .signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event));
-	button_release_event_connection = surface .signal_button_release_event () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_release_event));
-	scroll_event_connection         = surface .signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
+	button_press_event_connection   = getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_press_event));
+	motion_notify_event_connection  = getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event));
+	button_release_event_connection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_release_event));
+	scroll_event_connection         = getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
 
 	navigationInfo -> transitionComplete .addInterest (this, &ExamineViewer::set_viewpoint);
 
 	getBrowser () -> getExecutionContext () -> getActiveLayer () -> viewpointStack .addInterest (this, &ExamineViewer::set_viewpoint);
-	
+
 	set_viewpoint ();
 }
 
@@ -272,20 +271,20 @@ ExamineViewer::getPoint (const double x, const double y)
 
 	// Far plane point
 	gluUnProject (x, y, 1, modelview .data (), projection, viewport, &px, &py, &pz);
-	
+
 	if (dynamic_cast <OrthoViewpoint*> (viewpoint))
 		return Vector3f (-px, py, -abs (distance));
-		
+
 	Vector3f direction = normalize (Vector3f (-px, py, pz));
-		
+
 	return direction * abs (distance) / dot (direction, Vector3f (0, 0, -1));
 }
 
 Vector3f
 ExamineViewer::trackballProjectToSphere (const double x, const double y) const
 {
-	return Vector3f (x / surface .get_width () - 0.5f,
-	                 -y / surface .get_height () + 0.5f,
+	return Vector3f (x / getBrowser () -> get_width () - 0.5f,
+	                 -y / getBrowser () -> get_height () + 0.5f,
 	                 tb_project_to_sphere (0.5, 0, 0));
 }
 

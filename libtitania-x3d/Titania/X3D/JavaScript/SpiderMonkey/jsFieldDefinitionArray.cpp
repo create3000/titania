@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -142,7 +142,7 @@ jsFieldDefinitionArray::enumerate (JSContext* context, JSObject* obj, JSIterateO
 				break;
 			}
 
-		//else done -- cleanup.
+			//else done -- cleanup.
 		}
 		case JSENUMERATE_DESTROY:
 		{
@@ -156,7 +156,7 @@ jsFieldDefinitionArray::enumerate (JSContext* context, JSObject* obj, JSIterateO
 }
 
 JSBool
-jsFieldDefinitionArray::get1Value (JSContext *context, JSObject *obj, jsid id, jsval *vp)
+jsFieldDefinitionArray::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
@@ -172,7 +172,7 @@ jsFieldDefinitionArray::get1Value (JSContext *context, JSObject *obj, jsid id, j
 }
 
 JSBool
-jsFieldDefinitionArray::set1Value (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
+jsFieldDefinitionArray::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
@@ -181,7 +181,7 @@ jsFieldDefinitionArray::set1Value (JSContext *context, JSObject *obj, jsid id, J
 }
 
 JSBool
-jsFieldDefinitionArray::length (JSContext *context, JSObject *obj, jsid id, jsval *vp)
+jsFieldDefinitionArray::length (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	FieldDefinitionArray* array = (FieldDefinitionArray*) JS_GetPrivate (context, obj);
 
@@ -189,7 +189,7 @@ jsFieldDefinitionArray::length (JSContext *context, JSObject *obj, jsid id, jsva
 }
 
 JSBool
-jsFieldDefinitionArray::length (JSContext *context, JSObject *obj, jsid id, JSBool strict, jsval *vp)
+jsFieldDefinitionArray::length (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	return JS_TRUE;
 }

@@ -49,7 +49,7 @@
 #include "MotionBlur.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Browser.h"
+#include "../X3DBrowser.h"
 
 namespace titania {
 namespace X3D {

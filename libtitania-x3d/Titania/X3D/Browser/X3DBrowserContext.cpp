@@ -73,10 +73,10 @@ X3DBrowserContext::X3DBrowserContext () :
 	             lights (),                                        
 	           textures (),                                        
 	            sensors (),                                        
-	                  x (0),  
-	                  y (0),  
-	     sensitiveNodes (),  
-	               hits (),  
+	                  x (0),                                       
+	                  y (0),                                       
+	     sensitiveNodes (),                                        
+	               hits (),                                        
 	        changedTime (clock -> cycle ()),                       
 	      priorPosition (),                                        
 	       currentSpeed (0),                                       
@@ -115,7 +115,7 @@ X3DBrowserContext::initialize ()
 		lights .push (GL_LIGHT0 + i);
 
 	// Initialize OpenGL context
-	
+
 	if (glXGetCurrentContext ())
 	{
 		glClearColor (0, 0, 0, 0);
@@ -276,18 +276,18 @@ X3DBrowserContext::pick (const double _x, const double _y)
 {
 	x = _x;
 	y = _y;
-	
+
 	// Clear hits.
 
 	for (const auto & hit : hits)
 		delete hit;
 
 	hits .clear ();
-	
+
 	// Pick.
 
 	pick ();
-	
+
 	// Selection end.
 
 	sensitiveNodes .clear ();
@@ -392,7 +392,7 @@ X3DBrowserContext::dispose ()
 	finished    .dispose ();
 	shutdown    .dispose ();
 	changed     .dispose ();
-	
+
 	X3DChildObject::dispose ();
 	//X3DExecutionContext::dispose ();
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,9 +48,9 @@
 
 #include "jsGlobals.h"
 
+#include "../../InputOutput/Generator.h"
 #include "Fields/jsSFNode.h"
 #include "String.h"
-#include "../../InputOutput/Generator.h"
 
 #include <Titania/LOG.h>
 
@@ -79,7 +79,7 @@ jsGlobals::init (JSContext* context, JSObject* global)
 {
 	JS_DefineProperties (context, global, properties);
 	JS_DefineFunctions (context, global, functions);
-	
+
 	jsSFNode::create (context, new SFNode <X3DBaseNode> (), &X3D_JS_NULL);
 }
 
@@ -111,7 +111,7 @@ jsGlobals::include (JSContext* context, uintN argc, jsval* vp)
 
 	for (uintN i = 0; i < argc; ++ i)
 		std::clog << JS_GetString (context, argv [i]);
-	
+
 	std::clog << std::endl;
 
 	JS_SET_RVAL (context, vp, JSVAL_VOID);
@@ -125,7 +125,7 @@ jsGlobals::print (JSContext* context, uintN argc, jsval* vp)
 
 	for (uintN i = 0; i < argc; ++ i)
 		std::clog << JS_GetString (context, argv [i]);
-	
+
 	std::clog << std::endl;
 
 	JS_SET_RVAL (context, vp, JSVAL_VOID);

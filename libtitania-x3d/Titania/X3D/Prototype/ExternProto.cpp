@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,11 +58,11 @@ namespace titania {
 namespace X3D {
 
 ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	    X3DProto (),                                                    
 	X3DUrlObject (),                                                    
 	       scene (),                                                    
-	       proto ()                                                                                       
+	       proto ()                                                     
 {
 	setTypeName ("ExternProto");
 
@@ -101,7 +101,7 @@ ExternProto::createInstance (bool setup)
 
 	if (setup)
 		instance -> setup ();
-		
+
 	return instance;
 }
 
@@ -120,9 +120,9 @@ ExternProto::requestImmediateLoad ()
 	catch (const Error <INVALID_URL> & error)
 	{
 		scene .setValue (NULL);
-		
+
 		setLoadState (FAILED_STATE);
-		
+
 		throw Error <URL_UNAVAILABLE> ("Couldn't load any URL specified for EXTERNPROTO '" + getName () + "'\n" + error .what ());
 	}
 

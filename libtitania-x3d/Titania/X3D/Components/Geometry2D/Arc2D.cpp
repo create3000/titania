@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Arc2D::Arc2D (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
 	       endAngle (),                                                    // SFFloat [ ]endAngle    π/2        [-2π,2π]
 	         radius (1),                                                   // SFFloat [ ]radius      1          (0,∞)

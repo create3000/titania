@@ -170,7 +170,6 @@ public:
 		return *this;
 	}
 
-
 private:
 
 	struct Value

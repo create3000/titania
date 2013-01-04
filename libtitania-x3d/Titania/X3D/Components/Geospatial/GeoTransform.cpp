@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 GeoTransform::GeoTransform (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DGroupingNode (),                                                    
 	       geoCenter (),                                                    // SFVec3d    [in,out] geoCenter         0 0 0              (-∞,∞)
 	        rotation (),                                                    // SFRotation [in,out] rotation          0 0 1 0            [-1,1] or (-∞,∞)

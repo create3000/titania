@@ -61,7 +61,7 @@ public:
 
 	///  @name Constructors
 
-	X3DViewer (const SFNode <X3DBrowser> &);
+	X3DViewer (Browser* const);
 
 };
 

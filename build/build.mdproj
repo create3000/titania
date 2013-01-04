@@ -19,33 +19,6 @@
     <None Include="..\Makefile.am">
       <Link>Makefile.am</Link>
     </None>
-    <None Include="..\debian\changelog">
-      <Link>Titania\debian\changelog</Link>
-    </None>
-    <None Include="..\debian\compat">
-      <Link>Titania\debian\compat</Link>
-    </None>
-    <None Include="..\debian\control">
-      <Link>Titania\debian\control</Link>
-    </None>
-    <None Include="..\debian\copyright">
-      <Link>Titania\debian\copyright</Link>
-    </None>
-    <None Include="..\debian\rules">
-      <Link>Titania\debian\rules</Link>
-    </None>
-    <None Include="..\debian\titania.debhelper.log">
-      <Link>Titania\debian\titania.debhelper.log</Link>
-    </None>
-    <None Include="..\debian\titania.postinst.debhelper">
-      <Link>Titania\debian\titania.postinst.debhelper</Link>
-    </None>
-    <None Include="..\debian\titania.postrm.debhelper">
-      <Link>Titania\debian\titania.postrm.debhelper</Link>
-    </None>
-    <None Include="..\debian\source\format">
-      <Link>Titania\debian\source\format</Link>
-    </None>
     <None Include="..\autogen.sh">
       <Link>autogen.sh</Link>
     </None>
@@ -70,8 +43,5 @@
     <None Include="..\README">
       <Link>README</Link>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Titania\" />
   </ItemGroup>
 </Project>

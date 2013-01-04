@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 ScreenFontStyle::ScreenFontStyle (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DFontStyleNode (),                                                    
 	       pointSize (12)                                                   // SFFloat  [ ]pointSize    12.0           (0,∞)
 {

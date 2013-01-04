@@ -73,7 +73,7 @@ public:
 
 	BindableNodeStack (const pointer_type & node) :
 		stack ({ node })
-	{ 
+	{
 		stack .top () -> isBound .addInterest (this, &BindableNodeStack::set_bind);
 	}
 

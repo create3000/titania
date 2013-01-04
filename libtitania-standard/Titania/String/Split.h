@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BITS_STRING_SPLIT_H__
-#define __TITANIA_BITS_STRING_SPLIT_H__
+#ifndef __TITANIA_STRING_SPLIT_H__
+#define __TITANIA_STRING_SPLIT_H__
 
 #include <deque>
 #include <set>

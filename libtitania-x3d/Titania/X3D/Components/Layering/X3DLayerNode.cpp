@@ -48,7 +48,7 @@
 
 #include "X3DLayerNode.h"
 
-#include "../../Browser/Browser.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../EnvironmentalEffects/Background.h"
 
 namespace titania {
@@ -204,7 +204,7 @@ X3DLayerNode::dispose ()
 	__LOG__ << (void*) this << std::endl;
 
 	defaultViewport .dispose ();
-	
+
 	// Dont't dispose stack nodes, they were automatically disposed.
 
 	X3DNode::dispose ();

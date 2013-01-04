@@ -29,7 +29,6 @@
 #include "X3DBrowser.h"
 
 #include "../Components/Navigation/X3DViewpointNode.h"
-#include "../InputOutput/uncompress.h"
 
 namespace titania {
 namespace X3D {
@@ -359,7 +358,7 @@ X3DBrowser::dispose ()
 	supportedNodes      .dispose ();
 	supportedComponents .dispose ();
 	supportedProfiles   .dispose ();
-	
+
 	scene .dispose ();
 
 	X3DBrowserContext::dispose ();

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,19 +51,42 @@
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
+#include "../Widgets/ExamineViewer.h"
 
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <limits>
 
+#include <csignal>
+#include <cstdlib>
+
+#include <gtkmm/main.h>
+
 namespace titania {
 namespace X3D {
 
+void
+signal_handler (int sig)
+{
+	// print out all the frames to stderr
+	std::clog << "Error: signal " << sig << ":" << std::endl;
+	backtrace_fn (100);
+	exit (1);
+}
+
 Browser::Browser () :
 	    X3DBaseNode (this, this), 
-	     X3DBrowser ()           
-{ }
+	     X3DBrowser (),           
+	        viewer  (),           
+	pointingDevice  (this),       
+	    activeLayer ()            
+{
+	// install our handler
+	std::signal (SIGSEGV, signal_handler);
+
+	add_events (Gdk::BUTTON_PRESS_MASK | Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK | Gdk::SCROLL_MASK);
+}
 
 X3DBaseNode*
 Browser::create (X3DExecutionContext* const) const
@@ -72,15 +95,103 @@ Browser::create (X3DExecutionContext* const) const
 }
 
 void
+Browser::construct ()
+{
+	setup ();
+}
+
+void
 Browser::initialize ()
 {
 	std::clog << "Initializing Browser ..." << std::endl;
+
+	get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
+
+	initialized .addInterest (this, &Browser::set_initialized);
+	shutdown    .addInterest (this, &Browser::set_shutdown);
+	changed     .addInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
 
 	X3DBrowser::initialize ();
 
 	std::clog
 		<< "\tDone initializing Browser." << std::endl
 		<< std::endl;
+}
+
+void
+Browser::set_initialized ()
+{
+	getExecutionContext () -> getLayerSet () -> activeLayer .addInterest (this, &Browser::set_activeLayer);
+
+	set_activeLayer ();
+}
+
+void
+Browser::set_shutdown ()
+{
+	getExecutionContext () -> getLayerSet () -> activeLayer .removeInterest (this, &Browser::set_activeLayer);
+}
+
+void
+Browser::set_activeLayer ()
+{
+	if (activeLayer)
+		activeLayer -> navigationInfoStack .removeInterest (this, &Browser::set_navigationInfo);
+
+	activeLayer = getExecutionContext () -> getActiveLayer ();
+	activeLayer -> navigationInfoStack .addInterest (this, &Browser::set_navigationInfo);
+
+	set_navigationInfo ();
+}
+
+void
+Browser::set_navigationInfo ()
+{
+	viewer .reset (new ExamineViewer (this, getActiveNavigationInfo ()));
+	viewer -> setup ();
+}
+
+void
+Browser::reshape ()
+{
+	reshaped .processInterests ();
+}
+
+void
+Browser::update (const Cairo::RefPtr <Cairo::Context> & cairo)
+{
+	try
+	{
+		prepare ();
+		display ();
+		swapBuffers ();
+		finish ();
+	}
+	catch (const std::exception & exception)
+	{
+		std::clog
+			<< getCurrentTime () << " Execution Error:" << std::endl
+			<< "  " << exception .what () << std::endl;
+	}
+
+	cairo -> set_source_rgb (0.1, 0.1, 0.1);
+
+	cairo -> select_font_face ("monospace",
+	                           Cairo::FONT_SLANT_NORMAL,
+	                           Cairo::FONT_WEIGHT_BOLD);
+
+	cairo -> move_to (20, 30);
+	cairo -> show_text ("Titania");
+}
+
+void
+Browser::dispose ()
+{
+	viewer -> dispose ();
+	pointingDevice .dispose ();
+	activeLayer    .dispose ();
+
+	X3DBrowser::dispose ();
 }
 
 } // X3D

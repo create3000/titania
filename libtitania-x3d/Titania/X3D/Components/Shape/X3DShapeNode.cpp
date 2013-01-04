@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,15 +46,14 @@
  *
  ******************************************************************************/
 
-#include "../../Browser/Browser.h"
+#include "X3DShapeNode.h"
+
 #include "../../Browser/Hit.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/ViewVolume.h"
 #include "../../Types/Geometry.h"
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Shape/X3DAppearanceNode.h"
-#include "X3DShapeNode.h"
-
-#include "../Core/X3DPrototypeInstance.h"
 
 namespace titania {
 namespace X3D {
@@ -72,7 +71,7 @@ X3DShapeNode::X3DShapeNode () :
 {
 	addNodeType (X3DConstants::X3DShapeNode);
 }
-	
+
 void
 X3DShapeNode::initialize ()
 {
@@ -87,7 +86,7 @@ X3DShapeNode::getBBox ()
 	{
 		if (geometry)
 			return geometry -> getBBox ();
-		
+
 		else
 			return Box3f ();
 	}
@@ -144,7 +143,7 @@ X3DShapeNode::display ()
 
 		float radius = abs (centerMatrix .multDirMatrix (bbox .size ())) * 0.5f;
 
-		if (radius > centerMatrix [3] [2] || true)
+		if (radius > centerMatrix [3] [2] or true)
 			getBrowser () -> getRenderers () .top () -> addShape (this, centerMatrix [3] [2] - radius);
 	}
 }

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,19 +59,19 @@ namespace X3D {
 Route::Route (X3DExecutionContext* const executionContext,
               const SFNode <X3DBaseNode> & _sourceNode,      X3DFieldDefinition* const sourceField,
               const SFNode <X3DBaseNode> & _destinationNode, X3DFieldDefinition* const destinationField) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	        X3DRoute (),                                                    
-	      sourceNode (_sourceNode),                                          // SFNode   [ ] sourceNode         NULL
-	 destinationNode (_destinationNode),                                     // SFNode   [ ] destinationNode    NULL
+	      sourceNode (_sourceNode),                                         // SFNode   [ ] sourceNode         NULL
+	 destinationNode (_destinationNode),                                    // SFNode   [ ] destinationNode    NULL
 	     sourceField (sourceField),                                         
 	destinationField (destinationField),                                    
 	       connected (false)                                                
 {
 	setTypeName ("Route");
-	
+
 	sourceNode      .setName (_sourceNode      .getName ());
 	destinationNode .setName (_destinationNode .getName ());
-	
+
 	setChildren (sourceNode,
 	             destinationNode);
 
@@ -187,7 +187,7 @@ Route::toStream (std::ostream & ostream) const
 	ostream << '.';
 
 	ostream << sourceField -> getName ();
-	
+
 	if (sourceField -> getAccessType () == inputOutput)
 		ostream << "_changed";
 
@@ -202,7 +202,7 @@ Route::toStream (std::ostream & ostream) const
 		ostream << Generator::GetName (destinationNode);
 
 	ostream << '.';
-	
+
 	if (destinationField -> getAccessType () == inputOutput)
 		ostream << "set_";
 
@@ -213,7 +213,7 @@ void
 Route::dispose ()
 {
 	disconnect ();
-	
+
 	sourceNode      .dispose ();
 	destinationNode .dispose ();
 

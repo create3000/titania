@@ -46,7 +46,7 @@
  *
  ******************************************************************************/
 
-#include "../../Browser/Browser.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layering/Layer.h"
 #include "LayerSet.h"
@@ -56,11 +56,11 @@ namespace X3D {
 
 LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	     X3DNode (),                                                    
-	 activeLayer (),                                                    // SFInt32 [in,out] activeLayer  0          (-∞,∞)
-	       order ({ 0 }),                                               // MFInt32 [in,out] order        [0]        (0,∞)
-	      layers (),                                                    // MFNode  [in,out] layers       [ ]        [X3DLayerNode]
-	    children ({ new Layer (executionContext) })                     
+	    X3DNode (),                                                    
+	activeLayer (),                                                    // SFInt32 [in,out] activeLayer  0          (-∞,∞)
+	      order ({ 0 }),                                               // MFInt32 [in,out] order        [0]        (0,∞)
+	     layers (),                                                    // MFNode  [in,out] layers       [ ]        [X3DLayerNode]
+	   children ({ new Layer (executionContext) })                     
 {
 	setComponent ("Layering");
 	setTypeName ("LayerSet");
@@ -139,9 +139,9 @@ LayerSet::pick ()
 			X3DLayerNode* currentLayer = *children .at (index);
 
 			getBrowser () -> getLayers () .push (currentLayer);
-				
+
 			currentLayer  -> pick ();
-				
+
 			getBrowser () -> getLayers () .pop ();
 		}
 	}
@@ -155,7 +155,7 @@ LayerSet::display ()
 		if (index >= 0  and index < (int32_t) children .size ())
 		{
 			X3DLayerNode* currentLayer = *children [index];
-			
+
 			getBrowser () -> getLayers () .push (currentLayer);
 
 			currentLayer  -> display ();
@@ -169,7 +169,7 @@ void
 LayerSet::dispose ()
 {
 	children .dispose ();
-	
+
 	X3DNode::dispose ();
 }
 

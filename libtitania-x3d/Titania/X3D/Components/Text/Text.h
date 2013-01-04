@@ -105,7 +105,7 @@ private:
 	virtual
 	Box3f
 	createBBox ();
-	
+
 	Box2f
 	getLineBBox (const std::string &);
 

@@ -64,7 +64,6 @@
 namespace titania {
 namespace X3D {
 
-typedef bool         Bool;
 typedef double       Double;
 typedef float        Float;
 typedef std::int32_t Int32;

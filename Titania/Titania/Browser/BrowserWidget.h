@@ -87,13 +87,13 @@ private:
 	virtual
 	void
 	messageDialogResponse (int);
-	
+
 	///  @name Toolbar handling
 
 	virtual
 	void
 	on_home ();
-	
+
 	virtual
 	void
 	on_reload ();

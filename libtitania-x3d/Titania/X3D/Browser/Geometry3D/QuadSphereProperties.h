@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_PROPERTIES_QUAD_SPHERE_PROPERTIES_H__
-#define __TITANIA_X3D_BROWSER_PROPERTIES_QUAD_SPHERE_PROPERTIES_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_QUAD_SPHERE_PROPERTIES_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_QUAD_SPHERE_PROPERTIES_H__
 
 #include "../Geometry3D/X3DSpherePropertyNode.h"
 
@@ -67,7 +67,7 @@ public:
 	SFInt32 vDimension;
 
 	QuadSphereProperties (X3DExecutionContext* const);
-	
+
 	virtual
 	GLenum
 	getVertexMode () const { return GL_QUADS; }
@@ -92,13 +92,13 @@ private:
 
 	std::deque <Vector2f>
 	createTexCoord ();
-	
+
 	std::deque <int32_t>
 	createIndices ();
 
 	std::deque <Vector3f>
 	createPoints ();
-	
+
 	virtual
 	void
 	build ();

@@ -48,7 +48,7 @@
 
 #include "X3DPrototypeInstance.h"
 
-#include "../../Browser/Browser.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/Scene.h"
 #include "../../Prototype/ExternProto.h"
 #include "../../Prototype/Proto.h"
@@ -62,7 +62,7 @@ namespace X3D {
 X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, Proto* const prototype) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DExecutionContext (),                                                    
-	              proto (prototype)                                                
+	              proto (prototype)                                            
 {
 	addNodeType (X3DConstants::X3DPrototypeInstance);
 

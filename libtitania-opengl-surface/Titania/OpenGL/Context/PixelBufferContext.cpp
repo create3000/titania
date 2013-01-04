@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,8 +58,8 @@ namespace opengl {
 PixelBufferContext::PixelBufferContext (const Glib::RefPtr <Gdk::Display> & display,
                                         const Context & sharingContext,
                                         bool direct) :
-	Context (display), 
-	 xPBuffer (0)        
+	 Context (display), 
+	xPBuffer (0)        
 {
 	setValue    (create (sharingContext .getValue (), direct));
 	setDrawable (xPBuffer);
@@ -67,8 +67,8 @@ PixelBufferContext::PixelBufferContext (const Glib::RefPtr <Gdk::Display> & disp
 
 PixelBufferContext::PixelBufferContext (const Glib::RefPtr <Gdk::Display> & display,
                                         bool direct) :
-	Context (display), 
-	 xPBuffer (0)        
+	 Context (display), 
+	xPBuffer (0)        
 {
 	setValue    (create (NULL, direct));
 	setDrawable (xPBuffer);

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -115,7 +115,7 @@ X3DBrowserWindow::initialize ()
 	if (remainingOptions .size ())
 	{
 		resizeSession (1);
-		getConfig () .getSession (0) .getDirectory ("BrowserWidget") .setItem ("worldURL", 
+		getConfig () .getSession (0) .getDirectory ("BrowserWidget") .setItem ("worldURL",
 		                                                                       basic::uri ("file://", remainingOptions [0] .raw ()));
 	}
 
@@ -180,10 +180,10 @@ X3DBrowserWindow::restoreSession ()
 		insertPage (position);
 
 	setCurrentPage (getConfig () .integer ("currentPage"));
-	
+
 	// Restore Menu Configuration
 	// from Config
-	
+
 	//	// ToolBar
 	//	if (getConfig () .boolean ("toolBar"))
 	//		getToolBarMenuItem () .activate ();
@@ -227,10 +227,10 @@ X3DBrowserWindow::restoreSession ()
 		getLowQualityMenuItem () .activate ();
 
 	getBrowser () -> getBrowserOptions () -> primitiveQuality = getConfig () .string ("primitiveQuality");
-	
+
 	// RenderingProperties
 	getRenderingPropertiesMenuItem () .set_active (getConfig () .boolean ("renderingProperties"));
-	
+
 	// EnableInlineViewpoints
 	if (getConfig () .boolean ("enableInlineViewpoints"))
 		getEnableInlineViewpointsMenuItem () .activate ();
@@ -249,11 +249,11 @@ X3DBrowserWindow::saveSession ()
 	getConfig () .setItem ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
 
 	getConfig () .setItem ("enableInlineViewpoints", getEnableInlineViewpointsMenuItem () .get_active ());
-	
+
 	// Notebook
 
 	// Remove sessions.
-		
+
 	resizeSession (browserWidgets .size ());
 
 	// Save sessions.
@@ -310,21 +310,9 @@ X3DBrowserWindow::getBrowserWidget () const
 	return browserWidgets [getCurrentPage ()];
 }
 
-X3D::Surface &
-X3DBrowserWindow::getSurface ()
-{
-	return getBrowserWidget () -> getSurface ();
-}
-
-const X3D::Surface &
-X3DBrowserWindow::getSurface () const
-{
-	return getBrowserWidget () -> getSurface ();
-}
-
 // X3DBaseNode
 
-const X3D::SFNode <X3D::X3DBrowser> &
+const X3D::SFNode <X3D::Browser> &
 X3DBrowserWindow::getBrowser () const
 {
 	return getBrowserWidget () -> getBrowser ();
@@ -377,10 +365,10 @@ throw (X3D::Error <X3D::INVALID_URL>,
 		browserWidgets [position] -> loadURL (url);
 		setCurrentPage (position);
 	}
-	
+
 	else
 		getBrowserWidget () -> loadURL (url);
-	
+
 }
 
 void
@@ -431,7 +419,7 @@ X3DBrowserWindow::insertPage (size_t position)
 	// Set tab label.
 
 	getNotebook () .set_tab_label (*box, *Gtk::manage (getTabLabel (*box)));
-	
+
 	// Apply Menu Configuration
 
 	// Naviagtion

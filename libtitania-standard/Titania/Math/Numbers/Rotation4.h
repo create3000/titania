@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -273,7 +273,7 @@ rotation4 <Type>::rotation4 (const vector3 <T> & fromVector, const vector3 <T> &
 	else
 		*this = rotation4 (0, 0, 1, M_PI);
 }
-				
+
 template <class Type>
 template <class T>
 inline

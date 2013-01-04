@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 PositionInterpolator2D::PositionInterpolator2D (X3DExecutionContext* const executionContext) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
 	           keyValue (),                                                    // MFVec2f [in,out] keyValue       [ ]       (-∞,∞)
 	      value_changed ()                                                     // SFVec2f [out]    value_changed

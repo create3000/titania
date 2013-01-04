@@ -50,19 +50,20 @@
 #define __TITANIA_X3D_WIDGETS_POINTING_DEVICE_H__
 
 #include "../Widgets/X3DWidget.h"
+#include "../Fields.h"
 #include <gdkmm.h>
 
 namespace titania {
 namespace X3D {
 
-class Surface;
+class Browser;
 
 class PointingDevice :
 	public X3DWidget
 {
 public:
 
-	PointingDevice (Surface &);
+	PointingDevice (Browser* const);
 
 
 private:
@@ -79,7 +80,6 @@ private:
 	bool
 	pick (const double, const double);
 
-	Surface &            surface;
 	size_t               button;
 	bool                 isOver;
 	MFNode <X3DBaseNode> hitNodes;

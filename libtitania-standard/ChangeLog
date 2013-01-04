@@ -1,3 +1,33 @@
+2013-01-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Math.h:
+	* Path.h:
+	* System.cpp:
+	* Join.h:
+	* Split.h:
+	* Pass.h:
+	* Value.h:
+	* Adapter.h:
+	* strfsize.h:
+	* UniqueList.h:
+	* Remove.h:
+	* Box2.h:
+	* StopWatch.cpp:
+	* Box3.h:
+	* Color4.h:
+	* MemberValue.h:
+	* Color3.h:
+	* Vector4.h:
+	* Matrix4.h:
+	* Matrix3.h:
+	* Vector2.h:
+	* Vector3.h:
+	* IndexedMultiMap.h:
+	* Rotation4.h:
+	* Quaternion.h:
+	* Generator.h:
+	* EigenDecomposition.h: 
+
 2013-01-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* IndexedMultiMap.h: 

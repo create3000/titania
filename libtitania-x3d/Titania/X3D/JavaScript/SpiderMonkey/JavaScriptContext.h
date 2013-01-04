@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JAVA_SCRIPT_CONTEXT_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JAVA_SCRIPT_CONTEXT_H__
 
 #include "../../Basic/X3DFieldDefinition.h"
 #include "../../Browser/X3DBrowser.h"
@@ -67,7 +67,7 @@ class JavaScriptContext
 public:
 
 	JavaScriptContext (X3DScriptNode*, const std::string &);
-	
+
 	virtual
 	X3DScriptNode*
 	getNode () const;
@@ -105,10 +105,10 @@ private:
 
 	static
 	void
-	defineProperty (JSContext*, JSObject*, const std::string &, uintN);
-	
-	static JSBool getProperty (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool setProperty (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	defineProperty (JSContext *, JSObject *, const std::string &, uintN);
+
+	static JSBool getProperty (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool setProperty (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
 	void
 	callFunction (const std::string &);

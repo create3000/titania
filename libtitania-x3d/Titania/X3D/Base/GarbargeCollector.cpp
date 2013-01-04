@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ void
 GarbageCollector::addObject (X3DChildObject* object)
 {
 	__LOG__ << object -> getTypeName () << " " << (void*) object << std::endl;
-		
+
 	if (not disposedObjects .insert (object) .second)
 		__LOG__ << object -> getTypeName () << " " << (void*) object << std::endl;
 }

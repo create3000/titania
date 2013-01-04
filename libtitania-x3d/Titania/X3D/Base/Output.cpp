@@ -32,7 +32,7 @@ namespace titania {
 namespace X3D {
 
 Output::Output () :
-	X3DOutput ()
+	X3DOutput () 
 { }
 
 Output::~Output ()

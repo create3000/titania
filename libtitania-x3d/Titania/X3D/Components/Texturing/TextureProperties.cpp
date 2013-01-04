@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,7 +48,7 @@
 
 #include "TextureProperties.h"
 
-#include "../../Browser/Browser.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -57,7 +57,7 @@ namespace X3D {
 // http://new.web3d.org/files/specifications/19775-1/V3.2/Part01/components/texturing.html#TextureProperties
 
 TextureProperties::TextureProperties (X3DExecutionContext* const executionContext) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	    X3DPropertyNode (),                                                    
 	        borderColor (),                                                    // SFColorRGBA [ ] borderColor         0 0 0 0    [0,1]
 	        borderWidth (),                                                    // SFInt32     [ ] borderWidth         0          [0,1]
@@ -114,9 +114,9 @@ TextureProperties::getBoundaryMode (const std::string & boundaryMode) const
 
 	if (boundaryMode == "MIRRORED_REPEAT")
 		return GL_MIRRORED_REPEAT;
-		
+
 	//if (boundaryMode == "REPEAT")
-		return GL_REPEAT;
+	return GL_REPEAT;
 }
 
 GLenum
@@ -175,7 +175,7 @@ TextureProperties::getMagnificationFilter () const
 {
 	if (magnificationFilter == "AVG_PIXEL")
 		return GL_LINEAR;
-		
+
 	if (magnificationFilter == "NEAREST_PIXEL")
 		return GL_NEAREST;
 
@@ -197,19 +197,19 @@ TextureProperties::getTextureCompression () const
 
 	if (textureCompression == "MEDIUM")
 		return CompressionMode::MEDIUM;
-	
+
 	if (textureCompression == "HIGH")
 		return CompressionMode::HIGH;
-	
+
 	if (textureCompression == "DEFAULT")
 		return getBrowser () -> getBrowserOptions () -> textureProperties -> getTextureCompression ();
-	
+
 	if (textureCompression == "FASTEST")
 		return CompressionMode::FASTEST;
 
 	//if (textureCompression == "NICEST")
 	return CompressionMode::NICEST;
-	
+
 }
 
 GLenum
@@ -273,7 +273,7 @@ TextureProperties::getInternalFormat (int32_t components) const
 					return GL_RGBA;
 			}
 		}
-	}	
+	}
 
 	return GL_RGBA;
 }

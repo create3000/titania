@@ -49,8 +49,8 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_ARRAY_FIELDS_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_ARRAY_FIELDS_H__
 
-#include "../jsX3DArrayField.h"
 #include "../../../Fields/ArrayFields.h"
+#include "../jsX3DArrayField.h"
 
 #include "jsSFColor.h"
 #include "jsSFColorRGBA.h"
@@ -82,20 +82,20 @@ extern template class jsX3DArrayField <jsSFVec3f, MFVec3f>;
 extern template class jsX3DArrayField <jsSFVec4d, MFVec4d>;
 extern template class jsX3DArrayField <jsSFVec4f, MFVec4f>;
 
-typedef jsX3DArrayField <jsSFColor, MFColor> jsMFColor;
+typedef jsX3DArrayField <jsSFColor, MFColor>         jsMFColor;
 typedef jsX3DArrayField <jsSFColorRGBA, MFColorRGBA> jsMFColorRGBA;
-typedef jsX3DArrayField <jsSFImage, MFImage>     jsMFImage;
-typedef jsX3DArrayField <jsSFMatrix3d, MFMatrix3d>  jsMFMatrix3d;
-typedef jsX3DArrayField <jsSFMatrix3f, MFMatrix3f>  jsMFMatrix3f;
-typedef jsX3DArrayField <jsSFMatrix4d, MFMatrix4d>  jsMFMatrix4d;
-typedef jsX3DArrayField <jsSFMatrix4f, MFMatrix4f>  jsMFMatrix4f;
-typedef jsX3DArrayField <jsSFRotation, MFRotation>  jsMFRotation;
-typedef jsX3DArrayField <jsSFVec2d, MFVec2d>     jsMFVec2d;
-typedef jsX3DArrayField <jsSFVec2f, MFVec2f>     jsMFVec2f;
-typedef jsX3DArrayField <jsSFVec3d, MFVec3d>     jsMFVec3d;
-typedef jsX3DArrayField <jsSFVec3f, MFVec3f>     jsMFVec3f;
-typedef jsX3DArrayField <jsSFVec4d, MFVec4d>     jsMFVec4d;
-typedef jsX3DArrayField <jsSFVec4f, MFVec4f>     jsMFVec4f;
+typedef jsX3DArrayField <jsSFImage, MFImage>         jsMFImage;
+typedef jsX3DArrayField <jsSFMatrix3d, MFMatrix3d>   jsMFMatrix3d;
+typedef jsX3DArrayField <jsSFMatrix3f, MFMatrix3f>   jsMFMatrix3f;
+typedef jsX3DArrayField <jsSFMatrix4d, MFMatrix4d>   jsMFMatrix4d;
+typedef jsX3DArrayField <jsSFMatrix4f, MFMatrix4f>   jsMFMatrix4f;
+typedef jsX3DArrayField <jsSFRotation, MFRotation>   jsMFRotation;
+typedef jsX3DArrayField <jsSFVec2d, MFVec2d>         jsMFVec2d;
+typedef jsX3DArrayField <jsSFVec2f, MFVec2f>         jsMFVec2f;
+typedef jsX3DArrayField <jsSFVec3d, MFVec3d>         jsMFVec3d;
+typedef jsX3DArrayField <jsSFVec3f, MFVec3f>         jsMFVec3f;
+typedef jsX3DArrayField <jsSFVec4d, MFVec4d>         jsMFVec4d;
+typedef jsX3DArrayField <jsSFVec4f, MFVec4f>         jsMFVec4f;
 
 } // X3D
 } // titania

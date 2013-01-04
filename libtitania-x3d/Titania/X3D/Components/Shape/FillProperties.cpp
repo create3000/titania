@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 FillProperties::FillProperties (X3DExecutionContext* const executionContext) :
-	          X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DAppearanceChildNode (),                                                    
 	                filled (true),                                                // SFBool  [in,out] filled      TRUE
 	            hatchColor (1, 1, 1),                                             // SFColor [in,out] hatchColor  1 1 1        [0,1]

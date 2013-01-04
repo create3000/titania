@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,12 +59,12 @@ class NurbsPositionInterpolator :
 {
 public:
 
-	SFFloat               set_fraction;
+	SFFloat              set_fraction;
 	SFNode <X3DBaseNode> controlPoint;
-	MFDouble              knot;
-	SFInt32               order;
-	MFDouble              weight;
-	SFVec3f               value_changed;
+	MFDouble             knot;
+	SFInt32              order;
+	MFDouble             weight;
+	SFVec3f              value_changed;
 
 	NurbsPositionInterpolator (X3DExecutionContext* const);
 

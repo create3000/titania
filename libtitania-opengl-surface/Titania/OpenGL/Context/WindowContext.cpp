@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,8 +60,8 @@ WindowContext::WindowContext (const Glib::RefPtr <Gdk::Window> & window,
                               const Context & sharingContext,
                               bool direct) :
 	Context (display),                           
-	   window (window),                            
-	  xWindow (GDK_WINDOW_XID (window -> gobj ())) 
+	 window (window),                            
+	xWindow (GDK_WINDOW_XID (window -> gobj ())) 
 {
 	setValue    (create (sharingContext .getValue (), direct));
 	setDrawable (xWindow);
@@ -71,7 +71,7 @@ WindowContext::WindowContext (const Glib::RefPtr <Gdk::Window> & window,
                               const Glib::RefPtr <Gdk::Display> & display,
                               bool direct) :
 	Context (display),                           
-	  xWindow (GDK_WINDOW_XID (window -> gobj ())) 
+	xWindow (GDK_WINDOW_XID (window -> gobj ())) 
 {
 	setValue    (create (NULL, direct));
 	setDrawable (xWindow);

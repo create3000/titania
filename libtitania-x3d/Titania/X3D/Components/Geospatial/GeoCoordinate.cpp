@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 GeoCoordinate::GeoCoordinate (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DCoordinateNode (),                                                    
 	            point (),                                                    // MFVec3d  [in,out] point      [ ]                (-∞,∞)
 	        geoOrigin (),                                                    // SFNode   [ ]      geoOrigin  NULL               [GeoOrigin]
