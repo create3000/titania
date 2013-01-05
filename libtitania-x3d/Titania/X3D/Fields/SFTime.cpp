@@ -52,7 +52,7 @@ namespace titania {
 namespace X3D {
 
 template <>
-const basic::id SFTime::typeName ("SFTime");
+const std::string SFTime::typeName ("SFTime");
 
 template <>
 const X3DConstants::FieldType SFTime::type = X3DConstants::SFTime;
@@ -75,7 +75,7 @@ SFTime::clone () const
 	return new SFTime (*this);
 }
 
-const basic::id &
+const std::string &
 SFTime::getTypeName () const
 {
 	return typeName;

@@ -323,24 +323,7 @@ X3DBrowserWindow::setDescription (const std::string & value)
 throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
        X3D::Error <X3D::DISPOSED>)
 {
-	Gtk::Widget* child = getNotebook () .get_children () [getCurrentPage ()];
-
-	Gtk::HBox*  tab_label = getTabLabel (*child);
-	Gtk::Label* label     = new Gtk::Label (value);
-	Gtk::Image* icon      = new Gtk::Image (Gtk::StockID (getExecutionContext () -> getWorldURL () .str ()),
-	                                        Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
-
-	//	Gtk::IconTheme::get_default () -> load_icon (getExecutionContext () -> getWorldURL () .str (),
-	//	                                             12,
-	//	                                             ICON_LOOKUP_FORCE_SIZE);
-
-	tab_label -> pack_start (*Gtk::manage (icon), false, true, 0);
-	tab_label -> pack_start (*Gtk::manage (label), true, true, 0);
-	tab_label -> set_spacing (4);
-	tab_label -> show_all ();
-
-	getNotebook () .set_tab_label (*child,
-	                               *Gtk::manage (tab_label));
+	setTabLabel (getCurrentPage ());
 
 	if (value .empty ())
 		getWindow () .set_title ("Titania");
@@ -362,8 +345,8 @@ throw (X3D::Error <X3D::INVALID_URL>,
 		// Insert new page
 		size_t position = getNumPages ();
 		insertPage (position);
-		browserWidgets [position] -> loadURL (url);
 		setCurrentPage (position);
+		browserWidgets [position] -> loadURL (url);
 	}
 
 	else
@@ -418,7 +401,7 @@ X3DBrowserWindow::insertPage (size_t position)
 
 	// Set tab label.
 
-	getNotebook () .set_tab_label (*box, *Gtk::manage (getTabLabel (*box)));
+	setTabLabel (position);
 
 	// Apply Menu Configuration
 
@@ -445,34 +428,43 @@ X3DBrowserWindow::removePage (Gtk::Widget & child)
 {
 	size_t position = getNotebook () .page_num (child);
 
-	__LOG__ << browserWidgets .size () << std::endl;
-
 	browserWidgets [position] -> dispose ();
 	getNotebook () .remove_page (child);
 	browserWidgets .erase (browserWidgets .begin () + position);
-
-	__LOG__ << browserWidgets .size () << std::endl;
 }
 
 Gtk::HBox*
-X3DBrowserWindow::getTabLabel (Gtk::Widget & child)
+X3DBrowserWindow::setTabLabel (size_t position)
 {
-	Gtk::HBox* tab_label = new Gtk::HBox ();
+	Gtk::Widget* child = getNotebook () .get_children () [position];
 
+	Gtk::HBox* tab_label = new Gtk::HBox ();
+	
+	auto worldURL = browserWidgets [position] -> getBrowser () -> getExecutionContext () -> getWorldURL ();
+
+	Gtk::Label* label = new Gtk::Label (worldURL .str ());
+	Gtk::Image* icon  = new Gtk::Image (Gtk::StockID (worldURL .str ()),
+	                                    Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
+
+	// Close button.
 	Gtk::Image*  closeImage = new Gtk::Image (Gtk::StockID ("gtk-close"), Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
 	Gtk::Button* close      = new Gtk::Button ();
+	close -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserWindow::on_close_tab), sigc::ref (*child)));
+	close -> set_image (*Gtk::manage (closeImage));
 
-	close -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserWindow::on_close_tab), sigc::ref (child)));
-
-	close     -> set_image (*Gtk::manage (closeImage));
-	tab_label -> pack_end (*Gtk::manage (close), true, false, 0);
+	// Add Widgets to box.
 	tab_label -> get_style_context () -> add_class ("TabLabel");
-	tab_label -> show_all ();
+	tab_label -> pack_start (*Gtk::manage (icon), false, true, 0);
+	tab_label -> pack_start (*Gtk::manage (label), true, true, 0);
+	tab_label -> pack_end  (*Gtk::manage (close), true, false, 0);
+	tab_label -> set_spacing (4);
 
-	getNotebook () .set_tab_label (child, *Gtk::manage (tab_label));
+	getNotebook () .set_tab_label (*child, *Gtk::manage (tab_label));
+	tab_label -> show_all ();
 
 	return tab_label;
 }
+
 
 void
 X3DBrowserWindow::setTransparent (bool value)

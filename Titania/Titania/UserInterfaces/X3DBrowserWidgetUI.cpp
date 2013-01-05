@@ -93,32 +93,39 @@ X3DBrowserWidgetUI::create (const std::string & filename)
 	m_builder -> get_widget ("StatusBar", m_statusBar);
 
 	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
-	m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::messageDialogResponse));
+	connections .emplace_back (m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::messageDialogResponse)));
 
 	// Connect object Gtk::VBox with id 'Widget'.
-	m_widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_unmap));
-	m_widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_map));
+	connections .emplace_back (m_widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_unmap)));
+	connections .emplace_back (m_widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_map)));
 
 	// Connect object Gtk::ToolButton with id 'ReloadButton'.
-	m_reloadButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_reload));
-	m_homeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_home));
+	connections .emplace_back (m_reloadButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_reload)));
+	connections .emplace_back (m_homeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_home)));
 
 	// Connect object Gtk::Entry with id 'LocationEntry'.
-	m_locationEntry -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_locationEntry_activate));
-	m_locationEntry -> signal_icon_release () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_locationEntryIcon_activate));
+	connections .emplace_back (m_locationEntry -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_locationEntry_activate)));
+	connections .emplace_back (m_locationEntry -> signal_icon_release () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_locationEntryIcon_activate)));
 
 	// Connect object Gtk::RadioToolButton with id 'ArrowButton'.
-	m_arrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_arrow_button_toggled));
-	m_handButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_hand_button_toggled));
+	connections .emplace_back (m_arrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_arrow_button_toggled)));
+	connections .emplace_back (m_handButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_hand_button_toggled)));
 
 	// Connect object Gtk::ToolButton with id 'LookAtAllButton'.
-	m_lookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_look_at_all_clicked));
+	connections .emplace_back (m_lookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_look_at_all_clicked)));
 
 	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
-	m_lookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_look_at_toggled));
+	connections .emplace_back (m_lookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_look_at_toggled)));
 
 	// Call construct handler of base class.
 	construct ();
+}
+
+void
+X3DBrowserWidgetUI::dispose ()
+{
+	for (auto & connection : connections)
+		connection .disconnect ();
 }
 
 } // puck

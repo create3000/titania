@@ -130,7 +130,6 @@ X3DRenderer::draw ()
 			light -> enable ();
 	}
 
-	glClear (GL_DEPTH_BUFFER_BIT);
 	glPushMatrix ();
 
 	// render opaque objects first

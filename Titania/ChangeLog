@@ -1,3 +1,29 @@
+2013-01-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* X3DBrowserWindow.h:
+	* titania.desktop:
+	* test.wrl:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserWindow.cpp:
+	* X3DConsoleUI.h:
+	* X3DConsoleUI.cpp:
+	* X3DHistoryEditorUI.h:
+	* X3DOutlineEditorUI.h:
+	* X3DBrowserWidgetUI.h:
+	* X3DBrowserWindowUI.h:
+	* X3DViewpointEditorUI.h:
+	* X3DOutlineEditorUI.cpp:
+	* X3DHistoryEditorUI.cpp:
+	* X3DBrowserWindowUI.cpp:
+	* X3DBrowserWidgetUI.cpp:
+	* X3DMotionBlurEditorUI.h:
+	* X3DViewpointEditorUI.cpp:
+	* X3DBrowserUserInterface.h:
+	* X3DMotionBlurEditorUI.cpp: 
+
 2013-01-04  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* main.cpp:

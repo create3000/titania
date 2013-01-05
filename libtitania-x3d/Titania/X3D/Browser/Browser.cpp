@@ -77,6 +77,7 @@ signal_handler (int sig)
 
 Browser::Browser () :
 	    X3DBaseNode (this, this), 
+	opengl::Surface (),           
 	     X3DBrowser (),           
 	        viewer  (),           
 	pointingDevice  (this),       
@@ -85,7 +86,13 @@ Browser::Browser () :
 	// install our handler
 	std::signal (SIGSEGV, signal_handler);
 
+	addField (outputOnly, "activeLayer", activeLayer);
+
 	add_events (Gdk::BUTTON_PRESS_MASK | Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK | Gdk::SCROLL_MASK);
+
+	initialized .addInterest (this, &Browser::set_initialized);
+	shutdown    .addInterest (this, &Browser::set_shutdown);
+	changed     .addInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
 }
 
 X3DBaseNode*
@@ -104,12 +111,6 @@ void
 Browser::initialize ()
 {
 	std::clog << "Initializing Browser ..." << std::endl;
-
-	get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
-
-	initialized .addInterest (this, &Browser::set_initialized);
-	shutdown    .addInterest (this, &Browser::set_shutdown);
-	changed     .addInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
 
 	X3DBrowser::initialize ();
 
@@ -130,14 +131,14 @@ void
 Browser::set_shutdown ()
 {
 	getExecutionContext () -> getLayerSet () -> activeLayer .removeInterest (this, &Browser::set_activeLayer);
+
+	if (activeLayer)
+		activeLayer -> navigationInfoStack .removeInterest (this, &Browser::set_navigationInfo);
 }
 
 void
 Browser::set_activeLayer ()
 {
-	if (activeLayer)
-		activeLayer -> navigationInfoStack .removeInterest (this, &Browser::set_navigationInfo);
-
 	activeLayer = getExecutionContext () -> getActiveLayer ();
 	activeLayer -> navigationInfoStack .addInterest (this, &Browser::set_navigationInfo);
 
@@ -187,10 +188,13 @@ Browser::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 void
 Browser::dispose ()
 {
-	viewer -> dispose ();
+	if (viewer)
+		viewer -> dispose ();
+
 	pointingDevice .dispose ();
 	activeLayer    .dispose ();
 
+	opengl::Surface::dispose ();
 	X3DBrowser::dispose ();
 }
 

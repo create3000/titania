@@ -92,12 +92,12 @@ X3DPrototypeInstance::setup ()
 	X3DExecutionContext::setup ();
 }
 
-const basic::id &
+const std::string &
 X3DPrototypeInstance::getTypeName () const
 throw (Error <DISPOSED>)
 {
 	if (proto)
-		return proto .getNodeName ();
+		return proto .getNodeName () [0];
 
 	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getTypeName: node is already disposed.");
 }

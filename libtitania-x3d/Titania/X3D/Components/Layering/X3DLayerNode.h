@@ -62,6 +62,8 @@
 namespace titania {
 namespace X3D {
 
+typedef std::stack <LocalFog*> LocalFogStack;
+
 class X3DLayerNode :
 	virtual public X3DNode, public X3DRenderer
 {
@@ -91,13 +93,7 @@ public:
 
 	///  @name Fog handling
 
-	void
-	pushLocalFog (LocalFog* fog) { localFogs .push (fog); }
-
-	void
-	popLocalFog () { localFogs .pop (); }
-
-	const std::stack <LocalFog*> &
+	LocalFogStack &
 	getLocalFogs () { return localFogs; }
 
 	///  @name Light handling
@@ -142,11 +138,6 @@ public:
 	void
 	dispose ();
 
-	BindableNodeStack <NavigationInfo>    navigationInfoStack;
-	BindableNodeStack <X3DBackgroundNode> backgroundStack;
-	BindableNodeStack <Fog>               fogStack;
-	BindableNodeStack <X3DViewpointNode>  viewpointStack;
-
 
 protected:
 
@@ -171,13 +162,29 @@ private:
 	void
 	set_viewport ();
 
-	std::stack <LocalFog*> localFogs;
-	LightContainerArray    localLights;
-	LightContainerArray    cachedLocalLights;
-	LightContainerArray    globalLights;
+	SFNode <Viewport>          defaultViewport;
+	SFNode <NavigationInfo>    defaultNavigationInfo;
+	SFNode <X3DBackgroundNode> defaultBackground;
+	SFNode <Fog>               defaultFog;
+	SFNode <X3DViewpointNode>  defaultViewpoint;
+	
+	X3DViewportNode* currentViewport;
 
-	SFNode <Viewport> defaultViewport;
-	X3DViewportNode*  _viewport;
+
+public:
+
+	BindableNodeStack <NavigationInfo>    navigationInfoStack;
+	BindableNodeStack <X3DBackgroundNode> backgroundStack;
+	BindableNodeStack <Fog>               fogStack;
+	BindableNodeStack <X3DViewpointNode>  viewpointStack;
+
+
+private:
+
+	LocalFogStack       localFogs;
+	LightContainerArray localLights;
+	LightContainerArray cachedLocalLights;
+	LightContainerArray globalLights;
 
 };
 

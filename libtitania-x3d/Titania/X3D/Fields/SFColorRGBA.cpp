@@ -52,7 +52,7 @@ namespace titania {
 namespace X3D {
 
 template <>
-const basic::id X3DField <Color4f>::typeName ("SFColorRGBA");
+const std::string X3DField <Color4f>::typeName ("SFColorRGBA");
 
 template <>
 const X3DConstants::FieldType X3DField <Color4f>::type = X3DConstants::SFColorRGBA;

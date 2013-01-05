@@ -225,7 +225,7 @@ Scene::getLayerSet () const
 	return layerSet;
 }
 
-const SFNode <X3DLayerNode>
+const SFNode <X3DLayerNode> &
 Scene::getActiveLayer () const
 {
 	return layerSet -> getActiveLayer ();
@@ -282,6 +282,11 @@ void
 Scene::clear ()
 {
 	__LOG__ << getWorldURL () << std::endl;
+
+	navigationInfos .dispose ();
+	backgrounds     .dispose ();
+	viewpoints      .dispose ();
+	fogs            .dispose ();
 
 	layerSet .set (new LayerSet (this));
 	layerSet -> setup ();

@@ -33,18 +33,18 @@ sub new
 {
 	my ($class, $options) = @_;
 	my $self = {
-		namespaces       => exists $options -> {namespaces}   ? $options -> {namespaces}   : [ ],
-		base_class       => exists $options -> {base_class}   ? $options -> {base_class}   : "",
-		class_prefix     => exists $options -> {class_prefix} ? $options -> {class_prefix} : "",
-		class_suffix     => exists $options -> {class_suffix} ? $options -> {class_suffix} : "",
-		suffixes         => [ qw (.glade .ui .xml) ],
-		pure_virtual     =>  exists $options -> {pure_virtual} ? $options -> {pure_virtual} : true,
+		namespaces         => exists $options -> {namespaces}   ? $options -> {namespaces}   : [ ],
+		base_class         => exists $options -> {base_class}   ? $options -> {base_class}   : "",
+		class_prefix       => exists $options -> {class_prefix} ? $options -> {class_prefix} : "",
+		class_suffix       => exists $options -> {class_suffix} ? $options -> {class_suffix} : "",
+		suffixes           => [ qw (.glade .ui .xml) ],
+		pure_virtual       =>  exists $options -> {pure_virtual} ? $options -> {pure_virtual} : true,
 		h_signal_handler   => { },
 		cpp_signal_handler => { },
-		class            => "",
-		object           => "",
-		id               => "",
-		prototypes        => { grep { not /^\s*$/ } map { chomp; $_ } <DATA> },
+		class              => "",
+		object             => "",
+		id                 => "",
+		prototypes         => { grep { not /^\s*$/ } map { chomp; $_ } <DATA> },
 	};
 	bless $self, $class;
 	return $self;
@@ -218,16 +218,27 @@ sub cpp_signals
 	}
 	
 	$attributes {name} =~ s/-/_/;
+	
+	my $signal = "m_" . lcfirst ($self -> {id}) . " -> signal_$attributes{name} ()";
 
 	if (exists $attributes {after})
 	{
 		my $after = $attributes {after} eq "yes" ? "true" : "false";
-		say $file "m_" . lcfirst ($self -> {id}) . " -> signal_$attributes{name} () .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}), $after);";
+		say $file "connections .emplace_back ($signal .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}), $after));";
 	}
 	else
 	{
-		say $file "m_" . lcfirst ($self -> {id}) . " -> signal_$attributes{name} () .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}));";
+		say $file "connections .emplace_back ($signal .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler})));";
 	}
+}
+
+sub cpp_disconnect_signals
+{
+	my ($self) = @_;
+	my $file = $self -> {handle};
+	
+	say $file "for (auto & connection : connections)";
+	say $file "   connection .disconnect ();";
 }
 
 sub cpp_signal_handler
@@ -325,14 +336,14 @@ sub generate
 
 	# Constructor
 	say OUT "  template <class ... Arguments>";
-	print OUT "  $self->{class_name} (const std::string & filename, const Arguments & ... arguments)";
+	say OUT "  $self->{class_name} (const std::string & filename, const Arguments & ... arguments) :";
 	
 	# Call base class construtor if any.
 	if ($base_class_name) {
-		say OUT " :\n    $base_class_name (m_widgetName, arguments ...)";
-	} else {
-		say OUT "";
+		say OUT "   $base_class_name (m_widgetName, arguments ...),";
 	}
+	
+	say OUT "connections ()";
 
 	# Constructor end begin body
 	say OUT "{ create (filename); }";
@@ -354,6 +365,12 @@ sub generate
 	say OUT "";
 	$parser = new XML::Parser (Handlers => {Start => sub { $self -> h_signal_handler (@_) }});
 	$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
+	
+	# Dispose
+	say OUT "  virtual";
+	say OUT "  void";
+	say OUT "  dispose ();";
+	
 
 #	say OUT "protected:";
 #	say OUT "Glib::RefPtr <Gtk::Builder> &";
@@ -370,6 +387,7 @@ sub generate
 	say OUT "  static const std::string m_widgetName;";
 	say OUT "";
 
+	say OUT "  std::deque <sigc::connection> connections;";
 	say OUT "  Glib::RefPtr <Gtk::Builder> m_builder;";
 
 	$parser = new XML::Parser (Handlers => {Start => sub { $self -> h_objects (@_) }});
@@ -463,6 +481,13 @@ sub generate
 		$parser = new XML::Parser (Handlers => {Start => sub { $self -> cpp_signal_handler (@_) }});
 		$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
 	}
+	
+	# Dispose
+	say OUT "void";
+	say OUT "$self->{class_name}\::dispose ()";
+	say OUT "{";
+	$self -> cpp_disconnect_signals ();	
+	say OUT "}";
 
 	# Namespaces end
 	say OUT "";

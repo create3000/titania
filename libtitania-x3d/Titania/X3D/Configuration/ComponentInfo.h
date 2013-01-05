@@ -60,7 +60,7 @@ class ComponentInfo :
 {
 public:
 
-	ComponentInfo (X3DExecutionContext* const, const basic::id &, const size_t);
+	ComponentInfo (X3DExecutionContext* const, const std::string &, const size_t);
 
 	virtual
 	X3DBaseNode*

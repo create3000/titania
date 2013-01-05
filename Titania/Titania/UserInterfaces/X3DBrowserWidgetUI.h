@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_USER_INTERFACES_X3DBROWSER_WIDGET_UI_H__
-#define __TITANIA_USER_INTERFACES_X3DBROWSER_WIDGET_UI_H__
+#ifndef __TMP_GLAD2CPP_BROWSER_WIDGET_H__
+#define __TMP_GLAD2CPP_BROWSER_WIDGET_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
@@ -65,7 +65,8 @@ public:
 
 	template <class ... Arguments>
 	X3DBrowserWidgetUI (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (m_widgetName, arguments ...)
+		X3DUserInterface (m_widgetName, arguments ...),
+		connections ()
 	{ create (filename); }
 
 	const std::string &
@@ -202,6 +203,10 @@ public:
 	void
 	on_look_at_toggled () = 0;
 
+	virtual
+	void
+	dispose ();
+
 
 private:
 
@@ -210,6 +215,7 @@ private:
 
 	static const std::string m_widgetName;
 
+	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
 	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Gtk::MessageDialog*             m_messageDialog;

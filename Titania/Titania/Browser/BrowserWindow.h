@@ -225,6 +225,10 @@ private:
 	void
 	on_info ();
 
+	virtual
+	void
+	on_standard_size ();
+
 	///  @name Notebook handling
 
 	virtual

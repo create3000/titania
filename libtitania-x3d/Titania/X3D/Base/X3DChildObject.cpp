@@ -104,8 +104,10 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 		if (seen .insert (this) .second)
 		{
 			for (auto & parent : getParents ())
+			{
 				if (parent -> hasRoots (seen))
 					return true;
+			}
 
 			return false;
 

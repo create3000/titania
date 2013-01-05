@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_USER_INTERFACES_X3DMOTION_BLUR_EDITOR_UI_H__
-#define __TITANIA_USER_INTERFACES_X3DMOTION_BLUR_EDITOR_UI_H__
+#ifndef __TMP_GLAD2CPP_MOTION_BLUR_EDITOR_H__
+#define __TMP_GLAD2CPP_MOTION_BLUR_EDITOR_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
@@ -65,7 +65,8 @@ public:
 
 	template <class ... Arguments>
 	X3DMotionBlurEditorUI (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (m_widgetName, arguments ...)
+		X3DUserInterface (m_widgetName, arguments ...),
+		connections ()
 	{ create (filename); }
 
 	const std::string &
@@ -91,6 +92,10 @@ public:
 	void
 	on_enabled_toggled () = 0;
 
+	virtual
+	void
+	dispose ();
+
 
 private:
 
@@ -99,11 +104,12 @@ private:
 
 	static const std::string m_widgetName;
 
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Window*                m_window;
-	Gtk::Table*                 m_widget;
-	Gtk::HScale*                m_intensity;
-	Gtk::CheckButton*           m_enabled;
+	std::deque <sigc::connection> connections;
+	Glib::RefPtr <Gtk::Builder>   m_builder;
+	Gtk::Window*                  m_window;
+	Gtk::Table*                   m_widget;
+	Gtk::HScale*                  m_intensity;
+	Gtk::CheckButton*             m_enabled;
 
 };
 

@@ -1,3 +1,44 @@
+2013-01-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFNode.h:
+	* SFTime.h:
+	* X3DField.h:
+	* X3DObject.h:
+	* MFNode.cpp:
+	* SFVec2.cpp:
+	* SFTime.cpp:
+	* SFNode.cpp:
+	* Scene.h:
+	* SFVec3.cpp:
+	* Browser.h:
+	* SFVec4.cpp:
+	* MFInt32.cpp:
+	* SFColor.cpp:
+	* SFImage.cpp:
+	* X3DBaseNode.h:
+	* Scene.cpp:
+	* SFString.cpp:
+	* Browser.cpp:
+	* SFMatrix4.cpp:
+	* SFMatrix3.cpp:
+	* X3DScalar.cpp:
+	* X3DBaseNode.cpp:
+	* X3DWidget.cpp:
+	* SFRotation4.cpp:
+	* ArrayFields.cpp:
+	* SFColorRGBA.cpp:
+	* X3DChildObject.cpp:
+	* X3DRenderer.cpp:
+	* ProfileInfo.h:
+	* ProfileInfo.cpp:
+	* ComponentInfo.h:
+	* ComponentInfo.cpp:
+	* X3DLayerNode.h:
+	* X3DLayerNode.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DPrototypeInstance.cpp:
+	* LocalFog.cpp: 
+
 2013-01-04  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3D.h:

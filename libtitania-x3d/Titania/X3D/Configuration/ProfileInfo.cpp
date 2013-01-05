@@ -54,7 +54,7 @@
 namespace titania {
 namespace X3D {
 
-ProfileInfo::ProfileInfo (X3DExecutionContext* const executionContext, const basic::id & name, const ComponentInfoArray & components) :
+ProfileInfo::ProfileInfo (X3DExecutionContext* const executionContext, const std::string & name, const ComponentInfoArray & components) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	      title (name + " Profile"),                                   
 	providerUrl ("http://titania.create3000.de"),                      

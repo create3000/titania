@@ -54,7 +54,7 @@
 namespace titania {
 namespace X3D {
 
-ComponentInfo::ComponentInfo (X3DExecutionContext* const executionContext, const basic::id & name, const size_t level) :
+ComponentInfo::ComponentInfo (X3DExecutionContext* const executionContext, const std::string & name, const size_t level) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	      level (level),                                               
 	      title (name + " Component"),                                 

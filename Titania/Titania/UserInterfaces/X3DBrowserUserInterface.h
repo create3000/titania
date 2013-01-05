@@ -64,6 +64,7 @@ class X3DBrowserUserInterface :
 public:
 
 	using X3DBrowserWidgetUI::saveSession;
+	using X3DBrowserWidgetUI::dispose;
 
 	/// @name Widgets
 

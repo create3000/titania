@@ -360,6 +360,8 @@ void
 X3DBrowserWidget::dispose ()
 {
 	getBrowser () -> dispose ();
+	
+	X3DBrowserUserInterface::dispose ();
 }
 
 X3DBrowserWidget::~X3DBrowserWidget ()

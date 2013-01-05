@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 template <>
-const basic::id X3DField <String>::typeName ("SFString");
+const std::string X3DField <String>::typeName ("SFString");
 
 template <>
 const X3DConstants::FieldType X3DField <String>::type = X3DConstants::SFString;

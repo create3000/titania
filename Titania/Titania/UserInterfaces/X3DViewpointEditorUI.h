@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_USER_INTERFACES_X3DVIEWPOINT_EDITOR_UI_H__
-#define __TITANIA_USER_INTERFACES_X3DVIEWPOINT_EDITOR_UI_H__
+#ifndef __TMP_GLAD2CPP_VIEWPOINT_EDITOR_H__
+#define __TMP_GLAD2CPP_VIEWPOINT_EDITOR_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
@@ -65,7 +65,8 @@ public:
 
 	template <class ... Arguments>
 	X3DViewpointEditorUI (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (m_widgetName, arguments ...)
+		X3DUserInterface (m_widgetName, arguments ...),
+		connections ()
 	{ create (filename); }
 
 	const std::string &
@@ -100,6 +101,10 @@ public:
 	void
 	on_fieldOfView_changed () = 0;
 
+	virtual
+	void
+	dispose ();
+
 
 private:
 
@@ -108,6 +113,7 @@ private:
 
 	static const std::string m_widgetName;
 
+	std::deque <sigc::connection>      connections;
 	Glib::RefPtr <Gtk::Builder>        m_builder;
 	Glib::RefPtr <Gtk::ListStore>      m_listStore;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_descriptionColumn;

@@ -156,7 +156,7 @@ private:
 	insertPage (size_t);
 
 	Gtk::HBox*
-	getTabLabel (Gtk::Widget &);
+	setTabLabel (size_t position);
 
 	void
 	setTransparent (bool);

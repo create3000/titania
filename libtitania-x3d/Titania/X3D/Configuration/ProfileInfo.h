@@ -60,7 +60,7 @@ class ProfileInfo :
 {
 public:
 
-	ProfileInfo (X3DExecutionContext* const, const basic::id &, const ComponentInfoArray &);
+	ProfileInfo (X3DExecutionContext* const, const std::string &, const ComponentInfoArray &);
 
 	virtual
 	X3DBaseNode*

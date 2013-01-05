@@ -334,6 +334,12 @@ BrowserWindow::on_info ()
 	getBrowserWidget () -> loadURL ({ "about:info" });
 }
 
+void
+BrowserWindow::on_standard_size ()
+{
+	getWindow () .resize (960, 600);
+}
+
 // Notebook handling
 
 void

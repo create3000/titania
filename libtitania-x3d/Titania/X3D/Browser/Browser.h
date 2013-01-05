@@ -61,7 +61,7 @@ namespace titania {
 namespace X3D {
 
 class Browser :
-	public X3DBrowser, public opengl::Surface
+	public opengl::Surface, public X3DBrowser
 {
 public:
 

@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_USER_INTERFACES_X3DOUTLINE_EDITOR_UI_H__
-#define __TITANIA_USER_INTERFACES_X3DOUTLINE_EDITOR_UI_H__
+#ifndef __TMP_GLAD2CPP_OUTLINE_EDITOR_H__
+#define __TMP_GLAD2CPP_OUTLINE_EDITOR_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
@@ -65,7 +65,8 @@ public:
 
 	template <class ... Arguments>
 	X3DOutlineEditorUI (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (m_widgetName, arguments ...)
+		X3DUserInterface (m_widgetName, arguments ...),
+		connections ()
 	{ create (filename); }
 
 	const std::string &
@@ -83,6 +84,10 @@ public:
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const { return *m_scrolledWindow; }
 
+	virtual
+	void
+	dispose ();
+
 
 private:
 
@@ -91,11 +96,12 @@ private:
 
 	static const std::string m_widgetName;
 
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Window*                m_window;
-	Gtk::MenuBar*               m_menu;
-	Gtk::Box*                   m_widget;
-	Gtk::ScrolledWindow*        m_scrolledWindow;
+	std::deque <sigc::connection> connections;
+	Glib::RefPtr <Gtk::Builder>   m_builder;
+	Gtk::Window*                  m_window;
+	Gtk::MenuBar*                 m_menu;
+	Gtk::Box*                     m_widget;
+	Gtk::ScrolledWindow*          m_scrolledWindow;
 
 };
 

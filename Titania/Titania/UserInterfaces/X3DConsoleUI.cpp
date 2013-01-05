@@ -70,5 +70,12 @@ X3DConsoleUI::create (const std::string & filename)
 	construct ();
 }
 
+void
+X3DConsoleUI::dispose ()
+{
+	for (auto & connection : connections)
+		connection .disconnect ();
+}
+
 } // puck
 } // titania

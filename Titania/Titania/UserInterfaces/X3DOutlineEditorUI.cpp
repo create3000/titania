@@ -71,5 +71,12 @@ X3DOutlineEditorUI::create (const std::string & filename)
 	construct ();
 }
 
+void
+X3DOutlineEditorUI::dispose ()
+{
+	for (auto & connection : connections)
+		connection .disconnect ();
+}
+
 } // puck
 } // titania

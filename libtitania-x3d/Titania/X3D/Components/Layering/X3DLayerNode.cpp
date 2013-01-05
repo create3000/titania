@@ -55,31 +55,38 @@ namespace titania {
 namespace X3D {
 
 X3DLayerNode::X3DLayerNode () :
-	            X3DNode (),                                                   
-	        X3DRenderer (),                                                   
-	         isPickable (true),                                               // SFBool [in,out] isPickable      TRUE
-	           viewport (),                                                   // SFNode [in,out] viewport        NULL      [X3DViewportNode]
-	        addChildren (),                                                   // MFNode[in]      addChildren               [X3DChildNode]
-	     removeChildren (),                                                   // MFNode[in]      removeChildren            [X3DChildNode]
-	           children (),                                                   // MFNode[in,out]  children        [ ]       [X3DChildNode]
-	navigationInfoStack (new NavigationInfo (getExecutionContext (), false)), 
-	    backgroundStack (new Background     (getExecutionContext (), false)), 
-	           fogStack (new Fog            (getExecutionContext (), false)), 
-	     viewpointStack (new Viewpoint      (getExecutionContext (), false)), 
-	          localFogs (),                                                   
-	    defaultViewport (new Viewport (getExecutionContext ())),              
-	          _viewport (0)                                                   
+	              X3DNode (),                                                   
+	          X3DRenderer (),                                                   
+	           isPickable (true),                                               // SFBool [in,out] isPickable      TRUE
+	             viewport (),                                                   // SFNode [in,out] viewport        NULL      [X3DViewportNode]
+	          addChildren (),                                                   // MFNode[in]      addChildren               [X3DChildNode]
+	       removeChildren (),                                                   // MFNode[in]      removeChildren            [X3DChildNode]
+	             children (),                                                   // MFNode[in,out]  children        [ ]       [X3DChildNode]
+	      defaultViewport (new Viewport (getExecutionContext ())),              
+	defaultNavigationInfo (new NavigationInfo (getExecutionContext (), false)),                                                   
+	    defaultBackground (new Background     (getExecutionContext (), false)),                                                   
+	           defaultFog (new Fog            (getExecutionContext (), false)),                                                   
+	     defaultViewpoint (new Viewpoint      (getExecutionContext (), false)),                                                   
+	      currentViewport (*defaultViewport),                                                  
+	  navigationInfoStack (*defaultNavigationInfo), 
+	      backgroundStack (*defaultBackground), 
+	             fogStack (*defaultFog), 
+	       viewpointStack (*defaultViewpoint), 
+	            localFogs (),                                                   
+	          localLights (),                                                   
+	    cachedLocalLights (),                                                   
+	         globalLights ()                                                    
 {
 	addNodeType (X3DConstants::X3DLayerNode);
 
 	setChildren (defaultViewport,
-	             navigationInfoStack .bottom (),
-	             backgroundStack     .bottom (),
-	             fogStack            .bottom (),
-	             viewpointStack      .bottom ());
+	             defaultNavigationInfo,
+	             defaultBackground,
+	             defaultFog,
+	             defaultViewpoint);
 
-	//viewpointStack .bottom () -> setName ("Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ()));
-	//viewpointStack .bottom () -> description  = "Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ());
+	//defaultViewpoint -> setName ("Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ()));
+	//defaultViewpoint -> description = defaultViewpoint -> getName ();
 }
 
 void
@@ -87,11 +94,11 @@ X3DLayerNode::initialize ()
 {
 	X3DNode::initialize ();
 
-	defaultViewport -> setup ();
-	navigationInfoStack .bottom () -> setup ();
-	backgroundStack     .bottom () -> setup ();
-	fogStack            .bottom () -> setup ();
-	viewpointStack      .bottom () -> setup ();
+	defaultViewport       -> setup ();
+	defaultNavigationInfo -> setup ();
+	defaultBackground     -> setup ();
+	defaultFog            -> setup ();
+	defaultViewpoint      -> setup ();
 
 	viewport .addInterest (this, &X3DLayerNode::set_viewport);
 	set_viewport ();
@@ -161,41 +168,39 @@ X3DLayerNode::pick ()
 	if (not isPickable)
 		return;
 
-	_viewport -> enable ();
-
+	currentViewport -> enable ();
 	getViewpoint () -> reshape ();
 
 	intersect ();
 
-	_viewport -> disable ();
+	currentViewport -> disable ();
 }
 
 void
 X3DLayerNode::display ()
 {
-	_viewport -> enable ();
+	currentViewport -> enable ();
 
 	glClear (GL_DEPTH_BUFFER_BIT);
 
 	getBackground ()     -> draw ();
 	getNavigationInfo () -> enable ();
-
-	viewpointStack .bottom () -> display ();
+	defaultViewpoint     -> display ();
 
 	render ();
 
 	getNavigationInfo () -> disable ();
-	_viewport            -> disable ();
+	currentViewport      -> disable ();
 	clearLights ();
 }
 
 void
 X3DLayerNode::set_viewport ()
 {
-	_viewport = *viewport;
+	currentViewport = *viewport;
 
-	if (not _viewport)
-		_viewport = *defaultViewport;
+	if (not currentViewport)
+		currentViewport = *defaultViewport;
 }
 
 void
@@ -203,7 +208,11 @@ X3DLayerNode::dispose ()
 {
 	__LOG__ << (void*) this << std::endl;
 
-	defaultViewport .dispose ();
+	defaultViewport       .dispose ();
+	defaultNavigationInfo .dispose ();
+	defaultBackground     .dispose ();
+	defaultFog            .dispose ();
+	defaultViewpoint      .dispose ();
 
 	// Dont't dispose stack nodes, they were automatically disposed.
 

@@ -69,7 +69,7 @@ public:
 	setup ();
 
 	virtual
-	const basic::id &
+	const std::string &
 	getTypeName () const
 	throw (Error <DISPOSED>);
 

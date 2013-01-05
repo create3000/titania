@@ -1,19 +1,31 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="x3dtidy/main.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-opengl-surface/Titania/OpenGL/Surface.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="44" Column="27" />
       <File FileName="Library/Tests/Scripting/test.wrl" Line="15" Column="13" />
-      <File FileName="x3dtidy/main.cpp" Line="155" Column="4" />
+      <File FileName="x3dtidy/main.cpp" Line="155" Column="3" />
       <File FileName="Titania/Titania/main.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="203" Column="25" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="306" Column="48" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="363" Column="5" />
       <File FileName="Titania/Titania/Browser/BrowserWidget.h" Line="55" Column="1" />
+      <File FileName="miscellaneous/glade2c++/Glade2Cpp.pm" Line="372" Column="5" />
+      <File FileName="Titania/Titania/UserInterfaces/X3DBrowserWidgetUI.cpp" Line="99" Column="48" />
+      <File FileName="Titania/Titania/UserInterfaces/X3DBrowserWidgetUI.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.cpp" Line="430" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWidget.cpp" Line="75" Column="19" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="366" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="104" Column="9" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.h" Line="64" Column="24" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.cpp" Line="197" Column="17" />
+      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.h" Line="120" Column="30" />
+      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.cpp" Line="214" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True">
+            <Node name="glade2c++" expanded="True" />
             <Node name="uncrustify-all" expanded="True" />
           </Node>
           <Node name="build" expanded="True" />
@@ -47,7 +59,7 @@
               <Node name="Stream" expanded="True" />
             </Node>
           </Node>
-          <Node name="libtitania-opengl-surface" expanded="True">
+          <Node name="libtitania-opengl-surface" expanded="True" selected="True">
             <Node name="Titania" expanded="True">
               <Node name="OpenGL" expanded="True">
                 <Node name="Context" expanded="True" />
@@ -131,7 +143,7 @@
             </Node>
           </Node>
           <Node name="titania-info" expanded="True" />
-          <Node name="x3dtidy" expanded="True" selected="True" />
+          <Node name="x3dtidy" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

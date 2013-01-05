@@ -1,12 +1,45 @@
 #X3D V3.0 utf8 Titania
 
-PROTO Test [ ]
-{
-  Shape {
-    appearance Appearance {
-      material Material { }
-    }
-    geometry Box { }
-  }
-}
+META "icon" "about:icon"
+META "title" "about:test"
 
+LayerSet {
+  activeLayer 1
+  order [ 1, 2 ]
+  layers [
+    DEF _0 Layer {
+      children [
+        Viewpoint {
+          description "Home"
+          position 0 0 20
+        }
+        Transform {
+          translation -2 0 0
+          children Shape {
+            appearance Appearance {
+              material Material { }
+            }
+            geometry Box { }
+          }
+        }
+      ]
+    }
+    DEF _1 Layer {
+      children [
+        Viewpoint {
+          description "Home"
+          position 0 0 20
+        }
+        Transform {
+          translation 2 0 0
+          children Shape {
+            appearance Appearance {
+              material Material { }
+            }
+            geometry Box { }
+          }
+        }
+      ]
+    }
+  ]
+}

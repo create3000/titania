@@ -90,7 +90,7 @@ public:
 	getType () const { return type; }
 
 	virtual
-	const basic::id &
+	const std::string &
 	getTypeName () const { return typeName; }
 
 	///  6.7.5 getValue service.
@@ -220,7 +220,7 @@ private:
 	ValueType value;
 
 	///  TypeName identifer for X3DFields.
-	static const basic::id typeName;
+	static const std::string typeName;
 
 	///  Type identifer for X3DFields.
 	static const X3DConstants::FieldType type;
@@ -228,7 +228,7 @@ private:
 };
 
 template <class ValueType>
-const basic::id X3DField <ValueType>::typeName = "X3DField";
+const std::string X3DField <ValueType>::typeName = "X3DField";
 
 template <class ValueType>
 const X3DConstants::FieldType X3DField <ValueType>::type = X3DConstants::SFBool;

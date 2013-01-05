@@ -75,7 +75,7 @@ public:
 	getName () const;
 
 	virtual
-	const basic::id &
+	const std::string &
 	getTypeName () const = 0;
 
 	///  @name Input/Output

@@ -77,7 +77,7 @@ public:
 	clone () const;
 
 	virtual
-	const basic::id &
+	const std::string &
 	getTypeName () const;
 
 	virtual
@@ -98,7 +98,7 @@ public:
 
 private:
 
-	static const basic::id typeName;
+	static const std::string typeName;
 
 	static const X3DConstants::FieldType type;
 

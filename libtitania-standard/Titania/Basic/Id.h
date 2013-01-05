@@ -125,21 +125,20 @@ public:
 	// Element access:
 
 	//@{
-	constexpr
-	operator string_type () const
+	operator const string_type & () const
 	{ return first (); }
 
-	constexpr string_type
+	const string_type &
 	first () const
 	{ return operator [ ] (0); }
 
-	constexpr string_type
+	const string_type &
 	last () const
 	{ return operator [ ] (count () - 1); }
 
-	constexpr string_type
+	const string_type &
 	operator [ ] (size_type index) const
-	{ return count () ? value [min_index (index)] : string_type (); }
+	{ return count () ? value [min_index (index)] : empty_string; }
 	//@}
 
 	// Capacity:
@@ -167,8 +166,13 @@ private:
 	{ return std::min (index, count () - 1); }
 
 	value_type value;
+	
+	static StringT empty_string;
 
 };
+
+template <class StringT>
+StringT basic_id <StringT>::empty_string;
 
 ///  Returns a string containing characters from @a id followed by the characters from @a string.
 template <class StringT>

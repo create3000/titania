@@ -115,7 +115,7 @@ public:
 
 	///  @name Node Services
 
-	const basic::id &
+	const std::string &
 	getNodeTypeName () const;
 
 	const X3DBaseNode*
@@ -257,7 +257,7 @@ SFNode <ValueType>::clone (X3DExecutionContext* const executionContext) const
 }
 
 template <class ValueType>
-const basic::id &
+const std::string &
 SFNode <ValueType>::getNodeTypeName () const
 {
 	return getValue () -> getTypeName ();

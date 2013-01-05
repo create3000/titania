@@ -71,13 +71,20 @@ X3DViewpointEditorUI::create (const std::string & filename)
 	m_builder -> get_widget ("FieldOfView", m_fieldOfView);
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DViewpointEditorUI::on_row_activated));
+	connections .emplace_back (m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DViewpointEditorUI::on_row_activated)));
 
 	// Connect object Gtk::HScale with id 'FieldOfView'.
-	m_fieldOfView -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DViewpointEditorUI::on_fieldOfView_changed));
+	connections .emplace_back (m_fieldOfView -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DViewpointEditorUI::on_fieldOfView_changed)));
 
 	// Call construct handler of base class.
 	construct ();
+}
+
+void
+X3DViewpointEditorUI::dispose ()
+{
+	for (auto & connection : connections)
+		connection .disconnect ();
 }
 
 } // puck

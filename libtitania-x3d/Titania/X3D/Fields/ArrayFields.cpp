@@ -54,61 +54,61 @@ namespace X3D {
 // typeName
 
 template <>
-const basic::id X3DField <Array <SFBool>>::typeName ("MFBool");
+const std::string X3DField <Array <SFBool>>::typeName ("MFBool");
 
 template <>
-const basic::id X3DField <Array <SFColor>>::typeName ("MFColor");
+const std::string X3DField <Array <SFColor>>::typeName ("MFColor");
 
 template <>
-const basic::id X3DField <Array <SFColorRGBA>>::typeName ("MFColorRGBA");
+const std::string X3DField <Array <SFColorRGBA>>::typeName ("MFColorRGBA");
 
 template <>
-const basic::id X3DField <Array <SFDouble>>::typeName ("MFDouble");
+const std::string X3DField <Array <SFDouble>>::typeName ("MFDouble");
 
 template <>
-const basic::id X3DField <Array <SFFloat>>::typeName ("MFFloat");
+const std::string X3DField <Array <SFFloat>>::typeName ("MFFloat");
 
 template <>
-const basic::id X3DField <Array <SFImage>>::typeName ("MFImage");
+const std::string X3DField <Array <SFImage>>::typeName ("MFImage");
 
 template <>
-const basic::id X3DField <Array <SFMatrix3d>>::typeName ("MFMatrix3d");
+const std::string X3DField <Array <SFMatrix3d>>::typeName ("MFMatrix3d");
 
 template <>
-const basic::id X3DField <Array <SFMatrix3f>>::typeName ("MFMatrix3f");
+const std::string X3DField <Array <SFMatrix3f>>::typeName ("MFMatrix3f");
 
 template <>
-const basic::id X3DField <Array <SFMatrix4d>>::typeName ("MFMatrix4d");
+const std::string X3DField <Array <SFMatrix4d>>::typeName ("MFMatrix4d");
 
 template <>
-const basic::id X3DField <Array <SFMatrix4f>>::typeName ("MFMatrix4f");
+const std::string X3DField <Array <SFMatrix4f>>::typeName ("MFMatrix4f");
 
 template <>
-const basic::id X3DField <Array <SFRotation>>::typeName ("MFRotation");
+const std::string X3DField <Array <SFRotation>>::typeName ("MFRotation");
 
 template <>
-const basic::id X3DField <Array <SFString>>::typeName ("MFString");
+const std::string X3DField <Array <SFString>>::typeName ("MFString");
 
 template <>
-const basic::id X3DField <Array <SFTime>>::typeName ("MFTime");
+const std::string X3DField <Array <SFTime>>::typeName ("MFTime");
 
 template <>
-const basic::id X3DField <Array <SFVec2d>>::typeName ("MFVec2d");
+const std::string X3DField <Array <SFVec2d>>::typeName ("MFVec2d");
 
 template <>
-const basic::id X3DField <Array <SFVec2f>>::typeName ("MFVec2f");
+const std::string X3DField <Array <SFVec2f>>::typeName ("MFVec2f");
 
 template <>
-const basic::id X3DField <Array <SFVec3d>>::typeName ("MFVec3d");
+const std::string X3DField <Array <SFVec3d>>::typeName ("MFVec3d");
 
 template <>
-const basic::id X3DField <Array <SFVec3f>>::typeName ("MFVec3f");
+const std::string X3DField <Array <SFVec3f>>::typeName ("MFVec3f");
 
 template <>
-const basic::id X3DField <Array <SFVec4d>>::typeName ("MFVec4d");
+const std::string X3DField <Array <SFVec4d>>::typeName ("MFVec4d");
 
 template <>
-const basic::id X3DField <Array <SFVec4f>>::typeName ("MFVec4f");
+const std::string X3DField <Array <SFVec4f>>::typeName ("MFVec4f");
 
 // type
 

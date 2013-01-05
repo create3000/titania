@@ -268,25 +268,25 @@ X3DBaseNode::getNumClones () const
 }
 
 void
-X3DBaseNode::setComponent (const basic::id & value)
+X3DBaseNode::setComponent (const std::string & value)
 {
 	component = value;
 }
 
-const basic::id &
+const std::string &
 X3DBaseNode::getComponentName () const
 {
 	return component;
 }
 
 void
-X3DBaseNode::setTypeName (const basic::id & value)
+X3DBaseNode::setTypeName (const std::string & value)
 {
 	//	std::clog << __FILE__ << ":" << __LINE__ << ": in function " << __func__ << ": " << value << std::endl;
 	typeName = value;
 }
 
-const basic::id &
+const std::string &
 X3DBaseNode::getTypeName () const
 throw (Error <DISPOSED>)
 {

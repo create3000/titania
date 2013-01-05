@@ -87,14 +87,14 @@ void
 LocalFog::display ()
 {
 	if (enabled)
-		getCurrentLayer () -> pushLocalFog (this);
+		getCurrentLayer () -> getLocalFogs () .push (this);
 }
 
 void
 LocalFog::finish ()
 {
 	if (enabled)
-		getCurrentLayer () -> popLocalFog ();
+		getCurrentLayer () -> getLocalFogs () .pop ();
 }
 
 void

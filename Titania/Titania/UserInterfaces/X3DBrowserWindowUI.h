@@ -46,8 +46,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_USER_INTERFACES_X3DBROWSER_WINDOW_UI_H__
-#define __TITANIA_USER_INTERFACES_X3DBROWSER_WINDOW_UI_H__
+#ifndef __TMP_GLAD2CPP_BROWSER_WINDOW_H__
+#define __TMP_GLAD2CPP_BROWSER_WINDOW_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
@@ -65,7 +65,8 @@ public:
 
 	template <class ... Arguments>
 	X3DBrowserWindowUI (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (m_widgetName, arguments ...)
+		X3DUserInterface (m_widgetName, arguments ...),
+		connections ()
 	{ create (filename); }
 
 	const std::string &
@@ -218,6 +219,9 @@ public:
 	Gtk::ImageMenuItem &
 	getInfoMenuItem () const { return *m_infoMenuItem; }
 
+	Gtk::ImageMenuItem &
+	getStandardSizeMenuItem () const { return *m_standardSizeMenuItem; }
+
 	Gtk::Notebook &
 	getNotebook () const { return *m_notebook; }
 
@@ -349,11 +353,19 @@ public:
 
 	virtual
 	void
+	on_standard_size () = 0;
+
+	virtual
+	void
 	on_switch_page (Widget* page, guint page_num) = 0;
 
 	virtual
 	void
 	on_add_tab () = 0;
+
+	virtual
+	void
+	dispose ();
 
 
 private:
@@ -363,6 +375,7 @@ private:
 
 	static const std::string m_widgetName;
 
+	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilerX3D;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
@@ -413,6 +426,7 @@ private:
 	Gtk::MenuItem*                  m_consoleMenuItem;
 	Gtk::MenuItem*                  m_helpMenuItem;
 	Gtk::ImageMenuItem*             m_infoMenuItem;
+	Gtk::ImageMenuItem*             m_standardSizeMenuItem;
 	Gtk::Notebook*                  m_notebook;
 	Gtk::Box*                       m_addTabLabel;
 	Gtk::Button*                    m_addTabButton;

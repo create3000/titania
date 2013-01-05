@@ -72,6 +72,9 @@ public:
 
 	void
 	swapBuffers ();
+	
+	void
+	dispose ();
 
 
 protected:
@@ -115,9 +118,6 @@ private:
 	sigc::connection initialized_connection;
 
 	std::shared_ptr <Context> context;
-
-	//	Pixmap    pixmap;
-	//	GLXPixmap glxPixmap;
 
 };
 

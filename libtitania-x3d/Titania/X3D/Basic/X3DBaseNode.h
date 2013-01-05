@@ -103,11 +103,11 @@ public:
 	size_t
 	getNumClones () const;
 
-	const basic::id &
+	const std::string &
 	getComponentName () const;
 
 	virtual
-	const basic::id &
+	const std::string &
 	getTypeName () const
 	throw (Error <DISPOSED>);
 
@@ -195,10 +195,10 @@ protected:
 	X3DBaseNode (X3DBrowser* const = nullptr, X3DExecutionContext* const = nullptr);
 
 	void
-	setComponent (const basic::id &);
+	setComponent (const std::string &);
 
 	void
-	setTypeName (const basic::id &);
+	setTypeName (const std::string &);
 
 	void
 	addNodeType (const X3DConstants::NodeType);
@@ -245,8 +245,8 @@ private:
 	X3DBrowser* const          browser;
 	X3DExecutionContext* const executionContext;
 
-	basic::id     component;
-	basic::id     typeName;
+	std::string   component;
+	std::string   typeName;
 	NodeTypeArray nodeType;
 
 	FieldDefinitionArray fieldDefinitions;      // pre-defined and user-defined field definitions

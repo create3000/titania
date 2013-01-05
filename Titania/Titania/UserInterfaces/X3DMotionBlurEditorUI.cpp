@@ -68,13 +68,20 @@ X3DMotionBlurEditorUI::create (const std::string & filename)
 	m_builder -> get_widget ("Enabled", m_enabled);
 
 	// Connect object Gtk::HScale with id 'Intensity'.
-	m_intensity -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMotionBlurEditorUI::on_intensity_changed));
+	connections .emplace_back (m_intensity -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMotionBlurEditorUI::on_intensity_changed)));
 
 	// Connect object Gtk::CheckButton with id 'Enabled'.
-	m_enabled -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DMotionBlurEditorUI::on_enabled_toggled));
+	connections .emplace_back (m_enabled -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DMotionBlurEditorUI::on_enabled_toggled)));
 
 	// Call construct handler of base class.
 	construct ();
+}
+
+void
+X3DMotionBlurEditorUI::dispose ()
+{
+	for (auto & connection : connections)
+		connection .disconnect ();
 }
 
 } // puck

@@ -151,7 +151,7 @@ Surface::on_map (GdkEventAny* event)
 {
 	initialized_connection .disconnect ();
 
-	context = std::shared_ptr <Context> (new WindowContext (get_window (), get_display ()));
+	context .reset (new WindowContext (get_window (), get_display ()));
 
 	if (makeCurrent ())
 	{
@@ -206,41 +206,15 @@ Surface::swapBuffers ()
 	context -> swapBuffers ();
 }
 
+void
+Surface::dispose ()
+{
+	context = std::shared_ptr <Context> ();
+}
+
 Surface::~Surface ()
 {
-	//	if (glxPixmap)
-	//	{
-	//		glXDestroyGLXPixmap (display, glxPixmap);
-	//	}
-	//
-	//	if (pixmap)
-	//	{
-	//		XFreePixmap (display, pixmap);
-	//	}
 }
 
 } // opengl
 } // titania
-
-/*
- *
- * // http://src.chromium.org/viewvc/chrome/trunk/src/ui/gl/gl_context_glx.cc?revision=157879&content-type=text%2Fplain
- * void ContextGLX::SetSwapInterval(int interval) {
- * DCHECK(IsCurrent(NULL));
- * if (HasExtension("GLX_EXT_swap_control") && glXSwa
- * pIntervalEXT) {
- *  glXSwapIntervalEXT(
- *      display_,
- *      glXGetCurrentDrawable(),
- *      interval);
- * } else if (HasExtension("GLX_MESA_swap_control") && glXSwapIntervalMESA) {
- *  glXSwapIntervalMESA(interval);
- * } else {
- *  if(interval == 0)
- *    LOG(WARNING) <<
- *        "Could not disable vsync: driver does not "
- *        "support GLX_EXT_swap_control";
- * }
- * }
- *
- */
