@@ -99,11 +99,14 @@ X3DLayerNode::initialize ()
 	defaultBackground     -> setup ();
 	defaultFog            -> setup ();
 	defaultViewpoint      -> setup ();
+	
+	defaultBackground -> transparency = 1;
+	defaultFog        -> transparency = 1;
+	defaultViewpoint  -> isBound      = true;
 
 	viewport .addInterest (this, &X3DLayerNode::set_viewport);
 	set_viewport ();
 
-	viewpointStack .bottom () -> isBound = true;
 }
 
 NavigationInfo*
@@ -167,6 +170,9 @@ X3DLayerNode::pick ()
 {
 	if (not isPickable)
 		return;
+		
+	glPushMatrix ();
+	glLoadIdentity ();
 
 	currentViewport -> enable ();
 	getViewpoint () -> reshape ();
@@ -174,6 +180,8 @@ X3DLayerNode::pick ()
 	intersect ();
 
 	currentViewport -> disable ();
+
+	glPopMatrix ();
 }
 
 void

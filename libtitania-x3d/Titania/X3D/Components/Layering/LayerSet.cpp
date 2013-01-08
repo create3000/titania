@@ -84,8 +84,8 @@ LayerSet::initialize ()
 {
 	X3DNode::initialize ();
 
-	children [0] -> getBackground () -> transparency = 0;
 	children [0] -> setup ();
+	children [0] -> backgroundStack .bottom () -> transparency = 0;
 
 	activeLayer .addInterest (this, &LayerSet::set_activeLayer);
 	layers      .addInterest (this, &LayerSet::set_layers);
@@ -122,6 +122,8 @@ LayerSet::set_activeLayer ()
 void
 LayerSet::set_layers ()
 {
+	children .resize (1);
+
 	for (const auto & layer : layers)
 	{
 		if (layer)

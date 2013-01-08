@@ -42,5 +42,9 @@ Conflicts:
 Replaces:
 Provides: titania
 Description: Titania X3D Viewer
- Titania aims to provide a full standard X3D/VRML viewer for the gnome platform.
-
+ Titania is a X3D/VRML viewer for GNOME which uses the gtkmm library. The goal 
+ is a full standard X3D viewer for future releases of Gnome. It aims to implement
+ the VRML standard for version 1.0.
+ .
+ It can be used as a simple 3D viewer for .wrl files, a high quality 3D animation
+ rendering engine, for advanced science simulations, or as easy to use gaming engine.

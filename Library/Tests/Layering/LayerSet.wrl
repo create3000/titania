@@ -1,0 +1,75 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "LayerSet"
+
+LayerSet {
+  activeLayer 1
+  order [ 1, 2 ]
+  layers [
+    DEF Left Layer {
+      children [
+        Viewpoint {
+          description "Left"
+          position 0 0 20
+        }
+        DEF Clone Viewpoint {
+          description "Clone"
+          position 0 0 15
+        }
+        DEF Red Transform {
+          translation -2 0 0
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 1 0 0
+              }
+            }
+            geometry Box { }
+          }
+        }
+        DEF DarkRed Transform {
+          translation -5 0 0
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0.5 0 0
+              }
+            }
+            geometry DEF Box Box { }
+          }
+        }
+      ]
+    }
+    DEF Right Layer {
+      children [
+        Viewpoint {
+          description "Right"
+          position 0 0 20
+        }
+        USE Clone
+        DEF Blue Transform {
+          translation 2 0 0
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0 0 1
+              }
+            }
+            geometry Box { }
+          }
+        }
+        DEF DarkBlue Transform {
+          translation 5 0 0
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0 0 0.5
+              }
+            }
+            geometry USE Box
+          }
+        }      
+      ]
+    }
+  ]
+}

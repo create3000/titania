@@ -135,7 +135,7 @@ Inline::requestImmediateLoad ()
 
 		std::clog << error .what () << std::endl;
 
-		std::copy (urlError.cbegin (), urlError .cend (),
+		std::copy (urlError .cbegin (), urlError .cend (),
 		           std::ostream_iterator <String> (std::clog, "\n"));
 	}
 }
@@ -143,8 +143,6 @@ Inline::requestImmediateLoad ()
 Box3f
 Inline::getBBox ()
 {
-	requestImmediateLoad ();
-
 	return X3DBoundedObject::getBBox (getRootNodes ());
 }
 

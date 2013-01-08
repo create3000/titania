@@ -200,12 +200,12 @@ private:
 	void
 	clear ();
 
+	SFNode <LayerSet> layerSet;
+
 	NavigationInfoList navigationInfos;
 	BackgroundList     backgrounds;
 	FogList            fogs;
 	ViewpointList      viewpoints;
-
-	SFNode <LayerSet> layerSet;
 
 };
 

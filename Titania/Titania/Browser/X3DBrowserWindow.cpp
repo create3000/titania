@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -439,24 +439,38 @@ X3DBrowserWindow::setTabLabel (size_t position)
 	Gtk::Widget* child = getNotebook () .get_children () [position];
 
 	Gtk::HBox* tab_label = new Gtk::HBox ();
-	
+
 	auto worldURL = browserWidgets [position] -> getBrowser () -> getExecutionContext () -> getWorldURL ();
 
 	Gtk::Label* label = new Gtk::Label (worldURL .str ());
 	Gtk::Image* icon  = new Gtk::Image (Gtk::StockID (worldURL .str ()),
 	                                    Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
 
+	// Gio Close button.
+	//Glib::RefPtr<const Gio::Icon> closeIcon = Gio::ThemedIcon::create ("window-close-symbolic");
+	//Gtk::Image*             closeImage = new Gtk::Image ();
+	//closeImage -> set (closeIcon, Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
+
 	// Close button.
-	Gtk::Image*  closeImage = new Gtk::Image (Gtk::StockID ("gtk-close"), Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
-	Gtk::Button* close      = new Gtk::Button ();
-	close -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserWindow::on_close_tab), sigc::ref (*child)));
-	close -> set_image (*Gtk::manage (closeImage));
+	Gtk::Image*    closeImage = new Gtk::Image (Gtk::StockID ("gtk-close"), Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
+	closeImage -> set_pixel_size (1);
+	
+	Gtk::EventBox* closeBox   = new Gtk::EventBox ();
+
+	closeBox -> set_visible_window (false);
+	closeBox -> add (*Gtk::manage (closeImage));
+	closeBox -> signal_button_release_event () .connect (sigc::group (sigc::mem_fun (this, &X3DBrowserWindow::closeTab),
+	                                                                  sigc::ref (*child), sigc::_1));
+
+	//Gtk::Button* close      = new Gtk::Button ();
+	//close -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserWindow::on_close_tab), sigc::ref (*child)));
+	//close -> set_image (*Gtk::manage (closeImage));
 
 	// Add Widgets to box.
 	tab_label -> get_style_context () -> add_class ("TabLabel");
 	tab_label -> pack_start (*Gtk::manage (icon), false, true, 0);
 	tab_label -> pack_start (*Gtk::manage (label), true, true, 0);
-	tab_label -> pack_end  (*Gtk::manage (close), true, false, 0);
+	tab_label -> pack_end  (*Gtk::manage (closeBox), true, false, 0);
 	tab_label -> set_spacing (4);
 
 	getNotebook () .set_tab_label (*child, *Gtk::manage (tab_label));
@@ -465,6 +479,16 @@ X3DBrowserWindow::setTabLabel (size_t position)
 	return tab_label;
 }
 
+bool
+X3DBrowserWindow::closeTab (Gtk::Widget & child, GdkEventButton* event)
+{
+	__LOG__ << std::endl;
+
+	if (event -> button == 1)
+		on_close_tab (child);
+
+	return false;
+}
 
 void
 X3DBrowserWindow::setTransparent (bool value)

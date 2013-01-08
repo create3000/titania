@@ -133,10 +133,6 @@ protected:
 
 private:
 
-	virtual
-	void
-	on_close_tab (Gtk::Widget &) = 0;
-
 	void
 	parseOptions (int &, char** &);
 
@@ -157,6 +153,13 @@ private:
 
 	Gtk::HBox*
 	setTabLabel (size_t position);
+
+	bool
+	closeTab (Gtk::Widget &, GdkEventButton*);
+
+	virtual
+	void
+	on_close_tab (Gtk::Widget &) = 0;
 
 	void
 	setTransparent (bool);

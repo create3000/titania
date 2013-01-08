@@ -57,11 +57,11 @@ namespace X3D {
 Scene::Scene (X3DBrowser* const browser) :
 	    X3DBaseNode (browser, this),      
 	       X3DScene (),                   
+	       layerSet (new LayerSet (this)), 
 	navigationInfos (),                   
 	    backgrounds (),                   
 	           fogs (),                   
-	     viewpoints (),                   
-	       layerSet (new LayerSet (this)) 
+	     viewpoints ()                   
 {
 	std::clog << "Constructing Scene:" << std::endl;
 
@@ -299,12 +299,12 @@ Scene::dispose ()
 {
 	__LOG__ << getWorldURL () << std::endl;
 
+	layerSet .dispose ();
+
 	navigationInfos .dispose ();
 	backgrounds     .dispose ();
 	viewpoints      .dispose ();
 	fogs            .dispose ();
-
-	layerSet .dispose ();
 
 	X3DScene::dispose ();
 

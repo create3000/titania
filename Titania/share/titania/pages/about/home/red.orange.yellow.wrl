@@ -118,17 +118,17 @@ LayerSet {
 }
 
 DEF RedRotor Rotor {
-  cycleInterval 6.1803
+  cycleInterval 7
   loop TRUE
 }
 
 DEF OrangeRotor Rotor {
-  cycleInterval 10
+  cycleInterval 11
   loop TRUE
 }
 
 DEF YellowRotor Rotor {
-  cycleInterval 16.1803
+  cycleInterval 17
   loop TRUE
 }
 

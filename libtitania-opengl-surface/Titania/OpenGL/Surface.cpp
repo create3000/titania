@@ -209,7 +209,7 @@ Surface::swapBuffers ()
 void
 Surface::dispose ()
 {
-	context = std::shared_ptr <Context> ();
+	context .reset ();
 }
 
 Surface::~Surface ()

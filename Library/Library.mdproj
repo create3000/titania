@@ -1046,7 +1046,6 @@
     <None Include="Examples\raumdemo\index.wrl" />
     <None Include="Examples\schacht\index.wrl" />
     <None Include="Tests\1st\World_proto.wrl" />
-    <None Include="Tests\PROTO\test-x.wrl" />
     <None Include="Tests\PROTO\PROTO3.wrl" />
     <None Include="Tests\PROTO\RandomSwitcher_proto.wrl" />
     <None Include="Tests\PROTO\RandomSwitcher_proto.wrl.gz" />
@@ -1585,6 +1584,7 @@
     <None Include="Tests\Scripting\Feluet3D.wrl" />
     <None Include="Tests\Scripting\Felulet.wrl" />
     <None Include="Examples\BIC\stage\worlds\tuer_brett.wrl" />
+    <None Include="Tests\PROTO\test.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />
@@ -1630,5 +1630,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />
+    <Content Include="Tests\Layering\LayerSet.wrl" />
+    <Content Include="Tests\Layering\Inline.wrl" />
   </ItemGroup>
 </Project>

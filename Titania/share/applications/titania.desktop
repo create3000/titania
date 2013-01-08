@@ -7,7 +7,7 @@ Type=Application
 Exec=titania %U
 Terminal=false
 StartupNotify=false
-Icon=/usr/share/titania/ui/icons/icon.svg
+Icon=titania
 Categories=Graphics;GNOME;GTK;
 MimeType=model/vrml;model/x3d+vrml;
 

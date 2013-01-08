@@ -117,6 +117,9 @@ X3DRenderer::draw ()
 	numNodes                 = numOpaqueNodes + numTransparentNodes;
 	numNodesDrawn            = 0;
 	numTransparentNodesDrawn = 0;
+	
+	glPushMatrix ();
+	glLoadIdentity ();
 
 	getCurrentViewpoint () -> reshape ();
 
@@ -129,8 +132,6 @@ X3DRenderer::draw ()
 		for (const auto & light : globalLights)
 			light -> enable ();
 	}
-
-	glPushMatrix ();
 
 	// render opaque objects first
 

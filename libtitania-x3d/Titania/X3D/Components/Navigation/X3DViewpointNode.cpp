@@ -266,3 +266,4 @@ X3DViewpointNode::dispose ()
 
 } // X3D
 } // titania
+

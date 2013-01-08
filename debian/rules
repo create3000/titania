@@ -22,17 +22,16 @@ binary-arch: build
 	dh_installdocs
 	dh_installchangelogs
 
-# Copy the packages's files.
-#	find . -maxdepth 1 -mindepth 1 -not -name debian -print0 | \
-#		xargs -0 -r -i cp -a {} debian/$(PACKAGE)/usr/
-
 # Make and install binaries
-	./configure --prefix=`pwd`/debian/$(PACKAGE)/usr/
+	./configure --enable-release --prefix=`pwd`/debian/$(PACKAGE)/usr/
 	#make distclean
 	make -j4
 	make install
 
-# Copy share directory
+# Configure for debug testing
+	./configure
+
+# Copy share directory (currently only from Titania/)
 	find . -maxdepth 2 -mindepth 2 -name share -print0 | \
 		xargs -0 -r -i cp -a {} debian/$(PACKAGE)/usr/
 

@@ -16,7 +16,7 @@ PROTO Object [
   PROTO Data [
     exposedField SFVec3f    translation 0 0 0
     exposedField SFRotation rotation 0 0 1 0
-  exposedField SFVec3f    center 0 0 0
+    exposedField SFVec3f    center 0 0 0
   ]
   {
     Group { }
@@ -25,86 +25,86 @@ PROTO Object [
   PROTO Object [
     exposedField SFVec3f    translation 0 0 0
     exposedField SFRotation rotation 0 0 1 0
-  exposedField SFVec3f    center 0 0 0
+    exposedField SFVec3f    center 0 0 0
   ]
   {
     PROTO Data [
       exposedField SFVec3f    translation 0 0 0
       exposedField SFRotation rotation 0 0 1 0
-  exposedField SFVec3f    center 0 0 0
+      exposedField SFVec3f    center 0 0 0
     ]
     {
-     Group { }
-   }
+      Group { }
+    }
 
     PROTO Object [
       exposedField SFVec3f    translation 0 0 0
       exposedField SFRotation rotation 0 0 1 0
-  exposedField SFVec3f    center 0 0 0
+      exposedField SFVec3f    center 0 0 0
     ]
     {
       PROTO Data [
         exposedField SFVec3f    translation 0 0 0
         exposedField SFRotation rotation 0 0 1 0
-  exposedField SFVec3f    center 0 0 0
+        exposedField SFVec3f    center 0 0 0
       ]
       {
-    Group { }
+        Group { }
       }
 
       PROTO Object [
         exposedField SFVec3f    translation 0 0 0
         exposedField SFRotation rotation 0 0 1 0
-  exposedField SFVec3f    center 0 0 0
+        exposedField SFVec3f    center 0 0 0
       ]
       {
         PROTO Data [
           exposedField SFVec3f    translation 0 0 0
           exposedField SFRotation rotation 0 0 1 0
-  exposedField SFVec3f    center 0 0 0
+          exposedField SFVec3f    center 0 0 0
         ]
         {
-    Group { }
+          Group { }
         }
 
         PROTO Object [
           exposedField SFVec3f    translation 0 0 0
           exposedField SFRotation rotation 0 0 1 0
-  exposedField SFVec3f    center 0 0 0
+          exposedField SFVec3f    center 0 0 0
         ]
         {
           PROTO Data [
             exposedField SFVec3f    translation 0 0 0
             exposedField SFRotation rotation 0 0 1 0
-  exposedField SFVec3f    center 0 0 0
+            exposedField SFVec3f    center 0 0 0
           ]
           {
-    Group { }
+            Group { }
           }
 
           PROTO Object [
             exposedField SFVec3f    translation 0 0 0
             exposedField SFRotation rotation 0 0 1 0
-  exposedField SFVec3f    center 0 0 0
+            exposedField SFVec3f    center 0 0 0
           ]
           {
             PROTO Data [
               exposedField SFVec3f    translation 0 0 0
               exposedField SFRotation rotation 0 0 1 0
-  exposedField SFVec3f    center 0 0 0
+              exposedField SFVec3f    center 0 0 0
             ]
             {
-    Group { }
+              Group { }
             }
 
-	            DEF Box Transform {
-	              translation IS translation
+            DEF Box Transform {
+              translation IS translation
               rotation IS rotation
-	              center IS center
-	              children Inline {
-	                url "GoldenSphereAnimation.wrl"
-	              }
-	            }
+              center IS center
+              children Inline {
+                url "GoldenSphereAnimation.wrl"
+              }
+            }
 
             DEF Data Data {
               translation IS translation
@@ -119,88 +119,87 @@ PROTO Object [
 
           DEF Object1 Object {
             translation IS translation
-               rotation IS rotation
-             center IS center
+            rotation IS rotation
+            center IS center
           }
 
           DEF Data Data {
             translation IS translation
             rotation IS rotation
-              center IS center
+            center IS center
           }
 
           ROUTE Data.translation_changed TO Object1.set_translation
           ROUTE Data.rotation_changed TO Object1.set_rotation
-            ROUTE Data.center_changed TO Object1.set_center
+          ROUTE Data.center_changed TO Object1.set_center
         }
 
         DEF Object1 Object {
           translation IS translation
-              rotation IS rotation
-              center IS center
+          rotation IS rotation
+          center IS center
         }
 
         DEF Data Data {
           translation IS translation
           rotation IS rotation
-              rotation IS rotation
-              center IS center
+          center IS center
         }
 
         ROUTE Data.translation_changed TO Object1.set_translation
         ROUTE Data.rotation_changed TO Object1.set_rotation
-            ROUTE Data.center_changed TO Object1.set_center
+        ROUTE Data.center_changed TO Object1.set_center
       }
 
       DEF Object1 Object {
         translation IS translation
-              rotation IS rotation
-              center IS center
+        rotation IS rotation
+        center IS center
       }
 
       DEF Data Data {
         translation IS translation
         rotation IS rotation
-              center IS center
+        center IS center
       }
 
       ROUTE Data.translation_changed TO Object1.set_translation
       ROUTE Data.rotation_changed TO Object1.set_rotation
-            ROUTE Data.center_changed TO Object1.set_center
+      ROUTE Data.center_changed TO Object1.set_center
     }
 
     DEF Object1 Object {
       translation IS translation
-              rotation IS rotation
-              center IS center
+      rotation IS rotation
+      center IS center
     }
 
     DEF Data Data {
       translation IS translation
       rotation IS rotation
-              center IS center
+      center IS center
     }
 
     ROUTE Data.translation_changed TO Object1.set_translation
     ROUTE Data.rotation_changed TO Object1.set_rotation
-            ROUTE Data.center_changed TO Object1.set_center
+    ROUTE Data.center_changed TO Object1.set_center
   }
 
   DEF Object1 Object {
     translation IS translation
-              rotation IS rotation
-              center IS center
+    rotation IS rotation
+    center IS center
   }
 
   DEF Data Data {
     translation IS translation
     rotation IS rotation
-              center IS center
+    center IS center
   }
 
   ROUTE Data.translation_changed TO Object1.set_translation
   ROUTE Data.rotation_changed TO Object1.set_rotation
-            ROUTE Data.center_changed TO Object1.set_center
+  ROUTE Data.center_changed TO Object1.set_center
 }
 
 Viewpoint {
@@ -208,37 +207,32 @@ Viewpoint {
 }
 
 DEF SphereRotor Rotor {
-	cycleInterval 17
-	loop TRUE
+  cycleInterval 17
+  loop TRUE
 }
 
 DEF Spheres0 Transform {
-rotation 1 0 0 1.5707963
-children DEF Billboard0 Object {
-  translation 0 0 0
-}
+  rotation 1 0 0 1.5708
+  children DEF Billboard0 Object { }
 }
 
 DEF Spheres1 Transform {
-rotation 1 0 0 1.5707963
-children DEF Billboard1 Object {
-  translation 3 0 0
-}
+  rotation 1 0 0 1.5708
+  children DEF Billboard1 Object {
+    translation 3 0 0
+  }
 }
 
 DEF Spheres2 Transform {
-rotation 1 0 0 1.5707963
-children DEF Billboard2 Object {
-  translation -3 0 0
-}
+  rotation 1 0 0 1.5708
+  children DEF Billboard2 Object {
+    translation -3 0 0
+  }
 }
 
 DEF ProximitySensor ProximitySensor {
   size 100 100 100
 }
-
-#ROUTE SphereRotor.value_changed TO Spheres1.set_rotation
-#ROUTE SphereRotor.value_changed TO Spheres2.set_rotation
 
 ROUTE ProximitySensor.orientation_changed TO Billboard0.set_rotation
 ROUTE ProximitySensor.orientation_changed TO Billboard1.set_rotation

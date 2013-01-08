@@ -1,3 +1,15 @@
+2013-01-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Scene.h:
+	* Scene.cpp:
+	* X3DBrowser.cpp:
+	* X3DRenderer.cpp:
+	* X3DBrowserContext.cpp:
+	* Inline.cpp:
+	* LayerSet.cpp:
+	* X3DLayerNode.cpp:
+	* X3DViewpointNode.cpp: 
+
 2013-01-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SFNode.h:

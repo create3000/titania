@@ -337,8 +337,6 @@ X3DBrowserContext::notify (X3DBaseNode* const node)
 void
 X3DBrowserContext::pick ()
 {
-	glLoadIdentity ();
-
 	getExecutionContext () -> pick ();
 }
 
@@ -364,7 +362,6 @@ void
 X3DBrowserContext::display ()
 {
 	glClear (GL_COLOR_BUFFER_BIT);
-	glLoadIdentity ();
 
 	getExecutionContext () -> display ();
 

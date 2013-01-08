@@ -221,10 +221,10 @@ throw (Error <INVALID_SCENE>)
 
 	std::clog << "The browser is requested to replace the world:" << std::endl;
 
-	shutdown .processInterests ();
-
 	if (not value)
 		throw Error <INVALID_SCENE> ("Scene is NULL.");
+
+	shutdown .processInterests ();
 
 	scene = value;
 
@@ -256,9 +256,19 @@ throw (Error <INVALID_URL>,
 {
 	// where parameter is "target=nameOfFrame"
 
+	SFNode <Scene> scene = getExecutionContext ();
+
 	replaceWorld (createScene ());
 
-	X3DUrlObject::loadURL (getExecutionContext (), url);
+	try
+	{
+		X3DUrlObject::loadURL (getExecutionContext (), url);
+	}
+	catch (const X3DError & error)
+	{
+		replaceWorld (scene);
+		throw error;
+	}
 }
 
 SFNode <Scene>

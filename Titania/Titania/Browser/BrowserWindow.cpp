@@ -363,10 +363,10 @@ BrowserWindow::on_add_tab ()
 void
 BrowserWindow::on_close_tab (Gtk::Widget & child)
 {
-	removePage (child);
-
-	if (getNotebook () .get_n_pages () > 1)
+	if (getNotebook () .get_n_pages () > 2)
 	{
+		removePage (child);
+
 		if (getNotebook () .get_current_page () == getNotebook () .get_n_pages () - 1)
 			getNotebook () .set_current_page (getNotebook () .get_current_page () - 1);
 

@@ -40,19 +40,19 @@ DEF DarkBlue Background {
 }
 
 DEF Fastener Rotor {
-  cycleInterval 60
+  cycleInterval 61
   loop TRUE
 }
 
 LayerSet {
-  order [ 1, 2 ]
+  order [ 0, 1, 2 ]
   layers [
     DEF _0 Layer {
       children [
         USE NavigationInfo
         USE Home
         USE Far
-        DEF Lesser Transform {
+        DEF Greater Transform {
           children DEF loops Inline {
             url "home/red.orange.yellow.wrl"
           }
@@ -64,11 +64,13 @@ LayerSet {
         USE NavigationInfo
         USE Home
         USE Far
-        DEF Greater Transform {
-          scale 0.61803 0.61803 1
+        DEF Lesser Transform {
+          scale 0.23606798 0.23606798 1
           children USE loops
         }
       ]
     }
   ]
 }
+
+ROUTE Fastener.value_changed TO Lesser .set_rotation
