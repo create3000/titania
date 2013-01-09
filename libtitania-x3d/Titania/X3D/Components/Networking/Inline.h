@@ -49,15 +49,16 @@
 #ifndef __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
 #define __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
 
-#include "../../Execution/X3DScene.h"
 #include "../Grouping/X3DBoundedObject.h"
 #include "../Networking/X3DUrlObject.h"
 
 namespace titania {
 namespace X3D {
 
+class Scene;
+
 class Inline :
-	public X3DScene, public X3DBoundedObject, public X3DUrlObject
+	public X3DChildNode, public X3DBoundedObject, public X3DUrlObject
 {
 public:
 
@@ -75,6 +76,9 @@ public:
 	Box3f
 	getBBox ();
 
+	const SFNode <Scene> &
+	getScene () { return scene; }
+
 	virtual
 	void
 	pick ();
@@ -82,11 +86,6 @@ public:
 	virtual
 	void
 	display ();
-
-	///  Output operator.
-	virtual
-	void
-	toStream (std::ostream &) const;
 
 	virtual
 	void
@@ -104,6 +103,8 @@ private:
 
 	void
 	set_url ();
+	
+	SFNode <Scene> scene;
 
 };
 

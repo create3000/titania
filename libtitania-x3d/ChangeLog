@@ -1,3 +1,34 @@
+2013-01-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DField.h:
+	* Scene.h:
+	* Browser.cpp:
+	* Scene.cpp:
+	* X3DBaseNode.h:
+	* X3DScene.h:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* ExamineViewer.cpp:
+	* GarbargeCollector.cpp:
+	* Inline.h:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* LayerSet.cpp:
+	* X3DBindableNode.h:
+	* X3DExecutionContext.cpp:
+	* X3DLayerNode.h:
+	* X3DBindableNode.cpp:
+	* X3DLayerNode.cpp:
+	* Fog.h:
+	* NavigationInfo.h:
+	* Fog.cpp:
+	* X3DPrototypeInstance.cpp:
+	* NavigationInfo.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp:
+	* X3DBackgroundNode.h:
+	* X3DBackgroundNode.cpp: 
+
 2013-01-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Scene.h:

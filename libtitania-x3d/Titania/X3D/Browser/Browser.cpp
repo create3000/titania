@@ -133,14 +133,14 @@ Browser::set_shutdown ()
 	getExecutionContext () -> getLayerSet () -> activeLayer .removeInterest (this, &Browser::set_activeLayer);
 
 	if (activeLayer)
-		activeLayer -> navigationInfoStack .removeInterest (this, &Browser::set_navigationInfo);
+		activeLayer -> getNavigationInfoStack () .removeInterest (this, &Browser::set_navigationInfo);
 }
 
 void
 Browser::set_activeLayer ()
 {
 	activeLayer = getExecutionContext () -> getActiveLayer ();
-	activeLayer -> navigationInfoStack .addInterest (this, &Browser::set_navigationInfo);
+	activeLayer -> getNavigationInfoStack () .addInterest (this, &Browser::set_navigationInfo);
 
 	set_navigationInfo ();
 }
@@ -188,9 +188,7 @@ Browser::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 void
 Browser::dispose ()
 {
-	if (viewer)
-		viewer -> dispose ();
-
+	viewer .reset ();
 	pointingDevice .dispose ();
 	activeLayer    .dispose ();
 

@@ -101,13 +101,6 @@ public:
 	toStream (std::ostream &) const;
 
 
-protected:
-
-	virtual
-	void
-	clear ();
-
-
 private:
 
 	MetaDataIndex metadatas;

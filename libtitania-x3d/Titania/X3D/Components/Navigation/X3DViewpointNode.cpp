@@ -103,7 +103,8 @@ X3DViewpointNode::initialize ()
 	isBound .addInterest (this, &X3DViewpointNode::_set_bind);
 
 	if (displayed)
-		getScene () -> addViewpoint (this);
+		for (auto & layer : getLayers ())
+			layer -> getViewpoints () .push_back (this);
 }
 
 Vector3f
@@ -134,17 +135,17 @@ X3DViewpointNode::setTransformationMatrix (const Matrix4f & value)
 void
 X3DViewpointNode::bindToLayer (X3DLayerNode* const layer)
 {
-	std::clog << "Trying to bind X3DViewpoint '" << description << "': " << std::flush;
+	std::clog << "Trying to bind X3DViewpoint '" << description << "' to layer '" << layer -> getName () << "': " << std::flush;
 
-	layer -> viewpointStack .push (this);
+	layer -> getViewpointStack () .push (this);
 
-	std::clog << (layer -> viewpointStack .top () == this ? "success." : "rejected.") << std::endl;
+	std::clog << (layer -> getViewpointStack () .top () == this ? "success." : "rejected.") << std::endl;
 }
 
 void
-X3DViewpointNode::removeFromLayer (X3DLayerNode* const layer)
+X3DViewpointNode::unbindFromLayer (X3DLayerNode* const layer)
 {
-	layer -> viewpointStack .pop (this);
+	layer -> getViewpointStack () .pop (this);
 }
 
 void
@@ -175,7 +176,7 @@ X3DViewpointNode::set_active (const bool & value)
 	if (not value)
 	{
 		for (const auto & layer : getLayers ())
-			layer -> navigationInfoStack .top () -> transitionComplete = getCurrentTime ();
+			layer -> getNavigationInfoStack () .top () -> transitionComplete = getCurrentTime ();
 	}
 }
 
@@ -256,10 +257,12 @@ X3DViewpointNode::reshape ()
 void
 X3DViewpointNode::dispose ()
 {
+	if (displayed)
+		for (auto & layer : getLayers ())
+			layer -> getViewpoints () .erase (this);
+
 	timeSensor           .dispose ();
 	positionInterpolator .dispose ();
-
-	getScene () -> removeViewpoint (this);
 
 	X3DBindableNode::dispose ();
 }

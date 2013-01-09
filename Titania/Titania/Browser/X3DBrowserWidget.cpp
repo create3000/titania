@@ -343,7 +343,7 @@ X3DBrowserWidget::updateViewpoints (/* X3D::SFNode <X3D::World> & world */)
 {
 	Gtk::Menu* submenu = Gtk::manage (new Gtk::Menu ());
 
-	for (auto const & viewpoint : getBrowser () -> getExecutionContext () -> getViewpoints ())
+	for (auto const & viewpoint : getBrowser () -> getExecutionContext () -> getActiveLayer ()  -> getViewpoints ())
 	{
 		if (viewpoint -> description .length ())
 			submenu -> append (*Gtk::manage (new ViewpointMenuItem (viewpoint)));

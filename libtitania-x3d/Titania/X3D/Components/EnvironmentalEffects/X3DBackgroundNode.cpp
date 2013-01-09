@@ -85,7 +85,8 @@ X3DBackgroundNode::initialize ()
 	X3DBindableNode::initialize ();
 
 	if (displayed)
-		getScene () -> addBackground (this);
+		for (auto & layer : getLayers ())
+			layer -> getBackgrounds () .push_back (this);
 
 	build ();
 }
@@ -93,13 +94,13 @@ X3DBackgroundNode::initialize ()
 void
 X3DBackgroundNode::bindToLayer (X3DLayerNode* const layer)
 {
-	layer -> backgroundStack .push (this);
+	layer -> getBackgroundStack () .push (this);
 }
 
 void
-X3DBackgroundNode::removeFromLayer (X3DLayerNode* const layer)
+X3DBackgroundNode::unbindFromLayer (X3DLayerNode* const layer)
 {
-	layer -> backgroundStack .pop (this);
+	layer -> getBackgroundStack () .pop (this);
 }
 
 Color3f
@@ -412,7 +413,9 @@ X3DBackgroundNode::draw ()
 void
 X3DBackgroundNode::dispose ()
 {
-	getScene () -> removeBackground (this);
+	if (displayed)
+		for (auto & layer : getLayers ())
+			layer -> getBackgrounds () .erase (this);
 
 	X3DBindableNode::dispose ();
 }

@@ -189,14 +189,23 @@ protected:
 	/// @name Constructors
 
 	///  Default constructor.
-	X3DField ();
+	X3DField () :
+		X3DFieldDefinition (),
+		value ()
+	{ }
 
 	///  Copy constructor.
-	X3DField (const X3DField &);
+	X3DField (const X3DField & field) :
+		X3DFieldDefinition (),
+		value (field .getValue ())
+	{ }
 
 	///  Value constructor.
 	explicit
-	X3DField (const ValueType &);
+	X3DField (const ValueType & value) :
+		X3DFieldDefinition (),
+		value (value)
+	{ }
 
 	/// @name Element access
 
@@ -234,24 +243,7 @@ template <class ValueType>
 const X3DConstants::FieldType X3DField <ValueType>::type = X3DConstants::SFBool;
 
 template <class ValueType>
-X3DField <ValueType>::X3DField () :
-	X3DFieldDefinition (),
-	value ()
-{ }
-
-template <class ValueType>
-X3DField <ValueType>::X3DField (const X3DField & field) :
-	X3DFieldDefinition (),
-	value (field .getValue ())
-{ }
-
-template <class ValueType>
-X3DField <ValueType>::X3DField (const ValueType & value) :
-	X3DFieldDefinition (),
-	value (value)
-{ }
-
-template <class ValueType>
+inline
 X3DField <ValueType>*
 X3DField <ValueType>::clone () const
 {
@@ -259,6 +251,7 @@ X3DField <ValueType>::clone () const
 }
 
 template <class ValueType>
+inline
 X3DField <ValueType> &
 X3DField <ValueType>::operator = (const X3DField & value)
 {
@@ -267,6 +260,7 @@ X3DField <ValueType>::operator = (const X3DField & value)
 }
 
 template <class ValueType>
+inline
 X3DField <ValueType> &
 X3DField <ValueType>::operator = (const ValueType & value)
 {
@@ -275,6 +269,7 @@ X3DField <ValueType>::operator = (const ValueType & value)
 }
 
 template <class ValueType>
+inline
 void
 X3DField <ValueType>::setValue (const ValueType & value)
 {
@@ -291,6 +286,7 @@ X3DField <ValueType>::set (const ValueType & value)
 }
 
 template <class ValueType>
+inline
 void
 X3DField <ValueType>::write (const X3DChildObject & field)
 {
@@ -300,6 +296,7 @@ X3DField <ValueType>::write (const X3DChildObject & field)
 }
 
 template <class ValueType>
+inline
 bool
 X3DField <ValueType>::operator == (const X3DFieldDefinition & field) const
 {
@@ -392,6 +389,7 @@ operator not_eq (const typename X3DField <ValueType>::value_type & lhs, const X3
 }
 
 template <class ValueType>
+inline
 bool
 operator not_eq (const X3DField <ValueType> & lhs, const typename X3DField <ValueType>::value_type & rhs)
 {

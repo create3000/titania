@@ -215,20 +215,6 @@ X3DBaseNode::getCurrentTime () const
 	return getBrowser () -> getCurrentTime ();
 }
 
-X3DBrowser*
-X3DBaseNode::getBrowser () const
-{
-	return browser;
-}
-
-X3DExecutionContext*
-X3DBaseNode::getExecutionContext () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return executionContext;
-}
-
 size_t
 X3DBaseNode::getNumClones () const
 {
@@ -344,6 +330,7 @@ X3DBaseNode::addField (const AccessType accessType, const basic::id & name, X3DF
 	if (fields .find (name) not_eq fields .end ())
 		throw Error <INVALID_FIELD> ("In function " + std::string (__func__) + " 'field " + getTypeName () + "." + name + "' already exists in field set'.");
 
+	field .addParent (this);
 	field .setAccessType (accessType);
 	field .setName (name);
 	field .setAliasName (name);
@@ -466,10 +453,6 @@ X3DBaseNode::getInitializeableFields (const bool all) const
 	return changedFields;
 }
 
-void
-X3DBaseNode::setFields ()
-{ }
-
 const FieldsMap &
 X3DBaseNode::getFields () const
 {
@@ -487,24 +470,13 @@ X3DBaseNode::setup ()
 {
 	executionContext -> addParent (this);
 
-	for (const auto & field : fields)
-		field .second -> addParent (this);
-
 	initialize ();
-
-	//throw Error <NODE_IN_USE> ("Node " + getTypeName () + " named '" + getName () + "' is currently in use in another scene.");
-}
-
-void
-X3DBaseNode::initialize ()
-{
-	// This is only a virtual function and left empty.
 }
 
 void
 X3DBaseNode::notify (X3DChildObject* const object)
 {
-	//std::clog << "Node '" << getTypeName () << "' received an event from field '" << object -> getName () << ": " << object -> getTypeName () << "'." << (void*) this << std::endl;
+	//__LOG__ << "Node '" << getTypeName () << "' received an event from field '" << object -> getName () << ": " << object -> getTypeName () << "'." << (void*) this << std::endl;
 
 	assert (object);
 
@@ -555,18 +527,6 @@ X3DBaseNode::eventsProcessed ()
 	// Call eventsProcessed only if one event was from an eventIn.
 	prepare            = true;
 	receivedInputEvent = false;
-}
-
-void
-X3DBaseNode::pick ()
-{
-	// This is only a virtual function and left empty.
-}
-
-void
-X3DBaseNode::display ()
-{
-	// This is only a virtual function and left empty.
 }
 
 void

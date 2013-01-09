@@ -104,7 +104,8 @@ NavigationInfo::initialize ()
 	directionalLight -> setup ();
 
 	if (displayed)
-		getScene () -> addNavigationInfo (this);
+		for (auto & layer : getLayers ())
+			layer -> getNavigationInfos () .push_back (this);
 }
 
 float
@@ -130,13 +131,13 @@ NavigationInfo::getZFar () const
 void
 NavigationInfo::bindToLayer (X3DLayerNode* const layer)
 {
-	layer -> navigationInfoStack .push (this);
+	layer -> getNavigationInfoStack () .push (this);
 }
 
 void
-NavigationInfo::removeFromLayer (X3DLayerNode* const layer)
+NavigationInfo::unbindFromLayer (X3DLayerNode* const layer)
 {
-	layer -> navigationInfoStack .pop (this);
+	layer -> getNavigationInfoStack () .pop (this);
 }
 
 void
@@ -164,9 +165,11 @@ NavigationInfo::disable ()
 void
 NavigationInfo::dispose ()
 {
+	if (displayed)
+		for (auto & layer : getLayers ())
+			layer -> getNavigationInfos () .erase (this);
+		
 	directionalLight .dispose ();
-
-	getScene () -> removeNavigationInfo (this);
 
 	X3DBindableNode::dispose ();
 }

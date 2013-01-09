@@ -185,13 +185,5 @@ X3DScene::toStream (std::ostream & ostream) const
 	ostream << std::flush;
 }
 
-void
-X3DScene::clear ()
-{
-	metadatas .clear ();
-
-	X3DExecutionContext::clear ();
-}
-
 } // X3D
 } // titania

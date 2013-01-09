@@ -84,27 +84,30 @@ Fog::initialize ()
 {
 	X3DBindableNode::initialize ();
 	X3DFogObject::initialize ();
-
+	
 	if (displayed)
-		getScene () -> addFog (this);
+		for (auto & layer : getLayers ())
+			layer -> getFogs () .push_back (this);
 }
 
 void
 Fog::bindToLayer (X3DLayerNode* const layer)
 {
-	layer -> fogStack .push (this);
+	layer -> getFogStack () .push (this);
 }
 
 void
-Fog::removeFromLayer (X3DLayerNode* const layer)
+Fog::unbindFromLayer (X3DLayerNode* const layer)
 {
-	layer -> fogStack .pop (this);
+	layer -> getFogStack () .pop (this);
 }
 
 void
 Fog::dispose ()
 {
-	getScene () -> removeFog (this);
+	if (displayed)
+		for (auto & layer : getLayers ())
+			layer -> getFogs () .erase (this);
 
 	X3DFogObject::dispose ();
 	X3DBindableNode::dispose ();

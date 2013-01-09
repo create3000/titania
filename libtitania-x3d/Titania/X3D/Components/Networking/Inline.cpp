@@ -50,6 +50,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Execution/Scene.h"
 #include <iostream>
 #include <iterator>
 
@@ -57,8 +58,8 @@ namespace titania {
 namespace X3D {
 
 Inline::Inline (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	        X3DScene (),                                                    
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),                                                    
+	X3DChildNode (), 
 	X3DBoundedObject (),                                                    
 	    X3DUrlObject (),                                                    
 	            load (true)                                                 // SFBool [in,out] load  TRUE
@@ -71,6 +72,8 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "url",        url);
 	addField (initializeOnly, "bboxSize",   bboxSize);
 	addField (initializeOnly, "bboxCenter", bboxCenter);
+	
+	setChildren (scene);
 }
 
 X3DBaseNode*
@@ -82,31 +85,36 @@ Inline::create (X3DExecutionContext* const executionContext) const
 void
 Inline::initialize ()
 {
-	X3DScene::initialize ();
+	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
 
 	load .addInterest (this, &Inline::set_load);
 	url  .addInterest (this, &Inline::set_url);
 
+__LOG__ << url << std::endl;
 	set_url ();
 }
 
 void
 Inline::set_load ()
 {
+__LOG__ << url << std::endl;
+
 	if (load)
 		requestImmediateLoad ();
 	else
 	{
 		setLoadState (NOT_STARTED_STATE);
-		clear ();
+		scene = getBrowser () -> createScene ();
 	}
 }
 
 void
 Inline::set_url ()
 {
+__LOG__ << url << std::endl;
+
 	setLoadState (NOT_STARTED_STATE);
 	requestImmediateLoad ();
 }
@@ -124,14 +132,15 @@ Inline::requestImmediateLoad ()
 
 	try
 	{
-		clear ();
-		loadURL (this, url);
+		scene = createX3DFromURL (url);
+
 		setLoadState (COMPLETE_STATE);
 	}
 	catch (const X3DError & error)
 	{
+		scene = getBrowser () -> createScene ();
+	
 		setLoadState (FAILED_STATE);
-		clear ();
 
 		std::clog << error .what () << std::endl;
 
@@ -143,35 +152,31 @@ Inline::requestImmediateLoad ()
 Box3f
 Inline::getBBox ()
 {
-	return X3DBoundedObject::getBBox (getRootNodes ());
+	return X3DBoundedObject::getBBox (scene -> getRootNodes ());
 }
 
 void
 Inline::pick ()
 {
-	for (const auto & rootNode : getRootNodes ())
+	for (const auto & rootNode : scene -> getRootNodes ())
 		rootNode -> pick ();
 }
 
 void
 Inline::display ()
 {
-	for (const auto & rootNode : getRootNodes ())
+	for (const auto & rootNode : scene -> getRootNodes ())
 		rootNode -> display ();
-}
-
-void
-Inline::toStream (std::ostream & ostream) const
-{
-	X3DChildNode::toStream (ostream);
 }
 
 void
 Inline::dispose ()
 {
+	scene .dispose ();
+
 	X3DUrlObject::dispose ();
 	X3DBoundedObject::dispose ();
-	X3DScene::dispose ();
+	X3DChildNode::dispose ();
 }
 
 } // X3D

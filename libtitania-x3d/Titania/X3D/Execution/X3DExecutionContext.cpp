@@ -92,8 +92,6 @@ X3DExecutionContext::initialize ()
 void
 X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
 {
-	clear ();
-
 	setEncoding             (executionContext -> getEncoding ());
 	setSpecificationVersion (executionContext -> getSpecificationVersion ());
 	setCharacterEncoding    (executionContext -> getCharacterEncoding ());
@@ -407,7 +405,7 @@ throw (Error <INVALID_NAME>,
 
 	if (inlineNode -> checkLoadState () == COMPLETE_STATE)
 	{
-		SFNode <X3DBaseNode> node = inlineNode -> getExportedNode (exportedName);
+		SFNode <X3DBaseNode> node = inlineNode -> getScene () -> getExportedNode (exportedName);
 
 		importedNodes .push_back (localName, node) .setName ({ inlineNode .getNodeName (), exportedName, localName });
 		importedNodes .back ()                     .setName ({ inlineNode .getNodeName (), exportedName, localName });
@@ -807,39 +805,17 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 }
 
 void
-X3DExecutionContext::clear ()
-{
-	//	encoding             .clear ();
-	//	specificationVersion .clear ();
-	//	characterEncoding    .clear ();
-	//	comment              .clear ();
-	//	worldURL             .clear ();
-
-	profile = NULL;
-	components .clear ();
-
-	namedNodes         .clear ();
-	exportedNodes      .clear ();
-	importedNodes      .clear ();
-	protos             .clear ();
-	externProtos       .clear ();
-	routes             .clear ();
-
-	rootNodes .set ({ });
-}
-
-void
 X3DExecutionContext::dispose ()
 {
 	profile = NULL;
 	components .clear ();
 
-	namedNodes         .clear ();
-	exportedNodes      .clear ();
-	importedNodes      .clear ();
-	protos             .clear ();
-	externProtos       .clear ();
-	routes             .clear ();
+	namedNodes    .clear ();
+	exportedNodes .clear ();
+	importedNodes .clear ();
+	protos        .clear ();
+	externProtos  .clear ();
+	routes        .clear ();
 
 	rootNodes .dispose ();
 

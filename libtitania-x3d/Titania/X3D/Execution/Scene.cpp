@@ -57,11 +57,7 @@ namespace X3D {
 Scene::Scene (X3DBrowser* const browser) :
 	    X3DBaseNode (browser, this),      
 	       X3DScene (),                   
-	       layerSet (new LayerSet (this)), 
-	navigationInfos (),                   
-	    backgrounds (),                   
-	           fogs (),                   
-	     viewpoints ()                   
+	       layerSet (new LayerSet (this))
 {
 	std::clog << "Constructing Scene:" << std::endl;
 
@@ -108,86 +104,6 @@ Box3f
 Scene::getBBox ()
 {
 	return getLayerSet () -> getBBox ();
-}
-
-// NavigationInfo list handling
-
-void
-Scene::addNavigationInfo (NavigationInfo* const navigationInfo)
-{
-	navigationInfos .push_back (navigationInfo);
-}
-
-void
-Scene::removeNavigationInfo (NavigationInfo* const navigationInfo)
-{
-	navigationInfos .erase (navigationInfo);
-}
-
-const NavigationInfoList &
-Scene::getNavigationInfos () const
-{
-	return navigationInfos;
-}
-
-// Background list handling
-
-void
-Scene::addBackground (X3DBackgroundNode* const background)
-{
-	backgrounds .push_back (background);
-}
-
-void
-Scene::removeBackground (X3DBackgroundNode* const background)
-{
-	backgrounds .erase (background);
-}
-
-const BackgroundList &
-Scene::getBackgrounds () const
-{
-	return backgrounds;
-}
-
-// Fog list handling
-
-void
-Scene::addFog (Fog* const fog)
-{
-	fogs .push_back (fog);
-}
-
-void
-Scene::removeFog (Fog* const fog)
-{
-	fogs .erase (fog);
-}
-
-const FogList &
-Scene::getFogs () const
-{
-	return fogs;
-}
-
-// Viewpoint list handling
-
-void
-Scene::addViewpoint (X3DViewpointNode* const viewpoint)
-{
-	viewpoints .push_back (viewpoint);
-}
-
-void
-Scene::removeViewpoint (X3DViewpointNode* const viewpoint)
-{
-	viewpoints .erase (viewpoint);
-}
-
-const ViewpointList &
-Scene::getViewpoints () const
-{
-	return viewpoints;
 }
 
 // Root node handling
@@ -256,43 +172,27 @@ throw (Error <INVALID_X3D>,
 {
 	X3DScene::fromStream (istream);
 
-	if (getNavigationInfos () .size ())
-		getNavigationInfos () [0] -> set_bind = true;
-
-	if (getBackgrounds () .size ())
-		getBackgrounds () [0] -> set_bind = true;
-
-	if (getFogs () .size ())
-		getFogs () [0] -> set_bind = true;
-
-	// Bind viewpoint from URL,
-
-	if (getWorldURL () .fragment () .length ())
-		getBrowser () -> changeViewpoint (getWorldURL () .fragment ());
-
-	// or bind first viewpoint in viewpoint stack.
-
-	else if (getViewpoints () .size ())
-		getViewpoints () [0] -> set_bind = true;
+//	if (getNavigationInfos () .size ())
+//		getNavigationInfos () [0] -> set_bind = true;
+//
+//	if (getBackgrounds () .size ())
+//		getBackgrounds () [0] -> set_bind = true;
+//
+//	if (getFogs () .size ())
+//		getFogs () [0] -> set_bind = true;
+//
+//	// Bind viewpoint from URL,
+//
+//	if (getWorldURL () .fragment () .length ())
+//		getBrowser () -> changeViewpoint (getWorldURL () .fragment ());
+//
+//	// or bind first viewpoint in viewpoint stack.
+//
+//	else if (getViewpoints () .size ())
+//		getViewpoints () [0] -> set_bind = true;
 }
 
 // Dispose
-
-void
-Scene::clear ()
-{
-	__LOG__ << getWorldURL () << std::endl;
-
-	navigationInfos .dispose ();
-	backgrounds     .dispose ();
-	viewpoints      .dispose ();
-	fogs            .dispose ();
-
-	layerSet .set (new LayerSet (this));
-	layerSet -> setup ();
-
-	X3DScene::clear ();
-}
 
 void
 Scene::dispose ()
@@ -300,11 +200,6 @@ Scene::dispose ()
 	__LOG__ << getWorldURL () << std::endl;
 
 	layerSet .dispose ();
-
-	navigationInfos .dispose ();
-	backgrounds     .dispose ();
-	viewpoints      .dispose ();
-	fogs            .dispose ();
 
 	X3DScene::dispose ();
 

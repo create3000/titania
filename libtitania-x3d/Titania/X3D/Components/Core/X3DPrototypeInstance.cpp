@@ -68,14 +68,14 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	addField (inputOutput, "metadata", metadata);
 
-	setChildren (proto);
-
 	for (const auto & userDefinedField : proto -> getUserDefinedFields ())
 	{
 		addField (userDefinedField -> getAccessType (),
 		          userDefinedField -> getName (),
 		          *userDefinedField -> clone ());
 	}
+
+	setChildren (proto);
 }
 
 X3DPrototypeInstance*

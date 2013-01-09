@@ -7,4 +7,17 @@ PROTO Test [ ]
   }
 }
 
-Test { }
+Viewpoint {
+	description "1"
+}
+
+Viewpoint {
+	description "2"
+}
+
+DEF T Test { }
+
+Transform {
+	translation 0 1 0
+	children USE T
+}

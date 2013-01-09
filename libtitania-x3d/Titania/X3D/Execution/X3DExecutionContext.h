@@ -361,10 +361,6 @@ protected:
 	void
 	setWorldURL (const basic::uri &);
 
-	virtual
-	void
-	clear ();
-
 
 private:
 

@@ -66,27 +66,22 @@ public:
 	typedef std::vector <string_type>        value_type;
 	typedef size_t                           size_type;
 
-	constexpr
 	basic_id () :
 		value ()
 	{ }
 
-	constexpr
 	basic_id (const basic_id & id) :
 		value (id .value)
 	{ }
 
-	constexpr
 	basic_id (const string_type & string) :
 		value ({ string })
 	{ }
 
-	constexpr
 	basic_id (const char_type* string) :
 		value ({ string })
 	{ }
 
-	constexpr
 	basic_id (std::initializer_list <string_type> list) :
 		value (list)
 	{ }
@@ -143,15 +138,15 @@ public:
 
 	// Capacity:
 
-	constexpr bool
+	bool
 	empty () const
 	{ return value .empty (); }
 
-	constexpr size_type
+	size_type
 	count () const
 	{ return value .size (); }
 
-	constexpr size_type
+	size_type
 	length () const
 	{ return operator [ ] (0) .length (); }
 

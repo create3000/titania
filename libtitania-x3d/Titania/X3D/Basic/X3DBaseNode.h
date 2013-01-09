@@ -92,13 +92,15 @@ public:
 
 	virtual
 	X3DBrowser*
-	getBrowser () const;
+	getBrowser () const
+	{ return browser; }
 
 	virtual
 	X3DExecutionContext*
 	getExecutionContext () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return executionContext; }
 
 	size_t
 	getNumClones () const;
@@ -158,11 +160,11 @@ public:
 
 	virtual
 	void
-	pick ();
+	pick () { }
 
 	virtual
 	void
-	display ();
+	display () { }
 
 	///  @name Input/Output
 
@@ -212,16 +214,12 @@ protected:
 	void
 	addFieldAlias (const std::string &, const std::string &);
 
-	virtual
-	void
-	setFields ();
-
 	const FieldsMap &
 	getFields () const;
 
 	virtual
 	void
-	initialize ();
+	initialize () { }
 
 	virtual
 	void

@@ -63,15 +63,19 @@ X3DLayerNode::X3DLayerNode () :
 	       removeChildren (),                                                   // MFNode[in]      removeChildren            [X3DChildNode]
 	             children (),                                                   // MFNode[in,out]  children        [ ]       [X3DChildNode]
 	      defaultViewport (new Viewport (getExecutionContext ())),              
-	defaultNavigationInfo (new NavigationInfo (getExecutionContext (), false)),                                                   
-	    defaultBackground (new Background     (getExecutionContext (), false)),                                                   
-	           defaultFog (new Fog            (getExecutionContext (), false)),                                                   
-	     defaultViewpoint (new Viewpoint      (getExecutionContext (), false)),                                                   
-	      currentViewport (*defaultViewport),                                                  
-	  navigationInfoStack (*defaultNavigationInfo), 
-	      backgroundStack (*defaultBackground), 
-	             fogStack (*defaultFog), 
-	       viewpointStack (*defaultViewpoint), 
+	defaultNavigationInfo (new NavigationInfo (getExecutionContext (), false)), 
+	    defaultBackground (new Background     (getExecutionContext (), false)), 
+	           defaultFog (new Fog            (getExecutionContext (), false)), 
+	     defaultViewpoint (new Viewpoint      (getExecutionContext (), false)), 
+	      currentViewport (*defaultViewport),                                   
+	  navigationInfoStack (*defaultNavigationInfo),                             
+	      backgroundStack (*defaultBackground),                                 
+	             fogStack (*defaultFog),                                        
+	       viewpointStack (*defaultViewpoint),                                  
+	      navigationInfos (),                                                   
+	          backgrounds (),                                                   
+	                 fogs (),                                                   
+	           viewpoints (),                                                   
 	            localFogs (),                                                   
 	          localLights (),                                                   
 	    cachedLocalLights (),                                                   
@@ -99,10 +103,22 @@ X3DLayerNode::initialize ()
 	defaultBackground     -> setup ();
 	defaultFog            -> setup ();
 	defaultViewpoint      -> setup ();
-	
+
 	defaultBackground -> transparency = 1;
 	defaultFog        -> transparency = 1;
 	defaultViewpoint  -> isBound      = true;
+	
+	if (navigationInfos .size ())
+		navigationInfos [0] -> set_bind = true;
+
+	if (backgrounds .size ())
+		backgrounds [0] -> set_bind = true;
+
+	if (fogs .size ())
+		fogs [0] -> set_bind = true;
+
+	if (viewpoints .size ())
+		viewpoints [0] -> set_bind = true;
 
 	viewport .addInterest (this, &X3DLayerNode::set_viewport);
 	set_viewport ();
@@ -170,7 +186,7 @@ X3DLayerNode::pick ()
 {
 	if (not isPickable)
 		return;
-		
+
 	glPushMatrix ();
 	glLoadIdentity ();
 
@@ -221,6 +237,11 @@ X3DLayerNode::dispose ()
 	defaultBackground     .dispose ();
 	defaultFog            .dispose ();
 	defaultViewpoint      .dispose ();
+
+	navigationInfos .dispose ();
+	backgrounds     .dispose ();
+	viewpoints      .dispose ();
+	fogs            .dispose ();
 
 	// Dont't dispose stack nodes, they were automatically disposed.
 

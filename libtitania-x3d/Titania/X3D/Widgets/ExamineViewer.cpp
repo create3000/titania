@@ -88,7 +88,7 @@ ExamineViewer::initialize ()
 
 	navigationInfo -> transitionComplete .addInterest (this, &ExamineViewer::set_viewpoint);
 
-	getBrowser () -> getExecutionContext () -> getActiveLayer () -> viewpointStack .addInterest (this, &ExamineViewer::set_viewpoint);
+	getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpointStack () .addInterest (this, &ExamineViewer::set_viewpoint);
 
 	set_viewpoint ();
 }
@@ -103,7 +103,7 @@ ExamineViewer::set_viewpoint ()
 	orientation = viewpoint -> getUserOrientation ();
 	distance    = getDistance ();
 
-	__LOG__ << std::endl;
+	__LOG__ << viewpoint -> description << std::endl;
 }
 
 bool
@@ -312,7 +312,7 @@ ExamineViewer::~ExamineViewer ()
 {
 	navigationInfo -> transitionComplete .removeInterest (this, &ExamineViewer::set_viewpoint);
 
-	getBrowser () -> getExecutionContext () -> getActiveLayer () -> viewpointStack .removeInterest (this, &ExamineViewer::set_viewpoint);
+	getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpointStack () .removeInterest (this, &ExamineViewer::set_viewpoint);
 
 	button_press_event_connection   .disconnect ();
 	motion_notify_event_connection  .disconnect ();

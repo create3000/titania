@@ -50,6 +50,7 @@
 #define __TITANIA_X3D_COMPONENTS_LAYERING_X3DLAYER_NODE_H__
 
 #include "../../Execution/BindableNodeStack.h"
+#include "../../Execution/BindableNodeList.h"
 #include "../../Rendering/LightContainerArray.h"
 #include "../../Rendering/X3DRenderer.h"
 #include "../Core/X3DNode.h"
@@ -61,6 +62,11 @@
 
 namespace titania {
 namespace X3D {
+
+typedef BindableNodeList <NavigationInfo>    NavigationInfoList;
+typedef BindableNodeList <X3DBackgroundNode> BackgroundList;
+typedef BindableNodeList <Fog>               FogList;
+typedef BindableNodeList <X3DViewpointNode>  ViewpointList;
 
 typedef std::stack <LocalFog*> LocalFogStack;
 
@@ -90,6 +96,34 @@ public:
 
 	X3DViewpointNode*
 	getViewpoint ();
+
+	///  @name X3DBindableNode stack handling
+
+	BindableNodeStack <NavigationInfo> &
+	getNavigationInfoStack () { return navigationInfoStack; }
+
+	BindableNodeStack <X3DBackgroundNode> &
+	getBackgroundStack () { return backgroundStack; }
+
+	BindableNodeStack <Fog> &
+	getFogStack () { return fogStack; }
+
+	BindableNodeStack <X3DViewpointNode> &
+	getViewpointStack () { return viewpointStack; }
+
+	///  @name X3DBindableNode list handling
+
+	NavigationInfoList &
+	getNavigationInfos () { return navigationInfos; }
+
+	BackgroundList &
+	getBackgrounds () { return backgrounds; }
+
+	FogList &
+	getFogs () { return fogs; }
+
+	ViewpointList &
+	getViewpoints () { return viewpoints; }
 
 	///  @name Fog handling
 
@@ -167,19 +201,18 @@ private:
 	SFNode <X3DBackgroundNode> defaultBackground;
 	SFNode <Fog>               defaultFog;
 	SFNode <X3DViewpointNode>  defaultViewpoint;
-	
+
 	X3DViewportNode* currentViewport;
-
-
-public:
 
 	BindableNodeStack <NavigationInfo>    navigationInfoStack;
 	BindableNodeStack <X3DBackgroundNode> backgroundStack;
 	BindableNodeStack <Fog>               fogStack;
 	BindableNodeStack <X3DViewpointNode>  viewpointStack;
 
-
-private:
+	NavigationInfoList navigationInfos;
+	BackgroundList     backgrounds;
+	FogList            fogs;
+	ViewpointList      viewpoints;
 
 	LocalFogStack       localFogs;
 	LightContainerArray localLights;
