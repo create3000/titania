@@ -7,7 +7,7 @@ DEF VP Viewpoint {
 Anchor {
   url [
     "this-world-does-not-exists.wrl",
-    "LoadedWorld.wrl"
+    "Viewpoint.wrl"
   ]
   children Transform {
     translation 1 0 0

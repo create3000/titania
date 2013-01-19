@@ -172,24 +172,27 @@ throw (Error <INVALID_X3D>,
 {
 	X3DScene::fromStream (istream);
 
-//	if (getNavigationInfos () .size ())
-//		getNavigationInfos () [0] -> set_bind = true;
-//
-//	if (getBackgrounds () .size ())
-//		getBackgrounds () [0] -> set_bind = true;
-//
-//	if (getFogs () .size ())
-//		getFogs () [0] -> set_bind = true;
-//
-//	// Bind viewpoint from URL,
-//
-//	if (getWorldURL () .fragment () .length ())
-//		getBrowser () -> changeViewpoint (getWorldURL () .fragment ());
-//
-//	// or bind first viewpoint in viewpoint stack.
-//
-//	else if (getViewpoints () .size ())
-//		getViewpoints () [0] -> set_bind = true;
+	for (auto & layer : layerSet -> getLayers ())
+	{
+		if (layer -> getNavigationInfos () .size ())
+			layer -> getNavigationInfos () [0] -> set_bind = true;
+
+		if (layer -> getBackgrounds () .size ())
+			layer -> getBackgrounds () [0] -> set_bind = true;
+
+		if (layer -> getFogs () .size ())
+			layer -> getFogs () [0] -> set_bind = true;
+
+		// Bind first viewpoint in viewpoint stack.
+
+		if (layer -> getViewpoints () .size ())
+			layer -> getViewpoints () [0] -> set_bind = true;
+	}
+
+	// Bind viewpoint from URL.
+
+	if (getWorldURL () .fragment () .length ())
+		getBrowser () -> changeViewpoint (getWorldURL () .fragment ());
 }
 
 // Dispose

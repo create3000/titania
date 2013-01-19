@@ -15,7 +15,9 @@ Viewpoint {
 	description "2"
 }
 
-DEF T Test { }
+Transform {
+	children DEF T Test { }
+}
 
 Transform {
 	translation 0 1 0

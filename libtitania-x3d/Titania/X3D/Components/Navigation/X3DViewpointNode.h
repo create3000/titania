@@ -97,6 +97,14 @@ public:
 
 	virtual
 	void
+	addToLayer (X3DLayerNode* const);
+
+	virtual
+	void
+	removeFromLayer (X3DLayerNode* const);
+
+	virtual
+	void
 	lookAt (Box3f);
 
 	virtual
@@ -164,8 +172,6 @@ private:
 
 	SFNode <TimeSensor>           timeSensor;
 	SFNode <PositionInterpolator> positionInterpolator;
-
-	bool displayed;
 
 };
 

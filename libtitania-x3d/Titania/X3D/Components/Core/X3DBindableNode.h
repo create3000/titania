@@ -63,15 +63,31 @@ public:
 	SFTime bindTime;
 	SFBool isBound;
 
+	virtual
+	void
+	realize ();
+		
+	virtual
+	void
+	addToLayer (X3DLayerNode* const) = 0;
+
+	virtual
+	void
+	removeFromLayer (X3DLayerNode* const) = 0;
+
+	virtual
+	void
+	dispose ();
+	
 
 protected:
 
-	X3DBindableNode ();
+	X3DBindableNode (bool);
 
 	virtual
 	void
 	initialize ();
-	
+
 	virtual
 	void
 	bindToLayer (X3DLayerNode* const) = 0;
@@ -89,6 +105,8 @@ private:
 
 	void
 	moveToTop (MFNode <X3DBindableNode> & stack);
+	
+	bool displayed;
 
 };
 

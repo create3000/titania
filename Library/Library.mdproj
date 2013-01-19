@@ -1054,7 +1054,6 @@
     <None Include="Tests\Basic\UTF8.wrl" />
     <None Include="Examples\LogoPieces\logo pieces.wrl" />
     <None Include="Tests\Networking\Anchor\Anchor.wrl" />
-    <None Include="Tests\Networking\Anchor\LoadedWorld.wrl" />
     <None Include="Tests\Interpolation\CoordinateInterpolator.wrl" />
     <None Include="Tests\Interpolation\Interpolators.wrl" />
     <None Include="Tests\Lighting\LocalLight.wrl" />
@@ -1586,6 +1585,7 @@
     <None Include="Examples\BIC\stage\worlds\tuer_brett.wrl" />
     <None Include="Tests\PROTO\test.wrl" />
     <None Include="Tests\Geometry3D\Inline.wrl" />
+    <None Include="Tests\Networking\Anchor\Viewpoint.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

@@ -132,14 +132,12 @@ public:
 	void
 	loadURL (const MFString &)
 	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_X3D>);
+	       Error <URL_UNAVAILABLE>);
 
 	void
 	loadURL (const MFString &, const MFString &)
 	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_X3D>);
+	       Error <URL_UNAVAILABLE>);
 
 	SFNode <Scene>
 	importDocument (/*const XML DOMNode &*/)

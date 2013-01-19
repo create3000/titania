@@ -242,8 +242,7 @@ X3DBrowser::set_scene ()
 void
 X3DBrowser::loadURL (const MFString & url)
 throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_X3D>)
+       Error <URL_UNAVAILABLE>)
 {
 	loadURL (url, { });
 }
@@ -251,8 +250,7 @@ throw (Error <INVALID_URL>,
 void
 X3DBrowser::loadURL (const MFString & url, const MFString & parameter)
 throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_X3D>)
+       Error <URL_UNAVAILABLE>)
 {
 	// where parameter is "target=nameOfFrame"
 
@@ -262,9 +260,14 @@ throw (Error <INVALID_URL>,
 
 	try
 	{
-		X3DUrlObject::loadURL (getExecutionContext (), url);
+		parseIntoScene (getExecutionContext (), url);
 	}
-	catch (const X3DError & error)
+	catch (const Error <INVALID_URL> & error)
+	{
+		replaceWorld (scene);
+		throw error;
+	}
+	catch (const Error <URL_UNAVAILABLE> & error)
 	{
 		replaceWorld (scene);
 		throw error;
@@ -331,13 +334,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	try
 	{
-		const SFNode <X3DViewpointNode> viewpoint = getExecutionContext () -> getNamedNode (name);
-
-		if (viewpoint)
-			viewpoint -> set_bind = true;
-
-		else
-			throw Error <INVALID_NAME> ("Warning: Node named '" + name + "' is not a viewpoint node.");
+		getExecutionContext () -> changeViewpoint (name);
 	}
 	catch (const Error <INVALID_NAME> & error)
 	{

@@ -68,6 +68,14 @@ public:
 
 	virtual
 	void
+	addToLayer (X3DLayerNode* const);
+
+	virtual
+	void
+	removeFromLayer (X3DLayerNode* const);
+
+	virtual
+	void
 	dispose ();
 
 
@@ -84,8 +92,6 @@ private:
 	virtual
 	void
 	unbindFromLayer (X3DLayerNode*);
-
-	bool displayed;
 
 };
 

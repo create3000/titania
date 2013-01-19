@@ -82,6 +82,11 @@ private:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+	
+	const X3DBaseNode*
+	getRootNode () const
+	throw (Error <DISPOSED>)
+	{ return getRootNodes () [0]; }
 
 };
 

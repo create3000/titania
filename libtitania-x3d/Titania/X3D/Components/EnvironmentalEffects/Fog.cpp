@@ -57,9 +57,8 @@ namespace X3D {
 
 Fog::Fog (X3DExecutionContext* const executionContext, bool displayed) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DBindableNode (),                                                    
-	   X3DFogObject (),                                                    
-	      displayed (displayed)                                            
+	X3DBindableNode (displayed),                                                    
+	   X3DFogObject ()                                                    
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Fog");
@@ -84,10 +83,18 @@ Fog::initialize ()
 {
 	X3DBindableNode::initialize ();
 	X3DFogObject::initialize ();
-	
-	if (displayed)
-		for (auto & layer : getLayers ())
-			layer -> getFogs () .push_back (this);
+}
+
+void
+Fog::addToLayer (X3DLayerNode* const layer)
+{
+	layer -> getFogs () .push_back (this);
+}
+
+void
+Fog::removeFromLayer (X3DLayerNode* const layer)
+{
+	layer -> getFogs () .erase (this);
 }
 
 void
@@ -105,10 +112,6 @@ Fog::unbindFromLayer (X3DLayerNode* const layer)
 void
 Fog::dispose ()
 {
-	if (displayed)
-		for (auto & layer : getLayers ())
-			layer -> getFogs () .erase (this);
-
 	X3DFogObject::dispose ();
 	X3DBindableNode::dispose ();
 }

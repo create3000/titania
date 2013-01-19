@@ -69,6 +69,10 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+	
+	virtual
+	void
+	realize ();
 
 	void
 	requestImmediateLoad ();

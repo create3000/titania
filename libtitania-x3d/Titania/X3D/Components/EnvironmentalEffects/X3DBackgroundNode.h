@@ -67,15 +67,19 @@ public:
 
 	virtual
 	void
+	addToLayer (X3DLayerNode* const);
+
+	virtual
+	void
+	removeFromLayer (X3DLayerNode* const);
+
+	virtual
+	void
 	display ();
 
 	virtual
 	void
 	draw ();
-
-	virtual
-	void
-	dispose ();
 
 
 protected:
@@ -107,8 +111,6 @@ private:
 	std::vector <GLfloat> glColors;
 	std::vector <GLfloat> glPoints;
 	GLsizei               numIndices;
-
-	bool displayed;
 
 };
 

@@ -68,13 +68,12 @@ namespace titania {
 namespace X3D {
 
 X3DBackgroundNode::X3DBackgroundNode (bool displayed) :
-	X3DBindableNode (),               
+	X3DBindableNode (displayed),               
 	    groundAngle (),               // MFFloat [in,out] groundAngle   [ ]           [0,π/2]
 	    groundColor (),               // MFColor [in,out] groundColor   [ ]           [0,1]
 	       skyAngle (),               // MFFloat [in,out] skyAngle      [ ]           [0,π]
 	       skyColor ({ SFColor () }), // MFColor [in,out] skyColor      0 0 0         [0,1]
-	   transparency (),               // SFFloat [in,out] transparency  0             [0,1]
-	      displayed (displayed)       
+	   transparency ()                // SFFloat [in,out] transparency  0             [0,1]      
 {
 	addNodeType (X3DConstants::X3DBackgroundNode);
 }
@@ -84,11 +83,19 @@ X3DBackgroundNode::initialize ()
 {
 	X3DBindableNode::initialize ();
 
-	if (displayed)
-		for (auto & layer : getLayers ())
-			layer -> getBackgrounds () .push_back (this);
-
 	build ();
+}
+
+void
+X3DBackgroundNode::addToLayer (X3DLayerNode* const layer)
+{
+	layer -> getBackgrounds () .push_back (this);
+}
+
+void
+X3DBackgroundNode::removeFromLayer (X3DLayerNode* const layer)
+{
+	layer -> getBackgrounds () .erase (this);
 }
 
 void
@@ -408,16 +415,6 @@ X3DBackgroundNode::draw ()
 	}
 
 	glPolygonMode (GL_FRONT_AND_BACK, polygonMode [0]);
-}
-
-void
-X3DBackgroundNode::dispose ()
-{
-	if (displayed)
-		for (auto & layer : getLayers ())
-			layer -> getBackgrounds () .erase (this);
-
-	X3DBindableNode::dispose ();
 }
 
 } // X3D

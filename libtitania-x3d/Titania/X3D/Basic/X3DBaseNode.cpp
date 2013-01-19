@@ -330,7 +330,6 @@ X3DBaseNode::addField (const AccessType accessType, const basic::id & name, X3DF
 	if (fields .find (name) not_eq fields .end ())
 		throw Error <INVALID_FIELD> ("In function " + std::string (__func__) + " 'field " + getTypeName () + "." + name + "' already exists in field set'.");
 
-	field .addParent (this);
 	field .setAccessType (accessType);
 	field .setName (name);
 	field .setAliasName (name);
@@ -469,6 +468,9 @@ void
 X3DBaseNode::setup ()
 {
 	executionContext -> addParent (this);
+	
+	for (auto & field : fields)
+		field .second -> addParent (this);
 
 	initialize ();
 }

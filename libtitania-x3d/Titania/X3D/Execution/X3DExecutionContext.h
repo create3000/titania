@@ -333,6 +333,12 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	void
+	changeViewpoint (const std::string &)
+	throw (Error <INVALID_NAME>,
+			 Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	///  @name Input/Output
 
 	void

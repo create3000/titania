@@ -69,7 +69,6 @@
     <None Include="Titania\Math\Geometry\Plane3.h" />
     <None Include="Titania\Math\Geometry\Sphere3.h" />
     <None Include="Titania\Math\Math.h" />
-    <None Include="Titania\Math\Image.h" />
     <None Include="Titania\OS\Env.h" />
     <None Include="Titania\OS\FindDataFile.h" />
     <None Include="Titania\OS\System.h" />
@@ -99,6 +98,7 @@
     <None Include="Titania\Chrono\StopWatch.h" />
     <None Include="Titania\Math\Geometry\Box2.h" />
     <None Include="Titania\Math\Geometry\Box3.h" />
+    <None Include="Titania\Math\Image.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
@@ -117,7 +117,6 @@
     <Compile Include="Titania\Math\Geometry\Line3.cpp" />
     <Compile Include="Titania\Math\Geometry\Plane3.cpp" />
     <Compile Include="Titania\Math\Geometry\Sphere3.cpp" />
-    <Compile Include="Titania\Math\Image.cpp" />
     <Compile Include="Titania\OS\Env.cpp" />
     <Compile Include="Titania\OS\FindDataFile.cpp" />
     <Compile Include="Titania\OS\System.cpp" />
@@ -133,6 +132,7 @@
     <Compile Include="Titania\String\strfsize.cpp" />
     <Compile Include="Titania\Chrono\StopWatch.cpp" />
     <Compile Include="Titania\Math\Geometry\Box2.cpp" />
+    <Compile Include="Titania\Math\Image.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

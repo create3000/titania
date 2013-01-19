@@ -78,12 +78,12 @@ public:
 	getType () const
 	throw (Error <DISPOSED>);
 
-	X3DBaseNode*
-	getRootNode ();
-
 	virtual
 	X3DBaseNode*
 	getLocalNode ();
+
+	X3DBaseNode*
+	getRootNode ();
 
 	virtual
 	void

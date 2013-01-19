@@ -81,6 +81,14 @@ public:
 	float
 	getZFar () const;
 
+	virtual
+	void
+	addToLayer (X3DLayerNode* const);
+
+	virtual
+	void
+	removeFromLayer (X3DLayerNode* const);
+
 	void
 	enable ();
 
@@ -107,7 +115,6 @@ private:
 	unbindFromLayer (X3DLayerNode* const);
 
 	SFNode <DirectionalLight> directionalLight;
-	bool                      displayed;
 
 };
 

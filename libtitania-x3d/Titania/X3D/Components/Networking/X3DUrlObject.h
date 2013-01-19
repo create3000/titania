@@ -112,15 +112,13 @@ public:
 	void
 	createX3DFromURL (const MFString &, const SFNode <X3DBaseNode> &, const basic::id &)
 	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_X3D>);
+	       Error <URL_UNAVAILABLE>);
 
 	///
 	SFNode <Scene>
 	createX3DFromURL (const MFString &)
 	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_X3D>);
+	       Error <URL_UNAVAILABLE>);
 
 	///  @name Stream Handling
 
@@ -197,10 +195,9 @@ protected:
 	setLoadState (LoadState);
 
 	void
-	loadURL (X3DScene* const, const MFString &)
+	parseIntoScene (X3DScene* const, const MFString &)
 	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_X3D>);
+	       Error <URL_UNAVAILABLE>);
 
 	virtual
 	void

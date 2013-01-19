@@ -1,3 +1,35 @@
+2013-01-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Parser.h:
+	* Parser.cpp:
+	* Proto.h:
+	* Scene.cpp:
+	* X3DBaseNode.h:
+	* X3DBrowser.h:
+	* X3DBaseNode.cpp:
+	* X3DBrowser.cpp:
+	* PointingDevice.cpp:
+	* Inline.h:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* Anchor.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DBindableNode.h:
+	* X3DBindableNode.cpp:
+	* X3DLayerNode.cpp:
+	* X3DUrlObject.h:
+	* Fog.h:
+	* X3DUrlObject.cpp:
+	* NavigationInfo.h:
+	* X3DPrototypeInstance.h:
+	* Fog.cpp:
+	* X3DPrototypeInstance.cpp:
+	* X3DViewpointNode.h:
+	* NavigationInfo.cpp:
+	* X3DViewpointNode.cpp:
+	* X3DBackgroundNode.h:
+	* X3DBackgroundNode.cpp: 
+
 2013-01-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DField.h:

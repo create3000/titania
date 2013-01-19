@@ -56,11 +56,12 @@
 namespace titania {
 namespace X3D {
 
-X3DBindableNode::X3DBindableNode () :
+X3DBindableNode::X3DBindableNode (bool displayed) :
 	X3DChildNode (), 
 	    set_bind (), // SFBool [in]  set_bind
 	    bindTime (), // SFTime [out] bindTime
-	     isBound ()  // SFBool [out] isBound
+	     isBound (),  // SFBool [out] isBound
+	   displayed (displayed)
 {
 	addNodeType (X3DConstants::X3DBindableNode);
 }
@@ -71,6 +72,16 @@ X3DBindableNode::initialize ()
 	X3DChildNode::initialize ();
 
 	set_bind .addInterest (this, &X3DBindableNode::_set_bind);
+}
+
+void
+X3DBindableNode::realize ()
+{
+	X3DChildNode::initialize ();
+
+	if (displayed)
+		for (auto & layer : getLayers ())
+			addToLayer (layer);
 }
 
 void
@@ -108,6 +119,16 @@ X3DBindableNode::moveToTop (MFNode <X3DBindableNode> & stack)
 		stack .erase (iter);
 
 	stack .push_back (this);
+}
+
+void
+X3DBindableNode::dispose ()
+{
+	if (displayed)
+		for (auto & layer : getLayers ())
+			removeFromLayer (layer);
+
+	X3DChildNode::dispose ();
 }
 
 } // X3D

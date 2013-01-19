@@ -132,25 +132,32 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 
 			if (pick (event -> x, getBrowser () -> get_height () - event -> y))
 			{
-				Hit* hit = getBrowser () -> getHits () .front ();
-
-				for (const auto & node : hit -> nodes)
+				try
 				{
-					Anchor* anchor = dynamic_cast <Anchor*> (node);
+					Hit* hit = getBrowser () -> getHits () .front ();
 
-					if (anchor)
+					for (const auto & node : hit -> nodes)
 					{
-						anchor -> activate ();
-						break;
-					}
+						Anchor* anchor = dynamic_cast <Anchor*> (node);
 
-					X3DPointingDeviceSensorNode* pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+						if (anchor)
+						{
+							anchor -> activate ();
+							break;
+						}
 
-					if (pointingDeviceSensorNode)
-					{
-						pointingDeviceSensorNode -> update ();
-						continue;
+						X3DPointingDeviceSensorNode* pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+
+						if (pointingDeviceSensorNode)
+						{
+							pointingDeviceSensorNode -> update ();
+							continue;
+						}
 					}
+				}
+				catch (const X3DError & error)
+				{
+					std::clog << error .what () << std::endl;
 				}
 
 				//return true;

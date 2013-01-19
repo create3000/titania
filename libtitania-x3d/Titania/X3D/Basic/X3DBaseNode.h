@@ -146,6 +146,10 @@ public:
 
 	virtual
 	void
+	realize () { }
+
+	virtual
+	void
 	processEvents (ChildObjectSet &);
 
 	virtual

@@ -50,6 +50,7 @@
 
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
+#include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Networking/Inline.h"
 #include "../Prototype/ExternProto.h"
 #include "../Prototype/Proto.h"
@@ -270,7 +271,7 @@ throw (Error <INVALID_NAME>,
 		}
 		catch (const std::out_of_range &)
 		{
-			if (getExecutionContext () -> getExecutionContext () not_eq this)
+			if (getExecutionContext () not_eq this)
 				return getExecutionContext () -> createProtoInstance (name, setup);
 
 			throw Error <INVALID_NAME> ("Unknown proto type '" + name + "'.");
@@ -700,6 +701,31 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	return routes;
+}
+
+void
+X3DExecutionContext::changeViewpoint (const std::string & name)
+throw (Error <INVALID_NAME>,
+		 Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	try
+	{
+		const SFNode <X3DViewpointNode> viewpoint = getNamedNode (name);
+
+		if (viewpoint)
+			viewpoint -> set_bind = true;
+
+		else
+			throw Error <INVALID_NAME> ("Warning: Node named '" + name + "' is not a viewpoint node.");
+	}
+	catch (const Error <INVALID_NAME> & error)
+	{
+		if (getExecutionContext () not_eq this)
+			getExecutionContext () -> changeViewpoint (name);
+		else
+			throw error;	
+	}
 }
 
 void

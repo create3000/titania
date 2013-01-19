@@ -91,7 +91,23 @@ Anchor::initialize ()
 void
 Anchor::requestImmediateLoad ()
 {
-	getBrowser () -> loadURL (transformURI (url), parameter);
+	for (const auto & URL : url)
+	{
+		try
+		{
+			basic::uri uri = URL .str ();
+			
+			if (uri .filename () .length ())
+				getBrowser () -> loadURL ({ transformURI (uri) .str () }, parameter);
+		
+			else
+				getExecutionContext () -> changeViewpoint (uri .fragment ());
+
+			break;
+		}
+		catch (const X3DError &)
+		{ }
+	}
 }
 
 void

@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 X3DViewpointNode::X3DViewpointNode (bool displayed) :
-	            X3DBindableNode (),                                                 
+	            X3DBindableNode (displayed),                                                 
 	                description (),                                                 // SFString   [in,out] description       ""
 	                orientation (),                                                 // SFRotation [in,out] orientation       0 0 1 0        [-1,1],(-∞,∞)
 	           centerOfRotation (),                                                 // SFVec3f    [in,out] centerOfRotation  0 0 0          (-∞,∞)
@@ -70,8 +70,7 @@ X3DViewpointNode::X3DViewpointNode (bool displayed) :
 	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1), 
 	           differenceMatrix (),                                                 
 	                 timeSensor (),                                                 
-	       positionInterpolator (),                                                 
-	                  displayed (displayed)                                         
+	       positionInterpolator ()                                                                                      
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
 
@@ -101,10 +100,6 @@ X3DViewpointNode::initialize ()
 	positionInterpolator -> value_changed    .addInterest (positionOffset);
 
 	isBound .addInterest (this, &X3DViewpointNode::_set_bind);
-
-	if (displayed)
-		for (auto & layer : getLayers ())
-			layer -> getViewpoints () .push_back (this);
 }
 
 Vector3f
@@ -130,6 +125,18 @@ X3DViewpointNode::setTransformationMatrix (const Matrix4f & value)
 {
 	transformationMatrix        = value;
 	inverseTransformationMatrix = ~value;
+}
+
+void
+X3DViewpointNode::addToLayer (X3DLayerNode* const layer)
+{
+	layer -> getViewpoints () .push_back (this);
+}
+
+void
+X3DViewpointNode::removeFromLayer (X3DLayerNode* const layer)
+{
+	layer -> getViewpoints () .erase (this);
 }
 
 void
@@ -257,10 +264,6 @@ X3DViewpointNode::reshape ()
 void
 X3DViewpointNode::dispose ()
 {
-	if (displayed)
-		for (auto & layer : getLayers ())
-			layer -> getViewpoints () .erase (this);
-
 	timeSensor           .dispose ();
 	positionInterpolator .dispose ();
 

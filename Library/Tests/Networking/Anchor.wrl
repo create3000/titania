@@ -5,7 +5,7 @@ Viewpoint {
 }
 
 Anchor {
-  url [ "this-world-does-not-exists.wrl", "LoadedWorld.wrl" ]
+  url [ "", "this-world-does-not-exists.wrl", "Anchor/Viewpoint.wrl" ]
   children Transform {
     children Shape {
       appearance Appearance {

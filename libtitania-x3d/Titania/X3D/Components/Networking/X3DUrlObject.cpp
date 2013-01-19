@@ -139,28 +139,25 @@ throw (Error <INVALID_X3D>,
 void
 X3DUrlObject::createX3DFromURL (const MFString & url, const SFNode <X3DBaseNode> & node, const basic::id & fieldName)
 throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_X3D>)
+       Error <URL_UNAVAILABLE>)
 { }
 
 SFNode <Scene>
 X3DUrlObject::createX3DFromURL (const MFString & url)
 throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_X3D>)
+       Error <URL_UNAVAILABLE>)
 {
 	SFNode <Scene> scene = getBrowser () -> createScene ();
 
-	loadURL (*scene, url);
+	parseIntoScene (*scene, url);
 
 	return scene;
 }
 
 void
-X3DUrlObject::loadURL (X3DScene* const scene, const MFString & url)
+X3DUrlObject::parseIntoScene (X3DScene* const scene, const MFString & url)
 throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_X3D>)
+       Error <URL_UNAVAILABLE>)
 {
 	if (url .size ())
 	{
@@ -182,7 +179,7 @@ throw (Error <INVALID_URL>,
 			}
 		}
 
-		throw Error <INVALID_URL> ("Couldn't load any URL of " + url .toString () + ".");
+		throw Error <URL_UNAVAILABLE> ("Couldn't load any URL of " + url .toString () + ".");
 	}
 	else
 		throw Error <INVALID_URL> ("No URL given.");

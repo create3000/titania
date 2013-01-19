@@ -113,17 +113,17 @@ throw (Error <DISPOSED>)
 }
 
 X3DBaseNode*
+X3DPrototypeInstance::getLocalNode ()
+{
+	return getRootNode () -> getLocalNode ();
+}
+
+X3DBaseNode*
 X3DPrototypeInstance::getRootNode ()
 {
 	//assert (getRootNodes () .size ());
 
 	return getRootNodes () .front ();
-}
-
-X3DBaseNode*
-X3DPrototypeInstance::getLocalNode ()
-{
-	return getRootNode () -> getLocalNode ();
 }
 
 void

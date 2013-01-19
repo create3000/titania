@@ -92,15 +92,39 @@ Inline::initialize ()
 	load .addInterest (this, &Inline::set_load);
 	url  .addInterest (this, &Inline::set_url);
 
-__LOG__ << url << std::endl;
 	set_url ();
+}
+
+void
+Inline::realize ()
+{
+	X3DChildNode::realize ();
+	
+	if (getBrowser () -> getBrowserOptions () -> enableInlineViewpoints)
+	{
+		for (auto & layer : getLayers ())
+		{
+			for (const auto & sceneLayer : scene -> getLayerSet () -> getLayers ())
+			{
+				for (auto & navigationInfo : sceneLayer -> getNavigationInfos ())
+					navigationInfo -> addToLayer (layer);
+				
+				for (auto & background : sceneLayer -> getBackgrounds ())
+					background -> addToLayer (layer);
+					
+				for (auto & fog : sceneLayer -> getFogs ())
+					fog -> addToLayer (layer);
+					
+				for (auto & viewpoint : sceneLayer -> getViewpoints ())
+					viewpoint -> addToLayer (layer);
+			}
+		}
+	}
 }
 
 void
 Inline::set_load ()
 {
-__LOG__ << url << std::endl;
-
 	if (load)
 		requestImmediateLoad ();
 	else
@@ -113,8 +137,6 @@ __LOG__ << url << std::endl;
 void
 Inline::set_url ()
 {
-__LOG__ << url << std::endl;
-
 	setLoadState (NOT_STARTED_STATE);
 	requestImmediateLoad ();
 }

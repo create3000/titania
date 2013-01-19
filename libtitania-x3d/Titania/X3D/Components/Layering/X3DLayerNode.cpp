@@ -107,18 +107,6 @@ X3DLayerNode::initialize ()
 	defaultBackground -> transparency = 1;
 	defaultFog        -> transparency = 1;
 	defaultViewpoint  -> isBound      = true;
-	
-	if (navigationInfos .size ())
-		navigationInfos [0] -> set_bind = true;
-
-	if (backgrounds .size ())
-		backgrounds [0] -> set_bind = true;
-
-	if (fogs .size ())
-		fogs [0] -> set_bind = true;
-
-	if (viewpoints .size ())
-		viewpoints [0] -> set_bind = true;
 
 	viewport .addInterest (this, &X3DLayerNode::set_viewport);
 	set_viewport ();
