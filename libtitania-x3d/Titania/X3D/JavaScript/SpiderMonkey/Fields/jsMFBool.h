@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_MFBOOL_H__

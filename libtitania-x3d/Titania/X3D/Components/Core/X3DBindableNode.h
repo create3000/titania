@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DBINDABLE_NODE_H__
@@ -66,7 +68,7 @@ public:
 	virtual
 	void
 	realize ();
-		
+
 	virtual
 	void
 	addToLayer (X3DLayerNode* const) = 0;
@@ -78,7 +80,7 @@ public:
 	virtual
 	void
 	dispose ();
-	
+
 
 protected:
 
@@ -97,7 +99,6 @@ protected:
 	unbindFromLayer (X3DLayerNode* const) = 0;
 
 
-
 private:
 
 	void
@@ -105,7 +106,7 @@ private:
 
 	void
 	moveToTop (MFNode <X3DBindableNode> & stack);
-	
+
 	bool displayed;
 
 };

@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #ifndef __TITANIA_MATH_NUMBERS_MATRIX3_H__
@@ -679,7 +681,7 @@ matrix3 <Type>::factor (matrix3 & r, vector2 <S> & s, matrix3 & u, vector2 <T> &
 	double det_sign = (det < 0 ? -1 : 1);
 
 	if (det_sign * det < 1e-12)
-		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              // singular
+		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   // singular
 
 	/* (4) B = A * !A  (here !A means A transpose) */
 	matrix3 b = a * ! a;

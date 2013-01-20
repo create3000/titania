@@ -134,6 +134,7 @@ public:
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
 
+	virtual
 	void
 	loadURL (const MFString &, const MFString &)
 	throw (Error <INVALID_URL>,

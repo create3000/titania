@@ -1586,6 +1586,8 @@
     <None Include="Tests\PROTO\test.wrl" />
     <None Include="Tests\Geometry3D\Inline.wrl" />
     <None Include="Tests\Networking\Anchor\Viewpoint.wrl" />
+    <None Include="Tests\Scripting\Viewpoint.wrl" />
+    <None Include="Examples\Mikroben\stage\Import_proto.wrl.gz" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

@@ -34,5 +34,7 @@
     <None Include="titania.xcf" />
     <None Include="website.svg" />
     <None Include="screenshots.xcf" />
+    <None Include="icon32.png" />
+    <None Include="icon128.png" />
   </ItemGroup>
 </Project>

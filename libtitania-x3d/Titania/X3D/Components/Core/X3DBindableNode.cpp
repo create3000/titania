@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "X3DBindableNode.h"
@@ -57,11 +59,11 @@ namespace titania {
 namespace X3D {
 
 X3DBindableNode::X3DBindableNode (bool displayed) :
-	X3DChildNode (), 
-	    set_bind (), // SFBool [in]  set_bind
-	    bindTime (), // SFTime [out] bindTime
-	     isBound (),  // SFBool [out] isBound
-	   displayed (displayed)
+	X3DChildNode (),         
+	    set_bind (),         // SFBool [in]  set_bind
+	    bindTime (),         // SFTime [out] bindTime
+	     isBound (),         // SFBool [out] isBound
+	   displayed (displayed) 
 {
 	addNodeType (X3DConstants::X3DBindableNode);
 }
@@ -82,6 +84,7 @@ X3DBindableNode::realize ()
 	if (displayed)
 		for (auto & layer : getLayers ())
 			addToLayer (layer);
+
 }
 
 void

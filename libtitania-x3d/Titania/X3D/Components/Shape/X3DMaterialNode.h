@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #ifndef __TITANIA_X3D_COMPONENTS_SHAPE_X3DMATERIAL_NODE_H__

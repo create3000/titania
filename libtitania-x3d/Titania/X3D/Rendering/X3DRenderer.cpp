@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "X3DRenderer.h"
@@ -117,7 +119,7 @@ X3DRenderer::draw ()
 	numNodes                 = numOpaqueNodes + numTransparentNodes;
 	numNodesDrawn            = 0;
 	numTransparentNodesDrawn = 0;
-	
+
 	glPushMatrix ();
 	glLoadIdentity ();
 

@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "X3DBrowserUserInterface.h"
@@ -55,7 +57,7 @@ namespace puck {
 
 X3DBrowserUserInterface::X3DBrowserUserInterface (const std::string & sessionKey, X3DBrowserInterface* const browserWidget) :
 	 X3DBrowserWidgetUI (get_ui ("BrowserWidget.ui"), sessionKey), 
-	X3DBrowserInterface (X3D::createBrowser ()),                                            
+	X3DBrowserInterface (X3D::createBrowser ()),                   
 	    viewpointEditor (sessionKey, this),                        
 	      historyEditor (sessionKey, this),                        
 	      outlineEditor (sessionKey, this)                         

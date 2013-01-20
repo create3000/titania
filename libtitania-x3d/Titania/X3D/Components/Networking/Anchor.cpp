@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "Anchor.h"
@@ -91,23 +93,7 @@ Anchor::initialize ()
 void
 Anchor::requestImmediateLoad ()
 {
-	for (const auto & URL : url)
-	{
-		try
-		{
-			basic::uri uri = URL .str ();
-			
-			if (uri .filename () .length ())
-				getBrowser () -> loadURL ({ transformURI (uri) .str () }, parameter);
-		
-			else
-				getExecutionContext () -> changeViewpoint (uri .fragment ());
-
-			break;
-		}
-		catch (const X3DError &)
-		{ }
-	}
+	loadURL (url, parameter);
 }
 
 void

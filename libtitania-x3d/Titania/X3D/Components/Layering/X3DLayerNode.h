@@ -44,13 +44,15 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #ifndef __TITANIA_X3D_COMPONENTS_LAYERING_X3DLAYER_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_LAYERING_X3DLAYER_NODE_H__
 
-#include "../../Execution/BindableNodeStack.h"
 #include "../../Execution/BindableNodeList.h"
+#include "../../Execution/BindableNodeStack.h"
 #include "../../Rendering/LightContainerArray.h"
 #include "../../Rendering/X3DRenderer.h"
 #include "../Core/X3DNode.h"

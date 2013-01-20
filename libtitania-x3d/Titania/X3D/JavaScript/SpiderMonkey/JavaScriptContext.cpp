@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "JavaScriptContext.h"
@@ -240,27 +242,10 @@ JavaScriptContext::evaluate (const std::string & string, const std::string & fil
 }
 
 void
-JavaScriptContext::callFunction (const std::string & function)
-{
-	jsval     func_val = JSVAL_VOID;
-	JSObject* objp;
-
-	JSBool result = JS_GetMethod (context, global, function .c_str (), &objp, &func_val);
-
-	if (not result or JSVAL_IS_VOID (func_val))
-		return;
-
-	jsval rval;
-	JS_CallFunctionValue (context, global, func_val, 0, NULL, &rval);
-
-	JS_GC (context);
-}
-
-void
 JavaScriptContext::set_field (const X3DFieldDefinition & field)
 {
 	jsval     func_val = JSVAL_VOID;
-	JSObject* objp;
+	JSObject* objp     = NULL;
 
 	JSBool result = JS_GetMethod (context, global, field .getName () [0] .c_str (), &objp, &func_val);
 
@@ -305,6 +290,23 @@ void
 JavaScriptContext::shutdown ()
 {
 	callFunction ("shutdown");
+}
+
+void
+JavaScriptContext::callFunction (const std::string & function)
+{
+	jsval     func_val = JSVAL_VOID;
+	JSObject* objp     = NULL;
+
+	JSBool result = JS_GetMethod (context, global, function .c_str (), &objp, &func_val);
+
+	if (not result or JSVAL_IS_VOID (func_val))
+		return;
+
+	jsval rval;
+	JS_CallFunctionValue (context, global, func_val, 0, NULL, &rval);
+
+	JS_GC (context);
 }
 
 void

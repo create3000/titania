@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "Fog.h"
@@ -57,8 +59,8 @@ namespace X3D {
 
 Fog::Fog (X3DExecutionContext* const executionContext, bool displayed) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DBindableNode (displayed),                                                    
-	   X3DFogObject ()                                                    
+	X3DBindableNode (displayed),                                           
+	   X3DFogObject ()                                                     
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Fog");

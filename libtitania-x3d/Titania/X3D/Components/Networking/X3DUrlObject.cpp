@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "X3DUrlObject.h"
@@ -152,6 +154,30 @@ throw (Error <INVALID_URL>,
 	parseIntoScene (*scene, url);
 
 	return scene;
+}
+
+void
+X3DUrlObject::loadURL (const MFString & url, const MFString & parameter)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>)
+{
+	for (const auto & URL : url)
+	{
+		try
+		{
+			basic::uri uri = URL .str ();
+
+			if (uri .filename () .length ())
+				getBrowser () -> loadURL ({ transformURI (uri) .str () }, parameter);
+
+			else
+				getExecutionContext () -> changeViewpoint (uri .fragment ());
+
+			break;
+		}
+		catch (const X3DError &)
+		{ }
+	}
 }
 
 void

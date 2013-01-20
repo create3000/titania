@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #ifndef __TITANIA_X3D_EXECUTION_X3DEXECUTION_CONTEXT_H__
@@ -336,7 +338,7 @@ public:
 	void
 	changeViewpoint (const std::string &)
 	throw (Error <INVALID_NAME>,
-			 Error <INVALID_OPERATION_TIMING>,
+	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	///  @name Input/Output

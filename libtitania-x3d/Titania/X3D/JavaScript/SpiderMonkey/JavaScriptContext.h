@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JAVA_SCRIPT_CONTEXT_H__
@@ -111,10 +113,10 @@ private:
 	static JSBool setProperty (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
 	void
-	callFunction (const std::string &);
+	set_field (const X3DFieldDefinition &);
 
 	void
-	set_field (const X3DFieldDefinition &);
+	callFunction (const std::string &);
 
 	static
 	void

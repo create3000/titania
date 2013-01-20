@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "X3DBrowserWindow.h"
@@ -452,10 +454,11 @@ X3DBrowserWindow::setTabLabel (size_t position)
 	//closeImage -> set (closeIcon, Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
 
 	// Close button.
-	Gtk::Image*    closeImage = new Gtk::Image (Gtk::StockID ("gtk-close"), Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
+	Gtk::Image* closeImage = new Gtk::Image (Gtk::StockID ("gtk-close"), Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
+
 	closeImage -> set_pixel_size (1);
-	
-	Gtk::EventBox* closeBox   = new Gtk::EventBox ();
+
+	Gtk::EventBox* closeBox = new Gtk::EventBox ();
 
 	closeBox -> set_visible_window (false);
 	closeBox -> add (*Gtk::manage (closeImage));

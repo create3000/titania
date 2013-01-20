@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "Scene.h"
@@ -55,9 +57,9 @@ namespace titania {
 namespace X3D {
 
 Scene::Scene (X3DBrowser* const browser) :
-	    X3DBaseNode (browser, this),      
-	       X3DScene (),                   
-	       layerSet (new LayerSet (this))
+	X3DBaseNode (browser, this),      
+	   X3DScene (),                   
+	   layerSet (new LayerSet (this)) 
 {
 	std::clog << "Constructing Scene:" << std::endl;
 

@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "X3DBaseNode.h"
@@ -468,7 +470,7 @@ void
 X3DBaseNode::setup ()
 {
 	executionContext -> addParent (this);
-	
+
 	for (auto & field : fields)
 		field .second -> addParent (this);
 

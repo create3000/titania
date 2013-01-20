@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "jsBrowser.h"
@@ -283,7 +285,7 @@ jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
 
 		MFString* parameter = (MFString*) JS_GetPrivate (context, oparameter);
 
-		script -> getBrowser () -> loadURL (*url, *parameter);
+		script -> loadURL (*url, *parameter);
 
 		JS_SET_RVAL (context, vp, JSVAL_VOID);
 

@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "X3DViewpointNode.h"
@@ -56,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 X3DViewpointNode::X3DViewpointNode (bool displayed) :
-	            X3DBindableNode (displayed),                                                 
+	            X3DBindableNode (displayed),                                        
 	                description (),                                                 // SFString   [in,out] description       ""
 	                orientation (),                                                 // SFRotation [in,out] orientation       0 0 1 0        [-1,1],(-∞,∞)
 	           centerOfRotation (),                                                 // SFVec3f    [in,out] centerOfRotation  0 0 0          (-∞,∞)
@@ -70,7 +72,7 @@ X3DViewpointNode::X3DViewpointNode (bool displayed) :
 	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1), 
 	           differenceMatrix (),                                                 
 	                 timeSensor (),                                                 
-	       positionInterpolator ()                                                                                      
+	       positionInterpolator ()                                                  
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
 
@@ -272,4 +274,3 @@ X3DViewpointNode::dispose ()
 
 } // X3D
 } // titania
-

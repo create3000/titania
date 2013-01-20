@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "NavigationInfo.h"
@@ -59,7 +61,7 @@ namespace X3D {
 
 NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, bool displayed) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	   X3DBindableNode (displayed),                                                    
+	   X3DBindableNode (displayed),                                           
 	        avatarSize ({ 0.25, 1.6, 0.75 }),                                 // MFFloat  [in,out] avatarSize         [0.25 1.6 0.75]        [0,∞)
 	         headlight (true),                                                // SFBool   [in,out] headlight          TRUE
 	             speed (1),                                                   // SFFloat  [in,out] speed              1.0                    [0,∞)
@@ -68,7 +70,7 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, boo
 	              type ({ "EXAMINE", "ANY" }),                                // MFString [in,out] type               { "EXAMINE", "ANY" }
 	   visibilityLimit (),                                                    // SFFloat  [in,out] visibilityLimit    0
 	transitionComplete (),                                                    // SFBool   [out]    transitionComplete
-	  directionalLight (new DirectionalLight (executionContext))                                                       
+	  directionalLight (new DirectionalLight (executionContext))              
 {
 	setComponent ("Navigation");
 	setTypeName ("NavigationInfo");

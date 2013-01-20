@@ -44,13 +44,15 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "Inline.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../../Execution/X3DExecutionContext.h"
 #include "../../Execution/Scene.h"
+#include "../../Execution/X3DExecutionContext.h"
 #include <iostream>
 #include <iterator>
 
@@ -58,8 +60,8 @@ namespace titania {
 namespace X3D {
 
 Inline::Inline (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext),                                                    
-	X3DChildNode (), 
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DChildNode (),                                                    
 	X3DBoundedObject (),                                                    
 	    X3DUrlObject (),                                                    
 	            load (true)                                                 // SFBool [in,out] load  TRUE
@@ -72,7 +74,7 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "url",        url);
 	addField (initializeOnly, "bboxSize",   bboxSize);
 	addField (initializeOnly, "bboxCenter", bboxCenter);
-	
+
 	setChildren (scene);
 }
 
@@ -99,7 +101,7 @@ void
 Inline::realize ()
 {
 	X3DChildNode::realize ();
-	
+
 	if (getBrowser () -> getBrowserOptions () -> enableInlineViewpoints)
 	{
 		for (auto & layer : getLayers ())
@@ -108,13 +110,13 @@ Inline::realize ()
 			{
 				for (auto & navigationInfo : sceneLayer -> getNavigationInfos ())
 					navigationInfo -> addToLayer (layer);
-				
+
 				for (auto & background : sceneLayer -> getBackgrounds ())
 					background -> addToLayer (layer);
-					
+
 				for (auto & fog : sceneLayer -> getFogs ())
 					fog -> addToLayer (layer);
-					
+
 				for (auto & viewpoint : sceneLayer -> getViewpoints ())
 					viewpoint -> addToLayer (layer);
 			}
@@ -161,7 +163,7 @@ Inline::requestImmediateLoad ()
 	catch (const X3DError & error)
 	{
 		scene = getBrowser () -> createScene ();
-	
+
 		setLoadState (FAILED_STATE);
 
 		std::clog << error .what () << std::endl;

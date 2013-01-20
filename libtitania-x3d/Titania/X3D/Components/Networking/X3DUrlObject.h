@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #ifndef __TITANIA_X3D_COMPONENTS_NETWORKING_X3DURL_OBJECT_H__
@@ -117,6 +119,13 @@ public:
 	///
 	SFNode <Scene>
 	createX3DFromURL (const MFString &)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>);
+
+	///
+	virtual
+	void
+	loadURL (const MFString &, const MFString &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
 

@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "Surface.h"
@@ -213,8 +215,7 @@ Surface::dispose ()
 }
 
 Surface::~Surface ()
-{
-}
+{ }
 
 } // opengl
 } // titania

@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #ifndef __TITANIA_BASIC_ID_H__
@@ -161,7 +163,7 @@ private:
 	{ return std::min (index, count () - 1); }
 
 	value_type value;
-	
+
 	static StringT empty_string;
 
 };

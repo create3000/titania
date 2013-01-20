@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "X3DBackgroundNode.h"
@@ -68,12 +70,12 @@ namespace titania {
 namespace X3D {
 
 X3DBackgroundNode::X3DBackgroundNode (bool displayed) :
-	X3DBindableNode (displayed),               
+	X3DBindableNode (displayed),      
 	    groundAngle (),               // MFFloat [in,out] groundAngle   [ ]           [0,π/2]
 	    groundColor (),               // MFColor [in,out] groundColor   [ ]           [0,1]
 	       skyAngle (),               // MFFloat [in,out] skyAngle      [ ]           [0,π]
 	       skyColor ({ SFColor () }), // MFColor [in,out] skyColor      0 0 0         [0,1]
-	   transparency ()                // SFFloat [in,out] transparency  0             [0,1]      
+	   transparency ()                // SFFloat [in,out] transparency  0             [0,1]
 {
 	addNodeType (X3DConstants::X3DBackgroundNode);
 }

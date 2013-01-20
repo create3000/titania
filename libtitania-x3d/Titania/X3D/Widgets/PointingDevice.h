@@ -44,13 +44,15 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #ifndef __TITANIA_X3D_WIDGETS_POINTING_DEVICE_H__
 #define __TITANIA_X3D_WIDGETS_POINTING_DEVICE_H__
 
-#include "../Widgets/X3DWidget.h"
 #include "../Fields.h"
+#include "../Widgets/X3DWidget.h"
 #include <gdkmm.h>
 
 namespace titania {

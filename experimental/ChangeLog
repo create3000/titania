@@ -1,3 +1,25 @@
+2013-01-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URI.h:
+	* Type.h:
+	* Type.cpp:
+	* Input.h:
+	* Output.h:
+	* Id.h:
+	* Input.cpp:
+	* Id.cpp:
+	* Output.cpp:
+	* InputOutput.h:
+	* AccessType.h:
+	* ClassicVrml.h:
+	* ClassicVrml.cpp:
+	* CType.h:
+	* CType.cpp:
+	* NumPunct.h:
+	* NumPunct.cpp:
+	* AccessTypes.h:
+	* AccessTypes.cpp: 
+
 2013-01-04  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* main.cpp: 

@@ -44,6 +44,8 @@
  * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
  * copy of the GPLv3 License.
  *
+ * For Silvio, Joy and Adi.
+ *
  ******************************************************************************/
 
 #include "X3DExecutionContext.h"
@@ -706,7 +708,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 X3DExecutionContext::changeViewpoint (const std::string & name)
 throw (Error <INVALID_NAME>,
-		 Error <INVALID_OPERATION_TIMING>,
+       Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	try
@@ -724,7 +726,7 @@ throw (Error <INVALID_NAME>,
 		if (getExecutionContext () not_eq this)
 			getExecutionContext () -> changeViewpoint (name);
 		else
-			throw error;	
+			throw error;
 	}
 }
 
