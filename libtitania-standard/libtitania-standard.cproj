@@ -99,6 +99,8 @@
     <None Include="Titania\Math\Geometry\Box2.h" />
     <None Include="Titania\Math\Geometry\Box3.h" />
     <None Include="Titania\Math\Image.h" />
+    <None Include="Titania\OS\IsDirectory.h" />
+    <None Include="Titania\OS\IsFile.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
@@ -133,6 +135,8 @@
     <Compile Include="Titania\Chrono\StopWatch.cpp" />
     <Compile Include="Titania\Math\Geometry\Box2.cpp" />
     <Compile Include="Titania\Math\Image.cpp" />
+    <Compile Include="Titania\OS\IsDirectory.cpp" />
+    <Compile Include="Titania\OS\IsFile.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

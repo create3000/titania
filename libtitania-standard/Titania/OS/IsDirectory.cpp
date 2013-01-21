@@ -48,15 +48,20 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OS_H__
-#define __TITANIA_OS_H__
+#include "IsDirectory.h"
 
-#include "OS/CWD.h"
-#include "OS/Env.h"
-#include "OS/FindDataFile.h"
-#include "OS/Home.h"
-#include "OS/IsDirectory.h"
-#include "OS/IsFile.h"
-#include "OS/System.h"
+#include <sys/stat.h>
 
-#endif
+namespace titania {
+namespace os {
+
+bool
+is_directory (const std::string & pathname)
+{
+	static struct stat sb;
+
+	return stat (pathname .c_str (), &sb) == 0 && S_ISDIR (sb .st_mode);
+}
+
+} // os
+} // titania

@@ -788,7 +788,6 @@
     <None Include="Examples\metalbeast\stage\hh4.png" />
     <None Include="Examples\metalbeast\stage\Import_proto.wrl" />
     <None Include="Examples\metalbeast\stage\index.html" />
-    <None Include="Examples\metalbeast\stage\index.wrl" />
     <None Include="Examples\metalbeast\stage\Int_proto.wrl" />
     <None Include="Examples\metalbeast\stage\intro.mp2" />
     <None Include="Examples\metalbeast\stage\keys.png" />
@@ -1589,6 +1588,9 @@
     <None Include="Tests\Scripting\Viewpoint.wrl" />
     <None Include="Examples\Mikroben\stage\Import_proto.wrl.gz" />
     <None Include="Examples\Mikroben\stage\Counter_proto.wrl.gz" />
+    <None Include="Examples\metalbeast\stage\log.wrl" />
+    <None Include="Examples\metalbeast\stage\index.wrl" />
+    <None Include="Tests\PointingDeviceSensor\TouchSensor.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />
@@ -1631,6 +1633,7 @@
     <Folder Include="Examples\BIC\stage\" />
     <Folder Include="Examples\BIC\stage\worlds\" />
     <Folder Include="Examples\Cathedral\stage\" />
+    <Folder Include="Tests\PointingDeviceSensor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

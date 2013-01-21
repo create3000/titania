@@ -1,5 +1,12 @@
 2013-01-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.h:
+	* AudioClip.cpp:
+	* MovieTexture.cpp:
+	* X3DUrlObject.cpp: 
+
+2013-01-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DFieldDefinition.cpp:
 	* MovieTexture.h:
 	* MovieTexture.cpp: 

@@ -34,6 +34,8 @@ libtitania_standard_la_SOURCES =  \
 	Titania/OS/Env.cpp \
 	Titania/OS/FindDataFile.cpp \
 	Titania/OS/Home.cpp \
+	Titania/OS/IsDirectory.cpp \
+	Titania/OS/IsFile.cpp \
 	Titania/OS/System.cpp \
 	Titania/String/Split.cpp \
 	Titania/String/strfsize.cpp

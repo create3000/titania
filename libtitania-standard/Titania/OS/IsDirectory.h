@@ -48,15 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OS_H__
-#define __TITANIA_OS_H__
+#ifndef __TITANIA_OS_IS_DIRECTORY_H__
+#define __TITANIA_OS_IS_DIRECTORY_H__
 
-#include "OS/CWD.h"
-#include "OS/Env.h"
-#include "OS/FindDataFile.h"
-#include "OS/Home.h"
-#include "OS/IsDirectory.h"
-#include "OS/IsFile.h"
-#include "OS/System.h"
+#include <string>
+
+namespace titania {
+namespace os {
+
+bool
+is_directory (const std::string &);
+
+} // os
+} // titania
 
 #endif

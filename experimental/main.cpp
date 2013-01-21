@@ -791,9 +791,11 @@ main (int argc, char** argv)
 	ifilestream stream (basic::http::GET, "/home/holger/Projekte/Titania/Titania/share/titania/pages/about/gears.wrl");
 	stream .send ();
 
-	std::clog << igzstream (stream) .rdbuf () << std::endl;
+	std::clog << bool (stream) << std::endl;
+	
+	//std::clog << igzstream (stream) .rdbuf () << std::endl;
 
-	std::clog << (stream >> gunzip) .rdbuf () << std::endl;
+	//std::clog << (stream >> gunzip) .rdbuf () << std::endl;
 
 	//	test_path (basic::path ("/"));
 	//	test_path (basic::path ("/", "/"));

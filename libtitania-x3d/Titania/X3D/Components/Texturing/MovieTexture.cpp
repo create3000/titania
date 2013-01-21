@@ -66,6 +66,7 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	setTypeName ("MovieTexture");
 
 	addField (inputOutput,    "metadata",          metadata);
+	addField (inputOutput,    "description",       description);
 	addField (inputOutput,    "url",               url);
 	addField (inputOutput,    "loop",              loop);
 	addField (inputOutput,    "startTime",         startTime);
@@ -77,7 +78,6 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "repeatS",           repeatS);
 	addField (initializeOnly, "repeatT",           repeatT);
 	addField (initializeOnly, "textureProperties", textureProperties);
-	addField (inputOutput,    "description",       description);
 	addField (inputOutput,    "pitch",             pitch);
 	addField (outputOnly,     "isActive",          isActive);
 	addField (outputOnly,     "duration_changed",  duration_changed);
