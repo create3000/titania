@@ -87,7 +87,7 @@ private:
 	initialize ();
 
 	void
-	requestImmediateLoad () { }
+	requestImmediateLoad ();
 
 };
 

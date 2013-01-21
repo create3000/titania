@@ -228,6 +228,8 @@ X3DFieldDefinition::processEvents (ChildObjectSet & sourceFields)
 	}
 
 	processInterests ();
+	
+	sourceFields .erase (this);
 }
 
 void
@@ -236,10 +238,10 @@ X3DFieldDefinition::processEvent (X3DChildObject* const field, ChildObjectSet & 
 	if (sourceFields .find (this) not_eq sourceFields .end ())
 		return;
 
-	write (*field);
-
 	for (const auto & parent : getParents ())
 		parent -> processEvent (this, sourceFields);
+
+	write (*field);
 
 	processEvents (sourceFields);
 }

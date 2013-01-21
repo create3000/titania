@@ -96,6 +96,14 @@ MovieTexture::initialize ()
 	X3DTexture2DNode::initialize ();
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
+	
+	requestImmediateLoad ();
+}
+
+void
+MovieTexture::requestImmediateLoad ()
+{
+	duration_changed = 0;
 }
 
 void

@@ -25,7 +25,7 @@ PROTO Test [
 function initialize ()
 {
 	print ('********** initialize: ' + data .startTime);
-	data .startTime = 1;
+	data .startTime = 999;
 }
 
 function set_startTime (value)
@@ -46,7 +46,7 @@ DEF Script Script {
 
 function initialize ()
 {
-	time = 0;
+	time = 1000;
 }
   "
 }
