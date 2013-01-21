@@ -89,11 +89,15 @@ AudioClip::initialize ()
 {
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
+	
+	requestImmediateLoad ();
 }
 
 void
 AudioClip::requestImmediateLoad ()
-{ }
+{
+	duration_changed = 0;
+}
 
 void
 AudioClip::dispose ()

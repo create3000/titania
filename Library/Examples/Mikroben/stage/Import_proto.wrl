@@ -65,6 +65,7 @@ function url() {
 function loadUrl() {
 	if(data.url.length && !isActive) {
 		isActive = TRUE;
+		print ('************************************************ 1 ' + data .url);
 		Browser.createVrmlFromURL(url(), self, \"set_children\");
 	}
 }
@@ -76,7 +77,7 @@ function set_startTime(value, time) { loadUrl(); }
 function set_children(value, time) {
 	if(isActive)
 	{
-		print ('************************************************ ' + data .url);
+		print ('************************************************ 2 ' + data .url);
 		
 		if (value == \"Group { }\") {
 			data.children = value[0].children;

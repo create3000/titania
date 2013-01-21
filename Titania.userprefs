@@ -1,35 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="test/Tests/AddAndRemoveNode.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Networking/Inline.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="44" Column="27" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.cpp" Line="138" Column="3" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.h" Line="80" Column="24" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="793" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.h" Line="363" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.h" Line="102" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.cpp" Line="187" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/Scene.h" Line="157" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/Scene.cpp" Line="125" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.cpp" Line="138" Column="1" />
       <File FileName="Library/Tests/Layering/Inline.wrl" Line="31" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="141" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/ExamineViewer.cpp" Line="106" Column="37" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.h" Line="86" Column="5" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp" Line="130" Column="17" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="110" Column="1" />
-      <File FileName="Library/Examples/rathaus/stage/index.wrl" Line="409" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="2708" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DNode.cpp" Line="1" Column="1" />
-      <File FileName="Library/Tests/Text/Text.wrl" Line="1" Column="1" />
-      <File FileName="Library/Tests/PROTO/test.wrl" Line="21" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/SFNode.h" Line="203" Column="61" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="112" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="303" Column="22" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="1" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Image.h" Line="225" Column="1" />
       <File FileName="libtitania-standard/Titania/Math/Image.cpp" Line="58" Column="1" />
-      <File FileName="test/Tests/AddAndRemoveNode.h" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -106,6 +83,9 @@
                 <Node name="Components" expanded="True">
                   <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
+                  <Node name="Networking" expanded="True">
+                    <Node name="Inline.cpp" selected="True" />
+                  </Node>
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Types" expanded="True" />
@@ -113,7 +93,7 @@
               </Node>
             </Node>
           </Node>
-          <Node name="test" expanded="True" selected="True">
+          <Node name="test" expanded="True">
             <Node name="Tests" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">

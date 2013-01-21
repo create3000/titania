@@ -4841,3 +4841,17 @@ ROUTE _13.value_changed TO Explo4_76.set_startTime
 ROUTE Touch_15.value_changed TO Explo4_76.set_startTime
 ROUTE Touch_17.value_changed TO Explo4_76.set_startTime
 ROUTE _19.value_changed TO Explo4_76.set_startTime
+
+DEF Test Script {
+	eventIn SFTime set_time
+	field SFInt32 count 0
+	
+	url "vrmlscript:
+function set_time (value)
+{
+	count ++;
+}
+	"
+}
+
+ROUTE _30.exitTime TO Test.set_time

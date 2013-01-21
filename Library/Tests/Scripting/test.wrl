@@ -2,25 +2,57 @@
 
 META "title" "Test test"
 
-EXTERNPROTO Import [
-  inputOutput MFString url
-  inputOutput SFTime   startTime
-  outputOnly  SFBool   isActive
-  outputOnly  SFTime   exitTime
-  inputOutput MFNode   parameter
-  inputOutput MFNode   children
+PROTO Test [
+  inputOutput SFTime startTime 0
 ]
-"Import_proto.wrl"
+{
+  PROTO Data [
+    inputOutput SFTime startTime 0
+  ]
+  {
+    Group { }
+  }
 
-Background {
-  skyColor 1 1 1
+  Group { }
+
+  DEF _Test Script {
+    inputOnly      SFTime set_startTime
+    initializeOnly SFNode data DEF Data Data {
+      startTime IS startTime
+    }
+
+    url "vrmlscript:
+function initialize ()
+{
+	print ('********** initialize: ' + data .startTime);
+	data .startTime = 1;
 }
 
-DEF _1 Import {
-  url "Cube.wrl"
+function set_startTime (value)
+{
+	print ('********** set_startTime: ' + value);
+
+}
+		"
+  }
+
+  ROUTE Data.startTime_changed TO _Test.set_startTime
+}
+
+DEF Script Script {
+  outputOnly SFTime time
+
+  url "vrmlscript:
+
+function initialize ()
+{
+	time = 0;
+}
+  "
+}
+
+DEF Test Test {
   startTime 1
 }
 
-DEF _2 Transform { }
-
-ROUTE _1.children_changed TO _2.set_children
+ROUTE Script.time TO Test.set_startTime

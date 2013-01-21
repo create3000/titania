@@ -152,6 +152,10 @@ public:
 
 	virtual
 	void
+	prepareEvents () { }
+
+	virtual
+	void
 	processEvents (ChildObjectSet &);
 
 	virtual
@@ -226,10 +230,6 @@ protected:
 	virtual
 	void
 	initialize () { }
-
-	virtual
-	void
-	prepareEvents () { }
 
 
 private:
