@@ -75,9 +75,6 @@ public:
 	void
 	requestImmediateLoad ();
 
-	void
-	activate ();
-
 	virtual
 	void
 	pick ();

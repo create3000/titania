@@ -81,9 +81,5 @@ SphereSensor::create (X3DExecutionContext* const executionContext) const
 	return new SphereSensor (executionContext);
 }
 
-void
-SphereSensor::update ()
-{ }
-
 } // X3D
 } // titania

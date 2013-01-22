@@ -139,9 +139,9 @@ X3DGeometryNode::createBBox ()
 }
 
 bool
-X3DGeometryNode::intersect (const Line3f & hitRay, Hit*) const
+X3DGeometryNode::intersect (const Line3f & hitRay, Vector3f & hitPoint) const
 {
-	if (bbox .intersect (hitRay))
+	if (bbox .intersect (hitRay, hitPoint))
 	{
 		return true;
 	}

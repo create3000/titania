@@ -224,7 +224,7 @@ DEF info Transform {
 	    }
 
 	    geometry	Text {
-	      string	[ "create3000.tv",
+	      string	[ "titania.create3000.de",
 		        " " ]
 	      fontStyle	FontStyle {
 		size	6
@@ -327,7 +327,7 @@ DEF info Transform {
 	    }
 
 	    geometry	Text {
-	      string	[ "create3000.tv",
+	      string	[ "titania.create3000.de",
 		        " ",
 		        " " ]
 	      fontStyle	FontStyle {

@@ -632,3 +632,17 @@ ROUTE bell_33.duration_changed TO _39.set_nextTime
 ROUTE lightsplat_36.duration_changed TO _39.set_nextTime
 ROUTE ambient_37.duration_changed TO _39.set_nextTime
 ROUTE train_38.duration_changed TO _39.set_nextTime
+
+
+DEF Debug Script {
+  eventIn SFTime set_downTime
+  
+  url "vrmlscript:
+function set_downTime (value)
+{
+	print (value);
+}
+  "
+}
+
+ROUTE _9.downTime TO Debug.set_downTime

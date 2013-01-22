@@ -71,10 +71,10 @@ public:
 private:
 
 	bool
-	on_button_press_event (GdkEventButton*);
-
-	bool
 	on_motion_notify_event (GdkEventMotion*);
+	
+	bool
+	on_button_press_event (GdkEventButton*);
 
 	bool
 	on_button_release_event (GdkEventButton*);

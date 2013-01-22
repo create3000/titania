@@ -87,9 +87,5 @@ PlaneSensor::create (X3DExecutionContext* const executionContext) const
 	return new PlaneSensor (executionContext);
 }
 
-void
-PlaneSensor::update ()
-{ }
-
 } // X3D
 } // titania

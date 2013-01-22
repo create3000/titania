@@ -97,12 +97,6 @@ Anchor::requestImmediateLoad ()
 }
 
 void
-Anchor::activate ()
-{
-	requestImmediateLoad ();
-}
-
-void
 Anchor::pick ()
 {
 	getBrowser () -> pushSensitiveNode (this);

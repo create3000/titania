@@ -269,7 +269,7 @@ public:
 
 	///  Returns true if @a line intersects with this box.
 	bool
-	intersect (const line3 <Type> &) const;
+	intersect (const line3 <Type> &, vector3 <Type> &) const;
 
 
 private:
@@ -283,7 +283,7 @@ private:
 
 template <class Type>
 bool
-box3 <Type>::intersect (const line3 <Type> & line) const
+box3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & intersection) const
 {
 	vector3 <Type> min    = this -> min ();
 	vector3 <Type> max    = this -> max ();
@@ -308,8 +308,6 @@ box3 <Type>::intersect (const line3 <Type> & line) const
 		vector3 <Type> (1,  0,  0),
 		vector3 <Type> (-1,  0,  0)
 	};
-
-	vector3 <Type> intersection;
 
 	for (size_t i = 0; i < 6; ++ i)
 	{

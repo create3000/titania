@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BROWSER_HIT_H__
 
 #include "../Fields.h"
+#include "../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
@@ -60,11 +61,15 @@ class Hit
 {
 public:
 
-	Vector3f                   position;
-	Vector3f                   hitPoint;
-	std::vector <X3DBaseNode*> nodes;
-	Hit ()
+	Hit (const Vector3f & hitPoint, const Line3f & hitRay, const std::deque <X3DBaseNode*> & nodes) :
+		hitPoint (hitPoint),
+		distance (abs (hitPoint - hitRay .point ())),
+		nodes (nodes)
 	{ }
+
+	Vector3f                   hitPoint;
+	float                      distance;
+	std::deque <X3DBaseNode*> nodes;
 
 };
 
@@ -75,7 +80,7 @@ public:
 	bool
 	operator () (const Hit* a, const Hit* b) const
 	{
-		return abs (a -> hitPoint - a -> position) < abs (b -> hitPoint - b -> position);
+		return a -> distance < b -> distance;
 	}
 
 };

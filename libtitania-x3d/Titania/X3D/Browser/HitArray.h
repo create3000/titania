@@ -52,16 +52,16 @@
 #define __TITANIA_X3D_BROWSER_HIT_ARRAY_H__
 
 #include "Hit.h"
-#include <vector>
+#include <deque>
 
 namespace titania {
 namespace X3D {
 
-typedef std::vector <Hit*> HitArray;
+typedef std::deque <Hit*> HitArray;
 
 } // X3D
 } // titania
 
-extern template class std::vector <titania::X3D::Hit*>;
+extern template class std::deque <titania::X3D::Hit*>;
 
 #endif

@@ -51,10 +51,6 @@
 #include "PointingDevice.h"
 
 #include "../Browser/Browser.h"
-#include "../Components/Networking/Anchor.h"
-#include "../Components/PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
-
-#define SELECT_BUFFER_SIZE 1024
 
 namespace titania {
 namespace X3D {
@@ -70,30 +66,6 @@ PointingDevice::PointingDevice (Browser* const browser) :
 }
 
 bool
-PointingDevice::on_button_press_event (GdkEventButton* event)
-{
-	button = event -> button;
-
-	if (button == 1)
-	{
-		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
-		{
-			getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::HAND1));
-			return true;
-		}
-		else
-			getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::FLEUR));
-	}
-
-	else if (button == 2)
-	{
-		getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::FLEUR));
-	}
-
-	return false;
-}
-
-bool
 PointingDevice::on_motion_notify_event (GdkEventMotion* event)
 {
 	if (button == 0 or button == 1)
@@ -102,7 +74,7 @@ PointingDevice::on_motion_notify_event (GdkEventMotion* event)
 		{
 			if (not isOver)
 			{
-				getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::HAND2));
+				getBrowser () -> setCursor (Gdk::HAND2);
 				isOver = true;
 			}
 
@@ -112,10 +84,40 @@ PointingDevice::on_motion_notify_event (GdkEventMotion* event)
 		{
 			if (isOver)
 			{
-				getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
+				getBrowser () -> setCursor (Gdk::ARROW);
 				isOver = false;
 			}
 		}
+		
+		getBrowser () -> motionNotifyEvent ();
+	
+	}
+
+	return false;
+}
+
+bool
+PointingDevice::on_button_press_event (GdkEventButton* event)
+{
+	button = event -> button;
+
+	if (button == 1)
+	{
+		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
+		{
+			getBrowser () -> buttonPressEvent ();
+
+			getBrowser () -> setCursor (Gdk::HAND1);
+			
+			return true;
+		}
+		else
+			getBrowser () -> setCursor (Gdk::FLEUR);
+	}
+
+	else if (button == 2)
+	{
+		getBrowser () -> setCursor (Gdk::FLEUR);
 	}
 
 	return false;
@@ -130,51 +132,27 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 	{
 		if (isOver)
 		{
-			getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::HAND2));
+			// Handle button release event
 
 			if (pick (event -> x, getBrowser () -> get_height () - event -> y))
 			{
-				try
-				{
-					Hit* hit = getBrowser () -> getHits () .front ();
-
-					for (const auto & node : hit -> nodes)
-					{
-						Anchor* anchor = dynamic_cast <Anchor*> (node);
-
-						if (anchor)
-						{
-							anchor -> activate ();
-							break;
-						}
-
-						X3DPointingDeviceSensorNode* pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
-
-						if (pointingDeviceSensorNode)
-						{
-							pointingDeviceSensorNode -> update ();
-							continue;
-						}
-					}
-				}
-				catch (const X3DError & error)
-				{
-					std::clog << error .what () << std::endl;
-				}
-
-				//return true;
+				getBrowser () -> touchEvent ();
 			}
+		
+			getBrowser () -> setCursor (Gdk::HAND2);
 		}
 		else
-			getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
+			getBrowser () -> setCursor (Gdk::ARROW);
+	
+		getBrowser () -> buttonReleaseEvent ();
 	}
 
 	else if (event -> button == 2)
 	{
 		if (isOver)
-			getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::HAND2));
+			getBrowser () -> setCursor (Gdk::HAND2);
 		else
-			getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
+			getBrowser () -> setCursor (Gdk::ARROW);
 	}
 
 	return false;

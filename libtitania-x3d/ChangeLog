@@ -1,5 +1,36 @@
 2013-01-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Hit.h:
+	* Browser.h:
+	* HitArray.h:
+	* HitArray.cpp:
+	* PointingDevice.h:
+	* PointingDevice.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* Anchor.h:
+	* X3DSensorNode.h:
+	* Anchor.cpp:
+	* X3DShapeNode.cpp:
+	* X3DGeometryNode.h:
+	* GeoTouchSensor.h:
+	* GeoTouchSensor.cpp:
+	* X3DGeometryNode.cpp:
+	* TouchSensor.h:
+	* PlaneSensor.h:
+	* SphereSensor.h:
+	* TouchSensor.cpp:
+	* PlaneSensor.cpp:
+	* SphereSensor.cpp:
+	* CylinderSensor.h:
+	* CylinderSensor.cpp:
+	* X3DTouchSensorNode.h:
+	* X3DTouchSensorNode.cpp:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorNode.cpp: 
+
+2013-01-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MFNode.h:
 	* X3DArrayField.h:
 	* X3DRenderer.cpp:

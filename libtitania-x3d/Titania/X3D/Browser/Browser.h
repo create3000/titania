@@ -67,6 +67,10 @@ class Browser :
 {
 public:
 
+	void
+	setCursor (Gdk::CursorType cursor_type)
+	{ get_window () -> set_cursor (Gdk::Cursor::create (cursor_type)); }
+
 	virtual
 	void
 	dispose ();

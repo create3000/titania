@@ -119,16 +119,11 @@ X3DShapeNode::pick ()
 		if (ViewVolume () .intersect (getBBox ()))
 		{
 			Line3f hitRay = getBrowser () -> getHitRay ();
-			Hit*   hit    = new Hit ();
 
-			if (geometry -> intersect (hitRay, hit))
-			{
-				hit -> position = hitRay .point ();
-				hit -> nodes    = getBrowser () -> getSensitiveNodes ();
-				getBrowser () -> addHit (hit);
-			}
-			else
-				delete hit;
+			Vector3f hitPoint;
+		
+			if (geometry -> intersect (hitRay, hitPoint))
+				getBrowser () -> addHit (hitRay, hitPoint);
 		}
 	}
 }

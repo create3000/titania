@@ -50,6 +50,9 @@
 
 #include "X3DBrowserContext.h"
 
+#include "../Components/Networking/Anchor.h"
+#include "../Components/PointingDeviceSensor/X3DTouchSensorNode.h"
+
 #include <Titania/Chrono/CountingClock.h>
 #include <Titania/Chrono/SystemClock.h>
 
@@ -320,6 +323,99 @@ X3DBrowserContext::getHitRay () const
 	return Line3f (near, far);
 }
 
+void
+X3DBrowserContext::addHit (const Line3f & hitRay, const Vector3f hitPoint)
+{
+	hits .emplace_back (new Hit (hitPoint, hitRay, getSensitiveNodes ()));
+}
+
+void
+X3DBrowserContext::motionNotifyEvent ()
+{
+	// Set isOver to FALSE for appropriate nodes
+
+	std::deque <X3DBaseNode*> difference;
+	
+	if (getHits () .size ())
+	{
+		std::set_difference (overSensors .begin (), overSensors .end (),
+		                     getHits () .front () -> nodes .begin (), getHits () .front () -> nodes .end (),
+		                     std::inserter (difference, difference .begin ()));
+	}
+	else
+		difference = overSensors;
+	                     
+	for (const auto & node : difference)
+	{
+		X3DPointingDeviceSensorNode* pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+
+		if (pointingDeviceSensorNode)
+			pointingDeviceSensorNode -> over (false);
+	}   
+	            
+	// Set isOver to TRUE for appropriate nodes
+
+	if (getHits () .size ())
+	{
+		overSensors = getHits () .front () -> nodes;
+
+		for (const auto & node : overSensors)
+		{
+			X3DPointingDeviceSensorNode* pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+
+			if (pointingDeviceSensorNode)
+				pointingDeviceSensorNode -> over (true);
+		}
+	}
+	else
+		overSensors .clear ();
+}
+
+void
+X3DBrowserContext::buttonPressEvent ()
+{
+	activeSensors = getHits () .front () -> nodes;
+
+	for (const auto & node : activeSensors)
+	{
+		X3DPointingDeviceSensorNode* pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+
+		if (pointingDeviceSensorNode)
+			pointingDeviceSensorNode -> activate (true);
+	}
+}
+
+void
+X3DBrowserContext::buttonReleaseEvent ()
+{
+	for (const auto & node : activeSensors)
+	{
+		X3DPointingDeviceSensorNode* pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+
+		if (pointingDeviceSensorNode)
+			pointingDeviceSensorNode -> activate (false);
+	}
+}
+
+void
+X3DBrowserContext::touchEvent ()
+{
+	for (const auto & node : getHits () .front () -> nodes)
+	{
+		Anchor* anchor = dynamic_cast <Anchor*> (node);
+
+		if (anchor)
+		{
+			anchor -> requestImmediateLoad ();
+			break;
+		}
+
+		X3DTouchSensorNode* touchSensorNode = dynamic_cast <X3DTouchSensorNode*> (node);
+
+		if (touchSensorNode)
+			touchSensorNode -> update ();
+	}
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void

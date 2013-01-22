@@ -181,7 +181,7 @@ public:
 	void
 	popSensitiveNode () { return sensitiveNodes .pop_back (); }
 
-	const std::vector <X3DBaseNode*> &
+	const std::deque <X3DBaseNode*> &
 	getSensitiveNodes () const { return sensitiveNodes; }
 
 	bool
@@ -191,10 +191,22 @@ public:
 	getHitRay () const;
 
 	void
-	addHit (Hit* hit) { hits .push_back (hit); }
+	addHit (const Line3f &, const Vector3f);
 
 	const HitArray &
 	getHits () const { return hits; }
+
+	void
+	motionNotifyEvent ();
+
+	void
+	buttonPressEvent ();
+
+	void
+	buttonReleaseEvent ();
+
+	void
+	touchEvent ();
 
 	///  @name Event handling
 
@@ -251,9 +263,11 @@ private:
 	Output                     sensors;
 	double                     x;
 	double                     y;
-	std::vector <X3DBaseNode*> sensitiveNodes;
+	std::deque <X3DBaseNode*>  sensitiveNodes;
 	HitArray                   hits;
 	HitComp                    hitComp;
+	std::deque <X3DBaseNode*>  overSensors;
+	std::deque <X3DBaseNode*>  activeSensors;
 	time_type                  changedTime;
 	Vector3d                   priorPosition;
 	double                     currentSpeed;

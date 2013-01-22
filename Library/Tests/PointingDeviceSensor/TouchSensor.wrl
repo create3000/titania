@@ -8,12 +8,12 @@ Viewpoint {
 
 Transform {
   children [
-    DEF Touch1 TouchSensor { }
+    DEF Touch2 TouchSensor { }
     Transform {
       translation 0 1 0
       children Shape {
         geometry Text {
-          string "1"
+          string "2"
           fontStyle FontStyle {
             justify "MIDDLE"
           }
@@ -49,12 +49,12 @@ Transform {
 Transform {
   translation 0 0 4
   children [
-    DEF Touch2 TouchSensor { }
+    DEF Touch1 TouchSensor { }
     Transform {
       translation 0 1 0
       children Shape {
         geometry Text {
-          string "2"
+          string "1"
           fontStyle FontStyle {
             justify "MIDDLE"
           }
@@ -83,21 +83,49 @@ Transform {
 }
 
 DEF Debug Script {
-  inputOnly SFTime set_touch1
-  inputOnly SFTime set_touch2
+  inputOnly SFBool set_isOver1
+  inputOnly SFBool set_isActive1
+  inputOnly SFTime set_touchTime1
+  inputOnly SFBool set_isOver2
+  inputOnly SFBool set_isActive2
+  inputOnly SFTime set_touchTime2
 
   url "vrmlscript:
-function set_touch1 (value)
+function set_isOver1 (value)
 {
-	print ('Touch 1: ' + value);
+	print ('Touch 1 isOver: ' + value);
 }
 
-function set_touch2 (value)
+function set_isActive1 (value)
 {
-	print ('Touch 2: ' + value);
+	print ('Touch 1 isActive: ' + value);
+}
+
+function set_touchTime1 (value)
+{
+	print ('Touch 1 touchTime: ' + value);
+}
+
+function set_isOver2 (value)
+{
+	print ('Touch 2 isOver: ' + value);
+}
+
+function set_isActive2 (value)
+{
+	print ('Touch 2 isActive: ' + value);
+}
+
+function set_touchTime2 (value)
+{
+	print ('Touch 2 touchTime: ' + value);
 }
 	 "
 }
 
-ROUTE Touch1.touchTime TO Debug.set_touch1
-ROUTE Touch2.touchTime TO Debug.set_touch2
+ROUTE Touch1.isOver TO Debug.set_isOver1
+ROUTE Touch1.isActive TO Debug.set_isActive1
+ROUTE Touch1.touchTime TO Debug.set_touchTime1
+ROUTE Touch2.isOver TO Debug.set_isOver2
+ROUTE Touch2.isActive TO Debug.set_isActive2
+ROUTE Touch2.touchTime TO Debug.set_touchTime2

@@ -82,11 +82,5 @@ TouchSensor::create (X3DExecutionContext* const executionContext) const
 	return new TouchSensor (executionContext);
 }
 
-void
-TouchSensor::update ()
-{
-	touchTime = getCurrentTime ();
-}
-
 } // X3D
 } // titania

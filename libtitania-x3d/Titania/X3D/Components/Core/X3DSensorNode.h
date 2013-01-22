@@ -64,6 +64,10 @@ public:
 	SFBool enabled;
 	SFBool isActive;
 
+	void
+	activate (bool value)
+	{ isActive = value; }
+
 	virtual
 	void
 	update () = 0;

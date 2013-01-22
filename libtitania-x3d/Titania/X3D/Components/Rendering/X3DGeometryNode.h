@@ -76,7 +76,7 @@ public:
 
 	virtual
 	bool
-	intersect (const Line3f &, Hit*) const;
+	intersect (const Line3f &, Vector3f &) const;
 
 	virtual
 	void

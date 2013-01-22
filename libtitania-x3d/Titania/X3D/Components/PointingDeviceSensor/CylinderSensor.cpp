@@ -89,9 +89,5 @@ CylinderSensor::create (X3DExecutionContext* const executionContext) const
 	return new CylinderSensor (executionContext);
 }
 
-void
-CylinderSensor::update ()
-{ }
-
 } // X3D
 } // titania
