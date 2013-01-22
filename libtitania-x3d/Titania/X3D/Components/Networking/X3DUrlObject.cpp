@@ -258,8 +258,6 @@ throw (Error <INVALID_URL>,
 	std::clog << "\t\tResolved URL is '" << transformedURL << "'" << std::endl;
 
 	basic::ifilestream stream (basic::http::GET, transformedURL);
-	
-	std::clog << "++++++++++++++++++++++++++++++++++++++++++++++++ " << bool (stream) << std::endl;
 
 	if (stream)
 	{

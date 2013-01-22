@@ -1591,6 +1591,7 @@
     <None Include="Examples\metalbeast\stage\log.wrl" />
     <None Include="Examples\metalbeast\stage\index.wrl" />
     <None Include="Tests\PointingDeviceSensor\TouchSensor.wrl" />
+    <None Include="Tests\PROTO\Number.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

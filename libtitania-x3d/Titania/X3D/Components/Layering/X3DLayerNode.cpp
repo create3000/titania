@@ -182,6 +182,7 @@ X3DLayerNode::pick ()
 
 	currentViewport -> enable ();
 	getViewpoint () -> reshape ();
+	getViewpoint () -> transform ();
 
 	intersect ();
 
@@ -199,6 +200,7 @@ X3DLayerNode::display ()
 
 	getBackground ()     -> draw ();
 	getNavigationInfo () -> enable ();
+	getViewpoint ()      -> reshape ();
 	defaultViewpoint     -> display ();
 
 	render ();

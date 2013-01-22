@@ -1,25 +1,43 @@
 #VRML V2.0 utf8
 
-PROTO Test [ ]
+PROTO Float [
+  exposedField MFString string "1234"
+]
 {
-  Inline {
-    url "GoldenSphereAnimation.wrl"
+  DEF Number Text {
+    string IS string
+  }
+
+  Script {
+    field SFNode number USE Number
+
+    url "vrmlscript:
+function initialize ()
+{
+	number .string [0] = 'string';
+}
+    "
   }
 }
 
-Viewpoint {
-	description "1"
+DEF Touch TouchSensor {}
+
+DEF Debug Script {
+	eventIn SFTime set_time
+	eventOut MFString string_changed
+	
+	url "vrmlscript:
+function set_time (value)
+{
+	string_changed = new MFString (value);
+}"
+
 }
 
-Viewpoint {
-	description "2"
+Shape {
+  geometry DEF Number Float { }
 }
 
-Transform {
-	children DEF T Test { }
-}
 
-Transform {
-	translation 0 1 0
-	children USE T
-}
+ROUTE Touch.touchTime TO Debug.set_time
+ROUTE Debug.string_changed TO Number.set_string

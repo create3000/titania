@@ -1,12 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Networking/Inline.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/PROTO/Number.wrl">
     <Files>
-      <File FileName="experimental/main.cpp" Line="44" Column="27" />
+      <File FileName="experimental/main.cpp" Line="791" Column="108" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.h" Line="80" Column="24" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.cpp" Line="138" Column="1" />
-      <File FileName="Library/Tests/Layering/Inline.wrl" Line="31" Column="10" />
-      <File FileName="libtitania-standard/Titania/Math/Image.cpp" Line="58" Column="1" />
+      <File FileName="Library/Tests/PointingDeviceSensor/TouchSensor.wrl" Line="1" Column="1" />
+      <File FileName="libtitania-stream/Titania/Stream/SocketStreamBuf.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-stream/Titania/Stream/InputFileStream.cpp" Line="85" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="260" Column="63" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.cpp" Line="240" Column="1" />
+      <File FileName="Library/Tests/PROTO/Number.wrl" Line="13" Column="1" />
+      <File FileName="Library/Tests/PROTO/test.wrl" Line="31" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -22,20 +27,15 @@
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
-              <Node name="BIC" expanded="True" />
-              <Node name="kreuzkipper" expanded="True">
+              <Node name="Capone" expanded="True">
                 <Node name="stage" expanded="True" />
               </Node>
-              <Node name="LogoPieces" expanded="True" />
-              <Node name="nist-logo" expanded="True">
+              <Node name="metalbeast" expanded="True">
                 <Node name="stage" expanded="True" />
               </Node>
-              <Node name="rathaus" expanded="True">
+              <Node name="Mikroben" expanded="True">
                 <Node name="stage" expanded="True" />
               </Node>
-              <Node name="raumdemo" expanded="True" />
-              <Node name="tikiworld" expanded="True" />
-              <Node name="treasure-island" expanded="True" />
             </Node>
             <Node name="Tests" expanded="True">
               <Node name="Basic" expanded="True" />
@@ -49,7 +49,10 @@
               <Node name="Networking" expanded="True">
                 <Node name="Anchor" expanded="True" />
               </Node>
-              <Node name="PROTO" expanded="True" />
+              <Node name="PointingDeviceSensor" expanded="True" />
+              <Node name="PROTO" expanded="True">
+                <Node name="Number.wrl" selected="True" />
+              </Node>
               <Node name="Scripting" expanded="True" />
               <Node name="Text" expanded="True" />
             </Node>
@@ -69,7 +72,10 @@
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Basic" expanded="True" />
-              <Node name="Math" expanded="True" />
+              <Node name="Math" expanded="True">
+                <Node name="Numbers" expanded="True" />
+              </Node>
+              <Node name="OS" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-stream" expanded="True">
@@ -80,14 +86,17 @@
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Basic" expanded="True" />
                 <Node name="Components" expanded="True">
                   <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
-                  <Node name="Networking" expanded="True">
-                    <Node name="Inline.cpp" selected="True" />
-                  </Node>
+                  <Node name="Networking" expanded="True" />
+                  <Node name="PointingDeviceSensor" expanded="True" />
+                  <Node name="Sound" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
+                <Node name="Routing" expanded="True" />
                 <Node name="Types" expanded="True" />
                 <Node name="Widgets" expanded="True" />
               </Node>
@@ -99,6 +108,9 @@
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="applications" expanded="True" />
+              <Node name="gtksourceview-3.0" expanded="True">
+                <Node name="language-specs" expanded="True" />
+              </Node>
               <Node name="icons" expanded="True">
                 <Node name="hicolor" expanded="True">
                   <Node name="scalable" expanded="True">

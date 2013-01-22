@@ -408,8 +408,8 @@ X3DArrayField <ValueType>::set (InputIterator first, InputIterator last)
 {
 	iterator current = begin ();
 
-	while (first not_eq last && current not_eq end ())
-		*current ++ = *first ++;
+	for (; first not_eq last && current not_eq end (); current ++, first ++)
+		current -> set (*first);
 
 	if (first == last)
 		get () .resize (current - begin ());

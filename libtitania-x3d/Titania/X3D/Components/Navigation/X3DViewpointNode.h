@@ -109,13 +109,15 @@ public:
 	void
 	lookAt (Box3f);
 
-	virtual
 	void
 	reshape ();
 
 	virtual
 	void
 	reshape (const float, const float) = 0;
+
+	void
+	transform ();
 
 	virtual
 	void

@@ -85,9 +85,9 @@ X3DFieldDefinition::setReference (X3DFieldDefinition* const value)
 			//write (reference);
 			break;
 		case inputOutput:
+			write (*reference);
 			reference -> addInterest (this);
 			addInterest (reference);
-			write (*reference);
 			break;
 	}
 }

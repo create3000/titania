@@ -206,10 +206,10 @@ MFNode <Type>::write (const X3DObject & field)
 	//	{
 	const X3DArray* array = dynamic_cast <const X3DArray*> (&field);
 
-	resize (array -> size ());
+	get () .resize (array -> size ());
 
 	for (size_type i = 0; i < array -> size (); ++ i)
-		get () [i] = static_cast <const X3DField <X3DBaseNode*> &> (array -> get1 (i));
+		get () [i] .set (static_cast <const X3DField <X3DBaseNode*> &> (array -> get1 (i)));
 
 	//	}
 }

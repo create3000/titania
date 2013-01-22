@@ -1,3 +1,15 @@
+2013-01-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* MFNode.h:
+	* X3DArrayField.h:
+	* X3DRenderer.cpp:
+	* X3DFieldDefinition.cpp:
+	* X3DLayerNode.cpp:
+	* X3DUrlObject.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp:
+	* X3DBackgroundNode.cpp: 
+
 2013-01-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.h:

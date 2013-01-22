@@ -123,7 +123,7 @@ X3DRenderer::draw ()
 	glPushMatrix ();
 	glLoadIdentity ();
 
-	getCurrentViewpoint () -> reshape ();
+	getCurrentViewpoint () -> transform ();
 
 	// enable global lights
 

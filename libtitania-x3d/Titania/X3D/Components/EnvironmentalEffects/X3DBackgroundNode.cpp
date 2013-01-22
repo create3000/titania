@@ -375,10 +375,10 @@ X3DBackgroundNode::draw ()
 
 	glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 	{
-		Vector3d   translation, scale;
+		Vector3d   translation;
 		Rotation4f rotation;
 
-		matrix .get (translation, rotation, scale);
+		matrix .get (translation, rotation);
 
 		float x, y, z, angle;
 		rotation .get (x, y, z, angle);

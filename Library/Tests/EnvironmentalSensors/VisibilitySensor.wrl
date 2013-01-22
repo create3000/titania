@@ -17,23 +17,38 @@ Transform {
       }
     }
     geometry Box {
-      size 1 1 1
+      size 0.3 0.12 0.03
       solid FALSE
     }
   }
 }
 
-DEF Sensor VisibilitySensor { }
+DEF Sensor VisibilitySensor {
+  size 0.3 0.12 0.03
+
+}
 
 DEF Debug Script {
-  eventIn SFBool set_active
+  eventIn SFTime enterTime
+  eventIn SFTime exitTime
+  eventIn SFBool isActive
 
   url "vrmlscript:
-function set_active (value, time)
+function enterTime (value, time)
 {
-	print (value);
+	print ('enterTime ' + value);
+}
+function exitTime (value, time)
+{
+	print ('exitTime ' + value);
+}
+function isActive (value, time)
+{
+	print ('isActive ' + value);
 }
 	"
 }
 
-ROUTE Sensor.isActive TO Debug.set_active
+ROUTE Sensor.enterTime TO Debug.enterTime
+ROUTE Sensor.exitTime TO Debug.exitTime
+ROUTE Sensor.isActive TO Debug.isActive

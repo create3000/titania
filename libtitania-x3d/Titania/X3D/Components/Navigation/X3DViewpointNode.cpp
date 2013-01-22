@@ -259,7 +259,11 @@ X3DViewpointNode::reshape ()
 	NavigationInfo* navigationInfo = getCurrentLayer () -> getNavigationInfo ();
 
 	reshape (navigationInfo -> getZNear (), navigationInfo -> getZFar ());
+}
 
+void
+X3DViewpointNode::transform ()
+{
 	glLoadMatrixf (getInverseTransformationMatrix () .data ());
 }
 

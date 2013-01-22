@@ -1,0 +1,25 @@
+#VRML V2.0 utf8
+
+PROTO Float [
+  exposedField MFString string "0"
+]
+{
+  DEF Number Text {
+    string IS string
+  }
+
+  DEF _float Script {
+    field SFNode number USE Number
+
+    url "vrmlscript:
+function initialize ()
+{
+	number .string [0] = '1234';
+}
+	"
+  }
+}
+
+Shape {
+  geometry Float { }
+}
