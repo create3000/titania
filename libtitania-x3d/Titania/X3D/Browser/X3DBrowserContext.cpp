@@ -205,51 +205,6 @@ X3DBrowserContext::getActiveViewpoint ()
 	return getExecutionContext () -> getActiveLayer () -> getViewpoint ();
 }
 
-// Texture list handling
-
-void
-X3DBrowserContext::addTexture (const std::string & URL, GLuint textureId)
-{
-	textures [URL] = std::make_pair (textureId, 1);
-}
-
-bool
-X3DBrowserContext::removeTexture (const std::string & URL, GLuint textureId)
-{
-	auto texture = textures .find (URL);
-
-	if (texture not_eq textures .end ())
-	{
-		if (-- texture -> second .second == 0)
-		{
-			textures .erase (texture);
-			return true;
-		}
-	}
-
-	return false;
-}
-
-GLuint
-X3DBrowserContext::getTexture (const std::string & URL)
-{
-	auto texture = textures .find (URL);
-
-	if (texture not_eq textures .end ())
-	{
-		++ texture -> second .second;
-		return texture -> second .first;
-	}
-
-	return 0;
-}
-
-const TextureIndex &
-X3DBrowserContext::getTextures () const
-{
-	return textures;
-}
-
 /// @name Sensors
 
 void

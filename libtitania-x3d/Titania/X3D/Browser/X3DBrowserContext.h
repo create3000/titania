@@ -147,18 +147,6 @@ public:
 	X3DViewpointNode*
 	getActiveViewpoint ();
 
-	///  @name Texture handling
-
-	void addTexture (const std::string &, GLuint);
-
-	bool removeTexture (const std::string &, GLuint);
-
-	GLuint
-	getTexture (const std::string &);
-
-	const TextureIndex &
-	getTextures () const;
-
 	///  @name Sensor handling
 
 	void

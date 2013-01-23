@@ -89,7 +89,7 @@ PixelTexture::initialize ()
 void
 PixelTexture::requestImmediateLoad ()
 {
-	if (not getTexture () or image .getComponents () < 1 or image .getComponents () > 4 or image .getWidth () <= 0 or image .getHeight () <= 0)
+	if (image .getComponents () < 1 or image .getComponents () > 4 or image .getWidth () <= 0 or image .getHeight () <= 0)
 		return;
 
 	size_t pixels = image .getWidth () * image .getHeight ();
@@ -177,14 +177,6 @@ PixelTexture::requestImmediateLoad ()
 
 	mimage .flip ();
 	setImage (mimage);
-}
-
-void
-PixelTexture::dispose ()
-{
-	deleteTexture ();
-
-	X3DTexture2DNode::dispose ();
 }
 
 } // X3D

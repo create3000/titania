@@ -1,5 +1,15 @@
 2013-01-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* PixelTexture.h:
+	* PixelTexture.cpp:
+	* ImageTexture.cpp:
+	* X3DTexture2DNode.h:
+	* X3DTexture2DNode.cpp: 
+
+2013-01-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TimeSensor.cpp: 
 
 2013-01-23  Holger Seelig  <holger.seelig@yahoo.de>

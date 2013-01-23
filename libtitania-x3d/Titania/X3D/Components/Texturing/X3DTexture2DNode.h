@@ -67,12 +67,19 @@ public:
 	SFBool                     repeatT;
 	SFNode <TextureProperties> textureProperties;
 
+	const SFNode <TextureProperties> &
+	getTextureProperties ();
+
 	bool
 	isTransparent ();
 
 	virtual
 	void
 	display ();
+
+	virtual
+	void
+	dispose ();
 
 
 protected:
@@ -86,17 +93,8 @@ protected:
 	void
 	requestImmediateLoad () = 0;
 
-	GLuint
-	getTexture ();
-
 	void
 	setImage (Magick::Image &);
-
-	void
-	setTexture (const GLuint);
-
-	void
-	deleteTexture ();
 
 
 private:
@@ -112,8 +110,8 @@ private:
 	void
 	applyTextureProperties (const SFNode <TextureProperties> &) const;
 
-	static const int wrapTypes [2];
-	GLuint           textureId;
+	static const GLint wrapTypes [2];
+	GLuint             textureId;
 
 	int32_t components;
 	bool    transparent;

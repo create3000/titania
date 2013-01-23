@@ -104,38 +104,6 @@ ImageTexture::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	// Delete previous Texture.
-
-	if (getTexture ())
-		getBrowser () -> removeTexture (getWorldURL (), getTexture ());
-
-	// Get cached Texture.
-
-	std::string cache_control;
-
-	try
-	{
-		cache_control = getBrowser () -> getExecutionContext () -> getMetaData ("cache-control");
-	}
-	catch (...)
-	{ }
-
-	if (cache_control not_eq "no-cache")
-	{
-		for (const auto & URL : transformURI (url))
-		{
-			GLint textureId = getBrowser () -> getTexture (URL);
-
-			if (textureId)
-			{
-				setWorldURL (URL .str ());
-				setTexture (textureId);
-				setLoadState (COMPLETE_STATE);
-				return;
-			}
-		}
-	}
-
 	// Load image.
 
 	Magick::Image image;
@@ -149,10 +117,6 @@ ImageTexture::requestImmediateLoad ()
 	// Set image.
 
 	setImage (image);
-
-	// Add texture to cache.
-
-	getBrowser () -> addTexture (getWorldURL (), getTexture ());
 
 	setLoadState (COMPLETE_STATE);
 }
@@ -203,9 +167,6 @@ ImageTexture::loadImage (Magick::Image & image)
 void
 ImageTexture::dispose ()
 {
-	if (getBrowser () -> removeTexture (getWorldURL (), getTexture ()))
-		deleteTexture ();
-
 	X3DUrlObject::dispose ();
 	X3DTexture2DNode::dispose ();
 }

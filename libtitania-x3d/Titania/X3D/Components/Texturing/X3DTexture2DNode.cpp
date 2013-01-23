@@ -67,7 +67,7 @@ namespace X3D {
 //constant[2] = 0.5f + 0.5f * BLUE_SATURATION_WEIGHT;
 //constant[3] = 1.0;
 
-const int X3DTexture2DNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
+const GLint X3DTexture2DNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
 
 X3DTexture2DNode::X3DTexture2DNode () :
 	   X3DTextureNode (),     
@@ -89,28 +89,18 @@ X3DTexture2DNode::initialize ()
 	glGenTextures (1, &textureId);
 }
 
+const SFNode <TextureProperties> &
+X3DTexture2DNode::getTextureProperties ()
+{
+	return this -> textureProperties
+	       ? this -> textureProperties
+			 : getBrowser () -> getBrowserOptions () -> textureProperties;
+}
+
 bool
 X3DTexture2DNode::isTransparent ()
 {
 	return transparent;
-}
-
-void
-X3DTexture2DNode::setTexture (const GLuint value)
-{
-	textureId = value;
-
-	GLint alpha;
-	glBindTexture (GL_TEXTURE_2D, textureId);
-	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_ALPHA_SIZE, &alpha);
-
-	transparent = alpha;
-}
-
-GLuint
-X3DTexture2DNode::getTexture ()
-{
-	return textureId;
 }
 
 void
@@ -228,9 +218,7 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 	GLint level      = 0; // This texture is level 0 in mimpap generation.
 	bool  compressed = false;
 
-	const SFNode <TextureProperties> & textureProperties = this -> textureProperties
-	                                                       ? this -> textureProperties
-																			 : getBrowser () -> getBrowserOptions () -> textureProperties;
+	auto textureProperties = getTextureProperties ();
 
 	// scale image
 
@@ -316,13 +304,12 @@ X3DTexture2DNode::display ()
 }
 
 void
-X3DTexture2DNode::deleteTexture ()
+X3DTexture2DNode::dispose ()
 {
 	if (textureId)
-	{
 		glDeleteTextures (1, &textureId);
-		textureId = 0;
-	}
+
+	X3DTextureNode::dispose ();
 }
 
 } // X3D
