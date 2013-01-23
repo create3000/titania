@@ -72,10 +72,11 @@ public:
 	ShapeContainer &
 	operator = (const ShapeContainer &);
 
-	bool
-	operator < (const ShapeContainer &) const;
+	const float &
+	getDistance () const
+	{ return distance; }
 
-	int
+	bool
 	redraw ();
 
 
@@ -90,6 +91,18 @@ private:
 	LightContainerArray localLights;
 
 	X3DFogObject* fog;
+
+};
+
+class ShapeContainerComp
+{
+public:
+
+	bool
+	operator () (const ShapeContainer* lhs, const ShapeContainer* rhs) const
+	{
+		return lhs -> getDistance () < rhs -> getDistance ();
+	}
 
 };
 

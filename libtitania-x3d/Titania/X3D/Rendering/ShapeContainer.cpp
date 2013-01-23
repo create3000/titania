@@ -51,6 +51,7 @@
 #include "ShapeContainer.h"
 
 #include "../Rendering/ViewVolume.h"
+#include <Titania/Utility/Adapter.h>
 
 namespace titania {
 namespace X3D {
@@ -78,14 +79,10 @@ ShapeContainer::operator = (const ShapeContainer & container)
 }
 
 bool
-ShapeContainer::operator < (const ShapeContainer & container) const
-{
-	return distance < container .distance;
-}
-
-int
 ShapeContainer::redraw ()
 {
+	bool drawn = false;
+
 	glPushMatrix ();
 	glMultMatrixf (matrix .data ());
 
@@ -101,29 +98,26 @@ ShapeContainer::redraw ()
 			glPopMatrix ();
 		}
 
-		//glPushAttrib(GL_ENABLE_BIT);
+		//glPushAttrib (GL_ENABLE_BIT);
 
 		if (fog)
 			fog -> enable ();
 
 		shape -> draw ();
-
-		//glPopAttrib();
+		
+		//glPopAttrib ();
 
 		if (localLights .size ())
 		{
-			for (auto light = localLights .crbegin ();
-			     light not_eq localLights .crend ();
-			     ++ light) // FIXME
-				(*light) -> disable ();
+			for (const auto & light : basic::adapter (localLights .crbegin (), localLights .crend ()))
+				light -> disable ();
 		}
-
-		glPopMatrix ();
-		return 1;
+		
+		drawn = true;
 	}
 
 	glPopMatrix ();
-	return 0;
+	return drawn;
 }
 
 } // X3D

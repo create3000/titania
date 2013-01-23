@@ -635,14 +635,15 @@ ROUTE train_38.duration_changed TO _39.set_nextTime
 
 
 DEF Debug Script {
-  eventIn SFTime set_downTime
+  eventIn SFTime set_time
   
   url "vrmlscript:
-function set_downTime (value)
+function set_time (value)
 {
 	print (value);
 }
   "
 }
 
-ROUTE _9.downTime TO Debug.set_downTime
+ROUTE _18.startTime_changed TO Debug.set_time
+ROUTE _19.exitTime TO Debug.set_time

@@ -78,9 +78,9 @@ class HitComp
 public:
 
 	bool
-	operator () (const Hit* a, const Hit* b) const
+	operator () (const Hit* lhs, const Hit* rhs) const
 	{
-		return a -> distance < b -> distance;
+		return lhs -> distance < rhs -> distance;
 	}
 
 };

@@ -1,3 +1,11 @@
+2013-01-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Hit.h:
+	* X3DRenderer.cpp:
+	* ShapeContainer.h:
+	* ShapeContainer.cpp:
+	* X3DShapeNode.cpp: 
+
 2013-01-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Hit.h:

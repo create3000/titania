@@ -135,28 +135,61 @@ public:
 	///  @name Element access
 
 	///  Return the center of this box.
-	constexpr vector3 <Type>
+	vector3 <Type>
 	min () const
 	{
-		return math::min (translation + xAxis + yAxis + zAxis,
-		                  translation - xAxis - yAxis - zAxis);
+		vector3 <Type> vertice0 = xAxis + yAxis + zAxis;
+		vector3 <Type> vertice1 = xAxis + yAxis - zAxis;
+		vector3 <Type> vertice2 = xAxis - yAxis + zAxis;
+		vector3 <Type> vertice3 = xAxis - yAxis - zAxis;
+		vector3 <Type> vertice4 = -xAxis + yAxis + zAxis;
+		vector3 <Type> vertice5 = -xAxis + yAxis - zAxis;
+		vector3 <Type> vertice6 = -xAxis - yAxis + zAxis;
+		vector3 <Type> vertice7 = -xAxis - yAxis - zAxis;
+	
+		vector3 <Type> min;
+		
+		min = math::min (vertice0, vertice1);
+		min = math::min (min, vertice2);
+		min = math::min (min, vertice3);
+		min = math::min (min, vertice4);
+		min = math::min (min, vertice5);
+		min = math::min (min, vertice6);
+		min = math::min (min, vertice7);
+		
+		return translation + min;
 	}
 
-	constexpr vector3 <Type>
+	vector3 <Type>
 	max () const
 	{
-		return math::max (translation + xAxis + yAxis + zAxis,
-		                  translation - xAxis - yAxis - zAxis);
+		vector3 <Type> vertice0 = xAxis + yAxis + zAxis;
+		vector3 <Type> vertice1 = xAxis + yAxis - zAxis;
+		vector3 <Type> vertice2 = xAxis - yAxis + zAxis;
+		vector3 <Type> vertice3 = xAxis - yAxis - zAxis;
+		vector3 <Type> vertice4 = -xAxis + yAxis + zAxis;
+		vector3 <Type> vertice5 = -xAxis + yAxis - zAxis;
+		vector3 <Type> vertice6 = -xAxis - yAxis + zAxis;
+		vector3 <Type> vertice7 = -xAxis - yAxis - zAxis;
+	
+		vector3 <Type> max;
+		
+		max = math::max (vertice0, vertice1);
+		max = math::max (max, vertice2);
+		max = math::max (max, vertice3);
+		max = math::max (max, vertice4);
+		max = math::max (max, vertice5);
+		max = math::max (max, vertice6);
+		max = math::max (max, vertice7);
+		
+		return translation + max;
 	}
 
 	///  Return the size of this box.
 	vector3 <Type>
 	size () const
 	{
-		vector3 <Type> a = xAxis + yAxis + zAxis;
-		vector3 <Type> b = -xAxis - yAxis - zAxis;
-
-		return math::max (a, b) - math::min (a, b);
+		return max () - min ();
 	}
 
 	///  Return the center of this box.

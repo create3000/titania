@@ -2,8 +2,9 @@
 
 META "title" "Basic Test"
 
-PROTO Test [ ]
-{
-  Group { }
+Shape {
+  appearance Appearance {
+    material Material { }
+  }
+  geometry Box { }
 }
-

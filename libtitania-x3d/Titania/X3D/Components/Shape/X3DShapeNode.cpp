@@ -133,15 +133,12 @@ X3DShapeNode::display ()
 {
 	if (geometry)
 	{
-		Box3f bbox = getBBox ();
+		Box3f bbox = getBBox () * ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
 
-		Matrix4f centerMatrix = ModelViewMatrix4f ();
-		centerMatrix .translate (bbox .center ());
-
-		float radius = abs (centerMatrix .multDirMatrix (bbox .size ())) * 0.5f;
-
-		if (radius > centerMatrix [3] [2] or true)
-			getBrowser () -> getRenderers () .top () -> addShape (this, centerMatrix [3] [2] - radius);
+		float depth = bbox .size () .z () * 0.5f;
+		
+		if (depth > bbox .center () .z ())
+			getBrowser () -> getRenderers () .top () -> addShape (this, bbox .center () .z () - depth);
 	}
 }
 

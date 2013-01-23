@@ -52,6 +52,8 @@
 
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
+
+#include <Titania/Utility/Adapter.h>
 #include <algorithm>
 
 namespace titania {
@@ -141,11 +143,9 @@ X3DRenderer::draw ()
 	glDepthMask (GL_TRUE);
 	glDisable (GL_BLEND);
 
-	auto end = shapes .cbegin () + numOpaqueNodes;
-
-	for (auto shape = shapes .cbegin (); shape not_eq end; ++ shape)
+	for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
 	{
-		numNodesDrawn += (*shape) -> redraw ();
+		numNodesDrawn += shape -> redraw ();
 	}
 
 	// render transparent objects
@@ -153,13 +153,11 @@ X3DRenderer::draw ()
 	glDepthMask (GL_FALSE);
 	glEnable (GL_BLEND);
 
-	std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentNodes);
+	std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentNodes, ShapeContainerComp ());
 
-	end = transparentShapes .begin () + numTransparentNodes;
-
-	for (auto shape = transparentShapes .begin (); shape not_eq end; ++ shape)
+	for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
 	{
-		numTransparentNodesDrawn += (*shape) -> redraw ();
+		numTransparentNodesDrawn += shape -> redraw ();
 	}
 
 	glDepthMask (GL_TRUE);
@@ -169,10 +167,8 @@ X3DRenderer::draw ()
 
 	if (globalLights .size ())
 	{
-		LightContainerArray::const_reverse_iterator light;
-
-		for (light = globalLights .rbegin (); light not_eq globalLights .rend (); ++ light)
-			(*light) -> disable ();
+		for (const auto & light : basic::adapter (globalLights .crbegin (), globalLights .crend ()))
+			light -> disable ();
 	}
 
 	numNodesDrawn += numTransparentNodesDrawn;
