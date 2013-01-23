@@ -113,7 +113,7 @@ TimeSensor::initialize ()
 
 	if (enabled)
 	{
-		if ((loop or startTime <= getCurrentTime ()) and stopTime <= startTime)
+		if (loop and stopTime <= startTime)
 			set_start ();
 	}
 }
@@ -243,7 +243,7 @@ TimeSensor::addTimeout (sigc::connection & timeout, TimeoutHandler callback, con
 		timeout .disconnect ();
 
 	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, callback),
-	                                            time - getCurrentTime () * 1000,
+	                                            (time - getCurrentTime ()) * 1000,
 	                                            GDK_PRIORITY_REDRAW);
 }
 

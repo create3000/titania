@@ -1,5 +1,9 @@
 2013-01-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TimeSensor.cpp: 
+
+2013-01-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Hit.h:
 	* X3DRenderer.cpp:
 	* ShapeContainer.h:

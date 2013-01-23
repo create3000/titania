@@ -1,0 +1,107 @@
+#VRML V2.0 utf8
+
+PROTO Delay [
+  exposedField SFTime cycleInterval 1
+  exposedField SFBool enabled TRUE
+  exposedField SFTime startTime 0
+  exposedField SFTime stopTime 0
+  eventOut     SFBool isActive
+  eventOut     SFTime exitTime
+]
+{
+  PROTO Data [
+    exposedField SFTime cycleInterval 1
+    exposedField SFTime startTime 0
+    exposedField SFTime stopTime 0
+  ]
+  {
+    Group { }
+  }
+
+  DEF _0 Script {
+    eventOut SFBool isActive IS isActive
+    eventOut SFTime exitTime IS exitTime
+    eventIn  SFBool set_enabled
+    eventIn  SFTime set_startTime
+    eventIn  SFTime set_stopTime
+    eventIn  SFTime set_time
+    field    SFNode timeSensor DEF _1 TimeSensor {
+      enabled IS enabled
+    }
+    field    SFNode data DEF _2 Data {
+      cycleInterval IS cycleInterval
+      startTime IS startTime
+      stopTime IS stopTime
+    }
+
+    url "vrmlscript:
+function set_enabled(value, time)
+{
+	if (!value && isActive) {
+		timeSensor.startTime = 0;
+		isActive = FALSE;
+	}
+}
+
+function set_startTime(value, time)
+{
+	if (!timeSensor.enabled) return;
+	if (!isActive) isActive = TRUE;
+	timeSensor.startTime = time + data.cycleInterval;
+}
+
+function set_stopTime(value, time)
+{
+	if (!timeSensor.enabled) return;
+	timeSensor.startTime = 0;
+	timeSensor.stopTime = time;
+	if (isActive) isActive = FALSE;
+}
+
+function set_time(value, time)
+{
+	if (!timeSensor.enabled) return;
+	timeSensor.stopTime = time;
+	isActive = FALSE;
+	exitTime = time;
+}
+"
+    directOutput TRUE
+    mustEvaluate TRUE
+  }
+
+  ROUTE _2.startTime_changed TO _0.set_startTime
+  ROUTE _2.stopTime_changed TO _0.set_stopTime
+  ROUTE _1.time TO _0.set_time
+  ROUTE _1.enabled_changed TO _0.set_enabled
+}
+
+Transform {
+  children [
+    DEF Touch TouchSensor { }
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box { }
+    }
+  ]
+}
+
+DEF Delay Delay {
+  cycleInterval 3
+}
+
+DEF Debug Script {
+  eventIn SFTime set_time
+
+  url "vrmlscript:
+function set_time (value)
+{
+	print ('Debug: ' + value);
+}
+  "
+}
+
+ROUTE Touch.touchTime TO Delay.set_startTime
+ROUTE Delay.exitTime TO Debug.set_time

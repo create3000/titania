@@ -1593,6 +1593,7 @@
     <None Include="Tests\PointingDeviceSensor\TouchSensor.wrl" />
     <None Include="Tests\PROTO\Number.wrl" />
     <None Include="Examples\Capone\stage\Button_proto.wrl.gz" />
+    <None Include="Tests\PROTO\Delay.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />
