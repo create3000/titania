@@ -118,7 +118,10 @@ public:
 	push_back (Type* node)
 	{
 		if (list .push_back (node, node))
+		{
+			node -> shutdown .addInterest (this, &BindableNodeList::erase, node);
 			processInterests ();
+		}
 	}
 
 	void
@@ -128,9 +131,16 @@ public:
 			processInterests ();
 	}
 
-	virtual
 	void
-	dispose () { list .clear ();  }
+	dispose ()
+	{
+		for (auto & node : list)
+			node -> shutdown .removeInterest (this, &BindableNodeList::erase);
+
+		list .clear ();
+
+		X3DOutput::dispose ();
+	}
 
 	/// @name Destructor
 

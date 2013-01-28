@@ -9,7 +9,7 @@ Group {
       fieldOfView 1.76201
       position -0.89777 1.9211 3.15842
       orientation 0.461553 -0.875163 0.145114 0.195048
-      description "overview"
+      description "Station Overview"
     }
     DEF VP1 Viewpoint {
       position -0.468271 6.53063 13.7238

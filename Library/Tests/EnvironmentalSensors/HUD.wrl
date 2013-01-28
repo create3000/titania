@@ -1,0 +1,92 @@
+#VRML V2.0 utf8
+
+META "title" "HUD"
+
+Background {
+  skyColor 1 1 1
+}
+
+Shape {
+  appearance Appearance {
+    material Material { }
+  }
+  geometry DEF Cube IndexedFaceSet {
+    solid FALSE
+    colorPerVertex FALSE
+    texCoordIndex [ 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1 ]
+    colorIndex [ 0, 1, 2, 3, 4, 5 ]
+    coordIndex [ 0, 1, 3, 2, -1, 4, 5, 7, 6, -1, 6, 7, 1, 0, -1, 2, 3, 5, 4, -1, 6, 0, 2, 4, -1, 1, 7, 5, 3, -1 ]
+    texCoord TextureCoordinate {
+      point [ 0 1, 0 0, 1 1, 1 0 ]
+    }
+    color Color {
+      color [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 0 1 1, 1 0 1 ]
+    }
+    coord Coordinate {
+      point [ -1 1 1, -1 -1 1, 1 1 1, 1 -1 1, 1 1 -1, 1 -1 -1, -1 1 -1, -1 -1 -1 ]
+    }
+  }
+}
+
+Shape {
+  appearance Appearance {
+    material Material {
+      diffuseColor 0.5 0 1
+      transparency 0.5
+    }
+  }
+  geometry Box {
+    size 20 20 20
+    solid FALSE
+  }
+}
+
+DEF Sensor ProximitySensor {
+  size 20 20 20
+}
+
+DEF HUD Transform {
+  children Viewpoint {
+    description "Inside"
+    position 0 0 5
+    retainUserOffsets TRUE
+  }
+}
+
+
+Viewpoint {
+  description "Outside"
+  position 0 0 5
+  centerOfRotation 0 0 1
+}
+
+
+DEF Debug Script {
+  eventIn SFVec3f    set_position
+  eventIn SFRotation set_orientation
+  eventIn SFBool     set_active
+
+  url "vrmlscript:
+function set_position (value, time)
+{
+	print ('position: ' + value);
+}
+
+function set_orientation (value, time)
+{
+	print ('orientation: ' + value);
+}
+
+function set_active (value, time)
+{
+	print ('isActive: ' + value);
+}
+  "
+}
+
+
+ROUTE Sensor .position_changed TO HUD.set_translation
+ROUTE Sensor .orientation_changed TO HUD.set_rotation
+ROUTE Sensor .position_changed TO Debug.set_position
+ROUTE Sensor .orientation_changed TO Debug.set_orientation
+ROUTE Sensor .isActive TO Debug.set_active

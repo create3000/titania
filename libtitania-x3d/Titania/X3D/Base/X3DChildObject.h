@@ -80,7 +80,7 @@ public:
 	bool
 	hasRoots (ChildObjectSet &);
 
-	template <class Type>
+	template <class Root, class Type>
 	std::deque <Type*>
 	findClosestParents () const;
 
@@ -115,10 +115,6 @@ public:
 
 	virtual
 	void
-	processEvent (X3DChildObject* const, ChildObjectSet &) = 0;
-
-	virtual
-	void
 	dispose ();
 
 	virtual
@@ -131,12 +127,15 @@ protected:
 
 	virtual
 	void
-	notify (X3DChildObject* const);
+	registerEvent (X3DChildObject* const);
 
+	virtual
+	void
+	registerInterest (X3DChildObject* const);
 
 private:
 
-	template <class Type>
+	template <class Root, class Type>
 	void
 	findClosestParents (std::deque <Type*> &, ChildObjectSet &);
 
@@ -152,7 +151,7 @@ X3DChildObject::setChildren (Args & ... args)
 	basic::pass ((setChild (args), 1) ...);
 }
 
-template <class Type>
+template <class Root, class Type>
 std::deque <Type*>
 X3DChildObject::findClosestParents () const
 {
@@ -161,15 +160,18 @@ X3DChildObject::findClosestParents () const
 	std::deque <Type*> parents;
 
 	for (const auto & object : getParents ())
-		object -> findClosestParents (parents, seen);
+		object -> findClosestParents <Root, Type> (parents, seen);
 
 	return parents;
 }
 
-template <class Type>
+template <class Root, class Type>
 void
 X3DChildObject::findClosestParents (std::deque <Type*> & parents, ChildObjectSet & seen)
 {
+	if (dynamic_cast <Root*> (this))
+		return;
+
 	if (not seen .insert (this) .second)
 		return;
 
@@ -182,7 +184,7 @@ X3DChildObject::findClosestParents (std::deque <Type*> & parents, ChildObjectSet
 	}
 
 	for (const auto & object : getParents ())
-		object -> findClosestParents (parents, seen);
+		object -> findClosestParents <Root, Type> (parents, seen);
 }
 
 } // X3D

@@ -78,6 +78,15 @@ public:
 
 	void
 	assign (const X3DExecutionContext* const);
+	
+	///  @name Tests
+	
+	virtual
+	bool
+	isScene () const
+	{ return false; }
+	
+	///  @name Element access
 
 	virtual
 	const basic::uri &

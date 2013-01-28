@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_CONTEXT_H__
 #define __TITANIA_X3D_BROWSER_X3DBROWSER_CONTEXT_H__
 
-#include "../Base/Output.h"
 #include "../Browser/Properties/BrowserOptions.h"
 #include "../Browser/Properties/BrowserProperties.h"
 #include "../Browser/Properties/RenderingProperties.h"
@@ -85,12 +84,10 @@ class X3DBrowserContext :
 {
 public:
 
-	Output initialized;
 	Output reshaped;
 	Output exposed;
 	Output displayed;
 	Output finished;
-	Output shutdown;
 	Output changed;
 
 	///  @name Time handling
@@ -200,7 +197,11 @@ public:
 
 	virtual
 	void
-	notify (X3DBaseNode* const);
+	registerEvent (X3DBaseNode* const);
+
+	virtual
+	void
+	registerInterest (X3DBaseNode* const);
 
 	///  @name Rendering handling
 

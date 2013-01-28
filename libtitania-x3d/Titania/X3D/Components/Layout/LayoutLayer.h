@@ -69,18 +69,6 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
-	virtual
-	Box3f
-	getBBox ();
-
-	virtual
-	void
-	intersect ();
-
-	virtual
-	void
-	traverse ();
-
 };
 
 } // X3D

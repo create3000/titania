@@ -55,12 +55,12 @@
 #include "../Navigation/X3DViewpointNode.h"
 
 // LOW
-#define SPHERE_USEG 16.0
-#define SPHERE_VSEG 15.0
+//#define SPHERE_USEG 16.0
+//#define SPHERE_VSEG 15.0
 
 // HIGH
-#define SPHERE_USEG 32.0
-#define SPHERE_VSEG 41.0
+//#define SPHERE_USEG 32.0
+//#define SPHERE_VSEG 41.0
 
 // MEDIUM
 #define SPHERE_USEG 22.0

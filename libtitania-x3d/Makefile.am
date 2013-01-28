@@ -176,6 +176,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Navigation/Viewpoint.cpp \
 	Titania/X3D/Components/Navigation/ViewpointGroup.cpp \
 	Titania/X3D/Components/Navigation/X3DViewpointNode.cpp \
+	Titania/X3D/Components/Navigation/X3DViewpointObject.cpp \
 	Titania/X3D/Components/Networking/Anchor.cpp \
 	Titania/X3D/Components/Networking/Inline.cpp \
 	Titania/X3D/Components/Networking/LoadSensor.cpp \

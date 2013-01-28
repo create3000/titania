@@ -516,6 +516,7 @@
     <None Include="Titania\X3D\Widgets\X3DViewer.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\JavaScriptContext.h" />
     <None Include="Titania\X3D\Browser\BrowserApplication.h" />
+    <None Include="Titania\X3D\Components\Navigation\X3DViewpointObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -913,6 +914,7 @@
     <Compile Include="Titania\X3D\Widgets\ExamineViewer.cpp" />
     <Compile Include="Titania\X3D\Widgets\X3DViewer.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\JavaScriptContext.cpp" />
+    <Compile Include="Titania\X3D\Components\Navigation\X3DViewpointObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -78,25 +78,5 @@ Layer::create (X3DExecutionContext* const executionContext) const
 	return new Layer (executionContext);
 }
 
-Box3f
-Layer::getBBox ()
-{
-	return X3DBoundedObject::getBBox (children);
-}
-
-void
-Layer::intersect ()
-{
-	for (const auto & child : children)
-		child -> pick ();
-}
-
-void
-Layer::traverse ()
-{
-	for (const auto & child : children)
-		child -> display ();
-}
-
 } // X3D
 } // titania

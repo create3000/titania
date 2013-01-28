@@ -116,11 +116,20 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	      X3DChildObject (),                 
 	             browser (browser),          
 	    executionContext (executionContext), 
+	           component (),                 
+	            typeName (),                 
+	            nodeType (),                 
+	    fieldDefinitions (),                 
+	              fields (),                 
+	        fieldAliases (),                 
 	numUserDefinedFields (0),                
-	             prepare (true),             
-	  receivedInputEvent (false)             
+	              events (),                 
+	           interests (),                 
+	  receivedInputEvent (false)          
 {
 	assert (executionContext);
+
+	setChildren (initialized);
 }
 
 X3DBaseNode*
@@ -475,20 +484,28 @@ X3DBaseNode::setup ()
 		field .second -> addParent (this);
 
 	initialize ();
+
+	initialized = getCurrentTime ();
 }
 
 void
-X3DBaseNode::notify (X3DChildObject* const object)
+X3DBaseNode::registerEvent (X3DChildObject* const object)
 {
-	//__LOG__ << "Node '" << getTypeName () << "' received an event from field '" << object -> getName () << ": " << object -> getTypeName () << "'." << (void*) this << std::endl;
-
-	assert (object);
-
 	if (not events .insert (object) .second)
 		return;
 
 	if (events .size () == 1)
-		getBrowser () -> notify (this);
+		getBrowser () -> registerEvent (this);
+}
+
+void
+X3DBaseNode::registerInterest (X3DChildObject* object)
+{
+	if (not interests .insert (object) .second)
+		return;
+
+	if (interests .size () == 1)
+		getBrowser () -> registerInterest (this);
 
 	receivedInputEvent |= object -> isInput ();
 }
@@ -496,42 +513,34 @@ X3DBaseNode::notify (X3DChildObject* const object)
 void
 X3DBaseNode::processEvents (ChildObjectSet & sourceFields)
 {
-	//if (not events .size ())
-	//	__LOG__ << (void*) this << " " << getName () << " " << getTypeName () << std::endl;
-
-	if (prepare and receivedInputEvent)
-	{
-		// Call prepareEvents only if one event was from an eventIn.
-		prepare = false;
-		getBrowser () -> getRouter () .addPreparedNode (this);
-		prepareEvents ();
-	}
-
-	//assert (events .size ());
-
-	ChildObjectSet eventsToProcess (std::move (events));
-
-	for (const auto & event : eventsToProcess)
-	{
-		//std::clog << "Node '" << getTypeName () << "' process events from field '" << event -> getName () << "'." << (void*) this << std::endl;
-		event -> processEvents (sourceFields);
-	}
+	for (const auto & field : ChildObjectSet (std::move (events)))
+		field -> processEvents (sourceFields);
 }
 
 void
-X3DBaseNode::processEvent (X3DChildObject* const field, ChildObjectSet & sourceFields)
+X3DBaseNode::processInterests ()
 {
-	receivedInputEvent |= field -> isInput ();
-	processEvents (sourceFields);
+	if (receivedInputEvent)
+	{
+		receivedInputEvent = false;
+		
+		prepareEvents ();
+
+		for (const auto & field : ChildObjectSet (std::move (interests)))
+			field -> processInterests ();
+
+		eventsProcessed ();
+	}
+	else
+	{
+		for (const auto & field : ChildObjectSet (std::move (interests)))
+			field -> processInterests ();
+	}
 }
 
 void
 X3DBaseNode::eventsProcessed ()
-{
-	// Call eventsProcessed only if one event was from an eventIn.
-	prepare            = true;
-	receivedInputEvent = false;
-}
+{ }
 
 void
 X3DBaseNode::fromStream (std::istream & istream)
@@ -708,7 +717,11 @@ X3DBaseNode::dispose ()
 
 	executionContext -> removeParent (this);
 
-	events .clear ();
+	events    .clear ();
+	interests .clear ();
+	receivedInputEvent = false;
+
+	shutdown .processInterests ();
 
 	getGarbageCollector () .addObject (this);
 }

@@ -224,6 +224,9 @@ private:
 	void
 	set_scene ();
 
+	void
+	set_world ();
+
 	static const std::string version;
 
 	SupportedFields     supportedFields;
@@ -234,6 +237,7 @@ private:
 	SFString description;
 
 	SFNode <Scene> scene;
+	SFNode <Scene> world;
 
 };
 

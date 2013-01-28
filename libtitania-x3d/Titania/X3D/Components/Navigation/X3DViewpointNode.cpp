@@ -58,12 +58,11 @@ namespace titania {
 namespace X3D {
 
 X3DViewpointNode::X3DViewpointNode (bool displayed) :
-	            X3DBindableNode (displayed),                                        
-	                description (),                                                 // SFString   [in,out] description       ""
+	            X3DBindableNode (displayed),                      
+	         X3DViewpointObject (),
 	                orientation (),                                                 // SFRotation [in,out] orientation       0 0 1 0        [-1,1],(-∞,∞)
 	           centerOfRotation (),                                                 // SFVec3f    [in,out] centerOfRotation  0 0 0          (-∞,∞)
 	                       jump (true),                                             // SFBool     [in,out] jump              TRUE
-	          retainUserOffsets (),                                                 // SFBool     [ ]      retainUserOffsets
 	             positionOffset (),                                                 
 	          orientationOffset (),                                                 
 	     centerOfRotationOffset (),                                                 
@@ -87,6 +86,7 @@ void
 X3DViewpointNode::initialize ()
 {
 	X3DBindableNode::initialize ();
+	X3DViewpointObject::initialize ();
 
 	timeSensor                  = new TimeSensor (getExecutionContext ());
 	timeSensor -> stopTime      = 1;
@@ -98,7 +98,7 @@ X3DViewpointNode::initialize ()
 	positionInterpolator -> setup ();
 
 	timeSensor           -> fraction_changed .addInterest (positionInterpolator -> set_fraction);
-	timeSensor           -> isActive         .addInterest (this, &X3DViewpointNode::set_active);
+	timeSensor           -> isActive         .addInterest (this, &X3DViewpointNode::set_isActive);
 	positionInterpolator -> value_changed    .addInterest (positionOffset);
 
 	isBound .addInterest (this, &X3DViewpointNode::_set_bind);
@@ -180,7 +180,7 @@ X3DViewpointNode::lookAt (Box3f bbox)
 
 // Notify NavigationInfos when transitions are complete.
 void
-X3DViewpointNode::set_active (const bool & value)
+X3DViewpointNode::set_isActive (const bool & value)
 {
 	if (not value)
 	{
@@ -274,6 +274,7 @@ X3DViewpointNode::dispose ()
 	positionInterpolator .dispose ();
 
 	X3DBindableNode::dispose ();
+	X3DViewpointObject::dispose ();
 }
 
 } // X3D

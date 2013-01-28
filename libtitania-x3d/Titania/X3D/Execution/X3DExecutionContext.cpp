@@ -273,7 +273,7 @@ throw (Error <INVALID_NAME>,
 		}
 		catch (const std::out_of_range &)
 		{
-			if (getExecutionContext () not_eq this)
+			if (not isScene ())
 				return getExecutionContext () -> createProtoInstance (name, setup);
 
 			throw Error <INVALID_NAME> ("Unknown proto type '" + name + "'.");
@@ -723,7 +723,7 @@ throw (Error <INVALID_NAME>,
 	}
 	catch (const Error <INVALID_NAME> & error)
 	{
-		if (getExecutionContext () not_eq this)
+		if (not isScene ())
 			getExecutionContext () -> changeViewpoint (name);
 		else
 			throw error;

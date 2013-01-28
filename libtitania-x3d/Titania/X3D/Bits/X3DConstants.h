@@ -181,6 +181,7 @@ public:
 		X3DUrlObject,
 		X3DVertexAttributeNode,
 		X3DViewpointNode,
+		X3DViewpointObject,
 		X3DViewportNode
 
 	};

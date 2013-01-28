@@ -52,27 +52,76 @@
 #define __TITANIA_X3D_COMPONENTS_NAVIGATION_VIEWPOINT_GROUP_H__
 
 #include "../Core/X3DChildNode.h"
+#include "../Navigation/X3DViewpointObject.h"
+#include "../EnvironmentalSensor/VisibilitySensor.h"
 
 namespace titania {
 namespace X3D {
 
 class ViewpointGroup :
-	virtual public X3DChildNode
+	virtual public X3DChildNode, public X3DViewpointObject
 {
 public:
 
-	SFVec3f              center;
-	MFNode <X3DBaseNode> children;
-	SFString             description;
-	SFBool               displayed;
-	SFBool               retainUserOffsets;
-	SFVec3f              size;
+	///  @name Fields
+
+	SFBool                      displayed;
+	SFVec3f                     size;
+	SFVec3f                     center;
+	MFNode <X3DViewpointObject> children;
+	
+	SFBool isActive;
+	
+	///  @name Construction
 
 	ViewpointGroup (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+	
+	///  @name Element accesss
+	
+	const std::deque <X3DViewpointObject*>
+	getViewpointObjects () const;
+		
+	///  @name Rendering
+
+	virtual
+	void
+	display ();
+
+
+private:
+	
+	///  @name Construction
+
+	virtual
+	void
+	initialize ();
+	
+	///  @name Field callbacks
+
+	void
+	set_displayed ();
+	
+	void
+	set_size ();
+	
+	void
+	set_children ();
+	
+	void
+	set_isActive ();
+		
+	///  @name Destruction
+
+	virtual
+	void
+	dispose ();
+	
+	SFNode <VisibilitySensor>        visibilitySensor;
+	std::deque <X3DViewpointObject*> viewpointObjects;
 
 };
 

@@ -112,7 +112,7 @@ LayerSet::getActiveLayer () const
 }
 
 const MFNode <X3DLayerNode> &
-LayerSet::getLayers ()
+LayerSet::getLayers () const
 {
 	return children;
 }

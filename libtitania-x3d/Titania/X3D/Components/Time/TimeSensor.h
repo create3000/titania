@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 
 class TimeSensor :
-	public X3DTimeDependentNode, public X3DSensorNode
+	public X3DSensorNode, public X3DTimeDependentNode
 {
 public:
 
@@ -91,6 +91,9 @@ private:
 	virtual
 	void
 	initialize ();
+
+	void
+	set_initialized ();
 
 	void
 	set_enabled ();

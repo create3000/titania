@@ -76,7 +76,7 @@ public:
 	BindableNodeStack (const pointer_type & node) :
 		stack ({ node })
 	{
-		stack .top () -> isBound .addInterest (this, &BindableNodeStack::set_bind);
+		node -> isBound .addInterest (this, &BindableNodeStack::set_bind, node);
 	}
 
 	const pointer_type &
@@ -94,20 +94,36 @@ public:
 		if (stack .top () not_eq node)
 		{
 			stack .top () -> set_bind = false;
-			stack .push (node);
-			stack .top () -> isBound .addInterest (this, &BindableNodeStack::set_bind);
+			
+			if (stack .push (node))
+				node -> shutdown .addInterest (this, &BindableNodeStack::erase, node);
+			
+			node -> isBound .addInterest (this, &BindableNodeStack::set_bind, node);
 		}
 	}
 
-	void
+	bool
 	pop (const pointer_type & node)
 	{
 		if (stack .top () == node)
 		{
+			node -> shutdown .removeInterest (this, &BindableNodeStack::erase);
 			stack .pop ();
 			stack .top () -> set_bind = true;
-			stack .top () -> isBound .addInterest (this, &BindableNodeStack::set_bind);
+			stack .top () -> isBound .addInterest (this, &BindableNodeStack::set_bind, node);
+			return true;
 		}
+		
+		return false;
+	}
+	
+	void
+	dispose ()
+	{
+		for (auto & node : stack)
+			node -> shutdown .removeInterest (this, &BindableNodeStack::erase);
+
+		X3DOutput::dispose ();
 	}
 
 	~BindableNodeStack ()
@@ -117,9 +133,16 @@ public:
 private:
 
 	void
-	set_bind ()
+	erase (pointer_type node)
 	{
-		stack .top () -> set_bind .removeInterest (this, &BindableNodeStack::set_bind);
+		if (not pop (node))
+			stack .erase (node);
+	}
+
+	void
+	set_bind (pointer_type node)
+	{
+		node -> isBound .removeInterest (this, &BindableNodeStack::set_bind);
 		processInterests ();
 	}
 

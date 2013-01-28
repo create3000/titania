@@ -56,31 +56,123 @@ namespace titania {
 namespace X3D {
 
 ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	     X3DChildNode (),                                                    
-	           center (),                                                    // SFVec3f  [in,out] center             0 0 0        (-∞,∞)
-	         children (),                                                    // MFNode   [in,out] children           NULL         [X3DViewpointNode|ViewpointGroup]
-	      description (),                                                    // SFString [in,out] description        ""
-	        displayed (true),                                                // SFBool   [in,out] displayed          TRUE
-	retainUserOffsets (),                                                    // SFBool   [in,out] retainUserOffsets  FALSE
-	             size ()                                                     // SFVec3f  [in,out] size               0 0 0        (-∞,∞)
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	      X3DChildNode (),                                                    
+	X3DViewpointObject (),                                                    
+	         displayed (true),                                                // SFBool   [in,out] displayed          TRUE
+	              size (),                                                    // SFVec3f  [in,out] size               0 0 0        (-∞,∞)
+	            center (),                                                    // SFVec3f  [in,out] center             0 0 0        (-∞,∞)
+	          children (),                                                    // MFNode   [in,out] children           NULL         [X3DViewpointNode|ViewpointGroup]
+	          isActive (),
+	  visibilitySensor (new VisibilitySensor (executionContext)),
+	  viewpointObjects ()                                                     
 {
 	setComponent ("Navigation");
 	setTypeName ("ViewpointGroup");
 
 	addField (inputOutput, "metadata",          metadata);
-	addField (inputOutput, "center",            center);
-	addField (inputOutput, "children",          children);
-	addField (inputOutput, "description",       description);
 	addField (inputOutput, "displayed",         displayed);
+	addField (inputOutput, "description",       description);
 	addField (inputOutput, "retainUserOffsets", retainUserOffsets);
 	addField (inputOutput, "size",              size);
+	addField (inputOutput, "center",            center);
+	addField (inputOutput, "children",          children);
+	
+	setChildren (isActive,
+	             visibilitySensor);
 }
 
 X3DBaseNode*
 ViewpointGroup::create (X3DExecutionContext* const executionContext) const
 {
 	return new ViewpointGroup (executionContext);
+}
+
+void
+ViewpointGroup::initialize ()
+{
+	X3DChildNode::initialize ();
+	X3DViewpointObject::initialize ();
+	
+	visibilitySensor -> setup ();
+	visibilitySensor -> isActive .addInterest (isActive);
+	
+	size   .addInterest (visibilitySensor -> size);
+	center .addInterest (visibilitySensor -> center);
+	
+	displayed .addInterest (this, &ViewpointGroup::set_displayed);
+	size      .addInterest (this, &ViewpointGroup::set_size);
+	children  .addInterest (this, &ViewpointGroup::set_children);
+	isActive  .addInterest (this, &ViewpointGroup::set_isActive);
+	
+	set_size ();
+	set_children ();
+}
+
+const std::deque <X3DViewpointObject*>
+ViewpointGroup::getViewpointObjects () const
+{
+	return viewpointObjects;
+}
+
+void
+ViewpointGroup::set_displayed ()
+{
+	notifyParents ();
+}
+
+void
+ViewpointGroup::set_size ()
+{
+	if (size == Vector3f ())
+	{
+		if (not visibilitySensor -> isActive)
+			isActive = true;
+
+		visibilitySensor -> enabled = false;
+	}
+	else
+		visibilitySensor -> enabled = true;
+}
+
+void
+ViewpointGroup::set_children ()
+{
+	viewpointObjects .clear ();
+
+	for (const auto & child : children)
+	{
+		X3DViewpointObject* viewpointObject = *child;
+		
+		if (viewpointObject)
+			viewpointObjects .emplace_back (viewpointObject);
+	}
+
+	notifyParents ();
+}
+
+void
+ViewpointGroup::set_isActive ()
+{
+	notifyParents ();
+}
+
+void
+ViewpointGroup::display ()
+{
+	visibilitySensor -> display ();
+
+	for (const auto & viewpointObject : viewpointObjects)
+		viewpointObject -> display ();
+}
+
+void
+ViewpointGroup::dispose ()
+{
+	visibilitySensor .dispose ();
+
+	X3DChildNode::dispose ();
+	X3DViewpointObject::dispose ();
 }
 
 } // X3D

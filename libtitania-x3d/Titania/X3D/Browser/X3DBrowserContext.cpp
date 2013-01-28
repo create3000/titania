@@ -61,12 +61,10 @@ namespace X3D {
 
 X3DBrowserContext::X3DBrowserContext () :
 	X3DExecutionContext (),                                        
-	        initialized (),                                        // [out]    initialized
 	           reshaped (),                                        // [out]    reshape
 	            exposed (),                                        // [out]    exposed
 	          displayed (),                                        // [out]    displayed
 	           finished (),                                        // [out]    finished
-	           shutdown (),                                        // [out]    shutdown
 	            changed (),                                        // [out]    changed
 	renderingProperties (new RenderingProperties (this)),          // SFSting  [ ] renderingProperties NULL  [RenderingProperties]
 	  browserProperties (new BrowserProperties   (this)),          // SFSting  [ ] browserProperties   NULL  [BrowserProperties]
@@ -374,17 +372,21 @@ X3DBrowserContext::touchEvent ()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
-X3DBrowserContext::notify (X3DBaseNode* const node)
+X3DBrowserContext::registerEvent (X3DBaseNode* const node)
 {
-	assert (node);
-
-	router .notify (node);
+	router .registerEvent (node);
 
 	if (changedTime == getCurrentTime ())
 		return;
 
 	changedTime = getCurrentTime ();
 	changed .processInterests ();
+}
+
+void
+X3DBrowserContext::registerInterest (X3DBaseNode* const node)
+{
+	router .registerInterest (node);
 }
 
 void

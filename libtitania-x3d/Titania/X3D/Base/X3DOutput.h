@@ -71,6 +71,9 @@ public:
 	const RequesterArray &
 	getRequesters () const;
 
+
+	/// @name Has interest service
+	
 	template <class Class>
 	inline
 	bool
@@ -79,7 +82,17 @@ public:
 		return hasInterest (object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
+
 	/// @name Add interest service
+
+	template <class Class, class Argument>
+	inline
+	void
+	addInterest (Class* object, void (Class::* memberFunction) (Argument*), Argument* argument) const
+	{
+		insertInterest (std::bind (std::mem_fn (memberFunction), object, argument),
+		                object, reinterpret_cast <void*> (object ->* memberFunction));
+	}
 
 	template <class Class, class Argument>
 	inline
@@ -107,9 +120,8 @@ public:
 		insertInterest (std::bind (function, std::cref (argument)),
 		                nullptr, reinterpret_cast <void*> (function));
 	}
-	//@}
 
-	//@{
+
 	template <class Class>
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (void)) const
@@ -125,15 +137,23 @@ public:
 		insertInterest (std::bind (std::mem_fn (memberFunction), object),
 		                &object, reinterpret_cast <void*> (object .* memberFunction));
 	}
-	//@}
 
 	//  Add basic interest.
+	
 	void
 	addInterest (const Requester &) const;
 
-	///  @name Remove interest service
 
-	//@{
+	///  @name Remove interest service
+	
+	template <class Class, class Argument>
+	inline
+	void
+	removeInterest (Class* object, void (Class::* memberFunction) (Argument)) const
+	{
+		eraseInterest (object, reinterpret_cast <void*> (object ->* memberFunction));
+	}
+
 	template <class Class>
 	void
 	removeInterest (Class* object, void (Class::* memberFunction) (void)) const
@@ -150,13 +170,18 @@ public:
 
 	void
 	removeInterest (const Requester &) const;
-	//@}
+
 
 	///  @name Process interests service
+	
+	virtual
 	void
-	processInterests () const;
+	processInterests ();
+
 
 	///  @name Dispose service
+	
+	virtual
 	void
 	dispose ();
 

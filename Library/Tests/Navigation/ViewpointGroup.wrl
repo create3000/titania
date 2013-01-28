@@ -1,0 +1,35 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "ViewpointGroup"
+
+Viewpoint {
+  description "Home"
+  position 0 0 15
+}
+
+ViewpointGroup {
+  description "Group"
+  children [
+    Viewpoint {
+      description "First"
+      position 0 0 20
+    }
+    ViewpointGroup {
+      description "SubGroup"
+      children [
+        Viewpoint {
+          description "Second"
+          position 0 0 25
+        }
+        Viewpoint {
+          description "Third"
+          position 0 0 30
+        }
+      ]
+    }
+  ]
+}
+
+Inline {
+  url "../Networking/Cube.wrl"
+}

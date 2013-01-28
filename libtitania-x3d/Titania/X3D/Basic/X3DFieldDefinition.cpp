@@ -57,7 +57,11 @@ X3DFieldDefinition::X3DFieldDefinition () :
 	X3DChildObject (),               
 	     reference (nullptr),        
 	    accessType (initializeOnly), 
-	     aliasName ()                
+	     aliasName (),               
+	   inputRoutes (),               
+	  outputRoutes (),               
+	     interests (),               
+	        events ()                
 { }
 
 X3DFieldDefinition*
@@ -221,29 +225,35 @@ X3DFieldDefinition::processEvents (ChildObjectSet & sourceFields)
 {
 	//	if (inputRoutes  .size ())
 	sourceFields .insert (this);
+	
+	events .emplace_front (this);
+	registerInterest (this);
 
 	for (const auto & fieldDefinition : interests)
-	{
 		fieldDefinition -> processEvent (this, sourceFields);
-	}
-
-	processInterests ();
-	
-	sourceFields .erase (this);
 }
 
 void
-X3DFieldDefinition::processEvent (X3DChildObject* const field, ChildObjectSet & sourceFields)
+X3DFieldDefinition::processEvent (X3DFieldDefinition* const field, ChildObjectSet & sourceFields)
 {
-	if (sourceFields .find (this) not_eq sourceFields .end ())
+	if (not sourceFields .insert (this) .second)
 		return;
 
-	for (const auto & parent : getParents ())
-		parent -> processEvent (this, sourceFields);
+	events .emplace_back (field);
+	registerInterest (this);
 
-	write (*field);
+	for (const auto & fieldDefinition : interests)
+		fieldDefinition -> processEvent (field, sourceFields);
+}
 
-	processEvents (sourceFields);
+void
+X3DFieldDefinition::processInterests ()
+{
+	for (const auto & event : FieldDefinitionArray (std::move (events)))
+	{
+		write (*event);
+		X3DChildObject::processInterests ();
+	}
 }
 
 void
@@ -259,6 +269,7 @@ X3DFieldDefinition::dispose ()
 	outputRoutes .clear ();
 
 	interests .clear ();
+	events    .clear ();
 
 	X3DChildObject::dispose ();
 }

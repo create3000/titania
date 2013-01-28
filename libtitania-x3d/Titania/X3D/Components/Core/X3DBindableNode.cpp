@@ -73,18 +73,17 @@ X3DBindableNode::initialize ()
 {
 	X3DChildNode::initialize ();
 
+	if (displayed)
+		initialized .addInterest (this, &X3DBindableNode::set_initialized);
+	
 	set_bind .addInterest (this, &X3DBindableNode::_set_bind);
 }
 
 void
-X3DBindableNode::realize ()
+X3DBindableNode::set_initialized ()
 {
-	X3DChildNode::initialize ();
-
-	if (displayed)
-		for (auto & layer : getLayers ())
-			addToLayer (layer);
-
+	for (auto & layer : getLayers ())
+		addToLayer (layer);
 }
 
 void
@@ -122,16 +121,6 @@ X3DBindableNode::moveToTop (MFNode <X3DBindableNode> & stack)
 		stack .erase (iter);
 
 	stack .push_back (this);
-}
-
-void
-X3DBindableNode::dispose ()
-{
-	if (displayed)
-		for (auto & layer : getLayers ())
-			removeFromLayer (layer);
-
-	X3DChildNode::dispose ();
 }
 
 } // X3D

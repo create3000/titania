@@ -90,12 +90,12 @@ public:
 
 	// Modifiers:
 
-	void
+	bool
 	push (const Type & value)
 	{
 		// If value is on top then return.
 		if (value == top ())
-			return;
+			return false;
 
 		// If value is already in container then move value to top.
 		const auto map_iter = map .find (value);
@@ -103,11 +103,13 @@ public:
 		if (map_iter not_eq map .end ())
 		{
 			move_to_top (map_iter -> second, value);
-			return;
+			return false;
 		}
 
 		// Emplace new values on top.
 		push_front (value);
+
+		return true;
 	}
 
 	void
@@ -134,25 +136,25 @@ public:
 	const Type &
 	bottom () const { return list .back (); }
 
-	//	// Iterators:
-	//
-	//	//@{
-	//	///  begin
-	//	const_iterator
-	//	begin () const { return list .begin (); }
-	//
-	//	const_iterator
-	//	cbegin () const { return list .cbegin (); }
-	//	//@}
-	//
-	//	//@{
-	//	///  begin
-	//	const_iterator
-	//	end () const { return list .end (); }
-	//
-	//	const_iterator
-	//	cend () const { return list .cend (); }
-	//	//@}
+	// Iterators:
+
+	//@{
+	///  begin
+	const_iterator
+	begin () const { return list .begin (); }
+
+	const_iterator
+	cbegin () const { return list .cbegin (); }
+	//@}
+
+	//@{
+	///  begin
+	const_iterator
+	end () const { return list .end (); }
+
+	const_iterator
+	cend () const { return list .cend (); }
+	//@}
 
 	// Capacity:
 

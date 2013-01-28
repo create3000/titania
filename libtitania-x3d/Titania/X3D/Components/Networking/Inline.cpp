@@ -91,16 +91,44 @@ Inline::initialize ()
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
 
-	load .addInterest (this, &Inline::set_load);
-	url  .addInterest (this, &Inline::set_url);
+	load  .addInterest (this, &Inline::set_load);
+	url   .addInterest (this, &Inline::set_url);
+	scene .addInterest (this, &Inline::set_scene);
+	
+	scene = getBrowser () -> createScene ();
 
 	set_url ();
 }
 
-void
-Inline::realize ()
+Box3f
+Inline::getBBox ()
 {
-	X3DChildNode::realize ();
+	return X3DBoundedObject::getBBox (scene -> getRootNodes ());
+}
+
+void
+Inline::set_load ()
+{
+	if (load)
+		requestLoad ();
+		
+	else
+		requestUnload ();
+}
+
+void
+Inline::set_url ()
+{
+	setLoadState (NOT_STARTED_STATE);
+
+	if (load)
+		requestLoad ();
+}
+
+void
+Inline::set_scene ()
+{
+	const_cast <MFNode <X3DBaseNode> &> (scene -> getRootNodes ()) .addParent (this);
 
 	if (getBrowser () -> getBrowserOptions () -> enableInlineViewpoints)
 	{
@@ -125,21 +153,8 @@ Inline::realize ()
 }
 
 void
-Inline::set_load ()
+Inline::requestLoad ()
 {
-	if (load)
-		requestImmediateLoad ();
-	else
-	{
-		setLoadState (NOT_STARTED_STATE);
-		scene = getBrowser () -> createScene ();
-	}
-}
-
-void
-Inline::set_url ()
-{
-	setLoadState (NOT_STARTED_STATE);
 	requestImmediateLoad ();
 }
 
@@ -149,21 +164,18 @@ Inline::requestImmediateLoad ()
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 
-	if (not load)
-		return;
-
 	setLoadState (IN_PROGRESS_STATE);
 
 	try
 	{
+		const_cast <MFNode <X3DBaseNode> &> (scene -> getRootNodes ()) .removeParent (this);
+	
 		scene = createX3DFromURL (url);
 
 		setLoadState (COMPLETE_STATE);
 	}
 	catch (const X3DError & error)
 	{
-		scene = getBrowser () -> createScene ();
-
 		setLoadState (FAILED_STATE);
 
 		std::clog << error .what () << std::endl;
@@ -173,10 +185,17 @@ Inline::requestImmediateLoad ()
 	}
 }
 
-Box3f
-Inline::getBBox ()
+void
+Inline::requestUnload ()
 {
-	return X3DBoundedObject::getBBox (scene -> getRootNodes ());
+	if (checkLoadState () == NOT_STARTED_STATE or checkLoadState () == FAILED_STATE)
+		return;
+		
+	const_cast <MFNode <X3DBaseNode> &> (scene -> getRootNodes ()) .removeParent (this);
+
+	scene = getBrowser () -> createScene ();
+		
+	setLoadState (NOT_STARTED_STATE);
 }
 
 void
@@ -196,6 +215,8 @@ Inline::display ()
 void
 Inline::dispose ()
 {
+	const_cast <MFNode <X3DBaseNode> &> (scene -> getRootNodes ()) .removeParent (this);
+	
 	scene .dispose ();
 
 	X3DUrlObject::dispose ();

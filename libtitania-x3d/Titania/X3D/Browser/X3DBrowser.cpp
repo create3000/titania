@@ -43,7 +43,8 @@ X3DBrowser::X3DBrowser () :
 	supportedComponents (this),                      
 	  supportedProfiles (this, supportedComponents), 
 	        description (),                          // SFString  [in,out] description ""
-	              scene (createScene ())             // SFNode    [in,out] scene       NULL
+	              scene (createScene ()),            // SFNode    [in,out] scene       NULL
+	              world (scene)                      // SFNode    [in,out] world       NULL
 {
 	std::clog << "Constructing Browser:" << std::endl;
 
@@ -54,6 +55,7 @@ X3DBrowser::X3DBrowser () :
 	addField (outputOnly, "description", description);
 	addField (outputOnly, "urlError",    urlError);
 	addField (outputOnly, "scene",       scene);
+	addField (outputOnly, "world",       world);
 
 	std::clog << "\tDone constructing Browser." << std::endl;
 }
@@ -67,6 +69,7 @@ X3DBrowser::initialize ()
 	// Replace world service.
 
 	scene .addInterest (this, &X3DBrowser::set_scene);
+	world .addInterest (this, &X3DBrowser::set_world);
 
 	// Welcome
 
@@ -87,8 +90,6 @@ X3DBrowser::initialize ()
 		<< std::string (80, '*') << std::endl
 		<< std::string (80, '*') << std::endl
 		<< std::endl;
-
-	initialized .processInterests ();
 }
 
 X3DBrowser*
@@ -234,9 +235,38 @@ throw (Error <INVALID_SCENE>)
 void
 X3DBrowser::set_scene ()
 {
+	if (scene not_eq world)
+		world = scene;
+}
+
+void
+X3DBrowser::set_world ()
+{
+	for (auto & layer : scene -> getLayerSet () -> getLayers ())
+	{
+		if (layer -> getNavigationInfos () .size ())
+			layer -> getNavigationInfos () [0] -> set_bind = true;
+
+		if (layer -> getBackgrounds () .size ())
+			layer -> getBackgrounds () [0] -> set_bind = true;
+
+		if (layer -> getFogs () .size ())
+			layer -> getFogs () [0] -> set_bind = true;
+
+		// Bind first viewpoint in viewpoint stack.
+
+		if (layer -> getViewpoints () .size ())
+			layer -> getViewpoints () [0] -> set_bind = true;
+	}
+
+	// Bind viewpoint from URL.
+
+	if (scene -> getWorldURL () .fragment () .length ())
+		changeViewpoint (scene -> getWorldURL () .fragment ());
+
 	// Generate initialized event immediately upon receiving this service.
 
-	initialized .processInterests ();
+	initialized = getCurrentTime ();
 }
 
 void

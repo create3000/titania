@@ -78,19 +78,5 @@ LayoutLayer::create (X3DExecutionContext* const executionContext) const
 	return new LayoutLayer (executionContext);
 }
 
-Box3f
-LayoutLayer::getBBox ()
-{
-	return Box3f ();
-}
-
-void
-LayoutLayer::intersect ()
-{ }
-
-void
-LayoutLayer::traverse ()
-{ }
-
 } // X3D
 } // titania

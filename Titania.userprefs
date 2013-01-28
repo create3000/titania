@@ -1,17 +1,23 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Shape/X3DShapeNode.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Execution/BindableNodeStack.h">
     <Files>
       <File FileName="experimental/main.cpp" Line="791" Column="108" />
-      <File FileName="Library/Tests/PointingDeviceSensor/TouchSensor.wrl" Line="130" Column="13" />
-      <File FileName="libtitania-x3d/Titania/X3D/Widgets/PointingDevice.cpp" Line="73" Column="9" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="200" Column="14" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="371" Column="25" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h" Line="73" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/TouchSensor.cpp" Line="84" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/X3DPointingDeviceSensorNode.cpp" Line="69" Column="19" />
-      <File FileName="Library/Examples/Capone/stage/index.wrl" Line="308" Column="18" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/X3DShapeNode.cpp" Line="141" Column="36" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.h" Line="111" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.cpp" Line="198" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/Scene.h" Line="75" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/Scene.cpp" Line="60" Column="28" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.h" Line="89" Column="27" />
+      <File FileName="Library/Tests/Networking/Inline.wrl" Line="10" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="101" Column="89" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Scripting/X3DScriptNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="55" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="713" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/BindableNodeList.h" Line="141" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DOutput.h" Line="154" Column="80" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/BindableNodeStack.h" Line="96" Column="1" />
+      <File FileName="libtitania-standard/Titania/Basic/BindStack.h" Line="112" Column="15" />
+      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DOutput.cpp" Line="121" Column="7" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -30,6 +36,9 @@
               <Node name="Capone" expanded="True">
                 <Node name="stage" expanded="True" />
               </Node>
+              <Node name="schacht" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
             </Node>
             <Node name="Tests" expanded="True">
               <Node name="Basic" expanded="True" />
@@ -40,9 +49,7 @@
               <Node name="Interpolation" expanded="True" />
               <Node name="Layering" expanded="True" />
               <Node name="Navigation" expanded="True" />
-              <Node name="Networking" expanded="True">
-                <Node name="Anchor" expanded="True" />
-              </Node>
+              <Node name="Networking" expanded="True" />
               <Node name="PointingDeviceSensor" expanded="True" />
               <Node name="PROTO" expanded="True" />
               <Node name="Scripting" expanded="True" />
@@ -64,10 +71,6 @@
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Basic" expanded="True" />
-              <Node name="Math" expanded="True">
-                <Node name="Geometry" expanded="True" />
-                <Node name="Numbers" expanded="True" />
-              </Node>
               <Node name="OS" expanded="True" />
             </Node>
           </Node>
@@ -79,25 +82,33 @@
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Geospatial" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
                   <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                   <Node name="Networking" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Rendering" expanded="True" />
-                  <Node name="Shape" expanded="True">
-                    <Node name="X3DShapeNode.cpp" selected="True" />
-                  </Node>
+                  <Node name="Scripting" expanded="True" />
+                  <Node name="Shape" expanded="True" />
                   <Node name="Sound" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
+                  <Node name="Time" expanded="True" />
                 </Node>
-                <Node name="Execution" expanded="True" />
+                <Node name="Execution" expanded="True">
+                  <Node name="BindableNodeStack.h" selected="True" />
+                </Node>
                 <Node name="Fields" expanded="True" />
+                <Node name="JavaScript" expanded="True">
+                  <Node name="SpiderMonkey" expanded="True" />
+                </Node>
                 <Node name="Rendering" expanded="True" />
                 <Node name="Routing" expanded="True" />
                 <Node name="Types" expanded="True" />

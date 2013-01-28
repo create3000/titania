@@ -131,11 +131,8 @@ X3DRenderer::draw ()
 
 	const LightContainerArray & globalLights = getCurrentLayer () -> getGlobalLights ();
 
-	if (globalLights .size ())
-	{
-		for (const auto & light : globalLights)
-			light -> enable ();
-	}
+	for (const auto & light : globalLights)
+		light -> enable ();
 
 	// render opaque objects first
 
@@ -165,11 +162,8 @@ X3DRenderer::draw ()
 
 	// disable global lights
 
-	if (globalLights .size ())
-	{
-		for (const auto & light : basic::adapter (globalLights .crbegin (), globalLights .crend ()))
-			light -> disable ();
-	}
+	for (const auto & light : basic::adapter (globalLights .crbegin (), globalLights .crend ()))
+		light -> disable ();
 
 	numNodesDrawn += numTransparentNodesDrawn;
 

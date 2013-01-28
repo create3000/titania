@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_BASIC_X3DBASE_NODE_H__
 #define __TITANIA_X3D_BASIC_X3DBASE_NODE_H__
 
+#include "../Base/Output.h"
 #include "../Base/X3DChildObject.h"
 #include "../Basic/FieldDefinitionArray.h"
 #include "../Basic/NodeTypeArray.h"
@@ -58,6 +59,7 @@
 #include "../Basic/X3DFieldDefinition.h"
 #include "../Bits/Error.h"
 #include "../Bits/X3DConstants.h"
+#include "../Fields/SFTime.h"
 #include "../Types/Time.h"
 
 #include <map>
@@ -75,6 +77,9 @@ class X3DBaseNode :
 	public X3DChildObject
 {
 public:
+
+	SFTime initialized;
+	Output shutdown;
 
 	virtual
 	X3DBaseNode*
@@ -148,15 +153,11 @@ public:
 
 	virtual
 	void
-	realize () { }
-
-	virtual
-	void
 	processEvents (ChildObjectSet &);
 
 	virtual
 	void
-	processEvent (X3DChildObject* const, ChildObjectSet &);
+	processInterests ();
 
 	virtual
 	void
@@ -244,7 +245,11 @@ private:
 
 	virtual
 	void
-	notify (X3DChildObject* const);
+	registerEvent (X3DChildObject* const);
+
+	virtual
+	void
+	registerInterest (X3DChildObject* const);
 
 	X3DBrowser* const          browser;
 	X3DExecutionContext* const executionContext;
@@ -259,8 +264,8 @@ private:
 	size_t               numUserDefinedFields;
 
 	ChildObjectSet events;
+	ChildObjectSet interests;
 
-	bool prepare;
 	bool receivedInputEvent;
 
 };

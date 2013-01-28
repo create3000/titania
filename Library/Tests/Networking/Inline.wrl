@@ -1,0 +1,67 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "Inline"
+
+DEF Inline Inline {
+  url "Cube.wrl"
+}
+
+Viewpoint {
+	description "Inline"
+	position 0 0 15
+}
+
+Transform {
+  translation -1 -2 0
+  scale 0.5 0.5 0.5
+  children [
+    DEF LoadTouch TouchSensor { }
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 1 0
+        }
+      }
+      geometry Box { }
+    }
+  ]
+}
+
+Transform {
+  translation 1 -2 0
+  scale 0.5 0.5 0.5
+  children [
+    DEF UnloadTouch TouchSensor { }
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0 0
+        }
+      }
+      geometry Box { }
+    }
+  ]
+}
+
+DEF ToggleScript Script {
+  inputOnly  SFTime set_load
+  inputOnly  SFTime set_unload
+  outputOnly SFBool load_changed
+
+  url "vrmlscript:
+
+function set_load ()
+{
+	load_changed = true;
+}
+
+function set_unload ()
+{
+	load_changed = false;
+}
+  "
+}
+
+ROUTE LoadTouch.touchTime TO ToggleScript.set_load
+ROUTE UnloadTouch.touchTime TO ToggleScript.set_unload
+ROUTE ToggleScript.load_changed TO Inline.set_load

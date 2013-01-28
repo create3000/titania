@@ -83,6 +83,13 @@ public:
 	virtual
 	Scene*
 	create (X3DExecutionContext* const) const;
+	
+	///  @name Tests
+	
+	virtual
+	bool
+	isScene () const
+	{ return true; }
 
 	///  @name BBox
 

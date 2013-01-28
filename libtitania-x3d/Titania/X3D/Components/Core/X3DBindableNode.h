@@ -61,13 +61,13 @@ class X3DBindableNode :
 {
 public:
 
+	///  @name Fields
+
 	SFBool set_bind;
 	SFTime bindTime;
 	SFBool isBound;
 
-	virtual
-	void
-	realize ();
+	///  @name Layer handling
 
 	virtual
 	void
@@ -77,18 +77,18 @@ public:
 	void
 	removeFromLayer (X3DLayerNode* const) = 0;
 
-	virtual
-	void
-	dispose ();
-
 
 protected:
+
+	///  @name Construction
 
 	X3DBindableNode (bool);
 
 	virtual
 	void
 	initialize ();
+
+	///  @name Layer handling
 
 	virtual
 	void
@@ -100,6 +100,11 @@ protected:
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_initialized ();
 
 	void
 	_set_bind ();

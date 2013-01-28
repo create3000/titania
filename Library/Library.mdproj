@@ -998,7 +998,6 @@
     <None Include="Tests\1st\door1.png" />
     <None Include="Tests\1st\door2.png" />
     <None Include="Tests\1st\E4.wrl" />
-    <None Include="Tests\1st\ExecutionModel.wrl" />
     <None Include="Tests\1st\export.wrl" />
     <None Include="Tests\1st\file.wrl" />
     <None Include="Tests\1st\import.wrl" />
@@ -1594,6 +1593,11 @@
     <None Include="Tests\PROTO\Number.wrl" />
     <None Include="Examples\Capone\stage\Button_proto.wrl.gz" />
     <None Include="Tests\PROTO\Delay.wrl" />
+    <None Include="Tests\Networking\Inline.wrl" />
+    <None Include="Tests\Networking\Cube.wrl" />
+    <None Include="Tests\Navigation\ViewpointGroup.wrl" />
+    <None Include="Tests\Basic\ExecutionModel.wrl" />
+    <None Include="Tests\EnvironmentalSensors\HUD.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

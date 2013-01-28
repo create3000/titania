@@ -79,13 +79,12 @@ Parser::AccessTypes::AccessTypes ()
 Parser::AccessTypes Parser::accessTypes;
 
 Parser::Parser (X3DScene* scene) :
-	      X3DBaseNode (scene -> getBrowser (), scene), 
-	        X3DParser (),                              
-	            scene (scene),                         
-	            input (),                              
-	           string (),                              
-	nodesToInitialize (),                              
-	   nodesToRealize ()                               
+	X3DBaseNode (scene -> getBrowser (), scene), 
+	  X3DParser (),                              
+	      scene (scene),                         
+	      input (),                              
+	     string (),                              
+	      nodes ()                               
 {
 	setComponent ("Browser");
 	setTypeName ("Parser");
@@ -217,10 +216,10 @@ Parser::addRootNode (const SFNode <X3DBaseNode> & rootNode)
 {
 	//__LOG__ << std::endl;
 
-	for (auto & basicNode : nodesToInitialize)
+	for (auto & basicNode : nodes)
 		basicNode -> setup ();
 
-	nodesToInitialize .clear ();
+	nodes .clear ();
 
 	getExecutionContext () -> addRootNode (rootNode);
 }
@@ -282,12 +281,7 @@ Parser::x3dScene ()
 	popExecutionContext ();
 
 	if (string .empty ())
-	{
-		for (auto & basicNode : nodesToRealize)
-			basicNode -> realize ();
-
 		return;
-	}
 
 	throw Error <INVALID_X3D> ("Unknown statement.");
 }
@@ -1284,9 +1278,6 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 
 		//__LOG__ << _nodeTypeId << " " << (void*) _newNode << std::endl;
 
-		if (not isInsideProtoDefinition ())
-			nodesToRealize .push_back (_basicNode);
-
 		if (_nodeNameId .length ())
 			getExecutionContext () -> updateNamedNode (_nodeNameId, _newNode);
 
@@ -1304,7 +1295,7 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 				nodeBody (_basicNode);
 
 			if (not isInsideProtoDefinition ())
-				nodesToInitialize .push_back (_basicNode);
+				nodes .push_back (_basicNode);
 
 			if (RegEx::CloseBrace .Consume (&string))
 			{

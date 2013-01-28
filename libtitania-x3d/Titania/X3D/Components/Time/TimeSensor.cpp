@@ -62,8 +62,8 @@ namespace X3D {
 
 TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DTimeDependentNode (),                                                    
 	       X3DSensorNode (),                                                    
+	X3DTimeDependentNode (),                                                    
 	       cycleInterval (1),                                                   // SFTime  [in,out] cycleInterval     1        (0,∞)
 	           cycleTime (),                                                    // SFTime  [out]    cycleTime
 	    fraction_changed (),                                                    // SFFloat [out]    fraction_changed
@@ -111,6 +111,12 @@ TimeSensor::initialize ()
 	stopTime  .addInterest (this, &TimeSensor::set_stopTime);
 	stop      .addInterest (this, &TimeSensor::set_stop);
 
+	initialized .addInterest (this, &TimeSensor::set_initialized);
+}
+
+void
+TimeSensor::set_initialized ()
+{
 	if (enabled)
 	{
 		if (loop and stopTime <= startTime)
@@ -138,7 +144,7 @@ TimeSensor::set_enabled ()
 
 void
 TimeSensor::set_startTime ()
-{
+{	
 	if (not enabled)
 		return;
 

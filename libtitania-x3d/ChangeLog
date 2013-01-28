@@ -1,3 +1,62 @@
+2013-01-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Parser.h:
+	* X3DOutput.h:
+	* X3DField.h:
+	* Router.h:
+	* Scene.h:
+	* Parser.cpp:
+	* Router.cpp:
+	* X3DOutput.cpp:
+	* Scene.cpp:
+	* X3DConstants.h:
+	* X3DBaseNode.h:
+	* X3DBrowser.h:
+	* X3DChildObject.h:
+	* X3DBaseNode.cpp:
+	* X3DBrowser.cpp:
+	* X3DChildObject.cpp:
+	* X3DRenderer.cpp:
+	* X3DFieldDefinition.h:
+	* Layer.h:
+	* X3DBrowserContext.h:
+	* X3DNode.cpp:
+	* TimeSensor.h:
+	* BindableNodeList.h:
+	* FieldDefinitionArray.h:
+	* X3DFieldDefinition.cpp:
+	* X3DBrowserContext.cpp:
+	* BindableNodeStack.h:
+	* Layer.cpp:
+	* Inline.h:
+	* LayerSet.h:
+	* TimeSensor.cpp:
+	* X3DExecutionContext.h:
+	* Script.cpp:
+	* LayoutLayer.h:
+	* LayerSet.cpp:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp:
+	* LayoutLayer.cpp:
+	* X3DBindableNode.h:
+	* X3DLayerNode.h:
+	* X3DBindableNode.cpp:
+	* X3DLayerNode.cpp:
+	* Fog.h:
+	* NavigationInfo.h:
+	* ViewpointGroup.h:
+	* Fog.cpp:
+	* X3DGroupingNode.cpp:
+	* ViewpointGroup.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointObject.h:
+	* X3DViewpointNode.cpp:
+	* X3DViewpointObject.cpp:
+	* X3DBackgroundNode.h:
+	* X3DBackgroundNode.cpp: 
+
 2013-01-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserContext.h:

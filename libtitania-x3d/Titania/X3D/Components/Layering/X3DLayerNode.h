@@ -55,7 +55,7 @@
 #include "../../Execution/BindableNodeStack.h"
 #include "../../Rendering/LightContainerArray.h"
 #include "../../Rendering/X3DRenderer.h"
-#include "../Core/X3DNode.h"
+#include "../Grouping/Group.h"
 #include "../EnvironmentalEffects/LocalFog.h"
 #include "../Grouping/X3DGroupingNode.h"
 #include "../Layering/Viewport.h"
@@ -153,7 +153,7 @@ public:
 
 	virtual
 	Box3f
-	getBBox () = 0;
+	getBBox ();
 
 	void
 	lookAt ();
@@ -161,10 +161,6 @@ public:
 	virtual
 	void
 	pick ();
-
-	virtual
-	void
-	intersect () = 0;
 
 	virtual
 	void
@@ -198,6 +194,10 @@ private:
 	void
 	set_viewport ();
 
+	virtual
+	void
+	traverse ();
+
 	SFNode <Viewport>          defaultViewport;
 	SFNode <NavigationInfo>    defaultNavigationInfo;
 	SFNode <X3DBackgroundNode> defaultBackground;
@@ -220,6 +220,8 @@ private:
 	LightContainerArray localLights;
 	LightContainerArray cachedLocalLights;
 	LightContainerArray globalLights;
+	
+	SFNode <Group> group;
 
 };
 

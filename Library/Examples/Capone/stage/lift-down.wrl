@@ -1303,7 +1303,7 @@ DEF Lift Transform {
 	  position	-0.176222 -0.157331 2.18239
 	  orientation	0.0454949 -0.998784 -0.0189957  0.22475
 	  fieldOfView	1.23009
-	  description	""
+	  description	"Fahrstuhl"
 	}
 	DEF False Transform {
 	  children	DEF _22 False {

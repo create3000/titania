@@ -105,6 +105,8 @@ Script::initialize ()
 	// Initialize.
 
 	javaScript -> initialize ();
+	
+	shutdown .addInterest (javaScript .get (), &JavaScriptContext::shutdown);
 }
 
 void
@@ -126,12 +128,9 @@ Script::eventsProcessed ()
 void
 Script::dispose ()
 {
-	if (javaScript) // Prevent uninitialized prototype instances do call this.
-		javaScript -> shutdown ();
-
-	javaScript .reset (NULL);
-
 	X3DScriptNode::dispose ();
+
+	javaScript .reset ();
 }
 
 } // X3D

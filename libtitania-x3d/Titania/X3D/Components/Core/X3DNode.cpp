@@ -65,12 +65,12 @@ X3DNode::X3DNode () :
 Scene*
 X3DNode::getScene () const
 {
-	X3DExecutionContext* scene = getExecutionContext ();
+	X3DExecutionContext* executionContext = getExecutionContext ();
 
-	while (scene not_eq scene -> getExecutionContext ())
-		scene = scene -> getExecutionContext ();
+	while (not executionContext -> isScene ())
+		executionContext = executionContext -> getExecutionContext ();
 
-	return static_cast <Scene*> (scene);
+	return static_cast <Scene*> (executionContext);
 }
 
 X3DLayerNode*
@@ -82,7 +82,7 @@ X3DNode::getCurrentLayer () const
 std::deque <X3DLayerNode*>
 X3DNode::getLayers () const
 {
-	return findClosestParents <X3DLayerNode> ();
+	return findClosestParents <Scene, X3DLayerNode> ();
 }
 
 X3DViewpointNode*

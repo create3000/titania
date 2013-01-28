@@ -1,5 +1,7 @@
 #X3D V3.0 utf8 Titania
 
+META "title" "Anchor"
+
 Viewpoint {
   description "Home"
 }

@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BASIC_X3DFIELD_DEFINITION_H__
 
 #include "../Base/X3DChildObject.h"
+#include "../Basic/FieldDefinitionArray.h"
 #include "../Basic/FieldDefinitionSet.h"
 #include "../Bits/X3DConstants.h"
 #include "../Routing/RouteSet.h"
@@ -169,7 +170,11 @@ public:
 
 	virtual
 	void
-	processEvent (X3DChildObject* const, ChildObjectSet &);
+	processEvent (X3DFieldDefinition* const, ChildObjectSet &);
+	
+	virtual
+	void
+	processInterests ();
 
 	virtual
 	void
@@ -191,9 +196,10 @@ private:
 	AccessType  accessType;
 	std::string aliasName;
 
-	RouteSet           inputRoutes;
-	RouteSet           outputRoutes;
-	FieldDefinitionSet interests;
+	RouteSet             inputRoutes;
+	RouteSet             outputRoutes;
+	FieldDefinitionSet   interests;
+	FieldDefinitionArray events;
 
 };
 

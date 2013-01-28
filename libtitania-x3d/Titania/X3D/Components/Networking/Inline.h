@@ -72,15 +72,11 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
-	virtual
-	void
-	realize ();
+	Box3f
+	getBBox ();
 
 	void
 	requestImmediateLoad ();
-
-	Box3f
-	getBBox ();
 
 	const SFNode <Scene> &
 	getScene () { return scene; }
@@ -109,6 +105,15 @@ private:
 
 	void
 	set_url ();
+	
+	void
+	set_scene ();
+
+	void
+	requestLoad ();
+	
+	void
+	requestUnload ();
 
 	SFNode <Scene> scene;
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,6 +53,7 @@
 
 #include "../../Types/Geometry.h"
 #include "../Core/X3DBindableNode.h"
+#include "../Navigation/X3DViewpointObject.h"
 
 #include "../Interpolation/PositionInterpolator.h"
 #include "../Time/TimeSensor.h"
@@ -61,15 +62,13 @@ namespace titania {
 namespace X3D {
 
 class X3DViewpointNode :
-	public X3DBindableNode
+	public X3DBindableNode, public X3DViewpointObject
 {
 public:
 
-	SFString   description;
 	SFRotation orientation;
 	SFVec3f    centerOfRotation;
 	SFBool     jump;
-	SFBool     retainUserOffsets;
 
 	SFVec3f    positionOffset;
 	SFRotation orientationOffset;
@@ -164,7 +163,7 @@ private:
 	unbindFromLayer (X3DLayerNode* const);
 
 	void
-	set_active (const bool &);
+	set_isActive (const bool &);
 
 	void
 	_set_bind ();

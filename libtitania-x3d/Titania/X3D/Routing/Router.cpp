@@ -53,49 +53,34 @@
 namespace titania {
 namespace X3D {
 
-void
-Router::notify (X3DBaseNode* node)
-{
-	taintedNodes .push_back (node);
-}
+Router::Router () :
+	   events (), 
+	interests ()  
+{ }
 
 void
 Router::processEvents ()
 {
-	if (taintedNodes .size ())
+	ChildObjectSet sourceFields;
+	
+	while (events .size ())
 	{
-		std::deque <X3DBaseNode*> nodesToProcess (std::move (taintedNodes));
-
-		for (const auto & node : nodesToProcess)
+		for (const auto & node : std::deque <X3DBaseNode*> (std::move (events)))
 		{
-			//__LOG__ << (void*) node << std::endl;
-			//__LOG__ << node -> getParents () .size () << std::endl;
-			//__LOG__ << node -> getTypeName () << std::endl;
-
-			ChildObjectSet sourceFields;
+			sourceFields .clear ();
 
 			node -> processEvents (sourceFields);
-
-			processEvents ();
 		}
+	
+		processInterests ();
 	}
-
-	eventsProcessed ();
 }
 
 void
-Router::eventsProcessed ()
+Router::processInterests ()
 {
-	while (preparedNodes .size ())
-	{
-		std::deque <X3DBaseNode*> nodesToProcess (std::move (preparedNodes));
-
-		for (const auto & node : nodesToProcess)
-		{
-			node -> eventsProcessed ();
-			processEvents ();
-		}
-	}
+	for (const auto & node : std::deque <X3DBaseNode*> (std::move (interests)))
+		node -> processInterests ();
 }
 
 } // X3D

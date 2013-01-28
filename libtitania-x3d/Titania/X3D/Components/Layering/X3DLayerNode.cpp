@@ -81,7 +81,8 @@ X3DLayerNode::X3DLayerNode () :
 	            localFogs (),                                                   
 	          localLights (),                                                   
 	    cachedLocalLights (),                                                   
-	         globalLights ()                                                    
+	         globalLights (),
+	                group (new Group (getExecutionContext ()))                                                    
 {
 	addNodeType (X3DConstants::X3DLayerNode);
 
@@ -89,10 +90,10 @@ X3DLayerNode::X3DLayerNode () :
 	             defaultNavigationInfo,
 	             defaultBackground,
 	             defaultFog,
-	             defaultViewpoint);
+	             defaultViewpoint,
+	             group);
 
-	//defaultViewpoint -> setName ("Default Viewpoint " + std::to_string ((size_t) viewpointStack .top ()));
-	//defaultViewpoint -> description = defaultViewpoint -> getName ();
+	defaultViewpoint -> description = "Default Viewpoint";
 }
 
 void
@@ -111,8 +112,21 @@ X3DLayerNode::initialize ()
 	defaultViewpoint  -> isBound      = true;
 
 	viewport .addInterest (this, &X3DLayerNode::set_viewport);
+	
+	addChildren    .addInterest (group -> addChildren);
+	removeChildren .addInterest (group -> removeChildren);
+	children       .addInterest (group -> children);
+	
 	set_viewport ();
 
+	group -> children = children;
+	group -> setup ();
+}
+
+Box3f
+X3DLayerNode::getBBox ()
+{
+	return group -> getBBox ();
 }
 
 NavigationInfo*
@@ -172,6 +186,15 @@ X3DLayerNode::lookAt ()
 }
 
 void
+X3DLayerNode::set_viewport ()
+{
+	currentViewport = *viewport;
+
+	if (not currentViewport)
+		currentViewport = *defaultViewport;
+}
+
+void
 X3DLayerNode::pick ()
 {
 	if (not isPickable)
@@ -184,7 +207,7 @@ X3DLayerNode::pick ()
 	getViewpoint () -> reshape ();
 	getViewpoint () -> transform ();
 
-	intersect ();
+	group -> pick ();
 
 	currentViewport -> disable ();
 
@@ -211,12 +234,9 @@ X3DLayerNode::display ()
 }
 
 void
-X3DLayerNode::set_viewport ()
+X3DLayerNode::traverse ()
 {
-	currentViewport = *viewport;
-
-	if (not currentViewport)
-		currentViewport = *defaultViewport;
+	group -> display ();
 }
 
 void
@@ -229,11 +249,18 @@ X3DLayerNode::dispose ()
 	defaultBackground     .dispose ();
 	defaultFog            .dispose ();
 	defaultViewpoint      .dispose ();
+	
+	navigationInfoStack .dispose ();
+	backgroundStack     .dispose ();
+	fogStack            .dispose ();
+	viewpointStack      .dispose ();
 
 	navigationInfos .dispose ();
 	backgrounds     .dispose ();
 	viewpoints      .dispose ();
 	fogs            .dispose ();
+	
+	group .dispose ();
 
 	// Dont't dispose stack nodes, they were automatically disposed.
 

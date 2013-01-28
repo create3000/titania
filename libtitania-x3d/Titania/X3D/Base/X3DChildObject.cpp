@@ -41,7 +41,7 @@ X3DChildObject::X3DChildObject () :
 // Object
 
 void
-X3DChildObject::notify (X3DChildObject* const)
+X3DChildObject::registerEvent (X3DChildObject* const)
 {
 	notifyParents ();
 }
@@ -50,7 +50,14 @@ void
 X3DChildObject::notifyParents ()
 {
 	for (const auto & parent : getParents ())
-		parent -> notify (this);
+		parent -> registerEvent (this);
+}
+
+void
+X3DChildObject::registerInterest (X3DChildObject* object)
+{
+	for (auto & parent : getParents ())
+		parent -> registerInterest (this);
 }
 
 // Child

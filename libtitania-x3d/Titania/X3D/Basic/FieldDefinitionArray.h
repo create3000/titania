@@ -51,11 +51,12 @@
 #ifndef __TITANIA_X3D_BASIC_FIELD_DEFINITION_ARRAY_H__
 #define __TITANIA_X3D_BASIC_FIELD_DEFINITION_ARRAY_H__
 
-#include "X3DFieldDefinition.h"
 #include <deque>
 
 namespace titania {
 namespace X3D {
+
+class X3DFieldDefinition;
 
 typedef std::deque <X3DFieldDefinition*> FieldDefinitionArray;
 

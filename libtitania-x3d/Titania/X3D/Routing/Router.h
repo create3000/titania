@@ -61,13 +61,15 @@ class Router
 {
 public:
 
-	Router () { }
+	Router ();
 
 	void
-	notify (X3DBaseNode*);
+	registerEvent (X3DBaseNode* node)
+	{ events .push_back (node); }
 
 	void
-	addPreparedNode (X3DBaseNode* node) { preparedNodes .push_back (node); }
+	registerInterest (X3DBaseNode* node)
+	{ interests .push_back (node); }
 
 	void
 	processEvents ();
@@ -81,10 +83,10 @@ private:
 	operator = (const Router &) = delete;
 
 	void
-	eventsProcessed ();
+	processInterests ();
 
-	std::deque <X3DBaseNode*> taintedNodes;
-	std::deque <X3DBaseNode*> preparedNodes;
+	std::deque <X3DBaseNode*> events;
+	std::deque <X3DBaseNode*> interests;
 
 };
 

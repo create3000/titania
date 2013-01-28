@@ -122,7 +122,6 @@ public:
 	bool
 	operator not_eq (const X3DFieldDefinition & field) const { return not (*this == field); }
 
-	//@{
 	///  6.7.7 Add field interest.
 	template <class Class>
 	void
@@ -164,7 +163,6 @@ public:
 	{
 		addInterest (requester, value);
 	}
-	//@}
 
 	///  Input operator.
 	virtual

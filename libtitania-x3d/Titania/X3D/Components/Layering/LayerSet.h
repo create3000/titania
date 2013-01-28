@@ -79,7 +79,7 @@ public:
 	getActiveLayer () const;
 
 	const MFNode <X3DLayerNode> &
-	getLayers ();
+	getLayers () const;
 
 	virtual
 	void
