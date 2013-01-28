@@ -47,6 +47,7 @@ Description: Titania X3D Viewer
  the VRML standard for version 1.0.
  .
  It can be used as a simple 3D viewer for .wrl files, a high quality 3D animation
- rendering engine, for advanced science simulations, or as easy to use gaming engine.
+ rendering engine, for advanced science simulations, live data visualisation, or 
+ as easy to use gaming engine.
  .
  Furthermore this package includes x3dtidy, an easy to use X3D/VRML beautifier.

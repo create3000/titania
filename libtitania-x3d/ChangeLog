@@ -1,5 +1,10 @@
 2013-01-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Router.cpp:
+	* X3DFieldDefinition.cpp: 
+
+2013-01-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Parser.h:

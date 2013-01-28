@@ -79,8 +79,11 @@ Router::processEvents ()
 void
 Router::processInterests ()
 {
-	for (const auto & node : std::deque <X3DBaseNode*> (std::move (interests)))
-		node -> processInterests ();
+	while (interests .size ())
+	{
+		for (const auto & node : std::deque <X3DBaseNode*> (std::move (interests)))
+			node -> processInterests ();
+	}
 }
 
 } // X3D

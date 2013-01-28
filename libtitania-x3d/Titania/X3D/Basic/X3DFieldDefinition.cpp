@@ -249,11 +249,14 @@ X3DFieldDefinition::processEvent (X3DFieldDefinition* const field, ChildObjectSe
 void
 X3DFieldDefinition::processInterests ()
 {
-	for (const auto & event : FieldDefinitionArray (std::move (events)))
-	{
-		write (*event);
-		X3DChildObject::processInterests ();
-	}
+	write (*events .front ());
+	
+	events .pop_front ();
+	
+	X3DChildObject::processInterests ();
+	
+	if (events .size ())
+		registerInterest (this);
 }
 
 void

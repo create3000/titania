@@ -1,23 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Execution/BindableNodeStack.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/EnvironmentalSensors/HUD.wrl">
     <Files>
+      <File FileName="Library/Examples/Capone/stage/index.wrl" Line="132" Column="1" />
       <File FileName="experimental/main.cpp" Line="791" Column="108" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.h" Line="111" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.cpp" Line="198" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/Scene.h" Line="75" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/Scene.cpp" Line="60" Column="28" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.h" Line="89" Column="27" />
-      <File FileName="Library/Tests/Networking/Inline.wrl" Line="10" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="101" Column="89" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Scripting/X3DScriptNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="55" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="713" Column="32" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/BindableNodeList.h" Line="141" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DOutput.h" Line="154" Column="80" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/BindableNodeStack.h" Line="96" Column="1" />
-      <File FileName="libtitania-standard/Titania/Basic/BindStack.h" Line="112" Column="15" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DOutput.cpp" Line="121" Column="7" />
+      <File FileName="Library/Tests/Basic/ExecutionModel.wrl" Line="13" Column="10" />
+      <File FileName="Library/Examples/Capone/stage/shirt.wrl" Line="28" Column="16" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="414" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="129" Column="1" />
+      <File FileName="Library/Examples/Capone/stage/logo.wrl" Line="14" Column="18" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="228" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="226" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Transform.cpp" Line="112" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/ProximitySensor.cpp" Line="162" Column="1" />
+      <File FileName="Library/Tests/EnvironmentalSensors/ProximitySensor.wrl" Line="1" Column="1" />
+      <File FileName="Library/Tests/EnvironmentalSensors/HUD.wrl" Line="10" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/ProximitySensor.h" Line="101" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -43,7 +41,9 @@
             <Node name="Tests" expanded="True">
               <Node name="Basic" expanded="True" />
               <Node name="EnvironmentalEffects" expanded="True" />
-              <Node name="EnvironmentalSensors" expanded="True" />
+              <Node name="EnvironmentalSensors" expanded="True">
+                <Node name="HUD.wrl" selected="True" />
+              </Node>
               <Node name="Geometry3D" expanded="True" />
               <Node name="Grouping" expanded="True" />
               <Node name="Interpolation" expanded="True" />
@@ -85,13 +85,17 @@
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Properties" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="EnvironmentalSensor" expanded="True" />
                   <Node name="Grouping" expanded="True" />
                   <Node name="Layering" expanded="True" />
+                  <Node name="Layout" expanded="True" />
+                  <Node name="Lighting" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                   <Node name="Networking" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
@@ -102,13 +106,12 @@
                   <Node name="Texturing" expanded="True" />
                   <Node name="Time" expanded="True" />
                 </Node>
-                <Node name="Execution" expanded="True">
-                  <Node name="BindableNodeStack.h" selected="True" />
-                </Node>
+                <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="SpiderMonkey" expanded="True" />
                 </Node>
+                <Node name="Parser" expanded="True" />
                 <Node name="Rendering" expanded="True" />
                 <Node name="Routing" expanded="True" />
                 <Node name="Types" expanded="True" />

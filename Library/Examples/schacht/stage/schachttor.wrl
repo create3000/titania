@@ -921,3 +921,23 @@ ROUTE _9.touchTime TO _26.set_stopTime
 ROUTE _26.isActive TO _27.set_value
 ROUTE _26.enterTime TO _28.set_startTime
 ROUTE _26.exitTime TO _28.set_stopTime
+
+DEF Debug Script {
+  eventIn SFBool set_SFBool
+  eventIn SFBool set_or
+  
+  url "vrmlscript:
+function set_SFBool (value, time)
+{
+	//print (time + ': ' + value);
+}
+function set_or (value, time)
+{
+	//print (time + ': or ' + value);
+}
+  "
+}
+
+ROUTE _20.isOver TO Debug.set_SFBool
+ROUTE _8.isOver TO Debug.set_SFBool
+ROUTE _15.value_changed TO Debug.set_or
