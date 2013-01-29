@@ -1598,6 +1598,8 @@
     <None Include="Tests\Navigation\ViewpointGroup.wrl" />
     <None Include="Tests\Basic\ExecutionModel.wrl" />
     <None Include="Tests\EnvironmentalSensors\HUD.wrl" />
+    <None Include="Examples\icts\labyrinth.wrl" />
+    <None Include="Examples\icts\hamburger.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

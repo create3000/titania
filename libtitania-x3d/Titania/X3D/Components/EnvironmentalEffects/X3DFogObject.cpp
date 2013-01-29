@@ -50,6 +50,8 @@
 
 #include "X3DFogObject.h"
 
+#include "../../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
 
@@ -57,7 +59,7 @@ X3DFogObject::X3DFogObject () :
 	    X3DBaseNode (),         
 	          color (1, 1, 1),  // SFColor  [in,out] color            1 1 1           [0,1]
 	        fogType ("LINEAR"), // SFString [in,out] fogType          "LINEAR"        ["LINEAR"|"EXPONENTIAL"]
-	visibilityRange (),         // SFFloat  [in,out] visibilityRange  0               [0,-∞)
+	visibilityRange (),         // SFFloat  [in,out] visibilityRange  0               [0,∞)
 	   transparency (0)         // SFFloat  [in,out] transparency     1               [0,1]
 {
 	addNodeType (X3DConstants::X3DFogObject);
@@ -69,62 +71,80 @@ X3DFogObject::initialize ()
 	color           .addInterest (this, &X3DFogObject::set_color);
 	transparency    .addInterest (this, &X3DFogObject::set_transparency);
 	fogType         .addInterest (this, &X3DFogObject::set_fogType);
-	visibilityRange .addInterest (this, &X3DFogObject::set_visibilityRange);
+	visibilityRange .addInterest (this, &X3DFogObject::set_fogType);
 
 	set_color        ();
 	set_transparency ();
 	set_fogType      ();
 }
 
+float
+X3DFogObject::getVisibilityRange ()
+{
+	return 2 * (visibilityRange
+	            ? visibilityRange
+					: getBrowser () -> getLayers () .top () -> getNavigationInfo () -> getZFar ());
+}
+
+float
+X3DFogObject::getDensitiy (float visibilityRange)
+{
+	switch (glMode)
+	{
+		case GL_EXP2:
+			return 4 / visibilityRange;
+		case GL_EXP:
+			return 2 / visibilityRange;
+		default:
+			return 1;
+	}
+}
+
 void
 X3DFogObject::set_color ()
 {
-	glFogColor [0] = color .getR ();
-	glFogColor [1] = color .getG ();
-	glFogColor [2] = color .getB ();
+	glColor [0] = color .getR ();
+	glColor [1] = color .getG ();
+	glColor [2] = color .getB ();
 }
 
 void
 X3DFogObject::set_transparency ()
 {
-	glFogColor [3] = 1 - transparency;
+	glColor [3] = 1 - transparency;
 }
 
 void
 X3DFogObject::set_fogType ()
 {
-	if (fogType == "EXPONENTIAL")
+	if (fogType == "EXPONENTIAL2")
 	{
-		glFogMode    = GL_EXP;
-		glFogDensity = visibilityRange ? 2 / visibilityRange : 1; // correct would be: density = 1 / (visibilityRange - distance)
+		glMode = GL_EXP2;
 	}
-	else // if (fogType .getValue() == "LINEAR")
+	else if (fogType == "EXPONENTIAL")
 	{
-		glFogMode    = GL_LINEAR;
-		glFogDensity = 1;
+		glMode = GL_EXP;
 	}
-}
-
-void
-X3DFogObject::set_visibilityRange ()
-{
-	//	if (fogType == "EXPONENTIAL")
-	glFogDensity = visibilityRange ? 2 / visibilityRange : 1;
+	else  // LINEAR
+	{
+		glMode = GL_LINEAR;
+	}
 }
 
 void
 X3DFogObject::enable ()
 {
-	if (visibilityRange)
-	{
-		glFogi  (GL_FOG_MODE,    glFogMode);
-		glFogf  (GL_FOG_DENSITY, glFogDensity);
-		glFogf  (GL_FOG_START,   0);
-		glFogf  (GL_FOG_END,     visibilityRange);
-		glFogfv (GL_FOG_COLOR,   glFogColor);
+	float glVisibilityRange = getVisibilityRange ();
+	float glDensity         = getDensitiy (glVisibilityRange);
 
-		glEnable (GL_FOG);
-	}
+	glEnable (GL_FOG);
+
+	glFogi  (GL_FOG_MODE,    glMode);
+	glFogf  (GL_FOG_DENSITY, glDensity);
+	glFogf  (GL_FOG_START,   0);
+	glFogf  (GL_FOG_END,     glVisibilityRange);
+	glFogfv (GL_FOG_COLOR,   glColor);
+
 }
 
 void

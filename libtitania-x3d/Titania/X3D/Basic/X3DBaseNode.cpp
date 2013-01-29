@@ -339,7 +339,11 @@ void
 X3DBaseNode::addField (const AccessType accessType, const basic::id & name, X3DFieldDefinition & field)
 {
 	if (fields .find (name) not_eq fields .end ())
-		throw Error <INVALID_FIELD> ("In function " + std::string (__func__) + " 'field " + getTypeName () + "." + name + "' already exists in field set'.");
+	{
+		removeField (name);
+		
+		std::clog << "Warning: In function " << std::string (__func__) << " 'field " << getTypeName () << "." << name << "' already exists in field set'." << std::endl;
+	}
 
 	field .setAccessType (accessType);
 	field .setName (name);

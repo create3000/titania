@@ -1,3 +1,14 @@
+2013-01-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.cpp:
+	* X3DInterpolatorNode.h:
+	* X3DFogObject.h:
+	* NormalInterpolator.cpp:
+	* X3DInterpolatorNode.cpp:
+	* X3DFogObject.cpp:
+	* CoordinateInterpolator.cpp:
+	* CoordinateInterpolator2D.cpp: 
+
 2013-01-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Router.cpp:

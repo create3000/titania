@@ -93,6 +93,12 @@ protected:
 
 
 private:
+	
+	float
+	getVisibilityRange ();
+
+	float
+	getDensitiy (float);
 
 	void
 	set_color ();
@@ -103,12 +109,8 @@ private:
 	void
 	set_fogType ();
 
-	void
-	set_visibilityRange ();
-
-	GLenum  glFogMode;
-	GLfloat glFogColor [4];
-	GLfloat glFogDensity;
+	GLenum  glMode;
+	GLfloat glColor [4];
 
 };
 

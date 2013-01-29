@@ -62,16 +62,25 @@ X3DInterpolatorNode::X3DInterpolatorNode () :
 }
 
 void
+X3DInterpolatorNode::setup ()
+{
+	// If an X3DInterpolatorNode value_changed outputOnly field is read before it receives any inputs, 
+	// keyValue[0] is returned if keyValue is not empty. If keyValue is empty (i.e., [ ]), the initial 
+	// value for the respective field type is returned (EXAMPLE  (0, 0, 0) for SFVec3f);
+	
+	set_key ();
+	interpolate (0, 0, 0);
+
+	X3DChildNode::setup ();
+}
+
+void
 X3DInterpolatorNode::initialize ()
 {
-	set_key ();
-	interpolate (0, 1, 0);
-
 	X3DChildNode::initialize ();
 
 	set_fraction .addInterest (this, &X3DInterpolatorNode::_set_fraction);
 	key          .addInterest (this, &X3DInterpolatorNode::set_key);
-
 }
 
 void
@@ -81,7 +90,7 @@ X3DInterpolatorNode::_set_fraction ()
 		return;
 
 	if (key .size () == 1 or set_fraction <= key [0])
-		return interpolate (0, 1, 0);
+		return interpolate (0, 0, 0);
 
 	if (set_fraction >= key .at (key .size () - 1))
 		return interpolate (key .size () - 2, key .size () - 1, 1);

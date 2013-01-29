@@ -64,6 +64,10 @@ public:
 	SFFloat set_fraction;
 	MFFloat key;
 
+	virtual
+	void
+	setup ();
+
 
 protected:
 

@@ -1,5 +1,7 @@
 #VRML V2.0 utf8
 
+META "title" "Labyrinth World"
+
 EXTERNPROTO False [
 	    eventIn      SFBool set_SFBool 
 	    eventOut     SFTime startTime 
@@ -4340,7 +4342,7 @@ DEF _0 Switch {
 		}
 
 		geometry	Text {
-		  string	"ictspace.com"
+		  string	"titania.create3000.de"
 		  fontStyle	FontStyle {
 		    size	24
 		    family	"SANS"

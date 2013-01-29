@@ -81,24 +81,23 @@ void
 CoordinateInterpolator2D::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
-
-	keyValue .addInterest (this, &CoordinateInterpolator2D::set_keyValue);
 }
 
 void
 CoordinateInterpolator2D::set_keyValue ()
-{
-	value_changed .resize (key .size () ? keyValue .size () / key .size () : 0);
-}
+{ }
 
 void
 CoordinateInterpolator2D::interpolate (size_t index0, size_t index1, float weight)
 {
-	index0 *= value_changed .size ();
+	size_t size = key .size () > 1 ? keyValue .size () / key .size () : 0;
 
-	index1 = index0 + value_changed .size ();
+	index0 *= size;
+	index1  = index0 + size;
 
-	for (size_t i = 0; i < value_changed .size (); ++ i)
+	value_changed .resize (size);
+
+	for (size_t i = 0; i < size; ++ i)
 	{
 		value_changed [i] = math::lerp <Vector2f> (keyValue [index0 + i],
 		                                           keyValue [index1 + i],
