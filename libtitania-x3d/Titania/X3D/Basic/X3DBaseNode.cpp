@@ -154,8 +154,6 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 {
 	X3DBaseNode* copy = create (executionContext);
 
-	assert (copy);
-
 	if (getName () .count ())
 		executionContext -> updateNamedNode (getName (), copy);
 
@@ -360,7 +358,15 @@ X3DBaseNode::removeField (const basic::id & name)
 
 	if (field not_eq fields .end ())
 	{
-		fieldDefinitions .erase (std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field -> second));
+		auto iter = std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field -> second);
+		
+		if (fieldDefinitions .end () - iter <= FieldDefinitionArray::difference_type (numUserDefinedFields))
+		{
+			delete *iter;
+			-- numUserDefinedFields;
+		}
+		
+		fieldDefinitions .erase (iter);
 		fields .erase (field);
 	}
 }
@@ -368,7 +374,7 @@ X3DBaseNode::removeField (const basic::id & name)
 void
 X3DBaseNode::addFieldAlias (const std::string & name, const std::string & field)
 {
-	FieldsMap::const_iterator iter = fields .find (field);
+	const auto iter = fields .find (field);
 
 	if (iter not_eq fields .end ())
 	{
@@ -487,7 +493,8 @@ X3DBaseNode::setup ()
 	for (auto & field : fields)
 		field .second -> addParent (this);
 
-	initialize ();
+	if (not executionContext -> isProto ())
+		initialize ();
 
 	initialized = getCurrentTime ();
 }

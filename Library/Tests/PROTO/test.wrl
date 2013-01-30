@@ -1,43 +1,20 @@
 #VRML V2.0 utf8
 
-PROTO Float [
-  exposedField MFString string "1234"
-]
+META "title" "PROTO test"
+
+PROTO Ghost [ ]
 {
-  DEF Number Text {
-    string IS string
+  PROTO Data [ ]
+  {
+    Group { }
   }
 
-  Script {
-    field SFNode number USE Number
+  DEF _ghost_0 Script {
+    field SFNode data DEF _1 Data { }
 
     url "vrmlscript:
-function initialize ()
-{
-	number .string [0] = 'string';
-}
-    "
+"
   }
 }
 
-DEF Touch TouchSensor {}
-
-DEF Debug Script {
-	eventIn SFTime set_time
-	eventOut MFString string_changed
-	
-	url "vrmlscript:
-function set_time (value)
-{
-	string_changed = new MFString (value);
-}"
-
-}
-
-Shape {
-  geometry DEF Number Float { }
-}
-
-
-ROUTE Touch.touchTime TO Debug.set_time
-ROUTE Debug.string_changed TO Number.set_string
+Ghost { }

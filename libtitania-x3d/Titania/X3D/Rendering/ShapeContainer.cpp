@@ -99,7 +99,7 @@ ShapeContainer::redraw ()
 		}
 
 		//glPushAttrib (GL_ENABLE_BIT);
-
+		
 		if (fog)
 			fog -> enable ();
 

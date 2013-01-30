@@ -64,7 +64,8 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	    X3DChildNode (),                                                    
 	X3DBoundedObject (),                                                    
 	    X3DUrlObject (),                                                    
-	            load (true)                                                 // SFBool [in,out] load  TRUE
+	            load (true),                                                 // SFBool [in,out] load  TRUE
+	           scene (executionContext -> getBrowser () -> createScene ())
 {
 	setComponent ("Networking");
 	setTypeName ("Inline");
@@ -94,8 +95,6 @@ Inline::initialize ()
 	load  .addInterest (this, &Inline::set_load);
 	url   .addInterest (this, &Inline::set_url);
 	scene .addInterest (this, &Inline::set_scene);
-	
-	scene = getBrowser () -> createScene ();
 
 	set_url ();
 }

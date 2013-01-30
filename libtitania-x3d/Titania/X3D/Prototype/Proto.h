@@ -64,15 +64,26 @@ public:
 
 	using X3DExecutionContext::dispose;
 
+	///  @name Creation
+
 	Proto (X3DExecutionContext* const);
 
 	virtual
 	X3DPrototypeInstance*
-	createInstance (bool);
+	createInstance (bool = true);
+
+	///  @name Tests
+	
+	virtual
+	bool
+	isProto () const
+	{ return true; }
 
 	virtual
 	bool
 	isExternproto () const { return false; }
+
+	///  @name Input/Output
 
 	virtual
 	void
@@ -84,11 +95,6 @@ private:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
-
-	const X3DBaseNode*
-	getRootNode () const
-	throw (Error <DISPOSED>)
-	{ return getRootNodes () [0]; }
 
 };
 

@@ -180,15 +180,6 @@ ExternProto::requestImmediateLoad ()
 }
 
 void
-ExternProto::dispose ()
-{
-	scene .dispose ();
-	proto .dispose ();
-
-	X3DProto::dispose ();
-}
-
-void
 ExternProto::toStream (std::ostream & ostream) const
 {
 	ostream
@@ -254,6 +245,15 @@ ExternProto::toStream (std::ostream & ostream) const
 		<< Generator::TidyBreak
 		<< Generator::Indent
 		<< url;
+}
+
+void
+ExternProto::dispose ()
+{
+	scene .dispose ();
+	proto .dispose ();
+
+	X3DProto::dispose ();
 }
 
 } // X3D

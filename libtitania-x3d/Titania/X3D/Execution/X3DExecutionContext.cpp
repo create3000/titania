@@ -84,9 +84,9 @@ X3DExecutionContext::X3DExecutionContext () :
 { }
 
 void
-X3DExecutionContext::initialize ()
+X3DExecutionContext::setup ()
 {
-	X3DChildNode::initialize ();
+	X3DChildNode::setup ();
 
 	// Add rootNodes here as child. This prevents X3DProtoypeInstances from being disposed on construction.
 	setChildren (rootNodes);
@@ -403,6 +403,8 @@ throw (Error <INVALID_NAME>,
 		throw Error <INVALID_NAME> ("Bad imported node specification: exported node name is empty.");
 
 	const std::string & localName = localNameId .size () ? localNameId : exportedName;
+
+	// if the inline node is inside a proto it should not be loaded. And maybe inline shouldn have a scene at startup.
 
 	inlineNode -> requestImmediateLoad ();
 

@@ -231,6 +231,12 @@ protected:
 	initialize ();
 
 	void
+	set_initialized ();
+
+	void
+	clearHits ();
+
+	void
 	prepare ();
 
 	virtual

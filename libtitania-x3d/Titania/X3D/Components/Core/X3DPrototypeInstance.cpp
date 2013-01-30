@@ -150,16 +150,16 @@ void
 X3DPrototypeInstance::dispose ()
 {
 	X3DExecutionContext::dispose ();
-
-	proto .dispose (); // SFNode::dispose
+	
+	proto .dispose ();
 }
 
 X3DPrototypeInstance::~X3DPrototypeInstance ()
 {
-	removeField ("metadata");
+	//removeField ("metadata");
 
-	for (const auto & field : getFields ())
-		delete field .second;
+	for (const auto & field : basic::adapter (getFieldDefinitions () .begin () + 1, getFieldDefinitions () .end ()))
+		delete field;
 }
 
 } // X3D

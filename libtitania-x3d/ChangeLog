@@ -1,3 +1,20 @@
+2013-01-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Proto.h:
+	* Parser.cpp:
+	* X3DBaseNode.cpp:
+	* ExternProto.h:
+	* ExternProto.cpp:
+	* X3DBrowserContext.h:
+	* ShapeContainer.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DPrototypeInstance.cpp:
+	* X3DFogObject.cpp:
+	* jsX3DExecutionContext.cpp: 
+
 2013-01-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.cpp:

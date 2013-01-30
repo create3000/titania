@@ -153,6 +153,17 @@ X3DBrowserContext::initialize ()
 		//	glEnable (GL_LINE_SMOOTH);
 		//	glEnable (GL_POLYGON_SMOOTH);
 	}
+	
+	initialized .addInterest (this, &X3DBrowserContext::set_initialized);
+}
+
+void
+X3DBrowserContext::set_initialized ()
+{
+	clearHits ();
+
+	overSensors   .clear ();
+	activeSensors .clear ();
 }
 
 time_type
@@ -237,10 +248,7 @@ X3DBrowserContext::pick (const double _x, const double _y)
 
 	// Clear hits.
 
-	for (const auto & hit : hits)
-		delete hit;
-
-	hits .clear ();
+	clearHits ();
 
 	// Pick.
 
@@ -280,6 +288,15 @@ void
 X3DBrowserContext::addHit (const Line3f & hitRay, const Vector3f hitPoint)
 {
 	hits .emplace_back (new Hit (hitPoint, hitRay, getSensitiveNodes ()));
+}
+
+void
+X3DBrowserContext::clearHits ()
+{
+	for (const auto & hit : hits)
+		delete hit;
+
+	hits .clear ();
 }
 
 void

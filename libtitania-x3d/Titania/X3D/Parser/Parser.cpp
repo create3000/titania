@@ -1294,14 +1294,13 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 			else
 				nodeBody (_basicNode);
 
-			if (not isInsideProtoDefinition ())
-				nodes .push_back (_basicNode);
-
 			if (RegEx::CloseBrace .Consume (&string))
 			{
 				comments ();
 
 				_node .write (_newNode);
+
+				nodes .push_back (_basicNode);
 
 				return true;
 			}

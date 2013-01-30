@@ -76,6 +76,10 @@ class X3DExecutionContext :
 {
 public:
 
+	virtual
+	void
+	setup ();
+
 	void
 	assign (const X3DExecutionContext* const);
 	
@@ -84,6 +88,11 @@ public:
 	virtual
 	bool
 	isScene () const
+	{ return false; }
+	
+	virtual
+	bool
+	isProto () const
 	{ return false; }
 	
 	///  @name Element access
@@ -370,10 +379,6 @@ public:
 protected:
 
 	X3DExecutionContext ();
-
-	virtual
-	void
-	initialize ();
 
 	void
 	setWorldURL (const basic::uri &);

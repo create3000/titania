@@ -60,9 +60,11 @@ X3DFogObject::X3DFogObject () :
 	          color (1, 1, 1),  // SFColor  [in,out] color            1 1 1           [0,1]
 	        fogType ("LINEAR"), // SFString [in,out] fogType          "LINEAR"        ["LINEAR"|"EXPONENTIAL"]
 	visibilityRange (),         // SFFloat  [in,out] visibilityRange  0               [0,∞)
-	   transparency (0)         // SFFloat  [in,out] transparency     1               [0,1]
+	   transparency (0)         // SFFloat  [in,out] transparency     0               [0,1]
 {
 	addNodeType (X3DConstants::X3DFogObject);
+	
+	setChildren (transparency);
 }
 
 void
@@ -134,17 +136,19 @@ X3DFogObject::set_fogType ()
 void
 X3DFogObject::enable ()
 {
-	float glVisibilityRange = getVisibilityRange ();
-	float glDensity         = getDensitiy (glVisibilityRange);
+	if (glColor [3])
+	{
+		float glVisibilityRange = getVisibilityRange ();
+		float glDensity         = getDensitiy (glVisibilityRange);
 
-	glEnable (GL_FOG);
+		glEnable (GL_FOG);
 
-	glFogi  (GL_FOG_MODE,    glMode);
-	glFogf  (GL_FOG_DENSITY, glDensity);
-	glFogf  (GL_FOG_START,   0);
-	glFogf  (GL_FOG_END,     glVisibilityRange);
-	glFogfv (GL_FOG_COLOR,   glColor);
-
+		glFogi  (GL_FOG_MODE,    glMode);
+		glFogf  (GL_FOG_DENSITY, glDensity);
+		glFogf  (GL_FOG_START,   0);
+		glFogf  (GL_FOG_END,     glVisibilityRange);
+		glFogfv (GL_FOG_COLOR,   glColor);
+	}
 }
 
 void

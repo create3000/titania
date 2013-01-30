@@ -76,19 +76,19 @@ public:
 
 	virtual
 	X3DPrototypeInstance*
-	createInstance (bool);
-
+	createInstance (bool = true);
+	
 	virtual
 	void
 	requestImmediateLoad ();
 
 	virtual
 	void
-	dispose ();
+	toStream (std::ostream &) const;
 
 	virtual
 	void
-	toStream (std::ostream &) const;
+	dispose ();
 
 
 private:
