@@ -80,6 +80,9 @@ protected:
 	static void
 	finalize (JSContext*, JSObject*);
 
+	static void
+	dispose (X3DChildObject*);
+
 
 private:
 

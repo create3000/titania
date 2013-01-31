@@ -675,45 +675,11 @@ test_path (const basic::path & path)
 
 }
 
+typedef math::vector2 <float>   Vector2f;
 typedef math::vector3 <float>   Vector3f;
 typedef math::rotation4 <float> Rotation4f;
 typedef math::matrix4 <float>   Matrix4f;
 typedef math::box3 <float>      Box3f;
-
-class Base
-{
-public:
-
-	virtual
-	void
-	fn () = 0;
-
-};
-
-class A :
-	virtual public Base
-{
-public:
-
-	virtual
-	void
-	fn () { }
-
-};
-
-class B :
-	virtual public Base
-{
-public:
-
-};
-
-class C :
-	public A, public B
-{
-public:
-
-};
 
 namespace Test {
 
@@ -775,7 +741,7 @@ LOOP:;
 
 ///  Map @a value in the interval (fromLow;fromHigh) to the interval (toLow;toHigh).
 template <class Type>
-Type
+constexpr Type
 project (const Type & value, const Type & fromLow, const Type & fromHigh, const Type & toLow, const Type & toHigh)
 {
 	return toLow + ((value - fromLow) / (fromHigh - fromLow)) * (toHigh - toLow);
@@ -783,19 +749,20 @@ project (const Type & value, const Type & fromLow, const Type & fromHigh, const 
 
 #include <v8.h>
 
+
 int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
-
-	ifilestream stream (basic::http::GET, "/home/holger/Projekte/Titania/Titania/share/titania/pages/about/gears.wrl");
-	stream .send ();
-
-	std::clog << bool (stream) << std::endl;
 	
-	//std::clog << igzstream (stream) .rdbuf () << std::endl;
+	std::istringstream istream ("Text { }");
 
-	//std::clog << (stream >> gunzip) .rdbuf () << std::endl;
+	std::ostringstream ostringstream;
+
+	ostringstream << basic::gunzip (istream) .rdbuf ();
+	
+	std::clog << ostringstream .str () << std::endl;
+
 
 	//	test_path (basic::path ("/"));
 	//	test_path (basic::path ("/", "/"));
@@ -859,6 +826,7 @@ main (int argc, char** argv)
 	//
 
 	std::clog << "Function main done." << std::endl;
+	exit (0);
 	return 0;
 }
 

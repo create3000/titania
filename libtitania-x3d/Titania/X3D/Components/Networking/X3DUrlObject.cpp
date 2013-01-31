@@ -125,7 +125,7 @@ throw (Error <INVALID_X3D>,
 {
 	std::istringstream istringstream (string);
 
-	return getBrowser () -> getExecutionContext () -> create (worldURL, istringstream);
+	return createX3DFromStream (istringstream);
 }
 
 SFNode <Scene>
@@ -135,7 +135,11 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return getBrowser () -> getExecutionContext () -> create (worldURL, istream);
+	SFNode <Scene> scene = getBrowser () -> createScene ();
+	
+	scene -> fromStream (worldURL, istream);
+	
+	return scene;
 }
 
 void

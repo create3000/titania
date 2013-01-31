@@ -1,26 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="test/main.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="791" Column="108" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="476" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp" Line="152" Column="34" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Scripting/Script.cpp" Line="1" Column="1" />
-      <File FileName="Library/Tests/PROTO/test.wrl" Line="256" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.h" Line="84" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="230" Column="22" />
-      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ExternProto.h" Line="79" Column="18" />
-      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ExternProto.cpp" Line="98" Column="30" />
-      <File FileName="libtitania-x3d/Titania/X3D/Prototype/Proto.h" Line="98" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Prototype/Proto.cpp" Line="79" Column="24" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="1270" Column="41" />
-      <File FileName="libtitania-x3d/Titania/X3D/Prototype/X3DProto.h" Line="72" Column="18" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="277" Column="37" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DExecutionContext.cpp" Line="162" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DExecutionContext.h" Line="97" Column="16" />
-      <File FileName="Library/Tests/PROTO/Geometry.wrl" Line="11" Column="26" />
-      <File FileName="Titania/share/titania/pages/about/gears.wrl" Line="339" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.h" Line="74" Column="1" />
+      <File FileName="experimental/main.cpp" Line="769" Column="28" />
+      <File FileName="test/main.cpp" Line="143" Column="33" />
+      <File FileName="test/Makefile.am" Line="10" Column="1" />
+      <File FileName="x3dtidy/Makefile.am" Line="33" Column="38" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -36,10 +21,7 @@
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
-              <Node name="Capone" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
-              <Node name="schacht" expanded="True">
+              <Node name="treasure-island" expanded="True">
                 <Node name="stage" expanded="True" />
               </Node>
             </Node>
@@ -74,6 +56,9 @@
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Basic" expanded="True" />
+              <Node name="Math" expanded="True">
+                <Node name="Geometry" expanded="True" />
+              </Node>
               <Node name="OS" expanded="True" />
             </Node>
           </Node>
@@ -86,9 +71,7 @@
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True">
-                  <Node name="X3DBaseNode.cpp" selected="True" />
-                </Node>
+                <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Properties" expanded="True" />
@@ -108,6 +91,7 @@
                   <Node name="Scripting" expanded="True" />
                   <Node name="Shape" expanded="True" />
                   <Node name="Sound" expanded="True" />
+                  <Node name="Text" expanded="True" />
                   <Node name="Texturing" expanded="True" />
                   <Node name="Time" expanded="True" />
                 </Node>
@@ -125,7 +109,7 @@
               </Node>
             </Node>
           </Node>
-          <Node name="test" expanded="True">
+          <Node name="test" expanded="True" selected="True">
             <Node name="Tests" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">

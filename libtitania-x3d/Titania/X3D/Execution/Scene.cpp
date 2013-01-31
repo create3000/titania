@@ -72,21 +72,6 @@ Scene::Scene (X3DBrowser* const browser) :
 }
 
 Scene*
-Scene::create (const basic::uri & worldURL, std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	Scene* scene = create (this);
-
-	scene -> setup ();
-	scene -> fromStream (worldURL, istream);
-
-	return scene;
-}
-
-Scene*
 Scene::create (X3DExecutionContext* const executionContext) const
 {
 	return new Scene (executionContext -> getBrowser ());

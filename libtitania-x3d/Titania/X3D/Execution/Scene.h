@@ -73,13 +73,6 @@ public:
 
 	Scene (X3DBrowser* const);
 
-	Scene*
-	create (const basic::uri &, std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
 	virtual
 	Scene*
 	create (X3DExecutionContext* const) const;

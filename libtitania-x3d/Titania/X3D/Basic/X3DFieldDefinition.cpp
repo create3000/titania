@@ -241,7 +241,7 @@ X3DFieldDefinition::processEvent (X3DFieldDefinition* const field, ChildObjectSe
 
 	events .emplace_back (field);
 	registerInterest (this);
-
+	
 	for (const auto & fieldDefinition : interests)
 		fieldDefinition -> processEvent (field, sourceFields);
 }

@@ -95,6 +95,8 @@ private:
 
 	static JSBool length (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool length (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	
+	static void finalize (JSContext*, JSObject*);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
@@ -331,6 +333,15 @@ jsX3DArrayField <Type, FieldType>::length (JSContext* context, JSObject* obj, js
 	field -> resize (value);
 
 	return JS_TRUE;
+}
+
+template <class Type, class FieldType>
+void
+jsX3DArrayField <Type, FieldType>::finalize (JSContext* context, JSObject* obj)
+{
+	X3DArray* field = static_cast <X3DArray*> (JS_GetPrivate (context, obj));
+
+	dispose (dynamic_cast <X3DChildObject*> (field));
 }
 
 } // X3D

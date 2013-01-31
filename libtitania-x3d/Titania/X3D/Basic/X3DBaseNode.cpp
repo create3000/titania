@@ -524,7 +524,10 @@ X3DBaseNode::registerInterest (X3DChildObject* object)
 void
 X3DBaseNode::processEvents (ChildObjectSet & sourceFields)
 {
-	for (const auto & field : ChildObjectSet (std::move (events)))
+	ChildObjectSet eventsToProcess;
+	eventsToProcess .swap (events);
+
+	for (const auto & field : eventsToProcess)
 		field -> processEvents (sourceFields);
 }
 
@@ -536,15 +539,21 @@ X3DBaseNode::processInterests ()
 		receivedInputEvent = false;
 		
 		prepareEvents ();
+		
+		ChildObjectSet interestsToProcess;
+		interestsToProcess .swap (interests);
 
-		for (const auto & field : ChildObjectSet (std::move (interests)))
+		for (const auto & field : interestsToProcess)
 			field -> processInterests ();
 
 		eventsProcessed ();
 	}
 	else
 	{
-		for (const auto & field : ChildObjectSet (std::move (interests)))
+		ChildObjectSet interestsToProcess;
+		interestsToProcess .swap (interests);
+
+		for (const auto & field : interestsToProcess)
 			field -> processInterests ();
 	}
 }

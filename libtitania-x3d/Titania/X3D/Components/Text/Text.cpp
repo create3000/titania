@@ -142,12 +142,6 @@ Text::set_fontStyle ()
 	// Calculate lineHeight.
 	lineHeight = font -> LineHeight () * fontStyle -> spacing;
 
-	// Reserve charSpacings.
-	charSpacings .reserve (string .size ());
-
-	// Reserve translations.
-	translation .reserve (string .size ());
-
 	// Calculate scale.
 	scale = fontStyle -> getSize () / font -> LineHeight ();
 }
@@ -280,10 +274,6 @@ Text::getLineBBox (const std::string & line)
 }
 
 void
-Text::build ()
-{ }
-
-void
 Text::display ()
 {
 	if (solid)
@@ -311,6 +301,8 @@ Text::display ()
 
 		++ i;
 	}
+	
+	lineBounds .X3DChildObject::notifyParents ();
 }
 
 void

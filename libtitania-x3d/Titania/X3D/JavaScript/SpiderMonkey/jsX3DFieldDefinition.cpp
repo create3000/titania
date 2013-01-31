@@ -124,10 +124,16 @@ void
 jsX3DFieldDefinition::finalize (JSContext* context, JSObject* obj)
 {
 	X3DFieldDefinition* field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
+	
+	dispose (field);
+}
 
+void
+jsX3DFieldDefinition::dispose (X3DChildObject* field)
+{
 	if (field)
 	{
-		if (not field -> getParents () .size ())
+		if (field -> getParents () .size () == 0)
 			delete field;
 	}
 }

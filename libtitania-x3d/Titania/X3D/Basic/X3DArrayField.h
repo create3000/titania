@@ -395,6 +395,7 @@ X3DArrayField <ValueType>::get1Value (const size_type index)
 }
 
 template <class ValueType>
+inline
 void
 X3DArrayField <ValueType>::set (const value_type & value)
 {
@@ -420,6 +421,7 @@ X3DArrayField <ValueType>::set (InputIterator first, InputIterator last)
 
 template <class ValueType>
 template <class InputIterator>
+inline
 void
 X3DArrayField <ValueType>::assign (InputIterator first, InputIterator last)
 {
@@ -428,6 +430,7 @@ X3DArrayField <ValueType>::assign (InputIterator first, InputIterator last)
 }
 
 template <class ValueType>
+inline
 void
 X3DArrayField <ValueType>::clear ()
 {
@@ -480,6 +483,7 @@ X3DArrayField <ValueType>::insert (iterator location, const ValueType & value)
 	addChildren (iter, end ());
 
 	notifyParents ();
+
 	return iter;
 }
 
@@ -511,6 +515,7 @@ X3DArrayField <ValueType>::insert (iterator location, InputIterator first, Input
 }
 
 template <class ValueType>
+inline
 void
 X3DArrayField <ValueType>::pop_front ()
 {
@@ -519,6 +524,7 @@ X3DArrayField <ValueType>::pop_front ()
 }
 
 template <class ValueType>
+inline
 void
 X3DArrayField <ValueType>::pop_back ()
 {
@@ -583,6 +589,7 @@ X3DArrayField <ValueType>::emplace_back (Args && ... args)
 }
 
 template <class ValueType>
+inline
 void
 X3DArrayField <ValueType>::resize (size_type count)
 {
@@ -622,6 +629,7 @@ X3DArrayField <ValueType>::insert_at_end (InputIterator first, InputIterator las
 }
 
 template <class ValueType>
+inline
 void
 X3DArrayField <ValueType>::addChildren (iterator first, iterator last)
 {

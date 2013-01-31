@@ -1,58 +1,37 @@
 #X3D V3.0 utf8 Titania
 
-META "title" "Test test"
+META "title" "Scripting test"
 
-PROTO Test [
-  inputOutput SFTime startTime 0
-]
-{
-  PROTO Data [
-    inputOutput SFTime startTime 0
-  ]
-  {
-    Group { }
-  }
-
-  Group { }
-
-  DEF _Test Script {
-    inputOnly      SFTime set_startTime
-    initializeOnly SFNode data DEF Data Data {
-      startTime IS startTime
-    }
-
-    url "vrmlscript:
-function initialize ()
-{
-	print ('********** initialize: ' + data .startTime);
-	data .startTime = 999;
+DEF Timer TimeSensor {
+  loop TRUE
 }
 
-function set_startTime (value)
-{
-	print ('********** set_startTime: ' + value);
-
-}
-		"
-  }
-
-  ROUTE Data.startTime_changed TO _Test.set_startTime
-}
-
-DEF Script Script {
-  outputOnly SFTime time
+DEF A Script {
+  inputOnly  SFTime  set_startTime
+  outputOnly MFVec2f lineBounds
 
   url "vrmlscript:
-
-function initialize ()
+function set_startTime (value)
 {
-	time = 1000;
+	//print ('set_startTime');
+	new MFVec2f ();
 }
   "
 }
 
-DEF Test Test {
-  startTime 1
+ROUTE Timer .time TO A .set_startTime
+
+
+DEF B Script {
+  inputOnly MFVec2f set_lineBounds
+
+  url "vrmlscript:
+
+function set_lineBounds (value)
+{
+	print (value);
+}
+  "
 }
 
-ROUTE Script.time TO Test.set_startTime
+ROUTE A.lineBounds TO B.set_lineBounds

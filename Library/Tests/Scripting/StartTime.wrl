@@ -1,0 +1,58 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "Test startTime"
+
+PROTO Test [
+  inputOutput SFTime startTime 0
+]
+{
+  PROTO Data [
+    inputOutput SFTime startTime 0
+  ]
+  {
+    Group { }
+  }
+
+  Group { }
+
+  DEF _Test Script {
+    inputOnly      SFTime set_startTime
+    initializeOnly SFNode data DEF Data Data {
+      startTime IS startTime
+    }
+
+    url "vrmlscript:
+function initialize ()
+{
+	print ('********** initialize: ' + data .startTime);
+	data .startTime = 999;
+}
+
+function set_startTime (value)
+{
+	print ('********** set_startTime: ' + value);
+
+}
+		"
+  }
+
+  ROUTE Data.startTime_changed TO _Test.set_startTime
+}
+
+DEF Script Script {
+  outputOnly SFTime time
+
+  url "vrmlscript:
+
+function initialize ()
+{
+	time = 1000;
+}
+  "
+}
+
+DEF Test Test {
+  startTime 1
+}
+
+ROUTE Script.time TO Test.set_startTime

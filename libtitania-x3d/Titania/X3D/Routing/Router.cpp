@@ -65,7 +65,10 @@ Router::processEvents ()
 	
 	while (events .size ())
 	{
-		for (const auto & node : std::deque <X3DBaseNode*> (std::move (events)))
+		std::deque <X3DBaseNode*> nodesToProcess;
+		nodesToProcess .swap (events);
+	
+		for (const auto & node : nodesToProcess)
 		{
 			sourceFields .clear ();
 
@@ -81,7 +84,10 @@ Router::processInterests ()
 {
 	while (interests .size ())
 	{
-		for (const auto & node : std::deque <X3DBaseNode*> (std::move (interests)))
+		std::deque <X3DBaseNode*> nodesToProcess;
+		nodesToProcess .swap (interests);
+		
+		for (const auto & node : nodesToProcess)
 			node -> processInterests ();
 	}
 }

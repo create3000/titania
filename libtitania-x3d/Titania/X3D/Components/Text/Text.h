@@ -111,15 +111,11 @@ private:
 	Box2f
 	getLineBBox (const std::string &);
 
-	virtual
-	void
-	build ();
-
 	std::unique_ptr <FTPolygonFont> font;
 	float                           lineHeight;
-	std::vector <float>             charSpacings;
+	std::deque <float>              charSpacings;
 	Vector2f                        minorAlignment;
-	std::vector <Vector2f>          translation;
+	std::deque <Vector2f>           translation;
 	float                           scale;
 
 };

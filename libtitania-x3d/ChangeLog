@@ -1,3 +1,19 @@
+2013-01-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Scene.h:
+	* Router.cpp:
+	* Scene.cpp:
+	* X3DArrayField.h:
+	* X3DBaseNode.cpp:
+	* Text.h:
+	* Text.cpp:
+	* GarbargeCollector.cpp:
+	* X3DFieldDefinition.cpp:
+	* X3DUrlObject.cpp:
+	* jsX3DArrayField.h:
+	* jsX3DFieldDefinition.h:
+	* jsX3DFieldDefinition.cpp: 
+
 2013-01-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Proto.h:

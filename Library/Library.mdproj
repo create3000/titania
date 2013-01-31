@@ -1600,6 +1600,7 @@
     <None Include="Tests\EnvironmentalSensors\HUD.wrl" />
     <None Include="Examples\icts\labyrinth.wrl" />
     <None Include="Examples\icts\hamburger.wrl" />
+    <None Include="Tests\Scripting\StartTime.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />
