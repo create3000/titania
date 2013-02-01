@@ -140,15 +140,21 @@ basic_gzstreambuf <CharT, Traits>::open ()
 
 	// Test for the magic two-byte gzip header.
 
-	static int GZ_MAGIC = 0x1f8b;
+	static int GZ_MAGIC1 = 0x1f;
+	static int GZ_MAGIC2 = 0x8b;
 
-	CharT  magic [2];
-	size_t bytesRead = streambuf -> sgetn (magic, sizeof (magic));
+	bool gz   = false;
+	int first = streambuf -> sgetc ();
 
-	for (size_t i = 0; i < bytesRead; ++ i)
-		streambuf -> sungetc ();
+	if (first == GZ_MAGIC1)
+	{
+		if (streambuf -> snextc () == GZ_MAGIC2)
+			gz = true;
+			
+		streambuf -> sputbackc (first);
+	}
 
-	if (bytesRead < sizeof (magic)or ((magic [0] << 8) | (magic [1] & 0xff)) not_eq GZ_MAGIC)
+	if (not gz)
 		return this;
 
 	// allocate inflate state

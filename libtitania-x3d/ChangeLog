@@ -1,5 +1,9 @@
 2013-02-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DGeometryNode.cpp: 
+
+2013-02-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Text.cpp:
 	* X3DFieldDefinition.cpp:
 	* X3DGeometryNode.cpp: 

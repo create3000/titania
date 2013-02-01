@@ -143,32 +143,9 @@ main (int argc, char* argv [ ])
 		std::clog << "Start of block ..." << std::endl;
 
 		{
-			auto browser = X3D::getBrowser ();
-			auto scene   = browser -> createX3DFromString ("Text { }");
-			std::clog << "+++++++++++++++++++++++++++++++++++" << std::endl;
 
-			X3D::SFNode <X3D::Text> text = scene -> getRootNodes () [0];
-			std::clog << text << std::endl;
 		
-			for (int n = 0; n < 10; ++ n)
-			{
-				auto & a = text -> lineBounds;
-				
-				for (int i = 0; i < 10; ++ i)
-				{
-					for (int j = 0; j < 100000; ++ j)
-					{
-						text -> string = { "1", "2", "3" };
-						browser -> getRouter () .processEvents ();
-					}
-					
-					std::clog << i << std::endl;
-				}
-				
-				std::clog << a .size () << std::endl;
-			}
-
-			std::clog << "+++++++++++++++++++++++++++++++++++" << std::endl;
+		
 		}
 
 		std::clog << "End of block ..." << std::endl;

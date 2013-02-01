@@ -759,33 +759,10 @@ main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 	
-	{
-		double t0 = chrono::now ();
-		
-		for (int n = 0; n < 10000; ++ n)
-		{	
-			std::set <int*> set;
-		
-			for (int i = 0; i < 1000; ++ i)
-				set .insert (new int ());
-		}
-		
-		std::clog << chrono::now () - t0 << std::endl;
-	}
-
-	{
-		double t0 = chrono::now ();
-		
-		for (int n = 0; n < 10000; ++ n)
-		{	
-			std::unordered_set <int*> set;
-		
-			for (int i = 0; i < 1000; ++ i)
-				set .insert (new int ());
-		}
-		
-		std::clog << chrono::now () - t0 << std::endl;
-	}
+	
+	std::ifstream istream ("/home/holger/Arbeitsfläche/Particle/index.wrl");
+	
+	std::clog << basic::gunzip (istream) .rdbuf ();
 
 	//	test_path (basic::path ("/"));
 	//	test_path (basic::path ("/", "/"));
