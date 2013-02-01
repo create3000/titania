@@ -274,7 +274,9 @@ X3DFieldDefinition::dispose ()
 	interests .clear ();
 	events    .clear ();
 
-	X3DChildObject::dispose ();
+	// As long as the fields belong to nodes, don't dispose fields. So the ref count is always at least one 
+	// in JavaScript.
+	//X3DChildObject::dispose ();
 }
 
 X3DFieldDefinition::~X3DFieldDefinition ()

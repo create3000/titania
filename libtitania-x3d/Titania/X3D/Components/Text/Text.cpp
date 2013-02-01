@@ -301,8 +301,6 @@ Text::display ()
 
 		++ i;
 	}
-	
-	lineBounds .X3DChildObject::notifyParents ();
 }
 
 void

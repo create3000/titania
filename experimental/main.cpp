@@ -41,6 +41,7 @@
 #include <Titania/Math/Numbers/Vector3.h>
 #include <Titania/Math/Numbers/Vector4.h>
 #include <Titania/OS.h>
+#include <Titania/Chrono/Now.h>
 #include <Titania/Stream/IGZStream.h>
 #include <Titania/Stream/InputFileStream.h>
 //#include <Titania/Stream/InputHTTPStream.h>
@@ -61,6 +62,9 @@
 #include <map>
 #include <queue>
 #include <vector>
+#include <set>
+#include <unordered_set>
+
 using namespace titania;
 using namespace titania::basic;
 
@@ -755,14 +759,33 @@ main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 	
-	std::istringstream istream ("Text { }");
+	{
+		double t0 = chrono::now ();
+		
+		for (int n = 0; n < 10000; ++ n)
+		{	
+			std::set <int*> set;
+		
+			for (int i = 0; i < 1000; ++ i)
+				set .insert (new int ());
+		}
+		
+		std::clog << chrono::now () - t0 << std::endl;
+	}
 
-	std::ostringstream ostringstream;
-
-	ostringstream << basic::gunzip (istream) .rdbuf ();
-	
-	std::clog << ostringstream .str () << std::endl;
-
+	{
+		double t0 = chrono::now ();
+		
+		for (int n = 0; n < 10000; ++ n)
+		{	
+			std::unordered_set <int*> set;
+		
+			for (int i = 0; i < 1000; ++ i)
+				set .insert (new int ());
+		}
+		
+		std::clog << chrono::now () - t0 << std::endl;
+	}
 
 	//	test_path (basic::path ("/"));
 	//	test_path (basic::path ("/", "/"));

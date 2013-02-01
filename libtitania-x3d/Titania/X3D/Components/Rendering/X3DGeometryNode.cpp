@@ -187,14 +187,16 @@ X3DGeometryNode::intersect (const Line3f & hitRay, Vector3f & hitPoint) const
 void
 X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Vector3f> & normals)
 {
-	if (creaseAngle == 0.0f)
-		return;
+__LOG__ << ccw << std::endl;
 
 	if (not ccw)
 	{
 		for (auto & normal : normals)
 			normal .negate ();
 	}
+	
+	if (creaseAngle == 0.0f)
+		return;
 
 	float cosCreaseAngle = std::cos (creaseAngle);
 

@@ -1,11 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="test/main.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Grouping/Add&amp;RemoveChildren.wrl">
     <Files>
-      <File FileName="experimental/main.cpp" Line="769" Column="28" />
-      <File FileName="test/main.cpp" Line="143" Column="33" />
-      <File FileName="test/Makefile.am" Line="10" Column="1" />
-      <File FileName="x3dtidy/Makefile.am" Line="33" Column="38" />
+      <File FileName="experimental/main.cpp" Line="759" Column="1" />
+      <File FileName="test/main.cpp" Line="161" Column="38" />
+      <File FileName="Library/Tests/Scripting/test.wrl" Line="17" Column="15" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="225" Column="1" />
+      <File FileName="Library/Tests/Text/Text.wrl" Line="159" Column="32" />
+      <File FileName="Library/Tests/Grouping/Add&amp;RemoveChildren.wrl" Line="95" Column="19" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -30,7 +32,9 @@
               <Node name="EnvironmentalEffects" expanded="True" />
               <Node name="EnvironmentalSensors" expanded="True" />
               <Node name="Geometry3D" expanded="True" />
-              <Node name="Grouping" expanded="True" />
+              <Node name="Grouping" expanded="True">
+                <Node name="Add&amp;RemoveChildren.wrl" selected="True" />
+              </Node>
               <Node name="Interpolation" expanded="True" />
               <Node name="Layering" expanded="True" />
               <Node name="Navigation" expanded="True" />
@@ -98,7 +102,9 @@
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
                 <Node name="JavaScript" expanded="True">
-                  <Node name="SpiderMonkey" expanded="True" />
+                  <Node name="SpiderMonkey" expanded="True">
+                    <Node name="Fields" expanded="True" />
+                  </Node>
                 </Node>
                 <Node name="Parser" expanded="True" />
                 <Node name="Prototype" expanded="True" />
@@ -109,7 +115,7 @@
               </Node>
             </Node>
           </Node>
-          <Node name="test" expanded="True" selected="True">
+          <Node name="test" expanded="True">
             <Node name="Tests" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">
