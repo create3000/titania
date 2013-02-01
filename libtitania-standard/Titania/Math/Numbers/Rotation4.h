@@ -273,7 +273,27 @@ rotation4 <Type>::rotation4 (const vector3 <T> & fromVector, const vector3 <T> &
 		*this = rotation4 (cross (fromVector, toVector), angle);
 	}
 	else
-		*this = rotation4 (0, 0, 1, M_PI);
+	{
+		vector3 <Type> normal = normalize (toVector - fromVector);
+
+		if (normal .x ())
+		{
+			Type x = -normal .y () / normal .x ();
+			*this = rotation4 (x, 1, 0, M_PI);
+		}
+		else if (normal .y ())
+		{
+			Type y = -normal .z () / normal .y ();
+			*this = rotation4 (0, y, 1, M_PI);
+		}
+		else if (normal .z ())
+		{
+			Type z = -normal .x () / normal .z ();
+			*this = rotation4 (1, 0, z, M_PI);
+		}
+		else
+			*this = rotation4 (0, 0, 1, 0);
+	}
 }
 
 template <class Type>

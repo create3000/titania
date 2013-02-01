@@ -759,10 +759,8 @@ main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 	
-	
-	std::ifstream istream ("/home/holger/Arbeitsfläche/Particle/index.wrl");
-	
-	std::clog << basic::gunzip (istream) .rdbuf ();
+		
+	std::clog << Rotation4f (Vector3f (0, 0, 1), Vector3f (0, 0, -1)) * Vector3f (0, 0, 1) << std::endl;
 
 	//	test_path (basic::path ("/"));
 	//	test_path (basic::path ("/", "/"));
