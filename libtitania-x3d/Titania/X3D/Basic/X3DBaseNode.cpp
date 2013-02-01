@@ -227,37 +227,28 @@ X3DBaseNode::getCurrentTime () const
 size_t
 X3DBaseNode::getNumClones () const
 {
-	// executionContext is the limit
 	size_t numClones = 0;
-
+	
 	for (const auto & parentField : getParents ())
 	{
 		if (dynamic_cast <X3DFieldDefinition*> (parentField))
 		{
-			for (const auto & parentNode : parentField -> getParents ())
+			if (parentField -> getTypeName () == "SFNode")
 			{
-				MFNode <X3DBaseNode>* mfnode = dynamic_cast <MFNode <X3DBaseNode>*> (parentNode);
+				if (parentField -> getName () .length ())
+					++ numClones;
 
-				if (mfnode)
-				{
-					for (const auto & parentNode : mfnode -> getParents ())
-					{
-						if (parentNode and not dynamic_cast <X3DExecutionContext*> (parentNode))
-							++ numClones;
-					}
-				}
 				else
 				{
-					if (parentNode and not dynamic_cast <X3DExecutionContext*> (parentNode))
-						++ numClones;
+					for (const auto & parent : parentField -> getParents ())
+					{
+						if (parent -> getTypeName () == "MFNode" and parent -> getName () .length ())
+							++ numClones;
+					}
 				}
 			}
 		}
 	}
-
-	//	std::clog << __func__ << ": " << getTypeName () << " " << getName () << " " << numClones << std::endl;
-	//	for (const auto & parent : getParents ())
-	//		std::clog << "  " << __func__ << ": " << parent -> getTypeName () << " " << parent -> getName () << std::endl;
 
 	return numClones;
 }

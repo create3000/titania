@@ -300,7 +300,7 @@ Generator::GetName (const X3DBaseNode* basicNode)
 {
 	if (basicNode -> getName () .empty ())
 	{
-		NewNamesMap::const_iterator iter = newNames .find (basicNode);
+		auto iter = newNames .find (basicNode);
 
 		if (iter not_eq newNames .end ())
 			return iter -> second;
