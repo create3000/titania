@@ -1,0 +1,13 @@
+#VRML V2.0 utf8 Comment
+
+META "title" "Rectangle2D"
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Rectangle2D {
+    }
+  }
+}

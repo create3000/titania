@@ -101,21 +101,23 @@ Sphere::createBBox ()
 void
 Sphere::build ()
 {
-	const X3DSpherePropertyNode* sphereProperties = *getBrowser () -> getBrowserOptions () -> sphereProperties;
+	const X3DSpherePropertyNode* properties = *getBrowser () -> getBrowserOptions () -> sphereProperties;
 
-	getTexCoord () = sphereProperties -> getTexCoord ();
-	getNormals  () = sphereProperties -> getNormals  ();
+	getTexCoord () = properties -> getTexCoord ();
+	getNormals  () = properties -> getNormals  ();
 
 	if (radius == 1.0f)
-		getVertices () = sphereProperties -> getVertices ();
+		getVertices () = properties -> getVertices ();
 
 	else
 	{
-		for (const auto & vertex : sphereProperties -> getVertices ())
+		getVertices () .reserve (properties -> getVertices () .size ());
+
+		for (const auto & vertex : properties -> getVertices ())
 			getVertices () .emplace_back (vertex * radius .getValue ());
 	}
 
-	setVertexMode (sphereProperties -> getVertexMode ());
+	setVertexMode (properties -> getVertexMode ());
 }
 
 void

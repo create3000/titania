@@ -50,6 +50,8 @@
 
 #include "Rectangle2D.h"
 
+#include "../../Browser/Geometry2D/Rectangle2DProperties.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -58,7 +60,7 @@ namespace X3D {
 Rectangle2D::Rectangle2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	           size (2, 2)                                                 // SFVec2f [ ]size   2 2          (0,∞)
+	           size (2, 2)                                                 // SFVec2f [ ] size   2 2          (0,∞)
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Rectangle2D");
@@ -72,6 +74,58 @@ X3DBaseNode*
 Rectangle2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new Rectangle2D (executionContext);
+}
+
+void
+Rectangle2D::initialize ()
+{
+	X3DGeometryNode::initialize ();
+
+	getBrowser () -> getBrowserOptions () -> rectangle2DProperties .addInterest (this, &Rectangle2D::set_properties);
+}
+
+Box3f
+Rectangle2D::createBBox ()
+{
+	return Box3f (Vector3f (size .getX (), size .getY (), 0), Vector3f ());
+}
+
+void
+Rectangle2D::set_properties ()
+{
+	update ();
+}
+
+void
+Rectangle2D::build ()
+{
+	const Rectangle2DProperties* properties = *getBrowser () -> getBrowserOptions () -> rectangle2DProperties;
+
+	getTexCoord () = properties -> getTexCoord ();
+	getNormals  () = properties -> getNormals  ();
+
+	if (size == Vector2f (2, 2))
+		getVertices () = properties -> getVertices ();
+
+	else
+	{
+		getVertices () .reserve (properties -> getVertices () .size ());
+
+		auto size1_2 = Vector3f (size .getX (), size .getY (), 0) * 0.5f;
+
+		for (const auto & vertex : properties -> getVertices ())
+			getVertices () .emplace_back (vertex * size1_2);
+	}
+
+	setVertexMode (properties -> getVertexMode ());
+}
+
+void
+Rectangle2D::dispose ()
+{
+	getBrowser () -> getBrowserOptions () -> rectangle2DProperties .removeInterest (this, &Rectangle2D::set_properties);
+
+	X3DGeometryNode::dispose ();
 }
 
 } // X3D

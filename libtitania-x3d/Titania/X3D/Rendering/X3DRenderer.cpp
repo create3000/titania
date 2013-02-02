@@ -134,31 +134,95 @@ X3DRenderer::draw ()
 	for (const auto & light : globalLights)
 		light -> enable ();
 
-	// render opaque objects first
-
-	glEnable (GL_DEPTH_TEST);
-	glDepthMask (GL_TRUE);
-	glDisable (GL_BLEND);
-
-	for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
+	if (0)
 	{
-		numNodesDrawn += shape -> redraw ();
+		// Sorted blend
+
+		// render opaque objects first
+
+		glEnable (GL_DEPTH_TEST);
+		glDepthMask (GL_TRUE);
+		glDisable (GL_BLEND);
+
+		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
+		{
+			numNodesDrawn += shape -> redraw ();
+		}
+
+		// render transparent objects
+
+		glDepthMask (GL_FALSE);
+		glEnable (GL_BLEND);
+
+		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentNodes, ShapeContainerComp ());
+
+		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
+		{
+			numTransparentNodesDrawn += shape -> redraw ();
+		}
+
+		glDepthMask (GL_TRUE);
+		glDisable (GL_BLEND);
+
 	}
-
-	// render transparent objects
-
-	glDepthMask (GL_FALSE);
-	glEnable (GL_BLEND);
-
-	std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentNodes, ShapeContainerComp ());
-
-	for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
+	else
 	{
-		numTransparentNodesDrawn += shape -> redraw ();
-	}
+		//	http://wiki.delphigl.com/index.php/Blenden
 
-	glDepthMask (GL_TRUE);
-	glDisable (GL_BLEND);
+		glEnable (GL_DEPTH_TEST);
+
+		// render opaque objects first
+
+		glDepthMask (GL_TRUE);
+		glDisable (GL_BLEND);
+
+		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
+		{
+			numNodesDrawn += shape -> redraw ();
+		}
+
+		// render transparent objects
+
+		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentNodes, ShapeContainerComp ());
+
+		glEnable (GL_BLEND);
+
+		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
+		{
+			glDepthFunc (GL_GREATER);
+			glDepthMask (GL_FALSE);
+			glBlendFunc (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA);
+
+			numTransparentNodesDrawn += shape -> redraw ();
+
+			glDepthFunc (GL_LEQUAL);
+			glDepthMask (GL_TRUE);
+			glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+			shape -> redraw ();
+		}
+		
+//		// render opaque objects
+//
+//		glDepthFunc (GL_GREATER);
+//		glDepthMask (GL_FALSE);
+//		glBlendFunc (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA);
+//		glBlendFuncSeparate (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+//
+//		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
+//		{
+//			numNodesDrawn += shape -> redraw ();
+//		}
+//
+//		glDisable (GL_BLEND);
+//		glDepthFunc (GL_LEQUAL);
+//		glDepthMask (GL_TRUE);
+//
+//		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
+//		{
+//			shape -> redraw ();
+//		}
+	}
 
 	// disable global lights
 

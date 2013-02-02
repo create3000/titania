@@ -87,6 +87,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	               shading ("GOURAUD"),                                           
 	            motionBlur (new MotionBlur (executionContext)),                   
 	     textureProperties (new TextureProperties (executionContext)),            
+	 rectangle2DProperties (new Rectangle2DProperties (executionContext)),                
 	         boxProperties (new BoxProperties (executionContext)),                
 	      sphereProperties (new QuadSphereProperties (executionContext)),         
 	             fontStyle (new FontStyle (executionContext))                     
@@ -105,8 +106,9 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "motionBlur",             motionBlur);
 	addField (inputOutput, "textureProperties",      textureProperties);
-	addField (inputOutput, "sphereProperties",       sphereProperties);
+	addField (inputOutput, "rectangle2DProperties",  rectangle2DProperties);
 	addField (inputOutput, "boxProperties",          boxProperties);
+	addField (inputOutput, "sphereProperties",       sphereProperties);
 	addField (inputOutput, "fontStyle",              fontStyle);
 }
 
@@ -121,11 +123,12 @@ BrowserOptions::initialize ()
 {
 	X3DPropertyNode::initialize ();
 
-	motionBlur        -> setup ();
-	textureProperties -> setup ();
-	boxProperties     -> setup ();
-	sphereProperties  -> setup ();
-	fontStyle         -> setup ();
+	motionBlur            -> setup ();
+	textureProperties     -> setup ();
+	rectangle2DProperties -> setup ();
+	boxProperties         -> setup ();
+	sphereProperties      -> setup ();
+	fontStyle             -> setup ();
 
 	primitiveQuality .addInterest (this, &BrowserOptions::set_primitiveQuality);
 	shading          .addInterest (this, &BrowserOptions::set_shading);

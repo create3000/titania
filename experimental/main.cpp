@@ -759,7 +759,10 @@ main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 	
-		
+	#ifdef _GLIBCXX_PARALLEL
+	std::clog << "in parallel mode ..." << std::endl;	
+	#endif
+			
 	std::clog << Rotation4f (Vector3f (0, 0, 1), Vector3f (0, 0, -1)) * Vector3f (0, 0, 1) << std::endl;
 
 	//	test_path (basic::path ("/"));

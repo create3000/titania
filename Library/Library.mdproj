@@ -1602,6 +1602,7 @@
     <None Include="Examples\icts\hamburger.wrl" />
     <None Include="Tests\Scripting\StartTime.wrl" />
     <None Include="Tests\Grouping\Sorting.wrl" />
+    <None Include="Tests\Geometry2D\Rectangle2D.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />
@@ -1645,6 +1646,7 @@
     <Folder Include="Examples\BIC\stage\worlds\" />
     <Folder Include="Examples\Cathedral\stage\" />
     <Folder Include="Tests\PointingDeviceSensor\" />
+    <Folder Include="Tests\Geometry2D\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

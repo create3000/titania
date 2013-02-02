@@ -1,3 +1,22 @@
+2013-02-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.md.pc:
+	* libtitania-x3d.cproj:
+	* X3DRenderer.cpp:
+	* X3DFieldDefinition.h:
+	* Box.h:
+	* X3DFieldDefinition.cpp:
+	* Box.cpp:
+	* X3DBrowserContext.cpp:
+	* Sphere.cpp:
+	* BrowserOptions.h:
+	* Rectangle2D.h:
+	* BrowserOptions.cpp:
+	* Rectangle2D.cpp:
+	* Rectangle2DProperties.h:
+	* Rectangle2DProperties.cpp: 
+
 2013-02-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.cpp:

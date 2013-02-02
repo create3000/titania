@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,84 +48,66 @@
  *
  ******************************************************************************/
 
-#include "Box.h"
+#include "Rectangle2DProperties.h"
 
-#include "../../Browser/Geometry3D/BoxProperties.h"
-#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-Box::Box (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryNode (),                                                    
-	           size (2, 2, 2)                                              // SFVec3f [ ] size   2 2 2        (0,∞)
+Rectangle2DProperties::Rectangle2DProperties (X3DExecutionContext* const executionContext) :
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DGeometryPropertyNode ()                                                     
 {
-	setComponent ("Geometry3D");
-	setTypeName ("Box");
-
-	addField (inputOutput,    "metadata", metadata);
-	addField (initializeOnly, "size",     size);
-	addField (initializeOnly, "solid",    solid);
+	setComponent ("Browser"),
+	setTypeName ("Rectangle2DProperties");
 }
 
-X3DBaseNode*
-Box::create (X3DExecutionContext* const executionContext) const
+Rectangle2DProperties*
+Rectangle2DProperties::create (X3DExecutionContext* const executionContext) const
 {
-	return new Box (executionContext);
+	return new Rectangle2DProperties (executionContext);
 }
 
 void
-Box::initialize ()
+Rectangle2DProperties::initialize ()
 {
-	X3DGeometryNode::initialize ();
+	X3DGeometryPropertyNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> boxProperties .addInterest (this, &Box::set_properties);
-}
-
-Box3f
-Box::createBBox ()
-{
-	return Box3f (size, Vector3f ());
+	build ();
 }
 
 void
-Box::set_properties ()
+Rectangle2DProperties::eventsProcessed ()
 {
+	X3DGeometryPropertyNode::eventsProcessed ();
+
 	update ();
 }
 
 void
-Box::build ()
+Rectangle2DProperties::build ()
 {
-	const BoxProperties* properties = *getBrowser () -> getBrowserOptions () -> boxProperties;
+	getTexCoord () .reserve (4);
+	getNormals  () .reserve (4);
+	getVertices () .reserve (4);
 
-	getTexCoord () = properties -> getTexCoord ();
-	getNormals  () = properties -> getNormals  ();
+	// Front Face
+	getTexCoord () .emplace_back (0, 0);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (-1, -1, 0);
 
-	if (size == Vector3f (2, 2, 2))
-		getVertices () = properties -> getVertices ();
+	getTexCoord () .emplace_back (1, 0);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (1, -1, 0);
 
-	else
-	{
-		getVertices () .reserve (properties -> getVertices () .size ());
+	getTexCoord () .emplace_back (1, 1);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (1, 1, 0);
 
-		auto size1_2 = size * 0.5f;
-
-		for (const auto & vertex : properties -> getVertices ())
-			getVertices () .emplace_back (vertex * size1_2);
-	}
-
-	setVertexMode (properties -> getVertexMode ());
-}
-
-void
-Box::dispose ()
-{
-	getBrowser () -> getBrowserOptions () -> boxProperties .removeInterest (this, &Box::set_properties);
-
-	X3DGeometryNode::dispose ();
+	getTexCoord () .emplace_back (0, 1);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (-1, 1, 0);
 }
 
 } // X3D

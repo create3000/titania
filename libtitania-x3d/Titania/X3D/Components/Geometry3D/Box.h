@@ -82,11 +82,11 @@ private:
 	void
 	initialize ();
 
-	void
-	set_properties ();
-
 	Box3f
 	createBBox ();
+
+	void
+	set_properties ();
 
 	void
 	build ();

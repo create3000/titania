@@ -87,7 +87,7 @@ if test "x$enable_release" = "xyes" ; then
 fi
 
 if test "x$enable_parallel" = "xyes" ; then
-	CXXFLAGS=$CXXFLAGS" -O3 -ftree-parallelize-loops=4 -fopenmp"
+	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4 -fopenmp -D_GLIBCXX_PARALLEL"
 fi
 
 

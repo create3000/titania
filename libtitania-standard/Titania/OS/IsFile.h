@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,85 +48,18 @@
  *
  ******************************************************************************/
 
-#include "Box.h"
+#ifndef __TITANIA_OS_IS_FILE_H__
+#define __TITANIA_OS_IS_FILE_H__
 
-#include "../../Browser/Geometry3D/BoxProperties.h"
-#include "../../Browser/X3DBrowser.h"
-#include "../../Execution/X3DExecutionContext.h"
+#include <string>
 
 namespace titania {
-namespace X3D {
+namespace os {
 
-Box::Box (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryNode (),                                                    
-	           size (2, 2, 2)                                              // SFVec3f [ ] size   2 2 2        (0,∞)
-{
-	setComponent ("Geometry3D");
-	setTypeName ("Box");
+bool
+is_file (const std::string &);
 
-	addField (inputOutput,    "metadata", metadata);
-	addField (initializeOnly, "size",     size);
-	addField (initializeOnly, "solid",    solid);
-}
-
-X3DBaseNode*
-Box::create (X3DExecutionContext* const executionContext) const
-{
-	return new Box (executionContext);
-}
-
-void
-Box::initialize ()
-{
-	X3DGeometryNode::initialize ();
-
-	getBrowser () -> getBrowserOptions () -> boxProperties .addInterest (this, &Box::set_properties);
-}
-
-Box3f
-Box::createBBox ()
-{
-	return Box3f (size, Vector3f ());
-}
-
-void
-Box::set_properties ()
-{
-	update ();
-}
-
-void
-Box::build ()
-{
-	const BoxProperties* properties = *getBrowser () -> getBrowserOptions () -> boxProperties;
-
-	getTexCoord () = properties -> getTexCoord ();
-	getNormals  () = properties -> getNormals  ();
-
-	if (size == Vector3f (2, 2, 2))
-		getVertices () = properties -> getVertices ();
-
-	else
-	{
-		getVertices () .reserve (properties -> getVertices () .size ());
-
-		auto size1_2 = size * 0.5f;
-
-		for (const auto & vertex : properties -> getVertices ())
-			getVertices () .emplace_back (vertex * size1_2);
-	}
-
-	setVertexMode (properties -> getVertexMode ());
-}
-
-void
-Box::dispose ()
-{
-	getBrowser () -> getBrowserOptions () -> boxProperties .removeInterest (this, &Box::set_properties);
-
-	X3DGeometryNode::dispose ();
-}
-
-} // X3D
+} // os
 } // titania
+
+#endif

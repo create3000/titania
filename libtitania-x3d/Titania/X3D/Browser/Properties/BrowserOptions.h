@@ -55,6 +55,7 @@
 #include "../../Components/Text/FontStyle.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Geometry2D/Rectangle2DProperties.h"
 #include "../Geometry3D/BoxProperties.h"
 #include "../Geometry3D/X3DSpherePropertyNode.h"
 #include "../Properties/MotionBlur.h"
@@ -90,6 +91,7 @@ public:
 
 	SFNode <MotionBlur>            motionBlur;
 	SFNode <TextureProperties>     textureProperties;
+	SFNode <Rectangle2DProperties> rectangle2DProperties;
 	SFNode <BoxProperties>         boxProperties;
 	SFNode <X3DSpherePropertyNode> sphereProperties;
 	SFNode <X3DFontStyleNode>      fontStyle;

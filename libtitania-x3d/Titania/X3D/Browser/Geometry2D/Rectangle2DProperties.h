@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,85 +48,49 @@
  *
  ******************************************************************************/
 
-#include "Box.h"
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_RECTANGLE2DPROPERTIES_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY2D_RECTANGLE2DPROPERTIES_H__
 
-#include "../../Browser/Geometry3D/BoxProperties.h"
-#include "../../Browser/X3DBrowser.h"
-#include "../../Execution/X3DExecutionContext.h"
+#include "../Properties/X3DGeometryPropertyNode.h"
 
 namespace titania {
 namespace X3D {
 
-Box::Box (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryNode (),                                                    
-	           size (2, 2, 2)                                              // SFVec3f [ ] size   2 2 2        (0,∞)
+//	Property Name           Value data type      Description
+
+class Rectangle2DProperties :
+	public X3DGeometryPropertyNode
 {
-	setComponent ("Geometry3D");
-	setTypeName ("Box");
+public:
 
-	addField (inputOutput,    "metadata", metadata);
-	addField (initializeOnly, "size",     size);
-	addField (initializeOnly, "solid",    solid);
-}
+	Rectangle2DProperties (X3DExecutionContext* const);
 
-X3DBaseNode*
-Box::create (X3DExecutionContext* const executionContext) const
-{
-	return new Box (executionContext);
-}
+	virtual
+	GLenum
+	getVertexMode () const { return GL_QUADS; }
 
-void
-Box::initialize ()
-{
-	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> boxProperties .addInterest (this, &Box::set_properties);
-}
+private:
 
-Box3f
-Box::createBBox ()
-{
-	return Box3f (size, Vector3f ());
-}
+	virtual
+	Rectangle2DProperties*
+	create (X3DExecutionContext* const) const;
 
-void
-Box::set_properties ()
-{
-	update ();
-}
+	virtual
+	void
+	initialize ();
 
-void
-Box::build ()
-{
-	const BoxProperties* properties = *getBrowser () -> getBrowserOptions () -> boxProperties;
+	virtual
+	void
+	eventsProcessed ();
 
-	getTexCoord () = properties -> getTexCoord ();
-	getNormals  () = properties -> getNormals  ();
+	virtual
+	void
+	build ();
 
-	if (size == Vector3f (2, 2, 2))
-		getVertices () = properties -> getVertices ();
-
-	else
-	{
-		getVertices () .reserve (properties -> getVertices () .size ());
-
-		auto size1_2 = size * 0.5f;
-
-		for (const auto & vertex : properties -> getVertices ())
-			getVertices () .emplace_back (vertex * size1_2);
-	}
-
-	setVertexMode (properties -> getVertexMode ());
-}
-
-void
-Box::dispose ()
-{
-	getBrowser () -> getBrowserOptions () -> boxProperties .removeInterest (this, &Box::set_properties);
-
-	X3DGeometryNode::dispose ();
-}
+};
 
 } // X3D
 } // titania
+
+#endif

@@ -23,6 +23,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Bits/Error.cpp \
 	Titania/X3D/Bits/X3DConstants.cpp \
 	Titania/X3D/Browser/Browser.cpp \
+	Titania/X3D/Browser/Geometry2D/Rectangle2DProperties.cpp \
 	Titania/X3D/Browser/Geometry3D/BoxProperties.cpp \
 	Titania/X3D/Browser/Geometry3D/QuadSphereProperties.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DSpherePropertyNode.cpp \
