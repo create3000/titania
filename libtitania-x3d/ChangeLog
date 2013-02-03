@@ -1,3 +1,18 @@
+2013-02-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Router.h:
+	* Router.cpp:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* X3DChildObject.cpp:
+	* X3DFieldDefinition.h:
+	* X3DBrowserContext.h:
+	* X3DFieldDefinition.cpp:
+	* X3DBrowserContext.cpp:
+	* Script.cpp:
+	* jsfield.cpp:
+	* IndexedLineSet.cpp: 
+
 2013-02-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

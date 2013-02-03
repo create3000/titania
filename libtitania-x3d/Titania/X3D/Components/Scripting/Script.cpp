@@ -112,8 +112,6 @@ Script::initialize ()
 void
 Script::prepareEvents ()
 {
-	X3DScriptNode::prepareEvents ();
-
 	javaScript -> prepareEvents ();
 }
 

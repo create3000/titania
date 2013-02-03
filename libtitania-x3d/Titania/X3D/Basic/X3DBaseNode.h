@@ -155,7 +155,6 @@ public:
 	void
 	processEvents (ChildObjectSet &);
 
-	virtual
 	void
 	processInterests ();
 
@@ -228,10 +227,6 @@ protected:
 	void
 	initialize () { }
 
-	virtual
-	void
-	prepareEvents () { }
-
 
 private:
 
@@ -265,8 +260,6 @@ private:
 
 	ChildObjectSet events;
 	ChildObjectSet interests;
-
-	bool receivedInputEvent;
 
 };
 

@@ -41,16 +41,16 @@ X3DChildObject::X3DChildObject () :
 // Object
 
 void
-X3DChildObject::registerEvent (X3DChildObject* const)
-{
-	notifyParents ();
-}
-
-void
 X3DChildObject::notifyParents ()
 {
 	for (const auto & parent : getParents ())
 		parent -> registerEvent (this);
+}
+
+void
+X3DChildObject::registerEvent (X3DChildObject* const)
+{
+	notifyParents ();
 }
 
 void

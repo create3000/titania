@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_ROUTING_ROUTER_H__
 #define __TITANIA_X3D_ROUTING_ROUTER_H__
 
+#include "../Base/Output.h"
 #include "../Basic/X3DBaseNode.h"
 #include <deque>
 
@@ -61,6 +62,8 @@ class Router
 {
 public:
 
+	Output prepareEvents;
+
 	Router ();
 
 	void
@@ -70,6 +73,14 @@ public:
 	void
 	registerInterest (X3DBaseNode* node)
 	{ interests .push_back (node); }
+
+	void
+	registerProcessed (X3DBaseNode* node)
+	{ processeds .insert (node); }
+
+	void
+	removeProcessed (X3DBaseNode* node)
+	{ processeds .erase (node); }
 
 	void
 	processEvents ();
@@ -85,8 +96,12 @@ private:
 	void
 	processInterests ();
 
+	void
+	eventsProcessed ();
+
 	std::deque <X3DBaseNode*> events;
 	std::deque <X3DBaseNode*> interests;
+	std::set <X3DBaseNode*>   processeds;
 
 };
 

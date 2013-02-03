@@ -61,8 +61,7 @@ X3DFieldDefinition::X3DFieldDefinition () :
 	   inputRoutes (),               
 	  outputRoutes (),               
 	     interests (),               
-	        events (),
-	   sourceEvent (false)                
+	        events ()                
 { }
 
 X3DFieldDefinition*
@@ -227,15 +226,11 @@ X3DFieldDefinition::processEvents (ChildObjectSet & sourceFields)
 	//	if (inputRoutes  .size ())
 	sourceFields .insert (this);
 	
-	sourceEvent = true;
-	
-	X3DFieldDefinition* copy = this -> clone ();
-	
-	events .emplace_front (copy);
+	events .emplace_front (this);
 	registerInterest (this);
-
+	
 	for (const auto & fieldDefinition : interests)
-		fieldDefinition -> processEvent (copy, sourceFields);
+		fieldDefinition -> processEvent (this, sourceFields);
 }
 
 void
@@ -255,12 +250,6 @@ void
 X3DFieldDefinition::processInterests ()
 {
 	write (*events .front ());
-	
-	if (sourceEvent)
-	{
-		delete events .front ();
-		sourceEvent = false;
-	}	
 	
 	events .pop_front ();
 	

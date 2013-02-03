@@ -74,8 +74,8 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput,    "metadata",       metadata);
 	addField (initializeOnly, "colorPerVertex", colorPerVertex);
-	addField (initializeOnly, "colorIndex",     colorIndex);
-	addField (initializeOnly, "coordIndex",     coordIndex);
+	addField (inputOutput,    "colorIndex",     colorIndex);
+	addField (inputOutput,    "coordIndex",     coordIndex);
 	addField (inputOutput,    "attrib",         attrib);
 	addField (inputOutput,    "fogCoord",       fogCoord);
 	addField (inputOutput,    "color",          color);

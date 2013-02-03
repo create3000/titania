@@ -124,8 +124,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	        fieldAliases (),                 
 	numUserDefinedFields (0),                
 	              events (),                 
-	           interests (),                 
-	  receivedInputEvent (false)          
+	           interests ()          
 {
 	assert (executionContext);
 
@@ -493,6 +492,8 @@ X3DBaseNode::setup ()
 void
 X3DBaseNode::registerEvent (X3DChildObject* const object)
 {
+	__LOG__ << getName () << " : " << getTypeName () << " : " << object << " : '" << object -> getName () << "' : " << object -> getTypeName () << " : " << object -> getParents () .size () << std::endl; 
+
 	if (not events .insert (object) .second)
 		return;
 
@@ -507,9 +508,10 @@ X3DBaseNode::registerInterest (X3DChildObject* object)
 		return;
 
 	if (interests .size () == 1)
-		getBrowser () -> registerInterest (this);
-
-	receivedInputEvent |= object -> isInput ();
+		getBrowser () -> getRouter () .registerInterest (this);
+	
+	if (object -> isInput ())
+		getBrowser () -> getRouter () .registerProcessed (this);
 }
 
 void
@@ -525,28 +527,11 @@ X3DBaseNode::processEvents (ChildObjectSet & sourceFields)
 void
 X3DBaseNode::processInterests ()
 {
-	if (receivedInputEvent)
-	{
-		receivedInputEvent = false;
-		
-		prepareEvents ();
-		
-		ChildObjectSet interestsToProcess;
-		interestsToProcess .swap (interests);
+	ChildObjectSet interestsToProcess;
+	interestsToProcess .swap (interests);
 
-		for (const auto & field : interestsToProcess)
-			field -> processInterests ();
-
-		eventsProcessed ();
-	}
-	else
-	{
-		ChildObjectSet interestsToProcess;
-		interestsToProcess .swap (interests);
-
-		for (const auto & field : interestsToProcess)
-			field -> processInterests ();
-	}
+	for (const auto & field : interestsToProcess)
+		field -> processInterests ();
 }
 
 void
@@ -723,6 +708,8 @@ X3DBaseNode::dispose ()
 {
 	X3DChildObject::dispose ();
 
+	shutdown .processInterests ();
+
 	for (const auto & field : fields)
 		field .second -> dispose ();
 
@@ -730,9 +717,7 @@ X3DBaseNode::dispose ()
 
 	events    .clear ();
 	interests .clear ();
-	receivedInputEvent = false;
-
-	shutdown .processInterests ();
+	getBrowser () -> getRouter () .removeProcessed (this);
 
 	getGarbageCollector () .addObject (this);
 }

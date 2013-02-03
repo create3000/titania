@@ -401,12 +401,6 @@ X3DBrowserContext::registerEvent (X3DBaseNode* const node)
 }
 
 void
-X3DBrowserContext::registerInterest (X3DBaseNode* const node)
-{
-	router .registerInterest (node);
-}
-
-void
 X3DBrowserContext::pick ()
 {
 	getExecutionContext () -> pick ();

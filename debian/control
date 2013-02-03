@@ -1,7 +1,7 @@
 Source: titania
 Section: gnome
 Priority: extra
-Maintainer: Holger Seelig <holger.seelig@yahoo.de>libgomp
+Maintainer: Holger Seelig <holger.seelig@yahoo.de>
 Build-Depends: debhelper (>= 5),
                libgtkmm-3.0-dev, 
                libgconfmm-2.6-dev, 
@@ -16,7 +16,6 @@ Build-Depends: debhelper (>= 5),
                libcurl4-gnutls-dev, 
                libsqlite3-dev, 
                zlib1g,
-               libgomp1
                intltool,
                gettext
 
@@ -39,7 +38,6 @@ Depends: ${shlibs:Depends},
          libcurl4-gnutls-dev, 
          libsqlite3-0, 
          zlib1g
-         libgomp1
 Conflicts:
 Replaces:
 Provides: titania

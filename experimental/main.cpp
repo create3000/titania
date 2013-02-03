@@ -32,6 +32,7 @@
 #include <Titania/Algorithm/Remove.h>
 #include <Titania/Basic/Path.h>
 #include <Titania/Basic/URI.h>
+#include <Titania/Chrono/Now.h>
 #include <Titania/Math/Geometry/Box3.h>
 #include <Titania/Math/Math.h>
 #include <Titania/Math/Numbers/Matrix3.h>
@@ -41,7 +42,6 @@
 #include <Titania/Math/Numbers/Vector3.h>
 #include <Titania/Math/Numbers/Vector4.h>
 #include <Titania/OS.h>
-#include <Titania/Chrono/Now.h>
 #include <Titania/Stream/IGZStream.h>
 #include <Titania/Stream/InputFileStream.h>
 //#include <Titania/Stream/InputHTTPStream.h>
@@ -61,12 +61,22 @@
 #include <limits>
 #include <map>
 #include <queue>
-#include <vector>
 #include <set>
 #include <unordered_set>
+#include <vector>
 
 using namespace titania;
 using namespace titania::basic;
+
+void
+print_time (double time)
+{
+	std::clog
+		<< std::setiosflags (std::ios::fixed)
+		<< std::setprecision (std::numeric_limits <double>::digits10)
+		<< time
+		<< std::endl;
+}
 
 //void
 //callback1 ()
@@ -753,83 +763,133 @@ project (const Type & value, const Type & fromLow, const Type & fromHigh, const 
 
 #include <v8.h>
 
+static
+void
+test (Matrix4f & m)
+{
+	m *= Matrix4f ();
+}
 
 int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
-	
+
 	#ifdef _GLIBCXX_PARALLEL
-	std::clog << "in parallel mode ..." << std::endl;	
+	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-			
-	std::clog << Rotation4f (Vector3f (0, 0, 1), Vector3f (0, 0, -1)) * Vector3f (0, 0, 1) << std::endl;
+	
+	//__gnu_parallel::_Settings s;
+	//s .algorithm_strategy = __gnu_parallel::force_parallel;
+	//s .for_each_minimal_n = 1;
+	//__gnu_parallel::_Settings::set (s);
 
-	//	test_path (basic::path ("/"));
-	//	test_path (basic::path ("/", "/"));
-	//	test_path (basic::path ("home", "/"));
-	//	test_path (basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
-	//	test_path (basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
-	//	test_path (basic::path ("/home/holger/Projekte/../../../.././${Version}/pages/about/home.wrl/..", "/"));
+	#define N 100000
+	#define VECTOR_SIZE 1000
 
-	//	basic::ifilestream stream = get_stream ();
-	//
-	//	if (stream)
-	//	{
-	//		// Response
-	//
-	//		std::clog
-	//			<< "Response" << std::endl
-	//			<< "Http-Version: " << stream .http_version () << std::endl
-	//			<< "Status: "       << stream .status ()       << std::endl
-	//			<< "Reason: "       << stream .reason ()       << std::endl
-	//			<<  std::endl;
-	//
-	//		// Response Headers
-	//
-	//		std::clog << "Response Headers" << std::endl;
-	//		for (const auto & response_header : stream .response_headers ())
-	//			std::clog << response_header .first << ": " << response_header .second << std::endl;
-	//		std::clog <<  std::endl;
-	//
-	//
-	//		std::ostringstream osstream;
-	//		osstream << stream .rdbuf ();
-	//
-	//		std::clog << "'" << osstream .str () << "'" << std::endl;
-	//	}
+	std::deque <Matrix4f> a1 (VECTOR_SIZE);
 
-	//	sql::sqlite3 db (os::home () + "/test.db");
-	//
-	//	db .query ("DROP TABLE IF EXISTS test");
-	//	db .query ("CREATE TABLE IF NOT EXISTS test (title TEXT, location TEXT)");
-	//
-	//	db .query ("INSERT INTO test (title, location) VALUES ('tit1', 'loc1')");
-	//	db .query ("INSERT INTO test (title, location) VALUES ('tit2', 'loc2')");
-	//	db .query ("INSERT INTO test (title, location) VALUES ('tit3', 'loc3')");
-	//	db .query ("INSERT INTO test (title, location) VALUES ('tit4', 'loc4')");
-	//	db .query ("INSERT INTO test (title, location) VALUES ('tit5', 'loc5')");
-	//
-	//
-	//	for (const auto & item : db .query_assoc ("SELECT * FROM test"))
-	//		std::clog << item .at ("title") << ", " << item .at ("location") << std::endl;
-	//	std::clog << std::endl;
-	//
-	//
-	//	db .query ("INSERT INTO test (title, location) VALUES ('tit6', 'loc6')");
-	//
-	//	db .query_array ("UPDATE test SET title = 'tit10', location = 'loc10' WHERE title = 'tit6'");
-	//
-	//
-	//	for (const auto & item : db .query_assoc ("SELECT * FROM test WHERE title = 'tit10'"))
-	//		std::clog << item .at ("title") << ", " << item .at ("location") << std::endl;
-	//	std::clog << std::endl;
-	//
+	/////////////////////////////////////////////
+
+	auto t0 = chrono::now ();
+
+	/////////////////////////////////////////////
+
+	for (int n = 0; n < N; ++ n)
+		std::for_each (a1 .begin (), a1 .end (), test);
+
+	/////////////////////////////////////////////
+
+	print_time (chrono::now () - t0);
+	t0 = chrono::now ();
+
+	/////////////////////////////////////////////
+
+	for (int n = 0; n < N; ++ n)
+		for (auto a : a1)
+			test (a);
+
+	/////////////////////////////////////////////
+
+	print_time (chrono::now () - t0);
+	t0 = chrono::now ();
+
+	/////////////////////////////////////////////
+
+	for (int n = 0; n < N; ++ n)
+		for (int i = 0; i < a1 .size (); ++ i)
+			test (a1 [i]);
+
+	/////////////////////////////////////////////
+
+	print_time (chrono::now () - t0);
+	t0 = chrono::now ();
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);
 	return 0;
 }
+
+//	test_path (basic::path ("/"));
+//	test_path (basic::path ("/", "/"));
+//	test_path (basic::path ("home", "/"));
+//	test_path (basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
+//	test_path (basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
+//	test_path (basic::path ("/home/holger/Projekte/../../../.././${Version}/pages/about/home.wrl/..", "/"));
+
+//	basic::ifilestream stream = get_stream ();
+//
+//	if (stream)
+//	{
+//		// Response
+//
+//		std::clog
+//			<< "Response" << std::endl
+//			<< "Http-Version: " << stream .http_version () << std::endl
+//			<< "Status: "       << stream .status ()       << std::endl
+//			<< "Reason: "       << stream .reason ()       << std::endl
+//			<<  std::endl;
+//
+//		// Response Headers
+//
+//		std::clog << "Response Headers" << std::endl;
+//		for (const auto & response_header : stream .response_headers ())
+//			std::clog << response_header .first << ": " << response_header .second << std::endl;
+//		std::clog <<  std::endl;
+//
+//
+//		std::ostringstream osstream;
+//		osstream << stream .rdbuf ();
+//
+//		std::clog << "'" << osstream .str () << "'" << std::endl;
+//	}
+
+//	sql::sqlite3 db (os::home () + "/test.db");
+//
+//	db .query ("DROP TABLE IF EXISTS test");
+//	db .query ("CREATE TABLE IF NOT EXISTS test (title TEXT, location TEXT)");
+//
+//	db .query ("INSERT INTO test (title, location) VALUES ('tit1', 'loc1')");
+//	db .query ("INSERT INTO test (title, location) VALUES ('tit2', 'loc2')");
+//	db .query ("INSERT INTO test (title, location) VALUES ('tit3', 'loc3')");
+//	db .query ("INSERT INTO test (title, location) VALUES ('tit4', 'loc4')");
+//	db .query ("INSERT INTO test (title, location) VALUES ('tit5', 'loc5')");
+//
+//
+//	for (const auto & item : db .query_assoc ("SELECT * FROM test"))
+//		std::clog << item .at ("title") << ", " << item .at ("location") << std::endl;
+//	std::clog << std::endl;
+//
+//
+//	db .query ("INSERT INTO test (title, location) VALUES ('tit6', 'loc6')");
+//
+//	db .query_array ("UPDATE test SET title = 'tit10', location = 'loc10' WHERE title = 'tit6'");
+//
+//
+//	for (const auto & item : db .query_assoc ("SELECT * FROM test WHERE title = 'tit10'"))
+//		std::clog << item .at ("title") << ", " << item .at ("location") << std::endl;
+//	std::clog << std::endl;
+//
 
 //	gegl_init (&argc, &argv);
 //

@@ -199,10 +199,6 @@ public:
 	void
 	registerEvent (X3DBaseNode* const);
 
-	virtual
-	void
-	registerInterest (X3DBaseNode* const);
-
 	///  @name Rendering handling
 
 	virtual

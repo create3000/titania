@@ -200,7 +200,6 @@ private:
 	RouteSet             outputRoutes;
 	FieldDefinitionSet   interests;
 	FieldDefinitionArray events;
-	bool                 sourceEvent;
 
 };
 
