@@ -492,8 +492,6 @@ X3DBaseNode::setup ()
 void
 X3DBaseNode::registerEvent (X3DChildObject* const object)
 {
-	__LOG__ << getName () << " : " << getTypeName () << " : " << object << " : '" << object -> getName () << "' : " << object -> getTypeName () << " : " << object -> getParents () .size () << std::endl; 
-
 	if (not events .insert (object) .second)
 		return;
 
