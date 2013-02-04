@@ -92,7 +92,7 @@ public:
 	void
 	basic ()
 	{
-		MFNode <X3DBaseNode> array;
+		MFNode array;
 
 		assert (array .size () == 0);
 

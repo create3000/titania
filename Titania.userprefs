@@ -1,13 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Grouping/Add&amp;RemoveChildren.wrl">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Fields/MFNode.h">
     <Files>
-      <File FileName="experimental/main.cpp" Line="759" Column="1" />
-      <File FileName="test/main.cpp" Line="161" Column="38" />
-      <File FileName="Library/Tests/Scripting/test.wrl" Line="17" Column="15" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="225" Column="1" />
-      <File FileName="Library/Tests/Text/Text.wrl" Line="159" Column="32" />
-      <File FileName="Library/Tests/Grouping/Add&amp;RemoveChildren.wrl" Line="95" Column="19" />
+      <File FileName="experimental/main.cpp" Line="788" Column="26" />
+      <File FileName="libtitania-x3d/Titania/X3D/Fields/ArrayFields.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Fields/MFNode.h" Line="101" Column="52" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -31,10 +28,9 @@
               <Node name="Basic" expanded="True" />
               <Node name="EnvironmentalEffects" expanded="True" />
               <Node name="EnvironmentalSensors" expanded="True" />
+              <Node name="Geometry2D" expanded="True" />
               <Node name="Geometry3D" expanded="True" />
-              <Node name="Grouping" expanded="True">
-                <Node name="Add&amp;RemoveChildren.wrl" selected="True" />
-              </Node>
+              <Node name="Grouping" expanded="True" />
               <Node name="Interpolation" expanded="True" />
               <Node name="Layering" expanded="True" />
               <Node name="Navigation" expanded="True" />
@@ -59,9 +55,13 @@
           </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="Basic" expanded="True" />
+              <Node name="Basic" expanded="True">
+                <Node name="InputOutput" expanded="True" />
+              </Node>
+              <Node name="Chrono" expanded="True" />
               <Node name="Math" expanded="True">
                 <Node name="Geometry" expanded="True" />
+                <Node name="Numbers" expanded="True" />
               </Node>
               <Node name="OS" expanded="True" />
             </Node>
@@ -78,12 +78,16 @@
                 <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
+                  <Node name="Geometry2D" expanded="True" />
+                  <Node name="Geometry3D" expanded="True" />
                   <Node name="Properties" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="EnvironmentalSensor" expanded="True" />
+                  <Node name="Geometry2D" expanded="True" />
+                  <Node name="Geometry3D" expanded="True" />
                   <Node name="Grouping" expanded="True" />
                   <Node name="Layering" expanded="True" />
                   <Node name="Layout" expanded="True" />
@@ -100,7 +104,10 @@
                   <Node name="Time" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
-                <Node name="Fields" expanded="True" />
+                <Node name="Fields" expanded="True">
+                  <Node name="MFNode.h" selected="True" />
+                </Node>
+                <Node name="InputOutput" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="SpiderMonkey" expanded="True">
                     <Node name="Fields" expanded="True" />

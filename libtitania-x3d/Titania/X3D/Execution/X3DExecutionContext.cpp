@@ -616,7 +616,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 { }
 
-const MFNode <X3DBaseNode> &
+const MFNode &
 X3DExecutionContext::getRootNodes () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)

@@ -73,7 +73,7 @@ public:
 
 	static
 	Box3f
-	getBBox (const MFNode <X3DBoundedObject> &);
+	getBBox (const MFNode &);
 
 
 protected:

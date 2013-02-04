@@ -109,6 +109,9 @@ private:
 	set_activeLayer ();
 
 	void
+	remove_activeLayer ();
+
+	void
 	set_navigationInfo ();
 
 	virtual
@@ -121,7 +124,7 @@ private:
 
 	std::unique_ptr <X3DViewer> viewer;
 	PointingDevice              pointingDevice;
-	SFNode <X3DLayerNode>       activeLayer;
+	X3DLayerNode*               activeLayer;
 
 };
 

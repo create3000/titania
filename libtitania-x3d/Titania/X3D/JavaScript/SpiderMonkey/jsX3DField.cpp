@@ -56,7 +56,6 @@ namespace titania {
 namespace X3D {
 
 template JSBool jsX3DField::getType <X3DChildObject> (JSContext *, uintN, jsval*);
-template JSBool jsX3DField::getType <X3DArray>       (JSContext *, uintN, jsval*);
 
 } // X3D
 } // Titania

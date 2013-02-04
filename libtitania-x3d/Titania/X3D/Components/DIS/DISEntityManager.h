@@ -63,11 +63,11 @@ public:
 
 	SFString             address;
 	SFInt32              applicationID;
-	MFNode <X3DBaseNode> mapping;
+	MFNode mapping;
 	SFInt32              port;
 	SFInt32              siteID;
-	MFNode <X3DBaseNode> addedEntities;
-	MFNode <X3DBaseNode> removedEntities;
+	MFNode addedEntities;
+	MFNode removedEntities;
 
 	DISEntityManager (X3DExecutionContext* const);
 

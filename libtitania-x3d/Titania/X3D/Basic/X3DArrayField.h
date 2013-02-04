@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_BASIC_X3DARRAY_FIELD_H__
 #define __TITANIA_X3D_BASIC_X3DARRAY_FIELD_H__
 
-#include "../Basic/X3DArray.h"
 #include "../Basic/X3DField.h"
 #include "../Types/Array.h"
 
@@ -64,7 +63,7 @@ namespace X3D {
 
 template <class ValueType>
 class X3DArrayField :
-	public X3DArray, public X3DField <Array <ValueType>>
+	public X3DField <Array <ValueType>>
 {
 public:
 
@@ -76,6 +75,7 @@ public:
 	typedef typename value_type::reverse_iterator       reverse_iterator;
 	typedef typename value_type::const_reverse_iterator const_reverse_iterator;
 	typedef typename value_type::difference_type        difference_type;
+	typedef typename value_type::size_type              size_type;
 
 	using X3DField <value_type>::getValue;
 	using X3DField <value_type>::set;
@@ -83,13 +83,11 @@ public:
 
 	///  Default constructor.
 	X3DArrayField () :
-		X3DArray (),
 		X3DField <value_type> ()
 	{ }
 
 	///  Copy constructor.
 	X3DArrayField (const X3DArrayField & field) :
-		X3DArray (),
 		X3DField <value_type> (field)
 	{
 		addChildren (begin (), end ());
@@ -106,7 +104,6 @@ public:
 	///  Construct an X3DArrayField from basic type @a value.
 	explicit
 	X3DArrayField (const value_type & value) :
-		X3DArray (),
 		X3DField <value_type> (value)
 	{
 		addChildren (begin (), end ());
@@ -115,7 +112,6 @@ public:
 	///  Moves elements from basic type @a value.
 	explicit
 	X3DArrayField (value_type && value) :
-		X3DArray (),
 		X3DField <value_type> (value)
 	{
 		addChildren (begin (), end ());
@@ -123,7 +119,6 @@ public:
 
 	template <const size_t Size>
 	X3DArrayField (const ValueType (&value) [Size]) :
-		X3DArray (),
 		X3DField <value_type> (std::move (value_type (value, value + Size)))
 	{
 		addChildren (begin (), end ());
@@ -131,21 +126,18 @@ public:
 
 	template <const size_t Size>
 	X3DArrayField (const typename ValueType::value_type (&value) [Size]) :
-		X3DArray (),
 		X3DField <value_type> (std::move (value_type (value, value + Size)))
 	{
 		addChildren (begin (), end ());
 	}
 
 	X3DArrayField (std::initializer_list <ValueType> initializer_list) :
-		X3DArray (),
 		X3DField <value_type> (std::move (value_type (initializer_list .begin (), initializer_list .end ())))
 	{
 		addChildren (begin (), end ());
 	}
 
 	X3DArrayField (std::initializer_list <typename ValueType::value_type> initializer_list) :
-		X3DArray (),
 		X3DField <value_type> (std::move (value_type (initializer_list .begin (), initializer_list .end ())))
 	{
 		addChildren (begin (), end ());
@@ -153,7 +145,6 @@ public:
 
 	template <class InputIterator>
 	X3DArrayField (InputIterator first, InputIterator last) :
-		X3DArray (),
 		X3DField <value_type> (std::move (value_type (first, last)))
 	{
 		addChildren (begin (), end ());
@@ -167,18 +158,11 @@ public:
 	X3DArrayField*
 	clone (X3DExecutionContext* const) const { return clone (); }
 
-	virtual
 	void
-	set1Value (const size_type, const X3DFieldDefinition &);
+	set1Value (const size_type index, const typename ValueType::value_type &);
 
-	virtual
-	X3DFieldDefinition &
+	ValueType &
 	get1Value (const size_type);
-
-	virtual
-	const X3DFieldDefinition &
-	get1 (const size_type index) const
-	{ return getValue () [index]; }
 
 	///  Set @a value to this field without notfying parents.
 	virtual
@@ -250,11 +234,9 @@ public:
 
 	//size_type capacity () const { return getValue () .capacity (); };
 
-	virtual
 	void
 	clear ();
 
-	virtual
 	bool
 	empty () const { return getValue () .empty (); }
 
@@ -287,15 +269,12 @@ public:
 	template <class InputIterator>
 	void insert (iterator, InputIterator, InputIterator);
 
-	virtual
 	size_type
 	max_size () const { return getValue () .max_size (); }
 
-	virtual
 	void
 	pop_front ();
 
-	virtual
 	void
 	pop_back ();
 
@@ -339,14 +318,12 @@ public:
 
 	//	void reserve (size_type size) { get () .reserve (size); };
 
-	virtual
 	void
 	resize (size_type);
 
 	void
 	resize (size_type, const ValueType &);
 
-	virtual
 	size_type
 	size () const { return getValue () .size (); }
 
@@ -376,16 +353,16 @@ private:
 
 template <class ValueType>
 void
-X3DArrayField <ValueType>::set1Value (const size_type index, const X3DFieldDefinition & value)
+X3DArrayField <ValueType>::set1Value (const size_type index, const typename ValueType::value_type & value)
 {
 	if (index >= size ())
 		resize (index + 1);
 
-	get () [index] = static_cast <const ValueType &> (value);
+	get () [index] = value;
 }
 
 template <class ValueType>
-X3DFieldDefinition &
+ValueType &
 X3DArrayField <ValueType>::get1Value (const size_type index)
 {
 	if (index >= size ())

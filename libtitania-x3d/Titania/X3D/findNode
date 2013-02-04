@@ -21,9 +21,9 @@ Browser::setEditMode(X3DBaseNode* node, BasicNodeArray parents)
 			SFNode <X3DBaseNode>* sfnode = dynamic_cast<SFNode <X3DBaseNode>*>(*field);
 			setEditMode(sfnode->getValue(), parents);
 		}
-		else if (dynamic_cast<MFNode <X3DBaseNode>*>(*field))
+		else if (dynamic_cast<MFNode*>(*field))
 		{
-			MFNode <X3DBaseNode>* mfnode = dynamic_cast<MFNode <X3DBaseNode>*>(*field);
+			MFNode* mfnode = dynamic_cast<MFNode*>(*field);
 			MFNode::const_iterator sfnode;
 			for( sfnode = mfnode->begin(); sfnode != mfnode->end(); ++sfnode )
 			{

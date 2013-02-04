@@ -5,9 +5,9 @@ PROTO CoKeyframeAnimation [
   field        SFVec3f  bboxSize        -1 -1 -1
   field        SFFloat duration    10
   field        SFInt32 framesPerSecond 10
-  eventIn      MFNode <X3DBaseNode>   addChildren
-  eventIn      MFNode <X3DBaseNode>   removeChildren
-  exposedField MFNode <X3DBaseNode> children []
+  eventIn      MFNode   addChildren
+  eventIn      MFNode   removeChildren
+  exposedField MFNode children []
 ]
 {
 }

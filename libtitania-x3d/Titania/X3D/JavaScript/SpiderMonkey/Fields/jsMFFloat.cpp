@@ -112,9 +112,9 @@ jsX3DArrayField <jsSFFloat, MFFloat>::set1Value (JSContext* context, JSObject* o
 	if (not JS_ValueToNumber (context, *vp, &number))
 		return JS_FALSE;
 
-	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
+	MFFloat* field = (MFFloat*) JS_GetPrivate (context, obj);
 
-	field -> set1Value (index, SFFloat (number));
+	field -> set1Value (index, number);
 
 	*vp = JSVAL_VOID;
 

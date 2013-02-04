@@ -109,9 +109,6 @@ private:
 	void
 	_set_bind ();
 
-	void
-	moveToTop (MFNode <X3DBindableNode> & stack);
-
 	bool displayed;
 
 };

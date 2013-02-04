@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,20 +64,20 @@ public:
 
 	SFVec3f              center;
 	MFString             info;
-	MFNode <X3DBaseNode> joints;
+	MFNode joints;
 	SFString             name;
 	SFRotation           rotation;
 	SFVec3f              scale;
 	SFRotation           scaleOrientation;
-	MFNode <X3DBaseNode> segments;
-	MFNode <X3DBaseNode> sites;
-	MFNode <X3DBaseNode> skeleton;
-	MFNode <X3DBaseNode> skin;
+	MFNode segments;
+	MFNode sites;
+	MFNode skeleton;
+	MFNode skin;
 	SFNode <X3DBaseNode> skinCoord;
 	SFNode <X3DBaseNode> skinNormal;
 	SFVec3f              translation;
 	SFString             version;
-	MFNode <X3DBaseNode> viewpoints;
+	MFNode viewpoints;
 
 	HAnimHumanoid (X3DExecutionContext* const);
 

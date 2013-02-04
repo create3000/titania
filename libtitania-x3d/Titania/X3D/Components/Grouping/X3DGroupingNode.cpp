@@ -137,7 +137,7 @@ X3DGroupingNode::set_children ()
 }
 
 void
-X3DGroupingNode::add (const MFNode <X3DChildNode> & children)
+X3DGroupingNode::add (const MFNode & children)
 {
 	for (const auto & child : children)
 	{
@@ -162,8 +162,10 @@ X3DGroupingNode::add (const MFNode <X3DChildNode> & children)
 
 				else
 				{
-					if (child)
-						childNodes .emplace_back (*child);
+					auto childNode = dynamic_cast <X3DChildNode*> (child .getValue ());
+				
+					if (childNode)
+						childNodes .emplace_back (childNode);
 				}
 			}
 		}

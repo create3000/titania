@@ -242,9 +242,9 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 				return true;
 			}
 		}
-		else if (dynamic_cast <X3D::X3DArray*> (parent))
+		else if (dynamic_cast <X3D::MFNode*> (parent))
 		{
-			auto mfnode = dynamic_cast <X3D::X3DArray*> (parent);
+			auto mfnode = dynamic_cast <X3D::MFNode*> (parent);
 
 			if ((size_t) i < mfnode -> size ())
 			{
@@ -311,9 +311,9 @@ OutlineTreeModel::iter_n_children_vfunc (const iterator & iter) const
 			return node -> getFieldDefinitions () .size ();
 
 		}
-		else if (dynamic_cast <X3D::X3DArray*> (data -> object))
+		else if (dynamic_cast <X3D::MFNode*> (data -> object))
 		{
-			return dynamic_cast <X3D::X3DArray*> (data -> object) -> size ();
+			return dynamic_cast <X3D::MFNode*> (data -> object) -> size ();
 		}
 		else if (dynamic_cast <X3D::X3DField <X3D::X3DBaseNode*>*> (data -> object))
 		{
@@ -356,9 +356,9 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int n, iterator
 				return true;
 			}
 		}
-		else if (dynamic_cast <X3D::X3DArray*> (data -> object))
+		else if (dynamic_cast <X3D::MFNode*> (data -> object))
 		{
-			auto mfnode = dynamic_cast <X3D::X3DArray*> (data -> object);
+			auto mfnode = dynamic_cast <X3D::MFNode*> (data -> object);
 
 			if ((size_t) n < mfnode -> size ())
 			{
@@ -392,7 +392,7 @@ OutlineTreeModel::iter_nth_root_child_vfunc (int n, iterator & iter) const
 
 	iter = iterator ();   // invalid by default.
 
-	X3D::MFNode <X3D::X3DBaseNode>* parent = const_cast <X3D::MFNode <X3D::X3DBaseNode>*> (&executionContext -> getRootNodes ());
+	X3D::MFNode* parent = const_cast <X3D::MFNode*> (&executionContext -> getRootNodes ());
 
 	if ((size_t) n < parent -> size ())
 	{

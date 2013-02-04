@@ -127,7 +127,7 @@ Inline::set_url ()
 void
 Inline::set_scene ()
 {
-	const_cast <MFNode <X3DBaseNode> &> (scene -> getRootNodes ()) .addParent (this);
+	const_cast <MFNode &> (scene -> getRootNodes ()) .addParent (this);
 
 	if (getBrowser () -> getBrowserOptions () -> enableInlineViewpoints)
 	{
@@ -167,7 +167,7 @@ Inline::requestImmediateLoad ()
 
 	try
 	{
-		const_cast <MFNode <X3DBaseNode> &> (scene -> getRootNodes ()) .removeParent (this);
+		const_cast <MFNode &> (scene -> getRootNodes ()) .removeParent (this);
 	
 		scene = createX3DFromURL (url);
 
@@ -190,7 +190,7 @@ Inline::requestUnload ()
 	if (checkLoadState () == NOT_STARTED_STATE or checkLoadState () == FAILED_STATE)
 		return;
 		
-	const_cast <MFNode <X3DBaseNode> &> (scene -> getRootNodes ()) .removeParent (this);
+	const_cast <MFNode &> (scene -> getRootNodes ()) .removeParent (this);
 
 	scene = getBrowser () -> createScene ();
 		
@@ -214,7 +214,7 @@ Inline::display ()
 void
 Inline::dispose ()
 {
-	const_cast <MFNode <X3DBaseNode> &> (scene -> getRootNodes ()) .removeParent (this);
+	const_cast <MFNode &> (scene -> getRootNodes ()) .removeParent (this);
 	
 	scene .dispose ();
 

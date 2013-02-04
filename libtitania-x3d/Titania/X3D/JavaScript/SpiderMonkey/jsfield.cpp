@@ -389,8 +389,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFBool*) field = *(MFBool*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -407,8 +406,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFColor*) field = *(MFColor*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -425,8 +423,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFColorRGBA*) field = *(MFColorRGBA*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -443,8 +440,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFDouble*) field = *(MFDouble*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -461,8 +457,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFFloat*) field = *(MFFloat*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -479,8 +474,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFImage*) field = *(MFImage*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -497,9 +491,8 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
-			
+			*(MFInt32*) field = *(MFInt32*) JS_GetPrivate (context, value);
+
 			break;
 		}
 		case X3DConstants::MFMatrix3d:
@@ -515,8 +508,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFMatrix3d*) field = *(MFMatrix3d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -533,8 +525,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFMatrix3f*) field = *(MFMatrix3f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -551,8 +542,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFMatrix4d*) field = *(MFMatrix4d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -569,8 +559,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFMatrix4f*) field = *(MFMatrix4f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -587,8 +576,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFNode*) field = *(MFNode*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -605,8 +593,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFRotation*) field = *(MFRotation*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -623,8 +610,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFString*) field = *(MFString*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -641,8 +627,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFTime*) field = *(MFTime*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -659,8 +644,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFVec2d*) field = *(MFVec2d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -677,8 +661,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFVec2f*) field = *(MFVec2f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -695,8 +678,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFVec3d*) field = *(MFVec3d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -713,8 +695,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFVec3f*) field = *(MFVec3f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -731,8 +712,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFVec4d*) field = *(MFVec4d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -749,8 +729,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			field -> write (*dynamic_cast <X3DChildObject*> ((X3DArray*) JS_GetPrivate (context, value)));
-			field -> notifyParents ();
+			*(MFVec4f*) field = *(MFVec4f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -866,7 +845,7 @@ JS_NewFieldValue (JSContext* context, X3DFieldDefinition* field, jsval* vp, cons
 			return jsMFMatrix4f::create (context, (MFMatrix4f*) field, vp, seal);
 
 		case X3DConstants::MFNode:
-			return jsMFNode::create (context, dynamic_cast <X3DArray*> (field), vp, seal);
+			return jsMFNode::create (context, (MFNode*) field, vp, seal);
 
 		case X3DConstants::MFRotation:
 			return jsMFRotation::create (context, (MFRotation*) field, vp, seal);

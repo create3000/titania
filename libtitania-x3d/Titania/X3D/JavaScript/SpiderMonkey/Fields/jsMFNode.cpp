@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 template <>
-JSClass jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::static_class = {
+JSClass jsX3DArrayField <jsSFNode, MFNode>::static_class = {
 	"MFNode", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -64,15 +64,15 @@ JSClass jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::static_class = {
 
 template <>
 JSBool
-jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::construct (JSContext* context, uintN argc, jsval* vp)
+jsX3DArrayField <jsSFNode, MFNode>::construct (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		return create (context, new MFNode <X3DBaseNode> (), &JS_RVAL (context, vp));
+		return create (context, new MFNode (), &JS_RVAL (context, vp));
 	}
 	else
 	{
-		MFNode <X3DBaseNode>* field = new MFNode <X3DBaseNode> ();
+		MFNode* field = new MFNode ();
 
 		jsval* argv = JS_ARGV (context, vp);
 
@@ -100,7 +100,7 @@ jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::construct (JSContext* context,
 
 template <>
 JSBool
-jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DArrayField <jsSFNode, MFNode>::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
@@ -113,7 +113,7 @@ jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::get1Value (JSContext* context,
 		return JS_FALSE;
 	}
 
-	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
+	MFNode* field = (MFNode*) JS_GetPrivate (context, obj);
 
 	return jsSFNode::create (context, new SFNode <X3DBaseNode> (*(X3DField <X3DBaseNode*>*) & field -> get1Value (index)), vp);
 
@@ -122,7 +122,7 @@ jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::get1Value (JSContext* context,
 
 template <>
 JSBool
-jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsX3DArrayField <jsSFNode, MFNode>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
@@ -146,16 +146,16 @@ jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::set1Value (JSContext* context,
 		return JS_FALSE;
 	}
 
-	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
+	MFNode* field = (MFNode*) JS_GetPrivate (context, obj);
 
-	field -> set1Value (index, *(X3DField <X3DBaseNode*>*)JS_GetPrivate (context, value));
+	field -> set1Value (index, ((X3DField <X3DBaseNode*>*)JS_GetPrivate (context, value)) -> getValue ());
 
 	*vp = JSVAL_VOID;
 
 	return JS_TRUE;
 }
 
-template class jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>;
+template class jsX3DArrayField <jsSFNode, MFNode>;
 
 } // X3D
 } // titania

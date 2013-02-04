@@ -65,10 +65,10 @@ public:
 
 	///  @name Fields
 
-	SFBool                      displayed;
-	SFVec3f                     size;
-	SFVec3f                     center;
-	MFNode <X3DViewpointObject> children;
+	SFBool  displayed;
+	SFVec3f size;
+	SFVec3f center;
+	MFNode  children;
 	
 	SFBool isActive;
 	

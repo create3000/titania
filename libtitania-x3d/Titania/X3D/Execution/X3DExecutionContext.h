@@ -325,7 +325,7 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const MFNode <X3DBaseNode> &
+	const MFNode &
 	getRootNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -420,7 +420,7 @@ private:
 	ExternProtoArray  externProtos;
 	RouteArray        routes;
 
-	MFNode <X3DBaseNode> rootNodes;
+	MFNode rootNodes;
 
 };
 

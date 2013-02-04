@@ -66,7 +66,7 @@ X3DBoundedObject::initialize ()
 { }
 
 Box3f
-X3DBoundedObject::getBBox (const MFNode <X3DBoundedObject> & boundedObjects)
+X3DBoundedObject::getBBox (const MFNode & boundedObjects)
 {
 	Box3f bbox;
 
@@ -76,7 +76,7 @@ X3DBoundedObject::getBBox (const MFNode <X3DBoundedObject> & boundedObjects)
 
 	for ( ; first not_eq boundedObjects .end (); ++ first)
 	{
-		const auto & boundedObject = *first;
+		auto boundedObject = dynamic_cast <X3DBoundedObject*> (first -> getValue ());
 
 		if (boundedObject)
 		{
@@ -96,7 +96,7 @@ X3DBoundedObject::getBBox (const MFNode <X3DBoundedObject> & boundedObjects)
 	{
 		for (++ first; first not_eq boundedObjects .end (); ++ first)
 		{
-			const auto & boundedObject = *first;
+			auto boundedObject = dynamic_cast <X3DBoundedObject*> (first -> getValue ());
 
 			if (boundedObject)
 			{

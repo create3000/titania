@@ -112,16 +112,5 @@ X3DBindableNode::_set_bind ()
 	}
 }
 
-void
-X3DBindableNode::moveToTop (MFNode <X3DBindableNode> & stack)
-{
-	auto iter = std::find (stack .begin (), stack .end (), this);
-
-	if (iter not_eq stack .end ())
-		stack .erase (iter);
-
-	stack .push_back (this);
-}
-
 } // X3D
 } // titania

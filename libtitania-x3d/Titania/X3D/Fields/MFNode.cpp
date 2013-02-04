@@ -62,10 +62,74 @@ const X3DConstants::FieldType X3DField <Array <SFNode <X3DBaseNode>>>::type = X3
 template class Array <X3D::SFNode <X3DBaseNode>>;
 template class X3DField <Array <SFNode <X3DBaseNode>>>;
 template class X3DArrayField <SFNode <X3DBaseNode>>;
-template class MFNode <X3DBaseNode>;
+
+MFNode*
+MFNode::clone (X3DExecutionContext* const executionContext) const
+{
+	MFNode* field = new MFNode ();
+
+	for (const auto & node :* this)
+	{
+		field -> push_back (node .getValue ()
+		                    ? node .getValue () -> clone (executionContext)
+								  : NULL);
+	}
+
+	return field;
+}
+
+void
+MFNode::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{ }
+
+void
+MFNode::toStream (std::ostream & ostream) const
+{
+	if (size () > 1)
+	{
+		Generator::PushLevel ();
+
+		ostream
+			<< '['
+			<< Generator::TidyBreak
+			<< Generator::IncIndent;
+
+		for (const auto & value : basic::adapter (cbegin (), cend () - 1))
+		{
+			ostream
+				<< Generator::Indent
+				<< value
+				<< Generator::TidyBreak;
+		}
+
+		ostream
+			<< Generator::Indent
+			<< back ()
+			<< Generator::TidyBreak
+			<< Generator::DecIndent
+			<< Generator::Indent
+			<< ']';
+
+		Generator::PopLevel ();
+
+		return;
+	}
+
+	if (size () == 1)
+	{
+		Generator::PushLevel ();
+		ostream << front ();
+		Generator::PopLevel ();
+
+		return;
+	}
+
+	ostream << Generator::EmptyBrackets;
+}
 
 } // X3D
-
-template std::ostream & X3D::operator << (std::ostream &, const Array <X3D::SFNode <X3D::X3DBaseNode>> &);
-
 } // titania

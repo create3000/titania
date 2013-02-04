@@ -66,9 +66,9 @@ class X3DGroupingNode :
 {
 public:
 
-	MFNode <X3DChildNode> children; // Declare this before add and remove, to get a lower address.
-	MFNode <X3DChildNode> addChildren;
-	MFNode <X3DChildNode> removeChildren;
+	MFNode children; // Declare this before add and remove, to get a lower address.
+	MFNode addChildren;
+	MFNode removeChildren;
 
 	virtual
 	Box3f
@@ -111,7 +111,7 @@ private:
 	set_children ();
 
 	void
-	add (const MFNode <X3DChildNode> &);
+	add (const MFNode &);
 
 	std::deque <X3DPointingDeviceSensorNode*> pointingDeviceSensors;
 	std::deque <X3DLightNode*>                lights;

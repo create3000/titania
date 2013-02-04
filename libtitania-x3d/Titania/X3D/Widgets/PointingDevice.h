@@ -82,9 +82,9 @@ private:
 	bool
 	pick (const double, const double);
 
-	size_t               button;
-	bool                 isOver;
-	MFNode <X3DBaseNode> hitNodes;
+	size_t button;
+	bool   isOver;
+	MFNode hitNodes;
 
 };
 

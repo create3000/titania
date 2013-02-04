@@ -62,7 +62,8 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	activeLayer (),                                                    // SFInt32 [in,out] activeLayer  0          (-∞,∞)
 	      order ({ 0 }),                                               // MFInt32 [in,out] order        [0]        (0,∞)
 	     layers (),                                                    // MFNode  [in,out] layers       [ ]        [X3DLayerNode]
-	   children ({ new Layer (executionContext) })                     
+	   children ({ new Layer (executionContext) }),                    
+	     layer0 (children [0])
 {
 	setComponent ("Layering");
 	setTypeName ("LayerSet");
@@ -72,7 +73,7 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "order",       order);
 	addField (inputOutput, "layers",      layers);
 
-	setChildren (children);
+	setChildren (layer0);
 }
 
 X3DBaseNode*
@@ -102,7 +103,7 @@ LayerSet::getBBox ()
 	return getActiveLayer () -> getBBox ();                     // XXX get bbox from all layers;
 }
 
-const SFNode <X3DLayerNode> &
+X3DLayerNode*
 LayerSet::getActiveLayer () const
 {
 	if (activeLayer >= 0 and activeLayer < (int32_t) children .size ())
@@ -111,7 +112,7 @@ LayerSet::getActiveLayer () const
 	return children [0];
 }
 
-const MFNode <X3DLayerNode> &
+const std::deque <X3DLayerNode*> &
 LayerSet::getLayers () const
 {
 	return children;
@@ -128,8 +129,10 @@ LayerSet::set_layers ()
 
 	for (const auto & layer : layers)
 	{
-		if (layer)
-			children .emplace_back (layer);
+		auto child = dynamic_cast <X3DLayerNode*> (layer .getValue ());
+		
+		if (child)
+			children .emplace_back (child);
 	}
 }
 
@@ -140,7 +143,7 @@ LayerSet::pick ()
 	{
 		if (index >= 0  and index < (int32_t) children .size ())
 		{
-			X3DLayerNode* currentLayer = *children .at (index);
+			X3DLayerNode* currentLayer = children [index];
 
 			getBrowser () -> getLayers () .push (currentLayer);
 
@@ -158,7 +161,7 @@ LayerSet::display ()
 	{
 		if (index >= 0  and index < (int32_t) children .size ())
 		{
-			X3DLayerNode* currentLayer = *children [index];
+			X3DLayerNode* currentLayer = children [index];
 
 			getBrowser () -> getLayers () .push (currentLayer);
 
@@ -172,7 +175,9 @@ LayerSet::display ()
 void
 LayerSet::dispose ()
 {
-	children .dispose ();
+	children .clear ();
+
+	layer0 .dispose ();
 
 	X3DNode::dispose ();
 }

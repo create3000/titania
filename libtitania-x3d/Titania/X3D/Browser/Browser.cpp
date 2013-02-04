@@ -88,8 +88,6 @@ Browser::Browser () :
 	// install our handler
 	std::signal (SIGSEGV, signal_handler);
 
-	addField (outputOnly, "activeLayer", activeLayer);
-
 	add_events (Gdk::BUTTON_PRESS_MASK | Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK | Gdk::SCROLL_MASK);
 
 	initialized .addInterest (this, &Browser::set_initialized);
@@ -135,16 +133,28 @@ Browser::set_shutdown ()
 	getExecutionContext () -> getLayerSet () -> activeLayer .removeInterest (this, &Browser::set_activeLayer);
 
 	if (activeLayer)
+	{
+		activeLayer -> shutdown .removeInterest (this, &Browser::remove_activeLayer);
 		activeLayer -> getNavigationInfoStack () .removeInterest (this, &Browser::set_navigationInfo);
+	}
 }
 
 void
 Browser::set_activeLayer ()
 {
 	activeLayer = getExecutionContext () -> getActiveLayer ();
+	activeLayer -> shutdown .addInterest (this, &Browser::remove_activeLayer);
 	activeLayer -> getNavigationInfoStack () .addInterest (this, &Browser::set_navigationInfo);
 
 	set_navigationInfo ();
+}
+
+void
+Browser::remove_activeLayer ()
+{
+	__LOG__ << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
+
+	activeLayer = NULL;
 }
 
 void
@@ -192,7 +202,7 @@ Browser::dispose ()
 {
 	viewer .reset ();
 	pointingDevice .dispose ();
-	activeLayer    .dispose ();
+	activeLayer = NULL;
 
 	opengl::Surface::dispose ();
 	X3DBrowser::dispose ();

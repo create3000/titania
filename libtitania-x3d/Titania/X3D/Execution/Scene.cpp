@@ -128,7 +128,7 @@ Scene::getLayerSet () const
 	return layerSet;
 }
 
-const SFNode <X3DLayerNode> &
+X3DLayerNode*
 Scene::getActiveLayer () const
 {
 	return layerSet -> getActiveLayer ();

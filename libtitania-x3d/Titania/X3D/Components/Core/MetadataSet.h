@@ -62,7 +62,7 @@ class MetadataSet :
 {
 public:
 
-	MFNode <X3DBaseNode> value;
+	MFNode value;
 
 	MetadataSet (X3DExecutionContext* const);
 

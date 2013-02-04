@@ -108,7 +108,7 @@ public:
 	const SFNode <LayerSet> &
 	getLayerSet () const;
 
-	const SFNode <X3DLayerNode> &
+	X3DLayerNode*
 	getActiveLayer () const;
 
 	///  @name Display

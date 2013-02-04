@@ -112,9 +112,9 @@ jsX3DArrayField <jsSFInt32, MFInt32>::set1Value (JSContext* context, JSObject* o
 	if (not JS_ValueToECMAInt32 (context, *vp, &number))
 		return JS_FALSE;
 
-	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
+	MFInt32* field = (MFInt32*) JS_GetPrivate (context, obj);
 
-	field -> set1Value (index, SFInt32 (number));
+	field -> set1Value (index, number);
 
 	*vp = JSVAL_VOID;
 

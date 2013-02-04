@@ -102,9 +102,9 @@ jsX3DArrayField <jsSFString, MFString>::set1Value (JSContext* context, JSObject*
 		return JS_FALSE;
 	}
 
-	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
+	MFString* field = (MFString*) JS_GetPrivate (context, obj);
 
-	field -> set1Value (index, SFString (JS_GetString (context, *vp)));
+	field -> set1Value (index, JS_GetString (context, *vp));
 
 	*vp = JSVAL_VOID;
 

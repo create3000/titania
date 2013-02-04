@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,19 +60,19 @@ namespace X3D {
 
 template <>
 JSBool
-jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::construct (JSContext *, uintN, jsval*);
+jsX3DArrayField <jsSFNode, MFNode>::construct (JSContext *, uintN, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::get1Value (JSContext *, JSObject *, jsid, jsval*);
+jsX3DArrayField <jsSFNode, MFNode>::get1Value (JSContext *, JSObject *, jsid, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+jsX3DArrayField <jsSFNode, MFNode>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
-extern template class jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>>;
+extern template class jsX3DArrayField <jsSFNode, MFNode>;
 
-typedef jsX3DArrayField <jsSFNode, MFNode <X3DBaseNode>> jsMFNode;
+typedef jsX3DArrayField <jsSFNode, MFNode> jsMFNode;
 
 } // X3D
 } // titania

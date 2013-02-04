@@ -73,7 +73,7 @@ public:
 	SFNode <X3DMaterialNode>         material;
 	SFNode <X3DTextureNode>          texture;
 	SFNode <X3DTextureTransformNode> textureTransform;
-	MFNode <X3DShaderNode>           shaders;
+	MFNode shaders;
 
 	Appearance (X3DExecutionContext* const);
 

@@ -73,7 +73,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext*, X3DArray*, jsval*, const bool = false);
+	create (JSContext*, FieldType*, jsval*, const bool = false);
 
 	static
 	JSClass*
@@ -96,8 +96,6 @@ private:
 	static JSBool length (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool length (JSContext *, JSObject *, jsid, JSBool, jsval*);
 	
-	static void finalize (JSContext*, JSObject*);
-
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
@@ -122,11 +120,11 @@ JSPropertySpec jsX3DArrayField <Type, FieldType>::properties [ ] = {
 
 template <class Type, class FieldType>
 JSFunctionSpec jsX3DArrayField <Type, FieldType>::functions [ ] = {
-	{ "getName",     getName <X3DArray>,     0, 0 },
-	{ "getTypeName", getTypeName <X3DArray>, 0, 0 },
-	{ "getType",     getType <X3DArray>,     0, 0 },
+	{ "getName",     getName <X3DChildObject>,     0, 0 },
+	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
+	{ "getType",     getType <X3DChildObject>,     0, 0 },
 
-	{ "toString",    toString <X3DArray>,    0, 0 },
+	{ "toString",    toString <X3DChildObject>,    0, 0 },
 
 	{ 0 }
 
@@ -142,7 +140,7 @@ jsX3DArrayField <Type, FieldType>::init (JSContext* context, JSObject* global)
 
 template <class Type, class FieldType>
 JSBool
-jsX3DArrayField <Type, FieldType>::create (JSContext* context, X3DArray* field, jsval* vp, const bool seal)
+jsX3DArrayField <Type, FieldType>::create (JSContext* context, FieldType* field, jsval* vp, const bool seal)
 {
 	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 
@@ -203,7 +201,7 @@ template <class Type, class FieldType>
 JSBool
 jsX3DArrayField <Type, FieldType>::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
-	X3DArray* field = static_cast <X3DArray*> (JS_GetPrivate (context, obj));
+	FieldType* field = static_cast <FieldType*> (JS_GetPrivate (context, obj));
 
 	if (not field)
 	{
@@ -267,9 +265,9 @@ jsX3DArrayField <Type, FieldType>::get1Value (JSContext* context, JSObject* obj,
 		return JS_FALSE;
 	}
 
-	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
+	FieldType* field = (FieldType*) JS_GetPrivate (context, obj);
 
-	return value_type::create (context, (field_value_type*) &field -> get1Value (index), vp);
+	return value_type::create (context, &field -> get1Value (index), vp);
 }
 
 template <class Type, class FieldType>
@@ -301,7 +299,7 @@ jsX3DArrayField <Type, FieldType>::set1Value (JSContext* context, JSObject* obj,
 		return JS_FALSE;
 	}
 
-	X3DArray* field = (X3DArray*) JS_GetPrivate (context, obj);
+	FieldType* field = (FieldType*) JS_GetPrivate (context, obj);
 
 	field -> set1Value (index, *(field_value_type*) JS_GetPrivate (context, value));
 
@@ -314,7 +312,7 @@ template <class Type, class FieldType>
 JSBool
 jsX3DArrayField <Type, FieldType>::length (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DArray* field = static_cast <X3DArray*> (JS_GetPrivate (context, obj));
+	FieldType* field = static_cast <FieldType*> (JS_GetPrivate (context, obj));
 
 	return JS_NewNumberValue (context, field -> size (), vp);
 }
@@ -323,7 +321,7 @@ template <class Type, class FieldType>
 JSBool
 jsX3DArrayField <Type, FieldType>::length (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	X3DArray* field = static_cast <X3DArray*> (JS_GetPrivate (context, obj));
+	FieldType* field = static_cast <FieldType*> (JS_GetPrivate (context, obj));
 
 	uint32 value;
 
@@ -333,15 +331,6 @@ jsX3DArrayField <Type, FieldType>::length (JSContext* context, JSObject* obj, js
 	field -> resize (value);
 
 	return JS_TRUE;
-}
-
-template <class Type, class FieldType>
-void
-jsX3DArrayField <Type, FieldType>::finalize (JSContext* context, JSObject* obj)
-{
-	X3DArray* field = static_cast <X3DArray*> (JS_GetPrivate (context, obj));
-
-	dispose (dynamic_cast <X3DChildObject*> (field));
 }
 
 } // X3D

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -2672,7 +2672,7 @@ Parser::mfnodeValue (X3DFieldDefinition* const _fieldDefinition)
 {
 	//__LOG__ << std::endl;
 
-	MFNode <X3DBaseNode> field;
+	MFNode field;
 	SFNode <X3DBaseNode> value;
 
 	if (nodeStatement (value))
@@ -2707,7 +2707,7 @@ Parser::mfnodeValue (X3DFieldDefinition* const _fieldDefinition)
 }
 
 void
-Parser::nodeStatements (MFNode <X3DBaseNode>* _field)
+Parser::nodeStatements (MFNode* _field)
 {
 	//__LOG__ << std::endl;
 

@@ -62,9 +62,9 @@ class LayerSet :
 {
 public:
 
-	SFInt32               activeLayer;
-	MFInt32               order;
-	MFNode <X3DLayerNode> layers;
+	SFInt32 activeLayer;
+	MFInt32 order;
+	MFNode  layers;
 
 	LayerSet (X3DExecutionContext* const);
 
@@ -75,10 +75,10 @@ public:
 	Box3f
 	getBBox ();
 
-	const SFNode <X3DLayerNode> &
+	X3DLayerNode*
 	getActiveLayer () const;
 
-	const MFNode <X3DLayerNode> &
+	const std::deque <X3DLayerNode*> &
 	getLayers () const;
 
 	virtual
@@ -106,7 +106,8 @@ private:
 	void
 	set_layers ();
 
-	MFNode <X3DLayerNode> children;
+	std::deque <X3DLayerNode*> children;
+	SFNode <X3DBaseNode>       layer0;
 
 };
 

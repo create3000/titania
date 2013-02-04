@@ -83,7 +83,6 @@ jsX3DField::getType (JSContext* context, uintN argc, jsval* vp)
 }
 
 extern template JSBool jsX3DField::getType <X3DChildObject> (JSContext *, uintN, jsval*);
-extern template JSBool jsX3DField::getType <X3DArray>       (JSContext *, uintN, jsval*);
 
 } // X3D
 } // titania

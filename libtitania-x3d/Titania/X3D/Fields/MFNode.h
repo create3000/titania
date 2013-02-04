@@ -64,31 +64,15 @@ extern template class Array <SFNode <X3DBaseNode>>;
 extern template class X3DField <Array <SFNode <X3DBaseNode>>>;
 extern template class X3DArrayField <SFNode <X3DBaseNode>>;
 
-template <class Type>
 class MFNode :
-	public X3DArrayField <SFNode <Type>>
+	public X3DArrayField <SFNode <X3DBaseNode>>
 {
 private:
 
-	typedef X3DArrayField <SFNode <Type>> ArrayField;
+	typedef X3DArrayField <SFNode <X3DBaseNode>> ArrayField;
 
 
 public:
-
-	typedef typename ArrayField::size_type size_type;
-
-	using ArrayField::operator =;
-	using ArrayField::set1Value;
-	using ArrayField::set;
-	using ArrayField::assign;
-	using ArrayField::front;
-	using ArrayField::back;
-	using ArrayField::begin;
-	using ArrayField::end;
-	using ArrayField::cbegin;
-	using ArrayField::cend;
-	using ArrayField::size;
-	using ArrayField::resize;
 
 	MFNode () :
 		ArrayField ()
@@ -98,18 +82,13 @@ public:
 		ArrayField (field)
 	{ }
 
-	template <class Up>
-	MFNode (const MFNode <Up> & field) :
-		ArrayField (field .begin (), field .end ())
-	{ }
-
 	explicit
-	MFNode (std::initializer_list <SFNode <Type>> initializer_list) :
+	MFNode (std::initializer_list <SFNode <X3DBaseNode>> initializer_list) :
 		ArrayField (initializer_list)
 	{ }
 
 	explicit
-	MFNode (std::initializer_list <typename SFNode <Type>::value_type> initializer_list) :
+	MFNode (std::initializer_list <typename SFNode <X3DBaseNode>::value_type> initializer_list) :
 		ArrayField (initializer_list)
 	{ }
 
@@ -125,22 +104,6 @@ public:
 	virtual
 	MFNode*
 	clone (X3DExecutionContext* const executionContext) const;
-
-	template <class Up>
-	MFNode &
-	operator = (const MFNode <Up> & field)
-	{
-		assign (field .begin (), field .end ());
-		return *this;
-	}
-
-	virtual
-	void
-	set1Field (const size_type, const X3DFieldDefinition &);
-
-	virtual
-	void
-	write (const X3DObject &);
 
 	virtual
 	X3DConstants::FieldType
@@ -158,122 +121,9 @@ public:
 	void
 	toStream (std::ostream &) const;
 
-
-private:
-
-	using ArrayField::get;
-
 };
 
-template <class Type>
-MFNode <Type>*
-MFNode <Type>::clone (X3DExecutionContext* const executionContext) const
-{
-	MFNode* field = new MFNode ();
-
-	for (const auto & node :* this)
-	{
-		field -> push_back (node .getValue ()
-		                    ? node .getValue () -> clone (executionContext)
-								  : NULL);
-	}
-
-	return field;
-}
-
-template <class Type>
-void
-MFNode <Type>::set1Field (const size_type index, const X3DFieldDefinition & value)
-{
-	if (index >= size ())
-		resize (index + 1);
-
-	get () [index] = static_cast <const X3DField <X3DBaseNode*> &> (value);
-}
-
-template <class Type>
-void
-MFNode <Type>::write (const X3DObject & field)
-{
-	//assert (getType () == field .getType ());
-
-	//	const MFNode* same_type = dynamic_cast <const MFNode*> (&field);
-	//
-	//	if (same_type)
-	//		set (same_type -> getValue ());
-	//
-	//	else
-	//	{
-	const X3DArray* array = dynamic_cast <const X3DArray*> (&field);
-
-	get () .resize (array -> size ());
-
-	for (size_type i = 0; i < array -> size (); ++ i)
-		get () [i] .set (static_cast <const X3DField <X3DBaseNode*> &> (array -> get1 (i)));
-
-	//	}
-}
-
-template <class Type>
-void
-MFNode <Type>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{ }
-
-template <class Type>
-void
-MFNode <Type>::toStream (std::ostream & ostream) const
-{
-	if (size () > 1)
-	{
-		Generator::PushLevel ();
-
-		ostream
-			<< '['
-			<< Generator::TidyBreak
-			<< Generator::IncIndent;
-
-		for (const auto & value : basic::adapter (cbegin (), cend () - 1))
-		{
-			ostream
-				<< Generator::Indent
-				<< value
-				<< Generator::TidyBreak;
-		}
-
-		ostream
-			<< Generator::Indent
-			<< back ()
-			<< Generator::TidyBreak
-			<< Generator::DecIndent
-			<< Generator::Indent
-			<< ']';
-
-		Generator::PopLevel ();
-
-		return;
-	}
-
-	if (size () == 1)
-	{
-		Generator::PushLevel ();
-		ostream << front ();
-		Generator::PopLevel ();
-
-		return;
-	}
-
-	ostream << Generator::EmptyBrackets;
-}
-
-extern template class MFNode <X3DBaseNode>;
-
 } // X3D
-
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <SFNode <X3D::X3DBaseNode>> &);
 
 } // titania
 

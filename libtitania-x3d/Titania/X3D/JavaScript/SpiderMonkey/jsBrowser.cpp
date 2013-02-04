@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -387,13 +387,13 @@ jsBrowser::createVrmlFromString (JSContext* context, uintN argc, jsval* vp)
 		{
 			SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, vrmlSyntax));
 
-			return jsMFNode::create (context, new MFNode <X3DBaseNode> (scene -> getRootNodes ()), &JS_RVAL (context, vp));
+			return jsMFNode::create (context, new MFNode (scene -> getRootNodes ()), &JS_RVAL (context, vp));
 		}
 		catch (const X3DError & error)
 		{
 			JS_ReportError (context, error .what ());
 
-			return jsMFNode::create (context, new MFNode <X3DBaseNode> (), &JS_RVAL (context, vp));
+			return jsMFNode::create (context, new MFNode (), &JS_RVAL (context, vp));
 		}
 	}
 

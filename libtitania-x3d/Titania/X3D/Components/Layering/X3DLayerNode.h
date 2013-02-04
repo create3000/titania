@@ -81,9 +81,9 @@ public:
 
 	SFBool                   isPickable;
 	SFNode <X3DViewportNode> viewport;
-	MFNode <X3DChildNode>    addChildren;
-	MFNode <X3DChildNode>    removeChildren;
-	MFNode <X3DChildNode>    children;
+	MFNode    addChildren;
+	MFNode    removeChildren;
+	MFNode    children;
 
 	///  @name Bindable node stack handling
 
