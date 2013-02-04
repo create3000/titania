@@ -50,6 +50,8 @@
 
 #include "X3DBoundedObject.h"
 
+#include "../../Bits/Cast.h"
+
 namespace titania {
 namespace X3D {
 
@@ -76,7 +78,7 @@ X3DBoundedObject::getBBox (const MFNode & boundedObjects)
 
 	for ( ; first not_eq boundedObjects .end (); ++ first)
 	{
-		auto boundedObject = dynamic_cast <X3DBoundedObject*> (first -> getValue ());
+		auto boundedObject = x3d_cast <X3DBoundedObject*> (first -> getValue ());
 
 		if (boundedObject)
 		{
@@ -96,7 +98,7 @@ X3DBoundedObject::getBBox (const MFNode & boundedObjects)
 	{
 		for (++ first; first not_eq boundedObjects .end (); ++ first)
 		{
-			auto boundedObject = dynamic_cast <X3DBoundedObject*> (first -> getValue ());
+			auto boundedObject = x3d_cast <X3DBoundedObject*> (first -> getValue ());
 
 			if (boundedObject)
 			{

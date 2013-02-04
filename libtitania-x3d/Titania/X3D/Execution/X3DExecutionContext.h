@@ -82,19 +82,19 @@ public:
 
 	void
 	assign (const X3DExecutionContext* const);
-	
+
 	///  @name Tests
-	
+
 	virtual
 	bool
 	isScene () const
 	{ return false; }
-	
+
 	virtual
 	bool
 	isProto () const
 	{ return false; }
-	
+
 	///  @name Element access
 
 	virtual

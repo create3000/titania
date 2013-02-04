@@ -95,7 +95,7 @@ private:
 
 	static JSBool length (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool length (JSContext *, JSObject *, jsid, JSBool, jsval*);
-	
+
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];

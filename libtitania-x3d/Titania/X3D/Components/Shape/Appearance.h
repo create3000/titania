@@ -68,12 +68,12 @@ class Appearance :
 {
 public:
 
-	SFNode <FillProperties>          lineProperties;
-	SFNode <LineProperties>          fillProperties;
-	SFNode <X3DMaterialNode>         material;
-	SFNode <X3DTextureNode>          texture;
-	SFNode <X3DTextureTransformNode> textureTransform;
-	MFNode shaders;
+	SFNode <X3DBaseNode> lineProperties;
+	SFNode <X3DBaseNode> fillProperties;
+	SFNode <X3DBaseNode> material;
+	SFNode <X3DBaseNode> texture;
+	SFNode <X3DBaseNode> textureTransform;
+	MFNode               shaders;
 
 	Appearance (X3DExecutionContext* const);
 
@@ -94,6 +94,31 @@ private:
 	virtual
 	void
 	initialize ();
+
+	void
+	set_lineProperties ();
+
+	void
+	set_fillProperties ();
+
+	void
+	set_material ();
+
+	void
+	set_texture ();
+
+	void
+	set_textureTransform ();
+
+	void
+	set_shaders ();
+
+	LineProperties*             _lineProperties;
+	FillProperties*             _fillProperties;
+	X3DMaterialNode*            _material;
+	X3DTextureNode*             _texture;
+	X3DTextureTransformNode*    _textureTransform;
+	std::deque <X3DShaderNode*> _shaders;
 
 };
 

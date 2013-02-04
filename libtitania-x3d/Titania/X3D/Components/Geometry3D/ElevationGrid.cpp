@@ -50,6 +50,7 @@
 
 #include "ElevationGrid.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/Color.h"
 #include "../Rendering/ColorRGBA.h"
@@ -260,8 +261,8 @@ ElevationGrid::build ()
 
 	std::vector <Vector2f> _texCoord;
 
-	SFNode <TextureCoordinate>          _textureCoordinate          = texCoord;
-	SFNode <TextureCoordinateGenerator> _textureCoordinateGenerator = texCoord;
+	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord .getValue ());
+	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord .getValue ());
 
 	if (_textureCoordinate)
 	{
@@ -278,7 +279,7 @@ ElevationGrid::build ()
 		getTexCoord () .reserve (coordIndex .size ());
 	}
 
-	SFNode <Color> _color = color;
+	auto _color = x3d_cast <Color*> (color .getValue ());
 
 	if (_color)
 	{
@@ -296,7 +297,7 @@ ElevationGrid::build ()
 		getColors () .reserve (coordIndex .size ());
 	}
 
-	SFNode <ColorRGBA> _colorRGBA = color;
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
 
 	if (_colorRGBA)
 	{
@@ -315,7 +316,7 @@ ElevationGrid::build ()
 	}
 
 	std::vector <Vector3f> normals;
-	SFNode <Normal>        _normal = normal;
+	auto                   _normal = x3d_cast <Normal*> (normal .getValue ());
 
 	if (_normal)
 	{
@@ -399,7 +400,7 @@ ElevationGrid::build ()
 		}
 	}
 
-	setTextureCoordinateGenerator (*_textureCoordinateGenerator);
+	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setVertexMode (GL_TRIANGLES);
 }
 

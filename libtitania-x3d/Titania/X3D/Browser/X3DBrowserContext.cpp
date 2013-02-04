@@ -153,7 +153,7 @@ X3DBrowserContext::initialize ()
 		//	glEnable (GL_LINE_SMOOTH);
 		//	glEnable (GL_POLYGON_SMOOTH);
 	}
-	
+
 	initialized .addInterest (this, &X3DBrowserContext::set_initialized);
 }
 
@@ -305,7 +305,7 @@ X3DBrowserContext::motionNotifyEvent ()
 	// Set isOver to FALSE for appropriate nodes
 
 	std::deque <X3DBaseNode*> difference;
-	
+
 	if (getHits () .size ())
 	{
 		std::set_difference (overSensors .begin (), overSensors .end (),
@@ -314,15 +314,15 @@ X3DBrowserContext::motionNotifyEvent ()
 	}
 	else
 		difference = overSensors;
-	                     
+
 	for (const auto & node : difference)
 	{
 		X3DPointingDeviceSensorNode* pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 		if (pointingDeviceSensorNode)
 			pointingDeviceSensorNode -> over (false);
-	}   
-	            
+	}
+
 	// Set isOver to TRUE for appropriate nodes
 
 	if (getHits () .size ())
@@ -386,6 +386,7 @@ X3DBrowserContext::touchEvent ()
 			touchSensorNode -> update ();
 	}
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void

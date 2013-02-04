@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -485,7 +485,7 @@ Parser::importStatement ()
 
 		if (inlineNodeNameId (_inlineNodeNameId))
 		{
-			const SFNode <Inline> _inlineNode = getExecutionContext () -> getNamedNode (_inlineNodeNameId);
+			const SFNode <Inline> _inlineNode = dynamic_cast <Inline*> (getExecutionContext () -> getNamedNode (_inlineNodeNameId) .getValue ());
 
 			if (_inlineNode)
 			{
@@ -1271,7 +1271,7 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 		}
 		catch (const Error <INVALID_NAME> &)
 		{
-			_newNode = getExecutionContext () -> createProtoInstance (_nodeTypeId, false);
+			_newNode = getExecutionContext () -> createProtoInstance (_nodeTypeId, false) .getValue ();
 		}
 
 		X3DBaseNode* _basicNode = _newNode .getValue ();
@@ -2673,6 +2673,7 @@ Parser::mfnodeValue (X3DFieldDefinition* const _fieldDefinition)
 	//__LOG__ << std::endl;
 
 	MFNode field;
+
 	SFNode <X3DBaseNode> value;
 
 	if (nodeStatement (value))

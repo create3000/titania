@@ -50,6 +50,8 @@
 
 #include "ProtoArray.h"
 
+#include "../Prototype/Proto.h"
+
 namespace titania {
 namespace X3D {
 

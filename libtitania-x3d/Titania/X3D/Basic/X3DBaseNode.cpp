@@ -124,7 +124,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	        fieldAliases (),                 
 	numUserDefinedFields (0),                
 	              events (),                 
-	           interests ()          
+	           interests ()                  
 {
 	assert (executionContext);
 
@@ -227,7 +227,7 @@ size_t
 X3DBaseNode::getNumClones () const
 {
 	size_t numClones = 0;
-	
+
 	for (const auto & parentField : getParents ())
 	{
 		if (dynamic_cast <X3DFieldDefinition*> (parentField))
@@ -329,7 +329,7 @@ X3DBaseNode::addField (const AccessType accessType, const basic::id & name, X3DF
 	if (fields .find (name) not_eq fields .end ())
 	{
 		removeField (name);
-		
+
 		std::clog << "Warning: In function " << std::string (__func__) << " 'field " << getTypeName () << "." << name << "' already exists in field set'." << std::endl;
 	}
 
@@ -349,13 +349,13 @@ X3DBaseNode::removeField (const basic::id & name)
 	if (field not_eq fields .end ())
 	{
 		auto iter = std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field -> second);
-		
+
 		if (fieldDefinitions .end () - iter <= FieldDefinitionArray::difference_type (numUserDefinedFields))
 		{
 			delete *iter;
 			-- numUserDefinedFields;
 		}
-		
+
 		fieldDefinitions .erase (iter);
 		fields .erase (field);
 	}
@@ -507,7 +507,7 @@ X3DBaseNode::registerInterest (X3DChildObject* object)
 
 	if (interests .size () == 1)
 		getBrowser () -> getRouter () .registerInterest (this);
-	
+
 	if (object -> isInput ())
 		getBrowser () -> getRouter () .registerProcessed (this);
 }
@@ -516,6 +516,7 @@ void
 X3DBaseNode::processEvents (ChildObjectSet & sourceFields)
 {
 	ChildObjectSet eventsToProcess;
+
 	eventsToProcess .swap (events);
 
 	for (const auto & field : eventsToProcess)
@@ -526,6 +527,7 @@ void
 X3DBaseNode::processInterests ()
 {
 	ChildObjectSet interestsToProcess;
+
 	interestsToProcess .swap (interests);
 
 	for (const auto & field : interestsToProcess)

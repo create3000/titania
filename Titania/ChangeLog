@@ -1,5 +1,11 @@
 2013-02-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserWindow.cpp:
+	* ViewpointEditor.cpp:
+	* MotionBlurEditor.cpp: 
+
+2013-02-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineTreeModel.cpp: 
 
 2013-01-21  Holger Seelig  <holger.seelig@yahoo.de>

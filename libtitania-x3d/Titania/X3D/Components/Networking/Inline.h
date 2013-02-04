@@ -105,13 +105,13 @@ private:
 
 	void
 	set_url ();
-	
+
 	void
 	set_scene ();
 
 	void
 	requestLoad ();
-	
+
 	void
 	requestUnload ();
 

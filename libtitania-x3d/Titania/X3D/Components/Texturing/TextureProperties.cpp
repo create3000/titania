@@ -50,6 +50,7 @@
 
 #include "TextureProperties.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -161,7 +162,7 @@ TextureProperties::getMinificationFilter () const
 		return GL_NEAREST_MIPMAP_NEAREST;
 
 	if (minificationFilter == "DEFAULT")
-		return getBrowser () -> getBrowserOptions () -> textureProperties -> getMinificationFilter ();
+		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties .getValue ()) -> getMinificationFilter ();
 
 	if (minificationFilter == "FASTEST")
 		return GL_NEAREST;
@@ -182,7 +183,7 @@ TextureProperties::getMagnificationFilter () const
 		return GL_NEAREST;
 
 	if (magnificationFilter == "DEFAULT")
-		return getBrowser () -> getBrowserOptions () -> textureProperties -> getMagnificationFilter ();
+		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties .getValue ()) -> getMagnificationFilter ();
 
 	if (magnificationFilter == "FASTEST")
 		return GL_NEAREST;
@@ -204,7 +205,7 @@ TextureProperties::getTextureCompression () const
 		return CompressionMode::HIGH;
 
 	if (textureCompression == "DEFAULT")
-		return getBrowser () -> getBrowserOptions () -> textureProperties -> getTextureCompression ();
+		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties .getValue ()) -> getTextureCompression ();
 
 	if (textureCompression == "FASTEST")
 		return CompressionMode::FASTEST;

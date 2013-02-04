@@ -63,7 +63,7 @@ X3DFogObject::X3DFogObject () :
 	   transparency (0)         // SFFloat  [in,out] transparency     0               [0,1]
 {
 	addNodeType (X3DConstants::X3DFogObject);
-	
+
 	setChildren (transparency);
 }
 

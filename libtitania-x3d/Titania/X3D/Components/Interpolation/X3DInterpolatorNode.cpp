@@ -64,10 +64,10 @@ X3DInterpolatorNode::X3DInterpolatorNode () :
 void
 X3DInterpolatorNode::setup ()
 {
-	// If an X3DInterpolatorNode value_changed outputOnly field is read before it receives any inputs, 
-	// keyValue[0] is returned if keyValue is not empty. If keyValue is empty (i.e., [ ]), the initial 
+	// If an X3DInterpolatorNode value_changed outputOnly field is read before it receives any inputs,
+	// keyValue[0] is returned if keyValue is not empty. If keyValue is empty (i.e., [ ]), the initial
 	// value for the respective field type is returned (EXAMPLE  (0, 0, 0) for SFVec3f);
-	
+
 	set_key ();
 	interpolate (0, 0, 0);
 

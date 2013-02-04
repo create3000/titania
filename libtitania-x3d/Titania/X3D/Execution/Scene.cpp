@@ -50,6 +50,7 @@
 
 #include "Scene.h"
 
+#include "../Bits/Cast.h"
 #include "../Browser/X3DBrowser.h"
 #include <iostream>
 
@@ -102,7 +103,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	X3DScene::addRootNode (rootNode);
 
-	SFNode <LayerSet> rootLayerSet = rootNode;
+	SFNode <LayerSet> rootLayerSet = x3d_cast <LayerSet*> (rootNode .getValue ());
 
 	if (rootLayerSet)
 	{

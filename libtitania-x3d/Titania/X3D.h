@@ -55,6 +55,7 @@
 #include "X3D/Browser/Browser.h"
 #include "X3D/Browser/BrowserApplication.h"
 
+#include "X3D/Bits/Cast.h"
 #include "X3D/Bits/Error.h"
 #include "X3D/Components.h"
 

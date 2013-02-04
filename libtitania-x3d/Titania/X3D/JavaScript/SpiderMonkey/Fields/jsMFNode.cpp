@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -115,9 +115,7 @@ jsX3DArrayField <jsSFNode, MFNode>::get1Value (JSContext* context, JSObject* obj
 
 	MFNode* field = (MFNode*) JS_GetPrivate (context, obj);
 
-	return jsSFNode::create (context, new SFNode <X3DBaseNode> (*(X3DField <X3DBaseNode*>*) & field -> get1Value (index)), vp);
-
-	return JS_TRUE;
+	return jsSFNode::create (context, new SFNode <X3DBaseNode> (*(SFNode <X3DBaseNode>*) & field -> get1Value (index)), vp);
 }
 
 template <>
@@ -148,7 +146,7 @@ jsX3DArrayField <jsSFNode, MFNode>::set1Value (JSContext* context, JSObject* obj
 
 	MFNode* field = (MFNode*) JS_GetPrivate (context, obj);
 
-	field -> set1Value (index, ((X3DField <X3DBaseNode*>*)JS_GetPrivate (context, value)) -> getValue ());
+	field -> set1Value (index, ((SFNode <X3DBaseNode>*)JS_GetPrivate (context, value)) -> getValue ());
 
 	*vp = JSVAL_VOID;
 

@@ -71,9 +71,8 @@ public:
 	const RequesterArray &
 	getRequesters () const;
 
-
 	/// @name Has interest service
-	
+
 	template <class Class>
 	inline
 	bool
@@ -81,7 +80,6 @@ public:
 	{
 		return hasInterest (object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
-
 
 	/// @name Add interest service
 
@@ -121,7 +119,6 @@ public:
 		                nullptr, reinterpret_cast <void*> (function));
 	}
 
-
 	template <class Class>
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (void)) const
@@ -139,13 +136,12 @@ public:
 	}
 
 	//  Add basic interest.
-	
+
 	void
 	addInterest (const Requester &) const;
 
-
 	///  @name Remove interest service
-	
+
 	template <class Class, class Argument>
 	inline
 	void
@@ -171,16 +167,14 @@ public:
 	void
 	removeInterest (const Requester &) const;
 
-
 	///  @name Process interests service
-	
+
 	virtual
 	void
 	processInterests ();
 
-
 	///  @name Dispose service
-	
+
 	virtual
 	void
 	dispose ();

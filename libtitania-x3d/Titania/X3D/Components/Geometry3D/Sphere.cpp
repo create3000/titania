@@ -50,6 +50,7 @@
 
 #include "Sphere.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Browser/Geometry3D/QuadSphereProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -101,7 +102,7 @@ Sphere::createBBox ()
 void
 Sphere::build ()
 {
-	const X3DSpherePropertyNode* properties = *getBrowser () -> getBrowserOptions () -> sphereProperties;
+	auto properties = x3d_cast <const X3DSpherePropertyNode*> (getBrowser () -> getBrowserOptions () -> sphereProperties .getValue ());
 
 	getTexCoord () = properties -> getTexCoord ();
 	getNormals  () = properties -> getNormals  ();

@@ -63,7 +63,7 @@ namespace puck {
 X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 	   Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN), 
 	 X3DBrowserWindowUI (get_ui ("BrowserWindow.ui"), gconf_dir ()),                          
-	X3DBrowserInterface (X3D::getBrowser ())                                                  
+	X3DBrowserInterface (NULL)                                                                
 {
 	setTransparent (true);
 

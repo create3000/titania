@@ -136,9 +136,9 @@ throw (Error <INVALID_X3D>,
        Error <DISPOSED>)
 {
 	SFNode <Scene> scene = getBrowser () -> createScene ();
-	
+
 	scene -> fromStream (worldURL, istream);
-	
+
 	return scene;
 }
 

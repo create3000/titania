@@ -198,30 +198,30 @@ X3DRenderer::draw ()
 			glDepthFunc (GL_LEQUAL);
 			glDepthMask (GL_TRUE);
 			glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
+
 			shape -> redraw ();
 		}
-		
-//		// render opaque objects
-//
-//		glDepthFunc (GL_GREATER);
-//		glDepthMask (GL_FALSE);
-//		glBlendFunc (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA);
-//		glBlendFuncSeparate (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-//
-//		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
-//		{
-//			numNodesDrawn += shape -> redraw ();
-//		}
-//
-//		glDisable (GL_BLEND);
-//		glDepthFunc (GL_LEQUAL);
-//		glDepthMask (GL_TRUE);
-//
-//		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
-//		{
-//			shape -> redraw ();
-//		}
+
+		//		// render opaque objects
+		//
+		//		glDepthFunc (GL_GREATER);
+		//		glDepthMask (GL_FALSE);
+		//		glBlendFunc (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA);
+		//		glBlendFuncSeparate (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		//
+		//		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
+		//		{
+		//			numNodesDrawn += shape -> redraw ();
+		//		}
+		//
+		//		glDisable (GL_BLEND);
+		//		glDepthFunc (GL_LEQUAL);
+		//		glDepthMask (GL_TRUE);
+		//
+		//		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
+		//		{
+		//			shape -> redraw ();
+		//		}
 	}
 
 	// disable global lights

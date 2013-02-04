@@ -225,10 +225,10 @@ X3DFieldDefinition::processEvents (ChildObjectSet & sourceFields)
 {
 	//	if (inputRoutes  .size ())
 	sourceFields .insert (this);
-	
+
 	events .emplace_front (this);
 	registerInterest (this);
-	
+
 	for (const auto & fieldDefinition : interests)
 		fieldDefinition -> processEvent (this, sourceFields);
 }
@@ -241,7 +241,7 @@ X3DFieldDefinition::processEvent (X3DFieldDefinition* const field, ChildObjectSe
 
 	events .emplace_back (field);
 	registerInterest (this);
-	
+
 	for (const auto & fieldDefinition : interests)
 		fieldDefinition -> processEvent (field, sourceFields);
 }
@@ -250,11 +250,11 @@ void
 X3DFieldDefinition::processInterests ()
 {
 	write (*events .front ());
-	
+
 	events .pop_front ();
-	
+
 	X3DChildObject::processInterests ();
-	
+
 	if (events .size ())
 		registerInterest (this);
 }
@@ -274,7 +274,7 @@ X3DFieldDefinition::dispose ()
 	interests .clear ();
 	events    .clear ();
 
-	// As long as the fields belong to nodes, don't dispose fields. So the ref count is always at least one 
+	// As long as the fields belong to nodes, don't dispose fields. So the ref count is always at least one
 	// in JavaScript.
 	//X3DChildObject::dispose ();
 }

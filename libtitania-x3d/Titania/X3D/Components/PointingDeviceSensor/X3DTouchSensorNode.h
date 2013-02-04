@@ -62,7 +62,7 @@ class X3DTouchSensorNode :
 public:
 
 	SFTime touchTime;
-	
+
 	virtual
 	void
 	update ();

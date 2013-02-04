@@ -48,144 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASE_X3DCHILD_OBJECT_H__
-#define __TITANIA_X3D_BASE_X3DCHILD_OBJECT_H__
+#ifndef __TITANIA_X3D_BITS_CAST_H__
+#define __TITANIA_X3D_BITS_CAST_H__
 
-#include "../Base/ChildObjectSet.h"
-#include "../Base/X3DObject.h"
-
-#include <Titania/Utility/Pass.h>
-#include <deque>
+#include <cstddef>
 
 namespace titania {
 namespace X3D {
 
-class X3DChildObject :
-	virtual public X3DObject
+template <class Type, class Up>
+Type
+x3d_cast (Up value)
 {
-public:
+	if (value)
+		return dynamic_cast <Type> (value -> getLocalNode ());
 
-	///  @name Parent handling
-
-	bool
-	addParent (X3DChildObject* const);
-
-	bool
-	removeParent (X3DChildObject* const);
-
-	const ChildObjectSet &
-	getParents () const;
-
-	virtual
-	bool
-	hasRoots (ChildObjectSet &);
-
-	template <class Root, class Type>
-	std::deque <Type*>
-	findClosestParents () const;
-
-	///  @name Children handling
-
-	//@{
-	template <typename ... Args>
-	void
-	setChildren (Args & ...);
-
-	void
-	setChild (X3DChildObject* const child)
-	{ child -> addParent (this); }
-
-	void
-	setChild (X3DChildObject & child)
-	{ child .addParent (this); }
-
-	///  @name Event Handling
-
-	virtual
-	void
-	write (const X3DChildObject &) { }
-
-	virtual
-	void
-	notifyParents ();
-
-	virtual
-	void
-	processEvents (ChildObjectSet &) = 0; // XXX
-
-	virtual
-	void
-	dispose ();
-
-	virtual
-	~X3DChildObject ();
-
-
-protected:
-
-	X3DChildObject ();
-
-	virtual
-	void
-	registerEvent (X3DChildObject* const);
-
-	virtual
-	void
-	registerInterest (X3DChildObject* const);
-
-
-private:
-
-	template <class Root, class Type>
-	void
-	findClosestParents (std::deque <Type*> &, ChildObjectSet &);
-
-	ChildObjectSet parents;
-
-};
-
-template <typename ... Args>
-inline
-void
-X3DChildObject::setChildren (Args & ... args)
-{
-	basic::pass ((setChild (args), 1) ...);
-}
-
-template <class Root, class Type>
-std::deque <Type*>
-X3DChildObject::findClosestParents () const
-{
-	ChildObjectSet seen;
-
-	std::deque <Type*> parents;
-
-	for (const auto & object : getParents ())
-		object -> findClosestParents <Root, Type> (parents, seen);
-
-	return parents;
-}
-
-template <class Root, class Type>
-void
-X3DChildObject::findClosestParents (std::deque <Type*> & parents, ChildObjectSet & seen)
-{
-	if (dynamic_cast <Root*> (this))
-		return;
-
-	if (not seen .insert (this) .second)
-		return;
-
-	Type* parent = dynamic_cast <Type*> (this);
-
-	if (parent)
-	{
-		parents .push_back (parent);
-		return;
-	}
-
-	for (const auto & object : getParents ())
-		object -> findClosestParents <Root, Type> (parents, seen);
+	return NULL;
 }
 
 } // X3D

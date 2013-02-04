@@ -64,8 +64,8 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	    X3DChildNode (),                                                    
 	X3DBoundedObject (),                                                    
 	    X3DUrlObject (),                                                    
-	            load (true),                                                 // SFBool [in,out] load  TRUE
-	           scene (executionContext -> getBrowser () -> createScene ())
+	            load (true),                                                // SFBool [in,out] load  TRUE
+	           scene (executionContext -> getBrowser () -> createScene ())  
 {
 	setComponent ("Networking");
 	setTypeName ("Inline");
@@ -110,7 +110,7 @@ Inline::set_load ()
 {
 	if (load)
 		requestLoad ();
-		
+
 	else
 		requestUnload ();
 }
@@ -168,7 +168,7 @@ Inline::requestImmediateLoad ()
 	try
 	{
 		const_cast <MFNode &> (scene -> getRootNodes ()) .removeParent (this);
-	
+
 		scene = createX3DFromURL (url);
 
 		setLoadState (COMPLETE_STATE);
@@ -189,11 +189,11 @@ Inline::requestUnload ()
 {
 	if (checkLoadState () == NOT_STARTED_STATE or checkLoadState () == FAILED_STATE)
 		return;
-		
+
 	const_cast <MFNode &> (scene -> getRootNodes ()) .removeParent (this);
 
 	scene = getBrowser () -> createScene ();
-		
+
 	setLoadState (NOT_STARTED_STATE);
 }
 
@@ -215,7 +215,7 @@ void
 Inline::dispose ()
 {
 	const_cast <MFNode &> (scene -> getRootNodes ()) .removeParent (this);
-	
+
 	scene .dispose ();
 
 	X3DUrlObject::dispose ();

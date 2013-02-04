@@ -94,10 +94,10 @@ public:
 		if (stack .top () not_eq node)
 		{
 			stack .top () -> set_bind = false;
-			
+
 			if (stack .push (node))
 				node -> shutdown .addInterest (this, &BindableNodeStack::erase, node);
-			
+
 			node -> isBound .addInterest (this, &BindableNodeStack::set_bind, node);
 		}
 	}
@@ -113,10 +113,10 @@ public:
 			stack .top () -> isBound .addInterest (this, &BindableNodeStack::set_bind, node);
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	void
 	dispose ()
 	{

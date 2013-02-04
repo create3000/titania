@@ -48,6 +48,9 @@
  *
  ******************************************************************************/
 
+#include "Appearance.h"
+
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/X3DShaderNode.h"
 #include "../Shape/FillProperties.h"
@@ -55,7 +58,6 @@
 #include "../Shape/X3DMaterialNode.h"
 #include "../Texturing/X3DTextureNode.h"
 #include "../Texturing/X3DTextureTransformNode.h"
-#include "Appearance.h"
 
 namespace titania {
 namespace X3D {
@@ -68,7 +70,12 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	         material (),                                                    // SFNode [in,out] material          NULL        [X3DMaterialNode]
 	          texture (),                                                    // SFNode [in,out] texture           NULL        [X3DTextureNode]
 	 textureTransform (),                                                    // SFNode [in,out] textureTransform  NULL        [X3DTextureTransformNode]
-	          shaders ()                                                     // MFNode[in,out]  shaders           [ ]         [X3DShaderNode]
+	          shaders (),                                                    // MFNode[in,out]  shaders           [ ]         [X3DShaderNode]
+	  _lineProperties (NULL),                                                
+	  _fillProperties (NULL),                                                
+	        _material (NULL),                                                
+	         _texture (NULL),                                                
+	_textureTransform (NULL)                                                 
 {
 	setComponent ("Shape");
 	setTypeName ("Appearance");
@@ -92,39 +99,87 @@ void
 Appearance::initialize ()
 {
 	X3DAppearanceNode::initialize ();
+
+	lineProperties   .addInterest (this, &Appearance::set_lineProperties);
+	fillProperties   .addInterest (this, &Appearance::set_fillProperties);
+	material         .addInterest (this, &Appearance::set_material);
+	texture          .addInterest (this, &Appearance::set_texture);
+	textureTransform .addInterest (this, &Appearance::set_textureTransform);
+	shaders          .addInterest (this, &Appearance::set_shaders);
+
+	set_lineProperties ();
+	set_fillProperties ();
+	set_material ();
+	set_texture ();
+	set_textureTransform ();
+	set_shaders ();
 }
 
 bool
 Appearance::isTransparent ()
 {
-	if (material and material -> isTransparent ())
+	if (_material and _material -> isTransparent ())
 		return true;
 
-	if (texture and texture -> isTransparent ())
+	if (_texture and _texture -> isTransparent ())
 		return true;
 
 	return false;
 }
 
 void
+Appearance::set_lineProperties ()
+{
+	_lineProperties = x3d_cast <LineProperties*> (lineProperties .getValue ());
+}
+
+void
+Appearance::set_fillProperties ()
+{
+	_fillProperties = x3d_cast <FillProperties*> (fillProperties .getValue ());
+}
+
+void
+Appearance::set_material ()
+{
+	_material = x3d_cast <X3DMaterialNode*> (material .getValue ());
+}
+
+void
+Appearance::set_texture ()
+{
+	_texture = x3d_cast <X3DTextureNode*> (texture .getValue ());
+}
+
+void
+Appearance::set_textureTransform ()
+{
+	_textureTransform = x3d_cast <X3DTextureTransformNode*> (textureTransform .getValue ());
+}
+
+void
+Appearance::set_shaders ()
+{ }
+
+void
 Appearance::display ()
 {
-	if (lineProperties)
-		lineProperties -> display ();
+	if (_lineProperties)
+		_lineProperties -> display ();
 
-	if (fillProperties)
-		fillProperties -> display ();
+	if (_fillProperties)
+		_fillProperties -> display ();
 
-	if (material)
-		material -> display ();
+	if (_material)
+		_material -> display ();
 
-	if (texture)
-		texture -> display ();
+	if (_texture)
+		_texture -> display ();
 
-	if (textureTransform)
-		textureTransform -> display ();
+	if (_textureTransform)
+		_textureTransform -> display ();
 
-	for (const auto & shader : shaders)
+	for (const auto & shader : _shaders)
 		shader -> display ();
 }
 

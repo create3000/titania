@@ -192,7 +192,7 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 		for (auto & normal : normals)
 			normal .negate ();
 	}
-	
+
 	if (creaseAngle == 0.0f)
 		return;
 

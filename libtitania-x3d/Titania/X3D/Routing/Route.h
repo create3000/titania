@@ -64,6 +64,10 @@ class Route :
 public:
 
 	virtual
+	Route*
+	clone (X3DExecutionContext* const) const;
+
+	virtual
 	bool
 	isConnected ();
 
@@ -110,10 +114,6 @@ private:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
-
-	virtual
-	Route*
-	clone (X3DExecutionContext* const) const;
 
 	virtual
 	void

@@ -88,9 +88,9 @@ PointingDevice::on_motion_notify_event (GdkEventMotion* event)
 				isOver = false;
 			}
 		}
-		
+
 		getBrowser () -> motionNotifyEvent ();
-	
+
 	}
 
 	return false;
@@ -108,7 +108,7 @@ PointingDevice::on_button_press_event (GdkEventButton* event)
 			getBrowser () -> buttonPressEvent ();
 
 			getBrowser () -> setCursor (Gdk::HAND1);
-			
+
 			return true;
 		}
 		else
@@ -138,12 +138,12 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 			{
 				getBrowser () -> touchEvent ();
 			}
-		
+
 			getBrowser () -> setCursor (Gdk::HAND2);
 		}
 		else
 			getBrowser () -> setCursor (Gdk::ARROW);
-	
+
 		getBrowser () -> buttonReleaseEvent ();
 	}
 

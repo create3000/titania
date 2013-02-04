@@ -48,10 +48,12 @@
  *
  ******************************************************************************/
 
+#include "LayerSet.h"
+
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layering/Layer.h"
-#include "LayerSet.h"
 
 namespace titania {
 namespace X3D {
@@ -63,7 +65,7 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	      order ({ 0 }),                                               // MFInt32 [in,out] order        [0]        (0,∞)
 	     layers (),                                                    // MFNode  [in,out] layers       [ ]        [X3DLayerNode]
 	   children ({ new Layer (executionContext) }),                    
-	     layer0 (children [0])
+	     layer0 (children [0])                                         
 {
 	setComponent ("Layering");
 	setTypeName ("LayerSet");
@@ -129,8 +131,8 @@ LayerSet::set_layers ()
 
 	for (const auto & layer : layers)
 	{
-		auto child = dynamic_cast <X3DLayerNode*> (layer .getValue ());
-		
+		auto child = x3d_cast <X3DLayerNode*> (layer .getValue ());
+
 		if (child)
 			children .emplace_back (child);
 	}

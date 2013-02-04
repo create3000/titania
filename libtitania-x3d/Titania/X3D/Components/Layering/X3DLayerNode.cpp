@@ -50,6 +50,7 @@
 
 #include "X3DLayerNode.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../EnvironmentalEffects/Background.h"
 
@@ -81,8 +82,8 @@ X3DLayerNode::X3DLayerNode () :
 	            localFogs (),                                                   
 	          localLights (),                                                   
 	    cachedLocalLights (),                                                   
-	         globalLights (),
-	                group (new Group (getExecutionContext ()))                                                    
+	         globalLights (),                                                   
+	                group (new Group (getExecutionContext ()))                  
 {
 	addNodeType (X3DConstants::X3DLayerNode);
 
@@ -112,11 +113,11 @@ X3DLayerNode::initialize ()
 	defaultViewpoint  -> isBound      = true;
 
 	viewport .addInterest (this, &X3DLayerNode::set_viewport);
-	
+
 	addChildren    .addInterest (group -> addChildren);
 	removeChildren .addInterest (group -> removeChildren);
 	children       .addInterest (group -> children);
-	
+
 	set_viewport ();
 
 	group -> children = children;
@@ -188,10 +189,10 @@ X3DLayerNode::lookAt ()
 void
 X3DLayerNode::set_viewport ()
 {
-	currentViewport = *viewport;
+	currentViewport = x3d_cast <X3DViewportNode*> (viewport .getValue ());
 
 	if (not currentViewport)
-		currentViewport = *defaultViewport;
+		currentViewport = defaultViewport .getValue ();
 }
 
 void
@@ -249,7 +250,7 @@ X3DLayerNode::dispose ()
 	defaultBackground     .dispose ();
 	defaultFog            .dispose ();
 	defaultViewpoint      .dispose ();
-	
+
 	navigationInfoStack .dispose ();
 	backgroundStack     .dispose ();
 	fogStack            .dispose ();
@@ -259,7 +260,7 @@ X3DLayerNode::dispose ()
 	backgrounds     .dispose ();
 	viewpoints      .dispose ();
 	fogs            .dispose ();
-	
+
 	group .dispose ();
 
 	// Dont't dispose stack nodes, they were automatically disposed.

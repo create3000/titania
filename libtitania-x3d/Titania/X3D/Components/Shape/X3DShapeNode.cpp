@@ -50,6 +50,7 @@
 
 #include "X3DShapeNode.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Browser/Hit.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/ViewVolume.h"
@@ -66,10 +67,12 @@ const Matrix4d X3DShapeNode::textureMatrix = { 1,  0, 0, 0,
 	                                            0,  1, 0, 1 };
 
 X3DShapeNode::X3DShapeNode () :
-	    X3DChildNode (), 
-	X3DBoundedObject (), 
-	      appearance (), // SFNode [in,out] appearance  NULL        [X3DAppearanceNode]
-	        geometry ()  // SFNode [in,out] geometry    NULL        [X3DGeometryNode]
+	    X3DChildNode (),     
+	X3DBoundedObject (),     
+	      appearance (),     // SFNode [in,out] appearance  NULL        [X3DAppearanceNode]
+	        geometry (),     // SFNode [in,out] geometry    NULL        [X3DGeometryNode]
+	     _appearance (NULL), 
+	       _geometry (NULL)  
 {
 	addNodeType (X3DConstants::X3DShapeNode);
 }
@@ -79,6 +82,12 @@ X3DShapeNode::initialize ()
 {
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
+
+	appearance .addInterest (this, &X3DShapeNode::set_appearance);
+	geometry   .addInterest (this, &X3DShapeNode::set_geometry);
+
+	set_appearance ();
+	set_geometry ();
 }
 
 Box3f
@@ -86,8 +95,8 @@ X3DShapeNode::getBBox ()
 {
 	if (bboxSize == Vector3f (-1, -1, -1))
 	{
-		if (geometry)
-			return geometry -> getBBox ();
+		if (_geometry)
+			return _geometry -> getBBox ();
 
 		else
 			return Box3f ();
@@ -99,13 +108,25 @@ X3DShapeNode::getBBox ()
 bool
 X3DShapeNode::isTransparent ()
 {
-	if (appearance and appearance -> isTransparent ())
+	if (_appearance and _appearance -> isTransparent ())
 		return true;
 
-	if (geometry and geometry -> isTransparent ())
+	if (_geometry and _geometry -> isTransparent ())
 		return true;
 
 	return false;
+}
+
+void
+X3DShapeNode::set_appearance ()
+{
+	_appearance = x3d_cast <X3DAppearanceNode*> (appearance .getValue ());
+}
+
+void
+X3DShapeNode::set_geometry ()
+{
+	_geometry = x3d_cast <X3DGeometryNode*> (geometry .getValue ());
 }
 
 void
@@ -114,15 +135,15 @@ X3DShapeNode::pick ()
 	if (not getBrowser () -> isSensitive ())
 		return;
 
-	if (geometry)
+	if (_geometry)
 	{
 		if (ViewVolume () .intersect (getBBox ()))
 		{
 			Line3f hitRay = getBrowser () -> getHitRay ();
 
 			Vector3f hitPoint;
-		
-			if (geometry -> intersect (hitRay, hitPoint))
+
+			if (_geometry -> intersect (hitRay, hitPoint))
 				getBrowser () -> addHit (hitRay, hitPoint);
 		}
 	}
@@ -131,12 +152,12 @@ X3DShapeNode::pick ()
 void
 X3DShapeNode::display ()
 {
-	if (geometry)
+	if (_geometry)
 	{
 		Box3f bbox = getBBox () * ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
 
 		float depth = bbox .size () .z () * 0.5f;
-		
+
 		if (depth > bbox .center () .z ())
 			getBrowser () -> getRenderers () .top () -> addShape (this, bbox .center () .z () - depth);
 	}
@@ -155,10 +176,10 @@ X3DShapeNode::draw ()
 	//glScalef(1, -1, 1);
 	glMatrixMode (GL_MODELVIEW);
 
-	if (appearance)
-		appearance -> display ();
+	if (_appearance)
+		_appearance -> display ();
 
-	geometry -> display ();
+	_geometry -> display ();
 
 	glDisable (GL_FOG);
 	glDisable (GL_LIGHTING);

@@ -66,13 +66,13 @@ public:
 
 	using X3DGeometryNode::solid;
 
-	MFString                  string;
-	MFFloat                   length;
-	SFFloat                   maxExtent;
-	SFVec3f                   origin;
-	SFVec2f                   textBounds;
-	MFVec2f                   lineBounds;
-	SFNode <X3DFontStyleNode> fontStyle;
+	MFString             string;
+	MFFloat              length;
+	SFFloat              maxExtent;
+	SFVec3f              origin;
+	SFVec2f              textBounds;
+	MFVec2f              lineBounds;
+	SFNode <X3DBaseNode> fontStyle;
 
 	Text (X3DExecutionContext* const);
 
@@ -98,7 +98,7 @@ private:
 	float
 	getLength (const size_t);
 
-	const SFNode <X3DFontStyleNode> &
+	const X3DFontStyleNode*
 	getFontStyle () const;
 
 	void
@@ -109,7 +109,7 @@ private:
 	createBBox ();
 
 	Box2f
-	getLineBBox (const std::string &);
+	getLineBBox (const X3DFontStyleNode*, const std::string &);
 
 	std::unique_ptr <FTPolygonFont> font;
 	float                           lineHeight;

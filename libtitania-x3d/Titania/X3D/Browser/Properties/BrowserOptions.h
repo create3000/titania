@@ -89,12 +89,12 @@ public:
 	SFString qualityWhenMoving;
 	SFString shading;
 
-	SFNode <MotionBlur>            motionBlur;
-	SFNode <TextureProperties>     textureProperties;
-	SFNode <Rectangle2DProperties> rectangle2DProperties;
-	SFNode <BoxProperties>         boxProperties;
-	SFNode <X3DSpherePropertyNode> sphereProperties;
-	SFNode <X3DFontStyleNode>      fontStyle;
+	SFNode <X3DBaseNode> motionBlur;
+	SFNode <X3DBaseNode> textureProperties;
+	SFNode <X3DBaseNode> rectangle2DProperties;
+	SFNode <X3DBaseNode> boxProperties;
+	SFNode <X3DBaseNode> sphereProperties;
+	SFNode <X3DBaseNode> fontStyle;
 
 	BrowserOptions (X3DExecutionContext* const);
 

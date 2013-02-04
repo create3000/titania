@@ -61,18 +61,16 @@ extern template class X3DField <X3DBaseNode*>;
 
 template <class ValueType>
 class SFNode :
-	public X3DField <X3DBaseNode*>
+	public X3DField <ValueType*>
 {
 public:
 
-	typedef ValueType*                                   value_type;
-	typedef ValueType*                                   scalar_type;
-	typedef typename X3DField <X3DBaseNode*>::value_type basic_type;
+	typedef ValueType* value_type;
+	typedef ValueType* scalar_type;
 
-	using X3DField <X3DBaseNode*>::addInterest;
-	using X3DField <X3DBaseNode*>::setValue;
-	using X3DField <X3DBaseNode*>::getValue;
-	using X3DField <X3DBaseNode*>::operator =;
+	using X3DField <ValueType*>::addInterest;
+	using X3DField <ValueType*>::setValue;
+	using X3DField <ValueType*>::getValue;
 
 	///  @name Constructors
 
@@ -80,13 +78,8 @@ public:
 
 	SFNode (const SFNode &);
 
-	template <class Up>
-	SFNode (const SFNode <Up> &);
-
 	//explicit
 	SFNode (ValueType* const);
-
-	SFNode (X3DObject* const);
 
 	///  @name Copy
 
@@ -97,23 +90,6 @@ public:
 	virtual
 	SFNode*
 	clone (X3DExecutionContext* const) const;
-
-	///  @name Assignment Operator
-
-	template <class Up>
-	SFNode &
-	operator = (const SFNode <Up> & field)
-	{
-		setValue (field);
-		return *this;
-	}
-
-	SFNode &
-	operator = (X3DObject* const value)
-	{
-		setValue (dynamic_cast <X3DBaseNode*> (value));
-		return *this;
-	}
 
 	///  @name Node Services
 
@@ -142,19 +118,19 @@ public:
 
 	virtual
 	void
-	set (const basic_type &);
+	set (const value_type &);
 
 	///  @name Boolean Operator
 
-	operator bool () const { return getLocalNode (); }
+	operator bool () const { return getValue (); }
 
 	///  @name Access Operators
 
 	ValueType*
-	operator -> () const { return getLocalNode (); }
+	operator -> () const { return getValue (); }
 
 	ValueType*
-	operator * () const { return getLocalNode (); }
+	operator * () const { return getValue (); }
 
 	///  @name 6.7.7 Add field interest.
 
@@ -190,42 +166,24 @@ public:
 
 private:
 
-	using X3DField <X3DBaseNode*>::reset;
+	using X3DField <ValueType*>::reset;
 
 	void
-	addNode (X3DBaseNode* const);
+	addNode (ValueType* const);
 
 	void
-	removeNode (X3DBaseNode* const);
-
-	ValueType*
-	getLocalNode () const
-	{
-		if (getValue ())
-			return dynamic_cast <ValueType*> (getValue () -> getLocalNode ());
-
-		return NULL;
-	}
+	removeNode (ValueType* const);
 
 };
 
 template <class ValueType>
 SFNode <ValueType>::SFNode () :
-	X3DField <X3DBaseNode*> ()
+	X3DField <ValueType*> ()
 { }
 
 template <class ValueType>
 SFNode <ValueType>::SFNode (const SFNode & field) :
-	X3DField <X3DBaseNode*> (field)
-{
-	if (getValue ())
-		getValue () -> addParent (this);
-}
-
-template <class ValueType>
-template <class Up>
-SFNode <ValueType>::SFNode (const SFNode <Up> & field) :
-	X3DField <X3DBaseNode*> (field)
+	X3DField <ValueType*> (field)
 {
 	if (getValue ())
 		getValue () -> addParent (this);
@@ -233,15 +191,7 @@ SFNode <ValueType>::SFNode (const SFNode <Up> & field) :
 
 template <class ValueType>
 SFNode <ValueType>::SFNode (ValueType* const value) :
-	X3DField <X3DBaseNode*> (value)
-{
-	if (getValue ())
-		getValue () -> addParent (this);
-}
-
-template <class ValueType>
-SFNode <ValueType>::SFNode (X3DObject* const value) :
-	X3DField <X3DBaseNode*> (dynamic_cast <X3DBaseNode*> (value))
+	X3DField <ValueType*> (value)
 {
 	if (getValue ())
 		getValue () -> addParent (this);
@@ -252,7 +202,7 @@ SFNode <ValueType>*
 SFNode <ValueType>::clone (X3DExecutionContext* const executionContext) const
 {
 	if (getValue ())
-		return new SFNode (getValue () -> clone (executionContext));
+		return new SFNode (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));
 
 	else
 		return new SFNode ();
@@ -305,15 +255,15 @@ throw (Error <INVALID_NAME>,
 
 template <class ValueType>
 void
-SFNode <ValueType>::set (const basic_type & value)
+SFNode <ValueType>::set (const value_type & value)
 {
 	addNode (value);
-	X3DField <X3DBaseNode*>::set (value);
+	X3DField <ValueType*>::set (value);
 }
 
 template <class ValueType>
 void
-SFNode <ValueType>::addNode (X3DBaseNode* const value)
+SFNode <ValueType>::addNode (ValueType* const value)
 {
 	if (getValue () not_eq value)
 	{
@@ -326,7 +276,7 @@ SFNode <ValueType>::addNode (X3DBaseNode* const value)
 
 template <class ValueType>
 void
-SFNode <ValueType>::removeNode (X3DBaseNode* const value)
+SFNode <ValueType>::removeNode (ValueType* const value)
 {
 	if (value)
 	{
@@ -342,7 +292,7 @@ SFNode <ValueType>::dispose ()
 {
 	removeNode (getValue ());
 
-	X3DField <X3DBaseNode*>::dispose ();
+	X3DField <ValueType*>::dispose ();
 }
 
 template <class ValueType>

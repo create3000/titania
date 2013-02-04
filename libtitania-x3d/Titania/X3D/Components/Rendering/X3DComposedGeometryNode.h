@@ -73,13 +73,13 @@ public:
 	SFBool colorPerVertex;
 	SFBool normalPerVertex;
 
-	MFNode attrib;
-	SFNode <FogCoordinate> fogCoord;
+	MFNode               attrib;
+	SFNode <X3DBaseNode> fogCoord;
 
-	SFNode <X3DTextureCoordinateNode> texCoord;
-	SFNode <X3DColorNode>             color;
-	SFNode <X3DNormalNode>            normal;
-	SFNode <X3DCoordinateNode>        coord;
+	SFNode <X3DBaseNode> texCoord;
+	SFNode <X3DBaseNode> color;
+	SFNode <X3DBaseNode> normal;
+	SFNode <X3DBaseNode> coord;
 
 
 protected:

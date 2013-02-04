@@ -63,8 +63,8 @@ ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
 	              size (),                                                    // SFVec3f  [in,out] size               0 0 0        (-∞,∞)
 	            center (),                                                    // SFVec3f  [in,out] center             0 0 0        (-∞,∞)
 	          children (),                                                    // MFNode   [in,out] children           NULL         [X3DViewpointNode|ViewpointGroup]
-	          isActive (),
-	  visibilitySensor (new VisibilitySensor (executionContext)),
+	          isActive (),                                                    
+	  visibilitySensor (new VisibilitySensor (executionContext)),             
 	  viewpointObjects ()                                                     
 {
 	setComponent ("Navigation");
@@ -77,7 +77,7 @@ ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "size",              size);
 	addField (inputOutput, "center",            center);
 	addField (inputOutput, "children",          children);
-	
+
 	setChildren (isActive,
 	             visibilitySensor);
 }
@@ -93,18 +93,18 @@ ViewpointGroup::initialize ()
 {
 	X3DChildNode::initialize ();
 	X3DViewpointObject::initialize ();
-	
+
 	visibilitySensor -> setup ();
 	visibilitySensor -> isActive .addInterest (isActive);
-	
+
 	size   .addInterest (visibilitySensor -> size);
 	center .addInterest (visibilitySensor -> center);
-	
+
 	displayed .addInterest (this, &ViewpointGroup::set_displayed);
 	size      .addInterest (this, &ViewpointGroup::set_size);
 	children  .addInterest (this, &ViewpointGroup::set_children);
 	isActive  .addInterest (this, &ViewpointGroup::set_isActive);
-	
+
 	set_size ();
 	set_children ();
 }
@@ -143,7 +143,7 @@ ViewpointGroup::set_children ()
 	for (const auto & child : children)
 	{
 		X3DViewpointObject* viewpointObject = dynamic_cast <X3DViewpointObject*> (child .getValue ());
-		
+
 		if (viewpointObject)
 			viewpointObjects .emplace_back (viewpointObject);
 	}

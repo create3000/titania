@@ -67,6 +67,8 @@ class Browser :
 {
 public:
 
+	Browser ();
+
 	void
 	setCursor (Gdk::CursorType cursor_type)
 	{ get_window () -> set_cursor (Gdk::Cursor::create (cursor_type)); }
@@ -74,15 +76,6 @@ public:
 	virtual
 	void
 	dispose ();
-
-
-protected:
-
-	Browser ();
-
-	friend SFNode <Browser>
-	createBrowser ()
-	throw (Error <BROWSER_UNAVAILABLE>);
 
 
 private:

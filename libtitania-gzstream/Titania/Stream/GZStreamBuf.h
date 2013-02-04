@@ -143,14 +143,14 @@ basic_gzstreambuf <CharT, Traits>::open ()
 	static int GZ_MAGIC1 = 0x1f;
 	static int GZ_MAGIC2 = 0x8b;
 
-	bool gz   = false;
-	int first = streambuf -> sgetc ();
+	bool gz    = false;
+	int  first = streambuf -> sgetc ();
 
 	if (first == GZ_MAGIC1)
 	{
 		if (streambuf -> snextc () == GZ_MAGIC2)
 			gz = true;
-			
+
 		streambuf -> sputbackc (first);
 	}
 

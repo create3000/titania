@@ -78,12 +78,12 @@ protected:
 	virtual
 	void
 	initialize ();
-	
+
 	///  @name Event handler
-	
+
 	void
 	set_description ();
-	
+
 	///  @name Destruction
 
 	virtual

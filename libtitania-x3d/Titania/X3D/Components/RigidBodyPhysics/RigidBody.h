@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,20 +61,20 @@ class RigidBody :
 {
 public:
 
-	SFFloat              angularDampingFactor;
-	SFVec3f              angularVelocity;
-	SFBool               autoDamp;
-	SFBool               autoDisable;
-	SFVec3f              centerOfMass;
-	SFFloat              disableAngularSpeed;
-	SFFloat              disableLinearSpeed;
-	SFFloat              disableTime;
-	SFBool               enabled;
-	SFVec3f              finiteRotationAxis;
-	SFBool               fixed;
-	MFVec3f              forces;
-	MFNode geometry;
-	SFMatrix3f           inertia;
+	SFFloat    angularDampingFactor;
+	SFVec3f    angularVelocity;
+	SFBool     autoDamp;
+	SFBool     autoDisable;
+	SFVec3f    centerOfMass;
+	SFFloat    disableAngularSpeed;
+	SFFloat    disableLinearSpeed;
+	SFFloat    disableTime;
+	SFBool     enabled;
+	SFVec3f    finiteRotationAxis;
+	SFBool     fixed;
+	MFVec3f    forces;
+	MFNode     geometry;
+	SFMatrix3f inertia;
 
 	RigidBody (X3DExecutionContext* const);
 

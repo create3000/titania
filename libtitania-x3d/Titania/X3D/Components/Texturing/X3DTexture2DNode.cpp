@@ -50,6 +50,7 @@
 
 #include "X3DTexture2DNode.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include <Titania/Math/Math.h>
 #include <Titania/Utility/Adapter.h>
@@ -89,12 +90,14 @@ X3DTexture2DNode::initialize ()
 	glGenTextures (1, &textureId);
 }
 
-const SFNode <TextureProperties> &
+const TextureProperties*
 X3DTexture2DNode::getTextureProperties ()
 {
-	return this -> textureProperties
-	       ? this -> textureProperties
-			 : getBrowser () -> getBrowserOptions () -> textureProperties;
+	auto _textureProperties = x3d_cast <TextureProperties*> (textureProperties .getValue ());
+
+	return _textureProperties
+	       ? _textureProperties
+			 : x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties .getValue ());
 }
 
 bool
@@ -255,7 +258,7 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 }
 
 void
-X3DTexture2DNode::applyTextureProperties (const SFNode <TextureProperties> & textureProperties) const
+X3DTexture2DNode::applyTextureProperties (const TextureProperties* textureProperties) const
 {
 	glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());

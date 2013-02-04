@@ -778,7 +778,7 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-	
+
 	//__gnu_parallel::_Settings s;
 	//s .algorithm_strategy = __gnu_parallel::force_parallel;
 	//s .for_each_minimal_n = 1;

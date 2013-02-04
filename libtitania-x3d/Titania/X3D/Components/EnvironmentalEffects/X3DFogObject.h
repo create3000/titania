@@ -93,7 +93,7 @@ protected:
 
 
 private:
-	
+
 	float
 	getVisibilityRange ();
 

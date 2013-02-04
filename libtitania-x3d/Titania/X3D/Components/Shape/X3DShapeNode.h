@@ -65,8 +65,8 @@ class X3DShapeNode :
 {
 public:
 
-	SFNode <X3DAppearanceNode> appearance;
-	SFNode <X3DGeometryNode>   geometry;
+	SFNode <X3DBaseNode> appearance;
+	SFNode <X3DBaseNode> geometry;
 
 	virtual
 	Box3f
@@ -102,6 +102,15 @@ protected:
 
 
 private:
+
+	void
+	set_appearance ();
+
+	void
+	set_geometry ();
+
+	X3DAppearanceNode* _appearance;
+	X3DGeometryNode*   _geometry;
 
 	static const Matrix4d textureMatrix;
 

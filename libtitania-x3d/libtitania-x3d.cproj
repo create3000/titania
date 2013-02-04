@@ -517,6 +517,7 @@
     <None Include="Titania\X3D\Browser\BrowserApplication.h" />
     <None Include="Titania\X3D\Components\Navigation\X3DViewpointObject.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Rectangle2DProperties.h" />
+    <None Include="Titania\X3D\Bits\Cast.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

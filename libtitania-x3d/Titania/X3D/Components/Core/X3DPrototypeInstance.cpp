@@ -150,7 +150,7 @@ void
 X3DPrototypeInstance::dispose ()
 {
 	X3DExecutionContext::dispose ();
-	
+
 	proto .dispose ();
 }
 

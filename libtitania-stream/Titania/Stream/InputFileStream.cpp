@@ -29,8 +29,8 @@
 #include "InputFileStream.h"
 
 #include <Titania/OS/IsFile.h>
-#include <utility>
 #include <iostream>
+#include <utility>
 
 namespace titania {
 namespace basic {
@@ -76,10 +76,10 @@ ifilestream::open (const http::method method, const basic::uri & url)
 	if (url .is_local ())
 	{
 		istream = file_istream = new std::ifstream ();
-		
+
 		if (os::is_file (url .path ()))
 			file_istream -> open (url .path ());
-		
+
 		else
 			file_istream -> setstate (std::ios::failbit);
 	}

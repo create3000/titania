@@ -144,7 +144,7 @@ TimeSensor::set_enabled ()
 
 void
 TimeSensor::set_startTime ()
-{	
+{
 	if (not enabled)
 		return;
 

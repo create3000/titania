@@ -50,8 +50,8 @@
 
 #include "X3DOutput.h"
 
-#include <algorithm>
 #include <Titania/LOG.h>
+#include <algorithm>
 
 namespace titania {
 namespace X3D {

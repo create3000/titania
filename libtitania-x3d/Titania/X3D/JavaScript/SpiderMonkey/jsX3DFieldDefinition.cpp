@@ -124,7 +124,7 @@ void
 jsX3DFieldDefinition::finalize (JSContext* context, JSObject* obj)
 {
 	X3DFieldDefinition* field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
-	
+
 	dispose (field);
 }
 

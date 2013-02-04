@@ -50,6 +50,7 @@
 
 #include "X3DGroupingNode.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 
 #include <Titania/Utility/Adapter.h>
@@ -141,29 +142,29 @@ X3DGroupingNode::add (const MFNode & children)
 {
 	for (const auto & child : children)
 	{
-		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (child .getValue ());
+		auto pointingDeviceSensorNode = x3d_cast <X3DPointingDeviceSensorNode*> (child .getValue ());
 
 		if (pointingDeviceSensorNode)
 			pointingDeviceSensors .emplace_back (pointingDeviceSensorNode);
 
 		else
 		{
-			auto lightNode = dynamic_cast <X3DLightNode*> (child .getValue ());
+			auto lightNode = x3d_cast <X3DLightNode*> (child .getValue ());
 
 			if (lightNode)
 				lights .emplace_back (lightNode);
 
 			else
 			{
-				auto localFog = dynamic_cast <LocalFog*> (child .getValue ());
+				auto localFog = x3d_cast <LocalFog*> (child .getValue ());
 
 				if (localFog)
 					localFogs .emplace_back (localFog);
 
 				else
 				{
-					auto childNode = dynamic_cast <X3DChildNode*> (child .getValue ());
-				
+					auto childNode = x3d_cast <X3DChildNode*> (child .getValue ());
+
 					if (childNode)
 						childNodes .emplace_back (childNode);
 				}

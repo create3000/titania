@@ -99,12 +99,12 @@ ShapeContainer::redraw ()
 		}
 
 		//glPushAttrib (GL_ENABLE_BIT);
-		
+
 		if (fog)
 			fog -> enable ();
 
 		shape -> draw ();
-		
+
 		//glPopAttrib ();
 
 		if (localLights .size ())
@@ -112,7 +112,7 @@ ShapeContainer::redraw ()
 			for (const auto & light : basic::adapter (localLights .crbegin (), localLights .crend ()))
 				light -> disable ();
 		}
-		
+
 		drawn = true;
 	}
 

@@ -55,8 +55,8 @@
 #include "../../Execution/BindableNodeStack.h"
 #include "../../Rendering/LightContainerArray.h"
 #include "../../Rendering/X3DRenderer.h"
-#include "../Grouping/Group.h"
 #include "../EnvironmentalEffects/LocalFog.h"
+#include "../Grouping/Group.h"
 #include "../Grouping/X3DGroupingNode.h"
 #include "../Layering/Viewport.h"
 
@@ -79,11 +79,11 @@ public:
 
 	///  @name Fields
 
-	SFBool                   isPickable;
-	SFNode <X3DViewportNode> viewport;
-	MFNode    addChildren;
-	MFNode    removeChildren;
-	MFNode    children;
+	SFBool               isPickable;
+	SFNode <X3DBaseNode> viewport;
+	MFNode               addChildren;
+	MFNode               removeChildren;
+	MFNode               children;
 
 	///  @name Bindable node stack handling
 
@@ -220,7 +220,7 @@ private:
 	LightContainerArray localLights;
 	LightContainerArray cachedLocalLights;
 	LightContainerArray globalLights;
-	
+
 	SFNode <Group> group;
 
 };

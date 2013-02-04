@@ -89,7 +89,7 @@ Route::create (X3DExecutionContext* const) const
 Route*
 Route::clone (X3DExecutionContext* const executionContext) const
 {
-	return NULL;
+	throw Error <NOT_SUPPORTED> ("Cloning routes is not supported.");
 }
 
 void

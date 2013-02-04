@@ -105,7 +105,7 @@ Script::initialize ()
 	// Initialize.
 
 	javaScript -> initialize ();
-	
+
 	shutdown .addInterest (javaScript .get (), &JavaScriptContext::shutdown);
 }
 

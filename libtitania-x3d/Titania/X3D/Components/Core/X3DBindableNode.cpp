@@ -75,7 +75,7 @@ X3DBindableNode::initialize ()
 
 	if (displayed)
 		initialized .addInterest (this, &X3DBindableNode::set_initialized);
-	
+
 	set_bind .addInterest (this, &X3DBindableNode::_set_bind);
 }
 

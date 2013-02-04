@@ -96,7 +96,7 @@ MovieTexture::initialize ()
 	X3DTexture2DNode::initialize ();
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
-	
+
 	requestImmediateLoad ();
 }
 

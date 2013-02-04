@@ -171,7 +171,7 @@ public:
 	virtual
 	void
 	processEvent (X3DFieldDefinition* const, ChildObjectSet &);
-	
+
 	virtual
 	void
 	processInterests ();

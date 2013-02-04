@@ -63,12 +63,9 @@ class X3DTexture2DNode :
 {
 public:
 
-	SFBool                     repeatS;
-	SFBool                     repeatT;
-	SFNode <TextureProperties> textureProperties;
-
-	const SFNode <TextureProperties> &
-	getTextureProperties ();
+	SFBool               repeatS;
+	SFBool               repeatT;
+	SFNode <X3DBaseNode> textureProperties;
 
 	bool
 	isTransparent ();
@@ -99,6 +96,9 @@ protected:
 
 private:
 
+	const TextureProperties*
+	getTextureProperties ();
+
 	static void
 	scaleImage (Magick::Image &);
 
@@ -108,7 +108,7 @@ private:
 	                const bool);
 
 	void
-	applyTextureProperties (const SFNode <TextureProperties> &) const;
+	applyTextureProperties (const TextureProperties*) const;
 
 	static const GLint wrapTypes [2];
 	GLuint             textureId;

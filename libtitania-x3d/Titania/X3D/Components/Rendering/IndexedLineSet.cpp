@@ -48,6 +48,7 @@
  *
  ******************************************************************************/
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/Color.h"
 #include "../Rendering/ColorRGBA.h"
@@ -102,7 +103,7 @@ IndexedLineSet::initialize ()
 void
 IndexedLineSet::set_coordIndex ()
 {
-	SFNode <Coordinate> _coord = coord;
+	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
 
 	if (not _coord)
 		return;
@@ -171,8 +172,8 @@ IndexedLineSet::set_coordIndex ()
 void
 IndexedLineSet::set_colorIndex ()
 {
-	SFNode <Color>     _color     = color;
-	SFNode <ColorRGBA> _colorRGBA = color;
+	auto _color     = x3d_cast <Color*> (color .getValue ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
 
 	if (_color or _colorRGBA)
 	{
@@ -220,15 +221,15 @@ IndexedLineSet::set_colorIndex ()
 void
 IndexedLineSet::build ()
 {
-	SFNode <Coordinate> _coord = coord;
+	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
 
 	if (not _coord or not _coord -> point .size ())
 		return;
 
 	// Color
 
-	SFNode <Color>     _color     = color;
-	SFNode <ColorRGBA> _colorRGBA = color;
+	auto _color     = x3d_cast <Color*> (color .getValue ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
 
 	// Fill GeometryNode
 

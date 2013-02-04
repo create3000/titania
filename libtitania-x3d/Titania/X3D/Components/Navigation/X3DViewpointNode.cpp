@@ -58,8 +58,8 @@ namespace titania {
 namespace X3D {
 
 X3DViewpointNode::X3DViewpointNode (bool displayed) :
-	            X3DBindableNode (displayed),                      
-	         X3DViewpointObject (),
+	            X3DBindableNode (displayed),                                        
+	         X3DViewpointObject (),                                                 
 	                orientation (),                                                 // SFRotation [in,out] orientation       0 0 1 0        [-1,1],(-∞,∞)
 	           centerOfRotation (),                                                 // SFVec3f    [in,out] centerOfRotation  0 0 0          (-∞,∞)
 	                       jump (true),                                             // SFBool     [in,out] jump              TRUE

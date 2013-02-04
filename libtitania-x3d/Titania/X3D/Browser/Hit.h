@@ -67,8 +67,8 @@ public:
 		nodes (nodes)
 	{ }
 
-	Vector3f                   hitPoint;
-	float                      distance;
+	Vector3f                  hitPoint;
+	float                     distance;
 	std::deque <X3DBaseNode*> nodes;
 
 };

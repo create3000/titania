@@ -146,9 +146,9 @@ public:
 		vector3 <Type> vertice5 = -xAxis + yAxis - zAxis;
 		vector3 <Type> vertice6 = -xAxis - yAxis + zAxis;
 		vector3 <Type> vertice7 = -xAxis - yAxis - zAxis;
-	
+
 		vector3 <Type> min;
-		
+
 		min = math::min (vertice0, vertice1);
 		min = math::min (min, vertice2);
 		min = math::min (min, vertice3);
@@ -156,7 +156,7 @@ public:
 		min = math::min (min, vertice5);
 		min = math::min (min, vertice6);
 		min = math::min (min, vertice7);
-		
+
 		return translation + min;
 	}
 
@@ -171,9 +171,9 @@ public:
 		vector3 <Type> vertice5 = -xAxis + yAxis - zAxis;
 		vector3 <Type> vertice6 = -xAxis - yAxis + zAxis;
 		vector3 <Type> vertice7 = -xAxis - yAxis - zAxis;
-	
+
 		vector3 <Type> max;
-		
+
 		max = math::max (vertice0, vertice1);
 		max = math::max (max, vertice2);
 		max = math::max (max, vertice3);
@@ -181,7 +181,7 @@ public:
 		max = math::max (max, vertice5);
 		max = math::max (max, vertice6);
 		max = math::max (max, vertice7);
-		
+
 		return translation + max;
 	}
 

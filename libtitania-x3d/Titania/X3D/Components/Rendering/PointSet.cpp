@@ -50,6 +50,7 @@
 
 #include "PointSet.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/Color.h"
 #include "../Rendering/ColorRGBA.h"
@@ -85,13 +86,13 @@ PointSet::create (X3DExecutionContext* const executionContext) const
 void
 PointSet::build ()
 {
-	SFNode <Coordinate> _coord = coord;
+	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
 
 	if (not _coord)
 		return;
 
-	SFNode <Color>     _color     = color;
-	SFNode <ColorRGBA> _colorRGBA = color;
+	auto _color     = x3d_cast <Color*> (color .getValue ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
 
 	if (_color)
 	{

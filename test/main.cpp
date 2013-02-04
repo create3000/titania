@@ -62,7 +62,7 @@
 //#include "Tests/Hierarchy.h"
 //#include "Tests/FieldInterest.h"
 
-#include "Tests/AddAndRemoveNode.h"
+//////#include "Tests/AddAndRemoveNode.h"
 
 #include <Titania/X3D.h>
 //#include <Titania/X3D/Fields.h>
@@ -142,11 +142,7 @@ main (int argc, char* argv [ ])
 	{
 		std::clog << "Start of block ..." << std::endl;
 
-		{
-
-		
-		
-		}
+		{ }
 
 		std::clog << "End of block ..." << std::endl;
 	}

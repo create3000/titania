@@ -61,13 +61,13 @@ class DISEntityManager :
 {
 public:
 
-	SFString             address;
-	SFInt32              applicationID;
-	MFNode mapping;
-	SFInt32              port;
-	SFInt32              siteID;
-	MFNode addedEntities;
-	MFNode removedEntities;
+	SFString address;
+	SFInt32  applicationID;
+	MFNode   mapping;
+	SFInt32  port;
+	SFInt32  siteID;
+	MFNode   addedEntities;
+	MFNode   removedEntities;
 
 	DISEntityManager (X3DExecutionContext* const);
 

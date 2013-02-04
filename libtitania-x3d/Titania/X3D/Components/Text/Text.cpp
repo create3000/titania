@@ -50,6 +50,7 @@
 
 #include "Text.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -112,19 +113,21 @@ Text::getLength (const size_t index)
 	return 0;
 }
 
-const SFNode <X3DFontStyleNode> &
+const X3DFontStyleNode*
 Text::getFontStyle () const
 {
-	if (this -> fontStyle)
-		return this -> fontStyle;
+	auto _fontStyle = x3d_cast <X3DFontStyleNode*> (fontStyle .getValue ());
 
-	return getBrowser () -> getBrowserOptions () -> fontStyle;
+	if (_fontStyle)
+		return _fontStyle;
+
+	return x3d_cast <X3DFontStyleNode*> (getBrowser () -> getBrowserOptions () -> fontStyle .getValue ());
 }
 
 void
 Text::set_fontStyle ()
 {
-	const SFNode <X3DFontStyleNode> & fontStyle = getFontStyle ();
+	const X3DFontStyleNode* fontStyle = getFontStyle ();
 
 	// Create a pixmap font from a TrueType file.
 	font .reset (new FTPolygonFont (fontStyle -> getFilename () .c_str ()));
@@ -149,7 +152,7 @@ Text::set_fontStyle ()
 Box3f
 Text::createBBox ()
 {
-	const SFNode <X3DFontStyleNode> & fontStyle = getFontStyle ();
+	const X3DFontStyleNode* fontStyle = getFontStyle ();
 
 	Box2f bbox;
 
@@ -164,7 +167,7 @@ Text::createBBox ()
 
 	for (const auto & line : string)
 	{
-		Box2f            lineBBox = getLineBBox (line .getValue ());
+		Box2f            lineBBox = getLineBBox (fontStyle, line .getValue ());
 		const Vector2f & min      = lineBBox .min ();
 		const Vector2f & max      = lineBBox .max ();
 
@@ -250,10 +253,8 @@ Text::createBBox ()
 }
 
 Box2f
-Text::getLineBBox (const std::string & line)
+Text::getLineBBox (const X3DFontStyleNode* fontStyle, const std::string & line)
 {
-	const SFNode <X3DFontStyleNode> & fontStyle = getFontStyle ();
-
 	FTBBox  ftbbox = font -> BBox (line .c_str ());
 	FTPoint min    = ftbbox .Lower ();
 	FTPoint max    = ftbbox .Upper ();

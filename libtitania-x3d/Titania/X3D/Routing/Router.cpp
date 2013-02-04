@@ -63,27 +63,27 @@ Router::processEvents ()
 {
 	std::deque <X3DBaseNode*> nodesToProcess;
 	ChildObjectSet            sourceFields;
-	
+
 	prepareEvents .processInterests ();
-	
+
 	while (events .size ())
 	{
 		do
 		{
 			nodesToProcess .clear ();
 			nodesToProcess .swap (events);
-		
+
 			for (const auto & node : nodesToProcess)
 			{
 				sourceFields .clear ();
 
 				node -> processEvents (sourceFields);
 			}
-		
+
 			processInterests ();
 		}
 		while (events .size ());
-		
+
 		eventsProcessed ();
 	}
 }
@@ -92,12 +92,12 @@ void
 Router::processInterests ()
 {
 	std::deque <X3DBaseNode*> nodesToProcess;
-	
+
 	while (interests .size ())
 	{
 		nodesToProcess .clear ();
 		nodesToProcess .swap (interests);
-		
+
 		for (const auto & node : nodesToProcess)
 			node -> processInterests ();
 	}
@@ -108,7 +108,7 @@ Router::eventsProcessed ()
 {
 	std::set <X3DBaseNode*> nodesToProcess;
 	nodesToProcess .swap (processeds);
-		
+
 	for (const auto & node : nodesToProcess)
 		node -> eventsProcessed ();
 }

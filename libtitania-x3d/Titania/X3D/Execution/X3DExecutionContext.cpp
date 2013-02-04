@@ -115,7 +115,9 @@ X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
 		addRootNode (rootNode .getValue () -> clone (this));
 
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
-		addImportedNode (getNamedNode (importedNode .getName () [0]), importedNode .getName () [1], importedNode .getName () [2]);
+		addImportedNode (SFNode <Inline> (dynamic_cast <Inline*> (getNamedNode (importedNode .getName () [0]) .getValue ())),
+		                 importedNode .getName () [1],
+		                 importedNode .getName () [2]);
 
 	for (const auto & exportedNode : executionContext -> getExportedNodes ())
 		addExportedNode (exportedNode .getName () [0], exportedNode .getName () [1]);
@@ -715,7 +717,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		const SFNode <X3DViewpointNode> viewpoint = getNamedNode (name);
+		auto viewpoint = dynamic_cast <X3DViewpointNode*> (getNamedNode (name) .getValue ());
 
 		if (viewpoint)
 			viewpoint -> set_bind = true;

@@ -73,7 +73,7 @@ public:
 	createInstance (bool = true);
 
 	///  @name Tests
-	
+
 	virtual
 	bool
 	isProto () const
