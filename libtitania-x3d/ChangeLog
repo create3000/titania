@@ -1,5 +1,9 @@
 2013-02-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.cpp: 
+
+2013-02-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3D.h:
 	* libtitania-x3d.cproj:
 	* Cast.h:

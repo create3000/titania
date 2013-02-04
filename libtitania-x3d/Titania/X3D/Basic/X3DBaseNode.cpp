@@ -234,15 +234,45 @@ X3DBaseNode::getNumClones () const
 		{
 			if (parentField -> getTypeName () == "SFNode")
 			{
+				// Only X3DNodes, ie nodes in the scene graph, have field names
+					
 				if (parentField -> getName () .length ())
-					++ numClones;
+				{
+					// If any of the fields parents is in a scene add count.
+					
+					for (const auto & fparent : parentField -> getParents ())
+					{
+						auto node = dynamic_cast <X3DBaseNode*> (fparent);
+						
+						if (node and node -> getExecutionContext () -> isScene ())
+						{
+							++ numClones;
+							break;
+						}
+					}
+				}
 
 				else
 				{
 					for (const auto & parent : parentField -> getParents ())
 					{
+						// Only X3DNodes, ie nodes in the scene graph, have field names
+						
 						if (parent -> getTypeName () == "MFNode" and parent -> getName () .length ())
-							++ numClones;
+						{
+							// If any of the fields parents is in a scene add count.
+					
+							for (const auto & fparent : parent -> getParents ())
+							{
+								auto node = dynamic_cast <X3DBaseNode*> (fparent);
+								
+								if (node and node -> getExecutionContext () -> isScene ())
+								{
+									++ numClones;
+									break;
+								}
+							}
+						}
 					}
 				}
 			}
