@@ -1,0 +1,18 @@
+#VRML V2.0 utf8 Comment
+
+META "title" "Rectangle2D"
+
+Background {
+	skyColor 0.2 0.2 0.2
+}
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { emissiveColor 1 0 0 }
+    }
+    geometry Circle2D {
+      radius 2
+    }
+  }
+}

@@ -50,7 +50,6 @@
 
 #include "BrowserOptions.h"
 
-#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry3D/QuadSphereProperties.h"
 #include <Titania/String/Join.h>
@@ -88,6 +87,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	               shading ("GOURAUD"),                                           
 	            motionBlur (new MotionBlur (executionContext)),                   
 	     textureProperties (new TextureProperties (executionContext)),            
+	    circle2DProperties (new Circle2DProperties (executionContext)),        
 	 rectangle2DProperties (new Rectangle2DProperties (executionContext)),        
 	         boxProperties (new BoxProperties (executionContext)),                
 	      sphereProperties (new QuadSphereProperties (executionContext)),         
@@ -107,6 +107,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "motionBlur",             motionBlur);
 	addField (inputOutput, "textureProperties",      textureProperties);
+	addField (inputOutput, "circle2DProperties",     circle2DProperties);
 	addField (inputOutput, "rectangle2DProperties",  rectangle2DProperties);
 	addField (inputOutput, "boxProperties",          boxProperties);
 	addField (inputOutput, "sphereProperties",       sphereProperties);
@@ -126,6 +127,7 @@ BrowserOptions::initialize ()
 
 	motionBlur            -> setup ();
 	textureProperties     -> setup ();
+	circle2DProperties    -> setup ();
 	rectangle2DProperties -> setup ();
 	boxProperties         -> setup ();
 	sphereProperties      -> setup ();
@@ -142,12 +144,10 @@ BrowserOptions::initialize ()
 void
 BrowserOptions::set_textureQuality ()
 {
-	auto _textureProperties = x3d_cast <TextureProperties*> (textureProperties .getValue ());
-
-	_textureProperties -> magnificationFilter = "NICEST";
-	_textureProperties -> minificationFilter  = "NICEST";
-	_textureProperties -> textureCompression  = "NICEST";
-	_textureProperties -> generateMipMaps     = true;
+	textureProperties -> magnificationFilter = "NICEST";
+	textureProperties -> minificationFilter  = "NICEST";
+	textureProperties -> textureCompression  = "NICEST";
+	textureProperties -> generateMipMaps     = true;
 
 }
 
@@ -158,7 +158,7 @@ BrowserOptions::set_primitiveQuality ()
 
 	if (primitiveQuality == "LOW")
 	{
-		auto quadSphereProperties = x3d_cast <QuadSphereProperties*> (sphereProperties .getValue ());
+		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties .getValue ());
 
 		if (quadSphereProperties)
 		{
@@ -168,7 +168,7 @@ BrowserOptions::set_primitiveQuality ()
 	}
 	else if (primitiveQuality == "MEDIUM")
 	{
-		auto quadSphereProperties = x3d_cast <QuadSphereProperties*> (sphereProperties .getValue ());
+		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties .getValue ());
 
 		if (quadSphereProperties)
 		{
@@ -178,7 +178,7 @@ BrowserOptions::set_primitiveQuality ()
 	}
 	else if (primitiveQuality == "HIGH")
 	{
-		auto quadSphereProperties = x3d_cast <QuadSphereProperties*> (sphereProperties .getValue ());
+		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties .getValue ());
 
 		if (quadSphereProperties)
 		{

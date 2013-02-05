@@ -518,6 +518,7 @@
     <None Include="Titania\X3D\Components\Navigation\X3DViewpointObject.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Rectangle2DProperties.h" />
     <None Include="Titania\X3D\Bits\Cast.h" />
+    <None Include="Titania\X3D\Browser\Geometry2D\Circle2DProperties.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -917,6 +918,7 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\JavaScriptContext.cpp" />
     <Compile Include="Titania\X3D\Components\Navigation\X3DViewpointObject.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Rectangle2DProperties.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry2D\Circle2DProperties.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

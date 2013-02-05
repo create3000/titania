@@ -48,33 +48,43 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY2D_POLYPOINT2D_H__
-#define __TITANIA_X3D_COMPONENTS_GEOMETRY2D_POLYPOINT2D_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_CIRCLE2DPROPERTIES_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY2D_CIRCLE2DPROPERTIES_H__
 
-#include "../Rendering/X3DGeometryNode.h"
+#include "../Properties/X3DGeometryPropertyNode.h"
 
 namespace titania {
 namespace X3D {
 
-class Polypoint2D :
-	public X3DGeometryNode
+//	Property Name           Value data type      Description
+
+class Circle2DProperties :
+	public X3DGeometryPropertyNode
 {
 public:
 
-	MFVec2f point;
-
-	Polypoint2D (X3DExecutionContext* const);
+	Circle2DProperties (X3DExecutionContext* const);
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
-
-	void
-	display ();
+	GLenum
+	getVertexMode () const { return GL_QUADS; }
 
 
 private:
 
+	virtual
+	Circle2DProperties*
+	create (X3DExecutionContext* const) const;
+
+	virtual
+	void
+	initialize ();
+
+	virtual
+	void
+	eventsProcessed ();
+
+	virtual
 	void
 	build ();
 

@@ -121,7 +121,7 @@ Text::getFontStyle () const
 	if (_fontStyle)
 		return _fontStyle;
 
-	return x3d_cast <X3DFontStyleNode*> (getBrowser () -> getBrowserOptions () -> fontStyle .getValue ());
+	return getBrowser () -> getBrowserOptions () -> fontStyle .getValue ();
 }
 
 void

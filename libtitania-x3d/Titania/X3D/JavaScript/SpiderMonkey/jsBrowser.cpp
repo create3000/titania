@@ -235,14 +235,7 @@ jsBrowser::createX3DFromString (JSContext* context, uintN argc, jsval* vp)
 
 		X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		{
-			SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, x3dSyntax));
-
-			__LOG__ << scene -> getParents () .size () << std::endl;
-
-			for (const auto & parent : scene -> getParents ())
-				__LOG__ << parent -> getTypeName () << std::endl;
-		}
+		SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, x3dSyntax));
 
 		JS_SET_RVAL (context, vp, JSVAL_VOID);
 

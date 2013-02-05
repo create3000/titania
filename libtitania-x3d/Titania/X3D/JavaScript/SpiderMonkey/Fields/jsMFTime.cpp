@@ -121,6 +121,56 @@ jsX3DArrayField <jsSFTime, MFTime>::set1Value (JSContext* context, JSObject* obj
 	return JS_TRUE;
 }
 
+template <>
+JSBool
+jsX3DArrayField <jsSFTime, MFTime>::unshift (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		jsdouble value;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "d", &value))
+			return JS_FALSE;
+
+		MFTime* field = (MFTime*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		
+		field -> emplace_front (value);
+
+		return JS_NewNumberValue (context, field -> size (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+template <>
+JSBool
+jsX3DArrayField <jsSFTime, MFTime>::push (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		jsdouble value;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "d", &value))
+			return JS_FALSE;
+
+		MFTime* field = (MFTime*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		
+		field -> emplace_back (value);
+
+		return JS_NewNumberValue (context, field -> size (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
 template class jsX3DArrayField <jsSFTime, MFTime>;
 
 } // X3D

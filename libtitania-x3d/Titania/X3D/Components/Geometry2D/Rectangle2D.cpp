@@ -50,7 +50,6 @@
 
 #include "Rectangle2D.h"
 
-#include "../../Bits/Cast.h"
 #include "../../Browser/Geometry2D/Rectangle2DProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -100,7 +99,7 @@ Rectangle2D::set_properties ()
 void
 Rectangle2D::build ()
 {
-	auto properties = x3d_cast <const Rectangle2DProperties*> (getBrowser () -> getBrowserOptions () -> rectangle2DProperties .getValue ());
+	const Rectangle2DProperties* properties = getBrowser () -> getBrowserOptions () -> rectangle2DProperties .getValue ();
 
 	getTexCoord () = properties -> getTexCoord ();
 	getNormals  () = properties -> getNormals  ();

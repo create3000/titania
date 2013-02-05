@@ -58,18 +58,6 @@
 namespace titania {
 namespace X3D {
 
-template <>
-JSBool
-jsX3DArrayField <jsSFNode, MFNode>::construct (JSContext *, uintN, jsval*);
-
-template <>
-JSBool
-jsX3DArrayField <jsSFNode, MFNode>::get1Value (JSContext *, JSObject *, jsid, jsval*);
-
-template <>
-JSBool
-jsX3DArrayField <jsSFNode, MFNode>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
-
 extern template class jsX3DArrayField <jsSFNode, MFNode>;
 
 typedef jsX3DArrayField <jsSFNode, MFNode> jsMFNode;

@@ -48,39 +48,67 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY2D_POLYPOINT2D_H__
-#define __TITANIA_X3D_COMPONENTS_GEOMETRY2D_POLYPOINT2D_H__
+#include "Circle2DProperties.h"
 
-#include "../Rendering/X3DGeometryNode.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-class Polypoint2D :
-	public X3DGeometryNode
+Circle2DProperties::Circle2DProperties (X3DExecutionContext* const executionContext) :
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DGeometryPropertyNode ()                                                     
 {
-public:
+	setComponent ("Browser"),
+	setTypeName ("Circle2DProperties");
+}
 
-	MFVec2f point;
+Circle2DProperties*
+Circle2DProperties::create (X3DExecutionContext* const executionContext) const
+{
+	return new Circle2DProperties (executionContext);
+}
 
-	Polypoint2D (X3DExecutionContext* const);
+void
+Circle2DProperties::initialize ()
+{
+	X3DGeometryPropertyNode::initialize ();
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
-
-	void
-	display ();
-
-
-private:
-
-	void
 	build ();
+}
 
-};
+void
+Circle2DProperties::eventsProcessed ()
+{
+	X3DGeometryPropertyNode::eventsProcessed ();
+
+	update ();
+}
+
+void
+Circle2DProperties::build ()
+{
+	getTexCoord () .reserve (4);
+	getNormals  () .reserve (4);
+	getVertices () .reserve (4);
+
+	// Front Face
+	getTexCoord () .emplace_back (0, 0);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (-1, -1, 0);
+
+	getTexCoord () .emplace_back (1, 0);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (1, -1, 0);
+
+	getTexCoord () .emplace_back (1, 1);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (1, 1, 0);
+
+	getTexCoord () .emplace_back (0, 1);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (-1, 1, 0);
+}
 
 } // X3D
 } // titania
-
-#endif

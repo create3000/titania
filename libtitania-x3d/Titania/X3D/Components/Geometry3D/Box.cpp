@@ -50,7 +50,6 @@
 
 #include "Box.h"
 
-#include "../../Bits/Cast.h"
 #include "../../Browser/Geometry3D/BoxProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -100,7 +99,7 @@ Box::set_properties ()
 void
 Box::build ()
 {
-	auto properties = x3d_cast <const BoxProperties*> (getBrowser () -> getBrowserOptions () -> boxProperties .getValue ());
+	const BoxProperties* properties = getBrowser () -> getBrowserOptions () -> boxProperties .getValue ();
 
 	getTexCoord () = properties -> getTexCoord ();
 	getNormals  () = properties -> getNormals  ();

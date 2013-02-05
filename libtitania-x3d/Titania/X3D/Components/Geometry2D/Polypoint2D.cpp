@@ -73,5 +73,21 @@ Polypoint2D::create (X3DExecutionContext* const executionContext) const
 	return new Polypoint2D (executionContext);
 }
 
+void
+Polypoint2D::build ()
+{
+	for (const auto & vertex : point)
+		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
+
+	setVertexMode (GL_POINTS);
+}
+
+void
+Polypoint2D::display ()
+{
+	glDisable (GL_LIGHTING);
+	X3DGeometryNode::display ();
+}
+
 } // X3D
 } // titania

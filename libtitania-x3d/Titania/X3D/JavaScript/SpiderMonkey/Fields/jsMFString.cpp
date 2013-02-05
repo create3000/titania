@@ -111,6 +111,56 @@ jsX3DArrayField <jsSFString, MFString>::set1Value (JSContext* context, JSObject*
 	return JS_TRUE;
 }
 
+template <>
+JSBool
+jsX3DArrayField <jsSFString, MFString>::unshift (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		JSString* value;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "S", &value))
+			return JS_FALSE;
+
+		MFString* field = (MFString*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		
+		field -> emplace_front (JS_GetString (context, value));
+
+		return JS_NewNumberValue (context, field -> size (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+template <>
+JSBool
+jsX3DArrayField <jsSFString, MFString>::push (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		JSString* value;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "S", &value))
+			return JS_FALSE;
+
+		MFString* field = (MFString*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		
+		field -> emplace_back (JS_GetString (context, value));
+
+		return JS_NewNumberValue (context, field -> size (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
 template class jsX3DArrayField <jsSFString, MFString>;
 
 } // X3D

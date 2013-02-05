@@ -1,3 +1,36 @@
+2013-02-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Text.cpp:
+	* Box.cpp:
+	* Circle2D.h:
+	* Sphere.cpp:
+	* Circle2D.cpp:
+	* Polypoint2D.h:
+	* BrowserOptions.h:
+	* BrowserOptions.cpp:
+	* jsBrowser.cpp:
+	* Rectangle2D.cpp:
+	* Polypoint2D.cpp:
+	* Circle2DProperties.h:
+	* jsMFNode.h:
+	* jsMFTime.h:
+	* jsX3DArrayField.h:
+	* Circle2DProperties.cpp:
+	* jsMFBool.h:
+	* jsMFInt32.h:
+	* jsMFFloat.h:
+	* jsMFString.h:
+	* jsMFBool.cpp:
+	* jsMFTime.cpp:
+	* jsMFNode.cpp:
+	* jsMFDouble.h:
+	* jsMFFloat.cpp:
+	* jsMFInt32.cpp:
+	* jsMFString.cpp:
+	* jsMFDouble.cpp: 
+
 2013-02-04  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.cpp: 

@@ -55,6 +55,7 @@
 #include "../../Components/Text/FontStyle.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Geometry2D/Circle2DProperties.h"
 #include "../Geometry2D/Rectangle2DProperties.h"
 #include "../Geometry3D/BoxProperties.h"
 #include "../Geometry3D/X3DSpherePropertyNode.h"
@@ -89,12 +90,13 @@ public:
 	SFString qualityWhenMoving;
 	SFString shading;
 
-	SFNode <X3DBaseNode> motionBlur;
-	SFNode <X3DBaseNode> textureProperties;
-	SFNode <X3DBaseNode> rectangle2DProperties;
-	SFNode <X3DBaseNode> boxProperties;
-	SFNode <X3DBaseNode> sphereProperties;
-	SFNode <X3DBaseNode> fontStyle;
+	SFNode <MotionBlur>            motionBlur;
+	SFNode <TextureProperties>     textureProperties;
+	SFNode <Circle2DProperties>    circle2DProperties;
+	SFNode <Rectangle2DProperties> rectangle2DProperties;
+	SFNode <BoxProperties>         boxProperties;
+	SFNode <X3DSpherePropertyNode> sphereProperties;
+	SFNode <X3DFontStyleNode>      fontStyle;
 
 	BrowserOptions (X3DExecutionContext* const);
 

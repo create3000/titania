@@ -92,6 +92,11 @@ private:
 
 	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	
+	static JSBool unshift (JSContext *, uintN, jsval*);
+	static JSBool push    (JSContext *, uintN, jsval*);
+	static JSBool shift   (JSContext *, uintN, jsval*);
+	static JSBool pop     (JSContext *, uintN, jsval*);
 
 	static JSBool length (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool length (JSContext *, JSObject *, jsid, JSBool, jsval*);
@@ -124,6 +129,11 @@ JSFunctionSpec jsX3DArrayField <Type, FieldType>::functions [ ] = {
 	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
 	{ "getType",     getType <X3DChildObject>,     0, 0 },
 
+	{ "unshift",     unshift, 1, 0 },
+	{ "push",        push,    1, 0 },
+	{ "shift",       shift,   0, 0 },
+	{ "pop",         pop,     0, 0 },
+	
 	{ "toString",    toString <X3DChildObject>,    0, 0 },
 
 	{ 0 }
@@ -306,6 +316,128 @@ jsX3DArrayField <Type, FieldType>::set1Value (JSContext* context, JSObject* obj,
 	*vp = JSVAL_VOID;
 
 	return JS_TRUE;
+}
+
+template <class Type, class FieldType>
+JSBool
+jsX3DArrayField <Type, FieldType>::unshift (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		JSObject* value;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "o", &value))
+			return JS_FALSE;
+	
+		if (not JS_InstanceOf (context, value, value_type::getClass (), NULL))
+		{
+			JS_ReportError (context, "Type of argument is invalid - should be %s, is %s",
+			                value_type::getClass () -> name,
+			                JS_GetClass (context, value) -> name);
+
+			return JS_FALSE;
+		}
+
+		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		
+		field -> emplace_front (*(field_value_type*) JS_GetPrivate (context, value));
+
+		return JS_NewNumberValue (context, field -> size (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+template <class Type, class FieldType>
+JSBool
+jsX3DArrayField <Type, FieldType>::push (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		JSObject* value;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "o", &value))
+			return JS_FALSE;
+	
+		if (not JS_InstanceOf (context, value, value_type::getClass (), NULL))
+		{
+			JS_ReportError (context, "Type of argument is invalid - should be %s, is %s",
+			                value_type::getClass () -> name,
+			                JS_GetClass (context, value) -> name);
+
+			return JS_FALSE;
+		}
+
+		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		
+		field -> emplace_back (*(field_value_type*) JS_GetPrivate (context, value));
+
+		return JS_NewNumberValue (context, field -> size (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+template <class Type, class FieldType>
+JSBool
+jsX3DArrayField <Type, FieldType>::shift (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		
+		if (field -> size ())
+		{
+			auto value = new field_value_type (field -> front ());
+		
+			field -> pop_front ();
+
+			return value_type::create (context, value, vp);
+		}
+		
+		*vp = JSVAL_VOID;
+
+		return JS_TRUE;
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+template <class Type, class FieldType>
+JSBool
+jsX3DArrayField <Type, FieldType>::pop (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		
+		if (field -> size ())
+		{
+			auto value = new field_value_type (field -> back ());
+		
+			field -> pop_back ();
+
+			return value_type::create (context, value, vp);
+		}
+		
+		*vp = JSVAL_VOID;
+
+		return JS_TRUE;
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
 }
 
 template <class Type, class FieldType>

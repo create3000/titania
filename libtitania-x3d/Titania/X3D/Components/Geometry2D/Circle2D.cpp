@@ -50,6 +50,8 @@
 
 #include "Circle2D.h"
 
+#include "../../Browser/Geometry2D/Circle2DProperties.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -58,7 +60,7 @@ namespace X3D {
 Circle2D::Circle2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	         radius (1)                                                    // SFFloat [ ]radius  1        (0,∞)
+	         radius (1)                                                    // SFFloat [ ] radius  1        (0,∞)
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Circle2D");
@@ -71,6 +73,57 @@ X3DBaseNode*
 Circle2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new Circle2D (executionContext);
+}
+
+void
+Circle2D::initialize ()
+{
+	X3DGeometryNode::initialize ();
+
+	getBrowser () -> getBrowserOptions () -> circle2DProperties .addInterest (this, &Circle2D::set_properties);
+}
+
+Box3f
+Circle2D::createBBox ()
+{
+	return Box3f (Vector3f (radius, radius, 0), Vector3f ());
+}
+
+void
+Circle2D::set_properties ()
+{
+	update ();
+}
+
+void
+Circle2D::build ()
+{
+	const Circle2DProperties* properties = getBrowser () -> getBrowserOptions () -> circle2DProperties .getValue ();
+
+	getTexCoord () = properties -> getTexCoord ();
+
+	if (radius == 1.0f)
+		getVertices () = properties -> getVertices ();
+
+	else
+	{
+		getVertices () .reserve (properties -> getVertices () .size ());
+
+		auto size1_2 = Vector3f (radius, radius, 0);
+
+		for (const auto & vertex : properties -> getVertices ())
+			getVertices () .emplace_back (vertex * size1_2);
+	}
+
+	setVertexMode (properties -> getVertexMode ());
+}
+
+void
+Circle2D::dispose ()
+{
+	getBrowser () -> getBrowserOptions () -> circle2DProperties .removeInterest (this, &Circle2D::set_properties);
+
+	X3DGeometryNode::dispose ();
 }
 
 } // X3D
