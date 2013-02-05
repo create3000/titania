@@ -62,10 +62,10 @@ class NurbsSweptSurface :
 public:
 
 	using X3DGeometryNode::ccw;
-	using X3DGeometryNode::solid;
-
+	
 	SFNode <X3DBaseNode> crossSectionCurve;
 	SFNode <X3DBaseNode> trajectoryCurve;
+	SFBool               solid;
 
 	NurbsSweptSurface (X3DExecutionContext* const);
 

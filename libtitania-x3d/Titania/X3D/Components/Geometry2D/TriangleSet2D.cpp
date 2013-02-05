@@ -58,7 +58,8 @@ namespace X3D {
 TriangleSet2D::TriangleSet2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	       vertices ()                                                     // MFVec2f [in,out] vertices  [ ]          (-∞,∞)
+	       vertices (),                                                    // MFVec2f [in,out] vertices  [ ]          (-∞,∞)
+	          solid (true)                                                 // SFBool  [ ]      solid     TRUE
 {
 	setComponent ("Geometry2D");
 	setTypeName ("TriangleSet2D");

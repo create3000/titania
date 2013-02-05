@@ -60,10 +60,11 @@ namespace X3D {
 Cone::Cone (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	         bottom (true),                                                // SFBool  [ ]bottom        TRUE
-	   bottomRadius (1),                                                   // SFFloat [ ]bottomRadius  1           (0,∞)
-	         height (2),                                                   // SFFloat [ ]height        2           (0,∞)
-	           side (true)                                                 // SFBool  [ ]side          TRUE
+	         bottom (true),                                                // SFBool  [ ] bottom        TRUE
+	   bottomRadius (1),                                                   // SFFloat [ ] bottomRadius  1           (0,∞)
+	         height (2),                                                   // SFFloat [ ] height        2           (0,∞)
+	           side (true),                                                // SFBool  [ ] side          TRUE
+	          solid (true)                                                 // SFBool  [ ] solid         TRUE
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Cone");
@@ -170,6 +171,7 @@ Cone::build ()
 	}
 
 	setVertexMode (GL_TRIANGLES);
+	setSolid (solid);
 }
 
 } // X3D

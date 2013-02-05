@@ -64,7 +64,8 @@ Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
 	         height (2),                                                   // SFFloat [ ] height  2           (0,∞)
 	         radius (1),                                                   // SFFloat [ ] radius  1           (0,∞)
 	           side (true),                                                // SFBool  [ ] side    TRUE
-	            top (true)                                                 // SFBool  [ ] top     TRUE
+	            top (true),                                                // SFBool  [ ] top     TRUE
+	          solid (true)                                                 // SFBool  [ ] solid   TRUE
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Cylinder");
@@ -206,6 +207,7 @@ Cylinder::build ()
 	}
 
 	setVertexMode (GL_TRIANGLES);
+	setSolid (solid);
 }
 
 } // X3D

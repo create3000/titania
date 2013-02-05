@@ -100,8 +100,6 @@ Circle2D::build ()
 {
 	const Circle2DProperties* properties = getBrowser () -> getBrowserOptions () -> circle2DProperties .getValue ();
 
-	getTexCoord () = properties -> getTexCoord ();
-
 	if (radius == 1.0f)
 		getVertices () = properties -> getVertices ();
 
@@ -109,13 +107,18 @@ Circle2D::build ()
 	{
 		getVertices () .reserve (properties -> getVertices () .size ());
 
-		auto size1_2 = Vector3f (radius, radius, 0);
-
 		for (const auto & vertex : properties -> getVertices ())
-			getVertices () .emplace_back (vertex * size1_2);
+			getVertices () .emplace_back (vertex * radius .getValue ());
 	}
 
 	setVertexMode (properties -> getVertexMode ());
+}
+
+void
+Circle2D::display ()
+{
+	glDisable (GL_LIGHTING);
+	X3DGeometryNode::display ();
 }
 
 void

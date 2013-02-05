@@ -71,6 +71,10 @@ public:
 
 	virtual
 	void
+	display ();
+
+	virtual
+	void
 	dispose ();
 
 
@@ -80,12 +84,14 @@ private:
 	void
 	initialize ();
 
+	virtual
 	Box3f
 	createBBox ();
 
 	void
 	set_properties ();
 
+	virtual
 	void
 	build ();
 

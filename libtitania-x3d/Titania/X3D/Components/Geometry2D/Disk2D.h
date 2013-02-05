@@ -61,10 +61,9 @@ class Disk2D :
 {
 public:
 
-	using X3DGeometryNode::solid;
-
 	SFFloat innerRadius;
 	SFFloat outerRadius;
+	SFBool  solid;
 
 	Disk2D (X3DExecutionContext* const);
 

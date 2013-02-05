@@ -2,6 +2,54 @@
 
 	* Makefile.am:
 	* libtitania-x3d.cproj:
+	* Text.h:
+	* Box.h:
+	* Cone.h:
+	* Box.cpp:
+	* Cone.cpp:
+	* Sphere.h:
+	* Disk2D.h:
+	* Disk2D.cpp:
+	* Circle2D.h:
+	* Sphere.cpp:
+	* Cylinder.h:
+	* Extrusion.h:
+	* Cylinder.cpp:
+	* ArcClose2D.h:
+	* Circle2D.cpp:
+	* Extrusion.cpp:
+	* BrowserOptions.h:
+	* Polypoint2D.h:
+	* Rectangle2D.h:
+	* NurbsSwungSurface.h:
+	* ArcClose2D.cpp:
+	* NurbsSweptSurface.h:
+	* PixelTexture.cpp:
+	* BrowserOptions.cpp:
+	* Rectangle2D.cpp:
+	* TriangleSet2D.h:
+	* ElevationGrid.h:
+	* NurbsSweptSurface.cpp:
+	* X3DGeometryNode.h:
+	* NurbsSwungSurface.cpp:
+	* ElevationGrid.cpp:
+	* TriangleSet2D.cpp:
+	* Circle2DProperties.h:
+	* X3DGeometryNode.cpp:
+	* GeoElevationGrid.h:
+	* ArcClose2DProperties.h:
+	* Circle2DProperties.cpp:
+	* GeoElevationGrid.cpp:
+	* ArcClose2DProperties.cpp:
+	* X3DComposedGeometryNode.h:
+	* X3DNurbsSurfaceGeometryNode.h:
+	* X3DComposedGeometryNode.cpp:
+	* X3DNurbsSurfaceGeometryNode.cpp: 
+
+2013-02-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
 	* Text.cpp:
 	* Box.cpp:
 	* Circle2D.h:

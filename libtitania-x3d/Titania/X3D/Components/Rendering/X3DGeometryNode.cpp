@@ -55,7 +55,6 @@ namespace X3D {
 
 X3DGeometryNode::X3DGeometryNode () :
 	                   X3DNode (),               
-	                     solid (true),           // SFBool  [ ]      solid            TRUE
 	                       ccw (true),           // SFBool  [ ]      ccw              TRUE
 	               creaseAngle (),               // SFFloat [ ]      creaseAngle      0           [0,∞)
 	                      bbox (),               
@@ -66,6 +65,8 @@ X3DGeometryNode::X3DGeometryNode () :
 	                   normals (),               
 	                  vertices (),               
 	                vertexMode (),               
+	                     solid (true),
+	                  elements (1),
 	               bufferUsage (GL_STATIC_DRAW), 
 	          texCoordBufferId (0),              
 	             colorBufferId (0),              
@@ -324,7 +325,10 @@ X3DGeometryNode::display ()
 	glEnableClientState (GL_VERTEX_ARRAY);
 	glVertexPointer (3, GL_FLOAT, 0, 0);
 
-	glDrawArrays (vertexMode, 0, vertices .size ());
+	size_t count = vertices .size () / elements;
+
+	for (size_t n = 1; n < elements; ++ n)
+		glDrawArrays (vertexMode, n * count, count);
 
 	if (textureCoordinateGenerator)
 		textureCoordinateGenerator -> disable ();

@@ -63,7 +63,6 @@ class ElevationGrid :
 public:
 
 	using X3DGeometryNode::ccw;
-	using X3DGeometryNode::solid;
 	using X3DGeometryNode::creaseAngle;
 
 	MFFloat              set_height;
@@ -75,6 +74,7 @@ public:
 	SFBool               colorPerVertex;
 	MFFloat              height;
 	SFBool               normalPerVertex;
+	SFBool               solid;
 	SFInt32              xDimension;
 	SFFloat              xSpacing;
 	SFInt32              zDimension;

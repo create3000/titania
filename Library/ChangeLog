@@ -1,6 +1,15 @@
 2013-02-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Library.mdproj:
+	* image.png:
+	* image.svg:
+	* Circle2D.wrl:
+	* ArcClose2D.wrl:
+	* Polypoint2D.wrl: 
+
+2013-02-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
 	* Circle2D.wrl:
 	* Polypoint2D.wrl: 
 

@@ -10,11 +10,14 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
-   width="4096"
-   height="2048"
+   width="512"
+   height="512"
    id="svg2"
-   inkscape:version="0.47 r22583"
-   sodipodi:docname="image.svg">
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="image.svg"
+   inkscape:export-filename="/home/holger/Projekte/Titania/Library/Tests/images/image.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <metadata
      id="metadata11">
     <rdf:RDF>
@@ -23,6 +26,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -35,17 +39,32 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="640"
-     inkscape:window-height="480"
+     inkscape:window-width="1621"
+     inkscape:window-height="1026"
      id="namedview9"
      showgrid="false"
-     inkscape:zoom="0.13330078"
-     inkscape:cx="2048"
-     inkscape:cy="1024"
-     inkscape:window-x="0"
+     inkscape:zoom="1.2119866"
+     inkscape:cx="253.65104"
+     inkscape:cy="250.26204"
+     inkscape:window-x="59"
      inkscape:window-y="24"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="svg2" />
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2"
+     inkscape:snap-page="true"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-nodes="true"
+     inkscape:bbox-paths="true">
+    <sodipodi:guide
+       orientation="0,1"
+       position="256,256"
+       id="guide3837" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="256,256"
+       id="guide3839" />
+  </sodipodi:namedview>
   <defs
      id="defs4">
     <inkscape:perspective
@@ -56,21 +75,147 @@
        inkscape:persp3d-origin="2048 : 682.66667 : 1"
        id="perspective13" />
   </defs>
-  <g
-     transform="translate(1628,580.20923)"
-     id="layer1">
-    <path
-       transform="translate(-1628,-580.20923)"
-       style="fill:#d71f1f;fill-opacity:1;stroke:none"
-       d="m 554.28571,496.57144 671.42859,0 0,619.99996 -671.42859,0 0,-619.99996 z"
-       id="rect2851" />
-  </g>
+  <rect
+     style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+     id="rect3067"
+     width="512"
+     height="511.99997"
+     x="-1.1222541e-07"
+     y="7.6955018e-08" />
   <path
-     style="fill:#d71f1f;fill-opacity:1;stroke:none"
-     d="m 1820,408 762.8571,0 0,682.8571 -762.8571,0 L 1820,408 z"
-     id="rect2854" />
-  <path
-     style="fill:#d71f1f;fill-opacity:1;stroke:none"
-     id="path2856"
-     d="m 3188.5715,628 a 182.85715,185.71428 0 0 1 -365.7143,0 182.85715,185.71428 0 1 1 365.7143,0 z" />
+     sodipodi:type="arc"
+     style="fill:none;stroke:#000000;stroke-width:1.1655606;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+     id="path3841"
+     sodipodi:cx="242.68527"
+     sodipodi:cy="243.45483"
+     sodipodi:rx="149.19176"
+     sodipodi:ry="149.19176"
+     d="m 391.87703,243.45483 a 149.19176,149.19176 0 1 1 -298.383515,0 149.19176,149.19176 0 1 1 298.383515,0 z"
+     transform="matrix(1.7159125,0,0,1.7159125,-160.42669,-161.74719)" />
+  <rect
+     style="fill:#ff0000;fill-opacity:1;stroke:none"
+     id="rect3843"
+     width="64"
+     height="64"
+     x="160.00002"
+     y="128" />
+  <rect
+     y="128"
+     x="224.00002"
+     height="64"
+     width="64"
+     id="rect3845"
+     style="fill:#00ff00;fill-opacity:1;stroke:none" />
+  <rect
+     style="fill:#0000ff;fill-opacity:1;stroke:none"
+     id="rect3847"
+     width="64"
+     height="64"
+     x="288"
+     y="128" />
+  <rect
+     y="192"
+     x="160.00002"
+     height="64"
+     width="64"
+     id="rect3849"
+     style="fill:#00ffff;fill-opacity:1;stroke:none" />
+  <rect
+     style="fill:#ff00ff;fill-opacity:1;stroke:none"
+     id="rect3851"
+     width="64"
+     height="64"
+     x="224.00002"
+     y="192" />
+  <rect
+     y="192"
+     x="288"
+     height="64"
+     width="64"
+     id="rect3853"
+     style="fill:#ffff00;fill-opacity:1;stroke:none" />
+  <rect
+     y="64"
+     x="160.00002"
+     height="64"
+     width="64"
+     id="rect3855"
+     style="fill:#000000;fill-opacity:1;stroke:none" />
+  <rect
+     style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.99999982;stroke-opacity:1"
+     id="rect3857"
+     width="63"
+     height="63"
+     x="224.50002"
+     y="64.5" />
+  <rect
+     y="64.5"
+     x="288.5"
+     height="63"
+     width="63"
+     id="rect3859"
+     style="fill:none;stroke:#000000;stroke-width:0.99999952;stroke-opacity:1" />
+  <rect
+     y="320"
+     x="160.00002"
+     height="64"
+     width="64"
+     id="rect3881"
+     style="fill:#bf4040;fill-opacity:1;stroke:none" />
+  <rect
+     style="fill:#40bf40;fill-opacity:1;stroke:none"
+     id="rect3883"
+     width="64"
+     height="64"
+     x="224.00002"
+     y="320" />
+  <rect
+     y="320"
+     x="288"
+     height="64"
+     width="64"
+     id="rect3885"
+     style="fill:#4040bf;fill-opacity:1;stroke:none" />
+  <rect
+     style="fill:#40bfbf;fill-opacity:1;stroke:none"
+     id="rect3887"
+     width="64"
+     height="64"
+     x="160.00002"
+     y="384" />
+  <rect
+     y="384"
+     x="224.00002"
+     height="64"
+     width="64"
+     id="rect3889"
+     style="fill:#bf40bf;fill-opacity:1;stroke:none" />
+  <rect
+     style="fill:#bfbf40;fill-opacity:1;stroke:none"
+     id="rect3891"
+     width="64"
+     height="64"
+     x="288"
+     y="384" />
+  <rect
+     style="fill:#3f3f3f;fill-opacity:1;stroke:none"
+     id="rect3893"
+     width="64"
+     height="64"
+     x="160.00002"
+     y="256" />
+  <rect
+     y="256"
+     x="224.00002"
+     height="64"
+     width="64"
+     id="rect3937"
+     style="fill:#7f7f7f;fill-opacity:1;stroke:none" />
+  <rect
+     style="fill:#bfbfbf;fill-opacity:1;stroke:none"
+     id="rect3939"
+     width="64"
+     height="64"
+     x="288"
+     y="256" />
 </svg>

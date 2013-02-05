@@ -1,0 +1,71 @@
+#VRML V2.0 utf8 Comment
+
+META "title" "ArcClose2D"
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  position 0 0 6
+}
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+      }
+    }
+    geometry ArcClose2D {
+      startAngle 2
+      endAngle 6
+      solid FALSE
+    }
+  }
+}
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+      }
+    }
+    geometry ArcClose2D {
+      solid FALSE
+    }
+  }
+}
+
+Transform {
+  translation -2.5 0 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+      }
+    }
+    geometry ArcClose2D {
+      startAngle 1
+      endAngle 8
+      solid FALSE
+    }
+  }
+}
+
+Transform {
+  translation 2.5 0 0
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry ArcClose2D {
+      startAngle 1
+      endAngle 8
+      solid FALSE
+    }
+  }
+}

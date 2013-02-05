@@ -51,16 +51,20 @@
 #include "Circle2DProperties.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include <complex>
 
 namespace titania {
 namespace X3D {
 
 Circle2DProperties::Circle2DProperties (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryPropertyNode ()                                                     
+	X3DGeometryPropertyNode (),
+	               segments (60)                                                     
 {
 	setComponent ("Browser"),
 	setTypeName ("Circle2DProperties");
+	
+	addField (inputOutput, "segments", segments);
 }
 
 Circle2DProperties*
@@ -88,26 +92,16 @@ Circle2DProperties::eventsProcessed ()
 void
 Circle2DProperties::build ()
 {
-	getTexCoord () .reserve (4);
-	getNormals  () .reserve (4);
-	getVertices () .reserve (4);
+	getVertices () .reserve (segments);
 
-	// Front Face
-	getTexCoord () .emplace_back (0, 0);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (-1, -1, 0);
+	float angle = 2 * M_PI / segments;
 
-	getTexCoord () .emplace_back (1, 0);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (1, -1, 0);
+	for (int32_t n = 0; n < segments; ++ n)
+	{
+		std::complex <float> point = std::polar <float> (1, angle * n);
 
-	getTexCoord () .emplace_back (1, 1);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (1, 1, 0);
-
-	getTexCoord () .emplace_back (0, 1);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (-1, 1, 0);
+		getVertices () .emplace_back (point .real (), point .imag (), 0);
+	}
 }
 
 } // X3D

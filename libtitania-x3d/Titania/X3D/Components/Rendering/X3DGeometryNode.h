@@ -91,7 +91,6 @@ protected:
 
 	typedef std::map <size_t, std::vector <size_t>> NormalIndex;
 
-	SFBool  solid;
 	SFBool  ccw;
 	SFFloat creaseAngle;
 
@@ -121,6 +120,12 @@ protected:
 
 	void
 	setVertexMode (const GLenum value) { vertexMode = value; }
+
+	void
+	setSolid (const bool value) { solid = value; }
+
+	void
+	setElements (const size_t value) { elements = value; }
 
 	virtual
 	Box3f
@@ -157,6 +162,8 @@ private:
 	std::vector <Vector3f>      normals;
 	std::vector <Vector3f>      vertices;
 	GLenum                      vertexMode;
+	bool                        solid;
+	size_t                      elements;
 
 	GLenum bufferUsage;
 	GLuint texCoordBufferId;

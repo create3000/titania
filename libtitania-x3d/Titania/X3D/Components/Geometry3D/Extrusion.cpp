@@ -66,6 +66,7 @@ Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
 	       set_spine (),                                                                                       // MFVec3f    [in] set_spine
 	        beginCap (true),                                                                                   // SFBool     [ ]  beginCap          TRUE
 	          endCap (true),                                                                                   // SFBool     [ ]  endCap            TRUE
+	           solid (true),                                                                                   // SFBool     [ ]  solid             TRUE
 	          convex (true),                                                                                   // SFBool     [ ]  convex            TRUE
 	    crossSection ({ SFVec2f (1, 1), SFVec2f (1, -1), SFVec2f (-1, -1), SFVec2f (-1, 1), SFVec2f (1, 1) }), // MFVec2f    [ ]  crossSection      [1 1 1 -1 -1 -1 -1 1 1 1]        (-∞,∞)
 	     orientation ({ SFRotation () }),                                                                      // MFRotation [ ]  orientation       0 0 1 0                          [-1,1] or (-∞,∞)
@@ -399,6 +400,7 @@ Extrusion::build ()
 	}
 
 	setVertexMode (GL_TRIANGLES);
+	setSolid (solid);
 
 	#undef INDEX
 }

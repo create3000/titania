@@ -60,7 +60,8 @@ namespace X3D {
 Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	         radius (1)                                                    // SFFloat [ ] radius  1           (0,∞)
+	         radius (1),                                                   // SFFloat [ ] radius  1           (0,∞)
+	          solid (true)                                                 // SFBool  [ ] solid   TRUE
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Sphere");
@@ -118,6 +119,7 @@ Sphere::build ()
 	}
 
 	setVertexMode (properties -> getVertexMode ());
+	setSolid (solid);
 }
 
 void

@@ -63,11 +63,13 @@ class Circle2DProperties :
 {
 public:
 
+	SFInt32 segments;
+	
 	Circle2DProperties (X3DExecutionContext* const);
 
 	virtual
 	GLenum
-	getVertexMode () const { return GL_QUADS; }
+	getVertexMode () const { return GL_LINE_LOOP; }
 
 
 private:

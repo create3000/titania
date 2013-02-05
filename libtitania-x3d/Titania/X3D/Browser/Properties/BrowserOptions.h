@@ -55,6 +55,7 @@
 #include "../../Components/Text/FontStyle.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Geometry2D/ArcClose2DProperties.h"
 #include "../Geometry2D/Circle2DProperties.h"
 #include "../Geometry2D/Rectangle2DProperties.h"
 #include "../Geometry3D/BoxProperties.h"
@@ -92,6 +93,7 @@ public:
 
 	SFNode <MotionBlur>            motionBlur;
 	SFNode <TextureProperties>     textureProperties;
+	SFNode <ArcClose2DProperties>  arcClose2DProperties;
 	SFNode <Circle2DProperties>    circle2DProperties;
 	SFNode <Rectangle2DProperties> rectangle2DProperties;
 	SFNode <BoxProperties>         boxProperties;

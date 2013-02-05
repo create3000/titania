@@ -62,10 +62,10 @@ class NurbsSwungSurface :
 public:
 
 	using X3DGeometryNode::ccw;
-	using X3DGeometryNode::solid;
 
 	SFNode <X3DBaseNode> profileCurve;
 	SFNode <X3DBaseNode> trajectoryCurve;
+	SFBool               solid;
 
 	NurbsSwungSurface (X3DExecutionContext* const);
 

@@ -61,9 +61,8 @@ class Box :
 {
 public:
 
-	using X3DGeometryNode::solid;
-
 	SFVec3f size;
+	SFBool  solid;
 
 	Box (X3DExecutionContext* const);
 

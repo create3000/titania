@@ -72,6 +72,7 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	 colorPerVertex (true),                                                // SFBool  [ ]      colorPerVertex   TRUE
 	         height (),                                                    // MFFloat [ ]      height           [ ]          (-∞,∞)
 	normalPerVertex (true),                                                // SFBool  [ ]      normalPerVertex  TRUE
+	          solid (true),                                                // SFBool  [ ]      solid            TRUE
 	     xDimension (),                                                    // SFInt32 [ ]      xDimension       0           [0,∞)
 	       xSpacing (1),                                                   // SFFloat [ ]      xSpacing         1.0         (0,∞)
 	     zDimension (),                                                    // SFInt32 [ ]      zDimension       0           [0,∞)
@@ -402,6 +403,7 @@ ElevationGrid::build ()
 
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setVertexMode (GL_TRIANGLES);
+	setSolid (solid);
 }
 
 } // X3D

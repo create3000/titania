@@ -70,6 +70,7 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	      geoSystem ({ "GD", "WE" }),                                      // MFString [ ]      geoSystem        ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
 	         height ({ 0, 0 }),                                            // MFDouble [ ]      height           [0 0]              (-∞,∞)
 	normalPerVertex (true),                                                // SFBool   [ ]      normalPerVertex  TRUE
+	          solid (true),                                                // SFBool   [ ]      solid            TRUE
 	     xDimension (),                                                    // SFInt32  [ ]      xDimension       0                  (0,∞)
 	       xSpacing (1),                                                   // SFDouble [ ]      xSpacing         1.0                [0,∞)
 	     zDimension (),                                                    // SFInt32  [ ]      zDimension       0                  (0,∞)

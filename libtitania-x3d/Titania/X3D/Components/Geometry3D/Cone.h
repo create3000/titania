@@ -61,12 +61,11 @@ class Cone :
 {
 public:
 
-	using X3DGeometryNode::solid;
-
 	SFBool  bottom;
 	SFFloat bottomRadius;
 	SFFloat height;
 	SFBool  side;
+	SFBool  solid;
 
 	Cone (X3DExecutionContext* const);
 

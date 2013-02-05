@@ -80,6 +80,9 @@ void
 PixelTexture::initialize ()
 {
 	X3DTexture2DNode::initialize ();
+	
+	//Replacing All or Part of a Texture Image
+	//void glTexSubImage2D (...);
 
 	image .addInterest (this, &PixelTexture::requestImmediateLoad);
 

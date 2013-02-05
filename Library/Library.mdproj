@@ -1605,6 +1605,7 @@
     <None Include="Tests\Geometry2D\Rectangle2D.wrl" />
     <None Include="Tests\Geometry2D\Polypoint2D.wrl" />
     <None Include="Tests\Geometry2D\Circle2D.wrl" />
+    <None Include="Tests\Geometry2D\ArcClose2D.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

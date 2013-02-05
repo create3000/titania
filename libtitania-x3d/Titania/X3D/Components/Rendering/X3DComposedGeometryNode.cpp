@@ -57,6 +57,7 @@ X3DComposedGeometryNode::X3DComposedGeometryNode () :
 	X3DGeometryNode (),     
 	 colorPerVertex (true), // SFBool [ ]      colorPerVertex   TRUE
 	normalPerVertex (true), // SFBool [ ]      normalPerVertex  TRUE
+	          solid (true), // SFBool [ ]      solid            TRUE
 	         attrib (),     // MFNode [in,out] attrib           [ ]         [X3DVertexAttributeNode]
 	       fogCoord (),     // SFNode [in,out] fogCoord         [ ]         [FogCoordinate]
 	       texCoord (),     // SFNode [in,out] texCoord         NULL        [X3DTextureCoordinateNode]

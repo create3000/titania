@@ -61,13 +61,12 @@ class Cylinder :
 {
 public:
 
-	using X3DGeometryNode::solid;
-
 	SFBool  bottom;
 	SFFloat height;
 	SFFloat radius;
 	SFBool  side;
 	SFBool  top;
+	SFBool  solid;
 
 	Cylinder (X3DExecutionContext* const);
 

@@ -59,7 +59,8 @@ NurbsSwungSurface::NurbsSwungSurface (X3DExecutionContext* const executionContex
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DParametricGeometryNode (),                                                    
 	             profileCurve (),                                                    // SFNode [in,out] profileCurve     [ ]         [X3DNurbsControlCurveNode]
-	          trajectoryCurve ()                                                     // SFNode [in,out] trajectoryCurve  [ ]         [X3DNurbsControlCurveNode]
+	          trajectoryCurve (),                                                    // SFNode [in,out] trajectoryCurve  [ ]         [X3DNurbsControlCurveNode]
+	                    solid (true)                                                 // SFBool [ ]      solid            TRUE
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsSwungSurface");

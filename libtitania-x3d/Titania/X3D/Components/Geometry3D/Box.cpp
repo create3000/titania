@@ -60,7 +60,8 @@ namespace X3D {
 Box::Box (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	           size (2, 2, 2)                                              // SFVec3f [ ] size   2 2 2        (0,∞)
+	           size (2, 2, 2),                                             // SFVec3f [ ] size   2 2 2        (0,∞)
+	          solid (true)                                                 // SFBool  [ ] solid  TRUE
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Box");
@@ -118,6 +119,7 @@ Box::build ()
 	}
 
 	setVertexMode (properties -> getVertexMode ());
+	setSolid (solid);
 }
 
 void

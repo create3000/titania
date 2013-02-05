@@ -63,7 +63,6 @@ class Extrusion :
 public:
 
 	using X3DGeometryNode::ccw;
-	using X3DGeometryNode::solid;
 	using X3DGeometryNode::creaseAngle;
 
 	MFVec2f    set_crossSection;
@@ -72,6 +71,7 @@ public:
 	MFVec3f    set_spine;
 	SFBool     beginCap;
 	SFBool     endCap;
+	SFBool     solid;
 	SFBool     convex;
 	MFVec2f    crossSection;
 	MFRotation orientation;

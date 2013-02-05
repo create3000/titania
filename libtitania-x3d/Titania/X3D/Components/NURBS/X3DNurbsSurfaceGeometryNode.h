@@ -61,8 +61,7 @@ class X3DNurbsSurfaceGeometryNode :
 {
 public:
 
-	using X3DGeometryNode::solid;
-
+	SFBool               solid;
 	SFNode <X3DBaseNode> controlPoint;
 	SFNode <X3DBaseNode> texCoord;
 	SFInt32              uTessellation;

@@ -61,9 +61,8 @@ class Rectangle2D :
 {
 public:
 
-	using X3DGeometryNode::solid;
-
 	SFVec2f size;
+	SFBool  solid;
 
 	Rectangle2D (X3DExecutionContext* const);
 
@@ -82,12 +81,14 @@ private:
 	void
 	initialize ();
 
+	virtual
 	Box3f
 	createBBox ();
 
 	void
 	set_properties ();
 
+	virtual
 	void
 	build ();
 

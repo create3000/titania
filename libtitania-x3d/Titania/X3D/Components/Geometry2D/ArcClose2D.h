@@ -61,18 +61,35 @@ class ArcClose2D :
 {
 public:
 
-	using X3DGeometryNode::solid;
-
 	SFString closureType;
+	SFFloat  startAngle;
 	SFFloat  endAngle;
 	SFFloat  radius;
-	SFFloat  startAngle;
+	SFBool   solid;
 
 	ArcClose2D (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	virtual
+	void
+	dispose ();
+
+
+private:
+
+	virtual
+	void
+	initialize ();
+
+	void
+	set_properties ();
+
+	virtual
+	void
+	build ();
 
 };
 

@@ -48,78 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_TEXT_TEXT_H__
-#define __TITANIA_X3D_COMPONENTS_TEXT_TEXT_H__
+#include "ArcClose2DProperties.h"
 
-#include "../Rendering/X3DGeometryNode.h"
-#include "../Text/X3DFontStyleNode.h"
-#include <FTGL/ftgl.h>
-#include <memory>
+#include "../../Execution/X3DExecutionContext.h"
+#include <complex>
 
 namespace titania {
 namespace X3D {
 
-class Text :
-	public X3DGeometryNode
+ArcClose2DProperties::ArcClose2DProperties (X3DExecutionContext* const executionContext) :
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	        X3DPropertyNode (),
+	               minAngle (M_PI / 20)                                                     
 {
-public:
+	setComponent ("Browser"),
+	setTypeName ("ArcClose2DProperties");
+	
+	addField (inputOutput, "minAngle", minAngle);
+}
 
-	MFString             string;
-	MFFloat              length;
-	SFFloat              maxExtent;
-	SFBool               solid;
-	SFVec3f              origin;
-	SFVec2f              textBounds;
-	MFVec2f              lineBounds;
-	SFNode <X3DBaseNode> fontStyle;
-
-	Text (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	display ();
-
-	virtual
-	void
-	dispose ();
-
-
-private:
-
-	virtual
-	void
-	initialize ();
-
-	float
-	getLength (const size_t);
-
-	const X3DFontStyleNode*
-	getFontStyle () const;
-
-	void
-	set_fontStyle ();
-
-	virtual
-	Box3f
-	createBBox ();
-
-	Box2f
-	getLineBBox (const X3DFontStyleNode*, const std::string &);
-
-	std::unique_ptr <FTPolygonFont> font;
-	float                           lineHeight;
-	std::deque <float>              charSpacings;
-	Vector2f                        minorAlignment;
-	std::deque <Vector2f>           translation;
-	float                           scale;
-
-};
+ArcClose2DProperties*
+ArcClose2DProperties::create (X3DExecutionContext* const executionContext) const
+{
+	return new ArcClose2DProperties (executionContext);
+}
 
 } // X3D
 } // titania
-
-#endif
