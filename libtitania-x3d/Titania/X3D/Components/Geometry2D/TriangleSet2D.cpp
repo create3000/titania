@@ -75,5 +75,54 @@ TriangleSet2D::create (X3DExecutionContext* const executionContext) const
 	return new TriangleSet2D (executionContext);
 }
 
+void
+TriangleSet2D::build ()
+{
+	size_t elements = solid ? 1 : 2;
+	size_t reserve  = elements * vertices .size ();
+	
+	getTexCoord () .reserve (reserve);
+	getNormals  () .reserve (reserve);
+	getVertices () .reserve (reserve);
+	
+	for (const auto & vertex : vertices)
+	{
+		getNormals  () .emplace_back (0, 0, 1);
+		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
+	}
+	
+	size_t resize = vertices .size () - (vertices .size () % 3);
+	
+	getNormals  () .resize (resize);
+	getVertices () .resize (resize);
+	
+	buildTexCoord ();
+
+	setElements (elements);
+	setVertexMode (GL_TRIANGLES);
+	setSolid (true);
+	
+	if (not solid)
+		addMirrorVertices (true);
+}
+
+void
+TriangleSet2D::buildTexCoord ()
+{
+	getTexCoord () .reserve (getVertices () .size ());
+
+	Vector3f min;
+	float    Ssize;
+	int      Sindex, Tindex;
+	
+	getTexCoordParam (min, Ssize, Sindex, Tindex);
+
+	for (const auto & point : getVertices ())
+	{
+		getTexCoord () .emplace_back ((point [0] - min [0]) / Ssize,
+				                        (point [1] - min [1]) / Ssize);
+	}
+}
+
 } // X3D
 } // titania

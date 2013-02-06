@@ -70,6 +70,16 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+
+private:
+
+	virtual
+	void
+	build ();
+	
+	void
+	buildTexCoord ();
+
 };
 
 } // X3D

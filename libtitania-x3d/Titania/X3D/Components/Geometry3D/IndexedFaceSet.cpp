@@ -524,6 +524,7 @@ IndexedFaceSet::build ()
 
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setVertexMode (GL_TRIANGLES);
+	setSolid (solid);
 }
 
 void

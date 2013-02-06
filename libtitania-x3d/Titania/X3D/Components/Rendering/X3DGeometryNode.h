@@ -132,6 +132,9 @@ protected:
 	createBBox ();
 
 	void
+	getTexCoordParam (Vector3f &, float &, int &, int &);
+
+	void
 	refineNormals (const NormalIndex &, std::vector <Vector3f> &);
 	
 	void

@@ -150,6 +150,49 @@ X3DGeometryNode::intersect (const Line3f & hitRay, Vector3f & hitPoint) const
 	return false;
 }
 
+void
+X3DGeometryNode::getTexCoordParam (Vector3f & min, float & Ssize, int & Sindex, int & Tindex)
+{
+	Box3f bbox = getBBox ();
+	
+	min = bbox .min ();
+
+	float Xsize = bbox .size () .x ();
+	float Ysize = bbox .size () .y ();
+	float Zsize = bbox .size () .z ();
+
+	if ((Xsize >= Ysize)and (Xsize >= Zsize))
+	{
+		// X size largest
+		Ssize = Xsize; Sindex = 0;
+
+		if (Ysize >= Zsize)
+			Tindex = 1;
+		else
+			Tindex = 2;
+	}
+	else if ((Ysize >= Xsize)and (Ysize >= Zsize))
+	{
+		// Y size largest
+		Ssize = Ysize; Sindex = 1;
+
+		if (Xsize >= Zsize)
+			Tindex = 0;
+		else
+			Tindex = 2;
+	}
+	else
+	{
+		// Z is the largest
+		Ssize = Zsize; Sindex = 2;
+
+		if (Xsize >= Ysize)
+			Tindex = 0;
+		else
+			Tindex = 1;
+	}
+}
+
 /*
  *  normalIndex: a map of vertices with an array of the normals associated to this vertex
  *

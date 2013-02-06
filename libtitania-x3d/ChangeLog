@@ -1,5 +1,13 @@
 2013-02-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TriangleSet2D.h:
+	* X3DGeometryNode.h:
+	* TriangleSet2D.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp: 
+
+2013-02-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Arc2D.h:
