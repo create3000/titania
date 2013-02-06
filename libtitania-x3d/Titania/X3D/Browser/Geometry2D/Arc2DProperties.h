@@ -48,53 +48,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY2D_ARC2D_H__
-#define __TITANIA_X3D_COMPONENTS_GEOMETRY2D_ARC2D_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC2DPROPERTIES_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC2DPROPERTIES_H__
 
-#include "../Rendering/X3DGeometryNode.h"
+#include "../../Components/Core/X3DPropertyNode.h"
 
 namespace titania {
 namespace X3D {
 
-class Arc2D :
-	public X3DGeometryNode
+//	Property Name           Value data type      Description
+
+class Arc2DProperties :
+	public X3DPropertyNode
 {
 public:
 
-	SFFloat startAngle;
-	SFFloat endAngle;
-	SFFloat radius;
+	SFFloat minAngle;
 
-	Arc2D (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	display ();
-
-	virtual
-	void
-	dispose ();
+	Arc2DProperties (X3DExecutionContext* const);
 
 
 private:
 
 	virtual
-	void
-	initialize ();
-	
-	float
-	getAngle ();
-
-	void
-	set_properties ();
-
-	virtual
-	void
-	build ();
+	Arc2DProperties*
+	create (X3DExecutionContext* const) const;
 
 };
 

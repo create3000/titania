@@ -55,22 +55,43 @@
 namespace titania {
 namespace X3D {
 
+/*
+ * Changed accessType of lineSegments to inputOutput, so Polyline2D can be animated.
+ */
+
 Polyline2D::Polyline2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	   lineSegments ()                                                     // MFVec2f [ ]lineSegments  [ ]        (-∞,∞)
+	   lineSegments ()                                                     // MFVec2f [in,out] lineSegments  [ ]        (-∞,∞)
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Polyline2D");
 
-	addField (inputOutput,    "metadata",     metadata);
-	addField (initializeOnly, "lineSegments", lineSegments);
+	addField (inputOutput, "metadata",     metadata);
+	addField (inputOutput, "lineSegments", lineSegments);
 }
 
 X3DBaseNode*
 Polyline2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new Polyline2D (executionContext);
+}
+
+void
+Polyline2D::build ()
+{
+	for (const auto & vertex : lineSegments)
+		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
+
+	setVertexMode (GL_LINE_STRIP);
+	setSolid (false);
+}
+
+void
+Polyline2D::display ()
+{
+	glDisable (GL_LIGHTING);
+	X3DGeometryNode::display ();
 }
 
 } // X3D

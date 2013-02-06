@@ -282,6 +282,7 @@ IndexedLineSet::build ()
 	}
 
 	setVertexMode (GL_LINES);
+	setSolid (false);
 }
 
 void

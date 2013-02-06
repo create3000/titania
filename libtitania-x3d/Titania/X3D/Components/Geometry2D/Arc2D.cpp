@@ -50,6 +50,8 @@
 
 #include "Arc2D.h"
 
+#include "../../Browser/Geometry2D/Arc2DProperties.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -58,23 +60,100 @@ namespace X3D {
 Arc2D::Arc2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	       endAngle (),                                                    // SFFloat [ ]endAngle    π/2        [-2π,2π]
-	         radius (1),                                                   // SFFloat [ ]radius      1          (0,∞)
-	     startAngle ()                                                     // SFFloat [ ]startAngle  0          [-2π,2π]
+	     startAngle (),                                                    // SFFloat [ ] startAngle  0          [-2π,2π]
+	       endAngle (1.570796),                                            // SFFloat [ ] endAngle    π/2        [-2π,2π]
+	         radius (1)                                                    // SFFloat [ ] radius      1          (0,∞)
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Arc2D");
 
 	addField (inputOutput,    "metadata",   metadata);
+	addField (initializeOnly, "startAngle", startAngle);
 	addField (initializeOnly, "endAngle",   endAngle);
 	addField (initializeOnly, "radius",     radius);
-	addField (initializeOnly, "startAngle", startAngle);
 }
 
 X3DBaseNode*
 Arc2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new Arc2D (executionContext);
+}
+
+void
+Arc2D::initialize ()
+{
+	X3DGeometryNode::initialize ();
+
+	getBrowser () -> getBrowserOptions () -> arcClose2DProperties .addInterest (this, &Arc2D::set_properties);
+}
+
+float
+Arc2D::getAngle ()
+{
+	float start = math::interval <float> (startAngle, 0, M_PI2);
+	float end   = math::interval <float> (endAngle,   0, M_PI2);
+	
+	if (start == end)
+		return M_PI2;
+		
+	float difference = std::min (std::abs (end - start), float (M_PI2));
+	
+	if (start > end)
+		return M_PI2 - difference;
+		
+	return difference;
+}
+
+void
+Arc2D::set_properties ()
+{
+	update ();
+}
+
+void
+Arc2D::build ()
+{
+	const Arc2DProperties* properties = getBrowser () -> getBrowserOptions () -> arc2DProperties;
+	
+	float  difference = getAngle ();
+	size_t segments   = std::ceil (difference / properties -> minAngle);
+	float  angle      = difference / segments;
+
+	getVertices () .reserve (segments + 1);
+
+	if (difference < float (2 * M_PI))
+	{
+		++ segments;
+		setVertexMode (GL_LINE_STRIP);
+	}
+	else
+		setVertexMode (GL_LINE_LOOP);
+	
+	for (size_t n = 0; n < segments; ++ n)
+	{
+		float theta = startAngle + angle * n;
+	
+		std::complex <float> point = std::polar <float> (radius, theta);
+
+		getVertices () .emplace_back (point .real (), point .imag (), 0);
+	}
+
+	setSolid (false);
+}
+
+void
+Arc2D::display ()
+{
+	glDisable (GL_LIGHTING);
+	X3DGeometryNode::display ();
+}
+
+void
+Arc2D::dispose ()
+{
+	getBrowser () -> getBrowserOptions () -> arcClose2DProperties .removeInterest (this, &Arc2D::set_properties);
+
+	X3DGeometryNode::dispose ();
 }
 
 } // X3D

@@ -134,6 +134,8 @@ ArcClose2D::build ()
 
 	if (difference < float (2 * M_PI))
 	{
+		// If arc add add a center point otherwise it is a circle.
+	
 		if (closureType != "CHORD")
 		{
 			getTexCoord () .emplace_back (0.5, 0.5);
@@ -156,12 +158,12 @@ ArcClose2D::build ()
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}
 
-	if (not solid)
-		addMirrorVertices (false);
-
+	setElements (elements);
 	setVertexMode (GL_POLYGON);
 	setSolid (true);
-	setElements (elements);
+
+	if (not solid)
+		addMirrorVertices (false);
 }
 
 void

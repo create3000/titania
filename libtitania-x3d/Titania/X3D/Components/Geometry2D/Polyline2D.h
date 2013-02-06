@@ -69,6 +69,17 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	virtual
+	void
+	display ();
+
+
+private:
+
+	virtual
+	void
+	build ();
+
 };
 
 } // X3D

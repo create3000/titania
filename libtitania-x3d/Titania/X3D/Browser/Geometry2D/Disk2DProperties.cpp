@@ -48,57 +48,66 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY2D_ARC2D_H__
-#define __TITANIA_X3D_COMPONENTS_GEOMETRY2D_ARC2D_H__
+#include "Disk2DProperties.h"
 
-#include "../Rendering/X3DGeometryNode.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include <complex>
 
 namespace titania {
 namespace X3D {
 
-class Arc2D :
-	public X3DGeometryNode
+Disk2DProperties::Disk2DProperties (X3DExecutionContext* const executionContext) :
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DGeometryPropertyNode (),
+	               segments (60)                                                     
 {
-public:
-
-	SFFloat startAngle;
-	SFFloat endAngle;
-	SFFloat radius;
-
-	Arc2D (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	display ();
-
-	virtual
-	void
-	dispose ();
-
-
-private:
-
-	virtual
-	void
-	initialize ();
+	setComponent ("Browser"),
+	setTypeName ("Disk2DProperties");
 	
-	float
-	getAngle ();
+	addField (inputOutput, "segments", segments);
+}
 
-	void
-	set_properties ();
+Disk2DProperties*
+Disk2DProperties::create (X3DExecutionContext* const executionContext) const
+{
+	return new Disk2DProperties (executionContext);
+}
 
-	virtual
-	void
+void
+Disk2DProperties::initialize ()
+{
+	X3DGeometryPropertyNode::initialize ();
+
 	build ();
+}
 
-};
+void
+Disk2DProperties::eventsProcessed ()
+{
+	X3DGeometryPropertyNode::eventsProcessed ();
+
+	update ();
+}
+
+void
+Disk2DProperties::build ()
+{
+	getVertices () .reserve (segments);
+
+	float angle = M_PI2 / segments;
+
+	for (int32_t n = 0; n < segments; ++ n)
+	{
+		float theta = angle * n;
+	
+		std::complex <float> texCoord = std::polar <float> (0.5, theta) + std::complex <float> (0.5, 0.5);
+		std::complex <float> point    = std::polar <float> (1, theta);
+
+		getTexCoord () .emplace_back (texCoord .real (), texCoord .imag ());
+		getNormals  () .emplace_back (0, 0, 1);
+		getVertices () .emplace_back (point .real (), point .imag (), 0);
+	}
+}
 
 } // X3D
 } // titania
-
-#endif

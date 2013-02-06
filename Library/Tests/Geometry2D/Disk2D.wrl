@@ -1,0 +1,99 @@
+#VRML V2.0 utf8 Comment
+
+META "title" "Disk2D"
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  position 0 1.25 8.38483
+  orientation 0 0 1 0
+  centerOfRotation 0 1.25 0
+}
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+      }
+    }
+    geometry Disk2D { }
+  }
+}
+
+Transform {
+  translation -2.5 0 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        emissiveColor 1 0 0
+      }
+    }
+    geometry Disk2D {
+      innerRadius 1
+    }
+  }
+}
+
+Transform {
+  translation 2.5 0 0
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry Disk2D {
+      solid FALSE
+    }
+  }
+}
+
+Transform {
+  translation 0 2.5 0
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry Disk2D {
+      innerRadius 0.5
+      solid FALSE
+    }
+  }
+}
+
+Transform {
+  translation -2.5 2.5 0
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry Disk2D {
+      innerRadius 0.25
+      solid FALSE
+    }
+  }
+}
+
+
+Transform {
+  translation 2.5 2.5 0
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry Disk2D {
+      innerRadius 0.75
+      solid FALSE
+    }
+  }
+}
+

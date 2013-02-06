@@ -1,18 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Geometry2D/Circle2DProperties.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Geometry2D/Disk2D.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="789" Column="1" />
-      <File FileName="Library/Tests/Geometry2D/Circle2D.wrl" Line="19" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/Circle2D.h" Line="91" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/Circle2D.cpp" Line="63" Column="88" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.h" Line="96" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.cpp" Line="53" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Geometry2D/Circle2DProperties.h" Line="67" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Geometry2D/Circle2DProperties.cpp" Line="65" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/Rectangle2D.h" Line="93" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/Rectangle2D.cpp" Line="56" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.h" Line="101" Column="37" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.cpp" Line="202" Column="22" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Geometry2D/Disk2DProperties.h" Line="72" Column="44" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Geometry2D/Disk2DProperties.cpp" Line="97" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/Disk2D.h" Line="99" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/Disk2D.cpp" Line="123" Column="4" />
+      <File FileName="Library/Tests/Geometry2D/Disk2D.wrl" Line="29" Column="17" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -86,9 +83,7 @@
                 <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
-                  <Node name="Geometry2D" expanded="True">
-                    <Node name="Circle2DProperties.cpp" selected="True" />
-                  </Node>
+                  <Node name="Geometry2D" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
                   <Node name="Properties" expanded="True" />
                 </Node>
@@ -97,14 +92,18 @@
                   <Node name="DIS" expanded="True" />
                   <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Geometry2D" expanded="True" />
+                  <Node name="Geometry2D" expanded="True">
+                    <Node name="Disk2D.cpp" selected="True" />
+                  </Node>
                   <Node name="Geometry3D" expanded="True" />
+                  <Node name="Geospatial" expanded="True" />
                   <Node name="Grouping" expanded="True" />
                   <Node name="Layering" expanded="True" />
                   <Node name="Layout" expanded="True" />
                   <Node name="Lighting" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                   <Node name="Networking" expanded="True" />
+                  <Node name="NURBS" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                   <Node name="Scripting" expanded="True" />

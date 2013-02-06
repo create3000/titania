@@ -48,57 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY2D_ARC2D_H__
-#define __TITANIA_X3D_COMPONENTS_GEOMETRY2D_ARC2D_H__
+#include "Arc2DProperties.h"
 
-#include "../Rendering/X3DGeometryNode.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include <complex>
 
 namespace titania {
 namespace X3D {
 
-class Arc2D :
-	public X3DGeometryNode
+Arc2DProperties::Arc2DProperties (X3DExecutionContext* const executionContext) :
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	        X3DPropertyNode (),
+	               minAngle (M_PI / 20)                                                     
 {
-public:
-
-	SFFloat startAngle;
-	SFFloat endAngle;
-	SFFloat radius;
-
-	Arc2D (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	display ();
-
-	virtual
-	void
-	dispose ();
-
-
-private:
-
-	virtual
-	void
-	initialize ();
+	setComponent ("Browser"),
+	setTypeName ("Arc2DProperties");
 	
-	float
-	getAngle ();
+	addField (inputOutput, "minAngle", minAngle);
+}
 
-	void
-	set_properties ();
-
-	virtual
-	void
-	build ();
-
-};
+Arc2DProperties*
+Arc2DProperties::create (X3DExecutionContext* const executionContext) const
+{
+	return new Arc2DProperties (executionContext);
+}
 
 } // X3D
 } // titania
-
-#endif

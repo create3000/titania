@@ -80,6 +80,7 @@ Polypoint2D::build ()
 		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
 
 	setVertexMode (GL_POINTS);
+	setSolid (false);
 }
 
 void

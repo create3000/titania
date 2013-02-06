@@ -229,24 +229,51 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 void
 X3DGeometryNode::addMirrorVertices (const bool convex)
 {
-	size_t offset = convex ? 0 : 1;
+	switch (vertexMode)
+	{
+		case GL_QUAD_STRIP:
+		{
+			for (int32_t i = getTexCoord () .size () - 2; i >= 0; i -= 2)
+			{
+				const auto & texCoord1 = getTexCoord () [i]; 
+				const auto & texCoord0 = getTexCoord () [i + 1]; 
+			   getTexCoord () .emplace_back (1 - texCoord1 .x (), texCoord1 .y ());
+			   getTexCoord () .emplace_back (1 - texCoord0 .x (), texCoord0 .y ());
+			}
 
-	if (not convex)
-	{
-		getTexCoord () .emplace_back (1 - getTexCoord () .front () .x (), getTexCoord () .front () .y ());
-		getNormals  () .emplace_back (0, 0, -1);
-		getVertices () .emplace_back (getVertices () .front ());
-	}
-	
-	for (const auto & texCoord : basic::adapter (getTexCoord () .crbegin () + offset, getTexCoord () .crend () - offset))
-	{
-	   getTexCoord () .emplace_back (1 - texCoord .x (), texCoord .y ());
-	}
+			for (int32_t i = getVertices () .size () - 2; i >= 0; i -= 2)
+			{
+			   getNormals  () .emplace_back (0, 0, -1);
+			   getNormals  () .emplace_back (0, 0, -1);
+				getVertices () .emplace_back (getVertices () [i]);	
+				getVertices () .emplace_back (getVertices () [i + 1]);	
+			}
+			
+			break;
+		}
+		
+		default:
+		{
+			size_t offset = convex ? 0 : 1;
 
-	for (const auto & vertex : basic::adapter (getVertices () .crbegin () + offset, getVertices () .crend () - offset))
-	{
-	   getNormals  () .emplace_back (0, 0, -1);
-		getVertices () .emplace_back (vertex);	
+			if (not convex)
+			{
+				getTexCoord () .emplace_back (1 - getTexCoord () .front () .x (), getTexCoord () .front () .y ());
+				getNormals  () .emplace_back (0, 0, -1);
+				getVertices () .emplace_back (getVertices () .front ());
+			}
+			
+			for (const auto & texCoord : basic::adapter (getTexCoord () .crbegin () + offset, getTexCoord () .crend () - offset))
+			{
+			   getTexCoord () .emplace_back (1 - texCoord .x (), texCoord .y ());
+			}
+
+			for (const auto & vertex : basic::adapter (getVertices () .crbegin () + offset, getVertices () .crend () - offset))
+			{
+			   getNormals  () .emplace_back (0, 0, -1);
+				getVertices () .emplace_back (vertex);	
+			}
+		}
 	}
 }
 

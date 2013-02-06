@@ -1,5 +1,30 @@
 2013-02-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Arc2D.h:
+	* Disk2D.h:
+	* Arc2D.cpp:
+	* Disk2D.cpp:
+	* PointSet.cpp:
+	* Circle2D.cpp:
+	* Polyline2D.h:
+	* BrowserOptions.h:
+	* Polyline2D.cpp:
+	* Arc2DProperties.h:
+	* ArcClose2D.cpp:
+	* Polypoint2D.cpp:
+	* Rectangle2D.cpp:
+	* BrowserOptions.cpp:
+	* Disk2DProperties.h:
+	* Arc2DProperties.cpp:
+	* IndexedLineSet.cpp:
+	* Disk2DProperties.cpp:
+	* X3DGeometryNode.cpp:
+	* Circle2DProperties.cpp: 
+
+2013-02-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ArcClose2D.h:
 	* ArcClose2D.cpp:
 	* Rectangle2D.cpp:

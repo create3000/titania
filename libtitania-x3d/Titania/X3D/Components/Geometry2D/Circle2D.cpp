@@ -112,6 +112,7 @@ Circle2D::build ()
 	}
 
 	setVertexMode (properties -> getVertexMode ());
+	setSolid (false);
 }
 
 void

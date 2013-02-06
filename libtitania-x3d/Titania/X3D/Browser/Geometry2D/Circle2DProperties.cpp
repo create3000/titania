@@ -94,7 +94,7 @@ Circle2DProperties::build ()
 {
 	getVertices () .reserve (segments);
 
-	float angle = 2 * M_PI / segments;
+	float angle = M_PI2 / segments;
 
 	for (int32_t n = 0; n < segments; ++ n)
 	{

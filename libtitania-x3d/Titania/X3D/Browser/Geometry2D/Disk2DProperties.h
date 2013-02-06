@@ -48,49 +48,43 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY2D_ARC2D_H__
-#define __TITANIA_X3D_COMPONENTS_GEOMETRY2D_ARC2D_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_DISC2DPROPERTIES_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY2D_DISC2DPROPERTIES_H__
 
-#include "../Rendering/X3DGeometryNode.h"
+#include "../Properties/X3DGeometryPropertyNode.h"
 
 namespace titania {
 namespace X3D {
 
-class Arc2D :
-	public X3DGeometryNode
+//	Property Name           Value data type      Description
+
+class Disk2DProperties :
+	public X3DGeometryPropertyNode
 {
 public:
 
-	SFFloat startAngle;
-	SFFloat endAngle;
-	SFFloat radius;
+	SFInt32 segments;
 
-	Arc2D (X3DExecutionContext* const);
+	Disk2DProperties (X3DExecutionContext* const);
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	display ();
-
-	virtual
-	void
-	dispose ();
+	GLenum
+	getVertexMode () const { return GL_POLYGON; }
 
 
 private:
 
 	virtual
+	Disk2DProperties*
+	create (X3DExecutionContext* const) const;
+
+	virtual
 	void
 	initialize ();
-	
-	float
-	getAngle ();
 
+	virtual
 	void
-	set_properties ();
+	eventsProcessed ();
 
 	virtual
 	void

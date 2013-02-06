@@ -1,0 +1,65 @@
+#VRML V2.0 utf8 Comment
+
+META "title" "Arc2D"
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  position 0 0 6
+}
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        emissiveColor 1 0 0
+      }
+    }
+    geometry Arc2D { }
+  }
+}
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        emissiveColor 1 0 0
+      }
+    }
+    geometry Arc2D {
+      startAngle 2
+      endAngle 6
+    }
+  }
+}
+
+Transform {
+  translation -2.5 0 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        emissiveColor 1 0 0
+      }
+    }
+    geometry Arc2D {
+      endAngle 0
+    }
+  }
+}
+
+Transform {
+  translation 2.5 0 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        emissiveColor 1 0 0
+      }
+    }
+    geometry Arc2D {
+      startAngle 6
+      endAngle 2
+    }
+  }
+}

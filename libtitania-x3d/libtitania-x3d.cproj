@@ -520,6 +520,8 @@
     <None Include="Titania\X3D\Bits\Cast.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Circle2DProperties.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\ArcClose2DProperties.h" />
+    <None Include="Titania\X3D\Browser\Geometry2D\Arc2DProperties.h" />
+    <None Include="Titania\X3D\Browser\Geometry2D\Disk2DProperties.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -921,6 +923,8 @@
     <Compile Include="Titania\X3D\Browser\Geometry2D\Rectangle2DProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Circle2DProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\ArcClose2DProperties.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry2D\Arc2DProperties.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry2D\Disk2DProperties.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

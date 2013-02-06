@@ -50,6 +50,8 @@
 
 #include "Disk2D.h"
 
+#include "../../Browser/Geometry2D/Disk2DProperties.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -75,6 +77,161 @@ X3DBaseNode*
 Disk2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new Disk2D (executionContext);
+}
+
+void
+Disk2D::initialize ()
+{
+	X3DGeometryNode::initialize ();
+
+	getBrowser () -> getBrowserOptions () -> disc2DProperties .addInterest (this, &Disk2D::set_properties);
+}
+
+Box3f
+Disk2D::createBBox ()
+{
+	auto radius = std::max (innerRadius, outerRadius);
+
+	return Box3f (Vector3f (radius, radius, 0), Vector3f ());
+}
+
+void
+Disk2D::set_properties ()
+{
+	update ();
+}
+
+void
+Disk2D::build ()
+{
+	const Disk2DProperties* properties = getBrowser () -> getBrowserOptions () -> disc2DProperties .getValue ();
+		
+	if (innerRadius == outerRadius)
+	{
+		const auto & radius = outerRadius;
+	
+		// Circle
+		
+		if (radius == 1.0f)
+			getVertices () = properties -> getVertices ();
+
+		else
+		{
+			getVertices () .reserve (properties -> getVertices () .size ());
+
+			for (const auto & vertex : properties -> getVertices ())
+				getVertices () .emplace_back (vertex * radius .getValue ());
+		}
+
+		setVertexMode (GL_LINE_LOOP);
+		setSolid (false);
+		
+		return;
+	}
+
+	if (innerRadius == 0.0f or outerRadius == 0.0f)
+	{
+		const auto & radius = std::max (innerRadius, outerRadius);
+	
+		// Disk
+		
+		size_t elements = solid ? 1 : 2;
+		
+		getTexCoord () .reserve (elements * properties -> getTexCoord () .size ());
+		getNormals  () .reserve (elements * properties -> getNormals  () .size ());
+		getVertices () .reserve (elements * properties -> getVertices () .size ());
+
+		getTexCoord () = properties -> getTexCoord ();
+		getNormals  () = properties -> getNormals  ();
+
+		if (radius == 1.0f)
+			getVertices () = properties -> getVertices ();
+
+		else
+		{
+			getVertices () .reserve (properties -> getVertices () .size ());
+
+			for (const auto & vertex : properties -> getVertices ())
+				getVertices () .emplace_back (vertex * radius .getValue ());
+		}
+
+		setElements (elements);
+		setVertexMode (properties -> getVertexMode ());
+		setSolid (true);
+
+		if (not solid)
+			addMirrorVertices (true);
+		
+		return;
+	}
+	
+	// Disk with hole
+	
+	size_t elements = solid ? 1 : 2;
+		
+	getTexCoord () .reserve (elements * (properties -> getTexCoord () .size () + 2));
+	getNormals  () .reserve (elements * (properties -> getNormals  () .size () + 2));
+	getVertices () .reserve (elements * (properties -> getVertices () .size () + 2));
+	
+	// Texture Coordinates
+	
+	const auto & maxRadius = std::max (innerRadius, outerRadius);
+	const auto & minRadius = std::min (innerRadius, outerRadius);
+	auto scale             = minRadius / maxRadius;
+	
+	for (const auto & texCoord : properties -> getTexCoord ())
+	{
+		getTexCoord () .emplace_back (texCoord * scale + Vector2f ((1 - scale) / 2, (1 - scale) / 2));
+		getTexCoord () .emplace_back (texCoord);
+	}
+	
+	// Normals
+	
+	for (const auto & normal : properties -> getNormals ())
+	{
+		getNormals () .emplace_back (normal);
+		getNormals () .emplace_back (normal);
+	}
+	
+	// Vertices
+	
+	for (const auto & vertex : properties -> getVertices ())
+	{
+		getVertices () .emplace_back (vertex * minRadius .getValue ());
+		getVertices () .emplace_back (vertex * maxRadius .getValue ());
+	}
+	
+	// The last two vertices are the first two.
+	getTexCoord () .emplace_back (getTexCoord () [0]);
+	getTexCoord () .emplace_back (getTexCoord () [1]);
+	getNormals  () .emplace_back (getNormals  () [0]);
+	getNormals  () .emplace_back (getNormals  () [1]);
+	getVertices () .emplace_back (getVertices () [0]);
+	getVertices () .emplace_back (getVertices () [1]);
+	
+	setElements (elements);
+	setVertexMode (GL_QUAD_STRIP);
+	setSolid (true);
+	
+	if (not solid)
+		addMirrorVertices (true);
+}
+
+void
+Disk2D::display ()
+{
+	if (innerRadius == outerRadius)
+		glDisable (GL_LIGHTING);
+
+	X3DGeometryNode::display ();
+}
+
+void
+Disk2D::dispose ()
+{
+	getBrowser () -> getBrowserOptions () -> disc2DProperties .removeInterest (this, &Disk2D::set_properties);
+
+	X3DGeometryNode::dispose ();
 }
 
 } // X3D

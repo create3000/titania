@@ -110,6 +110,7 @@ PointSet::build ()
 	getVertices () .assign (_coord -> point .begin (), _coord -> point .end ());
 
 	setVertexMode (GL_POINTS);
+	setSolid (false);
 }
 
 void

@@ -87,8 +87,10 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	               shading ("GOURAUD"),                                           
 	            motionBlur (new MotionBlur (executionContext)),                   
 	     textureProperties (new TextureProperties (executionContext)),            
+	       arc2DProperties (new Arc2DProperties (executionContext)),        
 	  arcClose2DProperties (new ArcClose2DProperties (executionContext)),        
 	    circle2DProperties (new Circle2DProperties (executionContext)),        
+	      disc2DProperties (new Disk2DProperties (executionContext)),        
 	 rectangle2DProperties (new Rectangle2DProperties (executionContext)),        
 	         boxProperties (new BoxProperties (executionContext)),                
 	      sphereProperties (new QuadSphereProperties (executionContext)),         
@@ -110,6 +112,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "textureProperties",      textureProperties);
 	addField (inputOutput, "arcClose2DProperties",   arcClose2DProperties);
 	addField (inputOutput, "circle2DProperties",     circle2DProperties);
+	addField (inputOutput, "disc2DProperties",       disc2DProperties);
 	addField (inputOutput, "rectangle2DProperties",  rectangle2DProperties);
 	addField (inputOutput, "boxProperties",          boxProperties);
 	addField (inputOutput, "sphereProperties",       sphereProperties);
@@ -129,8 +132,10 @@ BrowserOptions::initialize ()
 
 	motionBlur            -> setup ();
 	textureProperties     -> setup ();
+	arc2DProperties       -> setup ();
 	arcClose2DProperties  -> setup ();
 	circle2DProperties    -> setup ();
+	disc2DProperties      -> setup ();
 	rectangle2DProperties -> setup ();
 	boxProperties         -> setup ();
 	sphereProperties      -> setup ();
@@ -161,8 +166,10 @@ BrowserOptions::set_primitiveQuality ()
 
 	if (primitiveQuality == "LOW")
 	{
+		arc2DProperties      -> minAngle = M_PI / 10;
 		arcClose2DProperties -> minAngle = M_PI / 10;
-		circle2DProperties -> segments   = 20;
+		circle2DProperties   -> segments = 20;
+		disc2DProperties     -> segments = 20;
 	
 		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties .getValue ());
 
@@ -174,8 +181,10 @@ BrowserOptions::set_primitiveQuality ()
 	}
 	else if (primitiveQuality == "MEDIUM")
 	{
+		arc2DProperties      -> minAngle = M_PI / 20;
 		arcClose2DProperties -> minAngle = M_PI / 20;
-		circle2DProperties -> segments   = 60;
+		circle2DProperties   -> segments = 60;
+		disc2DProperties     -> segments = 60;
 		
 		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties .getValue ());
 
@@ -187,8 +196,10 @@ BrowserOptions::set_primitiveQuality ()
 	}
 	else if (primitiveQuality == "HIGH")
 	{
+		arc2DProperties      -> minAngle = M_PI / 40;
 		arcClose2DProperties -> minAngle = M_PI / 40;
-		circle2DProperties -> segments   = 100;
+		circle2DProperties   -> segments = 100;
+		disc2DProperties     -> segments = 100;
 		
 		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties .getValue ());
 
