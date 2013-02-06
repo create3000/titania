@@ -18,8 +18,6 @@ Transform {
       }
     }
     geometry ArcClose2D {
-      startAngle 2
-      endAngle 6
       solid FALSE
     }
   }
@@ -33,6 +31,8 @@ Transform {
       }
     }
     geometry ArcClose2D {
+      startAngle 2
+      endAngle 6
       solid FALSE
     }
   }
@@ -47,8 +47,8 @@ Transform {
       }
     }
     geometry ArcClose2D {
-      startAngle 1
-      endAngle 8
+      startAngle 0
+      endAngle 0
       solid FALSE
     }
   }
@@ -63,8 +63,57 @@ Transform {
       }
     }
     geometry ArcClose2D {
-      startAngle 1
+      startAngle 8
       endAngle 8
+      solid FALSE
+    }
+  }
+}
+
+Transform {
+  translation 0 2.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+      }
+    }
+    geometry ArcClose2D {
+      closureType "CHORD"
+      solid FALSE
+    }
+  }
+}
+
+Transform {
+  translation 0 2.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+      }
+    }
+    geometry ArcClose2D {
+      closureType "CHORD"
+      startAngle 2
+      endAngle 6
+      solid FALSE
+    }
+  }
+}
+
+Transform {
+  translation 2.5 2.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+      }
+    }
+    geometry ArcClose2D {
+      closureType "CHORD"
+      startAngle 6
+      endAngle 2
       solid FALSE
     }
   }

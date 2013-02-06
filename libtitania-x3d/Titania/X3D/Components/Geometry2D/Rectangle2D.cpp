@@ -101,6 +101,12 @@ void
 Rectangle2D::build ()
 {
 	const Rectangle2DProperties* properties = getBrowser () -> getBrowserOptions () -> rectangle2DProperties .getValue ();
+	
+	size_t elements = solid ? 1 : 2;
+	
+	getTexCoord () .reserve (elements * properties -> getTexCoord () .size ());
+	getNormals  () .reserve (elements * properties -> getNormals  () .size ());
+	getVertices () .reserve (elements * properties -> getVertices () .size ());
 
 	getTexCoord () = properties -> getTexCoord ();
 	getNormals  () = properties -> getNormals  ();
@@ -117,9 +123,13 @@ Rectangle2D::build ()
 		for (const auto & vertex : properties -> getVertices ())
 			getVertices () .emplace_back (vertex * size1_2);
 	}
+	
+	if (not solid)
+		addMirrorVertices (true);
 
 	setVertexMode (properties -> getVertexMode ());
-	setSolid (solid);
+	setSolid (true);
+	setElements (elements);
 }
 
 void

@@ -93,6 +93,23 @@ ArcClose2D::initialize ()
 	getBrowser () -> getBrowserOptions () -> arcClose2DProperties .addInterest (this, &ArcClose2D::set_properties);
 }
 
+float
+ArcClose2D::getAngle ()
+{
+	float start = math::interval <float> (startAngle, 0, M_PI2);
+	float end   = math::interval <float> (endAngle,   0, M_PI2);
+	
+	if (start == end)
+		return M_PI2;
+		
+	float difference = std::min (std::abs (end - start), float (M_PI2));
+	
+	if (start > end)
+		return M_PI2 - difference;
+		
+	return difference;
+}
+
 void
 ArcClose2D::set_properties ()
 {
@@ -104,7 +121,7 @@ ArcClose2D::build ()
 {
 	const ArcClose2DProperties* properties = getBrowser () -> getBrowserOptions () -> arcClose2DProperties .getValue ();
 	
-	float  difference = std::min (std::abs (endAngle - startAngle), float (2 * M_PI));
+	float  difference = getAngle ();
 	size_t segments   = std::ceil (difference / properties -> minAngle);
 	float  angle      = difference / segments;
 
@@ -117,9 +134,12 @@ ArcClose2D::build ()
 
 	if (difference < float (2 * M_PI))
 	{
-		getTexCoord () .emplace_back (0.5, 0.5);
-		getNormals  () .emplace_back (0, 0, 1);
-		getVertices () .emplace_back (0, 0, 0);
+		if (closureType != "CHORD")
+		{
+			getTexCoord () .emplace_back (0.5, 0.5);
+			getNormals  () .emplace_back (0, 0, 1);
+			getVertices () .emplace_back (0, 0, 0);
+		}
 		
 		++ segments;
 	}
@@ -136,27 +156,8 @@ ArcClose2D::build ()
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}
 
-	__LOG__ << getVertices () .size () << std::endl;
-
 	if (not solid)
-	{
-		for (const auto & texCoord : basic::adapter (getTexCoord () .crbegin (), getTexCoord () .crend ()))
-		{
-		   getTexCoord () .emplace_back (1 - texCoord .x (), texCoord .y ());
-		}
-
-		for (const auto & vertex : basic::adapter (getVertices () .crbegin (), getVertices () .crend ()))
-		{
-		   getNormals  () .emplace_back (0, 0, -1);
-			getVertices () .emplace_back (vertex);	
-		}
-	}
-	
-	
-	for (size_t i = 0; i < getVertices () .size (); ++ i)
-		__LOG__ << i << ": " << getVertices () [i] << " : " << getNormals () [i] << std::endl;
-
-	__LOG__ << getVertices () .size () << std::endl;
+		addMirrorVertices (false);
 
 	setVertexMode (GL_POLYGON);
 	setSolid (true);

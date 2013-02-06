@@ -26,7 +26,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -218,4 +218,26 @@
      height="64"
      x="288"
      y="256" />
+  <text
+     xml:space="preserve"
+     style="font-size:144px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Condensed'"
+     x="44.554951"
+     y="305.96799"
+     id="text3012"
+     sodipodi:linespacing="130%"><tspan
+       sodipodi:role="line"
+       id="tspan3014"
+       x="44.554951"
+       y="305.96799">1</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:144px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Condensed'"
+     x="389.44324"
+     y="306.76001"
+     id="text3016"
+     sodipodi:linespacing="130%"><tspan
+       sodipodi:role="line"
+       id="tspan3018"
+       x="389.44324"
+       y="306.76001">2</tspan></text>
 </svg>

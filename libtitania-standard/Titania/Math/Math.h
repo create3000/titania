@@ -57,6 +57,7 @@
 namespace titania {
 namespace math {
 
+#define M_PI2 (2 * M_PI)
 #define M_PHI 1.6180339887498948482045868343656381177203091798057628
 
 ///  Convert @a value from degrees to radiants.
@@ -86,9 +87,27 @@ clamp (const Type & value, const Type & low, const Type & high)
 	return value > low ? (value < high ? value : high) : low;
 }
 
+///  Wrap value in the interval (low;high) so low <= result < high.
+template <class Type>
+static
+Type
+interval (const Type & value, const Type & low, const Type & high)
+{
+	Type range = high - low;
+
+	if (value >= high)
+		return std::fmod ((value - low), range) + low;
+
+	if (value < low)
+		return std::fmod ((value - high), range) + high;
+
+	return value;
+}
+
 ///  Map @a value in the interval (@a fromLow;@a fromHigh) to the interval (@a toLow;@a toHigh).
 template <class Type>
-Type
+inline
+constexpr Type
 project (const Type & value, const Type & fromLow, const Type & fromHigh, const Type & toLow, const Type & toHigh)
 {
 	return toLow + ((value - fromLow) / (fromHigh - fromLow)) * (toHigh - toLow);

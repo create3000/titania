@@ -83,6 +83,9 @@ private:
 	virtual
 	void
 	initialize ();
+	
+	float
+	getAngle ();
 
 	void
 	set_properties ();

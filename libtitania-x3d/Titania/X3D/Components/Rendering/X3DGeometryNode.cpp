@@ -221,6 +221,35 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 	normals .swap (_normals);
 }
 
+/*
+ * Adds all vertices, normals and texCoords mirrors onto the XY-plane to the arrays.
+ * If the shape is not convext, the this not convex one point must be the first point in the arrays.
+ */
+
+void
+X3DGeometryNode::addMirrorVertices (const bool convex)
+{
+	size_t offset = convex ? 0 : 1;
+
+	if (not convex)
+	{
+		getTexCoord () .emplace_back (1 - getTexCoord () .front () .x (), getTexCoord () .front () .y ());
+		getNormals  () .emplace_back (0, 0, -1);
+		getVertices () .emplace_back (getVertices () .front ());
+	}
+	
+	for (const auto & texCoord : basic::adapter (getTexCoord () .crbegin () + offset, getTexCoord () .crend () - offset))
+	{
+	   getTexCoord () .emplace_back (1 - texCoord .x (), texCoord .y ());
+	}
+
+	for (const auto & vertex : basic::adapter (getVertices () .crbegin () + offset, getVertices () .crend () - offset))
+	{
+	   getNormals  () .emplace_back (0, 0, -1);
+		getVertices () .emplace_back (vertex);	
+	}
+}
+
 void
 X3DGeometryNode::update ()
 {
@@ -327,7 +356,7 @@ X3DGeometryNode::display ()
 
 	size_t count = vertices .size () / elements;
 
-	for (size_t n = 1; n < elements; ++ n)
+	for (size_t n = 0; n < elements; ++ n)
 		glDrawArrays (vertexMode, n * count, count);
 
 	if (textureCoordinateGenerator)

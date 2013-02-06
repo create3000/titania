@@ -133,6 +133,9 @@ protected:
 
 	void
 	refineNormals (const NormalIndex &, std::vector <Vector3f> &);
+	
+	void
+	addMirrorVertices (const bool);
 
 	void
 	update ();
