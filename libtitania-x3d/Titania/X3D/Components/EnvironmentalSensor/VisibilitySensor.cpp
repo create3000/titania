@@ -127,7 +127,7 @@ VisibilitySensor::display ()
 	if (not enabled or visible)
 		return;
 
-	visible = ViewVolume (ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix (),
+	visible = ViewVolume (ModelViewMatrix4f (),
 	                      ProjectionMatrix4f ())
 	          .intersect (Box3f (size, center));
 }

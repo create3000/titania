@@ -202,7 +202,6 @@ X3DLayerNode::pick ()
 		return;
 
 	glPushMatrix ();
-	glLoadIdentity ();
 
 	currentViewport -> enable ();
 	getViewpoint () -> reshape ();
@@ -225,6 +224,7 @@ X3DLayerNode::display ()
 	getBackground ()     -> draw ();
 	getNavigationInfo () -> enable ();
 	getViewpoint ()      -> reshape ();
+	getViewpoint ()      -> transform ();
 	defaultViewpoint     -> display ();
 
 	render ();

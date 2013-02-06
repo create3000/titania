@@ -65,7 +65,10 @@ extern "C"
 }
 
 namespace titania {
-namespace X3D {
+namespace X3D 
+{
+
+typedef std::vector <Matrix4f> MatrixStack;
 
 class Scene;
 class X3DLayerNode;
@@ -99,7 +102,36 @@ protected:
 	X3DViewpointNode*
 	getCurrentViewpoint () const;
 
+	static
+	const Matrix4f &
+	getMatrix ();
+
+	static
+	const Matrix4f &
+	getCurrentMatrix ();
+
+	static
+	void
+	loadIdentity ();
+
+	static
+	void
+	multMatrix (const Matrix4f &, const Matrix4f &);
+
+	static
+	void
+	pushMatrix ();
+
+	static
+	void
+	popMatrix ();
+
 	friend class X3DExecutionContext;
+
+	static Matrix4f    matrix; 
+	static Matrix4f    currentMatrix;
+	static MatrixStack matrixStack;
+	static MatrixStack currentMatrixStack;
 
 };
 

@@ -83,8 +83,7 @@ ShapeContainer::redraw ()
 {
 	bool drawn = false;
 
-	glPushMatrix ();
-	glMultMatrixf (matrix .data ());
+	glLoadMatrixf (matrix .data ());
 
 	if (ViewVolume () .intersect (shape -> getBBox ()))
 	{
@@ -98,14 +97,10 @@ ShapeContainer::redraw ()
 			glPopMatrix ();
 		}
 
-		//glPushAttrib (GL_ENABLE_BIT);
-
 		if (fog)
 			fog -> enable ();
 
 		shape -> draw ();
-
-		//glPopAttrib ();
 
 		if (localLights .size ())
 		{
@@ -116,7 +111,6 @@ ShapeContainer::redraw ()
 		drawn = true;
 	}
 
-	glPopMatrix ();
 	return drawn;
 }
 

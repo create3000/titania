@@ -1,5 +1,23 @@
 2013-02-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DNode.h:
+	* X3DRenderer.cpp:
+	* X3DNode.cpp:
+	* ShapeContainer.cpp:
+	* LOD.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DShapeNode.cpp:
+	* Billboard.cpp:
+	* X3DLayerNode.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp:
+	* ProximitySensor.h:
+	* ProximitySensor.cpp:
+	* VisibilitySensor.cpp:
+	* X3DBackgroundNode.cpp: 
+
+2013-02-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TriangleSet2D.h:
 	* X3DGeometryNode.h:
 	* TriangleSet2D.cpp:

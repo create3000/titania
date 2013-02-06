@@ -90,7 +90,7 @@ LOD::create (X3DExecutionContext* const executionContext) const
 int32_t
 LOD::getLevel ()
 {
-	Matrix4f matrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
+	Matrix4f matrix = ModelViewMatrix4f ();
 
 	matrix .translate (center);
 

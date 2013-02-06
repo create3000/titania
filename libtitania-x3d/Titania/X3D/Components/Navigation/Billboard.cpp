@@ -86,7 +86,7 @@ Billboard::transform ()
 	Vector3f   translation, scale;
 	Rotation4f rotation;
 
-	(ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ()) .get (translation, rotation, scale);
+	ModelViewMatrix4f () .get (translation, rotation, scale);
 
 	Vector3f _axisOfRotation   = axisOfRotation;
 	Vector3f billboardToViewer = -translation;

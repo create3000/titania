@@ -88,13 +88,16 @@ public:
 	getUserCenterOfRotation () const;
 
 	void
-	setTransformationMatrix (const Matrix4f &);
+	setTransformationMatrix (const Matrix4f & value)
+	{ currentTransformationMatrix = value; }
 
 	const Matrix4f &
-	getTransformationMatrix () const { return transformationMatrix; }
+	getTransformationMatrix () const 
+	{ return transformationMatrix; }
 
 	const Matrix4f &
-	getInverseTransformationMatrix () const { return inverseTransformationMatrix; }
+	getInverseTransformationMatrix () const 
+	{ return inverseTransformationMatrix; }
 
 	virtual
 	void
@@ -121,6 +124,9 @@ public:
 	virtual
 	void
 	display ();
+
+	void
+	update ();
 
 	virtual
 	void
@@ -169,6 +175,7 @@ private:
 	_set_bind ();
 
 	Matrix4f modelViewMatrix;
+	Matrix4f currentTransformationMatrix;
 	Matrix4f transformationMatrix;
 	Matrix4f inverseTransformationMatrix;
 	Matrix4f differenceMatrix;

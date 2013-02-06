@@ -56,8 +56,12 @@ namespace titania {
 namespace X3D {
 
 X3DNode::X3DNode () :
-	X3DBaseNode (), 
-	   metadata ()  // SFNode [in,out] metadata  NULL        [X3DMetadataObject]
+	       X3DBaseNode (), 
+	          metadata (), // SFNode [in,out] metadata  NULL        [X3DMetadataObject]
+	            matrix (), 
+	     currentMatrix (), 
+	       matrixStack (), 
+	currentMatrixStack ()  
 {
 	addNodeType (X3DConstants::X3DNode);
 }
@@ -89,6 +93,33 @@ X3DViewpointNode*
 X3DNode::getCurrentViewpoint () const
 {
 	return getCurrentLayer () -> getViewpoint ();
+}
+
+void
+X3DNode::loadIdentity ()
+{
+	matrix = Matrix4f ();
+}
+
+void
+X3DNode::multMatrix (const Matrix4f & value, const Matrix4f & currentValue)
+{
+	matrix        = value * matrix;
+	currentMatrix = currentMatrix * currentValue;
+}
+
+void
+X3DNode::pushMatrix ()
+{
+	matrixStack .emplace_back (matrix);
+	currentMatrixStack .emplace_back (matrix);
+}
+
+void
+X3DNode::popMatrix ()
+{
+	matrixStack .pop_back ();
+	currentMatrixStack .pop_back ();
 }
 
 } // X3D

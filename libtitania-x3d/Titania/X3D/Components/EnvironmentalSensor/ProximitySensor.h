@@ -97,8 +97,9 @@ private:
 	bool
 	isInside (const Matrix4f &) const;
 
-	Matrix4f matrix;
-	bool     inside;
+	X3DViewpointNode* viewpoint;
+	Matrix4f          matrix;
+	bool              inside;
 
 };
 

@@ -67,6 +67,7 @@ X3DViewpointNode::X3DViewpointNode (bool displayed) :
 	          orientationOffset (),                                                 
 	     centerOfRotationOffset (),                                                 
 	            modelViewMatrix (),                                                 
+   currentTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),  
 	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),  
 	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1), 
 	           differenceMatrix (),                                                 
@@ -120,13 +121,6 @@ Vector3f
 X3DViewpointNode::getUserCenterOfRotation () const
 {
 	return centerOfRotation + centerOfRotationOffset;
-}
-
-void
-X3DViewpointNode::setTransformationMatrix (const Matrix4f & value)
-{
-	transformationMatrix        = value;
-	inverseTransformationMatrix = ~value;
 }
 
 void
@@ -222,7 +216,7 @@ X3DViewpointNode::display ()
 {
 	setModelViewMatrix (ModelViewMatrix4f ());
 
-	Matrix4f transformationMatrix = ModelViewMatrix4f ();
+	Matrix4f transformationMatrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getTransformationMatrix ();
 
 	if (isBound)
 	{
@@ -251,6 +245,13 @@ X3DViewpointNode::display ()
 			setDifferenceMatrix (getCurrentViewpoint () -> getTransformationMatrix () * ~transformationMatrix);
 		}
 	}
+}
+
+void
+X3DViewpointNode::update ()
+{
+	transformationMatrix        = currentTransformationMatrix;
+	inverseTransformationMatrix = ~currentTransformationMatrix;
 }
 
 void

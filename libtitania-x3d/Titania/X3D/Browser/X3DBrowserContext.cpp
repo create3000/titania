@@ -413,6 +413,9 @@ X3DBrowserContext::prepare ()
 	clock -> advance ();
 	exposed .processInterests ();
 
+	for (const auto & layer : getExecutionContext () -> getLayerSet () -> getLayers ())
+		layer -> getViewpoint () -> update ();
+	
 	currentFrameRate = 1 / clock -> interval ();
 
 	Vector3d position = getActiveViewpoint () -> getTransformationMatrix () .translation ();

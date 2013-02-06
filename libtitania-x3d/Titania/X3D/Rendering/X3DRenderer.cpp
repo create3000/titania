@@ -125,8 +125,6 @@ X3DRenderer::draw ()
 	glPushMatrix ();
 	glLoadIdentity ();
 
-	getCurrentViewpoint () -> transform ();
-
 	// enable global lights
 
 	const LightContainerArray & globalLights = getCurrentLayer () -> getGlobalLights ();
