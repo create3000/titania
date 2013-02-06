@@ -1,5 +1,9 @@
 2013-02-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DNode.cpp: 
+
+2013-02-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DNode.h:
 	* X3DRenderer.cpp:
 	* X3DNode.cpp:
