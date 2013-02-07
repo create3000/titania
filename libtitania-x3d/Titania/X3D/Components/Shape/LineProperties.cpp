@@ -77,5 +77,11 @@ LineProperties::create (X3DExecutionContext* const executionContext) const
 	return new LineProperties (executionContext);
 }
 
+void
+LineProperties::display ()
+{
+
+}
+
 } // X3D
 } // titania

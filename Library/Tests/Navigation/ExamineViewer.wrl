@@ -1,0 +1,11 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "Examine viewer"
+
+NavigationInfo {
+  type "EXAMINE"
+}
+
+Inline {
+  url "../Networking/Cube.wrl"
+}

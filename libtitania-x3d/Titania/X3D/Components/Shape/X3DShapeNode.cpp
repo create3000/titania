@@ -154,7 +154,7 @@ X3DShapeNode::display ()
 {
 	if (_geometry)
 	{
-		Box3f bbox = getBBox () * ModelViewMatrix4f ();
+		Box3f bbox = getBBox () * ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
 
 		float depth = bbox .size () .z () * 0.5f;
 

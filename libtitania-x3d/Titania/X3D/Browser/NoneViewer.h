@@ -48,74 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_BROWSER_H__
-#define __TITANIA_X3D_BROWSER_BROWSER_H__
+#ifndef __TITANIA_X3D_BROWSER_NONE_VIEWER_H__
+#define __TITANIA_X3D_BROWSER_NONE_VIEWER_H__
 
-#include <Titania/OpenGL/Surface.h>
-
-#include "../Browser/X3DBrowser.h"
-#include "../Widgets/PointingDevice.h"
 #include "../Browser/X3DViewer.h"
 
 namespace titania {
 namespace X3D {
 
-class Browser :
-	public opengl::Surface, public X3DBrowser
+class Browser;
+
+class NoneViewer :
+	public X3DViewer
 {
 public:
 
-	Browser ();
-
-	void
-	setCursor (Gdk::CursorType cursor_type)
-	{ get_window () -> set_cursor (Gdk::Cursor::create (cursor_type)); }
+	NoneViewer (Browser* const);
 
 	virtual
-	void
-	dispose ();
-
-
-private:
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	construct ();
-
-	virtual
-	void
-	initialize ();
-
-	void
-	set_initialized ();
-
-	void
-	set_shutdown ();
-
-	void
-	set_activeLayer ();
-
-	void
-	remove_activeLayer ();
-
-	void
-	set_navigationInfo ();
-
-	virtual
-	void
-	reshape ();
-
-	virtual
-	void
-	update (const Cairo::RefPtr <Cairo::Context> &);
-
-	std::unique_ptr <X3DViewer> viewer;
-	PointingDevice              pointingDevice;
-	X3DLayerNode*               activeLayer;
+	~NoneViewer ();
 
 };
 

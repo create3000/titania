@@ -53,7 +53,8 @@
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
-#include "../Widgets/ExamineViewer.h"
+#include "../Browser/ExamineViewer.h"
+#include "../Browser/NoneViewer.h"
 
 #include <algorithm>
 #include <iomanip>
@@ -160,7 +161,19 @@ Browser::remove_activeLayer ()
 void
 Browser::set_navigationInfo ()
 {
-	viewer .reset (new ExamineViewer (this, getActiveNavigationInfo ()));
+	NavigationInfo* navigationInfo = getActiveNavigationInfo ();
+	
+	if (navigationInfo -> type .size ())
+	{
+		if (navigationInfo -> type [0] == "NONE")
+			viewer .reset (new NoneViewer (this));
+
+		else
+			viewer .reset (new ExamineViewer (this, navigationInfo));
+	}
+	else
+		viewer .reset (new ExamineViewer (this, navigationInfo));
+
 	viewer -> setup ();
 }
 

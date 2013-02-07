@@ -65,8 +65,6 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	  centerOfRotation_changed (),                                                    // SFVec3f    [out] centerOfRotation_changed
 	       orientation_changed (),                                                    // SFRotation [out] orientation_changed
 	          position_changed (),                                                    // SFVec3f    [out] position_changed
-	                 viewpoint (NULL),                                                
-	                    matrix (),                                                    
 	                    inside (false)                                                
 {
 	setComponent ("EnvironmentalSensor");
@@ -114,39 +112,33 @@ ProximitySensor::update ()
 {
 	if (inside)
 	{
-		//std::clog << "#######################" << std::endl;
+		Vector3f   translation, scale;
+		Rotation4f rotation;
+		matrix .get (translation, rotation, scale);
 
-		if (viewpoint)
+		Vector3f   position    = inverse (matrix) .translation ();
+		Rotation4f orientation = ~rotation;
+
+		if (not isActive)
 		{
-			matrix = viewpoint -> getInverseTransformationMatrix () * matrix;
+			enterTime = getCurrentTime ();
+			isActive  = true;
 
-			Vector3f   translation, scale;
-			Rotation4f rotation;
-			matrix .get (translation, rotation, scale);
-
-			Vector3f   position    = inverse (matrix) .translation ();
-			Rotation4f orientation = ~rotation;
-
-			if (not isActive)
-			{
-				enterTime = getCurrentTime ();
-				isActive  = true;
-
-				position_changed    = position;
-				orientation_changed = orientation;
-			}
-			else
-			{
-				if (position_changed not_eq position)
-					position_changed = position;
-
-				if (orientation_changed not_eq orientation)
-					orientation_changed = orientation;
-			}
-
-			//std::clog << position << std::endl;
-			//std::clog << orientation << std::endl;
+			position_changed    = position;
+			orientation_changed = orientation;
 		}
+		else
+		{
+			if (position_changed not_eq position)
+				position_changed = position;
+
+			if (orientation_changed not_eq orientation)
+				orientation_changed = orientation;
+		}
+
+		//		std::clog << "#######################" << std::endl;
+		//		std::clog << position << std::endl;
+		//		std::clog << orientation << std::endl;
 	}
 	else
 	{
@@ -163,18 +155,15 @@ ProximitySensor::update ()
 void
 ProximitySensor::display ()
 {
-	if (inside)
+	if (inside /* or getBrowser () -> getEditMode () */)
 		return;
 
-	viewpoint = getCurrentViewpoint ();
-	matrix    = ModelViewMatrix4f ();
+	matrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
 
 	Matrix4f transformationMatrix = matrix;
 	transformationMatrix .translate (center);
 
 	inside = isInside (transformationMatrix);
-
-	matrix *= viewpoint -> getTransformationMatrix ();
 }
 
 bool

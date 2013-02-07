@@ -1,18 +1,37 @@
-2013-02-06  Holger Seelig  <holger.seelig@yahoo.de>
+2013-02-07  Holger Seelig  <holger.seelig@yahoo.de>
 
-	* X3DNode.cpp: 
-
-2013-02-06  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* X3DNode.h:
+	* ChangeLog:
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Browser.h:
+	* X3DViewer.h:
+	* Browser.cpp:
+	* X3DViewer.h:
+	* NoneViewer.h:
+	* X3DViewer.cpp:
+	* X3DViewer.cpp:
+	* NoneViewer.cpp:
+	* ExamineViewer.h:
+	* ExamineViewer.h:
 	* X3DRenderer.cpp:
+	* ExamineViewer.cpp:
+	* ExamineViewer.cpp:
+	* X3DNode.h:
 	* X3DNode.cpp:
 	* ShapeContainer.cpp:
 	* LOD.cpp:
 	* X3DBrowserContext.cpp:
+	* FillProperties.h:
+	* LineProperties.h:
 	* X3DShapeNode.cpp:
+	* Transform.cpp:
+	* LineProperties.cpp:
 	* Billboard.cpp:
+	* Viewpoint.cpp:
+	* FillProperties.cpp:
 	* X3DLayerNode.cpp:
+	* GeoViewpoint.cpp:
+	* OrthoViewpoint.cpp:
 	* X3DViewpointNode.h:
 	* X3DViewpointNode.cpp:
 	* ProximitySensor.h:

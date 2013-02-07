@@ -511,8 +511,6 @@
     <None Include="Titania\X3D\Browser\Geometry3D\X3DSpherePropertyNode.h" />
     <None Include="Titania\X3D\Browser\Properties\MotionBlur.h" />
     <None Include="Titania\X3D\Widgets\X3DWidget.h" />
-    <None Include="Titania\X3D\Widgets\ExamineViewer.h" />
-    <None Include="Titania\X3D\Widgets\X3DViewer.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\JavaScriptContext.h" />
     <None Include="Titania\X3D\Browser\BrowserApplication.h" />
     <None Include="Titania\X3D\Components\Navigation\X3DViewpointObject.h" />
@@ -522,6 +520,9 @@
     <None Include="Titania\X3D\Browser\Geometry2D\ArcClose2DProperties.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Arc2DProperties.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Disk2DProperties.h" />
+    <None Include="Titania\X3D\Browser\ExamineViewer.h" />
+    <None Include="Titania\X3D\Browser\X3DViewer.h" />
+    <None Include="Titania\X3D\Browser\NoneViewer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -916,8 +917,6 @@
     <Compile Include="Titania\X3D\Browser\Geometry3D\X3DSpherePropertyNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\MotionBlur.cpp" />
     <Compile Include="Titania\X3D\Widgets\X3DWidget.cpp" />
-    <Compile Include="Titania\X3D\Widgets\ExamineViewer.cpp" />
-    <Compile Include="Titania\X3D\Widgets\X3DViewer.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\JavaScriptContext.cpp" />
     <Compile Include="Titania\X3D\Components\Navigation\X3DViewpointObject.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Rectangle2DProperties.cpp" />
@@ -925,6 +924,9 @@
     <Compile Include="Titania\X3D\Browser\Geometry2D\ArcClose2DProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Arc2DProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Disk2DProperties.cpp" />
+    <Compile Include="Titania\X3D\Browser\ExamineViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\X3DViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\NoneViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

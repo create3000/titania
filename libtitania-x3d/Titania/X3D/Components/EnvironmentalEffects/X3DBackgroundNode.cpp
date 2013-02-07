@@ -361,7 +361,7 @@ X3DBackgroundNode::build ()
 void
 X3DBackgroundNode::display ()
 {
-	matrix = ModelViewMatrix4f ();
+	matrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
 }
 
 void

@@ -1,0 +1,11 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "None viewer"
+
+NavigationInfo {
+  type "NONE"
+}
+
+Inline {
+  url "../Networking/Cube.wrl"
+}

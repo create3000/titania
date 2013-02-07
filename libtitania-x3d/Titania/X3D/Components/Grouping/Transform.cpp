@@ -114,9 +114,6 @@ Transform::eventsProcessed ()
 void
 Transform::pick ()
 {
-	//	if (getBrowser () -> getEditMode ())
-	//		getBrowser () -> pushSensitiveNode (this);
-
 	glPushMatrix ();
 
 	glMultMatrixf (matrix .data ());
@@ -124,9 +121,6 @@ Transform::pick ()
 	X3DGroupingNode::pick ();
 
 	glPopMatrix ();
-
-	//	if (getBrowser () -> getEditMode ())
-	//		getBrowser () -> popSensitiveNode ();
 }
 
 void

@@ -62,15 +62,19 @@ class FillProperties :
 public:
 
 	SFBool  filled;
-	SFColor hatchColor;
 	SFBool  hatched;
 	SFInt32 hatchStyle;
+	SFColor hatchColor;
 
 	FillProperties (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	virtual
+	void
+	display ();
 
 };
 

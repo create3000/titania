@@ -83,34 +83,26 @@ ShapeContainer::redraw ()
 {
 	bool drawn = false;
 
-	glLoadMatrixf (matrix .data ());
+	glPushMatrix ();
+	glMultMatrixf (matrix .data ());
 
 	if (ViewVolume () .intersect (shape -> getBBox ()))
 	{
-		if (localLights .size ())
-		{
-			glPushMatrix ();
-
-			for (const auto & light : localLights)
-				light -> enable ();
-
-			glPopMatrix ();
-		}
+		for (const auto & light : localLights)
+			light -> enable ();
 
 		if (fog)
 			fog -> enable ();
 
 		shape -> draw ();
 
-		if (localLights .size ())
-		{
-			for (const auto & light : basic::adapter (localLights .crbegin (), localLights .crend ()))
-				light -> disable ();
-		}
+		for (const auto & light : basic::adapter (localLights .crbegin (), localLights .crend ()))
+			light -> disable ();
 
 		drawn = true;
 	}
 
+	glPopMatrix ();
 	return drawn;
 }
 

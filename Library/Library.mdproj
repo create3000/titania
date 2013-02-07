@@ -1610,6 +1610,8 @@
     <None Include="Tests\Geometry2D\Polyline2D.wrl" />
     <None Include="Tests\Geometry2D\Disk2D.wrl" />
     <None Include="Tests\Geometry2D\TriangleSet2D.wrl" />
+    <None Include="Tests\Navigation\NoneViewer.wrl" />
+    <None Include="Tests\Navigation\ExamineViewer.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

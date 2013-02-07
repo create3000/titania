@@ -57,13 +57,10 @@
 #include "../Components/Navigation/Viewpoint.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Fields/SFNode.h"
-#include "../Widgets/X3DViewer.h"
+#include "../Browser/X3DViewer.h"
 
 namespace titania {
 namespace X3D {
-
-class Surface;
-class Scene;
 
 class ExamineViewer :
 	public X3DViewer
