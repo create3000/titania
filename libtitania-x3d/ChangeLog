@@ -1,5 +1,29 @@
 2013-02-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Browser.h:
+	* X3DViewer.h:
+	* Browser.cpp:
+	* X3DWidget.h:
+	* X3DWidget.h:
+	* FlyViewer.h:
+	* SFRotation4.h:
+	* FlyViewer.cpp:
+	* X3DWidget.cpp:
+	* X3DWidget.cpp:
+	* ExamineViewer.h:
+	* PointingDevice.h:
+	* PointingDevice.h:
+	* ExamineViewer.cpp:
+	* PointingDevice.cpp:
+	* PointingDevice.cpp:
+	* Script.cpp:
+	* JavaScriptContext.h:
+	* JavaScriptContext.cpp: 
+
+2013-02-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ChangeLog:
 	* Makefile.am:
 	* libtitania-x3d.cproj:

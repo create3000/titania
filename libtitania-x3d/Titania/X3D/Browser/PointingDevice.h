@@ -48,38 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_WIDGETS_EXAMINE_VIEWER_H__
-#define __TITANIA_X3D_WIDGETS_EXAMINE_VIEWER_H__
+#ifndef __TITANIA_X3D_WIDGETS_POINTING_DEVICE_H__
+#define __TITANIA_X3D_WIDGETS_POINTING_DEVICE_H__
 
+#include "../Fields.h"
+#include "../Browser/X3DWidget.h"
 #include <gdkmm.h>
-
-#include "../Components/Navigation/NavigationInfo.h"
-#include "../Components/Navigation/Viewpoint.h"
-#include "../Components/Navigation/X3DViewpointNode.h"
-#include "../Fields/SFNode.h"
-#include "../Browser/X3DViewer.h"
 
 namespace titania {
 namespace X3D {
 
-class ExamineViewer :
-	public X3DViewer
+class Browser;
+
+class PointingDevice :
+	public X3DWidget
 {
 public:
 
-	ExamineViewer (Browser* const, NavigationInfo*);
-
-	void
-	initialize ();
-
-	virtual
-	~ExamineViewer ();
+	PointingDevice (Browser* const);
 
 
 private:
 
-	void
-	set_viewpoint ();
+	bool
+	on_motion_notify_event (GdkEventMotion*);
 
 	bool
 	on_button_press_event (GdkEventButton*);
@@ -88,47 +80,11 @@ private:
 	on_button_release_event (GdkEventButton*);
 
 	bool
-	on_motion_notify_event (GdkEventMotion*);
+	pick (const double, const double);
 
-	bool
-	on_scroll_event (GdkEventScroll*);
-
-	bool
-	spin ();
-
-	void
-	addSpinning ();
-
-	Vector3f
-	getDistance () const;
-
-	Vector3f
-	getPositionOffset () const;
-
-	Rotation4f
-	getOrientationOffset ();
-
-	Vector3f
-	getPoint (const double, const double);
-
-	Vector3f
-	trackballProjectToSphere (const double, const double) const;
-
-	float
-	tb_project_to_sphere (const float, const float, const float) const;
-
-	NavigationInfo*  navigationInfo;
-	Vector3f         distance;
-	Rotation4f       orientation;
-	Rotation4f       rotation;
-	Vector3f         fromVector;
-	Vector3f         fromPoint;
-	guint            button;
-	sigc::connection button_press_event_connection;
-	sigc::connection button_release_event_connection;
-	sigc::connection motion_notify_event_connection;
-	sigc::connection scroll_event_connection;
-	sigc::connection spin_id;
+	size_t button;
+	bool   isOver;
+	MFNode hitNodes;
 
 };
 

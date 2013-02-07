@@ -1,0 +1,45 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "Fly viewer"
+
+NavigationInfo {
+  type "FLY"
+  speed 1
+}
+
+Viewpoint {
+	position 0 0 30
+}
+
+DEF Obstacles Transform {
+	translation -45 0 0
+}
+
+Script {
+  initializeOnly SFNode obstacles USE Obstacles
+  initializeOnly SFNode obstacle Inline {
+    url "../Networking/Cube.wrl"
+  }
+
+  url "vrmlscript:
+
+function initialize ()
+{
+	for (var z = 0; z < 10; ++ z)
+	{
+		for (var x = 0; x < 10; ++ x)
+		{
+			var transform = Browser .currentScene .createNode ('Transform');
+			
+			transform .translation = new SFVec3f (x * 10, 0, z * -10);
+			transform .children    = new MFNode (obstacle);
+			
+			obstacles .children .push (transform);
+		}
+	}
+				
+	print (obstacles .children);
+}
+"
+  directOutput TRUE
+}

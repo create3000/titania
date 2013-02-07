@@ -69,9 +69,10 @@ JSClass JavaScriptContext::global_class = {
 
 };
 
-JavaScriptContext::JavaScriptContext (X3DScriptNode* node, const std::string & ecmascript) :
+JavaScriptContext::JavaScriptContext (X3DScriptNode* node, const std::string & ecmascript, size_t index) :
 	browser (node -> getBrowser ()), 
-	   node (node)                   
+	   node (node),                  
+	  index (index)                  
 {
 	// Create a JS runtime.
 	runtime = JS_NewRuntime (8L * 1024L * 1024L);
@@ -99,7 +100,7 @@ JavaScriptContext::JavaScriptContext (X3DScriptNode* node, const std::string & e
 
 	initNode ();
 
-	evaluate (ecmascript, node -> getName ());
+	evaluate (ecmascript, "<no filename>");
 }
 
 void
@@ -312,11 +313,43 @@ JavaScriptContext::callFunction (const std::string & function)
 void
 JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport* report)
 {
-	std::clog << "# Javascript: runtime error on line "
-	          << (unsigned int) report -> lineno
-	          << " in "
-	          << (*report -> filename ? report -> filename : "<no filename>") << ": "
-	          << message << std::endl;
+	JavaScriptContext* javaScript = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context));
+	X3DScriptNode*     script     = javaScript -> getNode ();
+
+	// Find error line
+
+	const String & ecmascript = script -> url [javaScript -> index];
+	
+	char nl = ecmascript .find ('\n', 0) == String::npos ? '\r' : '\n';
+
+	std::string::size_type start = 0;
+	std::string::size_type end   = 0;
+	size_t                 i     = 0;
+
+	for ( ; i < report -> lineno; ++ i)
+	{
+		if ((start = ecmascript .find (nl, start)) == String::npos)
+			break;
+
+		else
+			++ start;
+	}
+
+	if (start not_eq String::npos)
+	{
+		if ((end = ecmascript .find (nl, start)) == String::npos)
+			end = ecmascript .length ();
+	}
+
+	std::string line = ecmascript .substr (start, end - start);
+
+	// Pretty print error
+
+	std::clog << "# Javascript: runtime error at line " << report -> lineno << ":" << std::endl
+	          << "#  " << line << std::endl
+	          << "# " << message << std::endl
+	          << "# in Script '" << script -> getName () << "' from url '" << (report -> filename ? report -> filename : "<no filename>") << "'" << std::endl
+	          << "# World URL is '" << script -> getExecutionContext () -> getWorldURL () << "'" << std::endl;
 }
 
 JavaScriptContext::~JavaScriptContext ()
@@ -328,4 +361,5 @@ JavaScriptContext::~JavaScriptContext ()
 }
 
 } // X3D
+
 } // titania

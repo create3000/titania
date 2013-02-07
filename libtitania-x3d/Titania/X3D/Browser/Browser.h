@@ -54,7 +54,7 @@
 #include <Titania/OpenGL/Surface.h>
 
 #include "../Browser/X3DBrowser.h"
-#include "../Widgets/PointingDevice.h"
+#include "../Browser/PointingDevice.h"
 #include "../Browser/X3DViewer.h"
 
 namespace titania {

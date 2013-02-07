@@ -85,6 +85,8 @@ Script::initialize ()
 	X3DScriptNode::initialize ();
 
 	// Find first working script.
+	
+	size_t index = 0;
 
 	for (const auto & URL : url)
 	{
@@ -92,15 +94,17 @@ Script::initialize ()
 
 		if (RegEx::ECMAScript .FullMatch (URL .str (), &ecmascript))
 		{
-			javaScript .reset (new JavaScriptContext (this, ecmascript));
+			javaScript .reset (new JavaScriptContext (this, ecmascript, index));
 			break;
 		}
+		
+		++ index;
 	}
 
 	// Assign an empty script if no working script is found.
 
 	if (not javaScript)
-		javaScript .reset (new JavaScriptContext (this, ""));
+		javaScript .reset (new JavaScriptContext (this, "", 0));
 
 	// Initialize.
 

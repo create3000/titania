@@ -68,7 +68,7 @@ class JavaScriptContext
 {
 public:
 
-	JavaScriptContext (X3DScriptNode*, const std::string &);
+	JavaScriptContext (X3DScriptNode*, const std::string &, size_t);
 
 	virtual
 	X3DScriptNode*
@@ -128,6 +128,7 @@ private:
 	JSObject*      global;
 	X3DBrowser*    browser;
 	X3DScriptNode* node;
+	size_t         index;
 
 };
 

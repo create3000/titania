@@ -1,0 +1,30 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "EventIn"
+
+DEF Touch TouchSensor { }
+
+Inline {
+  url "../Networking/Cube.wrl"
+}
+
+DEF Script Script {
+  inputOnly SFTime touchTime
+  inputOnly SFTime startTime
+
+  url "vrmlscript:
+function startTime (value, time)
+{
+	print ('startTime')
+}
+
+function touchTime (value, time)
+{
+	print ('touchTime')
+	startTime (1,1);
+	startTime = time;
+}
+  "
+}
+
+ROUTE Touch.touchTime TO Script.touchTime

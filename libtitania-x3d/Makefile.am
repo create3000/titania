@@ -24,6 +24,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Bits/X3DConstants.cpp \
 	Titania/X3D/Browser/Browser.cpp \
 	Titania/X3D/Browser/ExamineViewer.cpp \
+	Titania/X3D/Browser/FlyViewer.cpp \
 	Titania/X3D/Browser/Geometry2D/Arc2DProperties.cpp \
 	Titania/X3D/Browser/Geometry2D/ArcClose2DProperties.cpp \
 	Titania/X3D/Browser/Geometry2D/Circle2DProperties.cpp \
@@ -34,6 +35,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Geometry3D/X3DSpherePropertyNode.cpp \
 	Titania/X3D/Browser/HitArray.cpp \
 	Titania/X3D/Browser/NoneViewer.cpp \
+	Titania/X3D/Browser/PointingDevice.cpp \
 	Titania/X3D/Browser/Properties/BrowserOptions.cpp \
 	Titania/X3D/Browser/Properties/BrowserProperties.cpp \
 	Titania/X3D/Browser/Properties/MotionBlur.cpp \
@@ -42,6 +44,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/X3DBrowser.cpp \
 	Titania/X3D/Browser/X3DBrowserContext.cpp \
 	Titania/X3D/Browser/X3DViewer.cpp \
+	Titania/X3D/Browser/X3DWidget.cpp \
 	Titania/X3D/Components/CADGeometry/CADAssembly.cpp \
 	Titania/X3D/Components/CADGeometry/CADFace.cpp \
 	Titania/X3D/Components/CADGeometry/CADLayer.cpp \
@@ -404,9 +407,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Routing/RouteArray.cpp \
 	Titania/X3D/Routing/Router.cpp \
 	Titania/X3D/Routing/RouteSet.cpp \
-	Titania/X3D/Types/Image.cpp \
-	Titania/X3D/Widgets/PointingDevice.cpp \
-	Titania/X3D/Widgets/X3DWidget.cpp
+	Titania/X3D/Types/Image.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(TITANIA_GZSTREAM_LIBS) \

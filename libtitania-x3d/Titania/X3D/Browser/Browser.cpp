@@ -55,6 +55,7 @@
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Browser/ExamineViewer.h"
 #include "../Browser/NoneViewer.h"
+#include "../Browser/FlyViewer.h"
 
 #include <algorithm>
 #include <iomanip>
@@ -89,7 +90,14 @@ Browser::Browser () :
 	// install our handler
 	std::signal (SIGSEGV, signal_handler);
 
-	add_events (Gdk::BUTTON_PRESS_MASK | Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK | Gdk::SCROLL_MASK);
+	add_events (Gdk::BUTTON_PRESS_MASK | 
+	            Gdk::POINTER_MOTION_MASK | 
+	            Gdk::BUTTON_RELEASE_MASK | 
+	            Gdk::SCROLL_MASK | 
+	            Gdk::KEY_PRESS_MASK | 
+	            Gdk::KEY_RELEASE_MASK);
+	            
+	set_can_focus (true);
 
 	initialized .addInterest (this, &Browser::set_initialized);
 	shutdown    .addInterest (this, &Browser::set_shutdown);
@@ -167,6 +175,12 @@ Browser::set_navigationInfo ()
 	{
 		if (navigationInfo -> type [0] == "NONE")
 			viewer .reset (new NoneViewer (this));
+
+		else if (navigationInfo -> type [0] == "WALK")
+			viewer .reset (new FlyViewer (this, navigationInfo));
+
+		else if (navigationInfo -> type [0] == "FLY")
+			viewer .reset (new FlyViewer (this, navigationInfo));
 
 		else
 			viewer .reset (new ExamineViewer (this, navigationInfo));

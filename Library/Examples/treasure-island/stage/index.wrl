@@ -4124,31 +4124,31 @@ function startTime(value, time)
 function key1Time(value, time)
 {
 	key1_changed = 1;
-	startTime = time;
+	//startTime = time;
 }
 
 function key2Time(value, time)
 {
 	key2_changed = 1;
-	startTime = time;
+	//startTime = time;
 }
 
 function key3Time(value, time)
 {
 	key3_changed = 1;
-	startTime = time;
+	//startTime = time;
 }
 
 function key4Time(value, time)
 {
 	key4_changed = 1;
-	startTime = time;
+	//startTime = time;
 }
 
 function key5Time(value, time)
 {
 	key5_changed = 1;
-	startTime = time;
+	//startTime = time;
 }
 "
                                         }

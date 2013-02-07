@@ -100,6 +100,8 @@ bool
 PointingDevice::on_button_press_event (GdkEventButton* event)
 {
 	button = event -> button;
+	
+	getBrowser () -> grab_focus ();
 
 	if (button == 1)
 	{

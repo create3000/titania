@@ -48,30 +48,35 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_WIDGETS_POINTING_DEVICE_H__
-#define __TITANIA_X3D_WIDGETS_POINTING_DEVICE_H__
+#ifndef __TITANIA_X3D_BROWSER_FLY_VIEWER_H__
+#define __TITANIA_X3D_BROWSER_FLY_VIEWER_H__
 
-#include "../Fields.h"
-#include "../Widgets/X3DWidget.h"
 #include <gdkmm.h>
+
+#include "../Browser/X3DViewer.h"
+#include "../Components/Navigation/NavigationInfo.h"
+#include "../Components/Navigation/Viewpoint.h"
+#include "../Components/Navigation/X3DViewpointNode.h"
+#include "../Fields/SFNode.h"
 
 namespace titania {
 namespace X3D {
 
-class Browser;
-
-class PointingDevice :
-	public X3DWidget
+class FlyViewer :
+	public X3DViewer
 {
 public:
 
-	PointingDevice (Browser* const);
+	FlyViewer (Browser* const, NavigationInfo*);
+
+	void
+	initialize ();
+
+	virtual
+	~FlyViewer ();
 
 
 private:
-
-	bool
-	on_motion_notify_event (GdkEventMotion*);
 
 	bool
 	on_button_press_event (GdkEventButton*);
@@ -80,11 +85,34 @@ private:
 	on_button_release_event (GdkEventButton*);
 
 	bool
-	pick (const double, const double);
+	on_motion_notify_event (GdkEventMotion*);
 
-	size_t button;
-	bool   isOver;
-	MFNode hitNodes;
+	bool
+	on_scroll_event (GdkEventScroll*);
+
+	bool
+	on_key_press_event (GdkEventKey*);
+
+	bool
+	on_key_release_event (GdkEventKey*);
+	
+	bool
+	fly ();
+
+	void
+	addFly ();
+
+	NavigationInfo*  navigationInfo;
+	Vector3f         fromVector;
+	Vector3f         direction;
+	guint            button;
+	bool             shift_key;
+	sigc::connection button_press_event_connection;
+	sigc::connection button_release_event_connection;
+	sigc::connection motion_notify_event_connection;
+	sigc::connection key_press_event_connection;
+	sigc::connection key_release_event_connection;
+	sigc::connection fly_id;
 
 };
 

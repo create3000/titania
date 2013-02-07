@@ -134,6 +134,12 @@ public:
 	void
 	getValue (scalar_type &, scalar_type &, scalar_type &, scalar_type &) const;
 
+	SFRotation4 &
+	operator *= (const SFRotation4 &);
+
+	SFRotation4 &
+	operator *= (const ValueType &);
+
 	SFRotation4*
 	inverse () const;
 
@@ -307,6 +313,24 @@ void
 SFRotation4 <ValueType>::getValue (scalar_type & x, scalar_type & y, scalar_type & z, scalar_type & angle) const
 {
 	getValue () .get (x, y, z, angle);
+}
+
+template <class ValueType>
+SFRotation4 <ValueType> &
+SFRotation4 <ValueType>::operator *= (const SFRotation4 & rotation)
+{
+	get () *= rotation .getValue ();
+	notifyParents ();
+	return *this;
+}
+
+template <class ValueType>
+SFRotation4 <ValueType> &
+SFRotation4 <ValueType>::operator *= (const ValueType & rotation)
+{
+	get () *= rotation;
+	notifyParents ();
+	return *this;
 }
 
 template <class ValueType>

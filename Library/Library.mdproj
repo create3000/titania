@@ -1612,6 +1612,8 @@
     <None Include="Tests\Geometry2D\TriangleSet2D.wrl" />
     <None Include="Tests\Navigation\NoneViewer.wrl" />
     <None Include="Tests\Navigation\ExamineViewer.wrl" />
+    <None Include="Tests\Navigation\FlyViewer.wrl" />
+    <None Include="Tests\Scripting\EventIn.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

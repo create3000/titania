@@ -57,9 +57,9 @@
 #include <cmath>
 #include <glibmm/main.h>
 
-#define TIMEOUT_INTERVAL 10
 #define SPIN_ANGLE       0.006
 #define SCOLL_FACTOR     (1.0f / 50.0f)
+#define FRAME_RATE       100
 
 namespace titania {
 namespace X3D {
@@ -74,8 +74,8 @@ ExamineViewer::ExamineViewer (Browser* const browser, NavigationInfo* navigation
 	                      fromPoint (),               
 	                         button (0),              
 	button_press_event_connection   (),               
-	motion_notify_event_connection  (),               
 	button_release_event_connection (),               
+	motion_notify_event_connection  (),               
 	scroll_event_connection         (),               
 	                        spin_id ()                
 { }
@@ -84,8 +84,8 @@ void
 ExamineViewer::initialize ()
 {
 	button_press_event_connection   = getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_press_event));
-	motion_notify_event_connection  = getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event));
 	button_release_event_connection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_release_event));
+	motion_notify_event_connection  = getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event));
 	scroll_event_connection         = getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
 
 	navigationInfo -> transitionComplete .addInterest (this, &ExamineViewer::set_viewpoint);
@@ -131,6 +131,25 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 }
 
 bool
+ExamineViewer::on_button_release_event (GdkEventButton* event)
+{
+	if (button == 1)
+	{
+		float angle = rotation .angle ();
+
+		if (angle > SPIN_ANGLE)
+		{
+			rotation .angle (angle - SPIN_ANGLE);
+			addSpinning ();
+		}
+	}
+
+	button = 0;
+
+	return false;
+}
+
+bool
 ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 {
 	if (button == 1)
@@ -159,25 +178,6 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 
 		fromPoint = toPoint;
 	}
-
-	return false;
-}
-
-bool
-ExamineViewer::on_button_release_event (GdkEventButton* event)
-{
-	if (button == 1)
-	{
-		float angle = rotation .angle ();
-
-		if (angle > SPIN_ANGLE)
-		{
-			rotation .angle (angle - SPIN_ANGLE);
-			addSpinning ();
-		}
-	}
-
-	button = 0;
 
 	return false;
 }
@@ -220,7 +220,7 @@ void
 ExamineViewer::addSpinning ()
 {
 	if (not spin_id .connected ())
-		spin_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &ExamineViewer::spin), TIMEOUT_INTERVAL, GDK_PRIORITY_REDRAW);
+		spin_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &ExamineViewer::spin), 1 / FRAME_RATE * 1000, GDK_PRIORITY_REDRAW);
 }
 
 Vector3f

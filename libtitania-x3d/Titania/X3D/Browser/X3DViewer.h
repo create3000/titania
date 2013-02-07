@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_WIDGETS_X3DVIEWER_H__
 #define __TITANIA_X3D_WIDGETS_X3DVIEWER_H__
 
-#include "../Widgets/X3DWidget.h"
+#include "../Browser/X3DWidget.h"
 
 namespace titania {
 namespace X3D {
