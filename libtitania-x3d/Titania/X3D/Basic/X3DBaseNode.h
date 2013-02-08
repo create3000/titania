@@ -118,7 +118,7 @@ public:
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) override;
+	throw (Error <DISPOSED>);
 
 	virtual
 	const X3DBaseNode*
@@ -153,11 +153,11 @@ public:
 
 	virtual
 	void
-	processEvents (ChildObjectSet &) final;
+	processEvents (ChildObjectSet &);
 
 	virtual
 	void
-	processInterests () final;
+	processInterests ();
 
 	virtual
 	void
@@ -181,17 +181,17 @@ public:
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	       Error <DISPOSED>);
 
 	virtual
 	void
-	toStream (std::ostream &) const override;
+	toStream (std::ostream &) const;
 
 	///  @name Dispose
 
 	virtual
 	void
-	dispose () override;
+	dispose ();
 
 	///  @name Destructor
 
@@ -241,11 +241,11 @@ private:
 
 	virtual
 	void
-	registerEvent (X3DChildObject* const) final;
+	registerEvent (X3DChildObject* const);
 
 	virtual
 	void
-	registerInterest (X3DChildObject* const) final;
+	registerInterest (X3DChildObject* const);
 
 	X3DBrowser* const          browser;
 	X3DExecutionContext* const executionContext;

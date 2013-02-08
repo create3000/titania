@@ -101,9 +101,13 @@ private:
 
 	void
 	addFly ();
+	
+	void
+	display ();
 
 	NavigationInfo*  navigationInfo;
 	Vector3f         fromVector;
+	Vector3f         toVector;
 	Vector3f         direction;
 	guint            button;
 	bool             shift_key;

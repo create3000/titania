@@ -534,11 +534,27 @@
                       <object class="GtkCheckMenuItem" id="HeadlightMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Headlight</property>
+                        <property name="label" translatable="yes">Toggle Headlight</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <accelerator key="KP_Divide" signal="activate"/>
                         <signal name="toggled" handler="on_headlight_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="RubberbandMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Display Rubberband</property>
+                        <property name="use_underline">True</property>
+                        <property name="active">True</property>
+                        <signal name="toggled" handler="on_rubberband_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem8">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>

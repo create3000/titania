@@ -1,5 +1,20 @@
 2013-02-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* SFString.h:
+	* FlyViewer.h:
+	* X3DBaseNode.h:
+	* X3DArrayField.h:
+	* FlyViewer.cpp:
+	* X3DFieldDefinition.h:
+	* BrowserOptions.h:
+	* jsBrowser.cpp:
+	* BrowserOptions.cpp:
+	* X3DUrlObject.cpp:
+	* RenderingProperties.cpp: 
+
+2013-02-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Router.cpp:
 	* X3DBaseNode.h:
 	* FlyViewer.cpp:

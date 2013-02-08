@@ -47,9 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_USER_INTERFACES_X3DBROWSER_WINDOW_UI_H__
-#define __TITANIA_USER_INTERFACES_X3DBROWSER_WINDOW_UI_H__
+#ifndef __TMP_GLAD2CPP_BROWSER_WINDOW_H__
+#define __TMP_GLAD2CPP_BROWSER_WINDOW_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
@@ -187,6 +186,9 @@ public:
 
 	Gtk::CheckMenuItem &
 	getHeadlightMenuItem () const { return *m_headlightMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getRubberbandMenuItem () const { return *m_rubberbandMenuItem; }
 
 	Gtk::MenuItem &
 	getLookAtAllMenuItem () const { return *m_lookAtAllMenuItem; }
@@ -331,6 +333,10 @@ public:
 
 	virtual
 	void
+	on_rubberband_toggled () = 0;
+
+	virtual
+	void
 	on_look_at_all_activate () = 0;
 
 	virtual
@@ -417,6 +423,7 @@ private:
 	Gtk::CheckMenuItem*             m_fullScreenMenuItem;
 	Gtk::MenuItem*                  m_navigationMenuItem;
 	Gtk::CheckMenuItem*             m_headlightMenuItem;
+	Gtk::CheckMenuItem*             m_rubberbandMenuItem;
 	Gtk::MenuItem*                  m_lookAtAllMenuItem;
 	Gtk::CheckMenuItem*             m_enableInlineViewpointsMenuItem;
 	Gtk::MenuItem*                  m_viewpointsMenuItem;

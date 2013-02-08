@@ -56,6 +56,8 @@
 #include <stdexcept>
 #include <string>
 
+#include <iostream>
+
 namespace titania {
 namespace basic {
 
@@ -484,7 +486,7 @@ basic_uri <StringT>::basic_uri (Value && value) :
 template <class StringT>
 basic_uri <StringT>::basic_uri (const string_type & string)
 throw (parse_error) :
-	value ()
+	basic_uri ()
 {
 	parser::parse (*this, string);
 }
@@ -492,7 +494,7 @@ throw (parse_error) :
 template <class StringT>
 basic_uri <StringT>::basic_uri (const char_type* string)
 throw (parse_error) :
-	value ()
+	basic_uri ()
 {
 	parser::parse (*this, string);
 }

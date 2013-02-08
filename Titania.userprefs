@@ -1,24 +1,26 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/NoneViewer.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="764" Column="16" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/FillProperties.h" Line="65" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/LineProperties.h" Line="77" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/LineProperties.cpp" Line="81" Column="16" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/FillProperties.cpp" Line="75" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.cpp" Line="56" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DViewer.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/ExamineViewer.h" Line="60" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/ExamineViewer.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.h" Line="59" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/NoneViewer.h" Line="63" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/NoneViewer.cpp" Line="65" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/ExamineViewer.cpp" Line="222" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/FlyViewer.h" Line="110" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/FlyViewer.cpp" Line="100" Column="58" />
+      <File FileName="Library/Tests/Navigation/FlyViewer.wrl" Line="5" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.cpp" Line="101" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="205" Column="15" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="303" Column="13" />
+      <File FileName="Titania/Makefile.am" Line="64" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="259" Column="1" />
+      <File FileName="libtitania-stream/Titania/Stream/InputFileStream.cpp" Line="80" Column="7" />
+      <File FileName="libtitania-standard/Titania/OS/IsFile.cpp" Line="63" Column="9" />
+      <File FileName="experimental/main.cpp" Line="824" Column="27" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True">
+            <Node name="g++parallel" expanded="True" />
             <Node name="glade2c++" expanded="True" />
             <Node name="logo" expanded="True" />
             <Node name="uncrustify-all" expanded="True" />
@@ -26,10 +28,16 @@
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
-          <Node name="experimental" expanded="True" />
+          <Node name="experimental" expanded="True" selected="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
+              <Node name="Arcadia" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
               <Node name="schacht" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
+              <Node name="treasure-island" expanded="True">
                 <Node name="stage" expanded="True" />
               </Node>
             </Node>
@@ -83,18 +91,27 @@
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
+                <Node name="Basic" expanded="True" />
                 <Node name="Browser" expanded="True">
-                  <Node name="NoneViewer.cpp" selected="True" />
+                  <Node name="Properties" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="EnvironmentalSensor" expanded="True" />
+                  <Node name="Geometry2D" expanded="True" />
                   <Node name="Grouping" expanded="True" />
+                  <Node name="Interpolation" expanded="True" />
                   <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
+                  <Node name="Networking" expanded="True" />
+                  <Node name="Scripting" expanded="True" />
                   <Node name="Shape" expanded="True" />
                 </Node>
-                <Node name="Widgets" expanded="True" />
+                <Node name="Fields" expanded="True" />
+                <Node name="Parser" expanded="True" />
+                <Node name="Rendering" expanded="True" />
+                <Node name="Routing" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -126,7 +143,6 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
               <Node name="HistoryEditor" expanded="True" />
               <Node name="MotionBlurEditor" expanded="True" />

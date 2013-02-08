@@ -55,9 +55,6 @@
     <None Include="..\debian\copyright">
       <Link>debian\copyright</Link>
     </None>
-    <None Include="..\debian\files">
-      <Link>debian\files</Link>
-    </None>
     <None Include="..\debian\rules">
       <Link>debian\rules</Link>
     </None>

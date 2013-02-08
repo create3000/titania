@@ -233,6 +233,10 @@ X3DBrowserWindow::restoreSession ()
 	// RenderingProperties
 	getRenderingPropertiesMenuItem () .set_active (getConfig () .boolean ("renderingProperties"));
 
+	// Rubberband
+	if (getConfig () .hasItem ("rubberBand"))
+		getRubberbandMenuItem () .set_active (getConfig () .boolean ("rubberBand"));
+
 	// EnableInlineViewpoints
 	if (getConfig () .boolean ("enableInlineViewpoints"))
 		getEnableInlineViewpointsMenuItem () .activate ();
@@ -250,6 +254,7 @@ X3DBrowserWindow::saveSession ()
 	getConfig () .setItem ("primitiveQuality", getBrowser () -> getBrowserOptions () -> primitiveQuality);
 	getConfig () .setItem ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
 
+	getConfig () .setItem ("rubberBand",             getRubberbandMenuItem () .get_active ());
 	getConfig () .setItem ("enableInlineViewpoints", getEnableInlineViewpointsMenuItem () .get_active ());
 
 	// Notebook
@@ -408,21 +413,25 @@ X3DBrowserWindow::insertPage (size_t position)
 	// Apply Menu Configuration
 
 	// Naviagtion
-	if (getConfig () .boolean ("navigationBar"))
+	if (getNavigationBarMenuItem () .get_active ())
 		browserWidget -> getNavigationBar () .show ();
 
-	if (getConfig () .boolean ("toolBar"))
+	if (getToolBarMenuItem () .get_active ())
 		browserWidget -> getToolBar () .show ();
 
 	// SideBar
-	if (getConfig () .boolean ("sideBar"))
+	if (getSideBarMenuItem () .get_active ())
 		browserWidget -> getSideBar () .show ();
 
 	// Footer
-	if (getConfig () .boolean ("footer"))
+	if (getFooterMenuItem () .get_active ())
 		browserWidget -> getFooter () .show ();
 
-	browserWidget -> getBrowser () -> getBrowserOptions () -> enableInlineViewpoints = getConfig () .boolean ("enableInlineViewpoints");
+	// Rubberband
+	browserWidget -> getBrowser () -> getBrowserOptions () -> rubberBand = getRubberbandMenuItem () .get_active ();
+
+	// Inline viewpoints
+	browserWidget -> getBrowser () -> getBrowserOptions () -> enableInlineViewpoints = getEnableInlineViewpointsMenuItem () .get_active ();
 }
 
 void

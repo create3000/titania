@@ -778,52 +778,59 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
+	
+	__LOG__ << basic::uri ("file:///home/holger/Projekte/Titania/Library/Examples/icts/labyrinth.wrl") .scheme () .size () << std::endl;
+	__LOG__ << basic::uri ("/home/holger/Projekte/Titania/Titania/share/titania/ui/icons/icon-bw.svg") .transform ("file:///home/holger/Projekte/Titania/Library/Examples/icts/labyrinth.wrl") << std::endl;
+	__LOG__ << bool (basic::ifilestream (basic::http::method::GET, "")) << std::endl;
 
-	//__gnu_parallel::_Settings s;
-	//s .algorithm_strategy = __gnu_parallel::force_parallel;
-	//s .for_each_minimal_n = 1;
-	//__gnu_parallel::_Settings::set (s);
+	if (0)
+	{
+		//__gnu_parallel::_Settings s;
+		//s .algorithm_strategy = __gnu_parallel::force_parallel;
+		//s .for_each_minimal_n = 1;
+		//__gnu_parallel::_Settings::set (s);
 
-	#define N 100000
-	#define VECTOR_SIZE 1000
+		#define N 100000
+		#define VECTOR_SIZE 1000
 
-	std::deque <Matrix4f> a1 (VECTOR_SIZE);
+		std::deque <Matrix4f> a1 (VECTOR_SIZE);
 
-	/////////////////////////////////////////////
+		/////////////////////////////////////////////
 
-	auto t0 = chrono::now ();
+		auto t0 = chrono::now ();
 
-	/////////////////////////////////////////////
+		/////////////////////////////////////////////
 
-	for (int n = 0; n < N; ++ n)
-		std::for_each (a1 .begin (), a1 .end (), test);
+		for (int n = 0; n < N; ++ n)
+			std::for_each (a1 .begin (), a1 .end (), test);
 
-	/////////////////////////////////////////////
+		/////////////////////////////////////////////
 
-	print_time (chrono::now () - t0);
-	t0 = chrono::now ();
+		print_time (chrono::now () - t0);
+		t0 = chrono::now ();
 
-	/////////////////////////////////////////////
+		/////////////////////////////////////////////
 
-	for (int n = 0; n < N; ++ n)
-		for (auto a : a1)
-			test (a);
+		for (int n = 0; n < N; ++ n)
+			for (auto a : a1)
+				test (a);
 
-	/////////////////////////////////////////////
+		/////////////////////////////////////////////
 
-	print_time (chrono::now () - t0);
-	t0 = chrono::now ();
+		print_time (chrono::now () - t0);
+		t0 = chrono::now ();
 
-	/////////////////////////////////////////////
+		/////////////////////////////////////////////
 
-	for (int n = 0; n < N; ++ n)
-		for (int i = 0; i < a1 .size (); ++ i)
-			test (a1 [i]);
+		for (int n = 0; n < N; ++ n)
+			for (size_t i = 0, size = a1 .size (); i < size; ++ i)
+				test (a1 [i]);
 
-	/////////////////////////////////////////////
+		/////////////////////////////////////////////
 
-	print_time (chrono::now () - t0);
-	t0 = chrono::now ();
+		print_time (chrono::now () - t0);
+		t0 = chrono::now ();
+	}
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

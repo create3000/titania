@@ -202,6 +202,10 @@ private:
 
 	virtual
 	void
+	on_rubberband_toggled ();
+
+	virtual
+	void
 	on_look_at_all_activate ();
 
 	void

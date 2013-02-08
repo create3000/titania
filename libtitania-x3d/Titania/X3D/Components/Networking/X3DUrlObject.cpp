@@ -256,6 +256,9 @@ X3DUrlObject::loadStream (const basic::uri & uri)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
+	if (uri .empty ())
+		throw Error <INVALID_URL> ("Couldn't load URL '" + uri + "'");
+
 	std::clog << "\tTrying to load URI '" << uri << "': " << std::endl;
 
 	basic::uri transformedURL = transformURI (uri);

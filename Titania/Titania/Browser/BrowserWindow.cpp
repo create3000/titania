@@ -297,6 +297,13 @@ BrowserWindow::on_headlight_toggled ()
 }
 
 void
+BrowserWindow::on_rubberband_toggled ()
+{
+	for (const auto & widget : getBrowserWidgets ())
+		widget -> getBrowser () -> getBrowserOptions () -> rubberBand = getRubberbandMenuItem () .get_active ();
+}
+
+void
 BrowserWindow::on_look_at_all_activate ()
 {
 	getBrowser () -> getExecutionContext () -> getActiveLayer () -> lookAt ();

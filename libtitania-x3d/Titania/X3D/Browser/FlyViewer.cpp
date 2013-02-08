@@ -68,9 +68,10 @@ FlyViewer::FlyViewer (Browser* const browser, NavigationInfo* navigationInfo) :
 	                      X3DViewer (browser),        
 	                 navigationInfo (navigationInfo), 
 	                     fromVector (),               
+	                       toVector (),               
 	                      direction (),               
-	                         button (0),
-	                      shift_key (false),              
+	                         button (0),              
+	                      shift_key (false),          
 	button_press_event_connection   (),               
 	button_release_event_connection (),               
 	motion_notify_event_connection  (),               
@@ -94,7 +95,10 @@ FlyViewer::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
-		fromVector = Vector3f (event -> x, 0, event -> y);
+		fromVector = toVector = Vector3f (event -> x, 0, event -> y);
+
+		if (getBrowser () -> getBrowserOptions () -> rubberBand)
+			getBrowser () -> displayed .addInterest (this, &FlyViewer::display);
 	}
 
 	else if (button == 2)
@@ -109,6 +113,9 @@ FlyViewer::on_button_release_event (GdkEventButton* event)
 	if (button == 1)
 	{
 		fly_id .disconnect ();
+
+		getBrowser () -> displayed .removeInterest (this, &FlyViewer::display);
+		getBrowser () -> changed .processInterests ();
 	}
 
 	button = 0;
@@ -121,13 +128,11 @@ FlyViewer::on_motion_notify_event (GdkEventMotion* event)
 {
 	if (button == 1)
 	{
-		Vector3f toVector (event -> x, 0, event -> y);
+		toVector = Vector3f (event -> x, 0, event -> y);
 
 		direction = (toVector - fromVector) * SPEED_FACTOR * navigationInfo -> speed .getValue ();
 
 		addFly ();
-
-		__LOG__ << direction << std::endl;
 	}
 
 	else if (button == 2)
@@ -142,8 +147,6 @@ FlyViewer::on_key_press_event (GdkEventKey* event)
 	if (event -> keyval == GDK_KEY_Shift_L or event -> keyval == GDK_KEY_Shift_R)
 		shift_key = true;
 
-	__LOG__ << event -> keyval << std::endl;
-
 	return false;
 }
 
@@ -156,24 +159,30 @@ FlyViewer::on_key_release_event (GdkEventKey* event)
 	return false;
 }
 
+#define M_PI1_2  (M_PI / 2)
+
 bool
 FlyViewer::fly ()
 {
 	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
 
-	float frameRate    = std::max <float> (getBrowser () -> getCurrentFrameRate (), FRAME_RATE);
-	float speed_factor = shift_key ? 4 : 1;
+	float frameRate = std::max <float> (getBrowser () -> getCurrentFrameRate (), FRAME_RATE);
 
 	Rotation4f rotation = direction .z () > 0
 	                      ? ~Rotation4f (Vector3f (0, 0, 1), direction)
 								 : Rotation4f (Vector3f (0, 0, -1), direction);
 
-	rotation .angle (rotation .angle () * math::abs (direction) * ROTATION_SPEED_FACTOR / frameRate);
+	float angle = rotation .angle ();
+
+	rotation .angle (angle * math::abs (direction) * ROTATION_SPEED_FACTOR / frameRate);
+
+	float speed_factor = shift_key ? 4 : 1;
+	speed_factor *= 1 - angle / M_PI1_2;
 
 	viewpoint -> orientationOffset *= rotation;
 	viewpoint -> positionOffset    += viewpoint -> getUserOrientation () * direction * speed_factor / frameRate;
 
-	__LOG__ << math::abs (viewpoint -> getUserOrientation () * direction * speed_factor / frameRate) << std::endl;
+	//__LOG__ << math::abs (viewpoint -> getUserOrientation () * direction * speed_factor / frameRate) << std::endl;
 
 	return true;
 }
@@ -183,6 +192,60 @@ FlyViewer::addFly ()
 {
 	if (not fly_id .connected ())
 		fly_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &FlyViewer::fly), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
+}
+
+void
+FlyViewer::display ()
+{
+	if (button == 1)
+	{
+		// Configure HUD
+
+		GLint viewport [4];
+
+		glGetIntegerv (GL_VIEWPORT, viewport);
+
+		GLint width  = viewport [2];
+		GLint height = viewport [3];
+
+		glMatrixMode (GL_PROJECTION);
+		glLoadIdentity ();
+		glOrtho (0, width, 0, height, -1, 1);
+		glMatrixMode (GL_MODELVIEW);
+
+		glDisable (GL_DEPTH_TEST);
+
+		// Display Rubberband.
+
+		Matrix4d::array_type modelview, projection;
+
+		glGetDoublev (GL_MODELVIEW_MATRIX, modelview);
+		glGetDoublev (GL_PROJECTION_MATRIX, projection);
+
+		GLdouble fx, fy, fz, tx, ty, tz;
+
+		// Starting point
+		gluUnProject (fromVector .x (), height - fromVector .z (), 0, modelview, projection, viewport, &fx, &fy, &fz);
+
+		gluUnProject (toVector .x (), height - toVector .z (), 0, modelview, projection, viewport, &tx, &ty, &tz);
+
+		glLineWidth (2);
+		glColor3f (0, 0, 0);
+		
+		glBegin (GL_LINES);
+		glVertex3f (fx, fy, fz);
+		glVertex3f (tx, ty, tz);
+		glEnd ();
+		
+		glLineWidth (1);
+		glColor3f (1, 1, 1);
+		
+		glBegin (GL_LINES);
+		glVertex3f (fx, fy, fz);
+		glVertex3f (tx, ty, tz);
+		glEnd ();
+	}
+
 }
 
 FlyViewer::~FlyViewer ()

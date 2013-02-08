@@ -263,12 +263,14 @@ RenderingProperties::build ()
 {
 	glNewList (listId, GL_COMPILE);
 
-	GLfloat viewport [4];
+	// Configure HUD
 
-	glGetFloatv (GL_VIEWPORT, viewport);
+	GLint viewport [4];
 
-	GLfloat width  = viewport [2];
-	GLfloat height = viewport [3];
+	glGetIntegerv (GL_VIEWPORT, viewport);
+
+	GLint width  = viewport [2];
+	GLint height = viewport [3];
 
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();

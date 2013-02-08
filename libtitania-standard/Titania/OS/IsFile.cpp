@@ -60,7 +60,7 @@ is_file (const std::string & pathname)
 {
 	static struct stat sb;
 
-	return stat (pathname .c_str (), &sb) == 0 && S_ISREG (sb .st_mode);
+	return stat (pathname .c_str (), &sb) == 0 and S_ISREG (sb .st_mode);
 }
 
 } // os

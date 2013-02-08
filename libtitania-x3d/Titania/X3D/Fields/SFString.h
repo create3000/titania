@@ -97,7 +97,7 @@ public:
 
 	virtual
 	std::string
-	toString () const /*override*/;
+	toString () const;
 
 	virtual
 	void

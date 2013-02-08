@@ -70,7 +70,8 @@ namespace X3D {
 // Table 9.2 — Browser options
 // Name                    Type/valid range                         Default                      Description
 // SplashScreen            Boolean                                  Implementation-dependent     Display browser splash screen on startup
-// Dashboard               Boolean                                                               Specified by bound NavigationInfo in contentDisplay browser navigation user interface
+// Dashboard               Boolean                                  False                        Specified by bound NavigationInfo in content. Display browser navigation user interface.
+// Rubberband              Boolean                                  True                         Specified by bound NavigationInfo in content. Display rubber band navigation hint.
 // EnableInlineViewpoints  Boolean                                  True                         Viewpoints from Inline nodes are included in list of viewpoints if made available by the Inline node.
 // Antialiased             Boolean                                  False                        Render using hardware antialiasing if available
 // TextureQuality          Low, Medium, High                        Medium                       Quality of texture map display
@@ -86,6 +87,7 @@ public:
 
 	SFBool   splashScreen;
 	SFBool   dashboard;
+	SFBool   rubberBand;
 	SFBool   enableInlineViewpoints;
 	SFBool   antialiased;
 	SFString textureQuality;

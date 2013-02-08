@@ -235,11 +235,18 @@ jsBrowser::createX3DFromString (JSContext* context, uintN argc, jsval* vp)
 
 		X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, x3dSyntax));
+		try
+		{
+			SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, x3dSyntax));
+			
+			return jsX3DScene::create (context, scene, vp);
+		}
+		catch (const X3DError & error)
+		{
+			JS_ReportError (context, error .what ());
 
-		JS_SET_RVAL (context, vp, JSVAL_VOID);
-
-		return JS_TRUE;
+			return jsX3DScene::create (context, script -> getBrowser () -> createScene (), vp);
+		}
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -278,7 +285,14 @@ jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
 
 		MFString* parameter = (MFString*) JS_GetPrivate (context, oparameter);
 
-		script -> loadURL (*url, *parameter);
+		try
+		{
+			script -> loadURL (*url, *parameter);
+		}
+		catch (const X3DError & error)
+		{
+			JS_ReportError (context, error .what ());
+		}
 
 		JS_SET_RVAL (context, vp, JSVAL_VOID);
 
@@ -438,12 +452,22 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 				{
 					if (field -> getType () == X3DConstants::MFNode)
 					{
-						SFNode <Scene> scene = script -> createX3DFromURL (*url);
-
-						if (scene)
+						try
 						{
-							field -> write (scene -> getRootNodes ());
+							SFNode <Scene> scene = script -> createX3DFromURL (*url);
+
+							if (scene)
+							{
+								field -> write (scene -> getRootNodes ());
+								field -> notifyParents ();
+							}
+						}
+						catch (const X3DError & error)
+						{
+							field -> write (MFNode ());
 							field -> notifyParents ();
+
+							JS_ReportError (context, error .what ());
 						}
 
 						//std::cout << "createVrmlFromURL " << *url << std::endl;

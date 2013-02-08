@@ -936,7 +936,6 @@
     <Folder Include="Titania\X3D\InputOutput\" />
     <Folder Include="Titania\X3D\Browser\" />
     <Folder Include="Titania\X3D\Extensions\" />
-    <Folder Include="Titania\X3D\Widgets\" />
     <Folder Include="Titania\X3D\Basic\" />
     <Folder Include="Titania\X3D\Base\" />
     <Folder Include="Titania\X3D\Bits\" />

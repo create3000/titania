@@ -67,8 +67,8 @@ class X3DArrayField :
 {
 public:
 
-	typedef ValueType         scalar_type;
-	typedef Array <ValueType> value_type;
+	typedef ValueType                                          scalar_type;
+	typedef typename X3DField <Array <ValueType>>::value_type value_type;
 
 	typedef typename value_type::iterator               iterator;
 	typedef typename value_type::const_iterator         const_iterator;
@@ -78,7 +78,6 @@ public:
 	typedef typename value_type::size_type              size_type;
 
 	using X3DField <value_type>::getValue;
-	using X3DField <value_type>::set;
 	using X3DField <value_type>::operator =;
 
 	///  Default constructor.
@@ -386,7 +385,7 @@ X3DArrayField <ValueType>::set (InputIterator first, InputIterator last)
 {
 	iterator current = begin ();
 
-	for ( ; first not_eq last && current not_eq end (); current ++, first ++)
+	for ( ; first not_eq last && current not_eq end (); ++ current, ++ first)
 		current -> set (*first);
 
 	if (first == last)

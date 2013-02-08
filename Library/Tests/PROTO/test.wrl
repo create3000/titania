@@ -2,19 +2,44 @@
 
 META "title" "PROTO test"
 
-PROTO Ghost [ ]
+PROTO LoadVrmlFromURL [
+  exposedField MFInt32 ints 1
+  exposedField MFString url ""
+  exposedField SFString string ""
+]
 {
-  PROTO Data [ ]
+  PROTO Data [
+    exposedField MFInt32 ints []
+    exposedField MFString url ["", ""]
+    exposedField SFString string ""
+  ]
   {
     Group { }
   }
 
-  DEF _ghost_0 Script {
-    field SFNode data DEF _1 Data { }
+  DEF _loadUrl_0 Script {
+    field SFNode data DEF Data Data {
+      ints IS ints
+      url IS url
+      string IS string
+    }
 
     url "vrmlscript:
+function initialize()
+{
+	print (data);
+	print (data .ints);
+	print (data .url);
+	print (data .string);
+}
 "
+    directOutput TRUE
+    mustEvaluate TRUE
   }
 }
 
-Ghost { }
+LoadVrmlFromURL {
+  ints [1,2,3]
+  url "level1.wrl"
+  string "string"
+}

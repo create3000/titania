@@ -62,24 +62,13 @@ extern "C"
 namespace titania {
 namespace X3D {
 
-// Table 9.2 — Browser options
-// Name                    Type/valid range                            Default                      Description
-// Antialiased             Boolean                                     False                        Render using hardware antialiasing if available
-// Dashboard               Boolean                                                                  Specified by bound NavigationInfo in contentDisplay browser navigation user interface
-// EnableInlineViewpoints  Boolean                                     True                         Viewpoints from Inline nodes are included in list of viewpoints if made available by the Inline node.
-// MotionBlur              Boolean                                     False                        Render animations with motion blur
-// PrimitiveQuality        Low, Medium, High                           Medium                       Render quality (tesselation level) for Box, Cone, Cylinder, Sphere
-// QualityWhenMoving       Low, Medium, High,                          Same (as while stationary)   SameRender quality while camera is moving
-// Shading                 Pointset, Wireframe, Flat, Gouraud, Phong   Gouraud                      Specify shading mode for all objects
-// SplashScreen            Boolean                                     Implementation-dependent     Display browser splash screen on startup
-// TextureQuality          Low, Medium, High                           Medium                       Quality of texture map display
-
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	       X3DPropertyNode (),                                                    
 	          splashScreen (false),                                               
 	             dashboard (),                                                    
-	enableInlineViewpoints (true),                                                // motionBlur (False),
+	            rubberBand (true),                                                    
+	enableInlineViewpoints (true),
 	           antialiased (),                                                    
 	        textureQuality ("MEDIUM"),                                            
 	      primitiveQuality ("MEDIUM"),                                            

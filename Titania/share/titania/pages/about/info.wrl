@@ -9,7 +9,7 @@ DEF White Background {
 
 Viewpoint {
   description "Home"
-  position 0 0 2.39431
+  position 0 0 1.39431
 }
 
 Transform {
@@ -22,6 +22,8 @@ Transform {
         repeatT FALSE
       }
     }
-    geometry Box { }
+    geometry Rectangle2D {
+      solid FALSE
+    }
   }
 }

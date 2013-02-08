@@ -47,7 +47,6 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
 #include "X3DBrowserWindowUI.h"
 
 namespace titania {
@@ -102,6 +101,7 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder -> get_widget ("FullScreenMenuItem", m_fullScreenMenuItem);
 	m_builder -> get_widget ("NavigationMenuItem", m_navigationMenuItem);
 	m_builder -> get_widget ("HeadlightMenuItem", m_headlightMenuItem);
+	m_builder -> get_widget ("RubberbandMenuItem", m_rubberbandMenuItem);
 	m_builder -> get_widget ("LookAtAllMenuItem", m_lookAtAllMenuItem);
 	m_builder -> get_widget ("EnableInlineViewpointsMenuItem", m_enableInlineViewpointsMenuItem);
 	m_builder -> get_widget ("ViewpointsMenuItem", m_viewpointsMenuItem);
@@ -151,6 +151,7 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	connections .emplace_back (m_renderingPropertiesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_rendering_properties_toggled)));
 	connections .emplace_back (m_fullScreenMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_fullscreen_toggled)));
 	connections .emplace_back (m_headlightMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_headlight_toggled)));
+	connections .emplace_back (m_rubberbandMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_rubberband_toggled)));
 
 	// Connect object Gtk::MenuItem with id 'LookAtAllMenuItem'.
 	connections .emplace_back (m_lookAtAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_look_at_all_activate)));

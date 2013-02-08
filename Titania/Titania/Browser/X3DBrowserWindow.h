@@ -59,6 +59,8 @@
 namespace titania {
 namespace puck {
 
+typedef std::deque <std::shared_ptr <BrowserWidget>> BrowserWidgetsArray;
+
 class X3DBrowserWindow :
 	public Gtk::Application, public X3DBrowserWindowUI, public X3DBrowserInterface
 {
@@ -87,6 +89,10 @@ public:
 
 	const std::shared_ptr <BrowserWidget> &
 	getBrowserWidget () const;
+
+	const BrowserWidgetsArray &
+	getBrowserWidgets () const
+	{ return browserWidgets; }
 
 	///  @name X3DBaseNode
 
@@ -166,8 +172,8 @@ private:
 	void
 	setTransparent (bool);
 
-	Glib::OptionGroup::vecustrings                remainingOptions;
-	std::deque <std::shared_ptr <BrowserWidget>> browserWidgets;
+	Glib::OptionGroup::vecustrings remainingOptions;
+	BrowserWidgetsArray            browserWidgets;
 
 };
 
