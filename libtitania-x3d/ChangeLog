@@ -1,5 +1,10 @@
 2013-02-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* FlyViewer.h:
+	* FlyViewer.cpp: 
+
+2013-02-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* SFString.h:
 	* FlyViewer.h:

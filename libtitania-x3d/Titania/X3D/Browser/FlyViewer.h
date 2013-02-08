@@ -101,6 +101,12 @@ private:
 
 	void
 	addFly ();
+
+	bool
+	pan ();
+
+	void
+	addPan ();
 	
 	void
 	display ();
@@ -117,6 +123,7 @@ private:
 	sigc::connection key_press_event_connection;
 	sigc::connection key_release_event_connection;
 	sigc::connection fly_id;
+	sigc::connection pan_id;
 
 };
 

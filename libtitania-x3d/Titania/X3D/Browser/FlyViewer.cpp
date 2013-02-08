@@ -75,7 +75,8 @@ FlyViewer::FlyViewer (Browser* const browser, NavigationInfo* navigationInfo) :
 	button_press_event_connection   (),               
 	button_release_event_connection (),               
 	motion_notify_event_connection  (),               
-	                         fly_id ()                
+	                         fly_id (),                
+	                         pan_id ()                
 { }
 
 void
@@ -102,7 +103,9 @@ FlyViewer::on_button_press_event (GdkEventButton* event)
 	}
 
 	else if (button == 2)
-	{ }
+	{
+		fromVector = toVector = Vector3f (event -> x, -event -> y, 0);
+	}
 
 	return false;
 }
@@ -116,6 +119,11 @@ FlyViewer::on_button_release_event (GdkEventButton* event)
 
 		getBrowser () -> displayed .removeInterest (this, &FlyViewer::display);
 		getBrowser () -> changed .processInterests ();
+	}
+	
+	else if (button == 2)
+	{
+		pan_id .disconnect ();
 	}
 
 	button = 0;
@@ -136,7 +144,13 @@ FlyViewer::on_motion_notify_event (GdkEventMotion* event)
 	}
 
 	else if (button == 2)
-	{ }
+	{
+		toVector = Vector3f (event -> x, -event -> y, 0);
+
+		direction = (toVector - fromVector) * SPEED_FACTOR * navigationInfo -> speed .getValue ();
+
+		addPan ();
+	}
 
 	return false;
 }
@@ -192,6 +206,29 @@ FlyViewer::addFly ()
 {
 	if (not fly_id .connected ())
 		fly_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &FlyViewer::fly), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
+}
+
+bool
+FlyViewer::pan ()
+{
+	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+
+	float frameRate = std::max <float> (getBrowser () -> getCurrentFrameRate (), FRAME_RATE);
+
+	float speed_factor = shift_key ? 4 : 1;
+
+	viewpoint -> positionOffset += viewpoint -> getUserOrientation () * direction * speed_factor / frameRate;
+
+	//__LOG__ << math::abs (viewpoint -> getUserOrientation () * direction * speed_factor / frameRate) << std::endl;
+
+	return true;
+}
+
+void
+FlyViewer::addPan ()
+{
+	if (not pan_id .connected ())
+		pan_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &FlyViewer::pan), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
 }
 
 void
@@ -256,6 +293,7 @@ FlyViewer::~FlyViewer ()
 	key_press_event_connection      .disconnect ();
 	key_release_event_connection    .disconnect ();
 	fly_id .disconnect ();
+	pan_id .disconnect ();
 }
 
 } // X3D
