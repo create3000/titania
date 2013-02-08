@@ -92,7 +92,7 @@ Disk2D::createBBox ()
 {
 	auto radius = std::max (innerRadius, outerRadius);
 
-	return Box3f (Vector3f (radius, radius, 0), Vector3f ());
+	return Box3f (Vector3f (std::abs (radius), std::abs (radius), 0), Vector3f ());
 }
 
 void
@@ -108,7 +108,7 @@ Disk2D::build ()
 		
 	if (innerRadius == outerRadius)
 	{
-		const auto & radius = outerRadius;
+		auto radius = std::abs (outerRadius);
 	
 		// Circle
 		
@@ -120,7 +120,7 @@ Disk2D::build ()
 			getVertices () .reserve (properties -> getVertices () .size ());
 
 			for (const auto & vertex : properties -> getVertices ())
-				getVertices () .emplace_back (vertex * radius .getValue ());
+				getVertices () .emplace_back (vertex * radius);
 		}
 
 		setVertexMode (GL_LINE_LOOP);
@@ -131,7 +131,7 @@ Disk2D::build ()
 
 	if (innerRadius == 0.0f or outerRadius == 0.0f)
 	{
-		const auto & radius = std::max (innerRadius, outerRadius);
+		auto radius = std::abs (std::max (innerRadius, outerRadius));
 	
 		// Disk
 		
@@ -152,7 +152,7 @@ Disk2D::build ()
 			getVertices () .reserve (properties -> getVertices () .size ());
 
 			for (const auto & vertex : properties -> getVertices ())
-				getVertices () .emplace_back (vertex * radius .getValue ());
+				getVertices () .emplace_back (vertex * radius);
 		}
 
 		setElements (elements);
@@ -175,9 +175,9 @@ Disk2D::build ()
 	
 	// Texture Coordinates
 	
-	const auto & maxRadius = std::max (innerRadius, outerRadius);
-	const auto & minRadius = std::min (innerRadius, outerRadius);
-	auto scale             = minRadius / maxRadius;
+	auto maxRadius = std::abs (std::max (innerRadius, outerRadius));
+	auto minRadius = std::abs (std::min (innerRadius, outerRadius));
+	auto scale     = minRadius / maxRadius;
 	
 	for (const auto & texCoord : properties -> getTexCoord ())
 	{
@@ -197,8 +197,8 @@ Disk2D::build ()
 	
 	for (const auto & vertex : properties -> getVertices ())
 	{
-		getVertices () .emplace_back (vertex * minRadius .getValue ());
-		getVertices () .emplace_back (vertex * maxRadius .getValue ());
+		getVertices () .emplace_back (vertex * minRadius);
+		getVertices () .emplace_back (vertex * maxRadius);
 	}
 	
 	// The last two vertices are the first two.

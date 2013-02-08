@@ -182,7 +182,7 @@ void
 FlyViewer::addFly ()
 {
 	if (not fly_id .connected ())
-		fly_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &FlyViewer::fly), 1 / FRAME_RATE * 1000, GDK_PRIORITY_REDRAW);
+		fly_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &FlyViewer::fly), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
 }
 
 FlyViewer::~FlyViewer ()

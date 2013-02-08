@@ -86,7 +86,7 @@ Circle2D::initialize ()
 Box3f
 Circle2D::createBBox ()
 {
-	return Box3f (Vector3f (radius, radius, 0), Vector3f ());
+	return Box3f (Vector3f (std::abs (radius), std::abs (radius), 0), Vector3f ());
 }
 
 void
@@ -100,7 +100,7 @@ Circle2D::build ()
 {
 	const Circle2DProperties* properties = getBrowser () -> getBrowserOptions () -> circle2DProperties .getValue ();
 
-	if (radius == 1.0f)
+	if (std::abs (radius) == 1.0f)
 		getVertices () = properties -> getVertices ();
 
 	else
@@ -108,7 +108,7 @@ Circle2D::build ()
 		getVertices () .reserve (properties -> getVertices () .size ());
 
 		for (const auto & vertex : properties -> getVertices ())
-			getVertices () .emplace_back (vertex * radius .getValue ());
+			getVertices () .emplace_back (vertex * std::abs (radius));
 	}
 
 	setVertexMode (properties -> getVertexMode ());

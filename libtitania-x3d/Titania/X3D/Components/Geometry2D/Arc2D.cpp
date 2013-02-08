@@ -133,7 +133,7 @@ Arc2D::build ()
 	{
 		float theta = startAngle + angle * n;
 	
-		std::complex <float> point = std::polar <float> (radius, theta);
+		auto point = std::polar (std::abs (radius), theta);
 
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}

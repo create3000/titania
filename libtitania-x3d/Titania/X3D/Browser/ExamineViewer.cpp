@@ -220,7 +220,7 @@ void
 ExamineViewer::addSpinning ()
 {
 	if (not spin_id .connected ())
-		spin_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &ExamineViewer::spin), 1 / FRAME_RATE * 1000, GDK_PRIORITY_REDRAW);
+		spin_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &ExamineViewer::spin), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
 }
 
 Vector3f

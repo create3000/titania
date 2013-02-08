@@ -22,9 +22,11 @@ function touchTime (value, time)
 {
 	print ('touchTime')
 	startTime (1,1);
-	startTime = time;
+	startTime = time; // error line
 }
   "
 }
 
 ROUTE Touch.touchTime TO Script.touchTime
+
+#This file should produce an javascript runtime error.

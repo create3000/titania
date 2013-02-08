@@ -150,8 +150,8 @@ ArcClose2D::build ()
 	{
 		float theta = startAngle + angle * n;
 	
-		std::complex <float> texCoord = std::polar <float> (0.5, theta) + std::complex <float> (0.5, 0.5);
-		std::complex <float> point    = std::polar <float> (radius, theta);
+		auto texCoord = std::polar (0.5f, theta) + std::complex <float> (0.5f, 0.5f);
+		auto point    = std::polar (std::abs (radius), theta);
 
 		getTexCoord () .emplace_back (texCoord .real (), texCoord .imag ());
 	   getNormals  () .emplace_back (0, 0, 1);

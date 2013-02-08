@@ -50,6 +50,8 @@
 
 #include "Router.h"
 
+#include <glibmm/thread.h>
+
 namespace titania {
 namespace X3D {
 
