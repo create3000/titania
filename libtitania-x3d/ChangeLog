@@ -1,5 +1,14 @@
 2013-02-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* FlyViewer.h:
+	* Browser.cpp:
+	* FlyViewer.cpp:
+	* X3DRenderer.h:
+	* X3DRenderer.cpp:
+	* X3DViewpointNode.cpp: 
+
+2013-02-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Router.h:
 	* Router.cpp:
 	* X3DOutput.cpp:

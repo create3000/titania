@@ -88,6 +88,9 @@ public:
 
 	void
 	render ();
+	
+	void
+	bottom ();
 
 	virtual
 	~X3DRenderer ();

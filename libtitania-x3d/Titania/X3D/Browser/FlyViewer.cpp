@@ -54,29 +54,38 @@
 #include "../Components/Geospatial/GeoViewpoint.h"
 #include "../Components/Navigation/OrthoViewpoint.h"
 
+#include <Titania/Chrono/Now.h>
 #include <cmath>
 #include <glibmm/main.h>
 
 #define SPEED_FACTOR            0.02f
 #define ROTATION_SPEED_FACTOR   0.2f
+#define ROLL_ANGLE              (M_PI / 16)
+#define ROLL_TIME               0.2
 #define FRAME_RATE              100
 
 namespace titania {
 namespace X3D {
+
+Vector3f FlyViewer::upVector (0, 1, 0);
 
 FlyViewer::FlyViewer (Browser* const browser, NavigationInfo* navigationInfo) :
 	                      X3DViewer (browser),        
 	                 navigationInfo (navigationInfo), 
 	                     fromVector (),               
 	                       toVector (),               
-	                      direction (),               
+	                      direction (),
+	                       rotation (),
+	                      startTime (),               
 	                         button (0),              
 	                      shift_key (false),          
-	button_press_event_connection   (),               
+	  button_press_event_connection (),               
 	button_release_event_connection (),               
-	motion_notify_event_connection  (),               
-	                         fly_id (),                
-	                         pan_id ()                
+	 motion_notify_event_connection (),               
+	        scroll_event_connection (),               
+	                         fly_id (),               
+	                         pan_id (),
+	                        roll_id ()                
 { }
 
 void
@@ -85,16 +94,17 @@ FlyViewer::initialize ()
 	button_press_event_connection   = getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &FlyViewer::on_button_press_event));
 	button_release_event_connection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &FlyViewer::on_button_release_event));
 	motion_notify_event_connection  = getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &FlyViewer::on_motion_notify_event));
+	scroll_event_connection         = getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &FlyViewer::on_scroll_event));
 	key_press_event_connection      = getBrowser () -> signal_key_press_event      () .connect (sigc::mem_fun (*this, &FlyViewer::on_key_press_event));
 	key_release_event_connection    = getBrowser () -> signal_key_release_event    () .connect (sigc::mem_fun (*this, &FlyViewer::on_key_release_event));
-
-	getBrowser () -> displayed .addInterest (this, &FlyViewer::collison);
 }
 
 bool
 FlyViewer::on_button_press_event (GdkEventButton* event)
 {
 	button = event -> button;
+
+	disconnect ();
 
 	if (button == 1)
 	{
@@ -115,18 +125,16 @@ FlyViewer::on_button_press_event (GdkEventButton* event)
 bool
 FlyViewer::on_button_release_event (GdkEventButton* event)
 {
+	disconnect ();
+
 	if (button == 1)
 	{
-		fly_id .disconnect ();
-
 		getBrowser () -> displayed .removeInterest (this, &FlyViewer::display);
 		getBrowser () -> changed .processInterests ();
 	}
-	
+
 	else if (button == 2)
-	{
-		pan_id .disconnect ();
-	}
+	{ }
 
 	button = 0;
 
@@ -158,6 +166,32 @@ FlyViewer::on_motion_notify_event (GdkEventMotion* event)
 }
 
 bool
+FlyViewer::on_scroll_event (GdkEventScroll* event)
+{
+	disconnect ();
+	
+	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+	
+	float speed_factor = shift_key ? 4 : 1;
+
+	if (event -> direction == 0)      // Roll up.
+	{
+		rotation  = Rotation4f (viewpoint -> getUserOrientation () * Vector3f (-1, 0, 0), ROLL_ANGLE / ROLL_TIME);
+		startTime = chrono::now ();
+		addRoll ();
+	}
+
+	else if (event -> direction == 1) // Roll down.
+	{
+		rotation  = Rotation4f (viewpoint -> getUserOrientation () * Vector3f (1, 0, 0), ROLL_ANGLE / ROLL_TIME);
+		startTime = chrono::now ();
+		addRoll ();
+	}
+
+	return false;
+}
+
+bool
 FlyViewer::on_key_press_event (GdkEventKey* event)
 {
 	if (event -> keyval == GDK_KEY_Shift_L or event -> keyval == GDK_KEY_Shift_R)
@@ -175,14 +209,14 @@ FlyViewer::on_key_release_event (GdkEventKey* event)
 	return false;
 }
 
-#define M_PI1_2  (M_PI / 2)
-
 bool
 FlyViewer::fly ()
 {
 	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	float frameRate = std::max <float> (getBrowser () -> getCurrentFrameRate (), FRAME_RATE);
+	
+	// Orientation offeset
 
 	Rotation4f rotation = direction .z () > 0
 	                      ? ~Rotation4f (Vector3f (0, 0, 1), direction)
@@ -191,12 +225,48 @@ FlyViewer::fly ()
 	float angle = rotation .angle ();
 
 	rotation .angle (angle * math::abs (direction) * ROTATION_SPEED_FACTOR / frameRate);
+	
+	viewpoint -> orientationOffset *= rotation;
+
+	// Position offset
 
 	float speed_factor = shift_key ? 4 : 1;
 	speed_factor *= 1 - angle / M_PI1_2;
 
-	viewpoint -> orientationOffset *= rotation;
-	viewpoint -> positionOffset    += viewpoint -> getUserOrientation () * direction * speed_factor / frameRate;
+	rotation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
+	
+	viewpoint -> positionOffset += rotation * direction * speed_factor / frameRate;
+
+	return true;
+}
+
+bool
+FlyViewer::pan ()
+{
+	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+
+	float frameRate = std::max <float> (getBrowser () -> getCurrentFrameRate (), FRAME_RATE);
+
+	float speed_factor = shift_key ? 4 : 1;
+	
+	Rotation4f rotation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
+
+	viewpoint -> positionOffset += rotation * direction * speed_factor / frameRate;
+
+	return true;
+}
+
+bool
+FlyViewer::roll ()
+{
+	if (chrono::now () - startTime > ROLL_TIME)
+		return false;
+
+	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+
+	float frameRate = std::max <float> (getBrowser () -> getCurrentFrameRate (), FRAME_RATE);
+	
+	viewpoint -> orientationOffset *= Rotation4f (rotation .axis (), rotation .angle () / frameRate);
 
 	return true;
 }
@@ -208,25 +278,26 @@ FlyViewer::addFly ()
 		fly_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &FlyViewer::fly), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
 }
 
-bool
-FlyViewer::pan ()
-{
-	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
-
-	float frameRate = std::max <float> (getBrowser () -> getCurrentFrameRate (), FRAME_RATE);
-
-	float speed_factor = shift_key ? 4 : 1;
-
-	viewpoint -> positionOffset += viewpoint -> getUserOrientation () * direction * speed_factor / frameRate;
-
-	return true;
-}
-
 void
 FlyViewer::addPan ()
 {
 	if (not pan_id .connected ())
 		pan_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &FlyViewer::pan), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
+}
+
+void
+FlyViewer::addRoll ()
+{
+	if (not roll_id .connected ())
+		roll_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &FlyViewer::roll), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
+}
+
+void
+FlyViewer::disconnect ()
+{
+	fly_id  .disconnect ();
+	pan_id  .disconnect ();
+	roll_id .disconnect ();
 }
 
 void
@@ -266,15 +337,15 @@ FlyViewer::display ()
 
 		glLineWidth (2);
 		glColor3f (0, 0, 0);
-		
+
 		glBegin (GL_LINES);
 		glVertex3f (fx, fy, fz);
 		glVertex3f (tx, ty, tz);
 		glEnd ();
-		
+
 		glLineWidth (1);
 		glColor3f (1, 1, 1);
-		
+
 		glBegin (GL_LINES);
 		glVertex3f (fx, fy, fz);
 		glVertex3f (tx, ty, tz);
@@ -282,34 +353,18 @@ FlyViewer::display ()
 	}
 }
 
-void
-FlyViewer::collison ()
-{
-	GLint viewport [4];
-
-	glGetIntegerv (GL_VIEWPORT, viewport);
-	
-	glViewport (0, 0, 20, 20);
-	
-	getBrowser () -> getExecutionContext () -> display ();
-
-	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
-}
-
 FlyViewer::~FlyViewer ()
 {
-	getBrowser () -> displayed .removeInterest (this, &FlyViewer::collison);
-
 	getBrowser () -> displayed .removeInterest (this, &FlyViewer::display);
 
 	button_press_event_connection   .disconnect ();
 	motion_notify_event_connection  .disconnect ();
+	scroll_event_connection         .disconnect ();
 	button_release_event_connection .disconnect ();
 	key_press_event_connection      .disconnect ();
 	key_release_event_connection    .disconnect ();
 
-	fly_id .disconnect ();
-	pan_id .disconnect ();
+	disconnect ();
 }
 
 } // X3D

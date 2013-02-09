@@ -57,7 +57,9 @@
 namespace titania {
 namespace math {
 
-#define M_PI2 (2 * M_PI)
+#define M_PI1_2  (M_PI / 2)
+#define M_PI2    (2 * M_PI)
+
 #define M_PHI 1.6180339887498948482045868343656381177203091798057628
 
 ///  Convert @a value from degrees to radiants.

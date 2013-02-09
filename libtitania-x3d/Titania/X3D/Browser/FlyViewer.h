@@ -99,34 +99,46 @@ private:
 	bool
 	fly ();
 
-	void
-	addFly ();
-
 	bool
 	pan ();
 
+	bool
+	roll ();
+
+	void
+	addFly ();
+	
 	void
 	addPan ();
 	
 	void
-	display ();
-
+	addRoll ();
+	
 	void
-	collison ();
+	disconnect ();
+	
+	void
+	display ();
+	
+	static Vector3f upVector;
 
 	NavigationInfo*  navigationInfo;
 	Vector3f         fromVector;
 	Vector3f         toVector;
 	Vector3f         direction;
+	Rotation4f       rotation;
+	time_type        startTime;
 	guint            button;
 	bool             shift_key;
 	sigc::connection button_press_event_connection;
 	sigc::connection button_release_event_connection;
 	sigc::connection motion_notify_event_connection;
+	sigc::connection scroll_event_connection;
 	sigc::connection key_press_event_connection;
 	sigc::connection key_release_event_connection;
 	sigc::connection fly_id;
 	sigc::connection pan_id;
+	sigc::connection roll_id;
 
 };
 

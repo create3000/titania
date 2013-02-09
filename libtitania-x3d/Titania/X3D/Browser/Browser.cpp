@@ -170,22 +170,47 @@ void
 Browser::set_navigationInfo ()
 {
 	NavigationInfo* navigationInfo = getActiveNavigationInfo ();
+
+	viewer .reset ();
 	
-	if (navigationInfo -> type .size ())
+	for (const auto & type : navigationInfo -> type)
 	{
-		if (navigationInfo -> type [0] == "NONE")
+		if (type == "NONE")
+		{
 			viewer .reset (new NoneViewer (this));
+			break;
+		}
 
-		else if (navigationInfo -> type [0] == "WALK")
+		else if (type == "WALK")
+		{
 			viewer .reset (new FlyViewer (this, navigationInfo));
+			break;
+		}
 
-		else if (navigationInfo -> type [0] == "FLY")
+		else if (type == "FLY")
+		{
 			viewer .reset (new FlyViewer (this, navigationInfo));
+			break;
+		}
+
+		else if (type == "LOOKAT")
+		{
+			
+		}
+
+		else if (type == "ANY")
+		{
+			
+		}
 
 		else
+		{
 			viewer .reset (new ExamineViewer (this, navigationInfo));
+			break;
+		}
 	}
-	else
+	
+	if (not viewer)
 		viewer .reset (new ExamineViewer (this, navigationInfo));
 
 	viewer -> setup ();

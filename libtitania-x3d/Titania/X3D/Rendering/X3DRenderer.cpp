@@ -104,13 +104,9 @@ X3DRenderer::render ()
 
 	getBrowser () -> getRenderers () .emplace (this);
 
-	time_type t0 = getCurrentTime ();
 	traverse ();
-	traverseTime = getCurrentTime () - t0;
-
-	t0 = getCurrentTime ();
 	draw ();
-	drawTime = getCurrentTime () - t0;
+	//bottom ();
 
 	getBrowser () -> getRenderers () .pop ();
 }
@@ -232,6 +228,58 @@ X3DRenderer::draw ()
 	numNodesDrawn += numTransparentNodesDrawn;
 
 	glPopMatrix ();
+}
+
+void
+X3DRenderer::bottom ()
+{
+	GLint viewport [4];
+
+	glGetIntegerv (GL_VIEWPORT, viewport);
+	
+	glViewport (0, 0, 200, 200);
+	glScissor(0, 0, 200, 200);
+	glEnable (GL_SCISSOR_TEST);
+
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glDisable (GL_SCISSOR_TEST);
+	
+	glPushMatrix ();
+	
+	glLoadMatrixf (Matrix4f (Rotation4f (1, 0, 0, M_PI1_2)) .data ());
+	getCurrentViewpoint () -> transform ();
+
+	{
+		// Sorted blend
+
+		// render opaque objects first
+
+		glEnable (GL_DEPTH_TEST);
+		glDepthMask (GL_TRUE);
+		glDisable (GL_BLEND);
+
+		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
+		{
+			shape -> redraw ();
+		}
+
+		// render transparent objects
+
+		glDepthMask (GL_FALSE);
+		glEnable (GL_BLEND);
+
+		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
+		{
+			shape -> redraw ();
+		}
+
+		glDepthMask (GL_TRUE);
+		glDisable (GL_BLEND);
+	}
+
+	glPopMatrix ();
+
+	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
 }
 
 void

@@ -264,7 +264,7 @@ X3DViewpointNode::reshape ()
 void
 X3DViewpointNode::transform ()
 {
-	glLoadMatrixf (getInverseTransformationMatrix () .data ());
+	glMultMatrixf (getInverseTransformationMatrix () .data ());
 }
 
 void
