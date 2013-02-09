@@ -79,9 +79,5 @@ PrimitivePickSensor::create (X3DExecutionContext* const executionContext) const
 	return new PrimitivePickSensor (executionContext);
 }
 
-void
-PrimitivePickSensor::update ()
-{ }
-
 } // X3D
 } // titania

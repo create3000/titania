@@ -137,7 +137,7 @@ TimeSensor::set_enabled ()
 		if (isActive)
 		{
 			isActive = false;
-			getBrowser () -> removeSensor (this);
+			getBrowser () -> sensors .removeInterest (this, &TimeSensor::update);
 		}
 	}
 }
@@ -177,7 +177,7 @@ TimeSensor::set_start ()
 		fraction_changed = 0;
 		time             = getCurrentTime ();
 
-		getBrowser () -> addSensor (this);
+		getBrowser () -> sensors .addInterest (this, &TimeSensor::update);
 	}
 }
 
@@ -211,7 +211,7 @@ void
 TimeSensor::set_stop ()
 {
 	isActive = false;
-	getBrowser () -> removeSensor (this);
+	getBrowser () -> sensors .removeInterest (this, &TimeSensor::update);
 }
 
 void
@@ -259,7 +259,7 @@ TimeSensor::dispose ()
 	startTimeout .disconnect ();
 
 	if (isActive)
-		getBrowser () -> removeSensor (this);
+		getBrowser () -> sensors .removeInterest (this, &TimeSensor::update);
 
 	X3DTimeDependentNode::dispose ();
 }

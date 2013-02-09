@@ -72,11 +72,6 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
-	virtual
-	void
-	update ();
-
-	virtual
 	void
 	display ();
 
@@ -93,6 +88,10 @@ private:
 
 	void
 	set_enabled ();
+
+	virtual
+	void
+	update ();
 
 	bool
 	isInside (const Matrix4f &) const;

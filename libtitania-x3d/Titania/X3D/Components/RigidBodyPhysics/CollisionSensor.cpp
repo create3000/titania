@@ -79,9 +79,5 @@ CollisionSensor::create (X3DExecutionContext* const executionContext) const
 	return new CollisionSensor (executionContext);
 }
 
-void
-CollisionSensor::update ()
-{ }
-
 } // X3D
 } // titania

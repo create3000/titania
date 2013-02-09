@@ -70,9 +70,18 @@ JSClass JavaScriptContext::global_class = {
 };
 
 JavaScriptContext::JavaScriptContext (X3DScriptNode* node, const std::string & ecmascript, size_t index) :
-	browser (node -> getBrowser ()), 
-	   node (node),                  
-	  index (index)                  
+	          runtime (NULL),                  
+	          context (NULL),                  
+	           global (NULL),                  
+	          browser (node -> getBrowser ()), 
+	             node (node),                  
+	            index (index),                 
+	     initializeFn (),                      
+	  prepareEventsFn (),                      
+	eventsProcessedFn (),                      
+	       shutdownFn (),                      
+	           fields (),                      
+	        functions ()                       
 {
 	// Create a JS runtime.
 	runtime = JS_NewRuntime (8L * 1024L * 1024L);
@@ -101,6 +110,8 @@ JavaScriptContext::JavaScriptContext (X3DScriptNode* node, const std::string & e
 	initNode ();
 
 	evaluate (ecmascript, "<no filename>");
+
+	initEventHandler ();
 }
 
 void
@@ -166,19 +177,18 @@ JavaScriptContext::initNode ()
 			case initializeOnly :
 			case outputOnly     :
 				{
-					defineProperty (context, global, field -> getName (), JSPROP_ENUMERATE);
+					addField (field);
+					defineProperty (context, global, field, field -> getName (), JSPROP_ENUMERATE);
 					break;
 				}
 			case inputOnly:
-			{
-				field -> addInterest (this, &JavaScriptContext::set_field, *field);
 				break;
-			}
 			case inputOutput:
 			{
-				defineProperty (context, global, field -> getName (),              JSPROP_ENUMERATE);
-				defineProperty (context, global, "set_" + field -> getName (),     0);
-				defineProperty (context, global, field -> getName () + "_changed", 0);
+				addField (field);
+				defineProperty (context, global, field, field -> getName (),              JSPROP_ENUMERATE);
+				defineProperty (context, global, field, "set_" + field -> getName (),     0);
+				defineProperty (context, global, field, field -> getName () + "_changed", 0);
 				break;
 			}
 		}
@@ -186,16 +196,108 @@ JavaScriptContext::initNode ()
 }
 
 void
+JavaScriptContext::addField (X3DFieldDefinition* const field)
+{
+	switch (field -> getType ())
+	{
+		case X3DConstants::SFBool:
+		case X3DConstants::SFDouble:
+		case X3DConstants::SFFloat:
+		case X3DConstants::SFInt32:
+		case X3DConstants::SFString:
+		case X3DConstants::SFTime:
+			break;
+		default:
+		{
+			jsval vp;
+
+			if (JS_NewFieldValue (context, field, &vp))
+			{
+				fields [field -> getName ()] = vp;
+				JS_AddValueRoot (context, &fields [field -> getName ()]);
+			}
+
+			break;
+		}
+	}
+}
+
+void
 JavaScriptContext::defineProperty (JSContext* context,
                                    JSObject* obj,
+                                   X3DFieldDefinition* const field,
                                    const std::string & name,
                                    uintN attrs)
 {
-	JS_DefineProperty (context,
-	                   obj, name .c_str (),
-	                   JSVAL_VOID,
-	                   getProperty, setProperty,
-	                   JSPROP_PERMANENT | JSPROP_SHARED | attrs);
+	switch (field -> getType ())
+	{
+		case X3DConstants::SFBool:
+		case X3DConstants::SFDouble:
+		case X3DConstants::SFFloat:
+		case X3DConstants::SFInt32:
+		case X3DConstants::SFString:
+		case X3DConstants::SFTime:
+			JS_DefineProperty (context,
+			                   obj, name .c_str (),
+			                   JSVAL_VOID,
+			                   getBuildInProperty, setProperty,
+			                   JSPROP_PERMANENT | JSPROP_SHARED | attrs);
+			break;
+		default:
+			JS_DefineProperty (context,
+			                   obj, name .c_str (),
+			                   JSVAL_VOID,
+			                   getProperty, setProperty,
+			                   JSPROP_PERMANENT | JSPROP_SHARED | attrs);
+			break;
+	}
+}
+
+void
+JavaScriptContext::initEventHandler ()
+{
+	initializeFn      = getFunction ("initialize");
+	prepareEventsFn   = getFunction ("prepareEvents");
+	eventsProcessedFn = getFunction ("eventsProcessed");
+	shutdownFn        = getFunction ("shutdownFn");
+
+	for (auto & field : node -> getUserDefinedFields ())
+	{
+		switch (field -> getAccessType ())
+		{
+			case inputOnly :
+				{
+					jsval function = getFunction (field -> getName ());
+
+					if (not JSVAL_IS_VOID (function))
+					{
+						functions [field] = function;
+						field -> addInterest (this, &JavaScriptContext::set_field, field);
+					}
+
+					break;
+				}
+			default:
+				break;
+		}
+	}
+}
+
+JSBool
+JavaScriptContext::getBuildInProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	jsval name;
+
+	if (JS_IdToValue (context, id, &name))
+	{
+		JavaScriptContext*  javaScript = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context));
+		X3DScriptNode*      script     = javaScript -> getNode ();
+		X3DFieldDefinition* field      = script -> getField (JS_GetString (context, name));
+
+		return JS_NewFieldValue (context, field, vp);
+	}
+
+	return JS_TRUE;
 }
 
 JSBool
@@ -205,11 +307,10 @@ JavaScriptContext::getProperty (JSContext* context, JSObject* obj, jsid id, jsva
 
 	if (JS_IdToValue (context, id, &name))
 	{
-		X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		JavaScriptContext* javaScript = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context));
 
-		X3DFieldDefinition* field = script -> getField (JS_GetString (context, name));
-
-		return JS_NewFieldValue (context, field, vp);
+		*vp = javaScript -> fields [JS_GetString (context, name)];
+		return JS_TRUE;
 	}
 
 	return JS_TRUE;
@@ -243,22 +344,15 @@ JavaScriptContext::evaluate (const std::string & string, const std::string & fil
 }
 
 void
-JavaScriptContext::set_field (const X3DFieldDefinition & field)
+JavaScriptContext::set_field (X3DFieldDefinition* field)
 {
-	jsval     func_val = JSVAL_VOID;
-	JSObject* objp     = NULL;
-
-	JSBool result = JS_GetMethod (context, global, field .getName () [0] .c_str (), &objp, &func_val);
-
-	if (not result or JSVAL_IS_VOID (func_val))
-		return;
-
 	jsval argv [2];
-	JS_NewFieldValue (context, const_cast <X3DFieldDefinition*> (&field), &argv [0], true);
+
+	JS_NewFieldValue (context, field, &argv [0], true);
 	JS_NewNumberValue (context, browser -> getCurrentTime (), &argv [1]);
 
 	jsval rval;
-	JS_CallFunctionValue (context, global, func_val, 2, argv, &rval);
+	JS_CallFunctionValue (context, global, functions [field], 2, argv, &rval);
 
 	JS_GC (context);
 }
@@ -272,40 +366,65 @@ JavaScriptContext::getNode () const
 void
 JavaScriptContext::initialize ()
 {
-	callFunction ("initialize");
+	if (not JSVAL_IS_VOID (initializeFn))
+		callFunction (initializeFn);
 }
 
 void
 JavaScriptContext::prepareEvents ()
 {
-	callFunction ("prepareEvents");
+	if (not JSVAL_IS_VOID (prepareEventsFn))
+		callFunction (prepareEventsFn);
 }
 
 void
 JavaScriptContext::eventsProcessed ()
 {
-	callFunction ("eventsProcessed");
+	if (not JSVAL_IS_VOID (eventsProcessedFn))
+		callFunction (eventsProcessedFn);
 }
 
 void
 JavaScriptContext::shutdown ()
 {
-	callFunction ("shutdown");
+	if (not JSVAL_IS_VOID (shutdownFn))
+		callFunction (shutdownFn);
+}
+
+jsval
+JavaScriptContext::getFunction (const std::string & name)
+{
+	jsval     function = JSVAL_VOID;
+	JSObject* objp     = NULL;
+
+	JSBool result = JS_GetMethod (context, global, name .c_str (), &objp, &function);
+
+	if (result)
+		return function;
+
+	return JSVAL_VOID;
 }
 
 void
-JavaScriptContext::callFunction (const std::string & function)
+JavaScriptContext::callFunction (const std::string & name)
 {
-	jsval     func_val = JSVAL_VOID;
+	jsval     function = JSVAL_VOID;
 	JSObject* objp     = NULL;
 
-	JSBool result = JS_GetMethod (context, global, function .c_str (), &objp, &func_val);
+	JSBool result = JS_GetMethod (context, global, name .c_str (), &objp, &function);
 
-	if (not result or JSVAL_IS_VOID (func_val))
+	if (not result or JSVAL_IS_VOID (function))
 		return;
 
+	callFunction (function);
+}
+
+void
+JavaScriptContext::callFunction (jsval function)
+{
 	jsval rval;
-	JS_CallFunctionValue (context, global, func_val, 0, NULL, &rval);
+
+	JS_CallFunctionValue (context, global, function, 0, NULL, &rval);
 
 	JS_GC (context);
 }
@@ -319,7 +438,7 @@ JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport
 	// Find error line
 
 	const String & ecmascript = script -> url [javaScript -> index];
-	
+
 	char nl = ecmascript .find ('\n', 0) == String::npos ? '\r' : '\n';
 
 	std::string::size_type start = 0;

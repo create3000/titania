@@ -93,9 +93,9 @@ void
 VisibilitySensor::set_enabled ()
 {
 	if (enabled)
-		getBrowser () -> addSensor (this);
+		getBrowser () -> sensors .addInterest (this, &VisibilitySensor::update);
 	else
-		getBrowser () -> removeSensor (this);
+		getBrowser () -> sensors .removeInterest (this, &VisibilitySensor::update);
 }
 
 void
@@ -136,7 +136,7 @@ void
 VisibilitySensor::dispose ()
 {
 	if (enabled)
-		getBrowser () -> removeSensor (this);
+		getBrowser () -> sensors .removeInterest (this, &VisibilitySensor::update);
 
 	X3DEnvironmentalSensorNode::dispose ();
 }

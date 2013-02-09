@@ -68,10 +68,6 @@ public:
 	activate (bool value)
 	{ isActive = value; }
 
-	virtual
-	void
-	update () = 0;
-
 
 protected:
 

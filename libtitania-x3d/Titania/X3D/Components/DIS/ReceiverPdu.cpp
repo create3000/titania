@@ -138,10 +138,6 @@ ReceiverPdu::getBBox ()
 }
 
 void
-ReceiverPdu::update ()
-{ }
-
-void
 ReceiverPdu::dispose ()
 {
 	X3DBoundedObject::dispose ();

@@ -87,6 +87,8 @@ FlyViewer::initialize ()
 	motion_notify_event_connection  = getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &FlyViewer::on_motion_notify_event));
 	key_press_event_connection      = getBrowser () -> signal_key_press_event      () .connect (sigc::mem_fun (*this, &FlyViewer::on_key_press_event));
 	key_release_event_connection    = getBrowser () -> signal_key_release_event    () .connect (sigc::mem_fun (*this, &FlyViewer::on_key_release_event));
+
+	getBrowser () -> displayed .addInterest (this, &FlyViewer::collison);
 }
 
 bool
@@ -196,8 +198,6 @@ FlyViewer::fly ()
 	viewpoint -> orientationOffset *= rotation;
 	viewpoint -> positionOffset    += viewpoint -> getUserOrientation () * direction * speed_factor / frameRate;
 
-	//__LOG__ << math::abs (viewpoint -> getUserOrientation () * direction * speed_factor / frameRate) << std::endl;
-
 	return true;
 }
 
@@ -218,8 +218,6 @@ FlyViewer::pan ()
 	float speed_factor = shift_key ? 4 : 1;
 
 	viewpoint -> positionOffset += viewpoint -> getUserOrientation () * direction * speed_factor / frameRate;
-
-	//__LOG__ << math::abs (viewpoint -> getUserOrientation () * direction * speed_factor / frameRate) << std::endl;
 
 	return true;
 }
@@ -282,16 +280,34 @@ FlyViewer::display ()
 		glVertex3f (tx, ty, tz);
 		glEnd ();
 	}
+}
 
+void
+FlyViewer::collison ()
+{
+	GLint viewport [4];
+
+	glGetIntegerv (GL_VIEWPORT, viewport);
+	
+	glViewport (0, 0, 20, 20);
+	
+	getBrowser () -> getExecutionContext () -> display ();
+
+	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
 }
 
 FlyViewer::~FlyViewer ()
 {
+	getBrowser () -> displayed .removeInterest (this, &FlyViewer::collison);
+
+	getBrowser () -> displayed .removeInterest (this, &FlyViewer::display);
+
 	button_press_event_connection   .disconnect ();
 	motion_notify_event_connection  .disconnect ();
 	button_release_event_connection .disconnect ();
 	key_press_event_connection      .disconnect ();
 	key_release_event_connection    .disconnect ();
+
 	fly_id .disconnect ();
 	pan_id .disconnect ();
 }

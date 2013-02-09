@@ -1,3 +1,53 @@
+2013-02-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Router.h:
+	* Router.cpp:
+	* X3DOutput.cpp:
+	* FlyViewer.h:
+	* FlyViewer.cpp:
+	* SignalPdu.h:
+	* X3DBrowserContext.h:
+	* SignalPdu.cpp:
+	* ReceiverPdu.h:
+	* TimeSensor.h:
+	* X3DBrowserContext.cpp:
+	* TimeSensor.cpp:
+	* ReceiverPdu.cpp:
+	* TransmitterPdu.h:
+	* X3DSensorNode.h:
+	* EspduTransform.h:
+	* Collision.h:
+	* TransmitterPdu.cpp:
+	* EspduTransform.cpp:
+	* LoadSensor.h:
+	* Collision.cpp:
+	* LinePickSensor.h:
+	* LoadSensor.cpp:
+	* PointPickSensor.h:
+	* LinePickSensor.cpp:
+	* VolumePickSensor.h:
+	* PointPickSensor.cpp:
+	* KeySensor.h:
+	* VolumePickSensor.cpp:
+	* PrimitivePickSensor.h:
+	* KeySensor.cpp:
+	* StringSensor.h:
+	* PrimitivePickSensor.cpp:
+	* RenderingProperties.cpp:
+	* GeoProximitySensor.h:
+	* JavaScriptContext.h:
+	* StringSensor.cpp:
+	* GeoProximitySensor.cpp:
+	* CollisionSensor.h:
+	* JavaScriptContext.cpp:
+	* CollisionSensor.cpp:
+	* ProximitySensor.h:
+	* TransformSensor.h:
+	* VisibilitySensor.h:
+	* ProximitySensor.cpp:
+	* TransformSensor.cpp:
+	* VisibilitySensor.cpp: 
+
 2013-02-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* FlyViewer.h:

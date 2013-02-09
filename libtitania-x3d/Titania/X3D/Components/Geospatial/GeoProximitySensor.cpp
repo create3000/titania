@@ -91,9 +91,5 @@ GeoProximitySensor::create (X3DExecutionContext* const executionContext) const
 	return new GeoProximitySensor (executionContext);
 }
 
-void
-GeoProximitySensor::update ()
-{ }
-
 } // X3D
 } // titania

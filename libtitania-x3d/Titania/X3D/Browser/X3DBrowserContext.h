@@ -84,6 +84,7 @@ class X3DBrowserContext :
 {
 public:
 
+	Output sensors;
 	Output reshaped;
 	Output exposed;
 	Output displayed;
@@ -143,17 +144,6 @@ public:
 
 	X3DViewpointNode*
 	getActiveViewpoint ();
-
-	///  @name Sensor handling
-
-	void
-	addSensor (X3DSensorNode* const);
-
-	void
-	removeSensor (X3DSensorNode* const);
-
-	void
-	updateSensors ();
 
 	///  @name Picking
 
@@ -251,7 +241,6 @@ private:
 	LayerStack                 layers;
 	LightStack                 lights;
 	TextureIndex               textures;
-	Output                     sensors;
 	double                     x;
 	double                     y;
 	std::deque <X3DBaseNode*>  sensitiveNodes;

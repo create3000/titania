@@ -85,9 +85,5 @@ LinePickSensor::create (X3DExecutionContext* const executionContext) const
 	return new LinePickSensor (executionContext);
 }
 
-void
-LinePickSensor::update ()
-{ }
-
 } // X3D
 } // titania

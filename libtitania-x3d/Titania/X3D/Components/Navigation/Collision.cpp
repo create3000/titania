@@ -84,9 +84,5 @@ Collision::create (X3DExecutionContext* const executionContext) const
 	return new Collision (executionContext);
 }
 
-void
-Collision::update ()
-{ }
-
 } // X3D
 } // titania

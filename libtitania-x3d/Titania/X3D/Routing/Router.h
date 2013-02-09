@@ -53,6 +53,7 @@
 
 #include "../Base/Output.h"
 #include "../Basic/X3DBaseNode.h"
+#include <Titania/Chrono/StopWatch.h>
 #include <deque>
 
 namespace titania {
@@ -62,7 +63,8 @@ class Router
 {
 public:
 
-	Output prepareEvents;
+	chrono::stopwatch <double> clock;
+	Output                     prepareEvents;
 
 	Router ();
 

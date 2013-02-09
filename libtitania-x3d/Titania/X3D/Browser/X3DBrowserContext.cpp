@@ -61,6 +61,7 @@ namespace X3D {
 
 X3DBrowserContext::X3DBrowserContext () :
 	X3DExecutionContext (),                                        
+	            sensors (),                                        
 	           reshaped (),                                        // [out]    reshape
 	            exposed (),                                        // [out]    exposed
 	          displayed (),                                        // [out]    displayed
@@ -75,7 +76,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	             layers (),                                        
 	             lights (),                                        
 	           textures (),                                        
-	            sensors (),                                        
 	                  x (0),                                       
 	                  y (0),                                       
 	     sensitiveNodes (),                                        
@@ -212,30 +212,6 @@ X3DViewpointNode*
 X3DBrowserContext::getActiveViewpoint ()
 {
 	return getExecutionContext () -> getActiveLayer () -> getViewpoint ();
-}
-
-/// @name Sensors
-
-void
-X3DBrowserContext::addSensor (X3DSensorNode* const sensor)
-{
-	std::clog << "\tAdding sensor " << sensor -> getTypeName () << " to world: " << sensors .getRequesters () .size () << " are registered until now." << std::endl;
-	sensors .addInterest (sensor, &X3DSensorNode::update);
-	std::clog << "\tNow are " << sensors .getRequesters () .size () << " registered." << std::endl;
-}
-
-void
-X3DBrowserContext::removeSensor (X3DSensorNode* const sensor)
-{
-	std::clog << "\tRemoving sensor " << sensor -> getTypeName () << " from world: " << sensors .getRequesters () .size () << " are registered until now." << std::endl;
-	sensors .removeInterest (sensor, &X3DSensorNode::update);
-	std::clog << "\tNow are " << sensors .getRequesters () .size () << " registered." << std::endl;
-}
-
-void
-X3DBrowserContext::updateSensors ()
-{
-	sensors .processInterests ();
 }
 
 // Selection
@@ -407,6 +383,15 @@ X3DBrowserContext::pick ()
 	getExecutionContext () -> pick ();
 }
 
+/*
+ * a) Update camera based on currently bound Viewpoint's position and orientation.
+ * b) Evaluate input from sensors.
+ * c) Evalute routes.
+ * d) If any events were generated from steps b and c, go to step b and continue.
+ * e) If particle system evaluation is to take place, evaluate the particle systems here.
+ * f) If physics model evaluation is to take place, evaluate the physics model.
+ */
+
 void
 X3DBrowserContext::prepare ()
 {
@@ -419,7 +404,7 @@ X3DBrowserContext::prepare ()
 	currentSpeed  = abs (position - priorPosition) * currentFrameRate;
 	priorPosition = position;
 
-	updateSensors ();
+	sensors .processInterests ();
 
 	router .processEvents ();
 	getGarbageCollector () .dispose ();
@@ -428,8 +413,8 @@ X3DBrowserContext::prepare ()
 void
 X3DBrowserContext::display ()
 {
-	glClearColor (0, 0, 0, 0);
-	glClear (GL_COLOR_BUFFER_BIT);
+	//glClearColor (0, 0, 0, 0);
+	//glClear (GL_COLOR_BUFFER_BIT);
 
 	getExecutionContext () -> display ();
 

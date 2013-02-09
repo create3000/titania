@@ -115,10 +115,6 @@ public:
 
 	virtual
 	void
-	update ();
-
-	virtual
-	void
 	dispose ();
 
 

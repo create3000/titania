@@ -87,9 +87,5 @@ KeySensor::create (X3DExecutionContext* const executionContext) const
 	return new KeySensor (executionContext);
 }
 
-void
-KeySensor::update ()
-{ }
-
 } // X3D
 } // titania

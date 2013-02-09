@@ -81,9 +81,5 @@ PointPickSensor::create (X3DExecutionContext* const executionContext) const
 	return new PointPickSensor (executionContext);
 }
 
-void
-PointPickSensor::update ()
-{ }
-
 } // X3D
 } // titania

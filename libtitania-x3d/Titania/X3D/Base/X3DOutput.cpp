@@ -52,6 +52,7 @@
 
 #include <Titania/LOG.h>
 #include <algorithm>
+#include <deque>
 
 namespace titania {
 namespace X3D {
@@ -118,7 +119,7 @@ X3DOutput::eraseInterest (const void* object, const void* memberFunction) const
 void
 X3DOutput::processInterests ()
 {
-	for (const auto & requester : std::vector <Requester> (requesters .cbegin (), requesters .cend ()))
+	for (const auto & requester : std::deque <Requester> (requesters .cbegin (), requesters .cend ()))
 		requester ();
 }
 

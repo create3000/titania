@@ -2,36 +2,17 @@
 
 META "title" "Scripting test"
 
-DEF Timer TimeSensor {
-  loop TRUE
-}
-
-DEF A Script {
-  inputOnly  SFTime  set_startTime
-  outputOnly MFVec2f lineBounds
-
-  url "vrmlscript:
-function set_startTime (value)
-{
-	//print ('set_startTime');
-	new MFVec2f ();
-}
-  "
-}
-
-ROUTE Timer .time TO A .set_startTime
-
-
 DEF B Script {
-  inputOnly MFVec2f set_lineBounds
-
+	field SFVec3f value 0 0 0
+	field SFNode self USE B
   url "vrmlscript:
 
-function set_lineBounds (value)
+function initialize ()
 {
 	print (value);
+	print (value == value);
+	print (value === value);
+	print (self);
 }
   "
 }
-
-ROUTE A.lineBounds TO B.set_lineBounds

@@ -63,6 +63,8 @@ Router::Router () :
 void
 Router::processEvents ()
 {
+	clock .start ();
+	
 	std::deque <X3DBaseNode*> nodesToProcess;
 	ChildObjectSet            sourceFields;
 
@@ -88,6 +90,8 @@ Router::processEvents ()
 
 		eventsProcessed ();
 	}
+	
+	clock .stop ();
 }
 
 void

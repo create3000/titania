@@ -69,10 +69,6 @@ public:
 
 	virtual
 	void
-	update ();
-
-	virtual
-	void
 	display ();
 
 	virtual
@@ -88,6 +84,9 @@ private:
 
 	void
 	set_enabled ();
+
+	void
+	update ();
 
 	bool visible;
 

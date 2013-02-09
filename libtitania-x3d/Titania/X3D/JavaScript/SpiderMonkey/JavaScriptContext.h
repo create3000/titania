@@ -57,6 +57,7 @@
 #include <iostream>
 #include <jsapi.h>
 #include <string>
+#include <map>
 
 namespace titania {
 namespace X3D {
@@ -101,34 +102,56 @@ private:
 
 	void
 	initNode ();
+	
+	void
+	addField (X3DFieldDefinition* const);
+
+	static
+	void
+	defineProperty (JSContext*, JSObject*, X3DFieldDefinition* const, const std::string &, uintN);
+
+	void
+	initEventHandler ();
 
 	void
 	evaluate (const std::string &, const std::string & = "<inline>");
 
-	static
-	void
-	defineProperty (JSContext *, JSObject *, const std::string &, uintN);
-
-	static JSBool getProperty (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool setProperty (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool getBuildInProperty (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool getProperty        (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool setProperty        (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
 	void
-	set_field (const X3DFieldDefinition &);
+	set_field (X3DFieldDefinition*);
+
+	jsval
+	getFunction (const std::string &);
 
 	void
 	callFunction (const std::string &);
+	
+	void
+	callFunction (jsval);
 
 	static
 	void
 	error (JSContext* context, const char* message, JSErrorReport* report);
 
 	static JSClass global_class;
+	
 	JSRuntime*     runtime;
 	JSContext*     context;
 	JSObject*      global;
 	X3DBrowser*    browser;
 	X3DScriptNode* node;
 	size_t         index;
+	
+	jsval initializeFn;
+	jsval prepareEventsFn;
+	jsval eventsProcessedFn;
+	jsval shutdownFn;
+	
+	std::map <std::string, jsval>         fields;
+	std::map <X3DFieldDefinition*, jsval> functions;
 
 };
 

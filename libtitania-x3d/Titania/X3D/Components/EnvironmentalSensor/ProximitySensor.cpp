@@ -102,9 +102,9 @@ void
 ProximitySensor::set_enabled ()
 {
 	if (enabled)
-		getBrowser () -> addSensor (this);
+		getBrowser () -> sensors .addInterest (this, &ProximitySensor::update);
 	else
-		getBrowser () -> removeSensor (this);
+		getBrowser () -> sensors .removeInterest (this, &ProximitySensor::update);
 }
 
 void
@@ -206,7 +206,7 @@ void
 ProximitySensor::dispose ()
 {
 	if (enabled)
-		getBrowser () -> removeSensor (this);
+		getBrowser () -> sensors .removeInterest (this, &ProximitySensor::update);
 
 	X3DEnvironmentalSensorNode::dispose ();
 }

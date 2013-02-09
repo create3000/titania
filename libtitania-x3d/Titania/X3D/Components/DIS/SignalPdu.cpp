@@ -138,10 +138,6 @@ SignalPdu::getBBox ()
 }
 
 void
-SignalPdu::update ()
-{ }
-
-void
 SignalPdu::dispose ()
 {
 	X3DBoundedObject::dispose ();

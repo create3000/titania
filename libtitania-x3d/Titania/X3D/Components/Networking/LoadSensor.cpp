@@ -83,9 +83,5 @@ LoadSensor::create (X3DExecutionContext* const executionContext) const
 	return new LoadSensor (executionContext);
 }
 
-void
-LoadSensor::update ()
-{ }
-
 } // X3D
 } // titania

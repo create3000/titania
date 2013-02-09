@@ -241,9 +241,5 @@ EspduTransform::create (X3DExecutionContext* const executionContext) const
 	return new EspduTransform (executionContext);
 }
 
-void
-EspduTransform::update ()
-{ }
-
 } // X3D
 } // titania

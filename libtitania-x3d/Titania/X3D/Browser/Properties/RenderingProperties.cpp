@@ -321,6 +321,7 @@ RenderingProperties::display ()
 
 		clock       .reset ();
 		renderClock .reset ();
+		getBrowser () -> getRouter () .clock .reset ();
 	}
 
 	glCallList (listId);
@@ -377,10 +378,16 @@ RenderingProperties::update_string ()
 	stringstream .str ("");
 	string .push_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Frame Rate:                " << std::setprecision (1) << std::fixed << 1 / clock .average ();
+	stringstream .str (""); stringstream << "Frame Rate:                " << std::setprecision (1) << std::fixed << 1 / clock .average () << " fps";
 	string .push_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Render Time:               " << std::setprecision (7) << std::fixed << renderClock .average ();
+	stringstream .str (""); stringstream << "Display:                   " << std::setprecision (2) << std::fixed << renderClock .average () / clock .average () * 100 << " %";
+	string .push_back (stringstream .str ());
+
+	stringstream .str (""); stringstream << "Routing:                   " << std::setprecision (2) << std::fixed << getBrowser () -> getRouter () .clock .average () / clock .average () * 100 << " %";
+	string .push_back (stringstream .str ());
+
+	stringstream .str (""); stringstream << "Sensors:                   " << getBrowser () -> sensors .getRequesters () .size ();
 	string .push_back (stringstream .str ());
 
 	//	//	stringstream .str (""); stringstream << "Event Time:    " << std::setprecision (7) << std::fixed << eventTime << " s (" << maxEventTime << ')';

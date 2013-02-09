@@ -111,6 +111,9 @@ private:
 	void
 	display ();
 
+	void
+	collison ();
+
 	NavigationInfo*  navigationInfo;
 	Vector3f         fromVector;
 	Vector3f         toVector;

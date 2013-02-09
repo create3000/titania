@@ -170,10 +170,6 @@ TransmitterPdu::getBBox ()
 }
 
 void
-TransmitterPdu::update ()
-{ }
-
-void
 TransmitterPdu::dispose ()
 {
 	X3DBoundedObject::dispose ();

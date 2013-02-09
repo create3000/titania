@@ -69,10 +69,6 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
-	virtual
-	void
-	update ();
-
 };
 
 } // X3D

@@ -77,10 +77,6 @@ public:
 
 	virtual
 	void
-	update ();
-
-	virtual
-	void
 	dispose ();
 
 
@@ -109,6 +105,9 @@ private:
 
 	void
 	set_stopTime ();
+	
+	void
+	update ();
 
 	bool
 	do_stop ();
