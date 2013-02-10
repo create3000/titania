@@ -52,7 +52,8 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/Normal.h"
-#include <iostream>
+
+#include <Titania/Utility/Adapter.h>
 
 namespace titania {
 namespace X3D {
@@ -108,18 +109,30 @@ Extrusion::initialize ()
 }
 
 std::vector <Vector3f>
-Extrusion::createPoints ()
+Extrusion::createPoints (bool hasCaps)
 {
+	size_t reserve = spine .size () * crossSection .size ();
+	
+	if (hasCaps)
+	{
+		if (beginCap)
+			reserve += crossSection .size ();
+
+		if (endCap)
+			reserve += crossSection .size ();
+	}
+	
+	
 	std::vector <Vector3f> points;
-	points .reserve (spine .size () * crossSection .size ());
+	points .reserve (reserve);
 
 	// calculate SCP rotations
 
-	std::vector <Matrix4f> rotations = createRotations ();
+	std::vector <Matrix4f> rotations = std::move (createRotations ());
 
 	// calculate vertices.
 
-	for (size_t i = 0; i < spine .size (); i ++)
+	for (size_t i = 0, size = spine .size (); i < size; i ++)
 	{
 		Matrix4f matrix;
 
@@ -140,6 +153,25 @@ Extrusion::createPoints ()
 		for (const auto & vector : crossSection)
 			points .emplace_back (Vector3f (vector .getX (), 0, vector .getY ()) * matrix);
 
+	}
+	
+	// Copy points for caps
+
+	if (hasCaps)
+	{
+		auto last = points .end () - crossSection .size ();
+	
+		if (beginCap)
+		{
+			for (const auto & point : basic::adapter (points .begin (), points .begin () + crossSection .size ()))
+				points .emplace_back (point);
+		}
+
+		if (endCap)
+		{
+			for (const auto & point : basic::adapter (last, last + crossSection .size ()))
+				points .emplace_back (point);
+		}
 	}
 
 	return points;
@@ -173,7 +205,7 @@ Extrusion::createRotations ()
 		SCPyAxis = normalize (spine [1] - spine [0]);
 
 		// Find first defined Z-axis.
-		for (size_t i = 1; i < spine .size () - 1; i ++)
+		for (size_t i = 1, size = spine .size () - 1; i < size; i ++)
 		{
 			SCPzAxis = normalize (cross (spine [i + 1] - spine [i], spine [i - 1] - spine [i]));
 
@@ -197,7 +229,7 @@ Extrusion::createRotations ()
 
 	SCPzAxisPrevious = SCPzAxis;
 
-	for (size_t i = 1; i < spine .size () - 1; i ++)
+	for (size_t i = 1, size = spine .size () - 1; i < size; i ++)
 	{
 		SCPyAxis = normalize (spine [i + 1] - spine [i - 1]);
 		SCPzAxis = normalize (cross (spine [i + 1] - spine [i], spine [i - 1] - spine [i]));
@@ -257,27 +289,46 @@ Extrusion::build ()
 {
 	if (spine .size () < 2 or crossSection .size () < 3)
 		return;
+		
+	size_t crossSectionSize = crossSection .size (); // This one is used only in the INDEX macro.
 
-	#define INDEX(n, k) ((n) * crossSection .size () + (k))
+	#define INDEX(n, k) ((n) * crossSectionSize + (k))
 
 	bool closedSpine        = spine .front () == spine .back ();
 	bool closedCrossSection = crossSection .front () == crossSection .back ();
-	size_t numCapPoints     = closedCrossSection ? crossSection .size () - 1 : crossSection .size ();
 
-	std::vector <Vector3f> points = createPoints ();
+	// For caps calculation
+
+	Vector2f min = crossSection [0];
+	Vector2f max = crossSection [0];
+
+	for (size_t k = 1, size = crossSection .size (); k < size; k ++)
+	{
+		min = math::min <float> (min, crossSection [k]);
+		max = math::max <float> (max, crossSection [k]);
+	}
+
+	Vector2f capSize = max - min;
+
+	bool hasCaps        = capSize .x () and capSize .y ();
+	size_t numCapPoints = closedCrossSection ? crossSection .size () - 1 : crossSection .size ();
+
+	// Create
+
+	std::vector <Vector3f> points = std::move (createPoints (hasCaps));
 	std::vector <size_t> coordIndex;
 	NormalIndex normalIndex;
 
 	size_t reserve = (spine .size () - 1) * (crossSection .size () - 1) * 6 + (beginCap ? (numCapPoints - 2) * 3 : 0) + (endCap ? (numCapPoints - 2) * 3 : 0);
 	coordIndex .reserve (reserve);
 	getTexCoord () .reserve (reserve);
-	getNormals () .reserve (reserve);
+	getNormals  () .reserve (reserve);
 
 	// Build body.
 
-	for (size_t n = 0; n < spine .size () - 1; n ++)
+	for (size_t n = 0, size = spine .size () - 1; n < size; ++ n)
 	{
-		for (size_t k = 0; k < crossSection .size () - 1; k ++)
+		for (size_t k = 0, size = crossSection .size () - 1; k < size; ++ k)
 		{
 			size_t n1 = closedSpine and n == spine .size () - 2 ? 0 : n + 1;
 			size_t k1 = closedCrossSection and k == crossSection .size () - 2 ? 0 : k + 1;
@@ -337,25 +388,16 @@ Extrusion::build ()
 
 	// Build caps
 
-	Vector2f min = crossSection [0];
-	Vector2f max = crossSection [0];
-
-	for (size_t k = 1; k < crossSection .size (); k ++)
-	{
-		min = math::min <float> (min, crossSection [k]);
-		max = math::max <float> (max, crossSection [k]);
-	}
-
-	Vector2f size = max - min;
-
-	if (size .x () and size .y ())
+	if (hasCaps)
 	{
 		if (beginCap)
 		{
+			size_t j = spine .size ();
+
 			Tesselator tesselator;
 
 			for (size_t k = 0; k < numCapPoints; ++ k)
-				tesselator .add_vertex (points [INDEX (0, numCapPoints - 1 - k)], INDEX (0, numCapPoints - 1 - k), numCapPoints - 1 - k);
+				tesselator .add_vertex (points [INDEX (j, numCapPoints - 1 - k)], INDEX (j, numCapPoints - 1 - k), numCapPoints - 1 - k);
 
 			tesselator .tesselate ();
 
@@ -364,12 +406,12 @@ Extrusion::build ()
 			          coordIndex,
 			          normalIndex,
 			          min,
-			          size);
+			          capSize);
 		}
 
 		if (endCap)
 		{
-			size_t j = spine .size () - 1;
+			size_t j = spine .size () + beginCap;
 
 			Tesselator tesselator;
 
@@ -383,7 +425,7 @@ Extrusion::build ()
 			          coordIndex,
 			          normalIndex,
 			          min,
-			          size);
+			          capSize);
 
 		}
 	}
@@ -411,7 +453,7 @@ Extrusion::buildCap (const Tesselator & tesselator,
                      std::vector <size_t> & coordIndex,
                      NormalIndex & normalIndex,
                      const Vector2f & min,
-                     const Vector2f & size)
+                     const Vector2f & capSize)
 {
 	#define I 0
 	#define K 1
@@ -424,7 +466,7 @@ Extrusion::buildCap (const Tesselator & tesselator,
 		{
 			case GL_TRIANGLE_FAN :
 				{
-					for (size_t i = 1; i < polygonElement .size () - 1; ++ i)
+					for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
 					{
 						normal += vertexNormal (points [std::get < I > (polygonElement [0] .data ())],
 						                        points [std::get < I > (polygonElement [i] .data ())],
@@ -435,7 +477,7 @@ Extrusion::buildCap (const Tesselator & tesselator,
 				}
 			case GL_TRIANGLE_STRIP:
 			{
-				for (size_t i = 0; i < polygonElement .size () - 2; ++ i)
+				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
 				{
 					normal += vertexNormal (points [std::get < I > (polygonElement [i % 2 ? i + 1 : i] .data ())],
 					                        points [std::get < I > (polygonElement [i % 2 ? i : i + 1] .data ())],
@@ -446,7 +488,7 @@ Extrusion::buildCap (const Tesselator & tesselator,
 			}
 			case GL_TRIANGLES:
 			{
-				for (size_t i = 0; i < polygonElement .size (); i += 3)
+				for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
 				{
 					normal += vertexNormal (points [std::get < I > (polygonElement [i] .data ())],
 					                        points [std::get < I > (polygonElement [i + 1] .data ())],
@@ -468,21 +510,21 @@ Extrusion::buildCap (const Tesselator & tesselator,
 		{
 			case GL_TRIANGLE_FAN :
 				{
-					for (size_t i = 1; i < polygonElement .size () - 1; ++ i)
+					for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
 					{
-						Vector2f t = (min + crossSection [std::get < K > (polygonElement [0] .data ())]) / size;
+						Vector2f t = (min + crossSection [std::get < K > (polygonElement [0] .data ())]) / capSize;
 						getTexCoord () .emplace_back (t .x (), 1 - t .y ());
 						coordIndex .emplace_back (std::get <0> (polygonElement [0] .data ()));
 						normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 						getNormals () .emplace_back (normal);
 
-						t = (min + crossSection [std::get < K > (polygonElement [i] .data ())]) / size;
+						t = (min + crossSection [std::get < K > (polygonElement [i] .data ())]) / capSize;
 						getTexCoord () .emplace_back (t .x (), 1 - t .y ());
 						coordIndex .emplace_back (std::get <0> (polygonElement [i] .data ()));
 						normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 						getNormals () .emplace_back (normal);
 
-						t = (min + crossSection [std::get < K > (polygonElement [i + 1] .data ())]) / size;
+						t = (min + crossSection [std::get < K > (polygonElement [i + 1] .data ())]) / capSize;
 						getTexCoord () .emplace_back (t .x (), 1 - t .y ());
 						coordIndex .emplace_back (std::get <0> (polygonElement [i + 1] .data ()));
 						normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
@@ -493,21 +535,21 @@ Extrusion::buildCap (const Tesselator & tesselator,
 				}
 			case GL_TRIANGLE_STRIP:
 			{
-				for (size_t i = 0; i < polygonElement .size () - 2; ++ i)
+				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
 				{
-					Vector2f t = (min + crossSection [std::get < K > (polygonElement [i % 2 ? i + 1 : i] .data ())]) / size;
+					Vector2f t = (min + crossSection [std::get < K > (polygonElement [i % 2 ? i + 1 : i] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y ());
 					coordIndex .emplace_back (std::get <0> (polygonElement [i % 2 ? i + 1 : i] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 					getNormals () .emplace_back (normal);
 
-					t = (min + crossSection [std::get < K > (polygonElement [i % 2 ? i : i + 1] .data ())]) / size;
+					t = (min + crossSection [std::get < K > (polygonElement [i % 2 ? i : i + 1] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y ());
 					coordIndex .emplace_back (std::get <0> (polygonElement [i % 2 ? i : i + 1] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 					getNormals () .emplace_back (normal);
 
-					t = (min + crossSection [std::get < K > (polygonElement [i + 2] .data ())]) / size;
+					t = (min + crossSection [std::get < K > (polygonElement [i + 2] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y ());
 					coordIndex .emplace_back (std::get <0> (polygonElement [i + 2] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
@@ -518,21 +560,21 @@ Extrusion::buildCap (const Tesselator & tesselator,
 			}
 			case GL_TRIANGLES:
 			{
-				for (size_t i = 0; i < polygonElement .size (); i += 3)
+				for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
 				{
-					Vector2f t = (min + crossSection [std::get < K > (polygonElement [i] .data ())]) / size;
+					Vector2f t = (min + crossSection [std::get < K > (polygonElement [i] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y ());
 					coordIndex .emplace_back (std::get <0> (polygonElement [i] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 					getNormals () .emplace_back (normal);
 
-					t = (min + crossSection [std::get < K > (polygonElement [i + 1] .data ())]) / size;
+					t = (min + crossSection [std::get < K > (polygonElement [i + 1] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y ());
 					coordIndex .emplace_back (std::get <0> (polygonElement [i + 1] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 					getNormals () .emplace_back (normal);
 
-					t = (min + crossSection [std::get < K > (polygonElement [i + 2] .data ())]) / size;
+					t = (min + crossSection [std::get < K > (polygonElement [i + 2] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y ());
 					coordIndex .emplace_back (std::get <0> (polygonElement [i + 2] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());

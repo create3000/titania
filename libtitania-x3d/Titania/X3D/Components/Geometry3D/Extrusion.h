@@ -98,7 +98,7 @@ private:
 	initialize ();
 
 	std::vector <Vector3f>
-	createPoints ();
+	createPoints (bool);
 
 	std::vector <Matrix4f>
 	createRotations ();
