@@ -1,5 +1,9 @@
 2013-02-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DLayerNode.cpp: 
+
+2013-02-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Scene.h:
 	* Scene.cpp:
 	* X3DBaseNode.h:
