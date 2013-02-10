@@ -72,6 +72,11 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	virtual
+	void
+	traverse ();
+
+	virtual
 	void
 	display ();
 
@@ -96,8 +101,9 @@ private:
 	bool
 	isInside (const Matrix4f &) const;
 
-	Matrix4f matrix;
-	bool     inside;
+	X3DViewpointNode* viewpoint;
+	Matrix4f          matrix;
+	bool              inside;
 
 };
 

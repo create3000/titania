@@ -99,6 +99,13 @@ Viewport::pick ()
 }
 
 void
+Viewport::traverse ()
+{
+	for (const auto & child : children)
+		child -> traverse ();
+}
+
+void
 Viewport::display ()
 {
 	enable ();
@@ -109,7 +116,7 @@ Viewport::display ()
 }
 
 void
-Viewport::traverse ()
+Viewport::collect ()
 {
 	for (const auto & child : children)
 		child -> display ();

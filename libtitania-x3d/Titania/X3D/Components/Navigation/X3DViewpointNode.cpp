@@ -218,7 +218,7 @@ X3DViewpointNode::_set_bind ()
 }
 
 void
-X3DViewpointNode::display ()
+X3DViewpointNode::traverse ()
 {
 	setModelViewMatrix (ModelViewMatrix4f ());
 
@@ -241,7 +241,14 @@ X3DViewpointNode::display ()
 			setTransformationMatrix (transformationMatrix);
 		}
 	}
-	else
+}
+
+void
+X3DViewpointNode::display ()
+{
+	Matrix4f transformationMatrix = ModelViewMatrix4f ();
+
+	if (not isBound)
 	{
 		if (not jump)
 		{

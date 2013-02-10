@@ -164,6 +164,10 @@ public:
 
 	virtual
 	void
+	traverse ();
+
+	virtual
+	void
 	display ();
 
 	virtual
@@ -196,7 +200,7 @@ private:
 
 	virtual
 	void
-	traverse ();
+	collect ();
 
 	SFNode <Viewport>          defaultViewport;
 	SFNode <NavigationInfo>    defaultNavigationInfo;

@@ -171,6 +171,10 @@ public:
 
 	virtual
 	void
+	traverse () { }
+
+	virtual
+	void
 	display () { }
 
 	///  @name Input/Output

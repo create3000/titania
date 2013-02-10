@@ -85,6 +85,10 @@ public:
 
 	virtual
 	void
+	traverse ();
+
+	virtual
+	void
 	display ();
 
 

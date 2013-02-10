@@ -104,7 +104,7 @@ X3DRenderer::render ()
 
 	getBrowser () -> getRenderers () .emplace (this);
 
-	traverse ();
+	collect ();
 	draw ();
 	//bottom ();
 
@@ -130,7 +130,7 @@ X3DRenderer::draw ()
 	for (const auto & light : globalLights)
 		light -> enable ();
 
-	if (0)
+	if (1)
 	{
 		// Sorted blend
 

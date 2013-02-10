@@ -128,6 +128,18 @@ Billboard::pick ()
 }
 
 void
+Billboard::traverse ()
+{
+	glPushMatrix ();
+
+	transform ();
+
+	X3DGroupingNode::traverse ();
+
+	glPopMatrix ();
+}
+
+void
 Billboard::display ()
 {
 	glPushMatrix ();

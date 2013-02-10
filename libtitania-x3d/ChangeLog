@@ -1,3 +1,34 @@
+2013-02-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Scene.h:
+	* Scene.cpp:
+	* X3DBaseNode.h:
+	* X3DRenderer.h:
+	* X3DRenderer.cpp:
+	* LOD.h:
+	* Switch.h:
+	* LOD.cpp:
+	* X3DBrowserContext.cpp:
+	* Viewport.h:
+	* Inline.h:
+	* LayerSet.h:
+	* Switch.cpp:
+	* Transform.h:
+	* Inline.cpp:
+	* Viewport.cpp:
+	* LayerSet.cpp:
+	* Transform.cpp:
+	* Billboard.h:
+	* X3DLayerNode.h:
+	* Billboard.cpp:
+	* X3DLayerNode.cpp:
+	* X3DGroupingNode.h:
+	* X3DGroupingNode.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp:
+	* ProximitySensor.h:
+	* ProximitySensor.cpp: 
+
 2013-02-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* FlyViewer.h:

@@ -216,6 +216,18 @@ X3DLayerNode::pick ()
 }
 
 void
+X3DLayerNode::traverse ()
+{
+	glPushMatrix ();
+	glLoadIdentity ();
+
+	//defaultViewpoint -> traverse ();
+	group -> traverse ();
+
+	glPopMatrix ();
+}
+
+void
 X3DLayerNode::display ()
 {
 	currentViewport -> enable ();
@@ -235,7 +247,7 @@ X3DLayerNode::display ()
 }
 
 void
-X3DLayerNode::traverse ()
+X3DLayerNode::collect ()
 {
 	group -> display ();
 }

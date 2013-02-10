@@ -139,6 +139,18 @@ LOD::pick ()
 }
 
 void
+LOD::traverse ()
+{
+	if (not children .size ())
+		return;
+
+	int32_t level = getLevel ();
+
+	if (children [level])
+		children [level] -> traverse ();
+}
+
+void
 LOD::display ()
 {
 	if (not children .size ())

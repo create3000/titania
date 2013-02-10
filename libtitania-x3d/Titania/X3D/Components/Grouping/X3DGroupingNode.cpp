@@ -176,22 +176,21 @@ X3DGroupingNode::add (const MFNode & children)
 void
 X3DGroupingNode::pick ()
 {
-	//	if (not getBrowser () -> getEditMode ())
-	//	{
 	for (const auto & child : pointingDeviceSensors)
 		child -> display ();
-
-	//	}
 
 	for (const auto & child : childNodes)
 		child -> pick ();
 
-	//	if (not getBrowser () -> getEditMode ())
-	//	{
 	for (const auto & child : basic::adapter (pointingDeviceSensors .crbegin (), pointingDeviceSensors .crend ()))
 		child -> finish ();
+}
 
-	//	}
+void
+X3DGroupingNode::traverse ()
+{
+	for (const auto & child : childNodes)
+		child -> traverse ();
 }
 
 void

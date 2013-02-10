@@ -113,7 +113,7 @@ private:
 
 	virtual
 	void
-	traverse () = 0;
+	collect () = 0;
 
 	void
 	draw ();

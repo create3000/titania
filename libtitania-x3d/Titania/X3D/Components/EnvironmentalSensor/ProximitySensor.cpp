@@ -65,6 +65,8 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	  centerOfRotation_changed (),                                                    // SFVec3f    [out] centerOfRotation_changed
 	       orientation_changed (),                                                    // SFRotation [out] orientation_changed
 	          position_changed (),                                                    // SFVec3f    [out] position_changed
+	                    viewpoint (NULL),
+	                    matrix (),
 	                    inside (false)                                                
 {
 	setComponent ("EnvironmentalSensor");
@@ -108,10 +110,19 @@ ProximitySensor::set_enabled ()
 }
 
 void
+ProximitySensor::traverse ()
+{
+	viewpoint = getCurrentViewpoint ();
+	matrix    = ModelViewMatrix4f ();
+}
+
+void
 ProximitySensor::update ()
 {
 	if (inside)
 	{
+		matrix *= viewpoint -> getInverseTransformationMatrix ();
+
 		Vector3f   translation, scale;
 		Rotation4f rotation;
 		matrix .get (translation, rotation, scale);
@@ -158,9 +169,7 @@ ProximitySensor::display ()
 	if (inside /* or getBrowser () -> getEditMode () */)
 		return;
 
-	matrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
-
-	Matrix4f transformationMatrix = matrix;
+	Matrix4f transformationMatrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
 	transformationMatrix .translate (center);
 
 	inside = isInside (transformationMatrix);

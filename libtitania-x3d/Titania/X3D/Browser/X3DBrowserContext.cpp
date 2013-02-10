@@ -403,10 +403,15 @@ X3DBrowserContext::prepare ()
 	Vector3d position = getActiveViewpoint () -> getTransformationMatrix () .translation ();
 	currentSpeed  = abs (position - priorPosition) * currentFrameRate;
 	priorPosition = position;
+	
+	router .processEvents ();
+	
+	getExecutionContext () -> traverse ();
 
 	sensors .processInterests ();
-
+	
 	router .processEvents ();
+
 	getGarbageCollector () .dispose ();
 }
 

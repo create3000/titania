@@ -90,6 +90,16 @@ Switch::pick ()
 }
 
 void
+Switch::traverse ()
+{
+	if (whichChoice >= 0 and whichChoice < (int32_t) children .size ())
+	{
+		if (children [whichChoice])
+			children [whichChoice] -> traverse ();
+	}
+}
+
+void
 Switch::display ()
 {
 	if (whichChoice >= 0 and whichChoice < (int32_t) children .size ())

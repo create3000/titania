@@ -124,6 +124,18 @@ Transform::pick ()
 }
 
 void
+Transform::traverse ()
+{
+	glPushMatrix ();
+
+	glMultMatrixf (matrix .data ());
+
+	X3DGroupingNode::traverse ();
+
+	glPopMatrix ();
+}
+
+void
 Transform::display ()
 {
 	glPushMatrix ();

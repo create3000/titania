@@ -205,6 +205,13 @@ Inline::pick ()
 }
 
 void
+Inline::traverse ()
+{
+	for (const auto & rootNode : scene -> getRootNodes ())
+		rootNode -> traverse ();
+}
+
+void
 Inline::display ()
 {
 	for (const auto & rootNode : scene -> getRootNodes ())

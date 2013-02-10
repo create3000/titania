@@ -76,11 +76,15 @@ public:
 
 	virtual
 	void
+	traverse ();
+
+	virtual
+	void
 	display ();
 
 	virtual
 	void
-	traverse ();
+	collect ();
 
 	virtual
 	void

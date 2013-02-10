@@ -144,6 +144,12 @@ Scene::pick ()
 }
 
 void
+Scene::traverse ()
+{
+	layerSet -> traverse ();
+}
+
+void
 Scene::display ()
 {
 	layerSet -> display ();
