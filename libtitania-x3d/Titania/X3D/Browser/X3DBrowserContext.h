@@ -86,7 +86,7 @@ public:
 
 	Output sensors;
 	Output reshaped;
-	Output exposed;
+	Output prepareEvents;
 	Output displayed;
 	Output finished;
 	Output changed;

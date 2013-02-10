@@ -68,8 +68,6 @@ Router::processEvents ()
 	std::deque <X3DBaseNode*> nodesToProcess;
 	ChildObjectSet            sourceFields;
 
-	prepareEvents .processInterests ();
-
 	while (events .size ())
 	{
 		do

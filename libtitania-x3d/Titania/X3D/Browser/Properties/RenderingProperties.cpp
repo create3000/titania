@@ -216,16 +216,16 @@ RenderingProperties::set_enabled ()
 	if (enabled)
 	{
 		getBrowser () -> initialized .addInterest (this, &RenderingProperties::reset);
-		getBrowser () -> exposed     .addInterest (this, &RenderingProperties::prepare);
-		getBrowser () -> displayed   .addInterest (this, &RenderingProperties::display);
+		getBrowser () -> prepareEvents .addInterest (this, &RenderingProperties::prepare);
+		getBrowser () -> displayed     .addInterest (this, &RenderingProperties::display);
 
 		reset ();
 	}
 	else
 	{
-		getBrowser () -> initialized .removeInterest (this, &RenderingProperties::reset);
-		getBrowser () -> exposed     .removeInterest (this, &RenderingProperties::prepare);
-		getBrowser () -> displayed   .removeInterest (this, &RenderingProperties::display);
+		getBrowser () -> initialized   .removeInterest (this, &RenderingProperties::reset);
+		getBrowser () -> prepareEvents .removeInterest (this, &RenderingProperties::prepare);
+		getBrowser () -> displayed     .removeInterest (this, &RenderingProperties::display);
 	}
 }
 

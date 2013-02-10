@@ -164,14 +164,14 @@ IndexedFaceSet::set_coordIndex ()
 					{
 						// Add polygon with one triangle.
 						polygons .emplace_back (Polygon ({ vertices,
-						                                   TriangleArray ({ Triangle ({ { vertices [0],
-						                                                                  vertices [1],
-						                                                                  vertices [2] } }) }) }));
+						                                   std::move (TriangleArray ({ std::move (Triangle ({ { vertices [0],
+						                                                                                        vertices [1],
+						                                                                                        vertices [2] } })) })) }));
 					}
 					else if (vertices .size () > 3)
 					{
 						// Tesselate polygons.
-						polygons .emplace_back (Polygon ({ vertices, tesselate (vertices) }));
+						polygons .emplace_back (Polygon ({ vertices, std::move (tesselate (vertices)) }));
 					}
 
 					vertices .clear ();
@@ -205,12 +205,12 @@ IndexedFaceSet::tesselate (const Vertices & vertices)
 
 	if (convex)
 	{
-		for (size_t i = 1; i < vertices .size () - 1; ++ i)
+		for (size_t i = 1, size = vertices .size () - 1; i < size; ++ i)
 		{
 			// Add triangle to polygon.
-			triangles .emplace_back (Triangle ({ { vertices [0],
-			                                       vertices [i],
-			                                       vertices [i + 1] } }));
+			triangles .emplace_back (std::move (Triangle ({ { vertices [0],
+			                                                  vertices [i],
+			                                                  vertices [i + 1] } })));
 		}
 	}
 	else
@@ -228,36 +228,36 @@ IndexedFaceSet::tesselate (const Vertices & vertices)
 			{
 				case GL_TRIANGLE_FAN :
 					{
-						for (size_t i = 1; i < polygonElement .size () - 1; ++ i)
+						for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
 						{
 							// Add triangle to polygon.
-							triangles .emplace_back (Triangle ({ { std::get <0> (polygonElement [0] .data ()),
-							                                       std::get <0> (polygonElement [i] .data ()),
-							                                       std::get <0> (polygonElement [i + 1] .data ()) } }));
+							triangles .emplace_back (std::move (Triangle ({ { std::get <0> (polygonElement [0] .data ()),
+							                                                  std::get <0> (polygonElement [i] .data ()),
+							                                                  std::get <0> (polygonElement [i + 1] .data ()) } })));
 						}
 
 						break;
 					}
 				case GL_TRIANGLE_STRIP:
 				{
-					for (size_t i = 0; i < polygonElement .size () - 2; ++ i)
+					for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
 					{
 						// Add triangle to polygon.
-						triangles .emplace_back (Triangle ({ { std::get <0> (polygonElement [i % 2 ? i + 1 : i] .data ()),
-						                                       std::get <0> (polygonElement [i % 2 ? i : i + 1] .data ()),
-						                                       std::get <0> (polygonElement [i + 2] .data ()) } }));
+						triangles .emplace_back (std::move (Triangle ({ { std::get <0> (polygonElement [i % 2 ? i + 1 : i] .data ()),
+						                                                  std::get <0> (polygonElement [i % 2 ? i : i + 1] .data ()),
+						                                                  std::get <0> (polygonElement [i + 2] .data ()) } })));
 					}
 
 					break;
 				}
 				case GL_TRIANGLES:
 				{
-					for (size_t i = 0; i < polygonElement .size (); i += 3)
+					for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
 					{
 						// Add triangle to polygon.
-						triangles .emplace_back (Triangle ({ { std::get <0> (polygonElement [i] .data ()),
-						                                       std::get <0> (polygonElement [i + 1] .data ()),
-						                                       std::get <0> (polygonElement [i + 2] .data ()) } }));
+						triangles .emplace_back (std::move (Triangle ({ { std::get <0> (polygonElement [i] .data ()),
+						                                                  std::get <0> (polygonElement [i + 1] .data ()),
+						                                                  std::get <0> (polygonElement [i + 2] .data ()) } })));
 					}
 
 					break;
@@ -436,20 +436,26 @@ IndexedFaceSet::build ()
 	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord .getValue ());
 	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord .getValue ());
 
-	if (not _textureCoordinate and not _textureCoordinateGenerator)
-		buildTexCoord ();
+	getTexCoord () .reserve (coordIndex .size ());
 
 	// Color
 
 	auto _color     = x3d_cast <Color*> (color .getValue ());
 	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
+	
+	if (_color)
+		getColors () .reserve (coordIndex .size ());
+		
+	else if (_colorRGBA)
+		getColorsRGBA () .reserve (coordIndex .size ());
 
 	// Normal
 
 	auto _normal = x3d_cast <Normal*> (normal .getValue ());
 
-	if (not _normal)
-		buildNormals ();
+	getNormals () .reserve (coordIndex .size ());
+	
+	getVertices () .reserve (coordIndex .size ());
 
 	// Fill GeometryNode
 
@@ -522,6 +528,14 @@ IndexedFaceSet::build ()
 		++ face;
 	}
 
+	// Autogenerate normal and texCoord if not specified
+
+	if (not _normal)
+		buildNormals ();
+
+	if (not _textureCoordinate and not _textureCoordinateGenerator)
+		buildTexCoord ();
+
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setVertexMode (GL_TRIANGLES);
 	setSolid (solid);
@@ -530,8 +544,6 @@ IndexedFaceSet::build ()
 void
 IndexedFaceSet::buildTexCoord ()
 {
-	getTexCoord () .reserve (coordIndex .size ());
-
 	Box3f    bbox = getBBox ();
 	Vector3f min  = bbox .min ();
 
@@ -594,6 +606,7 @@ void
 IndexedFaceSet::buildNormals ()
 {
 	std::vector <Vector3f> normals;
+	
 	normals .reserve (coordIndex .size ());
 
 	NormalIndex normalIndex;
@@ -613,7 +626,7 @@ IndexedFaceSet::buildNormals ()
 		}
 
 		// Add a normal index for each point.
-		for (size_t i = 0; i < polygon .vertices .size (); ++ i)
+		for (size_t i = 0, size = polygon .vertices .size (); i < size; ++ i)
 			normalIndex [coordIndex [polygon .vertices [i]]] .emplace_back (normals .size () + i);
 
 		// Add this normal for each vertex.
@@ -622,8 +635,6 @@ IndexedFaceSet::buildNormals ()
 	}
 
 	refineNormals (normalIndex, normals);
-
-	//getNormals () .resize (numVertices);
 
 	for (const auto & polygon : polygons)
 	{

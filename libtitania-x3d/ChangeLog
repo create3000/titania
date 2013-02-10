@@ -1,5 +1,16 @@
 2013-02-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Router.h:
+	* Router.cpp:
+	* X3DBrowserContext.h:
+	* TimeSensor.h:
+	* X3DBrowserContext.cpp:
+	* TimeSensor.cpp:
+	* IndexedFaceSet.cpp:
+	* RenderingProperties.cpp: 
+
+2013-02-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Extrusion.h:
 	* Extrusion.cpp: 
 

@@ -128,15 +128,15 @@ DEF Capone Transform {
               size 100.03 100.03 100.03
             }
           }
-                  DEF HUDVP1_8 Viewpoint {
-                    position 0 0 0
-                    description "HUDVP 1"
-                  }
           DEF HUD Transform {
             children Collision {
               collide FALSE
               children DEF HUDObj_7 Transform {
                 children [
+                  DEF HUDVP1_8 Viewpoint {
+                    position 0 0 0
+                    description "HUDVP 1"
+                  }
                   DEF Button Transform {
                     translation 0.141068 -0.134888 -0.429591
                     scale 0.539077 0.539077 0.539075

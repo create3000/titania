@@ -125,6 +125,34 @@ TimeSensor::set_initialized ()
 }
 
 void
+TimeSensor::prepareEvents ()
+{
+	//std::clog << "###### " << getCurrentTime () - cycleTime << " " << interval << std::endl;
+
+	if (getCurrentTime () - cycle >= interval)
+	{
+		if (loop)
+		{
+			cycle           += interval;
+			cycleTime        = getCurrentTime ();
+			fraction_changed = 1;
+		}
+		else
+		{
+			fraction_changed = 1;
+			stop             = getCurrentTime ();
+		}
+	}
+	else
+	{
+		static time_type intpart;
+		fraction_changed = std::modf ((getCurrentTime () - cycle) / interval, &intpart);
+	}
+
+	time = getCurrentTime ();
+}
+
+void
 TimeSensor::set_enabled ()
 {
 	if (enabled)
@@ -137,7 +165,7 @@ TimeSensor::set_enabled ()
 		if (isActive)
 		{
 			isActive = false;
-			getBrowser () -> sensors .removeInterest (this, &TimeSensor::update);
+			getBrowser () -> prepareEvents .removeInterest (this, &TimeSensor::prepareEvents);
 		}
 	}
 }
@@ -177,7 +205,7 @@ TimeSensor::set_start ()
 		fraction_changed = 0;
 		time             = getCurrentTime ();
 
-		getBrowser () -> sensors .addInterest (this, &TimeSensor::update);
+		getBrowser () -> prepareEvents .addInterest (this, &TimeSensor::prepareEvents);
 	}
 }
 
@@ -211,35 +239,7 @@ void
 TimeSensor::set_stop ()
 {
 	isActive = false;
-	getBrowser () -> sensors .removeInterest (this, &TimeSensor::update);
-}
-
-void
-TimeSensor::update ()
-{
-	//std::clog << "###### " << getCurrentTime () - cycleTime << " " << interval << std::endl;
-
-	if (getCurrentTime () - cycle >= interval)
-	{
-		if (loop)
-		{
-			cycle           += interval;
-			cycleTime        = getCurrentTime ();
-			fraction_changed = 1;
-		}
-		else
-		{
-			fraction_changed = 1;
-			stop             = getCurrentTime ();
-		}
-	}
-	else
-	{
-		static time_type intpart;
-		fraction_changed = std::modf ((getCurrentTime () - cycle) / interval, &intpart);
-	}
-
-	time = getCurrentTime ();
+	getBrowser () -> prepareEvents .removeInterest (this, &TimeSensor::prepareEvents);
 }
 
 void
@@ -259,7 +259,7 @@ TimeSensor::dispose ()
 	startTimeout .disconnect ();
 
 	if (isActive)
-		getBrowser () -> sensors .removeInterest (this, &TimeSensor::update);
+		getBrowser () -> prepareEvents .removeInterest (this, &TimeSensor::prepareEvents);
 
 	X3DTimeDependentNode::dispose ();
 }

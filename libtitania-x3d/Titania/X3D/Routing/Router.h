@@ -64,7 +64,6 @@ class Router
 public:
 
 	chrono::stopwatch <double> clock;
-	Output                     prepareEvents;
 
 	Router ();
 

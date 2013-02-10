@@ -90,6 +90,9 @@ private:
 
 	void
 	set_initialized ();
+	
+	void
+	prepareEvents ();
 
 	void
 	set_enabled ();
@@ -106,9 +109,6 @@ private:
 	void
 	set_stopTime ();
 	
-	void
-	update ();
-
 	bool
 	do_stop ();
 

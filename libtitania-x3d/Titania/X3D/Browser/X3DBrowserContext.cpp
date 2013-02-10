@@ -63,7 +63,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	X3DExecutionContext (),                                        
 	            sensors (),                                        
 	           reshaped (),                                        // [out]    reshape
-	            exposed (),                                        // [out]    exposed
+	      prepareEvents (),                                        // [out]    prepareEvents
 	          displayed (),                                        // [out]    displayed
 	           finished (),                                        // [out]    finished
 	            changed (),                                        // [out]    changed
@@ -396,13 +396,14 @@ void
 X3DBrowserContext::prepare ()
 {
 	clock -> advance ();
-	exposed .processInterests ();
 
 	currentFrameRate = 1 / clock -> interval ();
 
 	Vector3d position = getActiveViewpoint () -> getTransformationMatrix () .translation ();
 	currentSpeed  = abs (position - priorPosition) * currentFrameRate;
 	priorPosition = position;
+	
+	prepareEvents .processInterests ();
 	
 	router .processEvents ();
 	
@@ -423,11 +424,11 @@ X3DBrowserContext::display ()
 
 	getExecutionContext () -> display ();
 
-	glColorMask (FALSE, FALSE, FALSE, TRUE);
-	glClearColor (0, 0, 0, 1);
-	glClear (GL_COLOR_BUFFER_BIT);
+	//glColorMask (FALSE, FALSE, FALSE, TRUE);
+	//glClearColor (0, 0, 0, 1);
+	//glClear (GL_COLOR_BUFFER_BIT);
 
-	glColorMask (TRUE, TRUE, TRUE, TRUE);
+	//glColorMask (TRUE, TRUE, TRUE, TRUE);
 
 	displayed .processInterests ();
 }
@@ -446,13 +447,13 @@ X3DBrowserContext::finish ()
 void
 X3DBrowserContext::dispose ()
 {
-	initialized .dispose ();
-	reshaped    .dispose ();
-	exposed     .dispose ();
-	displayed   .dispose ();
-	finished    .dispose ();
-	shutdown    .dispose ();
-	changed     .dispose ();
+	initialized   .dispose ();
+	reshaped      .dispose ();
+	prepareEvents .dispose ();
+	displayed     .dispose ();
+	finished      .dispose ();
+	shutdown      .dispose ();
+	changed       .dispose ();
 
 	X3DChildObject::dispose ();
 	//X3DExecutionContext::dispose ();
