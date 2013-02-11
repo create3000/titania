@@ -418,7 +418,7 @@ throw (Error <INVALID_NAME>,
 	{
 		auto field = fields .find (getFieldName (name .substr (4)));
 
-		if (field not_eq fields .end ())
+		if (field not_eq fields .end () and field -> second -> getAccessType () == inputOutput)
 			return field -> second;
 	}
 
@@ -426,7 +426,7 @@ throw (Error <INVALID_NAME>,
 	{
 		auto field = fields .find (getFieldName (name .substr (0, name .size () - 8)));
 
-		if (field not_eq fields .end ())
+		if (field not_eq fields .end () and field -> second -> getAccessType () == inputOutput)
 			return field -> second;
 	}
 

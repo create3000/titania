@@ -1,5 +1,11 @@
 2013-02-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* FlyViewer.cpp:
+	* X3DBaseNode.cpp:
+	* Viewpoint.cpp: 
+
+2013-02-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TimeSensor.h:
 	* X3DBrowserContext.cpp:
 	* TimeSensor.cpp:

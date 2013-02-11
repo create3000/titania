@@ -108,8 +108,9 @@ Viewpoint::reshape (const float zNear, const float zFar)
 
 	GLfloat width  = viewport [2];
 	GLfloat height = viewport [3];
-
-	float ratio = std::tan (fieldOfView / 2) * zNear;
+	
+	float fov   = fieldOfView > 0 and fieldOfView < M_PI ? fieldOfView : (M_PI / 4);
+	float ratio = std::tan (fov / 2) * zNear;
 
 	if (width > height)
 	{

@@ -59,7 +59,7 @@
 #include <glibmm/main.h>
 
 #define SPEED_FACTOR            0.02f
-#define ROTATION_SPEED_FACTOR   0.2f
+#define ROTATION_SPEED_FACTOR   0.3f
 #define ROLL_ANGLE              (M_PI / 16)
 #define ROLL_TIME               0.2
 #define FRAME_RATE              100
