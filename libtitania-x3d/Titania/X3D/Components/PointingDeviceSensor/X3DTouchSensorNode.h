@@ -63,10 +63,6 @@ public:
 
 	SFTime touchTime;
 
-	virtual
-	void
-	update ();
-
 
 protected:
 

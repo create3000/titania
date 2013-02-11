@@ -136,7 +136,7 @@ private:
 	build ();
 
 	void
-	update_string ();
+	update ();
 
 	void
 	dispose ();

@@ -327,7 +327,7 @@ X3DBrowserContext::buttonPressEvent ()
 		X3DPointingDeviceSensorNode* pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> activate (true);
+			pointingDeviceSensorNode -> isActive = true;
 	}
 }
 
@@ -339,7 +339,7 @@ X3DBrowserContext::buttonReleaseEvent ()
 		X3DPointingDeviceSensorNode* pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> activate (false);
+			pointingDeviceSensorNode -> isActive = false;
 	}
 }
 
@@ -359,7 +359,7 @@ X3DBrowserContext::touchEvent ()
 		X3DTouchSensorNode* touchSensorNode = dynamic_cast <X3DTouchSensorNode*> (node);
 
 		if (touchSensorNode)
-			touchSensorNode -> update ();
+			touchSensorNode -> touchTime = getCurrentTime ();
 	}
 }
 

@@ -71,10 +71,6 @@ public:
 
 	virtual
 	void
-	update () { }
-
-	virtual
-	void
 	display ();
 
 	void

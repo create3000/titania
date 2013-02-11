@@ -1,3 +1,18 @@
+2013-02-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* TimeSensor.h:
+	* X3DBrowserContext.cpp:
+	* TimeSensor.cpp:
+	* X3DSensorNode.h:
+	* IndexedFaceSet.h:
+	* IndexedFaceSet.cpp:
+	* RenderingProperties.h:
+	* RenderingProperties.cpp:
+	* ProximitySensor.h:
+	* X3DTouchSensorNode.h:
+	* X3DTouchSensorNode.cpp:
+	* X3DPointingDeviceSensorNode.h: 
+
 2013-02-10  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Router.h:

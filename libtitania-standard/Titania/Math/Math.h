@@ -132,10 +132,10 @@ slerp (const Type & source, const Type & destination, const T & t)
 	Type dest  = destination;
 	T    cosom = dot (source, destination);
 
-	if (cosom == -1)
+	if (cosom <= -1)
 		throw std::domain_error ("slerp is not possible: vectors are inverse collinear.");
 
-	if (cosom == 1) // both normal vectors are equal
+	if (cosom >= 1) // both normal vectors are equal
 		return source;
 
 	if (cosom < 0)

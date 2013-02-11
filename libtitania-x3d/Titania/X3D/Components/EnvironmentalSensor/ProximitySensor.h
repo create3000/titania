@@ -94,7 +94,6 @@ private:
 	void
 	set_enabled ();
 
-	virtual
 	void
 	update ();
 

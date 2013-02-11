@@ -67,7 +67,8 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	             colorIndex (),                                                    // MFInt32 [ ]  colorIndex         [ ]          [0,∞) or -1
 	            normalIndex (),                                                    // MFInt32 [ ]  normalIndex        [ ]          [0,∞) or -1
 	             coordIndex (),                                                    // MFInt32 [ ]  coordIndex         [ ]          [0,∞) or -1
-	               polygons ()                                                     
+	               polygons (),
+	           numTriangles (0)                                                     
 {
 	setComponent ("Geometry3D");
 	setTypeName ("IndexedFaceSet");
@@ -122,6 +123,7 @@ IndexedFaceSet::set_coordIndex ()
 		return;
 
 	polygons .clear ();
+	numTriangles = 0;
 
 	// Fill up coordIndex if there are no indices.
 	if (coordIndex .empty ())
@@ -167,11 +169,15 @@ IndexedFaceSet::set_coordIndex ()
 						                                   std::move (TriangleArray ({ std::move (Triangle ({ { vertices [0],
 						                                                                                        vertices [1],
 						                                                                                        vertices [2] } })) })) }));
+						                                                                                        
+						++ numTriangles;
 					}
 					else if (vertices .size () > 3)
 					{
 						// Tesselate polygons.
 						polygons .emplace_back (Polygon ({ vertices, std::move (tesselate (vertices)) }));
+						
+						numTriangles += polygons .back () .triangles .size ();
 					}
 
 					vertices .clear ();
@@ -430,13 +436,16 @@ IndexedFaceSet::build ()
 
 	if (not _coord or not polygons .size ())
 		return;
+	
+	size_t reserve = numTriangles * 3;
 
 	// TextureCoordinate
 
 	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord .getValue ());
 	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord .getValue ());
 
-	getTexCoord () .reserve (coordIndex .size ());
+	if (_textureCoordinate or not _textureCoordinateGenerator)
+		getTexCoord () .reserve (reserve);
 
 	// Color
 
@@ -444,18 +453,20 @@ IndexedFaceSet::build ()
 	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
 	
 	if (_color)
-		getColors () .reserve (coordIndex .size ());
+		getColors () .reserve (reserve);
 		
 	else if (_colorRGBA)
-		getColorsRGBA () .reserve (coordIndex .size ());
+		getColorsRGBA () .reserve (reserve);
 
 	// Normal
 
 	auto _normal = x3d_cast <Normal*> (normal .getValue ());
 
-	getNormals () .reserve (coordIndex .size ());
+	getNormals () .reserve (reserve);
 	
-	getVertices () .reserve (coordIndex .size ());
+	// Vertices
+	
+	getVertices () .reserve (reserve);
 
 	// Fill GeometryNode
 

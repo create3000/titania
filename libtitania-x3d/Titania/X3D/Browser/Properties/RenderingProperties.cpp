@@ -283,7 +283,7 @@ RenderingProperties::build ()
 	// Display stats.
 
 	int i = 0;
-	update_string ();
+	update ();
 
 	for (const auto & line : string)
 	{
@@ -328,7 +328,7 @@ RenderingProperties::display ()
 }
 
 void
-RenderingProperties::update_string ()
+RenderingProperties::update ()
 {
 	//	   time_type
 	//       eventTime = getBrowser () -> getEventTime (),

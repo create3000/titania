@@ -68,7 +68,6 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	           cycleTime (),                                                    // SFTime  [out]    cycleTime
 	    fraction_changed (),                                                    // SFFloat [out]    fraction_changed
 	                time (),                                                    // SFTime  [out]    time
-	                stop (),                                                    
 	               cycle (),                                                    
 	            interval (),                                                    
 	        startTimeout (),                                                    
@@ -104,12 +103,9 @@ TimeSensor::initialize ()
 {
 	X3DTimeDependentNode::initialize ();
 
-	setChildren (stop);
-
 	enabled   .addInterest (this, &TimeSensor::set_enabled);
 	startTime .addInterest (this, &TimeSensor::set_startTime);
 	stopTime  .addInterest (this, &TimeSensor::set_stopTime);
-	stop      .addInterest (this, &TimeSensor::set_stop);
 
 	initialized .addInterest (this, &TimeSensor::set_initialized);
 }
@@ -140,7 +136,7 @@ TimeSensor::prepareEvents ()
 		else
 		{
 			fraction_changed = 1;
-			stop             = getCurrentTime ();
+			set_stop ();
 		}
 	}
 	else

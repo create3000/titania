@@ -135,6 +135,7 @@ private:
 	buildNormals ();
 
 	PolygonArray polygons;
+	size_t       numTriangles;
 
 };
 

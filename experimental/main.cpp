@@ -770,6 +770,38 @@ test (Matrix4f & m)
 	m *= Matrix4f ();
 }
 
+///  Spherical linear interpolate between two normal vectors @a source vector
+///  and @a destination vector by an amout of @a t.
+template <typename Type, typename T>
+Type
+slerp (const Type & source, const Type & destination, const T & t)
+{
+	Type dest  = destination;
+	T    cosom = dot (source, destination);
+
+	if (cosom <= -1)
+		throw std::domain_error ("slerp is not possible: vectors are inverse collinear.");
+
+	if (cosom >= 1) // both normal vectors are equal
+		return source;
+
+	if (cosom < 0)
+	{
+		// Reverse signs so we travel the short way round
+		cosom = -cosom;
+		dest  = -dest;
+	}
+
+	T omega = std::acos (cosom);
+	T sinom = std::sin  (omega);
+
+	T scale0 = std::sin ((1 - t) * omega);
+	T scale1 = std::sin (t * omega);
+
+	return (scale0 * source + scale1 * dest) / sinom;
+}
+
+
 int
 main (int argc, char** argv)
 {
@@ -779,9 +811,9 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 	
-	__LOG__ << basic::uri ("file:///home/holger/Projekte/Titania/Library/Examples/icts/labyrinth.wrl") .scheme () .size () << std::endl;
-	__LOG__ << basic::uri ("/home/holger/Projekte/Titania/Titania/share/titania/ui/icons/icon-bw.svg") .transform ("file:///home/holger/Projekte/Titania/Library/Examples/icts/labyrinth.wrl") << std::endl;
-	__LOG__ << bool (basic::ifilestream (basic::http::method::GET, "")) << std::endl;
+	auto r = math::rotation4 <float> (-0.0899162, -0.995117, 0.0406966, 0.546317);
+		
+	std::clog << math::rotation4 <float> (::slerp (r .quat (), r .quat (), 0.0f)) << std::endl;
 
 	if (0)
 	{

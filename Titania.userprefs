@@ -1,20 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/ExamineViewer.h" Line="60" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/ExamineViewer.cpp" Line="222" Column="32" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/FlyViewer.h" Line="110" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/FlyViewer.cpp" Line="100" Column="58" />
+      <File FileName="experimental/main.cpp" Line="782" Column="102" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/FlyViewer.h" Line="123" Column="27" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/FlyViewer.cpp" Line="254" Column="41" />
       <File FileName="Library/Tests/Navigation/FlyViewer.wrl" Line="5" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.cpp" Line="101" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="205" Column="15" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="303" Column="13" />
-      <File FileName="Titania/Makefile.am" Line="64" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="259" Column="1" />
-      <File FileName="libtitania-stream/Titania/Stream/InputFileStream.cpp" Line="80" Column="7" />
-      <File FileName="libtitania-standard/Titania/OS/IsFile.cpp" Line="63" Column="9" />
-      <File FileName="experimental/main.cpp" Line="824" Column="27" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="88" Column="18" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="432" Column="1" />
+      <File FileName="Library/Examples/Horten/stage/index.wrl" Line="5719" Column="12" />
+      <File FileName="libtitania-x3d/Titania/X3D/Routing/Router.h" Line="67" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Routing/Router.cpp" Line="70" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp" Line="226" Column="34" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.cpp" Line="154" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.h" Line="82" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.h" Line="99" Column="26" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="467" Column="13" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -28,23 +29,19 @@
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
-          <Node name="experimental" expanded="True" selected="True" />
+          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
-              <Node name="Arcadia" expanded="True">
+              <Node name="Capone" expanded="True">
                 <Node name="stage" expanded="True" />
               </Node>
-              <Node name="schacht" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
-              <Node name="treasure-island" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
+              <Node name="Horten" expanded="True" />
             </Node>
             <Node name="Tests" expanded="True">
               <Node name="Basic" expanded="True" />
               <Node name="EnvironmentalEffects" expanded="True" />
               <Node name="EnvironmentalSensors" expanded="True" />
+              <Node name="Extrusion" expanded="True" />
               <Node name="Geometry2D" expanded="True" />
               <Node name="Geometry3D" expanded="True" />
               <Node name="Grouping" expanded="True" />
@@ -65,27 +62,15 @@
           </Node>
           <Node name="libtitania-opengl-surface" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="OpenGL" expanded="True">
-                <Node name="Context" expanded="True" />
-              </Node>
+              <Node name="OpenGL" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="Basic" expanded="True">
-                <Node name="InputOutput" expanded="True" />
-              </Node>
               <Node name="Chrono" expanded="True" />
               <Node name="Math" expanded="True">
-                <Node name="Geometry" expanded="True" />
                 <Node name="Numbers" expanded="True" />
               </Node>
-              <Node name="OS" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-stream" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Stream" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -97,27 +82,29 @@
                   <Node name="Properties" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
                   <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Geometry2D" expanded="True" />
+                  <Node name="Geometry3D" expanded="True">
+                    <Node name="IndexedFaceSet.cpp" selected="True" />
+                  </Node>
                   <Node name="Grouping" expanded="True" />
-                  <Node name="Interpolation" expanded="True" />
                   <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                   <Node name="Networking" expanded="True" />
-                  <Node name="Scripting" expanded="True" />
-                  <Node name="Shape" expanded="True" />
+                  <Node name="Time" expanded="True" />
                 </Node>
+                <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
-                <Node name="Parser" expanded="True" />
+                <Node name="JavaScript" expanded="True">
+                  <Node name="SpiderMonkey" expanded="True">
+                    <Node name="Fields" expanded="True" />
+                  </Node>
+                </Node>
                 <Node name="Rendering" expanded="True" />
                 <Node name="Routing" expanded="True" />
               </Node>
             </Node>
           </Node>
-          <Node name="test" expanded="True">
-            <Node name="Tests" expanded="True" />
-          </Node>
+          <Node name="test" expanded="True" />
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="applications" expanded="True" />
