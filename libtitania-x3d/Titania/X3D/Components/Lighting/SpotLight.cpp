@@ -100,15 +100,18 @@ void
 SpotLight::eventsProcessed ()
 {
 	X3DLightNode::eventsProcessed ();
+	
+	float glAmbientIntensity = math::clamp <float> (ambientIntensity, 0, 1);
+	float glIntensity        = math::clamp <float> (intensity, 0, 1);
 
-	glAmbient [0] = color .getR () * ambientIntensity;
-	glAmbient [1] = color .getG () * ambientIntensity;
-	glAmbient [2] = color .getB () * ambientIntensity;
+	glAmbient [0] = color .getR () * glAmbientIntensity;
+	glAmbient [1] = color .getG () * glAmbientIntensity;
+	glAmbient [2] = color .getB () * glAmbientIntensity;
 	glAmbient [3] = 1;
 
-	glDiffuseSpecular [0] = color .getR () * intensity;
-	glDiffuseSpecular [1] = color .getG () * intensity;
-	glDiffuseSpecular [2] = color .getB () * intensity;
+	glDiffuseSpecular [0] = color .getR () * glIntensity;
+	glDiffuseSpecular [1] = color .getG () * glIntensity;
+	glDiffuseSpecular [2] = color .getB () * glIntensity;
 	glDiffuseSpecular [3] = 1;
 
 	glSpotExponent = math::clamp <float> (beamWidth ? 0.5f / beamWidth : 0, 0, 128);
@@ -125,23 +128,21 @@ SpotLight::eventsProcessed ()
 }
 
 void
-SpotLight::enable ()
+SpotLight::draw (GLenum lightId)
 {
-	X3DLightNode::enable ();
+	glLightfv (lightId, GL_AMBIENT,  glAmbient);
+	glLightfv (lightId, GL_DIFFUSE,  glDiffuseSpecular);
+	glLightfv (lightId, GL_SPECULAR, glDiffuseSpecular);
 
-	glLightfv (getLight (), GL_AMBIENT,  glAmbient);
-	glLightfv (getLight (), GL_DIFFUSE,  glDiffuseSpecular);
-	glLightfv (getLight (), GL_SPECULAR, glDiffuseSpecular);
+	glLightf (lightId, GL_SPOT_EXPONENT, glSpotExponent);
+	glLightf (lightId, GL_SPOT_CUTOFF,   glSpotCutOff);
 
-	glLightf (getLight (), GL_SPOT_EXPONENT, glSpotExponent);
-	glLightf (getLight (), GL_SPOT_CUTOFF,   glSpotCutOff);
+	glLightf (lightId, GL_CONSTANT_ATTENUATION,  attenuation .getX ());
+	glLightf (lightId, GL_LINEAR_ATTENUATION,    attenuation .getY ());
+	glLightf (lightId, GL_QUADRATIC_ATTENUATION, attenuation .getZ ());
 
-	glLightf (getLight (), GL_CONSTANT_ATTENUATION,  attenuation .getX ());
-	glLightf (getLight (), GL_LINEAR_ATTENUATION,    attenuation .getY ());
-	glLightf (getLight (), GL_QUADRATIC_ATTENUATION, attenuation .getZ ());
-
-	glLightfv (getLight (), GL_POSITION,       glPosition);
-	glLightfv (getLight (), GL_SPOT_DIRECTION, glSpotDirection);
+	glLightfv (lightId, GL_POSITION,       glPosition);
+	glLightfv (lightId, GL_SPOT_DIRECTION, glSpotDirection);
 }
 
 } // X3D

@@ -160,7 +160,7 @@ X3DLayerNode::getViewpoint ()
 void
 X3DLayerNode::pushLocalLight (X3DLightNode* light)
 {
-	LightContainer* lightContainer = new LightContainer (light);
+	LightContainer* lightContainer = new LightContainer (ModelViewMatrix4f (), light);
 
 	localLights .push_back (lightContainer);
 	cachedLocalLights .push_back (lightContainer);
@@ -233,6 +233,7 @@ X3DLayerNode::display ()
 	currentViewport -> enable ();
 
 	glClear (GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity ();
 
 	getBackground ()     -> draw ();
 	getNavigationInfo () -> enable ();

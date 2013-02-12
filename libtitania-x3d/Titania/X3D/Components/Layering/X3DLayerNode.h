@@ -144,7 +144,8 @@ public:
 	getLocalLights () { return localLights; }
 
 	void
-	addGlobalLight (X3DLightNode* light) { globalLights .push_back (new LightContainer (light)); }
+	addGlobalLight (X3DLightNode* light)
+	{ globalLights .push_back (new LightContainer (ModelViewMatrix4f (), light)); }
 
 	const LightContainerArray &
 	getGlobalLights () { return globalLights; }

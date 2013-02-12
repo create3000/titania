@@ -70,7 +70,8 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, boo
 	              type ({ "EXAMINE", "ANY" }),                                // MFString [in,out] type               { "EXAMINE", "ANY" }
 	   visibilityLimit (),                                                    // SFFloat  [in,out] visibilityLimit    0
 	transitionComplete (),                                                    // SFBool   [out]    transitionComplete
-	  directionalLight (new DirectionalLight (executionContext))              
+	  directionalLight (new DirectionalLight (executionContext)),
+	             light ()              
 {
 	setComponent ("Navigation");
 	setTypeName ("NavigationInfo");
@@ -103,6 +104,20 @@ NavigationInfo::initialize ()
 	X3DBindableNode::initialize ();
 
 	directionalLight -> setup ();
+	
+	headlight .addInterest (this, &NavigationInfo::set_headlight);
+	
+	set_headlight ();
+}
+
+void
+NavigationInfo::set_headlight ()
+{
+	if (headlight)
+		light .reset (new LightContainer (Matrix4f (), directionalLight));
+		
+	else
+		light .reset ();
 }
 
 float
@@ -153,22 +168,14 @@ void
 NavigationInfo::enable ()
 {
 	if (headlight)
-	{
-		// Reset modelview matrix for headlight.
-		glPushMatrix ();
-		glLoadIdentity ();
-
-		directionalLight -> enable ();
-
-		glPopMatrix ();
-	}
+		light -> enable ();
 }
 
 void
 NavigationInfo::disable ()
 {
 	if (headlight)
-		directionalLight -> disable ();
+		light -> disable ();
 }
 
 void

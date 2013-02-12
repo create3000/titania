@@ -90,15 +90,18 @@ void
 DirectionalLight::eventsProcessed ()
 {
 	X3DLightNode::eventsProcessed ();
+	
+	float glAmbientIntensity = math::clamp <float> (ambientIntensity, 0, 1);
+	float glIntensity        = math::clamp <float> (intensity, 0, 1);
 
-	glAmbient [0] = color .getR () * ambientIntensity;
-	glAmbient [1] = color .getG () * ambientIntensity;
-	glAmbient [2] = color .getB () * ambientIntensity;
+	glAmbient [0] = color .getR () * glAmbientIntensity;
+	glAmbient [1] = color .getG () * glAmbientIntensity;
+	glAmbient [2] = color .getB () * glAmbientIntensity;
 	glAmbient [3] = 1;
 
-	glDiffuseSpecular [0] = color .getR () * intensity;
-	glDiffuseSpecular [1] = color .getG () * intensity;
-	glDiffuseSpecular [2] = color .getB () * intensity;
+	glDiffuseSpecular [0] = color .getR () * glIntensity;
+	glDiffuseSpecular [1] = color .getG () * glIntensity;
+	glDiffuseSpecular [2] = color .getB () * glIntensity;
 	glDiffuseSpecular [3] = 1;
 
 	glPosition [0] = -direction .getX ();
@@ -108,18 +111,16 @@ DirectionalLight::eventsProcessed ()
 }
 
 void
-DirectionalLight::enable ()
+DirectionalLight::draw (GLenum lightId)
 {
-	X3DLightNode::enable ();
+	glLightfv (lightId, GL_AMBIENT,  glAmbient);
+	glLightfv (lightId, GL_DIFFUSE,  glDiffuseSpecular);
+	glLightfv (lightId, GL_SPECULAR, glDiffuseSpecular);
 
-	glLightfv (getLight (), GL_AMBIENT,  glAmbient);
-	glLightfv (getLight (), GL_DIFFUSE,  glDiffuseSpecular);
-	glLightfv (getLight (), GL_SPECULAR, glDiffuseSpecular);
+	glLightf  (lightId, GL_SPOT_EXPONENT, 0);
+	glLightf  (lightId, GL_SPOT_CUTOFF, 180);
 
-	glLightf  (getLight (), GL_SPOT_EXPONENT, 0);
-	glLightf  (getLight (), GL_SPOT_CUTOFF, 180);
-
-	glLightfv (getLight (), GL_POSITION, glPosition);
+	glLightfv (lightId, GL_POSITION, glPosition);
 }
 
 } // X3D

@@ -70,31 +70,19 @@ public:
 
 	virtual
 	void
-	enable ();
-
-	virtual
-	void
-	disable ();
-
-	virtual
-	void
 	display ();
 
 	void
 	finish ();
 
+	virtual
+	void
+	draw (GLenum) = 0;
+
 
 protected:
 
 	X3DLightNode ();
-
-	GLenum
-	getLight ();
-
-
-private:
-
-	GLenum lightId;
 
 };
 

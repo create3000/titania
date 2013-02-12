@@ -497,8 +497,6 @@ private:
 	pcrecpp::StringPiece  string;
 	ExecutionContextStack executionContextStack;
 
-	std::deque <X3DBaseNode*> nodes;
-
 };
 
 } // X3D

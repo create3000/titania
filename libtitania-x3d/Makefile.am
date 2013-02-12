@@ -400,6 +400,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Prototype/Proto.cpp \
 	Titania/X3D/Prototype/ProtoArray.cpp \
 	Titania/X3D/Prototype/X3DProto.cpp \
+	Titania/X3D/Rendering/LightContainer.cpp \
 	Titania/X3D/Rendering/ShapeContainer.cpp \
 	Titania/X3D/Rendering/ViewVolume.cpp \
 	Titania/X3D/Rendering/X3DRenderer.cpp \

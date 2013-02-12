@@ -53,6 +53,8 @@
 
 #include "../Core/X3DBindableNode.h"
 #include "../Lighting/DirectionalLight.h"
+#include "../../Rendering/LightContainer.h"
+#include <memory>
 
 namespace titania {
 namespace X3D {
@@ -108,6 +110,9 @@ private:
 	void
 	initialize ();
 
+	void
+	set_headlight ();
+
 	virtual
 	void
 	bindToLayer (X3DLayerNode* const);
@@ -116,7 +121,8 @@ private:
 	void
 	unbindFromLayer (X3DLayerNode* const);
 
-	SFNode <DirectionalLight> directionalLight;
+	SFNode <DirectionalLight>        directionalLight;
+	std::unique_ptr <LightContainer> light;
 
 };
 

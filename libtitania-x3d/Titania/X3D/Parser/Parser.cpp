@@ -83,8 +83,7 @@ Parser::Parser (X3DScene* scene) :
 	  X3DParser (),                              
 	      scene (scene),                         
 	      input (),                              
-	     string (),                              
-	      nodes ()                               
+	     string ()                               
 {
 	setComponent ("Browser");
 	setTypeName ("Parser");
@@ -216,18 +215,13 @@ Parser::addRootNode (const SFNode <X3DBaseNode> & rootNode)
 {
 	//__LOG__ << std::endl;
 
-	for (auto & basicNode : nodes)
-		basicNode -> setup ();
-
-	nodes .clear ();
-
 	getExecutionContext () -> addRootNode (rootNode);
 }
 
 void
 Parser::comments ()
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	std::string _comment;
 
@@ -238,7 +232,7 @@ Parser::comments ()
 bool
 Parser::comment (std::string & _comment)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	return RegEx::Comment .Consume (&string, &_comment);
 }
@@ -260,7 +254,7 @@ Parser::x3dScene ()
 		scene -> setComment (comment);
 	}
 	else
-		__LOG__ << std::endl;
+		//__LOG__ << std::endl;
 
 	comments ();
 	scene -> setProfile (profileStatement ());
@@ -1300,7 +1294,7 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 
 				_node .write (_newNode);
 
-				nodes .push_back (_basicNode);
+				_basicNode -> setup ();
 
 				return true;
 			}
@@ -1662,7 +1656,7 @@ template <class Type>
 bool
 Parser::from_string (Type & _value, const std::string & _string, std::ios_base & (*_format) (std::ios_base &))
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	std::istringstream _iss (_string);
 
@@ -1672,7 +1666,7 @@ Parser::from_string (Type & _value, const std::string & _string, std::ios_base &
 bool
 Parser::_double (double & _value)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	std::string _match;
 
@@ -1688,7 +1682,7 @@ Parser::_double (double & _value)
 bool
 Parser::_float (float & _value)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	std::string _match;
 
@@ -1704,7 +1698,7 @@ Parser::_float (float & _value)
 bool
 Parser::_int32 (int32_t & _value)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	if (_hex (_value))
 		return true;
@@ -1723,7 +1717,7 @@ Parser::_int32 (int32_t & _value)
 bool
 Parser::_hex (int32_t & _value)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	std::string _match;
 
@@ -1746,7 +1740,7 @@ Parser::_hex (int32_t & _value)
 bool
 Parser::_string (std::string & _value)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	if (RegEx::_string .Consume (&string, &_value))
 	{
@@ -1761,7 +1755,7 @@ Parser::_string (std::string & _value)
 bool
 Parser::sfboolValue (SFBool* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	if (RegEx::_true .Consume (&string))
 	{
@@ -1783,7 +1777,7 @@ Parser::sfboolValue (SFBool* _field)
 bool
 Parser::mfboolValue (MFBool* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -1821,7 +1815,7 @@ Parser::mfboolValue (MFBool* _field)
 void
 Parser::sfboolValues (MFBool* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFBool value;
 
@@ -1832,7 +1826,7 @@ Parser::sfboolValues (MFBool* _field)
 bool
 Parser::sfcolorValue (SFColor* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	int32_t color;
 
@@ -1864,7 +1858,7 @@ Parser::sfcolorValue (SFColor* _field)
 bool
 Parser::mfcolorValue (MFColor* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -1902,7 +1896,7 @@ Parser::mfcolorValue (MFColor* _field)
 void
 Parser::sfcolorValues (MFColor* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFColor value;
 
@@ -1913,7 +1907,7 @@ Parser::sfcolorValues (MFColor* _field)
 bool
 Parser::sfcolorRGBAValue (SFColorRGBA* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	float r, g, b, a;
 
@@ -1938,7 +1932,7 @@ Parser::sfcolorRGBAValue (SFColorRGBA* _field)
 bool
 Parser::mfcolorRGBAValue (MFColorRGBA* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -1976,7 +1970,7 @@ Parser::mfcolorRGBAValue (MFColorRGBA* _field)
 void
 Parser::sfcolorRGBAValues (MFColorRGBA* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFColorRGBA value;
 
@@ -1987,7 +1981,7 @@ Parser::sfcolorRGBAValues (MFColorRGBA* _field)
 bool
 Parser::sfdoubleValue (SFDouble* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	double value;
 
@@ -2003,7 +1997,7 @@ Parser::sfdoubleValue (SFDouble* _field)
 bool
 Parser::mfdoubleValue (MFDouble* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2041,7 +2035,7 @@ Parser::mfdoubleValue (MFDouble* _field)
 void
 Parser::sfdoubleValues (MFDouble* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFDouble value;
 
@@ -2052,7 +2046,7 @@ Parser::sfdoubleValues (MFDouble* _field)
 bool
 Parser::sffloatValue (SFFloat* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	float value;
 
@@ -2068,7 +2062,7 @@ Parser::sffloatValue (SFFloat* _field)
 bool
 Parser::mffloatValue (MFFloat* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2106,7 +2100,7 @@ Parser::mffloatValue (MFFloat* _field)
 void
 Parser::sffloatValues (MFFloat* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFFloat value;
 
@@ -2117,7 +2111,7 @@ Parser::sffloatValues (MFFloat* _field)
 bool
 Parser::sfimageValue (SFImage* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	int32_t width, height, components, size, pixel;
 	MFInt32 array;
@@ -2150,7 +2144,7 @@ Parser::sfimageValue (SFImage* _field)
 bool
 Parser::mfimageValue (MFImage* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2188,7 +2182,7 @@ Parser::mfimageValue (MFImage* _field)
 void
 Parser::sfimageValues (MFImage* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFImage value;
 
@@ -2199,7 +2193,7 @@ Parser::sfimageValues (MFImage* _field)
 bool
 Parser::sfint32Value (SFInt32* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	int32_t value;
 
@@ -2215,7 +2209,7 @@ Parser::sfint32Value (SFInt32* _field)
 bool
 Parser::mfint32Value (MFInt32* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2253,7 +2247,7 @@ Parser::mfint32Value (MFInt32* _field)
 void
 Parser::sfint32Values (MFInt32* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFInt32 value;
 
@@ -2264,7 +2258,7 @@ Parser::sfint32Values (MFInt32* _field)
 bool
 Parser::sfmatrix3dValue (SFMatrix3d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	double e11, e12, e13, e21, e22, e23, e31, e32, e33;
 
@@ -2304,7 +2298,7 @@ Parser::sfmatrix3dValue (SFMatrix3d* _field)
 bool
 Parser::mfmatrix3dValue (MFMatrix3d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2342,7 +2336,7 @@ Parser::mfmatrix3dValue (MFMatrix3d* _field)
 void
 Parser::sfmatrix3dValues (MFMatrix3d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFMatrix3d value;
 
@@ -2353,7 +2347,7 @@ Parser::sfmatrix3dValues (MFMatrix3d* _field)
 bool
 Parser::sfmatrix3fValue (SFMatrix3f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	float e11, e12, e13, e21, e22, e23, e31, e32, e33;
 
@@ -2393,7 +2387,7 @@ Parser::sfmatrix3fValue (SFMatrix3f* _field)
 bool
 Parser::mfmatrix3fValue (MFMatrix3f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2431,7 +2425,7 @@ Parser::mfmatrix3fValue (MFMatrix3f* _field)
 void
 Parser::sfmatrix3fValues (MFMatrix3f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFMatrix3f value;
 
@@ -2442,7 +2436,7 @@ Parser::sfmatrix3fValues (MFMatrix3f* _field)
 bool
 Parser::sfmatrix4dValue (SFMatrix4d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	double e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44;
 
@@ -2503,7 +2497,7 @@ Parser::sfmatrix4dValue (SFMatrix4d* _field)
 bool
 Parser::mfmatrix4dValue (MFMatrix4d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2541,7 +2535,7 @@ Parser::mfmatrix4dValue (MFMatrix4d* _field)
 void
 Parser::sfmatrix4dValues (MFMatrix4d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFMatrix4d value;
 
@@ -2552,7 +2546,7 @@ Parser::sfmatrix4dValues (MFMatrix4d* _field)
 bool
 Parser::sfmatrix4fValue (SFMatrix4f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	float e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44;
 
@@ -2613,7 +2607,7 @@ Parser::sfmatrix4fValue (SFMatrix4f* _field)
 bool
 Parser::mfmatrix4fValue (MFMatrix4f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2651,7 +2645,7 @@ Parser::mfmatrix4fValue (MFMatrix4f* _field)
 void
 Parser::sfmatrix4fValues (MFMatrix4f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFMatrix4f value;
 
@@ -2662,7 +2656,7 @@ Parser::sfmatrix4fValues (MFMatrix4f* _field)
 bool
 Parser::sfnodeValue (X3DFieldDefinition* const _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	return nodeStatement (*_field);
 }
@@ -2670,7 +2664,7 @@ Parser::sfnodeValue (X3DFieldDefinition* const _field)
 bool
 Parser::mfnodeValue (X3DFieldDefinition* const _fieldDefinition)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	MFNode field;
 
@@ -2710,7 +2704,7 @@ Parser::mfnodeValue (X3DFieldDefinition* const _fieldDefinition)
 void
 Parser::nodeStatements (MFNode* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFNode <X3DBaseNode> _node;
 
@@ -2721,7 +2715,7 @@ Parser::nodeStatements (MFNode* _field)
 bool
 Parser::sfrotationValue (SFRotation* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	float x, y, z, angle;
 
@@ -2746,7 +2740,7 @@ Parser::sfrotationValue (SFRotation* _field)
 bool
 Parser::mfrotationValue (MFRotation* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2784,7 +2778,7 @@ Parser::mfrotationValue (MFRotation* _field)
 void
 Parser::sfrotationValues (MFRotation* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFRotation value;
 
@@ -2795,7 +2789,7 @@ Parser::sfrotationValues (MFRotation* _field)
 bool
 Parser::sfstringValue (SFString* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	std::string value;
 
@@ -2811,7 +2805,7 @@ Parser::sfstringValue (SFString* _field)
 bool
 Parser::mfstringValue (MFString* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2849,7 +2843,7 @@ Parser::mfstringValue (MFString* _field)
 void
 Parser::sfstringValues (MFString* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFString value;
 
@@ -2860,7 +2854,7 @@ Parser::sfstringValues (MFString* _field)
 bool
 Parser::sftimeValue (SFTime* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	double value;
 
@@ -2876,7 +2870,7 @@ Parser::sftimeValue (SFTime* _field)
 bool
 Parser::mftimeValue (MFTime* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2914,7 +2908,7 @@ Parser::mftimeValue (MFTime* _field)
 void
 Parser::sftimeValues (MFTime* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFTime value;
 
@@ -2925,7 +2919,7 @@ Parser::sftimeValues (MFTime* _field)
 bool
 Parser::sfvec2dValue (SFVec2d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	double x, y;
 
@@ -2944,7 +2938,7 @@ Parser::sfvec2dValue (SFVec2d* _field)
 bool
 Parser::mfvec2dValue (MFVec2d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -2982,7 +2976,7 @@ Parser::mfvec2dValue (MFVec2d* _field)
 void
 Parser::sfvec2dValues (MFVec2d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFVec2d value;
 
@@ -2993,7 +2987,7 @@ Parser::sfvec2dValues (MFVec2d* _field)
 bool
 Parser::sfvec2fValue (SFVec2f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	float x, y;
 
@@ -3012,7 +3006,7 @@ Parser::sfvec2fValue (SFVec2f* _field)
 bool
 Parser::mfvec2fValue (MFVec2f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -3050,7 +3044,7 @@ Parser::mfvec2fValue (MFVec2f* _field)
 void
 Parser::sfvec2fValues (MFVec2f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFVec2f value;
 
@@ -3061,7 +3055,7 @@ Parser::sfvec2fValues (MFVec2f* _field)
 bool
 Parser::sfvec3dValue (SFVec3d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	double x, y, z;
 
@@ -3083,7 +3077,7 @@ Parser::sfvec3dValue (SFVec3d* _field)
 bool
 Parser::mfvec3dValue (MFVec3d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -3121,7 +3115,7 @@ Parser::mfvec3dValue (MFVec3d* _field)
 void
 Parser::sfvec3dValues (MFVec3d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFVec3d value;
 
@@ -3132,7 +3126,7 @@ Parser::sfvec3dValues (MFVec3d* _field)
 bool
 Parser::sfvec3fValue (SFVec3f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	float x, y, z;
 
@@ -3154,7 +3148,7 @@ Parser::sfvec3fValue (SFVec3f* _field)
 bool
 Parser::mfvec3fValue (MFVec3f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -3192,7 +3186,7 @@ Parser::mfvec3fValue (MFVec3f* _field)
 void
 Parser::sfvec3fValues (MFVec3f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFVec3f value;
 
@@ -3203,7 +3197,7 @@ Parser::sfvec3fValues (MFVec3f* _field)
 bool
 Parser::sfvec4dValue (SFVec4d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	double x, y, z, w;
 
@@ -3228,7 +3222,7 @@ Parser::sfvec4dValue (SFVec4d* _field)
 bool
 Parser::mfvec4dValue (MFVec4d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -3266,7 +3260,7 @@ Parser::mfvec4dValue (MFVec4d* _field)
 void
 Parser::sfvec4dValues (MFVec4d* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFVec4d value;
 
@@ -3277,7 +3271,7 @@ Parser::sfvec4dValues (MFVec4d* _field)
 bool
 Parser::sfvec4fValue (SFVec4f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	float x, y, z, w;
 
@@ -3302,7 +3296,7 @@ Parser::sfvec4fValue (SFVec4f* _field)
 bool
 Parser::mfvec4fValue (MFVec4f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	_field -> clear ();
 
@@ -3340,7 +3334,7 @@ Parser::mfvec4fValue (MFVec4f* _field)
 void
 Parser::sfvec4fValues (MFVec4f* _field)
 {
-	//__LOG__ << std::endl;
+	////__LOG__ << std::endl;
 
 	SFVec4f value;
 

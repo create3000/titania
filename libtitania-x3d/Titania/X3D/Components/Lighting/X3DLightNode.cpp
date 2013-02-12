@@ -61,40 +61,9 @@ X3DLightNode::X3DLightNode () :
 	           color (1, 1, 1), // SFColor [in,out] color             1 1 1        [0,1]
 	          global (true),    // SFBool  [in,out] global            FALSE
 	       intensity (1),       // SFFloat [in,out] intensity         1            [0,1]
-	              on (true),    // SFBool  [in,out] on                TRUE
-	         lightId (0)        
+	              on (true)     // SFBool  [in,out] on                TRUE
 {
 	addNodeType (X3DConstants::X3DLightNode);
-}
-
-GLenum
-X3DLightNode::getLight ()
-{
-	return lightId;
-}
-
-void
-X3DLightNode::enable ()
-{
-	if (getBrowser () -> getLights () .size ())
-	{
-		lightId = getBrowser () -> getLights () .top ();
-		getBrowser () -> getLights () .pop ();
-		glEnable (lightId);
-	}
-	else
-		lightId = 0;
-}
-
-void
-X3DLightNode::disable ()
-{
-	if (lightId)
-	{
-		getBrowser () -> getLights () .push (lightId);
-		glDisable (lightId);
-		lightId = 0;
-	}
 }
 
 void

@@ -1,21 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Parser/Parser.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="782" Column="102" />
+      <File FileName="experimental/main.cpp" Line="787" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/FlyViewer.h" Line="123" Column="27" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/FlyViewer.cpp" Line="254" Column="41" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/FlyViewer.cpp" Line="62" Column="36" />
       <File FileName="Library/Tests/Navigation/FlyViewer.wrl" Line="5" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="88" Column="18" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="432" Column="1" />
-      <File FileName="Library/Examples/Horten/stage/index.wrl" Line="5719" Column="12" />
-      <File FileName="libtitania-x3d/Titania/X3D/Routing/Router.h" Line="67" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Routing/Router.cpp" Line="70" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp" Line="226" Column="34" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.cpp" Line="154" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.h" Line="82" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.h" Line="99" Column="26" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="467" Column="13" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="429" Column="34" />
+      <File FileName="Library/Examples/Horten/stage/index.wrl" Line="56" Column="89" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="123" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="243" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Viewpoint.cpp" Line="99" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="452" Column="13" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -32,10 +29,10 @@
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
-              <Node name="Capone" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
-              <Node name="Horten" expanded="True" />
+              <Node name="Vattenfall" expanded="True" />
+            </Node>
+            <Node name="Models" expanded="True">
+              <Node name="Vehicles" expanded="True" />
             </Node>
             <Node name="Tests" expanded="True">
               <Node name="Basic" expanded="True" />
@@ -82,14 +79,15 @@
                   <Node name="Properties" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="Core" expanded="True" />
                   <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Geometry3D" expanded="True">
-                    <Node name="IndexedFaceSet.cpp" selected="True" />
-                  </Node>
+                  <Node name="Geometry3D" expanded="True" />
                   <Node name="Grouping" expanded="True" />
+                  <Node name="Interpolation" expanded="True" />
                   <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                   <Node name="Networking" expanded="True" />
+                  <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Time" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
@@ -98,6 +96,9 @@
                   <Node name="SpiderMonkey" expanded="True">
                     <Node name="Fields" expanded="True" />
                   </Node>
+                </Node>
+                <Node name="Parser" expanded="True">
+                  <Node name="Parser.cpp" selected="True" />
                 </Node>
                 <Node name="Rendering" expanded="True" />
                 <Node name="Routing" expanded="True" />

@@ -119,7 +119,6 @@ X3DRenderer::draw ()
 	numTransparentNodesDrawn = 0;
 
 	glPushMatrix ();
-	glLoadIdentity ();
 
 	getCurrentViewpoint () -> transform ();
 

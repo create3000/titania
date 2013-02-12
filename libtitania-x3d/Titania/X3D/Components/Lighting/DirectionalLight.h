@@ -75,7 +75,7 @@ public:
 
 	virtual
 	void
-	enable ();
+	draw (GLenum);
 
 
 private:

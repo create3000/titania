@@ -61,30 +61,19 @@ class LightContainer
 {
 public:
 
-	LightContainer (X3DLightNode* node) :
-		node (node),
-		matrix (ModelViewMatrix4f ())
-	{ }
+	LightContainer (const Matrix4f &, X3DLightNode*);
 
 	void
-	enable ()
-	{
-		glPushMatrix ();
-		glMultMatrixf (matrix .data ());
-		node -> enable ();
-		glPopMatrix ();
-	}
+	enable ();
 
 	void
-	disable ()
-	{
-		node -> disable ();
-	}
+	disable ();
 
 private:
 
 	X3DLightNode* node;
 	Matrix4f      matrix;
+	GLenum        lightId;
 
 };
 

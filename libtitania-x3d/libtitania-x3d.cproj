@@ -929,6 +929,7 @@
     <Compile Include="Titania\X3D\Browser\FlyViewer.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDevice.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DWidget.cpp" />
+    <Compile Include="Titania\X3D\Rendering\LightContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

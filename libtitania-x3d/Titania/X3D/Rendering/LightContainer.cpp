@@ -48,51 +48,46 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_LIGHTING_POINT_LIGHT_H__
-#define __TITANIA_X3D_COMPONENTS_LIGHTING_POINT_LIGHT_H__
+#include "LightContainer.h"
 
-#include "../Lighting/X3DLightNode.h"
+#include "../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-class PointLight :
-	public X3DLightNode
+LightContainer::LightContainer (const Matrix4f & matrix, X3DLightNode* node) :
+	   node (node),                 
+	 matrix (matrix), 
+	lightId (0)                     
+{ }
+
+void
+LightContainer::enable ()
 {
-public:
+	auto & lights = node -> getBrowser () -> getLights ();
 
-	SFVec3f attenuation;
-	SFVec3f location;
-	SFFloat radius;
+	if (lights .size ())
+	{
+		lightId = lights .top ();
+		lights .pop ();
+		glEnable (lightId);
 
-	PointLight (X3DExecutionContext* const);
+		glPushMatrix ();
+		glMultMatrixf (matrix .data ());
+		node -> draw (lightId);
+		glPopMatrix ();
+	}
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	eventsProcessed ();
-
-	virtual
-	void
-	draw (GLenum);
-
-
-private:
-
-	virtual
-	void
-	initialize ();
-
-	GLfloat glAmbient [4];
-	GLfloat glDiffuseSpecular [4];
-	GLfloat glPosition [4];
-
-};
+void
+LightContainer::disable ()
+{
+	if (lightId)
+	{
+		node -> getBrowser () -> getLights () .push (lightId);
+		glDisable (lightId);
+	}
+}
 
 } // X3D
 } // titania
-
-#endif
