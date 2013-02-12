@@ -1,5 +1,9 @@
 2013-02-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* IndexedFaceSet.cpp: 
+
+2013-02-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* libtitania-x3d.md.pc:
 	* IndexedFaceSet.h:

@@ -110,10 +110,7 @@ IndexedFaceSet::initialize ()
 	colorIndex    .addInterest (this, &IndexedFaceSet::set_colorIndex);
 	normalIndex   .addInterest (this, &IndexedFaceSet::set_normalIndex);
 
-	set_coordIndex    ();
-	set_texCoordIndex ();
-	set_colorIndex    ();
-	set_normalIndex   ();
+	set_coordIndex ();
 }
 
 void
@@ -124,23 +121,32 @@ IndexedFaceSet::set_coordIndex ()
 	int32_t numPoints = -1;
 	numPolygons = 0;
 
-	for (const auto & index : coordIndex)
+	if (coordIndex .size ())
 	{
-		numPoints = std::max <int32_t> (numPoints, index);
+		// Determine number of points and polygons.
 		
-		if (index == -1)
+		for (const auto & index : coordIndex)
+		{
+			numPoints = std::max <int32_t> (numPoints, index);
+			
+			if (index == -1)
+				++ numPolygons;
+		}
+
+		++ numPoints;
+		
+		if (coordIndex .back () >= 0)
 			++ numPolygons;
-	}
 
-	++ numPoints;
-	
-	if (coordIndex .back () >= 0)
-		++ numPolygons;
+		// Resize coord .point if to small
+		if (_coord -> point .size () < (size_t) numPoints)
+		{
+			_coord -> point .resize (numPoints);
+		}
 
-	// Resize coord .point if to small
-	if (_coord -> point .size () < (size_t) numPoints)
-	{
-		_coord -> point .resize (numPoints);
+		set_texCoordIndex ();
+		set_colorIndex    ();
+		set_normalIndex   ();
 	}
 }
 
