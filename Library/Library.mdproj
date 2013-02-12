@@ -1794,7 +1794,6 @@
     <None Include="Examples\Horten\stage\u-bahn.png" />
     <None Include="Examples\Horten\stage\walk.png" />
     <None Include="Examples\Horten\stage\granite__2.png" />
-    <None Include="Models\Vehicles\forklift3.wrl" />
     <None Include="Examples\Vattenfall\index.wrl" />
     <None Include="Examples\Vattenfall\stage\Bool_proto.wrl" />
     <None Include="Examples\Vattenfall\stage\Button_proto.wrl" />

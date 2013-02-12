@@ -108,9 +108,6 @@ private:
 	void
 	set_coordIndex ();
 
-	TriangleArray
-	tesselate (const Vertices & polygon);
-
 	void
 	set_texCoordIndex ();
 
@@ -121,12 +118,14 @@ private:
 	set_normalIndex ();
 
 	virtual
-	Box3f
-	createBBox ();
-
-	virtual
 	void
 	build ();
+
+	void
+	tesselate ();
+
+	TriangleArray
+	tesselate (const Vertices & polygon);
 
 	void
 	buildTexCoord ();

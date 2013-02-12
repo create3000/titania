@@ -1,5 +1,10 @@
 2013-02-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* IndexedFaceSet.h:
+	* IndexedFaceSet.cpp: 
+
+2013-02-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Parser.h:

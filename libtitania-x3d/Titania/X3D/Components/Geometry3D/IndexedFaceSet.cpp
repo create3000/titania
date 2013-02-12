@@ -111,7 +111,10 @@ IndexedFaceSet::initialize ()
 	colorIndex    .addInterest (this, &IndexedFaceSet::set_colorIndex);
 	normalIndex   .addInterest (this, &IndexedFaceSet::set_normalIndex);
 
-	set_coordIndex ();
+	set_coordIndex    ();
+	set_texCoordIndex ();
+	set_colorIndex    ();
+	set_normalIndex   ();
 }
 
 void
@@ -119,165 +122,20 @@ IndexedFaceSet::set_coordIndex ()
 {
 	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
 
-	if (not _coord)
-		return;
+	int32_t numPoints = -1;
 
-	polygons .clear ();
-	numTriangles = 0;
+	for (const auto & index : coordIndex)
+		numPoints = std::max <int32_t> (numPoints, index);
 
-	// Fill up coordIndex if there are no indices.
-	if (coordIndex .empty ())
+	++ numPoints;
+
+	// Resize coord .point if to small
+	if (_coord -> point .size () < (size_t) numPoints)
 	{
-		for (size_t i = 0; i < _coord -> point .size (); ++ i)
-			coordIndex .push_back (i);
+		_coord -> point .resize (numPoints);
 	}
 
-	if (coordIndex .size ())
-	{
-		// Add -1 (polygon end marker) to coordIndex if not present.
-		if (coordIndex .back () >= 0)
-			coordIndex .push_back (-1);
-
-		// Construct triangle array and determine the number of used points.
-		size_t  i         = 0;
-		int32_t numPoints = -1;
-
-		Vertices vertices;
-
-		for (const auto & index : coordIndex)
-		{
-			numPoints = std::max <int32_t> (numPoints, index);
-
-			if (index >= 0)
-				// Add vertex.
-				vertices .emplace_back (i);
-
-			else
-			{
-				// Negativ index.
-
-				if (vertices .size ())
-				{
-					// Closed polygon.
-					if (vertices .front () == vertices .back ())
-						vertices .pop_back ();
-
-					if (vertices .size () == 3)
-					{
-						// Add polygon with one triangle.
-						polygons .emplace_back (Polygon ({ vertices,
-						                                   std::move (TriangleArray ({ std::move (Triangle ({ { vertices [0],
-						                                                                                        vertices [1],
-						                                                                                        vertices [2] } })) })) }));
-						                                                                                        
-						++ numTriangles;
-					}
-					else if (vertices .size () > 3)
-					{
-						// Tesselate polygons.
-						polygons .emplace_back (Polygon ({ vertices, std::move (tesselate (vertices)) }));
-						
-						numTriangles += polygons .back () .triangles .size ();
-					}
-
-					vertices .clear ();
-				}
-			}
-
-			++ i;
-		}
-
-		++ numPoints;
-
-		if (polygons .size ())
-		{
-			// Resize coord .point if to small
-			if (_coord -> point .size () < (size_t) numPoints)
-				_coord -> point .resize (numPoints);
-
-			set_texCoordIndex ();
-			set_colorIndex    ();
-			set_normalIndex   ();
-		}
-	}
-}
-
-IndexedFaceSet::TriangleArray
-IndexedFaceSet::tesselate (const Vertices & vertices)
-{
-	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
-
-	TriangleArray triangles;
-
-	if (convex)
-	{
-		for (size_t i = 1, size = vertices .size () - 1; i < size; ++ i)
-		{
-			// Add triangle to polygon.
-			triangles .emplace_back (std::move (Triangle ({ { vertices [0],
-			                                                  vertices [i],
-			                                                  vertices [i + 1] } })));
-		}
-	}
-	else
-	{
-		opengl::tesselator <size_t> tesselator;
-
-		for (const auto & i : vertices)
-			tesselator .add_vertex (_coord -> point [coordIndex [i]], i);
-
-		tesselator .tesselate ();
-
-		for (const auto & polygonElement : tesselator .polygon ())
-		{
-			switch (polygonElement .type ())
-			{
-				case GL_TRIANGLE_FAN :
-					{
-						for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
-						{
-							// Add triangle to polygon.
-							triangles .emplace_back (std::move (Triangle ({ { std::get <0> (polygonElement [0] .data ()),
-							                                                  std::get <0> (polygonElement [i] .data ()),
-							                                                  std::get <0> (polygonElement [i + 1] .data ()) } })));
-						}
-
-						break;
-					}
-				case GL_TRIANGLE_STRIP:
-				{
-					for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
-					{
-						// Add triangle to polygon.
-						triangles .emplace_back (std::move (Triangle ({ { std::get <0> (polygonElement [i % 2 ? i + 1 : i] .data ()),
-						                                                  std::get <0> (polygonElement [i % 2 ? i : i + 1] .data ()),
-						                                                  std::get <0> (polygonElement [i + 2] .data ()) } })));
-					}
-
-					break;
-				}
-				case GL_TRIANGLES:
-				{
-					for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
-					{
-						// Add triangle to polygon.
-						triangles .emplace_back (std::move (Triangle ({ { std::get <0> (polygonElement [i] .data ()),
-						                                                  std::get <0> (polygonElement [i + 1] .data ()),
-						                                                  std::get <0> (polygonElement [i + 2] .data ()) } })));
-					}
-
-					break;
-				}
-				default:
-					break;
-			}
-		}
-
-		//		for (size_t i = 0; i < polygon .size (); ++ i)
-		//			delete vertices [i];
-	}
-
-	return triangles;
+	tesselate ();
 }
 
 void
@@ -397,36 +255,6 @@ IndexedFaceSet::set_normalIndex ()
 		if (_normal -> vector .size () < (size_t) numNormals)
 			_normal -> vector .resize (numNormals, _normal -> vector .back ());
 	}
-}
-
-Box3f
-IndexedFaceSet::createBBox ()
-{
-	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
-
-	if (_coord and polygons .size ())
-	{
-		Vector3f min = _coord -> point [coordIndex [polygons [0] .vertices [0]]];
-		Vector3f max = min;
-
-		for (const auto & polygon : polygons)
-		{
-			for (const auto & i : polygon .vertices)
-			{
-				const auto & vertex = _coord -> point [coordIndex [i]];
-
-				min = math::min <float> (min, vertex);
-				max = math::max <float> (max, vertex);
-			}
-		}
-
-		Vector3f size   = max - min;
-		Vector3f center = min + size * 0.5f;
-
-		return Box3f (size, center);
-	}
-
-	return Box3f ();
 }
 
 void
@@ -550,6 +378,156 @@ IndexedFaceSet::build ()
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setVertexMode (GL_TRIANGLES);
 	setSolid (solid);
+}
+
+void
+IndexedFaceSet::tesselate ()
+{
+	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
+
+	if (not _coord)
+		return;
+
+	polygons .clear ();
+	numTriangles = 0;
+
+	// Fill up coordIndex if there are no indices.
+	if (coordIndex .empty ())
+	{
+		for (size_t i = 0; i < _coord -> point .size (); ++ i)
+			coordIndex .push_back (i);
+	}
+
+	if (coordIndex .size ())
+	{
+		// Add -1 (polygon end marker) to coordIndex if not present.
+		if (coordIndex .back () >= 0)
+			coordIndex .push_back (-1);
+
+		// Construct triangle array and determine the number of used points.
+		size_t  i = 0;
+
+		Vertices vertices;
+
+		for (const auto & index : coordIndex)
+		{
+			if (index >= 0)
+				// Add vertex.
+				vertices .emplace_back (i);
+
+			else
+			{
+				// Negativ index.
+
+				if (vertices .size ())
+				{
+					// Closed polygon.
+					if (vertices .front () == vertices .back ())
+						vertices .pop_back ();
+
+					if (vertices .size () == 3)
+					{
+						// Add polygon with one triangle.
+						polygons .emplace_back (Polygon ({ vertices,
+						                                   std::move (TriangleArray ({ std::move (Triangle ({ { vertices [0],
+						                                                                                        vertices [1],
+						                                                                                        vertices [2] } })) })) }));
+						                                                                                        
+						++ numTriangles;
+					}
+					else if (vertices .size () > 3)
+					{
+						// Tesselate polygons.
+						polygons .emplace_back (Polygon ({ vertices, std::move (tesselate (vertices)) }));
+						
+						numTriangles += polygons .back () .triangles .size ();
+					}
+
+					vertices .clear ();
+				}
+			}
+
+			++ i;
+		}
+	}
+}
+
+IndexedFaceSet::TriangleArray
+IndexedFaceSet::tesselate (const Vertices & vertices)
+{
+	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
+
+	TriangleArray triangles;
+
+	if (convex)
+	{
+		for (size_t i = 1, size = vertices .size () - 1; i < size; ++ i)
+		{
+			// Add triangle to polygon.
+			triangles .emplace_back (std::move (Triangle ({ { vertices [0],
+			                                                  vertices [i],
+			                                                  vertices [i + 1] } })));
+		}
+	}
+	else
+	{
+		opengl::tesselator <size_t> tesselator;
+
+		for (const auto & i : vertices)
+			tesselator .add_vertex (_coord -> point [coordIndex [i]], i);
+
+		tesselator .tesselate ();
+
+		for (const auto & polygonElement : tesselator .polygon ())
+		{
+			switch (polygonElement .type ())
+			{
+				case GL_TRIANGLE_FAN :
+					{
+						for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
+						{
+							// Add triangle to polygon.
+							triangles .emplace_back (std::move (Triangle ({ { std::get <0> (polygonElement [0] .data ()),
+							                                                  std::get <0> (polygonElement [i] .data ()),
+							                                                  std::get <0> (polygonElement [i + 1] .data ()) } })));
+						}
+
+						break;
+					}
+				case GL_TRIANGLE_STRIP:
+				{
+					for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
+					{
+						// Add triangle to polygon.
+						triangles .emplace_back (std::move (Triangle ({ { std::get <0> (polygonElement [i % 2 ? i + 1 : i] .data ()),
+						                                                  std::get <0> (polygonElement [i % 2 ? i : i + 1] .data ()),
+						                                                  std::get <0> (polygonElement [i + 2] .data ()) } })));
+					}
+
+					break;
+				}
+				case GL_TRIANGLES:
+				{
+					for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
+					{
+						// Add triangle to polygon.
+						triangles .emplace_back (std::move (Triangle ({ { std::get <0> (polygonElement [i] .data ()),
+						                                                  std::get <0> (polygonElement [i + 1] .data ()),
+						                                                  std::get <0> (polygonElement [i + 2] .data ()) } })));
+					}
+
+					break;
+				}
+				default:
+					break;
+			}
+		}
+
+		//		for (size_t i = 0; i < polygon .size (); ++ i)
+		//			delete vertices [i];
+	}
+
+	return triangles;
 }
 
 void
