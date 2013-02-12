@@ -27,6 +27,7 @@
         <Package file="/home/holger/Projekte/Titania/libtitania-opengl-surface/libtitania-opengl-surface.md.pc" name="libtitania-opengl-surface" IsProject="true" />
         <Package file="/usr/lib/pkgconfig/ftgl.pc" name="FTGL" IsProject="false" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/fontconfig.pc" name="Fontconfig" IsProject="false" />
+        <Package file="/usr/lib/pkgconfig/gstreamermm-0.10.pc" name="gstreamermm" IsProject="false" />
       </Packages>
     </Packages>
     <ReleaseVersion>0.3</ReleaseVersion>

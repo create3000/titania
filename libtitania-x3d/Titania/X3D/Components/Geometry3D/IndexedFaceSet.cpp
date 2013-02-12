@@ -67,8 +67,7 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	             colorIndex (),                                                    // MFInt32 [ ]  colorIndex         [ ]          [0,∞) or -1
 	            normalIndex (),                                                    // MFInt32 [ ]  normalIndex        [ ]          [0,∞) or -1
 	             coordIndex (),                                                    // MFInt32 [ ]  coordIndex         [ ]          [0,∞) or -1
-	               polygons (),
-	           numTriangles (0)                                                     
+               numPolygons ()
 {
 	setComponent ("Geometry3D");
 	setTypeName ("IndexedFaceSet");
@@ -123,19 +122,26 @@ IndexedFaceSet::set_coordIndex ()
 	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
 
 	int32_t numPoints = -1;
+	numPolygons = 0;
 
 	for (const auto & index : coordIndex)
+	{
 		numPoints = std::max <int32_t> (numPoints, index);
+		
+		if (index == -1)
+			++ numPolygons;
+	}
 
 	++ numPoints;
+	
+	if (coordIndex .back () >= 0)
+		++ numPolygons;
 
 	// Resize coord .point if to small
 	if (_coord -> point .size () < (size_t) numPoints)
 	{
 		_coord -> point .resize (numPoints);
 	}
-
-	tesselate ();
 }
 
 void
@@ -186,7 +192,7 @@ IndexedFaceSet::set_colorIndex ()
 		}
 		else
 		{
-			for (size_t i = colorIndex .size (); i < polygons .size (); ++ i)
+			for (size_t i = colorIndex .size (); i < numPolygons; ++ i)
 			{
 				colorIndex .push_back (i);
 			}
@@ -234,7 +240,7 @@ IndexedFaceSet::set_normalIndex ()
 		}
 		else
 		{
-			for (size_t i = normalIndex .size (); i < polygons .size (); ++ i)
+			for (size_t i = normalIndex .size (); i < numPolygons; ++ i)
 			{
 				normalIndex .push_back (i);
 			}
@@ -262,9 +268,18 @@ IndexedFaceSet::build ()
 {
 	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
 
+	// Tesselate
+
+	PolygonArray polygons;
+	size_t       numTriangles = 0;
+
+	tesselate (polygons, numTriangles);
+
+	// Build arrays
+
 	if (not _coord or not polygons .size ())
 		return;
-	
+
 	size_t reserve = numTriangles * 3;
 
 	// TextureCoordinate
@@ -370,10 +385,10 @@ IndexedFaceSet::build ()
 	// Autogenerate normal and texCoord if not specified
 
 	if (not _normal)
-		buildNormals ();
+		buildNormals (polygons);
 
 	if (not _textureCoordinate and not _textureCoordinateGenerator)
-		buildTexCoord ();
+		buildTexCoord (polygons);
 
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setVertexMode (GL_TRIANGLES);
@@ -381,15 +396,12 @@ IndexedFaceSet::build ()
 }
 
 void
-IndexedFaceSet::tesselate ()
+IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numTriangles)
 {
 	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
 
 	if (not _coord)
 		return;
-
-	polygons .clear ();
-	numTriangles = 0;
 
 	// Fill up coordIndex if there are no indices.
 	if (coordIndex .empty ())
@@ -531,7 +543,7 @@ IndexedFaceSet::tesselate (const Vertices & vertices)
 }
 
 void
-IndexedFaceSet::buildTexCoord ()
+IndexedFaceSet::buildTexCoord (const PolygonArray & polygons)
 {
 	Box3f    bbox = getBBox ();
 	Vector3f min  = bbox .min ();
@@ -592,7 +604,7 @@ IndexedFaceSet::buildTexCoord ()
 }
 
 void
-IndexedFaceSet::buildNormals ()
+IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 {
 	std::vector <Vector3f> normals;
 	

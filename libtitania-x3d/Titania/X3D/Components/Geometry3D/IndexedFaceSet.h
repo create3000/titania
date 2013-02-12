@@ -122,19 +122,18 @@ private:
 	build ();
 
 	void
-	tesselate ();
+	tesselate (PolygonArray &, size_t &);
 
 	TriangleArray
 	tesselate (const Vertices & polygon);
 
 	void
-	buildTexCoord ();
+	buildTexCoord (const PolygonArray &);
 
 	void
-	buildNormals ();
+	buildNormals (const PolygonArray &);
 
-	PolygonArray polygons;
-	size_t       numTriangles;
+	size_t numPolygons;
 
 };
 
