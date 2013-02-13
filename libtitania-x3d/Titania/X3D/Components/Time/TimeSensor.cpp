@@ -52,8 +52,6 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include <gdk/gdk.h>
-#include <glibmm/main.h>
 
 #include <iostream>
 
@@ -65,13 +63,10 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	       X3DSensorNode (),                                                    
 	X3DTimeDependentNode (),                                                    
 	       cycleInterval (1),                                                   // SFTime  [in,out] cycleInterval     1        (0,∞)
-	           cycleTime (),                                                    // SFTime  [out]    cycleTime
 	    fraction_changed (),                                                    // SFFloat [out]    fraction_changed
 	                time (),                                                    // SFTime  [out]    time
 	               cycle (),                                                    
-	            interval (),                                                    
-	        startTimeout (),                                                    
-	         stopTimeout ()                                                     
+	            interval ()                                                    
 {
 	setComponent ("Time");
 	setTypeName ("TimeSensor");
@@ -84,10 +79,10 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "stopTime",         stopTime);
 	addField (inputOutput, "pauseTime",        pauseTime);
 	addField (inputOutput, "resumeTime",       resumeTime);
-	addField (outputOnly,  "elapsedTime",      elapsedTime);
 	addField (outputOnly,  "isPaused",         isPaused);
 	addField (outputOnly,  "isActive",         isActive);
 	addField (outputOnly,  "cycleTime",        cycleTime);
+	addField (outputOnly,  "elapsedTime",      elapsedTime);
 	addField (outputOnly,  "fraction_changed", fraction_changed);
 	addField (outputOnly,  "time",             time);
 }
@@ -103,21 +98,7 @@ TimeSensor::initialize ()
 {
 	X3DTimeDependentNode::initialize ();
 
-	enabled   .addInterest (this, &TimeSensor::set_enabled);
-	startTime .addInterest (this, &TimeSensor::set_startTime);
-	stopTime  .addInterest (this, &TimeSensor::set_stopTime);
-
-	initialized .addInterest (this, &TimeSensor::set_initialized);
-}
-
-void
-TimeSensor::set_initialized ()
-{
-	if (enabled)
-	{
-		if (loop and stopTime <= startTime)
-			set_start ();
-	}
+	enabled .addInterest (this, &TimeSensor::set_enabled);
 }
 
 void
@@ -167,28 +148,6 @@ TimeSensor::set_enabled ()
 }
 
 void
-TimeSensor::set_startTime ()
-{
-	if (not enabled)
-		return;
-
-	if (getCurrentTime () >= startTime)
-		set_start ();
-
-	else
-		addTimeout (startTimeout, &TimeSensor::do_start, startTime);
-}
-
-bool
-TimeSensor::do_start ()
-{
-	if (enabled)
-		set_start ();
-
-	return false;
-}
-
-void
 TimeSensor::set_start ()
 {
 	if (not isActive)
@@ -206,56 +165,19 @@ TimeSensor::set_start ()
 }
 
 void
-TimeSensor::set_stopTime ()
-{
-	if (not enabled)
-		return;
-
-	if (stopTime <= getCurrentTime ())
-	{
-		if (stopTime > startTime)
-			if (isActive)
-				set_stop ();
-
-	}
-	else
-		addTimeout (stopTimeout, &TimeSensor::do_stop, stopTime);
-}
-
-bool
-TimeSensor::do_stop ()
-{
-	if (enabled and isActive)
-		set_stop ();
-
-	return false;
-}
-
-void
 TimeSensor::set_stop ()
 {
-	isActive = false;
-	getBrowser () -> prepareEvents .removeInterest (this, &TimeSensor::prepareEvents);
-}
-
-void
-TimeSensor::addTimeout (sigc::connection & timeout, TimeoutHandler callback, const time_type time)
-{
-	if (timeout .connected ())
-		timeout .disconnect ();
-
-	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, callback),
-	                                            (time - getCurrentTime ()) * 1000,
-	                                            GDK_PRIORITY_REDRAW);
+	if (isActive)
+	{
+		isActive = false;
+		getBrowser () -> prepareEvents .removeInterest (this, &TimeSensor::prepareEvents);
+	}
 }
 
 void
 TimeSensor::dispose ()
 {
-	startTimeout .disconnect ();
-
-	if (isActive)
-		getBrowser () -> prepareEvents .removeInterest (this, &TimeSensor::prepareEvents);
+	getBrowser () -> prepareEvents .removeInterest (this, &TimeSensor::prepareEvents);
 
 	X3DTimeDependentNode::dispose ();
 }

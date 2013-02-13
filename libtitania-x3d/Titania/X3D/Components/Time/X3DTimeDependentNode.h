@@ -53,6 +53,8 @@
 
 #include "../Core/X3DChildNode.h"
 
+#include <sigc++/connection.h>
+
 namespace titania {
 namespace X3D {
 
@@ -62,17 +64,64 @@ class X3DTimeDependentNode :
 public:
 
 	SFBool loop;
-	SFTime pauseTime;
-	SFTime resumeTime;
 	SFTime startTime;
 	SFTime stopTime;
-	SFTime elapsedTime;
+	SFTime pauseTime;
+	SFTime resumeTime;
 	SFBool isPaused;
+	SFTime cycleTime;
+	SFTime elapsedTime;
+
+	virtual
+	void
+	dispose ();
 
 
 protected:
 
 	X3DTimeDependentNode ();
+	
+	virtual
+	bool
+	isEnabled () = 0;
+
+	virtual
+	void
+	initialize ();
+	
+	virtual
+	void
+	set_start () = 0;
+
+	virtual
+	void
+	set_stop () = 0;
+
+
+private:
+
+	typedef bool (X3DTimeDependentNode::* TimeoutHandler)();
+
+	void
+	set_initialized ();
+	
+	void
+	set_startTime ();
+
+	bool
+	do_start ();
+
+	void
+	set_stopTime ();
+	
+	bool
+	do_stop ();
+
+	void
+	addTimeout (sigc::connection &, TimeoutHandler, const time_type);
+
+	sigc::connection startTimeout;
+	sigc::connection stopTimeout;
 
 };
 

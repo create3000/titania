@@ -235,7 +235,7 @@ RenderingProperties::set_fontFamily ()
 	if (fontInfo)
 		glDeleteLists (fontListBase, fontInfo -> max_char_or_byte2);
 
-	Display* display = XOpenDisplay (nullptr);
+	Display* display = XOpenDisplay (NULL);
 	fontInfo = XLoadQueryFont (display, fontFamily .getValue () .c_str ());
 
 	if (fontInfo)

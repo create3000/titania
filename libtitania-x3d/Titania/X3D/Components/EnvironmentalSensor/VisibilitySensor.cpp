@@ -99,6 +99,17 @@ VisibilitySensor::set_enabled ()
 }
 
 void
+VisibilitySensor::traverse ()
+{
+	if (not enabled or visible)
+		return;
+
+	visible = ViewVolume (ModelViewMatrix4f (),
+	                      ProjectionMatrix4f ())
+	          .intersect (Box3f (size, center));
+}
+
+void
 VisibilitySensor::update ()
 {
 	if (visible)
@@ -119,17 +130,6 @@ VisibilitySensor::update ()
 	}
 
 	visible = false;
-}
-
-void
-VisibilitySensor::display ()
-{
-	if (not enabled or visible)
-		return;
-
-	visible = ViewVolume (ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix (),
-	                      ProjectionMatrix4f ())
-	          .intersect (Box3f (size, center));
 }
 
 void

@@ -185,9 +185,8 @@ public:
 
 	///  @name Event handling
 
-	virtual
 	void
-	registerEvent (X3DBaseNode* const);
+	notify ();
 
 	///  @name Rendering handling
 

@@ -54,8 +54,6 @@
 #include "../Core/X3DSensorNode.h"
 #include "../Time/X3DTimeDependentNode.h"
 
-#include <sigc++/connection.h>
-
 namespace titania {
 namespace X3D {
 
@@ -65,7 +63,6 @@ class TimeSensor :
 public:
 
 	SFTime  cycleInterval;
-	SFTime  cycleTime;
 	SFFloat fraction_changed;
 	SFTime  time;
 
@@ -82,14 +79,14 @@ public:
 
 private:
 
-	typedef bool (TimeSensor::* TimeoutHandler)();
+	virtual
+	bool
+	isEnabled ()
+	{ return enabled; }
 
 	virtual
 	void
 	initialize ();
-
-	void
-	set_initialized ();
 	
 	void
 	prepareEvents ();
@@ -97,32 +94,16 @@ private:
 	void
 	set_enabled ();
 
-	void
-	set_startTime ();
-
-	bool
-	do_start ();
-
+	virtual
 	void
 	set_start ();
 
-	void
-	set_stopTime ();
-	
-	bool
-	do_stop ();
-
+	virtual
 	void
 	set_stop ();
 
-	void
-	addTimeout (sigc::connection &, TimeoutHandler, const time_type);
-
 	time_type cycle;
 	time_type interval;
-
-	sigc::connection startTimeout;
-	sigc::connection stopTimeout;
 
 };
 

@@ -69,7 +69,7 @@ public:
 
 	virtual
 	void
-	display ();
+	traverse ();
 
 	virtual
 	void

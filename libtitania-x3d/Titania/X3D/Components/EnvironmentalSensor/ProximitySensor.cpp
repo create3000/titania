@@ -166,7 +166,7 @@ ProximitySensor::update ()
 void
 ProximitySensor::display ()
 {
-	if (inside /* or getBrowser () -> getEditMode () */)
+	if (inside)
 		return;
 
 	Matrix4f transformationMatrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();

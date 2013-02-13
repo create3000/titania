@@ -15,7 +15,7 @@ Build-Depends: debhelper (>= 5),
                libmagick++-dev, 
                libcurl4-gnutls-dev, 
                libsqlite3-dev,
-               libgstreamermm-0.10-dev 
+               libgstreamermm-0.10-dev,
                zlib1g,
                intltool,
                gettext
@@ -38,7 +38,7 @@ Depends: ${shlibs:Depends},
          libmagick++5, 
          libcurl4-gnutls-dev, 
          libsqlite3-0, 
-         libgstreamermm-0.10-2
+         libgstreamermm-0.10-2,
          zlib1g
 Conflicts:
 Replaces:

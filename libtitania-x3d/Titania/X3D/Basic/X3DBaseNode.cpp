@@ -526,7 +526,10 @@ X3DBaseNode::registerEvent (X3DChildObject* const object)
 		return;
 
 	if (events .size () == 1)
-		getBrowser () -> registerEvent (this);
+	{
+		getBrowser () -> getRouter () .registerEvent (this);
+		getBrowser () -> notify ();
+	}
 }
 
 void

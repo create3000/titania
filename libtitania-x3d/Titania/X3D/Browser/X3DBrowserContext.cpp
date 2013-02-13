@@ -366,10 +366,8 @@ X3DBrowserContext::touchEvent ()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
-X3DBrowserContext::registerEvent (X3DBaseNode* const node)
+X3DBrowserContext::notify ()
 {
-	router .registerEvent (node);
-
 	if (changedTime == getCurrentTime ())
 		return;
 

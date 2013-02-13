@@ -107,13 +107,14 @@ LT_INIT
 
 PKG_CHECK_MODULES(TITANIA,gconfmm-2.6)
 
-PKG_CHECK_MODULES(TITANIA_X3D,fontconfig
+PKG_CHECK_MODULES(TITANIA_X3D,
+gstreamermm-0.10
+fontconfig
 ftgl
 glu
 mozjs185
 libpcrecpp
-ImageMagick++,
-libgstreamermm-0.10)
+ImageMagick++)
 
 PKG_CHECK_MODULES(TITANIA_STREAM,libcurl)
 

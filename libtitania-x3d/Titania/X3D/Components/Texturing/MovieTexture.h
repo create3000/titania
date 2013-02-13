@@ -55,6 +55,8 @@
 #include "../Sound/X3DSoundSourceNode.h"
 #include "../Texturing/X3DTexture2DNode.h"
 
+#include <memory>
+
 namespace titania {
 namespace X3D {
 
@@ -73,7 +75,12 @@ public:
 
 	virtual
 	bool
-	isTransparent () { return false; }
+	isTransparent ()
+	{ return false; }
+
+	virtual
+	void
+	display ();
 
 	virtual
 	void
@@ -83,12 +90,44 @@ public:
 private:
 
 	virtual
+	bool
+	isEnabled ()
+	{ return speed; }
+
+	virtual
 	void
 	initialize ();
+	
+	void
+	prepareEvents ();
 
+	virtual
 	void
 	requestImmediateLoad ();
 
+	void
+	set_url ();
+
+	void
+	set_speed ();
+
+	void
+	set_pitch ();
+
+	virtual
+	void
+	set_start ();
+	
+	virtual
+	void
+	set_stop ();
+	
+	void
+	set_end ();
+
+	class GStream;
+	
+	std::unique_ptr <GStream> gstream;
 };
 
 } // X3D

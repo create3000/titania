@@ -69,6 +69,9 @@ public:
 
 	bool
 	isTransparent ();
+	
+	void
+	setImage (size_t, GLenum, GLint, GLint, const void*);
 
 	virtual
 	void

@@ -1938,6 +1938,7 @@
     <None Include="Examples\Vattenfall\stage\viewLabel.wrl" />
     <None Include="Examples\Vattenfall\stage\vrml.html" />
     <None Include="Examples\Vattenfall\stage\zentrale.wrl" />
+    <None Include="Tests\Texturing\MovieTexture.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

@@ -80,8 +80,21 @@ public:
 private:
 
 	virtual
+	bool
+	isEnabled ()
+	{ return true; }
+
+	virtual
 	void
 	initialize ();
+
+	virtual
+	void
+	set_start ();
+
+	virtual
+	void
+	set_stop ();
 
 };
 

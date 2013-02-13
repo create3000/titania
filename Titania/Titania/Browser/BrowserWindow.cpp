@@ -66,6 +66,8 @@ BrowserWindow::initialize ()
 
 	// MotionBlurEditor
 	getMotionBlurEditor () .getWindow () .set_transient_for (getWindow ());
+
+	getWindow () .grab_focus ();
 }
 
 // File menu

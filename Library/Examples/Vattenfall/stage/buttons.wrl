@@ -727,6 +727,22 @@ DEF ok Sound {
   maxBack	30
   spatialize	TRUE
 }
+
+DEF MovieDelay Delay {
+	cycleInterval 300
+	startTime 1
+}
+
+DEF MovieRandom Random {
+	minValue 0
+	maxValue 5
+}
+
+ROUTE MovieDelay.exitTime TO MovieDelay.set_startTime
+ROUTE MovieDelay.exitTime TO MovieRandom.set_startTime
+ROUTE MovieRandom.whichChoice_changed TO _43.set_whichChoice
+ROUTE _43.touchTime TO MovieDelay.set_startTime
+
 ROUTE OffButton_9.downTime TO Time_0.set_startTime
 ROUTE Time_0.fraction_changed TO cambuttonTranslationInterp_1.set_fraction
 ROUTE Time_0.fraction_changed TO fadebgTransparencyInterp.set_fraction

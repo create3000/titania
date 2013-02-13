@@ -50,20 +50,115 @@
 
 #include "X3DTimeDependentNode.h"
 
+#include "../../Browser/X3DBrowser.h"
+
+#include <gdk/gdk.h>
+#include <glibmm/main.h>
+
 namespace titania {
 namespace X3D {
 
 X3DTimeDependentNode::X3DTimeDependentNode () :
 	X3DChildNode (), 
 	        loop (), // SFBool [in,out] loop         FALSE
-	   pauseTime (), // SFTime [in,out] pauseTime    0            (-∞,∞)
-	  resumeTime (), // SFTime [in,out] resumeTime   0            (-∞,∞)
 	   startTime (), // SFTime [in,out] startTime    0            (-∞,∞)
 	    stopTime (), // SFTime [in,out] stopTime     0            (-∞,∞)
+	   pauseTime (), // SFTime [in,out] pauseTime    0            (-∞,∞)
+	  resumeTime (), // SFTime [in,out] resumeTime   0            (-∞,∞)
+	    isPaused (), // SFBool [out]    isPaused
+      cycleTime (), // SFTime  [out]   cycleTime
 	 elapsedTime (), // SFTime [out]    elapsedTime
-	    isPaused ()  // SFBool [out]    isPaused
+	startTimeout (), 
+	 stopTimeout ()  
 {
 	addNodeType (X3DConstants::X3DTimeDependentNode);
+}
+
+void
+X3DTimeDependentNode::initialize ()
+{
+	X3DChildNode::initialize ();
+
+	initialized .addInterest (this, &X3DTimeDependentNode::set_initialized);
+
+	startTime .addInterest (this, &X3DTimeDependentNode::set_startTime);
+	stopTime  .addInterest (this, &X3DTimeDependentNode::set_stopTime);
+}
+
+void
+X3DTimeDependentNode::set_initialized ()
+{
+	if (isEnabled ())
+	{
+		if (loop and stopTime <= startTime)
+			set_start ();
+	}
+}
+
+void
+X3DTimeDependentNode::set_startTime ()
+{
+	if (not isEnabled ())
+		return;
+
+	if (getCurrentTime () >= startTime)
+		set_start ();
+
+	else
+		addTimeout (startTimeout, &TimeSensor::do_start, startTime);
+}
+
+bool
+X3DTimeDependentNode::do_start ()
+{
+	if (isEnabled ())
+		set_start ();
+
+	return false;
+}
+
+void
+X3DTimeDependentNode::set_stopTime ()
+{
+	if (not isEnabled ())
+		return;
+
+	if (stopTime <= getCurrentTime ())
+	{
+		if (stopTime > startTime)
+			set_stop ();
+	}
+	else
+		addTimeout (stopTimeout, &TimeSensor::do_stop, stopTime);
+}
+
+bool
+X3DTimeDependentNode::do_stop ()
+{
+	if (isEnabled ())
+		set_stop ();
+
+	return false;
+}
+
+void
+X3DTimeDependentNode::addTimeout (sigc::connection & timeout, TimeoutHandler callback, const time_type time)
+{
+	if (timeout .connected ())
+		timeout .disconnect ();
+
+	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, callback),
+	                                            (time - getCurrentTime ()) * 1000,
+	                                            GDK_PRIORITY_REDRAW);
+}
+
+void
+X3DTimeDependentNode::dispose ()
+{
+	startTimeout .disconnect ();
+	stopTimeout  .disconnect ();
+
+	X3DChildNode::dispose ();
 }
 
 } // X3D

@@ -66,15 +66,15 @@ AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata",         metadata);
 	addField (inputOutput, "description",      description);
 	addField (inputOutput, "url",              url);
+	addField (inputOutput, "pitch",            pitch);
 	addField (inputOutput, "loop",             loop);
 	addField (inputOutput, "startTime",        startTime);
 	addField (inputOutput, "stopTime",         stopTime);
 	addField (inputOutput, "pauseTime",        pauseTime);
 	addField (inputOutput, "resumeTime",       resumeTime);
-	addField (outputOnly,  "elapsedTime",      elapsedTime);
 	addField (outputOnly,  "isPaused",         isPaused);
-	addField (inputOutput, "pitch",            pitch);
 	addField (outputOnly,  "isActive",         isActive);
+	addField (outputOnly,  "elapsedTime",      elapsedTime);
 	addField (outputOnly,  "duration_changed", duration_changed);
 }
 
@@ -97,6 +97,18 @@ void
 AudioClip::requestImmediateLoad ()
 {
 	duration_changed = 0;
+}
+
+void
+AudioClip::set_start ()
+{
+
+}
+
+void
+AudioClip::set_stop ()
+{
+
 }
 
 void

@@ -221,6 +221,7 @@ X3DLayerNode::traverse ()
 	glPushMatrix ();
 	glLoadIdentity ();
 
+	getViewpoint ()  -> reshape ();
 	defaultViewpoint -> traverse ();
 	group -> traverse ();
 

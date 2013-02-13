@@ -218,10 +218,7 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 {
 	// TextureProperties
 
-	GLint level      = 0; // This texture is level 0 in mimpap generation.
-	bool  compressed = false;
-
-	auto textureProperties = getTextureProperties ();
+	bool compressed = false;
 
 	// scale image
 
@@ -243,6 +240,18 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 	image .write (&blob);
 
 	// transfer image
+	              
+	setImage (components, format, image .size () .width (), image .size () .height (), blob .data ());
+}
+
+void
+X3DTexture2DNode::setImage (size_t components, GLenum format, GLint width, GLint height, const void* data)
+{
+	// transfer image
+
+	auto textureProperties = getTextureProperties ();
+	
+	GLint level = 0; // This texture is level 0 in mimpap generation.
 
 	glBindTexture (GL_TEXTURE_2D, textureId);
 
@@ -251,10 +260,10 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 	applyTextureProperties (textureProperties);
 
 	glTexImage2D (GL_TEXTURE_2D, level, textureProperties -> getInternalFormat (components),
-	              image .size () .width (), image .size () .height (),
+	              width, height,
 	              false, // border
 	              format, GL_UNSIGNED_BYTE,
-	              blob .data ());
+	              data);
 }
 
 void
