@@ -1,3 +1,11 @@
+2013-02-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* OS.h:
+	* Mkdir.cpp:
+	* libtitania-standard.cproj:
+	* Home (Kopie).h: 
+
 2013-02-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Math.h: 

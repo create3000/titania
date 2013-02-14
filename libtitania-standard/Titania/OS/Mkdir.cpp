@@ -48,16 +48,20 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OS_H__
-#define __TITANIA_OS_H__
+#include "Home.h"
 
-#include "OS/CWD.h"
-#include "OS/Env.h"
-#include "OS/FindDataFile.h"
-#include "OS/Home.h"
-#include "OS/IsDirectory.h"
-#include "OS/IsFile.h"
-#include "OS/Mkdir.h"
-#include "OS/System.h"
+#include "../LOG.h"
+#include <sys/stat.h>
+#include <stdexcept>
 
-#endif
+namespace titania {
+namespace os {
+
+bool
+mkdir (const std::string & path)
+{
+	return ::mkdir (path .c_str (), 0700) != -1;
+}
+
+} // os
+} // titania

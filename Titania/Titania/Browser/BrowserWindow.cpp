@@ -50,6 +50,8 @@
 
 #include "BrowserWindow.h"
 
+#include <Titania/OS.h>
+
 namespace titania {
 namespace puck {
 
@@ -57,7 +59,10 @@ BrowserWindow::BrowserWindow (int & argc, char** & argv) :
 	X3DBrowserWindow (argc, argv),                   
 	     currentPage (-1),                           
 	motionBlurEditor (getConfig () .getKey (), this) 
-{ }
+{
+	os::mkdir (os::home () + "/.config");
+	os::mkdir (os::home () + "/.config/Titania");
+}
 
 void
 BrowserWindow::initialize ()

@@ -101,6 +101,7 @@
     <None Include="Titania\Math\Image.h" />
     <None Include="Titania\OS\IsDirectory.h" />
     <None Include="Titania\OS\IsFile.h" />
+    <None Include="Titania\OS\Mkdir.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
@@ -137,6 +138,7 @@
     <Compile Include="Titania\Math\Image.cpp" />
     <Compile Include="Titania\OS\IsDirectory.cpp" />
     <Compile Include="Titania\OS\IsFile.cpp" />
+    <Compile Include="Titania\OS\Mkdir.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
