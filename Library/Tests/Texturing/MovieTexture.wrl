@@ -15,12 +15,17 @@ Transform {
     appearance Appearance {
       material Material { }
       texture DEF Movie MovieTexture {
-        url "file:///home/holger/Projekte/Titania/Library/Examples/Vattenfall/stage/film6.mpv"
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Examples/Vattenfall/stage/film6.mpv",
+          "http://www.visionbakery.com/content/dynamic/videos/project_574_video_1350486246_mod.mp4"
+        ]
+        speed 1
         repeatS FALSE
         repeatT FALSE
       }
     }
     geometry Rectangle2D {
+      size 2.66667 2
       solid FALSE
     }
   }
@@ -58,12 +63,101 @@ Transform {
   ]
 }
 
+Transform {
+  translation -1 -2 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF Speed1 TouchSensor { }
+    DEF SpeedButton Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 1 0
+        }
+      }
+      geometry Box { }
+    }
+  ]
+}
+
+Transform {
+  translation -0.33 -2 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF Speed2 TouchSensor { }
+    USE SpeedButton
+  ]
+}
+
+Transform {
+  translation 0.33 -2 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF Speed3 TouchSensor { }
+    USE SpeedButton
+  ]
+}
+
+Transform {
+  translation 1 -2 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF Speed4 TouchSensor { }
+    USE SpeedButton
+  ]
+}
+
+Transform {
+  translation -2 -2 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF Speed0 TouchSensor { }
+    USE SpeedButton
+  ]
+}
+
 DEF Debug Script {
-	eventIn SFBool set_active
-	eventIn SFTime set_elapsedTime
-	eventIn SFTime set_duration
-	
-	url "vrmlscript:
+  eventIn  SFTime  set_speed0
+  eventIn  SFTime  set_speed1
+  eventIn  SFTime  set_speed2
+  eventIn  SFTime  set_speed3
+  eventIn  SFTime  set_speed4
+  eventIn  SFBool  set_active
+  eventIn  SFTime  set_elapsedTime
+  eventIn  SFTime  set_duration
+  eventOut SFFloat speed_changed
+
+  url "vrmlscript:
+function set_speed (value)
+{
+	print ('speed: ', value);
+	speed_changed = value;
+}
+
+function set_speed0 ()
+{
+	set_speed (0);
+}
+
+function set_speed1 ()
+{
+	set_speed (-4);
+}
+
+function set_speed2 ()
+{
+	set_speed (-1);
+}
+
+function set_speed3 ()
+{
+	set_speed (1);
+}
+
+function set_speed4 ()
+{
+	set_speed (4);
+}
+  
 function set_active (value)
 {
 	print ('isActive: ', value)
@@ -81,6 +175,12 @@ function set_duration (value)
 	"
 }
 
+ROUTE Speed0.touchTime TO Debug.set_speed0
+ROUTE Speed1.touchTime TO Debug.set_speed1
+ROUTE Speed2.touchTime TO Debug.set_speed2
+ROUTE Speed3.touchTime TO Debug.set_speed3
+ROUTE Speed4.touchTime TO Debug.set_speed4
+ROUTE Debug.speed_changed TO Movie.set_speed
 ROUTE Play.touchTime TO Movie.set_startTime
 ROUTE Stop.touchTime TO Movie.set_stopTime
 ROUTE Movie.isActive TO Debug.set_active

@@ -112,6 +112,7 @@ TimeSensor::prepareEvents ()
 		{
 			cycle           += interval;
 			cycleTime        = getCurrentTime ();
+			elapsedTime      = getElapsedTime ();
 			fraction_changed = 1;
 		}
 		else
@@ -157,6 +158,7 @@ TimeSensor::set_start ()
 
 		isActive         = true;
 		cycleTime        = getCurrentTime ();
+		elapsedTime      = 0;
 		fraction_changed = 0;
 		time             = getCurrentTime ();
 
@@ -169,9 +171,23 @@ TimeSensor::set_stop ()
 {
 	if (isActive)
 	{
-		isActive = false;
+		isActive    = false;
+		elapsedTime = getElapsedTime ();
+	
 		getBrowser () -> prepareEvents .removeInterest (this, &TimeSensor::prepareEvents);
 	}
+}
+
+void
+TimeSensor::set_pause ()
+{
+
+}
+
+void
+TimeSensor::set_resume ()
+{
+
 }
 
 void

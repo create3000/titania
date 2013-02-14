@@ -54,11 +54,12 @@ namespace titania {
 namespace X3D {
 
 X3DSoundSourceNode::X3DSoundSourceNode () :
-	X3DTimeDependentNode (),  
-	         description (),  // SFString [in,out] description       ""
-	               pitch (1), // SFFloat  [in,out] pitch             1.0        (0,∞)
-	            isActive (),  // SFBool [ ] isActive
-	    duration_changed ()   // SFTime   [out]    duration_changed
+	X3DTimeDependentNode (),     
+	             enabled (true), // SFBool   [in,out] enabled           TRUE       non standard
+	         description (),     // SFString [in,out] description       ""
+	               pitch (1),    // SFFloat  [in,out] pitch             1.0        (0,∞)
+	            isActive (),     // SFBool   [ ]      isActive
+	    duration_changed (-1)    // SFTime   [out]    duration_changed
 {
 	addNodeType (X3DConstants::X3DSoundSourceNode);
 }

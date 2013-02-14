@@ -83,7 +83,10 @@ protected:
 	
 	virtual
 	bool
-	isEnabled () = 0;
+	isEnabled () const = 0;
+	
+	time_type
+	getElapsedTime () const;
 
 	virtual
 	void
@@ -96,6 +99,14 @@ protected:
 	virtual
 	void
 	set_stop () = 0;
+	
+	virtual
+	void
+	set_pause () = 0;
+
+	virtual
+	void
+	set_resume () = 0;
 
 
 private:
@@ -118,10 +129,26 @@ private:
 	do_stop ();
 
 	void
+	set_pauseTime ();
+
+	bool
+	do_pause ();
+
+	void
+	set_resumeTime ();
+	
+	bool
+	do_resume ();
+
+	void
 	addTimeout (sigc::connection &, TimeoutHandler, const time_type);
+
+	time_type pause;
 
 	sigc::connection startTimeout;
 	sigc::connection stopTimeout;
+	sigc::connection pauseTimeout;
+	sigc::connection resumeTimeout;
 
 };
 

@@ -91,13 +91,16 @@ private:
 
 	virtual
 	bool
-	isEnabled ()
-	{ return speed; }
+	isEnabled () const
+	{ return enabled; }
 
 	virtual
 	void
 	initialize ();
 	
+	void
+	set_initialized ();
+
 	void
 	prepareEvents ();
 
@@ -121,7 +124,15 @@ private:
 	virtual
 	void
 	set_stop ();
-	
+
+	virtual
+	void
+	set_pause ();
+
+	virtual
+	void
+	set_resume ();
+
 	void
 	set_end ();
 

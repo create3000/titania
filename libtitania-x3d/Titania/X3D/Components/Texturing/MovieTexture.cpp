@@ -55,6 +55,14 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+/* Playback speed
+ *   http://docs.gstreamer.com/display/GstSDK/Basic+tutorial+13%3A+Playback+speed
+ * Player
+ *   http://code.metager.de/source/xref/freedesktop/gstreamer/gstreamermm/examples/media_player_gtkmm/player_window.cc
+ * PlayBin2
+ *   http://www.freedesktop.org/software/gstreamer-sdk/data/docs/latest/gst-plugins-base-plugins-0.10/gst-plugins-base-plugins-playbin2.html
+ */
+
 namespace titania {
 namespace X3D {
 
@@ -63,7 +71,12 @@ class MovieTexture::GStream
 public:
 
 	GStream (MovieTexture* movie) :
-		movie (movie)
+		movie (movie),
+		player (),
+		vsink (),
+		message (),
+		pixmap (0),
+		display (XOpenDisplay (NULL))
 	{
 		// Static init
 
@@ -74,12 +87,15 @@ public:
 
 		// X11
 
-		pixmap = XCreatePixmap (XOpenDisplay (NULL), 0, 0, 0, 0);
+		if (display)
+			pixmap = XCreatePixmap (display, 0, 0, 0, 0);
 
 		// Construct
 
 		player = Gst::PlayBin::create ("player");
 		vsink  = Gst::XImageSink::create ("vsink");
+
+		player -> set_property ("video-sink", vsink);
 
 		auto bus = player -> get_bus ();
 
@@ -88,8 +104,6 @@ public:
 
 		bus -> add_signal_watch ();
 		message = bus -> signal_message () .connect (sigc::mem_fun (*this, &GStream::on_message));
-
-		player -> set_property ("video-sink", vsink);
 	}
 
 	bool
@@ -101,16 +115,16 @@ public:
 		return true;
 	}
 
-	double
+	time_type
 	getDuration () const
 	{
-		getState ();
+		auto   format   = Gst::FORMAT_TIME;
+		gint64 duration = 0;
 
-		auto   format = Gst::FORMAT_TIME;
-		gint64 duration;
-		player -> query_duration (format, duration);
+		if (player -> query_duration (format, duration))
+			return duration / 1000000000.0;
 
-		return duration / 1000000000.0;
+		return -1;
 	}
 
 	Gst::State
@@ -136,10 +150,47 @@ public:
 		return Gst::STATE_NULL;
 	}
 
+//	void
+//	setSpeed (double speed)
+//	{
+//		auto format = Gst::FORMAT_TIME;
+//		
+//		if (speed > 0)
+//		{
+//			player -> seek (speed,
+//			                format,
+//			                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
+//			                Gst::SEEK_TYPE_CUR, 0,
+//			                Gst::SEEK_TYPE_END, 0);
+//		}
+//		else
+//		{
+//			gint64 position = 0;
+//
+//			if (player -> query_position (format, position))
+//			{
+//				__LOG__ << position / 1000000000.0 << std::endl;
+//				
+//				player -> seek (speed,
+//				                format,
+//				                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
+//				                Gst::SEEK_TYPE_SET, 0,
+//				                Gst::SEEK_TYPE_SET, position);
+//			}
+//			else
+//				__LOG__ << "*** query_position failed" << std::endl;
+//		}
+//	}
+
 	void
-	start (double position)
+	start (double speed, time_type position)
 	{
-		player -> seek (Gst::FORMAT_TIME, Gst::SEEK_FLAG_FLUSH, position);
+		auto format = Gst::FORMAT_TIME;
+		
+		player -> seek (format,
+		                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
+		                position * 1000000000.0);
+			
 		player -> set_state (Gst::STATE_PLAYING);
 	}
 
@@ -157,12 +208,12 @@ public:
 			case Gst::MESSAGE_EOS:
 			{
 				movie -> set_end ();
-				__LOG__ << "MESSAGE_EOS" << std::endl;
 				break;
 			}
 			case Gst::MESSAGE_ERROR:
 			{
 				__LOG__ << "MESSAGE_ERROR" << std::endl;
+				movie -> set_stop ();
 				break;
 			}
 			default:
@@ -177,16 +228,16 @@ public:
 		if (message -> get_message_type () not_eq Gst::MESSAGE_ELEMENT)
 			return;
 
-		if (! message -> get_structure ().has_name ("prepare-xwindow-id"))
+		if (not message -> get_structure () .has_name ("prepare-xwindow-id"))
 			return;
 
-		Glib::RefPtr <Gst::Element> element = Glib::RefPtr <Gst::Element>::cast_dynamic (message -> get_source ());
-
-		Glib::RefPtr <Gst::ElementInterfaced <Gst::XOverlay>> xoverlay = Gst::Interface::cast <Gst::XOverlay> (element);
+		auto element  = Glib::RefPtr <Gst::Element>::cast_dynamic (message -> get_source ());
+		auto xoverlay = Gst::Interface::cast <Gst::XOverlay> (element);
 
 		if (xoverlay)
 		{
-			xoverlay -> set_xwindow_id (pixmap);
+			if (pixmap)
+				xoverlay -> set_xwindow_id (pixmap);
 		}
 	}
 
@@ -195,7 +246,8 @@ public:
 		message .disconnect ();
 		player -> set_state (Gst::STATE_NULL);
 
-		XFreePixmap (XOpenDisplay (NULL), pixmap);
+		XFreePixmap (display, pixmap);
+		XCloseDisplay (display);
 	}
 
 	MovieTexture* movie;
@@ -204,7 +256,8 @@ public:
 	Glib::RefPtr <Gst::XImageSink> vsink;
 	sigc::connection               message;
 
-	Pixmap pixmap;
+	Pixmap   pixmap;
+	Display* display;
 
 };
 
@@ -214,12 +267,13 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	X3DSoundSourceNode (),                                                    
 	      X3DUrlObject (),                                                    
 	             speed (1),                                                   // SFFloat [in,out] speed  1.0        (-∞,∞)
-	           gstream (new GStream (this))                                   
+	           gstream ()                                                     
 {
 	setComponent ("Texturing");
 	setTypeName ("MovieTexture");
 
 	addField (inputOutput,    "metadata",          metadata);
+	addField (inputOutput,    "enabled",           enabled);     // non standard
 	addField (inputOutput,    "description",       description);
 	addField (inputOutput,    "url",               url);
 	addField (inputOutput,    "speed",             speed);
@@ -233,7 +287,7 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "resumeTime",        resumeTime);
 	addField (outputOnly,     "isPaused",          isPaused);
 	addField (outputOnly,     "isActive",          isActive);
-	addField (outputOnly,     "cycleTime",         cycleTime);             // non standard
+	addField (outputOnly,     "cycleTime",         cycleTime);   // non standard
 	addField (outputOnly,     "elapsedTime",       elapsedTime);
 	addField (outputOnly,     "duration_changed",  duration_changed);
 	addField (initializeOnly, "textureProperties", textureProperties);
@@ -252,9 +306,17 @@ MovieTexture::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	url .addInterest (this, &MovieTexture::set_url);
+	initialized .addInterest (this, &MovieTexture::set_initialized);
+
+	url   .addInterest (this, &MovieTexture::set_url);
 	speed .addInterest (this, &MovieTexture::set_speed);
 	pitch .addInterest (this, &MovieTexture::set_pitch);
+}
+
+void
+MovieTexture::set_initialized ()
+{
+	gstream .reset (new GStream (this));
 
 	requestImmediateLoad ();
 }
@@ -262,27 +324,71 @@ MovieTexture::initialize ()
 void
 MovieTexture::requestImmediateLoad ()
 {
-	if (not url .size ())
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 
-	gstream -> setUri (transformURI (url [0] .getValue () .raw ()));
+	setLoadState (IN_PROGRESS_STATE);
 
-	duration_changed = gstream -> getDuration ();
+	if (not url .size ())
+	{
+		setLoadState (FAILED_STATE);
+		return;
+	}
+
+	auto vsink = gstream -> vsink;
+
+	for (const auto & URL : url)
+	{
+		gstream -> setUri (transformURI (URL .getValue () .raw ()));
+
+		// Sync stream
+
+		if (gstream -> getState () == Gst::STATE_NULL)
+			continue;
+
+		// Set image
+
+		if (vsink -> get_last_buffer ())
+		{
+			duration_changed = gstream -> getDuration ();
+
+			setImage (4, GL_BGRA,
+			          vsink -> get_width (),
+			          vsink -> get_height (),
+			          vsink -> get_last_buffer () -> get_data ());
+
+			setLoadState (COMPLETE_STATE);
+
+			break;
+		}
+	}
+
+	if (not vsink -> get_last_buffer ())
+	{
+		duration_changed = -1;
+		setLoadState (FAILED_STATE);
+	}
 }
 
 void
 MovieTexture::prepareEvents ()
 {
-	elapsedTime = getCurrentTime () - cycleTime;
+	elapsedTime = getElapsedTime ();
 }
 
 void
 MovieTexture::set_url ()
-{ }
+{
+	setLoadState (NOT_STARTED_STATE);
+
+	requestImmediateLoad ();
+}
 
 void
 MovieTexture::set_speed ()
-{ }
+{
+	// Speed is not supported maybe with playbin2
+}
 
 void
 MovieTexture::set_pitch ()
@@ -293,10 +399,12 @@ MovieTexture::set_start ()
 {
 	if (not isActive)
 	{
-		gstream -> start (0);
+		if (speed)
+			gstream -> start (speed, 0);
 
-		isActive  = true;
-		cycleTime = getCurrentTime ();
+		isActive    = true;
+		cycleTime   = getCurrentTime ();
+		elapsedTime = 0;
 
 		getBrowser () -> prepareEvents .addInterest (this, &MovieTexture::prepareEvents);
 	}
@@ -315,15 +423,25 @@ MovieTexture::set_stop ()
 }
 
 void
+MovieTexture::set_pause ()
+{ }
+
+void
+MovieTexture::set_resume ()
+{ }
+
+void
 MovieTexture::set_end ()
 {
 	// XXX thread save???
 
 	if (loop)
 	{
-		gstream -> start (0);
+		if (speed)
+			gstream -> start (speed, 0);
 
-		cycleTime = getCurrentTime ();
+		cycleTime   = getCurrentTime ();
+		elapsedTime = getElapsedTime ();
 	}
 	else
 	{
@@ -336,12 +454,14 @@ MovieTexture::set_end ()
 void
 MovieTexture::display ()
 {
-	if (gstream -> vsink -> get_last_buffer ())
+	auto vsink = gstream -> vsink;
+
+	if (vsink -> get_last_buffer ())
 	{
-		setImage (4, GL_BGRA,
-		          gstream -> vsink -> get_width (),
-		          gstream -> vsink -> get_height (),
-		          gstream -> vsink -> get_last_buffer () -> get_data ());
+		updateImage (GL_BGRA,
+		             vsink -> get_width (),
+		             vsink -> get_height (),
+		             vsink -> get_last_buffer () -> get_data ());
 
 		X3DTexture2DNode::display ();
 	}

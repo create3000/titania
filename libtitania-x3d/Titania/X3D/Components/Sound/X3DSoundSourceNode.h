@@ -61,6 +61,7 @@ class X3DSoundSourceNode :
 {
 public:
 
+	SFBool   enabled;
 	SFString description;
 	SFFloat  pitch;
 	SFBool   isActive;

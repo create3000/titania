@@ -61,5 +61,11 @@ X3DSensorNode::X3DSensorNode () :
 	addNodeType (X3DConstants::X3DSensorNode);
 }
 
+void
+X3DSensorNode::set_active (bool value)
+{
+	isActive = value;
+}
+
 } // X3D
 } // titania

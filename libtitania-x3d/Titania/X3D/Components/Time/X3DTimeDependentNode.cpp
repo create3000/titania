@@ -59,19 +59,29 @@ namespace titania {
 namespace X3D {
 
 X3DTimeDependentNode::X3DTimeDependentNode () :
-	X3DChildNode (), 
-	        loop (), // SFBool [in,out] loop         FALSE
-	   startTime (), // SFTime [in,out] startTime    0            (-∞,∞)
-	    stopTime (), // SFTime [in,out] stopTime     0            (-∞,∞)
-	   pauseTime (), // SFTime [in,out] pauseTime    0            (-∞,∞)
-	  resumeTime (), // SFTime [in,out] resumeTime   0            (-∞,∞)
-	    isPaused (), // SFBool [out]    isPaused
-      cycleTime (), // SFTime  [out]   cycleTime
-	 elapsedTime (), // SFTime [out]    elapsedTime
-	startTimeout (), 
-	 stopTimeout ()  
+	 X3DChildNode (),  
+	         loop (),  // SFBool [in,out] loop         FALSE
+	    startTime (),  // SFTime [in,out] startTime    0            (-∞,∞)
+	     stopTime (),  // SFTime [in,out] stopTime     0            (-∞,∞)
+	    pauseTime (),  // SFTime [in,out] pauseTime    0            (-∞,∞)
+	   resumeTime (),  // SFTime [in,out] resumeTime   0            (-∞,∞)
+	     isPaused (),  // SFBool [out]    isPaused
+	    cycleTime (),  // SFTime  [out]   cycleTime                 non standard
+	  elapsedTime (),  // SFTime [out]    elapsedTime
+	        pause (0), 
+	 startTimeout (),  
+	  stopTimeout (),  
+	 pauseTimeout (),  
+	resumeTimeout ()   
 {
 	addNodeType (X3DConstants::X3DTimeDependentNode);
+}
+
+time_type
+X3DTimeDependentNode::getElapsedTime () const
+{
+	return getCurrentTime () - startTime - pause;
+
 }
 
 void
@@ -81,8 +91,10 @@ X3DTimeDependentNode::initialize ()
 
 	initialized .addInterest (this, &X3DTimeDependentNode::set_initialized);
 
-	startTime .addInterest (this, &X3DTimeDependentNode::set_startTime);
-	stopTime  .addInterest (this, &X3DTimeDependentNode::set_stopTime);
+	startTime  .addInterest (this, &X3DTimeDependentNode::set_startTime);
+	stopTime   .addInterest (this, &X3DTimeDependentNode::set_stopTime);
+	pauseTime  .addInterest (this, &X3DTimeDependentNode::set_pauseTime);
+	resumeTime .addInterest (this, &X3DTimeDependentNode::set_resumeTime);
 }
 
 void
@@ -142,6 +154,38 @@ X3DTimeDependentNode::do_stop ()
 }
 
 void
+X3DTimeDependentNode::set_pauseTime ()
+{
+	if (not isEnabled ())
+		return;
+}
+
+bool
+X3DTimeDependentNode::do_pause ()
+{
+	if (isEnabled ())
+		set_pause ();
+
+	return false;
+}
+
+void
+X3DTimeDependentNode::set_resumeTime ()
+{
+	if (not isEnabled ())
+		return;
+}
+
+bool
+X3DTimeDependentNode::do_resume ()
+{
+	if (isEnabled ())
+		set_resume ();
+
+	return false;
+}
+
+void
 X3DTimeDependentNode::addTimeout (sigc::connection & timeout, TimeoutHandler callback, const time_type time)
 {
 	if (timeout .connected ())
@@ -155,8 +199,10 @@ X3DTimeDependentNode::addTimeout (sigc::connection & timeout, TimeoutHandler cal
 void
 X3DTimeDependentNode::dispose ()
 {
-	startTimeout .disconnect ();
-	stopTimeout  .disconnect ();
+	startTimeout  .disconnect ();
+	stopTimeout   .disconnect ();
+	pauseTimeout  .disconnect ();
+	resumeTimeout .disconnect ();
 
 	X3DChildNode::dispose ();
 }

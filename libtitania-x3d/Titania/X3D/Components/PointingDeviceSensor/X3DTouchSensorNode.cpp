@@ -60,5 +60,12 @@ X3DTouchSensorNode::X3DTouchSensorNode () :
 	addNodeType (X3DConstants::X3DTouchSensorNode);
 }
 
+void
+X3DTouchSensorNode::set_touch ()
+{
+	if (isActive)
+		touchTime = getCurrentTime ();
+}
+
 } // X3D
 } // titania

@@ -63,6 +63,9 @@ public:
 
 	SFTime touchTime;
 
+	virtual
+	void
+	set_touch ();
 
 protected:
 

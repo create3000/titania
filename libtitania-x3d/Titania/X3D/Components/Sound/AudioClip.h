@@ -81,8 +81,8 @@ private:
 
 	virtual
 	bool
-	isEnabled ()
-	{ return true; }
+	isEnabled () const
+	{ return enabled; }
 
 	virtual
 	void
@@ -95,6 +95,14 @@ private:
 	virtual
 	void
 	set_stop ();
+
+	virtual
+	void
+	set_pause ();
+
+	virtual
+	void
+	set_resume ();
 
 };
 

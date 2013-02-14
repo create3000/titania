@@ -293,10 +293,10 @@ X3DBrowserContext::motionNotifyEvent ()
 
 	for (const auto & node : difference)
 	{
-		X3DPointingDeviceSensorNode* pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> over (false);
+			pointingDeviceSensorNode -> set_over (false);
 	}
 
 	// Set isOver to TRUE for appropriate nodes
@@ -307,10 +307,10 @@ X3DBrowserContext::motionNotifyEvent ()
 
 		for (const auto & node : overSensors)
 		{
-			X3DPointingDeviceSensorNode* pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 			if (pointingDeviceSensorNode)
-				pointingDeviceSensorNode -> over (true);
+				pointingDeviceSensorNode -> set_over (true);
 		}
 	}
 	else
@@ -324,10 +324,10 @@ X3DBrowserContext::buttonPressEvent ()
 
 	for (const auto & node : activeSensors)
 	{
-		X3DPointingDeviceSensorNode* pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> isActive = true;
+			pointingDeviceSensorNode -> set_active (true);
 	}
 }
 
@@ -336,10 +336,10 @@ X3DBrowserContext::buttonReleaseEvent ()
 {
 	for (const auto & node : activeSensors)
 	{
-		X3DPointingDeviceSensorNode* pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> isActive = false;
+			pointingDeviceSensorNode -> set_active (false);
 	}
 }
 
@@ -348,7 +348,7 @@ X3DBrowserContext::touchEvent ()
 {
 	for (const auto & node : getHits () .front () -> nodes)
 	{
-		Anchor* anchor = dynamic_cast <Anchor*> (node);
+		auto anchor = dynamic_cast <Anchor*> (node);
 
 		if (anchor)
 		{
@@ -356,10 +356,10 @@ X3DBrowserContext::touchEvent ()
 			break;
 		}
 
-		X3DTouchSensorNode* touchSensorNode = dynamic_cast <X3DTouchSensorNode*> (node);
+		auto touchSensorNode = dynamic_cast <X3DTouchSensorNode*> (node);
 
 		if (touchSensorNode)
-			touchSensorNode -> touchTime = getCurrentTime ();
+			touchSensorNode -> set_touch ();
 	}
 }
 

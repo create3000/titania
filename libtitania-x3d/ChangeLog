@@ -1,5 +1,27 @@
 2013-02-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TimeSensor.h:
+	* AudioClip.h:
+	* X3DBrowserContext.cpp:
+	* TimeSensor.cpp:
+	* AudioClip.cpp:
+	* X3DSensorNode.h:
+	* X3DSensorNode.cpp:
+	* MovieTexture.h:
+	* X3DSoundSourceNode.h:
+	* MovieTexture.cpp:
+	* X3DTimeDependentNode.h:
+	* X3DTexture2DNode.h:
+	* X3DSoundSourceNode.cpp:
+	* X3DTimeDependentNode.cpp:
+	* X3DTexture2DNode.cpp:
+	* X3DTouchSensorNode.h:
+	* X3DTouchSensorNode.cpp:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorNode.cpp: 
+
+2013-02-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.cpp:
 	* X3DBrowserContext.h:
 	* AudioClip.h:

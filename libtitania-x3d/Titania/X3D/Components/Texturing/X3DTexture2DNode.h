@@ -72,6 +72,9 @@ public:
 	
 	void
 	setImage (size_t, GLenum, GLint, GLint, const void*);
+	
+	void
+	updateImage (GLenum, GLint, GLint, const void*);
 
 	virtual
 	void

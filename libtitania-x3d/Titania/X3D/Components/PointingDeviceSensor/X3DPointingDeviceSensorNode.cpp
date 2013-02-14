@@ -64,7 +64,7 @@ X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
 }
 
 void
-X3DPointingDeviceSensorNode::over (bool value)
+X3DPointingDeviceSensorNode::set_over (bool value)
 {
 	if (isOver not_eq value)
 		isOver = value;

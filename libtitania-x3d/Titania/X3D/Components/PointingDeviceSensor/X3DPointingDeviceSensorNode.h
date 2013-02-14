@@ -67,7 +67,11 @@ public:
 
 	virtual
 	void
-	over (bool);
+	set_touch () { }
+
+	virtual
+	void
+	set_over (bool);
 
 	virtual
 	void

@@ -81,7 +81,7 @@ private:
 
 	virtual
 	bool
-	isEnabled ()
+	isEnabled () const
 	{ return enabled; }
 
 	virtual
@@ -101,6 +101,14 @@ private:
 	virtual
 	void
 	set_stop ();
+
+	virtual
+	void
+	set_pause ();
+
+	virtual
+	void
+	set_resume ();
 
 	time_type cycle;
 	time_type interval;

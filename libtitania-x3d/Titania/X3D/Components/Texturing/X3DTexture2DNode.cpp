@@ -265,6 +265,18 @@ X3DTexture2DNode::setImage (size_t components, GLenum format, GLint width, GLint
 	              format, GL_UNSIGNED_BYTE,
 	              data);
 }
+	              
+void
+X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const void* data)
+{
+	// update image
+
+	glBindTexture (GL_TEXTURE_2D, textureId);
+
+	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
+
+	glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, data);
+}
 
 void
 X3DTexture2DNode::applyTextureProperties (const TextureProperties* textureProperties) const
