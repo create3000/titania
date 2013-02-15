@@ -73,15 +73,12 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
-	virtual
 	const Glib::RefPtr <Gtk::TextBuffer> &
 	getTextbuffer () const { return m_textbuffer; }
 
-	virtual
 	Gtk::Window &
 	getWindow () const { return *m_window; }
 
-	virtual
 	Gtk::Box &
 	getWidget () const { return *m_widget; }
 

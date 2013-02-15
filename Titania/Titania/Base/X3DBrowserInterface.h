@@ -63,8 +63,8 @@ class X3DBrowserInterface :
 public:
 
 	virtual
-	Gtk::FileChooserDialog &
-	getFileOpenDialog () const = 0;
+	void
+	open () const = 0;
 
 	virtual
 	void

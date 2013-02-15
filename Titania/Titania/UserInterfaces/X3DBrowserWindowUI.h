@@ -73,219 +73,165 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
-	virtual
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilerX3D () const { return m_fileFilerX3D; }
 
-	virtual
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterAllFiles () const { return m_fileFilterAllFiles; }
 
-	virtual
 	const Glib::RefPtr <Gtk::IconFactory> &
 	getIconFactory () const { return m_iconFactory; }
 
-	virtual
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const { return m_menuAccelGroup; }
 
-	virtual
 	Gtk::FileChooserDialog &
 	getFileOpenDialog () const { return *m_fileOpenDialog; }
 
-	virtual
 	Gtk::FileChooserDialog &
 	getFileSaveDialog () const { return *m_fileSaveDialog; }
 
-	virtual
 	Gtk::CheckButton &
 	getSaveCompressedButton () const { return *m_saveCompressedButton; }
 
-	virtual
 	Gtk::Window &
 	getWindow () const { return *m_window; }
 
-	virtual
 	Gtk::VBox &
 	getWidget () const { return *m_widget; }
 
-	virtual
 	Gtk::MenuBar &
 	getMenuBar () const { return *m_menuBar; }
 
-	virtual
 	Gtk::MenuItem &
 	getFileMenuItem () const { return *m_fileMenuItem; }
 
-	virtual
 	Gtk::ImageMenuItem &
 	getNewMenuItem () const { return *m_newMenuItem; }
 
-	virtual
 	Gtk::ImageMenuItem &
 	getOpenMenuItem () const { return *m_openMenuItem; }
 
-	virtual
 	Gtk::ImageMenuItem &
 	getSaveMenuItem () const { return *m_saveMenuItem; }
 
-	virtual
 	Gtk::ImageMenuItem &
 	getSaveAsMenuItem () const { return *m_saveAsMenuItem; }
 
-	virtual
 	Gtk::ImageMenuItem &
 	getRevertMenuItem () const { return *m_revertMenuItem; }
 
-	virtual
 	Gtk::ImageMenuItem &
 	getQuitMenuItem () const { return *m_quitMenuItem; }
 
-	virtual
 	Gtk::MenuItem &
 	getEditMenuItem () const { return *m_editMenuItem; }
 
-	virtual
 	Gtk::MenuItem &
 	getViewMenuItem () const { return *m_viewMenuItem; }
 
-	virtual
 	Gtk::CheckMenuItem &
 	getNavigationBarMenuItem () const { return *m_navigationBarMenuItem; }
 
-	virtual
 	Gtk::CheckMenuItem &
 	getToolBarMenuItem () const { return *m_toolBarMenuItem; }
 
-	virtual
 	Gtk::CheckMenuItem &
 	getSideBarMenuItem () const { return *m_sideBarMenuItem; }
 
-	virtual
 	Gtk::CheckMenuItem &
 	getFooterMenuItem () const { return *m_footerMenuItem; }
 
-	virtual
 	Gtk::CheckMenuItem &
 	getStatusBarMenuItem () const { return *m_statusBarMenuItem; }
 
-	virtual
 	Gtk::MenuItem &
 	getShadingMenuItem () const { return *m_shadingMenuItem; }
 
-	virtual
 	Gtk::RadioMenuItem &
 	getPhongMenuItem () const { return *m_phongMenuItem; }
 
-	virtual
 	Gtk::RadioMenuItem &
 	getGouraudMenuItem () const { return *m_gouraudMenuItem; }
 
-	virtual
 	Gtk::RadioMenuItem &
 	getFlatMenuItem () const { return *m_flatMenuItem; }
 
-	virtual
 	Gtk::RadioMenuItem &
 	getWireFrameMenuItem () const { return *m_wireFrameMenuItem; }
 
-	virtual
 	Gtk::RadioMenuItem &
 	getPointSetMenuItem () const { return *m_pointSetMenuItem; }
 
-	virtual
 	Gtk::MenuItem &
 	getPrimitiveQualtityMenuItem () const { return *m_primitiveQualtityMenuItem; }
 
-	virtual
 	Gtk::RadioMenuItem &
 	getHighQualityMenuItem () const { return *m_highQualityMenuItem; }
 
-	virtual
 	Gtk::RadioMenuItem &
 	getMediumQualityMenuItem () const { return *m_mediumQualityMenuItem; }
 
-	virtual
 	Gtk::RadioMenuItem &
 	getLowQualityMenuItem () const { return *m_lowQualityMenuItem; }
 
-	virtual
 	Gtk::CheckMenuItem &
 	getRenderingPropertiesMenuItem () const { return *m_renderingPropertiesMenuItem; }
 
-	virtual
 	Gtk::CheckMenuItem &
 	getFullScreenMenuItem () const { return *m_fullScreenMenuItem; }
 
-	virtual
 	Gtk::MenuItem &
 	getNavigationMenuItem () const { return *m_navigationMenuItem; }
 
-	virtual
 	Gtk::CheckMenuItem &
 	getHeadlightMenuItem () const { return *m_headlightMenuItem; }
 
-	virtual
 	Gtk::CheckMenuItem &
 	getRubberbandMenuItem () const { return *m_rubberbandMenuItem; }
 
-	virtual
 	Gtk::MenuItem &
 	getLookAtAllMenuItem () const { return *m_lookAtAllMenuItem; }
 
-	virtual
 	Gtk::CheckMenuItem &
 	getEnableInlineViewpointsMenuItem () const { return *m_enableInlineViewpointsMenuItem; }
 
-	virtual
 	Gtk::MenuItem &
 	getViewpointsMenuItem () const { return *m_viewpointsMenuItem; }
 
-	virtual
 	Gtk::MenuItem &
 	getHistoryMenuItem () const { return *m_historyMenuItem; }
 
-	virtual
 	Gtk::MenuItem &
 	getToolsMenuItem () const { return *m_toolsMenuItem; }
 
-	virtual
 	Gtk::MenuItem &
 	getOutlineEditorMenuItem () const { return *m_outlineEditorMenuItem; }
 
-	virtual
 	Gtk::MenuItem &
 	getViewpointEditorMenuItem () const { return *m_viewpointEditorMenuItem; }
 
-	virtual
 	Gtk::MenuItem &
 	getMotionBlurMenuItem () const { return *m_motionBlurMenuItem; }
 
-	virtual
 	Gtk::MenuItem &
 	getConsoleMenuItem () const { return *m_consoleMenuItem; }
 
-	virtual
 	Gtk::MenuItem &
 	getHelpMenuItem () const { return *m_helpMenuItem; }
 
-	virtual
 	Gtk::ImageMenuItem &
 	getInfoMenuItem () const { return *m_infoMenuItem; }
 
-	virtual
 	Gtk::ImageMenuItem &
 	getStandardSizeMenuItem () const { return *m_standardSizeMenuItem; }
 
-	virtual
 	Gtk::Notebook &
 	getNotebook () const { return *m_notebook; }
 
-	virtual
 	Gtk::Box &
 	getAddTabLabel () const { return *m_addTabLabel; }
 
-	virtual
 	Gtk::Button &
 	getAddTabButton () const { return *m_addTabButton; }
 

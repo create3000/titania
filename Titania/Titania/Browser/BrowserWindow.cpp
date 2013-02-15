@@ -87,12 +87,7 @@ BrowserWindow::on_home ()
 void
 BrowserWindow::on_open ()
 {
-	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
-
-	if (worldURL .length () and worldURL .is_local ())
-		getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
-
-	getFileOpenDialog () .present ();
+	open ();
 }
 
 void

@@ -73,19 +73,15 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
-	virtual
 	Gtk::Window &
 	getWindow () const { return *m_window; }
 
-	virtual
 	Gtk::Table &
 	getWidget () const { return *m_widget; }
 
-	virtual
 	Gtk::HScale &
 	getIntensity () const { return *m_intensity; }
 
-	virtual
 	Gtk::CheckButton &
 	getEnabled () const { return *m_enabled; }
 

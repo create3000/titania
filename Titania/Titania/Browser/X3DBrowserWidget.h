@@ -68,17 +68,16 @@ public:
 	/// @name File
 
 	virtual
-	Gtk::FileChooserDialog &
-	getFileOpenDialog () const
-	{ return getBrowserWidget () -> getFileOpenDialog (); }
-
-	virtual
 	void
 	blank ();
 
 	virtual
 	void
 	home ();
+
+	virtual
+	void
+	open () const;
 
 	virtual
 	void

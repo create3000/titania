@@ -74,9 +74,6 @@ X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 
 	os::mkdir (os::home () + "/.config");
 	os::mkdir (os::home () + "/.config/Titania");
-	
-	if (not getConfig () .hasItem ("navigationBar"))
-		getConfig () .setItem ("navigationBar", true);
 
 	// User interface
  
@@ -112,6 +109,7 @@ X3DBrowserWindow::initialize ()
 
 	// User interface
 
+	Gtk::Settings::get_default () -> property_gtk_menu_images ()       = true;
 	Gtk::Settings::get_default () -> property_gtk_button_images ()     = true;
 	Gtk::Settings::get_default () -> property_gtk_toolbar_style ()     = Gtk::TOOLBAR_ICONS;
 	Gtk::Settings::get_default () -> property_gtk_toolbar_icon_size () = Gtk::ICON_SIZE_SMALL_TOOLBAR;
@@ -184,24 +182,24 @@ X3DBrowserWindow::restoreSession ()
 	// from Config
 
 	//	// ToolBar
-	//	if (getConfig () .boolean ("toolBar"))
-	//		getToolBarMenuItem () .activate ();
+	//	if (getConfig () .hasItem ("toolBar"))
+	//		getToolBarMenuItem () .set_active (getConfig () .boolean ("toolBar"));
 
 	// Naviagtion
-	if (getConfig () .boolean ("navigationBar"))
-		getNavigationBarMenuItem () .activate ();
+	if (getConfig () .hasItem ("navigationBar"))
+		getNavigationBarMenuItem () .set_active (getConfig () .boolean ("navigationBar"));
 
 	// ToolBar
-	if (getConfig () .boolean ("toolBar"))
-		getToolBarMenuItem () .activate ();
+	if (getConfig () .hasItem ("toolBar"))
+		getToolBarMenuItem () .set_active (getConfig () .boolean ("toolBar"));
 
 	// SideBar
-	if (getConfig () .boolean ("sideBar"))
-		getSideBarMenuItem () .activate ();
+	if (getConfig () .hasItem ("sideBar"))
+		getSideBarMenuItem () .set_active (getConfig () .boolean ("sideBar"));
 
 	// Footer
-	if (getConfig () .boolean ("footer"))
-		getFooterMenuItem () .activate ();
+	if (getConfig () .hasItem ("footer"))
+		getFooterMenuItem () .set_active (getConfig () .boolean ("footer"));
 
 	// Shading
 	if (getConfig () .string ("shading") == "PHONG")
@@ -228,28 +226,30 @@ X3DBrowserWindow::restoreSession ()
 	//getBrowser () -> getBrowserOptions () -> primitiveQuality = getConfig () .string ("primitiveQuality");
 
 	// RenderingProperties
-	getRenderingPropertiesMenuItem () .set_active (getConfig () .boolean ("renderingProperties"));
+	if (getConfig () .hasItem ("renderingProperties"))
+		getRenderingPropertiesMenuItem () .set_active (getConfig () .boolean ("renderingProperties"));
 
 	// Rubberband
 	if (getConfig () .hasItem ("rubberBand"))
 		getRubberbandMenuItem () .set_active (getConfig () .boolean ("rubberBand"));
 
 	// EnableInlineViewpoints
-	if (getConfig () .boolean ("enableInlineViewpoints"))
-		getEnableInlineViewpointsMenuItem () .activate ();
+	if (getConfig () .hasItem ("enableInlineViewpoints"))
+		getEnableInlineViewpointsMenuItem () .set_active (getConfig () .boolean ("enableInlineViewpoints"));
 
 
 
-
-	// 
+	// Restore Session
 	
 	Configuration sessions = getConfig () .getDirectory ("Sessions");
+
+	size_t numSessions = sessions .getDirectories () .size ();
 
 	// Notebook
 
 	// Start with home page when no sessions exists.
 
-	if (not getConfig () .integer ("sessions"))
+	if (not getConfig () .integer ("sessions") or not numSessions)
 	{
 		insertPage (0);
 		setCurrentPage (0);
@@ -257,8 +257,6 @@ X3DBrowserWindow::restoreSession ()
 	}
 
 	// Restore session.
-
-	size_t numSessions = sessions .getDirectories () .size ();
 
 	for (size_t position = 0; position < numSessions; ++ position)
 		insertPage (position);
@@ -304,6 +302,17 @@ X3DBrowserWindow::resizeSession (size_t size)
 
 	for (size_t i = size; i < numSessions; ++ i)
 		sessions .getDirectory (std::to_string (i)) .remove ();
+}
+
+void
+X3DBrowserWindow::open () const
+{
+	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+
+	if (worldURL .length () and worldURL .is_local ())
+		getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
+
+	getFileOpenDialog () .present ();
 }
 
 void

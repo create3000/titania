@@ -316,6 +316,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Navigations-Symbolleiste</property>
                         <property name="use_underline">True</property>
+                        <property name="active">True</property>
                         <signal name="toggled" handler="on_navigationBar_toggled" swapped="no"/>
                       </object>
                     </child>
@@ -578,6 +579,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Enable Inline Viewpoints</property>
                         <property name="use_underline">True</property>
+                        <property name="active">True</property>
                         <signal name="toggled" handler="on_enableInlineViewpoints_toggled" swapped="no"/>
                       </object>
                     </child>
@@ -673,7 +675,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="StandardSizeMenuItem">
-                        <property name="label">Normale Größe</property>
+                        <property name="label">gtk-zoom-100</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>

@@ -171,8 +171,6 @@ FlyViewer::on_scroll_event (GdkEventScroll* event)
 	disconnect ();
 	
 	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
-	
-	float speed_factor = shift_key ? 4 : 1;
 
 	if (event -> direction == 0)      // Roll up.
 	{

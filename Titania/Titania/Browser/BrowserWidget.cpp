@@ -182,7 +182,7 @@ BrowserWidget::on_locationEntryIcon_activate (Gtk::EntryIconPosition icon_positi
 			{
 				case 1: // Left Button
 				{
-					getFileOpenDialog () .present ();
+					open ();
 					break;
 				}
 			}

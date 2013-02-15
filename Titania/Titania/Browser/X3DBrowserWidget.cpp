@@ -160,6 +160,12 @@ X3DBrowserWidget::home ()
 }
 
 void
+X3DBrowserWidget::open () const
+{
+	return getBrowserWidget () -> open ();
+}
+
+void
 X3DBrowserWidget::reload ()
 {
 	loadURL ({ getExecutionContext () -> getWorldURL () .str () });

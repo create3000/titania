@@ -97,7 +97,6 @@ sub h_object_getters
 	$attributes {class} =~ s/Gtk/Gtk::/;
 	return if not isObject ($attributes {class});
 
-	say $file "virtual";
 	say $file "const Glib::RefPtr <$attributes{class}> &";
 	say $file "get$attributes{id} () const { return m_" . lcfirst ($attributes {id}) . "; }";
 }
@@ -113,7 +112,6 @@ sub h_widget_getters
 	$attributes {class} =~ s/Gtk/Gtk::/;
 	return if not isWidget ($attributes {class});
 
-	say $file "virtual";
 	say $file "$attributes{class} &";
 	say $file "get$attributes{id} () const { return *m_" . lcfirst ($attributes {id}) . "; }";
 }
