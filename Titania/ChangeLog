@@ -1,5 +1,9 @@
 2013-02-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* History.cpp: 
+
+2013-02-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.cpp:
 	* BrowserWidget.cpp:
 	* BrowserWindow.ui:

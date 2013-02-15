@@ -64,9 +64,9 @@ History::History () :
 	                 "icon         BLOB,"
 	                 "title        TEXT,"
 	                 "worldURL     TEXT,"
-	                 "visited      INTEGER   DEFAULT 1,"
-	                 "lastAccess   INTEGER   DEFAULT (DATETIME ('now')),"
-	                 "creationTime INTEGER   DEFAULT (DATETIME ('now')),"
+	                 "visited      INTEGER DEFAULT 1,"
+	                 "lastAccess   REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
+	                 "creationTime REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
 	                 "PRIMARY KEY (id ASC))");
 }
 
@@ -138,7 +138,7 @@ History::update (const std::string & id, const std::string & title)
 	                 "SET "
 	                 "title      = " + database .quote (title) + ","
 	                                                             "visited    = (visited + 1), "
-	                                                             "lastAccess = DATETIME ('now') "
+	                                                             "lastAccess = strftime('%Y-%m-%d %H:%M:%f', 'now') "
 	                                                             "WHERE id = " + id);
 }
 
