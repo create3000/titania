@@ -417,8 +417,8 @@ X3DBrowserContext::prepare ()
 void
 X3DBrowserContext::display ()
 {
-	//glClearColor (0, 0, 0, 0);
-	//glClear (GL_COLOR_BUFFER_BIT);
+	glClearColor (0, 0, 0, 0);
+	glClear (GL_COLOR_BUFFER_BIT);
 
 	getExecutionContext () -> display ();
 

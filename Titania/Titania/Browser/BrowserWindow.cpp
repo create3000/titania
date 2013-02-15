@@ -50,8 +50,6 @@
 
 #include "BrowserWindow.h"
 
-#include <Titania/OS.h>
-
 namespace titania {
 namespace puck {
 
@@ -59,10 +57,7 @@ BrowserWindow::BrowserWindow (int & argc, char** & argv) :
 	X3DBrowserWindow (argc, argv),                   
 	     currentPage (-1),                           
 	motionBlurEditor (getConfig () .getKey (), this) 
-{
-	os::mkdir (os::home () + "/.config");
-	os::mkdir (os::home () + "/.config/Titania");
-}
+{ }
 
 void
 BrowserWindow::initialize ()
@@ -170,31 +165,36 @@ BrowserWindow::on_fileSaveDialog_response (int response_id)
 void
 BrowserWindow::on_toolBar_toggled ()
 {
-	toggleWidget (getToolBarMenuItem () .get_active (), getBrowserWidget () -> getToolBar ());
+	for (const auto & browserWidget : getBrowserWidgets ())
+		toggleWidget (getToolBarMenuItem () .get_active (), browserWidget -> getToolBar ());
 }
 
 void
 BrowserWindow::on_navigationBar_toggled ()
 {
-	toggleWidget (getNavigationBarMenuItem () .get_active (), getBrowserWidget () -> getNavigationBar ());
+	for (const auto & browserWidget : getBrowserWidgets ())
+		toggleWidget (getNavigationBarMenuItem () .get_active (), browserWidget -> getNavigationBar ());
 }
 
 void
 BrowserWindow::on_sideBar_toggled ()
 {
-	toggleWidget (getSideBarMenuItem () .get_active (), getBrowserWidget () -> getSideBar ());
+	for (const auto & browserWidget : getBrowserWidgets ())
+		toggleWidget (getSideBarMenuItem () .get_active (), browserWidget -> getSideBar ());
 }
 
 void
 BrowserWindow::on_footer_toggled ()
 {
-	toggleWidget (getFooterMenuItem () .get_active (), getBrowserWidget () -> getFooter ());
+	for (const auto & browserWidget : getBrowserWidgets ())
+		toggleWidget (getFooterMenuItem () .get_active (), browserWidget -> getFooter ());
 }
 
 void
 BrowserWindow::on_statusBar_toggled ()
 {
-	toggleWidget (getStatusBarMenuItem () .get_active (), getBrowserWidget () -> getStatusBar ());
+	for (const auto & browserWidget : getBrowserWidgets ())
+		toggleWidget (getStatusBarMenuItem () .get_active (), browserWidget -> getStatusBar ());
 }
 
 // Shading menu
@@ -205,7 +205,8 @@ BrowserWindow::phong_activate ()
 	if (not getPhongMenuItem () .get_active ())
 		return;
 
-	getBrowser () -> getBrowserOptions () -> shading = "PHONG";
+	for (const auto & browserWidget : getBrowserWidgets ())
+		browserWidget -> getBrowser () -> getBrowserOptions () -> shading = "PHONG";
 }
 
 void
@@ -214,7 +215,8 @@ BrowserWindow::gouraud_activate ()
 	if (not getGouraudMenuItem () .get_active ())
 		return;
 
-	getBrowser () -> getBrowserOptions () -> shading = "GOURAUD";
+	for (const auto & browserWidget : getBrowserWidgets ())
+		browserWidget -> getBrowser () -> getBrowserOptions () -> shading = "GOURAUD";
 }
 
 void
@@ -223,7 +225,8 @@ BrowserWindow::flat_activate ()
 	if (not getFlatMenuItem () .get_active ())
 		return;
 
-	getBrowser () -> getBrowserOptions () -> shading = "FLAT";
+	for (const auto & browserWidget : getBrowserWidgets ())
+		browserWidget -> getBrowser () -> getBrowserOptions () -> shading = "FLAT";
 }
 
 void
@@ -232,7 +235,8 @@ BrowserWindow::wireframe_activate ()
 	if (not getWireFrameMenuItem () .get_active ())
 		return;
 
-	getBrowser () -> getBrowserOptions () -> shading = "WIREFRAME";
+	for (const auto & browserWidget : getBrowserWidgets ())
+		browserWidget -> getBrowser () -> getBrowserOptions () -> shading = "WIREFRAME";
 }
 
 void
@@ -241,7 +245,8 @@ BrowserWindow::pointset_activate ()
 	if (not getPointSetMenuItem () .get_active ())
 		return;
 
-	getBrowser () -> getBrowserOptions () -> shading = "POINTSET";
+	for (const auto & browserWidget : getBrowserWidgets ())
+		browserWidget -> getBrowser () -> getBrowserOptions () -> shading = "POINTSET";
 }
 
 // Primitive Quality
@@ -252,7 +257,8 @@ BrowserWindow::on_low_quality_activate ()
 	if (not getLowQualityMenuItem () .get_active ())
 		return;
 
-	getBrowser () -> getBrowserOptions () -> primitiveQuality = "LOW";
+	for (const auto & browserWidget : getBrowserWidgets ())
+		browserWidget -> getBrowser () -> getBrowserOptions () -> primitiveQuality = "LOW";
 }
 
 void
@@ -261,7 +267,8 @@ BrowserWindow::on_medium_quality_activate ()
 	if (not getMediumQualityMenuItem () .get_active ())
 		return;
 
-	getBrowser () -> getBrowserOptions () -> primitiveQuality = "MEDIUM";
+	for (const auto & browserWidget : getBrowserWidgets ())
+		browserWidget -> getBrowser () -> getBrowserOptions () -> primitiveQuality = "MEDIUM";
 }
 
 void
@@ -270,7 +277,8 @@ BrowserWindow::on_high_quality_activate ()
 	if (not getHighQualityMenuItem () .get_active ())
 		return;
 
-	getBrowser () -> getBrowserOptions () -> primitiveQuality = "HIGH";
+	for (const auto & browserWidget : getBrowserWidgets ())
+		browserWidget -> getBrowser () -> getBrowserOptions () -> primitiveQuality = "HIGH";
 }
 
 // RenderingProperties
@@ -278,7 +286,8 @@ BrowserWindow::on_high_quality_activate ()
 void
 BrowserWindow::on_rendering_properties_toggled ()
 {
-	getBrowser () -> getRenderingProperties () -> enabled = getRenderingPropertiesMenuItem () .get_active ();
+	for (const auto & browserWidget : getBrowserWidgets ())
+		browserWidget -> getBrowser () -> getRenderingProperties () -> enabled = getRenderingPropertiesMenuItem () .get_active ();
 }
 
 // Fullscreen
@@ -306,8 +315,8 @@ BrowserWindow::on_headlight_toggled ()
 void
 BrowserWindow::on_rubberband_toggled ()
 {
-	for (const auto & widget : getBrowserWidgets ())
-		widget -> getBrowser () -> getBrowserOptions () -> rubberBand = getRubberbandMenuItem () .get_active ();
+	for (const auto & browserWidget : getBrowserWidgets ())
+		browserWidget -> getBrowser () -> getBrowserOptions () -> rubberBand = getRubberbandMenuItem () .get_active ();
 }
 
 void
@@ -319,7 +328,8 @@ BrowserWindow::on_look_at_all_activate ()
 void
 BrowserWindow::on_enableInlineViewpoints_toggled ()
 {
-	getBrowser () -> getBrowserOptions () -> enableInlineViewpoints = getEnableInlineViewpointsMenuItem () .get_active ();
+	for (const auto & browserWidget : getBrowserWidgets ())
+		browserWidget -> getBrowser () -> getBrowserOptions () -> enableInlineViewpoints = getEnableInlineViewpointsMenuItem () .get_active ();
 }
 
 // Editor handling

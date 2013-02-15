@@ -54,6 +54,7 @@
 #include <Titania/X3D/Components/Networking/X3DUrlObject.h>
 
 #include <Titania/gzstream.h>
+#include <Titania/OS.h>
 #include <fstream>
 #include <iostream>
 
@@ -65,10 +66,22 @@ X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 	 X3DBrowserWindowUI (get_ui ("BrowserWindow.ui"), gconf_dir ()),                          
 	X3DBrowserInterface (NULL)                                                                
 {
-	setTransparent (true);
-
+	// Options
+ 
 	parseOptions (argc, argv);
 
+	// First time initialization
+
+	os::mkdir (os::home () + "/.config");
+	os::mkdir (os::home () + "/.config/Titania");
+	
+	if (not getConfig () .hasItem ("navigationBar"))
+		getConfig () .setItem ("navigationBar", true);
+
+	// User interface
+ 
+	setTransparent (true);
+	
 	// Add window to application at first. The order is important here.
 	// add_window (getWindow ());
 
@@ -97,6 +110,12 @@ X3DBrowserWindow::initialize ()
 {
 	X3DBrowserWindowUI::initialize ();
 
+	// User interface
+
+	Gtk::Settings::get_default () -> property_gtk_button_images ()     = true;
+	Gtk::Settings::get_default () -> property_gtk_toolbar_style ()     = Gtk::TOOLBAR_ICONS;
+	Gtk::Settings::get_default () -> property_gtk_toolbar_icon_size () = Gtk::ICON_SIZE_SMALL_TOOLBAR;
+ 
 	// FileOpenDialog
 	getFileOpenDialog () .set_default_response (Gtk::RESPONSE_OK);
 	getFileOpenDialog () .add_button ("gtk-open", Gtk::RESPONSE_OK);
@@ -161,28 +180,6 @@ X3DBrowserWindow::parseOptions (int & argc, char** & argv)
 void
 X3DBrowserWindow::restoreSession ()
 {
-	Configuration sessions = getConfig () .getDirectory ("Sessions");
-
-	// Notebook
-
-	// Start with home page when no sessions exists.
-
-	if (not getConfig () .integer ("sessions"))
-	{
-		insertPage (0);
-		setCurrentPage (0);
-		return;
-	}
-
-	// Restore session.
-
-	size_t numSessions = sessions .getDirectories () .size ();
-
-	for (size_t position = 0; position < numSessions; ++ position)
-		insertPage (position);
-
-	setCurrentPage (getConfig () .integer ("currentPage"));
-
 	// Restore Menu Configuration
 	// from Config
 
@@ -218,7 +215,7 @@ X3DBrowserWindow::restoreSession ()
 	else if (getConfig () .string ("shading") == "POINTSET")
 		getPointSetMenuItem () .activate ();
 
-	getBrowser () -> getBrowserOptions () -> shading = getConfig () .string ("shading");
+	//getBrowser () -> getBrowserOptions () -> shading = getConfig () .string ("shading");
 
 	// PrimitiveQuality
 	if (getConfig () .string ("primitiveQuality") == "HIGH")
@@ -228,7 +225,7 @@ X3DBrowserWindow::restoreSession ()
 	else if (getConfig () .string ("primitiveQuality") == "LOW")
 		getLowQualityMenuItem () .activate ();
 
-	getBrowser () -> getBrowserOptions () -> primitiveQuality = getConfig () .string ("primitiveQuality");
+	//getBrowser () -> getBrowserOptions () -> primitiveQuality = getConfig () .string ("primitiveQuality");
 
 	// RenderingProperties
 	getRenderingPropertiesMenuItem () .set_active (getConfig () .boolean ("renderingProperties"));
@@ -240,6 +237,33 @@ X3DBrowserWindow::restoreSession ()
 	// EnableInlineViewpoints
 	if (getConfig () .boolean ("enableInlineViewpoints"))
 		getEnableInlineViewpointsMenuItem () .activate ();
+
+
+
+
+	// 
+	
+	Configuration sessions = getConfig () .getDirectory ("Sessions");
+
+	// Notebook
+
+	// Start with home page when no sessions exists.
+
+	if (not getConfig () .integer ("sessions"))
+	{
+		insertPage (0);
+		setCurrentPage (0);
+		return;
+	}
+
+	// Restore session.
+
+	size_t numSessions = sessions .getDirectories () .size ();
+
+	for (size_t position = 0; position < numSessions; ++ position)
+		insertPage (position);
+
+	setCurrentPage (getConfig () .integer ("currentPage"));
 }
 
 void
@@ -250,8 +274,8 @@ X3DBrowserWindow::saveSession ()
 	getConfig () .setItem ("sideBar",       getSideBarMenuItem ()       .get_active ());
 	getConfig () .setItem ("footer",        getFooterMenuItem  ()       .get_active ());
 
-	getConfig () .setItem ("shading",          getBrowser () -> getBrowserOptions () -> shading);
-	getConfig () .setItem ("primitiveQuality", getBrowser () -> getBrowserOptions () -> primitiveQuality);
+	//getConfig () .setItem ("shading",          getBrowser () -> getBrowserOptions () -> shading);
+	//getConfig () .setItem ("primitiveQuality", getBrowser () -> getBrowserOptions () -> primitiveQuality);
 	getConfig () .setItem ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
 
 	getConfig () .setItem ("rubberBand",             getRubberbandMenuItem () .get_active ());

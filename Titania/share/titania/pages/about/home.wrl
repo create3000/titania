@@ -26,7 +26,7 @@ DEF Far Viewpoint {
 
 DEF White Background {
   skyColor 1 1 1
-  transparency 1
+  transparency 0
 }
 
 DEF Blue Background {
