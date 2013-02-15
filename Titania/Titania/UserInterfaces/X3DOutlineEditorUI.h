@@ -73,15 +73,19 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
+	virtual
 	Gtk::Window &
 	getWindow () const { return *m_window; }
 
+	virtual
 	Gtk::MenuBar &
 	getMenu () const { return *m_menu; }
 
+	virtual
 	Gtk::Box &
 	getWidget () const { return *m_widget; }
 
+	virtual
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const { return *m_scrolledWindow; }
 

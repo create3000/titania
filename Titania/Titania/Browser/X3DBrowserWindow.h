@@ -66,6 +66,11 @@ class X3DBrowserWindow :
 {
 public:
 
+	virtual
+	Gtk::FileChooserDialog &
+	getFileOpenDialog () const
+	{ return X3DBrowserWindowUI::getFileOpenDialog (); }
+
 	///  @name Application Handling
 
 	virtual

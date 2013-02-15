@@ -52,6 +52,7 @@
 #define __TITANIA_BASE_X3DBROWSER_INTERFACE_H__
 
 #include "../Base/X3DBaseInterface.h"
+#include <gtkmm.h>
 
 namespace titania {
 namespace puck {
@@ -60,6 +61,10 @@ class X3DBrowserInterface :
 	virtual public X3DBaseInterface
 {
 public:
+
+	virtual
+	Gtk::FileChooserDialog &
+	getFileOpenDialog () const = 0;
 
 	virtual
 	void

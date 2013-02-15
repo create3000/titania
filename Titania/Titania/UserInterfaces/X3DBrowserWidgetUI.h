@@ -73,90 +73,119 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
+	virtual
 	const Glib::RefPtr <Gtk::IconFactory> &
 	getIconFactory () const { return m_iconFactory; }
 
+	virtual
 	Gtk::MessageDialog &
 	getMessageDialog () const { return *m_messageDialog; }
 
+	virtual
 	Gtk::Window &
 	getWindow () const { return *m_window; }
 
+	virtual
 	Gtk::VBox &
 	getWidget () const { return *m_widget; }
 
+	virtual
 	Gtk::Toolbar &
 	getNavigationBar () const { return *m_navigationBar; }
 
+	virtual
 	Gtk::ToolButton &
 	getForwardButton () const { return *m_forwardButton; }
 
+	virtual
 	Gtk::ToolButton &
 	getBackButton () const { return *m_backButton; }
 
+	virtual
 	Gtk::ToolButton &
 	getReloadButton () const { return *m_reloadButton; }
 
+	virtual
 	Gtk::ToolButton &
 	getHomeButton () const { return *m_homeButton; }
 
+	virtual
 	Gtk::Entry &
 	getLocationEntry () const { return *m_locationEntry; }
 
+	virtual
 	Gtk::Toolbar &
 	getToolBar () const { return *m_toolBar; }
 
+	virtual
 	Gtk::Paned &
 	getVPaned () const { return *m_vPaned; }
 
+	virtual
 	Gtk::Paned &
 	getHPaned () const { return *m_hPaned; }
 
+	virtual
 	Gtk::HBox &
 	getSurfaceBox () const { return *m_surfaceBox; }
 
+	virtual
 	Gtk::RadioToolButton &
 	getArrowButton () const { return *m_arrowButton; }
 
+	virtual
 	Gtk::RadioToolButton &
 	getHandButton () const { return *m_handButton; }
 
+	virtual
 	Gtk::ToolButton &
 	getLookAtAllButton () const { return *m_lookAtAllButton; }
 
+	virtual
 	Gtk::ToggleToolButton &
 	getLookAtButton () const { return *m_lookAtButton; }
 
+	virtual
 	Gtk::Box &
 	getFooter () const { return *m_footer; }
 
+	virtual
 	Gtk::Button &
 	getFooterCloseButton () const { return *m_footerCloseButton; }
 
+	virtual
 	Gtk::Notebook &
 	getFooterNotebook () const { return *m_footerNotebook; }
 
+	virtual
 	Gtk::Box &
 	getConsoleBox () const { return *m_consoleBox; }
 
+	virtual
 	Gtk::Box &
 	getSideBar () const { return *m_sideBar; }
 
+	virtual
 	Gtk::Button &
 	getSideBarCloseButton () const { return *m_sideBarCloseButton; }
 
+	virtual
 	Gtk::Notebook &
 	getSideBarNotebook () const { return *m_sideBarNotebook; }
 
+	virtual
 	Gtk::Box &
 	getHistoryEditorBox () const { return *m_historyEditorBox; }
 
+	virtual
 	Gtk::Box &
 	getViewpointEditorBox () const { return *m_viewpointEditorBox; }
 
+	virtual
 	Gtk::Box &
 	getOutlineEditorBox () const { return *m_outlineEditorBox; }
 
+	virtual
 	Gtk::Statusbar &
 	getStatusBar () const { return *m_statusBar; }
 

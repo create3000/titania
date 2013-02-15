@@ -73,24 +73,31 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
+	virtual
 	const Glib::RefPtr <Gtk::ListStore> &
 	getListStore () const { return m_listStore; }
 
+	virtual
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getDescriptionColumn () const { return m_descriptionColumn; }
 
+	virtual
 	Gtk::Window &
 	getWindow () const { return *m_window; }
 
+	virtual
 	Gtk::Box &
 	getWidget () const { return *m_widget; }
 
+	virtual
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const { return *m_scrolledWindow; }
 
+	virtual
 	Gtk::TreeView &
 	getTreeView () const { return *m_treeView; }
 
+	virtual
 	Gtk::HScale &
 	getFieldOfView () const { return *m_fieldOfView; }
 
