@@ -94,6 +94,7 @@ public:
 		if (stack .top () not_eq node)
 		{
 			stack .top () -> set_bind = false;
+			stack .top () -> isBound  = false;
 
 			if (stack .push (node))
 				node -> shutdown .addInterest (this, &BindableNodeStack::erase, node);
