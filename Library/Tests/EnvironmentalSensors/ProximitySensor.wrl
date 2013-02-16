@@ -97,6 +97,8 @@ Transform {
 DEF Debug Script {
   eventIn SFVec3f    set_position
   eventIn SFRotation set_orientation
+  eventIn SFTime     set_enterTime
+  eventIn SFTime     set_exitTime
   eventIn SFBool     set_active
 
   url "vrmlscript:
@@ -114,6 +116,16 @@ function set_active (value, time)
 {
 	print ('isActive: ' + value);
 }
+
+function set_enterTime (value, time)
+{
+	print ('enterTime: ' + value);
+}
+
+function set_exitTime (value, time)
+{
+	print ('exitTime: ' + value);
+}
   "
 }
     Viewpoint {
@@ -124,4 +136,6 @@ function set_active (value, time)
 
 ROUTE Sensor.position_changed TO Debug.set_position
 ROUTE Sensor.orientation_changed TO Debug.set_orientation
+ROUTE Sensor.enterTime TO Debug.set_enterTime
+ROUTE Sensor.exitTime TO Debug.set_exitTime
 ROUTE Sensor.isActive TO Debug.set_active
