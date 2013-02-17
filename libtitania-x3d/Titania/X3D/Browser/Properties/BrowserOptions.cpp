@@ -99,6 +99,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "motionBlur",             motionBlur);
 	addField (inputOutput, "textureProperties",      textureProperties);
+	addField (inputOutput, "arc2DProperties",        arc2DProperties);
 	addField (inputOutput, "arcClose2DProperties",   arcClose2DProperties);
 	addField (inputOutput, "circle2DProperties",     circle2DProperties);
 	addField (inputOutput, "disc2DProperties",       disc2DProperties);

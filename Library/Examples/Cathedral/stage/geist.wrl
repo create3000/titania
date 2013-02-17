@@ -399,30 +399,3 @@ ROUTE enterWorldScript.firstTime TO enterWorldTimeSensor.set_enabled
 ROUTE enterWorldTimeSensor.time TO enterWorldScript.triggerIn
 ROUTE vs_handle.translation_changed TO _8.set_center
 ROUTE vs_handle.scale_changed TO _8.set_size
-
-
-DEF Debug Script {
-  eventIn SFTime     set_enterTime
-  eventIn SFTime     set_exitTime
-  eventIn SFBool     set_active
-
-  url "vrmlscript:
-function set_active (value, time)
-{
-	print ('isActive: ' + value);
-}
-
-function set_enterTime (value, time)
-{
-	print ('enterTime: ' + value);
-}
-
-function set_exitTime (value, time)
-{
-	print ('exitTime: ' + value);
-}
-  "
-}
-ROUTE _8.enterTime TO Debug.set_enterTime
-ROUTE _8.exitTime TO Debug.set_exitTime
-ROUTE _8.isActive TO Debug.set_active

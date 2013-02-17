@@ -132,8 +132,8 @@ ProximitySensor::update ()
 
 		if (not isActive)
 		{
-			enterTime = getCurrentTime ();
 			isActive  = true;
+			enterTime = getCurrentTime ();
 
 			position_changed    = position;
 			orientation_changed = orientation;
@@ -155,8 +155,8 @@ ProximitySensor::update ()
 	{
 		if (isActive)
 		{
-			exitTime = getCurrentTime ();
 			isActive = false;
+			exitTime = getCurrentTime ();
 		}
 	}
 

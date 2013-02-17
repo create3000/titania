@@ -115,7 +115,7 @@ public:
 
 	virtual
 	void
-	dispose ();
+	dispose () override;
 
 	virtual
 	~X3DChildObject ();

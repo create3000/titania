@@ -140,7 +140,16 @@ sqlite3::array_callback (void* object, int argc, char** argv, char** columns)
 {
 	sqlite3* self = static_cast <sqlite3*> (object);
 
-	self -> array .emplace_back (argv, argv + argc);
+	array_row_type array;
+
+	for (int i = 0; i < argc; i ++)
+	{
+		if (argv [i])
+			array .emplace_back (argv [i] ? argv [i] : "");
+	}
+
+	if (array .size ())
+		self -> array .emplace_back (array);
 
 	//print (argc, argv, columns);
 
@@ -152,10 +161,12 @@ sqlite3::map_callback (void* object, int argc, char** argv, char** columns)
 {
 	sqlite3* self = static_cast <sqlite3*> (object);
 
-	std::map <std::string, std::string> map;
+	assoc_row_type map;
 
 	for (int i = 0; i < argc; i ++)
-		map .insert (std::make_pair (columns [i], argv [i]));
+	{
+		map .insert (std::make_pair (columns [i], argv [i] ? argv [i] : ""));
+	}
 
 	self -> array_map .emplace_back (map);
 

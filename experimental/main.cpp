@@ -763,6 +763,9 @@ project (const Type & value, const Type & fromLow, const Type & fromHigh, const 
 
 #include <v8.h>
 
+// https://www.homepluspower.info/2010/06/v8-javascript-engine-tutorial-part-1.html
+// https://www.homepluspower.info/2010/06/v8-javascript-engine-tutorial-part-2.html
+
 static
 void
 test (Matrix4f & m)

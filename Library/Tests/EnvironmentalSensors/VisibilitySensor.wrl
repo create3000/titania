@@ -29,11 +29,15 @@ DEF Sensor VisibilitySensor {
 }
 
 DEF Debug Script {
+  eventIn SFBool isActive
   eventIn SFTime enterTime
   eventIn SFTime exitTime
-  eventIn SFBool isActive
 
   url "vrmlscript:
+function isActive (value, time)
+{
+	print ('isActive ' + value);
+}
 function enterTime (value, time)
 {
 	print ('enterTime ' + value);
@@ -41,10 +45,6 @@ function enterTime (value, time)
 function exitTime (value, time)
 {
 	print ('exitTime ' + value);
-}
-function isActive (value, time)
-{
-	print ('isActive ' + value);
 }
 	"
 }

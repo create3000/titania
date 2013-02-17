@@ -56,12 +56,6 @@
 namespace titania {
 namespace X3D {
 
-template <>
-const std::string X3DField <X3DBaseNode*>::typeName ("SFNode");
-
-template <>
-const X3DConstants::FieldType X3DField <X3DBaseNode*>::type = X3DConstants::SFNode;
-
 template class X3DField <X3DBaseNode*>;
 template class SFNode <X3DBaseNode>;
 

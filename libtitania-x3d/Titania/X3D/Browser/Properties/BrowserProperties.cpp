@@ -77,6 +77,9 @@ BrowserProperties::BrowserProperties (X3DExecutionContext* const executionContex
 	 classicVrmlEncoding (),                                                    
 	      binaryEncoding ()                                                     
 {
+	setComponent ("Browser"),
+	setTypeName ("BrowserProperties");
+
 	addField (initializeOnly, "abstractNodes",        abstractNodes);
 	addField (initializeOnly, "concreteNodes",        concreteNodes);
 	addField (initializeOnly, "externalInteractions", externalInteractions);

@@ -119,7 +119,7 @@ public:
 
 	virtual
 	void
-	dispose ();
+	dispose () override;
 
 
 protected:

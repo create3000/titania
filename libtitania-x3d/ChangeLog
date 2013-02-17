@@ -1,3 +1,17 @@
+2013-02-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFNode.h:
+	* X3DObject.h:
+	* SFNode.cpp:
+	* X3DBaseNode.h:
+	* X3DChildObject.h:
+	* X3DFieldDefinition.h:
+	* TimeSensor.cpp:
+	* String.cpp:
+	* BrowserOptions.cpp:
+	* BrowserProperties.cpp:
+	* ProximitySensor.cpp: 
+
 2013-02-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* VisibilitySensor.cpp: 

@@ -111,13 +111,18 @@ const std::string &
 History::getIndex (const std::string & worldURL) const
 throw (std::out_of_range)
 {
-	const auto & index = database .query_array ("SELECT "
+	const auto & result = database .query_array ("SELECT "
 	                                            "(SELECT COUNT(0) - 1 FROM History h1 WHERE h1 .lastAccess >= h2 .lastAccess) AS 'rowid' "
 	                                            "FROM History h2 "
 	                                            "WHERE worldURL = " + database .quote (worldURL) + " " +
 	                                            "ORDER BY lastAccess DESC");
 
-	return index .at (0) .at (0);
+	const std::string & index = result .at (0) .at (0);
+
+	if (index == "-1")
+		throw std::out_of_range ("URL '" + worldURL + "' not found.");
+	
+	return index;
 }
 
 void
@@ -146,7 +151,7 @@ const std::string &
 History::getId (const std::string & worldURL) const
 throw (std::out_of_range)
 {
-	const auto & result = database .query_array ("SELECT id FROM History WHERE "
+	const auto & result = database .query_array ("SELECT id FROM History WHERE id IS NOT NULL AND "
 	                                             "worldURL = " + database .quote (worldURL));
 
 	return result .at (0) .at (0);

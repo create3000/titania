@@ -48,47 +48,18 @@
  *
  ******************************************************************************/
 
-#include "String.h"
+#ifndef __TITANIA_OS_MKDIR_H__
+#define __TITANIA_OS_MKDIR_H__
 
-#include <cstring>
+#include <string>
 
 namespace titania {
-namespace X3D {
+namespace os {
 
-JSBool
-JS_NewStringValue (JSContext* context, const std::string & string, jsval* vp)
-{
-	char* chars = (char*) JS_malloc (context, sizeof (char) * (string .length () + 1));
+bool
+mkdir (const std::string &);
 
-	if (not chars)
-		return JS_FALSE;
-
-	(void) memmove (chars, string .c_str (), sizeof (char) * (string .length () + 1));
-
-	JSString* result = JS_NewStringCopyN (context, chars, string .length ());
-
-	if (not result)
-	{
-		JS_free (context, chars);
-		return JS_FALSE;
-	}
-
-	JS_SET_RVAL (context, vp, STRING_TO_JSVAL (result));
-
-	return JS_TRUE;
-}
-
-std::string
-JS_GetString (JSContext* context, JSString* jsstring)
-{
-	char* chars = JS_EncodeString (context, jsstring);
-
-	std::string string = chars ? chars : "";
-
-	JS_free (context, chars);
-
-	return string;
-}
-
-} // X3D
+} // os
 } // titania
+
+#endif

@@ -133,6 +133,7 @@ TimeSensor::prepareEvents ()
 void
 TimeSensor::set_enabled ()
 {
+__LOG__ << (void*) this << " : " << enabled << std::endl;
 	if (enabled)
 	{
 		if (loop and stopTime <= startTime)
@@ -151,6 +152,7 @@ TimeSensor::set_enabled ()
 void
 TimeSensor::set_start ()
 {
+__LOG__ << (void*) this << " : " << startTime << std::endl;
 	if (not isActive)
 	{
 		cycle    = getCurrentTime ();

@@ -95,7 +95,7 @@ public:
 
 	virtual
 	bool
-	hasRoots (ChildObjectSet &);
+	hasRoots (ChildObjectSet &) override;
 
 	void
 	setReference (X3DFieldDefinition* const);
@@ -120,11 +120,11 @@ public:
 
 	virtual
 	bool
-	isInput () const;
+	isInput () const override;
 
 	virtual
 	bool
-	isOutput () const;
+	isOutput () const override;
 
 	virtual
 	bool
@@ -166,18 +166,18 @@ public:
 
 	virtual
 	void
-	processEvents (ChildObjectSet &);
+	processEvents (ChildObjectSet &) override;
 
 	void
 	processEvent (X3DFieldDefinition* const, ChildObjectSet &);
 
 	virtual
 	void
-	processInterests ();
+	processInterests () override;
 
 	virtual
 	void
-	dispose ();
+	dispose () override;
 
 	virtual
 	~X3DFieldDefinition ();

@@ -85,13 +85,26 @@ public:
 
 	virtual
 	SFNode*
-	clone () const { return new SFNode (*this); }
+	clone () const final
+	{ return new SFNode (*this); }
 
 	virtual
 	SFNode*
-	clone (X3DExecutionContext* const) const;
+	clone (X3DExecutionContext* const) const final;
+	
+	///  @name Field services
+	
+	virtual
+	X3DConstants::FieldType
+	getType () const final
+	{ return X3DConstants::SFNode; }
 
-	///  @name Node Services
+	virtual
+	const std::string &
+	getTypeName () const final
+	{ return typeName; }
+
+	///  @name Node services
 
 	const std::string &
 	getNodeTypeName () const;
@@ -114,23 +127,26 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	///  @name Set Value Services
+	///  @name Set value services
 
 	virtual
 	void
-	set (const value_type &);
+	set (const value_type &) final;
 
-	///  @name Boolean Operator
+	///  @name Boolean operator
 
-	operator bool () const { return getValue (); }
+	operator bool () const
+	{ return getValue (); }
 
-	///  @name Access Operators
-
-	ValueType*
-	operator -> () const { return getValue (); }
+	///  @name Access operators
 
 	ValueType*
-	operator * () const { return getValue (); }
+	operator -> () const
+	{ return getValue (); }
+
+	ValueType*
+	operator * () const
+	{ return getValue (); }
 
 	///  @name 6.7.7 Add field interest.
 
@@ -154,11 +170,11 @@ public:
 		addInterest (requester, *this);
 	}
 
-	///  @name Object Functions
+	///  @name Dispose
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 	virtual
 	~SFNode ();
@@ -174,7 +190,13 @@ private:
 	void
 	removeNode (ValueType* const);
 
+	///  TypeName identifer for X3DFields.
+	static const std::string typeName;
+
 };
+
+template <class ValueType>
+const std::string SFNode <ValueType>::typeName ("SFNode");
 
 template <class ValueType>
 SFNode <ValueType>::SFNode () :

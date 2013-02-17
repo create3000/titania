@@ -27,7 +27,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
+ * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.getenv
  *
  * This file is part of the Titania Project.
  *
@@ -58,7 +58,9 @@ namespace os {
 std::string
 env (const std::string & value)
 {
-	return std::getenv (value .c_str ());
+	char* string = std::getenv (value .c_str ());
+
+	return string ? string : "";
 }
 
 } // os
