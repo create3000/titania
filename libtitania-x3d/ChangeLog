@@ -1,3 +1,8 @@
+2013-02-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* TimeSensor.cpp:
+	* X3DGeometryNode.cpp: 
+
 2013-02-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SFNode.h:

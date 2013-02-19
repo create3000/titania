@@ -61,14 +61,14 @@ int
 main (int argc, char** argv)
 {
 	std::clog
-		<< "Puck started ..." << std::endl
+		<< "Titania started ..." << std::endl
 		<< " Compiled at " << __DATE__ << " " << __TIME__ << std::endl
 		<< std::endl;
 
 	std::setlocale (LC_ALL, os::env ("LANG") .c_str ());
 
 	//std::locale::global (std::locale (os::env ("LANG") .c_str ()));
-	#
+
 	try
 	{
 		BrowserWindow browserWindow (argc, argv);
@@ -86,7 +86,7 @@ main (int argc, char** argv)
 
 	std::clog
 		<< std::endl
-		<< "Puck finished." << std::endl;
+		<< "Titania finished." << std::endl;
 
 	return 0;
 }

@@ -91,7 +91,7 @@ X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 	X3D::X3DUrlObject::addURN ("about:info",        get_page ("about/info.wrl"));
 	X3D::X3DUrlObject::addURN ("about:splash",      get_page ("about/splash.wrl"));
 	X3D::X3DUrlObject::addURN ("about:url_error",   get_page ("about/url_error.wrl"));
-	X3D::X3DUrlObject::addURN ("about:hello_world", "http://titania.create3000.de/documentation/examples/hello_world.wrl");
+	X3D::X3DUrlObject::addURN ("about:hello_world", "http://titania.create3000.de/examples/hello_world.wrl");
 }
 
 // Application Handling

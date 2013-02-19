@@ -151,7 +151,7 @@ const std::string &
 History::getId (const std::string & worldURL) const
 throw (std::out_of_range)
 {
-	const auto & result = database .query_array ("SELECT id FROM History WHERE id IS NOT NULL AND "
+	const auto & result = database .query_array ("SELECT id FROM History WHERE "
 	                                             "worldURL = " + database .quote (worldURL));
 
 	return result .at (0) .at (0);

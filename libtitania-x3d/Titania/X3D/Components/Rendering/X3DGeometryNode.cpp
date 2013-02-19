@@ -82,24 +82,20 @@ X3DGeometryNode::setup ()
 	X3DNode::setup ();
 
 	if (GLEW_ARB_vertex_buffer_object)
+	{
+		glGenBuffers (1, &texCoordBufferId);
+		glGenBuffers (1, &colorBufferId);
+		glGenBuffers (1, &normalBufferId);
+		glGenBuffers (1, &pointBufferId);
+		
 		update ();
-
-	//else
-	//	std::clog << "Warning: X3DGeometryNode::setup: The glew vertex buffer objects are not supported." << std::endl;
+	}
 }
 
 void
 X3DGeometryNode::initialize ()
 {
 	X3DNode::initialize ();
-
-	if (GLEW_ARB_vertex_buffer_object)
-	{
-		glGenBuffers (1, &texCoordBufferId);
-		glGenBuffers (1, &colorBufferId);
-		glGenBuffers (1, &normalBufferId);
-		glGenBuffers (1, &pointBufferId);
-	}
 }
 
 void
