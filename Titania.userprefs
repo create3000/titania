@@ -1,25 +1,33 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Texturing/MovieTexture.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h">
     <Files>
-      <File FileName="experimental/main.cpp" Line="787" Column="1" />
+      <File FileName="experimental/main.cpp" Line="765" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/FlyViewer.h" Line="123" Column="27" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/FlyViewer.cpp" Line="62" Column="36" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/FlyViewer.cpp" Line="174" Column="1" />
       <File FileName="Library/Tests/Navigation/FlyViewer.wrl" Line="5" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.h" Line="202" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.cpp" Line="254" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="55" Column="10" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="569" Column="1" />
+      <File FileName="libtitania-sqlite/Titania/SQL/SQLite3.cpp" Line="148" Column="49" />
+      <File FileName="Titania/Titania/HistoryEditor/History.cpp" Line="154" Column="77" />
+      <File FileName="test/main.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="395" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="216" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="88" Column="18" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="434" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MovieTexture.h" Line="109" Column="30" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MovieTexture.cpp" Line="139" Column="1" />
-      <File FileName="Library/Tests/Texturing/MovieTexture.wrl" Line="20" Column="22" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="69" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTexture2DNode.cpp" Line="292" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTexture2DNode.h" Line="74" Column="28" />
+      <File FileName="Titania/share/titania/pages/about/splash.wrl" Line="24" Column="1" />
+      <File FileName="Titania/share/titania/pages/Library/Logo.wrl" Line="27" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.cpp" Line="154" Column="1" />
+      <File FileName="Titania/Titania/main.cpp" Line="71" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="miscellaneous" expanded="True" />
+          <Node name="miscellaneous" expanded="True">
+            <Node name="glade2c++" expanded="True" />
+          </Node>
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
@@ -27,9 +35,6 @@
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
               <Node name="Capone" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
-              <Node name="Vattenfall" expanded="True">
                 <Node name="stage" expanded="True" />
               </Node>
             </Node>
@@ -71,34 +76,29 @@
               <Node name="Math" expanded="True">
                 <Node name="Numbers" expanded="True" />
               </Node>
+              <Node name="OS" expanded="True" />
+              <Node name="Utility" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True" />
+                <Node name="Basic" expanded="True">
+                  <Node name="X3DArrayField.h" selected="True" />
+                </Node>
+                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Properties" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
-                  <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Geometry3D" expanded="True" />
                   <Node name="Grouping" expanded="True" />
-                  <Node name="Interpolation" expanded="True" />
-                  <Node name="Layering" expanded="True" />
-                  <Node name="Lighting" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
-                  <Node name="Networking" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
-                  <Node name="Sound" expanded="True" />
-                  <Node name="Texturing" expanded="True">
-                    <Node name="MovieTexture.cpp" selected="True" />
-                  </Node>
+                  <Node name="Rendering" expanded="True" />
                   <Node name="Time" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
+                <Node name="Extensions" expanded="True" />
                 <Node name="Fields" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="SpiderMonkey" expanded="True">
@@ -133,10 +133,12 @@
                     <Node name="home" expanded="True" />
                     <Node name="info" expanded="True" />
                   </Node>
+                  <Node name="Library" expanded="True" />
                 </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
               <Node name="HistoryEditor" expanded="True" />
               <Node name="MotionBlurEditor" expanded="True" />

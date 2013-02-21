@@ -72,8 +72,7 @@ X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 
 	// First time initialization
 
-	os::mkdir (os::home () + "/.config");
-	os::mkdir (os::home () + "/.config/Titania");
+	os::system ("mkdir", "-p", os::home () + "/.config/Titania");
 
 	// User interface
  

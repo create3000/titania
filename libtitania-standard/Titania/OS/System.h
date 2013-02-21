@@ -77,14 +77,14 @@ join_command (std::string & buffer, const std::string argument, const Args & ...
 } // utility
 
 template <typename ... Args>
-void
+int
 system (const std::string & command, const Args & ... args)
 {
 	std::string command_with_args = system_utility::escape_argument (command);
 
 	system_utility::join_command (command_with_args, args ...);
 
-	std::system (command_with_args .c_str ());
+	return std::system (command_with_args .c_str ());
 }
 
 } // os
