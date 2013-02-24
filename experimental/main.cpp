@@ -814,9 +814,13 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 	
-	auto r = math::rotation4 <float> (-0.0899162, -0.995117, 0.0406966, 0.546317);
-		
-	std::clog << math::rotation4 <float> (::slerp (r .quat (), r .quat (), 0.0f)) << std::endl;
+	Rotation4f userOrientation (0, 0, 1, 12);
+	
+	
+	auto d = Rotation4f (userOrientation * Vector3f (0, 0, 1), Vector3f (0, 1, 0));
+	
+	std::clog << userOrientation * d  * Vector3f (0, 0, 1) << std::endl;
+	std::clog << userOrientation * d << std::endl;
 
 	if (0)
 	{

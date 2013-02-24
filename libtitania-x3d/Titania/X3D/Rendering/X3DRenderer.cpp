@@ -122,7 +122,7 @@ X3DRenderer::draw ()
 
 	getCurrentViewpoint () -> transform ();
 
-	// enable global lights
+	// Enable global lights
 
 	const LightContainerArray & globalLights = getCurrentLayer () -> getGlobalLights ();
 
@@ -133,7 +133,7 @@ X3DRenderer::draw ()
 	{
 		// Sorted blend
 
-		// render opaque objects first
+		// Render opaque objects first
 
 		glEnable (GL_DEPTH_TEST);
 		glDepthMask (GL_TRUE);
@@ -144,7 +144,7 @@ X3DRenderer::draw ()
 			numNodesDrawn += shape -> redraw ();
 		}
 
-		// render transparent objects
+		// Render transparent objects
 
 		glDepthMask (GL_FALSE);
 		glEnable (GL_BLEND);
@@ -166,7 +166,7 @@ X3DRenderer::draw ()
 
 		glEnable (GL_DEPTH_TEST);
 
-		// render opaque objects first
+		// Render opaque objects first
 
 		glDepthMask (GL_TRUE);
 		glDisable (GL_BLEND);
@@ -176,7 +176,7 @@ X3DRenderer::draw ()
 			numNodesDrawn += shape -> redraw ();
 		}
 
-		// render transparent objects
+		// Render transparent objects
 
 		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentNodes, ShapeContainerComp ());
 
@@ -219,7 +219,7 @@ X3DRenderer::draw ()
 		//		}
 	}
 
-	// disable global lights
+	// Disable global lights
 
 	for (const auto & light : basic::adapter (globalLights .crbegin (), globalLights .crend ()))
 		light -> disable ();
@@ -235,23 +235,29 @@ X3DRenderer::bottom ()
 	GLint viewport [4];
 
 	glGetIntegerv (GL_VIEWPORT, viewport);
-	
+
 	glViewport (0, 0, 200, 200);
-	glScissor(0, 0, 200, 200);
+	glScissor (0, 0, 200, 200);
 	glEnable (GL_SCISSOR_TEST);
 
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable (GL_SCISSOR_TEST);
-	
+
 	glPushMatrix ();
-	
-	glLoadMatrixf (Matrix4f (Rotation4f (1, 0, 0, M_PI1_2)) .data ());
-	getCurrentViewpoint () -> transform ();
+
+	Matrix4f matrix = getCurrentViewpoint () -> getModelViewMatrix ();
+	matrix .translate (getCurrentViewpoint () -> getUserPosition ());
+	matrix .rotate (getCurrentViewpoint () -> getUserOrientation () *
+	                Rotation4f (getCurrentViewpoint () -> getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
+
+	matrix .inverse ();
+
+	glLoadMatrixf (matrix .data ());
 
 	{
 		// Sorted blend
 
-		// render opaque objects first
+		// Render opaque objects first
 
 		glEnable (GL_DEPTH_TEST);
 		glDepthMask (GL_TRUE);
@@ -262,7 +268,7 @@ X3DRenderer::bottom ()
 			shape -> redraw ();
 		}
 
-		// render transparent objects
+		// Render transparent objects
 
 		glDepthMask (GL_FALSE);
 		glEnable (GL_BLEND);
