@@ -30,8 +30,20 @@
 
 #include "../Components/Navigation/X3DViewpointNode.h"
 
+#include <csignal>
+#include <cstdlib>
+
 namespace titania {
 namespace X3D {
+
+void
+signal_handler (int sig)
+{
+	// print out all the frames to stderr
+	std::clog << "Error: signal " << sig << ":" << std::endl;
+	backtrace_fn (100);
+	exit (1);
+}
 
 const std::string X3DBrowser::version ("0.1");
 
@@ -43,10 +55,13 @@ X3DBrowser::X3DBrowser () :
 	supportedComponents (this),                      
 	  supportedProfiles (this, supportedComponents), 
 	        description (),                          // SFString  [in,out] description ""
-	              scene (createScene ()),            // SFNode    [in,out] scene       NULL
-	              world (scene)                      // SFNode    [in,out] world       NULL
+	              scene (),                          // SFNode    [in,out] scene       NULL
+	              world ()                           // SFNode    [in,out] world       NULL
 {
 	std::clog << "Constructing Browser:" << std::endl;
+
+	// install our handler
+	std::signal (SIGSEGV, signal_handler);
 
 	setComponent ("Browser");
 	setTypeName ("Browser");
@@ -63,6 +78,8 @@ X3DBrowser::X3DBrowser () :
 void
 X3DBrowser::initialize ()
 {
+	world = scene = createScene ();
+
 	X3DBrowserContext::initialize ();
 	X3DUrlObject::initialize ();
 
@@ -225,6 +242,8 @@ throw (Error <INVALID_SCENE>)
 	if (not value)
 		throw Error <INVALID_SCENE> ("Scene is NULL.");
 
+	clock -> advance ();
+
 	shutdown .processInterests ();
 
 	scene = value;
@@ -291,6 +310,7 @@ throw (Error <INVALID_URL>,
 	try
 	{
 		parseIntoScene (getExecutionContext (), url);
+		clock -> advance ();
 	}
 	catch (const Error <INVALID_URL> & error)
 	{

@@ -85,7 +85,6 @@ public:
 
 	///  @name Constructors
 
-	///@{
 	///  Copy constructor.
 	constexpr
 	plane3 (const plane3 & plane) :
@@ -107,11 +106,9 @@ public:
 		value { normalize (vector), abs (vector) }
 
 	{ }
-	///@}
 
 	///  @name Element access
 
-	///@{
 	///  Returns the normal of this plane.
 	const vector3 <Type> &
 	normal () const { return value .normal; }
@@ -119,8 +116,6 @@ public:
 	///  Returns the distance form origin.
 	const Type &
 	distanceFromOrigin () const { return value .distanceFromOrigin; }
-
-	///@}
 
 	constexpr Type
 	distance (const vector3 <Type> &) const;
@@ -143,8 +138,6 @@ private:
 
 ///  @name Arithmetic operations
 
-///@{
-//@{
 ///  Returns the distance from @a point.
 ///  The value can be both negative and positive depending
 ///  on the direction of the normal vector of this plane. If the point lies in the upper half
@@ -177,14 +170,10 @@ plane3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & point) con
 
 	return true;
 }
-//@}
-///@}
 
 ///  @relates plane3
 ///  @name Input/Output operations
 
-///@{
-//@{
 ///  Extraction operator for vector values.
 template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
@@ -207,8 +196,6 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const plane3 <Type> &
 {
 	return ostream << plane .normal () * plane .distanceFromOrigin ();
 }
-//@}
-///@}
 
 extern template class plane3 <float>;
 extern template class plane3 <double>;

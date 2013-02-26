@@ -57,36 +57,46 @@ namespace titania {
 namespace X3D {
 
 ShapeContainer::ShapeContainer (X3DShapeNode* shape,
-                                const float distance,
-                                const LightContainerArray & localLights,
-                                X3DFogObject* fog) :
-	      shape (shape),                
-	   distance (distance),             
-	     matrix (ModelViewMatrix4f ()), 
-	localLights (localLights),          
-	        fog (fog)                   
+                                X3DFogObject* fog,
+                                const LightContainerArray & localLights) :
+	               shape (shape),                
+	                 fog (fog),                  
+	         localLights (localLights),          
+	            distance (),                     
+	              matrix (ModelViewMatrix4f ()), 
+	transformationMatrix ()                      
 { }
 
-ShapeContainer &
-ShapeContainer::operator = (const ShapeContainer & container)
+void
+ShapeContainer::assign (X3DShapeNode* shape,
+                        X3DFogObject* fog,
+                        const LightContainerArray & localLights)
 {
-	shape       = container .shape;
-	distance    = container .distance;
-	matrix      = container .matrix;
-	localLights = container .localLights;
-	fog         = container .fog;
-	return *this;
+	this -> shape       = shape;
+	this -> fog         = fog;
+	this -> localLights = localLights;
+	this -> matrix      = ModelViewMatrix4f ();
+}
+
+void
+ShapeContainer::setViewpointMatrix (const Matrix4f & viewpointMatrix)
+{
+	transformationMatrix = matrix * viewpointMatrix;
+
+	Box3f bbox  = shape -> getBBox () * transformationMatrix;
+	float depth = bbox .size () .z () * 0.5f;
+
+	distance = bbox .center () .z () - depth;
 }
 
 bool
-ShapeContainer::redraw ()
+ShapeContainer::draw ()
 {
 	bool drawn = false;
 
-	glPushMatrix ();
-	glMultMatrixf (matrix .data ());
+	glLoadMatrixf (transformationMatrix .data ());
 
-	if (ViewVolume () .intersect (shape -> getBBox ()))
+	if (distance < 0 and ViewVolume () .intersect (shape -> getBBox ()))
 	{
 		for (const auto & light : localLights)
 			light -> enable ();
@@ -102,7 +112,6 @@ ShapeContainer::redraw ()
 		drawn = true;
 	}
 
-	glPopMatrix ();
 	return drawn;
 }
 

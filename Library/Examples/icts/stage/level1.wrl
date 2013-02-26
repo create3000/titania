@@ -248,7 +248,7 @@ DEF level1 Transform {
 		  DEF GameCam Transform {
 		    children	[
 		      DEF _gameNavInfo NavigationInfo {
-			avatarSize	[ 0.5, 1.2, 0.6 ]
+			avatarSize	[ 0.2, 1.2, 0.6 ]
 			headlight	FALSE
 			speed	4
 			type	"WALK"
@@ -264,7 +264,7 @@ DEF level1 Transform {
 		  DEF DeathCam Transform {
 		    children	[
 		      DEF _death-timeoverNavInfo NavigationInfo {
-			avatarSize	[ 0.5, 1.2, 0.6 ]
+			avatarSize	[ 0.2, 1.2, 0.6 ]
 			headlight	FALSE
 			speed	0
 			type	"WALK"
@@ -281,7 +281,7 @@ DEF level1 Transform {
 		  DEF TimeOverCam Transform {
 		    children	[
 		      DEF _timeoverNavInfo NavigationInfo {
-			avatarSize	[ 0.5, 1.2, 0.6 ]
+			avatarSize	[ 0.2, 1.2, 0.6 ]
 			headlight	FALSE
 			speed	0
 			type	"WALK"
@@ -298,7 +298,7 @@ DEF level1 Transform {
 		  DEF GameOverCam Transform {
 		    children	[
 		      DEF _gameOverNavInfo NavigationInfo {
-			avatarSize	[ 0.5, 1.2, 0.6 ]
+			avatarSize	[ 0.2, 1.2, 0.6 ]
 			headlight	FALSE
 			speed	0
 			type	"WALK"
@@ -315,7 +315,7 @@ DEF level1 Transform {
 		  DEF LevelCompletedCam Transform {
 		    children	[
 		      DEF _levelcompletedNavInfo NavigationInfo {
-			avatarSize	[ 0.5, 1.2, 0.6 ]
+			avatarSize	[ 0.2, 1.2, 0.6 ]
 			headlight	FALSE
 			speed	0
 			type	"WALK"

@@ -48,35 +48,43 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_FLY_VIEWER_H__
-#define __TITANIA_X3D_BROWSER_FLY_VIEWER_H__
+#ifndef __TITANIA_X3D_BROWSER_VIEWER_EXAMINE_VIEWER_H__
+#define __TITANIA_X3D_BROWSER_VIEWER_EXAMINE_VIEWER_H__
 
 #include <gdkmm.h>
 
-#include "../Browser/X3DViewer.h"
-#include "../Components/Navigation/NavigationInfo.h"
-#include "../Components/Navigation/Viewpoint.h"
-#include "../Components/Navigation/X3DViewpointNode.h"
-#include "../Fields/SFNode.h"
+#include "../../Components/Navigation/NavigationInfo.h"
+#include "../../Components/Navigation/Viewpoint.h"
+#include "../../Components/Navigation/X3DViewpointNode.h"
+#include "../../Fields/SFNode.h"
+#include "../Viewer/X3DViewer.h"
 
 namespace titania {
 namespace X3D {
 
-class FlyViewer :
+class ExamineViewer :
 	public X3DViewer
 {
 public:
 
-	FlyViewer (Browser* const, NavigationInfo*);
+	ExamineViewer (Browser* const, NavigationInfo*);
 
 	void
 	initialize ();
 
 	virtual
-	~FlyViewer ();
+	ViewerType
+	getType () const
+	{ return ViewerType::EXAMINE; }
+
+	virtual
+	~ExamineViewer ();
 
 
 private:
+
+	void
+	set_viewpoint ();
 
 	bool
 	on_button_press_event (GdkEventButton*);
@@ -91,54 +99,41 @@ private:
 	on_scroll_event (GdkEventScroll*);
 
 	bool
-	on_key_press_event (GdkEventKey*);
-
-	bool
-	on_key_release_event (GdkEventKey*);
-	
-	bool
-	fly ();
-
-	bool
-	pan ();
-
-	bool
-	roll ();
+	spin ();
 
 	void
-	addFly ();
-	
-	void
-	addPan ();
-	
-	void
-	addRoll ();
-	
-	void
-	disconnect ();
-	
-	void
-	display ();
-	
-	static Vector3f upVector;
+	addSpinning ();
+
+	Vector3f
+	getDistance () const;
+
+	Vector3f
+	getPositionOffset () const;
+
+	Rotation4f
+	getOrientationOffset ();
+
+	Vector3f
+	getPoint (const double, const double);
+
+	Vector3f
+	trackballProjectToSphere (const double, const double) const;
+
+	float
+	tb_project_to_sphere (const float, const float, const float) const;
 
 	NavigationInfo*  navigationInfo;
-	Vector3f         fromVector;
-	Vector3f         toVector;
-	Vector3f         direction;
+	Vector3f         distance;
+	Rotation4f       orientation;
 	Rotation4f       rotation;
-	time_type        startTime;
+	Vector3f         fromVector;
+	Vector3f         fromPoint;
 	guint            button;
-	bool             shift_key;
 	sigc::connection button_press_event_connection;
 	sigc::connection button_release_event_connection;
 	sigc::connection motion_notify_event_connection;
 	sigc::connection scroll_event_connection;
-	sigc::connection key_press_event_connection;
-	sigc::connection key_release_event_connection;
-	sigc::connection fly_id;
-	sigc::connection pan_id;
-	sigc::connection roll_id;
+	sigc::connection spin_id;
 
 };
 

@@ -116,10 +116,10 @@ Circle2D::build ()
 }
 
 void
-Circle2D::display ()
+Circle2D::draw ()
 {
 	glDisable (GL_LIGHTING);
-	X3DGeometryNode::display ();
+	X3DGeometryNode::draw ();
 }
 
 void

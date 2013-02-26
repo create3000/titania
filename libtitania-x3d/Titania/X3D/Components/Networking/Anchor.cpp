@@ -97,13 +97,26 @@ Anchor::requestImmediateLoad ()
 }
 
 void
-Anchor::pick ()
+Anchor::traverse (TraverseType type)
 {
-	getBrowser () -> pushSensitiveNode (this);
+	switch (type)
+	{
+		case TraverseType::PICK:
+		{
+			getBrowser () -> pushSensitiveNode (this);
 
-	X3DGroupingNode::pick ();
+			X3DGroupingNode::traverse (type);
 
-	getBrowser () -> popSensitiveNode ();
+			getBrowser () -> popSensitiveNode ();
+			
+			break;
+		}
+		default:
+		{
+			X3DGroupingNode::traverse (type);
+			break;
+		}
+	}
 }
 
 void

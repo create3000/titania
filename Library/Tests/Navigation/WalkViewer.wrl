@@ -1,0 +1,41 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "Walk viewer"
+
+NavigationInfo {
+  type "WALK"
+  speed 1
+}
+
+DirectionalLight {
+	direction 0 -1 0
+}
+
+Viewpoint {
+	position 0 10 30
+}
+
+DEF Floor Transform {
+	scale 100 1 100
+	children Shape {
+		appearance Appearance {
+		  material Material { }
+		  texture ImageTexture {
+		    url "../images/image.png"
+		  }
+		}
+		geometry Box {}
+	}
+}
+
+Transform {
+	translation 0 0 0
+	scale 2 1.2 2
+	children Shape {
+		appearance Appearance {
+		  material Material { }
+		}
+		geometry Box {}
+	}
+}
+

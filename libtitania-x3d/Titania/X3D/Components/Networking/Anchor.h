@@ -77,7 +77,7 @@ public:
 
 	virtual
 	void
-	pick ();
+	traverse (TraverseType);
 
 	virtual
 	void

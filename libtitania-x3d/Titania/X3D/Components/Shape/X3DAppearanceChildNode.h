@@ -59,6 +59,13 @@ namespace X3D {
 class X3DAppearanceChildNode :
 	virtual public X3DNode
 {
+public:
+	
+	virtual
+	void
+	draw () = 0;
+
+
 protected:
 
 	X3DAppearanceChildNode ();

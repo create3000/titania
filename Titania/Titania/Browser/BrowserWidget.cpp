@@ -68,16 +68,12 @@ BrowserWidget::initialize ()
 void
 BrowserWidget::on_map ()
 {
-	std::clog << "Signal map received for '" << getExecutionContext () -> getWorldURL () << "'." << std::endl;
-
 	getBrowser () -> beginUpdate ();
 }
 
 void
 BrowserWidget::on_unmap ()
 {
-	std::clog << "Signal unmap received for '" << getExecutionContext () -> getWorldURL () << "'." << std::endl;
-
 	getBrowser () -> endUpdate ();
 }
 

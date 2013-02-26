@@ -74,11 +74,7 @@ public:
 
 	virtual
 	void
-	traverse ();
-
-	virtual
-	void
-	display ();
+	traverse (TraverseType);
 
 	virtual
 	void

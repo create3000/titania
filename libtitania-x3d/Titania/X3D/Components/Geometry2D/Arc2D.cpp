@@ -142,10 +142,10 @@ Arc2D::build ()
 }
 
 void
-Arc2D::display ()
+Arc2D::draw ()
 {
 	glDisable (GL_LIGHTING);
-	X3DGeometryNode::display ();
+	X3DGeometryNode::draw ();
 }
 
 void

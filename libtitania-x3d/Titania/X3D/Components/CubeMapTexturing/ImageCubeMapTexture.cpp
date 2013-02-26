@@ -87,6 +87,10 @@ ImageCubeMapTexture::requestImmediateLoad ()
 { }
 
 void
+ImageCubeMapTexture::draw ()
+{ }
+
+void
 ImageCubeMapTexture::dispose ()
 {
 	X3DUrlObject::dispose ();

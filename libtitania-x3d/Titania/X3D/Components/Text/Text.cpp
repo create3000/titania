@@ -275,7 +275,7 @@ Text::getLineBBox (const X3DFontStyleNode* fontStyle, const std::string & line)
 }
 
 void
-Text::display ()
+Text::draw ()
 {
 	if (solid)
 		glEnable (GL_CULL_FACE);

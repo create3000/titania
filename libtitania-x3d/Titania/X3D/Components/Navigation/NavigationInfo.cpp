@@ -121,6 +121,33 @@ NavigationInfo::set_headlight ()
 }
 
 float
+NavigationInfo::getAvatarDepth ()
+{
+	if (avatarSize .size () > 0)
+		return avatarSize [0];
+	
+	return 0.25;
+}
+
+float
+NavigationInfo::getAvatarHeight ()
+{
+	if (avatarSize .size () > 1)
+		return avatarSize [1];
+	
+	return 1.6;
+}
+
+float
+NavigationInfo::getAvatarWidth ()
+{
+	if (avatarSize .size () > 2)
+		return avatarSize [2];
+	
+	return 0.75;
+}
+
+float
 NavigationInfo::getZNear () const
 {
 	float zNear = avatarSize .size () ? avatarSize .front () : 0.25;

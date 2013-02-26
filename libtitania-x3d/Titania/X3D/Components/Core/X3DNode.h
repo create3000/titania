@@ -69,6 +69,7 @@ namespace X3D {
 
 class Scene;
 class X3DLayerNode;
+class NavigationInfo;
 class X3DViewpointNode;
 
 class X3DNode :
@@ -77,10 +78,6 @@ class X3DNode :
 public:
 
 	SFNode <X3DBaseNode> metadata;
-
-	virtual
-	void
-	display () { }
 
 
 protected:
@@ -95,6 +92,9 @@ protected:
 
 	std::deque <X3DLayerNode*>
 	getLayers () const;
+
+	NavigationInfo*
+	getCurrentNavigationInfo () const;
 
 	X3DViewpointNode*
 	getCurrentViewpoint () const;

@@ -56,7 +56,7 @@
 #include <istream>
 #include <ostream>
 
-#include "../Math.h"
+#include "../Functional.h"
 
 namespace titania {
 namespace math {
@@ -130,14 +130,13 @@ public:
 	constexpr Type
 	b () const { return value [2]; }
 
-	//@{
 	///  Access components by @a index.
 	Type &
 	operator [ ] (const size_type index) { return value [index]; }
 
+	///  Access components by @a index.
 	constexpr Type
 	operator [ ] (const size_type index) const { return value [index]; }
-	//@}
 
 	///  Returns pointer to the underlying array serving as element storage.
 	Type*
@@ -146,17 +145,15 @@ public:
 	///  Returns pointer to the underlying array serving as element storage.
 	const Type*
 	data () const { return value; }
-	//@}
 
-	//@{
-	//  Set and get all components.
+	//  Set all components.
 	void
 	set (const Type &, const Type &, const Type &);
 
+	//  Get all components.
 	template <typename T>
 	void
 	get (T &, T &, T &) const;
-	//@}
 
 	///  Return hsv components of this color.
 	void

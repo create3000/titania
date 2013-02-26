@@ -73,5 +73,9 @@ MultiTextureTransform::create (X3DExecutionContext* const executionContext) cons
 	return new MultiTextureTransform (executionContext);
 }
 
+void
+MultiTextureTransform::draw ()
+{ }
+
 } // X3D
 } // titania

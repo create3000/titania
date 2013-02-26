@@ -204,7 +204,7 @@ template <class ValueType>
 void
 SFMatrix3 <ValueType>::set1Value (const size_type & index, const scalar_type & value)
 {
-	get () [index] = value;
+	get () .data () [index] = value;
 	notifyParents ();
 }
 
@@ -213,7 +213,7 @@ inline
 typename SFMatrix3 <ValueType>::scalar_type
 SFMatrix3 <ValueType>::get1Value (const size_type & index) const
 {
-	return getValue () [index];
+	return getValue () .data () [index];
 }
 
 template <class ValueType>
@@ -233,7 +233,19 @@ SFMatrix3 <ValueType>::getValue (scalar_type & e11, scalar_type & e12, scalar_ty
                                  scalar_type & e21, scalar_type & e22, scalar_type & e23,
                                  scalar_type & e31, scalar_type & e32, scalar_type & e33) const
 {
-	getValue () .get (e11, e12, e13, e21, e22, e23, e31, e32, e33);
+	const auto & data = getValue () .data ();
+	
+	e11 = data [0];
+	e12 = data [1];
+	e13 = data [2];
+	
+	e21 = data [3];
+	e22 = data [4];
+	e23 = data [5];
+	
+	e31 = data [6];
+	e32 = data [7];
+	e33 = data [8];
 }
 
 template <class ValueType>

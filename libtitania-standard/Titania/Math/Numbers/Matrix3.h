@@ -61,7 +61,7 @@
 #include "Vector2.h"
 #include "Vector3.h"
 
-#define INDEX3(c, r) ((c) * 3 + (r))
+#include "../Algorithms/EigenDecomposition.h"
 
 namespace titania {
 namespace math {
@@ -115,74 +115,72 @@ public:
 	typedef vector2 <Type> vector2_type;
 
 	///  Vector3 typedef.
+	typedef Type rotation_type;
+
+	///  Vector3 typedef.
 	typedef vector3 <Type> vector3_type;
 
 	///  Vector typedef.
+	///  This is the type for the vector representation of this matrix.
+	///  The matrix consists of four vectors of type vector3.
+	///  0 [     0 ]
+	///  1 [     0 ]
+	///  2 [ x y 1 ]
 	typedef vector3 <vector3_type> vector_type;
 
 	///  Array typedef.
 	typedef Type array_type [Size];
 
-	// XXX
-	typedef Type Matrix [9];
+	///  @name Constructors
 
 	///  Default constructor. A new matrix initialized with the identity matrix is created and returned.
-	matrix3 ();
-
-	///  Copy constructor.
-	matrix3 (const matrix3 &);
+	constexpr
+	matrix3 () :
+		value (Identity .value)
+	{ }
 
 	///  Copy constructor.
 	template <typename Up>
-	matrix3 (const matrix3 <Up> &);
+	constexpr
+	matrix3 (const matrix3 <Up> & matrix) :
+		value (matrix [0], matrix [1], matrix [2])
+	{ }
 
 	///  Value constructor.
 	explicit
-	matrix3 (const Matrix);
+	constexpr
+	matrix3 (const array_type & matrix) :
+		array
+	{
+		matrix [ 0], matrix [ 1], matrix [ 2],
+		matrix [ 3], matrix [ 4], matrix [ 5],
+		matrix [ 6], matrix [ 7], matrix [ 8]
+	} { }
 
-	///  Element constructor.
-	matrix3 (const Type &, const Type &, const Type &,
-	         const Type &, const Type &, const Type &,
-	         const Type &, const Type &, const Type &);
-
-	template <typename T>
-	matrix3 (const vector2 <T> &);
-
+	///  Components constructor. Set values from @a e11 to @a e33.
+	constexpr
+	matrix3 (const Type & e11, const Type & e12, const Type & e13,
+	         const Type & e21, const Type & e22, const Type & e23,
+	         const Type & e31, const Type & e32, const Type & e33) :
+		array
+	{
+		e11, e12, e13,
+		e21, e22, e23,
+		e31, e32, e33
+	} { }
+	
+	///  Constructs a matrix4 from a rotation4.
 	explicit
-	matrix3 (const Type &);
+	matrix3 (const Type & rot)
+	{ rotation (rot); }
 
-	matrix3 &
-	operator = (const Matrix);
+	///  @name Assignment operators
 
 	template <typename T>
 	matrix3 &
 	operator = (const matrix3 <T> &);
 
-	matrix3 &
-	operator = (const matrix3 &);
-
-	void
-	set (const Matrix);
-
-	void get (Matrix);
-
-	void
-	set (const Type &, const Type &, const Type &,
-	     const Type &, const Type &, const Type &,
-	     const Type &, const Type &, const Type &);
-
-	template <typename T>
-	void
-	get (T &, T &, T &,
-	     T &, T &, T &,
-	     T &, T &, T &) const;
-
-	template <typename T>
-	void
-	setRow (const size_type, const vector3 <T> &);
-
-	vector3 <Type>
-	getRow (const size_type) const;
+	///  @name Element access
 
 	vector2 <Type>
 	translation () const;
@@ -226,246 +224,153 @@ public:
 	void
 	get (vector2 <Type> &, Type &, vector2 <Type> &, Type &, vector2 <Type> &) const;
 
-	Type &
-	operator [ ] (const size_type);
+	///  Access rows by @a index.
+	vector3_type &
+	operator [ ] (const size_type index) { return value [index]; }
 
-	const Type &
-	operator [ ] (const size_type) const;
+	constexpr vector3_type
+	operator [ ] (const size_type index) const { return value [index]; }
 
+	///  Returns pointer to the underlying array serving as element storage.
+	///  Specifically the pointer is such that range [data (); data () + size ()) is valid.
+	Type*
+	data () { return array; }
+
+	const Type*
+	data () const { return array; }
+
+	///  Get access to the underlying vector representation of this matrix.
+	void
+	vector (const vector_type & vector) { value = vector; }
+
+	constexpr vector_type
+	vector () const { return value; }
+
+	///  @name Capacity
+
+	///  Returns the order of the matrix.
+	static
+	constexpr size_type
+	order () { return Order; }
+
+	///  Returns the number of elements in the matrix. The size is the same as order () * order ().
+	static
+	constexpr size_type
+	size () { return Size; }
+
+	///  @name  Arithmetic operations
+	///  All these operators modify this matrix4 inplace.
+
+	///  Returns the deteminant of this matrix.
 	Type
 	determinant () const;
 
+	///  Returns this matrix transposed.
 	matrix3 &
 	transpose ();
 
+	///  Returns this matrix inversed.
 	matrix3 &
 	inverse ();
 
+	///  Returns this matrix multiplies by @a scalar.
 	matrix3 &
 	operator *= (const Type &);
 
+	///  Returns this matrix right multiplied by @a matrix.
 	template <typename T>
 	matrix3 &
 	operator *= (const matrix3 <T> &);
 
+	///  Returns this matrix divided by @a scalar.
 	matrix3 &
 	operator /= (const Type &);
 
+	///  Returns this matrix left multiplied by @a matrix.
 	template <typename T>
 	matrix3 &
 	multLeft (const matrix3 <T> &);
 
+	///  Returns this matrix right multiplied by @a matrix.
 	template <typename T>
 	matrix3 &
 	multRight (const matrix3 <T> &);
 
+	///  Returns a new vector that is @vector multiplies by matrix.
 	template <typename T>
 	vector2 <Type>
 	multVecMatrix (const vector2 <T> &) const;
 
+	///  Returns a new vector that is matrix multiplies by @vector.
 	template <typename T>
 	vector2 <Type>
 	multMatrixVec (const vector2 <T> &) const;
 
+	///  Returns a new vector that is @vector (a normal or direction vector) multiplies by matrix.
 	template <typename T>
 	vector2 <Type>
 	multDirMatrix (const vector2 <T> &) const;
 
+	///  Returns a new vector that is matrix multiplies by @vector (a normal or direction vector).
 	template <typename T>
 	vector2 <Type>
 	multMatrixDir (const vector2 <T> &) const;
 
+	///  Returns this matrix translated by @a translation.
 	void
 	translate (const vector2 <Type> &);
 
+	///  Returns this matrix rotated by @a rotation.
 	void
 	rotate (const Type &);
 
+	///  Returns this matrix scaled by @a scale.
 	void
 	scale (const vector2 <Type> &);
-
-	static const Matrix Identity;
-
-	Matrix value;
 
 
 private:
 
+	bool
+	factor (vector2 <Type> & translation,
+	        matrix3 & rotation,
+	        vector2 <Type> & scale,
+	        matrix3 & scaleOrientation) const;
+
 	Type
 	det2 () const;
 
-	template <typename T, typename S>
-	bool
-	factor (matrix3 &, vector2 <S> &, matrix3 &, vector2 <T> &, matrix3 &) const;
+	union
+	{
+		vector_type value;
+		array_type array;
+	};
 
-	void jacobi2 (Type [2], vector2 <Type> [2], int &) const;
+	static const matrix3 Identity;
 
 };
 
 template <typename Type>
-const typename matrix3 <Type>::Matrix matrix3 <Type>::Identity = {
-	1, 0, 0,
-	0, 1, 0,
-	0, 0, 1
+const matrix3 <Type> matrix3 <Type>::Identity = { 1, 0, 0,
+	                                               0, 1, 0,
+	                                               0, 0, 1 };
 
-};
-
-template <typename Type>
-matrix3 <Type>::matrix3 ()
-{
-	set (Identity);
-}
-
-template <typename Type>
-matrix3 <Type>::matrix3 (const matrix3 <Type> & matrix)
-{
-	set (matrix .value);
-}
-
-template <typename Type>
-template <typename T>
-matrix3 <Type>::matrix3 (const matrix3 <T> & matrix)
-{
-	*this = matrix;
-}
-
-template <typename Type>
-matrix3 <Type>::matrix3 (const Matrix value)
-{
-	set (value);
-}
-
-template <typename Type>
-matrix3 <Type>::matrix3 (const Type & e11, const Type & e12, const Type & e13,
-                         const Type & e21, const Type & e22, const Type & e23,
-                         const Type & e31, const Type & e32, const Type & e33)
-{
-	set (e11, e12, e13, e21, e22, e23, e31, e32, e33);
-}
-
-template <typename Type>
-matrix3 <Type>::matrix3 (const Type & r)
-{
-	rotation (r);
-}
-
-template <typename Type>
+template <class Type>
+template <class Up>
+inline
 matrix3 <Type> &
-matrix3 <Type>::operator = (const Matrix matrix)
+matrix3 <Type>::operator = (const matrix3 <Up> & matrix)
 {
-	set (matrix);
+	value = matrix .vector ();
 	return *this;
-}
-
-template <typename Type>
-template <typename T>
-matrix3 <Type> &
-matrix3 <Type>::operator = (const matrix3 <T> & matrix)
-{
-	value [ 0] = matrix .value [ 0];
-	value [ 1] = matrix .value [ 1];
-	value [ 2] = matrix .value [ 2];
-	value [ 3] = matrix .value [ 3];
-	value [ 4] = matrix .value [ 4];
-	value [ 5] = matrix .value [ 5];
-	value [ 6] = matrix .value [ 6];
-	value [ 7] = matrix .value [ 7];
-	value [ 8] = matrix .value [ 8];
-	return *this;
-}
-
-template <typename Type>
-matrix3 <Type> &
-matrix3 <Type>::operator = (const matrix3 <Type> & matrix)
-{
-	set (matrix .value);
-	return *this;
-}
-
-template <typename Type>
-void
-matrix3 <Type>::set (const Matrix value)
-{
-	(void) memmove (this -> value, value, sizeof (Type) * 9);
-}
-
-template <typename Type>
-void
-matrix3 <Type>::get (Matrix value)
-{
-	(void) memmove (value, this -> value, sizeof (Type) * 9);
-}
-
-template <typename Type>
-void
-matrix3 <Type>::set (const Type & e11, const Type & e12, const Type & e13,
-                     const Type & e21, const Type & e22, const Type & e23,
-                     const Type & e31, const Type & e32, const Type & e33)
-{
-	value [0] = e11; value [1] = e12; value [2] = e13;
-	value [3] = e21; value [4] = e22; value [5] = e23;
-	value [6] = e31; value [7] = e32; value [8] = e33;
-}
-
-template <typename Type>
-template <typename T>
-void
-matrix3 <Type>::get (T & e11, T & e12, T & e13,
-                     T & e21, T & e22, T & e23,
-                     T & e31, T & e32, T & e33) const
-{
-	e11 = value [0]; e12 = value [1]; e13 = value [2];
-	e21 = value [3]; e22 = value [4]; e23 = value [5];
-	e31 = value [6]; e32 = value [7]; e33 = value [8];
-}
-
-template <typename Type>
-template <typename T>
-void
-matrix3 <Type>::setRow (const size_type row, const vector3 <T> & vector)
-{
-	switch (row)
-	{
-		case 0:
-			value [0] = vector .x;
-			value [1] = vector .y;
-			value [2] = vector .z;
-			return;
-		case 1:
-			value [3] = vector .x;
-			value [4] = vector .y;
-			value [5] = vector .z;
-			return;
-		case 2:
-			value [6] = vector .x;
-			value [7] = vector .y;
-			value [8] = vector .z;
-			return;
-	}
-
-	throw std::out_of_range ("index out of range");
-}
-
-template <typename Type>
-vector3 <Type>
-matrix3 <Type>::getRow (const size_type row) const
-{
-	switch (row)
-	{
-		case 0: return vector3 <Type> (value [0], value [1], value [2]);
-		case 1: return vector3 <Type> (value [3], value [4], value [5]);
-		case 2: return vector3 <Type> (value [6], value [7], value [8]);
-	}
-
-	throw std::out_of_range ("index out of range");
 }
 
 template <typename Type>
 vector2 <Type>
 matrix3 <Type>::translation () const
 {
-	return vector2 <Type> (value [6],
-	                       value [7]);
+	return vector2 <Type> (array [6],
+	                       array [7]);
 }
 
 template <typename Type>
@@ -477,33 +382,33 @@ matrix3 <Type>::rotation (const Type & rotation)
 
 	*this = Identity;
 
-	value [0] = cosAngle;
-	value [1] = sinAngle;
-	value [3] = -sinAngle;
-	value [4] = cosAngle;
+	array [0] = cosAngle;
+	array [1] = sinAngle;
+	array [3] = -sinAngle;
+	array [4] = cosAngle;
 }
 
 template <typename Type>
 Type
 matrix3 <Type>::rotation () const
 {
-	return std::atan2 (value [1], value [0]);
+	return std::atan2 (array [1], array [0]);
 }
 
 template <typename Type>
 void
 matrix3 <Type>::set ()
 {
-	set (Identity);
+	value = Identity .value;
 }
 
 template <typename Type>
 void
 matrix3 <Type>::set (const vector2 <Type> & translation)
 {
-	*this     = Identity;
-	value [6] = translation .x ();
-	value [7] = translation .y ();
+	value [0] = vector3 <Type> (1, 0, 0);
+	value [1] = vector3 <Type> (0, 1, 0);
+	value [2] = vector3 <Type> (translation .x (), translation .y (), 1);
 }
 
 template <typename Type>
@@ -513,7 +418,7 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
 {
 	set (translation);
 
-	if (rotation not_eq 0)
+	if (rotation not_eq Type (0))
 		rotate (rotation);
 }
 
@@ -525,7 +430,7 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
 {
 	set (translation);
 
-	if (rotation not_eq 0)
+	if (rotation not_eq Type (0))
 		rotate (rotation);
 
 	if (scaleFactor not_eq vector2 <Type> (1, 1))
@@ -541,17 +446,17 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
 {
 	set (translation);
 
-	if (rotation not_eq 0)
+	if (rotation not_eq Type (0))
 		rotate (rotation);
 
 	if (scaleFactor not_eq vector2 <Type> (1, 1))
 	{
-		if (scaleOrientation not_eq 0)
+		if (scaleOrientation not_eq Type (0))
 			rotate (scaleOrientation);
 
 		scale (scaleFactor);
 
-		if (scaleOrientation not_eq 0)
+		if (scaleOrientation not_eq Type (0))
 			rotate (-scaleOrientation);
 	}
 }
@@ -569,17 +474,17 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
 	if (center not_eq vector2 <Type> ())
 		translate (center);
 
-	if (rotation not_eq 0)
+	if (rotation not_eq Type (0))
 		rotate (rotation);
 
 	if (scaleFactor not_eq vector2 <Type> (1, 1))
 	{
-		if (scaleOrientation not_eq 0)
+		if (scaleOrientation not_eq Type (0))
 			rotate (scaleOrientation);
 
 		scale (scaleFactor);
 
-		if (scaleOrientation not_eq 0)
+		if (scaleOrientation not_eq Type (0))
 			rotate (-scaleOrientation);
 	}
 
@@ -599,9 +504,9 @@ void
 matrix3 <Type>::get (vector2 <Type> & translation,
                      Type & rotation) const
 {
-	matrix3 <Type> so, rot, proj;
+	matrix3 <Type> so, rot;
 	vector2 <Type> scaleFactor;
-	factor (so, scaleFactor, rot, translation, proj);
+	factor (translation, rot, scaleFactor, so);
 	rotation = rot .rotation ();
 }
 
@@ -611,8 +516,8 @@ matrix3 <Type>::get (vector2 <Type> & translation,
                      Type & rotation,
                      vector2 <Type> & scaleFactor) const
 {
-	matrix3 <Type> so, rot, proj;
-	factor (so, scaleFactor, rot, translation, proj);
+	matrix3 <Type> so, rot;
+	factor (translation, rot, scaleFactor, so);
 	rotation = rot .rotation ();
 }
 
@@ -623,8 +528,8 @@ matrix3 <Type>::get (vector2 <Type> & translation,
                      vector2 <Type> & scaleFactor,
                      Type & scaleOrientation) const
 {
-	matrix3 <Type> so, rot, proj;
-	factor (so, scaleFactor, rot, translation, proj);
+	matrix3 <Type> so, rot;
+	factor (translation, rot, scaleFactor, so);
 	rotation         = rot .rotation ();
 	scaleOrientation = so .rotation ();
 }
@@ -638,6 +543,7 @@ matrix3 <Type>::get (vector2 <Type> & translation,
                      vector2 <Type> & center) const
 {
 	matrix3 <Type> m, c;
+	
 	m .set (-center);
 	m .multLeft (*this);
 	c .set (center);
@@ -647,246 +553,103 @@ matrix3 <Type>::get (vector2 <Type> & translation,
 }
 
 template <typename Type>
-Type &
-matrix3 <Type>::operator [ ] (const size_type index)
-{
-	return value [index];
-}
-
-template <typename Type>
-const
-Type &
-matrix3 <Type>::operator [ ] (const size_type index) const
-{
-	return value [index];
-}
-
-template <typename Type>
-template <typename T, typename S>
 bool
-matrix3 <Type>::factor (matrix3 & r, vector2 <S> & s, matrix3 & u, vector2 <T> & t, matrix3 & proj) const
+matrix3 <Type>::factor (vector2 <Type> & translation,
+                        matrix3 & rotation,
+                        vector2 <Type> & scale,
+                        matrix3 & scaleOrientation) const
 {
 	matrix3 a (*this);
 
-	for (int i = 0; i < 2; i ++)
+	// (2) Get translation and create 3x3 matrix.
+	for (size_t i = 0; i < 2; ++ i)
 	{
-		t [i]                    = value [INDEX3 (2, i)];
-		a .value [INDEX3 (2, i)] = a .value [INDEX3 (i, 2)] = 0;
+		translation [i]  = value [2] [i];
+		a .value [2] [i] = a .value [i] [2] = 0;
 	}
 
-	a .value [INDEX3 (2, 2)] = 1;
+	a .value [2] [2] = 1;
 
-	/* (3) Compute det A. If negative, set sign = -1, else sign = 1 */
-	double det      = a .det2 ();
-	double det_sign = (det < 0 ? -1 : 1);
+	// (3) Compute det A. If negative, set sign = -1, else sign = 1
+	Type det      = a .det2 ();
+	Type det_sign = (det < 0 ? -1 : 1);
 
-	if (det_sign * det < 1e-12)
+	if (det_sign * det == 0)
 		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        // singular
 
-	/* (4) B = A * !A  (here !A means A transpose) */
+	// (4) B = A * !A  (here !A means A transpose)
 	matrix3 b = a * ! a;
 
-	Type           evalues [2];
-	vector2 <Type> evectors [2];
-	int            junk;
-	b .jacobi2 (evalues, evectors, junk);
+	Type evalues [2];
+	Type evectors [2] [2];
+
+	eigen_decomposition (b, evalues, evectors);
 
 	// find min / max eigenvalues and do ratio test to determine singularity
 
-	r = matrix3 (evectors [0] .x (), evectors [0] .y (), 0,
-	             evectors [1] .x (), evectors [1] .y (), 0,
-	             0, 0, 1);
+	scaleOrientation = matrix3 (evectors [0] [0], evectors [0] [1], 0,
+	                            evectors [1] [0], evectors [1] [1], 0,
+	                            0, 0, 1);
 
-	/* Compute s = sqrt(evalues), with sign. Set si = s-inverse */
+	// Compute s = sqrt(evalues), with sign. Set si = s-inverse
 	matrix3 si;
 
-	for (int i = 0; i < 2; i ++)
+	for (size_t i = 0; i < 2; ++ i)
 	{
-		s [i]                     = det_sign * std::sqrt (evalues [i]);
-		si .value [INDEX3 (i, i)] = 1 / s [i];
+		scale [i]         = det_sign * std::sqrt (evalues [i]);
+		si .value [i] [i] = 1 / scale [i];
 	}
 
-	/* (5) Compute U = R^ S! R A. */
-	u = r * si * ! r * a;
+	// (5) Compute U = !R ~S R A.
+	rotation = scaleOrientation * si * ! scaleOrientation * a;
 
-	r .transpose ();
+	scaleOrientation .transpose ();
 
 	return true;
 }
-
-#define SB_JACOBI_RANK  2
-template <typename Type>
-void
-matrix3 <Type>::jacobi2 (Type evalues [SB_JACOBI_RANK], vector2 <Type> evectors [SB_JACOBI_RANK], int & rots) const
-{
-	double sm;                 // smallest entry
-	double theta;              // angle for Jacobi rotation
-	double c, s, t;            // cosine, sine, tangent of theta
-	double tau;                // sine / (1 + cos)
-	double h, g;               // two scrap values
-	double thresh;             // threshold below which no rotation done
-	double b [SB_JACOBI_RANK]; // more scratch
-	double z [SB_JACOBI_RANK]; // more scratch
-	int    p, q, i, j;
-	double a [SB_JACOBI_RANK] [SB_JACOBI_RANK];
-
-	// initializations
-	for (i = 0; i < SB_JACOBI_RANK; i ++)
-	{
-		b [i] = evalues [i] = value [INDEX3 (i, i)];
-		z [i] = 0;
-
-		for (j = 0; j < SB_JACOBI_RANK; j ++)
-		{
-			evectors [i] [j] = (i == j) ? 1 : 0;
-			a [i] [j]        = value [INDEX3 (i, j)];
-		}
-	}
-
-	rots = 0;
-
-	// Why 50? I don't know--it's the way the folks who wrote the
-	// algorithm did it:
-	for (i = 0; i < 50; i ++)
-	{
-		sm = 0;
-
-		for (p = 0; p < SB_JACOBI_RANK - 1; p ++)
-			for (q = p + 1; q < SB_JACOBI_RANK; q ++)
-				sm += std::abs (a [p] [q]);
-
-		if (sm == 0)
-			return;
-
-		thresh = i < 3 ?
-		         .2 * sm / (SB_JACOBI_RANK * SB_JACOBI_RANK) :
-		         0;
-
-		for (p = 0; p < SB_JACOBI_RANK - 1; p ++)
-		{
-			for (q = p + 1; q < SB_JACOBI_RANK; q ++)
-			{
-				g = 100 * std::abs (a [p] [q]);
-
-				if (i > 3 and (std::abs (evalues [p]) + g == std::abs (evalues [p])) and (std::abs (evalues [q]) + g == std::abs (evalues [q])))
-					a [p] [q] = 0;
-
-				else if (std::abs (a [p] [q]) > thresh)
-				{
-					h = evalues [q] - evalues [p];
-
-					if (std::abs (h) + g == std::abs (h))
-						t = a [p] [q] / h;
-					else
-					{
-						theta = .5 * h / a [p] [q];
-						t     = 1 / (std::abs (theta) + std::sqrt (1 + theta * theta));
-
-						if (theta < 0)
-							t = -t;
-					}
-
-					// End of computing tangent of rotation angle
-
-					c            = 1 / std::sqrt (1 + t * t);
-					s            = t * c;
-					tau          = s / (1 + c);
-					h            = t * a [p] [q];
-					z [p]       -= h;
-					z [q]       += h;
-					evalues [p] -= h;
-					evalues [q] += h;
-					a [p] [q]    = 0;
-
-					for (j = 0; j < p; j ++)
-					{
-						g         = a [j] [p];
-						h         = a [j] [q];
-						a [j] [p] = g - s * (h + g * tau);
-						a [j] [q] = h + s * (g - h * tau);
-					}
-
-					for (j = p + 1; j < q; j ++)
-					{
-						g         = a [p] [j];
-						h         = a [j] [q];
-						a [p] [j] = g - s * (h + g * tau);
-						a [j] [q] = h + s * (g - h * tau);
-					}
-
-					for (j = q + 1; j < SB_JACOBI_RANK; j ++)
-					{
-						g         = a [p] [j];
-						h         = a [q] [j];
-						a [p] [j] = g - s * (h + g * tau);
-						a [q] [j] = h + s * (g - h * tau);
-					}
-
-					for (j = 0; j < SB_JACOBI_RANK; j ++)
-					{
-						g                = evectors [j] [p];
-						h                = evectors [j] [q];
-						evectors [j] [p] = g - s * (h + g * tau);
-						evectors [j] [q] = h + s * (g - h * tau);
-					}
-				}
-
-				rots ++;
-			}
-		}
-
-		for (p = 0; p < SB_JACOBI_RANK; p ++)
-		{
-			evalues [p] = b [p] += z [p];
-			z [p]       = 0;
-		}
-	}
-}
-
-#undef SB_JACOBI_RANK
 
 template <typename Type>
 Type
 matrix3 <Type>::det2 () const
 {
 	return
-	   value [0] * value [4]
-	   - value [1] * value [3];
+	   array [0] * array [4] -
+	   array [1] * array [3];
 }
 
 template <typename Type>
 Type
 matrix3 <Type>::determinant () const
 {
-	return value [0] * (value [4] * value [8] - value [5] * value [7])
-	       - value [1] * (value [3] * value [8] - value [5] * value [6])
-	       + value [2] * (value [3] * value [7] - value [4] * value [6]);
+	return array [0] * (array [4] * array [8] - array [5] * array [7]) -
+	       array [1] * (array [3] * array [8] - array [5] * array [6]) +
+	       array [2] * (array [3] * array [7] - array [4] * array [6]);
 }
 
 template <typename Type>
 matrix3 <Type> &
 matrix3 <Type>::transpose ()
 {
-	return *this = matrix3 <Type> (value [0], value [3], value [6],
-	                               value [1], value [4], value [7],
-	                               value [2], value [5], value [8]);
+	return *this = matrix3 <Type> (array [0], array [3], array [6],
+	                               array [1], array [4], array [7],
+	                               array [2], array [5], array [8]);
 }
 
 template <typename Type>
 matrix3 <Type> &
 matrix3 <Type>::inverse ()
 {
-	Type m00 = value [0];
-	Type m01 = value [1];
-	Type m02 = value [2];
+	Type m00 = array [0];
+	Type m01 = array [1];
+	Type m02 = array [2];
 
-	Type m10 = value [3];
-	Type m11 = value [4];
-	Type m12 = value [5];
+	Type m10 = array [3];
+	Type m11 = array [4];
+	Type m12 = array [5];
 
-	Type m20 = value [6];
-	Type m21 = value [7];
-	Type m22 = value [8];
+	Type m20 = array [6];
+	Type m21 = array [7];
+	Type m22 = array [8];
 
 	Type t4  = m00 * m11;
 	Type t6  = m00 * m21;
@@ -914,14 +677,44 @@ matrix3 <Type>::inverse ()
 }
 
 template <typename Type>
+matrix3 <Type> &
+matrix3 <Type>::operator *= (const Type & t)
+{
+	value [0] *= t;
+	value [1] *= t;
+	value [2] *= t;
+
+	return *this;
+}
+
+template <typename Type>
+template <typename T>
+matrix3 <Type> &
+matrix3 <Type>::operator *= (const matrix3 <T> & matrix)
+{
+	return multRight (matrix);
+}
+
+template <typename Type>
+matrix3 <Type> &
+matrix3 <Type>::operator /= (const Type & t)
+{
+	value [0] /= t;
+	value [1] /= t;
+	value [2] /= t;
+
+	return *this;
+}
+
+template <typename Type>
 template <typename T>
 matrix3 <Type> &
 matrix3 <Type>::multLeft (const matrix3 <T> & matrix)
 {
 	#define MULT_LEFT(i, j) \
-	   (value [0 * 3 + j] * matrix .value [i * 3 + 0]   \
-	    + value [1 * 3 + j] * matrix .value [i * 3 + 1]   \
-	    + value [2 * 3 + j] * matrix .value [i * 3 + 2])
+	   (array [0 * 3 + j] * matrix .array [i * 3 + 0] +   \
+	    array [1 * 3 + j] * matrix .array [i * 3 + 1] +   \
+	    array [2 * 3 + j] * matrix .array [i * 3 + 2])
 
 	return *this = matrix3 <Type> (MULT_LEFT (0, 0),
 	                               MULT_LEFT (0, 1),
@@ -944,9 +737,9 @@ matrix3 <Type> &
 matrix3 <Type>::multRight (const matrix3 <T> & matrix)
 {
 	#define MULT_RIGHT(i, j) \
-	   (value [i * 3 + 0] * matrix .value [0 * 3 + j]   \
-	    + value [i * 3 + 1] * matrix .value [1 * 3 + j]   \
-	    + value [i * 3 + 2] * matrix .value [2 * 3 + j])
+	   (array [i * 3 + 0] * matrix .array [0 * 3 + j] +   \
+	    array [i * 3 + 1] * matrix .array [1 * 3 + j] +   \
+	    array [i * 3 + 2] * matrix .array [2 * 3 + j])
 
 	return *this = matrix3 <Type> (MULT_RIGHT (0, 0),
 	                               MULT_RIGHT (0, 1),
@@ -968,10 +761,10 @@ template <typename T>
 vector2 <Type>
 matrix3 <Type>::multVecMatrix (const vector2 <T> & vector) const
 {
-	Type w = vector .x () * value [2] + vector .y () * value [5] + value [8];
+	Type w = vector .x () * array [2] + vector .y () * array [5] + array [8];
 
-	return vector2 <Type> ((vector .x () * value [0] + vector .y () * value [3] + value [6]) / w,
-	                       (vector .x () * value [1] + vector .y () * value [4] + value [7]) / w);
+	return vector2 <Type> ((vector .x () * array [0] + vector .y () * array [3] + array [6]) / w,
+	                       (vector .x () * array [1] + vector .y () * array [4] + array [7]) / w);
 }
 
 template <typename Type>
@@ -979,10 +772,10 @@ template <typename T>
 vector2 <Type>
 matrix3 <Type>::multMatrixVec (const vector2 <T> & vector) const
 {
-	Type w = vector .x () * value [6] + vector .y () * value [7] + value [8];
+	Type w = vector .x () * array [6] + vector .y () * array [7] + array [8];
 
-	return vector2 <Type> ((vector .x () * value [0] + vector .y () * value [1] + value [2]) / w,
-	                       (vector .x () * value [3] + vector .y () * value [4] + value [5]) / w);
+	return vector2 <Type> ((vector .x () * array [0] + vector .y () * array [1] + array [2]) / w,
+	                       (vector .x () * array [3] + vector .y () * array [4] + array [5]) / w);
 }
 
 template <typename Type>
@@ -990,8 +783,8 @@ template <typename T>
 vector2 <Type>
 matrix3 <Type>::multDirMatrix (const vector2 <T> & vector) const
 {
-	return vector2 <Type> (vector .x () * value [0] + vector .y () * value [3],
-	                       vector .x () * value [1] + vector .y () * value [4]);
+	return vector2 <Type> (vector .x () * array [0] + vector .y () * array [3],
+	                       vector .x () * array [1] + vector .y () * array [4]);
 }
 
 template <typename Type>
@@ -999,8 +792,8 @@ template <typename T>
 vector2 <Type>
 matrix3 <Type>::multMatrixDir (const vector2 <T> & vector) const
 {
-	return vector2 <Type> (vector .x () * value [0] + vector .y () * value [1],
-	                       vector .x () * value [3] + vector .y () * value [4]);
+	return vector2 <Type> (vector .x () * array [0] + vector .y () * array [1],
+	                       vector .x () * array [3] + vector .y () * array [4]);
 }
 
 template <typename Type>
@@ -1008,11 +801,11 @@ void
 matrix3 <Type>::translate (const vector2 <Type> & translation)
 {
 	#define TRANSLATE(i) \
-	   (value [INDEX3 (0, i)] * translation .x ()   \
-	    + value [INDEX3 (1, i)] * translation .y ())
+	   (value [0] [i] * translation .x () +   \
+	    value [1] [i] * translation .y ())
 
-	value [INDEX3 (2, 0)] += TRANSLATE (0);
-	value [INDEX3 (2, 1)] += TRANSLATE (1);
+	value [2] [0] += TRANSLATE (0);
+	value [2] [1] += TRANSLATE (1);
 
 	#undef TRANSLATE
 }
@@ -1028,86 +821,39 @@ template <typename Type>
 void
 matrix3 <Type>::scale (const vector2 <Type> & scaleFactor)
 {
-	value [INDEX3 (0, 0)] *= scaleFactor .x ();
-	value [INDEX3 (1, 0)] *= scaleFactor .y ();
+	value [0] [0] *= scaleFactor .x ();
+	value [1] [0] *= scaleFactor .y ();
 
-	value [INDEX3 (0, 1)] *= scaleFactor .x ();
-	value [INDEX3 (1, 1)] *= scaleFactor .y ();
-
-	//value[INDEX3(0,2)] *= scaleFactor .x;
-	//value[INDEX3(1,2)] *= scaleFactor .y;
+	value [0] [1] *= scaleFactor .x ();
+	value [1] [1] *= scaleFactor .y ();
 }
 
-template <typename Type>
-matrix3 <Type> &
-matrix3 <Type>::operator *= (const Type & v)
-{
-	value [0] *= v;
-	value [1] *= v;
-	value [2] *= v;
+///  @relates matrix3
+///  @name Comparision operations
 
-	value [3] *= v;
-	value [4] *= v;
-	value [5] *= v;
-
-	value [6] *= v;
-	value [7] *= v;
-	value [8] *= v;
-
-	return *this;
-}
-
-template <typename Type>
-template <typename T>
-matrix3 <Type> &
-matrix3 <Type>::operator *= (const matrix3 <T> & matrix)
-{
-	return multRight (matrix);
-}
-
-template <typename Type>
-matrix3 <Type> &
-matrix3 <Type>::operator /= (const Type & v)
-{
-	value [0] /= v;
-	value [1] /= v;
-	value [2] /= v;
-
-	value [3] /= v;
-	value [4] /= v;
-	value [5] /= v;
-
-	value [6] /= v;
-	value [7] /= v;
-	value [8] /= v;
-
-	return *this;
-}
-
+///  Compares two matrix3 numbers.
+///  Return true if @a a is equal to @a b.
 template <typename Type>
 bool
 operator == (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 {
-	return
-	   lhs .value [ 0] == rhs .value [ 0] and
-	   lhs .value [ 1] == rhs .value [ 1] and
-	   lhs .value [ 2] == rhs .value [ 2] and
-	   lhs .value [ 3] == rhs .value [ 3] and
-	   lhs .value [ 4] == rhs .value [ 4] and
-	   lhs .value [ 5] == rhs .value [ 5] and
-	   lhs .value [ 6] == rhs .value [ 6] and
-	   lhs .value [ 7] == rhs .value [ 7] and
-	   lhs .value [ 8] == rhs .value [ 8];
+	return lhs .vector () == rhs .vector ();
 }
 
+///  Compares two matrix3 numbers.
+///  Return true if @a a is not equal to @a b.
 template <typename Type>
 inline
 bool
 operator not_eq (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 {
-	return not (lhs == rhs);
+	return lhs .vector () not_eq rhs .vector ();
 }
 
+///  @relates matrix3
+///  @name Arithmetic operations
+
+///  Returns the transpose of the @a matrix.
 template <typename Type>
 inline
 matrix3 <Type>
@@ -1116,6 +862,7 @@ operator ! (const matrix3 <Type> & matrix)
 	return matrix3 <Type> (matrix) .transpose ();
 }
 
+///  Returns the transpose of the @a matrix.
 template <typename Type>
 inline
 matrix3 <Type>
@@ -1124,6 +871,7 @@ transpose (const matrix3 <Type> & matrix)
 	return matrix3 <Type> (matrix) .transpose ();
 }
 
+///  Returns the inverse of the @a matrix.
 template <typename Type>
 inline
 matrix3 <Type>
@@ -1132,6 +880,7 @@ operator ~ (const matrix3 <Type> & matrix)
 	return matrix3 <Type> (matrix) .inverse ();
 }
 
+///  Returns the inverse of the @a matrix.
 template <typename Type>
 inline
 matrix3 <Type>
@@ -1140,6 +889,7 @@ inverse (const matrix3 <Type> & matrix)
 	return matrix3 <Type> (matrix) .inverse ();
 }
 
+///  Return matrix value @a lhs right multiplied by @a rhs.
 template <typename Type>
 inline
 matrix3 <Type>
@@ -1148,6 +898,7 @@ operator * (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 	return matrix3 <Type> (lhs) .multRight (rhs);
 }
 
+///  Return vector value @a rhs multiplied by @a lhs.
 template <class Type>
 inline
 vector2 <Type>
@@ -1156,6 +907,7 @@ operator * (const matrix3 <Type> & lhs, const vector2 <Type> & rhs)
 	return lhs .multMatrixVec (rhs);
 }
 
+///  Return vector value @a rhs multiplied by @a lhs.
 template <class Type>
 inline
 vector2 <Type>
@@ -1164,26 +916,34 @@ operator * (const vector2 <Type> & lhs, const matrix3 <Type> & rhs)
 	return rhs .multVecMatrix (lhs);
 }
 
+///  @relates matrix3
+///  @name Input/Output operations
+
 ///  Extraction operator for vector values.
 template <typename CharT, class Traits, typename Type>
 std::basic_istream <CharT, Traits> &
 operator >> (std::basic_istream <CharT, Traits> & istream, matrix3 <Type> & matrix)
 {
-	typename matrix3 <Type>::Matrix value;
+	Type
+	   e11, e12, e13,
+	   e21, e22, e23,
+	   e31, e32, e33;
 
 	istream
-		>> value [0]
-		>> value [1]
-		>> value [2]
-		>> value [3]
-		>> value [4]
-		>> value [5]
-		>> value [6]
-		>> value [7]
-		>> value [8];
+		>> e11
+		>> e12
+		>> e13
+		>> e21
+		>> e22
+		>> e23
+		>> e31
+		>> e32
+		>> e33;
 
 	if (istream)
-		matrix .set (value);
+		matrix = matrix3 <Type> (e11, e12, e13,
+		                         e21, e22, e23,
+		                         e31, e32, e33);
 
 	return istream;
 }
@@ -1193,16 +953,7 @@ template <typename CharT, class Traits, typename Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const matrix3 <Type> & matrix)
 {
-	return ostream
-	       << matrix [0] << ' '
-	       << matrix [1] << ' '
-	       << matrix [2] << ' '
-	       << matrix [3] << ' '
-	       << matrix [4] << ' '
-	       << matrix [5] << ' '
-	       << matrix [6] << ' '
-	       << matrix [7] << ' '
-	       << matrix [8];
+	return ostream << matrix .vector ();
 }
 
 extern template class matrix3 <float>;
@@ -1221,7 +972,5 @@ extern template std::ostream & operator << (std::ostream &, const matrix3 <long 
 
 } // math
 } // titania
-
-#undef INDEX3
 
 #endif

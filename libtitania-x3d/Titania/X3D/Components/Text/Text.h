@@ -81,7 +81,7 @@ public:
 
 	virtual
 	void
-	display ();
+	draw ();
 
 	virtual
 	void

@@ -55,6 +55,8 @@
 #include "../Components/Core/X3DNode.h"
 #include "../Rendering/ShapeContainer.h"
 
+#include <memory>
+
 namespace titania {
 namespace X3D {
 
@@ -64,6 +66,10 @@ class X3DRenderer :
 public:
 
 	X3DRenderer ();
+
+	virtual
+	void
+	initialize ();
 
 	time_type
 	getTraverseTime () { return traverseTime; }
@@ -84,13 +90,14 @@ public:
 	getNumTransparentNodesDrawn () { return numTransparentNodesDrawn; }
 
 	void
-	addShape (X3DShapeNode*, const float);
+	addShape (X3DShapeNode*);
 
 	void
 	render ();
-	
+
+	virtual
 	void
-	bottom ();
+	dispose ();
 
 	virtual
 	~X3DRenderer ();
@@ -100,16 +107,8 @@ private:
 
 	typedef std::vector <ShapeContainer*> ShapeContainerArray;
 
-	time_type traverseTime;
-	time_type drawTime;
-	size_t    numNodes;
-	size_t    numNodesDrawn;
-	size_t    numOpaqueNodes;
-	size_t    numTransparentNodes;
-	size_t    numTransparentNodesDrawn;
-
-	ShapeContainerArray shapes;
-	ShapeContainerArray transparentShapes;
+	void
+	setViewpointMatrix (const Matrix4f &);
 
 	virtual
 	void
@@ -119,7 +118,26 @@ private:
 	draw ();
 
 	void
+	bottom ();
+
+	void
 	clear ();
+
+	class DepthBuffer;
+
+	ShapeContainerArray shapes;
+	ShapeContainerArray transparentShapes;
+
+	std::unique_ptr <DepthBuffer> depthBuffer;
+	float                         speed;
+
+	time_type traverseTime;
+	time_type drawTime;
+	size_t    numNodes;
+	size_t    numNodesDrawn;
+	size_t    numOpaqueNodes;
+	size_t    numTransparentNodes;
+	size_t    numTransparentNodesDrawn;
 
 };
 

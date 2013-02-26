@@ -48,101 +48,101 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_STREAM_IGZSTREAM_H__
-#define __TITANIA_STREAM_IGZSTREAM_H__
+#ifndef __TITANIA_X3D_BROWSER_VIEWER_X3DFLY_VIEWER_H__
+#define __TITANIA_X3D_BROWSER_VIEWER_X3DFLY_VIEWER_H__
 
-#include "GZStreamBuf.h"
-#include <istream>
+#include <gdkmm.h>
+
+#include "../../Components/Navigation/NavigationInfo.h"
+#include "../../Components/Navigation/Viewpoint.h"
+#include "../../Components/Navigation/X3DViewpointNode.h"
+#include "../../Fields/SFNode.h"
+#include "../Viewer/X3DViewer.h"
 
 namespace titania {
-namespace basic {
+namespace X3D {
 
-/**
- *  Template to represent basic gzstream handling.
- *
- *  Extern instantiations for char and wchar_t are part of the
- *  library.  Results with any other type are not guaranteed.
- *
- *  @param  CharT   Type of ... values.
- *  @param  Traits  Traits ...
- */
-
-template <class CharT,
-          class Traits = std::char_traits <CharT>>
-class basic_igzstream :
-	public std::basic_istream <CharT, Traits>
+class X3DFlyViewer :
+	public X3DViewer
 {
 public:
 
-	using std::basic_istream <CharT, Traits>::rdbuf;
+	X3DFlyViewer (Browser* const, NavigationInfo*);
 
-	/// @name Constructors
-
-	basic_igzstream (basic_igzstream &&);
-
-	basic_igzstream (const std::basic_istream <CharT, Traits> &);
-
-	/// @name Destructor
+	void
+	initialize ();
 
 	virtual
-	~basic_igzstream ();
+	~X3DFlyViewer ();
 
 
 private:
 
+	bool
+	on_button_press_event (GdkEventButton*);
+
+	bool
+	on_button_release_event (GdkEventButton*);
+
+	bool
+	on_motion_notify_event (GdkEventMotion*);
+
+	bool
+	on_scroll_event (GdkEventScroll*);
+
+	bool
+	on_key_press_event (GdkEventKey*);
+
+	bool
+	on_key_release_event (GdkEventKey*);
+
+	bool
+	fly ();
+
+	bool
+	pan ();
+
+	bool
+	roll ();
+
 	void
-	close ();
+	addFly ();
+
+	void
+	addPan ();
+
+	void
+	addRoll ();
+
+	void
+	disconnect ();
+
+	void
+	display ();
+
+	static Vector3f upVector;
+
+	NavigationInfo*  navigationInfo;
+	Vector3f         fromVector;
+	Vector3f         toVector;
+	Vector3f         direction;
+	Rotation4f       rotation;
+	time_type        startTime;
+	guint            button;
+	bool             shift_key;
+	sigc::connection button_press_event_connection;
+	sigc::connection button_release_event_connection;
+	sigc::connection motion_notify_event_connection;
+	sigc::connection scroll_event_connection;
+	sigc::connection key_press_event_connection;
+	sigc::connection key_release_event_connection;
+	sigc::connection fly_id;
+	sigc::connection pan_id;
+	sigc::connection roll_id;
 
 };
 
-template <class CharT, class Traits>
-basic_igzstream <CharT, Traits>::basic_igzstream (basic_igzstream <CharT, Traits>&& gzstream) :
-	std::basic_istream <CharT, Traits> (gzstream .rdbuf (NULL))
-{ }
-
-template <class CharT, class Traits>
-basic_igzstream <CharT, Traits>::basic_igzstream (const std::basic_istream <CharT, Traits> & istream) :
-	std::basic_istream <CharT, Traits> (new basic_gzstreambuf <CharT, Traits> (istream .rdbuf ()))
-{ }
-
-template <class CharT, class Traits>
-void
-basic_igzstream <CharT, Traits>::close ()
-{
-	if (rdbuf ())
-		delete rdbuf ();
-}
-
-template <class CharT, class Traits>
-basic_igzstream <CharT, Traits>::~basic_igzstream ()
-{
-	close ();
-}
-
-typedef basic_igzstream <char> igzstream;
-
-extern template class basic_igzstream <char>;
-
-template <class CharT,
-          class Traits = std::char_traits <CharT>>
-inline
-basic_igzstream <CharT, Traits>
-operator >> (std::basic_istream <CharT, Traits> & istream,
-             basic_igzstream <CharT, Traits> (* pf) (std::basic_istream <CharT, Traits> &))
-{
-	return pf (istream);
-}
-
-template <class CharT,
-          class Traits = std::char_traits <CharT>>
-inline
-basic_igzstream <CharT, Traits>
-gunzip (std::basic_istream <CharT, Traits> & istream)
-{
-	return igzstream (istream);
-}
-
-} // basic
+} // X3D
 } // titania
 
 #endif

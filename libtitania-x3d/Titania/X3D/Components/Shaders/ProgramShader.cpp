@@ -77,5 +77,9 @@ ProgramShader::create (X3DExecutionContext* const executionContext) const
 	return new ProgramShader (executionContext);
 }
 
+void
+ProgramShader::draw ()
+{ }
+
 } // X3D
 } // titania

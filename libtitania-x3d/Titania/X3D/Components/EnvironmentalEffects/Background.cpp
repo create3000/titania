@@ -161,7 +161,7 @@ Background::draw ()
 		else
 			glDisable (GL_BLEND);
 
-		frontTexture -> display ();
+		frontTexture -> draw ();
 		glBegin (GL_QUADS);
 		glTexCoord2f (1, 1);
 		glVertex3f (s, s, -s);
@@ -181,7 +181,7 @@ Background::draw ()
 		else
 			glDisable (GL_BLEND);
 
-		backTexture -> display ();
+		backTexture -> draw ();
 		glBegin (GL_QUADS);
 		glTexCoord2f (0, 0);
 		glVertex3f (s, -s, s);
@@ -201,7 +201,7 @@ Background::draw ()
 		else
 			glDisable (GL_BLEND);
 
-		leftTexture -> display ();
+		leftTexture -> draw ();
 		glBegin (GL_QUADS);
 		glTexCoord2f (0, 1);
 		glVertex3f (-s, s, s);
@@ -221,7 +221,7 @@ Background::draw ()
 		else
 			glDisable (GL_BLEND);
 
-		rightTexture -> display ();
+		rightTexture -> draw ();
 		glBegin (GL_QUADS);
 		glTexCoord2f (0, 1);
 		glVertex3f (s, s, -s);
@@ -241,7 +241,7 @@ Background::draw ()
 		else
 			glDisable (GL_BLEND);
 
-		topTexture -> display ();
+		topTexture -> draw ();
 		glBegin (GL_QUADS);
 		glTexCoord2f (0, 1);
 		glVertex3f (-s, s, s);
@@ -261,7 +261,7 @@ Background::draw ()
 		else
 			glDisable (GL_BLEND);
 
-		bottomTexture -> display ();
+		bottomTexture -> draw ();
 		glBegin (GL_QUADS);
 		glTexCoord2f (1, 0);
 		glVertex3f (s, -s, s);

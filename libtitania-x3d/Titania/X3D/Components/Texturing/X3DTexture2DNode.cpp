@@ -52,7 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
-#include <Titania/Math/Math.h>
+#include <Titania/Math/Functional.h>
 #include <Titania/Utility/Adapter.h>
 
 namespace titania {
@@ -301,7 +301,7 @@ X3DTexture2DNode::applyTextureProperties (const TextureProperties* textureProper
 }
 
 void
-X3DTexture2DNode::display ()
+X3DTexture2DNode::draw ()
 {
 	glEnable (GL_TEXTURE_2D);
 	glBindTexture (GL_TEXTURE_2D, textureId);

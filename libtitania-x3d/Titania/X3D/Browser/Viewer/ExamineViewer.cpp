@@ -50,9 +50,8 @@
 
 #include "ExamineViewer.h"
 
-#include "../Browser/Browser.h"
-#include "../Components/Geospatial/GeoViewpoint.h"
-#include "../Components/Navigation/OrthoViewpoint.h"
+#include "../Browser.h"
+#include "../../Components/Navigation/OrthoViewpoint.h"
 
 #include <cmath>
 #include <glibmm/main.h>

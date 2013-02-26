@@ -158,12 +158,12 @@ ViewpointGroup::set_isActive ()
 }
 
 void
-ViewpointGroup::display ()
+ViewpointGroup::traverse (TraverseType type)
 {
-	visibilitySensor -> display ();
+	visibilitySensor -> traverse (type);
 
 	for (const auto & viewpointObject : viewpointObjects)
-		viewpointObject -> display ();
+		viewpointObject -> traverse (type);
 }
 
 void

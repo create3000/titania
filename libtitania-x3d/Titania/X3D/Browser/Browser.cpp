@@ -53,31 +53,20 @@
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
-#include "../Browser/ExamineViewer.h"
-#include "../Browser/NoneViewer.h"
-#include "../Browser/FlyViewer.h"
+#include "../Browser/Viewer/ExamineViewer.h"
+#include "../Browser/Viewer/NoneViewer.h"
+#include "../Browser/Viewer/FlyViewer.h"
+#include "../Browser/Viewer/WalkViewer.h"
 
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <limits>
 
-#include <csignal>
-#include <cstdlib>
-
 #include <gtkmm/main.h>
 
 namespace titania {
 namespace X3D {
-
-void
-signal_handler (int sig)
-{
-	// print out all the frames to stderr
-	std::clog << "Error: signal " << sig << ":" << std::endl;
-	backtrace_fn (100);
-	exit (1);
-}
 
 Browser::Browser () :
 	    X3DBaseNode (this, this), 
@@ -87,9 +76,6 @@ Browser::Browser () :
 	pointingDevice  (this),       
 	    activeLayer ()            
 {
-	// install our handler
-	std::signal (SIGSEGV, signal_handler);
-
 	add_events (Gdk::BUTTON_PRESS_MASK | 
 	            Gdk::POINTER_MOTION_MASK | 
 	            Gdk::BUTTON_RELEASE_MASK | 
@@ -183,7 +169,7 @@ Browser::set_navigationInfo ()
 
 		else if (type == "WALK")
 		{
-			viewer .reset (new FlyViewer (this, navigationInfo));
+			viewer .reset (new WalkViewer (this, navigationInfo));
 			break;
 		}
 

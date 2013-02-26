@@ -70,7 +70,8 @@ ViewpointEditor::initialize ()
 
 	getBrowser () -> initialized .addInterest (this, &ViewpointEditor::set_world);
 
-	set_world ();
+	if (getBrowser () -> initialized)
+		set_world ();
 }
 
 void

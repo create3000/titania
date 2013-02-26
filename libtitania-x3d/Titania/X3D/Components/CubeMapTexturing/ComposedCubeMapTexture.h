@@ -74,8 +74,13 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	virtual
 	bool
 	isTransparent () { return false; }
+	
+	virtual
+	void
+	draw ();
 
 };
 

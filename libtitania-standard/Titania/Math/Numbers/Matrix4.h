@@ -137,8 +137,6 @@ public:
 
 	///  @name Constructors
 
-	///@{
-	//@{
 	///  Default constructor. A new matrix initialized with the identity matrix is created and returned.
 	constexpr
 	matrix4 () :
@@ -185,13 +183,9 @@ public:
 	///  Constructs a matrix4 from a matrix3.
 	matrix4 (const matrix3 <Type> & matrix)
 	{ *this = matrix; }
-	//@}
-	///@}
 
 	///  @name Assignment operators
 
-	///@{
-	//@{
 	template <class Up>
 	matrix4 &
 	operator = (const matrix3 <Up> &);
@@ -199,13 +193,9 @@ public:
 	template <class Up>
 	matrix4 &
 	operator = (const matrix4 <Up> &);
-	//@}
-	///@}
 
 	///  @name Element access
 
-	///@{
-	//@{
 	vector3_type
 	translation () const
 	{
@@ -217,34 +207,7 @@ public:
 
 	rotation4 <Type>
 	rotation () const;
-	//@}
 
-	//@{
-	///  Set all components.
-	void
-	set (const Type &, const Type &, const Type &, const Type &,
-	     const Type &, const Type &, const Type &, const Type &,
-	     const Type &, const Type &, const Type &, const Type &,
-	     const Type &, const Type &, const Type &, const Type &);
-
-	///  Get all components.
-	template <class T>
-	void
-	get (T &, T &, T &, T &,
-	     T &, T &, T &, T &,
-	     T &, T &, T &, T &,
-	     T &, T &, T &, T &) const;
-	//@}
-
-	//@{
-	void
-	set (const array_type &);
-
-	void
-	get (array_type &) const;
-	//@}
-
-	//@{
 	void
 	set ();
 
@@ -272,9 +235,7 @@ public:
 	     const vector3 <Type> &,
 	     const rotation4 <Type> &,
 	     const vector3 <Type> &);
-	//@}
 
-	//@{
 	template <class T>
 	void
 	get (vector3 <T> &) const;
@@ -294,18 +255,14 @@ public:
 	template <class T, class R, class S, class SO, class C>
 	void
 	get (vector3 <T> &, rotation4 <R> &, vector3 <S> &, rotation4 <SO> &, const vector3 <C> &) const;
-	//@}
 
-	//@{
 	///  Access rows by @a index.
 	vector4_type &
 	operator [ ] (const size_type index) { return value [index]; }
 
 	constexpr vector4_type
 	operator [ ] (const size_type index) const { return value [index]; }
-	//@}
 
-	//@{
 	///  Returns pointer to the underlying array serving as element storage.
 	///  Specifically the pointer is such that range [data (); data () + size ()) is valid.
 	Type*
@@ -313,21 +270,16 @@ public:
 
 	const Type*
 	data () const { return array; }
-	//@}
 
-	//@{
 	///  Get access to the underlying vector representation of this matrix.
 	void
 	vector (const vector_type & vector) { value = vector; }
 
 	constexpr vector_type
 	vector () const { return value; }
-	//@}
-	///@}
 
 	///  @name Capacity
 
-	///@{
 	///  Returns the order of the matrix.
 	static
 	constexpr size_type
@@ -338,12 +290,9 @@ public:
 	constexpr size_type
 	size () { return Size; }
 
-	///@}
-
 	///  @name  Arithmetic operations
 	///  All these operators modify this matrix4 inplace.
 
-	///@{
 	///  Returns the deteminant of this matrix.
 	Type
 	determinant () const;
@@ -394,7 +343,7 @@ public:
 	vector3 <Type>
 	multDirMatrix (const vector3 <T> &) const;
 
-	///  Returns a new vector that is matrix multiplies by @vector (a normal or direction vector) (a normal or direction vector) (a normal or direction vector).
+	///  Returns a new vector that is matrix multiplies by @vector (a normal or direction vector).
 	template <class T>
 	vector3 <Type>
 	multMatrixDir (const vector3 <T> &) const;
@@ -410,8 +359,6 @@ public:
 	///  Returns this matrix scaled by @a scale.
 	void
 	scale (const vector3 <Type> &);
-
-	///@}
 
 
 private:
@@ -449,10 +396,25 @@ template <class Up>
 matrix4 <Type> &
 matrix4 <Type>::operator = (const matrix3 <Up> & matrix)
 {
-	set (matrix [0], matrix [1], 0, matrix [2],
-	     matrix [3], matrix [4], 0, matrix [5],
-	     0, 0, 1, 0,
-	     matrix [6], matrix [7], 0, matrix [8]);
+	array [ 0] = matrix [0] [0];
+	array [ 1] = matrix [0] [1];
+	array [ 2] = 0;
+	array [ 3] = matrix [0] [2];
+
+	array [ 4] = matrix [1] [0];
+	array [ 5] = matrix [1] [1];
+	array [ 6] = 0;
+	array [ 7] = matrix [1] [2];
+
+	array [ 8] = 0;
+	array [ 9] = 0;
+	array [10] = 1;
+	array [11] = 0;
+
+	array [12] = matrix [2] [0];
+	array [13] = matrix [2] [1];
+	array [14] = 0;
+	array [15] = matrix [2] [2];
 
 	return *this;
 }
@@ -544,49 +506,6 @@ matrix4 <Type>::rotation () const
 	}
 
 	return rotation4 <Type> (quaternion <Type> (quat [0], quat [1], quat [2], quat [3]));
-}
-
-template <class Type>
-inline
-void
-matrix4 <Type>::set (const array_type & matrix)
-{
-	(void) memmove (array, matrix, sizeof (Type) * Size);
-}
-
-template <class Type>
-inline
-void
-matrix4 <Type>::get (array_type & matrix) const
-{
-	(void) memmove (matrix, array, sizeof (Type) * Size);
-}
-
-template <class Type>
-void
-matrix4 <Type>::set (const Type & e11, const Type & e12, const Type & e13, const Type & e14,
-                     const Type & e21, const Type & e22, const Type & e23, const Type & e24,
-                     const Type & e31, const Type & e32, const Type & e33, const Type & e34,
-                     const Type & e41, const Type & e42, const Type & e43, const Type & e44)
-{
-	array [ 0] = e11; array [ 1] = e12; array [ 2] = e13; array [ 3] = e14;
-	array [ 4] = e21; array [ 5] = e22; array [ 6] = e23; array [ 7] = e24;
-	array [ 8] = e31; array [ 9] = e32; array [10] = e33; array [11] = e34;
-	array [12] = e41; array [13] = e42; array [14] = e43; array [15] = e44;
-}
-
-template <class Type>
-template <class T>
-void
-matrix4 <Type>::get (T & e11, T & e12, T & e13, T & e14,
-                     T & e21, T & e22, T & e23, T & e24,
-                     T & e31, T & e32, T & e33, T & e34,
-                     T & e41, T & e42, T & e43, T & e44) const
-{
-	e11 = array [ 0]; e12 = array [ 1]; e13 = array [ 2]; e14 = array [ 3];
-	e21 = array [ 4]; e22 = array [ 5]; e23 = array [ 6]; e24 = array [ 7];
-	e31 = array [ 8]; e32 = array [ 9]; e33 = array [10]; e34 = array [11];
-	e41 = array [12]; e42 = array [13]; e43 = array [14]; e44 = array [15];
 }
 
 template <class Type>
@@ -776,7 +695,7 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
 	Type det_sign = (det < 0 ? -1 : 1);
 
 	if (det_sign * det == 0)
-		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // singular
+		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         // singular
 
 	// (4) B = A * !A  (here !A means A transpose)
 	matrix4 b = a * ! a;
@@ -927,10 +846,10 @@ matrix4 <Type> &
 matrix4 <Type>::multLeft (const matrix4 <T> & matrix)
 {
 	#define MULT_LEFT(i, j) \
-	   (array [0 * 4 + j] * matrix .array [i * 4 + 0]   \
-	    + array [1 * 4 + j] * matrix .array [i * 4 + 1]   \
-	    + array [2 * 4 + j] * matrix .array [i * 4 + 2]   \
-	    + array [3 * 4 + j] * matrix .array [i * 4 + 3])
+	   (array [0 * 4 + j] * matrix .array [i * 4 + 0] +   \
+	    array [1 * 4 + j] * matrix .array [i * 4 + 1] +   \
+	    array [2 * 4 + j] * matrix .array [i * 4 + 2] +   \
+	    array [3 * 4 + j] * matrix .array [i * 4 + 3])
 
 	return *this = matrix4 <Type> (MULT_LEFT (0, 0),
 	                               MULT_LEFT (0, 1),
@@ -964,10 +883,10 @@ matrix4 <Type> &
 matrix4 <Type>::multRight (const matrix4 <T> & matrix)
 {
 	#define MULT_RIGHT(i, j) \
-	   (array [i * 4 + 0] * matrix .array [0 * 4 + j]   \
-	    + array [i * 4 + 1] * matrix .array [1 * 4 + j]   \
-	    + array [i * 4 + 2] * matrix .array [2 * 4 + j]   \
-	    + array [i * 4 + 3] * matrix .array [3 * 4 + j])
+	   (array [i * 4 + 0] * matrix .array [0 * 4 + j] +   \
+	    array [i * 4 + 1] * matrix .array [1 * 4 + j] +   \
+	    array [i * 4 + 2] * matrix .array [2 * 4 + j] +   \
+	    array [i * 4 + 3] * matrix .array [3 * 4 + j])
 
 	return *this = matrix4 <Type> (MULT_RIGHT (0, 0),
 	                               MULT_RIGHT (0, 1),
@@ -1056,9 +975,9 @@ void
 matrix4 <Type>::translate (const vector3 <Type> & translation)
 {
 	#define TRANSLATE(i) \
-	   (value [0] [i] * translation .x ()   \
-	    + value [1] [i] * translation .y ()   \
-	    + value [2] [i] * translation .z ())
+	   (value [0] [i] * translation .x () +   \
+	    value [1] [i] * translation .y () +   \
+	    value [2] [i] * translation .z ())
 
 	value [3] [0] += TRANSLATE (0);
 	value [3] [1] += TRANSLATE (1);
@@ -1101,8 +1020,6 @@ matrix4 <Type>::scale (const vector3 <Type> & scaleFactor)
 ///  @relates matrix4
 ///  @name Comparision operations
 
-///@{
-//@{
 ///  Compares two matrix4 numbers.
 ///  Return true if @a a is equal to @a b.
 template <class Type>
@@ -1122,14 +1039,10 @@ operator not_eq (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 {
 	return lhs .vector () not_eq rhs .vector ();
 }
-//@}
-///@}
 
 ///  @relates matrix4
 ///  @name Arithmetic operations
 
-///@{
-//@{
 ///  Returns the transpose of the @a matrix.
 template <class Type>
 inline
@@ -1175,7 +1088,7 @@ operator * (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 	return matrix4 <Type> (lhs) .multRight (rhs);
 }
 
-///  Return vector value @a rhs left multiplied by @a lhs.
+///  Return vector value @a rhs multiplied by @a lhs.
 template <class Type>
 inline
 vector3 <Type>
@@ -1184,6 +1097,7 @@ operator * (const matrix4 <Type> & lhs, const vector3 <Type> & rhs)
 	return lhs .multMatrixVec (rhs);
 }
 
+///  Return vector value @a rhs multiplied by @a lhs.
 template <class Type>
 inline
 vector3 <Type>
@@ -1191,41 +1105,44 @@ operator * (const vector3 <Type> & lhs, const matrix4 <Type> & rhs)
 {
 	return rhs .multVecMatrix (lhs);
 }
-//@}
-///@}
 
 ///  @relates matrix4
 ///  @name Input/Output operations
 
-///@{
-//@{
 ///  Extraction operator for vector values.
 template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
 operator >> (std::basic_istream <CharT, Traits> & istream, matrix4 <Type> & matrix)
 {
-	Type array [matrix4 < Type > ::size ()];
+	Type
+	   e11, e12, e13, e14,
+	   e21, e22, e23, e24,
+	   e31, e32, e33, e34,
+	   e41, e42, e43, e44;
 
 	istream
-		>> array [ 0]
-		>> array [ 1]
-		>> array [ 2]
-		>> array [ 3]
-		>> array [ 4]
-		>> array [ 5]
-		>> array [ 6]
-		>> array [ 7]
-		>> array [ 8]
-		>> array [ 9]
-		>> array [10]
-		>> array [11]
-		>> array [12]
-		>> array [13]
-		>> array [14]
-		>> array [15];
+		>> e11
+		>> e12
+		>> e13
+		>> e14
+		>> e21
+		>> e22
+		>> e23
+		>> e24
+		>> e31
+		>> e32
+		>> e33
+		>> e34
+		>> e41
+		>> e42
+		>> e43
+		>> e44;
 
 	if (istream)
-		matrix .set (array);
+		matrix = matrix4 <Type> (e11, e12, e13, e14,
+		                         e21, e22, e23, e24,
+		                         e31, e32, e33, e34,
+		                         e41, e42, e43, e44);
 
 	return istream;
 }
@@ -1237,8 +1154,6 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const matrix4 <Type> 
 {
 	return ostream << matrix .vector ();
 }
-//@}
-///@}
 
 extern template class matrix4 <float>;
 extern template class matrix4 <double>;

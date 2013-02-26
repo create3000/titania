@@ -48,29 +48,20 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_NONE_VIEWER_H__
-#define __TITANIA_X3D_BROWSER_NONE_VIEWER_H__
+#ifndef __TITANIA_MATH_CONSTANTS_H__
+#define __TITANIA_MATH_CONSTANTS_H__
 
-#include "../Browser/X3DViewer.h"
+#include <cmath>
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-class Browser;
+#define M_PI1_2  (M_PI / 2)
+#define M_PI2    (2 * M_PI)
 
-class NoneViewer :
-	public X3DViewer
-{
-public:
+#define M_PHI    1.6180339887498948482045868343656381177203091798057628
 
-	NoneViewer (Browser* const);
-
-	virtual
-	~NoneViewer ();
-
-};
-
-} // X3D
+} // math
 } // titania
 
 #endif

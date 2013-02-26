@@ -91,6 +91,10 @@ PackagedShader::requestImmediateLoad ()
 { }
 
 void
+PackagedShader::draw ()
+{ }
+
+void
 PackagedShader::dispose ()
 {
 	X3DProgrammableShaderObject::dispose ();

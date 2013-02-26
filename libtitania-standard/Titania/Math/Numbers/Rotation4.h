@@ -57,7 +57,7 @@
 #include <stdexcept>
 
 #include "../../Utility/MemberValue.h"
-#include "../Math.h"
+#include "../Functional.h"
 #include "Quaternion.h"
 #include "Vector3.h"
 
@@ -94,7 +94,6 @@ public:
 
 	///  @name Constructors
 
-	///@{
 	///  Default constructor.
 	///  The rotation will be set to its default value 0 0 1  0.
 	constexpr
@@ -125,21 +124,16 @@ public:
 	///  from the fromVector to the toVector is stored in the object.
 	template <class T>
 	rotation4 (const vector3 <T> & fromVector, const vector3 <T> & toVector);
-	///@}
 
 	///  @name Assignment operator
 
-	///@{
 	///  Assign @a rotation to this rotation.
 	template <class T>
 	rotation4 &
 	operator = (const rotation4 <T> &);
 
-	///@}
-
 	///  @name Element access
 
-	///@{
 	///  Set x axis of this rotation.
 	void
 	x (const Type &);
@@ -164,7 +158,6 @@ public:
 	Type
 	z () const { return axis () .z (); }
 
-	//@{
 	///  Set @a axis of this rotation from vector.
 	template <class T>
 	void
@@ -173,9 +166,7 @@ public:
 	///  Returns axis of this rotation.
 	vector3_type
 	axis () const;
-	//@}
 
-	//@{
 	///  Set angle of this rotation.
 	void
 	angle (const Type &);
@@ -183,22 +174,18 @@ public:
 	///  Returns angle of this rotation.
 	Type
 	angle () const;
-	//@}
 
-	//@{
 	member_value_type
 	operator [ ] (const size_type);
 
 	Type
 	operator [ ] (const size_type) const;
-	//@}
 
 	///  Get @a x, @a y, @a z and @a angle componentwise.
 	template <class T>
 	void
 	get (T &, T &, T &, T &) const;
 
-	//@{
 	///  Set quaternion of this rotation.
 	template <class T>
 	void
@@ -207,12 +194,9 @@ public:
 	///  Returns quaternion of this rotation.
 	constexpr quaternion <Type>
 	quat () const { return value; }
-	//@}
-	///@}
 
 	///  @name Arithmetic operations
 
-	///@{
 	///  Invert this quaternion in place.
 	rotation4 &
 	inverse ();
@@ -221,8 +205,6 @@ public:
 	template <class T>
 	rotation4 &
 	operator *= (const rotation4 <T> &);
-
-	///@}
 
 
 private:
@@ -443,8 +425,6 @@ rotation4 <Type>::operator *= (const rotation4 <T> & rotation)
 ///  @relates rotation4
 ///  @name Comparision operations
 
-///@{
-//@{
 ///  Compares two rotation numbers.
 ///  Returns true if @a a is equal to @a b.
 template <class Type>
@@ -464,14 +444,10 @@ operator not_eq (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs)
 {
 	return lhs .quat () not_eq rhs .quat ();
 }
-//@}
-///@}
 
 ///  @relates rotation4
 ///  @name Arithmetic operations
 
-///@{
-//@{
 ///  Returns the inverse rotation for @a rotation.
 template <class Type>
 inline
@@ -480,10 +456,8 @@ operator ~ (const rotation4 <Type> & rotation)
 {
 	return rotation4 <Type> (rotation) .inverse ();
 }
-//@}
 
 ///  Left multiply @a lhs by @a rhs.
-//@{
 template <class Type>
 inline
 rotation4 <Type>
@@ -500,9 +474,7 @@ operator * (const rotation4 <Type> & rotation, const vector3 <Type> & vector)
 {
 	return rotation .quat () * vector;
 }
-//@}
 
-//@{
 ///  Spherical linear interpolate between @a source quaternion and @a destination quaternion by an amout of @a t.
 template <class Type>
 inline
@@ -513,14 +485,10 @@ slerp (const rotation4 <Type> & source,
 {
 	return rotation4 <Type> (math::slerp (source .quat (), destination .quat (), t));
 }
-//@}
-///@}
 
 ///  @relates rotation4
 ///  @name Input/Output operations
 
-///@{
-//@{
 ///  Extraction operator for vector values.
 template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
@@ -551,8 +519,6 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const rotation4 <Type
 	       << z << ' '
 	       << angle;
 }
-//@}
-///@}
 
 extern template class rotation4 <float>;
 extern template class rotation4 <double>;

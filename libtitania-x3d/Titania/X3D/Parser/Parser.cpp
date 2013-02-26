@@ -58,7 +58,7 @@
 #include "../Parser/RegEx.h"
 #include "../Prototype/ExternProto.h"
 
-#include <Titania/Stream/IGZStream.h>
+#include <Titania/Stream/IGZFilter.h>
 
 namespace titania {
 namespace X3D {

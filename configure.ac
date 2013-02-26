@@ -80,7 +80,7 @@ dnl ***************************************************************************
 dnl Compile options
 dnl ***************************************************************************
 
-CXXFLAGS="-Wall -std=c++11 -Wno-pmf-conversions -Wnarrowing"
+CXXFLAGS="-Wall -std=c++11 -Wno-pmf-conversions -Wno-narrowing"
 
 if test "x$enable_release" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -O3"

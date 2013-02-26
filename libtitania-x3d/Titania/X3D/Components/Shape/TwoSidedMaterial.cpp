@@ -97,5 +97,9 @@ TwoSidedMaterial::create (X3DExecutionContext* const executionContext) const
 	return new TwoSidedMaterial (executionContext);
 }
 
+void
+TwoSidedMaterial::draw ()
+{ }
+
 } // X3D
 } // titania

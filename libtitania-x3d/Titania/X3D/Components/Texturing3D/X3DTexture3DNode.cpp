@@ -63,5 +63,9 @@ X3DTexture3DNode::X3DTexture3DNode () :
 	addNodeType (X3DConstants::X3DTexture3DNode);
 }
 
+void
+X3DTexture3DNode::draw ()
+{ }
+
 } // X3D
 } // titania

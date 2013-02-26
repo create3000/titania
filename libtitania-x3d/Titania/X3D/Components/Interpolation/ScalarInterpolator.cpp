@@ -50,7 +50,7 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 #include "ScalarInterpolator.h"
-#include <Titania/Math/Math.h>
+#include <Titania/Math/Functional.h>
 
 namespace titania {
 namespace X3D {

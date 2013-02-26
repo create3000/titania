@@ -139,7 +139,7 @@ LayerSet::set_layers ()
 }
 
 void
-LayerSet::pick ()
+LayerSet::traverse (TraverseType type)
 {
 	for (const auto & index : order)
 	{
@@ -149,43 +149,7 @@ LayerSet::pick ()
 
 			getBrowser () -> getLayers () .push (currentLayer);
 
-			currentLayer  -> pick ();
-
-			getBrowser () -> getLayers () .pop ();
-		}
-	}
-}
-
-void
-LayerSet::traverse ()
-{
-	for (const auto & index : order)
-	{
-		if (index >= 0  and index < (int32_t) children .size ())
-		{
-			X3DLayerNode* currentLayer = children [index];
-
-			getBrowser () -> getLayers () .push (currentLayer);
-
-			currentLayer  -> traverse ();
-
-			getBrowser () -> getLayers () .pop ();
-		}
-	}
-}
-
-void
-LayerSet::display ()
-{
-	for (const auto & index : order)
-	{
-		if (index >= 0  and index < (int32_t) children .size ())
-		{
-			X3DLayerNode* currentLayer = children [index];
-
-			getBrowser () -> getLayers () .push (currentLayer);
-
-			currentLayer  -> display ();
+			currentLayer  -> traverse (type);
 
 			getBrowser () -> getLayers () .pop ();
 		}

@@ -68,12 +68,11 @@ public:
 	SFFloat intensity;
 	SFBool  on;
 
-	virtual
 	void
-	display ();
+	push ();
 
 	void
-	finish ();
+	pop ();
 
 	virtual
 	void

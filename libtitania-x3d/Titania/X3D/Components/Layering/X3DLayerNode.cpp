@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -101,6 +101,7 @@ void
 X3DLayerNode::initialize ()
 {
 	X3DNode::initialize ();
+	X3DRenderer::initialize ();
 
 	defaultViewport       -> setup ();
 	defaultNavigationInfo -> setup ();
@@ -196,62 +197,73 @@ X3DLayerNode::set_viewport ()
 }
 
 void
-X3DLayerNode::pick ()
+X3DLayerNode::traverse (TraverseType type)
 {
-	if (not isPickable)
-		return;
+	switch (type)
+	{
+		case TraverseType::PICK:
+		{
+			if (not isPickable)
+				return;
 
-	glPushMatrix ();
-	glLoadIdentity ();
+			glPushMatrix ();
+			glLoadIdentity ();
 
-	currentViewport -> enable ();
-	getViewpoint () -> reshape ();
-	getViewpoint () -> transform ();
+			currentViewport -> enable ();
+			getViewpoint () -> reshape ();
+			getViewpoint () -> transform ();
 
-	group -> pick ();
+			group -> traverse (type);
 
-	currentViewport -> disable ();
+			currentViewport -> disable ();
 
-	glPopMatrix ();
-}
+			glPopMatrix ();
+			
+			break;
+		}
+		case TraverseType::UPDATE:
+		{
+			glPushMatrix ();
+			glLoadIdentity ();
 
-void
-X3DLayerNode::traverse ()
-{
-	glPushMatrix ();
-	glLoadIdentity ();
+			getViewpoint ()  -> reshape ();
+			defaultViewpoint -> traverse (TraverseType::UPDATE);
+		
+			group -> traverse (type);
 
-	getViewpoint ()  -> reshape ();
-	defaultViewpoint -> traverse ();
-	group -> traverse ();
+			glPopMatrix ();
+			
+			break;
+		}
+		case TraverseType::COLLIDE:
+			break;
+		case TraverseType::RENDER:
+		{
+			currentViewport -> enable ();
 
-	glPopMatrix ();
-}
+			glClear (GL_DEPTH_BUFFER_BIT);
+			glLoadIdentity ();
 
-void
-X3DLayerNode::display ()
-{
-	currentViewport -> enable ();
+			getBackground ()     -> draw ();
+			getNavigationInfo () -> enable ();
+			getViewpoint ()      -> reshape ();
+			defaultViewpoint     -> traverse (TraverseType::RENDER);
 
-	glClear (GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity ();
+			render ();
 
-	getBackground ()     -> draw ();
-	getNavigationInfo () -> enable ();
-	getViewpoint ()      -> reshape ();
-	defaultViewpoint     -> display ();
-
-	render ();
-
-	getNavigationInfo () -> disable ();
-	currentViewport      -> disable ();
-	clearLights ();
+			getNavigationInfo () -> disable ();
+			currentViewport      -> disable ();
+			clearLights ();
+			
+			break;
+		}
+	}
 }
 
 void
 X3DLayerNode::collect ()
 {
-	group -> display ();
+	group -> traverse (TraverseType::RENDER);
 }
 
 void
@@ -280,6 +292,7 @@ X3DLayerNode::dispose ()
 	// Dont't dispose stack nodes, they were automatically disposed.
 
 	X3DNode::dispose ();
+	X3DRenderer::dispose ();
 }
 
 } // X3D

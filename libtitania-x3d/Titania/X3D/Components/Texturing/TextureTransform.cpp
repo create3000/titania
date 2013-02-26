@@ -114,7 +114,7 @@ TextureTransform::eventsProcessed ()
 }
 
 void
-TextureTransform::display ()
+TextureTransform::draw ()
 {
 	glMatrixMode (GL_TEXTURE);
 

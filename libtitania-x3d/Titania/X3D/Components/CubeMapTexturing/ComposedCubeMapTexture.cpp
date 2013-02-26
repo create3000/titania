@@ -83,5 +83,9 @@ ComposedCubeMapTexture::create (X3DExecutionContext* const executionContext) con
 	return new ComposedCubeMapTexture (executionContext);
 }
 
+void
+ComposedCubeMapTexture::draw ()
+{ }
+
 } // X3D
 } // titania

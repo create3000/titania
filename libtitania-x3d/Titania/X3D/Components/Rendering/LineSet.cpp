@@ -82,10 +82,10 @@ LineSet::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-LineSet::display ()
+LineSet::draw ()
 {
 	glDisable (GL_LIGHTING);
-	X3DGeometryNode::display ();
+	X3DGeometryNode::draw ();
 }
 
 } // X3D

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,7 +65,7 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	X3DBoundedObject (),                                                    
 	    X3DUrlObject (),                                                    
 	            load (true),                                                // SFBool [in,out] load  TRUE
-	           scene (executionContext -> getBrowser () -> createScene ())  
+	           scene ()  
 {
 	setComponent ("Networking");
 	setTypeName ("Inline");
@@ -91,6 +91,8 @@ Inline::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
+	
+	scene = getExecutionContext () -> getBrowser () -> createScene ();
 
 	load  .addInterest (this, &Inline::set_load);
 	url   .addInterest (this, &Inline::set_url);
@@ -198,24 +200,10 @@ Inline::requestUnload ()
 }
 
 void
-Inline::pick ()
+Inline::traverse (TraverseType type)
 {
 	for (const auto & rootNode : scene -> getRootNodes ())
-		rootNode -> pick ();
-}
-
-void
-Inline::traverse ()
-{
-	for (const auto & rootNode : scene -> getRootNodes ())
-		rootNode -> traverse ();
-}
-
-void
-Inline::display ()
-{
-	for (const auto & rootNode : scene -> getRootNodes ())
-		rootNode -> display ();
+		rootNode -> traverse (type);
 }
 
 void

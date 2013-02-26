@@ -452,7 +452,7 @@ MovieTexture::set_end ()
 }
 
 void
-MovieTexture::display ()
+MovieTexture::draw ()
 {
 	auto vsink = gstream -> vsink;
 
@@ -463,7 +463,7 @@ MovieTexture::display ()
 		             vsink -> get_height (),
 		             vsink -> get_last_buffer () -> get_data ());
 
-		X3DTexture2DNode::display ();
+		X3DTexture2DNode::draw ();
 	}
 }
 

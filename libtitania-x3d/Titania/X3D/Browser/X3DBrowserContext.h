@@ -54,6 +54,7 @@
 #include "../Browser/Properties/BrowserOptions.h"
 #include "../Browser/Properties/BrowserProperties.h"
 #include "../Browser/Properties/RenderingProperties.h"
+#include "../Browser/Viewer/ViewerType.h"
 #include "../Components/Core/X3DSensorNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/Viewpoint.h"
@@ -129,6 +130,12 @@ public:
 
 	LayerStack &
 	getLayers () { return layers; }
+	
+	///  @name Light stack handling
+
+	virtual
+	ViewerType
+	getViewerType () const = 0;
 
 	///  @name Light stack handling
 
@@ -188,12 +195,6 @@ public:
 	void
 	notify ();
 
-	///  @name Rendering handling
-
-	virtual
-	void
-	pick ();
-
 	///  @name Dispose
 
 	void
@@ -224,7 +225,6 @@ protected:
 	void
 	prepare ();
 
-	virtual
 	void
 	display ();
 
@@ -232,9 +232,13 @@ protected:
 	finish ();
 
 
-private:
+protected:
 
 	std::shared_ptr <X3DClock> clock;
+
+
+private:
+
 	Router                     router;
 	RendererStack              renderers;
 	LayerStack                 layers;

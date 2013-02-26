@@ -58,6 +58,7 @@
 #include "../Basic/X3DContext.h"
 #include "../Basic/X3DFieldDefinition.h"
 #include "../Bits/Error.h"
+#include "../Bits/TraverseType.h"
 #include "../Bits/X3DConstants.h"
 #include "../Fields/SFTime.h"
 #include "../Types/Time.h"
@@ -167,15 +168,7 @@ public:
 
 	virtual
 	void
-	pick () { }
-
-	virtual
-	void
-	traverse () { }
-
-	virtual
-	void
-	display () { }
+	traverse (TraverseType) { }
 
 	///  @name Input/Output
 

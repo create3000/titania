@@ -65,6 +65,11 @@ public:
 		X3DBaseNode (this, this),
 		X3D::X3DBrowser ()
 	{ }
+	
+	virtual
+	ViewerType
+	getViewerType () const
+	{ return ViewerType::NONE; }
 
 
 private:

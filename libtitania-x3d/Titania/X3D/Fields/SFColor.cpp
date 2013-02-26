@@ -125,7 +125,7 @@ SFColor::getB () const
 void
 SFColor::set1Value (const size_type & index, const scalar_type & value)
 {
-	get () [index] = value;
+	get () [index] = math::clamp <scalar_type> (value, 0, 1);
 	notifyParents ();
 }
 

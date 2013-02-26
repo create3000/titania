@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -174,42 +174,51 @@ X3DGroupingNode::add (const MFNode & children)
 }
 
 void
-X3DGroupingNode::pick ()
+X3DGroupingNode::traverse (TraverseType type)
 {
-	for (const auto & child : pointingDeviceSensors)
-		child -> display ();
+	switch (type)
+	{
+		case TraverseType::PICK:
+		{
+			for (const auto & child : pointingDeviceSensors)
+				child -> push ();
 
-	for (const auto & child : childNodes)
-		child -> pick ();
+			for (const auto & child : childNodes)
+				child -> traverse (type);
 
-	for (const auto & child : basic::adapter (pointingDeviceSensors .crbegin (), pointingDeviceSensors .crend ()))
-		child -> finish ();
-}
+			for (const auto & child : basic::adapter (pointingDeviceSensors .crbegin (), pointingDeviceSensors .crend ()))
+				child -> pop ();
+		
+			break;
+		}
+		case TraverseType::UPDATE:
+		case TraverseType::COLLIDE:
+		{
+			for (const auto & child : childNodes)
+				child -> traverse (type);
+		
+			break;
+		}
+		case TraverseType::RENDER:
+		{
+			for (const auto & child : lights)
+				child -> push ();
 
-void
-X3DGroupingNode::traverse ()
-{
-	for (const auto & child : childNodes)
-		child -> traverse ();
-}
+			if (localFogs .size ())
+				localFogs .front () -> push ();
 
-void
-X3DGroupingNode::display ()
-{
-	for (const auto & child : lights)
-		child -> display ();
+			for (const auto & child : childNodes)
+				child -> traverse (type);
 
-	if (localFogs .size ())
-		localFogs .front () -> display ();
+			if (localFogs .size ())
+				localFogs .front () -> pop ();
 
-	for (const auto & child : childNodes)
-		child -> display ();
-
-	if (localFogs .size ())
-		localFogs .front () -> finish ();
-
-	for (const auto & child : basic::adapter (lights .crbegin (), lights .crend ()))
-		child -> finish ();
+			for (const auto & child : basic::adapter (lights .crbegin (), lights .crend ()))
+				child -> pop ();
+		
+			break;
+		}
+	}
 }
 
 void

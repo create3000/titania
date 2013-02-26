@@ -78,7 +78,7 @@ LineProperties::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-LineProperties::display ()
+LineProperties::draw ()
 {
 
 }

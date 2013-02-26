@@ -411,7 +411,9 @@ X3DBrowserWindow::getNumPages () const
 void
 X3DBrowserWindow::setCurrentPage (size_t position)
 {
+__LOG__ << std::endl;
 	getNotebook () .set_current_page (position);
+__LOG__ << std::endl;
 }
 
 size_t
@@ -483,7 +485,10 @@ X3DBrowserWindow::setTabLabel (size_t position)
 
 	Gtk::HBox* tab_label = new Gtk::HBox ();
 
-	auto worldURL = browserWidgets [position] -> getBrowser () -> getExecutionContext () -> getWorldURL ();
+	basic::uri worldURL;
+
+	if (browserWidgets [position] -> getBrowser () -> initialized)
+		worldURL = browserWidgets [position] -> getBrowser () -> getExecutionContext () -> getWorldURL ();
 
 	Gtk::Label* label = new Gtk::Label (worldURL .str ());
 	Gtk::Image* icon  = new Gtk::Image (Gtk::StockID (worldURL .str ()),

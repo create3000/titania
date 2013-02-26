@@ -73,12 +73,11 @@ public:
 	void
 	set_over (bool);
 
-	virtual
 	void
-	display ();
+	push ();
 
 	void
-	finish ();
+	pop ();
 
 
 protected:

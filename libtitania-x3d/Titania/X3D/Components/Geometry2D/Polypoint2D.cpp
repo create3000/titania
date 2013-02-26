@@ -84,10 +84,10 @@ Polypoint2D::build ()
 }
 
 void
-Polypoint2D::display ()
+Polypoint2D::draw ()
 {
 	glDisable (GL_LIGHTING);
-	X3DGeometryNode::display ();
+	X3DGeometryNode::draw ();
 }
 
 } // X3D

@@ -66,6 +66,9 @@ public:
 	SFBool               repeatR;
 	SFNode <X3DBaseNode> textureProperties;
 
+	virtual
+	void
+	draw ();
 
 protected:
 

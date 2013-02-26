@@ -519,12 +519,16 @@
     <None Include="Titania\X3D\Browser\Geometry2D\ArcClose2DProperties.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Arc2DProperties.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Disk2DProperties.h" />
-    <None Include="Titania\X3D\Browser\ExamineViewer.h" />
-    <None Include="Titania\X3D\Browser\X3DViewer.h" />
-    <None Include="Titania\X3D\Browser\NoneViewer.h" />
-    <None Include="Titania\X3D\Browser\FlyViewer.h" />
     <None Include="Titania\X3D\Browser\PointingDevice.h" />
     <None Include="Titania\X3D\Browser\X3DWidget.h" />
+    <None Include="Titania\X3D\Bits\TraverseType.h" />
+    <None Include="Titania\X3D\Browser\Viewer\ExamineViewer.h" />
+    <None Include="Titania\X3D\Browser\Viewer\NoneViewer.h" />
+    <None Include="Titania\X3D\Browser\Viewer\X3DViewer.h" />
+    <None Include="Titania\X3D\Browser\Viewer\X3DFlyViewer.h" />
+    <None Include="Titania\X3D\Browser\Viewer\FlyViewer.h" />
+    <None Include="Titania\X3D\Browser\Viewer\WalkViewer.h" />
+    <None Include="Titania\X3D\Browser\Viewer\ViewerType.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -924,13 +928,15 @@
     <Compile Include="Titania\X3D\Browser\Geometry2D\ArcClose2DProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Arc2DProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Disk2DProperties.cpp" />
-    <Compile Include="Titania\X3D\Browser\ExamineViewer.cpp" />
-    <Compile Include="Titania\X3D\Browser\X3DViewer.cpp" />
-    <Compile Include="Titania\X3D\Browser\NoneViewer.cpp" />
-    <Compile Include="Titania\X3D\Browser\FlyViewer.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDevice.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DWidget.cpp" />
     <Compile Include="Titania\X3D\Rendering\LightContainer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Viewer\ExamineViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Viewer\NoneViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Viewer\X3DViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Viewer\X3DFlyViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Viewer\FlyViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Viewer\WalkViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -952,6 +958,7 @@
     <Folder Include="Titania\X3D\JavaScript\SpiderMonkey\" />
     <Folder Include="Titania\X3D\Browser\Geometry3D\" />
     <Folder Include="Titania\X3D\Browser\Geometry2D\" />
+    <Folder Include="Titania\X3D\Browser\Viewer\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

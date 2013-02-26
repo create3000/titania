@@ -66,7 +66,7 @@ namespace basic {
 
 template <class CharT,
           class Traits = std::char_traits <CharT>>
-class basic_gzstreambuf :
+class basic_gzfilterbuf :
 	public std::basic_streambuf <CharT, Traits>
 {
 public:
@@ -78,15 +78,15 @@ public:
 	using std::basic_streambuf <CharT, Traits>::pbase;
 	using std::basic_streambuf <CharT, Traits>::setg;
 
-	basic_gzstreambuf (std::basic_streambuf <CharT, Traits>*);
+	basic_gzfilterbuf (std::basic_streambuf <CharT, Traits>*);
 
 	bool
 	is_open () { return opened; }
 
-	basic_gzstreambuf*
+	basic_gzfilterbuf*
 	open ();
 
-	basic_gzstreambuf*
+	basic_gzfilterbuf*
 	close ();
 
 	virtual
@@ -102,7 +102,7 @@ public:
 	sync ();
 
 	virtual
-	~basic_gzstreambuf () { close (); }
+	~basic_gzfilterbuf () { close (); }
 
 
 private:
@@ -120,7 +120,7 @@ private:
 };
 
 template <class CharT, class Traits>
-basic_gzstreambuf <CharT, Traits>::basic_gzstreambuf (std::basic_streambuf <CharT, Traits>* streambuf) :
+basic_gzfilterbuf <CharT, Traits>::basic_gzfilterbuf (std::basic_streambuf <CharT, Traits>* streambuf) :
 	streambuf (streambuf),
 	opened (false)
 {
@@ -132,8 +132,8 @@ basic_gzstreambuf <CharT, Traits>::basic_gzstreambuf (std::basic_streambuf <Char
 }
 
 template <class CharT, class Traits>
-basic_gzstreambuf <CharT, Traits>*
-basic_gzstreambuf <CharT, Traits>::open ()
+basic_gzfilterbuf <CharT, Traits>*
+basic_gzfilterbuf <CharT, Traits>::open ()
 {
 	if (is_open ())
 		return NULL;
@@ -175,8 +175,8 @@ basic_gzstreambuf <CharT, Traits>::open ()
 }
 
 template <class CharT, class Traits>
-basic_gzstreambuf <CharT, Traits>*
-basic_gzstreambuf <CharT, Traits>::close ()
+basic_gzfilterbuf <CharT, Traits>*
+basic_gzfilterbuf <CharT, Traits>::close ()
 {
 	if (is_open ())
 	{
@@ -191,7 +191,7 @@ basic_gzstreambuf <CharT, Traits>::close ()
 
 template <class CharT, class Traits>
 typename Traits::int_type
-basic_gzstreambuf <CharT, Traits>::overflow (typename Traits::int_type c)
+basic_gzfilterbuf <CharT, Traits>::overflow (typename Traits::int_type c)
 {
 	__LOG__ << std::endl;
 
@@ -206,7 +206,7 @@ basic_gzstreambuf <CharT, Traits>::overflow (typename Traits::int_type c)
 
 template <class CharT, class Traits>
 typename Traits::int_type
-basic_gzstreambuf <CharT, Traits>::underflow () // used for input buffer only
+basic_gzfilterbuf <CharT, Traits>::underflow () // used for input buffer only
 {
 	if (gptr () && (gptr () < egptr ()))
 		return *reinterpret_cast <CharT*> (gptr ());
@@ -271,7 +271,7 @@ basic_gzstreambuf <CharT, Traits>::underflow () // used for input buffer only
 
 template <class CharT, class Traits>
 int
-basic_gzstreambuf <CharT, Traits>::sync ()
+basic_gzfilterbuf <CharT, Traits>::sync ()
 {
 	if (pptr () && pptr () > pbase ())
 	{
@@ -281,7 +281,7 @@ basic_gzstreambuf <CharT, Traits>::sync ()
 	return 0;
 }
 
-extern template class basic_gzstreambuf <char>;
+extern template class basic_gzfilterbuf <char>;
 
 } // basic
 } // titania

@@ -88,10 +88,10 @@ Polyline2D::build ()
 }
 
 void
-Polyline2D::display ()
+Polyline2D::draw ()
 {
 	glDisable (GL_LIGHTING);
-	X3DGeometryNode::display ();
+	X3DGeometryNode::draw ();
 }
 
 } // X3D

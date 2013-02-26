@@ -127,42 +127,21 @@ LOD::getLevel ()
 }
 
 void
-LOD::pick ()
+LOD::traverse (TraverseType type)
 {
 	if (not children .size ())
 		return;
 
 	int32_t level = getLevel ();
 
-	if (children [level])
-		children [level] -> pick ();
-}
-
-void
-LOD::traverse ()
-{
-	if (not children .size ())
-		return;
-
-	int32_t level = getLevel ();
+	if (type == TraverseType::RENDER)
+	{
+		if (level_changed not_eq level)
+			level_changed = level;
+	}
 
 	if (children [level])
-		children [level] -> traverse ();
-}
-
-void
-LOD::display ()
-{
-	if (not children .size ())
-		return;
-
-	int32_t level = getLevel ();
-
-	if (level_changed not_eq level)
-		level_changed = level;
-
-	if (children [level])
-		children [level] -> display ();
+		children [level] -> traverse (type);
 }
 
 } // X3D

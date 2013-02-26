@@ -86,6 +86,10 @@ ComposedShader::initialize ()
 }
 
 void
+ComposedShader::draw ()
+{ }
+
+void
 ComposedShader::dispose ()
 {
 	X3DProgrammableShaderObject::dispose ();

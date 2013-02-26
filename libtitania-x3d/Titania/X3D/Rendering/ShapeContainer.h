@@ -65,32 +65,34 @@ class ShapeContainer
 public:
 
 	ShapeContainer (X3DShapeNode*,
-	                const float,
-	                const LightContainerArray &,
-	                X3DFogObject*);
+	                X3DFogObject*,
+	                const LightContainerArray &);
 
-	ShapeContainer &
-	operator = (const ShapeContainer &);
+	void
+	assign (X3DShapeNode*,
+	        X3DFogObject*,
+	        const LightContainerArray &);
+	       
+	void
+	setViewpointMatrix (const Matrix4f &);
 
 	const float &
 	getDistance () const
 	{ return distance; }
 
 	bool
-	redraw ();
+	draw ();
 
 
 private:
 
 	X3DShapeNode* shape;
-
+	X3DFogObject* fog;
+	LightContainerArray localLights;
 	float distance;
 
 	Matrix4f matrix;
-
-	LightContainerArray localLights;
-
-	X3DFogObject* fog;
+	Matrix4f transformationMatrix;
 
 };
 

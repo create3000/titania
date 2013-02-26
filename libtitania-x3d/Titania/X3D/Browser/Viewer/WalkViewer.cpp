@@ -48,26 +48,17 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_WIDGETS_X3DVIEWER_H__
-#define __TITANIA_X3D_WIDGETS_X3DVIEWER_H__
-
-#include "../Browser/X3DWidget.h"
+#include "WalkViewer.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DViewer :
-	public X3DWidget
-{
-public:
+WalkViewer::WalkViewer (Browser* const browser, NavigationInfo* navigationInfo) :
+	X3DFlyViewer (browser, navigationInfo) 
+{ }
 
-	///  @name Constructors
-
-	X3DViewer (Browser* const);
-
-};
+WalkViewer::~WalkViewer ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

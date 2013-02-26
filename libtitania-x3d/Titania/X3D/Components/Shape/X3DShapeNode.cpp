@@ -130,36 +130,42 @@ X3DShapeNode::set_geometry ()
 }
 
 void
-X3DShapeNode::pick ()
+X3DShapeNode::traverse (TraverseType type)
 {
-	if (not getBrowser () -> isSensitive ())
-		return;
-
-	if (_geometry)
+	switch (type)
 	{
-		if (ViewVolume () .intersect (getBBox ()))
+		case TraverseType::PICK:
 		{
-			Line3f hitRay = getBrowser () -> getHitRay ();
 
-			Vector3f hitPoint;
+			if (not getBrowser () -> isSensitive ())
+				return;
 
-			if (_geometry -> intersect (hitRay, hitPoint))
-				getBrowser () -> addHit (hitRay, hitPoint);
+			if (_geometry)
+			{
+				if (ViewVolume () .intersect (getBBox ()))
+				{
+					Line3f hitRay = getBrowser () -> getHitRay ();
+
+					Vector3f hitPoint;
+
+					if (_geometry -> intersect (hitRay, hitPoint))
+						getBrowser () -> addHit (hitRay, hitPoint);
+				}
+			}
+		
+			break;
 		}
-	}
-}
-
-void
-X3DShapeNode::display ()
-{
-	if (_geometry)
-	{
-		Box3f bbox = getBBox () * ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
-
-		float depth = bbox .size () .z () * 0.5f;
-
-		if (depth > bbox .center () .z ())
-			getBrowser () -> getRenderers () .top () -> addShape (this, bbox .center () .z () - depth);
+		case TraverseType::RENDER:
+		{
+			if (_geometry)
+			{
+				getBrowser () -> getRenderers () .top () -> addShape (this);
+			}
+			
+			break;
+		}
+		default:
+			break;
 	}
 }
 
@@ -177,9 +183,9 @@ X3DShapeNode::draw ()
 	glMatrixMode (GL_MODELVIEW);
 
 	if (_appearance)
-		_appearance -> display ();
+		_appearance -> draw ();
 
-	_geometry -> display ();
+	_geometry -> draw ();
 
 	glDisable (GL_FOG);
 	glDisable (GL_LIGHTING);

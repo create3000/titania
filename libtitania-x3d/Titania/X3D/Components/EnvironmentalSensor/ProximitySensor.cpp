@@ -65,8 +65,8 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	  centerOfRotation_changed (),                                                    // SFVec3f    [out] centerOfRotation_changed
 	       orientation_changed (),                                                    // SFRotation [out] orientation_changed
 	          position_changed (),                                                    // SFVec3f    [out] position_changed
-	                    viewpoint (NULL),
-	                    matrix (),
+	                 viewpoint (NULL),                                                
+	                    matrix (),                                                    
 	                    inside (false)                                                
 {
 	setComponent ("EnvironmentalSensor");
@@ -107,13 +107,6 @@ ProximitySensor::set_enabled ()
 		getBrowser () -> sensors .addInterest (this, &ProximitySensor::update);
 	else
 		getBrowser () -> sensors .removeInterest (this, &ProximitySensor::update);
-}
-
-void
-ProximitySensor::traverse ()
-{
-	viewpoint = getCurrentViewpoint ();
-	matrix    = ModelViewMatrix4f ();
 }
 
 void
@@ -164,15 +157,31 @@ ProximitySensor::update ()
 }
 
 void
-ProximitySensor::display ()
+ProximitySensor::traverse (TraverseType type)
 {
-	if (inside)
-		return;
+	switch (type)
+	{
+		case TraverseType::UPDATE:
+		{
+			viewpoint = getCurrentViewpoint ();
+			matrix    = ModelViewMatrix4f ();
+			break;
+		}
+		case TraverseType::RENDER:
+		{
+			if (inside)
+				return;
 
-	Matrix4f transformationMatrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
-	transformationMatrix .translate (center);
+			Matrix4f transformationMatrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
+			transformationMatrix .translate (center);
 
-	inside = isInside (transformationMatrix);
+			inside = isInside (transformationMatrix);
+
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 bool

@@ -84,7 +84,6 @@ public:
 
 	///  @name Constructors
 
-	///@{
 	///  Default constructor.  All values default to 0.
 	constexpr
 	quaternion () :
@@ -106,21 +105,16 @@ public:
 	constexpr
 	quaternion (const vector3 <T> & imag, const Type & w) :
 		value { imag .x (), imag .y (), imag .z (), w } { }
-	///@}
 
 	///  @name Assignment operator
 
-	///@{
 	///  Assign @a quaternion to this quaternion.
 	template <class T>
 	quaternion &
 	operator = (const quaternion <T> &);
 
-	///@}
-
 	///  @name Element access
 
-	///@{
 	///  Set x component of this quaternion.
 	void
 	x (const Type & v) { value [0] = v; }
@@ -153,7 +147,6 @@ public:
 	constexpr Type
 	w () const { return value [3]; }
 
-	//@{
 	///  Access components by @a index.
 	Type &
 	operator [ ] (const size_type index) { return value [index]; }
@@ -169,23 +162,17 @@ public:
 	///  Returns pointer to the underlying array serving as element storage.
 	const Type*
 	data () const { return value; }
-	//@}
-	///@}
 
 	///  @name Capacity
 
-	///@{
 	///  Return number of components.
 	static
 	constexpr size_type
 	size () { return 4; }
 
-	///@}
-
 	///  @name  Arithmetic operations
 	///  All these operators modify this quaternion inplace.
 
-	///@{
 	///  Negates this quaternion in place.
 	quaternion &
 	negate ();
@@ -230,8 +217,6 @@ public:
 	///  Normalize this quaternion in place.
 	quaternion &
 	normalize ();
-
-	///@}
 
 
 private:
@@ -394,8 +379,6 @@ quaternion <Type>::normalize ()
 ///  @name Element access
 ///  @relates quaternion
 
-///@{
-//@{
 ///  Returns imaginary part of @a quaternion as vector.
 template <class Type>
 inline
@@ -413,14 +396,10 @@ imag (const quaternion <Type> & quat)
 {
 	return vector3 <Type> (quat .x (), quat .y (), quat .z ());
 }
-//@}
-///@}
 
 ///  @name Comparision operations
 ///  @relates quaternion
 
-///@{
-//@{
 ///  Compares two quaternion numbers.
 ///  Returns true if @a lhs is equal to @a rhs.
 template <class Type>
@@ -446,14 +425,10 @@ operator not_eq (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 	   lhs .z () not_eq rhs .z () or
 	   lhs .w () not_eq rhs .w ();
 }
-//@}
-///@}
 
 ///  @relates quaternion
 ///  @name Arithmetic operations
 
-///@{
-//@{
 ///  Returns a copy of @a quaternion.
 template <class Type>
 inline
@@ -478,9 +453,7 @@ operator ~ (const quaternion <Type> & quat)
 {
 	return quaternion <Type> (quat) .inverse ();
 }
-//@}
 
-//@{
 ///  Returns new quaternion value @a lhs plus @a rhs.
 template <class Type>
 inline
@@ -489,9 +462,7 @@ operator + (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
 	return quaternion <Type> (lhs) += rhs;
 }
-//@}
 
-//@{
 ///  Returns new quaternion value @a lhs minus @a rhs.
 template <class Type>
 inline
@@ -500,9 +471,7 @@ operator - (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
 	return quaternion <Type> (lhs) -= rhs;
 }
-//@}
 
-//@{
 ///  Returns new quaternion value @a lhs left multiplied by @a rhs.
 template <class Type>
 constexpr quaternion <Type>
@@ -537,7 +506,6 @@ operator * (const quaternion <Type> & quat, const vector3 <Type> & vector)
 {
 	return imag (quat * quaternion <Type> (vector, Type ()) * ~quat);
 }
-//@}
 
 //template <class Type>
 //constexpr quaternion <Type>
@@ -564,7 +532,6 @@ operator * (const quaternion <Type> & quat, const vector3 <Type> & vector)
 //	                          + a .z () * b .z ());
 //}
 
-//@{
 ///  Returns new quaternion value @a lhs divided by @a rhs.
 template <class Type>
 inline
@@ -574,7 +541,6 @@ operator / (const quaternion <Type> & lhs, const Type & rhs)
 	return quaternion <Type> (lhs) /= rhs;
 }
 
-//@{
 ///  Returns new quaternion value @a lhs divided by @a rhs.
 template <class Type>
 quaternion <Type>
@@ -585,9 +551,7 @@ operator / (const Type & lhs, const quaternion <Type> & rhs)
 	                          lhs / rhs .z (),
 	                          lhs / rhs .w ());
 }
-//@}
 
-//@{
 ///  Returns new quaternion value @a lhs dot @a rhs.
 template <class Type>
 constexpr Type
@@ -625,7 +589,6 @@ normalize (const quaternion <Type> & quat)
 {
 	return quaternion <Type> (quat) .normalize ();
 }
-//@}
 
 ///  Spherical linear interpolate between @a source quaternion and @a destination quaternion by an amout of @a t.
 //template <class Type>
@@ -667,13 +630,10 @@ normalize (const quaternion <Type> & quat)
 //
 //	return source * scale0 + _destination * scale1;
 //}
-///@}
 
 ///  @relates quaternion
 ///  @name Input/Output operations
 
-///@{
-//@{
 ///  Extraction operator for quaternion values.
 template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
@@ -700,8 +660,6 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const quaternion <Typ
 	       << quat .z () << ' '
 	       << quat .w ();
 }
-//@}
-///@}
 
 extern template class quaternion <float>;
 extern template class quaternion <double>;

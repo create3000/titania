@@ -87,7 +87,7 @@ public:
 
 	virtual
 	void
-	display ();
+	traverse (TraverseType);
 
 
 private:

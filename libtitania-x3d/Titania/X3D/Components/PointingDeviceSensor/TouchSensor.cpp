@@ -55,6 +55,8 @@
 namespace titania {
 namespace X3D {
 
+// http://stackoverflow.com/questions/7207422/setting-up-opengl-multiple-render-targets
+
 TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DTouchSensorNode (),                                                    

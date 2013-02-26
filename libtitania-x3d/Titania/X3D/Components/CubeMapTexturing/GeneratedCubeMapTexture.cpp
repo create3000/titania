@@ -77,5 +77,9 @@ GeneratedCubeMapTexture::create (X3DExecutionContext* const executionContext) co
 	return new GeneratedCubeMapTexture (executionContext);
 }
 
+void
+GeneratedCubeMapTexture::draw ()
+{ }
+
 } // X3D
 } // titania

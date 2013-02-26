@@ -80,7 +80,7 @@ FillProperties::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-FillProperties::display ()
+FillProperties::draw ()
 {
 
 }

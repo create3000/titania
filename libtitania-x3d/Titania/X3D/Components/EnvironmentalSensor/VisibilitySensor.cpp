@@ -99,14 +99,24 @@ VisibilitySensor::set_enabled ()
 }
 
 void
-VisibilitySensor::traverse ()
+VisibilitySensor::traverse (TraverseType type)
 {
-	if (not enabled or visible)
-		return;
+	switch (type)
+	{
+		case TraverseType::UPDATE:
+		{
+			if (not enabled or visible)
+				return;
 
-	visible = ViewVolume (ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix (),
-	                      ProjectionMatrix4f ())
-	          .intersect (Box3f (size, center));
+			visible = ViewVolume (ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix (),
+			                      ProjectionMatrix4f ())
+			          .intersect (Box3f (size, center));
+			          
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 void

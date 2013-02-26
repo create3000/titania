@@ -286,10 +286,10 @@ IndexedLineSet::build ()
 }
 
 void
-IndexedLineSet::display ()
+IndexedLineSet::draw ()
 {
 	glDisable (GL_LIGHTING);
-	X3DGeometryNode::display ();
+	X3DGeometryNode::draw ();
 }
 
 } // X3D

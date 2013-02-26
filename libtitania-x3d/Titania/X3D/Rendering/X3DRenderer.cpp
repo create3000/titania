@@ -53,14 +53,105 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 
+#include <Titania/Physics/Constants.h>
 #include <Titania/Utility/Adapter.h>
 #include <algorithm>
+
+#define DEPTH_BUFFER_WIDTH   16
+#define DEPTH_BUFFER_HEIGHT  16
 
 namespace titania {
 namespace X3D {
 
+class X3DRenderer::DepthBuffer
+{
+public:
+
+	DepthBuffer (size_t width, size_t height) :
+		width (width),
+		height (height),
+		id (0),
+		depth (width * height)
+	{
+		glGenFramebuffers (1, &id);
+		glGenRenderbuffers (1, &depthBuffer);
+
+		// Bind frame buffer.
+		bind ();
+
+		// The depth buffer
+		glBindRenderbuffer (GL_RENDERBUFFER, depthBuffer);
+		glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+		glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+
+		// Always check that our framebuffer is ok
+		if (glCheckFramebufferStatus (GL_FRAMEBUFFER) not_eq GL_FRAMEBUFFER_COMPLETE)
+			throw 1;
+
+		unbind ();
+	}
+
+	double
+	getDistance ()
+	{
+		GLint                viewport [4]; // x, y, width, heigth
+		Matrix4d::array_type modelview, projection;
+
+		glGetIntegerv (GL_VIEWPORT, viewport);
+		glGetDoublev (GL_MODELVIEW_MATRIX, modelview);
+		glGetDoublev (GL_PROJECTION_MATRIX, projection);
+
+		GLdouble px, py, pz, distance;
+
+		glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
+		gluUnProject (0, 0, depth [0], modelview, projection, viewport, &px, &py, &distance);
+
+		for (size_t y = 0; y < height; ++ y)
+		{
+			for (size_t x = 0; x < width; ++ x)
+			{
+				gluUnProject (x, y, depth [y * width + x], modelview, projection, viewport, &px, &py, &pz);
+				distance = std::max (distance, pz);
+			}
+		}
+
+		return distance;
+	}
+
+	void
+	bind ()
+	{
+		// Bind frame buffer.
+		glBindFramebuffer (GL_FRAMEBUFFER, id);
+	}
+
+	void
+	unbind ()
+	{
+		// Bind frame buffer.
+		glBindFramebuffer (GL_FRAMEBUFFER, 0);
+	}
+
+	~DepthBuffer ()
+	{
+		glDeleteFramebuffers (1, &id);
+	}
+
+	size_t width;
+	size_t height;
+
+	GLuint                id;
+	GLuint                depthBuffer;
+	std::vector <GLfloat> depth;
+
+};
+
 X3DRenderer::X3DRenderer () :
 	                 X3DNode (),  
+	                  shapes (),  
+	       transparentShapes (),  
+	             depthBuffer (),  
+	                   speed (),  
 	            traverseTime (0), 
 	                drawTime (0), 
 	                numNodes (0), 
@@ -71,26 +162,32 @@ X3DRenderer::X3DRenderer () :
 { }
 
 void
-X3DRenderer::addShape (X3DShapeNode* shape, const float distance)
+X3DRenderer::initialize ()
 {
-	const LightContainerArray & localLights = getCurrentLayer () -> getLocalLights ();
+	depthBuffer .reset (new DepthBuffer (DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT));
+}
+
+void
+X3DRenderer::addShape (X3DShapeNode* shape)
+{
 	X3DFogObject*               fog         = getCurrentLayer () -> getFog ();
+	const LightContainerArray & localLights = getCurrentLayer () -> getLocalLights ();
 
 	if (shape -> isTransparent ())
 	{
 		if (numTransparentNodes < transparentShapes .size ())
-			*transparentShapes [numTransparentNodes] = ShapeContainer (shape, distance, localLights, fog);
+			transparentShapes [numTransparentNodes] -> assign (shape, fog, localLights);
 		else
-			transparentShapes .push_back (new ShapeContainer (shape, distance, localLights, fog));
+			transparentShapes .emplace_back (new ShapeContainer (shape, fog, localLights));
 
 		++ numTransparentNodes;
 	}
 	else
 	{
 		if (numOpaqueNodes < shapes .size ())
-			*shapes [numOpaqueNodes] = ShapeContainer (shape, distance, localLights, fog);
+			shapes [numOpaqueNodes] -> assign (shape, fog, localLights);
 		else
-			shapes .push_back (new ShapeContainer (shape, distance, localLights, fog));
+			shapes .emplace_back (new ShapeContainer (shape, fog, localLights));
 
 		++ numOpaqueNodes;
 	}
@@ -106,7 +203,7 @@ X3DRenderer::render ()
 
 	collect ();
 	draw ();
-	//bottom ();
+	bottom ();
 
 	getBrowser () -> getRenderers () .pop ();
 }
@@ -120,7 +217,7 @@ X3DRenderer::draw ()
 
 	glPushMatrix ();
 
-	getCurrentViewpoint () -> transform ();
+	setViewpointMatrix (getCurrentViewpoint () -> getInverseTransformationMatrix ());
 
 	// Enable global lights
 
@@ -141,7 +238,7 @@ X3DRenderer::draw ()
 
 		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
 		{
-			numNodesDrawn += shape -> redraw ();
+			numNodesDrawn += shape -> draw ();
 		}
 
 		// Render transparent objects
@@ -153,7 +250,7 @@ X3DRenderer::draw ()
 
 		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
 		{
-			numTransparentNodesDrawn += shape -> redraw ();
+			numTransparentNodesDrawn += shape -> draw ();
 		}
 
 		glDepthMask (GL_TRUE);
@@ -173,7 +270,7 @@ X3DRenderer::draw ()
 
 		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
 		{
-			numNodesDrawn += shape -> redraw ();
+			numNodesDrawn += shape -> draw ();
 		}
 
 		// Render transparent objects
@@ -188,13 +285,13 @@ X3DRenderer::draw ()
 			glDepthMask (GL_FALSE);
 			glBlendFunc (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA);
 
-			numTransparentNodesDrawn += shape -> redraw ();
+			numTransparentNodesDrawn += shape -> draw ();
 
 			glDepthFunc (GL_LEQUAL);
 			glDepthMask (GL_TRUE);
 			glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-			shape -> redraw ();
+			shape -> draw ();
 		}
 
 		//		// render opaque objects
@@ -232,27 +329,54 @@ X3DRenderer::draw ()
 void
 X3DRenderer::bottom ()
 {
-	GLint viewport [4];
+	auto navigationInfo = getCurrentNavigationInfo ();
+	
+	if (getBrowser () -> getViewerType () not_eq ViewerType::WALK)
+		return;
+	
+	//depthBuffer -> bind ();
 
-	glGetIntegerv (GL_VIEWPORT, viewport);
+	GLint viewport [4];                                         //
 
-	glViewport (0, 0, 200, 200);
-	glScissor (0, 0, 200, 200);
-	glEnable (GL_SCISSOR_TEST);
+	glGetIntegerv (GL_VIEWPORT, viewport);                      //
+	glViewport (0, 0, DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT); //
+	glScissor  (0, 0, DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT); //
+	glEnable (GL_SCISSOR_TEST);                                 //
 
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glDisable (GL_SCISSOR_TEST);
+
+	// Reshape viewpoint
+
+	float zNear          = navigationInfo -> getZNear ();
+	float zFar           = navigationInfo -> getZFar ();
+	float width1_2       = navigationInfo -> getAvatarWidth  () / 2;
+	float depth1_2       = navigationInfo -> getAvatarDepth  () / 2;
+	float height         = navigationInfo -> getAvatarHeight ();
+
+	glMatrixMode (GL_PROJECTION);
+	glLoadIdentity ();
+	glOrtho (-width1_2, width1_2, -depth1_2, depth1_2, zNear, zFar);
+	glMatrixMode (GL_MODELVIEW);
+
+	// Setup viewpoint transformation
 
 	glPushMatrix ();
 
-	Matrix4f matrix = getCurrentViewpoint () -> getModelViewMatrix ();
-	matrix .translate (getCurrentViewpoint () -> getUserPosition ());
-	matrix .rotate (getCurrentViewpoint () -> getUserOrientation () *
-	                Rotation4f (getCurrentViewpoint () -> getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
+	Matrix4f viewpointMatrix = getCurrentViewpoint () -> getModelViewMatrix ();
+	viewpointMatrix .translate (getCurrentViewpoint () -> getUserPosition ());
+	viewpointMatrix .rotate (getCurrentViewpoint () -> getUserOrientation () *
+	                         Rotation4f (getCurrentViewpoint () -> getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
 
-	matrix .inverse ();
+	viewpointMatrix .inverse ();
 
-	glLoadMatrixf (matrix .data ());
+	setViewpointMatrix (viewpointMatrix);
+
+	// Enable global lights
+
+	const LightContainerArray & globalLights = getCurrentLayer () -> getGlobalLights (); //
+
+	for (const auto & light : globalLights)                                              //
+		light -> enable ();                                                               //
 
 	{
 		// Sorted blend
@@ -265,26 +389,75 @@ X3DRenderer::bottom ()
 
 		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
 		{
-			shape -> redraw ();
+			shape -> draw ();
 		}
 
 		// Render transparent objects
 
-		glDepthMask (GL_FALSE);
-		glEnable (GL_BLEND);
-
 		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
 		{
-			shape -> redraw ();
+			shape -> draw ();
 		}
-
-		glDepthMask (GL_TRUE);
-		glDisable (GL_BLEND);
 	}
+
+	// Disable global lights
+
+	for (const auto & light : basic::adapter (globalLights .crbegin (), globalLights .crend ())) //
+		light -> disable ();                                                                      //
+
+	glDisable (GL_SCISSOR_TEST);                                                                 //
+	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);                         //
 
 	glPopMatrix ();
 
-	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
+	// Gravite or step up
+
+	float distance = depthBuffer -> getDistance ();
+
+	if (zFar + distance > 0)
+	{
+		distance += height;
+
+		if (distance < 0)
+		{
+			// Gravite
+
+			float currentFrameRate = getBrowser () -> getCurrentFrameRate ();
+
+			speed += P_GN / currentFrameRate;
+
+			float translation = std::max (speed / currentFrameRate, distance);
+
+			getCurrentViewpoint () -> setUserPosition (getCurrentViewpoint () -> getUserPosition () + Vector3f (0, translation, 0));
+
+		}
+		else
+		{
+			speed = 0;
+
+			if (distance > 0.01 and distance < height / 2)
+			{
+				// Step up
+
+				getCurrentViewpoint () -> setUserPosition (getCurrentViewpoint () -> getUserPosition () + Vector3f (0, distance, 0));
+
+			}
+		}
+	}
+
+	depthBuffer -> unbind ();
+}
+
+void
+X3DRenderer::setViewpointMatrix (const Matrix4f & matrix)
+{
+	glMultMatrixf (matrix .data ());
+
+	for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
+		shape -> setViewpointMatrix (matrix);
+
+	for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
+		shape -> setViewpointMatrix (matrix);
 }
 
 void
@@ -299,6 +472,12 @@ X3DRenderer::clear ()
 		delete shape;
 
 	transparentShapes .clear ();
+}
+
+void
+X3DRenderer::dispose ()
+{
+	depthBuffer .reset ();
 }
 
 X3DRenderer::~X3DRenderer ()

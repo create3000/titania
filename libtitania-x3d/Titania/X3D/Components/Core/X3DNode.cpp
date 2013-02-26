@@ -85,6 +85,12 @@ X3DNode::getLayers () const
 	return findClosestParents <Scene, X3DLayerNode> ();
 }
 
+NavigationInfo*
+X3DNode::getCurrentNavigationInfo () const
+{
+	return getCurrentLayer () -> getNavigationInfo ();
+}
+
 X3DViewpointNode*
 X3DNode::getCurrentViewpoint () const
 {

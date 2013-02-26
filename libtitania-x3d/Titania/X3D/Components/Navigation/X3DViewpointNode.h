@@ -77,9 +77,15 @@ public:
 	virtual
 	Vector3f
 	getPosition () const = 0;
+	
+	void
+	setUserPosition (const Vector3f &);
 
 	Vector3f
 	getUserPosition () const;
+
+	void
+	setUserOrientation (const Rotation4f &);
 
 	Rotation4f
 	getUserOrientation () const;
@@ -123,11 +129,7 @@ public:
 
 	virtual
 	void
-	traverse ();
-
-	virtual
-	void
-	display ();
+	traverse (TraverseType);
 
 	virtual
 	void

@@ -162,25 +162,25 @@ Appearance::set_shaders ()
 { }
 
 void
-Appearance::display ()
+Appearance::draw ()
 {
 	if (_lineProperties)
-		_lineProperties -> display ();
+		_lineProperties -> draw ();
 
 	if (_fillProperties)
-		_fillProperties -> display ();
+		_fillProperties -> draw ();
 
 	if (_material)
-		_material -> display ();
+		_material -> draw ();
 
 	if (_texture)
-		_texture -> display ();
+		_texture -> draw ();
 
 	if (_textureTransform)
-		_textureTransform -> display ();
+		_textureTransform -> draw ();
 
 	for (const auto & shader : _shaders)
-		shader -> display ();
+		shader -> draw ();
 }
 
 } // X3D

@@ -244,7 +244,27 @@ SFMatrix4 <ValueType>::getValue (scalar_type & e11, scalar_type & e12, scalar_ty
                                  scalar_type & e31, scalar_type & e32, scalar_type & e33, scalar_type & e34,
                                  scalar_type & e41, scalar_type & e42, scalar_type & e43, scalar_type & e44) const
 {
-	getValue () .get (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44);
+	const auto & data = getValue () .data ();
+	
+	e11 = data [ 0];
+	e12 = data [ 1];
+	e13 = data [ 2];
+	e14 = data [ 3];
+	
+	e21 = data [ 4];
+	e22 = data [ 5];
+	e23 = data [ 6];
+	e24 = data [ 7];
+	
+	e31 = data [ 8];
+	e32 = data [ 9];
+	e33 = data [10];
+	e34 = data [11];
+	
+	e41 = data [12];
+	e42 = data [13];
+	e43 = data [14];
+	e44 = data [15];
 }
 
 template <class ValueType>

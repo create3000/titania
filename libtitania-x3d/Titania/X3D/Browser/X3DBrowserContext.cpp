@@ -228,7 +228,7 @@ X3DBrowserContext::pick (const double _x, const double _y)
 
 	// Pick.
 
-	pick ();
+	getExecutionContext () -> traverse (TraverseType::PICK);
 
 	// Selection end.
 
@@ -375,12 +375,6 @@ X3DBrowserContext::notify ()
 	changed .processInterests ();
 }
 
-void
-X3DBrowserContext::pick ()
-{
-	getExecutionContext () -> pick ();
-}
-
 /*
  * a) Update camera based on currently bound Viewpoint's position and orientation.
  * b) Evaluate input from sensors.
@@ -405,7 +399,7 @@ X3DBrowserContext::prepare ()
 	
 	router .processEvents ();
 	
-	getExecutionContext () -> traverse ();
+	getExecutionContext () -> traverse (TraverseType::UPDATE);
 
 	sensors .processInterests ();
 	
@@ -420,7 +414,7 @@ X3DBrowserContext::display ()
 	glClearColor (0, 0, 0, 0);
 	glClear (GL_COLOR_BUFFER_BIT);
 
-	getExecutionContext () -> display ();
+	getExecutionContext () -> traverse (TraverseType::RENDER);
 
 	//glColorMask (FALSE, FALSE, FALSE, TRUE);
 	//glClearColor (0, 0, 0, 1);

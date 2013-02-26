@@ -77,6 +77,10 @@ public:
 	virtual
 	bool
 	isTransparent () { return false; }
+	
+	virtual
+	void
+	draw ();
 
 	virtual
 	void

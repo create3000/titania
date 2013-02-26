@@ -112,37 +112,13 @@ Transform::eventsProcessed ()
 }
 
 void
-Transform::pick ()
+Transform::traverse (TraverseType type)
 {
 	glPushMatrix ();
 
 	glMultMatrixf (matrix .data ());
 
-	X3DGroupingNode::pick ();
-
-	glPopMatrix ();
-}
-
-void
-Transform::traverse ()
-{
-	glPushMatrix ();
-
-	glMultMatrixf (matrix .data ());
-
-	X3DGroupingNode::traverse ();
-
-	glPopMatrix ();
-}
-
-void
-Transform::display ()
-{
-	glPushMatrix ();
-
-	glMultMatrixf (matrix .data ());
-
-	X3DGroupingNode::display ();
+	X3DGroupingNode::traverse (type);
 
 	glPopMatrix ();
 }

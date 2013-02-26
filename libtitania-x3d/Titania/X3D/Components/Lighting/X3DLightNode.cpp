@@ -67,7 +67,7 @@ X3DLightNode::X3DLightNode () :
 }
 
 void
-X3DLightNode::display ()
+X3DLightNode::push ()
 {
 	if (on)
 	{
@@ -79,7 +79,7 @@ X3DLightNode::display ()
 }
 
 void
-X3DLightNode::finish ()
+X3DLightNode::pop ()
 {
 	if (not global and on)
 		getCurrentLayer () -> popLocalLight ();

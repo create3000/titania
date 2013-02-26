@@ -34,7 +34,7 @@
 #include <Titania/Basic/URI.h>
 #include <Titania/Chrono/Now.h>
 #include <Titania/Math/Geometry/Box3.h>
-#include <Titania/Math/Math.h>
+#include <Titania/Math/Functional.h>
 #include <Titania/Math/Numbers/Matrix3.h>
 #include <Titania/Math/Numbers/Matrix4.h>
 #include <Titania/Math/Numbers/Rotation4.h>
@@ -42,7 +42,7 @@
 #include <Titania/Math/Numbers/Vector3.h>
 #include <Titania/Math/Numbers/Vector4.h>
 #include <Titania/OS.h>
-#include <Titania/Stream/IGZStream.h>
+#include <Titania/Stream/IGZFilter.h>
 #include <Titania/Stream/InputFileStream.h>
 //#include <Titania/Stream/InputHTTPStream.h>
 
@@ -804,6 +804,78 @@ slerp (const Type & source, const Type & destination, const T & t)
 	return (scale0 * source + scale1 * dest) / sinom;
 }
 
+typedef void               X3DShapeNode;
+typedef std::deque <void*> LightContainerArray;
+typedef void               X3DFogObject;
+
+class ShapeContainer
+{
+public:
+
+	ShapeContainer (X3DShapeNode*,
+	                const float,
+	                const LightContainerArray &,
+	                X3DFogObject*);
+
+	void
+	assign (X3DShapeNode*,
+	        const float,
+	        const LightContainerArray &,
+	        X3DFogObject*);
+
+	ShapeContainer &
+	operator = (const ShapeContainer &);
+
+
+private:
+
+	X3DShapeNode* shape;
+
+	float distance;
+
+	Matrix4f matrix;
+
+	LightContainerArray localLights;
+
+	X3DFogObject* fog;
+
+};
+
+ShapeContainer::ShapeContainer (X3DShapeNode* shape,
+                                const float distance,
+                                const LightContainerArray & localLights,
+                                X3DFogObject* fog) :
+	      shape (shape),       
+	   distance (distance),    
+	     matrix (Matrix4f ()), 
+	localLights (localLights), 
+	        fog (fog)          
+{ }
+
+void
+ShapeContainer::assign (X3DShapeNode* shape,
+                        const float distance,
+                        const LightContainerArray & localLights,
+                        X3DFogObject* fog)
+{
+
+	this -> shape       = shape;
+	this -> distance    = distance;
+	this -> matrix      = Matrix4f ();
+	this -> localLights = localLights;
+	this -> fog         = fog;
+}
+
+ShapeContainer &
+ShapeContainer::operator = (const ShapeContainer & container)
+{
+	shape       = container .shape;
+	distance    = container .distance;
+	matrix      = container .matrix;
+	localLights = container .localLights;
+	fog         = container .fog;
+	return *this;
+}
 
 int
 main (int argc, char** argv)
@@ -813,14 +885,43 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-	
-	Rotation4f userOrientation (0, 0, 1, 12);
-	
-	
-	auto d = Rotation4f (userOrientation * Vector3f (0, 0, 1), Vector3f (0, 1, 0));
-	
-	std::clog << userOrientation * d  * Vector3f (0, 0, 1) << std::endl;
-	std::clog << userOrientation * d << std::endl;
+
+	if (1)
+	{
+		#define N 10000000
+
+		std::deque <Vector3f> vector (N);
+
+		/////////////////////////////////////////////
+
+		auto t0 = chrono::now ();
+
+		/////////////////////////////////////////////
+
+		for (int i = 0; i < N; ++ i)
+			vector [i] = Vector3f (1,2,3);
+
+		/////////////////////////////////////////////
+
+		print_time (chrono::now () - t0);
+		t0 = chrono::now ();
+
+		/////////////////////////////////////////////
+
+		for (int i = 0; i < N; ++ i)
+		{
+			vector [i] .x (1);
+			vector [i] .y (2);
+			vector [i] .z (3);
+		}
+
+		/////////////////////////////////////////////
+
+		print_time (chrono::now () - t0);
+		t0 = chrono::now ();
+
+		#undef N
+	}
 
 	if (0)
 	{
@@ -869,6 +970,8 @@ main (int argc, char** argv)
 
 		print_time (chrono::now () - t0);
 		t0 = chrono::now ();
+
+		#undef N
 	}
 
 	std::clog << "Function main done." << std::endl;

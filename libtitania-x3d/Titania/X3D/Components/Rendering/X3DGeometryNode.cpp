@@ -370,7 +370,7 @@ X3DGeometryNode::transfer ()
 }
 
 void
-X3DGeometryNode::display ()
+X3DGeometryNode::draw ()
 {
 	if (not vertices .size ())
 		return;

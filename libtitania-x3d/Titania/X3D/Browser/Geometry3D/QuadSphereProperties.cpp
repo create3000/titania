@@ -52,7 +52,6 @@
 
 #include "../../Components/Geometry3D/Sphere.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include <Titania/Math/Math.h>
 #include <complex>
 
 namespace titania {

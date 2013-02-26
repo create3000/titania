@@ -79,7 +79,6 @@ public:
 
 	///  @name Constructors
 
-	///@{
 	///  Default constructor.  All values default to 0.
 	constexpr
 	vector2 () :
@@ -95,21 +94,16 @@ public:
 	constexpr
 	vector2 (const Type & x, const Type & y) :
 		value { x, y } { }
-	///@}
 
 	///  @name Assignment operator
 
-	///@{
 	///  Assign @a vector to this vector.
 	template <class T>
 	vector2 &
 	operator = (const vector2 <T> &);
 
-	///@}
-
 	///  @name Element access
 
-	///@{
 	///  Set x component of this vector.
 	void
 	x (const Type & t) { value [0] = t; }
@@ -126,7 +120,6 @@ public:
 	constexpr Type
 	y () const { return value [1]; }
 
-	//@{
 	///  Access components by @a index.
 	Type &
 	operator [ ] (const size_type index) { return value [index]; }
@@ -142,23 +135,17 @@ public:
 	///  Returns pointer to the underlying array serving as element storage.
 	const Type*
 	data () const { return value; }
-	//@}
-	///@}
 
 	///  @name Capacity
 
-	///@{
 	///  Returns number of components.
 	static
 	constexpr size_type
 	size () { return 2; }
 
-	///@}
-
 	///  @name  Arithmetic operations
 	///  All these operators modify this vector2 inplace.
 
-	///@{
 	///  Negates this vector.
 	vector2 &
 	negate ();
@@ -194,8 +181,6 @@ public:
 	///  Normalize this vector in place.
 	vector2 &
 	normalize ();
-
-	///@}
 
 
 private:
@@ -297,8 +282,6 @@ vector2 <Type>::normalize ()
 ///  @relates vector2
 ///  @name Comparision operations
 
-///@{
-//@{
 ///  Compares two vector2 numbers.
 ///  Returns true if @a a is equal to @a rhs.
 template <class Type>
@@ -319,14 +302,10 @@ operator not_eq (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 	return lhs .x () not_eq rhs .x () or
 	       lhs .y () not_eq rhs .y ();
 }
-//@}
-///@}
 
 ///  @relates vector2
 ///  @name Arithmetic operations
 
-///@{
-//@{
 ///  Returns a copy of @a vector.
 template <class Type>
 constexpr vector2 <Type>
@@ -342,9 +321,7 @@ operator - (const vector2 <Type> & vector)
 {
 	return vector2 <Type> (vector) .negate ();
 }
-//@}
 
-//@{
 ///  Returns new vector value @a a plus @a rhs.
 template <class Type>
 inline
@@ -353,9 +330,7 @@ operator + (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 {
 	return vector2 <Type> (lhs) += rhs;
 }
-//@}
 
-//@{
 ///  Returns new vector value @a a minus @a rhs.
 template <class Type>
 inline
@@ -364,9 +339,7 @@ operator - (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 {
 	return vector2 <Type> (lhs) -= rhs;
 }
-//@}
 
-//@{
 ///  Returns new vector value @a a times @a rhs.
 template <class Type>
 inline
@@ -393,9 +366,7 @@ operator * (const Type & lhs, const vector2 <Type> & rhs)
 {
 	return vector2 <Type> (rhs) *= lhs;
 }
-//@}
 
-//@{
 ///  Returns new vector value @a a divided by @a rhs.
 template <class Type>
 inline
@@ -422,9 +393,7 @@ operator / (const Type & lhs, const vector2 <Type> & rhs)
 	return vector2 <Type> (lhs / rhs .x (),
 	                       lhs / rhs .y ());
 }
-//@}
 
-//@{
 ///  Returns new vector value @a a dot @a rhs.
 template <class Type>
 constexpr Type
@@ -460,9 +429,7 @@ normalize (const vector2 <Type> & vector)
 {
 	return vector2 <Type> (vector) .normalize ();
 }
-//@}
 
-//@{
 /**
  * @returns the lesser of each component.
  * @param a, b Items to compare.\n
@@ -490,14 +457,10 @@ max (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 	return vector2 <Type> (std::max (lhs .x (), rhs .x ()),
 	                       std::max (lhs .y (), rhs .y ()));
 }
-//@}
-///@}
 
 ///  @relates vector2
 ///  @name Input/Output operations
 
-///@{
-//@{
 ///  Extraction operator for vector values.
 template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
@@ -522,8 +485,6 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const vector2 <Type> 
 	       << vector .x () << ' '
 	       << vector .y ();
 }
-//@}
-///@}
 
 extern template class vector2 <float>;
 extern template class vector2 <double>;

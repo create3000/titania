@@ -79,5 +79,9 @@ TextureTransform3D::create (X3DExecutionContext* const executionContext) const
 	return new TextureTransform3D (executionContext);
 }
 
+void
+TextureTransform3D::draw ()
+{ }
+
 } // X3D
 } // titania

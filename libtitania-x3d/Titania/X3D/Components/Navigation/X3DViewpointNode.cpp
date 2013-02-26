@@ -104,10 +104,22 @@ X3DViewpointNode::initialize ()
 	isBound .addInterest (this, &X3DViewpointNode::_set_bind);
 }
 
+void
+X3DViewpointNode::setUserPosition (const Vector3f & value)
+{
+	positionOffset = value - getPosition ();
+}
+
 Vector3f
 X3DViewpointNode::getUserPosition () const
 {
 	return getPosition () + positionOffset;
+}
+
+void
+X3DViewpointNode::setUserOrientation (const Rotation4f & value)
+{
+	orientationOffset = value * ~orientation;
 }
 
 Rotation4f
@@ -218,45 +230,55 @@ X3DViewpointNode::_set_bind ()
 }
 
 void
-X3DViewpointNode::traverse ()
+X3DViewpointNode::traverse (TraverseType type)
 {
-	setModelViewMatrix (ModelViewMatrix4f ());
-
-	Matrix4f transformationMatrix = ModelViewMatrix4f ();
-
-	if (isBound)
+	switch (type)
 	{
-		if (jump)
+		case TraverseType::UPDATE:
 		{
-			transformationMatrix .translate (getUserPosition ());
-			transformationMatrix .rotate (getUserOrientation ());
+			setModelViewMatrix (ModelViewMatrix4f ());
 
-			setTransformationMatrix (transformationMatrix);
+			Matrix4f transformationMatrix = ModelViewMatrix4f ();
+
+			if (isBound)
+			{
+				if (jump)
+				{
+					transformationMatrix .translate (getUserPosition ());
+					transformationMatrix .rotate (getUserOrientation ());
+
+					setTransformationMatrix (transformationMatrix);
+				}
+				else
+				{
+					transformationMatrix .translate (getUserPosition ());
+					transformationMatrix .rotate (getUserOrientation ());
+
+					setTransformationMatrix (transformationMatrix);
+				}
+			}
+	
+			break;
 		}
-		else
+		case TraverseType::RENDER:
 		{
-			transformationMatrix .translate (getUserPosition ());
-			transformationMatrix .rotate (getUserOrientation ());
+			Matrix4f transformationMatrix = ModelViewMatrix4f ();
 
-			setTransformationMatrix (transformationMatrix);
+			if (not isBound)
+			{
+				if (not jump)
+				{
+					transformationMatrix .translate (getPosition ());
+					transformationMatrix .rotate (orientation);
+
+					setDifferenceMatrix (getCurrentViewpoint () -> getTransformationMatrix () * ~transformationMatrix);
+				}
+			}
+			
+			break;
 		}
-	}
-}
-
-void
-X3DViewpointNode::display ()
-{
-	Matrix4f transformationMatrix = ModelViewMatrix4f ();
-
-	if (not isBound)
-	{
-		if (not jump)
-		{
-			transformationMatrix .translate (getPosition ());
-			transformationMatrix .rotate (orientation);
-
-			setDifferenceMatrix (getCurrentViewpoint () -> getTransformationMatrix () * ~transformationMatrix);
-		}
+		default:
+			break;
 	}
 }
 

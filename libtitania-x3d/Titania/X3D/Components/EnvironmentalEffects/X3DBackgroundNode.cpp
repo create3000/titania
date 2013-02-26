@@ -359,9 +359,10 @@ X3DBackgroundNode::build ()
 }
 
 void
-X3DBackgroundNode::display ()
+X3DBackgroundNode::traverse (TraverseType type)
 {
-	matrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
+	if (type == TraverseType::RENDER)
+		matrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
 }
 
 void

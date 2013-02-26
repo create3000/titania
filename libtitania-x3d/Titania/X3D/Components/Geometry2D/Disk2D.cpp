@@ -218,12 +218,12 @@ Disk2D::build ()
 }
 
 void
-Disk2D::display ()
+Disk2D::draw ()
 {
 	if (innerRadius == outerRadius)
 		glDisable (GL_LIGHTING);
 
-	X3DGeometryNode::display ();
+	X3DGeometryNode::draw ();
 }
 
 void

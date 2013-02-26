@@ -116,37 +116,13 @@ Billboard::transform ()
 }
 
 void
-Billboard::pick ()
+Billboard::traverse (TraverseType type)
 {
 	glPushMatrix ();
 
 	transform ();
 
-	X3DGroupingNode::pick ();
-
-	glPopMatrix ();
-}
-
-void
-Billboard::traverse ()
-{
-	glPushMatrix ();
-
-	transform ();
-
-	X3DGroupingNode::traverse ();
-
-	glPopMatrix ();
-}
-
-void
-Billboard::display ()
-{
-	glPushMatrix ();
-
-	transform ();
-
-	X3DGroupingNode::display ();
+	X3DGroupingNode::traverse (type);
 
 	glPopMatrix ();
 }

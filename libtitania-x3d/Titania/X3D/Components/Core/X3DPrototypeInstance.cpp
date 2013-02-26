@@ -129,15 +129,9 @@ X3DPrototypeInstance::getRootNode ()
 }
 
 void
-X3DPrototypeInstance::pick ()
+X3DPrototypeInstance::traverse (TraverseType type)
 {
-	getRootNode () -> pick ();
-}
-
-void
-X3DPrototypeInstance::display ()
-{
-	getRootNode () -> display ();
+	getRootNode () -> traverse (type);
 }
 
 void

@@ -55,7 +55,7 @@
 
 #include "../Browser/X3DBrowser.h"
 #include "../Browser/PointingDevice.h"
-#include "../Browser/X3DViewer.h"
+#include "../Browser/Viewer/X3DViewer.h"
 
 namespace titania {
 namespace X3D {
@@ -70,6 +70,11 @@ public:
 	void
 	setCursor (Gdk::CursorType cursor_type)
 	{ get_window () -> set_cursor (Gdk::Cursor::create (cursor_type)); }
+	
+	virtual
+	ViewerType
+	getViewerType () const
+	{ return viewer -> getType (); }
 
 	virtual
 	void
