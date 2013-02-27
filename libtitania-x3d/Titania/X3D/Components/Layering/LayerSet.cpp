@@ -145,13 +145,7 @@ LayerSet::traverse (TraverseType type)
 	{
 		if (index >= 0  and index < (int32_t) children .size ())
 		{
-			X3DLayerNode* currentLayer = children [index];
-
-			getBrowser () -> getLayers () .push (currentLayer);
-
-			currentLayer  -> traverse (type);
-
-			getBrowser () -> getLayers () .pop ();
+			children [index] -> traverse (type);
 		}
 	}
 }

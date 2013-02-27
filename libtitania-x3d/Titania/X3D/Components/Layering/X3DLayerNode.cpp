@@ -199,6 +199,8 @@ X3DLayerNode::set_viewport ()
 void
 X3DLayerNode::traverse (TraverseType type)
 {
+	getBrowser () -> getLayers () .push (this);
+		
 	switch (type)
 	{
 		case TraverseType::PICKING:
@@ -221,8 +223,13 @@ X3DLayerNode::traverse (TraverseType type)
 			
 			break;
 		}
-		case TraverseType::CAMERA:
 		case TraverseType::COLLISION:
+		{
+			//getViewpoint () -> 
+			
+			// Proceed with CAMERA
+		}
+		case TraverseType::CAMERA:
 		{
 			glPushMatrix ();
 			glLoadIdentity ();
@@ -257,6 +264,8 @@ X3DLayerNode::traverse (TraverseType type)
 			break;
 		}
 	}
+
+	getBrowser () -> getLayers () .pop ();
 }
 
 void

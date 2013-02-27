@@ -74,7 +74,7 @@ public:
 		id (0),
 		depth (width * height)
 	{
-		if (glXGetCurrentContext ())
+		if (glXGetCurrentContext ()) // GL_EXT_framebuffer_object
 		{
 			glGenFramebuffers (1, &id);
 			glGenRenderbuffers (1, &depthBuffer);
@@ -342,16 +342,16 @@ X3DRenderer::gravite ()
 	if (getBrowser () -> getViewerType () not_eq ViewerType::WALK)
 		return;
 	
-	//depthBuffer -> bind ();
+	depthBuffer -> bind ();
+	glClear (GL_DEPTH_BUFFER_BIT);
 
-	GLint viewport [4];                                         //
-
-	glGetIntegerv (GL_VIEWPORT, viewport);                      //
-	glViewport (0, 0, DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT); //
-	glScissor  (0, 0, DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT); //
-	glEnable (GL_SCISSOR_TEST);                                 //
-
-	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//	GLint viewport [4];                                         //
+//
+//	glGetIntegerv (GL_VIEWPORT, viewport);                      //
+//	glViewport (0, 0, DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT); //
+//	glScissor  (0, 0, DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT); //
+//	glEnable (GL_SCISSOR_TEST);                                 //
+//	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Reshape viewpoint
 
@@ -379,13 +379,6 @@ X3DRenderer::gravite ()
 
 	setViewpointMatrix (viewpointMatrix);
 
-	// Enable global lights
-
-	const LightContainerArray & globalLights = getCurrentLayer () -> getGlobalLights (); //
-
-	for (const auto & light : globalLights)                                              //
-		light -> enable ();                                                               //
-
 	{
 		// Sorted blend
 
@@ -408,13 +401,8 @@ X3DRenderer::gravite ()
 		}
 	}
 
-	// Disable global lights
-
-	for (const auto & light : basic::adapter (globalLights .crbegin (), globalLights .crend ())) //
-		light -> disable ();                                                                      //
-
-	glDisable (GL_SCISSOR_TEST);                                                                 //
-	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);                         //
+//	glDisable (GL_SCISSOR_TEST);                                                                 //
+//	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);                         //
 
 	glPopMatrix ();
 
