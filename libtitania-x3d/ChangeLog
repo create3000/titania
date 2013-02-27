@@ -1,6 +1,17 @@
 2013-02-27  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DRenderer.cpp:
+	* Inline.cpp:
+	* X3DLayerNode.h:
+	* X3DLayerNode.cpp:
+	* NavigationInfo.h:
+	* NavigationInfo.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp: 
+
+2013-02-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DRenderer.cpp:
 	* LayerSet.cpp:
 	* X3DLayerNode.cpp: 
 

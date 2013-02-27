@@ -85,6 +85,12 @@ public:
 	MFNode               removeChildren;
 	MFNode               children;
 
+	///  @name Children handling
+
+	const SFNode <Group>
+	getGroup () const
+	{ return group; }
+
 	///  @name Bindable node stack handling
 
 	NavigationInfo*

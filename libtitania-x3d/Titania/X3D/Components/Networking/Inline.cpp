@@ -204,6 +204,7 @@ Inline::traverse (TraverseType type)
 {
 	for (const auto & rootNode : scene -> getRootNodes ())
 		rootNode -> traverse (type);
+	//scene -> getLayerSet () -> getLayers () [0] -> getGroup () -> traverse (type);
 }
 
 void

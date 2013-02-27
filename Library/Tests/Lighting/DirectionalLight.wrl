@@ -1,0 +1,33 @@
+#VRML V2.0 utf8 Comment
+
+META "title" "DirectionalLight"
+
+NavigationInfo {
+  headlight FALSE
+  #type [ "ANY", "WALK" ]
+}
+
+DEF Light1 DirectionalLight {
+  ambientIntensity 0.44
+  direction -0.342887 -0.849953 0.400012
+}
+
+Transform {
+  children Transform {
+    children [
+      Transform {
+        children Shape {
+          appearance Appearance {
+            material Material { }
+          }
+          geometry Box { }
+        }
+      }
+      PointLight {
+        location 12 0 0
+        radius 1
+        attenuation 1 1 0
+      }
+    ]
+  }
+}

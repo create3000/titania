@@ -66,6 +66,7 @@ X3DViewpointNode::X3DViewpointNode (bool displayed) :
 	             positionOffset (),                                                 
 	          orientationOffset (),                                                 
 	     centerOfRotationOffset (),                                                 
+	                       bbox (),
 	            modelViewMatrix (),                                                 
 	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),  
 	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1), 
@@ -104,22 +105,10 @@ X3DViewpointNode::initialize ()
 	isBound .addInterest (this, &X3DViewpointNode::_set_bind);
 }
 
-void
-X3DViewpointNode::setUserPosition (const Vector3f & value)
-{
-	positionOffset = value - getPosition ();
-}
-
 Vector3f
 X3DViewpointNode::getUserPosition () const
 {
 	return getPosition () + positionOffset;
-}
-
-void
-X3DViewpointNode::setUserOrientation (const Rotation4f & value)
-{
-	orientationOffset = value * ~orientation;
 }
 
 Rotation4f
@@ -139,6 +128,20 @@ X3DViewpointNode::setTransformationMatrix (const Matrix4f & value)
 {
 	transformationMatrix        = value;
 	inverseTransformationMatrix = ~value;
+	
+	bbox = getCurrentNavigationInfo () -> getBBox () * transformationMatrix;
+}
+
+Matrix4f
+X3DViewpointNode::getDownViewMatrix ()
+{
+	Matrix4f matrix = getModelViewMatrix ();
+
+	matrix .translate (getUserPosition ());
+	matrix .rotate (getUserOrientation () * Rotation4f (getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
+	matrix .inverse ();
+
+	return matrix;
 }
 
 void
@@ -197,7 +200,7 @@ X3DViewpointNode::set_isActive (const bool & value)
 	if (not value)
 	{
 		for (const auto & layer : getLayers ())
-			layer -> getNavigationInfoStack () .top () -> transitionComplete = getCurrentTime ();
+			layer -> getNavigationInfo () -> transitionComplete = getCurrentTime ();
 	}
 }
 

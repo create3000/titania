@@ -1,13 +1,17 @@
 #VRML V2.0 utf8 Comment
 
+META "title" "PointLight"
+
 NavigationInfo {
   headlight FALSE
 }
+
 PointLight {
-  attenuation 1 1 0
   location 12 0 0
   radius 1
+  attenuation 1 1 0
 }
+
 Transform {
   children Shape {
     appearance Appearance {

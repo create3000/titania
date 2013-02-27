@@ -54,6 +54,7 @@
 #include "../Core/X3DBindableNode.h"
 #include "../Lighting/DirectionalLight.h"
 #include "../../Rendering/LightContainer.h"
+#include "../../Types/Geometry.h"
 #include <memory>
 
 namespace titania {
@@ -79,6 +80,9 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 	
+	Box3f
+	getBBox ();
+
 	float
 	getAvatarDepth ();
 

@@ -120,6 +120,12 @@ NavigationInfo::set_headlight ()
 		light .reset ();
 }
 
+Box3f
+NavigationInfo::getBBox ()
+{
+	return Box3f (Vector3f (getAvatarWidth (), getAvatarHeight (), getAvatarDepth ()), Vector3f ());
+}
+
 float
 NavigationInfo::getAvatarDepth ()
 {

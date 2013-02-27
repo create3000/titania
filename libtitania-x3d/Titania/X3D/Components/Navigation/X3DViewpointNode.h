@@ -73,19 +73,17 @@ public:
 	SFVec3f    positionOffset;
 	SFRotation orientationOffset;
 	SFVec3f    centerOfRotationOffset;
+	
+	const Box3f &
+	getBBox () const
+	{ return bbox; }
 
 	virtual
 	Vector3f
 	getPosition () const = 0;
-	
-	void
-	setUserPosition (const Vector3f &);
 
 	Vector3f
 	getUserPosition () const;
-
-	void
-	setUserOrientation (const Rotation4f &);
 
 	Rotation4f
 	getUserOrientation () const;
@@ -104,6 +102,9 @@ public:
 
 	const Matrix4f &
 	getModelViewMatrix () const { return modelViewMatrix; }
+
+	Matrix4f
+	getDownViewMatrix ();
 
 	virtual
 	void
@@ -173,6 +174,8 @@ private:
 
 	void
 	_set_bind ();
+
+	Box3f bbox;
 
 	Matrix4f modelViewMatrix;
 	Matrix4f transformationMatrix;

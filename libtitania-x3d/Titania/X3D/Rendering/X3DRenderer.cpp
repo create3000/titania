@@ -343,15 +343,14 @@ X3DRenderer::gravite ()
 		return;
 	
 	depthBuffer -> bind ();
-	glClear (GL_DEPTH_BUFFER_BIT);
 
-//	GLint viewport [4];                                         //
-//
-//	glGetIntegerv (GL_VIEWPORT, viewport);                      //
-//	glViewport (0, 0, DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT); //
-//	glScissor  (0, 0, DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT); //
-//	glEnable (GL_SCISSOR_TEST);                                 //
-//	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	GLint viewport [4];
+
+	glGetIntegerv (GL_VIEWPORT, viewport);
+	glViewport (0, 0, DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT);
+	glScissor  (0, 0, DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT);
+	glEnable (GL_SCISSOR_TEST);
+	glClear (GL_DEPTH_BUFFER_BIT);
 
 	// Reshape viewpoint
 
@@ -370,14 +369,7 @@ X3DRenderer::gravite ()
 
 	glPushMatrix ();
 
-	Matrix4f viewpointMatrix = getCurrentViewpoint () -> getModelViewMatrix ();
-	viewpointMatrix .translate (getCurrentViewpoint () -> getUserPosition ());
-	viewpointMatrix .rotate (getCurrentViewpoint () -> getUserOrientation () *
-	                         Rotation4f (getCurrentViewpoint () -> getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
-
-	viewpointMatrix .inverse ();
-
-	setViewpointMatrix (viewpointMatrix);
+	setViewpointMatrix (getCurrentViewpoint () -> getDownViewMatrix ());
 
 	{
 		// Sorted blend
@@ -401,8 +393,8 @@ X3DRenderer::gravite ()
 		}
 	}
 
-//	glDisable (GL_SCISSOR_TEST);                                                                 //
-//	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);                         //
+	glDisable (GL_SCISSOR_TEST);
+	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
 
 	glPopMatrix ();
 
@@ -424,7 +416,7 @@ X3DRenderer::gravite ()
 
 			float translation = std::max (speed / currentFrameRate, distance);
 
-			getCurrentViewpoint () -> setUserPosition (getCurrentViewpoint () -> getUserPosition () + Vector3f (0, translation, 0));
+			getCurrentViewpoint () -> positionOffset += Vector3f (0, translation, 0);
 		}
 		else
 		{
@@ -433,8 +425,7 @@ X3DRenderer::gravite ()
 			if (distance > 0.01 and distance < height / 2)
 			{
 				// Step up
-
-				getCurrentViewpoint () -> setUserPosition (getCurrentViewpoint () -> getUserPosition () + Vector3f (0, distance, 0));
+				getCurrentViewpoint () -> positionOffset += Vector3f (0, distance, 0);
 			}
 		}
 	}

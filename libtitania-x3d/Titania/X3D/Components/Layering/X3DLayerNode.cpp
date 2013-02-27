@@ -223,13 +223,19 @@ X3DLayerNode::traverse (TraverseType type)
 			
 			break;
 		}
-		case TraverseType::COLLISION:
-		{
-			//getViewpoint () -> 
-			
-			// Proceed with CAMERA
-		}
 		case TraverseType::CAMERA:
+		{
+			glPushMatrix ();
+			glLoadIdentity ();
+
+			defaultViewpoint -> traverse (type);
+			group            -> traverse (type);
+
+			glPopMatrix ();
+			
+			break;
+		}
+		case TraverseType::COLLISION:
 		{
 			glPushMatrix ();
 			glLoadIdentity ();
