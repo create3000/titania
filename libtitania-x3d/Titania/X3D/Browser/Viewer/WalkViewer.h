@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,84 +48,32 @@
  *
  ******************************************************************************/
 
-#include "Billboard.h"
+#ifndef __TITANIA_X3D_BROWSER_VIEWER_WALK_VIEWER_H__
+#define __TITANIA_X3D_BROWSER_VIEWER_WALK_VIEWER_H__
 
-#include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/Matrix.h"
+#include "../Viewer/X3DFlyViewer.h"
 
 namespace titania {
 namespace X3D {
 
-Billboard::Billboard (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGroupingNode (),                                                    
-	 axisOfRotation (0, 1, 0)                                              // SFVec3f [in,out] axisOfRotation  0 1 0        (-∞,∞)
+class WalkViewer :
+	public X3DFlyViewer
 {
-	setComponent ("Navigation");
-	setTypeName ("Billboard");
+public:
 
-	addField (inputOutput,    "metadata",       metadata);
-	addField (inputOutput,    "axisOfRotation", axisOfRotation);
-	addField (initializeOnly, "bboxSize",       bboxSize);
-	addField (initializeOnly, "bboxCenter",     bboxCenter);
-	addField (inputOnly,      "addChildren",    addChildren);
-	addField (inputOnly,      "removeChildren", removeChildren);
-	addField (inputOutput,    "children",       children);
-}
+	WalkViewer (Browser* const, NavigationInfo*);
 
-X3DBaseNode*
-Billboard::create (X3DExecutionContext* const executionContext) const
-{
-	return new Billboard (executionContext);
-}
+	virtual
+	ViewerType
+	getType () const
+	{ return ViewerType::WALK; }
 
-void
-Billboard::transform ()
-{
-	Vector3f   translation, scale;
-	Rotation4f rotation;
+	virtual
+	~WalkViewer ();
 
-	getModelViewMatrix4f () .get (translation, rotation, scale);
-
-	Vector3f _axisOfRotation   = axisOfRotation;
-	Vector3f billboardToViewer = -translation;
-
-	static constexpr Vector3f zAxis (0, 0, 1);
-
-	if (_axisOfRotation == Vector3f ())
-	{
-		Rotation4f r = Rotation4f (billboardToViewer, zAxis) * ~rotation;
-		float      x, y, z, angle;
-		r .get (x, y, z, angle);
-		glRotatef (math::degree (angle), x, y, z);
-	}
-	else
-	{
-		Vector3f v1 = cross (_axisOfRotation, billboardToViewer);
-		Vector3f v2 = cross (_axisOfRotation, rotation * zAxis);
-
-		Rotation4f r = dot (_axisOfRotation, rotation * _axisOfRotation) > 0
-		               ? Rotation4f (v2, v1)
-							: Rotation4f (v1, v2);
-
-		float x, y, z, angle;
-		r .get (x, y, z, angle);
-		glRotatef (math::degree (angle), x, y, z);
-	}
-}
-
-void
-Billboard::traverse (TraverseType type)
-{
-	glPushMatrix ();
-
-	transform ();
-
-	X3DGroupingNode::traverse (type);
-
-	glPopMatrix ();
-}
+};
 
 } // X3D
 } // titania
+
+#endif

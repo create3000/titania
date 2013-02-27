@@ -56,6 +56,7 @@
 #include <Titania/Physics/Constants.h>
 #include <Titania/Utility/Adapter.h>
 #include <algorithm>
+#include <stdexcept>
 
 #define DEPTH_BUFFER_WIDTH   16
 #define DEPTH_BUFFER_HEIGHT  16
@@ -73,22 +74,25 @@ public:
 		id (0),
 		depth (width * height)
 	{
-		glGenFramebuffers (1, &id);
-		glGenRenderbuffers (1, &depthBuffer);
+		if (glXGetCurrentContext ())
+		{
+			glGenFramebuffers (1, &id);
+			glGenRenderbuffers (1, &depthBuffer);
 
-		// Bind frame buffer.
-		bind ();
+			// Bind frame buffer.
+			bind ();
 
-		// The depth buffer
-		glBindRenderbuffer (GL_RENDERBUFFER, depthBuffer);
-		glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-		glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+			// The depth buffer
+			glBindRenderbuffer (GL_RENDERBUFFER, depthBuffer);
+			glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+			glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
 
-		// Always check that our framebuffer is ok
-		if (glCheckFramebufferStatus (GL_FRAMEBUFFER) not_eq GL_FRAMEBUFFER_COMPLETE)
-			throw 1;
+			// Always check that our framebuffer is ok
+			if (glCheckFramebufferStatus (GL_FRAMEBUFFER) not_eq GL_FRAMEBUFFER_COMPLETE)
+				throw std::runtime_error ("Couldn't create frame buffer.");
 
-		unbind ();
+			unbind ();
+		}
 	}
 
 	double
@@ -134,7 +138,8 @@ public:
 
 	~DepthBuffer ()
 	{
-		glDeleteFramebuffers (1, &id);
+		if (id)
+			glDeleteFramebuffers (1, &id);
 	}
 
 	size_t width;
@@ -152,13 +157,8 @@ X3DRenderer::X3DRenderer () :
 	       transparentShapes (),  
 	             depthBuffer (),  
 	                   speed (),  
-	            traverseTime (0), 
-	                drawTime (0), 
-	                numNodes (0), 
-	           numNodesDrawn (0), 
 	          numOpaqueNodes (0), 
-	     numTransparentNodes (0), 
-	numTransparentNodesDrawn (0)  
+	     numTransparentNodes (0)
 { }
 
 void
@@ -194,27 +194,37 @@ X3DRenderer::addShape (X3DShapeNode* shape)
 }
 
 void
-X3DRenderer::render ()
+X3DRenderer::render (TraverseType type)
 {
 	numOpaqueNodes      = 0;
 	numTransparentNodes = 0;
 
 	getBrowser () -> getRenderers () .emplace (this);
 
-	collect ();
-	draw ();
-	bottom ();
-
+	collect (type);
+	
+	switch (type)
+	{
+		case TraverseType::COLLISION:
+		{
+			gravite ();
+			break;
+		}
+		case TraverseType::RENDER:
+		{
+			draw ();
+			break;
+		}
+		default:
+			break;
+	}
+	
 	getBrowser () -> getRenderers () .pop ();
 }
 
 void
 X3DRenderer::draw ()
 {
-	numNodes                 = numOpaqueNodes + numTransparentNodes;
-	numNodesDrawn            = 0;
-	numTransparentNodesDrawn = 0;
-
 	glPushMatrix ();
 
 	setViewpointMatrix (getCurrentViewpoint () -> getInverseTransformationMatrix ());
@@ -238,7 +248,7 @@ X3DRenderer::draw ()
 
 		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
 		{
-			numNodesDrawn += shape -> draw ();
+			shape -> draw ();
 		}
 
 		// Render transparent objects
@@ -250,7 +260,7 @@ X3DRenderer::draw ()
 
 		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
 		{
-			numTransparentNodesDrawn += shape -> draw ();
+			shape -> draw ();
 		}
 
 		glDepthMask (GL_TRUE);
@@ -270,7 +280,7 @@ X3DRenderer::draw ()
 
 		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
 		{
-			numNodesDrawn += shape -> draw ();
+			shape -> draw ();
 		}
 
 		// Render transparent objects
@@ -285,7 +295,7 @@ X3DRenderer::draw ()
 			glDepthMask (GL_FALSE);
 			glBlendFunc (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA);
 
-			numTransparentNodesDrawn += shape -> draw ();
+			shape -> draw ();
 
 			glDepthFunc (GL_LEQUAL);
 			glDepthMask (GL_TRUE);
@@ -321,13 +331,11 @@ X3DRenderer::draw ()
 	for (const auto & light : basic::adapter (globalLights .crbegin (), globalLights .crend ()))
 		light -> disable ();
 
-	numNodesDrawn += numTransparentNodesDrawn;
-
 	glPopMatrix ();
 }
 
 void
-X3DRenderer::bottom ()
+X3DRenderer::gravite ()
 {
 	auto navigationInfo = getCurrentNavigationInfo ();
 	
@@ -429,7 +437,6 @@ X3DRenderer::bottom ()
 			float translation = std::max (speed / currentFrameRate, distance);
 
 			getCurrentViewpoint () -> setUserPosition (getCurrentViewpoint () -> getUserPosition () + Vector3f (0, translation, 0));
-
 		}
 		else
 		{
@@ -440,7 +447,6 @@ X3DRenderer::bottom ()
 				// Step up
 
 				getCurrentViewpoint () -> setUserPosition (getCurrentViewpoint () -> getUserPosition () + Vector3f (0, distance, 0));
-
 			}
 		}
 	}

@@ -161,7 +161,7 @@ ProximitySensor::traverse (TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::UPDATE:
+		case TraverseType::CAMERA:
 		{
 			viewpoint = getCurrentViewpoint ();
 			matrix    = ModelViewMatrix4f ();
@@ -172,7 +172,7 @@ ProximitySensor::traverse (TraverseType type)
 			if (inside)
 				return;
 
-			Matrix4f transformationMatrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
+			Matrix4f transformationMatrix = getModelViewMatrix4f ();
 			transformationMatrix .translate (center);
 
 			inside = isInside (transformationMatrix);

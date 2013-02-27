@@ -71,29 +71,11 @@ public:
 	void
 	initialize ();
 
-	time_type
-	getTraverseTime () { return traverseTime; }
-
-	time_type
-	getDrawTime () { return drawTime; }
-
-	size_t
-	getNumNodes () { return numNodes; }
-
-	size_t
-	getNumNodesDrawn () { return numNodesDrawn; }
-
-	size_t
-	getNumTransparentNodes () { return numTransparentNodes; }
-
-	size_t
-	getNumTransparentNodesDrawn () { return numTransparentNodesDrawn; }
-
 	void
 	addShape (X3DShapeNode*);
 
 	void
-	render ();
+	render (TraverseType);
 
 	virtual
 	void
@@ -112,13 +94,13 @@ private:
 
 	virtual
 	void
-	collect () = 0;
+	collect (TraverseType) = 0;
 
 	void
 	draw ();
 
 	void
-	bottom ();
+	gravite ();
 
 	void
 	clear ();
@@ -131,13 +113,8 @@ private:
 	std::unique_ptr <DepthBuffer> depthBuffer;
 	float                         speed;
 
-	time_type traverseTime;
-	time_type drawTime;
-	size_t    numNodes;
-	size_t    numNodesDrawn;
-	size_t    numOpaqueNodes;
-	size_t    numTransparentNodes;
-	size_t    numTransparentNodesDrawn;
+	size_t numOpaqueNodes;
+	size_t numTransparentNodes;
 
 };
 

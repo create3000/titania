@@ -134,7 +134,7 @@ X3DShapeNode::traverse (TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::PICK:
+		case TraverseType::PICKING:
 		{
 
 			if (not getBrowser () -> isSensitive ())
@@ -155,6 +155,7 @@ X3DShapeNode::traverse (TraverseType type)
 		
 			break;
 		}
+		case TraverseType::COLLISION:
 		case TraverseType::RENDER:
 		{
 			if (_geometry)

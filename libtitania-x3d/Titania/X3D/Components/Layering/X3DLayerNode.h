@@ -193,7 +193,7 @@ private:
 
 	virtual
 	void
-	collect ();
+	collect (TraverseType);
 
 	SFNode <Viewport>          defaultViewport;
 	SFNode <NavigationInfo>    defaultNavigationInfo;

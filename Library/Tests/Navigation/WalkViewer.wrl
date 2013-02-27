@@ -4,38 +4,51 @@ META "title" "Walk viewer"
 
 NavigationInfo {
   type "WALK"
-  speed 1
 }
 
 DirectionalLight {
-	direction 0 -1 0
+  direction 0 -1 0
 }
 
 Viewpoint {
-	position 0 10 30
+  position 0 10 30
 }
 
 DEF Floor Transform {
-	scale 100 1 100
-	children Shape {
-		appearance Appearance {
-		  material Material { }
-		  texture ImageTexture {
-		    url "../images/image.png"
-		  }
-		}
-		geometry Box {}
-	}
+  scale 100 1 100
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry Box { }
+  }
 }
 
 Transform {
-	translation 0 0 0
-	scale 2 1.2 2
-	children Shape {
-		appearance Appearance {
-		  material Material { }
-		}
-		geometry Box {}
-	}
+  scale 2 1.5 2
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box { }
+  }
 }
 
+Collision {
+  enabled FALSE
+  children Transform {
+    translation 0 0 -4
+    scale 2 1.5 2
+    children Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0 0
+        }
+      }
+      geometry Box { }
+    }
+  }
+}

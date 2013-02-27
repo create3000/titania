@@ -78,6 +78,8 @@ X3DBrowser::X3DBrowser () :
 void
 X3DBrowser::initialize ()
 {
+	std::clog << "Initializing Browser ..." << std::endl;
+
 	world = scene = createScene ();
 
 	X3DBrowserContext::initialize ();
@@ -106,6 +108,10 @@ X3DBrowser::initialize ()
 	std::clog
 		<< std::string (80, '*') << std::endl
 		<< std::string (80, '*') << std::endl
+		<< std::endl;
+
+	std::clog
+		<< "\tDone initializing Browser." << std::endl
 		<< std::endl;
 }
 

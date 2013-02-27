@@ -234,7 +234,7 @@ X3DViewpointNode::traverse (TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::UPDATE:
+		case TraverseType::CAMERA:
 		{
 			setModelViewMatrix (ModelViewMatrix4f ());
 

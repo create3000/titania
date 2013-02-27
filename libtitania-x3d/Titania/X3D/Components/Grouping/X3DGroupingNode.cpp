@@ -178,7 +178,7 @@ X3DGroupingNode::traverse (TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::PICK:
+		case TraverseType::PICKING:
 		{
 			for (const auto & child : pointingDeviceSensors)
 				child -> push ();
@@ -191,8 +191,8 @@ X3DGroupingNode::traverse (TraverseType type)
 		
 			break;
 		}
-		case TraverseType::UPDATE:
-		case TraverseType::COLLIDE:
+		case TraverseType::CAMERA:
+		case TraverseType::COLLISION:
 		{
 			for (const auto & child : childNodes)
 				child -> traverse (type);

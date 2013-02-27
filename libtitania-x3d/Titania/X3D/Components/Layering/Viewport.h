@@ -95,7 +95,7 @@ private:
 
 	virtual
 	void
-	collect ();
+	collect (TraverseType);
 
 	GLint viewport [4];
 

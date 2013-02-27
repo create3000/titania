@@ -201,7 +201,7 @@ X3DLayerNode::traverse (TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::PICK:
+		case TraverseType::PICKING:
 		{
 			if (not isPickable)
 				return;
@@ -221,22 +221,21 @@ X3DLayerNode::traverse (TraverseType type)
 			
 			break;
 		}
-		case TraverseType::UPDATE:
+		case TraverseType::CAMERA:
+		case TraverseType::COLLISION:
 		{
 			glPushMatrix ();
 			glLoadIdentity ();
 
 			getViewpoint ()  -> reshape ();
-			defaultViewpoint -> traverse (TraverseType::UPDATE);
+			defaultViewpoint -> traverse (type);
 		
-			group -> traverse (type);
+			render (type);
 
 			glPopMatrix ();
 			
 			break;
 		}
-		case TraverseType::COLLIDE:
-			break;
 		case TraverseType::RENDER:
 		{
 			currentViewport -> enable ();
@@ -247,9 +246,9 @@ X3DLayerNode::traverse (TraverseType type)
 			getBackground ()     -> draw ();
 			getNavigationInfo () -> enable ();
 			getViewpoint ()      -> reshape ();
-			defaultViewpoint     -> traverse (TraverseType::RENDER);
+			defaultViewpoint     -> traverse (type);
 
-			render ();
+			render (type);
 
 			getNavigationInfo () -> disable ();
 			currentViewport      -> disable ();
@@ -261,9 +260,9 @@ X3DLayerNode::traverse (TraverseType type)
 }
 
 void
-X3DLayerNode::collect ()
+X3DLayerNode::collect (TraverseType type)
 {
-	group -> traverse (TraverseType::RENDER);
+	group -> traverse (type);
 }
 
 void

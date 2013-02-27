@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -103,12 +103,12 @@ VisibilitySensor::traverse (TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::UPDATE:
+		case TraverseType::CAMERA:
 		{
 			if (not enabled or visible)
 				return;
 
-			visible = ViewVolume (ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix (),
+			visible = ViewVolume (getModelViewMatrix4f (),
 			                      ProjectionMatrix4f ())
 			          .intersect (Box3f (size, center));
 			          

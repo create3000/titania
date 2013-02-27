@@ -1,3 +1,30 @@
+2013-02-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Browser.cpp:
+	* TraverseType.h:
+	* X3DBrowser.cpp:
+	* X3DRenderer.h:
+	* X3DNode.h:
+	* X3DRenderer.cpp:
+	* WalkViewer.h:
+	* X3DNode.cpp:
+	* LOD.cpp:
+	* X3DBrowserContext.cpp:
+	* Viewport.h:
+	* Anchor.cpp:
+	* Viewport.cpp:
+	* Collision.h:
+	* X3DShapeNode.cpp:
+	* X3DLayerNode.h:
+	* Billboard.cpp:
+	* Collision.cpp:
+	* X3DLayerNode.cpp:
+	* X3DGroupingNode.cpp:
+	* X3DViewpointNode.cpp:
+	* ProximitySensor.cpp:
+	* VisibilitySensor.cpp:
+	* X3DBackgroundNode.cpp: 
+
 2013-02-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

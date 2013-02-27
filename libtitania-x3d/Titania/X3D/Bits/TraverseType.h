@@ -56,9 +56,9 @@ namespace X3D {
 
 enum class TraverseType
 {
-	PICK,
-	UPDATE,
-	COLLIDE,
+	PICKING,
+	CAMERA,
+	COLLISION,
 	RENDER
 
 };

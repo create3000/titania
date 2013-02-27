@@ -362,7 +362,7 @@ void
 X3DBackgroundNode::traverse (TraverseType type)
 {
 	if (type == TraverseType::RENDER)
-		matrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
+		matrix = getModelViewMatrix4f ();
 }
 
 void

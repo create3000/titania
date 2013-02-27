@@ -93,7 +93,7 @@ Viewport::traverse (TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::PICK:
+		case TraverseType::PICKING:
 		{
 			enable ();
 
@@ -104,20 +104,13 @@ Viewport::traverse (TraverseType type)
 			
 			break;
 		}
-		case TraverseType::UPDATE:
-		{
-			for (const auto & child : children)
-				child -> traverse (type);
-			
-			break;
-		}
-		case TraverseType::COLLIDE:
-			break;
+		case TraverseType::CAMERA:
+		case TraverseType::COLLISION:
 		case TraverseType::RENDER:
 		{
 			enable ();
 
-			X3DRenderer::render ();
+			render (type);
 
 			disable ();
 			
@@ -127,10 +120,10 @@ Viewport::traverse (TraverseType type)
 }
 
 void
-Viewport::collect ()
+Viewport::collect (TraverseType type)
 {
 	for (const auto & child : children)
-		child -> traverse (TraverseType::RENDER);
+		child -> traverse (type);
 }
 
 void

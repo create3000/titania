@@ -105,13 +105,7 @@ Browser::construct ()
 void
 Browser::initialize ()
 {
-	std::clog << "Initializing Browser ..." << std::endl;
-
 	X3DBrowser::initialize ();
-
-	std::clog
-		<< "\tDone initializing Browser." << std::endl
-		<< std::endl;
 }
 
 void
