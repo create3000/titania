@@ -62,9 +62,8 @@ ShapeContainer::ShapeContainer (X3DShapeNode* shape,
 	               shape (shape),                
 	                 fog (fog),                  
 	         localLights (localLights),          
-	            distance (),                     
-	              matrix (ModelViewMatrix4f ()), 
-	transformationMatrix ()                      
+	              matrix (ModelViewMatrix4f ()),
+	            distance (getDistance (shape, matrix))                    
 { }
 
 void
@@ -76,17 +75,7 @@ ShapeContainer::assign (X3DShapeNode* shape,
 	this -> fog         = fog;
 	this -> localLights = localLights;
 	this -> matrix      = ModelViewMatrix4f ();
-}
-
-void
-ShapeContainer::setViewpointMatrix (const Matrix4f & viewpointMatrix)
-{
-	transformationMatrix = matrix * viewpointMatrix;
-
-	Box3f bbox  = shape -> getBBox () * transformationMatrix;
-	float depth = bbox .size () .z () * 0.5f;
-
-	distance = bbox .center () .z () - depth;
+	this -> distance    = getDistance (shape, this -> matrix);
 }
 
 bool
@@ -94,10 +83,10 @@ ShapeContainer::draw ()
 {
 	bool drawn = false;
 
-	glLoadMatrixf (transformationMatrix .data ());
-
 	if (distance < 0)
 	{
+		glLoadMatrixf (matrix .data ());
+		
 		if (ViewVolume () .intersect (shape -> getBBox ()))
 		{
 			for (const auto & light : localLights)
@@ -116,6 +105,15 @@ ShapeContainer::draw ()
 	}
 
 	return drawn;
+}
+
+float
+ShapeContainer::getDistance (X3DShapeNode* shape, const Matrix4f & matrix)
+{
+	Box3f bbox  = shape -> getBBox () * matrix;
+	float depth = bbox .size () .z () * 0.5f;
+
+	return bbox .center () .z () - depth;
 }
 
 } // X3D

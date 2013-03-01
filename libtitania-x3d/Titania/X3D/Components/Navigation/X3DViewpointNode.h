@@ -96,9 +96,6 @@ public:
 	const Matrix4f &
 	getInverseTransformationMatrix () const { return inverseTransformationMatrix; }
 
-	Matrix4f
-	getDownViewMatrix ();
-
 	virtual
 	void
 	addToLayer (X3DLayerNode* const);
@@ -120,6 +117,9 @@ public:
 
 	void
 	transform ();
+
+   void
+	down ();
 
 	virtual
 	void

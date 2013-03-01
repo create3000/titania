@@ -73,7 +73,7 @@ LightContainer::enable ()
 		glEnable (lightId);
 
 		glPushMatrix ();
-		glMultMatrixf (matrix .data ());
+		glLoadMatrixf (matrix .data ());
 		node -> draw (lightId);
 		glPopMatrix ();
 	}

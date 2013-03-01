@@ -399,6 +399,7 @@ X3DBrowserContext::prepare ()
 	router .processEvents ();
 	
 	getExecutionContext () -> traverse (TraverseType::CAMERA);
+	getExecutionContext () -> traverse (TraverseType::COLLISION);
 
 	sensors .processInterests ();
 	

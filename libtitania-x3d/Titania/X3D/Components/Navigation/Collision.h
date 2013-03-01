@@ -71,6 +71,22 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	virtual
+	void
+	traverse (TraverseType);
+	
+
+private:
+
+	virtual
+	void
+	initialize ();
+	
+	void
+	set_proxy ();
+	
+	X3DChildNode* _proxy;
+
 };
 
 } // X3D

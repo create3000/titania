@@ -59,16 +59,12 @@ namespace X3D {
 class LOD :
 	public X3DGroupingNode
 {
-	int32_t
-	getLevel ();
-
-
 public:
 
-	SFInt32 level_changed;
-	SFVec3f center;
 	SFBool  forceTransitions;
+	SFVec3f center;
 	MFFloat range;
+	SFInt32 level_changed;
 
 	LOD (X3DExecutionContext* const);
 
@@ -79,6 +75,13 @@ public:
 	virtual
 	void
 	traverse (TraverseType);
+
+
+private:
+
+	int32_t
+	getLevel (TraverseType);
+
 
 };
 

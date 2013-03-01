@@ -362,7 +362,7 @@ void
 X3DBackgroundNode::traverse (TraverseType type)
 {
 	if (type == TraverseType::COLLECT)
-		matrix = getModelViewMatrix4f ();
+		matrix = ModelViewMatrix4f ();
 }
 
 void

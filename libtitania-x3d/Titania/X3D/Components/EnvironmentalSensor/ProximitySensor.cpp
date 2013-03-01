@@ -172,7 +172,7 @@ ProximitySensor::traverse (TraverseType type)
 			if (inside)
 				break;
 
-			Matrix4f transformationMatrix = getModelViewMatrix4f ();
+			Matrix4f transformationMatrix = ModelViewMatrix4f ();
 			transformationMatrix .translate (center);
 
 			inside = isInside (transformationMatrix);

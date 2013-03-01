@@ -97,11 +97,5 @@ X3DNode::getCurrentViewpoint () const
 	return getCurrentLayer () -> getViewpoint ();
 }
 
-Matrix4f
-X3DNode::getModelViewMatrix4f ()
-{
-	return ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix ();
-}
-
 } // X3D
 } // titania

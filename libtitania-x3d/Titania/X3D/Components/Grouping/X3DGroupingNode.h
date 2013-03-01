@@ -116,6 +116,9 @@ private:
 	camera ();
 	
 	void
+	collision ();
+	
+	void
 	collect ();
 
 	std::deque <X3DPointingDeviceSensorNode*> pointingDeviceSensors;

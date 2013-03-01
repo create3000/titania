@@ -98,9 +98,6 @@ protected:
 
 	X3DViewpointNode*
 	getCurrentViewpoint () const;
-	
-	Matrix4f
-	getModelViewMatrix4f ();
 
 	friend class X3DExecutionContext;
 

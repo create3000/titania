@@ -60,10 +60,10 @@ namespace X3D {
 LOD::LOD (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DGroupingNode (),                                                    
-	   level_changed (),                                                    // SFInt32 [out] level_changed
-	          center (),                                                    // SFVec3f [ ]   center            0 0 0        (-∞,∞)
 	forceTransitions (),                                                    // SFBool  [ ]   forceTransitions  FALSE
-	           range ()                                                     // MFFloat [ ]   range             [ ]           [0,∞) or -1
+	          center (),                                                    // SFVec3f [ ]   center            0 0 0        (-∞,∞)
+	           range (),                                                    // MFFloat [ ]   range             [ ]           [0,∞) or -1
+	   level_changed ()                                                     // SFInt32 [out] level_changed
 {
 	setComponent ("Navigation");
 	setTypeName ("LOD");
@@ -78,6 +78,7 @@ LOD::LOD (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "addChildren",      addChildren);
 	addField (inputOnly,      "removeChildren",   removeChildren);
 	addField (inputOutput,    "children",         children);
+
 	addFieldAlias ("level", "children");
 }
 
@@ -88,10 +89,13 @@ LOD::create (X3DExecutionContext* const executionContext) const
 }
 
 int32_t
-LOD::getLevel ()
+LOD::getLevel (TraverseType type)
 {
-	Matrix4f matrix = getModelViewMatrix4f ();
-
+	Matrix4f matrix = ModelViewMatrix4f ();
+	
+	if (type == TraverseType::CAMERA)
+		matrix *= getCurrentViewpoint () -> getInverseTransformationMatrix ();
+	
 	matrix .translate (center);
 
 	float distance = math::abs (matrix .translation ());
@@ -104,7 +108,7 @@ LOD::getLevel ()
 
 		if (distance < range [0])
 			level = 0;
-			
+
 		else
 		{
 			int32_t i;
@@ -133,9 +137,9 @@ LOD::traverse (TraverseType type)
 	if (not children .size ())
 		return;
 
-	int32_t level = getLevel ();
+	int32_t level = getLevel (type);
 
-	if (type == TraverseType::COLLECT)
+	if (type == TraverseType::CAMERA)
 	{
 		if (level_changed not_eq level)
 			level_changed = level;

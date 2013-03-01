@@ -1,3 +1,32 @@
+2013-03-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* TraverseType.h:
+	* X3DRenderer.h:
+	* X3DRenderer.cpp:
+	* X3DNode.h:
+	* ShapeContainer.h:
+	* LOD.h:
+	* X3DNode.cpp:
+	* LightContainer.cpp:
+	* ShapeContainer.cpp:
+	* X3DBrowserContext.cpp:
+	* LOD.cpp:
+	* Viewport.cpp:
+	* Billboard.h:
+	* X3DShapeNode.cpp:
+	* Collision.h:
+	* X3DLayerNode.h:
+	* Billboard.cpp:
+	* Collision.cpp:
+	* X3DLayerNode.cpp:
+	* X3DGroupingNode.h:
+	* X3DGroupingNode.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp:
+	* ProximitySensor.cpp:
+	* VisibilitySensor.cpp:
+	* X3DBackgroundNode.cpp: 
+
 2013-03-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ChangeLog:

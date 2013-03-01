@@ -58,7 +58,7 @@ enum class TraverseType
 {
 	PICKING,
 	CAMERA,
-	//COLLISION,
+	COLLISION,
 	COLLECT
 
 };

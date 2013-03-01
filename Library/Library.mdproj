@@ -1940,6 +1940,7 @@
     <None Include="Examples\Vattenfall\stage\zentrale.wrl" />
     <None Include="Tests\Texturing\MovieTexture.wrl" />
     <None Include="Tests\Lighting\DirectionalLight.wrl" />
+    <None Include="Tests\Navigation\LOD.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

@@ -129,18 +129,6 @@ X3DViewpointNode::setTransformationMatrix (const Matrix4f & value)
 	inverseTransformationMatrix = ~value;
 }
 
-Matrix4f
-X3DViewpointNode::getDownViewMatrix ()
-{
-	Matrix4f matrix = getModelViewMatrix ();
-
-	matrix .translate (getUserPosition ());
-	matrix .rotate (getUserOrientation () * Rotation4f (getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
-	matrix .inverse ();
-
-	return matrix;
-}
-
 void
 X3DViewpointNode::addToLayer (X3DLayerNode* const layer)
 {
@@ -278,12 +266,12 @@ X3DViewpointNode::camera ()
 void
 X3DViewpointNode::collect ()
 {
-	Matrix4f transformationMatrix = ModelViewMatrix4f ();
-
 	if (not isBound)
 	{
 		if (not jump)
 		{
+			Matrix4f transformationMatrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getTransformationMatrix ();
+
 			transformationMatrix .translate (getPosition ());
 			transformationMatrix .rotate (orientation);
 
@@ -304,6 +292,18 @@ void
 X3DViewpointNode::transform ()
 {
 	glMultMatrixf (getInverseTransformationMatrix () .data ());
+}
+
+void
+X3DViewpointNode::down ()
+{
+	Matrix4f matrix = getModelViewMatrix ();
+
+	matrix .translate (getUserPosition ());
+	matrix .rotate (getUserOrientation () * Rotation4f (getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
+	matrix .inverse ();
+	
+	glMultMatrixf (matrix .data ());
 }
 
 void

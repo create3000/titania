@@ -213,6 +213,11 @@ X3DLayerNode::traverse (TraverseType type)
 			camera ();
 			break;
 		}
+		case TraverseType::COLLISION:
+		{
+			collision ();
+			break;
+		}
 		case TraverseType::COLLECT:
 		{
 			collect ();
@@ -263,6 +268,36 @@ X3DLayerNode::camera ()
 }
 
 void
+X3DLayerNode::collision ()
+{
+	currentViewport -> push ();
+
+	glLoadIdentity ();
+
+	// Reshape viewpoint
+	
+	auto navigationInfo = getCurrentNavigationInfo ();
+
+	float zNear          = navigationInfo -> getZNear ();
+	float zFar           = navigationInfo -> getZFar ();
+	float width1_2       = navigationInfo -> getAvatarWidth  () / 2;
+	float depth1_2       = navigationInfo -> getAvatarDepth  () / 2;
+	float height         = navigationInfo -> getAvatarHeight ();
+
+	glMatrixMode (GL_PROJECTION);
+	glLoadIdentity ();
+	glOrtho (-width1_2, width1_2, -depth1_2, depth1_2, zNear, zFar);
+	glMatrixMode (GL_MODELVIEW);
+	
+	//
+	getViewpoint () -> down ();
+
+	render (TraverseType::COLLISION);
+
+	currentViewport -> pop ();
+}
+
+void
 X3DLayerNode::collect ()
 {
 	currentViewport -> push ();
@@ -273,7 +308,8 @@ X3DLayerNode::collect ()
 	getBackground ()     -> draw ();
 	getNavigationInfo () -> enable ();
 	getViewpoint ()      -> reshape ();
-	
+	getViewpoint ()      -> transform ();
+
 	defaultViewpoint -> traverse (TraverseType::COLLECT);
 	render (TraverseType::COLLECT);
 

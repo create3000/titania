@@ -69,12 +69,15 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
-	void
-	transform ();
-
 	virtual
 	void
 	traverse (TraverseType);
+
+
+private:
+
+	void
+	transform (TraverseType);
 
 };
 

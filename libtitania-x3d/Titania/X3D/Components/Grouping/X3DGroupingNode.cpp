@@ -188,6 +188,11 @@ X3DGroupingNode::traverse (TraverseType type)
 			camera ();
 			break;
 		}
+		case TraverseType::COLLISION:
+		{
+			collision ();
+			break;
+		}
 		case TraverseType::COLLECT:
 		{
 			collect ();
@@ -214,6 +219,13 @@ X3DGroupingNode::camera ()
 {
 	for (const auto & child : childNodes)
 		child -> traverse (TraverseType::CAMERA);
+}
+
+void
+X3DGroupingNode::collision ()
+{
+	for (const auto & child : childNodes)
+		child -> traverse (TraverseType::COLLISION);
 }
 
 void

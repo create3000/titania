@@ -206,8 +206,22 @@ X3DRenderer::render (TraverseType type)
 	getBrowser () -> getRenderers () .emplace (this);
 
 	collect (type);
-	draw ();
-	gravite ();
+	
+	switch (type)
+	{
+		case TraverseType::COLLISION:
+		{
+			gravite ();
+			break;
+		}
+		case TraverseType::COLLECT:
+		{
+			draw ();
+			break;
+		}
+		default:
+			break;
+	}
 
 	getBrowser () -> getRenderers () .pop ();
 }
@@ -216,8 +230,6 @@ void
 X3DRenderer::draw ()
 {
 	glPushMatrix ();
-
-	setViewpointMatrix (getCurrentViewpoint () -> getInverseTransformationMatrix ());
 
 	// Enable global lights
 
@@ -330,12 +342,12 @@ X3DRenderer::draw ()
 void
 X3DRenderer::gravite ()
 {
-	auto navigationInfo = getCurrentNavigationInfo ();
-	
 	if (getBrowser () -> getViewerType () not_eq ViewerType::WALK)
 		return;
 	
-	depthBuffer -> bind ();
+	// Bind buffer
+	
+//	depthBuffer -> bind ();
 
 	GLint viewport [4];
 
@@ -346,23 +358,13 @@ X3DRenderer::gravite ()
 	glClear (GL_DEPTH_BUFFER_BIT);
 
 	// Reshape viewpoint
-
-	float zNear          = navigationInfo -> getZNear ();
-	float zFar           = navigationInfo -> getZFar ();
-	float width1_2       = navigationInfo -> getAvatarWidth  () / 2;
-	float depth1_2       = navigationInfo -> getAvatarDepth  () / 2;
-	float height         = navigationInfo -> getAvatarHeight ();
-
-	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity ();
-	glOrtho (-width1_2, width1_2, -depth1_2, depth1_2, zNear, zFar);
-	glMatrixMode (GL_MODELVIEW);
-
-	// Setup viewpoint transformation
+	
+	auto navigationInfo = getCurrentNavigationInfo ();
+	
+	float zFar   = navigationInfo -> getZFar ();
+	float height = navigationInfo -> getAvatarHeight ();
 
 	glPushMatrix ();
-
-	setViewpointMatrix (getCurrentViewpoint () -> getDownViewMatrix ());
 
 	{
 		// Render opaque objects first
@@ -384,12 +386,11 @@ X3DRenderer::gravite ()
 		}
 	}
 
-	glDisable (GL_SCISSOR_TEST);
-	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
-
 	glPopMatrix ();
 
 	// Gravite or step up
+	
+	glLoadIdentity ();
 
 	float distance = depthBuffer -> getDistance ();
 
@@ -421,19 +422,12 @@ X3DRenderer::gravite ()
 		}
 	}
 
+	// Unbind buffer
+
+	glDisable (GL_SCISSOR_TEST);
+	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
+
 	depthBuffer -> unbind ();
-}
-
-void
-X3DRenderer::setViewpointMatrix (const Matrix4f & matrix)
-{
-	glMultMatrixf (matrix .data ());
-
-	for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
-		shape -> setViewpointMatrix (matrix);
-
-	for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
-		shape -> setViewpointMatrix (matrix);
 }
 
 void

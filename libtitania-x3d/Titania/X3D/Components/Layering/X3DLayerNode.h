@@ -204,6 +204,9 @@ private:
 	camera ();
 	
 	void
+	collision ();
+	
+	void
 	collect ();
 
 	virtual

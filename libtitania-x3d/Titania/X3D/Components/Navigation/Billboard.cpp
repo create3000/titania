@@ -81,12 +81,17 @@ Billboard::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Billboard::transform ()
+Billboard::transform (TraverseType type)
 {
+	Matrix4f matrix = ModelViewMatrix4f ();
+
+	if (type == TraverseType::CAMERA)
+		matrix *= getCurrentViewpoint () -> getInverseTransformationMatrix ();
+
 	Vector3f   translation, scale;
 	Rotation4f rotation;
 
-	getModelViewMatrix4f () .get (translation, rotation, scale);
+	matrix .get (translation, rotation, scale);
 
 	Vector3f _axisOfRotation   = axisOfRotation;
 	Vector3f billboardToViewer = -translation;
@@ -120,7 +125,7 @@ Billboard::traverse (TraverseType type)
 {
 	glPushMatrix ();
 
-	transform ();
+	transform (type);
 
 	X3DGroupingNode::traverse (type);
 

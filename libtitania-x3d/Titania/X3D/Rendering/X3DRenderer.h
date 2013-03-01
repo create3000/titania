@@ -89,9 +89,6 @@ private:
 
 	typedef std::vector <ShapeContainer*> ShapeContainerArray;
 
-	void
-	setViewpointMatrix (const Matrix4f &);
-
 	virtual
 	void
 	collect (TraverseType) = 0;

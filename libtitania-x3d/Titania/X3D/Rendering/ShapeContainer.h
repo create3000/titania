@@ -72,9 +72,6 @@ public:
 	assign (X3DShapeNode*,
 	        X3DFogObject*,
 	        const LightContainerArray &);
-	       
-	void
-	setViewpointMatrix (const Matrix4f &);
 
 	const float &
 	getDistance () const
@@ -86,13 +83,16 @@ public:
 
 private:
 
+	static
+	float
+	getDistance (X3DShapeNode*, const Matrix4f &);
+
 	X3DShapeNode* shape;
 	X3DFogObject* fog;
 	LightContainerArray localLights;
-	float distance;
 
 	Matrix4f matrix;
-	Matrix4f transformationMatrix;
+	float distance;
 
 };
 
