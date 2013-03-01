@@ -114,12 +114,6 @@ LayerSet::getActiveLayer () const
 	return children [0];
 }
 
-const std::deque <X3DLayerNode*> &
-LayerSet::getLayers () const
-{
-	return children;
-}
-
 void
 LayerSet::set_activeLayer ()
 { }
@@ -143,7 +137,7 @@ LayerSet::traverse (TraverseType type)
 {
 	for (const auto & index : order)
 	{
-		if (index >= 0  and index < (int32_t) children .size ())
+		if (index >= 0 and index < (int32_t) children .size ())
 		{
 			children [index] -> traverse (type);
 		}

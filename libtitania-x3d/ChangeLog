@@ -1,206 +1,80 @@
-2013-02-27  Holger Seelig  <holger.seelig@yahoo.de>
+2013-03-01  Holger Seelig  <holger.seelig@yahoo.de>
 
-	* X3DRenderer.cpp:
-	* Inline.cpp:
-	* X3DLayerNode.h:
-	* X3DLayerNode.cpp:
-	* NavigationInfo.h:
-	* NavigationInfo.cpp:
-	* X3DViewpointNode.h:
-	* X3DViewpointNode.cpp: 
-
-2013-02-27  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* X3DRenderer.cpp:
-	* LayerSet.cpp:
-	* X3DLayerNode.cpp: 
-
-2013-02-27  Holger Seelig  <holger.seelig@yahoo.de>
-
+	* ChangeLog:
+	* libtitania-x3d.cproj:
+	* Scene.h:
+	* Matrix.h:
+	* Normal.h:
+	* Scene.cpp:
+	* X3DWidget.h:
 	* Browser.cpp:
 	* TraverseType.h:
-	* X3DBrowser.cpp:
-	* X3DRenderer.h:
-	* X3DNode.h:
+	* X3DWidget.cpp:
+	* Tesselator.h:
+	* Rendering.h:
+	* ViewVolume.h:
 	* X3DRenderer.cpp:
-	* WalkViewer.h:
-	* X3DNode.cpp:
+	* LightContainer.h:
+	* PointingDevice.cpp:
+	* ShapeContainer.h:
+	* X3DBrowserContext.h:
+	* LOD.h:
+	* Material.h:
+	* Color.h:
+	* ShapeContainer.cpp:
+	* Switch.h:
+	* X3DFlyViewer.h:
 	* LOD.cpp:
 	* X3DBrowserContext.cpp:
+	* Normal.h:
+	* LineSet.h:
+	* Inline.h:
+	* ExamineViewer.h:
 	* Viewport.h:
-	* Anchor.cpp:
+	* LayerSet.h:
+	* X3DShapeNode.h:
+	* LightContainerArray.h:
+	* Transform.h:
+	* PointSet.h:
+	* X3DFlyViewer.cpp:
+	* ColorRGBA.h:
+	* LayerSet.cpp:
 	* Viewport.cpp:
+	* ClipPlane.h:
+	* Inline.cpp:
+	* Anchor.cpp:
+	* ExamineViewer.cpp:
 	* Collision.h:
 	* X3DShapeNode.cpp:
-	* X3DLayerNode.h:
-	* Billboard.cpp:
-	* Collision.cpp:
-	* X3DLayerNode.cpp:
-	* X3DGroupingNode.cpp:
-	* X3DViewpointNode.cpp:
-	* ProximitySensor.cpp:
-	* VisibilitySensor.cpp:
-	* X3DBackgroundNode.cpp: 
-
-2013-02-26  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* Makefile.am:
-	* libtitania-x3d.cproj:
-	* Parser.cpp:
-	* Scene.h:
-	* Browser.h:
-	* SFColor.cpp:
-	* SFMatrix3.h:
-	* SFMatrix4.h:
-	* Browser.cpp:
-	* X3DBaseNode.h:
-	* Scene.cpp:
-	* FlyViewer.h:
-	* X3DViewer.h:
-	* TraverseType.h:
-	* NoneViewer.h:
-	* X3DViewer.cpp:
-	* FlyViewer.cpp:
-	* X3DBrowser.cpp:
-	* NoneViewer.cpp:
-	* Text.h:
-	* SFColorRGBA.cpp:
-	* ExamineViewer.h:
-	* X3DRenderer.h:
-	* Text.cpp:
-	* X3DRenderer.cpp:
-	* ExamineViewer.cpp:
-	* X3DNode.h:
-	* FlyViewer.h:
-	* ShapeContainer.h:
-	* X3DViewer.h:
-	* ViewerType.h:
-	* LOD.h:
-	* X3DBrowserContext.h:
-	* Material.h:
-	* NoneViewer.h:
-	* X3DNode.cpp:
-	* FlyViewer.cpp:
-	* X3DViewer.cpp:
-	* Switch.h:
-	* BrowserApplication.h:
-	* ShapeContainer.cpp:
-	* Appearance.h:
-	* LOD.cpp:
-	* Arc2D.h:
-	* X3DBrowserContext.cpp:
-	* WalkViewer.cpp:
-	* X3DFlyViewer.h:
-	* Material.cpp:
-	* NoneViewer.cpp:
-	* Switch.cpp:
-	* LayerSet.h:
-	* Viewport.h:
-	* Inline.h:
-	* LineSet.h:
-	* Disk2D.h:
-	* ExamineViewer.h:
-	* Anchor.h:
-	* Appearance.cpp:
-	* PointSet.h:
-	* X3DShapeNode.h:
-	* Arc2D.cpp:
-	* Transform.h:
-	* X3DFlyViewer.cpp:
-	* Anchor.cpp:
-	* Disk2D.cpp:
-	* Circle2D.h:
-	* Inline.cpp:
-	* LineSet.cpp:
-	* Viewport.cpp:
-	* ExamineViewer.cpp:
-	* LayerSet.cpp:
-	* X3DShapeNode.cpp:
-	* PointSet.cpp:
 	* Billboard.h:
-	* LineProperties.h:
-	* FillProperties.h:
-	* Transform.cpp:
-	* FlyViewer (Kopie).h:
-	* Polyline2D.h:
+	* Coordinate.h:
+	* TriangleSet.h:
 	* X3DLayerNode.h:
-	* ProgramShader.h:
-	* Circle2D.cpp:
-	* X3DLightNode.h:
-	* PackagedShader.h:
-	* FillProperties.cpp:
-	* ComposedShader.h:
-	* LineProperties.cpp:
-	* TwoSidedMaterial.h:
-	* Polypoint2D.h:
-	* Billboard.cpp:
-	* MultiTexture.h:
-	* MovieTexture.h:
-	* GeoViewpoint.h:
+	* Collision.cpp:
+	* X3DColorNode.h:
+	* X3DNormalNode.h:
 	* X3DLayerNode.cpp:
-	* ProgramShader.cpp:
-	* X3DAppearanceNode.h:
-	* Polyline2D.cpp:
-	* X3DLightNode.cpp:
-	* TwoSidedMaterial.cpp:
-	* MultiTexture.cpp:
-	* IndexedLineSet.h:
 	* X3DGroupingNode.h:
-	* Polypoint2D.cpp:
-	* ComposedShader.cpp:
-	* PackagedShader.cpp:
-	* MovieTexture.cpp:
-	* GeoViewpoint.cpp:
-	* ViewpointGroup.h:
-	* NavigationInfo.h:
+	* TriangleFanSet.h:
+	* IndexedLineSet.h:
+	* X3DViewportNode.h:
 	* X3DGeometryNode.h:
-	* X3DPrototypeInstance.h:
 	* X3DGroupingNode.cpp:
-	* IndexedLineSet.cpp:
-	* TextureTransform.h:
-	* X3DTexture2DNode.h:
-	* ViewpointGroup.cpp:
+	* TriangleStripSet.h:
+	* X3DCoordinateNode.h:
 	* X3DViewpointNode.h:
-	* X3DPrototypeInstance.cpp:
 	* NavigationInfo.cpp:
-	* X3DGeometryNode.cpp:
-	* X3DTexture2DNode.cpp:
-	* X3DAppearanceChildNode.h:
-	* X3DTexture3DNode.h:
-	* TextureTransform.cpp:
+	* IndexedTriangleSet.h:
 	* X3DViewpointNode.cpp:
-	* LocalFog.h:
-	* X3DTexture3DNode.cpp:
-	* TextureTransform3D.h:
-	* QuadSphereProperties.cpp:
-	* LocalFog.cpp:
-	* MultiTextureTransform.h:
-	* TextureTransform3D.cpp:
-	* Background.cpp:
-	* MultiTextureTransform.cpp:
-	* TouchSensor.cpp:
-	* ScalarInterpolator.cpp:
-	* ProximitySensor.h:
-	* ImageCubeMapTexture.h:
+	* IndexedTriangleFanSet.h:
+	* X3DComposedGeometryNode.h:
+	* IndexedTriangleStripSet.h:
+	* X3DGeometricPropertyNode.h:
 	* VisibilitySensor.h:
-	* TextureTransformMatrix3D.h:
 	* ProximitySensor.cpp:
-	* ImageCubeMapTexture.cpp:
-	* TextureTransformMatrix3D.cpp:
 	* VisibilitySensor.cpp:
-	* X3DBackgroundNode.h:
-	* ComposedCubeMapTexture.h:
-	* GeneratedCubeMapTexture.h:
 	* X3DBackgroundNode.cpp:
-	* ComposedCubeMapTexture.cpp:
-	* GeneratedCubeMapTexture.cpp:
-	* X3DPointingDeviceSensorNode.h:
 	* X3DPointingDeviceSensorNode.cpp: 
-
-2013-02-24  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* X3DRenderer.cpp:
-	* X3DViewpointNode.h: 
 
 2013-02-19  Holger Seelig  <holger.seelig@yahoo.de>
 

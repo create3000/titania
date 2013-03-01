@@ -167,10 +167,10 @@ ProximitySensor::traverse (TraverseType type)
 			matrix    = ModelViewMatrix4f ();
 			break;
 		}
-		case TraverseType::RENDER:
+		case TraverseType::COLLECT:
 		{
 			if (inside)
-				return;
+				break;
 
 			Matrix4f transformationMatrix = getModelViewMatrix4f ();
 			transformationMatrix .translate (center);

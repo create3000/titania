@@ -72,6 +72,7 @@ public:
 		width (width),
 		height (height),
 		id (0),
+		depthBuffer (0),
 		depth (width * height)
 	{
 		if (glXGetCurrentContext ()) // GL_EXT_framebuffer_object
@@ -138,6 +139,9 @@ public:
 
 	~DepthBuffer ()
 	{
+		if (depthBuffer)
+			glDeleteRenderbuffers (1, &depthBuffer);
+	
 		if (id)
 			glDeleteFramebuffers (1, &id);
 	}
@@ -202,23 +206,9 @@ X3DRenderer::render (TraverseType type)
 	getBrowser () -> getRenderers () .emplace (this);
 
 	collect (type);
-	
-	switch (type)
-	{
-		case TraverseType::COLLISION:
-		{
-			gravite ();
-			break;
-		}
-		case TraverseType::RENDER:
-		{
-			draw ();
-			break;
-		}
-		default:
-			break;
-	}
-	
+	draw ();
+	gravite ();
+
 	getBrowser () -> getRenderers () .pop ();
 }
 
@@ -239,6 +229,8 @@ X3DRenderer::draw ()
 	if (1)
 	{
 		// Sorted blend
+		
+		size_t numNodesDrawn = 0;
 
 		// Render opaque objects first
 
@@ -248,7 +240,7 @@ X3DRenderer::draw ()
 
 		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
 		{
-			shape -> draw ();
+			numNodesDrawn += shape -> draw ();
 		}
 
 		// Render transparent objects
@@ -260,12 +252,13 @@ X3DRenderer::draw ()
 
 		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
 		{
-			shape -> draw ();
+			numNodesDrawn += shape -> draw ();
 		}
 
 		glDepthMask (GL_TRUE);
 		glDisable (GL_BLEND);
 
+		//__LOG__ << numOpaqueNodes + numTransparentNodes << " : " << numNodesDrawn << std::endl;
 	}
 	else
 	{
@@ -372,8 +365,6 @@ X3DRenderer::gravite ()
 	setViewpointMatrix (getCurrentViewpoint () -> getDownViewMatrix ());
 
 	{
-		// Sorted blend
-
 		// Render opaque objects first
 
 		glEnable (GL_DEPTH_TEST);

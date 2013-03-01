@@ -136,37 +136,45 @@ X3DShapeNode::traverse (TraverseType type)
 	{
 		case TraverseType::PICKING:
 		{
-
-			if (not getBrowser () -> isSensitive ())
-				return;
-
-			if (_geometry)
-			{
-				if (ViewVolume () .intersect (getBBox ()))
-				{
-					Line3f hitRay = getBrowser () -> getHitRay ();
-
-					Vector3f hitPoint;
-
-					if (_geometry -> intersect (hitRay, hitPoint))
-						getBrowser () -> addHit (hitRay, hitPoint);
-				}
-			}
-		
+			pick ();
 			break;
 		}
-		case TraverseType::COLLISION:
-		case TraverseType::RENDER:
+		case TraverseType::COLLECT:
 		{
-			if (_geometry)
-			{
-				getBrowser () -> getRenderers () .top () -> addShape (this);
-			}
-			
+			collect ();
 			break;
 		}
 		default:
 			break;
+	}
+}
+
+void
+X3DShapeNode::pick ()
+{
+	if (not getBrowser () -> getSensors () .size ())
+		return;
+
+	if (_geometry)
+	{
+		if (ViewVolume () .intersect (getBBox ()))
+		{
+			Line3f hitRay = getBrowser () -> getHitRay ();
+
+			Vector3f hitPoint;
+
+			if (_geometry -> intersect (hitRay, hitPoint))
+				getBrowser () -> addHit (hitRay, hitPoint);
+		}
+	}
+}
+
+void
+X3DShapeNode::collect ()
+{
+	if (_geometry)
+	{
+		getBrowser () -> getRenderers () .top () -> addShape (this);
 	}
 }
 

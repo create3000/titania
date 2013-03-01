@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,7 +65,7 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	X3DBoundedObject (),                                                    
 	    X3DUrlObject (),                                                    
 	            load (true),                                                // SFBool [in,out] load  TRUE
-	           scene ()  
+	           scene (executionContext -> getBrowser () -> createScene ())  
 {
 	setComponent ("Networking");
 	setTypeName ("Inline");
@@ -91,8 +91,6 @@ Inline::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
-	
-	scene = getExecutionContext () -> getBrowser () -> createScene ();
 
 	load  .addInterest (this, &Inline::set_load);
 	url   .addInterest (this, &Inline::set_url);
@@ -199,12 +197,14 @@ Inline::requestUnload ()
 	setLoadState (NOT_STARTED_STATE);
 }
 
+// In the future X3DExecutionContext will be X3DBasicGroupingNode <X3DBaseNode>
+// and we can do then
+//    scene -> X3DGroupingNode <X3DBaseNode>::traverse (type);
+
 void
 Inline::traverse (TraverseType type)
 {
-	for (const auto & rootNode : scene -> getRootNodes ())
-		rootNode -> traverse (type);
-	//scene -> getLayerSet () -> getLayers () [0] -> getGroup () -> traverse (type);
+	scene -> getLayerSet () -> getLayers () [0] -> getGroup () -> traverse (type);
 }
 
 void

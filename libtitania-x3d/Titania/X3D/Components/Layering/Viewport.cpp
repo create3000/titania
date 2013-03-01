@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -85,7 +85,7 @@ void
 Viewport::initialize ()
 {
 	X3DViewportNode::initialize ();
-	//X3DRenderer::initialize ();
+	X3DRenderer::initialize ();
 }
 
 void
@@ -95,24 +95,27 @@ Viewport::traverse (TraverseType type)
 	{
 		case TraverseType::PICKING:
 		{
-			enable ();
+			push ();
 
 			for (const auto & child : children)
 				child -> traverse (type);
 
-			disable ();
+			pop ();
 			
 			break;
 		}
 		case TraverseType::CAMERA:
-		case TraverseType::COLLISION:
-		case TraverseType::RENDER:
 		{
-			enable ();
-
+			for (const auto & child : children)
+				child -> traverse (type);
+				
+			break;
+		}
+		case TraverseType::COLLECT:
+		{
+			push ();
 			render (type);
-
-			disable ();
+			pop ();
 			
 			break;
 		}
@@ -127,7 +130,7 @@ Viewport::collect (TraverseType type)
 }
 
 void
-Viewport::enable ()
+Viewport::push ()
 {
 	MFFloat cB = clipBoundary .size () < 4 ? MFFloat ({ 0, 1, 0, 1 }) : clipBoundary;
 
@@ -140,7 +143,7 @@ Viewport::enable ()
 }
 
 void
-Viewport::disable ()
+Viewport::pop ()
 {
 	glViewport (viewport [0],
 	            viewport [1],
@@ -152,7 +155,7 @@ void
 Viewport::dispose ()
 {
 	X3DViewportNode::dispose ();
-	//X3DRenderer::dispose ();
+	X3DRenderer::dispose ();
 }
 
 } // X3D

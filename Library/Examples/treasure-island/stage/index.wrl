@@ -42,7 +42,8 @@ function isActive(value, time)
 "
         }
         DEF ENTRYVP4 Viewpoint {
-          position 0.329115 1.87543 75.2157
+           position 0.329115 1.87543 75.2157
+           fieldOfView 1.0472
         }
         DEF World Transform {
           children [

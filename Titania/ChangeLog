@@ -1,8 +1,7 @@
-2013-02-26  Holger Seelig  <holger.seelig@yahoo.de>
+2013-03-01  Holger Seelig  <holger.seelig@yahoo.de>
 
-	* BrowserWidget.cpp:
-	* X3DBrowserWindow.cpp:
-	* ViewpointEditor.cpp: 
+	* ChangeLog:
+	* X3DBrowserWindow.cpp: 
 
 2013-02-21  Holger Seelig  <holger.seelig@yahoo.de>
 

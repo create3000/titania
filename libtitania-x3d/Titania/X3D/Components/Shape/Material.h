@@ -74,9 +74,7 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
-	void
-	eventsProcessed ();
-
+	virtual
 	bool
 	isTransparent () { return transparency; }
 
@@ -90,6 +88,9 @@ private:
 	virtual
 	void
 	initialize ();
+
+	void
+	eventsProcessed ();
 
 	float   alpha;
 	GLfloat glAmbientColor [4];

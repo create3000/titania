@@ -78,7 +78,6 @@ typedef chrono::clock_base <time_type>                      X3DClock;
 typedef std::stack <X3DRenderer*>                           RendererStack;
 typedef std::stack <X3DLayerNode*>                          LayerStack;
 typedef std::stack <GLenum>                                 LightStack;
-typedef std::map <std::string, std::pair <GLuint, size_t>> TextureIndex;
 
 class X3DBrowserContext :
 	public X3DExecutionContext
@@ -157,17 +156,8 @@ public:
 	void
 	pick (const double, const double);
 
-	void
-	pushSensitiveNode (X3DBaseNode* node) { return sensitiveNodes .push_back (node); }
-
-	void
-	popSensitiveNode () { return sensitiveNodes .pop_back (); }
-
-	const std::deque <X3DBaseNode*> &
-	getSensitiveNodes () const { return sensitiveNodes; }
-
-	bool
-	isSensitive () const { return sensitiveNodes .size (); }
+	std::deque <X3DBaseNode*> &
+	getSensors () { return enabledSensors; }
 
 	Line3f
 	getHitRay () const;
@@ -243,10 +233,9 @@ private:
 	RendererStack              renderers;
 	LayerStack                 layers;
 	LightStack                 lights;
-	TextureIndex               textures;
 	double                     x;
 	double                     y;
-	std::deque <X3DBaseNode*>  sensitiveNodes;
+	std::deque <X3DBaseNode*>  enabledSensors;
 	HitArray                   hits;
 	HitComp                    hitComp;
 	std::deque <X3DBaseNode*>  overSensors;

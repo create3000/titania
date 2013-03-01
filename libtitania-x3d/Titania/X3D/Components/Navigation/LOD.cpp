@@ -94,7 +94,7 @@ LOD::getLevel ()
 
 	matrix .translate (center);
 
-	float distance = -matrix [3] [2];
+	float distance = math::abs (matrix .translation ());
 
 	int32_t level = -1;
 
@@ -104,6 +104,7 @@ LOD::getLevel ()
 
 		if (distance < range [0])
 			level = 0;
+			
 		else
 		{
 			int32_t i;
@@ -134,7 +135,7 @@ LOD::traverse (TraverseType type)
 
 	int32_t level = getLevel ();
 
-	if (type == TraverseType::RENDER)
+	if (type == TraverseType::COLLECT)
 	{
 		if (level_changed not_eq level)
 			level_changed = level;

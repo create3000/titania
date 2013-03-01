@@ -130,12 +130,6 @@ private:
 	time_type        startTime;
 	guint            button;
 	bool             shift_key;
-	sigc::connection button_press_event_connection;
-	sigc::connection button_release_event_connection;
-	sigc::connection motion_notify_event_connection;
-	sigc::connection scroll_event_connection;
-	sigc::connection key_press_event_connection;
-	sigc::connection key_release_event_connection;
 	sigc::connection fly_id;
 	sigc::connection pan_id;
 	sigc::connection roll_id;

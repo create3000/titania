@@ -50,18 +50,18 @@
 
 #include "ExamineViewer.h"
 
-#include "../Browser.h"
 #include "../../Components/Navigation/OrthoViewpoint.h"
+#include "../Browser.h"
 
 #include <cmath>
 #include <glibmm/main.h>
 
-#define SPIN_ANGLE       0.006
-#define SCOLL_FACTOR     (1.0f / 50.0f)
-#define FRAME_RATE       100
-
 namespace titania {
 namespace X3D {
+
+static constexpr float SPIN_ANGLE   = 0.006;
+static constexpr float SCOLL_FACTOR = 1.0f / 50.0f;
+static constexpr float FRAME_RATE   = 100;
 
 ExamineViewer::ExamineViewer (Browser* const browser, NavigationInfo* navigationInfo) :
 	                      X3DViewer (browser),        
@@ -72,20 +72,16 @@ ExamineViewer::ExamineViewer (Browser* const browser, NavigationInfo* navigation
 	                     fromVector (),               
 	                      fromPoint (),               
 	                         button (0),              
-	button_press_event_connection   (),               
-	button_release_event_connection (),               
-	motion_notify_event_connection  (),               
-	scroll_event_connection         (),               
 	                        spin_id ()                
 { }
 
 void
 ExamineViewer::initialize ()
 {
-	button_press_event_connection   = getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_press_event));
-	button_release_event_connection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_release_event));
-	motion_notify_event_connection  = getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event));
-	scroll_event_connection         = getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
+	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_press_event));
+	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_release_event));
+	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event), false);
+	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
 
 	navigationInfo -> transitionComplete .addInterest (this, &ExamineViewer::set_viewpoint);
 
@@ -103,8 +99,6 @@ ExamineViewer::set_viewpoint ()
 
 	orientation = viewpoint -> getUserOrientation ();
 	distance    = getDistance ();
-
-	__LOG__ << viewpoint -> description << std::endl;
 }
 
 bool
@@ -163,6 +157,8 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 		viewpoint -> positionOffset    = getPositionOffset ();
 
 		fromVector = toVector;
+
+		return true;
 	}
 
 	else if (button == 2)
@@ -176,6 +172,8 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 		viewpoint -> centerOfRotationOffset += translation;
 
 		fromPoint = toPoint;
+
+		return true;
 	}
 
 	return false;
@@ -315,11 +313,7 @@ ExamineViewer::~ExamineViewer ()
 
 	getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpointStack () .removeInterest (this, &ExamineViewer::set_viewpoint);
 
-	button_press_event_connection   .disconnect ();
-	motion_notify_event_connection  .disconnect ();
-	button_release_event_connection .disconnect ();
-	scroll_event_connection         .disconnect ();
-	spin_id                         .disconnect ();
+	spin_id .disconnect ();
 }
 
 } // X3D

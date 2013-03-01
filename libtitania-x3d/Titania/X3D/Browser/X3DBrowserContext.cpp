@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -74,11 +74,10 @@ X3DBrowserContext::X3DBrowserContext () :
 	              clock (new chrono::system_clock <time_type> ()), 
 	             router (),                                        
 	             layers (),                                        
-	             lights (),                                        
-	           textures (),                                        
+	             lights (),                                                                              
 	                  x (0),                                       
 	                  y (0),                                       
-	     sensitiveNodes (),                                        
+	     enabledSensors (),                                        
 	               hits (),                                        
 	        changedTime (clock -> cycle ()),                       
 	      priorPosition (),                                        
@@ -227,14 +226,14 @@ X3DBrowserContext::pick (const double _x, const double _y)
 	clearHits ();
 
 	// Pick.
-
+	
 	getExecutionContext () -> traverse (TraverseType::PICKING);
 
 	// Selection end.
 
-	sensitiveNodes .clear ();
-
 	std::sort (hits .begin (), hits .end (), hitComp);
+
+	assert (enabledSensors .size () == 0);
 }
 
 Line3f
@@ -263,7 +262,7 @@ X3DBrowserContext::getHitRay () const
 void
 X3DBrowserContext::addHit (const Line3f & hitRay, const Vector3f hitPoint)
 {
-	hits .emplace_back (new Hit (hitPoint, hitRay, getSensitiveNodes ()));
+	hits .emplace_back (new Hit (hitPoint, hitRay, enabledSensors));
 }
 
 void
@@ -286,7 +285,7 @@ X3DBrowserContext::motionNotifyEvent ()
 	{
 		std::set_difference (overSensors .begin (), overSensors .end (),
 		                     getHits () .front () -> nodes .begin (), getHits () .front () -> nodes .end (),
-		                     std::inserter (difference, difference .begin ()));
+		                     std::back_inserter (difference));
 	}
 	else
 		difference = overSensors;
@@ -400,7 +399,6 @@ X3DBrowserContext::prepare ()
 	router .processEvents ();
 	
 	getExecutionContext () -> traverse (TraverseType::CAMERA);
-	getExecutionContext () -> traverse (TraverseType::COLLISION);
 
 	sensors .processInterests ();
 	
@@ -415,7 +413,7 @@ X3DBrowserContext::display ()
 	glClearColor (0, 0, 0, 0);
 	glClear (GL_COLOR_BUFFER_BIT);
 
-	getExecutionContext () -> traverse (TraverseType::RENDER);
+	getExecutionContext () -> traverse (TraverseType::COLLECT);
 
 	//glColorMask (FALSE, FALSE, FALSE, TRUE);
 	//glClearColor (0, 0, 0, 1);

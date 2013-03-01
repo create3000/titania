@@ -74,14 +74,14 @@ void
 X3DPointingDeviceSensorNode::push ()
 {
 	if (enabled)
-		getBrowser () -> pushSensitiveNode (this);
+		getBrowser () -> getSensors () .emplace_back (this);
 }
 
 void
 X3DPointingDeviceSensorNode::pop ()
 {
 	if (enabled)
-		getBrowser () -> popSensitiveNode ();
+		getBrowser () -> getSensors () .pop_back ();
 }
 
 } // X3D

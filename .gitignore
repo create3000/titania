@@ -1,0 +1,13 @@
+*.Tpo
+*.o
+*.d
+*.Po
+*.Plo
+*.lo
+*.la
+*.lai
+*.so
+*.so.*
+.bzr
+.libs
+

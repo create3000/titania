@@ -521,14 +521,14 @@
     <None Include="Titania\X3D\Browser\Geometry2D\Disk2DProperties.h" />
     <None Include="Titania\X3D\Browser\PointingDevice.h" />
     <None Include="Titania\X3D\Browser\X3DWidget.h" />
-    <None Include="Titania\X3D\Bits\TraverseType.h" />
     <None Include="Titania\X3D\Browser\Viewer\ExamineViewer.h" />
-    <None Include="Titania\X3D\Browser\Viewer\NoneViewer.h" />
-    <None Include="Titania\X3D\Browser\Viewer\X3DViewer.h" />
-    <None Include="Titania\X3D\Browser\Viewer\X3DFlyViewer.h" />
     <None Include="Titania\X3D\Browser\Viewer\FlyViewer.h" />
-    <None Include="Titania\X3D\Browser\Viewer\WalkViewer.h" />
+    <None Include="Titania\X3D\Browser\Viewer\NoneViewer.h" />
     <None Include="Titania\X3D\Browser\Viewer\ViewerType.h" />
+    <None Include="Titania\X3D\Browser\Viewer\WalkViewer.h" />
+    <None Include="Titania\X3D\Browser\Viewer\X3DFlyViewer.h" />
+    <None Include="Titania\X3D\Browser\Viewer\X3DViewer.h" />
+    <None Include="Titania\X3D\Bits\TraverseType.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -932,11 +932,11 @@
     <Compile Include="Titania\X3D\Browser\X3DWidget.cpp" />
     <Compile Include="Titania\X3D\Rendering\LightContainer.cpp" />
     <Compile Include="Titania\X3D\Browser\Viewer\ExamineViewer.cpp" />
-    <Compile Include="Titania\X3D\Browser\Viewer\NoneViewer.cpp" />
-    <Compile Include="Titania\X3D\Browser\Viewer\X3DViewer.cpp" />
-    <Compile Include="Titania\X3D\Browser\Viewer\X3DFlyViewer.cpp" />
     <Compile Include="Titania\X3D\Browser\Viewer\FlyViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Viewer\NoneViewer.cpp" />
     <Compile Include="Titania\X3D\Browser\Viewer\WalkViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Viewer\X3DFlyViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Viewer\X3DViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

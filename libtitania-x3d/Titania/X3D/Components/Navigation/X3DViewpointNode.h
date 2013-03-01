@@ -73,10 +73,6 @@ public:
 	SFVec3f    positionOffset;
 	SFRotation orientationOffset;
 	SFVec3f    centerOfRotationOffset;
-	
-	const Box3f &
-	getBBox () const
-	{ return bbox; }
 
 	virtual
 	Vector3f
@@ -99,9 +95,6 @@ public:
 
 	const Matrix4f &
 	getInverseTransformationMatrix () const { return inverseTransformationMatrix; }
-
-	const Matrix4f &
-	getModelViewMatrix () const { return modelViewMatrix; }
 
 	Matrix4f
 	getDownViewMatrix ();
@@ -144,6 +137,9 @@ protected:
 	void
 	setModelViewMatrix (const Matrix4f & value) { modelViewMatrix = value; }
 
+	const Matrix4f &
+	getModelViewMatrix () const { return modelViewMatrix; }
+
 	void
 	setDifferenceMatrix (const Matrix4f & value) { differenceMatrix = value; }
 
@@ -174,8 +170,12 @@ private:
 
 	void
 	_set_bind ();
-
-	Box3f bbox;
+	
+	void
+	camera ();
+	
+	void
+	collect ();
 
 	Matrix4f modelViewMatrix;
 	Matrix4f transformationMatrix;

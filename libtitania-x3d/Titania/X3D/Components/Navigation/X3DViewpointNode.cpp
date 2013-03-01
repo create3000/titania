@@ -66,7 +66,6 @@ X3DViewpointNode::X3DViewpointNode (bool displayed) :
 	             positionOffset (),                                                 
 	          orientationOffset (),                                                 
 	     centerOfRotationOffset (),                                                 
-	                       bbox (),
 	            modelViewMatrix (),                                                 
 	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),  
 	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1), 
@@ -128,8 +127,6 @@ X3DViewpointNode::setTransformationMatrix (const Matrix4f & value)
 {
 	transformationMatrix        = value;
 	inverseTransformationMatrix = ~value;
-	
-	bbox = getCurrentNavigationInfo () -> getBBox () * transformationMatrix;
 }
 
 Matrix4f
@@ -239,49 +236,59 @@ X3DViewpointNode::traverse (TraverseType type)
 	{
 		case TraverseType::CAMERA:
 		{
-			setModelViewMatrix (ModelViewMatrix4f ());
-
-			Matrix4f transformationMatrix = ModelViewMatrix4f ();
-
-			if (isBound)
-			{
-				if (jump)
-				{
-					transformationMatrix .translate (getUserPosition ());
-					transformationMatrix .rotate (getUserOrientation ());
-
-					setTransformationMatrix (transformationMatrix);
-				}
-				else
-				{
-					transformationMatrix .translate (getUserPosition ());
-					transformationMatrix .rotate (getUserOrientation ());
-
-					setTransformationMatrix (transformationMatrix);
-				}
-			}
-	
+			camera ();
 			break;
 		}
-		case TraverseType::RENDER:
+		case TraverseType::COLLECT:
 		{
-			Matrix4f transformationMatrix = ModelViewMatrix4f ();
-
-			if (not isBound)
-			{
-				if (not jump)
-				{
-					transformationMatrix .translate (getPosition ());
-					transformationMatrix .rotate (orientation);
-
-					setDifferenceMatrix (getCurrentViewpoint () -> getTransformationMatrix () * ~transformationMatrix);
-				}
-			}
-			
+			collect ();
 			break;
 		}
 		default:
 			break;
+	}
+}
+
+void
+X3DViewpointNode::camera ()
+{
+	setModelViewMatrix (ModelViewMatrix4f ());
+
+	Matrix4f transformationMatrix = ModelViewMatrix4f ();
+
+	if (isBound)
+	{
+		if (jump)
+		{
+			transformationMatrix .translate (getUserPosition ());
+			transformationMatrix .rotate (getUserOrientation ());
+
+			setTransformationMatrix (transformationMatrix);
+		}
+		else
+		{
+			transformationMatrix .translate (getUserPosition ());
+			transformationMatrix .rotate (getUserOrientation ());
+
+			setTransformationMatrix (transformationMatrix);
+		}
+	}
+}
+
+void
+X3DViewpointNode::collect ()
+{
+	Matrix4f transformationMatrix = ModelViewMatrix4f ();
+
+	if (not isBound)
+	{
+		if (not jump)
+		{
+			transformationMatrix .translate (getPosition ());
+			transformationMatrix .rotate (orientation);
+
+			setDifferenceMatrix (getCurrentViewpoint () -> getTransformationMatrix () * ~transformationMatrix);
+		}
 	}
 }
 

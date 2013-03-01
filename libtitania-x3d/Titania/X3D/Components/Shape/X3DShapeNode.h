@@ -104,6 +104,12 @@ private:
 
 	void
 	set_geometry ();
+	
+	void
+	pick ();
+	
+	void
+	collect ();
 
 	X3DAppearanceNode* _appearance;
 	X3DGeometryNode*   _geometry;

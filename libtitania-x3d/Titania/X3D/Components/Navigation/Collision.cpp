@@ -50,7 +50,6 @@
 
 #include "Collision.h"
 
-#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -61,8 +60,7 @@ Collision::Collision (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),                                                    
 	  X3DSensorNode (),                                                    
 	    collideTime (),                                                    // SFTime [out] collideTime
-	          proxy (),                                                    // SFNode [ ]   proxy        NULL        [X3DChildNode]
-	         _proxy (NULL)                                                 
+	          proxy ()                                                     // SFNode [ ]   proxy        NULL        [X3DChildNode]
 {
 	setComponent ("Navigation");
 	setTypeName ("Collision");
@@ -84,48 +82,6 @@ X3DBaseNode*
 Collision::create (X3DExecutionContext* const executionContext) const
 {
 	return new Collision (executionContext);
-}
-
-void
-Collision::initialize ()
-{
-	X3DGroupingNode::initialize ();
-
-	proxy .addInterest (this, &Collision::set_proxy);
-
-	set_proxy ();
-}
-
-void
-Collision::set_proxy ()
-{
-	_proxy = x3d_cast <X3DChildNode*> (proxy .getValue ());
-}
-
-void
-Collision::traverse (TraverseType type)
-{
-	switch (type)
-	{
-		case TraverseType::COLLISION:
-		{
-			if (enabled)
-			{
-				if (_proxy)
-					_proxy -> traverse (type);
-
-				else
-					X3DGroupingNode::traverse (type);
-			}
-
-			break;
-		}
-		default:
-		{
-			X3DGroupingNode::traverse (type);
-			break;
-		}
-	}
 }
 
 } // X3D

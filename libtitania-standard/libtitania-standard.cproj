@@ -101,9 +101,9 @@
     <None Include="Titania\OS\IsDirectory.h" />
     <None Include="Titania\OS\IsFile.h" />
     <None Include="Titania\OS\Mkdir.h" />
-    <None Include="Titania\Physics\Constants.h" />
     <None Include="Titania\Math\Constants.h" />
     <None Include="Titania\Math\Functional.h" />
+    <None Include="Titania\Physics\Constants.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />

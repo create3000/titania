@@ -56,7 +56,8 @@ namespace titania {
 namespace X3D {
 
 X3DWidget::X3DWidget (Browser* const browser) :
-	browser (browser) 
+	sigc::trackable (),
+	        browser (browser) 
 { }
 
 Browser*

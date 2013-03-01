@@ -58,6 +58,12 @@
     <None Include="..\debian\rules">
       <Link>debian\rules</Link>
     </None>
+    <None Include="..\.bzrignore">
+      <Link>.bzrignore</Link>
+    </None>
+    <None Include="..\.gitignore">
+      <Link>.gitignore</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />

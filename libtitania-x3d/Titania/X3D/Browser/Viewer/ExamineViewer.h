@@ -129,10 +129,6 @@ private:
 	Vector3f         fromVector;
 	Vector3f         fromPoint;
 	guint            button;
-	sigc::connection button_press_event_connection;
-	sigc::connection button_release_event_connection;
-	sigc::connection motion_notify_event_connection;
-	sigc::connection scroll_event_connection;
 	sigc::connection spin_id;
 
 };

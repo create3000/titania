@@ -51,12 +51,14 @@
 #ifndef __TITANIA_X3D_WIDGETS_X3DWIDGET_H__
 #define __TITANIA_X3D_WIDGETS_X3DWIDGET_H__
 
+#include <sigc++/trackable.h>
+
 namespace titania {
 namespace X3D {
 
 class Browser;
 
-class X3DWidget
+class X3DWidget : public sigc::trackable
 {
 public:
 

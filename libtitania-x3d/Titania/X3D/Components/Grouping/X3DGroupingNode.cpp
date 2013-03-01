@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -180,45 +180,59 @@ X3DGroupingNode::traverse (TraverseType type)
 	{
 		case TraverseType::PICKING:
 		{
-			for (const auto & child : pointingDeviceSensors)
-				child -> push ();
-
-			for (const auto & child : childNodes)
-				child -> traverse (type);
-
-			for (const auto & child : basic::adapter (pointingDeviceSensors .crbegin (), pointingDeviceSensors .crend ()))
-				child -> pop ();
-		
+			pick ();
 			break;
 		}
 		case TraverseType::CAMERA:
-		case TraverseType::COLLISION:
 		{
-			for (const auto & child : childNodes)
-				child -> traverse (type);
-		
+			camera ();
 			break;
 		}
-		case TraverseType::RENDER:
+		case TraverseType::COLLECT:
 		{
-			for (const auto & child : lights)
-				child -> push ();
-
-			if (localFogs .size ())
-				localFogs .front () -> push ();
-
-			for (const auto & child : childNodes)
-				child -> traverse (type);
-
-			if (localFogs .size ())
-				localFogs .front () -> pop ();
-
-			for (const auto & child : basic::adapter (lights .crbegin (), lights .crend ()))
-				child -> pop ();
-		
+			collect ();
 			break;
 		}
 	}
+}
+
+void
+X3DGroupingNode::pick ()
+{
+	for (const auto & child : pointingDeviceSensors)
+		child -> push ();
+
+	for (const auto & child : childNodes)
+		child -> traverse (TraverseType::PICKING);
+
+	for (const auto & child : basic::adapter (pointingDeviceSensors .crbegin (), pointingDeviceSensors .crend ()))
+		child -> pop ();
+}
+
+void
+X3DGroupingNode::camera ()
+{
+	for (const auto & child : childNodes)
+		child -> traverse (TraverseType::CAMERA);
+}
+
+void
+X3DGroupingNode::collect ()
+{
+	for (const auto & child : lights)
+		child -> push ();
+
+	if (localFogs .size ())
+		localFogs .front () -> push ();
+
+	for (const auto & child : childNodes)
+		child -> traverse (TraverseType::COLLECT);
+
+	if (localFogs .size ())
+		localFogs .front () -> pop ();
+
+	for (const auto & child : basic::adapter (lights .crbegin (), lights .crend ()))
+		child -> pop ();
 }
 
 void

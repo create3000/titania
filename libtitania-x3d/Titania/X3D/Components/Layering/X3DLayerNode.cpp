@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -200,78 +200,87 @@ void
 X3DLayerNode::traverse (TraverseType type)
 {
 	getBrowser () -> getLayers () .push (this);
-		
+	
 	switch (type)
 	{
 		case TraverseType::PICKING:
 		{
-			if (not isPickable)
-				return;
-
-			glPushMatrix ();
-			glLoadIdentity ();
-
-			currentViewport -> enable ();
-			getViewpoint () -> reshape ();
-			getViewpoint () -> transform ();
-
-			group -> traverse (type);
-
-			currentViewport -> disable ();
-
-			glPopMatrix ();
-			
+			pick ();
 			break;
 		}
 		case TraverseType::CAMERA:
 		{
-			glPushMatrix ();
-			glLoadIdentity ();
-
-			defaultViewpoint -> traverse (type);
-			group            -> traverse (type);
-
-			glPopMatrix ();
-			
+			camera ();
 			break;
 		}
-		case TraverseType::COLLISION:
+		case TraverseType::COLLECT:
 		{
-			glPushMatrix ();
-			glLoadIdentity ();
-
-			getViewpoint ()  -> reshape ();
-			defaultViewpoint -> traverse (type);
-		
-			render (type);
-
-			glPopMatrix ();
-			
-			break;
-		}
-		case TraverseType::RENDER:
-		{
-			currentViewport -> enable ();
-
-			glClear (GL_DEPTH_BUFFER_BIT);
-			glLoadIdentity ();
-
-			getBackground ()     -> draw ();
-			getNavigationInfo () -> enable ();
-			getViewpoint ()      -> reshape ();
-			defaultViewpoint     -> traverse (type);
-
-			render (type);
-
-			getNavigationInfo () -> disable ();
-			currentViewport      -> disable ();
-			clearLights ();
-			
+			collect ();
 			break;
 		}
 	}
 
 	getBrowser () -> getLayers () .pop ();
+}
+
+void
+X3DLayerNode::pick ()
+{
+	if (not isPickable)
+		return;
+		
+	currentViewport -> push ();
+
+	glPushMatrix ();
+	glLoadIdentity ();
+
+	getViewpoint () -> reshape ();
+	getViewpoint () -> transform ();
+		
+	//double t0 = chrono::now ();
+
+	group -> traverse (TraverseType::PICKING);
+		
+	//__LOG__ << "pick: " << SFTime (chrono::now () - t0) << std::endl;
+
+	glPopMatrix ();
+
+	currentViewport -> pop ();
+}
+
+void
+X3DLayerNode::camera ()
+{
+	glPushMatrix ();
+	glLoadIdentity ();
+
+	getViewpoint ()  -> reshape ();
+	
+	defaultViewpoint -> traverse (TraverseType::CAMERA);
+	group -> traverse (TraverseType::CAMERA);
+
+	glPopMatrix ();
+}
+
+void
+X3DLayerNode::collect ()
+{
+	currentViewport -> push ();
+
+	glClear (GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity ();
+
+	getBackground ()     -> draw ();
+	getNavigationInfo () -> enable ();
+	getViewpoint ()      -> reshape ();
+	
+	defaultViewpoint -> traverse (TraverseType::COLLECT);
+	render (TraverseType::COLLECT);
+
+	getNavigationInfo () -> disable ();
+	currentViewport -> pop ();
+
+	clearLights ();
 }
 
 void

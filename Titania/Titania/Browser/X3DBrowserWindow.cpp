@@ -411,9 +411,7 @@ X3DBrowserWindow::getNumPages () const
 void
 X3DBrowserWindow::setCurrentPage (size_t position)
 {
-__LOG__ << std::endl;
 	getNotebook () .set_current_page (position);
-__LOG__ << std::endl;
 }
 
 size_t

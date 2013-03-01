@@ -56,14 +56,15 @@
 #include <cmath>
 #include <glibmm/main.h>
 
-#define SPEED_FACTOR            0.02f
-#define ROTATION_SPEED_FACTOR   0.3f
-#define ROLL_ANGLE              (M_PI / 16)
-#define ROLL_TIME               0.2
-#define FRAME_RATE              100
-
 namespace titania {
 namespace X3D {
+
+static constexpr float SPEED_FACTOR          = 0.007;
+static constexpr float SHIFT_SPEED_FACTOR    = 4;
+static constexpr float ROTATION_SPEED_FACTOR = 0.3;
+static constexpr float ROLL_ANGLE            = M_PI / 16;
+static constexpr float ROLL_TIME             = 0.2;
+static constexpr float FRAME_RATE            = 100;
 
 Vector3f X3DFlyViewer::upVector (0, 1, 0);
 
@@ -77,10 +78,6 @@ X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* navigationIn
 	                      startTime (),               
 	                         button (0),              
 	                      shift_key (false),          
-	  button_press_event_connection (),               
-	button_release_event_connection (),               
-	 motion_notify_event_connection (),               
-	        scroll_event_connection (),               
 	                         fly_id (),               
 	                         pan_id (),               
 	                        roll_id ()                
@@ -89,12 +86,12 @@ X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* navigationIn
 void
 X3DFlyViewer::initialize ()
 {
-	button_press_event_connection   = getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_press_event));
-	button_release_event_connection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_release_event));
-	motion_notify_event_connection  = getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_motion_notify_event));
-	scroll_event_connection         = getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_scroll_event));
-	key_press_event_connection      = getBrowser () -> signal_key_press_event      () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_key_press_event));
-	key_release_event_connection    = getBrowser () -> signal_key_release_event    () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_key_release_event));
+	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_press_event));
+	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_release_event));
+	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_motion_notify_event), false);
+	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_scroll_event));
+	getBrowser () -> signal_key_press_event      () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_key_press_event));
+	getBrowser () -> signal_key_release_event    () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_key_release_event));
 }
 
 bool
@@ -149,6 +146,8 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 		direction = (toVector - fromVector) * SPEED_FACTOR * navigationInfo -> speed .getValue ();
 
 		addFly ();
+
+		return true;
 	}
 
 	else if (button == 2)
@@ -158,6 +157,8 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 		direction = (toVector - fromVector) * SPEED_FACTOR * navigationInfo -> speed .getValue ();
 
 		addPan ();
+
+		return true;
 	}
 
 	return false;
@@ -210,7 +211,7 @@ X3DFlyViewer::fly ()
 {
 	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
 
-	float frameRate = std::max <float> (getBrowser () -> getCurrentFrameRate (), FRAME_RATE);
+	float frameRate = getBrowser () -> getCurrentFrameRate ();
 
 	// Orientation offeset
 
@@ -220,18 +221,16 @@ X3DFlyViewer::fly ()
 
 	float angle = rotation .angle ();
 
-	rotation .angle (angle * math::abs (direction) * ROTATION_SPEED_FACTOR / frameRate);
-
-	viewpoint -> orientationOffset *= rotation;
+	viewpoint -> orientationOffset *= rotation * (math::abs (direction) * ROTATION_SPEED_FACTOR / frameRate);
 
 	// Position offset
 
-	float speed_factor = shift_key ? 4 : 1;
+	float speed_factor = shift_key ? SHIFT_SPEED_FACTOR : 1;
 	speed_factor *= 1 - angle / M_PI1_2;
 
-	rotation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
+	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
 
-	viewpoint -> positionOffset += rotation * direction * speed_factor / frameRate;
+	viewpoint -> positionOffset += orientation * direction * speed_factor / frameRate;
 
 	return true;
 }
@@ -241,7 +240,7 @@ X3DFlyViewer::pan ()
 {
 	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
 
-	float frameRate = std::max <float> (getBrowser () -> getCurrentFrameRate (), FRAME_RATE);
+	float frameRate = getBrowser () -> getCurrentFrameRate ();
 
 	float speed_factor = shift_key ? 4 : 1;
 
@@ -260,7 +259,7 @@ X3DFlyViewer::roll ()
 
 	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
 
-	float frameRate = std::max <float> (getBrowser () -> getCurrentFrameRate (), FRAME_RATE);
+	float frameRate = getBrowser () -> getCurrentFrameRate ();
 
 	viewpoint -> orientationOffset *= Rotation4f (rotation .axis (), rotation .angle () / frameRate);
 
@@ -352,13 +351,6 @@ X3DFlyViewer::display ()
 X3DFlyViewer::~X3DFlyViewer ()
 {
 	getBrowser () -> displayed .removeInterest (this, &X3DFlyViewer::display);
-
-	button_press_event_connection   .disconnect ();
-	motion_notify_event_connection  .disconnect ();
-	scroll_event_connection         .disconnect ();
-	button_release_event_connection .disconnect ();
-	key_press_event_connection      .disconnect ();
-	key_release_event_connection    .disconnect ();
 
 	disconnect ();
 }

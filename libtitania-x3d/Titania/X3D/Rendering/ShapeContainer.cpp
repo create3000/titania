@@ -96,20 +96,23 @@ ShapeContainer::draw ()
 
 	glLoadMatrixf (transformationMatrix .data ());
 
-	if (distance < 0 and ViewVolume () .intersect (shape -> getBBox ()))
+	if (distance < 0)
 	{
-		for (const auto & light : localLights)
-			light -> enable ();
+		if (ViewVolume () .intersect (shape -> getBBox ()))
+		{
+			for (const auto & light : localLights)
+				light -> enable ();
 
-		if (fog)
-			fog -> enable ();
+			if (fog)
+				fog -> enable ();
 
-		shape -> draw ();
+			shape -> draw ();
 
-		for (const auto & light : basic::adapter (localLights .crbegin (), localLights .crend ()))
-			light -> disable ();
+			for (const auto & light : basic::adapter (localLights .crbegin (), localLights .crend ()))
+				light -> disable ();
 
-		drawn = true;
+			drawn = true;
+		}
 	}
 
 	return drawn;

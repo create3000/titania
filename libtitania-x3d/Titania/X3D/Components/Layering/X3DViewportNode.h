@@ -63,11 +63,11 @@ public:
 
 	virtual
 	void
-	enable () = 0;
+	push () = 0;
 
 	virtual
 	void
-	disable () = 0;
+	pop () = 0;
 
 
 protected:

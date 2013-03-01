@@ -123,7 +123,7 @@ NavigationInfo::set_headlight ()
 Box3f
 NavigationInfo::getBBox ()
 {
-	return Box3f (Vector3f (getAvatarWidth (), getAvatarHeight (), getAvatarDepth ()), Vector3f ());
+	return Box3f (Vector3f (getAvatarWidth (), getAvatarHeight (), getAvatarDepth ()), Vector3f (0, getAvatarHeight () / 2, 0));
 }
 
 float

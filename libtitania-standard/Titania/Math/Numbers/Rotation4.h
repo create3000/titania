@@ -106,7 +106,7 @@ public:
 	rotation4 (const rotation4 <T> & rotation) :
 		value (rotation .quat ()) { }
 
-	///  Construct a rotation from normalized @a quaterion.
+	///  Construct a rotation from normalized @a quaternion.
 	template <class T>
 	constexpr
 	rotation4 (const quaternion <T> & quaternion) :
@@ -192,7 +192,7 @@ public:
 	quat (const quaternion <T> & q) { value = q; }
 
 	///  Returns quaternion of this rotation.
-	constexpr quaternion <Type>
+	const quaternion <Type> &
 	quat () const { return value; }
 
 	///  @name Arithmetic operations
@@ -201,10 +201,19 @@ public:
 	rotation4 &
 	inverse ();
 
-	///  Multiply @a rotation to this rotation.
+	///  Multiply this rotations angle by @a value.
+	rotation4 &
+	operator *= (const Type &);
+
+	///  Multiply this rotation by @a rotation.
 	template <class T>
 	rotation4 &
 	operator *= (const rotation4 <T> &);
+
+	///  Divide this rotations angle by @a value.
+	rotation4 &
+	operator /= (const Type &);
+
 
 
 private:
@@ -413,12 +422,28 @@ rotation4 <Type>::inverse ()
 }
 
 template <class Type>
+rotation4 <Type> &
+rotation4 <Type>::operator *= (const Type & t)
+{
+	angle (angle () * t);
+	return *this;
+}
+
+template <class Type>
 template <class T>
 inline
 rotation4 <Type> &
 rotation4 <Type>::operator *= (const rotation4 <T> & rotation)
 {
 	value .multLeft (rotation .quat ());
+	return *this;
+}
+
+template <class Type>
+rotation4 <Type> &
+rotation4 <Type>::operator /= (const Type & t)
+{
+	angle (angle () / t);
 	return *this;
 }
 
@@ -457,6 +482,24 @@ operator ~ (const rotation4 <Type> & rotation)
 	return rotation4 <Type> (rotation) .inverse ();
 }
 
+///  Multiply the angle of @a rotation by @a t.
+template <class Type>
+inline
+rotation4 <Type>
+operator * (const rotation4 <Type> & rotation, const Type & t)
+{
+	return rotation4 <Type> (rotation) *= t;
+}
+
+///  Multiply the angle of @a rotation by @a t.
+template <class Type>
+inline
+rotation4 <Type>
+operator * (const Type & t, const rotation4 <Type> & rotation)
+{
+	return rotation4 <Type> (rotation) *= t;
+}
+
 ///  Left multiply @a lhs by @a rhs.
 template <class Type>
 inline
@@ -473,6 +516,26 @@ vector3 <Type>
 operator * (const rotation4 <Type> & rotation, const vector3 <Type> & vector)
 {
 	return rotation .quat () * vector;
+}
+
+///  Divide the angle of @a rotation by @a t.
+template <class Type>
+inline
+rotation4 <Type>
+operator / (const rotation4 <Type> & rotation, const Type & t)
+{
+	return rotation4 <Type> (rotation) /= t;
+}
+
+///  Return a rotation where the angle is @a t / angle.
+template <class Type>
+inline
+rotation4 <Type>
+operator / (const Type & t, const rotation4 <Type> & rotation)
+{
+	rotation4 <Type> r = rotation4 <Type> (rotation);
+	r .angle (t / r .angle ());
+	return r;
 }
 
 ///  Spherical linear interpolate between @a source quaternion and @a destination quaternion by an amout of @a t.
