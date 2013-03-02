@@ -59,28 +59,30 @@
 namespace titania {
 namespace X3D {
 
-static constexpr float SPEED_FACTOR          = 0.007;
-static constexpr float SHIFT_SPEED_FACTOR    = 4;
-static constexpr float ROTATION_SPEED_FACTOR = 0.3;
-static constexpr float ROLL_ANGLE            = M_PI / 16;
-static constexpr float ROLL_TIME             = 0.2;
-static constexpr float FRAME_RATE            = 100;
+static constexpr float SPEED_FACTOR           = 0.007;
+static constexpr float SHIFT_SPEED_FACTOR     = 4;
+static constexpr float ROTATION_SPEED_FACTOR  = 0.3;
+//static constexpr float PAN_SPEED_FACTOR       = 2;
+static constexpr float PAN_SHIFT_SPEED_FACTOR = 4;
+static constexpr float ROLL_ANGLE             = M_PI / 16;
+static constexpr float ROLL_TIME              = 0.2;
+static constexpr float FRAME_RATE             = 100;
 
 Vector3f X3DFlyViewer::upVector (0, 1, 0);
 
 X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* navigationInfo) :
-	                      X3DViewer (browser),        
-	                 navigationInfo (navigationInfo), 
-	                     fromVector (),               
-	                       toVector (),               
-	                      direction (),               
-	                       rotation (),               
-	                      startTime (),               
-	                         button (0),              
-	                      shift_key (false),          
-	                         fly_id (),               
-	                         pan_id (),               
-	                        roll_id ()                
+	     X3DViewer (browser),        
+	navigationInfo (navigationInfo), 
+	    fromVector (),               
+	      toVector (),               
+	     direction (),               
+	      rotation (),               
+	     startTime (),               
+	        button (0),              
+	     shift_key (false),          
+	        fly_id (),               
+	        pan_id (),               
+	       roll_id ()                
 { }
 
 void
@@ -242,7 +244,7 @@ X3DFlyViewer::pan ()
 
 	float frameRate = getBrowser () -> getCurrentFrameRate ();
 
-	float speed_factor = shift_key ? 4 : 1;
+	float speed_factor = shift_key ? PAN_SHIFT_SPEED_FACTOR : 1;
 
 	Rotation4f rotation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
 
@@ -311,7 +313,7 @@ X3DFlyViewer::display ()
 	glLoadIdentity ();
 	glOrtho (0, width, 0, height, -1, 1);
 	glMatrixMode (GL_MODELVIEW);
-	
+
 	glLoadIdentity ();
 
 	glDisable (GL_DEPTH_TEST);
@@ -347,8 +349,6 @@ X3DFlyViewer::display ()
 	glVertex3f (fx, fy, fz);
 	glVertex3f (tx, ty, tz);
 	glEnd ();
-
-	__LOG__ << tx << " : " << ty << " : " << tz << std::endl;
 }
 
 X3DFlyViewer::~X3DFlyViewer ()

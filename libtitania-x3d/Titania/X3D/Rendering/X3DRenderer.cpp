@@ -406,7 +406,14 @@ X3DRenderer::gravite ()
 
 			speed += P_GN / currentFrameRate;
 
-			float translation = std::max (speed / currentFrameRate, distance);
+			float translation = speed / currentFrameRate;
+			
+			if (translation < distance)
+			{
+				// The ground is reached.
+				translation = distance;
+				speed       = 0;
+			}
 
 			getCurrentViewpoint () -> positionOffset += Vector3f (0, translation, 0);
 		}
