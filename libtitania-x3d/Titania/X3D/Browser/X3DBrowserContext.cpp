@@ -422,6 +422,7 @@ X3DBrowserContext::display ()
 
 	//glColorMask (TRUE, TRUE, TRUE, TRUE);
 
+	__LOG__ << std::endl;
 	displayed .processInterests ();
 }
 

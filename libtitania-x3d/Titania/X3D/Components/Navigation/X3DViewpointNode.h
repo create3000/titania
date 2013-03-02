@@ -91,10 +91,12 @@ public:
 	setTransformationMatrix (const Matrix4f &);
 
 	const Matrix4f &
-	getTransformationMatrix () const { return transformationMatrix; }
+	getTransformationMatrix () const 
+	{ return transformationMatrix; }
 
 	const Matrix4f &
-	getInverseTransformationMatrix () const { return inverseTransformationMatrix; }
+	getInverseTransformationMatrix () const 
+	{ return inverseTransformationMatrix; }
 
 	virtual
 	void
@@ -135,16 +137,12 @@ protected:
 	X3DViewpointNode (bool);
 
 	void
-	setModelViewMatrix (const Matrix4f & value) { modelViewMatrix = value; }
+	setModelViewMatrix (const Matrix4f & value)
+	{ modelViewMatrix = value; }
 
 	const Matrix4f &
-	getModelViewMatrix () const { return modelViewMatrix; }
-
-	void
-	setDifferenceMatrix (const Matrix4f & value) { differenceMatrix = value; }
-
-	const Matrix4f &
-	getDifferenceMatrix () const { return differenceMatrix; }
+	getModelViewMatrix () const
+	{ return modelViewMatrix; }
 
 
 private:
@@ -180,7 +178,6 @@ private:
 	Matrix4f modelViewMatrix;
 	Matrix4f transformationMatrix;
 	Matrix4f inverseTransformationMatrix;
-	Matrix4f differenceMatrix;
 
 	SFNode <TimeSensor>           timeSensor;
 	SFNode <PositionInterpolator> positionInterpolator;

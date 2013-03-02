@@ -1,5 +1,14 @@
 2013-03-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DRenderer.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DFlyViewer.cpp:
+	* X3DLayerNode.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp: 
+
+2013-03-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TraverseType.h:
 	* X3DRenderer.h:
 	* X3DRenderer.cpp:

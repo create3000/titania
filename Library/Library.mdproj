@@ -1941,6 +1941,9 @@
     <None Include="Tests\Texturing\MovieTexture.wrl" />
     <None Include="Tests\Lighting\DirectionalLight.wrl" />
     <None Include="Tests\Navigation\LOD.wrl" />
+    <None Include="Examples\BIC\building.wrl" />
+    <None Include="Examples\BIC\info.wrl" />
+    <None Include="Examples\BIC\buero.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

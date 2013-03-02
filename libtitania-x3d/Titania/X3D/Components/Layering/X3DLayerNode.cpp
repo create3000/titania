@@ -200,7 +200,7 @@ void
 X3DLayerNode::traverse (TraverseType type)
 {
 	getBrowser () -> getLayers () .push (this);
-	
+
 	switch (type)
 	{
 		case TraverseType::PICKING:
@@ -233,7 +233,7 @@ X3DLayerNode::pick ()
 {
 	if (not isPickable)
 		return;
-		
+
 	currentViewport -> push ();
 
 	glPushMatrix ();
@@ -241,11 +241,11 @@ X3DLayerNode::pick ()
 
 	getViewpoint () -> reshape ();
 	getViewpoint () -> transform ();
-		
+
 	//double t0 = chrono::now ();
 
 	group -> traverse (TraverseType::PICKING);
-		
+
 	//__LOG__ << "pick: " << SFTime (chrono::now () - t0) << std::endl;
 
 	glPopMatrix ();
@@ -260,7 +260,7 @@ X3DLayerNode::camera ()
 	glLoadIdentity ();
 
 	getViewpoint ()  -> reshape ();
-	
+
 	defaultViewpoint -> traverse (TraverseType::CAMERA);
 	group -> traverse (TraverseType::CAMERA);
 
@@ -275,20 +275,19 @@ X3DLayerNode::collision ()
 	glLoadIdentity ();
 
 	// Reshape viewpoint
-	
+
 	auto navigationInfo = getCurrentNavigationInfo ();
 
-	float zNear          = navigationInfo -> getZNear ();
-	float zFar           = navigationInfo -> getZFar ();
-	float width1_2       = navigationInfo -> getAvatarWidth  () / 2;
-	float depth1_2       = navigationInfo -> getAvatarDepth  () / 2;
-	float height         = navigationInfo -> getAvatarHeight ();
+	float zNear    = navigationInfo -> getZNear ();
+	float zFar     = navigationInfo -> getZFar ();
+	float width1_2 = navigationInfo -> getAvatarWidth () / 2;
+	float depth1_2 = navigationInfo -> getAvatarDepth () / 2;
 
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
 	glOrtho (-width1_2, width1_2, -depth1_2, depth1_2, zNear, zFar);
 	glMatrixMode (GL_MODELVIEW);
-	
+
 	//
 	getViewpoint () -> down ();
 

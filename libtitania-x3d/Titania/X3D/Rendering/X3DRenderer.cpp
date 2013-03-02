@@ -347,7 +347,7 @@ X3DRenderer::gravite ()
 	
 	// Bind buffer
 	
-//	depthBuffer -> bind ();
+	depthBuffer -> bind ();
 
 	GLint viewport [4];
 

@@ -298,54 +298,57 @@ X3DFlyViewer::disconnect ()
 void
 X3DFlyViewer::display ()
 {
-	if (button == 1)
-	{
-		// Configure HUD
+	// Configure HUD
 
-		GLint viewport [4];
+	GLint viewport [4];
 
-		glGetIntegerv (GL_VIEWPORT, viewport);
+	glGetIntegerv (GL_VIEWPORT, viewport);
 
-		GLint width  = viewport [2];
-		GLint height = viewport [3];
+	GLint width  = viewport [2];
+	GLint height = viewport [3];
 
-		glMatrixMode (GL_PROJECTION);
-		glLoadIdentity ();
-		glOrtho (0, width, 0, height, -1, 1);
-		glMatrixMode (GL_MODELVIEW);
+	glMatrixMode (GL_PROJECTION);
+	glLoadIdentity ();
+	glOrtho (0, width, 0, height, -1, 1);
+	glMatrixMode (GL_MODELVIEW);
+	
+	glLoadIdentity ();
 
-		glDisable (GL_DEPTH_TEST);
+	glDisable (GL_DEPTH_TEST);
 
-		// Display Rubberband.
+	// Display Rubberband.
 
-		Matrix4d::array_type modelview, projection;
+	Matrix4d::array_type modelview, projection;
 
-		glGetDoublev (GL_MODELVIEW_MATRIX, modelview);
-		glGetDoublev (GL_PROJECTION_MATRIX, projection);
+	glGetDoublev (GL_MODELVIEW_MATRIX, modelview);
+	glGetDoublev (GL_PROJECTION_MATRIX, projection);
 
-		GLdouble fx, fy, fz, tx, ty, tz;
+	GLdouble fx, fy, fz, tx, ty, tz;
 
-		// Starting point
-		gluUnProject (fromVector .x (), height - fromVector .z (), 0, modelview, projection, viewport, &fx, &fy, &fz);
+	// From point
+	gluUnProject (fromVector .x (), height - fromVector .z (), 0, modelview, projection, viewport, &fx, &fy, &fz);
 
-		gluUnProject (toVector .x (), height - toVector .z (), 0, modelview, projection, viewport, &tx, &ty, &tz);
+	// To point
+	gluUnProject (toVector .x (), height - toVector .z (), 0, modelview, projection, viewport, &tx, &ty, &tz);
 
-		glLineWidth (2);
-		glColor3f (0, 0, 0);
+	// Draw a black and a white line
+	glLineWidth (2);
+	glColor3f (0, 0, 0);
 
-		glBegin (GL_LINES);
-		glVertex3f (fx, fy, fz);
-		glVertex3f (tx, ty, tz);
-		glEnd ();
+	glBegin (GL_LINES);
+	glVertex3f (fx, fy, fz);
+	glVertex3f (tx, ty, tz);
+	glEnd ();
 
-		glLineWidth (1);
-		glColor3f (1, 1, 1);
+	glLineWidth (1);
+	glColor3f (1, 1, 1);
 
-		glBegin (GL_LINES);
-		glVertex3f (fx, fy, fz);
-		glVertex3f (tx, ty, tz);
-		glEnd ();
-	}
+	glBegin (GL_LINES);
+	glVertex3f (fx, fy, fz);
+	glVertex3f (tx, ty, tz);
+	glEnd ();
+
+	__LOG__ << tx << " : " << ty << " : " << tz << std::endl;
 }
 
 X3DFlyViewer::~X3DFlyViewer ()

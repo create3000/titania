@@ -69,7 +69,6 @@ X3DViewpointNode::X3DViewpointNode (bool displayed) :
 	            modelViewMatrix (),                                                 
 	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),  
 	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1), 
-	           differenceMatrix (),                                                 
 	                 timeSensor (),                                                 
 	       positionInterpolator ()                                                  
 {
@@ -206,13 +205,19 @@ X3DViewpointNode::_set_bind ()
 		}
 		else
 		{
-			// Apply relative transformations from previous viewpoint.
-			Vector3f   t;
-			Rotation4f r;
-			getDifferenceMatrix () .get (t, r);
+			Matrix4f differenceMatrix = getModelViewMatrix ();
 
-			positionOffset    = t;
-			orientationOffset = r;
+			differenceMatrix .translate (getPosition ());
+			differenceMatrix .rotate (orientation);
+			differenceMatrix .inverse ();
+		
+			// Apply relative transformations from previous viewpoint.
+			Vector3f   p;
+			Rotation4f o;
+			differenceMatrix .get (p, o);
+
+			positionOffset    = p;
+			orientationOffset = o;
 		}
 	}
 }
@@ -242,10 +247,10 @@ X3DViewpointNode::camera ()
 {
 	setModelViewMatrix (ModelViewMatrix4f ());
 
-	Matrix4f transformationMatrix = ModelViewMatrix4f ();
-
 	if (isBound)
 	{
+		Matrix4f transformationMatrix = ModelViewMatrix4f ();
+
 		if (jump)
 		{
 			transformationMatrix .translate (getUserPosition ());
@@ -266,18 +271,7 @@ X3DViewpointNode::camera ()
 void
 X3DViewpointNode::collect ()
 {
-	if (not isBound)
-	{
-		if (not jump)
-		{
-			Matrix4f transformationMatrix = ModelViewMatrix4f () * getCurrentViewpoint () -> getTransformationMatrix ();
-
-			transformationMatrix .translate (getPosition ());
-			transformationMatrix .rotate (orientation);
-
-			setDifferenceMatrix (getCurrentViewpoint () -> getTransformationMatrix () * ~transformationMatrix);
-		}
-	}
+	setModelViewMatrix (ModelViewMatrix4f ());
 }
 
 void
