@@ -76,7 +76,7 @@ public:
 		vsink (),
 		message (),
 		pixmap (0),
-		display (XOpenDisplay (NULL))
+		display (NULL)
 	{
 		// Static init
 
@@ -86,6 +86,9 @@ public:
 		Gst::init_check (argc, argv);
 
 		// X11
+		
+		if (glXGetCurrentContext ())
+			display = XOpenDisplay (NULL);
 
 		if (display)
 			pixmap = XCreatePixmap (display, 0, 0, 0, 0);
@@ -244,10 +247,14 @@ public:
 	~GStream ()
 	{
 		message .disconnect ();
+
 		player -> set_state (Gst::STATE_NULL);
 
-		XFreePixmap (display, pixmap);
-		XCloseDisplay (display);
+		if (pixmap)
+			XFreePixmap (display, pixmap);
+	
+		if (display)
+			XCloseDisplay (display);
 	}
 
 	MovieTexture* movie;
@@ -267,7 +274,7 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	X3DSoundSourceNode (),                                                    
 	      X3DUrlObject (),                                                    
 	             speed (1),                                                   // SFFloat [in,out] speed  1.0        (-∞,∞)
-	           gstream ()                                                     
+	           gstream (new GStream (this))                                                     
 {
 	setComponent ("Texturing");
 	setTypeName ("MovieTexture");
@@ -311,19 +318,21 @@ MovieTexture::initialize ()
 	url   .addInterest (this, &MovieTexture::set_url);
 	speed .addInterest (this, &MovieTexture::set_speed);
 	pitch .addInterest (this, &MovieTexture::set_pitch);
-}
-
-void
-MovieTexture::set_initialized ()
-{
-	gstream .reset (new GStream (this));
 
 	requestImmediateLoad ();
 }
 
 void
+MovieTexture::set_initialized ()
+{
+}
+
+void
 MovieTexture::requestImmediateLoad ()
 {
+	if (not glXGetCurrentContext ())
+		return;
+	
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 
