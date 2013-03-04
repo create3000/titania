@@ -1,5 +1,9 @@
 2013-03-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DFogObject.cpp: 
+
+2013-03-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Router.h:
 	* Router.cpp:
 	* X3DBaseNode.h:
