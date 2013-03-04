@@ -529,6 +529,7 @@
     <None Include="Titania\X3D\Browser\Viewer\X3DFlyViewer.h" />
     <None Include="Titania\X3D\Browser\Viewer\X3DViewer.h" />
     <None Include="Titania\X3D\Bits\TraverseType.h" />
+    <None Include="Titania\X3D\Types\Speed.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

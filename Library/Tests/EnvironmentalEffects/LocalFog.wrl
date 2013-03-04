@@ -6,7 +6,7 @@ Background {
 
 Fog {
   fogType "EXPONENTIAL"
-  visibilityRange 100
+  visibilityRange 20
 }
 
 Viewpoint { }

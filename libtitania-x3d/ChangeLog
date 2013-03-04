@@ -1,5 +1,13 @@
 2013-03-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Speed.h:
+	* ViewVolume.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp: 
+
+2013-03-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DFogObject.cpp: 
 
 2013-03-04  Holger Seelig  <holger.seelig@yahoo.de>

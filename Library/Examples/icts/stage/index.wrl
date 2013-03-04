@@ -1398,7 +1398,7 @@ function set_startTime(value, time)
                 children [
                   DEF fog Fog {
                     color 1 0.992157 0.937255
-                    visibilityRange 5
+                    visibilityRange 10
                   }
                   DEF VP Transform {
                     children [

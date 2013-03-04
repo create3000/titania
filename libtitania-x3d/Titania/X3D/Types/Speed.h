@@ -48,83 +48,45 @@
  *
  ******************************************************************************/
 
-#include "ViewVolume.h"
+#ifndef __TITANIA_X3D_TYPES_SPEED_H__
+#define __TITANIA_X3D_TYPES_SPEED_H__
 
-#include "../Rendering/Matrix.h"
-
-#include <GL/glu.h>
-
-#include <GL/gl.h>
-
-#include <Titania/LOG.h>
+#include <Titania/Math/Numbers/Vector3.h>
 
 namespace titania {
 namespace X3D {
 
-/*
- * p1 -------- p6
- * | \         | \
- * |   ---------- p5
- * |  |        |  |
- * |  |        |  |
- * p2 |________|  |
- *  \ |         \ |
- *   \|          \|
- *    p3 -------- p4
- */
-
-ViewVolume::ViewVolume () :
-	ViewVolume (ModelViewMatrix4d (), ProjectionMatrix4d ()) 
-{ }
-
-ViewVolume::ViewVolume (const Matrix4d & modelview, const Matrix4d & projection)
+template <class Type>
+class Speed
 {
-	GLint viewport [4];
+public:
 
-	glGetIntegerv (GL_VIEWPORT, viewport);
+	Speed (const Type &value) :
+		value (value),
+		position ()
+	{ }
 
-	GLdouble x, y, z;
-
-	gluUnProject (0, viewport [3], 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p1 = Vector3f (x, y, z);
-
-	gluUnProject (0, 0, 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p2 = Vector3f (x, y, z);
-
-	gluUnProject (0, 0, 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p3 = Vector3f (x, y, z);
-
-	gluUnProject (viewport [2], 0, 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p4 = Vector3f (x, y, z);
-
-	gluUnProject (viewport [2], viewport [3], 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p5 = Vector3f (x, y, z);
-
-	gluUnProject (viewport [2], viewport [3], 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p6 = Vector3f (x, y, z);
-
-	planes .reserve (6);
-	planes .push_back (Plane3f (p4, normalize (cross (p3 - p4, p5 - p4))));  // front
-	planes .push_back (Plane3f (p1, normalize (cross (p2 - p1, p6 - p1))));  // back
-	planes .push_back (Plane3f (p2, normalize (cross (p1 - p2, p3 - p2))));  // left
-	planes .push_back (Plane3f (p5, normalize (cross (p6 - p5, p4 - p5))));  // right
-	planes .push_back (Plane3f (p6, normalize (cross (p5 - p6, p1 - p6))));  // top
-	planes .push_back (Plane3f (p3, normalize (cross (p4 - p3, p2 - p3))));  // bottom
-}
-
-bool
-ViewVolume::intersect (const Box3f & bbox) const
-{
-	float nradius = bbox .greater_radius ();
-
-	for (const auto & plane : planes)
+	void
+	setPosition (const math::vector3 <Type> & newPosition, const Type & currentFrameRate)
 	{
-		if (plane .distance (bbox .center ()) + nradius < 0)
-			return false;
+		value    = math::abs (newPosition - position) * currentFrameRate;
+		position = newPosition;
 	}
 
-	return true;
-}
+	operator const Type & () const
+	{
+		return value;
+	}
+
+
+private:
+
+	Type                 value;
+	math::vector3 <Type> position;
+
+};
 
 } // X3D
 } // titania
+
+#endif

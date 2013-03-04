@@ -65,6 +65,7 @@
 #include "../Browser/HitArray.h"
 #include "../Rendering/X3DRenderer.h"
 #include "../Routing/Router.h"
+#include "../Types/Speed.h"
 
 #include <Titania/Chrono/ClockBase.h>
 
@@ -241,8 +242,7 @@ private:
 	std::deque <X3DBaseNode*>  overSensors;
 	std::deque <X3DBaseNode*>  activeSensors;
 	time_type                  changedTime;
-	Vector3d                   priorPosition;
-	double                     currentSpeed;
+	Speed <double>             currentSpeed;
 	double                     currentFrameRate;
 
 };

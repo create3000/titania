@@ -80,8 +80,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	     enabledSensors (),                                        
 	               hits (),                                        
 	        changedTime (clock -> cycle ()),                       
-	      priorPosition (),                                        
-	       currentSpeed (0),                                       
+          currentSpeed (0),                                       
 	   currentFrameRate (0)                                        
 {
 	//supportedFields, // make X3DBaseNodes of this
@@ -389,10 +388,7 @@ X3DBrowserContext::prepare ()
 	clock -> advance ();
 
 	currentFrameRate = 1 / clock -> interval ();
-
-	Vector3d position = getActiveViewpoint () -> getTransformationMatrix () .translation ();
-	currentSpeed  = abs (position - priorPosition) * currentFrameRate;
-	priorPosition = position;
+	currentSpeed .setPosition (getActiveViewpoint () -> getTransformationMatrix () .translation (), currentFrameRate);
 	
 	prepareEvents .processInterests ();
 	
