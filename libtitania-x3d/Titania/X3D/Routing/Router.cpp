@@ -56,62 +56,45 @@ namespace titania {
 namespace X3D {
 
 Router::Router () :
-	   events (), 
-	interests ()  
+	events (), 
+	 nodes ()  
 { }
 
 void
 Router::processEvents ()
 {
 	clock .start ();
-	
-	std::deque <X3DBaseNode*> nodesToProcess;
-	ChildObjectSet            sourceFields;
+
+	EventArray eventsToProcess;
 
 	while (events .size ())
 	{
 		do
 		{
-			nodesToProcess .clear ();
-			nodesToProcess .swap (events);
+			eventsToProcess .clear ();
+			eventsToProcess .swap (events);
 
-			for (const auto & node : nodesToProcess)
+			for (auto & node : eventsToProcess)
 			{
-				sourceFields .clear ();
-
-				node -> processEvents (sourceFields);
+				node -> processEvents ();
 			}
-
-			processInterests ();
 		}
 		while (events .size ());
 
 		eventsProcessed ();
 	}
-	
+
 	clock .stop ();
 }
 
-void
-Router::processInterests ()
-{
-	std::deque <X3DBaseNode*> nodesToProcess;
-
-	while (interests .size ())
-	{
-		nodesToProcess .clear ();
-		nodesToProcess .swap (interests);
-
-		for (const auto & node : nodesToProcess)
-			node -> processInterests ();
-	}
-}
+//}
 
 void
 Router::eventsProcessed ()
 {
-	std::set <X3DBaseNode*> nodesToProcess;
-	nodesToProcess .swap (processeds);
+	NodeSet nodesToProcess;
+
+	nodesToProcess .swap (nodes);
 
 	for (const auto & node : nodesToProcess)
 		node -> eventsProcessed ();

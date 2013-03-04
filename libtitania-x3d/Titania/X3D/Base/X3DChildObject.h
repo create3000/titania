@@ -60,6 +60,18 @@
 namespace titania {
 namespace X3D {
 
+class Event
+{
+public:
+
+	Event (X3DChildObject* object) :
+		object (object)
+	{ }
+
+	X3DChildObject* object;
+	ChildObjectSet sources;
+};
+
 class X3DChildObject :
 	virtual public X3DObject
 {
@@ -101,6 +113,14 @@ public:
 
 	///  @name Event Handling
 
+	void
+	isTainted (bool value)
+	{ tainted = value; }
+	
+	bool
+	isTainted ()
+	{ return tainted; }
+
 	virtual
 	void
 	write (const X3DChildObject &) { }
@@ -111,7 +131,7 @@ public:
 
 	virtual
 	void
-	processEvents (ChildObjectSet &) = 0; // XXX
+	processEvent (Event &) { } // XXX only used in X3DFieldDefinition
 
 	virtual
 	void
@@ -127,11 +147,11 @@ protected:
 
 	virtual
 	void
-	registerEvent (X3DChildObject* const);
+	registerEvent (X3DChildObject*);
 
 	virtual
 	void
-	registerInterest (X3DChildObject* const);
+	registerEvent (X3DChildObject*, const Event &);
 
 
 private:
@@ -141,6 +161,8 @@ private:
 	findClosestParents (std::deque <Type*> &, ChildObjectSet &);
 
 	ChildObjectSet parents;
+	
+	bool tainted;
 
 };
 

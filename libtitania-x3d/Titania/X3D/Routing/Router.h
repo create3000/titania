@@ -69,19 +69,15 @@ public:
 
 	void
 	registerEvent (X3DBaseNode* node)
-	{ events .push_back (node); }
+	{ events .emplace_back (node); }
 
 	void
-	registerInterest (X3DBaseNode* node)
-	{ interests .push_back (node); }
+	registerNode (X3DBaseNode* node)
+	{ nodes .insert (node); }
 
 	void
-	registerProcessed (X3DBaseNode* node)
-	{ processeds .insert (node); }
-
-	void
-	removeProcessed (X3DBaseNode* node)
-	{ processeds .erase (node); }
+	removeNode (X3DBaseNode* node)
+	{ nodes .erase (node); }
 
 	void
 	processEvents ();
@@ -95,14 +91,13 @@ private:
 	operator = (const Router &) = delete;
 
 	void
-	processInterests ();
-
-	void
 	eventsProcessed ();
 
-	std::deque <X3DBaseNode*> events;
-	std::deque <X3DBaseNode*> interests;
-	std::set <X3DBaseNode*>   processeds;
+	typedef std::deque <X3DBaseNode*> EventArray;
+	typedef std::set <X3DBaseNode*>   NodeSet;
+
+	EventArray events;
+	NodeSet    nodes;
 
 };
 

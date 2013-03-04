@@ -35,7 +35,8 @@ namespace X3D {
 
 X3DChildObject::X3DChildObject () :
 	X3DObject (), 
-	  parents ()  
+	  parents (),
+	  tainted (false)  
 { }
 
 // Object
@@ -54,10 +55,10 @@ X3DChildObject::registerEvent (X3DChildObject* const)
 }
 
 void
-X3DChildObject::registerInterest (X3DChildObject* object)
+X3DChildObject::registerEvent (X3DChildObject*, const Event & event)
 {
-	for (auto & parent : getParents ())
-		parent -> registerInterest (this);
+	for (const auto & parent : getParents ())
+		parent -> registerEvent (this, event);
 }
 
 // Child

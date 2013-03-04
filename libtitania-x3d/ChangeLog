@@ -1,3 +1,18 @@
+2013-03-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Router.h:
+	* Router.cpp:
+	* X3DBaseNode.h:
+	* X3DChildObject.h:
+	* X3DBaseNode.cpp:
+	* X3DBrowser.cpp:
+	* X3DChildObject.cpp:
+	* X3DFieldDefinition.h:
+	* X3DFieldDefinition.cpp:
+	* MovieTexture.h:
+	* MovieTexture.cpp:
+	* X3DFogObject.cpp: 
+
 2013-03-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MovieTexture.cpp:

@@ -84,9 +84,9 @@ float
 X3DFogObject::getVisibilityRange ()
 {
 	if (visibilityRange)
-		return visibilityRange;
+		return visibilityRange * 2;
 	
-	return getBrowser () -> getLayers () .top () -> getNavigationInfo () -> getZFar ();
+	return getBrowser () -> getLayers () .top () -> getNavigationInfo () -> getZFar () * 2;
 }
 
 float

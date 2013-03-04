@@ -313,18 +313,11 @@ MovieTexture::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	initialized .addInterest (this, &MovieTexture::set_initialized);
-
 	url   .addInterest (this, &MovieTexture::set_url);
 	speed .addInterest (this, &MovieTexture::set_speed);
 	pitch .addInterest (this, &MovieTexture::set_pitch);
 
 	requestImmediateLoad ();
-}
-
-void
-MovieTexture::set_initialized ()
-{
 }
 
 void
@@ -372,7 +365,7 @@ MovieTexture::requestImmediateLoad ()
 		}
 	}
 
-	if (not vsink -> get_last_buffer ())
+	if (checkLoadState () not_eq COMPLETE_STATE)
 	{
 		duration_changed = -1;
 		setLoadState (FAILED_STATE);

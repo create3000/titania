@@ -60,8 +60,7 @@ X3DFieldDefinition::X3DFieldDefinition () :
 	     aliasName (),               
 	   inputRoutes (),               
 	  outputRoutes (),               
-	     interests (),               
-	        events ()                
+	     interests ()                
 { }
 
 X3DFieldDefinition*
@@ -221,42 +220,20 @@ X3DFieldDefinition::removeInterest (X3DFieldDefinition & interest)
 }
 
 void
-X3DFieldDefinition::processEvents (ChildObjectSet & sourceFields)
+X3DFieldDefinition::processEvent (Event & event)
 {
-	//	if (inputRoutes  .size ())
-	sourceFields .insert (this);
-
-	events .emplace_front (this);
-	registerInterest (this);
-
-	for (const auto & fieldDefinition : interests)
-		fieldDefinition -> processEvent (this, sourceFields);
-}
-
-void
-X3DFieldDefinition::processEvent (X3DFieldDefinition* const field, ChildObjectSet & sourceFields)
-{
-	if (not sourceFields .insert (this) .second)
+	if (not event .sources .insert (this) .second)
 		return;
 
-	events .emplace_back (field);
-	registerInterest (this);
+	isTainted (false);
+
+	if (event .object not_eq this)
+		write (*event .object);
+
+	processInterests ();
 
 	for (const auto & fieldDefinition : interests)
-		fieldDefinition -> processEvent (field, sourceFields);
-}
-
-void
-X3DFieldDefinition::processInterests ()
-{
-	write (*events .front ());
-
-	events .pop_front ();
-
-	X3DChildObject::processInterests ();
-
-	if (events .size ())
-		registerInterest (this);
+		fieldDefinition -> registerEvent (fieldDefinition, event);
 }
 
 void
@@ -272,7 +249,6 @@ X3DFieldDefinition::dispose ()
 	outputRoutes .clear ();
 
 	interests .clear ();
-	events    .clear ();
 
 	// As long as the fields belong to nodes, don't dispose fields. So the ref count is always at least one
 	// in JavaScript.

@@ -151,14 +151,9 @@ public:
 	virtual
 	void
 	setup ();
-
-	virtual
+	
 	void
-	processEvents (ChildObjectSet &) final;
-
-	virtual
-	void
-	processInterests () final;
+	processEvents ();
 
 	virtual
 	void
@@ -238,11 +233,11 @@ private:
 
 	virtual
 	void
-	registerEvent (X3DChildObject* const) final;
+	registerEvent (X3DChildObject*) final;
 
 	virtual
 	void
-	registerInterest (X3DChildObject* const) final;
+	registerEvent (X3DChildObject*, const Event &) final;
 
 	X3DBrowser* const          browser;
 	X3DExecutionContext* const executionContext;
@@ -256,8 +251,8 @@ private:
 	FieldAliasesMap      fieldAliases;
 	size_t               numUserDefinedFields;
 
-	ChildObjectSet events;
-	ChildObjectSet interests;
+	typedef std::deque <std::pair <X3DChildObject*, Event>> EventArray;
+	EventArray events;
 
 };
 

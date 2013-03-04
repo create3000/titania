@@ -97,9 +97,6 @@ private:
 	virtual
 	void
 	initialize ();
-	
-	void
-	set_initialized ();
 
 	void
 	prepareEvents ();

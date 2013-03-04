@@ -166,14 +166,7 @@ public:
 
 	virtual
 	void
-	processEvents (ChildObjectSet &) override;
-
-	void
-	processEvent (X3DFieldDefinition* const, ChildObjectSet &);
-
-	virtual
-	void
-	processInterests () override;
+	processEvent (Event &) override;
 
 	virtual
 	void
@@ -195,10 +188,9 @@ private:
 	AccessType  accessType;
 	std::string aliasName;
 
-	RouteSet             inputRoutes;
-	RouteSet             outputRoutes;
-	FieldDefinitionSet   interests;
-	FieldDefinitionArray events;
+	RouteSet           inputRoutes;
+	RouteSet           outputRoutes;
+	FieldDefinitionSet interests;
 
 };
 

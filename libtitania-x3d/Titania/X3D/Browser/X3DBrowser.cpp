@@ -249,6 +249,8 @@ throw (Error <INVALID_SCENE>)
 		throw Error <INVALID_SCENE> ("Scene is NULL.");
 
 	clock -> advance ();
+	
+	getRouter () .processEvents ();
 
 	shutdown .processInterests ();
 
