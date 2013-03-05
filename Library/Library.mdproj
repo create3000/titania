@@ -1944,6 +1944,7 @@
     <None Include="Examples\BIC\building.wrl" />
     <None Include="Examples\BIC\info.wrl" />
     <None Include="Examples\BIC\buero.wrl" />
+    <None Include="Tests\Navigation\ViewVolume.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Examples\nist-logo\" />

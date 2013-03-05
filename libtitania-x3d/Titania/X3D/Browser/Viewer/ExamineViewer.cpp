@@ -82,12 +82,6 @@ ExamineViewer::initialize ()
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_release_event));
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event), false);
 	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
-
-	navigationInfo -> transitionComplete .addInterest (this, &ExamineViewer::set_viewpoint);
-
-	getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpointStack () .addInterest (this, &ExamineViewer::set_viewpoint);
-
-	set_viewpoint ();
 }
 
 void
@@ -113,11 +107,15 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 		fromVector = trackballProjectToSphere (event -> x, event -> y);
 
 		rotation = Rotation4f ();
+
+		set_viewpoint ();
 	}
 
 	else if (button == 2)
 	{
 		fromPoint = getPoint (event -> x, event -> y);
+
+		set_viewpoint ();
 	}
 
 	return false;
@@ -309,10 +307,6 @@ ExamineViewer::tb_project_to_sphere (const float r, const float x, const float y
 
 ExamineViewer::~ExamineViewer ()
 {
-	navigationInfo -> transitionComplete .removeInterest (this, &ExamineViewer::set_viewpoint);
-
-	getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpointStack () .removeInterest (this, &ExamineViewer::set_viewpoint);
-
 	spin_id .disconnect ();
 }
 

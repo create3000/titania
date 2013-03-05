@@ -81,6 +81,7 @@ X3DBrowser::initialize ()
 	std::clog << "Initializing Browser ..." << std::endl;
 
 	world = scene = createScene ();
+	//world = scene = createX3DFromURL ({ "about:splash" });
 
 	X3DBrowserContext::initialize ();
 	X3DUrlObject::initialize ();
@@ -249,8 +250,6 @@ throw (Error <INVALID_SCENE>)
 		throw Error <INVALID_SCENE> ("Scene is NULL.");
 
 	clock -> advance ();
-	
-	getRouter () .processEvents ();
 
 	shutdown .processInterests ();
 

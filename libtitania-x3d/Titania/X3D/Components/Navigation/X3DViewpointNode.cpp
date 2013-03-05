@@ -68,7 +68,8 @@ X3DViewpointNode::X3DViewpointNode (bool displayed) :
 	     centerOfRotationOffset (),                                                 
 	            modelViewMatrix (),                                                 
 	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),  
-	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1), 
+	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
+	           differenceMatrix (), 
 	                 timeSensor (),                                                 
 	       positionInterpolator ()                                                  
 {
@@ -205,12 +206,6 @@ X3DViewpointNode::_set_bind ()
 		}
 		else
 		{
-			Matrix4f differenceMatrix = getModelViewMatrix ();
-
-			differenceMatrix .translate (getPosition ());
-			differenceMatrix .rotate (orientation);
-			differenceMatrix .inverse ();
-		
 			// Apply relative transformations from previous viewpoint.
 			Vector3f   p;
 			Rotation4f o;
@@ -271,7 +266,17 @@ X3DViewpointNode::camera ()
 void
 X3DViewpointNode::collect ()
 {
-	setModelViewMatrix (ModelViewMatrix4f ());
+	if (not isBound)
+	{
+		if (not jump)
+		{
+			differenceMatrix = ModelViewMatrix4f ();
+
+			differenceMatrix .translate (getPosition ());
+			differenceMatrix .rotate (orientation);
+			differenceMatrix .inverse ();
+		}
+	}
 }
 
 void

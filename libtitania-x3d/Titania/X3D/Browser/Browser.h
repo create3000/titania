@@ -91,10 +91,6 @@ private:
 	void
 	construct ();
 
-	virtual
-	void
-	initialize ();
-
 	void
 	set_initialized ();
 

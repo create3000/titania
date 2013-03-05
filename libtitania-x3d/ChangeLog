@@ -1,3 +1,12 @@
+2013-03-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Browser.h:
+	* Browser.cpp:
+	* X3DBrowser.cpp:
+	* ExamineViewer.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp: 
+
 2013-03-04  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

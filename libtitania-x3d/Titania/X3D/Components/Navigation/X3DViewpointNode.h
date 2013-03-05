@@ -178,6 +178,7 @@ private:
 	Matrix4f modelViewMatrix;
 	Matrix4f transformationMatrix;
 	Matrix4f inverseTransformationMatrix;
+	Matrix4f differenceMatrix;
 
 	SFNode <TimeSensor>           timeSensor;
 	SFNode <PositionInterpolator> positionInterpolator;

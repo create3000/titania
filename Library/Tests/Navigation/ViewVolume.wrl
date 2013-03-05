@@ -1,0 +1,38 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "View volume"
+
+NavigationInfo {
+  type "EXAMINE"
+  visibilityLimit 20
+}
+
+Viewpoint {
+  description "10"
+}
+
+Viewpoint {
+  description "20"
+  position 0 0 20
+}
+
+Inline {
+  url "../Networking/Cube.wrl"
+}
+
+DEF Proxy ProximitySensor {
+  size 100 100 100
+}
+
+DEF Debug Script {
+  inputOnly SFVec3f set_position
+
+  url "vrmlscript:
+function set_position (value)
+{
+	print (value .length ());
+}
+	"
+}
+
+ROUTE Proxy.position_changed TO Debug.set_position

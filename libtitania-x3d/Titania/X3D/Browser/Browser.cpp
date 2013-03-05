@@ -104,12 +104,6 @@ Browser::construct ()
 }
 
 void
-Browser::initialize ()
-{
-	X3DBrowser::initialize ();
-}
-
-void
 Browser::set_initialized ()
 {
 	getExecutionContext () -> getLayerSet () -> activeLayer .addInterest (this, &Browser::set_activeLayer);
