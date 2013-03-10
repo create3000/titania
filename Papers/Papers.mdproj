@@ -23,5 +23,6 @@
     <None Include="Matrix.odt" />
     <None Include="quaternion.cpp" />
     <None Include="gtk-opengl.cpp" />
+    <None Include="Sphere - Triangle Intersection.pdf" />
   </ItemGroup>
 </Project>

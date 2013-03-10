@@ -98,6 +98,13 @@ public:
 	getInverseTransformationMatrix () const 
 	{ return inverseTransformationMatrix; }
 
+	const Matrix4f &
+	getModelViewMatrix () const
+	{ return modelViewMatrix; }
+
+	Matrix4f
+	getDownViewMatrix () const;
+
 	virtual
 	void
 	addToLayer (X3DLayerNode* const);
@@ -139,10 +146,6 @@ protected:
 	void
 	setModelViewMatrix (const Matrix4f & value)
 	{ modelViewMatrix = value; }
-
-	const Matrix4f &
-	getModelViewMatrix () const
-	{ return modelViewMatrix; }
 
 
 private:

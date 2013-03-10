@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -74,9 +74,11 @@ public:
 	void
 	setup ();
 
-	virtual
 	bool
 	intersect (const Line3f &, Vector3f &) const;
+
+	bool
+	intersect (const Matrix4f &, const Sphere3f &, std::deque <Vector3f> &) const;
 
 	virtual
 	void
@@ -131,12 +133,21 @@ protected:
 	Box3f
 	createBBox ();
 
+	static
+	bool
+	intersect (const Matrix4f &matrix,
+	           const Sphere3f &,
+	           Vector3f,
+	           Vector3f,
+	           Vector3f,
+	           std::deque <Vector3f> &);
+
 	void
 	getTexCoordParam (Vector3f &, float &, int &, int &);
 
 	void
 	refineNormals (const NormalIndex &, std::vector <Vector3f> &);
-	
+
 	void
 	addMirrorVertices (const bool);
 

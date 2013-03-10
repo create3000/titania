@@ -53,6 +53,7 @@
 
 #include "../Geometry/Line3.h"
 #include "../Geometry/Plane3.h"
+#include "../Geometry/Sphere3.h"
 #include "../Numbers/Matrix4.h"
 #include "../Numbers/Vector3.h"
 #include <array>
@@ -61,17 +62,18 @@ namespace titania {
 namespace math {
 
 /*
- *       p7              p5
+ *                       d0
  *        -------------
  *      /|            /|
- *   p1/ |        p3 / |
+ *   d1/ |           / |
  *     -------------   |
  *    |  |          |  |
- *    |  | p8       |  |
- *    |  |_ _ _ _ _ |_ | p6
+ *    |  |          |  |
+ *    |  | d3       |  |
+ *    |  |_ _ _ _ _ |_ |
  *    | /           | /
  *    |/____________|/
- *   p2              p4
+ *                    d2
  *
  */
 
@@ -85,12 +87,13 @@ public:
 
 	///  @name Constructors
 
-	///  Default constructor. Constructs a box of size 0 0 0 and center 0 0 0,
+	///  Default constructor. Constructs a box of size 0 0 0 and center 0 0 0.
 	constexpr
 	box3 () :
-		xAxis (),
-		yAxis (),
-		zAxis (),
+		d0 (),
+		d1 (),
+		d2 (),
+		d3 (),
 		translation ()
 	{ }
 
@@ -98,9 +101,10 @@ public:
 	template <class Up>
 	constexpr
 	box3 (const box3 <Up> & box) :
-		xAxis (box .xAxis),
-		yAxis (box .yAxis),
-		zAxis (box .zAxis),
+		d0 (box .d0),
+		d1 (box .d1),
+		d2 (box .d2),
+		d3 (box .d3),
 		translation (box .translation)
 	{ }
 
@@ -112,75 +116,50 @@ public:
 
 	///  Constructs a box of size @a size and center @a size.
 	box3 (const vector3 <Type> & size, const vector3 <Type> & center) :
-		xAxis (size .x () / 2, 0, 0),
-		yAxis (0, size .y () / 2, 0),
-		zAxis (0, 0, size .z () / 2),
-		translation (center .x (), center .y (), center .z ())
-	{ }
+		translation (center)
+	{
+		vector3 <Type> size1_2 = size / Type (2);
+		d0 = vector3 <Type> (+size1_2 .x (), +size1_2 .y (), -size1_2 .z ());
+		d1 = vector3 <Type> (-size1_2 .x (), +size1_2 .y (), +size1_2 .z ());
+		d2 = vector3 <Type> (+size1_2 .x (), -size1_2. y (), +size1_2 .z ());
+		d3 = vector3 <Type> (-size1_2. x (), -size1_2 .y (), -size1_2 .z ());
+	}
 
 	///  @name Assignment operator
 
-	///  Assign @a vector to this vector.
+	///  Assign @a box3 to this box3.
 	template <class Up>
 	box3 &
 	operator = (const box3 <Up> & box)
 	{
-		xAxis       = box .xAxis ();
-		yAxis       = box .yAxis ();
-		zAxis       = box .zAxis ();
-		translation = box .translation ();
+		d0          = box .d0;
+		d1          = box .d1;
+		d2          = box .d2;
+		d3          = box .d3;
+		translation = box .translation;
 		return *this;
 	}
 
 	///  @name Element access
 
-	///  Return the center of this box.
+	///  Return the minimum vector of this box.
 	vector3 <Type>
 	min () const
 	{
-		vector3 <Type> vertice0 = xAxis + yAxis + zAxis;
-		vector3 <Type> vertice1 = xAxis + yAxis - zAxis;
-		vector3 <Type> vertice2 = xAxis - yAxis + zAxis;
-		vector3 <Type> vertice3 = xAxis - yAxis - zAxis;
-		vector3 <Type> vertice4 = -xAxis + yAxis + zAxis;
-		vector3 <Type> vertice5 = -xAxis + yAxis - zAxis;
-		vector3 <Type> vertice6 = -xAxis - yAxis + zAxis;
-		vector3 <Type> vertice7 = -xAxis - yAxis - zAxis;
-
-		vector3 <Type> min;
-
-		min = math::min (vertice0, vertice1);
-		min = math::min (min, vertice2);
-		min = math::min (min, vertice3);
-		min = math::min (min, vertice4);
-		min = math::min (min, vertice5);
-		min = math::min (min, vertice6);
-		min = math::min (min, vertice7);
+		vector3 <Type> min = math::min (d0, d1);
+		min = math::min (min, d2);
+		min = math::min (min, d3);
 
 		return translation + min;
 	}
 
+	///  Return the maximum vector of this box.
 	vector3 <Type>
 	max () const
 	{
-		vector3 <Type> vertice0 = xAxis + yAxis + zAxis;
-		vector3 <Type> vertice1 = xAxis + yAxis - zAxis;
-		vector3 <Type> vertice2 = xAxis - yAxis + zAxis;
-		vector3 <Type> vertice3 = xAxis - yAxis - zAxis;
-		vector3 <Type> vertice4 = -xAxis + yAxis + zAxis;
-		vector3 <Type> vertice5 = -xAxis + yAxis - zAxis;
-		vector3 <Type> vertice6 = -xAxis - yAxis + zAxis;
-		vector3 <Type> vertice7 = -xAxis - yAxis - zAxis;
-
-		vector3 <Type> max;
-
-		max = math::max (vertice0, vertice1);
-		max = math::max (max, vertice2);
-		max = math::max (max, vertice3);
-		max = math::max (max, vertice4);
-		max = math::max (max, vertice5);
-		max = math::max (max, vertice6);
-		max = math::max (max, vertice7);
+		vector3 <Type> max = math::max (d0, d1);
+		max = math::max (max, d2);
+		max = math::max (max, d3);
 
 		return translation + max;
 	}
@@ -196,18 +175,8 @@ public:
 	const vector3 <Type> &
 	center () const { return translation; }
 
-	///  Return the radius of the smaller sphere.
-	constexpr Type
-	lesser_radius () const
-	{ return std::min (std::min (abs (xAxis), abs (yAxis)), abs (zAxis)); }
-
-	///  Return the radius of the great sphere.
-	constexpr Type
-	greater_radius () const
-	{ return abs (xAxis + yAxis + zAxis); }
-
 	///  @name  Arithmetic operations
-	///  All these operators modify this vector2 inplace.
+	///  All these operators modify this box3 inplace.
 
 	///  Add @a box3 to this box.
 	template <class Up>
@@ -249,70 +218,98 @@ public:
 		return *this;
 	}
 
-	///  Scale this box by @a scale.
+	///  Scale this box3 by @a scale.
 	box3 &
 	operator *= (const Type & scale)
 	{
-		xAxis *= scale;
-		yAxis *= scale;
-		zAxis *= scale;
+		d0 *= scale;
+		d1 *= scale;
+		d2 *= scale;
+		d3 *= scale;
 		return *this;
 	}
 
-	///  Scale this box by @a scale.
+	///  Scale this box3 by @a scale.
 	box3 &
 	operator /= (const Type & scale)
 	{
-		xAxis /= scale;
-		yAxis /= scale;
-		zAxis /= scale;
+		d0 /= scale;
+		d1 /= scale;
+		d2 /= scale;
+		d3 /= scale;
 		return *this;
 	}
 
-	///  Scale this box by @a scale.
+	///  Transform this box by @a matrix.
 	box3 &
 	operator *= (const matrix4 <Type> & matrix)
 	{
 		return multBoxMatrix (matrix);
 	}
 
-	///  Transform this box by matrix.
+	///  Transform this box by @a matrix.
 	box3 &
 	multMatrixBox (const matrix4 <Type> & matrix)
 	{
-		xAxis       = matrix .multMatrixDir (xAxis);
-		yAxis       = matrix .multMatrixDir (yAxis);
-		zAxis       = matrix .multMatrixDir (zAxis);
+		d0          = matrix .multMatrixDir (d0);
+		d1          = matrix .multMatrixDir (d1);
+		d2          = matrix .multMatrixDir (d2);
+		d3          = matrix .multMatrixDir (d3);
 		translation = matrix .multMatrixVec (translation);
 		return *this;
 	}
 
-	///  Transform this box by matrix.
+	///  Transform this box by @a matrix.
 	box3 &
 	multBoxMatrix (const matrix4 <Type> & matrix)
 	{
-		xAxis       = matrix .multDirMatrix (xAxis);
-		yAxis       = matrix .multDirMatrix (yAxis);
-		zAxis       = matrix .multDirMatrix (zAxis);
+		d0          = matrix .multDirMatrix (d0);
+		d1          = matrix .multDirMatrix (d1);
+		d2          = matrix .multDirMatrix (d2);
+		d3          = matrix .multDirMatrix (d3);
 		translation = matrix .multVecMatrix (translation);
 		return *this;
 	}
 
 	///  @name Intersection
 
-	///  Returns true if @a line intersects with this box.
+	///  Returns true if @a point is inside this box3 min and max extend.
+	bool
+	intersect (const vector3 <Type> &) const;
+
+	///  Returns true if @a line intersects with this box3.
 	bool
 	intersect (const line3 <Type> &, vector3 <Type> &) const;
+
+	///  Returns true if @a sphere intersects with this box3.
+	bool
+	intersect (const sphere3 <Type> &) const;
 
 
 private:
 
-	vector3 <Type> xAxis;
-	vector3 <Type> yAxis;
-	vector3 <Type> zAxis;
+	vector3 <Type> d0;
+	vector3 <Type> d1;
+	vector3 <Type> d2;
+	vector3 <Type> d3;
 	vector3 <Type> translation;
 
 };
+
+template <class Type>
+bool
+box3 <Type>::intersect (const vector3 <Type> & point) const
+{
+	vector3 <Type> min = this -> min ();
+	vector3 <Type> max = this -> max ();
+
+	return min .x () <= point .x () and
+	       max .x () >= point .x () and
+	       min .y () <= point .y () and
+	       max .y () >= point .y () and
+	       min .z () <= point .z () and
+	       max .z () >= point .z ();
+}
 
 template <class Type>
 bool
@@ -379,6 +376,24 @@ box3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & intersection
 	return false;
 }
 
+template <class Type>
+bool
+box3 <Type>::intersect (const sphere3 <Type> & sphere) const
+{
+	vector3 <Type> min = this -> min ();
+	vector3 <Type> max = this -> max ();
+	
+	vector3 <Type> center = sphere .center ();
+	Type           radius = sphere .radius ();
+
+	return min .x () <= center .x () + radius and
+	       max .x () >= center .x () - radius and
+	       min .y () <= center .y () + radius and
+	       max .y () >= center .y () - radius and
+	       min .z () <= center .z () + radius and
+	       max .z () >= center .z () - radius ;
+}
+
 ///  @relates box3
 ///  @name Comparision operations
 
@@ -407,7 +422,7 @@ operator not_eq (const box3 <Type> & lhs, const box3 <Type> & rhs)
 ///  @relates box3
 ///  @name Arithmetic operations
 
-///  Return new box value @a lhs plus @a rhs.
+///  Return new box3 value @a lhs plus @a rhs.
 template <class Type>
 inline
 box3 <Type>
@@ -425,7 +440,7 @@ operator + (const box3 <Type> & lhs, const vector3 <Type> & rhs)
 	return box3 <Type> (lhs) += rhs;
 }
 
-///  Return new box value @a rhs translated @a lhs.
+///  Return new box3 value @a rhs translated @a lhs.
 template <class Type>
 inline
 box3 <Type>
@@ -434,7 +449,7 @@ operator + (const vector3 <Type> & lhs, const box3 <Type> & rhs)
 	return box3 <Type> (rhs) += lhs;
 }
 
-///  Return new box value @a rhs translated @a lhs.
+///  Return new box3 value @a rhs translated @a lhs.
 template <class Type>
 inline
 box3 <Type>
@@ -443,7 +458,7 @@ operator - (const vector3 <Type> & lhs, const box3 <Type> & rhs)
 	return box3 <Type> (rhs) -= lhs;
 }
 
-///  Return new box value @a lhs scaled @a rhs.
+///  Return new box3 value @a rhs transformed by matrix @a lhs.
 template <class Type>
 inline
 box3 <Type>
@@ -452,7 +467,7 @@ operator * (const box3 <Type> & lhs, const Type & rhs)
 	return box3 <Type> (lhs) *= rhs;
 }
 
-///  Return new box value @a rhs scaled @a lhs.
+///  Return new box3 value @a rhs scaled @a lhs.
 template <class Type>
 inline
 box3 <Type>
@@ -461,7 +476,7 @@ operator * (const Type & lhs, const box3 <Type> & rhs)
 	return box3 <Type> (rhs) *= lhs;
 }
 
-///  Return new box value @a rhs scaled @a lhs.
+///  Return new box3 value @a rhs scaled @a lhs.
 template <class Type>
 inline
 box3 <Type>
@@ -470,7 +485,7 @@ operator / (const Type & lhs, const box3 <Type> & rhs)
 	return box3 <Type> (rhs) /= lhs;
 }
 
-///  Return new box value @a rhs transformed by matrix @a lhs.
+///  Return new box3 value @a rhs transformed by matrix @a lhs.
 template <class Type>
 inline
 box3 <Type>
@@ -479,19 +494,19 @@ operator * (const box3 <Type> & lhs, const matrix4 <Type> & rhs)
 	return box3 <Type> (lhs) .multBoxMatrix (rhs);
 }
 
-///  Return new box value @a rhs transformed by matrix @a lhs.
+///  Return new box3 value @a rhs transformed by matrix @a lhs.
 template <class Type>
 inline
 box3 <Type>
 operator * (const matrix4 <Type> & lhs, const box3 <Type> & rhs)
 {
-	return box3 <Type> (rhs) .multBoxMatrix (lhs);
+	return box3 <Type> (rhs) .multMatrixBox (lhs);
 }
 
 ///  @relates box3
 ///  @name Input/Output operations
 
-///  Extraction operator for vector values.
+///  Extraction operator for box3 values.
 template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
 operator >> (std::basic_istream <CharT, Traits> & istream, box3 <Type> & box)
@@ -507,7 +522,7 @@ operator >> (std::basic_istream <CharT, Traits> & istream, box3 <Type> & box)
 	return istream;
 }
 
-///  Insertion operator for vector values.
+///  Insertion operator for box3 values.
 template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const box3 <Type> & box)

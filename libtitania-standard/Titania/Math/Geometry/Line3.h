@@ -64,6 +64,12 @@ public:
 	///  Value typedef.
 	typedef Type value_type;
 
+	///  @name Constructors
+
+	///  Default constructor.
+	constexpr
+	line3 () = delete;
+
 	///  Copy constructor.
 	constexpr
 	line3 (const line3 & line) :
@@ -77,6 +83,8 @@ public:
 		value { point1, normalize (point2 - point1) }
 
 	{ }
+	
+	///  @name Element access
 
 	///  Returns the point of this line.
 	const vector3 <Type> &
@@ -98,6 +106,9 @@ private:
 	Value value;
 
 };
+
+///  @relates line3
+///  @name Input/Output operations
 
 ///  Extraction operator for vector values.
 template <class CharT, class Traits, class Type>

@@ -51,10 +51,10 @@
 #ifndef __TITANIA_X3D_RENDERING_NORMAL_H__
 #define __TITANIA_X3D_RENDERING_NORMAL_H__
 
-#include "../Types/Numbers.h"
+#include "../Numbers/Vector3.h"
 
 namespace titania {
-namespace X3D {
+namespace math {
 
 // v1
 //  |
@@ -64,9 +64,10 @@ namespace X3D {
 //  ----------
 // v2         v3
 
+template <class Type>
 inline
-Vector3f
-vertexNormal (const Vector3f & v1, const Vector3f & v2, const Vector3f & v3)
+vector3 <Type>
+normal (const vector3 <Type> & v1, const vector3 <Type> & v2, const vector3 <Type> & v3)
 {
 	return normalize (cross (v3 - v2, v1 - v2));
 }
@@ -77,15 +78,16 @@ vertexNormal (const Vector3f & v1, const Vector3f & v2, const Vector3f & v3)
 //  |       |
 // v1 ----- v2
 
+template <class Type>
 inline
-Vector3f
-vertexNormal (const Vector3f & v1, const Vector3f & v2, const Vector3f & v3, const Vector3f & v4)
+vector3 <Type>
+normal (const vector3 <Type> & v1, const vector3 <Type> & v2, const vector3 <Type> & v3, const vector3 <Type> & v4)
 {
 	// (p3 - p1) x (p4 - p2)
 	return normalize (cross (v3 - v1, v4 - v1));
 }
 
-} // X3D
+} // math
 } // titania
 
 #endif

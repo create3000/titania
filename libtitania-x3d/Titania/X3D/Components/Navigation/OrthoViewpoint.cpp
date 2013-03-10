@@ -117,7 +117,7 @@ Vector3f
 OrthoViewpoint::lookAtPositionOffset (Box3f bbox)
 {
 	return bbox .center ()
-	       + getUserOrientation () * (Vector3f (0, 0, bbox .greater_radius () + 10))
+	       + getUserOrientation () * (Vector3f (0, 0, math::abs (bbox .size ()) / 2 + 10))
 	       - position;
 }
 

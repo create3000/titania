@@ -52,9 +52,23 @@
 #define __TITANIA_MATH_GEOMETRY_BOX2_H__
 
 #include "../Numbers/Vector2.h"
+#include "../Numbers/Matrix3.h"
 
 namespace titania {
 namespace math {
+
+/*
+ *                    d0
+ *     ------------- 
+ *    |             |
+ *    |             |
+ *    |             |
+ *    |             |
+ *    |  d1         |
+ *    |_____________|
+ *                    
+ *
+ */
 
 template <class Type>
 class box2
@@ -66,133 +80,181 @@ public:
 
 	///  @name Constructors
 
-	///  Default constructor. Constructs a box of size 0 0 0 and center 0 0 0,
+	///  Default constructor. Constructs a box of size 0 0 and center 0 0.
 	constexpr
 	box2 () :
-		value ({ { } })
+		d0 (),
+		d1 (),
+		translation ()
 	{ }
 
 	///  Copy constructor.
 	template <class Up>
 	constexpr
 	box2 (const box2 <Up> & box) :
-		value ({ { box .min (), box .max () } })
+		d0 (box .d0),
+		d1 (box .d1),
+		translation (box .translation)
 	{ }
 
 	///  Constructs a box of min @a min and max @a max.
 	constexpr
 	box2 (const vector2 <Type> & min, const vector2 <Type> & max, bool) :
-		value ({ min, max })
+		box2 (max - min, min + (max - min) / Type (2))
 	{ }
 
 	///  Constructs a box of size @a size and center @a size.
-	box2 (const vector2 <Type> & size, const vector2 <Type> & center)
+	box2 (const vector2 <Type> & size, const vector2 <Type> & center) :
+		translation (center)
 	{
-		vector2 <Type> size_1_2 = size / Type (2);
-		value .min = center - size_1_2;
-		value .max = center + size_1_2;
+		vector2 <Type> size1_2 = size / Type (2);
+		d0 = vector2 <Type> (+size1_2 .x (), +size1_2 .y ());
+		d1 = vector2 <Type> (+size1_2 .x (), -size1_2 .y ());
 	}
 
 	///  @name Assignment operator
 
-	///  Assign @a vector to this vector.
+	///  Assign @a box2 to this box2.
 	template <class Up>
 	box2 &
-	operator = (const box2 <Up> &);
+	operator = (const box2 <Up> & box)
+	{
+		d0          = box .d0;
+		d1          = box .d1;
+		translation = box .translation;
+		return *this;
+	}
 
 	///  @name Element access
 
-	///  Return the center of this box.
-	const vector2 <Type> &
-	min () const { return value .min; }
+	///  Return the minimum vector of this box.
+	vector2 <Type>
+	min () const
+	{
+		vector2 <Type> min = math::min (d0, d1);
+		min = math::min (min, -d0);
+		min = math::min (min, -d1);
 
-	const vector2 <Type> &
-	max () const { return value .max; }
+		return translation + min;
+	}
+
+	///  Return the maximum vector of this box.
+	vector2 <Type>
+	max () const
+	{
+		vector2 <Type> max = math::max (d0, d1);
+		max = math::max (max, -d0);
+		max = math::max (max, -d1);
+
+		return translation + max;
+	}
 
 	///  Return the size of this box.
-	constexpr vector2 <Type>
-	size () const { return max () - min (); }
+	vector2 <Type>
+	size () const
+	{
+		return max () - min ();
+	}
 
 	///  Return the center of this box.
-	constexpr vector2 <Type>
-	center () const { return min () + size () / Type (2); }
+	const vector2 <Type> &
+	center () const { return translation; }
 
 	///  @name  Arithmetic operations
-	///  All these operators modify this vector2 inplace.
+	///  All these operators modify this box2 inplace.
 
 	///  Add @a box2 to this box.
 	template <class Up>
 	box2 &
 	operator += (const box2 <Up> & box)
 	{
-		if (box .min () not_eq box .max ())
+		vector2 <Type> lhs_min = this -> min ();
+		vector2 <Type> lhs_max = this -> max ();
+
+		vector2 <Type> rhs_min = box .min ();
+		vector2 <Type> rhs_max = box .max ();
+
+		if (lhs_min not_eq lhs_max)
 		{
-			value .min = math::min (value .min, box .min ());
-			value .max = math::max (value .max, box .max ());
+			if (rhs_min not_eq rhs_max)
+				return *this = box2 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), true);
+
+			return *this;
 		}
 
+		return *this = box;
+	}
+
+	///  Translate this box by @a translation.
+	template <class Up>
+	box2 &
+	operator += (const vector2 <Up> & t)
+	{
+		translation += t;
 		return *this;
 	}
 
 	///  Translate this box by @a translation.
 	template <class Up>
 	box2 &
-	operator += (const vector2 <Up> & translation)
+	operator -= (const vector2 <Up> & t)
 	{
-		value .min += translation;
-		value .max += translation;
+		translation -= t;
 		return *this;
 	}
 
-	///  Translate this box by @a translation.
-	template <class Up>
-	box2 &
-	operator -= (const vector2 <Up> & translation)
-	{
-		value .min -= translation;
-		value .max -= translation;
-		return *this;
-	}
-
-	///  Scale this box by @a scale.
+	///  Scale this box2 by @a scale.
 	box2 &
 	operator *= (const Type & scale)
 	{
-		value .min *= scale;
-		value .max *= scale;
+		d0 *= scale;
+		d1 *= scale;
+		return *this;
+	}
+
+	///  Scale this box2 by @a scale.
+	box2 &
+	operator /= (const Type & scale)
+	{
+		d0 /= scale;
+		d1 /= scale;
 		return *this;
 	}
 
 	///  Scale this box by @a scale.
 	box2 &
-	operator /= (const Type & scale)
+	operator *= (const matrix3 <Type> & matrix)
 	{
-		value .min /= scale;
-		value .max /= scale;
+		return multBoxMatrix (matrix);
+	}
+
+	///  Transform this box by matrix.
+	box2 &
+	multMatrixBox (const matrix3 <Type> & matrix)
+	{
+		d0          = matrix .multMatrixDir (d0);
+		d1          = matrix .multMatrixDir (d1);
+		translation = matrix .multMatrixVec (translation);
+		return *this;
+	}
+
+	///  Transform this box by matrix.
+	box2 &
+	multBoxMatrix (const matrix3 <Type> & matrix)
+	{
+		d0          = matrix .multDirMatrix (d0);
+		d1          = matrix .multDirMatrix (d1);
+		translation = matrix .multVecMatrix (translation);
 		return *this;
 	}
 
 private:
 
-	struct Value
-	{
-		vector2 <Type> min;
-		vector2 <Type> max;
-	};
-
-	Value value;
+	vector2 <Type> d0;
+	vector2 <Type> d1;
+	vector2 <Type> translation;
 
 };
-
-template <class Type>
-template <class Up>
-box2 <Type> &
-box2 <Type>::operator = (const box2 <Up> & box)
-{
-	value .min = box .min ();
-	value .max = box .max ();
-	return *this;
-}
 
 ///  @relates box2
 ///  @name Comparision operations
@@ -222,7 +284,7 @@ operator not_eq (const box2 <Type> & lhs, const box2 <Type> & rhs)
 ///  @relates box2
 ///  @name Arithmetic operations
 
-///  Return new box value @a lhs plus @a rhs.
+///  Return new box2 value @a lhs plus @a rhs.
 template <class Type>
 inline
 box2 <Type>
@@ -231,7 +293,7 @@ operator + (const box2 <Type> & lhs, const box2 <Type> & rhs)
 	return box2 <Type> (lhs) += rhs;
 }
 
-///  Return new box value @a lhs translated @a rhs.
+///  Return new box2 value @a lhs translated @a rhs.
 template <class Type>
 inline
 box2 <Type>
@@ -240,7 +302,7 @@ operator + (const box2 <Type> & lhs, const vector2 <Type> & rhs)
 	return box2 <Type> (lhs) += rhs;
 }
 
-///  Return new box value @a rhs translated @a lhs.
+///  Return new box2 value @a rhs translated @a lhs.
 template <class Type>
 inline
 box2 <Type>
@@ -249,7 +311,7 @@ operator + (const vector2 <Type> & lhs, const box2 <Type> & rhs)
 	return box2 <Type> (rhs) += lhs;
 }
 
-///  Return new box value @a lhs translated @a rhs.
+///  Return new box2 value @a lhs translated @a rhs.
 template <class Type>
 inline
 box2 <Type>
@@ -258,7 +320,7 @@ operator - (const box2 <Type> & lhs, const vector2 <Type> & rhs)
 	return box2 <Type> (lhs) -= rhs;
 }
 
-///  Return new box value @a lhs scaled @a rhs.
+///  Return new box2 value @a lhs scaled @a rhs.
 template <class Type>
 inline
 box2 <Type>
@@ -267,7 +329,7 @@ operator * (const box2 <Type> & lhs, const Type & rhs)
 	return box2 <Type> (lhs) *= rhs;
 }
 
-///  Return new box value @a rhs scaled @a lhs.
+///  Return new box2 value @a rhs scaled @a lhs.
 template <class Type>
 inline
 box2 <Type>
@@ -276,7 +338,7 @@ operator * (const Type & lhs, const box2 <Type> & rhs)
 	return box2 <Type> (rhs) *= lhs;
 }
 
-///  Return new box value @a rhs scaled @a lhs.
+///  Return new box2 value @a rhs scaled @a lhs.
 template <class Type>
 inline
 box2 <Type>
@@ -285,10 +347,28 @@ operator / (const Type & lhs, const box2 <Type> & rhs)
 	return box2 <Type> (rhs) /= lhs;
 }
 
+///  Return new box2 value @a rhs transformed by matrix @a lhs.
+template <class Type>
+inline
+box2 <Type>
+operator * (const box2 <Type> & lhs, const matrix3 <Type> & rhs)
+{
+	return box2 <Type> (lhs) .multBoxMatrix (rhs);
+}
+
+///  Return new box2 value @a rhs transformed by matrix @a lhs.
+template <class Type>
+inline
+box2 <Type>
+operator * (const matrix3 <Type> & lhs, const box2 <Type> & rhs)
+{
+	return box2 <Type> (rhs) .multMatrixBox (lhs);
+}
+
 ///  @relates box2
 ///  @name Input/Output operations
 
-///  Extraction operator for vector values.
+///  Extraction operator for box2 values.
 template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
 operator >> (std::basic_istream <CharT, Traits> & istream, box2 <Type> & box)
@@ -304,7 +384,7 @@ operator >> (std::basic_istream <CharT, Traits> & istream, box2 <Type> & box)
 	return istream;
 }
 
-///  Insertion operator for vector values.
+///  Insertion operator for box2 values.
 template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const box2 <Type> & box)

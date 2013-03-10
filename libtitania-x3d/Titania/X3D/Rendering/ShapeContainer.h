@@ -56,6 +56,7 @@
 #include "LightContainerArray.h"
 
 #include "../Types/Numbers.h"
+#include "../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
@@ -72,13 +73,18 @@ public:
 	assign (X3DShapeNode*,
 	        X3DFogObject*,
 	        const LightContainerArray &);
-
 	const float &
 	getDistance () const
 	{ return distance; }
 
+	void
+	multMatrix (const Matrix4f &);
+
 	bool
-	draw ();
+	intersect (const Sphere3f &, std::deque <Vector3f> &) const;
+
+	bool
+	draw ();	
 
 
 private:
@@ -91,6 +97,7 @@ private:
 	X3DFogObject* fog;
 	LightContainerArray localLights;
 
+	Matrix4f modelViewMatrix;
 	Matrix4f matrix;
 	float distance;
 

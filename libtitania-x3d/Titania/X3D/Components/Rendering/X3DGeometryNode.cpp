@@ -65,8 +65,8 @@ X3DGeometryNode::X3DGeometryNode () :
 	                   normals (),               
 	                  vertices (),               
 	                vertexMode (),               
-	                     solid (true),
-	                  elements (1),
+	                     solid (true),           
+	                  elements (1),              
 	               bufferUsage (GL_STATIC_DRAW), 
 	          texCoordBufferId (0),              
 	             colorBufferId (0),              
@@ -87,7 +87,7 @@ X3DGeometryNode::setup ()
 		glGenBuffers (1, &colorBufferId);
 		glGenBuffers (1, &normalBufferId);
 		glGenBuffers (1, &pointBufferId);
-		
+
 		update ();
 	}
 }
@@ -146,18 +146,79 @@ X3DGeometryNode::intersect (const Line3f & hitRay, Vector3f & hitPoint) const
 	return false;
 }
 
+bool
+X3DGeometryNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere, std::deque <Vector3f> & collisionNormal) const
+{
+	if ((bbox * matrix) .intersect (sphere))
+	{
+		bool intersected = false;
+
+		switch (vertexMode)
+		{
+			case GL_TRIANGLES:
+			{
+				for (size_t i = 0, size = vertices .size (); i < size; i += 3)
+				{
+					intersected |= intersect (matrix, sphere, vertices [i], vertices [i + 1], vertices [i + 2], collisionNormal);
+				}
+
+				break;
+			}
+			case GL_QUADS:
+			{
+				for (size_t i = 0, size = vertices .size (); i < size; i += 4)
+				{
+					intersected |= intersect (matrix, sphere, vertices [i], vertices [i + 1], vertices [i + 2], collisionNormal);
+					intersected |= intersect (matrix, sphere, vertices [i], vertices [i + 2], vertices [i + 3], collisionNormal);
+				}
+
+				break;
+			}
+			default:
+				break;
+		}
+
+		return intersected;
+	}
+
+	return false;
+}
+
+bool
+X3DGeometryNode::intersect (const Matrix4f & matrix,
+                            const Sphere3f & sphere,
+                            Vector3f A,
+                            Vector3f B,
+                            Vector3f C,
+                            std::deque <Vector3f> & collisionNormal)
+{
+	A = A * matrix;
+	B = B * matrix;
+	C = C * matrix;
+
+	if (sphere .intersect (A, B, C))
+	{
+		Plane3f plane (A, B, C);
+		float   depth = sphere .radius () - std::abs (plane .distance (sphere .center ()));
+		collisionNormal .emplace_back (depth * math::normalize (sphere .center () - plane .closest_point (sphere .center ())));
+		return true;
+	}
+
+	return false;
+}
+
 void
 X3DGeometryNode::getTexCoordParam (Vector3f & min, float & Ssize, int & Sindex, int & Tindex)
 {
 	Box3f bbox = getBBox ();
-	
+
 	min = bbox .min ();
 
 	float Xsize = bbox .size () .x ();
 	float Ysize = bbox .size () .y ();
 	float Zsize = bbox .size () .z ();
 
-	if ((Xsize >= Ysize)and (Xsize >= Zsize))
+	if ((Xsize >= Ysize) and (Xsize >= Zsize))
 	{
 		// X size largest
 		Ssize = Xsize; Sindex = 0;
@@ -167,7 +228,7 @@ X3DGeometryNode::getTexCoordParam (Vector3f & min, float & Ssize, int & Sindex, 
 		else
 			Tindex = 2;
 	}
-	else if ((Ysize >= Xsize)and (Ysize >= Zsize))
+	else if ((Ysize >= Xsize) and (Ysize >= Zsize))
 	{
 		// Y size largest
 		Ssize = Ysize; Sindex = 1;
@@ -274,23 +335,23 @@ X3DGeometryNode::addMirrorVertices (const bool convex)
 		{
 			for (int32_t i = getTexCoord () .size () - 2; i >= 0; i -= 2)
 			{
-				const auto & texCoord1 = getTexCoord () [i]; 
-				const auto & texCoord0 = getTexCoord () [i + 1]; 
-			   getTexCoord () .emplace_back (1 - texCoord1 .x (), texCoord1 .y ());
-			   getTexCoord () .emplace_back (1 - texCoord0 .x (), texCoord0 .y ());
+				const auto & texCoord1 = getTexCoord () [i];
+				const auto & texCoord0 = getTexCoord () [i + 1];
+				getTexCoord () .emplace_back (1 - texCoord1 .x (), texCoord1 .y ());
+				getTexCoord () .emplace_back (1 - texCoord0 .x (), texCoord0 .y ());
 			}
 
 			for (int32_t i = getVertices () .size () - 2; i >= 0; i -= 2)
 			{
-			   getNormals  () .emplace_back (0, 0, -1);
-			   getNormals  () .emplace_back (0, 0, -1);
-				getVertices () .emplace_back (getVertices () [i]);	
-				getVertices () .emplace_back (getVertices () [i + 1]);	
+				getNormals  () .emplace_back (0, 0, -1);
+				getNormals  () .emplace_back (0, 0, -1);
+				getVertices () .emplace_back (getVertices () [i]);
+				getVertices () .emplace_back (getVertices () [i + 1]);
 			}
-			
+
 			break;
 		}
-		
+
 		default:
 		{
 			size_t offset = convex ? 0 : 1;
@@ -301,16 +362,16 @@ X3DGeometryNode::addMirrorVertices (const bool convex)
 				getNormals  () .emplace_back (0, 0, -1);
 				getVertices () .emplace_back (getVertices () .front ());
 			}
-			
+
 			for (const auto & texCoord : basic::adapter (getTexCoord () .crbegin () + offset, getTexCoord () .crend () - offset))
 			{
-			   getTexCoord () .emplace_back (1 - texCoord .x (), texCoord .y ());
+				getTexCoord () .emplace_back (1 - texCoord .x (), texCoord .y ());
 			}
 
 			for (const auto & vertex : basic::adapter (getVertices () .crbegin () + offset, getVertices () .crend () - offset))
 			{
-			   getNormals  () .emplace_back (0, 0, -1);
-				getVertices () .emplace_back (vertex);	
+				getNormals  () .emplace_back (0, 0, -1);
+				getVertices () .emplace_back (vertex);
 			}
 		}
 	}

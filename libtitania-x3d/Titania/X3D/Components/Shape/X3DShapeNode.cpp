@@ -179,6 +179,15 @@ X3DShapeNode::collect ()
 	}
 }
 
+bool
+X3DShapeNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere, std::deque <Vector3f> & collisionNormal) const
+{
+	if (_geometry)
+		return _geometry -> intersect (matrix, sphere, collisionNormal);
+	
+	return false;
+}
+
 void
 X3DShapeNode::draw ()
 {
@@ -186,10 +195,6 @@ X3DShapeNode::draw ()
 
 	glMatrixMode (GL_TEXTURE);
 	glLoadMatrixd (textureMatrix .data ());
-
-	//glLoadIdentity();
-	//glTranslatef(0, 1, 0);
-	//glScalef(1, -1, 1);
 	glMatrixMode (GL_MODELVIEW);
 
 	if (_appearance)

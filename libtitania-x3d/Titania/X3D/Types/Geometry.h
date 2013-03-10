@@ -55,6 +55,7 @@
 #include <Titania/Math/Geometry/Box3.h>
 #include <Titania/Math/Geometry/Line3.h>
 #include <Titania/Math/Geometry/Plane3.h>
+#include <Titania/Math/Geometry/Sphere3.h>
 
 namespace titania {
 namespace X3D {
@@ -70,6 +71,9 @@ typedef math::line3 <float>  Line3f;
 
 typedef math::plane3 <double> Plane3d;
 typedef math::plane3 <float>  Plane3f;
+
+typedef math::sphere3 <double> Sphere3d;
+typedef math::sphere3 <float>  Sphere3f;
 
 } // X3D
 } // titania

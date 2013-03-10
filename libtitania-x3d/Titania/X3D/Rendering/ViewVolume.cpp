@@ -115,7 +115,7 @@ ViewVolume::ViewVolume (const Matrix4d & modelview, const Matrix4d & projection)
 bool
 ViewVolume::intersect (const Box3f & bbox) const
 {
-	float nradius = bbox .greater_radius ();
+	float nradius = math::abs (bbox .size ()) * 0.5f;
 
 	for (const auto & plane : planes)
 	{

@@ -52,6 +52,7 @@
 #define __TITANIA_MATH_GEOMETRY_SPHERE3_H__
 
 #include "../Numbers/Vector3.h"
+#include "../Numbers/Matrix4.h"
 
 namespace titania {
 namespace math {
@@ -61,28 +62,46 @@ class sphere3
 {
 public:
 
+	///  Value typedef.
+	typedef Type value_type;
+
+	///  @name Constructors
+
+	///  Default constructor.
 	constexpr
 	sphere3 () :
 		value ()
 	{ }
 
+	///  Copy constructor.
 	constexpr
 	sphere3 (const sphere3 & sphere) :
 		value { sphere .radius (), sphere .center () }
 
 	{ }
 
+	///  Constructs a line of from @a radius and @a center.
 	constexpr
 	sphere3 (const Type & radius, const vector3 <Type> & center) :
 		value { radius, center }
 
 	{ }
+	
+	///  @name Element access
 
+	///  Returns the radius of this sphere.
 	const Type &
 	radius () const { return value .radius; }
 
+	///  Returns the center of this sphere.
 	const vector3 <Type> &
 	center () const { return value .center; }
+	
+	///  @name Intersection
+
+	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this sphere.
+	bool
+	intersect (vector3 <Type>, vector3 <Type>, vector3 <Type>) const;
 
 
 private:
@@ -96,6 +115,72 @@ private:
 	Value value;
 
 };
+
+// http://realtimecollisiondetection.net/blog/?p=103
+
+template <class Type>
+bool
+sphere3 <Type>::intersect (vector3 <Type> A, vector3 <Type> B, vector3 <Type> C) const
+{
+	auto P = center ();
+	auto r = radius ();
+
+	A = A - P;
+	B = B - P;
+	C = C - P;
+
+	// Testing if sphere lies outside the triangle plane.
+	auto rr   = r * r;
+	auto V    = cross (B - A, C - A);
+	auto d    = dot (A, V);
+	auto e    = dot (V, V);
+	auto sep1 = d * d > rr * e;
+
+	if (sep1)
+		return false;
+
+	// Testing if sphere lies outside a triangle vertex.
+	auto aa   = dot (A, A);
+	auto ab   = dot (A, B);
+	auto ac   = dot (A, C);
+	auto bb   = dot (B, B);
+	auto bc   = dot (B, C);
+	auto cc   = dot (C, C);
+	auto sep2 = (aa > rr) and (ab > aa) and (ac > aa);
+	auto sep3 = (bb > rr) and (ab > bb) and (bc > bb);
+	auto sep4 = (cc > rr) and (ac > cc) and (bc > cc);
+
+	if (sep2 or sep3 or sep4)
+		return false;
+
+	// Testing if sphere lies outside a triangle edge.
+	auto AB   = B - A;
+	auto BC   = C - B;
+	auto CA   = A - C;
+	auto d1   = ab - aa;
+	auto d2   = bc - bb;
+	auto d3   = ac - cc;
+	auto e1   = dot (AB, AB);
+	auto e2   = dot (BC, BC);
+	auto e3   = dot (CA, CA);
+	auto Q1   = A * e1 - d1 * AB;
+	auto Q2   = B * e2 - d2 * BC;
+	auto Q3   = C * e3 - d3 * CA;
+	auto QC   = C * e1 - Q1;
+	auto QA   = A * e2 - Q2;
+	auto QB   = B * e3 - Q3;
+	auto sep5 = (dot (Q1, Q1) > rr * e1 * e1) and (dot (Q1, QC) > 0);
+	auto sep6 = (dot (Q2, Q2) > rr * e2 * e2) and (dot (Q2, QA) > 0);
+	auto sep7 = (dot (Q3, Q3) > rr * e3 * e3) and (dot (Q3, QB) > 0);
+
+	if (sep5 or sep6 or sep7)
+		return false;
+
+	return true;
+}
+
+///  @relates sphere3
+///  @name Input/Output operations
 
 ///  Extraction operator for vector values.
 template <class CharT, class Traits, class Type>

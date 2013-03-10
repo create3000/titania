@@ -278,18 +278,17 @@ X3DLayerNode::collision ()
 
 	auto navigationInfo = getCurrentNavigationInfo ();
 
-	float zNear    = navigationInfo -> getZNear ();
-	float zFar     = navigationInfo -> getZFar ();
-	float width1_2 = navigationInfo -> getAvatarWidth () / 2;
-	float depth1_2 = navigationInfo -> getAvatarDepth () / 2;
+	float zNear           = navigationInfo -> getZNear ();
+	float zFar            = navigationInfo -> getZFar ();
+	float collisionRadius = navigationInfo -> getCollisionRadius ();
 
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
-	glOrtho (-width1_2, width1_2, -depth1_2, depth1_2, zNear, zFar);
+	glOrtho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar);
 	glMatrixMode (GL_MODELVIEW);
 
 	//
-	getViewpoint () -> down ();
+	//getViewpoint () -> down ();
 
 	render (TraverseType::COLLISION);
 

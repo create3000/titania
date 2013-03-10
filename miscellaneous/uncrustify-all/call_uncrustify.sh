@@ -28,6 +28,7 @@ perl -p -e '
 	s/\)\((\w)/) ($1/sgo;                                                    # add space between )(
 	s/(\s[\w\d\)\]]+)\.([a-zA-Z])/$1 .$2/go
 		unless /\w\.\w+?[\>"]/ or /^\s*(\/?\*|\/\/)/go;                                   # change variable.member to variable .member
+   s/\)and/) and/sgo;
 ' | \
 perl -e '
 	# indent constuctor bases and member initialization

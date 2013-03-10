@@ -1,0 +1,52 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "Collision"
+
+Transform {
+  children [
+    NavigationInfo {
+      type "FLY"
+      avatarSize [ 0.5, 1.6, 0.75 ]
+    }
+    DirectionalLight {
+      direction 0 -1 0
+    }
+    Transform {
+      rotation 0 1 0 1.5708
+      children [
+        Viewpoint {
+          description "Front"
+        }
+        Viewpoint {
+          description "Right"
+          position 10 0 0
+          orientation 0 1 0 1.5708
+        }
+        Viewpoint {
+          description "Left"
+          position -10 0 0
+          orientation 0 -1 0 1.5708
+        }
+        Viewpoint {
+          description "Back"
+          position 0 0 -10
+          orientation 0 1 0 3.14159
+        }
+      ]
+    }
+    Transform {
+      rotation 0 1 0 1.5708
+      children Shape {
+        appearance Appearance {
+          texture ImageTexture {
+            url "../images/image.png"
+          }
+        }
+        geometry Box {
+          size 3 3 3
+          solid FALSE
+        }
+      }
+    }
+  ]
+}

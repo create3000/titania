@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -75,22 +75,23 @@
 namespace titania {
 namespace X3D {
 
-typedef chrono::clock_base <time_type>                      X3DClock;
-typedef std::stack <X3DRenderer*>                           RendererStack;
-typedef std::stack <X3DLayerNode*>                          LayerStack;
-typedef std::stack <GLenum>                                 LightStack;
+typedef chrono::clock_base <time_type> X3DClock;
+typedef std::stack <X3DRenderer*>      RendererStack;
+typedef std::stack <X3DLayerNode*>     LayerStack;
+typedef std::stack <GLenum>            LightStack;
 
 class X3DBrowserContext :
 	public X3DExecutionContext
 {
 public:
 
-	Output sensors;
-	Output reshaped;
-	Output prepareEvents;
-	Output displayed;
-	Output finished;
-	Output changed;
+	Vector3f velocity;
+	Output  sensors;
+	Output  reshaped;
+	Output  prepareEvents;
+	Output  displayed;
+	Output  finished;
+	Output  changed;
 
 	///  @name Time handling
 
@@ -130,7 +131,7 @@ public:
 
 	LayerStack &
 	getLayers () { return layers; }
-	
+
 	///  @name Light stack handling
 
 	virtual
@@ -230,20 +231,20 @@ protected:
 
 private:
 
-	Router                     router;
-	RendererStack              renderers;
-	LayerStack                 layers;
-	LightStack                 lights;
-	double                     x;
-	double                     y;
-	std::deque <X3DBaseNode*>  enabledSensors;
-	HitArray                   hits;
-	HitComp                    hitComp;
-	std::deque <X3DBaseNode*>  overSensors;
-	std::deque <X3DBaseNode*>  activeSensors;
-	time_type                  changedTime;
-	Speed <double>             currentSpeed;
-	double                     currentFrameRate;
+	Router                    router;
+	RendererStack             renderers;
+	LayerStack                layers;
+	LightStack                lights;
+	double                    x;
+	double                    y;
+	std::deque <X3DBaseNode*> enabledSensors;
+	HitArray                  hits;
+	HitComp                   hitComp;
+	std::deque <X3DBaseNode*> overSensors;
+	std::deque <X3DBaseNode*> activeSensors;
+	time_type                 changedTime;
+	Speed <double>            currentSpeed;
+	double                    currentFrameRate;
 
 };
 

@@ -97,7 +97,13 @@ private:
 	draw ();
 
 	void
+	collide ();
+
+	void
 	gravite ();
+	
+	void
+	multMatrix (const Matrix4f &);
 
 	void
 	clear ();

@@ -79,18 +79,15 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
-	
-	Box3f
-	getBBox ();
 
 	float
-	getAvatarDepth ();
+	getCollisionRadius () const;
 
 	float
-	getAvatarHeight ();
+	getAvatarHeight () const;
 
 	float
-	getAvatarWidth ();
+	getStepHeight () const;
 
 	float
 	getZNear () const;

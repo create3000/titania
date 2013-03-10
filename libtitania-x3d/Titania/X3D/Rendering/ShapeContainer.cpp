@@ -62,7 +62,8 @@ ShapeContainer::ShapeContainer (X3DShapeNode* shape,
 	               shape (shape),                
 	                 fog (fog),                  
 	         localLights (localLights),          
-	              matrix (ModelViewMatrix4f ()),
+	     modelViewMatrix (ModelViewMatrix4f ()),
+	              matrix (modelViewMatrix),
 	            distance (getDistance (shape, matrix))                    
 { }
 
@@ -71,11 +72,25 @@ ShapeContainer::assign (X3DShapeNode* shape,
                         X3DFogObject* fog,
                         const LightContainerArray & localLights)
 {
-	this -> shape       = shape;
-	this -> fog         = fog;
-	this -> localLights = localLights;
-	this -> matrix      = ModelViewMatrix4f ();
-	this -> distance    = getDistance (shape, this -> matrix);
+	this -> shape            = shape;
+	this -> fog             = fog;
+	this -> localLights     = localLights;
+	this -> modelViewMatrix = ModelViewMatrix4f ();
+	this -> matrix          = this -> modelViewMatrix;
+	this -> distance        = getDistance (shape, this -> matrix);
+}
+
+void
+ShapeContainer::multMatrix (const Matrix4f & matrix)
+{
+	this -> matrix   = modelViewMatrix * matrix;
+	this -> distance = getDistance (shape, this -> matrix);
+}
+
+bool
+ShapeContainer::intersect (const Sphere3f & sphere, std::deque <Vector3f> & collisionNormal) const
+{
+	return shape -> intersect (matrix, sphere, collisionNormal);
 }
 
 bool

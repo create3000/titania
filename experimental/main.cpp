@@ -33,8 +33,10 @@
 #include <Titania/Basic/Path.h>
 #include <Titania/Basic/URI.h>
 #include <Titania/Chrono/Now.h>
-#include <Titania/Math/Geometry/Box3.h>
 #include <Titania/Math/Functional.h>
+#include <Titania/Math/Geometry/Box2.h>
+#include <Titania/Math/Geometry/Box3.h>
+#include <Titania/Math/Geometry/Plane3.h>
 #include <Titania/Math/Numbers/Matrix3.h>
 #include <Titania/Math/Numbers/Matrix4.h>
 #include <Titania/Math/Numbers/Rotation4.h>
@@ -693,7 +695,9 @@ typedef math::vector2 <float>   Vector2f;
 typedef math::vector3 <float>   Vector3f;
 typedef math::rotation4 <float> Rotation4f;
 typedef math::matrix4 <float>   Matrix4f;
+typedef math::box2 <float>      Box2f;
 typedef math::box3 <float>      Box3f;
+typedef math::plane3 <float>    Plane3f;
 
 namespace Test {
 
@@ -804,7 +808,6 @@ slerp (const Type & source, const Type & destination, const T & t)
 	return (scale0 * source + scale1 * dest) / sinom;
 }
 
-
 int
 main (int argc, char** argv)
 {
@@ -813,10 +816,18 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-	
-	auto r = math::rotation4 <float> (-0.0899162, -0.995117, 0.0406966, 0.546317);
+
+	{
+		//auto x = Rotation4f (1, 0, 0, 0.78539816);
+		//auto y = Rotation4f (0, 1, 0, 0.78539816);
+		//auto z = Rotation4f (0, 0, 1, 0.78539816);
+
+		//auto m = Matrix4f (y);
+
+		auto plane = Plane3f (Vector3f (3, 0, 0), Vector3f (0, 3, 0), Vector3f (1, 2, -1));
 		
-	std::clog << math::rotation4 <float> (::slerp (r .quat (), r .quat (), 0.0f)) << std::endl;
+		std::clog << Vector3f (0,0,0) - plane .closest_point (Vector3f (0,0,0)) << std::endl;
+	}
 
 	if (0)
 	{

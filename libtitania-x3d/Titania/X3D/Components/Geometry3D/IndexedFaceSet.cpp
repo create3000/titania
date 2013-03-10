@@ -52,7 +52,6 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/Normal.h"
 #include "../../Rendering/Tesselator.h"
 #include <iostream>
 
@@ -627,9 +626,9 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 
 		for (const auto & triangle : polygon .triangles)
 		{
-			normal += vertexNormal (_coord -> point [coordIndex [triangle [0]]],
-			                        _coord -> point [coordIndex [triangle [1]]],
-			                        _coord -> point [coordIndex [triangle [2]]]);
+			normal += math::normal <float> (_coord -> point [coordIndex [triangle [0]]],
+			                                _coord -> point [coordIndex [triangle [1]]],
+			                                _coord -> point [coordIndex [triangle [2]]]);
 		}
 
 		// Add a normal index for each point.

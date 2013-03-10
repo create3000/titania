@@ -349,15 +349,15 @@ public:
 	multMatrixDir (const vector3 <T> &) const;
 
 	///  Returns this matrix translated by @a translation.
-	void
+	matrix4 &
 	translate (const vector3 <Type> &);
 
 	///  Returns this matrix rotated by @a rotation.
-	void
+	matrix4 &
 	rotate (const rotation4 <Type> &);
 
 	///  Returns this matrix scaled by @a scale.
-	void
+	matrix4 &
 	scale (const vector3 <Type> &);
 
 
@@ -971,7 +971,7 @@ matrix4 <Type>::multMatrixDir (const vector3 <T> & vector) const
  * It takes 9 multiplies and 15 adds.
  */
 template <class Type>
-void
+matrix4 <Type> &
 matrix4 <Type>::translate (const vector3 <Type> & translation)
 {
 	#define TRANSLATE(i) \
@@ -984,6 +984,8 @@ matrix4 <Type>::translate (const vector3 <Type> & translation)
 	value [3] [2] += TRANSLATE (2);
 
 	#undef TRANSLATE
+
+	return *this;
 }
 
 /**
@@ -991,17 +993,17 @@ matrix4 <Type>::translate (const vector3 <Type> & translation)
  */
 template <class Type>
 inline
-void
+matrix4 <Type> &
 matrix4 <Type>::rotate (const rotation4 <Type> & rotation)
 {
-	multLeft (matrix4 <Type> (rotation));
+	return multLeft (matrix4 <Type> (rotation));
 }
 
 /**
  * It takes 9 multiplies.
  */
 template <class Type>
-void
+matrix4 <Type> &
 matrix4 <Type>::scale (const vector3 <Type> & scaleFactor)
 {
 	value [0] [0] *= scaleFactor .x ();
@@ -1015,6 +1017,8 @@ matrix4 <Type>::scale (const vector3 <Type> & scaleFactor)
 	value [2] [0] *= scaleFactor .z ();
 	value [2] [1] *= scaleFactor .z ();
 	value [2] [2] *= scaleFactor .z ();
+
+	return *this;
 }
 
 ///  @relates matrix4

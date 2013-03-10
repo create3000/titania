@@ -1,3 +1,34 @@
+2013-03-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* Geometry.h:
+	* Normal.h:
+	* X3DRenderer.h:
+	* Text.cpp:
+	* ViewVolume.cpp:
+	* X3DRenderer.cpp:
+	* ShapeContainer.h:
+	* X3DBrowserContext.h:
+	* ShapeContainer.cpp:
+	* X3DFlyViewer.h:
+	* X3DBrowserContext.cpp:
+	* X3DFlyViewer.cpp:
+	* X3DShapeNode.h:
+	* X3DShapeNode.cpp:
+	* Viewpoint.cpp:
+	* Extrusion.cpp:
+	* X3DLayerNode.cpp:
+	* NavigationInfo.h:
+	* GeoViewpoint.cpp:
+	* X3DGeometryNode.h:
+	* IndexedFaceSet.cpp:
+	* X3DGeometryNode.cpp:
+	* OrthoViewpoint.cpp:
+	* NavigationInfo.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp:
+	* ProximitySensor.cpp: 
+
 2013-03-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Browser.h:

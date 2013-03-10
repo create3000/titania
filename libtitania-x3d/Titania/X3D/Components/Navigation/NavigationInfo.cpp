@@ -120,14 +120,8 @@ NavigationInfo::set_headlight ()
 		light .reset ();
 }
 
-Box3f
-NavigationInfo::getBBox ()
-{
-	return Box3f (Vector3f (getAvatarWidth (), getAvatarHeight (), getAvatarDepth ()), Vector3f (0, getAvatarHeight () / 2, 0));
-}
-
 float
-NavigationInfo::getAvatarDepth ()
+NavigationInfo::getCollisionRadius () const
 {
 	if (avatarSize .size () > 0)
 		return avatarSize [0];
@@ -136,7 +130,7 @@ NavigationInfo::getAvatarDepth ()
 }
 
 float
-NavigationInfo::getAvatarHeight ()
+NavigationInfo::getAvatarHeight () const
 {
 	if (avatarSize .size () > 1)
 		return avatarSize [1];
@@ -145,7 +139,7 @@ NavigationInfo::getAvatarHeight ()
 }
 
 float
-NavigationInfo::getAvatarWidth ()
+NavigationInfo::getStepHeight () const
 {
 	if (avatarSize .size () > 2)
 		return avatarSize [2];
@@ -156,7 +150,7 @@ NavigationInfo::getAvatarWidth ()
 float
 NavigationInfo::getZNear () const
 {
-	float zNear = avatarSize .size () ? avatarSize .front () : 0.25;
+	float zNear = getCollisionRadius ();
 
 	if (zNear == 0)
 		zNear = std::numeric_limits <float>::epsilon () * 100;

@@ -213,7 +213,7 @@ ProximitySensor::isInside (const Matrix4f & matrix) const
 
 	for (int i = 0; i < 6; ++ i)
 	{
-		if (Plane3f (points [i], normals [i]) .distanceFromOrigin () < 0)
+		if (Plane3f (points [i], normals [i]) .distance_from_origin () < 0)
 			return false;
 	}
 

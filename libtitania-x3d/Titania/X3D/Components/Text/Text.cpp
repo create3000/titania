@@ -167,9 +167,9 @@ Text::createBBox ()
 
 	for (const auto & line : string)
 	{
-		Box2f            lineBBox = getLineBBox (fontStyle, line .getValue ());
-		const Vector2f & min      = lineBBox .min ();
-		const Vector2f & max      = lineBBox .max ();
+		Box2f    lineBBox = getLineBBox (fontStyle, line .getValue ());
+		Vector2f min      = lineBBox .min ();
+		Vector2f max      = lineBBox .max ();
 
 		if (i == 1)
 			y1 = max .y ();
@@ -214,7 +214,7 @@ Text::createBBox ()
 
 		// Add bbox.
 
-		bbox += Box2f (size, center + translation [i]) * scale;
+		bbox += Box2f (size * scale, (center + translation [i]) * scale);
 
 		++ i;
 	}

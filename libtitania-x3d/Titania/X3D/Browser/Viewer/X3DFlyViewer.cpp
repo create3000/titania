@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-static constexpr float SPEED_FACTOR           = 0.007;
-static constexpr float SHIFT_SPEED_FACTOR     = 4;
-static constexpr float ROTATION_SPEED_FACTOR  = 0.3;
+static constexpr float SPEED_FACTOR          = 0.007;
+static constexpr float SHIFT_SPEED_FACTOR    = 4;
+static constexpr float ROTATION_SPEED_FACTOR = 0.3;
 //static constexpr float PAN_SPEED_FACTOR       = 2;
 static constexpr float PAN_SHIFT_SPEED_FACTOR = 4;
 static constexpr float ROLL_ANGLE             = M_PI / 16;
@@ -79,7 +79,7 @@ X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* navigationIn
 	      rotation (),               
 	     startTime (),               
 	        button (0),              
-	     shift_key (false),          
+	     shift_key (false),                 
 	        fly_id (),               
 	        pan_id (),               
 	       roll_id ()                
@@ -232,7 +232,7 @@ X3DFlyViewer::fly ()
 
 	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
 
-	viewpoint -> positionOffset += orientation * direction * speed_factor / frameRate;
+	getBrowser () -> velocity = orientation * direction * speed_factor;
 
 	return true;
 }
@@ -246,9 +246,10 @@ X3DFlyViewer::pan ()
 
 	float speed_factor = shift_key ? PAN_SHIFT_SPEED_FACTOR : 1;
 
-	Rotation4f rotation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
+	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
+	Vector3f   translation = orientation * direction * speed_factor / frameRate;
 
-	viewpoint -> positionOffset += rotation * direction * speed_factor / frameRate;
+	viewpoint -> positionOffset += translation;
 
 	return true;
 }

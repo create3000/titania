@@ -53,6 +53,7 @@
 
 #include "../Geometry/Line3.h"
 #include "../Numbers/Vector3.h"
+#include "../Utility/Normal.h"
 
 namespace titania {
 namespace math {
@@ -88,15 +89,21 @@ public:
 	///  Copy constructor.
 	constexpr
 	plane3 (const plane3 & plane) :
-		value { plane .normal (), plane .distanceFromOrigin () }
+		value { plane .normal (), plane .distance_from_origin () }
 
+	{ }
+
+	///  Constructs a plane from @a point1, @a point2 and @a point3. The normal is calculated
+	///  counter clockwise from the points.
+	constexpr
+	plane3 (const vector3 <Type> & point1, const vector3 <Type> & point2, const vector3 <Type> & point3) :
+		plane3 (point1, math::normal (point1, point2, point3))
 	{ }
 
 	///  Constructs a plane from @a point and @a normal.
 	constexpr
 	plane3 (const vector3 <Type> & point, const vector3 <Type> & normal) :
 		value { normal, dot (normal, point) }
-
 	{ }
 
 	///  Constructs a plane from @a vector. The point the vector points to is taken as a point on a plane
@@ -104,22 +111,34 @@ public:
 	constexpr
 	plane3 (const vector3 <Type> & vector) :
 		value { normalize (vector), abs (vector) }
-
 	{ }
 
 	///  @name Element access
 
 	///  Returns the normal of this plane.
 	const vector3 <Type> &
-	normal () const { return value .normal; }
+	normal () const
+	{ return value .normal; }
 
 	///  Returns the distance form origin.
 	const Type &
-	distanceFromOrigin () const { return value .distanceFromOrigin; }
+	distance_from_origin () const
+	{ return value .distanceFromOrigin; }
 
+	///  Returns the distance from @a point.
 	constexpr Type
 	distance (const vector3 <Type> &) const;
+	
+	///  Returns the closest point on the plane to a given point @a point.
+	vector3 <Type>
+	closest_point (const vector3 <Type> & point)
+	{
+		vector3 <Type> closest_point;
+		intersect (line3 <Type> (point, point + value .normal), closest_point);
+		return closest_point;
+	}
 
+	///  Returns true if @a line intersects with this box3. The intersection point is stored in @a point.
 	bool
 	intersect (const line3 <Type> &, vector3 <Type> &) const;
 
@@ -147,7 +166,7 @@ inline
 constexpr Type
 plane3 <Type>::distance (const vector3 <Type> & point) const
 {
-	return dot (point, normal ()) - distanceFromOrigin ();
+	return dot (point, normal ()) - distance_from_origin ();
 }
 
 ///  Return true if @a line intersects with this plane otherwise false.  The intersection
@@ -164,7 +183,7 @@ plane3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & point) con
 		return false;
 
 	// Plane and line are not parallel. The intersection point can be calculated now.
-	Type t = (distanceFromOrigin () - dot (normal (), line .point ())) / theta;
+	Type t = (distance_from_origin () - dot (normal (), line .point ())) / theta;
 
 	point = line .point () + line .direction () * t;
 
@@ -194,7 +213,7 @@ template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const plane3 <Type> & plane)
 {
-	return ostream << plane .normal () * plane .distanceFromOrigin ();
+	return ostream << plane .normal () * plane .distance_from_origin ();
 }
 
 extern template class plane3 <float>;

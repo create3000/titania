@@ -78,6 +78,9 @@ public:
 
 private:
 
+	void
+	set_collisionNormal ();
+
 	bool
 	on_button_press_event (GdkEventButton*);
 

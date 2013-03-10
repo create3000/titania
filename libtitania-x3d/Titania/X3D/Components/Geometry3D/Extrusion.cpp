@@ -51,8 +51,6 @@
 #include "Extrusion.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/Normal.h"
-
 #include <Titania/Utility/Adapter.h>
 
 namespace titania {
@@ -341,7 +339,7 @@ Extrusion::build ()
 			//  |     \ |
 			// p1 ----- p2   n
 
-			Vector3f normal = vertexNormal (points [INDEX (n, k)], points [INDEX (n, k1)],
+			Vector3f normal = math::normal (points [INDEX (n, k)], points [INDEX (n, k1)],
 			                                points [INDEX (n1, k1)], points [INDEX (n1, k)]);
 
 			// tri 1
@@ -468,7 +466,7 @@ Extrusion::buildCap (const Tesselator & tesselator,
 				{
 					for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
 					{
-						normal += vertexNormal (points [std::get < I > (polygonElement [0] .data ())],
+						normal += math::normal (points [std::get < I > (polygonElement [0] .data ())],
 						                        points [std::get < I > (polygonElement [i] .data ())],
 						                        points [std::get < I > (polygonElement [i + 1] .data ())]);
 					}
@@ -479,7 +477,7 @@ Extrusion::buildCap (const Tesselator & tesselator,
 			{
 				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
 				{
-					normal += vertexNormal (points [std::get < I > (polygonElement [i % 2 ? i + 1 : i] .data ())],
+					normal += math::normal (points [std::get < I > (polygonElement [i % 2 ? i + 1 : i] .data ())],
 					                        points [std::get < I > (polygonElement [i % 2 ? i : i + 1] .data ())],
 					                        points [std::get < I > (polygonElement [i + 2] .data ())]);
 				}
@@ -490,7 +488,7 @@ Extrusion::buildCap (const Tesselator & tesselator,
 			{
 				for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
 				{
-					normal += vertexNormal (points [std::get < I > (polygonElement [i] .data ())],
+					normal += math::normal (points [std::get < I > (polygonElement [i] .data ())],
 					                        points [std::get < I > (polygonElement [i + 1] .data ())],
 					                        points [std::get < I > (polygonElement [i + 2] .data ())]);
 				}

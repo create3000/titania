@@ -317,15 +317,15 @@ public:
 	multMatrixDir (const vector2 <T> &) const;
 
 	///  Returns this matrix translated by @a translation.
-	void
+	matrix3 &
 	translate (const vector2 <Type> &);
 
 	///  Returns this matrix rotated by @a rotation.
-	void
+	matrix3 &
 	rotate (const Type &);
 
 	///  Returns this matrix scaled by @a scale.
-	void
+	matrix3 &
 	scale (const vector2 <Type> &);
 
 
@@ -797,7 +797,7 @@ matrix3 <Type>::multMatrixDir (const vector2 <T> & vector) const
 }
 
 template <typename Type>
-void
+matrix3 <Type> &
 matrix3 <Type>::translate (const vector2 <Type> & translation)
 {
 	#define TRANSLATE(i) \
@@ -808,17 +808,19 @@ matrix3 <Type>::translate (const vector2 <Type> & translation)
 	value [2] [1] += TRANSLATE (1);
 
 	#undef TRANSLATE
+
+	return *this;
 }
 
 template <typename Type>
-void
+matrix3 <Type> &
 matrix3 <Type>::rotate (const Type & rotation)
 {
-	multLeft (matrix3 <Type> (rotation));
+	return multLeft (matrix3 <Type> (rotation));
 }
 
 template <typename Type>
-void
+matrix3 <Type> &
 matrix3 <Type>::scale (const vector2 <Type> & scaleFactor)
 {
 	value [0] [0] *= scaleFactor .x ();
@@ -826,6 +828,8 @@ matrix3 <Type>::scale (const vector2 <Type> & scaleFactor)
 
 	value [0] [1] *= scaleFactor .x ();
 	value [1] [1] *= scaleFactor .y ();
+
+	return *this;
 }
 
 ///  @relates matrix3

@@ -83,6 +83,9 @@ public:
 	void
 	draw ();
 
+	bool
+	intersect (const Matrix4f &, const Sphere3f &, std::deque <Vector3f> &) const;
+
 	virtual
 	void
 	dispose ();
