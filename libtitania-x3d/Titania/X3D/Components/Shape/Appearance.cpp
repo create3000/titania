@@ -116,7 +116,7 @@ Appearance::initialize ()
 }
 
 bool
-Appearance::isTransparent ()
+Appearance::isTransparent () const
 {
 	if (_material and _material -> isTransparent ())
 		return true;

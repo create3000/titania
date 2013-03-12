@@ -83,7 +83,7 @@ public:
 
 	virtual
 	bool
-	isTransparent ();
+	isTransparent () const;
 
 	virtual
 	void

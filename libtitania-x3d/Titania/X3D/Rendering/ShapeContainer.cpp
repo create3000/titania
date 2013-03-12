@@ -79,9 +79,9 @@ ShapeContainer::assign (X3DShapeNode* shape,
 }
 
 bool
-ShapeContainer::intersect (const Sphere3f & sphere, std::deque <Vector3f> & collisionNormal) const
+ShapeContainer::intersect (const Sphere3f & sphere) const
 {
-	return shape -> intersect (matrix, sphere, collisionNormal);
+	return shape -> intersect (matrix, sphere);
 }
 
 bool

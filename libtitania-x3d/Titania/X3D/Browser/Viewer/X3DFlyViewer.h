@@ -111,6 +111,9 @@ private:
 	Vector3f
 	getTranslation (const Vector3f &) const;
 
+	float
+	getDistance (const Vector3f &) const;
+
 	void
 	addFly ();
 

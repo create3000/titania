@@ -76,7 +76,8 @@ public:
 
 	virtual
 	bool
-	isTransparent () { return transparency; }
+	isTransparent () const
+	{ return transparency; }
 
 	virtual
 	void

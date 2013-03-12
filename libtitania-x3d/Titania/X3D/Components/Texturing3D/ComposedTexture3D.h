@@ -70,7 +70,8 @@ public:
 	create (X3DExecutionContext* const) const;
 
 	bool
-	isTransparent () { return false; }
+	isTransparent () const
+	{ return false; }
 
 };
 

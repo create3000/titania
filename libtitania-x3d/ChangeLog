@@ -1,5 +1,39 @@
 2013-03-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DRenderer.h:
+	* X3DRenderer.cpp:
+	* CollisionShape.h:
+	* ShapeContainer.h:
+	* Material.h:
+	* ShapeContainer.cpp:
+	* CollisionShape.cpp:
+	* Appearance.h:
+	* X3DFlyViewer.h:
+	* X3DShapeNode.h:
+	* X3DFlyViewer.cpp:
+	* Appearance.cpp:
+	* X3DShapeNode.cpp:
+	* X3DMaterialNode.h:
+	* MovieTexture.h:
+	* MultiTexture.h:
+	* TwoSidedMaterial.h:
+	* X3DAppearanceNode.h:
+	* X3DTextureNode.h:
+	* X3DGeometryNode.h:
+	* ImageTexture3D.h:
+	* PixelTexture3D.h:
+	* X3DTexture2DNode.h:
+	* X3DGeometryNode.cpp:
+	* X3DTexture2DNode.cpp:
+	* ComposedTexture3D.h:
+	* ImageCubeMapTexture.h:
+	* ComposedCubeMapTexture.h:
+	* GeneratedCubeMapTexture.h: 
+
+2013-03-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFVec3.h:
 	* TraverseType.h:
 	* X3DRenderer.h:

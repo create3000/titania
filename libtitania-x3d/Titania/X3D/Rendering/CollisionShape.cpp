@@ -48,97 +48,63 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_TEXTURING_MOVIE_TEXTURE_H__
-#define __TITANIA_X3D_COMPONENTS_TEXTURING_MOVIE_TEXTURE_H__
+#include "CollisionShape.h"
 
-#include "../Networking/X3DUrlObject.h"
-#include "../Sound/X3DSoundSourceNode.h"
-#include "../Texturing/X3DTexture2DNode.h"
-
-#include <memory>
+#include "../Rendering/ViewVolume.h"
+#include "../Rendering/Matrix.h"
+#include <Titania/Utility/Adapter.h>
 
 namespace titania {
 namespace X3D {
 
-class MovieTexture :
-	public X3DTexture2DNode, public X3DSoundSourceNode, public X3DUrlObject
+CollisionShape::CollisionShape (X3DShapeNode* shape, const CollisionArray & collisions) :
+	     shape (shape),                      
+	collisions (collisions),                 
+	    matrix (ModelViewMatrix4f ()),       
+	  distance (getDistance (shape, matrix)) 
+{ }
+
+void
+CollisionShape::assign (X3DShapeNode* shape,
+                        const CollisionArray & collisions)
 {
-public:
+	this -> shape      = shape;
+	this -> collisions = collisions;
+	this -> matrix     = ModelViewMatrix4f ();
+	this -> distance   = getDistance (shape, this -> matrix);
+}
 
-	SFFloat speed;
+bool
+CollisionShape::intersect (const Sphere3f & sphere) const
+{
+	if (collisions .empty ())
+		return false;
 
-	MovieTexture (X3DExecutionContext* const);
+	return shape -> intersect (matrix, sphere);
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
+void
+CollisionShape::draw ()
+{
+	if (distance < 0)
+	{
+		glLoadMatrixf (matrix .data ());
 
-	virtual
-	bool
-	isTransparent () const
-	{ return false; }
+		if (ViewVolume () .intersect (shape -> getBBox ()))
+		{
+			shape -> draw ();
+		}
+	}
+}
 
-	virtual
-	void
-	draw ();
+float
+CollisionShape::getDistance (X3DShapeNode* shape, const Matrix4f & matrix)
+{
+	Box3f bbox  = shape -> getBBox () * matrix;
+	float depth = bbox .size () .z () * 0.5f;
 
-	virtual
-	void
-	dispose ();
-
-
-private:
-
-	virtual
-	bool
-	isEnabled () const
-	{ return enabled; }
-
-	virtual
-	void
-	initialize ();
-
-	void
-	prepareEvents ();
-
-	virtual
-	void
-	requestImmediateLoad ();
-
-	void
-	set_url ();
-
-	void
-	set_speed ();
-
-	void
-	set_pitch ();
-
-	virtual
-	void
-	set_start ();
-	
-	virtual
-	void
-	set_stop ();
-
-	virtual
-	void
-	set_pause ();
-
-	virtual
-	void
-	set_resume ();
-
-	void
-	set_end ();
-
-	class GStream;
-	
-	std::unique_ptr <GStream> gstream;
-};
+	return bbox .center () .z () - depth;
+}
 
 } // X3D
 } // titania
-
-#endif

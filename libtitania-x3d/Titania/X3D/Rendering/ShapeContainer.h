@@ -73,12 +73,13 @@ public:
 	assign (X3DShapeNode*,
 	        X3DFogObject*,
 	        const LightContainerArray &);
+
 	const float &
 	getDistance () const
 	{ return distance; }
 
 	bool
-	intersect (const Sphere3f &, std::deque <Vector3f> &) const;
+	intersect (const Sphere3f &) const;
 
 	bool
 	draw ();	

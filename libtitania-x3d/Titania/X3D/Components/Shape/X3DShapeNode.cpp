@@ -106,7 +106,7 @@ X3DShapeNode::getBBox ()
 }
 
 bool
-X3DShapeNode::isTransparent ()
+X3DShapeNode::isTransparent () const
 {
 	if (_appearance and _appearance -> isTransparent ())
 		return true;
@@ -141,9 +141,15 @@ X3DShapeNode::traverse (TraverseType type)
 		}
 		case TraverseType::NAVIGATION:
 		case TraverseType::COLLISION:
+		{
+			if (_geometry)
+				getBrowser () -> getRenderers () .top () -> addCollision (this);
+			break;
+		}
 		case TraverseType::COLLECT:
 		{
-			collect ();
+			if (_geometry)
+				getBrowser () -> getRenderers () .top () -> addShape (this);
 			break;
 		}
 		default:
@@ -171,20 +177,11 @@ X3DShapeNode::pick ()
 	}
 }
 
-void
-X3DShapeNode::collect ()
-{
-	if (_geometry)
-	{
-		getBrowser () -> getRenderers () .top () -> addShape (this);
-	}
-}
-
 bool
-X3DShapeNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere, std::deque <Vector3f> & collisionNormal) const
+X3DShapeNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere) const
 {
 	if (_geometry)
-		return _geometry -> intersect (matrix, sphere, collisionNormal);
+		return _geometry -> intersect (matrix, sphere);
 	
 	return false;
 }

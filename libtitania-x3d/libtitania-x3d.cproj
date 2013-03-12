@@ -529,6 +529,7 @@
     <None Include="Titania\X3D\Browser\Viewer\X3DViewer.h" />
     <None Include="Titania\X3D\Bits\TraverseType.h" />
     <None Include="Titania\X3D\Types\Speed.h" />
+    <None Include="Titania\X3D\Rendering\CollisionShape.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -937,6 +938,7 @@
     <Compile Include="Titania\X3D\Browser\Viewer\WalkViewer.cpp" />
     <Compile Include="Titania\X3D\Browser\Viewer\X3DFlyViewer.cpp" />
     <Compile Include="Titania\X3D\Browser\Viewer\X3DViewer.cpp" />
+    <Compile Include="Titania\X3D\Rendering\CollisionShape.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

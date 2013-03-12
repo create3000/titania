@@ -48,94 +48,52 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_TEXTURING_MOVIE_TEXTURE_H__
-#define __TITANIA_X3D_COMPONENTS_TEXTURING_MOVIE_TEXTURE_H__
+#ifndef __TITANIA_X3D_RENDERING_COLLISION_SHAPE_H__
+#define __TITANIA_X3D_RENDERING_COLLISION_SHAPE_H__
 
-#include "../Networking/X3DUrlObject.h"
-#include "../Sound/X3DSoundSourceNode.h"
-#include "../Texturing/X3DTexture2DNode.h"
+#include "../Components/Navigation/Collision.h"
+#include "../Components/Shape/X3DShapeNode.h"
 
-#include <memory>
+#include "../Types/Geometry.h"
+#include "../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
 
-class MovieTexture :
-	public X3DTexture2DNode, public X3DSoundSourceNode, public X3DUrlObject
+typedef std::deque <Collision*> CollisionArray;
+
+class CollisionShape
 {
 public:
 
-	SFFloat speed;
+	CollisionShape (X3DShapeNode*, const CollisionArray &);
 
-	MovieTexture (X3DExecutionContext* const);
+	void
+	assign (X3DShapeNode*, const CollisionArray &);
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
+	const float &
+	getDistance () const
+	{ return distance; }
 
-	virtual
 	bool
-	isTransparent () const
-	{ return false; }
+	intersect (const Sphere3f &) const;
 
-	virtual
 	void
 	draw ();
-
-	virtual
-	void
-	dispose ();
 
 
 private:
 
-	virtual
-	bool
-	isEnabled () const
-	{ return enabled; }
+	static
+	float
+	getDistance (X3DShapeNode*, const Matrix4f &);
 
-	virtual
-	void
-	initialize ();
+	X3DShapeNode*  shape;
+	CollisionArray collisions;
 
-	void
-	prepareEvents ();
+	Matrix4f matrix;
+	float    distance;
 
-	virtual
-	void
-	requestImmediateLoad ();
-
-	void
-	set_url ();
-
-	void
-	set_speed ();
-
-	void
-	set_pitch ();
-
-	virtual
-	void
-	set_start ();
-	
-	virtual
-	void
-	set_stop ();
-
-	virtual
-	void
-	set_pause ();
-
-	virtual
-	void
-	set_resume ();
-
-	void
-	set_end ();
-
-	class GStream;
-	
-	std::unique_ptr <GStream> gstream;
 };
 
 } // X3D

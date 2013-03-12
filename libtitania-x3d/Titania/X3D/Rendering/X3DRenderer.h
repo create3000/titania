@@ -54,6 +54,7 @@
 #include "../Base/Output.h"
 #include "../Components/Core/X3DNode.h"
 #include "../Rendering/ShapeContainer.h"
+#include "../Rendering/CollisionShape.h"
 
 #include <memory>
 
@@ -65,16 +66,21 @@ class X3DRenderer :
 {
 public:
 
-	float distance;
-
 	X3DRenderer ();
 
 	virtual
 	void
 	initialize ();
+	
+	float
+	getDistance () const
+	{ return distance; }
 
 	void
 	addShape (X3DShapeNode*);
+
+	void
+	addCollision (X3DShapeNode*);
 
 	void
 	render (TraverseType);
@@ -90,6 +96,7 @@ public:
 private:
 
 	typedef std::vector <ShapeContainer*> ShapeContainerArray;
+	typedef std::vector <CollisionShape*> CollisionShapeArray;
 
 	virtual
 	void
@@ -114,12 +121,15 @@ private:
 
 	ShapeContainerArray shapes;
 	ShapeContainerArray transparentShapes;
+	CollisionShapeArray collisionShapes;
 
 	std::unique_ptr <DepthBuffer> depthBuffer;
 	float                         speed;
+	float                         distance;
 
-	size_t numOpaqueNodes;
-	size_t numTransparentNodes;
+	size_t numOpaqueShapes;
+	size_t numTransparentShapes;
+	size_t numCollisionShapes;
 
 };
 

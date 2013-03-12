@@ -100,12 +100,6 @@ X3DTexture2DNode::getTextureProperties ()
 			 : x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties .getValue ());
 }
 
-bool
-X3DTexture2DNode::isTransparent ()
-{
-	return transparent;
-}
-
 void
 X3DTexture2DNode::getImageFormat (Magick::Image & image,
                                   GLenum & format,

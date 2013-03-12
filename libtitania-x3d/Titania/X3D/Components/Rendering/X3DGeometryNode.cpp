@@ -147,19 +147,18 @@ X3DGeometryNode::intersect (const Line3f & hitRay, Vector3f & hitPoint) const
 }
 
 bool
-X3DGeometryNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere, std::deque <Vector3f> & collisionNormal) const
+X3DGeometryNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere) const
 {
 	if ((bbox * matrix) .intersect (sphere))
 	{
-		bool intersected = false;
-
 		switch (vertexMode)
 		{
 			case GL_TRIANGLES:
 			{
 				for (size_t i = 0, size = vertices .size (); i < size; i += 3)
 				{
-					intersected |= intersect (matrix, sphere, vertices [i], vertices [i + 1], vertices [i + 2], collisionNormal);
+					if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
+						return true;
 				}
 
 				break;
@@ -168,8 +167,11 @@ X3DGeometryNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere, st
 			{
 				for (size_t i = 0, size = vertices .size (); i < size; i += 4)
 				{
-					intersected |= intersect (matrix, sphere, vertices [i], vertices [i + 1], vertices [i + 2], collisionNormal);
-					intersected |= intersect (matrix, sphere, vertices [i], vertices [i + 2], vertices [i + 3], collisionNormal);
+					if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
+						return true;
+						
+					if (sphere .intersect (vertices [i] * matrix, vertices [i + 2] * matrix, vertices [i + 3] * matrix))
+						return true;
 				}
 
 				break;
@@ -177,31 +179,6 @@ X3DGeometryNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere, st
 			default:
 				break;
 		}
-
-		return intersected;
-	}
-
-	return false;
-}
-
-bool
-X3DGeometryNode::intersect (const Matrix4f & matrix,
-                            const Sphere3f & sphere,
-                            Vector3f A,
-                            Vector3f B,
-                            Vector3f C,
-                            std::deque <Vector3f> & collisionNormal)
-{
-	A = A * matrix;
-	B = B * matrix;
-	C = C * matrix;
-
-	if (sphere .intersect (A, B, C))
-	{
-		Plane3f plane (A, B, C);
-		float   depth = sphere .radius () - std::abs (plane .distance (sphere .center ()));
-		collisionNormal .emplace_back (depth * math::normalize (sphere .center () - plane .closest_point (sphere .center ())));
-		return true;
 	}
 
 	return false;

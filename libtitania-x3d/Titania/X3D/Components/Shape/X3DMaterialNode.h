@@ -63,7 +63,7 @@ public:
 
 	virtual
 	bool
-	isTransparent () = 0;
+	isTransparent () const = 0;
 
 
 protected:

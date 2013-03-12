@@ -9,6 +9,6 @@ Terminal=false
 StartupNotify=false
 Icon=titania
 Categories=Graphics;GNOME;GTK;
-MimeType=model/vrml;model/x3d+vrml;
+MimeType=model/vrml;model/x3d+vrml;x-world/x-vrml;
 
 GenericName=Titania X3D Browser

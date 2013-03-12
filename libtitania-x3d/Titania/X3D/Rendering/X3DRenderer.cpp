@@ -165,13 +165,14 @@ public:
 };
 
 X3DRenderer::X3DRenderer () :
-	            X3DNode (),  
-	             shapes (),  
-	  transparentShapes (),  
-	        depthBuffer (),  
-	              speed (),  
-	     numOpaqueNodes (0), 
-	numTransparentNodes (0)  
+	             X3DNode (),  
+	              shapes (),  
+	   transparentShapes (),  
+	         depthBuffer (),  
+	               speed (),  
+	            distance (),  
+	     numOpaqueShapes (0), 
+	numTransparentShapes (0)  
 { }
 
 void
@@ -188,29 +189,43 @@ X3DRenderer::addShape (X3DShapeNode* shape)
 
 	if (shape -> isTransparent ())
 	{
-		if (numTransparentNodes < transparentShapes .size ())
-			transparentShapes [numTransparentNodes] -> assign (shape, fog, localLights);
+		if (numTransparentShapes < transparentShapes .size ())
+			transparentShapes [numTransparentShapes] -> assign (shape, fog, localLights);
 		else
 			transparentShapes .emplace_back (new ShapeContainer (shape, fog, localLights));
 
-		++ numTransparentNodes;
+		++ numTransparentShapes;
 	}
 	else
 	{
-		if (numOpaqueNodes < shapes .size ())
-			shapes [numOpaqueNodes] -> assign (shape, fog, localLights);
+		if (numOpaqueShapes < shapes .size ())
+			shapes [numOpaqueShapes] -> assign (shape, fog, localLights);
 		else
 			shapes .emplace_back (new ShapeContainer (shape, fog, localLights));
 
-		++ numOpaqueNodes;
+		++ numOpaqueShapes;
 	}
+}
+
+void
+X3DRenderer::addCollision (X3DShapeNode* shape)
+{
+	CollisionArray collisions;
+
+	if (numCollisionShapes < collisionShapes .size ())
+		collisionShapes [numCollisionShapes] -> assign (shape, collisions);
+	else
+		collisionShapes .emplace_back (new CollisionShape (shape, collisions));
+
+	++ numCollisionShapes;
 }
 
 void
 X3DRenderer::render (TraverseType type)
 {
-	numOpaqueNodes      = 0;
-	numTransparentNodes = 0;
+	numOpaqueShapes      = 0;
+	numTransparentShapes = 0;
+	numCollisionShapes   = 0;
 
 	getBrowser () -> getRenderers () .emplace (this);
 
@@ -265,7 +280,7 @@ X3DRenderer::draw ()
 		glDepthMask (GL_TRUE);
 		glDisable (GL_BLEND);
 
-		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
+		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
 			numNodesDrawn += shape -> draw ();
 
 		// Render transparent objects
@@ -273,15 +288,15 @@ X3DRenderer::draw ()
 		glDepthMask (GL_FALSE);
 		glEnable (GL_BLEND);
 
-		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentNodes, ShapeContainerComp ());
+		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, ShapeContainerComp ());
 
-		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
+		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentShapes))
 			numNodesDrawn += shape -> draw ();
 
 		glDepthMask (GL_TRUE);
 		glDisable (GL_BLEND);
 
-		//__LOG__ << numOpaqueNodes + numTransparentNodes << " : " << numNodesDrawn << std::endl;
+		//__LOG__ << numOpaqueShapes + numTransparentShapes << " : " << numNodesDrawn << std::endl;
 	}
 	else
 	{
@@ -298,16 +313,16 @@ X3DRenderer::draw ()
 		glDepthMask (GL_TRUE);
 		glDisable (GL_BLEND);
 
-		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
+		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
 			shape -> draw ();
 
 		// Render transparent objects
 
-		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentNodes, ShapeContainerComp ());
+		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, ShapeContainerComp ());
 
 		glEnable (GL_BLEND);
 
-		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
+		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentShapes))
 		{
 			glDepthFunc (GL_GREATER);
 			glDepthMask (GL_FALSE);
@@ -329,19 +344,15 @@ X3DRenderer::draw ()
 		glBlendFunc (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA);
 		glBlendFuncSeparate (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
-		{
+		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
 			numNodesDrawn += shape -> draw ();
-		}
 
 		glDisable (GL_BLEND);
 		glDepthFunc (GL_LEQUAL);
 		glDepthMask (GL_TRUE);
 
-		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
-		{
+		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
 			shape -> draw ();
-		}
 	}
 
 	// Disable global lights
@@ -379,19 +390,14 @@ X3DRenderer::navigation ()
 		glDepthMask (GL_TRUE);
 		glDisable (GL_BLEND);
 
-		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
-			shape -> draw ();
-
-		// Render transparent objects
-
-		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
+		for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
 			shape -> draw ();
 	}
 
 	glPopMatrix ();
 
 	distance = depthBuffer -> getDistance (zNear, zFar);
-	
+
 	depthBuffer -> unbind ();
 }
 
@@ -435,12 +441,12 @@ X3DRenderer::navigation ()
 //		glDepthMask (GL_TRUE);
 //		glDisable (GL_BLEND);
 //
-//		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
+//		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
 //			shape -> draw ();
 //
 //		// Render transparent objects
 //
-//		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
+//		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentShapes))
 //			shape -> draw ();
 //	}
 //
@@ -496,7 +502,7 @@ X3DRenderer::navigation ()
 //
 //		std::deque <Vector3f> collisionNormal;
 //
-//		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
+//		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
 //		{
 //			if ((intersected = shape -> intersect (collisionSphere, collisionNormal)))
 //				break;
@@ -504,7 +510,7 @@ X3DRenderer::navigation ()
 //
 //		if (not intersected)
 //		{
-//			for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
+//			for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentShapes))
 //			{
 //				if ((intersected = shape -> intersect (collisionSphere, collisionNormal)))
 //					break;
@@ -544,27 +550,16 @@ X3DRenderer::collide ()
 		bool     intersected = false;
 		Sphere3f collisionSphere (collisionRadius, Vector3f ());
 
-		std::deque <Vector3f> collisionNormal;
-
-		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
+		for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
 		{
-			if ((intersected = shape -> intersect (collisionSphere, collisionNormal)))
+			if ((intersected = shape -> intersect (collisionSphere)))
 				break;
 		}
 
-		if (not intersected)
-		{
-			for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
-			{
-				if ((intersected = shape -> intersect (collisionSphere, collisionNormal)))
-					break;
-			}
-		}
-
-//		if (intersected)
-//		{
-//			__LOG__ << SFTime (chrono::now ()) << " : " << intersected << " : " << collisionNormal .size () << std::endl;
-//		}
+		//		if (intersected)
+		//		{
+		//			__LOG__ << SFTime (chrono::now ()) << " : " << intersected << " : " << collisionNormal .size () << std::endl;
+		//		}
 	}
 }
 
@@ -600,12 +595,7 @@ X3DRenderer::gravite ()
 		glDepthMask (GL_TRUE);
 		glDisable (GL_BLEND);
 
-		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueNodes))
-			shape -> draw ();
-
-		// Render transparent objects
-
-		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentNodes))
+		for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
 			shape -> draw ();
 	}
 
@@ -667,6 +657,11 @@ X3DRenderer::clear ()
 		delete shape;
 
 	transparentShapes .clear ();
+
+	for (const auto & shape : collisionShapes)
+		delete shape;
+
+	collisionShapes .clear ();
 }
 
 void

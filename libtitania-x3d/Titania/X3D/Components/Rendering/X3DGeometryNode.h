@@ -68,7 +68,8 @@ public:
 	getBBox ();
 
 	bool
-	isTransparent () { return colorsRGBA .size (); }
+	isTransparent () const
+	{ return colorsRGBA .size (); }
 
 	virtual
 	void
@@ -78,7 +79,7 @@ public:
 	intersect (const Line3f &, Vector3f &) const;
 
 	bool
-	intersect (const Matrix4f &, const Sphere3f &, std::deque <Vector3f> &) const;
+	intersect (const Matrix4f &, const Sphere3f &) const;
 
 	virtual
 	void
@@ -132,15 +133,6 @@ protected:
 	virtual
 	Box3f
 	createBBox ();
-
-	static
-	bool
-	intersect (const Matrix4f &matrix,
-	           const Sphere3f &,
-	           Vector3f,
-	           Vector3f,
-	           Vector3f,
-	           std::deque <Vector3f> &);
 
 	void
 	getTexCoordParam (Vector3f &, float &, int &, int &);

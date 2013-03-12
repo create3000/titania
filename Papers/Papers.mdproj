@@ -24,5 +24,6 @@
     <None Include="quaternion.cpp" />
     <None Include="gtk-opengl.cpp" />
     <None Include="Sphere - Triangle Intersection.pdf" />
+    <None Include="Fast MinimumStorage RayTriangle Intersection.pdf" />
   </ItemGroup>
 </Project>

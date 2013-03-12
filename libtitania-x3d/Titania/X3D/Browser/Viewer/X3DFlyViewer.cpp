@@ -103,6 +103,8 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 
 	disconnect ();
 
+	getBrowser () -> notify ();
+
 	if (button == 1)
 	{
 		fromVector = toVector = Vector3f (event -> x, 0, event -> y);
@@ -116,8 +118,6 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 		fromVector = toVector = Vector3f (event -> x, -event -> y, 0);
 	}
 
-	getBrowser () -> notify ();
-
 	return false;
 }
 
@@ -125,6 +125,8 @@ bool
 X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 {
 	disconnect ();
+
+	getBrowser () -> notify ();
 
 	if (button == 1)
 	{
@@ -134,7 +136,6 @@ X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 	else if (button == 2)
 	{ }
 
-	getBrowser () -> notify ();
 	button = 0;
 
 	return false;
@@ -143,6 +144,8 @@ X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 bool
 X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 {
+	getBrowser () -> notify ();
+		
 	if (button == 1)
 	{
 		toVector = Vector3f (event -> x, 0, event -> y);
@@ -151,7 +154,6 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 
 		addFly ();
 
-		getBrowser () -> notify ();
 		return true;
 	}
 
@@ -163,7 +165,6 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 
 		addPan ();
 
-		getBrowser () -> notify ();
 		return true;
 	}
 
@@ -277,26 +278,13 @@ X3DFlyViewer::roll ()
 Vector3f
 X3DFlyViewer::getTranslation (const Vector3f & translation) const
 {
-	glLoadIdentity ();
-
-	auto activeLayer = getBrowser () -> getExecutionContext () -> getActiveLayer ();
-	auto viewpoint   = activeLayer -> getViewpoint ();
-
-	Matrix4f cameraSpaceMatrix = viewpoint -> getModelViewMatrix ();
-
-	cameraSpaceMatrix .translate (viewpoint-> getUserPosition ());
-	cameraSpaceMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -translation));
-	glMultMatrixf (inverse (cameraSpaceMatrix) .data ());
-
-	activeLayer -> traverse (TraverseType::NAVIGATION);
-
-	//
+	auto activeLayer    = getBrowser () -> getExecutionContext () -> getActiveLayer ();
 	auto navigationInfo = activeLayer -> getNavigationInfo ();
 	
 	float zFar            = navigationInfo -> getZFar ();
 	float collisionRadius = navigationInfo -> getCollisionRadius ();
 
-	float distance = activeLayer -> distance;
+	float distance = getDistance (translation);
 	float length   = math::abs (translation);
 
 	if (zFar - distance > 0) // Are there polygons under the viewer
@@ -326,6 +314,25 @@ X3DFlyViewer::getTranslation (const Vector3f & translation) const
 	}
 	else
 		return translation;
+}
+
+float
+X3DFlyViewer::getDistance (const Vector3f & direction) const
+{
+	glLoadIdentity ();
+
+	auto activeLayer = getBrowser () -> getExecutionContext () -> getActiveLayer ();
+	auto viewpoint   = activeLayer -> getViewpoint ();
+
+	Matrix4f cameraSpaceMatrix = viewpoint -> getModelViewMatrix ();
+
+	cameraSpaceMatrix .translate (viewpoint-> getUserPosition ());
+	cameraSpaceMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction));
+	glMultMatrixf (inverse (cameraSpaceMatrix) .data ());
+
+	activeLayer -> traverse (TraverseType::NAVIGATION);
+
+	return activeLayer -> getDistance ();
 }
 
 void

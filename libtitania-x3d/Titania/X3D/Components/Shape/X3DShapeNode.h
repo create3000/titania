@@ -73,7 +73,7 @@ public:
 	getBBox ();
 
 	bool
-	isTransparent ();
+	isTransparent () const;
 
 	virtual
 	void
@@ -84,7 +84,7 @@ public:
 	draw ();
 
 	bool
-	intersect (const Matrix4f &, const Sphere3f &, std::deque <Vector3f> &) const;
+	intersect (const Matrix4f &, const Sphere3f &) const;
 
 	virtual
 	void
@@ -110,9 +110,6 @@ private:
 	
 	void
 	pick ();
-	
-	void
-	collect ();
 
 	X3DAppearanceNode* _appearance;
 	X3DGeometryNode*   _geometry;

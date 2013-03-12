@@ -68,8 +68,9 @@ public:
 	SFNode <X3DBaseNode> textureProperties;
 
 	bool
-	isTransparent ();
-	
+	isTransparent () const
+	{ return transparent; }
+
 	void
 	setImage (size_t, GLenum, GLint, GLint, const void*);
 	
