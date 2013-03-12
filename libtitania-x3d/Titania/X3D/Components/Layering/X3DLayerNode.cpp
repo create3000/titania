@@ -213,6 +213,11 @@ X3DLayerNode::traverse (TraverseType type)
 			camera ();
 			break;
 		}
+		case TraverseType::NAVIGATION:
+		{
+			navigation ();
+			break;
+		}
 		case TraverseType::COLLISION:
 		{
 			collision ();
@@ -268,13 +273,11 @@ X3DLayerNode::camera ()
 }
 
 void
-X3DLayerNode::collision ()
+X3DLayerNode::navigation ()
 {
 	currentViewport -> push ();
 
-	glLoadIdentity ();
-
-	// Reshape viewpoint
+	// Get NavigationInfo values
 
 	auto navigationInfo = getCurrentNavigationInfo ();
 
@@ -282,13 +285,54 @@ X3DLayerNode::collision ()
 	float zFar            = navigationInfo -> getZFar ();
 	float collisionRadius = navigationInfo -> getCollisionRadius ();
 
+	// Reshape viewpoint
+	
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
 	glOrtho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar);
 	glMatrixMode (GL_MODELVIEW);
 
-	//
-	//getViewpoint () -> down ();
+	// Render
+
+	render (TraverseType::NAVIGATION);
+
+	currentViewport -> pop ();
+}
+
+void
+X3DLayerNode::collision ()
+{
+	currentViewport -> push ();
+
+	glLoadIdentity ();
+
+	// Get NavigationInfo values
+
+	auto navigationInfo = getCurrentNavigationInfo ();
+
+	float zNear           = navigationInfo -> getZNear ();
+	float zFar            = navigationInfo -> getZFar ();
+	float collisionRadius = navigationInfo -> getCollisionRadius ();
+
+	// Reshape viewpoint
+	
+	glMatrixMode (GL_PROJECTION);
+	glLoadIdentity ();
+	glOrtho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar);
+	glMatrixMode (GL_MODELVIEW);
+
+	// Transform viewpoint
+	
+	auto viewpoint = getCurrentViewpoint ();
+
+	Matrix4f cameraSpaceMatrix = viewpoint -> getModelViewMatrix ();
+
+	cameraSpaceMatrix .translate (viewpoint -> getUserPosition ());
+	cameraSpaceMatrix .rotate (viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
+
+	glMultMatrixf (inverse (cameraSpaceMatrix) .data ());
+
+	// Render
 
 	render (TraverseType::COLLISION);
 

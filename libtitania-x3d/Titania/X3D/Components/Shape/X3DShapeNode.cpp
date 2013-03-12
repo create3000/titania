@@ -139,6 +139,7 @@ X3DShapeNode::traverse (TraverseType type)
 			pick ();
 			break;
 		}
+		case TraverseType::NAVIGATION:
 		case TraverseType::COLLISION:
 		case TraverseType::COLLECT:
 		{

@@ -1947,6 +1947,7 @@
     <None Include="Examples\Approach\stage\wegweiser.png" />
     <None Include="Examples\Approach\preview.gif" />
     <None Include="Examples\Approach\index.wrl" />
+    <None Include="Tests\Shading\ComposedShader.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -1982,7 +1983,6 @@
     <Folder Include="Tests\PointingDeviceSensor\" />
     <Folder Include="Tests\Geometry2D\" />
     <Folder Include="Examples\Horten\" />
-    <Folder Include="Vattenfall\" />
     <Folder Include="Examples\Vattenfall\" />
     <Folder Include="Examples\ICTSpace\stage\" />
     <Folder Include="Examples\MetalBeast\stage\" />

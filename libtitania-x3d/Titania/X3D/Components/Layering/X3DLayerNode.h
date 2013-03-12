@@ -204,6 +204,9 @@ private:
 	camera ();
 	
 	void
+	navigation ();
+
+	void
 	collision ();
 	
 	void

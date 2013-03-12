@@ -1,0 +1,23 @@
+#X3D V3.0 utf8
+
+Shape {
+  appearance Appearance {
+    shaders ComposedShader {
+      initializeOnly SFInt32 name 1
+
+      language "GLSL"
+      parts ShaderPart {
+        url "data:text/plain,
+void main (void)  
+{     
+   gl_FragColor = vec4 (0.0, 1.0, 0.0, 1.0);  
+}
+"
+        type "FRAGMENT"
+      }
+    }
+  }
+  geometry Sphere {
+    radius 2
+  }
+}

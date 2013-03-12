@@ -53,6 +53,7 @@
 
 #include "../Stream/InputHTTPStream.h"
 
+#include <sstream>
 #include <fstream>
 #include <map>
 
@@ -119,15 +120,16 @@ public:
 
 private:
 
-	static const headers_type file_response_headers;
 	static const std::string  reasons [2];
 	static const std::string  empty_string;
 
-	std::ifstream* file_istream;
-	ihttpstream*   http_istream;
-	std::istream*  istream;
+	std::istringstream* data_istream;
+	std::ifstream*      file_istream;
+	ihttpstream*        http_istream;
+	std::istream*       istream;
 
 	headers_type file_request_headers;
+	headers_type file_response_headers;
 
 };
 

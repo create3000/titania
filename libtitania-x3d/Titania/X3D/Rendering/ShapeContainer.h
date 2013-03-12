@@ -77,9 +77,6 @@ public:
 	getDistance () const
 	{ return distance; }
 
-	void
-	multMatrix (const Matrix4f &);
-
 	bool
 	intersect (const Sphere3f &, std::deque <Vector3f> &) const;
 
@@ -97,7 +94,6 @@ private:
 	X3DFogObject* fog;
 	LightContainerArray localLights;
 
-	Matrix4f modelViewMatrix;
 	Matrix4f matrix;
 	float distance;
 

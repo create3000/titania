@@ -61,7 +61,6 @@ namespace X3D {
 
 X3DBrowserContext::X3DBrowserContext () :
 	X3DExecutionContext (),
-	           velocity (),
 	            sensors (),                                        // [out]    sensors
 	           reshaped (),                                        // [out]    reshape
 	      prepareEvents (),                                        // [out]    prepareEvents

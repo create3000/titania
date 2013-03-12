@@ -111,6 +111,7 @@ Viewport::traverse (TraverseType type)
 				
 			break;
 		}
+		case TraverseType::NAVIGATION:
 		case TraverseType::COLLISION:
 		case TraverseType::COLLECT:
 		{

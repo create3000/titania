@@ -65,6 +65,8 @@ class X3DRenderer :
 {
 public:
 
+	float distance;
+
 	X3DRenderer ();
 
 	virtual
@@ -97,14 +99,14 @@ private:
 	draw ();
 
 	void
+	navigation ();
+
+	void
 	collide ();
 
 	void
 	gravite ();
 	
-	void
-	multMatrix (const Matrix4f &);
-
 	void
 	clear ();
 

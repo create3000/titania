@@ -1,3 +1,25 @@
+2013-03-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFVec3.h:
+	* TraverseType.h:
+	* X3DRenderer.h:
+	* X3DRenderer.cpp:
+	* ShapeContainer.h:
+	* X3DBrowserContext.h:
+	* ShapeContainer.cpp:
+	* X3DFlyViewer.h:
+	* X3DBrowserContext.cpp:
+	* X3DFlyViewer.cpp:
+	* Viewport.cpp:
+	* X3DShapeNode.cpp:
+	* X3DLayerNode.h:
+	* Collision.cpp:
+	* X3DLayerNode.cpp:
+	* X3DGroupingNode.h:
+	* X3DGroupingNode.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp: 
+
 2013-03-10  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

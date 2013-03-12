@@ -293,26 +293,6 @@ X3DViewpointNode::transform ()
 	glMultMatrixf (getInverseTransformationMatrix () .data ());
 }
 
-Matrix4f
-X3DViewpointNode::getDownViewMatrix () const
-{
-	Matrix4f matrix = getModelViewMatrix ();
-
-	matrix .translate (getUserPosition ());
-	matrix .rotate (getUserOrientation () * Rotation4f (getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
-	
-	return matrix;
-}
-
-void
-X3DViewpointNode::down ()
-{
-	Matrix4f matrix = getDownViewMatrix ();
-	matrix .inverse ();
-	
-	glMultMatrixf (matrix .data ());
-}
-
 void
 X3DViewpointNode::dispose ()
 {

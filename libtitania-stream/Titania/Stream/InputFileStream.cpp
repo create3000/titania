@@ -35,27 +35,31 @@
 namespace titania {
 namespace basic {
 
-const ifilestream::headers_type ifilestream::file_response_headers;
-const std::string               ifilestream::reasons [2] = { "OK", "FAILED" };
-const std::string               ifilestream::empty_string;
+const std::string ifilestream::reasons [2] = { "OK", "FAILED" };
+const std::string ifilestream::empty_string;
 
 ifilestream::ifilestream (const http::method method, const basic::uri & url) :
-	        std::istream (),     
-	        file_istream (NULL), 
-	        http_istream (NULL), 
-	             istream (NULL), 
-	file_request_headers ()      
+	         std::istream (),     
+	         data_istream (NULL), 
+	         file_istream (NULL), 
+	         http_istream (NULL), 
+	              istream (NULL), 
+	 file_request_headers (),
+	file_response_headers ()      
 {
 	open (method, url);
 }
 
 ifilestream::ifilestream (ifilestream && other) :
-	        std::istream (),     
-	        file_istream (other .file_istream),
-	        http_istream (other .http_istream),
-	             istream (other .istream),
-	file_request_headers (std::move (other .file_request_headers))
+	         std::istream (),     
+	         data_istream (other .data_istream),
+	         file_istream (other .file_istream),
+	         http_istream (other .http_istream),
+	              istream (other .istream),
+	 file_request_headers (std::move (other .file_request_headers)),
+	file_response_headers (std::move (other .file_response_headers))
 {
+	other .data_istream = NULL;
 	other .file_istream = NULL;
 	other .http_istream = NULL;
 	other .istream      = NULL;
@@ -73,7 +77,24 @@ ifilestream::open (const http::method method, const basic::uri & url)
 {
 	close ();
 
-	if (url .is_local ())
+	if (url .scheme () == "data")
+	{
+		std::string::size_type first  = std::string::npos;
+		std::string::size_type length = 0;
+		std::string::size_type comma  = url .path () .find (',');
+		
+		if (comma not_eq std::string::npos)
+		{
+			first  = comma + 1;
+			length = url .path () .size () - first;
+		}
+		
+		file_response_headers .emplace_back ("Content-Type",   url .path () .substr (0, comma));
+		file_response_headers .emplace_back ("Content-Length", std::to_string (length));
+		
+		istream = data_istream = new std::istringstream (url .path () .substr (first));
+	}
+	else if (url .is_local ())
 	{
 		istream = file_istream = new std::ifstream ();
 
@@ -105,15 +126,15 @@ ifilestream::close ()
 {
 	if (http_istream)
 	{
-		http_istream -> close ();
 		http_istream = NULL;
 	}
 	else if (file_istream)
 	{
-		file_istream -> close ();
 		file_istream = NULL;
-
-		file_request_headers .clear ();
+	}
+	else if (data_istream)
+	{
+		data_istream = NULL;
 	}
 
 	delete istream;
@@ -164,7 +185,7 @@ ifilestream::status ()
 	if (http_istream)
 		return http_istream -> status ();
 
-	return *file_istream ? 200 : 0;
+	return *istream ? 200 : 0;
 }
 
 const std::string &
@@ -173,10 +194,7 @@ ifilestream::reason ()
 	if (http_istream)
 		return http_istream -> reason ();
 
-	if (file_istream)
-		return *file_istream ? reasons [0] : reasons [1];
-
-	return reasons [1];
+	return *istream ? reasons [0] : reasons [1];
 }
 
 // Buffer

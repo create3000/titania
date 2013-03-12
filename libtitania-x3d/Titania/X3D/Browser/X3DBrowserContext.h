@@ -85,7 +85,6 @@ class X3DBrowserContext :
 {
 public:
 
-	Vector3f velocity;
 	Output  sensors;
 	Output  reshaped;
 	Output  prepareEvents;

@@ -107,6 +107,7 @@ Collision::traverse (TraverseType type)
 {
 	switch (type)
 	{
+		case TraverseType::NAVIGATION:
 		case TraverseType::COLLISION:
 		{
 			if (enabled)

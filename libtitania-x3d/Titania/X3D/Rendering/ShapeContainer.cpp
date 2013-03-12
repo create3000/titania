@@ -59,12 +59,11 @@ namespace X3D {
 ShapeContainer::ShapeContainer (X3DShapeNode* shape,
                                 X3DFogObject* fog,
                                 const LightContainerArray & localLights) :
-	               shape (shape),                
-	                 fog (fog),                  
-	         localLights (localLights),          
-	     modelViewMatrix (ModelViewMatrix4f ()),
-	              matrix (modelViewMatrix),
-	            distance (getDistance (shape, matrix))                    
+	      shape (shape),                      
+	        fog (fog),                        
+	localLights (localLights),                
+	     matrix (ModelViewMatrix4f ()),       
+	   distance (getDistance (shape, matrix)) 
 { }
 
 void
@@ -72,19 +71,11 @@ ShapeContainer::assign (X3DShapeNode* shape,
                         X3DFogObject* fog,
                         const LightContainerArray & localLights)
 {
-	this -> shape            = shape;
-	this -> fog             = fog;
-	this -> localLights     = localLights;
-	this -> modelViewMatrix = ModelViewMatrix4f ();
-	this -> matrix          = this -> modelViewMatrix;
-	this -> distance        = getDistance (shape, this -> matrix);
-}
-
-void
-ShapeContainer::multMatrix (const Matrix4f & matrix)
-{
-	this -> matrix   = modelViewMatrix * matrix;
-	this -> distance = getDistance (shape, this -> matrix);
+	this -> shape       = shape;
+	this -> fog         = fog;
+	this -> localLights = localLights;
+	this -> matrix      = ModelViewMatrix4f ();
+	this -> distance    = getDistance (shape, this -> matrix);
 }
 
 bool
@@ -101,7 +92,7 @@ ShapeContainer::draw ()
 	if (distance < 0)
 	{
 		glLoadMatrixf (matrix .data ());
-		
+
 		if (ViewVolume () .intersect (shape -> getBBox ()))
 		{
 			for (const auto & light : localLights)

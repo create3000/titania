@@ -69,7 +69,7 @@ enum method
 
 };
 
-}     // http
+} // http
 
 class ihttpstream :
 	public std::istream

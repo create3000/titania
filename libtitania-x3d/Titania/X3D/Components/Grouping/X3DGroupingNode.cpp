@@ -184,13 +184,11 @@ X3DGroupingNode::traverse (TraverseType type)
 			break;
 		}
 		case TraverseType::CAMERA:
-		{
-			camera ();
-			break;
-		}
+		case TraverseType::NAVIGATION:
 		case TraverseType::COLLISION:
 		{
-			collision ();
+			for (const auto & child : childNodes)
+				child -> traverse (type);
 			break;
 		}
 		case TraverseType::COLLECT:
@@ -212,20 +210,6 @@ X3DGroupingNode::pick ()
 
 	for (const auto & child : basic::adapter (pointingDeviceSensors .crbegin (), pointingDeviceSensors .crend ()))
 		child -> pop ();
-}
-
-void
-X3DGroupingNode::camera ()
-{
-	for (const auto & child : childNodes)
-		child -> traverse (TraverseType::CAMERA);
-}
-
-void
-X3DGroupingNode::collision ()
-{
-	for (const auto & child : childNodes)
-		child -> traverse (TraverseType::COLLISION);
 }
 
 void

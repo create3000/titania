@@ -403,51 +403,25 @@ operator - (const SFVec3 <ValueType> & vector)
 template <class ValueType>
 inline
 ValueType
-operator + (const SFVec3 <ValueType> & a, const SFVec3 <ValueType> & b)
+operator + (const SFVec3 <ValueType> & lhs, const SFVec3 <ValueType> & rhs)
 {
-	return a .getValue () + b .getValue ();
+	return lhs .getValue () + rhs .getValue ();
 }
 
 template <class ValueType>
 inline
 ValueType
-operator + (const SFVec3 <ValueType> & a, const ValueType & b)
+operator + (const SFVec3 <ValueType> & lhs, const ValueType & rhs)
 {
-	return a .getValue () + b;
+	return lhs .getValue () + rhs;
 }
 
 template <class ValueType>
 inline
 ValueType
-operator + (const ValueType & a, const SFVec3 <ValueType> & b)
+operator + (const ValueType & lhs, const SFVec3 <ValueType> & rhs)
 {
-	return a + b .getValue ();
-}
-//@}
-
-//@{
-template <class ValueType>
-inline
-ValueType
-operator - (const SFVec3 <ValueType> & a, const SFVec3 <ValueType> & b)
-{
-	return a .getValue () - b .getValue ();
-}
-
-template <class ValueType>
-inline
-ValueType
-operator - (const SFVec3 <ValueType> & a, const ValueType & b)
-{
-	return a .getValue () - b;
-}
-
-template <class ValueType>
-inline
-ValueType
-operator - (const ValueType & a, const SFVec3 <ValueType> & b)
-{
-	return a - b .getValue ();
+	return lhs + rhs .getValue ();
 }
 //@}
 
@@ -455,25 +429,25 @@ operator - (const ValueType & a, const SFVec3 <ValueType> & b)
 template <class ValueType>
 inline
 ValueType
-operator * (const SFVec3 <ValueType> & a, const SFVec3 <ValueType> & b)
+operator - (const SFVec3 <ValueType> & lhs, const SFVec3 <ValueType> & rhs)
 {
-	return a .getValue () * b .getValue ();
+	return lhs .getValue () - rhs .getValue ();
 }
 
 template <class ValueType>
 inline
 ValueType
-operator * (const SFVec3 <ValueType> & a, const ValueType & b)
+operator - (const SFVec3 <ValueType> & lhs, const ValueType & rhs)
 {
-	return a .getValue () * b;
+	return lhs .getValue () - rhs;
 }
 
 template <class ValueType>
 inline
 ValueType
-operator * (const ValueType & a, const SFVec3 <ValueType> & b)
+operator - (const ValueType & lhs, const SFVec3 <ValueType> & rhs)
 {
-	return a * b .getValue ();
+	return lhs - rhs .getValue ();
 }
 //@}
 
@@ -481,17 +455,61 @@ operator * (const ValueType & a, const SFVec3 <ValueType> & b)
 template <class ValueType>
 inline
 ValueType
-operator * (const SFVec3 <ValueType> & a, const typename ValueType::value_type & b)
+operator * (const SFVec3 <ValueType> & lhs, const SFVec3 <ValueType> & rhs)
 {
-	return a .getValue () * b;
+	return lhs .getValue () * rhs .getValue ();
 }
 
 template <class ValueType>
 inline
 ValueType
-operator * (const typename ValueType::value_type & a, const SFVec3 <ValueType> & b)
+operator * (const SFVec3 <ValueType> & lhs, const ValueType & rhs)
 {
-	return a * b .getValue ();
+	return lhs .getValue () * rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator * (const ValueType & lhs, const SFVec3 <ValueType> & rhs)
+{
+	return lhs * rhs .getValue ();
+}
+//@}
+
+//@{
+template <class ValueType>
+inline
+ValueType
+operator * (const SFVec3 <ValueType> & lhs, const typename ValueType::value_type & rhs)
+{
+	return lhs .getValue () * rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator * (const typename ValueType::value_type & lhs, const SFVec3 <ValueType> & rhs)
+{
+	return lhs * rhs .getValue ();
+}
+//@}
+
+//@{
+template <class ValueType>
+inline
+ValueType
+operator / (const SFVec3 <ValueType> & lhs, const typename ValueType::value_type & rhs)
+{
+	return lhs .getValue () / rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator / (const typename ValueType::value_type & lhs, const SFVec3 <ValueType> & rhs)
+{
+	return lhs / rhs .getValue ();
 }
 //@}
 

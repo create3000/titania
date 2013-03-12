@@ -79,7 +79,7 @@ X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* navigationIn
 	      rotation (),               
 	     startTime (),               
 	        button (0),              
-	     shift_key (false),                 
+	     shift_key (false),          
 	        fly_id (),               
 	        pan_id (),               
 	       roll_id ()                
@@ -116,6 +116,8 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 		fromVector = toVector = Vector3f (event -> x, -event -> y, 0);
 	}
 
+	getBrowser () -> notify ();
+
 	return false;
 }
 
@@ -127,12 +129,12 @@ X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 	if (button == 1)
 	{
 		getBrowser () -> displayed .removeInterest (this, &X3DFlyViewer::display);
-		getBrowser () -> changed .processInterests ();
 	}
 
 	else if (button == 2)
 	{ }
 
+	getBrowser () -> notify ();
 	button = 0;
 
 	return false;
@@ -149,6 +151,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 
 		addFly ();
 
+		getBrowser () -> notify ();
 		return true;
 	}
 
@@ -160,6 +163,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 
 		addPan ();
 
+		getBrowser () -> notify ();
 		return true;
 	}
 
@@ -231,8 +235,9 @@ X3DFlyViewer::fly ()
 	speed_factor *= 1 - angle / M_PI1_2;
 
 	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
+	Vector3f   translation = orientation * direction * speed_factor / frameRate;
 
-	getBrowser () -> velocity = orientation * direction * speed_factor;
+	viewpoint -> positionOffset += getTranslation (translation);
 
 	return true;
 }
@@ -249,7 +254,7 @@ X3DFlyViewer::pan ()
 	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
 	Vector3f   translation = orientation * direction * speed_factor / frameRate;
 
-	viewpoint -> positionOffset += translation;
+	viewpoint -> positionOffset += getTranslation (translation);
 
 	return true;
 }
@@ -267,6 +272,60 @@ X3DFlyViewer::roll ()
 	viewpoint -> orientationOffset *= Rotation4f (rotation .axis (), rotation .angle () / frameRate);
 
 	return true;
+}
+
+Vector3f
+X3DFlyViewer::getTranslation (const Vector3f & translation) const
+{
+	glLoadIdentity ();
+
+	auto activeLayer = getBrowser () -> getExecutionContext () -> getActiveLayer ();
+	auto viewpoint   = activeLayer -> getViewpoint ();
+
+	Matrix4f cameraSpaceMatrix = viewpoint -> getModelViewMatrix ();
+
+	cameraSpaceMatrix .translate (viewpoint-> getUserPosition ());
+	cameraSpaceMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -translation));
+	glMultMatrixf (inverse (cameraSpaceMatrix) .data ());
+
+	activeLayer -> traverse (TraverseType::NAVIGATION);
+
+	//
+	auto navigationInfo = activeLayer -> getNavigationInfo ();
+	
+	float zFar            = navigationInfo -> getZFar ();
+	float collisionRadius = navigationInfo -> getCollisionRadius ();
+
+	float distance = activeLayer -> distance;
+	float length   = math::abs (translation);
+
+	if (zFar - distance > 0) // Are there polygons under the viewer
+	{
+		distance -= collisionRadius;
+
+		if (distance > 0)
+		{
+			// Move
+
+			if (length > distance)
+			{
+				// Collision: The ground is reached.
+				__LOG__ << std::endl;
+				return normalize (translation) * distance;
+			}
+
+			else
+				return translation;
+		}
+		else
+		{
+			// Collision
+			__LOG__ << std::endl;
+			return Vector3f ();
+		}
+	}
+	else
+		return translation;
 }
 
 void

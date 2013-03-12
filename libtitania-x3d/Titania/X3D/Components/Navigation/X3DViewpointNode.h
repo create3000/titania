@@ -102,9 +102,6 @@ public:
 	getModelViewMatrix () const
 	{ return modelViewMatrix; }
 
-	Matrix4f
-	getDownViewMatrix () const;
-
 	virtual
 	void
 	addToLayer (X3DLayerNode* const);
@@ -126,9 +123,6 @@ public:
 
 	void
 	transform ();
-
-   void
-	down ();
 
 	virtual
 	void

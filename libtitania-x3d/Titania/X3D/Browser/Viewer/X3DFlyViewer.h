@@ -107,6 +107,9 @@ private:
 
 	bool
 	roll ();
+	
+	Vector3f
+	getTranslation (const Vector3f &) const;
 
 	void
 	addFly ();

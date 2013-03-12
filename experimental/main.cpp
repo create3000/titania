@@ -818,15 +818,14 @@ main (int argc, char** argv)
 	#endif
 
 	{
-		//auto x = Rotation4f (1, 0, 0, 0.78539816);
-		//auto y = Rotation4f (0, 1, 0, 0.78539816);
-		//auto z = Rotation4f (0, 0, 1, 0.78539816);
+		basic::uri data = "data:text/plain,content";
 
-		//auto m = Matrix4f (y);
-
-		auto plane = Plane3f (Vector3f (3, 0, 0), Vector3f (0, 3, 0), Vector3f (1, 2, -1));
+		std::clog << data .scheme () << std::endl;
+		std::clog << data .path () << std::endl;
 		
-		std::clog << Vector3f (0,0,0) - plane .closest_point (Vector3f (0,0,0)) << std::endl;
+		
+		std::clog << basic::ifilestream (basic::http::method::GET, data) .rdbuf () << std::endl;
+
 	}
 
 	if (0)
