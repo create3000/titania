@@ -62,6 +62,8 @@
 namespace titania {
 namespace X3D {
 
+static constexpr size_t VERTEX_COUNT = 4;
+
 QuadSet::QuadSet (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DComposedGeometryNode ()                                                     
@@ -100,7 +102,7 @@ QuadSet::build ()
 	if (not _coord or not _coord -> point .size ())
 		return;
 
-	size_t reserve = _coord -> point .size () / 4 * 4;
+	size_t size = _coord -> point .size () / VERTEX_COUNT * VERTEX_COUNT;
 
 	// Color
 
@@ -109,14 +111,14 @@ QuadSet::build ()
 
 	if (_color)
 	{
-		_color -> resize (colorPerVertex ? reserve : reserve / 4);
-		getColors () .reserve (reserve);
+		_color -> resize (colorPerVertex ? size : size / VERTEX_COUNT);
+		getColors () .reserve (size);
 	}
 
 	else if (_colorRGBA)
 	{
-		_colorRGBA -> resize (colorPerVertex ? reserve : reserve / 4);
-		getColorsRGBA () .reserve (reserve);
+		_colorRGBA -> resize (colorPerVertex ? size : size / VERTEX_COUNT);
+		getColorsRGBA () .reserve (size);
 	}
 
 	// TextureCoordinate
@@ -125,27 +127,27 @@ QuadSet::build ()
 	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord .getValue ());
 
 	if (_textureCoordinate)
-		_textureCoordinate -> resize (reserve);
+		_textureCoordinate -> resize (size);
 
 	if (_textureCoordinate or not _textureCoordinateGenerator)
-		getTexCoord () .reserve (reserve);
+		getTexCoord () .reserve (size);
 
 	// Normal
 
 	auto _normal = x3d_cast <Normal*> (normal .getValue ());
 	
 	if (_normal)
-		_normal -> resize (normalPerVertex ? reserve : reserve / 4);
+		_normal -> resize (normalPerVertex ? size : size / VERTEX_COUNT);
 
-	getNormals () .reserve (reserve);
+	getNormals () .reserve (size);
 
 	// Vertices
 
-	getVertices () .reserve (reserve);
+	getVertices () .reserve (size);
 
 	// Fill GeometryNode
 
-	for (size_t index = 0, face = 0; index < reserve; ++ face)
+	for (size_t index = 0, face = 0; index < size; ++ face)
 	{
 		Vector3f    faceNormal;
 		SFColor     faceColor;
@@ -166,7 +168,7 @@ QuadSet::build ()
 				faceNormal = _normal -> vector [face];
 		}
 
-		for (size_t i = 0; i < 4; ++ i, ++ index)
+		for (size_t i = 0; i < VERTEX_COUNT; ++ i, ++ index)
 		{
 			if (_color)
 			{
@@ -222,17 +224,17 @@ QuadSet::buildNormals ()
 {
 	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
 	
-	size_t reserve = _coord -> point .size ();
+	size_t size = _coord -> point .size () / VERTEX_COUNT * VERTEX_COUNT;
 	
-	for (size_t index = 0; index < reserve; index += 4)
+	for (size_t index = 0; index < size; index += VERTEX_COUNT)
 	{
 		// Determine polygon normal.
 		Vector3f normal = math::normal <float> (_coord -> point [index],
-			                                     _coord -> point [index + 0],
 			                                     _coord -> point [index + 1],
-			                                     _coord -> point [index + 2]);
+			                                     _coord -> point [index + 2],
+			                                     _coord -> point [index + 3]);
 		
-		getNormals () .resize (getNormals () .size () + 4, normal);
+		getNormals () .resize (getNormals () .size () + VERTEX_COUNT, normal);
 	}
 }
 

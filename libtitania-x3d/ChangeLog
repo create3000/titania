@@ -1,5 +1,12 @@
 2013-03-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* QuadSet.h:
+	* TriangleSet.h:
+	* QuadSet.cpp:
+	* TriangleSet.cpp: 
+
+2013-03-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Box.cpp:
 	* Cone.cpp:
 	* LineSet.h:
