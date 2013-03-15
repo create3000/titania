@@ -1,5 +1,11 @@
 2013-03-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DShapeNode.h:
+	* X3DShapeNode.cpp:
+	* X3DTexture2DNode.cpp: 
+
+2013-03-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* QuadSet.h:
 	* TriangleSet.h:
 	* QuadSet.cpp:

@@ -114,8 +114,6 @@ private:
 	X3DAppearanceNode* _appearance;
 	X3DGeometryNode*   _geometry;
 
-	static const Matrix4d textureMatrix;
-
 };
 
 } // X3D

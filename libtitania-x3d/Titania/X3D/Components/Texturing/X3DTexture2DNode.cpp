@@ -214,6 +214,10 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 
 	bool compressed = false;
 
+	// Flip image in vertical direction
+
+	image .flip ();
+	
 	// scale image
 
 	scaleImage (image);
