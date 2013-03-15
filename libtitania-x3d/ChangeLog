@@ -1,3 +1,52 @@
+2013-03-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* X3DRenderer.h:
+	* X3DRenderer.cpp:
+	* ShapeContainer.h:
+	* CollisionShape.h:
+	* CollisionArray.h:
+	* Material.h:
+	* X3DBrowserContext.h:
+	* Color.h:
+	* ShapeContainer.cpp:
+	* Normal.h:
+	* Material.cpp:
+	* X3DBrowserContext.cpp:
+	* Color.cpp:
+	* ShaderPart.h:
+	* Normal.cpp:
+	* X3DFlyViewer.cpp:
+	* Appearance.cpp:
+	* ColorRGBA.h:
+	* QuadSet.h:
+	* Collision.h:
+	* ShaderPart.cpp:
+	* X3DShapeNode.cpp:
+	* Coordinate.h:
+	* ColorRGBA.cpp:
+	* QuadSet.cpp:
+	* X3DLayerNode.h:
+	* TwoSidedMaterial.h:
+	* Collision.cpp:
+	* jsfield.cpp:
+	* Coordinate.cpp:
+	* ComposedShader.h:
+	* X3DLayerNode.cpp:
+	* ImageTexture.cpp:
+	* ComposedShader.cpp:
+	* TwoSidedMaterial.cpp:
+	* IndexedFaceSet.h:
+	* X3DGeometryNode.h:
+	* TriangleSet2D.cpp:
+	* IndexedLineSet.cpp:
+	* X3DTexture2DNode.h:
+	* IndexedFaceSet.cpp:
+	* X3DGeometryNode.cpp:
+	* TextureCoordinate.h:
+	* RenderingProperties.cpp:
+	* TextureCoordinate.cpp: 
+
 2013-03-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

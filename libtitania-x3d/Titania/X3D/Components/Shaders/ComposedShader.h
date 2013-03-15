@@ -85,6 +85,19 @@ private:
 	void
 	initialize ();
 
+	void
+	set_parts ();
+
+	void
+	remove_parts ();
+
+	void
+	set_field (X3DFieldDefinition*);
+
+	GLuint               shaderProgram;
+	std::deque <GLuint>  shaderParts;
+	std::deque <size_t>  textureUnits;
+
 };
 
 } // X3D

@@ -155,23 +155,6 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 
 			break;
 		}
-		case X3DConstants::SFMatrix3f:
-		{
-			JSObject* value;
-
-			if (not JS_ValueToObject (context, *vp, &value))
-				return JS_FALSE;
-
-			if (not JS_InstanceOf (context, value, jsSFMatrix3f::getClass (), NULL))
-			{
-				JS_ReportError (context, "Type of argument is invalid - should be SFMatrix3f, is %s", JS_GetClass (context, value) -> name);
-				return JS_FALSE;
-			}
-
-			*(SFMatrix3f*) field = *(SFMatrix3f*) JS_GetPrivate (context, value);
-
-			break;
-		}
 		case X3DConstants::SFMatrix3d:
 		{
 			JSObject* value;
@@ -186,6 +169,23 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			}
 
 			*(SFMatrix3d*) field = *(SFMatrix3d*) JS_GetPrivate (context, value);
+
+			break;
+		}
+		case X3DConstants::SFMatrix3f:
+		{
+			JSObject* value;
+
+			if (not JS_ValueToObject (context, *vp, &value))
+				return JS_FALSE;
+
+			if (not JS_InstanceOf (context, value, jsSFMatrix3f::getClass (), NULL))
+			{
+				JS_ReportError (context, "Type of argument is invalid - should be SFMatrix3f, is %s", JS_GetClass (context, value) -> name);
+				return JS_FALSE;
+			}
+
+			*(SFMatrix3f*) field = *(SFMatrix3f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -769,11 +769,11 @@ JS_NewFieldValue (JSContext* context, X3DFieldDefinition* field, jsval* vp, cons
 		case X3DConstants::SFImage:
 			return jsSFImage::create (context, (SFImage*) field, vp, seal);
 
-		case X3DConstants::SFMatrix3f:
-			return jsSFMatrix3f::create (context, (SFMatrix3f*) field, vp, seal);
-
 		case X3DConstants::SFMatrix3d:
 			return jsSFMatrix3d::create (context, (SFMatrix3d*) field, vp, seal);
+
+		case X3DConstants::SFMatrix3f:
+			return jsSFMatrix3f::create (context, (SFMatrix3f*) field, vp, seal);
 
 		case X3DConstants::SFMatrix4d:
 			return jsSFMatrix4d::create (context, (SFMatrix4d*) field, vp, seal);

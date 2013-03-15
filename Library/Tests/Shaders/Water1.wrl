@@ -1,0 +1,148 @@
+#X3D V3.0 utf8
+
+META "title" "Water 1 Shader"
+
+PROTO ElapsedTime [
+  outputOnly SFTime time
+]
+{
+  DEF Timer TimeSensor {
+    cycleInterval 10
+    loop TRUE
+  }
+
+  DEF ElapsedTime Script {
+    inputOnly      SFTime set_time
+    outputOnly     SFTime time_changed IS time
+    inputOnly      SFTime set_startTime
+    initializeOnly SFTime startTime 0
+    inputOutput    SFTime start 0
+
+    url "vrmlscript:
+function initialize ()
+{
+	start = 0;
+}
+  
+function set_time (value)
+{
+	time_changed = value - startTime;
+}
+
+function set_startTime (value, time)
+{
+	startTime = time;
+}
+"
+  }
+
+  ROUTE Timer.time TO ElapsedTime.set_time
+  ROUTE ElapsedTime.start_changed TO ElapsedTime.set_startTime
+}
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  position 33.7769 17.0666 56.784
+  orientation -0.649105 0.758365 0.059544 0.54794
+  centerOfRotation 14.5 0 14.5
+}
+
+DEF Timer ElapsedTime { }
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      shaders DEF Water ComposedShader {
+        inputOutput SFTime  time 0
+        inputOutput SFInt32 numWaves 5
+        inputOutput MFFloat amplitude [ 0.1, 0.2, 0.1, 0.1, 0.1 ]
+        inputOutput MFFloat waveLength [ 1, 2, 3, 4, 5 ]
+        inputOutput MFFloat speed [ 1, 2, 1, 2, 1 ]
+        inputOutput MFVec2f direction [ 0.1 0.2, 0.3 0.4, 0.5 0.6, 0.7 0.8, 0.9 0.1 ]
+        inputOutput SFColor color 1 1 1
+        inputOutput SFFloat transparency 0
+        inputOutput SFColor bottomColor 0 0.5 1
+        inputOutput SFFloat bottomTransparency 0.5
+
+        language "GLSL"
+        parts [
+          ShaderPart {
+            url "data:text/plain,
+uniform float time;
+uniform int   numWaves;
+uniform float amplitude [8];
+uniform float waveLength [8];
+uniform float speed [8];
+uniform vec2  direction [8];
+
+varying vec3 position;
+
+const float PI = 3.14159;
+
+float wave (int i, float x, float y)
+{
+	float frequency = 2 * PI / waveLength [i];
+	float phase     = speed [i] * frequency;
+	float theta     = dot (direction [i], vec2 (x, y));
+	return amplitude [i] * sin (theta * frequency + time * phase);
+}
+
+float waveHeight (float x, float y)
+{
+	float height = 0.0;
+	for (int i = 0; i < numWaves; ++ i)
+		height += wave (i, x, y);
+	return height;
+}
+
+void main()
+{
+	vec4 pos    = gl_Vertex;
+	pos .y      = waveHeight (pos .x, pos .z);
+	position    = pos .xyz / pos .w;
+	gl_Position = gl_ModelViewProjectionMatrix * pos;
+}
+"
+          }
+          ShaderPart {
+            type "FRAGMENT"
+            url "data:text/plain,
+uniform int   numWaves;
+uniform float amplitude [8];
+uniform vec3  color;
+uniform float transparency;
+uniform vec3  bottomColor;
+uniform float bottomTransparency;
+
+varying vec3 position;
+
+void main ()
+{
+	float height = 0;
+	for (int i = 0; i < numWaves; ++ i)
+		height += amplitude [i];
+
+	float alpha = ((height + position .y) / (2 * height));
+	
+	vec4 topColor    = vec4 (color, alpha * (1 - transparency));
+	vec4 bottomColor = vec4 (bottomColor, alpha * (1 - bottomTransparency));
+
+	gl_FragColor = mix (bottomColor, topColor, alpha);
+}
+"
+          }
+        ]
+      }
+    }
+    geometry ElevationGrid {
+      solid FALSE
+      xDimension 30
+      zDimension 30
+    }
+  }
+}
+
+ROUTE Timer.time TO Water.set_time

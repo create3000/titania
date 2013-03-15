@@ -74,7 +74,8 @@ X3DBrowserContext::X3DBrowserContext () :
 	              clock (new chrono::system_clock <time_type> ()), 
 	             router (),                                        
 	             layers (),                                        
-	             lights (),                                                                              
+	             lights (),
+	       textureUnits (),                                                                             
 	                  x (0),                                       
 	                  y (0),                                       
 	     enabledSensors (),                                        
@@ -114,6 +115,11 @@ X3DBrowserContext::initialize ()
 
 	for (int32_t i = 0; i < renderingProperties -> maxLights; ++ i)
 		lights .push (GL_LIGHT0 + i);
+
+	// TextureUnits
+
+	for (int32_t i = 1; i < renderingProperties -> textureUnits; ++ i)
+		textureUnits .push (i);	
 
 	// Initialize OpenGL context
 

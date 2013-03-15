@@ -137,9 +137,9 @@ RenderingProperties::initialize ()
 		GLint glPolygonSmooth;
 		GLint glTextureMemory = -1;
 
-		glGetIntegerv (GL_MAX_TEXTURE_SIZE,        &glMaxTextureSize);
-		glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS, &glTextureUnits);
-		glGetIntegerv (GL_MAX_LIGHTS,              &glMaxLights);
+		glGetIntegerv (GL_MAX_TEXTURE_SIZE,                 &glMaxTextureSize);
+		glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &glTextureUnits);
+		glGetIntegerv (GL_MAX_LIGHTS,                       &glMaxLights);
 
 		glGetIntegerv (GL_RED_BITS,   &glRedBits);
 		glGetIntegerv (GL_GREEN_BITS, &glGreen);
@@ -215,7 +215,7 @@ RenderingProperties::set_enabled ()
 {
 	if (enabled)
 	{
-		getBrowser () -> initialized .addInterest (this, &RenderingProperties::reset);
+		getBrowser () -> initialized   .addInterest (this, &RenderingProperties::reset);
 		getBrowser () -> prepareEvents .addInterest (this, &RenderingProperties::prepare);
 		getBrowser () -> displayed     .addInterest (this, &RenderingProperties::display);
 

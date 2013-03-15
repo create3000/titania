@@ -79,12 +79,6 @@ ShapeContainer::assign (X3DShapeNode* shape,
 }
 
 bool
-ShapeContainer::intersect (const Sphere3f & sphere) const
-{
-	return shape -> intersect (matrix, sphere);
-}
-
-bool
 ShapeContainer::draw ()
 {
 	bool drawn = false;

@@ -65,7 +65,12 @@ Material::Material (X3DExecutionContext* const executionContext) :
 	       shininess (0.2),                                                 // SFFloat [in,out] shininess         0.2                [0,1]
 	   specularColor (),                                                    // SFColor [in,out] specularColor     0 0 0              [0,1]
 	    transparency (),                                                    // SFFloat [in,out] transparency      0                  [0,1]
-	           alpha (1)                                                    
+	           alpha (1),                                                   
+	  glAmbientColor (),                                                    
+	  glDiffuseColor (),                                                    
+	 glSpecularColor (),                                                    
+	 glEmissiveColor (),                                                    
+	     glShininess ()                                                     
 {
 	setComponent ("Shape");
 	setTypeName ("Material");

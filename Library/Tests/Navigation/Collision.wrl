@@ -5,8 +5,8 @@ META "title" "Collision"
 Transform {
   children [
     NavigationInfo {
-      type "FLY"
       avatarSize [ 0.5, 1.6, 0.75 ]
+      type "FLY"
     }
     DirectionalLight {
       direction 0 -1 0
@@ -34,19 +34,41 @@ Transform {
         }
       ]
     }
-    Transform {
-      rotation 0 1 0 1.5708
-      children Shape {
-        appearance Appearance {
-          texture ImageTexture {
-            url "../images/image.png"
+    DEF Collider Collision {
+      children Transform {
+        rotation 0 1 0 1.5708
+        children Shape {
+          appearance Appearance {
+            texture ImageTexture {
+              url "../images/image.png"
+            }
           }
-        }
-        geometry Box {
-          size 3 3 3
-          solid FALSE
+          geometry Box {
+            size 3 3 3
+            solid FALSE
+          }
         }
       }
     }
   ]
 }
+
+DEF Debug Script {
+  inputOnly SFBool set_active
+  inputOnly SFTime set_time
+
+  url "vrmlscript:
+function set_active (value)
+{
+	print ('isActive: ', value);
+}
+
+function set_time (value)
+{
+	print ('collideTime: ', value);
+}
+"
+}
+
+ROUTE Collider.isActive TO Debug.set_active
+ROUTE Collider.collideTime TO Debug.set_time

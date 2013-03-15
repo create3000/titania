@@ -1,0 +1,66 @@
+#X3D V3.0 utf8
+
+META "title" "ComposedShader"
+
+Transform {
+  translation -2 0 0
+  children Shape {
+    appearance Appearance {
+      shaders ComposedShader {
+        initializeOnly MFColorRGBA color 1 1 0 1
+
+        language "GLSL"
+        parts ShaderPart {
+          type "FRAGMENT"
+          url "data:text/plain,
+uniform vec4 color [2];
+
+void main (void)  
+{     
+   gl_FragColor = color [0];  
+}
+"
+        }
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+Transform {
+  translation 2 0 0
+  children Shape {
+    appearance Appearance {
+      shaders ComposedShader {
+        inputOutput SFNode myTexture ImageTexture {
+          url "../images/image.png"
+        }
+
+        language "GLSL"
+        parts [
+          ShaderPart {
+            url "data:text/plain,
+void main (void)
+{
+	gl_Position     = ftransform ();
+	gl_TexCoord [0] = gl_MultiTexCoord0;
+}
+"
+          }
+          ShaderPart {
+            type "FRAGMENT"
+            url "data:text/plain,
+uniform sampler2D myTexture;
+
+void main (void)
+{
+	gl_FragColor = texture2D (myTexture, gl_TexCoord [0] .xy);
+}
+"
+          }
+        ]
+      }
+    }
+    geometry Sphere { }
+  }
+}

@@ -73,5 +73,17 @@ Color::create (X3DExecutionContext* const executionContext) const
 	return new Color (executionContext);
 }
 
+void
+Color::resize (size_t size)
+{
+	if (color .size ())
+	{
+		if (color .size () < size)
+			color .resize (size, color .back ());
+	}
+	else
+		color .resize (size, SFColor (1, 1, 1));
+}
+
 } // X3D
 } // titania

@@ -123,6 +123,9 @@ Appearance::isTransparent () const
 
 	if (_texture and _texture -> isTransparent ())
 		return true;
+		
+	if (_shaders .size ())
+		return true;
 
 	return false;
 }
@@ -159,7 +162,17 @@ Appearance::set_textureTransform ()
 
 void
 Appearance::set_shaders ()
-{ }
+{
+	_shaders .clear ();
+	
+	for (const auto & shader : shaders)
+	{
+		auto _shader = x3d_cast <X3DShaderNode*> (shader .getValue ());
+		
+		if (_shader)
+			_shaders .emplace_back (_shader);
+	}
+}
 
 void
 Appearance::draw ()

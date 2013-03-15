@@ -67,19 +67,13 @@
     <None Include="Tests\Basic\USE-Spheres.wrl" />
     <None Include="Tests\Networking\Inline-Sphere.wrl" />
     <None Include="Tests\Geometry3D\Cylinder.wrl" />
-    <None Include="Tests\Geometry3D\IndexedFaced.wrl" />
-    <None Include="Tests\Geometry3D\IndexedFaced.wrl.gz" />
-    <None Include="Tests\Geometry3D\IndexedFaced2.wrl" />
     <None Include="Tests\EnvironmentalEffects\Background.wrl" />
     <None Include="Tests\EnvironmentalEffects\Background2.wrl" />
     <None Include="Tests\EnvironmentalEffects\LocalFog.wrl" />
-    <None Include="Geometry3D\Box.wrl" />
     <None Include="Tests\Basic\EmptyWorld.wrl" />
     <None Include="Tests\Basic\NodeIndex.wrl" />
     <None Include="Tests\Basic\FieldTypes.wrl" />
     <None Include="Tests\Scripting\Script-vrmlscript1.wrl" />
-    <None Include="Models\Beethoven.wrl" />
-    <None Include="Models\gift.wrl" />
     <None Include="Tests\3rd Party\5000faces.x3dv" />
     <None Include="Tests\3rd Party\Figure27.2ProximitySensorDungeonSlidingDoors.x3dv" />
     <None Include="Tests\3rd Party\Normal.wrl" />
@@ -181,7 +175,6 @@
     <None Include="Materials\tropical.wrl" />
     <None Include="Materials\winter.wrl" />
     <None Include="Tests\Interpolation\NormalInterpolator.wrl" />
-    <None Include="Tests\Geometry3D\IndexedFaced16.wrl" />
     <None Include="Tests\PROTO\Geometry.wrl" />
     <None Include="Tests\PROTO\Material.wrl" />
     <None Include="Tests\PROTO\NestedProtos.wrl" />
@@ -200,8 +193,6 @@
     <None Include="Tests\Texturing\images\colors\red.png" />
     <None Include="Tests\Texturing\images\colors\white.png" />
     <None Include="Tests\Texturing\images\colors\yellow.png" />
-    <None Include="Models\shamrock.wrl" />
-    <None Include="Models\spongetri4.wrl" />
     <None Include="Models\Animals\bird.wrl" />
     <None Include="Models\Animals\shell.wrl" />
     <None Include="Models\Buildings\Barcelona.wrl" />
@@ -357,8 +348,6 @@
     <None Include="Tests\Text\test.wrl" />
     <None Include="Tests\Text\RandomText.wrl" />
     <None Include="Tests\Text\HelloWorld.wrl" />
-    <None Include="Protos\Geometry2D\RegularPolygon2D\RegularPolygon2D.py" />
-    <None Include="Protos\Geometry2D\RegularPolygon2D\RegularPolygon2D.wrl" />
     <None Include="Tests\Text\Text.wrl" />
     <None Include="Tests\Grouping\AddChildren.wrl" />
     <None Include="Tests\Grouping\Children.wrl" />
@@ -1947,7 +1936,30 @@
     <None Include="Examples\Approach\stage\wegweiser.png" />
     <None Include="Examples\Approach\preview.gif" />
     <None Include="Examples\Approach\index.wrl" />
-    <None Include="Tests\Shading\ComposedShader.wrl" />
+    <None Include="Tests\Shaders\ComposedShader.wrl" />
+    <None Include="Tests\Shaders\Water1.wrl" />
+    <None Include="Tests\Shaders\images\lostvalley_down.png" />
+    <None Include="Tests\Shaders\images\lostvalley_east.png" />
+    <None Include="Tests\Shaders\images\lostvalley_north.png" />
+    <None Include="Tests\Shaders\images\lostvalley_south.png" />
+    <None Include="Tests\Shaders\images\lostvalley_up.png" />
+    <None Include="Tests\Shaders\images\lostvalley_west.png" />
+    <None Include="Tests\Shaders\Phong.wrl" />
+    <None Include="Tests\Shaders\Lambert.wrl" />
+    <None Include="Prototypes\Geometry2D\RegularPolygon2D\RegularPolygon2D.py" />
+    <None Include="Prototypes\Geometry2D\RegularPolygon2D\RegularPolygon2D.wrl" />
+    <None Include="Models\People\Beethoven.wrl" />
+    <None Include="Models\Household\gift.wrl" />
+    <None Include="Models\Symbols\shamrock.wrl" />
+    <None Include="Models\Science\spongetri4.wrl" />
+    <None Include="Tests\Shape\TwoSidedMaterial.wrl" />
+    <None Include="Tests\Shaders\Test.wrl" />
+    <None Include="Tests\images\image1.png" />
+    <None Include="Tests\Geometry3D\IndexedFaceSet.wrl" />
+    <None Include="Tests\Geometry3D\IndexedFaceSet.wrl.gz" />
+    <None Include="Tests\Geometry3D\IndexedFaceSet16.wrl" />
+    <None Include="Tests\Geometry3D\IndexedFaceSet2.wrl" />
+    <None Include="Tests\CADGeometry\QuadSet.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -1956,7 +1968,6 @@
     <Folder Include="Tests\Networking\" />
     <Folder Include="Tests\EnvironmentalEffects\" />
     <Folder Include="Models\" />
-    <Folder Include="Geometry3D\" />
     <Folder Include="Tests\Scripting\" />
     <Folder Include="Tests\1st\" />
     <Folder Include="Tests\3rd Party\rocket\" />
@@ -1974,9 +1985,6 @@
     <Folder Include="Tests\EnvironmentalSensors\" />
     <Folder Include="Models\Backgrounds\" />
     <Folder Include="Tests\Text\" />
-    <Folder Include="Protos\" />
-    <Folder Include="Protos\Geometry2D\" />
-    <Folder Include="Protos\Geometry2D\RegularPolygon2D\" />
     <Folder Include="Examples\BIC\stage\" />
     <Folder Include="Examples\BIC\stage\worlds\" />
     <Folder Include="Examples\Cathedral\stage\" />
@@ -1994,6 +2002,14 @@
     <Folder Include="Examples\TikiWorld\stage\" />
     <Folder Include="Examples\TipperTruck\stage\" />
     <Folder Include="Examples\Approach\stage\" />
+    <Folder Include="Tests\Shaders\images\" />
+    <Folder Include="Prototypes\" />
+    <Folder Include="Prototypes\Geometry2D\" />
+    <Folder Include="Prototypes\Geometry2D\RegularPolygon2D\" />
+    <Folder Include="Prototypes\Fields\" />
+    <Folder Include="Models\Science\" />
+    <Folder Include="Tests\Shape\" />
+    <Folder Include="Tests\CADGeometry\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

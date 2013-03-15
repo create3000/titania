@@ -51,14 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY3D_INDEXED_FACE_SET_H__
 #define __TITANIA_X3D_COMPONENTS_GEOMETRY3D_INDEXED_FACE_SET_H__
 
-#include "../Rendering/Color.h"
-#include "../Rendering/ColorRGBA.h"
-#include "../Rendering/Coordinate.h"
-#include "../Rendering/Normal.h"
 #include "../Rendering/X3DComposedGeometryNode.h"
-#include "../Texturing/TextureCoordinate.h"
-#include "../Texturing/TextureCoordinateGenerator.h"
-
 #include <array>
 
 namespace titania {
@@ -126,9 +119,6 @@ private:
 
 	TriangleArray
 	tesselate (const Vertices & polygon);
-
-	void
-	buildTexCoord (const PolygonArray &);
 
 	void
 	buildNormals (const PolygonArray &);

@@ -36,5 +36,6 @@
     <None Include="screenshots.xcf" />
     <None Include="icon32.png" />
     <None Include="icon128.png" />
+    <None Include="x3d2wrl.pl" />
   </ItemGroup>
 </Project>

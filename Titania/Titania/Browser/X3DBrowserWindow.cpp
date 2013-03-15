@@ -53,8 +53,8 @@
 #include "../Configuration/config.h"
 #include <Titania/X3D/Components/Networking/X3DUrlObject.h>
 
-#include <Titania/gzstream.h>
 #include <Titania/OS.h>
+#include <Titania/gzstream.h>
 #include <fstream>
 #include <iostream>
 
@@ -67,7 +67,7 @@ X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 	X3DBrowserInterface (NULL)                                                                
 {
 	// Options
- 
+
 	parseOptions (argc, argv);
 
 	// First time initialization
@@ -75,9 +75,9 @@ X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 	os::system ("mkdir", "-p", os::home () + "/.config/Titania");
 
 	// User interface
- 
+
 	setTransparent (true);
-	
+
 	// Add window to application at first. The order is important here.
 	// add_window (getWindow ());
 
@@ -112,7 +112,7 @@ X3DBrowserWindow::initialize ()
 	Gtk::Settings::get_default () -> property_gtk_button_images ()     = true;
 	Gtk::Settings::get_default () -> property_gtk_toolbar_style ()     = Gtk::TOOLBAR_ICONS;
 	Gtk::Settings::get_default () -> property_gtk_toolbar_icon_size () = Gtk::ICON_SIZE_SMALL_TOOLBAR;
- 
+
 	// FileOpenDialog
 	getFileOpenDialog () .set_default_response (Gtk::RESPONSE_OK);
 	getFileOpenDialog () .add_button ("gtk-open", Gtk::RESPONSE_OK);
@@ -236,10 +236,8 @@ X3DBrowserWindow::restoreSession ()
 	if (getConfig () .hasItem ("enableInlineViewpoints"))
 		getEnableInlineViewpointsMenuItem () .set_active (getConfig () .boolean ("enableInlineViewpoints"));
 
-
-
 	// Restore Session
-	
+
 	Configuration sessions = getConfig () .getDirectory ("Sessions");
 
 	size_t numSessions = sessions .getDirectories () .size ();
@@ -459,10 +457,11 @@ X3DBrowserWindow::insertPage (size_t position)
 	if (getFooterMenuItem () .get_active ())
 		browserWidget -> getFooter () .show ();
 
-	// Rubberband
-	browserWidget -> getBrowser () -> getBrowserOptions () -> rubberBand = getRubberbandMenuItem () .get_active ();
+	// Rendering properties
+	browserWidget -> getBrowser () -> getRenderingProperties () -> enabled = getRenderingPropertiesMenuItem () .get_active ();
 
-	// Inline viewpoints
+	// Browser options
+	browserWidget -> getBrowser () -> getBrowserOptions () -> rubberBand             = getRubberbandMenuItem () .get_active ();
 	browserWidget -> getBrowser () -> getBrowserOptions () -> enableInlineViewpoints = getEnableInlineViewpointsMenuItem () .get_active ();
 }
 

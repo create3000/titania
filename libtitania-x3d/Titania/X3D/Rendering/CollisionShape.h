@@ -53,14 +53,13 @@
 
 #include "../Components/Navigation/Collision.h"
 #include "../Components/Shape/X3DShapeNode.h"
+#include "../Rendering/CollisionArray.h"
 
 #include "../Types/Geometry.h"
 #include "../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
-
-typedef std::deque <Collision*> CollisionArray;
 
 class CollisionShape
 {
@@ -74,6 +73,10 @@ public:
 	const float &
 	getDistance () const
 	{ return distance; }
+	
+	const CollisionArray &
+	getCollisions ()
+	{ return collisions; }
 
 	bool
 	intersect (const Sphere3f &) const;

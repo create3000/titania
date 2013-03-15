@@ -530,6 +530,7 @@
     <None Include="Titania\X3D\Bits\TraverseType.h" />
     <None Include="Titania\X3D\Types\Speed.h" />
     <None Include="Titania\X3D\Rendering\CollisionShape.h" />
+    <None Include="Titania\X3D\Rendering\CollisionArray.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

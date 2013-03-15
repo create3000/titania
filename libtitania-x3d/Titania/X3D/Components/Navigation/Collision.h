@@ -70,6 +70,9 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+	
+	void
+	set_active (bool value);
 
 	virtual
 	void

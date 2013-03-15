@@ -59,18 +59,30 @@ TwoSidedMaterial::TwoSidedMaterial (X3DExecutionContext* const executionContext)
 	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DMaterialNode (),                                                    
 	    ambientIntensity (0.2),                                                 // SFFloat [in,out] ambientIntensity      0.2                [0,1]
+	        diffuseColor (0.8, 0.8, 0.8),                                       // SFColor [in,out] diffuseColor          0.8 0.8 0.8        [0,1]
+	       emissiveColor (),                                                    // SFColor [in,out] emissiveColor         0 0 0              [0,1]
+	           shininess (0.2),                                                 // SFFloat [in,out] shininess             0.2                [0,1]
+	   separateBackColor (),                                                    // SFBool  [in,out] separateBackColor     FALSE
+	       specularColor (),                                                    // SFColor [in,out] specularColor         0 0 0              [0,1]
+	        transparency (),                                                    // SFFloat [in,out] transparency          0                  [0,1]
 	backAmbientIntensity (0.2),                                                 // SFFloat [in,out] backAmbientIntensity  0.2                [0,1]
 	    backDiffuseColor (0.8, 0.8, 0.8),                                       // SFColor [in,out] backDiffuseColor      0.8 0.8 0.8        [0,1]
 	   backEmissiveColor (),                                                    // SFColor [in,out] backEmissiveColor     0 0 0              [0,1]
 	       backShininess (0.2),                                                 // SFFloat [in,out] backShininess         0.2                [0,1]
 	   backSpecularColor (),                                                    // SFColor [in,out] backSpecularColor     0 0 0              [0,1]
 	    backTransparency (),                                                    // SFFloat [in,out] backTransparency      0                  [0,1]
-	        diffuseColor (0.8, 0.8, 0.8),                                       // SFColor [in,out] diffuseColor          0.8 0.8 0.8        [0,1]
-	       emissiveColor (),                                                    // SFColor [in,out] emissiveColor         0 0 0              [0,1]
-	           shininess (0.2),                                                 // SFFloat [in,out] shininess             0.2                [0,1]
-	   separateBackColor (),                                                    // SFBool  [in,out] separateBackColor     FALSE
-	       specularColor (),                                                    // SFColor [in,out] specularColor         0 0 0              [0,1]
-	        transparency ()                                                     // SFFloat [in,out] transparency          0                  [0,1]
+	               alpha (1),                                                   
+	      glAmbientColor (),                                                    
+	      glDiffuseColor (),                                                    
+	     glSpecularColor (),                                                    
+	     glEmissiveColor (),                                                    
+	         glShininess (),                                                    
+	           backAlpha (1),                                                   
+	  glBackAmbientColor (),                                                    
+	  glBackDiffuseColor (),                                                    
+	 glBackSpecularColor (),                                                    
+	 glBackEmissiveColor (),                                                    
+	     glBackShininess ()                                                     
 {
 	setComponent ("Shape");
 	setTypeName ("TwoSidedMaterial");
@@ -98,8 +110,90 @@ TwoSidedMaterial::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+TwoSidedMaterial::initialize ()
+{
+	X3DMaterialNode::initialize ();
+	eventsProcessed ();
+}
+
+void
+TwoSidedMaterial::eventsProcessed ()
+{
+	X3DMaterialNode::eventsProcessed ();
+
+	// Front
+
+	alpha = 1 - math::clamp <float> (transparency, 0, 1);
+
+	glAmbientColor [0] = ambientIntensity * diffuseColor .getR ();
+	glAmbientColor [1] = ambientIntensity * diffuseColor .getG ();
+	glAmbientColor [2] = ambientIntensity * diffuseColor .getB ();
+	glAmbientColor [3] = alpha;
+
+	glDiffuseColor [0] = diffuseColor .getR ();
+	glDiffuseColor [1] = diffuseColor .getG ();
+	glDiffuseColor [2] = diffuseColor .getB ();
+	glDiffuseColor [3] = alpha;
+
+	glSpecularColor [0] = specularColor .getR ();
+	glSpecularColor [1] = specularColor .getG ();
+	glSpecularColor [2] = specularColor .getB ();
+	glSpecularColor [3] = alpha;
+
+	glEmissiveColor [0] = emissiveColor .getR ();
+	glEmissiveColor [1] = emissiveColor .getG ();
+	glEmissiveColor [2] = emissiveColor .getB ();
+	glEmissiveColor [3] = alpha;
+
+	glShininess = math::clamp <float> (shininess, 0, 1) * 128;
+
+	// Back
+
+	backAlpha = 1 - math::clamp <float> (backTransparency, 0, 1);
+
+	glBackAmbientColor [0] = backAmbientIntensity * backDiffuseColor .getR ();
+	glBackAmbientColor [1] = backAmbientIntensity * backDiffuseColor .getG ();
+	glBackAmbientColor [2] = backAmbientIntensity * backDiffuseColor .getB ();
+	glBackAmbientColor [3] = backAlpha;
+
+	glBackDiffuseColor [0] = backDiffuseColor .getR ();
+	glBackDiffuseColor [1] = backDiffuseColor .getG ();
+	glBackDiffuseColor [2] = backDiffuseColor .getB ();
+	glBackDiffuseColor [3] = backAlpha;
+
+	glBackSpecularColor [0] = backSpecularColor .getR ();
+	glBackSpecularColor [1] = backSpecularColor .getG ();
+	glBackSpecularColor [2] = backSpecularColor .getB ();
+	glBackSpecularColor [3] = backAlpha;
+
+	glBackEmissiveColor [0] = backEmissiveColor .getR ();
+	glBackEmissiveColor [1] = backEmissiveColor .getG ();
+	glBackEmissiveColor [2] = backEmissiveColor .getB ();
+	glBackEmissiveColor [3] = backAlpha;
+
+	glBackShininess = math::clamp <float> (backShininess, 0, 1) * 128;
+}
+
+void
 TwoSidedMaterial::draw ()
-{ }
+{
+	glEnable (GL_LIGHTING);
+
+	glMaterialfv (GL_FRONT, GL_AMBIENT,   glAmbientColor);
+	glMaterialfv (GL_FRONT, GL_DIFFUSE,   glDiffuseColor);
+	glMaterialfv (GL_FRONT, GL_SPECULAR,  glSpecularColor);
+	glMaterialfv (GL_FRONT, GL_EMISSION,  glEmissiveColor);
+	glMaterialf  (GL_FRONT, GL_SHININESS, glShininess);
+
+	glMaterialfv (GL_BACK, GL_AMBIENT,   glBackAmbientColor);
+	glMaterialfv (GL_BACK, GL_DIFFUSE,   glBackDiffuseColor);
+	glMaterialfv (GL_BACK, GL_SPECULAR,  glBackSpecularColor);
+	glMaterialfv (GL_BACK, GL_EMISSION,  glBackEmissiveColor);
+	glMaterialf  (GL_BACK, GL_SHININESS, glBackShininess);
+
+	glColor4fv (glEmissiveColor); // for lines and points
+
+}
 
 } // X3D
 } // titania

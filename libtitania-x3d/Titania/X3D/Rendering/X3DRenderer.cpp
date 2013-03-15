@@ -168,11 +168,14 @@ X3DRenderer::X3DRenderer () :
 	             X3DNode (),  
 	              shapes (),  
 	   transparentShapes (),  
+	     collisionShapes (),  
+	    activeCollisions (),  
 	         depthBuffer (),  
 	               speed (),  
 	            distance (),  
 	     numOpaqueShapes (0), 
-	numTransparentShapes (0)  
+	numTransparentShapes (0), 
+	  numCollisionShapes (0)  
 { }
 
 void
@@ -210,7 +213,7 @@ X3DRenderer::addShape (X3DShapeNode* shape)
 void
 X3DRenderer::addCollision (X3DShapeNode* shape)
 {
-	CollisionArray collisions;
+	const CollisionArray & collisions = getCurrentLayer () -> getCollisions ();
 
 	if (numCollisionShapes < collisionShapes .size ())
 		collisionShapes [numCollisionShapes] -> assign (shape, collisions);
@@ -541,27 +544,85 @@ X3DRenderer::collide ()
 {
 	// Collision
 
-	// Get NavigationInfo values
+	std::deque <Collision*> collisions;
 
-	auto  navigationInfo  = getCurrentNavigationInfo ();
-	float collisionRadius = navigationInfo -> getCollisionRadius ();
+	Sphere3f collisionSphere (getCurrentNavigationInfo () -> getCollisionRadius () * 1.1f, Vector3f ());
 
+	for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
 	{
-		bool     intersected = false;
-		Sphere3f collisionSphere (collisionRadius, Vector3f ());
-
-		for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
+		if (shape -> intersect (collisionSphere))
 		{
-			if ((intersected = shape -> intersect (collisionSphere)))
-				break;
+			std::copy (shape -> getCollisions () .begin (), 
+			           shape -> getCollisions () .end (),
+			           std::back_inserter (collisions));
 		}
-
-		//		if (intersected)
-		//		{
-		//			__LOG__ << SFTime (chrono::now ()) << " : " << intersected << " : " << collisionNormal .size () << std::endl;
-		//		}
 	}
+
+	// Set isActive to FALSE for appropriate nodes
+	
+	std::deque <Collision*> difference;
+
+	if (collisions .size ())
+	{
+		std::set_difference (activeCollisions .begin (), activeCollisions .end (),
+		                     collisions .begin (), collisions .end (),
+		                     std::back_inserter (difference));
+	}
+	else
+		difference = activeCollisions;
+		
+	for (const auto & collisions : difference)
+		collisions -> set_active (false);
+
+	// Set isActive to TRUE for appropriate nodes
+
+	activeCollisions = std::move (collisions);
+
+	for (const auto & collision : activeCollisions)
+		collision -> set_active (true);
 }
+
+//void
+//X3DBrowserContext::motionNotifyEvent ()
+//{
+//	// Set isOver to FALSE for appropriate nodes
+//
+//	std::deque <X3DBaseNode*> difference;
+//
+//	if (getHits () .size ())
+//	{
+//		std::set_difference (overSensors .begin (), overSensors .end (),
+//		                     getHits () .front () -> nodes .begin (), getHits () .front () -> nodes .end (),
+//		                     std::back_inserter (difference));
+//	}
+//	else
+//		difference = overSensors;
+//
+//	for (const auto & node : difference)
+//	{
+//		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+//
+//		if (pointingDeviceSensorNode)
+//			pointingDeviceSensorNode -> set_over (false);
+//	}
+//
+//	// Set isOver to TRUE for appropriate nodes
+//
+//	if (getHits () .size ())
+//	{
+//		overSensors = getHits () .front () -> nodes;
+//
+//		for (const auto & node : overSensors)
+//		{
+//			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+//
+//			if (pointingDeviceSensorNode)
+//				pointingDeviceSensorNode -> set_over (true);
+//		}
+//	}
+//	else
+//		overSensors .clear ();
+//}
 
 void
 X3DRenderer::gravite ()

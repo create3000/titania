@@ -53,8 +53,8 @@
 
 #include "../Base/Output.h"
 #include "../Components/Core/X3DNode.h"
-#include "../Rendering/ShapeContainer.h"
 #include "../Rendering/CollisionShape.h"
+#include "../Rendering/ShapeContainer.h"
 
 #include <memory>
 
@@ -71,7 +71,7 @@ public:
 	virtual
 	void
 	initialize ();
-	
+
 	float
 	getDistance () const
 	{ return distance; }
@@ -113,15 +113,16 @@ private:
 
 	void
 	gravite ();
-	
+
 	void
 	clear ();
 
 	class DepthBuffer;
 
-	ShapeContainerArray shapes;
-	ShapeContainerArray transparentShapes;
-	CollisionShapeArray collisionShapes;
+	ShapeContainerArray     shapes;
+	ShapeContainerArray     transparentShapes;
+	CollisionShapeArray     collisionShapes;
+	std::deque <Collision*> activeCollisions;
 
 	std::unique_ptr <DepthBuffer> depthBuffer;
 	float                         speed;

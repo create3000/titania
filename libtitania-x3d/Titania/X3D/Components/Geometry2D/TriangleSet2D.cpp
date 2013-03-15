@@ -115,7 +115,7 @@ TriangleSet2D::buildTexCoord ()
 	float    Ssize;
 	int      Sindex, Tindex;
 	
-	getTexCoordParam (min, Ssize, Sindex, Tindex);
+	getTexCoordParams (min, Ssize, Sindex, Tindex);
 
 	for (const auto & point : getVertices ())
 	{

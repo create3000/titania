@@ -67,6 +67,10 @@ public:
 	SFBool               repeatT;
 	SFNode <X3DBaseNode> textureProperties;
 
+	GLenum
+	getTextureId () const
+	{ return textureId; }
+
 	bool
 	isTransparent () const
 	{ return transparent; }

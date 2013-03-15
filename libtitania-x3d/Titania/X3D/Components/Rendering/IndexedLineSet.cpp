@@ -161,8 +161,7 @@ IndexedLineSet::set_coordIndex ()
 		if (polylines .size ())
 		{
 			// Resize coord .point if to small
-			if (_coord -> point .size () < (size_t) numPoints)
-				_coord -> point .resize (numPoints);
+			_coord -> resize (numPoints);
 
 			set_colorIndex ();
 		}
@@ -207,13 +206,11 @@ IndexedLineSet::set_colorIndex ()
 		// Resize color .color if to small.
 		if (_color)
 		{
-			if (_color -> color .size () < (size_t) numColors)
-				_color -> color .resize (numColors, _color -> color .back ());
+			_color -> resize (numColors);
 		}
 		else if (_colorRGBA)
 		{
-			if (_colorRGBA -> color .size () < (size_t) numColors)
-				_colorRGBA -> color .resize (numColors, _colorRGBA -> color .back ());
+			_colorRGBA -> resize (numColors);
 		}
 	}
 }

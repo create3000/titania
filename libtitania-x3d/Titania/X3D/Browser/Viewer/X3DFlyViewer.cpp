@@ -298,7 +298,7 @@ X3DFlyViewer::getTranslation (const Vector3f & translation) const
 			if (length > distance)
 			{
 				// Collision: The ground is reached.
-				__LOG__ << std::endl;
+				//__LOG__ << std::endl;
 				return normalize (translation) * distance;
 			}
 
@@ -308,7 +308,7 @@ X3DFlyViewer::getTranslation (const Vector3f & translation) const
 		else
 		{
 			// Collision
-			__LOG__ << std::endl;
+			//__LOG__ << std::endl;
 			return Vector3f ();
 		}
 	}

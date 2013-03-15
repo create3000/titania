@@ -825,7 +825,9 @@ main (int argc, char** argv)
 		
 		
 		std::clog << basic::ifilestream (basic::http::method::GET, data) .rdbuf () << std::endl;
-
+		
+		size_t i = 8;
+		std::clog << (i / 4 * 4) << std::endl;
 	}
 
 	if (0)

@@ -68,6 +68,9 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+	
+	void
+	resize (size_t);
 
 };
 

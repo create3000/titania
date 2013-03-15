@@ -73,5 +73,17 @@ Normal::create (X3DExecutionContext* const executionContext) const
 	return new Normal (executionContext);
 }
 
+void
+Normal::resize (size_t size)
+{
+	if (vector .size ())
+	{
+		if (vector .size () < size)
+			vector .resize (size, vector .back ());
+	}
+	else
+		vector .resize (size, SFVec3f (0, 0, 1));
+}
+
 } // X3D
 } // titania

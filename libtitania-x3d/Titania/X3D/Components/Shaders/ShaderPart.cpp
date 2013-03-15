@@ -59,14 +59,16 @@ ShaderPart::ShaderPart (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DNode (),                                                    
 	X3DUrlObject (),                                                    
-	        type ("VERTEX")                                             // SFString [ ]type  "VERTEX"        ["VERTEX"|"FRAGMENT"]
+	        type ("VERTEX"),                                            // SFString [ ]type  "VERTEX"        ["VERTEX"|"FRAGMENT"]
+	    shaderId (0),                                                   
+	       valid (false)                                                
 {
 	setComponent ("Shaders");
 	setTypeName ("ShaderPart");
 
 	addField (inputOutput,    "metadata", metadata);
-	addField (inputOutput,    "url",      url);
 	addField (initializeOnly, "type",     type);
+	addField (inputOutput,    "url",      url);
 }
 
 X3DBaseNode*
@@ -80,15 +82,95 @@ ShaderPart::initialize ()
 {
 	X3DNode::initialize ();
 	X3DUrlObject::initialize ();
+
+	url .addInterest (this, &ShaderPart::set_url);
+
+	if (glXGetCurrentContext ())
+	{
+		shaderId = glCreateShader (getShaderType ());
+
+		requestImmediateLoad ();
+	}
+}
+
+GLenum
+ShaderPart::getShaderType () const
+{
+	if (type == "FRAGMENT")
+		return GL_FRAGMENT_SHADER;
+
+	if (type == "VERTEX")
+		return GL_VERTEX_SHADER;
+
+	return GL_VERTEX_SHADER;
 }
 
 void
 ShaderPart::requestImmediateLoad ()
-{ }
+{
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+		return;
+
+	setLoadState (IN_PROGRESS_STATE);
+
+	for (const auto & URL : url)
+	{
+		try
+		{
+			std::string shaderSource = loadDocument (URL);
+			const char* string       = shaderSource .c_str ();
+
+			glShaderSource  (shaderId, 1, &string, NULL);
+			glCompileShader (shaderId);
+
+			glGetShaderiv (shaderId, GL_COMPILE_STATUS, &valid);
+			
+			std::clog << getInfoLog ();
+
+			if (not valid)
+				continue;
+		}
+		catch (const X3DError & error)
+		{
+			std::clog << error .what () << std::endl;
+		}
+	}
+
+	setLoadState (valid ? COMPLETE_STATE : FAILED_STATE);	
+}
+
+std::string
+ShaderPart::getInfoLog () const
+{
+	GLint infoLogLength;
+
+	glGetShaderiv (shaderId, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+	if (infoLogLength)
+	{
+		char infoLog [infoLogLength];
+		glGetShaderInfoLog (shaderId, infoLogLength, 0, infoLog);
+
+		return infoLog;
+	}
+
+	return std::string ();
+}
+
+void
+ShaderPart::set_url ()
+{
+	setLoadState (NOT_STARTED_STATE);
+
+	requestImmediateLoad ();
+}
 
 void
 ShaderPart::dispose ()
 {
+	if (shaderId)
+		glDeleteShader (shaderId);
+
 	X3DUrlObject::dispose ();
 	X3DNode::dispose ();
 }

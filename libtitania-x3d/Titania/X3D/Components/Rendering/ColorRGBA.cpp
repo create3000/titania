@@ -73,5 +73,17 @@ ColorRGBA::create (X3DExecutionContext* const executionContext) const
 	return new ColorRGBA (executionContext);
 }
 
+void
+ColorRGBA::resize (size_t size)
+{
+	if (color .size ())
+	{
+		if (color .size () < size)
+			color .resize (size, color .back ());
+	}
+	else
+		color .resize (size, SFColorRGBA (1, 1, 1, 1));
+}
+
 } // X3D
 } // titania

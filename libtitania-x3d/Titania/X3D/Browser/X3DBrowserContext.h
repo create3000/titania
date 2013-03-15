@@ -79,6 +79,7 @@ typedef chrono::clock_base <time_type> X3DClock;
 typedef std::stack <X3DRenderer*>      RendererStack;
 typedef std::stack <X3DLayerNode*>     LayerStack;
 typedef std::stack <GLenum>            LightStack;
+typedef std::stack <size_t>            TextureUnitStack;
 
 class X3DBrowserContext :
 	public X3DExecutionContext
@@ -141,6 +142,11 @@ public:
 
 	LightStack &
 	getLights () { return lights; }
+
+	///  @name Texture unit stack handling
+
+	TextureUnitStack &
+	getTextureUnits () { return textureUnits; }
 
 	///  @name NavigationInfo handling
 
@@ -234,6 +240,7 @@ private:
 	RendererStack             renderers;
 	LayerStack                layers;
 	LightStack                lights;
+	TextureUnitStack          textureUnits;
 	double                    x;
 	double                    y;
 	std::deque <X3DBaseNode*> enabledSensors;

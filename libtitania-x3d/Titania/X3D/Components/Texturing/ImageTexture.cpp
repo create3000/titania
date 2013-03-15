@@ -86,7 +86,7 @@ ImageTexture::initialize ()
 
 	url .addInterest (this, &ImageTexture::set_url);
 
-	set_url ();
+	requestImmediateLoad ();
 }
 
 void

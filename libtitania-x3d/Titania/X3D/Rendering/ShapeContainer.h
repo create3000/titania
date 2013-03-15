@@ -79,9 +79,6 @@ public:
 	{ return distance; }
 
 	bool
-	intersect (const Sphere3f &) const;
-
-	bool
 	draw ();	
 
 

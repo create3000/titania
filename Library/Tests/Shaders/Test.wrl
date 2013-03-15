@@ -1,0 +1,45 @@
+#X3D V3.0 utf8
+
+META "title" "Test Shader"
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      shaders ComposedShader {
+        inputOutput MFNode myTexture [
+          ImageTexture {
+            url "../images/image.png"
+          }
+          ImageTexture {
+            url "../images/image1.png"
+          }
+        ]
+
+        language "GLSL"
+        parts [
+          ShaderPart {
+            url "data:text/plain,
+void main (void)
+{
+	gl_Position     = ftransform ();
+	gl_TexCoord [0] = gl_MultiTexCoord0;
+}
+"
+          }
+          ShaderPart {
+            type "FRAGMENT"
+            url "data:text/plain,
+uniform sampler2D myTexture [2];
+
+void main (void)
+{
+	gl_FragColor = texture2D (myTexture [1], gl_TexCoord [0] .xy);
+}
+"
+          }
+        ]
+      }
+    }
+    geometry Sphere { }
+  } 
+}

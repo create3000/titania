@@ -90,6 +90,7 @@ private:
 	void
 	initialize ();
 
+	virtual
 	void
 	eventsProcessed ();
 

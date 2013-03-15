@@ -53,6 +53,12 @@
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/Tesselator.h"
+#include "../Rendering/Color.h"
+#include "../Rendering/ColorRGBA.h"
+#include "../Rendering/Coordinate.h"
+#include "../Rendering/Normal.h"
+#include "../Texturing/TextureCoordinate.h"
+#include "../Texturing/TextureCoordinateGenerator.h"
 #include <iostream>
 
 namespace titania {
@@ -66,7 +72,7 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	             colorIndex (),                                                    // MFInt32 [ ]  colorIndex         [ ]          [0,∞) or -1
 	            normalIndex (),                                                    // MFInt32 [ ]  normalIndex        [ ]          [0,∞) or -1
 	             coordIndex (),                                                    // MFInt32 [ ]  coordIndex         [ ]          [0,∞) or -1
-               numPolygons ()
+	            numPolygons ()                                                     
 {
 	setComponent ("Geometry3D");
 	setTypeName ("IndexedFaceSet");
@@ -118,30 +124,28 @@ IndexedFaceSet::set_coordIndex ()
 	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
 
 	int32_t numPoints = -1;
+
 	numPolygons = 0;
 
 	if (coordIndex .size ())
 	{
 		// Determine number of points and polygons.
-		
+
 		for (const auto & index : coordIndex)
 		{
 			numPoints = std::max <int32_t> (numPoints, index);
-			
+
 			if (index == -1)
 				++ numPolygons;
 		}
 
 		++ numPoints;
-		
+
 		if (coordIndex .back () >= 0)
 			++ numPolygons;
 
 		// Resize coord .point if to small
-		if (_coord -> point .size () < (size_t) numPoints)
-		{
-			_coord -> point .resize (numPoints);
-		}
+		_coord -> resize (numPoints);
 
 		set_texCoordIndex ();
 		set_colorIndex    ();
@@ -174,8 +178,7 @@ IndexedFaceSet::set_texCoordIndex ()
 		++ numTexCoord;
 
 		// Resize textureCoordinate .point if to small.
-		if (_textureCoordinate -> point .size () < (size_t) numTexCoord)
-			_textureCoordinate -> point .resize (numTexCoord, _textureCoordinate -> point .back ());
+		_textureCoordinate -> resize (numTexCoord);
 	}
 }
 
@@ -202,6 +205,7 @@ IndexedFaceSet::set_colorIndex ()
 				colorIndex .push_back (i);
 			}
 		}
+		
 
 		// Determine number of used colors.
 
@@ -217,13 +221,11 @@ IndexedFaceSet::set_colorIndex ()
 		// Resize color .color if to small.
 		if (_color)
 		{
-			if (_color -> color .size () < (size_t) numColors)
-				_color -> color .resize (numColors, _color -> color .back ());
+			_color -> resize (numColors);
 		}
 		else if (_colorRGBA)
 		{
-			if (_colorRGBA -> color .size () < (size_t) numColors)
-				_colorRGBA -> color .resize (numColors, _colorRGBA -> color .back ());
+			_colorRGBA -> resize (numColors);
 		}
 	}
 }
@@ -263,8 +265,7 @@ IndexedFaceSet::set_normalIndex ()
 		++ numNormals;
 
 		// Resize normal .vector if to small.
-		if (_normal -> vector .size () < (size_t) numNormals)
-			_normal -> vector .resize (numNormals, _normal -> vector .back ());
+		_normal -> resize (numNormals);
 	}
 }
 
@@ -287,6 +288,17 @@ IndexedFaceSet::build ()
 
 	size_t reserve = numTriangles * 3;
 
+	// Color
+
+	auto _color     = x3d_cast <Color*> (color .getValue ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
+
+	if (_color)
+		getColors () .reserve (reserve);
+
+	else if (_colorRGBA)
+		getColorsRGBA () .reserve (reserve);
+
 	// TextureCoordinate
 
 	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord .getValue ());
@@ -295,25 +307,14 @@ IndexedFaceSet::build ()
 	if (_textureCoordinate or not _textureCoordinateGenerator)
 		getTexCoord () .reserve (reserve);
 
-	// Color
-
-	auto _color     = x3d_cast <Color*> (color .getValue ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
-	
-	if (_color)
-		getColors () .reserve (reserve);
-		
-	else if (_colorRGBA)
-		getColorsRGBA () .reserve (reserve);
-
 	// Normal
 
 	auto _normal = x3d_cast <Normal*> (normal .getValue ());
 
 	getNormals () .reserve (reserve);
-	
+
 	// Vertices
-	
+
 	getVertices () .reserve (reserve);
 
 	// Fill GeometryNode
@@ -389,11 +390,11 @@ IndexedFaceSet::build ()
 
 	// Autogenerate normal and texCoord if not specified
 
+	if (not _textureCoordinate and not _textureCoordinateGenerator)
+		buildTexCoord ();
+
 	if (not _normal)
 		buildNormals (polygons);
-
-	if (not _textureCoordinate and not _textureCoordinateGenerator)
-		buildTexCoord (polygons);
 
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setVertexMode (GL_TRIANGLES);
@@ -422,7 +423,7 @@ IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numTriangles)
 			coordIndex .push_back (-1);
 
 		// Construct triangle array and determine the number of used points.
-		size_t  i = 0;
+		size_t i = 0;
 
 		Vertices vertices;
 
@@ -449,14 +450,14 @@ IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numTriangles)
 						                                   std::move (TriangleArray ({ std::move (Triangle ({ { vertices [0],
 						                                                                                        vertices [1],
 						                                                                                        vertices [2] } })) })) }));
-						                                                                                        
+
 						++ numTriangles;
 					}
 					else if (vertices .size () > 3)
 					{
 						// Tesselate polygons.
 						polygons .emplace_back (Polygon ({ vertices, std::move (tesselate (vertices)) }));
-						
+
 						numTriangles += polygons .back () .triangles .size ();
 					}
 
@@ -547,72 +548,38 @@ IndexedFaceSet::tesselate (const Vertices & vertices)
 	return triangles;
 }
 
-void
-IndexedFaceSet::buildTexCoord (const PolygonArray & polygons)
-{
-	Box3f    bbox = getBBox ();
-	Vector3f min  = bbox .min ();
-
-	float Xsize = bbox .size () .x ();
-	float Ysize = bbox .size () .y ();
-	float Zsize = bbox .size () .z ();
-
-	float Ssize;
-	int   Sindex, Tindex;
-
-	if ((Xsize >= Ysize)and (Xsize >= Zsize))
-	{
-		// X size largest
-		Ssize = Xsize; Sindex = 0;
-
-		if (Ysize >= Zsize)
-			Tindex = 1;
-		else
-			Tindex = 2;
-	}
-	else if ((Ysize >= Xsize)and (Ysize >= Zsize))
-	{
-		// Y size largest
-		Ssize = Ysize; Sindex = 1;
-
-		if (Xsize >= Zsize)
-			Tindex = 0;
-		else
-			Tindex = 2;
-	}
-	else
-	{
-		// Z is the largest
-		Ssize = Zsize; Sindex = 2;
-
-		if (Xsize >= Ysize)
-			Tindex = 0;
-		else
-			Tindex = 1;
-	}
-
-	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
-
-	for (const auto & polygon : polygons)
-	{
-		for (const auto & triangle : polygon .triangles)
-		{
-			for (const auto & i : triangle)
-			{
-				const Vector3f & point = _coord -> point [coordIndex [i]];
-
-				getTexCoord () .emplace_back ((point [Sindex] - min [Sindex]) / Ssize,
-				                              (point [Tindex] - min [Tindex]) / Ssize);
-			}
-		}
-	}
-}
+//void
+//IndexedFaceSet::buildTexCoord (const PolygonArray & polygons)
+//{
+//	Vector3f min;
+//
+//	float Ssize;
+//	int   Sindex, Tindex;
+//
+//	getTexCoordParams (min, Ssize, Sindex, Tindex);
+//
+//	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
+//
+//	for (const auto & polygon : polygons)
+//	{
+//		for (const auto & triangle : polygon .triangles)
+//		{
+//			for (const auto & i : triangle)
+//			{
+//				const Vector3f & point = _coord -> point [coordIndex [i]];
+//
+//				getTexCoord () .emplace_back ((point [Sindex] - min [Sindex]) / Ssize,
+//				                              (point [Tindex] - min [Tindex]) / Ssize);
+//			}
+//		}
+//	}
+//}
 
 void
 IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 {
 	std::vector <Vector3f> normals;
-	
+
 	normals .reserve (coordIndex .size ());
 
 	NormalIndex normalIndex;

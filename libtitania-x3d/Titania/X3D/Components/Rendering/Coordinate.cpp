@@ -73,5 +73,12 @@ Coordinate::create (X3DExecutionContext* const executionContext) const
 	return new Coordinate (executionContext);
 }
 
+void
+Coordinate::resize (size_t size)
+{
+	if (point .size () < size)
+		point .resize (size);
+}
+
 } // X3D
 } // titania

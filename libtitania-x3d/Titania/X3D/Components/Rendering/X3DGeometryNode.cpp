@@ -185,7 +185,26 @@ X3DGeometryNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere) co
 }
 
 void
-X3DGeometryNode::getTexCoordParam (Vector3f & min, float & Ssize, int & Sindex, int & Tindex)
+X3DGeometryNode::buildTexCoord ()
+{
+	Vector3f min;
+
+	float Ssize;
+	int   Sindex, Tindex;
+
+	getTexCoordParams (min, Ssize, Sindex, Tindex);
+
+	getTexCoord () .reserve (getVertices () .size ());
+
+	for (const auto & vertex : getVertices ())
+	{
+		getTexCoord () .emplace_back ((vertex [Sindex] - min [Sindex]) / Ssize,
+		                              (vertex [Tindex] - min [Tindex]) / Ssize);
+	}
+}
+
+void
+X3DGeometryNode::getTexCoordParams (Vector3f & min, float & Ssize, int & Sindex, int & Tindex)
 {
 	Box3f bbox = getBBox ();
 

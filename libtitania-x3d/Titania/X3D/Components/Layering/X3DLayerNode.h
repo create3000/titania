@@ -54,6 +54,7 @@
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
 #include "../../Rendering/LightContainerArray.h"
+#include "../../Rendering/CollisionArray.h"
 #include "../../Rendering/X3DRenderer.h"
 #include "../EnvironmentalEffects/LocalFog.h"
 #include "../Grouping/Group.h"
@@ -156,6 +157,11 @@ public:
 	const LightContainerArray &
 	getGlobalLights () { return globalLights; }
 
+	///  @name Collision handling
+
+	CollisionArray &
+	getCollisions () { return collisions; }
+
 	///  @name ...
 
 	virtual
@@ -238,6 +244,7 @@ private:
 	LightContainerArray localLights;
 	LightContainerArray cachedLocalLights;
 	LightContainerArray globalLights;
+	CollisionArray      collisions;
 
 	SFNode <Group> group;
 

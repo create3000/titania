@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Layering/X3DLayerNode.h"
 
 namespace titania {
 namespace X3D {
@@ -69,14 +70,14 @@ Collision::Collision (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput,    "metadata",       metadata);
 	addField (inputOutput,    "enabled",        enabled);
-	addField (initializeOnly, "bboxSize",       bboxSize);
+	addField (outputOnly,     "isActive",       isActive);
 	addField (outputOnly,     "collideTime",    collideTime);
-	addField (initializeOnly, "proxy",          proxy);
+	addField (initializeOnly, "bboxSize",       bboxSize);
 	addField (initializeOnly, "bboxCenter",     bboxCenter);
+	addField (initializeOnly, "proxy",          proxy);
 	addField (inputOnly,      "addChildren",    addChildren);
 	addField (inputOnly,      "removeChildren", removeChildren);
 	addField (inputOutput,    "children",       children);
-	addField (outputOnly,     "isActive",       isActive);
 	addFieldAlias ("collide", "enabled");
 }
 
@@ -94,6 +95,18 @@ Collision::initialize ()
 	proxy .addInterest (this, &Collision::set_proxy);
 
 	set_proxy ();
+}
+
+void
+Collision::set_active (bool value)
+{
+	if (isActive not_eq value)
+	{
+		isActive = value;
+
+		if (isActive)
+			collideTime = getCurrentTime ();
+	}
 }
 
 void
@@ -116,7 +129,13 @@ Collision::traverse (TraverseType type)
 					_proxy -> traverse (type);
 
 				else
+				{
+					getCurrentLayer () -> getCollisions () .emplace_back (this);
+
 					X3DGroupingNode::traverse (type);
+
+					getCurrentLayer () -> getCollisions () .pop_back ();
+				}
 			}
 
 			break;

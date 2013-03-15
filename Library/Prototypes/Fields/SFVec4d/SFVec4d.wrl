@@ -1,0 +1,45 @@
+#VRML V2.0 utf8
+
+PROTO SFVec4d [
+  exposedField SFVec4d keyValue 0 0 0 0
+  exposedField SFTime  startTime 0
+  eventOut     SFVec4d value_changed
+]
+{
+  PROTO Fields [
+    exposedField SFVec4d keyValue 0 0 0 0
+    exposedField SFTime  startTime 0
+  ]
+  {
+    Group { }
+  }
+
+  DEF Fields Fields {
+    keyValue IS keyValue
+    startTime IS startTime
+  }
+
+  DEF SFVec4d Script {
+    eventIn  SFTime  set_startTime
+    eventOut SFVec4d value_changed IS value_changed
+    field    SFNode  fields USE Fields
+
+    url "vrmlscript:
+function initialize ()
+{
+	if (fields .startTime)
+		set_startTime (0, 0);
+}
+
+function set_startTime (value, time)
+{
+	value_changed = fields .keyValue;
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Fields.startTime_changed TO SFVec4d.set_startTime
+}
+
+

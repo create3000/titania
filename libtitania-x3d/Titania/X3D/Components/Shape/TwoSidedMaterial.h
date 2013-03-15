@@ -62,18 +62,18 @@ class TwoSidedMaterial :
 public:
 
 	SFFloat ambientIntensity;
-	SFFloat backAmbientIntensity;
-	SFColor backDiffuseColor;
-	SFColor backEmissiveColor;
-	SFFloat backShininess;
-	SFColor backSpecularColor;
-	SFFloat backTransparency;
 	SFColor diffuseColor;
 	SFColor emissiveColor;
 	SFFloat shininess;
 	SFBool  separateBackColor;
 	SFColor specularColor;
 	SFFloat transparency;
+	SFFloat backAmbientIntensity;
+	SFColor backDiffuseColor;
+	SFColor backEmissiveColor;
+	SFFloat backShininess;
+	SFColor backSpecularColor;
+	SFFloat backTransparency;
 
 	TwoSidedMaterial (X3DExecutionContext* const);
 
@@ -89,6 +89,31 @@ public:
 	virtual
 	void
 	draw ();
+
+
+private:
+
+	virtual
+	void
+	initialize ();
+
+	virtual
+	void
+	eventsProcessed ();
+
+	float   alpha;
+	GLfloat glAmbientColor [4];
+	GLfloat glDiffuseColor [4];
+	GLfloat glSpecularColor [4];
+	GLfloat glEmissiveColor [4];
+	GLfloat glShininess;
+
+	float   backAlpha;
+	GLfloat glBackAmbientColor [4];
+	GLfloat glBackDiffuseColor [4];
+	GLfloat glBackSpecularColor [4];
+	GLfloat glBackEmissiveColor [4];
+	GLfloat glBackShininess;
 
 };
 

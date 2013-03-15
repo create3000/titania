@@ -1,0 +1,45 @@
+#VRML V2.0 utf8
+
+PROTO SFNode [
+  exposedField SFNode keyValue NULL
+  exposedField SFTime startTime 0
+  eventOut     SFNode value_changed
+]
+{
+  PROTO Fields [
+    exposedField SFNode keyValue NULL
+    exposedField SFTime startTime 0
+  ]
+  {
+    Group { }
+  }
+
+  DEF Fields Fields {
+    keyValue IS keyValue
+    startTime IS startTime
+  }
+
+  DEF SFNode Script {
+    eventIn  SFTime set_startTime
+    eventOut SFNode value_changed IS value_changed
+    field    SFNode fields USE Fields
+
+    url "vrmlscript:
+function initialize ()
+{
+	if (fields .startTime)
+		set_startTime (0, 0);
+}
+
+function set_startTime (value, time)
+{
+	value_changed = fields .keyValue;
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Fields.startTime_changed TO SFNode.set_startTime
+}
+
+

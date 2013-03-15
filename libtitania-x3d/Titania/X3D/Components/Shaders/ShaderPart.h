@@ -69,6 +69,14 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+	
+	GLint
+	getShaderId () const
+	{ return shaderId; }
+
+	bool
+	isValid () const
+	{ return valid; }
 
 	virtual
 	void
@@ -83,7 +91,18 @@ private:
 
 	void
 	initialize ();
+		
+	GLenum
+	getShaderType () const;
+	
+	std::string
+	getInfoLog () const;
+	
+	void
+	set_url ();
 
+	GLuint shaderId;
+	GLint valid;
 };
 
 } // X3D

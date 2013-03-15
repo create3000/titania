@@ -1,0 +1,45 @@
+#VRML V2.0 utf8
+
+PROTO MFMatrix3f [
+  exposedField MFMatrix3f keyValue [ ]
+  exposedField SFTime     startTime 0
+  eventOut     MFMatrix3f value_changed
+]
+{
+  PROTO Fields [
+    exposedField MFMatrix3f keyValue [ ]
+    exposedField SFTime     startTime 0
+  ]
+  {
+    Group { }
+  }
+
+  DEF Fields Fields {
+    keyValue IS keyValue
+    startTime IS startTime
+  }
+
+  DEF MFMatrix3f Script {
+    eventIn  SFTime     set_startTime
+    eventOut MFMatrix3f value_changed IS value_changed
+    field    SFNode     fields USE Fields
+
+    url "vrmlscript:
+function initialize ()
+{
+	if (fields .startTime)
+		set_startTime (0, 0);
+}
+
+function set_startTime (value, time)
+{
+	value_changed = fields .keyValue;
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Fields.startTime_changed TO MFMatrix3f.set_startTime
+}
+
+
