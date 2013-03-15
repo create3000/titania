@@ -396,6 +396,7 @@ IndexedFaceSet::build ()
 	if (not _normal)
 		buildNormals (polygons);
 
+	addElement (getVertices () .size ());
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setVertexMode (GL_TRIANGLES);
 	setSolid (solid);

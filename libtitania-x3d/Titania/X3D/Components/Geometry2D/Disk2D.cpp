@@ -123,6 +123,7 @@ Disk2D::build ()
 				getVertices () .emplace_back (vertex * radius);
 		}
 
+		addElement (getVertices () .size ());
 		setVertexMode (GL_LINE_LOOP);
 		setSolid (false);
 		
@@ -155,13 +156,13 @@ Disk2D::build ()
 				getVertices () .emplace_back (vertex * radius);
 		}
 
-		setElements (elements);
+		addElement (getVertices () .size ());
 		setVertexMode (properties -> getVertexMode ());
 		setSolid (true);
 
 		if (not solid)
 			addMirrorVertices (true);
-		
+
 		return;
 	}
 	
@@ -209,7 +210,7 @@ Disk2D::build ()
 	getVertices () .emplace_back (getVertices () [0]);
 	getVertices () .emplace_back (getVertices () [1]);
 	
-	setElements (elements);
+	addElement (getVertices () .size ());
 	setVertexMode (GL_QUAD_STRIP);
 	setSolid (true);
 	

@@ -79,6 +79,7 @@ Polypoint2D::build ()
 	for (const auto & vertex : point)
 		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
 
+	addElement (getVertices () .size ());
 	setVertexMode (GL_POINTS);
 	setSolid (false);
 }

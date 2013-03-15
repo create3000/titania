@@ -66,7 +66,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	                  vertices (),               
 	                vertexMode (),               
 	                     solid (true),           
-	                  elements (1),              
+	                  elements (),              
 	               bufferUsage (GL_STATIC_DRAW), 
 	          texCoordBufferId (0),              
 	             colorBufferId (0),              
@@ -325,6 +325,8 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 void
 X3DGeometryNode::addMirrorVertices (const bool convex)
 {
+	addElement (getVertices () .size ());
+
 	switch (vertexMode)
 	{
 		case GL_QUAD_STRIP:
@@ -392,6 +394,7 @@ X3DGeometryNode::clear ()
 	colorsRGBA .clear ();
 	normals    .clear ();
 	vertices   .clear ();
+	elements   .clear ();
 }
 
 void
@@ -477,10 +480,13 @@ X3DGeometryNode::draw ()
 	glEnableClientState (GL_VERTEX_ARRAY);
 	glVertexPointer (3, GL_FLOAT, 0, 0);
 
-	size_t count = vertices .size () / elements;
+	size_t first = 0;
 
-	for (size_t n = 0; n < elements; ++ n)
-		glDrawArrays (vertexMode, n * count, count);
+	for (const auto & n : elements)
+	{
+		glDrawArrays (vertexMode, first, n);
+		first += n;
+	}
 
 	if (textureCoordinateGenerator)
 		textureCoordinateGenerator -> disable ();

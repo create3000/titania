@@ -401,6 +401,7 @@ ElevationGrid::build ()
 		}
 	}
 
+	addElement (getVertices () .size ());
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setVertexMode (GL_TRIANGLES);
 	setSolid (solid);

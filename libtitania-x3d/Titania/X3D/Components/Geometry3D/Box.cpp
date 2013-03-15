@@ -118,6 +118,7 @@ Box::build ()
 			getVertices () .emplace_back (vertex * size1_2);
 	}
 
+	addElement (getVertices () .size ());
 	setVertexMode (properties -> getVertexMode ());
 	setSolid (solid);
 }

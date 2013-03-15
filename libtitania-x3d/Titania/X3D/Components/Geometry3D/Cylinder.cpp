@@ -206,6 +206,7 @@ Cylinder::build ()
 		}
 	}
 
+	addElement (getVertices () .size ());
 	setVertexMode (GL_TRIANGLES);
 	setSolid (solid);
 }

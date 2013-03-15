@@ -439,6 +439,7 @@ Extrusion::build ()
 		getVertices () .emplace_back (points [coordIndex [i + 2]]);
 	}
 
+	addElement (getVertices () .size ());
 	setVertexMode (GL_TRIANGLES);
 	setSolid (solid);
 

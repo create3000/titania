@@ -126,8 +126,9 @@ ArcClose2D::build ()
 	float  angle      = difference / segments;
 
 	size_t elements = solid ? 1 : 2;
-	size_t reserve  = elements * (segments + 2);
-	
+	size_t vertices = segments + 2;
+	size_t reserve  = elements * vertices;
+
 	getTexCoord () .reserve (reserve);
 	getNormals  () .reserve (reserve);
 	getVertices () .reserve (reserve);
@@ -158,7 +159,7 @@ ArcClose2D::build ()
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}
 
-	setElements (elements);
+	addElement (getVertices () .size ());
 	setVertexMode (GL_POLYGON);
 	setSolid (true);
 

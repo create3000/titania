@@ -124,7 +124,7 @@ Rectangle2D::build ()
 			getVertices () .emplace_back (vertex * size1_2);
 	}
 
-	setElements (elements);
+	addElement (getVertices () .size ());
 	setVertexMode (properties -> getVertexMode ());
 	setSolid (true);
 	

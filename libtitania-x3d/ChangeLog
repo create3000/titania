@@ -1,5 +1,30 @@
 2013-03-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Box.cpp:
+	* Cone.cpp:
+	* LineSet.h:
+	* Arc2D.cpp:
+	* Sphere.cpp:
+	* LineSet.cpp:
+	* Disk2D.cpp:
+	* PointSet.cpp:
+	* Cylinder.cpp:
+	* Circle2D.cpp:
+	* QuadSet.cpp:
+	* Extrusion.cpp:
+	* Polyline2D.cpp:
+	* ArcClose2D.cpp:
+	* Polypoint2D.cpp:
+	* Rectangle2D.cpp:
+	* X3DGeometryNode.h:
+	* ElevationGrid.cpp:
+	* TriangleSet2D.cpp:
+	* IndexedLineSet.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp: 
+
+2013-03-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* X3DRenderer.h:
 	* X3DRenderer.cpp:

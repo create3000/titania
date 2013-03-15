@@ -48,12 +48,13 @@
  *
  ******************************************************************************/
 
+#include "IndexedLineSet.h"
+
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/Color.h"
 #include "../Rendering/ColorRGBA.h"
 #include "../Rendering/Coordinate.h"
-#include "IndexedLineSet.h"
 
 namespace titania {
 namespace X3D {
@@ -278,6 +279,7 @@ IndexedLineSet::build ()
 		++ face;
 	}
 
+	addElement (getVertices () .size ());
 	setVertexMode (GL_LINES);
 	setSolid (false);
 }

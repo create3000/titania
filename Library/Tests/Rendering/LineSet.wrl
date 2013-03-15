@@ -1,0 +1,18 @@
+#VRML V2.0 utf8
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        emissiveColor 1 0 0
+        transparency 0.5
+      }
+    }
+    geometry LineSet {
+      vertexCount 8
+      coord Coordinate {
+        point [ -1 1 1, -1 -1 1, 1 -1 1, 1 1 1, -1 1 -1, -1 -1 -1, 1 -1 -1, 1 1 -1 ]
+      }
+    }
+  }
+}

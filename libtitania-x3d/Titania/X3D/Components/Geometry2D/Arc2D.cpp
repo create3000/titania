@@ -138,6 +138,7 @@ Arc2D::build ()
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}
 
+	addElement (getVertices () .size ());
 	setSolid (false);
 }
 

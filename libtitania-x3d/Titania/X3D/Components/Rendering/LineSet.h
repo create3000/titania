@@ -61,17 +61,21 @@ class LineSet :
 {
 public:
 
+	MFInt32              vertexCount;
 	MFNode               attrib;
+	SFNode <X3DBaseNode> fogCoord;
 	SFNode <X3DBaseNode> color;
 	SFNode <X3DBaseNode> coord;
-	SFNode <X3DBaseNode> fogCoord;
-	MFInt32              vertexCount;
 
 	LineSet (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	virtual
+	void
+	build ();
 
 	virtual
 	void

@@ -128,7 +128,8 @@ protected:
 	setSolid (const bool value) { solid = value; }
 
 	void
-	setElements (const size_t value) { elements = value; }
+	addElement (size_t vertexCount)
+	{ elements .emplace_back (vertexCount); }
 
 	virtual
 	Box3f
@@ -175,7 +176,7 @@ private:
 	std::vector <Vector3f>      vertices;
 	GLenum                      vertexMode;
 	bool                        solid;
-	size_t                      elements;
+	std::deque <size_t>         elements;
 
 	GLenum bufferUsage;
 	GLuint texCoordBufferId;

@@ -1960,6 +1960,7 @@
     <None Include="Tests\Geometry3D\IndexedFaceSet16.wrl" />
     <None Include="Tests\Geometry3D\IndexedFaceSet2.wrl" />
     <None Include="Tests\CADGeometry\QuadSet.wrl" />
+    <None Include="Tests\Rendering\LineSet.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

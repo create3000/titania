@@ -98,7 +98,7 @@ TriangleSet2D::build ()
 	
 	buildTexCoord ();
 
-	setElements (elements);
+	addElement (getVertices () .size ());
 	setVertexMode (GL_TRIANGLES);
 	setSolid (true);
 	

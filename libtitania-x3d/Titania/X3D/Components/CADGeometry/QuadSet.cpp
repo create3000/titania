@@ -211,6 +211,7 @@ QuadSet::build ()
 	if (not _normal)
 		buildNormals ();
 
+	addElement (getVertices () .size ());
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setVertexMode (GL_QUADS);
 	setSolid (solid);
