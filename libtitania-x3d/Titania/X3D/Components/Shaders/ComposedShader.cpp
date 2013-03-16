@@ -55,6 +55,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/ShaderPart.h"
 #include "../Texturing/X3DTexture2DNode.h"
+#include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
 
 namespace titania {
 namespace X3D {
@@ -209,9 +210,9 @@ ComposedShader::set_field (X3DFieldDefinition* field)
 			{
 				auto node = static_cast <SFNode <X3DBaseNode>*> (field);
 
-				auto texture2D = x3d_cast <X3DTexture2DNode*> (node -> getValue ());
+				auto texture = x3d_cast <X3DTextureNode*> (node -> getValue ());
 
-				if (texture2D)
+				if (texture)
 				{
 					GLint textureUnit = 0;
 					glGetUniformiv (shaderProgram, location, &textureUnit);
@@ -227,7 +228,13 @@ ComposedShader::set_field (X3DFieldDefinition* field)
 					}
 
 					glActiveTexture (GL_TEXTURE0 + textureUnit);
-					glBindTexture (GL_TEXTURE_2D, texture2D -> getTextureId ());
+					
+					if (x3d_cast <X3DTexture2DNode*> (texture))
+						glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
+						
+					else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
+						glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
+					
 					glUniform1i (location, textureUnit);
 					glActiveTexture (GL_TEXTURE0);
 				}
@@ -405,9 +412,6 @@ ComposedShader::set_field (X3DFieldDefinition* field)
 						
 							if (textureUnit)
 								textureUnits .emplace_back (textureUnit);
-								
-							else
-								break;
 						}
 						else
 							break;
@@ -426,9 +430,9 @@ ComposedShader::set_field (X3DFieldDefinition* field)
 
 				for (const auto & node : *array)
 				{
-					auto texture2D = x3d_cast <X3DTexture2DNode*> (node .getValue ());
+					auto texture = x3d_cast <X3DTextureNode*> (node .getValue ());
 
-					if (texture2D)
+					if (texture)
 					{
 						GLint textureUnit = 0;
 	
@@ -440,7 +444,12 @@ ComposedShader::set_field (X3DFieldDefinition* field)
 						}
 						
 						glActiveTexture (GL_TEXTURE0 + textureUnit);
-						glBindTexture (GL_TEXTURE_2D, texture2D -> getTextureId ());
+						
+						if (x3d_cast <X3DTexture2DNode*> (texture))
+							glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
+							
+						else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
+							glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
 						
 						vector .emplace_back (textureUnit);
 					}
@@ -555,6 +564,7 @@ void
 ComposedShader::draw ()
 {
 	glEnable (GL_TEXTURE_2D);
+	glEnable (GL_TEXTURE_CUBE_MAP);
 	glUseProgram (shaderProgram);
 }
 

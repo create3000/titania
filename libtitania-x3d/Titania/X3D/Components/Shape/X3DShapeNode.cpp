@@ -199,6 +199,7 @@ X3DShapeNode::draw ()
 	glDisable (GL_FOG);
 	glDisable (GL_LIGHTING);
 	glDisable (GL_TEXTURE_2D);
+	glDisable (GL_TEXTURE_CUBE_MAP);
 	glDisable (GL_COLOR_MATERIAL);
 }
 

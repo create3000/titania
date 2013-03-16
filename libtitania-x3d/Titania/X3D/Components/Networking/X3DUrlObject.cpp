@@ -66,6 +66,7 @@ URNIndex X3DUrlObject::URNCache;
 X3DUrlObject::X3DUrlObject () :
 	X3DBaseNode (),                  
 	        url (),                  // MFString [in,out] url               [ ]       [URL]
+	   loadTime (),                  // SFTime   [out]    loaded                      (0,?)
 	   urlError (),                  // MFString [out]    urlError                    [BrowserEvent]
 	  loadState (NOT_STARTED_STATE), 
 	  userAgent (),                  
@@ -73,7 +74,7 @@ X3DUrlObject::X3DUrlObject () :
 {
 	addNodeType (X3DConstants::X3DUrlObject);
 
-	setChildren (urlError);
+	setChildren (loadTime, urlError);
 }
 
 void
@@ -94,6 +95,9 @@ void
 X3DUrlObject::setLoadState (LoadState value)
 {
 	loadState = value;
+	
+	if (loadState == COMPLETE_STATE)
+		loadTime = getCurrentTime ();
 }
 
 void

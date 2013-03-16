@@ -67,13 +67,17 @@ public:
 	SFBool               repeatT;
 	SFNode <X3DBaseNode> textureProperties;
 
-	GLenum
-	getTextureId () const
-	{ return textureId; }
-
+	virtual
 	bool
 	isTransparent () const
 	{ return transparent; }
+	
+	GLenum
+	getInternalFormat () const
+	{ return getTextureProperties () -> getInternalFormat (components); }
+
+	const TextureProperties*
+	getTextureProperties () const;
 
 	void
 	setImage (size_t, GLenum, GLint, GLint, const void*);
@@ -85,18 +89,11 @@ public:
 	void
 	draw ();
 
-	virtual
-	void
-	dispose ();
-
 
 protected:
 
 	X3DTexture2DNode ();
-
-	void
-	initialize ();
-
+	
 	virtual
 	void
 	requestImmediateLoad () = 0;
@@ -106,9 +103,6 @@ protected:
 
 
 private:
-
-	const TextureProperties*
-	getTextureProperties ();
 
 	static void
 	scaleImage (Magick::Image &);
@@ -122,7 +116,6 @@ private:
 	applyTextureProperties (const TextureProperties*) const;
 
 	static const GLint wrapTypes [2];
-	GLuint             textureId;
 
 	int32_t components;
 	bool    transparent;

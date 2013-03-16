@@ -1,5 +1,45 @@
 #X3D V3.0 utf8
 
+META "title" "Water 2 Shader"
+
+PROTO ElapsedTime [
+  outputOnly SFTime time
+]
+{
+  DEF Timer TimeSensor {
+    cycleInterval 10
+    loop TRUE
+  }
+
+  DEF ElapsedTime Script {
+    inputOnly      SFTime set_time
+    outputOnly     SFTime time_changed IS time
+    inputOnly      SFTime set_startTime
+    initializeOnly SFTime startTime 0
+    inputOutput    SFTime start 0
+
+    url "vrmlscript:
+function initialize ()
+{
+	start = 0;
+}
+  
+function set_time (value)
+{
+	time_changed = value - startTime;
+}
+
+function set_startTime (value, time)
+{
+	startTime = time;
+}
+"
+  }
+
+  ROUTE Timer.time TO ElapsedTime.set_time
+  ROUTE ElapsedTime.start_changed TO ElapsedTime.set_startTime
+}
+
 Background {
   skyColor 0.2 0.2 0.2
 }
@@ -10,112 +50,122 @@ Viewpoint {
   centerOfRotation 14.5 0 14.5
 }
 
-DEF Timer TimeSensor {
-  loop TRUE
-}
+DEF Timer ElapsedTime { }
 
 Transform {
   children Shape {
     appearance Appearance {
       shaders DEF Water ComposedShader {
-        inputOutput SFNode  refractTex ImageTexture { url "images/lostvalley_down.png" }
-        inputOutput SFNode  reflectTex ImageTexture { url "images/lostvalley_up.png" }
-        inputOutput SFNode  bumpMap ImageTexture { url "images/lostvalley_west.png" }
-        inputOutput SFFloat refractRatio 0
-        inputOutput SFFloat reflectRatio 0
-        inputOutput SFFloat mappingRatio 0.5
-        inputOutput SFBool  extendedBlending TRUE
+        inputOutput SFTime  time 0
+        inputOutput SFInt32 numWaves 5
+        inputOutput MFFloat amplitude [ 0.1, 0.2, 0.1, 0.1, 0.1 ]
+        inputOutput MFFloat waveLength [ 1, 2, 3, 4, 5 ]
+        inputOutput MFFloat speed [ 1, 2, 1, 2, 1 ]
+        inputOutput MFVec2f direction [ 0.1 0.2, 0.3 0.4, 0.5 0.6, 0.7 0.8, 0.9 0.1 ]
+        inputOutput SFNode  envMap ComposedCubeMapTexture {
+          front ImageTexture {
+            url "../CubeMapTexturing/images/lostvalley_south.png"
+          }
+          back ImageTexture {
+            url "../CubeMapTexturing/images/lostvalley_north.png"
+          }
+          left ImageTexture {
+            url "../CubeMapTexturing/images/lostvalley_west.png"
+          }
+          right ImageTexture {
+            url "../CubeMapTexturing/images/lostvalley_east.png"
+          }
+          bottom ImageTexture {
+            url "../CubeMapTexturing/images/lostvalley_down.png"
+          }
+          top ImageTexture {
+            url "../CubeMapTexturing/images/lostvalley_up.png"
+          }
+        }
 
         language "GLSL"
         parts [
           ShaderPart {
             url "data:text/plain,
-varying mat4 texMat;
- 
-void main(void)
-{
-  gl_Position     = gl_ModelViewProjectionMatrix * gl_Vertex;
-  gl_TexCoord[0]  = gl_MultiTexCoord0;
-  texMat = gl_TextureMatrix[0];
-  gl_TexCoord[1]  = gl_MultiTexCoord1;
-  gl_FrontColor   = gl_Color;
-}"
+uniform float time;
+uniform int numWaves;
+uniform float amplitude [8];
+uniform float waveLength [8];
+uniform float speed [8];
+uniform vec2 direction [8];
+
+varying vec3 position;
+varying vec3 worldNormal;
+varying vec3 eyeNormal;
+
+const float pi = 3.14159;
+
+float wave(int i, float x, float y) {
+    float frequency = 2*pi/waveLength[i];
+    float phase = speed[i] * frequency;
+    float theta = dot(direction[i], vec2(x, y));
+    return amplitude[i] * sin(theta * frequency + time * phase);
+}
+
+float waveHeight(float x, float y) {
+    float height = 0.0;
+    for (int i = 0; i < numWaves; ++i)
+        height += wave(i, x, y);
+    return height;
+}
+
+float dWavedx(int i, float x, float y) {
+    float frequency = 2*pi/waveLength[i];
+    float phase = speed[i] * frequency;
+    float theta = dot(direction[i], vec2(x, y));
+    float A = amplitude[i] * direction[i].x * frequency;
+    return A * cos(theta * frequency + time * phase);
+}
+
+float dWavedy(int i, float x, float y) {
+    float frequency = 2*pi/waveLength[i];
+    float phase = speed[i] * frequency;
+    float theta = dot(direction[i], vec2(x, y));
+    float A = amplitude[i] * direction[i].y * frequency;
+    return A * cos(theta * frequency + time * phase);
+}
+
+vec3 waveNormal(float x, float y) {
+    float dx = 0.0;
+    float dy = 0.0;
+    for (int i = 0; i < numWaves; ++i) {
+        dx += dWavedx(i, x, y);
+        dy += dWavedy(i, x, y);
+    }
+    vec3 n = vec3(-dx, -dy, 1.0);
+    return normalize(n);
+}
+
+void main() {
+    vec4 pos = gl_Vertex;
+    pos.y = waveHeight(pos.x, pos.z);
+    position = pos.xyz / pos.w;
+    worldNormal = waveNormal(pos.x, pos.z);
+    eyeNormal = gl_NormalMatrix * worldNormal;
+    gl_Position = gl_ModelViewProjectionMatrix * pos;
+}
+"
           }
           ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
-uniform sampler2D refractTex;
-uniform sampler2D reflectTex;
-uniform sampler2D bumpMap;
-uniform float refractRatio;
-uniform float reflectRatio;
-uniform float mappingRatio;
-uniform int extendedBlending;
+varying vec3 position;
+varying vec3 worldNormal;
+varying vec3 eyeNormal;
+uniform vec3 eyePos;
+uniform samplerCube envMap;
 
-varying mat4 texMat;
- 
-void main(void)
-{
-  vec4 refractcoord;
-  vec4 reflectcoord;
-  vec4 offsetColor = (texture2D(bumpMap, vec2(gl_TexCoord[1])) + 
-    texture2D(bumpMap, vec2(gl_TexCoord[1]) * 4.0)) / 2.0;
-  vec4 origOffset = offsetColor;
-  vec4 color;
-  vec4 reflectColor = vec4(1.0, 1.0, 1.0, 1.0);
-  vec4 refractColor = vec4(1.0, 1.0, 1.0, 1.0);
-  vec4 blendedColor;
- 
-  offsetColor -= 0.5;
-  offsetColor *= 2.0;
- 
-  refractcoord = texMat * gl_TexCoord[0];
-  refractColor = texture2DProj(refractTex, refractcoord);
-  refractcoord = gl_TexCoord[0];
-  refractcoord.x += offsetColor[0] * refractColor[3] * refractRatio;
-  refractcoord.z += offsetColor[1] * refractColor[3] * refractRatio;
-  refractcoord = texMat * refractcoord;
- 
-  reflectcoord = texMat * gl_TexCoord[0];
-  reflectColor = texture2DProj(reflectTex, reflectcoord);
-  reflectcoord = gl_TexCoord[0];
-  reflectcoord.x -= offsetColor[0] * reflectColor[3] * reflectRatio;
-  reflectcoord.z -= offsetColor[1] * reflectColor[3] * reflectRatio;
-  reflectcoord = texMat * reflectcoord;
- 
-  reflectColor = texture2DProj(reflectTex, reflectcoord);
-  refractColor = texture2DProj(refractTex, refractcoord);
- 
-  reflectColor[3] = 1.0;
-  refractColor[3] = 1.0;
- 
-  if (extendedBlending == 0)
-  {
-    float mappingRefract, mappingReflect;
-    mappingRefract = mappingRatio * 255.0;
-    mappingReflect = 255.0 - mappingRefract;
-    mappingRefract /= 255.0;
-    mappingReflect /= 255.0;
-    blendedColor = refractColor * mappingRefract + reflectColor * mappingReflect;
-    blendedColor.a = 1.0;
-  }
-  else
-  {
-    float Alpha, reflectAlpha, refractAlpha;
-    Alpha = (refractColor.r + refractColor.g + refractColor.b) / 3.0;
-    if (Alpha > 1.0)
-      Alpha = 1.0;
-    if (Alpha < 0.0)
-      Alpha = 0.0;
- 
-    refractAlpha = Alpha * 255.0;
-    reflectAlpha = 255.0 - refractAlpha;
-    refractAlpha /= 255.0;
-    reflectAlpha /= 255.0;
-    blendedColor = reflectColor * reflectAlpha + refractColor * refractAlpha;
-  }
- 
-  gl_FragColor = blendedColor;
+void main() {
+     vec3 eye = normalize(eyePos - position);
+     vec3 r = reflect(eye, worldNormal);
+     vec4 color = textureCube(envMap, r);
+     color.a = 0.5;
+     gl_FragColor = color;
 }
 "
           }
@@ -129,3 +179,5 @@ void main(void)
     }
   }
 }
+
+ROUTE Timer.time TO Water.set_time

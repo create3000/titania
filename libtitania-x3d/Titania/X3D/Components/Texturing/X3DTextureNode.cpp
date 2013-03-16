@@ -54,9 +54,27 @@ namespace titania {
 namespace X3D {
 
 X3DTextureNode::X3DTextureNode () :
-	X3DAppearanceChildNode () 
+	X3DAppearanceChildNode (), 
+	             textureId (0) 
 {
 	addNodeType (X3DConstants::X3DTextureNode);
+}
+
+void
+X3DTextureNode::initialize ()
+{
+	X3DAppearanceChildNode::initialize ();
+
+	glGenTextures (1, &textureId);
+}
+
+void
+X3DTextureNode::dispose ()
+{
+	if (textureId)
+		glDeleteTextures (1, &textureId);
+
+	X3DAppearanceChildNode::dispose ();
 }
 
 } // X3D

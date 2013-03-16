@@ -81,6 +81,8 @@ public:
 	///  @name Fields
 
 	MFString url;
+	
+	SFTime   loadTime;
 	MFString urlError;
 
 	LoadState

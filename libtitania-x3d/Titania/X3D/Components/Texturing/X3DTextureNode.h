@@ -61,14 +61,28 @@ class X3DTextureNode :
 {
 public:
 
+	GLuint
+	getTextureId () const
+	{ return textureId; }
+
 	virtual
 	bool
 	isTransparent () const = 0;
+
+	virtual
+	void
+	dispose ();
 
 
 protected:
 
 	X3DTextureNode ();
+
+	virtual
+	void
+	initialize ();
+
+	GLuint textureId;
 
 };
 

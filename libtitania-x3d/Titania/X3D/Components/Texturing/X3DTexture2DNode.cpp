@@ -75,29 +75,21 @@ X3DTexture2DNode::X3DTexture2DNode () :
 	          repeatS (true), // SFBool [ ] repeatS            TRUE
 	          repeatT (true), // SFBool [ ] repeatT            TRUE
 	textureProperties (),     // SFNode [ ] textureProperties  NULL        [TextureProperties]
-	        textureId (0),    
 	       components (0),    
 	      transparent (false) 
 {
 	addNodeType (X3DConstants::X3DTexture2DNode);
 }
 
-void
-X3DTexture2DNode::initialize ()
-{
-	X3DTextureNode::initialize ();
-
-	glGenTextures (1, &textureId);
-}
-
 const TextureProperties*
-X3DTexture2DNode::getTextureProperties ()
+X3DTexture2DNode::getTextureProperties () const
 {
 	auto _textureProperties = x3d_cast <TextureProperties*> (textureProperties .getValue ());
 
-	return _textureProperties
-	       ? _textureProperties
-			 : x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties .getValue ());
+	if (_textureProperties)
+		return _textureProperties;
+
+	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties .getValue ());
 }
 
 void
@@ -251,13 +243,13 @@ X3DTexture2DNode::setImage (size_t components, GLenum format, GLint width, GLint
 	
 	GLint level = 0; // This texture is level 0 in mimpap generation.
 
-	glBindTexture (GL_TEXTURE_2D, textureId);
+	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 
 	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
 	applyTextureProperties (textureProperties);
 
-	glTexImage2D (GL_TEXTURE_2D, level, textureProperties -> getInternalFormat (components),
+	glTexImage2D (GL_TEXTURE_2D, level, getInternalFormat (),
 	              width, height,
 	              false, // border
 	              format, GL_UNSIGNED_BYTE,
@@ -269,7 +261,7 @@ X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const v
 {
 	// update image
 
-	glBindTexture (GL_TEXTURE_2D, textureId);
+	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 
 	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
@@ -302,7 +294,7 @@ void
 X3DTexture2DNode::draw ()
 {
 	glEnable (GL_TEXTURE_2D);
-	glBindTexture (GL_TEXTURE_2D, textureId);
+	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 
 	if (glIsEnabled (GL_LIGHTING))
 	{
@@ -323,15 +315,6 @@ X3DTexture2DNode::draw ()
 				break;
 		}
 	}
-}
-
-void
-X3DTexture2DNode::dispose ()
-{
-	if (textureId)
-		glDeleteTextures (1, &textureId);
-
-	X3DTextureNode::dispose ();
 }
 
 } // X3D

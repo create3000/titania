@@ -89,7 +89,11 @@ TextureCoordinateGenerator::initialize ()
 void
 TextureCoordinateGenerator::set_mode ()
 {
-	if (mode == "SPHERE-REFLECT-LOCAL")
+	if (mode == "SPHERE")
+	{
+		textureGenMode = GL_SPHERE_MAP;
+	}
+	else if (mode == "SPHERE-REFLECT-LOCAL")
 	{
 		textureGenMode = GL_SPHERE_MAP;
 	}
@@ -101,10 +105,6 @@ TextureCoordinateGenerator::set_mode ()
 	{
 		textureGenMode = GL_SPHERE_MAP;
 	}
-	else if (mode == "SPHERE")
-	{
-		textureGenMode = GL_SPHERE_MAP;
-	}
 	else if (mode == "CAMERASPACENORMAL")
 	{
 		textureGenMode = GL_NORMAL_MAP;
@@ -113,7 +113,7 @@ TextureCoordinateGenerator::set_mode ()
 	{
 		textureGenMode = GL_OBJECT_LINEAR;
 	}
-	else if (mode == "CAMERASPACEREFLECTION")
+	else if (mode == "CAMERASPACEREFLECTIONVECTOR")
 	{
 		textureGenMode = GL_REFLECTION_MAP;
 	}
@@ -144,8 +144,10 @@ TextureCoordinateGenerator::enable ()
 {
 	glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, textureGenMode);
 	glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, textureGenMode);
+	glTexGeni (GL_R, GL_TEXTURE_GEN_MODE, textureGenMode);
 	glEnable (GL_TEXTURE_GEN_S);
 	glEnable (GL_TEXTURE_GEN_T);
+	glEnable (GL_TEXTURE_GEN_R);
 }
 
 void
@@ -153,6 +155,7 @@ TextureCoordinateGenerator::disable ()
 {
 	glDisable (GL_TEXTURE_GEN_S);
 	glDisable (GL_TEXTURE_GEN_T);
+	glDisable (GL_TEXTURE_GEN_R);
 }
 
 } // X3D

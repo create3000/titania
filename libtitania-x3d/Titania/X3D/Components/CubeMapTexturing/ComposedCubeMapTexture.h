@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_CUBE_MAP_TEXTURING_COMPOSED_CUBE_MAP_TEXTURE_H__
 
 #include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
+#include "../Texturing/X3DTexture2DNode.h"
 
 namespace titania {
 namespace X3D {
@@ -61,11 +62,11 @@ class ComposedCubeMapTexture :
 {
 public:
 
-	SFNode <X3DBaseNode> back;
-	SFNode <X3DBaseNode> bottom;
 	SFNode <X3DBaseNode> front;
+	SFNode <X3DBaseNode> back;
 	SFNode <X3DBaseNode> left;
 	SFNode <X3DBaseNode> right;
+	SFNode <X3DBaseNode> bottom;
 	SFNode <X3DBaseNode> top;
 
 	ComposedCubeMapTexture (X3DExecutionContext* const);
@@ -77,11 +78,26 @@ public:
 	virtual
 	bool
 	isTransparent () const
-	{ return false; }
+	{ return transparent; }
 	
 	virtual
 	void
 	draw ();
+
+
+private:
+
+	virtual
+	void
+	initialize ();
+
+	void
+	set_children ();
+	
+	void
+	setTexture (GLenum, const X3DTexture2DNode* const);
+
+	bool transparent;
 
 };
 

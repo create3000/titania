@@ -129,7 +129,6 @@
     <None Include="Tests\1st\test.wrl" />
     <None Include="Tests\1st\test-x.wrl" />
     <None Include="Tests\1st\texture.wrl" />
-    <None Include="Tests\1st\TextureCoordinateGenerator.wrl" />
     <None Include="Tests\1st\TextureTransform.wrl" />
     <None Include="Tests\1st\TextureTransform1.wrl" />
     <None Include="Tests\1st\TimeSensor.wrl" />
@@ -1938,12 +1937,6 @@
     <None Include="Examples\Approach\index.wrl" />
     <None Include="Tests\Shaders\ComposedShader.wrl" />
     <None Include="Tests\Shaders\Water1.wrl" />
-    <None Include="Tests\Shaders\images\lostvalley_down.png" />
-    <None Include="Tests\Shaders\images\lostvalley_east.png" />
-    <None Include="Tests\Shaders\images\lostvalley_north.png" />
-    <None Include="Tests\Shaders\images\lostvalley_south.png" />
-    <None Include="Tests\Shaders\images\lostvalley_up.png" />
-    <None Include="Tests\Shaders\images\lostvalley_west.png" />
     <None Include="Tests\Shaders\Phong.wrl" />
     <None Include="Tests\Shaders\Lambert.wrl" />
     <None Include="Prototypes\Geometry2D\RegularPolygon2D\RegularPolygon2D.py" />
@@ -1962,6 +1955,15 @@
     <None Include="Tests\CADGeometry\QuadSet.wrl" />
     <None Include="Tests\Rendering\LineSet.wrl" />
     <None Include="Tests\Rendering\TriangleSet.wrl" />
+    <None Include="Tests\CubeMapTexturing\images\lostvalley_down.png" />
+    <None Include="Tests\CubeMapTexturing\images\lostvalley_east.png" />
+    <None Include="Tests\CubeMapTexturing\images\lostvalley_north.png" />
+    <None Include="Tests\CubeMapTexturing\images\lostvalley_south.png" />
+    <None Include="Tests\CubeMapTexturing\images\lostvalley_up.png" />
+    <None Include="Tests\CubeMapTexturing\images\lostvalley_west.png" />
+    <None Include="Tests\CubeMapTexturing\ComposedCubeMapTexture.wrl" />
+    <None Include="Tests\Texturing\TextureCoordinateGenerator.wrl" />
+    <None Include="Tests\Shaders\Water2.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2004,7 +2006,6 @@
     <Folder Include="Examples\TikiWorld\stage\" />
     <Folder Include="Examples\TipperTruck\stage\" />
     <Folder Include="Examples\Approach\stage\" />
-    <Folder Include="Tests\Shaders\images\" />
     <Folder Include="Prototypes\" />
     <Folder Include="Prototypes\Geometry2D\" />
     <Folder Include="Prototypes\Geometry2D\RegularPolygon2D\" />
@@ -2012,6 +2013,7 @@
     <Folder Include="Models\Science\" />
     <Folder Include="Tests\Shape\" />
     <Folder Include="Tests\CADGeometry\" />
+    <Folder Include="Tests\CubeMapTexturing\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

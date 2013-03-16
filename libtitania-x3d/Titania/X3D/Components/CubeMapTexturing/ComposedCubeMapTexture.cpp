@@ -50,7 +50,14 @@
 
 #include "ComposedCubeMapTexture.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include <Magick++.h>
+
+extern "C"
+{
+#include <GL/glx.h>
+}
 
 namespace titania {
 namespace X3D {
@@ -58,22 +65,23 @@ namespace X3D {
 ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const executionContext) :
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DEnvironmentTextureNode (),                                                    
-	                     back (),                                                    // SFNode [in,out] back    NULL        [X3DTexture2DNode]
-	                   bottom (),                                                    // SFNode [in,out] bottom  NULL        [X3DTexture2DNode]
 	                    front (),                                                    // SFNode [in,out] front   NULL        [X3DTexture2DNode]
+	                     back (),                                                    // SFNode [in,out] back    NULL        [X3DTexture2DNode]
 	                     left (),                                                    // SFNode [in,out] left    NULL        [X3DTexture2DNode]
 	                    right (),                                                    // SFNode [in,out] right   NULL        [X3DTexture2DNode]
-	                      top ()                                                     // SFNode [in,out] top     NULL        [X3DTexture2DNode]
+	                   bottom (),                                                    // SFNode [in,out] bottom  NULL        [X3DTexture2DNode]
+	                      top (),                                                    // SFNode [in,out] top     NULL        [X3DTexture2DNode]
+	              transparent (false)                                                
 {
 	setComponent ("CubeMapTexturing");
 	setTypeName ("ComposedCubeMapTexture");
 
 	addField (inputOutput, "metadata", metadata);
-	addField (inputOutput, "back",     back);
-	addField (inputOutput, "bottom",   bottom);
 	addField (inputOutput, "front",    front);
+	addField (inputOutput, "back",     back);
 	addField (inputOutput, "left",     left);
 	addField (inputOutput, "right",    right);
+	addField (inputOutput, "bottom",   bottom);
 	addField (inputOutput, "top",      top);
 }
 
@@ -84,8 +92,137 @@ ComposedCubeMapTexture::create (X3DExecutionContext* const executionContext) con
 }
 
 void
+ComposedCubeMapTexture::initialize ()
+{
+	X3DEnvironmentTextureNode::initialize ();
+
+	if (glXGetCurrentContext ())
+		set_children ();
+}
+
+void
+ComposedCubeMapTexture::set_children ()
+{
+	glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
+
+	glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_REPEAT);
+	glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	auto _front  = x3d_cast <X3DTexture2DNode*> (front  .getValue ());
+	auto _back   = x3d_cast <X3DTexture2DNode*> (back   .getValue ());
+	auto _left   = x3d_cast <X3DTexture2DNode*> (left   .getValue ());
+	auto _right  = x3d_cast <X3DTexture2DNode*> (right  .getValue ());
+	auto _bottom = x3d_cast <X3DTexture2DNode*> (bottom .getValue ());
+	auto _top    = x3d_cast <X3DTexture2DNode*> (top    .getValue ());
+
+	if (_front)
+		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, _back);
+
+	if (_back)
+		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Z, _front);
+
+	if (_left)
+		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_X, _right);
+
+	if (_right)
+		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_X, _left);
+
+	if (_bottom)
+		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, _bottom);
+
+	if (_top)
+		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Y, _top);
+}
+
+
+
+void
+ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const texture)
+{
+	// Get texture 2d data
+
+	glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
+
+	GLint width = 0, height = 0;
+
+	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH,  &width);
+	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
+
+	std::vector <char> image (width * height * 4);
+
+	glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
+
+	// Flip image verticaly
+
+	Magick::Blob blob (image .data (), image .size ());
+	{
+		Magick::Image mimage;
+		mimage .magick ("RGBA");
+		mimage .depth (8);
+		mimage .size (Magick::Geometry (width, height));	
+		mimage .read (blob);
+		
+		mimage .flip ();
+		mimage .write (&blob);
+	}
+
+	// Transfer image
+
+	//applyTextureProperties (textureProperties);
+
+	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
+
+	glTexImage2D (target, 0, texture -> getInternalFormat (),
+	              width, height,
+	              false, // border
+	              GL_RGBA, GL_UNSIGNED_BYTE,
+	              blob .data ());
+
+	__LOG__ << getTextureId () << " : " << (int) image [0] << " : " << width << " : " << height << std::endl;
+}
+
+//void
+//ComposedCubeMapTexture::applyTextureProperties (const TextureProperties* textureProperties) const
+//{
+//	glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps);
+//	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());
+//	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureProperties -> getMagnificationFilter ());
+//
+//	if (this -> textureProperties)
+//	{
+//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
+//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
+//	}
+//	else
+//	{
+//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [repeatS]);
+//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [repeatT]);
+//	}
+//
+//	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, textureProperties -> borderColor .getValue () .data ());
+//	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,     textureProperties -> texturePriority);
+//}
+
+void
 ComposedCubeMapTexture::draw ()
-{ }
+{
+	glEnable (GL_TEXTURE_2D);
+	glEnable (GL_TEXTURE_CUBE_MAP);
+	glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
+
+	if (glIsEnabled (GL_LIGHTING))
+	{
+		// Texture color modulates material diffuse color.
+		glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	}
+	else
+	{
+		glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	}
+}
 
 } // X3D
 } // titania
