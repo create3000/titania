@@ -190,6 +190,9 @@ X3DShapeNode::draw ()
 	glLoadIdentity ();
 	glMatrixMode (GL_MODELVIEW);
 
+	glBindTexture (GL_TEXTURE_2D, 0);
+	glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
+
 	if (_appearance)
 		_appearance -> draw ();
 

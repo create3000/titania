@@ -95,7 +95,7 @@ private:
 	set_children ();
 	
 	void
-	setTexture (GLenum, const X3DTexture2DNode* const);
+	setTexture (GLenum, const X3DTexture2DNode* const, size_t &, size_t &, bool);
 
 	bool transparent;
 

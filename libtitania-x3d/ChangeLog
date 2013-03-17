@@ -1,3 +1,25 @@
+2013-03-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Hit.h:
+	* Hit.cpp:
+	* HitArray.h:
+	* HitArray.cpp:
+	* X3DRenderer.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* X3DShapeNode.cpp:
+	* X3DTextureNode.h:
+	* X3DTextureNode.cpp:
+	* X3DTexture2DNode.h:
+	* X3DGeometryNode.cpp:
+	* X3DTexture2DNode.cpp:
+	* RenderingProperties.cpp:
+	* ComposedCubeMapTexture.h:
+	* X3DBackgroundNode.cpp:
+	* ComposedCubeMapTexture.cpp: 
+
 2013-03-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DShapeNode.cpp:

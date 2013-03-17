@@ -1964,6 +1964,8 @@
     <None Include="Tests\CubeMapTexturing\ComposedCubeMapTexture.wrl" />
     <None Include="Tests\Texturing\TextureCoordinateGenerator.wrl" />
     <None Include="Tests\Shaders\Water2.wrl" />
+    <None Include="Tests\Shaders\Beethoven.wrl" />
+    <None Include="Tests\Shaders\Toon.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

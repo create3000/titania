@@ -31,6 +31,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Geometry3D/BoxProperties.cpp \
 	Titania/X3D/Browser/Geometry3D/QuadSphereProperties.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DSpherePropertyNode.cpp \
+	Titania/X3D/Browser/Hit.cpp \
 	Titania/X3D/Browser/HitArray.cpp \
 	Titania/X3D/Browser/PointingDevice.cpp \
 	Titania/X3D/Browser/Properties/BrowserOptions.cpp \

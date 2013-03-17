@@ -940,6 +940,7 @@
     <Compile Include="Titania\X3D\Browser\Viewer\X3DFlyViewer.cpp" />
     <Compile Include="Titania\X3D\Browser\Viewer\X3DViewer.cpp" />
     <Compile Include="Titania\X3D\Rendering\CollisionShape.cpp" />
+    <Compile Include="Titania\X3D\Browser\Hit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

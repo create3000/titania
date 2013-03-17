@@ -324,6 +324,8 @@ RenderingProperties::display ()
 		getBrowser () -> getRouter () .clock .reset ();
 	}
 
+	//
+
 	glCallList (listId);
 }
 

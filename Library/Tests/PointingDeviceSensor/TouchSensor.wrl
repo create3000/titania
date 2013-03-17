@@ -3,7 +3,13 @@
 META "title" "TouchSensor"
 
 Viewpoint {
-  description "Home"
+  description "Front"
+}
+
+Viewpoint {
+  description "Back"
+  position 0 0 -10
+  orientation 0 1 0 3.14159
 }
 
 Transform {

@@ -45,9 +45,9 @@ Background {
 }
 
 Viewpoint {
-  position 33.7769 17.0666 56.784
-  orientation -0.649105 0.758365 0.059544 0.54794
-  centerOfRotation 14.5 0 14.5
+  position 64.713 28.5504 95.758
+  orientation -0.573877 0.817501 0.048552 0.639998
+  centerOfRotation 29.5 0 29.5
 }
 
 DEF Timer ElapsedTime { }
@@ -58,9 +58,9 @@ Transform {
       shaders DEF Water ComposedShader {
         inputOutput SFTime  time 0
         inputOutput SFInt32 numWaves 5
-        inputOutput MFFloat amplitude [ 0.1, 0.2, 0.1, 0.1, 0.1 ]
-        inputOutput MFFloat waveLength [ 1, 2, 3, 4, 5 ]
-        inputOutput MFFloat speed [ 1, 2, 1, 2, 1 ]
+        inputOutput MFFloat amplitude [ 0.2, 0.2, 0.1, 0.1, 0.1 ]
+        inputOutput MFFloat waveLength [ 1.1, 2.3, 3.1, 4.1, 5.3 ]
+        inputOutput MFFloat speed [ 1.09, 0.79, 0.19, 0.29, 0.37 ]
         inputOutput MFVec2f direction [ 0.1 0.2, 0.3 0.4, 0.5 0.6, 0.7 0.8, 0.9 0.1 ]
         inputOutput SFNode  envMap ComposedCubeMapTexture {
           front ImageTexture {
@@ -100,54 +100,60 @@ varying vec3 eyeNormal;
 
 const float pi = 3.14159;
 
-float wave(int i, float x, float y) {
-    float frequency = 2*pi/waveLength[i];
-    float phase = speed[i] * frequency;
-    float theta = dot(direction[i], vec2(x, y));
-    return amplitude[i] * sin(theta * frequency + time * phase);
+float wave (int i, float x, float y)
+{
+	float frequency = 2 * pi / waveLength [i];
+	float phase     = speed [i] * frequency;
+	float theta     = dot (direction [i], vec2 (x, y));
+	return amplitude [i] * sin (theta * frequency + time * phase);
 }
 
-float waveHeight(float x, float y) {
-    float height = 0.0;
-    for (int i = 0; i < numWaves; ++i)
-        height += wave(i, x, y);
-    return height;
+float waveHeight (float x, float y)
+{
+	float height = 0.0;
+	for (int i = 0; i < numWaves; ++i)
+		height += wave (i, x, y);
+	return height;
 }
 
-float dWavedx(int i, float x, float y) {
-    float frequency = 2*pi/waveLength[i];
-    float phase = speed[i] * frequency;
-    float theta = dot(direction[i], vec2(x, y));
-    float A = amplitude[i] * direction[i].x * frequency;
-    return A * cos(theta * frequency + time * phase);
+float dWavedx (int i, float x, float y)
+{
+	float frequency = 2 * pi / waveLength [i];
+	float phase = speed [i] * frequency;
+	float theta = dot (direction [i], vec2 (x, y));
+	float A = amplitude [i] * direction [i] .x * frequency;
+	return A * cos (theta * frequency + time * phase);
 }
 
-float dWavedy(int i, float x, float y) {
-    float frequency = 2*pi/waveLength[i];
-    float phase = speed[i] * frequency;
-    float theta = dot(direction[i], vec2(x, y));
-    float A = amplitude[i] * direction[i].y * frequency;
-    return A * cos(theta * frequency + time * phase);
+float dWavedy (int i, float x, float y)
+{
+	float frequency = 2 * pi / waveLength [i];
+	float phase = speed [i] * frequency;
+	float theta = dot (direction [i], vec2 (x, y));
+	float A = amplitude [i] * direction [i] .y * frequency;
+	return A * cos (theta * frequency + time * phase);
 }
 
-vec3 waveNormal(float x, float y) {
-    float dx = 0.0;
-    float dy = 0.0;
-    for (int i = 0; i < numWaves; ++i) {
-        dx += dWavedx(i, x, y);
-        dy += dWavedy(i, x, y);
-    }
-    vec3 n = vec3(-dx, -dy, 1.0);
-    return normalize(n);
+vec3 waveNormal (float x, float y)
+{
+	float dx = 0.0;
+	float dy = 0.0;
+	for (int i = 0; i < numWaves; ++i)
+	{
+		dx += dWavedx (i, x, y);
+		dy += dWavedy (i, x, y);
+	}
+	vec3 n = vec3 (-dx, -dy, 1.0);
+	return normalize(n);
 }
 
-void main() {
-    vec4 pos = gl_Vertex;
-    pos.y = waveHeight(pos.x, pos.z);
-    position = pos.xyz / pos.w;
-    worldNormal = waveNormal(pos.x, pos.z);
-    eyeNormal = gl_NormalMatrix * worldNormal;
-    gl_Position = gl_ModelViewProjectionMatrix * pos;
+void main () {
+	vec4 pos = gl_Vertex;
+	pos.y = waveHeight (pos .x, pos .z);
+	position = pos .xyz / pos .w;
+	worldNormal = waveNormal (pos .x, pos .z);
+	eyeNormal = gl_NormalMatrix * worldNormal;
+	gl_Position = gl_ModelViewProjectionMatrix * pos;
 }
 "
           }
@@ -160,12 +166,13 @@ varying vec3 eyeNormal;
 uniform vec3 eyePos;
 uniform samplerCube envMap;
 
-void main() {
-     vec3 eye = normalize(eyePos - position);
-     vec3 r = reflect(eye, worldNormal);
-     vec4 color = textureCube(envMap, r);
-     color.a = 0.5;
-     gl_FragColor = color;
+void main ()
+{
+	vec3 eye = normalize (eyePos - position);
+	vec3 r = reflect (eye, worldNormal);
+	vec4 color = textureCube (envMap, r);
+	color.a = 0.5;
+	gl_FragColor = color;
 }
 "
           }
@@ -174,8 +181,8 @@ void main() {
     }
     geometry ElevationGrid {
       solid FALSE
-      xDimension 30
-      zDimension 30
+      xDimension 60
+      zDimension 60
     }
   }
 }

@@ -371,6 +371,8 @@ X3DBackgroundNode::draw ()
 	if (transparency == 1.0f)
 		return;
 
+	//
+
 	GLint polygonMode [2] = { 0, 0 }; // Front and back value.
 	glGetIntegerv (GL_POLYGON_MODE, polygonMode);
 

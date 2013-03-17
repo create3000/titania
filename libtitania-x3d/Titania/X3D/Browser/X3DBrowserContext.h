@@ -217,9 +217,6 @@ protected:
 	set_initialized ();
 
 	void
-	clearHits ();
-
-	void
 	prepare ();
 
 	void

@@ -53,6 +53,7 @@
 
 #include "../Fields.h"
 #include "../Types/Geometry.h"
+#include <memory>
 
 namespace titania {
 namespace X3D {
@@ -61,11 +62,7 @@ class Hit
 {
 public:
 
-	Hit (const Vector3f & hitPoint, const Line3f & hitRay, const std::deque <X3DBaseNode*> & nodes) :
-		hitPoint (hitPoint),
-		distance (abs (hitPoint - hitRay .point ())),
-		nodes (nodes)
-	{ }
+	Hit (const Vector3f &, const Line3f &, const std::deque <X3DBaseNode*> &);
 
 	Vector3f                  hitPoint;
 	float                     distance;
@@ -78,7 +75,7 @@ class HitComp
 public:
 
 	bool
-	operator () (const Hit* lhs, const Hit* rhs) const
+	operator () (const std::shared_ptr <Hit> & lhs, const std::shared_ptr <Hit> & rhs) const
 	{
 		return lhs -> distance < rhs -> distance;
 	}

@@ -192,10 +192,7 @@ X3DTexture2DNode::scaleImage (Magick::Image & image)
 			<< " to " << new_width << " × " << new_height << " pixel."
 			<< std::endl;
 
-		image .filterType (Magick::LanczosFilter);
-		Magick::Geometry geometry (new_width, new_height);
-		geometry .aspect (true);
-		image .zoom (geometry);
+		X3DTextureNode::scaleImage (image, new_width, new_height);
 	}
 }
 
@@ -245,15 +242,17 @@ X3DTexture2DNode::setImage (size_t components, GLenum format, GLint width, GLint
 
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 
-	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
-
 	applyTextureProperties (textureProperties);
+
+	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
 	glTexImage2D (GL_TEXTURE_2D, level, getInternalFormat (),
 	              width, height,
 	              false, // border
 	              format, GL_UNSIGNED_BYTE,
 	              data);
+	            
+	glBindTexture (GL_TEXTURE_2D, 0);
 }
 	              
 void
@@ -262,10 +261,8 @@ X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const v
 	// update image
 
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
-
-	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
-
 	glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, data);
+	glBindTexture (GL_TEXTURE_2D, 0);
 }
 
 void

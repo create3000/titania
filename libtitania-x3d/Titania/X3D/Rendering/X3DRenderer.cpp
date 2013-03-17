@@ -311,14 +311,6 @@ X3DRenderer::draw ()
 
 		glEnable (GL_DEPTH_TEST);
 
-		// Render opaque objects first
-
-		glDepthMask (GL_TRUE);
-		glDisable (GL_BLEND);
-
-		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
-			shape -> draw ();
-
 		// Render transparent objects
 
 		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, ShapeContainerComp ());

@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_TEXTURING_X3DTEXTURE_NODE_H__
 
 #include "../Shape/X3DAppearanceChildNode.h"
+#include <Magick++.h>
 
 namespace titania {
 namespace X3D {
@@ -81,6 +82,10 @@ protected:
 	virtual
 	void
 	initialize ();
+	
+	static
+	void
+	scaleImage (Magick::Image &, size_t, size_t);
 
 	GLuint textureId;
 

@@ -443,7 +443,7 @@ X3DGeometryNode::draw ()
 
 	glFrontFace (ccw ? GL_CCW : GL_CW);
 
-	if (glIsEnabled (GL_TEXTURE_2D))
+	if (glIsEnabled (GL_TEXTURE_2D) or glIsEnabled (GL_TEXTURE_CUBE_MAP))
 	{
 		if (textureCoordinateGenerator)
 			textureCoordinateGenerator -> enable ();

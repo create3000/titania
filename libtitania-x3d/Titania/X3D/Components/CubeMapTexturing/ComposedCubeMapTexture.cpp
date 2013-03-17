@@ -52,7 +52,6 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include <Magick++.h>
 
 extern "C"
 {
@@ -118,35 +117,37 @@ ComposedCubeMapTexture::set_children ()
 	auto _bottom = x3d_cast <X3DTexture2DNode*> (bottom .getValue ());
 	auto _top    = x3d_cast <X3DTexture2DNode*> (top    .getValue ());
 
+	size_t width = 0, height = 0;
+
 	if (_front)
-		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, _back);
+		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, _back, width, height, true);
 
 	if (_back)
-		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Z, _front);
+		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Z, _front, width, height, false);
 
 	if (_left)
-		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_X, _right);
+		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_X, _right, width, height, false);
 
 	if (_right)
-		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_X, _left);
+		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_X, _left, width, height, false);
 
 	if (_bottom)
-		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, _bottom);
+		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, _bottom, width, height, false);
 
 	if (_top)
-		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Y, _top);
+		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Y, _top, width, height, false);
+
+	glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
 }
 
-
-
 void
-ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const texture)
+ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const texture, size_t & w, size_t & h, bool store)
 {
 	// Get texture 2d data
 
-	glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
-
 	GLint width = 0, height = 0;
+
+	glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
 
 	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH,  &width);
 	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
@@ -154,17 +155,28 @@ ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const
 	std::vector <char> image (width * height * 4);
 
 	glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
+	glBindTexture (GL_TEXTURE_2D, 0);
 
-	// Flip image verticaly
+	// Flip image verticaly and scale if needed
 
 	Magick::Blob blob (image .data (), image .size ());
 	{
 		Magick::Image mimage;
 		mimage .magick ("RGBA");
 		mimage .depth (8);
-		mimage .size (Magick::Geometry (width, height));	
+		mimage .size (Magick::Geometry (width, height));
 		mimage .read (blob);
-		
+
+		if (store)
+		{
+			w = width;
+			h = height;
+		}
+		else
+		{
+			scaleImage (mimage, w, h);
+		}
+
 		mimage .flip ();
 		mimage .write (&blob);
 	}
@@ -175,13 +187,7 @@ ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const
 
 	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
-	glTexImage2D (target, 0, texture -> getInternalFormat (),
-	              width, height,
-	              false, // border
-	              GL_RGBA, GL_UNSIGNED_BYTE,
-	              blob .data ());
-
-	__LOG__ << getTextureId () << " : " << (int) image [0] << " : " << width << " : " << height << std::endl;
+	glTexImage2D (target, 0, GL_RGBA, w, h, false, GL_RGBA, GL_UNSIGNED_BYTE, blob .data ());
 }
 
 //void
@@ -209,7 +215,6 @@ ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const
 void
 ComposedCubeMapTexture::draw ()
 {
-	glEnable (GL_TEXTURE_2D);
 	glEnable (GL_TEXTURE_CUBE_MAP);
 	glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
 

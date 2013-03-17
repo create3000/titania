@@ -53,15 +53,17 @@
 
 #include "Hit.h"
 #include <deque>
+#include <deque>
+#include <memory>
 
 namespace titania {
 namespace X3D {
 
-typedef std::deque <Hit*> HitArray;
+typedef std::deque <std::shared_ptr<Hit>> HitArray;
 
 } // X3D
 } // titania
 
-extern template class std::deque <titania::X3D::Hit*>;
+extern template class std::deque <std::shared_ptr<titania::X3D::Hit>>;
 
 #endif

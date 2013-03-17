@@ -164,7 +164,7 @@ X3DBrowserContext::initialize ()
 void
 X3DBrowserContext::set_initialized ()
 {
-	clearHits ();
+	hits .clear ();
 
 	overSensors   .clear ();
 	activeSensors .clear ();
@@ -228,7 +228,7 @@ X3DBrowserContext::pick (const double _x, const double _y)
 
 	// Clear hits.
 
-	clearHits ();
+	hits .clear ();
 
 	// Pick.
 	
@@ -268,15 +268,6 @@ void
 X3DBrowserContext::addHit (const Line3f & hitRay, const Vector3f hitPoint)
 {
 	hits .emplace_back (new Hit (hitPoint, hitRay, enabledSensors));
-}
-
-void
-X3DBrowserContext::clearHits ()
-{
-	for (const auto & hit : hits)
-		delete hit;
-
-	hits .clear ();
 }
 
 void
