@@ -139,12 +139,14 @@ X3DShapeNode::traverse (TraverseType type)
 		{
 			if (_geometry)
 				getBrowser () -> getRenderers () .top () -> addCollision (this);
+
 			break;
 		}
 		case TraverseType::COLLECT:
 		{
 			if (_geometry)
 				getBrowser () -> getRenderers () .top () -> addShape (this);
+
 			break;
 		}
 		default:
@@ -161,14 +163,32 @@ X3DShapeNode::pick ()
 		{
 			Line3f hitRay = getBrowser () -> getHitRay ();
 
-			Vector3f hitPoint;
+			std::deque <Vector3f> hitPoints;
 
-			if (_geometry -> intersect (hitRay, hitPoint))
+			if (_geometry -> intersect (hitRay, hitPoints))
 			{
-				hitPoint = hitPoint * ModelViewMatrix4f ();
-			
-				if (hitPoint .z () < -getCurrentNavigationInfo () -> getNearPlane ())
-					getBrowser () -> addHit (hitPoint, this);
+				for (auto & hitPoint : hitPoints)
+					hitPoint = hitPoint * ModelViewMatrix4f ();
+			 
+			   // Sort desc
+				std::sort (hitPoints .begin (),
+				           hitPoints .end (),
+				           [ ] (const Vector3f &lhs, const Vector3f &rhs) -> bool
+				           {
+				              return lhs .z () > rhs .z ();
+							  });
+
+				// Find first point that is not greater than near plane;
+				auto hitPoint = std::lower_bound (hitPoints .cbegin (),
+				                              hitPoints .cend (),
+				                              -getCurrentNavigationInfo () -> getNearPlane (),
+				                              [ ] (const Vector3f &lhs, const float & rhs) -> bool
+				                              {
+				                                 return lhs .z () > rhs;
+														});
+
+				if (hitPoint not_eq hitPoints .end ())
+					getBrowser () -> addHit (*hitPoint, this);
 			}
 		}
 	}
@@ -179,7 +199,7 @@ X3DShapeNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere) const
 {
 	if (_geometry)
 		return _geometry -> intersect (matrix, sphere);
-	
+
 	return false;
 }
 

@@ -136,9 +136,12 @@ X3DGeometryNode::createBBox ()
 }
 
 bool
-X3DGeometryNode::intersect (const Line3f & line, Vector3f & intersection) const
+X3DGeometryNode::intersect (const Line3f & line, std::deque <Vector3f> & intersection) const
 {
-	if (bbox .intersect (line, intersection))
+	bool intersected = false;
+	Vector3f temp;
+
+	if (bbox .intersect (line, temp))
 	{
 		switch (vertexMode)
 		{
@@ -146,10 +149,11 @@ X3DGeometryNode::intersect (const Line3f & line, Vector3f & intersection) const
 			{
 				for (size_t i = 0, size = vertices .size (); i < size; i += 3)
 				{
-					if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2] ))
+					if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2]))
 					{
-						Plane3f (vertices [i], vertices [i + 1], vertices [i + 2]) .intersect (line, intersection);
-						return true;		
+						intersection .emplace_back ();
+						Plane3f (vertices [i], vertices [i + 1], vertices [i + 2]) .intersect (line, intersection .back ());
+						intersected = true;		
 					}		
 				}
 
@@ -161,14 +165,16 @@ X3DGeometryNode::intersect (const Line3f & line, Vector3f & intersection) const
 				{
 					if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2]))
 					{
-						Plane3f (vertices [i], vertices [i + 1], vertices [i + 2]) .intersect (line, intersection);
-						return true;
+						intersection .emplace_back ();
+						Plane3f (vertices [i], vertices [i + 1], vertices [i + 2]) .intersect (line, intersection .back ());
+						intersected = true;
 					}
 
 					if (line .intersect (vertices [i], vertices [i + 2], vertices [i + 3]))
 					{
-						Plane3f (vertices [i], vertices [i + 2], vertices [i + 3]) .intersect (line, intersection);
-						return true;
+						intersection .emplace_back ();
+						Plane3f (vertices [i], vertices [i + 2], vertices [i + 3]) .intersect (line, intersection .back ());
+						intersected = true;
 					}
 				}
 
@@ -179,7 +185,7 @@ X3DGeometryNode::intersect (const Line3f & line, Vector3f & intersection) const
 		}
 	}
 
-	return false;
+	return intersected;
 }
 
 bool

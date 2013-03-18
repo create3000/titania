@@ -76,7 +76,7 @@ public:
 	setup ();
 
 	bool
-	intersect (const Line3f &, Vector3f &) const;
+	intersect (const Line3f &, std::deque <Vector3f> &) const;
 
 	bool
 	intersect (const Matrix4f &, const Sphere3f &) const;

@@ -1,5 +1,11 @@
 2013-03-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DShapeNode.cpp:
+	* X3DGeometryNode.h:
+	* X3DGeometryNode.cpp: 
+
+2013-03-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserContext.cpp:
 	* TouchSensor.h:
 	* TouchSensor.cpp:
