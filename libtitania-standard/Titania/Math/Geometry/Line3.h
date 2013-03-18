@@ -94,6 +94,12 @@ public:
 	const vector3 <Type> &
 	direction () const { return value .direction; }
 
+	///  @name Intersection
+
+	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this line.
+	bool
+	intersect (const vector3 <Type> &, const vector3 <Type> &, const vector3 <Type> &) const;
+
 
 private:
 
@@ -106,6 +112,48 @@ private:
 	Value value;
 
 };
+
+template <class Type>
+bool
+line3 <Type> ::intersect (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C) const
+{
+	// find vectors for two edges sharing vert0
+	vector3 <Type> edge1 = B - A;
+	vector3 <Type> edge2 = C - A;
+	
+	// begin calculating determinant - also used to calculate U parameter
+	vector3 <Type> pvec = cross (direction (), edge2);
+	
+	// if determinant is near zero, ray lies in plane of triangle
+	Type det = dot (edge1, pvec);
+	
+	// Non culling intersection
+	
+	if (det == 0)
+		return false;
+		
+	Type inv_det = 1 / det;
+
+	// calculate distance from vert0 to ray origin
+	vector3 <Type> tvec = point () - A;
+
+	// calculate U parameter and test bounds
+	Type u = dot (tvec, pvec) * inv_det;
+
+	if (u < 0 or u > 1)
+		return false;
+
+	// prepare to test V parameter
+	vector3 <Type> qvec = cross (tvec, edge1);
+
+	// calculate V parameter and test bounds
+	Type v = dot (direction (), qvec) * inv_det;
+
+	if (v < 0 or u + v > 1)
+		return false;
+
+	return true;
+}
 
 ///  @relates line3
 ///  @name Input/Output operations

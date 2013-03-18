@@ -1,123 +1,119 @@
-#X3D V3.0 utf8 Titania
+#VRML V2.0 utf8 Titania
 
 META "title" "TouchSensor"
 
 Transform {
-translation 2 4 54
-rotation 123 1234 312 76
-scale 0.234 234 12.23
-children [
-Viewpoint {
-  description "Front"
-}
-
-Viewpoint {
-  description "Back"
-  position 0 0 -10
-  orientation 0 1 0 3.14159
-}
-
-Transform {
+  translation 2 4 54
+  rotation 0.0961869 0.964997 0.243986 0.601776
+  scale 0.234 234 12.23
   children [
-    DEF Touch2 TouchSensor { }
-    Transform {
-      translation 0 1 0
-      children Shape {
-        geometry Text {
-          string "2"
-          fontStyle FontStyle {
-            justify "MIDDLE"
-          }
-        }
-      }
+    Viewpoint {
+      description "Front"
+    }
+    Viewpoint {
+      description "Back"
+      position 0 0 -10
+      orientation 0 1 0 3.14159
     }
     Transform {
+      children [
+        DEF Touch2 TouchSensor { }
+        Transform {
+          translation 0 1 0
+          children Shape {
+            geometry Text {
+              string "2"
+              fontStyle FontStyle {
+                justify "MIDDLE"
+              }
+            }
+          }
+        }
+        Transform {
+          children Shape {
+            appearance Appearance {
+              material Material { }
+            }
+            geometry DEF Cube IndexedFaceSet {
+              solid FALSE
+              colorPerVertex FALSE
+              texCoordIndex [ 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1 ]
+              colorIndex [ 0, 1, 2, 3, 4, 5 ]
+              coordIndex [ 0, 1, 3, 2, -1, 4, 5, 7, 6, -1, 6, 7, 1, 0, -1, 2, 3, 5, 4, -1, 6, 0, 2, 4, -1, 1, 7, 5, 3, -1 ]
+              texCoord TextureCoordinate {
+                point [ 0 1, 0 0, 1 1, 1 0 ]
+              }
+              color Color {
+                color [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 0 1 1, 1 0 1 ]
+              }
+              coord Coordinate {
+                point [ -1 1 1, -1 -1 1, 1 1 1, 1 -1 1, 1 1 -1, 1 -1 -1, -1 1 -1, -1 -1 -1 ]
+              }
+            }
+          }
+        }
+      ]
+    }
+    Transform {
+      translation 0 0 4
+      children [
+        DEF Touch1 TouchSensor { }
+        Transform {
+          translation 0 1 0
+          children Shape {
+            geometry Text {
+              string "1"
+              fontStyle FontStyle {
+                justify "MIDDLE"
+              }
+            }
+          }
+        }
+        Transform {
+          children Shape {
+            appearance Appearance {
+              material Material { }
+            }
+            geometry USE Cube
+          }
+        }
+      ]
+    }
+    Transform {
+      translation 0 0 -4
       children Shape {
         appearance Appearance {
           material Material { }
         }
-        geometry DEF Cube IndexedFaceSet {
+        geometry Box { }
+      }
+    }
+    Transform {
+      translation 0 0 6
+      children Shape {
+        geometry IndexedFaceSet {
           solid FALSE
-          colorPerVertex FALSE
-          texCoordIndex [ 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1 ]
-          colorIndex [ 0, 1, 2, 3, 4, 5 ]
-          coordIndex [ 0, 1, 3, 2, -1, 4, 5, 7, 6, -1, 6, 7, 1, 0, -1, 2, 3, 5, 4, -1, 6, 0, 2, 4, -1, 1, 7, 5, 3, -1 ]
-          texCoord TextureCoordinate {
-            point [ 0 1, 0 0, 1 1, 1 0 ]
-          }
+          colorIndex [ 0, 1, 2, 3, 4, 5, 6, 7, -1 ]
+          coordIndex [ 0, 1, 2, 3, 4, 5, 6, 7, -1 ]
           color Color {
-            color [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 0 1 1, 1 0 1 ]
+            color [ 1 0 0, 1 0.75 0, 0.5 1 0, 0 1 0.25, 0 1 1, 0 0.25 1, 0.5 0 1, 1 0 0.75 ]
           }
           coord Coordinate {
-            point [ -1 1 1, -1 -1 1, 1 1 1, 1 -1 1, 1 1 -1, 1 -1 -1, -1 1 -1, -1 -1 -1 ]
+            point [ 1 0 0, 0.707107 0.707107 0, 0 1 0, -0.707107 0.707107 0, -1 0 0, -0.707107 -0.707107 0, -0 -1 0, 0.707107 -0.707107 0 ]
           }
         }
       }
     }
   ]
 }
-
-Transform {
-  translation 0 0 4
-  children [
-    DEF Touch1 TouchSensor { }
-    Transform {
-      translation 0 1 0
-      children Shape {
-        geometry Text {
-          string "1"
-          fontStyle FontStyle {
-            justify "MIDDLE"
-          }
-        }
-      }
-    }
-    Transform {
-      children Shape {
-        appearance Appearance {
-          material Material { }
-        }
-        geometry USE Cube
-      }
-    }
-  ]
-}
-
-Transform {
-  translation 0 0 -4
-  children Shape {
-    appearance Appearance {
-      material Material { }
-    }
-    geometry Box { }
-  }
-}
-
-Transform {
-  translation 0 0 6
-  children Shape {
-    geometry IndexedFaceSet {
-      solid FALSE
-      colorIndex [ 0, 1, 2, 3, 4, 5, 6, 7, -1 ]
-      coordIndex [ 0, 1, 2, 3, 4, 5, 6, 7, -1 ]
-      color Color {
-        color [ 1 0 0, 1 0.75 0, 0.5 1 0, 0 1 0.25, 0 1 1, 0 0.25 1, 0.5 0 1, 1 0 0.75 ]
-      }
-      coord Coordinate {
-        point [ 1 0 0, 0.707107 0.707107 0, 0 1 0, -0.707107 0.707107 0, -1 0 0, -0.707107 -0.707107 0, -0 -1 0, 0.707107 -0.707107 0 ]
-      }
-    }
-  }
-}
-]}
 
 DEF Debug Script {
-  inputOnly SFBool set_isOver1
-  inputOnly SFBool set_isActive1
-  inputOnly SFTime set_touchTime1
-  inputOnly SFBool set_isOver2
-  inputOnly SFBool set_isActive2
-  inputOnly SFTime set_touchTime2
+  eventIn SFBool set_isOver1
+  eventIn SFBool set_isActive1
+  eventIn SFTime set_touchTime1
+  eventIn SFBool set_isOver2
+  eventIn SFBool set_isActive2
+  eventIn SFTime set_touchTime2
 
   url "vrmlscript:
 function set_isOver1 (value)

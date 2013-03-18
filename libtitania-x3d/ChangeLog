@@ -1,5 +1,11 @@
 2013-03-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Hit.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DGeometryNode.cpp: 
+
+2013-03-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Hit.h:
 	* Hit.cpp:
 	* X3DRenderer.cpp:

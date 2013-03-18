@@ -135,62 +135,18 @@ X3DGeometryNode::createBBox ()
 	return Box3f ();
 }
 
-#define EPSILON 1.0e-5
-
-static
-bool
-intersect (const Line3f & line, const Vector3f & A, const Vector3f & B, const Vector3f & C)
-{
-	// find vectors for two edges sharing vert0
-	Vector3f edge1 = B - A;
-	Vector3f edge2 = C - A;
-	
-	// begin calculating determinant - also used to calculate U parameter
-	Vector3f pvec = cross (line .direction (), edge2);
-	
-	// if determinant is near zero, ray lies in plane of triangle
-	float det = dot (edge1, pvec);
-	
-	// Non culling intersection
-	
-	if (det > -EPSILON and det < EPSILON)
-		return false;
-		
-	float inv_det = 1 / det;
-
-	// calculate distance from vert0 to ray origin
-	Vector3f tvec = line .point () - A;
-
-	// calculate U parameter and test bounds
-	float u = dot (tvec, pvec) * inv_det;
-
-	if (u < 0 or u > 1)
-		return false;
-
-	// prepare to test V parameter
-	Vector3f qvec = cross (tvec, edge1);
-
-	// calculate V parameter and test bounds
-	float v = dot (line .direction (), qvec) * inv_det;
-
-	if (v < 0 or u + v > 1)
-		return false;
-
-	return true;
-}
-
 bool
 X3DGeometryNode::intersect (const Line3f & line, Vector3f & intersection) const
 {
-	//if (bbox .intersect (line, intersection))
-	//{
+	if (bbox .intersect (line, intersection))
+	{
 		switch (vertexMode)
 		{
 			case GL_TRIANGLES:
 			{
 				for (size_t i = 0, size = vertices .size (); i < size; i += 3)
 				{
-					if (X3D::intersect (line, vertices [i], vertices [i + 1], vertices [i + 2] ))
+					if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2] ))
 					{
 						Plane3f (vertices [i], vertices [i + 1], vertices [i + 2]) .intersect (line, intersection);
 						return true;		
@@ -203,13 +159,13 @@ X3DGeometryNode::intersect (const Line3f & line, Vector3f & intersection) const
 			{
 				for (size_t i = 0, size = vertices .size (); i < size; i += 4)
 				{
-					if (X3D::intersect (line, vertices [i], vertices [i + 1], vertices [i + 2]))
+					if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2]))
 					{
 						Plane3f (vertices [i], vertices [i + 1], vertices [i + 2]) .intersect (line, intersection);
 						return true;
 					}
 
-					if (X3D::intersect (line, vertices [i], vertices [i + 2], vertices [i + 3]))
+					if (line .intersect (vertices [i], vertices [i + 2], vertices [i + 3]))
 					{
 						Plane3f (vertices [i], vertices [i + 2], vertices [i + 3]) .intersect (line, intersection);
 						return true;
@@ -221,7 +177,7 @@ X3DGeometryNode::intersect (const Line3f & line, Vector3f & intersection) const
 			default:
 				break;
 		}
-	//}
+	}
 
 	return false;
 }

@@ -223,8 +223,6 @@ X3DBrowserContext::getActiveViewpoint ()
 void
 X3DBrowserContext::pick (const double _x, const double _y)
 {
-	__LOG__ << "*************" << std::endl;
-
 	x = _x;
 	y = _y;
 

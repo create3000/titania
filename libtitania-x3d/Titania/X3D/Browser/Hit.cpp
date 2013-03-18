@@ -62,9 +62,7 @@ Hit::Hit (const Vector3f & hitPoint,
 	distance (std::abs (hitPoint .z ())),
 	 sensors (sensors),                                                                            
 	    node (node)                                                                                
-{
-	__LOG__ << hitPoint << " *** " << distance << std::endl;
-}
+{ }
 
 } // X3D
 } // titania
