@@ -60,9 +60,9 @@ namespace X3D {
 TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DTouchSensorNode (),                                                    
+	hitTexCoord_changed (),                                                    // SFVec2f [out] hitTexCoord_changed
 	  hitNormal_changed (),                                                    // SFVec3f [out] hitNormal_changed
-	   hitPoint_changed (),                                                    // SFVec3f [out] hitPoint_changed
-	hitTexCoord_changed ()                                                     // SFVec2f [out] hitTexCoord_changed
+	   hitPoint_changed ()                                                     // SFVec3f [out] hitPoint_changed
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("TouchSensor");
@@ -70,9 +70,9 @@ TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata",            metadata);
 	addField (inputOutput, "enabled",             enabled);
 	addField (inputOutput, "description",         description);
+	addField (outputOnly,  "hitTexCoord_changed", hitTexCoord_changed);
 	addField (outputOnly,  "hitNormal_changed",   hitNormal_changed);
 	addField (outputOnly,  "hitPoint_changed",    hitPoint_changed);
-	addField (outputOnly,  "hitTexCoord_changed", hitTexCoord_changed);
 	addField (outputOnly,  "isActive",            isActive);
 	addField (outputOnly,  "isOver",              isOver);
 	addField (outputOnly,  "touchTime",           touchTime);
@@ -82,6 +82,13 @@ X3DBaseNode*
 TouchSensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new TouchSensor (executionContext);
+}
+
+void
+TouchSensor::setHit (const std::shared_ptr <Hit> & hit)
+{
+	if (isOver)
+		hitPoint_changed = hit -> hitPoint * ~getTransformationMatrix ();
 }
 
 } // X3D

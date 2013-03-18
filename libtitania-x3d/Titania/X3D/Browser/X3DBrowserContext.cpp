@@ -305,7 +305,10 @@ X3DBrowserContext::motionNotifyEvent ()
 			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 			if (pointingDeviceSensorNode)
+			{
 				pointingDeviceSensorNode -> set_over (true);
+				pointingDeviceSensorNode -> setHit (getHits () .front ());
+			}
 		}
 	}
 	else

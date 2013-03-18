@@ -15,7 +15,7 @@ Transform {
       position 0 0 -10
       orientation 0 1 0 3.14159
     }
-    Transform {
+    Group {
       children [
         DEF Touch2 TouchSensor { }
         Transform {
@@ -54,28 +54,32 @@ Transform {
         }
       ]
     }
-    Transform {
-      translation 0 0 4
+    Group {
       children [
         DEF Touch1 TouchSensor { }
         Transform {
-          translation 0 1 0
-          children Shape {
-            geometry Text {
-              string "1"
-              fontStyle FontStyle {
-                justify "MIDDLE"
+          translation 0 0 4
+          children [
+            Transform {
+              translation 0 1 0
+              children Shape {
+                geometry Text {
+                  string "1"
+                  fontStyle FontStyle {
+                    justify "MIDDLE"
+                  }
+                }
               }
             }
-          }
-        }
-        Transform {
-          children Shape {
-            appearance Appearance {
-              material Material { }
+            Transform {
+              children Shape {
+                appearance Appearance {
+                  material Material { }
+                }
+                geometry USE Cube
+              }
             }
-            geometry USE Cube
-          }
+          ]
         }
       ]
     }
@@ -104,18 +108,34 @@ Transform {
         }
       }
     }
+    DEF Cursor Transform {
+      scale 0.1 0.1 0.1
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Sphere { }
+      }
+    }
   ]
 }
 
 DEF Debug Script {
-  eventIn SFBool set_isOver1
-  eventIn SFBool set_isActive1
-  eventIn SFTime set_touchTime1
-  eventIn SFBool set_isOver2
-  eventIn SFBool set_isActive2
-  eventIn SFTime set_touchTime2
+  eventIn SFVec3f set_hitPoint1
+  eventIn SFBool  set_isOver1
+  eventIn SFBool  set_isActive1
+  eventIn SFTime  set_touchTime1
+  eventIn SFVec3f set_hitPoint2
+  eventIn SFBool  set_isOver2
+  eventIn SFBool  set_isActive2
+  eventIn SFTime  set_touchTime2
 
   url "vrmlscript:
+function set_hitPoint1 (value)
+{
+	print ('Touch 1 hitPoint: ' + value);
+}
+
 function set_isOver1 (value)
 {
 	print ('Touch 1 isOver: ' + value);
@@ -129,6 +149,11 @@ function set_isActive1 (value)
 function set_touchTime1 (value)
 {
 	print ('Touch 1 touchTime: ' + value);
+}
+
+function set_hitPoint2 (value)
+{
+	print ('Touch 2 hitPoint: ' + value);
 }
 
 function set_isOver2 (value)
@@ -151,6 +176,10 @@ function set_touchTime2 (value)
 ROUTE Touch1.isOver TO Debug.set_isOver1
 ROUTE Touch1.isActive TO Debug.set_isActive1
 ROUTE Touch1.touchTime TO Debug.set_touchTime1
+ROUTE Touch1.hitPoint_changed TO Debug.set_hitPoint1
+ROUTE Touch1.hitPoint_changed TO Cursor.set_translation
 ROUTE Touch2.isOver TO Debug.set_isOver2
 ROUTE Touch2.isActive TO Debug.set_isActive2
 ROUTE Touch2.touchTime TO Debug.set_touchTime2
+ROUTE Touch2.hitPoint_changed TO Debug.set_hitPoint2
+ROUTE Touch2.hitPoint_changed TO Cursor.set_translation

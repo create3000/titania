@@ -1,5 +1,14 @@
 2013-03-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserContext.cpp:
+	* TouchSensor.h:
+	* TouchSensor.cpp:
+	* ProximitySensor.cpp:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorNode.cpp: 
+
+2013-03-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Hit.cpp:
 	* X3DBrowserContext.cpp:
 	* X3DGeometryNode.cpp: 

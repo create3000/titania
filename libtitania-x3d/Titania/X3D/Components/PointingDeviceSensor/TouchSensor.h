@@ -61,15 +61,19 @@ class TouchSensor :
 {
 public:
 
+	SFVec2f hitTexCoord_changed;
 	SFVec3f hitNormal_changed;
 	SFVec3f hitPoint_changed;
-	SFVec2f hitTexCoord_changed;
 
 	TouchSensor (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	virtual
+	void
+	setHit (const std::shared_ptr <Hit> &);
 
 };
 

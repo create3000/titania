@@ -72,6 +72,11 @@ public:
 	virtual
 	void
 	set_over (bool);
+	
+	virtual
+	void
+	setHit (const std::shared_ptr <Hit> &)
+	{ }
 
 	void
 	push ();
@@ -83,7 +88,15 @@ public:
 protected:
 
 	X3DPointingDeviceSensorNode ();
+	
+	Matrix4f
+	getTransformationMatrix () const
+	{ return transformationMatrix; }
 
+
+private:
+
+	Matrix4f transformationMatrix;
 };
 
 } // X3D

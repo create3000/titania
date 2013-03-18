@@ -56,9 +56,10 @@ namespace titania {
 namespace X3D {
 
 X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
-	X3DSensorNode (), 
-	  description (), // SFString [in,out] description  ""
-	       isOver ()  // SFBool   [out]    isOver
+	       X3DSensorNode (), 
+	         description (), // SFString [in,out] description  ""
+	              isOver (), // SFBool   [out]    isOver
+	transformationMatrix ()  
 {
 	addNodeType (X3DConstants::X3DPointingDeviceSensorNode);
 }
@@ -74,7 +75,11 @@ void
 X3DPointingDeviceSensorNode::push ()
 {
 	if (enabled)
+	{
 		getBrowser () -> getSensors () .emplace_back (this);
+		
+		transformationMatrix = ModelViewMatrix4f ();
+	}
 }
 
 void
