@@ -1,3 +1,25 @@
+2013-03-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Hit.h:
+	* Hit.cpp:
+	* X3DRenderer.cpp:
+	* PointingDevice.cpp:
+	* X3DBrowserContext.h:
+	* CollisionShape.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DShapeNode.h:
+	* X3DFlyViewer.cpp:
+	* ExamineViewer.cpp:
+	* X3DShapeNode.cpp:
+	* X3DLayerNode.cpp:
+	* X3DGeometryNode.h:
+	* NavigationInfo.h:
+	* NavigationInfo.cpp:
+	* X3DGeometryNode.cpp:
+	* X3DViewpointNode.cpp:
+	* X3DFogObject.cpp:
+	* ComposedCubeMapTexture.cpp: 
+
 2013-03-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

@@ -55,11 +55,16 @@
 namespace titania {
 namespace X3D {
 
-Hit::Hit (const Vector3f & hitPoint, const Line3f & hitRay, const std::deque <X3DBaseNode*> & nodes) :
-	hitPoint (hitPoint),
-	distance (abs (ModelViewMatrix4f () .multDirMatrix (hitPoint - hitRay .point ()))),
-	nodes (nodes)
-{ }
+Hit::Hit (const Vector3f & hitPoint,
+          const std::deque <X3DBaseNode*> & sensors,
+          X3DBaseNode* const node) :
+	hitPoint (hitPoint),                                                    
+	distance (std::abs (hitPoint .z ())),
+	 sensors (sensors),                                                                            
+	    node (node)                                                                                
+{
+	__LOG__ << hitPoint << " *** " << distance << std::endl;
+}
 
 } // X3D
 } // titania

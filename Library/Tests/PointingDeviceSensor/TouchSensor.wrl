@@ -2,6 +2,11 @@
 
 META "title" "TouchSensor"
 
+Transform {
+translation 2 4 54
+rotation 123 1234 312 76
+scale 0.234 234 12.23
+children [
 Viewpoint {
   description "Front"
 }
@@ -87,6 +92,24 @@ Transform {
     geometry Box { }
   }
 }
+
+Transform {
+  translation 0 0 6
+  children Shape {
+    geometry IndexedFaceSet {
+      solid FALSE
+      colorIndex [ 0, 1, 2, 3, 4, 5, 6, 7, -1 ]
+      coordIndex [ 0, 1, 2, 3, 4, 5, 6, 7, -1 ]
+      color Color {
+        color [ 1 0 0, 1 0.75 0, 0.5 1 0, 0 1 0.25, 0 1 1, 0 0.25 1, 0.5 0 1, 1 0 0.75 ]
+      }
+      coord Coordinate {
+        point [ 1 0 0, 0.707107 0.707107 0, 0 1 0, -0.707107 0.707107 0, -1 0 0, -0.707107 -0.707107 0, -0 -1 0, 0.707107 -0.707107 0 ]
+      }
+    }
+  }
+}
+]}
 
 DEF Debug Script {
   inputOnly SFBool set_isOver1

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -281,7 +281,7 @@ X3DFlyViewer::getTranslation (const Vector3f & translation) const
 	auto activeLayer    = getBrowser () -> getExecutionContext () -> getActiveLayer ();
 	auto navigationInfo = activeLayer -> getNavigationInfo ();
 	
-	float zFar            = navigationInfo -> getZFar ();
+	float zFar            = navigationInfo -> getFarPlane ();
 	float collisionRadius = navigationInfo -> getCollisionRadius ();
 
 	float distance = getDistance (translation);

@@ -167,7 +167,8 @@ PointingDevice::pick (const double x, const double y)
 
 	getBrowser () -> pick (x, y);
 
-	return getBrowser () -> getHits () .size ();
+	return getBrowser () -> getHits () .size () and 
+	       getBrowser () -> getHits () .front () -> sensors .size ();
 }
 
 } // X3D

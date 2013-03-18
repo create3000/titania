@@ -74,6 +74,10 @@ public:
 
 	bool
 	isTransparent () const;
+	
+	X3DGeometryNode*
+	getGeometry () const
+	{ return _geometry; }
 
 	virtual
 	void

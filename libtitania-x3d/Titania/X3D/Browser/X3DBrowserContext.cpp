@@ -223,6 +223,8 @@ X3DBrowserContext::getActiveViewpoint ()
 void
 X3DBrowserContext::pick (const double _x, const double _y)
 {
+	__LOG__ << "*************" << std::endl;
+
 	x = _x;
 	y = _y;
 
@@ -265,9 +267,9 @@ X3DBrowserContext::getHitRay () const
 }
 
 void
-X3DBrowserContext::addHit (const Line3f & hitRay, const Vector3f hitPoint)
+X3DBrowserContext::addHit (const Vector3f & hitPoint, X3DBaseNode* const node)
 {
-	hits .emplace_back (new Hit (hitPoint, hitRay, enabledSensors));
+	hits .emplace_back (new Hit (hitPoint, enabledSensors, node));
 }
 
 void
@@ -280,7 +282,7 @@ X3DBrowserContext::motionNotifyEvent ()
 	if (getHits () .size ())
 	{
 		std::set_difference (overSensors .begin (), overSensors .end (),
-		                     getHits () .front () -> nodes .begin (), getHits () .front () -> nodes .end (),
+		                     getHits () .front () -> sensors .begin (), getHits () .front () -> sensors .end (),
 		                     std::back_inserter (difference));
 	}
 	else
@@ -298,7 +300,7 @@ X3DBrowserContext::motionNotifyEvent ()
 
 	if (getHits () .size ())
 	{
-		overSensors = getHits () .front () -> nodes;
+		overSensors = getHits () .front () -> sensors;
 
 		for (const auto & node : overSensors)
 		{
@@ -315,7 +317,7 @@ X3DBrowserContext::motionNotifyEvent ()
 void
 X3DBrowserContext::buttonPressEvent ()
 {
-	activeSensors = getHits () .front () -> nodes;
+	activeSensors = getHits () .front () -> sensors;
 
 	for (const auto & node : activeSensors)
 	{
@@ -336,12 +338,14 @@ X3DBrowserContext::buttonReleaseEvent ()
 		if (pointingDeviceSensorNode)
 			pointingDeviceSensorNode -> set_active (false);
 	}
+	
+	activeSensors .clear ();
 }
 
 void
 X3DBrowserContext::touchEvent ()
 {
-	for (const auto & node : getHits () .front () -> nodes)
+	for (const auto & node : getHits () .front () -> sensors)
 	{
 		auto anchor = dynamic_cast <Anchor*> (node);
 

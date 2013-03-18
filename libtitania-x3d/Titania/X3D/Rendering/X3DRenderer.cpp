@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -371,8 +371,8 @@ X3DRenderer::navigation ()
 
 	auto navigationInfo = getCurrentNavigationInfo ();
 
-	float zNear = navigationInfo -> getZNear ();
-	float zFar  = navigationInfo -> getZFar ();
+	float zNear = navigationInfo -> getNearPlane ();
+	float zFar  = navigationInfo -> getFarPlane ();
 
 	// Render
 
@@ -411,8 +411,8 @@ X3DRenderer::navigation ()
 //
 //	auto navigationInfo = getCurrentNavigationInfo ();
 //
-//	float zNear           = navigationInfo -> getZNear ();
-//	float zFar            = navigationInfo -> getZFar ();
+//	float zNear           = navigationInfo -> getNearPlane ();
+//	float zFar            = navigationInfo -> getFarPlane ();
 //	float collisionRadius = navigationInfo -> getCollisionRadius ();
 //
 //	// Transform viewpoint
@@ -632,8 +632,8 @@ X3DRenderer::gravite ()
 
 	auto navigationInfo = getCurrentNavigationInfo ();
 
-	float zNear      = navigationInfo -> getZNear ();
-	float zFar       = navigationInfo -> getZFar ();
+	float zNear      = navigationInfo -> getNearPlane ();
+	float zFar       = navigationInfo -> getFarPlane ();
 	float height     = navigationInfo -> getAvatarHeight ();
 	float stepHeight = navigationInfo -> getStepHeight ();
 

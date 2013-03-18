@@ -155,9 +155,6 @@ X3DShapeNode::traverse (TraverseType type)
 void
 X3DShapeNode::pick ()
 {
-	if (not getBrowser () -> getSensors () .size ())
-		return;
-
 	if (_geometry)
 	{
 		if (ViewVolume () .intersect (getBBox ()))
@@ -167,7 +164,12 @@ X3DShapeNode::pick ()
 			Vector3f hitPoint;
 
 			if (_geometry -> intersect (hitRay, hitPoint))
-				getBrowser () -> addHit (hitRay, hitPoint);
+			{
+				hitPoint = hitPoint * ModelViewMatrix4f ();
+			
+				if (hitPoint .z () < -getCurrentNavigationInfo () -> getNearPlane ())
+					getBrowser () -> addHit (hitPoint, this);
+			}
 		}
 	}
 }

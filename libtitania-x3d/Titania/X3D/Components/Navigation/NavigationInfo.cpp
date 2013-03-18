@@ -148,7 +148,7 @@ NavigationInfo::getStepHeight () const
 }
 
 float
-NavigationInfo::getZNear () const
+NavigationInfo::getNearPlane () const
 {
 	float zNear = getCollisionRadius ();
 
@@ -162,7 +162,7 @@ NavigationInfo::getZNear () const
 }
 
 float
-NavigationInfo::getZFar () const
+NavigationInfo::getFarPlane () const
 {
 	return visibilityLimit ? visibilityLimit : 100000;
 }

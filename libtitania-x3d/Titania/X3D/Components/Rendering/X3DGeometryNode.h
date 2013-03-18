@@ -84,6 +84,9 @@ public:
 	virtual
 	void
 	draw ();
+	
+	void
+	draw (bool, bool, bool);
 
 	virtual
 	void

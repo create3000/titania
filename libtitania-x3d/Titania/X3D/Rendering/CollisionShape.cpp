@@ -50,6 +50,7 @@
 
 #include "CollisionShape.h"
 
+#include "../Components/Rendering/X3DGeometryNode.h"
 #include "../Rendering/ViewVolume.h"
 #include "../Rendering/Matrix.h"
 #include <Titania/Utility/Adapter.h>
@@ -92,7 +93,7 @@ CollisionShape::draw ()
 
 		if (ViewVolume () .intersect (shape -> getBBox ()))
 		{
-			shape -> draw ();
+			shape -> getGeometry () -> draw (false, false, false);
 		}
 	}
 }

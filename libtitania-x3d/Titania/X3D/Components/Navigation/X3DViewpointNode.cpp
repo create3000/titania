@@ -284,7 +284,7 @@ X3DViewpointNode::reshape ()
 {
 	NavigationInfo* navigationInfo = getCurrentLayer () -> getNavigationInfo ();
 
-	reshape (navigationInfo -> getZNear (), navigationInfo -> getZFar ());
+	reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
 }
 
 void

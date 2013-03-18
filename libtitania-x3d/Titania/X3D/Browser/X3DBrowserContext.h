@@ -170,7 +170,7 @@ public:
 	getHitRay () const;
 
 	void
-	addHit (const Line3f &, const Vector3f);
+	addHit (const Vector3f &, X3DBaseNode* const);
 
 	const HitArray &
 	getHits () const { return hits; }

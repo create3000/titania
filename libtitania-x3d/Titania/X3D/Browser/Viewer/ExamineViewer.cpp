@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -260,7 +260,7 @@ ExamineViewer::getPoint (const double x, const double y)
 	Matrix4d             modelview;
 	Matrix4d::array_type projection;
 
-	viewpoint -> reshape (navigationInfo -> getZNear (), navigationInfo -> getZFar ());
+	viewpoint -> reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
 	glGetDoublev (GL_PROJECTION_MATRIX, projection);
 
 	glGetIntegerv (GL_VIEWPORT, viewport);

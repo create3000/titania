@@ -62,11 +62,12 @@ class Hit
 {
 public:
 
-	Hit (const Vector3f &, const Line3f &, const std::deque <X3DBaseNode*> &);
+	Hit (const Vector3f &, const std::deque <X3DBaseNode*> &, X3DBaseNode* const);
 
-	Vector3f                  hitPoint;
-	float                     distance;
-	std::deque <X3DBaseNode*> nodes;
+	const Vector3f                  hitPoint;
+	const float                     distance;
+	const std::deque <X3DBaseNode*> sensors;
+	const X3DBaseNode*              node;
 
 };
 
