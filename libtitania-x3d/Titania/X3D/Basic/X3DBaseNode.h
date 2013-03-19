@@ -146,6 +146,9 @@ public:
 	addUserDefinedField (const AccessType, const basic::id &, X3DFieldDefinition* const);
 
 	FieldDefinitionArray
+	getPreDefinedFields () const;
+
+	FieldDefinitionArray
 	getUserDefinedFields () const;
 
 	virtual

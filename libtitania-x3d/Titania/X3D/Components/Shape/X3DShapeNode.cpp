@@ -61,6 +61,12 @@
 namespace titania {
 namespace X3D {
 
+static
+const Matrix4d textureMatrix = { 1,  0, 0, 0,
+	                              0, -1, 0, 0,
+	                              0,  0, 1, 0,
+	                              0,  1, 0, 1 };
+
 X3DShapeNode::X3DShapeNode () :
 	    X3DChildNode (),     
 	X3DBoundedObject (),     
@@ -209,8 +215,7 @@ X3DShapeNode::draw ()
 	glColor4f (1, 1, 1, 1);
 
 	glMatrixMode (GL_TEXTURE);
-	glLoadIdentity ();
-	glScalef (1, -1, 1);
+	glLoadMatrixf (textureMatrix .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	glBindTexture (GL_TEXTURE_2D, 0);

@@ -463,6 +463,12 @@ X3DBaseNode::addUserDefinedField (const AccessType accessType, const basic::id &
 }
 
 FieldDefinitionArray
+X3DBaseNode::getPreDefinedFields () const
+{
+	return FieldDefinitionArray (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields);
+}
+
+FieldDefinitionArray
 X3DBaseNode::getUserDefinedFields () const
 {
 	return FieldDefinitionArray (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end ());

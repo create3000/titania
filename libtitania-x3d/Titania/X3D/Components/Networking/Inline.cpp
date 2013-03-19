@@ -65,7 +65,7 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	X3DBoundedObject (),                                                    
 	    X3DUrlObject (),                                                    
 	            load (true),                                                // SFBool [in,out] load  TRUE
-	           scene (executionContext -> getBrowser () -> createScene ())  
+	           scene ()  
 {
 	setComponent ("Networking");
 	setTypeName ("Inline");
@@ -96,7 +96,11 @@ Inline::initialize ()
 	url   .addInterest (this, &Inline::set_url);
 	scene .addInterest (this, &Inline::set_scene);
 
-	set_url ();
+	if (load)
+		requestLoad ();
+	
+	else
+		scene = getBrowser () -> createScene ();
 }
 
 Box3f
@@ -167,7 +171,8 @@ Inline::requestImmediateLoad ()
 
 	try
 	{
-		const_cast <MFNode &> (scene -> getRootNodes ()) .removeParent (this);
+		if (scene)
+			const_cast <MFNode &> (scene -> getRootNodes ()) .removeParent (this);
 
 		scene = createX3DFromURL (url);
 

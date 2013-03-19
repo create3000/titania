@@ -238,7 +238,7 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 			if ((size_t) i < node -> getFieldDefinitions () .size ())
 			{
 				iter_next .set_stamp (stamp);
-				iter_next .gobj () -> user_data = (void*) new Data (i, node -> getFieldDefinitions () [i], 0, data -> parents);
+				iter_next .gobj () -> user_data = (void*) new Data (i, getFields (node) [i], 0, data -> parents);
 				return true;
 			}
 		}
@@ -352,7 +352,7 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int n, iterator
 			if ((size_t) n < node -> getFieldDefinitions () .size ())
 			{
 				iter .set_stamp (stamp);
-				iter .gobj () -> user_data = (void*) new Data (n, node -> getFieldDefinitions () [n], 0, parents);
+				iter .gobj () -> user_data = (void*) new Data (n, getFields (node) [n], 0, parents);
 				return true;
 			}
 		}
@@ -501,6 +501,21 @@ OutlineTreeModel::iter_is_valid (const iterator & iter) const
 	// GTK2 example...
 	// GTK2 return Gtk::TreeModel::iter_is_valid (iter);
 	return true;
+}
+
+X3D::FieldDefinitionArray
+OutlineTreeModel::getFields (const X3D::X3DBaseNode* const node)
+{
+	X3D::FieldDefinitionArray fields            = std::move (node -> getPreDefinedFields ());
+	X3D::FieldDefinitionArray userDefinedFields = std::move (node -> getUserDefinedFields ());
+
+	if (fields .size ())
+		fields .insert (fields .begin () + 1, userDefinedFields .begin (), userDefinedFields .end ());
+
+	else
+		fields = std::move (userDefinedFields);
+
+	return fields;
 }
 
 OutlineTreeModel::~OutlineTreeModel ()

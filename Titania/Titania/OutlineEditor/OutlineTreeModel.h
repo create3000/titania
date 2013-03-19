@@ -128,6 +128,10 @@ private:
 	virtual
 	bool
 	iter_is_valid (const iterator & iter) const;
+	
+	static
+	X3D::FieldDefinitionArray
+	getFields (const X3D::X3DBaseNode* const);
 
 	class Item
 	{
