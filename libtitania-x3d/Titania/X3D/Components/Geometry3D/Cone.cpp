@@ -130,17 +130,17 @@ Cone::build ()
 			 */
 
 			// p1
-			getTexCoord () .emplace_back (u3, 1);
+			getTexCoord () .emplace_back (u3, 1, 0);
 			getNormals  () .emplace_back (x1, ny, z1);
 			getVertices () .emplace_back (0, y1, 0);
 
 			// p2
-			getTexCoord () .emplace_back (u1, 0);
+			getTexCoord () .emplace_back (u1, 0, 0);
 			getNormals  () .emplace_back (x1, ny, z1);
 			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
 
 			// p3
-			getTexCoord () .emplace_back (u2, 0);
+			getTexCoord () .emplace_back (u2, 0, 0);
 			getNormals  () .emplace_back (x2, ny, z2);
 			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
 		}
@@ -154,17 +154,17 @@ Cone::build ()
 			 */
 
 			// p1
-			getTexCoord () .emplace_back (0.5, 0.5);
+			getTexCoord () .emplace_back (0.5, 0.5, 0);
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (0, y2, 0);
 
 			// p3
-			getTexCoord () .emplace_back ((x2 + 1) / 2, (z2 + 1) / 2);
+			getTexCoord () .emplace_back ((x2 + 1) / 2, (z2 + 1) / 2, 0);
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
 
 			// p2
-			getTexCoord () .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2);
+			getTexCoord () .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2, 0);
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
 		}

@@ -53,6 +53,7 @@
 
 #include "../Fields.h"
 #include "../Types/Geometry.h"
+#include "../Browser/Intersection.h"
 #include <memory>
 
 namespace titania {
@@ -62,8 +63,10 @@ class Hit
 {
 public:
 
-	Hit (const Vector3f &, const std::deque <X3DBaseNode*> &, X3DBaseNode* const);
+	Hit (const std::shared_ptr <Intersection> &, const std::deque <X3DBaseNode*> &, X3DBaseNode* const);
 
+	const Vector3f                  hitTexCoord;
+	const Vector3f                  hitNormal;
 	const Vector3f                  hitPoint;
 	const float                     distance;
 	const std::deque <X3DBaseNode*> sensors;

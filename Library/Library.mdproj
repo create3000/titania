@@ -1966,6 +1966,7 @@
     <None Include="Tests\Shaders\Water2.wrl" />
     <None Include="Tests\Shaders\Beethoven.wrl" />
     <None Include="Tests\Shaders\Toon.wrl" />
+    <None Include="Tests\PointingDeviceSensor\Canvas.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

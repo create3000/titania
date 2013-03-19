@@ -58,7 +58,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	                       ccw (true),           // SFBool  [ ]      ccw              TRUE
 	               creaseAngle (),               // SFFloat [ ]      creaseAngle      0           [0,∞)
 	                      bbox (),               
-	                  texCoord (),               
+	                  texCoords (),               
 	textureCoordinateGenerator (NULL),           
 	                    colors (),               
 	                colorsRGBA (),               
@@ -136,25 +136,28 @@ X3DGeometryNode::createBBox ()
 }
 
 bool
-X3DGeometryNode::intersect (const Line3f & line, std::deque <Vector3f> & intersection) const
+X3DGeometryNode::intersect (const Line3f & line, std::deque <std::shared_ptr <Intersection>> & intersections) const
 {
-	bool intersected = false;
+	bool     intersected = false;
 	Vector3f temp;
 
 	if (bbox .intersect (line, temp))
 	{
+		float u, v, t;
+
 		switch (vertexMode)
 		{
 			case GL_TRIANGLES:
 			{
 				for (size_t i = 0, size = vertices .size (); i < size; i += 3)
 				{
-					if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2]))
+					if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
 					{
-						intersection .emplace_back ();
-						Plane3f (vertices [i], vertices [i + 1], vertices [i + 2]) .intersect (line, intersection .back ());
-						intersected = true;		
-					}		
+						intersections .emplace_back (new Intersection {(1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2],
+						                                               (1 - u - v) * normals   [i] + u * normals   [i + 1] + v * normals   [i + 2],
+						                                               (1 - u - v) * vertices  [i] + u * vertices  [i + 1] + v * vertices  [i + 2]});
+						intersected = true;
+					}
 				}
 
 				break;
@@ -163,17 +166,19 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <Vector3f> & interse
 			{
 				for (size_t i = 0, size = vertices .size (); i < size; i += 4)
 				{
-					if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2]))
+					if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
 					{
-						intersection .emplace_back ();
-						Plane3f (vertices [i], vertices [i + 1], vertices [i + 2]) .intersect (line, intersection .back ());
+						intersections .emplace_back (new Intersection {(1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2],
+						                                               (1 - u - v) * normals   [i] + u * normals   [i + 1] + v * normals   [i + 2],
+						                                               (1 - u - v) * vertices  [i] + u * vertices  [i + 1] + v * vertices  [i + 2]});
 						intersected = true;
 					}
 
-					if (line .intersect (vertices [i], vertices [i + 2], vertices [i + 3]))
+					if (line .intersect (vertices [i], vertices [i + 2], vertices [i + 3], u, v, t))
 					{
-						intersection .emplace_back ();
-						Plane3f (vertices [i], vertices [i + 2], vertices [i + 3]) .intersect (line, intersection .back ());
+						intersections .emplace_back (new Intersection {(1 - u - v) * texCoords [i] + u * texCoords [i + 2] + v * texCoords [i + 3],
+						                                               (1 - u - v) * normals   [i] + u * normals   [i + 2] + v * normals   [i + 3],
+						                                               (1 - u - v) * vertices  [i] + u * vertices  [i + 2] + v * vertices  [i + 3]});
 						intersected = true;
 					}
 				}
@@ -241,7 +246,8 @@ X3DGeometryNode::buildTexCoord ()
 	for (const auto & vertex : getVertices ())
 	{
 		getTexCoord () .emplace_back ((vertex [Sindex] - min [Sindex]) / Ssize,
-		                              (vertex [Tindex] - min [Tindex]) / Ssize);
+		                              (vertex [Tindex] - min [Tindex]) / Ssize,
+		                              0);
 	}
 }
 
@@ -360,7 +366,7 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 }
 
 /*
- * Adds all vertices, normals and texCoords mirrors onto the XY-plane to the arrays.
+ * Adds all vertices, normals and texCoordss mirrors onto the XY-plane to the arrays.
  * If the shape is not convext, the this not convex one point must be the first point in the arrays.
  */
 
@@ -377,8 +383,8 @@ X3DGeometryNode::addMirrorVertices (const bool convex)
 			{
 				const auto & texCoord1 = getTexCoord () [i];
 				const auto & texCoord0 = getTexCoord () [i + 1];
-				getTexCoord () .emplace_back (1 - texCoord1 .x (), texCoord1 .y ());
-				getTexCoord () .emplace_back (1 - texCoord0 .x (), texCoord0 .y ());
+				getTexCoord () .emplace_back (1 - texCoord1 .x (), texCoord1 .y (), texCoord1 .z ());
+				getTexCoord () .emplace_back (1 - texCoord0 .x (), texCoord0 .y (), texCoord0 .z ());
 			}
 
 			for (int32_t i = getVertices () .size () - 2; i >= 0; i -= 2)
@@ -398,14 +404,14 @@ X3DGeometryNode::addMirrorVertices (const bool convex)
 
 			if (not convex)
 			{
-				getTexCoord () .emplace_back (1 - getTexCoord () .front () .x (), getTexCoord () .front () .y ());
+				getTexCoord () .emplace_back (1 - getTexCoord () .front () .x (), getTexCoord () .front () .y (), getTexCoord () .front () .z ());
 				getNormals  () .emplace_back (0, 0, -1);
 				getVertices () .emplace_back (getVertices () .front ());
 			}
 
 			for (const auto & texCoord : basic::adapter (getTexCoord () .crbegin () + offset, getTexCoord () .crend () - offset))
 			{
-				getTexCoord () .emplace_back (1 - texCoord .x (), texCoord .y ());
+				getTexCoord () .emplace_back (1 - texCoord .x (), texCoord .y (), texCoord .z ());
 			}
 
 			for (const auto & vertex : basic::adapter (getVertices () .crbegin () + offset, getVertices () .crend () - offset))
@@ -430,7 +436,7 @@ X3DGeometryNode::clear ()
 {
 	bbox = Box3f ();
 
-	texCoord .clear ();
+	texCoords .clear ();
 	textureCoordinateGenerator = NULL;
 	colors     .clear ();
 	colorsRGBA .clear ();
@@ -447,7 +453,7 @@ void
 X3DGeometryNode::transfer ()
 {
 	glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector2f) * texCoord .size (), texCoord .data (), bufferUsage);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * texCoords .size (), texCoords .data (), bufferUsage);
 
 	if (colors .size ())
 	{
@@ -496,11 +502,11 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 		if (textureCoordinateGenerator)
 			textureCoordinateGenerator -> enable ();
 
-		else if (texCoord .size ())
+		else if (texCoords .size ())
 		{
 			glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferId);
 			glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-			glTexCoordPointer (2, GL_FLOAT, 0, 0);
+			glTexCoordPointer (3, GL_FLOAT, 0, 0);
 		}
 	}
 

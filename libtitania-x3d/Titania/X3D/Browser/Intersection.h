@@ -48,62 +48,21 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_QUAD_SPHERE_PROPERTIES_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY3D_QUAD_SPHERE_PROPERTIES_H__
+#ifndef __TITANIA_X3D_BROWSER_INTERSECTION_H__
+#define __TITANIA_X3D_BROWSER_INTERSECTION_H__
 
-#include "../Geometry3D/X3DSpherePropertyNode.h"
+#include "../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
 
-//	Property Name           Value data type      Description
-//	U_DIMESIONS             Boolean              The browser implementation supports the ab
-//	V_DIMESIONS             Boolean              The browser implementation supports the ab
-
-class QuadSphereProperties :
-	public X3DSpherePropertyNode
+class Intersection
 {
 public:
 
-	SFInt32 uDimension;
-	SFInt32 vDimension;
-
-	QuadSphereProperties (X3DExecutionContext* const);
-
-	virtual
-	GLenum
-	getVertexMode () const { return GL_QUADS; }
-
-
-private:
-
-	virtual
-	QuadSphereProperties*
-	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	initialize ();
-
-	virtual
-	void
-	eventsProcessed ();
-
-	std::deque <int32_t>
-	createTexIndices ();
-
-	std::deque <Vector3f>
-	createTexCoord ();
-
-	std::deque <int32_t>
-	createIndices ();
-
-	std::deque <Vector3f>
-	createPoints ();
-
-	virtual
-	void
-	build ();
+	Vector3f hitTexCoord;
+	Vector3f hitNormal;
+	Vector3f hitPoint;
 
 };
 

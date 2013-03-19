@@ -345,19 +345,19 @@ Extrusion::build ()
 			// tri 1
 
 			// p1
-			getTexCoord () .emplace_back (k / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1));
+			getTexCoord () .emplace_back (k / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n, k));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (normal);
 
 			// p2
-			getTexCoord () .emplace_back ((k + 1) / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1));
+			getTexCoord () .emplace_back ((k + 1) / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n, k1));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (normal);
 
 			// p3
-			getTexCoord () .emplace_back (k / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1));
+			getTexCoord () .emplace_back (k / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n1, k));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (normal);
@@ -365,19 +365,19 @@ Extrusion::build ()
 			// tri 2
 
 			// p2
-			getTexCoord () .emplace_back ((k + 1) / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1));
+			getTexCoord () .emplace_back ((k + 1) / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n, k1));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (normal);
 
 			// p4
-			getTexCoord () .emplace_back ((k + 1) / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1));
+			getTexCoord () .emplace_back ((k + 1) / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n1, k1));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (normal);
 
 			// p3
-			getTexCoord () .emplace_back (k / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1));
+			getTexCoord () .emplace_back (k / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n1, k));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (normal);
@@ -512,19 +512,19 @@ Extrusion::buildCap (const Tesselator & tesselator,
 					for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
 					{
 						Vector2f t = (min + crossSection [std::get < K > (polygonElement [0] .data ())]) / capSize;
-						getTexCoord () .emplace_back (t .x (), 1 - t .y ());
+						getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 						coordIndex .emplace_back (std::get <0> (polygonElement [0] .data ()));
 						normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 						getNormals () .emplace_back (normal);
 
 						t = (min + crossSection [std::get < K > (polygonElement [i] .data ())]) / capSize;
-						getTexCoord () .emplace_back (t .x (), 1 - t .y ());
+						getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 						coordIndex .emplace_back (std::get <0> (polygonElement [i] .data ()));
 						normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 						getNormals () .emplace_back (normal);
 
 						t = (min + crossSection [std::get < K > (polygonElement [i + 1] .data ())]) / capSize;
-						getTexCoord () .emplace_back (t .x (), 1 - t .y ());
+						getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 						coordIndex .emplace_back (std::get <0> (polygonElement [i + 1] .data ()));
 						normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 						getNormals () .emplace_back (normal);
@@ -537,19 +537,19 @@ Extrusion::buildCap (const Tesselator & tesselator,
 				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
 				{
 					Vector2f t = (min + crossSection [std::get < K > (polygonElement [i % 2 ? i + 1 : i] .data ())]) / capSize;
-					getTexCoord () .emplace_back (t .x (), 1 - t .y ());
+					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					coordIndex .emplace_back (std::get <0> (polygonElement [i % 2 ? i + 1 : i] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 					getNormals () .emplace_back (normal);
 
 					t = (min + crossSection [std::get < K > (polygonElement [i % 2 ? i : i + 1] .data ())]) / capSize;
-					getTexCoord () .emplace_back (t .x (), 1 - t .y ());
+					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					coordIndex .emplace_back (std::get <0> (polygonElement [i % 2 ? i : i + 1] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 					getNormals () .emplace_back (normal);
 
 					t = (min + crossSection [std::get < K > (polygonElement [i + 2] .data ())]) / capSize;
-					getTexCoord () .emplace_back (t .x (), 1 - t .y ());
+					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					coordIndex .emplace_back (std::get <0> (polygonElement [i + 2] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 					getNormals () .emplace_back (normal);
@@ -562,19 +562,19 @@ Extrusion::buildCap (const Tesselator & tesselator,
 				for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
 				{
 					Vector2f t = (min + crossSection [std::get < K > (polygonElement [i] .data ())]) / capSize;
-					getTexCoord () .emplace_back (t .x (), 1 - t .y ());
+					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					coordIndex .emplace_back (std::get <0> (polygonElement [i] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 					getNormals () .emplace_back (normal);
 
 					t = (min + crossSection [std::get < K > (polygonElement [i + 1] .data ())]) / capSize;
-					getTexCoord () .emplace_back (t .x (), 1 - t .y ());
+					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					coordIndex .emplace_back (std::get <0> (polygonElement [i + 1] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 					getNormals () .emplace_back (normal);
 
 					t = (min + crossSection [std::get < K > (polygonElement [i + 2] .data ())]) / capSize;
-					getTexCoord () .emplace_back (t .x (), 1 - t .y ());
+					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					coordIndex .emplace_back (std::get <0> (polygonElement [i + 2] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 					getNormals () .emplace_back (normal);

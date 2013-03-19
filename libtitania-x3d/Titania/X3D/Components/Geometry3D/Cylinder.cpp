@@ -130,17 +130,17 @@ Cylinder::build ()
 			 */
 
 			// p1
-			getTexCoord () .emplace_back (0.5, 0.5);
+			getTexCoord () .emplace_back (0.5, 0.5, 0);
 			getNormals  () .emplace_back (0, 1, 0);
 			getVertices () .emplace_back (0, y1, 0);
 
 			// p2
-			getTexCoord () .emplace_back (+(x1 + 1) / 2, -(z1 - 1) / 2);
+			getTexCoord () .emplace_back (+(x1 + 1) / 2, -(z1 - 1) / 2, 0);
 			getNormals  () .emplace_back (0, 1, 0);
 			getVertices () .emplace_back (x1 * _radius, y1, z1 * _radius);
 
 			// p3
-			getTexCoord () .emplace_back (+(x2 + 1) / 2, -(z2 - 1) / 2);
+			getTexCoord () .emplace_back (+(x2 + 1) / 2, -(z2 - 1) / 2, 0);
 			getNormals  () .emplace_back (0, 1, 0);
 			getVertices () .emplace_back (x2 * _radius, y1, z2 * _radius);
 		}
@@ -152,32 +152,32 @@ Cylinder::build ()
 			// p2 - p3
 
 			// p1
-			getTexCoord () .emplace_back (u1, 1);
+			getTexCoord () .emplace_back (u1, 1, 0);
 			getNormals  () .emplace_back (x1, 0, z1);
 			getVertices () .emplace_back (x1 * _radius, y1, z1 * _radius);
 
 			// p2
-			getTexCoord () .emplace_back (u1, 0);
+			getTexCoord () .emplace_back (u1, 0, 0);
 			getNormals  () .emplace_back (x1, 0, z1);
 			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
 
 			// p3
-			getTexCoord () .emplace_back (u2, 0);
+			getTexCoord () .emplace_back (u2, 0, 0);
 			getNormals  () .emplace_back (x2, 0, z2);
 			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
 
 			// p4
-			getTexCoord () .emplace_back (u2, 1);
+			getTexCoord () .emplace_back (u2, 1, 0);
 			getNormals  () .emplace_back (x2, 0, z2);
 			getVertices () .emplace_back (x2 * _radius, y1, z2 * _radius);
 
 			// p1
-			getTexCoord () .emplace_back (u1, 1);
+			getTexCoord () .emplace_back (u1, 1, 0);
 			getNormals  () .emplace_back (x1, 0, z1);
 			getVertices () .emplace_back (x1 * _radius, y1, z1 * _radius);
 
 			// p3
-			getTexCoord () .emplace_back (u2, 0);
+			getTexCoord () .emplace_back (u2, 0, 0);
 			getNormals  () .emplace_back (x2, 0, z2);
 			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
 		}
@@ -190,17 +190,17 @@ Cylinder::build ()
 			 */
 
 			// p1
-			getTexCoord () .emplace_back (0.5, 0.5);
+			getTexCoord () .emplace_back (0.5, 0.5, 0);
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (0, y2, 0);
 
 			// p3
-			getTexCoord () .emplace_back ((x2 + 1) / 2, (z2 + 1) / 2);
+			getTexCoord () .emplace_back ((x2 + 1) / 2, (z2 + 1) / 2, 0);
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
 
 			// p2
-			getTexCoord () .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2);
+			getTexCoord () .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2, 0);
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
 		}

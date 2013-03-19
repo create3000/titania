@@ -137,19 +137,19 @@ ElevationGrid::createBBox ()
 	return Box3f (size, center);
 }
 
-std::vector <Vector2f>
+std::vector <Vector3f>
 ElevationGrid::createTexCoord ()
 {
-	std::vector <Vector2f> texCoord;
+	std::vector <Vector3f> texCoord;
 	texCoord .reserve (xDimension * zDimension);
 
 	for (float j = 0; j < zDimension; ++ j)
 	{
 		for (float i = 0; i < xDimension; ++ i)
 		{
-			texCoord .push_back (
-			   Vector2f (i / (xDimension - 1),
-			             j / (zDimension - 1)));
+			texCoord .emplace_back (i / (xDimension - 1),
+			                        j / (zDimension - 1),
+			                        0);
 		}
 	}
 
@@ -260,7 +260,7 @@ ElevationGrid::build ()
 
 	getVertices () .reserve (coordIndex .size ());
 
-	std::vector <Vector2f> _texCoord;
+	std::vector <Vector3f> _texCoord;
 
 	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord .getValue ());
 	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord .getValue ());
@@ -356,7 +356,8 @@ ElevationGrid::build ()
 		{
 			if (_textureCoordinate)
 			{
-				getTexCoord () .emplace_back (_textureCoordinate -> point [*index]);
+				const auto & t = _textureCoordinate -> point [*index];
+				getTexCoord () .emplace_back (t .getX (), t .getY (), 0);
 			}
 			else if (_textureCoordinateGenerator)
 			{ }

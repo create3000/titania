@@ -1,0 +1,94 @@
+#VRML V2.0 utf8 Titania
+
+META "title" "Canvas"
+
+PROTO Canvas [
+  eventIn SFTime  set_clear
+  eventIn SFVec2f set_point
+  field   SFInt32 width 0
+  field   SFInt32 height 0
+]
+{
+  DEF Texture PixelTexture {
+    image 0 0 3
+  }
+
+  DEF Canvas Script {
+    eventIn SFTime  set_clear IS set_clear
+    eventIn SFVec2f set_point IS set_point
+    field   SFInt32 width IS width
+    field   SFInt32 height IS height
+    field   SFNode  texture USE Texture
+
+    url "vrmlscript:
+function initialize ()
+{
+	texture .image .width  = width;
+	texture .image .height = height;
+}
+
+function set_clear ()
+{
+	texture .image = new SFImage (width, height, 3, new MFInt32 ());
+}
+
+function set_point (value)
+{
+	var point = new SFVec2f (Math .round (value .x * (width - 1)), Math .round (value .y * (height - 1)));
+	var index = point .y * width + point .x;
+	
+	texture .image .array [index] = 0xffffff;
+}
+"
+  }
+}
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  description "Front"
+  position 3.41363 12.0372 3.42911
+  orientation -0.578215 0.575351 0.57848 2.10083
+  centerOfRotation 3.5 0 3.45
+}
+
+Group {
+  children [
+    DEF Touch TouchSensor { }
+    Transform {
+      children Shape {
+        appearance Appearance {
+          texture DEF Image Canvas {
+            width 64
+            height 64
+          }
+        }
+        geometry ElevationGrid {
+          xDimension 8
+          zDimension 8
+        }
+      }
+    }
+  ]
+}
+
+Group {
+  children [
+    DEF Clear TouchSensor { }
+    Transform {
+      translation 1 0 0
+      scale 0.1 0.1 0.1
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Box { }
+      }
+    }
+  ]
+}
+
+ROUTE Touch.hitTexCoord_changed TO Image.set_point
+ROUTE Clear.touchTime TO Image.set_clear

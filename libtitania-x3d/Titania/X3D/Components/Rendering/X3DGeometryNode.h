@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,10 +51,12 @@
 #ifndef __TITANIA_X3D_COMPONENTS_RENDERING_X3DGEOMETRY_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_RENDERING_X3DGEOMETRY_NODE_H__
 
-#include "../../Browser/Hit.h"
+#include "../../Browser/Intersection.h"
 #include "../../Types/Geometry.h"
 #include "../Core/X3DNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
+
+#include <memory>
 
 namespace titania {
 namespace X3D {
@@ -76,7 +78,7 @@ public:
 	setup ();
 
 	bool
-	intersect (const Line3f &, std::deque <Vector3f> &) const;
+	intersect (const Line3f &, std::deque <std::shared_ptr <Intersection>> &) const;
 
 	bool
 	intersect (const Matrix4f &, const Sphere3f &) const;
@@ -84,7 +86,7 @@ public:
 	virtual
 	void
 	draw ();
-	
+
 	void
 	draw (bool, bool, bool);
 
@@ -106,11 +108,12 @@ protected:
 	void
 	initialize ();
 
-	std::vector <Vector2f> &
-	getTexCoord () { return texCoord; }
+	std::vector <Vector3f> &
+	getTexCoord () { return texCoords; }
 
 	void
-	setTextureCoordinateGenerator (TextureCoordinateGenerator* value) { textureCoordinateGenerator = value; }
+	setTextureCoordinateGenerator (TextureCoordinateGenerator* value)
+	{ textureCoordinateGenerator = value; }
 
 	std::vector <Color3f> &
 	getColors () { return colors; }
@@ -125,10 +128,12 @@ protected:
 	getVertices () { return vertices; }
 
 	void
-	setVertexMode (const GLenum value) { vertexMode = value; }
+	setVertexMode (const GLenum value)
+	{ vertexMode = value; }
 
 	void
-	setSolid (const bool value) { solid = value; }
+	setSolid (const bool value)
+	{ solid = value; }
 
 	void
 	addElement (size_t vertexCount)
@@ -137,7 +142,7 @@ protected:
 	virtual
 	Box3f
 	createBBox ();
-	
+
 	void
 	buildTexCoord ();
 
@@ -171,7 +176,7 @@ private:
 	transfer ();
 
 	Box3f                       bbox;
-	std::vector <Vector2f>      texCoord;
+	std::vector <Vector3f>      texCoords;
 	TextureCoordinateGenerator* textureCoordinateGenerator;
 	std::vector <Color3f>       colors;
 	std::vector <Color4f>       colorsRGBA;

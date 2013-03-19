@@ -92,7 +92,7 @@ private:
 	Box3f
 	createBBox ();
 
-	std::vector <Vector2f>
+	std::vector <Vector3f>
 	createTexCoord ();
 
 	std::vector <Vector3f>

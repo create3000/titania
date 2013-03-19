@@ -189,7 +189,8 @@ QuadSet::build ()
 
 			if (_textureCoordinate)
 			{
-				getTexCoord () .emplace_back (_textureCoordinate -> point [index]);
+				const auto & t = _textureCoordinate -> point [index];
+				getTexCoord () .emplace_back (t .getX (), t .getY (), 0);
 			}
 
 			if (_normal)

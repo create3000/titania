@@ -98,7 +98,8 @@ public:
 
 	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this line.
 	bool
-	intersect (const vector3 <Type> &, const vector3 <Type> &, const vector3 <Type> &) const;
+	intersect (const vector3 <Type> &, const vector3 <Type> &, const vector3 <Type> &,
+	           Type &, Type &, Type &) const;
 
 
 private:
@@ -115,7 +116,8 @@ private:
 
 template <class Type>
 bool
-line3 <Type> ::intersect (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C) const
+line3 <Type> ::intersect (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C,
+                          Type & u, Type & v, Type & t) const
 {
 	// find vectors for two edges sharing vert0
 	vector3 <Type> edge1 = B - A;
@@ -138,7 +140,7 @@ line3 <Type> ::intersect (const vector3 <Type> & A, const vector3 <Type> & B, co
 	vector3 <Type> tvec = point () - A;
 
 	// calculate U parameter and test bounds
-	Type u = dot (tvec, pvec) * inv_det;
+	u = dot (tvec, pvec) * inv_det;
 
 	if (u < 0 or u > 1)
 		return false;
@@ -147,10 +149,12 @@ line3 <Type> ::intersect (const vector3 <Type> & A, const vector3 <Type> & B, co
 	vector3 <Type> qvec = cross (tvec, edge1);
 
 	// calculate V parameter and test bounds
-	Type v = dot (direction (), qvec) * inv_det;
+	v = dot (direction (), qvec) * inv_det;
 
 	if (v < 0 or u + v > 1)
 		return false;
+
+	t = dot (edge2, qvec) * inv_det;
 
 	return true;
 }

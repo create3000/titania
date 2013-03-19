@@ -116,10 +116,10 @@ QuadSphereProperties::createTexIndices ()
 	return texIndices;
 }
 
-std::deque <Vector2f>
+std::deque <Vector3f>
 QuadSphereProperties::createTexCoord ()
 {
-	std::deque <Vector2f> texCoord;
+	std::deque <Vector3f> texCoord;
 
 	for (int32_t v = 0; v < vDimension; ++ v)
 	{
@@ -128,10 +128,10 @@ QuadSphereProperties::createTexCoord ()
 		for (int u = 0; u < uDimension - 1; ++ u)
 		{
 			float x = u / float (uDimension - 1);
-			texCoord .emplace_back (x, 1 - y);
+			texCoord .emplace_back (x, 1 - y, 0);
 		}
 
-		texCoord .emplace_back (1, 1 - y);
+		texCoord .emplace_back (1, 1 - y, 0);
 	}
 
 	return texCoord;
@@ -194,7 +194,7 @@ void
 QuadSphereProperties::build ()
 {
 	std::deque <int32_t>  texIndices = createTexIndices ();
-	std::deque <Vector2f> texCoord   = createTexCoord ();
+	std::deque <Vector3f> texCoord   = createTexCoord ();
 	std::deque <int32_t>  indices    = createIndices ();
 	std::deque <Vector3f> points     = createPoints ();
 

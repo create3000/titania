@@ -63,7 +63,7 @@ public:
 
 	X3DGeometryPropertyNode ();
 
-	const std::vector <Vector2f> &
+	const std::vector <Vector3f> &
 	getTexCoord () const { return texCoord; }
 
 	const std::vector <Vector3f> &
@@ -79,7 +79,7 @@ public:
 
 protected:
 
-	std::vector <Vector2f> &
+	std::vector <Vector3f> &
 	getTexCoord () { return texCoord; }
 
 	std::vector <Vector3f> &
@@ -98,7 +98,7 @@ protected:
 
 private:
 
-	std::vector <Vector2f> texCoord;
+	std::vector <Vector3f> texCoord;
 	std::vector <Vector3f> normals;
 	std::vector <Vector3f> vertices;
 

@@ -93,19 +93,19 @@ Rectangle2DProperties::build ()
 	getVertices () .reserve (4);
 
 	// Front Face
-	getTexCoord () .emplace_back (0, 0);
+	getTexCoord () .emplace_back (0, 0, 0);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (-1, -1, 0);
 
-	getTexCoord () .emplace_back (1, 0);
+	getTexCoord () .emplace_back (1, 0, 0);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (1, -1, 0);
 
-	getTexCoord () .emplace_back (1, 1);
+	getTexCoord () .emplace_back (1, 1, 0);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (1, 1, 0);
 
-	getTexCoord () .emplace_back (0, 1);
+	getTexCoord () .emplace_back (0, 1, 0);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (-1, 1, 0);
 }

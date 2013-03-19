@@ -1,5 +1,35 @@
 2013-03-19  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Hit.h:
+	* Hit.cpp:
+	* Intersection.h:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* Cone.cpp:
+	* Disk2D.cpp:
+	* X3DShapeNode.cpp:
+	* QuadSet.cpp:
+	* Cylinder.cpp:
+	* Extrusion.cpp:
+	* TriangleSet.cpp:
+	* BoxProperties.cpp:
+	* ArcClose2D.cpp:
+	* ElevationGrid.h:
+	* X3DGeometryNode.h:
+	* Disk2DProperties.cpp:
+	* TriangleSet2D.cpp:
+	* ElevationGrid.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp:
+	* QuadSphereProperties.h:
+	* QuadSphereProperties.cpp:
+	* X3DGeometryPropertyNode.h:
+	* Rectangle2DProperties.cpp:
+	* TouchSensor.cpp: 
+
+2013-03-19  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DShapeNode.cpp:
 	* X3DTexture2DNode.cpp:
 	* ComposedCubeMapTexture.cpp: 

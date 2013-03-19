@@ -163,32 +163,32 @@ X3DShapeNode::pick ()
 		{
 			Line3f hitRay = getBrowser () -> getHitRay ();
 
-			std::deque <Vector3f> hitPoints;
+			std::deque <std::shared_ptr <Intersection>> itersections;
 
-			if (_geometry -> intersect (hitRay, hitPoints))
+			if (_geometry -> intersect (hitRay, itersections))
 			{
-				for (auto & hitPoint : hitPoints)
-					hitPoint = hitPoint * ModelViewMatrix4f ();
-			 
-			   // Sort desc
-				std::sort (hitPoints .begin (),
-				           hitPoints .end (),
-				           [ ] (const Vector3f &lhs, const Vector3f &rhs) -> bool
+				for (auto & itersection : itersections)
+					itersection -> hitPoint = itersection -> hitPoint * ModelViewMatrix4f ();
+
+				// Sort desc
+				std::sort (itersections .begin (),
+				           itersections .end (),
+				           [ ] (const std::shared_ptr <Intersection>&lhs, const std::shared_ptr <Intersection>&rhs) -> bool
 				           {
-				              return lhs .z () > rhs .z ();
+				              return lhs -> hitPoint .z () > rhs -> hitPoint .z ();
 							  });
 
 				// Find first point that is not greater than near plane;
-				auto hitPoint = std::lower_bound (hitPoints .cbegin (),
-				                              hitPoints .cend (),
-				                              -getCurrentNavigationInfo () -> getNearPlane (),
-				                              [ ] (const Vector3f &lhs, const float & rhs) -> bool
-				                              {
-				                                 return lhs .z () > rhs;
-														});
+				auto itersection = std::lower_bound (itersections .cbegin (),
+				                                     itersections .cend (),
+				                                     -getCurrentNavigationInfo () -> getNearPlane (),
+				                                     [ ] (const std::shared_ptr <Intersection>&lhs, const float & rhs) -> bool
+				                                     {
+				                                        return lhs -> hitPoint .z () > rhs;
+																 });
 
-				if (hitPoint not_eq hitPoints .end ())
-					getBrowser () -> addHit (*hitPoint, this);
+				if (itersection not_eq itersections .end ())
+					getBrowser () -> addHit (*itersection, this);
 			}
 		}
 	}

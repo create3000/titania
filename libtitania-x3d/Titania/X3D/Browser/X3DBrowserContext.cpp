@@ -265,9 +265,9 @@ X3DBrowserContext::getHitRay () const
 }
 
 void
-X3DBrowserContext::addHit (const Vector3f & hitPoint, X3DBaseNode* const node)
+X3DBrowserContext::addHit (const std::shared_ptr <Intersection> & intersection, X3DBaseNode* const node)
 {
-	hits .emplace_back (new Hit (hitPoint, enabledSensors, node));
+	hits .emplace_back (new Hit (intersection, enabledSensors, node));
 }
 
 void

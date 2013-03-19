@@ -88,7 +88,11 @@ void
 TouchSensor::setHit (const std::shared_ptr <Hit> & hit)
 {
 	if (isOver)
-		hitPoint_changed = hit -> hitPoint * ~getTransformationMatrix ();
+	{
+		hitTexCoord_changed = Vector2f (hit -> hitTexCoord .x (), hit -> hitTexCoord .y ());
+		hitNormal_changed   = hit -> hitNormal;
+		hitPoint_changed    = hit -> hitPoint * ~getTransformationMatrix ();
+	}
 }
 
 } // X3D

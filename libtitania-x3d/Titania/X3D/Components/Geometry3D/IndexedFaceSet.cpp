@@ -366,10 +366,12 @@ IndexedFaceSet::build ()
 				if (_textureCoordinate)
 				{
 					if (texCoordIndex [i] >= 0)
-						getTexCoord () .emplace_back (_textureCoordinate -> point [texCoordIndex [i]]);
-
+					{
+						const auto & t = _textureCoordinate -> point [texCoordIndex [i]];
+						getTexCoord () .emplace_back (t .getX (), t .getY (), 0);
+					}
 					else
-						getTexCoord () .emplace_back (0, 0);
+						getTexCoord () .emplace_back (0, 0, 0);
 				}
 
 				if (_normal)
