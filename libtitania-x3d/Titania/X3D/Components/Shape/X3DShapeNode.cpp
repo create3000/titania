@@ -210,6 +210,7 @@ X3DShapeNode::draw ()
 
 	glMatrixMode (GL_TEXTURE);
 	glLoadIdentity ();
+	glScalef (1, -1, 1);
 	glMatrixMode (GL_MODELVIEW);
 
 	glBindTexture (GL_TEXTURE_2D, 0);

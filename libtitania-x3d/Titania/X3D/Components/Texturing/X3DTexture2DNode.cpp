@@ -205,7 +205,7 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 
 	// Flip image in vertical direction
 
-	image .flip ();
+	//image .flip ();
 	
 	// scale image
 

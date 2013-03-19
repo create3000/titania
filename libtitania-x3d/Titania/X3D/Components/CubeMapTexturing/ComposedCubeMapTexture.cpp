@@ -126,10 +126,10 @@ ComposedCubeMapTexture::set_children ()
 		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Z, _front, width, height, false);
 
 	if (_left)
-		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_X, _left, width, height, false);
+		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_X, _right, width, height, false);
 
 	if (_right)
-		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_X, _right, width, height, false);
+		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_X, _left, width, height, false);
 
 	if (_bottom)
 		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, _bottom, width, height, false);
@@ -177,8 +177,8 @@ ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const
 			scaleImage (mimage, w, h);
 		}
 
-		mimage .flip ();
-		mimage .flop ();
+		//mimage .flip ();
+		//mimage .flop ();
 		mimage .write (&blob);
 	}
 
@@ -216,6 +216,10 @@ ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const
 void
 ComposedCubeMapTexture::draw ()
 {
+	glMatrixMode (GL_TEXTURE);
+	glScalef (-1, -1, 1);
+	glMatrixMode (GL_MODELVIEW);
+
 	glEnable (GL_TEXTURE_CUBE_MAP);
 	glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
 
