@@ -202,10 +202,13 @@ X3DGroupingNode::traverse (TraverseType type)
 void
 X3DGroupingNode::pick ()
 {
-	getBrowser () -> getSensors () .clear ();
+	if (pointingDeviceSensors .size ())
+	{
+		getBrowser () -> getSensors () .clear ();
 
-	for (const auto & child : pointingDeviceSensors)
-		child -> push ();
+		for (const auto & child : pointingDeviceSensors)
+			child -> push ();
+	}
 
 	for (const auto & child : childNodes)
 		child -> traverse (TraverseType::PICKING);
