@@ -184,9 +184,6 @@ public:
 	void
 	buttonReleaseEvent ();
 
-	void
-	touchEvent ();
-
 	///  @name Event handling
 
 	void
@@ -240,6 +237,7 @@ private:
 	TextureUnitStack          textureUnits;
 	double                    x;
 	double                    y;
+	Line3f                    hitRay;
 	std::deque <X3DBaseNode*> enabledSensors;
 	HitArray                  hits;
 	HitComp                   hitComp;

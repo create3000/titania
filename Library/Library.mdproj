@@ -1967,6 +1967,7 @@
     <None Include="Tests\Shaders\Beethoven.wrl" />
     <None Include="Tests\Shaders\Toon.wrl" />
     <None Include="Tests\PointingDeviceSensor\Canvas.wrl" />
+    <None Include="Tests\PointingDeviceSensor\PlaneSensor.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

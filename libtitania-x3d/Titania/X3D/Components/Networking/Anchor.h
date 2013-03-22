@@ -74,6 +74,9 @@ public:
 	virtual
 	void
 	requestImmediateLoad ();
+	
+	void
+	set_active (bool);
 
 	virtual
 	void

@@ -81,7 +81,7 @@ CollisionShape::intersect (const Sphere3f & sphere) const
 	if (collisions .empty ())
 		return false;
 
-	return shape -> intersect (matrix, sphere);
+	return shape -> getGeometry () -> intersect (matrix, sphere);
 }
 
 void

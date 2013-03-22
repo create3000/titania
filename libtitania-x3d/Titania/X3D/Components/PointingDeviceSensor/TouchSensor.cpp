@@ -85,8 +85,10 @@ TouchSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-TouchSensor::setHit (const std::shared_ptr <Hit> & hit)
+TouchSensor::set_over (const std::shared_ptr <Hit> & hit, bool over)
 {
+	X3DTouchSensorNode::set_over (hit, over);
+
 	if (isOver)
 	{
 		hitTexCoord_changed = Vector2f (hit -> hitTexCoord .x (), hit -> hitTexCoord .y ());

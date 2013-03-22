@@ -62,7 +62,7 @@ namespace titania {
 namespace X3D {
 
 static
-const Matrix4d textureMatrix = { 1,  0, 0, 0,
+const Matrix4f textureMatrix = { 1,  0, 0, 0,
 	                              0, -1, 0, 0,
 	                              0,  0, 1, 0,
 	                              0,  1, 0, 1 };
@@ -198,15 +198,6 @@ X3DShapeNode::pick ()
 			}
 		}
 	}
-}
-
-bool
-X3DShapeNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere) const
-{
-	if (_geometry)
-		return _geometry -> intersect (matrix, sphere);
-
-	return false;
 }
 
 void

@@ -55,15 +55,17 @@
 namespace titania {
 namespace X3D {
 
-Hit::Hit (const std::shared_ptr <Intersection> & intersection,
+Hit::Hit (const Line3f & hitRay,
+          const std::shared_ptr <Intersection> & intersection,
           const std::deque <X3DBaseNode*> & sensors,
           X3DBaseNode* const node) :
-   hitTexCoord (intersection -> hitTexCoord),
-   hitNormal (intersection -> hitNormal),
-	hitPoint (intersection -> hitPoint),                                                    
-	distance (std::abs (hitPoint .z ())),
-	 sensors (sensors),                                                                            
-	    node (node)                                                                                
+	     hitRay (hitRay),                           
+	hitTexCoord (intersection -> hitTexCoord), 
+	  hitNormal (intersection -> hitNormal),   
+	   hitPoint (intersection -> hitPoint),    
+	   distance (std::abs (hitPoint .z ())),   
+	    sensors (sensors),                     
+	       node (node)                         
 { }
 
 } // X3D

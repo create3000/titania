@@ -65,7 +65,7 @@ public:
 
 	virtual
 	void
-	set_touch ();
+	set_active (const std::shared_ptr <Hit> &, bool);
 
 protected:
 

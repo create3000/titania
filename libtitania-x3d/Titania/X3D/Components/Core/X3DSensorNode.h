@@ -64,9 +64,6 @@ public:
 	SFBool enabled;
 	SFBool isActive;
 
-	void
-	set_active (bool);
-
 protected:
 
 	X3DSensorNode ();

@@ -64,6 +64,10 @@ public:
 	SFBool  autoOffset;
 	SFVec3f trackPoint_changed;
 
+	virtual
+	void
+	set_motion (const std::shared_ptr <Hit> &) = 0;
+
 
 protected:
 

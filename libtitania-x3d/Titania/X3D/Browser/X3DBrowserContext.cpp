@@ -51,6 +51,7 @@
 #include "X3DBrowserContext.h"
 
 #include "../Components/Networking/Anchor.h"
+#include "../Components/PointingDeviceSensor/X3DDragSensorNode.h"
 #include "../Components/PointingDeviceSensor/X3DTouchSensorNode.h"
 
 #include <Titania/Chrono/CountingClock.h>
@@ -77,7 +78,8 @@ X3DBrowserContext::X3DBrowserContext () :
 	             lights (),
 	       textureUnits (),                                                                             
 	                  x (0),                                       
-	                  y (0),                                       
+	                  y (0),
+	             hitRay (),                                  
 	     enabledSensors (),                                        
 	               hits (),                                        
 	        changedTime (clock -> cycle ()),                       
@@ -220,11 +222,24 @@ X3DBrowserContext::getActiveViewpoint ()
 
 // Selection
 
+
+
 void
 X3DBrowserContext::pick (const double _x, const double _y)
 {
-	x = _x;
-	y = _y;
+	x      = _x;
+	y      = _y;
+	
+	// Get hitRay
+	
+	X3DViewpointNode* viewpoint      = getActiveViewpoint ();
+	NavigationInfo*   navigationInfo = getActiveNavigationInfo ();
+	
+	viewpoint -> reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
+	
+	glLoadIdentity ();
+	
+	hitRay = getHitRay ();
 
 	// Clear hits.
 
@@ -238,7 +253,7 @@ X3DBrowserContext::pick (const double _x, const double _y)
 
 	std::sort (hits .begin (), hits .end (), hitComp);
 
-	assert (enabledSensors .size () == 0);
+	enabledSensors .clear ();
 }
 
 Line3f
@@ -267,7 +282,7 @@ X3DBrowserContext::getHitRay () const
 void
 X3DBrowserContext::addHit (const std::shared_ptr <Intersection> & intersection, X3DBaseNode* const node)
 {
-	hits .emplace_back (new Hit (intersection, enabledSensors, node));
+	hits .emplace_back (new Hit (hitRay, intersection, enabledSensors, node));
 }
 
 void
@@ -291,7 +306,7 @@ X3DBrowserContext::motionNotifyEvent ()
 		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_over (false);
+			pointingDeviceSensorNode -> set_over (getHits () .front (), false);
 	}
 
 	// Set isOver to TRUE for appropriate nodes
@@ -306,13 +321,25 @@ X3DBrowserContext::motionNotifyEvent ()
 
 			if (pointingDeviceSensorNode)
 			{
-				pointingDeviceSensorNode -> set_over (true);
-				pointingDeviceSensorNode -> setHit (getHits () .front ());
+				pointingDeviceSensorNode -> set_over (getHits () .front (), true);
 			}
 		}
 	}
 	else
 		overSensors .clear ();
+		
+	// Forward motion event to active drag sensor nodes
+
+	for (const auto & node : activeSensors)
+	{
+		auto dragSensorNode = dynamic_cast <X3DDragSensorNode*> (node);
+
+		if (dragSensorNode)
+		{
+			dragSensorNode -> set_motion (std::make_shared <Hit> (hitRay, std::make_shared <Intersection> (), enabledSensors, nullptr));
+			break;
+		}
+	}
 }
 
 void
@@ -322,10 +349,15 @@ X3DBrowserContext::buttonPressEvent ()
 
 	for (const auto & node : activeSensors)
 	{
+		auto anchor = dynamic_cast <Anchor*> (node);
+
+		if (anchor)
+			anchor -> set_active (true);
+
 		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_active (true);
+			pointingDeviceSensorNode -> set_active (getHits () .front (), true);
 	}
 }
 
@@ -334,33 +366,18 @@ X3DBrowserContext::buttonReleaseEvent ()
 {
 	for (const auto & node : activeSensors)
 	{
-		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
-
-		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_active (false);
-	}
-	
-	activeSensors .clear ();
-}
-
-void
-X3DBrowserContext::touchEvent ()
-{
-	for (const auto & node : getHits () .front () -> sensors)
-	{
 		auto anchor = dynamic_cast <Anchor*> (node);
 
 		if (anchor)
-		{
-			anchor -> requestImmediateLoad ();
-			break;
-		}
+			anchor -> set_active (false);
 
-		auto touchSensorNode = dynamic_cast <X3DTouchSensorNode*> (node);
+		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
-		if (touchSensorNode)
-			touchSensorNode -> set_touch ();
+		if (pointingDeviceSensorNode)
+			pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (hitRay, std::make_shared <Intersection> (), enabledSensors, nullptr), false);
 	}
+	
+	activeSensors .clear ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

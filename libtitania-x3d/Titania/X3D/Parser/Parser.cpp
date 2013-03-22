@@ -63,6 +63,19 @@
 namespace titania {
 namespace X3D {
 
+static
+void
+error (const int line, const std::string & type)
+{
+	GLenum errorNum = glGetError ();
+
+	if (errorNum not_eq GL_NO_ERROR)
+	{
+		std::clog << "OpenGL Error at " << line << " " << type << ": " << gluErrorString (errorNum) << std::endl;
+		assert (0);
+	}
+}
+
 Parser::AccessTypes::AccessTypes ()
 {
 	(*this) ["field"]        = initializeOnly;
@@ -1293,7 +1306,7 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 				comments ();
 
 				_node .write (_newNode);
-
+				
 				_basicNode -> setup ();
 
 				return true;

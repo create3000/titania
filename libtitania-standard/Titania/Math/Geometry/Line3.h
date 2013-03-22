@@ -51,6 +51,7 @@
 #ifndef __TITANIA_MATH_GEOMETRY_LINE3_H__
 #define __TITANIA_MATH_GEOMETRY_LINE3_H__
 
+#include "../Numbers/Matrix4.h"
 #include "../Numbers/Vector3.h"
 
 namespace titania {
@@ -66,14 +67,17 @@ public:
 
 	///  @name Constructors
 
-	///  Default constructor.
+	///  Default constructor. Constructs a line of from (0, 0, 0) to (0, 0, 1).
 	constexpr
-	line3 () = delete;
+	line3 () :
+		value { { 0, 0, 0 }, { 0, 0, 1 } }
+
+	{ }
 
 	///  Copy constructor.
 	constexpr
 	line3 (const line3 & line) :
-		value { line .point (), line .direction () }
+		value { line .origin (), line .direction () }
 
 	{ }
 
@@ -83,16 +87,44 @@ public:
 		value { point1, normalize (point2 - point1) }
 
 	{ }
-	
+
 	///  @name Element access
 
 	///  Returns the point of this line.
 	const vector3 <Type> &
-	point () const { return value .point; }
+	origin () const { return value .point; }
 
 	/// Returns the direction of this line as normal a vector.
 	const vector3 <Type> &
 	direction () const { return value .direction; }
+
+	///  @name  Arithmetic operations
+	///  All these operators modify this box3 inplace.
+
+	///  Transform this line by @a matrix.
+	line3 &
+	operator *= (const matrix4 <Type> & matrix)
+	{
+		return multLineMatrix (matrix);
+	}
+
+	///  Transform this box by @a matrix.
+	line3 &
+	multMatrixLine (const matrix4 <Type> & matrix)
+	{
+		value .point     = matrix .multMatrixVec (value .point);
+		value .direction = normalize (matrix .multMatrixDir (value .direction));
+		return *this;
+	}
+
+	///  Transform this box by @a matrix.
+	line3 &
+	multLineMatrix (const matrix4 <Type> & matrix)
+	{
+		value .point     = matrix .multVecMatrix (value .point);
+		value .direction = normalize (matrix .multDirMatrix (value .direction));
+		return *this;
+	}
 
 	///  @name Intersection
 
@@ -116,28 +148,28 @@ private:
 
 template <class Type>
 bool
-line3 <Type> ::intersect (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C,
-                          Type & u, Type & v, Type & t) const
+line3 <Type>::intersect (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C,
+                         Type & u, Type & v, Type & t) const
 {
 	// find vectors for two edges sharing vert0
 	vector3 <Type> edge1 = B - A;
 	vector3 <Type> edge2 = C - A;
-	
+
 	// begin calculating determinant - also used to calculate U parameter
 	vector3 <Type> pvec = cross (direction (), edge2);
-	
+
 	// if determinant is near zero, ray lies in plane of triangle
 	Type det = dot (edge1, pvec);
-	
+
 	// Non culling intersection
-	
+
 	if (det == 0)
 		return false;
-		
+
 	Type inv_det = 1 / det;
 
 	// calculate distance from vert0 to ray origin
-	vector3 <Type> tvec = point () - A;
+	vector3 <Type> tvec = origin () - A;
 
 	// calculate U parameter and test bounds
 	u = dot (tvec, pvec) * inv_det;
@@ -157,6 +189,27 @@ line3 <Type> ::intersect (const vector3 <Type> & A, const vector3 <Type> & B, co
 	t = dot (edge2, qvec) * inv_det;
 
 	return true;
+}
+
+///  @relates line3
+///  @name Arithmetic operations
+
+///  Return new line3 value @a rhs transformed by matrix @a lhs.
+template <class Type>
+inline
+line3 <Type>
+operator * (const line3 <Type> & lhs, const matrix4 <Type> & rhs)
+{
+	return line3 <Type> (lhs) .multLineMatrix (rhs);
+}
+
+///  Return new line3 value @a rhs transformed by matrix @a lhs.
+template <class Type>
+inline
+line3 <Type>
+operator * (const matrix4 <Type> & lhs, const line3 <Type> & rhs)
+{
+	return line3 <Type> (rhs) .multMatrixLine (lhs);
 }
 
 ///  @relates line3
@@ -183,7 +236,7 @@ template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const line3 <Type> & line)
 {
-	return ostream << line .point () << ", " << line .point () + line .direction ();
+	return ostream << line .origin () << ", " << line .origin () + line .direction ();
 }
 
 extern template class line3 <float>;

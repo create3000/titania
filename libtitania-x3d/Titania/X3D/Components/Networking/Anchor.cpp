@@ -97,6 +97,13 @@ Anchor::requestImmediateLoad ()
 }
 
 void
+Anchor::set_active (bool value)
+{
+	if (not value)
+		requestImmediateLoad ();
+}
+
+void
 Anchor::traverse (TraverseType type)
 {
 	switch (type)

@@ -65,10 +65,38 @@ X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
 }
 
 void
-X3DPointingDeviceSensorNode::set_over (bool value)
+X3DPointingDeviceSensorNode::initialize ()
+{
+	X3DSensorNode::initialize ();
+	
+	enabled .addInterest (this, &X3DPointingDeviceSensorNode::set_enabled);
+}
+
+void
+X3DPointingDeviceSensorNode::set_enabled ()
+{
+	if (not enabled)
+	{
+		if (isActive)
+			isActive = false;
+		
+		if (isOver)
+			isOver = false;
+	}
+}
+
+void
+X3DPointingDeviceSensorNode::set_over (const std::shared_ptr <Hit> &, bool value)
 {
 	if (isOver not_eq value)
 		isOver = value;
+}
+
+void
+X3DPointingDeviceSensorNode::set_active (const std::shared_ptr <Hit> &, bool value)
+{
+	if (isActive not_eq value)
+		isActive = value;
 }
 
 void
@@ -80,13 +108,6 @@ X3DPointingDeviceSensorNode::push ()
 		
 		transformationMatrix = ModelViewMatrix4f ();
 	}
-}
-
-void
-X3DPointingDeviceSensorNode::pop ()
-{
-	if (enabled)
-		getBrowser () -> getSensors () .pop_back ();
 }
 
 } // X3D

@@ -51,9 +51,9 @@
 #ifndef __TITANIA_X3D_BROWSER_HIT_H__
 #define __TITANIA_X3D_BROWSER_HIT_H__
 
+#include "../Browser/Intersection.h"
 #include "../Fields.h"
 #include "../Types/Geometry.h"
-#include "../Browser/Intersection.h"
 #include <memory>
 
 namespace titania {
@@ -63,8 +63,12 @@ class Hit
 {
 public:
 
-	Hit (const std::shared_ptr <Intersection> &, const std::deque <X3DBaseNode*> &, X3DBaseNode* const);
+	Hit (const Line3f &,
+	     const std::shared_ptr <Intersection> &,
+	     const std::deque <X3DBaseNode*> &,
+	     X3DBaseNode* const);
 
+	const Line3f                    hitRay;
 	const Vector3f                  hitTexCoord;
 	const Vector3f                  hitNormal;
 	const Vector3f                  hitPoint;

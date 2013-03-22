@@ -62,9 +62,9 @@ class PlaneSensor :
 public:
 
 	SFRotation axisRotation;
+	SFVec3f    offset;
 	SFVec2f    maxPosition;
 	SFVec2f    minPosition;
-	SFVec3f    offset;
 	SFVec3f    translation_changed;
 
 	PlaneSensor (X3DExecutionContext* const);
@@ -72,6 +72,29 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	virtual
+	void
+	set_active (const std::shared_ptr <Hit> &, bool) final;
+
+	virtual
+	void
+	set_motion (const std::shared_ptr <Hit> &) final;
+
+
+private:
+
+	virtual
+	void
+	initialize () final;
+
+	void
+	set_offset ();
+
+	Plane3f  plane;
+	Vector3f startOffset;
+	Vector3f startPoint;
+	Matrix4f inverseTransformationMatrix;
 
 };
 

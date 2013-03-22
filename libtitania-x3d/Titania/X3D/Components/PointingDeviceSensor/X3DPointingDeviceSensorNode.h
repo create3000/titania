@@ -71,30 +71,33 @@ public:
 
 	virtual
 	void
-	set_over (bool);
-	
+	set_over (const std::shared_ptr <Hit> &, bool);
+
 	virtual
 	void
-	setHit (const std::shared_ptr <Hit> &)
-	{ }
+	set_active (const std::shared_ptr <Hit> &, bool);
 
 	void
 	push ();
-
-	void
-	pop ();
 
 
 protected:
 
 	X3DPointingDeviceSensorNode ();
 	
+	virtual
+	void
+	initialize () override;
+
 	Matrix4f
 	getTransformationMatrix () const
 	{ return transformationMatrix; }
 
 
 private:
+
+	void
+	set_enabled ();
 
 	Matrix4f transformationMatrix;
 };

@@ -114,13 +114,17 @@ Transform {
         appearance Appearance {
           material Material { }
         }
-        geometry Sphere { }
+        geometry Disk2D {
+          innerRadius 2
+          outerRadius 4
+        }
       }
     }
   ]
 }
 
 DEF Debug Script {
+  eventIn SFVec3f set_hitNormal
   eventIn SFVec3f set_hitPoint1
   eventIn SFBool  set_isOver1
   eventIn SFBool  set_isActive1
@@ -129,8 +133,14 @@ DEF Debug Script {
   eventIn SFBool  set_isOver2
   eventIn SFBool  set_isActive2
   eventIn SFTime  set_touchTime2
+  eventOut SFRotation rotation_changed
 
   url "vrmlscript:
+function set_hitNormal (value)
+{
+	rotation_changed = new SFRotation (new SFVec3f (0, 0, 1), value);
+}
+
 function set_hitPoint1 (value)
 {
 	print ('Touch 1 hitPoint: ' + value);
@@ -176,10 +186,13 @@ function set_touchTime2 (value)
 ROUTE Touch1.isOver TO Debug.set_isOver1
 ROUTE Touch1.isActive TO Debug.set_isActive1
 ROUTE Touch1.touchTime TO Debug.set_touchTime1
+ROUTE Touch1.hitNormal_changed TO Debug.set_hitNormal
 ROUTE Touch1.hitPoint_changed TO Debug.set_hitPoint1
 ROUTE Touch1.hitPoint_changed TO Cursor.set_translation
 ROUTE Touch2.isOver TO Debug.set_isOver2
 ROUTE Touch2.isActive TO Debug.set_isActive2
 ROUTE Touch2.touchTime TO Debug.set_touchTime2
+ROUTE Touch2.hitNormal_changed TO Debug.set_hitNormal
 ROUTE Touch2.hitPoint_changed TO Debug.set_hitPoint2
 ROUTE Touch2.hitPoint_changed TO Cursor.set_translation
+ROUTE Debug.rotation_changed TO Cursor.set_rotation

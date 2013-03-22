@@ -74,6 +74,10 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	virtual
+	void
+	set_motion (const std::shared_ptr <Hit> &) final;
+
 };
 
 } // X3D

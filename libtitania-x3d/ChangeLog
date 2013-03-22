@@ -1,3 +1,33 @@
+2013-03-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Hit.h:
+	* Hit.cpp:
+	* Parser.cpp:
+	* PointingDevice.cpp:
+	* X3DBrowserContext.h:
+	* CollisionShape.cpp:
+	* X3DBrowserContext.cpp:
+	* Anchor.h:
+	* X3DShapeNode.h:
+	* X3DSensorNode.h:
+	* Anchor.cpp:
+	* X3DSensorNode.cpp:
+	* X3DShapeNode.cpp:
+	* X3DGroupingNode.cpp:
+	* TouchSensor.h:
+	* PlaneSensor.h:
+	* SphereSensor.h:
+	* PlaneSensor.cpp:
+	* TouchSensor.cpp:
+	* CylinderSensor.h:
+	* SphereSensor.cpp:
+	* CylinderSensor.cpp:
+	* X3DDragSensorNode.h:
+	* X3DTouchSensorNode.h:
+	* X3DTouchSensorNode.cpp:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorNode.cpp: 
+
 2013-03-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.h:

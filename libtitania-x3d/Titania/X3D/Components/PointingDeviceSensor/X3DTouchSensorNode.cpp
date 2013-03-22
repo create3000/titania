@@ -61,9 +61,11 @@ X3DTouchSensorNode::X3DTouchSensorNode () :
 }
 
 void
-X3DTouchSensorNode::set_touch ()
+X3DTouchSensorNode::set_active (const std::shared_ptr <Hit> & hit, bool value)
 {
-	if (isActive)
+	X3DPointingDeviceSensorNode::set_active (hit, value);
+
+	if (enabled and not isActive)
 		touchTime = getCurrentTime ();
 }
 

@@ -89,5 +89,10 @@ CylinderSensor::create (X3DExecutionContext* const executionContext) const
 	return new CylinderSensor (executionContext);
 }
 
+void
+CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
+{
+}
+
 } // X3D
 } // titania

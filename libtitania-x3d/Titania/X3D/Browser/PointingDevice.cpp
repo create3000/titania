@@ -132,16 +132,8 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 	if (event -> button == 1)
 	{
 		if (isOver)
-		{
-			// Handle button release event
-
-			if (pick (event -> x, getBrowser () -> get_height () - event -> y))
-			{
-				getBrowser () -> touchEvent ();
-			}
-
 			getBrowser () -> setCursor (Gdk::HAND2);
-		}
+
 		else
 			getBrowser () -> setCursor (Gdk::ARROW);
 
@@ -152,6 +144,7 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 	{
 		if (isOver)
 			getBrowser () -> setCursor (Gdk::HAND2);
+		
 		else
 			getBrowser () -> setCursor (Gdk::ARROW);
 	}

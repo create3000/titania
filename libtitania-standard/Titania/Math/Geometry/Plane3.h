@@ -85,6 +85,13 @@ public:
 	typedef Type value_type;
 
 	///  @name Constructors
+	
+	///  Default constructor. Constructs a plane in the Z=0 plane with distance 0.
+	constexpr
+	plane3 () :
+		value { { 0, 0, 1 }, 0 }
+
+	{ }
 
 	///  Copy constructor.
 	constexpr
@@ -183,9 +190,9 @@ plane3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & point) con
 		return false;
 
 	// Plane and line are not parallel. The intersection point can be calculated now.
-	Type t = (distance_from_origin () - dot (normal (), line .point ())) / theta;
+	Type t = (distance_from_origin () - dot (normal (), line .origin ())) / theta;
 
-	point = line .point () + line .direction () * t;
+	point = line .origin () + line .direction () * t;
 
 	return true;
 }

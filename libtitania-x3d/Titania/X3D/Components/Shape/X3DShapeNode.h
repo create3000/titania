@@ -87,9 +87,6 @@ public:
 	void
 	draw ();
 
-	bool
-	intersect (const Matrix4f &, const Sphere3f &) const;
-
 	virtual
 	void
 	dispose ();

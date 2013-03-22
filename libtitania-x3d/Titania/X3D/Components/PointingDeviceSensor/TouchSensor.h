@@ -73,7 +73,7 @@ public:
 
 	virtual
 	void
-	setHit (const std::shared_ptr <Hit> &);
+	set_over (const std::shared_ptr <Hit> &, bool) final;
 
 };
 

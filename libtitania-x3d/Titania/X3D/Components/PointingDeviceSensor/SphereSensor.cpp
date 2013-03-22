@@ -81,5 +81,10 @@ SphereSensor::create (X3DExecutionContext* const executionContext) const
 	return new SphereSensor (executionContext);
 }
 
+void
+SphereSensor::set_motion (const std::shared_ptr <Hit> & hit)
+{
+}
+
 } // X3D
 } // titania
