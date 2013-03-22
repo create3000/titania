@@ -1,5 +1,10 @@
 2013-03-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserContext.cpp:
+	* Anchor.cpp: 
+
+2013-03-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Anchor.cpp:
 	* X3DGroupingNode.cpp: 
 

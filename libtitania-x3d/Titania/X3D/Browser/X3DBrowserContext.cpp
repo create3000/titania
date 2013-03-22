@@ -337,7 +337,6 @@ X3DBrowserContext::motionNotifyEvent ()
 		if (dragSensorNode)
 		{
 			dragSensorNode -> set_motion (std::make_shared <Hit> (hitRay, std::make_shared <Intersection> (), enabledSensors, nullptr));
-			break;
 		}
 	}
 }
