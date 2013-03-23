@@ -65,13 +65,15 @@ public:
 
 	Hit (const Line3f &,
 	     const std::shared_ptr <Intersection> &,
+	     const Box3f,
 	     const std::deque <X3DBaseNode*> &,
 	     X3DBaseNode* const);
 
-	const Line3f                    hitRay;
-	const Vector3f                  hitTexCoord;
-	const Vector3f                  hitNormal;
-	const Vector3f                  hitPoint;
+	const Line3f                    ray;
+	const Vector3f                  texCoord;
+	const Vector3f                  normal;
+	const Vector3f                  point;
+	const Box3f                     bbox;
 	const float                     distance;
 	const std::deque <X3DBaseNode*> sensors;
 	const X3DBaseNode*              node;

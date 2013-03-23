@@ -280,9 +280,9 @@ X3DBrowserContext::getHitRay () const
 }
 
 void
-X3DBrowserContext::addHit (const std::shared_ptr <Intersection> & intersection, X3DBaseNode* const node)
+X3DBrowserContext::addHit (const std::shared_ptr <Intersection> & intersection, const Box3f bbox, X3DBaseNode* const node)
 {
-	hits .emplace_back (new Hit (hitRay, intersection, enabledSensors .back (), node));
+	hits .emplace_back (new Hit (hitRay, intersection, bbox, enabledSensors .back (), node));
 }
 
 void
@@ -336,7 +336,7 @@ X3DBrowserContext::motionNotifyEvent ()
 
 		if (dragSensorNode)
 		{
-			dragSensorNode -> set_motion (std::make_shared <Hit> (hitRay, std::make_shared <Intersection> (), enabledSensors .back (), nullptr));
+			dragSensorNode -> set_motion (hitRay);
 		}
 	}
 }
@@ -373,7 +373,7 @@ X3DBrowserContext::buttonReleaseEvent ()
 		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (hitRay, std::make_shared <Intersection> (), enabledSensors .back (), nullptr), false);
+			pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (hitRay, std::make_shared <Intersection> (), Box3f (), enabledSensors .back (), nullptr), false);
 	}
 	
 	activeSensors .clear ();

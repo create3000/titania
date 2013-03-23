@@ -92,18 +92,6 @@ PlaneSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-PlaneSensor::initialize ()
-{
-	X3DDragSensorNode::initialize ();
-
-	offset .addInterest (this, &PlaneSensor::set_offset);
-}
-
-void
-PlaneSensor::set_offset ()
-{ }
-
-void
 PlaneSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 {
 	X3DDragSensorNode::set_active (hit, active);
@@ -111,9 +99,9 @@ PlaneSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 	if (isActive)
 	{
 		inverseTransformationMatrix = ~getTransformationMatrix ();
-		plane = Plane3f (hit -> hitPoint * inverseTransformationMatrix, axisRotation * Vector3f (0, 0, 1));
+		plane = Plane3f (hit -> point * inverseTransformationMatrix, axisRotation * Vector3f (0, 0, 1));
 
-		auto hitRay = hit -> hitRay * inverseTransformationMatrix;
+		auto hitRay = hit -> ray * inverseTransformationMatrix;
 
 		Vector3f intersection;
 
@@ -133,9 +121,9 @@ PlaneSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 }
 
 void
-PlaneSensor::set_motion (const std::shared_ptr <Hit> & hit)
+PlaneSensor::set_motion (const Line3f & ray)
 {
-	auto hitRay = hit -> hitRay * inverseTransformationMatrix;
+	auto hitRay = ray * inverseTransformationMatrix;
 
 	Vector3f intersection;
 

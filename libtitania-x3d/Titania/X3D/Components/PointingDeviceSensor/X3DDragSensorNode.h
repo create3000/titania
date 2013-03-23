@@ -66,7 +66,7 @@ public:
 
 	virtual
 	void
-	set_motion (const std::shared_ptr <Hit> &) = 0;
+	set_motion (const Line3f &) = 0;
 
 
 protected:

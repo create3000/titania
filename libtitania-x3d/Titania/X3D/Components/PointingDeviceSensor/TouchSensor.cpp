@@ -91,9 +91,9 @@ TouchSensor::set_over (const std::shared_ptr <Hit> & hit, bool over)
 
 	if (isOver)
 	{
-		hitTexCoord_changed = Vector2f (hit -> hitTexCoord .x (), hit -> hitTexCoord .y ());
-		hitNormal_changed   = hit -> hitNormal;
-		hitPoint_changed    = hit -> hitPoint * ~getTransformationMatrix ();
+		hitTexCoord_changed = Vector2f (hit -> texCoord .x (), hit -> texCoord .y ());
+		hitNormal_changed   = hit -> normal;
+		hitPoint_changed    = hit -> point * ~getTransformationMatrix ();
 	}
 }
 

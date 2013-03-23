@@ -170,7 +170,7 @@ public:
 	getHitRay () const;
 
 	void
-	addHit (const std::shared_ptr <Intersection> &, X3DBaseNode* const);
+	addHit (const std::shared_ptr <Intersection> &, const Box3f, X3DBaseNode* const);
 
 	const HitArray &
 	getHits () const { return hits; }

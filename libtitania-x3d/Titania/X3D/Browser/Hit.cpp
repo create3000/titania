@@ -57,13 +57,15 @@ namespace X3D {
 
 Hit::Hit (const Line3f & hitRay,
           const std::shared_ptr <Intersection> & intersection,
+          const Box3f bbox,
           const std::deque <X3DBaseNode*> & sensors,
           X3DBaseNode* const node) :
-	     hitRay (hitRay),                           
-	hitTexCoord (intersection -> hitTexCoord), 
-	  hitNormal (intersection -> hitNormal),   
-	   hitPoint (intersection -> hitPoint),    
-	   distance (std::abs (hitPoint .z ())),   
+	        ray (hitRay),                           
+	   texCoord (intersection -> hitTexCoord), 
+	     normal (intersection -> hitNormal),   
+	      point (intersection -> hitPoint), 
+	      bbox  (bbox),   
+	   distance (std::abs (point .z ())),   
 	    sensors (sensors),                     
 	       node (node)                         
 { }

@@ -79,17 +79,10 @@ public:
 
 	virtual
 	void
-	set_motion (const std::shared_ptr <Hit> &) final;
+	set_motion (const Line3f &) final;
 
 
 private:
-
-	virtual
-	void
-	initialize () final;
-
-	void
-	set_offset ();
 
 	Plane3f  plane;
 	Vector3f startOffset;

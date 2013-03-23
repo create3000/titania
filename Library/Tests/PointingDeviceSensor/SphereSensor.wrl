@@ -1,0 +1,85 @@
+#VRML V2.0 utf8 Titania
+
+META "title" "SphereSensor"
+
+Viewpoint {
+  description "Front"
+  position 0 0 4
+}
+
+Viewpoint {
+  description "Back"
+  position 0 0 -4
+  orientation 0 1 0 3.14159
+}
+
+Viewpoint {
+  description "Left"
+  position -4 0 0
+  orientation 0 1 0 -1.5707963
+}
+
+Viewpoint {
+  description "Right"
+  position 4 0 0
+  orientation 0 1 0 1.5707963
+}
+
+Viewpoint {
+  description "Top"
+  position 0 4 0
+  orientation 1 0 0 -1.5707963
+}
+
+Viewpoint {
+  description "Bottom"
+  position 0 -4 0
+  orientation 1 0 0 1.5707963
+}
+
+DEF Button1 Transform {
+  children [
+    DEF Touch1 SphereSensor { }
+    DEF Shape1 Transform {
+      children [
+        Transform {
+          children Shape {
+            appearance Appearance {
+              texture ImageTexture {
+                url "../images/image.png"
+              }
+            }
+            geometry Sphere { }
+          }
+        }
+      ]
+    }
+  ]
+}
+
+DEF Debug Script {
+  eventIn SFVec3f set_trackPoint1
+  eventIn SFBool  set_isOver1
+  eventIn SFBool  set_isActive1
+
+  url "vrmlscript:
+function set_trackPoint1 (value)
+{
+	print ('Touch 1 trackPoint: ' + value);
+}
+
+function set_isOver1 (value)
+{
+	print ('Touch 1 isOver: ' + value);
+}
+
+function set_isActive1 (value)
+{
+	print ('Touch 1 isActive: ' + value);
+}
+"
+}
+
+ROUTE Touch1.isOver TO Debug.set_isOver1
+ROUTE Touch1.isActive TO Debug.set_isActive1
+ROUTE Touch1.rotation_changed TO Shape1.set_rotation

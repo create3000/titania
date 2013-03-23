@@ -67,12 +67,12 @@ SphereSensor::SphereSensor (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata",           metadata);
 	addField (inputOutput, "enabled",            enabled);
 	addField (inputOutput, "description",        description);
+	addField (inputOutput, "autoOffset",         autoOffset);
+	addField (inputOutput, "offset",             offset);
+	addField (outputOnly,  "trackPoint_changed", trackPoint_changed);
+	addField (outputOnly,  "rotation_changed",   rotation_changed);
 	addField (outputOnly,  "isActive",           isActive);
 	addField (outputOnly,  "isOver",             isOver);
-	addField (inputOutput, "autoOffset",         autoOffset);
-	addField (outputOnly,  "trackPoint_changed", trackPoint_changed);
-	addField (inputOutput, "offset",             offset);
-	addField (outputOnly,  "rotation_changed",   rotation_changed);
 }
 
 X3DBaseNode*
@@ -82,8 +82,50 @@ SphereSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-SphereSensor::set_motion (const std::shared_ptr <Hit> & hit)
+SphereSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 {
+	X3DDragSensorNode::set_active (hit, active);
+
+	if (isActive)
+	{
+		inverseTransformationMatrix = ~getTransformationMatrix ();
+
+		plane  = Plane3f (hit -> point * inverseTransformationMatrix, inverseTransformationMatrix .multDirMatrix (Vector3f (0, 0, 1)));
+		sphere = Sphere3f (1, hit -> bbox .center () * inverseTransformationMatrix);
+
+		auto hitRay = hit -> ray * inverseTransformationMatrix;
+
+		Vector3f intersection;
+
+		if (plane .intersect (hitRay, intersection))
+		{
+			fromVector       = intersection - sphere .center ();
+			rotation_changed = offset;
+			startOffset      = offset;
+		}
+	}
+	else
+	{
+		if (autoOffset)
+			offset = rotation_changed;
+	}
+}
+
+void
+SphereSensor::set_motion (const Line3f & ray)
+{
+	auto hitRay = ray * inverseTransformationMatrix;
+
+	Vector3f intersection;
+
+	if (plane .intersect (hitRay, intersection))
+	{
+		auto toVector = intersection - sphere .center ();
+
+		rotation_changed = startOffset * Rotation4f (fromVector, toVector);
+
+		__LOG__ << Rotation4f (fromVector, toVector) << std::endl;
+	}
 }
 
 } // X3D

@@ -1,5 +1,21 @@
 2013-03-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Hit.h:
+	* Hit.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* X3DShapeNode.cpp:
+	* PlaneSensor.h:
+	* SphereSensor.h:
+	* TouchSensor.cpp:
+	* PlaneSensor.cpp:
+	* CylinderSensor.h:
+	* SphereSensor.cpp:
+	* CylinderSensor.cpp:
+	* X3DDragSensorNode.h: 
+
+2013-03-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserContext.h:
 	* X3DBrowserContext.cpp:
 	* Anchor.cpp:
