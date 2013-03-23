@@ -81,6 +81,10 @@ SphereSensor::create (X3DExecutionContext* const executionContext) const
 	return new SphereSensor (executionContext);
 }
 
+/*
+ *
+ */
+
 void
 SphereSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 {
@@ -90,19 +94,29 @@ SphereSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 	{
 		inverseTransformationMatrix = ~getTransformationMatrix ();
 
-		plane  = Plane3f (hit -> point * inverseTransformationMatrix, inverseTransformationMatrix .multDirMatrix (Vector3f (0, 0, 1)));
-		sphere = Sphere3f (1, hit -> bbox .center () * inverseTransformationMatrix);
+		auto hitPoint  = hit -> point * inverseTransformationMatrix;
+		auto hitCenter = Vector3f ();
 
-		auto hitRay = hit -> ray * inverseTransformationMatrix;
+		plane  = Plane3f (hitCenter, inverseTransformationMatrix .multDirMatrix (Vector3f (0, 0, 1)));
+		sphere = Sphere3f (abs (hitPoint - hitCenter), hitCenter);
 
-		Vector3f intersection;
+		behind = plane .distance (hitPoint) < 0;
 
-		if (plane .intersect (hitRay, intersection))
+		Vector3f trackPoint, intersection2;
 		{
-			fromVector       = intersection - sphere .center ();
-			rotation_changed = offset;
-			startOffset      = offset;
+			// Calculate trackPoint
+			auto hitRay = Line3f (hitPoint, sphere .center ());
+			sphere .intersect (hitRay, trackPoint, intersection2);
+
+			if (abs (hitRay .origin () - intersection2) < abs (hitRay .origin () - trackPoint))
+				trackPoint = intersection2;
 		}
+
+		fromVector         = hitPoint - hitCenter;
+		trackPoint_changed = trackPoint;
+		rotation_changed   = offset;
+		startOffset        = offset;
+		startPoint         = hitPoint;
 	}
 	else
 	{
@@ -112,19 +126,50 @@ SphereSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 }
 
 void
-SphereSensor::set_motion (const Line3f & ray)
+SphereSensor::set_motion (const std::shared_ptr <Hit> & hit)
 {
-	auto hitRay = ray * inverseTransformationMatrix;
+	auto hitRay = hit -> ray * inverseTransformationMatrix;
 
-	Vector3f intersection;
+	Vector3f trackPoint, intersection2;
 
-	if (plane .intersect (hitRay, intersection))
+	if (sphere .intersect (hitRay, trackPoint, intersection2))
 	{
-		auto toVector = intersection - sphere .center ();
+		if ((abs (hitRay .origin () - intersection2) < abs (hitRay .origin () - trackPoint)) - behind)
+			trackPoint = intersection2;
+
+		plane = Plane3f (trackPoint, inverseTransformationMatrix .multDirMatrix (Vector3f (0, 0, 1)));
+	}
+	else
+	{
+		// Find trackPoint on the plane with sphere
+		
+		Vector3f p1;
+		plane .intersect (hitRay, p1);
+
+		auto hitRay = Line3f (p1, sphere .center ());
+		sphere .intersect (hitRay, trackPoint, intersection2);
+
+		if (abs (hitRay .origin () - intersection2) < abs (hitRay .origin () - trackPoint))
+			trackPoint = intersection2;
+			
+		// Find trackPoint behind sphere
+
+		auto normal = cross (math::normal (sphere .center (), trackPoint, startPoint), normalize (trackPoint - sphere .center ()));
+	
+		hitRay = Line3f (trackPoint - normal * abs (p1 - trackPoint), sphere .center ());
+		
+		sphere .intersect (hitRay, trackPoint, intersection2);
+
+		if (abs (hitRay .origin () - intersection2) < abs (hitRay .origin () - trackPoint))
+			trackPoint = intersection2;	
+	}
+
+	{
+		trackPoint_changed = trackPoint;
+
+		auto toVector = trackPoint - sphere .center ();
 
 		rotation_changed = startOffset * Rotation4f (fromVector, toVector);
-
-		__LOG__ << Rotation4f (fromVector, toVector) << std::endl;
 	}
 }
 

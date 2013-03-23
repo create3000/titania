@@ -7,6 +7,21 @@
 	* X3DShapeNode.cpp:
 	* PlaneSensor.h:
 	* SphereSensor.h:
+	* PlaneSensor.cpp:
+	* SphereSensor.cpp:
+	* CylinderSensor.h:
+	* CylinderSensor.cpp:
+	* X3DDragSensorNode.h: 
+
+2013-03-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Hit.h:
+	* Hit.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* X3DShapeNode.cpp:
+	* PlaneSensor.h:
+	* SphereSensor.h:
 	* TouchSensor.cpp:
 	* PlaneSensor.cpp:
 	* CylinderSensor.h:

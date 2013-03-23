@@ -25,5 +25,6 @@
     <None Include="gtk-opengl.cpp" />
     <None Include="Sphere - Triangle Intersection.pdf" />
     <None Include="Fast MinimumStorage RayTriangle Intersection.pdf" />
+    <None Include="Ray-Sphere Intersection.gif" />
   </ItemGroup>
 </Project>

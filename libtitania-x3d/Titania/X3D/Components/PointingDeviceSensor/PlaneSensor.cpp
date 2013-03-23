@@ -103,12 +103,12 @@ PlaneSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 
 		auto hitRay = hit -> ray * inverseTransformationMatrix;
 
-		Vector3f intersection;
+		Vector3f trackPoint;
 
-		if (plane .intersect (hitRay, intersection))
+		if (plane .intersect (hitRay, trackPoint))
 		{
-			startPoint          = intersection;
-			trackPoint_changed  = intersection;
+			startPoint          = trackPoint;
+			trackPoint_changed  = trackPoint;
 			translation_changed = offset;
 			startOffset         = offset;
 		}
@@ -121,17 +121,17 @@ PlaneSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 }
 
 void
-PlaneSensor::set_motion (const Line3f & ray)
+PlaneSensor::set_motion (const std::shared_ptr <Hit> & hit)
 {
-	auto hitRay = ray * inverseTransformationMatrix;
+	auto hitRay = hit -> ray * inverseTransformationMatrix;
 
-	Vector3f intersection;
+	Vector3f trackPoint;
 
-	if (plane .intersect (hitRay, intersection))
+	if (plane .intersect (hitRay, trackPoint))
 	{
-		trackPoint_changed = intersection;
+		trackPoint_changed = trackPoint;
 
-		auto translation = startOffset + (intersection - startPoint);
+		auto translation = startOffset + (trackPoint - startPoint);
 
 		// X component
 

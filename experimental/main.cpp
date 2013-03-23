@@ -36,6 +36,7 @@
 #include <Titania/Math/Functional.h>
 #include <Titania/Math/Geometry/Box2.h>
 #include <Titania/Math/Geometry/Box3.h>
+#include <Titania/Math/Geometry/Line3.h>
 #include <Titania/Math/Geometry/Plane3.h>
 #include <Titania/Math/Numbers/Matrix3.h>
 #include <Titania/Math/Numbers/Matrix4.h>
@@ -698,6 +699,8 @@ typedef math::matrix4 <float>   Matrix4f;
 typedef math::box2 <float>      Box2f;
 typedef math::box3 <float>      Box3f;
 typedef math::plane3 <float>    Plane3f;
+typedef math::line3 <float>     Line3f;
+typedef math::sphere3 <float>   Sphere3f;
 
 namespace Test {
 
@@ -818,16 +821,15 @@ main (int argc, char** argv)
 	#endif
 
 	{
-		basic::uri data = "data:text/plain,content";
+		auto line   = Line3f(Vector3f (), Vector3f (1,1,0));
+		auto sphere = Sphere3f (1, Vector3f (0,0,0));
+		
+		auto intersection1 = Vector3f ();
+		auto intersection2 = Vector3f ();
 
-		std::clog << data .scheme () << std::endl;
-		std::clog << data .path () << std::endl;
-		
-		
-		std::clog << basic::ifilestream (basic::http::method::GET, data) .rdbuf () << std::endl;
-		
-		size_t i = 8;
-		std::clog << (i / 4 * 4) << std::endl;
+		std::clog << sphere .intersect (line, intersection1, intersection2) << std::endl;
+		std::clog << intersection1 << std::endl;
+		std::clog << intersection2 << std::endl;
 	}
 
 	if (0)

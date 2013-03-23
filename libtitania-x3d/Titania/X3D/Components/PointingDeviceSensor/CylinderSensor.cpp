@@ -90,7 +90,7 @@ CylinderSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-CylinderSensor::set_motion (const Line3f & ray)
+CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
 {
 }
 

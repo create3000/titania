@@ -76,15 +76,17 @@ public:
 
 	virtual
 	void
-	set_motion (const Line3f &) final;
+	set_motion (const std::shared_ptr <Hit> &) final;
 
 
 private:
 
 	Plane3f    plane;
 	Sphere3f   sphere;
+	bool       behind;
 	Vector3f   fromVector;
 	SFRotation startOffset;
+	Vector3f   startPoint;
 	Matrix4f   inverseTransformationMatrix;
 
 };

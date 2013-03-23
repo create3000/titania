@@ -126,6 +126,24 @@ public:
 		return *this;
 	}
 
+	//  @name Distance
+
+	///  Returns the perpendicular distance from the @a point to the line.
+	Type
+	distance (const vector3 <Type> & point) const
+	{
+		vector3 <Type> d = origin () - point;
+		return abs (d - dot (d, direction ()) * direction ());
+	}
+
+	/// Project @a point onto the line.
+	//	vector3 <Type>
+	//	project (const vector3 <Type> & point) const
+	//	{
+	//		vector3 <Type> d = origin () - point;
+	//		return point + (d - dot (d, direction ()) * direction ());
+	//	}
+
 	///  @name Intersection
 
 	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this line.

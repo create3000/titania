@@ -63,17 +63,17 @@ class Hit
 {
 public:
 
-	Hit (const Line3f &,
+	Hit (const Matrix4f &,
+	     const Line3f &,
 	     const std::shared_ptr <Intersection> &,
-	     const Box3f,
 	     const std::deque <X3DBaseNode*> &,
 	     X3DBaseNode* const);
 
+	const Matrix4f                  transformationMatrix;
 	const Line3f                    ray;
 	const Vector3f                  texCoord;
 	const Vector3f                  normal;
 	const Vector3f                  point;
-	const Box3f                     bbox;
 	const float                     distance;
 	const std::deque <X3DBaseNode*> sensors;
 	const X3DBaseNode*              node;

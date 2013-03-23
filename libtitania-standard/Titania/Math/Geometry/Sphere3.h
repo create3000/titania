@@ -53,6 +53,9 @@
 
 #include "../Numbers/Vector3.h"
 #include "../Numbers/Matrix4.h"
+#include "../Geometry/Line3.h"
+
+#include "../../LOG.h"
 
 namespace titania {
 namespace math {
@@ -98,6 +101,10 @@ public:
 	center () const { return value .center; }
 	
 	///  @name Intersection
+	
+	///  Returns true if the @a line intersects with this sphere.
+	bool
+	intersect (const line3 <Type> &, vector3 <Type> &, vector3 <Type> &) const;
 
 	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this sphere.
 	bool
@@ -115,6 +122,34 @@ private:
 	Value value;
 
 };
+
+template <class Type>
+bool
+sphere3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & intersection1, vector3 <Type> & intersection2) const
+{
+	auto L   = center () - line .origin ();
+	Type tca = dot (L, line .direction ());
+
+	if (tca < 0)
+		// there is no intersection
+		return false;
+
+	Type d2 = dot (L, L) - std::pow (tca, 2);
+	Type r2 = std::pow (radius (), 2);
+
+	if (d2 > r2)
+		return false;
+		
+	Type thc = std::sqrt (r2 - d2);
+	
+	Type t1 = tca - thc;
+	Type t2 = tca + thc;
+
+	intersection1 = line .origin () + line .direction () * t1;
+	intersection2 = line .origin () + line .direction () * t2;
+	
+	return true;
+}
 
 // http://realtimecollisiondetection.net/blog/?p=103
 

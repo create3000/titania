@@ -79,7 +79,7 @@ public:
 
 	virtual
 	void
-	set_motion (const Line3f &) final;
+	set_motion (const std::shared_ptr <Hit> &) final;
 
 
 private:

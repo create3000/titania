@@ -1,39 +1,45 @@
 #VRML V2.0 utf8 Titania
 
-META "title" "SphereSensor"
+#META "title" "SphereSensor"
 
+Transform {
+  translation 3.65468 0.0348776 2.6975
+  rotation -0.57735 0.57735 0.577351 2.09439
+  scale 26.825 26.8249 26.825
+  scaleOrientation 0.0459123 -0.998773 0.01854 0.72878
+  children [
 Viewpoint {
   description "Front"
-  position 0 0 4
+  position 0 0 8
 }
 
 Viewpoint {
   description "Back"
-  position 0 0 -4
+  position 0 0 -8
   orientation 0 1 0 3.14159
 }
 
 Viewpoint {
   description "Left"
-  position -4 0 0
+  position -8 0 0
   orientation 0 1 0 -1.5707963
 }
 
 Viewpoint {
   description "Right"
-  position 4 0 0
+  position 8 0 0
   orientation 0 1 0 1.5707963
 }
 
 Viewpoint {
   description "Top"
-  position 0 4 0
+  position 0 8 0
   orientation 1 0 0 -1.5707963
 }
 
 Viewpoint {
   description "Bottom"
-  position 0 -4 0
+  position 0 -8 0
   orientation 1 0 0 1.5707963
 }
 
@@ -43,6 +49,7 @@ DEF Button1 Transform {
     DEF Shape1 Transform {
       children [
         Transform {
+          translation 0 0 0
           children Shape {
             appearance Appearance {
               texture ImageTexture {
@@ -56,6 +63,7 @@ DEF Button1 Transform {
     }
   ]
 }
+]}
 
 DEF Debug Script {
   eventIn SFVec3f set_trackPoint1
@@ -80,6 +88,7 @@ function set_isActive1 (value)
 "
 }
 
-ROUTE Touch1.isOver TO Debug.set_isOver1
+#ROUTE Touch1.isOver TO Debug.set_isOver1
 ROUTE Touch1.isActive TO Debug.set_isActive1
+ROUTE Touch1.trackPoint_changed TO Debug.set_trackPoint1
 ROUTE Touch1.rotation_changed TO Shape1.set_rotation

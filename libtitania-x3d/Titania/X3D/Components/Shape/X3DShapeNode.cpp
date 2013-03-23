@@ -194,7 +194,7 @@ X3DShapeNode::pick ()
 																 });
 
 				if (itersection not_eq itersections .end ())
-					getBrowser () -> addHit (*itersection, getBBox () * ModelViewMatrix4f (), this);
+					getBrowser () -> addHit (ModelViewMatrix4f (), *itersection, this);
 			}
 		}
 	}
