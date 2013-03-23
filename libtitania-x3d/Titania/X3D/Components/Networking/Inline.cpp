@@ -180,6 +180,8 @@ Inline::requestImmediateLoad ()
 	}
 	catch (const X3DError & error)
 	{
+		scene = getBrowser () -> createScene ();
+		
 		setLoadState (FAILED_STATE);
 
 		std::clog << error .what () << std::endl;

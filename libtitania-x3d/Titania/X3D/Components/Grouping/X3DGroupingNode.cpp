@@ -204,7 +204,7 @@ X3DGroupingNode::pick ()
 {
 	if (pointingDeviceSensors .size ())
 	{
-		getBrowser () -> getSensors () .clear ();
+		getBrowser () -> getSensors () .emplace_back ();
 
 		for (const auto & child : pointingDeviceSensors)
 			child -> push ();
@@ -212,6 +212,9 @@ X3DGroupingNode::pick ()
 
 	for (const auto & child : childNodes)
 		child -> traverse (TraverseType::PICKING);
+
+	if (pointingDeviceSensors .size ())
+		getBrowser () -> getSensors () .pop_back ();
 }
 
 void

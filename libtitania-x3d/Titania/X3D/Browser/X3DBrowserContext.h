@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -86,12 +86,12 @@ class X3DBrowserContext :
 {
 public:
 
-	Output  sensors;
-	Output  reshaped;
-	Output  prepareEvents;
-	Output  displayed;
-	Output  finished;
-	Output  changed;
+	Output sensors;
+	Output reshaped;
+	Output prepareEvents;
+	Output displayed;
+	Output finished;
+	Output changed;
 
 	///  @name Time handling
 
@@ -163,7 +163,7 @@ public:
 	void
 	pick (const double, const double);
 
-	std::deque <X3DBaseNode*> &
+	std::deque <std::deque <X3DBaseNode*>> &
 	getSensors () { return enabledSensors; }
 
 	Line3f
@@ -230,22 +230,24 @@ protected:
 
 private:
 
-	Router                    router;
-	RendererStack             renderers;
-	LayerStack                layers;
-	LightStack                lights;
-	TextureUnitStack          textureUnits;
-	double                    x;
-	double                    y;
-	Line3f                    hitRay;
-	std::deque <X3DBaseNode*> enabledSensors;
-	HitArray                  hits;
-	HitComp                   hitComp;
-	std::deque <X3DBaseNode*> overSensors;
-	std::deque <X3DBaseNode*> activeSensors;
-	time_type                 changedTime;
-	Speed <double>            currentSpeed;
-	double                    currentFrameRate;
+	Router           router;
+	RendererStack    renderers;
+	LayerStack       layers;
+	LightStack       lights;
+	TextureUnitStack textureUnits;
+
+	double                                  x;
+	double                                  y;
+	Line3f                                  hitRay;
+	std::deque <std::deque <X3DBaseNode*>> enabledSensors;
+	HitArray                                hits;
+	HitComp                                 hitComp;
+	std::deque <X3DBaseNode*>               overSensors;
+	std::deque <X3DBaseNode*>               activeSensors;
+
+	time_type      changedTime;
+	Speed <double> currentSpeed;
+	double         currentFrameRate;
 
 };
 
