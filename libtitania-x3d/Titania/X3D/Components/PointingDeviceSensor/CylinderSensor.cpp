@@ -218,7 +218,7 @@ CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
 
 	auto toVector = getVector (hitRay, trackPoint);
 	auto offset   = Rotation4f (cylinder .axis () .direction (), startOffset);
-	auto rotation = Rotation4f (cross (fromVector, toVector), std::acos (dot (fromVector, toVector)));
+	auto rotation = Rotation4f (fromVector, toVector);
 
 	if (behind and not disk)
 		rotation .inverse ();
