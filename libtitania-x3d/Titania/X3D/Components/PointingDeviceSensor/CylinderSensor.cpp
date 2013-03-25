@@ -90,17 +90,13 @@ CylinderSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 bool
-CylinderSensor::isBehind (const Vector3f & pvector) const
+CylinderSensor::isBehind (const Line3f & hitRay, const Vector3f & hitPoint) const
 {
-	auto yAxis = axisRotation * Vector3f (0, 1, 0);
+	Vector3f enter, exit;
 
-	auto alignedXAxis = inverseTransformationMatrix .multDirMatrix (axisRotation * Vector3f (1, 0, 0));
-	auto alignedYAxis = inverseTransformationMatrix .multDirMatrix (axisRotation * Vector3f (0, 1, 0));
-	auto alignedZAxis = inverseTransformationMatrix .multDirMatrix (axisRotation * Vector3f (0, 0, 1));
+	cylinder .intersect (hitRay, enter, exit);
 
-	auto rotation = Rotation4f (alignedXAxis, std::acos (dot (alignedYAxis, yAxis)));
-
-	return dot (pvector, rotation * alignedZAxis) > -0.3;
+	return dot (normalize (enter), normalize (hitPoint)) < 0.99; // Fuzzy compare both points.
 }
 
 Vector3f
@@ -122,11 +118,21 @@ CylinderSensor::getTrackPoint (const Line3f & hitRay, Vector3f & trackPoint, boo
 	{
 		if ((abs (hitRay .origin () - exit) < abs (hitRay .origin () - trackPoint)) - behind)
 			trackPoint = exit;
-		
+
 		return true;
 	}
-	
+
 	return false;
+}
+
+float
+CylinderSensor::getAngle (const Rotation4f & rotation) const
+{
+	if (dot (rotation .axis (), cylinder .axis () .direction ()) > 0)
+		return rotation .angle ();
+
+	else
+		return -rotation .angle ();
 }
 
 void
@@ -152,36 +158,24 @@ CylinderSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 		yPlane = Plane3f (Vector3f (), yAxis);  // Sensor aligned Y-plane
 		zPlane = Plane3f (hitPoint, zAxis);     // Screen aligned Z-plane.
 
-		disk   = std::abs (dot (hitRay .direction (), yAxis)) > std::cos (M_PI1_2 - diskAngle);
-		behind = isBehind (pvector);
+		disk   = std::abs (dot (hitRay .direction (), yAxis)) > std::cos (diskAngle);
+		behind = isBehind (hitRay, hitPoint);
 
 		Vector3f trackPoint;
 		getTrackPoint (hitRay, trackPoint, behind);
-		
-		
-
-		__LOG__ << disk << std::endl;
 
 		fromVector = normalize (disk
 		                        ? getPointOnDisk (hitRay)
-		                        : -cylinder .axis () .perpendicular_vector (trackPoint));
-		
-		//trackPoint_changed  = trackPoint;
-		rotation_changed = Rotation4f (yAxis, offset);
-		startOffset      = offset;
+										: -cylinder .axis () .perpendicular_vector (trackPoint));
+
+		trackPoint_changed = trackPoint;
+		rotation_changed   = Rotation4f (yAxis, offset);
+		startOffset        = offset;
 	}
 	else
 	{
 		if (autoOffset)
-		{
-			if (dot (rotation_changed .getValue () .axis (), cylinder .axis () .direction ()) > 0)
-				offset = rotation_changed .getAngle ();
-
-			else
-				offset = M_PI2 - rotation_changed .getAngle ();
-		}
-
-		__LOG__ << rotation_changed << std::endl;
+			offset = getAngle (rotation_changed);
 	}
 }
 
@@ -194,13 +188,10 @@ CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
 
 	if (getTrackPoint (hitRay, trackPoint, behind))
 	{
-		__LOG__ << " +++ " << std::endl;
 		zPlane = Plane3f (trackPoint, zPlane .normal ());
 	}
 	else
 	{
-		__LOG__ << " *** " << std::endl;
-
 		// Find trackPoint on the plane with cylinder
 
 		Vector3f p1;
@@ -209,7 +200,7 @@ CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
 		auto axisPoint = p1 + cylinder .axis () .perpendicular_vector (p1);
 
 		auto hitRay = Line3f (p1, axisPoint);
-		
+
 		getTrackPoint (hitRay, trackPoint);
 
 		// Find trackPoint behind sphere
@@ -224,19 +215,30 @@ CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
 		getTrackPoint (hitRay, trackPoint);
 	}
 
-	//trackPoint_changed = trackPoint;
+	trackPoint_changed = trackPoint;
 
 	auto toVector = normalize (disk
-										? getPointOnDisk (hitRay)
-										:-cylinder .axis () .perpendicular_vector (trackPoint));
-										
+	                           ? getPointOnDisk (hitRay)
+										: -cylinder .axis () .perpendicular_vector (trackPoint));
+
 	auto offset   = Rotation4f (cylinder .axis () .direction (), startOffset);
 	auto rotation = Rotation4f (cross (fromVector, toVector), std::acos (dot (fromVector, toVector)));
 
 	if (behind and not disk)
 		rotation .inverse ();
 
-	rotation_changed = offset * rotation;
+	rotation = offset * rotation;
+
+	if (minAngle > maxAngle)
+		rotation_changed = rotation;
+
+	else
+	{
+		auto angle = getAngle (rotation);
+
+		if (angle > minAngle and angle < maxAngle)
+			rotation_changed = rotation;
+	}
 }
 
 } // X3D

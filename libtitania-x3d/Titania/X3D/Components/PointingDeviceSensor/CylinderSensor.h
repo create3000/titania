@@ -86,13 +86,16 @@ public:
 private:
 
 	bool
-	isBehind (const Vector3f &) const;
+	isBehind (const Line3f &, const Vector3f &) const;
 	
 	Vector3f
 	getPointOnDisk (const Line3f &) const;
 	
 	bool
 	getTrackPoint (const Line3f &, Vector3f &, bool = false) const;
+	
+	float
+	getAngle (const Rotation4f &) const;
 
 	Cylinder3f cylinder;
 	bool       disk;

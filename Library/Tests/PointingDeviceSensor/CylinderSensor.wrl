@@ -39,7 +39,11 @@ Transform {
     }
     DEF Button1 Transform {
       children [
-        DEF Touch1 CylinderSensor { }
+        DEF Touch1 CylinderSensor {
+          #minAngle -1
+          #maxAngle 1
+          #diskAngle 2.8
+        }
         DEF Shape1 Transform {
           children Transform {
             translation 2 0 0
