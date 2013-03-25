@@ -110,10 +110,6 @@ void
 Background::initialize ()
 {
 	X3DBackgroundNode::initialize ();
-	
-	textureProperties -> boundaryModeS = "CLAMP_TO_EDGE";
-	textureProperties -> boundaryModeT = "CLAMP_TO_EDGE";
-	textureProperties -> boundaryModeR = "CLAMP_TO_EDGE";
 
 	frontUrl  .addInterest (frontTexture  -> url);
 	backUrl   .addInterest (backTexture   -> url);
@@ -121,13 +117,10 @@ Background::initialize ()
 	rightUrl  .addInterest (rightTexture  -> url);
 	topUrl    .addInterest (topTexture    -> url);
 	bottomUrl .addInterest (bottomTexture -> url);
-
-	frontTexture  -> repeatS = frontTexture  -> repeatT = false;
-	backTexture   -> repeatS = backTexture   -> repeatT = false;
-	leftTexture   -> repeatS = leftTexture   -> repeatT = false;
-	rightTexture  -> repeatS = rightTexture  -> repeatT = false;
-	topTexture    -> repeatS = topTexture    -> repeatT = false;
-	bottomTexture -> repeatS = bottomTexture -> repeatT = false;
+	
+	textureProperties -> boundaryModeS = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeT = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeR = "CLAMP_TO_EDGE";
 
 	frontTexture  -> url = frontUrl;
 	backTexture   -> url = backUrl;

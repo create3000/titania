@@ -1971,6 +1971,7 @@
     <None Include="Tests\PointingDeviceSensor\SphereSensor.wrl" />
     <None Include="Tests\PointingDeviceSensor\CylinderSensor.wrl" />
     <None Include="Tests\PointingDeviceSensor\Dashboard.wrl" />
+    <None Include="Tests\EnvironmentalEffects\ImageBackground.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

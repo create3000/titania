@@ -100,13 +100,14 @@ CylinderSensor::isBehind (const Line3f & hitRay, const Vector3f & hitPoint) cons
 }
 
 Vector3f
-CylinderSensor::getPointOnDisk (const Line3f & hitRay) const
+CylinderSensor::getVector (const Line3f & hitRay, const Vector3f & trackPoint) const
 {
-	Vector3f intersection;
+	Vector3f intersection;	
 
-	yPlane .intersect (hitRay, intersection);
+	if (disk and yPlane .intersect (hitRay, intersection))
+		return normalize (intersection);
 
-	return intersection;
+	return normalize (-cylinder .axis () .perpendicular_vector (trackPoint));
 }
 
 bool
@@ -164,9 +165,7 @@ CylinderSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 		Vector3f trackPoint;
 		getTrackPoint (hitRay, trackPoint, behind);
 
-		fromVector = normalize (disk
-		                        ? getPointOnDisk (hitRay)
-										: -cylinder .axis () .perpendicular_vector (trackPoint));
+		fromVector = getVector (hitRay, trackPoint);
 
 		trackPoint_changed = trackPoint;
 		rotation_changed   = Rotation4f (yAxis, offset);
@@ -217,10 +216,7 @@ CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
 
 	trackPoint_changed = trackPoint;
 
-	auto toVector = normalize (disk
-	                           ? getPointOnDisk (hitRay)
-										: -cylinder .axis () .perpendicular_vector (trackPoint));
-
+	auto toVector = getVector (hitRay, trackPoint);
 	auto offset   = Rotation4f (cylinder .axis () .direction (), startOffset);
 	auto rotation = Rotation4f (cross (fromVector, toVector), std::acos (dot (fromVector, toVector)));
 
