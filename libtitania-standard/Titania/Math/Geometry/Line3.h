@@ -54,6 +54,8 @@
 #include "../Numbers/Matrix4.h"
 #include "../Numbers/Vector3.h"
 
+#include "../../LOG.h"
+
 namespace titania {
 namespace math {
 
@@ -128,21 +130,44 @@ public:
 
 	//  @name Distance
 
-	///  Returns the perpendicular distance from the @a point to the line.
+	///  Returns the perpendicular distance from the @a point to this line.
 	Type
 	distance (const vector3 <Type> & point) const
 	{
-		vector3 <Type> d = origin () - point;
-		return abs (d - dot (d, direction ()) * direction ());
+		return abs (perpendicular_vector (point));
 	}
 
-	/// Project @a point onto the line.
-	//	vector3 <Type>
-	//	project (const vector3 <Type> & point) const
-	//	{
-	//		vector3 <Type> d = origin () - point;
-	//		return point + (d - dot (d, direction ()) * direction ());
-	//	}
+	///  Returns the perpendicular distance from the @a line to this line.
+	Type
+	distance (const line3 <Type> & line) const
+	{
+		return abs (perpendicular_vector (line));
+	}
+
+	///  Returns the perpendicular vector from @a point to this line.
+	vector3 <Type>
+	perpendicular_vector (const vector3 <Type> & point) const
+	{
+		vector3 <Type> d = origin () - point;
+		return d - dot (d, direction ()) * direction ();
+	}
+
+	///  Returns the perpendicular vector from @a line to this line.
+	vector3 <Type>
+	perpendicular_vector (const line3 <Type> & line) const
+	{
+		vector3 <Type> d = origin () - line .origin ();
+
+		Type re1 = dot (d, direction ());
+		Type re2 = dot (d, line .direction ());
+		Type e12 = dot (direction (), line .direction ());
+		Type E12 = std::pow (e12, 2);
+
+		Type a = (re1 - re2 * e12) / (1 - E12);
+		Type b = -(re2 - re1 * e12) / (1 - E12);
+		
+		return d + b * line .direction () - a * direction ();
+	}
 
 	///  @name Intersection
 
@@ -254,7 +279,7 @@ template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const line3 <Type> & line)
 {
-	return ostream << line .origin () << ", " << line .origin () + line .direction ();
+	return ostream << line .origin () << " " << line .origin () + line .direction ();
 }
 
 extern template class line3 <float>;

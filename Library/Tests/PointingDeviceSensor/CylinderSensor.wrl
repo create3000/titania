@@ -1,6 +1,6 @@
 #VRML V2.0 utf8 Titania
 
-META "title" "SphereSensor"
+META "title" "CylinderSensor"
 
 Transform {
   translation 3.65468 0.0348776 2.6975
@@ -39,7 +39,7 @@ Transform {
     }
     DEF Button1 Transform {
       children [
-        DEF Touch1 SphereSensor { }
+        DEF Touch1 CylinderSensor { }
         DEF Shape1 Transform {
           children Transform {
             translation 2 0 0
@@ -49,11 +49,22 @@ Transform {
                   url "../images/image.png"
                 }
               }
-              geometry Sphere { }
+              geometry Cylinder { }
             }
           }
         }
       ]
+    }
+    Transform {
+      scale 1 2 1
+      children Shape {
+        geometry IndexedLineSet {
+          coordIndex [ 0, 1, -1 ]
+          coord Coordinate {
+            point [ 0 -1 0, 0 1 0 ]
+          }
+        }
+      }
     }
   ]
 }

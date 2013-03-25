@@ -48,53 +48,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_SPHERE_SENSOR_H__
-#define __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_SPHERE_SENSOR_H__
-
-#include "../PointingDeviceSensor/X3DDragSensorNode.h"
+#include "Cylinder3.h"
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-class SphereSensor :
-	public X3DDragSensorNode
-{
-public:
+template class cylinder3 <float>;
+template class cylinder3 <double>;
+template class cylinder3 <long double>;
 
-	SFRotation offset;
-	SFRotation rotation_changed;
+//
+template std::istream & operator >> (std::istream &, cylinder3 <float> &);
+template std::istream & operator >> (std::istream &, cylinder3 <double> &);
+template std::istream & operator >> (std::istream &, cylinder3 <long double> &);
 
-	SphereSensor (X3DExecutionContext* const);
+//
+template std::ostream & operator << (std::ostream &, const cylinder3 <float> &);
+template std::ostream & operator << (std::ostream &, const cylinder3 <double> &);
+template std::ostream & operator << (std::ostream &, const cylinder3 <long double> &);
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
-
-	virtual
-	void
-	set_active (const std::shared_ptr <Hit> &, bool) final;
-
-	virtual
-	void
-	set_motion (const std::shared_ptr <Hit> &) final;
-
-
-private:
-
-	bool
-	getTrackPoint (const Line3f &, Vector3f &, bool = false) const;
-
-	Plane3f    zPlane;
-	Sphere3f   sphere;
-	bool       behind;
-	Vector3f   fromVector;
-	SFRotation startOffset;
-	Vector3f   startPoint;
-	Matrix4f   inverseTransformationMatrix;
-
-};
-
-} // X3D
+} // math
 } // titania
-
-#endif

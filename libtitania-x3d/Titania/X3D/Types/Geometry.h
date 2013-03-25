@@ -53,6 +53,7 @@
 
 #include <Titania/Math/Geometry/Box2.h>
 #include <Titania/Math/Geometry/Box3.h>
+#include <Titania/Math/Geometry/Cylinder3.h>
 #include <Titania/Math/Geometry/Line3.h>
 #include <Titania/Math/Geometry/Plane3.h>
 #include <Titania/Math/Geometry/Sphere3.h>
@@ -65,6 +66,9 @@ typedef math::box2 <float>  Box2f;
 
 typedef math::box3 <double> Box3d;
 typedef math::box3 <float>  Box3f;
+
+typedef math::cylinder3 <double> Cylinder3d;
+typedef math::cylinder3 <float>  Cylinder3f;
 
 typedef math::line3 <double> Line3d;
 typedef math::line3 <float>  Line3f;

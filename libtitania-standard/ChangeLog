@@ -1,3 +1,11 @@
+2013-03-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-standard.cproj:
+	* Line3.h:
+	* Cylinder3.h:
+	* Cylinder3.cpp: 
+
 2013-03-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Line3.h:

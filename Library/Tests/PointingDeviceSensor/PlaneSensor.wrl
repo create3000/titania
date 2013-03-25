@@ -23,6 +23,16 @@ Transform {
       position 0 0 -10
       orientation 0 1 0 3.14159
     }
+    Viewpoint {
+      description "Left"
+      position -10 0 0
+      orientation 0 1 0 -1.5707963
+    }
+    Viewpoint {
+      description "Right"
+      position 10 0 0
+      orientation 0 1 0 1.5707963
+    }
     DEF Button1 Transform {
       children [
         DEF Touch1 PlaneSensor {

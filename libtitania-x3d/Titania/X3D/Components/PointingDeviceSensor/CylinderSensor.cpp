@@ -59,9 +59,9 @@ CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DDragSensorNode (),                                                    
 	     axisRotation (0, 1, 0, 0),                                          // SFRotation [in,out] axisRotation      0 1 0 0
-	        diskAngle (),                                                    // SFFloat    [in,out] diskAngle         π/12           [0,π/2]
-	         maxAngle (-1),                                                  // SFFloat    [in,out] maxAngle          -1             [-2π,2π]
+	        diskAngle (M_PI / 12),                                           // SFFloat    [in,out] diskAngle         π/12           [0,π/2]
 	         minAngle (),                                                    // SFFloat    [in,out] minAngle          0              [-2π,2π]
+	         maxAngle (-1),                                                  // SFFloat    [in,out] maxAngle          -1             [-2π,2π]
 	           offset (),                                                    // SFFloat    [in,out] offset            0              (-∞,∞)
 	 rotation_changed ()                                                     // SFRotation [out]    rotation_changed
 {
@@ -71,16 +71,16 @@ CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata",           metadata);
 	addField (inputOutput, "enabled",            enabled);
 	addField (inputOutput, "description",        description);
-	addField (outputOnly,  "isActive",           isActive);
-	addField (outputOnly,  "isOver",             isOver);
-	addField (inputOutput, "autoOffset",         autoOffset);
-	addField (outputOnly,  "trackPoint_changed", trackPoint_changed);
 	addField (inputOutput, "axisRotation",       axisRotation);
 	addField (inputOutput, "diskAngle",          diskAngle);
-	addField (inputOutput, "maxAngle",           maxAngle);
 	addField (inputOutput, "minAngle",           minAngle);
+	addField (inputOutput, "maxAngle",           maxAngle);
 	addField (inputOutput, "offset",             offset);
+	addField (inputOutput, "autoOffset",         autoOffset);
+	addField (outputOnly,  "trackPoint_changed", trackPoint_changed);
 	addField (outputOnly,  "rotation_changed",   rotation_changed);
+	addField (outputOnly,  "isActive",           isActive);
+	addField (outputOnly,  "isOver",             isOver);
 }
 
 X3DBaseNode*
@@ -89,9 +89,154 @@ CylinderSensor::create (X3DExecutionContext* const executionContext) const
 	return new CylinderSensor (executionContext);
 }
 
+bool
+CylinderSensor::isBehind (const Vector3f & pvector) const
+{
+	auto yAxis = axisRotation * Vector3f (0, 1, 0);
+
+	auto alignedXAxis = inverseTransformationMatrix .multDirMatrix (axisRotation * Vector3f (1, 0, 0));
+	auto alignedYAxis = inverseTransformationMatrix .multDirMatrix (axisRotation * Vector3f (0, 1, 0));
+	auto alignedZAxis = inverseTransformationMatrix .multDirMatrix (axisRotation * Vector3f (0, 0, 1));
+
+	auto rotation = Rotation4f (alignedXAxis, std::acos (dot (alignedYAxis, yAxis)));
+
+	return dot (pvector, rotation * alignedZAxis) > -0.3;
+}
+
+Vector3f
+CylinderSensor::getPointOnDisk (const Line3f & hitRay) const
+{
+	Vector3f intersection;
+
+	yPlane .intersect (hitRay, intersection);
+
+	return intersection;
+}
+
+bool
+CylinderSensor::getTrackPoint (const Line3f & hitRay, Vector3f & trackPoint, bool behind) const
+{
+	Vector3f exit;
+
+	if (cylinder .intersect (hitRay, trackPoint, exit))
+	{
+		if ((abs (hitRay .origin () - exit) < abs (hitRay .origin () - trackPoint)) - behind)
+			trackPoint = exit;
+		
+		return true;
+	}
+	
+	return false;
+}
+
+void
+CylinderSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
+{
+	X3DDragSensorNode::set_active (hit, active);
+
+	if (isActive)
+	{
+		inverseTransformationMatrix = ~getTransformationMatrix ();
+
+		auto hitRay   = hit -> ray * inverseTransformationMatrix;
+		auto hitPoint = hit -> point * inverseTransformationMatrix;
+
+		auto yAxis = axisRotation * Vector3f (0, 1, 0);
+		auto zAxis = inverseTransformationMatrix .multDirMatrix (axisRotation * Vector3f (0, 0, 1));
+
+		auto axis    = Line3f (Vector3f (), yAxis);
+		auto pvector = axis .perpendicular_vector (hitPoint);
+
+		cylinder = Cylinder3f (axis, abs (pvector));
+
+		yPlane = Plane3f (Vector3f (), yAxis);  // Sensor aligned Y-plane
+		zPlane = Plane3f (hitPoint, zAxis);     // Screen aligned Z-plane.
+
+		disk   = std::abs (dot (hitRay .direction (), yAxis)) > std::cos (M_PI1_2 - diskAngle);
+		behind = isBehind (pvector);
+
+		Vector3f trackPoint;
+		getTrackPoint (hitRay, trackPoint, behind);
+		
+		
+
+		__LOG__ << disk << std::endl;
+
+		fromVector = normalize (disk
+		                        ? getPointOnDisk (hitRay)
+		                        : -cylinder .axis () .perpendicular_vector (trackPoint));
+		
+		//trackPoint_changed  = trackPoint;
+		rotation_changed = Rotation4f (yAxis, offset);
+		startOffset      = offset;
+	}
+	else
+	{
+		if (autoOffset)
+		{
+			if (dot (rotation_changed .getValue () .axis (), cylinder .axis () .direction ()) > 0)
+				offset = rotation_changed .getAngle ();
+
+			else
+				offset = M_PI2 - rotation_changed .getAngle ();
+		}
+
+		__LOG__ << rotation_changed << std::endl;
+	}
+}
+
 void
 CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
 {
+	auto hitRay = hit -> ray * inverseTransformationMatrix;
+
+	Vector3f trackPoint;
+
+	if (getTrackPoint (hitRay, trackPoint, behind))
+	{
+		__LOG__ << " +++ " << std::endl;
+		zPlane = Plane3f (trackPoint, zPlane .normal ());
+	}
+	else
+	{
+		__LOG__ << " *** " << std::endl;
+
+		// Find trackPoint on the plane with cylinder
+
+		Vector3f p1;
+		zPlane .intersect (hitRay, p1);
+
+		auto axisPoint = p1 + cylinder .axis () .perpendicular_vector (p1);
+
+		auto hitRay = Line3f (p1, axisPoint);
+		
+		getTrackPoint (hitRay, trackPoint);
+
+		// Find trackPoint behind sphere
+
+		auto normal = zPlane .normal ();
+
+		if (behind)
+			normal .negate ();
+
+		hitRay = Line3f (trackPoint - normal * abs (p1 - trackPoint), axisPoint);
+
+		getTrackPoint (hitRay, trackPoint);
+	}
+
+	//trackPoint_changed = trackPoint;
+
+	auto toVector = normalize (disk
+										? getPointOnDisk (hitRay)
+										:-cylinder .axis () .perpendicular_vector (trackPoint));
+										
+	auto offset   = Rotation4f (cylinder .axis () .direction (), startOffset);
+	auto rotation = Rotation4f (cross (fromVector, toVector), std::acos (dot (fromVector, toVector)));
+
+	if (behind and not disk)
+		rotation .inverse ();
+
+	rotation_changed = offset * rotation;
 }
 
 } // X3D

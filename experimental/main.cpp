@@ -36,6 +36,7 @@
 #include <Titania/Math/Functional.h>
 #include <Titania/Math/Geometry/Box2.h>
 #include <Titania/Math/Geometry/Box3.h>
+#include <Titania/Math/Geometry/Cylinder3.h>
 #include <Titania/Math/Geometry/Line3.h>
 #include <Titania/Math/Geometry/Plane3.h>
 #include <Titania/Math/Numbers/Matrix3.h>
@@ -698,6 +699,7 @@ typedef math::rotation4 <float> Rotation4f;
 typedef math::matrix4 <float>   Matrix4f;
 typedef math::box2 <float>      Box2f;
 typedef math::box3 <float>      Box3f;
+typedef math::cylinder3 <float> Cylinder3f;
 typedef math::plane3 <float>    Plane3f;
 typedef math::line3 <float>     Line3f;
 typedef math::sphere3 <float>   Sphere3f;
@@ -821,15 +823,14 @@ main (int argc, char** argv)
 	#endif
 
 	{
-		auto line   = Line3f(Vector3f (), Vector3f (1,1,0));
-		auto sphere = Sphere3f (1, Vector3f (0,0,0));
+		auto line     = Line3f (Vector3f (), Vector3f (0, 1, 1));
+		auto cylinder = Cylinder3f (Line3f (Vector3f (), Vector3f (0, 1, 1)), 1);
 		
-		auto intersection1 = Vector3f ();
-		auto intersection2 = Vector3f ();
-
-		std::clog << sphere .intersect (line, intersection1, intersection2) << std::endl;
-		std::clog << intersection1 << std::endl;
-		std::clog << intersection2 << std::endl;
+		Vector3f enter, exit;
+		
+		std::clog << cylinder .intersect (line, enter, exit) << std::endl;
+		std::clog << enter << std::endl;
+		std::clog << exit << std::endl;
 	}
 
 	if (0)

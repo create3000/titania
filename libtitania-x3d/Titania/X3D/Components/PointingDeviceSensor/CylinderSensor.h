@@ -63,8 +63,8 @@ public:
 
 	SFRotation axisRotation;
 	SFFloat    diskAngle;
-	SFFloat    maxAngle;
 	SFFloat    minAngle;
+	SFFloat    maxAngle;
 	SFFloat    offset;
 	SFRotation rotation_changed;
 
@@ -76,8 +76,34 @@ public:
 
 	virtual
 	void
+	set_active (const std::shared_ptr <Hit> &, bool) final;
+
+	virtual
+	void
 	set_motion (const std::shared_ptr <Hit> &) final;
 
+
+private:
+
+	bool
+	isBehind (const Vector3f &) const;
+	
+	Vector3f
+	getPointOnDisk (const Line3f &) const;
+	
+	bool
+	getTrackPoint (const Line3f &, Vector3f &, bool = false) const;
+
+	Cylinder3f cylinder;
+	bool       disk;
+	Plane3f    yPlane;
+	Plane3f    zPlane;
+	bool       behind;
+	Vector3f   fromVector;
+	float      startOffset;
+	float      angle;
+	Matrix4f   inverseTransformationMatrix;
+	
 };
 
 } // X3D

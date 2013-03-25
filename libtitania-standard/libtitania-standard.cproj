@@ -105,6 +105,7 @@
     <None Include="Titania\Math\Functional.h" />
     <None Include="Titania\Physics\Constants.h" />
     <None Include="Titania\Math\Utility\Normal.h" />
+    <None Include="Titania\Math\Geometry\Cylinder3.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
@@ -142,6 +143,7 @@
     <Compile Include="Titania\OS\IsDirectory.cpp" />
     <Compile Include="Titania\OS\IsFile.cpp" />
     <Compile Include="Titania\OS\Mkdir.cpp" />
+    <Compile Include="Titania\Math\Geometry\Cylinder3.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

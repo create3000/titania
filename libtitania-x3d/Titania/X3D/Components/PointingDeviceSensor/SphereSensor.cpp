@@ -56,10 +56,17 @@ namespace titania {
 namespace X3D {
 
 SphereSensor::SphereSensor (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DDragSensorNode (),                                                    
-	           offset (0, 1, 0, 0),                                          // SFRotation [in,out] offset            0 1 0 0        [-1,1],(-∞,∞)
-	 rotation_changed ()                                                     // SFRotation [out]    rotation_changed
+	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	          X3DDragSensorNode (),                                                    
+	                     offset (0, 1, 0, 0),                                          // SFRotation [in,out] offset            0 1 0 0        [-1,1],(-∞,∞)
+	           rotation_changed (),                                                    // SFRotation [out]    rotation_changed
+	                     zPlane (),                                                    
+	                     sphere (),                                                    
+	                     behind (false),                                               
+	                 fromVector (),                                                    
+	                startOffset (),                                                    
+	                 startPoint (),                                                    
+	inverseTransformationMatrix ()                                                     
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("SphereSensor");
@@ -81,9 +88,21 @@ SphereSensor::create (X3DExecutionContext* const executionContext) const
 	return new SphereSensor (executionContext);
 }
 
-/*
- *
- */
+bool
+SphereSensor::getTrackPoint (const Line3f & hitRay, Vector3f & trackPoint, bool behind) const
+{
+	Vector3f exit;
+
+	if (sphere .intersect (hitRay, trackPoint, exit))
+	{
+		if ((abs (hitRay .origin () - exit) < abs (hitRay .origin () - trackPoint)) - behind)
+			trackPoint = exit;
+
+		return true;
+	}
+
+	return false;
+}
 
 void
 SphereSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
@@ -94,26 +113,15 @@ SphereSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 	{
 		inverseTransformationMatrix = ~getTransformationMatrix ();
 
-		auto hitPoint  = hit -> point * inverseTransformationMatrix;
-		auto hitCenter = Vector3f ();
+		auto hitPoint = hit -> point * inverseTransformationMatrix;
+		auto center   = Vector3f ();
 
-		plane  = Plane3f (hitCenter, inverseTransformationMatrix .multDirMatrix (Vector3f (0, 0, 1)));
-		sphere = Sphere3f (abs (hitPoint - hitCenter), hitCenter);
+		zPlane = Plane3f (center, inverseTransformationMatrix .multDirMatrix (Vector3f (0, 0, 1))); // Screen aligned Z-plane
+		sphere = Sphere3f (abs (hitPoint - center), center);
+		behind = zPlane .distance (hitPoint) < 0;
 
-		behind = plane .distance (hitPoint) < 0;
-
-		Vector3f trackPoint, intersection2;
-		{
-			// Calculate trackPoint
-			auto hitRay = Line3f (hitPoint, sphere .center ());
-			sphere .intersect (hitRay, trackPoint, intersection2);
-
-			if (abs (hitRay .origin () - intersection2) < abs (hitRay .origin () - trackPoint))
-				trackPoint = intersection2;
-		}
-
-		fromVector         = hitPoint - hitCenter;
-		trackPoint_changed = trackPoint;
+		fromVector         = hitPoint - center;
+		trackPoint_changed = hitPoint;
 		rotation_changed   = offset;
 		startOffset        = offset;
 		startPoint         = hitPoint;
@@ -132,45 +140,41 @@ SphereSensor::set_motion (const std::shared_ptr <Hit> & hit)
 
 	Vector3f trackPoint, intersection2;
 
-	if (sphere .intersect (hitRay, trackPoint, intersection2))
+	if (getTrackPoint (hitRay, trackPoint, behind))
 	{
-		if ((abs (hitRay .origin () - intersection2) < abs (hitRay .origin () - trackPoint)) - behind)
-			trackPoint = intersection2;
-
-		plane = Plane3f (trackPoint, inverseTransformationMatrix .multDirMatrix (Vector3f (0, 0, 1)));
+		zPlane = Plane3f (trackPoint, zPlane .normal ());
 	}
 	else
 	{
 		// Find trackPoint on the plane with sphere
-		
-		Vector3f p1;
-		plane .intersect (hitRay, p1);
 
-		auto hitRay = Line3f (p1, sphere .center ());
-		sphere .intersect (hitRay, trackPoint, intersection2);
+		Vector3f tangentPoint;
+		zPlane .intersect (hitRay, tangentPoint);
 
-		if (abs (hitRay .origin () - intersection2) < abs (hitRay .origin () - trackPoint))
-			trackPoint = intersection2;
-			
+		auto hitRay = Line3f (tangentPoint, sphere .center ());
+
+		getTrackPoint (hitRay, trackPoint);
+
 		// Find trackPoint behind sphere
 
-		auto normal = cross (math::normal (sphere .center (), trackPoint, startPoint), normalize (trackPoint - sphere .center ()));
-	
-		hitRay = Line3f (trackPoint - normal * abs (p1 - trackPoint), sphere .center ());
-		
-		sphere .intersect (hitRay, trackPoint, intersection2);
+		auto triNormal     = math::normal (sphere .center (), trackPoint, startPoint);
+		auto dirFromCenter = normalize (trackPoint - sphere .center ());
+		auto normal        = cross (triNormal, dirFromCenter);
 
-		if (abs (hitRay .origin () - intersection2) < abs (hitRay .origin () - trackPoint))
-			trackPoint = intersection2;	
+		hitRay = Line3f (trackPoint - normal * abs (tangentPoint - trackPoint), sphere .center ());
+
+		getTrackPoint (hitRay, trackPoint);
 	}
 
-	{
-		trackPoint_changed = trackPoint;
+	trackPoint_changed = trackPoint;
 
-		auto toVector = trackPoint - sphere .center ();
+	auto toVector = trackPoint - sphere .center ();
+	auto rotation = Rotation4f (fromVector, toVector);
 
-		rotation_changed = startOffset * Rotation4f (fromVector, toVector);
-	}
+	if (behind)
+		rotation .inverse ();
+
+	rotation_changed = startOffset * rotation;
 }
 
 } // X3D

@@ -1969,6 +1969,7 @@
     <None Include="Tests\PointingDeviceSensor\Canvas.wrl" />
     <None Include="Tests\PointingDeviceSensor\PlaneSensor.wrl" />
     <None Include="Tests\PointingDeviceSensor\SphereSensor.wrl" />
+    <None Include="Tests\PointingDeviceSensor\CylinderSensor.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
