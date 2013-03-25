@@ -51,9 +51,6 @@
 #include "Background.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Texturing/ImageTexture.h"
-
-#include <iostream>
 
 namespace titania {
 namespace X3D {
@@ -72,7 +69,8 @@ Background::Background (X3DExecutionContext* const executionContext, bool displa
 	      leftTexture (new ImageTexture (executionContext)),                 
 	     rightTexture (new ImageTexture (executionContext)),                 
 	       topTexture (new ImageTexture (executionContext)),                 
-	    bottomTexture (new ImageTexture (executionContext))                  
+	    bottomTexture (new ImageTexture (executionContext)),
+	textureProperties (new TextureProperties (executionContext))                  
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Background");
@@ -80,26 +78,26 @@ Background::Background (X3DExecutionContext* const executionContext, bool displa
 	addField (inputOutput, "metadata",     metadata);
 	addField (inputOnly,   "set_bind",     set_bind);
 	addField (outputOnly,  "bindTime",     bindTime);
-	addField (outputOnly,  "isBound",      isBound);
-	addField (inputOutput, "skyAngle",     skyAngle);
-	addField (inputOutput, "skyColor",     skyColor);
-	addField (inputOutput, "groundAngle",  groundAngle);
-	addField (inputOutput, "groundColor",  groundColor);
-	addField (inputOutput, "transparency", transparency);
 	addField (inputOutput, "frontUrl",     frontUrl);
 	addField (inputOutput, "backUrl",      backUrl);
 	addField (inputOutput, "leftUrl",      leftUrl);
 	addField (inputOutput, "rightUrl",     rightUrl);
 	addField (inputOutput, "topUrl",       topUrl);
 	addField (inputOutput, "bottomUrl",    bottomUrl);
+	addField (inputOutput, "skyAngle",     skyAngle);
+	addField (inputOutput, "skyColor",     skyColor);
+	addField (inputOutput, "groundAngle",  groundAngle);
+	addField (inputOutput, "groundColor",  groundColor);
+	addField (inputOutput, "transparency", transparency);
+	addField (outputOnly,  "isBound",      isBound);
 
 	setChildren (frontTexture,
 	             backTexture,
 	             leftTexture,
 	             rightTexture,
 	             topTexture,
-	             bottomTexture);
-
+	             bottomTexture,
+	             textureProperties);
 }
 
 X3DBaseNode*
@@ -112,6 +110,10 @@ void
 Background::initialize ()
 {
 	X3DBackgroundNode::initialize ();
+	
+	textureProperties -> boundaryModeS = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeT = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeR = "CLAMP_TO_EDGE";
 
 	frontUrl  .addInterest (frontTexture  -> url);
 	backUrl   .addInterest (backTexture   -> url);
@@ -133,6 +135,21 @@ Background::initialize ()
 	rightTexture  -> url = rightUrl;
 	topTexture    -> url = topUrl;
 	bottomTexture -> url = bottomUrl;
+	
+	frontTexture  -> textureProperties = *textureProperties;
+	backTexture   -> textureProperties = *textureProperties;
+	leftTexture   -> textureProperties = *textureProperties;
+	rightTexture  -> textureProperties = *textureProperties;
+	topTexture    -> textureProperties = *textureProperties;
+	bottomTexture -> textureProperties = *textureProperties;
+	
+	textureProperties -> setup ();
+	frontTexture      -> setup ();
+	backTexture       -> setup ();
+	leftTexture       -> setup ();
+	rightTexture      -> setup ();
+	topTexture        -> setup ();
+	bottomTexture     -> setup ();
 }
 
 void
@@ -281,12 +298,13 @@ Background::draw ()
 void
 Background::dispose ()
 {
-	frontTexture  .dispose ();
-	backTexture   .dispose ();
-	leftTexture   .dispose ();
-	rightTexture  .dispose ();
-	topTexture    .dispose ();
-	bottomTexture .dispose ();
+	textureProperties .dispose ();
+	frontTexture      .dispose ();
+	backTexture       .dispose ();
+	leftTexture       .dispose ();
+	rightTexture      .dispose ();
+	topTexture        .dispose ();
+	bottomTexture     .dispose ();
 
 	X3DBackgroundNode::dispose ();
 }

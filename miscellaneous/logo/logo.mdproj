@@ -19,7 +19,6 @@
     <OutputPath>.</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="logo.x3d" />
     <None Include="logo.blend" />
     <None Include="logo.svg" />
     <None Include="logo.dxf" />
@@ -36,6 +35,6 @@
     <None Include="screenshots.xcf" />
     <None Include="icon32.png" />
     <None Include="icon128.png" />
-    <None Include="x3d2wrl.pl" />
+    <None Include="logo.x3d" />
   </ItemGroup>
 </Project>

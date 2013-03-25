@@ -96,7 +96,7 @@ CylinderSensor::isBehind (const Line3f & hitRay, const Vector3f & hitPoint) cons
 
 	cylinder .intersect (hitRay, enter, exit);
 
-	return dot (normalize (enter), normalize (hitPoint)) < 0.99; // Fuzzy compare both points.
+	return abs (hitPoint - enter) > abs (hitPoint - exit);
 }
 
 Vector3f

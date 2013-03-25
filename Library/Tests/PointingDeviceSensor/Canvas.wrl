@@ -90,5 +90,27 @@ Group {
   ]
 }
 
-ROUTE Touch.hitTexCoord_changed TO Image.set_point
+DEF _Canvas Script {
+  eventIn SFBool set_active
+  eventIn SFVec2f set_point
+  eventOut SFVec2f point_changed
+  field SFBool isActive FALSE
+  
+  url "vrmlscript:
+function set_active (value)
+{
+	isActive = value;
+}
+
+function set_point (value)
+{
+	if (isActive)
+		point_changed = value
+}
+"
+}
+
+ROUTE Touch.isActive TO _Canvas.set_active
+ROUTE Touch.hitTexCoord_changed TO _Canvas.set_point
+ROUTE _Canvas.point_changed TO Image.set_point
 ROUTE Clear.touchTime TO Image.set_clear

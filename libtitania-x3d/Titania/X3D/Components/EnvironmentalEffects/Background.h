@@ -52,11 +52,11 @@
 #define __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_EFFECTS_BACKGROUND_H__
 
 #include "../EnvironmentalEffects/X3DBackgroundNode.h"
+#include "../Texturing/ImageTexture.h"
+#include "../Texturing/TextureProperties.h"
 
 namespace titania {
 namespace X3D {
-
-class ImageTexture;
 
 class Background :
 	public X3DBackgroundNode
@@ -87,12 +87,13 @@ public:
 
 private:
 
-	SFNode <ImageTexture> frontTexture;
-	SFNode <ImageTexture> backTexture;
-	SFNode <ImageTexture> leftTexture;
-	SFNode <ImageTexture> rightTexture;
-	SFNode <ImageTexture> topTexture;
-	SFNode <ImageTexture> bottomTexture;
+	SFNode <ImageTexture>      frontTexture;
+	SFNode <ImageTexture>      backTexture;
+	SFNode <ImageTexture>      leftTexture;
+	SFNode <ImageTexture>      rightTexture;
+	SFNode <ImageTexture>      topTexture;
+	SFNode <ImageTexture>      bottomTexture;
+	SFNode <TextureProperties> textureProperties;
 
 	virtual
 	void

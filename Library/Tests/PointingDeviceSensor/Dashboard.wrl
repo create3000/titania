@@ -1,0 +1,45 @@
+#VRML V2.0 utf8 Titania
+
+META "title" "Dashboard"
+
+LayerSet {
+  activeLayer 1
+  order [ 1, 2 ]
+  layers [
+    Layer {
+      children [
+        DEF _0 Background {
+          skyColor 0.2 0.2 0.2
+          frontUrl "../CubeMapTexturing/images/lostvalley_south.png"
+          backUrl "../CubeMapTexturing/images/lostvalley_north.png"
+          leftUrl "../CubeMapTexturing/images/lostvalley_east.png"
+          rightUrl "../CubeMapTexturing/images/lostvalley_west.png"
+          topUrl "../CubeMapTexturing/images/lostvalley_up.png"
+          bottomUrl "../CubeMapTexturing/images/lostvalley_down.png"
+        }
+        DEF _1 Viewpoint {
+          description "Front"
+        }
+      ]
+    }
+    Layer {
+      children DEF _2 Transform {
+            translation 0 -3 0
+        children [
+          DEF Touch SphereSensor { }
+          DEF Shape Transform {
+            children Shape {
+              appearance Appearance {
+                material Material { }
+              }
+              geometry Sphere { }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+
+ROUTE Touch.rotation_changed TO Shape.set_rotation
+ROUTE Touch.rotation_changed TO _1.set_orientation

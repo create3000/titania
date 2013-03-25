@@ -1,0 +1,38 @@
+<!--
+#
+# X3D Web3D Extensions Private DTD:
+#
+#	http://www.web3d.org/specifications/x3d-3.3-Web3dExtensionsPrivate.dtd
+#
+#	current version:  3.3.0
+#
+#	created:          30 April 2005
+#	revised:          18 July 2011
+#
+#	Maintainer:       Don Brutzman
+#
+# Purpose: support Web3D Consortium extensions to the X3D tagset.
+# The primary Extensible 3D (X3D) Document Type Definition (DTD)
+# is augmented by node definitions in x3d-3.3-Web3dExtensionsPublic.dtd
+# and x3d-3.3-Web3dExtensionsPrivate.dtd
+#
+# X3D Specification DTDs:
+#	http://www.web3d.org/specifications/x3d-3.3.dtd
+#	http://www.web3d.org/specifications/x3d-3.3-InputOutputFields.dtd
+#	http://www.web3d.org/specifications/x3d-3.3-Web3dExtensionsPublic.dtd
+#	http://www.web3d.org/specifications/x3d-3.3-Web3dExtensionsPrivate.dtd
+#
+# Web3D extensions update URL:
+#	http://www.web3d.org/x3d/content/x3d-3.3-Web3dExtensionsPublic.dtd
+#
+# changelog:
+#	http://www.web3d.org/specifications/x3d-dtd-changelog.txt
+#
+-->
+
+<!-- ================================================================= -->
+
+	<!-- Enter ELEMENT and ATTLIST definitions here -->
+
+<!-- ================================================================= -->
+
