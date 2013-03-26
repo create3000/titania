@@ -97,6 +97,8 @@ public:
 		vsink  = Gst::XImageSink::create ("vsink");
 		
 		player -> set_property ("video-sink", vsink);
+		player -> set_property ("volume", 1.0);
+		player -> set_property ("mute", false);
 
 		auto bus = player -> get_bus ();
 
@@ -128,6 +130,12 @@ public:
 		return -1;
 	}
 
+	void
+	setVolume (double value)
+	{
+		player -> set_property ("volume", value);
+	}
+			
 	Gst::State
 	getState () const
 	{
@@ -298,6 +306,12 @@ float
 X3DSoundSourceNode::getDuration ()
 {
 	return gstream -> getDuration ();
+}
+
+void
+X3DSoundSourceNode::setVolume (float value)
+{
+	return gstream -> setVolume (value);
 }
 
 bool

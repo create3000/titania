@@ -76,6 +76,9 @@ public:
 	SFBool   isActive;
 	SFTime   duration_changed;
 
+	void
+	setVolume (float);
+
 	virtual
 	void
 	dispose () override;

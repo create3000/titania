@@ -1,5 +1,12 @@
 2013-03-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Sound.h:
+	* Sound.cpp:
+	* X3DSoundSourceNode.h:
+	* X3DSoundSourceNode.cpp: 
+
+2013-03-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* AudioClip.h:
 	* AudioClip.cpp:
 	* MovieTexture.h:

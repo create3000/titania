@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_SOUND_SOUND_H__
 
 #include "../Sound/X3DSoundNode.h"
+#include "../Sound/X3DSoundSourceNode.h"
 
 namespace titania {
 namespace X3D {
@@ -61,22 +62,41 @@ class Sound :
 {
 public:
 
-	SFVec3f              direction;
 	SFFloat              intensity;
+	SFBool               spatialize;
 	SFVec3f              location;
-	SFFloat              maxBack;
-	SFFloat              maxFront;
+	SFVec3f              direction;
 	SFFloat              minBack;
 	SFFloat              minFront;
+	SFFloat              maxBack;
+	SFFloat              maxFront;
 	SFFloat              priority;
 	SFNode <X3DBaseNode> source;
-	SFBool               spatialize;
 
 	Sound (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	virtual
+	void
+	traverse (TraverseType) final;
+
+
+private:
+
+	virtual
+	void
+	initialize () final;
+	
+	void
+	set_source ();
+
+	void
+	getEllipsoidParameter (const float &, const float &, float &, float &);
+
+	X3DSoundSourceNode* _source;
 
 };
 

@@ -6,6 +6,33 @@ Sound {
   }
 }
 
+DEF Max Transform {
+  scale 10 10 10
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          transparency 0.3
+        }
+      }
+      geometry Sphere { }
+    }
+  ]
+}
+
+DEF Min Transform {
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          transparency 0.3
+        }
+      }
+      geometry Sphere { }
+    }
+  ]
+}
+
 Transform {
   translation 0 2 0
   children [

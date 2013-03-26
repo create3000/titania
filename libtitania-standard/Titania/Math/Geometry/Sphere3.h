@@ -102,6 +102,13 @@ public:
 	
 	///  @name Intersection
 	
+	///  Returns true if the @a point intersects with this sphere.
+	bool
+	intersect (const vector3 <Type> & point) const
+	{
+		return abs (point - center ()) <= radius ();
+	}
+
 	///  Returns true if the @a line intersects with this sphere.
 	bool
 	intersect (const line3 <Type> &, vector3 <Type> &, vector3 <Type> &) const;
