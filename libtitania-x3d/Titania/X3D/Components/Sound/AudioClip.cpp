@@ -48,6 +48,8 @@
  *
  ******************************************************************************/
 
+#include <gstreamermm.h>
+
 #include "AudioClip.h"
 
 #include "../../Execution/X3DExecutionContext.h"
@@ -67,6 +69,7 @@ AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "enabled",          enabled);             // non standard
 	addField (inputOutput, "description",      description);
 	addField (inputOutput, "url",              url);
+	addField (inputOutput, "speed",            speed);               // non standard
 	addField (inputOutput, "pitch",            pitch);
 	addField (inputOutput, "loop",             loop);
 	addField (inputOutput, "startTime",        startTime);
@@ -91,6 +94,8 @@ AudioClip::initialize ()
 {
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
+	
+	url .addInterest (this, &AudioClip::set_url);
 
 	requestImmediateLoad ();
 }
@@ -98,31 +103,54 @@ AudioClip::initialize ()
 void
 AudioClip::requestImmediateLoad ()
 {
-	duration_changed = 0;
+	if (not glXGetCurrentContext ())
+		return;
+
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+		return;
+
+	setLoadState (IN_PROGRESS_STATE);
+
+	if (not url .size ())
+	{
+		setLoadState (FAILED_STATE);
+		return;
+	}
+
+	for (const auto & URL : url)
+	{
+		setUri (transformURI (URL .getValue () .raw ()));
+
+		// Sync stream
+
+		if (not sync ())
+			continue;
+
+		// Get audio
+
+		//if (getVideoSink () -> get_last_buffer ())
+		//{
+			duration_changed = getDuration ();
+
+			setLoadState (COMPLETE_STATE);
+
+			break;
+		//}
+	}
+
+	if (checkLoadState () not_eq COMPLETE_STATE)
+	{
+		duration_changed = -1;
+		setLoadState (FAILED_STATE);
+	}
 }
 
 void
-AudioClip::set_start ()
+AudioClip::set_url ()
 {
+	setLoadState (NOT_STARTED_STATE);
 
-}
-
-void
-AudioClip::set_stop ()
-{
-
-}
-
-void
-AudioClip::set_pause ()
-{
-
-}
-
-void
-AudioClip::set_resume ()
-{
-
+	requestImmediateLoad ();
 }
 
 void

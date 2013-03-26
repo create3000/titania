@@ -55,7 +55,9 @@
 #include "../Sound/X3DSoundSourceNode.h"
 #include "../Texturing/X3DTexture2DNode.h"
 
-#include <memory>
+namespace Gst {
+class XImageSink;
+}
 
 namespace titania {
 namespace X3D {
@@ -65,8 +67,6 @@ class MovieTexture :
 {
 public:
 
-	SFFloat speed;
-
 	MovieTexture (X3DExecutionContext* const);
 
 	virtual
@@ -75,67 +75,33 @@ public:
 
 	virtual
 	bool
-	isTransparent () const
+	isTransparent () const final
 	{ return false; }
 
 	virtual
 	void
-	draw ();
+	requestImmediateLoad () final;
 
 	virtual
 	void
-	dispose ();
+	draw () final;
+
+	virtual
+	void
+	dispose () final;
 
 
 private:
 
 	virtual
-	bool
-	isEnabled () const
-	{ return enabled; }
-
-	virtual
 	void
-	initialize ();
-
-	void
-	prepareEvents ();
-
-	virtual
-	void
-	requestImmediateLoad ();
+	initialize () final;
 
 	void
 	set_url ();
-
-	void
-	set_speed ();
-
-	void
-	set_pitch ();
-
-	virtual
-	void
-	set_start ();
 	
-	virtual
-	void
-	set_stop ();
+	Glib::RefPtr <Gst::XImageSink> vsink;
 
-	virtual
-	void
-	set_pause ();
-
-	virtual
-	void
-	set_resume ();
-
-	void
-	set_end ();
-
-	class GStream;
-	
-	std::unique_ptr <GStream> gstream;
 };
 
 } // X3D

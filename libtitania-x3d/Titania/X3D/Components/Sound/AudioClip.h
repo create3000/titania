@@ -70,39 +70,21 @@ public:
 
 	virtual
 	void
-	requestImmediateLoad ();
+	requestImmediateLoad () final;
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:
 
 	virtual
-	bool
-	isEnabled () const
-	{ return enabled; }
-
-	virtual
 	void
-	initialize ();
-
-	virtual
+	initialize () final;
+	
 	void
-	set_start ();
-
-	virtual
-	void
-	set_stop ();
-
-	virtual
-	void
-	set_pause ();
-
-	virtual
-	void
-	set_resume ();
+	set_url ();
 
 };
 

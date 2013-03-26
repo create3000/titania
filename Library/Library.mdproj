@@ -1972,6 +1972,8 @@
     <None Include="Tests\PointingDeviceSensor\CylinderSensor.wrl" />
     <None Include="Tests\PointingDeviceSensor\Dashboard.wrl" />
     <None Include="Tests\EnvironmentalEffects\ImageBackground.wrl" />
+    <None Include="Tests\Sound\AudioClip.wrl" />
+    <None Include="Tests\Sound\04. Like A Virgin.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2022,6 +2024,7 @@
     <Folder Include="Tests\Shape\" />
     <Folder Include="Tests\CADGeometry\" />
     <Folder Include="Tests\CubeMapTexturing\" />
+    <Folder Include="Tests\Sound\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

@@ -1,3 +1,12 @@
+2013-03-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* AudioClip.h:
+	* AudioClip.cpp:
+	* MovieTexture.h:
+	* MovieTexture.cpp:
+	* X3DSoundSourceNode.h:
+	* X3DSoundSourceNode.cpp: 
+
 2013-03-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* CylinderSensor.cpp: 

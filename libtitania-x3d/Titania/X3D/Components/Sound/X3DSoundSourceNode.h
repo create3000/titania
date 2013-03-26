@@ -53,6 +53,14 @@
 
 #include "../Time/X3DTimeDependentNode.h"
 
+#include <Titania/Basic/URI.h>
+#include <glibmm/refptr.h>
+#include <memory>
+
+namespace Gst {
+class XImageSink;
+}
+
 namespace titania {
 namespace X3D {
 
@@ -63,14 +71,75 @@ public:
 
 	SFBool   enabled;
 	SFString description;
+	SFFloat  speed;
 	SFFloat  pitch;
 	SFBool   isActive;
 	SFTime   duration_changed;
+
+	virtual
+	void
+	dispose () override;
 
 
 protected:
 
 	X3DSoundSourceNode ();
+
+	virtual
+	void
+	initialize () override;
+
+	void
+	setUri (const basic::uri &);
+
+	float
+	getDuration ();
+
+	bool
+	sync ();
+	
+	const Glib::RefPtr <Gst::XImageSink> &
+	getVideoSink ();
+
+
+private:
+
+	virtual
+	bool
+	isEnabled () const override
+	{ return enabled; }
+
+	void
+	prepareEvents ();
+
+	void
+	set_speed ();
+
+	void
+	set_pitch ();
+
+	virtual
+	void
+	set_start ();
+
+	virtual
+	void
+	set_stop ();
+
+	virtual
+	void
+	set_pause ();
+
+	virtual
+	void
+	set_resume ();
+
+	void
+	set_end ();
+
+	class GStream;
+
+	std::shared_ptr <GStream> gstream;
 
 };
 
