@@ -101,6 +101,8 @@ void
 Browser::construct ()
 {
 	setup ();
+
+	setCursor (Gdk::ARROW);
 }
 
 void

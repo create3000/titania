@@ -1,3 +1,11 @@
+2013-04-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWidget.ui:
+	* X3DBrowserWidget.h:
+	* X3DBrowserWindow.cpp:
+	* X3DBrowserWidget.cpp:
+	* vrml2.lang: 
+
 2013-03-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineTreeModel.h:

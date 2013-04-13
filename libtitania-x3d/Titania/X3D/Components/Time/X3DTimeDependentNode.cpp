@@ -77,13 +77,6 @@ X3DTimeDependentNode::X3DTimeDependentNode () :
 	addNodeType (X3DConstants::X3DTimeDependentNode);
 }
 
-time_type
-X3DTimeDependentNode::getElapsedTime () const
-{
-	return getCurrentTime () - startTime - pause;
-
-}
-
 void
 X3DTimeDependentNode::initialize ()
 {
@@ -91,6 +84,7 @@ X3DTimeDependentNode::initialize ()
 
 	initialized .addInterest (this, &X3DTimeDependentNode::set_initialized);
 
+	loop       .addInterest (this, &X3DTimeDependentNode::set_loop);
 	startTime  .addInterest (this, &X3DTimeDependentNode::set_startTime);
 	stopTime   .addInterest (this, &X3DTimeDependentNode::set_stopTime);
 	pauseTime  .addInterest (this, &X3DTimeDependentNode::set_pauseTime);
@@ -99,6 +93,18 @@ X3DTimeDependentNode::initialize ()
 
 void
 X3DTimeDependentNode::set_initialized ()
+{
+	set_loop ();
+}
+
+time_type
+X3DTimeDependentNode::getElapsedTime () const
+{
+	return getCurrentTime () - startTime - pause;
+}
+
+void
+X3DTimeDependentNode::set_loop ()
 {
 	if (isEnabled ())
 	{

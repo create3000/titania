@@ -1,3 +1,18 @@
+2013-04-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Browser.cpp:
+	* X3DScene.cpp:
+	* X3DBrowser.cpp:
+	* Sound.cpp:
+	* X3DTimeDependentNode.h:
+	* X3DSoundSourceNode.cpp:
+	* X3DGroupingNode.cpp:
+	* X3DTimeDependentNode.cpp:
+	* PlaneSensor.cpp:
+	* TouchSensor.cpp:
+	* SphereSensor.cpp:
+	* CylinderSensor.cpp: 
+
 2013-03-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Sound.h:

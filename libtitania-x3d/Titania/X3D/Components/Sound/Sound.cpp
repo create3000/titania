@@ -143,6 +143,8 @@ Sound::traverse (TraverseType type)
 	}
 }
 
+// http://de.wikipedia.org/wiki/Ellipse
+
 void
 Sound::getEllipsoidParameter (const float & back, const float & front, float & radius, float & distance)
 {
@@ -157,9 +159,8 @@ Sound::getEllipsoidParameter (const float & back, const float & front, float & r
 	transformationMatrix .translate (Vector3f (0, 0, e));
 	transformationMatrix .scale (Vector3f (1, 1, b / a));
 	
-	Sphere3f minSphere (b, Vector3f ());
 	Vector3f viewer = inverse (transformationMatrix) .translation ();
-	
+
 	radius   = b;
 	distance = abs (viewer);
 }

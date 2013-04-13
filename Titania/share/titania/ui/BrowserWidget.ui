@@ -208,14 +208,14 @@
                                 <property name="orientation">vertical</property>
                                 <property name="icon_size">1</property>
                                 <child>
-                                  <object class="GtkRadioToolButton" id="ArrowButton">
+                                  <object class="GtkRadioToolButton" id="HandButton">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">toolbutton2</property>
+                                    <property name="label" translatable="yes">toolbutton6</property>
                                     <property name="use_underline">True</property>
-                                    <property name="stock_id">Arrow</property>
+                                    <property name="stock_id">Hand</property>
                                     <property name="active">True</property>
-                                    <signal name="toggled" handler="on_arrow_button_toggled" swapped="no"/>
+                                    <signal name="toggled" handler="on_hand_button_toggled" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -223,14 +223,14 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkRadioToolButton" id="HandButton">
+                                  <object class="GtkRadioToolButton" id="ArrowButton">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">toolbutton6</property>
+                                    <property name="label" translatable="yes">toolbutton2</property>
                                     <property name="use_underline">True</property>
-                                    <property name="stock_id">Hand</property>
-                                    <property name="group">ArrowButton</property>
-                                    <signal name="toggled" handler="on_hand_button_toggled" swapped="no"/>
+                                    <property name="stock_id">Arrow</property>
+                                    <property name="group">HandButton</property>
+                                    <signal name="toggled" handler="on_arrow_button_toggled" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>

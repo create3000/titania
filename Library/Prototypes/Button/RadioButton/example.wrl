@@ -1,0 +1,128 @@
+#VRML V2.0 utf8
+
+META "title" "RadioButton"
+
+EXTERNPROTO Button [
+  exposedField SFBool enabled
+  eventOut     SFBool isOver
+  eventOut     SFBool isActive
+  eventOut     SFTime touchTime
+  eventIn      MFNode addChildren
+  eventIn      MFNode removeChildren
+  exposedField MFNode children
+]
+"../Button/Button.wrl"
+
+EXTERNPROTO CheckButton [
+  exposedField SFBool enabled
+  eventOut     SFBool isActive
+  eventOut     SFTime enterTime
+  eventOut     SFTime exitTime
+  eventIn      MFNode addChildren
+  eventIn      MFNode removeChildren
+  exposedField MFNode children
+]
+"../CheckButton/CheckButton.wrl"
+
+EXTERNPROTO RadioButton [
+  exposedField SFInt32 whichChoice
+  eventIn      MFNode  addChildren
+  eventIn      MFNode  removeChildren
+  exposedField MFNode  children
+]
+"RadioButton.wrl"
+
+RadioButton {
+  whichChoice 0
+  children [
+    CheckButton {
+      children [
+        Button {
+          children [
+            DEF _0 Transform {
+              translation -2.5 0 0
+              children DEF Default Shape {
+                appearance Appearance {
+                  material Material { }
+                }
+                geometry Box { }
+              }
+            }
+            USE _0
+            USE _0
+            USE _0
+          ]
+        }
+        Button {
+          children [
+            DEF _1 Transform {
+              translation -2.5 0 0
+              children DEF Active Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0.4 0.4 0.4
+                  }
+                }
+                geometry Box { }
+              }
+            }
+            USE _1
+            USE _1
+            USE _1
+          ]
+        }
+      ]
+    }
+    CheckButton {
+      children [
+        Button {
+          children [
+            DEF _2 Transform {
+              children USE Default
+            }
+            USE _2
+            USE _2
+            USE _2
+          ]
+        }
+        Button {
+          children [
+            DEF _3 Transform {
+              children USE Active
+            }
+            USE _3
+            USE _3
+            USE _3
+          ]
+        }
+      ]
+    }
+    CheckButton {
+      children [
+        Button {
+          children [
+            DEF _4 Transform {
+              translation 2.5 0 0
+              children USE Default
+            }
+            USE _4
+            USE _4
+            USE _4
+          ]
+        }
+        Button {
+          children [
+            DEF _5 Transform {
+              translation 2.5 0 0
+              children USE Active
+            }
+            USE _5
+            USE _5
+            USE _5
+          ]
+        }
+      ]
+    }
+  ]
+}
+

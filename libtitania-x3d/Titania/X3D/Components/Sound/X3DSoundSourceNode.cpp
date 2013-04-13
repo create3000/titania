@@ -97,8 +97,8 @@ public:
 		vsink  = Gst::XImageSink::create ("vsink");
 		
 		player -> set_property ("video-sink", vsink);
-		player -> set_property ("volume", 1.0);
-		player -> set_property ("mute", false);
+		player -> set_property ("volume", 0.0);
+		//player -> set_property ("mute", false);
 
 		auto bus = player -> get_bus ();
 

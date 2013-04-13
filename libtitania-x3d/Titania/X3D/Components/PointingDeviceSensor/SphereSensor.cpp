@@ -78,8 +78,8 @@ SphereSensor::SphereSensor (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "offset",             offset);
 	addField (outputOnly,  "trackPoint_changed", trackPoint_changed);
 	addField (outputOnly,  "rotation_changed",   rotation_changed);
-	addField (outputOnly,  "isActive",           isActive);
 	addField (outputOnly,  "isOver",             isOver);
+	addField (outputOnly,  "isActive",           isActive);
 }
 
 X3DBaseNode*

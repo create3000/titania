@@ -1,0 +1,103 @@
+#VRML V2.0 utf8
+
+PROTO CheckButton [
+  exposedField SFBool enabled TRUE
+  eventOut     SFBool isActive
+  eventOut     SFTime enterTime
+  eventOut     SFTime exitTime
+  eventIn      MFNode addChildren
+  eventIn      MFNode removeChildren
+  exposedField MFNode children [ ]
+]
+{
+  PROTO Fields [
+    exposedField SFBool enabled FALSE
+  ]
+  {
+    Group { }
+  }
+
+  DEF Switch Switch {
+    addChildren IS addChildren
+    removeChildren IS removeChildren
+    choice IS children
+  }
+
+  DEF CheckButton Script {
+    eventIn  SFBool set_enabled
+    eventIn  SFTime set_disabled
+    eventIn  SFTime set_active
+    eventIn  MFNode set_children
+    eventOut SFBool isActive IS isActive
+    eventOut SFTime enterTime IS enterTime
+    eventOut SFTime exitTime IS exitTime
+    field    MFNode children [ ]
+    field    SFNode button USE Switch
+    field    SFNode fields DEF Fields Fields {
+      enabled IS enabled
+    }
+    field    SFNode self USE CheckButton
+
+    url "vrmlscript:
+function initialize()
+{
+	set_children (button .children);
+	choose ();
+}
+
+function set_enabled (value, time)
+{
+	if (value)
+	{
+		isActive  = TRUE;
+		enterTime = time;	
+	}
+	else
+	{
+		isActive = FALSE;
+		exitTime = time;
+	}
+
+	choose ();
+} 
+
+function set_disabled (value, time)
+{
+	set_enabled (FALSE, time);
+}
+
+function set_active (value, time)
+{
+	set_enabled (TRUE, time);
+}
+
+function set_children (value)
+{
+	if (children .length > 1)
+	{
+		Browser .deleteRoute (children [0], 'touchTime', self, 'set_active');
+		Browser .deleteRoute (children [1], 'touchTime', self, 'set_disabled');
+	}
+
+	children = value;
+
+	if (children .length > 1)
+	{
+		Browser .addRoute (children [0], 'touchTime', self, 'set_active');
+		Browser .addRoute (children [1], 'touchTime', self, 'set_disabled');
+	}
+}
+
+function choose ()
+{
+	button .whichChoice = isActive;
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Switch.children_changed TO CheckButton.set_children
+  ROUTE Fields.enabled_changed TO CheckButton.set_enabled
+}
+
+

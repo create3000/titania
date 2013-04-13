@@ -126,10 +126,10 @@ protected:
 	initialize ();
 
 	void
-	set_splashScreen ();
+	loadSplashScreen ();
 
 	void
-	set_initialized ();
+	loadWorld ();
 
 	void
 	restoreSession ();

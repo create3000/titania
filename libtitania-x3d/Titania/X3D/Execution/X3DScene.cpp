@@ -116,8 +116,6 @@ throw (Error <INVALID_X3D>,
 void
 X3DScene::toStream (std::ostream & ostream) const
 {
-	Generator::PushLevel ();
-
 	bool X3D = (getEncoding () == "X3D");
 	Generator::X3DAccessTypes (X3D);
 	Generator::X3DFieldNames (X3D);

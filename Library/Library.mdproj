@@ -1974,6 +1974,12 @@
     <None Include="Tests\EnvironmentalEffects\ImageBackground.wrl" />
     <None Include="Tests\Sound\AudioClip.wrl" />
     <None Include="Tests\Sound\04. Like A Virgin.mp3" />
+    <None Include="Prototypes\Button\Button\Button.wrl" />
+    <None Include="Prototypes\Button\Button\example.wrl" />
+    <None Include="Prototypes\Button\RadioButton\RadioButton.wrl" />
+    <None Include="Prototypes\Button\RadioButton\example.wrl" />
+    <None Include="Prototypes\Button\CheckButton\example.wrl" />
+    <None Include="Prototypes\Button\CheckButton\CheckButton.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2025,6 +2031,7 @@
     <Folder Include="Tests\CADGeometry\" />
     <Folder Include="Tests\CubeMapTexturing\" />
     <Folder Include="Tests\Sound\" />
+    <Folder Include="Prototypes\Button\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

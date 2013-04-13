@@ -101,8 +101,8 @@ X3DGroupingNode::set_addChildren ()
 
 		children .insert (children .end (), addChildren .begin (), addChildren .end ());
 
-		children .removeInterest (this, &X3DGroupingNode::set_children);
-		children .addInterest    (this, &X3DGroupingNode::set_endChildren);
+		//children .removeInterest (this, &X3DGroupingNode::set_children);
+		//children .addInterest    (this, &X3DGroupingNode::set_endChildren);
 	}
 }
 
@@ -114,8 +114,10 @@ X3DGroupingNode::set_removeChildren ()
 		auto new_end = basic::remove (children .begin (), children .end (), removeChildren .begin (), removeChildren .end ());
 		children .erase (new_end, children .end ());
 
-		if (not children .hasInterest (this, &X3DGroupingNode::set_children))
-			set_children ();
+		//children .removeInterest (this, &X3DGroupingNode::set_children);
+		//children .addInterest    (this, &X3DGroupingNode::set_endChildren);
+
+		set_children ();
 	}
 }
 

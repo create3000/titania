@@ -438,7 +438,7 @@ X3DBrowserWindow::insertPage (size_t position)
 
 	// Set tab label.
 
-	setTabLabel (position);
+	// setTabLabel (position);
 
 	// Apply Menu Configuration
 

@@ -117,6 +117,9 @@ private:
 	set_initialized ();
 	
 	void
+	set_loop ();
+	
+	void
 	set_startTime ();
 
 	bool

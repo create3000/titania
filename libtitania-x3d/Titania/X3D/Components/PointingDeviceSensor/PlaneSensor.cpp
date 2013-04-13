@@ -81,8 +81,8 @@ PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "minPosition",         minPosition);
 	addField (outputOnly,  "trackPoint_changed",  trackPoint_changed);
 	addField (outputOnly,  "translation_changed", translation_changed);
-	addField (outputOnly,  "isActive",            isActive);
 	addField (outputOnly,  "isOver",              isOver);
+	addField (outputOnly,  "isActive",            isActive);
 }
 
 X3DBaseNode*

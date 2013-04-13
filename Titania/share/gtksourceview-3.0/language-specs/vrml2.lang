@@ -332,6 +332,7 @@
                     <keyword>info</keyword>
                     <keyword>intensity</keyword>
                     <keyword>isActive</keyword>
+                    <keyword>isOver</keyword>
                     <keyword>jump</keyword>
                     <keyword>justify</keyword>
                     <keyword>key</keyword>
@@ -403,6 +404,7 @@
                     <keyword>top</keyword>
                     <keyword>topToBottom</keyword>
                     <keyword>topUrl</keyword>
+                    <keyword>touchTime</keyword>
                     <keyword>translation</keyword>
                     <keyword>transparency</keyword>
                     <keyword>type</keyword>

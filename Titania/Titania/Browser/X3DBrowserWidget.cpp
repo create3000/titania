@@ -94,24 +94,26 @@ X3DBrowserWidget::initialize ()
 	// Splash Screen.
 
 	// Connect to map_event
-	getBrowser () -> initialized .addInterest (this, &X3DBrowserWidget::set_splashScreen);
+	getBrowser () -> initialized .addInterest (this, &X3DBrowserWidget::loadSplashScreen);
 
 	// Insert Surface, this will initialize the Browser.;
 	getSurfaceBox () .pack_start (**getBrowser (), true, true, 0);
 
 	// Show Surface and start the X3D Main Loop.
 	getBrowser () -> show ();
+	
+	
 }
 
 void
-X3DBrowserWidget::set_splashScreen ()
+X3DBrowserWidget::loadSplashScreen ()
 {
 	__LOG__ << std::endl;
 
-	getBrowser () -> initialized .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
+	getBrowser () -> initialized .removeInterest (this, &X3DBrowserWidget::loadSplashScreen);
 
 	// Register browser interests.
-	getBrowser () -> finished .addInterest (this, &X3DBrowserWidget::set_initialized);
+	getBrowser () -> finished .addInterest (this, &X3DBrowserWidget::loadWorld);
 
 	try
 	{
@@ -123,7 +125,7 @@ X3DBrowserWidget::set_splashScreen ()
 }
 
 void
-X3DBrowserWidget::set_initialized ()
+X3DBrowserWidget::loadWorld ()
 {
 	__LOG__ << std::endl;
 
@@ -133,7 +135,7 @@ X3DBrowserWidget::set_initialized ()
 
 	// The Splash Screen is loaded.
 
-	getBrowser () -> finished    .removeInterest (this, &X3DBrowserWidget::set_initialized);
+	getBrowser () -> finished    .removeInterest (this, &X3DBrowserWidget::loadWorld);
 	getBrowser () -> initialized .addInterest    (this, &X3DBrowserWidget::set_world);
 	getBrowser () -> urlError    .addInterest    (this, &X3DBrowserWidget::set_urlError);
 

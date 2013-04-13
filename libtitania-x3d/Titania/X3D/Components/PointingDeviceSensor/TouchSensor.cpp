@@ -73,8 +73,8 @@ TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "hitTexCoord_changed", hitTexCoord_changed);
 	addField (outputOnly,  "hitNormal_changed",   hitNormal_changed);
 	addField (outputOnly,  "hitPoint_changed",    hitPoint_changed);
-	addField (outputOnly,  "isActive",            isActive);
 	addField (outputOnly,  "isOver",              isOver);
+	addField (outputOnly,  "isActive",            isActive);
 	addField (outputOnly,  "touchTime",           touchTime);
 }
 

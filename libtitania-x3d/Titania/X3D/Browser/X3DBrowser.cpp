@@ -67,6 +67,7 @@ X3DBrowser::X3DBrowser () :
 	setTypeName ("Browser");
 	setName ("Titania");
 
+	addField (outputOnly, "url",         url);
 	addField (outputOnly, "description", description);
 	addField (outputOnly, "urlError",    urlError);
 	addField (outputOnly, "scene",       scene);
@@ -85,11 +86,6 @@ X3DBrowser::initialize ()
 
 	X3DBrowserContext::initialize ();
 	X3DUrlObject::initialize ();
-
-	// Replace world service.
-
-	scene .addInterest (this, &X3DBrowser::set_scene);
-	world .addInterest (this, &X3DBrowser::set_world);
 
 	// Welcome
 
@@ -114,6 +110,15 @@ X3DBrowser::initialize ()
 	std::clog
 		<< "\tDone initializing Browser." << std::endl
 		<< std::endl;
+
+	// Process outstanding events
+
+	getRouter () .processEvents ();
+
+	// Replace world service.
+
+	scene .addInterest (this, &X3DBrowser::set_scene);
+	world .addInterest (this, &X3DBrowser::set_world);
 }
 
 X3DBrowser*
@@ -251,7 +256,8 @@ throw (Error <INVALID_SCENE>)
 
 	clock -> advance ();
 
-	shutdown .processInterests ();
+	if (scene)
+		shutdown .processInterests ();
 
 	scene = value;
 
