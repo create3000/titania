@@ -146,18 +146,14 @@ throw (Error <INVALID_X3D>,
 void
 Scene::dispose ()
 {
-	__LOG__ << getWorldURL () << std::endl;
-
 	layerSet .dispose ();
 
 	X3DScene::dispose ();
-
-	__LOG__ << std::endl;
 }
 
 Scene::~Scene ()
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 }
 
 } // X3D

@@ -58,7 +58,8 @@ GarbageCollector X3DObject::garbageCollector;
 X3DObject::X3DObject () :
 	 X3DInput (), 
 	X3DOutput (), 
-	     name ()  
+	     name (),
+	 userData (NULL)  
 { }
 
 //const basic::id &

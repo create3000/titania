@@ -95,6 +95,16 @@ public:
 	GarbageCollector &
 	getGarbageCollector ();
 
+	///  @name User data handling
+
+	void
+	setUserData (void* value)
+	{ userData = value; }
+
+	void*
+	getUserData ()
+	{ return userData; }
+
 	///  @name String Creation
 
 	virtual
@@ -133,6 +143,8 @@ protected:
 private:
 
 	basic::id name;
+	
+	void* userData;
 
 	static GarbageCollector garbageCollector;
 

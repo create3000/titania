@@ -66,7 +66,14 @@ class OutlineTreeView :
 public:
 
 	OutlineTreeView (const X3D::SFNode <X3D::Browser> &);
-
+	
+	virtual
+	bool
+	on_test_expand_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+	
+	virtual
+	void
+	on_row_expanded (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
 private:
 

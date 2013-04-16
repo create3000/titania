@@ -263,10 +263,10 @@ throw (Error <INVALID_URL>,
 	if (uri .empty ())
 		throw Error <INVALID_URL> ("Couldn't load URL '" + uri + "'");
 
-	std::clog << "\tTrying to load URI '" << uri << "': " << std::endl;
+	std::clog << "Trying to load URI '" << uri << "': " << std::endl;
 
 	basic::uri transformedURL = transformURI (uri);
-	std::clog << "\t\tResolved URL is '" << transformedURL << "'" << std::endl;
+	std::clog << "\tResolved URL is '" << transformedURL << "'" << std::endl;
 
 	basic::ifilestream stream (basic::http::GET, transformedURL);
 
@@ -283,13 +283,13 @@ throw (Error <INVALID_URL>,
 		else
 			worldURL = transformedURL;
 
-		std::clog << "\t\tLoaded URL is '" << worldURL << "': " << std::endl;
-		std::clog << "\tDone." << std::endl;
+		std::clog << "\tLoaded URL is '" << worldURL << "': " << std::endl;
+		std::clog << "Done." << std::endl;
 
 		return stream;
 	}
 
-	std::clog << "\tFailed." << std::endl;
+	std::clog << "Failed." << std::endl;
 
 	throw Error <URL_UNAVAILABLE> ("Couldn't load URL '" + transformedURL + "'");
 }

@@ -60,6 +60,45 @@
 namespace titania {
 namespace puck {
 
+enum class OutlineEditorDataType
+{
+	X3DField,
+	X3DBaseNode
+
+};
+
+class OutlineEditorDataParent
+{
+public:
+
+	OutlineEditorDataParent (OutlineEditorDataType type, X3D::X3DObject * object, int index) :
+		object (object),
+		type (type),
+		index (index)
+	{ }
+
+	X3D::X3DObject* const       object;
+	const OutlineEditorDataType type;
+	const size_t                index;
+
+};
+
+class OutlineEditorData :
+	public OutlineEditorDataParent
+{
+public:
+
+	typedef std::deque <OutlineEditorDataParent> parents_type;
+
+	OutlineEditorData (OutlineEditorDataType type, X3D::X3DObject* object, int index, const parents_type & parents) :
+		OutlineEditorDataParent (type, object, index),
+		parents (parents)
+	{ }
+
+	const parents_type parents;
+
+};
+
 class OutlineTreeModel :
 	public Glib::Object, public Gtk::TreeModel
 {
@@ -84,25 +123,22 @@ private:
 
 	virtual GType
 	get_column_type_vfunc (int index) const;
+	
+	virtual
+	void
+	get_value_vfunc (const OutlineTreeModel::iterator & iter, int column, Glib::ValueBase & value) const;
 
-	bool
-	iter_next_vfunc (const iterator & iter, iterator & iter_next) const;
-
+	virtual
+	Path
+	get_path_vfunc (const iterator & iter) const;
+	
 	virtual
 	bool
 	get_iter_vfunc (const Path & path, iterator & iter) const;
 
 	virtual
-	bool
-	iter_children_vfunc (const iterator & parent, iterator & iter) const;
-
-	virtual
-	bool
-	iter_parent_vfunc (const iterator & child, iterator & iter) const;
-
-	virtual
-	bool
-	iter_nth_child_vfunc (const iterator & parent, int n, iterator & iter) const;
+	int
+	iter_n_root_children_vfunc () const;
 
 	virtual
 	bool
@@ -112,61 +148,40 @@ private:
 	bool
 	iter_has_child_vfunc (const iterator & iter) const;
 
-	virtual int
-	iter_n_children_vfunc (const iterator & iter) const;
-
-	virtual int
-	iter_n_root_children_vfunc () const;
-
-	virtual Path
-	get_path_vfunc (const iterator & iter) const;
-
 	virtual
-	void
-	get_value_vfunc (const OutlineTreeModel::iterator & iter, int column, Glib::ValueBase & value) const;
+	int
+	iter_n_children_vfunc (const iterator & iter) const;
 
 	virtual
 	bool
-	iter_is_valid (const iterator & iter) const;
-	
+	iter_children_vfunc (const iterator & parent, iterator & iter) const;
+
+	virtual
+	bool
+	iter_nth_child_vfunc (const iterator & parent, int n, iterator & iter) const;
+
+	virtual
+	bool
+	iter_next_vfunc (const iterator & iter, iterator & iter_next) const;
+
+	virtual
+	bool
+	iter_parent_vfunc (const iterator & child, iterator & iter) const;
+
+	virtual
+	void
+	ref_node_vfunc (const iterator &) const;
+
+	virtual
+	void
+	unref_node_vfunc (const iterator &) const;
+
 	static
 	X3D::FieldDefinitionArray
 	getFields (const X3D::X3DBaseNode* const);
 
-	class Item
-	{
-	public:
-
-		Item (int index, X3D::X3DObject* object, X3D::X3DObject* sfnode) :
-			index (index),
-			object (object),
-			sfnode (sfnode)
-		{ }
-
-		const int             index;
-		X3D::X3DObject* const object;
-		X3D::X3DObject* const sfnode;
-
-	};
-
-	class Data :
-		public Item
-	{
-	public:
-
-		typedef std::deque <Item> parents_type;
-
-		Data (int index, X3D::X3DObject* object, X3D::X3DObject* sfnode, parents_type parents) :
-			Item (index, object, sfnode),
-			parents (parents)
-		{ }
-
-		parents_type parents;
-
-	};
-
 	typedef Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>> icon_column_type;
-	typedef Gtk::TreeModelColumn <Data*>                       data_column_type;
+	typedef Gtk::TreeModelColumn <OutlineEditorData*>          data_column_type;
 	typedef Gtk::TreeModelColumn <Gdk::Color>                  background_color_column_type;
 	typedef Gtk::TreeModelColumn <Glib::ustring>               debug_column_type;
 

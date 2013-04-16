@@ -247,11 +247,7 @@ X3DLayerNode::pick ()
 	getViewpoint () -> reshape ();
 	getViewpoint () -> transform ();
 
-	//double t0 = chrono::now ();
-
 	group -> traverse (TraverseType::PICKING);
-
-	//__LOG__ << "pick: " << SFTime (chrono::now () - t0) << std::endl;
 
 	glPopMatrix ();
 
@@ -370,8 +366,6 @@ X3DLayerNode::collect (TraverseType type)
 void
 X3DLayerNode::dispose ()
 {
-	__LOG__ << (void*) this << std::endl;
-
 	defaultViewport       .dispose ();
 	defaultNavigationInfo .dispose ();
 	defaultBackground     .dispose ();

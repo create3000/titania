@@ -132,6 +132,8 @@ public:
 	virtual
 	X3DBaseNode*
 	getLocalNode ();
+	
+	///  @name Field handling
 
 	X3DFieldDefinition*
 	getField (const std::string &) const
@@ -151,9 +153,13 @@ public:
 	FieldDefinitionArray
 	getUserDefinedFields () const;
 
+	///  @name Initialization
+
 	virtual
 	void
 	setup ();
+	
+	///  @name Event handling
 	
 	void
 	processEvents ();

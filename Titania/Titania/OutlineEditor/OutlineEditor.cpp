@@ -62,6 +62,8 @@ OutlineEditor::OutlineEditor (const std::string & sessionKey, X3DBrowserInterfac
 {
 	setBrowserWidget (browserWidget);
 	setBrowser (browserWidget -> getBrowser ());
+
+	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &OutlineEditor::on_button_release_event), false);
 }
 
 void
@@ -72,6 +74,14 @@ OutlineEditor::initialize ()
 	treeview .show ();
 
 	getScrolledWindow () .add (treeview);
+}
+
+bool
+OutlineEditor::on_button_release_event (GdkEventButton* event)
+{
+	__LOG__ << std::endl;
+
+	return false;
 }
 
 } // puck

@@ -63,12 +63,12 @@ function set_enabled (value, time)
 
 function set_disabled (value, time)
 {
-	set_enabled (FALSE, time);
+	fields .enabled = FALSE;
 }
 
 function set_active (value, time)
 {
-	set_enabled (TRUE, time);
+	fields .enabled = TRUE;
 }
 
 function set_children (value)

@@ -1,3 +1,12 @@
+2013-04-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* OutlineEditor.h:
+	* OutlineTreeView.h:
+	* OutlineEditor.cpp:
+	* OutlineTreeModel.h:
+	* OutlineTreeView.cpp:
+	* OutlineTreeModel.cpp: 
+
 2013-04-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWidget.ui:

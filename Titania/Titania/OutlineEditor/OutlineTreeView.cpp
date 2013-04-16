@@ -97,5 +97,52 @@ OutlineTreeView::set_world ()
 	set_model (OutlineTreeModel::create (getBrowser ()));
 }
 
+bool
+OutlineTreeView::on_test_expand_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
+{
+	// Return false to allow expansion, true to reject.
+	return false;
+}
+
+void
+OutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
+{
+	auto data = (OutlineEditorData*) iter .gobj () -> user_data;
+	
+	if (data -> type == OutlineEditorDataType::X3DBaseNode)
+	{
+		auto   children = iter -> children ();
+		size_t size     = children .size ();
+		
+		for (size_t i = 0; i < size; ++ i)
+		{
+			auto child = children [i];
+	
+			auto data  = (OutlineEditorData*) child .gobj () -> user_data;
+			auto field = dynamic_cast <X3D::X3DFieldDefinition*> (data -> object);
+			
+			switch (field -> getType ())
+			{
+				case X3D::X3DConstants::SFNode:
+				{
+					auto sfnode = dynamic_cast <X3D::SFNode <X3D::X3DBaseNode>*> (field);
+					
+					if (*sfnode)
+						expand_row (Gtk::TreePath (child), false);
+					
+					break;
+				}
+				case X3D::X3DConstants::MFNode:
+				{
+					expand_row (Gtk::TreePath (child), false);
+					break;
+				}
+				default:
+					break;
+			}
+		}
+	}
+}
+
 } // puck
 } // titania

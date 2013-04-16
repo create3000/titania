@@ -1,3 +1,14 @@
+2013-04-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DObject.h:
+	* X3DObject.cpp:
+	* Scene.cpp:
+	* X3DBaseNode.h:
+	* GarbargeCollector.cpp:
+	* X3DLayerNode.cpp:
+	* ImageTexture.cpp:
+	* X3DUrlObject.cpp: 
+
 2013-04-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Browser.cpp:

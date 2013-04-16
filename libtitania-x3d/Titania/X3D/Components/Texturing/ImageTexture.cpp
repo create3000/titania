@@ -124,10 +124,6 @@ ImageTexture::requestImmediateLoad ()
 bool
 ImageTexture::loadImage (Magick::Image & image)
 {
-	std::clog
-		<< std::endl
-		<< "Info: Loading image for ImageTexture '" << (void*) this << '\'' << std::endl;
-
 	for (const auto & URL : url)
 	{
 		try
