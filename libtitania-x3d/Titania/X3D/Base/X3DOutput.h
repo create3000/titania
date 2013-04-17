@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_BASE_X3DOUTPUT_H__
 #define __TITANIA_X3D_BASE_X3DOUTPUT_H__
 
+#include "../Base/X3DBase.h"
 #include <functional>
 #include <list>
 #include <map>
@@ -64,7 +65,8 @@ typedef RequesterArray::iterator              RequesterId;
 typedef std::pair <const void*, const void*>  RequesterPair;
 typedef std::map <RequesterPair, RequesterId> RequesterIndex;
 
-class X3DOutput
+class X3DOutput :
+	virtual public X3DBase
 {
 public:
 
@@ -179,13 +181,13 @@ public:
 	void
 	dispose ();
 
+	virtual
+	~X3DOutput ();
+
 
 protected:
 
 	X3DOutput ();
-
-	virtual
-	~X3DOutput ();
 
 
 private:

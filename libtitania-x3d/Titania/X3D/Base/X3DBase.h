@@ -48,93 +48,27 @@
  *
  ******************************************************************************/
 
-#include "X3DObject.h"
+#ifndef __TITANIA_X3D_BASE_X3DBASE_H__
+#define __TITANIA_X3D_BASE_X3DBASE_H__
 
 namespace titania {
 namespace X3D {
 
-GarbageCollector X3DObject::garbageCollector;
-
-X3DObject::X3DObject () :
-	 X3DInput (), 
-	X3DOutput (), 
-	     name (),
-	 userData (NULL)  
-{ }
-
-//const basic::id &
-//X3DObject::getTypeName () const
-//{
-//
-//}
-
-// Type
-
-void
-X3DObject::setName (const basic::id & value)
+class X3DBase
 {
-	name = value;
-}
+public:
 
-const basic::id &
-X3DObject::getName () const
-{
-	return name;
-}
+	virtual
+	~X3DBase ();
 
-// InputOutput
 
-bool
-X3DObject::isInput () const
-{
-	return true;
-}
+protected:
 
-bool
-X3DObject::isOutput () const
-{
-	return true;
-}
+	X3DBase ();
 
-// Garbage collection
-
-GarbageCollector &
-X3DObject::getGarbageCollector ()
-{
-	return garbageCollector;
-}
-
-// String
-
-std::string
-X3DObject::toString () const
-{
-	std::ostringstream ostringstream;
-
-	toStream (ostringstream);
-
-	return ostringstream .str ();
-}
-
-// Object
-
-void
-X3DObject::dispose ()
-{
-	X3DInput::dispose  ();
-	X3DOutput::dispose ();
-}
-
-X3DObject::~X3DObject ()
-{
-	if (userData)
-		delete userData;
-}
-
-template std::istream & operator >> (std::istream &, X3DObject &);
-template std::ostream & operator << (std::ostream &, const X3DObject &);
-//template std::wistream & operator >> (std::wistream &, const X3DObject &);
-//template std::wostream & operator << (std::wostream &, const X3DObject &);
+};
 
 } // X3D
 } // titania
+
+#endif

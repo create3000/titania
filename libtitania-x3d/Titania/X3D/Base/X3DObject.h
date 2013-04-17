@@ -98,11 +98,11 @@ public:
 	///  @name User data handling
 
 	void
-	setUserData (void* value)
+	setUserData (X3DBase* value)
 	{ userData = value; }
 
-	void*
-	getUserData ()
+	X3DBase*
+	getUserData () const
 	{ return userData; }
 
 	///  @name String Creation
@@ -144,7 +144,7 @@ private:
 
 	basic::id name;
 	
-	void* userData;
+	X3DBase* userData;
 
 	static GarbageCollector garbageCollector;
 

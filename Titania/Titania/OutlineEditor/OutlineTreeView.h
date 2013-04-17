@@ -55,6 +55,7 @@
 #include <iostream>
 
 #include "../Base/X3DBaseInterface.h"
+#include "../OutlineEditor/OutlineData.h"
 #include <Titania/X3D.h>
 
 namespace titania {
@@ -67,6 +68,11 @@ public:
 
 	OutlineTreeView (const X3D::SFNode <X3D::Browser> &);
 	
+private:
+
+	void
+	set_world ();
+	
 	virtual
 	bool
 	on_test_expand_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
@@ -74,11 +80,16 @@ public:
 	virtual
 	void
 	on_row_expanded (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-private:
+	
+	virtual
+	void
+	on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path);
 
 	void
-	set_world ();
+	autoExpandFields (const Gtk::TreeModel::iterator &);
+	
+	void
+	toggleExpand (const Gtk::TreeModel::iterator &);
 
 };
 

@@ -152,6 +152,9 @@ public:
 
 	FieldDefinitionArray
 	getUserDefinedFields () const;
+	
+	bool
+	isDefaultValue (const X3DFieldDefinition* const) const;
 
 	///  @name Initialization
 

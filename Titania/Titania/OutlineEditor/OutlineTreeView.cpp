@@ -74,7 +74,7 @@ OutlineTreeView::OutlineTreeView (const X3D::SFNode <X3D::Browser> & browser) :
 
 	Gtk::CellRendererText* cellrenderer_name = Gtk::manage (new Gtk::CellRendererText ());
 	treeviewcolumn_name -> pack_start (*cellrenderer_name, true);
-	treeviewcolumn_name -> add_attribute (*cellrenderer_name, "text", 3);
+	treeviewcolumn_name -> add_attribute (*cellrenderer_name, "markup", 3);
 	treeviewcolumn_name -> add_attribute (*cellrenderer_name, "cell-background-gdk", 2);
 
 	append_column (*treeviewcolumn_name);
@@ -107,9 +107,21 @@ OutlineTreeView::on_test_expand_row (const Gtk::TreeModel::iterator & iter, cons
 void
 OutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
 {
-	auto data = (OutlineEditorData*) iter .gobj () -> user_data;
+	autoExpandFields (iter);
+}
+
+void
+OutlineTreeView::on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
+{
+	toggleExpand (iter);
+}
+
+void
+OutlineTreeView::autoExpandFields (const Gtk::TreeModel::iterator & iter)
+{
+	auto data = (OutlineTreeModel::Data*) iter .gobj () -> user_data;
 	
-	if (data -> type == OutlineEditorDataType::X3DBaseNode)
+	if (data -> type == OutlineTreeModel::DataType::X3DBaseNode)
 	{
 		auto   children = iter -> children ();
 		size_t size     = children .size ();
@@ -118,7 +130,7 @@ OutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, const G
 		{
 			auto child = children [i];
 	
-			auto data  = (OutlineEditorData*) child .gobj () -> user_data;
+			auto data  = (OutlineTreeModel::Data*) child .gobj () -> user_data;
 			auto field = dynamic_cast <X3D::X3DFieldDefinition*> (data -> object);
 			
 			switch (field -> getType ())
@@ -141,6 +153,21 @@ OutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, const G
 					break;
 			}
 		}
+	}
+}
+
+void
+OutlineTreeView::toggleExpand (const Gtk::TreeModel::iterator & iter)
+{
+	auto userData = OutlineTreeModel::getUserData (iter);
+	
+	if (userData)
+	{
+		userData -> expand  = not userData -> expand;
+		userData -> tainted = true;
+
+		if (userData -> expand)
+			expand_row (Gtk::TreePath (iter), false);
 	}
 }
 

@@ -51,6 +51,7 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_MODEL_H__
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_MODEL_H__
 
+#include "../OutlineEditor/OutlineData.h"
 #include <Titania/X3D.h>
 
 #include <deque>
@@ -60,54 +61,62 @@
 namespace titania {
 namespace puck {
 
-enum class OutlineEditorDataType
-{
-	X3DField,
-	X3DBaseNode
-
-};
-
-class OutlineEditorDataParent
-{
-public:
-
-	OutlineEditorDataParent (OutlineEditorDataType type, X3D::X3DObject * object, int index) :
-		object (object),
-		type (type),
-		index (index)
-	{ }
-
-	X3D::X3DObject* const       object;
-	const OutlineEditorDataType type;
-	const size_t                index;
-
-};
-
-class OutlineEditorData :
-	public OutlineEditorDataParent
-{
-public:
-
-	typedef std::deque <OutlineEditorDataParent> parents_type;
-
-	OutlineEditorData (OutlineEditorDataType type, X3D::X3DObject* object, int index, const parents_type & parents) :
-		OutlineEditorDataParent (type, object, index),
-		parents (parents)
-	{ }
-
-	const parents_type parents;
-
-};
-
 class OutlineTreeModel :
 	public Glib::Object, public Gtk::TreeModel
 {
 public:
 
+	enum class DataType
+	{
+		X3DField,
+		X3DBaseNode
+
+	};
+
+	class DataParent
+	{
+	public:
+
+		DataParent (DataType type, X3D::X3DObject* object, int index) :
+			object (object),
+			type (type),
+			index (index)
+		{ }
+
+		X3D::X3DObject* const object;
+		const DataType        type;
+		const size_t          index;
+
+	};
+
+	class Data :
+		public DataParent
+	{
+	public:
+
+		typedef std::deque <DataParent> parents_type;
+
+		Data (DataType type, X3D::X3DObject* object, int index, const parents_type & parents) :
+			DataParent (type, object, index),
+			parents (parents)
+		{ }
+
+		const parents_type parents;
+
+	};
+
 	OutlineTreeModel (const X3D::SFNode <X3D::Browser> &);
 
 	static Glib::RefPtr <OutlineTreeModel>
 	create (const X3D::SFNode <X3D::Browser> &);
+
+	static
+	OutlineData*
+	getUserData (const iterator &);
+
+	static
+	OutlineData*
+	getUserData (X3D::X3DObject*);
 
 	virtual
 	~OutlineTreeModel ();
@@ -123,15 +132,15 @@ private:
 
 	virtual GType
 	get_column_type_vfunc (int index) const;
-	
+
 	virtual
 	void
-	get_value_vfunc (const OutlineTreeModel::iterator & iter, int column, Glib::ValueBase & value) const;
+	get_value_vfunc (const iterator & iter, int column, Glib::ValueBase & value) const;
 
 	virtual
 	Path
 	get_path_vfunc (const iterator & iter) const;
-	
+
 	virtual
 	bool
 	get_iter_vfunc (const Path & path, iterator & iter) const;
@@ -178,10 +187,14 @@ private:
 
 	static
 	X3D::FieldDefinitionArray
-	getFields (const X3D::X3DBaseNode* const);
+	getFields (X3D::X3DBaseNode*);
+
+	static
+	X3D::FieldDefinitionArray
+	getFields (X3D::X3DBaseNode*, OutlineData*);
 
 	typedef Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>> icon_column_type;
-	typedef Gtk::TreeModelColumn <OutlineEditorData*>          data_column_type;
+	typedef Gtk::TreeModelColumn <Data*>                       data_column_type;
 	typedef Gtk::TreeModelColumn <Gdk::Color>                  background_color_column_type;
 	typedef Gtk::TreeModelColumn <Glib::ustring>               debug_column_type;
 

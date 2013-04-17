@@ -51,10 +51,13 @@
 #ifndef __TITANIA_X3D_BASE_X3DINPUT_H__
 #define __TITANIA_X3D_BASE_X3DINPUT_H__
 
+#include "../Base/X3DBase.h"
+
 namespace titania {
 namespace X3D {
 
-class X3DInput
+class X3DInput :
+	virtual public X3DBase
 {
 public:
 

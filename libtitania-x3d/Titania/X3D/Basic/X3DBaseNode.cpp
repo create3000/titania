@@ -454,6 +454,18 @@ X3DBaseNode::getFieldName (const std::string & name) const
 //	return field -> getName ();
 //}
 
+const FieldsMap &
+X3DBaseNode::getFields () const
+{
+	return fields;
+}
+
+const FieldDefinitionArray &
+X3DBaseNode::getFieldDefinitions () const
+{
+	return fieldDefinitions;
+}
+
 void
 X3DBaseNode::addUserDefinedField (const AccessType accessType, const basic::id & name, X3DFieldDefinition* const field)
 {
@@ -479,8 +491,6 @@ X3DBaseNode::getInitializeableFields (const bool all) const
 {
 	FieldDefinitionArray changedFields;
 
-	const X3DBaseNode* declaration = getType ();
-
 	for (const auto & field : basic::adapter (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
 	{
 		if (not field -> getReference ())
@@ -488,7 +498,7 @@ X3DBaseNode::getInitializeableFields (const bool all) const
 			if (not field -> isInitializeable ())
 				continue;
 
-			if (not all and * field == *declaration -> getField (field -> getName ()))
+			if (not all and isDefaultValue (field))
 				continue;
 		}
 
@@ -498,16 +508,16 @@ X3DBaseNode::getInitializeableFields (const bool all) const
 	return changedFields;
 }
 
-const FieldsMap &
-X3DBaseNode::getFields () const
+bool
+X3DBaseNode::isDefaultValue (const X3DFieldDefinition* const field) const
 {
-	return fields;
-}
-
-const FieldDefinitionArray &
-X3DBaseNode::getFieldDefinitions () const
-{
-	return fieldDefinitions;
+	const X3DBaseNode*        declaration      = getType ();
+	const X3DFieldDefinition* declarationField = declaration -> getField (field -> getName ());
+	
+	if (declarationField)
+		return *field == *declarationField;
+		
+	return false;
 }
 
 void
