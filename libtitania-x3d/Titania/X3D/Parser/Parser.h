@@ -403,7 +403,7 @@ private:
 	sfnodeValue (X3DFieldDefinition* const);
 
 	bool
-	mfnodeValue (X3DFieldDefinition* const);
+	mfnodeValue (MFNode*);
 
 	void
 	nodeStatements (MFNode*);

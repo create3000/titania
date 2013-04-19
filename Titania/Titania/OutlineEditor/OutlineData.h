@@ -51,6 +51,8 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_DATA_H__
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_DATA_H__
 
+#include <gtkmm.h>
+
 #include <Titania/X3D.h>
 
 namespace titania {
@@ -62,15 +64,21 @@ class OutlineData :
 public:
 
 	OutlineData () :
+		path (),
 		fields (),
-		expand (false),
-		tainted (true)
+		tainted (true),
+		expanded (false),
+		showAllFields (false),
+		selected (false)
 	{ }
-
+	
+	Gtk::TreeModel::Path      path;
 	X3D::FieldDefinitionArray fields;
 
-	bool expand;
 	bool tainted;
+	bool expanded;
+	bool showAllFields;
+	bool selected;
 
 };
 

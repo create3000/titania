@@ -84,12 +84,45 @@ private:
 	virtual
 	void
 	on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path);
+	
+	virtual
+	void
+	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
+
+	void
+	setPath (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+
+	void
+	setExpanded (const Gtk::TreeModel::iterator &, bool);
+	
+	void
+	watch (const Gtk::TreeModel::iterator &, bool);
 
 	void
 	autoExpandFields (const Gtk::TreeModel::iterator &);
 	
 	void
 	toggleExpand (const Gtk::TreeModel::iterator &);
+	
+	void
+	select (const Gtk::TreeModel::iterator &);
+	
+	void
+	clearSelection ();
+	
+	void
+	toggleSelection (X3D::X3DBaseNode*);
+
+	void
+	select (X3D::X3DBaseNode*, bool);
+
+	void
+	select (X3D::X3DBaseNode*, bool, X3D::ChildObjectSet &);
+	
+	void
+	select (X3D::X3DFieldDefinition*, bool, X3D::ChildObjectSet &);
+	
+	X3D::MFNode selection;
 
 };
 

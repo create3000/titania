@@ -1534,130 +1534,130 @@ Parser::fieldValue (X3DFieldDefinition* _field)
 	switch (_field -> getType ())
 	{
 		case X3DConstants::SFBool:
-			return sfboolValue (dynamic_cast <SFBool*> (_field));
+			return sfboolValue (static_cast <SFBool*> (_field));
 
 		case X3DConstants::SFColor:
-			return sfcolorValue (dynamic_cast <SFColor*> (_field));
+			return sfcolorValue (static_cast <SFColor*> (_field));
 
 		case X3DConstants::SFColorRGBA:
-			return sfcolorRGBAValue (dynamic_cast <SFColorRGBA*> (_field));
+			return sfcolorRGBAValue (static_cast <SFColorRGBA*> (_field));
 
 		case X3DConstants::SFDouble:
-			return sfdoubleValue (dynamic_cast <SFDouble*> (_field));
+			return sfdoubleValue (static_cast <SFDouble*> (_field));
 
 		case X3DConstants::SFFloat:
-			return sffloatValue (dynamic_cast <SFFloat*> (_field));
+			return sffloatValue (static_cast <SFFloat*> (_field));
 
 		case X3DConstants::SFImage:
-			return sfimageValue (dynamic_cast <SFImage*> (_field));
+			return sfimageValue (static_cast <SFImage*> (_field));
 
 		case X3DConstants::SFInt32:
-			return sfint32Value (dynamic_cast <SFInt32*> (_field));
+			return sfint32Value (static_cast <SFInt32*> (_field));
 
 		case X3DConstants::SFMatrix3d:
-			return sfmatrix3dValue (dynamic_cast <SFMatrix3d*> (_field));
+			return sfmatrix3dValue (static_cast <SFMatrix3d*> (_field));
 
 		case X3DConstants::SFMatrix3f:
-			return sfmatrix3fValue (dynamic_cast <SFMatrix3f*> (_field));
+			return sfmatrix3fValue (static_cast <SFMatrix3f*> (_field));
 
 		case X3DConstants::SFMatrix4d:
-			return sfmatrix4dValue (dynamic_cast <SFMatrix4d*> (_field));
+			return sfmatrix4dValue (static_cast <SFMatrix4d*> (_field));
 
 		case X3DConstants::SFMatrix4f:
-			return sfmatrix4fValue (dynamic_cast <SFMatrix4f*> (_field));
+			return sfmatrix4fValue (static_cast <SFMatrix4f*> (_field));
 
 		case X3DConstants::SFNode:
 			return sfnodeValue (_field);
 
 		case X3DConstants::SFRotation:
-			return sfrotationValue (dynamic_cast <SFRotation*> (_field));
+			return sfrotationValue (static_cast <SFRotation*> (_field));
 
 		case X3DConstants::SFString:
-			return sfstringValue (dynamic_cast <SFString*> (_field));
+			return sfstringValue (static_cast <SFString*> (_field));
 
 		case X3DConstants::SFTime:
-			return sftimeValue (dynamic_cast <SFTime*> (_field));
+			return sftimeValue (static_cast <SFTime*> (_field));
 
 		case X3DConstants::SFVec2d:
-			return sfvec2dValue (dynamic_cast <SFVec2d*> (_field));
+			return sfvec2dValue (static_cast <SFVec2d*> (_field));
 
 		case X3DConstants::SFVec2f:
-			return sfvec2fValue (dynamic_cast <SFVec2f*> (_field));
+			return sfvec2fValue (static_cast <SFVec2f*> (_field));
 
 		case X3DConstants::SFVec3d:
-			return sfvec3dValue (dynamic_cast <SFVec3d*> (_field));
+			return sfvec3dValue (static_cast <SFVec3d*> (_field));
 
 		case X3DConstants::SFVec3f:
-			return sfvec3fValue (dynamic_cast <SFVec3f*> (_field));
+			return sfvec3fValue (static_cast <SFVec3f*> (_field));
 
 		case X3DConstants::SFVec4d:
-			return sfvec4dValue (dynamic_cast <SFVec4d*> (_field));
+			return sfvec4dValue (static_cast <SFVec4d*> (_field));
 
 		case X3DConstants::SFVec4f:
-			return sfvec4fValue (dynamic_cast <SFVec4f*> (_field));
+			return sfvec4fValue (static_cast <SFVec4f*> (_field));
 
 		case X3DConstants::MFBool:
-			return mfboolValue (dynamic_cast <MFBool*> (_field));
+			return mfboolValue (static_cast <MFBool*> (_field));
 
 		case X3DConstants::MFColor:
-			return mfcolorValue (dynamic_cast <MFColor*> (_field));
+			return mfcolorValue (static_cast <MFColor*> (_field));
 
 		case X3DConstants::MFColorRGBA:
-			return mfcolorRGBAValue (dynamic_cast <MFColorRGBA*> (_field));
+			return mfcolorRGBAValue (static_cast <MFColorRGBA*> (_field));
 
 		case X3DConstants::MFDouble:
-			return mfdoubleValue (dynamic_cast <MFDouble*> (_field));
+			return mfdoubleValue (static_cast <MFDouble*> (_field));
 
 		case X3DConstants::MFFloat:
-			return mffloatValue (dynamic_cast <MFFloat*> (_field));
+			return mffloatValue (static_cast <MFFloat*> (_field));
 
 		case X3DConstants::MFImage:
-			return mfimageValue (dynamic_cast <MFImage*> (_field));
+			return mfimageValue (static_cast <MFImage*> (_field));
 
 		case X3DConstants::MFInt32:
-			return mfint32Value (dynamic_cast <MFInt32*> (_field));
+			return mfint32Value (static_cast <MFInt32*> (_field));
 
 		case X3DConstants::MFMatrix3d:
-			return mfmatrix3dValue (dynamic_cast <MFMatrix3d*> (_field));
+			return mfmatrix3dValue (static_cast <MFMatrix3d*> (_field));
 
 		case X3DConstants::MFMatrix3f:
-			return mfmatrix3fValue (dynamic_cast <MFMatrix3f*> (_field));
+			return mfmatrix3fValue (static_cast <MFMatrix3f*> (_field));
 
 		case X3DConstants::MFMatrix4d:
-			return mfmatrix4dValue (dynamic_cast <MFMatrix4d*> (_field));
+			return mfmatrix4dValue (static_cast <MFMatrix4d*> (_field));
 
 		case X3DConstants::MFMatrix4f:
-			return mfmatrix4fValue (dynamic_cast <MFMatrix4f*> (_field));
+			return mfmatrix4fValue (static_cast <MFMatrix4f*> (_field));
 
 		case X3DConstants::MFNode:
-			return mfnodeValue (_field);
+			return mfnodeValue (static_cast <MFNode*> (_field));
 
 		case X3DConstants::MFRotation:
-			return mfrotationValue (dynamic_cast <MFRotation*> (_field));
+			return mfrotationValue (static_cast <MFRotation*> (_field));
 
 		case X3DConstants::MFString:
-			return mfstringValue (dynamic_cast <MFString*> (_field));
+			return mfstringValue (static_cast <MFString*> (_field));
 
 		case X3DConstants::MFTime:
-			return mftimeValue (dynamic_cast <MFTime*> (_field));
+			return mftimeValue (static_cast <MFTime*> (_field));
 
 		case X3DConstants::MFVec2d:
-			return mfvec2dValue (dynamic_cast <MFVec2d*> (_field));
+			return mfvec2dValue (static_cast <MFVec2d*> (_field));
 
 		case X3DConstants::MFVec2f:
-			return mfvec2fValue (dynamic_cast <MFVec2f*> (_field));
+			return mfvec2fValue (static_cast <MFVec2f*> (_field));
 
 		case X3DConstants::MFVec3d:
-			return mfvec3dValue (dynamic_cast <MFVec3d*> (_field));
+			return mfvec3dValue (static_cast <MFVec3d*> (_field));
 
 		case X3DConstants::MFVec3f:
-			return mfvec3fValue (dynamic_cast <MFVec3f*> (_field));
+			return mfvec3fValue (static_cast <MFVec3f*> (_field));
 
 		case X3DConstants::MFVec4d:
-			return mfvec4dValue (dynamic_cast <MFVec4d*> (_field));
+			return mfvec4dValue (static_cast <MFVec4d*> (_field));
 
 		case X3DConstants::MFVec4f:
-			return mfvec4fValue (dynamic_cast <MFVec4f*> (_field));
+			return mfvec4fValue (static_cast <MFVec4f*> (_field));
 	}
 
 	throw Error <INVALID_X3D> ("Unknown field type.");
@@ -2675,18 +2675,15 @@ Parser::sfnodeValue (X3DFieldDefinition* const _field)
 }
 
 bool
-Parser::mfnodeValue (X3DFieldDefinition* const _fieldDefinition)
+Parser::mfnodeValue (MFNode* _field)
 {
 	////__LOG__ << std::endl;
-
-	MFNode field;
 
 	SFNode <X3DBaseNode> value;
 
 	if (nodeStatement (value))
 	{
-		field .push_back (value);
-		_fieldDefinition -> write (field);
+		_field -> push_back (value);
 		return true;
 	}
 
@@ -2699,11 +2696,10 @@ Parser::mfnodeValue (X3DFieldDefinition* const _fieldDefinition)
 	if (RegEx::OpenBracket .Consume (&string))
 	{
 		comments ();
-		nodeStatements (&field);
+		nodeStatements (_field);
 
 		if (RegEx::CloseBracket .Consume (&string))
 		{
-			_fieldDefinition -> write (field);
 			comments ();
 			return true;
 		}

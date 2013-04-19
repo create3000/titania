@@ -68,6 +68,7 @@ public:
 
 	enum class DataType
 	{
+		X3DFieldValue,
 		X3DField,
 		X3DBaseNode
 
@@ -207,6 +208,7 @@ private:
 	background_color_column_type background_color_column;
 	debug_column_type            debug_column;
 
+	Glib::RefPtr <Gdk::Pixbuf> noneImage;
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
 	FieldTypeImageIndex        fieldTypeImages;
 	Gdk::Color                 selected_color;
