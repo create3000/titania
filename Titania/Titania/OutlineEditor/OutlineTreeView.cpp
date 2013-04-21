@@ -82,10 +82,10 @@ OutlineTreeView::OutlineTreeView (const X3D::SFNode <X3D::Browser> & browser) :
 	treeviewcolumn_name -> add_attribute (*cellrenderer_name, "markup", 3);
 	treeviewcolumn_name -> add_attribute (*cellrenderer_name, "cell-background-gdk", 2);
 
-//	Gtk::CellRendererText* cellrenderer_test = Gtk::manage (new Gtk::CellRendererText ());
-//	treeviewcolumn_name -> pack_start (*cellrenderer_test, false);
-//	treeviewcolumn_name -> add_attribute (*cellrenderer_test, "markup", 3);
-//	treeviewcolumn_name -> add_attribute (*cellrenderer_test, "cell-background-gdk", 2);
+	//	Gtk::CellRendererText* cellrenderer_test = Gtk::manage (new Gtk::CellRendererText ());
+	//	treeviewcolumn_name -> pack_start (*cellrenderer_test, false);
+	//	treeviewcolumn_name -> add_attribute (*cellrenderer_test, "markup", 3);
+	//	treeviewcolumn_name -> add_attribute (*cellrenderer_test, "cell-background-gdk", 2);
 
 	append_column (*treeviewcolumn_name);
 
@@ -110,21 +110,7 @@ OutlineTreeView::set_world ()
 bool
 OutlineTreeView::on_test_expand_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
 {
-	auto data = (OutlineTreeModel::Data*) iter .gobj () -> user_data;
-	
-	if (data -> type == OutlineTreeModel::DataType::X3DBaseNode)
-	{
-		auto userData = OutlineTreeModel::getUserData (iter);
-		
-		if (userData)
-		{
-			if (userData -> expanded)
-			{
-				userData -> showAllFields = true;
-				collapse_row (userData -> path);
-			}
-		}
-	}
+	collapseClone (iter);
 
 	// Return false to allow expansion, true to reject.
 	return false;
@@ -144,7 +130,7 @@ OutlineTreeView::on_row_collapsed (const Gtk::TreeModel::iterator & iter, const 
 {
 	setExpanded (iter, false);
 	watch (iter, false);
-	toggleExpand (iter);
+	toggleExpand (iter, path);
 }
 
 void
@@ -157,7 +143,7 @@ void
 OutlineTreeView::setPath (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & value)
 {
 	auto userData = OutlineTreeModel::getUserData (iter);
-	
+
 	if (userData)
 		userData -> path = value;
 }
@@ -166,7 +152,7 @@ void
 OutlineTreeView::setExpanded (const Gtk::TreeModel::iterator & iter, bool value)
 {
 	auto userData = OutlineTreeModel::getUserData (iter);
-	
+
 	if (userData)
 		userData -> expanded = value;
 }
@@ -174,23 +160,23 @@ OutlineTreeView::setExpanded (const Gtk::TreeModel::iterator & iter, bool value)
 void
 OutlineTreeView::watch (const Gtk::TreeModel::iterator & iter, bool value)
 {
-	auto data = (OutlineTreeModel::Data*) iter .gobj () -> user_data;
-	
-	if (data -> type == OutlineTreeModel::DataType::X3DBaseNode)
+	auto data = OutlineTreeModel::getData (iter);
+
+	if (data -> type == OutlineIterType::X3DBaseNode)
 	{
 		auto   children = iter -> children ();
 		size_t size     = children .size ();
-		
+
 		for (size_t i = 0; i < size; ++ i)
 		{
 			auto child = children [i];
-	
-			auto data  = (OutlineTreeModel::Data*) child .gobj () -> user_data;
-			auto field = dynamic_cast <X3D::X3DFieldDefinition*> (data -> object);
-			
+
+			auto data  = OutlineTreeModel::getData (child);
+			auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object);
+
 			if (value)
 				field -> addInterest ((Gtk::Widget*) this, &OutlineTreeView::queue_draw);
-				
+
 			else
 				field -> removeInterest ((Gtk::Widget*) this, &OutlineTreeView::queue_draw);
 		}
@@ -200,52 +186,55 @@ OutlineTreeView::watch (const Gtk::TreeModel::iterator & iter, bool value)
 void
 OutlineTreeView::autoExpandFields (const Gtk::TreeModel::iterator & iter)
 {
-	auto data = (OutlineTreeModel::Data*) iter .gobj () -> user_data;
-	
+	auto data = OutlineTreeModel::getData (iter);
+
 	switch (data -> type)
 	{
-		case OutlineTreeModel::DataType::X3DFieldValue:
+		case OutlineIterType::X3DFieldValue:
 			break;
-			
-		case OutlineTreeModel::DataType::X3DField:
+
+		case OutlineIterType::X3DField:
 		{
 			auto   children = iter -> children ();
 			size_t size     = children .size ();
-			
+
 			for (size_t i = 0; i < size; ++ i)
 			{
 				auto child = children [i];
-				
+
 				auto userData = OutlineTreeModel::getUserData (child);
-				
+
 				if (userData)
+				{
 					if (userData -> expanded)
 						expand_row (Gtk::TreePath (child), false);
+				}
 			}
-			
+
 			break;
 		}
-		case OutlineTreeModel::DataType::X3DBaseNode:
+		case OutlineIterType::X3DBaseNode:
 		{
 			auto   children = iter -> children ();
 			size_t size     = children .size ();
-			
+
 			for (size_t i = 0; i < size; ++ i)
 			{
 				auto child = children [i];
-		
-				auto data  = (OutlineTreeModel::Data*) child .gobj () -> user_data;
-				auto field = dynamic_cast <X3D::X3DFieldDefinition*> (data -> object);
-				
+
+				auto data     = OutlineTreeModel::getData (child);
+				auto userData = OutlineTreeModel::getUserData (child);
+				auto field    = static_cast <X3D::X3DFieldDefinition*> (data -> object);
+
 				switch (field -> getType ())
 				{
 					case X3D::X3DConstants::SFNode:
 					{
-						auto sfnode = dynamic_cast <X3D::SFNode <X3D::X3DBaseNode>*> (field);
-						
-						if (*sfnode)
+						auto sfnode = static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (field);
+
+						if (*sfnode or userData -> expanded)
 							expand_row (Gtk::TreePath (child), false);
-						
+
 						break;
 					}
 					case X3D::X3DConstants::MFNode:
@@ -255,8 +244,9 @@ OutlineTreeView::autoExpandFields (const Gtk::TreeModel::iterator & iter)
 					}
 					default:
 					{
-						if (OutlineTreeModel::getUserData (field) -> expanded)
+						if (userData -> expanded)
 							expand_row (Gtk::TreePath (child), false);
+
 						break;
 					}
 				}
@@ -266,18 +256,19 @@ OutlineTreeView::autoExpandFields (const Gtk::TreeModel::iterator & iter)
 }
 
 void
-OutlineTreeView::toggleExpand (const Gtk::TreeModel::iterator & iter)
+OutlineTreeView::toggleExpand (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
 {
-	auto data = (OutlineTreeModel::Data*) iter .gobj () -> user_data;
-	
-	if (data -> type == OutlineTreeModel::DataType::X3DBaseNode)
+	auto data = OutlineTreeModel::getData (iter);
+
+	if (data -> type == OutlineIterType::X3DBaseNode)
 	{
 		auto userData = OutlineTreeModel::getUserData (iter);
-		
+
 		if (userData)
 		{
+			Glib::RefPtr <OutlineTreeModel>::cast_dynamic (get_model ()) -> collapse_row (path, iter);
+
 			userData -> showAllFields = not userData -> showAllFields;
-			userData -> tainted       = true;
 
 			if (userData -> showAllFields)
 				expand_row (Gtk::TreePath (iter), false);
@@ -286,17 +277,39 @@ OutlineTreeView::toggleExpand (const Gtk::TreeModel::iterator & iter)
 }
 
 void
+OutlineTreeView::collapseClone (const Gtk::TreeModel::iterator & iter)
+{
+	auto data = OutlineTreeModel::getData (iter);
+
+	if (data -> type == OutlineIterType::X3DBaseNode)
+	{
+		auto userData = OutlineTreeModel::getUserData (iter);
+
+		if (userData)
+		{
+			if (userData -> expanded)
+			{
+				collapse_row (userData -> path);
+
+				if (userData -> showAllFields)
+					collapse_row (userData -> path);
+			}
+		}
+	}
+}
+
+void
 OutlineTreeView::select (const Gtk::TreeModel::iterator & iter)
 {
-	auto data = (OutlineTreeModel::Data*) iter .gobj () -> user_data;
-	
-	if (data -> type == OutlineTreeModel::DataType::X3DBaseNode)
+	auto data = OutlineTreeModel::getData (iter);
+
+	if (data -> type == OutlineIterType::X3DBaseNode)
 	{
 		clearSelection ();
-	
-		auto sfnode = dynamic_cast <X3D::SFNode <X3D::X3DBaseNode>*> (data -> object);
+
+		auto sfnode = static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (data -> object);
 		auto node   = sfnode -> getValue ();
-	
+
 		if (node)
 		{
 			toggleSelection (node);
@@ -312,7 +325,7 @@ OutlineTreeView::clearSelection ()
 {
 	for (const auto & node : selection)
 		toggleSelection (node .getValue ());
-	
+
 	selection .clear ();
 }
 
@@ -320,16 +333,10 @@ void
 OutlineTreeView::toggleSelection (X3D::X3DBaseNode* node)
 {
 	auto userData = OutlineTreeModel::getUserData (node);
-	
-	select (node, not userData -> selected);
-}
 
-void
-OutlineTreeView::select (X3D::X3DBaseNode* node, bool value)
-{
 	X3D::ChildObjectSet objects;
-	
-	select (node, value, objects);
+
+	select (node, not userData -> selected, objects);
 }
 
 void
@@ -339,18 +346,13 @@ OutlineTreeView::select (X3D::X3DBaseNode* node, bool value, X3D::ChildObjectSet
 	{
 		if (not seen .insert (node) .second)
 			return;
-	
+
 		// Select node
-		
-		auto userData = OutlineTreeModel::getUserData (node);	
-		
-		if (userData -> selected == value)
-			return;
-		
-		userData -> selected = value;
-		
+
+		OutlineTreeModel::getUserData (node) -> selected = value;
+
 		// Select children
-	
+
 		for (const auto & field : node -> getFieldDefinitions ())
 			select (field, value, seen);
 	}
@@ -360,30 +362,26 @@ void
 OutlineTreeView::select (X3D::X3DFieldDefinition* field, bool value, X3D::ChildObjectSet & seen)
 {
 	// Select field
-		
-	auto userData = OutlineTreeModel::getUserData (field);
-	if (userData -> selected == value)
-		return;
-	
-	userData -> selected = value;
-	
+
+	OutlineTreeModel::getUserData (field) -> selected = value;
+
 	// Select children
 
 	switch (field -> getType ())
 	{
 		case X3D::X3DConstants::SFNode:
 		{
-			auto sfnode = dynamic_cast <X3D::SFNode <X3D::X3DBaseNode>*> (field);
+			auto sfnode = static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (field);
 			select (sfnode -> getValue (), value, seen);
 			break;
 		}
 		case X3D::X3DConstants::MFNode:
 		{
-			auto mfnode = dynamic_cast <X3D::MFNode*> (field);
-			
-			for (auto & sfnode : *mfnode)
+			auto mfnode = static_cast <X3D::MFNode*> (field);
+
+			for (auto & sfnode :* mfnode)
 				select (&sfnode, value, seen);
-			
+
 			break;
 		}
 		default:

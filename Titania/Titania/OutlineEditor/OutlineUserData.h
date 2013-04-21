@@ -58,24 +58,20 @@
 namespace titania {
 namespace puck {
 
-class OutlineData :
+class OutlineUserData :
 	public X3D::X3DBase
 {
 public:
 
-	OutlineData () :
+	OutlineUserData () :
 		path (),
-		fields (),
-		tainted (true),
 		expanded (false),
 		showAllFields (false),
 		selected (false)
 	{ }
 	
-	Gtk::TreeModel::Path      path;
-	X3D::FieldDefinitionArray fields;
+	Gtk::TreeModel::Path path;
 
-	bool tainted;
 	bool expanded;
 	bool showAllFields;
 	bool selected;

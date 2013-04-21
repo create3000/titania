@@ -55,7 +55,7 @@
 #include <iostream>
 
 #include "../Base/X3DBaseInterface.h"
-#include "../OutlineEditor/OutlineData.h"
+#include "../OutlineEditor/OutlineUserData.h"
 #include <Titania/X3D.h>
 
 namespace titania {
@@ -67,24 +67,25 @@ class OutlineTreeView :
 public:
 
 	OutlineTreeView (const X3D::SFNode <X3D::Browser> &);
-	
+
+
 private:
 
 	void
 	set_world ();
-	
+
 	virtual
 	bool
 	on_test_expand_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-	
+
 	virtual
 	void
 	on_row_expanded (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-	
+
 	virtual
 	void
 	on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path);
-	
+
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
@@ -94,34 +95,34 @@ private:
 
 	void
 	setExpanded (const Gtk::TreeModel::iterator &, bool);
-	
+
 	void
 	watch (const Gtk::TreeModel::iterator &, bool);
 
 	void
 	autoExpandFields (const Gtk::TreeModel::iterator &);
-	
+
 	void
-	toggleExpand (const Gtk::TreeModel::iterator &);
-	
+	toggleExpand (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path & path);
+
+	void
+	collapseClone (const Gtk::TreeModel::iterator &);
+
 	void
 	select (const Gtk::TreeModel::iterator &);
-	
+
 	void
 	clearSelection ();
-	
+
 	void
 	toggleSelection (X3D::X3DBaseNode*);
 
 	void
-	select (X3D::X3DBaseNode*, bool);
+	select (X3D::X3DBaseNode*, bool, X3D::ChildObjectSet &);
 
 	void
-	select (X3D::X3DBaseNode*, bool, X3D::ChildObjectSet &);
-	
-	void
 	select (X3D::X3DFieldDefinition*, bool, X3D::ChildObjectSet &);
-	
+
 	X3D::MFNode selection;
 
 };
