@@ -2679,6 +2679,8 @@ Parser::mfnodeValue (MFNode* _field)
 {
 	////__LOG__ << std::endl;
 
+	_field -> clear ();
+
 	SFNode <X3DBaseNode> value;
 
 	if (nodeStatement (value))
