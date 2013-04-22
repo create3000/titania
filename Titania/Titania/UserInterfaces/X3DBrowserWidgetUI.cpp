@@ -77,14 +77,15 @@ X3DBrowserWidgetUI::create (const std::string & filename)
 	m_builder -> get_widget ("VPaned", m_vPaned);
 	m_builder -> get_widget ("HPaned", m_hPaned);
 	m_builder -> get_widget ("SurfaceBox", m_surfaceBox);
-	m_builder -> get_widget ("ArrowButton", m_arrowButton);
 	m_builder -> get_widget ("HandButton", m_handButton);
+	m_builder -> get_widget ("ArrowButton", m_arrowButton);
 	m_builder -> get_widget ("LookAtAllButton", m_lookAtAllButton);
 	m_builder -> get_widget ("LookAtButton", m_lookAtButton);
 	m_builder -> get_widget ("Footer", m_footer);
 	m_builder -> get_widget ("FooterCloseButton", m_footerCloseButton);
 	m_builder -> get_widget ("FooterNotebook", m_footerNotebook);
 	m_builder -> get_widget ("ConsoleBox", m_consoleBox);
+	m_builder -> get_widget ("Console", m_console);
 	m_builder -> get_widget ("SideBar", m_sideBar);
 	m_builder -> get_widget ("SideBarCloseButton", m_sideBarCloseButton);
 	m_builder -> get_widget ("SideBarNotebook", m_sideBarNotebook);
@@ -108,9 +109,9 @@ X3DBrowserWidgetUI::create (const std::string & filename)
 	connections .emplace_back (m_locationEntry -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_locationEntry_activate)));
 	connections .emplace_back (m_locationEntry -> signal_icon_release () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_locationEntryIcon_activate)));
 
-	// Connect object Gtk::RadioToolButton with id 'ArrowButton'.
-	connections .emplace_back (m_arrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_arrow_button_toggled)));
+	// Connect object Gtk::RadioToolButton with id 'HandButton'.
 	connections .emplace_back (m_handButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_hand_button_toggled)));
+	connections .emplace_back (m_arrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_arrow_button_toggled)));
 
 	// Connect object Gtk::ToolButton with id 'LookAtAllButton'.
 	connections .emplace_back (m_lookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWidgetUI::on_look_at_all_clicked)));

@@ -68,10 +68,11 @@ X3DBrowserContext::X3DBrowserContext () :
 	          displayed (),                                        // [out]    displayed
 	           finished (),                                        // [out]    finished
 	            changed (),                                        // [out]    changed
-	renderingProperties (new RenderingProperties (this)),          // SFSting  [ ] renderingProperties NULL  [RenderingProperties]
-	  browserProperties (new BrowserProperties   (this)),          // SFSting  [ ] browserProperties   NULL  [BrowserProperties]
-	     browserOptions (new BrowserOptions      (this)),          // SFSting  [ ] browserOptions      NULL  [BrowserOptions]
-	   javaScriptEngine (new JavaScriptEngine    (this)),          // SFSting  [ ] javaScriptEngine    NULL  [JavaScriptEngine]
+	            console (),                                        // MFString [out] console             []
+	renderingProperties (new RenderingProperties (this)),          // SFSting  [ ]   renderingProperties NULL  [RenderingProperties]
+	  browserProperties (new BrowserProperties   (this)),          // SFSting  [ ]   browserProperties   NULL  [BrowserProperties]
+	     browserOptions (new BrowserOptions      (this)),          // SFSting  [ ]   browserOptions      NULL  [BrowserOptions]
+	   javaScriptEngine (new JavaScriptEngine    (this)),          // SFSting  [ ]   javaScriptEngine    NULL  [JavaScriptEngine]
 	              clock (new chrono::system_clock <time_type> ()), 
 	             router (),                                        
 	             layers (),                                        
@@ -80,7 +81,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	                  x (0),                                       
 	                  y (0),
 	             hitRay (),                                  
-	     enabledSensors ({ std::deque <X3DBaseNode*> () }),                                        
+	     enabledSensors ({ std::set <X3DBaseNode*> () }),                                        
 	               hits (),                                        
 	        changedTime (clock -> cycle ()),                       
           currentSpeed (0),                                       
@@ -95,6 +96,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	addField (initializeOnly, "browserProperties",   browserProperties);
 	addField (initializeOnly, "browserOptions",      browserOptions);
 	addField (initializeOnly, "javaScriptEngine",    javaScriptEngine);
+	addField (outputOnly,     "console",             console);
 }
 
 void
@@ -253,7 +255,7 @@ X3DBrowserContext::pick (const double _x, const double _y)
 
 	std::sort (hits .begin (), hits .end (), hitComp);
 
-	enabledSensors = { std::deque <X3DBaseNode*> () };
+	enabledSensors = { std::set <X3DBaseNode*> () };
 }
 
 Line3f
@@ -299,7 +301,7 @@ X3DBrowserContext::motionNotifyEvent ()
 		                     std::back_inserter (difference));
 	}
 	else
-		difference = overSensors;
+		difference .assign (overSensors .begin (), overSensors .end ());
 
 	for (const auto & node : difference)
 	{
@@ -356,11 +358,14 @@ X3DBrowserContext::buttonPressEvent ()
 
 		if (anchor)
 			anchor -> set_active (true);
+			
+		else
+		{
+			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
-		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
-
-		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_active (getHits () .front (), true);
+			if (pointingDeviceSensorNode)
+				pointingDeviceSensorNode -> set_active (getHits () .front (), true);
+		}
 	}
 }
 
@@ -373,14 +378,17 @@ X3DBrowserContext::buttonReleaseEvent ()
 
 		if (anchor)
 			anchor -> set_active (false);
+			
+		else
+		{
+			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
-		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
-
-		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_active (
-				std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), enabledSensors .back (), nullptr),
-				false
-			);
+			if (pointingDeviceSensorNode)
+				pointingDeviceSensorNode -> set_active (
+					std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), enabledSensors .back (), nullptr),
+					false
+				);
+		}
 	}
 	
 	activeSensors .clear ();
@@ -455,6 +463,8 @@ X3DBrowserContext::finish ()
 
 	if (errorNum not_eq GL_NO_ERROR)
 		std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toLocaleString () << ": " << gluErrorString (errorNum) << std::endl;
+		
+	console .set ({ });
 }
 
 void

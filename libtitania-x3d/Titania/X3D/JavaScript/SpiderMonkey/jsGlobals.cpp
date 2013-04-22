@@ -50,8 +50,10 @@
 
 #include "jsGlobals.h"
 
+#include "../../Components/Scripting/X3DScriptNode.h"
 #include "../../InputOutput/Generator.h"
 #include "Fields/jsSFNode.h"
+#include "JavaScriptContext.h"
 #include "String.h"
 
 #include <Titania/LOG.h>
@@ -123,12 +125,14 @@ jsGlobals::include (JSContext* context, uintN argc, jsval* vp)
 JSBool
 jsGlobals::print (JSContext* context, uintN argc, jsval* vp)
 {
+	X3DBrowser* browser = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode () -> getBrowser ();
+
 	jsval* argv = JS_ARGV (context, vp);
 
 	for (uintN i = 0; i < argc; ++ i)
-		std::clog << JS_GetString (context, argv [i]);
+		browser -> print (JS_GetString (context, argv [i]));
 
-	std::clog << std::endl;
+	browser -> print ('\n');
 
 	JS_SET_RVAL (context, vp, JSVAL_VOID);
 	return JS_TRUE;

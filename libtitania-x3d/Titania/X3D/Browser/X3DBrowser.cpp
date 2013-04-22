@@ -45,7 +45,7 @@ signal_handler (int sig)
 	exit (1);
 }
 
-const std::string X3DBrowser::version ("0.1");
+const std::string X3DBrowser::version ("0.2");
 
 X3DBrowser::X3DBrowser () :
 	  X3DBrowserContext (),                          
@@ -89,23 +89,20 @@ X3DBrowser::initialize ()
 
 	// Welcome
 
-	std::clog
-		<< std::boolalpha
-		<< std::endl
-		<< std::string (80, '*') << std::endl
-		<< std::string (80, '*') << std::endl
+	print (std::boolalpha,
+	       '\n',
+	       std::string (80, '*'), '\n',
+	       std::string (80, '*'), '\n',
 
-		<< "Welcome to " << getName () << " X3D Browser " << getVersion () << ':' << std::endl
-		<< "\tCompiled at " << __DATE__ << " " << __TIME__ << std::endl;
+	       "Welcome to ", getName (), " X3D Browser ", getVersion (), ':', '\n',
+	       "\tCompiled at ", __DATE__, " ", __TIME__, '\n',
 
-	std::clog
-		<< renderingProperties << std::endl
-		<< javaScriptEngine << std::endl;
+	       renderingProperties, '\n',
+	       javaScriptEngine, '\n',
 
-	std::clog
-		<< std::string (80, '*') << std::endl
-		<< std::string (80, '*') << std::endl
-		<< std::endl;
+	       std::string (80, '*'), '\n',
+	       std::string (80, '*'), '\n',
+	       '\n');
 
 	std::clog
 		<< "\tDone initializing Browser." << std::endl
@@ -403,20 +400,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		std::clog << error .what ();
 	}
-}
-
-void
-X3DBrowser::print (const X3DObject & object) const
-throw (Error <DISPOSED>)
-{
-	std::cout << CompactStyle << object << std::flush;
-}
-
-void
-X3DBrowser::println (const X3DObject & object) const
-throw (Error <DISPOSED>)
-{
-	std::cout << CompactStyle << object << std::endl;
 }
 
 void

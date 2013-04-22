@@ -16,7 +16,7 @@
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/zlib.pc" name="zlib" IsProject="false" />
       </Packages>
     </Packages>
-    <ReleaseVersion>0.3</ReleaseVersion>
+    <ReleaseVersion>0.2</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

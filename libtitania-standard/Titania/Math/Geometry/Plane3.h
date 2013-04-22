@@ -102,7 +102,6 @@ public:
 
 	///  Constructs a plane from @a point1, @a point2 and @a point3. The normal is calculated
 	///  counter clockwise from the points.
-	constexpr
 	plane3 (const vector3 <Type> & point1, const vector3 <Type> & point2, const vector3 <Type> & point3) :
 		plane3 (point1, math::normal (point1, point2, point3))
 	{ }
@@ -115,7 +114,6 @@ public:
 
 	///  Constructs a plane from @a vector. The point the vector points to is taken as a point on a plane
 	///  and the direction of this vector as normal.
-	constexpr
 	plane3 (const vector3 <Type> & vector) :
 		value { normalize (vector), abs (vector) }
 	{ }

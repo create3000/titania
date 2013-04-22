@@ -305,14 +305,13 @@ OutlineTreeView::select (const Gtk::TreeModel::iterator & iter)
 
 	if (data -> type == OutlineIterType::X3DBaseNode)
 	{
+		auto sfnode = static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (data -> object);
+	
 		clearSelection ();
 
-		auto sfnode = static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (data -> object);
-		auto node   = sfnode -> getValue ();
-
-		if (node)
+		if (*sfnode)
 		{
-			toggleSelection (node);
+			select (sfnode -> getValue (), true);
 			selection .push_back (*sfnode);
 		}
 
@@ -324,19 +323,17 @@ void
 OutlineTreeView::clearSelection ()
 {
 	for (const auto & node : selection)
-		toggleSelection (node .getValue ());
+		select (node .getValue (), false);
 
 	selection .clear ();
 }
 
 void
-OutlineTreeView::toggleSelection (X3D::X3DBaseNode* node)
+OutlineTreeView::select (X3D::X3DBaseNode* node, bool value)
 {
-	auto userData = OutlineTreeModel::getUserData (node);
-
 	X3D::ChildObjectSet objects;
 
-	select (node, not userData -> selected, objects);
+	select (node, value, objects);
 }
 
 void

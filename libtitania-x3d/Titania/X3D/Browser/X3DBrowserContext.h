@@ -86,12 +86,13 @@ class X3DBrowserContext :
 {
 public:
 
-	Output sensors;
-	Output reshaped;
-	Output prepareEvents;
-	Output displayed;
-	Output finished;
-	Output changed;
+	Output   sensors;
+	Output   reshaped;
+	Output   prepareEvents;
+	Output   displayed;
+	Output   finished;
+	Output   changed;
+	MFString console;
 
 	///  @name Time handling
 
@@ -163,7 +164,7 @@ public:
 	void
 	pick (const double, const double);
 
-	std::deque <std::deque <X3DBaseNode*>> &
+	std::deque <std::set <X3DBaseNode*>> &
 	getSensors () { return enabledSensors; }
 
 	Line3f
@@ -236,14 +237,14 @@ private:
 	LightStack       lights;
 	TextureUnitStack textureUnits;
 
-	double                                  x;
-	double                                  y;
-	Line3f                                  hitRay;
-	std::deque <std::deque <X3DBaseNode*>> enabledSensors;
-	HitArray                                hits;
-	HitComp                                 hitComp;
-	std::deque <X3DBaseNode*>               overSensors;
-	std::deque <X3DBaseNode*>               activeSensors;
+	double                                x;
+	double                                y;
+	Line3f                                hitRay;
+	std::deque <std::set <X3DBaseNode*>> enabledSensors;
+	HitArray                              hits;
+	HitComp                               hitComp;
+	std::set <X3DBaseNode*>               overSensors;
+	std::set <X3DBaseNode*>               activeSensors;
 
 	time_type      changedTime;
 	Speed <double> currentSpeed;

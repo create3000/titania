@@ -24,7 +24,7 @@
         <Package file="/home/holger/Projekte/Titania/libtitania-opengl-surface/libtitania-opengl-surface.md.pc" name="libtitania-opengl-surface" IsProject="true" />
       </Packages>
     </Packages>
-    <ReleaseVersion>0.3</ReleaseVersion>
+    <ReleaseVersion>0.2</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

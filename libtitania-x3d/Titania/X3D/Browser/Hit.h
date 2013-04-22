@@ -66,7 +66,7 @@ public:
 	Hit (const Matrix4f &,
 	     const Line3f &,
 	     const std::shared_ptr <Intersection> &,
-	     const std::deque <X3DBaseNode*> &,
+	     const std::set <X3DBaseNode*> &,
 	     X3DBaseNode* const);
 
 	const Matrix4f                  transformationMatrix;
@@ -75,7 +75,7 @@ public:
 	const Vector3f                  normal;
 	const Vector3f                  point;
 	const float                     distance;
-	const std::deque <X3DBaseNode*> sensors;
+	const std::set <X3DBaseNode*>   sensors;
 	const X3DBaseNode*              node;
 
 };

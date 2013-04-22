@@ -153,10 +153,13 @@ private:
 	// Callbacks
 
 	void
-	set_urlError ();
+	set_world ();
 
 	void
-	set_world ();
+	set_console ();
+
+	void
+	set_urlError ();
 
 	void
 	updateDescription ();

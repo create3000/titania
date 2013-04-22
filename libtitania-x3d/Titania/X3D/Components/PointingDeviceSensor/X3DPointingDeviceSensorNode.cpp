@@ -104,7 +104,7 @@ X3DPointingDeviceSensorNode::push ()
 {
 	if (enabled)
 	{
-		getBrowser () -> getSensors () .back () .emplace_back (this);
+		getBrowser () -> getSensors () .back () .insert (this);
 		
 		transformationMatrix = ModelViewMatrix4f ();
 	}

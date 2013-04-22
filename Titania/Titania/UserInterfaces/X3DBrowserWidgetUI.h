@@ -116,10 +116,10 @@ public:
 	getSurfaceBox () const { return *m_surfaceBox; }
 
 	Gtk::RadioToolButton &
-	getArrowButton () const { return *m_arrowButton; }
+	getHandButton () const { return *m_handButton; }
 
 	Gtk::RadioToolButton &
-	getHandButton () const { return *m_handButton; }
+	getArrowButton () const { return *m_arrowButton; }
 
 	Gtk::ToolButton &
 	getLookAtAllButton () const { return *m_lookAtAllButton; }
@@ -138,6 +138,9 @@ public:
 
 	Gtk::Box &
 	getConsoleBox () const { return *m_consoleBox; }
+
+	Gtk::TextView &
+	getConsole () const { return *m_console; }
 
 	Gtk::Box &
 	getSideBar () const { return *m_sideBar; }
@@ -190,11 +193,11 @@ public:
 
 	virtual
 	void
-	on_arrow_button_toggled () = 0;
+	on_hand_button_toggled () = 0;
 
 	virtual
 	void
-	on_hand_button_toggled () = 0;
+	on_arrow_button_toggled () = 0;
 
 	virtual
 	void
@@ -232,14 +235,15 @@ private:
 	Gtk::Paned*                     m_vPaned;
 	Gtk::Paned*                     m_hPaned;
 	Gtk::HBox*                      m_surfaceBox;
-	Gtk::RadioToolButton*           m_arrowButton;
 	Gtk::RadioToolButton*           m_handButton;
+	Gtk::RadioToolButton*           m_arrowButton;
 	Gtk::ToolButton*                m_lookAtAllButton;
 	Gtk::ToggleToolButton*          m_lookAtButton;
 	Gtk::Box*                       m_footer;
 	Gtk::Button*                    m_footerCloseButton;
 	Gtk::Notebook*                  m_footerNotebook;
 	Gtk::Box*                       m_consoleBox;
+	Gtk::TextView*                  m_console;
 	Gtk::Box*                       m_sideBar;
 	Gtk::Button*                    m_sideBarCloseButton;
 	Gtk::Notebook*                  m_sideBarNotebook;

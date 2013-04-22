@@ -18,7 +18,7 @@
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/cairomm-1.0.pc" name="cairomm" IsProject="false" />
       </Packages>
     </Packages>
-    <ReleaseVersion>0.3</ReleaseVersion>
+    <ReleaseVersion>0.2</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

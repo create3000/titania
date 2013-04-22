@@ -115,7 +115,7 @@ private:
 	clearSelection ();
 
 	void
-	toggleSelection (X3D::X3DBaseNode*);
+	select (X3D::X3DBaseNode*, bool);
 
 	void
 	select (X3D::X3DBaseNode*, bool, X3D::ChildObjectSet &);

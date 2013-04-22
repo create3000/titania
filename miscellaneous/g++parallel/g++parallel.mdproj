@@ -7,7 +7,7 @@
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{358104F4-57B1-40FF-94D4-AFF1D651067F}</ProjectGuid>
-    <ReleaseVersion>0.3</ReleaseVersion>
+    <ReleaseVersion>0.2</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>Debug</OutputPath>

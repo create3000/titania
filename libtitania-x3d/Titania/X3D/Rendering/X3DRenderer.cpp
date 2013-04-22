@@ -544,9 +544,7 @@ X3DRenderer::collide ()
 	{
 		if (shape -> intersect (collisionSphere))
 		{
-			std::copy (shape -> getCollisions () .begin (), 
-			           shape -> getCollisions () .end (),
-			           std::back_inserter (collisions));
+			collisions = shape -> getCollisions ();
 		}
 	}
 
@@ -556,6 +554,8 @@ X3DRenderer::collide ()
 
 	if (collisions .size ())
 	{
+		std::sort (collisions .begin (), collisions .end ());
+	
 		std::set_difference (activeCollisions .begin (), activeCollisions .end (),
 		                     collisions .begin (), collisions .end (),
 		                     std::back_inserter (difference));

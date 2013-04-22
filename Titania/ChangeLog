@@ -1,3 +1,13 @@
+2013-04-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWidget.ui:
+	* X3DBrowserWidget.h:
+	* X3DBrowserWidget.cpp:
+	* OutlineTreeView.h:
+	* OutlineTreeView.cpp:
+	* X3DBrowserWidgetUI.h:
+	* X3DBrowserWidgetUI.cpp: 
+
 2013-04-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineData.h:

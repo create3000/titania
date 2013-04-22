@@ -91,6 +91,8 @@ X3DBrowserWidget::initialize ()
 
 	__LOG__ << std::endl;
 
+	getBrowser () -> console .addInterest (this, &X3DBrowserWidget::set_console);
+
 	// Splash Screen.
 
 	// Connect to map_event
@@ -103,6 +105,17 @@ X3DBrowserWidget::initialize ()
 	getBrowser () -> show ();
 	
 	
+}
+
+void
+X3DBrowserWidget::set_console ()
+{
+	for (const auto & string : getBrowser () -> console)
+		getConsole () .get_buffer () -> insert (getConsole () .get_buffer () -> end (), string .getValue ());
+
+	auto end = getConsole () .get_buffer () -> end ();
+
+	getConsole () .scroll_to (end, 0.0);
 }
 
 void

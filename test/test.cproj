@@ -11,7 +11,7 @@
     <Compiler>
       <Compiler ctype="GppCompiler" />
     </Compiler>
-    <ReleaseVersion>0.3</ReleaseVersion>
+    <ReleaseVersion>0.2</ReleaseVersion>
     <Packages>
       <Packages>
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/sigc++-2.0.pc" name="libsigc++" IsProject="false" />

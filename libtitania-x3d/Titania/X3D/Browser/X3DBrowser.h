@@ -185,13 +185,25 @@ public:
 	//	throw (Error <INVALID_OPERATION_TIMING>,
 	//	       Error <DISPOSED>);
 
+	template <typename ... Args>
 	void
-	print (const X3DObject &) const
-	throw (Error <DISPOSED>);
+	print (const Args & ... args)
+	throw (Error <DISPOSED>)
+	{
+		std::ostringstream stream;
 
+		print (stream, args ...);
+		
+		console .emplace_back (stream .str ());
+	}
+
+	template <typename ... Args>
 	void
-	println (const X3DObject &) const
-	throw (Error <DISPOSED>);
+	println (const Args & ... args) const
+	throw (Error <DISPOSED>)
+	{
+		print (args ..., std::endl);
+	}
 
 	//	bool
 	//	setBrowserOption (SAIString, SAIObject)
@@ -218,6 +230,18 @@ protected:
 
 
 private:
+
+	template <typename Arg, typename ... Args>
+	void
+	print (std::ostringstream & stream, const Arg & first, const Args & ... args)
+	{
+		stream << first;
+		print (stream, args ...);
+	}
+
+	void
+	print (std::ostringstream &)
+	{ }
 
 	using X3DUrlObject::url;
 
