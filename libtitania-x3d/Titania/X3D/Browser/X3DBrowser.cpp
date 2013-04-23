@@ -72,6 +72,11 @@ X3DBrowser::X3DBrowser () :
 	addField (outputOnly, "urlError",    urlError);
 	addField (outputOnly, "scene",       scene);
 	addField (outputOnly, "world",       world);
+	
+	//supportedFields, // make X3DBaseNodes of this
+	//supportedNodes,
+	//supportedComponents,
+	//supportedProfiles,
 
 	std::clog << "\tDone constructing Browser." << std::endl;
 }

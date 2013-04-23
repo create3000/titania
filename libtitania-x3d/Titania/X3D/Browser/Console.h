@@ -48,109 +48,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_PROPERTIES_RENDERING_PROPERTIES_H__
-#define __TITANIA_X3D_BROWSER_PROPERTIES_RENDERING_PROPERTIES_H__
+#ifndef __TITANIA_X3D_BROWSER_CONSOLE_H__
+#define __TITANIA_X3D_BROWSER_CONSOLE_H__
 
-#include "../../Components/Core/X3DNode.h"
-#include <Titania/Chrono/StopWatch.h>
-
-#include <stack>
-
-extern "C"
-{
-#include <GL/glx.h>
-}
+#include "../Components/Core/X3DNode.h"
+#include "../Fields.h"
 
 namespace titania {
 namespace X3D {
 
-// Property Name     Value data type      Description
-// Shading           String               The type of shading algorithm in use. Typical values are Flat, Gouraud, Phong, Wireframe.
-// MaxTextureSize    Integer              The maximum texture size supported. The format shall be WIDTHxHEIGHT describing the number of pixels in each direction (for example 1024x1024).
-// TextureUnits      Integer              The number of texture units supported for doing multitexture.
-// AntiAliased       Boolean              True or false if the rendering is currently anti-aliased or not
-// ColorDepth        Integer              The number of bits of colour depth supported by the screen. Allows for optimized selection of textures, particularly for lower colour depth screen capabilities.
-// TextureMemory     Float                The amount of memory in megabytes available for textures to be placed on the video card.
-
-class RenderingProperties :
+class Console :
 	public X3DNode
 {
 public:
 
-	SFBool  enabled;
-	SFFloat cycleInterval;
+	MFString string_changed;
 
-	SFString vendor;
-	SFString renderer;
-	SFString version;
-
-	SFString shading;
-	SFInt32  maxTextureSize;
-	SFInt32  textureUnits;
-	SFInt32  maxLights;
-	SFBool   antiAliased;
-	SFInt32  colorDepth;
-	SFDouble textureMemory;
-
-	MFString string;
-
-	RenderingProperties (X3DExecutionContext* const);
-
-	bool
-	hasExtension (const std::string &);
-
-	size_t
-	getAvailableTextureMemory ();
-
-	void
-	prepare ();
-
-	void
-	display ();
+	Console (X3DExecutionContext* const);
 
 	virtual
-	void
-	toStream (std::ostream &) const;
-
-
-private:
-
-	virtual
-	RenderingProperties*
-	create (X3DExecutionContext* const)  const;
-
-	virtual
-	void
-	initialize ();
-
-	void
-	set_enabled ();
-
-	void
-	set_fontFamily ();
-
-	void
-	reset ();
-
-	void
-	build ();
-
-	void
-	update ();
-
-	void
-	dispose ();
-
-	std::set <std::string> extensions;
-
-	chrono::stopwatch <double> clock;
-	chrono::stopwatch <double> renderClock;
-
-	SFString     fontFamily;
-	size_t       fontHeigth;
-	GLuint       fontListBase;
-	XFontStruct* fontInfo;
-	GLuint       listId;
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const;
 
 };
 

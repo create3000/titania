@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,42 +61,37 @@ namespace titania {
 namespace X3D {
 
 X3DBrowserContext::X3DBrowserContext () :
-	X3DExecutionContext (),
+	X3DExecutionContext (),                                        
 	            sensors (),                                        // [out]    sensors
 	           reshaped (),                                        // [out]    reshape
 	      prepareEvents (),                                        // [out]    prepareEvents
 	          displayed (),                                        // [out]    displayed
 	           finished (),                                        // [out]    finished
 	            changed (),                                        // [out]    changed
-	            console (),                                        // MFString [out] console             []
-	renderingProperties (new RenderingProperties (this)),          // SFSting  [ ]   renderingProperties NULL  [RenderingProperties]
-	  browserProperties (new BrowserProperties   (this)),          // SFSting  [ ]   browserProperties   NULL  [BrowserProperties]
-	     browserOptions (new BrowserOptions      (this)),          // SFSting  [ ]   browserOptions      NULL  [BrowserOptions]
-	   javaScriptEngine (new JavaScriptEngine    (this)),          // SFSting  [ ]   javaScriptEngine    NULL  [JavaScriptEngine]
+	renderingProperties (new RenderingProperties (this)),          // SFNode  [ ]   renderingProperties NULL  [RenderingProperties]
+	  browserProperties (new BrowserProperties   (this)),          // SFNode  [ ]   browserProperties   NULL  [BrowserProperties]
+	     browserOptions (new BrowserOptions      (this)),          // SFNode  [ ]   browserOptions      NULL  [BrowserOptions]
+	   javaScriptEngine (new JavaScriptEngine    (this)),          // SFNode  [ ]   javaScriptEngine    NULL  [JavaScriptEngine]
 	              clock (new chrono::system_clock <time_type> ()), 
 	             router (),                                        
 	             layers (),                                        
-	             lights (),
-	       textureUnits (),                                                                             
+	             lights (),                                        
+	       textureUnits (),                                        
 	                  x (0),                                       
-	                  y (0),
-	             hitRay (),                                  
-	     enabledSensors ({ std::set <X3DBaseNode*> () }),                                        
+	                  y (0),                                       
+	             hitRay (),                                        
+	     enabledSensors ({ std::set <X3DBaseNode*> () }),          
 	               hits (),                                        
 	        changedTime (clock -> cycle ()),                       
-          currentSpeed (0),                                       
-	   currentFrameRate (0)                                        
+	       currentSpeed (0),                                       
+	   currentFrameRate (0),                                       
+	            console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
 {
-	//supportedFields, // make X3DBaseNodes of this
-	//supportedNodes,
-	//supportedComponents,
-	//supportedProfiles,
-
 	addField (initializeOnly, "renderingProperties", renderingProperties);
 	addField (initializeOnly, "browserProperties",   browserProperties);
 	addField (initializeOnly, "browserOptions",      browserOptions);
 	addField (initializeOnly, "javaScriptEngine",    javaScriptEngine);
-	addField (outputOnly,     "console",             console);
+	addField (initializeOnly, "console",             console);
 }
 
 void
@@ -114,6 +109,7 @@ X3DBrowserContext::initialize ()
 	browserProperties   -> setup ();
 	browserOptions      -> setup ();
 	javaScriptEngine    -> setup ();
+	console             -> setup ();
 
 	// Lights
 
@@ -123,7 +119,7 @@ X3DBrowserContext::initialize ()
 	// TextureUnits
 
 	for (int32_t i = 1; i < renderingProperties -> textureUnits; ++ i)
-		textureUnits .push (i);	
+		textureUnits .push (i);
 
 	// Initialize OpenGL context
 
@@ -217,30 +213,28 @@ X3DBrowserContext::getActiveNavigationInfo () const
 // Viewpoint handling
 
 X3DViewpointNode*
-X3DBrowserContext::getActiveViewpoint ()
+X3DBrowserContext::getActiveViewpoint () const
 {
 	return getExecutionContext () -> getActiveLayer () -> getViewpoint ();
 }
 
 // Selection
 
-
-
 void
 X3DBrowserContext::pick (const double _x, const double _y)
 {
-	x      = _x;
-	y      = _y;
-	
+	x = _x;
+	y = _y;
+
 	// Get hitRay
-	
+
 	X3DViewpointNode* viewpoint      = getActiveViewpoint ();
 	NavigationInfo*   navigationInfo = getActiveNavigationInfo ();
-	
+
 	viewpoint -> reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
-	
+
 	glLoadIdentity ();
-	
+
 	hitRay = getHitRay ();
 
 	// Clear hits.
@@ -248,7 +242,7 @@ X3DBrowserContext::pick (const double _x, const double _y)
 	hits .clear ();
 
 	// Pick.
-	
+
 	getExecutionContext () -> traverse (TraverseType::PICKING);
 
 	// Selection end.
@@ -329,7 +323,7 @@ X3DBrowserContext::motionNotifyEvent ()
 	}
 	else
 		overSensors .clear ();
-		
+
 	// Forward motion event to active drag sensor nodes
 
 	for (const auto & node : activeSensors)
@@ -339,10 +333,10 @@ X3DBrowserContext::motionNotifyEvent ()
 		if (dragSensorNode)
 		{
 			dragSensorNode -> set_motion (
-				getHits () .size ()
-				? getHits () .front ()
+			   getHits () .size ()
+			   ? getHits () .front ()
 				: std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), enabledSensors .back (), nullptr)
-			);
+			   );
 		}
 	}
 }
@@ -358,7 +352,7 @@ X3DBrowserContext::buttonPressEvent ()
 
 		if (anchor)
 			anchor -> set_active (true);
-			
+
 		else
 		{
 			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
@@ -378,19 +372,19 @@ X3DBrowserContext::buttonReleaseEvent ()
 
 		if (anchor)
 			anchor -> set_active (false);
-			
+
 		else
 		{
 			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 			if (pointingDeviceSensorNode)
 				pointingDeviceSensorNode -> set_active (
-					std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), enabledSensors .back (), nullptr),
-					false
-				);
+				   std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), enabledSensors .back (), nullptr),
+				   false
+				   );
 		}
 	}
-	
+
 	activeSensors .clear ();
 }
 
@@ -422,16 +416,16 @@ X3DBrowserContext::prepare ()
 
 	currentFrameRate = 1 / clock -> interval ();
 	currentSpeed .setPosition (getActiveViewpoint () -> getTransformationMatrix () .translation (), currentFrameRate);
-	
+
 	prepareEvents .processInterests ();
-	
+
 	router .processEvents ();
-	
+
 	getExecutionContext () -> traverse (TraverseType::CAMERA);
 	getExecutionContext () -> traverse (TraverseType::COLLISION);
 
 	sensors .processInterests ();
-	
+
 	router .processEvents ();
 
 	getGarbageCollector () .dispose ();
@@ -463,8 +457,8 @@ X3DBrowserContext::finish ()
 
 	if (errorNum not_eq GL_NO_ERROR)
 		std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toLocaleString () << ": " << gluErrorString (errorNum) << std::endl;
-		
-	console .set ({ });
+
+	console -> string_changed .set ({ });
 }
 
 void

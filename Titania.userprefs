@@ -1,20 +1,48 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="debian/changelog">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="788" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="186" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="339" Column="34" />
-      <File FileName="debian/changelog" Line="2" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/X3DPointingDeviceSensorNode.h" Line="79" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/X3DPointingDeviceSensorNode.cpp" Line="84" Column="19" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Hit.h" Line="66" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Hit.cpp" Line="62" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.h" Line="97" Column="7" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="69" Column="41" />
+      <File FileName="Library/Tests/PointingDeviceSensor/PlaneSensor.wrl" Line="113" Column="31" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/X3DTouchSensorNode.h" Line="69" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/X3DTouchSensorNode.cpp" Line="74" Column="1" />
+      <File FileName="Library/Examples/MetalBeast/stage/index.wrl" Line="2439" Column="28" />
+      <File FileName="Library/Tests/PointingDeviceSensor/TouchSensor.wrl" Line="9" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/TouchSensor.cpp" Line="102" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Anchor.cpp" Line="64" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Anchor.h" Line="94" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDevice.cpp" Line="147" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True" selected="True">
+          <Node name="miscellaneous" expanded="True">
+            <Node name="glade2c++" expanded="True" />
+            <Node name="uncrustify-all" expanded="True" />
+          </Node>
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
           <Node name="experimental" expanded="True" />
+          <Node name="Library" expanded="True">
+            <Node name="Tests" expanded="True" />
+          </Node>
+          <Node name="libtitania-opengl-surface" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="OpenGL" expanded="True">
+                <Node name="Context" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Math" expanded="True">
@@ -22,32 +50,55 @@
               </Node>
             </Node>
           </Node>
+          <Node name="libtitania-stream" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Stream" expanded="True" />
+            </Node>
+          </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Browser" expanded="True" />
+                <Node name="Base" expanded="True" />
+                <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Viewer" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="CADGeometry" expanded="True" />
+                  <Node name="Core" expanded="True" />
+                  <Node name="CubeMapTexturing" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
                   <Node name="Networking" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
+                  <Node name="Rendering" expanded="True" />
+                  <Node name="Shape" expanded="True" />
+                  <Node name="Text" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
                 </Node>
+                <Node name="Execution" expanded="True" />
+                <Node name="Fields" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="SpiderMonkey" expanded="True" />
                 </Node>
                 <Node name="Parser" expanded="True" />
+                <Node name="Prototype" expanded="True" />
                 <Node name="Rendering" expanded="True" />
+                <Node name="Routing" expanded="True" />
+                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>
+          <Node name="Papers" expanded="True" />
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="ui" expanded="True" />
-              </Node>
+              <Node name="applications" expanded="True" />
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Browser" expanded="True" />
               <Node name="OutlineEditor" expanded="True" />
-              <Node name="UserInterfaces" expanded="True" />
             </Node>
           </Node>
         </State>

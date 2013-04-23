@@ -1,7 +1,18 @@
-2013-04-22  Holger Seelig  <holger.seelig@yahoo.de>
+2013-04-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ChangeLog:
-	* Parser.cpp: 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Console.h:
+	* Browser.cpp:
+	* Console.cpp:
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* RenderingProperties.h:
+	* RenderingProperties.cpp:
+	* JavaScriptContext.cpp: 
 
 2013-04-17  Holger Seelig  <holger.seelig@yahoo.de>
 

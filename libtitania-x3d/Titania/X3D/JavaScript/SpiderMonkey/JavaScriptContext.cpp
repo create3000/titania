@@ -434,6 +434,7 @@ JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport
 {
 	JavaScriptContext* javaScript = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context));
 	X3DScriptNode*     script     = javaScript -> getNode ();
+	X3DBrowser*        browser    = script -> getBrowser ();
 
 	// Find error line
 
@@ -464,11 +465,11 @@ JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport
 
 	// Pretty print error
 
-	std::clog << "# Javascript: runtime error at line " << report -> lineno << ":" << std::endl
-	          << "#  " << line << std::endl
-	          << "# " << message << std::endl
-	          << "# in Script '" << script -> getName () << "' from url '" << (report -> filename ? report -> filename : "<no filename>") << "'" << std::endl
-	          << "# World URL is '" << script -> getExecutionContext () -> getWorldURL () << "'" << std::endl;
+	browser -> print ("# Javascript: runtime error at line ", report -> lineno, ":", '\n',
+	                  "#  ", line, '\n',
+	                  "# ", '\n',
+	                  "# in Script '", script -> getName (), "' from url '", (report -> filename ? report -> filename : "<no filename>"), "'", '\n',
+	                  "# World URL is '", script -> getExecutionContext () -> getWorldURL (), "'", '\n');
 }
 
 JavaScriptContext::~JavaScriptContext ()

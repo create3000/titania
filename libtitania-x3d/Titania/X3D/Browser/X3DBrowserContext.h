@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_CONTEXT_H__
 #define __TITANIA_X3D_BROWSER_X3DBROWSER_CONTEXT_H__
 
+#include "../Browser/Console.h"
 #include "../Browser/Properties/BrowserOptions.h"
 #include "../Browser/Properties/BrowserProperties.h"
 #include "../Browser/Properties/RenderingProperties.h"
@@ -86,13 +87,12 @@ class X3DBrowserContext :
 {
 public:
 
-	Output   sensors;
-	Output   reshaped;
-	Output   prepareEvents;
-	Output   displayed;
-	Output   finished;
-	Output   changed;
-	MFString console;
+	Output sensors;
+	Output reshaped;
+	Output prepareEvents;
+	Output displayed;
+	Output finished;
+	Output changed;
 
 	///  @name Time handling
 
@@ -157,7 +157,13 @@ public:
 	///  @name Viewpoint handling
 
 	X3DViewpointNode*
-	getActiveViewpoint ();
+	getActiveViewpoint () const;
+
+	///  @name Console handling
+
+	const SFNode <Console> &
+	getConsole () const
+	{ return console; }
 
 	///  @name Picking
 
@@ -246,9 +252,10 @@ private:
 	std::set <X3DBaseNode*>               overSensors;
 	std::set <X3DBaseNode*>               activeSensors;
 
-	time_type      changedTime;
-	Speed <double> currentSpeed;
-	double         currentFrameRate;
+	time_type        changedTime;
+	Speed <double>   currentSpeed;
+	double           currentFrameRate;
+	SFNode <Console> console;
 
 };
 

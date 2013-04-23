@@ -533,6 +533,7 @@
     <None Include="Titania\X3D\Rendering\CollisionArray.h" />
     <None Include="Titania\X3D\Browser\Intersection.h" />
     <None Include="Titania\X3D\Base\X3DBase.h" />
+    <None Include="Titania\X3D\Browser\Console.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -944,6 +945,7 @@
     <Compile Include="Titania\X3D\Rendering\CollisionShape.cpp" />
     <Compile Include="Titania\X3D\Browser\Hit.cpp" />
     <Compile Include="Titania\X3D\Base\X3DBase.cpp" />
+    <Compile Include="Titania\X3D\Browser\Console.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

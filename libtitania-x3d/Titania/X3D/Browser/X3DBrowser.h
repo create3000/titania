@@ -194,7 +194,7 @@ public:
 
 		print (stream, args ...);
 		
-		console .emplace_back (stream .str ());
+		getConsole () -> string_changed .emplace_back (stream .str ());
 	}
 
 	template <typename ... Args>
@@ -202,7 +202,7 @@ public:
 	println (const Args & ... args) const
 	throw (Error <DISPOSED>)
 	{
-		print (args ..., std::endl);
+		print (args ..., '\n');
 	}
 
 	//	bool

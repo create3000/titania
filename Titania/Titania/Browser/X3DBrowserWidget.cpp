@@ -91,7 +91,7 @@ X3DBrowserWidget::initialize ()
 
 	__LOG__ << std::endl;
 
-	getBrowser () -> console .addInterest (this, &X3DBrowserWidget::set_console);
+	getBrowser () -> getConsole () -> string_changed .addInterest (this, &X3DBrowserWidget::set_console);
 
 	// Splash Screen.
 
@@ -103,19 +103,6 @@ X3DBrowserWidget::initialize ()
 
 	// Show Surface and start the X3D Main Loop.
 	getBrowser () -> show ();
-	
-	
-}
-
-void
-X3DBrowserWidget::set_console ()
-{
-	for (const auto & string : getBrowser () -> console)
-		getConsole () .get_buffer () -> insert (getConsole () .get_buffer () -> end (), string .getValue ());
-
-	auto end = getConsole () .get_buffer () -> end ();
-
-	getConsole () .scroll_to (end, 0.0);
 }
 
 void
@@ -258,20 +245,6 @@ X3DBrowserWidget::printStatistics () const
 // EventIn's
 
 void
-X3DBrowserWidget::set_urlError ()
-{
-	if (getBrowser () -> urlError .empty ())
-		return;
-
-	getMessageDialog () .set_message ("Invalid X3D");
-	getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
-	                                         + basic::join (getBrowser () -> urlError, "\n")
-	                                         + "</span>",
-	                                         true);
-	getMessageDialog () .show ();
-}
-
-void
 X3DBrowserWidget::set_world (/* X3D::SFNode <X3D::World> & world */)
 {
 	loadTime = chrono::now () - loadTime;
@@ -289,6 +262,33 @@ X3DBrowserWidget::set_world (/* X3D::SFNode <X3D::World> & world */)
 	// Clear statusbar.
 
 	popStatusBar ();
+}
+
+void
+X3DBrowserWidget::set_console ()
+{
+	auto buffer = getConsole () .get_buffer ();
+
+	for (const auto & string : getBrowser () -> getConsole () -> string_changed)
+		buffer -> insert (buffer -> end (), string .getValue ());
+
+	auto end = buffer -> end ();
+
+	getConsole () .scroll_to (end, 0.0);
+}
+
+void
+X3DBrowserWidget::set_urlError ()
+{
+	if (getBrowser () -> urlError .empty ())
+		return;
+
+	getMessageDialog () .set_message ("Invalid X3D");
+	getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
+	                                         + basic::join (getBrowser () -> urlError, "\n")
+	                                         + "</span>",
+	                                         true);
+	getMessageDialog () .show ();
 }
 
 void

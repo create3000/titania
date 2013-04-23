@@ -73,7 +73,7 @@ namespace X3D {
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
 	   X3DBaseNode (executionContext -> getBrowser (), executionContext),              
-	  X3DChildNode (),                                                                 
+	       X3DNode (),                                                                 
 	       enabled (),                                                                 
 	 cycleInterval (1),                                                                // SFFloat  [in,out] cycleInterval  1
 	        vendor (),                                                                 
@@ -434,7 +434,7 @@ RenderingProperties::toStream (std::ostream & stream) const
 void
 RenderingProperties::dispose ()
 {
-	X3DChildNode::dispose ();
+	X3DNode::dispose ();
 
 	if (fontInfo)
 		glDeleteLists (fontListBase, fontInfo -> max_char_or_byte2);
