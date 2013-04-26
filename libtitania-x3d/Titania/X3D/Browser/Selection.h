@@ -48,81 +48,52 @@
  *
  ******************************************************************************/
 
-#include "MotionBlur.h"
+#ifndef __TITANIA_X3D_BROWSER_SELECTION_H__
+#define __TITANIA_X3D_BROWSER_SELECTION_H__
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../X3DBrowser.h"
+#include "../Components/Core/X3DNode.h"
 
 namespace titania {
 namespace X3D {
 
-MotionBlur::MotionBlur (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DNode (),
-	    enabled (),                                                    // SFBool  [in,out] enabled    FALSE
-	  intensity (0)                                                    // SFFloat [in,out] intensitiy 0
+class Selection :
+	virtual public X3DNode
 {
-	setComponent ("Browser");
-	setTypeName ("MotionBlur");
+public:
 
-	addField (inputOutput, "metadata",   metadata);
-	addField (inputOutput, "enabled",     enabled);
-	addField (inputOutput, "intensity", intensity);
-}
+	Selection (X3DExecutionContext* const);
 
-X3DBaseNode*
-MotionBlur::create (X3DExecutionContext* const executionContext) const
-{
-	return new MotionBlur (executionContext);
-}
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const;
+	
+	void
+	addChild (const SFNode <X3DBaseNode> &);
 
-void
-MotionBlur::initialize ()
-{
-	X3DNode::initialize ();
+	void
+	removeChild (const SFNode <X3DBaseNode> &);
+	
+	const MFNode &
+	getChildren () const
+	{ return children; }
 
-	enabled .addInterest (this, &MotionBlur::set_enabled);
-
-	set_enabled ();
-}
-
-void
-MotionBlur::set_enabled ()
-{
+	void
 	clear ();
 
-	if (enabled)
-	{
-		getBrowser () -> reshaped  .addInterest (this, &MotionBlur::clear);
-		getBrowser () -> displayed .addInterest (this, &MotionBlur::display);
-	}
-	else
-	{
-		getBrowser () -> reshaped  .removeInterest (this, &MotionBlur::clear);
-		getBrowser () -> displayed .removeInterest (this, &MotionBlur::display);
-	}
-}
 
-void
-MotionBlur::clear ()
-{
-	glClearAccum (0, 0, 0, 1);
+private:
 
-	glClear (GL_ACCUM_BUFFER_BIT);
-}
+	void
+	addHandle (const SFNode <X3DBaseNode> &);
 
-void
-MotionBlur::display ()
-{
-	if (enabled)
-	{
-		glAccum (GL_MULT, intensity);
+	void
+	removeHandle (const SFNode <X3DBaseNode> &);
 
-		glAccum (GL_ACCUM, 1 - intensity);
+	MFNode children;
 
-		glAccum (GL_RETURN, 1);
-	}
-}
+};
 
 } // X3D
 } // titania
+
+#endif

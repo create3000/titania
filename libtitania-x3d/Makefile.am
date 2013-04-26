@@ -21,6 +21,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Basic/X3DBaseNode.cpp \
 	Titania/X3D/Basic/X3DContext.cpp \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \
+	Titania/X3D/Bits/config.cpp \
 	Titania/X3D/Bits/Error.cpp \
 	Titania/X3D/Bits/X3DConstants.cpp \
 	Titania/X3D/Browser/Browser.cpp \
@@ -41,6 +42,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Properties/MotionBlur.cpp \
 	Titania/X3D/Browser/Properties/RenderingProperties.cpp \
 	Titania/X3D/Browser/Properties/X3DGeometryPropertyNode.cpp \
+	Titania/X3D/Browser/Selection.cpp \
 	Titania/X3D/Browser/Viewer/ExamineViewer.cpp \
 	Titania/X3D/Browser/Viewer/FlyViewer.cpp \
 	Titania/X3D/Browser/Viewer/NoneViewer.cpp \
@@ -363,6 +365,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Fields/SFVec3.cpp \
 	Titania/X3D/Fields/SFVec4.cpp \
 	Titania/X3D/Fields/X3DScalar.cpp \
+	Titania/X3D/Handles/TransformHandle.cpp \
+	Titania/X3D/Handles/X3DHandleNode.cpp \
 	Titania/X3D/InputOutput/Generator.cpp \
 	Titania/X3D/JavaScript/JavaScriptEngine.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsArrayFields.cpp \

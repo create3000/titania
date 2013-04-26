@@ -63,9 +63,6 @@ std::string
 gconf_dir (const std::string &);
 
 std::string
-puck_config_dir ();
-
-std::string
 get_user_data (const std::string &);
 
 basic::uri

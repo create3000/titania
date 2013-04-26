@@ -114,12 +114,23 @@ Transform::eventsProcessed ()
 void
 Transform::traverse (TraverseType type)
 {
+	push (type);
+	pop ();
+}
+
+void
+Transform::push (TraverseType type)
+{
 	glPushMatrix ();
 
 	glMultMatrixf (matrix .data ());
 
 	X3DGroupingNode::traverse (type);
+}
 
+void
+Transform::pop ()
+{
 	glPopMatrix ();
 }
 

@@ -112,27 +112,25 @@ BrowserWidget::on_reload ()
 // Browser toolbar handling
 
 void
-BrowserWidget::on_arrow_button_toggled ()
-{
-	if (getArrowButton () .get_active ())
-	{
-		std::clog << "Arrow button clicked." << std::endl;
-	}
-
-	//	getBrowser () -> setEditMode (true);
-	//	getStatusBar () .push ("Edit mode");
-}
-
-void
 BrowserWidget::on_hand_button_toggled ()
 {
 	if (getHandButton () .get_active ())
 	{
 		std::clog << "Hand button clicked." << std::endl;
+		
+		getBrowser () -> select = false;
 	}
+}
 
-	//	getBrowser () -> setEditMode (false);
-	//	getStatusBar () .push ("Browser mode");
+void
+BrowserWidget::on_arrow_button_toggled ()
+{
+	if (getArrowButton () .get_active ())
+	{
+		std::clog << "Arrow button clicked." << std::endl;
+		
+		getBrowser () -> select = true;
+	}
 }
 
 void

@@ -20,6 +20,7 @@ titania_SOURCES =  \
 	Titania/main.cpp \
 	Titania/MotionBlurEditor/MotionBlurEditor.cpp \
 	Titania/OutlineEditor/OutlineEditor.cpp \
+	Titania/OutlineEditor/OutlineSelection.cpp \
 	Titania/OutlineEditor/OutlineTreeModel.cpp \
 	Titania/OutlineEditor/OutlineTreeView.cpp \
 	Titania/UserInterfaces/X3DBrowserUserInterface.cpp \
@@ -61,6 +62,6 @@ AM_CPPFLAGS = $(TITANIA_CFLAGS) \
 	-I$(top_builddir)/libtitania-stream
 	
 run:
-	env XDG_DATA_DIRS="/home/holger/Projekte/Titania/Titania/share:"${XDG_DATA_DIRS} \
+	env XDG_DATA_DIRS="/home/holger/Projekte/Titania/Titania/share:/home/holger/Projekte/Titania/libtitania-x3d/share:"${XDG_DATA_DIRS} \
 	$(builddir)/$(bin_PROGRAMS)
 

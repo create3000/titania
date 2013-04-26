@@ -48,80 +48,86 @@
  *
  ******************************************************************************/
 
-#include "MotionBlur.h"
+#include "Selection.h"
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../X3DBrowser.h"
+#include "../Browser/X3DBrowser.h"
+#include "../Execution/X3DExecutionContext.h"
+
+#include "../Handles/TransformHandle.h"
 
 namespace titania {
 namespace X3D {
 
-MotionBlur::MotionBlur (X3DExecutionContext* const executionContext) :
+Selection::Selection (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DNode (),
-	    enabled (),                                                    // SFBool  [in,out] enabled    FALSE
-	  intensity (0)                                                    // SFFloat [in,out] intensitiy 0
+	    X3DNode (), 
+	   children ()                                                     // MFNode  [out] children [ ]
 {
 	setComponent ("Browser");
-	setTypeName ("MotionBlur");
+	setTypeName ("Selection");
 
-	addField (inputOutput, "metadata",   metadata);
-	addField (inputOutput, "enabled",     enabled);
-	addField (inputOutput, "intensity", intensity);
+	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "children", children);
 }
 
 X3DBaseNode*
-MotionBlur::create (X3DExecutionContext* const executionContext) const
+Selection::create (X3DExecutionContext* const executionContext) const
 {
-	return new MotionBlur (executionContext);
+	return new Selection (executionContext);
 }
 
 void
-MotionBlur::initialize ()
+Selection::addChild (const SFNode <X3DBaseNode> & child)
 {
-	X3DNode::initialize ();
+	if (not child)
+		return;
 
-	enabled .addInterest (this, &MotionBlur::set_enabled);
-
-	set_enabled ();
+	children .emplace_back (child);
+	
+	addHandle (child);
 }
 
 void
-MotionBlur::set_enabled ()
+Selection::removeChild (const SFNode <X3DBaseNode> & child)
 {
-	clear ();
+	children .erase (std::remove (children .begin (), children .end (), child), children .end ()); // XXX pointer fields
+	
+	// Handle
+	
+	removeHandle (child);
+}
 
-	if (enabled)
+void
+Selection::clear ()
+{
+	for (const auto & child : children)
+		removeHandle (child);
+
+	children .clear ();
+}
+
+void
+Selection::addHandle (const SFNode <X3DBaseNode> & child)
+{
+	X3DHandleNode* handle = NULL;
+	
+	if (dynamic_cast <Transform*> (child .getValue ()))
+		handle = new TransformHandle (child -> getExecutionContext ());
+
+	if (handle)
 	{
-		getBrowser () -> reshaped  .addInterest (this, &MotionBlur::clear);
-		getBrowser () -> displayed .addInterest (this, &MotionBlur::display);
-	}
-	else
-	{
-		getBrowser () -> reshaped  .removeInterest (this, &MotionBlur::clear);
-		getBrowser () -> displayed .removeInterest (this, &MotionBlur::display);
+		handle -> replace (child .getValue ());
+		handle -> setup ();
 	}
 }
 
 void
-MotionBlur::clear ()
+Selection::removeHandle (const SFNode <X3DBaseNode> & child)
 {
-	glClearAccum (0, 0, 0, 1);
-
-	glClear (GL_ACCUM_BUFFER_BIT);
-}
-
-void
-MotionBlur::display ()
-{
-	if (enabled)
-	{
-		glAccum (GL_MULT, intensity);
-
-		glAccum (GL_ACCUM, 1 - intensity);
-
-		glAccum (GL_RETURN, 1);
-	}
+	auto handle = dynamic_cast <X3DHandleNode*> (child .getValue ());
+	
+	if (handle)
+		handle -> remove ();
 }
 
 } // X3D

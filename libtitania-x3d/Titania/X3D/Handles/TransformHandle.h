@@ -48,81 +48,50 @@
  *
  ******************************************************************************/
 
-#include "MotionBlur.h"
+#ifndef __TITANIA_X3D_HANDLES_TRANSFORM_HANDLE_H__
+#define __TITANIA_X3D_HANDLES_TRANSFORM_HANDLE_H__
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../X3DBrowser.h"
+#include "../Components/Grouping/Transform.h"
+#include "../Handles/X3DHandleNode.h"
 
 namespace titania {
 namespace X3D {
 
-MotionBlur::MotionBlur (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DNode (),
-	    enabled (),                                                    // SFBool  [in,out] enabled    FALSE
-	  intensity (0)                                                    // SFFloat [in,out] intensitiy 0
+class TransformHandle :
+	public Transform, public X3DHandleNode
 {
-	setComponent ("Browser");
-	setTypeName ("MotionBlur");
+public:
 
-	addField (inputOutput, "metadata",   metadata);
-	addField (inputOutput, "enabled",     enabled);
-	addField (inputOutput, "intensity", intensity);
-}
+	TransformHandle (X3DExecutionContext* const);
 
-X3DBaseNode*
-MotionBlur::create (X3DExecutionContext* const executionContext) const
-{
-	return new MotionBlur (executionContext);
-}
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const;
 
-void
-MotionBlur::initialize ()
-{
-	X3DNode::initialize ();
+	virtual
+	void
+	remove ();
+	
+	virtual
+	void
+	dispose ();
 
-	enabled .addInterest (this, &MotionBlur::set_enabled);
 
-	set_enabled ();
-}
+private:
 
-void
-MotionBlur::set_enabled ()
-{
-	clear ();
+	virtual
+	void
+	initialize ();
 
-	if (enabled)
-	{
-		getBrowser () -> reshaped  .addInterest (this, &MotionBlur::clear);
-		getBrowser () -> displayed .addInterest (this, &MotionBlur::display);
-	}
-	else
-	{
-		getBrowser () -> reshaped  .removeInterest (this, &MotionBlur::clear);
-		getBrowser () -> displayed .removeInterest (this, &MotionBlur::display);
-	}
-}
+	virtual
+	void
+	traverse (TraverseType);
+	
+	SFNode <Scene> scene;
 
-void
-MotionBlur::clear ()
-{
-	glClearAccum (0, 0, 0, 1);
-
-	glClear (GL_ACCUM_BUFFER_BIT);
-}
-
-void
-MotionBlur::display ()
-{
-	if (enabled)
-	{
-		glAccum (GL_MULT, intensity);
-
-		glAccum (GL_ACCUM, 1 - intensity);
-
-		glAccum (GL_RETURN, 1);
-	}
-}
+};
 
 } // X3D
 } // titania
+
+#endif

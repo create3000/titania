@@ -56,7 +56,7 @@ namespace titania {
 namespace puck {
 
 #define TITANIA_GCONF_DIR  "/apps/titania"
-#define TITANIA_CONFIG_DIR "titania/"
+#define TITANIA_CONFIG_DIR (os::home () + "/.config/Titania/")
 #define TITANIA_DATA_DIR   "titania/"
 
 std::string
@@ -72,15 +72,9 @@ gconf_dir (const std::string & key)
 }
 
 std::string
-puck_config_dir ()
-{
-	return os::home () + "/.config/Titania/";
-}
-
-std::string
 get_user_data (const std::string & filename)
 {
-	return puck_config_dir () + filename;
+	return TITANIA_CONFIG_DIR + filename;
 }
 
 basic::uri

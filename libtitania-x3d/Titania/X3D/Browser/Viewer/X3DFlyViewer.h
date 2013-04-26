@@ -129,6 +129,24 @@ private:
 	void
 	display ();
 
+	class Keys
+	{
+	public:
+
+		Keys () :
+			shift_l (false),
+			shift_r (false)
+		{ }
+
+		bool
+		shift ()
+		{ return shift_l or shift_r; }
+
+		bool shift_l;
+		bool shift_r;
+
+	};
+
 	static Vector3f upVector;
 
 	NavigationInfo*  navigationInfo;
@@ -138,7 +156,7 @@ private:
 	Rotation4f       rotation;
 	time_type        startTime;
 	guint            button;
-	bool             shift_key;
+	Keys             keys;
 	sigc::connection fly_id;
 	sigc::connection pan_id;
 	sigc::connection roll_id;

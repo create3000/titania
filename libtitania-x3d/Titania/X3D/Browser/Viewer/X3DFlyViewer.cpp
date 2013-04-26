@@ -78,11 +78,11 @@ X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* navigationIn
 	     direction (),               
 	      rotation (),               
 	     startTime (),               
-	        button (0),              
-	     shift_key (false),          
+	        button (0),                      
+	          keys (),                
 	        fly_id (),               
 	        pan_id (),               
-	       roll_id ()                
+	       roll_id ()
 { }
 
 void
@@ -198,8 +198,17 @@ X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 bool
 X3DFlyViewer::on_key_press_event (GdkEventKey* event)
 {
-	if (event -> keyval == GDK_KEY_Shift_L or event -> keyval == GDK_KEY_Shift_R)
-		shift_key = true;
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Shift_L:
+			keys .shift_l = true;
+			break;
+		case GDK_KEY_Shift_R:
+			keys .shift_r = true;
+			break;
+		default:
+			break;
+	}
 
 	return false;
 }
@@ -207,8 +216,17 @@ X3DFlyViewer::on_key_press_event (GdkEventKey* event)
 bool
 X3DFlyViewer::on_key_release_event (GdkEventKey* event)
 {
-	if (event -> keyval == GDK_KEY_Shift_L or event -> keyval == GDK_KEY_Shift_R)
-		shift_key = false;
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Shift_L:
+			keys .shift_l = false;
+			break;
+		case GDK_KEY_Shift_R:
+			keys .shift_r = false;
+			break;
+		default:
+			break;
+	}
 
 	return false;
 }
@@ -232,7 +250,7 @@ X3DFlyViewer::fly ()
 
 	// Position offset
 
-	float speed_factor = shift_key ? SHIFT_SPEED_FACTOR : 1;
+	float speed_factor = keys .shift () ? SHIFT_SPEED_FACTOR : 1;
 	speed_factor *= 1 - angle / M_PI1_2;
 
 	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
@@ -250,7 +268,7 @@ X3DFlyViewer::pan ()
 
 	float frameRate = getBrowser () -> getCurrentFrameRate ();
 
-	float speed_factor = shift_key ? PAN_SHIFT_SPEED_FACTOR : 1;
+	float speed_factor = keys .shift () ? PAN_SHIFT_SPEED_FACTOR : 1;
 
 	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
 	Vector3f   translation = orientation * direction * speed_factor / frameRate;

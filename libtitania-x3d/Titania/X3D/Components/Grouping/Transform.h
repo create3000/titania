@@ -73,22 +73,33 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	virtual
 	Box3f
-	getBBox ();
+	getBBox () override;
 
 	virtual
 	void
-	traverse (TraverseType);
+	traverse (TraverseType) override;
+
+
+protected:
+
+	virtual
+	void
+	initialize () override;
+
+	virtual
+	void
+	eventsProcessed () override;
+	
+	void
+	push (TraverseType);
+	
+	void
+	pop ();
 
 
 private:
-
-	virtual
-	void
-	initialize ();
-
-	void
-	eventsProcessed ();
 
 	Matrix4f matrix;
 

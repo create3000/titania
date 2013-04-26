@@ -57,7 +57,8 @@ namespace titania {
 namespace X3D {
 
 Console::Console (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       X3DNode (), 
 	string_changed ()                                                     // MFString  [out] string_changed [ ]
 {
 	setComponent ("Browser");

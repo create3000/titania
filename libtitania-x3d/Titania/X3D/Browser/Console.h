@@ -52,13 +52,12 @@
 #define __TITANIA_X3D_BROWSER_CONSOLE_H__
 
 #include "../Components/Core/X3DNode.h"
-#include "../Fields.h"
 
 namespace titania {
 namespace X3D {
 
 class Console :
-	public X3DNode
+	virtual public X3DNode
 {
 public:
 

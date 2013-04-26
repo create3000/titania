@@ -66,9 +66,6 @@ public:
 	virtual
 	~Output ();
 
-
-private:
-
 };
 
 } // X3D

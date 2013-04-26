@@ -55,6 +55,7 @@
 #include "../Browser/Properties/BrowserOptions.h"
 #include "../Browser/Properties/BrowserProperties.h"
 #include "../Browser/Properties/RenderingProperties.h"
+#include "../Browser/Selection.h"
 #include "../Browser/Viewer/ViewerType.h"
 #include "../Components/Core/X3DSensorNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
@@ -93,6 +94,7 @@ public:
 	Output displayed;
 	Output finished;
 	Output changed;
+	SFBool select;
 
 	///  @name Time handling
 
@@ -126,12 +128,14 @@ public:
 	///  @name Renderer handling
 
 	RendererStack &
-	getRenderers () { return renderers; }
+	getRenderers ()
+	{ return renderers; }
 
 	///  @name Layer handling
 
 	LayerStack &
-	getLayers () { return layers; }
+	getLayers ()
+	{ return layers; }
 
 	///  @name Light stack handling
 
@@ -142,12 +146,14 @@ public:
 	///  @name Light stack handling
 
 	LightStack &
-	getLights () { return lights; }
+	getLights ()
+	{ return lights; }
 
 	///  @name Texture unit stack handling
 
 	TextureUnitStack &
-	getTextureUnits () { return textureUnits; }
+	getTextureUnits ()
+	{ return textureUnits; }
 
 	///  @name NavigationInfo handling
 
@@ -171,7 +177,8 @@ public:
 	pick (const double, const double);
 
 	std::deque <std::set <X3DBaseNode*>> &
-	getSensors () { return enabledSensors; }
+	getSensors ()
+	{ return enabledSensors; }
 
 	Line3f
 	getHitRay () const;
@@ -180,7 +187,8 @@ public:
 	addHit (const Matrix4f &, const std::shared_ptr <Intersection> &, X3DBaseNode* const);
 
 	const HitArray &
-	getHits () const { return hits; }
+	getHits () const
+	{ return hits; }
 
 	void
 	motionNotifyEvent ();
@@ -190,6 +198,10 @@ public:
 
 	void
 	buttonReleaseEvent ();
+	
+	const SFNode <Selection> &
+	getSelection ()
+	{ return selection; }
 
 	///  @name Event handling
 
@@ -246,11 +258,12 @@ private:
 	double                                x;
 	double                                y;
 	Line3f                                hitRay;
-	std::deque <std::set <X3DBaseNode*>> enabledSensors;
 	HitArray                              hits;
 	HitComp                               hitComp;
+	std::deque <std::set <X3DBaseNode*>> enabledSensors;
 	std::set <X3DBaseNode*>               overSensors;
 	std::set <X3DBaseNode*>               activeSensors;
+	SFNode <Selection>                    selection;
 
 	time_type        changedTime;
 	Speed <double>   currentSpeed;

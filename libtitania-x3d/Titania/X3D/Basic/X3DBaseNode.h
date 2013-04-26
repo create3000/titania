@@ -93,6 +93,9 @@ public:
 	virtual
 	X3DBaseNode*
 	copy (X3DExecutionContext* const) const;
+	
+	void
+	replace (X3DBaseNode* const);
 
 	virtual
 	time_type

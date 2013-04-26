@@ -122,11 +122,11 @@ private:
 
 	virtual
 	void
-	on_arrow_button_toggled ();
+	on_hand_button_toggled ();
 
 	virtual
 	void
-	on_hand_button_toggled ();
+	on_arrow_button_toggled ();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

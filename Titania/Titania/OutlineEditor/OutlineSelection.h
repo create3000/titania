@@ -48,81 +48,56 @@
  *
  ******************************************************************************/
 
-#include "MotionBlur.h"
+#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
+#define __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../X3DBrowser.h"
+#include <gtkmm.h>
+
+#include <Titania/X3D.h>
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-MotionBlur::MotionBlur (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DNode (),
-	    enabled (),                                                    // SFBool  [in,out] enabled    FALSE
-	  intensity (0)                                                    // SFFloat [in,out] intensitiy 0
+class OutlineSelection :
+	public X3DBaseInterface
 {
-	setComponent ("Browser");
-	setTypeName ("MotionBlur");
+public:
 
-	addField (inputOutput, "metadata",   metadata);
-	addField (inputOutput, "enabled",     enabled);
-	addField (inputOutput, "intensity", intensity);
-}
+	OutlineSelection (const X3D::SFNode <X3D::Browser> &);
+	
+	void
+	setSelectMultiple (bool);
 
-X3DBaseNode*
-MotionBlur::create (X3DExecutionContext* const executionContext) const
-{
-	return new MotionBlur (executionContext);
-}
+	void
+	select (const X3D::SFNode <X3D::X3DBaseNode> &);
 
-void
-MotionBlur::initialize ()
-{
-	X3DNode::initialize ();
-
-	enabled .addInterest (this, &MotionBlur::set_enabled);
-
-	set_enabled ();
-}
-
-void
-MotionBlur::set_enabled ()
-{
+	void
 	clear ();
 
-	if (enabled)
-	{
-		getBrowser () -> reshaped  .addInterest (this, &MotionBlur::clear);
-		getBrowser () -> displayed .addInterest (this, &MotionBlur::display);
-	}
-	else
-	{
-		getBrowser () -> reshaped  .removeInterest (this, &MotionBlur::clear);
-		getBrowser () -> displayed .removeInterest (this, &MotionBlur::display);
-	}
-}
 
-void
-MotionBlur::clear ()
-{
-	glClearAccum (0, 0, 0, 1);
+private:
 
-	glClear (GL_ACCUM_BUFFER_BIT);
-}
+	void
+	set_selection ();
 
-void
-MotionBlur::display ()
-{
-	if (enabled)
-	{
-		glAccum (GL_MULT, intensity);
+	void
+	remove (const X3D::SFNode <X3D::X3DBaseNode> &);
 
-		glAccum (GL_ACCUM, 1 - intensity);
+	void
+	select (X3D::X3DBaseNode*, bool);
 
-		glAccum (GL_RETURN, 1);
-	}
-}
+	void
+	select (X3D::X3DBaseNode*, bool, X3D::ChildObjectSet &);
 
-} // X3D
+	void
+	select (X3D::X3DFieldDefinition*, bool, X3D::ChildObjectSet &);
+
+	bool        selectMultiple;
+	bool        forceSelection;
+
+};
+
+} // puck
 } // titania
+
+#endif

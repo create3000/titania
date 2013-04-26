@@ -55,6 +55,7 @@
 #include <iostream>
 
 #include "../Base/X3DBaseInterface.h"
+#include "../OutlineEditor/OutlineSelection.h"
 #include "../OutlineEditor/OutlineUserData.h"
 #include <Titania/X3D.h>
 
@@ -73,6 +74,14 @@ private:
 
 	void
 	set_world ();
+
+	virtual
+	bool
+	on_key_press_event (GdkEventKey*);
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey*);
 
 	virtual
 	bool
@@ -109,21 +118,28 @@ private:
 	collapseClone (const Gtk::TreeModel::iterator &);
 
 	void
-	select (const Gtk::TreeModel::iterator &);
+	select (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
-	void
-	clearSelection ();
+	class Keys
+	{
+	public:
+	
+		Keys () :
+			shift_l (false),
+			shift_r (false)
+		{ }
 
-	void
-	select (X3D::X3DBaseNode*, bool);
+		bool
+		shift ()
+		{ return shift_l or shift_r; }
 
-	void
-	select (X3D::X3DBaseNode*, bool, X3D::ChildObjectSet &);
+		bool shift_l;
+		bool shift_r;
 
-	void
-	select (X3D::X3DFieldDefinition*, bool, X3D::ChildObjectSet &);
+	};
 
-	X3D::MFNode selection;
+	OutlineSelection selection;
+	Keys             keys;
 
 };
 

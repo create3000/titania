@@ -60,7 +60,6 @@ OutlineTreeModel::OutlineTreeModel (const X3D::SFNode <X3D::Browser> & browser) 
 	    Glib::Object (),                                        
 	  Gtk::TreeModel (),                                        
 	executionContext (browser -> getExecutionContext ()),       
-	  selected_color ("#99BDFF"),                               
 	           stamp ((long int)                          this),
 	            tree ()
 {
@@ -106,7 +105,7 @@ OutlineTreeModel::get_column_type_vfunc (int index) const
 		case 1:
 			return data_column .type ();
 		case 2:
-			return background_color_column .type ();
+			return selected_color_column .type ();
 		case 3:
 			return debug_column .type ();
 		default:
@@ -170,16 +169,15 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 		}
 		case 2:
 		{
-			background_color_column_type::ValueType val;
-			val .init (background_color_column_type::ValueType::value_type ());
+			selected_color_column_type::ValueType val;
+			val .init (selected_color_column_type::ValueType::value_type ());
 
 			auto userData       = getUserData (iter);
 			auto parentUserData = getUserData (data -> object);
 
-			if ((userData and userData -> selected) or parentUserData -> selected)
-				val .set (Gdk::Color ("LightBlue"));
+			val .set ((userData and userData -> selected) or parentUserData -> selected);
 
-			value .init (background_color_column_type::ValueType::value_type ());
+			value .init (selected_color_column_type::ValueType::value_type ());
 			value = val;
 
 			break;

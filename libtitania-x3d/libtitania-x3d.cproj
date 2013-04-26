@@ -534,6 +534,11 @@
     <None Include="Titania\X3D\Browser\Intersection.h" />
     <None Include="Titania\X3D\Base\X3DBase.h" />
     <None Include="Titania\X3D\Browser\Console.h" />
+    <None Include="Titania\X3D\Browser\Selection.h" />
+    <None Include="Titania\X3D\Handles\X3DHandleNode.h" />
+    <None Include="Titania\X3D\Handles\TransformHandle.h" />
+    <None Include="Titania\X3D\Bits\config.h" />
+    <None Include="share\titania\handles\TransformHandle.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -946,6 +951,10 @@
     <Compile Include="Titania\X3D\Browser\Hit.cpp" />
     <Compile Include="Titania\X3D\Base\X3DBase.cpp" />
     <Compile Include="Titania\X3D\Browser\Console.cpp" />
+    <Compile Include="Titania\X3D\Browser\Selection.cpp" />
+    <Compile Include="Titania\X3D\Handles\X3DHandleNode.cpp" />
+    <Compile Include="Titania\X3D\Handles\TransformHandle.cpp" />
+    <Compile Include="Titania\X3D\Bits\config.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -968,6 +977,10 @@
     <Folder Include="Titania\X3D\Browser\Geometry3D\" />
     <Folder Include="Titania\X3D\Browser\Geometry2D\" />
     <Folder Include="Titania\X3D\Browser\Viewer\" />
+    <Folder Include="Titania\X3D\Handles\" />
+    <Folder Include="share\" />
+    <Folder Include="share\titania\" />
+    <Folder Include="share\titania\handles\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

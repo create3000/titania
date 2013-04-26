@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_DATA_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_DATA_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_USER_DATA_H__
+#define __TITANIA_OUTLINE_EDITOR_OUTLINE_USER_DATA_H__
 
 #include <gtkmm.h>
 
@@ -69,7 +69,7 @@ public:
 		showAllFields (false),
 		selected (false)
 	{ }
-	
+
 	Gtk::TreeModel::Path path;
 
 	bool expanded;

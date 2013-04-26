@@ -283,7 +283,7 @@ private:
 
 	typedef Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>> icon_column_type;
 	typedef Gtk::TreeModelColumn <OutlineIterData*>            data_column_type;
-	typedef Gtk::TreeModelColumn <Gdk::Color>                  background_color_column_type;
+	typedef Gtk::TreeModelColumn <bool>                        selected_color_column_type;
 	typedef Gtk::TreeModelColumn <Glib::ustring>               debug_column_type;
 
 	typedef std::map <const X3D::X3DConstants::FieldType, Glib::RefPtr <Gdk::Pixbuf>> FieldTypeImageIndex;
@@ -292,13 +292,12 @@ private:
 
 	icon_column_type             icon_column;
 	data_column_type             data_column;
-	background_color_column_type background_color_column;
+	selected_color_column_type   selected_color_column;
 	debug_column_type            debug_column;
 
 	Glib::RefPtr <Gdk::Pixbuf> noneImage;
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
 	FieldTypeImageIndex        fieldTypeImages;
-	Gdk::Color                 selected_color;
 
 	int stamp;
 	mutable OutlineTree tree;

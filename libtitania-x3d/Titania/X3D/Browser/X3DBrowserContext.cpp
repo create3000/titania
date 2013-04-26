@@ -62,16 +62,17 @@ namespace X3D {
 
 X3DBrowserContext::X3DBrowserContext () :
 	X3DExecutionContext (),                                        
-	            sensors (),                                        // [out]    sensors
-	           reshaped (),                                        // [out]    reshape
-	      prepareEvents (),                                        // [out]    prepareEvents
-	          displayed (),                                        // [out]    displayed
-	           finished (),                                        // [out]    finished
-	            changed (),                                        // [out]    changed
-	renderingProperties (new RenderingProperties (this)),          // SFNode  [ ]   renderingProperties NULL  [RenderingProperties]
-	  browserProperties (new BrowserProperties   (this)),          // SFNode  [ ]   browserProperties   NULL  [BrowserProperties]
-	     browserOptions (new BrowserOptions      (this)),          // SFNode  [ ]   browserOptions      NULL  [BrowserOptions]
-	   javaScriptEngine (new JavaScriptEngine    (this)),          // SFNode  [ ]   javaScriptEngine    NULL  [JavaScriptEngine]
+	            sensors (),                                        // [out]  sensors
+	           reshaped (),                                        // [out]  reshape
+	      prepareEvents (),                                        // [out]  prepareEvents
+	          displayed (),                                        // [out]  displayed
+	           finished (),                                        // [out]  finished
+	            changed (),                                        // [out]  changed
+	             select (false),                                   // SFNode  [in,out]  select              FALSE
+	renderingProperties (new RenderingProperties (this)),          // SFNode  [ ]       renderingProperties NULL   [RenderingProperties]
+	  browserProperties (new BrowserProperties   (this)),          // SFNode  [ ]       browserProperties   NULL   [BrowserProperties]
+	     browserOptions (new BrowserOptions      (this)),          // SFNode  [ ]       browserOptions      NULL   [BrowserOptions]
+	   javaScriptEngine (new JavaScriptEngine    (this)),          // SFNode  [ ]       javaScriptEngine    NULL   [JavaScriptEngine]
 	              clock (new chrono::system_clock <time_type> ()), 
 	             router (),                                        
 	             layers (),                                        
@@ -80,17 +81,23 @@ X3DBrowserContext::X3DBrowserContext () :
 	                  x (0),                                       
 	                  y (0),                                       
 	             hitRay (),                                        
-	     enabledSensors ({ std::set <X3DBaseNode*> () }),          
 	               hits (),                                        
+	            hitComp (),                                        
+	     enabledSensors ({ std::set <X3DBaseNode*> () }),          
+	        overSensors (),                                        
+	      activeSensors (),                                         
+	          selection (new Selection (this)),                    // SFNode  [ ]   selection    NULL  [Selection]
 	        changedTime (clock -> cycle ()),                       
 	       currentSpeed (0),                                       
 	   currentFrameRate (0),                                       
 	            console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
 {
+	addField (initializeOnly, "select",              select);
 	addField (initializeOnly, "renderingProperties", renderingProperties);
 	addField (initializeOnly, "browserProperties",   browserProperties);
 	addField (initializeOnly, "browserOptions",      browserOptions);
 	addField (initializeOnly, "javaScriptEngine",    javaScriptEngine);
+	addField (initializeOnly, "selection",           selection);
 	addField (initializeOnly, "console",             console);
 }
 
@@ -109,6 +116,7 @@ X3DBrowserContext::initialize ()
 	browserProperties   -> setup ();
 	browserOptions      -> setup ();
 	javaScriptEngine    -> setup ();
+	selection           -> setup ();
 	console             -> setup ();
 
 	// Lights

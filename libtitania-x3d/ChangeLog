@@ -1,3 +1,30 @@
+2013-04-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Output.h:
+	* config.h:
+	* config.cpp:
+	* Console.h:
+	* Selection.h:
+	* Console.cpp:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* Selection.cpp:
+	* X3DHandleNode.h:
+	* TransformHandle.h:
+	* X3DHandleNode.cpp:
+	* X3DBrowserContext.h:
+	* TransformHandle.cpp:
+	* X3DFlyViewer.h:
+	* X3DBrowserContext.cpp:
+	* TransformHandle.wrl:
+	* Transform.h:
+	* MotionBlur.h:
+	* X3DFlyViewer.cpp:
+	* MotionBlur.cpp:
+	* Transform.cpp: 
+
 2013-04-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ChangeLog:
