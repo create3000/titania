@@ -57,11 +57,11 @@ namespace X3D {
 
 X3DLightNode::X3DLightNode () :
 	    X3DChildNode (),        
-	ambientIntensity (),        // SFFloat [in,out] ambientIntensity  0            [0,1]
-	           color (1, 1, 1), // SFColor [in,out] color             1 1 1        [0,1]
+	              on (true),    // SFBool  [in,out] on                TRUE
 	          global (true),    // SFBool  [in,out] global            FALSE
+	           color (1, 1, 1), // SFColor [in,out] color             1 1 1        [0,1]
 	       intensity (1),       // SFFloat [in,out] intensity         1            [0,1]
-	              on (true)     // SFBool  [in,out] on                TRUE
+	ambientIntensity ()         // SFFloat [in,out] ambientIntensity  0            [0,1]
 {
 	addNodeType (X3DConstants::X3DLightNode);
 }

@@ -1,3 +1,8 @@
+2013-04-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DLightNode.h:
+	* X3DLightNode.cpp: 
+
 2013-04-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

@@ -62,11 +62,11 @@ class X3DLightNode :
 {
 public:
 
-	SFFloat ambientIntensity;
-	SFColor color;
-	SFBool  global;
-	SFFloat intensity;
 	SFBool  on;
+	SFBool  global;
+	SFColor color;
+	SFFloat intensity;
+	SFFloat ambientIntensity;
 
 	void
 	push ();
