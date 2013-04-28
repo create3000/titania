@@ -1,5 +1,9 @@
 2013-04-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DFontStyleNode.cpp: 
+
+2013-04-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Console.h:
 	* Proto.cpp:
 	* Scene.cpp:
