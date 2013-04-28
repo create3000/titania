@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,7 +65,7 @@ FillProperties::Fields::Fields () :
 FillProperties::FillProperties (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DAppearanceChildNode (),                                                    
-	fields ()
+	                fields ()                                                     
 {
 	setComponent ("Shape");
 	setTypeName ("FillProperties");
@@ -85,10 +85,7 @@ FillProperties::create (X3DExecutionContext* const executionContext) const
 
 void
 FillProperties::draw ()
-{
-
-}
+{ }
 
 } // X3D
 } // titania
-

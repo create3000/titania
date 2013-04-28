@@ -73,7 +73,7 @@ public:
 	const float &
 	getDistance () const
 	{ return distance; }
-	
+
 	const CollisionArray &
 	getCollisions ()
 	{ return collisions; }

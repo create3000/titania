@@ -62,8 +62,6 @@ class MetadataString :
 {
 public:
 
-	
-
 	MetadataString (X3DExecutionContext* const);
 
 	virtual
@@ -79,8 +77,6 @@ public:
 	const MFString &
 	value () const
 	{ return *fields .value; }
-
-
 
 	virtual
 	void
@@ -102,11 +98,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

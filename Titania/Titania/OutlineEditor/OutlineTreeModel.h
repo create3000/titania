@@ -101,21 +101,22 @@ public:
 
 };
 
-class OutlineNode {
+class OutlineNode
+{
 public:
 
 	OutlineNode () :
 		data (NULL),
 		children ()
 	{ }
-	
+
 	~OutlineNode ()
 	{
 		if (data)
 			delete data;
 	}
 
-	OutlineIterData* data;
+	OutlineIterData*         data;
 	std::deque <OutlineNode> children;
 
 };
@@ -128,7 +129,7 @@ public:
 	OutlineTree () :
 		OutlineNode ()
 	{ }
-	
+
 	OutlineNode &
 	getNode (const Gtk::TreePath & path)
 	{
@@ -136,10 +137,10 @@ public:
 
 		for (const auto & index : path)
 			node = &getChild (node, index);
-		
+
 		return *node;
 	}
-	
+
 	void
 	removeChildren (const Gtk::TreePath & path)
 	{
@@ -147,13 +148,13 @@ public:
 	}
 
 private:
-	
+
 	OutlineNode &
 	getChild (OutlineNode* parent, size_t index)
 	{
 		if (index + 1 > parent -> children .size ())
 			parent -> children .resize (index + 1);
-			
+
 		return parent -> children [index];
 	}
 
@@ -168,10 +169,10 @@ public:
 
 	static Glib::RefPtr <OutlineTreeModel>
 	create (const X3D::SFNode <X3D::Browser> &);
-	
+
 	void
 	collapse_row (const Path &, const iterator &);
-	
+
 	static
 	OutlineUserData*
 	getUserData (const iterator &);
@@ -206,7 +207,7 @@ private:
 	virtual
 	Path
 	get_path_vfunc (const iterator & iter) const;
-	
+
 	Path
 	get_path (const OutlineIterData::parents_type & parents, size_t) const;
 
@@ -253,23 +254,23 @@ private:
 	virtual
 	void
 	unref_node_vfunc (const iterator &) const;
-	
+
 	virtual
 	void
 	on_row_changed (const Path &, const iterator &);
-	 
+
 	virtual
 	void
 	on_row_inserted (const Path & path, const iterator &);
-	 
+
 	virtual
 	void
 	on_row_has_child_toggled (const Path &, const iterator &);
-	 
+
 	virtual
 	void
 	on_row_deleted (const Path &);
-	 
+
 	virtual
 	void
 	on_rows_reordered (const Path &, const iterator &, int*);
@@ -290,16 +291,16 @@ private:
 
 	X3D::SFNode <X3D::X3DExecutionContext> executionContext;
 
-	icon_column_type             icon_column;
-	data_column_type             data_column;
-	selected_color_column_type   selected_color_column;
-	debug_column_type            debug_column;
+	icon_column_type           icon_column;
+	data_column_type           data_column;
+	selected_color_column_type selected_color_column;
+	debug_column_type          debug_column;
 
 	Glib::RefPtr <Gdk::Pixbuf> noneImage;
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
 	FieldTypeImageIndex        fieldTypeImages;
 
-	int stamp;
+	int                 stamp;
 	mutable OutlineTree tree;
 
 };

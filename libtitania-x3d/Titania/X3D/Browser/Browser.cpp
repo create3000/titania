@@ -50,13 +50,13 @@
 
 #include "Browser.h"
 
+#include "../Browser/Viewer/ExamineViewer.h"
+#include "../Browser/Viewer/FlyViewer.h"
+#include "../Browser/Viewer/NoneViewer.h"
+#include "../Browser/Viewer/WalkViewer.h"
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
-#include "../Browser/Viewer/ExamineViewer.h"
-#include "../Browser/Viewer/NoneViewer.h"
-#include "../Browser/Viewer/FlyViewer.h"
-#include "../Browser/Viewer/WalkViewer.h"
 
 #include <algorithm>
 #include <iomanip>
@@ -76,14 +76,14 @@ Browser::Browser () :
 	pointingDevice  (this),       
 	    activeLayer ()            
 {
-	add_events (Gdk::BUTTON_PRESS_MASK | 
+	add_events (Gdk::BUTTON_PRESS_MASK |
 	            Gdk::POINTER_MOTION_MASK |
 	            Gdk::POINTER_MOTION_HINT_MASK |
-	            Gdk::BUTTON_RELEASE_MASK | 
-	            Gdk::SCROLL_MASK | 
-	            Gdk::KEY_PRESS_MASK | 
+	            Gdk::BUTTON_RELEASE_MASK |
+	            Gdk::SCROLL_MASK |
+	            Gdk::KEY_PRESS_MASK |
 	            Gdk::KEY_RELEASE_MASK);
-	            
+
 	set_can_focus (true);
 
 	initialized .addInterest (this, &Browser::set_initialized);
@@ -149,7 +149,7 @@ Browser::set_navigationInfo ()
 	NavigationInfo* navigationInfo = getActiveNavigationInfo ();
 
 	viewer .reset ();
-	
+
 	for (const auto & type : navigationInfo -> type ())
 	{
 		if (type == "NONE")
@@ -171,14 +171,10 @@ Browser::set_navigationInfo ()
 		}
 
 		else if (type == "LOOKAT")
-		{
-			
-		}
+		{ }
 
 		else if (type == "ANY")
-		{
-			
-		}
+		{ }
 
 		else
 		{
@@ -186,7 +182,7 @@ Browser::set_navigationInfo ()
 			break;
 		}
 	}
-	
+
 	if (not viewer)
 		viewer .reset (new ExamineViewer (this, navigationInfo));
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -67,7 +67,7 @@ CylinderSensor::Fields::Fields () :
 CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DDragSensorNode (),                                                    
-	fields ()
+	           fields ()                                                     
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("CylinderSensor");
@@ -106,7 +106,7 @@ CylinderSensor::isBehind (const Line3f & hitRay, const Vector3f & hitPoint) cons
 Vector3f
 CylinderSensor::getVector (const Line3f & hitRay, const Vector3f & trackPoint) const
 {
-	Vector3f intersection;	
+	Vector3f intersection;
 
 	if (disk and yPlane .intersect (hitRay, intersection))
 		return normalize (intersection);
@@ -243,4 +243,3 @@ CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
 
 } // X3D
 } // titania
-

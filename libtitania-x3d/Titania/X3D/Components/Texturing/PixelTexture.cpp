@@ -62,7 +62,7 @@ PixelTexture::Fields::Fields () :
 PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTexture2DNode (),                                                    
-	fields ()
+	          fields ()                                                     
 {
 	setComponent ("Texturing");
 	setTypeName ("PixelTexture");
@@ -84,7 +84,7 @@ void
 PixelTexture::initialize ()
 {
 	X3DTexture2DNode::initialize ();
-	
+
 	//Replacing All or Part of a Texture Image
 	//void glTexSubImage2D (...);
 
@@ -188,4 +188,3 @@ PixelTexture::requestImmediateLoad ()
 
 } // X3D
 } // titania
-

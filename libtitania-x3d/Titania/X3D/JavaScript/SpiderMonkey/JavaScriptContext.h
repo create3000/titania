@@ -56,8 +56,8 @@
 #include "../../Types/Time.h"
 #include <iostream>
 #include <jsapi.h>
-#include <string>
 #include <map>
+#include <string>
 
 namespace titania {
 namespace X3D {
@@ -102,13 +102,13 @@ private:
 
 	void
 	initNode ();
-	
+
 	void
 	addField (X3DFieldDefinition* const);
 
 	static
 	void
-	defineProperty (JSContext*, JSObject*, X3DFieldDefinition* const, const std::string &, uintN);
+	defineProperty (JSContext *, JSObject *, X3DFieldDefinition * const, const std::string &, uintN);
 
 	void
 	initEventHandler ();
@@ -128,7 +128,7 @@ private:
 
 	void
 	callFunction (const std::string &);
-	
+
 	void
 	callFunction (jsval);
 
@@ -137,19 +137,19 @@ private:
 	error (JSContext* context, const char* message, JSErrorReport* report);
 
 	static JSClass global_class;
-	
+
 	JSRuntime*     runtime;
 	JSContext*     context;
 	JSObject*      global;
 	X3DBrowser*    browser;
 	X3DScriptNode* node;
 	size_t         index;
-	
+
 	jsval initializeFn;
 	jsval prepareEventsFn;
 	jsval eventsProcessedFn;
 	jsval shutdownFn;
-	
+
 	std::map <std::string, jsval>         fields;
 	std::map <X3DFieldDefinition*, jsval> functions;
 

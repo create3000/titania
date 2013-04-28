@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,9 +62,9 @@ LinePickSensor::Fields::Fields () :
 { }
 
 LinePickSensor::LinePickSensor (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	      X3DPickSensorNode (),                                                    
-	fields ()
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DPickSensorNode (),                                                    
+	           fields ()                                                     
 {
 	setComponent ("Picking");
 	setTypeName ("LinePickSensor");
@@ -91,4 +91,3 @@ LinePickSensor::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
-

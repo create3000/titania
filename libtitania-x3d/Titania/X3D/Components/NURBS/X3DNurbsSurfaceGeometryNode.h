@@ -174,10 +174,11 @@ public:
 	{ return *fields .vOrder; }
 
 
-
 protected:
 
 	X3DNurbsSurfaceGeometryNode ();
+
+
 private:
 
 	struct Fields
@@ -208,4 +209,3 @@ private:
 } // titania
 
 #endif
-

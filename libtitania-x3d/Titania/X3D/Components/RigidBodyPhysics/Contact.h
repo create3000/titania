@@ -61,23 +61,6 @@ class Contact :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	Contact (X3DExecutionContext* const);
 
 	virtual
@@ -247,4 +230,3 @@ private:
 } // titania
 
 #endif
-

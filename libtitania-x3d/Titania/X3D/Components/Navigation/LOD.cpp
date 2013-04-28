@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,9 +65,9 @@ LOD::Fields::Fields () :
 { }
 
 LOD::LOD (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	 X3DGroupingNode (),                                                    
-	fields ()
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DGroupingNode (),                                                    
+	         fields ()                                                     
 {
 	setComponent ("Navigation");
 	setTypeName ("LOD");
@@ -96,10 +96,10 @@ int32_t
 LOD::getLevel (TraverseType type)
 {
 	Matrix4f matrix = ModelViewMatrix4f ();
-	
+
 	if (type == TraverseType::CAMERA)
 		matrix *= getCurrentViewpoint () -> getInverseTransformationMatrix ();
-	
+
 	matrix .translate (center ());
 
 	float distance = math::abs (matrix .translation ());
@@ -155,4 +155,3 @@ LOD::traverse (TraverseType type)
 
 } // X3D
 } // titania
-

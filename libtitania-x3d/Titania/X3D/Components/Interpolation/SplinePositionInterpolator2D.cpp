@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,7 +66,7 @@ SplinePositionInterpolator2D::Fields::Fields () :
 SplinePositionInterpolator2D::SplinePositionInterpolator2D (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
-	fields ()
+	             fields ()                                                     
 {
 	setComponent ("Interpolation");
 	setTypeName ("SplinePositionInterpolator2D");
@@ -108,4 +108,3 @@ SplinePositionInterpolator2D::interpolate (size_t index0, size_t index1, float w
 
 } // X3D
 } // titania
-

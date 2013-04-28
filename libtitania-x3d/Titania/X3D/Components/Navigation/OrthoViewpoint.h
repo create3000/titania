@@ -61,9 +61,6 @@ class OrthoViewpoint :
 {
 public:
 
-	
-	
-
 	OrthoViewpoint (X3DExecutionContext* const, bool = true);
 
 	virtual
@@ -87,8 +84,6 @@ public:
 	const MFFloat &
 	fieldOfView () const
 	{ return *fields .fieldOfView; }
-
-
 
 	virtual
 	Vector3f
@@ -118,11 +113,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

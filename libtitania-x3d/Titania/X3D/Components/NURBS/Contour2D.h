@@ -61,10 +61,6 @@ class Contour2D :
 {
 public:
 
-	
-	
-	
-
 	Contour2D (X3DExecutionContext* const);
 
 	virtual
@@ -117,4 +113,3 @@ private:
 } // titania
 
 #endif
-

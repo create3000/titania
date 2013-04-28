@@ -94,10 +94,11 @@ public:
 	{ return *fields .language; }
 
 
-
 protected:
 
 	X3DShaderNode ();
+
+
 private:
 
 	struct Fields
@@ -118,4 +119,3 @@ private:
 } // titania
 
 #endif
-

@@ -61,11 +61,6 @@ class WindPhysicsModel :
 {
 public:
 
-	
-	
-	
-	
-
 	WindPhysicsModel (X3DExecutionContext* const);
 
 	virtual
@@ -127,4 +122,3 @@ private:
 } // titania
 
 #endif
-

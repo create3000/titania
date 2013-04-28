@@ -69,7 +69,8 @@ public:
 	{ }
 
 	X3DChildObject* object;
-	ChildObjectSet sources;
+	ChildObjectSet  sources;
+
 };
 
 class X3DChildObject :
@@ -116,7 +117,7 @@ public:
 	void
 	isTainted (bool value)
 	{ tainted = value; }
-	
+
 	bool
 	isTainted ()
 	{ return tainted; }
@@ -161,7 +162,7 @@ private:
 	findClosestParents (std::deque <Type*> &, ChildObjectSet &);
 
 	ChildObjectSet parents;
-	
+
 	bool tainted;
 
 };

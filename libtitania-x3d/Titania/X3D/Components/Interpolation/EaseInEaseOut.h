@@ -61,11 +61,6 @@ class EaseInEaseOut :
 {
 public:
 
-	
-	
-	
-	
-
 	EaseInEaseOut (X3DExecutionContext* const);
 
 	virtual
@@ -107,8 +102,6 @@ public:
 	{ return *fields .modifiedFraction_changed; }
 
 
-
-
 private:
 
 	virtual
@@ -127,11 +120,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

@@ -62,10 +62,6 @@ class TimeSensor :
 {
 public:
 
-	
-	
-	
-
 	TimeSensor (X3DExecutionContext* const);
 
 	virtual
@@ -98,8 +94,6 @@ public:
 	time () const
 	{ return *fields .time; }
 
-
-
 	virtual
 	void
 	dispose ();
@@ -115,7 +109,7 @@ private:
 	virtual
 	void
 	initialize ();
-	
+
 	void
 	prepareEvents ();
 
@@ -149,7 +143,6 @@ private:
 
 	Fields fields;
 
-
 	time_type cycle;
 	time_type interval;
 
@@ -159,4 +152,3 @@ private:
 } // titania
 
 #endif
-

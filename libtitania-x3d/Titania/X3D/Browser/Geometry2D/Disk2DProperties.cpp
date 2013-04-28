@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,12 +62,12 @@ Disk2DProperties::Fields::Fields () :
 
 Disk2DProperties::Disk2DProperties (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryPropertyNode (),
-	               fields ()                                                     
+	X3DGeometryPropertyNode (),                                                    
+	                 fields ()                                                     
 {
 	setComponent ("Browser"),
 	setTypeName ("Disk2DProperties");
-	
+
 	addField (inputOutput, "segments", segments ());
 }
 
@@ -103,7 +103,7 @@ Disk2DProperties::build ()
 	for (int32_t n = 0; n < segments (); ++ n)
 	{
 		float theta = angle * n;
-	
+
 		std::complex <float> texCoord = std::polar <float> (0.5, theta) + std::complex <float> (0.5, 0.5);
 		std::complex <float> point    = std::polar <float> (1, theta);
 
@@ -115,4 +115,3 @@ Disk2DProperties::build ()
 
 } // X3D
 } // titania
-

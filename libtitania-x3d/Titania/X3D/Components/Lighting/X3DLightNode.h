@@ -102,7 +102,6 @@ public:
 	ambientIntensity () const
 	{ return *fields .ambientIntensity; }
 
-
 	void
 	push ();
 
@@ -117,6 +116,8 @@ public:
 protected:
 
 	X3DLightNode ();
+
+
 private:
 
 	struct Fields
@@ -138,4 +139,3 @@ private:
 } // titania
 
 #endif
-

@@ -59,11 +59,11 @@
 namespace titania {
 namespace X3D {
 
-typedef std::deque <std::shared_ptr<Hit>> HitArray;
+typedef std::deque <std::shared_ptr <Hit>> HitArray;
 
 } // X3D
 } // titania
 
-extern template class std::deque <std::shared_ptr<titania::X3D::Hit>>;
+extern template class std::deque <std::shared_ptr <titania::X3D::Hit>>;
 
 #endif

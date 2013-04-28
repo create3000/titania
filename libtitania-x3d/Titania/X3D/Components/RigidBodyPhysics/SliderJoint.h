@@ -61,14 +61,6 @@ class SliderJoint :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-
 	SliderJoint (X3DExecutionContext* const);
 
 	virtual
@@ -157,4 +149,3 @@ private:
 } // titania
 
 #endif
-

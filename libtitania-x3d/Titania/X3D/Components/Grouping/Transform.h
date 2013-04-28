@@ -61,12 +61,6 @@ class Transform :
 {
 public:
 
-	
-	
-	
-	
-	
-
 	Transform (X3DExecutionContext* const);
 
 	virtual
@@ -115,8 +109,6 @@ public:
 	translation () const
 	{ return *fields .translation; }
 
-
-
 	virtual
 	Box3f
 	getBBox () override;
@@ -135,10 +127,10 @@ protected:
 	virtual
 	void
 	eventsProcessed () override;
-	
+
 	void
 	push (TraverseType);
-	
+
 	void
 	pop ();
 
@@ -146,6 +138,8 @@ protected:
 private:
 
 	Matrix4f matrix;
+
+
 private:
 
 	struct Fields
@@ -167,4 +161,3 @@ private:
 } // titania
 
 #endif
-

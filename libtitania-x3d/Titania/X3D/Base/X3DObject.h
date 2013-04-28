@@ -143,7 +143,7 @@ protected:
 private:
 
 	basic::id name;
-	
+
 	X3DBase* userData;
 
 	static GarbageCollector garbageCollector;

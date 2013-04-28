@@ -61,10 +61,6 @@ class GeoLocation :
 {
 public:
 
-	
-	
-	
-
 	GeoLocation (X3DExecutionContext* const);
 
 	virtual
@@ -117,4 +113,3 @@ private:
 } // titania
 
 #endif
-

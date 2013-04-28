@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,11 +71,11 @@ NavigationInfo::Fields::Fields () :
 { }
 
 NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, bool displayed) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	   X3DBindableNode (displayed),                                           
-	            fields (),
-	  directionalLight (new DirectionalLight (executionContext)),
-	             light ()              
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	 X3DBindableNode (displayed),                                           
+	          fields (),                                                    
+	directionalLight (new DirectionalLight (executionContext)),             
+	           light ()                                                     
 {
 	setComponent ("Navigation");
 	setTypeName ("NavigationInfo");
@@ -108,9 +108,9 @@ NavigationInfo::initialize ()
 	X3DBindableNode::initialize ();
 
 	directionalLight -> setup ();
-	
+
 	headlight () .addInterest (this, &NavigationInfo::set_headlight);
-	
+
 	set_headlight ();
 }
 
@@ -119,7 +119,7 @@ NavigationInfo::set_headlight ()
 {
 	if (headlight ())
 		light .reset (new LightContainer (Matrix4f (), directionalLight));
-		
+
 	else
 		light .reset ();
 }
@@ -129,7 +129,7 @@ NavigationInfo::getCollisionRadius () const
 {
 	if (avatarSize () .size () > 0)
 		return avatarSize () [0];
-	
+
 	return 0.25;
 }
 
@@ -138,7 +138,7 @@ NavigationInfo::getAvatarHeight () const
 {
 	if (avatarSize () .size () > 1)
 		return avatarSize () [1];
-	
+
 	return 1.6;
 }
 
@@ -147,7 +147,7 @@ NavigationInfo::getStepHeight () const
 {
 	if (avatarSize () .size () > 2)
 		return avatarSize () [2];
-	
+
 	return 0.75;
 }
 
@@ -219,4 +219,3 @@ NavigationInfo::dispose ()
 
 } // X3D
 } // titania
-

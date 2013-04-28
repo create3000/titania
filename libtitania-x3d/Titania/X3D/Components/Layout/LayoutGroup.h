@@ -61,9 +61,6 @@ class LayoutGroup :
 {
 public:
 
-	
-	
-
 	LayoutGroup (X3DExecutionContext* const);
 
 	virtual
@@ -107,4 +104,3 @@ private:
 } // titania
 
 #endif
-

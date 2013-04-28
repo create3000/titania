@@ -68,9 +68,9 @@ X3DBrowser::X3DBrowser () :
 	setName ("Titania");
 
 	addField (outputOnly, "url", url ());
-	
+
 	setChildren (description, scene, world);
-	
+
 	//supportedFields, // make X3DBaseNodes of this
 	//supportedNodes,
 	//supportedComponents,

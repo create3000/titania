@@ -123,7 +123,7 @@ private:
 	class Keys
 	{
 	public:
-	
+
 		Keys () :
 			shift_l (false),
 			shift_r (false)

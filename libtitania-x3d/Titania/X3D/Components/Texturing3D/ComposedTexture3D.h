@@ -61,8 +61,6 @@ class ComposedTexture3D :
 {
 public:
 
-	
-
 	ComposedTexture3D (X3DExecutionContext* const);
 
 	virtual
@@ -79,11 +77,11 @@ public:
 	texture () const
 	{ return *fields .texture; }
 
-
-
 	bool
 	isTransparent () const
 	{ return false; }
+
+
 private:
 
 	struct Fields
@@ -101,4 +99,3 @@ private:
 } // titania
 
 #endif
-

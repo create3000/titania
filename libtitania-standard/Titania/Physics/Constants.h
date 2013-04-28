@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PHYSICS_H__
-#define __TITANIA_PHYSICS_H__
+#ifndef __TITANIA_PHYSICS_CONSTANTS_H__
+#define __TITANIA_PHYSICS_CONSTANTS_H__
 
 namespace titania {
 namespace math {

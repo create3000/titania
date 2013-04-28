@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,7 +66,7 @@ LoadSensor::Fields::Fields () :
 LoadSensor::LoadSensor (X3DExecutionContext* const executionContext) :
 	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DNetworkSensorNode (),                                                    
-	fields ()
+	              fields ()                                                     
 {
 	setComponent ("Networking");
 	setTypeName ("LoadSensor");
@@ -89,4 +89,3 @@ LoadSensor::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
-

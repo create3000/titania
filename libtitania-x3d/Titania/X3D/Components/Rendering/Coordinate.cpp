@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,7 +62,7 @@ Coordinate::Fields::Fields () :
 Coordinate::Coordinate (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DCoordinateNode (),                                                    
-	fields ()
+	           fields ()                                                     
 {
 	setComponent ("Rendering");
 	setTypeName ("Coordinate");
@@ -86,4 +86,3 @@ Coordinate::resize (size_t size)
 
 } // X3D
 } // titania
-

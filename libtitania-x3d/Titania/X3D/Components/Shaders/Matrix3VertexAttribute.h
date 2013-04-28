@@ -61,8 +61,6 @@ class Matrix3VertexAttribute :
 {
 public:
 
-	
-
 	Matrix3VertexAttribute (X3DExecutionContext* const);
 
 	virtual
@@ -97,4 +95,3 @@ private:
 } // titania
 
 #endif
-

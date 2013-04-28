@@ -61,7 +61,7 @@ class Speed
 {
 public:
 
-	Speed (const Type &value) :
+	Speed (const Type & value) :
 		value (value),
 		position ()
 	{ }

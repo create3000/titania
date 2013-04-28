@@ -61,13 +61,6 @@ class Material :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-
 	Material (X3DExecutionContext* const);
 
 	virtual
@@ -124,8 +117,6 @@ public:
 	transparency () const
 	{ return *fields .transparency; }
 
-
-
 	virtual
 	bool
 	isTransparent () const
@@ -160,7 +151,6 @@ private:
 
 	Fields fields;
 
-
 	float   alpha;
 	GLfloat glAmbientColor [4];
 	GLfloat glDiffuseColor [4];
@@ -174,4 +164,3 @@ private:
 } // titania
 
 #endif
-

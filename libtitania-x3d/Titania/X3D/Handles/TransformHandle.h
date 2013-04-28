@@ -71,7 +71,7 @@ public:
 	virtual
 	void
 	remove ();
-	
+
 	virtual
 	void
 	dispose ();
@@ -86,7 +86,7 @@ private:
 	virtual
 	void
 	traverse (TraverseType);
-	
+
 	SFNode <Scene> scene;
 
 };

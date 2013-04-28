@@ -65,19 +65,6 @@ public:
 	using X3DGeometryNode::ccw;
 	using X3DGeometryNode::creaseAngle;
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	Extrusion (X3DExecutionContext* const);
 
 	virtual
@@ -182,8 +169,6 @@ public:
 	spine () const
 	{ return *fields .spine; }
 
-
-
 	virtual
 	void
 	dispose ();
@@ -235,11 +220,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

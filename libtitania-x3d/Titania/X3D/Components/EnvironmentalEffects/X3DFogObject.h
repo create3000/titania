@@ -101,7 +101,6 @@ public:
 	transparency () const
 	{ return fields .transparency; }
 
-
 	virtual
 	void
 	enable ();
@@ -149,7 +148,6 @@ private:
 
 	Fields fields;
 
-
 	GLenum  glMode;
 	GLfloat glColor [4];
 
@@ -159,4 +157,3 @@ private:
 } // titania
 
 #endif
-

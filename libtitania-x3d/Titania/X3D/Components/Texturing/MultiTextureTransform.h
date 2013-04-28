@@ -61,8 +61,6 @@ class MultiTextureTransform :
 {
 public:
 
-	
-
 	MultiTextureTransform (X3DExecutionContext* const);
 
 	virtual
@@ -79,11 +77,11 @@ public:
 	textureTransform () const
 	{ return *fields .textureTransform; }
 
-
-
 	virtual
 	void
 	draw ();
+
+
 private:
 
 	struct Fields
@@ -101,4 +99,3 @@ private:
 } // titania
 
 #endif
-

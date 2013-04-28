@@ -61,8 +61,6 @@ class DirectionalLight :
 {
 public:
 
-	
-
 	DirectionalLight (X3DExecutionContext* const);
 
 	virtual
@@ -78,8 +76,6 @@ public:
 	const SFVec3f &
 	direction () const
 	{ return *fields .direction; }
-
-
 
 	virtual
 	void
@@ -105,7 +101,6 @@ private:
 
 	Fields fields;
 
-
 	GLfloat glAmbient [4];
 	GLfloat glDiffuseSpecular [4];
 	GLfloat glPosition [4];
@@ -116,4 +111,3 @@ private:
 } // titania
 
 #endif
-

@@ -82,7 +82,7 @@ protected:
 	virtual
 	void
 	initialize ();
-	
+
 	static
 	void
 	scaleImage (Magick::Image &, size_t, size_t);

@@ -87,7 +87,6 @@ public:
 	isBound () const
 	{ return *fields .isBound; }
 
-
 	///  @name Layer handling
 
 	virtual
@@ -141,7 +140,6 @@ private:
 
 	Fields fields;
 
-
 	bool displayed;
 
 };
@@ -150,4 +148,3 @@ private:
 } // titania
 
 #endif
-

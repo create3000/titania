@@ -68,13 +68,6 @@ class Appearance :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-
 	Appearance (X3DExecutionContext* const);
 
 	virtual
@@ -131,8 +124,6 @@ public:
 	shaders () const
 	{ return *fields .shaders; }
 
-
-
 	virtual
 	bool
 	isTransparent () const;
@@ -180,7 +171,6 @@ private:
 
 	Fields fields;
 
-
 	LineProperties*             _lineProperties;
 	FillProperties*             _fillProperties;
 	X3DMaterialNode*            _material;
@@ -194,4 +184,3 @@ private:
 } // titania
 
 #endif
-

@@ -59,7 +59,7 @@ namespace X3D {
 
 MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	  X3DTexture2DNode (),
+	  X3DTexture2DNode (),                                                    
 	X3DSoundSourceNode (),                                                    
 	      X3DUrlObject ()                                                     
 {
@@ -99,7 +99,7 @@ MovieTexture::initialize ()
 	X3DTexture2DNode::initialize ();
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
-	
+
 	url () .addInterest (this, &MovieTexture::set_url);
 
 	requestImmediateLoad ();

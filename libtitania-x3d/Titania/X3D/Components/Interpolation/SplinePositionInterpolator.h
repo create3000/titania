@@ -61,12 +61,6 @@ class SplinePositionInterpolator :
 {
 public:
 
-	
-	
-	
-	
-	
-
 	SplinePositionInterpolator (X3DExecutionContext* const);
 
 	virtual
@@ -116,8 +110,6 @@ public:
 	{ return *fields .value_changed; }
 
 
-
-
 private:
 
 	virtual
@@ -145,11 +137,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

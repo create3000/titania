@@ -842,8 +842,8 @@ X3DBaseNode::~X3DBaseNode ()
 {
 	//__LOG__ << typeName << std::endl;
 
-	for (const auto & field : getUserDefinedFields ())
-		delete field;
+	for (const auto & field : fields)
+		delete field .second;
 
 	//__LOG__ << typeName << std::endl;
 }

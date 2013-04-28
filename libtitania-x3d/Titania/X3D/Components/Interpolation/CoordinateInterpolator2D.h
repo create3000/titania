@@ -61,9 +61,6 @@ class CoordinateInterpolator2D :
 {
 public:
 
-	
-	
-
 	CoordinateInterpolator2D (X3DExecutionContext* const);
 
 	virtual
@@ -87,8 +84,6 @@ public:
 	const MFVec2f &
 	value_changed () const
 	{ return *fields .value_changed; }
-
-
 
 
 private:
@@ -115,11 +110,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

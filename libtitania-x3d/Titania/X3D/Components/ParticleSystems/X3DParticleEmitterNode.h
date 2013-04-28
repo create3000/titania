@@ -94,10 +94,11 @@ public:
 	{ return *fields .surfaceArea; }
 
 
-
 protected:
 
 	X3DParticleEmitterNode ();
+
+
 private:
 
 	struct Fields
@@ -118,4 +119,3 @@ private:
 } // titania
 
 #endif
-

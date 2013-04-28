@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,7 +62,7 @@ ComposedTexture3D::Fields::Fields () :
 ComposedTexture3D::ComposedTexture3D (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTexture3DNode (),                                                    
-	fields ()
+	          fields ()                                                     
 {
 	setComponent ("Texturing3D");
 	setTypeName ("ComposedTexture3D");
@@ -83,4 +83,3 @@ ComposedTexture3D::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
-

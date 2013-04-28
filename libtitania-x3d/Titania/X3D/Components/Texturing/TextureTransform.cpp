@@ -65,7 +65,7 @@ TextureTransform::Fields::Fields () :
 TextureTransform::TextureTransform (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTextureTransformNode (),                                                    
-	fields ()
+	                 fields ()                                                     
 {
 	setComponent ("Texturing");
 	setTypeName ("TextureTransform");
@@ -129,4 +129,3 @@ TextureTransform::draw ()
 
 } // X3D
 } // titania
-

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,7 +65,7 @@ PointLight::Fields::Fields () :
 PointLight::PointLight (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DLightNode (),                                                    
-	fields ()
+	      fields ()                                                     
 {
 	setComponent ("Lighting");
 	setTypeName ("PointLight");
@@ -98,7 +98,7 @@ void
 PointLight::eventsProcessed ()
 {
 	X3DLightNode::eventsProcessed ();
-	
+
 	float glAmbientIntensity = math::clamp <float> (ambientIntensity (), 0, 1);
 	float glIntensity        = math::clamp <float> (intensity (), 0, 1);
 
@@ -115,7 +115,7 @@ PointLight::eventsProcessed ()
 	glPosition [0] = location () .getX ();
 	glPosition [1] = location () .getY ();
 	glPosition [2] = location () .getZ ();
-	glPosition [3] = 1;                           // point light
+	glPosition [3] = 1;                       // point light
 }
 
 void
@@ -137,4 +137,3 @@ PointLight::draw (GLenum lightId)
 
 } // X3D
 } // titania
-

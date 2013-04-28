@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ WorldInfo::Fields::Fields () :
 WorldInfo::WorldInfo (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInfoNode (),                                                    
-	fields ()
+	     fields ()                                                     
 {
 	setComponent ("Core");
 	setTypeName ("WorldInfo");
@@ -81,4 +81,3 @@ WorldInfo::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
-

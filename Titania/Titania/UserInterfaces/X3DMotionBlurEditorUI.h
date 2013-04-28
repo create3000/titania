@@ -47,8 +47,9 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_MOTION_BLUR_EDITOR_H__
-#define __TMP_GLAD2CPP_MOTION_BLUR_EDITOR_H__
+
+#ifndef __TITANIA_USER_INTERFACES_X3DMOTION_BLUR_EDITOR_UI_H__
+#define __TITANIA_USER_INTERFACES_X3DMOTION_BLUR_EDITOR_UI_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>

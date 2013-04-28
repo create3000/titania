@@ -125,7 +125,7 @@ jsX3DArrayField <jsSFString, MFString>::unshift (JSContext* context, uintN argc,
 			return JS_FALSE;
 
 		MFString* field = (MFString*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-		
+
 		field -> emplace_front (JS_GetString (context, value));
 
 		return JS_NewNumberValue (context, field -> size (), vp);
@@ -150,7 +150,7 @@ jsX3DArrayField <jsSFString, MFString>::push (JSContext* context, uintN argc, js
 			return JS_FALSE;
 
 		MFString* field = (MFString*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-		
+
 		field -> emplace_back (JS_GetString (context, value));
 
 		return JS_NewNumberValue (context, field -> size (), vp);

@@ -65,9 +65,6 @@ class QuadSphereProperties :
 {
 public:
 
-	
-	
-
 	QuadSphereProperties (X3DExecutionContext* const);
 
 	///  @name Fields
@@ -87,8 +84,6 @@ public:
 	const SFInt32 &
 	vDimension () const
 	{ return *fields .vDimension; }
-
-
 
 	virtual
 	GLenum
@@ -135,11 +130,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

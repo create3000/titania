@@ -135,7 +135,7 @@ jsX3DArrayField <jsSFDouble, MFDouble>::unshift (JSContext* context, uintN argc,
 			return JS_FALSE;
 
 		MFDouble* field = (MFDouble*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-		
+
 		field -> emplace_front (value);
 
 		return JS_NewNumberValue (context, field -> size (), vp);
@@ -160,7 +160,7 @@ jsX3DArrayField <jsSFDouble, MFDouble>::push (JSContext* context, uintN argc, js
 			return JS_FALSE;
 
 		MFDouble* field = (MFDouble*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-		
+
 		field -> emplace_back (value);
 
 		return JS_NewNumberValue (context, field -> size (), vp);

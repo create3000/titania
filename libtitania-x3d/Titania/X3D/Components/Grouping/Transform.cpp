@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,9 +64,9 @@ Transform::Fields::Fields () :
 { }
 
 Transform::Transform (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	 X3DGroupingNode (),                                                    
-	fields ()
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DGroupingNode (),                                                    
+	         fields ()                                                     
 {
 	setComponent ("Grouping");
 	setTypeName ("Transform");
@@ -140,4 +140,3 @@ Transform::pop ()
 
 } // X3D
 } // titania
-

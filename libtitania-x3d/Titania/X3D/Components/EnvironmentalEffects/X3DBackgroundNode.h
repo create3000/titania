@@ -101,7 +101,6 @@ public:
 	transparency () const
 	{ return *fields .transparency; }
 
-
 	virtual
 	void
 	addToLayer (X3DLayerNode* const);
@@ -157,7 +156,6 @@ private:
 
 	Fields fields;
 
-
 	Matrix4d              matrix;
 	std::vector <GLfloat> glColors;
 	std::vector <GLfloat> glPoints;
@@ -169,4 +167,3 @@ private:
 } // titania
 
 #endif
-

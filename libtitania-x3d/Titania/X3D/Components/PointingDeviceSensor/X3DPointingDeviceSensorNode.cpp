@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,7 +62,7 @@ X3DPointingDeviceSensorNode::Fields::Fields () :
 
 X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
 	       X3DSensorNode (), 
-	              fields (),
+	              fields (), 
 	transformationMatrix ()  
 {
 	addNodeType (X3DConstants::X3DPointingDeviceSensorNode);
@@ -72,7 +72,7 @@ void
 X3DPointingDeviceSensorNode::initialize ()
 {
 	X3DSensorNode::initialize ();
-	
+
 	enabled () .addInterest (this, &X3DPointingDeviceSensorNode::set_enabled);
 }
 
@@ -83,7 +83,7 @@ X3DPointingDeviceSensorNode::set_enabled ()
 	{
 		if (isActive ())
 			isActive () = false;
-		
+
 		if (isOver ())
 			isOver () = false;
 	}
@@ -109,11 +109,10 @@ X3DPointingDeviceSensorNode::push ()
 	if (enabled ())
 	{
 		getBrowser () -> getSensors () .back () .insert (this);
-		
+
 		transformationMatrix = ModelViewMatrix4f ();
 	}
 }
 
 } // X3D
 } // titania
-

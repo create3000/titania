@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -68,8 +68,8 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	    X3DChildNode (),                                                    
 	X3DBoundedObject (),                                                    
 	    X3DUrlObject (),                                                    
-	          fields (),
-	           scene ()  
+	          fields (),                                                    
+	           scene ()                                                     
 {
 	setComponent ("Networking");
 	setTypeName ("Inline");
@@ -102,7 +102,7 @@ Inline::initialize ()
 
 	if (load ())
 		requestLoad ();
-	
+
 	else
 		scene = getBrowser () -> createScene ();
 }
@@ -185,7 +185,7 @@ Inline::requestImmediateLoad ()
 	catch (const X3DError & error)
 	{
 		scene = getBrowser () -> createScene ();
-		
+
 		setLoadState (FAILED_STATE);
 
 		std::clog << error .what () << std::endl;
@@ -232,4 +232,3 @@ Inline::dispose ()
 
 } // X3D
 } // titania
-

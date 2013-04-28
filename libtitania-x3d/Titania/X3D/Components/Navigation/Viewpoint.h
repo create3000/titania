@@ -61,9 +61,6 @@ class Viewpoint :
 {
 public:
 
-	
-	
-
 	Viewpoint (X3DExecutionContext* const, bool = true);
 
 	virtual
@@ -87,8 +84,6 @@ public:
 	const SFFloat &
 	fieldOfView () const
 	{ return *fields .fieldOfView; }
-
-
 
 	virtual
 	Vector3f
@@ -114,11 +109,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

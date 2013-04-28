@@ -53,8 +53,8 @@
 
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
-#include "../../Rendering/LightContainerArray.h"
 #include "../../Rendering/CollisionArray.h"
+#include "../../Rendering/LightContainerArray.h"
 #include "../../Rendering/X3DRenderer.h"
 #include "../EnvironmentalEffects/LocalFog.h"
 #include "../Grouping/Group.h"
@@ -119,7 +119,6 @@ public:
 	const MFNode &
 	children () const
 	{ return *fields .children; }
-
 
 	///  @name Children handling
 
@@ -240,16 +239,16 @@ private:
 
 	void
 	pick ();
-	
+
 	void
 	camera ();
-	
+
 	void
 	navigation ();
 
 	void
 	collision ();
-	
+
 	void
 	collect ();
 
@@ -269,7 +268,6 @@ private:
 	};
 
 	Fields fields;
-
 
 	SFNode <Viewport>          defaultViewport;
 	SFNode <NavigationInfo>    defaultNavigationInfo;
@@ -303,4 +301,3 @@ private:
 } // titania
 
 #endif
-

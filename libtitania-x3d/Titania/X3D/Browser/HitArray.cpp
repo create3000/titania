@@ -58,4 +58,4 @@ namespace X3D {
 } // X3D
 } // titania
 
-template class std::deque <std::shared_ptr<titania::X3D::Hit>>;
+template class std::deque <std::shared_ptr <titania::X3D::Hit>>;

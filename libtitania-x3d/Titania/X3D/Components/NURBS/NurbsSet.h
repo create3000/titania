@@ -62,11 +62,6 @@ class NurbsSet :
 {
 public:
 
-	
-	
-	
-	
-
 	NurbsSet (X3DExecutionContext* const);
 
 	virtual
@@ -107,8 +102,6 @@ public:
 	tessellationScale () const
 	{ return *fields .tessellationScale; }
 
-
-
 	Box3f
 	getBBox ();
 
@@ -135,11 +128,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

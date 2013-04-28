@@ -74,9 +74,9 @@ TextureProperties::Fields::Fields () :
 { }
 
 TextureProperties::TextureProperties (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DPropertyNode (),                                                    
-	fields ()
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DPropertyNode (),                                                    
+	         fields ()                                                     
 {
 	setComponent ("Texturing");
 	setTypeName ("TextureProperties");
@@ -287,4 +287,3 @@ TextureProperties::getInternalFormat (int32_t components) const
 
 } // X3D
 } // titania
-

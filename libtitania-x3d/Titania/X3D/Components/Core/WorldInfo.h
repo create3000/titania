@@ -61,9 +61,6 @@ class WorldInfo :
 {
 public:
 
-	
-	
-
 	WorldInfo (X3DExecutionContext* const);
 
 	virtual
@@ -107,4 +104,3 @@ private:
 } // titania
 
 #endif
-

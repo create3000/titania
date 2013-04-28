@@ -63,10 +63,7 @@ class ArcClose2DProperties :
 {
 public:
 
-	
-
 	ArcClose2DProperties (X3DExecutionContext* const);
-
 
 	///  @name Fields
 
@@ -77,6 +74,7 @@ public:
 	const SFFloat &
 	minAngle () const
 	{ return *fields .minAngle; }
+
 
 private:
 
@@ -99,4 +97,3 @@ private:
 } // titania
 
 #endif
-

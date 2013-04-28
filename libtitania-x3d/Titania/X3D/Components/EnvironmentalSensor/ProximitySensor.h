@@ -62,10 +62,6 @@ class ProximitySensor :
 {
 public:
 
-	
-	
-	
-
 	ProximitySensor (X3DExecutionContext* const);
 
 	virtual
@@ -97,8 +93,6 @@ public:
 	const SFVec3f &
 	position_changed () const
 	{ return *fields .position_changed; }
-
-
 
 	virtual
 	void
@@ -132,7 +126,6 @@ private:
 
 	Fields fields;
 
-
 	bool
 	isInside (const Matrix4f &) const;
 
@@ -146,4 +139,3 @@ private:
 } // titania
 
 #endif
-

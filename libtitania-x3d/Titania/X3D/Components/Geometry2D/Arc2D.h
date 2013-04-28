@@ -61,10 +61,6 @@ class Arc2D :
 {
 public:
 
-	
-	
-	
-
 	Arc2D (X3DExecutionContext* const);
 
 	virtual
@@ -97,8 +93,6 @@ public:
 	radius () const
 	{ return *fields .radius; }
 
-
-
 	virtual
 	void
 	draw ();
@@ -113,7 +107,7 @@ private:
 	virtual
 	void
 	initialize ();
-	
+
 	float
 	getAngle ();
 
@@ -135,11 +129,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

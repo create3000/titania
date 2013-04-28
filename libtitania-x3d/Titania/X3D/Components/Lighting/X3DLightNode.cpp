@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,8 +64,8 @@ X3DLightNode::Fields::Fields () :
 { }
 
 X3DLightNode::X3DLightNode () :
-	    X3DChildNode (),        
-	fields ()
+	X3DChildNode (), 
+	      fields ()  
 {
 	addNodeType (X3DConstants::X3DLightNode);
 }
@@ -91,4 +91,3 @@ X3DLightNode::pop ()
 
 } // X3D
 } // titania
-

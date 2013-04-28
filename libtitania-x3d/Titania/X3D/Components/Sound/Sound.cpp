@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,8 +50,8 @@
 
 #include "Sound.h"
 
-#include "../../Execution/X3DExecutionContext.h"
 #include "../../Bits/Cast.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 #include "../../Rendering/Matrix.h"
 #include "../../Types/Geometry.h"
@@ -75,7 +75,7 @@ Sound::Fields::Fields () :
 Sound::Sound (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DSoundNode (),                                                    
-	      fields (),
+	      fields (),                                                    
 	     _source (NULL)                                                 
 {
 	setComponent ("Sound");
@@ -122,22 +122,22 @@ Sound::traverse (TraverseType type)
 	if (type == TraverseType::COLLECT)
 	{
 		if (_source)
-		{			
+		{
 			float minRadius, maxRadius, minDistance, maxDistance;
-			
+
 			getEllipsoidParameter (maxBack (), maxFront (), maxRadius, maxDistance);
 			getEllipsoidParameter (minBack (), minFront (), minRadius, minDistance);
-			
+
 			if (maxDistance < maxRadius)
 			{
 				if (minDistance < minRadius)
 					_source -> setVolume (intensity ());
-					
+
 				else
 				{
 					float d1 = maxRadius - maxDistance;
 					float d2 = maxRadius - minRadius;
-					
+
 					_source -> setVolume (intensity () * (d1 / d2));
 				}
 			}
@@ -157,19 +157,18 @@ Sound::getEllipsoidParameter (const float & back, const float & front, float & r
 	float b = std::sqrt (a * a - e * e);
 
 	Matrix4f transformationMatrix = ModelViewMatrix4f ();
+
 	transformationMatrix .translate (location () .getValue ());
 	transformationMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), direction () .getValue ()));
-	
+
 	transformationMatrix .translate (Vector3f (0, 0, e));
 	transformationMatrix .scale (Vector3f (1, 1, b / a));
-	
+
 	Vector3f viewer = inverse (transformationMatrix) .translation ();
 
 	radius   = b;
 	distance = abs (viewer);
 }
 
-
 } // X3D
 } // titania
-

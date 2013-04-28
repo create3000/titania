@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,8 +63,8 @@ X3DFogObject::Fields::Fields () :
 { }
 
 X3DFogObject::X3DFogObject () :
-	    X3DBaseNode (),         
-	fields ()
+	X3DBaseNode (), 
+	     fields ()  
 {
 	addNodeType (X3DConstants::X3DFogObject);
 
@@ -89,7 +89,7 @@ X3DFogObject::getVisibilityRange ()
 {
 	if (visibilityRange ())
 		return visibilityRange ();
-	
+
 	return getBrowser () -> getLayers () .top () -> getNavigationInfo () -> getFarPlane ();
 }
 
@@ -162,4 +162,3 @@ X3DFogObject::dispose ()
 
 } // X3D
 } // titania
-

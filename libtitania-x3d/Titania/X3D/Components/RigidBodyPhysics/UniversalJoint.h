@@ -61,18 +61,6 @@ class UniversalJoint :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	UniversalJoint (X3DExecutionContext* const);
 
 	virtual
@@ -197,4 +185,3 @@ private:
 } // titania
 
 #endif
-

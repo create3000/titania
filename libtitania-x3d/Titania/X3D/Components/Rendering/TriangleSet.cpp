@@ -72,12 +72,12 @@ TriangleSet::TriangleSet (X3DExecutionContext* const executionContext) :
 	setTypeName ("TriangleSet");
 
 	addField (inputOutput,    "metadata",        metadata ());
-	
+
 	addField (initializeOnly, "solid",           solid ());
 	addField (initializeOnly, "ccw",             ccw ());
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-	
+
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
 	addField (inputOutput,    "texCoord",        texCoord ());
@@ -135,7 +135,7 @@ TriangleSet::build ()
 	// Normal
 
 	auto _normal = x3d_cast <Normal*> (normal () .getValue ());
-	
+
 	if (_normal)
 		_normal -> resize (normalPerVertex () ? size : size / VERTEX_COUNT);
 
@@ -224,16 +224,16 @@ void
 TriangleSet::buildNormals ()
 {
 	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
-	
+
 	size_t size = _coord -> point () .size () / VERTEX_COUNT * VERTEX_COUNT;
-	
+
 	for (size_t index = 0; index < size; index += VERTEX_COUNT)
 	{
 		// Determine polygon normal.
 		Vector3f normal = math::normal <float> (_coord -> point () [index],
-			                                     _coord -> point () [index + 1],
-			                                     _coord -> point () [index + 2]);
-		
+		                                        _coord -> point () [index + 1],
+		                                        _coord -> point () [index + 2]);
+
 		getNormals () .resize (getNormals () .size () + VERTEX_COUNT, normal);
 	}
 }

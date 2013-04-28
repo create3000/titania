@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,9 +61,9 @@ BooleanTrigger::Fields::Fields () :
 { }
 
 BooleanTrigger::BooleanTrigger (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	 X3DTriggerNode (),                                                    
-	fields ()
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DTriggerNode (),                                                    
+	        fields ()                                                     
 {
 	setComponent ("EventUtilities");
 	setTypeName ("BooleanTrigger");
@@ -81,4 +81,3 @@ BooleanTrigger::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
-

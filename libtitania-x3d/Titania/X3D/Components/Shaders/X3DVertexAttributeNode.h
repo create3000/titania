@@ -70,10 +70,11 @@ public:
 	{ return *fields .name; }
 
 
-
 protected:
 
 	X3DVertexAttributeNode ();
+
+
 private:
 
 	struct Fields
@@ -91,4 +92,3 @@ private:
 } // titania
 
 #endif
-

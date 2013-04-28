@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,7 +66,7 @@ Disk2D::Fields::Fields () :
 Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	fields ()
+	         fields ()                                                     
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Disk2D");
@@ -109,13 +109,13 @@ void
 Disk2D::build ()
 {
 	const Disk2DProperties* properties = getBrowser () -> getBrowserOptions () -> disc2DProperties () .getValue ();
-		
+
 	if (innerRadius () == outerRadius ())
 	{
 		auto radius = std::abs (outerRadius ());
-	
+
 		// Circle
-		
+
 		if (radius == 1.0f)
 			getVertices () = properties -> getVertices ();
 
@@ -130,18 +130,18 @@ Disk2D::build ()
 		addElement (getVertices () .size ());
 		setVertexMode (GL_LINE_LOOP);
 		setSolid (false);
-		
+
 		return;
 	}
 
 	if (innerRadius () == 0.0f or outerRadius () == 0.0f)
 	{
 		auto radius = std::abs (std::max (innerRadius (), outerRadius ()));
-	
+
 		// Disk
-		
+
 		size_t elements = solid () ? 1 : 2;
-		
+
 		getTexCoord () .reserve (elements * properties -> getTexCoord () .size ());
 		getNormals  () .reserve (elements * properties -> getNormals  () .size ());
 		getVertices () .reserve (elements * properties -> getVertices () .size ());
@@ -169,43 +169,43 @@ Disk2D::build ()
 
 		return;
 	}
-	
+
 	// Disk with hole
-	
+
 	size_t elements = solid () ? 1 : 2;
-		
+
 	getTexCoord () .reserve (elements * (properties -> getTexCoord () .size () + 2));
 	getNormals  () .reserve (elements * (properties -> getNormals  () .size () + 2));
 	getVertices () .reserve (elements * (properties -> getVertices () .size () + 2));
-	
+
 	// Texture Coordinates
-	
+
 	auto maxRadius = std::abs (std::max (innerRadius (), outerRadius ()));
 	auto minRadius = std::abs (std::min (innerRadius (), outerRadius ()));
 	auto scale     = minRadius / maxRadius;
-	
+
 	for (const auto & texCoord : properties -> getTexCoord ())
 	{
 		getTexCoord () .emplace_back (texCoord * scale + Vector3f ((1 - scale) / 2, (1 - scale) / 2, 0));
 		getTexCoord () .emplace_back (texCoord);
 	}
-	
+
 	// Normals
-	
+
 	for (const auto & normal : properties -> getNormals ())
 	{
 		getNormals () .emplace_back (normal);
 		getNormals () .emplace_back (normal);
 	}
-	
+
 	// Vertices
-	
+
 	for (const auto & vertex : properties -> getVertices ())
 	{
 		getVertices () .emplace_back (vertex * minRadius);
 		getVertices () .emplace_back (vertex * maxRadius);
 	}
-	
+
 	// The last two vertices are the first two.
 	getTexCoord () .emplace_back (getTexCoord () [0]);
 	getTexCoord () .emplace_back (getTexCoord () [1]);
@@ -213,11 +213,11 @@ Disk2D::build ()
 	getNormals  () .emplace_back (getNormals  () [1]);
 	getVertices () .emplace_back (getVertices () [0]);
 	getVertices () .emplace_back (getVertices () [1]);
-	
+
 	addElement (getVertices () .size ());
 	setVertexMode (GL_QUAD_STRIP);
 	setSolid (true);
-	
+
 	if (not solid ())
 		addMirrorVertices (true);
 }
@@ -241,4 +241,3 @@ Disk2D::dispose ()
 
 } // X3D
 } // titania
-

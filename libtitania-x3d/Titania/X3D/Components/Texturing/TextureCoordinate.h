@@ -61,8 +61,6 @@ class TextureCoordinate :
 {
 public:
 
-	
-
 	TextureCoordinate (X3DExecutionContext* const);
 
 	virtual
@@ -79,10 +77,10 @@ public:
 	point () const
 	{ return *fields .point; }
 
-
-
 	void
 	resize (size_t);
+
+
 private:
 
 	struct Fields
@@ -100,4 +98,3 @@ private:
 } // titania
 
 #endif
-

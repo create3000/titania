@@ -61,20 +61,6 @@ class TwoSidedMaterial :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	TwoSidedMaterial (X3DExecutionContext* const);
 
 	virtual
@@ -187,8 +173,6 @@ public:
 	backTransparency () const
 	{ return *fields .backTransparency; }
 
-
-
 	virtual
 	bool
 	isTransparent () const
@@ -230,7 +214,6 @@ private:
 
 	Fields fields;
 
-
 	float   alpha;
 	GLfloat glAmbientColor [4];
 	GLfloat glDiffuseColor [4];
@@ -251,4 +234,3 @@ private:
 } // titania
 
 #endif
-

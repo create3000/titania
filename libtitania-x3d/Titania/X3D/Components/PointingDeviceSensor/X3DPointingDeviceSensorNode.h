@@ -78,7 +78,6 @@ public:
 	isOver () const
 	{ return *fields .isOver; }
 
-
 	virtual
 	void
 	set_touch () { }
@@ -98,7 +97,7 @@ public:
 protected:
 
 	X3DPointingDeviceSensorNode ();
-	
+
 	virtual
 	void
 	initialize () override;
@@ -123,12 +122,11 @@ private:
 
 	Fields fields;
 
-
 	Matrix4f transformationMatrix;
+
 };
 
 } // X3D
 } // titania
 
 #endif
-

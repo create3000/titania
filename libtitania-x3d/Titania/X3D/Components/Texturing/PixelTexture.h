@@ -61,8 +61,6 @@ class PixelTexture :
 {
 public:
 
-	
-
 	PixelTexture (X3DExecutionContext* const);
 
 	virtual
@@ -78,8 +76,6 @@ public:
 	const SFImage &
 	image () const
 	{ return *fields .image; }
-
-
 
 
 private:
@@ -100,11 +96,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

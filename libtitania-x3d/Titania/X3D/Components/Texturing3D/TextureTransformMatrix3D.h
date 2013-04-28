@@ -61,8 +61,6 @@ class TextureTransformMatrix3D :
 {
 public:
 
-	
-
 	TextureTransformMatrix3D (X3DExecutionContext* const);
 
 	virtual
@@ -79,11 +77,11 @@ public:
 	matrix () const
 	{ return *fields .matrix; }
 
-
-
 	virtual
 	void
 	draw ();
+
+
 private:
 
 	struct Fields
@@ -101,4 +99,3 @@ private:
 } // titania
 
 #endif
-

@@ -93,7 +93,7 @@ public:
 	virtual
 	X3DBaseNode*
 	copy (X3DExecutionContext* const) const;
-	
+
 	void
 	replace (X3DBaseNode* const);
 
@@ -122,7 +122,7 @@ public:
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) override;
+	throw (Error <DISPOSED>)override;
 
 	virtual
 	const X3DBaseNode*
@@ -135,7 +135,7 @@ public:
 	virtual
 	X3DBaseNode*
 	getLocalNode ();
-	
+
 	///  @name Field handling
 
 	X3DFieldDefinition*
@@ -155,7 +155,7 @@ public:
 
 	FieldDefinitionArray
 	getUserDefinedFields () const;
-	
+
 	bool
 	isDefaultValue (const X3DFieldDefinition* const) const;
 
@@ -164,9 +164,9 @@ public:
 	virtual
 	void
 	setup ();
-	
+
 	///  @name Event handling
-	
+
 	void
 	processEvents ();
 
@@ -188,7 +188,7 @@ public:
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	       Error <DISPOSED>)override;
 
 	virtual
 	void

@@ -85,7 +85,7 @@ public:
 	typedef Type value_type;
 
 	///  @name Constructors
-	
+
 	///  Default constructor. Constructs a plane in the Z=0 plane with distance 0.
 	constexpr
 	plane3 () :
@@ -110,12 +110,14 @@ public:
 	constexpr
 	plane3 (const vector3 <Type> & point, const vector3 <Type> & normal) :
 		value { normal, dot (normal, point) }
+
 	{ }
 
 	///  Constructs a plane from @a vector. The point the vector points to is taken as a point on a plane
 	///  and the direction of this vector as normal.
 	plane3 (const vector3 <Type> & vector) :
 		value { normalize (vector), abs (vector) }
+
 	{ }
 
 	///  @name Element access
@@ -133,7 +135,7 @@ public:
 	///  Returns the distance from @a point.
 	constexpr Type
 	distance (const vector3 <Type> &) const;
-	
+
 	///  Returns the closest point on the plane to a given point @a point.
 	vector3 <Type>
 	closest_point (const vector3 <Type> & point)

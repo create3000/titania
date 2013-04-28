@@ -63,13 +63,6 @@ class Background :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-
 	Background (X3DExecutionContext* const, bool = true);
 
 	virtual
@@ -126,8 +119,6 @@ public:
 	bottomUrl () const
 	{ return *fields .bottomUrl; }
 
-
-
 	virtual
 	void
 	draw ();
@@ -157,7 +148,6 @@ private:
 
 	Fields fields;
 
-
 	SFNode <ImageTexture>      frontTexture;
 	SFNode <ImageTexture>      backTexture;
 	SFNode <ImageTexture>      leftTexture;
@@ -172,4 +162,3 @@ private:
 } // titania
 
 #endif
-

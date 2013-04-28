@@ -61,8 +61,6 @@ class Matrix4VertexAttribute :
 {
 public:
 
-	
-
 	Matrix4VertexAttribute (X3DExecutionContext* const);
 
 	virtual
@@ -97,4 +95,3 @@ private:
 } // titania
 
 #endif
-

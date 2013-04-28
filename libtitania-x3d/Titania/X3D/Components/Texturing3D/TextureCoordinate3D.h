@@ -61,8 +61,6 @@ class TextureCoordinate3D :
 {
 public:
 
-	
-
 	TextureCoordinate3D (X3DExecutionContext* const);
 
 	virtual
@@ -97,4 +95,3 @@ private:
 } // titania
 
 #endif
-

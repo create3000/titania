@@ -62,10 +62,6 @@ class NurbsSweptSurface :
 public:
 
 	using X3DGeometryNode::ccw;
-	
-	
-	
-	
 
 	NurbsSweptSurface (X3DExecutionContext* const);
 
@@ -119,4 +115,3 @@ private:
 } // titania
 
 #endif
-

@@ -61,21 +61,6 @@ class RigidBody :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	RigidBody (X3DExecutionContext* const);
 
 	virtual
@@ -227,4 +212,3 @@ private:
 } // titania
 
 #endif
-

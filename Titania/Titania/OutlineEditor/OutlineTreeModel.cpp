@@ -56,12 +56,12 @@ namespace titania {
 namespace puck {
 
 OutlineTreeModel::OutlineTreeModel (const X3D::SFNode <X3D::Browser> & browser) :
-	Glib::ObjectBase (typeid (OutlineTreeModel)),               
-	    Glib::Object (),                                        
-	  Gtk::TreeModel (),                                        
-	executionContext (browser -> getExecutionContext ()),       
-	           stamp ((long int)                          this),
-	            tree ()
+	Glib::ObjectBase (typeid (OutlineTreeModel)),                
+	    Glib::Object (),                                         
+	  Gtk::TreeModel (),                                         
+	executionContext (browser -> getExecutionContext ()),        
+	           stamp ((long int)                          this), 
+	            tree ()                                          
 {
 	//__LOG__ << std::endl;
 
@@ -724,7 +724,7 @@ OutlineTreeModel::setData (iterator & iter,
 
 	if (not node .data)
 		node .data = new OutlineIterData (type, object, index, parents);
-	
+
 	iter .gobj () -> user_data = node .data;
 }
 

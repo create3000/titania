@@ -111,7 +111,7 @@ VisibilitySensor::traverse (TraverseType type)
 			visible = ViewVolume (ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix (),
 			                      ProjectionMatrix4f ())
 			          .intersect (Box3f (size (), center ()));
-			          
+
 			break;
 		}
 		default:

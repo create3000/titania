@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,7 +65,7 @@ QuadSphereProperties::Fields::Fields () :
 QuadSphereProperties::QuadSphereProperties (X3DExecutionContext* const executionContext) :
 	          X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DSpherePropertyNode (),                                                    
-	           fields ()                                                   
+	               fields ()                                                     
 {
 	setComponent ("Browser"),
 	setTypeName ("QuadSphereProperties");
@@ -220,4 +220,3 @@ QuadSphereProperties::build ()
 
 } // X3D
 } // titania
-

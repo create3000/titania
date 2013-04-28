@@ -51,22 +51,22 @@
 #ifndef __TITANIA_MATH_GEOMETRY_BOX2_H__
 #define __TITANIA_MATH_GEOMETRY_BOX2_H__
 
-#include "../Numbers/Vector2.h"
 #include "../Numbers/Matrix3.h"
+#include "../Numbers/Vector2.h"
 
 namespace titania {
 namespace math {
 
 /*
  *                    d0
- *     ------------- 
+ *     -------------
  *    |             |
  *    |             |
  *    |             |
  *    |             |
  *    |  d1         |
  *    |_____________|
- *                    
+ *
  *
  */
 

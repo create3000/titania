@@ -62,13 +62,6 @@ class ComposedCubeMapTexture :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-
 	ComposedCubeMapTexture (X3DExecutionContext* const);
 
 	virtual
@@ -125,13 +118,11 @@ public:
 	top () const
 	{ return *fields .top; }
 
-
-
 	virtual
 	bool
 	isTransparent () const
 	{ return transparent; }
-	
+
 	virtual
 	void
 	draw ();
@@ -145,9 +136,9 @@ private:
 
 	void
 	set_children ();
-	
+
 	void
-	setTexture (GLenum, const X3DTexture2DNode* const, size_t &, size_t &, bool);
+	setTexture (GLenum, const X3DTexture2DNode * const, size_t &, size_t &, bool);
 
 	struct Fields
 	{
@@ -163,7 +154,6 @@ private:
 
 	Fields fields;
 
-
 	bool transparent;
 
 };
@@ -172,4 +162,3 @@ private:
 } // titania
 
 #endif
-

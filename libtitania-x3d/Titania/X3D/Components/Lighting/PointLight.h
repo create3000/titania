@@ -61,10 +61,6 @@ class PointLight :
 {
 public:
 
-	
-	
-	
-
 	PointLight (X3DExecutionContext* const);
 
 	virtual
@@ -97,8 +93,6 @@ public:
 	radius () const
 	{ return *fields .radius; }
 
-
-
 	virtual
 	void
 	eventsProcessed ();
@@ -125,7 +119,6 @@ private:
 
 	Fields fields;
 
-
 	GLfloat glAmbient [4];
 	GLfloat glDiffuseSpecular [4];
 	GLfloat glPosition [4];
@@ -136,4 +129,3 @@ private:
 } // titania
 
 #endif
-

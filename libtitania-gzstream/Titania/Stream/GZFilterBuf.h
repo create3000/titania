@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_STREAM_GZSTREAM_BUF_H__
-#define __TITANIA_STREAM_GZSTREAM_BUF_H__
+#ifndef __TITANIA_STREAM_GZFILTER_BUF_H__
+#define __TITANIA_STREAM_GZFILTER_BUF_H__
 
 #include <cstddef>
 #include <cstring>

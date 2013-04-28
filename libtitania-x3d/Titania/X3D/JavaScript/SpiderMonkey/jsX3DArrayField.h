@@ -92,7 +92,7 @@ private:
 
 	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
-	
+
 	static JSBool unshift (JSContext *, uintN, jsval*);
 	static JSBool push    (JSContext *, uintN, jsval*);
 	static JSBool shift   (JSContext *, uintN, jsval*);
@@ -133,7 +133,7 @@ JSFunctionSpec jsX3DArrayField <Type, FieldType>::functions [ ] = {
 	{ "push",        push,    1, 0 },
 	{ "shift",       shift,   0, 0 },
 	{ "pop",         pop,     0, 0 },
-	
+
 	{ "toString",    toString <X3DChildObject>,    0, 0 },
 
 	{ 0 }
@@ -330,7 +330,7 @@ jsX3DArrayField <Type, FieldType>::unshift (JSContext* context, uintN argc, jsva
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &value))
 			return JS_FALSE;
-	
+
 		if (not JS_InstanceOf (context, value, value_type::getClass (), NULL))
 		{
 			JS_ReportError (context, "Type of argument is invalid - should be %s, is %s",
@@ -341,7 +341,7 @@ jsX3DArrayField <Type, FieldType>::unshift (JSContext* context, uintN argc, jsva
 		}
 
 		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-		
+
 		field -> emplace_front (*(field_value_type*) JS_GetPrivate (context, value));
 
 		return JS_NewNumberValue (context, field -> size (), vp);
@@ -364,7 +364,7 @@ jsX3DArrayField <Type, FieldType>::push (JSContext* context, uintN argc, jsval* 
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &value))
 			return JS_FALSE;
-	
+
 		if (not JS_InstanceOf (context, value, value_type::getClass (), NULL))
 		{
 			JS_ReportError (context, "Type of argument is invalid - should be %s, is %s",
@@ -375,7 +375,7 @@ jsX3DArrayField <Type, FieldType>::push (JSContext* context, uintN argc, jsval* 
 		}
 
 		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-		
+
 		field -> emplace_back (*(field_value_type*) JS_GetPrivate (context, value));
 
 		return JS_NewNumberValue (context, field -> size (), vp);
@@ -393,16 +393,16 @@ jsX3DArrayField <Type, FieldType>::shift (JSContext* context, uintN argc, jsval*
 	if (argc == 0)
 	{
 		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-		
+
 		if (field -> size ())
 		{
 			auto value = new field_value_type (field -> front ());
-		
+
 			field -> pop_front ();
 
 			return value_type::create (context, value, vp);
 		}
-		
+
 		*vp = JSVAL_VOID;
 
 		return JS_TRUE;
@@ -420,16 +420,16 @@ jsX3DArrayField <Type, FieldType>::pop (JSContext* context, uintN argc, jsval* v
 	if (argc == 0)
 	{
 		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-		
+
 		if (field -> size ())
 		{
 			auto value = new field_value_type (field -> back ());
-		
+
 			field -> pop_back ();
 
 			return value_type::create (context, value, vp);
 		}
-		
+
 		*vp = JSVAL_VOID;
 
 		return JS_TRUE;

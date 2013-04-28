@@ -68,11 +68,11 @@ jsX3DArrayField <jsSFFloat, MFFloat>::set1Value (JSContext *, JSObject *, jsid, 
 
 template <>
 JSBool
-jsX3DArrayField <jsSFFloat, MFFloat>::unshift (JSContext*, uintN, jsval*);
+jsX3DArrayField <jsSFFloat, MFFloat>::unshift (JSContext *, uintN, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFFloat, MFFloat>::push (JSContext*, uintN, jsval*);
+jsX3DArrayField <jsSFFloat, MFFloat>::push (JSContext *, uintN, jsval*);
 
 extern template class jsX3DArrayField <jsSFFloat, MFFloat>;
 

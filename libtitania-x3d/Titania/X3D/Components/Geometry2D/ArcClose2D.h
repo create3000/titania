@@ -61,12 +61,6 @@ class ArcClose2D :
 {
 public:
 
-	
-	
-	
-	
-	
-
 	ArcClose2D (X3DExecutionContext* const);
 
 	virtual
@@ -115,8 +109,6 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
-
-
 	virtual
 	void
 	dispose ();
@@ -127,7 +119,7 @@ private:
 	virtual
 	void
 	initialize ();
-	
+
 	float
 	getAngle ();
 
@@ -151,11 +143,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

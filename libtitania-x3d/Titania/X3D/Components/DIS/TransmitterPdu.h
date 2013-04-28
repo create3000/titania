@@ -62,47 +62,6 @@ class TransmitterPdu :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	TransmitterPdu (X3DExecutionContext* const);
 
 	virtual
@@ -431,8 +390,6 @@ public:
 	timestamp () const
 	{ return *fields .timestamp; }
 
-
-
 	virtual
 	Box3f
 	getBBox ();
@@ -496,11 +453,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

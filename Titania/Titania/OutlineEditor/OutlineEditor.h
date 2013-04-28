@@ -78,7 +78,7 @@ private:
 	initialize ();
 
 	OutlineTreeView treeview;
-	
+
 	bool
 	on_button_release_event (GdkEventButton*);
 

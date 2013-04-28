@@ -61,10 +61,6 @@ class GeoCoordinate :
 {
 public:
 
-	
-	
-	
-
 	GeoCoordinate (X3DExecutionContext* const);
 
 	virtual
@@ -117,4 +113,3 @@ private:
 } // titania
 
 #endif
-

@@ -61,9 +61,6 @@ class IntegerSequencer :
 {
 public:
 
-	
-	
-
 	IntegerSequencer (X3DExecutionContext* const);
 
 	virtual
@@ -107,4 +104,3 @@ private:
 } // titania
 
 #endif
-

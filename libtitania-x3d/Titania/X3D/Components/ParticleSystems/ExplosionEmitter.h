@@ -61,8 +61,6 @@ class ExplosionEmitter :
 {
 public:
 
-	
-
 	ExplosionEmitter (X3DExecutionContext* const);
 
 	virtual
@@ -97,4 +95,3 @@ private:
 } // titania
 
 #endif
-

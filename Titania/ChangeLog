@@ -1,5 +1,32 @@
 2013-04-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* History.cpp:
+	* BrowserWidget.cpp:
+	* X3DConsoleUI.h:
+	* OutlineEditor.h:
+	* ViewpointMenuItem.cpp:
+	* OutlineTreeView.h:
+	* X3DConsoleUI.cpp:
+	* OutlineTreeModel.h:
+	* OutlineSelection.h:
+	* OutlineTreeView.cpp:
+	* OutlineTreeModel.cpp:
+	* OutlineSelection.cpp:
+	* X3DOutlineEditorUI.h:
+	* X3DHistoryEditorUI.h:
+	* X3DBrowserWidgetUI.h:
+	* X3DBrowserWindowUI.h:
+	* X3DOutlineEditorUI.cpp:
+	* X3DBrowserWidgetUI.cpp:
+	* X3DViewpointEditorUI.h:
+	* X3DBrowserWindowUI.cpp:
+	* X3DHistoryEditorUI.cpp:
+	* X3DMotionBlurEditorUI.h:
+	* X3DViewpointEditorUI.cpp:
+	* X3DMotionBlurEditorUI.cpp: 
+
+2013-04-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.cpp:
 	* X3DBrowserWindow.cpp:
 	* X3DBrowserWidget.cpp:

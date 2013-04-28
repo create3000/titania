@@ -61,11 +61,6 @@ class LOD :
 {
 public:
 
-	
-	
-	
-	
-
 	LOD (X3DExecutionContext* const);
 
 	virtual
@@ -106,8 +101,6 @@ public:
 	level_changed () const
 	{ return *fields .level_changed; }
 
-
-
 	virtual
 	void
 	traverse (TraverseType);
@@ -130,12 +123,9 @@ private:
 
 	Fields fields;
 
-
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

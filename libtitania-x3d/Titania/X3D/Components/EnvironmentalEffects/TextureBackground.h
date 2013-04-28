@@ -61,13 +61,6 @@ class TextureBackground :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-
 	TextureBackground (X3DExecutionContext* const, bool = true);
 
 	virtual
@@ -147,4 +140,3 @@ private:
 } // titania
 
 #endif
-

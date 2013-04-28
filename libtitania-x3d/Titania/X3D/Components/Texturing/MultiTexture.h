@@ -61,13 +61,6 @@ class MultiTexture :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-
 	MultiTexture (X3DExecutionContext* const);
 
 	virtual
@@ -124,8 +117,6 @@ public:
 	texture () const
 	{ return *fields .texture; }
 
-
-
 	virtual
 	bool
 	isTransparent () const
@@ -134,6 +125,8 @@ public:
 	virtual
 	void
 	draw ();
+
+
 private:
 
 	struct Fields
@@ -156,4 +149,3 @@ private:
 } // titania
 
 #endif
-

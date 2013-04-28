@@ -62,9 +62,6 @@ class Collision :
 {
 public:
 
-	
-	
-
 	Collision (X3DExecutionContext* const);
 
 	virtual
@@ -89,22 +86,20 @@ public:
 	proxy () const
 	{ return *fields .proxy; }
 
-
-	
 	void
 	set_active (bool value);
 
 	virtual
 	void
 	traverse (TraverseType);
-	
+
 
 private:
 
 	virtual
 	void
 	initialize ();
-	
+
 	void
 	set_proxy ();
 
@@ -118,7 +113,6 @@ private:
 
 	Fields fields;
 
-	
 	X3DChildNode* _proxy;
 
 };
@@ -127,4 +121,3 @@ private:
 } // titania
 
 #endif
-

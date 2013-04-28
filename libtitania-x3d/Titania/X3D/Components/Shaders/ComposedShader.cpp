@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,9 +53,9 @@
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
 #include "../Shaders/ShaderPart.h"
 #include "../Texturing/X3DTexture2DNode.h"
-#include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
 
 namespace titania {
 namespace X3D {
@@ -68,7 +68,7 @@ ComposedShader::ComposedShader (X3DExecutionContext* const executionContext) :
 	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	              X3DShaderNode (),                                                    
 	X3DProgrammableShaderObject (),                                                    
-	                     fields (),
+	                     fields (),                                                    
 	              shaderProgram (0),                                                   
 	                shaderParts (),                                                    
 	               textureUnits ()                                                     
@@ -232,13 +232,13 @@ ComposedShader::set_field (X3DFieldDefinition* field)
 					}
 
 					glActiveTexture (GL_TEXTURE0 + textureUnit);
-					
+
 					if (x3d_cast <X3DTexture2DNode*> (texture))
 						glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
-						
+
 					else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
 						glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
-					
+
 					glUniform1i (location, textureUnit);
 					glActiveTexture (GL_TEXTURE0);
 				}
@@ -403,65 +403,65 @@ ComposedShader::set_field (X3DFieldDefinition* field)
 				// Push back texture units
 				{
 					std::deque <size_t> textureUnits;
-				
+
 					for (size_t i = 0; ; ++ i)
 					{
 						GLint textureUnit = 0;
-						
+
 						GLint location = glGetUniformLocation (shaderProgram, (field -> getName () [0] + "[" + std::to_string (i) + "]") .c_str ());
-						
-						if (location not_eq -1)
+
+						if (location not_eq - 1)
 						{
-							glGetUniformiv (shaderProgram, location , &textureUnit);
-						
+							glGetUniformiv (shaderProgram, location, &textureUnit);
+
 							if (textureUnit)
 								textureUnits .emplace_back (textureUnit);
 						}
 						else
 							break;
 					}
-					
+
 					for (const auto & textureUnit : textureUnits)
 						getBrowser () -> getTextureUnits () .push (textureUnit);
 				}
-				
+
 				// Set uniform variable;
-				
+
 				auto array = static_cast <MFNode*> (field);
-			
+
 				std::vector <GLint> vector;
 				vector .reserve (array -> size ());
 
-				for (const auto & node : *array)
+				for (const auto & node :* array)
 				{
 					auto texture = x3d_cast <X3DTextureNode*> (node .getValue ());
 
 					if (texture)
 					{
 						GLint textureUnit = 0;
-	
+
 						if (getBrowser () -> getTextureUnits () .size ())
 						{
 							textureUnit = getBrowser () -> getTextureUnits () .top ();
 							getBrowser () -> getTextureUnits () .pop ();
 							textureUnits .emplace_back (textureUnit);
 						}
-						
+
 						glActiveTexture (GL_TEXTURE0 + textureUnit);
-						
+
 						if (x3d_cast <X3DTexture2DNode*> (texture))
 							glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
-							
+
 						else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
 							glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
-						
+
 						vector .emplace_back (textureUnit);
 					}
 				}
 
 				glUniform1iv (location, vector .size (), vector .data ());
 				glActiveTexture (GL_TEXTURE0);
-						
+
 				break;
 			}
 			case X3DConstants::MFRotation:
@@ -589,4 +589,3 @@ ComposedShader::dispose ()
 
 } // X3D
 } // titania
-

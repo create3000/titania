@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_CONFIGURATION_CONFIG_H__
-#define __TITANIA_CONFIGURATION_CONFIG_H__
+#ifndef __TITANIA_X3D_BITS_CONFIG_H__
+#define __TITANIA_X3D_BITS_CONFIG_H__
 
 #include <Titania/Basic/URI.h>
 

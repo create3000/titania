@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -72,7 +72,7 @@ IndexedLineSet::Fields::Fields () :
 IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	         fields (),
+	         fields (),                                                    
 	      polylines ()                                                     
 {
 	setComponent ("Rendering");
@@ -297,4 +297,3 @@ IndexedLineSet::draw ()
 
 } // X3D
 } // titania
-

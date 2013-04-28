@@ -85,10 +85,10 @@ main (int argc, char* argv [ ])
 		{
 			auto browser = X3D::getBrowser ();
 			browser -> setup ();
-		
+
 			X3D::MFNode mfnode;
 			mfnode .push_back (browser -> getExecutionContext () -> createNode ("Transform"));
-			
+
 			std::clog << mfnode << std::endl;
 			std::clog << mfnode [0] .getParents () .size () << std::endl;
 		}

@@ -382,7 +382,7 @@ box3 <Type>::intersect (const sphere3 <Type> & sphere) const
 {
 	vector3 <Type> min = this -> min ();
 	vector3 <Type> max = this -> max ();
-	
+
 	vector3 <Type> center = sphere .center ();
 	Type           radius = sphere .radius ();
 
@@ -391,7 +391,7 @@ box3 <Type>::intersect (const sphere3 <Type> & sphere) const
 	       min .y () <= center .y () + radius and
 	       max .y () >= center .y () - radius and
 	       min .z () <= center .z () + radius and
-	       max .z () >= center .z () - radius ;
+	       max .z () >= center .z () - radius;
 }
 
 ///  @relates box3

@@ -62,8 +62,6 @@ class StaticGroup :
 {
 public:
 
-	
-
 	StaticGroup (X3DExecutionContext* const);
 
 	virtual
@@ -79,8 +77,6 @@ public:
 	const MFNode &
 	children () const
 	{ return *fields .children; }
-
-
 
 	Box3f
 	getBBox ();
@@ -105,11 +101,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

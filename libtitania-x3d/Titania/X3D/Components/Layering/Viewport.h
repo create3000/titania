@@ -62,8 +62,6 @@ class Viewport :
 {
 public:
 
-	
-
 	Viewport (X3DExecutionContext* const);
 
 	virtual
@@ -79,8 +77,6 @@ public:
 	const MFFloat &
 	clipBoundary () const
 	{ return *fields .clipBoundary; }
-
-
 
 	virtual
 	void
@@ -118,7 +114,6 @@ private:
 
 	Fields fields;
 
-
 	GLint viewport [4];
 
 };
@@ -127,4 +122,3 @@ private:
 } // titania
 
 #endif
-

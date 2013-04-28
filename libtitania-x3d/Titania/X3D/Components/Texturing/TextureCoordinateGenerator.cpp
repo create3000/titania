@@ -63,7 +63,7 @@ TextureCoordinateGenerator::Fields::Fields () :
 TextureCoordinateGenerator::TextureCoordinateGenerator (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTextureCoordinateNode (),                                                    
-	                  fields (),
+	                  fields (),                                                    
 	          textureGenMode (GL_SPHERE_MAP)                                        
 {
 	setComponent ("Texturing");
@@ -164,4 +164,3 @@ TextureCoordinateGenerator::disable ()
 
 } // X3D
 } // titania
-

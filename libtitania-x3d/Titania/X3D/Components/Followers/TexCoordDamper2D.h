@@ -61,16 +61,6 @@ class TexCoordDamper2D :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	TexCoordDamper2D (X3DExecutionContext* const);
 
 	virtual
@@ -177,4 +167,3 @@ private:
 } // titania
 
 #endif
-

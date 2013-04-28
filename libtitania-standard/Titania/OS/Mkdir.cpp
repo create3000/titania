@@ -51,8 +51,8 @@
 #include "Home.h"
 
 #include "../LOG.h"
-#include <sys/stat.h>
 #include <stdexcept>
+#include <sys/stat.h>
 
 namespace titania {
 namespace os {
@@ -60,7 +60,7 @@ namespace os {
 bool
 mkdir (const std::string & path)
 {
-	return ::mkdir (path .c_str (), 0700) != -1;
+	return ::mkdir (path .c_str (), 0700) not_eq -1;
 }
 
 } // os

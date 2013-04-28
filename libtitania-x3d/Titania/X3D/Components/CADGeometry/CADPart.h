@@ -62,12 +62,6 @@ class CADPart :
 {
 public:
 
-	
-	
-	
-	
-	
-
 	CADPart (X3DExecutionContext* const);
 
 	virtual
@@ -138,4 +132,3 @@ private:
 } // titania
 
 #endif
-

@@ -62,8 +62,6 @@ class LocalFog :
 {
 public:
 
-	
-
 	LocalFog (X3DExecutionContext* const);
 
 	virtual
@@ -79,8 +77,6 @@ public:
 	const SFBool &
 	enabled () const
 	{ return *fields .enabled; }
-
-
 
 	void
 	push ();
@@ -108,11 +104,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

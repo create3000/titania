@@ -61,8 +61,6 @@ class GravityPhysicsModel :
 {
 public:
 
-	
-
 	GravityPhysicsModel (X3DExecutionContext* const);
 
 	virtual
@@ -97,4 +95,3 @@ private:
 } // titania
 
 #endif
-

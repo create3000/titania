@@ -61,8 +61,6 @@ class Polypoint2D :
 {
 public:
 
-	
-
 	Polypoint2D (X3DExecutionContext* const);
 
 	virtual
@@ -78,8 +76,6 @@ public:
 	const MFVec2f &
 	point () const
 	{ return *fields .point; }
-
-
 
 	virtual
 	void
@@ -101,11 +97,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

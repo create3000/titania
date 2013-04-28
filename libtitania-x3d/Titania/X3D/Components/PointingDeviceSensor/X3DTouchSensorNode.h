@@ -69,14 +69,16 @@ public:
 	touchTime () const
 	{ return *fields .touchTime; }
 
-
 	virtual
 	void
 	set_active (const std::shared_ptr <Hit> &, bool);
 
+
 protected:
 
 	X3DTouchSensorNode ();
+
+
 private:
 
 	struct Fields
@@ -94,4 +96,3 @@ private:
 } // titania
 
 #endif
-

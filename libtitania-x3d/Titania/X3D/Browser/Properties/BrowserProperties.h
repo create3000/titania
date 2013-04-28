@@ -73,7 +73,6 @@ public:
 
 	BrowserProperties (X3DExecutionContext* const executionContext);
 
-
 	SFBool &
 	abstractNodes ()
 	{ return *fields .abstractNodes; }
@@ -139,13 +138,11 @@ public:
 	{ return *fields .binaryEncoding; }
 
 
-
 private:
 
 	virtual
 	BrowserProperties*
 	create (X3DExecutionContext* const executionContext) const;
-
 
 	struct Fields
 	{
@@ -169,4 +166,3 @@ private:
 } // titania
 
 #endif
-

@@ -93,14 +93,16 @@ public:
 	textureProperties () const
 	{ return *fields .textureProperties; }
 
-
 	virtual
 	void
 	draw ();
 
+
 protected:
 
 	X3DTexture3DNode ();
+
+
 private:
 
 	struct Fields
@@ -121,4 +123,3 @@ private:
 } // titania
 
 #endif
-

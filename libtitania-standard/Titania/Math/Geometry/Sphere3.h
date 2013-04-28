@@ -51,9 +51,9 @@
 #ifndef __TITANIA_MATH_GEOMETRY_SPHERE3_H__
 #define __TITANIA_MATH_GEOMETRY_SPHERE3_H__
 
-#include "../Numbers/Vector3.h"
-#include "../Numbers/Matrix4.h"
 #include "../Geometry/Line3.h"
+#include "../Numbers/Matrix4.h"
+#include "../Numbers/Vector3.h"
 
 #include "../../LOG.h"
 
@@ -89,7 +89,7 @@ public:
 		value { radius, center }
 
 	{ }
-	
+
 	///  @name Element access
 
 	///  Returns the radius of this sphere.
@@ -99,9 +99,9 @@ public:
 	///  Returns the center of this sphere.
 	const vector3 <Type> &
 	center () const { return value .center; }
-	
+
 	///  @name Intersection
-	
+
 	///  Returns true if the @a point intersects with this sphere.
 	bool
 	intersect (const vector3 <Type> & point) const
@@ -146,15 +146,15 @@ sphere3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & intersect
 
 	if (d2 > r2)
 		return false;
-		
+
 	Type thc = std::sqrt (r2 - d2);
-	
+
 	Type t1 = tca - thc;
 	Type t2 = tca + thc;
 
 	intersection1 = line .origin () + line .direction () * t1;
 	intersection2 = line .origin () + line .direction () * t2;
-	
+
 	return true;
 }
 

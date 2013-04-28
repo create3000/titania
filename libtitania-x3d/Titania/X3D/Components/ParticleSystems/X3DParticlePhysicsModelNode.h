@@ -70,10 +70,11 @@ public:
 	{ return *fields .enabled; }
 
 
-
 protected:
 
 	X3DParticlePhysicsModelNode ();
+
+
 private:
 
 	struct Fields
@@ -91,4 +92,3 @@ private:
 } // titania
 
 #endif
-

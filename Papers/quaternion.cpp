@@ -156,7 +156,7 @@ Quaternion::Quaternion (const Matrix & R)
  * A positive sign has been chosen.
  */
 {
-	if ((R .Nrows () == 3)and (R .Ncols () == 3) or
+	if ((R .Nrows () == 3) and (R .Ncols () == 3) or
 	       (R .Nrows () == 4) and (R .Ncols () == 4))
 	{
 		Real tmp = fabs (R (1, 1) + R (2, 2) + R (3, 3) + 1);

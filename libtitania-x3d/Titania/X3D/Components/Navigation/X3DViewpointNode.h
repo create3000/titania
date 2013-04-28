@@ -90,7 +90,6 @@ public:
 	jump () const
 	{ return *fields .jump; }
 
-
 	SFVec3f &
 	positionOffset ()
 	{ return fields .positionOffset; }
@@ -115,7 +114,6 @@ public:
 	centerOfRotationOffset () const
 	{ return fields .centerOfRotationOffset; }
 
-
 	virtual
 	Vector3f
 	getPosition () const = 0;
@@ -133,11 +131,11 @@ public:
 	setTransformationMatrix (const Matrix4f &);
 
 	const Matrix4f &
-	getTransformationMatrix () const 
+	getTransformationMatrix () const
 	{ return transformationMatrix; }
 
 	const Matrix4f &
-	getInverseTransformationMatrix () const 
+	getInverseTransformationMatrix () const
 	{ return inverseTransformationMatrix; }
 
 	const Matrix4f &
@@ -207,10 +205,10 @@ private:
 
 	void
 	_set_bind ();
-	
+
 	void
 	camera ();
-	
+
 	void
 	collect ();
 
@@ -228,7 +226,6 @@ private:
 
 	Fields fields;
 
-
 	Matrix4f modelViewMatrix;
 	Matrix4f transformationMatrix;
 	Matrix4f inverseTransformationMatrix;
@@ -243,4 +240,3 @@ private:
 } // titania
 
 #endif
-

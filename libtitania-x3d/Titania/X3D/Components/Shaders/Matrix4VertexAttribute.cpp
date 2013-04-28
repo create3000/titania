@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,7 +62,7 @@ Matrix4VertexAttribute::Fields::Fields () :
 Matrix4VertexAttribute::Matrix4VertexAttribute (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DVertexAttributeNode (),                                                    
-	fields ()
+	                fields ()                                                     
 {
 	setComponent ("Shaders");
 	setTypeName ("Matrix4VertexAttribute");
@@ -80,4 +80,3 @@ Matrix4VertexAttribute::create (X3DExecutionContext* const executionContext) con
 
 } // X3D
 } // titania
-

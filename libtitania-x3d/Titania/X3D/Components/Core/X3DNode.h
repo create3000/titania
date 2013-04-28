@@ -86,7 +86,6 @@ public:
 	{ return *fields .metadata; }
 
 
-
 protected:
 
 	X3DNode ();
@@ -107,6 +106,8 @@ protected:
 	getCurrentViewpoint () const;
 
 	friend class X3DExecutionContext;
+
+
 private:
 
 	struct Fields
@@ -124,4 +125,3 @@ private:
 } // titania
 
 #endif
-

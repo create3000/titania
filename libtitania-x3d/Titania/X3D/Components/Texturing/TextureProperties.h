@@ -72,18 +72,6 @@ class TextureProperties :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	TextureProperties (X3DExecutionContext* const);
 
 	virtual
@@ -180,8 +168,6 @@ public:
 	texturePriority () const
 	{ return *fields .texturePriority; }
 
-
-
 	virtual
 	void
 	initialize ();
@@ -238,4 +224,3 @@ private:
 } // titania
 
 #endif
-

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -95,7 +95,7 @@ public:
 
 		player = Gst::PlayBin::create ("player");
 		vsink  = Gst::XImageSink::create ("vsink");
-		
+
 		player -> set_property ("video-sink", vsink);
 		player -> set_property ("volume", 0.0);
 		//player -> set_property ("mute", false);
@@ -135,7 +135,7 @@ public:
 	{
 		player -> set_property ("volume", value);
 	}
-			
+
 	Gst::State
 	getState () const
 	{
@@ -266,7 +266,7 @@ public:
 	X3DSoundSourceNode* source;
 
 	Glib::RefPtr <Gst::PlayBin>    player;
-	Glib::RefPtr <Gst::XImageSink>  vsink;
+	Glib::RefPtr <Gst::XImageSink> vsink;
 	sigc::connection               message;
 
 	Pixmap   pixmap;
@@ -285,7 +285,7 @@ X3DSoundSourceNode::Fields::Fields () :
 
 X3DSoundSourceNode::X3DSoundSourceNode () :
 	X3DTimeDependentNode (),                  
-	              fields (),
+	              fields (),                  
 	             gstream (new GStream (this)) 
 {
 	addNodeType (X3DConstants::X3DSoundSourceNode);
@@ -415,4 +415,3 @@ X3DSoundSourceNode::dispose ()
 
 } // X3D
 } // titania
-

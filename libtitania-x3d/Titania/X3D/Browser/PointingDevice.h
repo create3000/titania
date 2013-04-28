@@ -48,11 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_WIDGETS_POINTING_DEVICE_H__
-#define __TITANIA_X3D_WIDGETS_POINTING_DEVICE_H__
+#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_H__
+#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_H__
 
-#include "../Fields.h"
 #include "../Browser/X3DWidget.h"
+#include "../Fields.h"
 #include <gdkmm.h>
 
 namespace titania {

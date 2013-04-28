@@ -61,12 +61,6 @@ class PlaneSensor :
 {
 public:
 
-	
-	
-	
-	
-	
-
 	PlaneSensor (X3DExecutionContext* const);
 
 	virtual
@@ -115,8 +109,6 @@ public:
 	translation_changed () const
 	{ return *fields .translation_changed; }
 
-
-
 	virtual
 	void
 	set_active (const std::shared_ptr <Hit> &, bool) final;
@@ -152,4 +144,3 @@ private:
 } // titania
 
 #endif
-

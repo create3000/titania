@@ -85,7 +85,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	            hitComp (),                                        
 	     enabledSensors ({ std::set <X3DBaseNode*> () }),          
 	        overSensors (),                                        
-	      activeSensors (),                                         
+	      activeSensors (),                                        
 	          selection (new Selection (this)),                    // SFNode  [ ]   selection    NULL  [Selection]
 	        changedTime (clock -> cycle ()),                       
 	       currentSpeed (0),                                       

@@ -75,7 +75,7 @@ X3DShapeNode::Fields::Fields () :
 X3DShapeNode::X3DShapeNode () :
 	    X3DChildNode (),     
 	X3DBoundedObject (),     
-	          fields (),
+	          fields (),     
 	     _appearance (NULL), 
 	       _geometry (NULL)  
 {
@@ -238,4 +238,3 @@ X3DShapeNode::dispose ()
 
 } // X3D
 } // titania
-

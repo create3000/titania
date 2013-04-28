@@ -73,7 +73,8 @@ public:
 	const MFNode &
 	children () const
 	{ return *fields .children; }
- // Declare this before add and remove, to get a lower address.
+
+	// Declare this before add and remove, to get a lower address.
 	MFNode &
 	addChildren ()
 	{ return *fields .addChildren; }
@@ -89,7 +90,6 @@ public:
 	const MFNode &
 	removeChildren () const
 	{ return *fields .removeChildren; }
-
 
 	virtual
 	Box3f
@@ -129,10 +129,10 @@ private:
 
 	void
 	add (const MFNode &);
-	
+
 	void
 	pick ();
-	
+
 	void
 	collect ();
 
@@ -147,7 +147,6 @@ private:
 
 	Fields fields;
 
-
 	std::deque <X3DPointingDeviceSensorNode*> pointingDeviceSensors;
 	std::deque <X3DLightNode*>                lights;
 	std::deque <LocalFog*>                    localFogs;
@@ -159,4 +158,3 @@ private:
 } // titania
 
 #endif
-

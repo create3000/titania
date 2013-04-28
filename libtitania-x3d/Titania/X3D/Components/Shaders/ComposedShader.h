@@ -62,8 +62,6 @@ class ComposedShader :
 {
 public:
 
-	
-
 	ComposedShader (X3DExecutionContext* const);
 
 	virtual
@@ -79,8 +77,6 @@ public:
 	const MFNode &
 	parts () const
 	{ return *fields .parts; }
-
-
 
 	virtual
 	void
@@ -115,10 +111,9 @@ private:
 
 	Fields fields;
 
-
-	GLuint               shaderProgram;
-	std::deque <GLuint>  shaderParts;
-	std::deque <size_t>  textureUnits;
+	GLuint              shaderProgram;
+	std::deque <GLuint> shaderParts;
+	std::deque <size_t> textureUnits;
 
 };
 
@@ -126,4 +121,3 @@ private:
 } // titania
 
 #endif
-

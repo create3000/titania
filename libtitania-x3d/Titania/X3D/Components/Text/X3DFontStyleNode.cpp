@@ -67,9 +67,9 @@ X3DFontStyleNode::Fields::Fields () :
 { }
 
 X3DFontStyleNode::X3DFontStyleNode () :
-	X3DPropertyNode (), 
-	         fields (), 
-	     alignments ({ Alignment::BEGIN, Alignment::BEGIN })
+	X3DPropertyNode (),                                      
+	         fields (),                                      
+	     alignments ({ Alignment::BEGIN, Alignment::BEGIN }) 
 {
 	addNodeType (X3DConstants::X3DFontStyleNode);
 }

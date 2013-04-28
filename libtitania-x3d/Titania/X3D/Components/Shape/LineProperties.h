@@ -61,10 +61,6 @@ class LineProperties :
 {
 public:
 
-	
-	
-	
-
 	LineProperties (X3DExecutionContext* const);
 
 	virtual
@@ -97,11 +93,11 @@ public:
 	linewidthScaleFactor () const
 	{ return *fields .linewidthScaleFactor; }
 
-
-
 	virtual
 	void
 	draw ();
+
+
 private:
 
 	struct Fields
@@ -121,4 +117,3 @@ private:
 } // titania
 
 #endif
-

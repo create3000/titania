@@ -81,6 +81,8 @@ public:
 protected:
 
 	X3DSensorNode ();
+
+
 private:
 
 	struct Fields
@@ -99,4 +101,3 @@ private:
 } // titania
 
 #endif
-

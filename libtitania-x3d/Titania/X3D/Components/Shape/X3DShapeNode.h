@@ -81,14 +81,13 @@ public:
 	geometry () const
 	{ return *fields .geometry; }
 
-
 	virtual
 	Box3f
 	getBBox ();
 
 	bool
 	isTransparent () const;
-	
+
 	X3DGeometryNode*
 	getGeometry () const
 	{ return _geometry; }
@@ -122,7 +121,7 @@ private:
 
 	void
 	set_geometry ();
-	
+
 	void
 	pick ();
 
@@ -136,7 +135,6 @@ private:
 
 	Fields fields;
 
-
 	X3DAppearanceNode* _appearance;
 	X3DGeometryNode*   _geometry;
 
@@ -146,4 +144,3 @@ private:
 } // titania
 
 #endif
-

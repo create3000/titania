@@ -61,11 +61,6 @@ class TextureTransform3D :
 {
 public:
 
-	
-	
-	
-	
-
 	TextureTransform3D (X3DExecutionContext* const);
 
 	virtual
@@ -106,11 +101,11 @@ public:
 	translation () const
 	{ return *fields .translation; }
 
-
-
 	virtual
 	void
 	draw ();
+
+
 private:
 
 	struct Fields
@@ -131,4 +126,3 @@ private:
 } // titania
 
 #endif
-

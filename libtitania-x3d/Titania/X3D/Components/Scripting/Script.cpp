@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,7 +65,7 @@ Script::Fields::Fields () :
 Script::Script (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DScriptNode (),                                                    
-	       fields (),
+	       fields (),                                                    
 	   javaScript ()                                                     
 {
 	setComponent ("Scripting");
@@ -89,7 +89,7 @@ Script::initialize ()
 	X3DScriptNode::initialize ();
 
 	// Find first working script.
-	
+
 	size_t index = 0;
 
 	for (const auto & URL : url ())
@@ -101,7 +101,7 @@ Script::initialize ()
 			javaScript .reset (new JavaScriptContext (this, ecmascript, index));
 			break;
 		}
-		
+
 		++ index;
 	}
 
@@ -141,4 +141,3 @@ Script::dispose ()
 
 } // X3D
 } // titania
-

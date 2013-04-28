@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,15 +64,15 @@ static constexpr float SCOLL_FACTOR = 1.0f / 50.0f;
 static constexpr float FRAME_RATE   = 100;
 
 ExamineViewer::ExamineViewer (Browser* const browser, NavigationInfo* navigationInfo) :
-	                      X3DViewer (browser),        
-	                 navigationInfo (navigationInfo), 
-	                       distance (),               
-	                    orientation (),               
-	                       rotation (),               
-	                     fromVector (),               
-	                      fromPoint (),               
-	                         button (0),              
-	                        spin_id ()                
+	     X3DViewer (browser),        
+	navigationInfo (navigationInfo), 
+	      distance (),               
+	   orientation (),               
+	      rotation (),               
+	    fromVector (),               
+	     fromPoint (),               
+	        button (0),              
+	       spin_id ()                
 { }
 
 void
@@ -224,7 +224,7 @@ ExamineViewer::getDistance () const
 	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	return ~viewpoint -> orientationOffset () * (viewpoint -> getUserPosition ()
-	                                          - viewpoint -> getUserCenterOfRotation ());
+	                                             - viewpoint -> getUserCenterOfRotation ());
 }
 
 Vector3f

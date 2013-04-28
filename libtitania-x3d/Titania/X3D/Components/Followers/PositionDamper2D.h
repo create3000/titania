@@ -61,16 +61,6 @@ class PositionDamper2D :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	PositionDamper2D (X3DExecutionContext* const);
 
 	virtual
@@ -177,4 +167,3 @@ private:
 } // titania
 
 #endif
-

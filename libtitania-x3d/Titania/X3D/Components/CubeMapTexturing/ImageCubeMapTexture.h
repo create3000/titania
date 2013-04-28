@@ -62,8 +62,6 @@ class ImageCubeMapTexture :
 {
 public:
 
-	
-
 	ImageCubeMapTexture (X3DExecutionContext* const);
 
 	virtual
@@ -80,8 +78,6 @@ public:
 	textureProperties () const
 	{ return *fields .textureProperties; }
 
-
-
 	virtual
 	void
 	requestImmediateLoad ();
@@ -90,7 +86,7 @@ public:
 	bool
 	isTransparent () const
 	{ return false; }
-	
+
 	virtual
 	void
 	draw ();
@@ -115,11 +111,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

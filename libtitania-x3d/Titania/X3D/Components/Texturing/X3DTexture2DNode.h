@@ -86,12 +86,11 @@ public:
 	textureProperties () const
 	{ return *fields .textureProperties; }
 
-
 	virtual
 	bool
 	isTransparent () const
 	{ return transparent; }
-	
+
 	GLenum
 	getInternalFormat () const
 	{ return getTextureProperties () -> getInternalFormat (components); }
@@ -101,7 +100,7 @@ public:
 
 	void
 	setImage (size_t, GLenum, GLint, GLint, const void*);
-	
+
 	void
 	updateImage (GLenum, GLint, GLint, const void*);
 
@@ -113,7 +112,7 @@ public:
 protected:
 
 	X3DTexture2DNode ();
-	
+
 	virtual
 	void
 	requestImmediateLoad () = 0;
@@ -143,7 +142,6 @@ private:
 
 	Fields fields;
 
-
 	void
 	applyTextureProperties (const TextureProperties*) const;
 
@@ -158,4 +156,3 @@ private:
 } // titania
 
 #endif
-

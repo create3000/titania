@@ -82,7 +82,7 @@ private:
 	virtual
 	void
 	initialize () final;
-	
+
 	void
 	set_url ();
 

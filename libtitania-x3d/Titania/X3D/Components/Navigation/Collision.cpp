@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,7 +66,7 @@ Collision::Collision (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGroupingNode (),                                                    
 	  X3DSensorNode (),                                                    
-	         fields (),
+	         fields (),                                                    
 	         _proxy (NULL)                                                 
 {
 	setComponent ("Navigation");
@@ -154,4 +154,3 @@ Collision::traverse (TraverseType type)
 
 } // X3D
 } // titania
-

@@ -66,15 +66,15 @@ Material::Fields::Fields () :
 { }
 
 Material::Material (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	 X3DMaterialNode (),                                                    
-	          fields (),
-	           alpha (1),                                                   
-	  glAmbientColor (),                                                    
-	  glDiffuseColor (),                                                    
-	 glSpecularColor (),                                                    
-	 glEmissiveColor (),                                                    
-	     glShininess ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DMaterialNode (),                                                    
+	         fields (),                                                    
+	          alpha (1),                                                   
+	 glAmbientColor (),                                                    
+	 glDiffuseColor (),                                                    
+	glSpecularColor (),                                                    
+	glEmissiveColor (),                                                    
+	    glShininess ()                                                     
 {
 	setComponent ("Shape");
 	setTypeName ("Material");
@@ -148,4 +148,3 @@ Material::draw ()
 
 } // X3D
 } // titania
-

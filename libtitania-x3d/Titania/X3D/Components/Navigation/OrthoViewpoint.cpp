@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ OrthoViewpoint::Fields::Fields () :
 OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext, bool displayed) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DViewpointNode (displayed),                                           
-	fields ()
+	          fields ()                                                     
 {
 	setComponent ("Navigation");
 	setTypeName ("OrthoViewpoint");
@@ -162,4 +162,3 @@ OrthoViewpoint::reshape (const float zNear, const float zFar)
 
 } // X3D
 } // titania
-

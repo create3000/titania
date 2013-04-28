@@ -89,7 +89,7 @@ public:
 	virtual
 	void
 	dispose ();
-	
+
 	virtual
 	~ExternProto ();
 

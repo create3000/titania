@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,8 +55,8 @@
 #include "../Components/Shape/X3DShapeNode.h"
 #include "LightContainerArray.h"
 
-#include "../Types/Numbers.h"
 #include "../Types/Geometry.h"
+#include "../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
@@ -79,7 +79,7 @@ public:
 	{ return distance; }
 
 	bool
-	draw ();	
+	draw ();
 
 
 private:
@@ -88,12 +88,12 @@ private:
 	float
 	getDistance (X3DShapeNode*, const Matrix4f &);
 
-	X3DShapeNode* shape;
-	X3DFogObject* fog;
+	X3DShapeNode*       shape;
+	X3DFogObject*       fog;
 	LightContainerArray localLights;
 
 	Matrix4f matrix;
-	float distance;
+	float    distance;
 
 };
 

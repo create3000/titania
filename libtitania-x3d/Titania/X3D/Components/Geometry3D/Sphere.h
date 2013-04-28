@@ -61,9 +61,6 @@ class Sphere :
 {
 public:
 
-	
-	
-
 	Sphere (X3DExecutionContext* const);
 
 	virtual
@@ -87,8 +84,6 @@ public:
 	const SFBool &
 	solid () const
 	{ return *fields .solid; }
-
-
 
 	virtual
 	void
@@ -122,11 +117,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

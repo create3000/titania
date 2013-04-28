@@ -61,9 +61,6 @@ class FloatVertexAttribute :
 {
 public:
 
-	
-	
-
 	FloatVertexAttribute (X3DExecutionContext* const);
 
 	virtual
@@ -107,4 +104,3 @@ private:
 } // titania
 
 #endif
-

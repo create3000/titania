@@ -198,7 +198,7 @@ public:
 
 	void
 	buttonReleaseEvent ();
-	
+
 	const SFNode <Selection> &
 	getSelection ()
 	{ return selection; }

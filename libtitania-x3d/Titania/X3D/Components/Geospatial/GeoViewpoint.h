@@ -61,16 +61,6 @@ class GeoViewpoint :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	GeoViewpoint (X3DExecutionContext* const, bool = true);
 
 	virtual
@@ -151,8 +141,6 @@ public:
 	speedFactor () const
 	{ return *fields .speedFactor; }
 
-
-
 	virtual
 	Vector3f
 	getPosition () const;
@@ -188,11 +176,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

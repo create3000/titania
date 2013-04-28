@@ -61,16 +61,6 @@ class CoordinateDamper :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	CoordinateDamper (X3DExecutionContext* const);
 
 	virtual
@@ -177,4 +167,3 @@ private:
 } // titania
 
 #endif
-

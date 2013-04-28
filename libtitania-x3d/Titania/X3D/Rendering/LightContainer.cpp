@@ -56,9 +56,9 @@ namespace titania {
 namespace X3D {
 
 LightContainer::LightContainer (const Matrix4f & matrix, X3DLightNode* node) :
-	   node (node),                 
+	   node (node),   
 	 matrix (matrix), 
-	lightId (0)                     
+	lightId (0)       
 { }
 
 void

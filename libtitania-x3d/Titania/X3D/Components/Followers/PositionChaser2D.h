@@ -61,14 +61,6 @@ class PositionChaser2D :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-
 	PositionChaser2D (X3DExecutionContext* const);
 
 	virtual
@@ -157,4 +149,3 @@ private:
 } // titania
 
 #endif
-

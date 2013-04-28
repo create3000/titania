@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -68,7 +68,7 @@ X3DLayerNode::Fields::Fields () :
 X3DLayerNode::X3DLayerNode () :
 	              X3DNode (),                                                   
 	          X3DRenderer (),                                                   
-	               fields (),
+	               fields (),                                                   
 	      defaultViewport (new Viewport (getExecutionContext ())),              
 	defaultNavigationInfo (new NavigationInfo (getExecutionContext (), false)), 
 	    defaultBackground (new Background     (getExecutionContext (), false)), 
@@ -286,7 +286,7 @@ X3DLayerNode::navigation ()
 	float collisionRadius = navigationInfo -> getCollisionRadius () / std::sqrt (2.0f);
 
 	// Reshape viewpoint
-	
+
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
 	glOrtho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar);
@@ -315,14 +315,14 @@ X3DLayerNode::collision ()
 	float collisionRadius = navigationInfo -> getCollisionRadius () / std::sqrt (2.0f);
 
 	// Reshape viewpoint
-	
+
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
 	glOrtho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar);
 	glMatrixMode (GL_MODELVIEW);
 
 	// Transform viewpoint
-	
+
 	auto viewpoint = getCurrentViewpoint ();
 
 	Matrix4f cameraSpaceMatrix = viewpoint -> getModelViewMatrix ();
@@ -396,4 +396,3 @@ X3DLayerNode::dispose ()
 
 } // X3D
 } // titania
-

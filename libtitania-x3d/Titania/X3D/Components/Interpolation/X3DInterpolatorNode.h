@@ -77,7 +77,6 @@ public:
 	key () const
 	{ return *fields .key; }
 
-
 	virtual
 	void
 	setup ();
@@ -114,7 +113,6 @@ private:
 
 	Fields fields;
 
-
 	virtual
 	void
 	set_keyValue () = 0;
@@ -125,4 +123,3 @@ private:
 } // titania
 
 #endif
-

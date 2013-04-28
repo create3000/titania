@@ -63,8 +63,6 @@ class ShaderProgram :
 {
 public:
 
-	
-
 	ShaderProgram (X3DExecutionContext* const);
 
 	virtual
@@ -80,8 +78,6 @@ public:
 	const SFString &
 	type () const
 	{ return *fields .type; }
-
-
 
 	virtual
 	void
@@ -107,11 +103,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

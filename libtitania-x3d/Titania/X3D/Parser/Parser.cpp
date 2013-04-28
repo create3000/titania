@@ -269,7 +269,8 @@ Parser::x3dScene ()
 	else
 		//__LOG__ << std::endl;
 
-	comments ();
+		comments ();
+
 	scene -> setProfile (profileStatement ());
 
 	comments ();
@@ -1306,7 +1307,7 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 				comments ();
 
 				_node .write (_newNode);
-				
+
 				_basicNode -> setup ();
 
 				return true;

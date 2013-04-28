@@ -61,12 +61,6 @@ class VolumeEmitter :
 {
 public:
 
-	
-	
-	
-	
-	
-
 	VolumeEmitter (X3DExecutionContext* const);
 
 	virtual
@@ -137,4 +131,3 @@ private:
 } // titania
 
 #endif
-

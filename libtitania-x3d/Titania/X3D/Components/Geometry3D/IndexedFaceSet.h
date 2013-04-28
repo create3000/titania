@@ -62,13 +62,7 @@ class IndexedFaceSet :
 {
 public:
 
-	
 	using X3DGeometryNode::creaseAngle;
-
-	
-	
-	
-	
 
 	IndexedFaceSet (X3DExecutionContext* const);
 
@@ -117,8 +111,6 @@ public:
 	const MFInt32 &
 	coordIndex () const
 	{ return *fields .coordIndex; }
-
-
 
 	virtual
 	void
@@ -180,7 +172,6 @@ private:
 
 	Fields fields;
 
-
 	size_t numPolygons;
 
 };
@@ -189,4 +180,3 @@ private:
 } // titania
 
 #endif
-

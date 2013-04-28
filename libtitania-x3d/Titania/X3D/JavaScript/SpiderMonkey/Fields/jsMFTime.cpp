@@ -135,7 +135,7 @@ jsX3DArrayField <jsSFTime, MFTime>::unshift (JSContext* context, uintN argc, jsv
 			return JS_FALSE;
 
 		MFTime* field = (MFTime*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-		
+
 		field -> emplace_front (value);
 
 		return JS_NewNumberValue (context, field -> size (), vp);
@@ -160,7 +160,7 @@ jsX3DArrayField <jsSFTime, MFTime>::push (JSContext* context, uintN argc, jsval*
 			return JS_FALSE;
 
 		MFTime* field = (MFTime*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-		
+
 		field -> emplace_back (value);
 
 		return JS_NewNumberValue (context, field -> size (), vp);

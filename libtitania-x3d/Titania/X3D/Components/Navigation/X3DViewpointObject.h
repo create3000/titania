@@ -82,7 +82,6 @@ public:
 	{ return *fields .retainUserOffsets; }
 
 
-
 protected:
 
 	///  @name Construction
@@ -103,6 +102,8 @@ protected:
 	virtual
 	void
 	dispose ();
+
+
 private:
 
 	struct Fields
@@ -121,4 +122,3 @@ private:
 } // titania
 
 #endif
-

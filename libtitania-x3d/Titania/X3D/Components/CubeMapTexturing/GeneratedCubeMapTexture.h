@@ -61,10 +61,6 @@ class GeneratedCubeMapTexture :
 {
 public:
 
-	
-	
-	
-
 	GeneratedCubeMapTexture (X3DExecutionContext* const);
 
 	virtual
@@ -97,16 +93,16 @@ public:
 	textureProperties () const
 	{ return *fields .textureProperties; }
 
-
-
 	virtual
 	bool
 	isTransparent () const
 	{ return false; }
-	
+
 	virtual
 	void
 	draw ();
+
+
 private:
 
 	struct Fields
@@ -126,4 +122,3 @@ private:
 } // titania
 
 #endif
-

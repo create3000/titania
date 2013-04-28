@@ -94,10 +94,11 @@ public:
 	{ return *fields .exitTime; }
 
 
-
 protected:
 
 	X3DEnvironmentalSensorNode ();
+
+
 private:
 
 	struct Fields
@@ -118,4 +119,3 @@ private:
 } // titania
 
 #endif
-

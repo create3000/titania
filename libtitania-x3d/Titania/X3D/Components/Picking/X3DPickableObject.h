@@ -80,7 +80,6 @@ public:
 	{ return *fields .pickable; }
 
 
-
 protected:
 
 	X3DPickableObject ();
@@ -92,6 +91,8 @@ protected:
 	virtual
 	void
 	dispose ();
+
+
 private:
 
 	struct Fields
@@ -110,4 +111,3 @@ private:
 } // titania
 
 #endif
-

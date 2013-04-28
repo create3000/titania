@@ -68,11 +68,11 @@ jsX3DArrayField <jsSFTime, MFTime>::set1Value (JSContext *, JSObject *, jsid, JS
 
 template <>
 JSBool
-jsX3DArrayField <jsSFTime, MFTime>::unshift (JSContext*, uintN, jsval*);
+jsX3DArrayField <jsSFTime, MFTime>::unshift (JSContext *, uintN, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFTime, MFTime>::push (JSContext*, uintN, jsval*);
+jsX3DArrayField <jsSFTime, MFTime>::push (JSContext *, uintN, jsval*);
 
 extern template class jsX3DArrayField <jsSFTime, MFTime>;
 

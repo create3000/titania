@@ -61,8 +61,6 @@ class PixelTexture3D :
 {
 public:
 
-	
-
 	PixelTexture3D (X3DExecutionContext* const);
 
 	virtual
@@ -79,11 +77,11 @@ public:
 	image () const
 	{ return *fields .image; }
 
-
-
 	bool
 	isTransparent () const
 	{ return false; }
+
+
 private:
 
 	struct Fields
@@ -101,4 +99,3 @@ private:
 } // titania
 
 #endif
-

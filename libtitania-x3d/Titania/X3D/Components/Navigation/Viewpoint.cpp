@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ Viewpoint::Fields::Fields () :
 Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool displayed) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DViewpointNode (displayed),                                           
-	fields ()
+	          fields ()                                                     
 {
 	setComponent ("Navigation");
 	setTypeName ("Viewpoint");
@@ -112,8 +112,9 @@ Viewpoint::reshape (const float zNear, const float zFar)
 
 	GLfloat width  = viewport [2];
 	GLfloat height = viewport [3];
-	
-	float fov   = fieldOfView () > 0 and fieldOfView () < M_PI ? fieldOfView () : (M_PI / 4);
+
+	float fov = fieldOfView () > 0 and fieldOfView () < M_PI ? fieldOfView () :
+						(M_PI / 4);
 	float ratio = std::tan (fov / 2) * zNear;
 
 	if (width > height)
@@ -132,4 +133,3 @@ Viewpoint::reshape (const float zNear, const float zFar)
 
 } // X3D
 } // titania
-

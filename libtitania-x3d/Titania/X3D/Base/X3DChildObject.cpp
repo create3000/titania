@@ -34,9 +34,9 @@ namespace titania {
 namespace X3D {
 
 X3DChildObject::X3DChildObject () :
-	X3DObject (), 
-	  parents (),
-	  tainted (false)  
+	X3DObject (),     
+	  parents (),     
+	  tainted (false) 
 { }
 
 // Object

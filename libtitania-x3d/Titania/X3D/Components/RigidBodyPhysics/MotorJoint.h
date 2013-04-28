@@ -61,30 +61,6 @@ class MotorJoint :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	MotorJoint (X3DExecutionContext* const);
 
 	virtual
@@ -317,4 +293,3 @@ private:
 } // titania
 
 #endif
-

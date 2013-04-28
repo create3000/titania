@@ -61,11 +61,6 @@ class BooleanFilter :
 {
 public:
 
-	
-	
-	
-	
-
 	BooleanFilter (X3DExecutionContext* const);
 
 	virtual
@@ -127,4 +122,3 @@ private:
 } // titania
 
 #endif
-

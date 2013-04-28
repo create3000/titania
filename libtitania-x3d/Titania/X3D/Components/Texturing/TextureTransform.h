@@ -61,11 +61,6 @@ class TextureTransform :
 {
 public:
 
-	
-	
-	
-	
-
 	TextureTransform (X3DExecutionContext* const);
 
 	virtual
@@ -106,8 +101,6 @@ public:
 	translation () const
 	{ return *fields .translation; }
 
-
-
 	virtual
 	void
 	eventsProcessed ();
@@ -135,7 +128,6 @@ private:
 
 	Fields fields;
 
-
 	Matrix4f matrix;
 
 };
@@ -144,4 +136,3 @@ private:
 } // titania
 
 #endif
-

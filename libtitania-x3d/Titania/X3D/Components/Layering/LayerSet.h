@@ -62,10 +62,6 @@ class LayerSet :
 {
 public:
 
-	
-	
-	
-
 	LayerSet (X3DExecutionContext* const);
 
 	virtual
@@ -97,8 +93,6 @@ public:
 	const MFNode &
 	layers () const
 	{ return *fields .layers; }
-
-
 
 	Box3f
 	getBBox ();
@@ -142,7 +136,6 @@ private:
 
 	Fields fields;
 
-
 	std::deque <X3DLayerNode*> children;
 	SFNode <X3DBaseNode>       layer0;
 
@@ -152,4 +145,3 @@ private:
 } // titania
 
 #endif
-

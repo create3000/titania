@@ -61,29 +61,6 @@ class DoubleAxisHingeJoint :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	DoubleAxisHingeJoint (X3DExecutionContext* const);
 
 	virtual
@@ -307,4 +284,3 @@ private:
 } // titania
 
 #endif
-

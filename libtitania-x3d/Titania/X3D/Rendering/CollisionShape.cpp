@@ -51,8 +51,8 @@
 #include "CollisionShape.h"
 
 #include "../Components/Rendering/X3DGeometryNode.h"
-#include "../Rendering/ViewVolume.h"
 #include "../Rendering/Matrix.h"
+#include "../Rendering/ViewVolume.h"
 #include <Titania/Utility/Adapter.h>
 
 namespace titania {

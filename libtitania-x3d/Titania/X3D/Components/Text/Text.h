@@ -64,15 +64,6 @@ class Text :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-
 	Text (X3DExecutionContext* const);
 
 	virtual
@@ -145,8 +136,6 @@ public:
 	fontStyle () const
 	{ return *fields .fontStyle; }
 
-
-
 	virtual
 	void
 	draw ();
@@ -194,7 +183,6 @@ private:
 
 	Fields fields;
 
-
 	std::unique_ptr <FTPolygonFont> font;
 	float                           lineHeight;
 	std::deque <float>              charSpacings;
@@ -208,4 +196,3 @@ private:
 } // titania
 
 #endif
-

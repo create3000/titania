@@ -168,7 +168,7 @@ public:
 		e21, e22, e23,
 		e31, e32, e33
 	} { }
-	
+
 	///  Constructs a matrix4 from a rotation4.
 	explicit
 	matrix3 (const Type & rot)
@@ -543,7 +543,7 @@ matrix3 <Type>::get (vector2 <Type> & translation,
                      vector2 <Type> & center) const
 {
 	matrix3 <Type> m, c;
-	
+
 	m .set (-center);
 	m .multLeft (*this);
 	c .set (center);
@@ -575,7 +575,7 @@ matrix3 <Type>::factor (vector2 <Type> & translation,
 	Type det_sign = (det < 0 ? -1 : 1);
 
 	if (det_sign * det == 0)
-		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        // singular
+		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             // singular
 
 	// (4) B = A * !A  (here !A means A transpose)
 	matrix3 b = a * ! a;

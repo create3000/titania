@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,12 +71,11 @@ X3DNurbsSurfaceGeometryNode::Fields::Fields () :
 { }
 
 X3DNurbsSurfaceGeometryNode::X3DNurbsSurfaceGeometryNode () :
-	X3DParametricGeometryNode (),     
-	fields ()
+	X3DParametricGeometryNode (), 
+	                   fields ()  
 {
 	addNodeType (X3DConstants::X3DNurbsSurfaceGeometryNode);
 }
 
 } // X3D
 } // titania
-

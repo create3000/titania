@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ DirectionalLight::Fields::Fields () :
 DirectionalLight::DirectionalLight (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DLightNode (),                                                    
-	fields ()
+	      fields ()                                                     
 {
 	setComponent ("Lighting");
 	setTypeName ("DirectionalLight");
@@ -94,7 +94,7 @@ void
 DirectionalLight::eventsProcessed ()
 {
 	X3DLightNode::eventsProcessed ();
-	
+
 	float glAmbientIntensity = math::clamp <float> (ambientIntensity (), 0, 1);
 	float glIntensity        = math::clamp <float> (intensity (), 0, 1);
 
@@ -129,4 +129,3 @@ DirectionalLight::draw (GLenum lightId)
 
 } // X3D
 } // titania
-

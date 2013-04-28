@@ -62,8 +62,6 @@ class MetadataInteger :
 {
 public:
 
-	
-
 	MetadataInteger (X3DExecutionContext* const);
 
 	virtual
@@ -79,8 +77,6 @@ public:
 	const MFInt32 &
 	value () const
 	{ return *fields .value; }
-
-
 
 	virtual
 	void
@@ -102,11 +98,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

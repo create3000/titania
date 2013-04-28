@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_DISC2DPROPERTIES_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY2D_DISC2DPROPERTIES_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_DISK2DPROPERTIES_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY2D_DISK2DPROPERTIES_H__
 
 #include "../Properties/X3DGeometryPropertyNode.h"
 
@@ -62,8 +62,6 @@ class Disk2DProperties :
 	public X3DGeometryPropertyNode
 {
 public:
-
-	
 
 	Disk2DProperties (X3DExecutionContext* const);
 
@@ -88,8 +86,6 @@ private:
 	Disk2DProperties*
 	create (X3DExecutionContext* const) const;
 
-
-
 	virtual
 	void
 	initialize ();
@@ -111,11 +107,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -78,11 +78,11 @@ X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* navigationIn
 	     direction (),               
 	      rotation (),               
 	     startTime (),               
-	        button (0),                      
-	          keys (),                
+	        button (0),              
+	          keys (),               
 	        fly_id (),               
 	        pan_id (),               
-	       roll_id ()
+	       roll_id ()                
 { }
 
 void
@@ -145,7 +145,7 @@ bool
 X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 {
 	getBrowser () -> notify ();
-		
+
 	if (button == 1)
 	{
 		toVector = Vector3f (event -> x, 0, event -> y);
@@ -298,7 +298,7 @@ X3DFlyViewer::getTranslation (const Vector3f & translation) const
 {
 	auto activeLayer    = getBrowser () -> getExecutionContext () -> getActiveLayer ();
 	auto navigationInfo = activeLayer -> getNavigationInfo ();
-	
+
 	float zFar            = navigationInfo -> getFarPlane ();
 	float collisionRadius = navigationInfo -> getCollisionRadius ();
 
@@ -344,7 +344,7 @@ X3DFlyViewer::getDistance (const Vector3f & direction) const
 
 	Matrix4f cameraSpaceMatrix = viewpoint -> getModelViewMatrix ();
 
-	cameraSpaceMatrix .translate (viewpoint-> getUserPosition ());
+	cameraSpaceMatrix .translate (viewpoint -> getUserPosition ());
 	cameraSpaceMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction));
 	glMultMatrixf (inverse (cameraSpaceMatrix) .data ());
 

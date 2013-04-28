@@ -61,17 +61,6 @@ class SingleAxisHingeJoint :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	SingleAxisHingeJoint (X3DExecutionContext* const);
 
 	virtual
@@ -187,4 +176,3 @@ private:
 } // titania
 
 #endif
-

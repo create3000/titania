@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_STREAM_IGZSTREAM_H__
-#define __TITANIA_STREAM_IGZSTREAM_H__
+#ifndef __TITANIA_STREAM_IGZFILTER_H__
+#define __TITANIA_STREAM_IGZFILTER_H__
 
 #include "GZFilterBuf.h"
 #include <istream>

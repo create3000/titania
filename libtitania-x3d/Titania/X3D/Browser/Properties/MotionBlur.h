@@ -61,9 +61,6 @@ class MotionBlur :
 {
 public:
 
-	
-	
-
 	MotionBlur (X3DExecutionContext* const);
 
 	virtual
@@ -87,8 +84,6 @@ public:
 	const SFFloat &
 	intensity () const
 	{ return *fields .intensity; }
-
-
 
 	void
 	clear ();
@@ -117,11 +112,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

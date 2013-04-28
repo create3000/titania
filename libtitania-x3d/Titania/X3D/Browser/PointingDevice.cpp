@@ -99,7 +99,7 @@ bool
 PointingDevice::on_button_press_event (GdkEventButton* event)
 {
 	button = event -> button;
-	
+
 	getBrowser () -> grab_focus ();
 
 	if (button == 1)
@@ -144,7 +144,7 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 	{
 		if (isOver)
 			getBrowser () -> setCursor (Gdk::HAND2);
-		
+
 		else
 			getBrowser () -> setCursor (Gdk::ARROW);
 	}
@@ -160,7 +160,7 @@ PointingDevice::pick (const double x, const double y)
 
 	getBrowser () -> pick (x, y);
 
-	return getBrowser () -> getHits () .size () and 
+	return getBrowser () -> getHits () .size () and
 	       getBrowser () -> getHits () .front () -> sensors .size ();
 }
 

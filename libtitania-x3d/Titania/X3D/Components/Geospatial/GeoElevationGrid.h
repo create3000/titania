@@ -63,24 +63,6 @@ public:
 
 	using X3DGeometryNode::ccw;
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	GeoElevationGrid (X3DExecutionContext* const);
 
 	virtual
@@ -259,4 +241,3 @@ private:
 } // titania
 
 #endif
-

@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_WIDGETS_X3DWIDGET_H__
-#define __TITANIA_X3D_WIDGETS_X3DWIDGET_H__
+#ifndef __TITANIA_X3D_BROWSER_X3DWIDGET_H__
+#define __TITANIA_X3D_BROWSER_X3DWIDGET_H__
 
 #include <sigc++/trackable.h>
 
@@ -58,7 +58,8 @@ namespace X3D {
 
 class Browser;
 
-class X3DWidget : public sigc::trackable
+class X3DWidget :
+	public sigc::trackable
 {
 public:
 

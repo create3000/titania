@@ -64,7 +64,7 @@ class OutlineSelection :
 public:
 
 	OutlineSelection (const X3D::SFNode <X3D::Browser> &);
-	
+
 	void
 	setSelectMultiple (bool);
 
@@ -92,8 +92,8 @@ private:
 	void
 	select (X3D::X3DFieldDefinition*, bool, X3D::ChildObjectSet &);
 
-	bool        selectMultiple;
-	bool        forceSelection;
+	bool selectMultiple;
+	bool forceSelection;
 
 };
 

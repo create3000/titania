@@ -77,7 +77,6 @@ public:
 	trackPoint_changed () const
 	{ return *fields .trackPoint_changed; }
 
-
 	virtual
 	void
 	set_motion (const std::shared_ptr <Hit> &) = 0;
@@ -86,6 +85,8 @@ public:
 protected:
 
 	X3DDragSensorNode ();
+
+
 private:
 
 	struct Fields
@@ -104,4 +105,3 @@ private:
 } // titania
 
 #endif
-

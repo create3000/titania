@@ -30,7 +30,6 @@
 
 #include "URI.h"
 #include <Titania/Algorithm/Remove.h>
-#include <Titania/Utility/Pass.h>
 #include <Titania/Basic/Path.h>
 #include <Titania/Basic/URI.h>
 #include <Titania/Chrono/Now.h>
@@ -49,6 +48,7 @@
 #include <Titania/OS.h>
 #include <Titania/Stream/IGZFilter.h>
 #include <Titania/Stream/InputFileStream.h>
+#include <Titania/Utility/Pass.h>
 //#include <Titania/Stream/InputHTTPStream.h>
 
 #include <Titania/Algorithm.h>
@@ -302,10 +302,9 @@ print (const Args & ... args)
 	std::ostringstream stream;
 
 	print (stream, args ...);
-	
+
 	__LOG__ << stream .str () << std::endl;
 }
-
 
 int
 main (int argc, char** argv)
@@ -324,9 +323,9 @@ main (int argc, char** argv)
 	{
 		auto line     = Line3f (Vector3f (), Vector3f (0, 1, 1));
 		auto cylinder = Cylinder3f (Line3f (Vector3f (), Vector3f (0, 1, 1)), 1);
-		
+
 		Vector3f enter, exit;
-		
+
 		std::clog << cylinder .intersect (line, enter, exit) << std::endl;
 		std::clog << enter << std::endl;
 		std::clog << exit << std::endl;

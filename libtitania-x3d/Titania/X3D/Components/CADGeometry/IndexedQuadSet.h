@@ -61,9 +61,6 @@ class IndexedQuadSet :
 {
 public:
 
-	
-	
-
 	IndexedQuadSet (X3DExecutionContext* const);
 
 	virtual
@@ -107,4 +104,3 @@ private:
 } // titania
 
 #endif
-

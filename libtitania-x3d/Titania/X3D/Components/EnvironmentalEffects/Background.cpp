@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -67,14 +67,14 @@ Background::Fields::Fields () :
 Background::Background (X3DExecutionContext* const executionContext, bool displayed) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DBackgroundNode (displayed),                                           
-	fields (),
+	           fields (),                                                    
 	     frontTexture (new ImageTexture (executionContext)),                 
 	      backTexture (new ImageTexture (executionContext)),                 
 	      leftTexture (new ImageTexture (executionContext)),                 
 	     rightTexture (new ImageTexture (executionContext)),                 
 	       topTexture (new ImageTexture (executionContext)),                 
-	    bottomTexture (new ImageTexture (executionContext)),
-	textureProperties (new TextureProperties (executionContext))                  
+	    bottomTexture (new ImageTexture (executionContext)),                 
+	textureProperties (new TextureProperties (executionContext))             
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Background");
@@ -121,7 +121,7 @@ Background::initialize ()
 	rightUrl ()  .addInterest (rightTexture  -> url ());
 	topUrl ()    .addInterest (topTexture    -> url ());
 	bottomUrl () .addInterest (bottomTexture -> url ());
-	
+
 	textureProperties -> boundaryModeS () = "CLAMP_TO_EDGE";
 	textureProperties -> boundaryModeT () = "CLAMP_TO_EDGE";
 	textureProperties -> boundaryModeR () = "CLAMP_TO_EDGE";
@@ -132,14 +132,14 @@ Background::initialize ()
 	rightTexture  -> url () = rightUrl ();
 	topTexture    -> url () = topUrl ();
 	bottomTexture -> url () = bottomUrl ();
-	
+
 	frontTexture  -> textureProperties () = *textureProperties;
 	backTexture   -> textureProperties () = *textureProperties;
 	leftTexture   -> textureProperties () = *textureProperties;
 	rightTexture  -> textureProperties () = *textureProperties;
 	topTexture    -> textureProperties () = *textureProperties;
 	bottomTexture -> textureProperties () = *textureProperties;
-	
+
 	textureProperties -> setup ();
 	frontTexture      -> setup ();
 	backTexture       -> setup ();
@@ -308,4 +308,3 @@ Background::dispose ()
 
 } // X3D
 } // titania
-

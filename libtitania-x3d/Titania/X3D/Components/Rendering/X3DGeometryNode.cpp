@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,15 +54,15 @@ namespace titania {
 namespace X3D {
 
 X3DGeometryNode::Fields::Fields () :
-	                       ccw (new SFBool (true)),
-	               creaseAngle (new SFFloat ())
+	ccw (new SFBool (true)),
+	creaseAngle (new SFFloat ())
 { }
 
 X3DGeometryNode::X3DGeometryNode () :
-	                   X3DNode (),
+	                   X3DNode (),               
 	                    fields (),               
 	                      bbox (),               
-	                  texCoords (),               
+	                 texCoords (),               
 	textureCoordinateGenerator (NULL),           
 	                    colors (),               
 	                colorsRGBA (),               
@@ -157,9 +157,9 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <std::shared_ptr <In
 				{
 					if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
 					{
-						intersections .emplace_back (new Intersection {(1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2],
-						                                               (1 - u - v) * normals   [i] + u * normals   [i + 1] + v * normals   [i + 2],
-						                                               (1 - u - v) * vertices  [i] + u * vertices  [i + 1] + v * vertices  [i + 2]});
+						intersections .emplace_back (new Intersection { (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2],
+						                                                (1 - u - v) * normals   [i] + u * normals   [i + 1] + v * normals   [i + 2],
+						                                                (1 - u - v) * vertices  [i] + u * vertices  [i + 1] + v * vertices  [i + 2] });
 						intersected = true;
 					}
 				}
@@ -172,17 +172,17 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <std::shared_ptr <In
 				{
 					if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
 					{
-						intersections .emplace_back (new Intersection {(1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2],
-						                                               (1 - u - v) * normals   [i] + u * normals   [i + 1] + v * normals   [i + 2],
-						                                               (1 - u - v) * vertices  [i] + u * vertices  [i + 1] + v * vertices  [i + 2]});
+						intersections .emplace_back (new Intersection { (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2],
+						                                                (1 - u - v) * normals   [i] + u * normals   [i + 1] + v * normals   [i + 2],
+						                                                (1 - u - v) * vertices  [i] + u * vertices  [i + 1] + v * vertices  [i + 2] });
 						intersected = true;
 					}
 
 					if (line .intersect (vertices [i], vertices [i + 2], vertices [i + 3], u, v, t))
 					{
-						intersections .emplace_back (new Intersection {(1 - u - v) * texCoords [i] + u * texCoords [i + 2] + v * texCoords [i + 3],
-						                                               (1 - u - v) * normals   [i] + u * normals   [i + 2] + v * normals   [i + 3],
-						                                               (1 - u - v) * vertices  [i] + u * vertices  [i + 2] + v * vertices  [i + 3]});
+						intersections .emplace_back (new Intersection { (1 - u - v) * texCoords [i] + u * texCoords [i + 2] + v * texCoords [i + 3],
+						                                                (1 - u - v) * normals   [i] + u * normals   [i + 2] + v * normals   [i + 3],
+						                                                (1 - u - v) * vertices  [i] + u * vertices  [i + 2] + v * vertices  [i + 3] });
 						intersected = true;
 					}
 				}

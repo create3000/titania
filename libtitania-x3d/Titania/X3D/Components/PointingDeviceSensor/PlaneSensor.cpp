@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,13 +64,13 @@ PlaneSensor::Fields::Fields () :
 { }
 
 PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	  X3DDragSensorNode (),                                                    
-	             fields (),
-	              plane (),                                                    
-	        startOffset (),                                                     
-	         startPoint (),
-	         inverseTransformationMatrix ()
+	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	          X3DDragSensorNode (),                                                    
+	                     fields (),                                                    
+	                      plane (),                                                    
+	                startOffset (),                                                    
+	                 startPoint (),                                                    
+	inverseTransformationMatrix ()                                                     
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("PlaneSensor");
@@ -103,7 +103,7 @@ PlaneSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 	if (isActive ())
 	{
 		inverseTransformationMatrix = ~getTransformationMatrix ();
-		plane = Plane3f (hit -> point * inverseTransformationMatrix, axisRotation () * Vector3f (0, 0, 1));
+		plane                       = Plane3f (hit -> point * inverseTransformationMatrix, axisRotation () * Vector3f (0, 0, 1));
 
 		auto hitRay = hit -> ray * inverseTransformationMatrix;
 
@@ -153,4 +153,3 @@ PlaneSensor::set_motion (const std::shared_ptr <Hit> & hit)
 
 } // X3D
 } // titania
-

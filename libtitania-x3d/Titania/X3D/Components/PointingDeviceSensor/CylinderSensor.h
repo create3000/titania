@@ -61,13 +61,6 @@ class CylinderSensor :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-
 	CylinderSensor (X3DExecutionContext* const);
 
 	virtual
@@ -124,8 +117,6 @@ public:
 	rotation_changed () const
 	{ return *fields .rotation_changed; }
 
-
-
 	virtual
 	void
 	set_active (const std::shared_ptr <Hit> &, bool) final;
@@ -139,13 +130,13 @@ private:
 
 	bool
 	isBehind (const Line3f &, const Vector3f &) const;
-	
+
 	Vector3f
 	getVector (const Line3f &, const Vector3f &) const;
-	
+
 	bool
 	getTrackPoint (const Line3f &, Vector3f &, bool = false) const;
-	
+
 	float
 	getAngle (const Rotation4f &) const;
 
@@ -179,4 +170,3 @@ private:
 } // titania
 
 #endif
-

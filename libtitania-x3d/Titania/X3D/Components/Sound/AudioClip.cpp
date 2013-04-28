@@ -78,7 +78,7 @@ AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "resumeTime",       resumeTime ());
 	addField (outputOnly,  "isPaused",         isPaused ());
 	addField (outputOnly,  "isActive",         isActive ());
-	addField (outputOnly,  "cycleTime",        cycleTime ());             // non standard
+	addField (outputOnly,  "cycleTime",        cycleTime ());           // non standard
 	addField (outputOnly,  "elapsedTime",      elapsedTime ());
 	addField (outputOnly,  "duration_changed", duration_changed ());
 }
@@ -94,7 +94,7 @@ AudioClip::initialize ()
 {
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
-	
+
 	url () .addInterest (this, &AudioClip::set_url);
 
 	requestImmediateLoad ();
@@ -130,11 +130,11 @@ AudioClip::requestImmediateLoad ()
 
 		//if (getVideoSink () -> get_last_buffer ())
 		//{
-			duration_changed () = getDuration ();
+		duration_changed () = getDuration ();
 
-			setLoadState (COMPLETE_STATE);
+		setLoadState (COMPLETE_STATE);
 
-			break;
+		break;
 		//}
 	}
 

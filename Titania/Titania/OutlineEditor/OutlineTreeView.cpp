@@ -57,10 +57,10 @@ namespace titania {
 namespace puck {
 
 OutlineTreeView::OutlineTreeView (const X3D::SFNode <X3D::Browser> & browser) :
-	   Gtk::TreeView (), 
-	X3DBaseInterface (),
-	       selection (browser),
-	            keys ()
+	   Gtk::TreeView (),        
+	X3DBaseInterface (),        
+	       selection (browser), 
+	            keys ()         
 {
 	setBrowser (browser);
 
@@ -82,7 +82,7 @@ OutlineTreeView::OutlineTreeView (const X3D::SFNode <X3D::Browser> & browser) :
 	treeviewcolumn_name -> pack_start (*cellrenderer_icon, false);
 	treeviewcolumn_name -> add_attribute (*cellrenderer_icon, "pixbuf", 0);
 	treeviewcolumn_name -> add_attribute (*cellrenderer_icon, "cell-background-set", 2);
-   cellrenderer_icon -> property_cell_background_rgba () = selectedBackgroundColor;
+	cellrenderer_icon -> property_cell_background_rgba () = selectedBackgroundColor;
 
 	// Node typeName or field name
 
@@ -91,8 +91,8 @@ OutlineTreeView::OutlineTreeView (const X3D::SFNode <X3D::Browser> & browser) :
 	treeviewcolumn_name -> add_attribute (*cellrenderer_name, "markup", 3);
 	treeviewcolumn_name -> add_attribute (*cellrenderer_name, "foreground-set", 2);
 	treeviewcolumn_name -> add_attribute (*cellrenderer_name, "background-set", 2);
-   cellrenderer_name -> property_foreground_rgba () = selectedForegroundColor;
-   cellrenderer_name -> property_background_rgba () = selectedBackgroundColor;
+	cellrenderer_name -> property_foreground_rgba () = selectedForegroundColor;
+	cellrenderer_name -> property_background_rgba () = selectedBackgroundColor;
 
 	//	Gtk::CellRendererText* cellrenderer_test = Gtk::manage (new Gtk::CellRendererText ());
 	//	treeviewcolumn_name -> pack_start (*cellrenderer_test, false);
@@ -127,7 +127,7 @@ OutlineTreeView::on_key_press_event (GdkEventKey* event)
 		default:
 			break;
 	}
-	
+
 	selection .setSelectMultiple (keys .shift ());
 
 	return false;
@@ -147,7 +147,7 @@ OutlineTreeView::on_key_release_event (GdkEventKey* event)
 		default:
 			break;
 	}
-	
+
 	selection .setSelectMultiple (keys .shift ());
 
 	return false;
@@ -351,7 +351,6 @@ OutlineTreeView::select (const Gtk::TreeModel::iterator & iter, const Gtk::TreeM
 		queue_draw ();
 	}
 }
-
 
 } // puck
 } // titania

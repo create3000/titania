@@ -61,16 +61,6 @@ class ColorDamper :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	ColorDamper (X3DExecutionContext* const);
 
 	virtual
@@ -177,4 +167,3 @@ private:
 } // titania
 
 #endif
-

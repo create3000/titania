@@ -53,9 +53,9 @@
 
 #include "../Stream/InputHTTPStream.h"
 
-#include <sstream>
 #include <fstream>
 #include <map>
+#include <sstream>
 
 namespace titania {
 namespace basic {
@@ -120,8 +120,8 @@ public:
 
 private:
 
-	static const std::string  reasons [2];
-	static const std::string  empty_string;
+	static const std::string reasons [2];
+	static const std::string empty_string;
 
 	std::istringstream* data_istream;
 	std::ifstream*      file_istream;

@@ -127,7 +127,6 @@ public:
 	elapsedTime () const
 	{ return *fields .elapsedTime; }
 
-
 	virtual
 	void
 	dispose ();
@@ -136,18 +135,18 @@ public:
 protected:
 
 	X3DTimeDependentNode ();
-	
+
 	virtual
 	bool
 	isEnabled () const = 0;
-	
+
 	time_type
 	getElapsedTime () const;
 
 	virtual
 	void
 	initialize ();
-	
+
 	virtual
 	void
 	set_start () = 0;
@@ -155,7 +154,7 @@ protected:
 	virtual
 	void
 	set_stop () = 0;
-	
+
 	virtual
 	void
 	set_pause () = 0;
@@ -171,10 +170,10 @@ private:
 
 	void
 	set_initialized ();
-	
+
 	void
 	set_loop ();
-	
+
 	void
 	set_startTime ();
 
@@ -183,7 +182,7 @@ private:
 
 	void
 	set_stopTime ();
-	
+
 	bool
 	do_stop ();
 
@@ -195,7 +194,7 @@ private:
 
 	void
 	set_resumeTime ();
-	
+
 	bool
 	do_resume ();
 
@@ -218,7 +217,6 @@ private:
 
 	Fields fields;
 
-
 	time_type pause;
 
 	sigc::connection startTimeout;
@@ -232,4 +230,3 @@ private:
 } // titania
 
 #endif
-

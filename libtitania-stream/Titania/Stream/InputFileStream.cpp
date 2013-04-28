@@ -44,7 +44,7 @@ ifilestream::ifilestream (const http::method method, const basic::uri & url) :
 	         file_istream (NULL), 
 	         http_istream (NULL), 
 	              istream (NULL), 
-	 file_request_headers (),
+	 file_request_headers (),     
 	file_response_headers ()      
 {
 	open (method, url);
@@ -82,16 +82,16 @@ ifilestream::open (const http::method method, const basic::uri & url)
 		std::string::size_type first  = std::string::npos;
 		std::string::size_type length = 0;
 		std::string::size_type comma  = url .path () .find (',');
-		
+
 		if (comma not_eq std::string::npos)
 		{
 			first  = comma + 1;
 			length = url .path () .size () - first;
 		}
-		
+
 		file_response_headers .emplace_back ("Content-Type",   url .path () .substr (0, comma));
 		file_response_headers .emplace_back ("Content-Length", std::to_string (length));
-		
+
 		istream = data_istream = new std::istringstream (url .path () .substr (first));
 	}
 	else if (url .is_local ())

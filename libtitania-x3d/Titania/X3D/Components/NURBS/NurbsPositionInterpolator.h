@@ -61,13 +61,6 @@ class NurbsPositionInterpolator :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-
 	NurbsPositionInterpolator (X3DExecutionContext* const);
 
 	virtual
@@ -147,4 +140,3 @@ private:
 } // titania
 
 #endif
-

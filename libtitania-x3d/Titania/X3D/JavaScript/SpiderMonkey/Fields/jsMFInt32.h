@@ -68,11 +68,11 @@ jsX3DArrayField <jsSFInt32, MFInt32>::set1Value (JSContext *, JSObject *, jsid, 
 
 template <>
 JSBool
-jsX3DArrayField <jsSFInt32, MFInt32>::unshift (JSContext*, uintN, jsval*);
+jsX3DArrayField <jsSFInt32, MFInt32>::unshift (JSContext *, uintN, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFInt32, MFInt32>::push (JSContext*, uintN, jsval*);
+jsX3DArrayField <jsSFInt32, MFInt32>::push (JSContext *, uintN, jsval*);
 
 extern template class jsX3DArrayField <jsSFInt32, MFInt32>;
 

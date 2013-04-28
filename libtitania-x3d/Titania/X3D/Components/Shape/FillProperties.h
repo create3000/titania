@@ -61,11 +61,6 @@ class FillProperties :
 {
 public:
 
-	
-	
-	
-	
-
 	FillProperties (X3DExecutionContext* const);
 
 	virtual
@@ -106,11 +101,11 @@ public:
 	hatchColor () const
 	{ return *fields .hatchColor; }
 
-
-
 	virtual
 	void
 	draw ();
+
+
 private:
 
 	struct Fields
@@ -131,4 +126,3 @@ private:
 } // titania
 
 #endif
-

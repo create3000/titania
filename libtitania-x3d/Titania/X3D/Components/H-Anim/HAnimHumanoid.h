@@ -62,23 +62,6 @@ class HAnimHumanoid :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	HAnimHumanoid (X3DExecutionContext* const);
 
 	virtual
@@ -215,8 +198,6 @@ public:
 	viewpoints () const
 	{ return *fields .viewpoints; }
 
-
-
 	Box3f
 	getBBox ();
 
@@ -255,11 +236,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

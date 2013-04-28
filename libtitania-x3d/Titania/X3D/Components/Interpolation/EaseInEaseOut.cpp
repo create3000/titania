@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,9 +63,9 @@ EaseInEaseOut::Fields::Fields () :
 { }
 
 EaseInEaseOut::EaseInEaseOut (X3DExecutionContext* const executionContext) :
-	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	                 X3DNode (),                                                    
-	fields ()
+	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DNode (),                                                    
+	     fields ()                                                     
 {
 	setComponent ("Interpolation");
 	setTypeName ("EaseInEaseOut");
@@ -89,4 +89,3 @@ EaseInEaseOut::interpolate (size_t index, float weight)
 
 } // X3D
 } // titania
-

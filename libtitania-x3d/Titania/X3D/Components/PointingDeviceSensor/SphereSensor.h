@@ -61,9 +61,6 @@ class SphereSensor :
 {
 public:
 
-	
-	
-
 	SphereSensor (X3DExecutionContext* const);
 
 	virtual
@@ -87,8 +84,6 @@ public:
 	const SFRotation &
 	rotation_changed () const
 	{ return *fields .rotation_changed; }
-
-
 
 	virtual
 	void
@@ -128,4 +123,3 @@ private:
 } // titania
 
 #endif
-

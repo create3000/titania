@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,8 +59,8 @@ X3DPickableObject::Fields::Fields () :
 { }
 
 X3DPickableObject::X3DPickableObject () :
-	X3DBaseNode (),          
-	fields ()
+	X3DBaseNode (), 
+	     fields ()  
 {
 	addNodeType (X3DConstants::X3DPickableObject);
 }
@@ -75,4 +75,3 @@ X3DPickableObject::dispose ()
 
 } // X3D
 } // titania
-

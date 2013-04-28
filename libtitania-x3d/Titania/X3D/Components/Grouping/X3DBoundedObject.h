@@ -80,7 +80,6 @@ public:
 	bboxSize () const
 	{ return *fields .bboxSize; }
 
-
 	virtual
 	Box3f
 	getBBox () = 0;
@@ -101,6 +100,8 @@ protected:
 	virtual
 	void
 	dispose ();
+
+
 private:
 
 	struct Fields
@@ -119,4 +120,3 @@ private:
 } // titania
 
 #endif
-

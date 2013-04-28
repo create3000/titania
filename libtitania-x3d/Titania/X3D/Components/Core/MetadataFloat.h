@@ -62,8 +62,6 @@ class MetadataFloat :
 {
 public:
 
-	
-
 	MetadataFloat (X3DExecutionContext* const);
 
 	virtual
@@ -79,8 +77,6 @@ public:
 	const MFFloat &
 	value () const
 	{ return *fields .value; }
-
-
 
 	virtual
 	void
@@ -102,11 +98,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

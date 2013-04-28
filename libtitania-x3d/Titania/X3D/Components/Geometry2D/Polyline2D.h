@@ -61,8 +61,6 @@ class Polyline2D :
 {
 public:
 
-	
-
 	Polyline2D (X3DExecutionContext* const);
 
 	virtual
@@ -78,8 +76,6 @@ public:
 	const MFVec2f &
 	lineSegments () const
 	{ return *fields .lineSegments; }
-
-
 
 	virtual
 	void
@@ -101,11 +97,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

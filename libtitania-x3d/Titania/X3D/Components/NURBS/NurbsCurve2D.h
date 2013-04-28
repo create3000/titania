@@ -61,12 +61,6 @@ class NurbsCurve2D :
 {
 public:
 
-	
-	
-	
-	
-	
-
 	NurbsCurve2D (X3DExecutionContext* const);
 
 	virtual
@@ -137,4 +131,3 @@ private:
 } // titania
 
 #endif
-

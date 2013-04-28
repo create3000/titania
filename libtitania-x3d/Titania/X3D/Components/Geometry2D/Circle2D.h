@@ -61,8 +61,6 @@ class Circle2D :
 {
 public:
 
-	
-
 	Circle2D (X3DExecutionContext* const);
 
 	virtual
@@ -78,8 +76,6 @@ public:
 	const SFFloat &
 	radius () const
 	{ return *fields .radius; }
-
-
 
 	virtual
 	void
@@ -116,11 +112,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

@@ -65,21 +65,6 @@ public:
 	using X3DGeometryNode::ccw;
 	using X3DGeometryNode::creaseAngle;
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	ElevationGrid (X3DExecutionContext* const);
 
 	virtual
@@ -201,8 +186,6 @@ public:
 	{ return *fields .zSpacing; }
 
 
-
-
 private:
 
 	Box3f
@@ -245,11 +228,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

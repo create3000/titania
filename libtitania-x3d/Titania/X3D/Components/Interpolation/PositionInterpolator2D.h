@@ -61,9 +61,6 @@ class PositionInterpolator2D :
 {
 public:
 
-	
-	
-
 	PositionInterpolator2D (X3DExecutionContext* const);
 
 	virtual
@@ -87,8 +84,6 @@ public:
 	const SFVec2f &
 	value_changed () const
 	{ return *fields .value_changed; }
-
-
 
 
 private:
@@ -115,11 +110,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

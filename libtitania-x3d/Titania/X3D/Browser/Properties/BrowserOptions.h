@@ -85,27 +85,6 @@ class BrowserOptions :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	BrowserOptions (X3DExecutionContext* const);
 
 	///  @name Fields
@@ -263,13 +242,11 @@ public:
 	{ return *fields .fontStyle; }
 
 
-
 private:
 
 	virtual
 	BrowserOptions*
 	create (X3DExecutionContext* const) const;
-
 
 	virtual
 	void
@@ -311,11 +288,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

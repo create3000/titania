@@ -61,8 +61,6 @@ class MultiTextureCoordinate :
 {
 public:
 
-	
-
 	MultiTextureCoordinate (X3DExecutionContext* const);
 
 	virtual
@@ -97,4 +95,3 @@ private:
 } // titania
 
 #endif
-

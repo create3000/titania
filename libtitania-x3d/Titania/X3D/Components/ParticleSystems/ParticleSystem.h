@@ -61,21 +61,6 @@ class ParticleSystem :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	ParticleSystem (X3DExecutionContext* const);
 
 	virtual
@@ -227,4 +212,3 @@ private:
 } // titania
 
 #endif
-

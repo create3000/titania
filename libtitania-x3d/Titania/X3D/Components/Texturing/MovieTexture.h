@@ -99,7 +99,7 @@ private:
 
 	void
 	set_url ();
-	
+
 	Glib::RefPtr <Gst::XImageSink> vsink;
 
 };

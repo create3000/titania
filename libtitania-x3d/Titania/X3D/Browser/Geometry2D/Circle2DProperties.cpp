@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,12 +62,12 @@ Circle2DProperties::Fields::Fields () :
 
 Circle2DProperties::Circle2DProperties (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryPropertyNode (),
-	               fields ()                                                     
+	X3DGeometryPropertyNode (),                                                    
+	                 fields ()                                                     
 {
 	setComponent ("Browser"),
 	setTypeName ("Circle2DProperties");
-	
+
 	addField (inputOutput, "segments", segments ());
 }
 
@@ -110,4 +110,3 @@ Circle2DProperties::build ()
 
 } // X3D
 } // titania
-

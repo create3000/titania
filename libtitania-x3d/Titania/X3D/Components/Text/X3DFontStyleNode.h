@@ -133,7 +133,6 @@ public:
 	language () const
 	{ return *fields .language; }
 
-
 	Alignment
 	getMajorAlignment () const;
 
@@ -177,7 +176,6 @@ private:
 
 	Fields fields;
 
-
 	Alignment
 	getAlignment (const size_t) const;
 
@@ -189,4 +187,3 @@ private:
 } // titania
 
 #endif
-

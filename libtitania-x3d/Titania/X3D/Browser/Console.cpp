@@ -50,8 +50,8 @@
 
 #include "Console.h"
 
-#include "../Execution/X3DExecutionContext.h"
 #include "../Browser/X3DBrowser.h"
+#include "../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
@@ -61,9 +61,9 @@ Console::Fields::Fields () :
 { }
 
 Console::Console (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	       X3DNode (), 
-	fields ()
+	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DNode (),                                                    
+	     fields ()                                                     
 {
 	setComponent ("Browser");
 	setTypeName ("Console");
@@ -80,4 +80,3 @@ Console::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
-

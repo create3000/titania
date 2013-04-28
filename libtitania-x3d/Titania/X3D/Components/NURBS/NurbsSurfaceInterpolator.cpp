@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -70,9 +70,9 @@ NurbsSurfaceInterpolator::Fields::Fields () :
 { }
 
 NurbsSurfaceInterpolator::NurbsSurfaceInterpolator (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DChildNode (),                                                    
-	fields ()
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DChildNode (),                                                    
+	      fields ()                                                     
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsSurfaceInterpolator");
@@ -99,4 +99,3 @@ NurbsSurfaceInterpolator::create (X3DExecutionContext* const executionContext) c
 
 } // X3D
 } // titania
-

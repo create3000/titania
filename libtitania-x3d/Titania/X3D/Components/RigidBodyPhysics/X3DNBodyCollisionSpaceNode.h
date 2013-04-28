@@ -70,7 +70,6 @@ public:
 	enabled () const
 	{ return *fields .enabled; }
 
-
 	Box3f
 	getBBox ();
 
@@ -86,6 +85,8 @@ protected:
 	virtual
 	void
 	initialize ();
+
+
 private:
 
 	struct Fields
@@ -103,4 +104,3 @@ private:
 } // titania
 
 #endif
-

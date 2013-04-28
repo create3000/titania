@@ -58,10 +58,10 @@ namespace titania {
 namespace X3D {
 
 TransformHandle::TransformHandle (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    Transform (executionContext), 
-	X3DHandleNode (),
-	        scene ()                  
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    Transform (executionContext),                                    
+	X3DHandleNode (),                                                    
+	        scene ()                                                     
 {
 	setChildren (scene);
 }
@@ -76,7 +76,7 @@ void
 TransformHandle::initialize ()
 {
 	Transform::initialize ();
-	
+
 	scene = getBrowser () -> createX3DFromURL ({ get_handle ("TransformHandle.wrl") .str () });
 }
 
@@ -93,10 +93,10 @@ void
 TransformHandle::traverse (TraverseType type)
 {
 	push (type);
-	
+
 	for (const auto & rootNode : scene -> getRootNodes ())
 		rootNode -> traverse (type);
-	
+
 	pop ();
 }
 

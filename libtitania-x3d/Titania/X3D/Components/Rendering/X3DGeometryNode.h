@@ -107,19 +107,19 @@ protected:
 
 	///  @name Fields
 
-	SFBool&
+	SFBool &
 	ccw ()
 	{ return *fields .ccw; }
-	
-	const SFBool&
+
+	const SFBool &
 	ccw () const
 	{ return *fields .ccw; }
-	
-	SFFloat&
+
+	SFFloat &
 	creaseAngle ()
 	{ return *fields .creaseAngle; }
 
-	const SFFloat&
+	const SFFloat &
 	creaseAngle () const
 	{ return *fields .creaseAngle; }
 
@@ -195,11 +195,11 @@ private:
 	struct Fields
 	{
 		Fields ();
-		
-		SFBool* const  ccw;
+
+		SFBool* const ccw;
 		SFFloat* const creaseAngle;
 	};
-	
+
 	Fields fields;
 
 	Box3f                       bbox;

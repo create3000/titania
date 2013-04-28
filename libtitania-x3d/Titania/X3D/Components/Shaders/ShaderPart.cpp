@@ -63,7 +63,7 @@ ShaderPart::ShaderPart (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DNode (),                                                    
 	X3DUrlObject (),                                                    
-	      fields (),
+	      fields (),                                                    
 	    shaderId (0),                                                   
 	       valid (false)                                                
 {
@@ -128,7 +128,7 @@ ShaderPart::requestImmediateLoad ()
 			glCompileShader (shaderId);
 
 			glGetShaderiv (shaderId, GL_COMPILE_STATUS, &valid);
-			
+
 			std::clog << getInfoLog ();
 
 			if (not valid)
@@ -140,7 +140,7 @@ ShaderPart::requestImmediateLoad ()
 		}
 	}
 
-	setLoadState (valid ? COMPLETE_STATE : FAILED_STATE);	
+	setLoadState (valid ? COMPLETE_STATE : FAILED_STATE);
 }
 
 std::string
@@ -181,4 +181,3 @@ ShaderPart::dispose ()
 
 } // X3D
 } // titania
-

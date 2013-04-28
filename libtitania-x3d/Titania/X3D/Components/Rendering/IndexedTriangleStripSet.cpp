@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ IndexedTriangleStripSet::Fields::Fields () :
 IndexedTriangleStripSet::IndexedTriangleStripSet (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DComposedGeometryNode (),                                                    
-	fields ()
+	                 fields ()                                                     
 {
 	setComponent ("Rendering");
 	setTypeName ("IndexedTriangleStripSet");
@@ -91,4 +91,3 @@ IndexedTriangleStripSet::create (X3DExecutionContext* const executionContext) co
 
 } // X3D
 } // titania
-

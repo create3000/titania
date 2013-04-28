@@ -234,15 +234,15 @@ SFMatrix3 <ValueType>::getValue (scalar_type & e11, scalar_type & e12, scalar_ty
                                  scalar_type & e31, scalar_type & e32, scalar_type & e33) const
 {
 	const auto & data = getValue () .data ();
-	
+
 	e11 = data [0];
 	e12 = data [1];
 	e13 = data [2];
-	
+
 	e21 = data [3];
 	e22 = data [4];
 	e23 = data [5];
-	
+
 	e31 = data [6];
 	e32 = data [7];
 	e33 = data [8];

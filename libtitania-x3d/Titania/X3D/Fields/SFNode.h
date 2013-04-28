@@ -91,9 +91,9 @@ public:
 	virtual
 	SFNode*
 	clone (X3DExecutionContext* const) const final;
-	
+
 	///  @name Field services
-	
+
 	virtual
 	X3DConstants::FieldType
 	getType () const final

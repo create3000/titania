@@ -238,7 +238,7 @@ jsBrowser::createX3DFromString (JSContext* context, uintN argc, jsval* vp)
 		try
 		{
 			SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, x3dSyntax));
-			
+
 			return jsX3DScene::create (context, scene, vp);
 		}
 		catch (const X3DError & error)

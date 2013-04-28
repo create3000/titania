@@ -117,7 +117,6 @@ public:
 	duration_changed () const
 	{ return *fields .duration_changed; }
 
-
 	void
 	setVolume (float);
 
@@ -142,7 +141,7 @@ protected:
 
 	bool
 	sync ();
-	
+
 	const Glib::RefPtr <Gst::XImageSink> &
 	getVideoSink ();
 
@@ -196,7 +195,6 @@ private:
 
 	Fields fields;
 
-
 	class GStream;
 
 	std::shared_ptr <GStream> gstream;
@@ -207,4 +205,3 @@ private:
 } // titania
 
 #endif
-

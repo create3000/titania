@@ -61,10 +61,6 @@ class TouchSensor :
 {
 public:
 
-	
-	
-	
-
 	TouchSensor (X3DExecutionContext* const);
 
 	virtual
@@ -97,11 +93,11 @@ public:
 	hitPoint_changed () const
 	{ return *fields .hitPoint_changed; }
 
-
-
 	virtual
 	void
 	set_over (const std::shared_ptr <Hit> &, bool) final;
+
+
 private:
 
 	struct Fields
@@ -121,4 +117,3 @@ private:
 } // titania
 
 #endif
-

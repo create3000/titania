@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,19 +61,19 @@ X3DViewpointNode::Fields::Fields () :
 	orientation (new SFRotation ()),
 	centerOfRotation (new SFVec3f ()),
 	jump (new SFBool (true)),
-	             positionOffset (),                                                 
-	          orientationOffset (),                                                 
-	     centerOfRotationOffset ()                                                 
+	positionOffset (),
+	orientationOffset (),
+	centerOfRotationOffset ()
 { }
 
 X3DViewpointNode::X3DViewpointNode (bool displayed) :
 	            X3DBindableNode (displayed),                                        
-	         X3DViewpointObject (),
+	         X3DViewpointObject (),                                                 
 	                     fields (),                                                 
 	            modelViewMatrix (),                                                 
 	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),  
-	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
-	           differenceMatrix (), 
+	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1), 
+	           differenceMatrix (),                                                 
 	                 timeSensor (),                                                 
 	       positionInterpolator ()                                                  
 {
@@ -309,4 +309,3 @@ X3DViewpointNode::dispose ()
 
 } // X3D
 } // titania
-

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,7 +65,7 @@ Rectangle2D::Fields::Fields () :
 Rectangle2D::Rectangle2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	fields ()
+	         fields ()                                                     
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Rectangle2D");
@@ -105,9 +105,9 @@ void
 Rectangle2D::build ()
 {
 	const Rectangle2DProperties* properties = getBrowser () -> getBrowserOptions () -> rectangle2DProperties () .getValue ();
-	
+
 	size_t elements = solid () ? 1 : 2;
-	
+
 	getTexCoord () .reserve (elements * properties -> getTexCoord () .size ());
 	getNormals  () .reserve (elements * properties -> getNormals  () .size ());
 	getVertices () .reserve (elements * properties -> getVertices () .size ());
@@ -131,7 +131,7 @@ Rectangle2D::build ()
 	addElement (getVertices () .size ());
 	setVertexMode (properties -> getVertexMode ());
 	setSolid (true);
-	
+
 	if (not solid ())
 		addMirrorVertices (true);
 }
@@ -146,4 +146,3 @@ Rectangle2D::dispose ()
 
 } // X3D
 } // titania
-

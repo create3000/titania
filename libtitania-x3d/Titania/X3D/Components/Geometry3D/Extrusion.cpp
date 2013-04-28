@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -72,9 +72,9 @@ Extrusion::Fields::Fields () :
 { }
 
 Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext),                                    
-	 X3DGeometryNode (),                                                                                       
-	fields ()
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DGeometryNode (),                                                    
+	         fields ()                                                     
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Extrusion");
@@ -114,7 +114,7 @@ std::vector <Vector3f>
 Extrusion::createPoints (bool hasCaps)
 {
 	size_t reserve = spine () .size () * crossSection () .size ();
-	
+
 	if (hasCaps)
 	{
 		if (beginCap ())
@@ -123,8 +123,7 @@ Extrusion::createPoints (bool hasCaps)
 		if (endCap ())
 			reserve += crossSection () .size ();
 	}
-	
-	
+
 	std::vector <Vector3f> points;
 	points .reserve (reserve);
 
@@ -156,13 +155,13 @@ Extrusion::createPoints (bool hasCaps)
 			points .emplace_back (Vector3f (vector .getX (), 0, vector .getY ()) * matrix);
 
 	}
-	
+
 	// Copy points for caps
 
 	if (hasCaps)
 	{
 		auto last = points .end () - crossSection () .size ();
-	
+
 		if (beginCap ())
 		{
 			for (const auto & point : basic::adapter (points .begin (), points .begin () + crossSection () .size ()))
@@ -291,7 +290,7 @@ Extrusion::build ()
 {
 	if (spine () .size () < 2 or crossSection () .size () < 3)
 		return;
-		
+
 	size_t crossSectionSize = crossSection () .size (); // This one is used only in the INDEX macro.
 
 	#define INDEX(n, k) ((n) * crossSectionSize + (k))
@@ -603,4 +602,3 @@ Extrusion::dispose ()
 
 } // X3D
 } // titania
-

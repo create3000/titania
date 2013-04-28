@@ -110,10 +110,11 @@ public:
 	{ return *fields .sortOrder; }
 
 
-
 protected:
 
 	X3DPickSensorNode ();
+
+
 private:
 
 	struct Fields
@@ -136,4 +137,3 @@ private:
 } // titania
 
 #endif
-

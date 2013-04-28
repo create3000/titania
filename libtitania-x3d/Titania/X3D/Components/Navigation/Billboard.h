@@ -61,8 +61,6 @@ class Billboard :
 {
 public:
 
-	
-
 	Billboard (X3DExecutionContext* const);
 
 	virtual
@@ -78,8 +76,6 @@ public:
 	const SFVec3f &
 	axisOfRotation () const
 	{ return *fields .axisOfRotation; }
-
-
 
 	virtual
 	void
@@ -100,11 +96,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

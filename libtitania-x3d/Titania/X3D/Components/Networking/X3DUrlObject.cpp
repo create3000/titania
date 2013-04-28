@@ -71,7 +71,7 @@ X3DUrlObject::Fields::Fields () :
 
 X3DUrlObject::X3DUrlObject () :
 	X3DBaseNode (),                  
-	     fields (),
+	     fields (),                  
 	  loadState (NOT_STARTED_STATE), 
 	  userAgent (),                  
 	   worldURL ()                   
@@ -99,7 +99,7 @@ void
 X3DUrlObject::setLoadState (LoadState value)
 {
 	loadState = value;
-	
+
 	if (loadState == COMPLETE_STATE)
 		loadTime () = getCurrentTime ();
 }
@@ -406,4 +406,3 @@ print_uri (const basic::uri & uri)
 
 } // X3D
 } // titania
-

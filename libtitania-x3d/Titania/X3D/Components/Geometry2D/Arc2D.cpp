@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,7 +66,7 @@ Arc2D::Fields::Fields () :
 Arc2D::Arc2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	fields ()
+	         fields ()                                                     
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Arc2D");
@@ -96,15 +96,15 @@ Arc2D::getAngle ()
 {
 	float start = math::interval <float> (startAngle (), 0, M_PI2);
 	float end   = math::interval <float> (endAngle (),   0, M_PI2);
-	
+
 	if (start == end)
 		return M_PI2;
-		
+
 	float difference = std::min (std::abs (end - start), float (M_PI2));
-	
+
 	if (start > end)
 		return M_PI2 - difference;
-		
+
 	return difference;
 }
 
@@ -118,7 +118,7 @@ void
 Arc2D::build ()
 {
 	const Arc2DProperties* properties = getBrowser () -> getBrowserOptions () -> arc2DProperties ();
-	
+
 	float  difference = getAngle ();
 	size_t segments   = std::ceil (difference / properties -> minAngle ());
 	float  angle      = difference / segments;
@@ -132,11 +132,11 @@ Arc2D::build ()
 	}
 	else
 		setVertexMode (GL_LINE_LOOP);
-	
+
 	for (size_t n = 0; n < segments; ++ n)
 	{
 		float theta = startAngle () + angle * n;
-	
+
 		auto point = std::polar (std::abs (radius ()), theta);
 
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
@@ -163,4 +163,3 @@ Arc2D::dispose ()
 
 } // X3D
 } // titania
-

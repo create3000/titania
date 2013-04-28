@@ -61,20 +61,6 @@ class HAnimJoint :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	HAnimJoint (X3DExecutionContext* const);
 
 	virtual
@@ -217,4 +203,3 @@ private:
 } // titania
 
 #endif
-

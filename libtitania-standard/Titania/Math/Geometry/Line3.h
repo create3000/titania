@@ -165,8 +165,10 @@ public:
 
 		Type a = (re1 - re2 * e12) / (1 - E12);
 		Type b = -(re2 - re1 * e12) / (1 - E12);
-		
-		return d + b * line .direction () - a * direction ();
+
+		return d + b* line .direction () - a*
+		       direction ();
+
 	}
 
 	///  @name Intersection

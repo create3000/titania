@@ -27,7 +27,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.getenv
+ * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
  *
  * This file is part of the Titania Project.
  *

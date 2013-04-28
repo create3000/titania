@@ -77,23 +77,6 @@ class RenderingProperties :
 {
 public:
 
-	
-	
-
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-
-	
-
 	RenderingProperties (X3DExecutionContext* const);
 	///  @name Fields
 
@@ -201,7 +184,6 @@ public:
 	string () const
 	{ return *fields .string; }
 
-
 	bool
 	hasExtension (const std::string &);
 
@@ -224,8 +206,6 @@ private:
 	virtual
 	RenderingProperties*
 	create (X3DExecutionContext* const) const;
-
-
 
 	virtual
 	void
@@ -270,7 +250,6 @@ private:
 
 	Fields fields;
 
-
 	std::set <std::string> extensions;
 
 	chrono::stopwatch <double> clock;
@@ -288,4 +267,3 @@ private:
 } // titania
 
 #endif
-

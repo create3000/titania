@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ TriangleSet2D::Fields::Fields () :
 TriangleSet2D::TriangleSet2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	fields ()
+	         fields ()                                                     
 {
 	setComponent ("Geometry2D");
 	setTypeName ("TriangleSet2D");
@@ -84,28 +84,28 @@ TriangleSet2D::build ()
 {
 	size_t elements = solid () ? 1 : 2;
 	size_t reserve  = elements * vertices () .size ();
-	
+
 	getTexCoord () .reserve (reserve);
 	getNormals  () .reserve (reserve);
 	getVertices () .reserve (reserve);
-	
+
 	for (const auto & vertex : vertices ())
 	{
 		getNormals  () .emplace_back (0, 0, 1);
 		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
 	}
-	
+
 	size_t resize = vertices () .size () - (vertices () .size () % 3);
-	
+
 	getNormals  () .resize (resize);
 	getVertices () .resize (resize);
-	
+
 	buildTexCoord ();
 
 	addElement (getVertices () .size ());
 	setVertexMode (GL_TRIANGLES);
 	setSolid (true);
-	
+
 	if (not solid ())
 		addMirrorVertices (true);
 }
@@ -118,17 +118,16 @@ TriangleSet2D::buildTexCoord ()
 	Vector3f min;
 	float    Ssize;
 	int      Sindex, Tindex;
-	
+
 	getTexCoordParams (min, Ssize, Sindex, Tindex);
 
 	for (const auto & point : getVertices ())
 	{
 		getTexCoord () .emplace_back ((point [0] - min [0]) / Ssize,
-				                        (point [1] - min [1]) / Ssize,
-				                        0);
+		                              (point [1] - min [1]) / Ssize,
+		                              0);
 	}
 }
 
 } // X3D
 } // titania
-

@@ -61,9 +61,6 @@ class TriangleSet2D :
 {
 public:
 
-	
-	
-
 	TriangleSet2D (X3DExecutionContext* const);
 
 	virtual
@@ -89,14 +86,12 @@ public:
 	{ return *fields .solid; }
 
 
-
-
 private:
 
 	virtual
 	void
 	build ();
-	
+
 	void
 	buildTexCoord ();
 
@@ -110,11 +105,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

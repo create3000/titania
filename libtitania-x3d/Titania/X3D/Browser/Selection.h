@@ -66,16 +66,16 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
-	
+
 	void
 	addChild (const SFNode <X3DBaseNode> &);
 
 	void
 	removeChild (const SFNode <X3DBaseNode> &);
-	
+
 	const MFNode &
-	getChildren () const
-	{ return children; }
+	children () const
+	{ return fields .children; }
 
 	void
 	clear ();
@@ -89,7 +89,14 @@ private:
 	void
 	removeHandle (const SFNode <X3DBaseNode> &);
 
-	MFNode children;
+	struct Fields
+	{
+		Fields ();
+	
+		MFNode children;
+	};
+	
+	Fields fields;
 
 };
 

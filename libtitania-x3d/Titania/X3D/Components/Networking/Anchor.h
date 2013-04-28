@@ -62,9 +62,6 @@ class Anchor :
 {
 public:
 
-	
-	
-
 	Anchor (X3DExecutionContext* const);
 
 	virtual
@@ -89,12 +86,10 @@ public:
 	description () const
 	{ return *fields .description; }
 
-
-
 	virtual
 	void
 	requestImmediateLoad ();
-	
+
 	void
 	set_active (bool);
 
@@ -122,11 +117,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

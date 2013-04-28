@@ -61,8 +61,6 @@ class ProgramShader :
 {
 public:
 
-	
-
 	ProgramShader (X3DExecutionContext* const);
 
 	virtual
@@ -79,11 +77,11 @@ public:
 	programs () const
 	{ return *fields .programs; }
 
-
-
 	virtual
 	void
 	draw ();
+
+
 private:
 
 	struct Fields
@@ -101,4 +99,3 @@ private:
 } // titania
 
 #endif
-

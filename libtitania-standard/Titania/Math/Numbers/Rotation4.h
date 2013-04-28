@@ -215,7 +215,6 @@ public:
 	operator /= (const Type &);
 
 
-
 private:
 
 	quaternion <Type> value;

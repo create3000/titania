@@ -69,14 +69,14 @@ public:
 	     const std::set <X3DBaseNode*> &,
 	     X3DBaseNode* const);
 
-	const Matrix4f                  transformationMatrix;
-	const Line3f                    ray;
-	const Vector3f                  texCoord;
-	const Vector3f                  normal;
-	const Vector3f                  point;
-	const float                     distance;
-	const std::set <X3DBaseNode*>   sensors;
-	const X3DBaseNode*              node;
+	const Matrix4f                transformationMatrix;
+	const Line3f                  ray;
+	const Vector3f                texCoord;
+	const Vector3f                normal;
+	const Vector3f                point;
+	const float                   distance;
+	const std::set <X3DBaseNode*> sensors;
+	const X3DBaseNode*            node;
 
 };
 

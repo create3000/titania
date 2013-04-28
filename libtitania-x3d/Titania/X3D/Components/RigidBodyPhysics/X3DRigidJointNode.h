@@ -86,10 +86,11 @@ public:
 	{ return *fields .forceOutput; }
 
 
-
 protected:
 
 	X3DRigidJointNode ();
+
+
 private:
 
 	struct Fields
@@ -109,4 +110,3 @@ private:
 } // titania
 
 #endif
-

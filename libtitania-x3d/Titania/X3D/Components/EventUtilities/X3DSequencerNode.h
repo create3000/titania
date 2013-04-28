@@ -94,10 +94,11 @@ public:
 	{ return *fields .key; }
 
 
-
 protected:
 
 	X3DSequencerNode ();
+
+
 private:
 
 	struct Fields
@@ -118,4 +119,3 @@ private:
 } // titania
 
 #endif
-

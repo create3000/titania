@@ -65,13 +65,6 @@ public:
 
 	///  @name Fields
 
-	
-	
-	
-	
-
-	
-
 	///  @name Construction
 
 	ViewpointGroup (X3DExecutionContext* const);
@@ -121,8 +114,6 @@ public:
 	const SFBool &
 	isActive () const
 	{ return fields .isActive; }
-
-
 
 	///  @name Element accesss
 
@@ -177,7 +168,6 @@ private:
 
 	Fields fields;
 
-
 	SFNode <VisibilitySensor>        visibilitySensor;
 	std::deque <X3DViewpointObject*> viewpointObjects;
 
@@ -187,4 +177,3 @@ private:
 } // titania
 
 #endif
-

@@ -149,12 +149,7 @@ X3DPrototypeInstance::dispose ()
 }
 
 X3DPrototypeInstance::~X3DPrototypeInstance ()
-{
-	//removeField ("metadata");
-
-	for (const auto & field : basic::adapter (getFieldDefinitions () .begin () + 1, getFieldDefinitions () .end ()))
-		delete field;
-}
+{ }
 
 } // X3D
 } // titania

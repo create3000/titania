@@ -62,8 +62,6 @@ class ShaderPart :
 {
 public:
 
-	
-
 	ShaderPart (X3DExecutionContext* const);
 
 	virtual
@@ -80,8 +78,6 @@ public:
 	type () const
 	{ return *fields .type; }
 
-
-	
 	GLint
 	getShaderId () const
 	{ return shaderId; }
@@ -103,13 +99,13 @@ private:
 
 	void
 	initialize ();
-		
+
 	GLenum
 	getShaderType () const;
-	
+
 	std::string
 	getInfoLog () const;
-	
+
 	void
 	set_url ();
 
@@ -122,13 +118,12 @@ private:
 
 	Fields fields;
 
-
 	GLuint shaderId;
-	GLint valid;
+	GLint  valid;
+
 };
 
 } // X3D
 } // titania
 
 #endif
-

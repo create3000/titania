@@ -62,9 +62,6 @@ class Script :
 {
 public:
 
-	
-	
-
 	Script (X3DExecutionContext* const);
 
 	virtual
@@ -88,8 +85,6 @@ public:
 	const SFBool &
 	mustEvaluate () const
 	{ return *fields .mustEvaluate; }
-
-
 
 	void
 	eventsProcessed ();
@@ -118,7 +113,6 @@ private:
 
 	Fields fields;
 
-
 	std::unique_ptr <JavaScriptContext> javaScript;
 
 };
@@ -127,4 +121,3 @@ private:
 } // titania
 
 #endif
-

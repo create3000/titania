@@ -88,7 +88,6 @@ public:
 	url () const
 	{ return *fields .url; }
 
-	
 	SFTime &
 	loadTime ()
 	{ return fields .loadTime; }
@@ -104,7 +103,6 @@ public:
 	const MFString &
 	urlError () const
 	{ return fields .urlError; }
-
 
 	LoadState
 	checkLoadState ();
@@ -251,14 +249,13 @@ private:
 
 	Fields fields;
 
-
 	LoadState   loadState;
 	std::string userAgent;
 	basic::uri  worldURL;
+
 };
 
 } // X3D
 } // titania
 
 #endif
-

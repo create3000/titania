@@ -74,7 +74,7 @@ Appearance::Fields::Fields () :
 Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DAppearanceNode (),                                                    
-	           fields (),
+	           fields (),                                                    
 	  _lineProperties (NULL),                                                
 	  _fillProperties (NULL),                                                
 	        _material (NULL),                                                
@@ -127,7 +127,7 @@ Appearance::isTransparent () const
 
 	if (_texture and _texture -> isTransparent ())
 		return true;
-		
+
 	if (_shaders .size ())
 		return true;
 
@@ -168,11 +168,11 @@ void
 Appearance::set_shaders ()
 {
 	_shaders .clear ();
-	
+
 	for (const auto & shader : shaders ())
 	{
 		auto _shader = x3d_cast <X3DShaderNode*> (shader .getValue ());
-		
+
 		if (_shader)
 			_shaders .emplace_back (_shader);
 	}
@@ -202,4 +202,3 @@ Appearance::draw ()
 
 } // X3D
 } // titania
-

@@ -62,8 +62,6 @@ class CADFace :
 {
 public:
 
-	
-
 	CADFace (X3DExecutionContext* const);
 
 	virtual
@@ -79,8 +77,6 @@ public:
 	const SFNode <X3DBaseNode> &
 	shape () const
 	{ return *fields .shape; }
-
-
 
 	Box3f
 	getBBox ();
@@ -105,11 +101,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

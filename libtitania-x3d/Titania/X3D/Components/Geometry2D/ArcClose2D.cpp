@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -70,7 +70,7 @@ ArcClose2D::Fields::Fields () :
 ArcClose2D::ArcClose2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	fields ()
+	         fields ()                                                     
 {
 	setComponent ("Geometry2D");
 	setTypeName ("ArcClose2D");
@@ -102,15 +102,15 @@ ArcClose2D::getAngle ()
 {
 	float start = math::interval <float> (startAngle (), 0, M_PI2);
 	float end   = math::interval <float> (endAngle (),   0, M_PI2);
-	
+
 	if (start == end)
 		return M_PI2;
-		
+
 	float difference = std::min (std::abs (end - start), float (M_PI2));
-	
+
 	if (start > end)
 		return M_PI2 - difference;
-		
+
 	return difference;
 }
 
@@ -124,7 +124,7 @@ void
 ArcClose2D::build ()
 {
 	const ArcClose2DProperties* properties = getBrowser () -> getBrowserOptions () -> arcClose2DProperties () .getValue ();
-	
+
 	float  difference = getAngle ();
 	size_t segments   = std::ceil (difference / properties -> minAngle ());
 	float  angle      = difference / segments;
@@ -140,26 +140,26 @@ ArcClose2D::build ()
 	if (difference < float (2 * M_PI))
 	{
 		// If arc add add a center point otherwise it is a circle.
-	
-		if (closureType () != "CHORD")
+
+		if (closureType () not_eq "CHORD")
 		{
 			getTexCoord () .emplace_back (0.5, 0.5, 0);
 			getNormals  () .emplace_back (0, 0, 1);
 			getVertices () .emplace_back (0, 0, 0);
 		}
-		
+
 		++ segments;
 	}
-	
+
 	for (size_t n = 0; n < segments; ++ n)
 	{
 		float theta = startAngle () + angle * n;
-	
+
 		auto texCoord = std::polar (0.5f, theta) + std::complex <float> (0.5f, 0.5f);
 		auto point    = std::polar (std::abs (radius ()), theta);
 
 		getTexCoord () .emplace_back (texCoord .real (), texCoord .imag (), 0);
-	   getNormals  () .emplace_back (0, 0, 1);
+		getNormals  () .emplace_back (0, 0, 1);
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}
 
@@ -181,4 +181,3 @@ ArcClose2D::dispose ()
 
 } // X3D
 } // titania
-

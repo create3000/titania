@@ -62,19 +62,6 @@ class GeoLOD :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	GeoLOD (X3DExecutionContext* const);
 
 	virtual
@@ -179,8 +166,6 @@ public:
 	rootNode () const
 	{ return *fields .rootNode; }
 
-
-
 	Box3f
 	getBBox ();
 
@@ -215,11 +200,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

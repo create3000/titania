@@ -61,15 +61,6 @@ class NurbsTextureCoordinate :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-
 	NurbsTextureCoordinate (X3DExecutionContext* const);
 
 	virtual
@@ -167,4 +158,3 @@ private:
 } // titania
 
 #endif
-

@@ -61,14 +61,6 @@ class GeoProximitySensor :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-
 	GeoProximitySensor (X3DExecutionContext* const);
 
 	virtual
@@ -157,4 +149,3 @@ private:
 } // titania
 
 #endif
-

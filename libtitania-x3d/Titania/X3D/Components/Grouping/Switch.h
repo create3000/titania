@@ -61,8 +61,6 @@ class Switch :
 {
 public:
 
-	
-
 	Switch (X3DExecutionContext* const);
 
 	virtual
@@ -79,11 +77,11 @@ public:
 	whichChoice () const
 	{ return *fields .whichChoice; }
 
-
-
 	virtual
 	void
 	traverse (TraverseType);
+
+
 private:
 
 	struct Fields
@@ -101,4 +99,3 @@ private:
 } // titania
 
 #endif
-

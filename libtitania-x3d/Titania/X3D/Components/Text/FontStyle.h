@@ -61,8 +61,6 @@ class FontStyle :
 {
 public:
 
-	
-
 	FontStyle (X3DExecutionContext* const);
 
 	virtual
@@ -79,11 +77,11 @@ public:
 	size () const
 	{ return *fields .size; }
 
-
-
 	virtual
 	float
 	getSize () const;
+
+
 private:
 
 	struct Fields
@@ -101,4 +99,3 @@ private:
 } // titania
 
 #endif
-

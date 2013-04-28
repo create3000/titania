@@ -63,8 +63,6 @@ class Circle2DProperties :
 {
 public:
 
-	
-	
 	Circle2DProperties (X3DExecutionContext* const);
 
 	///  @name Fields
@@ -88,8 +86,6 @@ private:
 	Circle2DProperties*
 	create (X3DExecutionContext* const) const;
 
-
-
 	virtual
 	void
 	initialize ();
@@ -111,11 +107,9 @@ private:
 
 	Fields fields;
 
-
 };
 
 } // X3D
 } // titania
 
 #endif
-

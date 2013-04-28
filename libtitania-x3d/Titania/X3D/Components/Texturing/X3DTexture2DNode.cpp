@@ -77,10 +77,10 @@ X3DTexture2DNode::Fields::Fields () :
 { }
 
 X3DTexture2DNode::X3DTexture2DNode () :
-	   X3DTextureNode (),     
-	           fields (),
-	       components (0),    
-	      transparent (false) 
+	X3DTextureNode (),     
+	        fields (),     
+	    components (0),    
+	   transparent (false) 
 {
 	addNodeType (X3DConstants::X3DTexture2DNode);
 }
@@ -210,7 +210,7 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 	// Flip image in vertical direction
 
 	//image .flip ();
-	
+
 	// scale image
 
 	scaleImage (image);
@@ -231,7 +231,7 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 	image .write (&blob);
 
 	// transfer image
-	              
+
 	setImage (components, format, image .size () .width (), image .size () .height (), blob .data ());
 }
 
@@ -241,8 +241,8 @@ X3DTexture2DNode::setImage (size_t components, GLenum format, GLint width, GLint
 	// transfer image
 
 	auto textureProperties = getTextureProperties ();
-	
-	GLint level = 0; // This texture is level 0 in mimpap generation.
+
+	GLint level = 0;     // This texture is level 0 in mimpap generation.
 
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 
@@ -255,10 +255,10 @@ X3DTexture2DNode::setImage (size_t components, GLenum format, GLint width, GLint
 	              false, // border
 	              format, GL_UNSIGNED_BYTE,
 	              data);
-	            
+
 	glBindTexture (GL_TEXTURE_2D, 0);
 }
-	              
+
 void
 X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const void* data)
 {
@@ -320,4 +320,3 @@ X3DTexture2DNode::draw ()
 
 } // X3D
 } // titania
-

@@ -63,10 +63,6 @@ public:
 
 	using X3DGeometryNode::ccw;
 
-	
-	
-	
-
 	NurbsSwungSurface (X3DExecutionContext* const);
 
 	virtual
@@ -119,4 +115,3 @@ private:
 } // titania
 
 #endif
-

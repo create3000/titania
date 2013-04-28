@@ -72,6 +72,7 @@ void
 X3DTextureNode::scaleImage (Magick::Image & image, size_t width, size_t height)
 {
 	Magick::Geometry geometry (width, height);
+
 	geometry .aspect (true);
 	image .filterType (Magick::LanczosFilter);
 	image .zoom (geometry);

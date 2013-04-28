@@ -61,16 +61,6 @@ class OrientationDamper :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	OrientationDamper (X3DExecutionContext* const);
 
 	virtual
@@ -177,4 +167,3 @@ private:
 } // titania
 
 #endif
-

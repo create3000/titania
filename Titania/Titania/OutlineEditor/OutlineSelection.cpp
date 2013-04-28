@@ -56,17 +56,17 @@ namespace titania {
 namespace puck {
 
 OutlineSelection::OutlineSelection (const X3D::SFNode <X3D::Browser> & browser) :
-	X3DBaseInterface ()
+	X3DBaseInterface () 
 {
 	setBrowser (browser);
-	
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &OutlineSelection::set_selection);
+
+	getBrowser () -> getSelection () -> children () .addInterest (this, &OutlineSelection::set_selection);
 }
 
 void
 OutlineSelection::set_selection ()
 {
-	for (const auto & sfnode : getBrowser () -> getSelection () -> getChildren ())
+	for (const auto & sfnode : getBrowser () -> getSelection () -> children ())
 		select (sfnode .getValue (), true);
 }
 
@@ -79,14 +79,13 @@ OutlineSelection::setSelectMultiple (bool value)
 		forceSelection = true;
 }
 
-
 void
 OutlineSelection::select (const X3D::SFNode <X3D::X3DBaseNode> & sfnode)
 {
 	if (sfnode)
 	{
-		const auto & children = getBrowser () -> getSelection () -> getChildren ();
-	
+		const auto & children = getBrowser () -> getSelection () -> children ();
+
 		bool selected = std::find (children .begin (), children .end (), sfnode) not_eq children .end (); // XXX pointer fields
 
 		if (selectMultiple)
@@ -109,16 +108,16 @@ void
 OutlineSelection::remove (const X3D::SFNode <X3D::X3DBaseNode> & sfnode)
 {
 	select (sfnode .getValue (), false);
-	
+
 	getBrowser () -> getSelection () -> removeChild (sfnode);
 }
 
 void
 OutlineSelection::clear ()
 {
-	for (const auto & sfnode : getBrowser () -> getSelection () -> getChildren ())
+	for (const auto & sfnode : getBrowser () -> getSelection () -> children ())
 		select (sfnode .getValue (), false);
-	
+
 	getBrowser () -> getSelection () -> clear ();
 }
 
@@ -137,7 +136,7 @@ OutlineSelection::select (X3D::X3DBaseNode* node, bool value, X3D::ChildObjectSe
 	{
 		if (not seen .insert (node) .second)
 			return;
-		
+
 		if (OutlineTreeModel::getUserData (node) -> selected == value)
 			return;
 

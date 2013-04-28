@@ -62,17 +62,6 @@ class Sound :
 {
 public:
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	Sound (X3DExecutionContext* const);
 
 	virtual
@@ -161,8 +150,6 @@ public:
 	source () const
 	{ return *fields .source; }
 
-
-
 	virtual
 	void
 	traverse (TraverseType) final;
@@ -173,7 +160,7 @@ private:
 	virtual
 	void
 	initialize () final;
-	
+
 	void
 	set_source ();
 
@@ -198,7 +185,6 @@ private:
 
 	Fields fields;
 
-
 	X3DSoundSourceNode* _source;
 
 };
@@ -207,4 +193,3 @@ private:
 } // titania
 
 #endif
-

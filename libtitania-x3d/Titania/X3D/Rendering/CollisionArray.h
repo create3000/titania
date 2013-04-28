@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_RENDERING_COLLISION_SHAPE_ARRAY_H__
-#define __TITANIA_X3D_RENDERING_COLLISION_SHAPE_ARRAY_H__
+#ifndef __TITANIA_X3D_RENDERING_COLLISION_ARRAY_H__
+#define __TITANIA_X3D_RENDERING_COLLISION_ARRAY_H__
 
 #include "../Components/Navigation/Collision.h"
 #include <vector>

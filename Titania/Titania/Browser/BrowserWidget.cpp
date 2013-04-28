@@ -117,7 +117,7 @@ BrowserWidget::on_hand_button_toggled ()
 	if (getHandButton () .get_active ())
 	{
 		std::clog << "Hand button clicked." << std::endl;
-		
+
 		getBrowser () -> select = false;
 	}
 }
@@ -128,7 +128,7 @@ BrowserWidget::on_arrow_button_toggled ()
 	if (getArrowButton () .get_active ())
 	{
 		std::clog << "Arrow button clicked." << std::endl;
-		
+
 		getBrowser () -> select = true;
 	}
 }

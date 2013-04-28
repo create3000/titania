@@ -60,7 +60,7 @@ class X3DAppearanceChildNode :
 	virtual public X3DNode
 {
 public:
-	
+
 	virtual
 	void
 	draw () = 0;

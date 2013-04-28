@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,7 +64,7 @@ LocalFog::LocalFog (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DChildNode (),                                                    
 	X3DFogObject (),                                                    
-	fields ()
+	      fields ()                                                     
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("LocalFog");
@@ -112,4 +112,3 @@ LocalFog::dispose ()
 
 } // X3D
 } // titania
-

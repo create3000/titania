@@ -58,17 +58,21 @@
 namespace titania {
 namespace X3D {
 
+Selection::Fields::Fields () :
+	children ()
+{ }
+
 Selection::Selection (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DNode (), 
-	   children ()                                                     // MFNode  [out] children [ ]
+	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	    X3DNode (),                                                    
+	     fields ()
 {
 	setComponent ("Browser");
 	setTypeName ("Selection");
 
 	addField (inputOutput, "metadata", metadata ());
 
-	setChildren (children);
+	setChildren (fields .children);
 }
 
 X3DBaseNode*
@@ -83,35 +87,38 @@ Selection::addChild (const SFNode <X3DBaseNode> & child)
 	if (not child)
 		return;
 
-	children .emplace_back (child);
-	
+	fields .children .emplace_back (child);
+
 	addHandle (child);
 }
 
 void
 Selection::removeChild (const SFNode <X3DBaseNode> & child)
 {
-	children .erase (std::remove (children .begin (), children .end (), child), children .end ()); // XXX pointer fields
-	
+	fields .children .erase (std::remove (fields .children .begin (),
+	                                      fields .children .end (),
+	                                      child),
+	                         fields .children .end ()); // XXX pointer fields
+
 	// Handle
-	
+
 	removeHandle (child);
 }
 
 void
 Selection::clear ()
 {
-	for (const auto & child : children)
+	for (const auto & child : children ())
 		removeHandle (child);
 
-	children .clear ();
+	fields .children .clear ();
 }
 
 void
 Selection::addHandle (const SFNode <X3DBaseNode> & child)
 {
 	X3DHandleNode* handle = NULL;
-	
+
 	if (dynamic_cast <Transform*> (child .getValue ()))
 		handle = new TransformHandle (child -> getExecutionContext ());
 
@@ -126,7 +133,7 @@ void
 Selection::removeHandle (const SFNode <X3DBaseNode> & child)
 {
 	auto handle = dynamic_cast <X3DHandleNode*> (child .getValue ());
-	
+
 	if (handle)
 		handle -> remove ();
 }

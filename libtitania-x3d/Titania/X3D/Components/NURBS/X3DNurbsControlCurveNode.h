@@ -70,10 +70,11 @@ public:
 	{ return *fields .controlPoint; }
 
 
-
 protected:
 
 	X3DNurbsControlCurveNode ();
+
+
 private:
 
 	struct Fields
@@ -91,4 +92,3 @@ private:
 } // titania
 
 #endif
-
