@@ -69,12 +69,54 @@ class X3DSoundSourceNode :
 {
 public:
 
-	SFBool   enabled;
-	SFString description;
-	SFFloat  speed;
-	SFFloat  pitch;
-	SFBool   isActive;
-	SFTime   duration_changed;
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	SFString &
+	description ()
+	{ return *fields .description; }
+
+	const SFString &
+	description () const
+	{ return *fields .description; }
+
+	SFFloat &
+	speed ()
+	{ return *fields .speed; }
+
+	const SFFloat &
+	speed () const
+	{ return *fields .speed; }
+
+	SFFloat &
+	pitch ()
+	{ return *fields .pitch; }
+
+	const SFFloat &
+	pitch () const
+	{ return *fields .pitch; }
+
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
+	SFTime &
+	duration_changed ()
+	{ return *fields .duration_changed; }
+
+	const SFTime &
+	duration_changed () const
+	{ return *fields .duration_changed; }
+
 
 	void
 	setVolume (float);
@@ -110,7 +152,7 @@ private:
 	virtual
 	bool
 	isEnabled () const override
-	{ return enabled; }
+	{ return enabled (); }
 
 	void
 	prepareEvents ();
@@ -140,6 +182,21 @@ private:
 	void
 	set_end ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const enabled;
+		SFString* const description;
+		SFFloat* const speed;
+		SFFloat* const pitch;
+		SFBool* const isActive;
+		SFTime* const duration_changed;
+	};
+
+	Fields fields;
+
+
 	class GStream;
 
 	std::shared_ptr <GStream> gstream;
@@ -150,3 +207,4 @@ private:
 } // titania
 
 #endif
+

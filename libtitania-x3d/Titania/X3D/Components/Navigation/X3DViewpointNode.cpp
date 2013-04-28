@@ -57,15 +57,19 @@
 namespace titania {
 namespace X3D {
 
-X3DViewpointNode::X3DViewpointNode (bool displayed) :
-	            X3DBindableNode (displayed),                                        
-	         X3DViewpointObject (),                                                 
-	                orientation (),                                                 // SFRotation [in,out] orientation       0 0 1 0        [-1,1],(-∞,∞)
-	           centerOfRotation (),                                                 // SFVec3f    [in,out] centerOfRotation  0 0 0          (-∞,∞)
-	                       jump (true),                                             // SFBool     [in,out] jump              TRUE
+X3DViewpointNode::Fields::Fields () :
+	orientation (new SFRotation ()),
+	centerOfRotation (new SFVec3f ()),
+	jump (new SFBool (true)),
 	             positionOffset (),                                                 
 	          orientationOffset (),                                                 
-	     centerOfRotationOffset (),                                                 
+	     centerOfRotationOffset ()                                                 
+{ }
+
+X3DViewpointNode::X3DViewpointNode (bool displayed) :
+	            X3DBindableNode (displayed),                                        
+	         X3DViewpointObject (),
+	                     fields (),                                                 
 	            modelViewMatrix (),                                                 
 	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),  
 	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
@@ -75,9 +79,9 @@ X3DViewpointNode::X3DViewpointNode (bool displayed) :
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
 
-	setChildren (positionOffset,
-	             orientationOffset,
-	             centerOfRotationOffset,
+	setChildren (positionOffset (),
+	             orientationOffset (),
+	             centerOfRotationOffset (),
 	             timeSensor,
 	             positionInterpolator);
 }
@@ -88,38 +92,38 @@ X3DViewpointNode::initialize ()
 	X3DBindableNode::initialize ();
 	X3DViewpointObject::initialize ();
 
-	timeSensor                  = new TimeSensor (getExecutionContext ());
-	timeSensor -> stopTime      = 1;
-	timeSensor -> cycleInterval = 0.2;
+	timeSensor                     = new TimeSensor (getExecutionContext ());
+	timeSensor -> stopTime ()      = 1;
+	timeSensor -> cycleInterval () = 0.2;
 	timeSensor -> setup ();
 
-	positionInterpolator        = new PositionInterpolator (getExecutionContext ());
-	positionInterpolator -> key = { 0, 1 };
+	positionInterpolator           = new PositionInterpolator (getExecutionContext ());
+	positionInterpolator -> key () = { 0, 1 };
 	positionInterpolator -> setup ();
 
-	timeSensor           -> fraction_changed .addInterest (positionInterpolator -> set_fraction);
-	timeSensor           -> isActive         .addInterest (this, &X3DViewpointNode::set_isActive);
-	positionInterpolator -> value_changed    .addInterest (positionOffset);
+	timeSensor           -> fraction_changed () .addInterest (positionInterpolator -> set_fraction ());
+	timeSensor           -> isActive ()         .addInterest (this, &X3DViewpointNode::set_isActive);
+	positionInterpolator -> value_changed ()    .addInterest (positionOffset ());
 
-	isBound .addInterest (this, &X3DViewpointNode::_set_bind);
+	isBound () .addInterest (this, &X3DViewpointNode::_set_bind);
 }
 
 Vector3f
 X3DViewpointNode::getUserPosition () const
 {
-	return getPosition () + positionOffset;
+	return getPosition () + positionOffset ();
 }
 
 Rotation4f
 X3DViewpointNode::getUserOrientation () const
 {
-	return orientation * orientationOffset;
+	return orientation () * orientationOffset ();
 }
 
 Vector3f
 X3DViewpointNode::getUserCenterOfRotation () const
 {
-	return centerOfRotation + centerOfRotationOffset;
+	return centerOfRotation () + centerOfRotationOffset ();
 }
 
 void
@@ -144,7 +148,7 @@ X3DViewpointNode::removeFromLayer (X3DLayerNode* const layer)
 void
 X3DViewpointNode::bindToLayer (X3DLayerNode* const layer)
 {
-	std::clog << "Trying to bind X3DViewpoint '" << description << "' to layer '" << layer -> getName () << "': " << std::flush;
+	std::clog << "Trying to bind X3DViewpoint '" << description () << "' to layer '" << layer -> getName () << "': " << std::flush;
 
 	layer -> getViewpointStack () .push (this);
 
@@ -160,16 +164,16 @@ X3DViewpointNode::unbindFromLayer (X3DLayerNode* const layer)
 void
 X3DViewpointNode::lookAt (Box3f bbox)
 {
-	std::clog << "Look at using viewpoint: " << description << "." << std::endl;
+	std::clog << "Look at using viewpoint: " << description () << "." << std::endl;
 
 	bbox *= ~getModelViewMatrix ();
 
-	timeSensor -> startTime          = 1;
-	positionInterpolator -> keyValue = { this -> positionOffset, lookAtPositionOffset (bbox) };
+	timeSensor -> startTime ()          = 1;
+	positionInterpolator -> keyValue () = { this -> positionOffset (), lookAtPositionOffset (bbox) };
 
-	centerOfRotation       = bbox .center ();
-	centerOfRotationOffset = Vector3f ();
-	set_bind               = true;
+	centerOfRotation ()       = bbox .center ();
+	centerOfRotationOffset () = Vector3f ();
+	set_bind ()               = true;
 
 	std::clog << getTypeName () << " {" << std::endl;
 	std::clog << "  position " << getUserPosition () << std::endl;
@@ -185,23 +189,23 @@ X3DViewpointNode::set_isActive (const bool & value)
 	if (not value)
 	{
 		for (const auto & layer : getLayers ())
-			layer -> getNavigationInfo () -> transitionComplete = getCurrentTime ();
+			layer -> getNavigationInfo () -> transitionComplete () = getCurrentTime ();
 	}
 }
 
 void
 X3DViewpointNode::_set_bind ()
 {
-	if (isBound)
+	if (isBound ())
 	{
-		if (jump)
+		if (jump ())
 		{
-			if (not retainUserOffsets)
+			if (not retainUserOffsets ())
 			{
 				// Reinitialize user offsets.
-				positionOffset         = Vector3f ();
-				orientationOffset      = Rotation4f ();
-				centerOfRotationOffset = Vector3f ();
+				positionOffset ()         = Vector3f ();
+				orientationOffset ()      = Rotation4f ();
+				centerOfRotationOffset () = Vector3f ();
 			}
 		}
 		else
@@ -211,8 +215,8 @@ X3DViewpointNode::_set_bind ()
 			Rotation4f o;
 			differenceMatrix .get (p, o);
 
-			positionOffset    = p;
-			orientationOffset = o;
+			positionOffset ()    = p;
+			orientationOffset () = o;
 		}
 	}
 }
@@ -242,11 +246,11 @@ X3DViewpointNode::camera ()
 {
 	setModelViewMatrix (ModelViewMatrix4f ());
 
-	if (isBound)
+	if (isBound ())
 	{
 		Matrix4f transformationMatrix = ModelViewMatrix4f ();
 
-		if (jump)
+		if (jump ())
 		{
 			transformationMatrix .translate (getUserPosition ());
 			transformationMatrix .rotate (getUserOrientation ());
@@ -266,14 +270,14 @@ X3DViewpointNode::camera ()
 void
 X3DViewpointNode::collect ()
 {
-	if (not isBound)
+	if (not isBound ())
 	{
-		if (not jump)
+		if (not jump ())
 		{
 			differenceMatrix = ModelViewMatrix4f ();
 
 			differenceMatrix .translate (getPosition ());
-			differenceMatrix .rotate (orientation);
+			differenceMatrix .rotate (orientation ());
 			differenceMatrix .inverse ();
 		}
 	}
@@ -305,3 +309,4 @@ X3DViewpointNode::dispose ()
 
 } // X3D
 } // titania
+

@@ -62,36 +62,232 @@ class SignalPdu :
 {
 public:
 
-	SFString address;
-	SFInt32  applicationID;
-	MFInt32  data;
-	SFInt32  dataLength;
-	SFInt32  encodingScheme;
-	SFInt32  entityID;
-	SFString multicastRelayHost;
-	SFInt32  multicastRelayPort;
-	SFString networkMode;
-	SFInt32  port;
-	SFInt32  radioID;
-	SFFloat  readInterval;
-	SFBool   rtpHeaderExpected;
-	SFInt32  sampleRate;
-	SFInt32  samples;
-	SFInt32  siteID;
-	SFInt32  tdlType;
-	SFInt32  whichGeometry;
-	SFFloat  writeInterval;
-	SFBool   isNetworkReader;
-	SFBool   isNetworkWriter;
-	SFBool   isRtpHeaderHeard;
-	SFBool   isStandAlone;
-	SFTime   timestamp;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	SignalPdu (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFString &
+	address ()
+	{ return *fields .address; }
+
+	const SFString &
+	address () const
+	{ return *fields .address; }
+
+	SFInt32 &
+	applicationID ()
+	{ return *fields .applicationID; }
+
+	const SFInt32 &
+	applicationID () const
+	{ return *fields .applicationID; }
+
+	MFInt32 &
+	data ()
+	{ return *fields .data; }
+
+	const MFInt32 &
+	data () const
+	{ return *fields .data; }
+
+	SFInt32 &
+	dataLength ()
+	{ return *fields .dataLength; }
+
+	const SFInt32 &
+	dataLength () const
+	{ return *fields .dataLength; }
+
+	SFInt32 &
+	encodingScheme ()
+	{ return *fields .encodingScheme; }
+
+	const SFInt32 &
+	encodingScheme () const
+	{ return *fields .encodingScheme; }
+
+	SFInt32 &
+	entityID ()
+	{ return *fields .entityID; }
+
+	const SFInt32 &
+	entityID () const
+	{ return *fields .entityID; }
+
+	SFString &
+	multicastRelayHost ()
+	{ return *fields .multicastRelayHost; }
+
+	const SFString &
+	multicastRelayHost () const
+	{ return *fields .multicastRelayHost; }
+
+	SFInt32 &
+	multicastRelayPort ()
+	{ return *fields .multicastRelayPort; }
+
+	const SFInt32 &
+	multicastRelayPort () const
+	{ return *fields .multicastRelayPort; }
+
+	SFString &
+	networkMode ()
+	{ return *fields .networkMode; }
+
+	const SFString &
+	networkMode () const
+	{ return *fields .networkMode; }
+
+	SFInt32 &
+	port ()
+	{ return *fields .port; }
+
+	const SFInt32 &
+	port () const
+	{ return *fields .port; }
+
+	SFInt32 &
+	radioID ()
+	{ return *fields .radioID; }
+
+	const SFInt32 &
+	radioID () const
+	{ return *fields .radioID; }
+
+	SFFloat &
+	readInterval ()
+	{ return *fields .readInterval; }
+
+	const SFFloat &
+	readInterval () const
+	{ return *fields .readInterval; }
+
+	SFBool &
+	rtpHeaderExpected ()
+	{ return *fields .rtpHeaderExpected; }
+
+	const SFBool &
+	rtpHeaderExpected () const
+	{ return *fields .rtpHeaderExpected; }
+
+	SFInt32 &
+	sampleRate ()
+	{ return *fields .sampleRate; }
+
+	const SFInt32 &
+	sampleRate () const
+	{ return *fields .sampleRate; }
+
+	SFInt32 &
+	samples ()
+	{ return *fields .samples; }
+
+	const SFInt32 &
+	samples () const
+	{ return *fields .samples; }
+
+	SFInt32 &
+	siteID ()
+	{ return *fields .siteID; }
+
+	const SFInt32 &
+	siteID () const
+	{ return *fields .siteID; }
+
+	SFInt32 &
+	tdlType ()
+	{ return *fields .tdlType; }
+
+	const SFInt32 &
+	tdlType () const
+	{ return *fields .tdlType; }
+
+	SFInt32 &
+	whichGeometry ()
+	{ return *fields .whichGeometry; }
+
+	const SFInt32 &
+	whichGeometry () const
+	{ return *fields .whichGeometry; }
+
+	SFFloat &
+	writeInterval ()
+	{ return *fields .writeInterval; }
+
+	const SFFloat &
+	writeInterval () const
+	{ return *fields .writeInterval; }
+
+	SFBool &
+	isNetworkReader ()
+	{ return *fields .isNetworkReader; }
+
+	const SFBool &
+	isNetworkReader () const
+	{ return *fields .isNetworkReader; }
+
+	SFBool &
+	isNetworkWriter ()
+	{ return *fields .isNetworkWriter; }
+
+	const SFBool &
+	isNetworkWriter () const
+	{ return *fields .isNetworkWriter; }
+
+	SFBool &
+	isRtpHeaderHeard ()
+	{ return *fields .isRtpHeaderHeard; }
+
+	const SFBool &
+	isRtpHeaderHeard () const
+	{ return *fields .isRtpHeaderHeard; }
+
+	SFBool &
+	isStandAlone ()
+	{ return *fields .isStandAlone; }
+
+	const SFBool &
+	isStandAlone () const
+	{ return *fields .isStandAlone; }
+
+	SFTime &
+	timestamp ()
+	{ return *fields .timestamp; }
+
+	const SFTime &
+	timestamp () const
+	{ return *fields .timestamp; }
+
+
 
 	virtual
 	Box3f
@@ -108,9 +304,43 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFString* const address;
+		SFInt32* const applicationID;
+		MFInt32* const data;
+		SFInt32* const dataLength;
+		SFInt32* const encodingScheme;
+		SFInt32* const entityID;
+		SFString* const multicastRelayHost;
+		SFInt32* const multicastRelayPort;
+		SFString* const networkMode;
+		SFInt32* const port;
+		SFInt32* const radioID;
+		SFFloat* const readInterval;
+		SFBool* const rtpHeaderExpected;
+		SFInt32* const sampleRate;
+		SFInt32* const samples;
+		SFInt32* const siteID;
+		SFInt32* const tdlType;
+		SFInt32* const whichGeometry;
+		SFFloat* const writeInterval;
+		SFBool* const isNetworkReader;
+		SFBool* const isNetworkWriter;
+		SFBool* const isRtpHeaderHeard;
+		SFBool* const isStandAlone;
+		SFTime* const timestamp;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

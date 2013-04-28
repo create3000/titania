@@ -55,26 +55,30 @@
 namespace titania {
 namespace X3D {
 
+TriangleStripSet::Fields::Fields () :
+	stripCount (new MFInt32 ())
+{ }
+
 TriangleStripSet::TriangleStripSet (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DComposedGeometryNode (),                                                    
-	             stripCount ()                                                     // MFInt32 [in,out] stripCount  [ ]       [3,∞)
+	fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("TriangleStripSet");
 
-	addField (inputOutput,    "metadata",        metadata);
-	addField (inputOutput,    "attrib",          attrib);
-	addField (inputOutput,    "coord",           coord);
-	addField (inputOutput,    "texCoord",        texCoord);
-	addField (inputOutput,    "color",           color);
-	addField (inputOutput,    "normal",          normal);
-	addField (inputOutput,    "fogCoord",        fogCoord);
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex);
-	addField (initializeOnly, "normalPerVertex", normalPerVertex);
-	addField (initializeOnly, "solid",           solid);
-	addField (initializeOnly, "ccw",             ccw);
-	addField (inputOutput,    "stripCount",      stripCount);
+	addField (inputOutput,    "metadata",        metadata ());
+	addField (inputOutput,    "attrib",          attrib ());
+	addField (inputOutput,    "coord",           coord ());
+	addField (inputOutput,    "texCoord",        texCoord ());
+	addField (inputOutput,    "color",           color ());
+	addField (inputOutput,    "normal",          normal ());
+	addField (inputOutput,    "fogCoord",        fogCoord ());
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
+	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "ccw",             ccw ());
+	addField (inputOutput,    "stripCount",      stripCount ());
 }
 
 X3DBaseNode*
@@ -85,3 +89,4 @@ TriangleStripSet::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

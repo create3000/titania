@@ -61,8 +61,8 @@ class BooleanSequencer :
 {
 public:
 
-	MFBool keyValue;
-	SFBool value_changed;
+	
+	
 
 	BooleanSequencer (X3DExecutionContext* const);
 
@@ -70,9 +70,41 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFBool &
+	keyValue ()
+	{ return *fields .keyValue; }
+
+	const MFBool &
+	keyValue () const
+	{ return *fields .keyValue; }
+
+	SFBool &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFBool &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFBool* const keyValue;
+		SFBool* const value_changed;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

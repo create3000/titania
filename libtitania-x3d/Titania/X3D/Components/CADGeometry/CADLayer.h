@@ -61,8 +61,8 @@ class CADLayer :
 {
 public:
 
-	SFString name;
-	MFBool   visible;
+	
+	
 
 	CADLayer (X3DExecutionContext* const);
 
@@ -70,9 +70,41 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFString &
+	name ()
+	{ return *fields .name; }
+
+	const SFString &
+	name () const
+	{ return *fields .name; }
+
+	MFBool &
+	visible ()
+	{ return *fields .visible; }
+
+	const MFBool &
+	visible () const
+	{ return *fields .visible; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFString* const name;
+		MFBool* const visible;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

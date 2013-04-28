@@ -55,28 +55,32 @@
 namespace titania {
 namespace X3D {
 
+PositionChaser::Fields::Fields () :
+	set_destination (new SFVec3f ()),
+	set_value (new SFVec3f ()),
+	isActive (new SFBool ()),
+	value_changed (new SFVec3f ()),
+	duration (new SFTime ()),
+	initialDestination (new SFVec3f ()),
+	defaultValue (new SFVec3f ())
+{ }
+
 PositionChaser::PositionChaser (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DChaserNode (),                                                    
-	   set_destination (),                                                    // SFVec3f [in]     set_destination
-	         set_value (),                                                    // SFVec3f [in]     set_value
-	          isActive (),                                                    // SFBool  [out]    isActive
-	     value_changed (),                                                    // SFVec3f [out]    value_changed
-	          duration (),                                                    // SFTime  [ ]      duration            0            [0,∞)
-	initialDestination (),                                                    // SFVec3f [ ]      initialDestination  0 0 0
-	      defaultValue ()                                                     // SFVec3f [ ]      defaultValue        0 0 0
+	fields ()
 {
 	setComponent ("Followers");
 	setTypeName ("PositionChaser");
 
-	addField (inputOutput,    "metadata",           metadata);
-	addField (inputOnly,      "set_destination",    set_destination);
-	addField (inputOnly,      "set_value",          set_value);
-	addField (outputOnly,     "isActive",           isActive);
-	addField (outputOnly,     "value_changed",      value_changed);
-	addField (initializeOnly, "duration",           duration);
-	addField (initializeOnly, "initialDestination", initialDestination);
-	addField (initializeOnly, "defaultValue",       defaultValue);
+	addField (inputOutput,    "metadata",           metadata ());
+	addField (inputOnly,      "set_destination",    set_destination ());
+	addField (inputOnly,      "set_value",          set_value ());
+	addField (outputOnly,     "isActive",           isActive ());
+	addField (outputOnly,     "value_changed",      value_changed ());
+	addField (initializeOnly, "duration",           duration ());
+	addField (initializeOnly, "initialDestination", initialDestination ());
+	addField (initializeOnly, "defaultValue",       defaultValue ());
 }
 
 X3DBaseNode*
@@ -87,3 +91,4 @@ PositionChaser::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

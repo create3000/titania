@@ -61,12 +61,12 @@ class HAnimSite :
 {
 public:
 
-	SFVec3f    center;
-	SFString   name;
-	SFRotation rotation;
-	SFVec3f    scale;
-	SFRotation scaleOrientation;
-	SFVec3f    translation;
+	
+	
+	
+	
+	
+	
 
 	HAnimSite (X3DExecutionContext* const);
 
@@ -74,9 +74,77 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3f &
+	center ()
+	{ return *fields .center; }
+
+	const SFVec3f &
+	center () const
+	{ return *fields .center; }
+
+	SFString &
+	name ()
+	{ return *fields .name; }
+
+	const SFString &
+	name () const
+	{ return *fields .name; }
+
+	SFRotation &
+	rotation ()
+	{ return *fields .rotation; }
+
+	const SFRotation &
+	rotation () const
+	{ return *fields .rotation; }
+
+	SFVec3f &
+	scale ()
+	{ return *fields .scale; }
+
+	const SFVec3f &
+	scale () const
+	{ return *fields .scale; }
+
+	SFRotation &
+	scaleOrientation ()
+	{ return *fields .scaleOrientation; }
+
+	const SFRotation &
+	scaleOrientation () const
+	{ return *fields .scaleOrientation; }
+
+	SFVec3f &
+	translation ()
+	{ return *fields .translation; }
+
+	const SFVec3f &
+	translation () const
+	{ return *fields .translation; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const center;
+		SFString* const name;
+		SFRotation* const rotation;
+		SFVec3f* const scale;
+		SFRotation* const scaleOrientation;
+		SFVec3f* const translation;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

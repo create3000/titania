@@ -69,14 +69,70 @@ public:
 		END
 	};
 
-	MFString family;
-	SFString style;
-	SFFloat  spacing;
-	SFBool   horizontal;
-	MFString justify;
-	SFBool   topToBottom;
-	SFBool   leftToRight;
-	SFString language;
+	MFString &
+	family ()
+	{ return *fields .family; }
+
+	const MFString &
+	family () const
+	{ return *fields .family; }
+
+	SFString &
+	style ()
+	{ return *fields .style; }
+
+	const SFString &
+	style () const
+	{ return *fields .style; }
+
+	SFFloat &
+	spacing ()
+	{ return *fields .spacing; }
+
+	const SFFloat &
+	spacing () const
+	{ return *fields .spacing; }
+
+	SFBool &
+	horizontal ()
+	{ return *fields .horizontal; }
+
+	const SFBool &
+	horizontal () const
+	{ return *fields .horizontal; }
+
+	MFString &
+	justify ()
+	{ return *fields .justify; }
+
+	const MFString &
+	justify () const
+	{ return *fields .justify; }
+
+	SFBool &
+	topToBottom ()
+	{ return *fields .topToBottom; }
+
+	const SFBool &
+	topToBottom () const
+	{ return *fields .topToBottom; }
+
+	SFBool &
+	leftToRight ()
+	{ return *fields .leftToRight; }
+
+	const SFBool &
+	leftToRight () const
+	{ return *fields .leftToRight; }
+
+	SFString &
+	language ()
+	{ return *fields .language; }
+
+	const SFString &
+	language () const
+	{ return *fields .language; }
+
 
 	Alignment
 	getMajorAlignment () const;
@@ -105,6 +161,23 @@ private:
 	void
 	set_justify ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFString* const family;
+		SFString* const style;
+		SFFloat* const spacing;
+		SFBool* const horizontal;
+		MFString* const justify;
+		SFBool* const topToBottom;
+		SFBool* const leftToRight;
+		SFString* const language;
+	};
+
+	Fields fields;
+
+
 	Alignment
 	getAlignment (const size_t) const;
 
@@ -116,3 +189,4 @@ private:
 } // titania
 
 #endif
+

@@ -57,21 +57,25 @@
 namespace titania {
 namespace X3D {
 
+Billboard::Fields::Fields () :
+	axisOfRotation (new SFVec3f (0, 1, 0))
+{ }
+
 Billboard::Billboard (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGroupingNode (),                                                    
-	 axisOfRotation (0, 1, 0)                                              // SFVec3f [in,out] axisOfRotation  0 1 0        (-∞,∞)
+	fields ()
 {
 	setComponent ("Navigation");
 	setTypeName ("Billboard");
 
-	addField (inputOutput,    "metadata",       metadata);
-	addField (inputOutput,    "axisOfRotation", axisOfRotation);
-	addField (initializeOnly, "bboxSize",       bboxSize);
-	addField (initializeOnly, "bboxCenter",     bboxCenter);
-	addField (inputOnly,      "addChildren",    addChildren);
-	addField (inputOnly,      "removeChildren", removeChildren);
-	addField (inputOutput,    "children",       children);
+	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "axisOfRotation", axisOfRotation ());
+	addField (initializeOnly, "bboxSize",       bboxSize ());
+	addField (initializeOnly, "bboxCenter",     bboxCenter ());
+	addField (inputOnly,      "addChildren",    addChildren ());
+	addField (inputOnly,      "removeChildren", removeChildren ());
+	addField (inputOutput,    "children",       children ());
 }
 
 X3DBaseNode*
@@ -93,7 +97,7 @@ Billboard::transform (TraverseType type)
 
 	matrix .get (translation, rotation, scale);
 
-	Vector3f _axisOfRotation   = axisOfRotation;
+	Vector3f _axisOfRotation   = axisOfRotation ();
 	Vector3f billboardToViewer = -translation;
 
 	static constexpr Vector3f zAxis (0, 0, 1);
@@ -134,3 +138,4 @@ Billboard::traverse (TraverseType type)
 
 } // X3D
 } // titania
+

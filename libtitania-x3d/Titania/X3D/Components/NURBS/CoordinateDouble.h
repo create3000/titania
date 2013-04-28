@@ -61,7 +61,7 @@ class CoordinateDouble :
 {
 public:
 
-	MFVec3d point;
+	
 
 	CoordinateDouble (X3DExecutionContext* const);
 
@@ -69,9 +69,32 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFVec3d &
+	point ()
+	{ return *fields .point; }
+
+	const MFVec3d &
+	point () const
+	{ return *fields .point; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFVec3d* const point;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

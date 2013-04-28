@@ -61,20 +61,20 @@ class RigidBody :
 {
 public:
 
-	SFFloat    angularDampingFactor;
-	SFVec3f    angularVelocity;
-	SFBool     autoDamp;
-	SFBool     autoDisable;
-	SFVec3f    centerOfMass;
-	SFFloat    disableAngularSpeed;
-	SFFloat    disableLinearSpeed;
-	SFFloat    disableTime;
-	SFBool     enabled;
-	SFVec3f    finiteRotationAxis;
-	SFBool     fixed;
-	MFVec3f    forces;
-	MFNode     geometry;
-	SFMatrix3f inertia;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	RigidBody (X3DExecutionContext* const);
 
@@ -82,9 +82,149 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFFloat &
+	angularDampingFactor ()
+	{ return *fields .angularDampingFactor; }
+
+	const SFFloat &
+	angularDampingFactor () const
+	{ return *fields .angularDampingFactor; }
+
+	SFVec3f &
+	angularVelocity ()
+	{ return *fields .angularVelocity; }
+
+	const SFVec3f &
+	angularVelocity () const
+	{ return *fields .angularVelocity; }
+
+	SFBool &
+	autoDamp ()
+	{ return *fields .autoDamp; }
+
+	const SFBool &
+	autoDamp () const
+	{ return *fields .autoDamp; }
+
+	SFBool &
+	autoDisable ()
+	{ return *fields .autoDisable; }
+
+	const SFBool &
+	autoDisable () const
+	{ return *fields .autoDisable; }
+
+	SFVec3f &
+	centerOfMass ()
+	{ return *fields .centerOfMass; }
+
+	const SFVec3f &
+	centerOfMass () const
+	{ return *fields .centerOfMass; }
+
+	SFFloat &
+	disableAngularSpeed ()
+	{ return *fields .disableAngularSpeed; }
+
+	const SFFloat &
+	disableAngularSpeed () const
+	{ return *fields .disableAngularSpeed; }
+
+	SFFloat &
+	disableLinearSpeed ()
+	{ return *fields .disableLinearSpeed; }
+
+	const SFFloat &
+	disableLinearSpeed () const
+	{ return *fields .disableLinearSpeed; }
+
+	SFFloat &
+	disableTime ()
+	{ return *fields .disableTime; }
+
+	const SFFloat &
+	disableTime () const
+	{ return *fields .disableTime; }
+
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	SFVec3f &
+	finiteRotationAxis ()
+	{ return *fields .finiteRotationAxis; }
+
+	const SFVec3f &
+	finiteRotationAxis () const
+	{ return *fields .finiteRotationAxis; }
+
+	SFBool &
+	fixed ()
+	{ return *fields .fixed; }
+
+	const SFBool &
+	fixed () const
+	{ return *fields .fixed; }
+
+	MFVec3f &
+	forces ()
+	{ return *fields .forces; }
+
+	const MFVec3f &
+	forces () const
+	{ return *fields .forces; }
+
+	MFNode &
+	geometry ()
+	{ return *fields .geometry; }
+
+	const MFNode &
+	geometry () const
+	{ return *fields .geometry; }
+
+	SFMatrix3f &
+	inertia ()
+	{ return *fields .inertia; }
+
+	const SFMatrix3f &
+	inertia () const
+	{ return *fields .inertia; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const angularDampingFactor;
+		SFVec3f* const angularVelocity;
+		SFBool* const autoDamp;
+		SFBool* const autoDisable;
+		SFVec3f* const centerOfMass;
+		SFFloat* const disableAngularSpeed;
+		SFFloat* const disableLinearSpeed;
+		SFFloat* const disableTime;
+		SFBool* const enabled;
+		SFVec3f* const finiteRotationAxis;
+		SFBool* const fixed;
+		MFVec3f* const forces;
+		MFNode* const geometry;
+		SFMatrix3f* const inertia;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

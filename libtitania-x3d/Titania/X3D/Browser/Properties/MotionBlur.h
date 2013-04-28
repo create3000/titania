@@ -61,14 +61,34 @@ class MotionBlur :
 {
 public:
 
-	SFBool  enabled;
-	SFFloat intensity;
+	
+	
 
 	MotionBlur (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	SFFloat &
+	intensity ()
+	{ return *fields .intensity; }
+
+	const SFFloat &
+	intensity () const
+	{ return *fields .intensity; }
+
+
 
 	void
 	clear ();
@@ -87,9 +107,21 @@ private:
 	void
 	set_enabled ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const enabled;
+		SFFloat* const intensity;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

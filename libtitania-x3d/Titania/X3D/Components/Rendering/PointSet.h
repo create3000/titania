@@ -65,10 +65,10 @@ class PointSet :
 
 public:
 
-	MFNode               attrib;
-	SFNode <X3DBaseNode> color;
-	SFNode <X3DBaseNode> coord;
-	SFNode <X3DBaseNode> fogCoord;
+	
+	
+	
+	
 
 	PointSet (X3DExecutionContext* const);
 
@@ -76,9 +76,58 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFNode &
+	attrib ()
+	{ return *fields .attrib; }
+
+	const MFNode &
+	attrib () const
+	{ return *fields .attrib; }
+
+	SFNode <X3DBaseNode> &
+	color ()
+	{ return *fields .color; }
+
+	const SFNode <X3DBaseNode> &
+	color () const
+	{ return *fields .color; }
+
+	SFNode <X3DBaseNode> &
+	coord ()
+	{ return *fields .coord; }
+
+	const SFNode <X3DBaseNode> &
+	coord () const
+	{ return *fields .coord; }
+
+	SFNode <X3DBaseNode> &
+	fogCoord ()
+	{ return *fields .fogCoord; }
+
+	const SFNode <X3DBaseNode> &
+	fogCoord () const
+	{ return *fields .fogCoord; }
+
+
+
 	virtual
 	void
 	draw ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const attrib;
+		SFNode <X3DBaseNode>* const color;
+		SFNode <X3DBaseNode>* const coord;
+		SFNode <X3DBaseNode>* const fogCoord;
+	};
+
+	Fields fields;
 
 };
 
@@ -86,3 +135,4 @@ public:
 } // titania
 
 #endif
+

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,14 +53,19 @@
 namespace titania {
 namespace X3D {
 
+X3DRigidJointNode::Fields::Fields () :
+	body1 (new SFNode <X3DBaseNode> ()),
+	body2 (new SFNode <X3DBaseNode> ()),
+	forceOutput (new MFString ({ "NONE" }))
+{ }
+
 X3DRigidJointNode::X3DRigidJointNode () :
 	    X3DNode (),          
-	      body1 (),          // SFNode   [in,out] body1        NULL          [RigidBody]
-	      body2 (),          // SFNode   [in,out] body2        NULL          [RigidBody]
-	forceOutput ({ "NONE" }) // MFString [in,out] forceOutput  "NONE"        ["ALL","NONE",...]
+	fields ()
 {
 	addNodeType (X3DConstants::X3DRigidJointNode);
 }
 
 } // X3D
 } // titania
+

@@ -55,41 +55,45 @@
 namespace titania {
 namespace X3D {
 
+GeoLOD::Fields::Fields () :
+	children (new MFNode ()),
+	level_changed (new SFInt32 ()),
+	center (new SFVec3d ()),
+	child1Url (new MFString ()),
+	child2Url (new MFString ()),
+	child3Url (new MFString ()),
+	child4Url (new MFString ()),
+	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoSystem (new MFString ({ "GD", "WE" })),
+	range (new SFFloat (10)),
+	rootUrl (new MFString ()),
+	rootNode (new MFNode ())
+{ }
+
 GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	    X3DChildNode (),                                                    
 	X3DBoundedObject (),                                                    
-	        children (),                                                    // MFNode   [out] children                          [ ]
-	   level_changed (),                                                    // SFInt32  [out] level_changed
-	          center (),                                                    // SFVec3d  [ ]   center         0 0 0              (-∞,∞)
-	       child1Url (),                                                    // MFString [ ]   child1Url      [ ]                 [URI]
-	       child2Url (),                                                    // MFString [ ]   child2Url      [ ]                 [URI]
-	       child3Url (),                                                    // MFString [ ]   child3Url      [ ]                 [URI]
-	       child4Url (),                                                    // MFString [ ]   child4Url      [ ]                 [URI]
-	       geoOrigin (),                                                    // SFNode   [ ]   geoOrigin      NULL               [GeoOrigin]
-	       geoSystem ({ "GD", "WE" }),                                      // MFString [ ]   geoSystem      ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
-	           range (10),                                                  // SFFloat  [ ]   range          10                 [0,∞)
-	         rootUrl (),                                                    // MFString [ ]   rootUrl        [ ]                 [URI]
-	        rootNode ()                                                     // MFNode   [ ]   rootNode       [ ]                 [X3DChildNode]
+	fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoLOD");
 
-	addField (inputOutput,    "metadata",      metadata);
-	addField (initializeOnly, "bboxSize",      bboxSize);
-	addField (initializeOnly, "bboxCenter",    bboxCenter);
-	addField (outputOnly,     "children",      children);
-	addField (outputOnly,     "level_changed", level_changed);
-	addField (initializeOnly, "center",        center);
-	addField (initializeOnly, "child1Url",     child1Url);
-	addField (initializeOnly, "child2Url",     child2Url);
-	addField (initializeOnly, "child3Url",     child3Url);
-	addField (initializeOnly, "child4Url",     child4Url);
-	addField (initializeOnly, "geoOrigin",     geoOrigin);
-	addField (initializeOnly, "geoSystem",     geoSystem);
-	addField (initializeOnly, "range",         range);
-	addField (initializeOnly, "rootUrl",       rootUrl);
-	addField (initializeOnly, "rootNode",      rootNode);
+	addField (inputOutput,    "metadata",      metadata ());
+	addField (initializeOnly, "bboxSize",      bboxSize ());
+	addField (initializeOnly, "bboxCenter",    bboxCenter ());
+	addField (outputOnly,     "children",      children ());
+	addField (outputOnly,     "level_changed", level_changed ());
+	addField (initializeOnly, "center",        center ());
+	addField (initializeOnly, "child1Url",     child1Url ());
+	addField (initializeOnly, "child2Url",     child2Url ());
+	addField (initializeOnly, "child3Url",     child3Url ());
+	addField (initializeOnly, "child4Url",     child4Url ());
+	addField (initializeOnly, "geoOrigin",     geoOrigin ());
+	addField (initializeOnly, "geoSystem",     geoSystem ());
+	addField (initializeOnly, "range",         range ());
+	addField (initializeOnly, "rootUrl",       rootUrl ());
+	addField (initializeOnly, "rootNode",      rootNode ());
 }
 
 X3DBaseNode*
@@ -120,3 +124,4 @@ GeoLOD::dispose ()
 
 } // X3D
 } // titania
+

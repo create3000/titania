@@ -55,24 +55,28 @@
 namespace titania {
 namespace X3D {
 
+ScreenFontStyle::Fields::Fields () :
+	pointSize (new SFFloat (12))
+{ }
+
 ScreenFontStyle::ScreenFontStyle (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DFontStyleNode (),                                                    
-	       pointSize (12)                                                   // SFFloat  [ ]pointSize    12.0           (0,∞)
+	fields ()
 {
 	setComponent ("Layout");
 	setTypeName ("ScreenFontStyle");
 
-	addField (inputOutput,    "metadata",    metadata);
-	addField (initializeOnly, "family",      family);
-	addField (initializeOnly, "style",       style);
-	addField (initializeOnly, "pointSize",   pointSize);
-	addField (initializeOnly, "spacing",     spacing);
-	addField (initializeOnly, "horizontal",  horizontal);
-	addField (initializeOnly, "justify",     justify);
-	addField (initializeOnly, "topToBottom", topToBottom);
-	addField (initializeOnly, "leftToRight", leftToRight);
-	addField (initializeOnly, "language",    language);
+	addField (inputOutput,    "metadata",    metadata ());
+	addField (initializeOnly, "family",      family ());
+	addField (initializeOnly, "style",       style ());
+	addField (initializeOnly, "pointSize",   pointSize ());
+	addField (initializeOnly, "spacing",     spacing ());
+	addField (initializeOnly, "horizontal",  horizontal ());
+	addField (initializeOnly, "justify",     justify ());
+	addField (initializeOnly, "topToBottom", topToBottom ());
+	addField (initializeOnly, "leftToRight", leftToRight ());
+	addField (initializeOnly, "language",    language ());
 }
 
 X3DBaseNode*
@@ -84,8 +88,9 @@ ScreenFontStyle::create (X3DExecutionContext* const executionContext) const
 float
 ScreenFontStyle::getSize () const
 {
-	return pointSize;
+	return pointSize ();
 }
 
 } // X3D
 } // titania
+

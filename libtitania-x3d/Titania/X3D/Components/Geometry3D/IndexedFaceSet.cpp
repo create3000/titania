@@ -64,39 +64,43 @@
 namespace titania {
 namespace X3D {
 
+IndexedFaceSet::Fields::Fields () :
+	convex (new SFBool (true)),
+	texCoordIndex (new MFInt32 ()),
+	colorIndex (new MFInt32 ()),
+	normalIndex (new MFInt32 ()),
+	coordIndex (new MFInt32 ())
+{ }
+
 IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DComposedGeometryNode (),                                                    
-	                 convex (true),                                                // SFBool  [ ]  convex             TRUE
-	          texCoordIndex (),                                                    // MFInt32 [ ]  texCoordIndex      [ ]          [-1,∞)
-	             colorIndex (),                                                    // MFInt32 [ ]  colorIndex         [ ]          [0,∞) or -1
-	            normalIndex (),                                                    // MFInt32 [ ]  normalIndex        [ ]          [0,∞) or -1
-	             coordIndex (),                                                    // MFInt32 [ ]  coordIndex         [ ]          [0,∞) or -1
+	fields (),
 	            numPolygons ()                                                     
 {
 	setComponent ("Geometry3D");
 	setTypeName ("IndexedFaceSet");
 
-	addField (inputOutput,    "metadata",          metadata);
+	addField (inputOutput,    "metadata",          metadata ());
 
-	addField (initializeOnly, "solid",             solid);
-	addField (initializeOnly, "ccw",               ccw);
-	addField (initializeOnly, "convex",            convex);
-	addField (initializeOnly, "creaseAngle",       creaseAngle);
-	addField (initializeOnly, "colorPerVertex",    colorPerVertex);
-	addField (initializeOnly, "normalPerVertex",   normalPerVertex);
+	addField (initializeOnly, "solid",             solid ());
+	addField (initializeOnly, "ccw",               ccw ());
+	addField (initializeOnly, "convex",            convex ());
+	addField (initializeOnly, "creaseAngle",       creaseAngle ());
+	addField (initializeOnly, "colorPerVertex",    colorPerVertex ());
+	addField (initializeOnly, "normalPerVertex",   normalPerVertex ());
 
-	addField (inputOutput,    "texCoordIndex",     texCoordIndex);
-	addField (inputOutput,    "colorIndex",        colorIndex);
-	addField (inputOutput,    "normalIndex",       normalIndex);
-	addField (inputOutput,    "coordIndex",        coordIndex);
+	addField (inputOutput,    "texCoordIndex",     texCoordIndex ());
+	addField (inputOutput,    "colorIndex",        colorIndex ());
+	addField (inputOutput,    "normalIndex",       normalIndex ());
+	addField (inputOutput,    "coordIndex",        coordIndex ());
 
-	addField (inputOutput,    "attrib",            attrib);
-	addField (inputOutput,    "fogCoord",          fogCoord);
-	addField (inputOutput,    "texCoord",          texCoord);
-	addField (inputOutput,    "color",             color);
-	addField (inputOutput,    "normal",            normal);
-	addField (inputOutput,    "coord",             coord);
+	addField (inputOutput,    "attrib",            attrib ());
+	addField (inputOutput,    "fogCoord",          fogCoord ());
+	addField (inputOutput,    "texCoord",          texCoord ());
+	addField (inputOutput,    "color",             color ());
+	addField (inputOutput,    "normal",            normal ());
+	addField (inputOutput,    "coord",             coord ());
 }
 
 X3DBaseNode*
@@ -110,10 +114,10 @@ IndexedFaceSet::initialize ()
 {
 	X3DComposedGeometryNode::initialize ();
 
-	coordIndex    .addInterest (this, &IndexedFaceSet::set_coordIndex);
-	texCoordIndex .addInterest (this, &IndexedFaceSet::set_texCoordIndex);
-	colorIndex    .addInterest (this, &IndexedFaceSet::set_colorIndex);
-	normalIndex   .addInterest (this, &IndexedFaceSet::set_normalIndex);
+	coordIndex ()    .addInterest (this, &IndexedFaceSet::set_coordIndex);
+	texCoordIndex () .addInterest (this, &IndexedFaceSet::set_texCoordIndex);
+	colorIndex ()    .addInterest (this, &IndexedFaceSet::set_colorIndex);
+	normalIndex ()   .addInterest (this, &IndexedFaceSet::set_normalIndex);
 
 	set_coordIndex ();
 }
@@ -121,17 +125,17 @@ IndexedFaceSet::initialize ()
 void
 IndexedFaceSet::set_coordIndex ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
 
 	int32_t numPoints = -1;
 
 	numPolygons = 0;
 
-	if (coordIndex .size ())
+	if (coordIndex () .size ())
 	{
 		// Determine number of points and polygons.
 
-		for (const auto & index : coordIndex)
+		for (const auto & index : coordIndex ())
 		{
 			numPoints = std::max <int32_t> (numPoints, index);
 
@@ -141,7 +145,7 @@ IndexedFaceSet::set_coordIndex ()
 
 		++ numPoints;
 
-		if (coordIndex .back () >= 0)
+		if (coordIndex () .back () >= 0)
 			++ numPolygons;
 
 		// Resize coord .point if to small
@@ -156,21 +160,21 @@ IndexedFaceSet::set_coordIndex ()
 void
 IndexedFaceSet::set_texCoordIndex ()
 {
-	auto _textureCoordinate = x3d_cast <TextureCoordinate*> (texCoord .getValue ());
+	auto _textureCoordinate = x3d_cast <TextureCoordinate*> (texCoord () .getValue ());
 
 	if (_textureCoordinate)
 	{
 		// Fill up texCoordIndex if to small.
-		for (size_t i = texCoordIndex .size (); i < coordIndex .size (); ++ i)
+		for (size_t i = texCoordIndex () .size (); i < coordIndex () .size (); ++ i)
 		{
-			texCoordIndex .push_back (coordIndex [i]);
+			texCoordIndex () .push_back (coordIndex () [i]);
 		}
 
 		// Determine number of used texCoords.
 
 		int numTexCoord = -1;
 
-		for (const auto & index : texCoordIndex)
+		for (const auto & index : texCoordIndex ())
 		{
 			numTexCoord = std::max <int32_t> (numTexCoord, index);
 		}
@@ -185,24 +189,24 @@ IndexedFaceSet::set_texCoordIndex ()
 void
 IndexedFaceSet::set_colorIndex ()
 {
-	auto _color     = x3d_cast <Color*> (color .getValue ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
+	auto _color     = x3d_cast <Color*> (color () .getValue ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color () .getValue ());
 
 	if (_color or _colorRGBA)
 	{
 		// Fill up colorIndex if to small.
-		if (colorPerVertex)
+		if (colorPerVertex ())
 		{
-			for (size_t i = colorIndex .size (); i < coordIndex .size (); ++ i)
+			for (size_t i = colorIndex () .size (); i < coordIndex () .size (); ++ i)
 			{
-				colorIndex .push_back (coordIndex [i]);
+				colorIndex () .push_back (coordIndex () [i]);
 			}
 		}
 		else
 		{
-			for (size_t i = colorIndex .size (); i < numPolygons; ++ i)
+			for (size_t i = colorIndex () .size (); i < numPolygons; ++ i)
 			{
-				colorIndex .push_back (i);
+				colorIndex () .push_back (i);
 			}
 		}
 		
@@ -211,7 +215,7 @@ IndexedFaceSet::set_colorIndex ()
 
 		int numColors = -1;
 
-		for (const auto & index : colorIndex)
+		for (const auto & index : colorIndex ())
 		{
 			numColors = std::max <int32_t> (numColors, index);
 		}
@@ -233,23 +237,23 @@ IndexedFaceSet::set_colorIndex ()
 void
 IndexedFaceSet::set_normalIndex ()
 {
-	auto _normal = x3d_cast <Normal*> (normal .getValue ());
+	auto _normal = x3d_cast <Normal*> (normal () .getValue ());
 
 	if (_normal)
 	{
 		// Fill up normalIndex if to small.
-		if (normalPerVertex)
+		if (normalPerVertex ())
 		{
-			for (size_t i = normalIndex .size (); i < coordIndex .size (); ++ i)
+			for (size_t i = normalIndex () .size (); i < coordIndex () .size (); ++ i)
 			{
-				normalIndex .push_back (coordIndex [i]);
+				normalIndex () .push_back (coordIndex () [i]);
 			}
 		}
 		else
 		{
-			for (size_t i = normalIndex .size (); i < numPolygons; ++ i)
+			for (size_t i = normalIndex () .size (); i < numPolygons; ++ i)
 			{
-				normalIndex .push_back (i);
+				normalIndex () .push_back (i);
 			}
 		}
 
@@ -257,7 +261,7 @@ IndexedFaceSet::set_normalIndex ()
 
 		int numNormals = -1;
 
-		for (const auto & index : normalIndex)
+		for (const auto & index : normalIndex ())
 		{
 			numNormals = std::max <int32_t> (numNormals, index);
 		}
@@ -272,7 +276,7 @@ IndexedFaceSet::set_normalIndex ()
 void
 IndexedFaceSet::build ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
 
 	// Tesselate
 
@@ -290,8 +294,8 @@ IndexedFaceSet::build ()
 
 	// Color
 
-	auto _color     = x3d_cast <Color*> (color .getValue ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
+	auto _color     = x3d_cast <Color*> (color () .getValue ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color () .getValue ());
 
 	if (_color)
 		getColors () .reserve (reserve);
@@ -301,15 +305,15 @@ IndexedFaceSet::build ()
 
 	// TextureCoordinate
 
-	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord .getValue ());
-	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord .getValue ());
+	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord () .getValue ());
+	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord () .getValue ());
 
 	if (_textureCoordinate or not _textureCoordinateGenerator)
 		getTexCoord () .reserve (reserve);
 
 	// Normal
 
-	auto _normal = x3d_cast <Normal*> (normal .getValue ());
+	auto _normal = x3d_cast <Normal*> (normal () .getValue ());
 
 	getNormals () .reserve (reserve);
 
@@ -329,35 +333,35 @@ IndexedFaceSet::build ()
 			SFColor     faceColor;
 			SFColorRGBA faceColorRGBA;
 
-			if (not colorPerVertex)
+			if (not colorPerVertex ())
 			{
-				if (_color and colorIndex [face] >= 0)
-					faceColor = _color -> color [colorIndex [face]];
+				if (_color and colorIndex () [face] >= 0)
+					faceColor = _color -> color () [colorIndex () [face]];
 
-				else if (_colorRGBA and colorIndex [face] >= 0)
-					faceColorRGBA = _colorRGBA -> color [colorIndex [face]];
+				else if (_colorRGBA and colorIndex () [face] >= 0)
+					faceColorRGBA = _colorRGBA -> color () [colorIndex () [face]];
 			}
 
 			if (_normal)
 			{
-				if (not normalPerVertex and normalIndex [face] >= 0)
-					faceNormal = _normal -> vector [normalIndex [face]];
+				if (not normalPerVertex () and normalIndex () [face] >= 0)
+					faceNormal = _normal -> vector () [normalIndex () [face]];
 			}
 
 			for (const auto & i : triangle)
 			{
 				if (_color)
 				{
-					if (colorPerVertex and colorIndex [i] >= 0)
-						getColors () .emplace_back (_color -> color [colorIndex [i]]);
+					if (colorPerVertex () and colorIndex () [i] >= 0)
+						getColors () .emplace_back (_color -> color () [colorIndex () [i]]);
 
 					else
 						getColors () .emplace_back (faceColor);
 				}
 				else if (_colorRGBA)
 				{
-					if (colorPerVertex and colorIndex [i] >= 0)
-						getColorsRGBA () .emplace_back (_colorRGBA -> color [colorIndex [i]]);
+					if (colorPerVertex () and colorIndex () [i] >= 0)
+						getColorsRGBA () .emplace_back (_colorRGBA -> color () [colorIndex () [i]]);
 
 					else
 						getColorsRGBA () .emplace_back (faceColorRGBA);
@@ -365,9 +369,9 @@ IndexedFaceSet::build ()
 
 				if (_textureCoordinate)
 				{
-					if (texCoordIndex [i] >= 0)
+					if (texCoordIndex () [i] >= 0)
 					{
-						const auto & t = _textureCoordinate -> point [texCoordIndex [i]];
+						const auto & t = _textureCoordinate -> point () [texCoordIndex () [i]];
 						getTexCoord () .emplace_back (t .getX (), t .getY (), 0);
 					}
 					else
@@ -376,14 +380,14 @@ IndexedFaceSet::build ()
 
 				if (_normal)
 				{
-					if (normalPerVertex and normalIndex [i] >= 0)
-						getNormals () .emplace_back (_normal -> vector [normalIndex [i]]);
+					if (normalPerVertex () and normalIndex () [i] >= 0)
+						getNormals () .emplace_back (_normal -> vector () [normalIndex () [i]]);
 
 					else
 						getNormals () .emplace_back (faceNormal);
 				}
 
-				getVertices () .emplace_back (_coord -> point [coordIndex [i]]);
+				getVertices () .emplace_back (_coord -> point () [coordIndex () [i]]);
 			}
 		}
 
@@ -401,36 +405,36 @@ IndexedFaceSet::build ()
 	addElement (getVertices () .size ());
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setVertexMode (GL_TRIANGLES);
-	setSolid (solid);
+	setSolid (solid ());
 }
 
 void
 IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numTriangles)
 {
-	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
 
 	if (not _coord)
 		return;
 
 	// Fill up coordIndex if there are no indices.
-	if (coordIndex .empty ())
+	if (coordIndex () .empty ())
 	{
-		for (size_t i = 0; i < _coord -> point .size (); ++ i)
-			coordIndex .push_back (i);
+		for (size_t i = 0; i < _coord -> point () .size (); ++ i)
+			coordIndex () .push_back (i);
 	}
 
-	if (coordIndex .size ())
+	if (coordIndex () .size ())
 	{
 		// Add -1 (polygon end marker) to coordIndex if not present.
-		if (coordIndex .back () >= 0)
-			coordIndex .push_back (-1);
+		if (coordIndex () .back () >= 0)
+			coordIndex () .push_back (-1);
 
 		// Construct triangle array and determine the number of used points.
 		size_t i = 0;
 
 		Vertices vertices;
 
-		for (const auto & index : coordIndex)
+		for (const auto & index : coordIndex ())
 		{
 			if (index >= 0)
 				// Add vertex.
@@ -476,11 +480,11 @@ IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numTriangles)
 IndexedFaceSet::TriangleArray
 IndexedFaceSet::tesselate (const Vertices & vertices)
 {
-	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
 
 	TriangleArray triangles;
 
-	if (convex)
+	if (convex ())
 	{
 		for (size_t i = 1, size = vertices .size () - 1; i < size; ++ i)
 		{
@@ -495,7 +499,7 @@ IndexedFaceSet::tesselate (const Vertices & vertices)
 		opengl::tesselator <size_t> tesselator;
 
 		for (const auto & i : vertices)
-			tesselator .add_vertex (_coord -> point [coordIndex [i]], i);
+			tesselator .add_vertex (_coord -> point () [coordIndex () [i]], i);
 
 		tesselator .tesselate ();
 
@@ -583,11 +587,11 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 {
 	std::vector <Vector3f> normals;
 
-	normals .reserve (coordIndex .size ());
+	normals .reserve (coordIndex () .size ());
 
 	NormalIndex normalIndex;
 
-	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
 
 	for (const auto & polygon : polygons)
 	{
@@ -596,14 +600,14 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 
 		for (const auto & triangle : polygon .triangles)
 		{
-			normal += math::normal <float> (_coord -> point [coordIndex [triangle [0]]],
-			                                _coord -> point [coordIndex [triangle [1]]],
-			                                _coord -> point [coordIndex [triangle [2]]]);
+			normal += math::normal <float> (_coord -> point () [coordIndex () [triangle [0]]],
+			                                _coord -> point () [coordIndex () [triangle [1]]],
+			                                _coord -> point () [coordIndex () [triangle [2]]]);
 		}
 
 		// Add a normal index for each point.
 		for (size_t i = 0, size = polygon .vertices .size (); i < size; ++ i)
-			normalIndex [coordIndex [polygon .vertices [i]]] .emplace_back (normals .size () + i);
+			normalIndex [coordIndex () [polygon .vertices [i]]] .emplace_back (normals .size () + i);
 
 		// Add this normal for each vertex.
 		normals .resize (normals .size () + polygon .vertices .size (), normalize (normal));
@@ -634,3 +638,4 @@ IndexedFaceSet::dispose ()
 } // X3D
 
 } // titania
+

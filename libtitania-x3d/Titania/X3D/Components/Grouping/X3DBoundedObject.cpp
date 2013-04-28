@@ -55,10 +55,14 @@
 namespace titania {
 namespace X3D {
 
+X3DBoundedObject::Fields::Fields () :
+	bboxCenter (new SFVec3f ()),
+	bboxSize (new SFVec3f (-1, -1, -1))
+{ }
+
 X3DBoundedObject::X3DBoundedObject () :
 	X3DBaseNode (),          
-	 bboxCenter (),          // SFVec3f [ ]bboxCenter  0 0 0           (-∞,∞)
-	   bboxSize (-1, -1, -1) // SFVec3f [ ]bboxSize    -1 -1 -1        [0,∞) or −1 −1 −1
+	fields ()
 {
 	addNodeType (X3DConstants::X3DBoundedObject);
 }
@@ -116,3 +120,4 @@ X3DBoundedObject::dispose ()
 
 } // X3D
 } // titania
+

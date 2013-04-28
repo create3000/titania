@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,20 +56,24 @@
 namespace titania {
 namespace X3D {
 
+LocalFog::Fields::Fields () :
+	enabled (new SFBool (true))
+{ }
+
 LocalFog::LocalFog (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DChildNode (),                                                    
 	X3DFogObject (),                                                    
-	     enabled (true)                                                 // SFBool [in,out] enabled  TRUE
+	fields ()
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("LocalFog");
 
-	addField (inputOutput, "metadata",        metadata);
-	addField (inputOutput, "color",           color);
-	addField (inputOutput, "fogType",         fogType);
-	addField (inputOutput, "visibilityRange", visibilityRange);
-	addField (inputOutput, "enabled",         enabled);
+	addField (inputOutput, "metadata",        metadata ());
+	addField (inputOutput, "color",           color ());
+	addField (inputOutput, "fogType",         fogType ());
+	addField (inputOutput, "visibilityRange", visibilityRange ());
+	addField (inputOutput, "enabled",         enabled ());
 }
 
 X3DBaseNode*
@@ -88,14 +92,14 @@ LocalFog::initialize ()
 void
 LocalFog::push ()
 {
-	if (enabled)
+	if (enabled ())
 		getCurrentLayer () -> getLocalFogs () .push (this);
 }
 
 void
 LocalFog::pop ()
 {
-	if (enabled)
+	if (enabled ())
 		getCurrentLayer () -> getLocalFogs () .pop ();
 }
 
@@ -108,3 +112,4 @@ LocalFog::dispose ()
 
 } // X3D
 } // titania
+

@@ -61,13 +61,13 @@ class PositionChaser2D :
 {
 public:
 
-	SFVec2f set_destination;
-	SFVec2f set_value;
-	SFBool  isActive;
-	SFVec2f value_changed;
-	SFTime  duration;
-	SFVec2f initialDestination;
-	SFVec2f defaultValue;
+	
+	
+	
+	
+	
+	
+	
 
 	PositionChaser2D (X3DExecutionContext* const);
 
@@ -75,9 +75,86 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec2f &
+	set_destination ()
+	{ return *fields .set_destination; }
+
+	const SFVec2f &
+	set_destination () const
+	{ return *fields .set_destination; }
+
+	SFVec2f &
+	set_value ()
+	{ return *fields .set_value; }
+
+	const SFVec2f &
+	set_value () const
+	{ return *fields .set_value; }
+
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
+	SFVec2f &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFVec2f &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+	SFTime &
+	duration ()
+	{ return *fields .duration; }
+
+	const SFTime &
+	duration () const
+	{ return *fields .duration; }
+
+	SFVec2f &
+	initialDestination ()
+	{ return *fields .initialDestination; }
+
+	const SFVec2f &
+	initialDestination () const
+	{ return *fields .initialDestination; }
+
+	SFVec2f &
+	defaultValue ()
+	{ return *fields .defaultValue; }
+
+	const SFVec2f &
+	defaultValue () const
+	{ return *fields .defaultValue; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec2f* const set_destination;
+		SFVec2f* const set_value;
+		SFBool* const isActive;
+		SFVec2f* const value_changed;
+		SFTime* const duration;
+		SFVec2f* const initialDestination;
+		SFVec2f* const defaultValue;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

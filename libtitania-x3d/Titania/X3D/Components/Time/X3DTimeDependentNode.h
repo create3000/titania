@@ -63,14 +63,70 @@ class X3DTimeDependentNode :
 {
 public:
 
-	SFBool loop;
-	SFTime startTime;
-	SFTime stopTime;
-	SFTime pauseTime;
-	SFTime resumeTime;
-	SFBool isPaused;
-	SFTime cycleTime;
-	SFTime elapsedTime;
+	SFBool &
+	loop ()
+	{ return *fields .loop; }
+
+	const SFBool &
+	loop () const
+	{ return *fields .loop; }
+
+	SFTime &
+	startTime ()
+	{ return *fields .startTime; }
+
+	const SFTime &
+	startTime () const
+	{ return *fields .startTime; }
+
+	SFTime &
+	stopTime ()
+	{ return *fields .stopTime; }
+
+	const SFTime &
+	stopTime () const
+	{ return *fields .stopTime; }
+
+	SFTime &
+	pauseTime ()
+	{ return *fields .pauseTime; }
+
+	const SFTime &
+	pauseTime () const
+	{ return *fields .pauseTime; }
+
+	SFTime &
+	resumeTime ()
+	{ return *fields .resumeTime; }
+
+	const SFTime &
+	resumeTime () const
+	{ return *fields .resumeTime; }
+
+	SFBool &
+	isPaused ()
+	{ return *fields .isPaused; }
+
+	const SFBool &
+	isPaused () const
+	{ return *fields .isPaused; }
+
+	SFTime &
+	cycleTime ()
+	{ return *fields .cycleTime; }
+
+	const SFTime &
+	cycleTime () const
+	{ return *fields .cycleTime; }
+
+	SFTime &
+	elapsedTime ()
+	{ return *fields .elapsedTime; }
+
+	const SFTime &
+	elapsedTime () const
+	{ return *fields .elapsedTime; }
+
 
 	virtual
 	void
@@ -146,6 +202,23 @@ private:
 	void
 	addTimeout (sigc::connection &, TimeoutHandler, const time_type);
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const loop;
+		SFTime* const startTime;
+		SFTime* const stopTime;
+		SFTime* const pauseTime;
+		SFTime* const resumeTime;
+		SFBool* const isPaused;
+		SFTime* const cycleTime;
+		SFTime* const elapsedTime;
+	};
+
+	Fields fields;
+
+
 	time_type pause;
 
 	sigc::connection startTimeout;
@@ -159,3 +232,4 @@ private:
 } // titania
 
 #endif
+

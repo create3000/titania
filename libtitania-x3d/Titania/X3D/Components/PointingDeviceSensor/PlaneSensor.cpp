@@ -55,14 +55,18 @@
 namespace titania {
 namespace X3D {
 
+PlaneSensor::Fields::Fields () :
+	axisRotation (new SFRotation ()),
+	offset (new SFVec3f ()),
+	maxPosition (new SFVec2f (-1, -1)),
+	minPosition (new SFVec2f ()),
+	translation_changed (new SFVec3f ())
+{ }
+
 PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	  X3DDragSensorNode (),                                                    
-	       axisRotation (),                                                    // SFRotation [in,out] axisRotation         0 0 1 0
-	             offset (),                                                    // SFVec3f    [in,out] offset               0 0 0          (-∞,∞)
-	        maxPosition (-1, -1),                                              // SFVec2f    [in,out] maxPosition          -1 -1          (-∞,∞)
-	        minPosition (),                                                    // SFVec2f    [in,out] minPosition          0 0            (-∞,∞)
-	translation_changed (),                                                    // SFVec3f    [out]    translation_changed
+	             fields (),
 	              plane (),                                                    
 	        startOffset (),                                                     
 	         startPoint (),
@@ -71,18 +75,18 @@ PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("PlaneSensor");
 
-	addField (inputOutput, "metadata",            metadata);
-	addField (inputOutput, "enabled",             enabled);
-	addField (inputOutput, "description",         description);
-	addField (inputOutput, "axisRotation",        axisRotation);
-	addField (inputOutput, "autoOffset",          autoOffset);
-	addField (inputOutput, "offset",              offset);
-	addField (inputOutput, "maxPosition",         maxPosition);
-	addField (inputOutput, "minPosition",         minPosition);
-	addField (outputOnly,  "trackPoint_changed",  trackPoint_changed);
-	addField (outputOnly,  "translation_changed", translation_changed);
-	addField (outputOnly,  "isOver",              isOver);
-	addField (outputOnly,  "isActive",            isActive);
+	addField (inputOutput, "metadata",            metadata ());
+	addField (inputOutput, "enabled",             enabled ());
+	addField (inputOutput, "description",         description ());
+	addField (inputOutput, "axisRotation",        axisRotation ());
+	addField (inputOutput, "autoOffset",          autoOffset ());
+	addField (inputOutput, "offset",              offset ());
+	addField (inputOutput, "maxPosition",         maxPosition ());
+	addField (inputOutput, "minPosition",         minPosition ());
+	addField (outputOnly,  "trackPoint_changed",  trackPoint_changed ());
+	addField (outputOnly,  "translation_changed", translation_changed ());
+	addField (outputOnly,  "isOver",              isOver ());
+	addField (outputOnly,  "isActive",            isActive ());
 }
 
 X3DBaseNode*
@@ -96,10 +100,10 @@ PlaneSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 {
 	X3DDragSensorNode::set_active (hit, active);
 
-	if (isActive)
+	if (isActive ())
 	{
 		inverseTransformationMatrix = ~getTransformationMatrix ();
-		plane = Plane3f (hit -> point * inverseTransformationMatrix, axisRotation * Vector3f (0, 0, 1));
+		plane = Plane3f (hit -> point * inverseTransformationMatrix, axisRotation () * Vector3f (0, 0, 1));
 
 		auto hitRay = hit -> ray * inverseTransformationMatrix;
 
@@ -107,16 +111,16 @@ PlaneSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 
 		if (plane .intersect (hitRay, trackPoint))
 		{
-			startPoint          = trackPoint;
-			trackPoint_changed  = trackPoint;
-			translation_changed = offset;
-			startOffset         = offset;
+			startPoint             = trackPoint;
+			trackPoint_changed ()  = trackPoint;
+			translation_changed () = offset ();
+			startOffset            = offset ();
 		}
 	}
 	else
 	{
-		if (autoOffset)
-			offset = translation_changed;
+		if (autoOffset ())
+			offset () = translation_changed ();
 	}
 }
 
@@ -129,23 +133,24 @@ PlaneSensor::set_motion (const std::shared_ptr <Hit> & hit)
 
 	if (plane .intersect (hitRay, trackPoint))
 	{
-		trackPoint_changed = trackPoint;
+		trackPoint_changed () = trackPoint;
 
 		auto translation = startOffset + (trackPoint - startPoint);
 
 		// X component
 
-		if (not (minPosition .getX () > maxPosition .getX ()))
-			translation .x (math::clamp <float> (translation .x (), minPosition .getX (), maxPosition .getX ()));
+		if (not (minPosition () .getX () > maxPosition () .getX ()))
+			translation .x (math::clamp <float> (translation .x (), minPosition () .getX (), maxPosition () .getX ()));
 
 		// Y component
 
-		if (not (minPosition .getY () > maxPosition .getY ()))
-			translation .y (math::clamp <float> (translation .y (), minPosition .getY (), maxPosition .getY ()));
+		if (not (minPosition () .getY () > maxPosition () .getY ()))
+			translation .y (math::clamp <float> (translation .y (), minPosition () .getY (), maxPosition () .getY ()));
 
-		translation_changed = translation;
+		translation_changed () = translation;
 	}
 }
 
 } // X3D
 } // titania
+

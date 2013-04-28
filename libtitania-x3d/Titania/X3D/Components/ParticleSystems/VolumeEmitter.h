@@ -61,11 +61,11 @@ class VolumeEmitter :
 {
 public:
 
-	SFInt32              set_coordinate;
-	SFNode <X3DBaseNode> coord;
-	SFVec3f              direction;
-	MFInt32              coordIndex;
-	SFBool               internal;
+	
+	
+	
+	
+	
 
 	VolumeEmitter (X3DExecutionContext* const);
 
@@ -73,9 +73,68 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFInt32 &
+	set_coordinate ()
+	{ return *fields .set_coordinate; }
+
+	const SFInt32 &
+	set_coordinate () const
+	{ return *fields .set_coordinate; }
+
+	SFNode <X3DBaseNode> &
+	coord ()
+	{ return *fields .coord; }
+
+	const SFNode <X3DBaseNode> &
+	coord () const
+	{ return *fields .coord; }
+
+	SFVec3f &
+	direction ()
+	{ return *fields .direction; }
+
+	const SFVec3f &
+	direction () const
+	{ return *fields .direction; }
+
+	MFInt32 &
+	coordIndex ()
+	{ return *fields .coordIndex; }
+
+	const MFInt32 &
+	coordIndex () const
+	{ return *fields .coordIndex; }
+
+	SFBool &
+	internal ()
+	{ return *fields .internal; }
+
+	const SFBool &
+	internal () const
+	{ return *fields .internal; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const set_coordinate;
+		SFNode <X3DBaseNode>* const coord;
+		SFVec3f* const direction;
+		MFInt32* const coordIndex;
+		SFBool* const internal;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

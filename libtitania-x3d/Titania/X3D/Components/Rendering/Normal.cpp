@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,16 +55,20 @@
 namespace titania {
 namespace X3D {
 
+Normal::Fields::Fields () :
+	vector (new MFVec3f ())
+{ }
+
 Normal::Normal (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DNormalNode (),                                                    
-	       vector ()                                                     // MFVec3f [in,out] vector  [ ]       [-1,1]
+	fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("Normal");
 
-	addField (inputOutput, "metadata", metadata);
-	addField (inputOutput, "vector",   vector);
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "vector",   vector ());
 }
 
 X3DBaseNode*
@@ -76,14 +80,15 @@ Normal::create (X3DExecutionContext* const executionContext) const
 void
 Normal::resize (size_t size)
 {
-	if (vector .size ())
+	if (vector () .size ())
 	{
-		if (vector .size () < size)
-			vector .resize (size, vector .back ());
+		if (vector () .size () < size)
+			vector () .resize (size, vector () .back ());
 	}
 	else
-		vector .resize (size, SFVec3f (0, 0, 1));
+		vector () .resize (size, SFVec3f (0, 0, 1));
 }
 
 } // X3D
 } // titania
+

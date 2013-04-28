@@ -61,13 +61,25 @@ class Polypoint2D :
 {
 public:
 
-	MFVec2f point;
+	
 
 	Polypoint2D (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFVec2f &
+	point ()
+	{ return *fields .point; }
+
+	const MFVec2f &
+	point () const
+	{ return *fields .point; }
+
+
 
 	virtual
 	void
@@ -80,9 +92,20 @@ private:
 	void
 	build ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFVec2f* const point;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

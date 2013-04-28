@@ -55,29 +55,33 @@
 namespace titania {
 namespace X3D {
 
+Transform::Fields::Fields () :
+	center (new SFVec3f ()),
+	rotation (new SFRotation ()),
+	scale (new SFVec3f (1, 1, 1)),
+	scaleOrientation (new SFRotation ()),
+	translation (new SFVec3f ())
+{ }
+
 Transform::Transform (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DGroupingNode (),                                                    
-	          center (),                                                    // SFVec3f    [in,out] center            0 0 0          (-∞,∞)
-	        rotation (),                                                    // SFRotation [in,out] rotation          0 0 1 0        [-1,1] or (-∞,∞)
-	           scale (1, 1, 1),                                             // SFVec3f    [in,out] scale             1 1 1          (-∞, ∞)
-	scaleOrientation (),                                                    // SFRotation [in,out] scaleOrientation  0 0 1 0        [-1,1] or (-∞,∞)
-	     translation ()                                                     // SFVec3f    [in,out] translation       0 0 0          (-∞,∞)
+	fields ()
 {
 	setComponent ("Grouping");
 	setTypeName ("Transform");
 
-	addField (inputOutput,    "metadata",         metadata);
-	addField (inputOutput,    "translation",      translation);
-	addField (inputOutput,    "rotation",         rotation);
-	addField (inputOutput,    "scale",            scale);
-	addField (inputOutput,    "scaleOrientation", scaleOrientation);
-	addField (inputOutput,    "center",           center);
-	addField (initializeOnly, "bboxSize",         bboxSize);
-	addField (initializeOnly, "bboxCenter",       bboxCenter);
-	addField (inputOnly,      "addChildren",      addChildren);
-	addField (inputOnly,      "removeChildren",   removeChildren);
-	addField (inputOutput,    "children",         children);
+	addField (inputOutput,    "metadata",         metadata ());
+	addField (inputOutput,    "translation",      translation ());
+	addField (inputOutput,    "rotation",         rotation ());
+	addField (inputOutput,    "scale",            scale ());
+	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
+	addField (inputOutput,    "center",           center ());
+	addField (initializeOnly, "bboxSize",         bboxSize ());
+	addField (initializeOnly, "bboxCenter",       bboxCenter ());
+	addField (inputOnly,      "addChildren",      addChildren ());
+	addField (inputOnly,      "removeChildren",   removeChildren ());
+	addField (inputOutput,    "children",         children ());
 }
 
 X3DBaseNode*
@@ -104,11 +108,11 @@ Transform::eventsProcessed ()
 {
 	X3DGroupingNode::eventsProcessed ();
 
-	matrix .set (translation,
-	             rotation,
-	             scale,
-	             scaleOrientation,
-	             center);
+	matrix .set (translation (),
+	             rotation (),
+	             scale (),
+	             scaleOrientation (),
+	             center ());
 }
 
 void
@@ -136,3 +140,4 @@ Transform::pop ()
 
 } // X3D
 } // titania
+

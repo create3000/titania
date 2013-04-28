@@ -61,14 +61,34 @@ class TextureCoordinateGenerator :
 {
 public:
 
-	SFString mode;
-	MFFloat  parameter;
+	
+	
 
 	TextureCoordinateGenerator (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFString &
+	mode ()
+	{ return *fields .mode; }
+
+	const SFString &
+	mode () const
+	{ return *fields .mode; }
+
+	MFFloat &
+	parameter ()
+	{ return *fields .parameter; }
+
+	const MFFloat &
+	parameter () const
+	{ return *fields .parameter; }
+
+
 
 	void
 	set_mode ();
@@ -86,6 +106,17 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFString* const mode;
+		MFFloat* const parameter;
+	};
+
+	Fields fields;
+
+
 	GLint textureGenMode;
 
 };
@@ -94,3 +125,4 @@ private:
 } // titania
 
 #endif
+

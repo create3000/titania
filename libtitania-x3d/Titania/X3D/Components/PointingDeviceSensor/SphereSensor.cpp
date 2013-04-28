@@ -55,11 +55,15 @@
 namespace titania {
 namespace X3D {
 
+SphereSensor::Fields::Fields () :
+	offset (new SFRotation (0, 1, 0, 0)),
+	rotation_changed (new SFRotation ())
+{ }
+
 SphereSensor::SphereSensor (X3DExecutionContext* const executionContext) :
 	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	          X3DDragSensorNode (),                                                    
-	                     offset (0, 1, 0, 0),                                          // SFRotation [in,out] offset            0 1 0 0        [-1,1],(-∞,∞)
-	           rotation_changed (),                                                    // SFRotation [out]    rotation_changed
+	                     fields (),
 	                     zPlane (),                                                    
 	                     sphere (),                                                    
 	                     behind (false),                                               
@@ -71,15 +75,15 @@ SphereSensor::SphereSensor (X3DExecutionContext* const executionContext) :
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("SphereSensor");
 
-	addField (inputOutput, "metadata",           metadata);
-	addField (inputOutput, "enabled",            enabled);
-	addField (inputOutput, "description",        description);
-	addField (inputOutput, "autoOffset",         autoOffset);
-	addField (inputOutput, "offset",             offset);
-	addField (outputOnly,  "trackPoint_changed", trackPoint_changed);
-	addField (outputOnly,  "rotation_changed",   rotation_changed);
-	addField (outputOnly,  "isOver",             isOver);
-	addField (outputOnly,  "isActive",           isActive);
+	addField (inputOutput, "metadata",           metadata ());
+	addField (inputOutput, "enabled",            enabled ());
+	addField (inputOutput, "description",        description ());
+	addField (inputOutput, "autoOffset",         autoOffset ());
+	addField (inputOutput, "offset",             offset ());
+	addField (outputOnly,  "trackPoint_changed", trackPoint_changed ());
+	addField (outputOnly,  "rotation_changed",   rotation_changed ());
+	addField (outputOnly,  "isOver",             isOver ());
+	addField (outputOnly,  "isActive",           isActive ());
 }
 
 X3DBaseNode*
@@ -109,7 +113,7 @@ SphereSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 {
 	X3DDragSensorNode::set_active (hit, active);
 
-	if (isActive)
+	if (isActive ())
 	{
 		inverseTransformationMatrix = ~getTransformationMatrix ();
 
@@ -120,16 +124,16 @@ SphereSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 		sphere = Sphere3f (abs (hitPoint - center), center);
 		behind = zPlane .distance (hitPoint) < 0;
 
-		fromVector         = hitPoint - center;
-		trackPoint_changed = hitPoint;
-		rotation_changed   = offset;
-		startOffset        = offset;
-		startPoint         = hitPoint;
+		fromVector            = hitPoint - center;
+		trackPoint_changed () = hitPoint;
+		rotation_changed ()   = offset ();
+		startOffset           = offset ();
+		startPoint            = hitPoint;
 	}
 	else
 	{
-		if (autoOffset)
-			offset = rotation_changed;
+		if (autoOffset ())
+			offset () = rotation_changed ();
 	}
 }
 
@@ -166,7 +170,7 @@ SphereSensor::set_motion (const std::shared_ptr <Hit> & hit)
 		getTrackPoint (hitRay, trackPoint);
 	}
 
-	trackPoint_changed = trackPoint;
+	trackPoint_changed () = trackPoint;
 
 	auto toVector = trackPoint - sphere .center ();
 	auto rotation = Rotation4f (fromVector, toVector);
@@ -174,8 +178,9 @@ SphereSensor::set_motion (const std::shared_ptr <Hit> & hit)
 	if (behind)
 		rotation .inverse ();
 
-	rotation_changed = startOffset * rotation;
+	rotation_changed () = startOffset * rotation;
 }
 
 } // X3D
 } // titania
+

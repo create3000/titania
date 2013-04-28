@@ -57,14 +57,18 @@
 namespace titania {
 namespace X3D {
 
+X3DLayerNode::Fields::Fields () :
+	isPickable (new SFBool (true)),
+	viewport (new SFNode <X3DBaseNode> ()),
+	addChildren (new MFNode ()),
+	removeChildren (new MFNode ()),
+	children (new MFNode ())
+{ }
+
 X3DLayerNode::X3DLayerNode () :
 	              X3DNode (),                                                   
 	          X3DRenderer (),                                                   
-	           isPickable (true),                                               // SFBool [in,out] isPickable      TRUE
-	             viewport (),                                                   // SFNode [in,out] viewport        NULL      [X3DViewportNode]
-	          addChildren (),                                                   // MFNode[in]      addChildren               [X3DChildNode]
-	       removeChildren (),                                                   // MFNode[in]      removeChildren            [X3DChildNode]
-	             children (),                                                   // MFNode[in,out]  children        [ ]       [X3DChildNode]
+	               fields (),
 	      defaultViewport (new Viewport (getExecutionContext ())),              
 	defaultNavigationInfo (new NavigationInfo (getExecutionContext (), false)), 
 	    defaultBackground (new Background     (getExecutionContext (), false)), 
@@ -94,7 +98,7 @@ X3DLayerNode::X3DLayerNode () :
 	             defaultViewpoint,
 	             group);
 
-	defaultViewpoint -> description = "Default Viewpoint";
+	defaultViewpoint -> description () = "Default Viewpoint";
 }
 
 void
@@ -109,19 +113,19 @@ X3DLayerNode::initialize ()
 	defaultFog            -> setup ();
 	defaultViewpoint      -> setup ();
 
-	defaultBackground -> transparency = 1;
-	defaultFog        -> transparency = 1;
-	defaultViewpoint  -> isBound      = true;
+	defaultBackground -> transparency () = 1;
+	defaultFog        -> transparency () = 1;
+	defaultViewpoint  -> isBound ()      = true;
 
-	viewport .addInterest (this, &X3DLayerNode::set_viewport);
+	viewport () .addInterest (this, &X3DLayerNode::set_viewport);
 
-	addChildren    .addInterest (group -> addChildren);
-	removeChildren .addInterest (group -> removeChildren);
-	children       .addInterest (group -> children);
+	addChildren ()    .addInterest (group -> addChildren ());
+	removeChildren () .addInterest (group -> removeChildren ());
+	children ()       .addInterest (group -> children ());
 
 	set_viewport ();
 
-	group -> children = children;
+	group -> children () = children ();
 	group -> setup ();
 }
 
@@ -190,7 +194,7 @@ X3DLayerNode::lookAt ()
 void
 X3DLayerNode::set_viewport ()
 {
-	currentViewport = x3d_cast <X3DViewportNode*> (viewport .getValue ());
+	currentViewport = x3d_cast <X3DViewportNode*> (viewport () .getValue ());
 
 	if (not currentViewport)
 		currentViewport = defaultViewport .getValue ();
@@ -236,7 +240,7 @@ X3DLayerNode::traverse (TraverseType type)
 void
 X3DLayerNode::pick ()
 {
-	if (not isPickable)
+	if (not isPickable ())
 		return;
 
 	currentViewport -> push ();
@@ -392,3 +396,4 @@ X3DLayerNode::dispose ()
 
 } // X3D
 } // titania
+

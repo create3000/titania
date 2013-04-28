@@ -61,13 +61,25 @@ class Polyline2D :
 {
 public:
 
-	MFVec2f lineSegments;
+	
 
 	Polyline2D (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFVec2f &
+	lineSegments ()
+	{ return *fields .lineSegments; }
+
+	const MFVec2f &
+	lineSegments () const
+	{ return *fields .lineSegments; }
+
+
 
 	virtual
 	void
@@ -80,9 +92,20 @@ private:
 	void
 	build ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFVec2f* const lineSegments;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

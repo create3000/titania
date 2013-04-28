@@ -91,7 +91,7 @@ X3DBrowserWidget::initialize ()
 
 	__LOG__ << std::endl;
 
-	getBrowser () -> getConsole () -> string_changed .addInterest (this, &X3DBrowserWidget::set_console);
+	getBrowser () -> getConsole () -> string_changed () .addInterest (this, &X3DBrowserWidget::set_console);
 
 	// Splash Screen.
 
@@ -137,7 +137,7 @@ X3DBrowserWidget::loadWorld ()
 
 	getBrowser () -> finished    .removeInterest (this, &X3DBrowserWidget::loadWorld);
 	getBrowser () -> initialized .addInterest    (this, &X3DBrowserWidget::set_world);
-	getBrowser () -> urlError    .addInterest    (this, &X3DBrowserWidget::set_urlError);
+	getBrowser () -> urlError () .addInterest    (this, &X3DBrowserWidget::set_urlError);
 
 	if (getConfig () .hasItem ("worldURL"))
 		loadURL ({ getConfig () .string ("worldURL") });
@@ -269,7 +269,7 @@ X3DBrowserWidget::set_console ()
 {
 	auto buffer = getConsole () .get_buffer ();
 
-	for (const auto & string : getBrowser () -> getConsole () -> string_changed)
+	for (const auto & string : getBrowser () -> getConsole () -> string_changed ())
 		buffer -> insert (buffer -> end (), string .getValue ());
 
 	auto end = buffer -> end ();
@@ -280,12 +280,12 @@ X3DBrowserWidget::set_console ()
 void
 X3DBrowserWidget::set_urlError ()
 {
-	if (getBrowser () -> urlError .empty ())
+	if (getBrowser () -> urlError () .empty ())
 		return;
 
 	getMessageDialog () .set_message ("Invalid X3D");
 	getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
-	                                         + basic::join (getBrowser () -> urlError, "\n")
+	                                         + basic::join (getBrowser () -> urlError (), "\n")
 	                                         + "</span>",
 	                                         true);
 	getMessageDialog () .show ();
@@ -368,7 +368,7 @@ X3DBrowserWidget::updateViewpoints (/* X3D::SFNode <X3D::World> & world */)
 
 	for (auto const & viewpoint : getBrowser () -> getExecutionContext () -> getActiveLayer ()  -> getViewpoints ())
 	{
-		if (viewpoint -> description .length ())
+		if (viewpoint -> description () .length ())
 			submenu -> append (*Gtk::manage (new ViewpointMenuItem (viewpoint)));
 	}
 

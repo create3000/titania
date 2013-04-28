@@ -64,13 +64,25 @@ class Inline :
 {
 public:
 
-	SFBool load;
+	
 
 	Inline (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFBool &
+	load ()
+	{ return *fields .load; }
+
+	const SFBool &
+	load () const
+	{ return *fields .load; }
+
+
 
 	Box3f
 	getBBox ();
@@ -111,6 +123,16 @@ private:
 	void
 	requestUnload ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const load;
+	};
+
+	Fields fields;
+
+
 	SFNode <Scene> scene;
 
 };
@@ -119,3 +141,4 @@ private:
 } // titania
 
 #endif
+

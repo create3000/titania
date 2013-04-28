@@ -194,7 +194,7 @@ public:
 
 		print (stream, args ...);
 		
-		getConsole () -> string_changed .emplace_back (stream .str ());
+		getConsole () -> string_changed () .emplace_back (stream .str ());
 	}
 
 	template <typename ... Args>

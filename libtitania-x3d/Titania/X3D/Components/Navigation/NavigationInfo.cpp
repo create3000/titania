@@ -59,35 +59,39 @@
 namespace titania {
 namespace X3D {
 
+NavigationInfo::Fields::Fields () :
+	avatarSize (new MFFloat ({ 0.25, 1.6, 0.75 })),
+	headlight (new SFBool (true)),
+	speed (new SFFloat (1)),
+	transitionTime (new SFTime (1)),
+	transitionType (new MFString ({ "LINEAR" })),
+	type (new MFString ({ "EXAMINE", "ANY" })),
+	visibilityLimit (new SFFloat ()),
+	transitionComplete (new SFBool ())
+{ }
+
 NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, bool displayed) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	   X3DBindableNode (displayed),                                           
-	        avatarSize ({ 0.25, 1.6, 0.75 }),                                 // MFFloat  [in,out] avatarSize         [0.25 1.6 0.75]        [0,∞)
-	         headlight (true),                                                // SFBool   [in,out] headlight          TRUE
-	             speed (1),                                                   // SFFloat  [in,out] speed              1.0                    [0,∞)
-	    transitionTime (1),                                                   // SFTime   [in,out] transitionTime     1.0                    [0, ∞)
-	    transitionType ({ "LINEAR" }),                                        // MFString [in,out] transitionType     ["LINEAR"]             ["TELEPORT","LINEAR",
-	              type ({ "EXAMINE", "ANY" }),                                // MFString [in,out] type               { "EXAMINE", "ANY" }
-	   visibilityLimit (),                                                    // SFFloat  [in,out] visibilityLimit    0
-	transitionComplete (),                                                    // SFBool   [out]    transitionComplete
+	            fields (),
 	  directionalLight (new DirectionalLight (executionContext)),
 	             light ()              
 {
 	setComponent ("Navigation");
 	setTypeName ("NavigationInfo");
 
-	addField (inputOutput, "metadata",           metadata);
-	addField (inputOnly,   "set_bind",           set_bind);
-	addField (inputOutput, "avatarSize",         avatarSize);
-	addField (inputOutput, "headlight",          headlight);
-	addField (inputOutput, "speed",              speed);
-	addField (inputOutput, "transitionTime",     transitionTime);
-	addField (inputOutput, "transitionType",     transitionType);
-	addField (inputOutput, "type",               type);
-	addField (inputOutput, "visibilityLimit",    visibilityLimit);
-	addField (outputOnly,  "transitionComplete", transitionComplete);
-	addField (outputOnly,  "bindTime",           bindTime);
-	addField (outputOnly,  "isBound",            isBound);
+	addField (inputOutput, "metadata",           metadata ());
+	addField (inputOnly,   "set_bind",           set_bind ());
+	addField (inputOutput, "avatarSize",         avatarSize ());
+	addField (inputOutput, "headlight",          headlight ());
+	addField (inputOutput, "speed",              speed ());
+	addField (inputOutput, "transitionTime",     transitionTime ());
+	addField (inputOutput, "transitionType",     transitionType ());
+	addField (inputOutput, "type",               type ());
+	addField (inputOutput, "visibilityLimit",    visibilityLimit ());
+	addField (outputOnly,  "transitionComplete", transitionComplete ());
+	addField (outputOnly,  "bindTime",           bindTime ());
+	addField (outputOnly,  "isBound",            isBound ());
 
 	setChildren (directionalLight);
 }
@@ -105,7 +109,7 @@ NavigationInfo::initialize ()
 
 	directionalLight -> setup ();
 	
-	headlight .addInterest (this, &NavigationInfo::set_headlight);
+	headlight () .addInterest (this, &NavigationInfo::set_headlight);
 	
 	set_headlight ();
 }
@@ -113,7 +117,7 @@ NavigationInfo::initialize ()
 void
 NavigationInfo::set_headlight ()
 {
-	if (headlight)
+	if (headlight ())
 		light .reset (new LightContainer (Matrix4f (), directionalLight));
 		
 	else
@@ -123,8 +127,8 @@ NavigationInfo::set_headlight ()
 float
 NavigationInfo::getCollisionRadius () const
 {
-	if (avatarSize .size () > 0)
-		return avatarSize [0];
+	if (avatarSize () .size () > 0)
+		return avatarSize () [0];
 	
 	return 0.25;
 }
@@ -132,8 +136,8 @@ NavigationInfo::getCollisionRadius () const
 float
 NavigationInfo::getAvatarHeight () const
 {
-	if (avatarSize .size () > 1)
-		return avatarSize [1];
+	if (avatarSize () .size () > 1)
+		return avatarSize () [1];
 	
 	return 1.6;
 }
@@ -141,8 +145,8 @@ NavigationInfo::getAvatarHeight () const
 float
 NavigationInfo::getStepHeight () const
 {
-	if (avatarSize .size () > 2)
-		return avatarSize [2];
+	if (avatarSize () .size () > 2)
+		return avatarSize () [2];
 	
 	return 0.75;
 }
@@ -164,7 +168,7 @@ NavigationInfo::getNearPlane () const
 float
 NavigationInfo::getFarPlane () const
 {
-	return visibilityLimit ? visibilityLimit : 100000;
+	return visibilityLimit () ? visibilityLimit () : 100000;
 }
 
 void
@@ -194,14 +198,14 @@ NavigationInfo::unbindFromLayer (X3DLayerNode* const layer)
 void
 NavigationInfo::enable ()
 {
-	if (headlight)
+	if (headlight ())
 		light -> enable ();
 }
 
 void
 NavigationInfo::disable ()
 {
-	if (headlight)
+	if (headlight ())
 		light -> disable ();
 }
 
@@ -215,3 +219,4 @@ NavigationInfo::dispose ()
 
 } // X3D
 } // titania
+

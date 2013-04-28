@@ -274,14 +274,18 @@ public:
 
 };
 
+X3DSoundSourceNode::Fields::Fields () :
+	enabled (new SFBool (true)),
+	description (new SFString ()),
+	speed (new SFFloat (1)),
+	pitch (new SFFloat (1)),
+	isActive (new SFBool ()),
+	duration_changed (new SFTime (-1))
+{ }
+
 X3DSoundSourceNode::X3DSoundSourceNode () :
 	X3DTimeDependentNode (),                  
-	             enabled (true),              // SFBool   [in,out] enabled           TRUE       non standard
-	         description (),                  // SFString [in,out] description       ""
-	               speed (1),                 // SFFloat [in,out] speed  1.0        (-∞,∞)
-	               pitch (1),                 // SFFloat  [in,out] pitch             1.0        (0,∞)
-	            isActive (),                  // SFBool   [ ]      isActive
-	    duration_changed (-1),                // SFTime   [out]    duration_changed
+	              fields (),
 	             gstream (new GStream (this)) 
 {
 	addNodeType (X3DConstants::X3DSoundSourceNode);
@@ -292,8 +296,8 @@ X3DSoundSourceNode::initialize ()
 {
 	X3DTimeDependentNode::initialize ();
 
-	speed .addInterest (this, &X3DSoundSourceNode::set_speed);
-	pitch .addInterest (this, &X3DSoundSourceNode::set_pitch);
+	speed () .addInterest (this, &X3DSoundSourceNode::set_speed);
+	pitch () .addInterest (this, &X3DSoundSourceNode::set_pitch);
 }
 
 void
@@ -329,7 +333,7 @@ X3DSoundSourceNode::getVideoSink ()
 void
 X3DSoundSourceNode::prepareEvents ()
 {
-	elapsedTime = getElapsedTime ();
+	elapsedTime () = getElapsedTime ();
 }
 
 void
@@ -345,14 +349,14 @@ X3DSoundSourceNode::set_pitch ()
 void
 X3DSoundSourceNode::set_start ()
 {
-	if (not isActive)
+	if (not isActive ())
 	{
-		if (speed)
-			gstream -> start (speed, 0);
+		if (speed ())
+			gstream -> start (speed (), 0);
 
-		isActive    = true;
-		cycleTime   = getCurrentTime ();
-		elapsedTime = 0;
+		isActive ()    = true;
+		cycleTime ()   = getCurrentTime ();
+		elapsedTime () = 0;
 
 		getBrowser () -> prepareEvents .addInterest (this, &X3DSoundSourceNode::prepareEvents);
 	}
@@ -361,10 +365,10 @@ X3DSoundSourceNode::set_start ()
 void
 X3DSoundSourceNode::set_stop ()
 {
-	if (isActive)
+	if (isActive ())
 	{
 		gstream -> stop ();
-		isActive = false;
+		isActive () = false;
 
 		getBrowser () -> prepareEvents .removeInterest (this, &X3DSoundSourceNode::prepareEvents);
 	}
@@ -383,17 +387,17 @@ X3DSoundSourceNode::set_end ()
 {
 	// XXX thread save???
 
-	if (loop)
+	if (loop ())
 	{
-		if (speed)
-			gstream -> start (speed, 0);
+		if (speed ())
+			gstream -> start (speed (), 0);
 
-		cycleTime   = getCurrentTime ();
-		elapsedTime = getElapsedTime ();
+		cycleTime ()   = getCurrentTime ();
+		elapsedTime () = getElapsedTime ();
 	}
 	else
 	{
-		isActive = false;
+		isActive () = false;
 
 		getBrowser () -> prepareEvents .removeInterest (this, &X3DSoundSourceNode::prepareEvents);
 	}
@@ -411,3 +415,4 @@ X3DSoundSourceNode::dispose ()
 
 } // X3D
 } // titania
+

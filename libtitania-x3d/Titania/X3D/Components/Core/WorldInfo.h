@@ -61,8 +61,8 @@ class WorldInfo :
 {
 public:
 
-	MFString info;
-	SFString title;
+	
+	
 
 	WorldInfo (X3DExecutionContext* const);
 
@@ -70,9 +70,41 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFString &
+	info ()
+	{ return *fields .info; }
+
+	const MFString &
+	info () const
+	{ return *fields .info; }
+
+	SFString &
+	title ()
+	{ return *fields .title; }
+
+	const SFString &
+	title () const
+	{ return *fields .title; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFString* const info;
+		SFString* const title;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

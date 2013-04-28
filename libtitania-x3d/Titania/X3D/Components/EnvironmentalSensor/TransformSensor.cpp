@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,26 +55,30 @@
 namespace titania {
 namespace X3D {
 
+TransformSensor::Fields::Fields () :
+	targetObject (new SFNode <X3DBaseNode> ()),
+	orientation_changed (new SFRotation ()),
+	position_changed (new SFVec3f ())
+{ }
+
 TransformSensor::TransformSensor (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DEnvironmentalSensorNode (),                                                    
-	              targetObject (),                                                    // SFNode     [in,out] targetObject         NULL        [X3DGroupingNode|X3DShapeNode]
-	       orientation_changed (),                                                    // SFRotation [out]    orientation_changed
-	          position_changed ()                                                     // SFVec3f    [out]    position_changed
+	fields ()
 {
 	setComponent ("EnvironmentalSensor");
 	setTypeName ("TransformSensor");
 
-	addField (inputOutput, "metadata",            metadata);
-	addField (inputOutput, "enabled",             enabled);
-	addField (inputOutput, "size",                size);
-	addField (inputOutput, "center",              center);
-	addField (outputOnly,  "enterTime",           enterTime);
-	addField (outputOnly,  "exitTime",            exitTime);
-	addField (outputOnly,  "isActive",            isActive);
-	addField (inputOutput, "targetObject",        targetObject);
-	addField (outputOnly,  "orientation_changed", orientation_changed);
-	addField (outputOnly,  "position_changed",    position_changed);
+	addField (inputOutput, "metadata",            metadata ());
+	addField (inputOutput, "enabled",             enabled ());
+	addField (inputOutput, "size",                size ());
+	addField (inputOutput, "center",              center ());
+	addField (outputOnly,  "enterTime",           enterTime ());
+	addField (outputOnly,  "exitTime",            exitTime ());
+	addField (outputOnly,  "isActive",            isActive ());
+	addField (inputOutput, "targetObject",        targetObject ());
+	addField (outputOnly,  "orientation_changed", orientation_changed ());
+	addField (outputOnly,  "position_changed",    position_changed ());
 }
 
 X3DBaseNode*
@@ -85,3 +89,4 @@ TransformSensor::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

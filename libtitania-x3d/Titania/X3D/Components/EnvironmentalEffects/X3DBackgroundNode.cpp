@@ -69,13 +69,17 @@
 namespace titania {
 namespace X3D {
 
+X3DBackgroundNode::Fields::Fields () :
+	groundAngle (new MFFloat ()),
+	groundColor (new MFColor ()),
+	skyAngle (new MFFloat ()),
+	skyColor (new MFColor ({ SFColor () })),
+	transparency (new SFFloat ())
+{ }
+
 X3DBackgroundNode::X3DBackgroundNode (bool displayed) :
 	X3DBindableNode (displayed),      
-	    groundAngle (),               // MFFloat [in,out] groundAngle   [ ]           [0,π/2]
-	    groundColor (),               // MFColor [in,out] groundColor   [ ]           [0,1]
-	       skyAngle (),               // MFFloat [in,out] skyAngle      [ ]           [0,π]
-	       skyColor ({ SFColor () }), // MFColor [in,out] skyColor      0 0 0         [0,1]
-	   transparency ()                // SFFloat [in,out] transparency  0             [0,1]
+	fields ()
 {
 	addNodeType (X3DConstants::X3DBackgroundNode);
 }
@@ -145,11 +149,11 @@ X3DBackgroundNode::build ()
 	glPoints .clear ();
 	numIndices = 0;
 
-	if (transparency == 1.0f)
+	if (transparency () == 1.0f)
 		return;
 
 	float radius  = 10000;
-	float opacity = 1 - math::clamp <float> (transparency, 0, 1);
+	float opacity = 1 - math::clamp <float> (transparency (), 0, 1);
 	float PI2     = 2 * M_PI;
 
 	// p2 --- p1
@@ -157,9 +161,9 @@ X3DBackgroundNode::build ()
 	//  |     |
 	// p3 --- p4
 
-	if (skyColor .size () > skyAngle .size ())
+	if (skyColor () .size () > skyAngle () .size ())
 	{
-		float vmax = groundColor .size () > groundAngle .size () ? (SPHERE_VSEG / 2) - 1 : SPHERE_VSEG - 1;
+		float vmax = groundColor () .size () > groundAngle () .size () ? (SPHERE_VSEG / 2) - 1 : SPHERE_VSEG - 1;
 
 		for (int v = 0; v < vmax; ++ v)
 		{
@@ -178,7 +182,7 @@ X3DBackgroundNode::build ()
 				z     = -cos (phi) * r;
 
 				p = Vector3f (x, y, z) * radius;
-				c = getColor (theta, skyColor, skyAngle);
+				c = getColor (theta, skyColor (), skyAngle ());
 
 				glColors .push_back (c .r ());
 				glColors .push_back (c .g ());
@@ -221,7 +225,7 @@ X3DBackgroundNode::build ()
 				z     = -cos (phi) * r;
 
 				p = Vector3f (x, y, z) * radius;
-				c = getColor (theta, skyColor, skyAngle);
+				c = getColor (theta, skyColor (), skyAngle ());
 
 				glColors .push_back (c .r ());
 				glColors .push_back (c .g ());
@@ -258,7 +262,7 @@ X3DBackgroundNode::build ()
 		}
 	}
 
-	if (groundColor .size () > groundAngle .size ())
+	if (groundColor () .size () > groundAngle () .size ())
 	{
 		for (int v = SPHERE_VSEG / 2; v < SPHERE_VSEG - 1; ++ v)
 		{
@@ -277,7 +281,7 @@ X3DBackgroundNode::build ()
 				z     = -cos (phi) * r;
 
 				p = Vector3f (x, y, z) * radius;
-				c = getColor (M_PI - theta, groundColor, groundAngle);
+				c = getColor (M_PI - theta, groundColor (), groundAngle ());
 
 				glColors .push_back (c .r ());
 				glColors .push_back (c .g ());
@@ -320,7 +324,7 @@ X3DBackgroundNode::build ()
 				z     = -cos (phi) * r;
 
 				p = Vector3f (x, y, z) * radius;
-				c = getColor (M_PI - theta, groundColor, groundAngle);
+				c = getColor (M_PI - theta, groundColor (), groundAngle ());
 
 				glColors .push_back (c .r ());
 				glColors .push_back (c .g ());
@@ -368,7 +372,7 @@ X3DBackgroundNode::traverse (TraverseType type)
 void
 X3DBackgroundNode::draw ()
 {
-	if (transparency == 1.0f)
+	if (transparency () == 1.0f)
 		return;
 
 	//
@@ -395,7 +399,7 @@ X3DBackgroundNode::draw ()
 		glDisable (GL_DEPTH_TEST);
 		glDepthMask (GL_FALSE);
 
-		if (transparency)
+		if (transparency ())
 			glEnable (GL_BLEND);
 		else
 			glDisable (GL_BLEND);
@@ -424,3 +428,4 @@ X3DBackgroundNode::draw ()
 
 } // X3D
 } // titania
+

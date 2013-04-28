@@ -61,18 +61,70 @@ class CylinderSensor :
 {
 public:
 
-	SFRotation axisRotation;
-	SFFloat    diskAngle;
-	SFFloat    minAngle;
-	SFFloat    maxAngle;
-	SFFloat    offset;
-	SFRotation rotation_changed;
+	
+	
+	
+	
+	
+	
 
 	CylinderSensor (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFRotation &
+	axisRotation ()
+	{ return *fields .axisRotation; }
+
+	const SFRotation &
+	axisRotation () const
+	{ return *fields .axisRotation; }
+
+	SFFloat &
+	diskAngle ()
+	{ return *fields .diskAngle; }
+
+	const SFFloat &
+	diskAngle () const
+	{ return *fields .diskAngle; }
+
+	SFFloat &
+	minAngle ()
+	{ return *fields .minAngle; }
+
+	const SFFloat &
+	minAngle () const
+	{ return *fields .minAngle; }
+
+	SFFloat &
+	maxAngle ()
+	{ return *fields .maxAngle; }
+
+	const SFFloat &
+	maxAngle () const
+	{ return *fields .maxAngle; }
+
+	SFFloat &
+	offset ()
+	{ return *fields .offset; }
+
+	const SFFloat &
+	offset () const
+	{ return *fields .offset; }
+
+	SFRotation &
+	rotation_changed ()
+	{ return *fields .rotation_changed; }
+
+	const SFRotation &
+	rotation_changed () const
+	{ return *fields .rotation_changed; }
+
+
 
 	virtual
 	void
@@ -97,6 +149,20 @@ private:
 	float
 	getAngle (const Rotation4f &) const;
 
+	struct Fields
+	{
+		Fields ();
+
+		SFRotation* const axisRotation;
+		SFFloat* const diskAngle;
+		SFFloat* const minAngle;
+		SFFloat* const maxAngle;
+		SFFloat* const offset;
+		SFRotation* const rotation_changed;
+	};
+
+	Fields fields;
+
 	Cylinder3f cylinder;
 	bool       disk;
 	Plane3f    yPlane;
@@ -106,10 +172,11 @@ private:
 	float      startOffset;
 	float      angle;
 	Matrix4f   inverseTransformationMatrix;
-	
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

@@ -61,14 +61,34 @@ class CoordinateInterpolator2D :
 {
 public:
 
-	MFVec2f keyValue;
-	MFVec2f value_changed;
+	
+	
 
 	CoordinateInterpolator2D (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFVec2f &
+	keyValue ()
+	{ return *fields .keyValue; }
+
+	const MFVec2f &
+	keyValue () const
+	{ return *fields .keyValue; }
+
+	MFVec2f &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const MFVec2f &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+
 
 
 private:
@@ -85,9 +105,21 @@ private:
 	void
 	interpolate (size_t, size_t, float);
 
+	struct Fields
+	{
+		Fields ();
+
+		MFVec2f* const keyValue;
+		MFVec2f* const value_changed;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

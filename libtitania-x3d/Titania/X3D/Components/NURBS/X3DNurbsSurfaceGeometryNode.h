@@ -61,25 +61,146 @@ class X3DNurbsSurfaceGeometryNode :
 {
 public:
 
-	SFBool               solid;
-	SFNode <X3DBaseNode> controlPoint;
-	SFNode <X3DBaseNode> texCoord;
-	SFInt32              uTessellation;
-	SFInt32              vTessellation;
-	MFDouble             weight;
-	SFBool               uClosed;
-	SFInt32              uDimension;
-	MFDouble             uKnot;
-	SFInt32              uOrder;
-	SFBool               vClosed;
-	SFInt32              vDimension;
-	MFDouble             vKnot;
-	SFInt32              vOrder;
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+	SFNode <X3DBaseNode> &
+	controlPoint ()
+	{ return *fields .controlPoint; }
+
+	const SFNode <X3DBaseNode> &
+	controlPoint () const
+	{ return *fields .controlPoint; }
+
+	SFNode <X3DBaseNode> &
+	texCoord ()
+	{ return *fields .texCoord; }
+
+	const SFNode <X3DBaseNode> &
+	texCoord () const
+	{ return *fields .texCoord; }
+
+	SFInt32 &
+	uTessellation ()
+	{ return *fields .uTessellation; }
+
+	const SFInt32 &
+	uTessellation () const
+	{ return *fields .uTessellation; }
+
+	SFInt32 &
+	vTessellation ()
+	{ return *fields .vTessellation; }
+
+	const SFInt32 &
+	vTessellation () const
+	{ return *fields .vTessellation; }
+
+	MFDouble &
+	weight ()
+	{ return *fields .weight; }
+
+	const MFDouble &
+	weight () const
+	{ return *fields .weight; }
+
+	SFBool &
+	uClosed ()
+	{ return *fields .uClosed; }
+
+	const SFBool &
+	uClosed () const
+	{ return *fields .uClosed; }
+
+	SFInt32 &
+	uDimension ()
+	{ return *fields .uDimension; }
+
+	const SFInt32 &
+	uDimension () const
+	{ return *fields .uDimension; }
+
+	MFDouble &
+	uKnot ()
+	{ return *fields .uKnot; }
+
+	const MFDouble &
+	uKnot () const
+	{ return *fields .uKnot; }
+
+	SFInt32 &
+	uOrder ()
+	{ return *fields .uOrder; }
+
+	const SFInt32 &
+	uOrder () const
+	{ return *fields .uOrder; }
+
+	SFBool &
+	vClosed ()
+	{ return *fields .vClosed; }
+
+	const SFBool &
+	vClosed () const
+	{ return *fields .vClosed; }
+
+	SFInt32 &
+	vDimension ()
+	{ return *fields .vDimension; }
+
+	const SFInt32 &
+	vDimension () const
+	{ return *fields .vDimension; }
+
+	MFDouble &
+	vKnot ()
+	{ return *fields .vKnot; }
+
+	const MFDouble &
+	vKnot () const
+	{ return *fields .vKnot; }
+
+	SFInt32 &
+	vOrder ()
+	{ return *fields .vOrder; }
+
+	const SFInt32 &
+	vOrder () const
+	{ return *fields .vOrder; }
+
 
 
 protected:
 
 	X3DNurbsSurfaceGeometryNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const solid;
+		SFNode <X3DBaseNode>* const controlPoint;
+		SFNode <X3DBaseNode>* const texCoord;
+		SFInt32* const uTessellation;
+		SFInt32* const vTessellation;
+		MFDouble* const weight;
+		SFBool* const uClosed;
+		SFInt32* const uDimension;
+		MFDouble* const uKnot;
+		SFInt32* const uOrder;
+		SFBool* const vClosed;
+		SFInt32* const vDimension;
+		MFDouble* const vKnot;
+		SFInt32* const vOrder;
+	};
+
+	Fields fields;
 
 };
 
@@ -87,3 +208,4 @@ protected:
 } // titania
 
 #endif
+

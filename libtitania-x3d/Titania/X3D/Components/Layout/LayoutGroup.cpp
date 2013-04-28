@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,23 +55,27 @@
 namespace titania {
 namespace X3D {
 
+LayoutGroup::Fields::Fields () :
+	layout (new SFNode <X3DBaseNode> ()),
+	viewport (new SFNode <X3DBaseNode> ())
+{ }
+
 LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGroupingNode (),                                                    
-	         layout (),                                                    // SFNode [in,out] layout    NULL        [X3DLayoutNode]
-	       viewport ()                                                     // SFNode [in,out] viewport  NULL        [X3DViewportNode]
+	fields ()
 {
 	setComponent ("Layout");
 	setTypeName ("LayoutGroup");
 
-	addField (inputOutput,    "metadata",       metadata);
-	addField (initializeOnly, "bboxSize",       bboxSize);
-	addField (initializeOnly, "bboxCenter",     bboxCenter);
-	addField (inputOnly,      "addChildren",    addChildren);
-	addField (inputOnly,      "removeChildren", removeChildren);
-	addField (inputOutput,    "children",       children);
-	addField (inputOutput,    "layout",         layout);
-	addField (inputOutput,    "viewport",       viewport);
+	addField (inputOutput,    "metadata",       metadata ());
+	addField (initializeOnly, "bboxSize",       bboxSize ());
+	addField (initializeOnly, "bboxCenter",     bboxCenter ());
+	addField (inputOnly,      "addChildren",    addChildren ());
+	addField (inputOnly,      "removeChildren", removeChildren ());
+	addField (inputOutput,    "children",       children ());
+	addField (inputOutput,    "layout",         layout ());
+	addField (inputOutput,    "viewport",       viewport ());
 }
 
 X3DBaseNode*
@@ -82,3 +86,4 @@ LayoutGroup::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

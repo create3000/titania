@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,13 +53,18 @@
 namespace titania {
 namespace X3D {
 
+X3DDragSensorNode::Fields::Fields () :
+	autoOffset (new SFBool (true)),
+	trackPoint_changed (new SFVec3f ())
+{ }
+
 X3DDragSensorNode::X3DDragSensorNode () :
 	X3DPointingDeviceSensorNode (),     
-	                 autoOffset (true), // SFBool  [in,out] autoOffset          TRUE
-	         trackPoint_changed ()      // SFVec3f [out]    trackPoint_changed
+	fields ()
 {
 	addNodeType (X3DConstants::X3DDragSensorNode);
 }
 
 } // X3D
 } // titania
+

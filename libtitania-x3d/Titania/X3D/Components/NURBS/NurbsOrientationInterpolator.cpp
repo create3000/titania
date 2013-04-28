@@ -55,26 +55,30 @@
 namespace titania {
 namespace X3D {
 
+NurbsOrientationInterpolator::Fields::Fields () :
+	set_fraction (new SFFloat ()),
+	controlPoint (new SFNode <X3DBaseNode> ()),
+	knot (new MFDouble ()),
+	order (new SFInt32 (3)),
+	weight (new MFDouble ()),
+	value_changed (new SFRotation ())
+{ }
+
 NurbsOrientationInterpolator::NurbsOrientationInterpolator (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DChildNode (),                                                    
-	 set_fraction (),                                                    // SFFloat    [in]     set_fraction             (-∞,∞)
-	 controlPoint (),                                                    // SFNode     [in,out] controlPoint   [ ]       [X3DCoordinateNode]
-	         knot (),                                                    // MFDouble   [in,out] knot           [ ]       (-∞,∞)
-	        order (3),                                                   // SFInt32    [in,out] order          3         (2,∞)
-	       weight (),                                                    // MFDouble   [in,out] weight         [ ]       (-∞,∞)
-	value_changed ()                                                     // SFRotation [out]    value_changed
+	fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsOrientationInterpolator");
 
-	addField (inputOutput, "metadata",      metadata);
-	addField (inputOnly,   "set_fraction",  set_fraction);
-	addField (inputOutput, "controlPoint",  controlPoint);
-	addField (inputOutput, "knot",          knot);
-	addField (inputOutput, "order",         order);
-	addField (inputOutput, "weight",        weight);
-	addField (outputOnly,  "value_changed", value_changed);
+	addField (inputOutput, "metadata",      metadata ());
+	addField (inputOnly,   "set_fraction",  set_fraction ());
+	addField (inputOutput, "controlPoint",  controlPoint ());
+	addField (inputOutput, "knot",          knot ());
+	addField (inputOutput, "order",         order ());
+	addField (inputOutput, "weight",        weight ());
+	addField (outputOnly,  "value_changed", value_changed ());
 }
 
 X3DBaseNode*
@@ -85,3 +89,4 @@ NurbsOrientationInterpolator::create (X3DExecutionContext* const executionContex
 
 } // X3D
 } // titania
+

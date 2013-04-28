@@ -66,13 +66,55 @@ class X3DViewpointNode :
 {
 public:
 
-	SFRotation orientation;
-	SFVec3f    centerOfRotation;
-	SFBool     jump;
+	SFRotation &
+	orientation ()
+	{ return *fields .orientation; }
 
-	SFVec3f    positionOffset;
-	SFRotation orientationOffset;
-	SFVec3f    centerOfRotationOffset;
+	const SFRotation &
+	orientation () const
+	{ return *fields .orientation; }
+
+	SFVec3f &
+	centerOfRotation ()
+	{ return *fields .centerOfRotation; }
+
+	const SFVec3f &
+	centerOfRotation () const
+	{ return *fields .centerOfRotation; }
+
+	SFBool &
+	jump ()
+	{ return *fields .jump; }
+
+	const SFBool &
+	jump () const
+	{ return *fields .jump; }
+
+
+	SFVec3f &
+	positionOffset ()
+	{ return fields .positionOffset; }
+
+	const SFVec3f &
+	positionOffset () const
+	{ return fields .positionOffset; }
+
+	SFRotation &
+	orientationOffset ()
+	{ return fields .orientationOffset; }
+
+	const SFRotation &
+	orientationOffset () const
+	{ return fields .orientationOffset; }
+
+	SFVec3f &
+	centerOfRotationOffset ()
+	{ return fields .centerOfRotationOffset; }
+
+	const SFVec3f &
+	centerOfRotationOffset () const
+	{ return fields .centerOfRotationOffset; }
+
 
 	virtual
 	Vector3f
@@ -172,6 +214,21 @@ private:
 	void
 	collect ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFRotation* const orientation;
+		SFVec3f* const centerOfRotation;
+		SFBool* const jump;
+		SFVec3f positionOffset;
+		SFRotation orientationOffset;
+		SFVec3f centerOfRotationOffset;
+	};
+
+	Fields fields;
+
+
 	Matrix4f modelViewMatrix;
 	Matrix4f transformationMatrix;
 	Matrix4f inverseTransformationMatrix;
@@ -186,3 +243,4 @@ private:
 } // titania
 
 #endif
+

@@ -61,14 +61,34 @@ class OrthoViewpoint :
 {
 public:
 
-	SFVec3f position;
-	MFFloat fieldOfView;
+	
+	
 
 	OrthoViewpoint (X3DExecutionContext* const, bool = true);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFVec3f &
+	position ()
+	{ return *fields .position; }
+
+	const SFVec3f &
+	position () const
+	{ return *fields .position; }
+
+	MFFloat &
+	fieldOfView ()
+	{ return *fields .fieldOfView; }
+
+	const MFFloat &
+	fieldOfView () const
+	{ return *fields .fieldOfView; }
+
+
 
 	virtual
 	Vector3f
@@ -88,9 +108,21 @@ private:
 	Vector3f
 	lookAtPositionOffset (Box3f);
 
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const position;
+		MFFloat* const fieldOfView;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

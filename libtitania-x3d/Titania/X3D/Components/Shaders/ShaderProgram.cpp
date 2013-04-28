@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,19 +55,23 @@
 namespace titania {
 namespace X3D {
 
+ShaderProgram::Fields::Fields () :
+	type (new SFString ("VERTEX"))
+{ }
+
 ShaderProgram::ShaderProgram (X3DExecutionContext* const executionContext) :
 	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	                    X3DNode (),                                                    
 	               X3DUrlObject (),                                                    
 	X3DProgrammableShaderObject (),                                                    
-	                       type ("VERTEX")                                             // SFString [ ]type  "VERTEX"        ["VERTEX"|"FRAGMENT"]
+	fields ()
 {
 	setComponent ("Shaders");
 	setTypeName ("ShaderProgram");
 
-	addField (inputOutput,    "metadata", metadata);
-	addField (inputOutput,    "url",      url);
-	addField (initializeOnly, "type",     type);
+	addField (inputOutput,    "metadata", metadata ());
+	addField (inputOutput,    "url",      url ());
+	addField (initializeOnly, "type",     type ());
 }
 
 X3DBaseNode*
@@ -98,3 +102,4 @@ ShaderProgram::dispose ()
 
 } // X3D
 } // titania
+

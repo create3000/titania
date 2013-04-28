@@ -61,9 +61,9 @@ class CollisionSensor :
 {
 public:
 
-	SFNode <X3DBaseNode> collider;
-	MFNode               intersections;
-	MFNode               contacts;
+	
+	
+	
 
 	CollisionSensor (X3DExecutionContext* const);
 
@@ -71,9 +71,50 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFNode <X3DBaseNode> &
+	collider ()
+	{ return *fields .collider; }
+
+	const SFNode <X3DBaseNode> &
+	collider () const
+	{ return *fields .collider; }
+
+	MFNode &
+	intersections ()
+	{ return *fields .intersections; }
+
+	const MFNode &
+	intersections () const
+	{ return *fields .intersections; }
+
+	MFNode &
+	contacts ()
+	{ return *fields .contacts; }
+
+	const MFNode &
+	contacts () const
+	{ return *fields .contacts; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const collider;
+		MFNode* const intersections;
+		MFNode* const contacts;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

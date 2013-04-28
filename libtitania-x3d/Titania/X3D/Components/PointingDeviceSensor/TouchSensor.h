@@ -61,9 +61,9 @@ class TouchSensor :
 {
 public:
 
-	SFVec2f hitTexCoord_changed;
-	SFVec3f hitNormal_changed;
-	SFVec3f hitPoint_changed;
+	
+	
+	
 
 	TouchSensor (X3DExecutionContext* const);
 
@@ -71,9 +71,49 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec2f &
+	hitTexCoord_changed ()
+	{ return *fields .hitTexCoord_changed; }
+
+	const SFVec2f &
+	hitTexCoord_changed () const
+	{ return *fields .hitTexCoord_changed; }
+
+	SFVec3f &
+	hitNormal_changed ()
+	{ return *fields .hitNormal_changed; }
+
+	const SFVec3f &
+	hitNormal_changed () const
+	{ return *fields .hitNormal_changed; }
+
+	SFVec3f &
+	hitPoint_changed ()
+	{ return *fields .hitPoint_changed; }
+
+	const SFVec3f &
+	hitPoint_changed () const
+	{ return *fields .hitPoint_changed; }
+
+
+
 	virtual
 	void
 	set_over (const std::shared_ptr <Hit> &, bool) final;
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec2f* const hitTexCoord_changed;
+		SFVec3f* const hitNormal_changed;
+		SFVec3f* const hitPoint_changed;
+	};
+
+	Fields fields;
 
 };
 
@@ -81,3 +121,4 @@ public:
 } // titania
 
 #endif
+

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,51 +62,55 @@ extern "C"
 namespace titania {
 namespace X3D {
 
+BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
+	splashScreen (new SFBool (false)),
+	dashboard (new SFBool ()),
+	rubberBand (new SFBool (true)),
+	enableInlineViewpoints (new SFBool (true)),
+	antialiased (new SFBool ()),
+	textureQuality (new SFString ("MEDIUM")),
+	primitiveQuality (new SFString ("MEDIUM")),
+	qualityWhenMoving (new SFString ("MEDIUM")),
+	shading (new SFString ("GOURAUD")),
+	motionBlur (new SFNode <MotionBlur> (new MotionBlur (executionContext))),
+	textureProperties (new SFNode <TextureProperties> (new TextureProperties (executionContext))),
+	arc2DProperties (new SFNode <Arc2DProperties> (new Arc2DProperties (executionContext))),
+	arcClose2DProperties (new SFNode <ArcClose2DProperties> (new ArcClose2DProperties (executionContext))),
+	circle2DProperties (new SFNode <Circle2DProperties> (new Circle2DProperties (executionContext))),
+	disc2DProperties (new SFNode <Disk2DProperties> (new Disk2DProperties (executionContext))),
+	rectangle2DProperties (new SFNode <Rectangle2DProperties> (new Rectangle2DProperties (executionContext))),
+	boxProperties (new SFNode <BoxProperties> (new BoxProperties (executionContext))),
+	sphereProperties (new SFNode <X3DSpherePropertyNode> (new QuadSphereProperties (executionContext))),
+	fontStyle (new SFNode <X3DFontStyleNode> (new FontStyle (executionContext)))
+{ }
+
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	       X3DPropertyNode (),                                                    
-	          splashScreen (false),                                               
-	             dashboard (),                                                    
-	            rubberBand (true),                                                    
-	enableInlineViewpoints (true),
-	           antialiased (),                                                    
-	        textureQuality ("MEDIUM"),                                            
-	      primitiveQuality ("MEDIUM"),                                            
-	     qualityWhenMoving ("MEDIUM"),                                            
-	               shading ("GOURAUD"),                                           
-	            motionBlur (new MotionBlur (executionContext)),                   
-	     textureProperties (new TextureProperties (executionContext)),            
-	       arc2DProperties (new Arc2DProperties (executionContext)),        
-	  arcClose2DProperties (new ArcClose2DProperties (executionContext)),        
-	    circle2DProperties (new Circle2DProperties (executionContext)),        
-	      disc2DProperties (new Disk2DProperties (executionContext)),        
-	 rectangle2DProperties (new Rectangle2DProperties (executionContext)),        
-	         boxProperties (new BoxProperties (executionContext)),                
-	      sphereProperties (new QuadSphereProperties (executionContext)),         
-	             fontStyle (new FontStyle (executionContext))                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DPropertyNode (),                                                    
+	         fields (executionContext)                                     
 {
 	setComponent ("Browser"),
 	setTypeName ("BrowserOptions");
 
-	addField (inputOutput, "splashScreen",           splashScreen);
-	addField (inputOutput, "dashboard",              dashboard);
-	addField (inputOutput, "enableInlineViewpoints", enableInlineViewpoints);
-	addField (inputOutput, "antialiased",            antialiased);
-	addField (inputOutput, "textureQuality",         textureQuality);
-	addField (inputOutput, "primitiveQuality",       primitiveQuality);
-	addField (inputOutput, "qualityWhenMoving",      qualityWhenMoving);
-	addField (inputOutput, "shading",                shading);
+	addField (inputOutput, "splashScreen",           splashScreen ());
+	addField (inputOutput, "dashboard",              dashboard ());
+	addField (inputOutput, "enableInlineViewpoints", enableInlineViewpoints ());
+	addField (inputOutput, "antialiased",            antialiased ());
+	addField (inputOutput, "textureQuality",         textureQuality ());
+	addField (inputOutput, "primitiveQuality",       primitiveQuality ());
+	addField (inputOutput, "qualityWhenMoving",      qualityWhenMoving ());
+	addField (inputOutput, "shading",                shading ());
 
-	addField (inputOutput, "motionBlur",             motionBlur);
-	addField (inputOutput, "textureProperties",      textureProperties);
-	addField (inputOutput, "arc2DProperties",        arc2DProperties);
-	addField (inputOutput, "arcClose2DProperties",   arcClose2DProperties);
-	addField (inputOutput, "circle2DProperties",     circle2DProperties);
-	addField (inputOutput, "disc2DProperties",       disc2DProperties);
-	addField (inputOutput, "rectangle2DProperties",  rectangle2DProperties);
-	addField (inputOutput, "boxProperties",          boxProperties);
-	addField (inputOutput, "sphereProperties",       sphereProperties);
-	addField (inputOutput, "fontStyle",              fontStyle);
+	addField (inputOutput, "motionBlur",             motionBlur ());
+	addField (inputOutput, "textureProperties",      textureProperties ());
+	addField (inputOutput, "arc2DProperties",        arc2DProperties ());
+	addField (inputOutput, "arcClose2DProperties",   arcClose2DProperties ());
+	addField (inputOutput, "circle2DProperties",     circle2DProperties ());
+	addField (inputOutput, "disc2DProperties",       disc2DProperties ());
+	addField (inputOutput, "rectangle2DProperties",  rectangle2DProperties ());
+	addField (inputOutput, "boxProperties",          boxProperties ());
+	addField (inputOutput, "sphereProperties",       sphereProperties ());
+	addField (inputOutput, "fontStyle",              fontStyle ());
 }
 
 BrowserOptions*
@@ -120,19 +124,19 @@ BrowserOptions::initialize ()
 {
 	X3DPropertyNode::initialize ();
 
-	motionBlur            -> setup ();
-	textureProperties     -> setup ();
-	arc2DProperties       -> setup ();
-	arcClose2DProperties  -> setup ();
-	circle2DProperties    -> setup ();
-	disc2DProperties      -> setup ();
-	rectangle2DProperties -> setup ();
-	boxProperties         -> setup ();
-	sphereProperties      -> setup ();
-	fontStyle             -> setup ();
+	motionBlur ()            -> setup ();
+	textureProperties ()     -> setup ();
+	arc2DProperties ()       -> setup ();
+	arcClose2DProperties ()  -> setup ();
+	circle2DProperties ()    -> setup ();
+	disc2DProperties ()      -> setup ();
+	rectangle2DProperties () -> setup ();
+	boxProperties ()         -> setup ();
+	sphereProperties ()      -> setup ();
+	fontStyle ()             -> setup ();
 
-	primitiveQuality .addInterest (this, &BrowserOptions::set_primitiveQuality);
-	shading          .addInterest (this, &BrowserOptions::set_shading);
+	primitiveQuality () .addInterest (this, &BrowserOptions::set_primitiveQuality);
+	shading ()          .addInterest (this, &BrowserOptions::set_shading);
 
 	set_textureQuality ();
 	set_primitiveQuality ();
@@ -142,61 +146,61 @@ BrowserOptions::initialize ()
 void
 BrowserOptions::set_textureQuality ()
 {
-	textureProperties -> magnificationFilter = "NICEST";
-	textureProperties -> minificationFilter  = "NICEST";
-	textureProperties -> textureCompression  = "NICEST";
-	textureProperties -> generateMipMaps     = true;
+	textureProperties () -> magnificationFilter () = "NICEST";
+	textureProperties () -> minificationFilter ()  = "NICEST";
+	textureProperties () -> textureCompression ()  = "NICEST";
+	textureProperties () -> generateMipMaps ()     = true;
 
 }
 
 void
 BrowserOptions::set_primitiveQuality ()
 {
-	std::clog << "Setting primitive quality to " << primitiveQuality << "." << std::endl;
+	std::clog << "Setting primitive quality to " << primitiveQuality () << "." << std::endl;
 
-	if (primitiveQuality == "LOW")
+	if (primitiveQuality () == "LOW")
 	{
-		arc2DProperties      -> minAngle = M_PI / 10;
-		arcClose2DProperties -> minAngle = M_PI / 10;
-		circle2DProperties   -> segments = 20;
-		disc2DProperties     -> segments = 20;
-	
-		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties .getValue ());
+		arc2DProperties ()      -> minAngle () = M_PI / 10;
+		arcClose2DProperties () -> minAngle () = M_PI / 10;
+		circle2DProperties ()   -> segments () = 20;
+		disc2DProperties ()     -> segments () = 20;
+
+		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties () .getValue ());
 
 		if (quadSphereProperties)
 		{
-			quadSphereProperties -> uDimension = 20;
-			quadSphereProperties -> vDimension = 10;
+			quadSphereProperties -> uDimension () = 20;
+			quadSphereProperties -> vDimension () = 10;
 		}
 	}
-	else if (primitiveQuality == "MEDIUM")
+	else if (primitiveQuality () == "MEDIUM")
 	{
-		arc2DProperties      -> minAngle = M_PI / 20;
-		arcClose2DProperties -> minAngle = M_PI / 20;
-		circle2DProperties   -> segments = 60;
-		disc2DProperties     -> segments = 60;
-		
-		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties .getValue ());
+		arc2DProperties ()      -> minAngle () = M_PI / 20;
+		arcClose2DProperties () -> minAngle () = M_PI / 20;
+		circle2DProperties ()   -> segments () = 60;
+		disc2DProperties ()     -> segments () = 60;
+
+		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties () .getValue ());
 
 		if (quadSphereProperties)
 		{
-			quadSphereProperties -> uDimension = 40;
-			quadSphereProperties -> vDimension = 20;
+			quadSphereProperties -> uDimension () = 40;
+			quadSphereProperties -> vDimension () = 20;
 		}
 	}
-	else if (primitiveQuality == "HIGH")
+	else if (primitiveQuality () == "HIGH")
 	{
-		arc2DProperties      -> minAngle = M_PI / 40;
-		arcClose2DProperties -> minAngle = M_PI / 40;
-		circle2DProperties   -> segments = 100;
-		disc2DProperties     -> segments = 100;
-		
-		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties .getValue ());
+		arc2DProperties ()      -> minAngle () = M_PI / 40;
+		arcClose2DProperties () -> minAngle () = M_PI / 40;
+		circle2DProperties ()   -> segments () = 100;
+		disc2DProperties ()     -> segments () = 100;
+
+		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties () .getValue ());
 
 		if (quadSphereProperties)
 		{
-			quadSphereProperties -> uDimension = 80;
-			quadSphereProperties -> vDimension = 40;
+			quadSphereProperties -> uDimension () = 80;
+			quadSphereProperties -> vDimension () = 40;
 		}
 	}
 }
@@ -204,29 +208,29 @@ BrowserOptions::set_primitiveQuality ()
 void
 BrowserOptions::set_shading ()
 {
-	std::clog << "Setting shading to " << shading << "." << std::endl;
+	std::clog << "Setting shading to " << shading () << "." << std::endl;
 
-	if (shading == "PHONG")
+	if (shading () == "PHONG")
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 		glShadeModel (GL_SMOOTH);
 	}
-	else if (shading == "GOURAUD")
+	else if (shading () == "GOURAUD")
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 		glShadeModel (GL_SMOOTH);
 	}
-	else if (shading == "FLAT")
+	else if (shading () == "FLAT")
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 		glShadeModel (GL_FLAT);
 	}
-	else if (shading == "WIREFRAME")
+	else if (shading () == "WIREFRAME")
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
 		glShadeModel (GL_SMOOTH);
 	}
-	else if (shading == "POINTSET")
+	else if (shading () == "POINTSET")
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
 		glShadeModel (GL_SMOOTH);

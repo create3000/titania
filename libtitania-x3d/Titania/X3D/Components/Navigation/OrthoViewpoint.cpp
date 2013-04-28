@@ -55,26 +55,30 @@
 namespace titania {
 namespace X3D {
 
+OrthoViewpoint::Fields::Fields () :
+	position (new SFVec3f (0, 0, 10)),
+	fieldOfView (new MFFloat ({ -1 }))
+{ }
+
 OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext, bool displayed) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DViewpointNode (displayed),                                           
-	        position (0, 0, 10),                                            // SFVec3f [in,out] position           0 0 10              (-∞,∞)
-	     fieldOfView ({ -1 })                                               // MFFloat [in,out] fieldOfView        -1, -1, 1, 1        (-∞,∞)
+	fields ()
 {
 	setComponent ("Navigation");
 	setTypeName ("OrthoViewpoint");
 
-	addField (inputOutput, "metadata",          metadata);
-	addField (inputOutput, "description",       description);
-	addField (inputOnly,   "set_bind",          set_bind);
-	addField (inputOutput, "position",          position);
-	addField (inputOutput, "orientation",       orientation);
-	addField (inputOutput, "centerOfRotation",  centerOfRotation);
-	addField (inputOutput, "fieldOfView",       fieldOfView);
-	addField (inputOutput, "jump",              jump);
-	addField (inputOutput, "retainUserOffsets", retainUserOffsets);
-	addField (outputOnly,  "bindTime",          bindTime);
-	addField (outputOnly,  "isBound",           isBound);
+	addField (inputOutput, "metadata",          metadata ());
+	addField (inputOutput, "description",       description ());
+	addField (inputOnly,   "set_bind",          set_bind ());
+	addField (inputOutput, "position",          position ());
+	addField (inputOutput, "orientation",       orientation ());
+	addField (inputOutput, "centerOfRotation",  centerOfRotation ());
+	addField (inputOutput, "fieldOfView",       fieldOfView ());
+	addField (inputOutput, "jump",              jump ());
+	addField (inputOutput, "retainUserOffsets", retainUserOffsets ());
+	addField (outputOnly,  "bindTime",          bindTime ());
+	addField (outputOnly,  "isBound",           isBound ());
 }
 
 X3DBaseNode*
@@ -86,30 +90,30 @@ OrthoViewpoint::create (X3DExecutionContext* const executionContext) const
 Vector3f
 OrthoViewpoint::getPosition () const
 {
-	return position;
+	return position ();
 }
 
 std::array <float, 4>
 OrthoViewpoint::getFieldOfView ()
 {
 
-	switch (fieldOfView .size ())
+	switch (fieldOfView () .size ())
 	{
 		case 0:
 			return std::array <float, 4> {{ -1, -1, 1, 1 }};
 			
 		case 1:
-			return std::array <float, 4> {{ fieldOfView [0], -1,
+			return std::array <float, 4> {{ fieldOfView () [0], -1,
 			                                1, 1 }};
 		case 2:
-			return std::array <float, 4> {{ fieldOfView [0], fieldOfView [1],
+			return std::array <float, 4> {{ fieldOfView () [0], fieldOfView () [1],
 			                                1, 1 }};
 		case 3:
-			return std::array <float, 4> {{ fieldOfView [0], fieldOfView [1],
-			                                fieldOfView [2], 1 }};
+			return std::array <float, 4> {{ fieldOfView () [0], fieldOfView () [1],
+			                                fieldOfView () [2], 1 }};
 		default:
-			return std::array <float, 4> {{ fieldOfView [0], fieldOfView [1],
-			                                fieldOfView [2], fieldOfView [3] }};
+			return std::array <float, 4> {{ fieldOfView () [0], fieldOfView () [1],
+			                                fieldOfView () [2], fieldOfView () [3] }};
 	}
 }
 
@@ -118,7 +122,7 @@ OrthoViewpoint::lookAtPositionOffset (Box3f bbox)
 {
 	return bbox .center ()
 	       + getUserOrientation () * (Vector3f (0, 0, math::abs (bbox .size ()) / 2 + 10))
-	       - position;
+	       - position ();
 }
 
 void
@@ -158,3 +162,4 @@ OrthoViewpoint::reshape (const float zNear, const float zFar)
 
 } // X3D
 } // titania
+

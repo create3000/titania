@@ -61,13 +61,13 @@ class ScalarChaser :
 {
 public:
 
-	SFFloat set_destination;
-	SFFloat set_value;
-	SFBool  isActive;
-	SFFloat value_changed;
-	SFTime  duration;
-	SFFloat initialDestination;
-	SFFloat defaultValue;
+	
+	
+	
+	
+	
+	
+	
 
 	ScalarChaser (X3DExecutionContext* const);
 
@@ -75,9 +75,86 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFFloat &
+	set_destination ()
+	{ return *fields .set_destination; }
+
+	const SFFloat &
+	set_destination () const
+	{ return *fields .set_destination; }
+
+	SFFloat &
+	set_value ()
+	{ return *fields .set_value; }
+
+	const SFFloat &
+	set_value () const
+	{ return *fields .set_value; }
+
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
+	SFFloat &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFFloat &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+	SFTime &
+	duration ()
+	{ return *fields .duration; }
+
+	const SFTime &
+	duration () const
+	{ return *fields .duration; }
+
+	SFFloat &
+	initialDestination ()
+	{ return *fields .initialDestination; }
+
+	const SFFloat &
+	initialDestination () const
+	{ return *fields .initialDestination; }
+
+	SFFloat &
+	defaultValue ()
+	{ return *fields .defaultValue; }
+
+	const SFFloat &
+	defaultValue () const
+	{ return *fields .defaultValue; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const set_destination;
+		SFFloat* const set_value;
+		SFBool* const isActive;
+		SFFloat* const value_changed;
+		SFTime* const duration;
+		SFFloat* const initialDestination;
+		SFFloat* const defaultValue;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

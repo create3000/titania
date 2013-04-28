@@ -61,12 +61,12 @@ class Material :
 {
 public:
 
-	SFFloat ambientIntensity;
-	SFColor diffuseColor;
-	SFColor emissiveColor;
-	SFFloat shininess;
-	SFColor specularColor;
-	SFFloat transparency;
+	
+	
+	
+	
+	
+	
 
 	Material (X3DExecutionContext* const);
 
@@ -74,10 +74,62 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFFloat &
+	ambientIntensity ()
+	{ return *fields .ambientIntensity; }
+
+	const SFFloat &
+	ambientIntensity () const
+	{ return *fields .ambientIntensity; }
+
+	SFColor &
+	diffuseColor ()
+	{ return *fields .diffuseColor; }
+
+	const SFColor &
+	diffuseColor () const
+	{ return *fields .diffuseColor; }
+
+	SFColor &
+	emissiveColor ()
+	{ return *fields .emissiveColor; }
+
+	const SFColor &
+	emissiveColor () const
+	{ return *fields .emissiveColor; }
+
+	SFFloat &
+	shininess ()
+	{ return *fields .shininess; }
+
+	const SFFloat &
+	shininess () const
+	{ return *fields .shininess; }
+
+	SFColor &
+	specularColor ()
+	{ return *fields .specularColor; }
+
+	const SFColor &
+	specularColor () const
+	{ return *fields .specularColor; }
+
+	SFFloat &
+	transparency ()
+	{ return *fields .transparency; }
+
+	const SFFloat &
+	transparency () const
+	{ return *fields .transparency; }
+
+
+
 	virtual
 	bool
 	isTransparent () const
-	{ return transparency; }
+	{ return transparency (); }
 
 	virtual
 	void
@@ -94,6 +146,21 @@ private:
 	void
 	eventsProcessed ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const ambientIntensity;
+		SFColor* const diffuseColor;
+		SFColor* const emissiveColor;
+		SFFloat* const shininess;
+		SFColor* const specularColor;
+		SFFloat* const transparency;
+	};
+
+	Fields fields;
+
+
 	float   alpha;
 	GLfloat glAmbientColor [4];
 	GLfloat glDiffuseColor [4];
@@ -107,3 +174,4 @@ private:
 } // titania
 
 #endif
+

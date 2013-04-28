@@ -67,11 +67,9 @@ X3DBrowser::X3DBrowser () :
 	setTypeName ("Browser");
 	setName ("Titania");
 
-	addField (outputOnly, "url",         url);
-	addField (outputOnly, "description", description);
-	addField (outputOnly, "urlError",    urlError);
-	addField (outputOnly, "scene",       scene);
-	addField (outputOnly, "world",       world);
+	addField (outputOnly, "url", url ());
+	
+	setChildren (description, scene, world);
 	
 	//supportedFields, // make X3DBaseNodes of this
 	//supportedNodes,
@@ -279,18 +277,18 @@ X3DBrowser::set_world ()
 	for (auto & layer : scene -> getLayerSet () -> getLayers ())
 	{
 		if (layer -> getNavigationInfos () .size ())
-			layer -> getNavigationInfos () [0] -> set_bind = true;
+			layer -> getNavigationInfos () [0] -> set_bind () = true;
 
 		if (layer -> getBackgrounds () .size ())
-			layer -> getBackgrounds () [0] -> set_bind = true;
+			layer -> getBackgrounds () [0] -> set_bind () = true;
 
 		if (layer -> getFogs () .size ())
-			layer -> getFogs () [0] -> set_bind = true;
+			layer -> getFogs () [0] -> set_bind () = true;
 
 		// Bind first viewpoint in viewpoint stack.
 
 		if (layer -> getViewpoints () .size ())
-			layer -> getViewpoints () [0] -> set_bind = true;
+			layer -> getViewpoints () [0] -> set_bind () = true;
 	}
 
 	// Bind viewpoint from URL.

@@ -61,14 +61,47 @@ class X3DRigidJointNode :
 {
 public:
 
-	SFNode <X3DBaseNode> body1;
-	SFNode <X3DBaseNode> body2;
-	MFString             forceOutput;
+	SFNode <X3DBaseNode> &
+	body1 ()
+	{ return *fields .body1; }
+
+	const SFNode <X3DBaseNode> &
+	body1 () const
+	{ return *fields .body1; }
+
+	SFNode <X3DBaseNode> &
+	body2 ()
+	{ return *fields .body2; }
+
+	const SFNode <X3DBaseNode> &
+	body2 () const
+	{ return *fields .body2; }
+
+	MFString &
+	forceOutput ()
+	{ return *fields .forceOutput; }
+
+	const MFString &
+	forceOutput () const
+	{ return *fields .forceOutput; }
+
 
 
 protected:
 
 	X3DRigidJointNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const body1;
+		SFNode <X3DBaseNode>* const body2;
+		MFString* const forceOutput;
+	};
+
+	Fields fields;
 
 };
 
@@ -76,3 +109,4 @@ protected:
 } // titania
 
 #endif
+

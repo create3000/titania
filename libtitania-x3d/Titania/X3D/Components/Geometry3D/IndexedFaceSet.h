@@ -62,19 +62,63 @@ class IndexedFaceSet :
 {
 public:
 
-	SFBool convex;
+	
 	using X3DGeometryNode::creaseAngle;
 
-	MFInt32 texCoordIndex;
-	MFInt32 colorIndex;
-	MFInt32 normalIndex;
-	MFInt32 coordIndex;
+	
+	
+	
+	
 
 	IndexedFaceSet (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFBool &
+	convex ()
+	{ return *fields .convex; }
+
+	const SFBool &
+	convex () const
+	{ return *fields .convex; }
+
+	MFInt32 &
+	texCoordIndex ()
+	{ return *fields .texCoordIndex; }
+
+	const MFInt32 &
+	texCoordIndex () const
+	{ return *fields .texCoordIndex; }
+
+	MFInt32 &
+	colorIndex ()
+	{ return *fields .colorIndex; }
+
+	const MFInt32 &
+	colorIndex () const
+	{ return *fields .colorIndex; }
+
+	MFInt32 &
+	normalIndex ()
+	{ return *fields .normalIndex; }
+
+	const MFInt32 &
+	normalIndex () const
+	{ return *fields .normalIndex; }
+
+	MFInt32 &
+	coordIndex ()
+	{ return *fields .coordIndex; }
+
+	const MFInt32 &
+	coordIndex () const
+	{ return *fields .coordIndex; }
+
+
 
 	virtual
 	void
@@ -123,6 +167,20 @@ private:
 	void
 	buildNormals (const PolygonArray &);
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const convex;
+		MFInt32* const texCoordIndex;
+		MFInt32* const colorIndex;
+		MFInt32* const normalIndex;
+		MFInt32* const coordIndex;
+	};
+
+	Fields fields;
+
+
 	size_t numPolygons;
 
 };
@@ -131,3 +189,4 @@ private:
 } // titania
 
 #endif
+

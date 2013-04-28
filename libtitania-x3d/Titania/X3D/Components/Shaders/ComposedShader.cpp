@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,11 +60,15 @@
 namespace titania {
 namespace X3D {
 
+ComposedShader::Fields::Fields () :
+	parts (new MFNode ())
+{ }
+
 ComposedShader::ComposedShader (X3DExecutionContext* const executionContext) :
 	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	              X3DShaderNode (),                                                    
 	X3DProgrammableShaderObject (),                                                    
-	                      parts (),                                                    // MFNode[in,out] parts  [ ]       [ShaderPart]
+	                     fields (),
 	              shaderProgram (0),                                                   
 	                shaderParts (),                                                    
 	               textureUnits ()                                                     
@@ -72,12 +76,12 @@ ComposedShader::ComposedShader (X3DExecutionContext* const executionContext) :
 	setComponent ("Shaders");
 	setTypeName ("ComposedShader");
 
-	addField (inputOutput,    "metadata",   metadata);
-	addField (inputOnly,      "activate",   activate);
-	addField (outputOnly,     "isSelected", isSelected);
-	addField (outputOnly,     "isValid",    isValid);
-	addField (initializeOnly, "language",   language);
-	addField (inputOutput,    "parts",      parts);
+	addField (inputOutput,    "metadata",   metadata ());
+	addField (inputOnly,      "activate",   activate ());
+	addField (outputOnly,     "isSelected", isSelected ());
+	addField (outputOnly,     "isValid",    isValid ());
+	addField (initializeOnly, "language",   language ());
+	addField (inputOutput,    "parts",      parts ());
 }
 
 X3DBaseNode*
@@ -92,7 +96,7 @@ ComposedShader::initialize ()
 	X3DShaderNode::initialize ();
 	X3DProgrammableShaderObject::initialize ();
 
-	parts .addInterest (this, &ComposedShader::set_parts);
+	parts () .addInterest (this, &ComposedShader::set_parts);
 
 	if (glXGetCurrentContext ())
 	{
@@ -113,9 +117,9 @@ ComposedShader::set_parts ()
 {
 	remove_parts ();
 
-	if (language == "GLSL")
+	if (language () == "GLSL")
 	{
-		for (const auto & part : parts)
+		for (const auto & part : parts ())
 		{
 			auto _part = x3d_cast <ShaderPart*> (part .getValue ());
 
@@ -585,3 +589,4 @@ ComposedShader::dispose ()
 
 } // X3D
 } // titania
+

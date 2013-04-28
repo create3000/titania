@@ -55,22 +55,26 @@
 namespace titania {
 namespace X3D {
 
+IntegerSequencer::Fields::Fields () :
+	keyValue (new MFInt32 ()),
+	value_changed (new SFInt32 ())
+{ }
+
 IntegerSequencer::IntegerSequencer (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DSequencerNode (),                                                    
-	        keyValue (),                                                    // MFInt32 [in,out] keyValue       [ ]       (-∞,∞)
-	   value_changed ()                                                     // SFInt32 [out]    value_changed
+	fields ()
 {
 	setComponent ("EventUtilities");
 	setTypeName ("IntegerSequencer");
 
-	addField (inputOutput, "metadata",      metadata);
-	addField (inputOnly,   "next",          next);
-	addField (inputOnly,   "previous",      previous);
-	addField (inputOnly,   "set_fraction",  set_fraction);
-	addField (inputOutput, "key",           key);
-	addField (inputOutput, "keyValue",      keyValue);
-	addField (outputOnly,  "value_changed", value_changed);
+	addField (inputOutput, "metadata",      metadata ());
+	addField (inputOnly,   "next",          next ());
+	addField (inputOnly,   "previous",      previous ());
+	addField (inputOnly,   "set_fraction",  set_fraction ());
+	addField (inputOutput, "key",           key ());
+	addField (inputOutput, "keyValue",      keyValue ());
+	addField (outputOnly,  "value_changed", value_changed ());
 }
 
 X3DBaseNode*
@@ -81,3 +85,4 @@ IntegerSequencer::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

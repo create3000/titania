@@ -55,42 +55,46 @@
 namespace titania {
 namespace X3D {
 
+RigidBody::Fields::Fields () :
+	angularDampingFactor (new SFFloat (0.001)),
+	angularVelocity (new SFVec3f ()),
+	autoDamp (new SFBool ()),
+	autoDisable (new SFBool ()),
+	centerOfMass (new SFVec3f ()),
+	disableAngularSpeed (new SFFloat ()),
+	disableLinearSpeed (new SFFloat ()),
+	disableTime (new SFFloat ()),
+	enabled (new SFBool (true)),
+	finiteRotationAxis (new SFVec3f ()),
+	fixed (new SFBool ()),
+	forces (new MFVec3f ()),
+	geometry (new MFNode ()),
+	inertia (new SFMatrix3f ())
+{ }
+
 RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	             X3DNode (),                                                    
-	angularDampingFactor (0.001),                                               // SFFloat    [in,out] angularDampingFactor  0.001        [0,1]
-	     angularVelocity (),                                                    // SFVec3f    [in,out] angularVelocity       0 0 0        (-∞,∞)
-	            autoDamp (),                                                    // SFBool     [in,out] autoDamp              FALSE
-	         autoDisable (),                                                    // SFBool     [in,out] autoDisable           FALSE
-	        centerOfMass (),                                                    // SFVec3f    [in,out] centerOfMass          0 0 0        (-∞,∞)
-	 disableAngularSpeed (),                                                    // SFFloat    [in,out] disableAngularSpeed   0            [0,∞)
-	  disableLinearSpeed (),                                                    // SFFloat    [in,out] disableLinearSpeed    0            [0,∞)
-	         disableTime (),                                                    // SFFloat    [in,out] disableTime           0            [0,∞)
-	             enabled (true),                                                // SFBool     [in,out] enabled               TRUE
-	  finiteRotationAxis (),                                                    // SFVec3f    [in,out] finiteRotationAxis    0 0 0        [-1,1]
-	               fixed (),                                                    // SFBool     [in,out] fixed                 FALSE
-	              forces (),                                                    // MFVec3f    [in,out] forces                [ ]
-	            geometry (),                                                    // MFNode     [in,out] geometry              [ ]          [X3DNBodyCollidableNode]
-	             inertia ()                                                     // SFMatrix3f [in,out] inertia               1 0 0
+	fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("RigidBody");
 
-	addField (inputOutput, "metadata",             metadata);
-	addField (inputOutput, "angularDampingFactor", angularDampingFactor);
-	addField (inputOutput, "angularVelocity",      angularVelocity);
-	addField (inputOutput, "autoDamp",             autoDamp);
-	addField (inputOutput, "autoDisable",          autoDisable);
-	addField (inputOutput, "centerOfMass",         centerOfMass);
-	addField (inputOutput, "disableAngularSpeed",  disableAngularSpeed);
-	addField (inputOutput, "disableLinearSpeed",   disableLinearSpeed);
-	addField (inputOutput, "disableTime",          disableTime);
-	addField (inputOutput, "enabled",              enabled);
-	addField (inputOutput, "finiteRotationAxis",   finiteRotationAxis);
-	addField (inputOutput, "fixed",                fixed);
-	addField (inputOutput, "forces",               forces);
-	addField (inputOutput, "geometry",             geometry);
-	addField (inputOutput, "inertia",              inertia);
+	addField (inputOutput, "metadata",             metadata ());
+	addField (inputOutput, "angularDampingFactor", angularDampingFactor ());
+	addField (inputOutput, "angularVelocity",      angularVelocity ());
+	addField (inputOutput, "autoDamp",             autoDamp ());
+	addField (inputOutput, "autoDisable",          autoDisable ());
+	addField (inputOutput, "centerOfMass",         centerOfMass ());
+	addField (inputOutput, "disableAngularSpeed",  disableAngularSpeed ());
+	addField (inputOutput, "disableLinearSpeed",   disableLinearSpeed ());
+	addField (inputOutput, "disableTime",          disableTime ());
+	addField (inputOutput, "enabled",              enabled ());
+	addField (inputOutput, "finiteRotationAxis",   finiteRotationAxis ());
+	addField (inputOutput, "fixed",                fixed ());
+	addField (inputOutput, "forces",               forces ());
+	addField (inputOutput, "geometry",             geometry ());
+	addField (inputOutput, "inertia",              inertia ());
 }
 
 X3DBaseNode*
@@ -101,3 +105,4 @@ RigidBody::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

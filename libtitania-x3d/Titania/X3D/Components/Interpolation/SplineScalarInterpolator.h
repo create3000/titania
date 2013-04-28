@@ -61,17 +61,61 @@ class SplineScalarInterpolator :
 {
 public:
 
-	SFBool  closed;
-	MFFloat keyValue;
-	MFFloat keyVelocity;
-	SFBool  normalizeVelocity;
-	SFFloat value_changed;
+	
+	
+	
+	
+	
 
 	SplineScalarInterpolator (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFBool &
+	closed ()
+	{ return *fields .closed; }
+
+	const SFBool &
+	closed () const
+	{ return *fields .closed; }
+
+	MFFloat &
+	keyValue ()
+	{ return *fields .keyValue; }
+
+	const MFFloat &
+	keyValue () const
+	{ return *fields .keyValue; }
+
+	MFFloat &
+	keyVelocity ()
+	{ return *fields .keyVelocity; }
+
+	const MFFloat &
+	keyVelocity () const
+	{ return *fields .keyVelocity; }
+
+	SFBool &
+	normalizeVelocity ()
+	{ return *fields .normalizeVelocity; }
+
+	const SFBool &
+	normalizeVelocity () const
+	{ return *fields .normalizeVelocity; }
+
+	SFFloat &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFFloat &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+
 
 
 private:
@@ -88,9 +132,24 @@ private:
 	void
 	interpolate (size_t, size_t, float);
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const closed;
+		MFFloat* const keyValue;
+		MFFloat* const keyVelocity;
+		SFBool* const normalizeVelocity;
+		SFFloat* const value_changed;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

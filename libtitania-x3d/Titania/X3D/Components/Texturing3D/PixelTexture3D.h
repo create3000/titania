@@ -61,7 +61,7 @@ class PixelTexture3D :
 {
 public:
 
-	MFInt32 image;
+	
 
 	PixelTexture3D (X3DExecutionContext* const);
 
@@ -69,9 +69,31 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFInt32 &
+	image ()
+	{ return *fields .image; }
+
+	const MFInt32 &
+	image () const
+	{ return *fields .image; }
+
+
+
 	bool
 	isTransparent () const
 	{ return false; }
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFInt32* const image;
+	};
+
+	Fields fields;
 
 };
 
@@ -79,3 +101,4 @@ public:
 } // titania
 
 #endif
+

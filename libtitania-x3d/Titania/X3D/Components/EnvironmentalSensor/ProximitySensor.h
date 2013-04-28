@@ -62,15 +62,43 @@ class ProximitySensor :
 {
 public:
 
-	SFVec3f    centerOfRotation_changed;
-	SFRotation orientation_changed;
-	SFVec3f    position_changed;
+	
+	
+	
 
 	ProximitySensor (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFVec3f &
+	centerOfRotation_changed ()
+	{ return *fields .centerOfRotation_changed; }
+
+	const SFVec3f &
+	centerOfRotation_changed () const
+	{ return *fields .centerOfRotation_changed; }
+
+	SFRotation &
+	orientation_changed ()
+	{ return *fields .orientation_changed; }
+
+	const SFRotation &
+	orientation_changed () const
+	{ return *fields .orientation_changed; }
+
+	SFVec3f &
+	position_changed ()
+	{ return *fields .position_changed; }
+
+	const SFVec3f &
+	position_changed () const
+	{ return *fields .position_changed; }
+
+
 
 	virtual
 	void
@@ -93,6 +121,18 @@ private:
 	void
 	update ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const centerOfRotation_changed;
+		SFRotation* const orientation_changed;
+		SFVec3f* const position_changed;
+	};
+
+	Fields fields;
+
+
 	bool
 	isInside (const Matrix4f &) const;
 
@@ -106,3 +146,4 @@ private:
 } // titania
 
 #endif
+

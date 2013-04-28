@@ -61,8 +61,8 @@ class LayoutGroup :
 {
 public:
 
-	SFNode <X3DBaseNode> layout;
-	SFNode <X3DBaseNode> viewport;
+	
+	
 
 	LayoutGroup (X3DExecutionContext* const);
 
@@ -70,9 +70,41 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFNode <X3DBaseNode> &
+	layout ()
+	{ return *fields .layout; }
+
+	const SFNode <X3DBaseNode> &
+	layout () const
+	{ return *fields .layout; }
+
+	SFNode <X3DBaseNode> &
+	viewport ()
+	{ return *fields .viewport; }
+
+	const SFNode <X3DBaseNode> &
+	viewport () const
+	{ return *fields .viewport; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const layout;
+		SFNode <X3DBaseNode>* const viewport;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

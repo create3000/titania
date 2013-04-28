@@ -70,11 +70,15 @@ namespace X3D {
 
 const GLint X3DTexture2DNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
 
+X3DTexture2DNode::Fields::Fields () :
+	repeatS (new SFBool (true)),
+	repeatT (new SFBool (true)),
+	textureProperties (new SFNode <X3DBaseNode> ())
+{ }
+
 X3DTexture2DNode::X3DTexture2DNode () :
 	   X3DTextureNode (),     
-	          repeatS (true), // SFBool [ ] repeatS            TRUE
-	          repeatT (true), // SFBool [ ] repeatT            TRUE
-	textureProperties (),     // SFNode [ ] textureProperties  NULL        [TextureProperties]
+	           fields (),
 	       components (0),    
 	      transparent (false) 
 {
@@ -84,12 +88,12 @@ X3DTexture2DNode::X3DTexture2DNode () :
 const TextureProperties*
 X3DTexture2DNode::getTextureProperties () const
 {
-	auto _textureProperties = x3d_cast <TextureProperties*> (textureProperties .getValue ());
+	auto _textureProperties = x3d_cast <TextureProperties*> (textureProperties () .getValue ());
 
 	if (_textureProperties)
 		return _textureProperties;
 
-	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties .getValue ());
+	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties () .getValue ());
 }
 
 void
@@ -268,23 +272,23 @@ X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const v
 void
 X3DTexture2DNode::applyTextureProperties (const TextureProperties* textureProperties) const
 {
-	glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps);
+	glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps ());
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureProperties -> getMagnificationFilter ());
 
-	if (this -> textureProperties)
+	if (this -> textureProperties ())
 	{
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
 	}
 	else
 	{
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [repeatS]);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [repeatT]);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [repeatS ()]);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [repeatT ()]);
 	}
 
-	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, textureProperties -> borderColor .getValue () .data ());
-	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,     textureProperties -> texturePriority);
+	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, textureProperties -> borderColor () .getValue () .data ());
+	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,     textureProperties -> texturePriority ());
 }
 
 void
@@ -316,3 +320,4 @@ X3DTexture2DNode::draw ()
 
 } // X3D
 } // titania
+

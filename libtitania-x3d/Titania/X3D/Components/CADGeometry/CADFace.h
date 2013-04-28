@@ -62,13 +62,25 @@ class CADFace :
 {
 public:
 
-	SFNode <X3DBaseNode> shape;
+	
 
 	CADFace (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFNode <X3DBaseNode> &
+	shape ()
+	{ return *fields .shape; }
+
+	const SFNode <X3DBaseNode> &
+	shape () const
+	{ return *fields .shape; }
+
+
 
 	Box3f
 	getBBox ();
@@ -84,9 +96,20 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const shape;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

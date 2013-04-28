@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,31 +55,35 @@
 namespace titania {
 namespace X3D {
 
+GeoTouchSensor::Fields::Fields () :
+	hitNormal_changed (new SFVec3f ()),
+	hitPoint_changed (new SFVec3f ()),
+	hitTexCoord_changed (new SFVec2f ()),
+	hitGeoCoord_changed (new SFVec3d ()),
+	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoSystem (new MFString ({ "GD", "WE" }))
+{ }
+
 GeoTouchSensor::GeoTouchSensor (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DTouchSensorNode (),                                                    
-	  hitNormal_changed (),                                                    // SFVec3f  [out] hitNormal_changed
-	   hitPoint_changed (),                                                    // SFVec3f  [out] hitPoint_changed
-	hitTexCoord_changed (),                                                    // SFVec2f  [out] hitTexCoord_changed
-	hitGeoCoord_changed (),                                                    // SFVec3d  [out] hitGeoCoord_changed
-	          geoOrigin (),                                                    // SFNode   [ ]   geoOrigin            NULL               [GeoOrigin]
-	          geoSystem ({ "GD", "WE" })                                       // MFString [ ]   geoSystem            ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
+	fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoTouchSensor");
 
-	addField (inputOutput,    "metadata",            metadata);
-	addField (inputOutput,    "enabled",             enabled);
-	addField (inputOutput,    "description",         description);
-	addField (outputOnly,     "isActive",            isActive);
-	addField (outputOnly,     "isOver",              isOver);
-	addField (outputOnly,     "touchTime",           touchTime);
-	addField (outputOnly,     "hitNormal_changed",   hitNormal_changed);
-	addField (outputOnly,     "hitPoint_changed",    hitPoint_changed);
-	addField (outputOnly,     "hitTexCoord_changed", hitTexCoord_changed);
-	addField (outputOnly,     "hitGeoCoord_changed", hitGeoCoord_changed);
-	addField (initializeOnly, "geoOrigin",           geoOrigin);
-	addField (initializeOnly, "geoSystem",           geoSystem);
+	addField (inputOutput,    "metadata",            metadata ());
+	addField (inputOutput,    "enabled",             enabled ());
+	addField (inputOutput,    "description",         description ());
+	addField (outputOnly,     "isActive",            isActive ());
+	addField (outputOnly,     "isOver",              isOver ());
+	addField (outputOnly,     "touchTime",           touchTime ());
+	addField (outputOnly,     "hitNormal_changed",   hitNormal_changed ());
+	addField (outputOnly,     "hitPoint_changed",    hitPoint_changed ());
+	addField (outputOnly,     "hitTexCoord_changed", hitTexCoord_changed ());
+	addField (outputOnly,     "hitGeoCoord_changed", hitGeoCoord_changed ());
+	addField (initializeOnly, "geoOrigin",           geoOrigin ());
+	addField (initializeOnly, "geoSystem",           geoSystem ());
 }
 
 X3DBaseNode*
@@ -90,3 +94,4 @@ GeoTouchSensor::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

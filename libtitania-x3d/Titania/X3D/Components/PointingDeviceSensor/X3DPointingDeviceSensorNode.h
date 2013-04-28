@@ -62,8 +62,22 @@ class X3DPointingDeviceSensorNode :
 {
 public:
 
-	SFString description;
-	SFBool   isOver;
+	SFString &
+	description ()
+	{ return *fields .description; }
+
+	const SFString &
+	description () const
+	{ return *fields .description; }
+
+	SFBool &
+	isOver ()
+	{ return *fields .isOver; }
+
+	const SFBool &
+	isOver () const
+	{ return *fields .isOver; }
+
 
 	virtual
 	void
@@ -99,6 +113,17 @@ private:
 	void
 	set_enabled ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFString* const description;
+		SFBool* const isOver;
+	};
+
+	Fields fields;
+
+
 	Matrix4f transformationMatrix;
 };
 
@@ -106,3 +131,4 @@ private:
 } // titania
 
 #endif
+

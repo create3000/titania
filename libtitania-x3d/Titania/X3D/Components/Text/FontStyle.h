@@ -61,7 +61,7 @@ class FontStyle :
 {
 public:
 
-	SFFloat size;
+	
 
 	FontStyle (X3DExecutionContext* const);
 
@@ -69,9 +69,31 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFFloat &
+	size ()
+	{ return *fields .size; }
+
+	const SFFloat &
+	size () const
+	{ return *fields .size; }
+
+
+
 	virtual
 	float
 	getSize () const;
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const size;
+	};
+
+	Fields fields;
 
 };
 
@@ -79,3 +101,4 @@ public:
 } // titania
 
 #endif
+

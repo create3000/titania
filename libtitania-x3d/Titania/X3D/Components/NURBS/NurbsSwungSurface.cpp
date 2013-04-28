@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,21 +55,25 @@
 namespace titania {
 namespace X3D {
 
+NurbsSwungSurface::Fields::Fields () :
+	profileCurve (new SFNode <X3DBaseNode> ()),
+	trajectoryCurve (new SFNode <X3DBaseNode> ()),
+	solid (new SFBool (true))
+{ }
+
 NurbsSwungSurface::NurbsSwungSurface (X3DExecutionContext* const executionContext) :
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DParametricGeometryNode (),                                                    
-	             profileCurve (),                                                    // SFNode [in,out] profileCurve     [ ]         [X3DNurbsControlCurveNode]
-	          trajectoryCurve (),                                                    // SFNode [in,out] trajectoryCurve  [ ]         [X3DNurbsControlCurveNode]
-	                    solid (true)                                                 // SFBool [ ]      solid            TRUE
+	fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsSwungSurface");
 
-	addField (inputOutput,    "metadata",        metadata);
-	addField (inputOutput,    "profileCurve",    profileCurve);
-	addField (inputOutput,    "trajectoryCurve", trajectoryCurve);
-	addField (initializeOnly, "ccw",             ccw);
-	addField (initializeOnly, "solid",           solid);
+	addField (inputOutput,    "metadata",        metadata ());
+	addField (inputOutput,    "profileCurve",    profileCurve ());
+	addField (inputOutput,    "trajectoryCurve", trajectoryCurve ());
+	addField (initializeOnly, "ccw",             ccw ());
+	addField (initializeOnly, "solid",           solid ());
 }
 
 X3DBaseNode*
@@ -80,3 +84,4 @@ NurbsSwungSurface::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

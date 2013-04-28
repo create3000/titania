@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,26 +55,30 @@
 namespace titania {
 namespace X3D {
 
+MultiTexture::Fields::Fields () :
+	alpha (new SFFloat (1)),
+	color (new SFColor (1, 1, 1)),
+	function (new MFString ()),
+	mode (new MFString ()),
+	source (new MFString ()),
+	texture (new MFNode ())
+{ }
+
 MultiTexture::MultiTexture (X3DExecutionContext* const executionContext) :
 	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTextureNode (),                                                    
-	         alpha (1),                                                   // SFFloat  [in,out] alpha     1            [0,1]
-	         color (1, 1, 1),                                             // SFColor  [in,out] color     1 1 1        [0,1]
-	      function (),                                                    // MFString [in,out] function  [ ]
-	          mode (),                                                    // MFString [in,out] mode      [ ]
-	        source (),                                                    // MFString [in,out] source    [ ]
-	       texture ()                                                     // MFNode   [in,out] texture   [ ]          [X3DTextureNode]
+	fields ()
 {
 	setComponent ("Texturing");
 	setTypeName ("MultiTexture");
 
-	addField (inputOutput, "metadata", metadata);
-	addField (inputOutput, "alpha",    alpha);
-	addField (inputOutput, "color",    color);
-	addField (inputOutput, "function", function);
-	addField (inputOutput, "mode",     mode);
-	addField (inputOutput, "source",   source);
-	addField (inputOutput, "texture",  texture);
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "alpha",    alpha ());
+	addField (inputOutput, "color",    color ());
+	addField (inputOutput, "function", function ());
+	addField (inputOutput, "mode",     mode ());
+	addField (inputOutput, "source",   source ());
+	addField (inputOutput, "texture",  texture ());
 }
 
 X3DBaseNode*
@@ -89,3 +93,4 @@ MultiTexture::draw ()
 
 } // X3D
 } // titania
+

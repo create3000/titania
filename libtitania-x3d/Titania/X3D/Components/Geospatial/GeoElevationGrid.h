@@ -63,23 +63,23 @@ public:
 
 	using X3DGeometryNode::ccw;
 
-	MFDouble             set_height;
-	SFNode <X3DBaseNode> color;
-	SFNode <X3DBaseNode> normal;
-	SFNode <X3DBaseNode> texCoord;
-	SFFloat              yScale;
-	SFBool               colorPerVertex;
-	SFDouble             creaseAngle;
-	SFVec3d              geoGridOrigin;
-	SFNode <X3DBaseNode> geoOrigin;
-	MFString             geoSystem;
-	MFDouble             height;
-	SFBool               normalPerVertex;
-	SFBool               solid;
-	SFInt32              xDimension;
-	SFDouble             xSpacing;
-	SFInt32              zDimension;
-	SFDouble             zSpacing;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	GeoElevationGrid (X3DExecutionContext* const);
 
@@ -87,9 +87,176 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFDouble &
+	set_height ()
+	{ return *fields .set_height; }
+
+	const MFDouble &
+	set_height () const
+	{ return *fields .set_height; }
+
+	SFNode <X3DBaseNode> &
+	color ()
+	{ return *fields .color; }
+
+	const SFNode <X3DBaseNode> &
+	color () const
+	{ return *fields .color; }
+
+	SFNode <X3DBaseNode> &
+	normal ()
+	{ return *fields .normal; }
+
+	const SFNode <X3DBaseNode> &
+	normal () const
+	{ return *fields .normal; }
+
+	SFNode <X3DBaseNode> &
+	texCoord ()
+	{ return *fields .texCoord; }
+
+	const SFNode <X3DBaseNode> &
+	texCoord () const
+	{ return *fields .texCoord; }
+
+	SFFloat &
+	yScale ()
+	{ return *fields .yScale; }
+
+	const SFFloat &
+	yScale () const
+	{ return *fields .yScale; }
+
+	SFBool &
+	colorPerVertex ()
+	{ return *fields .colorPerVertex; }
+
+	const SFBool &
+	colorPerVertex () const
+	{ return *fields .colorPerVertex; }
+
+	SFDouble &
+	creaseAngle ()
+	{ return *fields .creaseAngle; }
+
+	const SFDouble &
+	creaseAngle () const
+	{ return *fields .creaseAngle; }
+
+	SFVec3d &
+	geoGridOrigin ()
+	{ return *fields .geoGridOrigin; }
+
+	const SFVec3d &
+	geoGridOrigin () const
+	{ return *fields .geoGridOrigin; }
+
+	SFNode <X3DBaseNode> &
+	geoOrigin ()
+	{ return *fields .geoOrigin; }
+
+	const SFNode <X3DBaseNode> &
+	geoOrigin () const
+	{ return *fields .geoOrigin; }
+
+	MFString &
+	geoSystem ()
+	{ return *fields .geoSystem; }
+
+	const MFString &
+	geoSystem () const
+	{ return *fields .geoSystem; }
+
+	MFDouble &
+	height ()
+	{ return *fields .height; }
+
+	const MFDouble &
+	height () const
+	{ return *fields .height; }
+
+	SFBool &
+	normalPerVertex ()
+	{ return *fields .normalPerVertex; }
+
+	const SFBool &
+	normalPerVertex () const
+	{ return *fields .normalPerVertex; }
+
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+	SFInt32 &
+	xDimension ()
+	{ return *fields .xDimension; }
+
+	const SFInt32 &
+	xDimension () const
+	{ return *fields .xDimension; }
+
+	SFDouble &
+	xSpacing ()
+	{ return *fields .xSpacing; }
+
+	const SFDouble &
+	xSpacing () const
+	{ return *fields .xSpacing; }
+
+	SFInt32 &
+	zDimension ()
+	{ return *fields .zDimension; }
+
+	const SFInt32 &
+	zDimension () const
+	{ return *fields .zDimension; }
+
+	SFDouble &
+	zSpacing ()
+	{ return *fields .zSpacing; }
+
+	const SFDouble &
+	zSpacing () const
+	{ return *fields .zSpacing; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFDouble* const set_height;
+		SFNode <X3DBaseNode>* const color;
+		SFNode <X3DBaseNode>* const normal;
+		SFNode <X3DBaseNode>* const texCoord;
+		SFFloat* const yScale;
+		SFBool* const colorPerVertex;
+		SFDouble* const creaseAngle;
+		SFVec3d* const geoGridOrigin;
+		SFNode <X3DBaseNode>* const geoOrigin;
+		MFString* const geoSystem;
+		MFDouble* const height;
+		SFBool* const normalPerVertex;
+		SFBool* const solid;
+		SFInt32* const xDimension;
+		SFDouble* const xSpacing;
+		SFInt32* const zDimension;
+		SFDouble* const zSpacing;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

@@ -62,28 +62,160 @@ class HAnimHumanoid :
 {
 public:
 
-	SFVec3f              center;
-	MFString             info;
-	MFNode               joints;
-	SFString             name;
-	SFRotation           rotation;
-	SFVec3f              scale;
-	SFRotation           scaleOrientation;
-	MFNode               segments;
-	MFNode               sites;
-	MFNode               skeleton;
-	MFNode               skin;
-	SFNode <X3DBaseNode> skinCoord;
-	SFNode <X3DBaseNode> skinNormal;
-	SFVec3f              translation;
-	SFString             version;
-	MFNode               viewpoints;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	HAnimHumanoid (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFVec3f &
+	center ()
+	{ return *fields .center; }
+
+	const SFVec3f &
+	center () const
+	{ return *fields .center; }
+
+	MFString &
+	info ()
+	{ return *fields .info; }
+
+	const MFString &
+	info () const
+	{ return *fields .info; }
+
+	MFNode &
+	joints ()
+	{ return *fields .joints; }
+
+	const MFNode &
+	joints () const
+	{ return *fields .joints; }
+
+	SFString &
+	name ()
+	{ return *fields .name; }
+
+	const SFString &
+	name () const
+	{ return *fields .name; }
+
+	SFRotation &
+	rotation ()
+	{ return *fields .rotation; }
+
+	const SFRotation &
+	rotation () const
+	{ return *fields .rotation; }
+
+	SFVec3f &
+	scale ()
+	{ return *fields .scale; }
+
+	const SFVec3f &
+	scale () const
+	{ return *fields .scale; }
+
+	SFRotation &
+	scaleOrientation ()
+	{ return *fields .scaleOrientation; }
+
+	const SFRotation &
+	scaleOrientation () const
+	{ return *fields .scaleOrientation; }
+
+	MFNode &
+	segments ()
+	{ return *fields .segments; }
+
+	const MFNode &
+	segments () const
+	{ return *fields .segments; }
+
+	MFNode &
+	sites ()
+	{ return *fields .sites; }
+
+	const MFNode &
+	sites () const
+	{ return *fields .sites; }
+
+	MFNode &
+	skeleton ()
+	{ return *fields .skeleton; }
+
+	const MFNode &
+	skeleton () const
+	{ return *fields .skeleton; }
+
+	MFNode &
+	skin ()
+	{ return *fields .skin; }
+
+	const MFNode &
+	skin () const
+	{ return *fields .skin; }
+
+	SFNode <X3DBaseNode> &
+	skinCoord ()
+	{ return *fields .skinCoord; }
+
+	const SFNode <X3DBaseNode> &
+	skinCoord () const
+	{ return *fields .skinCoord; }
+
+	SFNode <X3DBaseNode> &
+	skinNormal ()
+	{ return *fields .skinNormal; }
+
+	const SFNode <X3DBaseNode> &
+	skinNormal () const
+	{ return *fields .skinNormal; }
+
+	SFVec3f &
+	translation ()
+	{ return *fields .translation; }
+
+	const SFVec3f &
+	translation () const
+	{ return *fields .translation; }
+
+	SFString &
+	version ()
+	{ return *fields .version; }
+
+	const SFString &
+	version () const
+	{ return *fields .version; }
+
+	MFNode &
+	viewpoints ()
+	{ return *fields .viewpoints; }
+
+	const MFNode &
+	viewpoints () const
+	{ return *fields .viewpoints; }
+
+
 
 	Box3f
 	getBBox ();
@@ -99,9 +231,35 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const center;
+		MFString* const info;
+		MFNode* const joints;
+		SFString* const name;
+		SFRotation* const rotation;
+		SFVec3f* const scale;
+		SFRotation* const scaleOrientation;
+		MFNode* const segments;
+		MFNode* const sites;
+		MFNode* const skeleton;
+		MFNode* const skin;
+		SFNode <X3DBaseNode>* const skinCoord;
+		SFNode <X3DBaseNode>* const skinNormal;
+		SFVec3f* const translation;
+		SFString* const version;
+		MFNode* const viewpoints;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

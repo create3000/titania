@@ -62,13 +62,25 @@ class MetadataDouble :
 {
 public:
 
-	MFDouble value;
+	
 
 	MetadataDouble (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFDouble &
+	value ()
+	{ return *fields .value; }
+
+	const MFDouble &
+	value () const
+	{ return *fields .value; }
+
+
 
 	virtual
 	void
@@ -81,9 +93,20 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFDouble* const value;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

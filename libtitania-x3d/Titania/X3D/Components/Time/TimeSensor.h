@@ -62,15 +62,43 @@ class TimeSensor :
 {
 public:
 
-	SFTime  cycleInterval;
-	SFFloat fraction_changed;
-	SFTime  time;
+	
+	
+	
 
 	TimeSensor (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFTime &
+	cycleInterval ()
+	{ return *fields .cycleInterval; }
+
+	const SFTime &
+	cycleInterval () const
+	{ return *fields .cycleInterval; }
+
+	SFFloat &
+	fraction_changed ()
+	{ return *fields .fraction_changed; }
+
+	const SFFloat &
+	fraction_changed () const
+	{ return *fields .fraction_changed; }
+
+	SFTime &
+	time ()
+	{ return *fields .time; }
+
+	const SFTime &
+	time () const
+	{ return *fields .time; }
+
+
 
 	virtual
 	void
@@ -82,7 +110,7 @@ private:
 	virtual
 	bool
 	isEnabled () const
-	{ return enabled; }
+	{ return enabled (); }
 
 	virtual
 	void
@@ -110,6 +138,18 @@ private:
 	void
 	set_resume ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFTime* const cycleInterval;
+		SFFloat* const fraction_changed;
+		SFTime* const time;
+	};
+
+	Fields fields;
+
+
 	time_type cycle;
 	time_type interval;
 
@@ -119,3 +159,4 @@ private:
 } // titania
 
 #endif
+

@@ -53,10 +53,14 @@
 namespace titania {
 namespace X3D {
 
+X3DInterpolatorNode::Fields::Fields () :
+	set_fraction (new SFFloat ()),
+	key (new MFFloat ())
+{ }
+
 X3DInterpolatorNode::X3DInterpolatorNode () :
 	X3DChildNode (), 
-	set_fraction (), // SFFloat [in]     set_fraction            (-∞,∞)
-	         key ()  // MFFloat [in,out] key           [ ]       (-∞,∞)
+	fields ()
 {
 	addNodeType (X3DConstants::X3DInterpolatorNode);
 }
@@ -79,27 +83,27 @@ X3DInterpolatorNode::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	set_fraction .addInterest (this, &X3DInterpolatorNode::_set_fraction);
-	key          .addInterest (this, &X3DInterpolatorNode::set_key);
+	set_fraction () .addInterest (this, &X3DInterpolatorNode::_set_fraction);
+	key ()          .addInterest (this, &X3DInterpolatorNode::set_key);
 }
 
 void
 X3DInterpolatorNode::_set_fraction ()
 {
-	if (key .size () == 0)
+	if (key () .size () == 0)
 		return;
 
-	if (key .size () == 1 or set_fraction <= key [0])
+	if (key () .size () == 1 or set_fraction () <= key () [0])
 		return interpolate (0, 0, 0);
 
-	if (set_fraction >= key .at (key .size () - 1))
-		return interpolate (key .size () - 2, key .size () - 1, 1);
+	if (set_fraction () >= key () .at (key () .size () - 1))
+		return interpolate (key () .size () - 2, key () .size () - 1, 1);
 
-	auto   iter   = std::upper_bound (key .cbegin (), key .cend (), set_fraction);
-	size_t index1 = iter - key .begin ();
+	auto   iter   = std::upper_bound (key () .cbegin (), key () .cend (), set_fraction ());
+	size_t index1 = iter - key () .begin ();
 	size_t index0 = index1 - 1;
 
-	float weight = (set_fraction - key [index0]) / (key [index1] - key [index0]);
+	float weight = (set_fraction () - key () [index0]) / (key () [index1] - key () [index0]);
 
 	interpolate (index0, index1, math::clamp (weight, 0.0f, 1.0f));
 }
@@ -112,3 +116,4 @@ X3DInterpolatorNode::set_key ()
 
 } // X3D
 } // titania
+

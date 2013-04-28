@@ -57,20 +57,24 @@
 namespace titania {
 namespace X3D {
 
+Disk2D::Fields::Fields () :
+	innerRadius (new SFFloat ()),
+	outerRadius (new SFFloat (1)),
+	solid (new SFBool (true))
+{ }
+
 Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	    innerRadius (),                                                    // SFFloat [ ] innerRadius  0            [0,∞)
-	    outerRadius (1),                                                   // SFFloat [ ] outerRadius  1            (0,∞)
-	          solid (true)                                                 // SFBool  [ ] solid        TRUE
+	fields ()
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Disk2D");
 
-	addField (inputOutput,    "metadata",    metadata);
-	addField (initializeOnly, "innerRadius", innerRadius);
-	addField (initializeOnly, "outerRadius", outerRadius);
-	addField (initializeOnly, "solid",       solid);
+	addField (inputOutput,    "metadata",    metadata ());
+	addField (initializeOnly, "innerRadius", innerRadius ());
+	addField (initializeOnly, "outerRadius", outerRadius ());
+	addField (initializeOnly, "solid",       solid ());
 }
 
 X3DBaseNode*
@@ -84,13 +88,13 @@ Disk2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> disc2DProperties .addInterest (this, &Disk2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> disc2DProperties () .addInterest (this, &Disk2D::set_properties);
 }
 
 Box3f
 Disk2D::createBBox ()
 {
-	auto radius = std::max (innerRadius, outerRadius);
+	auto radius = std::max (innerRadius (), outerRadius ());
 
 	return Box3f (Vector3f (std::abs (radius), std::abs (radius), 0), Vector3f ());
 }
@@ -104,11 +108,11 @@ Disk2D::set_properties ()
 void
 Disk2D::build ()
 {
-	const Disk2DProperties* properties = getBrowser () -> getBrowserOptions () -> disc2DProperties .getValue ();
+	const Disk2DProperties* properties = getBrowser () -> getBrowserOptions () -> disc2DProperties () .getValue ();
 		
-	if (innerRadius == outerRadius)
+	if (innerRadius () == outerRadius ())
 	{
-		auto radius = std::abs (outerRadius);
+		auto radius = std::abs (outerRadius ());
 	
 		// Circle
 		
@@ -130,13 +134,13 @@ Disk2D::build ()
 		return;
 	}
 
-	if (innerRadius == 0.0f or outerRadius == 0.0f)
+	if (innerRadius () == 0.0f or outerRadius () == 0.0f)
 	{
-		auto radius = std::abs (std::max (innerRadius, outerRadius));
+		auto radius = std::abs (std::max (innerRadius (), outerRadius ()));
 	
 		// Disk
 		
-		size_t elements = solid ? 1 : 2;
+		size_t elements = solid () ? 1 : 2;
 		
 		getTexCoord () .reserve (elements * properties -> getTexCoord () .size ());
 		getNormals  () .reserve (elements * properties -> getNormals  () .size ());
@@ -160,7 +164,7 @@ Disk2D::build ()
 		setVertexMode (properties -> getVertexMode ());
 		setSolid (true);
 
-		if (not solid)
+		if (not solid ())
 			addMirrorVertices (true);
 
 		return;
@@ -168,7 +172,7 @@ Disk2D::build ()
 	
 	// Disk with hole
 	
-	size_t elements = solid ? 1 : 2;
+	size_t elements = solid () ? 1 : 2;
 		
 	getTexCoord () .reserve (elements * (properties -> getTexCoord () .size () + 2));
 	getNormals  () .reserve (elements * (properties -> getNormals  () .size () + 2));
@@ -176,8 +180,8 @@ Disk2D::build ()
 	
 	// Texture Coordinates
 	
-	auto maxRadius = std::abs (std::max (innerRadius, outerRadius));
-	auto minRadius = std::abs (std::min (innerRadius, outerRadius));
+	auto maxRadius = std::abs (std::max (innerRadius (), outerRadius ()));
+	auto minRadius = std::abs (std::min (innerRadius (), outerRadius ()));
 	auto scale     = minRadius / maxRadius;
 	
 	for (const auto & texCoord : properties -> getTexCoord ())
@@ -214,14 +218,14 @@ Disk2D::build ()
 	setVertexMode (GL_QUAD_STRIP);
 	setSolid (true);
 	
-	if (not solid)
+	if (not solid ())
 		addMirrorVertices (true);
 }
 
 void
 Disk2D::draw ()
 {
-	if (innerRadius == outerRadius)
+	if (innerRadius () == outerRadius ())
 		glDisable (GL_LIGHTING);
 
 	X3DGeometryNode::draw ();
@@ -230,10 +234,11 @@ Disk2D::draw ()
 void
 Disk2D::dispose ()
 {
-	getBrowser () -> getBrowserOptions () -> disc2DProperties .removeInterest (this, &Disk2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> disc2DProperties () .removeInterest (this, &Disk2D::set_properties);
 
 	X3DGeometryNode::dispose ();
 }
 
 } // X3D
 } // titania
+

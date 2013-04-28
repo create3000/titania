@@ -55,99 +55,103 @@
 namespace titania {
 namespace X3D {
 
+TransmitterPdu::Fields::Fields () :
+	address (new SFString ("localhost")),
+	antennaLocation (new SFVec3f ()),
+	antennaPatternLength (new SFInt32 ()),
+	antennaPatternType (new SFInt32 ()),
+	applicationID (new SFInt32 (1)),
+	cryptoKeyID (new SFInt32 ()),
+	cryptoSystem (new SFInt32 ()),
+	entityID (new SFInt32 ()),
+	frequency (new SFInt32 ()),
+	inputSource (new SFInt32 ()),
+	lengthOfModulationParameters (new SFInt32 ()),
+	modulationTypeDetail (new SFInt32 ()),
+	modulationTypeMajor (new SFInt32 ()),
+	modulationTypeSpreadSpectrum (new SFInt32 ()),
+	modulationTypeSystem (new SFInt32 ()),
+	multicastRelayHost (new SFString ()),
+	multicastRelayPort (new SFInt32 ()),
+	networkMode (new SFString ("standAlone")),
+	port (new SFInt32 ()),
+	power (new SFFloat ()),
+	radioEntityTypeCategory (new SFInt32 ()),
+	radioEntityTypeCountry (new SFInt32 ()),
+	radioEntityTypeDomain (new SFInt32 ()),
+	radioEntityTypeKind (new SFInt32 ()),
+	radioEntityTypeNomenclature (new SFInt32 ()),
+	radioEntityTypeNomenclatureVersion (new SFInt32 ()),
+	radioID (new SFInt32 ()),
+	readInterval (new SFFloat (0.1)),
+	relativeAntennaLocation (new SFVec3f ()),
+	rtpHeaderExpected (new SFBool ()),
+	siteID (new SFInt32 ()),
+	transmitFrequencyBandwidth (new SFFloat ()),
+	transmitState (new SFInt32 ()),
+	whichGeometry (new SFInt32 (1)),
+	writeInterval (new SFFloat (1)),
+	isNetworkReader (new SFBool ()),
+	isNetworkWriter (new SFBool ()),
+	isRtpHeaderHeard (new SFBool ()),
+	isStandAlone (new SFBool ()),
+	timestamp (new SFTime ())
+{ }
+
 TransmitterPdu::TransmitterPdu (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	                     X3DSensorNode (),                                                    
 	                  X3DBoundedObject (),                                                    
-	                           address ("localhost"),                                         // SFString [in,out] address                             "localhost"
-	                   antennaLocation (),                                                    // SFVec3f  [in,out] antennaLocation                     0 0 0               (-∞,∞)
-	              antennaPatternLength (),                                                    // SFInt32  [in,out] antennaPatternLength                0                   [0,65535]
-	                antennaPatternType (),                                                    // SFInt32  [in,out] antennaPatternType                  0                   [0,65535]
-	                     applicationID (1),                                                   // SFInt32  [in,out] applicationID                       1                   [0,65535]
-	                       cryptoKeyID (),                                                    // SFInt32  [in,out] cryptoKeyID                         0                   [0,65535]
-	                      cryptoSystem (),                                                    // SFInt32  [in,out] cryptoSystem                        0                   [0,65535]
-	                          entityID (),                                                    // SFInt32  [in,out] entityID                            0                   [0,65535]
-	                         frequency (),                                                    // SFInt32  [in,out] frequency                           0                   [0,4294967296]
-	                       inputSource (),                                                    // SFInt32  [in,out] inputSource                         0                   [0,255]
-	      lengthOfModulationParameters (),                                                    // SFInt32  [in,out] lengthOfModulationParameters        0                   [0,255]
-	              modulationTypeDetail (),                                                    // SFInt32  [in,out] modulationTypeDetail                0                   [0,65535]
-	               modulationTypeMajor (),                                                    // SFInt32  [in,out] modulationTypeMajor                 0                   [0,65535]
-	      modulationTypeSpreadSpectrum (),                                                    // SFInt32  [in,out] modulationTypeSpreadSpectrum        0                   [0,65535]
-	              modulationTypeSystem (),                                                    // SFInt32  [in,out] modulationTypeSystem                0                   [0,65535]
-	                multicastRelayHost (),                                                    // SFString [in,out] multicastRelayHost                  ""
-	                multicastRelayPort (),                                                    // SFInt32  [in,out] multicastRelayPort                  0                   [0,4294967295]
-	                       networkMode ("standAlone"),                                        // SFString [in,out] networkMode                         "standAlone"        ["standAlone"|"networkReader"|"networkWriter"]
-	                              port (),                                                    // SFInt32  [in,out] port                                0                   [0,65535]
-	                             power (),                                                    // SFFloat  [in,out] power                               0.0                 [0,∞)
-	           radioEntityTypeCategory (),                                                    // SFInt32  [in,out] radioEntityTypeCategory             0                   [0,255]
-	            radioEntityTypeCountry (),                                                    // SFInt32  [in,out] radioEntityTypeCountry              0                   [0,65535]
-	             radioEntityTypeDomain (),                                                    // SFInt32  [in,out] radioEntityTypeDomain               0                   [0,255]
-	               radioEntityTypeKind (),                                                    // SFInt32  [in,out] radioEntityTypeKind                 0                   [0,255]
-	       radioEntityTypeNomenclature (),                                                    // SFInt32  [in,out] radioEntityTypeNomenclature         0                   [0,255]
-	radioEntityTypeNomenclatureVersion (),                                                    // SFInt32  [in,out] radioEntityTypeNomenclatureVersion  0                   [0,65535]
-	                           radioID (),                                                    // SFInt32  [in,out] radioID                             0                   [0,255]
-	                      readInterval (0.1),                                                 // SFFloat  [in,out] readInterval                        0.1                 [0,∞)
-	           relativeAntennaLocation (),                                                    // SFVec3f  [in,out] relativeAntennaLocation             0 0 0               (-∞,∞)
-	                 rtpHeaderExpected (),                                                    // SFBool   [in,out] rtpHeaderExpected                   FALSE
-	                            siteID (),                                                    // SFInt32  [in,out] siteID                              0                   [0,65535]
-	        transmitFrequencyBandwidth (),                                                    // SFFloat  [in,out] transmitFrequencyBandwidth          0.0                 (-∞,∞)
-	                     transmitState (),                                                    // SFInt32  [in,out] transmitState                       0                   [0,255]
-	                     whichGeometry (1),                                                   // SFInt32  [in,out] whichGeometry                       1                   [-1,∞)
-	                     writeInterval (1),                                                   // SFFloat  [in,out] writeInterval                       1.0                 [0,∞)
-	                   isNetworkReader (),                                                    // SFBool   [out]    isNetworkReader                                         FALSE
-	                   isNetworkWriter (),                                                    // SFBool   [out]    isNetworkWriter                                         FALSE
-	                  isRtpHeaderHeard (),                                                    // SFBool   [out]    isRtpHeaderHeard                                        FALSE
-	                      isStandAlone (),                                                    // SFBool   [out]    isStandAlone                                            FALSE
-	                         timestamp ()                                                     // SFTime   [out]    timestamp
+	fields ()
 {
 	setComponent ("DIS");
 	setTypeName ("TransmitterPdu");
 
-	addField (inputOutput,    "metadata",                           metadata);
-	addField (initializeOnly, "bboxSize",                           bboxSize);
-	addField (initializeOnly, "bboxCenter",                         bboxCenter);
-	addField (inputOutput,    "enabled",                            enabled);
-	addField (outputOnly,     "isActive",                           isActive);
-	addField (inputOutput,    "address",                            address);
-	addField (inputOutput,    "antennaLocation",                    antennaLocation);
-	addField (inputOutput,    "antennaPatternLength",               antennaPatternLength);
-	addField (inputOutput,    "antennaPatternType",                 antennaPatternType);
-	addField (inputOutput,    "applicationID",                      applicationID);
-	addField (inputOutput,    "cryptoKeyID",                        cryptoKeyID);
-	addField (inputOutput,    "cryptoSystem",                       cryptoSystem);
-	addField (inputOutput,    "entityID",                           entityID);
-	addField (inputOutput,    "frequency",                          frequency);
-	addField (inputOutput,    "inputSource",                        inputSource);
-	addField (inputOutput,    "lengthOfModulationParameters",       lengthOfModulationParameters);
-	addField (inputOutput,    "modulationTypeDetail",               modulationTypeDetail);
-	addField (inputOutput,    "modulationTypeMajor",                modulationTypeMajor);
-	addField (inputOutput,    "modulationTypeSpreadSpectrum",       modulationTypeSpreadSpectrum);
-	addField (inputOutput,    "modulationTypeSystem",               modulationTypeSystem);
-	addField (inputOutput,    "multicastRelayHost",                 multicastRelayHost);
-	addField (inputOutput,    "multicastRelayPort",                 multicastRelayPort);
-	addField (inputOutput,    "networkMode",                        networkMode);
-	addField (inputOutput,    "port",                               port);
-	addField (inputOutput,    "power",                              power);
-	addField (inputOutput,    "radioEntityTypeCategory",            radioEntityTypeCategory);
-	addField (inputOutput,    "radioEntityTypeCountry",             radioEntityTypeCountry);
-	addField (inputOutput,    "radioEntityTypeDomain",              radioEntityTypeDomain);
-	addField (inputOutput,    "radioEntityTypeKind",                radioEntityTypeKind);
-	addField (inputOutput,    "radioEntityTypeNomenclature",        radioEntityTypeNomenclature);
-	addField (inputOutput,    "radioEntityTypeNomenclatureVersion", radioEntityTypeNomenclatureVersion);
-	addField (inputOutput,    "radioID",                            radioID);
-	addField (inputOutput,    "readInterval",                       readInterval);
-	addField (inputOutput,    "relativeAntennaLocation",            relativeAntennaLocation);
-	addField (inputOutput,    "rtpHeaderExpected",                  rtpHeaderExpected);
-	addField (inputOutput,    "siteID",                             siteID);
-	addField (inputOutput,    "transmitFrequencyBandwidth",         transmitFrequencyBandwidth);
-	addField (inputOutput,    "transmitState",                      transmitState);
-	addField (inputOutput,    "whichGeometry",                      whichGeometry);
-	addField (inputOutput,    "writeInterval",                      writeInterval);
-	addField (outputOnly,     "isNetworkReader",                    isNetworkReader);
-	addField (outputOnly,     "isNetworkWriter",                    isNetworkWriter);
-	addField (outputOnly,     "isRtpHeaderHeard",                   isRtpHeaderHeard);
-	addField (outputOnly,     "isStandAlone",                       isStandAlone);
-	addField (outputOnly,     "timestamp",                          timestamp);
+	addField (inputOutput,    "metadata",                           metadata ());
+	addField (initializeOnly, "bboxSize",                           bboxSize ());
+	addField (initializeOnly, "bboxCenter",                         bboxCenter ());
+	addField (inputOutput,    "enabled",                            enabled ());
+	addField (outputOnly,     "isActive",                           isActive ());
+	addField (inputOutput,    "address",                            address ());
+	addField (inputOutput,    "antennaLocation",                    antennaLocation ());
+	addField (inputOutput,    "antennaPatternLength",               antennaPatternLength ());
+	addField (inputOutput,    "antennaPatternType",                 antennaPatternType ());
+	addField (inputOutput,    "applicationID",                      applicationID ());
+	addField (inputOutput,    "cryptoKeyID",                        cryptoKeyID ());
+	addField (inputOutput,    "cryptoSystem",                       cryptoSystem ());
+	addField (inputOutput,    "entityID",                           entityID ());
+	addField (inputOutput,    "frequency",                          frequency ());
+	addField (inputOutput,    "inputSource",                        inputSource ());
+	addField (inputOutput,    "lengthOfModulationParameters",       lengthOfModulationParameters ());
+	addField (inputOutput,    "modulationTypeDetail",               modulationTypeDetail ());
+	addField (inputOutput,    "modulationTypeMajor",                modulationTypeMajor ());
+	addField (inputOutput,    "modulationTypeSpreadSpectrum",       modulationTypeSpreadSpectrum ());
+	addField (inputOutput,    "modulationTypeSystem",               modulationTypeSystem ());
+	addField (inputOutput,    "multicastRelayHost",                 multicastRelayHost ());
+	addField (inputOutput,    "multicastRelayPort",                 multicastRelayPort ());
+	addField (inputOutput,    "networkMode",                        networkMode ());
+	addField (inputOutput,    "port",                               port ());
+	addField (inputOutput,    "power",                              power ());
+	addField (inputOutput,    "radioEntityTypeCategory",            radioEntityTypeCategory ());
+	addField (inputOutput,    "radioEntityTypeCountry",             radioEntityTypeCountry ());
+	addField (inputOutput,    "radioEntityTypeDomain",              radioEntityTypeDomain ());
+	addField (inputOutput,    "radioEntityTypeKind",                radioEntityTypeKind ());
+	addField (inputOutput,    "radioEntityTypeNomenclature",        radioEntityTypeNomenclature ());
+	addField (inputOutput,    "radioEntityTypeNomenclatureVersion", radioEntityTypeNomenclatureVersion ());
+	addField (inputOutput,    "radioID",                            radioID ());
+	addField (inputOutput,    "readInterval",                       readInterval ());
+	addField (inputOutput,    "relativeAntennaLocation",            relativeAntennaLocation ());
+	addField (inputOutput,    "rtpHeaderExpected",                  rtpHeaderExpected ());
+	addField (inputOutput,    "siteID",                             siteID ());
+	addField (inputOutput,    "transmitFrequencyBandwidth",         transmitFrequencyBandwidth ());
+	addField (inputOutput,    "transmitState",                      transmitState ());
+	addField (inputOutput,    "whichGeometry",                      whichGeometry ());
+	addField (inputOutput,    "writeInterval",                      writeInterval ());
+	addField (outputOnly,     "isNetworkReader",                    isNetworkReader ());
+	addField (outputOnly,     "isNetworkWriter",                    isNetworkWriter ());
+	addField (outputOnly,     "isRtpHeaderHeard",                   isRtpHeaderHeard ());
+	addField (outputOnly,     "isStandAlone",                       isStandAlone ());
+	addField (outputOnly,     "timestamp",                          timestamp ());
 }
 
 X3DBaseNode*
@@ -178,3 +182,4 @@ TransmitterPdu::dispose ()
 
 } // X3D
 } // titania
+

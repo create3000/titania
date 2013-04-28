@@ -62,13 +62,25 @@ class ShaderPart :
 {
 public:
 
-	SFString type;
+	
 
 	ShaderPart (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFString &
+	type ()
+	{ return *fields .type; }
+
+	const SFString &
+	type () const
+	{ return *fields .type; }
+
+
 	
 	GLint
 	getShaderId () const
@@ -101,6 +113,16 @@ private:
 	void
 	set_url ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFString* const type;
+	};
+
+	Fields fields;
+
+
 	GLuint shaderId;
 	GLint valid;
 };
@@ -109,3 +131,4 @@ private:
 } // titania
 
 #endif
+

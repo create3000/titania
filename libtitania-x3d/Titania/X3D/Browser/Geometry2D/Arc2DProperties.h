@@ -63,10 +63,20 @@ class Arc2DProperties :
 {
 public:
 
-	SFFloat minAngle;
+	
 
 	Arc2DProperties (X3DExecutionContext* const);
 
+
+	///  @name Fields
+
+	SFFloat &
+	minAngle ()
+	{ return *fields .minAngle; }
+
+	const SFFloat &
+	minAngle () const
+	{ return *fields .minAngle; }
 
 private:
 
@@ -74,9 +84,19 @@ private:
 	Arc2DProperties*
 	create (X3DExecutionContext* const) const;
 
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const minAngle;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

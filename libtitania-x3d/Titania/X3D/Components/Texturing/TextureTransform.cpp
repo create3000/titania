@@ -55,22 +55,26 @@
 namespace titania {
 namespace X3D {
 
+TextureTransform::Fields::Fields () :
+	center (new SFVec2f ()),
+	rotation (new SFFloat ()),
+	scale (new SFVec2f (1, 1)),
+	translation (new SFVec2f ())
+{ }
+
 TextureTransform::TextureTransform (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTextureTransformNode (),                                                    
-	                 center (),                                                    // SFVec2f [in,out] center       0 0        (-∞,∞)
-	               rotation (),                                                    // SFFloat [in,out] rotation     0          (-∞,∞)
-	                  scale (1, 1),                                                // SFVec2f [in,out] scale        1 1        (-∞,∞)
-	            translation ()                                                     // SFVec2f [in,out] translation  0 0        (-∞,∞)
+	fields ()
 {
 	setComponent ("Texturing");
 	setTypeName ("TextureTransform");
 
-	addField (inputOutput, "metadata",    metadata);
-	addField (inputOutput, "translation", translation);
-	addField (inputOutput, "rotation",    rotation);
-	addField (inputOutput, "scale",       scale);
-	addField (inputOutput, "center",      center);
+	addField (inputOutput, "metadata",    metadata ());
+	addField (inputOutput, "translation", translation ());
+	addField (inputOutput, "rotation",    rotation ());
+	addField (inputOutput, "scale",       scale ());
+	addField (inputOutput, "center",      center ());
 }
 
 X3DBaseNode*
@@ -95,20 +99,20 @@ TextureTransform::eventsProcessed ()
 
 	Matrix3f m;
 
-	if (center not_eq Vector2f (0, 0))
-		m .translate (-center);
+	if (center () not_eq Vector2f (0, 0))
+		m .translate (-center ());
 
-	if (scale not_eq Vector2f (1, 1))
-		m .scale (scale);
+	if (scale () not_eq Vector2f (1, 1))
+		m .scale (scale ());
 
-	if (rotation not_eq 0.0f)
-		m .rotate (rotation);
+	if (rotation () not_eq 0.0f)
+		m .rotate (rotation ());
 
-	if (center not_eq Vector2f (0, 0))
-		m .translate (center);
+	if (center () not_eq Vector2f (0, 0))
+		m .translate (center ());
 
-	if (translation not_eq Vector2f (0, 0))
-		m .translate (translation);
+	if (translation () not_eq Vector2f (0, 0))
+		m .translate (translation ());
 
 	matrix = m;
 }
@@ -125,3 +129,4 @@ TextureTransform::draw ()
 
 } // X3D
 } // titania
+

@@ -55,24 +55,28 @@
 namespace titania {
 namespace X3D {
 
+SurfaceEmitter::Fields::Fields () :
+	set_coordinate (new SFInt32 ()),
+	coordIndex (new MFInt32 ({ -1 })),
+	surface (new SFNode <X3DBaseNode> ())
+{ }
+
 SurfaceEmitter::SurfaceEmitter (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DParticleEmitterNode (),                                                    
-	        set_coordinate (),                                                    // SFInt32 [in] set_coordinate
-	            coordIndex ({ -1 }),                                              // MFInt32 [ ]  coordIndex      -1          [0,∞) or -1
-	               surface ()                                                     // SFNode  [ ]  surface         NULL        [X3DGeometryNode]
+	fields ()
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("SurfaceEmitter");
 
-	addField (inputOutput,    "metadata",       metadata);
-	addField (inputOutput,    "speed",          speed);
-	addField (inputOutput,    "variation",      variation);
-	addField (initializeOnly, "mass",           mass);
-	addField (initializeOnly, "surfaceArea",    surfaceArea);
-	addField (inputOnly,      "set_coordinate", set_coordinate);
-	addField (initializeOnly, "coordIndex",     coordIndex);
-	addField (initializeOnly, "surface",        surface);
+	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "speed",          speed ());
+	addField (inputOutput,    "variation",      variation ());
+	addField (initializeOnly, "mass",           mass ());
+	addField (initializeOnly, "surfaceArea",    surfaceArea ());
+	addField (inputOnly,      "set_coordinate", set_coordinate ());
+	addField (initializeOnly, "coordIndex",     coordIndex ());
+	addField (initializeOnly, "surface",        surface ());
 }
 
 X3DBaseNode*
@@ -83,3 +87,4 @@ SurfaceEmitter::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

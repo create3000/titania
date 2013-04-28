@@ -61,7 +61,7 @@ class Console :
 {
 public:
 
-	MFString string_changed;
+	
 
 	Console (X3DExecutionContext* const);
 
@@ -69,9 +69,32 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFString &
+	string_changed ()
+	{ return *fields .string_changed; }
+
+	const MFString &
+	string_changed () const
+	{ return *fields .string_changed; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFString* const string_changed;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

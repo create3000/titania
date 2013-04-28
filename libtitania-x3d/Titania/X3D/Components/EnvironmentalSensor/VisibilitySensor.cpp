@@ -64,13 +64,13 @@ VisibilitySensor::VisibilitySensor (X3DExecutionContext* const executionContext)
 	setComponent ("EnvironmentalSensor");
 	setTypeName ("VisibilitySensor");
 
-	addField (inputOutput, "metadata",  metadata);
-	addField (inputOutput, "enabled",   enabled);
-	addField (inputOutput, "size",      size);
-	addField (inputOutput, "center",    center);
-	addField (outputOnly,  "enterTime", enterTime);
-	addField (outputOnly,  "exitTime",  exitTime);
-	addField (outputOnly,  "isActive",  isActive);
+	addField (inputOutput, "metadata",  metadata ());
+	addField (inputOutput, "enabled",   enabled ());
+	addField (inputOutput, "size",      size ());
+	addField (inputOutput, "center",    center ());
+	addField (outputOnly,  "enterTime", enterTime ());
+	addField (outputOnly,  "exitTime",  exitTime ());
+	addField (outputOnly,  "isActive",  isActive ());
 }
 
 X3DBaseNode*
@@ -84,7 +84,7 @@ VisibilitySensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
 
-	enabled .addInterest (this, &VisibilitySensor::set_enabled);
+	enabled () .addInterest (this, &VisibilitySensor::set_enabled);
 
 	set_enabled ();
 }
@@ -92,7 +92,7 @@ VisibilitySensor::initialize ()
 void
 VisibilitySensor::set_enabled ()
 {
-	if (enabled)
+	if (enabled ())
 		getBrowser () -> sensors .addInterest (this, &VisibilitySensor::update);
 	else
 		getBrowser () -> sensors .removeInterest (this, &VisibilitySensor::update);
@@ -105,12 +105,12 @@ VisibilitySensor::traverse (TraverseType type)
 	{
 		case TraverseType::CAMERA:
 		{
-			if (not enabled or visible)
+			if (not enabled () or visible)
 				break;
 
 			visible = ViewVolume (ModelViewMatrix4f () * getCurrentViewpoint () -> getInverseTransformationMatrix (),
 			                      ProjectionMatrix4f ())
-			          .intersect (Box3f (size, center));
+			          .intersect (Box3f (size (), center ()));
 			          
 			break;
 		}
@@ -124,18 +124,18 @@ VisibilitySensor::update ()
 {
 	if (visible)
 	{
-		if (not isActive)
+		if (not isActive ())
 		{
-			isActive  = true;
-			enterTime = getCurrentTime ();
+			isActive ()  = true;
+			enterTime () = getCurrentTime ();
 		}
 	}
 	else
 	{
-		if (isActive)
+		if (isActive ())
 		{
-			isActive = false;
-			exitTime = getCurrentTime ();
+			isActive () = false;
+			exitTime () = getCurrentTime ();
 		}
 	}
 
@@ -145,7 +145,7 @@ VisibilitySensor::update ()
 void
 VisibilitySensor::dispose ()
 {
-	if (enabled)
+	if (enabled ())
 		getBrowser () -> sensors .removeInterest (this, &VisibilitySensor::update);
 
 	X3DEnvironmentalSensorNode::dispose ();

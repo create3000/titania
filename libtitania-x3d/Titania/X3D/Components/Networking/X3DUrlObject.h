@@ -80,10 +80,31 @@ public:
 
 	///  @name Fields
 
-	MFString url;
+	MFString &
+	url ()
+	{ return *fields .url; }
+
+	const MFString &
+	url () const
+	{ return *fields .url; }
+
 	
-	SFTime   loadTime;
-	MFString urlError;
+	SFTime &
+	loadTime ()
+	{ return fields .loadTime; }
+
+	const SFTime &
+	loadTime () const
+	{ return fields .loadTime; }
+
+	MFString &
+	urlError ()
+	{ return fields .urlError; }
+
+	const MFString &
+	urlError () const
+	{ return fields .urlError; }
+
 
 	LoadState
 	checkLoadState ();
@@ -219,13 +240,25 @@ private:
 
 	static URNIndex URNCache;
 
+	struct Fields
+	{
+		Fields ();
+
+		MFString* const url;
+		SFTime loadTime;
+		MFString urlError;
+	};
+
+	Fields fields;
+
+
 	LoadState   loadState;
 	std::string userAgent;
 	basic::uri  worldURL;
-
 };
 
 } // X3D
 } // titania
 
 #endif
+

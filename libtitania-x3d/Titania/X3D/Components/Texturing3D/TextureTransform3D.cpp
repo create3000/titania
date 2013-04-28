@@ -55,22 +55,26 @@
 namespace titania {
 namespace X3D {
 
+TextureTransform3D::Fields::Fields () :
+	center (new SFVec3f ()),
+	rotation (new SFRotation ()),
+	scale (new SFVec3f (1, 1, 1)),
+	translation (new SFVec3f ())
+{ }
+
 TextureTransform3D::TextureTransform3D (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTextureTransformNode (),                                                    
-	                 center (),                                                    // SFVec3f    [in,out] center       0 0 0          (-∞,∞)
-	               rotation (),                                                    // SFRotation [in,out] rotation     0 0 1 0        (-∞,∞)
-	                  scale (1, 1, 1),                                             // SFVec3f    [in,out] scale        1 1 1          (-∞,∞)
-	            translation ()                                                     // SFVec3f    [in,out] translation  0 0 0          (-∞,∞)
+	fields ()
 {
 	setComponent ("Texturing3D");
 	setTypeName ("TextureTransform3D");
 
-	addField (inputOutput, "metadata",    metadata);
-	addField (inputOutput, "center",      center);
-	addField (inputOutput, "rotation",    rotation);
-	addField (inputOutput, "scale",       scale);
-	addField (inputOutput, "translation", translation);
+	addField (inputOutput, "metadata",    metadata ());
+	addField (inputOutput, "center",      center ());
+	addField (inputOutput, "rotation",    rotation ());
+	addField (inputOutput, "scale",       scale ());
+	addField (inputOutput, "translation", translation ());
 }
 
 X3DBaseNode*
@@ -85,3 +89,4 @@ TextureTransform3D::draw ()
 
 } // X3D
 } // titania
+

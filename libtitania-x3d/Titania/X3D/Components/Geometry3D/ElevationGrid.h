@@ -65,26 +65,142 @@ public:
 	using X3DGeometryNode::ccw;
 	using X3DGeometryNode::creaseAngle;
 
-	MFFloat              set_height;
-	MFNode               attrib;
-	SFNode <X3DBaseNode> color;
-	SFNode <X3DBaseNode> fogCoord;
-	SFNode <X3DBaseNode> normal;
-	SFNode <X3DBaseNode> texCoord;
-	SFBool               colorPerVertex;
-	MFFloat              height;
-	SFBool               normalPerVertex;
-	SFBool               solid;
-	SFInt32              xDimension;
-	SFFloat              xSpacing;
-	SFInt32              zDimension;
-	SFFloat              zSpacing;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	ElevationGrid (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFFloat &
+	set_height ()
+	{ return *fields .set_height; }
+
+	const MFFloat &
+	set_height () const
+	{ return *fields .set_height; }
+
+	MFNode &
+	attrib ()
+	{ return *fields .attrib; }
+
+	const MFNode &
+	attrib () const
+	{ return *fields .attrib; }
+
+	SFNode <X3DBaseNode> &
+	color ()
+	{ return *fields .color; }
+
+	const SFNode <X3DBaseNode> &
+	color () const
+	{ return *fields .color; }
+
+	SFNode <X3DBaseNode> &
+	fogCoord ()
+	{ return *fields .fogCoord; }
+
+	const SFNode <X3DBaseNode> &
+	fogCoord () const
+	{ return *fields .fogCoord; }
+
+	SFNode <X3DBaseNode> &
+	normal ()
+	{ return *fields .normal; }
+
+	const SFNode <X3DBaseNode> &
+	normal () const
+	{ return *fields .normal; }
+
+	SFNode <X3DBaseNode> &
+	texCoord ()
+	{ return *fields .texCoord; }
+
+	const SFNode <X3DBaseNode> &
+	texCoord () const
+	{ return *fields .texCoord; }
+
+	SFBool &
+	colorPerVertex ()
+	{ return *fields .colorPerVertex; }
+
+	const SFBool &
+	colorPerVertex () const
+	{ return *fields .colorPerVertex; }
+
+	MFFloat &
+	height ()
+	{ return *fields .height; }
+
+	const MFFloat &
+	height () const
+	{ return *fields .height; }
+
+	SFBool &
+	normalPerVertex ()
+	{ return *fields .normalPerVertex; }
+
+	const SFBool &
+	normalPerVertex () const
+	{ return *fields .normalPerVertex; }
+
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+	SFInt32 &
+	xDimension ()
+	{ return *fields .xDimension; }
+
+	const SFInt32 &
+	xDimension () const
+	{ return *fields .xDimension; }
+
+	SFFloat &
+	xSpacing ()
+	{ return *fields .xSpacing; }
+
+	const SFFloat &
+	xSpacing () const
+	{ return *fields .xSpacing; }
+
+	SFInt32 &
+	zDimension ()
+	{ return *fields .zDimension; }
+
+	const SFInt32 &
+	zDimension () const
+	{ return *fields .zDimension; }
+
+	SFFloat &
+	zSpacing ()
+	{ return *fields .zSpacing; }
+
+	const SFFloat &
+	zSpacing () const
+	{ return *fields .zSpacing; }
+
+
 
 
 private:
@@ -107,9 +223,33 @@ private:
 	void
 	build ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFFloat* const set_height;
+		MFNode* const attrib;
+		SFNode <X3DBaseNode>* const color;
+		SFNode <X3DBaseNode>* const fogCoord;
+		SFNode <X3DBaseNode>* const normal;
+		SFNode <X3DBaseNode>* const texCoord;
+		SFBool* const colorPerVertex;
+		MFFloat* const height;
+		SFBool* const normalPerVertex;
+		SFBool* const solid;
+		SFInt32* const xDimension;
+		SFFloat* const xSpacing;
+		SFInt32* const zDimension;
+		SFFloat* const zSpacing;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

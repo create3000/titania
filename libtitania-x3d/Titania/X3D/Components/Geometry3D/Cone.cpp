@@ -57,24 +57,28 @@
 namespace titania {
 namespace X3D {
 
+Cone::Fields::Fields () :
+	bottom (new SFBool (true)),
+	bottomRadius (new SFFloat (1)),
+	height (new SFFloat (2)),
+	side (new SFBool (true)),
+	solid (new SFBool (true))
+{ }
+
 Cone::Cone (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	         bottom (true),                                                // SFBool  [ ] bottom        TRUE
-	   bottomRadius (1),                                                   // SFFloat [ ] bottomRadius  1           (0,∞)
-	         height (2),                                                   // SFFloat [ ] height        2           (0,∞)
-	           side (true),                                                // SFBool  [ ] side          TRUE
-	          solid (true)                                                 // SFBool  [ ] solid         TRUE
+	fields ()
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Cone");
 
-	addField (inputOutput,    "metadata",     metadata);
-	addField (initializeOnly, "side",         side);
-	addField (initializeOnly, "bottom",       bottom);
-	addField (initializeOnly, "height",       height);
-	addField (initializeOnly, "bottomRadius", bottomRadius);
-	addField (initializeOnly, "solid",        solid);
+	addField (inputOutput,    "metadata",     metadata ());
+	addField (initializeOnly, "side",         side ());
+	addField (initializeOnly, "bottom",       bottom ());
+	addField (initializeOnly, "height",       height ());
+	addField (initializeOnly, "bottomRadius", bottomRadius ());
+	addField (initializeOnly, "solid",        solid ());
 }
 
 X3DBaseNode*
@@ -86,25 +90,25 @@ Cone::create (X3DExecutionContext* const executionContext) const
 Box3f
 Cone::createBBox ()
 {
-	float diameter = bottomRadius * 2;
+	float diameter = bottomRadius () * 2;
 
-	if (not side and not bottom)
+	if (not side () and not bottom ())
 		return Box3f ();
 
-	else if (not side)
-		return Box3f (Vector3f (diameter, 0, diameter), Vector3f (0, -height / 2, 0));
+	else if (not side ())
+		return Box3f (Vector3f (diameter, 0, diameter), Vector3f (0, -height () / 2, 0));
 
 	else
-		return Box3f (Vector3f (diameter, height, diameter), Vector3f ());
+		return Box3f (Vector3f (diameter, height (), diameter), Vector3f ());
 }
 
 void
 Cone::build ()
 {
-	float y1      = height / 2;
+	float y1      = height () / 2;
 	float y2      = -y1;
-	float _height = height;
-	float _radius = bottomRadius;
+	float _height = height ();
+	float _radius = bottomRadius ();
 	float ny      = std::atan (_radius / _height);
 
 	for (int i = 0; i < SEGMENTS; ++ i)
@@ -121,7 +125,7 @@ Cone::build ()
 
 		float u3 = (i + 0.5) / SEGMENTS;
 
-		if (side)
+		if (side ())
 		{
 			/*    p1
 			 *   /  \
@@ -145,7 +149,7 @@ Cone::build ()
 			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
 		}
 
-		if (bottom)
+		if (bottom ())
 		{
 			/*    p1
 			 *   /  \
@@ -172,10 +176,11 @@ Cone::build ()
 
 	addElement (getVertices () .size ());
 	setVertexMode (GL_TRIANGLES);
-	setSolid (solid);
+	setSolid (solid ());
 }
 
 } // X3D
 } // titania
 
 #undef SEGMENTS
+

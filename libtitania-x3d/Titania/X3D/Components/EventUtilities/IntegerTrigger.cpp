@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+IntegerTrigger::Fields::Fields () :
+	set_boolean (new SFBool ()),
+	integerKey (new SFInt32 ()),
+	triggerValue (new SFInt32 ())
+{ }
+
 IntegerTrigger::IntegerTrigger (X3DExecutionContext* const executionContext) :
 	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTriggerNode (),                                                    
-	   set_boolean (),                                                    // SFBool  [in]     set_boolean
-	    integerKey (),                                                    // SFInt32 [in,out] integerKey    (-∞,∞)
-	  triggerValue ()                                                     // SFInt32 [out]    triggerValue
+	fields ()
 {
 	setComponent ("EventUtilities");
 	setTypeName ("IntegerTrigger");
 
-	addField (inputOutput, "metadata",     metadata);
-	addField (inputOnly,   "set_boolean",  set_boolean);
-	addField (inputOutput, "integerKey",   integerKey);
-	addField (outputOnly,  "triggerValue", triggerValue);
+	addField (inputOutput, "metadata",     metadata ());
+	addField (inputOnly,   "set_boolean",  set_boolean ());
+	addField (inputOutput, "integerKey",   integerKey ());
+	addField (outputOnly,  "triggerValue", triggerValue ());
 }
 
 X3DBaseNode*
@@ -79,3 +83,4 @@ IntegerTrigger::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

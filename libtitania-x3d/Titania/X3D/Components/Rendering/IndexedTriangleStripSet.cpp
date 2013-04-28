@@ -55,28 +55,32 @@
 namespace titania {
 namespace X3D {
 
+IndexedTriangleStripSet::Fields::Fields () :
+	set_index (new MFInt32 ()),
+	index (new MFInt32 ())
+{ }
+
 IndexedTriangleStripSet::IndexedTriangleStripSet (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DComposedGeometryNode (),                                                    
-	              set_index (),                                                    // MFInt32 [in] set_index            [ ]
-	                  index ()                                                     // MFInt32 [ ]  index      [ ]        [0,∞) or -1
+	fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("IndexedTriangleStripSet");
 
-	addField (inputOutput,    "metadata",        metadata);
-	addField (inputOutput,    "attrib",          attrib);
-	addField (inputOutput,    "coord",           coord);
-	addField (inputOutput,    "texCoord",        texCoord);
-	addField (inputOutput,    "color",           color);
-	addField (inputOutput,    "normal",          normal);
-	addField (inputOutput,    "fogCoord",        fogCoord);
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex);
-	addField (initializeOnly, "normalPerVertex", normalPerVertex);
-	addField (initializeOnly, "solid",           solid);
-	addField (initializeOnly, "ccw",             ccw);
-	addField (inputOnly,      "set_index",       set_index);
-	addField (initializeOnly, "index",           index);
+	addField (inputOutput,    "metadata",        metadata ());
+	addField (inputOutput,    "attrib",          attrib ());
+	addField (inputOutput,    "coord",           coord ());
+	addField (inputOutput,    "texCoord",        texCoord ());
+	addField (inputOutput,    "color",           color ());
+	addField (inputOutput,    "normal",          normal ());
+	addField (inputOutput,    "fogCoord",        fogCoord ());
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
+	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "ccw",             ccw ());
+	addField (inputOnly,      "set_index",       set_index ());
+	addField (initializeOnly, "index",           index ());
 }
 
 X3DBaseNode*
@@ -87,3 +91,4 @@ IndexedTriangleStripSet::create (X3DExecutionContext* const executionContext) co
 
 } // X3D
 } // titania
+

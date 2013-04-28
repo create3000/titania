@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+PixelTexture3D::Fields::Fields () :
+	image (new MFInt32 ({ 0, 0, 0, 0 }))
+{ }
+
 PixelTexture3D::PixelTexture3D (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTexture3DNode (),                                                    
-	           image ({ 0, 0, 0, 0 })                                       // MFInt32 [in,out] image  [0 0 0 0]
+	fields ()
 {
 	setComponent ("Texturing3D");
 	setTypeName ("PixelTexture3D");
 
-	addField (inputOutput,    "metadata",          metadata);
-	addField (initializeOnly, "repeatS",           repeatS);
-	addField (initializeOnly, "repeatT",           repeatT);
-	addField (initializeOnly, "repeatR",           repeatR);
-	addField (initializeOnly, "textureProperties", textureProperties);
-	addField (inputOutput,    "image",             image);
+	addField (inputOutput,    "metadata",          metadata ());
+	addField (initializeOnly, "repeatS",           repeatS ());
+	addField (initializeOnly, "repeatT",           repeatT ());
+	addField (initializeOnly, "repeatR",           repeatR ());
+	addField (initializeOnly, "textureProperties", textureProperties ());
+	addField (inputOutput,    "image",             image ());
 }
 
 X3DBaseNode*
@@ -79,3 +83,4 @@ PixelTexture3D::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

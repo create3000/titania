@@ -64,12 +64,12 @@ Layer::Layer (X3DExecutionContext* const executionContext) :
 	setComponent ("Layering");
 	setTypeName ("Layer");
 
-	addField (inputOutput, "metadata",       metadata);
-	addField (inputOutput, "isPickable",     isPickable);
-	addField (inputOutput, "viewport",       viewport);
-	addField (inputOnly,   "addChildren",    addChildren);
-	addField (inputOnly,   "removeChildren", removeChildren);
-	addField (inputOutput, "children",       children);
+	addField (inputOutput, "metadata",       metadata ());
+	addField (inputOutput, "isPickable",     isPickable ());
+	addField (inputOutput, "viewport",       viewport ());
+	addField (inputOnly,   "addChildren",    addChildren ());
+	addField (inputOnly,   "removeChildren", removeChildren ());
+	addField (inputOutput, "children",       children ());
 }
 
 X3DBaseNode*

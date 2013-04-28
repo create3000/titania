@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+OrientationInterpolator::Fields::Fields () :
+	keyValue (new MFRotation ()),
+	value_changed (new SFRotation ())
+{ }
+
 OrientationInterpolator::OrientationInterpolator (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
-	           keyValue (),                                                    // MFRotation [in,out] keyValue       [ ]       [-1,1] or (-∞,∞)
-	      value_changed ()                                                     // SFRotation [out]    value_changed
+	fields ()
 {
 	setComponent ("Interpolation");
 	setTypeName ("OrientationInterpolator");
 
-	addField (inputOutput, "metadata",      metadata);
-	addField (inputOnly,   "set_fraction",  set_fraction);
-	addField (inputOutput, "key",           key);
-	addField (inputOutput, "keyValue",      keyValue);
-	addField (outputOnly,  "value_changed", value_changed);
+	addField (inputOutput, "metadata",      metadata ());
+	addField (inputOnly,   "set_fraction",  set_fraction ());
+	addField (inputOutput, "key",           key ());
+	addField (inputOutput, "keyValue",      keyValue ());
+	addField (outputOnly,  "value_changed", value_changed ());
 }
 
 X3DBaseNode*
@@ -82,21 +86,22 @@ OrientationInterpolator::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue .addInterest (this, &OrientationInterpolator::set_keyValue);
+	keyValue () .addInterest (this, &OrientationInterpolator::set_keyValue);
 }
 
 void
 OrientationInterpolator::set_keyValue ()
 {
-	if (keyValue .size () < key .size ())
-		keyValue .resize (key .size (), keyValue .size () ? keyValue .back () : SFRotation ());
+	if (keyValue () .size () < key () .size ())
+		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFRotation ());
 }
 
 void
 OrientationInterpolator::interpolate (size_t index0, size_t index1, float weight)
 {
-	value_changed = math::slerp <float> (keyValue [index0], keyValue [index1], weight);
+	value_changed () = math::slerp <float> (keyValue () [index0], keyValue () [index1], weight);
 }
 
 } // X3D
 } // titania
+

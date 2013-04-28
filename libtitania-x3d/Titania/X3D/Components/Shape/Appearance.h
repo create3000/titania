@@ -68,18 +68,70 @@ class Appearance :
 {
 public:
 
-	SFNode <X3DBaseNode> lineProperties;
-	SFNode <X3DBaseNode> fillProperties;
-	SFNode <X3DBaseNode> material;
-	SFNode <X3DBaseNode> texture;
-	SFNode <X3DBaseNode> textureTransform;
-	MFNode               shaders;
+	
+	
+	
+	
+	
+	
 
 	Appearance (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFNode <X3DBaseNode> &
+	lineProperties ()
+	{ return *fields .lineProperties; }
+
+	const SFNode <X3DBaseNode> &
+	lineProperties () const
+	{ return *fields .lineProperties; }
+
+	SFNode <X3DBaseNode> &
+	fillProperties ()
+	{ return *fields .fillProperties; }
+
+	const SFNode <X3DBaseNode> &
+	fillProperties () const
+	{ return *fields .fillProperties; }
+
+	SFNode <X3DBaseNode> &
+	material ()
+	{ return *fields .material; }
+
+	const SFNode <X3DBaseNode> &
+	material () const
+	{ return *fields .material; }
+
+	SFNode <X3DBaseNode> &
+	texture ()
+	{ return *fields .texture; }
+
+	const SFNode <X3DBaseNode> &
+	texture () const
+	{ return *fields .texture; }
+
+	SFNode <X3DBaseNode> &
+	textureTransform ()
+	{ return *fields .textureTransform; }
+
+	const SFNode <X3DBaseNode> &
+	textureTransform () const
+	{ return *fields .textureTransform; }
+
+	MFNode &
+	shaders ()
+	{ return *fields .shaders; }
+
+	const MFNode &
+	shaders () const
+	{ return *fields .shaders; }
+
+
 
 	virtual
 	bool
@@ -114,6 +166,21 @@ private:
 	void
 	set_shaders ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const lineProperties;
+		SFNode <X3DBaseNode>* const fillProperties;
+		SFNode <X3DBaseNode>* const material;
+		SFNode <X3DBaseNode>* const texture;
+		SFNode <X3DBaseNode>* const textureTransform;
+		MFNode* const shaders;
+	};
+
+	Fields fields;
+
+
 	LineProperties*             _lineProperties;
 	FillProperties*             _fillProperties;
 	X3DMaterialNode*            _material;
@@ -127,3 +194,4 @@ private:
 } // titania
 
 #endif
+

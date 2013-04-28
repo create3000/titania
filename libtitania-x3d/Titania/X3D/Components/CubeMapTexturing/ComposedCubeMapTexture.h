@@ -62,18 +62,70 @@ class ComposedCubeMapTexture :
 {
 public:
 
-	SFNode <X3DBaseNode> front;
-	SFNode <X3DBaseNode> back;
-	SFNode <X3DBaseNode> left;
-	SFNode <X3DBaseNode> right;
-	SFNode <X3DBaseNode> bottom;
-	SFNode <X3DBaseNode> top;
+	
+	
+	
+	
+	
+	
 
 	ComposedCubeMapTexture (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFNode <X3DBaseNode> &
+	front ()
+	{ return *fields .front; }
+
+	const SFNode <X3DBaseNode> &
+	front () const
+	{ return *fields .front; }
+
+	SFNode <X3DBaseNode> &
+	back ()
+	{ return *fields .back; }
+
+	const SFNode <X3DBaseNode> &
+	back () const
+	{ return *fields .back; }
+
+	SFNode <X3DBaseNode> &
+	left ()
+	{ return *fields .left; }
+
+	const SFNode <X3DBaseNode> &
+	left () const
+	{ return *fields .left; }
+
+	SFNode <X3DBaseNode> &
+	right ()
+	{ return *fields .right; }
+
+	const SFNode <X3DBaseNode> &
+	right () const
+	{ return *fields .right; }
+
+	SFNode <X3DBaseNode> &
+	bottom ()
+	{ return *fields .bottom; }
+
+	const SFNode <X3DBaseNode> &
+	bottom () const
+	{ return *fields .bottom; }
+
+	SFNode <X3DBaseNode> &
+	top ()
+	{ return *fields .top; }
+
+	const SFNode <X3DBaseNode> &
+	top () const
+	{ return *fields .top; }
+
+
 
 	virtual
 	bool
@@ -97,6 +149,21 @@ private:
 	void
 	setTexture (GLenum, const X3DTexture2DNode* const, size_t &, size_t &, bool);
 
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const front;
+		SFNode <X3DBaseNode>* const back;
+		SFNode <X3DBaseNode>* const left;
+		SFNode <X3DBaseNode>* const right;
+		SFNode <X3DBaseNode>* const bottom;
+		SFNode <X3DBaseNode>* const top;
+	};
+
+	Fields fields;
+
+
 	bool transparent;
 
 };
@@ -105,3 +172,4 @@ private:
 } // titania
 
 #endif
+

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,15 +53,20 @@
 namespace titania {
 namespace X3D {
 
+X3DShaderNode::Fields::Fields () :
+	activate (new SFBool ()),
+	isSelected (new SFBool ()),
+	isValid (new SFBool ()),
+	language (new SFString ())
+{ }
+
 X3DShaderNode::X3DShaderNode () :
 	X3DAppearanceChildNode (), 
-	              activate (), // SFBool   [in]  activate
-	            isSelected (), // SFBool   [out] isSelected
-	               isValid (), // SFBool   [out] isValid
-	              language ()  // SFString [ ]   language    ""        ["CG"|"GLSL"|"HLSL"|...]
+	fields ()
 {
 	addNodeType (X3DConstants::X3DShaderNode);
 }
 
 } // X3D
 } // titania
+

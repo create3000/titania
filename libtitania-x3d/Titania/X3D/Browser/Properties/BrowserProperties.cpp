@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,29 +65,33 @@ namespace X3D {
 //	CLASSIC_VRML_ENCODING   Boolean              The browser supports the Classic VRML encoding.
 //	BINARY_ENCODING         Boolean              The browser supports the binary file format encoding.
 
+BrowserProperties::Fields::Fields () :
+	abstractNodes (new SFBool ()),
+	concreteNodes (new SFBool ()),
+	externalInteractions (new SFBool ()),
+	prototypeCreate (new SFBool ()),
+	domImport (new SFBool ()),
+	xmlEncoding (new SFBool ()),
+	classicVrmlEncoding (new SFBool ()),
+	binaryEncoding (new SFBool ())
+{ }
+
 BrowserProperties::BrowserProperties (X3DExecutionContext* const executionContext) :
 	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DPropertyNode (),                                                    
-	       abstractNodes (),                                                    
-	       concreteNodes (),                                                    
-	externalInteractions (),                                                    
-	     prototypeCreate (),                                                    
-	           domImport (),                                                    
-	         xmlEncoding (),                                                    
-	 classicVrmlEncoding (),                                                    
-	      binaryEncoding ()                                                     
+	     fields ()                                                     
 {
 	setComponent ("Browser"),
 	setTypeName ("BrowserProperties");
 
-	addField (initializeOnly, "abstractNodes",        abstractNodes);
-	addField (initializeOnly, "concreteNodes",        concreteNodes);
-	addField (initializeOnly, "externalInteractions", externalInteractions);
-	addField (initializeOnly, "prototypeCreate",      prototypeCreate);
-	addField (initializeOnly, "domImport",            domImport);
-	addField (initializeOnly, "xmlEncoding",          xmlEncoding);
-	addField (initializeOnly, "classicVrmlEncoding",  classicVrmlEncoding);
-	addField (initializeOnly, "binaryEncoding",       binaryEncoding);
+	addField (initializeOnly, "abstractNodes",        abstractNodes ());
+	addField (initializeOnly, "concreteNodes",        concreteNodes ());
+	addField (initializeOnly, "externalInteractions", externalInteractions ());
+	addField (initializeOnly, "prototypeCreate",      prototypeCreate ());
+	addField (initializeOnly, "domImport",            domImport ());
+	addField (initializeOnly, "xmlEncoding",          xmlEncoding ());
+	addField (initializeOnly, "classicVrmlEncoding",  classicVrmlEncoding ());
+	addField (initializeOnly, "binaryEncoding",       binaryEncoding ());
 }
 
 BrowserProperties*
@@ -98,3 +102,4 @@ BrowserProperties::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

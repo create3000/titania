@@ -59,24 +59,28 @@
 namespace titania {
 namespace X3D {
 
+ArcClose2D::Fields::Fields () :
+	closureType (new SFString ("PIE")),
+	startAngle (new SFFloat ()),
+	endAngle (new SFFloat (1.570796)),
+	radius (new SFFloat (1)),
+	solid (new SFBool (true))
+{ }
+
 ArcClose2D::ArcClose2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	    closureType ("PIE"),                                               // SFString [ ] closureType  "PIE"        ["PIE"|"CHORD"]
-	     startAngle (),                                                    // SFFloat  [ ] startAngle   0            [-2π,2π]
-	       endAngle (1.570796),                                            // SFFloat  [ ] endAngle     π/2          [-2π,2π]
-	         radius (1),                                                   // SFFloat  [ ] radius       1            (0,∞)
-	          solid (true)                                                 // SFBool   [ ] solid        TRUE
+	fields ()
 {
 	setComponent ("Geometry2D");
 	setTypeName ("ArcClose2D");
 
-	addField (inputOutput,    "metadata",    metadata);
-	addField (initializeOnly, "closureType", closureType);
-	addField (initializeOnly, "startAngle",  startAngle);
-	addField (initializeOnly, "endAngle",    endAngle);
-	addField (initializeOnly, "radius",      radius);
-	addField (initializeOnly, "solid",       solid);
+	addField (inputOutput,    "metadata",    metadata ());
+	addField (initializeOnly, "closureType", closureType ());
+	addField (initializeOnly, "startAngle",  startAngle ());
+	addField (initializeOnly, "endAngle",    endAngle ());
+	addField (initializeOnly, "radius",      radius ());
+	addField (initializeOnly, "solid",       solid ());
 }
 
 X3DBaseNode*
@@ -90,14 +94,14 @@ ArcClose2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> arcClose2DProperties .addInterest (this, &ArcClose2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> arcClose2DProperties () .addInterest (this, &ArcClose2D::set_properties);
 }
 
 float
 ArcClose2D::getAngle ()
 {
-	float start = math::interval <float> (startAngle, 0, M_PI2);
-	float end   = math::interval <float> (endAngle,   0, M_PI2);
+	float start = math::interval <float> (startAngle (), 0, M_PI2);
+	float end   = math::interval <float> (endAngle (),   0, M_PI2);
 	
 	if (start == end)
 		return M_PI2;
@@ -119,13 +123,13 @@ ArcClose2D::set_properties ()
 void
 ArcClose2D::build ()
 {
-	const ArcClose2DProperties* properties = getBrowser () -> getBrowserOptions () -> arcClose2DProperties .getValue ();
+	const ArcClose2DProperties* properties = getBrowser () -> getBrowserOptions () -> arcClose2DProperties () .getValue ();
 	
 	float  difference = getAngle ();
-	size_t segments   = std::ceil (difference / properties -> minAngle);
+	size_t segments   = std::ceil (difference / properties -> minAngle ());
 	float  angle      = difference / segments;
 
-	size_t elements = solid ? 1 : 2;
+	size_t elements = solid () ? 1 : 2;
 	size_t vertices = segments + 2;
 	size_t reserve  = elements * vertices;
 
@@ -137,7 +141,7 @@ ArcClose2D::build ()
 	{
 		// If arc add add a center point otherwise it is a circle.
 	
-		if (closureType != "CHORD")
+		if (closureType () != "CHORD")
 		{
 			getTexCoord () .emplace_back (0.5, 0.5, 0);
 			getNormals  () .emplace_back (0, 0, 1);
@@ -149,10 +153,10 @@ ArcClose2D::build ()
 	
 	for (size_t n = 0; n < segments; ++ n)
 	{
-		float theta = startAngle + angle * n;
+		float theta = startAngle () + angle * n;
 	
 		auto texCoord = std::polar (0.5f, theta) + std::complex <float> (0.5f, 0.5f);
-		auto point    = std::polar (std::abs (radius), theta);
+		auto point    = std::polar (std::abs (radius ()), theta);
 
 		getTexCoord () .emplace_back (texCoord .real (), texCoord .imag (), 0);
 	   getNormals  () .emplace_back (0, 0, 1);
@@ -163,17 +167,18 @@ ArcClose2D::build ()
 	setVertexMode (GL_POLYGON);
 	setSolid (true);
 
-	if (not solid)
+	if (not solid ())
 		addMirrorVertices (false);
 }
 
 void
 ArcClose2D::dispose ()
 {
-	getBrowser () -> getBrowserOptions () -> arcClose2DProperties .removeInterest (this, &ArcClose2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> arcClose2DProperties () .removeInterest (this, &ArcClose2D::set_properties);
 
 	X3DGeometryNode::dispose ();
 }
 
 } // X3D
 } // titania
+

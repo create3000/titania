@@ -57,16 +57,20 @@
 namespace titania {
 namespace X3D {
 
+Circle2D::Fields::Fields () :
+	radius (new SFFloat (1))
+{ }
+
 Circle2D::Circle2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	         radius (1)                                                    // SFFloat [ ] radius  1        (0,∞)
+	fields ()
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Circle2D");
 
-	addField (inputOutput,    "metadata", metadata);
-	addField (initializeOnly, "radius",   radius);
+	addField (inputOutput,    "metadata", metadata ());
+	addField (initializeOnly, "radius",   radius ());
 }
 
 X3DBaseNode*
@@ -80,13 +84,13 @@ Circle2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> circle2DProperties .addInterest (this, &Circle2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> circle2DProperties () .addInterest (this, &Circle2D::set_properties);
 }
 
 Box3f
 Circle2D::createBBox ()
 {
-	return Box3f (Vector3f (std::abs (radius), std::abs (radius), 0), Vector3f ());
+	return Box3f (Vector3f (std::abs (radius ()), std::abs (radius ()), 0), Vector3f ());
 }
 
 void
@@ -98,9 +102,9 @@ Circle2D::set_properties ()
 void
 Circle2D::build ()
 {
-	const Circle2DProperties* properties = getBrowser () -> getBrowserOptions () -> circle2DProperties .getValue ();
+	const Circle2DProperties* properties = getBrowser () -> getBrowserOptions () -> circle2DProperties () .getValue ();
 
-	if (std::abs (radius) == 1.0f)
+	if (std::abs (radius ()) == 1.0f)
 		getVertices () = properties -> getVertices ();
 
 	else
@@ -108,7 +112,7 @@ Circle2D::build ()
 		getVertices () .reserve (properties -> getVertices () .size ());
 
 		for (const auto & vertex : properties -> getVertices ())
-			getVertices () .emplace_back (vertex * std::abs (radius));
+			getVertices () .emplace_back (vertex * std::abs (radius ()));
 	}
 
 	addElement (getVertices () .size ());
@@ -126,10 +130,11 @@ Circle2D::draw ()
 void
 Circle2D::dispose ()
 {
-	getBrowser () -> getBrowserOptions () -> circle2DProperties .removeInterest (this, &Circle2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> circle2DProperties () .removeInterest (this, &Circle2D::set_properties);
 
 	X3DGeometryNode::dispose ();
 }
 
 } // X3D
 } // titania
+

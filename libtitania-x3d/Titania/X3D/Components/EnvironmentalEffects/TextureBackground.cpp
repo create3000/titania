@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,34 +55,38 @@
 namespace titania {
 namespace X3D {
 
+TextureBackground::Fields::Fields () :
+	backTexture (new SFNode <X3DBaseNode> ()),
+	bottomTexture (new SFNode <X3DBaseNode> ()),
+	frontTexture (new SFNode <X3DBaseNode> ()),
+	leftTexture (new SFNode <X3DBaseNode> ()),
+	rightTexture (new SFNode <X3DBaseNode> ()),
+	topTexture (new SFNode <X3DBaseNode> ())
+{ }
+
 TextureBackground::TextureBackground (X3DExecutionContext* const executionContext, bool displayed) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DBackgroundNode (displayed),                                           
-	      backTexture (),                                                    // SFNode [in,out] backTexture    NULL        [X3DTextureNode]
-	    bottomTexture (),                                                    // SFNode [in,out] bottomTexture  NULL        [X3DTextureNode]
-	     frontTexture (),                                                    // SFNode [in,out] frontTexture   NULL        [X3DTextureNode]
-	      leftTexture (),                                                    // SFNode [in,out] leftTexture    NULL        [X3DTextureNode]
-	     rightTexture (),                                                    // SFNode [in,out] rightTexture   NULL        [X3DTextureNode]
-	       topTexture ()                                                     // SFNode [in,out] topTexture     NULL        [X3DTextureNode]
+	fields ()
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("TextureBackground");
 
-	addField (inputOutput, "metadata",      metadata);
-	addField (inputOnly,   "set_bind",      set_bind);
-	addField (outputOnly,  "bindTime",      bindTime);
-	addField (outputOnly,  "isBound",       isBound);
-	addField (inputOutput, "skyAngle",      skyAngle);
-	addField (inputOutput, "skyColor",      skyColor);
-	addField (inputOutput, "groundAngle",   groundAngle);
-	addField (inputOutput, "groundColor",   groundColor);
-	addField (inputOutput, "transparency",  transparency);
-	addField (inputOutput, "backTexture",   backTexture);
-	addField (inputOutput, "bottomTexture", bottomTexture);
-	addField (inputOutput, "frontTexture",  frontTexture);
-	addField (inputOutput, "leftTexture",   leftTexture);
-	addField (inputOutput, "rightTexture",  rightTexture);
-	addField (inputOutput, "topTexture",    topTexture);
+	addField (inputOutput, "metadata",      metadata ());
+	addField (inputOnly,   "set_bind",      set_bind ());
+	addField (outputOnly,  "bindTime",      bindTime ());
+	addField (outputOnly,  "isBound",       isBound ());
+	addField (inputOutput, "skyAngle",      skyAngle ());
+	addField (inputOutput, "skyColor",      skyColor ());
+	addField (inputOutput, "groundAngle",   groundAngle ());
+	addField (inputOutput, "groundColor",   groundColor ());
+	addField (inputOutput, "transparency",  transparency ());
+	addField (inputOutput, "backTexture",   backTexture ());
+	addField (inputOutput, "bottomTexture", bottomTexture ());
+	addField (inputOutput, "frontTexture",  frontTexture ());
+	addField (inputOutput, "leftTexture",   leftTexture ());
+	addField (inputOutput, "rightTexture",  rightTexture ());
+	addField (inputOutput, "topTexture",    topTexture ());
 }
 
 X3DBaseNode*
@@ -93,3 +97,4 @@ TextureBackground::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

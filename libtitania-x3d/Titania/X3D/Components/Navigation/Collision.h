@@ -62,14 +62,34 @@ class Collision :
 {
 public:
 
-	SFTime               collideTime;
-	SFNode <X3DBaseNode> proxy;
+	
+	
 
 	Collision (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFTime &
+	collideTime ()
+	{ return *fields .collideTime; }
+
+	const SFTime &
+	collideTime () const
+	{ return *fields .collideTime; }
+
+	SFNode <X3DBaseNode> &
+	proxy ()
+	{ return *fields .proxy; }
+
+	const SFNode <X3DBaseNode> &
+	proxy () const
+	{ return *fields .proxy; }
+
+
 	
 	void
 	set_active (bool value);
@@ -87,6 +107,17 @@ private:
 	
 	void
 	set_proxy ();
+
+	struct Fields
+	{
+		Fields ();
+
+		SFTime* const collideTime;
+		SFNode <X3DBaseNode>* const proxy;
+	};
+
+	Fields fields;
+
 	
 	X3DChildNode* _proxy;
 
@@ -96,3 +127,4 @@ private:
 } // titania
 
 #endif
+

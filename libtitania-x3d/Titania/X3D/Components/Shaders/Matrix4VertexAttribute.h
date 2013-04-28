@@ -61,7 +61,7 @@ class Matrix4VertexAttribute :
 {
 public:
 
-	MFMatrix4f value;
+	
 
 	Matrix4VertexAttribute (X3DExecutionContext* const);
 
@@ -69,9 +69,32 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFMatrix4f &
+	value ()
+	{ return *fields .value; }
+
+	const MFMatrix4f &
+	value () const
+	{ return *fields .value; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFMatrix4f* const value;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

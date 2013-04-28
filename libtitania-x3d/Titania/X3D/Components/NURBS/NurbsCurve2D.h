@@ -61,11 +61,11 @@ class NurbsCurve2D :
 {
 public:
 
-	SFInt32  tessellation;
-	MFDouble weight;
-	SFBool   closed;
-	MFDouble knot;
-	SFInt32  order;
+	
+	
+	
+	
+	
 
 	NurbsCurve2D (X3DExecutionContext* const);
 
@@ -73,9 +73,68 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFInt32 &
+	tessellation ()
+	{ return *fields .tessellation; }
+
+	const SFInt32 &
+	tessellation () const
+	{ return *fields .tessellation; }
+
+	MFDouble &
+	weight ()
+	{ return *fields .weight; }
+
+	const MFDouble &
+	weight () const
+	{ return *fields .weight; }
+
+	SFBool &
+	closed ()
+	{ return *fields .closed; }
+
+	const SFBool &
+	closed () const
+	{ return *fields .closed; }
+
+	MFDouble &
+	knot ()
+	{ return *fields .knot; }
+
+	const MFDouble &
+	knot () const
+	{ return *fields .knot; }
+
+	SFInt32 &
+	order ()
+	{ return *fields .order; }
+
+	const SFInt32 &
+	order () const
+	{ return *fields .order; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const tessellation;
+		MFDouble* const weight;
+		SFBool* const closed;
+		MFDouble* const knot;
+		SFInt32* const order;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

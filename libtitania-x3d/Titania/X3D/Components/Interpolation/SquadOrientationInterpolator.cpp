@@ -55,22 +55,26 @@
 namespace titania {
 namespace X3D {
 
+SquadOrientationInterpolator::Fields::Fields () :
+	keyValue (new MFRotation ()),
+	normalizeVelocity (new SFBool ()),
+	value_changed (new SFRotation ())
+{ }
+
 SquadOrientationInterpolator::SquadOrientationInterpolator (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
-	           keyValue (),                                                    // MFRotation [in,out] keyValue           [ ]          (-∞,∞)
-	  normalizeVelocity (),                                                    // SFBool     [in,out] normalizeVelocity  FALSE
-	      value_changed ()                                                     // SFRotation [out]    value_changed
+	fields ()
 {
 	setComponent ("Interpolation");
 	setTypeName ("SquadOrientationInterpolator");
 
-	addField (inputOutput, "metadata",          metadata);
-	addField (inputOnly,   "set_fraction",      set_fraction);
-	addField (inputOutput, "key",               key);
-	addField (inputOutput, "keyValue",          keyValue);
-	addField (inputOutput, "normalizeVelocity", normalizeVelocity);
-	addField (outputOnly,  "value_changed",     value_changed);
+	addField (inputOutput, "metadata",          metadata ());
+	addField (inputOnly,   "set_fraction",      set_fraction ());
+	addField (inputOutput, "key",               key ());
+	addField (inputOutput, "keyValue",          keyValue ());
+	addField (inputOutput, "normalizeVelocity", normalizeVelocity ());
+	addField (outputOnly,  "value_changed",     value_changed ());
 }
 
 X3DBaseNode*
@@ -84,14 +88,14 @@ SquadOrientationInterpolator::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue .addInterest (this, &SquadOrientationInterpolator::set_keyValue);
+	keyValue () .addInterest (this, &SquadOrientationInterpolator::set_keyValue);
 }
 
 void
 SquadOrientationInterpolator::set_keyValue ()
 {
-	if (keyValue .size () < key .size ())
-		keyValue .resize (key .size (), keyValue .size () ? keyValue .back () : SFRotation ());
+	if (keyValue () .size () < key () .size ())
+		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFRotation ());
 }
 
 void
@@ -100,3 +104,4 @@ SquadOrientationInterpolator::interpolate (size_t index0, size_t index1, float w
 
 } // X3D
 } // titania
+

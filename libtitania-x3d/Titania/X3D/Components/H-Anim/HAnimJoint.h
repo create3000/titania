@@ -61,19 +61,19 @@ class HAnimJoint :
 {
 public:
 
-	SFVec3f    center;
-	MFNode     displacers;
-	SFRotation limitOrientation;
-	MFFloat    llimit;
-	SFString   name;
-	SFRotation rotation;
-	SFVec3f    scale;
-	SFRotation scaleOrientation;
-	MFInt32    skinCoordIndex;
-	MFFloat    skinCoordWeight;
-	MFFloat    stiffness;
-	SFVec3f    translation;
-	MFFloat    ulimit;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	HAnimJoint (X3DExecutionContext* const);
 
@@ -81,9 +81,140 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3f &
+	center ()
+	{ return *fields .center; }
+
+	const SFVec3f &
+	center () const
+	{ return *fields .center; }
+
+	MFNode &
+	displacers ()
+	{ return *fields .displacers; }
+
+	const MFNode &
+	displacers () const
+	{ return *fields .displacers; }
+
+	SFRotation &
+	limitOrientation ()
+	{ return *fields .limitOrientation; }
+
+	const SFRotation &
+	limitOrientation () const
+	{ return *fields .limitOrientation; }
+
+	MFFloat &
+	llimit ()
+	{ return *fields .llimit; }
+
+	const MFFloat &
+	llimit () const
+	{ return *fields .llimit; }
+
+	SFString &
+	name ()
+	{ return *fields .name; }
+
+	const SFString &
+	name () const
+	{ return *fields .name; }
+
+	SFRotation &
+	rotation ()
+	{ return *fields .rotation; }
+
+	const SFRotation &
+	rotation () const
+	{ return *fields .rotation; }
+
+	SFVec3f &
+	scale ()
+	{ return *fields .scale; }
+
+	const SFVec3f &
+	scale () const
+	{ return *fields .scale; }
+
+	SFRotation &
+	scaleOrientation ()
+	{ return *fields .scaleOrientation; }
+
+	const SFRotation &
+	scaleOrientation () const
+	{ return *fields .scaleOrientation; }
+
+	MFInt32 &
+	skinCoordIndex ()
+	{ return *fields .skinCoordIndex; }
+
+	const MFInt32 &
+	skinCoordIndex () const
+	{ return *fields .skinCoordIndex; }
+
+	MFFloat &
+	skinCoordWeight ()
+	{ return *fields .skinCoordWeight; }
+
+	const MFFloat &
+	skinCoordWeight () const
+	{ return *fields .skinCoordWeight; }
+
+	MFFloat &
+	stiffness ()
+	{ return *fields .stiffness; }
+
+	const MFFloat &
+	stiffness () const
+	{ return *fields .stiffness; }
+
+	SFVec3f &
+	translation ()
+	{ return *fields .translation; }
+
+	const SFVec3f &
+	translation () const
+	{ return *fields .translation; }
+
+	MFFloat &
+	ulimit ()
+	{ return *fields .ulimit; }
+
+	const MFFloat &
+	ulimit () const
+	{ return *fields .ulimit; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const center;
+		MFNode* const displacers;
+		SFRotation* const limitOrientation;
+		MFFloat* const llimit;
+		SFString* const name;
+		SFRotation* const rotation;
+		SFVec3f* const scale;
+		SFRotation* const scaleOrientation;
+		MFInt32* const skinCoordIndex;
+		MFFloat* const skinCoordWeight;
+		MFFloat* const stiffness;
+		SFVec3f* const translation;
+		MFFloat* const ulimit;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

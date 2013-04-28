@@ -61,8 +61,8 @@ class TimeTrigger :
 {
 public:
 
-	SFBool set_boolean;
-	SFTime triggerTime;
+	
+	
 
 	TimeTrigger (X3DExecutionContext* const);
 
@@ -70,9 +70,41 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFBool &
+	set_boolean ()
+	{ return *fields .set_boolean; }
+
+	const SFBool &
+	set_boolean () const
+	{ return *fields .set_boolean; }
+
+	SFTime &
+	triggerTime ()
+	{ return *fields .triggerTime; }
+
+	const SFTime &
+	triggerTime () const
+	{ return *fields .triggerTime; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const set_boolean;
+		SFTime* const triggerTime;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,22 +57,26 @@
 namespace titania {
 namespace X3D {
 
+QuadSphereProperties::Fields::Fields () :
+	uDimension (new SFInt32 (40)),
+	vDimension (new SFInt32 (20))
+{ }
+
 QuadSphereProperties::QuadSphereProperties (X3DExecutionContext* const executionContext) :
 	          X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DSpherePropertyNode (),                                                    
-	           uDimension (40),                                                  
-	           vDimension (20)                                                   
+	           fields ()                                                   
 {
 	setComponent ("Browser"),
 	setTypeName ("QuadSphereProperties");
 
-	addField (inputOutput, "uDimension", uDimension);
-	addField (inputOutput, "vDimension", vDimension);
+	addField (inputOutput, "uDimension", uDimension ());
+	addField (inputOutput, "vDimension", vDimension ());
 
-	//addField (inputOutput, "texIndices", texIndices);
-	//addField (inputOutput, "texCoord",   texCoord);
-	//addField (inputOutput, "indices",    indices);
-	//addField (inputOutput, "points",     points);
+	//addField (inputOutput, "texIndices", texIndices ());
+	//addField (inputOutput, "texCoord",   texCoord ());
+	//addField (inputOutput, "indices",    indices ());
+	//addField (inputOutput, "points",     points ());
 }
 
 QuadSphereProperties*
@@ -102,13 +106,13 @@ QuadSphereProperties::createTexIndices ()
 {
 	std::deque <int32_t> texIndices;
 
-	for (int32_t p = 0, v = 0; v < vDimension - 1; ++ v, ++ p)
+	for (int32_t p = 0, v = 0; v < vDimension () - 1; ++ v, ++ p)
 	{
-		for (int32_t u = 0; u < uDimension - 1; ++ u, ++ p)
+		for (int32_t u = 0; u < uDimension () - 1; ++ u, ++ p)
 		{
 			texIndices .emplace_back (p);
-			texIndices .emplace_back (p + uDimension);
-			texIndices .emplace_back (p + uDimension + 1);
+			texIndices .emplace_back (p + uDimension ());
+			texIndices .emplace_back (p + uDimension () + 1);
 			texIndices .emplace_back (p + 1);
 		}
 	}
@@ -121,13 +125,13 @@ QuadSphereProperties::createTexCoord ()
 {
 	std::deque <Vector3f> texCoord;
 
-	for (int32_t v = 0; v < vDimension; ++ v)
+	for (int32_t v = 0; v < vDimension (); ++ v)
 	{
-		float y = v / float (vDimension - 1);
+		float y = v / float (vDimension () - 1);
 
-		for (int u = 0; u < uDimension - 1; ++ u)
+		for (int u = 0; u < uDimension () - 1; ++ u)
 		{
-			float x = u / float (uDimension - 1);
+			float x = u / float (uDimension () - 1);
 			texCoord .emplace_back (x, 1 - y, 0);
 		}
 
@@ -142,20 +146,20 @@ QuadSphereProperties::createIndices ()
 {
 	std::deque <int32_t> indices;
 
-	for (int32_t p = 0, v = 0; v < vDimension - 1; ++ v, ++ p)
+	for (int32_t p = 0, v = 0; v < vDimension () - 1; ++ v, ++ p)
 	{
-		for (int32_t u = 0; u < uDimension - 2; ++ u, ++ p)
+		for (int32_t u = 0; u < uDimension () - 2; ++ u, ++ p)
 		{
 			indices .emplace_back (p);
-			indices .emplace_back (p + uDimension - 1);
-			indices .emplace_back (p + uDimension);
+			indices .emplace_back (p + uDimension () - 1);
+			indices .emplace_back (p + uDimension ());
 			indices .emplace_back (p + 1);
 		}
 
 		indices .emplace_back (p);
-		indices .emplace_back (p + uDimension - 1);
+		indices .emplace_back (p + uDimension () - 1);
 		indices .emplace_back (p + 1);
-		indices .emplace_back (p - uDimension + 2);
+		indices .emplace_back (p - uDimension () + 2);
 	}
 
 	return indices;
@@ -167,24 +171,24 @@ QuadSphereProperties::createPoints ()
 	std::deque <Vector3f> points;
 
 	// north pole
-	for (int32_t u = 0; u < uDimension - 1; ++ u)
+	for (int32_t u = 0; u < uDimension () - 1; ++ u)
 		points .emplace_back (0, 1, 0);
 
 	// sphere segments
-	for (int32_t v = 1; v < vDimension - 1; ++ v)
+	for (int32_t v = 1; v < vDimension () - 1; ++ v)
 	{
-		std::complex <float> zPlane = std::polar <float> (1, -M_PI * (v / float (vDimension - 1)));
+		std::complex <float> zPlane = std::polar <float> (1, -M_PI * (v / float (vDimension () - 1)));
 
-		for (int32_t u = 0; u < uDimension - 1; ++ u)
+		for (int32_t u = 0; u < uDimension () - 1; ++ u)
 		{
-			std::complex <float> yPlane = std::polar <float> (zPlane .imag (), (2 * M_PI) * (u / float (uDimension - 1)));
+			std::complex <float> yPlane = std::polar <float> (zPlane .imag (), (2 * M_PI) * (u / float (uDimension () - 1)));
 
 			points .emplace_back (yPlane .imag (), zPlane .real (), yPlane .real ());
 		}
 	}
 
 	// south pole
-	for (int32_t u = 0; u < uDimension - 1; ++ u)
+	for (int32_t u = 0; u < uDimension () - 1; ++ u)
 		points .emplace_back (0, -1, 0);
 
 	return points;
@@ -216,3 +220,4 @@ QuadSphereProperties::build ()
 
 } // X3D
 } // titania
+

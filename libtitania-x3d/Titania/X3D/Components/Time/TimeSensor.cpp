@@ -58,33 +58,37 @@
 namespace titania {
 namespace X3D {
 
+TimeSensor::Fields::Fields () :
+	cycleInterval (new SFTime (1)),
+	fraction_changed (new SFFloat ()),
+	time (new SFTime ())
+{ }
+
 TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	       X3DSensorNode (),                                                    
 	X3DTimeDependentNode (),                                                    
-	       cycleInterval (1),                                                   // SFTime  [in,out] cycleInterval     1        (0,∞)
-	    fraction_changed (),                                                    // SFFloat [out]    fraction_changed
-	                time (),                                                    // SFTime  [out]    time
+	              fields (),
 	               cycle (),                                                    
 	            interval ()                                                    
 {
 	setComponent ("Time");
 	setTypeName ("TimeSensor");
 
-	addField (inputOutput, "metadata",         metadata);
-	addField (inputOutput, "enabled",          enabled);
-	addField (inputOutput, "cycleInterval",    cycleInterval);
-	addField (inputOutput, "loop",             loop);
-	addField (inputOutput, "startTime",        startTime);
-	addField (inputOutput, "stopTime",         stopTime);
-	addField (inputOutput, "pauseTime",        pauseTime);
-	addField (inputOutput, "resumeTime",       resumeTime);
-	addField (outputOnly,  "isPaused",         isPaused);
-	addField (outputOnly,  "isActive",         isActive);
-	addField (outputOnly,  "cycleTime",        cycleTime);
-	addField (outputOnly,  "elapsedTime",      elapsedTime);
-	addField (outputOnly,  "fraction_changed", fraction_changed);
-	addField (outputOnly,  "time",             time);
+	addField (inputOutput, "metadata",         metadata ());
+	addField (inputOutput, "enabled",          enabled ());
+	addField (inputOutput, "cycleInterval",    cycleInterval ());
+	addField (inputOutput, "loop",             loop ());
+	addField (inputOutput, "startTime",        startTime ());
+	addField (inputOutput, "stopTime",         stopTime ());
+	addField (inputOutput, "pauseTime",        pauseTime ());
+	addField (inputOutput, "resumeTime",       resumeTime ());
+	addField (outputOnly,  "isPaused",         isPaused ());
+	addField (outputOnly,  "isActive",         isActive ());
+	addField (outputOnly,  "cycleTime",        cycleTime ());
+	addField (outputOnly,  "elapsedTime",      elapsedTime ());
+	addField (outputOnly,  "fraction_changed", fraction_changed ());
+	addField (outputOnly,  "time",             time ());
 }
 
 X3DBaseNode*
@@ -98,7 +102,7 @@ TimeSensor::initialize ()
 {
 	X3DTimeDependentNode::initialize ();
 
-	enabled .addInterest (this, &TimeSensor::set_enabled);
+	enabled () .addInterest (this, &TimeSensor::set_enabled);
 }
 
 void
@@ -108,41 +112,41 @@ TimeSensor::prepareEvents ()
 
 	if (getCurrentTime () - cycle >= interval)
 	{
-		if (loop)
+		if (loop ())
 		{
-			cycle           += interval;
-			cycleTime        = getCurrentTime ();
-			elapsedTime      = getElapsedTime ();
-			fraction_changed = 1;
+			cycle              += interval;
+			cycleTime ()        = getCurrentTime ();
+			elapsedTime ()      = getElapsedTime ();
+			fraction_changed () = 1;
 		}
 		else
 		{
-			fraction_changed = 1;
+			fraction_changed () = 1;
 			set_stop ();
 		}
 	}
 	else
 	{
 		static time_type intpart;
-		fraction_changed = std::modf ((getCurrentTime () - cycle) / interval, &intpart);
+		fraction_changed () = std::modf ((getCurrentTime () - cycle) / interval, &intpart);
 	}
 
-	time = getCurrentTime ();
+	time () = getCurrentTime ();
 }
 
 void
 TimeSensor::set_enabled ()
 {
-	if (enabled)
+	if (enabled ())
 	{
-		if (loop and stopTime <= startTime)
+		if (loop () and stopTime () <= startTime ())
 			set_start ();
 	}
 	else
 	{
-		if (isActive)
+		if (isActive ())
 		{
-			isActive = false;
+			isActive () = false;
 			getBrowser () -> prepareEvents .removeInterest (this, &TimeSensor::prepareEvents);
 		}
 	}
@@ -151,16 +155,16 @@ TimeSensor::set_enabled ()
 void
 TimeSensor::set_start ()
 {
-	if (not isActive)
+	if (not isActive ())
 	{
 		cycle    = getCurrentTime ();
-		interval = cycleInterval;
+		interval = cycleInterval ();
 
-		isActive         = true;
-		cycleTime        = getCurrentTime ();
-		elapsedTime      = 0;
-		fraction_changed = 0;
-		time             = getCurrentTime ();
+		isActive ()         = true;
+		cycleTime ()        = getCurrentTime ();
+		elapsedTime ()      = 0;
+		fraction_changed () = 0;
+		time ()             = getCurrentTime ();
 
 		getBrowser () -> prepareEvents .addInterest (this, &TimeSensor::prepareEvents);
 	}
@@ -169,10 +173,10 @@ TimeSensor::set_start ()
 void
 TimeSensor::set_stop ()
 {
-	if (isActive)
+	if (isActive ())
 	{
-		isActive    = false;
-		elapsedTime = getElapsedTime ();
+		isActive ()    = false;
+		elapsedTime () = getElapsedTime ();
 	
 		getBrowser () -> prepareEvents .removeInterest (this, &TimeSensor::prepareEvents);
 	}
@@ -200,3 +204,4 @@ TimeSensor::dispose ()
 
 } // X3D
 } // titania
+

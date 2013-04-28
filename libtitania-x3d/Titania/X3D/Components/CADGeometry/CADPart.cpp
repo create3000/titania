@@ -55,31 +55,35 @@
 namespace titania {
 namespace X3D {
 
+CADPart::Fields::Fields () :
+	translation (new SFVec3f ()),
+	rotation (new SFRotation ()),
+	scale (new SFVec3f (1, 1, 1)),
+	scaleOrientation (new SFRotation ()),
+	center (new SFVec3f ())
+{ }
+
 CADPart::CADPart (X3DExecutionContext* const executionContext) :
 	                 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	             X3DGroupingNode (),                                                    
 	X3DProductStructureChildNode (),                                                    
-	                 translation (),                                                    // SFVec3f    [in,out] translation       0 0 0          (-∞,∞)
-	                    rotation (),                                                    // SFRotation [in,out] rotation          0 0 1 0        [-1,1] or (-∞,∞)
-	                       scale (1, 1, 1),                                             // SFVec3f    [in,out] scale             1 1 1          (0,∞)
-	            scaleOrientation (),                                                    // SFRotation [in,out] scaleOrientation  0 0 1 0        [-1,1] or (-∞,∞)
-	                      center ()                                                     // SFVec3f    [in,out] center            0 0 0          (-∞,∞)
+	fields ()
 {
 	setComponent ("CADGeometry");
 	setTypeName ("CADPart");
 
-	addField (inputOutput,    "metadata",         metadata);
-	addField (inputOutput,    "name",             name);
-	addField (inputOutput,    "translation",      translation);
-	addField (inputOutput,    "rotation",         rotation);
-	addField (inputOutput,    "scale",            scale);
-	addField (inputOutput,    "scaleOrientation", scaleOrientation);
-	addField (inputOutput,    "center",           center);
-	addField (initializeOnly, "bboxSize",         bboxSize);
-	addField (initializeOnly, "bboxCenter",       bboxCenter);
-	addField (inputOnly,      "addChildren",      addChildren);
-	addField (inputOnly,      "removeChildren",   removeChildren);
-	addField (inputOutput,    "children",         children);
+	addField (inputOutput,    "metadata",         metadata ());
+	addField (inputOutput,    "name",             name ());
+	addField (inputOutput,    "translation",      translation ());
+	addField (inputOutput,    "rotation",         rotation ());
+	addField (inputOutput,    "scale",            scale ());
+	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
+	addField (inputOutput,    "center",           center ());
+	addField (initializeOnly, "bboxSize",         bboxSize ());
+	addField (initializeOnly, "bboxCenter",       bboxCenter ());
+	addField (inputOnly,      "addChildren",      addChildren ());
+	addField (inputOnly,      "removeChildren",   removeChildren ());
+	addField (inputOutput,    "children",         children ());
 }
 
 X3DBaseNode*
@@ -90,3 +94,4 @@ CADPart::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

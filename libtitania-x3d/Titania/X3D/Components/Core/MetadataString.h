@@ -62,13 +62,25 @@ class MetadataString :
 {
 public:
 
-	MFString value;
+	
 
 	MetadataString (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFString &
+	value ()
+	{ return *fields .value; }
+
+	const MFString &
+	value () const
+	{ return *fields .value; }
+
+
 
 	virtual
 	void
@@ -81,9 +93,20 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFString* const value;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

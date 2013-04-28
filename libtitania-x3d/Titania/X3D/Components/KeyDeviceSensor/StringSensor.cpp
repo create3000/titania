@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,22 +55,26 @@
 namespace titania {
 namespace X3D {
 
+StringSensor::Fields::Fields () :
+	deletionAllowed (new SFBool (true)),
+	enteredText (new SFString ()),
+	finalText (new SFString ())
+{ }
+
 StringSensor::StringSensor (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DKeyDeviceSensorNode (),                                                    
-	       deletionAllowed (true),                                                // SFBool   [in,out] deletionAllowed  TRUE
-	           enteredText (),                                                    // SFString [out]    enteredText
-	             finalText ()                                                     // SFString [out]    finalText
+	fields ()
 {
 	setComponent ("KeyDeviceSensor");
 	setTypeName ("StringSensor");
 
-	addField (inputOutput, "metadata",        metadata);
-	addField (inputOutput, "enabled",         enabled);
-	addField (outputOnly,  "isActive",        isActive);
-	addField (inputOutput, "deletionAllowed", deletionAllowed);
-	addField (outputOnly,  "enteredText",     enteredText);
-	addField (outputOnly,  "finalText",       finalText);
+	addField (inputOutput, "metadata",        metadata ());
+	addField (inputOutput, "enabled",         enabled ());
+	addField (outputOnly,  "isActive",        isActive ());
+	addField (inputOutput, "deletionAllowed", deletionAllowed ());
+	addField (outputOnly,  "enteredText",     enteredText ());
+	addField (outputOnly,  "finalText",       finalText ());
 }
 
 X3DBaseNode*
@@ -81,3 +85,4 @@ StringSensor::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

@@ -56,31 +56,35 @@
 namespace titania {
 namespace X3D {
 
+SpotLight::Fields::Fields () :
+	attenuation (new SFVec3f (1, 0, 0)),
+	beamWidth (new SFFloat ()),
+	cutOffAngle (new SFFloat (0.785398)),
+	direction (new SFVec3f (0, 0, -1)),
+	location (new SFVec3f ()),
+	radius (new SFFloat (100))
+{ }
+
 SpotLight::SpotLight (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DLightNode (),                                                    
-	 attenuation (1, 0, 0),                                             // SFVec3f [in,out] attenuation  1 0 0         [0,∞)
-	   beamWidth (),                                                    // SFFloat [in,out] beamWidth    π/2           (0,π/2]
-	 cutOffAngle (0.785398),                                            // SFFloat [in,out] cutOffAngle  π/4           (0,π/2]
-	   direction (0, 0, -1),                                            // SFVec3f [in,out] direction    0 0 -1        (-∞,∞)
-	    location (),                                                    // SFVec3f [in,out] location     0 0 0         (-∞,∞)
-	      radius (100)                                                  // SFFloat [in,out] radius       100           [0,∞)
+	fields ()
 {
 	setComponent ("Lighting");
 	setTypeName ("SpotLight");
 
-	addField (inputOutput, "metadata",         metadata);
-	addField (inputOutput, "on",               on);
-	addField (inputOutput, "global",           global);
-	addField (inputOutput, "color",            color);
-	addField (inputOutput, "location",         location);
-	addField (inputOutput, "direction",        direction);
-	addField (inputOutput, "radius",           radius);
-	addField (inputOutput, "intensity",        intensity);
-	addField (inputOutput, "ambientIntensity", ambientIntensity);
-	addField (inputOutput, "beamWidth",        beamWidth);
-	addField (inputOutput, "cutOffAngle",      cutOffAngle);
-	addField (inputOutput, "attenuation",      attenuation);
+	addField (inputOutput, "metadata",         metadata ());
+	addField (inputOutput, "on",               on ());
+	addField (inputOutput, "global",           global ());
+	addField (inputOutput, "color",            color ());
+	addField (inputOutput, "location",         location ());
+	addField (inputOutput, "direction",        direction ());
+	addField (inputOutput, "radius",           radius ());
+	addField (inputOutput, "intensity",        intensity ());
+	addField (inputOutput, "ambientIntensity", ambientIntensity ());
+	addField (inputOutput, "beamWidth",        beamWidth ());
+	addField (inputOutput, "cutOffAngle",      cutOffAngle ());
+	addField (inputOutput, "attenuation",      attenuation ());
 }
 
 X3DBaseNode*
@@ -101,30 +105,30 @@ SpotLight::eventsProcessed ()
 {
 	X3DLightNode::eventsProcessed ();
 	
-	float glAmbientIntensity = math::clamp <float> (ambientIntensity, 0, 1);
-	float glIntensity        = math::clamp <float> (intensity, 0, 1);
+	float glAmbientIntensity = math::clamp <float> (ambientIntensity (), 0, 1);
+	float glIntensity        = math::clamp <float> (intensity (), 0, 1);
 
-	glAmbient [0] = color .getR () * glAmbientIntensity;
-	glAmbient [1] = color .getG () * glAmbientIntensity;
-	glAmbient [2] = color .getB () * glAmbientIntensity;
+	glAmbient [0] = color () .getR () * glAmbientIntensity;
+	glAmbient [1] = color () .getG () * glAmbientIntensity;
+	glAmbient [2] = color () .getB () * glAmbientIntensity;
 	glAmbient [3] = 1;
 
-	glDiffuseSpecular [0] = color .getR () * glIntensity;
-	glDiffuseSpecular [1] = color .getG () * glIntensity;
-	glDiffuseSpecular [2] = color .getB () * glIntensity;
+	glDiffuseSpecular [0] = color () .getR () * glIntensity;
+	glDiffuseSpecular [1] = color () .getG () * glIntensity;
+	glDiffuseSpecular [2] = color () .getB () * glIntensity;
 	glDiffuseSpecular [3] = 1;
 
-	glSpotExponent = math::clamp <float> (beamWidth ? 0.5f / beamWidth : 0, 0, 128);
-	glSpotCutOff   = math::clamp <float> (math::degree <float> (cutOffAngle), 0, 90);
+	glSpotExponent = math::clamp <float> (beamWidth () ? 0.5f / beamWidth () : 0, 0, 128);
+	glSpotCutOff   = math::clamp <float> (math::degree <float> (cutOffAngle ()), 0, 90);
 
-	glPosition [0] = location .getX ();
-	glPosition [1] = location .getY ();
-	glPosition [2] = location .getZ ();
+	glPosition [0] = location () .getX ();
+	glPosition [1] = location () .getY ();
+	glPosition [2] = location () .getZ ();
 	glPosition [3] = 1; // point light
 
-	glSpotDirection [0] = direction .getX ();
-	glSpotDirection [1] = direction .getY ();
-	glSpotDirection [2] = direction .getZ ();
+	glSpotDirection [0] = direction () .getX ();
+	glSpotDirection [1] = direction () .getY ();
+	glSpotDirection [2] = direction () .getZ ();
 }
 
 void
@@ -137,9 +141,9 @@ SpotLight::draw (GLenum lightId)
 	glLightf (lightId, GL_SPOT_EXPONENT, glSpotExponent);
 	glLightf (lightId, GL_SPOT_CUTOFF,   glSpotCutOff);
 
-	glLightf (lightId, GL_CONSTANT_ATTENUATION,  attenuation .getX ());
-	glLightf (lightId, GL_LINEAR_ATTENUATION,    attenuation .getY ());
-	glLightf (lightId, GL_QUADRATIC_ATTENUATION, attenuation .getZ ());
+	glLightf (lightId, GL_CONSTANT_ATTENUATION,  attenuation () .getX ());
+	glLightf (lightId, GL_LINEAR_ATTENUATION,    attenuation () .getY ());
+	glLightf (lightId, GL_QUADRATIC_ATTENUATION, attenuation () .getZ ());
 
 	glLightfv (lightId, GL_POSITION,       glPosition);
 	glLightfv (lightId, GL_SPOT_DIRECTION, glSpotDirection);
@@ -147,3 +151,4 @@ SpotLight::draw (GLenum lightId)
 
 } // X3D
 } // titania
+

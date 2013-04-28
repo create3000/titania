@@ -55,25 +55,29 @@
 namespace titania {
 namespace X3D {
 
+X3DFogObject::Fields::Fields () :
+	color (new SFColor (1, 1, 1)),
+	fogType (new SFString ("LINEAR")),
+	visibilityRange (new SFFloat ()),
+	transparency (0)
+{ }
+
 X3DFogObject::X3DFogObject () :
 	    X3DBaseNode (),         
-	          color (1, 1, 1),  // SFColor  [in,out] color            1 1 1           [0,1]
-	        fogType ("LINEAR"), // SFString [in,out] fogType          "LINEAR"        ["LINEAR"|"EXPONENTIAL"]
-	visibilityRange (),         // SFFloat  [in,out] visibilityRange  0               [0,∞)
-	   transparency (0)         // SFFloat  [in,out] transparency     0               [0,1]
+	fields ()
 {
 	addNodeType (X3DConstants::X3DFogObject);
 
-	setChildren (transparency);
+	setChildren (transparency ());
 }
 
 void
 X3DFogObject::initialize ()
 {
-	color           .addInterest (this, &X3DFogObject::set_color);
-	transparency    .addInterest (this, &X3DFogObject::set_transparency);
-	fogType         .addInterest (this, &X3DFogObject::set_fogType);
-	visibilityRange .addInterest (this, &X3DFogObject::set_fogType);
+	color ()           .addInterest (this, &X3DFogObject::set_color);
+	fogType ()         .addInterest (this, &X3DFogObject::set_fogType);
+	visibilityRange () .addInterest (this, &X3DFogObject::set_fogType);
+	transparency ()    .addInterest (this, &X3DFogObject::set_transparency);
 
 	set_color        ();
 	set_transparency ();
@@ -83,8 +87,8 @@ X3DFogObject::initialize ()
 float
 X3DFogObject::getVisibilityRange ()
 {
-	if (visibilityRange)
-		return visibilityRange;
+	if (visibilityRange ())
+		return visibilityRange ();
 	
 	return getBrowser () -> getLayers () .top () -> getNavigationInfo () -> getFarPlane ();
 }
@@ -106,25 +110,25 @@ X3DFogObject::getDensitiy (float visibilityRange)
 void
 X3DFogObject::set_color ()
 {
-	glColor [0] = color .getR ();
-	glColor [1] = color .getG ();
-	glColor [2] = color .getB ();
+	glColor [0] = color () .getR ();
+	glColor [1] = color () .getG ();
+	glColor [2] = color () .getB ();
 }
 
 void
 X3DFogObject::set_transparency ()
 {
-	glColor [3] = 1 - transparency;
+	glColor [3] = 1 - transparency ();
 }
 
 void
 X3DFogObject::set_fogType ()
 {
-	if (fogType == "EXPONENTIAL2")
+	if (fogType () == "EXPONENTIAL2")
 	{
 		glMode = GL_EXP2;
 	}
-	else if (fogType == "EXPONENTIAL")
+	else if (fogType () == "EXPONENTIAL")
 	{
 		glMode = GL_EXP;
 	}
@@ -158,3 +162,4 @@ X3DFogObject::dispose ()
 
 } // X3D
 } // titania
+

@@ -77,24 +77,130 @@ class RenderingProperties :
 {
 public:
 
-	SFBool  enabled;
-	SFFloat cycleInterval;
+	
+	
 
-	SFString vendor;
-	SFString renderer;
-	SFString version;
+	
+	
+	
 
-	SFString shading;
-	SFInt32  maxTextureSize;
-	SFInt32  textureUnits;
-	SFInt32  maxLights;
-	SFBool   antiAliased;
-	SFInt32  colorDepth;
-	SFDouble textureMemory;
+	
+	
+	
+	
+	
+	
+	
 
-	MFString string;
+	
 
 	RenderingProperties (X3DExecutionContext* const);
+	///  @name Fields
+
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	SFFloat &
+	cycleInterval ()
+	{ return *fields .cycleInterval; }
+
+	const SFFloat &
+	cycleInterval () const
+	{ return *fields .cycleInterval; }
+
+	SFString &
+	vendor ()
+	{ return *fields .vendor; }
+
+	const SFString &
+	vendor () const
+	{ return *fields .vendor; }
+
+	SFString &
+	renderer ()
+	{ return *fields .renderer; }
+
+	const SFString &
+	renderer () const
+	{ return *fields .renderer; }
+
+	SFString &
+	version ()
+	{ return *fields .version; }
+
+	const SFString &
+	version () const
+	{ return *fields .version; }
+
+	SFString &
+	shading ()
+	{ return *fields .shading; }
+
+	const SFString &
+	shading () const
+	{ return *fields .shading; }
+
+	SFInt32 &
+	maxTextureSize ()
+	{ return *fields .maxTextureSize; }
+
+	const SFInt32 &
+	maxTextureSize () const
+	{ return *fields .maxTextureSize; }
+
+	SFInt32 &
+	textureUnits ()
+	{ return *fields .textureUnits; }
+
+	const SFInt32 &
+	textureUnits () const
+	{ return *fields .textureUnits; }
+
+	SFInt32 &
+	maxLights ()
+	{ return *fields .maxLights; }
+
+	const SFInt32 &
+	maxLights () const
+	{ return *fields .maxLights; }
+
+	SFBool &
+	antiAliased ()
+	{ return *fields .antiAliased; }
+
+	const SFBool &
+	antiAliased () const
+	{ return *fields .antiAliased; }
+
+	SFInt32 &
+	colorDepth ()
+	{ return *fields .colorDepth; }
+
+	const SFInt32 &
+	colorDepth () const
+	{ return *fields .colorDepth; }
+
+	SFDouble &
+	textureMemory ()
+	{ return *fields .textureMemory; }
+
+	const SFDouble &
+	textureMemory () const
+	{ return *fields .textureMemory; }
+
+	MFString &
+	string ()
+	{ return *fields .string; }
+
+	const MFString &
+	string () const
+	{ return *fields .string; }
+
 
 	bool
 	hasExtension (const std::string &);
@@ -117,7 +223,9 @@ private:
 
 	virtual
 	RenderingProperties*
-	create (X3DExecutionContext* const)  const;
+	create (X3DExecutionContext* const) const;
+
+
 
 	virtual
 	void
@@ -141,6 +249,28 @@ private:
 	void
 	dispose ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const enabled;
+		SFFloat* const cycleInterval;
+		SFString* const vendor;
+		SFString* const renderer;
+		SFString* const version;
+		SFString* const shading;
+		SFInt32* const maxTextureSize;
+		SFInt32* const textureUnits;
+		SFInt32* const maxLights;
+		SFBool* const antiAliased;
+		SFInt32* const colorDepth;
+		SFDouble* const textureMemory;
+		MFString* const string;
+	};
+
+	Fields fields;
+
+
 	std::set <std::string> extensions;
 
 	chrono::stopwatch <double> clock;
@@ -158,3 +288,4 @@ private:
 } // titania
 
 #endif
+

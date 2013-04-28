@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,26 +55,30 @@
 namespace titania {
 namespace X3D {
 
+GeoPositionInterpolator::Fields::Fields () :
+	keyValue (new MFVec3d ()),
+	geovalue_changed (new SFVec3d ()),
+	value_changed (new SFVec3d ()),
+	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoSystem (new MFString ({ "GD", "WE" }))
+{ }
+
 GeoPositionInterpolator::GeoPositionInterpolator (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
-	           keyValue (),                                                    // MFVec3d  [in,out] keyValue          [ ]
-	   geovalue_changed (),                                                    // SFVec3d  [out]    geovalue_changed
-	      value_changed (),                                                    // SFVec3d  [out]    value_changed
-	          geoOrigin (),                                                    // SFNode   [ ]      geoOrigin         NULL               [GeoOrigin]
-	          geoSystem ({ "GD", "WE" })                                       // MFString [ ]      geoSystem         ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
+	fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoPositionInterpolator");
 
-	addField (inputOutput,    "metadata",         metadata);
-	addField (inputOnly,      "set_fraction",     set_fraction);
-	addField (inputOutput,    "key",              key);
-	addField (inputOutput,    "keyValue",         keyValue);
-	addField (outputOnly,     "geovalue_changed", geovalue_changed);
-	addField (outputOnly,     "value_changed",    value_changed);
-	addField (initializeOnly, "geoOrigin",        geoOrigin);
-	addField (initializeOnly, "geoSystem",        geoSystem);
+	addField (inputOutput,    "metadata",         metadata ());
+	addField (inputOnly,      "set_fraction",     set_fraction ());
+	addField (inputOutput,    "key",              key ());
+	addField (inputOutput,    "keyValue",         keyValue ());
+	addField (outputOnly,     "geovalue_changed", geovalue_changed ());
+	addField (outputOnly,     "value_changed",    value_changed ());
+	addField (initializeOnly, "geoOrigin",        geoOrigin ());
+	addField (initializeOnly, "geoSystem",        geoSystem ());
 }
 
 X3DBaseNode*
@@ -88,14 +92,14 @@ GeoPositionInterpolator::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue .addInterest (this, &GeoPositionInterpolator::set_keyValue);
+	keyValue () .addInterest (this, &GeoPositionInterpolator::set_keyValue);
 }
 
 void
 GeoPositionInterpolator::set_keyValue ()
 {
-	if (keyValue .size () < key .size ())
-		keyValue .resize (key .size (), keyValue .size () ? keyValue .back () : SFVec3d ());
+	if (keyValue () .size () < key () .size ())
+		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFVec3d ());
 }
 
 void
@@ -104,3 +108,4 @@ GeoPositionInterpolator::interpolate (size_t index0, size_t index1, float weight
 
 } // X3D
 } // titania
+

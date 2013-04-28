@@ -65,8 +65,22 @@ class X3DShapeNode :
 {
 public:
 
-	SFNode <X3DBaseNode> appearance;
-	SFNode <X3DBaseNode> geometry;
+	SFNode <X3DBaseNode> &
+	appearance ()
+	{ return *fields .appearance; }
+
+	const SFNode <X3DBaseNode> &
+	appearance () const
+	{ return *fields .appearance; }
+
+	SFNode <X3DBaseNode> &
+	geometry ()
+	{ return *fields .geometry; }
+
+	const SFNode <X3DBaseNode> &
+	geometry () const
+	{ return *fields .geometry; }
+
 
 	virtual
 	Box3f
@@ -112,6 +126,17 @@ private:
 	void
 	pick ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const appearance;
+		SFNode <X3DBaseNode>* const geometry;
+	};
+
+	Fields fields;
+
+
 	X3DAppearanceNode* _appearance;
 	X3DGeometryNode*   _geometry;
 
@@ -121,3 +146,4 @@ private:
 } // titania
 
 #endif
+

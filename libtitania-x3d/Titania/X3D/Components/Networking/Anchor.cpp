@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,25 +56,29 @@
 namespace titania {
 namespace X3D {
 
+Anchor::Fields::Fields () :
+	parameter (new MFString ()),
+	description (new SFString ())
+{ }
+
 Anchor::Anchor (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGroupingNode (),                                                    
 	   X3DUrlObject (),                                                    
-	      parameter (),                                                    // MFString [in,out] parameter    [ ]
-	    description ()                                                     // SFString [in,out] description  ""
+	fields ()
 {
 	setComponent ("Networking");
 	setTypeName ("Anchor");
 
-	addField (inputOutput,    "metadata",       metadata);
-	addField (inputOutput,    "url",            url);
-	addField (inputOutput,    "parameter",      parameter);
-	addField (inputOutput,    "description",    description);
-	addField (initializeOnly, "bboxSize",       bboxSize);
-	addField (initializeOnly, "bboxCenter",     bboxCenter);
-	addField (inputOnly,      "addChildren",    addChildren);
-	addField (inputOnly,      "removeChildren", removeChildren);
-	addField (inputOutput,    "children",       children);
+	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "url",            url ());
+	addField (inputOutput,    "parameter",      parameter ());
+	addField (inputOutput,    "description",    description ());
+	addField (initializeOnly, "bboxSize",       bboxSize ());
+	addField (initializeOnly, "bboxCenter",     bboxCenter ());
+	addField (inputOnly,      "addChildren",    addChildren ());
+	addField (inputOnly,      "removeChildren", removeChildren ());
+	addField (inputOutput,    "children",       children ());
 }
 
 X3DBaseNode*
@@ -93,7 +97,7 @@ Anchor::initialize ()
 void
 Anchor::requestImmediateLoad ()
 {
-	loadURL (url, parameter);
+	loadURL (url (), parameter ());
 }
 
 void
@@ -136,3 +140,4 @@ Anchor::dispose ()
 
 } // X3D
 } // titania
+

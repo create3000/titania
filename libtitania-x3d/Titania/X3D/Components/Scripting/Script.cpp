@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,20 +57,24 @@
 namespace titania {
 namespace X3D {
 
+Script::Fields::Fields () :
+	directOutput (new SFBool ()),
+	mustEvaluate (new SFBool ())
+{ }
+
 Script::Script (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DScriptNode (),                                                    
-	 directOutput (),                                                    // SFBool [ ]directOutput  FALSE
-	 mustEvaluate (),                                                    // SFBool [ ]mustEvaluate  FALSE
+	       fields (),
 	   javaScript ()                                                     
 {
 	setComponent ("Scripting");
 	setTypeName ("Script");
 
-	addField (inputOutput,    "metadata",     metadata);
-	addField (inputOutput,    "url",          url);
-	addField (initializeOnly, "directOutput", directOutput);
-	addField (initializeOnly, "mustEvaluate", mustEvaluate);
+	addField (inputOutput,    "metadata",     metadata ());
+	addField (inputOutput,    "url",          url ());
+	addField (initializeOnly, "directOutput", directOutput ());
+	addField (initializeOnly, "mustEvaluate", mustEvaluate ());
 }
 
 X3DBaseNode*
@@ -88,7 +92,7 @@ Script::initialize ()
 	
 	size_t index = 0;
 
-	for (const auto & URL : url)
+	for (const auto & URL : url ())
 	{
 		std::string ecmascript;
 
@@ -137,3 +141,4 @@ Script::dispose ()
 
 } // X3D
 } // titania
+

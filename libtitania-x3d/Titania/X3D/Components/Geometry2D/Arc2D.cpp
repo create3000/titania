@@ -57,20 +57,24 @@
 namespace titania {
 namespace X3D {
 
+Arc2D::Fields::Fields () :
+	startAngle (new SFFloat ()),
+	endAngle (new SFFloat (1.570796)),
+	radius (new SFFloat (1))
+{ }
+
 Arc2D::Arc2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	     startAngle (),                                                    // SFFloat [ ] startAngle  0          [-2π,2π]
-	       endAngle (1.570796),                                            // SFFloat [ ] endAngle    π/2        [-2π,2π]
-	         radius (1)                                                    // SFFloat [ ] radius      1          (0,∞)
+	fields ()
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Arc2D");
 
-	addField (inputOutput,    "metadata",   metadata);
-	addField (initializeOnly, "startAngle", startAngle);
-	addField (initializeOnly, "endAngle",   endAngle);
-	addField (initializeOnly, "radius",     radius);
+	addField (inputOutput,    "metadata",   metadata ());
+	addField (initializeOnly, "startAngle", startAngle ());
+	addField (initializeOnly, "endAngle",   endAngle ());
+	addField (initializeOnly, "radius",     radius ());
 }
 
 X3DBaseNode*
@@ -84,14 +88,14 @@ Arc2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> arcClose2DProperties .addInterest (this, &Arc2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> arcClose2DProperties () .addInterest (this, &Arc2D::set_properties);
 }
 
 float
 Arc2D::getAngle ()
 {
-	float start = math::interval <float> (startAngle, 0, M_PI2);
-	float end   = math::interval <float> (endAngle,   0, M_PI2);
+	float start = math::interval <float> (startAngle (), 0, M_PI2);
+	float end   = math::interval <float> (endAngle (),   0, M_PI2);
 	
 	if (start == end)
 		return M_PI2;
@@ -113,10 +117,10 @@ Arc2D::set_properties ()
 void
 Arc2D::build ()
 {
-	const Arc2DProperties* properties = getBrowser () -> getBrowserOptions () -> arc2DProperties;
+	const Arc2DProperties* properties = getBrowser () -> getBrowserOptions () -> arc2DProperties ();
 	
 	float  difference = getAngle ();
-	size_t segments   = std::ceil (difference / properties -> minAngle);
+	size_t segments   = std::ceil (difference / properties -> minAngle ());
 	float  angle      = difference / segments;
 
 	getVertices () .reserve (segments + 1);
@@ -131,9 +135,9 @@ Arc2D::build ()
 	
 	for (size_t n = 0; n < segments; ++ n)
 	{
-		float theta = startAngle + angle * n;
+		float theta = startAngle () + angle * n;
 	
-		auto point = std::polar (std::abs (radius), theta);
+		auto point = std::polar (std::abs (radius ()), theta);
 
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}
@@ -152,10 +156,11 @@ Arc2D::draw ()
 void
 Arc2D::dispose ()
 {
-	getBrowser () -> getBrowserOptions () -> arcClose2DProperties .removeInterest (this, &Arc2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> arcClose2DProperties () .removeInterest (this, &Arc2D::set_properties);
 
 	X3DGeometryNode::dispose ();
 }
 
 } // X3D
 } // titania
+

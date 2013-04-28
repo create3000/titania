@@ -61,16 +61,16 @@ class SingleAxisHingeJoint :
 {
 public:
 
-	SFVec3f anchorPoint;
-	SFVec3f axis;
-	SFFloat maxAngle;
-	SFFloat minAngle;
-	SFFloat stopBounce;
-	SFFloat stopErrorCorrection;
-	SFFloat angle;
-	SFFloat angleRate;
-	SFVec3f body1AnchorPoint;
-	SFVec3f body2AnchorPoint;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	SingleAxisHingeJoint (X3DExecutionContext* const);
 
@@ -78,9 +78,113 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3f &
+	anchorPoint ()
+	{ return *fields .anchorPoint; }
+
+	const SFVec3f &
+	anchorPoint () const
+	{ return *fields .anchorPoint; }
+
+	SFVec3f &
+	axis ()
+	{ return *fields .axis; }
+
+	const SFVec3f &
+	axis () const
+	{ return *fields .axis; }
+
+	SFFloat &
+	maxAngle ()
+	{ return *fields .maxAngle; }
+
+	const SFFloat &
+	maxAngle () const
+	{ return *fields .maxAngle; }
+
+	SFFloat &
+	minAngle ()
+	{ return *fields .minAngle; }
+
+	const SFFloat &
+	minAngle () const
+	{ return *fields .minAngle; }
+
+	SFFloat &
+	stopBounce ()
+	{ return *fields .stopBounce; }
+
+	const SFFloat &
+	stopBounce () const
+	{ return *fields .stopBounce; }
+
+	SFFloat &
+	stopErrorCorrection ()
+	{ return *fields .stopErrorCorrection; }
+
+	const SFFloat &
+	stopErrorCorrection () const
+	{ return *fields .stopErrorCorrection; }
+
+	SFFloat &
+	angle ()
+	{ return *fields .angle; }
+
+	const SFFloat &
+	angle () const
+	{ return *fields .angle; }
+
+	SFFloat &
+	angleRate ()
+	{ return *fields .angleRate; }
+
+	const SFFloat &
+	angleRate () const
+	{ return *fields .angleRate; }
+
+	SFVec3f &
+	body1AnchorPoint ()
+	{ return *fields .body1AnchorPoint; }
+
+	const SFVec3f &
+	body1AnchorPoint () const
+	{ return *fields .body1AnchorPoint; }
+
+	SFVec3f &
+	body2AnchorPoint ()
+	{ return *fields .body2AnchorPoint; }
+
+	const SFVec3f &
+	body2AnchorPoint () const
+	{ return *fields .body2AnchorPoint; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const anchorPoint;
+		SFVec3f* const axis;
+		SFFloat* const maxAngle;
+		SFFloat* const minAngle;
+		SFFloat* const stopBounce;
+		SFFloat* const stopErrorCorrection;
+		SFFloat* const angle;
+		SFFloat* const angleRate;
+		SFVec3f* const body1AnchorPoint;
+		SFVec3f* const body2AnchorPoint;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

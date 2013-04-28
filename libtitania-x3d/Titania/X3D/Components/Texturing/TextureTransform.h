@@ -61,16 +61,52 @@ class TextureTransform :
 {
 public:
 
-	SFVec2f center;
-	SFFloat rotation;
-	SFVec2f scale;
-	SFVec2f translation;
+	
+	
+	
+	
 
 	TextureTransform (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFVec2f &
+	center ()
+	{ return *fields .center; }
+
+	const SFVec2f &
+	center () const
+	{ return *fields .center; }
+
+	SFFloat &
+	rotation ()
+	{ return *fields .rotation; }
+
+	const SFFloat &
+	rotation () const
+	{ return *fields .rotation; }
+
+	SFVec2f &
+	scale ()
+	{ return *fields .scale; }
+
+	const SFVec2f &
+	scale () const
+	{ return *fields .scale; }
+
+	SFVec2f &
+	translation ()
+	{ return *fields .translation; }
+
+	const SFVec2f &
+	translation () const
+	{ return *fields .translation; }
+
+
 
 	virtual
 	void
@@ -87,6 +123,19 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFVec2f* const center;
+		SFFloat* const rotation;
+		SFVec2f* const scale;
+		SFVec2f* const translation;
+	};
+
+	Fields fields;
+
+
 	Matrix4f matrix;
 
 };
@@ -95,3 +144,4 @@ private:
 } // titania
 
 #endif
+

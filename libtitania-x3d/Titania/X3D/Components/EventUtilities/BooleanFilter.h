@@ -61,10 +61,10 @@ class BooleanFilter :
 {
 public:
 
-	SFBool set_boolean;
-	SFBool inputFalse;
-	SFBool inputNegate;
-	SFBool inputTrue;
+	
+	
+	
+	
 
 	BooleanFilter (X3DExecutionContext* const);
 
@@ -72,9 +72,59 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFBool &
+	set_boolean ()
+	{ return *fields .set_boolean; }
+
+	const SFBool &
+	set_boolean () const
+	{ return *fields .set_boolean; }
+
+	SFBool &
+	inputFalse ()
+	{ return *fields .inputFalse; }
+
+	const SFBool &
+	inputFalse () const
+	{ return *fields .inputFalse; }
+
+	SFBool &
+	inputNegate ()
+	{ return *fields .inputNegate; }
+
+	const SFBool &
+	inputNegate () const
+	{ return *fields .inputNegate; }
+
+	SFBool &
+	inputTrue ()
+	{ return *fields .inputTrue; }
+
+	const SFBool &
+	inputTrue () const
+	{ return *fields .inputTrue; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const set_boolean;
+		SFBool* const inputFalse;
+		SFBool* const inputNegate;
+		SFBool* const inputTrue;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

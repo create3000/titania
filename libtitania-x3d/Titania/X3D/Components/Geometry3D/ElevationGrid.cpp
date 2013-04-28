@@ -60,44 +60,48 @@
 namespace titania {
 namespace X3D {
 
+ElevationGrid::Fields::Fields () :
+	set_height (new MFFloat ()),
+	attrib (new MFNode ()),
+	color (new SFNode <X3DBaseNode> ()),
+	fogCoord (new SFNode <X3DBaseNode> ()),
+	normal (new SFNode <X3DBaseNode> ()),
+	texCoord (new SFNode <X3DBaseNode> ()),
+	colorPerVertex (new SFBool (true)),
+	height (new MFFloat ()),
+	normalPerVertex (new SFBool (true)),
+	solid (new SFBool (true)),
+	xDimension (new SFInt32 ()),
+	xSpacing (new SFFloat (1)),
+	zDimension (new SFInt32 ()),
+	zSpacing (new SFFloat (1))
+{ }
+
 ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	     set_height (),                                                    // MFFloat [in]     set_height
-	         attrib (),                                                    // MFNode  [in,out] attrib           [ ]         [X3DVertexAttributeNode]
-	          color (),                                                    // SFNode  [in,out] color            NULL        [X3DColorNode]
-	       fogCoord (),                                                    // SFNode  [in,out] fogCoord         [ ]         [FogCoordinate]
-	         normal (),                                                    // SFNode  [in,out] normal           NULL        [X3DNormalNode]
-	       texCoord (),                                                    // SFNode  [in,out] texCoord         NULL        [X3DTextureCoordinateNode]
-	 colorPerVertex (true),                                                // SFBool  [ ]      colorPerVertex   TRUE
-	         height (),                                                    // MFFloat [ ]      height           [ ]          (-∞,∞)
-	normalPerVertex (true),                                                // SFBool  [ ]      normalPerVertex  TRUE
-	          solid (true),                                                // SFBool  [ ]      solid            TRUE
-	     xDimension (),                                                    // SFInt32 [ ]      xDimension       0           [0,∞)
-	       xSpacing (1),                                                   // SFFloat [ ]      xSpacing         1.0         (0,∞)
-	     zDimension (),                                                    // SFInt32 [ ]      zDimension       0           [0,∞)
-	       zSpacing (1)                                                    // SFFloat [ ]      zSpacing         1.0         (0,∞)
+	fields ()
 {
 	setComponent ("Geometry3D");
 	setTypeName ("ElevationGrid");
 
-	addField (inputOutput,    "metadata",        metadata);
-	addField (inputOnly,      "set_height",      set_height);
-	addField (inputOutput,    "attrib",          attrib);
-	addField (inputOutput,    "color",           color);
-	addField (inputOutput,    "fogCoord",        fogCoord);
-	addField (inputOutput,    "normal",          normal);
-	addField (inputOutput,    "texCoord",        texCoord);
-	addField (initializeOnly, "ccw",             ccw);
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex);
-	addField (initializeOnly, "creaseAngle",     creaseAngle);
-	addField (initializeOnly, "height",          height);
-	addField (initializeOnly, "normalPerVertex", normalPerVertex);
-	addField (initializeOnly, "solid",           solid);
-	addField (initializeOnly, "xDimension",      xDimension);
-	addField (initializeOnly, "xSpacing",        xSpacing);
-	addField (initializeOnly, "zDimension",      zDimension);
-	addField (initializeOnly, "zSpacing",        zSpacing);
+	addField (inputOutput,    "metadata",        metadata ());
+	addField (inputOnly,      "set_height",      set_height ());
+	addField (inputOutput,    "attrib",          attrib ());
+	addField (inputOutput,    "color",           color ());
+	addField (inputOutput,    "fogCoord",        fogCoord ());
+	addField (inputOutput,    "normal",          normal ());
+	addField (inputOutput,    "texCoord",        texCoord ());
+	addField (initializeOnly, "ccw",             ccw ());
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
+	addField (initializeOnly, "creaseAngle",     creaseAngle ());
+	addField (initializeOnly, "height",          height ());
+	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "xDimension",      xDimension ());
+	addField (initializeOnly, "xSpacing",        xSpacing ());
+	addField (initializeOnly, "zDimension",      zDimension ());
+	addField (initializeOnly, "zSpacing",        zSpacing ());
 }
 
 X3DBaseNode*
@@ -109,24 +113,24 @@ ElevationGrid::create (X3DExecutionContext* const executionContext) const
 Box3f
 ElevationGrid::createBBox ()
 {
-	if (xDimension < 2 or zDimension < 2)
+	if (xDimension () < 2 or zDimension () < 2)
 		return Box3f ();
 
-	size_t vertices = xDimension * zDimension;
+	size_t vertices = xDimension () * zDimension ();
 
-	if (height .size () < vertices)
-		height .resize (vertices);
+	if (height () .size () < vertices)
+		height () .resize (vertices);
 
-	float x = xSpacing * (xDimension - 1);
-	float z = zSpacing * (zDimension - 1);
+	float x = xSpacing () * (xDimension () - 1);
+	float z = zSpacing () * (zDimension () - 1);
 
-	float miny = height [0];
-	float maxy = height [0];
+	float miny = height () [0];
+	float maxy = height () [0];
 
 	for (size_t i = 1; i < vertices; ++ i)
 	{
-		miny = std::min <float> (miny, height [i]);
-		maxy = std::max <float> (maxy, height [i]);
+		miny = std::min <float> (miny, height () [i]);
+		maxy = std::max <float> (maxy, height () [i]);
 	}
 
 	float y = maxy - miny;
@@ -141,14 +145,14 @@ std::vector <Vector3f>
 ElevationGrid::createTexCoord ()
 {
 	std::vector <Vector3f> texCoord;
-	texCoord .reserve (xDimension * zDimension);
+	texCoord .reserve (xDimension () * zDimension ());
 
-	for (float j = 0; j < zDimension; ++ j)
+	for (float j = 0; j < zDimension (); ++ j)
 	{
-		for (float i = 0; i < xDimension; ++ i)
+		for (float i = 0; i < xDimension (); ++ i)
 		{
-			texCoord .emplace_back (i / (xDimension - 1),
-			                        j / (zDimension - 1),
+			texCoord .emplace_back (i / (xDimension () - 1),
+			                        j / (zDimension () - 1),
 			                        0);
 		}
 	}
@@ -190,11 +194,11 @@ std::vector <size_t>
 ElevationGrid::createCoordIndex ()
 {
 	std::vector <size_t> _coordIndex;
-	_coordIndex .reserve ((xDimension - 1) * (zDimension - 1) * 6);
+	_coordIndex .reserve ((xDimension () - 1) * (zDimension () - 1) * 6);
 
-	for (int32_t j = 0; j < zDimension - 1; ++ j)
+	for (int32_t j = 0; j < zDimension () - 1; ++ j)
 	{
-		for (int32_t i = 0; i < xDimension - 1; ++ i)
+		for (int32_t i = 0; i < xDimension () - 1; ++ i)
 		{
 			for (int32_t p = 0; p < 6; ++ p)
 			{
@@ -207,13 +211,13 @@ ElevationGrid::createCoordIndex ()
 				switch (p)
 				{
 					// triangle one
-					case 0: index =       j * xDimension + i; break;         // P1
-					case 1: index = (j + 1) * xDimension + i; break;         // P2
-					case 2: index =       j * xDimension + (i + 1); break;   // P4
+					case 0: index =       j * xDimension () + i; break;         // P1
+					case 1: index = (j + 1) * xDimension () + i; break;         // P2
+					case 2: index =       j * xDimension () + (i + 1); break;   // P4
 					// triangle two
-					case 3: index = (j + 1) * xDimension + (i + 1); break;   // P3
-					case 4: index =       j * xDimension + (i + 1); break;   // P4
-					case 5: index = (j + 1) * xDimension + i; break;         // P2
+					case 3: index = (j + 1) * xDimension () + (i + 1); break;   // P3
+					case 4: index =       j * xDimension () + (i + 1); break;   // P4
+					case 5: index = (j + 1) * xDimension () + i; break;         // P2
 				}
 
 				_coordIndex .push_back (index);
@@ -228,15 +232,15 @@ std::vector <Vector3f>
 ElevationGrid::createPoints ()
 {
 	std::vector <Vector3f> points;
-	points .reserve (xDimension * zDimension);
+	points .reserve (xDimension () * zDimension ());
 
-	for (int32_t j = 0; j < zDimension; ++ j)
+	for (int32_t j = 0; j < zDimension (); ++ j)
 	{
-		for (int32_t i = 0; i < xDimension; ++ i)
+		for (int32_t i = 0; i < xDimension (); ++ i)
 		{
-			points .push_back (Vector3f (xSpacing * i,
-			                             height [i + j * xDimension],
-			                             zSpacing * j));
+			points .push_back (Vector3f (xSpacing () * i,
+			                             height () [i + j * xDimension ()],
+			                             zSpacing () * j));
 		}
 	}
 
@@ -246,14 +250,14 @@ ElevationGrid::createPoints ()
 void
 ElevationGrid::build ()
 {
-	if (xDimension < 2 or zDimension < 2)
+	if (xDimension () < 2 or zDimension () < 2)
 		return;
 
-	size_t vertices = xDimension * zDimension;
-	size_t faces    = (xDimension - 1) * (zDimension - 1);
+	size_t vertices = xDimension () * zDimension ();
+	size_t faces    = (xDimension () - 1) * (zDimension () - 1);
 
-	if (height .size () < vertices)
-		height .resize (vertices);
+	if (height () .size () < vertices)
+		height () .resize (vertices);
 
 	std::vector <size_t>   coordIndex = createCoordIndex ();
 	std::vector <Vector3f> points     = createPoints ();
@@ -262,13 +266,13 @@ ElevationGrid::build ()
 
 	std::vector <Vector3f> _texCoord;
 
-	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord .getValue ());
-	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord .getValue ());
+	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord () .getValue ());
+	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord () .getValue ());
 
 	if (_textureCoordinate)
 	{
-		if (_textureCoordinate -> point .size () < vertices)
-			_textureCoordinate -> point .resize (vertices);
+		if (_textureCoordinate -> point () .size () < vertices)
+			_textureCoordinate -> point () .resize (vertices);
 
 		getTexCoord () .reserve (coordIndex .size ());
 	}
@@ -280,56 +284,57 @@ ElevationGrid::build ()
 		getTexCoord () .reserve (coordIndex .size ());
 	}
 
-	auto _color = x3d_cast <Color*> (color .getValue ());
+	auto _color = x3d_cast <Color*> (color () .getValue ());
 
 	if (_color)
 	{
-		if (colorPerVertex)
+		if (colorPerVertex ())
 		{
-			if (_color -> color .size () < vertices)
-				_color -> color .resize (vertices);
+			if (_color -> color () .size () < vertices)
+				_color -> color () .resize (vertices);
 		}
 		else
 		{
-			if (_color -> color .size () < faces)
-				_color -> color .resize (faces);
+			if (_color -> color () .size () < faces)
+				_color -> color () .resize (faces);
 		}
 
 		getColors () .reserve (coordIndex .size ());
 	}
 
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color () .getValue ());
 
 	if (_colorRGBA)
 	{
-		if (colorPerVertex)
+		if (colorPerVertex ())
 		{
-			if (_colorRGBA -> color .size () < vertices)
-				_colorRGBA -> color .resize (vertices);
+			if (_colorRGBA -> color () .size () < vertices)
+				_colorRGBA -> color () .resize (vertices);
 		}
 		else
 		{
-			if (_colorRGBA -> color .size () < faces)
-				_colorRGBA -> color .resize (faces);
+			if (_colorRGBA -> color () .size () < faces)
+				_colorRGBA -> color () .resize (faces);
 		}
 
 		getColorsRGBA () .reserve (coordIndex .size ());
 	}
 
 	std::vector <Vector3f> normals;
-	auto                   _normal = x3d_cast <Normal*> (normal .getValue ());
+	
+	auto _normal = x3d_cast <Normal*> (normal () .getValue ());
 
 	if (_normal)
 	{
-		if (normalPerVertex)
+		if (normalPerVertex ())
 		{
-			if (_normal -> vector .size () < vertices)
-				_normal -> vector .resize (vertices);
+			if (_normal -> vector () .size () < vertices)
+				_normal -> vector () .resize (vertices);
 		}
 		else
 		{
-			if (_normal -> vector .size () < faces)
-				_normal -> vector .resize (faces);
+			if (_normal -> vector () .size () < faces)
+				_normal -> vector () .resize (faces);
 		}
 	}
 	else
@@ -348,15 +353,15 @@ ElevationGrid::build ()
 
 		if (_normal)
 		{
-			if (not normalPerVertex)
-				getNormals () .emplace_back (_normal -> vector [face]);
+			if (not normalPerVertex ())
+				getNormals () .emplace_back (_normal -> vector () [face]);
 		}
 
 		for (int32_t p = 0; p < 6; ++ p, ++ index, ++ i)
 		{
 			if (_textureCoordinate)
 			{
-				const auto & t = _textureCoordinate -> point [*index];
+				const auto & t = _textureCoordinate -> point () [*index];
 				getTexCoord () .emplace_back (t .getX (), t .getY (), 0);
 			}
 			else if (_textureCoordinateGenerator)
@@ -368,30 +373,30 @@ ElevationGrid::build ()
 
 			if (_color)
 			{
-				if (colorPerVertex)
-					getColors () .emplace_back (_color -> color [*index]);
+				if (colorPerVertex ())
+					getColors () .emplace_back (_color -> color () [*index]);
 
 				else
-					getColors () .emplace_back (_color -> color [face]);
+					getColors () .emplace_back (_color -> color () [face]);
 
 			}
 			else if (_colorRGBA)
 			{
 				float r = 0, g = 0, b = 0, a = 0;
 
-				if (colorPerVertex)
-					_colorRGBA -> color [*index] .getValue (r, g, b, a);
+				if (colorPerVertex ())
+					_colorRGBA -> color () [*index] .getValue (r, g, b, a);
 
 				else
-					_colorRGBA -> color [face] .getValue (r, g, b, a);
+					_colorRGBA -> color () [face] .getValue (r, g, b, a);
 
 				getColorsRGBA () .emplace_back (r, g, b, 1 - a);
 			}
 
 			if (_normal)
 			{
-				if (normalPerVertex)
-					getNormals () .emplace_back (_normal -> vector [*index]);
+				if (normalPerVertex ())
+					getNormals () .emplace_back (_normal -> vector () [*index]);
 			}
 			else
 			{
@@ -405,8 +410,9 @@ ElevationGrid::build ()
 	addElement (getVertices () .size ());
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setVertexMode (GL_TRIANGLES);
-	setSolid (solid);
+	setSolid (solid ());
 }
 
 } // X3D
 } // titania
+

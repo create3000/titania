@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,22 +55,26 @@
 namespace titania {
 namespace X3D {
 
+BooleanSequencer::Fields::Fields () :
+	keyValue (new MFBool ()),
+	value_changed (new SFBool ())
+{ }
+
 BooleanSequencer::BooleanSequencer (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DSequencerNode (),                                                    
-	        keyValue (),                                                    // MFBool [in,out] keyValue       [ ]
-	   value_changed ()                                                     // SFBool [out]    value_changed
+	fields ()
 {
 	setComponent ("EventUtilities");
 	setTypeName ("BooleanSequencer");
 
-	addField (inputOutput, "metadata",      metadata);
-	addField (inputOnly,   "next",          next);
-	addField (inputOnly,   "previous",      previous);
-	addField (inputOnly,   "set_fraction",  set_fraction);
-	addField (inputOutput, "key",           key);
-	addField (inputOutput, "keyValue",      keyValue);
-	addField (outputOnly,  "value_changed", value_changed);
+	addField (inputOutput, "metadata",      metadata ());
+	addField (inputOnly,   "next",          next ());
+	addField (inputOnly,   "previous",      previous ());
+	addField (inputOnly,   "set_fraction",  set_fraction ());
+	addField (inputOutput, "key",           key ());
+	addField (inputOutput, "keyValue",      keyValue ());
+	addField (outputOnly,  "value_changed", value_changed ());
 }
 
 X3DBaseNode*
@@ -81,3 +85,4 @@ BooleanSequencer::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

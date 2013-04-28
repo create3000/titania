@@ -61,12 +61,12 @@ class NurbsPositionInterpolator :
 {
 public:
 
-	SFFloat              set_fraction;
-	SFNode <X3DBaseNode> controlPoint;
-	MFDouble             knot;
-	SFInt32              order;
-	MFDouble             weight;
-	SFVec3f              value_changed;
+	
+	
+	
+	
+	
+	
 
 	NurbsPositionInterpolator (X3DExecutionContext* const);
 
@@ -74,9 +74,77 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFFloat &
+	set_fraction ()
+	{ return *fields .set_fraction; }
+
+	const SFFloat &
+	set_fraction () const
+	{ return *fields .set_fraction; }
+
+	SFNode <X3DBaseNode> &
+	controlPoint ()
+	{ return *fields .controlPoint; }
+
+	const SFNode <X3DBaseNode> &
+	controlPoint () const
+	{ return *fields .controlPoint; }
+
+	MFDouble &
+	knot ()
+	{ return *fields .knot; }
+
+	const MFDouble &
+	knot () const
+	{ return *fields .knot; }
+
+	SFInt32 &
+	order ()
+	{ return *fields .order; }
+
+	const SFInt32 &
+	order () const
+	{ return *fields .order; }
+
+	MFDouble &
+	weight ()
+	{ return *fields .weight; }
+
+	const MFDouble &
+	weight () const
+	{ return *fields .weight; }
+
+	SFVec3f &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFVec3f &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const set_fraction;
+		SFNode <X3DBaseNode>* const controlPoint;
+		MFDouble* const knot;
+		SFInt32* const order;
+		MFDouble* const weight;
+		SFVec3f* const value_changed;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

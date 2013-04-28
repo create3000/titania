@@ -61,10 +61,10 @@ class WindPhysicsModel :
 {
 public:
 
-	SFVec3f direction;
-	SFFloat gustiness;
-	SFFloat speed;
-	SFFloat turbulence;
+	
+	
+	
+	
 
 	WindPhysicsModel (X3DExecutionContext* const);
 
@@ -72,9 +72,59 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3f &
+	direction ()
+	{ return *fields .direction; }
+
+	const SFVec3f &
+	direction () const
+	{ return *fields .direction; }
+
+	SFFloat &
+	gustiness ()
+	{ return *fields .gustiness; }
+
+	const SFFloat &
+	gustiness () const
+	{ return *fields .gustiness; }
+
+	SFFloat &
+	speed ()
+	{ return *fields .speed; }
+
+	const SFFloat &
+	speed () const
+	{ return *fields .speed; }
+
+	SFFloat &
+	turbulence ()
+	{ return *fields .turbulence; }
+
+	const SFFloat &
+	turbulence () const
+	{ return *fields .turbulence; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const direction;
+		SFFloat* const gustiness;
+		SFFloat* const speed;
+		SFFloat* const turbulence;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

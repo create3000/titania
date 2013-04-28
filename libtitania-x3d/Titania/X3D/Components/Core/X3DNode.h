@@ -77,7 +77,14 @@ class X3DNode :
 {
 public:
 
-	SFNode <X3DBaseNode> metadata;
+	SFNode <X3DBaseNode> &
+	metadata ()
+	{ return *fields .metadata; }
+
+	const SFNode <X3DBaseNode> &
+	metadata () const
+	{ return *fields .metadata; }
+
 
 
 protected:
@@ -100,6 +107,16 @@ protected:
 	getCurrentViewpoint () const;
 
 	friend class X3DExecutionContext;
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const metadata;
+	};
+
+	Fields fields;
 
 };
 
@@ -107,3 +124,4 @@ protected:
 } // titania
 
 #endif
+

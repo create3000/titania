@@ -61,8 +61,8 @@ class BooleanToggle :
 {
 public:
 
-	SFBool set_boolean;
-	SFBool toggle;
+	
+	
 
 	BooleanToggle (X3DExecutionContext* const);
 
@@ -70,9 +70,41 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFBool &
+	set_boolean ()
+	{ return *fields .set_boolean; }
+
+	const SFBool &
+	set_boolean () const
+	{ return *fields .set_boolean; }
+
+	SFBool &
+	toggle ()
+	{ return *fields .toggle; }
+
+	const SFBool &
+	toggle () const
+	{ return *fields .toggle; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const set_boolean;
+		SFBool* const toggle;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

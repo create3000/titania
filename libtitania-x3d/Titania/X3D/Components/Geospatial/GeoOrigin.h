@@ -61,9 +61,9 @@ class GeoOrigin :
 {
 public:
 
-	SFVec3d  geoCoords;
-	MFString geoSystem;
-	SFBool   rotateYUp;
+	
+	
+	
 
 	GeoOrigin (X3DExecutionContext* const);
 
@@ -71,9 +71,50 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3d &
+	geoCoords ()
+	{ return *fields .geoCoords; }
+
+	const SFVec3d &
+	geoCoords () const
+	{ return *fields .geoCoords; }
+
+	MFString &
+	geoSystem ()
+	{ return *fields .geoSystem; }
+
+	const MFString &
+	geoSystem () const
+	{ return *fields .geoSystem; }
+
+	SFBool &
+	rotateYUp ()
+	{ return *fields .rotateYUp; }
+
+	const SFBool &
+	rotateYUp () const
+	{ return *fields .rotateYUp; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3d* const geoCoords;
+		MFString* const geoSystem;
+		SFBool* const rotateYUp;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

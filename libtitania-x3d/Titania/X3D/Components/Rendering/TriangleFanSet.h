@@ -61,7 +61,7 @@ class TriangleFanSet :
 {
 public:
 
-	MFInt32 fanCount;
+	
 
 	TriangleFanSet (X3DExecutionContext* const);
 
@@ -69,9 +69,32 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFInt32 &
+	fanCount ()
+	{ return *fields .fanCount; }
+
+	const MFInt32 &
+	fanCount () const
+	{ return *fields .fanCount; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFInt32* const fanCount;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

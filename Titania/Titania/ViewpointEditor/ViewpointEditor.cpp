@@ -93,7 +93,7 @@ ViewpointEditor::set_viewpoints ()
 	// Fill the TreeView's model
 	for (const auto & viewpoint : getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpoints ())
 	{
-		getListStore () -> append () -> set_value (0, viewpoint -> description .getValue ());
+		getListStore () -> append () -> set_value (0, viewpoint -> description () .getValue ());
 	}
 
 	getTreeView () .queue_draw ();
@@ -105,13 +105,13 @@ ViewpointEditor::set_currentViewpoint ()
 	X3D::Viewpoint* viewpoint = dynamic_cast <X3D::Viewpoint*> (getBrowser () -> getActiveViewpoint ());
 
 	if (viewpoint)
-		getFieldOfView () .set_value (viewpoint -> fieldOfView);
+		getFieldOfView () .set_value (viewpoint -> fieldOfView ());
 }
 
 void
 ViewpointEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
-	getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpoints () [path .front ()] -> set_bind = true;
+	getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpoints () [path .front ()] -> set_bind () = true;
 }
 
 void
@@ -120,7 +120,7 @@ ViewpointEditor::on_fieldOfView_changed ()
 	X3D::Viewpoint* viewpoint = dynamic_cast <X3D::Viewpoint*> (getBrowser () -> getActiveViewpoint ());
 
 	if (viewpoint)
-		viewpoint -> fieldOfView = getFieldOfView () .get_value ();
+		viewpoint -> fieldOfView () = getFieldOfView () .get_value ();
 }
 
 } // puck

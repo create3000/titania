@@ -55,24 +55,28 @@
 namespace titania {
 namespace X3D {
 
+ConeEmitter::Fields::Fields () :
+	angle (new SFFloat (0.785398)),
+	direction (new SFVec3f (0, 1, 0)),
+	position (new SFVec3f ())
+{ }
+
 ConeEmitter::ConeEmitter (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DParticleEmitterNode (),                                                    
-	                 angle (0.785398),                                            // SFFloat [in,out] angle      π/4          [0,π]
-	             direction (0, 1, 0),                                             // SFVec3f [in,out] direction  0 1 0
-	              position ()                                                     // SFVec3f [in,out] position   0 0 0
+	fields ()
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("ConeEmitter");
 
-	addField (inputOutput,    "metadata",    metadata);
-	addField (inputOutput,    "speed",       speed);
-	addField (inputOutput,    "variation",   variation);
-	addField (initializeOnly, "mass",        mass);
-	addField (initializeOnly, "surfaceArea", surfaceArea);
-	addField (inputOutput,    "angle",       angle);
-	addField (inputOutput,    "direction",   direction);
-	addField (inputOutput,    "position",    position);
+	addField (inputOutput,    "metadata",    metadata ());
+	addField (inputOutput,    "speed",       speed ());
+	addField (inputOutput,    "variation",   variation ());
+	addField (initializeOnly, "mass",        mass ());
+	addField (initializeOnly, "surfaceArea", surfaceArea ());
+	addField (inputOutput,    "angle",       angle ());
+	addField (inputOutput,    "direction",   direction ());
+	addField (inputOutput,    "position",    position ());
 }
 
 X3DBaseNode*
@@ -83,3 +87,4 @@ ConeEmitter::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

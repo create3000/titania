@@ -56,15 +56,19 @@
 namespace titania {
 namespace X3D {
 
+Material::Fields::Fields () :
+	ambientIntensity (new SFFloat (0.2)),
+	diffuseColor (new SFColor (0.8, 0.8, 0.8)),
+	emissiveColor (new SFColor ()),
+	shininess (new SFFloat (0.2)),
+	specularColor (new SFColor ()),
+	transparency (new SFFloat ())
+{ }
+
 Material::Material (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DMaterialNode (),                                                    
-	ambientIntensity (0.2),                                                 // SFFloat [in,out] ambientIntensity  0.2                [0,1]
-	    diffuseColor (0.8, 0.8, 0.8),                                       // SFColor [in,out] diffuseColor      0.8 0.8 0.8        [0,1]
-	   emissiveColor (),                                                    // SFColor [in,out] emissiveColor     0 0 0              [0,1]
-	       shininess (0.2),                                                 // SFFloat [in,out] shininess         0.2                [0,1]
-	   specularColor (),                                                    // SFColor [in,out] specularColor     0 0 0              [0,1]
-	    transparency (),                                                    // SFFloat [in,out] transparency      0                  [0,1]
+	          fields (),
 	           alpha (1),                                                   
 	  glAmbientColor (),                                                    
 	  glDiffuseColor (),                                                    
@@ -75,13 +79,13 @@ Material::Material (X3DExecutionContext* const executionContext) :
 	setComponent ("Shape");
 	setTypeName ("Material");
 
-	addField (inputOutput, "metadata",         metadata);
-	addField (inputOutput, "ambientIntensity", ambientIntensity);
-	addField (inputOutput, "diffuseColor",     diffuseColor);
-	addField (inputOutput, "specularColor",    specularColor);
-	addField (inputOutput, "emissiveColor",    emissiveColor);
-	addField (inputOutput, "shininess",        shininess);
-	addField (inputOutput, "transparency",     transparency);
+	addField (inputOutput, "metadata",         metadata ());
+	addField (inputOutput, "ambientIntensity", ambientIntensity ());
+	addField (inputOutput, "diffuseColor",     diffuseColor ());
+	addField (inputOutput, "specularColor",    specularColor ());
+	addField (inputOutput, "emissiveColor",    emissiveColor ());
+	addField (inputOutput, "shininess",        shininess ());
+	addField (inputOutput, "transparency",     transparency ());
 }
 
 X3DBaseNode*
@@ -102,29 +106,29 @@ Material::eventsProcessed ()
 {
 	X3DMaterialNode::eventsProcessed ();
 
-	alpha = 1 - math::clamp <float> (transparency, 0, 1);
+	alpha = 1 - math::clamp <float> (transparency (), 0, 1);
 
-	glAmbientColor [0] = ambientIntensity * diffuseColor .getR ();
-	glAmbientColor [1] = ambientIntensity * diffuseColor .getG ();
-	glAmbientColor [2] = ambientIntensity * diffuseColor .getB ();
+	glAmbientColor [0] = ambientIntensity () * diffuseColor () .getR ();
+	glAmbientColor [1] = ambientIntensity () * diffuseColor () .getG ();
+	glAmbientColor [2] = ambientIntensity () * diffuseColor () .getB ();
 	glAmbientColor [3] = alpha;
 
-	glDiffuseColor [0] = diffuseColor .getR ();
-	glDiffuseColor [1] = diffuseColor .getG ();
-	glDiffuseColor [2] = diffuseColor .getB ();
+	glDiffuseColor [0] = diffuseColor () .getR ();
+	glDiffuseColor [1] = diffuseColor () .getG ();
+	glDiffuseColor [2] = diffuseColor () .getB ();
 	glDiffuseColor [3] = alpha;
 
-	glSpecularColor [0] = specularColor .getR ();
-	glSpecularColor [1] = specularColor .getG ();
-	glSpecularColor [2] = specularColor .getB ();
+	glSpecularColor [0] = specularColor () .getR ();
+	glSpecularColor [1] = specularColor () .getG ();
+	glSpecularColor [2] = specularColor () .getB ();
 	glSpecularColor [3] = alpha;
 
-	glEmissiveColor [0] = emissiveColor .getR ();
-	glEmissiveColor [1] = emissiveColor .getG ();
-	glEmissiveColor [2] = emissiveColor .getB ();
+	glEmissiveColor [0] = emissiveColor () .getR ();
+	glEmissiveColor [1] = emissiveColor () .getG ();
+	glEmissiveColor [2] = emissiveColor () .getB ();
 	glEmissiveColor [3] = alpha;
 
-	glShininess = math::clamp <float> (shininess, 0, 1) * 128;
+	glShininess = math::clamp <float> (shininess (), 0, 1) * 128;
 }
 
 void
@@ -144,3 +148,4 @@ Material::draw ()
 
 } // X3D
 } // titania
+

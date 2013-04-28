@@ -595,7 +595,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		                                    field);
 	}
 
-	externProto -> url = URLList;
+	externProto -> url () = URLList;
 
 	externProto -> setup ();
 
@@ -720,7 +720,7 @@ throw (Error <INVALID_NAME>,
 		auto viewpoint = dynamic_cast <X3DViewpointNode*> (getNamedNode (name) .getValue ());
 
 		if (viewpoint)
-			viewpoint -> set_bind = true;
+			viewpoint -> set_bind () = true;
 
 		else
 			throw Error <INVALID_NAME> ("Warning: Node named '" + name + "' is not a viewpoint node.");

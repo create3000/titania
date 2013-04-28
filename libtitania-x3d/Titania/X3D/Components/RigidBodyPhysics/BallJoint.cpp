@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,23 +55,27 @@
 namespace titania {
 namespace X3D {
 
+BallJoint::Fields::Fields () :
+	anchorPoint (new SFVec3f ()),
+	body1AnchorPoint (new SFVec3f ()),
+	body2AnchorPoint (new SFVec3f ())
+{ }
+
 BallJoint::BallJoint (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DRigidJointNode (),                                                    
-	      anchorPoint (),                                                    // SFVec3f [in,out] anchorPoint       0 0 0
-	 body1AnchorPoint (),                                                    // SFVec3f [out]    body1AnchorPoint
-	 body2AnchorPoint ()                                                     // SFVec3f [out]    body2AnchorPoint
+	fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("BallJoint");
 
-	addField (inputOutput, "metadata",         metadata);
-	addField (inputOutput, "body1",            body1);
-	addField (inputOutput, "body2",            body2);
-	addField (inputOutput, "forceOutput",      forceOutput);
-	addField (inputOutput, "anchorPoint",      anchorPoint);
-	addField (outputOnly,  "body1AnchorPoint", body1AnchorPoint);
-	addField (outputOnly,  "body2AnchorPoint", body2AnchorPoint);
+	addField (inputOutput, "metadata",         metadata ());
+	addField (inputOutput, "body1",            body1 ());
+	addField (inputOutput, "body2",            body2 ());
+	addField (inputOutput, "forceOutput",      forceOutput ());
+	addField (inputOutput, "anchorPoint",      anchorPoint ());
+	addField (outputOnly,  "body1AnchorPoint", body1AnchorPoint ());
+	addField (outputOnly,  "body2AnchorPoint", body2AnchorPoint ());
 }
 
 X3DBaseNode*
@@ -82,3 +86,4 @@ BallJoint::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

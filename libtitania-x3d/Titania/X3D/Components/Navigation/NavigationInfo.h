@@ -65,20 +65,88 @@ class NavigationInfo :
 {
 public:
 
-	MFFloat  avatarSize;
-	SFBool   headlight;
-	SFFloat  speed;
-	SFTime   transitionTime;
-	MFString transitionType;
-	MFString type;
-	SFFloat  visibilityLimit;
-	SFBool   transitionComplete;
+	
+	
+	
+	
+	
+	
+	
+	
 
 	NavigationInfo (X3DExecutionContext* const, bool = true);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFFloat &
+	avatarSize ()
+	{ return *fields .avatarSize; }
+
+	const MFFloat &
+	avatarSize () const
+	{ return *fields .avatarSize; }
+
+	SFBool &
+	headlight ()
+	{ return *fields .headlight; }
+
+	const SFBool &
+	headlight () const
+	{ return *fields .headlight; }
+
+	SFFloat &
+	speed ()
+	{ return *fields .speed; }
+
+	const SFFloat &
+	speed () const
+	{ return *fields .speed; }
+
+	SFTime &
+	transitionTime ()
+	{ return *fields .transitionTime; }
+
+	const SFTime &
+	transitionTime () const
+	{ return *fields .transitionTime; }
+
+	MFString &
+	transitionType ()
+	{ return *fields .transitionType; }
+
+	const MFString &
+	transitionType () const
+	{ return *fields .transitionType; }
+
+	MFString &
+	type ()
+	{ return *fields .type; }
+
+	const MFString &
+	type () const
+	{ return *fields .type; }
+
+	SFFloat &
+	visibilityLimit ()
+	{ return *fields .visibilityLimit; }
+
+	const SFFloat &
+	visibilityLimit () const
+	{ return *fields .visibilityLimit; }
+
+	SFBool &
+	transitionComplete ()
+	{ return *fields .transitionComplete; }
+
+	const SFBool &
+	transitionComplete () const
+	{ return *fields .transitionComplete; }
+
+
 
 	float
 	getCollisionRadius () const;
@@ -131,6 +199,23 @@ private:
 	void
 	unbindFromLayer (X3DLayerNode* const);
 
+	struct Fields
+	{
+		Fields ();
+
+		MFFloat* const avatarSize;
+		SFBool* const headlight;
+		SFFloat* const speed;
+		SFTime* const transitionTime;
+		MFString* const transitionType;
+		MFString* const type;
+		SFFloat* const visibilityLimit;
+		SFBool* const transitionComplete;
+	};
+
+	Fields fields;
+
+
 	SFNode <DirectionalLight>        directionalLight;
 	std::unique_ptr <LightContainer> light;
 
@@ -140,3 +225,4 @@ private:
 } // titania
 
 #endif
+

@@ -56,25 +56,29 @@
 namespace titania {
 namespace X3D {
 
+PointLight::Fields::Fields () :
+	attenuation (new SFVec3f (1, 0, 0)),
+	location (new SFVec3f ()),
+	radius (new SFFloat (100))
+{ }
+
 PointLight::PointLight (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DLightNode (),                                                    
-	 attenuation (1, 0, 0),                                             // SFVec3f [in,out] attenuation  1 0 0        [0,∞)
-	    location (),                                                    // SFVec3f [in,out] location     0 0 0        (-∞,∞)
-	      radius (100)                                                  // SFFloat [in,out] radius       100          [0,∞)
+	fields ()
 {
 	setComponent ("Lighting");
 	setTypeName ("PointLight");
 
-	addField (inputOutput, "metadata",         metadata);
-	addField (inputOutput, "on",               on);
-	addField (inputOutput, "global",           global);
-	addField (inputOutput, "color",            color);
-	addField (inputOutput, "location",         location);
-	addField (inputOutput, "radius",           radius);
-	addField (inputOutput, "intensity",        intensity);
-	addField (inputOutput, "ambientIntensity", ambientIntensity);
-	addField (inputOutput, "attenuation",      attenuation);
+	addField (inputOutput, "metadata",         metadata ());
+	addField (inputOutput, "on",               on ());
+	addField (inputOutput, "global",           global ());
+	addField (inputOutput, "color",            color ());
+	addField (inputOutput, "location",         location ());
+	addField (inputOutput, "radius",           radius ());
+	addField (inputOutput, "intensity",        intensity ());
+	addField (inputOutput, "ambientIntensity", ambientIntensity ());
+	addField (inputOutput, "attenuation",      attenuation ());
 }
 
 X3DBaseNode*
@@ -95,22 +99,22 @@ PointLight::eventsProcessed ()
 {
 	X3DLightNode::eventsProcessed ();
 	
-	float glAmbientIntensity = math::clamp <float> (ambientIntensity, 0, 1);
-	float glIntensity        = math::clamp <float> (intensity, 0, 1);
+	float glAmbientIntensity = math::clamp <float> (ambientIntensity (), 0, 1);
+	float glIntensity        = math::clamp <float> (intensity (), 0, 1);
 
-	glAmbient [0] = color .getR () * glAmbientIntensity;
-	glAmbient [1] = color .getG () * glAmbientIntensity;
-	glAmbient [2] = color .getB () * glAmbientIntensity;
+	glAmbient [0] = color () .getR () * glAmbientIntensity;
+	glAmbient [1] = color () .getG () * glAmbientIntensity;
+	glAmbient [2] = color () .getB () * glAmbientIntensity;
 	glAmbient [3] = 1;
 
-	glDiffuseSpecular [0] = color .getR () * glIntensity;
-	glDiffuseSpecular [1] = color .getG () * glIntensity;
-	glDiffuseSpecular [2] = color .getB () * glIntensity;
+	glDiffuseSpecular [0] = color () .getR () * glIntensity;
+	glDiffuseSpecular [1] = color () .getG () * glIntensity;
+	glDiffuseSpecular [2] = color () .getB () * glIntensity;
 	glDiffuseSpecular [3] = 1;
 
-	glPosition [0] = location .getX ();
-	glPosition [1] = location .getY ();
-	glPosition [2] = location .getZ ();
+	glPosition [0] = location () .getX ();
+	glPosition [1] = location () .getY ();
+	glPosition [2] = location () .getZ ();
 	glPosition [3] = 1;                           // point light
 }
 
@@ -124,12 +128,13 @@ PointLight::draw (GLenum lightId)
 	glLightf  (lightId, GL_SPOT_EXPONENT, 0);
 	glLightf  (lightId, GL_SPOT_CUTOFF, 180); // point light
 
-	glLightf  (lightId, GL_CONSTANT_ATTENUATION,  attenuation .getX ());
-	glLightf  (lightId, GL_LINEAR_ATTENUATION,    attenuation .getY ());
-	glLightf  (lightId, GL_QUADRATIC_ATTENUATION, attenuation .getZ ());
+	glLightf  (lightId, GL_CONSTANT_ATTENUATION,  attenuation () .getX ());
+	glLightf  (lightId, GL_LINEAR_ATTENUATION,    attenuation () .getY ());
+	glLightf  (lightId, GL_QUADRATIC_ATTENUATION, attenuation () .getZ ());
 
 	glLightfv (lightId, GL_POSITION, glPosition);
 }
 
 } // X3D
 } // titania
+

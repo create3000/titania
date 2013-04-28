@@ -61,14 +61,34 @@ class Rectangle2D :
 {
 public:
 
-	SFVec2f size;
-	SFBool  solid;
+	
+	
 
 	Rectangle2D (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFVec2f &
+	size ()
+	{ return *fields .size; }
+
+	const SFVec2f &
+	size () const
+	{ return *fields .size; }
+
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+
 
 	virtual
 	void
@@ -92,9 +112,21 @@ private:
 	void
 	build ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFVec2f* const size;
+		SFBool* const solid;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

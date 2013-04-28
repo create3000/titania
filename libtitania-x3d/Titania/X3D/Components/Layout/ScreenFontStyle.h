@@ -61,7 +61,7 @@ class ScreenFontStyle :
 {
 public:
 
-	SFFloat pointSize;
+	
 
 	ScreenFontStyle (X3DExecutionContext* const);
 
@@ -69,9 +69,31 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFFloat &
+	pointSize ()
+	{ return *fields .pointSize; }
+
+	const SFFloat &
+	pointSize () const
+	{ return *fields .pointSize; }
+
+
+
 	virtual
 	float
 	getSize () const;
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const pointSize;
+	};
+
+	Fields fields;
 
 };
 
@@ -79,3 +101,4 @@ public:
 } // titania
 
 #endif
+

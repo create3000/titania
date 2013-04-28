@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+GeoOrigin::Fields::Fields () :
+	geoCoords (new SFVec3d ()),
+	geoSystem (new MFString ({ "GD", "WE" })),
+	rotateYUp (new SFBool ())
+{ }
+
 GeoOrigin::GeoOrigin (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	    X3DNode (),                                                    
-	  geoCoords (),                                                    // SFVec3d  [in,out] geoCoords  0 0 0              (-∞,∞)
-	  geoSystem ({ "GD", "WE" }),                                      // MFString [ ]      geoSystem  ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
-	  rotateYUp ()                                                     // SFBool   [ ]      rotateYUp  FALSE
+	fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoOrigin");
 
-	addField (inputOutput,    "metadata",  metadata);
-	addField (inputOutput,    "geoCoords", geoCoords);
-	addField (initializeOnly, "geoSystem", geoSystem);
-	addField (initializeOnly, "rotateYUp", rotateYUp);
+	addField (inputOutput,    "metadata",  metadata ());
+	addField (inputOutput,    "geoCoords", geoCoords ());
+	addField (initializeOnly, "geoSystem", geoSystem ());
+	addField (initializeOnly, "rotateYUp", rotateYUp ());
 }
 
 X3DBaseNode*
@@ -79,3 +83,4 @@ GeoOrigin::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

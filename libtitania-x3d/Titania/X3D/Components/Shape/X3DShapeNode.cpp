@@ -67,11 +67,15 @@ const Matrix4f textureMatrix = { 1,  0, 0, 0,
 	                              0,  0, 1, 0,
 	                              0,  1, 0, 1 };
 
+X3DShapeNode::Fields::Fields () :
+	appearance (new SFNode <X3DBaseNode> ()),
+	geometry (new SFNode <X3DBaseNode> ())
+{ }
+
 X3DShapeNode::X3DShapeNode () :
 	    X3DChildNode (),     
 	X3DBoundedObject (),     
-	      appearance (),     // SFNode [in,out] appearance  NULL        [X3DAppearanceNode]
-	        geometry (),     // SFNode [in,out] geometry    NULL        [X3DGeometryNode]
+	          fields (),
 	     _appearance (NULL), 
 	       _geometry (NULL)  
 {
@@ -84,8 +88,8 @@ X3DShapeNode::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 
-	appearance .addInterest (this, &X3DShapeNode::set_appearance);
-	geometry   .addInterest (this, &X3DShapeNode::set_geometry);
+	appearance () .addInterest (this, &X3DShapeNode::set_appearance);
+	geometry ()   .addInterest (this, &X3DShapeNode::set_geometry);
 
 	set_appearance ();
 	set_geometry ();
@@ -94,7 +98,7 @@ X3DShapeNode::initialize ()
 Box3f
 X3DShapeNode::getBBox ()
 {
-	if (bboxSize == Vector3f (-1, -1, -1))
+	if (bboxSize () == Vector3f (-1, -1, -1))
 	{
 		if (_geometry)
 			return _geometry -> getBBox ();
@@ -103,7 +107,7 @@ X3DShapeNode::getBBox ()
 			return Box3f ();
 	}
 
-	return Box3f (bboxSize, bboxCenter);
+	return Box3f (bboxSize (), bboxCenter ());
 }
 
 bool
@@ -121,13 +125,13 @@ X3DShapeNode::isTransparent () const
 void
 X3DShapeNode::set_appearance ()
 {
-	_appearance = x3d_cast <X3DAppearanceNode*> (appearance .getValue ());
+	_appearance = x3d_cast <X3DAppearanceNode*> (appearance () .getValue ());
 }
 
 void
 X3DShapeNode::set_geometry ()
 {
-	_geometry = x3d_cast <X3DGeometryNode*> (geometry .getValue ());
+	_geometry = x3d_cast <X3DGeometryNode*> (geometry () .getValue ());
 }
 
 void
@@ -234,3 +238,4 @@ X3DShapeNode::dispose ()
 
 } // X3D
 } // titania
+

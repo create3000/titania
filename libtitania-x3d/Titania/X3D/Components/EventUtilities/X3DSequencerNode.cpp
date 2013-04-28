@@ -53,15 +53,20 @@
 namespace titania {
 namespace X3D {
 
+X3DSequencerNode::Fields::Fields () :
+	next (new SFBool ()),
+	previous (new SFBool ()),
+	set_fraction (new SFFloat ()),
+	key (new MFFloat ())
+{ }
+
 X3DSequencerNode::X3DSequencerNode () :
 	X3DChildNode (), 
-	        next (), // SFBool  [in]     next
-	    previous (), // SFBool  [in]     previous
-	set_fraction (), // SFFloat [in]     set_fraction            (-∞,∞)
-	         key ()  // MFFloat [in,out] key           [ ]       (-∞,∞)
+	fields ()
 {
 	addNodeType (X3DConstants::X3DSequencerNode);
 }
 
 } // X3D
 } // titania
+

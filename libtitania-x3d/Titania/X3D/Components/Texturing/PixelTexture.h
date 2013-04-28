@@ -61,13 +61,25 @@ class PixelTexture :
 {
 public:
 
-	SFImage image;
+	
 
 	PixelTexture (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFImage &
+	image ()
+	{ return *fields .image; }
+
+	const SFImage &
+	image () const
+	{ return *fields .image; }
+
+
 
 
 private:
@@ -79,9 +91,20 @@ private:
 	void
 	requestImmediateLoad ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFImage* const image;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

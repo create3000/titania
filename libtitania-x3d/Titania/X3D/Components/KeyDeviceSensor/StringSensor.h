@@ -61,9 +61,9 @@ class StringSensor :
 {
 public:
 
-	SFBool   deletionAllowed;
-	SFString enteredText;
-	SFString finalText;
+	
+	
+	
 
 	StringSensor (X3DExecutionContext* const);
 
@@ -71,9 +71,50 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFBool &
+	deletionAllowed ()
+	{ return *fields .deletionAllowed; }
+
+	const SFBool &
+	deletionAllowed () const
+	{ return *fields .deletionAllowed; }
+
+	SFString &
+	enteredText ()
+	{ return *fields .enteredText; }
+
+	const SFString &
+	enteredText () const
+	{ return *fields .enteredText; }
+
+	SFString &
+	finalText ()
+	{ return *fields .finalText; }
+
+	const SFString &
+	finalText () const
+	{ return *fields .finalText; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const deletionAllowed;
+		SFString* const enteredText;
+		SFString* const finalText;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

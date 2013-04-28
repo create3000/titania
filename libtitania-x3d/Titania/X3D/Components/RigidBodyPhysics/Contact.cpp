@@ -55,46 +55,50 @@
 namespace titania {
 namespace X3D {
 
+Contact::Fields::Fields () :
+	appliedParameters (new MFString ({ "BOUNCE" })),
+	body1 (new SFNode <X3DBaseNode> ()),
+	body2 (new SFNode <X3DBaseNode> ()),
+	bounce (new SFFloat ()),
+	contactNormal (new SFVec3f (0, 1, 0)),
+	depth (new SFFloat ()),
+	frictionCoefficients (new SFVec2f ()),
+	frictionDirection (new SFVec3f (0, 1, 0)),
+	geometry1 (new SFNode <X3DBaseNode> ()),
+	geometry2 (new SFNode <X3DBaseNode> ()),
+	minbounceSpeed (new SFFloat ()),
+	position (new SFVec3f ()),
+	slipCoefficients (new SFVec2f ()),
+	softnessConstantForceMix (new SFFloat (0.0001)),
+	softnessErrorCorrection (new SFFloat (0.8)),
+	surfaceSpeed (new SFVec2f ())
+{ }
+
 Contact::Contact (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	                 X3DNode (),                                                    
-	       appliedParameters ({ "BOUNCE" }),                                        // MFString [in,out] appliedParameters         "BOUNCE"        [ ]
-	                   body1 (),                                                    // SFNode   [in,out] body1                     NULL            [RigidBody]
-	                   body2 (),                                                    // SFNode   [in,out] body2                     NULL            [RigidBody]
-	                  bounce (),                                                    // SFFloat  [in,out] bounce                    0               [0,1]
-	           contactNormal (0, 1, 0),                                             // SFVec3f  [in,out] contactNormal             0 1 0           (-∞,∞)
-	                   depth (),                                                    // SFFloat  [in,out] depth                     0               (-∞,∞)
-	    frictionCoefficients (),                                                    // SFVec2f  [in,out] frictionCoefficients      0 0             [0,∞)
-	       frictionDirection (0, 1, 0),                                             // SFVec3f  [in,out] frictionDirection         0 1 0           (-∞,∞)
-	               geometry1 (),                                                    // SFNode   [in,out] geometry1                 NULL            [X3DNBodyCollidableNode]
-	               geometry2 (),                                                    // SFNode   [in,out] geometry2                 NULL            [X3DNBodyCollidableNode]
-	          minbounceSpeed (),                                                    // SFFloat  [in,out] minbounceSpeed            0               [0,∞)
-	                position (),                                                    // SFVec3f  [in,out] position                  0 0 0           (-∞,∞)
-	        slipCoefficients (),                                                    // SFVec2f  [in,out] slipCoefficients          0 0             (-∞,∞)
-	softnessConstantForceMix (0.0001),                                              // SFFloat  [in,out] softnessConstantForceMix  0.0001          [0,1]
-	 softnessErrorCorrection (0.8),                                                 // SFFloat  [in,out] softnessErrorCorrection   0.8             [0,1]
-	            surfaceSpeed ()                                                     // SFVec2f  [in,out] surfaceSpeed              0 0             (-∞,∞)
+	fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("Contact");
 
-	addField (inputOutput, "metadata",                 metadata);
-	addField (inputOutput, "appliedParameters",        appliedParameters);
-	addField (inputOutput, "body1",                    body1);
-	addField (inputOutput, "body2",                    body2);
-	addField (inputOutput, "bounce",                   bounce);
-	addField (inputOutput, "contactNormal",            contactNormal);
-	addField (inputOutput, "depth",                    depth);
-	addField (inputOutput, "frictionCoefficients",     frictionCoefficients);
-	addField (inputOutput, "frictionDirection",        frictionDirection);
-	addField (inputOutput, "geometry1",                geometry1);
-	addField (inputOutput, "geometry2",                geometry2);
-	addField (inputOutput, "minbounceSpeed",           minbounceSpeed);
-	addField (inputOutput, "position",                 position);
-	addField (inputOutput, "slipCoefficients",         slipCoefficients);
-	addField (inputOutput, "softnessConstantForceMix", softnessConstantForceMix);
-	addField (inputOutput, "softnessErrorCorrection",  softnessErrorCorrection);
-	addField (inputOutput, "surfaceSpeed",             surfaceSpeed);
+	addField (inputOutput, "metadata",                 metadata ());
+	addField (inputOutput, "appliedParameters",        appliedParameters ());
+	addField (inputOutput, "body1",                    body1 ());
+	addField (inputOutput, "body2",                    body2 ());
+	addField (inputOutput, "bounce",                   bounce ());
+	addField (inputOutput, "contactNormal",            contactNormal ());
+	addField (inputOutput, "depth",                    depth ());
+	addField (inputOutput, "frictionCoefficients",     frictionCoefficients ());
+	addField (inputOutput, "frictionDirection",        frictionDirection ());
+	addField (inputOutput, "geometry1",                geometry1 ());
+	addField (inputOutput, "geometry2",                geometry2 ());
+	addField (inputOutput, "minbounceSpeed",           minbounceSpeed ());
+	addField (inputOutput, "position",                 position ());
+	addField (inputOutput, "slipCoefficients",         slipCoefficients ());
+	addField (inputOutput, "softnessConstantForceMix", softnessConstantForceMix ());
+	addField (inputOutput, "softnessErrorCorrection",  softnessErrorCorrection ());
+	addField (inputOutput, "surfaceSpeed",             surfaceSpeed ());
 }
 
 X3DBaseNode*
@@ -105,3 +109,4 @@ Contact::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

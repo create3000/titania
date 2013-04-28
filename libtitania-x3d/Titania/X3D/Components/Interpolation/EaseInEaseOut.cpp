@@ -55,22 +55,26 @@
 namespace titania {
 namespace X3D {
 
+EaseInEaseOut::Fields::Fields () :
+	set_fraction (new SFFloat ()),
+	easeInEaseOut (new MFVec2f ()),
+	key (new MFFloat ()),
+	modifiedFraction_changed (new SFFloat ())
+{ }
+
 EaseInEaseOut::EaseInEaseOut (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	                 X3DNode (),                                                    
-	            set_fraction (),                                                    // SFFloat [in]     set_fraction                        (-∞,∞)
-	           easeInEaseOut (),                                                    // MFVec2f [in,out] easeInEaseOut             [ ]       (-∞,∞)
-	                     key (),                                                    // MFFloat [in,out] key                       [ ]       (-∞,∞)
-	modifiedFraction_changed ()                                                     // SFFloat [out]    modifiedFraction_changed
+	fields ()
 {
 	setComponent ("Interpolation");
 	setTypeName ("EaseInEaseOut");
 
-	addField (inputOutput, "metadata",                 metadata);
-	addField (inputOnly,   "set_fraction",             set_fraction);
-	addField (inputOutput, "easeInEaseOut",            easeInEaseOut);
-	addField (inputOutput, "key",                      key);
-	addField (outputOnly,  "modifiedFraction_changed", modifiedFraction_changed);
+	addField (inputOutput, "metadata",                 metadata ());
+	addField (inputOnly,   "set_fraction",             set_fraction ());
+	addField (inputOutput, "easeInEaseOut",            easeInEaseOut ());
+	addField (inputOutput, "key",                      key ());
+	addField (outputOnly,  "modifiedFraction_changed", modifiedFraction_changed ());
 }
 
 X3DBaseNode*
@@ -85,3 +89,4 @@ EaseInEaseOut::interpolate (size_t index, float weight)
 
 } // X3D
 } // titania
+

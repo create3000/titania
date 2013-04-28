@@ -76,7 +76,7 @@ public:
 	BindableNodeStack (const pointer_type & node) :
 		stack ({ node })
 	{
-		node -> isBound .addInterest (this, &BindableNodeStack::set_bind, node);
+		node -> isBound () .addInterest (this, &BindableNodeStack::set_bind, node);
 	}
 
 	const pointer_type &
@@ -93,13 +93,13 @@ public:
 	{
 		if (stack .top () not_eq node)
 		{
-			stack .top () -> set_bind = false;
-			stack .top () -> isBound  = false;
+			stack .top () -> set_bind () = false;
+			stack .top () -> isBound ()  = false;
 
 			if (stack .push (node))
 				node -> shutdown .addInterest (this, &BindableNodeStack::erase, node);
 
-			node -> isBound .addInterest (this, &BindableNodeStack::set_bind, node);
+			node -> isBound () .addInterest (this, &BindableNodeStack::set_bind, node);
 		}
 	}
 
@@ -110,8 +110,8 @@ public:
 		{
 			node -> shutdown .removeInterest (this, &BindableNodeStack::erase);
 			stack .pop ();
-			stack .top () -> set_bind = true;
-			stack .top () -> isBound .addInterest (this, &BindableNodeStack::set_bind, node);
+			stack .top () -> set_bind () = true;
+			stack .top () -> isBound () .addInterest (this, &BindableNodeStack::set_bind, node);
 			return true;
 		}
 
@@ -143,7 +143,7 @@ private:
 	void
 	set_bind (pointer_type node)
 	{
-		node -> isBound .removeInterest (this, &BindableNodeStack::set_bind);
+		node -> isBound () .removeInterest (this, &BindableNodeStack::set_bind);
 		processInterests ();
 	}
 

@@ -61,8 +61,8 @@ class IntegerSequencer :
 {
 public:
 
-	MFInt32 keyValue;
-	SFInt32 value_changed;
+	
+	
 
 	IntegerSequencer (X3DExecutionContext* const);
 
@@ -70,9 +70,41 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFInt32 &
+	keyValue ()
+	{ return *fields .keyValue; }
+
+	const MFInt32 &
+	keyValue () const
+	{ return *fields .keyValue; }
+
+	SFInt32 &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFInt32 &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFInt32* const keyValue;
+		SFInt32* const value_changed;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

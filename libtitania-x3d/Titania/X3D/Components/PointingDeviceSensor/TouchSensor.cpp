@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,25 +57,29 @@ namespace X3D {
 
 // http://stackoverflow.com/questions/7207422/setting-up-opengl-multiple-render-targets
 
+TouchSensor::Fields::Fields () :
+	hitTexCoord_changed (new SFVec2f ()),
+	hitNormal_changed (new SFVec3f ()),
+	hitPoint_changed (new SFVec3f ())
+{ }
+
 TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DTouchSensorNode (),                                                    
-	hitTexCoord_changed (),                                                    // SFVec2f [out] hitTexCoord_changed
-	  hitNormal_changed (),                                                    // SFVec3f [out] hitNormal_changed
-	   hitPoint_changed ()                                                     // SFVec3f [out] hitPoint_changed
+	fields ()
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("TouchSensor");
 
-	addField (inputOutput, "metadata",            metadata);
-	addField (inputOutput, "enabled",             enabled);
-	addField (inputOutput, "description",         description);
-	addField (outputOnly,  "hitTexCoord_changed", hitTexCoord_changed);
-	addField (outputOnly,  "hitNormal_changed",   hitNormal_changed);
-	addField (outputOnly,  "hitPoint_changed",    hitPoint_changed);
-	addField (outputOnly,  "isOver",              isOver);
-	addField (outputOnly,  "isActive",            isActive);
-	addField (outputOnly,  "touchTime",           touchTime);
+	addField (inputOutput, "metadata",            metadata ());
+	addField (inputOutput, "enabled",             enabled ());
+	addField (inputOutput, "description",         description ());
+	addField (outputOnly,  "hitTexCoord_changed", hitTexCoord_changed ());
+	addField (outputOnly,  "hitNormal_changed",   hitNormal_changed ());
+	addField (outputOnly,  "hitPoint_changed",    hitPoint_changed ());
+	addField (outputOnly,  "isOver",              isOver ());
+	addField (outputOnly,  "isActive",            isActive ());
+	addField (outputOnly,  "touchTime",           touchTime ());
 }
 
 X3DBaseNode*
@@ -89,13 +93,14 @@ TouchSensor::set_over (const std::shared_ptr <Hit> & hit, bool over)
 {
 	X3DTouchSensorNode::set_over (hit, over);
 
-	if (isOver)
+	if (isOver ())
 	{
-		hitTexCoord_changed = Vector2f (hit -> texCoord .x (), hit -> texCoord .y ());
-		hitNormal_changed   = hit -> normal;
-		hitPoint_changed    = hit -> point * ~getTransformationMatrix ();
+		hitTexCoord_changed () = Vector2f (hit -> texCoord .x (), hit -> texCoord .y ());
+		hitNormal_changed ()   = hit -> normal;
+		hitPoint_changed ()    = hit -> point * ~getTransformationMatrix ();
 	}
 }
 
 } // X3D
 } // titania
+

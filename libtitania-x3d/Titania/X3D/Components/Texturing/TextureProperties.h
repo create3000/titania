@@ -72,23 +72,115 @@ class TextureProperties :
 {
 public:
 
-	SFColorRGBA borderColor;
-	SFInt32     borderWidth;
-	SFString    boundaryModeS;
-	SFString    boundaryModeT;
-	SFString    boundaryModeR;
-	SFString    minificationFilter;
-	SFString    magnificationFilter;
-	SFString    textureCompression;
-	SFBool      generateMipMaps;
-	SFFloat     anisotropicDegree;
-	SFFloat     texturePriority;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	TextureProperties (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFColorRGBA &
+	borderColor ()
+	{ return *fields .borderColor; }
+
+	const SFColorRGBA &
+	borderColor () const
+	{ return *fields .borderColor; }
+
+	SFInt32 &
+	borderWidth ()
+	{ return *fields .borderWidth; }
+
+	const SFInt32 &
+	borderWidth () const
+	{ return *fields .borderWidth; }
+
+	SFString &
+	boundaryModeS ()
+	{ return *fields .boundaryModeS; }
+
+	const SFString &
+	boundaryModeS () const
+	{ return *fields .boundaryModeS; }
+
+	SFString &
+	boundaryModeT ()
+	{ return *fields .boundaryModeT; }
+
+	const SFString &
+	boundaryModeT () const
+	{ return *fields .boundaryModeT; }
+
+	SFString &
+	boundaryModeR ()
+	{ return *fields .boundaryModeR; }
+
+	const SFString &
+	boundaryModeR () const
+	{ return *fields .boundaryModeR; }
+
+	SFString &
+	minificationFilter ()
+	{ return *fields .minificationFilter; }
+
+	const SFString &
+	minificationFilter () const
+	{ return *fields .minificationFilter; }
+
+	SFString &
+	magnificationFilter ()
+	{ return *fields .magnificationFilter; }
+
+	const SFString &
+	magnificationFilter () const
+	{ return *fields .magnificationFilter; }
+
+	SFString &
+	textureCompression ()
+	{ return *fields .textureCompression; }
+
+	const SFString &
+	textureCompression () const
+	{ return *fields .textureCompression; }
+
+	SFBool &
+	generateMipMaps ()
+	{ return *fields .generateMipMaps; }
+
+	const SFBool &
+	generateMipMaps () const
+	{ return *fields .generateMipMaps; }
+
+	SFFloat &
+	anisotropicDegree ()
+	{ return *fields .anisotropicDegree; }
+
+	const SFFloat &
+	anisotropicDegree () const
+	{ return *fields .anisotropicDegree; }
+
+	SFFloat &
+	texturePriority ()
+	{ return *fields .texturePriority; }
+
+	const SFFloat &
+	texturePriority () const
+	{ return *fields .texturePriority; }
+
+
 
 	virtual
 	void
@@ -121,9 +213,29 @@ private:
 	GLenum
 	getBoundaryMode (const std::string &) const;
 
+	struct Fields
+	{
+		Fields ();
+
+		SFColorRGBA* const borderColor;
+		SFInt32* const borderWidth;
+		SFString* const boundaryModeS;
+		SFString* const boundaryModeT;
+		SFString* const boundaryModeR;
+		SFString* const minificationFilter;
+		SFString* const magnificationFilter;
+		SFString* const textureCompression;
+		SFBool* const generateMipMaps;
+		SFFloat* const anisotropicDegree;
+		SFFloat* const texturePriority;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

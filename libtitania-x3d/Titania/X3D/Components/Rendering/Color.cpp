@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,16 +55,20 @@
 namespace titania {
 namespace X3D {
 
+Color::Fields::Fields () :
+	color (new MFColor ())
+{ }
+
 Color::Color (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DColorNode (),                                                    
-	       color ()                                                     // MFColor [in,out] color  [NULL]        [0,1]
+	fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("Color");
 
-	addField (inputOutput, "metadata", metadata);
-	addField (inputOutput, "color",    color);
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "color",    color ());
 }
 
 X3DBaseNode*
@@ -76,14 +80,15 @@ Color::create (X3DExecutionContext* const executionContext) const
 void
 Color::resize (size_t size)
 {
-	if (color .size ())
+	if (color () .size ())
 	{
-		if (color .size () < size)
-			color .resize (size, color .back ());
+		if (color () .size () < size)
+			color () .resize (size, color () .back ());
 	}
 	else
-		color .resize (size, SFColor (1, 1, 1));
+		color () .resize (size, SFColor (1, 1, 1));
 }
 
 } // X3D
 } // titania
+

@@ -61,16 +61,52 @@ class LOD :
 {
 public:
 
-	SFBool  forceTransitions;
-	SFVec3f center;
-	MFFloat range;
-	SFInt32 level_changed;
+	
+	
+	
+	
 
 	LOD (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFBool &
+	forceTransitions ()
+	{ return *fields .forceTransitions; }
+
+	const SFBool &
+	forceTransitions () const
+	{ return *fields .forceTransitions; }
+
+	SFVec3f &
+	center ()
+	{ return *fields .center; }
+
+	const SFVec3f &
+	center () const
+	{ return *fields .center; }
+
+	MFFloat &
+	range ()
+	{ return *fields .range; }
+
+	const MFFloat &
+	range () const
+	{ return *fields .range; }
+
+	SFInt32 &
+	level_changed ()
+	{ return *fields .level_changed; }
+
+	const SFInt32 &
+	level_changed () const
+	{ return *fields .level_changed; }
+
+
 
 	virtual
 	void
@@ -82,6 +118,19 @@ private:
 	int32_t
 	getLevel (TraverseType);
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const forceTransitions;
+		SFVec3f* const center;
+		MFFloat* const range;
+		SFInt32* const level_changed;
+	};
+
+	Fields fields;
+
+
 
 };
 
@@ -89,3 +138,4 @@ private:
 } // titania
 
 #endif
+

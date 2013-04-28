@@ -61,15 +61,56 @@ class X3DParticleEmitterNode :
 {
 public:
 
-	SFFloat speed;
-	SFFloat variation;
-	SFFloat mass;
-	SFFloat surfaceArea;
+	SFFloat &
+	speed ()
+	{ return *fields .speed; }
+
+	const SFFloat &
+	speed () const
+	{ return *fields .speed; }
+
+	SFFloat &
+	variation ()
+	{ return *fields .variation; }
+
+	const SFFloat &
+	variation () const
+	{ return *fields .variation; }
+
+	SFFloat &
+	mass ()
+	{ return *fields .mass; }
+
+	const SFFloat &
+	mass () const
+	{ return *fields .mass; }
+
+	SFFloat &
+	surfaceArea ()
+	{ return *fields .surfaceArea; }
+
+	const SFFloat &
+	surfaceArea () const
+	{ return *fields .surfaceArea; }
+
 
 
 protected:
 
 	X3DParticleEmitterNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const speed;
+		SFFloat* const variation;
+		SFFloat* const mass;
+		SFFloat* const surfaceArea;
+	};
+
+	Fields fields;
 
 };
 
@@ -77,3 +118,4 @@ protected:
 } // titania
 
 #endif
+

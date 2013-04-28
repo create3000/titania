@@ -61,15 +61,15 @@ class ColorDamper :
 {
 public:
 
-	SFColor set_destination;
-	SFColor set_value;
-	SFTime  tau;
-	SFFloat tolerance;
-	SFBool  isActive;
-	SFColor value_changed;
-	SFColor initialDestination;
-	SFColor defaultValue;
-	SFInt32 order;
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	ColorDamper (X3DExecutionContext* const);
 
@@ -77,9 +77,104 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFColor &
+	set_destination ()
+	{ return *fields .set_destination; }
+
+	const SFColor &
+	set_destination () const
+	{ return *fields .set_destination; }
+
+	SFColor &
+	set_value ()
+	{ return *fields .set_value; }
+
+	const SFColor &
+	set_value () const
+	{ return *fields .set_value; }
+
+	SFTime &
+	tau ()
+	{ return *fields .tau; }
+
+	const SFTime &
+	tau () const
+	{ return *fields .tau; }
+
+	SFFloat &
+	tolerance ()
+	{ return *fields .tolerance; }
+
+	const SFFloat &
+	tolerance () const
+	{ return *fields .tolerance; }
+
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
+	SFColor &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFColor &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+	SFColor &
+	initialDestination ()
+	{ return *fields .initialDestination; }
+
+	const SFColor &
+	initialDestination () const
+	{ return *fields .initialDestination; }
+
+	SFColor &
+	defaultValue ()
+	{ return *fields .defaultValue; }
+
+	const SFColor &
+	defaultValue () const
+	{ return *fields .defaultValue; }
+
+	SFInt32 &
+	order ()
+	{ return *fields .order; }
+
+	const SFInt32 &
+	order () const
+	{ return *fields .order; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFColor* const set_destination;
+		SFColor* const set_value;
+		SFTime* const tau;
+		SFFloat* const tolerance;
+		SFBool* const isActive;
+		SFColor* const value_changed;
+		SFColor* const initialDestination;
+		SFColor* const defaultValue;
+		SFInt32* const order;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

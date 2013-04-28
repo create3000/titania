@@ -61,9 +61,9 @@ class NurbsTrimmedSurface :
 {
 public:
 
-	MFNode addTrimmingContour;
-	MFNode removeTrimmingContour;
-	MFNode trimmingContour;
+	
+	
+	
 
 	NurbsTrimmedSurface (X3DExecutionContext* const);
 
@@ -71,9 +71,50 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFNode &
+	addTrimmingContour ()
+	{ return *fields .addTrimmingContour; }
+
+	const MFNode &
+	addTrimmingContour () const
+	{ return *fields .addTrimmingContour; }
+
+	MFNode &
+	removeTrimmingContour ()
+	{ return *fields .removeTrimmingContour; }
+
+	const MFNode &
+	removeTrimmingContour () const
+	{ return *fields .removeTrimmingContour; }
+
+	MFNode &
+	trimmingContour ()
+	{ return *fields .trimmingContour; }
+
+	const MFNode &
+	trimmingContour () const
+	{ return *fields .trimmingContour; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const addTrimmingContour;
+		MFNode* const removeTrimmingContour;
+		MFNode* const trimmingContour;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

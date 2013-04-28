@@ -65,24 +65,124 @@ public:
 	using X3DGeometryNode::ccw;
 	using X3DGeometryNode::creaseAngle;
 
-	MFVec2f    set_crossSection;
-	MFRotation set_orientation;
-	MFVec2f    set_scale;
-	MFVec3f    set_spine;
-	SFBool     beginCap;
-	SFBool     endCap;
-	SFBool     solid;
-	SFBool     convex;
-	MFVec2f    crossSection;
-	MFRotation orientation;
-	MFVec2f    scale;
-	MFVec3f    spine;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	Extrusion (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFVec2f &
+	set_crossSection ()
+	{ return *fields .set_crossSection; }
+
+	const MFVec2f &
+	set_crossSection () const
+	{ return *fields .set_crossSection; }
+
+	MFRotation &
+	set_orientation ()
+	{ return *fields .set_orientation; }
+
+	const MFRotation &
+	set_orientation () const
+	{ return *fields .set_orientation; }
+
+	MFVec2f &
+	set_scale ()
+	{ return *fields .set_scale; }
+
+	const MFVec2f &
+	set_scale () const
+	{ return *fields .set_scale; }
+
+	MFVec3f &
+	set_spine ()
+	{ return *fields .set_spine; }
+
+	const MFVec3f &
+	set_spine () const
+	{ return *fields .set_spine; }
+
+	SFBool &
+	beginCap ()
+	{ return *fields .beginCap; }
+
+	const SFBool &
+	beginCap () const
+	{ return *fields .beginCap; }
+
+	SFBool &
+	endCap ()
+	{ return *fields .endCap; }
+
+	const SFBool &
+	endCap () const
+	{ return *fields .endCap; }
+
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+	SFBool &
+	convex ()
+	{ return *fields .convex; }
+
+	const SFBool &
+	convex () const
+	{ return *fields .convex; }
+
+	MFVec2f &
+	crossSection ()
+	{ return *fields .crossSection; }
+
+	const MFVec2f &
+	crossSection () const
+	{ return *fields .crossSection; }
+
+	MFRotation &
+	orientation ()
+	{ return *fields .orientation; }
+
+	const MFRotation &
+	orientation () const
+	{ return *fields .orientation; }
+
+	MFVec2f &
+	scale ()
+	{ return *fields .scale; }
+
+	const MFVec2f &
+	scale () const
+	{ return *fields .scale; }
+
+	MFVec3f &
+	spine ()
+	{ return *fields .spine; }
+
+	const MFVec3f &
+	spine () const
+	{ return *fields .spine; }
+
+
 
 	virtual
 	void
@@ -115,9 +215,31 @@ private:
 	          const Vector2f &,
 	          const Vector2f &);
 
+	struct Fields
+	{
+		Fields ();
+
+		MFVec2f* const set_crossSection;
+		MFRotation* const set_orientation;
+		MFVec2f* const set_scale;
+		MFVec3f* const set_spine;
+		SFBool* const beginCap;
+		SFBool* const endCap;
+		SFBool* const solid;
+		SFBool* const convex;
+		MFVec2f* const crossSection;
+		MFRotation* const orientation;
+		MFVec2f* const scale;
+		MFVec3f* const spine;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

@@ -61,12 +61,12 @@ class GeoTouchSensor :
 {
 public:
 
-	SFVec3f              hitNormal_changed;
-	SFVec3f              hitPoint_changed;
-	SFVec2f              hitTexCoord_changed;
-	SFVec3d              hitGeoCoord_changed;
-	SFNode <X3DBaseNode> geoOrigin;
-	MFString             geoSystem;
+	
+	
+	
+	
+	
+	
 
 	GeoTouchSensor (X3DExecutionContext* const);
 
@@ -74,9 +74,77 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3f &
+	hitNormal_changed ()
+	{ return *fields .hitNormal_changed; }
+
+	const SFVec3f &
+	hitNormal_changed () const
+	{ return *fields .hitNormal_changed; }
+
+	SFVec3f &
+	hitPoint_changed ()
+	{ return *fields .hitPoint_changed; }
+
+	const SFVec3f &
+	hitPoint_changed () const
+	{ return *fields .hitPoint_changed; }
+
+	SFVec2f &
+	hitTexCoord_changed ()
+	{ return *fields .hitTexCoord_changed; }
+
+	const SFVec2f &
+	hitTexCoord_changed () const
+	{ return *fields .hitTexCoord_changed; }
+
+	SFVec3d &
+	hitGeoCoord_changed ()
+	{ return *fields .hitGeoCoord_changed; }
+
+	const SFVec3d &
+	hitGeoCoord_changed () const
+	{ return *fields .hitGeoCoord_changed; }
+
+	SFNode <X3DBaseNode> &
+	geoOrigin ()
+	{ return *fields .geoOrigin; }
+
+	const SFNode <X3DBaseNode> &
+	geoOrigin () const
+	{ return *fields .geoOrigin; }
+
+	MFString &
+	geoSystem ()
+	{ return *fields .geoSystem; }
+
+	const MFString &
+	geoSystem () const
+	{ return *fields .geoSystem; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const hitNormal_changed;
+		SFVec3f* const hitPoint_changed;
+		SFVec2f* const hitTexCoord_changed;
+		SFVec3d* const hitGeoCoord_changed;
+		SFNode <X3DBaseNode>* const geoOrigin;
+		MFString* const geoSystem;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

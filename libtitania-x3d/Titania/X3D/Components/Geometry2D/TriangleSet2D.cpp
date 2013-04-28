@@ -55,18 +55,22 @@
 namespace titania {
 namespace X3D {
 
+TriangleSet2D::Fields::Fields () :
+	vertices (new MFVec2f ()),
+	solid (new SFBool (true))
+{ }
+
 TriangleSet2D::TriangleSet2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	       vertices (),                                                    // MFVec2f [in,out] vertices  [ ]          (-∞,∞)
-	          solid (true)                                                 // SFBool  [ ]      solid     TRUE
+	fields ()
 {
 	setComponent ("Geometry2D");
 	setTypeName ("TriangleSet2D");
 
-	addField (inputOutput,    "metadata", metadata);
-	addField (inputOutput,    "vertices", vertices);
-	addField (initializeOnly, "solid",    solid);
+	addField (inputOutput,    "metadata", metadata ());
+	addField (inputOutput,    "vertices", vertices ());
+	addField (initializeOnly, "solid",    solid ());
 }
 
 X3DBaseNode*
@@ -78,20 +82,20 @@ TriangleSet2D::create (X3DExecutionContext* const executionContext) const
 void
 TriangleSet2D::build ()
 {
-	size_t elements = solid ? 1 : 2;
-	size_t reserve  = elements * vertices .size ();
+	size_t elements = solid () ? 1 : 2;
+	size_t reserve  = elements * vertices () .size ();
 	
 	getTexCoord () .reserve (reserve);
 	getNormals  () .reserve (reserve);
 	getVertices () .reserve (reserve);
 	
-	for (const auto & vertex : vertices)
+	for (const auto & vertex : vertices ())
 	{
 		getNormals  () .emplace_back (0, 0, 1);
 		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
 	}
 	
-	size_t resize = vertices .size () - (vertices .size () % 3);
+	size_t resize = vertices () .size () - (vertices () .size () % 3);
 	
 	getNormals  () .resize (resize);
 	getVertices () .resize (resize);
@@ -102,7 +106,7 @@ TriangleSet2D::build ()
 	setVertexMode (GL_TRIANGLES);
 	setSolid (true);
 	
-	if (not solid)
+	if (not solid ())
 		addMirrorVertices (true);
 }
 
@@ -127,3 +131,4 @@ TriangleSet2D::buildTexCoord ()
 
 } // X3D
 } // titania
+

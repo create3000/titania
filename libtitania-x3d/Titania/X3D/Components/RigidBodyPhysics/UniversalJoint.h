@@ -61,17 +61,17 @@ class UniversalJoint :
 {
 public:
 
-	SFVec3f anchorPoint;
-	SFVec3f axis1;
-	SFVec3f axis2;
-	SFFloat stopBounce1;
-	SFFloat stop1ErrorCorrection;
-	SFFloat stop2Bounce;
-	SFFloat stop2ErrorCorrection;
-	SFVec3f body1AnchorPoint;
-	SFVec3f body1Axis;
-	SFVec3f body2AnchorPoint;
-	SFVec3f body2Axis;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	UniversalJoint (X3DExecutionContext* const);
 
@@ -79,9 +79,122 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3f &
+	anchorPoint ()
+	{ return *fields .anchorPoint; }
+
+	const SFVec3f &
+	anchorPoint () const
+	{ return *fields .anchorPoint; }
+
+	SFVec3f &
+	axis1 ()
+	{ return *fields .axis1; }
+
+	const SFVec3f &
+	axis1 () const
+	{ return *fields .axis1; }
+
+	SFVec3f &
+	axis2 ()
+	{ return *fields .axis2; }
+
+	const SFVec3f &
+	axis2 () const
+	{ return *fields .axis2; }
+
+	SFFloat &
+	stopBounce1 ()
+	{ return *fields .stopBounce1; }
+
+	const SFFloat &
+	stopBounce1 () const
+	{ return *fields .stopBounce1; }
+
+	SFFloat &
+	stop1ErrorCorrection ()
+	{ return *fields .stop1ErrorCorrection; }
+
+	const SFFloat &
+	stop1ErrorCorrection () const
+	{ return *fields .stop1ErrorCorrection; }
+
+	SFFloat &
+	stop2Bounce ()
+	{ return *fields .stop2Bounce; }
+
+	const SFFloat &
+	stop2Bounce () const
+	{ return *fields .stop2Bounce; }
+
+	SFFloat &
+	stop2ErrorCorrection ()
+	{ return *fields .stop2ErrorCorrection; }
+
+	const SFFloat &
+	stop2ErrorCorrection () const
+	{ return *fields .stop2ErrorCorrection; }
+
+	SFVec3f &
+	body1AnchorPoint ()
+	{ return *fields .body1AnchorPoint; }
+
+	const SFVec3f &
+	body1AnchorPoint () const
+	{ return *fields .body1AnchorPoint; }
+
+	SFVec3f &
+	body1Axis ()
+	{ return *fields .body1Axis; }
+
+	const SFVec3f &
+	body1Axis () const
+	{ return *fields .body1Axis; }
+
+	SFVec3f &
+	body2AnchorPoint ()
+	{ return *fields .body2AnchorPoint; }
+
+	const SFVec3f &
+	body2AnchorPoint () const
+	{ return *fields .body2AnchorPoint; }
+
+	SFVec3f &
+	body2Axis ()
+	{ return *fields .body2Axis; }
+
+	const SFVec3f &
+	body2Axis () const
+	{ return *fields .body2Axis; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const anchorPoint;
+		SFVec3f* const axis1;
+		SFVec3f* const axis2;
+		SFFloat* const stopBounce1;
+		SFFloat* const stop1ErrorCorrection;
+		SFFloat* const stop2Bounce;
+		SFFloat* const stop2ErrorCorrection;
+		SFVec3f* const body1AnchorPoint;
+		SFVec3f* const body1Axis;
+		SFVec3f* const body2AnchorPoint;
+		SFVec3f* const body2Axis;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

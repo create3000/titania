@@ -55,33 +55,37 @@
 namespace titania {
 namespace X3D {
 
+GeoTransform::Fields::Fields () :
+	geoCenter (new SFVec3d ()),
+	rotation (new SFRotation ()),
+	scale (new SFVec3f (1, 1, 1)),
+	scaleOrientation (new SFRotation ()),
+	translation (new SFVec3f ()),
+	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoSystem (new MFString ({ "GD", "WE" }))
+{ }
+
 GeoTransform::GeoTransform (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DGroupingNode (),                                                    
-	       geoCenter (),                                                    // SFVec3d    [in,out] geoCenter         0 0 0              (-∞,∞)
-	        rotation (),                                                    // SFRotation [in,out] rotation          0 0 1 0            [-1,1] or (-∞,∞)
-	           scale (1, 1, 1),                                             // SFVec3f    [in,out] scale             1 1 1              (0,∞)
-	scaleOrientation (),                                                    // SFRotation [in,out] scaleOrientation  0 0 1 0            [-1,1] or (-∞,∞)
-	     translation (),                                                    // SFVec3f    [in,out] translation       0 0 0              (-∞,∞)
-	       geoOrigin (),                                                    // SFNode     [ ]      geoOrigin         NULL               [GeoOrigin]
-	       geoSystem ({ "GD", "WE" })                                       // MFString   [ ]      geoSystem         ["GD","WE"]        [see <a href="../../../../X3D/Amendment%202%20to%2019775-1/WD2/Part01/components/geodata .html#Specifyingaspatialreference">25.2.3</a>]
+	fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoTransform");
 
-	addField (inputOutput,    "metadata",         metadata);
-	addField (initializeOnly, "bboxSize",         bboxSize);
-	addField (initializeOnly, "bboxCenter",       bboxCenter);
-	addField (inputOnly,      "addChildren",      addChildren);
-	addField (inputOnly,      "removeChildren",   removeChildren);
-	addField (inputOutput,    "children",         children);
-	addField (inputOutput,    "geoCenter",        geoCenter);
-	addField (inputOutput,    "rotation",         rotation);
-	addField (inputOutput,    "scale",            scale);
-	addField (inputOutput,    "scaleOrientation", scaleOrientation);
-	addField (inputOutput,    "translation",      translation);
-	addField (initializeOnly, "geoOrigin",        geoOrigin);
-	addField (initializeOnly, "geoSystem",        geoSystem);
+	addField (inputOutput,    "metadata",         metadata ());
+	addField (initializeOnly, "bboxSize",         bboxSize ());
+	addField (initializeOnly, "bboxCenter",       bboxCenter ());
+	addField (inputOnly,      "addChildren",      addChildren ());
+	addField (inputOnly,      "removeChildren",   removeChildren ());
+	addField (inputOutput,    "children",         children ());
+	addField (inputOutput,    "geoCenter",        geoCenter ());
+	addField (inputOutput,    "rotation",         rotation ());
+	addField (inputOutput,    "scale",            scale ());
+	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
+	addField (inputOutput,    "translation",      translation ());
+	addField (initializeOnly, "geoOrigin",        geoOrigin ());
+	addField (initializeOnly, "geoSystem",        geoSystem ());
 }
 
 X3DBaseNode*
@@ -92,3 +96,4 @@ GeoTransform::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

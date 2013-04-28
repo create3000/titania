@@ -69,22 +69,103 @@ public:
 
 	using X3DGeometryNode::ccw;
 
-	SFBool colorPerVertex;
-	SFBool normalPerVertex;
-	SFBool solid;
+	SFBool &
+	colorPerVertex ()
+	{ return *fields .colorPerVertex; }
 
-	MFNode               attrib;
-	SFNode <X3DBaseNode> fogCoord;
+	const SFBool &
+	colorPerVertex () const
+	{ return *fields .colorPerVertex; }
 
-	SFNode <X3DBaseNode> texCoord;
-	SFNode <X3DBaseNode> color;
-	SFNode <X3DBaseNode> normal;
-	SFNode <X3DBaseNode> coord;
+	SFBool &
+	normalPerVertex ()
+	{ return *fields .normalPerVertex; }
+
+	const SFBool &
+	normalPerVertex () const
+	{ return *fields .normalPerVertex; }
+
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+
+	MFNode &
+	attrib ()
+	{ return *fields .attrib; }
+
+	const MFNode &
+	attrib () const
+	{ return *fields .attrib; }
+
+	SFNode <X3DBaseNode> &
+	fogCoord ()
+	{ return *fields .fogCoord; }
+
+	const SFNode <X3DBaseNode> &
+	fogCoord () const
+	{ return *fields .fogCoord; }
+
+
+	SFNode <X3DBaseNode> &
+	texCoord ()
+	{ return *fields .texCoord; }
+
+	const SFNode <X3DBaseNode> &
+	texCoord () const
+	{ return *fields .texCoord; }
+
+	SFNode <X3DBaseNode> &
+	color ()
+	{ return *fields .color; }
+
+	const SFNode <X3DBaseNode> &
+	color () const
+	{ return *fields .color; }
+
+	SFNode <X3DBaseNode> &
+	normal ()
+	{ return *fields .normal; }
+
+	const SFNode <X3DBaseNode> &
+	normal () const
+	{ return *fields .normal; }
+
+	SFNode <X3DBaseNode> &
+	coord ()
+	{ return *fields .coord; }
+
+	const SFNode <X3DBaseNode> &
+	coord () const
+	{ return *fields .coord; }
+
 
 
 protected:
 
 	X3DComposedGeometryNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const colorPerVertex;
+		SFBool* const normalPerVertex;
+		SFBool* const solid;
+		MFNode* const attrib;
+		SFNode <X3DBaseNode>* const fogCoord;
+		SFNode <X3DBaseNode>* const texCoord;
+		SFNode <X3DBaseNode>* const color;
+		SFNode <X3DBaseNode>* const normal;
+		SFNode <X3DBaseNode>* const coord;
+	};
+
+	Fields fields;
 
 };
 
@@ -92,3 +173,4 @@ protected:
 } // titania
 
 #endif
+

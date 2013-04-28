@@ -55,25 +55,29 @@
 namespace titania {
 namespace X3D {
 
+NurbsSet::Fields::Fields () :
+	addGeometry (new MFNode ()),
+	removeGeometry (new MFNode ()),
+	geometry (new MFNode ()),
+	tessellationScale (new SFFloat (1))
+{ }
+
 NurbsSet::NurbsSet (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DChildNode (),                                                    
 	 X3DBoundedObject (),                                                    
-	      addGeometry (),                                                    // MFNode  [in]     addGeometry                   [NurbsSurface]
-	   removeGeometry (),                                                    // MFNode  [in]     removeGeometry                [NurbsSurface]
-	         geometry (),                                                    // MFNode  [in,out] geometry           [ ]        [NurbsSurface]
-	tessellationScale (1)                                                    // SFFloat [in,out] tessellationScale  1.0        (0,∞)
+	fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsSet");
 
-	addField (inputOutput,    "metadata",          metadata);
-	addField (initializeOnly, "bboxSize",          bboxSize);
-	addField (initializeOnly, "bboxCenter",        bboxCenter);
-	addField (inputOnly,      "addGeometry",       addGeometry);
-	addField (inputOnly,      "removeGeometry",    removeGeometry);
-	addField (inputOutput,    "geometry",          geometry);
-	addField (inputOutput,    "tessellationScale", tessellationScale);
+	addField (inputOutput,    "metadata",          metadata ());
+	addField (initializeOnly, "bboxSize",          bboxSize ());
+	addField (initializeOnly, "bboxCenter",        bboxCenter ());
+	addField (inputOnly,      "addGeometry",       addGeometry ());
+	addField (inputOnly,      "removeGeometry",    removeGeometry ());
+	addField (inputOutput,    "geometry",          geometry ());
+	addField (inputOutput,    "tessellationScale", tessellationScale ());
 }
 
 X3DBaseNode*
@@ -104,3 +108,4 @@ NurbsSet::dispose ()
 
 } // X3D
 } // titania
+

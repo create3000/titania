@@ -61,7 +61,7 @@ class TextureTransformMatrix3D :
 {
 public:
 
-	SFMatrix4f matrix;
+	
 
 	TextureTransformMatrix3D (X3DExecutionContext* const);
 
@@ -69,9 +69,31 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFMatrix4f &
+	matrix ()
+	{ return *fields .matrix; }
+
+	const SFMatrix4f &
+	matrix () const
+	{ return *fields .matrix; }
+
+
+
 	virtual
 	void
 	draw ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFMatrix4f* const matrix;
+	};
+
+	Fields fields;
 
 };
 
@@ -79,3 +101,4 @@ public:
 } // titania
 
 #endif
+

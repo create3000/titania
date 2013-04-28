@@ -57,18 +57,22 @@
 namespace titania {
 namespace X3D {
 
+Sphere::Fields::Fields () :
+	radius (new SFFloat (1)),
+	solid (new SFBool (true))
+{ }
+
 Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	         radius (1),                                                   // SFFloat [ ] radius  1           (0,∞)
-	          solid (true)                                                 // SFBool  [ ] solid   TRUE
+	fields ()
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Sphere");
 
-	addField (inputOutput,    "metadata", metadata);
-	addField (initializeOnly, "radius",   radius);
-	addField (initializeOnly, "solid",    solid);
+	addField (inputOutput,    "metadata", metadata ());
+	addField (initializeOnly, "radius",   radius ());
+	addField (initializeOnly, "solid",    solid ());
 }
 
 X3DBaseNode*
@@ -82,7 +86,7 @@ Sphere::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> sphereProperties .addInterest (this, &Sphere::set_properties);
+	getBrowser () -> getBrowserOptions () -> sphereProperties () .addInterest (this, &Sphere::set_properties);
 }
 
 void
@@ -94,7 +98,7 @@ Sphere::set_properties ()
 Box3f
 Sphere::createBBox ()
 {
-	float diameter = 2 * radius;
+	float diameter = 2 * radius ();
 
 	return Box3f (Vector3f (diameter, diameter, diameter), Vector3f ());
 }
@@ -102,12 +106,12 @@ Sphere::createBBox ()
 void
 Sphere::build ()
 {
-	const X3DSpherePropertyNode* properties = getBrowser () -> getBrowserOptions () -> sphereProperties .getValue ();
+	const X3DSpherePropertyNode* properties = getBrowser () -> getBrowserOptions () -> sphereProperties () .getValue ();
 
 	getTexCoord () = properties -> getTexCoord ();
 	getNormals  () = properties -> getNormals  ();
 
-	if (radius == 1.0f)
+	if (radius () == 1.0f)
 		getVertices () = properties -> getVertices ();
 
 	else
@@ -115,21 +119,22 @@ Sphere::build ()
 		getVertices () .reserve (properties -> getVertices () .size ());
 
 		for (const auto & vertex : properties -> getVertices ())
-			getVertices () .emplace_back (vertex * radius .getValue ());
+			getVertices () .emplace_back (vertex * radius () .getValue ());
 	}
 
 	addElement (getVertices () .size ());
 	setVertexMode (properties -> getVertexMode ());
-	setSolid (solid);
+	setSolid (solid ());
 }
 
 void
 Sphere::dispose ()
 {
-	getBrowser () -> getBrowserOptions () -> sphereProperties .removeInterest (this, &Sphere::set_properties);
+	getBrowser () -> getBrowserOptions () -> sphereProperties () .removeInterest (this, &Sphere::set_properties);
 
 	X3DGeometryNode::dispose ();
 }
 
 } // X3D
 } // titania
+

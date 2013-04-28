@@ -61,13 +61,13 @@ class SliderJoint :
 {
 public:
 
-	SFVec3f axis;
-	SFFloat maxSeparation;
-	SFFloat minSeparation;
-	SFFloat stopBounce;
-	SFFloat stopErrorCorrection;
-	SFFloat separation;
-	SFFloat separationRate;
+	
+	
+	
+	
+	
+	
+	
 
 	SliderJoint (X3DExecutionContext* const);
 
@@ -75,9 +75,86 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3f &
+	axis ()
+	{ return *fields .axis; }
+
+	const SFVec3f &
+	axis () const
+	{ return *fields .axis; }
+
+	SFFloat &
+	maxSeparation ()
+	{ return *fields .maxSeparation; }
+
+	const SFFloat &
+	maxSeparation () const
+	{ return *fields .maxSeparation; }
+
+	SFFloat &
+	minSeparation ()
+	{ return *fields .minSeparation; }
+
+	const SFFloat &
+	minSeparation () const
+	{ return *fields .minSeparation; }
+
+	SFFloat &
+	stopBounce ()
+	{ return *fields .stopBounce; }
+
+	const SFFloat &
+	stopBounce () const
+	{ return *fields .stopBounce; }
+
+	SFFloat &
+	stopErrorCorrection ()
+	{ return *fields .stopErrorCorrection; }
+
+	const SFFloat &
+	stopErrorCorrection () const
+	{ return *fields .stopErrorCorrection; }
+
+	SFFloat &
+	separation ()
+	{ return *fields .separation; }
+
+	const SFFloat &
+	separation () const
+	{ return *fields .separation; }
+
+	SFFloat &
+	separationRate ()
+	{ return *fields .separationRate; }
+
+	const SFFloat &
+	separationRate () const
+	{ return *fields .separationRate; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const axis;
+		SFFloat* const maxSeparation;
+		SFFloat* const minSeparation;
+		SFFloat* const stopBounce;
+		SFFloat* const stopErrorCorrection;
+		SFFloat* const separation;
+		SFFloat* const separationRate;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

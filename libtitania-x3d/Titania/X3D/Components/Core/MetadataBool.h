@@ -62,13 +62,25 @@ class MetadataBool :
 {
 public:
 
-	MFBool value;
+	
 
 	MetadataBool (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFBool &
+	value ()
+	{ return *fields .value; }
+
+	const MFBool &
+	value () const
+	{ return *fields .value; }
+
+
 
 	virtual
 	void
@@ -81,9 +93,20 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFBool* const value;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

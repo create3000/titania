@@ -55,19 +55,23 @@
 namespace titania {
 namespace X3D {
 
+PixelTexture::Fields::Fields () :
+	image (new SFImage (0, 0, 0, MFInt32 ()))
+{ }
+
 PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTexture2DNode (),                                                    
-	           image (0, 0, 0, MFInt32 ())                                  // SFImage [in,out] image  0 0 0
+	fields ()
 {
 	setComponent ("Texturing");
 	setTypeName ("PixelTexture");
 
-	addField (inputOutput,    "metadata",          metadata);
-	addField (inputOutput,    "image",             image);
-	addField (initializeOnly, "repeatS",           repeatS);
-	addField (initializeOnly, "repeatT",           repeatT);
-	addField (initializeOnly, "textureProperties", textureProperties);
+	addField (inputOutput,    "metadata",          metadata ());
+	addField (inputOutput,    "image",             image ());
+	addField (initializeOnly, "repeatS",           repeatS ());
+	addField (initializeOnly, "repeatT",           repeatT ());
+	addField (initializeOnly, "textureProperties", textureProperties ());
 }
 
 X3DBaseNode*
@@ -84,7 +88,7 @@ PixelTexture::initialize ()
 	//Replacing All or Part of a Texture Image
 	//void glTexSubImage2D (...);
 
-	image .addInterest (this, &PixelTexture::requestImmediateLoad);
+	image () .addInterest (this, &PixelTexture::requestImmediateLoad);
 
 	requestImmediateLoad ();
 }
@@ -92,24 +96,24 @@ PixelTexture::initialize ()
 void
 PixelTexture::requestImmediateLoad ()
 {
-	if (image .getComponents () < 1 or image .getComponents () > 4 or image .getWidth () <= 0 or image .getHeight () <= 0)
+	if (image () .getComponents () < 1 or image () .getComponents () > 4 or image () .getWidth () <= 0 or image () .getHeight () <= 0)
 		return;
 
-	size_t pixels = image .getWidth () * image .getHeight ();
+	size_t pixels = image () .getWidth () * image () .getHeight ();
 
 	Magick::Image mimage;
 	mimage .depth (8);
-	mimage .size (Magick::Geometry (image .getWidth (), image .getHeight ()));
+	mimage .size (Magick::Geometry (image () .getWidth (), image () .getHeight ()));
 
-	switch (image .getComponents ())
+	switch (image () .getComponents ())
 	{
 		case 1:
 		{
 			std::vector <uint8_t> array;
 			array .reserve (pixels);
 
-			array .assign (image .getArray () .begin (),
-			               image .getArray () .end ());
+			array .assign (image () .getArray () .begin (),
+			               image () .getArray () .end ());
 
 			Magick::Blob blob (array .data (), pixels);
 			mimage .magick ("GRAY");
@@ -122,7 +126,7 @@ PixelTexture::requestImmediateLoad ()
 			std::vector <uint8_t> array;
 			array .reserve (pixels * 2);
 
-			for (const auto & pixel : image .getArray ())
+			for (const auto & pixel : image () .getArray ())
 			{
 				uint8_t color = pixel >> 8;
 				array .push_back (color);
@@ -142,7 +146,7 @@ PixelTexture::requestImmediateLoad ()
 			std::vector <uint8_t> array;
 			array .reserve (pixels * 3);
 
-			for (const auto & pixel : image .getArray ())
+			for (const auto & pixel : image () .getArray ())
 			{
 				array .push_back (pixel >> 16);
 				array .push_back (pixel >> 8);
@@ -160,7 +164,7 @@ PixelTexture::requestImmediateLoad ()
 			std::vector <uint8_t> array;
 			array .reserve (pixels * 4);
 
-			for (const auto & pixel : image .getArray ())
+			for (const auto & pixel : image () .getArray ())
 			{
 				array .push_back (pixel >> 24);
 				array .push_back (pixel >> 16);
@@ -184,3 +188,4 @@ PixelTexture::requestImmediateLoad ()
 
 } // X3D
 } // titania
+

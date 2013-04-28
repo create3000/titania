@@ -61,8 +61,8 @@ class IndexedTriangleSet :
 {
 public:
 
-	MFInt32 set_index;
-	MFInt32 index;
+	
+	
 
 	IndexedTriangleSet (X3DExecutionContext* const);
 
@@ -70,9 +70,41 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFInt32 &
+	set_index ()
+	{ return *fields .set_index; }
+
+	const MFInt32 &
+	set_index () const
+	{ return *fields .set_index; }
+
+	MFInt32 &
+	index ()
+	{ return *fields .index; }
+
+	const MFInt32 &
+	index () const
+	{ return *fields .index; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFInt32* const set_index;
+		MFInt32* const index;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

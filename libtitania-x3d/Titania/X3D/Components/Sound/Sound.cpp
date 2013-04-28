@@ -59,35 +59,39 @@
 namespace titania {
 namespace X3D {
 
+Sound::Fields::Fields () :
+	intensity (new SFFloat (1)),
+	spatialize (new SFBool (true)),
+	location (new SFVec3f ()),
+	direction (new SFVec3f (0, 0, 1)),
+	minBack (new SFFloat (1)),
+	minFront (new SFFloat (1)),
+	maxBack (new SFFloat (10)),
+	maxFront (new SFFloat (10)),
+	priority (new SFFloat ()),
+	source (new SFNode <X3DBaseNode> ())
+{ }
+
 Sound::Sound (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DSoundNode (),                                                    
-	   intensity (1),                                                   // SFFloat [in,out] intensity   1            [0,1]
-	  spatialize (true),                                                // SFBool  [ ]      spatialize  TRUE
-	    location (),                                                    // SFVec3f [in,out] location    0 0 0        (-∞,∞)
-	   direction (0, 0, 1),                                             // SFVec3f [in,out] direction   0 0 1        (-∞,∞)
-	     minBack (1),                                                   // SFFloat [in,out] minBack     1            [0,∞)
-	    minFront (1),                                                   // SFFloat [in,out] minFront    1            [0,∞)
-	     maxBack (10),                                                  // SFFloat [in,out] maxBack     10           [0,∞)
-	    maxFront (10),                                                  // SFFloat [in,out] maxFront    10           [0,∞)
-	    priority (),                                                    // SFFloat [in,out] priority    0            [0,1]
-	      source (),                                                    // SFNode  [in,out] source      NULL         [X3DSoundSourceNode]
+	      fields (),
 	     _source (NULL)                                                 
 {
 	setComponent ("Sound");
 	setTypeName ("Sound");
 
-	addField (inputOutput,    "metadata",   metadata);
-	addField (inputOutput,    "intensity",  intensity);
-	addField (initializeOnly, "spatialize", spatialize);
-	addField (inputOutput,    "location",   location);
-	addField (inputOutput,    "direction",  direction);
-	addField (inputOutput,    "minBack",    minBack);
-	addField (inputOutput,    "minFront",   minFront);
-	addField (inputOutput,    "maxBack",    maxBack);
-	addField (inputOutput,    "maxFront",   maxFront);
-	addField (inputOutput,    "priority",   priority);
-	addField (inputOutput,    "source",     source);
+	addField (inputOutput,    "metadata",   metadata ());
+	addField (inputOutput,    "intensity",  intensity ());
+	addField (initializeOnly, "spatialize", spatialize ());
+	addField (inputOutput,    "location",   location ());
+	addField (inputOutput,    "direction",  direction ());
+	addField (inputOutput,    "minBack",    minBack ());
+	addField (inputOutput,    "minFront",   minFront ());
+	addField (inputOutput,    "maxBack",    maxBack ());
+	addField (inputOutput,    "maxFront",   maxFront ());
+	addField (inputOutput,    "priority",   priority ());
+	addField (inputOutput,    "source",     source ());
 }
 
 X3DBaseNode*
@@ -101,7 +105,7 @@ Sound::initialize ()
 {
 	X3DSoundNode::initialize ();
 
-	source .addInterest (this, &Sound::set_source);
+	source () .addInterest (this, &Sound::set_source);
 
 	set_source ();
 }
@@ -109,7 +113,7 @@ Sound::initialize ()
 void
 Sound::set_source ()
 {
-	_source = x3d_cast <X3DSoundSourceNode*> (source .getValue ());
+	_source = x3d_cast <X3DSoundSourceNode*> (source () .getValue ());
 }
 
 void
@@ -121,20 +125,20 @@ Sound::traverse (TraverseType type)
 		{			
 			float minRadius, maxRadius, minDistance, maxDistance;
 			
-			getEllipsoidParameter (maxBack, maxFront, maxRadius, maxDistance);
-			getEllipsoidParameter (minBack, minFront, minRadius, minDistance);
+			getEllipsoidParameter (maxBack (), maxFront (), maxRadius, maxDistance);
+			getEllipsoidParameter (minBack (), minFront (), minRadius, minDistance);
 			
 			if (maxDistance < maxRadius)
 			{
 				if (minDistance < minRadius)
-					_source -> setVolume (intensity);
+					_source -> setVolume (intensity ());
 					
 				else
 				{
 					float d1 = maxRadius - maxDistance;
 					float d2 = maxRadius - minRadius;
 					
-					_source -> setVolume (intensity * (d1 / d2));
+					_source -> setVolume (intensity () * (d1 / d2));
 				}
 			}
 			else
@@ -153,8 +157,8 @@ Sound::getEllipsoidParameter (const float & back, const float & front, float & r
 	float b = std::sqrt (a * a - e * e);
 
 	Matrix4f transformationMatrix = ModelViewMatrix4f ();
-	transformationMatrix .translate (location .getValue ());
-	transformationMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), direction .getValue ()));
+	transformationMatrix .translate (location () .getValue ());
+	transformationMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), direction () .getValue ()));
 	
 	transformationMatrix .translate (Vector3f (0, 0, e));
 	transformationMatrix .scale (Vector3f (1, 1, b / a));
@@ -168,3 +172,4 @@ Sound::getEllipsoidParameter (const float & back, const float & front, float & r
 
 } // X3D
 } // titania
+

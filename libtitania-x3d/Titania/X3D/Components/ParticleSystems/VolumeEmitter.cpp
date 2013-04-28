@@ -55,28 +55,32 @@
 namespace titania {
 namespace X3D {
 
+VolumeEmitter::Fields::Fields () :
+	set_coordinate (new SFInt32 ()),
+	coord (new SFNode <X3DBaseNode> ()),
+	direction (new SFVec3f (0, 1, 0)),
+	coordIndex (new MFInt32 ({ -1 })),
+	internal (new SFBool (true))
+{ }
+
 VolumeEmitter::VolumeEmitter (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DParticleEmitterNode (),                                                    
-	        set_coordinate (),                                                    // SFInt32 [in]     set_coordinate
-	                 coord (),                                                    // SFNode  [in,out] coord           NULL         [X3DCoordinateNode]
-	             direction (0, 1, 0),                                             // SFVec3f [in,out] direction       0 1 0        [-1,1]
-	            coordIndex ({ -1 }),                                              // MFInt32 [ ]      coordIndex      -1           [0,∞) or -1
-	              internal (true)                                                 // SFBool  [ ]      internal        TRUE
+	fields ()
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("VolumeEmitter");
 
-	addField (inputOutput,    "metadata",       metadata);
-	addField (inputOutput,    "speed",          speed);
-	addField (inputOutput,    "variation",      variation);
-	addField (initializeOnly, "mass",           mass);
-	addField (initializeOnly, "surfaceArea",    surfaceArea);
-	addField (inputOnly,      "set_coordinate", set_coordinate);
-	addField (inputOutput,    "coord",          coord);
-	addField (inputOutput,    "direction",      direction);
-	addField (initializeOnly, "coordIndex",     coordIndex);
-	addField (initializeOnly, "internal",       internal);
+	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "speed",          speed ());
+	addField (inputOutput,    "variation",      variation ());
+	addField (initializeOnly, "mass",           mass ());
+	addField (initializeOnly, "surfaceArea",    surfaceArea ());
+	addField (inputOnly,      "set_coordinate", set_coordinate ());
+	addField (inputOutput,    "coord",          coord ());
+	addField (inputOutput,    "direction",      direction ());
+	addField (initializeOnly, "coordIndex",     coordIndex ());
+	addField (initializeOnly, "internal",       internal ());
 }
 
 X3DBaseNode*
@@ -87,3 +91,4 @@ VolumeEmitter::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

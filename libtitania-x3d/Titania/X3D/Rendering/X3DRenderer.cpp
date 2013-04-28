@@ -679,7 +679,7 @@ X3DRenderer::gravite ()
 				speed       = 0;
 			}
 
-			getCurrentViewpoint () -> positionOffset += Vector3f (0, translation, 0);
+			getCurrentViewpoint () -> positionOffset () += Vector3f (0, translation, 0);
 		}
 		else
 		{
@@ -688,7 +688,7 @@ X3DRenderer::gravite ()
 			if (-distance > 0.01 and - distance < stepHeight)
 			{
 				// Step up
-				getCurrentViewpoint () -> positionOffset += Vector3f (0, -distance, 0);
+				getCurrentViewpoint () -> positionOffset () += Vector3f (0, -distance, 0);
 			}
 		}
 	}

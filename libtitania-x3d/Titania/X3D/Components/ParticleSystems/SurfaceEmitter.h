@@ -61,9 +61,9 @@ class SurfaceEmitter :
 {
 public:
 
-	SFInt32              set_coordinate;
-	MFInt32              coordIndex;
-	SFNode <X3DBaseNode> surface;
+	
+	
+	
 
 	SurfaceEmitter (X3DExecutionContext* const);
 
@@ -71,9 +71,50 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFInt32 &
+	set_coordinate ()
+	{ return *fields .set_coordinate; }
+
+	const SFInt32 &
+	set_coordinate () const
+	{ return *fields .set_coordinate; }
+
+	MFInt32 &
+	coordIndex ()
+	{ return *fields .coordIndex; }
+
+	const MFInt32 &
+	coordIndex () const
+	{ return *fields .coordIndex; }
+
+	SFNode <X3DBaseNode> &
+	surface ()
+	{ return *fields .surface; }
+
+	const SFNode <X3DBaseNode> &
+	surface () const
+	{ return *fields .surface; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const set_coordinate;
+		MFInt32* const coordIndex;
+		SFNode <X3DBaseNode>* const surface;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

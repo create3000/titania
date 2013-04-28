@@ -63,14 +63,14 @@ PickableGroup::PickableGroup (X3DExecutionContext* const executionContext) :
 	setComponent ("Picking");
 	setTypeName ("PickableGroup");
 
-	addField (inputOutput,    "metadata",       metadata);
-	addField (initializeOnly, "bboxSize",       bboxSize);
-	addField (initializeOnly, "bboxCenter",     bboxCenter);
-	addField (inputOnly,      "addChildren",    addChildren);
-	addField (inputOnly,      "removeChildren", removeChildren);
-	addField (inputOutput,    "children",       children);
-	addField (inputOutput,    "objectType",     objectType);
-	addField (inputOutput,    "pickable",       pickable);
+	addField (inputOutput,    "metadata",       metadata ());
+	addField (initializeOnly, "bboxSize",       bboxSize ());
+	addField (initializeOnly, "bboxCenter",     bboxCenter ());
+	addField (inputOnly,      "addChildren",    addChildren ());
+	addField (inputOnly,      "removeChildren", removeChildren ());
+	addField (inputOutput,    "children",       children ());
+	addField (inputOutput,    "objectType",     objectType ());
+	addField (inputOutput,    "pickable",       pickable ());
 }
 
 X3DBaseNode*

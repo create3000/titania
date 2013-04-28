@@ -65,11 +65,11 @@ ImageTexture::ImageTexture (X3DExecutionContext* const executionContext) :
 	setComponent ("Texturing");
 	setTypeName ("ImageTexture");
 
-	addField (inputOutput,    "metadata",          metadata);
-	addField (inputOutput,    "url",               url);
-	addField (initializeOnly, "repeatS",           repeatS);
-	addField (initializeOnly, "repeatT",           repeatT);
-	addField (initializeOnly, "textureProperties", textureProperties);
+	addField (inputOutput,    "metadata",          metadata ());
+	addField (inputOutput,    "url",               url ());
+	addField (initializeOnly, "repeatS",           repeatS ());
+	addField (initializeOnly, "repeatT",           repeatT ());
+	addField (initializeOnly, "textureProperties", textureProperties ());
 }
 
 X3DBaseNode*
@@ -84,7 +84,7 @@ ImageTexture::initialize ()
 	X3DTexture2DNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	url .addInterest (this, &ImageTexture::set_url);
+	url () .addInterest (this, &ImageTexture::set_url);
 
 	requestImmediateLoad ();
 }
@@ -124,7 +124,7 @@ ImageTexture::requestImmediateLoad ()
 bool
 ImageTexture::loadImage (Magick::Image & image)
 {
-	for (const auto & URL : url)
+	for (const auto & URL : url ())
 	{
 		try
 		{

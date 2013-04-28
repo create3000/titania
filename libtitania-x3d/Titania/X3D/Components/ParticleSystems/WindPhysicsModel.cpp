@@ -55,23 +55,27 @@
 namespace titania {
 namespace X3D {
 
+WindPhysicsModel::Fields::Fields () :
+	direction (new SFVec3f ()),
+	gustiness (new SFFloat (0.1)),
+	speed (new SFFloat (0.1)),
+	turbulence (new SFFloat ())
+{ }
+
 WindPhysicsModel::WindPhysicsModel (X3DExecutionContext* const executionContext) :
 	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DParticlePhysicsModelNode (),                                                    
-	                  direction (),                                                    // SFVec3f [in,out] direction   0 0 0        (∞,∞)
-	                  gustiness (0.1),                                                 // SFFloat [in,out] gustiness   0.1          [0,∞)
-	                      speed (0.1),                                                 // SFFloat [in,out] speed       0.1          [0,∞)
-	                 turbulence ()                                                     // SFFloat [in,out] turbulence  0            [0,1]
+	fields ()
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("WindPhysicsModel");
 
-	addField (inputOutput, "metadata",   metadata);
-	addField (inputOutput, "enabled",    enabled);
-	addField (inputOutput, "direction",  direction);
-	addField (inputOutput, "gustiness",  gustiness);
-	addField (inputOutput, "speed",      speed);
-	addField (inputOutput, "turbulence", turbulence);
+	addField (inputOutput, "metadata",   metadata ());
+	addField (inputOutput, "enabled",    enabled ());
+	addField (inputOutput, "direction",  direction ());
+	addField (inputOutput, "gustiness",  gustiness ());
+	addField (inputOutput, "speed",      speed ());
+	addField (inputOutput, "turbulence", turbulence ());
 }
 
 X3DBaseNode*
@@ -82,3 +86,4 @@ WindPhysicsModel::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

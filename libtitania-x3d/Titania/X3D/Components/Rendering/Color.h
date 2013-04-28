@@ -61,7 +61,7 @@ class Color :
 {
 public:
 
-	MFColor color;
+	
 
 	Color (X3DExecutionContext* const);
 
@@ -69,8 +69,30 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFColor &
+	color ()
+	{ return *fields .color; }
+
+	const MFColor &
+	color () const
+	{ return *fields .color; }
+
+
+
 	void
 	resize (size_t);
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFColor* const color;
+	};
+
+	Fields fields;
 
 };
 
@@ -78,3 +100,4 @@ public:
 } // titania
 
 #endif
+

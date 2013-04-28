@@ -61,22 +61,22 @@ class Contact :
 {
 public:
 
-	MFString             appliedParameters;
-	SFNode <X3DBaseNode> body1;
-	SFNode <X3DBaseNode> body2;
-	SFFloat              bounce;
-	SFVec3f              contactNormal;
-	SFFloat              depth;
-	SFVec2f              frictionCoefficients;
-	SFVec3f              frictionDirection;
-	SFNode <X3DBaseNode> geometry1;
-	SFNode <X3DBaseNode> geometry2;
-	SFFloat              minbounceSpeed;
-	SFVec3f              position;
-	SFVec2f              slipCoefficients;
-	SFFloat              softnessConstantForceMix;
-	SFFloat              softnessErrorCorrection;
-	SFVec2f              surfaceSpeed;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	Contact (X3DExecutionContext* const);
 
@@ -84,9 +84,167 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFString &
+	appliedParameters ()
+	{ return *fields .appliedParameters; }
+
+	const MFString &
+	appliedParameters () const
+	{ return *fields .appliedParameters; }
+
+	SFNode <X3DBaseNode> &
+	body1 ()
+	{ return *fields .body1; }
+
+	const SFNode <X3DBaseNode> &
+	body1 () const
+	{ return *fields .body1; }
+
+	SFNode <X3DBaseNode> &
+	body2 ()
+	{ return *fields .body2; }
+
+	const SFNode <X3DBaseNode> &
+	body2 () const
+	{ return *fields .body2; }
+
+	SFFloat &
+	bounce ()
+	{ return *fields .bounce; }
+
+	const SFFloat &
+	bounce () const
+	{ return *fields .bounce; }
+
+	SFVec3f &
+	contactNormal ()
+	{ return *fields .contactNormal; }
+
+	const SFVec3f &
+	contactNormal () const
+	{ return *fields .contactNormal; }
+
+	SFFloat &
+	depth ()
+	{ return *fields .depth; }
+
+	const SFFloat &
+	depth () const
+	{ return *fields .depth; }
+
+	SFVec2f &
+	frictionCoefficients ()
+	{ return *fields .frictionCoefficients; }
+
+	const SFVec2f &
+	frictionCoefficients () const
+	{ return *fields .frictionCoefficients; }
+
+	SFVec3f &
+	frictionDirection ()
+	{ return *fields .frictionDirection; }
+
+	const SFVec3f &
+	frictionDirection () const
+	{ return *fields .frictionDirection; }
+
+	SFNode <X3DBaseNode> &
+	geometry1 ()
+	{ return *fields .geometry1; }
+
+	const SFNode <X3DBaseNode> &
+	geometry1 () const
+	{ return *fields .geometry1; }
+
+	SFNode <X3DBaseNode> &
+	geometry2 ()
+	{ return *fields .geometry2; }
+
+	const SFNode <X3DBaseNode> &
+	geometry2 () const
+	{ return *fields .geometry2; }
+
+	SFFloat &
+	minbounceSpeed ()
+	{ return *fields .minbounceSpeed; }
+
+	const SFFloat &
+	minbounceSpeed () const
+	{ return *fields .minbounceSpeed; }
+
+	SFVec3f &
+	position ()
+	{ return *fields .position; }
+
+	const SFVec3f &
+	position () const
+	{ return *fields .position; }
+
+	SFVec2f &
+	slipCoefficients ()
+	{ return *fields .slipCoefficients; }
+
+	const SFVec2f &
+	slipCoefficients () const
+	{ return *fields .slipCoefficients; }
+
+	SFFloat &
+	softnessConstantForceMix ()
+	{ return *fields .softnessConstantForceMix; }
+
+	const SFFloat &
+	softnessConstantForceMix () const
+	{ return *fields .softnessConstantForceMix; }
+
+	SFFloat &
+	softnessErrorCorrection ()
+	{ return *fields .softnessErrorCorrection; }
+
+	const SFFloat &
+	softnessErrorCorrection () const
+	{ return *fields .softnessErrorCorrection; }
+
+	SFVec2f &
+	surfaceSpeed ()
+	{ return *fields .surfaceSpeed; }
+
+	const SFVec2f &
+	surfaceSpeed () const
+	{ return *fields .surfaceSpeed; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFString* const appliedParameters;
+		SFNode <X3DBaseNode>* const body1;
+		SFNode <X3DBaseNode>* const body2;
+		SFFloat* const bounce;
+		SFVec3f* const contactNormal;
+		SFFloat* const depth;
+		SFVec2f* const frictionCoefficients;
+		SFVec3f* const frictionDirection;
+		SFNode <X3DBaseNode>* const geometry1;
+		SFNode <X3DBaseNode>* const geometry2;
+		SFFloat* const minbounceSpeed;
+		SFVec3f* const position;
+		SFVec2f* const slipCoefficients;
+		SFFloat* const softnessConstantForceMix;
+		SFFloat* const softnessErrorCorrection;
+		SFVec2f* const surfaceSpeed;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

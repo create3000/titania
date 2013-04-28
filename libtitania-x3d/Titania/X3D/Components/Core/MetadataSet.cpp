@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,19 +55,23 @@
 namespace titania {
 namespace X3D {
 
+MetadataSet::Fields::Fields () :
+	value (new MFNode ())
+{ }
+
 MetadataSet::MetadataSet (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	          X3DNode (),                                                    
 	X3DMetadataObject (),                                                    
-	            value ()                                                     // MFNode[in,out] value  [ ]       [X3DMetadataObject]
+	fields ()
 {
 	setComponent ("Core");
 	setTypeName ("MetadataSet");
 
-	addField (inputOutput, "metadata",  metadata);
-	addField (inputOutput, "name",      name);
-	addField (inputOutput, "reference", reference);
-	addField (inputOutput, "value",     value);
+	addField (inputOutput, "metadata",  metadata ());
+	addField (inputOutput, "name",      name ());
+	addField (inputOutput, "reference", reference ());
+	addField (inputOutput, "value",     value ());
 }
 
 X3DBaseNode*
@@ -92,3 +96,4 @@ MetadataSet::dispose ()
 
 } // X3D
 } // titania
+

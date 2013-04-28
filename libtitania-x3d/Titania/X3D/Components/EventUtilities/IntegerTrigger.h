@@ -61,9 +61,9 @@ class IntegerTrigger :
 {
 public:
 
-	SFBool  set_boolean;
-	SFInt32 integerKey;
-	SFInt32 triggerValue;
+	
+	
+	
 
 	IntegerTrigger (X3DExecutionContext* const);
 
@@ -71,9 +71,50 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFBool &
+	set_boolean ()
+	{ return *fields .set_boolean; }
+
+	const SFBool &
+	set_boolean () const
+	{ return *fields .set_boolean; }
+
+	SFInt32 &
+	integerKey ()
+	{ return *fields .integerKey; }
+
+	const SFInt32 &
+	integerKey () const
+	{ return *fields .integerKey; }
+
+	SFInt32 &
+	triggerValue ()
+	{ return *fields .triggerValue; }
+
+	const SFInt32 &
+	triggerValue () const
+	{ return *fields .triggerValue; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const set_boolean;
+		SFInt32* const integerKey;
+		SFInt32* const triggerValue;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

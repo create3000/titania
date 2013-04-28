@@ -62,13 +62,25 @@ class StaticGroup :
 {
 public:
 
-	MFNode children;
+	
 
 	StaticGroup (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFNode &
+	children ()
+	{ return *fields .children; }
+
+	const MFNode &
+	children () const
+	{ return *fields .children; }
+
+
 
 	Box3f
 	getBBox ();
@@ -84,9 +96,20 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const children;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

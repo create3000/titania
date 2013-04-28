@@ -61,12 +61,29 @@ class X3DNurbsControlCurveNode :
 {
 public:
 
-	MFVec2d controlPoint;
+	MFVec2d &
+	controlPoint ()
+	{ return *fields .controlPoint; }
+
+	const MFVec2d &
+	controlPoint () const
+	{ return *fields .controlPoint; }
+
 
 
 protected:
 
 	X3DNurbsControlCurveNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFVec2d* const controlPoint;
+	};
+
+	Fields fields;
 
 };
 
@@ -74,3 +91,4 @@ protected:
 } // titania
 
 #endif
+

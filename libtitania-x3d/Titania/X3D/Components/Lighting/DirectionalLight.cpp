@@ -56,21 +56,25 @@
 namespace titania {
 namespace X3D {
 
+DirectionalLight::Fields::Fields () :
+	direction (new SFVec3f (0, 0, -1))
+{ }
+
 DirectionalLight::DirectionalLight (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DLightNode (),                                                    
-	   direction (0, 0, -1)                                             // SFVec3f [in,out] direction  0 0 -1        (-∞,∞)
+	fields ()
 {
 	setComponent ("Lighting");
 	setTypeName ("DirectionalLight");
 
-	addField (inputOutput, "metadata",         metadata);
-	addField (inputOutput, "on",               on);
-	addField (inputOutput, "global",           global);
-	addField (inputOutput, "color",            color);
-	addField (inputOutput, "intensity",        intensity);
-	addField (inputOutput, "ambientIntensity", ambientIntensity);
-	addField (inputOutput, "direction",        direction);
+	addField (inputOutput, "metadata",         metadata ());
+	addField (inputOutput, "on",               on ());
+	addField (inputOutput, "global",           global ());
+	addField (inputOutput, "color",            color ());
+	addField (inputOutput, "intensity",        intensity ());
+	addField (inputOutput, "ambientIntensity", ambientIntensity ());
+	addField (inputOutput, "direction",        direction ());
 }
 
 X3DBaseNode*
@@ -91,22 +95,22 @@ DirectionalLight::eventsProcessed ()
 {
 	X3DLightNode::eventsProcessed ();
 	
-	float glAmbientIntensity = math::clamp <float> (ambientIntensity, 0, 1);
-	float glIntensity        = math::clamp <float> (intensity, 0, 1);
+	float glAmbientIntensity = math::clamp <float> (ambientIntensity (), 0, 1);
+	float glIntensity        = math::clamp <float> (intensity (), 0, 1);
 
-	glAmbient [0] = color .getR () * glAmbientIntensity;
-	glAmbient [1] = color .getG () * glAmbientIntensity;
-	glAmbient [2] = color .getB () * glAmbientIntensity;
+	glAmbient [0] = color () .getR () * glAmbientIntensity;
+	glAmbient [1] = color () .getG () * glAmbientIntensity;
+	glAmbient [2] = color () .getB () * glAmbientIntensity;
 	glAmbient [3] = 1;
 
-	glDiffuseSpecular [0] = color .getR () * glIntensity;
-	glDiffuseSpecular [1] = color .getG () * glIntensity;
-	glDiffuseSpecular [2] = color .getB () * glIntensity;
+	glDiffuseSpecular [0] = color () .getR () * glIntensity;
+	glDiffuseSpecular [1] = color () .getG () * glIntensity;
+	glDiffuseSpecular [2] = color () .getB () * glIntensity;
 	glDiffuseSpecular [3] = 1;
 
-	glPosition [0] = -direction .getX ();
-	glPosition [1] = -direction .getY ();
-	glPosition [2] = -direction .getZ ();
+	glPosition [0] = -direction () .getX ();
+	glPosition [1] = -direction () .getY ();
+	glPosition [2] = -direction () .getZ ();
 	glPosition [3] = 0; // directional light
 }
 
@@ -125,3 +129,4 @@ DirectionalLight::draw (GLenum lightId)
 
 } // X3D
 } // titania
+

@@ -61,9 +61,9 @@ class BallJoint :
 {
 public:
 
-	SFVec3f anchorPoint;
-	SFVec3f body1AnchorPoint;
-	SFVec3f body2AnchorPoint;
+	
+	
+	
 
 	BallJoint (X3DExecutionContext* const);
 
@@ -71,9 +71,50 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3f &
+	anchorPoint ()
+	{ return *fields .anchorPoint; }
+
+	const SFVec3f &
+	anchorPoint () const
+	{ return *fields .anchorPoint; }
+
+	SFVec3f &
+	body1AnchorPoint ()
+	{ return *fields .body1AnchorPoint; }
+
+	const SFVec3f &
+	body1AnchorPoint () const
+	{ return *fields .body1AnchorPoint; }
+
+	SFVec3f &
+	body2AnchorPoint ()
+	{ return *fields .body2AnchorPoint; }
+
+	const SFVec3f &
+	body2AnchorPoint () const
+	{ return *fields .body2AnchorPoint; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const anchorPoint;
+		SFVec3f* const body1AnchorPoint;
+		SFVec3f* const body2AnchorPoint;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

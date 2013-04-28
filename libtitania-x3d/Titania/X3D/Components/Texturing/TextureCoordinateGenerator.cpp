@@ -55,19 +55,23 @@
 namespace titania {
 namespace X3D {
 
+TextureCoordinateGenerator::Fields::Fields () :
+	mode (new SFString ("SPHERE")),
+	parameter (new MFFloat ())
+{ }
+
 TextureCoordinateGenerator::TextureCoordinateGenerator (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTextureCoordinateNode (),                                                    
-	                    mode ("SPHERE"),                                            // SFString [in,out] mode       "SPHERE"        [see Table 18.6]
-	               parameter (),                                                    // MFFloat  [in,out] parameter  [ ]             [see Table 18.6]
+	                  fields (),
 	          textureGenMode (GL_SPHERE_MAP)                                        
 {
 	setComponent ("Texturing");
 	setTypeName ("TextureCoordinateGenerator");
 
-	addField (inputOutput, "metadata",  metadata);
-	addField (inputOutput, "mode",      mode);
-	addField (inputOutput, "parameter", parameter);
+	addField (inputOutput, "metadata",  metadata ());
+	addField (inputOutput, "mode",      mode ());
+	addField (inputOutput, "parameter", parameter ());
 }
 
 X3DBaseNode*
@@ -81,7 +85,7 @@ TextureCoordinateGenerator::initialize ()
 {
 	X3DTextureCoordinateNode::initialize ();
 
-	mode .addInterest (this, &TextureCoordinateGenerator::set_mode);
+	mode () .addInterest (this, &TextureCoordinateGenerator::set_mode);
 
 	set_mode ();
 }
@@ -89,47 +93,47 @@ TextureCoordinateGenerator::initialize ()
 void
 TextureCoordinateGenerator::set_mode ()
 {
-	if (mode == "SPHERE")
+	if (mode () == "SPHERE")
 	{
 		textureGenMode = GL_SPHERE_MAP;
 	}
-	else if (mode == "SPHERE-REFLECT-LOCAL")
+	else if (mode () == "SPHERE-REFLECT-LOCAL")
 	{
 		textureGenMode = GL_SPHERE_MAP;
 	}
-	else if (mode == "SPHERE-REFLECT")
+	else if (mode () == "SPHERE-REFLECT")
 	{
 		textureGenMode = GL_SPHERE_MAP;
 	}
-	else if (mode == "SPHERE-LOCAL")
+	else if (mode () == "SPHERE-LOCAL")
 	{
 		textureGenMode = GL_SPHERE_MAP;
 	}
-	else if (mode == "CAMERASPACENORMAL")
+	else if (mode () == "CAMERASPACENORMAL")
 	{
 		textureGenMode = GL_NORMAL_MAP;
 	}
-	else if (mode == "CAMERASPACEPOSITION")
+	else if (mode () == "CAMERASPACEPOSITION")
 	{
 		textureGenMode = GL_OBJECT_LINEAR;
 	}
-	else if (mode == "CAMERASPACEREFLECTIONVECTOR")
+	else if (mode () == "CAMERASPACEREFLECTIONVECTOR")
 	{
 		textureGenMode = GL_REFLECTION_MAP;
 	}
-	else if (mode == "COORD-EYE")
+	else if (mode () == "COORD-EYE")
 	{
 		textureGenMode = GL_EYE_LINEAR;
 	}
-	else if (mode == "COORD")
+	else if (mode () == "COORD")
 	{
 		textureGenMode = GL_EYE_LINEAR;
 	}
-	else if (mode == "NOISE-EYE")
+	else if (mode () == "NOISE-EYE")
 	{
 		textureGenMode = GL_EYE_LINEAR;
 	}
-	else if (mode == "NOISE")
+	else if (mode () == "NOISE")
 	{
 		textureGenMode = GL_EYE_LINEAR;
 	}
@@ -160,3 +164,4 @@ TextureCoordinateGenerator::disable ()
 
 } // X3D
 } // titania
+

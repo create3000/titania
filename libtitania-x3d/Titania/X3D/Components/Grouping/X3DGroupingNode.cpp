@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,12 +58,16 @@
 namespace titania {
 namespace X3D {
 
+X3DGroupingNode::Fields::Fields () :
+	addChildren (new MFNode ()),
+	removeChildren (new MFNode ()),
+	children (new MFNode ())
+{ }
+
 X3DGroupingNode::X3DGroupingNode () :
 	    X3DChildNode (), 
 	X3DBoundedObject (), 
-	        children (), // MFNode[in,out] children        [ ]       [X3DChildNode]
-	     addChildren (), // MFNode[in]     addChildren               [X3DChildNode]
-	  removeChildren ()  // MFNode[in]     removeChildren            [X3DChildNode]
+	fields ()
 {
 	addNodeType (X3DConstants::X3DGroupingNode);
 }
@@ -74,9 +78,9 @@ X3DGroupingNode::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 
-	addChildren    .addInterest (this, &X3DGroupingNode::set_addChildren);
-	removeChildren .addInterest (this, &X3DGroupingNode::set_removeChildren);
-	children       .addInterest (this, &X3DGroupingNode::set_children);
+	addChildren ()    .addInterest (this, &X3DGroupingNode::set_addChildren);
+	removeChildren () .addInterest (this, &X3DGroupingNode::set_removeChildren);
+	children ()       .addInterest (this, &X3DGroupingNode::set_children);
 
 	set_children ();
 }
@@ -84,22 +88,22 @@ X3DGroupingNode::initialize ()
 Box3f
 X3DGroupingNode::getBBox ()
 {
-	if (bboxSize == Vector3f (-1, -1, -1))
+	if (bboxSize () == Vector3f (-1, -1, -1))
 	{
-		return X3DBoundedObject::getBBox (children);
+		return X3DBoundedObject::getBBox (children ());
 	}
 
-	return Box3f (bboxSize, bboxCenter);
+	return Box3f (bboxSize (), bboxCenter ());
 }
 
 void
 X3DGroupingNode::set_addChildren ()
 {
-	if (addChildren .size ())
+	if (addChildren () .size ())
 	{
-		add (addChildren);
+		add (addChildren ());
 
-		children .insert (children .end (), addChildren .begin (), addChildren .end ());
+		children () .insert (children () .end (), addChildren () .begin (), addChildren () .end ());
 
 		//children .removeInterest (this, &X3DGroupingNode::set_children);
 		//children .addInterest    (this, &X3DGroupingNode::set_endChildren);
@@ -109,10 +113,10 @@ X3DGroupingNode::set_addChildren ()
 void
 X3DGroupingNode::set_removeChildren ()
 {
-	if (removeChildren .size ())
+	if (removeChildren () .size ())
 	{
-		auto new_end = basic::remove (children .begin (), children .end (), removeChildren .begin (), removeChildren .end ());
-		children .erase (new_end, children .end ());
+		auto new_end = basic::remove (children () .begin (), children () .end (), removeChildren () .begin (), removeChildren () .end ());
+		children () .erase (new_end, children () .end ());
 
 		//children .removeInterest (this, &X3DGroupingNode::set_children);
 		//children .addInterest    (this, &X3DGroupingNode::set_endChildren);
@@ -124,8 +128,8 @@ X3DGroupingNode::set_removeChildren ()
 void
 X3DGroupingNode::set_endChildren ()
 {
-	children .removeInterest (this, &X3DGroupingNode::set_endChildren);
-	children .addInterest    (this, &X3DGroupingNode::set_children);
+	children () .removeInterest (this, &X3DGroupingNode::set_endChildren);
+	children () .addInterest    (this, &X3DGroupingNode::set_children);
 }
 
 void
@@ -136,7 +140,7 @@ X3DGroupingNode::set_children ()
 	localFogs  .clear ();
 	childNodes .clear ();
 
-	add (children);
+	add (children ());
 }
 
 void
@@ -247,3 +251,4 @@ X3DGroupingNode::dispose ()
 
 } // X3D
 } // titania
+

@@ -61,14 +61,14 @@ class NurbsTextureCoordinate :
 {
 public:
 
-	MFVec2f  controlPoint;
-	MFFloat  weight;
-	SFInt32  uDimension;
-	MFDouble uKnot;
-	SFInt32  uOrder;
-	SFInt32  vDimension;
-	MFDouble vKnot;
-	SFInt32  vOrder;
+	
+	
+	
+	
+	
+	
+	
+	
 
 	NurbsTextureCoordinate (X3DExecutionContext* const);
 
@@ -76,9 +76,95 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFVec2f &
+	controlPoint ()
+	{ return *fields .controlPoint; }
+
+	const MFVec2f &
+	controlPoint () const
+	{ return *fields .controlPoint; }
+
+	MFFloat &
+	weight ()
+	{ return *fields .weight; }
+
+	const MFFloat &
+	weight () const
+	{ return *fields .weight; }
+
+	SFInt32 &
+	uDimension ()
+	{ return *fields .uDimension; }
+
+	const SFInt32 &
+	uDimension () const
+	{ return *fields .uDimension; }
+
+	MFDouble &
+	uKnot ()
+	{ return *fields .uKnot; }
+
+	const MFDouble &
+	uKnot () const
+	{ return *fields .uKnot; }
+
+	SFInt32 &
+	uOrder ()
+	{ return *fields .uOrder; }
+
+	const SFInt32 &
+	uOrder () const
+	{ return *fields .uOrder; }
+
+	SFInt32 &
+	vDimension ()
+	{ return *fields .vDimension; }
+
+	const SFInt32 &
+	vDimension () const
+	{ return *fields .vDimension; }
+
+	MFDouble &
+	vKnot ()
+	{ return *fields .vKnot; }
+
+	const MFDouble &
+	vKnot () const
+	{ return *fields .vKnot; }
+
+	SFInt32 &
+	vOrder ()
+	{ return *fields .vOrder; }
+
+	const SFInt32 &
+	vOrder () const
+	{ return *fields .vOrder; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFVec2f* const controlPoint;
+		MFFloat* const weight;
+		SFInt32* const uDimension;
+		MFDouble* const uKnot;
+		SFInt32* const uOrder;
+		SFInt32* const vDimension;
+		MFDouble* const vKnot;
+		SFInt32* const vOrder;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

@@ -61,7 +61,14 @@ class X3DTouchSensorNode :
 {
 public:
 
-	SFTime touchTime;
+	SFTime &
+	touchTime ()
+	{ return *fields .touchTime; }
+
+	const SFTime &
+	touchTime () const
+	{ return *fields .touchTime; }
+
 
 	virtual
 	void
@@ -70,6 +77,16 @@ public:
 protected:
 
 	X3DTouchSensorNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFTime* const touchTime;
+	};
+
+	Fields fields;
 
 };
 
@@ -77,3 +94,4 @@ protected:
 } // titania
 
 #endif
+

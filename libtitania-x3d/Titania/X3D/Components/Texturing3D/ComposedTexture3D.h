@@ -61,7 +61,7 @@ class ComposedTexture3D :
 {
 public:
 
-	MFNode texture;
+	
 
 	ComposedTexture3D (X3DExecutionContext* const);
 
@@ -69,9 +69,31 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFNode &
+	texture ()
+	{ return *fields .texture; }
+
+	const MFNode &
+	texture () const
+	{ return *fields .texture; }
+
+
+
 	bool
 	isTransparent () const
 	{ return false; }
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const texture;
+	};
+
+	Fields fields;
 
 };
 
@@ -79,3 +101,4 @@ public:
 } // titania
 
 #endif
+

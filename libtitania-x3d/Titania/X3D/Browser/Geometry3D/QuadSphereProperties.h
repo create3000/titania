@@ -65,10 +65,30 @@ class QuadSphereProperties :
 {
 public:
 
-	SFInt32 uDimension;
-	SFInt32 vDimension;
+	
+	
 
 	QuadSphereProperties (X3DExecutionContext* const);
+
+	///  @name Fields
+
+	SFInt32 &
+	uDimension ()
+	{ return *fields .uDimension; }
+
+	const SFInt32 &
+	uDimension () const
+	{ return *fields .uDimension; }
+
+	SFInt32 &
+	vDimension ()
+	{ return *fields .vDimension; }
+
+	const SFInt32 &
+	vDimension () const
+	{ return *fields .vDimension; }
+
+
 
 	virtual
 	GLenum
@@ -105,9 +125,21 @@ private:
 	void
 	build ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const uDimension;
+		SFInt32* const vDimension;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

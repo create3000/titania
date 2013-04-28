@@ -64,8 +64,22 @@ class X3DBoundedObject :
 {
 public:
 
-	SFVec3f bboxCenter;
-	SFVec3f bboxSize;
+	SFVec3f &
+	bboxCenter ()
+	{ return *fields .bboxCenter; }
+
+	const SFVec3f &
+	bboxCenter () const
+	{ return *fields .bboxCenter; }
+
+	SFVec3f &
+	bboxSize ()
+	{ return *fields .bboxSize; }
+
+	const SFVec3f &
+	bboxSize () const
+	{ return *fields .bboxSize; }
+
 
 	virtual
 	Box3f
@@ -87,6 +101,17 @@ protected:
 	virtual
 	void
 	dispose ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const bboxCenter;
+		SFVec3f* const bboxSize;
+	};
+
+	Fields fields;
 
 };
 
@@ -94,3 +119,4 @@ protected:
 } // titania
 
 #endif
+

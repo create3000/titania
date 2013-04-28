@@ -61,15 +61,56 @@ class X3DShaderNode :
 {
 public:
 
-	SFBool   activate;
-	SFBool   isSelected;
-	SFBool   isValid;
-	SFString language;
+	SFBool &
+	activate ()
+	{ return *fields .activate; }
+
+	const SFBool &
+	activate () const
+	{ return *fields .activate; }
+
+	SFBool &
+	isSelected ()
+	{ return *fields .isSelected; }
+
+	const SFBool &
+	isSelected () const
+	{ return *fields .isSelected; }
+
+	SFBool &
+	isValid ()
+	{ return *fields .isValid; }
+
+	const SFBool &
+	isValid () const
+	{ return *fields .isValid; }
+
+	SFString &
+	language ()
+	{ return *fields .language; }
+
+	const SFString &
+	language () const
+	{ return *fields .language; }
+
 
 
 protected:
 
 	X3DShaderNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const activate;
+		SFBool* const isSelected;
+		SFBool* const isValid;
+		SFString* const language;
+	};
+
+	Fields fields;
 
 };
 
@@ -77,3 +118,4 @@ protected:
 } // titania
 
 #endif
+

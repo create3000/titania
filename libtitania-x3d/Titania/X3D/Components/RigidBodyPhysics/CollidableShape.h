@@ -61,7 +61,7 @@ class CollidableShape :
 {
 public:
 
-	SFNode <X3DBaseNode> shape;
+	
 
 	CollidableShape (X3DExecutionContext* const);
 
@@ -69,9 +69,32 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFNode <X3DBaseNode> &
+	shape ()
+	{ return *fields .shape; }
+
+	const SFNode <X3DBaseNode> &
+	shape () const
+	{ return *fields .shape; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const shape;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

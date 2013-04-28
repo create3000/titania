@@ -61,16 +61,38 @@ class ColorRGBA :
 {
 public:
 
-	MFColorRGBA color;
+	
 
 	ColorRGBA (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFColorRGBA &
+	color ()
+	{ return *fields .color; }
+
+	const MFColorRGBA &
+	color () const
+	{ return *fields .color; }
+
+
 	
 	void
 	resize (size_t);
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFColorRGBA* const color;
+	};
+
+	Fields fields;
 
 };
 
@@ -78,3 +100,4 @@ public:
 } // titania
 
 #endif
+

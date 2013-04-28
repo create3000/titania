@@ -61,8 +61,8 @@ class CollisionSpace :
 {
 public:
 
-	SFBool useGeometry;
-	MFNode collidables;
+	
+	
 
 	CollisionSpace (X3DExecutionContext* const);
 
@@ -70,9 +70,41 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFBool &
+	useGeometry ()
+	{ return *fields .useGeometry; }
+
+	const SFBool &
+	useGeometry () const
+	{ return *fields .useGeometry; }
+
+	MFNode &
+	collidables ()
+	{ return *fields .collidables; }
+
+	const MFNode &
+	collidables () const
+	{ return *fields .collidables; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const useGeometry;
+		MFNode* const collidables;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

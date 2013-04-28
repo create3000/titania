@@ -61,7 +61,7 @@ class ProgramShader :
 {
 public:
 
-	MFNode programs;
+	
 
 	ProgramShader (X3DExecutionContext* const);
 
@@ -69,9 +69,31 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFNode &
+	programs ()
+	{ return *fields .programs; }
+
+	const MFNode &
+	programs () const
+	{ return *fields .programs; }
+
+
+
 	virtual
 	void
 	draw ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const programs;
+	};
+
+	Fields fields;
 
 };
 
@@ -79,3 +101,4 @@ public:
 } // titania
 
 #endif
+

@@ -65,12 +65,12 @@ public:
 
 	///  @name Fields
 
-	SFBool  displayed;
-	SFVec3f size;
-	SFVec3f center;
-	MFNode  children;
+	
+	
+	
+	
 
-	SFBool isActive;
+	
 
 	///  @name Construction
 
@@ -79,6 +79,50 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFBool &
+	displayed ()
+	{ return *fields .displayed; }
+
+	const SFBool &
+	displayed () const
+	{ return *fields .displayed; }
+
+	SFVec3f &
+	size ()
+	{ return *fields .size; }
+
+	const SFVec3f &
+	size () const
+	{ return *fields .size; }
+
+	SFVec3f &
+	center ()
+	{ return *fields .center; }
+
+	const SFVec3f &
+	center () const
+	{ return *fields .center; }
+
+	MFNode &
+	children ()
+	{ return *fields .children; }
+
+	const MFNode &
+	children () const
+	{ return *fields .children; }
+
+	SFBool &
+	isActive ()
+	{ return fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return fields .isActive; }
+
+
 
 	///  @name Element accesss
 
@@ -120,6 +164,20 @@ private:
 	void
 	dispose ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const displayed;
+		SFVec3f* const size;
+		SFVec3f* const center;
+		MFNode* const children;
+		SFBool isActive;
+	};
+
+	Fields fields;
+
+
 	SFNode <VisibilitySensor>        visibilitySensor;
 	std::deque <X3DViewpointObject*> viewpointObjects;
 
@@ -129,3 +187,4 @@ private:
 } // titania
 
 #endif
+

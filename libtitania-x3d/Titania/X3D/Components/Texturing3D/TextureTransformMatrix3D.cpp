@@ -55,16 +55,20 @@
 namespace titania {
 namespace X3D {
 
+TextureTransformMatrix3D::Fields::Fields () :
+	matrix (new SFMatrix4f ())
+{ }
+
 TextureTransformMatrix3D::TextureTransformMatrix3D (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTextureTransformNode (),                                                    
-	                 matrix ()                                                     // SFMatrix4f [in,out] matrix  1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1        (-∞,∞)
+	fields ()
 {
 	setComponent ("Texturing3D");
 	setTypeName ("TextureTransformMatrix3D");
 
-	addField (inputOutput, "metadata", metadata);
-	addField (inputOutput, "matrix",   matrix);
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "matrix",   matrix ());
 }
 
 X3DBaseNode*
@@ -79,3 +83,4 @@ TextureTransformMatrix3D::draw ()
 
 } // X3D
 } // titania
+

@@ -61,13 +61,13 @@ class OrientationChaser :
 {
 public:
 
-	SFRotation set_destination;
-	SFRotation set_value;
-	SFBool     isActive;
-	SFRotation value_changed;
-	SFTime     duration;
-	SFRotation initialDestination;
-	SFRotation defaultValue;
+	
+	
+	
+	
+	
+	
+	
 
 	OrientationChaser (X3DExecutionContext* const);
 
@@ -75,9 +75,86 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFRotation &
+	set_destination ()
+	{ return *fields .set_destination; }
+
+	const SFRotation &
+	set_destination () const
+	{ return *fields .set_destination; }
+
+	SFRotation &
+	set_value ()
+	{ return *fields .set_value; }
+
+	const SFRotation &
+	set_value () const
+	{ return *fields .set_value; }
+
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
+	SFRotation &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFRotation &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+	SFTime &
+	duration ()
+	{ return *fields .duration; }
+
+	const SFTime &
+	duration () const
+	{ return *fields .duration; }
+
+	SFRotation &
+	initialDestination ()
+	{ return *fields .initialDestination; }
+
+	const SFRotation &
+	initialDestination () const
+	{ return *fields .initialDestination; }
+
+	SFRotation &
+	defaultValue ()
+	{ return *fields .defaultValue; }
+
+	const SFRotation &
+	defaultValue () const
+	{ return *fields .defaultValue; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFRotation* const set_destination;
+		SFRotation* const set_value;
+		SFBool* const isActive;
+		SFRotation* const value_changed;
+		SFTime* const duration;
+		SFRotation* const initialDestination;
+		SFRotation* const defaultValue;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

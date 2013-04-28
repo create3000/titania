@@ -62,12 +62,12 @@ Group::Group (X3DExecutionContext* const executionContext) :
 	setComponent ("Grouping");
 	setTypeName ("Group");
 
-	addField (inputOutput,    "metadata",       metadata);
-	addField (initializeOnly, "bboxSize",       bboxSize);
-	addField (initializeOnly, "bboxCenter",     bboxCenter);
-	addField (inputOnly,      "addChildren",    addChildren);
-	addField (inputOnly,      "removeChildren", removeChildren);
-	addField (inputOutput,    "children",       children);
+	addField (inputOutput,    "metadata",       metadata ());
+	addField (initializeOnly, "bboxSize",       bboxSize ());
+	addField (initializeOnly, "bboxCenter",     bboxCenter ());
+	addField (inputOnly,      "addChildren",    addChildren ());
+	addField (inputOnly,      "removeChildren", removeChildren ());
+	addField (inputOutput,    "children",       children ());
 }
 
 X3DBaseNode*

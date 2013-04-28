@@ -63,13 +63,25 @@ class ShaderProgram :
 {
 public:
 
-	SFString type;
+	
 
 	ShaderProgram (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFString &
+	type ()
+	{ return *fields .type; }
+
+	const SFString &
+	type () const
+	{ return *fields .type; }
+
+
 
 	virtual
 	void
@@ -86,9 +98,20 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFString* const type;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

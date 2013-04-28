@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,21 +55,25 @@
 namespace titania {
 namespace X3D {
 
+CollidableShape::Fields::Fields () :
+	shape (new SFNode <X3DBaseNode> ())
+{ }
+
 CollidableShape::CollidableShape (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DNBodyCollidableNode (),                                                    
-	                 shape ()                                                     // SFNode [ ]shape  NULL        [Shape]
+	fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("CollidableShape");
 
-	addField (inputOutput,    "metadata",    metadata);
-	addField (initializeOnly, "bboxSize",    bboxSize);
-	addField (initializeOnly, "bboxCenter",  bboxCenter);
-	addField (inputOutput,    "enabled",     enabled);
-	addField (inputOutput,    "rotation",    rotation);
-	addField (inputOutput,    "translation", translation);
-	addField (initializeOnly, "shape",       shape);
+	addField (inputOutput,    "metadata",    metadata ());
+	addField (initializeOnly, "bboxSize",    bboxSize ());
+	addField (initializeOnly, "bboxCenter",  bboxCenter ());
+	addField (inputOutput,    "enabled",     enabled ());
+	addField (inputOutput,    "rotation",    rotation ());
+	addField (inputOutput,    "translation", translation ());
+	addField (initializeOnly, "shape",       shape ());
 }
 
 X3DBaseNode*
@@ -80,3 +84,4 @@ CollidableShape::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

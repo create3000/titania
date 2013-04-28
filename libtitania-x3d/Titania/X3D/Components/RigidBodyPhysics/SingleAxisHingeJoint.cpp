@@ -55,37 +55,41 @@
 namespace titania {
 namespace X3D {
 
+SingleAxisHingeJoint::Fields::Fields () :
+	anchorPoint (new SFVec3f ()),
+	axis (new SFVec3f ()),
+	maxAngle (new SFFloat ()),
+	minAngle (new SFFloat ()),
+	stopBounce (new SFFloat ()),
+	stopErrorCorrection (new SFFloat (0.8)),
+	angle (new SFFloat ()),
+	angleRate (new SFFloat ()),
+	body1AnchorPoint (new SFVec3f ()),
+	body2AnchorPoint (new SFVec3f ())
+{ }
+
 SingleAxisHingeJoint::SingleAxisHingeJoint (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	  X3DRigidJointNode (),                                                    
-	        anchorPoint (),                                                    // SFVec3f [in,out] anchorPoint          0 0 0
-	               axis (),                                                    // SFVec3f [in,out] axis                 0 0 0
-	           maxAngle (),                                                    // SFFloat [in,out] maxAngle             π
-	           minAngle (),                                                    // SFFloat [in,out] minAngle             -π
-	         stopBounce (),                                                    // SFFloat [in,out] stopBounce           0            [0,1]
-	stopErrorCorrection (0.8),                                                 // SFFloat [in,out] stopErrorCorrection  0.8          [0,1]
-	              angle (),                                                    // SFFloat [out]    angle
-	          angleRate (),                                                    // SFFloat [out]    angleRate
-	   body1AnchorPoint (),                                                    // SFVec3f [out]    body1AnchorPoint
-	   body2AnchorPoint ()                                                     // SFVec3f [out]    body2AnchorPoint
+	fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("SingleAxisHingeJoint");
 
-	addField (inputOutput, "metadata",            metadata);
-	addField (inputOutput, "body1",               body1);
-	addField (inputOutput, "body2",               body2);
-	addField (inputOutput, "forceOutput",         forceOutput);
-	addField (inputOutput, "anchorPoint",         anchorPoint);
-	addField (inputOutput, "axis",                axis);
-	addField (inputOutput, "maxAngle",            maxAngle);
-	addField (inputOutput, "minAngle",            minAngle);
-	addField (inputOutput, "stopBounce",          stopBounce);
-	addField (inputOutput, "stopErrorCorrection", stopErrorCorrection);
-	addField (outputOnly,  "angle",               angle);
-	addField (outputOnly,  "angleRate",           angleRate);
-	addField (outputOnly,  "body1AnchorPoint",    body1AnchorPoint);
-	addField (outputOnly,  "body2AnchorPoint",    body2AnchorPoint);
+	addField (inputOutput, "metadata",            metadata ());
+	addField (inputOutput, "body1",               body1 ());
+	addField (inputOutput, "body2",               body2 ());
+	addField (inputOutput, "forceOutput",         forceOutput ());
+	addField (inputOutput, "anchorPoint",         anchorPoint ());
+	addField (inputOutput, "axis",                axis ());
+	addField (inputOutput, "maxAngle",            maxAngle ());
+	addField (inputOutput, "minAngle",            minAngle ());
+	addField (inputOutput, "stopBounce",          stopBounce ());
+	addField (inputOutput, "stopErrorCorrection", stopErrorCorrection ());
+	addField (outputOnly,  "angle",               angle ());
+	addField (outputOnly,  "angleRate",           angleRate ());
+	addField (outputOnly,  "body1AnchorPoint",    body1AnchorPoint ());
+	addField (outputOnly,  "body2AnchorPoint",    body2AnchorPoint ());
 }
 
 X3DBaseNode*
@@ -96,3 +100,4 @@ SingleAxisHingeJoint::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

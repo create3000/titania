@@ -57,27 +57,31 @@
 namespace titania {
 namespace X3D {
 
+LOD::Fields::Fields () :
+	forceTransitions (new SFBool ()),
+	center (new SFVec3f ()),
+	range (new MFFloat ()),
+	level_changed (new SFInt32 ())
+{ }
+
 LOD::LOD (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DGroupingNode (),                                                    
-	forceTransitions (),                                                    // SFBool  [ ]   forceTransitions  FALSE
-	          center (),                                                    // SFVec3f [ ]   center            0 0 0        (-∞,∞)
-	           range (),                                                    // MFFloat [ ]   range             [ ]           [0,∞) or -1
-	   level_changed ()                                                     // SFInt32 [out] level_changed
+	fields ()
 {
 	setComponent ("Navigation");
 	setTypeName ("LOD");
 
-	addField (inputOutput,    "metadata",         metadata);
-	addField (initializeOnly, "forceTransitions", forceTransitions);
-	addField (initializeOnly, "center",           center);
-	addField (initializeOnly, "range",            range);
-	addField (outputOnly,     "level_changed",    level_changed);
-	addField (initializeOnly, "bboxSize",         bboxSize);
-	addField (initializeOnly, "bboxCenter",       bboxCenter);
-	addField (inputOnly,      "addChildren",      addChildren);
-	addField (inputOnly,      "removeChildren",   removeChildren);
-	addField (inputOutput,    "children",         children);
+	addField (inputOutput,    "metadata",         metadata ());
+	addField (initializeOnly, "forceTransitions", forceTransitions ());
+	addField (initializeOnly, "center",           center ());
+	addField (initializeOnly, "range",            range ());
+	addField (outputOnly,     "level_changed",    level_changed ());
+	addField (initializeOnly, "bboxSize",         bboxSize ());
+	addField (initializeOnly, "bboxCenter",       bboxCenter ());
+	addField (inputOnly,      "addChildren",      addChildren ());
+	addField (inputOnly,      "removeChildren",   removeChildren ());
+	addField (inputOutput,    "children",         children ());
 
 	addFieldAlias ("level", "children");
 }
@@ -96,17 +100,17 @@ LOD::getLevel (TraverseType type)
 	if (type == TraverseType::CAMERA)
 		matrix *= getCurrentViewpoint () -> getInverseTransformationMatrix ();
 	
-	matrix .translate (center);
+	matrix .translate (center ());
 
 	float distance = math::abs (matrix .translation ());
 
 	int32_t level = -1;
 
-	if (range .size ())
+	if (range () .size ())
 	{
-		int32_t n = std::min (range .size (), children .size () - 1);
+		int32_t n = std::min (range () .size (), children () .size () - 1);
 
-		if (distance < range [0])
+		if (distance < range () [0])
 			level = 0;
 
 		else
@@ -115,7 +119,7 @@ LOD::getLevel (TraverseType type)
 
 			for (i = 0; i < n - 1; ++ i)
 			{
-				if (range [i] <= distance and distance < range [i + 1])
+				if (range () [i] <= distance and distance < range () [i + 1])
 					level = i + 1;
 			}
 
@@ -134,20 +138,21 @@ LOD::getLevel (TraverseType type)
 void
 LOD::traverse (TraverseType type)
 {
-	if (not children .size ())
+	if (not children () .size ())
 		return;
 
 	int32_t level = getLevel (type);
 
 	if (type == TraverseType::CAMERA)
 	{
-		if (level_changed not_eq level)
-			level_changed = level;
+		if (level_changed () not_eq level)
+			level_changed () = level;
 	}
 
-	if (children [level])
-		children [level] -> traverse (type);
+	if (children () [level])
+		children () [level] -> traverse (type);
 }
 
 } // X3D
 } // titania
+

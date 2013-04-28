@@ -55,32 +55,36 @@
 namespace titania {
 namespace X3D {
 
+TexCoordDamper2D::Fields::Fields () :
+	set_destination (new MFVec2f ()),
+	set_value (new MFVec2f ()),
+	tau (new SFTime ()),
+	tolerance (new SFFloat (-1)),
+	isActive (new SFBool ()),
+	value_changed (new MFVec2f ()),
+	initialDestination (new MFVec2f ()),
+	defaultValue (new MFVec2f ()),
+	order (new SFInt32 ())
+{ }
+
 TexCoordDamper2D::TexCoordDamper2D (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DDamperNode (),                                                    
-	   set_destination (),                                                    // MFVec2f [in]     set_destination
-	         set_value (),                                                    // MFVec2f [in]     set_value
-	               tau (),                                                    // SFTime  [in,out] tau                 0.0         [0,∞)
-	         tolerance (-1),                                                  // SFFloat [in,out] tolerance           -1          [0..∞] or -1
-	          isActive (),                                                    // SFBool  [out]    isActive
-	     value_changed (),                                                    // MFVec2f [out]    value_changed
-	initialDestination (),                                                    // MFVec2f [ ]      initialDestination  [ ]
-	      defaultValue (),                                                    // MFVec2f [ ]      defaultValue        [ ]
-	             order ()                                                     // SFInt32 [ ]      order               0           [0..5]
+	fields ()
 {
 	setComponent ("Followers");
 	setTypeName ("TexCoordDamper2D");
 
-	addField (inputOutput,    "metadata",           metadata);
-	addField (inputOnly,      "set_destination",    set_destination);
-	addField (inputOnly,      "set_value",          set_value);
-	addField (inputOutput,    "tau",                tau);
-	addField (inputOutput,    "tolerance",          tolerance);
-	addField (outputOnly,     "isActive",           isActive);
-	addField (outputOnly,     "value_changed",      value_changed);
-	addField (initializeOnly, "initialDestination", initialDestination);
-	addField (initializeOnly, "defaultValue",       defaultValue);
-	addField (initializeOnly, "order",              order);
+	addField (inputOutput,    "metadata",           metadata ());
+	addField (inputOnly,      "set_destination",    set_destination ());
+	addField (inputOnly,      "set_value",          set_value ());
+	addField (inputOutput,    "tau",                tau ());
+	addField (inputOutput,    "tolerance",          tolerance ());
+	addField (outputOnly,     "isActive",           isActive ());
+	addField (outputOnly,     "value_changed",      value_changed ());
+	addField (initializeOnly, "initialDestination", initialDestination ());
+	addField (initializeOnly, "defaultValue",       defaultValue ());
+	addField (initializeOnly, "order",              order ());
 }
 
 X3DBaseNode*
@@ -91,3 +95,4 @@ TexCoordDamper2D::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

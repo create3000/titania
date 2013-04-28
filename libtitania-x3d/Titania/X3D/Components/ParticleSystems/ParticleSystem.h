@@ -61,20 +61,20 @@ class ParticleSystem :
 {
 public:
 
-	SFBool               createParticles;
-	SFBool               enabled;
-	SFFloat              lifetimeVariation;
-	SFInt32              maxParticles;
-	SFFloat              particleLifetime;
-	SFVec2f              particleSize;
-	SFBool               isActive;
-	SFNode <X3DBaseNode> colorRamp;
-	MFFloat              colorKey;
-	SFNode <X3DBaseNode> emitter;
-	SFString             geometryType;
-	MFNode               physics;
-	SFNode <X3DBaseNode> texCoordRamp;
-	MFFloat              texCoordKey;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	ParticleSystem (X3DExecutionContext* const);
 
@@ -82,9 +82,149 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFBool &
+	createParticles ()
+	{ return *fields .createParticles; }
+
+	const SFBool &
+	createParticles () const
+	{ return *fields .createParticles; }
+
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	SFFloat &
+	lifetimeVariation ()
+	{ return *fields .lifetimeVariation; }
+
+	const SFFloat &
+	lifetimeVariation () const
+	{ return *fields .lifetimeVariation; }
+
+	SFInt32 &
+	maxParticles ()
+	{ return *fields .maxParticles; }
+
+	const SFInt32 &
+	maxParticles () const
+	{ return *fields .maxParticles; }
+
+	SFFloat &
+	particleLifetime ()
+	{ return *fields .particleLifetime; }
+
+	const SFFloat &
+	particleLifetime () const
+	{ return *fields .particleLifetime; }
+
+	SFVec2f &
+	particleSize ()
+	{ return *fields .particleSize; }
+
+	const SFVec2f &
+	particleSize () const
+	{ return *fields .particleSize; }
+
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
+	SFNode <X3DBaseNode> &
+	colorRamp ()
+	{ return *fields .colorRamp; }
+
+	const SFNode <X3DBaseNode> &
+	colorRamp () const
+	{ return *fields .colorRamp; }
+
+	MFFloat &
+	colorKey ()
+	{ return *fields .colorKey; }
+
+	const MFFloat &
+	colorKey () const
+	{ return *fields .colorKey; }
+
+	SFNode <X3DBaseNode> &
+	emitter ()
+	{ return *fields .emitter; }
+
+	const SFNode <X3DBaseNode> &
+	emitter () const
+	{ return *fields .emitter; }
+
+	SFString &
+	geometryType ()
+	{ return *fields .geometryType; }
+
+	const SFString &
+	geometryType () const
+	{ return *fields .geometryType; }
+
+	MFNode &
+	physics ()
+	{ return *fields .physics; }
+
+	const MFNode &
+	physics () const
+	{ return *fields .physics; }
+
+	SFNode <X3DBaseNode> &
+	texCoordRamp ()
+	{ return *fields .texCoordRamp; }
+
+	const SFNode <X3DBaseNode> &
+	texCoordRamp () const
+	{ return *fields .texCoordRamp; }
+
+	MFFloat &
+	texCoordKey ()
+	{ return *fields .texCoordKey; }
+
+	const MFFloat &
+	texCoordKey () const
+	{ return *fields .texCoordKey; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const createParticles;
+		SFBool* const enabled;
+		SFFloat* const lifetimeVariation;
+		SFInt32* const maxParticles;
+		SFFloat* const particleLifetime;
+		SFVec2f* const particleSize;
+		SFBool* const isActive;
+		SFNode <X3DBaseNode>* const colorRamp;
+		MFFloat* const colorKey;
+		SFNode <X3DBaseNode>* const emitter;
+		SFString* const geometryType;
+		MFNode* const physics;
+		SFNode <X3DBaseNode>* const texCoordRamp;
+		MFFloat* const texCoordKey;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

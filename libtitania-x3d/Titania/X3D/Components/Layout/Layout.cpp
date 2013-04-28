@@ -55,26 +55,30 @@
 namespace titania {
 namespace X3D {
 
+Layout::Fields::Fields () :
+	align (new MFString ({ "CENTER", "CENTER" })),
+	offset (new MFFloat ()),
+	offsetUnits (new MFString ()),
+	scaleMode (new MFString ()),
+	size (new MFFloat ()),
+	sizeUnits (new MFString ())
+{ }
+
 Layout::Layout (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DLayoutNode (),                                                    
-	        align ({ "CENTER", "CENTER" }),                              // MFString [in,out] align        ["CENTER","CENTER"]        ["LEFT"|"CENTER"|"RIGHT","BOTTOM"|"CENTER"|"TOP"]
-	       offset (),                                                    // MFFloat  [in,out] offset       [0,0]                      (-∞,∞)
-	  offsetUnits (),                                                    // MFString [in,out] offsetUnits  ["WORLD","WORLD"]          ["WORLD","FRACTION","PIXEL"]
-	    scaleMode (),                                                    // MFString [in,out] scaleMode    ["NONE","NONE"]            ["NONE","FRACTION","STRETCH","PIXEL"]
-	         size (),                                                    // MFFloat  [in,out] size         [1,1]                      (0,∞)
-	    sizeUnits ()                                                     // MFString [in,out] sizeUnits    ["WORLD","WORLD"]          ["WORLD","FRACTION","PIXEL"]
+	fields ()
 {
 	setComponent ("Layout");
 	setTypeName ("Layout");
 
-	addField (inputOutput, "metadata",    metadata);
-	addField (inputOutput, "align",       align);
-	addField (inputOutput, "offset",      offset);
-	addField (inputOutput, "offsetUnits", offsetUnits);
-	addField (inputOutput, "scaleMode",   scaleMode);
-	addField (inputOutput, "size",        size);
-	addField (inputOutput, "sizeUnits",   sizeUnits);
+	addField (inputOutput, "metadata",    metadata ());
+	addField (inputOutput, "align",       align ());
+	addField (inputOutput, "offset",      offset ());
+	addField (inputOutput, "offsetUnits", offsetUnits ());
+	addField (inputOutput, "scaleMode",   scaleMode ());
+	addField (inputOutput, "size",        size ());
+	addField (inputOutput, "sizeUnits",   sizeUnits ());
 }
 
 X3DBaseNode*
@@ -85,3 +89,4 @@ Layout::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

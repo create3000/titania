@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,15 +55,19 @@
 namespace titania {
 namespace X3D {
 
+Background::Fields::Fields () :
+	frontUrl (new MFString ()),
+	backUrl (new MFString ()),
+	leftUrl (new MFString ()),
+	rightUrl (new MFString ()),
+	topUrl (new MFString ()),
+	bottomUrl (new MFString ())
+{ }
+
 Background::Background (X3DExecutionContext* const executionContext, bool displayed) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DBackgroundNode (displayed),                                           
-	         frontUrl (),                                                    // MFString [in,out] frontUrl   [ ]        [URI]
-	          backUrl (),                                                    // MFString [in,out] backUrl    [ ]        [URI]
-	          leftUrl (),                                                    // MFString [in,out] leftUrl    [ ]        [URI]
-	         rightUrl (),                                                    // MFString [in,out] rightUrl   [ ]        [URI]
-	           topUrl (),                                                    // MFString [in,out] topUrl     [ ]        [URI]
-	        bottomUrl (),                                                    // MFString [in,out] bottomUrl  [ ]        [URI]
+	fields (),
 	     frontTexture (new ImageTexture (executionContext)),                 
 	      backTexture (new ImageTexture (executionContext)),                 
 	      leftTexture (new ImageTexture (executionContext)),                 
@@ -75,21 +79,21 @@ Background::Background (X3DExecutionContext* const executionContext, bool displa
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Background");
 
-	addField (inputOutput, "metadata",     metadata);
-	addField (inputOnly,   "set_bind",     set_bind);
-	addField (outputOnly,  "bindTime",     bindTime);
-	addField (inputOutput, "frontUrl",     frontUrl);
-	addField (inputOutput, "backUrl",      backUrl);
-	addField (inputOutput, "leftUrl",      leftUrl);
-	addField (inputOutput, "rightUrl",     rightUrl);
-	addField (inputOutput, "topUrl",       topUrl);
-	addField (inputOutput, "bottomUrl",    bottomUrl);
-	addField (inputOutput, "skyAngle",     skyAngle);
-	addField (inputOutput, "skyColor",     skyColor);
-	addField (inputOutput, "groundAngle",  groundAngle);
-	addField (inputOutput, "groundColor",  groundColor);
-	addField (inputOutput, "transparency", transparency);
-	addField (outputOnly,  "isBound",      isBound);
+	addField (inputOutput, "metadata",     metadata ());
+	addField (inputOnly,   "set_bind",     set_bind ());
+	addField (outputOnly,  "bindTime",     bindTime ());
+	addField (inputOutput, "frontUrl",     frontUrl ());
+	addField (inputOutput, "backUrl",      backUrl ());
+	addField (inputOutput, "leftUrl",      leftUrl ());
+	addField (inputOutput, "rightUrl",     rightUrl ());
+	addField (inputOutput, "topUrl",       topUrl ());
+	addField (inputOutput, "bottomUrl",    bottomUrl ());
+	addField (inputOutput, "skyAngle",     skyAngle ());
+	addField (inputOutput, "skyColor",     skyColor ());
+	addField (inputOutput, "groundAngle",  groundAngle ());
+	addField (inputOutput, "groundColor",  groundColor ());
+	addField (inputOutput, "transparency", transparency ());
+	addField (outputOnly,  "isBound",      isBound ());
 
 	setChildren (frontTexture,
 	             backTexture,
@@ -111,30 +115,30 @@ Background::initialize ()
 {
 	X3DBackgroundNode::initialize ();
 
-	frontUrl  .addInterest (frontTexture  -> url);
-	backUrl   .addInterest (backTexture   -> url);
-	leftUrl   .addInterest (leftTexture   -> url);
-	rightUrl  .addInterest (rightTexture  -> url);
-	topUrl    .addInterest (topTexture    -> url);
-	bottomUrl .addInterest (bottomTexture -> url);
+	frontUrl ()  .addInterest (frontTexture  -> url ());
+	backUrl ()   .addInterest (backTexture   -> url ());
+	leftUrl ()   .addInterest (leftTexture   -> url ());
+	rightUrl ()  .addInterest (rightTexture  -> url ());
+	topUrl ()    .addInterest (topTexture    -> url ());
+	bottomUrl () .addInterest (bottomTexture -> url ());
 	
-	textureProperties -> boundaryModeS = "CLAMP_TO_EDGE";
-	textureProperties -> boundaryModeT = "CLAMP_TO_EDGE";
-	textureProperties -> boundaryModeR = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeS () = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeT () = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeR () = "CLAMP_TO_EDGE";
 
-	frontTexture  -> url = frontUrl;
-	backTexture   -> url = backUrl;
-	leftTexture   -> url = leftUrl;
-	rightTexture  -> url = rightUrl;
-	topTexture    -> url = topUrl;
-	bottomTexture -> url = bottomUrl;
+	frontTexture  -> url () = frontUrl ();
+	backTexture   -> url () = backUrl ();
+	leftTexture   -> url () = leftUrl ();
+	rightTexture  -> url () = rightUrl ();
+	topTexture    -> url () = topUrl ();
+	bottomTexture -> url () = bottomUrl ();
 	
-	frontTexture  -> textureProperties = *textureProperties;
-	backTexture   -> textureProperties = *textureProperties;
-	leftTexture   -> textureProperties = *textureProperties;
-	rightTexture  -> textureProperties = *textureProperties;
-	topTexture    -> textureProperties = *textureProperties;
-	bottomTexture -> textureProperties = *textureProperties;
+	frontTexture  -> textureProperties () = *textureProperties;
+	backTexture   -> textureProperties () = *textureProperties;
+	leftTexture   -> textureProperties () = *textureProperties;
+	rightTexture  -> textureProperties () = *textureProperties;
+	topTexture    -> textureProperties () = *textureProperties;
+	bottomTexture -> textureProperties () = *textureProperties;
 	
 	textureProperties -> setup ();
 	frontTexture      -> setup ();
@@ -304,3 +308,4 @@ Background::dispose ()
 
 } // X3D
 } // titania
+

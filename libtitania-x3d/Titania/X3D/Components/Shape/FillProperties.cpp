@@ -55,22 +55,26 @@
 namespace titania {
 namespace X3D {
 
+FillProperties::Fields::Fields () :
+	filled (new SFBool (true)),
+	hatched (new SFBool (true)),
+	hatchStyle (new SFInt32 (1)),
+	hatchColor (new SFColor (1, 1, 1))
+{ }
+
 FillProperties::FillProperties (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DAppearanceChildNode (),                                                    
-	                filled (true),                                                // SFBool  [in,out] filled      TRUE
-	               hatched (true),                                                // SFBool  [in,out] hatched     TRUE
-	            hatchStyle (1),                                                   // SFInt32 [in,out] hatchStyle  1            [0,∞)
-	            hatchColor (1, 1, 1)                                              // SFColor [in,out] hatchColor  1 1 1        [0,1]
+	fields ()
 {
 	setComponent ("Shape");
 	setTypeName ("FillProperties");
 
-	addField (inputOutput, "metadata",   metadata);
-	addField (inputOutput, "filled",     filled);
-	addField (inputOutput, "hatched",    hatched);
-	addField (inputOutput, "hatchStyle", hatchStyle);
-	addField (inputOutput, "hatchColor", hatchColor);
+	addField (inputOutput, "metadata",   metadata ());
+	addField (inputOutput, "filled",     filled ());
+	addField (inputOutput, "hatched",    hatched ());
+	addField (inputOutput, "hatchStyle", hatchStyle ());
+	addField (inputOutput, "hatchColor", hatchColor ());
 }
 
 X3DBaseNode*
@@ -87,3 +91,4 @@ FillProperties::draw ()
 
 } // X3D
 } // titania
+

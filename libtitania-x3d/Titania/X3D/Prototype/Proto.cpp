@@ -64,7 +64,7 @@ Proto::Proto (X3DExecutionContext* const executionContext) :
 {
 	setTypeName ("Proto");
 
-	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "metadata", metadata ());
 
 	setWorldURL (executionContext -> getWorldURL ());
 }

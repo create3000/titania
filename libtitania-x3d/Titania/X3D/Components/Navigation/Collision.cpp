@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,27 +57,31 @@
 namespace titania {
 namespace X3D {
 
+Collision::Fields::Fields () :
+	collideTime (new SFTime ()),
+	proxy (new SFNode <X3DBaseNode> ())
+{ }
+
 Collision::Collision (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGroupingNode (),                                                    
 	  X3DSensorNode (),                                                    
-	    collideTime (),                                                    // SFTime [out] collideTime
-	          proxy (),                                                    // SFNode [ ]   proxy        NULL        [X3DChildNode]
+	         fields (),
 	         _proxy (NULL)                                                 
 {
 	setComponent ("Navigation");
 	setTypeName ("Collision");
 
-	addField (inputOutput,    "metadata",       metadata);
-	addField (inputOutput,    "enabled",        enabled);
-	addField (outputOnly,     "isActive",       isActive);
-	addField (outputOnly,     "collideTime",    collideTime);
-	addField (initializeOnly, "bboxSize",       bboxSize);
-	addField (initializeOnly, "bboxCenter",     bboxCenter);
-	addField (initializeOnly, "proxy",          proxy);
-	addField (inputOnly,      "addChildren",    addChildren);
-	addField (inputOnly,      "removeChildren", removeChildren);
-	addField (inputOutput,    "children",       children);
+	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "enabled",        enabled ());
+	addField (outputOnly,     "isActive",       isActive ());
+	addField (outputOnly,     "collideTime",    collideTime ());
+	addField (initializeOnly, "bboxSize",       bboxSize ());
+	addField (initializeOnly, "bboxCenter",     bboxCenter ());
+	addField (initializeOnly, "proxy",          proxy ());
+	addField (inputOnly,      "addChildren",    addChildren ());
+	addField (inputOnly,      "removeChildren", removeChildren ());
+	addField (inputOutput,    "children",       children ());
 	addFieldAlias ("collide", "enabled");
 }
 
@@ -92,7 +96,7 @@ Collision::initialize ()
 {
 	X3DGroupingNode::initialize ();
 
-	proxy .addInterest (this, &Collision::set_proxy);
+	proxy () .addInterest (this, &Collision::set_proxy);
 
 	set_proxy ();
 }
@@ -100,19 +104,19 @@ Collision::initialize ()
 void
 Collision::set_active (bool value)
 {
-	if (isActive not_eq value)
+	if (isActive () not_eq value)
 	{
-		isActive = value;
+		isActive () = value;
 
-		if (isActive)
-			collideTime = getCurrentTime ();
+		if (isActive ())
+			collideTime () = getCurrentTime ();
 	}
 }
 
 void
 Collision::set_proxy ()
 {
-	_proxy = x3d_cast <X3DChildNode*> (proxy .getValue ());
+	_proxy = x3d_cast <X3DChildNode*> (proxy () .getValue ());
 }
 
 void
@@ -123,7 +127,7 @@ Collision::traverse (TraverseType type)
 		case TraverseType::NAVIGATION:
 		case TraverseType::COLLISION:
 		{
-			if (enabled)
+			if (enabled ())
 			{
 				if (_proxy)
 					_proxy -> traverse (type);
@@ -150,3 +154,4 @@ Collision::traverse (TraverseType type)
 
 } // X3D
 } // titania
+

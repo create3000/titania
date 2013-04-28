@@ -61,17 +61,61 @@ class LineSet :
 {
 public:
 
-	MFInt32              vertexCount;
-	MFNode               attrib;
-	SFNode <X3DBaseNode> fogCoord;
-	SFNode <X3DBaseNode> color;
-	SFNode <X3DBaseNode> coord;
+	
+	
+	
+	
+	
 
 	LineSet (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFInt32 &
+	vertexCount ()
+	{ return *fields .vertexCount; }
+
+	const MFInt32 &
+	vertexCount () const
+	{ return *fields .vertexCount; }
+
+	MFNode &
+	attrib ()
+	{ return *fields .attrib; }
+
+	const MFNode &
+	attrib () const
+	{ return *fields .attrib; }
+
+	SFNode <X3DBaseNode> &
+	fogCoord ()
+	{ return *fields .fogCoord; }
+
+	const SFNode <X3DBaseNode> &
+	fogCoord () const
+	{ return *fields .fogCoord; }
+
+	SFNode <X3DBaseNode> &
+	color ()
+	{ return *fields .color; }
+
+	const SFNode <X3DBaseNode> &
+	color () const
+	{ return *fields .color; }
+
+	SFNode <X3DBaseNode> &
+	coord ()
+	{ return *fields .coord; }
+
+	const SFNode <X3DBaseNode> &
+	coord () const
+	{ return *fields .coord; }
+
+
 
 	virtual
 	void
@@ -80,6 +124,20 @@ public:
 	virtual
 	void
 	draw ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFInt32* const vertexCount;
+		MFNode* const attrib;
+		SFNode <X3DBaseNode>* const fogCoord;
+		SFNode <X3DBaseNode>* const color;
+		SFNode <X3DBaseNode>* const coord;
+	};
+
+	Fields fields;
 
 };
 
@@ -87,3 +145,4 @@ public:
 } // titania
 
 #endif
+

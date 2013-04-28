@@ -61,19 +61,79 @@ class IndexedLineSet :
 {
 public:
 
-	SFBool               colorPerVertex;
-	MFInt32              colorIndex;
-	MFInt32              coordIndex;
-	MFNode               attrib;
-	SFNode <X3DBaseNode> fogCoord;
-	SFNode <X3DBaseNode> color;
-	SFNode <X3DBaseNode> coord;
+	
+	
+	
+	
+	
+	
+	
 
 	IndexedLineSet (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFBool &
+	colorPerVertex ()
+	{ return *fields .colorPerVertex; }
+
+	const SFBool &
+	colorPerVertex () const
+	{ return *fields .colorPerVertex; }
+
+	MFInt32 &
+	colorIndex ()
+	{ return *fields .colorIndex; }
+
+	const MFInt32 &
+	colorIndex () const
+	{ return *fields .colorIndex; }
+
+	MFInt32 &
+	coordIndex ()
+	{ return *fields .coordIndex; }
+
+	const MFInt32 &
+	coordIndex () const
+	{ return *fields .coordIndex; }
+
+	MFNode &
+	attrib ()
+	{ return *fields .attrib; }
+
+	const MFNode &
+	attrib () const
+	{ return *fields .attrib; }
+
+	SFNode <X3DBaseNode> &
+	fogCoord ()
+	{ return *fields .fogCoord; }
+
+	const SFNode <X3DBaseNode> &
+	fogCoord () const
+	{ return *fields .fogCoord; }
+
+	SFNode <X3DBaseNode> &
+	color ()
+	{ return *fields .color; }
+
+	const SFNode <X3DBaseNode> &
+	color () const
+	{ return *fields .color; }
+
+	SFNode <X3DBaseNode> &
+	coord ()
+	{ return *fields .coord; }
+
+	const SFNode <X3DBaseNode> &
+	coord () const
+	{ return *fields .coord; }
+
+
 
 	virtual
 	void
@@ -96,6 +156,22 @@ private:
 	void
 	build ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const colorPerVertex;
+		MFInt32* const colorIndex;
+		MFInt32* const coordIndex;
+		MFNode* const attrib;
+		SFNode <X3DBaseNode>* const fogCoord;
+		SFNode <X3DBaseNode>* const color;
+		SFNode <X3DBaseNode>* const coord;
+	};
+
+	Fields fields;
+
+
 	std::deque <std::deque <size_t>> polylines;
 
 };
@@ -104,3 +180,4 @@ private:
 } // titania
 
 #endif
+

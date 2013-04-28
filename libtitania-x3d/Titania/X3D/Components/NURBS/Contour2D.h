@@ -61,9 +61,9 @@ class Contour2D :
 {
 public:
 
-	MFNode addChildren;
-	MFNode removeChildren;
-	MFNode children;
+	
+	
+	
 
 	Contour2D (X3DExecutionContext* const);
 
@@ -71,9 +71,50 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFNode &
+	addChildren ()
+	{ return *fields .addChildren; }
+
+	const MFNode &
+	addChildren () const
+	{ return *fields .addChildren; }
+
+	MFNode &
+	removeChildren ()
+	{ return *fields .removeChildren; }
+
+	const MFNode &
+	removeChildren () const
+	{ return *fields .removeChildren; }
+
+	MFNode &
+	children ()
+	{ return *fields .children; }
+
+	const MFNode &
+	children () const
+	{ return *fields .children; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const addChildren;
+		MFNode* const removeChildren;
+		MFNode* const children;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

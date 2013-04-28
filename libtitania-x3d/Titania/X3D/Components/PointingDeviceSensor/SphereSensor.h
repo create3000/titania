@@ -61,14 +61,34 @@ class SphereSensor :
 {
 public:
 
-	SFRotation offset;
-	SFRotation rotation_changed;
+	
+	
 
 	SphereSensor (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFRotation &
+	offset ()
+	{ return *fields .offset; }
+
+	const SFRotation &
+	offset () const
+	{ return *fields .offset; }
+
+	SFRotation &
+	rotation_changed ()
+	{ return *fields .rotation_changed; }
+
+	const SFRotation &
+	rotation_changed () const
+	{ return *fields .rotation_changed; }
+
+
 
 	virtual
 	void
@@ -84,6 +104,16 @@ private:
 	bool
 	getTrackPoint (const Line3f &, Vector3f &, bool = false) const;
 
+	struct Fields
+	{
+		Fields ();
+
+		SFRotation* const offset;
+		SFRotation* const rotation_changed;
+	};
+
+	Fields fields;
+
 	Plane3f    zPlane;
 	Sphere3f   sphere;
 	bool       behind;
@@ -98,3 +128,4 @@ private:
 } // titania
 
 #endif
+

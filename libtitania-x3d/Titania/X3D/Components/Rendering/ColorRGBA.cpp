@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,16 +55,20 @@
 namespace titania {
 namespace X3D {
 
+ColorRGBA::Fields::Fields () :
+	color (new MFColorRGBA ())
+{ }
+
 ColorRGBA::ColorRGBA (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DColorNode (),                                                    
-	       color ()                                                     // MFColorRGBA [in,out] color  [NULL]        [0,1]
+	fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("ColorRGBA");
 
-	addField (inputOutput, "metadata", metadata);
-	addField (inputOutput, "color",    color);
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "color",    color ());
 }
 
 X3DBaseNode*
@@ -76,14 +80,15 @@ ColorRGBA::create (X3DExecutionContext* const executionContext) const
 void
 ColorRGBA::resize (size_t size)
 {
-	if (color .size ())
+	if (color () .size ())
 	{
-		if (color .size () < size)
-			color .resize (size, color .back ());
+		if (color () .size () < size)
+			color () .resize (size, color () .back ());
 	}
 	else
-		color .resize (size, SFColorRGBA (1, 1, 1, 1));
+		color () .resize (size, SFColorRGBA (1, 1, 1, 1));
 }
 
 } // X3D
 } // titania
+

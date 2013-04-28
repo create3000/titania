@@ -61,17 +61,17 @@ class NurbsSurfaceInterpolator :
 {
 public:
 
-	SFVec2f              set_fraction;
-	SFNode <X3DBaseNode> controlPoint;
-	MFDouble             weight;
-	SFVec3f              position_changed;
-	SFVec3f              normal_changed;
-	SFInt32              uDimension;
-	MFDouble             uKnot;
-	SFInt32              uOrder;
-	SFInt32              vDimension;
-	MFDouble             vKnot;
-	SFInt32              vOrder;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	NurbsSurfaceInterpolator (X3DExecutionContext* const);
 
@@ -79,9 +79,122 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec2f &
+	set_fraction ()
+	{ return *fields .set_fraction; }
+
+	const SFVec2f &
+	set_fraction () const
+	{ return *fields .set_fraction; }
+
+	SFNode <X3DBaseNode> &
+	controlPoint ()
+	{ return *fields .controlPoint; }
+
+	const SFNode <X3DBaseNode> &
+	controlPoint () const
+	{ return *fields .controlPoint; }
+
+	MFDouble &
+	weight ()
+	{ return *fields .weight; }
+
+	const MFDouble &
+	weight () const
+	{ return *fields .weight; }
+
+	SFVec3f &
+	position_changed ()
+	{ return *fields .position_changed; }
+
+	const SFVec3f &
+	position_changed () const
+	{ return *fields .position_changed; }
+
+	SFVec3f &
+	normal_changed ()
+	{ return *fields .normal_changed; }
+
+	const SFVec3f &
+	normal_changed () const
+	{ return *fields .normal_changed; }
+
+	SFInt32 &
+	uDimension ()
+	{ return *fields .uDimension; }
+
+	const SFInt32 &
+	uDimension () const
+	{ return *fields .uDimension; }
+
+	MFDouble &
+	uKnot ()
+	{ return *fields .uKnot; }
+
+	const MFDouble &
+	uKnot () const
+	{ return *fields .uKnot; }
+
+	SFInt32 &
+	uOrder ()
+	{ return *fields .uOrder; }
+
+	const SFInt32 &
+	uOrder () const
+	{ return *fields .uOrder; }
+
+	SFInt32 &
+	vDimension ()
+	{ return *fields .vDimension; }
+
+	const SFInt32 &
+	vDimension () const
+	{ return *fields .vDimension; }
+
+	MFDouble &
+	vKnot ()
+	{ return *fields .vKnot; }
+
+	const MFDouble &
+	vKnot () const
+	{ return *fields .vKnot; }
+
+	SFInt32 &
+	vOrder ()
+	{ return *fields .vOrder; }
+
+	const SFInt32 &
+	vOrder () const
+	{ return *fields .vOrder; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec2f* const set_fraction;
+		SFNode <X3DBaseNode>* const controlPoint;
+		MFDouble* const weight;
+		SFVec3f* const position_changed;
+		SFVec3f* const normal_changed;
+		SFInt32* const uDimension;
+		MFDouble* const uKnot;
+		SFInt32* const uOrder;
+		SFInt32* const vDimension;
+		MFDouble* const vKnot;
+		SFInt32* const vOrder;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

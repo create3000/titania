@@ -61,12 +61,12 @@ class TextureBackground :
 {
 public:
 
-	SFNode <X3DBaseNode> backTexture;
-	SFNode <X3DBaseNode> bottomTexture;
-	SFNode <X3DBaseNode> frontTexture;
-	SFNode <X3DBaseNode> leftTexture;
-	SFNode <X3DBaseNode> rightTexture;
-	SFNode <X3DBaseNode> topTexture;
+	
+	
+	
+	
+	
+	
 
 	TextureBackground (X3DExecutionContext* const, bool = true);
 
@@ -74,9 +74,77 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFNode <X3DBaseNode> &
+	backTexture ()
+	{ return *fields .backTexture; }
+
+	const SFNode <X3DBaseNode> &
+	backTexture () const
+	{ return *fields .backTexture; }
+
+	SFNode <X3DBaseNode> &
+	bottomTexture ()
+	{ return *fields .bottomTexture; }
+
+	const SFNode <X3DBaseNode> &
+	bottomTexture () const
+	{ return *fields .bottomTexture; }
+
+	SFNode <X3DBaseNode> &
+	frontTexture ()
+	{ return *fields .frontTexture; }
+
+	const SFNode <X3DBaseNode> &
+	frontTexture () const
+	{ return *fields .frontTexture; }
+
+	SFNode <X3DBaseNode> &
+	leftTexture ()
+	{ return *fields .leftTexture; }
+
+	const SFNode <X3DBaseNode> &
+	leftTexture () const
+	{ return *fields .leftTexture; }
+
+	SFNode <X3DBaseNode> &
+	rightTexture ()
+	{ return *fields .rightTexture; }
+
+	const SFNode <X3DBaseNode> &
+	rightTexture () const
+	{ return *fields .rightTexture; }
+
+	SFNode <X3DBaseNode> &
+	topTexture ()
+	{ return *fields .topTexture; }
+
+	const SFNode <X3DBaseNode> &
+	topTexture () const
+	{ return *fields .topTexture; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const backTexture;
+		SFNode <X3DBaseNode>* const bottomTexture;
+		SFNode <X3DBaseNode>* const frontTexture;
+		SFNode <X3DBaseNode>* const leftTexture;
+		SFNode <X3DBaseNode>* const rightTexture;
+		SFNode <X3DBaseNode>* const topTexture;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

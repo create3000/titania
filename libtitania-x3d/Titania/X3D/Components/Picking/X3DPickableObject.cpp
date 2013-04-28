@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,10 +53,14 @@
 namespace titania {
 namespace X3D {
 
+X3DPickableObject::Fields::Fields () :
+	objectType (new MFString ({ "ALL" })),
+	pickable (new SFBool (true))
+{ }
+
 X3DPickableObject::X3DPickableObject () :
 	X3DBaseNode (),          
-	 objectType ({ "ALL" }), // MFString [in,out] objectType  "ALL"        ["ALL"|"NONE"|"TERRAIN"|...]
-	   pickable (true)       // SFBool   [in,out] pickable    TRUE
+	fields ()
 {
 	addNodeType (X3DConstants::X3DPickableObject);
 }
@@ -71,3 +75,4 @@ X3DPickableObject::dispose ()
 
 } // X3D
 } // titania
+

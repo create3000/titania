@@ -61,9 +61,9 @@ class GeoMetadata :
 {
 public:
 
-	MFNode   data;
-	MFString summary;
-	MFString url;
+	
+	
+	
 
 	GeoMetadata (X3DExecutionContext* const);
 
@@ -71,9 +71,50 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFNode &
+	data ()
+	{ return *fields .data; }
+
+	const MFNode &
+	data () const
+	{ return *fields .data; }
+
+	MFString &
+	summary ()
+	{ return *fields .summary; }
+
+	const MFString &
+	summary () const
+	{ return *fields .summary; }
+
+	MFString &
+	url ()
+	{ return *fields .url; }
+
+	const MFString &
+	url () const
+	{ return *fields .url; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const data;
+		MFString* const summary;
+		MFString* const url;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

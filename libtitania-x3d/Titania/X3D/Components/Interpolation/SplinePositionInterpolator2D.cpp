@@ -55,26 +55,30 @@
 namespace titania {
 namespace X3D {
 
+SplinePositionInterpolator2D::Fields::Fields () :
+	closed (new SFBool ()),
+	keyValue (new MFVec2f ()),
+	keyVelocity (new MFVec2f ()),
+	normalizeVelocity (new SFBool ()),
+	value_changed (new SFVec2f ())
+{ }
+
 SplinePositionInterpolator2D::SplinePositionInterpolator2D (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
-	             closed (),                                                    // SFBool  [in,out] closed             FALSE
-	           keyValue (),                                                    // MFVec2f [in,out] keyValue           [ ]          (-∞,∞)
-	        keyVelocity (),                                                    // MFVec2f [in,out] keyVelocity        [ ]          (-∞,∞)
-	  normalizeVelocity (),                                                    // SFBool  [in,out] normalizeVelocity  FALSE
-	      value_changed ()                                                     // SFVec2f [out]    value_changed
+	fields ()
 {
 	setComponent ("Interpolation");
 	setTypeName ("SplinePositionInterpolator2D");
 
-	addField (inputOutput, "metadata",          metadata);
-	addField (inputOnly,   "set_fraction",      set_fraction);
-	addField (inputOutput, "key",               key);
-	addField (inputOutput, "closed",            closed);
-	addField (inputOutput, "keyValue",          keyValue);
-	addField (inputOutput, "keyVelocity",       keyVelocity);
-	addField (inputOutput, "normalizeVelocity", normalizeVelocity);
-	addField (outputOnly,  "value_changed",     value_changed);
+	addField (inputOutput, "metadata",          metadata ());
+	addField (inputOnly,   "set_fraction",      set_fraction ());
+	addField (inputOutput, "key",               key ());
+	addField (inputOutput, "closed",            closed ());
+	addField (inputOutput, "keyValue",          keyValue ());
+	addField (inputOutput, "keyVelocity",       keyVelocity ());
+	addField (inputOutput, "normalizeVelocity", normalizeVelocity ());
+	addField (outputOnly,  "value_changed",     value_changed ());
 }
 
 X3DBaseNode*
@@ -88,14 +92,14 @@ SplinePositionInterpolator2D::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue .addInterest (this, &SplinePositionInterpolator2D::set_keyValue);
+	keyValue () .addInterest (this, &SplinePositionInterpolator2D::set_keyValue);
 }
 
 void
 SplinePositionInterpolator2D::set_keyValue ()
 {
-	if (keyValue .size () < key .size ())
-		keyValue .resize (key .size (), keyValue .size () ? keyValue .back () : SFVec2f ());
+	if (keyValue () .size () < key () .size ())
+		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFVec2f ());
 }
 
 void
@@ -104,3 +108,4 @@ SplinePositionInterpolator2D::interpolate (size_t index0, size_t index1, float w
 
 } // X3D
 } // titania
+

@@ -55,25 +55,29 @@
 namespace titania {
 namespace X3D {
 
+NurbsCurve2D::Fields::Fields () :
+	tessellation (new SFInt32 ()),
+	weight (new MFDouble ()),
+	closed (new SFBool ()),
+	knot (new MFDouble ()),
+	order (new SFInt32 (3))
+{ }
+
 NurbsCurve2D::NurbsCurve2D (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DNurbsControlCurveNode (),                                                    
-	            tessellation (),                                                    // SFInt32  [in,out] tessellation  0            (-∞,∞)
-	                  weight (),                                                    // MFDouble [in,out] weight        [ ]          (0,∞)
-	                  closed (),                                                    // SFBool   [ ]      closed        FALSE
-	                    knot (),                                                    // MFDouble [ ]      knot          [ ]           (-∞,∞)
-	                   order (3)                                                    // SFInt32  [ ]      order         3            [2,∞)
+	fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsCurve2D");
 
-	addField (inputOutput,    "metadata",     metadata);
-	addField (inputOutput,    "controlPoint", controlPoint);
-	addField (inputOutput,    "tessellation", tessellation);
-	addField (inputOutput,    "weight",       weight);
-	addField (initializeOnly, "closed",       closed);
-	addField (initializeOnly, "knot",         knot);
-	addField (initializeOnly, "order",        order);
+	addField (inputOutput,    "metadata",     metadata ());
+	addField (inputOutput,    "controlPoint", controlPoint ());
+	addField (inputOutput,    "tessellation", tessellation ());
+	addField (inputOutput,    "weight",       weight ());
+	addField (initializeOnly, "closed",       closed ());
+	addField (initializeOnly, "knot",         knot ());
+	addField (initializeOnly, "order",        order ());
 }
 
 X3DBaseNode*
@@ -84,3 +88,4 @@ NurbsCurve2D::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

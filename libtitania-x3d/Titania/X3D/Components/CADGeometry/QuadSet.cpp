@@ -71,19 +71,19 @@ QuadSet::QuadSet (X3DExecutionContext* const executionContext) :
 	setComponent ("CADGeometry");
 	setTypeName ("QuadSet");
 
-	addField (inputOutput,    "metadata",        metadata);
+	addField (inputOutput,    "metadata",        metadata ());
 
-	addField (initializeOnly, "solid",           solid);
-	addField (initializeOnly, "ccw",             ccw);
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex);
-	addField (initializeOnly, "normalPerVertex", normalPerVertex);
+	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "ccw",             ccw ());
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
+	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
 
-	addField (inputOutput,    "attrib",          attrib);
-	addField (inputOutput,    "fogCoord",        fogCoord);
-	addField (inputOutput,    "texCoord",        texCoord);
-	addField (inputOutput,    "color",           color);
-	addField (inputOutput,    "normal",          normal);
-	addField (inputOutput,    "coord",           coord);
+	addField (inputOutput,    "attrib",          attrib ());
+	addField (inputOutput,    "fogCoord",        fogCoord ());
+	addField (inputOutput,    "texCoord",        texCoord ());
+	addField (inputOutput,    "color",           color ());
+	addField (inputOutput,    "normal",          normal ());
+	addField (inputOutput,    "coord",           coord ());
 }
 
 X3DBaseNode*
@@ -95,36 +95,36 @@ QuadSet::create (X3DExecutionContext* const executionContext) const
 void
 QuadSet::build ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
 
 	// Build arrays
 
-	if (not _coord or not _coord -> point .size ())
+	if (not _coord or not _coord -> point () .size ())
 		return;
 
-	size_t size = _coord -> point .size () / VERTEX_COUNT * VERTEX_COUNT;
+	size_t size = _coord -> point () .size () / VERTEX_COUNT * VERTEX_COUNT;
 
 	// Color
 
-	auto _color     = x3d_cast <Color*> (color .getValue ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
+	auto _color     = x3d_cast <Color*> (color () .getValue ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color () .getValue ());
 
 	if (_color)
 	{
-		_color -> resize (colorPerVertex ? size : size / VERTEX_COUNT);
+		_color -> resize (colorPerVertex () ? size : size / VERTEX_COUNT);
 		getColors () .reserve (size);
 	}
 
 	else if (_colorRGBA)
 	{
-		_colorRGBA -> resize (colorPerVertex ? size : size / VERTEX_COUNT);
+		_colorRGBA -> resize (colorPerVertex () ? size : size / VERTEX_COUNT);
 		getColorsRGBA () .reserve (size);
 	}
 
 	// TextureCoordinate
 
-	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord .getValue ());
-	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord .getValue ());
+	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord () .getValue ());
+	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord () .getValue ());
 
 	if (_textureCoordinate)
 		_textureCoordinate -> resize (size);
@@ -134,10 +134,10 @@ QuadSet::build ()
 
 	// Normal
 
-	auto _normal = x3d_cast <Normal*> (normal .getValue ());
+	auto _normal = x3d_cast <Normal*> (normal () .getValue ());
 	
 	if (_normal)
-		_normal -> resize (normalPerVertex ? size : size / VERTEX_COUNT);
+		_normal -> resize (normalPerVertex () ? size : size / VERTEX_COUNT);
 
 	getNormals () .reserve (size);
 
@@ -153,35 +153,35 @@ QuadSet::build ()
 		SFColor     faceColor;
 		SFColorRGBA faceColorRGBA;
 
-		if (not colorPerVertex)
+		if (not colorPerVertex ())
 		{
 			if (_color)
-				faceColor = _color -> color [face];
+				faceColor = _color -> color () [face];
 
 			else if (_colorRGBA)
-				faceColorRGBA = _colorRGBA -> color [face];
+				faceColorRGBA = _colorRGBA -> color () [face];
 		}
 
 		if (_normal)
 		{
-			if (not normalPerVertex)
-				faceNormal = _normal -> vector [face];
+			if (not normalPerVertex ())
+				faceNormal = _normal -> vector () [face];
 		}
 
 		for (size_t i = 0; i < VERTEX_COUNT; ++ i, ++ index)
 		{
 			if (_color)
 			{
-				if (colorPerVertex)
-					getColors () .emplace_back (_color -> color [index]);
+				if (colorPerVertex ())
+					getColors () .emplace_back (_color -> color () [index]);
 
 				else
 					getColors () .emplace_back (faceColor);
 			}
 			else if (_colorRGBA)
 			{
-				if (colorPerVertex)
-					getColorsRGBA () .emplace_back (_colorRGBA -> color [index]);
+				if (colorPerVertex ())
+					getColorsRGBA () .emplace_back (_colorRGBA -> color () [index]);
 
 				else
 					getColorsRGBA () .emplace_back (faceColorRGBA);
@@ -189,20 +189,20 @@ QuadSet::build ()
 
 			if (_textureCoordinate)
 			{
-				const auto & t = _textureCoordinate -> point [index];
+				const auto & t = _textureCoordinate -> point () [index];
 				getTexCoord () .emplace_back (t .getX (), t .getY (), 0);
 			}
 
 			if (_normal)
 			{
-				if (normalPerVertex)
-					getNormals () .emplace_back (_normal -> vector [index]);
+				if (normalPerVertex ())
+					getNormals () .emplace_back (_normal -> vector () [index]);
 
 				else
 					getNormals () .emplace_back (faceNormal);
 			}
 
-			getVertices () .emplace_back (_coord -> point [index]);
+			getVertices () .emplace_back (_coord -> point () [index]);
 		}
 	}
 
@@ -217,23 +217,23 @@ QuadSet::build ()
 	addElement (getVertices () .size ());
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setVertexMode (GL_QUADS);
-	setSolid (solid);
+	setSolid (solid ());
 }
 
 void
 QuadSet::buildNormals ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
 	
-	size_t size = _coord -> point .size () / VERTEX_COUNT * VERTEX_COUNT;
+	size_t size = _coord -> point () .size () / VERTEX_COUNT * VERTEX_COUNT;
 	
 	for (size_t index = 0; index < size; index += VERTEX_COUNT)
 	{
 		// Determine polygon normal.
-		Vector3f normal = math::normal <float> (_coord -> point [index],
-			                                     _coord -> point [index + 1],
-			                                     _coord -> point [index + 2],
-			                                     _coord -> point [index + 3]);
+		Vector3f normal = math::normal <float> (_coord -> point () [index],
+			                                     _coord -> point () [index + 1],
+			                                     _coord -> point () [index + 2],
+			                                     _coord -> point () [index + 3]);
 		
 		getNormals () .resize (getNormals () .size () + VERTEX_COUNT, normal);
 	}

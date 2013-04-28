@@ -61,12 +61,37 @@ class X3DSensorNode :
 {
 public:
 
-	SFBool enabled;
-	SFBool isActive;
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
 
 protected:
 
 	X3DSensorNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const enabled;
+		SFBool* const isActive;
+	};
+
+	Fields fields;
 
 };
 
@@ -74,3 +99,4 @@ protected:
 } // titania
 
 #endif
+

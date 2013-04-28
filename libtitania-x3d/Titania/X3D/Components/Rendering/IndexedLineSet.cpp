@@ -59,29 +59,33 @@
 namespace titania {
 namespace X3D {
 
+IndexedLineSet::Fields::Fields () :
+	colorPerVertex (new SFBool (true)),
+	colorIndex (new MFInt32 ()),
+	coordIndex (new MFInt32 ()),
+	attrib (new MFNode ()),
+	fogCoord (new SFNode <X3DBaseNode> ()),
+	color (new SFNode <X3DBaseNode> ()),
+	coord (new SFNode <X3DBaseNode> ())
+{ }
+
 IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	 colorPerVertex (true),                                                // SFBool  [ ]      colorPerVertex  TRUE
-	     colorIndex (),                                                    // MFInt32 [ ]      colorIndex      [ ]         [0,∞) or -1
-	     coordIndex (),                                                    // MFInt32 [ ]      coordIndex      [ ]         [0,∞) or -1
-	         attrib (),                                                    // MFNode  [in,out] attrib          [ ]         [X3DVertexAttributeNode]
-	       fogCoord (),                                                    // SFNode  [in,out] fogCoord        [ ]         [FogCoordinate]
-	          color (),                                                    // SFNode  [in,out] color           NULL        [X3DColorNode]
-	          coord (),                                                    // SFNode  [in,out] coord           NULL        [X3DCoordinateNode]
+	         fields (),
 	      polylines ()                                                     
 {
 	setComponent ("Rendering");
 	setTypeName ("IndexedLineSet");
 
-	addField (inputOutput,    "metadata",       metadata);
-	addField (initializeOnly, "colorPerVertex", colorPerVertex);
-	addField (inputOutput,    "colorIndex",     colorIndex);
-	addField (inputOutput,    "coordIndex",     coordIndex);
-	addField (inputOutput,    "attrib",         attrib);
-	addField (inputOutput,    "fogCoord",       fogCoord);
-	addField (inputOutput,    "color",          color);
-	addField (inputOutput,    "coord",          coord);
+	addField (inputOutput,    "metadata",       metadata ());
+	addField (initializeOnly, "colorPerVertex", colorPerVertex ());
+	addField (inputOutput,    "colorIndex",     colorIndex ());
+	addField (inputOutput,    "coordIndex",     coordIndex ());
+	addField (inputOutput,    "attrib",         attrib ());
+	addField (inputOutput,    "fogCoord",       fogCoord ());
+	addField (inputOutput,    "color",          color ());
+	addField (inputOutput,    "coord",          coord ());
 }
 
 X3DBaseNode*
@@ -95,8 +99,8 @@ IndexedLineSet::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	coordIndex .addInterest (this, &IndexedLineSet::set_coordIndex);
-	colorIndex .addInterest (this, &IndexedLineSet::set_colorIndex);
+	coordIndex () .addInterest (this, &IndexedLineSet::set_coordIndex);
+	colorIndex () .addInterest (this, &IndexedLineSet::set_colorIndex);
 
 	set_coordIndex ();
 }
@@ -104,7 +108,7 @@ IndexedLineSet::initialize ()
 void
 IndexedLineSet::set_coordIndex ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
 
 	if (not _coord)
 		return;
@@ -112,17 +116,17 @@ IndexedLineSet::set_coordIndex ()
 	polylines .clear ();
 
 	// Fill up coordIndex if there are no indices.
-	if (coordIndex .empty ())
+	if (coordIndex () .empty ())
 	{
-		for (size_t i = 0; i < _coord -> point .size (); ++ i)
-			coordIndex .push_back (i);
+		for (size_t i = 0; i < _coord -> point () .size (); ++ i)
+			coordIndex () .push_back (i);
 	}
 
-	if (coordIndex .size ())
+	if (coordIndex () .size ())
 	{
 		// Add -1 (polylines end marker) to coordIndex if not present.
-		if (coordIndex .back () >= 0)
-			coordIndex .push_back (-1);
+		if (coordIndex () .back () >= 0)
+			coordIndex () .push_back (-1);
 
 		// Construct polylines array and determine the number of used points.
 		size_t  i         = 0;
@@ -130,7 +134,7 @@ IndexedLineSet::set_coordIndex ()
 
 		std::deque <size_t> polyline;
 
-		for (const auto & index : coordIndex)
+		for (const auto & index : coordIndex ())
 		{
 			numPoints = std::max <int32_t> (numPoints, index);
 
@@ -172,24 +176,24 @@ IndexedLineSet::set_coordIndex ()
 void
 IndexedLineSet::set_colorIndex ()
 {
-	auto _color     = x3d_cast <Color*> (color .getValue ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
+	auto _color     = x3d_cast <Color*> (color () .getValue ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color () .getValue ());
 
 	if (_color or _colorRGBA)
 	{
 		// Fill up colorIndex if to small.
-		if (colorPerVertex)
+		if (colorPerVertex ())
 		{
-			for (size_t i = colorIndex .size (); i < coordIndex .size (); ++ i)
+			for (size_t i = colorIndex () .size (); i < coordIndex () .size (); ++ i)
 			{
-				colorIndex .push_back (coordIndex [i]);
+				colorIndex () .push_back (coordIndex () [i]);
 			}
 		}
 		else
 		{
-			for (size_t i = colorIndex .size (); i < polylines .size (); ++ i)
+			for (size_t i = colorIndex () .size (); i < polylines .size (); ++ i)
 			{
-				colorIndex .push_back (i);
+				colorIndex () .push_back (i);
 			}
 		}
 
@@ -197,7 +201,7 @@ IndexedLineSet::set_colorIndex ()
 
 		int numColors = -1;
 
-		for (const auto & index : colorIndex)
+		for (const auto & index : colorIndex ())
 		{
 			numColors = std::max <int32_t> (numColors, index);
 		}
@@ -219,15 +223,15 @@ IndexedLineSet::set_colorIndex ()
 void
 IndexedLineSet::build ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
 
-	if (not _coord or not _coord -> point .size ())
+	if (not _coord or not _coord -> point () .size ())
 		return;
 
 	// Color
 
-	auto _color     = x3d_cast <Color*> (color .getValue ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
+	auto _color     = x3d_cast <Color*> (color () .getValue ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color () .getValue ());
 
 	// Fill GeometryNode
 
@@ -238,13 +242,13 @@ IndexedLineSet::build ()
 		SFColor     faceColor;
 		SFColorRGBA faceColorRGBA;
 
-		if (not colorPerVertex)
+		if (not colorPerVertex ())
 		{
-			if (_color and colorIndex [face] >= 0)
-				faceColor = _color -> color [colorIndex [face]];
+			if (_color and colorIndex () [face] >= 0)
+				faceColor = _color -> color () [colorIndex () [face]];
 
-			else if (_colorRGBA and colorIndex [face] >= 0)
-				faceColorRGBA = _colorRGBA -> color [colorIndex [face]];
+			else if (_colorRGBA and colorIndex () [face] >= 0)
+				faceColorRGBA = _colorRGBA -> color () [colorIndex () [face]];
 		}
 
 		// Create two vertices for each line.
@@ -257,22 +261,22 @@ IndexedLineSet::build ()
 
 				if (_color)
 				{
-					if (colorPerVertex and colorIndex [i] >= 0)
-						getColors () .emplace_back (_color -> color [colorIndex [i]]);
+					if (colorPerVertex () and colorIndex () [i] >= 0)
+						getColors () .emplace_back (_color -> color () [colorIndex () [i]]);
 
 					else
 						getColors () .emplace_back (faceColor);
 				}
 				else if (_colorRGBA)
 				{
-					if (colorPerVertex and colorIndex [i] >= 0)
-						getColorsRGBA () .emplace_back (_colorRGBA -> color [colorIndex [i]]);
+					if (colorPerVertex () and colorIndex () [i] >= 0)
+						getColorsRGBA () .emplace_back (_colorRGBA -> color () [colorIndex () [i]]);
 
 					else
 						getColorsRGBA () .emplace_back (faceColorRGBA);
 				}
 
-				getVertices () .emplace_back (_coord -> point [coordIndex [i]]);
+				getVertices () .emplace_back (_coord -> point () [coordIndex () [i]]);
 			}
 		}
 
@@ -293,3 +297,4 @@ IndexedLineSet::draw ()
 
 } // X3D
 } // titania
+

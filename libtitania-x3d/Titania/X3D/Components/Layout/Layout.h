@@ -61,12 +61,12 @@ class Layout :
 {
 public:
 
-	MFString align;
-	MFFloat  offset;
-	MFString offsetUnits;
-	MFString scaleMode;
-	MFFloat  size;
-	MFString sizeUnits;
+	
+	
+	
+	
+	
+	
 
 	Layout (X3DExecutionContext* const);
 
@@ -74,9 +74,77 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFString &
+	align ()
+	{ return *fields .align; }
+
+	const MFString &
+	align () const
+	{ return *fields .align; }
+
+	MFFloat &
+	offset ()
+	{ return *fields .offset; }
+
+	const MFFloat &
+	offset () const
+	{ return *fields .offset; }
+
+	MFString &
+	offsetUnits ()
+	{ return *fields .offsetUnits; }
+
+	const MFString &
+	offsetUnits () const
+	{ return *fields .offsetUnits; }
+
+	MFString &
+	scaleMode ()
+	{ return *fields .scaleMode; }
+
+	const MFString &
+	scaleMode () const
+	{ return *fields .scaleMode; }
+
+	MFFloat &
+	size ()
+	{ return *fields .size; }
+
+	const MFFloat &
+	size () const
+	{ return *fields .size; }
+
+	MFString &
+	sizeUnits ()
+	{ return *fields .sizeUnits; }
+
+	const MFString &
+	sizeUnits () const
+	{ return *fields .sizeUnits; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFString* const align;
+		MFFloat* const offset;
+		MFString* const offsetUnits;
+		MFString* const scaleMode;
+		MFFloat* const size;
+		MFString* const sizeUnits;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

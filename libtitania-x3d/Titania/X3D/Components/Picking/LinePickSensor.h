@@ -61,9 +61,9 @@ class LinePickSensor :
 {
 public:
 
-	MFVec3f pickedNormal;
-	MFVec3f pickedPoint;
-	MFVec3f pickedTextureCoordinate;
+	
+	
+	
 
 	LinePickSensor (X3DExecutionContext* const);
 
@@ -71,9 +71,50 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFVec3f &
+	pickedNormal ()
+	{ return *fields .pickedNormal; }
+
+	const MFVec3f &
+	pickedNormal () const
+	{ return *fields .pickedNormal; }
+
+	MFVec3f &
+	pickedPoint ()
+	{ return *fields .pickedPoint; }
+
+	const MFVec3f &
+	pickedPoint () const
+	{ return *fields .pickedPoint; }
+
+	MFVec3f &
+	pickedTextureCoordinate ()
+	{ return *fields .pickedTextureCoordinate; }
+
+	const MFVec3f &
+	pickedTextureCoordinate () const
+	{ return *fields .pickedTextureCoordinate; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFVec3f* const pickedNormal;
+		MFVec3f* const pickedPoint;
+		MFVec3f* const pickedTextureCoordinate;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

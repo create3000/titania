@@ -53,10 +53,14 @@
 namespace titania {
 namespace X3D {
 
+X3DGeometryNode::Fields::Fields () :
+	                       ccw (new SFBool (true)),
+	               creaseAngle (new SFFloat ())
+{ }
+
 X3DGeometryNode::X3DGeometryNode () :
-	                   X3DNode (),               
-	                       ccw (true),           // SFBool  [ ]      ccw              TRUE
-	               creaseAngle (),               // SFFloat [ ]      creaseAngle      0           [0,∞)
+	                   X3DNode (),
+	                    fields (),               
 	                      bbox (),               
 	                  texCoords (),               
 	textureCoordinateGenerator (NULL),           
@@ -332,16 +336,16 @@ X3DGeometryNode::getTexCoordParams (Vector3f & min, float & Ssize, int & Sindex,
 void
 X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Vector3f> & normals)
 {
-	if (not ccw)
+	if (not ccw ())
 	{
 		for (auto & normal : normals)
 			normal .negate ();
 	}
 
-	if (creaseAngle == 0.0f)
+	if (creaseAngle () == 0.0f)
 		return;
 
-	float cosCreaseAngle = std::cos (creaseAngle);
+	float cosCreaseAngle = std::cos (creaseAngle ());
 
 	std::vector <Vector3f> _normals (normals .size ());
 
@@ -495,7 +499,7 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 	else
 		glDisable (GL_CULL_FACE);
 
-	glFrontFace (ccw ? GL_CCW : GL_CW);
+	glFrontFace (ccw () ? GL_CCW : GL_CW);
 
 	if (texture)
 	{

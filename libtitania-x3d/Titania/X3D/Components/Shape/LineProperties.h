@@ -61,9 +61,9 @@ class LineProperties :
 {
 public:
 
-	SFBool  applied;
-	SFInt32 linetype;
-	SFFloat linewidthScaleFactor;
+	
+	
+	
 
 	LineProperties (X3DExecutionContext* const);
 
@@ -71,9 +71,49 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFBool &
+	applied ()
+	{ return *fields .applied; }
+
+	const SFBool &
+	applied () const
+	{ return *fields .applied; }
+
+	SFInt32 &
+	linetype ()
+	{ return *fields .linetype; }
+
+	const SFInt32 &
+	linetype () const
+	{ return *fields .linetype; }
+
+	SFFloat &
+	linewidthScaleFactor ()
+	{ return *fields .linewidthScaleFactor; }
+
+	const SFFloat &
+	linewidthScaleFactor () const
+	{ return *fields .linewidthScaleFactor; }
+
+
+
 	virtual
 	void
 	draw ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const applied;
+		SFInt32* const linetype;
+		SFFloat* const linewidthScaleFactor;
+	};
+
+	Fields fields;
 
 };
 
@@ -81,3 +121,4 @@ public:
 } // titania
 
 #endif
+

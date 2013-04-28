@@ -62,14 +62,34 @@ class Script :
 {
 public:
 
-	SFBool directOutput;
-	SFBool mustEvaluate;
+	
+	
 
 	Script (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFBool &
+	directOutput ()
+	{ return *fields .directOutput; }
+
+	const SFBool &
+	directOutput () const
+	{ return *fields .directOutput; }
+
+	SFBool &
+	mustEvaluate ()
+	{ return *fields .mustEvaluate; }
+
+	const SFBool &
+	mustEvaluate () const
+	{ return *fields .mustEvaluate; }
+
+
 
 	void
 	eventsProcessed ();
@@ -88,6 +108,17 @@ private:
 	void
 	prepareEvents ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const directOutput;
+		SFBool* const mustEvaluate;
+	};
+
+	Fields fields;
+
+
 	std::unique_ptr <JavaScriptContext> javaScript;
 
 };
@@ -96,3 +127,4 @@ private:
 } // titania
 
 #endif
+

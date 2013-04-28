@@ -61,9 +61,9 @@ class TransformSensor :
 {
 public:
 
-	SFNode <X3DBaseNode> targetObject;
-	SFRotation           orientation_changed;
-	SFVec3f              position_changed;
+	
+	
+	
 
 	TransformSensor (X3DExecutionContext* const);
 
@@ -71,9 +71,50 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFNode <X3DBaseNode> &
+	targetObject ()
+	{ return *fields .targetObject; }
+
+	const SFNode <X3DBaseNode> &
+	targetObject () const
+	{ return *fields .targetObject; }
+
+	SFRotation &
+	orientation_changed ()
+	{ return *fields .orientation_changed; }
+
+	const SFRotation &
+	orientation_changed () const
+	{ return *fields .orientation_changed; }
+
+	SFVec3f &
+	position_changed ()
+	{ return *fields .position_changed; }
+
+	const SFVec3f &
+	position_changed () const
+	{ return *fields .position_changed; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const targetObject;
+		SFRotation* const orientation_changed;
+		SFVec3f* const position_changed;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

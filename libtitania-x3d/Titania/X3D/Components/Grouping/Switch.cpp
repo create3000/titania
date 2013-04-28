@@ -55,21 +55,25 @@
 namespace titania {
 namespace X3D {
 
+Switch::Fields::Fields () :
+	whichChoice (new SFInt32 (-1))
+{ }
+
 Switch::Switch (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGroupingNode (),                                                    
-	    whichChoice (-1)                                                   // SFInt32 [in,out] whichChoice  -1        [-1,∞)
+	fields ()
 {
 	setComponent ("Grouping");
 	setTypeName ("Switch");
 
-	addField (inputOutput,    "metadata",       metadata);
-	addField (inputOutput,    "whichChoice",    whichChoice);
-	addField (initializeOnly, "bboxSize",       bboxSize);
-	addField (initializeOnly, "bboxCenter",     bboxCenter);
-	addField (inputOnly,      "addChildren",    addChildren);
-	addField (inputOnly,      "removeChildren", removeChildren);
-	addField (inputOutput,    "children",       children);
+	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "whichChoice",    whichChoice ());
+	addField (initializeOnly, "bboxSize",       bboxSize ());
+	addField (initializeOnly, "bboxCenter",     bboxCenter ());
+	addField (inputOnly,      "addChildren",    addChildren ());
+	addField (inputOnly,      "removeChildren", removeChildren ());
+	addField (inputOutput,    "children",       children ());
 	addFieldAlias ("choice", "children");
 }
 
@@ -82,12 +86,13 @@ Switch::create (X3DExecutionContext* const executionContext) const
 void
 Switch::traverse (TraverseType type)
 {
-	if (whichChoice >= 0 and whichChoice < (int32_t) children .size ())
+	if (whichChoice () >= 0 and whichChoice () < (int32_t) children () .size ())
 	{
-		if (children [whichChoice])
-			children [whichChoice] -> traverse (type);
+		if (children () [whichChoice ()])
+			children () [whichChoice ()] -> traverse (type);
 	}
 }
 
 } // X3D
 } // titania
+

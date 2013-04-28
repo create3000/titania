@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,27 +61,31 @@ extern "C"
 namespace titania {
 namespace X3D {
 
+ComposedCubeMapTexture::Fields::Fields () :
+	front (new SFNode <X3DBaseNode> ()),
+	back (new SFNode <X3DBaseNode> ()),
+	left (new SFNode <X3DBaseNode> ()),
+	right (new SFNode <X3DBaseNode> ()),
+	bottom (new SFNode <X3DBaseNode> ()),
+	top (new SFNode <X3DBaseNode> ())
+{ }
+
 ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const executionContext) :
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DEnvironmentTextureNode (),                                                    
-	                    front (),                                                    // SFNode [in,out] front   NULL        [X3DTexture2DNode]
-	                     back (),                                                    // SFNode [in,out] back    NULL        [X3DTexture2DNode]
-	                     left (),                                                    // SFNode [in,out] left    NULL        [X3DTexture2DNode]
-	                    right (),                                                    // SFNode [in,out] right   NULL        [X3DTexture2DNode]
-	                   bottom (),                                                    // SFNode [in,out] bottom  NULL        [X3DTexture2DNode]
-	                      top (),                                                    // SFNode [in,out] top     NULL        [X3DTexture2DNode]
+	fields (),
 	              transparent (false)                                                
 {
 	setComponent ("CubeMapTexturing");
 	setTypeName ("ComposedCubeMapTexture");
 
-	addField (inputOutput, "metadata", metadata);
-	addField (inputOutput, "front",    front);
-	addField (inputOutput, "back",     back);
-	addField (inputOutput, "left",     left);
-	addField (inputOutput, "right",    right);
-	addField (inputOutput, "bottom",   bottom);
-	addField (inputOutput, "top",      top);
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "front",    front ());
+	addField (inputOutput, "back",     back ());
+	addField (inputOutput, "left",     left ());
+	addField (inputOutput, "right",    right ());
+	addField (inputOutput, "bottom",   bottom ());
+	addField (inputOutput, "top",      top ());
 }
 
 X3DBaseNode*
@@ -110,12 +114,12 @@ ComposedCubeMapTexture::set_children ()
 	glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	auto _front  = x3d_cast <X3DTexture2DNode*> (front  .getValue ());
-	auto _back   = x3d_cast <X3DTexture2DNode*> (back   .getValue ());
-	auto _left   = x3d_cast <X3DTexture2DNode*> (left   .getValue ());
-	auto _right  = x3d_cast <X3DTexture2DNode*> (right  .getValue ());
-	auto _bottom = x3d_cast <X3DTexture2DNode*> (bottom .getValue ());
-	auto _top    = x3d_cast <X3DTexture2DNode*> (top    .getValue ());
+	auto _front  = x3d_cast <X3DTexture2DNode*> (front ()  .getValue ());
+	auto _back   = x3d_cast <X3DTexture2DNode*> (back ()   .getValue ());
+	auto _left   = x3d_cast <X3DTexture2DNode*> (left ()   .getValue ());
+	auto _right  = x3d_cast <X3DTexture2DNode*> (right ()  .getValue ());
+	auto _bottom = x3d_cast <X3DTexture2DNode*> (bottom () .getValue ());
+	auto _top    = x3d_cast <X3DTexture2DNode*> (top ()    .getValue ());
 
 	size_t width = 0, height = 0;
 
@@ -236,3 +240,4 @@ ComposedCubeMapTexture::draw ()
 
 } // X3D
 } // titania
+

@@ -65,13 +65,13 @@ Fog::Fog (X3DExecutionContext* const executionContext, bool displayed) :
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Fog");
 
-	addField (inputOutput, "metadata",        metadata);
-	addField (inputOnly,   "set_bind",        set_bind);
-	addField (inputOutput, "fogType",         fogType);
-	addField (inputOutput, "color",           color);
-	addField (inputOutput, "visibilityRange", visibilityRange);
-	addField (outputOnly,  "isBound",         isBound);
-	addField (outputOnly,  "bindTime",        bindTime);
+	addField (inputOutput, "metadata",        metadata ());
+	addField (inputOnly,   "set_bind",        set_bind ());
+	addField (inputOutput, "fogType",         fogType ());
+	addField (inputOutput, "color",           color ());
+	addField (inputOutput, "visibilityRange", visibilityRange ());
+	addField (outputOnly,  "isBound",         isBound ());
+	addField (outputOnly,  "bindTime",        bindTime ());
 }
 
 X3DBaseNode*

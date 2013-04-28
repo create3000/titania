@@ -62,7 +62,14 @@ class X3DNBodyCollisionSpaceNode :
 {
 public:
 
-	SFBool enabled;
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
 
 	Box3f
 	getBBox ();
@@ -79,6 +86,16 @@ protected:
 	virtual
 	void
 	initialize ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const enabled;
+	};
+
+	Fields fields;
 
 };
 
@@ -86,3 +103,4 @@ protected:
 } // titania
 
 #endif
+

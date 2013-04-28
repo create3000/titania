@@ -55,63 +55,67 @@
 namespace titania {
 namespace X3D {
 
+MotorJoint::Fields::Fields () :
+	axis1Angle (new SFFloat ()),
+	axis1Torque (new SFFloat ()),
+	axis2Angle (new SFFloat ()),
+	axis2Torque (new SFFloat ()),
+	axis3Angle (new SFFloat ()),
+	axis3Torque (new SFFloat ()),
+	enabledAxes (new SFInt32 (1)),
+	motor1Axis (new SFVec3f ()),
+	motor2Axis (new SFVec3f ()),
+	motor3Axis (new SFVec3f ()),
+	stop1Bounce (new SFFloat ()),
+	stop1ErrorCorrection (new SFFloat (0.8)),
+	stop2Bounce (new SFFloat ()),
+	stop2ErrorCorrection (new SFFloat (0.8)),
+	stop3Bounce (new SFFloat ()),
+	stop3ErrorCorrection (new SFFloat (0.8)),
+	motor1Angle (new SFFloat ()),
+	motor1AngleRate (new SFFloat ()),
+	motor2Angle (new SFFloat ()),
+	motor2AngleRate (new SFFloat ()),
+	motor3Angle (new SFFloat ()),
+	motor3AngleRate (new SFFloat ()),
+	autoCalc (new SFBool ())
+{ }
+
 MotorJoint::MotorJoint (X3DExecutionContext* const executionContext) :
 	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	   X3DRigidJointNode (),                                                    
-	          axis1Angle (),                                                    // SFFloat [in,out] axis1Angle            0            [-π,π]
-	         axis1Torque (),                                                    // SFFloat [in,out] axis1Torque           0            (-∞,∞)
-	          axis2Angle (),                                                    // SFFloat [in,out] axis2Angle            0            [-π,π]
-	         axis2Torque (),                                                    // SFFloat [in,out] axis2Torque           0            (-∞,∞)
-	          axis3Angle (),                                                    // SFFloat [in,out] axis3Angle            0            [-π,π]
-	         axis3Torque (),                                                    // SFFloat [in,out] axis3Torque           0            (-∞,∞)
-	         enabledAxes (1),                                                   // SFInt32 [in,out] enabledAxes           1            [0,3]
-	          motor1Axis (),                                                    // SFVec3f [in,out] motor1Axis            0 0 0
-	          motor2Axis (),                                                    // SFVec3f [in,out] motor2Axis            0 0 0
-	          motor3Axis (),                                                    // SFVec3f [in,out] motor3Axis            0 0 0
-	         stop1Bounce (),                                                    // SFFloat [in,out] stop1Bounce           0            [0,1]
-	stop1ErrorCorrection (0.8),                                                 // SFFloat [in,out] stop1ErrorCorrection  0.8          [0,1]
-	         stop2Bounce (),                                                    // SFFloat [in,out] stop2Bounce           0            [0,1]
-	stop2ErrorCorrection (0.8),                                                 // SFFloat [in,out] stop2ErrorCorrection  0.8          [0,1]
-	         stop3Bounce (),                                                    // SFFloat [in,out] stop3Bounce           0            [0,1]
-	stop3ErrorCorrection (0.8),                                                 // SFFloat [in,out] stop3ErrorCorrection  0.8          [0,1]
-	         motor1Angle (),                                                    // SFFloat [out]    motor1Angle
-	     motor1AngleRate (),                                                    // SFFloat [out]    motor1AngleRate
-	         motor2Angle (),                                                    // SFFloat [out]    motor2Angle
-	     motor2AngleRate (),                                                    // SFFloat [out]    motor2AngleRate
-	         motor3Angle (),                                                    // SFFloat [out]    motor3Angle
-	     motor3AngleRate (),                                                    // SFFloat [out]    motor3AngleRate
-	            autoCalc ()                                                     // SFBool  [ ]      autoCalc              FALSE
+	fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("MotorJoint");
 
-	addField (inputOutput,    "metadata",             metadata);
-	addField (inputOutput,    "body1",                body1);
-	addField (inputOutput,    "body2",                body2);
-	addField (inputOutput,    "forceOutput",          forceOutput);
-	addField (inputOutput,    "axis1Angle",           axis1Angle);
-	addField (inputOutput,    "axis1Torque",          axis1Torque);
-	addField (inputOutput,    "axis2Angle",           axis2Angle);
-	addField (inputOutput,    "axis2Torque",          axis2Torque);
-	addField (inputOutput,    "axis3Angle",           axis3Angle);
-	addField (inputOutput,    "axis3Torque",          axis3Torque);
-	addField (inputOutput,    "enabledAxes",          enabledAxes);
-	addField (inputOutput,    "motor1Axis",           motor1Axis);
-	addField (inputOutput,    "motor2Axis",           motor2Axis);
-	addField (inputOutput,    "motor3Axis",           motor3Axis);
-	addField (inputOutput,    "stop1Bounce",          stop1Bounce);
-	addField (inputOutput,    "stop1ErrorCorrection", stop1ErrorCorrection);
-	addField (inputOutput,    "stop2Bounce",          stop2Bounce);
-	addField (inputOutput,    "stop2ErrorCorrection", stop2ErrorCorrection);
-	addField (inputOutput,    "stop3Bounce",          stop3Bounce);
-	addField (inputOutput,    "stop3ErrorCorrection", stop3ErrorCorrection);
-	addField (outputOnly,     "motor1Angle",          motor1Angle);
-	addField (outputOnly,     "motor1AngleRate",      motor1AngleRate);
-	addField (outputOnly,     "motor2Angle",          motor2Angle);
-	addField (outputOnly,     "motor2AngleRate",      motor2AngleRate);
-	addField (outputOnly,     "motor3Angle",          motor3Angle);
-	addField (outputOnly,     "motor3AngleRate",      motor3AngleRate);
-	addField (initializeOnly, "autoCalc",             autoCalc);
+	addField (inputOutput,    "metadata",             metadata ());
+	addField (inputOutput,    "body1",                body1 ());
+	addField (inputOutput,    "body2",                body2 ());
+	addField (inputOutput,    "forceOutput",          forceOutput ());
+	addField (inputOutput,    "axis1Angle",           axis1Angle ());
+	addField (inputOutput,    "axis1Torque",          axis1Torque ());
+	addField (inputOutput,    "axis2Angle",           axis2Angle ());
+	addField (inputOutput,    "axis2Torque",          axis2Torque ());
+	addField (inputOutput,    "axis3Angle",           axis3Angle ());
+	addField (inputOutput,    "axis3Torque",          axis3Torque ());
+	addField (inputOutput,    "enabledAxes",          enabledAxes ());
+	addField (inputOutput,    "motor1Axis",           motor1Axis ());
+	addField (inputOutput,    "motor2Axis",           motor2Axis ());
+	addField (inputOutput,    "motor3Axis",           motor3Axis ());
+	addField (inputOutput,    "stop1Bounce",          stop1Bounce ());
+	addField (inputOutput,    "stop1ErrorCorrection", stop1ErrorCorrection ());
+	addField (inputOutput,    "stop2Bounce",          stop2Bounce ());
+	addField (inputOutput,    "stop2ErrorCorrection", stop2ErrorCorrection ());
+	addField (inputOutput,    "stop3Bounce",          stop3Bounce ());
+	addField (inputOutput,    "stop3ErrorCorrection", stop3ErrorCorrection ());
+	addField (outputOnly,     "motor1Angle",          motor1Angle ());
+	addField (outputOnly,     "motor1AngleRate",      motor1AngleRate ());
+	addField (outputOnly,     "motor2Angle",          motor2Angle ());
+	addField (outputOnly,     "motor2AngleRate",      motor2AngleRate ());
+	addField (outputOnly,     "motor3Angle",          motor3Angle ());
+	addField (outputOnly,     "motor3AngleRate",      motor3AngleRate ());
+	addField (initializeOnly, "autoCalc",             autoCalc ());
 }
 
 X3DBaseNode*
@@ -122,3 +126,4 @@ MotorJoint::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

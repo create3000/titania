@@ -61,14 +61,34 @@ class ScalarInterpolator :
 {
 public:
 
-	MFFloat keyValue;
-	SFFloat value_changed;
+	
+	
 
 	ScalarInterpolator (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFFloat &
+	keyValue ()
+	{ return *fields .keyValue; }
+
+	const MFFloat &
+	keyValue () const
+	{ return *fields .keyValue; }
+
+	SFFloat &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFFloat &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+
 
 
 private:
@@ -85,9 +105,21 @@ private:
 	void
 	interpolate (size_t, size_t, float);
 
+	struct Fields
+	{
+		Fields ();
+
+		MFFloat* const keyValue;
+		SFFloat* const value_changed;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

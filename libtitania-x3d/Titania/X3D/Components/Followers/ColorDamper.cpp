@@ -55,32 +55,36 @@
 namespace titania {
 namespace X3D {
 
+ColorDamper::Fields::Fields () :
+	set_destination (new SFColor ()),
+	set_value (new SFColor ()),
+	tau (new SFTime ()),
+	tolerance (new SFFloat (-1)),
+	isActive (new SFBool ()),
+	value_changed (new SFColor ()),
+	initialDestination (new SFColor ()),
+	defaultValue (new SFColor ()),
+	order (new SFInt32 ())
+{ }
+
 ColorDamper::ColorDamper (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DDamperNode (),                                                    
-	   set_destination (),                                                    // SFColor [in]     set_destination
-	         set_value (),                                                    // SFColor [in]     set_value
-	               tau (),                                                    // SFTime  [in,out] tau                 0                  [0,∞)
-	         tolerance (-1),                                                  // SFFloat [in,out] tolerance           -1                 [0,∞) or -1
-	          isActive (),                                                    // SFBool  [out]    isActive
-	     value_changed (),                                                    // SFColor [out]    value_changed
-	initialDestination (),                                                    // SFColor [ ]      initialDestination  0.8 0.8 0.8
-	      defaultValue (),                                                    // SFColor [ ]      defaultValue        0.8 0.8 0.8
-	             order ()                                                     // SFInt32 [ ]      order               0                  [0..5]
+	fields ()
 {
 	setComponent ("Followers");
 	setTypeName ("ColorDamper");
 
-	addField (inputOutput,    "metadata",           metadata);
-	addField (inputOnly,      "set_destination",    set_destination);
-	addField (inputOnly,      "set_value",          set_value);
-	addField (inputOutput,    "tau",                tau);
-	addField (inputOutput,    "tolerance",          tolerance);
-	addField (outputOnly,     "isActive",           isActive);
-	addField (outputOnly,     "value_changed",      value_changed);
-	addField (initializeOnly, "initialDestination", initialDestination);
-	addField (initializeOnly, "defaultValue",       defaultValue);
-	addField (initializeOnly, "order",              order);
+	addField (inputOutput,    "metadata",           metadata ());
+	addField (inputOnly,      "set_destination",    set_destination ());
+	addField (inputOnly,      "set_value",          set_value ());
+	addField (inputOutput,    "tau",                tau ());
+	addField (inputOutput,    "tolerance",          tolerance ());
+	addField (outputOnly,     "isActive",           isActive ());
+	addField (outputOnly,     "value_changed",      value_changed ());
+	addField (initializeOnly, "initialDestination", initialDestination ());
+	addField (initializeOnly, "defaultValue",       defaultValue ());
+	addField (initializeOnly, "order",              order ());
 }
 
 X3DBaseNode*
@@ -91,3 +95,4 @@ ColorDamper::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

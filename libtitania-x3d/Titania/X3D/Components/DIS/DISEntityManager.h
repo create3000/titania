@@ -61,13 +61,13 @@ class DISEntityManager :
 {
 public:
 
-	SFString address;
-	SFInt32  applicationID;
-	MFNode   mapping;
-	SFInt32  port;
-	SFInt32  siteID;
-	MFNode   addedEntities;
-	MFNode   removedEntities;
+	
+	
+	
+	
+	
+	
+	
 
 	DISEntityManager (X3DExecutionContext* const);
 
@@ -75,9 +75,86 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFString &
+	address ()
+	{ return *fields .address; }
+
+	const SFString &
+	address () const
+	{ return *fields .address; }
+
+	SFInt32 &
+	applicationID ()
+	{ return *fields .applicationID; }
+
+	const SFInt32 &
+	applicationID () const
+	{ return *fields .applicationID; }
+
+	MFNode &
+	mapping ()
+	{ return *fields .mapping; }
+
+	const MFNode &
+	mapping () const
+	{ return *fields .mapping; }
+
+	SFInt32 &
+	port ()
+	{ return *fields .port; }
+
+	const SFInt32 &
+	port () const
+	{ return *fields .port; }
+
+	SFInt32 &
+	siteID ()
+	{ return *fields .siteID; }
+
+	const SFInt32 &
+	siteID () const
+	{ return *fields .siteID; }
+
+	MFNode &
+	addedEntities ()
+	{ return *fields .addedEntities; }
+
+	const MFNode &
+	addedEntities () const
+	{ return *fields .addedEntities; }
+
+	MFNode &
+	removedEntities ()
+	{ return *fields .removedEntities; }
+
+	const MFNode &
+	removedEntities () const
+	{ return *fields .removedEntities; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFString* const address;
+		SFInt32* const applicationID;
+		MFNode* const mapping;
+		SFInt32* const port;
+		SFInt32* const siteID;
+		MFNode* const addedEntities;
+		MFNode* const removedEntities;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

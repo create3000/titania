@@ -56,16 +56,20 @@
 namespace titania {
 namespace X3D {
 
+Console::Fields::Fields () :
+	string_changed (new MFString ())
+{ }
+
 Console::Console (X3DExecutionContext* const executionContext) :
 	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	       X3DNode (), 
-	string_changed ()                                                     // MFString  [out] string_changed [ ]
+	fields ()
 {
 	setComponent ("Browser");
 	setTypeName ("Console");
 
-	addField (inputOutput, "metadata",       metadata);
-	addField (inputOutput, "string_changed", string_changed);
+	addField (inputOutput, "metadata",       metadata ());
+	addField (inputOutput, "string_changed", string_changed ());
 }
 
 X3DBaseNode*
@@ -76,3 +80,4 @@ Console::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

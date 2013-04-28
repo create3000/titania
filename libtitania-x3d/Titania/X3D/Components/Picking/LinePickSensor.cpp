@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,28 +55,32 @@
 namespace titania {
 namespace X3D {
 
+LinePickSensor::Fields::Fields () :
+	pickedNormal (new MFVec3f ()),
+	pickedPoint (new MFVec3f ()),
+	pickedTextureCoordinate (new MFVec3f ())
+{ }
+
 LinePickSensor::LinePickSensor (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	      X3DPickSensorNode (),                                                    
-	           pickedNormal (),                                                    // MFVec3f [out] pickedNormal
-	            pickedPoint (),                                                    // MFVec3f [out] pickedPoint
-	pickedTextureCoordinate ()                                                     // MFVec3f [out] pickedTextureCoordinate
+	fields ()
 {
 	setComponent ("Picking");
 	setTypeName ("LinePickSensor");
 
-	addField (inputOutput,    "metadata",                metadata);
-	addField (inputOutput,    "enabled",                 enabled);
-	addField (outputOnly,     "isActive",                isActive);
-	addField (inputOutput,    "objectType",              objectType);
-	addField (inputOutput,    "pickingGeometry",         pickingGeometry);
-	addField (inputOutput,    "pickTarget",              pickTarget);
-	addField (outputOnly,     "pickedGeometry",          pickedGeometry);
-	addField (initializeOnly, "intersectionType",        intersectionType);
-	addField (initializeOnly, "sortOrder",               sortOrder);
-	addField (outputOnly,     "pickedNormal",            pickedNormal);
-	addField (outputOnly,     "pickedPoint",             pickedPoint);
-	addField (outputOnly,     "pickedTextureCoordinate", pickedTextureCoordinate);
+	addField (inputOutput,    "metadata",                metadata ());
+	addField (inputOutput,    "enabled",                 enabled ());
+	addField (outputOnly,     "isActive",                isActive ());
+	addField (inputOutput,    "objectType",              objectType ());
+	addField (inputOutput,    "pickingGeometry",         pickingGeometry ());
+	addField (inputOutput,    "pickTarget",              pickTarget ());
+	addField (outputOnly,     "pickedGeometry",          pickedGeometry ());
+	addField (initializeOnly, "intersectionType",        intersectionType ());
+	addField (initializeOnly, "sortOrder",               sortOrder ());
+	addField (outputOnly,     "pickedNormal",            pickedNormal ());
+	addField (outputOnly,     "pickedPoint",             pickedPoint ());
+	addField (outputOnly,     "pickedTextureCoordinate", pickedTextureCoordinate ());
 }
 
 X3DBaseNode*
@@ -87,3 +91,4 @@ LinePickSensor::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

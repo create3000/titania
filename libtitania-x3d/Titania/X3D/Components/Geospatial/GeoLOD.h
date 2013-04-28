@@ -62,24 +62,124 @@ class GeoLOD :
 {
 public:
 
-	MFNode               children;
-	SFInt32              level_changed;
-	SFVec3d              center;
-	MFString             child1Url;
-	MFString             child2Url;
-	MFString             child3Url;
-	MFString             child4Url;
-	SFNode <X3DBaseNode> geoOrigin;
-	MFString             geoSystem;
-	SFFloat              range;
-	MFString             rootUrl;
-	MFNode               rootNode;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	GeoLOD (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFNode &
+	children ()
+	{ return *fields .children; }
+
+	const MFNode &
+	children () const
+	{ return *fields .children; }
+
+	SFInt32 &
+	level_changed ()
+	{ return *fields .level_changed; }
+
+	const SFInt32 &
+	level_changed () const
+	{ return *fields .level_changed; }
+
+	SFVec3d &
+	center ()
+	{ return *fields .center; }
+
+	const SFVec3d &
+	center () const
+	{ return *fields .center; }
+
+	MFString &
+	child1Url ()
+	{ return *fields .child1Url; }
+
+	const MFString &
+	child1Url () const
+	{ return *fields .child1Url; }
+
+	MFString &
+	child2Url ()
+	{ return *fields .child2Url; }
+
+	const MFString &
+	child2Url () const
+	{ return *fields .child2Url; }
+
+	MFString &
+	child3Url ()
+	{ return *fields .child3Url; }
+
+	const MFString &
+	child3Url () const
+	{ return *fields .child3Url; }
+
+	MFString &
+	child4Url ()
+	{ return *fields .child4Url; }
+
+	const MFString &
+	child4Url () const
+	{ return *fields .child4Url; }
+
+	SFNode <X3DBaseNode> &
+	geoOrigin ()
+	{ return *fields .geoOrigin; }
+
+	const SFNode <X3DBaseNode> &
+	geoOrigin () const
+	{ return *fields .geoOrigin; }
+
+	MFString &
+	geoSystem ()
+	{ return *fields .geoSystem; }
+
+	const MFString &
+	geoSystem () const
+	{ return *fields .geoSystem; }
+
+	SFFloat &
+	range ()
+	{ return *fields .range; }
+
+	const SFFloat &
+	range () const
+	{ return *fields .range; }
+
+	MFString &
+	rootUrl ()
+	{ return *fields .rootUrl; }
+
+	const MFString &
+	rootUrl () const
+	{ return *fields .rootUrl; }
+
+	MFNode &
+	rootNode ()
+	{ return *fields .rootNode; }
+
+	const MFNode &
+	rootNode () const
+	{ return *fields .rootNode; }
+
+
 
 	Box3f
 	getBBox ();
@@ -95,9 +195,31 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const children;
+		SFInt32* const level_changed;
+		SFVec3d* const center;
+		MFString* const child1Url;
+		MFString* const child2Url;
+		MFString* const child3Url;
+		MFString* const child4Url;
+		SFNode <X3DBaseNode>* const geoOrigin;
+		MFString* const geoSystem;
+		SFFloat* const range;
+		MFString* const rootUrl;
+		MFNode* const rootNode;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

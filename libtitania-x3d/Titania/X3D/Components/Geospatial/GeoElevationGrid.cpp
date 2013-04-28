@@ -55,49 +55,53 @@
 namespace titania {
 namespace X3D {
 
+GeoElevationGrid::Fields::Fields () :
+	set_height (new MFDouble ()),
+	color (new SFNode <X3DBaseNode> ()),
+	normal (new SFNode <X3DBaseNode> ()),
+	texCoord (new SFNode <X3DBaseNode> ()),
+	yScale (new SFFloat (1)),
+	colorPerVertex (new SFBool (true)),
+	creaseAngle (new SFDouble ()),
+	geoGridOrigin (new SFVec3d ()),
+	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoSystem (new MFString ({ "GD", "WE" })),
+	height (new MFDouble ()),
+	normalPerVertex (new SFBool (true)),
+	solid (new SFBool (true)),
+	xDimension (new SFInt32 ()),
+	xSpacing (new SFDouble (1)),
+	zDimension (new SFInt32 ()),
+	zSpacing (new SFDouble (1))
+{ }
+
 GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	     set_height (),                                                    // MFDouble [in]     set_height
-	          color (),                                                    // SFNode   [in,out] color            NULL               [X3DColorNode]
-	         normal (),                                                    // SFNode   [in,out] normal           NULL               [X3DNormalNode]
-	       texCoord (),                                                    // SFNode   [in,out] texCoord         NULL               [X3DTextureCoordinateNode]
-	         yScale (1),                                                   // SFFloat  [in,out] yScale           1.0                [0,∞)
-	 colorPerVertex (true),                                                // SFBool   [ ]      colorPerVertex   TRUE
-	    creaseAngle (),                                                    // SFDouble [ ]      creaseAngle      0                  [0,∞)
-	  geoGridOrigin (),                                                    // SFVec3d  [ ]      geoGridOrigin    0 0 0              (-∞,∞)
-	      geoOrigin (),                                                    // SFNode   [ ]      geoOrigin        NULL               [GeoOrigin]
-	      geoSystem ({ "GD", "WE" }),                                      // MFString [ ]      geoSystem        ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
-	         height ({ 0, 0 }),                                            // MFDouble [ ]      height           [0 0]              (-∞,∞)
-	normalPerVertex (true),                                                // SFBool   [ ]      normalPerVertex  TRUE
-	          solid (true),                                                // SFBool   [ ]      solid            TRUE
-	     xDimension (),                                                    // SFInt32  [ ]      xDimension       0                  (0,∞)
-	       xSpacing (1),                                                   // SFDouble [ ]      xSpacing         1.0                [0,∞)
-	     zDimension (),                                                    // SFInt32  [ ]      zDimension       0                  (0,∞)
-	       zSpacing (1)                                                    // SFDouble [ ]      zSpacing         1.0                [0,∞)
+	fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoElevationGrid");
 
-	addField (inputOutput,    "metadata",        metadata);
-	addField (inputOnly,      "set_height",      set_height);
-	addField (inputOutput,    "color",           color);
-	addField (inputOutput,    "normal",          normal);
-	addField (inputOutput,    "texCoord",        texCoord);
-	addField (inputOutput,    "yScale",          yScale);
-	addField (initializeOnly, "ccw",             ccw);
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex);
-	addField (initializeOnly, "creaseAngle",     creaseAngle);
-	addField (initializeOnly, "geoGridOrigin",   geoGridOrigin);
-	addField (initializeOnly, "geoOrigin",       geoOrigin);
-	addField (initializeOnly, "geoSystem",       geoSystem);
-	addField (initializeOnly, "height",          height);
-	addField (initializeOnly, "normalPerVertex", normalPerVertex);
-	addField (initializeOnly, "solid",           solid);
-	addField (initializeOnly, "xDimension",      xDimension);
-	addField (initializeOnly, "xSpacing",        xSpacing);
-	addField (initializeOnly, "zDimension",      zDimension);
-	addField (initializeOnly, "zSpacing",        zSpacing);
+	addField (inputOutput,    "metadata",        metadata ());
+	addField (inputOnly,      "set_height",      set_height ());
+	addField (inputOutput,    "color",           color ());
+	addField (inputOutput,    "normal",          normal ());
+	addField (inputOutput,    "texCoord",        texCoord ());
+	addField (inputOutput,    "yScale",          yScale ());
+	addField (initializeOnly, "ccw",             ccw ());
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
+	addField (initializeOnly, "creaseAngle",     creaseAngle ());
+	addField (initializeOnly, "geoGridOrigin",   geoGridOrigin ());
+	addField (initializeOnly, "geoOrigin",       geoOrigin ());
+	addField (initializeOnly, "geoSystem",       geoSystem ());
+	addField (initializeOnly, "height",          height ());
+	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "xDimension",      xDimension ());
+	addField (initializeOnly, "xSpacing",        xSpacing ());
+	addField (initializeOnly, "zDimension",      zDimension ());
+	addField (initializeOnly, "zSpacing",        zSpacing ());
 }
 
 X3DBaseNode*
@@ -108,3 +112,4 @@ GeoElevationGrid::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

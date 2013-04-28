@@ -1,3 +1,12 @@
+2013-04-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.cpp:
+	* X3DBrowserWindow.cpp:
+	* X3DBrowserWidget.cpp:
+	* ViewpointMenuItem.cpp:
+	* ViewpointEditor.cpp:
+	* MotionBlurEditor.cpp: 
+
 2013-04-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

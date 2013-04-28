@@ -61,8 +61,22 @@ class X3DDragSensorNode :
 {
 public:
 
-	SFBool  autoOffset;
-	SFVec3f trackPoint_changed;
+	SFBool &
+	autoOffset ()
+	{ return *fields .autoOffset; }
+
+	const SFBool &
+	autoOffset () const
+	{ return *fields .autoOffset; }
+
+	SFVec3f &
+	trackPoint_changed ()
+	{ return *fields .trackPoint_changed; }
+
+	const SFVec3f &
+	trackPoint_changed () const
+	{ return *fields .trackPoint_changed; }
+
 
 	virtual
 	void
@@ -72,6 +86,17 @@ public:
 protected:
 
 	X3DDragSensorNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const autoOffset;
+		SFVec3f* const trackPoint_changed;
+	};
+
+	Fields fields;
 
 };
 
@@ -79,3 +104,4 @@ protected:
 } // titania
 
 #endif
+

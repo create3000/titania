@@ -61,15 +61,15 @@ class PositionDamper :
 {
 public:
 
-	SFVec3f set_destination;
-	SFVec3f set_value;
-	SFTime  tau;
-	SFFloat tolerance;
-	SFBool  isActive;
-	SFVec3f value_changed;
-	SFVec3f initialDestination;
-	SFVec3f defaultValue;
-	SFInt32 order;
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	PositionDamper (X3DExecutionContext* const);
 
@@ -77,9 +77,104 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3f &
+	set_destination ()
+	{ return *fields .set_destination; }
+
+	const SFVec3f &
+	set_destination () const
+	{ return *fields .set_destination; }
+
+	SFVec3f &
+	set_value ()
+	{ return *fields .set_value; }
+
+	const SFVec3f &
+	set_value () const
+	{ return *fields .set_value; }
+
+	SFTime &
+	tau ()
+	{ return *fields .tau; }
+
+	const SFTime &
+	tau () const
+	{ return *fields .tau; }
+
+	SFFloat &
+	tolerance ()
+	{ return *fields .tolerance; }
+
+	const SFFloat &
+	tolerance () const
+	{ return *fields .tolerance; }
+
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
+	SFVec3f &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFVec3f &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+	SFVec3f &
+	initialDestination ()
+	{ return *fields .initialDestination; }
+
+	const SFVec3f &
+	initialDestination () const
+	{ return *fields .initialDestination; }
+
+	SFVec3f &
+	defaultValue ()
+	{ return *fields .defaultValue; }
+
+	const SFVec3f &
+	defaultValue () const
+	{ return *fields .defaultValue; }
+
+	SFInt32 &
+	order ()
+	{ return *fields .order; }
+
+	const SFInt32 &
+	order () const
+	{ return *fields .order; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const set_destination;
+		SFVec3f* const set_value;
+		SFTime* const tau;
+		SFFloat* const tolerance;
+		SFBool* const isActive;
+		SFVec3f* const value_changed;
+		SFVec3f* const initialDestination;
+		SFVec3f* const defaultValue;
+		SFInt32* const order;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

@@ -61,7 +61,7 @@ class BoundedPhysicsModel :
 {
 public:
 
-	SFNode <X3DBaseNode> geometry;
+	
 
 	BoundedPhysicsModel (X3DExecutionContext* const);
 
@@ -69,9 +69,32 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFNode <X3DBaseNode> &
+	geometry ()
+	{ return *fields .geometry; }
+
+	const SFNode <X3DBaseNode> &
+	geometry () const
+	{ return *fields .geometry; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const geometry;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

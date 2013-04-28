@@ -61,13 +61,13 @@ class KeySensor :
 {
 public:
 
-	SFInt32  actionKeyPress;
-	SFInt32  actionKeyRelease;
-	SFBool   altKey;
-	SFBool   controlKey;
-	SFString keyPress;
-	SFString keyRelease;
-	SFBool   shiftKey;
+	
+	
+	
+	
+	
+	
+	
 
 	KeySensor (X3DExecutionContext* const);
 
@@ -75,9 +75,86 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFInt32 &
+	actionKeyPress ()
+	{ return *fields .actionKeyPress; }
+
+	const SFInt32 &
+	actionKeyPress () const
+	{ return *fields .actionKeyPress; }
+
+	SFInt32 &
+	actionKeyRelease ()
+	{ return *fields .actionKeyRelease; }
+
+	const SFInt32 &
+	actionKeyRelease () const
+	{ return *fields .actionKeyRelease; }
+
+	SFBool &
+	altKey ()
+	{ return *fields .altKey; }
+
+	const SFBool &
+	altKey () const
+	{ return *fields .altKey; }
+
+	SFBool &
+	controlKey ()
+	{ return *fields .controlKey; }
+
+	const SFBool &
+	controlKey () const
+	{ return *fields .controlKey; }
+
+	SFString &
+	keyPress ()
+	{ return *fields .keyPress; }
+
+	const SFString &
+	keyPress () const
+	{ return *fields .keyPress; }
+
+	SFString &
+	keyRelease ()
+	{ return *fields .keyRelease; }
+
+	const SFString &
+	keyRelease () const
+	{ return *fields .keyRelease; }
+
+	SFBool &
+	shiftKey ()
+	{ return *fields .shiftKey; }
+
+	const SFBool &
+	shiftKey () const
+	{ return *fields .shiftKey; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const actionKeyPress;
+		SFInt32* const actionKeyRelease;
+		SFBool* const altKey;
+		SFBool* const controlKey;
+		SFString* const keyPress;
+		SFString* const keyRelease;
+		SFBool* const shiftKey;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

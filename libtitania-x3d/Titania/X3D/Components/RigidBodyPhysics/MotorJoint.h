@@ -61,29 +61,29 @@ class MotorJoint :
 {
 public:
 
-	SFFloat axis1Angle;
-	SFFloat axis1Torque;
-	SFFloat axis2Angle;
-	SFFloat axis2Torque;
-	SFFloat axis3Angle;
-	SFFloat axis3Torque;
-	SFInt32 enabledAxes;
-	SFVec3f motor1Axis;
-	SFVec3f motor2Axis;
-	SFVec3f motor3Axis;
-	SFFloat stop1Bounce;
-	SFFloat stop1ErrorCorrection;
-	SFFloat stop2Bounce;
-	SFFloat stop2ErrorCorrection;
-	SFFloat stop3Bounce;
-	SFFloat stop3ErrorCorrection;
-	SFFloat motor1Angle;
-	SFFloat motor1AngleRate;
-	SFFloat motor2Angle;
-	SFFloat motor2AngleRate;
-	SFFloat motor3Angle;
-	SFFloat motor3AngleRate;
-	SFBool  autoCalc;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	MotorJoint (X3DExecutionContext* const);
 
@@ -91,9 +91,230 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFFloat &
+	axis1Angle ()
+	{ return *fields .axis1Angle; }
+
+	const SFFloat &
+	axis1Angle () const
+	{ return *fields .axis1Angle; }
+
+	SFFloat &
+	axis1Torque ()
+	{ return *fields .axis1Torque; }
+
+	const SFFloat &
+	axis1Torque () const
+	{ return *fields .axis1Torque; }
+
+	SFFloat &
+	axis2Angle ()
+	{ return *fields .axis2Angle; }
+
+	const SFFloat &
+	axis2Angle () const
+	{ return *fields .axis2Angle; }
+
+	SFFloat &
+	axis2Torque ()
+	{ return *fields .axis2Torque; }
+
+	const SFFloat &
+	axis2Torque () const
+	{ return *fields .axis2Torque; }
+
+	SFFloat &
+	axis3Angle ()
+	{ return *fields .axis3Angle; }
+
+	const SFFloat &
+	axis3Angle () const
+	{ return *fields .axis3Angle; }
+
+	SFFloat &
+	axis3Torque ()
+	{ return *fields .axis3Torque; }
+
+	const SFFloat &
+	axis3Torque () const
+	{ return *fields .axis3Torque; }
+
+	SFInt32 &
+	enabledAxes ()
+	{ return *fields .enabledAxes; }
+
+	const SFInt32 &
+	enabledAxes () const
+	{ return *fields .enabledAxes; }
+
+	SFVec3f &
+	motor1Axis ()
+	{ return *fields .motor1Axis; }
+
+	const SFVec3f &
+	motor1Axis () const
+	{ return *fields .motor1Axis; }
+
+	SFVec3f &
+	motor2Axis ()
+	{ return *fields .motor2Axis; }
+
+	const SFVec3f &
+	motor2Axis () const
+	{ return *fields .motor2Axis; }
+
+	SFVec3f &
+	motor3Axis ()
+	{ return *fields .motor3Axis; }
+
+	const SFVec3f &
+	motor3Axis () const
+	{ return *fields .motor3Axis; }
+
+	SFFloat &
+	stop1Bounce ()
+	{ return *fields .stop1Bounce; }
+
+	const SFFloat &
+	stop1Bounce () const
+	{ return *fields .stop1Bounce; }
+
+	SFFloat &
+	stop1ErrorCorrection ()
+	{ return *fields .stop1ErrorCorrection; }
+
+	const SFFloat &
+	stop1ErrorCorrection () const
+	{ return *fields .stop1ErrorCorrection; }
+
+	SFFloat &
+	stop2Bounce ()
+	{ return *fields .stop2Bounce; }
+
+	const SFFloat &
+	stop2Bounce () const
+	{ return *fields .stop2Bounce; }
+
+	SFFloat &
+	stop2ErrorCorrection ()
+	{ return *fields .stop2ErrorCorrection; }
+
+	const SFFloat &
+	stop2ErrorCorrection () const
+	{ return *fields .stop2ErrorCorrection; }
+
+	SFFloat &
+	stop3Bounce ()
+	{ return *fields .stop3Bounce; }
+
+	const SFFloat &
+	stop3Bounce () const
+	{ return *fields .stop3Bounce; }
+
+	SFFloat &
+	stop3ErrorCorrection ()
+	{ return *fields .stop3ErrorCorrection; }
+
+	const SFFloat &
+	stop3ErrorCorrection () const
+	{ return *fields .stop3ErrorCorrection; }
+
+	SFFloat &
+	motor1Angle ()
+	{ return *fields .motor1Angle; }
+
+	const SFFloat &
+	motor1Angle () const
+	{ return *fields .motor1Angle; }
+
+	SFFloat &
+	motor1AngleRate ()
+	{ return *fields .motor1AngleRate; }
+
+	const SFFloat &
+	motor1AngleRate () const
+	{ return *fields .motor1AngleRate; }
+
+	SFFloat &
+	motor2Angle ()
+	{ return *fields .motor2Angle; }
+
+	const SFFloat &
+	motor2Angle () const
+	{ return *fields .motor2Angle; }
+
+	SFFloat &
+	motor2AngleRate ()
+	{ return *fields .motor2AngleRate; }
+
+	const SFFloat &
+	motor2AngleRate () const
+	{ return *fields .motor2AngleRate; }
+
+	SFFloat &
+	motor3Angle ()
+	{ return *fields .motor3Angle; }
+
+	const SFFloat &
+	motor3Angle () const
+	{ return *fields .motor3Angle; }
+
+	SFFloat &
+	motor3AngleRate ()
+	{ return *fields .motor3AngleRate; }
+
+	const SFFloat &
+	motor3AngleRate () const
+	{ return *fields .motor3AngleRate; }
+
+	SFBool &
+	autoCalc ()
+	{ return *fields .autoCalc; }
+
+	const SFBool &
+	autoCalc () const
+	{ return *fields .autoCalc; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const axis1Angle;
+		SFFloat* const axis1Torque;
+		SFFloat* const axis2Angle;
+		SFFloat* const axis2Torque;
+		SFFloat* const axis3Angle;
+		SFFloat* const axis3Torque;
+		SFInt32* const enabledAxes;
+		SFVec3f* const motor1Axis;
+		SFVec3f* const motor2Axis;
+		SFVec3f* const motor3Axis;
+		SFFloat* const stop1Bounce;
+		SFFloat* const stop1ErrorCorrection;
+		SFFloat* const stop2Bounce;
+		SFFloat* const stop2ErrorCorrection;
+		SFFloat* const stop3Bounce;
+		SFFloat* const stop3ErrorCorrection;
+		SFFloat* const motor1Angle;
+		SFFloat* const motor1AngleRate;
+		SFFloat* const motor2Angle;
+		SFFloat* const motor2AngleRate;
+		SFFloat* const motor3Angle;
+		SFFloat* const motor3AngleRate;
+		SFBool* const autoCalc;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

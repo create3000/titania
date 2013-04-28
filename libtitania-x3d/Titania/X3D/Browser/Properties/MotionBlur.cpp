@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,18 +56,22 @@
 namespace titania {
 namespace X3D {
 
+MotionBlur::Fields::Fields () :
+	enabled (new SFBool ()),
+	intensity (new SFFloat (0))
+{ }
+
 MotionBlur::MotionBlur (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	    X3DNode (),
-	    enabled (),                                                    // SFBool  [in,out] enabled    FALSE
-	  intensity (0)                                                    // SFFloat [in,out] intensitiy 0
+	fields ()
 {
 	setComponent ("Browser");
 	setTypeName ("MotionBlur");
 
-	addField (inputOutput, "metadata",   metadata);
-	addField (inputOutput, "enabled",     enabled);
-	addField (inputOutput, "intensity", intensity);
+	addField (inputOutput, "metadata",   metadata ());
+	addField (inputOutput, "enabled",     enabled ());
+	addField (inputOutput, "intensity", intensity ());
 }
 
 X3DBaseNode*
@@ -81,7 +85,7 @@ MotionBlur::initialize ()
 {
 	X3DNode::initialize ();
 
-	enabled .addInterest (this, &MotionBlur::set_enabled);
+	enabled () .addInterest (this, &MotionBlur::set_enabled);
 
 	set_enabled ();
 }
@@ -91,7 +95,7 @@ MotionBlur::set_enabled ()
 {
 	clear ();
 
-	if (enabled)
+	if (enabled ())
 	{
 		getBrowser () -> reshaped  .addInterest (this, &MotionBlur::clear);
 		getBrowser () -> displayed .addInterest (this, &MotionBlur::display);
@@ -114,11 +118,11 @@ MotionBlur::clear ()
 void
 MotionBlur::display ()
 {
-	if (enabled)
+	if (enabled ())
 	{
-		glAccum (GL_MULT, intensity);
+		glAccum (GL_MULT, intensity ());
 
-		glAccum (GL_ACCUM, 1 - intensity);
+		glAccum (GL_ACCUM, 1 - intensity ());
 
 		glAccum (GL_RETURN, 1);
 	}
@@ -126,3 +130,4 @@ MotionBlur::display ()
 
 } // X3D
 } // titania
+

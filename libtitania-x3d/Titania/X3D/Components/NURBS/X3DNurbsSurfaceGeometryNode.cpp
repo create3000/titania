@@ -53,25 +53,30 @@
 namespace titania {
 namespace X3D {
 
+X3DNurbsSurfaceGeometryNode::Fields::Fields () :
+	solid (new SFBool (true)),
+	controlPoint (new SFNode <X3DBaseNode> ()),
+	texCoord (new SFNode <X3DBaseNode> ()),
+	uTessellation (new SFInt32 ()),
+	vTessellation (new SFInt32 ()),
+	weight (new MFDouble ()),
+	uClosed (new SFBool ()),
+	uDimension (new SFInt32 ()),
+	uKnot (new MFDouble ()),
+	uOrder (new SFInt32 (3)),
+	vClosed (new SFBool ()),
+	vDimension (new SFInt32 ()),
+	vKnot (new MFDouble ()),
+	vOrder (new SFInt32 (3))
+{ }
+
 X3DNurbsSurfaceGeometryNode::X3DNurbsSurfaceGeometryNode () :
 	X3DParametricGeometryNode (),     
-	                    solid (true), // SFBool   [ ]      solid          TRUE
-	             controlPoint (),     // SFNode   [in,out] controlPoint   [ ]          [X3DCoordinateNode]
-	                 texCoord (),     // SFNode   [in,out] texCoord       [ ]          [X3DTextureCoordinateNode|NurbsTextureCoordinate]
-	            uTessellation (),     // SFInt32  [in,out] uTessellation  0            (-∞,∞)
-	            vTessellation (),     // SFInt32  [in,out] vTessellation  0            (-∞,∞)
-	                   weight (),     // MFDouble [in,out] weight         [ ]          (0,∞)
-	                  uClosed (),     // SFBool   [ ]      uClosed        FALSE
-	               uDimension (),     // SFInt32  [ ]      uDimension     0            [0,∞)
-	                    uKnot (),     // MFDouble [ ]      uKnot          [ ]           (-∞,∞)
-	                   uOrder (3),    // SFInt32  [ ]      uOrder         3            [2,∞)
-	                  vClosed (),     // SFBool   [ ]      vClosed        FALSE
-	               vDimension (),     // SFInt32  [ ]      vDimension     0            [0,∞)
-	                    vKnot (),     // MFDouble [ ]      vKnot          [ ]           (-∞,∞)
-	                   vOrder (3)     // SFInt32  [ ]      vOrder         3            [2,∞)
+	fields ()
 {
 	addNodeType (X3DConstants::X3DNurbsSurfaceGeometryNode);
 }
 
 } // X3D
 } // titania
+

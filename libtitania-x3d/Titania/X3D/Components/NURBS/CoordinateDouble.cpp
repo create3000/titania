@@ -55,16 +55,20 @@
 namespace titania {
 namespace X3D {
 
+CoordinateDouble::Fields::Fields () :
+	point (new MFVec3d ())
+{ }
+
 CoordinateDouble::CoordinateDouble (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DCoordinateNode (),                                                    
-	            point ()                                                     // MFVec3d [in,out] point  [ ]       (-∞,∞)
+	fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("CoordinateDouble");
 
-	addField (inputOutput, "metadata", metadata);
-	addField (inputOutput, "point",    point);
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "point",    point ());
 }
 
 X3DBaseNode*
@@ -75,3 +79,4 @@ CoordinateDouble::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

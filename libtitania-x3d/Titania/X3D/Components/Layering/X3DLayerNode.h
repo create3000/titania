@@ -80,11 +80,46 @@ public:
 
 	///  @name Fields
 
-	SFBool               isPickable;
-	SFNode <X3DBaseNode> viewport;
-	MFNode               addChildren;
-	MFNode               removeChildren;
-	MFNode               children;
+	SFBool &
+	isPickable ()
+	{ return *fields .isPickable; }
+
+	const SFBool &
+	isPickable () const
+	{ return *fields .isPickable; }
+
+	SFNode <X3DBaseNode> &
+	viewport ()
+	{ return *fields .viewport; }
+
+	const SFNode <X3DBaseNode> &
+	viewport () const
+	{ return *fields .viewport; }
+
+	MFNode &
+	addChildren ()
+	{ return *fields .addChildren; }
+
+	const MFNode &
+	addChildren () const
+	{ return *fields .addChildren; }
+
+	MFNode &
+	removeChildren ()
+	{ return *fields .removeChildren; }
+
+	const MFNode &
+	removeChildren () const
+	{ return *fields .removeChildren; }
+
+	MFNode &
+	children ()
+	{ return *fields .children; }
+
+	const MFNode &
+	children () const
+	{ return *fields .children; }
+
 
 	///  @name Children handling
 
@@ -222,6 +257,20 @@ private:
 	void
 	collect (TraverseType);
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const isPickable;
+		SFNode <X3DBaseNode>* const viewport;
+		MFNode* const addChildren;
+		MFNode* const removeChildren;
+		MFNode* const children;
+	};
+
+	Fields fields;
+
+
 	SFNode <Viewport>          defaultViewport;
 	SFNode <NavigationInfo>    defaultNavigationInfo;
 	SFNode <X3DBackgroundNode> defaultBackground;
@@ -254,3 +303,4 @@ private:
 } // titania
 
 #endif
+

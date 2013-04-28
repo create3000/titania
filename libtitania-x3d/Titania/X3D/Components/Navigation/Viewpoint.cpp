@@ -55,26 +55,30 @@
 namespace titania {
 namespace X3D {
 
+Viewpoint::Fields::Fields () :
+	position (new SFVec3f (0, 0, 10)),
+	fieldOfView (new SFFloat (0.785398))
+{ }
+
 Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool displayed) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DViewpointNode (displayed),                                           
-	        position (0, 0, 10),                                            // SFVec3f [in,out] position           0 0 10        (-∞,∞)
-	     fieldOfView (0.785398)                                             // SFFloat [in,out] fieldOfView        π/4           (0,π)
+	fields ()
 {
 	setComponent ("Navigation");
 	setTypeName ("Viewpoint");
 
-	addField (inputOutput, "metadata",          metadata);
-	addField (inputOutput, "description",       description);
-	addField (inputOnly,   "set_bind",          set_bind);
-	addField (inputOutput, "position",          position);
-	addField (inputOutput, "orientation",       orientation);
-	addField (inputOutput, "centerOfRotation",  centerOfRotation);
-	addField (inputOutput, "fieldOfView",       fieldOfView);
-	addField (inputOutput, "jump",              jump);
-	addField (inputOutput, "retainUserOffsets", retainUserOffsets);
-	addField (outputOnly,  "bindTime",          bindTime);
-	addField (outputOnly,  "isBound",           isBound);
+	addField (inputOutput, "metadata",          metadata ());
+	addField (inputOutput, "description",       description ());
+	addField (inputOnly,   "set_bind",          set_bind ());
+	addField (inputOutput, "position",          position ());
+	addField (inputOutput, "orientation",       orientation ());
+	addField (inputOutput, "centerOfRotation",  centerOfRotation ());
+	addField (inputOutput, "fieldOfView",       fieldOfView ());
+	addField (inputOutput, "jump",              jump ());
+	addField (inputOutput, "retainUserOffsets", retainUserOffsets ());
+	addField (outputOnly,  "bindTime",          bindTime ());
+	addField (outputOnly,  "isBound",           isBound ());
 }
 
 X3DBaseNode*
@@ -86,15 +90,15 @@ Viewpoint::create (X3DExecutionContext* const executionContext) const
 Vector3f
 Viewpoint::getPosition () const
 {
-	return position;
+	return position ();
 }
 
 Vector3f
 Viewpoint::lookAtPositionOffset (Box3f bbox)
 {
 	return bbox .center ()
-	       + getUserOrientation () * (Vector3f (0, 0, (math::abs (bbox .size ()) * 0.5f) / std::tan (fieldOfView * 0.5f)))
-	       - position;
+	       + getUserOrientation () * (Vector3f (0, 0, (math::abs (bbox .size ()) * 0.5f) / std::tan (fieldOfView () * 0.5f)))
+	       - position ();
 }
 
 void
@@ -109,7 +113,7 @@ Viewpoint::reshape (const float zNear, const float zFar)
 	GLfloat width  = viewport [2];
 	GLfloat height = viewport [3];
 	
-	float fov   = fieldOfView > 0 and fieldOfView < M_PI ? fieldOfView : (M_PI / 4);
+	float fov   = fieldOfView () > 0 and fieldOfView () < M_PI ? fieldOfView () : (M_PI / 4);
 	float ratio = std::tan (fov / 2) * zNear;
 
 	if (width > height)
@@ -128,3 +132,4 @@ Viewpoint::reshape (const float zNear, const float zFar)
 
 } // X3D
 } // titania
+

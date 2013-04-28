@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,21 +55,25 @@
 namespace titania {
 namespace X3D {
 
+CollisionSpace::Fields::Fields () :
+	useGeometry (new SFBool ()),
+	collidables (new MFNode ())
+{ }
+
 CollisionSpace::CollisionSpace (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DNBodyCollisionSpaceNode (),                                                    
-	               useGeometry (),                                                    // SFBool [in,out] useGeometry  FALSE
-	               collidables ()                                                     // MFNode[in,out] collidables  NULL         [X3DNBodyCollisionSpaceNode|X3DNBodyCollidableNode]
+	fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("CollisionSpace");
 
-	addField (inputOutput,    "metadata",    metadata);
-	addField (inputOutput,    "enabled",     enabled);
-	addField (inputOutput,    "useGeometry", useGeometry);
-	addField (initializeOnly, "bboxSize",    bboxSize);
-	addField (initializeOnly, "bboxCenter",  bboxCenter);
-	addField (inputOutput,    "collidables", collidables);
+	addField (inputOutput,    "metadata",    metadata ());
+	addField (inputOutput,    "enabled",     enabled ());
+	addField (inputOutput,    "useGeometry", useGeometry ());
+	addField (initializeOnly, "bboxSize",    bboxSize ());
+	addField (initializeOnly, "bboxCenter",  bboxCenter ());
+	addField (inputOutput,    "collidables", collidables ());
 }
 
 X3DBaseNode*
@@ -80,3 +84,4 @@ CollisionSpace::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

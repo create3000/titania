@@ -61,11 +61,11 @@ class LoadSensor :
 {
 public:
 
-	SFTime  timeOut;
-	MFNode  watchList;
-	SFBool  isLoaded;
-	SFTime  loadTime;
-	SFFloat progress;
+	
+	
+	
+	
+	
 
 	LoadSensor (X3DExecutionContext* const);
 
@@ -73,9 +73,68 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFTime &
+	timeOut ()
+	{ return *fields .timeOut; }
+
+	const SFTime &
+	timeOut () const
+	{ return *fields .timeOut; }
+
+	MFNode &
+	watchList ()
+	{ return *fields .watchList; }
+
+	const MFNode &
+	watchList () const
+	{ return *fields .watchList; }
+
+	SFBool &
+	isLoaded ()
+	{ return *fields .isLoaded; }
+
+	const SFBool &
+	isLoaded () const
+	{ return *fields .isLoaded; }
+
+	SFTime &
+	loadTime ()
+	{ return *fields .loadTime; }
+
+	const SFTime &
+	loadTime () const
+	{ return *fields .loadTime; }
+
+	SFFloat &
+	progress ()
+	{ return *fields .progress; }
+
+	const SFFloat &
+	progress () const
+	{ return *fields .progress; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFTime* const timeOut;
+		MFNode* const watchList;
+		SFBool* const isLoaded;
+		SFTime* const loadTime;
+		SFFloat* const progress;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

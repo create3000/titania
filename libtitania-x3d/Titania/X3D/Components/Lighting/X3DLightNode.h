@@ -62,11 +62,46 @@ class X3DLightNode :
 {
 public:
 
-	SFBool  on;
-	SFBool  global;
-	SFColor color;
-	SFFloat intensity;
-	SFFloat ambientIntensity;
+	SFBool &
+	on ()
+	{ return *fields .on; }
+
+	const SFBool &
+	on () const
+	{ return *fields .on; }
+
+	SFBool &
+	global ()
+	{ return *fields .global; }
+
+	const SFBool &
+	global () const
+	{ return *fields .global; }
+
+	SFColor &
+	color ()
+	{ return *fields .color; }
+
+	const SFColor &
+	color () const
+	{ return *fields .color; }
+
+	SFFloat &
+	intensity ()
+	{ return *fields .intensity; }
+
+	const SFFloat &
+	intensity () const
+	{ return *fields .intensity; }
+
+	SFFloat &
+	ambientIntensity ()
+	{ return *fields .ambientIntensity; }
+
+	const SFFloat &
+	ambientIntensity () const
+	{ return *fields .ambientIntensity; }
+
 
 	void
 	push ();
@@ -82,6 +117,20 @@ public:
 protected:
 
 	X3DLightNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const on;
+		SFBool* const global;
+		SFColor* const color;
+		SFFloat* const intensity;
+		SFFloat* const ambientIntensity;
+	};
+
+	Fields fields;
 
 };
 
@@ -89,3 +138,4 @@ protected:
 } // titania
 
 #endif
+

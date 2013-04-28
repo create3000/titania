@@ -62,13 +62,25 @@ class ImageCubeMapTexture :
 {
 public:
 
-	SFNode <X3DBaseNode> textureProperties;
+	
 
 	ImageCubeMapTexture (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFNode <X3DBaseNode> &
+	textureProperties ()
+	{ return *fields .textureProperties; }
+
+	const SFNode <X3DBaseNode> &
+	textureProperties () const
+	{ return *fields .textureProperties; }
+
+
 
 	virtual
 	void
@@ -94,9 +106,20 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const textureProperties;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

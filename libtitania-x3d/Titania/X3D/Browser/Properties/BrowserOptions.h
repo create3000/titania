@@ -85,35 +85,191 @@ class BrowserOptions :
 {
 public:
 
-	SFBool   splashScreen;
-	SFBool   dashboard;
-	SFBool   rubberBand;
-	SFBool   enableInlineViewpoints;
-	SFBool   antialiased;
-	SFString textureQuality;
-	SFString primitiveQuality;
-	SFString qualityWhenMoving;
-	SFString shading;
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
-	SFNode <MotionBlur>            motionBlur;
-	SFNode <TextureProperties>     textureProperties;
-	SFNode <Arc2DProperties>       arc2DProperties;
-	SFNode <ArcClose2DProperties>  arcClose2DProperties;
-	SFNode <Circle2DProperties>    circle2DProperties;
-	SFNode <Disk2DProperties>      disc2DProperties;
-	SFNode <Rectangle2DProperties> rectangle2DProperties;
-	SFNode <BoxProperties>         boxProperties;
-	SFNode <X3DSpherePropertyNode> sphereProperties;
-	SFNode <X3DFontStyleNode>      fontStyle;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	BrowserOptions (X3DExecutionContext* const);
+
+	///  @name Fields
+
+	SFBool &
+	splashScreen ()
+	{ return *fields .splashScreen; }
+
+	const SFBool &
+	splashScreen () const
+	{ return *fields .splashScreen; }
+
+	SFBool &
+	dashboard ()
+	{ return *fields .dashboard; }
+
+	const SFBool &
+	dashboard () const
+	{ return *fields .dashboard; }
+
+	SFBool &
+	rubberBand ()
+	{ return *fields .rubberBand; }
+
+	const SFBool &
+	rubberBand () const
+	{ return *fields .rubberBand; }
+
+	SFBool &
+	enableInlineViewpoints ()
+	{ return *fields .enableInlineViewpoints; }
+
+	const SFBool &
+	enableInlineViewpoints () const
+	{ return *fields .enableInlineViewpoints; }
+
+	SFBool &
+	antialiased ()
+	{ return *fields .antialiased; }
+
+	const SFBool &
+	antialiased () const
+	{ return *fields .antialiased; }
+
+	SFString &
+	textureQuality ()
+	{ return *fields .textureQuality; }
+
+	const SFString &
+	textureQuality () const
+	{ return *fields .textureQuality; }
+
+	SFString &
+	primitiveQuality ()
+	{ return *fields .primitiveQuality; }
+
+	const SFString &
+	primitiveQuality () const
+	{ return *fields .primitiveQuality; }
+
+	SFString &
+	qualityWhenMoving ()
+	{ return *fields .qualityWhenMoving; }
+
+	const SFString &
+	qualityWhenMoving () const
+	{ return *fields .qualityWhenMoving; }
+
+	SFString &
+	shading ()
+	{ return *fields .shading; }
+
+	const SFString &
+	shading () const
+	{ return *fields .shading; }
+
+	SFNode <MotionBlur> &
+	motionBlur ()
+	{ return *fields .motionBlur; }
+
+	const SFNode <MotionBlur> &
+	motionBlur () const
+	{ return *fields .motionBlur; }
+
+	SFNode <TextureProperties> &
+	textureProperties ()
+	{ return *fields .textureProperties; }
+
+	const SFNode <TextureProperties> &
+	textureProperties () const
+	{ return *fields .textureProperties; }
+
+	SFNode <Arc2DProperties> &
+	arc2DProperties ()
+	{ return *fields .arc2DProperties; }
+
+	const SFNode <Arc2DProperties> &
+	arc2DProperties () const
+	{ return *fields .arc2DProperties; }
+
+	SFNode <ArcClose2DProperties> &
+	arcClose2DProperties ()
+	{ return *fields .arcClose2DProperties; }
+
+	const SFNode <ArcClose2DProperties> &
+	arcClose2DProperties () const
+	{ return *fields .arcClose2DProperties; }
+
+	SFNode <Circle2DProperties> &
+	circle2DProperties ()
+	{ return *fields .circle2DProperties; }
+
+	const SFNode <Circle2DProperties> &
+	circle2DProperties () const
+	{ return *fields .circle2DProperties; }
+
+	SFNode <Disk2DProperties> &
+	disc2DProperties ()
+	{ return *fields .disc2DProperties; }
+
+	const SFNode <Disk2DProperties> &
+	disc2DProperties () const
+	{ return *fields .disc2DProperties; }
+
+	SFNode <Rectangle2DProperties> &
+	rectangle2DProperties ()
+	{ return *fields .rectangle2DProperties; }
+
+	const SFNode <Rectangle2DProperties> &
+	rectangle2DProperties () const
+	{ return *fields .rectangle2DProperties; }
+
+	SFNode <BoxProperties> &
+	boxProperties ()
+	{ return *fields .boxProperties; }
+
+	const SFNode <BoxProperties> &
+	boxProperties () const
+	{ return *fields .boxProperties; }
+
+	SFNode <X3DSpherePropertyNode> &
+	sphereProperties ()
+	{ return *fields .sphereProperties; }
+
+	const SFNode <X3DSpherePropertyNode> &
+	sphereProperties () const
+	{ return *fields .sphereProperties; }
+
+	SFNode <X3DFontStyleNode> &
+	fontStyle ()
+	{ return *fields .fontStyle; }
+
+	const SFNode <X3DFontStyleNode> &
+	fontStyle () const
+	{ return *fields .fontStyle; }
+
 
 
 private:
 
 	virtual
 	BrowserOptions*
-	create (X3DExecutionContext* const)  const;
+	create (X3DExecutionContext* const) const;
+
 
 	virtual
 	void
@@ -128,9 +284,38 @@ private:
 	void
 	set_shading ();
 
+	struct Fields
+	{
+		Fields (X3DExecutionContext* const);
+
+		SFBool* const splashScreen;
+		SFBool* const dashboard;
+		SFBool* const rubberBand;
+		SFBool* const enableInlineViewpoints;
+		SFBool* const antialiased;
+		SFString* const textureQuality;
+		SFString* const primitiveQuality;
+		SFString* const qualityWhenMoving;
+		SFString* const shading;
+		SFNode <MotionBlur>* const motionBlur;
+		SFNode <TextureProperties>* const textureProperties;
+		SFNode <Arc2DProperties>* const arc2DProperties;
+		SFNode <ArcClose2DProperties>* const arcClose2DProperties;
+		SFNode <Circle2DProperties>* const circle2DProperties;
+		SFNode <Disk2DProperties>* const disc2DProperties;
+		SFNode <Rectangle2DProperties>* const rectangle2DProperties;
+		SFNode <BoxProperties>* const boxProperties;
+		SFNode <X3DSpherePropertyNode>* const sphereProperties;
+		SFNode <X3DFontStyleNode>* const fontStyle;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

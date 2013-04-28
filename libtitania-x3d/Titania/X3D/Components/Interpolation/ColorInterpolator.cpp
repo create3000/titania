@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+ColorInterpolator::Fields::Fields () :
+	keyValue (new MFColor ()),
+	value_changed (new SFColor ())
+{ }
+
 ColorInterpolator::ColorInterpolator (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
-	           keyValue (),                                                    // MFColor [in,out] keyValue       [ ]       [0,1]
-	      value_changed ()                                                     // SFColor [out]    value_changed
+	fields ()
 {
 	setComponent ("Interpolation");
 	setTypeName ("ColorInterpolator");
 
-	addField (inputOutput, "metadata",      metadata);
-	addField (inputOnly,   "set_fraction",  set_fraction);
-	addField (inputOutput, "key",           key);
-	addField (inputOutput, "keyValue",      keyValue);
-	addField (outputOnly,  "value_changed", value_changed);
+	addField (inputOutput, "metadata",      metadata ());
+	addField (inputOnly,   "set_fraction",  set_fraction ());
+	addField (inputOutput, "key",           key ());
+	addField (inputOutput, "keyValue",      keyValue ());
+	addField (outputOnly,  "value_changed", value_changed ());
 }
 
 X3DBaseNode*
@@ -82,21 +86,22 @@ ColorInterpolator::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue .addInterest (this, &ColorInterpolator::set_keyValue);
+	keyValue () .addInterest (this, &ColorInterpolator::set_keyValue);
 }
 
 void
 ColorInterpolator::set_keyValue ()
 {
-	if (keyValue .size () < key .size ())
-		keyValue .resize (key .size (), keyValue .size () ? keyValue .back () : SFColor ());
+	if (keyValue () .size () < key () .size ())
+		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFColor ());
 }
 
 void
 ColorInterpolator::interpolate (size_t index0, size_t index1, float weight)
 {
-	value_changed = math::clerp <float> (keyValue [index0], keyValue [index1], weight);
+	value_changed () = math::clerp <float> (keyValue () [index0], keyValue () [index1], weight);
 }
 
 } // X3D
 } // titania
+

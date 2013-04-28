@@ -66,25 +66,25 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	setComponent ("Texturing");
 	setTypeName ("MovieTexture");
 
-	addField (inputOutput,    "metadata",          metadata);
-	addField (inputOutput,    "enabled",           enabled);     // non standard
-	addField (inputOutput,    "description",       description);
-	addField (inputOutput,    "url",               url);
-	addField (inputOutput,    "speed",             speed);
-	addField (inputOutput,    "pitch",             pitch);
-	addField (initializeOnly, "repeatS",           repeatS);
-	addField (initializeOnly, "repeatT",           repeatT);
-	addField (inputOutput,    "loop",              loop);
-	addField (inputOutput,    "startTime",         startTime);
-	addField (inputOutput,    "stopTime",          stopTime);
-	addField (inputOutput,    "pauseTime",         pauseTime);
-	addField (inputOutput,    "resumeTime",        resumeTime);
-	addField (outputOnly,     "isPaused",          isPaused);
-	addField (outputOnly,     "isActive",          isActive);
-	addField (outputOnly,     "cycleTime",         cycleTime);   // non standard
-	addField (outputOnly,     "elapsedTime",       elapsedTime);
-	addField (outputOnly,     "duration_changed",  duration_changed);
-	addField (initializeOnly, "textureProperties", textureProperties);
+	addField (inputOutput,    "metadata",          metadata ());
+	addField (inputOutput,    "enabled",           enabled ());     // non standard
+	addField (inputOutput,    "description",       description ());
+	addField (inputOutput,    "url",               url ());
+	addField (inputOutput,    "speed",             speed ());
+	addField (inputOutput,    "pitch",             pitch ());
+	addField (initializeOnly, "repeatS",           repeatS ());
+	addField (initializeOnly, "repeatT",           repeatT ());
+	addField (inputOutput,    "loop",              loop ());
+	addField (inputOutput,    "startTime",         startTime ());
+	addField (inputOutput,    "stopTime",          stopTime ());
+	addField (inputOutput,    "pauseTime",         pauseTime ());
+	addField (inputOutput,    "resumeTime",        resumeTime ());
+	addField (outputOnly,     "isPaused",          isPaused ());
+	addField (outputOnly,     "isActive",          isActive ());
+	addField (outputOnly,     "cycleTime",         cycleTime ());   // non standard
+	addField (outputOnly,     "elapsedTime",       elapsedTime ());
+	addField (outputOnly,     "duration_changed",  duration_changed ());
+	addField (initializeOnly, "textureProperties", textureProperties ());
 }
 
 X3DBaseNode*
@@ -100,7 +100,7 @@ MovieTexture::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 	
-	url .addInterest (this, &MovieTexture::set_url);
+	url () .addInterest (this, &MovieTexture::set_url);
 
 	requestImmediateLoad ();
 }
@@ -116,13 +116,13 @@ MovieTexture::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	if (not url .size ())
+	if (not url () .size ())
 	{
 		setLoadState (FAILED_STATE);
 		return;
 	}
 
-	for (const auto & URL : url)
+	for (const auto & URL : url ())
 	{
 		setUri (transformURI (URL .getValue () .raw ()));
 
@@ -135,7 +135,7 @@ MovieTexture::requestImmediateLoad ()
 
 		if (getVideoSink () -> get_last_buffer ())
 		{
-			duration_changed = getDuration ();
+			duration_changed () = getDuration ();
 
 			setImage (4, GL_BGRA,
 			          getVideoSink () -> get_width (),
@@ -150,7 +150,7 @@ MovieTexture::requestImmediateLoad ()
 
 	if (checkLoadState () not_eq COMPLETE_STATE)
 	{
-		duration_changed = -1;
+		duration_changed () = -1;
 		setLoadState (FAILED_STATE);
 	}
 }

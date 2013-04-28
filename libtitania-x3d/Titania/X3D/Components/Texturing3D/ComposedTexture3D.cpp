@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+ComposedTexture3D::Fields::Fields () :
+	texture (new MFNode ())
+{ }
+
 ComposedTexture3D::ComposedTexture3D (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTexture3DNode (),                                                    
-	         texture ()                                                     // MFNode[in,out] texture  [ ]       [X3DTexture2DNode]
+	fields ()
 {
 	setComponent ("Texturing3D");
 	setTypeName ("ComposedTexture3D");
 
-	addField (inputOutput,    "metadata",          metadata);
-	addField (initializeOnly, "repeatS",           repeatS);
-	addField (initializeOnly, "repeatT",           repeatT);
-	addField (initializeOnly, "repeatR",           repeatR);
-	addField (initializeOnly, "textureProperties", textureProperties);
-	addField (inputOutput,    "texture",           texture);
+	addField (inputOutput,    "metadata",          metadata ());
+	addField (initializeOnly, "repeatS",           repeatS ());
+	addField (initializeOnly, "repeatT",           repeatT ());
+	addField (initializeOnly, "repeatR",           repeatR ());
+	addField (initializeOnly, "textureProperties", textureProperties ());
+	addField (inputOutput,    "texture",           texture ());
 }
 
 X3DBaseNode*
@@ -79,3 +83,4 @@ ComposedTexture3D::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

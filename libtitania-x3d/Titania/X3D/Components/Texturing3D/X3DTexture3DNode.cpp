@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,12 +53,16 @@
 namespace titania {
 namespace X3D {
 
+X3DTexture3DNode::Fields::Fields () :
+	repeatS (new SFBool ()),
+	repeatT (new SFBool ()),
+	repeatR (new SFBool ()),
+	textureProperties (new SFNode <X3DBaseNode> ())
+{ }
+
 X3DTexture3DNode::X3DTexture3DNode () :
 	   X3DTextureNode (), 
-	          repeatS (), // SFBool [ ]repeatS            FALSE
-	          repeatT (), // SFBool [ ]repeatT            FALSE
-	          repeatR (), // SFBool [ ]repeatR            FALSE
-	textureProperties ()  // SFNode [ ]textureProperties  NULL         [TextureProperties]
+	fields ()
 {
 	addNodeType (X3DConstants::X3DTexture3DNode);
 }
@@ -69,3 +73,4 @@ X3DTexture3DNode::draw ()
 
 } // X3D
 } // titania
+

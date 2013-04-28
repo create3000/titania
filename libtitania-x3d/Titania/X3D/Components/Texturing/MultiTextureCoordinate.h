@@ -61,7 +61,7 @@ class MultiTextureCoordinate :
 {
 public:
 
-	MFNode texCoord;
+	
 
 	MultiTextureCoordinate (X3DExecutionContext* const);
 
@@ -69,9 +69,32 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFNode &
+	texCoord ()
+	{ return *fields .texCoord; }
+
+	const MFNode &
+	texCoord () const
+	{ return *fields .texCoord; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const texCoord;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

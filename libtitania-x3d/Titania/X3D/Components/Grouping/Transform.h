@@ -61,17 +61,61 @@ class Transform :
 {
 public:
 
-	SFVec3f    center;
-	SFRotation rotation;
-	SFVec3f    scale;
-	SFRotation scaleOrientation;
-	SFVec3f    translation;
+	
+	
+	
+	
+	
 
 	Transform (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFVec3f &
+	center ()
+	{ return *fields .center; }
+
+	const SFVec3f &
+	center () const
+	{ return *fields .center; }
+
+	SFRotation &
+	rotation ()
+	{ return *fields .rotation; }
+
+	const SFRotation &
+	rotation () const
+	{ return *fields .rotation; }
+
+	SFVec3f &
+	scale ()
+	{ return *fields .scale; }
+
+	const SFVec3f &
+	scale () const
+	{ return *fields .scale; }
+
+	SFRotation &
+	scaleOrientation ()
+	{ return *fields .scaleOrientation; }
+
+	const SFRotation &
+	scaleOrientation () const
+	{ return *fields .scaleOrientation; }
+
+	SFVec3f &
+	translation ()
+	{ return *fields .translation; }
+
+	const SFVec3f &
+	translation () const
+	{ return *fields .translation; }
+
+
 
 	virtual
 	Box3f
@@ -102,6 +146,20 @@ protected:
 private:
 
 	Matrix4f matrix;
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const center;
+		SFRotation* const rotation;
+		SFVec3f* const scale;
+		SFRotation* const scaleOrientation;
+		SFVec3f* const translation;
+	};
+
+	Fields fields;
 
 };
 
@@ -109,3 +167,4 @@ private:
 } // titania
 
 #endif
+

@@ -55,28 +55,32 @@
 namespace titania {
 namespace X3D {
 
+ScalarChaser::Fields::Fields () :
+	set_destination (new SFFloat ()),
+	set_value (new SFFloat ()),
+	isActive (new SFBool ()),
+	value_changed (new SFFloat ()),
+	duration (new SFTime ()),
+	initialDestination (new SFFloat ()),
+	defaultValue (new SFFloat ())
+{ }
+
 ScalarChaser::ScalarChaser (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DChaserNode (),                                                    
-	   set_destination (),                                                    // SFFloat [in]     set_destination
-	         set_value (),                                                    // SFFloat [in]     set_value
-	          isActive (),                                                    // SFBool  [out]    isActive
-	     value_changed (),                                                    // SFFloat [out]    value_changed
-	          duration (),                                                    // SFTime  [ ]      duration            0           [0,∞)
-	initialDestination (),                                                    // SFFloat [ ]      initialDestination
-	      defaultValue ()                                                     // SFFloat [ ]      defaultValue
+	fields ()
 {
 	setComponent ("Followers");
 	setTypeName ("ScalarChaser");
 
-	addField (inputOutput,    "metadata",           metadata);
-	addField (inputOnly,      "set_destination",    set_destination);
-	addField (inputOnly,      "set_value",          set_value);
-	addField (outputOnly,     "isActive",           isActive);
-	addField (outputOnly,     "value_changed",      value_changed);
-	addField (initializeOnly, "duration",           duration);
-	addField (initializeOnly, "initialDestination", initialDestination);
-	addField (initializeOnly, "defaultValue",       defaultValue);
+	addField (inputOutput,    "metadata",           metadata ());
+	addField (inputOnly,      "set_destination",    set_destination ());
+	addField (inputOnly,      "set_value",          set_value ());
+	addField (outputOnly,     "isActive",           isActive ());
+	addField (outputOnly,     "value_changed",      value_changed ());
+	addField (initializeOnly, "duration",           duration ());
+	addField (initializeOnly, "initialDestination", initialDestination ());
+	addField (initializeOnly, "defaultValue",       defaultValue ());
 }
 
 X3DBaseNode*
@@ -87,3 +91,4 @@ ScalarChaser::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

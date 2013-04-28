@@ -56,42 +56,46 @@
 namespace titania {
 namespace X3D {
 
+Extrusion::Fields::Fields () :
+	set_crossSection (new MFVec2f ()),
+	set_orientation (new MFRotation ()),
+	set_scale (new MFVec2f ()),
+	set_spine (new MFVec3f ()),
+	beginCap (new SFBool (true)),
+	endCap (new SFBool (true)),
+	solid (new SFBool (true)),
+	convex (new SFBool (true)),
+	crossSection (new MFVec2f ()),
+	orientation (new MFRotation ()),
+	scale (new MFVec2f ()),
+	spine (new MFVec3f ())
+{ }
+
 Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),                                    
 	 X3DGeometryNode (),                                                                                       
-	set_crossSection (),                                                                                       // MFVec2f    [in] set_crossSection
-	 set_orientation (),                                                                                       // MFRotation [in] set_orientation
-	       set_scale (),                                                                                       // MFVec2f    [in] set_scale
-	       set_spine (),                                                                                       // MFVec3f    [in] set_spine
-	        beginCap (true),                                                                                   // SFBool     [ ]  beginCap          TRUE
-	          endCap (true),                                                                                   // SFBool     [ ]  endCap            TRUE
-	           solid (true),                                                                                   // SFBool     [ ]  solid             TRUE
-	          convex (true),                                                                                   // SFBool     [ ]  convex            TRUE
-	    crossSection ({ SFVec2f (1, 1), SFVec2f (1, -1), SFVec2f (-1, -1), SFVec2f (-1, 1), SFVec2f (1, 1) }), // MFVec2f    [ ]  crossSection      [1 1 1 -1 -1 -1 -1 1 1 1]        (-∞,∞)
-	     orientation ({ SFRotation () }),                                                                      // MFRotation [ ]  orientation       0 0 1 0                          [-1,1] or (-∞,∞)
-	           scale ({ SFVec2f (1, 1) }),                                                                     // MFVec2f    [ ]  scale             1 1                              (0,∞)
-	           spine ({ SFVec3f (), SFVec3f (0, 1, 0) })                                                       // MFVec3f    [ ]  spine             [0 0 0 0 1 0]                    (-∞,∞)
+	fields ()
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Extrusion");
 
-	addField (inputOutput,    "metadata",         metadata);
-	addField (inputOnly,      "set_crossSection", set_crossSection);
-	addField (inputOnly,      "set_orientation",  set_orientation);
-	addField (inputOnly,      "set_scale",        set_scale);
-	addField (inputOnly,      "set_spine",        set_spine);
+	addField (inputOutput,    "metadata",         metadata ());
+	addField (inputOnly,      "set_crossSection", set_crossSection ());
+	addField (inputOnly,      "set_orientation",  set_orientation ());
+	addField (inputOnly,      "set_scale",        set_scale ());
+	addField (inputOnly,      "set_spine",        set_spine ());
 
-	addField (initializeOnly, "beginCap",         beginCap);
-	addField (initializeOnly, "endCap",           endCap);
-	addField (initializeOnly, "solid",            solid);
-	addField (initializeOnly, "ccw",              ccw);
-	addField (initializeOnly, "convex",           convex);
-	addField (initializeOnly, "creaseAngle",      creaseAngle);
+	addField (initializeOnly, "beginCap",         beginCap ());
+	addField (initializeOnly, "endCap",           endCap ());
+	addField (initializeOnly, "solid",            solid ());
+	addField (initializeOnly, "ccw",              ccw ());
+	addField (initializeOnly, "convex",           convex ());
+	addField (initializeOnly, "creaseAngle",      creaseAngle ());
 
-	addField (initializeOnly, "crossSection",     crossSection);
-	addField (initializeOnly, "orientation",      orientation);
-	addField (initializeOnly, "scale",            scale);
-	addField (initializeOnly, "spine",            spine);
+	addField (initializeOnly, "crossSection",     crossSection ());
+	addField (initializeOnly, "orientation",      orientation ());
+	addField (initializeOnly, "scale",            scale ());
+	addField (initializeOnly, "spine",            spine ());
 }
 
 X3DBaseNode*
@@ -109,15 +113,15 @@ Extrusion::initialize ()
 std::vector <Vector3f>
 Extrusion::createPoints (bool hasCaps)
 {
-	size_t reserve = spine .size () * crossSection .size ();
+	size_t reserve = spine () .size () * crossSection () .size ();
 	
 	if (hasCaps)
 	{
-		if (beginCap)
-			reserve += crossSection .size ();
+		if (beginCap ())
+			reserve += crossSection () .size ();
 
-		if (endCap)
-			reserve += crossSection .size ();
+		if (endCap ())
+			reserve += crossSection () .size ();
 	}
 	
 	
@@ -130,25 +134,25 @@ Extrusion::createPoints (bool hasCaps)
 
 	// calculate vertices.
 
-	for (size_t i = 0, size = spine .size (); i < size; i ++)
+	for (size_t i = 0, size = spine () .size (); i < size; i ++)
 	{
 		Matrix4f matrix;
 
-		matrix .translate (spine [i]);
+		matrix .translate (spine () [i]);
 
-		if (orientation .size ())
-			matrix .rotate (orientation [std::min (i, orientation .size () - 1)]);
+		if (orientation () .size ())
+			matrix .rotate (orientation () [std::min (i, orientation () .size () - 1)]);
 
 		matrix .multLeft (rotations [i]);
 
-		if (scale .size ())
+		if (scale () .size ())
 		{
-			const Vector2f & s = scale [std::min (i, scale .size () - 1)];
+			const Vector2f & s = scale () [std::min (i, scale () .size () - 1)];
 
 			matrix .scale (Vector3f (s .x (), 1, s .y ()));
 		}
 
-		for (const auto & vector : crossSection)
+		for (const auto & vector : crossSection ())
 			points .emplace_back (Vector3f (vector .getX (), 0, vector .getY ()) * matrix);
 
 	}
@@ -157,17 +161,17 @@ Extrusion::createPoints (bool hasCaps)
 
 	if (hasCaps)
 	{
-		auto last = points .end () - crossSection .size ();
+		auto last = points .end () - crossSection () .size ();
 	
-		if (beginCap)
+		if (beginCap ())
 		{
-			for (const auto & point : basic::adapter (points .begin (), points .begin () + crossSection .size ()))
+			for (const auto & point : basic::adapter (points .begin (), points .begin () + crossSection () .size ()))
 				points .emplace_back (point);
 		}
 
-		if (endCap)
+		if (endCap ())
 		{
-			for (const auto & point : basic::adapter (last, last + crossSection .size ()))
+			for (const auto & point : basic::adapter (last, last + crossSection () .size ()))
 				points .emplace_back (point);
 		}
 	}
@@ -179,11 +183,11 @@ std::vector <Matrix4f>
 Extrusion::createRotations ()
 {
 	std::vector <Matrix4f> rotations;
-	rotations .reserve (spine .size ());
+	rotations .reserve (spine () .size ());
 
 	// calculate SCP rotations
 
-	bool closedSpine = spine .front () == spine .back ();
+	bool closedSpine = spine () .front () == spine () .back ();
 
 	Vector3f SCPyAxisPrevious;
 	Vector3f SCPzAxisPrevious;
@@ -195,17 +199,17 @@ Extrusion::createRotations ()
 	// SCP for the first point:
 	if (closedSpine)
 	{
-		SCPyAxis = normalize (spine [1] - spine [spine .size () - 2]);
-		SCPzAxis = normalize (cross (spine [1] - spine [0], spine [spine .size () - 2] - spine [0]));
+		SCPyAxis = normalize (spine () [1] - spine () [spine () .size () - 2]);
+		SCPzAxis = normalize (cross (spine () [1] - spine () [0], spine () [spine () .size () - 2] - spine () [0]));
 	}
 	else
 	{
-		SCPyAxis = normalize (spine [1] - spine [0]);
+		SCPyAxis = normalize (spine () [1] - spine () [0]);
 
 		// Find first defined Z-axis.
-		for (size_t i = 1, size = spine .size () - 1; i < size; i ++)
+		for (size_t i = 1, size = spine () .size () - 1; i < size; i ++)
 		{
-			SCPzAxis = normalize (cross (spine [i + 1] - spine [i], spine [i - 1] - spine [i]));
+			SCPzAxis = normalize (cross (spine () [i + 1] - spine () [i], spine () [i - 1] - spine () [i]));
 
 			if (SCPzAxis not_eq Vector3f ())
 				break;
@@ -227,10 +231,10 @@ Extrusion::createRotations ()
 
 	SCPzAxisPrevious = SCPzAxis;
 
-	for (size_t i = 1, size = spine .size () - 1; i < size; i ++)
+	for (size_t i = 1, size = spine () .size () - 1; i < size; i ++)
 	{
-		SCPyAxis = normalize (spine [i + 1] - spine [i - 1]);
-		SCPzAxis = normalize (cross (spine [i + 1] - spine [i], spine [i - 1] - spine [i]));
+		SCPyAxis = normalize (spine () [i + 1] - spine () [i - 1]);
+		SCPzAxis = normalize (cross (spine () [i + 1] - spine () [i], spine () [i - 1] - spine () [i]));
 
 		// d.
 		if (dot (SCPzAxisPrevious, SCPzAxis) < 0)
@@ -258,10 +262,10 @@ Extrusion::createRotations ()
 	}
 	else
 	{
-		SCPyAxis = normalize (spine [spine .size () - 1] - spine [spine .size () - 2]);
+		SCPyAxis = normalize (spine () [spine () .size () - 1] - spine () [spine () .size () - 2]);
 
-		if (spine .size () > 2)
-			SCPzAxis = normalize (cross (spine [spine .size () - 1] - spine [spine .size () - 2], spine [spine .size () - 3] - spine [spine .size () - 2]));
+		if (spine () .size () > 2)
+			SCPzAxis = normalize (cross (spine () [spine () .size () - 1] - spine () [spine () .size () - 2], spine () [spine () .size () - 3] - spine () [spine () .size () - 2]));
 
 		// d.
 		if (dot (SCPzAxisPrevious, SCPzAxis) < 0)
@@ -285,31 +289,31 @@ Extrusion::createRotations ()
 void
 Extrusion::build ()
 {
-	if (spine .size () < 2 or crossSection .size () < 3)
+	if (spine () .size () < 2 or crossSection () .size () < 3)
 		return;
 		
-	size_t crossSectionSize = crossSection .size (); // This one is used only in the INDEX macro.
+	size_t crossSectionSize = crossSection () .size (); // This one is used only in the INDEX macro.
 
 	#define INDEX(n, k) ((n) * crossSectionSize + (k))
 
-	bool closedSpine        = spine .front () == spine .back ();
-	bool closedCrossSection = crossSection .front () == crossSection .back ();
+	bool closedSpine        = spine () .front () == spine () .back ();
+	bool closedCrossSection = crossSection () .front () == crossSection () .back ();
 
 	// For caps calculation
 
-	Vector2f min = crossSection [0];
-	Vector2f max = crossSection [0];
+	Vector2f min = crossSection () [0];
+	Vector2f max = crossSection () [0];
 
-	for (size_t k = 1, size = crossSection .size (); k < size; k ++)
+	for (size_t k = 1, size = crossSection () .size (); k < size; k ++)
 	{
-		min = math::min <float> (min, crossSection [k]);
-		max = math::max <float> (max, crossSection [k]);
+		min = math::min <float> (min, crossSection () [k]);
+		max = math::max <float> (max, crossSection () [k]);
 	}
 
 	Vector2f capSize = max - min;
 
 	bool hasCaps        = capSize .x () and capSize .y ();
-	size_t numCapPoints = closedCrossSection ? crossSection .size () - 1 : crossSection .size ();
+	size_t numCapPoints = closedCrossSection ? crossSection () .size () - 1 : crossSection () .size ();
 
 	// Create
 
@@ -317,19 +321,19 @@ Extrusion::build ()
 	std::vector <size_t> coordIndex;
 	NormalIndex normalIndex;
 
-	size_t reserve = (spine .size () - 1) * (crossSection .size () - 1) * 6 + (beginCap ? (numCapPoints - 2) * 3 : 0) + (endCap ? (numCapPoints - 2) * 3 : 0);
+	size_t reserve = (spine () .size () - 1) * (crossSection () .size () - 1) * 6 + (beginCap () ? (numCapPoints - 2) * 3 : 0) + (endCap () ? (numCapPoints - 2) * 3 : 0);
 	coordIndex .reserve (reserve);
 	getTexCoord () .reserve (reserve);
 	getNormals  () .reserve (reserve);
 
 	// Build body.
 
-	for (size_t n = 0, size = spine .size () - 1; n < size; ++ n)
+	for (size_t n = 0, size = spine () .size () - 1; n < size; ++ n)
 	{
-		for (size_t k = 0, size = crossSection .size () - 1; k < size; ++ k)
+		for (size_t k = 0, size = crossSection () .size () - 1; k < size; ++ k)
 		{
-			size_t n1 = closedSpine and n == spine .size () - 2 ? 0 : n + 1;
-			size_t k1 = closedCrossSection and k == crossSection .size () - 2 ? 0 : k + 1;
+			size_t n1 = closedSpine and n == spine () .size () - 2 ? 0 : n + 1;
+			size_t k1 = closedCrossSection and k == crossSection () .size () - 2 ? 0 : k + 1;
 
 			// k      k+1
 			//
@@ -345,19 +349,19 @@ Extrusion::build ()
 			// tri 1
 
 			// p1
-			getTexCoord () .emplace_back (k / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1), 0);
+			getTexCoord () .emplace_back (k / (float) (crossSection () .size () - 1), n / (float) (spine () .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n, k));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (normal);
 
 			// p2
-			getTexCoord () .emplace_back ((k + 1) / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1), 0);
+			getTexCoord () .emplace_back ((k + 1) / (float) (crossSection () .size () - 1), n / (float) (spine () .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n, k1));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (normal);
 
 			// p3
-			getTexCoord () .emplace_back (k / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1), 0);
+			getTexCoord () .emplace_back (k / (float) (crossSection () .size () - 1), (n + 1) / (float) (spine () .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n1, k));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (normal);
@@ -365,19 +369,19 @@ Extrusion::build ()
 			// tri 2
 
 			// p2
-			getTexCoord () .emplace_back ((k + 1) / (float) (crossSection .size () - 1), n / (float) (spine .size () - 1), 0);
+			getTexCoord () .emplace_back ((k + 1) / (float) (crossSection () .size () - 1), n / (float) (spine () .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n, k1));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (normal);
 
 			// p4
-			getTexCoord () .emplace_back ((k + 1) / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1), 0);
+			getTexCoord () .emplace_back ((k + 1) / (float) (crossSection () .size () - 1), (n + 1) / (float) (spine () .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n1, k1));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (normal);
 
 			// p3
-			getTexCoord () .emplace_back (k / (float) (crossSection .size () - 1), (n + 1) / (float) (spine .size () - 1), 0);
+			getTexCoord () .emplace_back (k / (float) (crossSection () .size () - 1), (n + 1) / (float) (spine () .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n1, k));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (normal);
@@ -388,9 +392,9 @@ Extrusion::build ()
 
 	if (hasCaps)
 	{
-		if (beginCap)
+		if (beginCap ())
 		{
-			size_t j = spine .size ();
+			size_t j = spine () .size ();
 
 			Tesselator tesselator;
 
@@ -407,9 +411,9 @@ Extrusion::build ()
 			          capSize);
 		}
 
-		if (endCap)
+		if (endCap ())
 		{
-			size_t j = spine .size () + beginCap;
+			size_t j = spine () .size () + beginCap ();
 
 			Tesselator tesselator;
 
@@ -441,7 +445,7 @@ Extrusion::build ()
 
 	addElement (getVertices () .size ());
 	setVertexMode (GL_TRIANGLES);
-	setSolid (solid);
+	setSolid (solid ());
 
 	#undef INDEX
 }
@@ -511,19 +515,19 @@ Extrusion::buildCap (const Tesselator & tesselator,
 				{
 					for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
 					{
-						Vector2f t = (min + crossSection [std::get < K > (polygonElement [0] .data ())]) / capSize;
+						Vector2f t = (min + crossSection () [std::get < K > (polygonElement [0] .data ())]) / capSize;
 						getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 						coordIndex .emplace_back (std::get <0> (polygonElement [0] .data ()));
 						normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 						getNormals () .emplace_back (normal);
 
-						t = (min + crossSection [std::get < K > (polygonElement [i] .data ())]) / capSize;
+						t = (min + crossSection () [std::get < K > (polygonElement [i] .data ())]) / capSize;
 						getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 						coordIndex .emplace_back (std::get <0> (polygonElement [i] .data ()));
 						normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 						getNormals () .emplace_back (normal);
 
-						t = (min + crossSection [std::get < K > (polygonElement [i + 1] .data ())]) / capSize;
+						t = (min + crossSection () [std::get < K > (polygonElement [i + 1] .data ())]) / capSize;
 						getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 						coordIndex .emplace_back (std::get <0> (polygonElement [i + 1] .data ()));
 						normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
@@ -536,19 +540,19 @@ Extrusion::buildCap (const Tesselator & tesselator,
 			{
 				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
 				{
-					Vector2f t = (min + crossSection [std::get < K > (polygonElement [i % 2 ? i + 1 : i] .data ())]) / capSize;
+					Vector2f t = (min + crossSection () [std::get < K > (polygonElement [i % 2 ? i + 1 : i] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					coordIndex .emplace_back (std::get <0> (polygonElement [i % 2 ? i + 1 : i] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 					getNormals () .emplace_back (normal);
 
-					t = (min + crossSection [std::get < K > (polygonElement [i % 2 ? i : i + 1] .data ())]) / capSize;
+					t = (min + crossSection () [std::get < K > (polygonElement [i % 2 ? i : i + 1] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					coordIndex .emplace_back (std::get <0> (polygonElement [i % 2 ? i : i + 1] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 					getNormals () .emplace_back (normal);
 
-					t = (min + crossSection [std::get < K > (polygonElement [i + 2] .data ())]) / capSize;
+					t = (min + crossSection () [std::get < K > (polygonElement [i + 2] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					coordIndex .emplace_back (std::get <0> (polygonElement [i + 2] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
@@ -561,19 +565,19 @@ Extrusion::buildCap (const Tesselator & tesselator,
 			{
 				for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
 				{
-					Vector2f t = (min + crossSection [std::get < K > (polygonElement [i] .data ())]) / capSize;
+					Vector2f t = (min + crossSection () [std::get < K > (polygonElement [i] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					coordIndex .emplace_back (std::get <0> (polygonElement [i] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 					getNormals () .emplace_back (normal);
 
-					t = (min + crossSection [std::get < K > (polygonElement [i + 1] .data ())]) / capSize;
+					t = (min + crossSection () [std::get < K > (polygonElement [i + 1] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					coordIndex .emplace_back (std::get <0> (polygonElement [i + 1] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 					getNormals () .emplace_back (normal);
 
-					t = (min + crossSection [std::get < K > (polygonElement [i + 2] .data ())]) / capSize;
+					t = (min + crossSection () [std::get < K > (polygonElement [i + 2] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					coordIndex .emplace_back (std::get <0> (polygonElement [i + 2] .data ()));
 					normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
@@ -599,3 +603,4 @@ Extrusion::dispose ()
 
 } // X3D
 } // titania
+

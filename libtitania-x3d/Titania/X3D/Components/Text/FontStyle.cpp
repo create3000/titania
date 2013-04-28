@@ -55,24 +55,28 @@
 namespace titania {
 namespace X3D {
 
+FontStyle::Fields::Fields () :
+	size (new SFFloat (1))
+{ }
+
 FontStyle::FontStyle (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DFontStyleNode (),                                                    
-	            size (1)                                                    // SFFloat  [ ] size         1.0            (0,∞)
+	fields ()
 {
 	setComponent ("Text");
 	setTypeName ("FontStyle");
 
-	addField (inputOutput,    "metadata",    metadata);
-	addField (initializeOnly, "family",      family);
-	addField (initializeOnly, "style",       style);
-	addField (initializeOnly, "size",        size);
-	addField (initializeOnly, "spacing",     spacing);
-	addField (initializeOnly, "horizontal",  horizontal);
-	addField (initializeOnly, "justify",     justify);
-	addField (initializeOnly, "topToBottom", topToBottom);
-	addField (initializeOnly, "leftToRight", leftToRight);
-	addField (initializeOnly, "language",    language);
+	addField (inputOutput,    "metadata",    metadata ());
+	addField (initializeOnly, "family",      family ());
+	addField (initializeOnly, "style",       style ());
+	addField (initializeOnly, "size",        size ());
+	addField (initializeOnly, "spacing",     spacing ());
+	addField (initializeOnly, "horizontal",  horizontal ());
+	addField (initializeOnly, "justify",     justify ());
+	addField (initializeOnly, "topToBottom", topToBottom ());
+	addField (initializeOnly, "leftToRight", leftToRight ());
+	addField (initializeOnly, "language",    language ());
 }
 
 X3DBaseNode*
@@ -84,8 +88,9 @@ FontStyle::create (X3DExecutionContext* const executionContext) const
 float
 FontStyle::getSize () const
 {
-	return size;
+	return size ();
 }
 
 } // X3D
 } // titania
+

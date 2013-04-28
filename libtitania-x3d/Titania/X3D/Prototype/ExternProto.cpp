@@ -68,7 +68,7 @@ ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
 {
 	setTypeName ("ExternProto");
 
-	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "metadata", metadata ());
 }
 
 X3DBaseNode*
@@ -117,7 +117,7 @@ ExternProto::requestImmediateLoad ()
 
 	try
 	{
-		scene = createX3DFromURL (url);
+		scene = createX3DFromURL (url ());
 	}
 	catch (const Error <INVALID_URL> & error)
 	{
@@ -244,7 +244,7 @@ ExternProto::toStream (std::ostream & ostream) const
 		<< ']'
 		<< Generator::TidyBreak
 		<< Generator::Indent
-		<< url;
+		<< url ();
 }
 
 void
@@ -254,6 +254,11 @@ ExternProto::dispose ()
 	proto .dispose ();
 
 	X3DProto::dispose ();
+}
+
+ExternProto::~ExternProto ()
+{
+	delete &url ();
 }
 
 } // X3D

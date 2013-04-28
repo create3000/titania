@@ -99,14 +99,31 @@ protected:
 
 	typedef std::map <size_t, std::vector <size_t>> NormalIndex;
 
-	SFBool  ccw;
-	SFFloat creaseAngle;
-
 	X3DGeometryNode ();
 
 	virtual
 	void
 	initialize ();
+
+	///  @name Fields
+
+	SFBool&
+	ccw ()
+	{ return *fields .ccw; }
+	
+	const SFBool&
+	ccw () const
+	{ return *fields .ccw; }
+	
+	SFFloat&
+	creaseAngle ()
+	{ return *fields .creaseAngle; }
+
+	const SFFloat&
+	creaseAngle () const
+	{ return *fields .creaseAngle; }
+
+	///  @name Properties
 
 	std::vector <Vector3f> &
 	getTexCoord () { return texCoords; }
@@ -174,6 +191,16 @@ private:
 
 	void
 	transfer ();
+
+	struct Fields
+	{
+		Fields ();
+		
+		SFBool* const  ccw;
+		SFFloat* const creaseAngle;
+	};
+	
+	Fields fields;
 
 	Box3f                       bbox;
 	std::vector <Vector3f>      texCoords;

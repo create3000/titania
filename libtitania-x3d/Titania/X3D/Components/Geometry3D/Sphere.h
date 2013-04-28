@@ -61,14 +61,34 @@ class Sphere :
 {
 public:
 
-	SFFloat radius;
-	SFBool  solid;
+	
+	
 
 	Sphere (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFFloat &
+	radius ()
+	{ return *fields .radius; }
+
+	const SFFloat &
+	radius () const
+	{ return *fields .radius; }
+
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+
 
 	virtual
 	void
@@ -92,9 +112,21 @@ private:
 	void
 	build ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const radius;
+		SFBool* const solid;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

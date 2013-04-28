@@ -61,18 +61,70 @@ class SpotLight :
 {
 public:
 
-	SFVec3f attenuation;
-	SFFloat beamWidth;
-	SFFloat cutOffAngle;
-	SFVec3f direction;
-	SFVec3f location;
-	SFFloat radius;
+	
+	
+	
+	
+	
+	
 
 	SpotLight (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFVec3f &
+	attenuation ()
+	{ return *fields .attenuation; }
+
+	const SFVec3f &
+	attenuation () const
+	{ return *fields .attenuation; }
+
+	SFFloat &
+	beamWidth ()
+	{ return *fields .beamWidth; }
+
+	const SFFloat &
+	beamWidth () const
+	{ return *fields .beamWidth; }
+
+	SFFloat &
+	cutOffAngle ()
+	{ return *fields .cutOffAngle; }
+
+	const SFFloat &
+	cutOffAngle () const
+	{ return *fields .cutOffAngle; }
+
+	SFVec3f &
+	direction ()
+	{ return *fields .direction; }
+
+	const SFVec3f &
+	direction () const
+	{ return *fields .direction; }
+
+	SFVec3f &
+	location ()
+	{ return *fields .location; }
+
+	const SFVec3f &
+	location () const
+	{ return *fields .location; }
+
+	SFFloat &
+	radius ()
+	{ return *fields .radius; }
+
+	const SFFloat &
+	radius () const
+	{ return *fields .radius; }
+
+
 
 	virtual
 	void
@@ -89,6 +141,21 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const attenuation;
+		SFFloat* const beamWidth;
+		SFFloat* const cutOffAngle;
+		SFVec3f* const direction;
+		SFVec3f* const location;
+		SFFloat* const radius;
+	};
+
+	Fields fields;
+
+
 	GLfloat glAmbient [4];
 	GLfloat glDiffuseSpecular [4];
 	GLfloat glSpotExponent;
@@ -102,3 +169,4 @@ private:
 } // titania
 
 #endif
+

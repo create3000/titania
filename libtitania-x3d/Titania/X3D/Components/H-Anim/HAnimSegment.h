@@ -61,12 +61,12 @@ class HAnimSegment :
 {
 public:
 
-	SFVec3f              centerOfMass;
-	SFNode <X3DBaseNode> coord;
-	MFNode               displacers;
-	SFFloat              mass;
-	MFFloat              momentsOfInertia;
-	SFString             name;
+	
+	
+	
+	
+	
+	
 
 	HAnimSegment (X3DExecutionContext* const);
 
@@ -74,9 +74,77 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3f &
+	centerOfMass ()
+	{ return *fields .centerOfMass; }
+
+	const SFVec3f &
+	centerOfMass () const
+	{ return *fields .centerOfMass; }
+
+	SFNode <X3DBaseNode> &
+	coord ()
+	{ return *fields .coord; }
+
+	const SFNode <X3DBaseNode> &
+	coord () const
+	{ return *fields .coord; }
+
+	MFNode &
+	displacers ()
+	{ return *fields .displacers; }
+
+	const MFNode &
+	displacers () const
+	{ return *fields .displacers; }
+
+	SFFloat &
+	mass ()
+	{ return *fields .mass; }
+
+	const SFFloat &
+	mass () const
+	{ return *fields .mass; }
+
+	MFFloat &
+	momentsOfInertia ()
+	{ return *fields .momentsOfInertia; }
+
+	const MFFloat &
+	momentsOfInertia () const
+	{ return *fields .momentsOfInertia; }
+
+	SFString &
+	name ()
+	{ return *fields .name; }
+
+	const SFString &
+	name () const
+	{ return *fields .name; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const centerOfMass;
+		SFNode <X3DBaseNode>* const coord;
+		MFNode* const displacers;
+		SFFloat* const mass;
+		MFFloat* const momentsOfInertia;
+		SFString* const name;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

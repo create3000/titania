@@ -61,10 +61,10 @@ class HAnimDisplacer :
 {
 public:
 
-	MFInt32  coordIndex;
-	MFVec3f  displacements;
-	SFString name;
-	SFFloat  weight;
+	
+	
+	
+	
 
 	HAnimDisplacer (X3DExecutionContext* const);
 
@@ -72,9 +72,59 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFInt32 &
+	coordIndex ()
+	{ return *fields .coordIndex; }
+
+	const MFInt32 &
+	coordIndex () const
+	{ return *fields .coordIndex; }
+
+	MFVec3f &
+	displacements ()
+	{ return *fields .displacements; }
+
+	const MFVec3f &
+	displacements () const
+	{ return *fields .displacements; }
+
+	SFString &
+	name ()
+	{ return *fields .name; }
+
+	const SFString &
+	name () const
+	{ return *fields .name; }
+
+	SFFloat &
+	weight ()
+	{ return *fields .weight; }
+
+	const SFFloat &
+	weight () const
+	{ return *fields .weight; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFInt32* const coordIndex;
+		MFVec3f* const displacements;
+		SFString* const name;
+		SFFloat* const weight;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

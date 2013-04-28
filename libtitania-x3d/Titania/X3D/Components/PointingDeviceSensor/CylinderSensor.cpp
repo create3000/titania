@@ -55,32 +55,36 @@
 namespace titania {
 namespace X3D {
 
+CylinderSensor::Fields::Fields () :
+	axisRotation (new SFRotation (0, 1, 0, 0)),
+	diskAngle (new SFFloat (M_PI / 12)),
+	minAngle (new SFFloat ()),
+	maxAngle (new SFFloat (-1)),
+	offset (new SFFloat ()),
+	rotation_changed (new SFRotation ())
+{ }
+
 CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DDragSensorNode (),                                                    
-	     axisRotation (0, 1, 0, 0),                                          // SFRotation [in,out] axisRotation      0 1 0 0
-	        diskAngle (M_PI / 12),                                           // SFFloat    [in,out] diskAngle         π/12           [0,π/2]
-	         minAngle (),                                                    // SFFloat    [in,out] minAngle          0              [-2π,2π]
-	         maxAngle (-1),                                                  // SFFloat    [in,out] maxAngle          -1             [-2π,2π]
-	           offset (),                                                    // SFFloat    [in,out] offset            0              (-∞,∞)
-	 rotation_changed ()                                                     // SFRotation [out]    rotation_changed
+	fields ()
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("CylinderSensor");
 
-	addField (inputOutput, "metadata",           metadata);
-	addField (inputOutput, "enabled",            enabled);
-	addField (inputOutput, "description",        description);
-	addField (inputOutput, "axisRotation",       axisRotation);
-	addField (inputOutput, "diskAngle",          diskAngle);
-	addField (inputOutput, "minAngle",           minAngle);
-	addField (inputOutput, "maxAngle",           maxAngle);
-	addField (inputOutput, "offset",             offset);
-	addField (inputOutput, "autoOffset",         autoOffset);
-	addField (outputOnly,  "trackPoint_changed", trackPoint_changed);
-	addField (outputOnly,  "rotation_changed",   rotation_changed);
-	addField (outputOnly,  "isOver",             isOver);
-	addField (outputOnly,  "isActive",           isActive);
+	addField (inputOutput, "metadata",           metadata ());
+	addField (inputOutput, "enabled",            enabled ());
+	addField (inputOutput, "description",        description ());
+	addField (inputOutput, "axisRotation",       axisRotation ());
+	addField (inputOutput, "diskAngle",          diskAngle ());
+	addField (inputOutput, "minAngle",           minAngle ());
+	addField (inputOutput, "maxAngle",           maxAngle ());
+	addField (inputOutput, "offset",             offset ());
+	addField (inputOutput, "autoOffset",         autoOffset ());
+	addField (outputOnly,  "trackPoint_changed", trackPoint_changed ());
+	addField (outputOnly,  "rotation_changed",   rotation_changed ());
+	addField (outputOnly,  "isOver",             isOver ());
+	addField (outputOnly,  "isActive",           isActive ());
 }
 
 X3DBaseNode*
@@ -141,15 +145,15 @@ CylinderSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 {
 	X3DDragSensorNode::set_active (hit, active);
 
-	if (isActive)
+	if (isActive ())
 	{
 		inverseTransformationMatrix = ~getTransformationMatrix ();
 
 		auto hitRay   = hit -> ray * inverseTransformationMatrix;
 		auto hitPoint = hit -> point * inverseTransformationMatrix;
 
-		auto yAxis = axisRotation * Vector3f (0, 1, 0);
-		auto zAxis = inverseTransformationMatrix .multDirMatrix (axisRotation * Vector3f (0, 0, 1));
+		auto yAxis = axisRotation () * Vector3f (0, 1, 0);
+		auto zAxis = inverseTransformationMatrix .multDirMatrix (axisRotation () * Vector3f (0, 0, 1));
 
 		auto axis    = Line3f (Vector3f (), yAxis);
 		auto pvector = axis .perpendicular_vector (hitPoint);
@@ -159,7 +163,7 @@ CylinderSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 		yPlane = Plane3f (Vector3f (), yAxis);  // Sensor aligned Y-plane
 		zPlane = Plane3f (hitPoint, zAxis);     // Screen aligned Z-plane.
 
-		disk   = std::abs (dot (hitRay .direction (), yAxis)) > std::cos (diskAngle);
+		disk   = std::abs (dot (hitRay .direction (), yAxis)) > std::cos (diskAngle ());
 		behind = isBehind (hitRay, hitPoint);
 
 		Vector3f trackPoint;
@@ -167,14 +171,14 @@ CylinderSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 
 		fromVector = getVector (hitRay, trackPoint);
 
-		trackPoint_changed = trackPoint;
-		rotation_changed   = Rotation4f (yAxis, offset);
-		startOffset        = offset;
+		trackPoint_changed () = trackPoint;
+		rotation_changed ()   = Rotation4f (yAxis, offset ());
+		startOffset           = offset ();
 	}
 	else
 	{
-		if (autoOffset)
-			offset = getAngle (rotation_changed);
+		if (autoOffset ())
+			offset () = getAngle (rotation_changed ());
 	}
 }
 
@@ -214,7 +218,7 @@ CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
 		getTrackPoint (hitRay, trackPoint);
 	}
 
-	trackPoint_changed = trackPoint;
+	trackPoint_changed () = trackPoint;
 
 	auto toVector = getVector (hitRay, trackPoint);
 	auto offset   = Rotation4f (cylinder .axis () .direction (), startOffset);
@@ -225,17 +229,18 @@ CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
 
 	rotation = offset * rotation;
 
-	if (minAngle > maxAngle)
-		rotation_changed = rotation;
+	if (minAngle () > maxAngle ())
+		rotation_changed () = rotation;
 
 	else
 	{
 		auto angle = getAngle (rotation);
 
-		if (angle > minAngle and angle < maxAngle)
-			rotation_changed = rotation;
+		if (angle > minAngle () and angle < maxAngle ())
+			rotation_changed () = rotation;
 	}
 }
 
 } // X3D
 } // titania
+

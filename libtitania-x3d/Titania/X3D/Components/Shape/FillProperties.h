@@ -61,10 +61,10 @@ class FillProperties :
 {
 public:
 
-	SFBool  filled;
-	SFBool  hatched;
-	SFInt32 hatchStyle;
-	SFColor hatchColor;
+	
+	
+	
+	
 
 	FillProperties (X3DExecutionContext* const);
 
@@ -72,9 +72,58 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFBool &
+	filled ()
+	{ return *fields .filled; }
+
+	const SFBool &
+	filled () const
+	{ return *fields .filled; }
+
+	SFBool &
+	hatched ()
+	{ return *fields .hatched; }
+
+	const SFBool &
+	hatched () const
+	{ return *fields .hatched; }
+
+	SFInt32 &
+	hatchStyle ()
+	{ return *fields .hatchStyle; }
+
+	const SFInt32 &
+	hatchStyle () const
+	{ return *fields .hatchStyle; }
+
+	SFColor &
+	hatchColor ()
+	{ return *fields .hatchColor; }
+
+	const SFColor &
+	hatchColor () const
+	{ return *fields .hatchColor; }
+
+
+
 	virtual
 	void
 	draw ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const filled;
+		SFBool* const hatched;
+		SFInt32* const hatchStyle;
+		SFColor* const hatchColor;
+	};
+
+	Fields fields;
 
 };
 
@@ -82,3 +131,4 @@ public:
 } // titania
 
 #endif
+

@@ -61,8 +61,22 @@ class X3DInterpolatorNode :
 {
 public:
 
-	SFFloat set_fraction;
-	MFFloat key;
+	SFFloat &
+	set_fraction ()
+	{ return *fields .set_fraction; }
+
+	const SFFloat &
+	set_fraction () const
+	{ return *fields .set_fraction; }
+
+	MFFloat &
+	key ()
+	{ return *fields .key; }
+
+	const MFFloat &
+	key () const
+	{ return *fields .key; }
+
 
 	virtual
 	void
@@ -90,6 +104,17 @@ private:
 	void
 	set_key ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const set_fraction;
+		MFFloat* const key;
+	};
+
+	Fields fields;
+
+
 	virtual
 	void
 	set_keyValue () = 0;
@@ -100,3 +125,4 @@ private:
 } // titania
 
 #endif
+

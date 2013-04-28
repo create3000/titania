@@ -61,14 +61,34 @@ class TriangleSet2D :
 {
 public:
 
-	MFVec2f vertices;
-	SFBool  solid;
+	
+	
 
 	TriangleSet2D (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFVec2f &
+	vertices ()
+	{ return *fields .vertices; }
+
+	const MFVec2f &
+	vertices () const
+	{ return *fields .vertices; }
+
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+
 
 
 private:
@@ -80,9 +100,21 @@ private:
 	void
 	buildTexCoord ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFVec2f* const vertices;
+		SFBool* const solid;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

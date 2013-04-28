@@ -61,15 +61,15 @@ class OrientationDamper :
 {
 public:
 
-	SFRotation set_destination;
-	SFRotation set_value;
-	SFTime     tau;
-	SFFloat    tolerance;
-	SFBool     isActive;
-	SFRotation value_changed;
-	SFRotation initialDestination;
-	SFRotation defaultValue;
-	SFInt32    order;
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	OrientationDamper (X3DExecutionContext* const);
 
@@ -77,9 +77,104 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFRotation &
+	set_destination ()
+	{ return *fields .set_destination; }
+
+	const SFRotation &
+	set_destination () const
+	{ return *fields .set_destination; }
+
+	SFRotation &
+	set_value ()
+	{ return *fields .set_value; }
+
+	const SFRotation &
+	set_value () const
+	{ return *fields .set_value; }
+
+	SFTime &
+	tau ()
+	{ return *fields .tau; }
+
+	const SFTime &
+	tau () const
+	{ return *fields .tau; }
+
+	SFFloat &
+	tolerance ()
+	{ return *fields .tolerance; }
+
+	const SFFloat &
+	tolerance () const
+	{ return *fields .tolerance; }
+
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
+	SFRotation &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFRotation &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+	SFRotation &
+	initialDestination ()
+	{ return *fields .initialDestination; }
+
+	const SFRotation &
+	initialDestination () const
+	{ return *fields .initialDestination; }
+
+	SFRotation &
+	defaultValue ()
+	{ return *fields .defaultValue; }
+
+	const SFRotation &
+	defaultValue () const
+	{ return *fields .defaultValue; }
+
+	SFInt32 &
+	order ()
+	{ return *fields .order; }
+
+	const SFInt32 &
+	order () const
+	{ return *fields .order; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFRotation* const set_destination;
+		SFRotation* const set_value;
+		SFTime* const tau;
+		SFFloat* const tolerance;
+		SFBool* const isActive;
+		SFRotation* const value_changed;
+		SFRotation* const initialDestination;
+		SFRotation* const defaultValue;
+		SFInt32* const order;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

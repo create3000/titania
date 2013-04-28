@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+ShaderPart::Fields::Fields () :
+	type (new SFString ("VERTEX"))
+{ }
+
 ShaderPart::ShaderPart (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DNode (),                                                    
 	X3DUrlObject (),                                                    
-	        type ("VERTEX"),                                            // SFString [ ]type  "VERTEX"        ["VERTEX"|"FRAGMENT"]
+	      fields (),
 	    shaderId (0),                                                   
 	       valid (false)                                                
 {
 	setComponent ("Shaders");
 	setTypeName ("ShaderPart");
 
-	addField (inputOutput,    "metadata", metadata);
-	addField (initializeOnly, "type",     type);
-	addField (inputOutput,    "url",      url);
+	addField (inputOutput,    "metadata", metadata ());
+	addField (initializeOnly, "type",     type ());
+	addField (inputOutput,    "url",      url ());
 }
 
 X3DBaseNode*
@@ -83,7 +87,7 @@ ShaderPart::initialize ()
 	X3DNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	url .addInterest (this, &ShaderPart::set_url);
+	url () .addInterest (this, &ShaderPart::set_url);
 
 	if (glXGetCurrentContext ())
 	{
@@ -96,10 +100,10 @@ ShaderPart::initialize ()
 GLenum
 ShaderPart::getShaderType () const
 {
-	if (type == "FRAGMENT")
+	if (type () == "FRAGMENT")
 		return GL_FRAGMENT_SHADER;
 
-	if (type == "VERTEX")
+	if (type () == "VERTEX")
 		return GL_VERTEX_SHADER;
 
 	return GL_VERTEX_SHADER;
@@ -113,7 +117,7 @@ ShaderPart::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	for (const auto & URL : url)
+	for (const auto & URL : url ())
 	{
 		try
 		{
@@ -177,3 +181,4 @@ ShaderPart::dispose ()
 
 } // X3D
 } // titania
+

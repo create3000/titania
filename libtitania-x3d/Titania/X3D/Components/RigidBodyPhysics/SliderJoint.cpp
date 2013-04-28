@@ -55,31 +55,35 @@
 namespace titania {
 namespace X3D {
 
+SliderJoint::Fields::Fields () :
+	axis (new SFVec3f (0, 1, 0)),
+	maxSeparation (new SFFloat (1)),
+	minSeparation (new SFFloat ()),
+	stopBounce (new SFFloat ()),
+	stopErrorCorrection (new SFFloat (1)),
+	separation (new SFFloat ()),
+	separationRate (new SFFloat ())
+{ }
+
 SliderJoint::SliderJoint (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	  X3DRigidJointNode (),                                                    
-	               axis (0, 1, 0),                                             // SFVec3f [in,out] axis                 0 1 0
-	      maxSeparation (1),                                                   // SFFloat [in,out] maxSeparation        1            [0,∞)
-	      minSeparation (),                                                    // SFFloat [in,out] minSeparation        0            [0,∞)
-	         stopBounce (),                                                    // SFFloat [in,out] stopBounce           0            [0,1]
-	stopErrorCorrection (1),                                                   // SFFloat [in,out] stopErrorCorrection  1            [0,1]
-	         separation (),                                                    // SFFloat [out]    separation
-	     separationRate ()                                                     // SFFloat [out]    separationRate
+	fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("SliderJoint");
 
-	addField (inputOutput, "metadata",            metadata);
-	addField (inputOutput, "body1",               body1);
-	addField (inputOutput, "body2",               body2);
-	addField (inputOutput, "forceOutput",         forceOutput);
-	addField (inputOutput, "axis",                axis);
-	addField (inputOutput, "maxSeparation",       maxSeparation);
-	addField (inputOutput, "minSeparation",       minSeparation);
-	addField (inputOutput, "stopBounce",          stopBounce);
-	addField (inputOutput, "stopErrorCorrection", stopErrorCorrection);
-	addField (outputOnly,  "separation",          separation);
-	addField (outputOnly,  "separationRate",      separationRate);
+	addField (inputOutput, "metadata",            metadata ());
+	addField (inputOutput, "body1",               body1 ());
+	addField (inputOutput, "body2",               body2 ());
+	addField (inputOutput, "forceOutput",         forceOutput ());
+	addField (inputOutput, "axis",                axis ());
+	addField (inputOutput, "maxSeparation",       maxSeparation ());
+	addField (inputOutput, "minSeparation",       minSeparation ());
+	addField (inputOutput, "stopBounce",          stopBounce ());
+	addField (inputOutput, "stopErrorCorrection", stopErrorCorrection ());
+	addField (outputOnly,  "separation",          separation ());
+	addField (outputOnly,  "separationRate",      separationRate ());
 }
 
 X3DBaseNode*
@@ -90,3 +94,4 @@ SliderJoint::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

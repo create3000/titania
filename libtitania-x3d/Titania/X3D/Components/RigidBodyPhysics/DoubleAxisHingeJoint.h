@@ -61,28 +61,28 @@ class DoubleAxisHingeJoint :
 {
 public:
 
-	SFVec3f anchorPoint;
-	SFVec3f axis1;
-	SFVec3f axis2;
-	SFFloat desiredAngularVelocity1;
-	SFFloat desiredAngularVelocity2;
-	SFFloat maxAngle1;
-	SFFloat maxTorque1;
-	SFFloat maxTorque2;
-	SFFloat minAngle1;
-	SFFloat stopBounce1;
-	SFFloat stopConstantForceMix1;
-	SFFloat stopErrorCorrection1;
-	SFFloat suspensionErrorCorrection;
-	SFFloat suspensionForce;
-	SFVec3f body1AnchorPoint;
-	SFVec3f body1Axis;
-	SFVec3f body2AnchorPoint;
-	SFVec3f body2Axis;
-	SFFloat hinge1Angle;
-	SFFloat hinge1AngleRate;
-	SFFloat hinge2Angle;
-	SFFloat hinge2AngleRate;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	DoubleAxisHingeJoint (X3DExecutionContext* const);
 
@@ -90,9 +90,221 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3f &
+	anchorPoint ()
+	{ return *fields .anchorPoint; }
+
+	const SFVec3f &
+	anchorPoint () const
+	{ return *fields .anchorPoint; }
+
+	SFVec3f &
+	axis1 ()
+	{ return *fields .axis1; }
+
+	const SFVec3f &
+	axis1 () const
+	{ return *fields .axis1; }
+
+	SFVec3f &
+	axis2 ()
+	{ return *fields .axis2; }
+
+	const SFVec3f &
+	axis2 () const
+	{ return *fields .axis2; }
+
+	SFFloat &
+	desiredAngularVelocity1 ()
+	{ return *fields .desiredAngularVelocity1; }
+
+	const SFFloat &
+	desiredAngularVelocity1 () const
+	{ return *fields .desiredAngularVelocity1; }
+
+	SFFloat &
+	desiredAngularVelocity2 ()
+	{ return *fields .desiredAngularVelocity2; }
+
+	const SFFloat &
+	desiredAngularVelocity2 () const
+	{ return *fields .desiredAngularVelocity2; }
+
+	SFFloat &
+	maxAngle1 ()
+	{ return *fields .maxAngle1; }
+
+	const SFFloat &
+	maxAngle1 () const
+	{ return *fields .maxAngle1; }
+
+	SFFloat &
+	maxTorque1 ()
+	{ return *fields .maxTorque1; }
+
+	const SFFloat &
+	maxTorque1 () const
+	{ return *fields .maxTorque1; }
+
+	SFFloat &
+	maxTorque2 ()
+	{ return *fields .maxTorque2; }
+
+	const SFFloat &
+	maxTorque2 () const
+	{ return *fields .maxTorque2; }
+
+	SFFloat &
+	minAngle1 ()
+	{ return *fields .minAngle1; }
+
+	const SFFloat &
+	minAngle1 () const
+	{ return *fields .minAngle1; }
+
+	SFFloat &
+	stopBounce1 ()
+	{ return *fields .stopBounce1; }
+
+	const SFFloat &
+	stopBounce1 () const
+	{ return *fields .stopBounce1; }
+
+	SFFloat &
+	stopConstantForceMix1 ()
+	{ return *fields .stopConstantForceMix1; }
+
+	const SFFloat &
+	stopConstantForceMix1 () const
+	{ return *fields .stopConstantForceMix1; }
+
+	SFFloat &
+	stopErrorCorrection1 ()
+	{ return *fields .stopErrorCorrection1; }
+
+	const SFFloat &
+	stopErrorCorrection1 () const
+	{ return *fields .stopErrorCorrection1; }
+
+	SFFloat &
+	suspensionErrorCorrection ()
+	{ return *fields .suspensionErrorCorrection; }
+
+	const SFFloat &
+	suspensionErrorCorrection () const
+	{ return *fields .suspensionErrorCorrection; }
+
+	SFFloat &
+	suspensionForce ()
+	{ return *fields .suspensionForce; }
+
+	const SFFloat &
+	suspensionForce () const
+	{ return *fields .suspensionForce; }
+
+	SFVec3f &
+	body1AnchorPoint ()
+	{ return *fields .body1AnchorPoint; }
+
+	const SFVec3f &
+	body1AnchorPoint () const
+	{ return *fields .body1AnchorPoint; }
+
+	SFVec3f &
+	body1Axis ()
+	{ return *fields .body1Axis; }
+
+	const SFVec3f &
+	body1Axis () const
+	{ return *fields .body1Axis; }
+
+	SFVec3f &
+	body2AnchorPoint ()
+	{ return *fields .body2AnchorPoint; }
+
+	const SFVec3f &
+	body2AnchorPoint () const
+	{ return *fields .body2AnchorPoint; }
+
+	SFVec3f &
+	body2Axis ()
+	{ return *fields .body2Axis; }
+
+	const SFVec3f &
+	body2Axis () const
+	{ return *fields .body2Axis; }
+
+	SFFloat &
+	hinge1Angle ()
+	{ return *fields .hinge1Angle; }
+
+	const SFFloat &
+	hinge1Angle () const
+	{ return *fields .hinge1Angle; }
+
+	SFFloat &
+	hinge1AngleRate ()
+	{ return *fields .hinge1AngleRate; }
+
+	const SFFloat &
+	hinge1AngleRate () const
+	{ return *fields .hinge1AngleRate; }
+
+	SFFloat &
+	hinge2Angle ()
+	{ return *fields .hinge2Angle; }
+
+	const SFFloat &
+	hinge2Angle () const
+	{ return *fields .hinge2Angle; }
+
+	SFFloat &
+	hinge2AngleRate ()
+	{ return *fields .hinge2AngleRate; }
+
+	const SFFloat &
+	hinge2AngleRate () const
+	{ return *fields .hinge2AngleRate; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const anchorPoint;
+		SFVec3f* const axis1;
+		SFVec3f* const axis2;
+		SFFloat* const desiredAngularVelocity1;
+		SFFloat* const desiredAngularVelocity2;
+		SFFloat* const maxAngle1;
+		SFFloat* const maxTorque1;
+		SFFloat* const maxTorque2;
+		SFFloat* const minAngle1;
+		SFFloat* const stopBounce1;
+		SFFloat* const stopConstantForceMix1;
+		SFFloat* const stopErrorCorrection1;
+		SFFloat* const suspensionErrorCorrection;
+		SFFloat* const suspensionForce;
+		SFVec3f* const body1AnchorPoint;
+		SFVec3f* const body1Axis;
+		SFVec3f* const body2AnchorPoint;
+		SFVec3f* const body2Axis;
+		SFFloat* const hinge1Angle;
+		SFFloat* const hinge1AngleRate;
+		SFFloat* const hinge2Angle;
+		SFFloat* const hinge2AngleRate;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

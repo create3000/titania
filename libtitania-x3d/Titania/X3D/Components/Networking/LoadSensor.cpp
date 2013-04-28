@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,26 +55,30 @@
 namespace titania {
 namespace X3D {
 
+LoadSensor::Fields::Fields () :
+	timeOut (new SFTime ()),
+	watchList (new MFNode ()),
+	isLoaded (new SFBool ()),
+	loadTime (new SFTime ()),
+	progress (new SFFloat ())
+{ }
+
 LoadSensor::LoadSensor (X3DExecutionContext* const executionContext) :
 	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DNetworkSensorNode (),                                                    
-	             timeOut (),                                                    // SFTime  [in,out] timeOut
-	           watchList (),                                                    // MFNode  [in,out] watchList  [ ]       [X3DUrlObject]
-	            isLoaded (),                                                    // SFBool  [out]    isLoaded
-	            loadTime (),                                                    // SFTime  [out]    loadTime
-	            progress ()                                                     // SFFloat [out]    progress
+	fields ()
 {
 	setComponent ("Networking");
 	setTypeName ("LoadSensor");
 
-	addField (inputOutput, "metadata",  metadata);
-	addField (inputOutput, "enabled",   enabled);
-	addField (outputOnly,  "isActive",  isActive);
-	addField (inputOutput, "timeOut",   timeOut);
-	addField (inputOutput, "watchList", watchList);
-	addField (outputOnly,  "isLoaded",  isLoaded);
-	addField (outputOnly,  "loadTime",  loadTime);
-	addField (outputOnly,  "progress",  progress);
+	addField (inputOutput, "metadata",  metadata ());
+	addField (inputOutput, "enabled",   enabled ());
+	addField (outputOnly,  "isActive",  isActive ());
+	addField (inputOutput, "timeOut",   timeOut ());
+	addField (inputOutput, "watchList", watchList ());
+	addField (outputOnly,  "isLoaded",  isLoaded ());
+	addField (outputOnly,  "loadTime",  loadTime ());
+	addField (outputOnly,  "progress",  progress ());
 }
 
 X3DBaseNode*
@@ -85,3 +89,4 @@ LoadSensor::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

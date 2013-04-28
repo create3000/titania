@@ -61,15 +61,15 @@ class CoordinateDamper :
 {
 public:
 
-	MFVec3f set_destination;
-	MFVec3f set_value;
-	SFTime  tau;
-	SFFloat tolerance;
-	SFBool  isActive;
-	MFVec3f value_changed;
-	MFVec3f initialDestination;
-	MFVec3f defaultValue;
-	SFInt32 order;
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	CoordinateDamper (X3DExecutionContext* const);
 
@@ -77,9 +77,104 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFVec3f &
+	set_destination ()
+	{ return *fields .set_destination; }
+
+	const MFVec3f &
+	set_destination () const
+	{ return *fields .set_destination; }
+
+	MFVec3f &
+	set_value ()
+	{ return *fields .set_value; }
+
+	const MFVec3f &
+	set_value () const
+	{ return *fields .set_value; }
+
+	SFTime &
+	tau ()
+	{ return *fields .tau; }
+
+	const SFTime &
+	tau () const
+	{ return *fields .tau; }
+
+	SFFloat &
+	tolerance ()
+	{ return *fields .tolerance; }
+
+	const SFFloat &
+	tolerance () const
+	{ return *fields .tolerance; }
+
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
+	MFVec3f &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const MFVec3f &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+	MFVec3f &
+	initialDestination ()
+	{ return *fields .initialDestination; }
+
+	const MFVec3f &
+	initialDestination () const
+	{ return *fields .initialDestination; }
+
+	MFVec3f &
+	defaultValue ()
+	{ return *fields .defaultValue; }
+
+	const MFVec3f &
+	defaultValue () const
+	{ return *fields .defaultValue; }
+
+	SFInt32 &
+	order ()
+	{ return *fields .order; }
+
+	const SFInt32 &
+	order () const
+	{ return *fields .order; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFVec3f* const set_destination;
+		MFVec3f* const set_value;
+		SFTime* const tau;
+		SFFloat* const tolerance;
+		SFBool* const isActive;
+		MFVec3f* const value_changed;
+		MFVec3f* const initialDestination;
+		MFVec3f* const defaultValue;
+		SFInt32* const order;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

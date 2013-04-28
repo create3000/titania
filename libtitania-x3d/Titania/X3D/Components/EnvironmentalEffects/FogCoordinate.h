@@ -61,7 +61,7 @@ class FogCoordinate :
 {
 public:
 
-	MFFloat depth;
+	
 
 	FogCoordinate (X3DExecutionContext* const);
 
@@ -69,9 +69,32 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFFloat &
+	depth ()
+	{ return *fields .depth; }
+
+	const MFFloat &
+	depth () const
+	{ return *fields .depth; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFFloat* const depth;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

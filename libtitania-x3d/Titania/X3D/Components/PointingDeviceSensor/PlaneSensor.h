@@ -61,17 +61,61 @@ class PlaneSensor :
 {
 public:
 
-	SFRotation axisRotation;
-	SFVec3f    offset;
-	SFVec2f    maxPosition;
-	SFVec2f    minPosition;
-	SFVec3f    translation_changed;
+	
+	
+	
+	
+	
 
 	PlaneSensor (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFRotation &
+	axisRotation ()
+	{ return *fields .axisRotation; }
+
+	const SFRotation &
+	axisRotation () const
+	{ return *fields .axisRotation; }
+
+	SFVec3f &
+	offset ()
+	{ return *fields .offset; }
+
+	const SFVec3f &
+	offset () const
+	{ return *fields .offset; }
+
+	SFVec2f &
+	maxPosition ()
+	{ return *fields .maxPosition; }
+
+	const SFVec2f &
+	maxPosition () const
+	{ return *fields .maxPosition; }
+
+	SFVec2f &
+	minPosition ()
+	{ return *fields .minPosition; }
+
+	const SFVec2f &
+	minPosition () const
+	{ return *fields .minPosition; }
+
+	SFVec3f &
+	translation_changed ()
+	{ return *fields .translation_changed; }
+
+	const SFVec3f &
+	translation_changed () const
+	{ return *fields .translation_changed; }
+
+
 
 	virtual
 	void
@@ -84,6 +128,19 @@ public:
 
 private:
 
+	struct Fields
+	{
+		Fields ();
+
+		SFRotation* const axisRotation;
+		SFVec3f* const offset;
+		SFVec2f* const maxPosition;
+		SFVec2f* const minPosition;
+		SFVec3f* const translation_changed;
+	};
+
+	Fields fields;
+
 	Plane3f  plane;
 	Vector3f startOffset;
 	Vector3f startPoint;
@@ -95,3 +152,4 @@ private:
 } // titania
 
 #endif
+

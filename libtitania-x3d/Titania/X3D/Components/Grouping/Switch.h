@@ -61,7 +61,7 @@ class Switch :
 {
 public:
 
-	SFInt32 whichChoice;
+	
 
 	Switch (X3DExecutionContext* const);
 
@@ -69,9 +69,31 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFInt32 &
+	whichChoice ()
+	{ return *fields .whichChoice; }
+
+	const SFInt32 &
+	whichChoice () const
+	{ return *fields .whichChoice; }
+
+
+
 	virtual
 	void
 	traverse (TraverseType);
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const whichChoice;
+	};
+
+	Fields fields;
 
 };
 
@@ -79,3 +101,4 @@ public:
 } // titania
 
 #endif
+

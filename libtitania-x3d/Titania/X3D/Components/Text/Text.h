@@ -64,20 +64,88 @@ class Text :
 {
 public:
 
-	MFString             string;
-	MFFloat              length;
-	SFFloat              maxExtent;
-	SFBool               solid;
-	SFVec3f              origin;
-	SFVec2f              textBounds;
-	MFVec2f              lineBounds;
-	SFNode <X3DBaseNode> fontStyle;
+	
+	
+	
+	
+	
+	
+	
+	
 
 	Text (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFString &
+	string ()
+	{ return *fields .string; }
+
+	const MFString &
+	string () const
+	{ return *fields .string; }
+
+	MFFloat &
+	length ()
+	{ return *fields .length; }
+
+	const MFFloat &
+	length () const
+	{ return *fields .length; }
+
+	SFFloat &
+	maxExtent ()
+	{ return *fields .maxExtent; }
+
+	const SFFloat &
+	maxExtent () const
+	{ return *fields .maxExtent; }
+
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+	SFVec3f &
+	origin ()
+	{ return *fields .origin; }
+
+	const SFVec3f &
+	origin () const
+	{ return *fields .origin; }
+
+	SFVec2f &
+	textBounds ()
+	{ return *fields .textBounds; }
+
+	const SFVec2f &
+	textBounds () const
+	{ return *fields .textBounds; }
+
+	MFVec2f &
+	lineBounds ()
+	{ return *fields .lineBounds; }
+
+	const MFVec2f &
+	lineBounds () const
+	{ return *fields .lineBounds; }
+
+	SFNode <X3DBaseNode> &
+	fontStyle ()
+	{ return *fields .fontStyle; }
+
+	const SFNode <X3DBaseNode> &
+	fontStyle () const
+	{ return *fields .fontStyle; }
+
+
 
 	virtual
 	void
@@ -110,6 +178,23 @@ private:
 	Box2f
 	getLineBBox (const X3DFontStyleNode*, const std::string &);
 
+	struct Fields
+	{
+		Fields ();
+
+		MFString* const string;
+		MFFloat* const length;
+		SFFloat* const maxExtent;
+		SFBool* const solid;
+		SFVec3f* const origin;
+		SFVec2f* const textBounds;
+		MFVec2f* const lineBounds;
+		SFNode <X3DBaseNode>* const fontStyle;
+	};
+
+	Fields fields;
+
+
 	std::unique_ptr <FTPolygonFont> font;
 	float                           lineHeight;
 	std::deque <float>              charSpacings;
@@ -123,3 +208,4 @@ private:
 } // titania
 
 #endif
+

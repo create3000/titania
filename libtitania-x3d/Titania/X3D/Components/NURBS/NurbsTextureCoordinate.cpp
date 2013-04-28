@@ -55,30 +55,34 @@
 namespace titania {
 namespace X3D {
 
+NurbsTextureCoordinate::Fields::Fields () :
+	controlPoint (new MFVec2f ()),
+	weight (new MFFloat ()),
+	uDimension (new SFInt32 ()),
+	uKnot (new MFDouble ()),
+	uOrder (new SFInt32 (3)),
+	vDimension (new SFInt32 ()),
+	vKnot (new MFDouble ()),
+	vOrder (new SFInt32 (3))
+{ }
+
 NurbsTextureCoordinate::NurbsTextureCoordinate (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DNode (),                                                    
-	controlPoint (),                                                    // MFVec2f  [in,out] controlPoint  [ ]       (-∞,∞)
-	      weight (),                                                    // MFFloat  [in,out] weight        [ ]       (0,∞)
-	  uDimension (),                                                    // SFInt32  [ ]      uDimension    0         [0,∞)
-	       uKnot (),                                                    // MFDouble [ ]      uKnot         [ ]        (-∞,∞)
-	      uOrder (3),                                                   // SFInt32  [ ]      uOrder        3         [2,∞)
-	  vDimension (),                                                    // SFInt32  [ ]      vDimension    0         [0,∞)
-	       vKnot (),                                                    // MFDouble [ ]      vKnot         [ ]        (-∞,∞)
-	      vOrder (3)                                                    // SFInt32  [ ]      vOrder        3         [2,∞)
+	fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsTextureCoordinate");
 
-	addField (inputOutput,    "metadata",     metadata);
-	addField (inputOutput,    "controlPoint", controlPoint);
-	addField (inputOutput,    "weight",       weight);
-	addField (initializeOnly, "uDimension",   uDimension);
-	addField (initializeOnly, "uKnot",        uKnot);
-	addField (initializeOnly, "uOrder",       uOrder);
-	addField (initializeOnly, "vDimension",   vDimension);
-	addField (initializeOnly, "vKnot",        vKnot);
-	addField (initializeOnly, "vOrder",       vOrder);
+	addField (inputOutput,    "metadata",     metadata ());
+	addField (inputOutput,    "controlPoint", controlPoint ());
+	addField (inputOutput,    "weight",       weight ());
+	addField (initializeOnly, "uDimension",   uDimension ());
+	addField (initializeOnly, "uKnot",        uKnot ());
+	addField (initializeOnly, "uOrder",       uOrder ());
+	addField (initializeOnly, "vDimension",   vDimension ());
+	addField (initializeOnly, "vKnot",        vKnot ());
+	addField (initializeOnly, "vOrder",       vOrder ());
 }
 
 X3DBaseNode*
@@ -89,3 +93,4 @@ NurbsTextureCoordinate::create (X3DExecutionContext* const executionContext) con
 
 } // X3D
 } // titania
+

@@ -66,9 +66,30 @@ class X3DGroupingNode :
 {
 public:
 
-	MFNode children; // Declare this before add and remove, to get a lower address.
-	MFNode addChildren;
-	MFNode removeChildren;
+	MFNode &
+	children ()
+	{ return *fields .children; }
+
+	const MFNode &
+	children () const
+	{ return *fields .children; }
+ // Declare this before add and remove, to get a lower address.
+	MFNode &
+	addChildren ()
+	{ return *fields .addChildren; }
+
+	const MFNode &
+	addChildren () const
+	{ return *fields .addChildren; }
+
+	MFNode &
+	removeChildren ()
+	{ return *fields .removeChildren; }
+
+	const MFNode &
+	removeChildren () const
+	{ return *fields .removeChildren; }
+
 
 	virtual
 	Box3f
@@ -115,6 +136,18 @@ private:
 	void
 	collect ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const addChildren;
+		MFNode* const removeChildren;
+		MFNode* const children;
+	};
+
+	Fields fields;
+
+
 	std::deque <X3DPointingDeviceSensorNode*> pointingDeviceSensors;
 	std::deque <X3DLightNode*>                lights;
 	std::deque <LocalFog*>                    localFogs;
@@ -126,3 +159,4 @@ private:
 } // titania
 
 #endif
+

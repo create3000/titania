@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,22 +55,26 @@
 namespace titania {
 namespace X3D {
 
+CollisionSensor::Fields::Fields () :
+	collider (new SFNode <X3DBaseNode> ()),
+	intersections (new MFNode ()),
+	contacts (new MFNode ())
+{ }
+
 CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DSensorNode (),                                                    
-	     collider (),                                                    // SFNode [in,out] collider       NULL        [CollisionCollection]
-	intersections (),                                                    // MFNode[out]    intersections              [X3DNBodyCollidableNode]
-	     contacts ()                                                     // MFNode[out]    contacts                   [Contact]
+	fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("CollisionSensor");
 
-	addField (inputOutput, "metadata",      metadata);
-	addField (inputOutput, "enabled",       enabled);
-	addField (outputOnly,  "isActive",      isActive);
-	addField (inputOutput, "collider",      collider);
-	addField (outputOnly,  "intersections", intersections);
-	addField (outputOnly,  "contacts",      contacts);
+	addField (inputOutput, "metadata",      metadata ());
+	addField (inputOutput, "enabled",       enabled ());
+	addField (outputOnly,  "isActive",      isActive ());
+	addField (inputOutput, "collider",      collider ());
+	addField (outputOnly,  "intersections", intersections ());
+	addField (outputOnly,  "contacts",      contacts ());
 }
 
 X3DBaseNode*
@@ -81,3 +85,4 @@ CollisionSensor::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

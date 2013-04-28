@@ -61,17 +61,61 @@ class SplinePositionInterpolator :
 {
 public:
 
-	SFBool  closed;
-	MFVec3f keyValue;
-	MFVec3f keyVelocity;
-	SFBool  normalizeVelocity;
-	SFVec3f value_changed;
+	
+	
+	
+	
+	
 
 	SplinePositionInterpolator (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFBool &
+	closed ()
+	{ return *fields .closed; }
+
+	const SFBool &
+	closed () const
+	{ return *fields .closed; }
+
+	MFVec3f &
+	keyValue ()
+	{ return *fields .keyValue; }
+
+	const MFVec3f &
+	keyValue () const
+	{ return *fields .keyValue; }
+
+	MFVec3f &
+	keyVelocity ()
+	{ return *fields .keyVelocity; }
+
+	const MFVec3f &
+	keyVelocity () const
+	{ return *fields .keyVelocity; }
+
+	SFBool &
+	normalizeVelocity ()
+	{ return *fields .normalizeVelocity; }
+
+	const SFBool &
+	normalizeVelocity () const
+	{ return *fields .normalizeVelocity; }
+
+	SFVec3f &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFVec3f &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+
 
 
 private:
@@ -88,9 +132,24 @@ private:
 	void
 	interpolate (size_t, size_t, float);
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const closed;
+		MFVec3f* const keyValue;
+		MFVec3f* const keyVelocity;
+		SFBool* const normalizeVelocity;
+		SFVec3f* const value_changed;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

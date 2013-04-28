@@ -55,34 +55,38 @@
 namespace titania {
 namespace X3D {
 
+GeoProximitySensor::Fields::Fields () :
+	geoCenter (new SFVec3d ()),
+	centerOfRotation_changed (new SFVec3f ()),
+	geoCoord_changed (new SFVec3d ()),
+	orientation_changed (new SFRotation ()),
+	position_changed (new SFVec3f ()),
+	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoSystem (new MFString ({ "GD", "WE" }))
+{ }
+
 GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DEnvironmentalSensorNode (),                                                    
-	                 geoCenter (),                                                    // SFVec3d    [in,out] geoCenter                 0 0 0              (-∞,∞)
-	  centerOfRotation_changed (),                                                    // SFVec3f    [out]    centerOfRotation_changed
-	          geoCoord_changed (),                                                    // SFVec3d    [out]    geoCoord_changed
-	       orientation_changed (),                                                    // SFRotation [out]    orientation_changed
-	          position_changed (),                                                    // SFVec3f    [out]    position_changed
-	                 geoOrigin (),                                                    // SFNode     [ ]      geoOrigin                 NULL               [GeoOrigin]
-	                 geoSystem ({ "GD", "WE" })                                       // MFString   [ ]      geoSystem                 ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
+	fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoProximitySensor");
 
-	addField (inputOutput,    "metadata",                 metadata);
-	addField (inputOutput,    "enabled",                  enabled);
-	addField (inputOutput,    "size",                     size);
-	addField (inputOutput,    "center",                   center);
-	addField (outputOnly,     "enterTime",                enterTime);
-	addField (outputOnly,     "exitTime",                 exitTime);
-	addField (outputOnly,     "isActive",                 isActive);
-	addField (inputOutput,    "geoCenter",                geoCenter);
-	addField (outputOnly,     "centerOfRotation_changed", centerOfRotation_changed);
-	addField (outputOnly,     "geoCoord_changed",         geoCoord_changed);
-	addField (outputOnly,     "orientation_changed",      orientation_changed);
-	addField (outputOnly,     "position_changed",         position_changed);
-	addField (initializeOnly, "geoOrigin",                geoOrigin);
-	addField (initializeOnly, "geoSystem",                geoSystem);
+	addField (inputOutput,    "metadata",                 metadata ());
+	addField (inputOutput,    "enabled",                  enabled ());
+	addField (inputOutput,    "size",                     size ());
+	addField (inputOutput,    "center",                   center ());
+	addField (outputOnly,     "enterTime",                enterTime ());
+	addField (outputOnly,     "exitTime",                 exitTime ());
+	addField (outputOnly,     "isActive",                 isActive ());
+	addField (inputOutput,    "geoCenter",                geoCenter ());
+	addField (outputOnly,     "centerOfRotation_changed", centerOfRotation_changed ());
+	addField (outputOnly,     "geoCoord_changed",         geoCoord_changed ());
+	addField (outputOnly,     "orientation_changed",      orientation_changed ());
+	addField (outputOnly,     "position_changed",         position_changed ());
+	addField (initializeOnly, "geoOrigin",                geoOrigin ());
+	addField (initializeOnly, "geoSystem",                geoSystem ());
 }
 
 X3DBaseNode*
@@ -93,3 +97,4 @@ GeoProximitySensor::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

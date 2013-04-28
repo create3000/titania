@@ -64,12 +64,12 @@ PackagedShader::PackagedShader (X3DExecutionContext* const executionContext) :
 	setComponent ("Shaders");
 	setTypeName ("PackagedShader");
 
-	addField (inputOutput,    "metadata",   metadata);
-	addField (inputOutput,    "url",        url);
-	addField (inputOnly,      "activate",   activate);
-	addField (outputOnly,     "isSelected", isSelected);
-	addField (outputOnly,     "isValid",    isValid);
-	addField (initializeOnly, "language",   language);
+	addField (inputOutput,    "metadata",   metadata ());
+	addField (inputOutput,    "url",        url ());
+	addField (inputOnly,      "activate",   activate ());
+	addField (outputOnly,     "isSelected", isSelected ());
+	addField (outputOnly,     "isValid",    isValid ());
+	addField (initializeOnly, "language",   language ());
 }
 
 X3DBaseNode*

@@ -61,7 +61,7 @@ class TriangleStripSet :
 {
 public:
 
-	MFInt32 stripCount;
+	
 
 	TriangleStripSet (X3DExecutionContext* const);
 
@@ -69,9 +69,32 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFInt32 &
+	stripCount ()
+	{ return *fields .stripCount; }
+
+	const MFInt32 &
+	stripCount () const
+	{ return *fields .stripCount; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFInt32* const stripCount;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

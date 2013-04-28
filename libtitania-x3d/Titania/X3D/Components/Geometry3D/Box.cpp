@@ -57,18 +57,22 @@
 namespace titania {
 namespace X3D {
 
+Box::Fields::Fields () :
+	size (new SFVec3f (2, 2, 2)),
+	solid (new SFBool (true))
+{ }
+
 Box::Box (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	           size (2, 2, 2),                                             // SFVec3f [ ] size   2 2 2        (0,∞)
-	          solid (true)                                                 // SFBool  [ ] solid  TRUE
+	fields ()
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Box");
 
-	addField (inputOutput,    "metadata", metadata);
-	addField (initializeOnly, "size",     size);
-	addField (initializeOnly, "solid",    solid);
+	addField (inputOutput,    "metadata", metadata ());
+	addField (initializeOnly, "size",     size ());
+	addField (initializeOnly, "solid",    solid ());
 }
 
 X3DBaseNode*
@@ -82,13 +86,13 @@ Box::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> boxProperties .addInterest (this, &Box::set_properties);
+	getBrowser () -> getBrowserOptions () -> boxProperties () .addInterest (this, &Box::set_properties);
 }
 
 Box3f
 Box::createBBox ()
 {
-	return Box3f (size, Vector3f ());
+	return Box3f (size (), Vector3f ());
 }
 
 void
@@ -100,19 +104,19 @@ Box::set_properties ()
 void
 Box::build ()
 {
-	const BoxProperties* properties = getBrowser () -> getBrowserOptions () -> boxProperties .getValue ();
+	const BoxProperties* properties = getBrowser () -> getBrowserOptions () -> boxProperties () .getValue ();
 
 	getTexCoord () = properties -> getTexCoord ();
 	getNormals  () = properties -> getNormals  ();
 
-	if (size == Vector3f (2, 2, 2))
+	if (size () == Vector3f (2, 2, 2))
 		getVertices () = properties -> getVertices ();
 
 	else
 	{
 		getVertices () .reserve (properties -> getVertices () .size ());
 
-		auto size1_2 = size * 0.5f;
+		auto size1_2 = size () * 0.5f;
 
 		for (const auto & vertex : properties -> getVertices ())
 			getVertices () .emplace_back (vertex * size1_2);
@@ -120,16 +124,17 @@ Box::build ()
 
 	addElement (getVertices () .size ());
 	setVertexMode (properties -> getVertexMode ());
-	setSolid (solid);
+	setSolid (solid ());
 }
 
 void
 Box::dispose ()
 {
-	getBrowser () -> getBrowserOptions () -> boxProperties .removeInterest (this, &Box::set_properties);
+	getBrowser () -> getBrowserOptions () -> boxProperties () .removeInterest (this, &Box::set_properties);
 
 	X3DGeometryNode::dispose ();
 }
 
 } // X3D
 } // titania
+

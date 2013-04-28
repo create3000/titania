@@ -62,16 +62,52 @@ class NurbsSet :
 {
 public:
 
-	MFNode  addGeometry;
-	MFNode  removeGeometry;
-	MFNode  geometry;
-	SFFloat tessellationScale;
+	
+	
+	
+	
 
 	NurbsSet (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFNode &
+	addGeometry ()
+	{ return *fields .addGeometry; }
+
+	const MFNode &
+	addGeometry () const
+	{ return *fields .addGeometry; }
+
+	MFNode &
+	removeGeometry ()
+	{ return *fields .removeGeometry; }
+
+	const MFNode &
+	removeGeometry () const
+	{ return *fields .removeGeometry; }
+
+	MFNode &
+	geometry ()
+	{ return *fields .geometry; }
+
+	const MFNode &
+	geometry () const
+	{ return *fields .geometry; }
+
+	SFFloat &
+	tessellationScale ()
+	{ return *fields .tessellationScale; }
+
+	const SFFloat &
+	tessellationScale () const
+	{ return *fields .tessellationScale; }
+
+
 
 	Box3f
 	getBBox ();
@@ -87,9 +123,23 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const addGeometry;
+		MFNode* const removeGeometry;
+		MFNode* const geometry;
+		SFFloat* const tessellationScale;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

@@ -61,22 +61,22 @@ class RigidBodyCollection :
 {
 public:
 
-	MFNode               set_contacts;
-	SFBool               autoDisable;
-	MFNode               bodies;
-	SFFloat              constantForceMix;
-	SFFloat              contactSurfaceThickness;
-	SFFloat              disableAngularSpeed;
-	SFFloat              disableLinearSpeed;
-	SFFloat              disableTime;
-	SFBool               enabled;
-	SFFloat              errorCorrection;
-	SFVec3f              gravity;
-	SFInt32              iterations;
-	MFNode               joints;
-	SFFloat              maxCorrectionSpeed;
-	SFBool               preferAccuracy;
-	SFNode <X3DBaseNode> collider;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	RigidBodyCollection (X3DExecutionContext* const);
 
@@ -84,9 +84,167 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFNode &
+	set_contacts ()
+	{ return *fields .set_contacts; }
+
+	const MFNode &
+	set_contacts () const
+	{ return *fields .set_contacts; }
+
+	SFBool &
+	autoDisable ()
+	{ return *fields .autoDisable; }
+
+	const SFBool &
+	autoDisable () const
+	{ return *fields .autoDisable; }
+
+	MFNode &
+	bodies ()
+	{ return *fields .bodies; }
+
+	const MFNode &
+	bodies () const
+	{ return *fields .bodies; }
+
+	SFFloat &
+	constantForceMix ()
+	{ return *fields .constantForceMix; }
+
+	const SFFloat &
+	constantForceMix () const
+	{ return *fields .constantForceMix; }
+
+	SFFloat &
+	contactSurfaceThickness ()
+	{ return *fields .contactSurfaceThickness; }
+
+	const SFFloat &
+	contactSurfaceThickness () const
+	{ return *fields .contactSurfaceThickness; }
+
+	SFFloat &
+	disableAngularSpeed ()
+	{ return *fields .disableAngularSpeed; }
+
+	const SFFloat &
+	disableAngularSpeed () const
+	{ return *fields .disableAngularSpeed; }
+
+	SFFloat &
+	disableLinearSpeed ()
+	{ return *fields .disableLinearSpeed; }
+
+	const SFFloat &
+	disableLinearSpeed () const
+	{ return *fields .disableLinearSpeed; }
+
+	SFFloat &
+	disableTime ()
+	{ return *fields .disableTime; }
+
+	const SFFloat &
+	disableTime () const
+	{ return *fields .disableTime; }
+
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	SFFloat &
+	errorCorrection ()
+	{ return *fields .errorCorrection; }
+
+	const SFFloat &
+	errorCorrection () const
+	{ return *fields .errorCorrection; }
+
+	SFVec3f &
+	gravity ()
+	{ return *fields .gravity; }
+
+	const SFVec3f &
+	gravity () const
+	{ return *fields .gravity; }
+
+	SFInt32 &
+	iterations ()
+	{ return *fields .iterations; }
+
+	const SFInt32 &
+	iterations () const
+	{ return *fields .iterations; }
+
+	MFNode &
+	joints ()
+	{ return *fields .joints; }
+
+	const MFNode &
+	joints () const
+	{ return *fields .joints; }
+
+	SFFloat &
+	maxCorrectionSpeed ()
+	{ return *fields .maxCorrectionSpeed; }
+
+	const SFFloat &
+	maxCorrectionSpeed () const
+	{ return *fields .maxCorrectionSpeed; }
+
+	SFBool &
+	preferAccuracy ()
+	{ return *fields .preferAccuracy; }
+
+	const SFBool &
+	preferAccuracy () const
+	{ return *fields .preferAccuracy; }
+
+	SFNode <X3DBaseNode> &
+	collider ()
+	{ return *fields .collider; }
+
+	const SFNode <X3DBaseNode> &
+	collider () const
+	{ return *fields .collider; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const set_contacts;
+		SFBool* const autoDisable;
+		MFNode* const bodies;
+		SFFloat* const constantForceMix;
+		SFFloat* const contactSurfaceThickness;
+		SFFloat* const disableAngularSpeed;
+		SFFloat* const disableLinearSpeed;
+		SFFloat* const disableTime;
+		SFBool* const enabled;
+		SFFloat* const errorCorrection;
+		SFVec3f* const gravity;
+		SFInt32* const iterations;
+		MFNode* const joints;
+		SFFloat* const maxCorrectionSpeed;
+		SFBool* const preferAccuracy;
+		SFNode <X3DBaseNode>* const collider;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

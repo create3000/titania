@@ -61,17 +61,61 @@ class Cone :
 {
 public:
 
-	SFBool  bottom;
-	SFFloat bottomRadius;
-	SFFloat height;
-	SFBool  side;
-	SFBool  solid;
+	
+	
+	
+	
+	
 
 	Cone (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFBool &
+	bottom ()
+	{ return *fields .bottom; }
+
+	const SFBool &
+	bottom () const
+	{ return *fields .bottom; }
+
+	SFFloat &
+	bottomRadius ()
+	{ return *fields .bottomRadius; }
+
+	const SFFloat &
+	bottomRadius () const
+	{ return *fields .bottomRadius; }
+
+	SFFloat &
+	height ()
+	{ return *fields .height; }
+
+	const SFFloat &
+	height () const
+	{ return *fields .height; }
+
+	SFBool &
+	side ()
+	{ return *fields .side; }
+
+	const SFBool &
+	side () const
+	{ return *fields .side; }
+
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+
 
 
 private:
@@ -82,9 +126,24 @@ private:
 	void
 	build ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const bottom;
+		SFFloat* const bottomRadius;
+		SFFloat* const height;
+		SFBool* const side;
+		SFBool* const solid;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

@@ -108,7 +108,7 @@ Browser::construct ()
 void
 Browser::set_initialized ()
 {
-	getExecutionContext () -> getLayerSet () -> activeLayer .addInterest (this, &Browser::set_activeLayer);
+	getExecutionContext () -> getLayerSet () -> activeLayer () .addInterest (this, &Browser::set_activeLayer);
 
 	set_activeLayer ();
 }
@@ -116,7 +116,7 @@ Browser::set_initialized ()
 void
 Browser::set_shutdown ()
 {
-	getExecutionContext () -> getLayerSet () -> activeLayer .removeInterest (this, &Browser::set_activeLayer);
+	getExecutionContext () -> getLayerSet () -> activeLayer () .removeInterest (this, &Browser::set_activeLayer);
 
 	if (activeLayer)
 	{
@@ -150,7 +150,7 @@ Browser::set_navigationInfo ()
 
 	viewer .reset ();
 	
-	for (const auto & type : navigationInfo -> type)
+	for (const auto & type : navigationInfo -> type ())
 	{
 		if (type == "NONE")
 		{

@@ -61,18 +61,70 @@ class MultiTexture :
 {
 public:
 
-	SFFloat  alpha;
-	SFColor  color;
-	MFString function;
-	MFString mode;
-	MFString source;
-	MFNode   texture;
+	
+	
+	
+	
+	
+	
 
 	MultiTexture (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFFloat &
+	alpha ()
+	{ return *fields .alpha; }
+
+	const SFFloat &
+	alpha () const
+	{ return *fields .alpha; }
+
+	SFColor &
+	color ()
+	{ return *fields .color; }
+
+	const SFColor &
+	color () const
+	{ return *fields .color; }
+
+	MFString &
+	function ()
+	{ return *fields .function; }
+
+	const MFString &
+	function () const
+	{ return *fields .function; }
+
+	MFString &
+	mode ()
+	{ return *fields .mode; }
+
+	const MFString &
+	mode () const
+	{ return *fields .mode; }
+
+	MFString &
+	source ()
+	{ return *fields .source; }
+
+	const MFString &
+	source () const
+	{ return *fields .source; }
+
+	MFNode &
+	texture ()
+	{ return *fields .texture; }
+
+	const MFNode &
+	texture () const
+	{ return *fields .texture; }
+
+
 
 	virtual
 	bool
@@ -82,6 +134,21 @@ public:
 	virtual
 	void
 	draw ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const alpha;
+		SFColor* const color;
+		MFString* const function;
+		MFString* const mode;
+		MFString* const source;
+		MFNode* const texture;
+	};
+
+	Fields fields;
 
 };
 
@@ -89,3 +156,4 @@ public:
 } // titania
 
 #endif
+

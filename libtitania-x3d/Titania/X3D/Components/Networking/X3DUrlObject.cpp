@@ -63,18 +63,22 @@ namespace X3D {
 
 URNIndex X3DUrlObject::URNCache;
 
+X3DUrlObject::Fields::Fields () :
+	url (new MFString ()),
+	loadTime (),
+	urlError ()
+{ }
+
 X3DUrlObject::X3DUrlObject () :
 	X3DBaseNode (),                  
-	        url (),                  // MFString [in,out] url               [ ]       [URL]
-	   loadTime (),                  // SFTime   [out]    loaded                      (0,?)
-	   urlError (),                  // MFString [out]    urlError                    [BrowserEvent]
+	     fields (),
 	  loadState (NOT_STARTED_STATE), 
 	  userAgent (),                  
 	   worldURL ()                   
 {
 	addNodeType (X3DConstants::X3DUrlObject);
 
-	setChildren (loadTime, urlError);
+	setChildren (fields .loadTime, fields .urlError);
 }
 
 void
@@ -97,7 +101,7 @@ X3DUrlObject::setLoadState (LoadState value)
 	loadState = value;
 	
 	if (loadState == COMPLETE_STATE)
-		loadTime = getCurrentTime ();
+		loadTime () = getCurrentTime ();
 }
 
 void
@@ -195,7 +199,7 @@ throw (Error <INVALID_URL>,
 {
 	if (url .size ())
 	{
-		urlError .set ({ });
+		urlError () .set ({ });
 
 		for (const auto & URL : url)
 		{
@@ -209,7 +213,7 @@ throw (Error <INVALID_URL>,
 			}
 			catch (const X3DError & error)
 			{
-				urlError .push_back (error .what ());
+				urlError () .push_back (error .what ());
 			}
 		}
 
@@ -402,3 +406,4 @@ print_uri (const basic::uri & uri)
 
 } // X3D
 } // titania
+

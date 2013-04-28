@@ -458,11 +458,11 @@ X3DBrowserWindow::insertPage (size_t position)
 		browserWidget -> getFooter () .show ();
 
 	// Rendering properties
-	browserWidget -> getBrowser () -> getRenderingProperties () -> enabled = getRenderingPropertiesMenuItem () .get_active ();
+	browserWidget -> getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesMenuItem () .get_active ();
 
 	// Browser options
-	browserWidget -> getBrowser () -> getBrowserOptions () -> rubberBand             = getRubberbandMenuItem () .get_active ();
-	browserWidget -> getBrowser () -> getBrowserOptions () -> enableInlineViewpoints = getEnableInlineViewpointsMenuItem () .get_active ();
+	browserWidget -> getBrowser () -> getBrowserOptions () -> rubberBand ()             = getRubberbandMenuItem () .get_active ();
+	browserWidget -> getBrowser () -> getBrowserOptions () -> enableInlineViewpoints () = getEnableInlineViewpointsMenuItem () .get_active ();
 }
 
 void

@@ -71,16 +71,73 @@ class BrowserProperties :
 {
 public:
 
-	SFBool abstractNodes;
-	SFBool concreteNodes;
-	SFBool externalInteractions;
-	SFBool prototypeCreate;
-	SFBool domImport;
-	SFBool xmlEncoding;
-	SFBool classicVrmlEncoding;
-	SFBool binaryEncoding;
-
 	BrowserProperties (X3DExecutionContext* const executionContext);
+
+
+	SFBool &
+	abstractNodes ()
+	{ return *fields .abstractNodes; }
+
+	const SFBool &
+	abstractNodes () const
+	{ return *fields .abstractNodes; }
+
+	SFBool &
+	concreteNodes ()
+	{ return *fields .concreteNodes; }
+
+	const SFBool &
+	concreteNodes () const
+	{ return *fields .concreteNodes; }
+
+	SFBool &
+	externalInteractions ()
+	{ return *fields .externalInteractions; }
+
+	const SFBool &
+	externalInteractions () const
+	{ return *fields .externalInteractions; }
+
+	SFBool &
+	prototypeCreate ()
+	{ return *fields .prototypeCreate; }
+
+	const SFBool &
+	prototypeCreate () const
+	{ return *fields .prototypeCreate; }
+
+	SFBool &
+	domImport ()
+	{ return *fields .domImport; }
+
+	const SFBool &
+	domImport () const
+	{ return *fields .domImport; }
+
+	SFBool &
+	xmlEncoding ()
+	{ return *fields .xmlEncoding; }
+
+	const SFBool &
+	xmlEncoding () const
+	{ return *fields .xmlEncoding; }
+
+	SFBool &
+	classicVrmlEncoding ()
+	{ return *fields .classicVrmlEncoding; }
+
+	const SFBool &
+	classicVrmlEncoding () const
+	{ return *fields .classicVrmlEncoding; }
+
+	SFBool &
+	binaryEncoding ()
+	{ return *fields .binaryEncoding; }
+
+	const SFBool &
+	binaryEncoding () const
+	{ return *fields .binaryEncoding; }
+
 
 
 private:
@@ -89,9 +146,27 @@ private:
 	BrowserProperties*
 	create (X3DExecutionContext* const executionContext) const;
 
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const abstractNodes;
+		SFBool* const concreteNodes;
+		SFBool* const externalInteractions;
+		SFBool* const prototypeCreate;
+		SFBool* const domImport;
+		SFBool* const xmlEncoding;
+		SFBool* const classicVrmlEncoding;
+		SFBool* const binaryEncoding;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

@@ -61,16 +61,38 @@ class Normal :
 {
 public:
 
-	MFVec3f vector;
+	
 
 	Normal (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFVec3f &
+	vector ()
+	{ return *fields .vector; }
+
+	const MFVec3f &
+	vector () const
+	{ return *fields .vector; }
+
+
 	
 	void
 	resize (size_t);
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFVec3f* const vector;
+	};
+
+	Fields fields;
 
 };
 
@@ -78,3 +100,4 @@ public:
 } // titania
 
 #endif
+

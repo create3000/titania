@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,16 +55,20 @@
 namespace titania {
 namespace X3D {
 
+MultiTextureTransform::Fields::Fields () :
+	textureTransform (new MFNode ())
+{ }
+
 MultiTextureTransform::MultiTextureTransform (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTextureTransformNode (),                                                    
-	       textureTransform ()                                                     // MFNode[in,out] textureTransform  NULL        [X3DTextureTransformNode]
+	fields ()
 {
 	setComponent ("Texturing");
 	setTypeName ("MultiTextureTransform");
 
-	addField (inputOutput, "metadata",         metadata);
-	addField (inputOutput, "textureTransform", textureTransform);
+	addField (inputOutput, "metadata",         metadata ());
+	addField (inputOutput, "textureTransform", textureTransform ());
 }
 
 X3DBaseNode*
@@ -79,3 +83,4 @@ MultiTextureTransform::draw ()
 
 } // X3D
 } // titania
+

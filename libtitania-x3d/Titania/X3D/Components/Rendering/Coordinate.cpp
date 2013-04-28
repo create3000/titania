@@ -55,16 +55,20 @@
 namespace titania {
 namespace X3D {
 
+Coordinate::Fields::Fields () :
+	point (new MFVec3f ())
+{ }
+
 Coordinate::Coordinate (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DCoordinateNode (),                                                    
-	            point ()                                                     // MFVec3f [in,out] point  [NULL]        (-∞,∞)
+	fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("Coordinate");
 
-	addField (inputOutput, "metadata", metadata);
-	addField (inputOutput, "point",    point);
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "point",    point ());
 }
 
 X3DBaseNode*
@@ -76,9 +80,10 @@ Coordinate::create (X3DExecutionContext* const executionContext) const
 void
 Coordinate::resize (size_t size)
 {
-	if (point .size () < size)
-		point .resize (size);
+	if (point () .size () < size)
+		point () .resize (size);
 }
 
 } // X3D
 } // titania
+

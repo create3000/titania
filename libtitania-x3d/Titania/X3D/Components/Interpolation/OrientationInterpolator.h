@@ -61,14 +61,34 @@ class OrientationInterpolator :
 {
 public:
 
-	MFRotation keyValue;
-	SFRotation value_changed;
+	
+	
 
 	OrientationInterpolator (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFRotation &
+	keyValue ()
+	{ return *fields .keyValue; }
+
+	const MFRotation &
+	keyValue () const
+	{ return *fields .keyValue; }
+
+	SFRotation &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFRotation &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+
 
 
 private:
@@ -85,9 +105,21 @@ private:
 	void
 	interpolate (size_t, size_t, float);
 
+	struct Fields
+	{
+		Fields ();
+
+		MFRotation* const keyValue;
+		SFRotation* const value_changed;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

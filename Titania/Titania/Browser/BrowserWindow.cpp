@@ -201,7 +201,7 @@ BrowserWindow::phong_activate ()
 		return;
 
 	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> shading = "PHONG";
+		browserWidget -> getBrowser () -> getBrowserOptions () -> shading () = "PHONG";
 }
 
 void
@@ -211,7 +211,7 @@ BrowserWindow::gouraud_activate ()
 		return;
 
 	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> shading = "GOURAUD";
+		browserWidget -> getBrowser () -> getBrowserOptions () -> shading () = "GOURAUD";
 }
 
 void
@@ -221,7 +221,7 @@ BrowserWindow::flat_activate ()
 		return;
 
 	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> shading = "FLAT";
+		browserWidget -> getBrowser () -> getBrowserOptions () -> shading () = "FLAT";
 }
 
 void
@@ -231,7 +231,7 @@ BrowserWindow::wireframe_activate ()
 		return;
 
 	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> shading = "WIREFRAME";
+		browserWidget -> getBrowser () -> getBrowserOptions () -> shading () = "WIREFRAME";
 }
 
 void
@@ -241,7 +241,7 @@ BrowserWindow::pointset_activate ()
 		return;
 
 	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> shading = "POINTSET";
+		browserWidget -> getBrowser () -> getBrowserOptions () -> shading () = "POINTSET";
 }
 
 // Primitive Quality
@@ -253,7 +253,7 @@ BrowserWindow::on_low_quality_activate ()
 		return;
 
 	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> primitiveQuality = "LOW";
+		browserWidget -> getBrowser () -> getBrowserOptions () -> primitiveQuality () = "LOW";
 }
 
 void
@@ -263,7 +263,7 @@ BrowserWindow::on_medium_quality_activate ()
 		return;
 
 	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> primitiveQuality = "MEDIUM";
+		browserWidget -> getBrowser () -> getBrowserOptions () -> primitiveQuality () = "MEDIUM";
 }
 
 void
@@ -273,7 +273,7 @@ BrowserWindow::on_high_quality_activate ()
 		return;
 
 	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> primitiveQuality = "HIGH";
+		browserWidget -> getBrowser () -> getBrowserOptions () -> primitiveQuality () = "HIGH";
 }
 
 // RenderingProperties
@@ -282,7 +282,7 @@ void
 BrowserWindow::on_rendering_properties_toggled ()
 {
 	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getRenderingProperties () -> enabled = getRenderingPropertiesMenuItem () .get_active ();
+		browserWidget -> getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesMenuItem () .get_active ();
 }
 
 // Fullscreen
@@ -304,14 +304,14 @@ BrowserWindow::on_headlight_toggled ()
 {
 	const X3D::SFNode <X3D::NavigationInfo> & navigationInfo = getBrowser () -> getActiveNavigationInfo ();
 
-	navigationInfo -> headlight = getHeadlightMenuItem () .get_active ();
+	navigationInfo -> headlight () = getHeadlightMenuItem () .get_active ();
 }
 
 void
 BrowserWindow::on_rubberband_toggled ()
 {
 	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> rubberBand = getRubberbandMenuItem () .get_active ();
+		browserWidget -> getBrowser () -> getBrowserOptions () -> rubberBand () = getRubberbandMenuItem () .get_active ();
 }
 
 void
@@ -324,7 +324,7 @@ void
 BrowserWindow::on_enableInlineViewpoints_toggled ()
 {
 	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> enableInlineViewpoints = getEnableInlineViewpointsMenuItem () .get_active ();
+		browserWidget -> getBrowser () -> getBrowserOptions () -> enableInlineViewpoints () = getEnableInlineViewpointsMenuItem () .get_active ();
 }
 
 // Editor handling

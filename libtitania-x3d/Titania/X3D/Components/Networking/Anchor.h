@@ -62,14 +62,34 @@ class Anchor :
 {
 public:
 
-	MFString parameter;
-	SFString description;
+	
+	
 
 	Anchor (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFString &
+	parameter ()
+	{ return *fields .parameter; }
+
+	const MFString &
+	parameter () const
+	{ return *fields .parameter; }
+
+	SFString &
+	description ()
+	{ return *fields .description; }
+
+	const SFString &
+	description () const
+	{ return *fields .description; }
+
+
 
 	virtual
 	void
@@ -92,9 +112,21 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFString* const parameter;
+		SFString* const description;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

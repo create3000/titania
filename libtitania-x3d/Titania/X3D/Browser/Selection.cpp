@@ -66,8 +66,9 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	setComponent ("Browser");
 	setTypeName ("Selection");
 
-	addField (inputOutput, "metadata", metadata);
-	addField (inputOutput, "children", children);
+	addField (inputOutput, "metadata", metadata ());
+
+	setChildren (children);
 }
 
 X3DBaseNode*

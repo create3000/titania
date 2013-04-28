@@ -438,7 +438,7 @@ JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport
 
 	// Find error line
 
-	const String & ecmascript = script -> url [javaScript -> index];
+	const String & ecmascript = script -> url () [javaScript -> index];
 
 	char nl = ecmascript .find ('\n', 0) == String::npos ? '\r' : '\n';
 

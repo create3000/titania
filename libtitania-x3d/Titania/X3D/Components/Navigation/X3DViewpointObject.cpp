@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,10 +53,14 @@
 namespace titania {
 namespace X3D {
 
+X3DViewpointObject::Fields::Fields () :
+	description (new SFString ()),
+	retainUserOffsets (new SFBool ())
+{ }
+
 X3DViewpointObject::X3DViewpointObject () :
 	      X3DBaseNode (), 
-	      description (), // SFString   [in,out] description       ""
-	retainUserOffsets ()  // SFBool     [ ]      retainUserOffsets
+	fields ()
 {
 	addNodeType (X3DConstants::X3DViewpointObject);
 }
@@ -64,7 +68,7 @@ X3DViewpointObject::X3DViewpointObject () :
 void
 X3DViewpointObject::initialize ()
 {
-	description .addInterest (this, &X3DViewpointObject::set_description);
+	description () .addInterest (this, &X3DViewpointObject::set_description);
 }
 
 void
@@ -79,3 +83,4 @@ X3DViewpointObject::dispose ()
 
 } // X3D
 } // titania
+

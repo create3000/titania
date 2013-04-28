@@ -61,12 +61,29 @@ class X3DProductStructureChildNode :
 {
 public:
 
-	SFString name;
+	SFString &
+	name ()
+	{ return *fields .name; }
+
+	const SFString &
+	name () const
+	{ return *fields .name; }
+
 
 
 protected:
 
 	X3DProductStructureChildNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFString* const name;
+	};
+
+	Fields fields;
 
 };
 
@@ -74,3 +91,4 @@ protected:
 } // titania
 
 #endif
+

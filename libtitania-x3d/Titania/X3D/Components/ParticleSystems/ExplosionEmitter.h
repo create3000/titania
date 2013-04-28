@@ -61,7 +61,7 @@ class ExplosionEmitter :
 {
 public:
 
-	SFVec3f position;
+	
 
 	ExplosionEmitter (X3DExecutionContext* const);
 
@@ -69,9 +69,32 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3f &
+	position ()
+	{ return *fields .position; }
+
+	const SFVec3f &
+	position () const
+	{ return *fields .position; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const position;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

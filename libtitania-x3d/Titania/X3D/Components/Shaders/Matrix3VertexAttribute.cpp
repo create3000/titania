@@ -55,17 +55,21 @@
 namespace titania {
 namespace X3D {
 
+Matrix3VertexAttribute::Fields::Fields () :
+	value (new MFMatrix3f ())
+{ }
+
 Matrix3VertexAttribute::Matrix3VertexAttribute (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DVertexAttributeNode (),                                                    
-	                 value ()                                                     // MFMatrix3f [in,out] value  [ ]       (-∞,∞)
+	fields ()
 {
 	setComponent ("Shaders");
 	setTypeName ("Matrix3VertexAttribute");
 
-	addField (inputOutput,    "metadata", metadata);
-	addField (initializeOnly, "name",     name);
-	addField (inputOutput,    "value",    value);
+	addField (inputOutput,    "metadata", metadata ());
+	addField (initializeOnly, "name",     name ());
+	addField (inputOutput,    "value",    value ());
 }
 
 X3DBaseNode*
@@ -76,3 +80,4 @@ Matrix3VertexAttribute::create (X3DExecutionContext* const executionContext) con
 
 } // X3D
 } // titania
+

@@ -62,13 +62,25 @@ class MetadataSet :
 {
 public:
 
-	MFNode value;
+	
 
 	MetadataSet (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFNode &
+	value ()
+	{ return *fields .value; }
+
+	const MFNode &
+	value () const
+	{ return *fields .value; }
+
+
 
 	virtual
 	void
@@ -81,9 +93,20 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const value;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

@@ -61,13 +61,13 @@ class GeoTransform :
 {
 public:
 
-	SFVec3d              geoCenter;
-	SFRotation           rotation;
-	SFVec3f              scale;
-	SFRotation           scaleOrientation;
-	SFVec3f              translation;
-	SFNode <X3DBaseNode> geoOrigin;
-	MFString             geoSystem;
+	
+	
+	
+	
+	
+	
+	
 
 	GeoTransform (X3DExecutionContext* const);
 
@@ -75,9 +75,86 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3d &
+	geoCenter ()
+	{ return *fields .geoCenter; }
+
+	const SFVec3d &
+	geoCenter () const
+	{ return *fields .geoCenter; }
+
+	SFRotation &
+	rotation ()
+	{ return *fields .rotation; }
+
+	const SFRotation &
+	rotation () const
+	{ return *fields .rotation; }
+
+	SFVec3f &
+	scale ()
+	{ return *fields .scale; }
+
+	const SFVec3f &
+	scale () const
+	{ return *fields .scale; }
+
+	SFRotation &
+	scaleOrientation ()
+	{ return *fields .scaleOrientation; }
+
+	const SFRotation &
+	scaleOrientation () const
+	{ return *fields .scaleOrientation; }
+
+	SFVec3f &
+	translation ()
+	{ return *fields .translation; }
+
+	const SFVec3f &
+	translation () const
+	{ return *fields .translation; }
+
+	SFNode <X3DBaseNode> &
+	geoOrigin ()
+	{ return *fields .geoOrigin; }
+
+	const SFNode <X3DBaseNode> &
+	geoOrigin () const
+	{ return *fields .geoOrigin; }
+
+	MFString &
+	geoSystem ()
+	{ return *fields .geoSystem; }
+
+	const MFString &
+	geoSystem () const
+	{ return *fields .geoSystem; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3d* const geoCenter;
+		SFRotation* const rotation;
+		SFVec3f* const scale;
+		SFRotation* const scaleOrientation;
+		SFVec3f* const translation;
+		SFNode <X3DBaseNode>* const geoOrigin;
+		MFString* const geoSystem;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

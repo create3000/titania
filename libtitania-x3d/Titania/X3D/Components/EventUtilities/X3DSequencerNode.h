@@ -61,15 +61,56 @@ class X3DSequencerNode :
 {
 public:
 
-	SFBool  next;
-	SFBool  previous;
-	SFFloat set_fraction;
-	MFFloat key;
+	SFBool &
+	next ()
+	{ return *fields .next; }
+
+	const SFBool &
+	next () const
+	{ return *fields .next; }
+
+	SFBool &
+	previous ()
+	{ return *fields .previous; }
+
+	const SFBool &
+	previous () const
+	{ return *fields .previous; }
+
+	SFFloat &
+	set_fraction ()
+	{ return *fields .set_fraction; }
+
+	const SFFloat &
+	set_fraction () const
+	{ return *fields .set_fraction; }
+
+	MFFloat &
+	key ()
+	{ return *fields .key; }
+
+	const MFFloat &
+	key () const
+	{ return *fields .key; }
+
 
 
 protected:
 
 	X3DSequencerNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const next;
+		SFBool* const previous;
+		SFFloat* const set_fraction;
+		MFFloat* const key;
+	};
+
+	Fields fields;
 
 };
 
@@ -77,3 +118,4 @@ protected:
 } // titania
 
 #endif
+

@@ -65,22 +65,22 @@ AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	setComponent ("Sound");
 	setTypeName ("AudioClip");
 
-	addField (inputOutput, "metadata",         metadata);
-	addField (inputOutput, "enabled",          enabled);             // non standard
-	addField (inputOutput, "description",      description);
-	addField (inputOutput, "url",              url);
-	addField (inputOutput, "speed",            speed);               // non standard
-	addField (inputOutput, "pitch",            pitch);
-	addField (inputOutput, "loop",             loop);
-	addField (inputOutput, "startTime",        startTime);
-	addField (inputOutput, "stopTime",         stopTime);
-	addField (inputOutput, "pauseTime",        pauseTime);
-	addField (inputOutput, "resumeTime",       resumeTime);
-	addField (outputOnly,  "isPaused",         isPaused);
-	addField (outputOnly,  "isActive",         isActive);
-	addField (outputOnly,  "cycleTime",        cycleTime);             // non standard
-	addField (outputOnly,  "elapsedTime",      elapsedTime);
-	addField (outputOnly,  "duration_changed", duration_changed);
+	addField (inputOutput, "metadata",         metadata ());
+	addField (inputOutput, "enabled",          enabled ());             // non standard
+	addField (inputOutput, "description",      description ());
+	addField (inputOutput, "url",              url ());
+	addField (inputOutput, "speed",            speed ());               // non standard
+	addField (inputOutput, "pitch",            pitch ());
+	addField (inputOutput, "loop",             loop ());
+	addField (inputOutput, "startTime",        startTime ());
+	addField (inputOutput, "stopTime",         stopTime ());
+	addField (inputOutput, "pauseTime",        pauseTime ());
+	addField (inputOutput, "resumeTime",       resumeTime ());
+	addField (outputOnly,  "isPaused",         isPaused ());
+	addField (outputOnly,  "isActive",         isActive ());
+	addField (outputOnly,  "cycleTime",        cycleTime ());             // non standard
+	addField (outputOnly,  "elapsedTime",      elapsedTime ());
+	addField (outputOnly,  "duration_changed", duration_changed ());
 }
 
 X3DBaseNode*
@@ -95,7 +95,7 @@ AudioClip::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 	
-	url .addInterest (this, &AudioClip::set_url);
+	url () .addInterest (this, &AudioClip::set_url);
 
 	requestImmediateLoad ();
 }
@@ -111,13 +111,13 @@ AudioClip::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	if (not url .size ())
+	if (not url () .size ())
 	{
 		setLoadState (FAILED_STATE);
 		return;
 	}
 
-	for (const auto & URL : url)
+	for (const auto & URL : url ())
 	{
 		setUri (transformURI (URL .getValue () .raw ()));
 
@@ -130,7 +130,7 @@ AudioClip::requestImmediateLoad ()
 
 		//if (getVideoSink () -> get_last_buffer ())
 		//{
-			duration_changed = getDuration ();
+			duration_changed () = getDuration ();
 
 			setLoadState (COMPLETE_STATE);
 
@@ -140,7 +140,7 @@ AudioClip::requestImmediateLoad ()
 
 	if (checkLoadState () not_eq COMPLETE_STATE)
 	{
-		duration_changed = -1;
+		duration_changed () = -1;
 		setLoadState (FAILED_STATE);
 	}
 }

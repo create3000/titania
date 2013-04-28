@@ -57,16 +57,21 @@
 namespace titania {
 namespace X3D {
 
+Text::Fields::Fields () :
+	string (new MFString ()),
+	length (new MFFloat ()),
+	maxExtent (new SFFloat ()),
+	solid (new SFBool ()),
+	origin (new SFVec3f ()),
+	textBounds (new SFVec2f ()),
+	lineBounds (new MFVec2f ()),
+	fontStyle (new SFNode <X3DBaseNode> ())
+{ }
+
 Text::Text (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	         string (),                                                    // MFString [in,out] string      [ ]
-	         length (),                                                    // MFFloat  [in,out] length      [ ]          [0,∞)
-	      maxExtent (),                                                    // SFFloat  [in,out] maxExtent   0.0          [0,∞)
-	         origin (),                                                    // SFVec3f  [out]    origin
-	     textBounds (),                                                    // SFVec2f  [out]    textBounds
-	     lineBounds (),                                                    // MFVec2f  [out]    lineBounds
-	      fontStyle (),                                                    // SFNode   [in,out] fontStyle   NULL         [X3FontStyleNode]
+	         fields (),
 	           font (),                                                    
 	     lineHeight (),                                                    
 	   charSpacings (),                                                    
@@ -77,15 +82,15 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	setComponent ("Text");
 	setTypeName ("Text");
 
-	addField (inputOutput,    "metadata",   metadata);
-	addField (inputOutput,    "string",     string);
-	addField (inputOutput,    "length",     length);
-	addField (inputOutput,    "maxExtent",  maxExtent);
-	addField (initializeOnly, "solid",      solid);
-	addField (outputOnly,     "origin",     origin);
-	addField (outputOnly,     "textBounds", textBounds);
-	addField (outputOnly,     "lineBounds", lineBounds);
-	addField (inputOutput,    "fontStyle",  fontStyle);
+	addField (inputOutput,    "metadata",   metadata ());
+	addField (inputOutput,    "string",     string ());
+	addField (inputOutput,    "length",     length ());
+	addField (inputOutput,    "maxExtent",  maxExtent ());
+	addField (initializeOnly, "solid",      solid ());
+	addField (outputOnly,     "origin",     origin ());
+	addField (outputOnly,     "textBounds", textBounds ());
+	addField (outputOnly,     "lineBounds", lineBounds ());
+	addField (inputOutput,    "fontStyle",  fontStyle ());
 }
 
 X3DBaseNode*
@@ -99,7 +104,7 @@ Text::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	fontStyle .addInterest (this, &Text::set_fontStyle);
+	fontStyle () .addInterest (this, &Text::set_fontStyle);
 
 	set_fontStyle ();
 }
@@ -107,8 +112,8 @@ Text::initialize ()
 float
 Text::getLength (const size_t index)
 {
-	if (index < length .size ())
-		return length [index];
+	if (index < length () .size ())
+		return length () [index];
 
 	return 0;
 }
@@ -116,12 +121,12 @@ Text::getLength (const size_t index)
 const X3DFontStyleNode*
 Text::getFontStyle () const
 {
-	auto _fontStyle = x3d_cast <X3DFontStyleNode*> (fontStyle .getValue ());
+	auto _fontStyle = x3d_cast <X3DFontStyleNode*> (fontStyle () .getValue ());
 
 	if (_fontStyle)
 		return _fontStyle;
 
-	return getBrowser () -> getBrowserOptions () -> fontStyle .getValue ();
+	return getBrowser () -> getBrowserOptions () -> fontStyle () .getValue ();
 }
 
 void
@@ -143,7 +148,7 @@ Text::set_fontStyle ()
 	font -> FaceSize (100);
 
 	// Calculate lineHeight.
-	lineHeight = font -> LineHeight () * fontStyle -> spacing;
+	lineHeight = font -> LineHeight () * fontStyle -> spacing ();
 
 	// Calculate scale.
 	scale = fontStyle -> getSize () / font -> LineHeight ();
@@ -158,14 +163,14 @@ Text::createBBox ()
 
 	float y1 = 0;
 
-	charSpacings .clear ();
-	lineBounds   .clear ();
-	translation  .clear ();
+	charSpacings  .clear ();
+	lineBounds () .clear ();
+	translation   .clear ();
 
 	// Calculate BBoxes.
 	size_t i = 0;
 
-	for (const auto & line : string)
+	for (const auto & line : string ())
 	{
 		Box2f    lineBBox = getLineBBox (fontStyle, line .getValue ());
 		Vector2f min      = lineBBox .min ();
@@ -189,8 +194,8 @@ Text::createBBox ()
 			size .x (length / scale);
 		}
 
-		charSpacings .emplace_back (charSpacing);
-		lineBounds   .emplace_back (lineBound);
+		charSpacings  .emplace_back (charSpacing);
+		lineBounds () .emplace_back (lineBound);
 
 		// Calculate line translation.
 
@@ -219,12 +224,12 @@ Text::createBBox ()
 		++ i;
 	}
 
-	textBounds .setValue (bbox .size ());
+	textBounds () .setValue (bbox .size ());
 
-	if (string .size () > 1)
+	if (string () .size () > 1)
 	{
-		lineBounds .front () .setY (bbox .max () .y () + (lineHeight - y1) * scale);
-		lineBounds .back  () .setY (textBounds .getY () - (lineBounds [0] .getY () + (string .size () - 2) * fontStyle -> spacing));
+		lineBounds () .front () .setY (bbox .max () .y () + (lineHeight - y1) * scale);
+		lineBounds () .back  () .setY (textBounds () .getY () - (lineBounds () [0] .getY () + (string () .size () - 2) * fontStyle -> spacing ()));
 	}
 
 	switch (fontStyle -> getMinorAlignment ())
@@ -236,16 +241,16 @@ Text::createBBox ()
 			minorAlignment = Vector2f ();
 			break;
 		case FontStyle::Alignment::MIDDLE:
-			minorAlignment = Vector2f (0, textBounds .getY () / 2 - bbox .max () .y ());
+			minorAlignment = Vector2f (0, textBounds () .getY () / 2 - bbox .max () .y ());
 			break;
 		case FontStyle::Alignment::END:
-			minorAlignment = Vector2f  (0, textBounds .getY () - bbox .max () .y ());
+			minorAlignment = Vector2f  (0, textBounds () .getY () - bbox .max () .y ());
 			break;
 	}
 
 	bbox += minorAlignment;
 
-	origin .setValue (Vector3f (bbox .min () .x (), bbox .max () .y (), 0));
+	origin () = Vector3f (bbox .min () .x (), bbox .max () .y (), 0);
 
 	return Box3f (Vector3f (bbox .min () .x (), bbox .min () .y (), 0),
 	              Vector3f (bbox .max () .x (), bbox .max () .y (), 0),
@@ -277,7 +282,7 @@ Text::getLineBBox (const X3DFontStyleNode* fontStyle, const std::string & line)
 void
 Text::draw ()
 {
-	if (solid)
+	if (solid ())
 		glEnable (GL_CULL_FACE);
 
 	else
@@ -292,7 +297,7 @@ Text::draw ()
 	// Render lines.
 	size_t i = 0;
 
-	for (const auto & line : string)
+	for (const auto & line : string ())
 	{
 		font -> Render (line .getValue () .c_str (),
 		                -1,
@@ -314,3 +319,4 @@ Text::dispose ()
 
 } // X3D
 } // titania
+

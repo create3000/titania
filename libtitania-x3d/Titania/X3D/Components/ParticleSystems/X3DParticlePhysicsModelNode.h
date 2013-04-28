@@ -61,12 +61,29 @@ class X3DParticlePhysicsModelNode :
 {
 public:
 
-	SFBool enabled;
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
 
 
 protected:
 
 	X3DParticlePhysicsModelNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const enabled;
+	};
+
+	Fields fields;
 
 };
 
@@ -74,3 +91,4 @@ protected:
 } // titania
 
 #endif
+

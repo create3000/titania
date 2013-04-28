@@ -55,36 +55,40 @@
 namespace titania {
 namespace X3D {
 
+NurbsSurfaceInterpolator::Fields::Fields () :
+	set_fraction (new SFVec2f ()),
+	controlPoint (new SFNode <X3DBaseNode> ()),
+	weight (new MFDouble ()),
+	position_changed (new SFVec3f ()),
+	normal_changed (new SFVec3f ()),
+	uDimension (new SFInt32 ()),
+	uKnot (new MFDouble ()),
+	uOrder (new SFInt32 (3)),
+	vDimension (new SFInt32 ()),
+	vKnot (new MFDouble ()),
+	vOrder (new SFInt32 (3))
+{ }
+
 NurbsSurfaceInterpolator::NurbsSurfaceInterpolator (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	    X3DChildNode (),                                                    
-	    set_fraction (),                                                    // SFVec2f  [in]     set_fraction                (-∞,∞)
-	    controlPoint (),                                                    // SFNode   [in,out] controlPoint      [ ]       [X3DCoordinateNode]
-	          weight (),                                                    // MFDouble [in,out] weight            [ ]       (-∞,∞)
-	position_changed (),                                                    // SFVec3f  [out]    position_changed
-	  normal_changed (),                                                    // SFVec3f  [out]    normal_changed
-	      uDimension (),                                                    // SFInt32  [ ]      uDimension        0         [0,∞)
-	           uKnot (),                                                    // MFDouble [ ]      uKnot             [ ]        (-∞,∞)
-	          uOrder (3),                                                   // SFInt32  [ ]      uOrder            3         [2,∞)
-	      vDimension (),                                                    // SFInt32  [ ]      vDimension        0         [0,∞)
-	           vKnot (),                                                    // MFDouble [ ]      vKnot             [ ]        (-∞,∞)
-	          vOrder (3)                                                    // SFInt32  [ ]      vOrder            3         [2,∞)
+	fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsSurfaceInterpolator");
 
-	addField (inputOutput,    "metadata",         metadata);
-	addField (inputOnly,      "set_fraction",     set_fraction);
-	addField (inputOutput,    "controlPoint",     controlPoint);
-	addField (inputOutput,    "weight",           weight);
-	addField (outputOnly,     "position_changed", position_changed);
-	addField (outputOnly,     "normal_changed",   normal_changed);
-	addField (initializeOnly, "uDimension",       uDimension);
-	addField (initializeOnly, "uKnot",            uKnot);
-	addField (initializeOnly, "uOrder",           uOrder);
-	addField (initializeOnly, "vDimension",       vDimension);
-	addField (initializeOnly, "vKnot",            vKnot);
-	addField (initializeOnly, "vOrder",           vOrder);
+	addField (inputOutput,    "metadata",         metadata ());
+	addField (inputOnly,      "set_fraction",     set_fraction ());
+	addField (inputOutput,    "controlPoint",     controlPoint ());
+	addField (inputOutput,    "weight",           weight ());
+	addField (outputOnly,     "position_changed", position_changed ());
+	addField (outputOnly,     "normal_changed",   normal_changed ());
+	addField (initializeOnly, "uDimension",       uDimension ());
+	addField (initializeOnly, "uKnot",            uKnot ());
+	addField (initializeOnly, "uOrder",           uOrder ());
+	addField (initializeOnly, "vDimension",       vDimension ());
+	addField (initializeOnly, "vKnot",            vKnot ());
+	addField (initializeOnly, "vOrder",           vOrder ());
 }
 
 X3DBaseNode*
@@ -95,3 +99,4 @@ NurbsSurfaceInterpolator::create (X3DExecutionContext* const executionContext) c
 
 } // X3D
 } // titania
+

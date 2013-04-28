@@ -55,61 +55,65 @@
 namespace titania {
 namespace X3D {
 
+DoubleAxisHingeJoint::Fields::Fields () :
+	anchorPoint (new SFVec3f ()),
+	axis1 (new SFVec3f ()),
+	axis2 (new SFVec3f ()),
+	desiredAngularVelocity1 (new SFFloat ()),
+	desiredAngularVelocity2 (new SFFloat ()),
+	maxAngle1 (new SFFloat ()),
+	maxTorque1 (new SFFloat ()),
+	maxTorque2 (new SFFloat ()),
+	minAngle1 (new SFFloat ()),
+	stopBounce1 (new SFFloat ()),
+	stopConstantForceMix1 (new SFFloat (0.001)),
+	stopErrorCorrection1 (new SFFloat (0.8)),
+	suspensionErrorCorrection (new SFFloat (0.8)),
+	suspensionForce (new SFFloat ()),
+	body1AnchorPoint (new SFVec3f ()),
+	body1Axis (new SFVec3f ()),
+	body2AnchorPoint (new SFVec3f ()),
+	body2Axis (new SFVec3f ()),
+	hinge1Angle (new SFFloat ()),
+	hinge1AngleRate (new SFFloat ()),
+	hinge2Angle (new SFFloat ()),
+	hinge2AngleRate (new SFFloat ())
+{ }
+
 DoubleAxisHingeJoint::DoubleAxisHingeJoint (X3DExecutionContext* const executionContext) :
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	        X3DRigidJointNode (),                                                    
-	              anchorPoint (),                                                    // SFVec3f [in,out] anchorPoint                0 0 0
-	                    axis1 (),                                                    // SFVec3f [in,out] axis1                      0 0 0
-	                    axis2 (),                                                    // SFVec3f [in,out] axis2                      0 0 0
-	  desiredAngularVelocity1 (),                                                    // SFFloat [in,out] desiredAngularVelocity1    0            (-∞,∞)
-	  desiredAngularVelocity2 (),                                                    // SFFloat [in,out] desiredAngularVelocity2    0            (-∞,∞)
-	                maxAngle1 (),                                                    // SFFloat [in,out] maxAngle1                  π            [-π,π]
-	               maxTorque1 (),                                                    // SFFloat [in,out] maxTorque1                 0            (-∞,∞)
-	               maxTorque2 (),                                                    // SFFloat [in,out] maxTorque2                 0            (-∞,∞)
-	                minAngle1 (),                                                    // SFFloat [in,out] minAngle1                  -π           [-π,π]
-	              stopBounce1 (),                                                    // SFFloat [in,out] stopBounce1                0            [0,1]
-	    stopConstantForceMix1 (0.001),                                               // SFFloat [in,out] stopConstantForceMix1      0.001        [0,∞)
-	     stopErrorCorrection1 (0.8),                                                 // SFFloat [in,out] stopErrorCorrection1       0.8          [0,1]
-	suspensionErrorCorrection (0.8),                                                 // SFFloat [in,out] suspensionErrorCorrection  0.8          [0,1]
-	          suspensionForce (),                                                    // SFFloat [in,out] suspensionForce            0            [0,∞)
-	         body1AnchorPoint (),                                                    // SFVec3f [out]    body1AnchorPoint
-	                body1Axis (),                                                    // SFVec3f [out]    body1Axis
-	         body2AnchorPoint (),                                                    // SFVec3f [out]    body2AnchorPoint
-	                body2Axis (),                                                    // SFVec3f [out]    body2Axis
-	              hinge1Angle (),                                                    // SFFloat [out]    hinge1Angle
-	          hinge1AngleRate (),                                                    // SFFloat [out]    hinge1AngleRate
-	              hinge2Angle (),                                                    // SFFloat [out]    hinge2Angle
-	          hinge2AngleRate ()                                                     // SFFloat [out]    hinge2AngleRate
+	fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("DoubleAxisHingeJoint");
 
-	addField (inputOutput, "metadata",                  metadata);
-	addField (inputOutput, "body1",                     body1);
-	addField (inputOutput, "body2",                     body2);
-	addField (inputOutput, "forceOutput",               forceOutput);
-	addField (inputOutput, "anchorPoint",               anchorPoint);
-	addField (inputOutput, "axis1",                     axis1);
-	addField (inputOutput, "axis2",                     axis2);
-	addField (inputOutput, "desiredAngularVelocity1",   desiredAngularVelocity1);
-	addField (inputOutput, "desiredAngularVelocity2",   desiredAngularVelocity2);
-	addField (inputOutput, "maxAngle1",                 maxAngle1);
-	addField (inputOutput, "maxTorque1",                maxTorque1);
-	addField (inputOutput, "maxTorque2",                maxTorque2);
-	addField (inputOutput, "minAngle1",                 minAngle1);
-	addField (inputOutput, "stopBounce1",               stopBounce1);
-	addField (inputOutput, "stopConstantForceMix1",     stopConstantForceMix1);
-	addField (inputOutput, "stopErrorCorrection1",      stopErrorCorrection1);
-	addField (inputOutput, "suspensionErrorCorrection", suspensionErrorCorrection);
-	addField (inputOutput, "suspensionForce",           suspensionForce);
-	addField (outputOnly,  "body1AnchorPoint",          body1AnchorPoint);
-	addField (outputOnly,  "body1Axis",                 body1Axis);
-	addField (outputOnly,  "body2AnchorPoint",          body2AnchorPoint);
-	addField (outputOnly,  "body2Axis",                 body2Axis);
-	addField (outputOnly,  "hinge1Angle",               hinge1Angle);
-	addField (outputOnly,  "hinge1AngleRate",           hinge1AngleRate);
-	addField (outputOnly,  "hinge2Angle",               hinge2Angle);
-	addField (outputOnly,  "hinge2AngleRate",           hinge2AngleRate);
+	addField (inputOutput, "metadata",                  metadata ());
+	addField (inputOutput, "body1",                     body1 ());
+	addField (inputOutput, "body2",                     body2 ());
+	addField (inputOutput, "forceOutput",               forceOutput ());
+	addField (inputOutput, "anchorPoint",               anchorPoint ());
+	addField (inputOutput, "axis1",                     axis1 ());
+	addField (inputOutput, "axis2",                     axis2 ());
+	addField (inputOutput, "desiredAngularVelocity1",   desiredAngularVelocity1 ());
+	addField (inputOutput, "desiredAngularVelocity2",   desiredAngularVelocity2 ());
+	addField (inputOutput, "maxAngle1",                 maxAngle1 ());
+	addField (inputOutput, "maxTorque1",                maxTorque1 ());
+	addField (inputOutput, "maxTorque2",                maxTorque2 ());
+	addField (inputOutput, "minAngle1",                 minAngle1 ());
+	addField (inputOutput, "stopBounce1",               stopBounce1 ());
+	addField (inputOutput, "stopConstantForceMix1",     stopConstantForceMix1 ());
+	addField (inputOutput, "stopErrorCorrection1",      stopErrorCorrection1 ());
+	addField (inputOutput, "suspensionErrorCorrection", suspensionErrorCorrection ());
+	addField (inputOutput, "suspensionForce",           suspensionForce ());
+	addField (outputOnly,  "body1AnchorPoint",          body1AnchorPoint ());
+	addField (outputOnly,  "body1Axis",                 body1Axis ());
+	addField (outputOnly,  "body2AnchorPoint",          body2AnchorPoint ());
+	addField (outputOnly,  "body2Axis",                 body2Axis ());
+	addField (outputOnly,  "hinge1Angle",               hinge1Angle ());
+	addField (outputOnly,  "hinge1AngleRate",           hinge1AngleRate ());
+	addField (outputOnly,  "hinge2Angle",               hinge2Angle ());
+	addField (outputOnly,  "hinge2AngleRate",           hinge2AngleRate ());
 }
 
 X3DBaseNode*
@@ -120,3 +124,4 @@ DoubleAxisHingeJoint::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

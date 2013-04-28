@@ -63,9 +63,9 @@ public:
 
 	using X3DGeometryNode::ccw;
 	
-	SFNode <X3DBaseNode> crossSectionCurve;
-	SFNode <X3DBaseNode> trajectoryCurve;
-	SFBool               solid;
+	
+	
+	
 
 	NurbsSweptSurface (X3DExecutionContext* const);
 
@@ -73,9 +73,50 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFNode <X3DBaseNode> &
+	crossSectionCurve ()
+	{ return *fields .crossSectionCurve; }
+
+	const SFNode <X3DBaseNode> &
+	crossSectionCurve () const
+	{ return *fields .crossSectionCurve; }
+
+	SFNode <X3DBaseNode> &
+	trajectoryCurve ()
+	{ return *fields .trajectoryCurve; }
+
+	const SFNode <X3DBaseNode> &
+	trajectoryCurve () const
+	{ return *fields .trajectoryCurve; }
+
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const crossSectionCurve;
+		SFNode <X3DBaseNode>* const trajectoryCurve;
+		SFBool* const solid;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

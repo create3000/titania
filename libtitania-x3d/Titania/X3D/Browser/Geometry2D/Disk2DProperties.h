@@ -63,9 +63,19 @@ class Disk2DProperties :
 {
 public:
 
-	SFInt32 segments;
+	
 
 	Disk2DProperties (X3DExecutionContext* const);
+
+	///  @name Fields
+
+	SFInt32 &
+	segments ()
+	{ return *fields .segments; }
+
+	const SFInt32 &
+	segments () const
+	{ return *fields .segments; }
 
 	virtual
 	GLenum
@@ -77,6 +87,8 @@ private:
 	virtual
 	Disk2DProperties*
 	create (X3DExecutionContext* const) const;
+
+
 
 	virtual
 	void
@@ -90,9 +102,20 @@ private:
 	void
 	build ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const segments;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

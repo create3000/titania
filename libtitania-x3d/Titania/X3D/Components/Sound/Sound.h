@@ -62,22 +62,106 @@ class Sound :
 {
 public:
 
-	SFFloat              intensity;
-	SFBool               spatialize;
-	SFVec3f              location;
-	SFVec3f              direction;
-	SFFloat              minBack;
-	SFFloat              minFront;
-	SFFloat              maxBack;
-	SFFloat              maxFront;
-	SFFloat              priority;
-	SFNode <X3DBaseNode> source;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	Sound (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFFloat &
+	intensity ()
+	{ return *fields .intensity; }
+
+	const SFFloat &
+	intensity () const
+	{ return *fields .intensity; }
+
+	SFBool &
+	spatialize ()
+	{ return *fields .spatialize; }
+
+	const SFBool &
+	spatialize () const
+	{ return *fields .spatialize; }
+
+	SFVec3f &
+	location ()
+	{ return *fields .location; }
+
+	const SFVec3f &
+	location () const
+	{ return *fields .location; }
+
+	SFVec3f &
+	direction ()
+	{ return *fields .direction; }
+
+	const SFVec3f &
+	direction () const
+	{ return *fields .direction; }
+
+	SFFloat &
+	minBack ()
+	{ return *fields .minBack; }
+
+	const SFFloat &
+	minBack () const
+	{ return *fields .minBack; }
+
+	SFFloat &
+	minFront ()
+	{ return *fields .minFront; }
+
+	const SFFloat &
+	minFront () const
+	{ return *fields .minFront; }
+
+	SFFloat &
+	maxBack ()
+	{ return *fields .maxBack; }
+
+	const SFFloat &
+	maxBack () const
+	{ return *fields .maxBack; }
+
+	SFFloat &
+	maxFront ()
+	{ return *fields .maxFront; }
+
+	const SFFloat &
+	maxFront () const
+	{ return *fields .maxFront; }
+
+	SFFloat &
+	priority ()
+	{ return *fields .priority; }
+
+	const SFFloat &
+	priority () const
+	{ return *fields .priority; }
+
+	SFNode <X3DBaseNode> &
+	source ()
+	{ return *fields .source; }
+
+	const SFNode <X3DBaseNode> &
+	source () const
+	{ return *fields .source; }
+
+
 
 	virtual
 	void
@@ -96,6 +180,25 @@ private:
 	void
 	getEllipsoidParameter (const float &, const float &, float &, float &);
 
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const intensity;
+		SFBool* const spatialize;
+		SFVec3f* const location;
+		SFVec3f* const direction;
+		SFFloat* const minBack;
+		SFFloat* const minFront;
+		SFFloat* const maxBack;
+		SFFloat* const maxFront;
+		SFFloat* const priority;
+		SFNode <X3DBaseNode>* const source;
+	};
+
+	Fields fields;
+
+
 	X3DSoundSourceNode* _source;
 
 };
@@ -104,3 +207,4 @@ private:
 } // titania
 
 #endif
+

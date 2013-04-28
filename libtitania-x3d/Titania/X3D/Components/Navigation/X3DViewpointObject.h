@@ -65,8 +65,22 @@ public:
 
 	///  @name Fields
 
-	SFString description;
-	SFBool   retainUserOffsets;
+	SFString &
+	description ()
+	{ return *fields .description; }
+
+	const SFString &
+	description () const
+	{ return *fields .description; }
+
+	SFBool &
+	retainUserOffsets ()
+	{ return *fields .retainUserOffsets; }
+
+	const SFBool &
+	retainUserOffsets () const
+	{ return *fields .retainUserOffsets; }
+
 
 
 protected:
@@ -89,6 +103,17 @@ protected:
 	virtual
 	void
 	dispose ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFString* const description;
+		SFBool* const retainUserOffsets;
+	};
+
+	Fields fields;
 
 };
 
@@ -96,3 +121,4 @@ protected:
 } // titania
 
 #endif
+

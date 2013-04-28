@@ -55,16 +55,20 @@
 namespace titania {
 namespace X3D {
 
+X3DFontStyleNode::Fields::Fields () :
+	family (new MFString ({ "SERIF" })),
+	style (new SFString ("PLAIN")),
+	spacing (new SFFloat (1)),
+	horizontal (new SFBool (true)),
+	justify (new MFString ({ "BEGIN" })),
+	topToBottom (new SFBool (true)),
+	leftToRight (new SFBool (true)),
+	language (new SFString ())
+{ }
+
 X3DFontStyleNode::X3DFontStyleNode () :
-	X3DPropertyNode (),                                    
-	         family ({ "SERIF" }),                         // MFString [ ] family       "SERIF"
-	          style ("PLAIN"),                             // SFString [ ] style        "PLAIN"        ["PLAIN"|"BOLD"|"ITALIC"|"BOLDITALIC"|""]
-	        spacing (1),                                   // SFFloat  [ ] spacing      1.0            [0,?)
-	     horizontal (true),                                // SFBool   [ ] horizontal   TRUE
-	        justify ({ "BEGIN" }),                         // MFString [ ] justify      "BEGIN"        ["BEGIN","END","FIRST","MIDDLE",""]
-	    topToBottom (true),                                // SFBool   [ ] topToBottom  TRUE
-	    leftToRight (true),                                // SFBool   [ ] leftToRight  TRUE
-	       language (),                                    // SFString [ ] language     ""
+	X3DPropertyNode (), 
+	         fields (), 
 	     alignments { Alignment::BEGIN, Alignment::BEGIN } 
 {
 	addNodeType (X3DConstants::X3DFontStyleNode);
@@ -75,7 +79,7 @@ X3DFontStyleNode::initialize ()
 {
 	X3DPropertyNode::initialize ();
 
-	justify .addInterest (this, &X3DFontStyleNode::set_justify);
+	justify () .addInterest (this, &X3DFontStyleNode::set_justify);
 
 	set_justify ();
 }
@@ -83,11 +87,11 @@ X3DFontStyleNode::initialize ()
 void
 X3DFontStyleNode::set_justify ()
 {
-	alignments [0] = justify .size () > 0
+	alignments [0] = justify () .size () > 0
 	                 ? getAlignment (0)
 						  : Alignment::BEGIN;
 
-	alignments [1] = justify .size () > 1
+	alignments [1] = justify () .size () > 1
 	                 ? getAlignment (1)
 						  : Alignment::FIRST;
 }
@@ -95,16 +99,16 @@ X3DFontStyleNode::set_justify ()
 X3DFontStyleNode::Alignment
 X3DFontStyleNode::getAlignment (const size_t index) const
 {
-	if (justify [index] == "BEGIN")
+	if (justify () [index] == "BEGIN")
 		return Alignment::BEGIN;
 
-	else if (justify [index] == "FIRST")
+	else if (justify () [index] == "FIRST")
 		return Alignment::FIRST;
 
-	else if (justify [index] == "MIDDLE")
+	else if (justify () [index] == "MIDDLE")
 		return Alignment::MIDDLE;
 
-	else if (justify [index] == "END")
+	else if (justify () [index] == "END")
 		return Alignment::END;
 
 	return index ? Alignment::FIRST : Alignment::BEGIN;
@@ -125,11 +129,11 @@ X3DFontStyleNode::getMinorAlignment () const
 std::string
 X3DFontStyleNode::getFilename () const
 {
-	FcPattern* pattern = family .size ()
-	                     ? FcNameParse ((FcChar8*) (family [0] .getValue () .c_str ()))
+	FcPattern* pattern = family () .size ()
+	                     ? FcNameParse ((FcChar8*) (family () [0] .getValue () .c_str ()))
 								: FcPatternCreate ();
 
-	FcPatternAddString (pattern, "style", (FcChar8*) (style == "BOLDITALIC" ? "bold italic" : style .getValue () .c_str ()));
+	FcPatternAddString (pattern, "style", (FcChar8*) (style () == "BOLDITALIC" ? "bold italic" : style () .getValue () .c_str ()));
 
 	FcConfigSubstitute (NULL, pattern, FcMatchPattern);
 	FcDefaultSubstitute (pattern);

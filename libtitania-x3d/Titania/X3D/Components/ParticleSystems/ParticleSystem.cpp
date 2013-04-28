@@ -55,46 +55,50 @@
 namespace titania {
 namespace X3D {
 
+ParticleSystem::Fields::Fields () :
+	createParticles (new SFBool (true)),
+	enabled (new SFBool (true)),
+	lifetimeVariation (new SFFloat (0.25)),
+	maxParticles (new SFInt32 (200)),
+	particleLifetime (new SFFloat (5)),
+	particleSize (new SFVec2f (0.02, 0.02)),
+	isActive (new SFBool ()),
+	colorRamp (new SFNode <X3DBaseNode> ()),
+	colorKey (new MFFloat ()),
+	emitter (new SFNode <X3DBaseNode> ()),
+	geometryType (new SFString ("QUAD")),
+	physics (new MFNode ()),
+	texCoordRamp (new SFNode <X3DBaseNode> ()),
+	texCoordKey (new MFFloat ())
+{ }
+
 ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	     X3DShapeNode (),                                                    
-	  createParticles (true),                                                // SFBool   [in,out] createParticles    TRUE
-	          enabled (true),                                                // SFBool   [in,out] enabled            TRUE
-	lifetimeVariation (0.25),                                                // SFFloat  [in,out] lifetimeVariation  0.25             [0,1]
-	     maxParticles (200),                                                 // SFInt32  [in,out] maxParticles       200              [0,∞)
-	 particleLifetime (5),                                                   // SFFloat  [in,out] particleLifetime   5                [0,∞)
-	     particleSize (0.02, 0.02),                                          // SFVec2f  [in,out] particleSize       0.02 0.02        [0,∞)
-	         isActive (),                                                    // SFBool   [out]    isActive
-	        colorRamp (),                                                    // SFNode   [ ]      colorRamp          NULL             [X3DColorNode]
-	         colorKey (),                                                    // MFFloat  [ ]      colorKey           NULL             [0,∞)
-	          emitter (),                                                    // SFNode   [ ]      emitter            NULL             [X3DParticleEmitterNode]
-	     geometryType ("QUAD"),                                              // SFString [ ]      geometryType       "QUAD"           ["LINE"|"POINT"|"QUAD"|"SPRITE"|"TRIANGLE"|"GEOMETRY"|...]
-	          physics (),                                                    // MFNode   [ ]      physics            [ ]               [X3DParticlePhysicsModelNode]
-	     texCoordRamp (),                                                    // SFNode   [ ]      texCoordRamp       NULL             [TextureCoordinate]
-	      texCoordKey ()                                                     // MFFloat  [ ]      texCoordKey        [ ]               [0,∞)
+	fields ()
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("ParticleSystem");
 
-	addField (inputOutput,    "metadata",          metadata);
-	addField (initializeOnly, "bboxSize",          bboxSize);
-	addField (initializeOnly, "bboxCenter",        bboxCenter);
-	addField (inputOutput,    "appearance",        appearance);
-	addField (inputOutput,    "geometry",          geometry);
-	addField (inputOutput,    "createParticles",   createParticles);
-	addField (inputOutput,    "enabled",           enabled);
-	addField (inputOutput,    "lifetimeVariation", lifetimeVariation);
-	addField (inputOutput,    "maxParticles",      maxParticles);
-	addField (inputOutput,    "particleLifetime",  particleLifetime);
-	addField (inputOutput,    "particleSize",      particleSize);
-	addField (outputOnly,     "isActive",          isActive);
-	addField (initializeOnly, "colorRamp",         colorRamp);
-	addField (initializeOnly, "colorKey",          colorKey);
-	addField (initializeOnly, "emitter",           emitter);
-	addField (initializeOnly, "geometryType",      geometryType);
-	addField (initializeOnly, "physics",           physics);
-	addField (initializeOnly, "texCoordRamp",      texCoordRamp);
-	addField (initializeOnly, "texCoordKey",       texCoordKey);
+	addField (inputOutput,    "metadata",          metadata ());
+	addField (initializeOnly, "bboxSize",          bboxSize ());
+	addField (initializeOnly, "bboxCenter",        bboxCenter ());
+	addField (inputOutput,    "appearance",        appearance ());
+	addField (inputOutput,    "geometry",          geometry ());
+	addField (inputOutput,    "createParticles",   createParticles ());
+	addField (inputOutput,    "enabled",           enabled ());
+	addField (inputOutput,    "lifetimeVariation", lifetimeVariation ());
+	addField (inputOutput,    "maxParticles",      maxParticles ());
+	addField (inputOutput,    "particleLifetime",  particleLifetime ());
+	addField (inputOutput,    "particleSize",      particleSize ());
+	addField (outputOnly,     "isActive",          isActive ());
+	addField (initializeOnly, "colorRamp",         colorRamp ());
+	addField (initializeOnly, "colorKey",          colorKey ());
+	addField (initializeOnly, "emitter",           emitter ());
+	addField (initializeOnly, "geometryType",      geometryType ());
+	addField (initializeOnly, "physics",           physics ());
+	addField (initializeOnly, "texCoordRamp",      texCoordRamp ());
+	addField (initializeOnly, "texCoordKey",       texCoordKey ());
 }
 
 X3DBaseNode*
@@ -105,3 +109,4 @@ ParticleSystem::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

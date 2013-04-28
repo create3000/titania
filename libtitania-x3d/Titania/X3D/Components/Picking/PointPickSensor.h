@@ -61,7 +61,7 @@ class PointPickSensor :
 {
 public:
 
-	MFVec3f pickedPoint;
+	
 
 	PointPickSensor (X3DExecutionContext* const);
 
@@ -69,9 +69,32 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFVec3f &
+	pickedPoint ()
+	{ return *fields .pickedPoint; }
+
+	const MFVec3f &
+	pickedPoint () const
+	{ return *fields .pickedPoint; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFVec3f* const pickedPoint;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

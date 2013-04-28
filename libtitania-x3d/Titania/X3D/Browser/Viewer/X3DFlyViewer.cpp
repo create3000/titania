@@ -109,7 +109,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 	{
 		fromVector = toVector = Vector3f (event -> x, 0, event -> y);
 
-		if (getBrowser () -> getBrowserOptions () -> rubberBand)
+		if (getBrowser () -> getBrowserOptions () -> rubberBand ())
 			getBrowser () -> displayed .addInterest (this, &X3DFlyViewer::display);
 	}
 
@@ -150,7 +150,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 	{
 		toVector = Vector3f (event -> x, 0, event -> y);
 
-		direction = (toVector - fromVector) * SPEED_FACTOR * navigationInfo -> speed .getValue ();
+		direction = (toVector - fromVector) * SPEED_FACTOR * navigationInfo -> speed () .getValue ();
 
 		addFly ();
 
@@ -161,7 +161,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 	{
 		toVector = Vector3f (event -> x, -event -> y, 0);
 
-		direction = (toVector - fromVector) * SPEED_FACTOR * navigationInfo -> speed .getValue ();
+		direction = (toVector - fromVector) * SPEED_FACTOR * navigationInfo -> speed () .getValue ();
 
 		addPan ();
 
@@ -246,7 +246,7 @@ X3DFlyViewer::fly ()
 
 	float angle = rotation .angle ();
 
-	viewpoint -> orientationOffset *= rotation * (math::abs (direction) * ROTATION_SPEED_FACTOR / frameRate);
+	viewpoint -> orientationOffset () *= rotation * (math::abs (direction) * ROTATION_SPEED_FACTOR / frameRate);
 
 	// Position offset
 
@@ -256,7 +256,7 @@ X3DFlyViewer::fly ()
 	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
 	Vector3f   translation = orientation * direction * speed_factor / frameRate;
 
-	viewpoint -> positionOffset += getTranslation (translation);
+	viewpoint -> positionOffset () += getTranslation (translation);
 
 	return true;
 }
@@ -273,7 +273,7 @@ X3DFlyViewer::pan ()
 	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
 	Vector3f   translation = orientation * direction * speed_factor / frameRate;
 
-	viewpoint -> positionOffset += getTranslation (translation);
+	viewpoint -> positionOffset () += getTranslation (translation);
 
 	return true;
 }
@@ -288,7 +288,7 @@ X3DFlyViewer::roll ()
 
 	float frameRate = getBrowser () -> getCurrentFrameRate ();
 
-	viewpoint -> orientationOffset *= Rotation4f (rotation .axis (), rotation .angle () / frameRate);
+	viewpoint -> orientationOffset () *= Rotation4f (rotation .axis (), rotation .angle () / frameRate);
 
 	return true;
 }

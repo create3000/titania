@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,12 +59,16 @@
 namespace titania {
 namespace X3D {
 
+ProximitySensor::Fields::Fields () :
+	centerOfRotation_changed (new SFVec3f ()),
+	orientation_changed (new SFRotation ()),
+	position_changed (new SFVec3f ())
+{ }
+
 ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DEnvironmentalSensorNode (),                                                    
-	  centerOfRotation_changed (),                                                    // SFVec3f    [out] centerOfRotation_changed
-	       orientation_changed (),                                                    // SFRotation [out] orientation_changed
-	          position_changed (),                                                    // SFVec3f    [out] position_changed
+	fields (),
 	                 viewpoint (NULL),                                                
 	                    matrix (),                                                    
 	                    inside (false)                                                
@@ -72,16 +76,16 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	setComponent ("EnvironmentalSensor");
 	setTypeName ("ProximitySensor");
 
-	addField (inputOutput, "metadata",                 metadata);
-	addField (inputOutput, "enabled",                  enabled);
-	addField (inputOutput, "size",                     size);
-	addField (inputOutput, "center",                   center);
-	addField (outputOnly,  "enterTime",                enterTime);
-	addField (outputOnly,  "exitTime",                 exitTime);
-	addField (outputOnly,  "isActive",                 isActive);
-	addField (outputOnly,  "position_changed",         position_changed);
-	addField (outputOnly,  "orientation_changed",      orientation_changed);
-	addField (outputOnly,  "centerOfRotation_changed", centerOfRotation_changed);
+	addField (inputOutput, "metadata",                 metadata ());
+	addField (inputOutput, "enabled",                  enabled ());
+	addField (inputOutput, "size",                     size ());
+	addField (inputOutput, "center",                   center ());
+	addField (outputOnly,  "enterTime",                enterTime ());
+	addField (outputOnly,  "exitTime",                 exitTime ());
+	addField (outputOnly,  "isActive",                 isActive ());
+	addField (outputOnly,  "position_changed",         position_changed ());
+	addField (outputOnly,  "orientation_changed",      orientation_changed ());
+	addField (outputOnly,  "centerOfRotation_changed", centerOfRotation_changed ());
 }
 
 X3DBaseNode*
@@ -95,7 +99,7 @@ ProximitySensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
 
-	enabled .addInterest (this, &ProximitySensor::set_enabled);
+	enabled () .addInterest (this, &ProximitySensor::set_enabled);
 
 	set_enabled ();
 }
@@ -103,7 +107,7 @@ ProximitySensor::initialize ()
 void
 ProximitySensor::set_enabled ()
 {
-	if (enabled)
+	if (enabled ())
 		getBrowser () -> sensors .addInterest (this, &ProximitySensor::update);
 	else
 		getBrowser () -> sensors .removeInterest (this, &ProximitySensor::update);
@@ -123,21 +127,21 @@ ProximitySensor::update ()
 		Vector3f   position    = inverse (matrix) .translation ();
 		Rotation4f orientation = ~rotation;
 
-		if (not isActive)
+		if (not isActive ())
 		{
-			isActive  = true;
-			enterTime = getCurrentTime ();
+			isActive ()  = true;
+			enterTime () = getCurrentTime ();
 
-			position_changed    = position;
-			orientation_changed = orientation;
+			position_changed ()    = position;
+			orientation_changed () = orientation;
 		}
 		else
 		{
-			if (position_changed not_eq position)
-				position_changed = position;
+			if (position_changed () not_eq position)
+				position_changed () = position;
 
-			if (orientation_changed not_eq orientation)
-				orientation_changed = orientation;
+			if (orientation_changed () not_eq orientation)
+				orientation_changed () = orientation;
 		}
 
 		//		std::clog << "#######################" << std::endl;
@@ -146,10 +150,10 @@ ProximitySensor::update ()
 	}
 	else
 	{
-		if (isActive)
+		if (isActive ())
 		{
-			isActive = false;
-			exitTime = getCurrentTime ();
+			isActive () = false;
+			exitTime () = getCurrentTime ();
 		}
 	}
 
@@ -173,7 +177,7 @@ ProximitySensor::traverse (TraverseType type)
 				break;
 
 			Matrix4f modelViewMatrix = ModelViewMatrix4f ();
-			modelViewMatrix .translate (center);
+			modelViewMatrix .translate (center ());
 
 			inside = isInside (modelViewMatrix);
 
@@ -187,7 +191,7 @@ ProximitySensor::traverse (TraverseType type)
 bool
 ProximitySensor::isInside (const Matrix4f & matrix) const
 {
-	auto size1_2 = size * 0.5f;
+	auto size1_2 = size () * 0.5f;
 
 	float x = size1_2 .x ();
 	float y = size1_2 .y ();
@@ -223,7 +227,7 @@ ProximitySensor::isInside (const Matrix4f & matrix) const
 void
 ProximitySensor::dispose ()
 {
-	if (enabled)
+	if (enabled ())
 		getBrowser () -> sensors .removeInterest (this, &ProximitySensor::update);
 
 	X3DEnvironmentalSensorNode::dispose ();
@@ -231,3 +235,4 @@ ProximitySensor::dispose ()
 
 } // X3D
 } // titania
+

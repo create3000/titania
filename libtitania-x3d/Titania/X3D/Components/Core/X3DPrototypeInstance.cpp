@@ -68,7 +68,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 {
 	addNodeType (X3DConstants::X3DPrototypeInstance);
 
-	addField (inputOutput, "metadata", metadata);
+	addField (inputOutput, "metadata", metadata ());
 
 	for (const auto & userDefinedField : proto -> getUserDefinedFields ())
 	{

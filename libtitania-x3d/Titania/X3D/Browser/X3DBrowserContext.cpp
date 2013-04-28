@@ -121,12 +121,12 @@ X3DBrowserContext::initialize ()
 
 	// Lights
 
-	for (int32_t i = 0; i < renderingProperties -> maxLights; ++ i)
+	for (int32_t i = 0; i < renderingProperties -> maxLights (); ++ i)
 		lights .push (GL_LIGHT0 + i);
 
 	// TextureUnits
 
-	for (int32_t i = 1; i < renderingProperties -> textureUnits; ++ i)
+	for (int32_t i = 1; i < renderingProperties -> textureUnits (); ++ i)
 		textureUnits .push (i);
 
 	// Initialize OpenGL context
@@ -466,7 +466,7 @@ X3DBrowserContext::finish ()
 	if (errorNum not_eq GL_NO_ERROR)
 		std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toLocaleString () << ": " << gluErrorString (errorNum) << std::endl;
 
-	console -> string_changed .set ({ });
+	console -> string_changed () .set ({ });
 }
 
 void

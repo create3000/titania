@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,30 +55,34 @@
 namespace titania {
 namespace X3D {
 
+DISEntityTypeMapping::Fields::Fields () :
+	url (new MFString ()),
+	category (new SFInt32 ()),
+	country (new SFInt32 ()),
+	domain (new SFInt32 ()),
+	extra (new SFInt32 ()),
+	kind (new SFInt32 ()),
+	specific (new SFInt32 ()),
+	subcategory (new SFInt32 ())
+{ }
+
 DISEntityTypeMapping::DISEntityTypeMapping (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInfoNode (),                                                    
-	        url (),                                                    // MFString [in,out] url          [ ]       [URI]
-	   category (),                                                    // SFInt32  [ ]      category     0         [0,255]
-	    country (),                                                    // SFInt32  [ ]      country      0         [0,65535]
-	     domain (),                                                    // SFInt32  [ ]      domain       0         [0,255]
-	      extra (),                                                    // SFInt32  [ ]      extra        0         [0,255]
-	       kind (),                                                    // SFInt32  [ ]      kind         0         [0,255]
-	   specific (),                                                    // SFInt32  [ ]      specific     0         [0,255]
-	subcategory ()                                                     // SFInt32  [ ]      subcategory  0         [0,255]
+	fields ()
 {
 	setComponent ("DIS");
 	setTypeName ("DISEntityTypeMapping");
 
-	addField (inputOutput,    "metadata",    metadata);
-	addField (inputOutput,    "url",         url);
-	addField (initializeOnly, "category",    category);
-	addField (initializeOnly, "country",     country);
-	addField (initializeOnly, "domain",      domain);
-	addField (initializeOnly, "extra",       extra);
-	addField (initializeOnly, "kind",        kind);
-	addField (initializeOnly, "specific",    specific);
-	addField (initializeOnly, "subcategory", subcategory);
+	addField (inputOutput,    "metadata",    metadata ());
+	addField (inputOutput,    "url",         url ());
+	addField (initializeOnly, "category",    category ());
+	addField (initializeOnly, "country",     country ());
+	addField (initializeOnly, "domain",      domain ());
+	addField (initializeOnly, "extra",       extra ());
+	addField (initializeOnly, "kind",        kind ());
+	addField (initializeOnly, "specific",    specific ());
+	addField (initializeOnly, "subcategory", subcategory ());
 }
 
 X3DBaseNode*
@@ -89,3 +93,4 @@ DISEntityTypeMapping::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

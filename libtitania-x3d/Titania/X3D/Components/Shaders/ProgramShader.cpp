@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+ProgramShader::Fields::Fields () :
+	programs (new MFNode ())
+{ }
+
 ProgramShader::ProgramShader (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DShaderNode (),                                                    
-	     programs ()                                                     // MFNode[in,out] programs  [ ]       [ShaderProgram]
+	fields ()
 {
 	setComponent ("Shaders");
 	setTypeName ("ProgramShader");
 
-	addField (inputOutput,    "metadata",   metadata);
-	addField (inputOnly,      "activate",   activate);
-	addField (outputOnly,     "isSelected", isSelected);
-	addField (outputOnly,     "isValid",    isValid);
-	addField (initializeOnly, "language",   language);
-	addField (inputOutput,    "programs",   programs);
+	addField (inputOutput,    "metadata",   metadata ());
+	addField (inputOnly,      "activate",   activate ());
+	addField (outputOnly,     "isSelected", isSelected ());
+	addField (outputOnly,     "isValid",    isValid ());
+	addField (initializeOnly, "language",   language ());
+	addField (inputOutput,    "programs",   programs ());
 }
 
 X3DBaseNode*
@@ -83,3 +87,4 @@ ProgramShader::draw ()
 
 } // X3D
 } // titania
+

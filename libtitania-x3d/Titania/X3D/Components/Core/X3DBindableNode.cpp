@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,11 +58,15 @@
 namespace titania {
 namespace X3D {
 
+X3DBindableNode::Fields::Fields () :
+	set_bind (new SFBool ()),
+	bindTime (new SFTime ()),
+	isBound (new SFBool ())
+{ }
+
 X3DBindableNode::X3DBindableNode (bool displayed) :
 	X3DChildNode (),         
-	    set_bind (),         // SFBool [in]  set_bind
-	    bindTime (),         // SFTime [out] bindTime
-	     isBound (),         // SFBool [out] isBound
+	fields (),
 	   displayed (displayed) 
 {
 	addNodeType (X3DConstants::X3DBindableNode);
@@ -76,7 +80,7 @@ X3DBindableNode::initialize ()
 	if (displayed)
 		initialized .addInterest (this, &X3DBindableNode::set_initialized);
 
-	set_bind .addInterest (this, &X3DBindableNode::_set_bind);
+	set_bind () .addInterest (this, &X3DBindableNode::_set_bind);
 }
 
 void
@@ -89,21 +93,21 @@ X3DBindableNode::set_initialized ()
 void
 X3DBindableNode::_set_bind ()
 {
-	if (set_bind)
+	if (set_bind ())
 	{
-		if (not isBound)
+		if (not isBound ())
 		{
 			for (auto & layer : getLayers ())
 				bindToLayer (layer);
 
-			isBound  = true;
-			bindTime = getCurrentTime ();
+			isBound ()  = true;
+			bindTime () = getCurrentTime ();
 		}
 	}
 	else
 	{
-		if (isBound)
-			isBound = false;
+		if (isBound ())
+			isBound () = false;
 
 		for (auto & layer : getLayers ())
 			unbindFromLayer (layer);
@@ -112,3 +116,4 @@ X3DBindableNode::_set_bind ()
 
 } // X3D
 } // titania
+

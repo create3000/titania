@@ -61,15 +61,43 @@ class Arc2D :
 {
 public:
 
-	SFFloat startAngle;
-	SFFloat endAngle;
-	SFFloat radius;
+	
+	
+	
 
 	Arc2D (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFFloat &
+	startAngle ()
+	{ return *fields .startAngle; }
+
+	const SFFloat &
+	startAngle () const
+	{ return *fields .startAngle; }
+
+	SFFloat &
+	endAngle ()
+	{ return *fields .endAngle; }
+
+	const SFFloat &
+	endAngle () const
+	{ return *fields .endAngle; }
+
+	SFFloat &
+	radius ()
+	{ return *fields .radius; }
+
+	const SFFloat &
+	radius () const
+	{ return *fields .radius; }
+
+
 
 	virtual
 	void
@@ -96,9 +124,22 @@ private:
 	void
 	build ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const startAngle;
+		SFFloat* const endAngle;
+		SFFloat* const radius;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

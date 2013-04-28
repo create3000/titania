@@ -61,14 +61,14 @@ class DISEntityTypeMapping :
 {
 public:
 
-	MFString url;
-	SFInt32  category;
-	SFInt32  country;
-	SFInt32  domain;
-	SFInt32  extra;
-	SFInt32  kind;
-	SFInt32  specific;
-	SFInt32  subcategory;
+	
+	
+	
+	
+	
+	
+	
+	
 
 	DISEntityTypeMapping (X3DExecutionContext* const);
 
@@ -76,9 +76,95 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFString &
+	url ()
+	{ return *fields .url; }
+
+	const MFString &
+	url () const
+	{ return *fields .url; }
+
+	SFInt32 &
+	category ()
+	{ return *fields .category; }
+
+	const SFInt32 &
+	category () const
+	{ return *fields .category; }
+
+	SFInt32 &
+	country ()
+	{ return *fields .country; }
+
+	const SFInt32 &
+	country () const
+	{ return *fields .country; }
+
+	SFInt32 &
+	domain ()
+	{ return *fields .domain; }
+
+	const SFInt32 &
+	domain () const
+	{ return *fields .domain; }
+
+	SFInt32 &
+	extra ()
+	{ return *fields .extra; }
+
+	const SFInt32 &
+	extra () const
+	{ return *fields .extra; }
+
+	SFInt32 &
+	kind ()
+	{ return *fields .kind; }
+
+	const SFInt32 &
+	kind () const
+	{ return *fields .kind; }
+
+	SFInt32 &
+	specific ()
+	{ return *fields .specific; }
+
+	const SFInt32 &
+	specific () const
+	{ return *fields .specific; }
+
+	SFInt32 &
+	subcategory ()
+	{ return *fields .subcategory; }
+
+	const SFInt32 &
+	subcategory () const
+	{ return *fields .subcategory; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFString* const url;
+		SFInt32* const category;
+		SFInt32* const country;
+		SFInt32* const domain;
+		SFInt32* const extra;
+		SFInt32* const kind;
+		SFInt32* const specific;
+		SFInt32* const subcategory;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

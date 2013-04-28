@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,34 +55,38 @@
 namespace titania {
 namespace X3D {
 
+NurbsTrimmedSurface::Fields::Fields () :
+	addTrimmingContour (new MFNode ()),
+	removeTrimmingContour (new MFNode ()),
+	trimmingContour (new MFNode ())
+{ }
+
 NurbsTrimmedSurface::NurbsTrimmedSurface (X3DExecutionContext* const executionContext) :
 	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DNurbsSurfaceGeometryNode (),                                                    
-	         addTrimmingContour (),                                                    // MFNode[in]     addTrimmingContour               [Contour2D]
-	      removeTrimmingContour (),                                                    // MFNode[in]     removeTrimmingContour            [Contour2D]
-	            trimmingContour ()                                                     // MFNode[in,out] trimmingContour        [ ]       [Contour2D]
+	fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsTrimmedSurface");
 
-	addField (inputOutput,    "metadata",              metadata);
-	addField (inputOutput,    "controlPoint",          controlPoint);
-	addField (inputOutput,    "texCoord",              texCoord);
-	addField (inputOutput,    "uTessellation",         uTessellation);
-	addField (inputOutput,    "vTessellation",         vTessellation);
-	addField (inputOutput,    "weight",                weight);
-	addField (initializeOnly, "solid",                 solid);
-	addField (initializeOnly, "uClosed",               uClosed);
-	addField (initializeOnly, "uDimension",            uDimension);
-	addField (initializeOnly, "uKnot",                 uKnot);
-	addField (initializeOnly, "uOrder",                uOrder);
-	addField (initializeOnly, "vClosed",               vClosed);
-	addField (initializeOnly, "vDimension",            vDimension);
-	addField (initializeOnly, "vKnot",                 vKnot);
-	addField (initializeOnly, "vOrder",                vOrder);
-	addField (inputOnly,      "addTrimmingContour",    addTrimmingContour);
-	addField (inputOnly,      "removeTrimmingContour", removeTrimmingContour);
-	addField (inputOutput,    "trimmingContour",       trimmingContour);
+	addField (inputOutput,    "metadata",              metadata ());
+	addField (inputOutput,    "controlPoint",          controlPoint ());
+	addField (inputOutput,    "texCoord",              texCoord ());
+	addField (inputOutput,    "uTessellation",         uTessellation ());
+	addField (inputOutput,    "vTessellation",         vTessellation ());
+	addField (inputOutput,    "weight",                weight ());
+	addField (initializeOnly, "solid",                 solid ());
+	addField (initializeOnly, "uClosed",               uClosed ());
+	addField (initializeOnly, "uDimension",            uDimension ());
+	addField (initializeOnly, "uKnot",                 uKnot ());
+	addField (initializeOnly, "uOrder",                uOrder ());
+	addField (initializeOnly, "vClosed",               vClosed ());
+	addField (initializeOnly, "vDimension",            vDimension ());
+	addField (initializeOnly, "vKnot",                 vKnot ());
+	addField (initializeOnly, "vOrder",                vOrder ());
+	addField (inputOnly,      "addTrimmingContour",    addTrimmingContour ());
+	addField (inputOnly,      "removeTrimmingContour", removeTrimmingContour ());
+	addField (inputOutput,    "trimmingContour",       trimmingContour ());
 }
 
 X3DBaseNode*
@@ -93,3 +97,4 @@ NurbsTrimmedSurface::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

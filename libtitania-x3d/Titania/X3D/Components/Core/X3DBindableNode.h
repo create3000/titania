@@ -63,9 +63,30 @@ public:
 
 	///  @name Fields
 
-	SFBool set_bind;
-	SFTime bindTime;
-	SFBool isBound;
+	SFBool &
+	set_bind ()
+	{ return *fields .set_bind; }
+
+	const SFBool &
+	set_bind () const
+	{ return *fields .set_bind; }
+
+	SFTime &
+	bindTime ()
+	{ return *fields .bindTime; }
+
+	const SFTime &
+	bindTime () const
+	{ return *fields .bindTime; }
+
+	SFBool &
+	isBound ()
+	{ return *fields .isBound; }
+
+	const SFBool &
+	isBound () const
+	{ return *fields .isBound; }
+
 
 	///  @name Layer handling
 
@@ -109,6 +130,18 @@ private:
 	void
 	_set_bind ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const set_bind;
+		SFTime* const bindTime;
+		SFBool* const isBound;
+	};
+
+	Fields fields;
+
+
 	bool displayed;
 
 };
@@ -117,3 +150,4 @@ private:
 } // titania
 
 #endif
+

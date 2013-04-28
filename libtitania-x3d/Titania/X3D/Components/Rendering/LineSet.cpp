@@ -59,24 +59,28 @@
 namespace titania {
 namespace X3D {
 
+LineSet::Fields::Fields () :
+	vertexCount (new MFInt32 ()),
+	attrib (new MFNode ()),
+	fogCoord (new SFNode <X3DBaseNode> ()),
+	color (new SFNode <X3DBaseNode> ()),
+	coord (new SFNode <X3DBaseNode> ())
+{ }
+
 LineSet::LineSet (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	    vertexCount (),                                                    // MFInt32 [in,out] vertexCount  [ ]         [2,∞)
-	         attrib (),                                                    // MFNode  [in,out] attrib       [ ]         [X3DVertexAttributeNode]
-	       fogCoord (),                                                    // SFNode  [in,out] fogCoord     [ ]         [FogCoordinate]
-	          color (),                                                    // SFNode  [in,out] color        NULL        [X3DColorNode]
-	          coord ()                                                     // SFNode  [in,out] coord        NULL        [X3DCoordinateNode]
+	fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("LineSet");
 
-	addField (inputOutput, "metadata",    metadata);
-	addField (inputOutput, "vertexCount", vertexCount);
-	addField (inputOutput, "attrib",      attrib);
-	addField (inputOutput, "fogCoord",    fogCoord);
-	addField (inputOutput, "color",       color);
-	addField (inputOutput, "coord",       coord);
+	addField (inputOutput, "metadata",    metadata ());
+	addField (inputOutput, "vertexCount", vertexCount ());
+	addField (inputOutput, "attrib",      attrib ());
+	addField (inputOutput, "fogCoord",    fogCoord ());
+	addField (inputOutput, "color",       color ());
+	addField (inputOutput, "coord",       coord ());
 }
 
 X3DBaseNode*
@@ -88,31 +92,31 @@ LineSet::create (X3DExecutionContext* const executionContext) const
 void
 LineSet::build ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
 
-	if (not _coord or not _coord -> point .size ())
+	if (not _coord or not _coord -> point () .size ())
 		return;
 
 	// Color
 
-	auto _color     = x3d_cast <Color*> (color .getValue ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color .getValue ());
+	auto _color     = x3d_cast <Color*> (color () .getValue ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color () .getValue ());
 
 	if (_color)
-		_color -> resize (_coord -> point .size ());
+		_color -> resize (_coord -> point () .size ());
 
 	if (_colorRGBA)
-		_colorRGBA -> resize (_coord -> point .size ());
+		_colorRGBA -> resize (_coord -> point () .size ());
 
 	// Fill GeometryNode
 
 	size_t index = 0;
 
-	for (const auto count : vertexCount)
+	for (const auto count : vertexCount ())
 	{
 		// Create two vertices for each line.
 
-		if (index + count > _coord -> point .size ())
+		if (index + count > _coord -> point () .size ())
 			break;
 
 		if (count > 1)
@@ -121,14 +125,14 @@ LineSet::build ()
 			{
 				if (_color)
 				{
-					getColors () .emplace_back (_color -> color [index]);
+					getColors () .emplace_back (_color -> color () [index]);
 				}
 				else if (_colorRGBA)
 				{
-					getColorsRGBA () .emplace_back (_colorRGBA -> color [index]);
+					getColorsRGBA () .emplace_back (_colorRGBA -> color () [index]);
 				}
 
-				getVertices () .emplace_back (_coord -> point [index]);
+				getVertices () .emplace_back (_coord -> point () [index]);
 			}
 
 			addElement (count);
@@ -153,3 +157,4 @@ LineSet::draw ()
 
 } // X3D
 } // titania
+

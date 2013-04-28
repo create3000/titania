@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+PositionInterpolator2D::Fields::Fields () :
+	keyValue (new MFVec2f ()),
+	value_changed (new SFVec2f ())
+{ }
+
 PositionInterpolator2D::PositionInterpolator2D (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
-	           keyValue (),                                                    // MFVec2f [in,out] keyValue       [ ]       (-∞,∞)
-	      value_changed ()                                                     // SFVec2f [out]    value_changed
+	fields ()
 {
 	setComponent ("Interpolation");
 	setTypeName ("PositionInterpolator2D");
 
-	addField (inputOutput, "metadata",      metadata);
-	addField (inputOnly,   "set_fraction",  set_fraction);
-	addField (inputOutput, "key",           key);
-	addField (inputOutput, "keyValue",      keyValue);
-	addField (outputOnly,  "value_changed", value_changed);
+	addField (inputOutput, "metadata",      metadata ());
+	addField (inputOnly,   "set_fraction",  set_fraction ());
+	addField (inputOutput, "key",           key ());
+	addField (inputOutput, "keyValue",      keyValue ());
+	addField (outputOnly,  "value_changed", value_changed ());
 }
 
 X3DBaseNode*
@@ -82,21 +86,22 @@ PositionInterpolator2D::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue .addInterest (this, &PositionInterpolator2D::set_keyValue);
+	keyValue () .addInterest (this, &PositionInterpolator2D::set_keyValue);
 }
 
 void
 PositionInterpolator2D::set_keyValue ()
 {
-	if (keyValue .size () < key .size ())
-		keyValue .resize (key .size (), keyValue .size () ? keyValue .back () : SFVec2f ());
+	if (keyValue () .size () < key () .size ())
+		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFVec2f ());
 }
 
 void
 PositionInterpolator2D::interpolate (size_t index0, size_t index1, float weight)
 {
-	value_changed = math::lerp <Vector2f> (keyValue [index0], keyValue [index1], weight);
+	value_changed () = math::lerp <Vector2f> (keyValue () [index0], keyValue () [index1], weight);
 }
 
 } // X3D
 } // titania
+

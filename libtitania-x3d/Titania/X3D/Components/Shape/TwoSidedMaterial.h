@@ -61,19 +61,19 @@ class TwoSidedMaterial :
 {
 public:
 
-	SFFloat ambientIntensity;
-	SFColor diffuseColor;
-	SFColor emissiveColor;
-	SFFloat shininess;
-	SFBool  separateBackColor;
-	SFColor specularColor;
-	SFFloat transparency;
-	SFFloat backAmbientIntensity;
-	SFColor backDiffuseColor;
-	SFColor backEmissiveColor;
-	SFFloat backShininess;
-	SFColor backSpecularColor;
-	SFFloat backTransparency;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	TwoSidedMaterial (X3DExecutionContext* const);
 
@@ -81,10 +81,118 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFFloat &
+	ambientIntensity ()
+	{ return *fields .ambientIntensity; }
+
+	const SFFloat &
+	ambientIntensity () const
+	{ return *fields .ambientIntensity; }
+
+	SFColor &
+	diffuseColor ()
+	{ return *fields .diffuseColor; }
+
+	const SFColor &
+	diffuseColor () const
+	{ return *fields .diffuseColor; }
+
+	SFColor &
+	emissiveColor ()
+	{ return *fields .emissiveColor; }
+
+	const SFColor &
+	emissiveColor () const
+	{ return *fields .emissiveColor; }
+
+	SFFloat &
+	shininess ()
+	{ return *fields .shininess; }
+
+	const SFFloat &
+	shininess () const
+	{ return *fields .shininess; }
+
+	SFBool &
+	separateBackColor ()
+	{ return *fields .separateBackColor; }
+
+	const SFBool &
+	separateBackColor () const
+	{ return *fields .separateBackColor; }
+
+	SFColor &
+	specularColor ()
+	{ return *fields .specularColor; }
+
+	const SFColor &
+	specularColor () const
+	{ return *fields .specularColor; }
+
+	SFFloat &
+	transparency ()
+	{ return *fields .transparency; }
+
+	const SFFloat &
+	transparency () const
+	{ return *fields .transparency; }
+
+	SFFloat &
+	backAmbientIntensity ()
+	{ return *fields .backAmbientIntensity; }
+
+	const SFFloat &
+	backAmbientIntensity () const
+	{ return *fields .backAmbientIntensity; }
+
+	SFColor &
+	backDiffuseColor ()
+	{ return *fields .backDiffuseColor; }
+
+	const SFColor &
+	backDiffuseColor () const
+	{ return *fields .backDiffuseColor; }
+
+	SFColor &
+	backEmissiveColor ()
+	{ return *fields .backEmissiveColor; }
+
+	const SFColor &
+	backEmissiveColor () const
+	{ return *fields .backEmissiveColor; }
+
+	SFFloat &
+	backShininess ()
+	{ return *fields .backShininess; }
+
+	const SFFloat &
+	backShininess () const
+	{ return *fields .backShininess; }
+
+	SFColor &
+	backSpecularColor ()
+	{ return *fields .backSpecularColor; }
+
+	const SFColor &
+	backSpecularColor () const
+	{ return *fields .backSpecularColor; }
+
+	SFFloat &
+	backTransparency ()
+	{ return *fields .backTransparency; }
+
+	const SFFloat &
+	backTransparency () const
+	{ return *fields .backTransparency; }
+
+
+
 	virtual
 	bool
 	isTransparent () const
-	{ return transparency or backTransparency; }
+	{ return transparency () or backTransparency (); }
 
 	virtual
 	void
@@ -100,6 +208,28 @@ private:
 	virtual
 	void
 	eventsProcessed ();
+
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const ambientIntensity;
+		SFColor* const diffuseColor;
+		SFColor* const emissiveColor;
+		SFFloat* const shininess;
+		SFBool* const separateBackColor;
+		SFColor* const specularColor;
+		SFFloat* const transparency;
+		SFFloat* const backAmbientIntensity;
+		SFColor* const backDiffuseColor;
+		SFColor* const backEmissiveColor;
+		SFFloat* const backShininess;
+		SFColor* const backSpecularColor;
+		SFFloat* const backTransparency;
+	};
+
+	Fields fields;
+
 
 	float   alpha;
 	GLfloat glAmbientColor [4];
@@ -121,3 +251,4 @@ private:
 } // titania
 
 #endif
+

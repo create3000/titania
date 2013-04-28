@@ -61,13 +61,25 @@ class Billboard :
 {
 public:
 
-	SFVec3f axisOfRotation;
+	
 
 	Billboard (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFVec3f &
+	axisOfRotation ()
+	{ return *fields .axisOfRotation; }
+
+	const SFVec3f &
+	axisOfRotation () const
+	{ return *fields .axisOfRotation; }
+
+
 
 	virtual
 	void
@@ -79,9 +91,20 @@ private:
 	void
 	transform (TraverseType);
 
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const axisOfRotation;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

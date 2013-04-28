@@ -55,34 +55,38 @@
 namespace titania {
 namespace X3D {
 
+CollisionCollection::Fields::Fields () :
+	appliedParameters (new MFString ({ "BOUNCE" })),
+	bounce (new SFFloat ()),
+	collidables (new MFNode ()),
+	enabled (new SFBool ()),
+	frictionCoefficients (new SFVec2f ()),
+	minBounceSpeed (new SFFloat ()),
+	slipFactors (new SFVec2f ()),
+	softnessConstantForceMix (new SFFloat ()),
+	softnessErrorCorrection (new SFFloat ()),
+	surfaceSpeed (new SFVec2f ())
+{ }
+
 CollisionCollection::CollisionCollection (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	            X3DChildNode (),                                                    
-	       appliedParameters ({ "BOUNCE" }),                                        // MFString [in,out] appliedParameters         "BOUNCE"        [ ]
-	                  bounce (),                                                    // SFFloat  [in,out] bounce                    0               [0,1]
-	             collidables (),                                                    // MFNode   [in,out] collidables               NULL            [X3DNBodyCollisionSpaceNode|X3DNBodyCollidableNode]
-	                 enabled (),                                                    // SFBool   [in,out] enabled                   TRUE
-	    frictionCoefficients (),                                                    // SFVec2f  [in,out] frictionCoefficients      0 0             [0,∞)
-	          minBounceSpeed (),                                                    // SFFloat  [in,out] minBounceSpeed            0.1             [0,∞)
-	             slipFactors (),                                                    // SFVec2f  [in,out] slipFactors               0 0             (-∞,∞)
-	softnessConstantForceMix (),                                                    // SFFloat  [in,out] softnessConstantForceMix  0.0001          [0,1]
-	 softnessErrorCorrection (),                                                    // SFFloat  [in,out] softnessErrorCorrection   0.8             [0,1]
-	            surfaceSpeed ()                                                     // SFVec2f  [in,out] surfaceSpeed              0 0             (-∞,∞)
+	fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("CollisionCollection");
 
-	addField (inputOutput, "metadata",                 metadata);
-	addField (inputOutput, "appliedParameters",        appliedParameters);
-	addField (inputOutput, "bounce",                   bounce);
-	addField (inputOutput, "collidables",              collidables);
-	addField (inputOutput, "enabled",                  enabled);
-	addField (inputOutput, "frictionCoefficients",     frictionCoefficients);
-	addField (inputOutput, "minBounceSpeed",           minBounceSpeed);
-	addField (inputOutput, "slipFactors",              slipFactors);
-	addField (inputOutput, "softnessConstantForceMix", softnessConstantForceMix);
-	addField (inputOutput, "softnessErrorCorrection",  softnessErrorCorrection);
-	addField (inputOutput, "surfaceSpeed",             surfaceSpeed);
+	addField (inputOutput, "metadata",                 metadata ());
+	addField (inputOutput, "appliedParameters",        appliedParameters ());
+	addField (inputOutput, "bounce",                   bounce ());
+	addField (inputOutput, "collidables",              collidables ());
+	addField (inputOutput, "enabled",                  enabled ());
+	addField (inputOutput, "frictionCoefficients",     frictionCoefficients ());
+	addField (inputOutput, "minBounceSpeed",           minBounceSpeed ());
+	addField (inputOutput, "slipFactors",              slipFactors ());
+	addField (inputOutput, "softnessConstantForceMix", softnessConstantForceMix ());
+	addField (inputOutput, "softnessErrorCorrection",  softnessErrorCorrection ());
+	addField (inputOutput, "surfaceSpeed",             surfaceSpeed ());
 }
 
 X3DBaseNode*
@@ -93,3 +97,4 @@ CollisionCollection::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

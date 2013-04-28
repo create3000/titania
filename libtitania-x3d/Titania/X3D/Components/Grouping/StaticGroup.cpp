@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,19 +55,23 @@
 namespace titania {
 namespace X3D {
 
+StaticGroup::Fields::Fields () :
+	children (new MFNode ())
+{ }
+
 StaticGroup::StaticGroup (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	    X3DChildNode (),                                                    
 	X3DBoundedObject (),                                                    
-	        children ()                                                     // MFNode[ ]children  [ ]        [X3DChildNode]
+	fields ()
 {
 	setComponent ("Grouping");
 	setTypeName ("StaticGroup");
 
-	addField (inputOutput,    "metadata",   metadata);
-	addField (initializeOnly, "bboxSize",   bboxSize);
-	addField (initializeOnly, "bboxCenter", bboxCenter);
-	addField (initializeOnly, "children",   children);
+	addField (inputOutput,    "metadata",   metadata ());
+	addField (initializeOnly, "bboxSize",   bboxSize ());
+	addField (initializeOnly, "bboxCenter", bboxCenter ());
+	addField (initializeOnly, "children",   children ());
 }
 
 X3DBaseNode*
@@ -98,3 +102,4 @@ StaticGroup::dispose ()
 
 } // X3D
 } // titania
+

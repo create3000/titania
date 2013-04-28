@@ -61,7 +61,7 @@ class GravityPhysicsModel :
 {
 public:
 
-	SFVec3f force;
+	
 
 	GravityPhysicsModel (X3DExecutionContext* const);
 
@@ -69,9 +69,32 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3f &
+	force ()
+	{ return *fields .force; }
+
+	const SFVec3f &
+	force () const
+	{ return *fields .force; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const force;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

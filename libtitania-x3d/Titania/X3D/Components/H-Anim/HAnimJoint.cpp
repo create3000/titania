@@ -55,45 +55,49 @@
 namespace titania {
 namespace X3D {
 
+HAnimJoint::Fields::Fields () :
+	center (new SFVec3f ()),
+	displacers (new MFNode ()),
+	limitOrientation (new SFRotation ()),
+	llimit (new MFFloat ()),
+	name (new SFString ()),
+	rotation (new SFRotation ()),
+	scale (new SFVec3f (1, 1, 1)),
+	scaleOrientation (new SFRotation ()),
+	skinCoordIndex (new MFInt32 ()),
+	skinCoordWeight (new MFFloat ()),
+	stiffness (new MFFloat ({ 0, 0, 0 })),
+	translation (new SFVec3f ()),
+	ulimit (new MFFloat ())
+{ }
+
 HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DGroupingNode (),                                                    
-	          center (),                                                    // SFVec3f    [in,out] center            0 0 0          (-∞,∞)
-	      displacers (),                                                    // MFNode     [in,out] displacers        [ ]            [HAnimDisplacer]
-	limitOrientation (),                                                    // SFRotation [in,out] limitOrientation  0 0 1 0        (-∞,∞)|[-1,1]
-	          llimit (),                                                    // MFFloat    [in,out] llimit            [ ]            (-∞,∞)
-	            name (),                                                    // SFString   [in,out] name              ""
-	        rotation (),                                                    // SFRotation [in,out] rotation          0 0 1 0        (-∞,∞)|[-1,1]
-	           scale (1, 1, 1),                                             // SFVec3f    [in,out] scale             1 1 1          (0,∞)
-	scaleOrientation (),                                                    // SFRotation [in,out] scaleOrientation  0 0 1 0        (-∞,∞)|[-1,1]
-	  skinCoordIndex (),                                                    // MFInt32    [in,out] skinCoordIndex    [ ]
-	 skinCoordWeight (),                                                    // MFFloat    [in,out] skinCoordWeight   [ ]
-	       stiffness ({ 0, 0, 0 }),                                         // MFFloat    [in,out] stiffness         [0 0 0]        [0,1]
-	     translation (),                                                    // SFVec3f    [in,out] translation       0 0 0          (-∞,∞)
-	          ulimit ()                                                     // MFFloat    [in,out] ulimit            [ ]            (-∞,∞)
+	fields ()
 {
 	setComponent ("H-Anim");
 	setTypeName ("HAnimJoint");
 
-	addField (inputOutput,    "metadata",         metadata);
-	addField (initializeOnly, "bboxSize",         bboxSize);
-	addField (initializeOnly, "bboxCenter",       bboxCenter);
-	addField (inputOnly,      "addChildren",      addChildren);
-	addField (inputOnly,      "removeChildren",   removeChildren);
-	addField (inputOutput,    "children",         children);
-	addField (inputOutput,    "center",           center);
-	addField (inputOutput,    "displacers",       displacers);
-	addField (inputOutput,    "limitOrientation", limitOrientation);
-	addField (inputOutput,    "llimit",           llimit);
-	addField (inputOutput,    "name",             name);
-	addField (inputOutput,    "rotation",         rotation);
-	addField (inputOutput,    "scale",            scale);
-	addField (inputOutput,    "scaleOrientation", scaleOrientation);
-	addField (inputOutput,    "skinCoordIndex",   skinCoordIndex);
-	addField (inputOutput,    "skinCoordWeight",  skinCoordWeight);
-	addField (inputOutput,    "stiffness",        stiffness);
-	addField (inputOutput,    "translation",      translation);
-	addField (inputOutput,    "ulimit",           ulimit);
+	addField (inputOutput,    "metadata",         metadata ());
+	addField (initializeOnly, "bboxSize",         bboxSize ());
+	addField (initializeOnly, "bboxCenter",       bboxCenter ());
+	addField (inputOnly,      "addChildren",      addChildren ());
+	addField (inputOnly,      "removeChildren",   removeChildren ());
+	addField (inputOutput,    "children",         children ());
+	addField (inputOutput,    "center",           center ());
+	addField (inputOutput,    "displacers",       displacers ());
+	addField (inputOutput,    "limitOrientation", limitOrientation ());
+	addField (inputOutput,    "llimit",           llimit ());
+	addField (inputOutput,    "name",             name ());
+	addField (inputOutput,    "rotation",         rotation ());
+	addField (inputOutput,    "scale",            scale ());
+	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
+	addField (inputOutput,    "skinCoordIndex",   skinCoordIndex ());
+	addField (inputOutput,    "skinCoordWeight",  skinCoordWeight ());
+	addField (inputOutput,    "stiffness",        stiffness ());
+	addField (inputOutput,    "translation",      translation ());
+	addField (inputOutput,    "ulimit",           ulimit ());
 }
 
 X3DBaseNode*
@@ -104,3 +108,4 @@ HAnimJoint::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

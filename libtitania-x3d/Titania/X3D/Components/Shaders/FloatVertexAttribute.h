@@ -61,8 +61,8 @@ class FloatVertexAttribute :
 {
 public:
 
-	MFFloat value;
-	SFInt32 numComponents;
+	
+	
 
 	FloatVertexAttribute (X3DExecutionContext* const);
 
@@ -70,9 +70,41 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFFloat &
+	value ()
+	{ return *fields .value; }
+
+	const MFFloat &
+	value () const
+	{ return *fields .value; }
+
+	SFInt32 &
+	numComponents ()
+	{ return *fields .numComponents; }
+
+	const SFInt32 &
+	numComponents () const
+	{ return *fields .numComponents; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFFloat* const value;
+		SFInt32* const numComponents;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

@@ -55,46 +55,50 @@
 namespace titania {
 namespace X3D {
 
+RigidBodyCollection::Fields::Fields () :
+	set_contacts (new MFNode ()),
+	autoDisable (new SFBool ()),
+	bodies (new MFNode ()),
+	constantForceMix (new SFFloat (0.0001)),
+	contactSurfaceThickness (new SFFloat ()),
+	disableAngularSpeed (new SFFloat ()),
+	disableLinearSpeed (new SFFloat ()),
+	disableTime (new SFFloat ()),
+	enabled (new SFBool (true)),
+	errorCorrection (new SFFloat (0.8)),
+	gravity (new SFVec3f (0, -9.8, 0)),
+	iterations (new SFInt32 (10)),
+	joints (new MFNode ()),
+	maxCorrectionSpeed (new SFFloat (-1)),
+	preferAccuracy (new SFBool ()),
+	collider (new SFNode <X3DBaseNode> ())
+{ }
+
 RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	           X3DChildNode (),                                                    
-	           set_contacts (),                                                    // MFNode  [in]     set_contacts                             [ ]
-	            autoDisable (),                                                    // SFBool  [in,out] autoDisable              FALSE
-	                 bodies (),                                                    // MFNode  [in,out] bodies                   [ ]             [RigidBody]
-	       constantForceMix (0.0001),                                              // SFFloat [in,out] constantForceMix         0.0001          [0,∞)
-	contactSurfaceThickness (),                                                    // SFFloat [in,out] contactSurfaceThickness  0               [0,∞)
-	    disableAngularSpeed (),                                                    // SFFloat [in,out] disableAngularSpeed      0               [0,∞)
-	     disableLinearSpeed (),                                                    // SFFloat [in,out] disableLinearSpeed       0               [0,∞)
-	            disableTime (),                                                    // SFFloat [in,out] disableTime              0               [0,∞)
-	                enabled (true),                                                // SFBool  [in,out] enabled                  TRUE
-	        errorCorrection (0.8),                                                 // SFFloat [in,out] errorCorrection          0.8             [0,1]
-	                gravity (0, -9.8, 0),                                          // SFVec3f [in,out] gravity                  0 -9.8 0
-	             iterations (10),                                                  // SFInt32 [in,out] iterations               10              [0,∞)
-	                 joints (),                                                    // MFNode  [in,out] joints                   [ ]             [X3DRigidJointNode]
-	     maxCorrectionSpeed (-1),                                                  // SFFloat [in,out] maxCorrectionSpeed       -1              [0,∞) or -1
-	         preferAccuracy (),                                                    // SFBool  [in,out] preferAccuracy           FALSE
-	               collider ()                                                     // SFNode  [ ]      collider                 NULL            [CollisionCollection]
+	fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("RigidBodyCollection");
 
-	addField (inputOutput,    "metadata",                metadata);
-	addField (inputOnly,      "set_contacts",            set_contacts);
-	addField (inputOutput,    "autoDisable",             autoDisable);
-	addField (inputOutput,    "bodies",                  bodies);
-	addField (inputOutput,    "constantForceMix",        constantForceMix);
-	addField (inputOutput,    "contactSurfaceThickness", contactSurfaceThickness);
-	addField (inputOutput,    "disableAngularSpeed",     disableAngularSpeed);
-	addField (inputOutput,    "disableLinearSpeed",      disableLinearSpeed);
-	addField (inputOutput,    "disableTime",             disableTime);
-	addField (inputOutput,    "enabled",                 enabled);
-	addField (inputOutput,    "errorCorrection",         errorCorrection);
-	addField (inputOutput,    "gravity",                 gravity);
-	addField (inputOutput,    "iterations",              iterations);
-	addField (inputOutput,    "joints",                  joints);
-	addField (inputOutput,    "maxCorrectionSpeed",      maxCorrectionSpeed);
-	addField (inputOutput,    "preferAccuracy",          preferAccuracy);
-	addField (initializeOnly, "collider",                collider);
+	addField (inputOutput,    "metadata",                metadata ());
+	addField (inputOnly,      "set_contacts",            set_contacts ());
+	addField (inputOutput,    "autoDisable",             autoDisable ());
+	addField (inputOutput,    "bodies",                  bodies ());
+	addField (inputOutput,    "constantForceMix",        constantForceMix ());
+	addField (inputOutput,    "contactSurfaceThickness", contactSurfaceThickness ());
+	addField (inputOutput,    "disableAngularSpeed",     disableAngularSpeed ());
+	addField (inputOutput,    "disableLinearSpeed",      disableLinearSpeed ());
+	addField (inputOutput,    "disableTime",             disableTime ());
+	addField (inputOutput,    "enabled",                 enabled ());
+	addField (inputOutput,    "errorCorrection",         errorCorrection ());
+	addField (inputOutput,    "gravity",                 gravity ());
+	addField (inputOutput,    "iterations",              iterations ());
+	addField (inputOutput,    "joints",                  joints ());
+	addField (inputOutput,    "maxCorrectionSpeed",      maxCorrectionSpeed ());
+	addField (inputOutput,    "preferAccuracy",          preferAccuracy ());
+	addField (initializeOnly, "collider",                collider ());
 }
 
 X3DBaseNode*
@@ -105,3 +109,4 @@ RigidBodyCollection::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

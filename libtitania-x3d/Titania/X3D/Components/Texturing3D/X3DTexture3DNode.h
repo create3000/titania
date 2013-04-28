@@ -61,10 +61,38 @@ class X3DTexture3DNode :
 {
 public:
 
-	SFBool               repeatS;
-	SFBool               repeatT;
-	SFBool               repeatR;
-	SFNode <X3DBaseNode> textureProperties;
+	SFBool &
+	repeatS ()
+	{ return *fields .repeatS; }
+
+	const SFBool &
+	repeatS () const
+	{ return *fields .repeatS; }
+
+	SFBool &
+	repeatT ()
+	{ return *fields .repeatT; }
+
+	const SFBool &
+	repeatT () const
+	{ return *fields .repeatT; }
+
+	SFBool &
+	repeatR ()
+	{ return *fields .repeatR; }
+
+	const SFBool &
+	repeatR () const
+	{ return *fields .repeatR; }
+
+	SFNode <X3DBaseNode> &
+	textureProperties ()
+	{ return *fields .textureProperties; }
+
+	const SFNode <X3DBaseNode> &
+	textureProperties () const
+	{ return *fields .textureProperties; }
+
 
 	virtual
 	void
@@ -73,6 +101,19 @@ public:
 protected:
 
 	X3DTexture3DNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const repeatS;
+		SFBool* const repeatT;
+		SFBool* const repeatR;
+		SFNode <X3DBaseNode>* const textureProperties;
+	};
+
+	Fields fields;
 
 };
 
@@ -80,3 +121,4 @@ protected:
 } // titania
 
 #endif
+

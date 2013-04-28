@@ -62,15 +62,19 @@
 namespace titania {
 namespace X3D {
 
+Appearance::Fields::Fields () :
+	lineProperties (new SFNode <X3DBaseNode> ()),
+	fillProperties (new SFNode <X3DBaseNode> ()),
+	material (new SFNode <X3DBaseNode> ()),
+	texture (new SFNode <X3DBaseNode> ()),
+	textureTransform (new SFNode <X3DBaseNode> ()),
+	shaders (new MFNode ())
+{ }
+
 Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DAppearanceNode (),                                                    
-	   lineProperties (),                                                    // SFNode [in,out] lineProperties    NULL        [LineProperties]
-	   fillProperties (),                                                    // SFNode [in,out] fillProperties    NULL        [FillProperties]
-	         material (),                                                    // SFNode [in,out] material          NULL        [X3DMaterialNode]
-	          texture (),                                                    // SFNode [in,out] texture           NULL        [X3DTextureNode]
-	 textureTransform (),                                                    // SFNode [in,out] textureTransform  NULL        [X3DTextureTransformNode]
-	          shaders (),                                                    // MFNode[in,out]  shaders           [ ]         [X3DShaderNode]
+	           fields (),
 	  _lineProperties (NULL),                                                
 	  _fillProperties (NULL),                                                
 	        _material (NULL),                                                
@@ -80,13 +84,13 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	setComponent ("Shape");
 	setTypeName ("Appearance");
 
-	addField (inputOutput, "metadata",         metadata);
-	addField (inputOutput, "fillProperties",   fillProperties);
-	addField (inputOutput, "lineProperties",   lineProperties);
-	addField (inputOutput, "material",         material);
-	addField (inputOutput, "texture",          texture);
-	addField (inputOutput, "textureTransform", textureTransform);
-	addField (inputOutput, "shaders",          shaders);
+	addField (inputOutput, "metadata",         metadata ());
+	addField (inputOutput, "fillProperties",   fillProperties ());
+	addField (inputOutput, "lineProperties",   lineProperties ());
+	addField (inputOutput, "material",         material ());
+	addField (inputOutput, "texture",          texture ());
+	addField (inputOutput, "textureTransform", textureTransform ());
+	addField (inputOutput, "shaders",          shaders ());
 }
 
 X3DBaseNode*
@@ -100,12 +104,12 @@ Appearance::initialize ()
 {
 	X3DAppearanceNode::initialize ();
 
-	lineProperties   .addInterest (this, &Appearance::set_lineProperties);
-	fillProperties   .addInterest (this, &Appearance::set_fillProperties);
-	material         .addInterest (this, &Appearance::set_material);
-	texture          .addInterest (this, &Appearance::set_texture);
-	textureTransform .addInterest (this, &Appearance::set_textureTransform);
-	shaders          .addInterest (this, &Appearance::set_shaders);
+	lineProperties ()   .addInterest (this, &Appearance::set_lineProperties);
+	fillProperties ()   .addInterest (this, &Appearance::set_fillProperties);
+	material ()         .addInterest (this, &Appearance::set_material);
+	texture ()          .addInterest (this, &Appearance::set_texture);
+	textureTransform () .addInterest (this, &Appearance::set_textureTransform);
+	shaders ()          .addInterest (this, &Appearance::set_shaders);
 
 	set_lineProperties ();
 	set_fillProperties ();
@@ -133,31 +137,31 @@ Appearance::isTransparent () const
 void
 Appearance::set_lineProperties ()
 {
-	_lineProperties = x3d_cast <LineProperties*> (lineProperties .getValue ());
+	_lineProperties = x3d_cast <LineProperties*> (lineProperties () .getValue ());
 }
 
 void
 Appearance::set_fillProperties ()
 {
-	_fillProperties = x3d_cast <FillProperties*> (fillProperties .getValue ());
+	_fillProperties = x3d_cast <FillProperties*> (fillProperties () .getValue ());
 }
 
 void
 Appearance::set_material ()
 {
-	_material = x3d_cast <X3DMaterialNode*> (material .getValue ());
+	_material = x3d_cast <X3DMaterialNode*> (material () .getValue ());
 }
 
 void
 Appearance::set_texture ()
 {
-	_texture = x3d_cast <X3DTextureNode*> (texture .getValue ());
+	_texture = x3d_cast <X3DTextureNode*> (texture () .getValue ());
 }
 
 void
 Appearance::set_textureTransform ()
 {
-	_textureTransform = x3d_cast <X3DTextureTransformNode*> (textureTransform .getValue ());
+	_textureTransform = x3d_cast <X3DTextureTransformNode*> (textureTransform () .getValue ());
 }
 
 void
@@ -165,7 +169,7 @@ Appearance::set_shaders ()
 {
 	_shaders .clear ();
 	
-	for (const auto & shader : shaders)
+	for (const auto & shader : shaders ())
 	{
 		auto _shader = x3d_cast <X3DShaderNode*> (shader .getValue ());
 		
@@ -198,3 +202,4 @@ Appearance::draw ()
 
 } // X3D
 } // titania
+

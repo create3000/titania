@@ -61,9 +61,9 @@ class ConeEmitter :
 {
 public:
 
-	SFFloat angle;
-	SFVec3f direction;
-	SFVec3f position;
+	
+	
+	
 
 	ConeEmitter (X3DExecutionContext* const);
 
@@ -71,9 +71,50 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFFloat &
+	angle ()
+	{ return *fields .angle; }
+
+	const SFFloat &
+	angle () const
+	{ return *fields .angle; }
+
+	SFVec3f &
+	direction ()
+	{ return *fields .direction; }
+
+	const SFVec3f &
+	direction () const
+	{ return *fields .direction; }
+
+	SFVec3f &
+	position ()
+	{ return *fields .position; }
+
+	const SFVec3f &
+	position () const
+	{ return *fields .position; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const angle;
+		SFVec3f* const direction;
+		SFVec3f* const position;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

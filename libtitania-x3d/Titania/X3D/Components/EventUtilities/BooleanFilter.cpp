@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,22 +55,26 @@
 namespace titania {
 namespace X3D {
 
+BooleanFilter::Fields::Fields () :
+	set_boolean (new SFBool ()),
+	inputFalse (new SFBool ()),
+	inputNegate (new SFBool ()),
+	inputTrue (new SFBool ())
+{ }
+
 BooleanFilter::BooleanFilter (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DChildNode (),                                                    
-	 set_boolean (),                                                    // SFBool [in]  set_boolean
-	  inputFalse (),                                                    // SFBool [out] inputFalse
-	 inputNegate (),                                                    // SFBool [out] inputNegate
-	   inputTrue ()                                                     // SFBool [out] inputTrue
+	fields ()
 {
 	setComponent ("EventUtilities");
 	setTypeName ("BooleanFilter");
 
-	addField (inputOutput, "metadata",    metadata);
-	addField (inputOnly,   "set_boolean", set_boolean);
-	addField (outputOnly,  "inputFalse",  inputFalse);
-	addField (outputOnly,  "inputNegate", inputNegate);
-	addField (outputOnly,  "inputTrue",   inputTrue);
+	addField (inputOutput, "metadata",    metadata ());
+	addField (inputOnly,   "set_boolean", set_boolean ());
+	addField (outputOnly,  "inputFalse",  inputFalse ());
+	addField (outputOnly,  "inputNegate", inputNegate ());
+	addField (outputOnly,  "inputTrue",   inputTrue ());
 }
 
 X3DBaseNode*
@@ -81,3 +85,4 @@ BooleanFilter::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

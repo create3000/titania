@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,15 +56,19 @@
 namespace titania {
 namespace X3D {
 
+Arc2DProperties::Fields::Fields () :
+	minAngle (new SFFloat (M_PI / 20))
+{ }
+
 Arc2DProperties::Arc2DProperties (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	        X3DPropertyNode (),
-	               minAngle (M_PI / 20)                                                     
+	               fields ()                                                     
 {
 	setComponent ("Browser"),
 	setTypeName ("Arc2DProperties");
 	
-	addField (inputOutput, "minAngle", minAngle);
+	addField (inputOutput, "minAngle", minAngle ());
 }
 
 Arc2DProperties*
@@ -75,3 +79,4 @@ Arc2DProperties::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

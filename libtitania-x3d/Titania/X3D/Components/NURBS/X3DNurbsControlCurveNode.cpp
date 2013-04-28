@@ -53,12 +53,17 @@
 namespace titania {
 namespace X3D {
 
+X3DNurbsControlCurveNode::Fields::Fields () :
+	controlPoint (new MFVec2d ())
+{ }
+
 X3DNurbsControlCurveNode::X3DNurbsControlCurveNode () :
 	     X3DNode (), 
-	controlPoint ()  // MFVec2d [in,out] controlPoint  [ ]       (-∞,∞)
+	fields ()
 {
 	addNodeType (X3DConstants::X3DNurbsControlCurveNode);
 }
 
 } // X3D
 } // titania
+

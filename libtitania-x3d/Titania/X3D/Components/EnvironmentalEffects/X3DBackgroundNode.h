@@ -61,11 +61,46 @@ class X3DBackgroundNode :
 {
 public:
 
-	MFFloat groundAngle;
-	MFColor groundColor;
-	MFFloat skyAngle;
-	MFColor skyColor;
-	SFFloat transparency;
+	MFFloat &
+	groundAngle ()
+	{ return *fields .groundAngle; }
+
+	const MFFloat &
+	groundAngle () const
+	{ return *fields .groundAngle; }
+
+	MFColor &
+	groundColor ()
+	{ return *fields .groundColor; }
+
+	const MFColor &
+	groundColor () const
+	{ return *fields .groundColor; }
+
+	MFFloat &
+	skyAngle ()
+	{ return *fields .skyAngle; }
+
+	const MFFloat &
+	skyAngle () const
+	{ return *fields .skyAngle; }
+
+	MFColor &
+	skyColor ()
+	{ return *fields .skyColor; }
+
+	const MFColor &
+	skyColor () const
+	{ return *fields .skyColor; }
+
+	SFFloat &
+	transparency ()
+	{ return *fields .transparency; }
+
+	const SFFloat &
+	transparency () const
+	{ return *fields .transparency; }
+
 
 	virtual
 	void
@@ -109,6 +144,20 @@ private:
 	void
 	build ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFFloat* const groundAngle;
+		MFColor* const groundColor;
+		MFFloat* const skyAngle;
+		MFColor* const skyColor;
+		SFFloat* const transparency;
+	};
+
+	Fields fields;
+
+
 	Matrix4d              matrix;
 	std::vector <GLfloat> glColors;
 	std::vector <GLfloat> glPoints;
@@ -120,3 +169,4 @@ private:
 } // titania
 
 #endif
+

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,28 +55,32 @@
 namespace titania {
 namespace X3D {
 
+DISEntityManager::Fields::Fields () :
+	address (new SFString ("localhost")),
+	applicationID (new SFInt32 (1)),
+	mapping (new MFNode ()),
+	port (new SFInt32 ()),
+	siteID (new SFInt32 ()),
+	addedEntities (new MFNode ()),
+	removedEntities (new MFNode ())
+{ }
+
 DISEntityManager::DISEntityManager (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	   X3DChildNode (),                                                    
-	        address ("localhost"),                                         // SFString [in,out] address          "localhost"
-	  applicationID (1),                                                   // SFInt32  [in,out] applicationID    1                  [0,65535]
-	        mapping (),                                                    // MFNode   [in,out] mapping          [ ]                [DISEntityTypeMapping]
-	           port (),                                                    // SFInt32  [in,out] port             0                  [0,65535]
-	         siteID (),                                                    // SFInt32  [in,out] siteID           0                  [0,65535]
-	  addedEntities (),                                                    // MFNode   [out]    addedEntities                       [EspduTransform]
-	removedEntities ()                                                     // MFNode   [out]    removedEntities                     [EspduTransform]
+	fields ()
 {
 	setComponent ("DIS");
 	setTypeName ("DISEntityManager");
 
-	addField (inputOutput, "metadata",        metadata);
-	addField (inputOutput, "address",         address);
-	addField (inputOutput, "applicationID",   applicationID);
-	addField (inputOutput, "mapping",         mapping);
-	addField (inputOutput, "port",            port);
-	addField (inputOutput, "siteID",          siteID);
-	addField (outputOnly,  "addedEntities",   addedEntities);
-	addField (outputOnly,  "removedEntities", removedEntities);
+	addField (inputOutput, "metadata",        metadata ());
+	addField (inputOutput, "address",         address ());
+	addField (inputOutput, "applicationID",   applicationID ());
+	addField (inputOutput, "mapping",         mapping ());
+	addField (inputOutput, "port",            port ());
+	addField (inputOutput, "siteID",          siteID ());
+	addField (outputOnly,  "addedEntities",   addedEntities ());
+	addField (outputOnly,  "removedEntities", removedEntities ());
 }
 
 X3DBaseNode*
@@ -87,3 +91,4 @@ DISEntityManager::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

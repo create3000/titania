@@ -61,13 +61,13 @@ class GeoProximitySensor :
 {
 public:
 
-	SFVec3d              geoCenter;
-	SFVec3f              centerOfRotation_changed;
-	SFVec3d              geoCoord_changed;
-	SFRotation           orientation_changed;
-	SFVec3f              position_changed;
-	SFNode <X3DBaseNode> geoOrigin;
-	MFString             geoSystem;
+	
+	
+	
+	
+	
+	
+	
 
 	GeoProximitySensor (X3DExecutionContext* const);
 
@@ -75,9 +75,86 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3d &
+	geoCenter ()
+	{ return *fields .geoCenter; }
+
+	const SFVec3d &
+	geoCenter () const
+	{ return *fields .geoCenter; }
+
+	SFVec3f &
+	centerOfRotation_changed ()
+	{ return *fields .centerOfRotation_changed; }
+
+	const SFVec3f &
+	centerOfRotation_changed () const
+	{ return *fields .centerOfRotation_changed; }
+
+	SFVec3d &
+	geoCoord_changed ()
+	{ return *fields .geoCoord_changed; }
+
+	const SFVec3d &
+	geoCoord_changed () const
+	{ return *fields .geoCoord_changed; }
+
+	SFRotation &
+	orientation_changed ()
+	{ return *fields .orientation_changed; }
+
+	const SFRotation &
+	orientation_changed () const
+	{ return *fields .orientation_changed; }
+
+	SFVec3f &
+	position_changed ()
+	{ return *fields .position_changed; }
+
+	const SFVec3f &
+	position_changed () const
+	{ return *fields .position_changed; }
+
+	SFNode <X3DBaseNode> &
+	geoOrigin ()
+	{ return *fields .geoOrigin; }
+
+	const SFNode <X3DBaseNode> &
+	geoOrigin () const
+	{ return *fields .geoOrigin; }
+
+	MFString &
+	geoSystem ()
+	{ return *fields .geoSystem; }
+
+	const MFString &
+	geoSystem () const
+	{ return *fields .geoSystem; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3d* const geoCenter;
+		SFVec3f* const centerOfRotation_changed;
+		SFVec3d* const geoCoord_changed;
+		SFRotation* const orientation_changed;
+		SFVec3f* const position_changed;
+		SFNode <X3DBaseNode>* const geoOrigin;
+		MFString* const geoSystem;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

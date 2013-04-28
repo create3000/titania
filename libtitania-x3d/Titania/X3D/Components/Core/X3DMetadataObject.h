@@ -63,8 +63,22 @@ class X3DMetadataObject :
 {
 public:
 
-	SFString name;
-	SFString reference;
+	SFString &
+	name ()
+	{ return *fields .name; }
+
+	const SFString &
+	name () const
+	{ return *fields .name; }
+
+	SFString &
+	reference ()
+	{ return *fields .reference; }
+
+	const SFString &
+	reference () const
+	{ return *fields .reference; }
+
 
 
 protected:
@@ -78,6 +92,17 @@ protected:
 	virtual
 	void
 	dispose ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFString* const name;
+		SFString* const reference;
+	};
+
+	Fields fields;
 
 };
 
@@ -85,3 +110,4 @@ protected:
 } // titania
 
 #endif
+

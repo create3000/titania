@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+CoordinateInterpolator2D::Fields::Fields () :
+	keyValue (new MFVec2f ()),
+	value_changed (new MFVec2f ())
+{ }
+
 CoordinateInterpolator2D::CoordinateInterpolator2D (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
-	           keyValue (),                                                    // MFVec2f [in,out] keyValue       [ ]       (-∞,∞)
-	      value_changed ()                                                     // MFVec2f [out]    value_changed
+	fields ()
 {
 	setComponent ("Interpolation");
 	setTypeName ("CoordinateInterpolator2D");
 
-	addField (inputOutput, "metadata",      metadata);
-	addField (inputOnly,   "set_fraction",  set_fraction);
-	addField (inputOutput, "key",           key);
-	addField (inputOutput, "keyValue",      keyValue);
-	addField (outputOnly,  "value_changed", value_changed);
+	addField (inputOutput, "metadata",      metadata ());
+	addField (inputOnly,   "set_fraction",  set_fraction ());
+	addField (inputOutput, "key",           key ());
+	addField (inputOutput, "keyValue",      keyValue ());
+	addField (outputOnly,  "value_changed", value_changed ());
 }
 
 X3DBaseNode*
@@ -90,20 +94,21 @@ CoordinateInterpolator2D::set_keyValue ()
 void
 CoordinateInterpolator2D::interpolate (size_t index0, size_t index1, float weight)
 {
-	size_t size = key .size () > 1 ? keyValue .size () / key .size () : 0;
+	size_t size = key () .size () > 1 ? keyValue () .size () / key () .size () : 0;
 
 	index0 *= size;
 	index1  = index0 + size;
 
-	value_changed .resize (size);
+	value_changed () .resize (size);
 
 	for (size_t i = 0; i < size; ++ i)
 	{
-		value_changed [i] = math::lerp <Vector2f> (keyValue [index0 + i],
-		                                           keyValue [index1 + i],
-		                                           weight);
+		value_changed () [i] = math::lerp <Vector2f> (keyValue () [index0 + i],
+		                                              keyValue () [index1 + i],
+		                                              weight);
 	}
 }
 
 } // X3D
 } // titania
+

@@ -62,21 +62,21 @@ NurbsPatchSurface::NurbsPatchSurface (X3DExecutionContext* const executionContex
 	setComponent ("NURBS");
 	setTypeName ("NurbsPatchSurface");
 
-	addField (inputOutput,    "metadata",      metadata);
-	addField (inputOutput,    "controlPoint",  controlPoint);
-	addField (inputOutput,    "texCoord",      texCoord);
-	addField (inputOutput,    "uTessellation", uTessellation);
-	addField (inputOutput,    "vTessellation", vTessellation);
-	addField (inputOutput,    "weight",        weight);
-	addField (initializeOnly, "solid",         solid);
-	addField (initializeOnly, "uClosed",       uClosed);
-	addField (initializeOnly, "uDimension",    uDimension);
-	addField (initializeOnly, "uKnot",         uKnot);
-	addField (initializeOnly, "uOrder",        uOrder);
-	addField (initializeOnly, "vClosed",       vClosed);
-	addField (initializeOnly, "vDimension",    vDimension);
-	addField (initializeOnly, "vKnot",         vKnot);
-	addField (initializeOnly, "vOrder",        vOrder);
+	addField (inputOutput,    "metadata",      metadata ());
+	addField (inputOutput,    "controlPoint",  controlPoint ());
+	addField (inputOutput,    "texCoord",      texCoord ());
+	addField (inputOutput,    "uTessellation", uTessellation ());
+	addField (inputOutput,    "vTessellation", vTessellation ());
+	addField (inputOutput,    "weight",        weight ());
+	addField (initializeOnly, "solid",         solid ());
+	addField (initializeOnly, "uClosed",       uClosed ());
+	addField (initializeOnly, "uDimension",    uDimension ());
+	addField (initializeOnly, "uKnot",         uKnot ());
+	addField (initializeOnly, "uOrder",        uOrder ());
+	addField (initializeOnly, "vClosed",       vClosed ());
+	addField (initializeOnly, "vDimension",    vDimension ());
+	addField (initializeOnly, "vKnot",         vKnot ());
+	addField (initializeOnly, "vOrder",        vOrder ());
 }
 
 X3DBaseNode*

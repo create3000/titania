@@ -61,17 +61,74 @@ class X3DPickSensorNode :
 {
 public:
 
-	MFString             objectType;
-	SFNode <X3DBaseNode> pickingGeometry;
-	MFNode               pickTarget;
-	MFNode               pickedGeometry;
-	SFString             intersectionType;
-	SFString             sortOrder;
+	MFString &
+	objectType ()
+	{ return *fields .objectType; }
+
+	const MFString &
+	objectType () const
+	{ return *fields .objectType; }
+
+	SFNode <X3DBaseNode> &
+	pickingGeometry ()
+	{ return *fields .pickingGeometry; }
+
+	const SFNode <X3DBaseNode> &
+	pickingGeometry () const
+	{ return *fields .pickingGeometry; }
+
+	MFNode &
+	pickTarget ()
+	{ return *fields .pickTarget; }
+
+	const MFNode &
+	pickTarget () const
+	{ return *fields .pickTarget; }
+
+	MFNode &
+	pickedGeometry ()
+	{ return *fields .pickedGeometry; }
+
+	const MFNode &
+	pickedGeometry () const
+	{ return *fields .pickedGeometry; }
+
+	SFString &
+	intersectionType ()
+	{ return *fields .intersectionType; }
+
+	const SFString &
+	intersectionType () const
+	{ return *fields .intersectionType; }
+
+	SFString &
+	sortOrder ()
+	{ return *fields .sortOrder; }
+
+	const SFString &
+	sortOrder () const
+	{ return *fields .sortOrder; }
+
 
 
 protected:
 
 	X3DPickSensorNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFString* const objectType;
+		SFNode <X3DBaseNode>* const pickingGeometry;
+		MFNode* const pickTarget;
+		MFNode* const pickedGeometry;
+		SFString* const intersectionType;
+		SFString* const sortOrder;
+	};
+
+	Fields fields;
 
 };
 
@@ -79,3 +136,4 @@ protected:
 } // titania
 
 #endif
+

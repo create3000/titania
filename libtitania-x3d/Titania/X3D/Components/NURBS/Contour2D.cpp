@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+Contour2D::Fields::Fields () :
+	addChildren (new MFNode ()),
+	removeChildren (new MFNode ()),
+	children (new MFNode ())
+{ }
+
 Contour2D::Contour2D (X3DExecutionContext* const executionContext) :
 	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	       X3DNode (),                                                    
-	   addChildren (),                                                    // MFNode[in]     addChildren               [NurbsCurve2D|ContourPolyline2D]
-	removeChildren (),                                                    // MFNode[in]     removeChildren            [NurbsCurve2D|ContourPolyline2D]
-	      children ()                                                     // MFNode[in,out] children        [ ]       [NurbsCurve2D|ContourPolyline2D]
+	fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("Contour2D");
 
-	addField (inputOutput, "metadata",       metadata);
-	addField (inputOnly,   "addChildren",    addChildren);
-	addField (inputOnly,   "removeChildren", removeChildren);
-	addField (inputOutput, "children",       children);
+	addField (inputOutput, "metadata",       metadata ());
+	addField (inputOnly,   "addChildren",    addChildren ());
+	addField (inputOnly,   "removeChildren", removeChildren ());
+	addField (inputOutput, "children",       children ());
 }
 
 X3DBaseNode*
@@ -79,3 +83,4 @@ Contour2D::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

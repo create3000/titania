@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+NormalInterpolator::Fields::Fields () :
+	keyValue (new MFVec3f ()),
+	value_changed (new MFVec3f ())
+{ }
+
 NormalInterpolator::NormalInterpolator (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
-	           keyValue (),                                                    // MFVec3f [in,out] keyValue       [ ]       (-∞,∞)
-	      value_changed ()                                                     // MFVec3f [out]    value_changed
+	fields ()
 {
 	setComponent ("Interpolation");
 	setTypeName ("NormalInterpolator");
 
-	addField (inputOutput, "metadata",      metadata);
-	addField (inputOnly,   "set_fraction",  set_fraction);
-	addField (inputOutput, "key",           key);
-	addField (inputOutput, "keyValue",      keyValue);
-	addField (outputOnly,  "value_changed", value_changed);
+	addField (inputOutput, "metadata",      metadata ());
+	addField (inputOnly,   "set_fraction",  set_fraction ());
+	addField (inputOutput, "key",           key ());
+	addField (inputOutput, "keyValue",      keyValue ());
+	addField (outputOnly,  "value_changed", value_changed ());
 }
 
 X3DBaseNode*
@@ -90,18 +94,18 @@ NormalInterpolator::set_keyValue ()
 void
 NormalInterpolator::interpolate (size_t index0, size_t index1, float weight)
 {
-	size_t size = key .size () > 1 ? keyValue .size () / key .size () : 0;
+	size_t size = key () .size () > 1 ? keyValue () .size () / key () .size () : 0;
 
 	index0 *= size;
 	index1  = index0 + size;
 
-	value_changed .resize (size);
+	value_changed () .resize (size);
 
 	for (size_t i = 0; i < size; ++ i)
 	{
-		value_changed [i] = math::slerp <Vector3f> (keyValue [index0 + i],
-		                                            keyValue [index1 + i],
-		                                            weight);
+		value_changed () [i] = math::slerp <Vector3f> (keyValue () [index0 + i],
+		                                               keyValue () [index1 + i],
+		                                               weight);
 	}
 }
 
@@ -124,3 +128,4 @@ NormalInterpolator::interpolate (size_t index0, size_t index1, float weight)
 
 } // X3D
 } // titania
+

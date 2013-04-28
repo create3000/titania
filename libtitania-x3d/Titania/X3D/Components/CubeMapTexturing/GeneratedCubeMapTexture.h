@@ -61,15 +61,43 @@ class GeneratedCubeMapTexture :
 {
 public:
 
-	SFString             update;
-	SFInt32              size;
-	SFNode <X3DBaseNode> textureProperties;
+	
+	
+	
 
 	GeneratedCubeMapTexture (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFString &
+	update ()
+	{ return *fields .update; }
+
+	const SFString &
+	update () const
+	{ return *fields .update; }
+
+	SFInt32 &
+	size ()
+	{ return *fields .size; }
+
+	const SFInt32 &
+	size () const
+	{ return *fields .size; }
+
+	SFNode <X3DBaseNode> &
+	textureProperties ()
+	{ return *fields .textureProperties; }
+
+	const SFNode <X3DBaseNode> &
+	textureProperties () const
+	{ return *fields .textureProperties; }
+
+
 
 	virtual
 	bool
@@ -79,6 +107,18 @@ public:
 	virtual
 	void
 	draw ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFString* const update;
+		SFInt32* const size;
+		SFNode <X3DBaseNode>* const textureProperties;
+	};
+
+	Fields fields;
 
 };
 
@@ -86,3 +126,4 @@ public:
 } // titania
 
 #endif
+

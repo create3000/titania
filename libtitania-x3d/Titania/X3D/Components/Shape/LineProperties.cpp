@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+LineProperties::Fields::Fields () :
+	applied (new SFBool (true)),
+	linetype (new SFInt32 (1)),
+	linewidthScaleFactor (new SFFloat ())
+{ }
+
 LineProperties::LineProperties (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DAppearanceChildNode (),                                                    
-	               applied (true),                                                // SFBool  [in,out] applied               TRUE
-	              linetype (1),                                                   // SFInt32 [in,out] linetype              1           [1,∞)
-	  linewidthScaleFactor ()                                                     // SFFloat [in,out] linewidthScaleFactor  0           (-∞,∞)
+	fields ()
 {
 	setComponent ("Shape");
 	setTypeName ("LineProperties");
 
-	addField (inputOutput, "metadata",             metadata);
-	addField (inputOutput, "applied",              applied);
-	addField (inputOutput, "linetype",             linetype);
-	addField (inputOutput, "linewidthScaleFactor", linewidthScaleFactor);
+	addField (inputOutput, "metadata",             metadata ());
+	addField (inputOutput, "applied",              applied ());
+	addField (inputOutput, "linetype",             linetype ());
+	addField (inputOutput, "linewidthScaleFactor", linewidthScaleFactor ());
 }
 
 X3DBaseNode*
@@ -85,3 +89,4 @@ LineProperties::draw ()
 
 } // X3D
 } // titania
+

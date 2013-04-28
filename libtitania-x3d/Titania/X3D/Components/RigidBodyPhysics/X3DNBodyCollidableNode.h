@@ -62,9 +62,30 @@ class X3DNBodyCollidableNode :
 {
 public:
 
-	SFBool     enabled;
-	SFRotation rotation;
-	SFVec3f    translation;
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	SFRotation &
+	rotation ()
+	{ return *fields .rotation; }
+
+	const SFRotation &
+	rotation () const
+	{ return *fields .rotation; }
+
+	SFVec3f &
+	translation ()
+	{ return *fields .translation; }
+
+	const SFVec3f &
+	translation () const
+	{ return *fields .translation; }
+
 
 	Box3f
 	getBBox ();
@@ -81,6 +102,18 @@ protected:
 	virtual
 	void
 	initialize ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const enabled;
+		SFRotation* const rotation;
+		SFVec3f* const translation;
+	};
+
+	Fields fields;
 
 };
 
@@ -88,3 +121,4 @@ protected:
 } // titania
 
 #endif
+

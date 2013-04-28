@@ -61,7 +61,7 @@ class MultiTextureTransform :
 {
 public:
 
-	MFNode textureTransform;
+	
 
 	MultiTextureTransform (X3DExecutionContext* const);
 
@@ -69,9 +69,31 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFNode &
+	textureTransform ()
+	{ return *fields .textureTransform; }
+
+	const MFNode &
+	textureTransform () const
+	{ return *fields .textureTransform; }
+
+
+
 	virtual
 	void
 	draw ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const textureTransform;
+	};
+
+	Fields fields;
 
 };
 
@@ -79,3 +101,4 @@ public:
 } // titania
 
 #endif
+

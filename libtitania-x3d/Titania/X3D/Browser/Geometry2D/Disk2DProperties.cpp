@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,15 +56,19 @@
 namespace titania {
 namespace X3D {
 
+Disk2DProperties::Fields::Fields () :
+	segments (new SFInt32 (60))
+{ }
+
 Disk2DProperties::Disk2DProperties (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryPropertyNode (),
-	               segments (60)                                                     
+	               fields ()                                                     
 {
 	setComponent ("Browser"),
 	setTypeName ("Disk2DProperties");
 	
-	addField (inputOutput, "segments", segments);
+	addField (inputOutput, "segments", segments ());
 }
 
 Disk2DProperties*
@@ -92,11 +96,11 @@ Disk2DProperties::eventsProcessed ()
 void
 Disk2DProperties::build ()
 {
-	getVertices () .reserve (segments);
+	getVertices () .reserve (segments ());
 
-	float angle = M_PI2 / segments;
+	float angle = M_PI2 / segments ();
 
-	for (int32_t n = 0; n < segments; ++ n)
+	for (int32_t n = 0; n < segments (); ++ n)
 	{
 		float theta = angle * n;
 	
@@ -111,3 +115,4 @@ Disk2DProperties::build ()
 
 } // X3D
 } // titania
+

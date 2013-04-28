@@ -54,25 +54,29 @@
 
 namespace titania {
 namespace X3D {
+GeoLocation::Fields::Fields () :
+	geoCoords (new SFVec3d ()),
+	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoSystem (new MFString ({ "GD", "WE" }))
+{ }
+
 GeoLocation::GeoLocation (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGroupingNode (),                                                    
-	      geoCoords (),                                                    // SFVec3d  [in,out] geoCoords  0 0 0              (-∞,∞)
-	      geoOrigin (),                                                    // SFNode   [ ]      geoOrigin  NULL               [GeoOrigin]
-	      geoSystem ({ "GD", "WE" })                                       // MFString [ ]      geoSystem  ["GD","WE"]        [see <a href="#Specifyingaspatialreference">25.2.3</a>]
+	fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoLocation");
 
-	addField (inputOutput,    "metadata",       metadata);
-	addField (initializeOnly, "bboxSize",       bboxSize);
-	addField (initializeOnly, "bboxCenter",     bboxCenter);
-	addField (inputOnly,      "addChildren",    addChildren);
-	addField (inputOnly,      "removeChildren", removeChildren);
-	addField (inputOutput,    "children",       children);
-	addField (inputOutput,    "geoCoords",      geoCoords);
-	addField (initializeOnly, "geoOrigin",      geoOrigin);
-	addField (initializeOnly, "geoSystem",      geoSystem);
+	addField (inputOutput,    "metadata",       metadata ());
+	addField (initializeOnly, "bboxSize",       bboxSize ());
+	addField (initializeOnly, "bboxCenter",     bboxCenter ());
+	addField (inputOnly,      "addChildren",    addChildren ());
+	addField (inputOnly,      "removeChildren", removeChildren ());
+	addField (inputOutput,    "children",       children ());
+	addField (inputOutput,    "geoCoords",      geoCoords ());
+	addField (initializeOnly, "geoOrigin",      geoOrigin ());
+	addField (initializeOnly, "geoSystem",      geoSystem ());
 }
 
 X3DBaseNode*
@@ -83,3 +87,4 @@ GeoLocation::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

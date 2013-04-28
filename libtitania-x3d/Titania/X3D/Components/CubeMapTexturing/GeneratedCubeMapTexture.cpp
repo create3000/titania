@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+GeneratedCubeMapTexture::Fields::Fields () :
+	update (new SFString ("NONE")),
+	size (new SFInt32 (128)),
+	textureProperties (new SFNode <X3DBaseNode> ())
+{ }
+
 GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const executionContext) :
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DEnvironmentTextureNode (),                                                    
-	                   update ("NONE"),                                              // SFString [in,out] update             "NONE"        ["NONE"|"NEXT_FRAME_ONLY"|"ALWAYS"]
-	                     size (128),                                                 // SFInt32  [ ]      size               128           (0,∞)
-	        textureProperties ()                                                     // SFNode   [ ]      textureProperties  NULL          [TextureProperties]
+	fields ()
 {
 	setComponent ("CubeMapTexturing");
 	setTypeName ("GeneratedCubeMapTexture");
 
-	addField (inputOutput,    "metadata",          metadata);
-	addField (inputOutput,    "update",            update);
-	addField (initializeOnly, "size",              size);
-	addField (initializeOnly, "textureProperties", textureProperties);
+	addField (inputOutput,    "metadata",          metadata ());
+	addField (inputOutput,    "update",            update ());
+	addField (initializeOnly, "size",              size ());
+	addField (initializeOnly, "textureProperties", textureProperties ());
 }
 
 X3DBaseNode*
@@ -83,3 +87,4 @@ GeneratedCubeMapTexture::draw ()
 
 } // X3D
 } // titania
+

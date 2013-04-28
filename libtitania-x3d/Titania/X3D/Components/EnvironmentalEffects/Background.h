@@ -63,18 +63,70 @@ class Background :
 {
 public:
 
-	MFString frontUrl;
-	MFString backUrl;
-	MFString leftUrl;
-	MFString rightUrl;
-	MFString topUrl;
-	MFString bottomUrl;
+	
+	
+	
+	
+	
+	
 
 	Background (X3DExecutionContext* const, bool = true);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFString &
+	frontUrl ()
+	{ return *fields .frontUrl; }
+
+	const MFString &
+	frontUrl () const
+	{ return *fields .frontUrl; }
+
+	MFString &
+	backUrl ()
+	{ return *fields .backUrl; }
+
+	const MFString &
+	backUrl () const
+	{ return *fields .backUrl; }
+
+	MFString &
+	leftUrl ()
+	{ return *fields .leftUrl; }
+
+	const MFString &
+	leftUrl () const
+	{ return *fields .leftUrl; }
+
+	MFString &
+	rightUrl ()
+	{ return *fields .rightUrl; }
+
+	const MFString &
+	rightUrl () const
+	{ return *fields .rightUrl; }
+
+	MFString &
+	topUrl ()
+	{ return *fields .topUrl; }
+
+	const MFString &
+	topUrl () const
+	{ return *fields .topUrl; }
+
+	MFString &
+	bottomUrl ()
+	{ return *fields .bottomUrl; }
+
+	const MFString &
+	bottomUrl () const
+	{ return *fields .bottomUrl; }
+
+
 
 	virtual
 	void
@@ -87,6 +139,25 @@ public:
 
 private:
 
+	virtual
+	void
+	initialize ();
+
+	struct Fields
+	{
+		Fields ();
+
+		MFString* const frontUrl;
+		MFString* const backUrl;
+		MFString* const leftUrl;
+		MFString* const rightUrl;
+		MFString* const topUrl;
+		MFString* const bottomUrl;
+	};
+
+	Fields fields;
+
+
 	SFNode <ImageTexture>      frontTexture;
 	SFNode <ImageTexture>      backTexture;
 	SFNode <ImageTexture>      leftTexture;
@@ -95,13 +166,10 @@ private:
 	SFNode <ImageTexture>      bottomTexture;
 	SFNode <TextureProperties> textureProperties;
 
-	virtual
-	void
-	initialize ();
-
 };
 
 } // X3D
 } // titania
 
 #endif
+

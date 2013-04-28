@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,30 +55,34 @@
 namespace titania {
 namespace X3D {
 
+KeySensor::Fields::Fields () :
+	actionKeyPress (new SFInt32 ()),
+	actionKeyRelease (new SFInt32 ()),
+	altKey (new SFBool ()),
+	controlKey (new SFBool ()),
+	keyPress (new SFString ()),
+	keyRelease (new SFString ()),
+	shiftKey (new SFBool ())
+{ }
+
 KeySensor::KeySensor (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DKeyDeviceSensorNode (),                                                    
-	        actionKeyPress (),                                                    // SFInt32  [out] actionKeyPress
-	      actionKeyRelease (),                                                    // SFInt32  [out] actionKeyRelease
-	                altKey (),                                                    // SFBool   [out] altKey
-	            controlKey (),                                                    // SFBool   [out] controlKey
-	              keyPress (),                                                    // SFString [out] keyPress
-	            keyRelease (),                                                    // SFString [out] keyRelease
-	              shiftKey ()                                                     // SFBool   [out] shiftKey
+	fields ()
 {
 	setComponent ("KeyDeviceSensor");
 	setTypeName ("KeySensor");
 
-	addField (inputOutput, "metadata",         metadata);
-	addField (inputOutput, "enabled",          enabled);
-	addField (outputOnly,  "isActive",         isActive);
-	addField (outputOnly,  "actionKeyPress",   actionKeyPress);
-	addField (outputOnly,  "actionKeyRelease", actionKeyRelease);
-	addField (outputOnly,  "altKey",           altKey);
-	addField (outputOnly,  "controlKey",       controlKey);
-	addField (outputOnly,  "keyPress",         keyPress);
-	addField (outputOnly,  "keyRelease",       keyRelease);
-	addField (outputOnly,  "shiftKey",         shiftKey);
+	addField (inputOutput, "metadata",         metadata ());
+	addField (inputOutput, "enabled",          enabled ());
+	addField (outputOnly,  "isActive",         isActive ());
+	addField (outputOnly,  "actionKeyPress",   actionKeyPress ());
+	addField (outputOnly,  "actionKeyRelease", actionKeyRelease ());
+	addField (outputOnly,  "altKey",           altKey ());
+	addField (outputOnly,  "controlKey",       controlKey ());
+	addField (outputOnly,  "keyPress",         keyPress ());
+	addField (outputOnly,  "keyRelease",       keyRelease ());
+	addField (outputOnly,  "shiftKey",         shiftKey ());
 }
 
 X3DBaseNode*
@@ -89,3 +93,4 @@ KeySensor::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

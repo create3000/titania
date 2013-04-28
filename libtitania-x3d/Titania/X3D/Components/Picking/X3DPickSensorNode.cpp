@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,17 +53,22 @@
 namespace titania {
 namespace X3D {
 
+X3DPickSensorNode::Fields::Fields () :
+	objectType (new MFString ({ "ALL" })),
+	pickingGeometry (new SFNode <X3DBaseNode> ()),
+	pickTarget (new MFNode ()),
+	pickedGeometry (new MFNode ()),
+	intersectionType (new SFString ("BOUNDS")),
+	sortOrder (new SFString ("CLOSEST"))
+{ }
+
 X3DPickSensorNode::X3DPickSensorNode () :
 	   X3DSensorNode (),          
-	      objectType ({ "ALL" }), // MFString [in,out] objectType        "ALL"            ["ALL","NONE","TERRAIN",...]
-	 pickingGeometry (),          // SFNode   [in,out] pickingGeometry   NULL             [X3DGeometryNode]
-	      pickTarget (),          // MFNode   [in,out] pickTarget        [ ]              [X3DGroupingNode|X3DShapeNode|X3DInlineNode]
-	  pickedGeometry (),          // MFNode   [out]    pickedGeometry                     [X3DGeometryNode]
-	intersectionType ("BOUNDS"),  // SFString [ ]      intersectionType  "BOUNDS"         ["GEOMETRY"|"BOUNDS"]
-	       sortOrder ("CLOSEST")  // SFString [ ]      sortOrder         "CLOSEST"        ["ANY"|"CLOSEST"|"ALL"|"ALL_SORTED"]
+	fields ()
 {
 	addNodeType (X3DConstants::X3DPickSensorNode);
 }
 
 } // X3D
 } // titania
+

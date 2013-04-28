@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,20 +55,24 @@
 namespace titania {
 namespace X3D {
 
+ExplosionEmitter::Fields::Fields () :
+	position (new SFVec3f ())
+{ }
+
 ExplosionEmitter::ExplosionEmitter (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DParticleEmitterNode (),                                                    
-	              position ()                                                     // SFVec3f [in,out] position  0 0 0
+	fields ()
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("ExplosionEmitter");
 
-	addField (inputOutput,    "metadata",    metadata);
-	addField (inputOutput,    "speed",       speed);
-	addField (inputOutput,    "variation",   variation);
-	addField (initializeOnly, "mass",        mass);
-	addField (initializeOnly, "surfaceArea", surfaceArea);
-	addField (inputOutput,    "position",    position);
+	addField (inputOutput,    "metadata",    metadata ());
+	addField (inputOutput,    "speed",       speed ());
+	addField (inputOutput,    "variation",   variation ());
+	addField (initializeOnly, "mass",        mass ());
+	addField (initializeOnly, "surfaceArea", surfaceArea ());
+	addField (inputOutput,    "position",    position ());
 }
 
 X3DBaseNode*
@@ -79,3 +83,4 @@ ExplosionEmitter::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

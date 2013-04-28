@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,10 +55,14 @@
 namespace titania {
 namespace X3D {
 
+X3DPointingDeviceSensorNode::Fields::Fields () :
+	description (new SFString ()),
+	isOver (new SFBool ())
+{ }
+
 X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
 	       X3DSensorNode (), 
-	         description (), // SFString [in,out] description  ""
-	              isOver (), // SFBool   [out]    isOver
+	              fields (),
 	transformationMatrix ()  
 {
 	addNodeType (X3DConstants::X3DPointingDeviceSensorNode);
@@ -69,40 +73,40 @@ X3DPointingDeviceSensorNode::initialize ()
 {
 	X3DSensorNode::initialize ();
 	
-	enabled .addInterest (this, &X3DPointingDeviceSensorNode::set_enabled);
+	enabled () .addInterest (this, &X3DPointingDeviceSensorNode::set_enabled);
 }
 
 void
 X3DPointingDeviceSensorNode::set_enabled ()
 {
-	if (not enabled)
+	if (not enabled ())
 	{
-		if (isActive)
-			isActive = false;
+		if (isActive ())
+			isActive () = false;
 		
-		if (isOver)
-			isOver = false;
+		if (isOver ())
+			isOver () = false;
 	}
 }
 
 void
 X3DPointingDeviceSensorNode::set_over (const std::shared_ptr <Hit> &, bool value)
 {
-	if (isOver not_eq value)
-		isOver = value;
+	if (isOver () not_eq value)
+		isOver () = value;
 }
 
 void
 X3DPointingDeviceSensorNode::set_active (const std::shared_ptr <Hit> &, bool value)
 {
-	if (isActive not_eq value)
-		isActive = value;
+	if (isActive () not_eq value)
+		isActive () = value;
 }
 
 void
 X3DPointingDeviceSensorNode::push ()
 {
-	if (enabled)
+	if (enabled ())
 	{
 		getBrowser () -> getSensors () .back () .insert (this);
 		
@@ -112,3 +116,4 @@ X3DPointingDeviceSensorNode::push ()
 
 } // X3D
 } // titania
+

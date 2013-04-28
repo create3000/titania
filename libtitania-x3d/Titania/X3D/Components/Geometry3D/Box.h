@@ -61,14 +61,34 @@ class Box :
 {
 public:
 
-	SFVec3f size;
-	SFBool  solid;
+	
+	
 
 	Box (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFVec3f &
+	size ()
+	{ return *fields .size; }
+
+	const SFVec3f &
+	size () const
+	{ return *fields .size; }
+
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+
 
 	virtual
 	void
@@ -90,9 +110,21 @@ private:
 	void
 	build ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const size;
+		SFBool* const solid;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

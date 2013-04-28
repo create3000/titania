@@ -61,21 +61,97 @@ class GeoViewpoint :
 {
 public:
 
-	SFRotation           set_orientation;
-	SFVec3d              set_position;
-	SFFloat              fieldOfView;
-	SFBool               headlight;
-	MFString             navType;
-	SFNode <X3DBaseNode> geoOrigin;
-	MFString             geoSystem;
-	SFVec3d              position;
-	SFFloat              speedFactor;
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	GeoViewpoint (X3DExecutionContext* const, bool = true);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFRotation &
+	set_orientation ()
+	{ return *fields .set_orientation; }
+
+	const SFRotation &
+	set_orientation () const
+	{ return *fields .set_orientation; }
+
+	SFVec3d &
+	set_position ()
+	{ return *fields .set_position; }
+
+	const SFVec3d &
+	set_position () const
+	{ return *fields .set_position; }
+
+	SFFloat &
+	fieldOfView ()
+	{ return *fields .fieldOfView; }
+
+	const SFFloat &
+	fieldOfView () const
+	{ return *fields .fieldOfView; }
+
+	SFBool &
+	headlight ()
+	{ return *fields .headlight; }
+
+	const SFBool &
+	headlight () const
+	{ return *fields .headlight; }
+
+	MFString &
+	navType ()
+	{ return *fields .navType; }
+
+	const MFString &
+	navType () const
+	{ return *fields .navType; }
+
+	SFNode <X3DBaseNode> &
+	geoOrigin ()
+	{ return *fields .geoOrigin; }
+
+	const SFNode <X3DBaseNode> &
+	geoOrigin () const
+	{ return *fields .geoOrigin; }
+
+	MFString &
+	geoSystem ()
+	{ return *fields .geoSystem; }
+
+	const MFString &
+	geoSystem () const
+	{ return *fields .geoSystem; }
+
+	SFVec3d &
+	position ()
+	{ return *fields .position; }
+
+	const SFVec3d &
+	position () const
+	{ return *fields .position; }
+
+	SFFloat &
+	speedFactor ()
+	{ return *fields .speedFactor; }
+
+	const SFFloat &
+	speedFactor () const
+	{ return *fields .speedFactor; }
+
+
 
 	virtual
 	Vector3f
@@ -95,9 +171,28 @@ private:
 	Vector3f
 	lookAtPositionOffset (Box3f);
 
+	struct Fields
+	{
+		Fields ();
+
+		SFRotation* const set_orientation;
+		SFVec3d* const set_position;
+		SFFloat* const fieldOfView;
+		SFBool* const headlight;
+		MFString* const navType;
+		SFNode <X3DBaseNode>* const geoOrigin;
+		MFString* const geoSystem;
+		SFVec3d* const position;
+		SFFloat* const speedFactor;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

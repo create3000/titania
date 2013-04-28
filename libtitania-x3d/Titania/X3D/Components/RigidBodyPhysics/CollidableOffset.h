@@ -61,7 +61,7 @@ class CollidableOffset :
 {
 public:
 
-	SFNode <X3DBaseNode> collidable;
+	
 
 	CollidableOffset (X3DExecutionContext* const);
 
@@ -69,9 +69,32 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFNode <X3DBaseNode> &
+	collidable ()
+	{ return *fields .collidable; }
+
+	const SFNode <X3DBaseNode> &
+	collidable () const
+	{ return *fields .collidable; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const collidable;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

@@ -57,26 +57,30 @@
 namespace titania {
 namespace X3D {
 
+Cylinder::Fields::Fields () :
+	bottom (new SFBool (true)),
+	height (new SFFloat (2)),
+	radius (new SFFloat (1)),
+	side (new SFBool (true)),
+	top (new SFBool (true)),
+	solid (new SFBool (true))
+{ }
+
 Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometryNode (),                                                    
-	         bottom (true),                                                // SFBool  [ ] bottom  TRUE
-	         height (2),                                                   // SFFloat [ ] height  2           (0,∞)
-	         radius (1),                                                   // SFFloat [ ] radius  1           (0,∞)
-	           side (true),                                                // SFBool  [ ] side    TRUE
-	            top (true),                                                // SFBool  [ ] top     TRUE
-	          solid (true)                                                 // SFBool  [ ] solid   TRUE
+	fields ()
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Cylinder");
 
-	addField (inputOutput,    "metadata", metadata);
-	addField (initializeOnly, "top",      top);
-	addField (initializeOnly, "bottom",   bottom);
-	addField (initializeOnly, "side",     side);
-	addField (initializeOnly, "height",   height);
-	addField (initializeOnly, "radius",   radius);
-	addField (initializeOnly, "solid",    solid);
+	addField (inputOutput,    "metadata", metadata ());
+	addField (initializeOnly, "top",      top ());
+	addField (initializeOnly, "bottom",   bottom ());
+	addField (initializeOnly, "side",     side ());
+	addField (initializeOnly, "height",   height ());
+	addField (initializeOnly, "radius",   radius ());
+	addField (initializeOnly, "solid",    solid ());
 }
 
 X3DBaseNode*
@@ -88,27 +92,27 @@ Cylinder::create (X3DExecutionContext* const executionContext) const
 Box3f
 Cylinder::createBBox ()
 {
-	float diameter = radius * 2;
+	float diameter = radius () * 2;
 
-	if (not top and not side and not bottom)
+	if (not top () and not side () and not bottom ())
 		return Box3f ();
 
-	else if (not top and not side)
-		return Box3f (Vector3f (diameter, 0, diameter), Vector3f (0, -height / 2, 0));
+	else if (not top () and not side ())
+		return Box3f (Vector3f (diameter, 0, diameter), Vector3f (0, -height () / 2, 0));
 
-	else if (not bottom and not side)
-		return Box3f (Vector3f (diameter, 0, diameter), Vector3f (0, height / 2, 0));
+	else if (not bottom () and not side ())
+		return Box3f (Vector3f (diameter, 0, diameter), Vector3f (0, height () / 2, 0));
 
 	else
-		return Box3f (Vector3f (diameter, height, diameter), Vector3f ());
+		return Box3f (Vector3f (diameter, height (), diameter), Vector3f ());
 }
 
 void
 Cylinder::build ()
 {
-	float y1      = height / 2;
+	float y1      = height () / 2;
 	float y2      = -y1;
-	float _radius = radius;
+	float _radius = radius ();
 
 	for (int i = 0; i < SEGMENTS; ++ i)
 	{
@@ -122,7 +126,7 @@ Cylinder::build ()
 		float x2     = -std::sin (theta2);
 		float z2     = -std::cos (theta2);
 
-		if (top)
+		if (top ())
 		{
 			/*   p1
 			 *  /  \
@@ -145,7 +149,7 @@ Cylinder::build ()
 			getVertices () .emplace_back (x2 * _radius, y1, z2 * _radius);
 		}
 
-		if (side)
+		if (side ())
 		{
 			// p1 - p4
 			//  | \ |
@@ -182,7 +186,7 @@ Cylinder::build ()
 			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
 		}
 
-		if (bottom)
+		if (bottom ())
 		{
 			/*   p1
 			 *  /  \
@@ -208,8 +212,9 @@ Cylinder::build ()
 
 	addElement (getVertices () .size ());
 	setVertexMode (GL_TRIANGLES);
-	setSolid (solid);
+	setSolid (solid ());
 }
 
 } // X3D
 } // titania
+

@@ -55,26 +55,30 @@
 namespace titania {
 namespace X3D {
 
+TriangleFanSet::Fields::Fields () :
+	fanCount (new MFInt32 ())
+{ }
+
 TriangleFanSet::TriangleFanSet (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DComposedGeometryNode (),                                                    
-	               fanCount ()                                                     // MFInt32 [in,out] fanCount  [ ]       [3,∞)
+	fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("TriangleFanSet");
 
-	addField (inputOutput,    "metadata",        metadata);
-	addField (inputOutput,    "attrib",          attrib);
-	addField (inputOutput,    "coord",           coord);
-	addField (inputOutput,    "texCoord",        texCoord);
-	addField (inputOutput,    "color",           color);
-	addField (inputOutput,    "normal",          normal);
-	addField (inputOutput,    "fogCoord",        fogCoord);
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex);
-	addField (initializeOnly, "normalPerVertex", normalPerVertex);
-	addField (initializeOnly, "solid",           solid);
-	addField (initializeOnly, "ccw",             ccw);
-	addField (inputOutput,    "fanCount",        fanCount);
+	addField (inputOutput,    "metadata",        metadata ());
+	addField (inputOutput,    "attrib",          attrib ());
+	addField (inputOutput,    "coord",           coord ());
+	addField (inputOutput,    "texCoord",        texCoord ());
+	addField (inputOutput,    "color",           color ());
+	addField (inputOutput,    "normal",          normal ());
+	addField (inputOutput,    "fogCoord",        fogCoord ());
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
+	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "ccw",             ccw ());
+	addField (inputOutput,    "fanCount",        fanCount ());
 }
 
 X3DBaseNode*
@@ -85,3 +89,4 @@ TriangleFanSet::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

@@ -61,17 +61,61 @@ class GeoPositionInterpolator :
 {
 public:
 
-	MFVec3d              keyValue;
-	SFVec3d              geovalue_changed;
-	SFVec3d              value_changed;
-	SFNode <X3DBaseNode> geoOrigin;
-	MFString             geoSystem;
+	
+	
+	
+	
+	
 
 	GeoPositionInterpolator (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFVec3d &
+	keyValue ()
+	{ return *fields .keyValue; }
+
+	const MFVec3d &
+	keyValue () const
+	{ return *fields .keyValue; }
+
+	SFVec3d &
+	geovalue_changed ()
+	{ return *fields .geovalue_changed; }
+
+	const SFVec3d &
+	geovalue_changed () const
+	{ return *fields .geovalue_changed; }
+
+	SFVec3d &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFVec3d &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+	SFNode <X3DBaseNode> &
+	geoOrigin ()
+	{ return *fields .geoOrigin; }
+
+	const SFNode <X3DBaseNode> &
+	geoOrigin () const
+	{ return *fields .geoOrigin; }
+
+	MFString &
+	geoSystem ()
+	{ return *fields .geoSystem; }
+
+	const MFString &
+	geoSystem () const
+	{ return *fields .geoSystem; }
+
+
 
 
 private:
@@ -88,9 +132,24 @@ private:
 	void
 	interpolate (size_t, size_t, float);
 
+	struct Fields
+	{
+		Fields ();
+
+		MFVec3d* const keyValue;
+		SFVec3d* const geovalue_changed;
+		SFVec3d* const value_changed;
+		SFNode <X3DBaseNode>* const geoOrigin;
+		MFString* const geoSystem;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

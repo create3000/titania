@@ -55,16 +55,20 @@
 namespace titania {
 namespace X3D {
 
+TextureCoordinate3D::Fields::Fields () :
+	point (new MFVec3f ())
+{ }
+
 TextureCoordinate3D::TextureCoordinate3D (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DTextureCoordinateNode (),                                                    
-	                   point ()                                                     // MFVec3f [in,out] point  [ ]       (-∞,∞)
+	fields ()
 {
 	setComponent ("Texturing3D");
 	setTypeName ("TextureCoordinate3D");
 
-	addField (inputOutput, "metadata", metadata);
-	addField (inputOutput, "point",    point);
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "point",    point ());
 }
 
 X3DBaseNode*
@@ -75,3 +79,4 @@ TextureCoordinate3D::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

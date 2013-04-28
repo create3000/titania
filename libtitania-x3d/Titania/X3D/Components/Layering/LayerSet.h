@@ -62,15 +62,43 @@ class LayerSet :
 {
 public:
 
-	SFInt32 activeLayer;
-	MFInt32 order;
-	MFNode  layers;
+	
+	
+	
 
 	LayerSet (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFInt32 &
+	activeLayer ()
+	{ return *fields .activeLayer; }
+
+	const SFInt32 &
+	activeLayer () const
+	{ return *fields .activeLayer; }
+
+	MFInt32 &
+	order ()
+	{ return *fields .order; }
+
+	const MFInt32 &
+	order () const
+	{ return *fields .order; }
+
+	MFNode &
+	layers ()
+	{ return *fields .layers; }
+
+	const MFNode &
+	layers () const
+	{ return *fields .layers; }
+
+
 
 	Box3f
 	getBBox ();
@@ -103,6 +131,18 @@ private:
 	void
 	set_layers ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const activeLayer;
+		MFInt32* const order;
+		MFNode* const layers;
+	};
+
+	Fields fields;
+
+
 	std::deque <X3DLayerNode*> children;
 	SFNode <X3DBaseNode>       layer0;
 
@@ -112,3 +152,4 @@ private:
 } // titania
 
 #endif
+

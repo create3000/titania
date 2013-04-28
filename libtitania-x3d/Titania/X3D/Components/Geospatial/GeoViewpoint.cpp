@@ -55,40 +55,44 @@
 namespace titania {
 namespace X3D {
 
+GeoViewpoint::Fields::Fields () :
+	set_orientation (new SFRotation ()),
+	set_position (new SFVec3d ()),
+	fieldOfView (new SFFloat (0.785398)),
+	headlight (new SFBool (true)),
+	navType (new MFString ({ "EXAMINE", "ANY" })),
+	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoSystem (new MFString ({ "GD", "WE" })),
+	position (new SFVec3d ()),
+	speedFactor (new SFFloat (1))
+{ }
+
 GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext, bool displayed) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DViewpointNode (displayed),                                           
-	 set_orientation (),                                                    // SFRotation [in]     set_orientation
-	    set_position (),                                                    // SFVec3d    [in]     set_position
-	     fieldOfView (0.785398),                                            // SFFloat    [in,out] fieldOfView      π/4                      (0,π)
-	       headlight (true),                                                // SFBool     [in,out] headlight        TRUE
-	         navType ({ "EXAMINE", "ANY" }),                                // MFString   [in,out] navType          ["EXAMINE","ANY"]
-	       geoOrigin (),                                                    // SFNode     [ ]      geoOrigin        NULL                     [GeoOrigin]
-	       geoSystem ({ "GD", "WE" }),                                      // MFString   [ ]      geoSystem        ["GD","WE"]              [see <a href="#Specifyingaspatialreference">25.2.3</a>]
-	        position (0, 0, 100000),                                        // SFVec3d    [ ]      position         0 0 100000               (-∞,∞)
-	     speedFactor (1)                                                    // SFFloat    [ ]      speedFactor      1.0                      [0,∞)
+	fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoViewpoint");
 
-	addField (inputOutput,    "metadata",          metadata);
-	addField (inputOnly,      "set_bind",          set_bind);
-	addField (inputOutput,    "jump",              jump);
-	addField (inputOutput,    "retainUserOffsets", retainUserOffsets);
-	addField (inputOutput,    "centerOfRotation",  centerOfRotation);
-	addField (inputOutput,    "description",       description);
-	addField (outputOnly,     "bindTime",          bindTime);
-	addField (outputOnly,     "isBound",           isBound);
-	addField (inputOnly,      "set_orientation",   set_orientation);
-	addField (inputOnly,      "set_position",      set_position);
-	addField (inputOutput,    "fieldOfView",       fieldOfView);
-	addField (inputOutput,    "headlight",         headlight);
-	addField (inputOutput,    "navType",           navType);
-	addField (initializeOnly, "geoOrigin",         geoOrigin);
-	addField (initializeOnly, "geoSystem",         geoSystem);
-	addField (initializeOnly, "position",          position);
-	addField (initializeOnly, "orientation",       orientation);
-	addField (initializeOnly, "speedFactor",       speedFactor);
+	addField (inputOutput,    "metadata",          metadata ());
+	addField (inputOnly,      "set_bind",          set_bind ());
+	addField (inputOutput,    "jump",              jump ());
+	addField (inputOutput,    "retainUserOffsets", retainUserOffsets ());
+	addField (inputOutput,    "centerOfRotation",  centerOfRotation ());
+	addField (inputOutput,    "description",       description ());
+	addField (outputOnly,     "bindTime",          bindTime ());
+	addField (outputOnly,     "isBound",           isBound ());
+	addField (inputOnly,      "set_orientation",   set_orientation ());
+	addField (inputOnly,      "set_position",      set_position ());
+	addField (inputOutput,    "fieldOfView",       fieldOfView ());
+	addField (inputOutput,    "headlight",         headlight ());
+	addField (inputOutput,    "navType",           navType ());
+	addField (initializeOnly, "geoOrigin",         geoOrigin ());
+	addField (initializeOnly, "geoSystem",         geoSystem ());
+	addField (initializeOnly, "position",          position ());
+	addField (initializeOnly, "orientation",       orientation ());
+	addField (initializeOnly, "speedFactor",       speedFactor ());
 }
 
 X3DBaseNode*
@@ -100,14 +104,14 @@ GeoViewpoint::create (X3DExecutionContext* const executionContext) const
 Vector3f
 GeoViewpoint::getPosition () const
 {
-	return position .getValue ();
+	return position () .getValue ();
 }
 
 Vector3f
 GeoViewpoint::lookAtPositionOffset (Box3f bbox)
 {
 	return bbox .center ()
-	       + getUserOrientation () * (Vector3f (0, 0, (math::abs (bbox .size ()) * 0.5f) / std::tan (fieldOfView * 0.5f)))
+	       + getUserOrientation () * (Vector3f (0, 0, (math::abs (bbox .size ()) * 0.5f) / std::tan (fieldOfView () * 0.5f)))
 	       - getPosition ();
 }
 
@@ -121,3 +125,4 @@ GeoViewpoint::traverse (TraverseType)
 
 } // X3D
 } // titania
+

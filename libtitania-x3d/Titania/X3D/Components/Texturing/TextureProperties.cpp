@@ -59,36 +59,40 @@ namespace X3D {
 
 // http://new.web3d.org/files/specifications/19775-1/V3.2/Part01/components/texturing.html#TextureProperties
 
+TextureProperties::Fields::Fields () :
+	borderColor (new SFColorRGBA ()),
+	borderWidth (new SFInt32 ()),
+	boundaryModeS (new SFString ("REPEAT")),
+	boundaryModeT (new SFString ("REPEAT")),
+	boundaryModeR (new SFString ("REPEAT")),
+	minificationFilter (new SFString ("FASTEST")),
+	magnificationFilter (new SFString ("FASTEST")),
+	textureCompression (new SFString ("FASTEST")),
+	generateMipMaps (new SFBool ()),
+	anisotropicDegree (new SFFloat (1)),
+	texturePriority (new SFFloat ())
+{ }
+
 TextureProperties::TextureProperties (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	    X3DPropertyNode (),                                                    
-	        borderColor (),                                                    // SFColorRGBA [ ] borderColor         0 0 0 0    [0,1]
-	        borderWidth (),                                                    // SFInt32     [ ] borderWidth         0          [0,1]
-	      boundaryModeS ("REPEAT"),                                            // SFString    [ ] boundaryModeS       "REPEAT"
-	      boundaryModeT ("REPEAT"),                                            // SFString    [ ] boundaryModeT       "REPEAT"
-	      boundaryModeR ("REPEAT"),                                            // SFString    [ ] boundaryModeR       "REPEAT"
-	 minificationFilter ("FASTEST"),                                           // SFString    [ ] minificationFilter  "FASTEST"
-	magnificationFilter ("FASTEST"),                                           // SFString    [ ] magnificationFilter "FASTEST"
-	 textureCompression ("FASTEST"),                                           // SFString    [ ] textureCompression  "FASTEST"
-	    generateMipMaps (),                                                    // SFBool      [ ] generateMipMaps      FALSE
-	  anisotropicDegree (1),                                                   // SFFloat     [ ] anisotropicDegree    1.0        [1,?)
-	    texturePriority ()                                                     // SFFloat     [ ] texturePriority      0
+	fields ()
 {
 	setComponent ("Texturing");
 	setTypeName ("TextureProperties");
 
-	addField (inputOutput,    "metadata",            metadata);
-	addField (inputOutput,    "borderColor",         borderColor);
-	addField (inputOutput,    "borderWidth",         borderWidth);
-	addField (inputOutput,    "boundaryModeS",       boundaryModeS);
-	addField (inputOutput,    "boundaryModeT",       boundaryModeT);
-	addField (inputOutput,    "boundaryModeR",       boundaryModeR);
-	addField (inputOutput,    "minificationFilter",  minificationFilter);
-	addField (inputOutput,    "magnificationFilter", magnificationFilter);
-	addField (inputOutput,    "textureCompression",  textureCompression);
-	addField (initializeOnly, "generateMipMaps",     generateMipMaps);
-	addField (inputOutput,    "anisotropicDegree",   anisotropicDegree);
-	addField (inputOutput,    "texturePriority",     texturePriority);
+	addField (inputOutput,    "metadata",            metadata ());
+	addField (inputOutput,    "borderColor",         borderColor ());
+	addField (inputOutput,    "borderWidth",         borderWidth ());
+	addField (inputOutput,    "boundaryModeS",       boundaryModeS ());
+	addField (inputOutput,    "boundaryModeT",       boundaryModeT ());
+	addField (inputOutput,    "boundaryModeR",       boundaryModeR ());
+	addField (inputOutput,    "minificationFilter",  minificationFilter ());
+	addField (inputOutput,    "magnificationFilter", magnificationFilter ());
+	addField (inputOutput,    "textureCompression",  textureCompression ());
+	addField (initializeOnly, "generateMipMaps",     generateMipMaps ());
+	addField (inputOutput,    "anisotropicDegree",   anisotropicDegree ());
+	addField (inputOutput,    "texturePriority",     texturePriority ());
 }
 
 X3DBaseNode*
@@ -125,50 +129,50 @@ TextureProperties::getBoundaryMode (const std::string & boundaryMode) const
 GLenum
 TextureProperties::getBoundaryModeS () const
 {
-	return getBoundaryMode (boundaryModeS);
+	return getBoundaryMode (boundaryModeS ());
 }
 
 GLenum
 TextureProperties::getBoundaryModeT () const
 {
-	return getBoundaryMode (boundaryModeT);
+	return getBoundaryMode (boundaryModeT ());
 }
 
 GLenum
 TextureProperties::getBoundaryModeR () const
 {
-	return getBoundaryMode (boundaryModeR);
+	return getBoundaryMode (boundaryModeR ());
 }
 
 GLenum
 TextureProperties::getMinificationFilter () const
 {
-	if (minificationFilter == "AVG_PIXEL")
+	if (minificationFilter () == "AVG_PIXEL")
 		return GL_LINEAR;
 
-	if (minificationFilter == "AVG_PIXEL_AVG_MIPMAP")
+	if (minificationFilter () == "AVG_PIXEL_AVG_MIPMAP")
 		return GL_LINEAR_MIPMAP_LINEAR;
 
-	if (minificationFilter == "AVG_PIXEL_NEAREST_MIPMAP")
+	if (minificationFilter () == "AVG_PIXEL_NEAREST_MIPMAP")
 		return GL_LINEAR_MIPMAP_NEAREST;
 
-	if (minificationFilter == "NEAREST_PIXEL")
+	if (minificationFilter () == "NEAREST_PIXEL")
 		return GL_NEAREST;
 
-	if (minificationFilter == "NEAREST_PIXEL_AVG_MIPMAP")
+	if (minificationFilter () == "NEAREST_PIXEL_AVG_MIPMAP")
 		return GL_NEAREST_MIPMAP_LINEAR;
 
-	if (minificationFilter == "NEAREST_PIXEL_NEAREST_MIPMAP")
+	if (minificationFilter () == "NEAREST_PIXEL_NEAREST_MIPMAP")
 		return GL_NEAREST_MIPMAP_NEAREST;
 
-	if (minificationFilter == "DEFAULT")
-		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties .getValue ()) -> getMinificationFilter ();
+	if (minificationFilter () == "DEFAULT")
+		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties () .getValue ()) -> getMinificationFilter ();
 
-	if (minificationFilter == "FASTEST")
+	if (minificationFilter () == "FASTEST")
 		return GL_NEAREST;
 
 	// if (minificationFilter == "NICEST")
-	return generateMipMaps
+	return generateMipMaps ()
 	       ? GL_LINEAR_MIPMAP_LINEAR
 			 : GL_LINEAR;
 }
@@ -176,16 +180,16 @@ TextureProperties::getMinificationFilter () const
 GLenum
 TextureProperties::getMagnificationFilter () const
 {
-	if (magnificationFilter == "AVG_PIXEL")
+	if (magnificationFilter () == "AVG_PIXEL")
 		return GL_LINEAR;
 
-	if (magnificationFilter == "NEAREST_PIXEL")
+	if (magnificationFilter () == "NEAREST_PIXEL")
 		return GL_NEAREST;
 
-	if (magnificationFilter == "DEFAULT")
-		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties .getValue ()) -> getMagnificationFilter ();
+	if (magnificationFilter () == "DEFAULT")
+		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties () .getValue ()) -> getMagnificationFilter ();
 
-	if (magnificationFilter == "FASTEST")
+	if (magnificationFilter () == "FASTEST")
 		return GL_NEAREST;
 
 	// if (magnificationFilter == "NICEST")
@@ -195,19 +199,19 @@ TextureProperties::getMagnificationFilter () const
 CompressionMode
 TextureProperties::getTextureCompression () const
 {
-	if (textureCompression == "LOW")
+	if (textureCompression () == "LOW")
 		return CompressionMode::LOW;
 
-	if (textureCompression == "MEDIUM")
+	if (textureCompression () == "MEDIUM")
 		return CompressionMode::MEDIUM;
 
-	if (textureCompression == "HIGH")
+	if (textureCompression () == "HIGH")
 		return CompressionMode::HIGH;
 
-	if (textureCompression == "DEFAULT")
-		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties .getValue ()) -> getTextureCompression ();
+	if (textureCompression () == "DEFAULT")
+		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties () .getValue ()) -> getTextureCompression ();
 
-	if (textureCompression == "FASTEST")
+	if (textureCompression () == "FASTEST")
 		return CompressionMode::FASTEST;
 
 	//if (textureCompression == "NICEST")
@@ -283,3 +287,4 @@ TextureProperties::getInternalFormat (int32_t components) const
 
 } // X3D
 } // titania
+

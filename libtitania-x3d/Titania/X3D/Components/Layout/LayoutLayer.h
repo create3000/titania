@@ -61,7 +61,7 @@ class LayoutLayer :
 {
 public:
 
-	SFNode <X3DBaseNode> layout;
+	
 
 	LayoutLayer (X3DExecutionContext* const);
 
@@ -69,9 +69,32 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFNode <X3DBaseNode> &
+	layout ()
+	{ return *fields .layout; }
+
+	const SFNode <X3DBaseNode> &
+	layout () const
+	{ return *fields .layout; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFNode <X3DBaseNode>* const layout;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

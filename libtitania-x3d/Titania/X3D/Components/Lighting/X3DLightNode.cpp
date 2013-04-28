@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,13 +55,17 @@
 namespace titania {
 namespace X3D {
 
+X3DLightNode::Fields::Fields () :
+	on (new SFBool (true)),
+	global (new SFBool (true)),
+	color (new SFColor (1, 1, 1)),
+	intensity (new SFFloat (1)),
+	ambientIntensity (new SFFloat ())
+{ }
+
 X3DLightNode::X3DLightNode () :
 	    X3DChildNode (),        
-	              on (true),    // SFBool  [in,out] on                TRUE
-	          global (true),    // SFBool  [in,out] global            FALSE
-	           color (1, 1, 1), // SFColor [in,out] color             1 1 1        [0,1]
-	       intensity (1),       // SFFloat [in,out] intensity         1            [0,1]
-	ambientIntensity ()         // SFFloat [in,out] ambientIntensity  0            [0,1]
+	fields ()
 {
 	addNodeType (X3DConstants::X3DLightNode);
 }
@@ -69,9 +73,9 @@ X3DLightNode::X3DLightNode () :
 void
 X3DLightNode::push ()
 {
-	if (on)
+	if (on ())
 	{
-		if (global)
+		if (global ())
 			getCurrentLayer () -> addGlobalLight (this);
 		else
 			getCurrentLayer () -> pushLocalLight (this);
@@ -81,9 +85,10 @@ X3DLightNode::push ()
 void
 X3DLightNode::pop ()
 {
-	if (not global and on)
+	if (not global () and on ())
 		getCurrentLayer () -> popLocalLight ();
 }
 
 } // X3D
 } // titania
+

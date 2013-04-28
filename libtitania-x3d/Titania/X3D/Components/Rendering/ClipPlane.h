@@ -61,8 +61,8 @@ class ClipPlane :
 {
 public:
 
-	SFBool  enabled;
-	SFVec4f plane;
+	
+	
 
 	ClipPlane (X3DExecutionContext* const);
 
@@ -70,9 +70,41 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	SFVec4f &
+	plane ()
+	{ return *fields .plane; }
+
+	const SFVec4f &
+	plane () const
+	{ return *fields .plane; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const enabled;
+		SFVec4f* const plane;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

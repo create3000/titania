@@ -62,13 +62,25 @@ class MetadataFloat :
 {
 public:
 
-	MFFloat value;
+	
 
 	MetadataFloat (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFFloat &
+	value ()
+	{ return *fields .value; }
+
+	const MFFloat &
+	value () const
+	{ return *fields .value; }
+
+
 
 	virtual
 	void
@@ -81,9 +93,20 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		MFFloat* const value;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

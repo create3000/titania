@@ -62,13 +62,25 @@ class Viewport :
 {
 public:
 
-	MFFloat clipBoundary;
+	
 
 	Viewport (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFFloat &
+	clipBoundary ()
+	{ return *fields .clipBoundary; }
+
+	const MFFloat &
+	clipBoundary () const
+	{ return *fields .clipBoundary; }
+
+
 
 	virtual
 	void
@@ -97,6 +109,16 @@ private:
 	void
 	collect (TraverseType);
 
+	struct Fields
+	{
+		Fields ();
+
+		MFFloat* const clipBoundary;
+	};
+
+	Fields fields;
+
+
 	GLint viewport [4];
 
 };
@@ -105,3 +127,4 @@ private:
 } // titania
 
 #endif
+

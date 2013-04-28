@@ -61,7 +61,7 @@ class TextureCoordinate :
 {
 public:
 
-	MFVec2f point;
+	
 
 	TextureCoordinate (X3DExecutionContext* const);
 
@@ -69,8 +69,30 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFVec2f &
+	point ()
+	{ return *fields .point; }
+
+	const MFVec2f &
+	point () const
+	{ return *fields .point; }
+
+
+
 	void
 	resize (size_t);
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFVec2f* const point;
+	};
+
+	Fields fields;
 
 };
 
@@ -78,3 +100,4 @@ public:
 } // titania
 
 #endif
+

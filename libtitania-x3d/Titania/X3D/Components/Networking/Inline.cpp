@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,22 +59,26 @@
 namespace titania {
 namespace X3D {
 
+Inline::Fields::Fields () :
+	load (new SFBool (true))
+{ }
+
 Inline::Inline (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	    X3DChildNode (),                                                    
 	X3DBoundedObject (),                                                    
 	    X3DUrlObject (),                                                    
-	            load (true),                                                // SFBool [in,out] load  TRUE
+	          fields (),
 	           scene ()  
 {
 	setComponent ("Networking");
 	setTypeName ("Inline");
 
-	addField (inputOutput,    "metadata",   metadata);
-	addField (inputOutput,    "load",       load);
-	addField (inputOutput,    "url",        url);
-	addField (initializeOnly, "bboxSize",   bboxSize);
-	addField (initializeOnly, "bboxCenter", bboxCenter);
+	addField (inputOutput,    "metadata",   metadata ());
+	addField (inputOutput,    "load",       load ());
+	addField (inputOutput,    "url",        url ());
+	addField (initializeOnly, "bboxSize",   bboxSize ());
+	addField (initializeOnly, "bboxCenter", bboxCenter ());
 
 	setChildren (scene);
 }
@@ -92,11 +96,11 @@ Inline::initialize ()
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
 
-	load  .addInterest (this, &Inline::set_load);
-	url   .addInterest (this, &Inline::set_url);
+	load ()  .addInterest (this, &Inline::set_load);
+	url ()   .addInterest (this, &Inline::set_url);
 	scene .addInterest (this, &Inline::set_scene);
 
-	if (load)
+	if (load ())
 		requestLoad ();
 	
 	else
@@ -112,7 +116,7 @@ Inline::getBBox ()
 void
 Inline::set_load ()
 {
-	if (load)
+	if (load ())
 		requestLoad ();
 
 	else
@@ -124,7 +128,7 @@ Inline::set_url ()
 {
 	setLoadState (NOT_STARTED_STATE);
 
-	if (load)
+	if (load ())
 		requestLoad ();
 }
 
@@ -133,7 +137,7 @@ Inline::set_scene ()
 {
 	const_cast <MFNode &> (scene -> getRootNodes ()) .addParent (this);
 
-	if (getBrowser () -> getBrowserOptions () -> enableInlineViewpoints)
+	if (getBrowser () -> getBrowserOptions () -> enableInlineViewpoints ())
 	{
 		for (auto & layer : getLayers ())
 		{
@@ -174,7 +178,7 @@ Inline::requestImmediateLoad ()
 		if (scene)
 			const_cast <MFNode &> (scene -> getRootNodes ()) .removeParent (this);
 
-		scene = createX3DFromURL (url);
+		scene = createX3DFromURL (url ());
 
 		setLoadState (COMPLETE_STATE);
 	}
@@ -186,7 +190,7 @@ Inline::requestImmediateLoad ()
 
 		std::clog << error .what () << std::endl;
 
-		std::copy (urlError .cbegin (), urlError .cend (),
+		std::copy (urlError () .cbegin (), urlError () .cend (),
 		           std::ostream_iterator <String> (std::clog, "\n"));
 	}
 }
@@ -228,3 +232,4 @@ Inline::dispose ()
 
 } // X3D
 } // titania
+

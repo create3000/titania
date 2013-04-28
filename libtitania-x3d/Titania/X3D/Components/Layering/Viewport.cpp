@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,22 +57,26 @@
 namespace titania {
 namespace X3D {
 
+Viewport::Fields::Fields () :
+	clipBoundary (new MFFloat ({ 0, 1, 0, 1 }))
+{ }
+
 Viewport::Viewport (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DViewportNode (),                                                    
 	    X3DRenderer (),                                                    
-	   clipBoundary ({ 0, 1, 0, 1 })                                       // MFFloat [in,out] clipBoundary  0 1 0 1        [0,1]
+	fields ()
 {
 	setComponent ("Layering");
 	setTypeName ("Viewport");
 
-	addField (inputOutput,    "metadata",       metadata);
-	addField (inputOutput,    "clipBoundary",   clipBoundary);
-	addField (initializeOnly, "bboxSize",       bboxSize);
-	addField (initializeOnly, "bboxCenter",     bboxCenter);
-	addField (inputOnly,      "addChildren",    addChildren);
-	addField (inputOnly,      "removeChildren", removeChildren);
-	addField (inputOutput,    "children",       children);
+	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "clipBoundary",   clipBoundary ());
+	addField (initializeOnly, "bboxSize",       bboxSize ());
+	addField (initializeOnly, "bboxCenter",     bboxCenter ());
+	addField (inputOnly,      "addChildren",    addChildren ());
+	addField (inputOnly,      "removeChildren", removeChildren ());
+	addField (inputOutput,    "children",       children ());
 }
 
 X3DBaseNode*
@@ -97,7 +101,7 @@ Viewport::traverse (TraverseType type)
 		{
 			push ();
 
-			for (const auto & child : children)
+			for (const auto & child : children ())
 				child -> traverse (type);
 
 			pop ();
@@ -106,7 +110,7 @@ Viewport::traverse (TraverseType type)
 		}
 		case TraverseType::CAMERA:
 		{
-			for (const auto & child : children)
+			for (const auto & child : children ())
 				child -> traverse (type);
 				
 			break;
@@ -127,14 +131,14 @@ Viewport::traverse (TraverseType type)
 void
 Viewport::collect (TraverseType type)
 {
-	for (const auto & child : children)
+	for (const auto & child : children ())
 		child -> traverse (type);
 }
 
 void
 Viewport::push ()
 {
-	MFFloat cB = clipBoundary .size () < 4 ? MFFloat ({ 0, 1, 0, 1 }) : clipBoundary;
+	MFFloat cB = clipBoundary () .size () < 4 ? MFFloat ({ 0, 1, 0, 1 }) : clipBoundary ();
 
 	glGetIntegerv (GL_VIEWPORT, viewport); // x, y, width, heigth
 
@@ -162,3 +166,4 @@ Viewport::dispose ()
 
 } // X3D
 } // titania
+

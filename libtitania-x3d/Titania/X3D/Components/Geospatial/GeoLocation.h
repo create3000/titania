@@ -61,9 +61,9 @@ class GeoLocation :
 {
 public:
 
-	SFVec3d              geoCoords;
-	SFNode <X3DBaseNode> geoOrigin;
-	MFString             geoSystem;
+	
+	
+	
 
 	GeoLocation (X3DExecutionContext* const);
 
@@ -71,9 +71,50 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	SFVec3d &
+	geoCoords ()
+	{ return *fields .geoCoords; }
+
+	const SFVec3d &
+	geoCoords () const
+	{ return *fields .geoCoords; }
+
+	SFNode <X3DBaseNode> &
+	geoOrigin ()
+	{ return *fields .geoOrigin; }
+
+	const SFNode <X3DBaseNode> &
+	geoOrigin () const
+	{ return *fields .geoOrigin; }
+
+	MFString &
+	geoSystem ()
+	{ return *fields .geoSystem; }
+
+	const MFString &
+	geoSystem () const
+	{ return *fields .geoSystem; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3d* const geoCoords;
+		SFNode <X3DBaseNode>* const geoOrigin;
+		MFString* const geoSystem;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

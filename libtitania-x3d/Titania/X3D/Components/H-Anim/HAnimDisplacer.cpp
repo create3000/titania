@@ -55,22 +55,26 @@
 namespace titania {
 namespace X3D {
 
+HAnimDisplacer::Fields::Fields () :
+	coordIndex (new MFInt32 ()),
+	displacements (new MFVec3f ()),
+	name (new SFString ()),
+	weight (new SFFloat ())
+{ }
+
 HAnimDisplacer::HAnimDisplacer (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGeometricPropertyNode (),                                                    
-	              coordIndex (),                                                    // MFInt32  [in,out] coordIndex     [ ]        [0,∞) or -1
-	           displacements (),                                                    // MFVec3f  [in,out] displacements  [ ]
-	                    name (),                                                    // SFString [in,out] name           ""
-	                  weight ()                                                     // SFFloat  [in,out] weight         0.0        (-∞,∞)
+	fields ()
 {
 	setComponent ("H-Anim");
 	setTypeName ("HAnimDisplacer");
 
-	addField (inputOutput, "metadata",      metadata);
-	addField (inputOutput, "coordIndex",    coordIndex);
-	addField (inputOutput, "displacements", displacements);
-	addField (inputOutput, "name",          name);
-	addField (inputOutput, "weight",        weight);
+	addField (inputOutput, "metadata",      metadata ());
+	addField (inputOutput, "coordIndex",    coordIndex ());
+	addField (inputOutput, "displacements", displacements ());
+	addField (inputOutput, "name",          name ());
+	addField (inputOutput, "weight",        weight ());
 }
 
 X3DBaseNode*
@@ -81,3 +85,4 @@ HAnimDisplacer::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

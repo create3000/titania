@@ -61,15 +61,56 @@ class X3DEnvironmentalSensorNode :
 {
 public:
 
-	SFVec3f center;
-	SFVec3f size;
-	SFTime  enterTime;
-	SFTime  exitTime;
+	SFVec3f &
+	center ()
+	{ return *fields .center; }
+
+	const SFVec3f &
+	center () const
+	{ return *fields .center; }
+
+	SFVec3f &
+	size ()
+	{ return *fields .size; }
+
+	const SFVec3f &
+	size () const
+	{ return *fields .size; }
+
+	SFTime &
+	enterTime ()
+	{ return *fields .enterTime; }
+
+	const SFTime &
+	enterTime () const
+	{ return *fields .enterTime; }
+
+	SFTime &
+	exitTime ()
+	{ return *fields .exitTime; }
+
+	const SFTime &
+	exitTime () const
+	{ return *fields .exitTime; }
+
 
 
 protected:
 
 	X3DEnvironmentalSensorNode ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const center;
+		SFVec3f* const size;
+		SFTime* const enterTime;
+		SFTime* const exitTime;
+	};
+
+	Fields fields;
 
 };
 
@@ -77,3 +118,4 @@ protected:
 } // titania
 
 #endif
+

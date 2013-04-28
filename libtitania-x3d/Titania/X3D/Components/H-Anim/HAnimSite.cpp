@@ -55,31 +55,35 @@
 namespace titania {
 namespace X3D {
 
+HAnimSite::Fields::Fields () :
+	center (new SFVec3f ()),
+	name (new SFString ()),
+	rotation (new SFRotation ()),
+	scale (new SFVec3f (1, 1, 1)),
+	scaleOrientation (new SFRotation ()),
+	translation (new SFVec3f ())
+{ }
+
 HAnimSite::HAnimSite (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	 X3DGroupingNode (),                                                    
-	          center (),                                                    // SFVec3f    [in,out] center            0 0 0          (-∞,∞)
-	            name (),                                                    // SFString   [in,out] name              ""
-	        rotation (),                                                    // SFRotation [in,out] rotation          0 0 1 0        (-∞,∞)|[-1,1]
-	           scale (1, 1, 1),                                             // SFVec3f    [in,out] scale             1 1 1          (0,∞)
-	scaleOrientation (),                                                    // SFRotation [in,out] scaleOrientation  0 0 1 0        (-∞,∞)|[-1,1]
-	     translation ()                                                     // SFVec3f    [in,out] translation       0 0 0          (-∞,∞)|[-1,1]
+	fields ()
 {
 	setComponent ("H-Anim");
 	setTypeName ("HAnimSite");
 
-	addField (inputOutput,    "metadata",         metadata);
-	addField (initializeOnly, "bboxSize",         bboxSize);
-	addField (initializeOnly, "bboxCenter",       bboxCenter);
-	addField (inputOnly,      "addChildren",      addChildren);
-	addField (inputOnly,      "removeChildren",   removeChildren);
-	addField (inputOutput,    "children",         children);
-	addField (inputOutput,    "center",           center);
-	addField (inputOutput,    "name",             name);
-	addField (inputOutput,    "rotation",         rotation);
-	addField (inputOutput,    "scale",            scale);
-	addField (inputOutput,    "scaleOrientation", scaleOrientation);
-	addField (inputOutput,    "translation",      translation);
+	addField (inputOutput,    "metadata",         metadata ());
+	addField (initializeOnly, "bboxSize",         bboxSize ());
+	addField (initializeOnly, "bboxCenter",       bboxCenter ());
+	addField (inputOnly,      "addChildren",      addChildren ());
+	addField (inputOnly,      "removeChildren",   removeChildren ());
+	addField (inputOutput,    "children",         children ());
+	addField (inputOutput,    "center",           center ());
+	addField (inputOutput,    "name",             name ());
+	addField (inputOutput,    "rotation",         rotation ());
+	addField (inputOutput,    "scale",            scale ());
+	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
+	addField (inputOutput,    "translation",      translation ());
 }
 
 X3DBaseNode*
@@ -90,3 +94,4 @@ HAnimSite::create (X3DExecutionContext* const executionContext) const
 
 } // X3D
 } // titania
+

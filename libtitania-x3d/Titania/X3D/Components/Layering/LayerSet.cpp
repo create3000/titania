@@ -58,22 +58,26 @@
 namespace titania {
 namespace X3D {
 
+LayerSet::Fields::Fields () :
+	activeLayer (new SFInt32 ()),
+	order (new MFInt32 ({ 0 })),
+	layers (new MFNode ())
+{ }
+
 LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	    X3DNode (),                                                    
-	activeLayer (),                                                    // SFInt32 [in,out] activeLayer  0          (-∞,∞)
-	      order ({ 0 }),                                               // MFInt32 [in,out] order        [0]        (0,∞)
-	     layers (),                                                    // MFNode  [in,out] layers       [ ]        [X3DLayerNode]
+	     fields (),
 	   children ({ new Layer (executionContext) }),                    
 	     layer0 (children [0])                                         
 {
 	setComponent ("Layering");
 	setTypeName ("LayerSet");
 
-	addField (inputOutput, "metadata",    metadata);
-	addField (inputOutput, "activeLayer", activeLayer);
-	addField (inputOutput, "order",       order);
-	addField (inputOutput, "layers",      layers);
+	addField (inputOutput, "metadata",    metadata ());
+	addField (inputOutput, "activeLayer", activeLayer ());
+	addField (inputOutput, "order",       order ());
+	addField (inputOutput, "layers",      layers ());
 
 	setChildren (layer0);
 }
@@ -90,10 +94,10 @@ LayerSet::initialize ()
 	X3DNode::initialize ();
 
 	children [0] -> setup ();
-	children [0] -> getBackgroundStack () .bottom () -> transparency = 0;
+	children [0] -> getBackgroundStack () .bottom () -> transparency () = 0;
 
-	activeLayer .addInterest (this, &LayerSet::set_activeLayer);
-	layers      .addInterest (this, &LayerSet::set_layers);
+	activeLayer () .addInterest (this, &LayerSet::set_activeLayer);
+	layers ()      .addInterest (this, &LayerSet::set_layers);
 
 	set_activeLayer ();
 	set_layers ();
@@ -108,8 +112,8 @@ LayerSet::getBBox ()
 X3DLayerNode*
 LayerSet::getActiveLayer () const
 {
-	if (activeLayer >= 0 and activeLayer < (int32_t) children .size ())
-		return children [activeLayer];
+	if (activeLayer () >= 0 and activeLayer () < (int32_t) children .size ())
+		return children [activeLayer ()];
 
 	return children [0];
 }
@@ -123,7 +127,7 @@ LayerSet::set_layers ()
 {
 	children .resize (1);
 
-	for (const auto & layer : layers)
+	for (const auto & layer : layers ())
 	{
 		auto child = x3d_cast <X3DLayerNode*> (layer .getValue ());
 
@@ -135,7 +139,7 @@ LayerSet::set_layers ()
 void
 LayerSet::traverse (TraverseType type)
 {
-	for (const auto & index : order)
+	for (const auto & index : order ())
 	{
 		if (index >= 0 and index < (int32_t) children .size ())
 		{
@@ -156,3 +160,4 @@ LayerSet::dispose ()
 
 } // X3D
 } // titania
+

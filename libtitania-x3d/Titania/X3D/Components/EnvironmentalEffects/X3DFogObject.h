@@ -69,10 +69,38 @@ class X3DFogObject :
 {
 public:
 
-	SFColor  color;
-	SFString fogType;
-	SFFloat  visibilityRange;
-	SFFloat  transparency;
+	SFColor &
+	color ()
+	{ return *fields .color; }
+
+	const SFColor &
+	color () const
+	{ return *fields .color; }
+
+	SFString &
+	fogType ()
+	{ return *fields .fogType; }
+
+	const SFString &
+	fogType () const
+	{ return *fields .fogType; }
+
+	SFFloat &
+	visibilityRange ()
+	{ return *fields .visibilityRange; }
+
+	const SFFloat &
+	visibilityRange () const
+	{ return *fields .visibilityRange; }
+
+	SFFloat &
+	transparency ()
+	{ return fields .transparency; }
+
+	const SFFloat &
+	transparency () const
+	{ return fields .transparency; }
+
 
 	virtual
 	void
@@ -109,6 +137,19 @@ private:
 	void
 	set_fogType ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFColor* const color;
+		SFString* const fogType;
+		SFFloat* const visibilityRange;
+		SFFloat transparency;
+	};
+
+	Fields fields;
+
+
 	GLenum  glMode;
 	GLfloat glColor [4];
 
@@ -118,3 +159,4 @@ private:
 } // titania
 
 #endif
+

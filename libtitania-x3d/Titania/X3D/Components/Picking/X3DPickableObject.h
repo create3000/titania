@@ -63,8 +63,22 @@ class X3DPickableObject :
 {
 public:
 
-	MFString objectType;
-	SFBool   pickable;
+	MFString &
+	objectType ()
+	{ return *fields .objectType; }
+
+	const MFString &
+	objectType () const
+	{ return *fields .objectType; }
+
+	SFBool &
+	pickable ()
+	{ return *fields .pickable; }
+
+	const SFBool &
+	pickable () const
+	{ return *fields .pickable; }
+
 
 
 protected:
@@ -78,6 +92,17 @@ protected:
 	virtual
 	void
 	dispose ();
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFString* const objectType;
+		SFBool* const pickable;
+	};
+
+	Fields fields;
 
 };
 
@@ -85,3 +110,4 @@ protected:
 } // titania
 
 #endif
+

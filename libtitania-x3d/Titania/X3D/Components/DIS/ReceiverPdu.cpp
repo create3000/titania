@@ -55,67 +55,71 @@
 namespace titania {
 namespace X3D {
 
+ReceiverPdu::Fields::Fields () :
+	address (new SFString ("localhost")),
+	applicationID (new SFInt32 (1)),
+	entityID (new SFInt32 ()),
+	multicastRelayHost (new SFString ()),
+	multicastRelayPort (new SFInt32 ()),
+	networkMode (new SFString ("standAlone")),
+	port (new SFInt32 ()),
+	radioID (new SFInt32 ()),
+	readInterval (new SFFloat (0.1)),
+	receivedPower (new SFFloat ()),
+	receiverState (new SFInt32 ()),
+	rtpHeaderExpected (new SFBool ()),
+	siteID (new SFInt32 ()),
+	transmitterApplicationID (new SFInt32 (1)),
+	transmitterEntityID (new SFInt32 ()),
+	transmitterRadioID (new SFInt32 ()),
+	transmitterSiteID (new SFInt32 ()),
+	whichGeometry (new SFInt32 (1)),
+	writeInterval (new SFFloat (1)),
+	isNetworkReader (new SFBool ()),
+	isNetworkWriter (new SFBool ()),
+	isRtpHeaderHeard (new SFBool ()),
+	isStandAlone (new SFBool ()),
+	timestamp (new SFTime ())
+{ }
+
 ReceiverPdu::ReceiverPdu (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	           X3DSensorNode (),                                                    
 	        X3DBoundedObject (),                                                    
-	                 address ("localhost"),                                         // SFString [in,out] address                   "localhost"
-	           applicationID (1),                                                   // SFInt32  [in,out] applicationID             1                   [0,65535]
-	                entityID (),                                                    // SFInt32  [in,out] entityID                  0                   [0,65535]
-	      multicastRelayHost (),                                                    // SFString [in,out] multicastRelayHost        ""
-	      multicastRelayPort (),                                                    // SFInt32  [in,out] multicastRelayPort        0                   [0,4294967295]
-	             networkMode ("standAlone"),                                        // SFString [in,out] networkMode               "standAlone"        ["standAlone"|"networkReader"|"networkWriter"]
-	                    port (),                                                    // SFInt32  [in,out] port                      0                   [0,65535]
-	                 radioID (),                                                    // SFInt32  [in,out] radioID                   0                   [0,65535]
-	            readInterval (0.1),                                                 // SFFloat  [in,out] readInterval              0.1                 [0,∞)
-	           receivedPower (),                                                    // SFFloat  [in,out] receivedPower             0.0                 [0,∞)
-	           receiverState (),                                                    // SFInt32  [in,out] receiverState             0                   [0,65535]
-	       rtpHeaderExpected (),                                                    // SFBool   [in,out] rtpHeaderExpected         FALSE
-	                  siteID (),                                                    // SFInt32  [in,out] siteID                    0                   [0,65535]
-	transmitterApplicationID (1),                                                   // SFInt32  [in,out] transmitterApplicationID  1                   [0,65535]
-	     transmitterEntityID (),                                                    // SFInt32  [in,out] transmitterEntityID       0                   [0,65535]
-	      transmitterRadioID (),                                                    // SFInt32  [in,out] transmitterRadioID        0                   [0,65535]
-	       transmitterSiteID (),                                                    // SFInt32  [in,out] transmitterSiteID         0                   [0,65535]
-	           whichGeometry (1),                                                   // SFInt32  [in,out] whichGeometry             1                   [-1,∞)
-	           writeInterval (1),                                                   // SFFloat  [in,out] writeInterval             1.0                 [0,∞)
-	         isNetworkReader (),                                                    // SFBool   [out]    isNetworkReader                               FALSE
-	         isNetworkWriter (),                                                    // SFBool   [out]    isNetworkWriter                               FALSE
-	        isRtpHeaderHeard (),                                                    // SFBool   [out]    isRtpHeaderHeard                              FALSE
-	            isStandAlone (),                                                    // SFBool   [out]    isStandAlone                                  FALSE
-	               timestamp ()                                                     // SFTime   [out]    timestamp
+	fields ()
 {
 	setComponent ("DIS");
 	setTypeName ("ReceiverPdu");
 
-	addField (inputOutput,    "metadata",                 metadata);
-	addField (initializeOnly, "bboxSize",                 bboxSize);
-	addField (initializeOnly, "bboxCenter",               bboxCenter);
-	addField (inputOutput,    "enabled",                  enabled);
-	addField (outputOnly,     "isActive",                 isActive);
-	addField (inputOutput,    "address",                  address);
-	addField (inputOutput,    "applicationID",            applicationID);
-	addField (inputOutput,    "entityID",                 entityID);
-	addField (inputOutput,    "multicastRelayHost",       multicastRelayHost);
-	addField (inputOutput,    "multicastRelayPort",       multicastRelayPort);
-	addField (inputOutput,    "networkMode",              networkMode);
-	addField (inputOutput,    "port",                     port);
-	addField (inputOutput,    "radioID",                  radioID);
-	addField (inputOutput,    "readInterval",             readInterval);
-	addField (inputOutput,    "receivedPower",            receivedPower);
-	addField (inputOutput,    "receiverState",            receiverState);
-	addField (inputOutput,    "rtpHeaderExpected",        rtpHeaderExpected);
-	addField (inputOutput,    "siteID",                   siteID);
-	addField (inputOutput,    "transmitterApplicationID", transmitterApplicationID);
-	addField (inputOutput,    "transmitterEntityID",      transmitterEntityID);
-	addField (inputOutput,    "transmitterRadioID",       transmitterRadioID);
-	addField (inputOutput,    "transmitterSiteID",        transmitterSiteID);
-	addField (inputOutput,    "whichGeometry",            whichGeometry);
-	addField (inputOutput,    "writeInterval",            writeInterval);
-	addField (outputOnly,     "isNetworkReader",          isNetworkReader);
-	addField (outputOnly,     "isNetworkWriter",          isNetworkWriter);
-	addField (outputOnly,     "isRtpHeaderHeard",         isRtpHeaderHeard);
-	addField (outputOnly,     "isStandAlone",             isStandAlone);
-	addField (outputOnly,     "timestamp",                timestamp);
+	addField (inputOutput,    "metadata",                 metadata ());
+	addField (initializeOnly, "bboxSize",                 bboxSize ());
+	addField (initializeOnly, "bboxCenter",               bboxCenter ());
+	addField (inputOutput,    "enabled",                  enabled ());
+	addField (outputOnly,     "isActive",                 isActive ());
+	addField (inputOutput,    "address",                  address ());
+	addField (inputOutput,    "applicationID",            applicationID ());
+	addField (inputOutput,    "entityID",                 entityID ());
+	addField (inputOutput,    "multicastRelayHost",       multicastRelayHost ());
+	addField (inputOutput,    "multicastRelayPort",       multicastRelayPort ());
+	addField (inputOutput,    "networkMode",              networkMode ());
+	addField (inputOutput,    "port",                     port ());
+	addField (inputOutput,    "radioID",                  radioID ());
+	addField (inputOutput,    "readInterval",             readInterval ());
+	addField (inputOutput,    "receivedPower",            receivedPower ());
+	addField (inputOutput,    "receiverState",            receiverState ());
+	addField (inputOutput,    "rtpHeaderExpected",        rtpHeaderExpected ());
+	addField (inputOutput,    "siteID",                   siteID ());
+	addField (inputOutput,    "transmitterApplicationID", transmitterApplicationID ());
+	addField (inputOutput,    "transmitterEntityID",      transmitterEntityID ());
+	addField (inputOutput,    "transmitterRadioID",       transmitterRadioID ());
+	addField (inputOutput,    "transmitterSiteID",        transmitterSiteID ());
+	addField (inputOutput,    "whichGeometry",            whichGeometry ());
+	addField (inputOutput,    "writeInterval",            writeInterval ());
+	addField (outputOnly,     "isNetworkReader",          isNetworkReader ());
+	addField (outputOnly,     "isNetworkWriter",          isNetworkWriter ());
+	addField (outputOnly,     "isRtpHeaderHeard",         isRtpHeaderHeard ());
+	addField (outputOnly,     "isStandAlone",             isStandAlone ());
+	addField (outputOnly,     "timestamp",                timestamp ());
 }
 
 X3DBaseNode*
@@ -146,3 +150,4 @@ ReceiverPdu::dispose ()
 
 } // X3D
 } // titania
+

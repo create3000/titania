@@ -61,15 +61,43 @@ class PointLight :
 {
 public:
 
-	SFVec3f attenuation;
-	SFVec3f location;
-	SFFloat radius;
+	
+	
+	
 
 	PointLight (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	SFVec3f &
+	attenuation ()
+	{ return *fields .attenuation; }
+
+	const SFVec3f &
+	attenuation () const
+	{ return *fields .attenuation; }
+
+	SFVec3f &
+	location ()
+	{ return *fields .location; }
+
+	const SFVec3f &
+	location () const
+	{ return *fields .location; }
+
+	SFFloat &
+	radius ()
+	{ return *fields .radius; }
+
+	const SFFloat &
+	radius () const
+	{ return *fields .radius; }
+
+
 
 	virtual
 	void
@@ -86,6 +114,18 @@ private:
 	void
 	initialize ();
 
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const attenuation;
+		SFVec3f* const location;
+		SFFloat* const radius;
+	};
+
+	Fields fields;
+
+
 	GLfloat glAmbient [4];
 	GLfloat glDiffuseSpecular [4];
 	GLfloat glPosition [4];
@@ -96,3 +136,4 @@ private:
 } // titania
 
 #endif
+

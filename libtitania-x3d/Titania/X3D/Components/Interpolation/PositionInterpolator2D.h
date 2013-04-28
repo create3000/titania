@@ -61,14 +61,34 @@ class PositionInterpolator2D :
 {
 public:
 
-	MFVec2f keyValue;
-	SFVec2f value_changed;
+	
+	
 
 	PositionInterpolator2D (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
+
+	///  @name Fields
+
+	MFVec2f &
+	keyValue ()
+	{ return *fields .keyValue; }
+
+	const MFVec2f &
+	keyValue () const
+	{ return *fields .keyValue; }
+
+	SFVec2f &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFVec2f &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+
 
 
 private:
@@ -85,9 +105,21 @@ private:
 	void
 	interpolate (size_t, size_t, float);
 
+	struct Fields
+	{
+		Fields ();
+
+		MFVec2f* const keyValue;
+		SFVec2f* const value_changed;
+	};
+
+	Fields fields;
+
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

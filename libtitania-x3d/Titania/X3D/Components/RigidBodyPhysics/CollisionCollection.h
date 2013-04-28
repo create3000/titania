@@ -61,16 +61,16 @@ class CollisionCollection :
 {
 public:
 
-	MFString appliedParameters;
-	SFFloat  bounce;
-	MFNode   collidables;
-	SFBool   enabled;
-	SFVec2f  frictionCoefficients;
-	SFFloat  minBounceSpeed;
-	SFVec2f  slipFactors;
-	SFFloat  softnessConstantForceMix;
-	SFFloat  softnessErrorCorrection;
-	SFVec2f  surfaceSpeed;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	CollisionCollection (X3DExecutionContext* const);
 
@@ -78,9 +78,113 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
+	///  @name Fields
+
+	MFString &
+	appliedParameters ()
+	{ return *fields .appliedParameters; }
+
+	const MFString &
+	appliedParameters () const
+	{ return *fields .appliedParameters; }
+
+	SFFloat &
+	bounce ()
+	{ return *fields .bounce; }
+
+	const SFFloat &
+	bounce () const
+	{ return *fields .bounce; }
+
+	MFNode &
+	collidables ()
+	{ return *fields .collidables; }
+
+	const MFNode &
+	collidables () const
+	{ return *fields .collidables; }
+
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	SFVec2f &
+	frictionCoefficients ()
+	{ return *fields .frictionCoefficients; }
+
+	const SFVec2f &
+	frictionCoefficients () const
+	{ return *fields .frictionCoefficients; }
+
+	SFFloat &
+	minBounceSpeed ()
+	{ return *fields .minBounceSpeed; }
+
+	const SFFloat &
+	minBounceSpeed () const
+	{ return *fields .minBounceSpeed; }
+
+	SFVec2f &
+	slipFactors ()
+	{ return *fields .slipFactors; }
+
+	const SFVec2f &
+	slipFactors () const
+	{ return *fields .slipFactors; }
+
+	SFFloat &
+	softnessConstantForceMix ()
+	{ return *fields .softnessConstantForceMix; }
+
+	const SFFloat &
+	softnessConstantForceMix () const
+	{ return *fields .softnessConstantForceMix; }
+
+	SFFloat &
+	softnessErrorCorrection ()
+	{ return *fields .softnessErrorCorrection; }
+
+	const SFFloat &
+	softnessErrorCorrection () const
+	{ return *fields .softnessErrorCorrection; }
+
+	SFVec2f &
+	surfaceSpeed ()
+	{ return *fields .surfaceSpeed; }
+
+	const SFVec2f &
+	surfaceSpeed () const
+	{ return *fields .surfaceSpeed; }
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		MFString* const appliedParameters;
+		SFFloat* const bounce;
+		MFNode* const collidables;
+		SFBool* const enabled;
+		SFVec2f* const frictionCoefficients;
+		SFFloat* const minBounceSpeed;
+		SFVec2f* const slipFactors;
+		SFFloat* const softnessConstantForceMix;
+		SFFloat* const softnessErrorCorrection;
+		SFVec2f* const surfaceSpeed;
+	};
+
+	Fields fields;
+
 };
 
 } // X3D
 } // titania
 
 #endif
+

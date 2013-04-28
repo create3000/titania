@@ -62,9 +62,30 @@ class X3DTexture2DNode :
 {
 public:
 
-	SFBool               repeatS;
-	SFBool               repeatT;
-	SFNode <X3DBaseNode> textureProperties;
+	SFBool &
+	repeatS ()
+	{ return *fields .repeatS; }
+
+	const SFBool &
+	repeatS () const
+	{ return *fields .repeatS; }
+
+	SFBool &
+	repeatT ()
+	{ return *fields .repeatT; }
+
+	const SFBool &
+	repeatT () const
+	{ return *fields .repeatT; }
+
+	SFNode <X3DBaseNode> &
+	textureProperties ()
+	{ return *fields .textureProperties; }
+
+	const SFNode <X3DBaseNode> &
+	textureProperties () const
+	{ return *fields .textureProperties; }
+
 
 	virtual
 	bool
@@ -111,6 +132,18 @@ private:
 	                GLenum &,
 	                const bool);
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const repeatS;
+		SFBool* const repeatT;
+		SFNode <X3DBaseNode>* const textureProperties;
+	};
+
+	Fields fields;
+
+
 	void
 	applyTextureProperties (const TextureProperties*) const;
 
@@ -125,3 +158,4 @@ private:
 } // titania
 
 #endif
+
