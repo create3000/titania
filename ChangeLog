@@ -1,6 +1,19 @@
 2013-04-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Titania.sln:
+	* test.py:
+	* ChangeLog:
+	* Makefile.am:
+	* libtitania-python.cproj:
+	* PyX3D.cpp:
+	* PyBrowser.h:
+	* PyBrowser.cpp:
+	* PySFVec3f.h:
+	* PySFVec3f.cpp: 
+
+2013-04-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Titania.sln:
 	* Titania.userprefs: 
 
 2013-04-26  Holger Seelig  <holger.seelig@yahoo.de>
