@@ -48,29 +48,58 @@
  *
  ******************************************************************************/
 
-#include "X3DBrowserInterface.h"
+#ifndef __TITANIA_PYTHON_X3D_PY_BROWSER_H__
+#define __TITANIA_PYTHON_X3D_PY_BROWSER_H__
 
-#include <iostream>
+extern "C"
+{
+#include <Python.h>
+}
+
+#include <Titania/X3D/Browser/Browser.h>
 
 namespace titania {
-namespace puck {
+namespace python {
 
-X3DBrowserInterface::X3DBrowserInterface (const X3D::SFNode <X3D::Browser> & browser) :
-	X3DBaseInterface () 
+class PyBrowser
 {
-	setBrowser (browser);
-}
+public:
 
-X3D::Scene*
-X3DBrowserInterface::getExecutionContext () const
-throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
-       X3D::Error <X3D::DISPOSED>)
-{
-	return getBrowser () -> getExecutionContext ();
-}
+	struct Object
+	{
+		PyObject_HEAD;
+		X3D::SFNode <X3D::Browser>* field;
 
-X3DBrowserInterface::~X3DBrowserInterface ()
-{ }
+	};
 
-} // puck
+	static
+	void
+	init (PyObject*);
+
+
+private:
+
+	static
+	int
+	construct (PyObject*,  PyObject*, PyObject*);
+
+	PyObject*
+	getName (Object* self, PyObject *args);
+
+	static
+	PyObject*
+	toString (PyObject*);
+
+	static
+	void
+	dealloc (Object*);
+
+	static PyTypeObject type;
+	static PyMethodDef  methods [ ];
+
+};
+
+} // python
 } // titania
+
+#endif

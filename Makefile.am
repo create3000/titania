@@ -1,7 +1,18 @@
 ## Process this file with automake to produce Makefile.in
 ## Created by Anjuta
 
-SUBDIRS = libtitania-standard libtitania-sqlite libtitania-stream libtitania-anyoptions libtitania-gzstream libtitania-opengl-surface libtitania-x3d Titania titania-info x3dtidy
+SUBDIRS =  \
+	libtitania-standard \
+	libtitania-sqlite \
+	libtitania-stream \
+	libtitania-anyoptions \
+	libtitania-gzstream \
+	libtitania-opengl-surface \
+	libtitania-x3d \
+	libtitania-python \
+	Titania \
+	titania-info \
+	x3dtidy
 
 
 INTLTOOL_FILES = intltool-extract.in \

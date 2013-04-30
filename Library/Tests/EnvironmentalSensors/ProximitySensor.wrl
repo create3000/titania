@@ -6,7 +6,7 @@ Background {
   skyColor 1 1 1
 }
 
-Transform {
+DEF Test Transform {
   translation 10 10 10
   rotation -0.981245 -0.0143457 -0.192232 5.67512
   scale 10 10 10

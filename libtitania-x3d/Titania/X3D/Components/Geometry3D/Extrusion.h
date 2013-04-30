@@ -62,9 +62,6 @@ class Extrusion :
 {
 public:
 
-	using X3DGeometryNode::ccw;
-	using X3DGeometryNode::creaseAngle;
-
 	Extrusion (X3DExecutionContext* const);
 
 	virtual
@@ -130,12 +127,28 @@ public:
 	{ return *fields .solid; }
 
 	SFBool &
+	ccw ()
+	{ return *fields .ccw; }
+
+	const SFBool &
+	ccw () const
+	{ return *fields .ccw; }
+
+	SFBool &
 	convex ()
 	{ return *fields .convex; }
 
 	const SFBool &
 	convex () const
 	{ return *fields .convex; }
+
+	SFFloat &
+	creaseAngle ()
+	{ return *fields .creaseAngle; }
+
+	const SFFloat &
+	creaseAngle () const
+	{ return *fields .creaseAngle; }
 
 	MFVec2f &
 	crossSection ()
@@ -181,6 +194,9 @@ private:
 	virtual
 	void
 	initialize ();
+	
+	void
+	set_ccw ();
 
 	std::vector <Vector3f>
 	createPoints (bool);
@@ -211,7 +227,9 @@ private:
 		SFBool* const beginCap;
 		SFBool* const endCap;
 		SFBool* const solid;
+		SFBool* const ccw;
 		SFBool* const convex;
+		SFFloat* const creaseAngle;
 		MFVec2f* const crossSection;
 		MFRotation* const orientation;
 		MFVec2f* const scale;

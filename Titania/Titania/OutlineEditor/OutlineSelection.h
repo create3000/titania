@@ -58,12 +58,14 @@
 namespace titania {
 namespace puck {
 
+class OutlineTreeView;
+
 class OutlineSelection :
 	public X3DBaseInterface
 {
 public:
 
-	OutlineSelection (const X3D::SFNode <X3D::Browser> &);
+	OutlineSelection (OutlineTreeView* const, const X3D::SFNode <X3D::Browser> &);
 
 	void
 	setSelectMultiple (bool);
@@ -92,8 +94,9 @@ private:
 	void
 	select (X3D::X3DFieldDefinition*, bool, X3D::ChildObjectSet &);
 
-	bool selectMultiple;
-	bool forceSelection;
+	OutlineTreeView* const treeview;
+	bool                   selectMultiple;
+	bool                   forceSelection;
 
 };
 

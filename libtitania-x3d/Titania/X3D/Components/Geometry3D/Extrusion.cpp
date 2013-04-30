@@ -64,7 +64,9 @@ Extrusion::Fields::Fields () :
 	beginCap (new SFBool (true)),
 	endCap (new SFBool (true)),
 	solid (new SFBool (true)),
+	ccw (new SFBool (true)),
 	convex (new SFBool (true)),
+	creaseAngle (new SFFloat ()),
 	crossSection (new MFVec2f ()),
 	orientation (new MFRotation ()),
 	scale (new MFVec2f ()),
@@ -108,6 +110,15 @@ void
 Extrusion::initialize ()
 {
 	X3DGeometryNode::initialize ();
+
+	ccw () .addInterest (this, &Extrusion::set_ccw);
+	set_ccw ();
+}
+
+void
+Extrusion::set_ccw ()
+{
+	setCCW (ccw ());
 }
 
 std::vector <Vector3f>
@@ -433,7 +444,7 @@ Extrusion::build ()
 
 	// Refine normals and build vertices.
 
-	refineNormals (normalIndex, getNormals ());
+	refineNormals (normalIndex, getNormals (), creaseAngle ());
 
 	for (size_t i = 0; i < coordIndex .size (); i += 3)
 	{

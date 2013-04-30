@@ -72,7 +72,7 @@ Browser::Browser () :
 	    X3DBaseNode (this, this), 
 	opengl::Surface (),           
 	     X3DBrowser (),           
-	        viewer  (),           
+	        viewer  (new NoneViewer (this)),           
 	pointingDevice  (this),       
 	    activeLayer ()            
 {

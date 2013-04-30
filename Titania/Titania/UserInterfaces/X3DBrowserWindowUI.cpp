@@ -47,7 +47,6 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
 #include "X3DBrowserWindowUI.h"
 
 namespace titania {
@@ -62,6 +61,9 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_newAction          = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("NewAction"));
+	m_openAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("OpenAction"));
+	m_saveAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("SaveAction"));
 	m_fileFilerX3D       = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilerX3D"));
 	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
 	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
@@ -71,6 +73,7 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder -> get_widget ("FileOpenDialog", m_fileOpenDialog);
 	m_builder -> get_widget ("FileSaveDialog", m_fileSaveDialog);
 	m_builder -> get_widget ("SaveCompressedButton", m_saveCompressedButton);
+	m_builder -> get_widget ("MessageDialog", m_messageDialog);
 	m_builder -> get_widget ("Window", m_window);
 	m_builder -> get_widget ("Widget", m_widget);
 	m_builder -> get_widget ("MenuBar", m_menuBar);
@@ -83,7 +86,6 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder -> get_widget ("QuitMenuItem", m_quitMenuItem);
 	m_builder -> get_widget ("EditMenuItem", m_editMenuItem);
 	m_builder -> get_widget ("ViewMenuItem", m_viewMenuItem);
-	m_builder -> get_widget ("NavigationBarMenuItem", m_navigationBarMenuItem);
 	m_builder -> get_widget ("ToolBarMenuItem", m_toolBarMenuItem);
 	m_builder -> get_widget ("SideBarMenuItem", m_sideBarMenuItem);
 	m_builder -> get_widget ("FooterMenuItem", m_footerMenuItem);
@@ -105,8 +107,6 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder -> get_widget ("RubberbandMenuItem", m_rubberbandMenuItem);
 	m_builder -> get_widget ("LookAtAllMenuItem", m_lookAtAllMenuItem);
 	m_builder -> get_widget ("EnableInlineViewpointsMenuItem", m_enableInlineViewpointsMenuItem);
-	m_builder -> get_widget ("ViewpointsMenuItem", m_viewpointsMenuItem);
-	m_builder -> get_widget ("HistoryMenuItem", m_historyMenuItem);
 	m_builder -> get_widget ("ToolsMenuItem", m_toolsMenuItem);
 	m_builder -> get_widget ("OutlineEditorMenuItem", m_outlineEditorMenuItem);
 	m_builder -> get_widget ("ViewpointEditorMenuItem", m_viewpointEditorMenuItem);
@@ -115,24 +115,49 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder -> get_widget ("HelpMenuItem", m_helpMenuItem);
 	m_builder -> get_widget ("InfoMenuItem", m_infoMenuItem);
 	m_builder -> get_widget ("StandardSizeMenuItem", m_standardSizeMenuItem);
-	m_builder -> get_widget ("Notebook", m_notebook);
-	m_builder -> get_widget ("AddTabLabel", m_addTabLabel);
-	m_builder -> get_widget ("AddTabButton", m_addTabButton);
+	m_builder -> get_widget ("ToolBar", m_toolBar);
+	m_builder -> get_widget ("NewButton", m_newButton);
+	m_builder -> get_widget ("OpenButton", m_openButton);
+	m_builder -> get_widget ("SaveButton", m_saveButton);
+	m_builder -> get_widget ("VPaned", m_vPaned);
+	m_builder -> get_widget ("HPaned", m_hPaned);
+	m_builder -> get_widget ("SurfaceBox", m_surfaceBox);
+	m_builder -> get_widget ("HandButton", m_handButton);
+	m_builder -> get_widget ("ArrowButton", m_arrowButton);
+	m_builder -> get_widget ("LookAtAllButton", m_lookAtAllButton);
+	m_builder -> get_widget ("LookAtButton", m_lookAtButton);
+	m_builder -> get_widget ("Footer", m_footer);
+	m_builder -> get_widget ("FooterCloseButton", m_footerCloseButton);
+	m_builder -> get_widget ("FooterNotebook", m_footerNotebook);
+	m_builder -> get_widget ("ConsoleBox", m_consoleBox);
+	m_builder -> get_widget ("Console", m_console);
+	m_builder -> get_widget ("SideBar", m_sideBar);
+	m_builder -> get_widget ("SideBarCloseButton", m_sideBarCloseButton);
+	m_builder -> get_widget ("SideBarNotebook", m_sideBarNotebook);
+	m_builder -> get_widget ("HistoryEditorBox", m_historyEditorBox);
+	m_builder -> get_widget ("ViewpointEditorBox", m_viewpointEditorBox);
+	m_builder -> get_widget ("OutlineEditorBox", m_outlineEditorBox);
+	m_builder -> get_widget ("StatusBar", m_statusBar);
+
+	// Connect object Gtk::Action with id 'NewAction'.
+	connections .emplace_back (m_newAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_new)));
+	connections .emplace_back (m_openAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_open)));
+	connections .emplace_back (m_saveAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_save)));
 
 	// Connect object Gtk::FileChooserDialog with id 'FileOpenDialog'.
 	connections .emplace_back (m_fileOpenDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_fileOpenDialog_response)));
 	connections .emplace_back (m_fileSaveDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_fileSaveDialog_response)));
 
-	// Connect object Gtk::ImageMenuItem with id 'NewMenuItem'.
-	connections .emplace_back (m_newMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_new)));
-	connections .emplace_back (m_openMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_open)));
+	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
+	connections .emplace_back (m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_messageDialog_response)));
+
+	// Connect object Gtk::ImageMenuItem with id 'SaveMenuItem'.
 	connections .emplace_back (m_saveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_save)));
 	connections .emplace_back (m_saveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_save_as)));
 	connections .emplace_back (m_revertMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_revert_to_saved)));
 	connections .emplace_back (m_quitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_close)));
 
-	// Connect object Gtk::CheckMenuItem with id 'NavigationBarMenuItem'.
-	connections .emplace_back (m_navigationBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_navigationBar_toggled)));
+	// Connect object Gtk::CheckMenuItem with id 'ToolBarMenuItem'.
 	connections .emplace_back (m_toolBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_toolBar_toggled)));
 	connections .emplace_back (m_sideBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_sideBar_toggled)));
 	connections .emplace_back (m_footerMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_footer_toggled)));
@@ -169,11 +194,15 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	connections .emplace_back (m_infoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_info)));
 	connections .emplace_back (m_standardSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_standard_size)));
 
-	// Connect object Gtk::Notebook with id 'Notebook'.
-	connections .emplace_back (m_notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_switch_page)));
+	// Connect object Gtk::RadioToolButton with id 'HandButton'.
+	connections .emplace_back (m_handButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_hand_button_toggled)));
+	connections .emplace_back (m_arrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_arrow_button_toggled)));
 
-	// Connect object Gtk::Button with id 'AddTabButton'.
-	connections .emplace_back (m_addTabButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_add_tab)));
+	// Connect object Gtk::ToolButton with id 'LookAtAllButton'.
+	connections .emplace_back (m_lookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_look_at_all_clicked)));
+
+	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
+	connections .emplace_back (m_lookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_look_at_toggled)));
 
 	// Call construct handler of base class.
 	construct ();

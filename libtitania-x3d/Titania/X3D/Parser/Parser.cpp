@@ -632,7 +632,7 @@ Parser::statement ()
 }
 
 bool
-Parser::nodeStatement (X3DFieldDefinition & _node)
+Parser::nodeStatement (SFNode <X3DBaseNode> & _node)
 {
 	//__LOG__ << std::endl;
 
@@ -661,9 +661,7 @@ Parser::nodeStatement (X3DFieldDefinition & _node)
 
 		if (nodeNameId (_nodeNameId))
 		{
-			const SFNode <X3DBaseNode> & _namedNode = getExecutionContext () -> getNamedNode (_nodeNameId);
-
-			_node .write (_namedNode);
+			_node = getExecutionContext () -> getNamedNode (_nodeNameId);
 
 			return true;
 		}
@@ -675,9 +673,7 @@ Parser::nodeStatement (X3DFieldDefinition & _node)
 	{
 		comments ();
 
-		static SFNode <X3DBaseNode> _null;
-
-		_node .write (_null);
+		_node = NULL;
 
 		return true;
 	}
@@ -1261,7 +1257,7 @@ Parser::URLList (MFString* _value)
 //Nodes
 
 bool
-Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
+Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 {
 	//__LOG__ << _nodeNameId << std::endl;
 
@@ -1271,23 +1267,21 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 	{
 		//__LOG__ << _nodeTypeId << std::endl;
 
-		SFNode <X3DBaseNode> _newNode;
-
 		try
 		{
-			_newNode = getExecutionContext () -> createNode (_nodeTypeId, false);
+			_node = getExecutionContext () -> createNode (_nodeTypeId, false);
 		}
 		catch (const Error <INVALID_NAME> &)
 		{
-			_newNode = getExecutionContext () -> createProtoInstance (_nodeTypeId, false) .getValue ();
+			_node = getExecutionContext () -> createProtoInstance (_nodeTypeId, false) .getValue ();
 		}
 
-		X3DBaseNode* _basicNode = _newNode .getValue ();
+		X3DBaseNode* _basicNode = _node .getValue ();
 
 		//__LOG__ << _nodeTypeId << " " << (void*) _newNode << std::endl;
 
 		if (_nodeNameId .length ())
-			getExecutionContext () -> updateNamedNode (_nodeNameId, _newNode);
+			getExecutionContext () -> updateNamedNode (_nodeNameId, _node);
 
 		if (RegEx::OpenBrace .Consume (&string))
 		{
@@ -1305,8 +1299,6 @@ Parser::node (X3DFieldDefinition & _node, const std::string & _nodeNameId)
 			if (RegEx::CloseBrace .Consume (&string))
 			{
 				comments ();
-
-				_node .write (_newNode);
 
 				_basicNode -> setup ();
 
@@ -1568,7 +1560,7 @@ Parser::fieldValue (X3DFieldDefinition* _field)
 			return sfmatrix4fValue (static_cast <SFMatrix4f*> (_field));
 
 		case X3DConstants::SFNode:
-			return sfnodeValue (_field);
+			return sfnodeValue (static_cast <SFNode <X3DBaseNode>*> (_field));
 
 		case X3DConstants::SFRotation:
 			return sfrotationValue (static_cast <SFRotation*> (_field));
@@ -2668,7 +2660,7 @@ Parser::sfmatrix4fValues (MFMatrix4f* _field)
 }
 
 bool
-Parser::sfnodeValue (X3DFieldDefinition* const _field)
+Parser::sfnodeValue (SFNode <X3DBaseNode>* _field)
 {
 	////__LOG__ << std::endl;
 

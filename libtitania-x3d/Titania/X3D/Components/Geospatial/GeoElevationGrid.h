@@ -61,8 +61,6 @@ class GeoElevationGrid :
 {
 public:
 
-	using X3DGeometryNode::ccw;
-
 	GeoElevationGrid (X3DExecutionContext* const);
 
 	virtual
@@ -175,6 +173,14 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
+	SFBool &
+	ccw ()
+	{ return *fields .ccw; }
+
+	const SFBool &
+	ccw () const
+	{ return *fields .ccw; }
+
 	SFInt32 &
 	xDimension ()
 	{ return *fields .xDimension; }
@@ -210,6 +216,13 @@ public:
 
 private:
 
+	virtual
+	void
+	initialize ();
+	
+	void
+	set_ccw ();
+
 	struct Fields
 	{
 		Fields ();
@@ -227,6 +240,7 @@ private:
 		MFDouble* const height;
 		SFBool* const normalPerVertex;
 		SFBool* const solid;
+		SFBool* const ccw;
 		SFInt32* const xDimension;
 		SFDouble* const xSpacing;
 		SFInt32* const zDimension;

@@ -51,7 +51,6 @@
 #ifndef __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
 #define __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
 
-#include "../Browser/BrowserWidget.h"
 #include "../UserInterfaces/X3DBrowserWindowUI.h"
 #include <gtkmm.h>
 #include <memory>
@@ -59,10 +58,8 @@
 namespace titania {
 namespace puck {
 
-typedef std::deque <std::shared_ptr <BrowserWidget>> BrowserWidgetsArray;
-
 class X3DBrowserWindow :
-	public Gtk::Application, public X3DBrowserWindowUI, public X3DBrowserInterface
+	public Gtk::Application, public X3DBrowserWindowUI
 {
 public:
 
@@ -78,53 +75,23 @@ public:
 	void
 	saveSession ();
 
-	virtual
 	void
-	open () const;
+	blank ();
 
+	void
+	open ();
+
+	void
+	open (const basic::uri &);
+	
 	void
 	save (const basic::uri &);
+	
+	void
+	reload ();
 
-	virtual
 	void
 	close ();
-
-	///  @name X3DBrowserInterface
-
-	const std::shared_ptr <BrowserWidget> &
-	getBrowserWidget () const;
-
-	const BrowserWidgetsArray &
-	getBrowserWidgets () const
-	{ return browserWidgets; }
-
-	///  @name X3DBaseNode
-
-	virtual
-	const X3D::SFNode <X3D::Browser> &
-	getBrowser () const;
-
-	///  @name X3DURLObject
-
-	virtual
-	void
-	setDescription (const std::string & value)
-	throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
-	       X3D::Error <X3D::DISPOSED>);
-
-	virtual
-	void
-	loadURL (const X3D::MFString &, const X3D::MFString &)
-	throw (X3D::Error <X3D::INVALID_URL>,
-	       X3D::Error <X3D::URL_UNAVAILABLE>,
-	       X3D::Error <X3D::INVALID_X3D>);
-
-	virtual
-	void
-	loadURL (const X3D::MFString &)
-	throw (X3D::Error <X3D::INVALID_URL>,
-	       X3D::Error <X3D::URL_UNAVAILABLE>,
-	       X3D::Error <X3D::INVALID_X3D>);
 
 	virtual
 	void
@@ -139,9 +106,6 @@ protected:
 	void
 	initialize ();
 
-	void
-	removePage (Gtk::Widget &);
-
 
 private:
 
@@ -149,35 +113,25 @@ private:
 	parseOptions (int &, char** &);
 
 	void
-	resizeSession (size_t);
-
-	size_t
-	getNumPages () const;
+	set_initialized ();
 
 	void
-	setCurrentPage (size_t);
-
-	size_t
-	getCurrentPage () const;
+	set_world ();
 
 	void
-	insertPage (size_t);
+	set_console ();
 
-	Gtk::HBox*
-	setTabLabel (size_t position);
-
-	bool
-	closeTab (Gtk::Widget &, GdkEventButton*);
-
-	virtual
 	void
-	on_close_tab (Gtk::Widget &) = 0;
+	set_urlError ();
+	
+	void
+	loadIcon ();
 
 	void
 	setTransparent (bool);
 
 	Glib::OptionGroup::vecustrings remainingOptions;
-	BrowserWidgetsArray            browserWidgets;
+	double loadTime;
 
 };
 

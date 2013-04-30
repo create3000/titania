@@ -129,6 +129,7 @@ PKG_CHECK_MODULES(TITANIA_GZSTREAM,zlib)
 PKG_CHECK_MODULES(TITANIA_STANDARD, giomm-2.4
 glibmm-2.4)
 
+PKG_CHECK_MODULES(TITANIA_PYTHON, python)
 
 AC_OUTPUT([
 libtitania-standard/Makefile
@@ -138,6 +139,7 @@ libtitania-anyoptions/Makefile
 libtitania-gzstream/Makefile
 libtitania-opengl-surface/Makefile
 libtitania-x3d/Makefile
+libtitania-python/Makefile
 Titania/Makefile
 titania-info/Makefile
 x3dtidy/Makefile

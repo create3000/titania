@@ -53,6 +53,9 @@
 
 #include "../Browser/X3DBrowserWindow.h"
 #include "../MotionBlurEditor/MotionBlurEditor.h"
+#include "../HistoryEditor/HistoryEditor.h"
+#include "../OutlineEditor/OutlineEditor.h"
+#include "../ViewpointEditor/ViewpointEditor.h"
 
 namespace titania {
 namespace puck {
@@ -70,23 +73,45 @@ private:
 	void
 	initialize ();
 
-	/// @name Element access
+	/// @name Widgets
 
 	MotionBlurEditor &
-	getMotionBlurEditor () { return motionBlurEditor; }
+	getMotionBlurEditor ()
+	{ return motionBlurEditor; }
 
 	const MotionBlurEditor &
-	getMotionBlurEditor () const { return motionBlurEditor; }
+	getMotionBlurEditor () const
+	{ return motionBlurEditor; }
+	
+	ViewpointEditor &
+	getViewpointEditor ()
+	{ return viewpointEditor; }
+
+	const ViewpointEditor &
+	getViewpointEditor () const
+	{ return viewpointEditor; }
+
+	HistoryEditor &
+	getHistoryEditor ()
+	{ return historyEditor; }
+
+	const HistoryEditor &
+	getHistoryEditor () const
+	{ return historyEditor; }
+
+	OutlineEditor &
+	getOutlineEditor ()
+	{ return outlineEditor; }
+
+	const OutlineEditor &
+	getOutlineEditor () const
+	{ return outlineEditor; }
 
 	/// @name File menu
 
 	virtual
 	void
 	on_new ();
-
-	virtual
-	void
-	on_home ();
 
 	virtual
 	void
@@ -106,10 +131,6 @@ private:
 
 	virtual
 	void
-	on_reload ();
-
-	virtual
-	void
 	on_close ();
 
 	/// @name File open dialog response
@@ -125,10 +146,6 @@ private:
 	on_fileSaveDialog_response (int);
 
 	/// @name Bar view handling
-
-	virtual
-	void
-	on_navigationBar_toggled ();
 
 	virtual
 	void
@@ -235,22 +252,34 @@ private:
 	void
 	on_standard_size ();
 
-	///  @name Notebook handling
+	///  @name Browser toolbar handling
 
 	virtual
 	void
-	on_switch_page (Gtk::Widget *, guint);
+	on_hand_button_toggled ();
 
 	virtual
 	void
-	on_add_tab ();
+	on_arrow_button_toggled ();
 
 	virtual
 	void
-	on_close_tab (Gtk::Widget &);
+	on_look_at_all_clicked ();
 
-	size_t           currentPage;
+	virtual
+	void
+	on_look_at_toggled ();
+	
+	///  @name Dialog response handling
+	
+	void
+	on_messageDialog_response (int);
+
+
 	MotionBlurEditor motionBlurEditor;
+	ViewpointEditor viewpointEditor;
+	HistoryEditor   historyEditor;
+	OutlineEditor   outlineEditor;
 
 };
 

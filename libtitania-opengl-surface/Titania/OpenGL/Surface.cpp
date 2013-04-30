@@ -52,6 +52,7 @@
 
 #include <gdk/gdkx.h>
 #include <gtkmm/container.h>
+#include <glibmm/main.h>
 
 #include "Context/PixelBufferContext.h"
 #include "Context/WindowContext.h"
@@ -73,7 +74,7 @@ Surface::Surface () :
 	add_events (Gdk::STRUCTURE_MASK);
 
 	// Connect to map_event.
-	initialized_connection = signal_map_event () .connect (sigc::mem_fun (*this, &Surface::on_map));
+	map_connection = signal_map_event () .connect (sigc::mem_fun (*this, &Surface::on_map));
 }
 
 const std::shared_ptr <Context> &
@@ -151,20 +152,17 @@ Surface::glew ()
 bool
 Surface::on_map (GdkEventAny* event)
 {
-	initialized_connection .disconnect ();
+	map_connection .disconnect ();
 
 	context .reset (new WindowContext (get_window (), get_display ()));
 
 	if (makeCurrent ())
 	{
 		signal_configure_event () .connect (sigc::mem_fun (*this, &Surface::set_configure_event));
-		signal_draw ()            .connect (sigc::mem_fun (*this, &Surface::set_draw));
+
+		construct_connection = signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_construct));
 
 		glewInit ();
-
-		glViewport (0, 0, get_width (), get_height ());
-
-		construct ();
 	}
 
 	return false; // Propagate the event further.
@@ -178,6 +176,23 @@ Surface::set_configure_event (GdkEventConfigure* event)
 		glViewport (0, 0, get_width (), get_height ());
 
 		reshape ();
+	}
+
+	return false; // Propagate the event further.
+}
+
+bool
+Surface::set_construct (const Cairo::RefPtr <Cairo::Context> & cairo)
+{
+	construct_connection .disconnect ();
+
+	if (makeCurrent ())
+	{
+		signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_draw));
+
+		construct ();
+
+		swapBuffers ();
 	}
 
 	return false; // Propagate the event further.

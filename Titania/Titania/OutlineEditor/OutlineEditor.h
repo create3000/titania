@@ -51,7 +51,6 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_EDITOR_H__
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_EDITOR_H__
 
-#include "../Base/X3DBrowserInterface.h"
 #include "../OutlineEditor/OutlineTreeView.h"
 #include "../UserInterfaces/X3DOutlineEditorUI.h"
 
@@ -68,7 +67,7 @@ class OutlineEditor :
 {
 public:
 
-	OutlineEditor (const std::string &, X3DBrowserInterface* const);
+	OutlineEditor (const X3D::SFNode <X3D::Browser> &);
 
 
 private:

@@ -51,10 +51,10 @@
 #include "X3DBrowserWindow.h"
 
 #include "../Configuration/config.h"
-#include <Titania/X3D/Components/Networking/X3DUrlObject.h>
+#include "../Browser/Image.h"
 
-#include <Titania/OS.h>
 #include <Titania/gzstream.h>
+#include <Titania/String.h>
 #include <fstream>
 #include <iostream>
 
@@ -63,16 +63,11 @@ namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 	   Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN), 
-	 X3DBrowserWindowUI (get_ui ("BrowserWindow.ui"), gconf_dir ()),                          
-	X3DBrowserInterface (NULL)                                                                
+	 X3DBrowserWindowUI (get_ui ("BrowserWindow.ui"), gconf_dir ())                                                                                        
 {
 	// Options
 
 	parseOptions (argc, argv);
-
-	// First time initialization
-
-	os::system ("mkdir", "-p", os::home () + "/.config/Titania");
 
 	// User interface
 
@@ -82,15 +77,18 @@ X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 	// add_window (getWindow ());
 
 	// Add URNs to X3D::X3DUrlObject
-	X3D::X3DUrlObject::addURN ("about:icon",        get_ui   ("icons/icon-bw.svg"));
-	X3D::X3DUrlObject::addURN ("about:blank",       get_page ("about/blank.wrl"));
-	X3D::X3DUrlObject::addURN ("about:date",        get_page ("about/date.wrl"));
-	X3D::X3DUrlObject::addURN ("about:gears",       get_page ("about/gears.wrl"));
-	X3D::X3DUrlObject::addURN ("about:home",        get_page ("about/home.wrl"));
-	X3D::X3DUrlObject::addURN ("about:info",        get_page ("about/info.wrl"));
-	X3D::X3DUrlObject::addURN ("about:splash",      get_page ("about/splash.wrl"));
-	X3D::X3DUrlObject::addURN ("about:url_error",   get_page ("about/url_error.wrl"));
+	X3D::X3DUrlObject::addURN ("about:icon",      get_ui   ("icons/icon-bw.svg"));
+	X3D::X3DUrlObject::addURN ("about:blank",     get_page ("about/blank.wrl"));
+	X3D::X3DUrlObject::addURN ("about:date",      get_page ("about/date.wrl"));
+	X3D::X3DUrlObject::addURN ("about:gears",     get_page ("about/gears.wrl"));
+	X3D::X3DUrlObject::addURN ("about:home",      get_page ("about/home.wrl"));
+	X3D::X3DUrlObject::addURN ("about:info",      get_page ("about/info.wrl"));
+	X3D::X3DUrlObject::addURN ("about:url_error", get_page ("about/url_error.wrl"));
 	X3D::X3DUrlObject::addURN ("about:hello_world", "http://titania.create3000.de/examples/hello_world.wrl");
+
+	// Browser
+	setBrowser (X3D::createBrowser ());
+	getBrowser () -> getBrowserOptions () -> splashScreen () = true;
 }
 
 // Application Handling
@@ -105,39 +103,42 @@ void
 X3DBrowserWindow::initialize ()
 {
 	X3DBrowserWindowUI::initialize ();
-
-	// User interface
-
-	Gtk::Settings::get_default () -> property_gtk_menu_images ()       = true;
-	Gtk::Settings::get_default () -> property_gtk_button_images ()     = true;
-	Gtk::Settings::get_default () -> property_gtk_toolbar_style ()     = Gtk::TOOLBAR_ICONS;
-	Gtk::Settings::get_default () -> property_gtk_toolbar_icon_size () = Gtk::ICON_SIZE_SMALL_TOOLBAR;
-
-	// FileOpenDialog
-	getFileOpenDialog () .set_default_response (Gtk::RESPONSE_OK);
-	getFileOpenDialog () .add_button ("gtk-open", Gtk::RESPONSE_OK);
-	getFileOpenDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
-
-	// FileSaveDialog
-	getFileSaveDialog () .set_default_response (Gtk::RESPONSE_OK);
-	getFileSaveDialog () .add_button ("gtk-save", Gtk::RESPONSE_OK);
-	getFileSaveDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
-
-	// AddTabLabel
-
-	getAddTabButton () .set_image (*Gtk::manage (new Gtk::Image (Gtk::StockID ("gtk-add"),
-	                                                             Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR))));
+	
+	__LOG__ << std::endl;
 
 	// Start with file from options or home page.
 
-	if (remainingOptions .size ())
-	{
-		resizeSession (1);
-		getConfig () .getSession (0) .getDirectory ("BrowserWidget") .setItem ("worldURL",
-		                                                                       basic::uri ("file://", remainingOptions [0] .raw ()));
-	}
+	// Console
+	getBrowser () -> getConsole () -> string_changed () .addInterest (this, &X3DBrowserWindow::set_console);
+	
+	// UrlError
+	getBrowser () -> urlError () .addInterest (this, &X3DBrowserWindow::set_urlError);
+
+	// Initialized
+	getBrowser () -> initialized .addInterest (this, &X3DBrowserWindow::set_initialized);
+
+	// Insert Surface, this will initialize the Browser.
+	getSurfaceBox () .pack_start (**getBrowser (), true, true, 0);
+
+	// Show Surface and start the X3D Main Loop.
+	getBrowser () -> show ();
 
 	restoreSession ();
+}
+
+void
+X3DBrowserWindow::set_initialized ()
+{
+	// Initialized
+	getBrowser () -> initialized .removeInterest (this, &X3DBrowserWindow::set_initialized);
+	getBrowser () -> initialized .addInterest (this, &X3DBrowserWindow::set_world);
+
+	// WorldURL
+	if (remainingOptions .size ())
+		open (basic::uri ("file://", remainingOptions [0] .raw ()));
+	
+	else if (getConfig () .hasItem ("worldURL"))
+		open (getConfig () .string ("worldURL") .raw ());
 }
 
 void
@@ -180,14 +181,6 @@ X3DBrowserWindow::restoreSession ()
 	// Restore Menu Configuration
 	// from Config
 
-	//	// ToolBar
-	//	if (getConfig () .hasItem ("toolBar"))
-	//		getToolBarMenuItem () .set_active (getConfig () .boolean ("toolBar"));
-
-	// Naviagtion
-	if (getConfig () .hasItem ("navigationBar"))
-		getNavigationBarMenuItem () .set_active (getConfig () .boolean ("navigationBar"));
-
 	// ToolBar
 	if (getConfig () .hasItem ("toolBar"))
 		getToolBarMenuItem () .set_active (getConfig () .boolean ("toolBar"));
@@ -203,26 +196,28 @@ X3DBrowserWindow::restoreSession ()
 	// Shading
 	if (getConfig () .string ("shading") == "PHONG")
 		getPhongMenuItem () .activate ();
+		
 	else if (getConfig () .string ("shading") == "GOURAUD")
 		getGouraudMenuItem () .activate ();
+		
 	else if (getConfig () .string ("shading") == "FLAT")
 		getFlatMenuItem () .activate ();
+		
 	else if (getConfig () .string ("shading") == "WIREFRAME")
 		getWireFrameMenuItem () .activate ();
+		
 	else if (getConfig () .string ("shading") == "POINTSET")
 		getPointSetMenuItem () .activate ();
-
-	//getBrowser () -> getBrowserOptions () -> shading = getConfig () .string ("shading");
 
 	// PrimitiveQuality
 	if (getConfig () .string ("primitiveQuality") == "HIGH")
 		getHighQualityMenuItem () .activate ();
+		
 	else if (getConfig () .string ("primitiveQuality") == "MEDIUM")
 		getMediumQualityMenuItem () .activate ();
+		
 	else if (getConfig () .string ("primitiveQuality") == "LOW")
 		getLowQualityMenuItem () .activate ();
-
-	//getBrowser () -> getBrowserOptions () -> primitiveQuality = getConfig () .string ("primitiveQuality");
 
 	// RenderingProperties
 	if (getConfig () .hasItem ("renderingProperties"))
@@ -236,73 +231,53 @@ X3DBrowserWindow::restoreSession ()
 	if (getConfig () .hasItem ("enableInlineViewpoints"))
 		getEnableInlineViewpointsMenuItem () .set_active (getConfig () .boolean ("enableInlineViewpoints"));
 
-	// Restore Session
+	// VPaned
+	if (getConfig () .hasItem ("vPaned"))
+		getVPaned () .set_position (getConfig () .integer ("vPaned"));
 
-	Configuration sessions = getConfig () .getDirectory ("Sessions");
+	// HPaned
+	if (getConfig () .hasItem ("hPaned"))
+		getHPaned () .set_position (getConfig () .integer ("hPaned"));
 
-	size_t numSessions = sessions .getDirectories () .size ();
-
-	// Notebook
-
-	// Start with home page when no sessions exists.
-
-	if (not getConfig () .integer ("sessions") or not numSessions)
-	{
-		insertPage (0);
-		setCurrentPage (0);
-		return;
-	}
-
-	// Restore session.
-
-	for (size_t position = 0; position < numSessions; ++ position)
-		insertPage (position);
-
-	setCurrentPage (getConfig () .integer ("currentPage"));
+	getSideBarNotebook () .set_current_page (getConfig () .integer ("sidebarCurrentPage"));
+	getFooterNotebook ()  .set_current_page (getConfig () .integer ("footerCurrentPage"));
 }
 
 void
 X3DBrowserWindow::saveSession ()
 {
-	getConfig () .setItem ("navigationBar", getNavigationBarMenuItem () .get_active ());
-	getConfig () .setItem ("toolBar",       getToolBarMenuItem ()       .get_active ());
-	getConfig () .setItem ("sideBar",       getSideBarMenuItem ()       .get_active ());
-	getConfig () .setItem ("footer",        getFooterMenuItem  ()       .get_active ());
+	getConfig () .setItem ("toolBar", getToolBarMenuItem () .get_active ());
+	getConfig () .setItem ("sideBar", getSideBarMenuItem () .get_active ());
+	getConfig () .setItem ("footer",  getFooterMenuItem  () .get_active ());
 
-	//getConfig () .setItem ("shading",          getBrowser () -> getBrowserOptions () -> shading);
-	//getConfig () .setItem ("primitiveQuality", getBrowser () -> getBrowserOptions () -> primitiveQuality);
+	getConfig () .setItem ("shading",          getBrowser () -> getBrowserOptions () -> shading ());
+	getConfig () .setItem ("primitiveQuality", getBrowser () -> getBrowserOptions () -> primitiveQuality ());
 	getConfig () .setItem ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
 
-	getConfig () .setItem ("rubberBand",             getRubberbandMenuItem () .get_active ());
+	getConfig () .setItem ("rubberBand",             getRubberbandMenuItem ()             .get_active ());
 	getConfig () .setItem ("enableInlineViewpoints", getEnableInlineViewpointsMenuItem () .get_active ());
 
-	// Notebook
+	getConfig () .setItem ("vPaned", getVPaned () .get_position ());
+	getConfig () .setItem ("hPaned", getHPaned () .get_position ());
 
-	// Remove sessions.
+	getConfig () .setItem ("sidebarCurrentPage", getSideBarNotebook () .get_current_page ());
+	getConfig () .setItem ("footerCurrentPage",  getFooterNotebook  () .get_current_page ());
 
-	resizeSession (browserWidgets .size ());
-
-	// Save sessions.
-
-	getConfig () .setItem ("sessions",    browserWidgets .size ());
-	getConfig () .setItem ("currentPage", getCurrentPage ());
-
-	for (size_t i = 0; i < browserWidgets .size (); ++ i)
-		browserWidgets [i] -> saveSession (getConfig () .getSession (i) .getKey ());
+	if (getBrowser () -> getExecutionContext () -> getWorldURL () .size ())
+		getConfig () .setItem ("worldURL", getBrowser () -> getExecutionContext () -> getWorldURL ());
 }
 
 void
-X3DBrowserWindow::resizeSession (size_t size)
+X3DBrowserWindow::blank ()
 {
-	Configuration sessions    = getConfig () .getDirectory ("Sessions");
-	size_t        numSessions = sessions .getDirectories () .size ();
+	if (not getBrowser () -> makeCurrent ())
+		return;
 
-	for (size_t i = size; i < numSessions; ++ i)
-		sessions .getDirectory (std::to_string (i)) .remove ();
+	getBrowser () -> replaceWorld (getBrowser () -> createScene ());
 }
 
 void
-X3DBrowserWindow::open () const
+X3DBrowserWindow::open ()
 {
 	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
@@ -310,6 +285,19 @@ X3DBrowserWindow::open () const
 		getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
 
 	getFileOpenDialog () .present ();
+}
+
+void
+X3DBrowserWindow::open (const basic::uri & worldURL)
+{
+	try
+	{
+		loadTime = chrono::now ();
+
+		getBrowser () -> loadURL ({ worldURL .str () });
+	}
+	catch (...)
+	{ }
 }
 
 void
@@ -332,6 +320,12 @@ X3DBrowserWindow::save (const basic::uri & worldURL)
 }
 
 void
+X3DBrowserWindow::reload ()
+{
+	open (getBrowser () -> getExecutionContext () -> getWorldURL ());
+}
+
+void
 X3DBrowserWindow::close ()
 {
 	X3DBrowserWindowUI::close ();
@@ -339,201 +333,83 @@ X3DBrowserWindow::close ()
 	quit ();
 }
 
-// X3DBrowserInterface
-
-const std::shared_ptr <BrowserWidget> &
-X3DBrowserWindow::getBrowserWidget () const
+void
+X3DBrowserWindow::set_world ()
 {
-	return browserWidgets [getCurrentPage ()];
+	std::clog << "Load Time: " << chrono::now () - loadTime << std::endl;
+
+	loadIcon ();
 }
 
-// X3DBaseNode
 
-const X3D::SFNode <X3D::Browser> &
-X3DBrowserWindow::getBrowser () const
+void
+X3DBrowserWindow::set_console ()
 {
-	return getBrowserWidget () -> getBrowser ();
+	auto buffer = getConsole () .get_buffer ();
+
+	for (const auto & string : getBrowser () -> getConsole () -> string_changed ())
+		buffer -> insert (buffer -> end (), string .getValue ());
+
+	auto end = buffer -> end ();
+
+	getConsole () .scroll_to (end, 0.0);
 }
 
 void
-X3DBrowserWindow::setDescription (const std::string & value)
-throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
-       X3D::Error <X3D::DISPOSED>)
+X3DBrowserWindow::set_urlError ()
 {
-	setTabLabel (getCurrentPage ());
+	if (getBrowser () -> urlError () .empty ())
+		return;
 
-	if (value .empty ())
-		getWindow () .set_title ("Titania");
-
-	else
-		getWindow () .set_title (value);
+	getMessageDialog () .set_message ("Invalid X3D");
+	getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
+	                                         + basic::join (getBrowser () -> urlError (), "\n")
+	                                         + "</span>",
+	                                         true);
+	getMessageDialog () .show ();
 }
 
-// X3DURLObject
-
 void
-X3DBrowserWindow::loadURL (const X3D::MFString & url, const X3D::MFString & parameter)
-throw (X3D::Error <X3D::INVALID_URL>,
-       X3D::Error <X3D::URL_UNAVAILABLE>,
-       X3D::Error <X3D::INVALID_X3D>)
+X3DBrowserWindow::loadIcon ()
 {
-	if (parameter .size () or not getNumPages ())
+	const auto & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+
+	Gtk::StockID stockId = Gtk::StockID (worldURL .str ());
+
+	Glib::RefPtr <Gtk::IconSet> iconSet;
+
+	try
 	{
-		// Insert new page
-		size_t position = getNumPages ();
-		insertPage (position);
-		setCurrentPage (position);
-		browserWidgets [position] -> loadURL (url);
+		// Create Stock Icon
+
+		basic::uri uri;
+
+		try
+		{
+			uri = getBrowser () -> getExecutionContext () -> getMetaData ("icon");
+		}
+		catch (const X3D::Error <X3D::INVALID_NAME> &)
+		{
+			uri = "/favicon.ico";
+		}
+
+		titania::Image icon (getBrowser () -> loadDocument (uri));
+
+		iconSet = Gtk::IconSet::create (Gdk::Pixbuf::create_from_data (icon .getData (),
+		                                                               Gdk::COLORSPACE_RGB,
+		                                                               icon .getTransparency (),
+		                                                               sizeof (Image::value_type) * 8,
+		                                                               icon .getWidth (),
+		                                                               icon .getHeight (),
+		                                                               icon .getWidth () * icon .getComponents ()) -> copy ());
+	}
+	catch (const std::exception & error)
+	{
+		iconSet = Gtk::IconSet::lookup_default (Gtk::StockID ("BlankIcon"));
 	}
 
-	else
-		getBrowserWidget () -> loadURL (url);
-
-}
-
-void
-X3DBrowserWindow::loadURL (const X3D::MFString & url)
-throw (X3D::Error <X3D::INVALID_URL>,
-       X3D::Error <X3D::URL_UNAVAILABLE>,
-       X3D::Error <X3D::INVALID_X3D>)
-{
-	loadURL (url, { });
-}
-
-size_t
-X3DBrowserWindow::getNumPages () const
-{
-	return getNotebook () .get_n_pages () - 1;
-}
-
-void
-X3DBrowserWindow::setCurrentPage (size_t position)
-{
-	getNotebook () .set_current_page (position);
-}
-
-size_t
-X3DBrowserWindow::getCurrentPage () const
-{
-	return getNotebook () .get_current_page ();
-}
-
-void
-X3DBrowserWindow::insertPage (size_t position)
-{
-	// Insert content.
-
-	Gtk::HBox* box = new Gtk::HBox ();
-
-	std::string sessionKey = getConfig () .getSession (browserWidgets .size ()) .getKey ();
-
-	std::shared_ptr <BrowserWidget> browserWidget (new BrowserWidget (sessionKey, this));
-	browserWidget -> reparent (*box, getWindow ());
-	browserWidget -> getWidget () .show ();
-	box -> show ();
-
-	browserWidgets .insert (browserWidgets .begin () + position, browserWidget);
-
-	getNotebook () .insert_page (*Gtk::manage (box), "", position);
-
-	// Set tab label.
-
-	// setTabLabel (position);
-
-	// Apply Menu Configuration
-
-	// Naviagtion
-	if (getNavigationBarMenuItem () .get_active ())
-		browserWidget -> getNavigationBar () .show ();
-
-	if (getToolBarMenuItem () .get_active ())
-		browserWidget -> getToolBar () .show ();
-
-	// SideBar
-	if (getSideBarMenuItem () .get_active ())
-		browserWidget -> getSideBar () .show ();
-
-	// Footer
-	if (getFooterMenuItem () .get_active ())
-		browserWidget -> getFooter () .show ();
-
-	// Rendering properties
-	browserWidget -> getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesMenuItem () .get_active ();
-
-	// Browser options
-	browserWidget -> getBrowser () -> getBrowserOptions () -> rubberBand ()             = getRubberbandMenuItem () .get_active ();
-	browserWidget -> getBrowser () -> getBrowserOptions () -> enableInlineViewpoints () = getEnableInlineViewpointsMenuItem () .get_active ();
-}
-
-void
-X3DBrowserWindow::removePage (Gtk::Widget & child)
-{
-	size_t position = getNotebook () .page_num (child);
-
-	browserWidgets [position] -> dispose ();
-	getNotebook () .remove_page (child);
-	browserWidgets .erase (browserWidgets .begin () + position);
-}
-
-Gtk::HBox*
-X3DBrowserWindow::setTabLabel (size_t position)
-{
-	Gtk::Widget* child = getNotebook () .get_children () [position];
-
-	Gtk::HBox* tab_label = new Gtk::HBox ();
-
-	basic::uri worldURL;
-
-	if (browserWidgets [position] -> getBrowser () -> initialized)
-		worldURL = browserWidgets [position] -> getBrowser () -> getExecutionContext () -> getWorldURL ();
-
-	Gtk::Label* label = new Gtk::Label (worldURL .str ());
-	Gtk::Image* icon  = new Gtk::Image (Gtk::StockID (worldURL .str ()),
-	                                    Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
-
-	// Gio Close button.
-	//Glib::RefPtr<const Gio::Icon> closeIcon = Gio::ThemedIcon::create ("window-close-symbolic");
-	//Gtk::Image*             closeImage = new Gtk::Image ();
-	//closeImage -> set (closeIcon, Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
-
-	// Close button.
-	Gtk::Image* closeImage = new Gtk::Image (Gtk::StockID ("gtk-close"), Gtk::IconSize (Gtk::ICON_SIZE_SMALL_TOOLBAR));
-
-	closeImage -> set_pixel_size (1);
-
-	Gtk::EventBox* closeBox = new Gtk::EventBox ();
-
-	closeBox -> set_visible_window (false);
-	closeBox -> add (*Gtk::manage (closeImage));
-	closeBox -> signal_button_release_event () .connect (sigc::group (sigc::mem_fun (this, &X3DBrowserWindow::closeTab),
-	                                                                  sigc::ref (*child), sigc::_1));
-
-	//Gtk::Button* close      = new Gtk::Button ();
-	//close -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserWindow::on_close_tab), sigc::ref (*child)));
-	//close -> set_image (*Gtk::manage (closeImage));
-
-	// Add Widgets to box.
-	tab_label -> get_style_context () -> add_class ("TabLabel");
-	tab_label -> pack_start (*Gtk::manage (icon), false, true, 0);
-	tab_label -> pack_start (*Gtk::manage (label), true, true, 0);
-	tab_label -> pack_end  (*Gtk::manage (closeBox), true, false, 0);
-	tab_label -> set_spacing (4);
-
-	getNotebook () .set_tab_label (*child, *Gtk::manage (tab_label));
-	tab_label -> show_all ();
-
-	return tab_label;
-}
-
-bool
-X3DBrowserWindow::closeTab (Gtk::Widget & child, GdkEventButton* event)
-{
-	__LOG__ << std::endl;
-
-	if (event -> button == 1)
-		on_close_tab (child);
-
-	return false;
+	getIconFactory () -> add (stockId, iconSet);
+	Gtk::Stock::add (Gtk::StockItem (stockId, worldURL .str ()));
 }
 
 void

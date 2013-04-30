@@ -250,6 +250,9 @@ private:
 
 	void
 	set_world ();
+	
+	void
+	bind ();
 
 	static const std::string version;
 

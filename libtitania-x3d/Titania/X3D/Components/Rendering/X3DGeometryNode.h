@@ -105,24 +105,6 @@ protected:
 	void
 	initialize ();
 
-	///  @name Fields
-
-	SFBool &
-	ccw ()
-	{ return *fields .ccw; }
-
-	const SFBool &
-	ccw () const
-	{ return *fields .ccw; }
-
-	SFFloat &
-	creaseAngle ()
-	{ return *fields .creaseAngle; }
-
-	const SFFloat &
-	creaseAngle () const
-	{ return *fields .creaseAngle; }
-
 	///  @name Properties
 
 	std::vector <Vector3f> &
@@ -149,8 +131,12 @@ protected:
 	{ vertexMode = value; }
 
 	void
-	setSolid (const bool value)
+	setSolid (const bool & value)
 	{ solid = value; }
+
+	void
+	setCCW (const bool & value)
+	{ ccw = value; }
 
 	void
 	addElement (size_t vertexCount)
@@ -167,7 +153,7 @@ protected:
 	getTexCoordParams (Vector3f &, float &, int &, int &);
 
 	void
-	refineNormals (const NormalIndex &, std::vector <Vector3f> &);
+	refineNormals (const NormalIndex &, std::vector <Vector3f> &, float);
 
 	void
 	addMirrorVertices (const bool);
@@ -192,16 +178,6 @@ private:
 	void
 	transfer ();
 
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const ccw;
-		SFFloat* const creaseAngle;
-	};
-
-	Fields fields;
-
 	Box3f                       bbox;
 	std::vector <Vector3f>      texCoords;
 	TextureCoordinateGenerator* textureCoordinateGenerator;
@@ -211,6 +187,7 @@ private:
 	std::vector <Vector3f>      vertices;
 	GLenum                      vertexMode;
 	bool                        solid;
+	bool                        ccw;
 	std::deque <size_t>         elements;
 
 	GLenum bufferUsage;

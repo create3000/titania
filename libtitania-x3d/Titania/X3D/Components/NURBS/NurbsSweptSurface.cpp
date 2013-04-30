@@ -58,7 +58,8 @@ namespace X3D {
 NurbsSweptSurface::Fields::Fields () :
 	crossSectionCurve (new SFNode <X3DBaseNode> ()),
 	trajectoryCurve (new SFNode <X3DBaseNode> ()),
-	solid (new SFBool (true))
+	solid (new SFBool (true)),
+	ccw (new SFBool (true))
 { }
 
 NurbsSweptSurface::NurbsSweptSurface (X3DExecutionContext* const executionContext) :
@@ -72,14 +73,29 @@ NurbsSweptSurface::NurbsSweptSurface (X3DExecutionContext* const executionContex
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "crossSectionCurve", crossSectionCurve ());
 	addField (inputOutput,    "trajectoryCurve",   trajectoryCurve ());
-	addField (initializeOnly, "ccw",               ccw ());
 	addField (initializeOnly, "solid",             solid ());
+	addField (initializeOnly, "ccw",               ccw ());
 }
 
 X3DBaseNode*
 NurbsSweptSurface::create (X3DExecutionContext* const executionContext) const
 {
 	return new NurbsSweptSurface (executionContext);
+}
+
+void
+NurbsSweptSurface::initialize ()
+{
+	X3DParametricGeometryNode::initialize ();
+
+	ccw () .addInterest (this, &NurbsSweptSurface::set_ccw);
+	set_ccw ();
+}
+
+void
+NurbsSweptSurface::set_ccw ()
+{
+	setCCW (ccw ());
 }
 
 } // X3D

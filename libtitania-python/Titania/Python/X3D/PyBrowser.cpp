@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,65 +48,81 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BASE_X3DBROWSER_INTERFACE_H__
-#define __TITANIA_BASE_X3DBROWSER_INTERFACE_H__
+#include "PyBrowser.h"
 
-#include "../Base/X3DBaseInterface.h"
-#include <gtkmm.h>
+#include <Titania/X3D.h>
 
 namespace titania {
-namespace puck {
+namespace python {
 
-class X3DBrowserInterface :
-	virtual public X3DBaseInterface
-{
-public:
-
-	virtual
-	void
-	open () const = 0;
-
-	virtual
-	void
-	setDescription (const std::string &)
-	throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
-	       X3D::Error <X3D::DISPOSED>) = 0;
-
-	virtual
-	X3D::Scene*
-	getExecutionContext () const
-	throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
-	       X3D::Error <X3D::DISPOSED>);
-
-	virtual
-	void
-	loadURL (const X3D::MFString &, const X3D::MFString &)
-	throw (X3D::Error <X3D::INVALID_URL>,
-	       X3D::Error <X3D::URL_UNAVAILABLE>,
-	       X3D::Error <X3D::INVALID_X3D>) = 0;
-
-	virtual
-	void
-	loadURL (const X3D::MFString &)
-	throw (X3D::Error <X3D::INVALID_URL>,
-	       X3D::Error <X3D::URL_UNAVAILABLE>,
-	       X3D::Error <X3D::INVALID_X3D>) = 0;
-
-	virtual
-	void
-	dispose () = 0;
-
-	virtual
-	~X3DBrowserInterface ();
-
-
-protected:
-
-	X3DBrowserInterface (const X3D::SFNode <X3D::Browser> &);
-
+PyTypeObject PyBrowser::type = {
+	PyObject_HEAD_INIT (NULL)
 };
 
-} // puck
+PyMethodDef PyBrowser::methods [ ] = {
+	{ "getName", (PyCFunction) &PyBrowser::getName, METH_NOARGS, "getName" },
+	{ NULL }
+};
+
+void
+PyBrowser::init (PyObject* module)
+{
+	type .tp_new       = PyType_GenericNew;
+	type .tp_name      = "Browser";
+	type .tp_basicsize = sizeof (Object);
+	type .tp_flags     = Py_TPFLAGS_DEFAULT;
+	type .tp_init      = &PyBrowser::construct;
+	type .tp_methods   = methods;
+	type .tp_str       = &PyBrowser::toString;
+	type .tp_dealloc   = (destructor) &PyBrowser::dealloc;
+
+	if (PyType_Ready (&type) < 0)
+		return;
+
+	PyModule_AddObject (module, "Browser", (PyObject*) &type);
+}
+
+int
+PyBrowser::construct (PyObject* self,
+                    PyObject* args,
+                    PyObject* kwords)
+{
+	auto object = (Object*) self;
+
+	object -> field = new X3D::SFNode <X3D::Browser> (X3D::createBrowser ());
+
+	__LOG__ << object << std::endl;
+
+	return 0;
+}
+
+PyObject*
+PyBrowser::getName (Object* self, PyObject *args)
+{
+__LOG__ << std::endl;
+__LOG__ << self << std::endl;
+__LOG__ << self -> field << std::endl;
+__LOG__ << self -> field -> getNodeName () << std::endl;
+	return PyString_FromString (self -> field -> getNodeName () [0] .c_str ());
+}
+
+PyObject*
+PyBrowser::toString (PyObject* self)
+{
+__LOG__ << std::endl;
+__LOG__ << self << std::endl;
+__LOG__ << ((Object*) self) -> field << std::endl;
+__LOG__ << ((Object*) self) -> field -> getNodeName () << std::endl;
+	return PyString_FromString (((Object*) self) -> field -> toString () .c_str ());
+}
+
+void
+PyBrowser::dealloc (Object* self)
+{
+	delete self -> field;
+	self -> ob_type -> tp_free ((PyObject*) self);
+}
+
+} // python
 } // titania
 
-#endif

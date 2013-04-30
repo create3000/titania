@@ -181,7 +181,7 @@ private:
 	statement ();
 
 	bool
-	nodeStatement (X3DFieldDefinition &);
+	nodeStatement (SFNode <X3DBaseNode> &);
 
 	bool
 	rootNodeStatement (SFNode <X3DBaseNode> &);
@@ -223,7 +223,7 @@ private:
 	URLList (MFString*);
 
 	bool
-	node (X3DFieldDefinition &, const std::string & = "");
+	node (SFNode <X3DBaseNode> &, const std::string & = "");
 
 	void
 	scriptBody (X3DBaseNode* const);
@@ -400,7 +400,7 @@ private:
 	sfmatrix4fValues (MFMatrix4f*);
 
 	bool
-	sfnodeValue (X3DFieldDefinition* const);
+	sfnodeValue (SFNode <X3DBaseNode>*);
 
 	bool
 	mfnodeValue (MFNode*);

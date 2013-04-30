@@ -47,9 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_USER_INTERFACES_X3DBROWSER_WINDOW_UI_H__
-#define __TITANIA_USER_INTERFACES_X3DBROWSER_WINDOW_UI_H__
+#ifndef __TMP_GLAD2CPP_BROWSER_WINDOW_H__
+#define __TMP_GLAD2CPP_BROWSER_WINDOW_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
@@ -74,6 +73,15 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
+	const Glib::RefPtr <Gtk::Action> &
+	getNewAction () const { return m_newAction; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getOpenAction () const { return m_openAction; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getSaveAction () const { return m_saveAction; }
+
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilerX3D () const { return m_fileFilerX3D; }
 
@@ -94,6 +102,9 @@ public:
 
 	Gtk::CheckButton &
 	getSaveCompressedButton () const { return *m_saveCompressedButton; }
+
+	Gtk::MessageDialog &
+	getMessageDialog () const { return *m_messageDialog; }
 
 	Gtk::Window &
 	getWindow () const { return *m_window; }
@@ -130,9 +141,6 @@ public:
 
 	Gtk::MenuItem &
 	getViewMenuItem () const { return *m_viewMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getNavigationBarMenuItem () const { return *m_navigationBarMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getToolBarMenuItem () const { return *m_toolBarMenuItem; }
@@ -198,12 +206,6 @@ public:
 	getEnableInlineViewpointsMenuItem () const { return *m_enableInlineViewpointsMenuItem; }
 
 	Gtk::MenuItem &
-	getViewpointsMenuItem () const { return *m_viewpointsMenuItem; }
-
-	Gtk::MenuItem &
-	getHistoryMenuItem () const { return *m_historyMenuItem; }
-
-	Gtk::MenuItem &
 	getToolsMenuItem () const { return *m_toolsMenuItem; }
 
 	Gtk::MenuItem &
@@ -227,22 +229,74 @@ public:
 	Gtk::ImageMenuItem &
 	getStandardSizeMenuItem () const { return *m_standardSizeMenuItem; }
 
-	Gtk::Notebook &
-	getNotebook () const { return *m_notebook; }
+	Gtk::Toolbar &
+	getToolBar () const { return *m_toolBar; }
+
+	Gtk::ToolButton &
+	getNewButton () const { return *m_newButton; }
+
+	Gtk::ToolButton &
+	getOpenButton () const { return *m_openButton; }
+
+	Gtk::ToolButton &
+	getSaveButton () const { return *m_saveButton; }
+
+	Gtk::Paned &
+	getVPaned () const { return *m_vPaned; }
+
+	Gtk::Paned &
+	getHPaned () const { return *m_hPaned; }
+
+	Gtk::HBox &
+	getSurfaceBox () const { return *m_surfaceBox; }
+
+	Gtk::RadioToolButton &
+	getHandButton () const { return *m_handButton; }
+
+	Gtk::RadioToolButton &
+	getArrowButton () const { return *m_arrowButton; }
+
+	Gtk::ToolButton &
+	getLookAtAllButton () const { return *m_lookAtAllButton; }
+
+	Gtk::ToggleToolButton &
+	getLookAtButton () const { return *m_lookAtButton; }
 
 	Gtk::Box &
-	getAddTabLabel () const { return *m_addTabLabel; }
+	getFooter () const { return *m_footer; }
 
 	Gtk::Button &
-	getAddTabButton () const { return *m_addTabButton; }
+	getFooterCloseButton () const { return *m_footerCloseButton; }
 
-	virtual
-	void
-	on_fileOpenDialog_response (int response_id) = 0;
+	Gtk::Notebook &
+	getFooterNotebook () const { return *m_footerNotebook; }
 
-	virtual
-	void
-	on_fileSaveDialog_response (int response_id) = 0;
+	Gtk::Box &
+	getConsoleBox () const { return *m_consoleBox; }
+
+	Gtk::TextView &
+	getConsole () const { return *m_console; }
+
+	Gtk::Box &
+	getSideBar () const { return *m_sideBar; }
+
+	Gtk::Button &
+	getSideBarCloseButton () const { return *m_sideBarCloseButton; }
+
+	Gtk::Notebook &
+	getSideBarNotebook () const { return *m_sideBarNotebook; }
+
+	Gtk::Box &
+	getHistoryEditorBox () const { return *m_historyEditorBox; }
+
+	Gtk::Box &
+	getViewpointEditorBox () const { return *m_viewpointEditorBox; }
+
+	Gtk::Box &
+	getOutlineEditorBox () const { return *m_outlineEditorBox; }
+
+	Gtk::Statusbar &
+	getStatusBar () const { return *m_statusBar; }
 
 	virtual
 	void
@@ -258,6 +312,18 @@ public:
 
 	virtual
 	void
+	on_fileOpenDialog_response (int response_id) = 0;
+
+	virtual
+	void
+	on_fileSaveDialog_response (int response_id) = 0;
+
+	virtual
+	void
+	on_messageDialog_response (int response_id) = 0;
+
+	virtual
+	void
 	on_save_as () = 0;
 
 	virtual
@@ -267,10 +333,6 @@ public:
 	virtual
 	void
 	on_close () = 0;
-
-	virtual
-	void
-	on_navigationBar_toggled () = 0;
 
 	virtual
 	void
@@ -366,11 +428,19 @@ public:
 
 	virtual
 	void
-	on_switch_page (Widget* page, guint page_num) = 0;
+	on_hand_button_toggled () = 0;
 
 	virtual
 	void
-	on_add_tab () = 0;
+	on_arrow_button_toggled () = 0;
+
+	virtual
+	void
+	on_look_at_all_clicked () = 0;
+
+	virtual
+	void
+	on_look_at_toggled () = 0;
 
 	virtual
 	void
@@ -386,6 +456,9 @@ private:
 
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
+	Glib::RefPtr <Gtk::Action>      m_newAction;
+	Glib::RefPtr <Gtk::Action>      m_openAction;
+	Glib::RefPtr <Gtk::Action>      m_saveAction;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilerX3D;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
 	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
@@ -393,6 +466,7 @@ private:
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
 	Gtk::CheckButton*               m_saveCompressedButton;
+	Gtk::MessageDialog*             m_messageDialog;
 	Gtk::Window*                    m_window;
 	Gtk::VBox*                      m_widget;
 	Gtk::MenuBar*                   m_menuBar;
@@ -405,7 +479,6 @@ private:
 	Gtk::ImageMenuItem*             m_quitMenuItem;
 	Gtk::MenuItem*                  m_editMenuItem;
 	Gtk::MenuItem*                  m_viewMenuItem;
-	Gtk::CheckMenuItem*             m_navigationBarMenuItem;
 	Gtk::CheckMenuItem*             m_toolBarMenuItem;
 	Gtk::CheckMenuItem*             m_sideBarMenuItem;
 	Gtk::CheckMenuItem*             m_footerMenuItem;
@@ -427,8 +500,6 @@ private:
 	Gtk::CheckMenuItem*             m_rubberbandMenuItem;
 	Gtk::MenuItem*                  m_lookAtAllMenuItem;
 	Gtk::CheckMenuItem*             m_enableInlineViewpointsMenuItem;
-	Gtk::MenuItem*                  m_viewpointsMenuItem;
-	Gtk::MenuItem*                  m_historyMenuItem;
 	Gtk::MenuItem*                  m_toolsMenuItem;
 	Gtk::MenuItem*                  m_outlineEditorMenuItem;
 	Gtk::MenuItem*                  m_viewpointEditorMenuItem;
@@ -437,9 +508,29 @@ private:
 	Gtk::MenuItem*                  m_helpMenuItem;
 	Gtk::ImageMenuItem*             m_infoMenuItem;
 	Gtk::ImageMenuItem*             m_standardSizeMenuItem;
-	Gtk::Notebook*                  m_notebook;
-	Gtk::Box*                       m_addTabLabel;
-	Gtk::Button*                    m_addTabButton;
+	Gtk::Toolbar*                   m_toolBar;
+	Gtk::ToolButton*                m_newButton;
+	Gtk::ToolButton*                m_openButton;
+	Gtk::ToolButton*                m_saveButton;
+	Gtk::Paned*                     m_vPaned;
+	Gtk::Paned*                     m_hPaned;
+	Gtk::HBox*                      m_surfaceBox;
+	Gtk::RadioToolButton*           m_handButton;
+	Gtk::RadioToolButton*           m_arrowButton;
+	Gtk::ToolButton*                m_lookAtAllButton;
+	Gtk::ToggleToolButton*          m_lookAtButton;
+	Gtk::Box*                       m_footer;
+	Gtk::Button*                    m_footerCloseButton;
+	Gtk::Notebook*                  m_footerNotebook;
+	Gtk::Box*                       m_consoleBox;
+	Gtk::TextView*                  m_console;
+	Gtk::Box*                       m_sideBar;
+	Gtk::Button*                    m_sideBarCloseButton;
+	Gtk::Notebook*                  m_sideBarNotebook;
+	Gtk::Box*                       m_historyEditorBox;
+	Gtk::Box*                       m_viewpointEditorBox;
+	Gtk::Box*                       m_outlineEditorBox;
+	Gtk::Statusbar*                 m_statusBar;
 
 };
 

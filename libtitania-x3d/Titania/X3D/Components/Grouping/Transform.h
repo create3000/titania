@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_GROUPING_TRANSFORM_H__
 
 #include "../Grouping/X3DGroupingNode.h"
+#include "../../Handles/TransformHandle.h"
 
 namespace titania {
 namespace X3D {
@@ -70,12 +71,8 @@ public:
 	///  @name Fields
 
 	SFVec3f &
-	center ()
-	{ return *fields .center; }
-
-	const SFVec3f &
-	center () const
-	{ return *fields .center; }
+	translation ()
+	{ return *fields .translation; }
 
 	SFRotation &
 	rotation ()
@@ -84,6 +81,10 @@ public:
 	const SFRotation &
 	rotation () const
 	{ return *fields .rotation; }
+
+	const SFVec3f &
+	translation () const
+	{ return *fields .translation; }
 
 	SFVec3f &
 	scale ()
@@ -102,42 +103,45 @@ public:
 	{ return *fields .scaleOrientation; }
 
 	SFVec3f &
-	translation ()
-	{ return *fields .translation; }
+	center ()
+	{ return *fields .center; }
 
 	const SFVec3f &
-	translation () const
-	{ return *fields .translation; }
+	center () const
+	{ return *fields .center; }
+	
+	///  @name Properties
 
 	virtual
 	Box3f
-	getBBox () override;
+	getBBox () final;
 
 	virtual
 	void
-	traverse (TraverseType) override;
+	addHandle ();
+
+	virtual
+	void
+	removeHandle ();
+
+	virtual
+	void
+	traverse (TraverseType) final;
+
+	virtual
+	void
+	dispose () final;
 
 
 protected:
 
 	virtual
 	void
-	initialize () override;
+	initialize () final;
 
 	virtual
 	void
-	eventsProcessed () override;
-
-	void
-	push (TraverseType);
-
-	void
-	pop ();
-
-
-private:
-
-	Matrix4f matrix;
+	eventsProcessed () final;
 
 
 private:
@@ -146,14 +150,18 @@ private:
 	{
 		Fields ();
 
-		SFVec3f* const center;
+		SFVec3f* const translation;
 		SFRotation* const rotation;
 		SFVec3f* const scale;
 		SFRotation* const scaleOrientation;
-		SFVec3f* const translation;
+		SFVec3f* const center;
 	};
 
 	Fields fields;
+
+	Matrix4f matrix;
+	
+	SFNode <TransformHandle> handle;
 
 };
 

@@ -67,8 +67,6 @@ class X3DComposedGeometryNode :
 {
 public:
 
-	using X3DGeometryNode::ccw;
-
 	SFBool &
 	colorPerVertex ()
 	{ return *fields .colorPerVertex; }
@@ -92,6 +90,14 @@ public:
 	const SFBool &
 	solid () const
 	{ return *fields .solid; }
+
+	SFBool &
+	ccw ()
+	{ return *fields .ccw; }
+
+	const SFBool &
+	ccw () const
+	{ return *fields .ccw; }
 
 	MFNode &
 	attrib ()
@@ -146,8 +152,14 @@ protected:
 
 	X3DComposedGeometryNode ();
 
+	virtual
+	void
+	initialize ();
 
 private:
+	
+	void
+	set_ccw ();
 
 	struct Fields
 	{
@@ -156,6 +168,7 @@ private:
 		SFBool* const colorPerVertex;
 		SFBool* const normalPerVertex;
 		SFBool* const solid;
+		SFBool* const ccw;
 		MFNode* const attrib;
 		SFNode <X3DBaseNode>* const fogCoord;
 		SFNode <X3DBaseNode>* const texCoord;

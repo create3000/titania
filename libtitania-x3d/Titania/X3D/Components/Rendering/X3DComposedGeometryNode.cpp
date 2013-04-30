@@ -57,6 +57,7 @@ X3DComposedGeometryNode::Fields::Fields () :
 	colorPerVertex (new SFBool (true)),
 	normalPerVertex (new SFBool (true)),
 	solid (new SFBool (true)),
+	ccw (new SFBool (true)),
 	attrib (new MFNode ()),
 	fogCoord (new SFNode <X3DBaseNode> ()),
 	texCoord (new SFNode <X3DBaseNode> ()),
@@ -70,6 +71,21 @@ X3DComposedGeometryNode::X3DComposedGeometryNode () :
 	         fields ()  
 {
 	addNodeType (X3DConstants::X3DComposedGeometryNode);
+}
+
+void
+X3DComposedGeometryNode::initialize ()
+{
+	X3DGeometryNode::initialize ();
+
+	ccw () .addInterest (this, &X3DComposedGeometryNode::set_ccw);
+	set_ccw ();
+}
+
+void
+X3DComposedGeometryNode::set_ccw ()
+{
+	setCCW (ccw ());
 }
 
 } // X3D

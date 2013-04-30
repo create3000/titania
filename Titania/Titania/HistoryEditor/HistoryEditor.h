@@ -51,7 +51,6 @@
 #ifndef __TITANIA_HISTORY_EDITOR_HISTORY_EDITOR_H__
 #define __TITANIA_HISTORY_EDITOR_HISTORY_EDITOR_H__
 
-#include "../Base/X3DBrowserInterface.h"
 #include "../HistoryEditor/History.h"
 #include "../UserInterfaces/X3DHistoryEditorUI.h"
 #include <Titania/X3D.h>
@@ -60,12 +59,14 @@
 namespace titania {
 namespace puck {
 
+class X3DBrowserWindow;
+
 class HistoryEditor :
 	public X3DHistoryEditorUI
 {
 public:
 
-	HistoryEditor (const std::string &, X3DBrowserInterface* const);
+	HistoryEditor (const X3D::SFNode <X3D::Browser> &);
 
 	const History &
 	getHistory ();

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,139 +48,64 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
-#define __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
+extern "C"
+{
+#include <Python.h>
+}
 
-#include "../HistoryEditor/HistoryEditor.h"
-#include "../MotionBlurEditor/MotionBlurEditor.h"
-#include "../OutlineEditor/OutlineEditor.h"
-#include "../UserInterfaces/X3DBrowserUserInterface.h"
-#include "../ViewpointEditor/ViewpointEditor.h"
+#include "X3D/PyBrowser.h"
+#include "X3D/Fields/PySFVec3f.h"
 
 namespace titania {
-namespace puck {
+namespace python {
 
-class X3DBrowserWidget :
-	public X3DBrowserUserInterface
+static PyObject* TitaniaError;
+
+static
+PyObject*
+Titania_createBrowser (PyObject* self, PyObject* args)
 {
-public:
+	const char* command;
+	int         sts;
 
-	/// @name File
+	if (! PyArg_ParseTuple (args, "s", &command))
+		return NULL;
 
-	virtual
-	void
-	blank ();
+	sts = system (command);
 
-	virtual
-	void
-	home ();
+	if (sts < 0)
+	{
+		PyErr_SetString (TitaniaError, "System command failed");
+		return NULL;
+	}
 
-	virtual
-	void
-	open () const;
+	return PyLong_FromLong (sts);
+}
 
-	virtual
-	void
-	reload ();
-
-	virtual
-	void
-	setDescription (const std::string & value)
-	throw (X3D::Error <X3D::INVALID_OPERATION_TIMING>,
-	       X3D::Error <X3D::DISPOSED>);
-
-	virtual
-	void
-	loadURL (const X3D::MFString &, const X3D::MFString &)
-	throw (X3D::Error <X3D::INVALID_URL>,
-	       X3D::Error <X3D::URL_UNAVAILABLE>,
-	       X3D::Error <X3D::INVALID_X3D>);
-
-	virtual
-	void
-	loadURL (const X3D::MFString &)
-	throw (X3D::Error <X3D::INVALID_URL>,
-	       X3D::Error <X3D::URL_UNAVAILABLE>,
-	       X3D::Error <X3D::INVALID_X3D>);
-
-	/// @name Destruction
-
-	virtual
-	void
-	dispose ();
-
-	virtual
-	~X3DBrowserWidget ();
-
-
-protected:
-
-	X3DBrowserWidget (const std::string &, X3DBrowserInterface* const);
-
-	virtual
-	void
-	construct ();
-
-	virtual
-	void
-	initialize ();
-
-	void
-	loadSplashScreen ();
-
-	void
-	loadWorld ();
-
-	void
-	restoreSession ();
-
-	/// @name StatusBar
-
-	void
-	pushStatusBar (const std::string &);
-
-	void
-	popStatusBar ();
-
-	// Statistics
-
-	void
-	printStatistics () const;
-
-
-private:
-
-	// Callbacks
-
-	void
-	set_world ();
-
-	void
-	set_console ();
-
-	void
-	set_urlError ();
-
-	void
-	updateDescription ();
-
-	void
-	updateLocation ();
-
-	void
-	updateIcon ();
-
-	void
-	updateViewpoints ();
-
-
-private:
-
-	double loadTime;
+static PyMethodDef TitaniaMethods [ ] = {
+	{ "createBrowser",  Titania_createBrowser, METH_VARARGS, "Execute a shell command." },
+	{ NULL, NULL, 0, NULL }
 
 };
 
-} // puck
+} // python
 } // titania
 
-#endif
+using namespace titania::python;
+
+PyMODINIT_FUNC
+initTitania (void)
+{
+	auto module = Py_InitModule ("Titania", TitaniaMethods);
+
+	if (module == NULL)
+		return;
+		
+	PyBrowser::init (module);
+	PySFVec3f::init (module);
+
+	TitaniaError = PyErr_NewException ((char*) "Titania.Error", NULL, NULL);
+	Py_INCREF (TitaniaError);
+	PyModule_AddObject (module, "Error", TitaniaError);
+}
+

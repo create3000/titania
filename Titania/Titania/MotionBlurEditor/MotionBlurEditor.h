@@ -51,7 +51,6 @@
 #ifndef __TITANIA_MOTION_BLUR_EDITOR_MOTION_BLUR_EDITOR_H__
 #define __TITANIA_MOTION_BLUR_EDITOR_MOTION_BLUR_EDITOR_H__
 
-#include "../Base/X3DBrowserInterface.h"
 #include "../UserInterfaces/X3DMotionBlurEditorUI.h"
 #include <Titania/X3D.h>
 #include <gtkmm.h>
@@ -59,12 +58,14 @@
 namespace titania {
 namespace puck {
 
+class X3DBrowserWindow;
+
 class MotionBlurEditor :
 	public X3DMotionBlurEditorUI
 {
 public:
 
-	MotionBlurEditor (const std::string &, X3DBrowserInterface* const);
+	MotionBlurEditor (const X3D::SFNode <X3D::Browser> &);
 
 
 private:
@@ -72,10 +73,6 @@ private:
 	virtual
 	void
 	initialize ();
-
-	virtual
-	const X3D::SFNode <X3D::Browser> &
-	getBrowser () const;
 
 	virtual
 	void

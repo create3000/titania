@@ -51,18 +51,19 @@
 #ifndef __TITANIA_X3D_HANDLES_TRANSFORM_HANDLE_H__
 #define __TITANIA_X3D_HANDLES_TRANSFORM_HANDLE_H__
 
-#include "../Components/Grouping/Transform.h"
 #include "../Handles/X3DHandleNode.h"
 
 namespace titania {
 namespace X3D {
 
+class Transform;
+
 class TransformHandle :
-	public Transform, public X3DHandleNode
+	public X3DHandleNode
 {
 public:
 
-	TransformHandle (X3DExecutionContext* const);
+	TransformHandle (Transform* const, X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
@@ -70,7 +71,7 @@ public:
 
 	virtual
 	void
-	remove ();
+	traverse (TraverseType type);
 
 	virtual
 	void
@@ -82,11 +83,8 @@ private:
 	virtual
 	void
 	initialize ();
-
-	virtual
-	void
-	traverse (TraverseType);
-
+	
+	SFNode <Transform> transform;
 	SFNode <Scene> scene;
 
 };

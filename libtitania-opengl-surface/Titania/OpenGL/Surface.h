@@ -110,6 +110,9 @@ private:
 
 	bool
 	on_map (GdkEventAny*);
+	
+	bool
+	set_construct (const Cairo::RefPtr <Cairo::Context> &);
 
 	bool
 	set_configure_event (GdkEventConfigure*);
@@ -117,7 +120,8 @@ private:
 	bool
 	set_draw (const Cairo::RefPtr <Cairo::Context> &);
 
-	sigc::connection initialized_connection;
+	sigc::connection map_connection;
+	sigc::connection construct_connection;
 
 	std::shared_ptr <Context> context;
 

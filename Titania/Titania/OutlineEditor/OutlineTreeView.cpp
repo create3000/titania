@@ -59,7 +59,7 @@ namespace puck {
 OutlineTreeView::OutlineTreeView (const X3D::SFNode <X3D::Browser> & browser) :
 	   Gtk::TreeView (),        
 	X3DBaseInterface (),        
-	       selection (browser), 
+	       selection (this, browser), 
 	            keys ()         
 {
 	setBrowser (browser);
@@ -113,6 +113,14 @@ OutlineTreeView::OutlineTreeView (const X3D::SFNode <X3D::Browser> & browser) :
 	getBrowser () -> initialized .addInterest (this, &OutlineTreeView::set_world);
 }
 
+void
+OutlineTreeView::set_world ()
+{
+	selection .clear ();
+
+	set_model (OutlineTreeModel::create (getBrowser ()));
+}
+
 bool
 OutlineTreeView::on_key_press_event (GdkEventKey* event)
 {
@@ -151,14 +159,6 @@ OutlineTreeView::on_key_release_event (GdkEventKey* event)
 	selection .setSelectMultiple (keys .shift ());
 
 	return false;
-}
-
-void
-OutlineTreeView::set_world ()
-{
-	selection .clear ();
-
-	set_model (OutlineTreeModel::create (getBrowser ()));
 }
 
 bool
@@ -347,8 +347,6 @@ OutlineTreeView::select (const Gtk::TreeModel::iterator & iter, const Gtk::TreeM
 		Glib::RefPtr <OutlineTreeModel>::cast_dynamic (get_model ()) -> collapse_row (path, iter);
 
 		selection .select (*static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (data -> object));
-
-		queue_draw ();
 	}
 }
 

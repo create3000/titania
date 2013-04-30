@@ -52,7 +52,6 @@
 #define __TITANIA_BASE_X3DUSER_INTERFACE_H__
 
 #include "../Base/X3DBaseInterface.h"
-#include "../Base/X3DBrowserInterface.h"
 #include "../Configuration/Configuration.h"
 #include <gtkmm.h>
 #include <string>
@@ -64,9 +63,6 @@ class X3DUserInterface :
 	virtual public X3DBaseInterface
 {
 public:
-
-	X3DBrowserInterface*
-	getBrowserWidget () const;
 
 	virtual
 	const std::string &
@@ -84,7 +80,7 @@ public:
 	reparent (Gtk::Widget &, Gtk::Window &);
 
 	void
-	toggleWidget (bool, Gtk::Widget &);
+	toggleWidget (Gtk::Widget &, bool);
 
 	void
 	saveSession (const std::string &);
@@ -114,9 +110,6 @@ protected:
 	virtual
 	void
 	close ();
-
-	void
-	setBrowserWidget (X3DBrowserInterface* const);
 
 	Configuration &
 	getConfig ()
@@ -149,7 +142,6 @@ private:
 
 	Configuration        gconf;
 	sigc::connection     initialized_connection;
-	X3DBrowserInterface* browserWidget;
 	Array::iterator      userInterface;
 
 	static Array userInterfaces;

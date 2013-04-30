@@ -63,7 +63,7 @@ class ViewpointEditor :
 {
 public:
 
-	ViewpointEditor (const std::string &, X3DBrowserInterface* const);
+	ViewpointEditor (const X3D::SFNode <X3D::Browser> &);
 
 
 private:

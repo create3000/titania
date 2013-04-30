@@ -57,6 +57,9 @@ namespace titania {
 namespace X3D {
 
 basic::uri
+get_page (const std::string &);
+
+basic::uri
 get_handle (const std::string &);
 
 } // X3D

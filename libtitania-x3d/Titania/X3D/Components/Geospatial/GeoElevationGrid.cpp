@@ -69,6 +69,7 @@ GeoElevationGrid::Fields::Fields () :
 	height (new MFDouble ()),
 	normalPerVertex (new SFBool (true)),
 	solid (new SFBool (true)),
+	ccw (new SFBool (true)),
 	xDimension (new SFInt32 ()),
 	xSpacing (new SFDouble (1)),
 	zDimension (new SFInt32 ()),
@@ -108,6 +109,21 @@ X3DBaseNode*
 GeoElevationGrid::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoElevationGrid (executionContext);
+}
+
+void
+GeoElevationGrid::initialize ()
+{
+	X3DGeometryNode::initialize ();
+
+	ccw () .addInterest (this, &GeoElevationGrid::set_ccw);
+	set_ccw ();
+}
+
+void
+GeoElevationGrid::set_ccw ()
+{
+	setCCW (ccw ());
 }
 
 } // X3D

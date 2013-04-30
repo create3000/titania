@@ -29,6 +29,7 @@
 #include "X3DBrowser.h"
 
 #include "../Components/Navigation/X3DViewpointNode.h"
+#include "../Bits/config.h"
 
 #include <csignal>
 #include <cstdlib>
@@ -71,10 +72,7 @@ X3DBrowser::X3DBrowser () :
 
 	setChildren (description, scene, world);
 
-	//supportedFields, // make X3DBaseNodes of this
-	//supportedNodes,
-	//supportedComponents,
-	//supportedProfiles,
+	X3D::X3DUrlObject::addURN ("about:splash", get_page ("about/splash.wrl"));
 
 	std::clog << "\tDone constructing Browser." << std::endl;
 }
@@ -85,7 +83,17 @@ X3DBrowser::initialize ()
 	std::clog << "Initializing Browser ..." << std::endl;
 
 	world = scene = createScene ();
-	//world = scene = createX3DFromURL ({ "about:splash" });
+	
+	if (browserOptions -> splashScreen ())
+	{
+		world = scene = createX3DFromURL ({ "about:splash" });
+		
+		prepare ();
+		bind ();
+
+		prepare ();
+		display ();
+	}
 
 	X3DBrowserContext::initialize ();
 	X3DUrlObject::initialize ();
@@ -274,6 +282,16 @@ X3DBrowser::set_scene ()
 void
 X3DBrowser::set_world ()
 {
+	bind ();
+
+	// Generate initialized event immediately upon receiving this service.
+
+	initialized = getCurrentTime ();
+}
+
+void
+X3DBrowser::bind ()
+{
 	for (auto & layer : scene -> getLayerSet () -> getLayers ())
 	{
 		if (layer -> getNavigationInfos () .size ())
@@ -295,10 +313,6 @@ X3DBrowser::set_world ()
 
 	if (scene -> getWorldURL () .fragment () .length ())
 		changeViewpoint (scene -> getWorldURL () .fragment ());
-
-	// Generate initialized event immediately upon receiving this service.
-
-	initialized = getCurrentTime ();
 }
 
 void

@@ -1,3 +1,44 @@
+2013-04-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.md.pc:
+	* libtitania-x3d.cproj:
+	* config.h:
+	* config.cpp:
+	* Parser.h:
+	* Parser.cpp:
+	* Browser.cpp:
+	* X3DBrowser.h:
+	* Selection.cpp:
+	* X3DChildObject.h:
+	* X3DBrowser.cpp:
+	* X3DHandleNode.h:
+	* Logo.wrl:
+	* splash.wrl:
+	* X3DHandleNode.cpp:
+	* TransformHandle.h:
+	* Colors.wrl:
+	* GarbargeCollector.cpp:
+	* TransformHandle.cpp:
+	* TransformHandle.wrl:
+	* Transform.h:
+	* Transform.cpp:
+	* Extrusion.h:
+	* Extrusion.cpp:
+	* NurbsSweptSurface.h:
+	* NurbsSwungSurface.h:
+	* ElevationGrid.h:
+	* X3DGeometryNode.h:
+	* NurbsSweptSurface.cpp:
+	* NurbsSwungSurface.cpp:
+	* IndexedFaceSet.h:
+	* ElevationGrid.cpp:
+	* IndexedFaceSet.cpp:
+	* GeoElevationGrid.h:
+	* X3DGeometryNode.cpp:
+	* GeoElevationGrid.cpp:
+	* X3DComposedGeometryNode.h:
+	* X3DComposedGeometryNode.cpp: 
+
 2013-04-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Hit.h:

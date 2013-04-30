@@ -52,60 +52,68 @@
 
 #include "../Bits/config.h"
 #include "../Browser/X3DBrowser.h"
+#include "../Components/Grouping/Transform.h"
 #include "../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-TransformHandle::TransformHandle (X3DExecutionContext* const executionContext) :
+TransformHandle::TransformHandle (Transform* const _transform, X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    Transform (executionContext),                                    
-	X3DHandleNode (),                                                    
+	X3DHandleNode (),
+	    transform (_transform),
 	        scene ()                                                     
 {
-	setChildren (scene);
+	setComponent ("Handles");
+	setTypeName ("TransformHandle");
+	
+	setChildren (transform, scene);
 }
 
 X3DBaseNode*
 TransformHandle::create (X3DExecutionContext* const executionContext) const
 {
-	return new TransformHandle (executionContext);
+	return new TransformHandle (transform, executionContext);
 }
 
 void
 TransformHandle::initialize ()
 {
-	Transform::initialize ();
+	X3DHandleNode::initialize ();
 
 	scene = getBrowser () -> createX3DFromURL ({ get_handle ("TransformHandle.wrl") .str () });
 }
 
 void
-TransformHandle::remove ()
-{
-	auto transform = new Transform (getExecutionContext ());
-
-	transform -> replace (this);
-	transform -> setup ();
-}
-
-void
 TransformHandle::traverse (TraverseType type)
 {
-	push (type);
+	if (type == TraverseType::COLLISION)
+	{
+		auto handle = scene -> getNamedNode ("Handle");
+		auto bbox   = transform -> X3DGroupingNode::getBBox ();
+		
+		auto & translation = *static_cast <SFVec3f*> (handle -> getField ("translation"));
+
+		if (translation not_eq bbox .center ())
+			translation = bbox .center ();
+	
+		auto & scale = *static_cast <SFVec3f*> (handle -> getField ("scale"));
+
+		if (scale not_eq bbox .size ())
+			scale = bbox .size ();
+	}
 
 	for (const auto & rootNode : scene -> getRootNodes ())
 		rootNode -> traverse (type);
-
-	pop ();
 }
 
 void
 TransformHandle::dispose ()
 {
-	scene .dispose ();
+	transform .dispose ();
+	scene     .dispose ();
 
-	Transform::dispose ();
+	X3DHandleNode::dispose ();
 }
 
 } // X3D

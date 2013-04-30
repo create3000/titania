@@ -61,8 +61,6 @@ class NurbsSweptSurface :
 {
 public:
 
-	using X3DGeometryNode::ccw;
-
 	NurbsSweptSurface (X3DExecutionContext* const);
 
 	virtual
@@ -95,8 +93,23 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
+	SFBool &
+	ccw ()
+	{ return *fields .ccw; }
+
+	const SFBool &
+	ccw () const
+	{ return *fields .ccw; }
+
 
 private:
+
+	virtual
+	void
+	initialize ();
+	
+	void
+	set_ccw ();
 
 	struct Fields
 	{
@@ -105,6 +118,7 @@ private:
 		SFNode <X3DBaseNode>* const crossSectionCurve;
 		SFNode <X3DBaseNode>* const trajectoryCurve;
 		SFBool* const solid;
+		SFBool* const ccw;
 	};
 
 	Fields fields;

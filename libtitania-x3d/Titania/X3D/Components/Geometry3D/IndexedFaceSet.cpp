@@ -66,6 +66,7 @@ namespace X3D {
 
 IndexedFaceSet::Fields::Fields () :
 	convex (new SFBool (true)),
+	creaseAngle (new SFFloat ()),
 	texCoordIndex (new MFInt32 ()),
 	colorIndex (new MFInt32 ()),
 	normalIndex (new MFInt32 ()),
@@ -613,7 +614,7 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 		normals .emplace_back ();
 	}
 
-	refineNormals (normalIndex, normals);
+	refineNormals (normalIndex, normals, creaseAngle ());
 
 	for (const auto & polygon : polygons)
 	{

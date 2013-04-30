@@ -63,10 +63,6 @@ public:
 
 	X3DHandleNode ();
 
-	virtual
-	void
-	remove () = 0;
-
 };
 
 } // X3D

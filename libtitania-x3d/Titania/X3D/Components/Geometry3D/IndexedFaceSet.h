@@ -62,8 +62,6 @@ class IndexedFaceSet :
 {
 public:
 
-	using X3DGeometryNode::creaseAngle;
-
 	IndexedFaceSet (X3DExecutionContext* const);
 
 	virtual
@@ -79,6 +77,14 @@ public:
 	const SFBool &
 	convex () const
 	{ return *fields .convex; }
+
+	SFFloat &
+	creaseAngle ()
+	{ return *fields .creaseAngle; }
+
+	const SFFloat &
+	creaseAngle () const
+	{ return *fields .creaseAngle; }
 
 	MFInt32 &
 	texCoordIndex ()
@@ -164,6 +170,7 @@ private:
 		Fields ();
 
 		SFBool* const convex;
+		SFFloat* const creaseAngle;
 		MFInt32* const texCoordIndex;
 		MFInt32* const colorIndex;
 		MFInt32* const normalIndex;

@@ -981,6 +981,9 @@
     <Folder Include="share\" />
     <Folder Include="share\titania\" />
     <Folder Include="share\titania\handles\" />
+    <Folder Include="share\titania\pages\" />
+    <Folder Include="share\titania\pages\about\" />
+    <Folder Include="share\titania\pages\Library\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -1001,4 +1004,9 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <Content Include="share\titania\pages\about\splash.wrl" />
+    <Content Include="share\titania\pages\Library\Colors.wrl" />
+    <Content Include="share\titania\pages\Library\Logo.wrl" />
+  </ItemGroup>
 </Project>

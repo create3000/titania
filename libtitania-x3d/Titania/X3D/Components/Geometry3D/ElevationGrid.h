@@ -62,9 +62,6 @@ class ElevationGrid :
 {
 public:
 
-	using X3DGeometryNode::ccw;
-	using X3DGeometryNode::creaseAngle;
-
 	ElevationGrid (X3DExecutionContext* const);
 
 	virtual
@@ -80,78 +77,6 @@ public:
 	const MFFloat &
 	set_height () const
 	{ return *fields .set_height; }
-
-	MFNode &
-	attrib ()
-	{ return *fields .attrib; }
-
-	const MFNode &
-	attrib () const
-	{ return *fields .attrib; }
-
-	SFNode <X3DBaseNode> &
-	color ()
-	{ return *fields .color; }
-
-	const SFNode <X3DBaseNode> &
-	color () const
-	{ return *fields .color; }
-
-	SFNode <X3DBaseNode> &
-	fogCoord ()
-	{ return *fields .fogCoord; }
-
-	const SFNode <X3DBaseNode> &
-	fogCoord () const
-	{ return *fields .fogCoord; }
-
-	SFNode <X3DBaseNode> &
-	normal ()
-	{ return *fields .normal; }
-
-	const SFNode <X3DBaseNode> &
-	normal () const
-	{ return *fields .normal; }
-
-	SFNode <X3DBaseNode> &
-	texCoord ()
-	{ return *fields .texCoord; }
-
-	const SFNode <X3DBaseNode> &
-	texCoord () const
-	{ return *fields .texCoord; }
-
-	SFBool &
-	colorPerVertex ()
-	{ return *fields .colorPerVertex; }
-
-	const SFBool &
-	colorPerVertex () const
-	{ return *fields .colorPerVertex; }
-
-	MFFloat &
-	height ()
-	{ return *fields .height; }
-
-	const MFFloat &
-	height () const
-	{ return *fields .height; }
-
-	SFBool &
-	normalPerVertex ()
-	{ return *fields .normalPerVertex; }
-
-	const SFBool &
-	normalPerVertex () const
-	{ return *fields .normalPerVertex; }
-
-	SFBool &
-	solid ()
-	{ return *fields .solid; }
-
-	const SFBool &
-	solid () const
-	{ return *fields .solid; }
 
 	SFInt32 &
 	xDimension ()
@@ -185,8 +110,106 @@ public:
 	zSpacing () const
 	{ return *fields .zSpacing; }
 
+	SFFloat &
+	creaseAngle ()
+	{ return *fields .creaseAngle; }
+
+	const SFFloat &
+	creaseAngle () const
+	{ return *fields .creaseAngle; }
+
+	SFBool &
+	colorPerVertex ()
+	{ return *fields .colorPerVertex; }
+
+	const SFBool &
+	colorPerVertex () const
+	{ return *fields .colorPerVertex; }
+
+	SFBool &
+	normalPerVertex ()
+	{ return *fields .normalPerVertex; }
+
+	const SFBool &
+	normalPerVertex () const
+	{ return *fields .normalPerVertex; }
+
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+	SFBool &
+	ccw ()
+	{ return *fields .ccw; }
+
+	const SFBool &
+	ccw () const
+	{ return *fields .ccw; }
+
+	MFNode &
+	attrib ()
+	{ return *fields .attrib; }
+
+	const MFNode &
+	attrib () const
+	{ return *fields .attrib; }
+
+	SFNode <X3DBaseNode> &
+	fogCoord ()
+	{ return *fields .fogCoord; }
+
+	const SFNode <X3DBaseNode> &
+	fogCoord () const
+	{ return *fields .fogCoord; }
+
+	SFNode <X3DBaseNode> &
+	texCoord ()
+	{ return *fields .texCoord; }
+
+	const SFNode <X3DBaseNode> &
+	texCoord () const
+	{ return *fields .texCoord; }
+
+	SFNode <X3DBaseNode> &
+	color ()
+	{ return *fields .color; }
+
+	const SFNode <X3DBaseNode> &
+	color () const
+	{ return *fields .color; }
+	
+	SFNode <X3DBaseNode> &
+	normal ()
+	{ return *fields .normal; }
+
+	const SFNode <X3DBaseNode> &
+	normal () const
+	{ return *fields .normal; }
+
+	MFFloat &
+	height ()
+	{ return *fields .height; }
+
+	const MFFloat &
+	height () const
+	{ return *fields .height; }
+
+
+protected:
+
+	virtual
+	void
+	initialize ();
+
 
 private:
+	
+	void
+	set_ccw ();
 
 	Box3f
 	createBBox ();
@@ -211,19 +234,21 @@ private:
 		Fields ();
 
 		MFFloat* const set_height;
-		MFNode* const attrib;
-		SFNode <X3DBaseNode>* const color;
-		SFNode <X3DBaseNode>* const fogCoord;
-		SFNode <X3DBaseNode>* const normal;
-		SFNode <X3DBaseNode>* const texCoord;
-		SFBool* const colorPerVertex;
-		MFFloat* const height;
-		SFBool* const normalPerVertex;
-		SFBool* const solid;
 		SFInt32* const xDimension;
 		SFFloat* const xSpacing;
 		SFInt32* const zDimension;
 		SFFloat* const zSpacing;
+		SFBool* const solid;
+		SFBool* const ccw;
+		SFFloat* const creaseAngle;
+		SFBool* const colorPerVertex;
+		SFBool* const normalPerVertex;
+		MFNode* const attrib;
+		SFNode <X3DBaseNode>* const fogCoord;
+		SFNode <X3DBaseNode>* const texCoord;
+		SFNode <X3DBaseNode>* const color;
+		SFNode <X3DBaseNode>* const normal;
+		MFFloat* const height;
 	};
 
 	Fields fields;

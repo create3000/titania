@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,84 +48,62 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_USER_INTERFACES_X3DBROWSER_USER_INTERFACE_H__
-#define __TITANIA_USER_INTERFACES_X3DBROWSER_USER_INTERFACE_H__
-
-#include "../Base/X3DBrowserInterface.h"
-#include "../HistoryEditor/HistoryEditor.h"
-#include "../OutlineEditor/OutlineEditor.h"
-#include "../UserInterfaces/X3DBrowserWidgetUI.h"
-#include "../ViewpointEditor/ViewpointEditor.h"
+#include "PySFVec3f.h"
 
 namespace titania {
-namespace puck {
+namespace python {
 
-class X3DBrowserUserInterface :
-	public X3DBrowserWidgetUI,  public X3DBrowserInterface
-{
-public:
-
-	using X3DBrowserWidgetUI::saveSession;
-	using X3DBrowserWidgetUI::dispose;
-
-	/// @name Widgets
-
-	ViewpointEditor &
-	getViewpointEditor () { return viewpointEditor; }
-
-	const ViewpointEditor &
-	getViewpointEditor () const { return viewpointEditor; }
-
-	HistoryEditor &
-	getHistoryEditor () { return historyEditor; }
-
-	const HistoryEditor &
-	getHistoryEditor () const { return historyEditor; }
-
-	OutlineEditor &
-	getOutlineEditor () { return outlineEditor; }
-
-	const OutlineEditor &
-	getOutlineEditor () const { return outlineEditor; }
-
-	/// @name Session
-
-	void
-	close ();
-
-	virtual
-	void
-	saveSession ();
-
-	/// @name Destructor
-
-	virtual
-	~X3DBrowserUserInterface ();
-
-
-protected:
-
-	X3DBrowserUserInterface (const std::string &, X3DBrowserInterface* const);
-
-	virtual
-	void
-	initialize ();
-
-	/// @name Session
-
-	void
-	restoreSession ();
-
-
-private:
-
-	ViewpointEditor viewpointEditor;
-	HistoryEditor   historyEditor;
-	OutlineEditor   outlineEditor;
-
+PyTypeObject PySFVec3f::type = {
+	PyObject_HEAD_INIT (NULL)
 };
 
-} // puck
+PyMethodDef PySFVec3f::methods [ ] = {
+	{ NULL }
+};
+
+void
+PySFVec3f::init (PyObject* module)
+{
+	type .tp_new       = PyType_GenericNew;
+	type .tp_name      = "SFVec3f";
+	type .tp_basicsize = sizeof (Object);
+	type .tp_flags     = Py_TPFLAGS_DEFAULT;
+	type .tp_init      = &PySFVec3f::construct;
+	type .tp_methods   = methods;
+	type .tp_str       = &PySFVec3f::toString;
+	type .tp_dealloc   = (destructor) &PySFVec3f::dealloc;
+
+	if (PyType_Ready (&type) < 0)
+		return;
+
+	PyModule_AddObject (module, "SFVec3f", (PyObject*) &type);
+}
+
+int
+PySFVec3f::construct (PyObject* self,
+                    PyObject* args,
+                    PyObject* kwords)
+{
+	auto object = (Object*) self;
+
+	object -> field = new X3D::SFVec3f ();
+
+	return 0;
+}
+
+PyObject*
+PySFVec3f::toString (PyObject* self)
+{
+	return PyString_FromString (((Object*) self) -> field -> toString () .c_str ());
+}
+
+void
+PySFVec3f::dealloc (Object* self)
+{
+	delete self -> field;
+	self -> ob_type -> tp_free ((PyObject*) self);
+}
+
+} // python
 } // titania
 
-#endif

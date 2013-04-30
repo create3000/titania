@@ -58,7 +58,8 @@ namespace X3D {
 NurbsSwungSurface::Fields::Fields () :
 	profileCurve (new SFNode <X3DBaseNode> ()),
 	trajectoryCurve (new SFNode <X3DBaseNode> ()),
-	solid (new SFBool (true))
+	solid (new SFBool (true)),
+	ccw (new SFBool (true))
 { }
 
 NurbsSwungSurface::NurbsSwungSurface (X3DExecutionContext* const executionContext) :
@@ -72,14 +73,29 @@ NurbsSwungSurface::NurbsSwungSurface (X3DExecutionContext* const executionContex
 	addField (inputOutput,    "metadata",        metadata ());
 	addField (inputOutput,    "profileCurve",    profileCurve ());
 	addField (inputOutput,    "trajectoryCurve", trajectoryCurve ());
-	addField (initializeOnly, "ccw",             ccw ());
 	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "ccw",             ccw ());
 }
 
 X3DBaseNode*
 NurbsSwungSurface::create (X3DExecutionContext* const executionContext) const
 {
 	return new NurbsSwungSurface (executionContext);
+}
+
+void
+NurbsSwungSurface::initialize ()
+{
+	X3DParametricGeometryNode::initialize ();
+
+	ccw () .addInterest (this, &NurbsSwungSurface::set_ccw);
+	set_ccw ();
+}
+
+void
+NurbsSwungSurface::set_ccw ()
+{
+	setCCW (ccw ());
 }
 
 } // X3D

@@ -56,11 +56,10 @@
 namespace titania {
 namespace puck {
 
-ViewpointEditor::ViewpointEditor (const std::string & sessionKey, X3DBrowserInterface* const browserWidget) :
-	X3DViewpointEditorUI (get_ui ("ViewpointEditor.ui"), sessionKey) 
+ViewpointEditor::ViewpointEditor (const X3D::SFNode <X3D::Browser> & browser) :
+	X3DViewpointEditorUI (get_ui ("ViewpointEditor.ui"), gconf_dir ()) 
 {
-	setBrowserWidget (browserWidget);
-	setBrowser (browserWidget -> getBrowser ());
+	setBrowser (browser);
 }
 
 void

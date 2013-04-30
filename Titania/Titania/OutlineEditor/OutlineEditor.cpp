@@ -56,12 +56,11 @@
 namespace titania {
 namespace puck {
 
-OutlineEditor::OutlineEditor (const std::string & sessionKey, X3DBrowserInterface* const browserWidget) :
-	X3DOutlineEditorUI (get_ui ("OutlineEditor.ui"), sessionKey), 
-	          treeview (browserWidget -> getBrowser ())           
+OutlineEditor::OutlineEditor (const X3D::SFNode <X3D::Browser> & browser) :
+	X3DOutlineEditorUI (get_ui ("OutlineEditor.ui"), gconf_dir ()), 
+	          treeview (browser)           
 {
-	setBrowserWidget (browserWidget);
-	setBrowser (browserWidget -> getBrowser ());
+	setBrowser (browser);
 
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &OutlineEditor::on_button_release_event), false);
 }

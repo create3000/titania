@@ -105,10 +105,6 @@ public:
 	setChildren (Args & ...);
 
 	void
-	setChild (X3DChildObject* const child)
-	{ child -> addParent (this); }
-
-	void
 	setChild (X3DChildObject & child)
 	{ child .addParent (this); }
 

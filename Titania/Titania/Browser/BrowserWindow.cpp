@@ -54,9 +54,11 @@ namespace titania {
 namespace puck {
 
 BrowserWindow::BrowserWindow (int & argc, char** & argv) :
-	X3DBrowserWindow (argc, argv),                   
-	     currentPage (-1),                           
-	motionBlurEditor (getConfig () .getKey (), this) 
+	X3DBrowserWindow (argc, argv),    
+	motionBlurEditor (getBrowser ()), 
+	 viewpointEditor (getBrowser ()), 
+	   historyEditor (getBrowser ()), 
+	   outlineEditor (getBrowser ())  
 { }
 
 void
@@ -64,8 +66,34 @@ BrowserWindow::initialize ()
 {
 	X3DBrowserWindow::initialize ();
 
+	// User interface
+
+	Gtk::Settings::get_default () -> property_gtk_menu_images ()       = true;
+	Gtk::Settings::get_default () -> property_gtk_button_images ()     = true;
+	Gtk::Settings::get_default () -> property_gtk_toolbar_style ()     = Gtk::TOOLBAR_ICONS;
+	Gtk::Settings::get_default () -> property_gtk_toolbar_icon_size () = Gtk::ICON_SIZE_SMALL_TOOLBAR;
+
+	// FileOpenDialog
+	getFileOpenDialog () .set_default_response (Gtk::RESPONSE_OK);
+	getFileOpenDialog () .add_button ("gtk-open", Gtk::RESPONSE_OK);
+	getFileOpenDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
+
+	// FileSaveDialog
+	getFileSaveDialog () .set_default_response (Gtk::RESPONSE_OK);
+	getFileSaveDialog () .add_button ("gtk-save", Gtk::RESPONSE_OK);
+	getFileSaveDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
+
 	// MotionBlurEditor
 	getMotionBlurEditor () .getWindow () .set_transient_for (getWindow ());
+
+	// ViewpointEditor
+	getViewpointEditor () .reparent (getViewpointEditorBox (), getWindow ());
+
+	// HistoryEditor
+	getHistoryEditor () .reparent (getHistoryEditorBox (), getWindow ());
+
+	// OutlineEditor
+	getOutlineEditor () .reparent (getOutlineEditorBox (), getWindow ());
 
 	getWindow () .grab_focus ();
 }
@@ -75,13 +103,7 @@ BrowserWindow::initialize ()
 void
 BrowserWindow::on_new ()
 {
-	getBrowserWidget () -> blank ();
-}
-
-void
-BrowserWindow::on_home ()
-{
-	getBrowserWidget () -> home ();
+	blank ();
 }
 
 void
@@ -120,13 +142,7 @@ BrowserWindow::on_close ()
 void
 BrowserWindow::on_revert_to_saved ()
 {
-	getBrowserWidget () -> reload ();
-}
-
-void
-BrowserWindow::on_reload ()
-{
-	getBrowserWidget () -> reload ();
+	reload ();
 }
 
 // Dialog response handling
@@ -137,10 +153,10 @@ BrowserWindow::on_fileOpenDialog_response (int response_id)
 	getFileOpenDialog () .hide ();
 
 	if (response_id == Gtk::RESPONSE_OK)
-		getBrowserWidget () -> loadURL ({ Glib::uri_unescape_string (getFileOpenDialog () .get_uri ()) });
+		open (Glib::uri_unescape_string (getFileOpenDialog () .get_uri ()));
 
 	else
-		getFileOpenDialog () .set_current_folder_uri (getExecutionContext () -> getWorldURL () .base () .str ());
+		getFileOpenDialog () .set_current_folder_uri (getBrowser () -> getExecutionContext () -> getWorldURL () .base () .str ());
 }
 
 void
@@ -152,7 +168,7 @@ BrowserWindow::on_fileSaveDialog_response (int response_id)
 		save (Glib::uri_unescape_string (getFileSaveDialog () .get_filename ()));
 
 	else
-		getFileSaveDialog () .set_current_folder_uri (getExecutionContext () -> getWorldURL () .base () .str ());
+		getFileSaveDialog () .set_current_folder_uri (getBrowser () -> getExecutionContext () -> getWorldURL () .base () .str ());
 }
 
 // View menu
@@ -160,36 +176,25 @@ BrowserWindow::on_fileSaveDialog_response (int response_id)
 void
 BrowserWindow::on_toolBar_toggled ()
 {
-	for (const auto & browserWidget : getBrowserWidgets ())
-		toggleWidget (getToolBarMenuItem () .get_active (), browserWidget -> getToolBar ());
-}
-
-void
-BrowserWindow::on_navigationBar_toggled ()
-{
-	for (const auto & browserWidget : getBrowserWidgets ())
-		toggleWidget (getNavigationBarMenuItem () .get_active (), browserWidget -> getNavigationBar ());
+	toggleWidget (getToolBar (), getToolBarMenuItem () .get_active ());
 }
 
 void
 BrowserWindow::on_sideBar_toggled ()
 {
-	for (const auto & browserWidget : getBrowserWidgets ())
-		toggleWidget (getSideBarMenuItem () .get_active (), browserWidget -> getSideBar ());
+	toggleWidget (getSideBar (), getSideBarMenuItem () .get_active ());
 }
 
 void
 BrowserWindow::on_footer_toggled ()
 {
-	for (const auto & browserWidget : getBrowserWidgets ())
-		toggleWidget (getFooterMenuItem () .get_active (), browserWidget -> getFooter ());
+	toggleWidget (getFooter (), getFooterMenuItem () .get_active ());
 }
 
 void
 BrowserWindow::on_statusBar_toggled ()
 {
-	for (const auto & browserWidget : getBrowserWidgets ())
-		toggleWidget (getStatusBarMenuItem () .get_active (), browserWidget -> getStatusBar ());
+	toggleWidget (getStatusBar (), getStatusBarMenuItem () .get_active ());
 }
 
 // Shading menu
@@ -200,8 +205,7 @@ BrowserWindow::phong_activate ()
 	if (not getPhongMenuItem () .get_active ())
 		return;
 
-	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> shading () = "PHONG";
+	getBrowser () -> getBrowserOptions () -> shading () = "PHONG";
 }
 
 void
@@ -210,8 +214,7 @@ BrowserWindow::gouraud_activate ()
 	if (not getGouraudMenuItem () .get_active ())
 		return;
 
-	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> shading () = "GOURAUD";
+	getBrowser () -> getBrowserOptions () -> shading () = "GOURAUD";
 }
 
 void
@@ -220,8 +223,7 @@ BrowserWindow::flat_activate ()
 	if (not getFlatMenuItem () .get_active ())
 		return;
 
-	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> shading () = "FLAT";
+	getBrowser () -> getBrowserOptions () -> shading () = "FLAT";
 }
 
 void
@@ -230,8 +232,7 @@ BrowserWindow::wireframe_activate ()
 	if (not getWireFrameMenuItem () .get_active ())
 		return;
 
-	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> shading () = "WIREFRAME";
+	getBrowser () -> getBrowserOptions () -> shading () = "WIREFRAME";
 }
 
 void
@@ -240,8 +241,7 @@ BrowserWindow::pointset_activate ()
 	if (not getPointSetMenuItem () .get_active ())
 		return;
 
-	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> shading () = "POINTSET";
+	getBrowser () -> getBrowserOptions () -> shading () = "POINTSET";
 }
 
 // Primitive Quality
@@ -252,8 +252,7 @@ BrowserWindow::on_low_quality_activate ()
 	if (not getLowQualityMenuItem () .get_active ())
 		return;
 
-	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> primitiveQuality () = "LOW";
+	getBrowser () -> getBrowserOptions () -> primitiveQuality () = "LOW";
 }
 
 void
@@ -262,8 +261,7 @@ BrowserWindow::on_medium_quality_activate ()
 	if (not getMediumQualityMenuItem () .get_active ())
 		return;
 
-	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> primitiveQuality () = "MEDIUM";
+	getBrowser () -> getBrowserOptions () -> primitiveQuality () = "MEDIUM";
 }
 
 void
@@ -272,8 +270,7 @@ BrowserWindow::on_high_quality_activate ()
 	if (not getHighQualityMenuItem () .get_active ())
 		return;
 
-	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> primitiveQuality () = "HIGH";
+	getBrowser () -> getBrowserOptions () -> primitiveQuality () = "HIGH";
 }
 
 // RenderingProperties
@@ -281,8 +278,7 @@ BrowserWindow::on_high_quality_activate ()
 void
 BrowserWindow::on_rendering_properties_toggled ()
 {
-	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesMenuItem () .get_active ();
+	getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesMenuItem () .get_active ();
 }
 
 // Fullscreen
@@ -310,8 +306,7 @@ BrowserWindow::on_headlight_toggled ()
 void
 BrowserWindow::on_rubberband_toggled ()
 {
-	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> rubberBand () = getRubberbandMenuItem () .get_active ();
+	getBrowser () -> getBrowserOptions () -> rubberBand () = getRubberbandMenuItem () .get_active ();
 }
 
 void
@@ -323,8 +318,7 @@ BrowserWindow::on_look_at_all_activate ()
 void
 BrowserWindow::on_enableInlineViewpoints_toggled ()
 {
-	for (const auto & browserWidget : getBrowserWidgets ())
-		browserWidget -> getBrowser () -> getBrowserOptions () -> enableInlineViewpoints () = getEnableInlineViewpointsMenuItem () .get_active ();
+	getBrowser () -> getBrowserOptions () -> enableInlineViewpoints () = getEnableInlineViewpointsMenuItem () .get_active ();
 }
 
 // Editor handling
@@ -352,7 +346,7 @@ BrowserWindow::on_motion_blur_editor_activate ()
 void
 BrowserWindow::on_info ()
 {
-	getBrowserWidget () -> loadURL ({ "about:info" });
+	open ("about:info");
 }
 
 void
@@ -361,40 +355,48 @@ BrowserWindow::on_standard_size ()
 	getWindow () .resize (960, 600);
 }
 
-// Notebook handling
+// Browser toolbar handling
 
 void
-BrowserWindow::on_switch_page (Gtk::Widget* page, guint page_num)
+BrowserWindow::on_hand_button_toggled ()
 {
-	if (page_num == (guint) getNotebook () .get_n_pages () - 1)
+	if (getHandButton () .get_active ())
 	{
-		getNotebook () .set_current_page (currentPage);
-		return;
-	}
+		std::clog << "Hand button clicked." << std::endl;
 
-	currentPage = page_num;
+		getBrowser () -> select = false;
+	}
 }
 
 void
-BrowserWindow::on_add_tab ()
+BrowserWindow::on_arrow_button_toggled ()
 {
-	loadURL ({ "about:blank" }, { "target", "_blank" });
+	if (getArrowButton () .get_active ())
+	{
+		std::clog << "Arrow button clicked." << std::endl;
+
+		getBrowser () -> select = true;
+	}
 }
 
 void
-BrowserWindow::on_close_tab (Gtk::Widget & child)
+BrowserWindow::on_look_at_all_clicked ()
 {
-	if (getNotebook () .get_n_pages () > 2)
-	{
-		removePage (child);
+	getBrowser () -> getExecutionContext () -> getActiveLayer () -> lookAt ();
+}
 
-		if (getNotebook () .get_current_page () == getNotebook () .get_n_pages () - 1)
-			getNotebook () .set_current_page (getNotebook () .get_current_page () - 1);
+void
+BrowserWindow::on_look_at_toggled ()
+{
+	__LOG__ << std::endl;
+}
 
-		currentPage = getNotebook () .get_current_page ();
-	}
-	else
-		close ();
+// Dialog response handling
+
+void
+BrowserWindow::on_messageDialog_response (int response_id)
+{
+	getMessageDialog () .hide ();
 }
 
 } // puck

@@ -61,7 +61,6 @@ X3DUserInterface::Array X3DUserInterface::userInterfaces;
 X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::string & configKey) :
 	                 gconf (configKey, widgetName), 
 	initialized_connection (),                      
-	         browserWidget (),                      
 	         userInterface ()                       
 { }
 
@@ -121,18 +120,6 @@ X3DUserInterface::is_initialized ()
 }
 
 void
-X3DUserInterface::setBrowserWidget (X3DBrowserInterface* const value)
-{
-	browserWidget = value;
-}
-
-X3DBrowserInterface*
-X3DUserInterface::getBrowserWidget () const
-{
-	return browserWidget;
-}
-
-void
 X3DUserInterface::reparent (Gtk::Widget & widget, Gtk::Window & window)
 {
 	getWindow () .set_transient_for (window);
@@ -140,7 +127,7 @@ X3DUserInterface::reparent (Gtk::Widget & widget, Gtk::Window & window)
 }
 
 void
-X3DUserInterface::toggleWidget (bool active, Gtk::Widget & widget)
+X3DUserInterface::toggleWidget (Gtk::Widget & widget, bool active)
 {
 	if (active)
 		widget .show ();

@@ -48,25 +48,28 @@
  *
  ******************************************************************************/
 
+#include "Transform.h"
+
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "Transform.h"
 
 namespace titania {
 namespace X3D {
 
 Transform::Fields::Fields () :
-	center (new SFVec3f ()),
+	translation (new SFVec3f ()),
 	rotation (new SFRotation ()),
 	scale (new SFVec3f (1, 1, 1)),
 	scaleOrientation (new SFRotation ()),
-	translation (new SFVec3f ())
+	center (new SFVec3f ())
 { }
 
 Transform::Transform (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGroupingNode (),                                                    
-	         fields ()                                                     
+	         fields (),
+	         matrix (),
+	         handle ()                                                     
 {
 	setComponent ("Grouping");
 	setTypeName ("Transform");
@@ -82,6 +85,8 @@ Transform::Transform (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "addChildren",      addChildren ());
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
+	
+	setChildren (handle);
 }
 
 X3DBaseNode*
@@ -104,6 +109,19 @@ Transform::getBBox ()
 }
 
 void
+Transform::addHandle ()
+{
+	handle = new TransformHandle (this, getExecutionContext ());
+	handle -> setup ();
+}
+
+void
+Transform::removeHandle ()
+{
+	handle = NULL;
+}
+
+void
 Transform::eventsProcessed ()
 {
 	X3DGroupingNode::eventsProcessed ();
@@ -118,24 +136,24 @@ Transform::eventsProcessed ()
 void
 Transform::traverse (TraverseType type)
 {
-	push (type);
-	pop ();
-}
-
-void
-Transform::push (TraverseType type)
-{
 	glPushMatrix ();
 
 	glMultMatrixf (matrix .data ());
 
 	X3DGroupingNode::traverse (type);
+	
+	if (handle)
+		handle -> traverse (type);
+
+	glPopMatrix ();
 }
 
 void
-Transform::pop ()
+Transform::dispose ()
 {
-	glPopMatrix ();
+	handle .dispose ();
+
+	X3DGroupingNode::dispose ();
 }
 
 } // X3D

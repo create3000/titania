@@ -50,13 +50,17 @@
 
 #include "OutlineTreeView.h"
 
+#include "../OutlineEditor/OutlineTreeView.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
 
 namespace titania {
 namespace puck {
 
-OutlineSelection::OutlineSelection (const X3D::SFNode <X3D::Browser> & browser) :
-	X3DBaseInterface () 
+OutlineSelection::OutlineSelection (OutlineTreeView* const treeview, const X3D::SFNode <X3D::Browser> & browser) :
+	X3DBaseInterface (),
+	        treeview (treeview),
+	  selectMultiple (false),
+	  forceSelection (false)
 {
 	setBrowser (browser);
 
@@ -68,6 +72,8 @@ OutlineSelection::set_selection ()
 {
 	for (const auto & sfnode : getBrowser () -> getSelection () -> children ())
 		select (sfnode .getValue (), true);
+		
+	treeview -> queue_draw ();
 }
 
 void

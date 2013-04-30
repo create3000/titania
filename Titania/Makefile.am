@@ -6,12 +6,9 @@ bin_PROGRAMS =  \
 
 titania_SOURCES =  \
 	Titania/Base/X3DBaseInterface.cpp \
-	Titania/Base/X3DBrowserInterface.cpp \
 	Titania/Base/X3DUserInterface.cpp \
-	Titania/Browser/BrowserWidget.cpp \
 	Titania/Browser/BrowserWindow.cpp \
 	Titania/Browser/ViewpointMenuItem.cpp \
-	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \
@@ -23,7 +20,6 @@ titania_SOURCES =  \
 	Titania/OutlineEditor/OutlineSelection.cpp \
 	Titania/OutlineEditor/OutlineTreeModel.cpp \
 	Titania/OutlineEditor/OutlineTreeView.cpp \
-	Titania/UserInterfaces/X3DBrowserUserInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserWidgetUI.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowUI.cpp \
 	Titania/UserInterfaces/X3DConsoleUI.cpp \

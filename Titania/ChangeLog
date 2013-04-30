@@ -1,3 +1,51 @@
+2013-04-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* BrowserWindow.h:
+	* X3DUserInterface.h:
+	* BrowserWidget.h:
+	* BrowserWidget.ui:
+	* BrowserWidget.cpp:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.ui:
+	* X3DBrowserWindow.h:
+	* X3DBrowserWidget.h:
+	* X3DBrowserInterface.h:
+	* Logo.wrl:
+	* X3DBrowserInterface.cpp:
+	* X3DBrowserWidget.cpp:
+	* splash.wrl:
+	* X3DBrowserWindow.cpp:
+	* X3DConsoleUI.h:
+	* OutlineEditor.h:
+	* HistoryEditor.h:
+	* Colors.wrl:
+	* X3DConsoleUI.cpp:
+	* OutlineEditor.cpp:
+	* HistoryEditor.cpp:
+	* OutlineSelection.h:
+	* ViewpointEditor.h:
+	* OutlineTreeView.cpp:
+	* OutlineSelection.cpp:
+	* ViewpointEditor.cpp:
+	* X3DHistoryEditorUI.h:
+	* X3DBrowserWindowUI.h:
+	* MotionBlurEditor.h:
+	* X3DBrowserWidgetUI.h:
+	* X3DOutlineEditorUI.h:
+	* X3DBrowserWindowUI.cpp:
+	* X3DHistoryEditorUI.cpp:
+	* MotionBlurEditor.cpp:
+	* X3DBrowserWidgetUI.cpp:
+	* X3DOutlineEditorUI.cpp:
+	* X3DViewpointEditorUI.h:
+	* X3DMotionBlurEditorUI.h:
+	* X3DViewpointEditorUI.cpp:
+	* X3DMotionBlurEditorUI.cpp:
+	* X3DBrowserUserInterface.h:
+	* X3DBrowserUserInterface.cpp: 
+
 2013-04-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* History.cpp:

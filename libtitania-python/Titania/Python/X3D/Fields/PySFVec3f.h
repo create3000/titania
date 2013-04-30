@@ -48,99 +48,55 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_BROWSER_WIDGET_H__
-#define __TITANIA_BROWSER_BROWSER_WIDGET_H__
+#ifndef __TITANIA_PYTHON_X3D_FIELDS_PY_SFVEC3F_H__
+#define __TITANIA_PYTHON_X3D_FIELDS_PY_SFVEC3F_H__
 
-#include "../Browser/X3DBrowserWidget.h"
+extern "C"
+{
+#include <Python.h>
+}
 
-#include <gtkmm.h>
-#include <iostream>
+#include <Titania/X3D/Fields/SFVec3.h>
 
 namespace titania {
-namespace puck {
+namespace python {
 
-class BrowserWidget :
-	public X3DBrowserWidget
+class PySFVec3f
 {
 public:
 
-	BrowserWidget (const std::string &, X3DBrowserInterface* const);
+	struct Object
+	{
+		PyObject_HEAD;
+		X3D::SFVec3f* field;
 
-	virtual
-	~BrowserWidget ();
+	};
+
+	static
+	void
+	init (PyObject*);
 
 
 private:
 
-	virtual
+	static
+	int
+	construct (PyObject*,  PyObject*, PyObject*);
+
+	static
+	PyObject*
+	toString (PyObject*);
+
+	static
 	void
-	initialize ();
+	dealloc (Object*);
 
-	virtual
-	void
-	on_map ();
-
-	virtual
-	void
-	on_unmap ();
-
-	/// @name Message dialog response handling
-
-	virtual
-	void
-	messageDialogResponse (int);
-
-	///  @name Toolbar handling
-
-	virtual
-	void
-	on_home ();
-
-	virtual
-	void
-	on_reload ();
-
-	///  @name Bar view handling
-
-	virtual
-	void
-	on_footer_toggled ();
-
-	virtual
-	void
-	on_sideBar_toggled ();
-
-	virtual
-	void
-	on_look_at_all_clicked ();
-
-	virtual
-	void
-	on_look_at_toggled ();
-
-	///  @name Browser toolbar handling
-
-	virtual
-	void
-	on_hand_button_toggled ();
-
-	virtual
-	void
-	on_arrow_button_toggled ();
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	virtual
-	void
-	on_locationEntry_activate ();
-
-	virtual
-	void
-	on_locationEntryIcon_activate (Gtk::EntryIconPosition, const GdkEventButton*);
+	static PyTypeObject type;
+	static PyMethodDef  methods [ ];
 
 };
 
-} // puck
+} // python
 } // titania
 
 #endif

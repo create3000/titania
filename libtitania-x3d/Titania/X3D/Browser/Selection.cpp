@@ -53,7 +53,7 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/X3DExecutionContext.h"
 
-#include "../Handles/TransformHandle.h"
+#include "../Components/Grouping/Transform.h"
 
 namespace titania {
 namespace X3D {
@@ -117,25 +117,15 @@ Selection::clear ()
 void
 Selection::addHandle (const SFNode <X3DBaseNode> & child)
 {
-	X3DHandleNode* handle = NULL;
-
 	if (dynamic_cast <Transform*> (child .getValue ()))
-		handle = new TransformHandle (child -> getExecutionContext ());
-
-	if (handle)
-	{
-		handle -> replace (child .getValue ());
-		handle -> setup ();
-	}
+		dynamic_cast <Transform*> (child .getValue ()) -> addHandle ();
 }
 
 void
 Selection::removeHandle (const SFNode <X3DBaseNode> & child)
 {
-	auto handle = dynamic_cast <X3DHandleNode*> (child .getValue ());
-
-	if (handle)
-		handle -> remove ();
+	if (dynamic_cast <Transform*> (child .getValue ()))
+		dynamic_cast <Transform*> (child .getValue ()) -> removeHandle ();
 }
 
 } // X3D

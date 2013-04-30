@@ -62,19 +62,21 @@ namespace X3D {
 
 ElevationGrid::Fields::Fields () :
 	set_height (new MFFloat ()),
-	attrib (new MFNode ()),
-	color (new SFNode <X3DBaseNode> ()),
-	fogCoord (new SFNode <X3DBaseNode> ()),
-	normal (new SFNode <X3DBaseNode> ()),
-	texCoord (new SFNode <X3DBaseNode> ()),
-	colorPerVertex (new SFBool (true)),
-	height (new MFFloat ()),
-	normalPerVertex (new SFBool (true)),
-	solid (new SFBool (true)),
 	xDimension (new SFInt32 ()),
 	xSpacing (new SFFloat (1)),
 	zDimension (new SFInt32 ()),
-	zSpacing (new SFFloat (1))
+	zSpacing (new SFFloat (1)),
+	solid (new SFBool (true)),
+	ccw (new SFBool (true)),
+	creaseAngle (new SFFloat ()),
+	colorPerVertex (new SFBool (true)),
+	normalPerVertex (new SFBool (true)),
+	attrib (new MFNode ()),
+	fogCoord (new SFNode <X3DBaseNode> ()),
+	texCoord (new SFNode <X3DBaseNode> ()),
+	color (new SFNode <X3DBaseNode> ()),
+	normal (new SFNode <X3DBaseNode> ()),
+	height (new MFFloat ())
 { }
 
 ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
@@ -87,27 +89,45 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput,    "metadata",        metadata ());
 	addField (inputOnly,      "set_height",      set_height ());
-	addField (inputOutput,    "attrib",          attrib ());
-	addField (inputOutput,    "color",           color ());
-	addField (inputOutput,    "fogCoord",        fogCoord ());
-	addField (inputOutput,    "normal",          normal ());
-	addField (inputOutput,    "texCoord",        texCoord ());
-	addField (initializeOnly, "ccw",             ccw ());
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
-	addField (initializeOnly, "creaseAngle",     creaseAngle ());
-	addField (initializeOnly, "height",          height ());
-	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-	addField (initializeOnly, "solid",           solid ());
+	
 	addField (initializeOnly, "xDimension",      xDimension ());
 	addField (initializeOnly, "xSpacing",        xSpacing ());
 	addField (initializeOnly, "zDimension",      zDimension ());
 	addField (initializeOnly, "zSpacing",        zSpacing ());
+	
+	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "ccw",             ccw ());
+	addField (initializeOnly, "creaseAngle",     creaseAngle ());
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
+	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+	
+	addField (inputOutput,    "attrib",          attrib ());
+	addField (inputOutput,    "fogCoord",        fogCoord ());
+	addField (inputOutput,    "texCoord",        texCoord ());
+	addField (inputOutput,    "color",           color ());
+	addField (inputOutput,    "normal",          normal ());
+	addField (initializeOnly, "height",          height ());
 }
 
 X3DBaseNode*
 ElevationGrid::create (X3DExecutionContext* const executionContext) const
 {
 	return new ElevationGrid (executionContext);
+}
+
+void
+ElevationGrid::initialize ()
+{
+	X3DGeometryNode::initialize ();
+
+	ccw () .addInterest (this, &ElevationGrid::set_ccw);
+	set_ccw ();
+}
+
+void
+ElevationGrid::set_ccw ()
+{
+	setCCW (ccw ());
 }
 
 Box3f
@@ -185,7 +205,7 @@ ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::
 		normals .resize (normals .size () + 6, normalize (normal));
 	}
 
-	refineNormals (normalIndex, normals);
+	refineNormals (normalIndex, normals, creaseAngle ());
 
 	return normals;
 }
