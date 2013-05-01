@@ -194,7 +194,7 @@ Parser::pushExecutionContext (X3DExecutionContext* const executionContext)
 {
 	//__LOG__ << std::endl;
 
-	executionContextStack .push_back (executionContext);
+	executionContextStack .emplace_back (executionContext);
 }
 
 void
@@ -822,7 +822,7 @@ Parser::interfaceDeclarations ()
 
 	while (_field)
 	{
-		_interfaceDeclarations .push_back (_field);
+		_interfaceDeclarations .emplace_back (_field);
 		_field = interfaceDeclaration ();
 	}
 
@@ -1032,7 +1032,7 @@ Parser::externInterfaceDeclarations ()
 
 	while (_field)
 	{
-		_externInterfaceDeclarations .push_back (_field);
+		_externInterfaceDeclarations .emplace_back (_field);
 		_field = externInterfaceDeclaration ();
 	}
 
@@ -1791,7 +1791,7 @@ Parser::mfboolValue (MFBool* _field)
 
 	if (sfboolValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -1826,7 +1826,7 @@ Parser::sfboolValues (MFBool* _field)
 	SFBool value;
 
 	while (sfboolValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -1872,7 +1872,7 @@ Parser::mfcolorValue (MFColor* _field)
 
 	if (sfcolorValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -1907,7 +1907,7 @@ Parser::sfcolorValues (MFColor* _field)
 	SFColor value;
 
 	while (sfcolorValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -1946,7 +1946,7 @@ Parser::mfcolorRGBAValue (MFColorRGBA* _field)
 
 	if (sfcolorRGBAValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -1981,7 +1981,7 @@ Parser::sfcolorRGBAValues (MFColorRGBA* _field)
 	SFColorRGBA value;
 
 	while (sfcolorRGBAValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -2011,7 +2011,7 @@ Parser::mfdoubleValue (MFDouble* _field)
 
 	if (sfdoubleValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -2046,7 +2046,7 @@ Parser::sfdoubleValues (MFDouble* _field)
 	SFDouble value;
 
 	while (sfdoubleValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -2076,7 +2076,7 @@ Parser::mffloatValue (MFFloat* _field)
 
 	if (sffloatValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -2111,7 +2111,7 @@ Parser::sffloatValues (MFFloat* _field)
 	SFFloat value;
 
 	while (sffloatValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -2133,7 +2133,7 @@ Parser::sfimageValue (SFImage* _field)
 				for (int32_t i = 0; i < size; ++ i)
 				{
 					if (_int32 (pixel))
-						array .push_back (pixel);
+						array .emplace_back (pixel);
 					else
 						throw Error <INVALID_X3D> ("Expected more pixel values.");
 				}
@@ -2158,7 +2158,7 @@ Parser::mfimageValue (MFImage* _field)
 
 	if (sfimageValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -2193,7 +2193,7 @@ Parser::sfimageValues (MFImage* _field)
 	SFImage value;
 
 	while (sfimageValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -2223,7 +2223,7 @@ Parser::mfint32Value (MFInt32* _field)
 
 	if (sfint32Value (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -2258,7 +2258,7 @@ Parser::sfint32Values (MFInt32* _field)
 	SFInt32 value;
 
 	while (sfint32Value (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -2312,7 +2312,7 @@ Parser::mfmatrix3dValue (MFMatrix3d* _field)
 
 	if (sfmatrix3dValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -2347,7 +2347,7 @@ Parser::sfmatrix3dValues (MFMatrix3d* _field)
 	SFMatrix3d value;
 
 	while (sfmatrix3dValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -2401,7 +2401,7 @@ Parser::mfmatrix3fValue (MFMatrix3f* _field)
 
 	if (sfmatrix3fValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -2436,7 +2436,7 @@ Parser::sfmatrix3fValues (MFMatrix3f* _field)
 	SFMatrix3f value;
 
 	while (sfmatrix3fValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -2511,7 +2511,7 @@ Parser::mfmatrix4dValue (MFMatrix4d* _field)
 
 	if (sfmatrix4dValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -2546,7 +2546,7 @@ Parser::sfmatrix4dValues (MFMatrix4d* _field)
 	SFMatrix4d value;
 
 	while (sfmatrix4dValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -2621,7 +2621,7 @@ Parser::mfmatrix4fValue (MFMatrix4f* _field)
 
 	if (sfmatrix4fValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -2656,7 +2656,7 @@ Parser::sfmatrix4fValues (MFMatrix4f* _field)
 	SFMatrix4f value;
 
 	while (sfmatrix4fValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -2678,7 +2678,7 @@ Parser::mfnodeValue (MFNode* _field)
 
 	if (nodeStatement (value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -2713,7 +2713,7 @@ Parser::nodeStatements (MFNode* _field)
 	SFNode <X3DBaseNode> _node;
 
 	while (nodeStatement (_node))
-		_field -> push_back (_node);
+		_field -> emplace_back (_node);
 }
 
 bool
@@ -2752,7 +2752,7 @@ Parser::mfrotationValue (MFRotation* _field)
 
 	if (sfrotationValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -2787,7 +2787,7 @@ Parser::sfrotationValues (MFRotation* _field)
 	SFRotation value;
 
 	while (sfrotationValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -2817,7 +2817,7 @@ Parser::mfstringValue (MFString* _field)
 
 	if (sfstringValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -2852,7 +2852,7 @@ Parser::sfstringValues (MFString* _field)
 	SFString value;
 
 	while (sfstringValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -2882,7 +2882,7 @@ Parser::mftimeValue (MFTime* _field)
 
 	if (sftimeValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -2917,7 +2917,7 @@ Parser::sftimeValues (MFTime* _field)
 	SFTime value;
 
 	while (sftimeValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -2950,7 +2950,7 @@ Parser::mfvec2dValue (MFVec2d* _field)
 
 	if (sfvec2dValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -2985,7 +2985,7 @@ Parser::sfvec2dValues (MFVec2d* _field)
 	SFVec2d value;
 
 	while (sfvec2dValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -3018,7 +3018,7 @@ Parser::mfvec2fValue (MFVec2f* _field)
 
 	if (sfvec2fValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -3053,7 +3053,7 @@ Parser::sfvec2fValues (MFVec2f* _field)
 	SFVec2f value;
 
 	while (sfvec2fValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -3089,7 +3089,7 @@ Parser::mfvec3dValue (MFVec3d* _field)
 
 	if (sfvec3dValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -3124,7 +3124,7 @@ Parser::sfvec3dValues (MFVec3d* _field)
 	SFVec3d value;
 
 	while (sfvec3dValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -3160,7 +3160,7 @@ Parser::mfvec3fValue (MFVec3f* _field)
 
 	if (sfvec3fValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -3195,7 +3195,7 @@ Parser::sfvec3fValues (MFVec3f* _field)
 	SFVec3f value;
 
 	while (sfvec3fValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -3234,7 +3234,7 @@ Parser::mfvec4dValue (MFVec4d* _field)
 
 	if (sfvec4dValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -3269,7 +3269,7 @@ Parser::sfvec4dValues (MFVec4d* _field)
 	SFVec4d value;
 
 	while (sfvec4dValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 bool
@@ -3308,7 +3308,7 @@ Parser::mfvec4fValue (MFVec4f* _field)
 
 	if (sfvec4fValue (&value))
 	{
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 		return true;
 	}
 
@@ -3343,7 +3343,7 @@ Parser::sfvec4fValues (MFVec4f* _field)
 	SFVec4f value;
 
 	while (sfvec4fValue (&value))
-		_field -> push_back (value);
+		_field -> emplace_back (value);
 }
 
 } // X3D
