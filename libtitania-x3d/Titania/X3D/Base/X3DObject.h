@@ -97,9 +97,9 @@ public:
 
 	///  @name Comment handling
 
-	std::deque <std::string> &
-	getComments ()
-	{ return comments; }
+	void
+	addComments (const std::deque <std::string> & value)
+	{ comments .insert (comments .end (), value .begin (), value .end ()); }
 
 	const std::deque <std::string> &
 	getComments () const

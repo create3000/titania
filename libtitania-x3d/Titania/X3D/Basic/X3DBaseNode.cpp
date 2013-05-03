@@ -123,7 +123,8 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	              fields (),                 
 	        fieldAliases (),                 
 	numUserDefinedFields (0),                
-	              events ()                  
+	              events (),
+	            comments ()                 
 {
 	assert (executionContext);
 
@@ -684,7 +685,31 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 			return;
 		}
+	}
+	
+	if (getComments () .size ())
+	{
+		ostream
+			<< Generator::Comment
+			<< getComments () .front ()
+			<< Generator::Break;
+	
+		for (const auto & comment : basic::adapter (getComments () .begin () + 1, getComments (). end ()))
+		{
+			ostream
+				<< Generator::Indent
+				<< Generator::Comment
+				<< comment
+				<< Generator::Break;
+		}
+		
+		ostream
+			<< Generator::TidyBreak
+			<< Generator::Indent;
+	}
 
+	if (name .length ())
+	{
 		Generator::AddNode (this);
 
 		ostream
@@ -722,6 +747,15 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 		for (const auto & field : userDefinedFields)
 		{
+			for (const auto & comment : field -> getComments ())
+			{
+				ostream
+					<< Generator::Indent
+					<< Generator::Comment
+					<< comment
+					<< Generator::Break;
+			}
+		
 			ostream
 				<< Generator::Indent
 				<< std::setiosflags (std::ios::left)
@@ -731,9 +765,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 			ostream
 				<< Generator::Space
-
 				<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
-
 				<< Generator::Space;
 
 			if (Generator::X3DFieldNames ())
@@ -778,6 +810,15 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 		for (const auto & field : fields)
 		{
+			for (const auto & comment : field -> getComments ())
+			{
+				ostream
+					<< Generator::Indent
+					<< Generator::Comment
+					<< comment
+					<< Generator::Break;
+			}
+		
 			ostream << Generator::Indent;
 
 			if (Generator::X3DFieldNames ())
@@ -812,6 +853,26 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 			ostream << Generator::Indent;
 		else
 			ostream << Generator::TidySpace;
+	}
+
+	if (getInnerComments () .size ())
+	{
+		ostream
+			<< Generator::TidyBreak
+			<< Generator::IncIndent;
+
+		for (const auto & comment : getInnerComments ())
+		{
+			ostream
+				<< Generator::Indent
+				<< Generator::Comment
+				<< comment
+				<< Generator::Break;
+		}
+		
+		ostream
+			<< Generator::DecIndent
+			<< Generator::Indent;
 	}
 
 	ostream << '}';

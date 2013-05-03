@@ -121,7 +121,7 @@ X3DPrototypeInstance::getLocalNode ()
 }
 
 X3DBaseNode*
-X3DPrototypeInstance::getRootNode ()
+X3DPrototypeInstance::getRootNode () const
 {
 	//assert (getRootNodes () .size ());
 

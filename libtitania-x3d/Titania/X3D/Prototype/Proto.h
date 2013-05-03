@@ -81,7 +81,13 @@ public:
 
 	virtual
 	bool
-	isExternproto () const { return false; }
+	isExternproto () const
+	{ return false; }
+
+	///  @name Tests
+
+	X3DBaseNode*
+	getRootNode () const;
 
 	///  @name Input/Output
 

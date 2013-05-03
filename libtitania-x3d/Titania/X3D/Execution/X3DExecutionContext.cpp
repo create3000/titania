@@ -628,7 +628,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 //	Dynamic route handling
 
-void
+const SFNode <Route> &
 X3DExecutionContext::addRoute (const SFNode <X3DBaseNode> & sourceNode,      const std::string & sourceFieldId,
                                const SFNode <X3DBaseNode> & destinationNode, const std::string & destinationFieldId)
 throw (Error <INVALID_NODE>,
@@ -642,7 +642,7 @@ throw (Error <INVALID_NODE>,
 	{
 		// Silently return if route already exists.
 
-		routes .find_last (fields);
+		return routes .find_last (fields);
 	}
 	catch (const std::out_of_range &)
 	{
@@ -652,6 +652,7 @@ throw (Error <INVALID_NODE>,
 
 		route .addParent (this);
 		routes .back () .addParent (this);
+		return routes .back ();
 	}
 }
 
@@ -742,7 +743,6 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 	for (const auto & externProto : getExternProtoDeclarations ())
 	{
 		ostream
-			<< Generator::Indent
 			<< externProto
 			<< Generator::TidyBreak
 			<< Generator::TidyBreak;
@@ -751,7 +751,6 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 	for (const auto & proto : getProtoDeclarations ())
 	{
 		ostream
-			<< Generator::Indent
 			<< proto
 			<< Generator::TidyBreak
 			<< Generator::TidyBreak;
@@ -828,9 +827,22 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 	for (const auto & route : getRoutes ())
 	{
 		ostream
-			<< Generator::Indent
 			<< route
 			<< Generator::Break;
+	}
+
+	if (getInnerComments () .size ())
+	{
+		ostream << Generator::TidyBreak;
+	
+		for (const auto & comment : getInnerComments ())
+		{
+			ostream
+				<< Generator::Indent
+				<< Generator::Comment
+				<< comment
+				<< Generator::Break;
+		}
 	}
 
 	Generator::PopLevel ();

@@ -263,17 +263,15 @@ Parser::x3dScene ()
 		scene -> setComment (comment);
 	}
 
-	scene -> setProfile (profileStatement ());
-	scene -> addComponents (componentStatements ());
+	profileStatement ();
+	componentStatements ();
 
 	unitStatements ();
 	metaStatements ();
 
-	scene -> getComments () = std::move (currentComments);
-
 	statements ();
-
-	comments ();
+	
+	scene -> addInnerComments (getComments ());
 
 	popExecutionContext ();
 
@@ -321,6 +319,8 @@ Parser::headerStatement (std::string & _encoding, std::string & _specificationVe
 
 	if (Grammar::comment (istream))
 	{
+		whitespaces .push_back ('\n');
+
 		if (Grammar::Header .FullMatch (Grammar::comment .match (), &_encoding, &_specificationVersion, &_characterEncoding, &_comment))
 			return true;
 	}
@@ -328,7 +328,7 @@ Parser::headerStatement (std::string & _encoding, std::string & _specificationVe
 	return false;
 }
 
-const ProfileInfo*
+void
 Parser::profileStatement ()
 {
 	//__LOG__ << std::endl;
@@ -337,22 +337,19 @@ Parser::profileStatement ()
 
 	if (Grammar::PROFILE (istream))
 	{
-		comments ();
-
 		std::string _profileNameId;
 
 		if (profileNameId (_profileNameId))
 		{
-			return getBrowser () -> getProfile (_profileNameId);
+			scene -> addComments (getComments ());
+			scene -> setProfile (getBrowser () -> getProfile (_profileNameId));
 		}
 		else
 			throw Error <INVALID_X3D> ("Expected a profile name.");
 	}
-
-	return nullptr;
 }
 
-ComponentInfoArray
+void
 Parser::componentStatements ()
 {
 	//__LOG__ << std::endl;
@@ -367,7 +364,7 @@ Parser::componentStatements ()
 		_componentStatement = componentStatement ();
 	}
 
-	return _componentStatements;
+	scene -> addComponents (_componentStatements);
 }
 
 const ComponentInfo*
@@ -379,8 +376,6 @@ Parser::componentStatement ()
 
 	if (Grammar::COMPONENT (istream))
 	{
-		comments ();
-
 		std::string _componentNameId;
 
 		if (componentNameId (_componentNameId))
@@ -393,6 +388,8 @@ Parser::componentStatement ()
 
 				if (componentSupportLevel (_componentSupportLevel))
 				{
+					scene -> addComments (getComments ());
+	
 					return getBrowser () -> getComponent (_componentNameId, _componentSupportLevel);
 				}
 				else
@@ -483,8 +480,6 @@ Parser::exportStatement ()
 
 			if (Grammar::AS (istream))
 			{
-				comments ();
-
 				if (not exportedNodeNameId (_exportedNodeNameId))
 					throw Error <INVALID_X3D> ("No name given after AS.");
 			}
@@ -581,6 +576,7 @@ Parser::metaStatement ()
 
 			if (metavalue (_metavalue))
 			{
+				scene -> addComments (getComments ());
 				scene -> setMetaData (_metakey, _metavalue);
 				return true;
 			}
@@ -750,17 +746,22 @@ Parser::proto ()
 
 			if (Grammar::OpenBracket (istream))
 			{
-				FieldDefinitionArray _interfaceDeclarations = interfaceDeclarations ();
+				auto _comments = std::move (getComments ());
+	
+				FieldDefinitionArray _interfaceDeclarations = std::move (interfaceDeclarations ());
 
 				comments ();
 
 				if (Grammar::CloseBracket (istream))
 				{
+					auto _interfaceComments = std::move (getComments ());
+
 					comments ();
 
 					if (Grammar::OpenBrace (istream))
 					{
 						const SFNode <Proto> & _proto = getExecutionContext () -> addProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
+						
 
 						pushExecutionContext (*_proto);
 
@@ -773,6 +774,11 @@ Parser::proto ()
 						if (Grammar::CloseBrace (istream))
 						{
 							//__LOG__ << (void*) _proto .getValue () << " " << _nodeTypeId << std::endl;
+							
+							_proto -> addInterfaceComments (_interfaceComments);
+							_proto -> addComments (_comments);
+							_proto -> addInnerComments (getComments ());
+							
 							return true;
 						}
 						else
@@ -849,6 +855,7 @@ Parser::restrictedInterfaceDeclaration ()
 				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
 				_field -> setAccessType (inputOnly);
 				_field -> setName (_fieldId);
+				_field -> addComments (getComments ());
 				return _field;
 			}
 			else
@@ -871,6 +878,7 @@ Parser::restrictedInterfaceDeclaration ()
 				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
 				_field -> setAccessType (outputOnly);
 				_field -> setName (_fieldId);
+				_field -> addComments (getComments ());
 				return _field;
 			}
 			else
@@ -896,6 +904,7 @@ Parser::restrictedInterfaceDeclaration ()
 				{
 					_field -> setAccessType (initializeOnly);
 					_field -> setName (_fieldId);
+					_field -> addComments (getComments ());
 					return _field;
 				}
 				else
@@ -942,6 +951,7 @@ Parser::interfaceDeclaration ()
 				{
 					_field -> setAccessType (inputOutput);
 					_field -> setName (_fieldId);
+					_field -> addComments (getComments ());
 					return _field;
 				}
 				else
@@ -977,19 +987,26 @@ Parser::externproto ()
 
 			if (Grammar::OpenBracket (istream))
 			{
-				FieldDefinitionArray _externInterfaceDeclarations = externInterfaceDeclarations ();
+				auto _comments = std::move (getComments ());
+	
+				FieldDefinitionArray _externInterfaceDeclarations = std::move (externInterfaceDeclarations ());
 
 				comments ();
 
 				if (Grammar::CloseBracket (istream))
 				{
-					comments ();
-
+					auto _interfaceComments = std::move (getComments ());
+				
 					MFString _URLList;
 
 					if (URLList (&_URLList))
 					{
-						getExecutionContext () -> addExternProtoDeclaration (_nodeTypeId, _externInterfaceDeclarations, _URLList);
+						const SFNode <ExternProto> & _externProto = getExecutionContext () -> addExternProtoDeclaration (_nodeTypeId, _externInterfaceDeclarations, _URLList);
+						
+						_externProto -> addInterfaceComments (_interfaceComments);
+						_externProto -> addComments (_comments);
+						_externProto -> addInnerComments (getComments ());
+
 						return true;
 					}
 					else
@@ -1045,6 +1062,7 @@ Parser::externInterfaceDeclaration ()
 				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
 				_field -> setAccessType (inputOnly);
 				_field -> setName (_fieldId);
+				_field -> addComments (getComments ());
 				return _field;
 			}
 			else
@@ -1067,6 +1085,7 @@ Parser::externInterfaceDeclaration ()
 				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
 				_field -> setAccessType (outputOnly);
 				_field -> setName (_fieldId);
+				_field -> addComments (getComments ());
 				return _field;
 			}
 			else
@@ -1089,6 +1108,7 @@ Parser::externInterfaceDeclaration ()
 				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
 				_field -> setAccessType (initializeOnly);
 				_field -> setName (_fieldId);
+				_field -> addComments (getComments ());
 				return _field;
 			}
 			else
@@ -1111,6 +1131,7 @@ Parser::externInterfaceDeclaration ()
 				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
 				_field -> setAccessType (inputOutput);
 				_field -> setName (_fieldId);
+				_field -> addComments (getComments ());
 				return _field;
 			}
 			else
@@ -1174,7 +1195,9 @@ Parser::routeStatement ()
 										{
 											if (_eventOut -> getType () == _eventIn -> getType ())
 											{
-												getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
+												const SFNode <Route> & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
+
+												_route -> addComments (getComments ());
 
 												return true;
 											}
@@ -1253,6 +1276,8 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 
 		if (Grammar::OpenBrace (istream))
 		{
+			_basicNode -> addComments (getComments ());
+		
 			if (dynamic_cast <Script*> (_basicNode))
 				scriptBody (_basicNode);
 
@@ -1267,6 +1292,7 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 			if (Grammar::CloseBrace (istream))
 			{
 				_basicNode -> setup ();
+				_basicNode -> addInnerComments (getComments ());
 
 				return true;
 			}
@@ -1336,6 +1362,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 											X3DFieldDefinition* _field = _supportedField -> clone ();
 
 											_field -> setReference (_reference);
+											_field -> addComments (getComments ());
 
 											_basicNode -> addUserDefinedField (_accessType -> second,
 											                                   _fieldId,
@@ -1426,6 +1453,7 @@ Parser::nodeBodyElement (X3DBaseNode* const _basicNode)
 								if (_field -> getAccessType () == _reference -> getAccessType () or _field -> getAccessType () == inputOutput)
 								{
 									_field -> setReference (_reference);
+									_field -> addComments (getComments ());
 									return true;
 								}
 								else
@@ -1448,6 +1476,7 @@ Parser::nodeBodyElement (X3DBaseNode* const _basicNode)
 			{
 				if (fieldValue (_field))
 				{
+					_field -> addComments (getComments ());
 					return true;
 				}
 				else
@@ -1567,6 +1596,8 @@ Parser::fieldValue (X3DFieldDefinition* _field)
 {
 	//__LOG__ << std::endl;
 	//__LOG__ << _field -> getTypeName () << std::endl;
+	
+	_field -> addComments (getComments ());
 
 	switch (_field -> getType ())
 	{

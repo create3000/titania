@@ -71,10 +71,22 @@ public:
 	X3DPrototypeInstance*
 	createInstance (bool) = 0;
 
+	///  @name Comment handling
+
+	void
+	addInterfaceComments (const std::deque <std::string> & value)
+	{ comments .insert (comments .end (), value .begin (), value .end ()); }
+
+	const std::deque <std::string> &
+	getInterfaceComments () const
+	{ return comments; }
+
 
 protected:
 
 	X3DProto ();
+
+	std::deque <std::string> comments;
 
 };
 

@@ -85,7 +85,7 @@ public:
 	getLocalNode ();
 
 	X3DBaseNode*
-	getRootNode ();
+	getRootNode () const;
 
 	virtual
 	void

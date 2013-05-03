@@ -122,6 +122,10 @@ private:
 	getExecutionContext () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
+	       
+	std::deque <std::string>
+	getComments ()
+	{ return std::move (currentComments); }
 
 	bool
 	isInsideProtoDefinition () const;
@@ -141,10 +145,10 @@ private:
 	bool
 	headerStatement (std::string &, std::string &, std::string &, std::string &);
 
-	const ProfileInfo*
+	void
 	profileStatement ();
 
-	ComponentInfoArray
+	void
 	componentStatements ();
 
 	const ComponentInfo*

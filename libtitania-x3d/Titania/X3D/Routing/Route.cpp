@@ -177,7 +177,25 @@ Route::disconnect ()
 void
 Route::toStream (std::ostream & ostream) const
 {
+
+	if (getComments () .size ())
+	{
+		ostream << Generator::TidyBreak;
+		
+		for (const auto & comment : getComments ())
+		{
+			ostream
+				<< Generator::Indent
+				<< Generator::Comment
+				<< comment
+				<< Generator::Break;
+		}
+
+		ostream << Generator::TidyBreak;
+	}
+
 	ostream
+		<< Generator::Indent
 		<< "ROUTE"
 		<< Generator::Space;
 

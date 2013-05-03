@@ -86,12 +86,33 @@ Proto::createInstance (bool setup)
 	return instance;
 }
 
+X3DBaseNode*
+Proto::getRootNode () const
+{
+	return getRootNodes () .front ();
+}
+
 void
 Proto::toStream (std::ostream & ostream) const
 {
 	Generator::PushLevel ();
 
+	if (getComments () .size ())
+	{
+		for (const auto & comment : getComments ())
+		{
+			ostream
+				<< Generator::Indent
+				<< Generator::Comment
+				<< comment
+				<< Generator::Break;
+		}
+	
+		ostream << Generator::TidyBreak;
+	}
+
 	ostream
+		<< Generator::Indent
 		<< "PROTO"
 		<< Generator::Space
 		<< getName ()
@@ -121,6 +142,15 @@ Proto::toStream (std::ostream & ostream) const
 
 		for (const auto & field : fields)
 		{
+			for (const auto & comment : field -> getComments ())
+			{
+				ostream
+					<< Generator::Indent
+					<< Generator::Comment
+					<< comment
+					<< Generator::Break;
+			}
+		
 			ostream
 				<< Generator::Indent
 				<< std::setiosflags (std::ios::left)
@@ -130,11 +160,8 @@ Proto::toStream (std::ostream & ostream) const
 
 			ostream
 				<< Generator::Space
-
 				<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
-
 				<< Generator::Space
-
 				<< field -> getName ();
 
 			if (field -> isInitializeable ())
@@ -146,13 +173,45 @@ Proto::toStream (std::ostream & ostream) const
 
 			ostream << Generator::Break;
 		}
-
+		
+		for (const auto & comment : getInterfaceComments ())
+		{
+			ostream
+				<< Generator::Indent
+				<< Generator::Comment
+				<< comment
+				<< Generator::Break;
+		}
+		
 		ostream
 			<< Generator::DecIndent
 			<< Generator::Indent;
 	}
 	else
-		ostream << Generator::TidySpace;
+	{
+		if (getInterfaceComments () .size ())
+		{
+			ostream
+				<< Generator::TidyBreak
+				<< Generator::IncIndent;
+				
+			for (const auto & comment : getInterfaceComments ())
+			{
+				ostream
+					<< Generator::Indent
+					<< Generator::Comment
+					<< comment
+					<< Generator::Break;
+			}
+	
+			ostream
+				<< Generator::DecIndent
+				<< Generator::Indent;
+		}
+	
+		else
+			ostream << Generator::TidySpace;
+	}
 
 	ostream << ']';
 

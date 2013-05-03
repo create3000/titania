@@ -139,16 +139,18 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	ostream << std::endl << std::endl;
 
-	for (const auto & comment : getComments ())
-	{
-		ostream
-			<< Generator::Comment
-			<< comment
-			<< Generator::Break;
-	}
-	
 	if (getComments () .size ())
+	{
+		for (const auto & comment : getComments ())
+		{
+			ostream
+				<< Generator::Comment
+				<< comment
+				<< Generator::Break;
+		}
+	
 		ostream << Generator::TidyBreak;
+	}
 
 	if (getProfile ())
 	{
@@ -158,39 +160,43 @@ X3DScene::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak;
 	}
 
-	for (const auto & component : getComponents ())
-	{
-		ostream
-			<< component
-			<< Generator::Break;
-	}
-
 	if (getComponents () .size ())
-		ostream << Generator::TidyBreak;
-
-	for (const auto & meta : getMetaDatas ())
 	{
-		std::string key   = meta .first;
-		std::string value = meta .second;
+		for (const auto & component : getComponents ())
+		{
+			ostream
+				<< component
+				<< Generator::Break;
+		}
 
-		RegEx::QuotationMark .GlobalReplace ("\\\\\"", &key);
-		RegEx::QuotationMark .GlobalReplace ("\\\\\"", &value);
-
-		ostream
-			<< "META"
-			<< Generator::Space
-			<< '"'
-			<< key
-			<< '"'
-			<< Generator::Space
-			<< '"'
-			<< value
-			<< '"'
-			<< Generator::Break;
+		ostream << Generator::TidyBreak;
 	}
 
 	if (getMetaDatas () .size ())
+	{
+		for (const auto & meta : getMetaDatas ())
+		{
+			std::string key   = meta .first;
+			std::string value = meta .second;
+
+			RegEx::QuotationMark .GlobalReplace ("\\\\\"", &key);
+			RegEx::QuotationMark .GlobalReplace ("\\\\\"", &value);
+
+			ostream
+				<< "META"
+				<< Generator::Space
+				<< '"'
+				<< key
+				<< '"'
+				<< Generator::Space
+				<< '"'
+				<< value
+				<< '"'
+				<< Generator::Break;
+		}
+
 		ostream << Generator::TidyBreak;
+	}
 
 	X3DExecutionContext::toStream (ostream);
 

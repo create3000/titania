@@ -332,7 +332,7 @@ public:
 
 	///  @name Dynamic route node handling
 
-	void
+	const SFNode <Route> &
 	addRoute (const SFNode <X3DBaseNode> &, const std::string &,
 	          const SFNode <X3DBaseNode> &, const std::string &)
 	throw (Error <INVALID_NODE>,

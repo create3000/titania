@@ -182,7 +182,22 @@ ExternProto::requestImmediateLoad ()
 void
 ExternProto::toStream (std::ostream & ostream) const
 {
+	if (getComments () .size ())
+	{
+		for (const auto & comment : getComments ())
+		{
+			ostream
+				<< Generator::Indent
+				<< Generator::Comment
+				<< comment
+				<< Generator::Break;
+		}
+	
+		ostream << Generator::TidyBreak;
+	}
+
 	ostream
+		<< Generator::Indent
 		<< "EXTERNPROTO"
 		<< Generator::Space
 		<< getName ()
@@ -212,6 +227,15 @@ ExternProto::toStream (std::ostream & ostream) const
 
 		for (const auto & field : fields)
 		{
+			for (const auto & comment : field -> getComments ())
+			{
+				ostream
+					<< Generator::Indent
+					<< Generator::Comment
+					<< comment
+					<< Generator::Break;
+			}
+		
 			ostream
 				<< Generator::Indent
 				<< std::setiosflags (std::ios::left)
@@ -221,13 +245,18 @@ ExternProto::toStream (std::ostream & ostream) const
 
 			ostream
 				<< Generator::Space
-
 				<< std::setiosflags (std::ios::left) << std::setw (typeLength) << field -> getTypeName ()
-
 				<< Generator::Space
-
 				<< field -> getName ()
-
+				<< Generator::Break;
+		}
+		
+		for (const auto & comment : getInterfaceComments ())
+		{
+			ostream
+				<< Generator::Indent
+				<< Generator::Comment
+				<< comment
 				<< Generator::Break;
 		}
 
@@ -237,12 +266,44 @@ ExternProto::toStream (std::ostream & ostream) const
 	}
 	else
 	{
-		ostream << Generator::TidySpace;
+		if (getInterfaceComments () .size ())
+		{
+			ostream
+				<< Generator::TidyBreak
+				<< Generator::IncIndent;
+				
+			for (const auto & comment : getInterfaceComments ())
+			{
+				ostream
+					<< Generator::Indent
+					<< Generator::Comment
+					<< comment
+					<< Generator::Break;
+			}
+	
+			ostream
+				<< Generator::DecIndent
+				<< Generator::Indent;
+		}
+		
+		else
+			ostream << Generator::TidySpace;
 	}
 
 	ostream
 		<< ']'
-		<< Generator::TidyBreak
+		<< Generator::TidyBreak;
+
+	for (const auto & comment : getInnerComments ())
+	{
+		ostream
+			<< Generator::Indent
+			<< Generator::Comment
+			<< comment
+			<< Generator::Break;
+	}
+
+	ostream
 		<< Generator::Indent
 		<< url ();
 }
