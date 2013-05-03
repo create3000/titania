@@ -63,7 +63,7 @@ static constexpr int WORLD_URL_COLUMN = 2;
 
 HistoryEditor::HistoryEditor (const X3D::SFNode <X3D::Browser> & browser) :
 	X3DHistoryEditorUI (get_ui ("HistoryEditor.ui"), gconf_dir ()), 
-	           history ()                                         
+	           history ()                                           
 {
 	setBrowser (browser);
 
@@ -128,7 +128,11 @@ void
 HistoryEditor::set_world ()
 {
 	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
-	std::string        title    = getTitle (worldURL);
+
+	if (not worldURL .str () .size ())
+		return;
+
+	std::string title = getTitle (worldURL);
 
 	try
 	{

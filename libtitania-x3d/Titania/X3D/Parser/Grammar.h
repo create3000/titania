@@ -48,59 +48,76 @@
  *
  ******************************************************************************/
 
-#include "GarbageCollector.h"
+#ifndef __TITANIA_X3D_PARSER_GRAMMAR_H__
+#define __TITANIA_X3D_PARSER_GRAMMAR_H__
 
-#include "../Base/X3DChildObject.h"
-
-#include <cassert>
-#include <iostream>
+#include <Titania/InputOutput.h>
+#include <pcrecpp.h>
+#include <set>
 
 namespace titania {
 namespace X3D {
 
-GarbageCollector::GarbageCollector ()
-{ }
-
-void
-GarbageCollector::addObject (X3DChildObject* object)
+class Grammar
 {
-	//__LOG__ << object -> getTypeName () << " '" << object -> getName () << "' " << (void*) object << std::endl;
+public:
 
-	if (not disposedObjects .insert (object) .second)
-		__LOG__ << object -> getTypeName () << " " << (void*) object << std::endl;
-}
+	static io::sequence      whitespaces;
+	static io::quoted_string string;
+	static io::comment       comment;
 
-void
-GarbageCollector::dispose ()
-{
-	while (disposedObjects .size ())
-	{
-		ChildObjectSet objectsToDelete;
-		objectsToDelete .swap (disposedObjects);
+	static const pcrecpp::RE Header;
 
-		//__LOG__ << objectsToDelete .size () << " objects to delete: " << std::flush;
+	static io::string AS;
+	static io::string COMPONENT;
+	static io::string DEF;
+	static io::string EXPORT;
+	static io::string EXTERNPROTO;
+	static io::string _false;
+	static io::string IMPORT;
+	static io::string IS;
+	static io::string META;
+	static io::string _null;
+	static io::string PROFILE;
+	static io::string PROTO;
+	static io::string ROUTE;
+	static io::string TO;
+	static io::string _true;
+	static io::string UNIT;
+	static io::string USE;
 
-		for (const auto & object : objectsToDelete)
-		{
-			//__LOG__ << (void*) object << " " << object -> getTypeName () << " " << object -> getName () << std::endl;
+	static io::string initializeOnly;
+	static io::string inputOnly;
+	static io::string outputOnly;
+	static io::string inputOutput;
 
-			delete object;
-		}
+	static io::string field;
+	static io::string eventIn;
+	static io::string eventOut;
+	static io::string exposedField;
 
-		//__LOG__ << "Done." << std::endl;
-	}
-}
+	static io::character OpenBrace;
+	static io::character CloseBrace;
+	static io::character OpenBracket;
+	static io::character CloseBracket;
+	static io::character Period;
+	static io::character Colon;
 
-GarbageCollector::size_type
-GarbageCollector::size ()
-{
-	return disposedObjects .size ();
-}
+	static io::string hex;
+	static io::string HEX;
 
-GarbageCollector::~GarbageCollector ()
-{
-	dispose ();
-}
+	static std::set <std::string> FieldType;
+
+
+private:
+
+	static
+	std::set <std::string>
+	getFieldType ();
+
+};
 
 } // X3D
 } // titania
+
+#endif

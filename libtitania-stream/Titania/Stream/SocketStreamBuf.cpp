@@ -32,7 +32,7 @@
 #include <curl/curl.h>
 #include <istream>
 
-#include <iostream>
+#include <stdexcept>
 
 namespace titania {
 namespace basic {
@@ -44,7 +44,10 @@ socketstreambuf::socketstreambuf (const basic::uri & URL) :
 	        buffer (),      
 	        opened (false), 
 	           URL (URL),   
-	totalBytesRead (0)      
+	totalBytesRead (0),     
+	     bytesRead (0),
+	 lastBytesRead (0),
+	     bytesGone (0)    
 {
 	setg (buffer + bufferSize,                    // beginning of putback area
 	      buffer + bufferSize,                    // read position
@@ -170,64 +173,60 @@ socketstreambuf::close ()
 }
 
 int
-socketstreambuf::overflow (int c)
-{
-	std::clog << "socketstreambuf::overflow" << std::endl;
-
-	if (c not_eq EOF)
-	{
-		*pptr () = c;
-		pbump (1);
-	}
-
-	return c;
-}
-
-int
 socketstreambuf::underflow ()   // used for input buffer only
 {
-	if (gptr () && (gptr () < egptr ()))
-		return *reinterpret_cast <unsigned char*> (gptr ());
-
 	if (! is_open ())
 		return EOF;
 
+	bytesGone += lastBytesRead;
+
 	// Move buffer to back buffer area.
 
-	(void) memcpy (buffer, buffer + bufferSize, bufferSize);
+	(void) memcpy (buffer + bufferSize - bytesRead, buffer + bufferSize, bytesRead);
 
 	// Reading response.
 
+	lastBytesRead = bytesRead;
+
 	wait (RECEIVE, 60000L);
 
-	size_t   bytesRead = 0;
-	CURLcode retcode   = curl_easy_recv (curl, buffer + bufferSize, bufferSize, &bytesRead);
+	CURLcode retcode = curl_easy_recv (curl, buffer + bufferSize, bufferSize, &bytesRead);
 
 	if (retcode not_eq CURLE_OK)
 		return EOF;
 
 	totalBytesRead += bytesRead;
 
-	// reset buffer pointers
-	setg (buffer,                           // beginning of putback area
-	      buffer + bufferSize,              // read position
-	      buffer + bufferSize + bytesRead); // end of buffer
+	// Reset buffer pointers
+	setg (buffer + bufferSize - lastBytesRead,     // beginning of putback area
+	      buffer + bufferSize,                     // read position
+	      buffer + bufferSize + bytesRead);        // end of buffer
 
-	// return next character
-	return *reinterpret_cast <unsigned char*> (gptr ());
+	// Return next character
+	return *gptr ();
 }
 
-int
-socketstreambuf::sync ()
+socketstreambuf::pos_type
+socketstreambuf::seekoff (off_type off, std::ios_base::seekdir dir, std::ios_base::openmode which)
 {
-	std::clog << "socketstreambuf::sync" << std::endl;
-
-	if (pptr () && pptr () > pbase ())
+	if (which == std::ios_base::in)
 	{
-		return EOF;
+		if (dir == std::ios_base::cur)
+		{
+			auto pos = gptr () + off;
+		
+			if (pos >= eback () and pos <= egptr ())
+			{
+				gbump (off);
+
+				return bytesGone + gptr () - eback ();
+			}
+			
+			throw std::out_of_range ("socketstreambuf::seekoff");
+		}
 	}
 
-	return 0;
+	throw std::invalid_argument ("socketstreambuf::seekoff");
 }
 
 } // basic

@@ -53,16 +53,13 @@
 
 #include <cstddef>
 #include <cstring>
+#include <ios>
+#include <stdexcept>
 #include <streambuf>
-
 #include <zlib.h>
-
-#include <iostream>
 
 namespace titania {
 namespace basic {
-
-#define __LOG__ (std::clog << "########## " __FILE__ << ":" << __LINE__ << ": in function '" << __func__ << "': ")
 
 template <class CharT,
           class Traits = std::char_traits <CharT>>
@@ -71,8 +68,13 @@ class basic_gzfilterbuf :
 {
 public:
 
+	typedef typename std::basic_streambuf <CharT, Traits>::pos_type pos_type;
+	typedef typename std::basic_streambuf <CharT, Traits>::off_type off_type;
+
 	using std::basic_streambuf <CharT, Traits>::pptr;
+	using std::basic_streambuf <CharT, Traits>::gbump;
 	using std::basic_streambuf <CharT, Traits>::pbump;
+	using std::basic_streambuf <CharT, Traits>::eback;
 	using std::basic_streambuf <CharT, Traits>::gptr;
 	using std::basic_streambuf <CharT, Traits>::egptr;
 	using std::basic_streambuf <CharT, Traits>::pbase;
@@ -81,7 +83,8 @@ public:
 	basic_gzfilterbuf (std::basic_streambuf <CharT, Traits>*);
 
 	bool
-	is_open () { return opened; }
+	is_open ()
+	{ return opened; }
 
 	basic_gzfilterbuf*
 	open ();
@@ -91,18 +94,15 @@ public:
 
 	virtual
 	typename Traits::int_type
-	overflow (typename Traits::int_type c = EOF);
-
-	virtual
-	typename Traits::int_type
 	underflow ();
 
 	virtual
-	int
-	sync ();
+	pos_type
+	seekoff (off_type, std::ios_base::seekdir, std::ios_base::openmode);
 
 	virtual
-	~basic_gzfilterbuf () { close (); }
+	~basic_gzfilterbuf ()
+	{ close (); }
 
 
 private:
@@ -116,13 +116,19 @@ private:
 
 	z_stream zstream;
 	CharT    in [bufferSize];
+	size_t   bytesRead;
+	size_t   lastBytesRead;
+	size_t   bytesGone;
 
 };
 
 template <class CharT, class Traits>
 basic_gzfilterbuf <CharT, Traits>::basic_gzfilterbuf (std::basic_streambuf <CharT, Traits>* streambuf) :
 	streambuf (streambuf),
-	opened (false)
+	opened (false),
+	bytesRead (0),
+	lastBytesRead (0),
+	bytesGone (0)
 {
 	setg (buffer + bufferSize,                                     // beginning of putback area
 	      buffer + bufferSize,                                     // read position
@@ -191,31 +197,15 @@ basic_gzfilterbuf <CharT, Traits>::close ()
 
 template <class CharT, class Traits>
 typename Traits::int_type
-basic_gzfilterbuf <CharT, Traits>::overflow (typename Traits::int_type c)
-{
-	__LOG__ << std::endl;
-
-	if (c not_eq Traits::eof ())
-	{
-		*pptr () = c;
-		pbump (1);
-	}
-
-	return c;
-}
-
-template <class CharT, class Traits>
-typename Traits::int_type
 basic_gzfilterbuf <CharT, Traits>::underflow () // used for input buffer only
 {
-	if (gptr () && (gptr () < egptr ()))
-		return *reinterpret_cast <CharT*> (gptr ());
+	bytesGone += lastBytesRead;
 
 	// Move buffer to back buffer area.
 
-	(void) memcpy (buffer, buffer + bufferSize, bufferSize);
+	(void) memcpy (buffer + bufferSize - bytesRead, buffer + bufferSize, bytesRead);
 
-	std::streamsize bytesRead = 0;
+	lastBytesRead = bytesRead;
 
 	if (is_open ())
 	{
@@ -245,7 +235,6 @@ basic_gzfilterbuf <CharT, Traits>::underflow () // used for input buffer only
 				case Z_NEED_DICT:
 				case Z_DATA_ERROR:
 				case Z_MEM_ERROR:
-					__LOG__ << std::endl;
 					return Traits::eof ();
 
 				default:
@@ -261,24 +250,36 @@ basic_gzfilterbuf <CharT, Traits>::underflow () // used for input buffer only
 		return Traits::eof ();
 
 	// reset buffer pointers
-	setg (buffer,                                // beginning of putback area
-	      buffer + bufferSize,                   // read position
-	      buffer + bufferSize + bytesRead);      // end of buffer
+	setg (buffer + bufferSize - lastBytesRead,         // beginning of putback area
+	      buffer + bufferSize,                         // read position
+	      buffer + bufferSize + bytesRead);            // end of buffer
 
 	// return next character
-	return *reinterpret_cast <CharT*> (gptr ());
+	return *gptr ();
 }
 
 template <class CharT, class Traits>
-int
-basic_gzfilterbuf <CharT, Traits>::sync ()
+typename basic_gzfilterbuf <CharT, Traits>::pos_type
+basic_gzfilterbuf <CharT, Traits>::seekoff (off_type off, std::ios_base::seekdir dir, std::ios_base::openmode which)
 {
-	if (pptr () && pptr () > pbase ())
+	if (which == std::ios_base::in)
 	{
-		return Traits::eof ();
+		if (dir == std::ios_base::cur)
+		{
+			auto pos = gptr () + off;
+
+			if (pos >= eback () and pos <= egptr ())
+			{
+				gbump (off);
+
+				return bytesGone + gptr () - eback ();
+			}
+			
+			throw std::out_of_range ("basic_gzfilterbuf::seekoff");
+		}
 	}
 
-	return 0;
+	throw std::invalid_argument ("basic_gzfilterbuf::seekoff");
 }
 
 extern template class basic_gzfilterbuf <char>;

@@ -1981,6 +1981,7 @@
     <None Include="Prototypes\Button\CheckButton\example.wrl" />
     <None Include="Prototypes\Button\CheckButton\CheckButton.wrl" />
     <None Include="Tests\Basic\SelfReference.wrl" />
+    <None Include="Tests\Basic\Comments.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

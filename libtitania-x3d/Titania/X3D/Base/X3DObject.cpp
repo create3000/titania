@@ -58,51 +58,10 @@ GarbageCollector X3DObject::garbageCollector;
 X3DObject::X3DObject () :
 	 X3DInput (),    
 	X3DOutput (),    
-	     name (),    
+	     name (),
+	 comments (),    
 	 userData (NULL) 
 { }
-
-//const basic::id &
-//X3DObject::getTypeName () const
-//{
-//
-//}
-
-// Type
-
-void
-X3DObject::setName (const basic::id & value)
-{
-	name = value;
-}
-
-const basic::id &
-X3DObject::getName () const
-{
-	return name;
-}
-
-// InputOutput
-
-bool
-X3DObject::isInput () const
-{
-	return true;
-}
-
-bool
-X3DObject::isOutput () const
-{
-	return true;
-}
-
-// Garbage collection
-
-GarbageCollector &
-X3DObject::getGarbageCollector ()
-{
-	return garbageCollector;
-}
 
 // String
 

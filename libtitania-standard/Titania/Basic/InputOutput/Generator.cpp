@@ -59,6 +59,7 @@ namespace basic {
 } // titania
 
 // Implicit template instantiations.
+template std::ostream & titania::basic::Generator::Comment       (std::ostream &);
 template std::ostream & titania::basic::Generator::Space         (std::ostream &);
 template std::ostream & titania::basic::Generator::TidySpace     (std::ostream &);
 template std::ostream & titania::basic::Generator::Break         (std::ostream &);

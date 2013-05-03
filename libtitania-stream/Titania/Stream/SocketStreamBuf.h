@@ -68,7 +68,8 @@ public:
 	socketstreambuf (const basic::uri &);
 
 	int
-	is_open () { return opened; }
+	is_open ()
+	{ return opened; }
 
 	socketstreambuf*
 	open ();
@@ -79,20 +80,21 @@ public:
 	socketstreambuf*
 	close ();
 
-	virtual int
-	overflow (int c = EOF);
-
-	virtual int
+	virtual
+	int
 	underflow ();
 
-	virtual int
-	sync ();
+	virtual
+	pos_type
+	seekoff (off_type, std::ios_base::seekdir, std::ios_base::openmode);
 
 	const basic::uri &
-	url () { return URL; }
+	url ()
+	{ return URL; }
 
 	virtual
-	~socketstreambuf () { close (); }
+	~socketstreambuf () 
+	{ close (); }
 
 
 private:
@@ -119,6 +121,9 @@ private:
 	basic::uri URL;
 
 	size_type totalBytesRead;
+	size_t    bytesRead;
+	size_t    lastBytesRead;
+	size_t    bytesGone;
 
 };
 

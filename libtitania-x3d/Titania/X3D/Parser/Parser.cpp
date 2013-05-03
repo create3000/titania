@@ -55,26 +55,11 @@
 #include "../Components/Networking/Inline.h"
 #include "../Components/Scripting/Script.h"
 #include "../Components/Shaders/X3DProgrammableShaderObject.h"
-#include "../Parser/RegEx.h"
+#include "../Parser/Grammar.h"
 #include "../Prototype/ExternProto.h"
-
-#include <Titania/Stream/IGZFilter.h>
 
 namespace titania {
 namespace X3D {
-
-static
-void
-error (const int line, const std::string & type)
-{
-	GLenum errorNum = glGetError ();
-
-	if (errorNum not_eq GL_NO_ERROR)
-	{
-		std::clog << "OpenGL Error at " << line << " " << type << ": " << gluErrorString (errorNum) << std::endl;
-		assert (0);
-	}
-}
 
 Parser::AccessTypes::AccessTypes ()
 {
@@ -91,28 +76,23 @@ Parser::AccessTypes::AccessTypes ()
 
 Parser::AccessTypes Parser::accessTypes;
 
-Parser::Parser (X3DScene* scene) :
-	X3DBaseNode (scene -> getBrowser (), scene), 
-	  X3DParser (),                              
-	      scene (scene),                         
-	      input (),                              
-	     string ()                               
+Parser::Parser (std::istream & istream, X3DScene* scene) :
+	          X3DBaseNode (scene -> getBrowser (), scene), 
+	            X3DParser (),                              
+	              istream (basic::gunzip (istream)),       
+	                scene (scene),                         
+	executionContextStack (),
+	      currentComments (),                              
+	          whitespaces ()                               
 {
 	setComponent ("Browser");
 	setTypeName ("Parser");
 }
 
 void
-Parser::parseIntoScene (std::istream & istream)
+Parser::parseIntoScene ()
 throw (Error <INVALID_X3D>)
 {
-	std::ostringstream ostringstream;
-
-	ostringstream << basic::gunzip (istream) .rdbuf ();
-
-	input  = ostringstream .str ();
-	string = pcrecpp::StringPiece (input);
-
 	std::clog << "Parsing into scene: " << scene -> getWorldURL () << "." << std::endl;
 
 	try
@@ -132,53 +112,28 @@ Parser::getMessageFromError (const X3DError & error)
 {
 	//__LOG__ << std::endl;
 
-	// still unused error message: Premature end of file after DEF
+	//__LOG__ << istream .peek () << std::endl;
+	
+	istream .clear ();
+	
+	size_t lineNumber = std::count (whitespaces .begin (), whitespaces .end (), '\n') + 1;
 
+	std::string rest    = getline ();
+	std::string line    = rgetline ();
+	std::string preLine = rgetline ();
+	size_t      linePos = line .size () - rest .size ();
+
+	// Format error
+	
 	std::ostringstream stringstream;
-
-	char nl = input .find ('\n', 0) == std::string::npos ? '\r' : '\n';
-
-	std::string::size_type pos = (string .data () - input .data ()) / sizeof (char);
-
-	std::string::size_type start = input .rfind (nl, pos);
-
-	start = (start == std::string::npos) ? 0 : start + 1;
-	std::string::size_type end = input .find (nl, start);
-
-	if (end == std::string::npos)
-		end = input .length ();
-
-	std::string line = input .substr (start, end - start);
-
-	std::string::size_type linePos = pos > start ? pos - start : 0;
-
-	int                    lineNumber = 0;
-	std::string            begin      = input .substr (0, pos);
-	std::string::size_type _break     = begin .find (nl, 0);
-
-	while (_break not_eq std::string::npos)
-	{
-		++ lineNumber;
-		_break = begin .find ("\n", _break + 1);
-	}
-
-	++ lineNumber;
-
-	std::string preLine;
-
-	if (start)
-	{
-		std::string::size_type preLineStart = input .rfind (nl, start - 2);
-		preLineStart = preLineStart == std::string::npos ? 0 : preLineStart + 1;
-		preLine      = input .substr (preLineStart, start - 1 - preLineStart);
-	}
-
+	
 	stringstream
 		<< std::string (80, '*') << std::endl
 		<< "Parser error at - line " << lineNumber << ':' << linePos << std::endl
 		<< std::endl
 		<< preLine << std::endl
 		<< line << std::endl
+		<< "rest: " << rest << std::endl
 		<< std::string (linePos, ' ') << '^' << std::endl
 		<< error .what () << std::endl
 		<< std::string (80, '*') << std::endl
@@ -187,6 +142,66 @@ Parser::getMessageFromError (const X3DError & error)
 	std::clog << stringstream .str () << std::endl;
 
 	return stringstream .str ();
+}
+
+std::string
+Parser::getline ()
+{
+	//__LOG__ << std::endl;
+
+	std::string string;
+
+	for ( ; ;)
+	{
+		char c = istream .get ();
+		
+		if (istream)
+		{
+			if (c not_eq '\n')
+				string .push_back (c);
+			
+			else
+			{
+				istream .unget ();
+				break;
+			}
+		}
+		else
+			break;
+	}
+
+	return string;
+}
+
+std::string
+Parser::rgetline ()
+{
+	//__LOG__ << std::endl;
+
+	std::string string;
+
+	for ( ; ;)
+	{
+		istream .unget ();
+			
+		char c = istream .peek ();
+		
+		if (istream)
+		{
+			if (c not_eq '\n')
+				string .push_back (c);
+
+			else
+				break;
+		}
+		else
+			break;
+	}
+
+	if (string .size ())
+		return std::string (string .rbegin (), string .rend ());
+	
+	return string;
 }
 
 void
@@ -232,25 +247,6 @@ Parser::addRootNode (const SFNode <X3DBaseNode> & rootNode)
 }
 
 void
-Parser::comments ()
-{
-	////__LOG__ << std::endl;
-
-	std::string _comment;
-
-	while (comment (_comment))
-		;
-}
-
-bool
-Parser::comment (std::string & _comment)
-{
-	////__LOG__ << std::endl;
-
-	return RegEx::Comment .Consume (&string, &_comment);
-}
-
-void
 Parser::x3dScene ()
 {
 	//__LOG__ << std::endl;
@@ -266,43 +262,67 @@ Parser::x3dScene ()
 		scene -> setCharacterEncoding (characterEncoding);
 		scene -> setComment (comment);
 	}
-	else
-		//__LOG__ << std::endl;
-
-		comments ();
 
 	scene -> setProfile (profileStatement ());
-
-	comments ();
 	scene -> addComponents (componentStatements ());
 
-	comments ();
 	unitStatements ();
-
-	comments ();
 	metaStatements ();
+
+	scene -> getComments () = std::move (currentComments);
 
 	statements ();
 
-	RegEx::Whitespaces .Consume (&string);
+	comments ();
 
 	popExecutionContext ();
 
-	if (string .empty ())
+	if (istream .get () == std::char_traits <char>::eof ())
 		return;
 
 	throw Error <INVALID_X3D> ("Unknown statement.");
 }
 
+void
+Parser::comments ()
+{
+	////__LOG__ << std::endl;
+
+	if (Grammar::whitespaces (istream))
+		whitespaces .append (Grammar::whitespaces .match ());
+
+	while (comment ())
+	{
+		if (Grammar::whitespaces (istream))
+			whitespaces .append (Grammar::whitespaces .match ());
+	}
+}
+
 bool
-Parser::headerStatement (std::string & encoding, std::string & specificationVersion, std::string & characterEncoding, std::string & comment)
+Parser::comment ()
+{
+	////__LOG__ << std::endl;
+
+	if (Grammar::comment (istream))
+	{
+		currentComments .push_back (Grammar::comment .match ());
+		whitespaces .push_back ('\n');
+
+		return true;
+	}
+	
+	return false;
+}
+
+bool
+Parser::headerStatement (std::string & _encoding, std::string & _specificationVersion, std::string & _characterEncoding, std::string & _comment)
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::Header .Consume (&string, &encoding, &specificationVersion, &characterEncoding, &comment))
+	if (Grammar::comment (istream))
 	{
-		comments ();
-		return true;
+		if (Grammar::Header .FullMatch (Grammar::comment .match (), &_encoding, &_specificationVersion, &_characterEncoding, &_comment))
+			return true;
 	}
 
 	return false;
@@ -313,7 +333,9 @@ Parser::profileStatement ()
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::PROFILE .Consume (&string))
+	comments ();
+
+	if (Grammar::PROFILE (istream))
 	{
 		comments ();
 
@@ -353,7 +375,9 @@ Parser::componentStatement ()
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::COMPONENT .Consume (&string))
+	comments ();
+
+	if (Grammar::COMPONENT (istream))
 	{
 		comments ();
 
@@ -361,10 +385,10 @@ Parser::componentStatement ()
 
 		if (componentNameId (_componentNameId))
 		{
-			if (RegEx::Colon .Consume (&string))
-			{
-				comments ();
+			comments ();
 
+			if (Grammar::Colon (istream))
+			{
 				int32_t _componentSupportLevel;
 
 				if (componentSupportLevel (_componentSupportLevel))
@@ -385,11 +409,13 @@ Parser::componentStatement ()
 }
 
 bool
-Parser::componentSupportLevel (int32_t & value)
+Parser::componentSupportLevel (int32_t & _value)
 {
 	//__LOG__ << std::endl;
 
-	return _int32 (value);
+	comments ();
+
+	return istream >> _value;
 }
 
 void
@@ -406,10 +432,10 @@ Parser::unitStatement ()
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::UNIT .Consume (&string))
-	{
-		comments ();
+	comments ();
 
+	if (Grammar::UNIT (istream))
+	{
 		std::string _categoryNameId;
 
 		if (categoryNameId (_categoryNameId))
@@ -439,29 +465,23 @@ Parser::unitStatement ()
 }
 
 bool
-Parser::unitConversionFactor (double & _value)
-{
-	//__LOG__ << std::endl;
-
-	return _double (_value);
-}
-
-bool
 Parser::exportStatement ()
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::EXPORT .Consume (&string))
-	{
-		comments ();
+	comments ();
 
+	if (Grammar::EXPORT (istream))
+	{
 		std::string _localNodeNameId;
 
 		if (nodeNameId (_localNodeNameId))
 		{
 			std::string _exportedNodeNameId;
 
-			if (RegEx::AS .Consume (&string))
+			comments ();
+
+			if (Grammar::AS (istream))
 			{
 				comments ();
 
@@ -485,10 +505,10 @@ Parser::importStatement ()
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::IMPORT .Consume (&string))
-	{
-		comments ();
+	comments ();
 
+	if (Grammar::IMPORT (istream))
+	{
 		std::string _inlineNodeNameId;
 
 		if (inlineNodeNameId (_inlineNodeNameId))
@@ -497,20 +517,20 @@ Parser::importStatement ()
 
 			if (_inlineNode)
 			{
-				if (RegEx::Period .Consume (&string))
-				{
-					comments ();
+				comments ();
 
+				if (Grammar::Period (istream))
+				{
 					std::string _exportedNodeNameId;
 
 					if (exportedNodeNameId (_exportedNodeNameId))
 					{
 						std::string _nodeNameId;
 
-						if (RegEx::AS .Consume (&string))
-						{
-							comments ();
+						comments ();
 
+						if (Grammar::AS (istream))
+						{
 							if (not nodeNameId (_nodeNameId))
 								throw Error <INVALID_X3D> ("No name given after AS.");
 						}
@@ -549,10 +569,10 @@ Parser::metaStatement ()
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::META .Consume (&string))
-	{
-		comments ();
+	comments ();
 
+	if (Grammar::META (istream))
+	{
 		std::string _metakey;
 
 		if (metakey (_metakey))
@@ -574,22 +594,6 @@ Parser::metaStatement ()
 	return false;
 }
 
-bool
-Parser::metakey (std::string & _value)
-{
-	//__LOG__ << std::endl;
-
-	return _string (_value);
-}
-
-bool
-Parser::metavalue (std::string & _value)
-{
-	//__LOG__ << std::endl;
-
-	return _string (_value);
-}
-
 void
 Parser::statements ()
 {
@@ -605,8 +609,6 @@ bool
 Parser::statement ()
 {
 	//__LOG__ << std::endl;
-
-	comments ();
 
 	if (protoStatement ())
 		return true;
@@ -636,10 +638,10 @@ Parser::nodeStatement (SFNode <X3DBaseNode> & _node)
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::DEF .Consume (&string))
-	{
-		comments ();
+	comments ();
 
+	if (Grammar::DEF (istream))
+	{
 		std::string _nodeNameId;
 
 		if (nodeNameId (_nodeNameId))
@@ -653,10 +655,8 @@ Parser::nodeStatement (SFNode <X3DBaseNode> & _node)
 			throw Error <INVALID_X3D> ("No name given after DEF.");
 	}
 
-	if (RegEx::USE .Consume (&string))
+	if (Grammar::USE (istream))
 	{
-		comments ();
-
 		std::string _nodeNameId;
 
 		if (nodeNameId (_nodeNameId))
@@ -669,10 +669,8 @@ Parser::nodeStatement (SFNode <X3DBaseNode> & _node)
 			throw Error <INVALID_X3D> ("No name given after USE.");
 	}
 
-	if (RegEx::_null .Consume (&string))
+	if (Grammar::_null (istream))
 	{
-		comments ();
-
 		_node = NULL;
 
 		return true;
@@ -689,9 +687,10 @@ Parser::rootNodeStatement (SFNode <X3DBaseNode> & _node)
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::DEF .Consume (&string))
+	comments ();
+
+	if (Grammar::DEF (istream))
 	{
-		comments ();
 		std::string _nodeNameId;
 
 		if (nodeNameId (_nodeNameId))
@@ -739,28 +738,28 @@ Parser::proto ()
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::PROTO .Consume (&string))
-	{
-		comments ();
+	comments ();
 
+	if (Grammar::PROTO (istream))
+	{
 		std::string _nodeTypeId;
 
 		if (nodeTypeId (_nodeTypeId))
 		{
-			if (RegEx::OpenBracket .Consume (&string))
-			{
-				comments ();
+			comments ();
 
+			if (Grammar::OpenBracket (istream))
+			{
 				FieldDefinitionArray _interfaceDeclarations = interfaceDeclarations ();
 
-				if (RegEx::CloseBracket .Consume (&string))
+				comments ();
+
+				if (Grammar::CloseBracket (istream))
 				{
 					comments ();
 
-					if (RegEx::OpenBrace .Consume (&string))
+					if (Grammar::OpenBrace (istream))
 					{
-						comments ();
-
 						const SFNode <Proto> & _proto = getExecutionContext () -> addProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
 
 						pushExecutionContext (*_proto);
@@ -769,10 +768,11 @@ Parser::proto ()
 
 						popExecutionContext ();
 
-						if (RegEx::CloseBrace .Consume (&string))
+						comments ();
+
+						if (Grammar::CloseBrace (istream))
 						{
 							//__LOG__ << (void*) _proto .getValue () << " " << _nodeTypeId << std::endl;
-							comments ();
 							return true;
 						}
 						else
@@ -834,9 +834,10 @@ Parser::restrictedInterfaceDeclaration ()
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::inputOnly .Consume (&string))
+	comments ();
+
+	if (Grammar::inputOnly (istream) or Grammar::eventIn (istream))
 	{
-		comments ();
 		std::string _fieldType;
 
 		if (fieldType (_fieldType))
@@ -854,16 +855,11 @@ Parser::restrictedInterfaceDeclaration ()
 				throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
 		else
-		{
-			std::string _Id;
-			Id (_Id);
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _Id + "'.");
-		}
+			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
-	if (RegEx::outputOnly .Consume (&string))
+	if (Grammar::outputOnly (istream) or Grammar::eventOut (istream))
 	{
-		comments ();
 		std::string _fieldType;
 
 		if (fieldType (_fieldType))
@@ -881,16 +877,11 @@ Parser::restrictedInterfaceDeclaration ()
 				throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
 		else
-		{
-			std::string _Id;
-			Id (_Id);
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _Id + "'.");
-		}
+			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
-	if (RegEx::initializeOnly .Consume (&string))
+	if (Grammar::initializeOnly (istream) or Grammar::field (istream))
 	{
-		comments ();
 		std::string _fieldType;
 
 		if (fieldType (_fieldType))
@@ -917,11 +908,7 @@ Parser::restrictedInterfaceDeclaration ()
 				throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
 		else
-		{
-			std::string _Id;
-			Id (_Id);
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _Id + "'.");
-		}
+			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
 	return nullptr;
@@ -937,9 +924,10 @@ Parser::interfaceDeclaration ()
 	if (_field)
 		return _field;
 
-	if (RegEx::inputOutput .Consume (&string))
+	comments ();
+
+	if (Grammar::inputOutput (istream) or Grammar::exposedField (istream))
 	{
-		comments ();
 		std::string _fieldType;
 
 		if (fieldType (_fieldType))
@@ -966,11 +954,7 @@ Parser::interfaceDeclaration ()
 				throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
 		else
-		{
-			std::string _Id;
-			Id (_Id);
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _Id + "'.");
-		}
+			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
 	return nullptr;
@@ -981,21 +965,23 @@ Parser::externproto ()
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::EXTERNPROTO .Consume (&string))
-	{
-		comments ();
+	comments ();
 
+	if (Grammar::EXTERNPROTO (istream))
+	{
 		std::string _nodeTypeId;
 
 		if (nodeTypeId (_nodeTypeId))
 		{
-			if (RegEx::OpenBracket .Consume (&string))
-			{
-				comments ();
+			comments ();
 
+			if (Grammar::OpenBracket (istream))
+			{
 				FieldDefinitionArray _externInterfaceDeclarations = externInterfaceDeclarations ();
 
-				if (RegEx::CloseBracket .Consume (&string))
+				comments ();
+
+				if (Grammar::CloseBracket (istream))
 				{
 					comments ();
 
@@ -1044,9 +1030,10 @@ Parser::externInterfaceDeclaration ()
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::inputOnly .Consume (&string))
+	comments ();
+
+	if (Grammar::inputOnly (istream) or Grammar::eventIn (istream))
 	{
-		comments ();
 		std::string _fieldType;
 
 		if (fieldType (_fieldType))
@@ -1064,16 +1051,11 @@ Parser::externInterfaceDeclaration ()
 				throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
 		else
-		{
-			std::string _Id;
-			Id (_Id);
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _Id + "'.");
-		}
+			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
-	if (RegEx::outputOnly .Consume (&string))
+	if (Grammar::outputOnly (istream) or Grammar::eventOut (istream))
 	{
-		comments ();
 		std::string _fieldType;
 
 		if (fieldType (_fieldType))
@@ -1091,16 +1073,11 @@ Parser::externInterfaceDeclaration ()
 				throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
 		else
-		{
-			std::string _Id;
-			Id (_Id);
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _Id + "'.");
-		}
+			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
-	if (RegEx::initializeOnly .Consume (&string))
+	if (Grammar::initializeOnly (istream) or Grammar::field (istream))
 	{
-		comments ();
 		std::string _fieldType;
 
 		if (fieldType (_fieldType))
@@ -1118,16 +1095,11 @@ Parser::externInterfaceDeclaration ()
 				throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
 		else
-		{
-			std::string _Id;
-			Id (_Id);
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _Id + "'.");
-		}
+			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
-	if (RegEx::inputOutput .Consume (&string))
+	if (Grammar::inputOutput (istream) or Grammar::exposedField (istream))
 	{
-		comments ();
 		std::string _fieldType;
 
 		if (fieldType (_fieldType))
@@ -1145,11 +1117,7 @@ Parser::externInterfaceDeclaration ()
 				throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
 		else
-		{
-			std::string _Id;
-			Id (_Id);
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _Id + "'.");
-		}
+			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
 	return nullptr;
@@ -1160,20 +1128,20 @@ Parser::routeStatement ()
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::ROUTE .Consume (&string))
-	{
-		comments ();
+	comments ();
 
+	if (Grammar::ROUTE (istream))
+	{
 		std::string _fromNodeId;
 
 		if (nodeNameId (_fromNodeId))
 		{
 			const SFNode <X3DBaseNode> & _fromNode = getExecutionContext () -> getNode (_fromNodeId);
 
-			if (RegEx::Period .Consume (&string))
-			{
-				comments ();
+			comments ();
 
+			if (Grammar::Period (istream))
+			{
 				std::string _eventOutId;
 
 				if (outputOnlyId (_eventOutId))
@@ -1182,20 +1150,20 @@ Parser::routeStatement ()
 
 					if (_eventOut)
 					{
-						if (RegEx::TO .Consume (&string))
-						{
-							comments ();
+						comments ();
 
+						if (Grammar::TO (istream))
+						{
 							std::string _toNodeId;
 
 							if (nodeNameId (_toNodeId))
 							{
 								const SFNode <X3DBaseNode> & _toNode = getExecutionContext () -> getNode (_toNodeId);
 
-								if (RegEx::Period .Consume (&string))
-								{
-									comments ();
+								comments ();
 
+								if (Grammar::Period (istream))
+								{
 									std::string _eventInId;
 
 									if (inputOnlyId (_eventInId))
@@ -1207,8 +1175,6 @@ Parser::routeStatement ()
 											if (_eventOut -> getType () == _eventIn -> getType ())
 											{
 												getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
-
-												comments ();
 
 												return true;
 											}
@@ -1278,15 +1244,15 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 
 		X3DBaseNode* _basicNode = _node .getValue ();
 
-		//__LOG__ << _nodeTypeId << " " << (void*) _newNode << std::endl;
+		//__LOG__ << _nodeTypeId << " " << (void*) _node << std::endl;
 
 		if (_nodeNameId .length ())
 			getExecutionContext () -> updateNamedNode (_nodeNameId, _node);
 
-		if (RegEx::OpenBrace .Consume (&string))
-		{
-			comments ();
+		comments ();
 
+		if (Grammar::OpenBrace (istream))
+		{
 			if (dynamic_cast <Script*> (_basicNode))
 				scriptBody (_basicNode);
 
@@ -1296,10 +1262,10 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 			else
 				nodeBody (_basicNode);
 
-			if (RegEx::CloseBrace .Consume (&string))
-			{
-				comments ();
+			comments ();
 
+			if (Grammar::CloseBrace (istream))
+			{
 				_basicNode -> setup ();
 
 				return true;
@@ -1329,53 +1295,75 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 {
 	//__LOG__ << std::endl;
 
-	std::string _accessType, _fieldType, _fieldId;
+	auto pos = istream .tellg ();
 
-	if (RegEx::ScriptNodeInterfaceIS .Consume (&string, &_accessType, &_fieldType, &_fieldId))
+	std::string _accessTypeId;
+
+	if (Id (_accessTypeId))
 	{
-		comments ();
+		auto _accessType = accessTypes .find (_accessTypeId);
 
-		if (isInsideProtoDefinition ())
+		if (_accessType not_eq accessTypes .end ())
 		{
-			std::string _isId;
+			std::string _fieldType;
 
-			if (Id (_isId))
+			if (fieldType (_fieldType))
 			{
-				X3DFieldDefinition* _reference = getExecutionContext () -> getField (_isId);
+				std::string _fieldId;
 
-				if (_reference)
+				if (Id (_fieldId))
 				{
-					const X3DFieldDefinition* _supportedField = getBrowser () -> getFieldType (_fieldType);
+					comments ();
 
-					if (_supportedField -> getType () == _reference -> getType ())
+					if (Grammar::IS (istream))
 					{
-						if (accessTypes [_accessType] == _reference -> getAccessType () or accessTypes [_accessType] == inputOutput)
+						if (isInsideProtoDefinition ())
 						{
-							X3DFieldDefinition* _field = _supportedField -> clone ();
+							std::string _isId;
 
-							_field -> setReference (_reference);
+							if (Id (_isId))
+							{
+								X3DFieldDefinition* _reference = getExecutionContext () -> getField (_isId);
 
-							_basicNode -> addUserDefinedField (accessTypes [_accessType],
-							                                   _fieldId,
-							                                   _field);
+								if (_reference)
+								{
+									const X3DFieldDefinition* _supportedField = getBrowser () -> getFieldType (_fieldType);
 
-							return true;
+									if (_supportedField -> getType () == _reference -> getType ())
+									{
+										if (_accessType -> second == _reference -> getAccessType () or _accessType -> second == inputOutput)
+										{
+											X3DFieldDefinition* _field = _supportedField -> clone ();
+
+											_field -> setReference (_reference);
+
+											_basicNode -> addUserDefinedField (_accessType -> second,
+											                                   _fieldId,
+											                                   _field);
+
+											return true;
+										}
+										else
+											throw Error <INVALID_X3D> ("Field '" + _fieldId + "' and '" + _reference -> getName () + "' in PROTO '" + getExecutionContext () -> getName () + "' are incompatible as an IS mapping.");
+									}
+									else
+										throw Error <INVALID_X3D> ("Field '" + _fieldId + "' and '" + _reference -> getName () + "' in PROTO '" + getExecutionContext () -> getName () + "' have different types.");
+								}
+								else
+									throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName () + " head.");
+							}
+							else
+								throw Error <INVALID_X3D> ("No name give after IS statement.");
 						}
 						else
-							throw Error <INVALID_X3D> ("Field '" + _fieldId + "' and '" + _reference -> getName () + "' in PROTO '" + getExecutionContext () -> getName () + "' are incompatible as an IS mapping.");
+							throw Error <INVALID_X3D> ("IS statement outside PROTO definition.");
 					}
-					else
-						throw Error <INVALID_X3D> ("Field '" + _fieldId + "' and '" + _reference -> getName () + "' in PROTO '" + getExecutionContext () -> getName () + "' have different types.");
 				}
-				else
-					throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName () + " head.");
 			}
-			else
-				throw Error <INVALID_X3D> ("No name give after IS statement.");
 		}
-		else
-			throw Error <INVALID_X3D> ("IS statement outside PROTO definition.");
 	}
+
+	istream .seekg (pos - istream .tellg (), std::ios_base::cur);
 
 	X3DFieldDefinition* _field = interfaceDeclaration ();
 
@@ -1413,16 +1401,16 @@ Parser::nodeBodyElement (X3DBaseNode* const _basicNode)
 
 	std::string _fieldId;
 
-	if (initializeOnlyId (_fieldId))
+	if (Id (_fieldId))
 	{
 		X3DFieldDefinition* _field = _basicNode -> getField (_fieldId);
 
 		if (_field)
 		{
-			if (RegEx::IS .Consume (&string))
-			{
-				comments ();
+			comments ();
 
+			if (Grammar::IS (istream))
+			{
 				if (isInsideProtoDefinition ())
 				{
 					std::string _isId;
@@ -1482,27 +1470,86 @@ Parser::Id (std::string & _Id)
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::Id .Consume (&string, &_Id))
+	comments ();
+
+	std::istream::int_type c = istream .get ();
+
+	if (istream)
 	{
-		comments ();
-		return true;
+		switch (c)
+		{
+			case '\x22':
+			case '\x23':
+			case '\x27':
+			case '\x2b':
+			case '\x2c':
+			case '\x2d':
+			case '\x2e':
+			case '\x5b':
+			case '\x5c':
+			case '\x5d':
+			case '\x7b':
+			case '\x7d':
+			case '\x7f':
+			{
+				istream .unget ();
+				return false;
+			}
+			default:
+			{
+				if ((c >= '\x00' and c <= '\x20')or (c >= '\x30' and c <= '\x39'))
+				{
+					istream .unget ();
+					return false;
+				}
+
+				_Id .push_back (c);
+			}
+		}
+	}
+	else
+		return false;
+
+	for ( ; istream;)
+	{
+		c = istream .get ();
+
+		if (istream)
+		{
+			switch (c)
+			{
+				case '\x22':
+				case '\x23':
+				case '\x27':
+				case '\x2c':
+				case '\x2e':
+				case '\x5b':
+				case '\x5c':
+				case '\x5d':
+				case '\x7b':
+				case '\x7d':
+				case '\x7f':
+				{
+					istream .unget ();
+					return true;
+				}
+				default:
+				{
+					if ((c >= '\x00' and c <= '\x20'))
+					{
+						istream .unget ();
+						return true;
+					}
+
+					_Id .push_back (c);
+				}
+			}
+		}
+		else
+			return true;
 	}
 
-	return false;
-}
-
-bool
-Parser::componentNameId (std::string & _Id)
-{
-	//__LOG__ << std::endl;
-
-	if (RegEx::ComponentNameId .Consume (&string, &_Id))
-	{
-		comments ();
-		return true;
-	}
-
-	return false;
+	return true;
 }
 
 bool
@@ -1510,19 +1557,16 @@ Parser::fieldType (std::string & _fieldType)
 {
 	//__LOG__ << std::endl;
 
-	if (RegEx::FieldType .Consume (&string, &_fieldType))
-	{
-		comments ();
-		return true;
-	}
+	Id (_fieldType);
 
-	return false;
+	return Grammar::FieldType .find (_fieldType) not_eq Grammar::FieldType .end ();
 }
 
 bool
 Parser::fieldValue (X3DFieldDefinition* _field)
 {
 	//__LOG__ << std::endl;
+	//__LOG__ << _field -> getTypeName () << std::endl;
 
 	switch (_field -> getType ())
 	{
@@ -1658,104 +1702,70 @@ Parser::fieldValue (X3DFieldDefinition* _field)
 
 // fieldValues
 
-template <class Type>
 bool
-Parser::from_string (Type & _value, const std::string & _string, std::ios_base & (*_format) (std::ios_base &))
+Parser::Double (double & _value)
 {
 	////__LOG__ << std::endl;
 
-	std::istringstream _iss (_string);
+	comments ();
 
-	return _iss >> _format >> _value;
-}
-
-bool
-Parser::_double (double & _value)
-{
-	////__LOG__ << std::endl;
-
-	std::string _match;
-
-	if (RegEx::_double .Consume (&string, &_match))
-	{
-		comments ();
-		return from_string <double> (_value, _match, std::dec);
-	}
-
-	return false;
-}
-
-bool
-Parser::_float (float & _value)
-{
-	////__LOG__ << std::endl;
-
-	std::string _match;
-
-	if (RegEx::_float .Consume (&string, &_match))
-	{
-		comments ();
-		return from_string <float> (_value, _match, std::dec);
-	}
-
-	return false;
-}
-
-bool
-Parser::_int32 (int32_t & _value)
-{
-	////__LOG__ << std::endl;
-
-	if (_hex (_value))
+	if (istream >> _value)
 		return true;
 
-	std::string _match;
-
-	if (RegEx::_int32 .Consume (&string, &_match))
-	{
-		comments ();
-		return from_string <int32_t> (_value, _match, std::dec);
-	}
+	istream .clear ();
 
 	return false;
 }
 
 bool
-Parser::_hex (int32_t & _value)
+Parser::Float (float & _value)
 {
 	////__LOG__ << std::endl;
 
-	std::string _match;
+	comments ();
 
-	if (RegEx::_hex .Consume (&string, &_match))
-	{
-		comments ();
-		unsigned long hex;
-		bool          res = from_string <unsigned long> (hex, _match, std::hex);
-
-		if (res)
-		{
-			_value = hex;
-			return true;
-		}
-	}
-
-	return false;
-}
-
-bool
-Parser::_string (std::string & _value)
-{
-	////__LOG__ << std::endl;
-
-	if (RegEx::_string .Consume (&string, &_value))
-	{
-		comments ();
-		RegEx::EscapedQuotationMark .GlobalReplace ("\"", &_value);
+	if (istream >> _value)
 		return true;
-	}
+
+	istream .clear ();
 
 	return false;
+}
+
+bool
+Parser::Int32 (int32_t & _value)
+{
+	////__LOG__ << std::endl;
+
+	comments ();
+
+	if (Grammar::hex (istream) or Grammar::HEX (istream))
+		return Hex ((uint32_t &) _value);
+
+	if (istream >> std::dec >> _value)
+		return true;
+
+	istream .clear ();
+
+	return false;
+}
+
+bool
+Parser::Hex (uint32_t & _value)
+{
+	////__LOG__ << std::endl;
+
+	return istream >> std::hex >> _value;
+}
+
+bool
+Parser::String (std::string & _value)
+{
+	////__LOG__ << std::endl;
+
+	comments ();
+
+	return Grammar::string (istream, _value);
 }
 
 bool
@@ -1763,16 +1773,16 @@ Parser::sfboolValue (SFBool* _field)
 {
 	////__LOG__ << std::endl;
 
-	if (RegEx::_true .Consume (&string))
+	comments ();
+
+	if (Grammar::_true (istream))
 	{
-		comments ();
 		_field -> setValue (true);
 		return true;
 	}
 
-	if (RegEx::_false .Consume (&string))
+	if (Grammar::_false (istream))
 	{
-		comments ();
 		_field -> setValue (false);
 		return true;
 	}
@@ -1795,22 +1805,15 @@ Parser::mfboolValue (MFBool* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfboolValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -1834,23 +1837,13 @@ Parser::sfcolorValue (SFColor* _field)
 {
 	////__LOG__ << std::endl;
 
-	int32_t color;
-
-	if (_hex (color))
-	{
-		_field -> setValue (((color >> 16) & 0xff) / 255.0f,
-		                    ((color >> 8) & 0xff) / 255.0f,
-		                    (color & 0xff) / 255.0f);
-		return true;
-	}
-
 	float r, g, b;
 
-	if (_float (r))
+	if (Float (r))
 	{
-		if (_float (g))
+		if (Float (g))
 		{
-			if (_float (b))
+			if (Float (b))
 			{
 				_field -> setValue (r, g, b);
 				return true;
@@ -1876,22 +1869,15 @@ Parser::mfcolorValue (MFColor* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfcolorValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -1917,13 +1903,13 @@ Parser::sfcolorRGBAValue (SFColorRGBA* _field)
 
 	float r, g, b, a;
 
-	if (_float (r))
+	if (Float (r))
 	{
-		if (_float (g))
+		if (Float (g))
 		{
-			if (_float (b))
+			if (Float (b))
 			{
-				if (_float (a))
+				if (Float (a))
 				{
 					_field -> setValue (r, g, b, a);
 					return true;
@@ -1950,22 +1936,15 @@ Parser::mfcolorRGBAValue (MFColorRGBA* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfcolorRGBAValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -1991,7 +1970,7 @@ Parser::sfdoubleValue (SFDouble* _field)
 
 	double value;
 
-	if (_double (value))
+	if (Double (value))
 	{
 		_field -> setValue (value);
 		return true;
@@ -2015,22 +1994,15 @@ Parser::mfdoubleValue (MFDouble* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfdoubleValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -2056,7 +2028,7 @@ Parser::sffloatValue (SFFloat* _field)
 
 	float value;
 
-	if (_float (value))
+	if (Float (value))
 	{
 		_field -> setValue (value);
 		return true;
@@ -2080,22 +2052,15 @@ Parser::mffloatValue (MFFloat* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sffloatValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -2122,18 +2087,19 @@ Parser::sfimageValue (SFImage* _field)
 	int32_t width, height, components, size, pixel;
 	MFInt32 array;
 
-	if (_int32 (width))
+	if (Int32 (width))
 	{
-		if (_int32 (height))
+		if (Int32 (height))
 		{
-			if (_int32 (components))
+			if (Int32 (components))
 			{
 				size = height * width;
 
 				for (int32_t i = 0; i < size; ++ i)
 				{
-					if (_int32 (pixel))
+					if (Int32 (pixel))
 						array .emplace_back (pixel);
+
 					else
 						throw Error <INVALID_X3D> ("Expected more pixel values.");
 				}
@@ -2162,22 +2128,15 @@ Parser::mfimageValue (MFImage* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfimageValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -2203,7 +2162,7 @@ Parser::sfint32Value (SFInt32* _field)
 
 	int32_t value;
 
-	if (_int32 (value))
+	if (Int32 (value))
 	{
 		_field -> setValue (value);
 		return true;
@@ -2227,22 +2186,15 @@ Parser::mfint32Value (MFInt32* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfint32Values (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -2268,23 +2220,23 @@ Parser::sfmatrix3dValue (SFMatrix3d* _field)
 
 	double e11, e12, e13, e21, e22, e23, e31, e32, e33;
 
-	if (_double (e11))
+	if (Double (e11))
 	{
-		if (_double (e12))
+		if (Double (e12))
 		{
-			if (_double (e13))
+			if (Double (e13))
 			{
-				if (_double (e21))
+				if (Double (e21))
 				{
-					if (_double (e22))
+					if (Double (e22))
 					{
-						if (_double (e23))
+						if (Double (e23))
 						{
-							if (_double (e31))
+							if (Double (e31))
 							{
-								if (_double (e32))
+								if (Double (e32))
 								{
-									if (_double (e33))
+									if (Double (e33))
 									{
 										_field -> setValue (e11, e12, e13, e21, e22, e23, e31, e32, e33);
 										return true;
@@ -2316,22 +2268,15 @@ Parser::mfmatrix3dValue (MFMatrix3d* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfmatrix3dValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -2357,23 +2302,23 @@ Parser::sfmatrix3fValue (SFMatrix3f* _field)
 
 	float e11, e12, e13, e21, e22, e23, e31, e32, e33;
 
-	if (_float (e11))
+	if (Float (e11))
 	{
-		if (_float (e12))
+		if (Float (e12))
 		{
-			if (_float (e13))
+			if (Float (e13))
 			{
-				if (_float (e21))
+				if (Float (e21))
 				{
-					if (_float (e22))
+					if (Float (e22))
 					{
-						if (_float (e23))
+						if (Float (e23))
 						{
-							if (_float (e31))
+							if (Float (e31))
 							{
-								if (_float (e32))
+								if (Float (e32))
 								{
-									if (_float (e33))
+									if (Float (e33))
 									{
 										_field -> setValue (e11, e12, e13, e21, e22, e23, e31, e32, e33);
 										return true;
@@ -2405,22 +2350,15 @@ Parser::mfmatrix3fValue (MFMatrix3f* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfmatrix3fValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -2446,37 +2384,37 @@ Parser::sfmatrix4dValue (SFMatrix4d* _field)
 
 	double e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44;
 
-	if (_double (e11))
+	if (Double (e11))
 	{
-		if (_double (e12))
+		if (Double (e12))
 		{
-			if (_double (e13))
+			if (Double (e13))
 			{
-				if (_double (e14))
+				if (Double (e14))
 				{
-					if (_double (e21))
+					if (Double (e21))
 					{
-						if (_double (e22))
+						if (Double (e22))
 						{
-							if (_double (e23))
+							if (Double (e23))
 							{
-								if (_double (e24))
+								if (Double (e24))
 								{
-									if (_double (e31))
+									if (Double (e31))
 									{
-										if (_double (e32))
+										if (Double (e32))
 										{
-											if (_double (e33))
+											if (Double (e33))
 											{
-												if (_double (e34))
+												if (Double (e34))
 												{
-													if (_double (e41))
+													if (Double (e41))
 													{
-														if (_double (e42))
+														if (Double (e42))
 														{
-															if (_double (e43))
+															if (Double (e43))
 															{
-																if (_double (e44))
+																if (Double (e44))
 																{
 																	_field -> setValue (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44);
 																	return true;
@@ -2515,22 +2453,15 @@ Parser::mfmatrix4dValue (MFMatrix4d* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfmatrix4dValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -2556,37 +2487,37 @@ Parser::sfmatrix4fValue (SFMatrix4f* _field)
 
 	float e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44;
 
-	if (_float (e11))
+	if (Float (e11))
 	{
-		if (_float (e12))
+		if (Float (e12))
 		{
-			if (_float (e13))
+			if (Float (e13))
 			{
-				if (_float (e14))
+				if (Float (e14))
 				{
-					if (_float (e21))
+					if (Float (e21))
 					{
-						if (_float (e22))
+						if (Float (e22))
 						{
-							if (_float (e23))
+							if (Float (e23))
 							{
-								if (_float (e24))
+								if (Float (e24))
 								{
-									if (_float (e31))
+									if (Float (e31))
 									{
-										if (_float (e32))
+										if (Float (e32))
 										{
-											if (_float (e33))
+											if (Float (e33))
 											{
-												if (_float (e34))
+												if (Float (e34))
 												{
-													if (_float (e41))
+													if (Float (e41))
 													{
-														if (_float (e42))
+														if (Float (e42))
 														{
-															if (_float (e43))
+															if (Float (e43))
 															{
-																if (_float (e44))
+																if (Float (e44))
 																{
 																	_field -> setValue (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44);
 																	return true;
@@ -2625,22 +2556,15 @@ Parser::mfmatrix4fValue (MFMatrix4f* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfmatrix4fValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -2682,22 +2606,15 @@ Parser::mfnodeValue (MFNode* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		nodeStatements (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -2723,13 +2640,13 @@ Parser::sfrotationValue (SFRotation* _field)
 
 	float x, y, z, angle;
 
-	if (_float (x))
+	if (Float (x))
 	{
-		if (_float (y))
+		if (Float (y))
 		{
-			if (_float (z))
+			if (Float (z))
 			{
-				if (_float (angle))
+				if (Float (angle))
 				{
 					_field -> setValue (x, y, z, angle);
 					return true;
@@ -2756,22 +2673,15 @@ Parser::mfrotationValue (MFRotation* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfrotationValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -2797,7 +2707,7 @@ Parser::sfstringValue (SFString* _field)
 
 	std::string value;
 
-	if (_string (value))
+	if (String (value))
 	{
 		_field -> setValue (value);
 		return true;
@@ -2821,22 +2731,15 @@ Parser::mfstringValue (MFString* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfstringValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -2862,7 +2765,7 @@ Parser::sftimeValue (SFTime* _field)
 
 	double value;
 
-	if (_double (value))
+	if (Double (value))
 	{
 		_field -> setValue (value);
 		return true;
@@ -2886,22 +2789,15 @@ Parser::mftimeValue (MFTime* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sftimeValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -2927,9 +2823,9 @@ Parser::sfvec2dValue (SFVec2d* _field)
 
 	double x, y;
 
-	if (_double (x))
+	if (Double (x))
 	{
-		if (_double (y))
+		if (Double (y))
 		{
 			_field -> setValue (x, y);
 			return true;
@@ -2954,22 +2850,15 @@ Parser::mfvec2dValue (MFVec2d* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfvec2dValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -2995,9 +2884,9 @@ Parser::sfvec2fValue (SFVec2f* _field)
 
 	float x, y;
 
-	if (_float (x))
+	if (Float (x))
 	{
-		if (_float (y))
+		if (Float (y))
 		{
 			_field -> setValue (x, y);
 			return true;
@@ -3022,22 +2911,15 @@ Parser::mfvec2fValue (MFVec2f* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfvec2fValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -3063,11 +2945,11 @@ Parser::sfvec3dValue (SFVec3d* _field)
 
 	double x, y, z;
 
-	if (_double (x))
+	if (Double (x))
 	{
-		if (_double (y))
+		if (Double (y))
 		{
-			if (_double (z))
+			if (Double (z))
 			{
 				_field -> setValue (x, y, z);
 				return true;
@@ -3093,22 +2975,15 @@ Parser::mfvec3dValue (MFVec3d* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfvec3dValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -3134,11 +3009,11 @@ Parser::sfvec3fValue (SFVec3f* _field)
 
 	float x, y, z;
 
-	if (_float (x))
+	if (Float (x))
 	{
-		if (_float (y))
+		if (Float (y))
 		{
-			if (_float (z))
+			if (Float (z))
 			{
 				_field -> setValue (x, y, z);
 				return true;
@@ -3164,22 +3039,15 @@ Parser::mfvec3fValue (MFVec3f* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfvec3fValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -3205,13 +3073,13 @@ Parser::sfvec4dValue (SFVec4d* _field)
 
 	double x, y, z, w;
 
-	if (_double (x))
+	if (Double (x))
 	{
-		if (_double (y))
+		if (Double (y))
 		{
-			if (_double (z))
+			if (Double (z))
 			{
-				if (_double (w))
+				if (Double (w))
 				{
 					_field -> setValue (x, y, z, w);
 					return true;
@@ -3238,22 +3106,15 @@ Parser::mfvec4dValue (MFVec4d* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfvec4dValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}
@@ -3279,13 +3140,13 @@ Parser::sfvec4fValue (SFVec4f* _field)
 
 	float x, y, z, w;
 
-	if (_float (x))
+	if (Float (x))
 	{
-		if (_float (y))
+		if (Float (y))
 		{
-			if (_float (z))
+			if (Float (z))
 			{
-				if (_float (w))
+				if (Float (w))
 				{
 					_field -> setValue (x, y, z, w);
 					return true;
@@ -3312,22 +3173,15 @@ Parser::mfvec4fValue (MFVec4f* _field)
 		return true;
 	}
 
-	if (RegEx::Brackets .Consume (&string))
+	if (Grammar::OpenBracket (istream))
 	{
-		comments ();
-		return true;
-	}
-
-	if (RegEx::OpenBracket .Consume (&string))
-	{
-		comments ();
 		sfvec4fValues (_field);
 
-		if (RegEx::CloseBracket .Consume (&string))
-		{
-			comments ();
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
 			return true;
-		}
+
 		else
 			throw Error <INVALID_X3D> ("Expected ']'.");
 	}

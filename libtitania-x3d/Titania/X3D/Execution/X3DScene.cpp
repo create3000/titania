@@ -110,7 +110,7 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	Parser (this) .parseIntoScene (istream);
+	Parser (istream, this) .parseIntoScene ();
 }
 
 void
@@ -138,6 +138,17 @@ X3DScene::toStream (std::ostream & ostream) const
 	}
 
 	ostream << std::endl << std::endl;
+
+	for (const auto & comment : getComments ())
+	{
+		ostream
+			<< Generator::Comment
+			<< comment
+			<< Generator::Break;
+	}
+	
+	if (getComments () .size ())
+		ostream << Generator::TidyBreak;
 
 	if (getProfile ())
 	{

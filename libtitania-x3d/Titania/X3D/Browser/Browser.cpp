@@ -198,8 +198,8 @@ Browser::reshape ()
 void
 Browser::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
-	while (Gtk::Main::events_pending ())
-		Gtk::Main::iteration ();
+//	while (Gtk::Main::events_pending ())
+//		Gtk::Main::iteration ();
 
 	try
 	{

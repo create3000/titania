@@ -70,6 +70,11 @@ public:
 
 	static
 	std::basic_ostream <CharT, Traits> &
+	Comment (std::basic_ostream <CharT, Traits> & ostream)
+	{ return ostream << comment; }
+
+	static
+	std::basic_ostream <CharT, Traits> &
 	Space (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << space; }
 
@@ -199,6 +204,7 @@ public:
 
 protected:
 
+	static std::string comment;
 	static std::string space;
 	static std::string tidySpace;
 	static std::string endl;
@@ -218,6 +224,8 @@ protected:
 
 };
 
+template <class CharT, class Traits>
+std::string basic_generator <CharT, Traits>::comment = "#";
 template <class CharT, class Traits>
 std::string basic_generator <CharT, Traits>::space = " ";
 template <class CharT, class Traits>
@@ -292,6 +300,7 @@ typedef basic_generator <char> Generator;
 } // basic
 } // titania
 
+extern template std::ostream & titania::basic::Generator::Comment       (std::ostream &);
 extern template std::ostream & titania::basic::Generator::Space         (std::ostream &);
 extern template std::ostream & titania::basic::Generator::TidySpace     (std::ostream &);
 extern template std::ostream & titania::basic::Generator::Break         (std::ostream &);

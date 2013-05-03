@@ -48,147 +48,67 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASE_X3DOBJECT_H__
-#define __TITANIA_X3D_BASE_X3DOBJECT_H__
+#ifndef __TITANIA_INPUT_OUTPUT_STRING_H__
+#define __TITANIA_INPUT_OUTPUT_STRING_H__
 
-#include "../Base/GarbageCollector.h"
-#include "../Base/X3DInput.h"
-#include "../Base/X3DOutput.h"
-#include "../Bits/Error.h"
-#include <Titania/Basic/Id.h>
-#include <Titania/LOG.h>
-#include <deque>
 #include <istream>
-#include <ostream>
+#include <string>
+
+#include "../LOG.h"
 
 namespace titania {
-namespace X3D {
+namespace io {
 
-class X3DObject :
-	public X3DInput, public X3DOutput
+template <class CharT, class Traits = std::char_traits <CharT>>
+class basic_string
 {
 public:
 
-	///  @name Type Information
+	basic_string (const std::basic_string <CharT> &);
 
-	void
-	setName (const basic::id & value)
-	{ name = value; }
-
-	const basic::id &
-	getName () const
-	{ return name; }
-
-	virtual
-	const std::string &
-	getTypeName () const = 0;
-
-	///  @name Input/Output
-
-	virtual
 	bool
-	isInput () const
-	{ return true; }
-
-	virtual
-	bool
-	isOutput () const
-	{ return true; }
-
-	///  @name Comment handling
-
-	std::deque <std::string> &
-	getComments ()
-	{ return comments; }
-
-	const std::deque <std::string> &
-	getComments () const
-	{ return comments; }
-
-	///  @name User data handling
-
-	void
-	setUserData (X3DBase* value)
-	{ userData = value; }
-
-	X3DBase*
-	getUserData () const
-	{ return userData; }
-
-	///  @name Garbage Collection
-
-	GarbageCollector &
-	getGarbageCollector ()
-	{ return garbageCollector; }
-
-	///  @name String Creation
-
-	virtual
-	std::string
-	toString () const;
-
-	///  @name Stream Handling
-
-	virtual
-	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
-
-	virtual
-	void
-	toStream (std::ostream &) const = 0;
-
-	///  @name Destruction Handling
-
-	virtual
-	void
-	dispose () override;
-
-
-protected:
-
-	X3DObject ();
-
-	virtual
-	~X3DObject ();
+	operator () (std::basic_istream <CharT, Traits> &);
 
 
 private:
 
-	basic::id                name;
-	std::deque <std::string> comments;
+	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
 
-	X3DBase* userData;
-
-	static GarbageCollector garbageCollector;
+	std::basic_string <CharT> value;
 
 };
 
 template <class CharT, class Traits>
-std::basic_istream <CharT, Traits> &
-operator >> (std::basic_istream <CharT, Traits> & istream, X3DObject & object)
-{
-	object .fromStream (istream);
-	return istream;
-}
+basic_string <CharT, Traits>::basic_string (const std::basic_string <CharT> & value) :
+	value (value)
+{ }
 
 template <class CharT, class Traits>
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const X3DObject & object)
+bool
+basic_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream)
 {
-	object .toStream (ostream);
-	return ostream;
+	auto pos = istream .tellg ();
+
+	for (const auto & c : value)
+	{
+		if (istream .get () not_eq (int_type) c)
+		{
+			istream .seekg (pos - istream .tellg (), std::ios_base::cur);
+
+			return false;
+		}
+	}
+
+	return true;
 }
 
-extern template std::istream & operator >> (std::istream &, X3DObject &);
-extern template std::ostream & operator << (std::ostream &, const X3DObject &);
-//extern template std::wistream & operator >> (std::wistream &, const X3DObject &);
-//extern template std::wostream & operator << (std::wostream &, const X3DObject &);
+typedef basic_string <char>    string;
+typedef basic_string <wchar_t> wstring;
 
-} // X3D
+extern template class basic_string <char>;
+extern template class basic_string <wchar_t>;
+
+} // io
 } // titania
 
 #endif

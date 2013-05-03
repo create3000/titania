@@ -1,3 +1,17 @@
+2013-05-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Parser.h:
+	* X3DObject.h:
+	* Grammar.h:
+	* Parser.cpp:
+	* X3DObject.cpp:
+	* Grammar.cpp:
+	* Browser.cpp:
+	* X3DScene.cpp:
+	* GarbargeCollector.cpp: 
+
 2013-05-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.cpp: 

@@ -153,6 +153,7 @@ print_time (double time)
  * return stream;
  * }
  */
+ 
 void
 test_path (const basic::path & path)
 {
@@ -174,137 +175,26 @@ typedef math::plane3 <float>    Plane3f;
 typedef math::line3 <float>     Line3f;
 typedef math::sphere3 <float>   Sphere3f;
 
-namespace Test {
-
-template <class ForwardIterator, class RangeIterator>
-ForwardIterator
-remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, RangeIterator rlast)
-{
-	std::multiset <typename RangeIterator::value_type> range (rfirst, rlast);
-
-	if (range .empty ())
-		return last;
-
-	size_t count = 0;
-
-	for ( ; first not_eq last; ++ first)
-	{
-		auto item = range .find (*first);
-
-		if (item not_eq range .end ())
-		{
-			range .erase (item);
-			++ count;
-			break;
-		}
-	}
-
-	while (range .size ())
-	{
-		auto second = first + count;
-
-		for ( ; second not_eq last; ++ first, ++ second)
-		{
-			auto item = range .find (*second);
-
-			if (item not_eq range .end ())
-			{
-				range .erase (item);
-				++ count;
-				goto LOOP;
-			}
-
-			*first = std::move (*second);
-		}
-
-		break;
-
-LOOP:;
-	}
-
-	for (auto second = first + count; second not_eq last; ++ first, ++ second)
-	{
-		*first = std::move (*second);
-	}
-
-	return first;
-}
-
-}
-
-///  Map @a value in the interval (fromLow;fromHigh) to the interval (toLow;toHigh).
-template <class Type>
-constexpr Type
-project (const Type & value, const Type & fromLow, const Type & fromHigh, const Type & toLow, const Type & toHigh)
-{
-	return toLow + ((value - fromLow) / (fromHigh - fromLow)) * (toHigh - toLow);
-}
-
 #include <v8.h>
 
 // https://www.homepluspower.info/2010/06/v8-javascript-engine-tutorial-part-1.html
 // https://www.homepluspower.info/2010/06/v8-javascript-engine-tutorial-part-2.html
 
+#include <regex>
+
+#include <Titania/InputOutput.h>
+
 static
-void
-test (Matrix4f & m)
-{
-	m *= Matrix4f ();
-}
+io::sequence whitespaces ("\r\n \t,");
 
-///  Spherical linear interpolate between two normal vectors @a source vector
-///  and @a destination vector by an amout of @a t.
-template <typename Type, typename T>
-Type
-slerp (const Type & source, const Type & destination, const T & t)
-{
-	Type dest  = destination;
-	T    cosom = dot (source, destination);
+static
+io::string X3D ("dTransform");
 
-	if (cosom <= -1)
-		throw std::domain_error ("slerp is not possible: vectors are inverse collinear.");
+static
+io::quoted_string string ('\"');
 
-	if (cosom >= 1) // both normal vectors are equal
-		return source;
-
-	if (cosom < 0)
-	{
-		// Reverse signs so we travel the short way round
-		cosom = -cosom;
-		dest  = -dest;
-	}
-
-	T omega = std::acos (cosom);
-	T sinom = std::sin  (omega);
-
-	T scale0 = std::sin ((1 - t) * omega);
-	T scale1 = std::sin (t * omega);
-
-	return (scale0 * source + scale1 * dest) / sinom;
-}
-
-void
-print (std::ostringstream &)
-{ }
-
-template <typename Arg, typename ... Args>
-void
-print (std::ostringstream & stream, const Arg & first, const Args & ... args)
-{
-	stream << first;
-	print (stream, args ...);
-}
-
-template <typename ... Args>
-void
-print (const Args & ... args)
-{
-	std::ostringstream stream;
-
-	print (stream, args ...);
-
-	__LOG__ << stream .str () << std::endl;
-}
+static
+io::comment comment ("#");
 
 int
 main (int argc, char** argv)
@@ -316,68 +206,19 @@ main (int argc, char** argv)
 	#endif
 
 	{
-		print (std::boolalpha);
-	}
+		basic::uri url = "/home/holger/test.wrl";
+		basic::ifilestream stream (basic::http::method::GET, url);
+		
+		comment (stream);	
+		
+		whitespaces (stream);
+		
+		std::string s;
+		string (stream, s);
+		
+		X3D (stream);
 
-	if (0)
-	{
-		auto line     = Line3f (Vector3f (), Vector3f (0, 1, 1));
-		auto cylinder = Cylinder3f (Line3f (Vector3f (), Vector3f (0, 1, 1)), 1);
-
-		Vector3f enter, exit;
-
-		std::clog << cylinder .intersect (line, enter, exit) << std::endl;
-		std::clog << enter << std::endl;
-		std::clog << exit << std::endl;
-	}
-
-	if (0)
-	{
-		//__gnu_parallel::_Settings s;
-		//s .algorithm_strategy = __gnu_parallel::force_parallel;
-		//s .for_each_minimal_n = 1;
-		//__gnu_parallel::_Settings::set (s);
-
-		#define N 100000
-		#define VECTOR_SIZE 1000
-
-		std::deque <Matrix4f> a1 (VECTOR_SIZE);
-
-		/////////////////////////////////////////////
-
-		auto t0 = chrono::now ();
-
-		/////////////////////////////////////////////
-
-		for (int n = 0; n < N; ++ n)
-			std::for_each (a1 .begin (), a1 .end (), test);
-
-		/////////////////////////////////////////////
-
-		print_time (chrono::now () - t0);
-		t0 = chrono::now ();
-
-		/////////////////////////////////////////////
-
-		for (int n = 0; n < N; ++ n)
-			for (auto a : a1)
-				test (a);
-
-		/////////////////////////////////////////////
-
-		print_time (chrono::now () - t0);
-		t0 = chrono::now ();
-
-		/////////////////////////////////////////////
-
-		for (int n = 0; n < N; ++ n)
-			for (size_t i = 0, size = a1 .size (); i < size; ++ i)
-				test (a1 [i]);
-
-		/////////////////////////////////////////////
-
-		print_time (chrono::now () - t0);
-		t0 = chrono::now ();
+		std::clog << stream .rdbuf () << std::endl;
 	}
 
 	std::clog << "Function main done." << std::endl;

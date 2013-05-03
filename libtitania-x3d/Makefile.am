@@ -401,6 +401,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DObject.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DScene.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/String.cpp \
+	Titania/X3D/Parser/Grammar.cpp \
 	Titania/X3D/Parser/Parser.cpp \
 	Titania/X3D/Parser/RegEx.cpp \
 	Titania/X3D/Parser/X3DParser.cpp \

@@ -56,8 +56,8 @@
 #include "../Parser/X3DParser.h"
 #include "../Prototype/Proto.h"
 
+#include <Titania/Stream/IGZFilter.h>
 #include <ios>
-#include <pcrecpp.h>
 
 namespace titania {
 namespace X3D {
@@ -90,10 +90,10 @@ private:
 
 public:
 
-	Parser (X3DScene*);
+	Parser (std::istream & istream, X3DScene*);
 
 	void
-	parseIntoScene (std::istream & istream)
+	parseIntoScene ()
 	throw (Error <INVALID_X3D>);
 
 	static AccessTypes accessTypes;
@@ -105,6 +105,12 @@ private:
 
 	std::string
 	getMessageFromError (const X3DError &);
+
+	std::string
+	getline ();
+
+	std::string
+	rgetline ();
 
 	void
 	pushExecutionContext (X3DExecutionContext* const);
@@ -124,13 +130,13 @@ private:
 	addRootNode (const SFNode <X3DBaseNode> &);
 
 	void
+	x3dScene ();
+
+	void
 	comments ();
 
 	bool
-	comment (std::string &);
-
-	void
-	x3dScene ();
+	comment ();
 
 	bool
 	headerStatement (std::string &, std::string &, std::string &, std::string &);
@@ -154,7 +160,8 @@ private:
 	unitStatement ();
 
 	bool
-	unitConversionFactor (double &);
+	unitConversionFactor (double & value)
+	{ return Double (value); }
 
 	bool
 	exportStatement ();
@@ -169,10 +176,12 @@ private:
 	metaStatement ();
 
 	bool
-	metakey (std::string &);
+	metakey (std::string & value)
+	{ return String (value); }
 
 	bool
-	metavalue (std::string &);
+	metavalue (std::string & value)
+	{ return String (value); }
 
 	void
 	statements ();
@@ -241,40 +250,52 @@ private:
 	Id (std::string &);
 
 	bool
-	componentNameId (std::string &);
+	profileNameId (std::string & id)
+	{ return Id (id); }
 
 	bool
-	profileNameId (std::string & _Id) { return Id (_Id); }
+	componentNameId (std::string & id)
+	{ return Id (id); }
 
 	bool
-	categoryNameId (std::string & _Id) { return Id (_Id); }
+	categoryNameId (std::string & id)
+	{ return Id (id); }
 
 	bool
-	unitNameId (std::string & _Id) { return Id (_Id); }
+	unitNameId (std::string & id)
+	{ return Id (id); }
 
 	bool
-	nodeNameId (std::string & _Id) { return Id (_Id); }
+	nodeNameId (std::string & id)
+	{ return Id (id); }
 
 	bool
-	nodeTypeId (std::string & _Id) { return Id (_Id); }
+	nodeTypeId (std::string & id)
+	{ return Id (id); }
 
 	bool
-	inlineNodeNameId (std::string & _Id) { return Id (_Id); }
+	inlineNodeNameId (std::string & id)
+	{ return Id (id); }
 
 	bool
-	exportedNodeNameId (std::string & _Id) { return Id (_Id); }
+	exportedNodeNameId (std::string & id)
+	{ return Id (id); }
 
 	bool
-	initializeOnlyId (std::string & _Id) { return Id (_Id); }
+	initializeOnlyId (std::string & id)
+	{ return Id (id); }
 
 	bool
-	inputOnlyId (std::string & _Id) { return Id (_Id); }
+	inputOnlyId (std::string & id)
+	{ return Id (id); }
 
 	bool
-	inputOutputId (std::string & _Id) { return Id (_Id); }
+	inputOutputId (std::string & id)
+	{ return Id (id); }
 
 	bool
-	outputOnlyId (std::string & _Id) { return Id (_Id); }
+	outputOnlyId (std::string & id)
+	{ return Id (id); }
 
 	bool
 	fieldType (std::string &);
@@ -282,23 +303,20 @@ private:
 	bool
 	fieldValue (X3DFieldDefinition*);
 
-	template <class Type>
-	bool from_string (Type &, const std::string &, std::ios_base & (*) (std::ios_base &));
+	bool
+	Double (double &);
 
 	bool
-	_double (double &);
+	Float (float &);
 
 	bool
-	_float (float &);
+	Int32 (int32_t &);
 
 	bool
-	_int32 (int32_t &);
+	Hex (uint32_t &);
 
 	bool
-	_hex (int32_t &);
-
-	bool
-	_string (std::string &);
+	String (std::string &);
 
 	bool
 	sfboolValue (SFBool*);
@@ -492,10 +510,11 @@ private:
 	X3DFieldDefinition*
 	createField (const std::type_info &);
 
-	X3DScene*             scene;
-	std::string           input;
-	pcrecpp::StringPiece  string;
-	ExecutionContextStack executionContextStack;
+	basic::igzfilter         istream;
+	X3DScene*                scene;
+	ExecutionContextStack    executionContextStack;
+	std::deque <std::string> currentComments;
+	std::string              whitespaces;
 
 };
 

@@ -539,6 +539,7 @@
     <None Include="Titania\X3D\Handles\TransformHandle.h" />
     <None Include="Titania\X3D\Bits\config.h" />
     <None Include="share\titania\handles\TransformHandle.wrl" />
+    <None Include="Titania\X3D\Parser\Grammar.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -955,6 +956,7 @@
     <Compile Include="Titania\X3D\Handles\X3DHandleNode.cpp" />
     <Compile Include="Titania\X3D\Handles\TransformHandle.cpp" />
     <Compile Include="Titania\X3D\Bits\config.cpp" />
+    <Compile Include="Titania\X3D\Parser\Grammar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

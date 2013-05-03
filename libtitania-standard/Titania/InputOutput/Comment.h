@@ -48,59 +48,80 @@
  *
  ******************************************************************************/
 
-#include "GarbageCollector.h"
+#ifndef __TITANIA_INPUT_OUTPUT_COMMENT_H__
+#define __TITANIA_INPUT_OUTPUT_COMMENT_H__
 
-#include "../Base/X3DChildObject.h"
-
-#include <cassert>
-#include <iostream>
+#include "String.h"
 
 namespace titania {
-namespace X3D {
+namespace io {
 
-GarbageCollector::GarbageCollector ()
+template <class CharT, class Traits = std::char_traits <CharT>>
+class basic_comment
+{
+public:
+
+	basic_comment (const std::basic_string <CharT> &);
+
+	const std::basic_string <CharT> &
+	match ()
+	{ return string; }
+
+	bool
+	operator () (std::basic_istream <CharT, Traits> &);
+
+
+private:
+
+	basic_string <CharT, Traits> value;
+	std::basic_string <CharT>    string;
+
+};
+
+template <class CharT, class Traits>
+basic_comment <CharT, Traits>::basic_comment (const std::basic_string <CharT> & value) :
+	value (value)
 { }
 
-void
-GarbageCollector::addObject (X3DChildObject* object)
+template <class CharT, class Traits>
+bool
+basic_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream)
 {
-	//__LOG__ << object -> getTypeName () << " '" << object -> getName () << "' " << (void*) object << std::endl;
+	string .clear ();
 
-	if (not disposedObjects .insert (object) .second)
-		__LOG__ << object -> getTypeName () << " " << (void*) object << std::endl;
-}
-
-void
-GarbageCollector::dispose ()
-{
-	while (disposedObjects .size ())
+	if (value (istream))
 	{
-		ChildObjectSet objectsToDelete;
-		objectsToDelete .swap (disposedObjects);
-
-		//__LOG__ << objectsToDelete .size () << " objects to delete: " << std::flush;
-
-		for (const auto & object : objectsToDelete)
+		for ( ; ;)
 		{
-			//__LOG__ << (void*) object << " " << object -> getTypeName () << " " << object -> getName () << std::endl;
+			auto c = istream .get ();
 
-			delete object;
+			if (istream)
+			{
+				switch (c)
+				{
+					case '\n':
+						return true;
+
+					default:
+						string .push_back (c);
+						break;
+				}
+			}
+			else
+				return true;
 		}
-
-		//__LOG__ << "Done." << std::endl;
 	}
+
+	return false;
 }
 
-GarbageCollector::size_type
-GarbageCollector::size ()
-{
-	return disposedObjects .size ();
-}
+typedef basic_comment <char>    comment;
+typedef basic_comment <wchar_t> wcomment;
 
-GarbageCollector::~GarbageCollector ()
-{
-	dispose ();
-}
+extern template class basic_comment <char>;
+extern template class basic_comment <wchar_t>;
 
-} // X3D
+} // io
 } // titania
+
+#endif

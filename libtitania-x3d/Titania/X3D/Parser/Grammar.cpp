@@ -48,58 +48,68 @@
  *
  ******************************************************************************/
 
-#include "GarbageCollector.h"
+#include "Grammar.h"
 
-#include "../Base/X3DChildObject.h"
-
-#include <cassert>
-#include <iostream>
+#include "../../X3D.h"
 
 namespace titania {
 namespace X3D {
 
-GarbageCollector::GarbageCollector ()
-{ }
+io::sequence      Grammar::whitespaces ("\r\n \t,");
+io::quoted_string Grammar::string ('\"');
+io::comment       Grammar::comment ("#");
 
-void
-GarbageCollector::addObject (X3DChildObject* object)
+const pcrecpp::RE Grammar::Header ("(VRML|X3D) V(.*?) (utf8)(?: (.*?)[\r\n]*)?");
+
+io::string Grammar::AS ("AS");
+io::string Grammar::COMPONENT ("COMPONENT");
+io::string Grammar::DEF ("DEF");
+io::string Grammar::EXPORT ("EXPORT");
+io::string Grammar::EXTERNPROTO ("EXTERNPROTO");
+io::string Grammar::_false ("FALSE");
+io::string Grammar::IMPORT ("IMPORT");
+io::string Grammar::IS ("IS");
+io::string Grammar::META ("META");
+io::string Grammar::_null ("NULL");
+io::string Grammar::PROFILE ("PROFILE");
+io::string Grammar::PROTO ("PROTO");
+io::string Grammar::ROUTE ("ROUTE");
+io::string Grammar::TO ("TO");
+io::string Grammar::_true ("TRUE");
+io::string Grammar::UNIT ("UNIT");
+io::string Grammar::USE ("USE");
+
+io::string Grammar::initializeOnly ("initializeOnly");
+io::string Grammar::inputOnly ("inputOnly");
+io::string Grammar::outputOnly ("outputOnly");
+io::string Grammar::inputOutput ("inputOutput");
+
+io::string Grammar::field ("field");
+io::string Grammar::eventIn ("eventIn");
+io::string Grammar::eventOut ("eventOut");
+io::string Grammar::exposedField ("exposedField");
+
+io::character Grammar::OpenBrace ('{');
+io::character Grammar::CloseBrace ('}');
+io::character Grammar::OpenBracket ('[');
+io::character Grammar::CloseBracket (']');
+io::character Grammar::Period ('.');
+io::character Grammar::Colon (':');
+
+io::string Grammar::hex ("0x");
+io::string Grammar::HEX ("0X");
+
+std::set <std::string> Grammar::FieldType = std::move (getFieldType ());
+
+std::set <std::string>
+Grammar::getFieldType ()
 {
-	//__LOG__ << object -> getTypeName () << " '" << object -> getName () << "' " << (void*) object << std::endl;
+	std::set <std::string> FieldType;
 
-	if (not disposedObjects .insert (object) .second)
-		__LOG__ << object -> getTypeName () << " " << (void*) object << std::endl;
-}
+	for (const auto & field : getBrowser () -> getSupportedFields ())
+		FieldType .insert (field -> getTypeName ());
 
-void
-GarbageCollector::dispose ()
-{
-	while (disposedObjects .size ())
-	{
-		ChildObjectSet objectsToDelete;
-		objectsToDelete .swap (disposedObjects);
-
-		//__LOG__ << objectsToDelete .size () << " objects to delete: " << std::flush;
-
-		for (const auto & object : objectsToDelete)
-		{
-			//__LOG__ << (void*) object << " " << object -> getTypeName () << " " << object -> getName () << std::endl;
-
-			delete object;
-		}
-
-		//__LOG__ << "Done." << std::endl;
-	}
-}
-
-GarbageCollector::size_type
-GarbageCollector::size ()
-{
-	return disposedObjects .size ();
-}
-
-GarbageCollector::~GarbageCollector ()
-{
-	dispose ();
+	return FieldType;
 }
 
 } // X3D

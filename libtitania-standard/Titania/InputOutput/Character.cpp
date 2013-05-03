@@ -48,59 +48,13 @@
  *
  ******************************************************************************/
 
-#include "GarbageCollector.h"
-
-#include "../Base/X3DChildObject.h"
-
-#include <cassert>
-#include <iostream>
+#include "Character.h"
 
 namespace titania {
-namespace X3D {
+namespace io {
 
-GarbageCollector::GarbageCollector ()
-{ }
+template class basic_character <char>;
+template class basic_character <wchar_t>;
 
-void
-GarbageCollector::addObject (X3DChildObject* object)
-{
-	//__LOG__ << object -> getTypeName () << " '" << object -> getName () << "' " << (void*) object << std::endl;
-
-	if (not disposedObjects .insert (object) .second)
-		__LOG__ << object -> getTypeName () << " " << (void*) object << std::endl;
-}
-
-void
-GarbageCollector::dispose ()
-{
-	while (disposedObjects .size ())
-	{
-		ChildObjectSet objectsToDelete;
-		objectsToDelete .swap (disposedObjects);
-
-		//__LOG__ << objectsToDelete .size () << " objects to delete: " << std::flush;
-
-		for (const auto & object : objectsToDelete)
-		{
-			//__LOG__ << (void*) object << " " << object -> getTypeName () << " " << object -> getName () << std::endl;
-
-			delete object;
-		}
-
-		//__LOG__ << "Done." << std::endl;
-	}
-}
-
-GarbageCollector::size_type
-GarbageCollector::size ()
-{
-	return disposedObjects .size ();
-}
-
-GarbageCollector::~GarbageCollector ()
-{
-	dispose ();
-}
-
-} // X3D
+} // io
 } // titania

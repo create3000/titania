@@ -15,6 +15,11 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Chrono/Now.cpp \
 	Titania/Chrono/StopWatch.cpp \
 	Titania/Chrono/SystemClock.cpp \
+	Titania/InputOutput/Character.cpp \
+	Titania/InputOutput/Comment.cpp \
+	Titania/InputOutput/QuotedString.cpp \
+	Titania/InputOutput/Sequence.cpp \
+	Titania/InputOutput/String.cpp \
 	Titania/Math/Geometry/Box2.cpp \
 	Titania/Math/Geometry/Box3.cpp \
 	Titania/Math/Geometry/Cylinder3.cpp \

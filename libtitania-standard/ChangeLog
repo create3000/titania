@@ -1,3 +1,21 @@
+2013-05-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* InputOutput.h:
+	* libtitania-standard.cproj:
+	* String.h:
+	* Comment.h:
+	* String.cpp:
+	* Sequence.h:
+	* Comment.cpp:
+	* Character.h:
+	* Sequence.cpp:
+	* Character.cpp:
+	* QuotedString.h:
+	* QuotedString.cpp:
+	* Generator.h:
+	* Generator.cpp: 
+
 2013-04-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-standard.md.pc: 
