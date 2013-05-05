@@ -51,7 +51,7 @@
 #ifndef __TITANIA_INPUT_OUTPUT_COMMENT_H__
 #define __TITANIA_INPUT_OUTPUT_COMMENT_H__
 
-#include "String.h"
+#include "Character.h"
 
 namespace titania {
 namespace io {
@@ -61,7 +61,7 @@ class basic_comment
 {
 public:
 
-	basic_comment (const std::basic_string <CharT> &);
+	basic_comment (const CharT &);
 
 	const std::basic_string <CharT> &
 	match ()
@@ -73,13 +73,13 @@ public:
 
 private:
 
-	basic_string <CharT, Traits> value;
-	std::basic_string <CharT>    string;
+	basic_character <CharT, Traits> value;
+	std::basic_string <CharT>       string;
 
 };
 
 template <class CharT, class Traits>
-basic_comment <CharT, Traits>::basic_comment (const std::basic_string <CharT> & value) :
+basic_comment <CharT, Traits>::basic_comment (const CharT & value) :
 	value (value)
 { }
 
@@ -99,6 +99,7 @@ basic_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> &
 			{
 				switch (c)
 				{
+					case '\r':
 					case '\n':
 						return true;
 

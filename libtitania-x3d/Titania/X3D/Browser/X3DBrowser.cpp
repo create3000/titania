@@ -82,22 +82,30 @@ X3DBrowser::initialize ()
 {
 	std::clog << "Initializing Browser ..." << std::endl;
 
-	world = scene = createScene ();
-	
-	if (browserOptions -> splashScreen ())
-	{
-		world = scene = createX3DFromURL ({ "about:splash" });
-		
-		prepare ();
-		bind ();
-
-		prepare ();
-		display ();
-	}
-
 	X3DBrowserContext::initialize ();
 	X3DUrlObject::initialize ();
 
+	// Initialize scene
+	
+	world = scene = createScene ();
+	
+	if (browserOptions -> splashScreen ())
+		world = scene = createX3DFromURL ({ "about:splash" });
+		
+	// Process outstanding events
+	
+	getRouter () .processEvents ();
+	
+	// Update display
+	
+	bind ();
+	update ();
+
+	// Replace world service.
+
+	scene .addInterest (this, &X3DBrowser::set_scene);
+	world .addInterest (this, &X3DBrowser::set_world);
+	
 	// Welcome
 
 	print (std::boolalpha,
@@ -118,15 +126,6 @@ X3DBrowser::initialize ()
 	std::clog
 		<< "\tDone initializing Browser." << std::endl
 		<< std::endl;
-
-	// Process outstanding events
-
-	getRouter () .processEvents ();
-
-	// Replace world service.
-
-	scene .addInterest (this, &X3DBrowser::set_scene);
-	world .addInterest (this, &X3DBrowser::set_world);
 }
 
 X3DBrowser*

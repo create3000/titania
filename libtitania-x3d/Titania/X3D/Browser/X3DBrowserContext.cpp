@@ -418,55 +418,58 @@ X3DBrowserContext::notify ()
  */
 
 void
-X3DBrowserContext::prepare ()
+X3DBrowserContext::update ()
 {
-	clock -> advance ();
+	try
+	{
+		// Prepare
 
-	currentFrameRate = 1 / clock -> interval ();
-	currentSpeed .setPosition (getActiveViewpoint () -> getTransformationMatrix () .translation (), currentFrameRate);
+		clock -> advance ();
 
-	prepareEvents .processInterests ();
+		currentFrameRate = 1 / clock -> interval ();
+		currentSpeed .setPosition (getActiveViewpoint () -> getTransformationMatrix () .translation (), currentFrameRate);
 
-	router .processEvents ();
+		prepareEvents .processInterests ();
 
-	getExecutionContext () -> traverse (TraverseType::CAMERA);
-	getExecutionContext () -> traverse (TraverseType::COLLISION);
+		router .processEvents ();
 
-	sensors .processInterests ();
+		getExecutionContext () -> traverse (TraverseType::CAMERA);
+		getExecutionContext () -> traverse (TraverseType::COLLISION);
 
-	router .processEvents ();
+		sensors .processInterests ();
 
-	getGarbageCollector () .dispose ();
-}
+		router .processEvents ();
 
-void
-X3DBrowserContext::display ()
-{
-	glClearColor (0, 0, 0, 0);
-	glClear (GL_COLOR_BUFFER_BIT);
+		getGarbageCollector () .dispose ();
+		
+		// Display
 
-	getExecutionContext () -> traverse (TraverseType::COLLECT);
+		glClearColor (0, 0, 0, 0);
+		glClear (GL_COLOR_BUFFER_BIT);
 
-	//glColorMask (FALSE, FALSE, FALSE, TRUE);
-	//glClearColor (0, 0, 0, 1);
-	//glClear (GL_COLOR_BUFFER_BIT);
+		getExecutionContext () -> traverse (TraverseType::COLLECT);
 
-	//glColorMask (TRUE, TRUE, TRUE, TRUE);
+		displayed .processInterests ();
+		
+		swapBuffers ();
 
-	displayed .processInterests ();
-}
+		// Finish
 
-void
-X3DBrowserContext::finish ()
-{
-	finished .processInterests ();
+		finished .processInterests ();
 
-	GLenum errorNum = glGetError ();
+		GLenum errorNum = glGetError ();
 
-	if (errorNum not_eq GL_NO_ERROR)
-		std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toLocaleString () << ": " << gluErrorString (errorNum) << std::endl;
+		if (errorNum not_eq GL_NO_ERROR)
+			std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toLocaleString () << ": " << gluErrorString (errorNum) << std::endl;
 
-	console -> string_changed () .set ({ });
+		console -> string_changed () .set ({ });
+	}
+	catch (const std::exception & exception)
+	{
+		std::clog
+			<< getCurrentTime () << " Execution Error:" << std::endl
+			<< "  " << exception .what () << std::endl;
+	}
 }
 
 void

@@ -207,6 +207,13 @@ public:
 
 	void
 	notify ();
+	
+	///  @name Event handling
+	
+	virtual
+	void
+	swapBuffers ()
+	{ }
 
 	///  @name Dispose
 
@@ -229,25 +236,17 @@ protected:
 	void
 	initialize ();
 
+	virtual
 	void
-	set_initialized ();
-
-	void
-	prepare ();
-
-	void
-	display ();
-
-	void
-	finish ();
-
-
-protected:
+	update ();
 
 	std::shared_ptr <X3DClock> clock;
 
 
 private:
+
+	void
+	set_initialized ();
 
 	Router           router;
 	RendererStack    renderers;

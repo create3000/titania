@@ -50,7 +50,7 @@ PROTO Test [
 
 # Node Comment 
 
-DEF _0 Viewpoint {
+Viewpoint {
   description "Cube"
   position 0 0 8
 }
@@ -59,7 +59,6 @@ DEF _0 Viewpoint {
 
 DEF Transform Transform {
   # Field Comment
-  # Node Comment 
   children Shape {
     appearance Appearance {
       material Material { }
@@ -86,7 +85,7 @@ DEF Transform Transform {
   }
 }
 
-DEF _1 Group { 
+Group { 
   # Inner Comment 
 }
 

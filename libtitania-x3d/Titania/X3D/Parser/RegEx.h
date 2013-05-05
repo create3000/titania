@@ -60,65 +60,10 @@ class RegEx
 {
 public:
 
-	// VRML lexical elements
-	// General
-	static const pcrecpp::RE Header;
-	static const pcrecpp::RE Whitespaces;
-	static const pcrecpp::RE Comment;
-
-	// Keywords
-	static const pcrecpp::RE AS;
-	static const pcrecpp::RE COMPONENT;
-	static const pcrecpp::RE DEF;
-	static const pcrecpp::RE EXPORT;
-	static const pcrecpp::RE EXTERNPROTO;
-	static const pcrecpp::RE _false;
-	static const pcrecpp::RE IMPORT;
-	static const pcrecpp::RE IS;
-	static const pcrecpp::RE META;
-	static const pcrecpp::RE _null;
-	static const pcrecpp::RE PROFILE;
-	static const pcrecpp::RE PROTO;
-	static const pcrecpp::RE ROUTE;
-	static const pcrecpp::RE TO;
-	static const pcrecpp::RE _true;
-	static const pcrecpp::RE UNIT;
-	static const pcrecpp::RE USE;
-
-	static const pcrecpp::RE inputOnly;
-	static const pcrecpp::RE outputOnly;
-	static const pcrecpp::RE inputOutput;
-	static const pcrecpp::RE initializeOnly;
-
-	// Terminal symbols
-	static const pcrecpp::RE OpenBrace;
-	static const pcrecpp::RE CloseBrace;
-	static const pcrecpp::RE OpenBracket;
-	static const pcrecpp::RE CloseBracket;
-	static const pcrecpp::RE Period;
-	static const pcrecpp::RE Colon;
-	static const pcrecpp::RE Brackets;
-
-	static const pcrecpp::RE QuotationMark;
-	static const pcrecpp::RE EscapedQuotationMark;
-
-	// Field Values Symbols
-	static const pcrecpp::RE _hex;
-	static const pcrecpp::RE _float;
-	static const pcrecpp::RE _int32;
-	static const pcrecpp::RE _double;
-	static const pcrecpp::RE _string;
-
-	// Other Symbols
-	static const pcrecpp::RE Id;
-	static const pcrecpp::RE ComponentNameId;
-	static const pcrecpp::RE FieldType;
-	static const pcrecpp::RE ScriptNodeInterfaceIS;
-
 	// Execution
 
+	static const pcrecpp::RE QuotationMark;
 	static const pcrecpp::RE _Num;
-
 	static const pcrecpp::RE ECMAScript;
 
 };

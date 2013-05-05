@@ -194,7 +194,7 @@ static
 io::quoted_string string ('\"');
 
 static
-io::comment comment ("#");
+io::comment comment ('#');
 
 int
 main (int argc, char** argv)
@@ -206,19 +206,11 @@ main (int argc, char** argv)
 	#endif
 
 	{
-		basic::uri url = "/home/holger/test.wrl";
-		basic::ifilestream stream (basic::http::method::GET, url);
+		std::string string;
 		
-		comment (stream);	
+		std::string r (string .rbegin (), string .rend ());
 		
-		whitespaces (stream);
-		
-		std::string s;
-		string (stream, s);
-		
-		X3D (stream);
-
-		std::clog << stream .rdbuf () << std::endl;
+		std::clog << r << std::endl;
 	}
 
 	std::clog << "Function main done." << std::endl;

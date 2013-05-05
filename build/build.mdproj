@@ -64,6 +64,12 @@
     <None Include="..\.gitignore">
       <Link>.gitignore</Link>
     </None>
+    <None Include="..\titania.anjuta">
+      <Link>titania.anjuta</Link>
+    </None>
+    <None Include="..\Titania.sln">
+      <Link>Titania.sln</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />

@@ -317,7 +317,8 @@ private:
 	Int32 (int32_t &);
 
 	bool
-	Hex (uint32_t &);
+	Hex (uint32_t & value)
+	{ return istream >> std::hex >> value; }
 
 	bool
 	String (std::string &);

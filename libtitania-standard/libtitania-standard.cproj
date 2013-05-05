@@ -106,12 +106,12 @@
     <None Include="Titania\Physics\Constants.h" />
     <None Include="Titania\Math\Utility\Normal.h" />
     <None Include="Titania\Math\Geometry\Cylinder3.h" />
-    <None Include="Titania\InputOutput\Comment.h" />
     <None Include="Titania\InputOutput.h" />
-    <None Include="Titania\InputOutput\Sequence.h" />
-    <None Include="Titania\InputOutput\QuotedString.h" />
-    <None Include="Titania\InputOutput\String.h" />
     <None Include="Titania\InputOutput\Character.h" />
+    <None Include="Titania\InputOutput\Comment.h" />
+    <None Include="Titania\InputOutput\QuotedString.h" />
+    <None Include="Titania\InputOutput\Sequence.h" />
+    <None Include="Titania\InputOutput\String.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
@@ -150,11 +150,11 @@
     <Compile Include="Titania\OS\IsFile.cpp" />
     <Compile Include="Titania\OS\Mkdir.cpp" />
     <Compile Include="Titania\Math\Geometry\Cylinder3.cpp" />
-    <Compile Include="Titania\InputOutput\Comment.cpp" />
-    <Compile Include="Titania\InputOutput\Sequence.cpp" />
-    <Compile Include="Titania\InputOutput\QuotedString.cpp" />
-    <Compile Include="Titania\InputOutput\String.cpp" />
     <Compile Include="Titania\InputOutput\Character.cpp" />
+    <Compile Include="Titania\InputOutput\Comment.cpp" />
+    <Compile Include="Titania\InputOutput\QuotedString.cpp" />
+    <Compile Include="Titania\InputOutput\Sequence.cpp" />
+    <Compile Include="Titania\InputOutput\String.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

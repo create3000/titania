@@ -131,9 +131,9 @@ Parser::getMessageFromError (const X3DError & error)
 		<< std::string (80, '*') << std::endl
 		<< "Parser error at - line " << lineNumber << ':' << linePos << std::endl
 		<< std::endl
+		<< "rest: " << rest << std::endl
 		<< preLine << std::endl
 		<< line << std::endl
-		<< "rest: " << rest << std::endl
 		<< std::string (linePos, ' ') << '^' << std::endl
 		<< error .what () << std::endl
 		<< std::string (80, '*') << std::endl
@@ -157,14 +157,14 @@ Parser::getline ()
 		
 		if (istream)
 		{
-			if (c not_eq '\n')
-				string .push_back (c);
-			
-			else
+			if (c == '\n' or c == '\r')
 			{
 				istream .unget ();
 				break;
 			}
+
+			else
+				string .push_back (c);
 		}
 		else
 			break;
@@ -188,20 +188,17 @@ Parser::rgetline ()
 		
 		if (istream)
 		{
-			if (c not_eq '\n')
-				string .push_back (c);
+			if (c == '\n' or c == '\r')
+				break;
 
 			else
-				break;
+				string .push_back (c);
 		}
 		else
 			break;
 	}
 
-	if (string .size ())
-		return std::string (string .rbegin (), string .rend ());
-	
-	return string;
+	return std::string (string .rbegin (), string .rend ());
 }
 
 void
@@ -1779,14 +1776,6 @@ Parser::Int32 (int32_t & _value)
 	istream .clear ();
 
 	return false;
-}
-
-bool
-Parser::Hex (uint32_t & _value)
-{
-	////__LOG__ << std::endl;
-
-	return istream >> std::hex >> _value;
 }
 
 bool

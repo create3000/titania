@@ -1,3 +1,28 @@
+2013-05-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* RegEx.h:
+	* Parser.h:
+	* Grammar.h:
+	* RegEx.cpp:
+	* Browser.h:
+	* Parser.cpp:
+	* Grammar.cpp:
+	* Browser.cpp:
+	* X3DBrowser.cpp:
+	* Generator.cpp:
+	* X3DBrowserContext.h:
+	* String.h:
+	* Comment.h:
+	* String.cpp:
+	* Sequence.h:
+	* X3DBrowserContext.cpp:
+	* Character.h:
+	* Comment.cpp:
+	* Sequence.cpp:
+	* Character.cpp:
+	* QuotedString.h:
+	* QuotedString.cpp: 
+
 2013-05-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.h:

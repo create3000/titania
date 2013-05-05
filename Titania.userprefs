@@ -1,30 +1,38 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Parser/Parser.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Basic/Comments.wrl">
     <Files>
-      <File FileName="experimental/main.cpp" Line="188" Column="13" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.h" Line="92" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="76" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/pages/Library/Logo.wrl" Line="27" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/pages/Library/Colors.wrl" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Grammar.h" Line="106" Column="24" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Grammar.cpp" Line="99" Column="30" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/RegEx.cpp" Line="101" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.cpp" Line="113" Column="19" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.cpp" Line="202" Column="1" />
+      <File FileName="experimental/main.cpp" Line="194" Column="12" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.h" Line="309" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="1600" Column="39" />
+      <File FileName="Library/Tests/Basic/Comments.wrl" Line="67" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="697" Column="72" />
+      <File FileName="libtitania-x3d/Titania/X3D/Prototype/Proto.cpp" Line="211" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ExternProto.cpp" Line="290" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="848" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.h" Line="337" Column="10" />
+      <File FileName="libtitania-x3d/Titania/X3D/Routing/Route.cpp" Line="196" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="193" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Prototype/X3DProto.h" Line="81" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/Prototype/X3DProto.cpp" Line="63" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Generator.cpp" Line="218" Column="17" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="build" expanded="True" />
           <Node name="experimental" expanded="True" />
+          <Node name="Library" expanded="True">
+            <Node name="Tests" expanded="True">
+              <Node name="Basic" expanded="True" selected="True" />
+              <Node name="Networking" expanded="True" />
+              <Node name="PROTO" expanded="True" />
+            </Node>
+          </Node>
           <Node name="libtitania-gzstream" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Stream" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-opengl-surface" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="OpenGL" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
@@ -34,6 +42,11 @@
               </Node>
               <Node name="InputOutput" expanded="True" />
               <Node name="Math" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="libtitania-stream" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Stream" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -50,16 +63,23 @@
                 <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True" />
-                <Node name="Execution" expanded="True" />
-                <Node name="Parser" expanded="True">
-                  <Node name="Parser.cpp" selected="True" />
+                <Node name="Components" expanded="True">
+                  <Node name="Core" expanded="True" />
+                  <Node name="Text" expanded="True" />
                 </Node>
+                <Node name="Configuration" expanded="True" />
+                <Node name="Execution" expanded="True" />
+                <Node name="InputOutput" expanded="True" />
+                <Node name="Parser" expanded="True" />
+                <Node name="Prototype" expanded="True" />
+                <Node name="Routing" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Browser" expanded="True" />
+              <Node name="HistoryEditor" expanded="True" />
               <Node name="OutlineEditor" expanded="True" />
             </Node>
           </Node>

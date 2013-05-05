@@ -191,8 +191,6 @@ Surface::set_construct (const Cairo::RefPtr <Cairo::Context> & cairo)
 		signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_draw));
 
 		construct ();
-
-		swapBuffers ();
 	}
 
 	return false; // Propagate the event further.

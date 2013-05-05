@@ -215,7 +215,7 @@ Generator::CleanStyle ()
 
 	space     = " ";
 	tidySpace = "";
-	endl      = " ";
+	endl      = "\n";
 	tidyBreak = "";
 	listBreak = " ";
 	comma     = "";

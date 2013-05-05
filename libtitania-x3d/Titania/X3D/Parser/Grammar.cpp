@@ -55,12 +55,15 @@
 namespace titania {
 namespace X3D {
 
-io::sequence      Grammar::whitespaces ("\r\n \t,");
-io::quoted_string Grammar::string ('\"');
-io::comment       Grammar::comment ("#");
+// VRML lexical elements
+// General
+io::sequence Grammar::whitespaces ("\r\n \t,");
+io::comment  Grammar::comment ('#');
 
+// Header
 const pcrecpp::RE Grammar::Header ("(VRML|X3D) V(.*?) (utf8)(?: (.*?)[\r\n]*)?");
 
+// Keywords
 io::string Grammar::AS ("AS");
 io::string Grammar::COMPONENT ("COMPONENT");
 io::string Grammar::DEF ("DEF");
@@ -89,6 +92,9 @@ io::string Grammar::eventIn ("eventIn");
 io::string Grammar::eventOut ("eventOut");
 io::string Grammar::exposedField ("exposedField");
 
+std::set <std::string> Grammar::FieldType = std::move (getFieldType ());
+
+// Terminal symbols
 io::character Grammar::OpenBrace ('{');
 io::character Grammar::CloseBrace ('}');
 io::character Grammar::OpenBracket ('[');
@@ -96,10 +102,11 @@ io::character Grammar::CloseBracket (']');
 io::character Grammar::Period ('.');
 io::character Grammar::Colon (':');
 
+// Values
 io::string Grammar::hex ("0x");
 io::string Grammar::HEX ("0X");
 
-std::set <std::string> Grammar::FieldType = std::move (getFieldType ());
+io::quoted_string Grammar::string ('\"');
 
 std::set <std::string>
 Grammar::getFieldType ()

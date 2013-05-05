@@ -196,36 +196,6 @@ Browser::reshape ()
 }
 
 void
-Browser::update (const Cairo::RefPtr <Cairo::Context> & cairo)
-{
-//	while (Gtk::Main::events_pending ())
-//		Gtk::Main::iteration ();
-
-	try
-	{
-		prepare ();
-		display ();
-		swapBuffers ();
-		finish ();
-	}
-	catch (const std::exception & exception)
-	{
-		std::clog
-			<< getCurrentTime () << " Execution Error:" << std::endl
-			<< "  " << exception .what () << std::endl;
-	}
-
-	cairo -> set_source_rgb (0.1, 0.1, 0.1);
-
-	cairo -> select_font_face ("monospace",
-	                           Cairo::FONT_SLANT_NORMAL,
-	                           Cairo::FONT_WEIGHT_BOLD);
-
-	cairo -> move_to (20, 30);
-	cairo -> show_text ("Titania");
-}
-
-void
 Browser::dispose ()
 {
 	viewer .reset ();

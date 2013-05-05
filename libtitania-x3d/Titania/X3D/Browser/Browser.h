@@ -73,19 +73,24 @@ public:
 
 	virtual
 	ViewerType
-	getViewerType () const
+	getViewerType () const final
 	{ return viewer -> getType (); }
+	
+	virtual
+	void
+	swapBuffers () final
+	{ opengl::Surface::swapBuffers (); }
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
+	create (X3DExecutionContext* const) const final;
 
 	virtual
 	void
@@ -108,11 +113,12 @@ private:
 
 	virtual
 	void
-	reshape ();
+	reshape () final;
 
 	virtual
 	void
-	update (const Cairo::RefPtr <Cairo::Context> &);
+	update (const Cairo::RefPtr <Cairo::Context> &) final
+	{ X3DBrowser::update (); }
 
 	std::unique_ptr <X3DViewer> viewer;
 	PointingDevice              pointingDevice;

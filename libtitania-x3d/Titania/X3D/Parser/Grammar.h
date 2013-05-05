@@ -58,16 +58,19 @@
 namespace titania {
 namespace X3D {
 
+// VRML lexical elements
 class Grammar
 {
 public:
 
-	static io::sequence      whitespaces;
-	static io::quoted_string string;
-	static io::comment       comment;
+	///  @name General
+	static io::sequence whitespaces;
+	static io::comment  comment;
 
+	///  @name Header
 	static const pcrecpp::RE Header;
 
+	///  @name Keywords
 	static io::string AS;
 	static io::string COMPONENT;
 	static io::string DEF;
@@ -96,6 +99,9 @@ public:
 	static io::string eventOut;
 	static io::string exposedField;
 
+	static std::set <std::string> FieldType;
+
+	///  @name Terminal symbols
 	static io::character OpenBrace;
 	static io::character CloseBrace;
 	static io::character OpenBracket;
@@ -103,10 +109,11 @@ public:
 	static io::character Period;
 	static io::character Colon;
 
+	///  @name Values
 	static io::string hex;
 	static io::string HEX;
 
-	static std::set <std::string> FieldType;
+	static io::quoted_string string;
 
 
 private:
