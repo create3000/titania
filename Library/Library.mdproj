@@ -98,8 +98,6 @@
     <None Include="Tests\3rd Party\CircleExtrusionPROTO_src\CircleExtrusionPROTO_src.wrl" />
     <None Include="Tests\3rd Party\CircleExtrusionPROTO_src\CircularCrossSection.js" />
     <None Include="Tests\3rd Party\CircleExtrusionPROTO_src\CircularCrossSection.vs" />
-    <None Include="Tests\3rd Party\DolphinPROTO_src\DolphinPROTO Test.wrl" />
-    <None Include="Tests\3rd Party\DolphinPROTO_src\DolphinPROTO.wrl" />
     <None Include="Tests\3rd Party\frontpanel\frontpanel.wrl" />
     <None Include="Tests\3rd Party\frontpanel\paneltest.wrl" />
     <None Include="Tests\3rd Party\markbutton\markbutton.wrl" />
@@ -1982,6 +1980,9 @@
     <None Include="Prototypes\Button\CheckButton\CheckButton.wrl" />
     <None Include="Tests\Basic\SelfReference.wrl" />
     <None Include="Tests\Basic\Comments.wrl" />
+    <None Include="Examples\Dolphin\stage\DolphinPROTO.wrl" />
+    <None Include="Examples\Dolphin\stage\index.wrl" />
+    <None Include="Examples\Dolphin\index.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2034,6 +2035,7 @@
     <Folder Include="Tests\CubeMapTexturing\" />
     <Folder Include="Tests\Sound\" />
     <Folder Include="Prototypes\Button\" />
+    <Folder Include="Examples\Dolphin\stage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

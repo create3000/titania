@@ -216,6 +216,6 @@ DEF IcosahedronFromTriangle Shape {
     material Material { }
   }
   geometry GeoTriangle {
-    order 1
+    order 2
   }
 }
