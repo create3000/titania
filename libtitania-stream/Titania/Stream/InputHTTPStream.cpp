@@ -131,7 +131,7 @@ ihttpstream::parse_status_line ()
 void
 ihttpstream::parse_response_headers ()
 {
-	while (peek () not_eq '\r')
+	while (peek () not_eq '\r' and peek () not_eq socketstreambuf::traits_type::eof ())
 		parse_response_header ();
 
 	if (get () not_eq '\r')

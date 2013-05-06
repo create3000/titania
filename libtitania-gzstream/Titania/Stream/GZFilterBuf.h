@@ -255,7 +255,7 @@ basic_gzfilterbuf <CharT, Traits>::underflow () // used for input buffer only
 	      buffer + bufferSize + bytesRead);            // end of buffer
 
 	// return next character
-	return *gptr ();
+	return Traits::to_int_type (*gptr ());
 }
 
 template <class CharT, class Traits>

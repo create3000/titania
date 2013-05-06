@@ -2,6 +2,13 @@
 
 META "title" "Newtworking test"
 
-Inline {
-	url "http://www.itl.nist.gov/iaui/ovrt/projects/vrml/VRML2/kinematics/cylinder.wrl"
+Transform {
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url "http://www.wiley.com/legacy/compbooks/vrml2sbk/ch27/stone2.jpg"
+      }
+    }
+    geometry Box { }
+  }
 }

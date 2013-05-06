@@ -33,6 +33,7 @@
 #include <istream>
 
 #include <stdexcept>
+#include <iostream>
 
 namespace titania {
 namespace basic {
@@ -203,7 +204,7 @@ socketstreambuf::underflow ()   // used for input buffer only
 	      buffer + bufferSize + bytesRead);        // end of buffer
 
 	// Return next character
-	return *gptr ();
+	return traits_type::to_int_type (*gptr ());
 }
 
 socketstreambuf::pos_type

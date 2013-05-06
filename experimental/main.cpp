@@ -206,11 +206,30 @@ main (int argc, char** argv)
 	#endif
 
 	{
-		std::string string;
+		__LOG__ << std::endl;
 		
-		std::string r (string .rbegin (), string .rend ());
+		basic::ihttpstream stream (basic::http::method::GET, "http://www.wiley.com/legacy/compbooks/vrml2sbk/ch27/stone2.jpg");
 		
-		std::clog << r << std::endl;
+		__LOG__ << std::endl;
+		
+		stream .send ();
+		
+		__LOG__ << std::endl;
+		
+		for (const auto & header : stream .response_headers ())
+			std::clog << header .first << ": " << header .second << std::endl;
+			
+		__LOG__ << std::endl;
+		
+		std::clog << bool (stream) << std::endl;
+		std::clog << bool (stream .rdbuf () -> is_open ()) << std::endl;
+		
+		__LOG__ << std::endl;
+		
+		std::ofstream out ("/home/holger/test.jpg");		
+		out << stream .rdbuf ();
+		
+		__LOG__ << std::endl;
 	}
 
 	std::clog << "Function main done." << std::endl;
