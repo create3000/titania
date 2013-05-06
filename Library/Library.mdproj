@@ -76,7 +76,6 @@
     <None Include="Tests\Scripting\Script-vrmlscript1.wrl" />
     <None Include="Tests\3rd Party\5000faces.x3dv" />
     <None Include="Tests\3rd Party\Figure27.2ProximitySensorDungeonSlidingDoors.x3dv" />
-    <None Include="Tests\3rd Party\Normal.wrl" />
     <None Include="Tests\3rd Party\ProximitySensorNoOverlap.wrl" />
     <None Include="Tests\3rd Party\TouchSensor.wrl" />
     <None Include="Tests\3rd Party\abacus4.wrl" />
@@ -330,7 +329,6 @@
     <None Include="Tests\Scripting\Fields.wrl" />
     <None Include="Tests\Scripting\UserDefinedFields.wrl" />
     <None Include="Tests\EnvironmentalSensors\VisibilitySensor.wrl" />
-    <None Include="Models\Household\Vase.wrl" />
     <None Include="Models\Household\pipe.wrl" />
     <None Include="Models\Vehicles\rocket.wrl" />
     <None Include="Models\Backgrounds\blue-green.wrl" />
@@ -1984,6 +1982,8 @@
     <None Include="Examples\Dolphin\stage\index.wrl" />
     <None Include="Examples\Dolphin\index.wrl" />
     <None Include="Tests\Networking\test.wrl" />
+    <None Include="Models\Household\vase2.wrl" />
+    <None Include="Models\Household\vase.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

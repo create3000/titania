@@ -101,6 +101,14 @@ Script::initialize ()
 			javaScript .reset (new JavaScriptContext (this, ecmascript, index));
 			break;
 		}
+		
+		try
+		{
+			javaScript .reset (new JavaScriptContext (this, loadDocument (URL), index));
+			break;
+		}
+		catch (const X3DError &)
+		{ }
 
 		++ index;
 	}

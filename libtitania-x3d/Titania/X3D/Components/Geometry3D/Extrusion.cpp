@@ -57,10 +57,6 @@ namespace titania {
 namespace X3D {
 
 Extrusion::Fields::Fields () :
-	set_crossSection (new MFVec2f ()),
-	set_orientation (new MFRotation ()),
-	set_scale (new MFVec2f ()),
-	set_spine (new MFVec3f ()),
 	beginCap (new SFBool (true)),
 	endCap (new SFBool (true)),
 	solid (new SFBool (true)),
@@ -82,10 +78,6 @@ Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
 	setTypeName ("Extrusion");
 
 	addField (inputOutput,    "metadata",         metadata ());
-	addField (inputOnly,      "set_crossSection", set_crossSection ());
-	addField (inputOnly,      "set_orientation",  set_orientation ());
-	addField (inputOnly,      "set_scale",        set_scale ());
-	addField (inputOnly,      "set_spine",        set_spine ());
 
 	addField (initializeOnly, "beginCap",         beginCap ());
 	addField (initializeOnly, "endCap",           endCap ());
@@ -94,10 +86,10 @@ Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "convex",           convex ());
 	addField (initializeOnly, "creaseAngle",      creaseAngle ());
 
-	addField (initializeOnly, "crossSection",     crossSection ());
-	addField (initializeOnly, "orientation",      orientation ());
-	addField (initializeOnly, "scale",            scale ());
-	addField (initializeOnly, "spine",            spine ());
+	addField (inputOutput,    "crossSection",     crossSection ());
+	addField (inputOutput,    "orientation",      orientation ());
+	addField (inputOutput,    "scale",            scale ());
+	addField (inputOutput,    "spine",            spine ());
 }
 
 X3DBaseNode*

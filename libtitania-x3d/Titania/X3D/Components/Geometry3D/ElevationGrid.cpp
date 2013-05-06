@@ -61,7 +61,6 @@ namespace titania {
 namespace X3D {
 
 ElevationGrid::Fields::Fields () :
-	set_height (new MFFloat ()),
 	xDimension (new SFInt32 ()),
 	xSpacing (new SFFloat (1)),
 	zDimension (new SFInt32 ()),
@@ -88,7 +87,6 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	setTypeName ("ElevationGrid");
 
 	addField (inputOutput,    "metadata",        metadata ());
-	addField (inputOnly,      "set_height",      set_height ());
 	
 	addField (initializeOnly, "xDimension",      xDimension ());
 	addField (initializeOnly, "xSpacing",        xSpacing ());
@@ -106,7 +104,7 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "color",           color ());
 	addField (inputOutput,    "normal",          normal ());
-	addField (initializeOnly, "height",          height ());
+	addField (inputOutput,    "height",          height ());
 }
 
 X3DBaseNode*

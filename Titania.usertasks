@@ -1,5 +1,4 @@
 <ListOfTask>
-  <Task file="" description="set_field und field zusammenfassen Extrusion EleveationGrid" />
   <Task file="" description="INVALID_OPERATION_TIMING ist wenn kein GL context vorhanden" />
   <Task file="" description="field und X3DArrayField values zu pointer, siehe JavaScript dispose und X3DFieldDefinition dispose" />
   <Task file="" description="Collisions radius" />
