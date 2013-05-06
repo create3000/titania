@@ -7,7 +7,6 @@ PROTO GeoTriangle [
 {
   DEF geometry IndexedFaceSet {
     coord Coordinate { }
-    normal Normal { }
     solid IS solid
   }
 
@@ -200,9 +199,6 @@ function initialize()
 
 	geometry.coord.set_point = vertex;
 	geometry.set_coordIndex = ci;
-  
-	geometry.normal.set_normal = vertex;
-	geometry.set_normalIndex = ci;	    
 }
 "
   }
@@ -216,6 +212,6 @@ DEF IcosahedronFromTriangle Shape {
     material Material { }
   }
   geometry GeoTriangle {
-    order 2
+    order 0
   }
 }

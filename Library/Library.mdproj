@@ -1983,6 +1983,7 @@
     <None Include="Examples\Dolphin\stage\DolphinPROTO.wrl" />
     <None Include="Examples\Dolphin\stage\index.wrl" />
     <None Include="Examples\Dolphin\index.wrl" />
+    <None Include="Tests\Networking\test.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

@@ -201,7 +201,8 @@ Inline::requestUnload ()
 	if (checkLoadState () == NOT_STARTED_STATE or checkLoadState () == FAILED_STATE)
 		return;
 
-	const_cast <MFNode &> (scene -> getRootNodes ()) .removeParent (this);
+	if (scene)
+		const_cast <MFNode &> (scene -> getRootNodes ()) .removeParent (this);
 
 	scene = getBrowser () -> createScene ();
 
@@ -221,7 +222,8 @@ Inline::traverse (TraverseType type)
 void
 Inline::dispose ()
 {
-	const_cast <MFNode &> (scene -> getRootNodes ()) .removeParent (this);
+	if (scene)
+		const_cast <MFNode &> (scene -> getRootNodes ()) .removeParent (this);
 
 	scene .dispose ();
 

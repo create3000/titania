@@ -1,0 +1,7 @@
+#VRML V2.0 utf8
+
+META "title" "Newtworking test"
+
+Inline {
+	url "http://www.itl.nist.gov/iaui/ovrt/projects/vrml/VRML2/kinematics/cylinder.wrl"
+}
