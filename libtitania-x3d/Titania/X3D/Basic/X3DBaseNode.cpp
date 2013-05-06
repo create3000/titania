@@ -702,10 +702,8 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 				<< comment
 				<< Generator::Break;
 		}
-		
-		ostream
-			<< Generator::TidyBreak
-			<< Generator::Indent;
+
+		ostream << Generator::Indent;
 	}
 
 	if (name .length ())

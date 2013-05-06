@@ -446,7 +446,7 @@ JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport
 	std::string::size_type end   = 0;
 	size_t                 i     = 0;
 
-	for ( ; i < report -> lineno; ++ i)
+	for ( ; i < report -> lineno - 1; ++ i)
 	{
 		if ((start = ecmascript .find (nl, start)) == String::npos)
 			break;
@@ -466,6 +466,7 @@ JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport
 	// Pretty print error
 
 	browser -> print ("# Javascript: runtime error at line ", report -> lineno, ":", '\n',
+	                  "# ", message, '\n',
 	                  "#  ", line, '\n',
 	                  "# ", '\n',
 	                  "# in Script '", script -> getName (), "' from url '", (report -> filename ? report -> filename : "<no filename>"), "'", '\n',

@@ -8,12 +8,8 @@ function initialize ()
 {
 	print ('initialize');
 
-	var vm = new VrmlMatrix ();
-	
-	print (vm);
-	print (vm .setTransform);
-
-	vm .setTransform (new SFVec3d (0,0,0), new SFRotation (1, 0, 1.61803398, 1.256637061));
+	var v = new SFVec3f ();
+	v.add (new SFVec3d ());
 
 	print ('done.');
 }

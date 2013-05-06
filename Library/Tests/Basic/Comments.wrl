@@ -34,7 +34,6 @@ PROTO Test [
   {
     # Node Comment 
     # Node Comment 
-
     Group { }
 
     # Inner Comment
@@ -42,21 +41,18 @@ PROTO Test [
 
   # Node Comment 
   # Node Comment 
-
   Group { }
 
   # Inner Comment
 }
 
 # Node Comment 
-
 Viewpoint {
   description "Cube"
   position 0 0 8
 }
 
 # Node Comment
-
 DEF Transform Transform {
   # Field Comment
   children Shape {
@@ -85,8 +81,14 @@ DEF Transform Transform {
   }
 }
 
-Group { 
+Group {
   # Inner Comment 
+  children [
+    # Node comment
+    Transform { }
+    # Node comment
+    Transform { }
+  ]
 }
 
 

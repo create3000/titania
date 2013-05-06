@@ -1984,6 +1984,7 @@
     <None Include="Tests\Networking\test.wrl" />
     <None Include="Models\Household\vase2.wrl" />
     <None Include="Models\Household\vase.wrl" />
+    <None Include="Tests\Navigation\Collision-27fig03.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
