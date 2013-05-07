@@ -50,18 +50,15 @@
 
 #include "Context.h"
 
-#include <gdk/gdkx.h>
-
 #include <Titania/LOG.h>
 #include <stdexcept>
 
 namespace titania {
 namespace opengl {
 
-Context::Context (const Glib::RefPtr <Gdk::Display> & display) :
-	 display (display),                                           
-	xDisplay (gdk_x11_display_get_xdisplay (display -> gobj ())), 
-	xContext (NULL)                                               
+Context::Context (Display* xDisplay) :
+	xDisplay (xDisplay), 
+	xContext (NULL)      
 { }
 
 Display*

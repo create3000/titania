@@ -50,30 +50,27 @@
 
 #include "WindowContext.h"
 
-#include <gdk/gdkx.h>
-#include <gdkmm/window.h>
 #include <stdexcept>
 
 namespace titania {
 namespace opengl {
 
-WindowContext::WindowContext (const Glib::RefPtr <Gdk::Window> & window,
-                              const Glib::RefPtr <Gdk::Display> & display,
+WindowContext::WindowContext (GLXWindow xWindow,
+                              Display* display,
                               const Context & sharingContext,
                               bool direct) :
-	Context (display),                           
-	 window (window),                            
-	xWindow (GDK_WINDOW_XID (window -> gobj ())) 
+	Context (display), 
+	xWindow (xWindow)  
 {
 	setValue    (create (sharingContext .getValue (), direct));
 	setDrawable (xWindow);
 }
 
-WindowContext::WindowContext (const Glib::RefPtr <Gdk::Window> & window,
-                              const Glib::RefPtr <Gdk::Display> & display,
+WindowContext::WindowContext (GLXWindow xWindow,
+                              Display* display,
                               bool direct) :
-	Context (display),                           
-	xWindow (GDK_WINDOW_XID (window -> gobj ())) 
+	Context (display), 
+	xWindow (xWindow)  
 {
 	setValue    (create (NULL, direct));
 	setDrawable (xWindow);

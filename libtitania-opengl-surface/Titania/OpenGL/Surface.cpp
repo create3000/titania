@@ -54,7 +54,6 @@
 #include <gtkmm/container.h>
 #include <glibmm/main.h>
 
-#include "Context/PixelBufferContext.h"
 #include "Context/WindowContext.h"
 
 #include <Titania/LOG.h>
@@ -83,56 +82,6 @@ Surface::getContext ()
 	return context;
 }
 
-//void
-//Surface::createPixmapContext ()
-//{
-//	GLXContext sharingContext = NULL;
-//
-//	display = gdk_x11_display_get_xdisplay (get_display () -> gobj ());
-//
-//	static
-//	int32_t visualAttributes [ ] = {
-//		GLX_RGBA,
-//		GLX_RED_SIZE, 1,
-//		GLX_GREEN_SIZE, 1,
-//		GLX_BLUE_SIZE, 1,
-//		GLX_ALPHA_SIZE, 1,
-//		0
-//	};
-//
-//	XVisualInfo* visualInfo = glXChooseVisual (display, DefaultScreen (display), visualAttributes);
-//
-//	if (not visualInfo)
-//		return;
-//
-//	context = glXCreateContext (display, visualInfo, sharingContext, true);
-//
-//	if (not context)
-//	{
-//		XFree (visualInfo);
-//		return;
-//	}
-//
-//	pixmap = XCreatePixmap (display, DefaultRootWindow (display), 1, 1, visualInfo -> depth);
-//
-//	if (not pixmap)
-//	{
-//		XFree (visualInfo);
-//		return;
-//	}
-//
-//	glxPixmap = glXCreateGLXPixmap (display, visualInfo, pixmap);
-//
-//	if (not glxPixmap)
-//	{
-//		XFreePixmap (display, pixmap);
-//		XFree (visualInfo);
-//		return;
-//	}
-//
-//	XFree (visualInfo);
-//}
-
 bool
 Surface::glew ()
 {
@@ -154,7 +103,8 @@ Surface::on_map (GdkEventAny* event)
 {
 	map_connection .disconnect ();
 
-	context .reset (new WindowContext (get_window (), get_display ()));
+	context .reset (new WindowContext (GDK_WINDOW_XID (get_window () -> gobj ()),
+	                                   gdk_x11_display_get_xdisplay (get_display () -> gobj ())));
 
 	if (makeCurrent ())
 	{

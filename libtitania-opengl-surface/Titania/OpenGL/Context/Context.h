@@ -51,10 +51,6 @@
 #ifndef __TITANIA_OPEN_GL_CONTEXT_CONTEXT_H__
 #define __TITANIA_OPEN_GL_CONTEXT_CONTEXT_H__
 
-#include <gdkmm/display.h>
-#include <glibmm/object.h>
-#include <glibmm/refptr.h>
-
 extern "C"
 {
 #include <GL/glew.h>
@@ -90,7 +86,7 @@ public:
 
 protected:
 
-	Context (const Glib::RefPtr <Gdk::Display> &);
+	Context (Display*);
 
 	Display*
 	getDisplay () const;
@@ -103,8 +99,6 @@ protected:
 
 
 private:
-
-	Glib::RefPtr <Gdk::Display> display;
 
 	Display*    xDisplay;
 	GLXDrawable xDrawable;

@@ -61,13 +61,13 @@ class WindowContext :
 {
 public:
 
-	WindowContext (const Glib::RefPtr <Gdk::Window> &,
-	               const Glib::RefPtr <Gdk::Display> &,
+	WindowContext (GLXWindow,
+	               Display*,
 	               const Context &,
 	               bool = true);
 
-	WindowContext (const Glib::RefPtr <Gdk::Window> &,
-	               const Glib::RefPtr <Gdk::Display> &,
+	WindowContext (GLXWindow,
+	               Display*,
 	               bool = true);
 
 	virtual
@@ -79,8 +79,7 @@ private:
 	GLXContext
 	create (GLXContext, bool);
 
-	Glib::RefPtr <Gdk::Window> window;
-	GLXWindow                  xWindow;
+	GLXWindow xWindow;
 
 };
 
