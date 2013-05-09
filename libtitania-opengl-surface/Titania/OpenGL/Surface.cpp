@@ -103,8 +103,8 @@ Surface::set_map_event (GdkEventAny* event)
 {
 	map_connection .disconnect ();
 
-	context .reset (new WindowContext (gdk_x11_window_get_xid (get_window () -> gobj ()),
-	                                   gdk_x11_display_get_xdisplay (get_display () -> gobj ())));
+	context .reset (new WindowContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
+	                                   gdk_x11_window_get_xid (get_window () -> gobj ())));
 
 	if (makeCurrent ())
 	{

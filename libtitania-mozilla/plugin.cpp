@@ -163,7 +163,7 @@ NPP_New (NPMIMEType pluginType, NPP instance, uint16_t mode, int16_t argc, char*
 	                          NULL, NULL, NULL, NULL, NULL, NULL,
 	                          NULL);
 
-	//instance -> pdata = new Plugin (createBrowser ());
+	instance -> pdata = new Plugin (createBrowser ());
 
 	return NPERR_NO_ERROR;
 }
@@ -176,10 +176,10 @@ NPP_Destroy (NPP instance, NPSavedData** save)
 	if (not instance)
 		return NPERR_INVALID_INSTANCE_ERROR;
 
-	//auto self = static_cast <Plugin*> (instance -> pdata);
+	auto self = static_cast <Plugin*> (instance -> pdata);
 
-	//if (self)
-	//	delete self;
+	if (self)
+		delete self;
 
 	return NPERR_NO_ERROR;
 }
@@ -189,7 +189,7 @@ NPP_SetWindow (NPP instance, NPWindow* window)
 {
 	__LOG__ << std::endl;
 	__LOG__ << "window: " << window -> window << std::endl;
-	__LOG__ << "width: " << window -> width << std::endl;
+	__LOG__ << "width: "  << window -> width << std::endl;
 	__LOG__ << "height: " << window -> height << std::endl;
 
 	auto self = static_cast <Plugin*> (instance -> pdata);

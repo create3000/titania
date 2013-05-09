@@ -61,13 +61,13 @@ class WindowContext :
 {
 public:
 
-	WindowContext (GLXWindow,
-	               Display*,
+	WindowContext (Display*,
+	               GLXWindow,
 	               const Context &,
 	               bool = true);
 
-	WindowContext (GLXWindow,
-	               Display*,
+	WindowContext (Display*,
+	               GLXWindow,
 	               bool = true);
 
 	virtual
