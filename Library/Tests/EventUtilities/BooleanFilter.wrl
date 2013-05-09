@@ -1,0 +1,45 @@
+#VRML V2.0 utf8
+
+META "title" "BooleanFilter"
+
+Group {
+  children [
+    DEF Touch TouchSensor { }
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box { }
+    }
+  ]
+}
+
+DEF Filter BooleanFilter { }
+
+DEF Debug Script {
+  eventIn SFBool set_true
+  eventIn SFBool set_false
+  eventIn SFBool set_negate
+
+  url "vrmlscript:
+function set_true (value)
+{
+	print ('set_true: ', value);
+}
+
+function set_false (value)
+{
+	print ('set_false: ', value);
+}
+
+function set_negate (value)
+{
+	print ('set_negate: ', value);
+}
+"
+}
+
+ROUTE Touch.isActive TO Filter.set_boolean
+ROUTE Filter.inputTrue TO Debug.set_true
+ROUTE Filter.inputFalse TO Debug.set_false
+ROUTE Filter.inputNegate TO Debug.set_negate

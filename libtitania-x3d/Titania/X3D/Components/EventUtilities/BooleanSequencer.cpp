@@ -69,9 +69,9 @@ BooleanSequencer::BooleanSequencer (X3DExecutionContext* const executionContext)
 	setTypeName ("BooleanSequencer");
 
 	addField (inputOutput, "metadata",      metadata ());
-	addField (inputOnly,   "next",          next ());
-	addField (inputOnly,   "previous",      previous ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
+	addField (inputOnly,   "previous",      previous ());
+	addField (inputOnly,   "next",          next ());
 	addField (inputOutput, "key",           key ());
 	addField (inputOutput, "keyValue",      keyValue ());
 	addField (outputOnly,  "value_changed", value_changed ());
@@ -81,6 +81,18 @@ X3DBaseNode*
 BooleanSequencer::create (X3DExecutionContext* const executionContext) const
 {
 	return new BooleanSequencer (executionContext);
+}
+
+size_t
+BooleanSequencer::getSize ()
+{
+	return keyValue () .size ();
+}
+
+void
+BooleanSequencer::sequence (size_t index)
+{
+	value_changed () = keyValue () [index];
 }
 
 } // X3D

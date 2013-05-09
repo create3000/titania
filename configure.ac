@@ -105,7 +105,8 @@ AM_GLIB_GNU_GETTEXT
 
 LT_INIT
 
-PKG_CHECK_MODULES(TITANIA,gconfmm-2.6)
+PKG_CHECK_MODULES(TITANIA,
+gconfmm-2.6)
 
 PKG_CHECK_MODULES(TITANIA_X3D,
 gstreamermm-0.10
@@ -116,18 +117,26 @@ mozjs185
 libpcrecpp
 ImageMagick++)
 
-PKG_CHECK_MODULES(TITANIA_STREAM,libcurl)
+PKG_CHECK_MODULES(TITANIA_STREAM,
+libcurl)
 
-PKG_CHECK_MODULES(TITANIA_SQLITE,sqlite3)
+PKG_CHECK_MODULES(TITANIA_SQLITE,
+sqlite3)
 
-PKG_CHECK_MODULES(TITANIA_OPENGL_SURFACE,gtkmm-3.0
+PKG_CHECK_MODULES(TITANIA_OPENGL_SURFACE,
+gtkmm-3.0
 glew
 gl)
 
-PKG_CHECK_MODULES(TITANIA_GZSTREAM,zlib)
+PKG_CHECK_MODULES(TITANIA_GZSTREAM,
+zlib)
 
-PKG_CHECK_MODULES(TITANIA_STANDARD, giomm-2.4
+PKG_CHECK_MODULES(TITANIA_STANDARD,
+giomm-2.4
 glibmm-2.4)
+
+PKG_CHECK_MODULES(TITANIA_MOZILLA, 
+mozilla-plugin)
 
 
 AC_OUTPUT([
@@ -138,6 +147,7 @@ libtitania-anyoptions/Makefile
 libtitania-gzstream/Makefile
 libtitania-opengl-surface/Makefile
 libtitania-x3d/Makefile
+libtitania-mozilla/Makefile
 Titania/Makefile
 titania-info/Makefile
 x3dtidy/Makefile

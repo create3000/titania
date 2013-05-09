@@ -81,5 +81,19 @@ IntegerTrigger::create (X3DExecutionContext* const executionContext) const
 	return new IntegerTrigger (executionContext);
 }
 
+void
+IntegerTrigger::initialize ()
+{
+	X3DTriggerNode::initialize ();
+	
+	set_boolean () .addInterest (this, &IntegerTrigger::_set_boolean);
+}
+
+void
+IntegerTrigger::_set_boolean ()
+{
+	triggerValue () = integerKey ();
+}
+
 } // X3D
 } // titania

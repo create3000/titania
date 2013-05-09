@@ -421,7 +421,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 X3DBrowser::dispose ()
 {
-	__LOG__ << std::endl;
+	__LOG__ << (void*) this << std::endl;
 
 	supportedFields     .dispose ();
 	supportedNodes      .dispose ();

@@ -69,9 +69,9 @@ IntegerSequencer::IntegerSequencer (X3DExecutionContext* const executionContext)
 	setTypeName ("IntegerSequencer");
 
 	addField (inputOutput, "metadata",      metadata ());
-	addField (inputOnly,   "next",          next ());
-	addField (inputOnly,   "previous",      previous ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
+	addField (inputOnly,   "previous",      previous ());
+	addField (inputOnly,   "next",          next ());
 	addField (inputOutput, "key",           key ());
 	addField (inputOutput, "keyValue",      keyValue ());
 	addField (outputOnly,  "value_changed", value_changed ());
@@ -81,6 +81,18 @@ X3DBaseNode*
 IntegerSequencer::create (X3DExecutionContext* const executionContext) const
 {
 	return new IntegerSequencer (executionContext);
+}
+
+size_t
+IntegerSequencer::getSize ()
+{
+	return keyValue () .size ();
+}
+
+void
+IntegerSequencer::sequence (size_t index)
+{
+	value_changed () = keyValue () [index];
 }
 
 } // X3D

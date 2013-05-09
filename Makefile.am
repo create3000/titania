@@ -9,6 +9,7 @@ SUBDIRS =  \
 	libtitania-gzstream \
 	libtitania-opengl-surface \
 	libtitania-x3d \
+	libtitania-mozilla \
 	Titania \
 	titania-info \
 	x3dtidy

@@ -18,7 +18,8 @@ Build-Depends: debhelper (>= 5),
                libgstreamermm-0.10-dev,
                zlib1g,
                intltool,
-               gettext
+               gettext,
+               firefox-dev
 
 Homepage: https://titania.create3000.de/
 Package: titania

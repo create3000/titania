@@ -62,7 +62,7 @@ OutlineEditor::OutlineEditor (const X3D::SFNode <X3D::Browser> & browser) :
 {
 	setBrowser (browser);
 
-	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &OutlineEditor::on_button_release_event), false);
+	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &OutlineEditor::on_button_release_event));
 }
 
 void

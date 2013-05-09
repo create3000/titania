@@ -1,3 +1,13 @@
+2013-05-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
+	* TimeTrigger.wrl:
+	* BooleanFilter.wrl:
+	* BooleanToggle.wrl:
+	* IntegerTrigger.wrl:
+	* BooleanTrigger.wrl:
+	* IntegerSequencer.wrl: 
+
 2013-05-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Library.mdproj:

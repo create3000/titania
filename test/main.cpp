@@ -65,6 +65,7 @@
 //////#include "Tests/AddAndRemoveNode.h"
 
 #include <Titania/X3D.h>
+#include <gtkmm.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -77,6 +78,9 @@ int
 main (int argc, char* argv [ ])
 {
 	install_signal_hander ();
+	
+	Gtk::Main::init_gtkmm_internals ();
+	Gtk::Main::init_gtkmm_internals ();
 
 	std::clog << "Test started ..." << std::endl << std::endl;
 	{

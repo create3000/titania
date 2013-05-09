@@ -79,5 +79,20 @@ BooleanToggle::create (X3DExecutionContext* const executionContext) const
 	return new BooleanToggle (executionContext);
 }
 
+void
+BooleanToggle::initialize ()
+{
+	X3DChildNode::initialize ();
+	
+	set_boolean () .addInterest (this, &BooleanToggle::_set_boolean);
+}
+
+void
+BooleanToggle::_set_boolean ()
+{
+	if (set_boolean ())
+		toggle () = not toggle ();
+}
+
 } // X3D
 } // titania

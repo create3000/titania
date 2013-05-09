@@ -78,6 +78,14 @@ public:
 	{ return *fields .set_boolean; }
 
 	SFBool &
+	inputTrue ()
+	{ return *fields .inputTrue; }
+
+	const SFBool &
+	inputTrue () const
+	{ return *fields .inputTrue; }
+
+	SFBool &
 	inputFalse ()
 	{ return *fields .inputFalse; }
 
@@ -93,25 +101,24 @@ public:
 	inputNegate () const
 	{ return *fields .inputNegate; }
 
-	SFBool &
-	inputTrue ()
-	{ return *fields .inputTrue; }
-
-	const SFBool &
-	inputTrue () const
-	{ return *fields .inputTrue; }
-
 
 private:
+
+	virtual
+	void
+	initialize () final;
+	
+	void
+	_set_boolean ();
 
 	struct Fields
 	{
 		Fields ();
 
 		SFBool* const set_boolean;
+		SFBool* const inputTrue;
 		SFBool* const inputFalse;
 		SFBool* const inputNegate;
-		SFBool* const inputTrue;
 	};
 
 	Fields fields;

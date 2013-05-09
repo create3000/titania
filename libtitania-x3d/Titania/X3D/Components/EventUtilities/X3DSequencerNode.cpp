@@ -54,17 +54,95 @@ namespace titania {
 namespace X3D {
 
 X3DSequencerNode::Fields::Fields () :
-	next (new SFBool ()),
-	previous (new SFBool ()),
 	set_fraction (new SFFloat ()),
+	previous (new SFBool ()),
+	next (new SFBool ()),
 	key (new MFFloat ())
 { }
 
 X3DSequencerNode::X3DSequencerNode () :
 	X3DChildNode (), 
-	      fields ()  
+	      fields (), 
+	       index (0) 
 {
 	addNodeType (X3DConstants::X3DSequencerNode);
+}
+
+void
+X3DSequencerNode::setup ()
+{
+	// If an X3DInterpolatorNode value_changed outputOnly field is read before it receives any inputs,
+	// keyValue[0] is returned if keyValue is not empty. If keyValue is empty (i.e., [ ]), the initial
+	// value for the respective field type is returned (EXAMPLE  (0, 0, 0) for SFVec3f);
+
+	if (getSize () > 0)
+		sequence (0);
+
+	X3DChildNode::setup ();
+}
+
+void
+X3DSequencerNode::initialize ()
+{
+	X3DChildNode::initialize ();
+
+	set_fraction () .addInterest (this, &X3DSequencerNode::_set_fraction);
+	previous () .addInterest (this, &X3DSequencerNode::_set_previous);
+	next () .addInterest (this, &X3DSequencerNode::_set_next);
+}
+
+void
+X3DSequencerNode::_set_fraction ()
+{
+	if (key () .size () == 0)
+		return;
+
+	size_t i = 0;
+
+	if (key () .size () == 1 or set_fraction () <= key () [0])
+		i = 0;
+
+	else if (set_fraction () >= key () .at (key () .size () - 1))
+		i = getSize () - 1;
+
+	else
+	{
+		auto iter = std::upper_bound (key () .cbegin (), key () .cend (), set_fraction ());
+		i = iter - key () .begin () - 1;
+	}
+
+	if (i < getSize ())
+	{
+		if (i not_eq index)
+		{
+			index = i;
+			sequence (index);
+		}
+	}
+}
+
+void
+X3DSequencerNode::_set_previous ()
+{
+	if (index == 0)
+		index = getSize () - 1;
+
+	else
+		-- index;
+
+	sequence (index);
+}
+
+void
+X3DSequencerNode::_set_next ()
+{
+	if (index == getSize () - 1)
+		index = 0;
+
+	else
+		++ index;
+
+	sequence (index);
 }
 
 } // X3D

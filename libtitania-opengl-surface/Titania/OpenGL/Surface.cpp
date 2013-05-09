@@ -63,8 +63,8 @@ namespace titania {
 namespace opengl {
 
 Surface::Surface () :
-	Gtk::DrawingArea (),    
-	        context  (NULL) 
+	Gtk::DrawingArea (),
+	context (NULL) 
 {
 	set_double_buffered (false);
 	set_app_paintable (true);
@@ -73,7 +73,7 @@ Surface::Surface () :
 	add_events (Gdk::STRUCTURE_MASK);
 
 	// Connect to map_event.
-	map_connection = signal_map_event () .connect (sigc::mem_fun (*this, &Surface::on_map));
+	map_connection = signal_map_event () .connect (sigc::mem_fun (*this, &Surface::set_map_event));
 }
 
 const std::shared_ptr <Context> &
@@ -99,11 +99,11 @@ Surface::glew ()
 }
 
 bool
-Surface::on_map (GdkEventAny* event)
+Surface::set_map_event (GdkEventAny* event)
 {
 	map_connection .disconnect ();
 
-	context .reset (new WindowContext (GDK_WINDOW_XID (get_window () -> gobj ()),
+	context .reset (new WindowContext (gdk_x11_window_get_xid (get_window () -> gobj ()),
 	                                   gdk_x11_display_get_xdisplay (get_display () -> gobj ())));
 
 	if (makeCurrent ())

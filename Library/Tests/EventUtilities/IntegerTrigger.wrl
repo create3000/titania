@@ -1,0 +1,33 @@
+#VRML V2.0 utf8
+
+META "title" "IntegerTrigger"
+
+Group {
+  children [
+    DEF Touch TouchSensor { }
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box { }
+    }
+  ]
+}
+
+DEF Filter IntegerTrigger {
+  integerKey 123
+}
+
+DEF Debug Script {
+  eventIn SFInt32 set_value
+
+  url "vrmlscript:
+function set_value (value)
+{
+	print ('set_value: ', value);
+}
+"
+}
+
+ROUTE Touch.isActive TO Filter.set_boolean
+ROUTE Filter.triggerValue TO Debug.set_value

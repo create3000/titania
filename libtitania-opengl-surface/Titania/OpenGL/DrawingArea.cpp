@@ -48,60 +48,41 @@
  *
  ******************************************************************************/
 
-#include "BooleanFilter.h"
+#include "DrawingArea.h"
 
-#include "../../Execution/X3DExecutionContext.h"
+#include <glibmm.h>
 
 namespace titania {
-namespace X3D {
+namespace opengl {
 
-BooleanFilter::Fields::Fields () :
-	set_boolean (new SFBool ()),
-	inputTrue (new SFBool ()),
-	inputFalse (new SFBool ()),
-	inputNegate (new SFBool ())
-{ }
-
-BooleanFilter::BooleanFilter (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DChildNode (),                                                    
-	      fields ()                                                     
+DrawingArea::DrawingArea () :
+	sigc::trackable () 
 {
-	setComponent ("EventUtilities");
-	setTypeName ("BooleanFilter");
+	widget = GTK_DRAWING_AREA (gtk_drawing_area_new ());
+	g_object_ref (widget);
 
-	addField (inputOutput, "metadata",    metadata ());
-	addField (inputOnly,   "set_boolean", set_boolean ());
-	addField (outputOnly,  "inputTrue",   inputTrue ());
-	addField (outputOnly,  "inputFalse",  inputFalse ());
-	addField (outputOnly,  "inputNegate", inputNegate ());
-}
+	g_signal_connect (G_OBJECT (gobj ()), "button_press_event",   G_CALLBACK (&DrawingArea::button_press_event_cb),   this);
+	g_signal_connect (G_OBJECT (gobj ()), "button_release_event", G_CALLBACK (&DrawingArea::button_release_event_cb), this);
+	g_signal_connect (G_OBJECT (gobj ()), "scroll_event",         G_CALLBACK (&DrawingArea::scroll_event_cb),         this);
+	g_signal_connect (G_OBJECT (gobj ()), "motion_notify_event",  G_CALLBACK (&DrawingArea::motion_notify_event_cb),  this);
 
-X3DBaseNode*
-BooleanFilter::create (X3DExecutionContext* const executionContext) const
-{
-	return new BooleanFilter (executionContext);
-}
+	g_signal_connect (G_OBJECT (gobj ()), "key_press_event",   G_CALLBACK (&DrawingArea::key_press_event_cb),   this);
+	g_signal_connect (G_OBJECT (gobj ()), "key_release_event", G_CALLBACK (&DrawingArea::key_release_event_cb), this);
 
-void
-BooleanFilter::initialize ()
-{
-	X3DChildNode::initialize ();
+	g_signal_connect (G_OBJECT (gobj ()), "map_event",       G_CALLBACK (&DrawingArea::map_event_cb),      this);
+	g_signal_connect (G_OBJECT (gobj ()), "configure_event", G_CALLBACK (&DrawingArea::configure_event_cb), this);
 	
-	set_boolean () .addInterest (this, &BooleanFilter::_set_boolean);
+	//if (g_signal_name ("draw"))
+		g_signal_connect (G_OBJECT (gobj ()), "draw", G_CALLBACK (&DrawingArea::draw_cb), this);
+		
+	//else
+		g_signal_connect (G_OBJECT (gobj ()), "expose_event", G_CALLBACK (&DrawingArea::expose_event_cb), this);
 }
 
-void
-BooleanFilter::_set_boolean ()
+DrawingArea::~DrawingArea ()
 {
-	if (set_boolean ())
-		inputTrue () = true;
-		
-	else
-		inputFalse () = true;
-		
-	inputNegate () = not set_boolean ();
+	g_object_unref (widget);
 }
 
-} // X3D
+} // opengl
 } // titania

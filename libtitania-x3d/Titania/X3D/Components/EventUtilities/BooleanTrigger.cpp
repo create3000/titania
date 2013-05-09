@@ -79,5 +79,19 @@ BooleanTrigger::create (X3DExecutionContext* const executionContext) const
 	return new BooleanTrigger (executionContext);
 }
 
+void
+BooleanTrigger::initialize ()
+{
+	X3DTriggerNode::initialize ();
+	
+	set_triggerTime () .addInterest (this, &BooleanTrigger::_set_triggerTime);
+}
+
+void
+BooleanTrigger::_set_triggerTime ()
+{
+	triggerTrue () = true;
+}
+
 } // X3D
 } // titania

@@ -23,13 +23,10 @@ binary-arch: build
 	dh_installchangelogs
 
 # Make and install binaries
-	./configure --enable-release --prefix=`pwd`/debian/$(PACKAGE)/usr/
+	./autogen.sh --enable-release --prefix=`pwd`/debian/$(PACKAGE)/usr/
 	#make distclean
 	make -j4
 	make install
-
-# Configure for debug testing
-	./configure
 
 # Copy share directory (currently only from Titania/)
 	find . -maxdepth 2 -mindepth 2 -name share -print0 | \

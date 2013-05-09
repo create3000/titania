@@ -103,6 +103,10 @@ private:
 	void
 	set_key ();
 
+	virtual
+	void
+	set_keyValue () = 0;
+
 	struct Fields
 	{
 		Fields ();
@@ -112,10 +116,6 @@ private:
 	};
 
 	Fields fields;
-
-	virtual
-	void
-	set_keyValue () = 0;
 
 };
 

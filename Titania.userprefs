@@ -1,12 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Basic/Comments.wrl">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-mozilla/plugin.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.cpp" Line="202" Column="1" />
       <File FileName="experimental/main.cpp" Line="194" Column="12" />
       <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.h" Line="309" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="1600" Column="39" />
-      <File FileName="Library/Tests/Basic/Comments.wrl" Line="67" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="1600" Column="3" />
+      <File FileName="Library/Tests/Basic/Comments.wrl" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="697" Column="72" />
       <File FileName="libtitania-x3d/Titania/X3D/Prototype/Proto.cpp" Line="211" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Prototype/ExternProto.cpp" Line="290" Column="2" />
@@ -17,15 +17,31 @@
       <File FileName="libtitania-x3d/Titania/X3D/Prototype/X3DProto.h" Line="81" Column="14" />
       <File FileName="libtitania-x3d/Titania/X3D/Prototype/X3DProto.cpp" Line="63" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Generator.cpp" Line="218" Column="17" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/JavaScriptContext.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.cpp" Line="108" Column="1" />
+      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.h" Line="1" Column="1" />
+      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Context/Context.h" Line="109" Column="12" />
+      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Context/Context.cpp" Line="57" Column="17" />
+      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Context/WindowContext.h" Line="46" Column="3" />
+      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Context/WindowContext.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-mozilla/plugin.cpp" Line="93" Column="1" />
+      <File FileName="Titania/Titania/main.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Makefile.am" Line="59" Column="1" />
+      <File FileName="libtitania-mozilla/Makefile.am" Line="43" Column="67" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.h" Line="56" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="build" expanded="True" />
+          <Node name="build" expanded="True">
+            <Node name="debian" expanded="True" />
+          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
-              <Node name="Basic" expanded="True" selected="True" />
+              <Node name="Basic" expanded="True" />
+              <Node name="Navigation" expanded="True" />
               <Node name="Networking" expanded="True" />
               <Node name="PROTO" expanded="True" />
             </Node>
@@ -35,6 +51,10 @@
               <Node name="Stream" expanded="True" />
             </Node>
           </Node>
+          <Node name="libtitania-mozilla" expanded="True">
+            <Node name="plugin.cpp" selected="True" />
+          </Node>
+          <Node name="libtitania-opengl-surface" expanded="True" />
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Basic" expanded="True">
@@ -70,6 +90,9 @@
                 <Node name="Configuration" expanded="True" />
                 <Node name="Execution" expanded="True" />
                 <Node name="InputOutput" expanded="True" />
+                <Node name="JavaScript" expanded="True">
+                  <Node name="SpiderMonkey" expanded="True" />
+                </Node>
                 <Node name="Parser" expanded="True" />
                 <Node name="Prototype" expanded="True" />
                 <Node name="Routing" expanded="True" />
@@ -78,6 +101,7 @@
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
               <Node name="HistoryEditor" expanded="True" />
               <Node name="OutlineEditor" expanded="True" />

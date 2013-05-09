@@ -50,6 +50,8 @@ Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-standard", "libt
 EndProject
 Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "build", "build\build.mdproj", "{ADFD852E-EC3F-463B-B5F9-30812AB9890B}"
 EndProject
+Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-mozilla", "libtitania-mozilla\libtitania-mozilla.cproj", "{B12F32C0-6190-4AC2-A6D3-1E2C6DE9657C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -150,6 +152,14 @@ Global
 		{ADFD852E-EC3F-463B-B5F9-30812AB9890B}.Parallel|Any CPU.Build.0 = Default|Any CPU
 		{ADFD852E-EC3F-463B-B5F9-30812AB9890B}.Release|Any CPU.ActiveCfg = Default|Any CPU
 		{ADFD852E-EC3F-463B-B5F9-30812AB9890B}.Release|Any CPU.Build.0 = Default|Any CPU
+		{B12F32C0-6190-4AC2-A6D3-1E2C6DE9657C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B12F32C0-6190-4AC2-A6D3-1E2C6DE9657C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B12F32C0-6190-4AC2-A6D3-1E2C6DE9657C}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{B12F32C0-6190-4AC2-A6D3-1E2C6DE9657C}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{B12F32C0-6190-4AC2-A6D3-1E2C6DE9657C}.Parallel|Any CPU.ActiveCfg = Debug|Any CPU
+		{B12F32C0-6190-4AC2-A6D3-1E2C6DE9657C}.Parallel|Any CPU.Build.0 = Debug|Any CPU
+		{B12F32C0-6190-4AC2-A6D3-1E2C6DE9657C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B12F32C0-6190-4AC2-A6D3-1E2C6DE9657C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B8162BFF-FE10-4AE2-83EF-35F6DA9300B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8162BFF-FE10-4AE2-83EF-35F6DA9300B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8162BFF-FE10-4AE2-83EF-35F6DA9300B1}.Parallel|Any CPU.ActiveCfg = Parallel|Any CPU

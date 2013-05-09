@@ -1,3 +1,26 @@
+2013-05-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3D.cpp:
+	* X3DBrowser.cpp:
+	* PointingDevice.cpp:
+	* TimeTrigger.h:
+	* BooleanToggle.h:
+	* TimeTrigger.cpp:
+	* BooleanFilter.h:
+	* BooleanTrigger.h:
+	* IntegerTrigger.h:
+	* BooleanFilter.cpp:
+	* BooleanToggle.cpp:
+	* IntegerTrigger.cpp:
+	* X3DSequencerNode.h:
+	* BooleanTrigger.cpp:
+	* BooleanSequencer.h:
+	* IntegerSequencer.h:
+	* BooleanSequencer.cpp:
+	* X3DInterpolatorNode.h:
+	* IntegerSequencer.cpp:
+	* X3DSequencerNode.cpp: 
+
 2013-05-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Surface.h:

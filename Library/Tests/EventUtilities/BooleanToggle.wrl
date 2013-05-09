@@ -1,0 +1,31 @@
+#VRML V2.0 utf8
+
+META "title" "BooleanToggle"
+
+Group {
+  children [
+    DEF Touch TouchSensor { }
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box { }
+    }
+  ]
+}
+
+DEF Filter BooleanToggle { }
+
+DEF Debug Script {
+  eventIn SFBool set_toggle
+
+  url "vrmlscript:
+function set_toggle (value)
+{
+	print ('set_toggle: ', value);
+}
+"
+}
+
+ROUTE Touch.isActive TO Filter.set_boolean
+ROUTE Filter.toggle_changed TO Debug.set_toggle

@@ -79,5 +79,19 @@ TimeTrigger::create (X3DExecutionContext* const executionContext) const
 	return new TimeTrigger (executionContext);
 }
 
+void
+TimeTrigger::initialize ()
+{
+	X3DTriggerNode::initialize ();
+	
+	set_boolean () .addInterest (this, &TimeTrigger::_set_boolean);
+}
+
+void
+TimeTrigger::_set_boolean ()
+{
+	triggerTime () = getCurrentTime ();
+}
+
 } // X3D
 } // titania

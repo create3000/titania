@@ -88,6 +88,13 @@ public:
 
 private:
 
+	virtual
+	void
+	initialize () final;
+	
+	void
+	_set_triggerTime ();
+
 	struct Fields
 	{
 		Fields ();

@@ -61,13 +61,13 @@ class X3DSequencerNode :
 {
 public:
 
-	SFBool &
-	next ()
-	{ return *fields .next; }
+	SFFloat &
+	set_fraction ()
+	{ return *fields .set_fraction; }
 
-	const SFBool &
-	next () const
-	{ return *fields .next; }
+	const SFFloat &
+	set_fraction () const
+	{ return *fields .set_fraction; }
 
 	SFBool &
 	previous ()
@@ -77,13 +77,13 @@ public:
 	previous () const
 	{ return *fields .previous; }
 
-	SFFloat &
-	set_fraction ()
-	{ return *fields .set_fraction; }
+	SFBool &
+	next ()
+	{ return *fields .next; }
 
-	const SFFloat &
-	set_fraction () const
-	{ return *fields .set_fraction; }
+	const SFBool &
+	next () const
+	{ return *fields .next; }
 
 	MFFloat &
 	key ()
@@ -93,25 +93,51 @@ public:
 	key () const
 	{ return *fields .key; }
 
+	virtual
+	void
+	setup () final;
+
 
 protected:
 
 	X3DSequencerNode ();
 
+	virtual
+	void
+	initialize ();
+
+	virtual
+	size_t
+	getSize () = 0;
+
+	virtual
+	void
+	sequence (size_t) = 0;
+
 
 private:
+
+	void
+	_set_previous ();
+
+	void
+	_set_next ();
+
+	void
+	_set_fraction ();
 
 	struct Fields
 	{
 		Fields ();
 
-		SFBool* const next;
-		SFBool* const previous;
 		SFFloat* const set_fraction;
+		SFBool* const previous;
+		SFBool* const next;
 		MFFloat* const key;
 	};
 
 	Fields fields;
+	size_t index;
 
 };
 

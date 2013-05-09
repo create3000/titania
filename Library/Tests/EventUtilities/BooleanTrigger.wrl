@@ -1,0 +1,31 @@
+#VRML V2.0 utf8
+
+META "title" "BooleanTrigger"
+
+Group {
+  children [
+    DEF Touch TouchSensor { }
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box { }
+    }
+  ]
+}
+
+DEF Filter BooleanTrigger { }
+
+DEF Debug Script {
+  eventIn SFBool set_true
+
+  url "vrmlscript:
+function set_true (value)
+{
+	print ('set_true: ', value);
+}
+"
+}
+
+ROUTE Touch.touchTime TO Filter.set_triggerTime
+ROUTE Filter.triggerTrue TO Debug.set_true

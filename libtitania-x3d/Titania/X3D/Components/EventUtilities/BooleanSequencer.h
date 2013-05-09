@@ -88,6 +88,14 @@ public:
 
 private:
 
+	virtual
+	size_t
+	getSize () final;
+
+	virtual
+	void
+	sequence (size_t) final;
+
 	struct Fields
 	{
 		Fields ();

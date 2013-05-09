@@ -1985,6 +1985,12 @@
     <None Include="Models\Household\vase2.wrl" />
     <None Include="Models\Household\vase.wrl" />
     <None Include="Tests\Navigation\Collision-27fig03.wrl" />
+    <None Include="Tests\EventUtilities\BooleanFilter.wrl" />
+    <None Include="Tests\EventUtilities\BooleanToggle.wrl" />
+    <None Include="Tests\EventUtilities\BooleanTrigger.wrl" />
+    <None Include="Tests\EventUtilities\IntegerTrigger.wrl" />
+    <None Include="Tests\EventUtilities\TimeTrigger.wrl" />
+    <None Include="Tests\EventUtilities\IntegerSequencer.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2038,6 +2044,7 @@
     <Folder Include="Tests\Sound\" />
     <Folder Include="Prototypes\Button\" />
     <Folder Include="Examples\Dolphin\stage\" />
+    <Folder Include="Tests\EventUtilities\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />
