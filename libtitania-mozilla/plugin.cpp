@@ -240,7 +240,9 @@ NPP_Write (NPP instance, NPStream* stream, int32_t offset, int32_t len, void* bu
 
 void
 NPP_StreamAsFile (NPP instance, NPStream* stream, const char* fname)
-{ }
+{
+	__LOG__ << std::endl;
+}
 
 void
 NPP_Print (NPP instance, NPPrint* platformPrint)
@@ -266,8 +268,6 @@ NPP_GetValue (NPP instance, NPPVariable variable, void* value)
 {
 	__LOG__ << std::endl;
 
-	NPError err = NPERR_NO_ERROR;
-
 	switch (variable)
 	{
 		case NPPVpluginNameString:
@@ -280,10 +280,10 @@ NPP_GetValue (NPP instance, NPPVariable variable, void* value)
 			*((NPBool*) value) = true;
 			break;
 		default:
-			err = NPERR_GENERIC_ERROR;
+			return NPERR_GENERIC_ERROR;
 	}
 
-	return err;
+	return NPERR_NO_ERROR;
 }
 
 NPError
