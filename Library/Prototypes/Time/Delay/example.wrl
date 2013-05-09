@@ -1,0 +1,48 @@
+#X3D V3.0 utf8 Titania 0.1
+
+META "title" "Delay"
+
+EXTERNPROTO Delay [
+  inputOutput SFTime cycleInterval
+  inputOutput SFBool enabled
+  inputOutput SFTime startTime
+  inputOutput SFTime stopTime
+  outputOnly  SFBool isActive
+  outputOnly  SFTime exitTime
+]
+"Delay.wrl"
+
+Group {
+  children [
+    DEF Touch TouchSensor { }
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box { }
+    }
+  ]
+}
+
+DEF Delay Delay { }
+
+DEF Debug Script {
+  inputOnly SFBool set_active
+  inputOnly SFTime set_time
+
+  url "vrmlscript:
+function set_active (value)
+{
+	print ('set_active: ', value);
+}
+
+function set_time (value)
+{
+	print ('set_time: ', value);
+}
+"
+}
+
+ROUTE Touch.touchTime TO Delay.set_startTime
+ROUTE Delay.isActive TO Debug.set_active
+ROUTE Delay.exitTime TO Debug.set_time

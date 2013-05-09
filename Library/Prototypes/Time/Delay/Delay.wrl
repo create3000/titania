@@ -1,0 +1,84 @@
+#VRML V2.0 utf8
+
+PROTO Delay [
+  exposedField SFTime cycleInterval 1
+  exposedField SFBool enabled TRUE
+  exposedField SFTime startTime 0
+  exposedField SFTime stopTime 0
+  eventOut     SFBool isActive
+  eventOut     SFTime exitTime
+]
+{
+  PROTO Fields [
+    exposedField SFTime cycleInterval 1
+    exposedField SFTime startTime 0
+    exposedField SFTime stopTime 0
+  ]
+  {
+    Group { }
+  }
+
+  DEF Delay Script {
+    eventIn  SFTime set_startTime
+    eventIn  SFTime set_stopTime
+    eventIn  SFBool set_isActive
+    eventOut SFBool isActive IS isActive
+    eventOut SFTime exitTime IS exitTime
+    field    SFNode timeSensor DEF TimeSensor TimeSensor {
+      enabled IS enabled
+      loop TRUE
+      stopTime 1
+    }
+    field    SFNode fields DEF Fields Fields {
+      cycleInterval IS cycleInterval
+      startTime IS startTime
+      stopTime IS stopTime
+    }
+
+    url "vrmlscript:
+function initialize ()
+{
+	if (timeSensor.enabled && fields.startTime)
+		fields .startTime = 1;
+}
+
+function set_startTime (value, time)
+{
+	if (!isActive)
+		isActive = TRUE;
+
+	timeSensor .startTime = time;
+	timeSensor .stopTime  = time + fields .cycleInterval;
+}
+
+function set_stopTime (value, time)
+{
+	if (isActive)
+		isActive = FALSE;
+
+	timeSensor .startTime = 0;
+	timeSensor .stopTime  = time;
+}
+
+function set_isActive (value, time)
+{
+	if (!value)
+	{
+		if (isActive)
+		{
+			isActive = FALSE;
+
+			if (timeSensor.enabled)
+				exitTime = time;
+		}
+	}
+}
+"
+    directOutput TRUE
+    mustEvaluate TRUE
+  }
+
+  ROUTE TimeSensor.isActive TO Delay.set_isActive
+  ROUTE Fields.startTime_changed TO Delay.set_startTime
+  ROUTE Fields.stopTime_changed TO Delay.set_stopTime
+}

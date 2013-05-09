@@ -49,6 +49,7 @@
  ******************************************************************************/
 
 #include <Titania/X3D.h>
+#include <gtkmm/main.h>
 #include <gtkmm/plug.h>
 
 extern "C"
@@ -107,7 +108,7 @@ NP_Initialize (NPNetscapeFuncs* bFuncs, NPPluginFuncs* pFuncs)
 	pFuncs -> getvalue      = NPP_GetValue;
 	pFuncs -> setvalue      = NPP_SetValue;
 
-	//Gtk::Main::init_gtkmm_internals ();
+	Gtk::Main::init_gtkmm_internals ();
 
 	return NPERR_NO_ERROR;
 }

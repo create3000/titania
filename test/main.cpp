@@ -79,7 +79,7 @@ main (int argc, char* argv [ ])
 {
 	install_signal_hander ();
 	
-	Gtk::Main::init_gtkmm_internals ();
+	gtk_init (0, 0);
 	Gtk::Main::init_gtkmm_internals ();
 
 	std::clog << "Test started ..." << std::endl << std::endl;

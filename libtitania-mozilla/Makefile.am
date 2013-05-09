@@ -42,5 +42,5 @@ run:
 	mkdir -p ~/.mozilla/plugins
 	cp -a -L .libs/libtitania-mozilla.so ~/.mozilla/plugins
 	LD_LIBRARIES_PATH=`find \`realpath ..\` -name .libs | tr '\n' ':'` \
-		/home/holger/Arbeitsfläche/firefox/firefox
+		firefox
 	rm ~/.mozilla/plugins/libtitania-mozilla.so

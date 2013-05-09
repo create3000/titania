@@ -1991,6 +1991,8 @@
     <None Include="Tests\EventUtilities\IntegerTrigger.wrl" />
     <None Include="Tests\EventUtilities\TimeTrigger.wrl" />
     <None Include="Tests\EventUtilities\IntegerSequencer.wrl" />
+    <None Include="Prototypes\Time\Delay\Delay.wrl" />
+    <None Include="Prototypes\Time\Delay\example.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2045,6 +2047,8 @@
     <Folder Include="Prototypes\Button\" />
     <Folder Include="Examples\Dolphin\stage\" />
     <Folder Include="Tests\EventUtilities\" />
+    <Folder Include="Prototypes\Time\" />
+    <Folder Include="Prototypes\Time\Delay\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />
