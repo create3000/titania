@@ -35,7 +35,8 @@ AM_CPPFLAGS = $(TITANIA_MOZILLA_CFLAGS) \
 install-data-hook:
 	cp -a -L $(DESTDIR)$(plugindir)/libtitania-mozilla.so $(DESTDIR)$(plugindir)/so.libtitania-mozilla.so 
 	rm -f $(DESTDIR)$(plugindir)/libtitania-mozilla.*
-	mv $(DESTDIR)$(plugindir)/so.libtitania-mozilla.so $(DESTDIR)$(plugindir)/libtitania-mozilla.so 
+	mv $(DESTDIR)$(plugindir)/so.libtitania-mozilla.so $(DESTDIR)$(plugindir)/libtitania-mozilla.so
+	rm -r $(DESTDIR)$(plugindir)
 
 run:
 	mkdir -p ~/.mozilla/plugins
