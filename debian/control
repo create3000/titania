@@ -19,6 +19,7 @@ Build-Depends: debhelper (>= 5),
                zlib1g,
                intltool,
                gettext,
+               libtool,
                firefox-dev
 
 Homepage: https://titania.create3000.de/

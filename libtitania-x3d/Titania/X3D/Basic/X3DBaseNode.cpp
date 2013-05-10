@@ -632,11 +632,10 @@ X3DBaseNode::registerEvent (X3DChildObject* object, const Event & event)
 {
 	events .emplace_back (object, event);
 
-	getBrowser () -> getRouter () .registerEvent (this);
-
 	if (object -> isInput ())
 		getBrowser () -> getRouter () .registerNode (this);
 
+	getBrowser () -> getRouter () .registerEvent (this);
 	getBrowser () -> notify ();
 }
 

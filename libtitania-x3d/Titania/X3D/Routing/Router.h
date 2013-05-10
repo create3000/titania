@@ -54,7 +54,7 @@
 #include "../Base/Output.h"
 #include "../Basic/X3DBaseNode.h"
 #include <Titania/Chrono/StopWatch.h>
-#include <deque>
+#include <vector>
 
 namespace titania {
 namespace X3D {

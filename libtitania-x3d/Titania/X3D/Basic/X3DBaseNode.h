@@ -277,6 +277,7 @@ private:
 	size_t               numUserDefinedFields;
 
 	typedef std::deque <std::pair <X3DChildObject*, Event>> EventArray;
+
 	EventArray               events;
 	std::deque <std::string> comments;
 

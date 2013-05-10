@@ -207,6 +207,13 @@ protected:
 		value (value)
 	{ }
 
+	///  Move Value constructor.
+	explicit
+	X3DField (ValueType && value) :
+		X3DFieldDefinition (),
+		value (value)
+	{ }
+
 	/// @name Element access
 
 	///  Get a non const value.
