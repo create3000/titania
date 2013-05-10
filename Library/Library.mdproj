@@ -1993,6 +1993,8 @@
     <None Include="Tests\EventUtilities\IntegerSequencer.wrl" />
     <None Include="Prototypes\Time\Delay\Delay.wrl" />
     <None Include="Prototypes\Time\Delay\example.wrl" />
+    <None Include="Prototypes\Geometry3D\TriangleSphere\example.wrl" />
+    <None Include="Prototypes\Geometry3D\TriangleSphere\IcoSphere.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2049,6 +2051,8 @@
     <Folder Include="Tests\EventUtilities\" />
     <Folder Include="Prototypes\Time\" />
     <Folder Include="Prototypes\Time\Delay\" />
+    <Folder Include="Prototypes\Geometry3D\" />
+    <Folder Include="Prototypes\Geometry3D\TriangleSphere\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

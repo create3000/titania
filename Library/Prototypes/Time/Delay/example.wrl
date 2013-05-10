@@ -24,7 +24,9 @@ Group {
   ]
 }
 
-DEF Delay Delay { }
+DEF Delay Delay {
+  cycleInterval 2
+}
 
 DEF Debug Script {
   inputOnly SFBool set_active

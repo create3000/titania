@@ -1,0 +1,160 @@
+#VRML V2.0 utf8
+
+PROTO IcoSphere [
+  field SFInt32 order 0
+  field SFBool  solid TRUE
+  field SFFloat creaseAngle 3.14159
+]
+{
+  DEF Geometry IndexedFaceSet {
+    solid IS solid
+    creaseAngle IS creaseAngle
+    coord Coordinate { }
+  }
+
+  DEF IcoSphere Script {
+    field SFInt32 order IS order
+    field SFNode  geometry USE Geometry
+
+    url "javascript:
+var p = (1 + Math .sqrt (5)) / 2; // Golden ratio
+
+IcoSphere = function (order)
+{
+	this .point    = new MFVec3f ();
+	this .middlePointIndexCache = [ ];
+
+	// Create 12 vertices of a icosahedron
+	this .addPoint (-1,  p,  0);
+	this .addPoint ( 1,  p,  0);
+	this .addPoint (-1, -p,  0);
+	this .addPoint ( 1, -p,  0);
+
+	this .addPoint ( 0, -1,  p);
+	this .addPoint ( 0,  1,  p);
+	this .addPoint ( 0, -1, -p);
+	this .addPoint ( 0,  1, -p);
+
+	this .addPoint ( p,  0, -1);
+	this .addPoint ( p,  0,  1);
+	this .addPoint (-p,  0, -1);
+	this .addPoint (-p,  0,  1);		
+	
+	var coordIndex = MFInt32 ();
+
+	// 5 faces around point 0
+	this .addTriangle (coordIndex, 0, 11,  5);
+	this .addTriangle (coordIndex, 0,  5,  1);
+	this .addTriangle (coordIndex, 0,  1,  7);
+	this .addTriangle (coordIndex, 0,  7, 10);
+	this .addTriangle (coordIndex, 0, 10, 11);
+
+	// 5 adjacentcoordIndex,  faces
+	this .addTriangle (coordIndex,  1,  5,  9);
+	this .addTriangle (coordIndex,  5, 11,  4);
+	this .addTriangle (coordIndex, 11, 10,  2);
+	this .addTriangle (coordIndex, 10,  7,  6);
+	this .addTriangle (coordIndex,  7,  1,  8);
+
+	// 5 faces arcoordIndex, ound point 3
+	this .addTriangle (coordIndex,  3,  9,  4);
+	this .addTriangle (coordIndex,  3,  4,  2);
+	this .addTriangle (coordIndex,  3,  2,  6);
+	this .addTriangle (coordIndex,  3,  6,  8);
+	this .addTriangle (coordIndex,  3,  8,  9);
+
+	// 5 adjacentcoordIndex,  faces
+	this .addTriangle (coordIndex,  4,  9,  5);
+	this .addTriangle (coordIndex,  2,  4, 11);
+	this .addTriangle (coordIndex,  6,  2, 10);
+	this .addTriangle (coordIndex,  8,  6,  7);
+	this .addTriangle (coordIndex,  9,  8,  1);
+
+	// Refine triangles
+	for (var o = 0; o < order; ++ o)
+	{
+		var coordIndex2 = new MFInt32 ();
+
+		for (var i = 0; i < coordIndex .length; i += 4)
+		{
+			// Replace triangle by 4 triangles
+			var a = this .getMiddlePoint (coordIndex [i],     coordIndex [i + 1]);
+			var b = this .getMiddlePoint (coordIndex [i + 1], coordIndex [i + 2]);
+			var c = this .getMiddlePoint (coordIndex [i + 2], coordIndex [i]);
+
+			this .addTriangle (coordIndex2, coordIndex [i],     a, c);
+			this .addTriangle (coordIndex2, coordIndex [i + 1], b, a);
+			this .addTriangle (coordIndex2, coordIndex [i + 2], c, b);
+			this .addTriangle (coordIndex2, a, b, c);
+		}
+
+		coordIndex = coordIndex2;
+	}
+	
+	this .coordIndex = coordIndex;
+}
+
+IcoSphere .prototype .getCoordIndex = function ()
+{
+	return this .coordIndex;
+}
+
+IcoSphere .prototype .getPoint = function ()
+{
+	return this .point;
+}
+
+IcoSphere .prototype .addPoint = function (x, y, z)
+{
+	var index = this .point .length;
+	this .point [index] = new SFVec3f (x, y, z) .normalize ();
+	return index;
+}
+
+IcoSphere .prototype .addTriangle = function (coordIndex, i1, i2, i3)
+{
+	coordIndex [coordIndex .length] = i1;
+	coordIndex [coordIndex .length] = i2;
+	coordIndex [coordIndex .length] = i3;
+	coordIndex [coordIndex .length] = -1;
+}
+
+IcoSphere .prototype .getMiddlePoint = function (p1, p2)
+{
+	// First check if we have it already
+	var firstIsSmaller = p1 < p2;
+	var smallerIndex   = firstIsSmaller ? p1 : p2;
+	var greaterIndex   = firstIsSmaller ? p2 : p1;
+	var key            = smallerIndex + '+' + greaterIndex;
+
+	if (key in this .middlePointIndexCache)
+		return this .middlePointIndexCache [key];
+
+	// Not in cache, calculate it
+	var point1 = this .point [p1];
+	var point2 = this .point [p2];
+	
+	// Add middle point, makes sure point is on unit sphere
+	var i = this .addPoint ((point1 .x + point2 .x) / 2,
+	                        (point1 .y + point2 .y) / 2,
+	                        (point1 .z + point2 .z) / 2);
+
+	// Store it, return index
+	this .middlePointIndexCache [key] = i;
+
+	return i;
+}
+
+function initialize ()
+{
+	var icoSphere = new IcoSphere (order);
+
+	geometry .set_coordIndex   = icoSphere .getCoordIndex ();
+	geometry .coord .set_point = icoSphere .getPoint ();
+	
+	print (1 << 2);
+}
+"
+  }
+}
+

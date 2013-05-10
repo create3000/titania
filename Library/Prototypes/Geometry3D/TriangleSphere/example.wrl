@@ -1,0 +1,57 @@
+#VRML V2.0 utf8
+
+META "title" "IcoSphere"
+
+EXTERNPROTO IcoSphere [
+  field SFInt32 order
+  field SFBool  solid
+]
+"IcoSphere.wrl"
+
+Transform {
+  translation -3 0 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry IcoSphere {
+      order 0
+    }
+  }
+}
+
+Transform {
+  translation -1 0 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry IcoSphere {
+      order 1
+    }
+  }
+}
+
+Transform {
+  translation 1 0 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry IcoSphere {
+      order 2
+    }
+  }
+}
+
+Transform {
+  translation 3 0 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry IcoSphere {
+      order 3
+    }
+  }
+}
