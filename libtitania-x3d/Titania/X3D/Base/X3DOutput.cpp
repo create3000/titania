@@ -119,7 +119,12 @@ X3DOutput::eraseInterest (const void* object, const void* memberFunction) const
 void
 X3DOutput::processInterests ()
 {
-	for (const auto & requester : std::deque <Requester> (requesters .cbegin (), requesters .cend ()))
+	std::vector <Requester> copy;
+	
+	copy .reserve (requesters .size ());
+	copy .assign (requesters .cbegin (), requesters .cend ());
+
+	for (const auto & requester : copy)
 		requester ();
 }
 
