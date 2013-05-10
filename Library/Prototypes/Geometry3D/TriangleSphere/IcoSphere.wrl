@@ -1,9 +1,12 @@
 #VRML V2.0 utf8
 
+# Taken from:
+# http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
+
 PROTO IcoSphere [
   field SFInt32 order 0
   field SFBool  solid TRUE
-  field SFFloat creaseAngle 3.14159
+  field SFFloat creaseAngle 0
 ]
 {
   DEF Geometry IndexedFaceSet {
@@ -17,6 +20,7 @@ PROTO IcoSphere [
     field SFNode  geometry USE Geometry
 
     url "javascript:
+
 var p = (1 + Math .sqrt (5)) / 2; // Golden ratio
 
 IcoSphere = function (order)
@@ -38,8 +42,16 @@ IcoSphere = function (order)
 	this .addPoint ( p,  0, -1);
 	this .addPoint ( p,  0,  1);
 	this .addPoint (-p,  0, -1);
-	this .addPoint (-p,  0,  1);		
+	this .addPoint (-p,  0,  1);
 	
+	if (order % 2 == 0)
+	{
+		var rotation = new SFRotation (0, 0, 1, Math .atan (1 / p));
+			              
+		for (var i = 0; i < this .point .length; ++ i)
+			this .point [i] = rotation .multVec (this .point [i]);
+	}
+
 	var coordIndex = MFInt32 ();
 
 	// 5 faces around point 0
@@ -135,14 +147,14 @@ IcoSphere .prototype .getMiddlePoint = function (p1, p2)
 	var point2 = this .point [p2];
 	
 	// Add middle point, makes sure point is on unit sphere
-	var i = this .addPoint ((point1 .x + point2 .x) / 2,
-	                        (point1 .y + point2 .y) / 2,
-	                        (point1 .z + point2 .z) / 2);
+	var index = this .addPoint ((point1 .x + point2 .x) / 2,
+	                           (point1 .y + point2 .y) / 2,
+	                           (point1 .z + point2 .z) / 2);
 
 	// Store it, return index
-	this .middlePointIndexCache [key] = i;
+	this .middlePointIndexCache [key] = index;
 
-	return i;
+	return index;
 }
 
 function initialize ()
@@ -151,8 +163,6 @@ function initialize ()
 
 	geometry .set_coordIndex   = icoSphere .getCoordIndex ();
 	geometry .coord .set_point = icoSphere .getPoint ();
-	
-	print (1 << 2);
 }
 "
   }

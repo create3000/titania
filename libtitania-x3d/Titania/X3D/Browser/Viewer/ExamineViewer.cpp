@@ -104,18 +104,17 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
-		fromVector = trackballProjectToSphere (event -> x, event -> y);
-
-		rotation = Rotation4f ();
-
 		set_viewpoint ();
+	
+		fromVector = trackballProjectToSphere (event -> x, event -> y);
+		rotation   = Rotation4f ();
 	}
 
 	else if (button == 2)
 	{
-		fromPoint = getPoint (event -> x, event -> y);
-
 		set_viewpoint ();
+		
+		fromPoint = getPoint (event -> x, event -> y);
 	}
 
 	return false;
