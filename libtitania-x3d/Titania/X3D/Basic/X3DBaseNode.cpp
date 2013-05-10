@@ -643,11 +643,7 @@ X3DBaseNode::registerEvent (X3DChildObject* object, const Event & event)
 void
 X3DBaseNode::processEvents ()
 {
-	EventArray eventsToProcess;
-
-	eventsToProcess .swap (events);
-
-	for (auto & pair : eventsToProcess)
+	for (auto & pair : EventArray (std::move (events)))
 		pair .first -> processEvent (pair .second);
 }
 

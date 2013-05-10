@@ -65,16 +65,11 @@ Router::processEvents ()
 {
 	clock .start ();
 
-	EventArray eventsToProcess;
-
 	while (events .size ())
 	{
 		do
 		{
-			eventsToProcess .clear ();
-			eventsToProcess .swap (events);
-
-			for (auto & node : eventsToProcess)
+			for (auto & node : EventArray (std::move (events)))
 			{
 				node -> processEvents ();
 			}
@@ -92,11 +87,7 @@ Router::processEvents ()
 void
 Router::eventsProcessed ()
 {
-	NodeSet nodesToProcess;
-
-	nodesToProcess .swap (nodes);
-
-	for (const auto & node : nodesToProcess)
+	for (const auto & node : NodeSet (std::move (nodes)))
 		node -> eventsProcessed ();
 }
 

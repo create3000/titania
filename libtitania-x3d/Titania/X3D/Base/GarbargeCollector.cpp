@@ -75,12 +75,9 @@ GarbageCollector::dispose ()
 {
 	while (disposedObjects .size ())
 	{
-		ChildObjectSet objectsToDelete;
-		objectsToDelete .swap (disposedObjects);
+		//__LOG__ << disposedObjects .size () << " objects to delete: " << std::flush;
 
-		//__LOG__ << objectsToDelete .size () << " objects to delete: " << std::flush;
-
-		for (const auto & object : objectsToDelete)
+		for (const auto & object : ChildObjectSet (std::move (disposedObjects)))
 		{
 			//__LOG__ << (void*) object << " " << object -> getTypeName () << " " << object -> getName () << std::endl;
 

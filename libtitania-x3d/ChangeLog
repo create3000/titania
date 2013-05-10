@@ -1,5 +1,11 @@
 2013-05-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Router.cpp:
+	* X3DBaseNode.cpp:
+	* GarbargeCollector.cpp: 
+
+2013-05-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DOutput.cpp: 
 
 2013-05-10  Holger Seelig  <holger.seelig@yahoo.de>

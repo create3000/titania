@@ -208,26 +208,19 @@ main (int argc, char** argv)
 	{
 		__LOG__ << std::endl;
 		
-		basic::ihttpstream stream (basic::http::method::GET, "http://www.wiley.com/legacy/compbooks/vrml2sbk/ch27/stone2.jpg");
+		std::vector <int> v1;
+		v1 .reserve (200);
 		
-		__LOG__ << std::endl;
+		std::vector <int> v2;
+		v2 .reserve (20);
 		
-		stream .send ();
+		__LOG__ << v1 .capacity () << std::endl;
+		__LOG__ << v2 .capacity () << std::endl;
 		
-		__LOG__ << std::endl;
+		v2 = std::move (v1);
 		
-		for (const auto & header : stream .response_headers ())
-			std::clog << header .first << ": " << header .second << std::endl;
-			
-		__LOG__ << std::endl;
-		
-		std::clog << bool (stream) << std::endl;
-		std::clog << bool (stream .rdbuf () -> is_open ()) << std::endl;
-		
-		__LOG__ << std::endl;
-		
-		std::ofstream out ("/home/holger/test.jpg");		
-		out << stream .rdbuf ();
+		__LOG__ << v1 .capacity () << std::endl;
+		__LOG__ << v2 .capacity () << std::endl;
 		
 		__LOG__ << std::endl;
 	}
