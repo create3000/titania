@@ -1,5 +1,9 @@
 2013-05-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DGeometryNode.cpp: 
+
+2013-05-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DField.h:
 	* Router.h:
 	* X3DBaseNode.h:

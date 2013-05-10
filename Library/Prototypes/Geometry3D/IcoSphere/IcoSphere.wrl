@@ -12,6 +12,7 @@ PROTO IcoSphere [
   DEF Geometry IndexedFaceSet {
     solid IS solid
     creaseAngle IS creaseAngle
+    texCoord TextureCoordinate { }
     coord Coordinate { }
   }
 
@@ -116,6 +117,19 @@ IcoSphere .prototype .getPoint = function ()
 	return this .point;
 }
 
+IcoSphere .prototype .getTexPoint = function ()
+{
+	var point = new MFVec2f ();
+	
+	for (var i = 0; i < this .point .length; ++ i)
+	{
+		point [i] = new SFVec2f (Math .asin (this .point [i] .x / Math .PI + 0.5),
+		                         Math .asin (this .point [i] .y / Math .PI + 0.5));
+	}
+	
+	return point;
+}
+
 IcoSphere .prototype .addPoint = function (x, y, z)
 {
 	var index = this .point .length;
@@ -161,8 +175,11 @@ function initialize ()
 {
 	var icoSphere = new IcoSphere (order);
 
-	geometry .set_coordIndex   = icoSphere .getCoordIndex ();
-	geometry .coord .set_point = icoSphere .getPoint ();
+//	geometry .set_texCoordIndex = icoSphere .getCoordIndex ();
+//	geometry .texCoord .point   = icoSphere .getTexPoint ();
+
+	geometry .set_coordIndex = icoSphere .getCoordIndex ();
+	geometry .coord .point   = icoSphere .getPoint ();
 }
 "
   }
