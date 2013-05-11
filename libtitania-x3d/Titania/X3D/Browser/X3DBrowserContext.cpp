@@ -91,15 +91,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	       currentSpeed (0),                                       
 	   currentFrameRate (0),                                       
 	            console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
-{
-	addField (initializeOnly, "select",              select);
-	addField (initializeOnly, "renderingProperties", renderingProperties);
-	addField (initializeOnly, "browserProperties",   browserProperties);
-	addField (initializeOnly, "browserOptions",      browserOptions);
-	addField (initializeOnly, "javaScriptEngine",    javaScriptEngine);
-	addField (initializeOnly, "selection",           selection);
-	addField (initializeOnly, "console",             console);
-}
+{ }
 
 void
 X3DBrowserContext::initialize ()

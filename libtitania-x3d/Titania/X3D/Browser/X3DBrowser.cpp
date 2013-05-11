@@ -85,6 +85,23 @@ X3DBrowser::initialize ()
 	X3DBrowserContext::initialize ();
 	X3DUrlObject::initialize ();
 
+	// Welcome
+
+	print (std::boolalpha,
+	       '\n',
+	       std::string (80, '*'), '\n',
+	       std::string (80, '*'), '\n',
+
+	       "Welcome to ", getName (), " X3D Browser ", getVersion (), ':', '\n',
+	       "\tCompiled at ", __DATE__, " ", __TIME__, '\n',
+
+	       renderingProperties, '\n',
+	       javaScriptEngine, '\n',
+
+	       std::string (80, '*'), '\n',
+	       std::string (80, '*'), '\n',
+	       '\n');
+
 	// Initialize scene
 	
 	world = scene = createScene ();
@@ -106,23 +123,6 @@ X3DBrowser::initialize ()
 	scene .addInterest (this, &X3DBrowser::set_scene);
 	world .addInterest (this, &X3DBrowser::set_world);
 	
-	// Welcome
-
-	print (std::boolalpha,
-	       '\n',
-	       std::string (80, '*'), '\n',
-	       std::string (80, '*'), '\n',
-
-	       "Welcome to ", getName (), " X3D Browser ", getVersion (), ':', '\n',
-	       "\tCompiled at ", __DATE__, " ", __TIME__, '\n',
-
-	       renderingProperties, '\n',
-	       javaScriptEngine, '\n',
-
-	       std::string (80, '*'), '\n',
-	       std::string (80, '*'), '\n',
-	       '\n');
-
 	std::clog
 		<< "\tDone initializing Browser." << std::endl
 		<< std::endl;
@@ -257,6 +257,7 @@ throw (Error <INVALID_SCENE>)
 	// Replace world.
 
 	std::clog << "The browser is requested to replace the world:" << std::endl;
+	print ("*** The browser is requested to replace the world\n");
 
 	if (not value)
 		throw Error <INVALID_SCENE> ("Scene is NULL.");
@@ -267,7 +268,7 @@ throw (Error <INVALID_SCENE>)
 		shutdown .processInterests ();
 
 	scene = value;
-
+	
 	std::clog << "Replacing world done." << std::endl;
 }
 

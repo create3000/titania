@@ -84,7 +84,7 @@ JavaScriptContext::JavaScriptContext (X3DScriptNode* node, const std::string & e
 	        functions ()                       
 {
 	// Create a JS runtime.
-	runtime = JS_NewRuntime (8L * 1024L * 1024L);
+	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 
 	if (runtime == NULL)
 		return;

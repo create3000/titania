@@ -5,4 +5,5 @@
   <Task file="" description="in Geometry2D TwoSidedMaterial aktivieren" />
   <Task file="" description="Collision beim aufsteigen aktivieren" />
   <Task file="" description="IndexedFaceSet coordIndex check" />
+  <Task file="" description="OpenGL error in TextureCoordinateGenerator" />
 </ListOfTask>

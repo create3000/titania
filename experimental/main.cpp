@@ -208,21 +208,16 @@ main (int argc, char** argv)
 	{
 		__LOG__ << std::endl;
 		
-		std::vector <int> v1;
-		v1 .reserve (200);
-		
-		std::vector <int> v2;
-		v2 .reserve (20);
-		
-		__LOG__ << v1 .capacity () << std::endl;
-		__LOG__ << v2 .capacity () << std::endl;
-		
-		v2 = std::move (v1);
-		
-		__LOG__ << v1 .capacity () << std::endl;
-		__LOG__ << v2 .capacity () << std::endl;
-		
-		__LOG__ << std::endl;
+		for (int i = 0; i < 10; ++ i)
+		{
+			{
+				std::vector <int> v1 (800000000);
+			
+				__LOG__ << v1 .capacity () << std::endl;
+			}
+			
+			sleep (1);
+		}
 	}
 
 	std::clog << "Function main done." << std::endl;

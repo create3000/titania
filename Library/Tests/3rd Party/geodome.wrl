@@ -187,15 +187,16 @@ function initialize()
 	// cutting and pasting the results into the Coordinate
 	// node and coordIndex field of an geometry.
 
-	// print('Vertices = ' + vcount);
-	// print('Indices = ' + ccount);
-	// for (var i=0; i < vcount; i++) {
-	// print ('' + vertex[i]);
-	// }
-	// for (var i=0; i < ccount; i+=4) {
-	// print ('' + ci[i] + ', ' + ci[i+1] + ', ' + ci[i+2] + ', ' + ci[i+3]);
-	// }
-	// print('Done');
+	print('Vertices = ' + vcount);
+	print('Indices = ' + ccount);
+
+	for (var i=0; i < vcount; i++)
+		print ('' + vertex[i]);
+
+	for (var i=0; i < ccount; i+=4)
+		print ('' + ci[i] + ', ' + ci[i+1] + ', ' + ci[i+2] + ', ' + ci[i+3]);
+
+	print('Done');
 
 	geometry.coord.set_point = vertex;
 	geometry.set_coordIndex = ci;

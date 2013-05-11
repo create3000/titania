@@ -26,8 +26,20 @@ var p = (1 + Math .sqrt (5)) / 2; // Golden ratio
 
 IcoSphere = function (order)
 {
-	this .point    = new MFVec3f ();
+	this .order = order;
+
+	this .coord ();
+	this .sphericalMapping (this .coordIndex, this .point);
+}
+
+IcoSphere .prototype .coord = function ()
+{
+	this .point = new MFVec3f ();
 	this .middlePointIndexCache = [ ];
+	
+	//
+	// Create triangles
+	//
 
 	// Create 12 vertices of a icosahedron
 	this .addPoint (-1,  p,  0);
@@ -45,10 +57,12 @@ IcoSphere = function (order)
 	this .addPoint (-p,  0, -1);
 	this .addPoint (-p,  0,  1);
 	
-	if (order % 2 == 0)
+	// Rotate point thus a vertice is a pole44334322322
+	//if (order % 2 == 0)
 	{
-		var rotation = new SFRotation (0, 0, 1, Math .atan (1 / p));
-			              
+		var rotation = new SFRotation (0, 0, 1, Math .atan (1 / p))
+		               .multiply (new SFRotation (0, 1, 0, -Math .PI / 10));
+
 		for (var i = 0; i < this .point .length; ++ i)
 			this .point [i] = rotation .multVec (this .point [i]);
 	}
@@ -84,7 +98,7 @@ IcoSphere = function (order)
 	this .addTriangle (coordIndex,  9,  8,  1);
 
 	// Refine triangles
-	for (var o = 0; o < order; ++ o)
+	for (var o = 0; o < this .order; ++ o)
 	{
 		var coordIndex2 = new MFInt32 ();
 
@@ -107,6 +121,150 @@ IcoSphere = function (order)
 	this .coordIndex = coordIndex;
 }
 
+IcoSphere .prototype .sphericalMapping = function (coordIndex, point)
+{
+	this .poleThreshold    = 0.001;
+	this .overlapThreshold = 0.5;
+
+	//
+	// Create texture coordinates
+	//
+
+	// Copy coordIndex
+	var texCoordIndex = new MFInt32 ();
+	
+	for (var i = 0; i < coordIndex .length; ++ i)
+		texCoordIndex [i] = coordIndex [i];
+
+	// Apply spherecical mapping
+	var texPoint = new MFVec2f ();
+	
+	for (var i = 0; i < point .length; ++ i)
+	{
+		texPoint [i] = new SFVec2f (Math .atan2 (point [i] .x, point [i] .z) / (2 * Math .PI) + 0.5,
+		                            Math .asin (point [i] .y) / Math .PI + 0.5);
+	}
+
+	this .texCoordIndex = texCoordIndex;
+	this .texPoint      = texPoint;
+
+	// Refine overlapping polygons
+	var length = texCoordIndex .length;
+	
+	// Refine poles
+	var northPoleThreshold = 1 - this .poleThreshold;
+	var soutPoleThreshold  = this .poleThreshold;
+	
+	var length = texCoordIndex .length;
+	
+	for (var i = 0; i < length; i += 4)
+	{
+		var i0 = -1, i1, i2;
+		
+		// Find north pole
+		
+		if (texPoint [texCoordIndex [i]] .y > northPoleThreshold)
+		{
+			i0 = i;
+			i1 = i + 1;
+			i2 = i + 2;
+		}
+			
+		else if (texPoint [texCoordIndex [i + 1]] .y > northPoleThreshold)
+		{
+			i0 = i + 1;
+			i1 = i;
+			i2 = i + 2;
+		}
+		
+		else if (texPoint [texCoordIndex [i + 2]] .y > northPoleThreshold)
+		{
+			i0 = i + 2;
+			i1 = i;
+			i2 = i + 1;
+		}
+
+		// North pole found
+		if (i0 > -1)
+		{
+			var index0 = texCoordIndex [i0];
+			var index1 = this. resolveOverlap (i1, i2);
+			var index2 = texCoordIndex [i2];
+		
+			texCoordIndex [i0]          = texPoint .length;
+			texPoint [texPoint .length] = new SFVec2f ((texPoint [index1] .x + texPoint [index2] .x) / 2,
+			                                           texPoint [index0] .y);
+			
+			continue;
+		}
+		
+		// Find south pole
+
+		if (texPoint [texCoordIndex [i]] .y < soutPoleThreshold)
+		{
+			i0 = i;
+			i1 = i + 1;
+			i2 = i + 2;
+		}
+			
+		else if (texPoint [texCoordIndex [i + 1]] .y < soutPoleThreshold)
+		{
+			i0 = i + 1;
+			i1 = i;
+			i2 = i + 2;
+		}
+		
+		else if (texPoint [texCoordIndex [i + 2]] .y < soutPoleThreshold)
+		{
+			i0 = i + 2;
+			i1 = i;
+			i2 = i + 1;
+		}
+
+		// North pole found
+		if (i0 > -1)
+		{
+			var index0 = texCoordIndex [i0];
+			var index1 = this. resolveOverlap (i1, i2);
+			var index2 = texCoordIndex [i2];
+
+			texCoordIndex [i0]          = texPoint .length;
+			texPoint [texPoint .length] = new SFVec2f ((texPoint [index1] .x + texPoint [index2] .x) / 2,
+			                                           texPoint [index0] .y);
+			
+			continue;
+		}
+		
+		this. resolveOverlap (i, i + 1);
+		this. resolveOverlap (i, i + 2);
+	}
+}
+
+
+IcoSphere .prototype .resolveOverlap = function (i0, i1)
+{
+	var texCoordIndex = this .texCoordIndex;
+	var texPoint      = this .texPoint;
+
+	var index1   = texCoordIndex [i1];
+	var distance = texPoint [texCoordIndex [i0]] .x - this .texPoint [index1] .x;
+	
+	if (distance > this .overlapThreshold)
+	{
+		texCoordIndex [i1]          = texPoint .length;
+		texPoint [texPoint .length] = new SFVec2f (texPoint [index1] .x + 1,
+		                                           texPoint [index1] .y);
+	}
+	else if (distance < -this .overlapThreshold)
+	{
+		texCoordIndex [i1]          = texPoint .length;
+		texPoint [texPoint .length] = new SFVec2f (texPoint [index1] .x - 1,
+		                                           texPoint [index1] .y);	
+	}
+
+	return texCoordIndex [i1];
+}
+
 IcoSphere .prototype .getCoordIndex = function ()
 {
 	return this .coordIndex;
@@ -117,17 +275,14 @@ IcoSphere .prototype .getPoint = function ()
 	return this .point;
 }
 
+IcoSphere .prototype .getTexCoordIndex = function ()
+{
+	return this .texCoordIndex;
+}
+
 IcoSphere .prototype .getTexPoint = function ()
 {
-	var point = new MFVec2f ();
-	
-	for (var i = 0; i < this .point .length; ++ i)
-	{
-		point [i] = new SFVec2f (Math .asin (this .point [i] .x / Math .PI + 0.5),
-		                         Math .asin (this .point [i] .y / Math .PI + 0.5));
-	}
-	
-	return point;
+	return this .texPoint;
 }
 
 IcoSphere .prototype .addPoint = function (x, y, z)
@@ -175,8 +330,8 @@ function initialize ()
 {
 	var icoSphere = new IcoSphere (order);
 
-//	geometry .set_texCoordIndex = icoSphere .getCoordIndex ();
-//	geometry .texCoord .point   = icoSphere .getTexPoint ();
+	geometry .set_texCoordIndex = icoSphere .getTexCoordIndex ();
+	geometry .texCoord .point   = icoSphere .getTexPoint ();
 
 	geometry .set_coordIndex = icoSphere .getCoordIndex ();
 	geometry .coord .point   = icoSphere .getPoint ();

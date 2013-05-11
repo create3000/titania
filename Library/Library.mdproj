@@ -1995,6 +1995,7 @@
     <None Include="Prototypes\Time\Delay\example.wrl" />
     <None Include="Prototypes\Geometry3D\IcoSphere\IcoSphere.wrl" />
     <None Include="Prototypes\Geometry3D\IcoSphere\example.wrl" />
+    <None Include="Prototypes\Geometry3D\IcoSphere\earth.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
