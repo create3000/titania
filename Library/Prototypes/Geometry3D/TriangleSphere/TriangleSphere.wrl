@@ -3,63 +3,104 @@
 # Taken from:
 # http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
 
-PROTO IcoSphere [
-  field SFInt32 order 0
-  field SFBool  solid TRUE
-  field SFFloat creaseAngle 0
+PROTO TriangleSphere [
+  # SFString  [ ]  type  "OCTAHEDRON"  [OCTAHEDRON, ICOSAHEDRON]
+  field SFString type "OCTAHEDRON"
+  field SFInt32  order 0
+  field SFBool   solid TRUE
+  field SFFloat  creaseAngle 0
 ]
 {
   DEF Geometry IndexedFaceSet {
     solid IS solid
     creaseAngle IS creaseAngle
+    coordIndex [324,234,234,342,234,54,544,23,324]
     texCoord TextureCoordinate { }
     coord Coordinate { }
   }
 
-  DEF IcoSphere Script {
-    field SFInt32 order IS order
-    field SFNode  geometry USE Geometry
+  DEF TriangleSphere Script {
+    field SFString type IS type
+    field SFInt32  order IS order
+    field SFNode   geometry USE Geometry
 
     url "javascript:
 
 var p = (1 + Math .sqrt (5)) / 2; // Golden ratio
 
-IcoSphere = function (order)
+TriangleSphere = function (type, order)
 {
+	this .type  = type;
 	this .order = order;
 
 	this .coord ();
 	this .sphericalMapping (this .coordIndex, this .point);
 }
 
-IcoSphere .prototype .getCoordIndex = function ()
+TriangleSphere .prototype .getCoordIndex = function ()
 {
 	return this .coordIndex;
 }
 
-IcoSphere .prototype .getPoint = function ()
+TriangleSphere .prototype .getPoint = function ()
 {
 	return this .point;
 }
 
-IcoSphere .prototype .getTexCoordIndex = function ()
+TriangleSphere .prototype .getTexCoordIndex = function ()
 {
 	return this .texCoordIndex;
 }
 
-IcoSphere .prototype .getTexPoint = function ()
+TriangleSphere .prototype .getTexPoint = function ()
 {
 	return this .texPoint;
 }
 
-IcoSphere .prototype .coord = function ()
+TriangleSphere .prototype .coord = function ()
 {
-	this .point = new MFVec3f ();
+	this .point      = new MFVec3f ();
+	this .coordIndex = MFInt32 ();
+
 	this .middlePointIndexCache = [ ];
+
+	if (this .type == 'ICOSAHEDRON')
+		this .icosahedron ();
+
+	else
+		this .octahedron ();
+
+	this .refineTriangles ();
+}
+
+TriangleSphere .prototype .octahedron = function ()
+{
+	var coordIndex = this .coordIndex;
 	
-	//
-	// Create triangles
-	//
+	this .addPoint (0,  1,  0);
+	
+	this .addPoint ( 0,  0,  1);
+	this .addPoint ( 1,  0,  0);
+	this .addPoint ( 0,  0, -1);
+	this .addPoint (-1,  0,  0);
+
+	this .addPoint ( 0, -1,  0);
+	
+	// 8 faces
+	this .addTriangle (coordIndex, 0, 1, 2);
+	this .addTriangle (coordIndex, 0, 2, 3);
+	this .addTriangle (coordIndex, 0, 3, 4);
+	this .addTriangle (coordIndex, 0, 4, 1);
+	
+	this .addTriangle (coordIndex, 5, 2, 1);
+	this .addTriangle (coordIndex, 5, 3, 2);
+	this .addTriangle (coordIndex, 5, 4, 3);
+	this .addTriangle (coordIndex, 5, 1, 4);
+}
+
+TriangleSphere .prototype .icosahedron = function ()
+{
+	var coordIndex = this .coordIndex;
 
 	// Create 12 vertices of a icosahedron
 	this .addPoint (-1,  p,  0);
@@ -77,8 +118,8 @@ IcoSphere .prototype .coord = function ()
 	this .addPoint (-p,  0, -1);
 	this .addPoint (-p,  0,  1);
 	
-	// Rotate point thus a vertice is a pole44334322322
-	//if (order % 2 == 0)
+	// Rotate point thus a vertice is a pole
+	if (order % 2 == 0)
 	{
 		var rotation = new SFRotation (0, 0, 1, Math .atan (1 / p))
 		               .multiply (new SFRotation (0, 1, 0, -Math .PI / 10));
@@ -86,8 +127,6 @@ IcoSphere .prototype .coord = function ()
 		for (var i = 0; i < this .point .length; ++ i)
 			this .point [i] = rotation .multVec (this .point [i]);
 	}
-
-	var coordIndex = MFInt32 ();
 
 	// 5 faces around point 0
 	this .addTriangle (coordIndex, 0, 11,  5);
@@ -116,6 +155,11 @@ IcoSphere .prototype .coord = function ()
 	this .addTriangle (coordIndex,  6,  2, 10);
 	this .addTriangle (coordIndex,  8,  6,  7);
 	this .addTriangle (coordIndex,  9,  8,  1);
+}
+
+TriangleSphere .prototype .refineTriangles = function ()
+{
+	var coordIndex = this .coordIndex;
 
 	// Refine triangles
 	for (var o = 0; o < this .order; ++ o)
@@ -141,14 +185,14 @@ IcoSphere .prototype .coord = function ()
 	this .coordIndex = coordIndex;
 }
 
-IcoSphere .prototype .addPoint = function (x, y, z)
+TriangleSphere .prototype .addPoint = function (x, y, z)
 {
 	var index = this .point .length;
 	this .point [index] = new SFVec3f (x, y, z) .normalize ();
 	return index;
 }
 
-IcoSphere .prototype .addTriangle = function (coordIndex, i1, i2, i3)
+TriangleSphere .prototype .addTriangle = function (coordIndex, i1, i2, i3)
 {
 	coordIndex [coordIndex .length] = i1;
 	coordIndex [coordIndex .length] = i2;
@@ -156,7 +200,7 @@ IcoSphere .prototype .addTriangle = function (coordIndex, i1, i2, i3)
 	coordIndex [coordIndex .length] = -1;
 }
 
-IcoSphere .prototype .getMiddlePoint = function (p1, p2)
+TriangleSphere .prototype .getMiddlePoint = function (p1, p2)
 {
 	// First check if we have it already
 	var firstIsSmaller = p1 < p2;
@@ -182,7 +226,7 @@ IcoSphere .prototype .getMiddlePoint = function (p1, p2)
 	return index;
 }
 
-IcoSphere .prototype .sphericalMapping = function (coordIndex, point)
+TriangleSphere .prototype .sphericalMapping = function (coordIndex, point)
 {
 	this .poleThreshold    = 0.001;
 	this .overlapThreshold = 0.5;
@@ -210,9 +254,6 @@ IcoSphere .prototype .sphericalMapping = function (coordIndex, point)
 	this .texCoordIndex = texCoordIndex;
 	this .texPoint      = texPoint;
 
-	// Refine overlapping polygons
-	var length = texCoordIndex .length;
-	
 	// Refine poles
 	var northPoleThreshold = 1 - this .poleThreshold;
 	var soutPoleThreshold  = this .poleThreshold;
@@ -303,7 +344,7 @@ IcoSphere .prototype .sphericalMapping = function (coordIndex, point)
 }
 
 
-IcoSphere .prototype .resolveOverlap = function (i0, i1)
+TriangleSphere .prototype .resolveOverlap = function (i0, i1)
 {
 	var texCoordIndex = this .texCoordIndex;
 	var texPoint      = this .texPoint;
@@ -329,7 +370,7 @@ IcoSphere .prototype .resolveOverlap = function (i0, i1)
 
 function initialize ()
 {
-	var icoSphere = new IcoSphere (order);
+	var icoSphere = new TriangleSphere (type, order);
 
 	geometry .set_texCoordIndex = icoSphere .getTexCoordIndex ();
 	geometry .texCoord .point   = icoSphere .getTexPoint ();

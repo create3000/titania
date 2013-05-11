@@ -611,8 +611,10 @@ X3DBaseNode::setup ()
 	for (auto & field : fields)
 		field .second -> addParent (this);
 
-	if (not executionContext -> isProto ())
-		initialize ();
+	if (executionContext -> isProto ())
+		return;
+
+	initialize ();
 
 	initialized = getCurrentTime ();
 }

@@ -140,7 +140,7 @@ IndexedFaceSet::set_coordIndex ()
 		{
 			numPoints = std::max <int32_t> (numPoints, index);
 
-			if (index == -1)
+			if (index < 0)
 				++ numPolygons;
 		}
 
@@ -162,7 +162,7 @@ void
 IndexedFaceSet::set_texCoordIndex ()
 {
 	auto _textureCoordinate = x3d_cast <TextureCoordinate*> (texCoord () .getValue ());
-
+	
 	if (_textureCoordinate)
 	{
 		// Fill up texCoordIndex if to small.

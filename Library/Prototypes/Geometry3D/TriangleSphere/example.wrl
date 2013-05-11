@@ -1,0 +1,205 @@
+#VRML V2.0 utf8
+
+META "title" "TriangleSphere"
+
+EXTERNPROTO TriangleSphere [
+  field SFString type
+  field SFInt32  order
+  field SFBool   solid
+]
+"TriangleSphere.wrl"
+
+Viewpoint { }
+
+Transform {
+  translation -3 0 2
+  children [
+    Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url "earth.png"
+        }
+      }
+      geometry TriangleSphere { }
+    }
+    Shape {
+      geometry IndexedLineSet {
+        coordIndex [ 0, 1, -1 ]
+        coord Coordinate {
+          point [ 0 -2 0, 0 2 0 ]
+        }
+      }
+    }
+  ]
+}
+
+Transform {
+  translation -1 0 2
+  children [
+    Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url "earth.png"
+        }
+      }
+      geometry TriangleSphere {
+        order 1
+      }
+    }
+    Shape {
+      geometry IndexedLineSet {
+        coordIndex [ 0, 1, -1 ]
+        coord Coordinate {
+          point [ 0 -2 0, 0 2 0 ]
+        }
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 1 0 2
+  children [
+    Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url "earth.png"
+        }
+      }
+      geometry TriangleSphere {
+        order 2
+      }
+    }
+    Shape {
+      geometry IndexedLineSet {
+        coordIndex [ 0, 1, -1 ]
+        coord Coordinate {
+          point [ 0 -2 0, 0 2 0 ]
+        }
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 3 0 2
+  children [
+    Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url "earth.png"
+        }
+      }
+      geometry TriangleSphere {
+        order 3
+      }
+    }
+    Shape {
+      geometry IndexedLineSet {
+        coordIndex [ 0, 1, -1 ]
+        coord Coordinate {
+          point [ 0 -2 0, 0 2 0 ]
+        }
+      }
+    }
+  ]
+}
+
+Transform {
+  translation -3 0 -2
+  children [
+    Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url "earth.png"
+        }
+      }
+      geometry TriangleSphere {
+        type "ICOSAHEDRON"
+      }
+    }
+    Shape {
+      geometry IndexedLineSet {
+        coordIndex [ 0, 1, -1 ]
+        coord Coordinate {
+          point [ 0 -2 0, 0 2 0 ]
+        }
+      }
+    }
+  ]
+}
+
+Transform {
+  translation -1 0 -2
+  children [
+    Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url "earth.png"
+        }
+      }
+      geometry TriangleSphere {
+        type "ICOSAHEDRON"
+        order 1
+      }
+    }
+    Shape {
+      geometry IndexedLineSet {
+        coordIndex [ 0, 1, -1 ]
+        coord Coordinate {
+          point [ 0 -2 0, 0 2 0 ]
+        }
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 1 0 -2
+  children [
+    Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url "earth.png"
+        }
+      }
+      geometry TriangleSphere {
+        type "ICOSAHEDRON"
+        order 2
+      }
+    }
+    Shape {
+      geometry IndexedLineSet {
+        coordIndex [ 0, 1, -1 ]
+        coord Coordinate {
+          point [ 0 -2 0, 0 2 0 ]
+        }
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 3 0 -2
+  children [
+    Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url "earth.png"
+        }
+      }
+      geometry TriangleSphere {
+        type "ICOSAHEDRON"
+        order 3
+      }
+    }
+    Shape {
+      geometry IndexedLineSet {
+        coordIndex [ 0, 1, -1 ]
+        coord Coordinate {
+          point [ 0 -2 0, 0 2 0 ]
+        }
+      }
+    }
+  ]
+}
