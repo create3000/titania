@@ -32,6 +32,26 @@ IcoSphere = function (order)
 	this .sphericalMapping (this .coordIndex, this .point);
 }
 
+IcoSphere .prototype .getCoordIndex = function ()
+{
+	return this .coordIndex;
+}
+
+IcoSphere .prototype .getPoint = function ()
+{
+	return this .point;
+}
+
+IcoSphere .prototype .getTexCoordIndex = function ()
+{
+	return this .texCoordIndex;
+}
+
+IcoSphere .prototype .getTexPoint = function ()
+{
+	return this .texPoint;
+}
+
 IcoSphere .prototype .coord = function ()
 {
 	this .point = new MFVec3f ();
@@ -121,6 +141,47 @@ IcoSphere .prototype .coord = function ()
 	this .coordIndex = coordIndex;
 }
 
+IcoSphere .prototype .addPoint = function (x, y, z)
+{
+	var index = this .point .length;
+	this .point [index] = new SFVec3f (x, y, z) .normalize ();
+	return index;
+}
+
+IcoSphere .prototype .addTriangle = function (coordIndex, i1, i2, i3)
+{
+	coordIndex [coordIndex .length] = i1;
+	coordIndex [coordIndex .length] = i2;
+	coordIndex [coordIndex .length] = i3;
+	coordIndex [coordIndex .length] = -1;
+}
+
+IcoSphere .prototype .getMiddlePoint = function (p1, p2)
+{
+	// First check if we have it already
+	var firstIsSmaller = p1 < p2;
+	var smallerIndex   = firstIsSmaller ? p1 : p2;
+	var greaterIndex   = firstIsSmaller ? p2 : p1;
+	var key            = smallerIndex + '+' + greaterIndex;
+
+	if (key in this .middlePointIndexCache)
+		return this .middlePointIndexCache [key];
+
+	// Not in cache, calculate it
+	var point1 = this .point [p1];
+	var point2 = this .point [p2];
+	
+	// Add middle point, makes sure point is on unit sphere
+	var index = this .addPoint ((point1 .x + point2 .x) / 2,
+	                           (point1 .y + point2 .y) / 2,
+	                           (point1 .z + point2 .z) / 2);
+
+	// Store it, return index
+	this .middlePointIndexCache [key] = index;
+
+	return index;
+}
+
 IcoSphere .prototype .sphericalMapping = function (coordIndex, point)
 {
 	this .poleThreshold    = 0.001;
@@ -141,6 +202,7 @@ IcoSphere .prototype .sphericalMapping = function (coordIndex, point)
 	
 	for (var i = 0; i < point .length; ++ i)
 	{
+		// Normaly we would use normalized points, but this one are already normalized.
 		texPoint [i] = new SFVec2f (Math .atan2 (point [i] .x, point [i] .z) / (2 * Math .PI) + 0.5,
 		                            Math .asin (point [i] .y) / Math .PI + 0.5);
 	}
@@ -263,67 +325,6 @@ IcoSphere .prototype .resolveOverlap = function (i0, i1)
 	}
 
 	return texCoordIndex [i1];
-}
-
-IcoSphere .prototype .getCoordIndex = function ()
-{
-	return this .coordIndex;
-}
-
-IcoSphere .prototype .getPoint = function ()
-{
-	return this .point;
-}
-
-IcoSphere .prototype .getTexCoordIndex = function ()
-{
-	return this .texCoordIndex;
-}
-
-IcoSphere .prototype .getTexPoint = function ()
-{
-	return this .texPoint;
-}
-
-IcoSphere .prototype .addPoint = function (x, y, z)
-{
-	var index = this .point .length;
-	this .point [index] = new SFVec3f (x, y, z) .normalize ();
-	return index;
-}
-
-IcoSphere .prototype .addTriangle = function (coordIndex, i1, i2, i3)
-{
-	coordIndex [coordIndex .length] = i1;
-	coordIndex [coordIndex .length] = i2;
-	coordIndex [coordIndex .length] = i3;
-	coordIndex [coordIndex .length] = -1;
-}
-
-IcoSphere .prototype .getMiddlePoint = function (p1, p2)
-{
-	// First check if we have it already
-	var firstIsSmaller = p1 < p2;
-	var smallerIndex   = firstIsSmaller ? p1 : p2;
-	var greaterIndex   = firstIsSmaller ? p2 : p1;
-	var key            = smallerIndex + '+' + greaterIndex;
-
-	if (key in this .middlePointIndexCache)
-		return this .middlePointIndexCache [key];
-
-	// Not in cache, calculate it
-	var point1 = this .point [p1];
-	var point2 = this .point [p2];
-	
-	// Add middle point, makes sure point is on unit sphere
-	var index = this .addPoint ((point1 .x + point2 .x) / 2,
-	                           (point1 .y + point2 .y) / 2,
-	                           (point1 .z + point2 .z) / 2);
-
-	// Store it, return index
-	this .middlePointIndexCache [key] = index;
-
-	return index;
 }
 
 function initialize ()

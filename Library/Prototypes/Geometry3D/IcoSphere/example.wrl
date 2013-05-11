@@ -13,7 +13,7 @@ Viewpoint {
 }
 
 Transform {
-  translation 0 0 0
+  translation -3 0 0
   children [
     Shape {
       appearance Appearance {
@@ -21,7 +21,7 @@ Transform {
           url "earth.png"
         }
       }
-      geometry IcoSphere { order 6 }
+      geometry IcoSphere { }
     }
     Shape {
       geometry IndexedLineSet {
@@ -32,83 +32,84 @@ Transform {
       }
     }
     Transform {
-    rotation 0 1 0 1.5707963
-    children Shape {
-      geometry Rectangle2D {
-        solid FALSE
+      rotation 0 1 0 1.5708
+      children Shape {
+        geometry Rectangle2D {
+          solid FALSE
+        }
       }
-    }}
+    }
   ]
 }
 
-#Transform {
-#  translation -1 0 0
-#  children [
-#    Shape {
-#      appearance Appearance {
-#        texture ImageTexture {
-#          url "earth.png"
-#        }
-#      }
-#      geometry IcoSphere {
-#        order 1
-#      }
-#    }
-#    Shape {
-#      geometry IndexedLineSet {
-#        coordIndex [ 0, 1, -1 ]
-#        coord Coordinate {
-#          point [ 0 -2 0, 0 2 0 ]
-#        }
-#      }
-#    }
-#  ]
-#}
-#
-#Transform {
-#  translation 1 0 0
-#  children [
-#    Shape {
-#      appearance Appearance {
-#        texture ImageTexture {
-#          url "earth.png"
-#        }
-#      }
-#      geometry IcoSphere {
-#        order 2
-#      }
-#    }
-#    Shape {
-#      geometry IndexedLineSet {
-#        coordIndex [ 0, 1, -1 ]
-#        coord Coordinate {
-#          point [ 0 -2 0, 0 2 0 ]
-#        }
-#      }
-#    }
-#  ]
-#}
-#
-#Transform {
-#  translation 3 0 0
-#  children [
-#    Shape {
-#      appearance Appearance {
-#        texture ImageTexture {
-#          url "earth.png"
-#        }
-#      }
-#      geometry IcoSphere {
-#        order 3
-#      }
-#    }
-#    Shape {
-#      geometry IndexedLineSet {
-#        coordIndex [ 0, 1, -1 ]
-#        coord Coordinate {
-#          point [ 0 -2 0, 0 2 0 ]
-#        }
-#      }
-#    }
-#  ]
-#}
+Transform {
+  translation -1 0 0
+  children [
+    Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url "earth.png"
+        }
+      }
+      geometry IcoSphere {
+        order 1
+      }
+    }
+    Shape {
+      geometry IndexedLineSet {
+        coordIndex [ 0, 1, -1 ]
+        coord Coordinate {
+          point [ 0 -2 0, 0 2 0 ]
+        }
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 1 0 0
+  children [
+    Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url "earth.png"
+        }
+      }
+      geometry IcoSphere {
+        order 2
+      }
+    }
+    Shape {
+      geometry IndexedLineSet {
+        coordIndex [ 0, 1, -1 ]
+        coord Coordinate {
+          point [ 0 -2 0, 0 2 0 ]
+        }
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 3 0 0
+  children [
+    Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url "earth.png"
+        }
+      }
+      geometry IcoSphere {
+        order 3
+      }
+    }
+    Shape {
+      geometry IndexedLineSet {
+        coordIndex [ 0, 1, -1 ]
+        coord Coordinate {
+          point [ 0 -2 0, 0 2 0 ]
+        }
+      }
+    }
+  ]
+}
