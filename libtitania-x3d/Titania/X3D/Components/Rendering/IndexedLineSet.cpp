@@ -110,65 +110,65 @@ IndexedLineSet::set_coordIndex ()
 {
 	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
 
-	if (not _coord)
-		return;
-
 	polylines .clear ();
 
-	// Fill up coordIndex if there are no indices.
-	if (coordIndex () .empty ())
+	if (_coord)
 	{
-		for (size_t i = 0; i < _coord -> point () .size (); ++ i)
-			coordIndex () .push_back (i);
-	}
-
-	if (coordIndex () .size ())
-	{
-		// Add -1 (polylines end marker) to coordIndex if not present.
-		if (coordIndex () .back () >= 0)
-			coordIndex () .push_back (-1);
-
-		// Construct polylines array and determine the number of used points.
-		size_t  i         = 0;
-		int32_t numPoints = -1;
-
-		std::deque <size_t> polyline;
-
-		for (const auto & index : coordIndex ())
+		// Fill up coordIndex if there are no indices.
+		if (coordIndex () .empty ())
 		{
-			numPoints = std::max <int32_t> (numPoints, index);
-
-			if (index >= 0)
-				// Add vertex.
-				polyline .emplace_back (i);
-
-			else
-			{
-				// Negativ index.
-
-				if (polyline .size ())
-				{
-					if (polyline .size () > 1)
-					{
-						// Add polylines.
-						polylines .emplace_back (polyline);
-					}
-
-					polyline .clear ();
-				}
-			}
-
-			++ i;
+			for (size_t i = 0; i < _coord -> point () .size (); ++ i)
+				coordIndex () .push_back (i);
 		}
 
-		++ numPoints;
-
-		if (polylines .size ())
+		if (coordIndex () .size ())
 		{
-			// Resize coord .point if to small
-			_coord -> resize (numPoints);
+			// Add -1 (polylines end marker) to coordIndex if not present.
+			if (coordIndex () .back () >= 0)
+				coordIndex () .push_back (-1);
 
-			set_colorIndex ();
+			// Construct polylines array and determine the number of used points.
+			size_t  i         = 0;
+			int32_t numPoints = -1;
+
+			std::deque <size_t> polyline;
+
+			for (const auto & index : coordIndex ())
+			{
+				numPoints = std::max <int32_t> (numPoints, index);
+
+				if (index >= 0)
+					// Add vertex.
+					polyline .emplace_back (i);
+
+				else
+				{
+					// Negativ index.
+
+					if (polyline .size ())
+					{
+						if (polyline .size () > 1)
+						{
+							// Add polylines.
+							polylines .emplace_back (polyline);
+						}
+
+						polyline .clear ();
+					}
+				}
+
+				++ i;
+			}
+
+			++ numPoints;
+
+			if (polylines .size ())
+			{
+				// Resize coord .point if to small
+				_coord -> resize (numPoints);
+
+				set_colorIndex ();
+			}
 		}
 	}
 }
