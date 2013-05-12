@@ -127,34 +127,37 @@ void
 IndexedFaceSet::set_coordIndex ()
 {
 	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
-
-	int32_t numPoints = -1;
-
+	
 	numPolygons = 0;
 
-	if (coordIndex () .size ())
+	if (_coord)
 	{
-		// Determine number of points and polygons.
+		int32_t numPoints = -1;
 
-		for (const auto & index : coordIndex ())
+		if (coordIndex () .size ())
 		{
-			numPoints = std::max <int32_t> (numPoints, index);
+			// Determine number of points and polygons.
 
-			if (index < 0)
+			for (const auto & index : coordIndex ())
+			{
+				numPoints = std::max <int32_t> (numPoints, index);
+
+				if (index < 0)
+					++ numPolygons;
+			}
+
+			++ numPoints;
+
+			if (coordIndex () .back () >= 0)
 				++ numPolygons;
+
+			// Resize coord .point if to small
+			_coord -> resize (numPoints);
+
+			set_texCoordIndex ();
+			set_colorIndex    ();
+			set_normalIndex   ();
 		}
-
-		++ numPoints;
-
-		if (coordIndex () .back () >= 0)
-			++ numPolygons;
-
-		// Resize coord .point if to small
-		_coord -> resize (numPoints);
-
-		set_texCoordIndex ();
-		set_colorIndex    ();
-		set_normalIndex   ();
 	}
 }
 

@@ -2,19 +2,25 @@
 
 # Taken from:
 # http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
+#
+# TriangleSphere : IndexedFaceSet [
+#   SFString  [ ]  type        "ICOSAHEDRON" [OCTAHEDRON, ICOSAHEDRON]
+#   SFInt32   [ ]  order       2             (0,∞)
+#   SFBool    [ ]  solid       TRUE
+#   SFFloat   [ ]  creaseAngle π             (0,∞)
+# }
 
 PROTO TriangleSphere [
-  # SFString  [ ]  type  "OCTAHEDRON"  [OCTAHEDRON, ICOSAHEDRON]
   field SFString type "OCTAHEDRON"
-  field SFInt32  order 0
+  field SFInt32  order 2
   field SFBool   solid TRUE
+  # 3.1415927
   field SFFloat  creaseAngle 0
 ]
 {
   DEF Geometry IndexedFaceSet {
     solid IS solid
     creaseAngle IS creaseAngle
-    coordIndex [324,234,234,342,234,54,544,23,324]
     texCoord TextureCoordinate { }
     coord Coordinate { }
   }
@@ -379,6 +385,7 @@ function initialize ()
 	geometry .coord .point   = icoSphere .getPoint ();
 }
 "
+    directOutput TRUE
   }
 }
 

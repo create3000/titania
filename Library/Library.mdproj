@@ -1996,6 +1996,7 @@
     <None Include="Prototypes\Geometry3D\TriangleSphere\example.wrl" />
     <None Include="Prototypes\Geometry3D\TriangleSphere\earth.png" />
     <None Include="Prototypes\Geometry3D\TriangleSphere\TriangleSphere.wrl" />
+    <None Include="Prototypes\Geometry3D\QuadSphere\QuadSphere.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2054,6 +2055,7 @@
     <Folder Include="Prototypes\Time\Delay\" />
     <Folder Include="Prototypes\Geometry3D\" />
     <Folder Include="Prototypes\Geometry3D\TriangleSphere\" />
+    <Folder Include="Prototypes\Geometry3D\QuadSphere\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

@@ -1,0 +1,116 @@
+#VRML V2.0 utf8
+
+PROTO QuadSphere [
+  exposedField SFInt32 uSegments 20
+  exposedField SFInt32 vSegments 10
+  exposedField SFFloat radius 1
+  field        SFBool  solid TRUE
+  field        SFBool  ccw TRUE
+  field        SFFloat creaseAngle 3.14159
+]
+{
+  PROTO Fields [
+    exposedField SFInt32 uSegments 20
+    exposedField SFInt32 vSegments 10
+    exposedField SFFloat radius 1
+  ]
+  {
+    Group { }
+  }
+
+  DEF Geometry IndexedFaceSet {
+    solid IS solid
+    ccw IS ccw
+    creaseAngle IS creaseAngle
+    texCoord TextureCoordinate { }
+    coord Coordinate { }
+  }
+
+  DEF QuadSphere Script {
+    field SFNode geometry USE Geometry
+    field SFNode fields Fields {
+      uSegments IS uSegments
+      vSegments IS vSegments
+      radius IS radius
+    }
+
+    url "vrmlscript:
+function initialize ()
+{
+	var index = indices ();
+
+	geometry .set_texCoordIndex = index;
+	geometry .texCoord .point   = texCoord ();
+	
+	geometry .set_coordIndex    = index;
+	geometry .coord .point      = points ();
+}
+
+function points ()
+{
+	var point = new MFVec3f ();
+	
+	for (var i = 0, v = 0; v < fields .vSegments; ++ v)
+	{
+		var y = Math .cos (Math .PI * (v / (fields .vSegments - 1)));
+		var r = Math .sin (Math .PI * (v / (fields .vSegments - 1)));
+		
+		for (u = 0; u < fields .uSegments - 1; ++ i, ++ u)
+		{
+			var x = Math .sin ((2 * Math .PI) * (u / (fields .uSegments - 1))) * r;
+			var z = Math .cos ((2 * Math .PI) * (u / (fields .uSegments - 1))) * r;
+
+			point [i] = new SFVec3f (x, y, z) .multiply (fields .radius);
+		}
+	}
+
+	return point;
+}
+
+function texCoord ()
+{
+	var texCoord = new MFVec2f ();
+
+	for (var i = 0, v = 0; v < fields .vSegments; ++ v)
+	{
+		var y = 1 - v / (fields .vSegments - 1);
+		
+		for (var u = 0; u < fields .uSegments - 1; ++ i, ++ u)
+		{
+			var x = u / (fields .uSegments - 1);
+			
+			texCoord [i] = new SFVec2f (x, y);
+		}
+	}
+
+	return texCoord;
+}
+
+function indices ()
+{
+	var index = new MFInt32 ();
+	
+	for (var i = 0, p = 0, v = 0; v < fields .vSegments - 1; ++ v, i += 5, ++ p)
+	{
+		for (var u = 0; u < fields .uSegments - 2; ++ u, i += 5, ++ p)
+		{
+			index [i]     = p;
+			index [i + 1] = p + fields .uSegments - 1;
+			index [i + 2] = p + fields .uSegments;
+			index [i + 3] = p + 1;
+			index [i + 4] = -1;
+		}
+		index [i]     = p;
+		index [i + 1] = p + fields .uSegments - 1;
+		index [i + 2] = p + 1;
+		index [i + 3] = p - fields .uSegments + 2;
+		index [i + 4] = -1;
+	}
+
+	return index;
+}
+"
+    directOutput TRUE
+  }
+}
+
