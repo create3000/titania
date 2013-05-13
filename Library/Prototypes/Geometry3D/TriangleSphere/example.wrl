@@ -9,40 +9,7 @@ EXTERNPROTO TriangleSphere [
 ]
 "TriangleSphere.wrl"
 
-EXTERNPROTO QuadSphere [
-  exposedField SFInt32 uSegments
-  exposedField SFInt32 vSegments
-  exposedField SFFloat radius
-  field        SFBool  solid
-  field        SFFloat creaseAngle
-]
-"../QuadSphere/QuadSphere.wrl"
-
 Viewpoint { }
-
-Transform {
-  translation -3 0 5
-  children [
-    Shape {
-      appearance Appearance {
-        material Material { }
-        texture ImageTexture {
-          url "earth.png"
-        }
-      }
-      geometry QuadSphere {
-      }
-    }
-    Shape {
-      geometry IndexedLineSet {
-        coordIndex [ 0, 1, -1 ]
-        coord Coordinate {
-          point [ 0 -2 0, 0 2 0 ]
-        }
-      }
-    }
-  ]
-}
 
 Transform {
   translation -3 0 2

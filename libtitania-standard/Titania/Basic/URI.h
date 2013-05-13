@@ -1146,6 +1146,28 @@ operator > (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 //@}
 ///@}
 
+//@{
+///  Compares two basic_uri's.
+///  Return true if URI @a a is less equal than @a b.
+template <class StringT>
+constexpr bool
+operator <= (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
+{
+	return lhs .str () <= rhs .str ();
+}
+
+///  Compares two basic_uri's.
+///  Return false if URI @a a is greater than equal @a b.
+template <class StringT>
+inline
+constexpr bool
+operator >= (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
+{
+	return lhs .str () >= rhs .str ();
+}
+//@}
+///@}
+
 ///  @relates basic_uri
 ///  @name String concatanation
 

@@ -105,13 +105,15 @@ public:
 	{ return fields .urlError; }
 
 	LoadState
-	checkLoadState ();
+	checkLoadState ()
+	{ return loadState; }
 
 	///  @name File operations
 
 	virtual
 	void
-	requestImmediateLoad ();
+	requestImmediateLoad ()
+	{ }
 
 	///  @name X3D Creation Handling
 
@@ -166,12 +168,6 @@ public:
 
 	///  Returns a stream for @a URL
 	basic::ifilestream
-	loadStream (const SFString &)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
-
-	///  Returns a stream for @a URL
-	basic::ifilestream
 	loadStream (const basic::uri &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
@@ -181,8 +177,14 @@ public:
 	MFString
 	transformURI (const MFString &);
 
+	MFString
+	transformURI (const basic::uri &, const MFString &);
+
 	basic::uri
 	transformURI (const basic::uri &);
+
+	basic::uri
+	transformURI (const basic::uri &, const basic::uri &);
 
 	/// URN Handling
 
@@ -209,17 +211,19 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
 
 	///  @name Element Access
 
 	virtual
 	void
-	setWorldURL (const basic::uri &);
+	setWorldURL (const basic::uri & value)
+	{ worldURL = value; }
 
 	virtual
 	const basic::uri &
-	getWorldURL ();
+	getWorldURL ()
+	{ return worldURL; }
 
 	void
 	setLoadState (LoadState);
@@ -231,7 +235,7 @@ protected:
 
 	virtual
 	void
-	dispose ();
+	dispose () override;
 
 
 private:

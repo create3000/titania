@@ -70,7 +70,7 @@ JSPropertySpec jsGlobals::properties [ ] = {
 };
 
 JSFunctionSpec jsGlobals::functions [ ] = {
-	{ "include", jsGlobals::include, 1, 0 },
+	{ "require", jsGlobals::require, 1, 0 },
 	{ "print",   jsGlobals::print,   0, 0 },
 	{ 0 }
 
@@ -109,17 +109,26 @@ jsGlobals::_true (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
-jsGlobals::include (JSContext* context, uintN argc, jsval* vp)
+jsGlobals::require (JSContext* context, uintN argc, jsval* vp)
 {
+	auto javaScript = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context));
+	
+	JSBool success = JS_FALSE;
+
 	jsval* argv = JS_ARGV (context, vp);
+	jsval  rval = JSVAL_VOID;
 
 	for (uintN i = 0; i < argc; ++ i)
-		std::clog << JS_GetString (context, argv [i]);
+	{
+		if (javaScript -> require (JS_GetString (context, argv [i]), rval))
+		{
+			success = JS_TRUE;
+			break;
+		}
+	}
 
-	std::clog << std::endl;
-
-	JS_SET_RVAL (context, vp, JSVAL_VOID);
-	return JS_TRUE;
+	JS_SET_RVAL (context, vp, rval);
+	return success;
 }
 
 JSBool

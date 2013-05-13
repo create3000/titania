@@ -74,13 +74,7 @@ public:
 	getWidgetName () const { return m_widgetName; }
 
 	const Glib::RefPtr <Gtk::Action> &
-	getNewAction () const { return m_newAction; }
-
-	const Glib::RefPtr <Gtk::Action> &
-	getOpenAction () const { return m_openAction; }
-
-	const Glib::RefPtr <Gtk::Action> &
-	getSaveAction () const { return m_saveAction; }
+	getRevertAction () const { return m_revertAction; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilerX3D () const { return m_fileFilerX3D; }
@@ -90,6 +84,15 @@ public:
 
 	const Glib::RefPtr <Gtk::IconFactory> &
 	getIconFactory () const { return m_iconFactory; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getNewAction () const { return m_newAction; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getOpenAction () const { return m_openAction; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getSaveAction () const { return m_saveAction; }
 
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const { return m_menuAccelGroup; }
@@ -235,11 +238,14 @@ public:
 	Gtk::ToolButton &
 	getNewButton () const { return *m_newButton; }
 
-	Gtk::ToolButton &
+	Gtk::MenuToolButton &
 	getOpenButton () const { return *m_openButton; }
 
 	Gtk::ToolButton &
 	getSaveButton () const { return *m_saveButton; }
+
+	Gtk::ToolButton &
+	getRefreshButton () const { return *m_refreshButton; }
 
 	Gtk::Paned &
 	getVPaned () const { return *m_vPaned; }
@@ -300,6 +306,10 @@ public:
 
 	virtual
 	void
+	on_revert_to_saved () = 0;
+
+	virtual
+	void
 	on_new () = 0;
 
 	virtual
@@ -325,10 +335,6 @@ public:
 	virtual
 	void
 	on_save_as () = 0;
-
-	virtual
-	void
-	on_revert_to_saved () = 0;
 
 	virtual
 	void
@@ -456,12 +462,13 @@ private:
 
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
-	Glib::RefPtr <Gtk::Action>      m_newAction;
-	Glib::RefPtr <Gtk::Action>      m_openAction;
-	Glib::RefPtr <Gtk::Action>      m_saveAction;
+	Glib::RefPtr <Gtk::Action>      m_revertAction;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilerX3D;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
 	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
+	Glib::RefPtr <Gtk::Action>      m_newAction;
+	Glib::RefPtr <Gtk::Action>      m_openAction;
+	Glib::RefPtr <Gtk::Action>      m_saveAction;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
@@ -510,8 +517,9 @@ private:
 	Gtk::ImageMenuItem*             m_standardSizeMenuItem;
 	Gtk::Toolbar*                   m_toolBar;
 	Gtk::ToolButton*                m_newButton;
-	Gtk::ToolButton*                m_openButton;
+	Gtk::MenuToolButton*            m_openButton;
 	Gtk::ToolButton*                m_saveButton;
+	Gtk::ToolButton*                m_refreshButton;
 	Gtk::Paned*                     m_vPaned;
 	Gtk::Paned*                     m_hPaned;
 	Gtk::HBox*                      m_surfaceBox;

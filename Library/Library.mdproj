@@ -1997,6 +1997,8 @@
     <None Include="Prototypes\Geometry3D\TriangleSphere\earth.png" />
     <None Include="Prototypes\Geometry3D\TriangleSphere\TriangleSphere.wrl" />
     <None Include="Prototypes\Geometry3D\QuadSphere\QuadSphere.wrl" />
+    <None Include="Prototypes\Geometry3D\QuadSphere\example.wrl" />
+    <None Include="Prototypes\Geometry3D\QuadSphere\earth.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

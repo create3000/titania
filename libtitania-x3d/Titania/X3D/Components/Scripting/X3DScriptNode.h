@@ -62,9 +62,11 @@ class X3DScriptNode :
 {
 public:
 
+	using X3DUrlObject::loadDocument;
+
 	virtual
-	void
-	requestImmediateLoad ();
+	bool
+	loadDocument (const SFString &, std::string &) = 0;
 
 	virtual
 	void

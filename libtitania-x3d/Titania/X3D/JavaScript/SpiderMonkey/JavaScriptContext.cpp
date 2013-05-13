@@ -50,8 +50,6 @@
 
 #include "JavaScriptContext.h"
 
-#include "../../Components/Scripting/X3DScriptNode.h"
-
 #include "String.h"
 #include "jsBrowser.h"
 #include "jsFields.h"
@@ -69,20 +67,28 @@ JSClass JavaScriptContext::global_class = {
 
 };
 
-JavaScriptContext::JavaScriptContext (X3DScriptNode* node, const std::string & ecmascript, size_t index) :
+JavaScriptContext::JavaScriptContext (X3DScriptNode* script, const std::string & ecmascript, const basic::uri & uri, size_t index) :
+	      X3DBaseNode (script -> getExecutionContext () -> getBrowser (), script -> getExecutionContext ()),
+	          X3DNode (),
+	     X3DUrlObject (),
 	          runtime (NULL),                  
 	          context (NULL),                  
 	           global (NULL),                  
-	          browser (node -> getBrowser ()), 
-	             node (node),                  
+	          browser (script -> getBrowser ()), 
+	           script (script),                  
 	            index (index),                 
 	     initializeFn (),                      
 	  prepareEventsFn (),                      
 	eventsProcessedFn (),                      
 	       shutdownFn (),                      
 	           fields (),                      
-	        functions ()                       
+	        functions (),                      
+	            files (),
+	         worldURL ({ uri })                       
 {
+	setComponent ("Browser");
+	setTypeName ("JavaScriptContext");
+
 	// Create a JS runtime.
 	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 
@@ -109,9 +115,30 @@ JavaScriptContext::JavaScriptContext (X3DScriptNode* node, const std::string & e
 
 	initNode ();
 
-	evaluate (ecmascript, "<no filename>");
+	evaluate (ecmascript, uri .str ());
 
 	initEventHandler ();
+}
+
+X3DBaseNode*
+JavaScriptContext::create (X3DExecutionContext* const) const
+{
+	std::string ecmascript;
+
+	script -> loadDocument (script -> url () [index], ecmascript);
+
+	return new JavaScriptContext (script, ecmascript, worldURL .front (), index);
+}
+
+void
+JavaScriptContext::initialize ()
+{
+	X3DNode::initialize ();
+	X3DUrlObject::initialize ();
+
+	set_initialize ();
+
+	JS_GC (context);
 }
 
 void
@@ -170,7 +197,7 @@ JavaScriptContext::initContext ()
 void
 JavaScriptContext::initNode ()
 {
-	for (auto & field : node -> getUserDefinedFields ())
+	for (auto & field : script -> getUserDefinedFields ())
 	{
 		switch (field -> getAccessType ())
 		{
@@ -261,7 +288,7 @@ JavaScriptContext::initEventHandler ()
 	eventsProcessedFn = getFunction ("eventsProcessed");
 	shutdownFn        = getFunction ("shutdownFn");
 
-	for (auto & field : node -> getUserDefinedFields ())
+	for (auto & field : script -> getUserDefinedFields ())
 	{
 		switch (field -> getAccessType ())
 		{
@@ -333,14 +360,74 @@ JavaScriptContext::setProperty (JSContext* context, JSObject* obj, jsid id, JSBo
 	return JS_TRUE;
 }
 
-void
+JSBool
+JavaScriptContext::require (const basic::uri & uri, jsval & rval)
+{
+	try
+	{
+		// Resolve uri
+		
+		basic::uri base = worldURL .back () .size ()
+		                  ? worldURL .back ()
+		                  : getExecutionContext () -> getWorldURL ();
+		                   
+		basic::uri resolvedURL = transformURI (base, uri);
+
+		// Get cached result
+		
+		auto file = files .find (resolvedURL);
+
+		if (file not_eq files .end ())
+		{
+			rval = file -> second;
+			return JS_TRUE;
+		}
+
+		// Load document
+		
+		std::string document = loadDocument (resolvedURL);
+		
+		// Evaluate script
+		
+		worldURL .emplace_back (resolvedURL);
+		
+		auto success = evaluate (document, resolvedURL, rval);
+		
+		worldURL .pop_back ();
+
+		// Cache result
+		
+		if (success)
+		{
+			JS_AddValueRoot (context, &rval);
+
+			files .insert (std::make_pair (resolvedURL, rval));
+
+			return JS_TRUE;
+		}
+	}
+	catch (const X3DError &)
+	{ }
+
+	return JS_FALSE;
+}
+
+JSBool
 JavaScriptContext::evaluate (const std::string & string, const std::string & filename)
 {
 	jsval rval;
 
-	JS_EvaluateScript (context, global, string .c_str (), string .length (), filename .c_str (), 1, &rval);
+	return evaluate (string, filename, rval);
+}
 
-	JS_GC (context); // Garbage Collector
+JSBool
+JavaScriptContext::evaluate (const std::string & string, const std::string & filename, jsval & rval)
+{
+	return JS_EvaluateScript (context, global, 
+	                          string .c_str (), string .length (),
+	                          filename .size () ? filename .c_str () : NULL,
+	                          1,
+	                          &rval);
 }
 
 void
@@ -353,39 +440,31 @@ JavaScriptContext::set_field (X3DFieldDefinition* field)
 
 	jsval rval;
 	JS_CallFunctionValue (context, global, functions [field], 2, argv, &rval);
-
-	JS_GC (context);
-}
-
-X3DScriptNode*
-JavaScriptContext::getNode () const
-{
-	return node;
 }
 
 void
-JavaScriptContext::initialize ()
+JavaScriptContext::set_initialize ()
 {
 	if (not JSVAL_IS_VOID (initializeFn))
 		callFunction (initializeFn);
 }
 
 void
-JavaScriptContext::prepareEvents ()
+JavaScriptContext::set_prepareEvents ()
 {
 	if (not JSVAL_IS_VOID (prepareEventsFn))
 		callFunction (prepareEventsFn);
 }
 
 void
-JavaScriptContext::eventsProcessed ()
+JavaScriptContext::set_eventsProcessed ()
 {
 	if (not JSVAL_IS_VOID (eventsProcessedFn))
 		callFunction (eventsProcessedFn);
 }
 
 void
-JavaScriptContext::shutdown ()
+JavaScriptContext::set_shutdown ()
 {
 	if (not JSVAL_IS_VOID (shutdownFn))
 		callFunction (shutdownFn);
@@ -426,7 +505,7 @@ JavaScriptContext::callFunction (jsval function)
 
 	JS_CallFunctionValue (context, global, function, 0, NULL, &rval);
 
-	JS_GC (context);
+	//JS_GC (context);
 }
 
 void
@@ -436,47 +515,73 @@ JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport
 	X3DScriptNode*     script     = javaScript -> getNode ();
 	X3DBrowser*        browser    = script -> getBrowser ();
 
+	// Get script
+
+	std::string ecmascript;
+
+	if (report -> filename)
+	{
+		try
+		{
+			ecmascript = script -> loadDocument (report -> filename);
+		}
+		catch (const X3DError &)
+		{ }
+	}
+
+	else
+		script -> loadDocument (script -> url () [javaScript -> index], ecmascript);
+
 	// Find error line
-
-	const String & ecmascript = script -> url () [javaScript -> index];
-
-	char nl = ecmascript .find ('\n', 0) == String::npos ? '\r' : '\n';
-
-	std::string::size_type start = 0;
-	std::string::size_type end   = 0;
-	size_t                 i     = 0;
-
-	for ( ; i < report -> lineno - 1; ++ i)
+	
+	std::string line = "Couldn't load file!";
+	
+	if (ecmascript .size ())
 	{
-		if ((start = ecmascript .find (nl, start)) == String::npos)
-			break;
+		char nl = ecmascript .find ('\n', 0) == String::npos ? '\r' : '\n';
 
-		else
-			++ start;
+		std::string::size_type start = 0;
+		std::string::size_type end   = 0;
+		size_t                 i     = 0;
+
+		for ( ; i < report -> lineno - 1; ++ i)
+		{
+			if ((start = ecmascript .find (nl, start)) == String::npos)
+				break;
+
+			else
+				++ start;
+		}
+
+		if (start not_eq String::npos)
+		{
+			if ((end = ecmascript .find (nl, start)) == String::npos)
+				end = ecmascript .length ();
+		}
+
+		line = ecmascript .substr (start, end - start);
 	}
-
-	if (start not_eq String::npos)
-	{
-		if ((end = ecmascript .find (nl, start)) == String::npos)
-			end = ecmascript .length ();
-	}
-
-	std::string line = ecmascript .substr (start, end - start);
 
 	// Pretty print error
 
 	browser -> print ("# Javascript: runtime error at line ", report -> lineno, ":", '\n',
-	                  "# ", message, '\n',
-	                  "#  ", line, '\n',
+	                  "# in url '", (report -> filename ? report -> filename : "<inline>"), "' from Script '", script -> getName (), '\n',
+	                  "# World URL is '", script -> getExecutionContext () -> getWorldURL (), "'", '\n',
 	                  "# ", '\n',
-	                  "# in Script '", script -> getName (), "' from url '", (report -> filename ? report -> filename : "<no filename>"), "'", '\n',
-	                  "# World URL is '", script -> getExecutionContext () -> getWorldURL (), "'", '\n');
+	                  "# ", message, '\n',
+	                  "#  ", line, '\n');
+}
+
+void
+JavaScriptContext::dispose ()
+{
+	X3DUrlObject::dispose ();
+	X3DNode::dispose ();
 }
 
 JavaScriptContext::~JavaScriptContext ()
 {
 	// Cleanup.
-	JS_GC (context);
 	JS_DestroyContext (context);
 	JS_DestroyRuntime (runtime);
 }

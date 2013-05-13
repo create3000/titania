@@ -4,12 +4,14 @@ META "title" "Scripting test"
 
 Script {
 	url "vrmlscript:
+var Complex = require ('http://titania.create3000.de/Library/JavaScript/Math.js');
+
 function initialize ()
 {
 	print ('initialize');
 
-	var v = new SFVec3f ();
-	v.add (new SFVec3d ());
+//	print (Complex);
+//	print (Math .PHI);
 
 	print ('done.');
 }

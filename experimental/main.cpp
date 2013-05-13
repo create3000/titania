@@ -184,17 +184,9 @@ typedef math::sphere3 <float>   Sphere3f;
 
 #include <Titania/InputOutput.h>
 
-static
-io::sequence whitespaces ("\r\n \t,");
-
-static
-io::string X3D ("dTransform");
-
-static
-io::quoted_string string ('\"');
-
-static
-io::comment comment ('#');
+std::string
+create_string ()
+{ return std::string (200000000, '#'); }
 
 int
 main (int argc, char** argv)
@@ -206,17 +198,33 @@ main (int argc, char** argv)
 	#endif
 
 	{
-		__LOG__ << std::endl;
-		
-		for (int i = 0; i < 10; ++ i)
 		{
+			auto t0 = chrono::now ();
+			
+			for (int i = 0; i < 10; ++ i)
 			{
-				std::vector <int> v1 (800000000);
-			
-				__LOG__ << v1 .capacity () << std::endl;
+				{
+					auto s = create_string ();
+				
+					__LOG__ << s .size () << std::endl;
+				}
 			}
+
+			__LOG__ << chrono::now () - t0 << std::endl;
+		}
+		{
+			auto t0 = chrono::now ();
 			
-			sleep (1);
+			for (int i = 0; i < 10; ++ i)
+			{
+				{
+					std::string s (std::move (create_string ()));
+				
+					__LOG__ << s .size () << std::endl;
+				}
+			}
+
+			__LOG__ << chrono::now () - t0 << std::endl;
 		}
 	}
 

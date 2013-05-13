@@ -68,10 +68,6 @@ X3DScriptNode::initialize ()
 }
 
 void
-X3DScriptNode::requestImmediateLoad ()
-{ }
-
-void
 X3DScriptNode::dispose ()
 {
 	X3DUrlObject::dispose ();

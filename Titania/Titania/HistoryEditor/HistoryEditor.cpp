@@ -156,7 +156,12 @@ HistoryEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 {
 	// Open worldURL.
 
-	getBrowser () -> loadURL ({ history .getItemFromIndex (path .to_string ()) .at ("worldURL") });
+	try
+	{
+		getBrowser () -> loadURL ({ history .getItemFromIndex (path .to_string ()) .at ("worldURL") });
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 HistoryEditor::~HistoryEditor ()

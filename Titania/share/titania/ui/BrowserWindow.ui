@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkAction" id="NewAction">
-    <signal name="activate" handler="on_new" swapped="no"/>
-  </object>
-  <object class="GtkAction" id="OpenAction">
-    <signal name="activate" handler="on_open" swapped="no"/>
-  </object>
-  <object class="GtkAction" id="SaveAction">
-    <signal name="activate" handler="on_save" swapped="no"/>
+  <object class="GtkAction" id="RevertAction">
+    <signal name="activate" handler="on_revert_to_saved" swapped="no"/>
   </object>
   <object class="GtkFileFilter" id="FileFilerX3D">
     <mime-types>
@@ -41,6 +35,15 @@
       <source stock-id="Arrow" filename="icons/arrow.png"/>
       <source stock-id="Hand" filename="icons/hand.png"/>
     </sources>
+  </object>
+  <object class="GtkAction" id="NewAction">
+    <signal name="activate" handler="on_new" swapped="no"/>
+  </object>
+  <object class="GtkAction" id="OpenAction">
+    <signal name="activate" handler="on_open" swapped="no"/>
+  </object>
+  <object class="GtkAction" id="SaveAction">
+    <signal name="activate" handler="on_save" swapped="no"/>
   </object>
   <object class="GtkFileChooserDialog" id="FileOpenDialog">
     <property name="can_focus">False</property>
@@ -258,12 +261,13 @@
                     <child>
                       <object class="GtkImageMenuItem" id="RevertMenuItem">
                         <property name="label">gtk-revert-to-saved</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="related_action">RevertAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <accelerator key="F5" signal="activate"/>
-                        <signal name="activate" handler="on_revert_to_saved" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -724,6 +728,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -752,6 +757,22 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="RefreshButton">
+                <property name="use_action_appearance">False</property>
+                <property name="related_action">RevertAction</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Reload file.</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-refresh</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
           </object>

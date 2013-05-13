@@ -61,12 +61,13 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_newAction          = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("NewAction"));
-	m_openAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("OpenAction"));
-	m_saveAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("SaveAction"));
+	m_revertAction       = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("RevertAction"));
 	m_fileFilerX3D       = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilerX3D"));
 	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
 	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
+	m_newAction          = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("NewAction"));
+	m_openAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("OpenAction"));
+	m_saveAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("SaveAction"));
 	m_menuAccelGroup     = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
 
 	// Get widgets.
@@ -119,6 +120,7 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder -> get_widget ("NewButton", m_newButton);
 	m_builder -> get_widget ("OpenButton", m_openButton);
 	m_builder -> get_widget ("SaveButton", m_saveButton);
+	m_builder -> get_widget ("RefreshButton", m_refreshButton);
 	m_builder -> get_widget ("VPaned", m_vPaned);
 	m_builder -> get_widget ("HPaned", m_hPaned);
 	m_builder -> get_widget ("SurfaceBox", m_surfaceBox);
@@ -139,7 +141,8 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder -> get_widget ("OutlineEditorBox", m_outlineEditorBox);
 	m_builder -> get_widget ("StatusBar", m_statusBar);
 
-	// Connect object Gtk::Action with id 'NewAction'.
+	// Connect object Gtk::Action with id 'RevertAction'.
+	connections .emplace_back (m_revertAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_revert_to_saved)));
 	connections .emplace_back (m_newAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_new)));
 	connections .emplace_back (m_openAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_open)));
 	connections .emplace_back (m_saveAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_save)));
@@ -154,7 +157,6 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'SaveMenuItem'.
 	connections .emplace_back (m_saveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_save)));
 	connections .emplace_back (m_saveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_save_as)));
-	connections .emplace_back (m_revertMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_revert_to_saved)));
 	connections .emplace_back (m_quitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_close)));
 
 	// Connect object Gtk::CheckMenuItem with id 'ToolBarMenuItem'.

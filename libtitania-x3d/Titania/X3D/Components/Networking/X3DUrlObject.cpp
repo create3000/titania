@@ -51,12 +51,7 @@
 #include "X3DUrlObject.h"
 
 #include "../../Browser/X3DBrowser.h"
-
 #include <Titania/Basic/URI.h>
-
-#include <fstream>
-#include <iostream>
-#include <sstream>
 
 namespace titania {
 namespace X3D {
@@ -89,12 +84,6 @@ X3DUrlObject::initialize ()
 
 //  Element Access
 
-LoadState
-X3DUrlObject::checkLoadState ()
-{
-	return loadState;
-}
-
 void
 X3DUrlObject::setLoadState (LoadState value)
 {
@@ -103,24 +92,6 @@ X3DUrlObject::setLoadState (LoadState value)
 	if (loadState == COMPLETE_STATE)
 		loadTime () = getCurrentTime ();
 }
-
-void
-X3DUrlObject::setWorldURL (const basic::uri & value)
-{
-	worldURL = value;
-}
-
-const basic::uri &
-X3DUrlObject::getWorldURL ()
-{
-	return worldURL;
-}
-
-//  Load Operations
-
-void
-X3DUrlObject::requestImmediateLoad ()
-{ }
 
 //  X3D Creation Handling
 
@@ -205,7 +176,7 @@ throw (Error <INVALID_URL>,
 		{
 			try
 			{
-				basic::ifilestream stream = loadStream (URL);
+				basic::ifilestream stream = loadStream (URL .str ());
 
 				scene -> fromStream (worldURL, stream);
 
@@ -247,18 +218,6 @@ throw (Error <INVALID_URL>,
 	return ostringstream .str ();
 }
 
-static
-void
-print_uri (const basic::uri &);
-
-basic::ifilestream
-X3DUrlObject::loadStream (const SFString & URL)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
-{
-	return loadStream (URL .str ());
-}
-
 basic::ifilestream
 X3DUrlObject::loadStream (const basic::uri & uri)
 throw (Error <INVALID_URL>,
@@ -269,7 +228,7 @@ throw (Error <INVALID_URL>,
 
 	std::clog << "Trying to load URI '" << uri << "': " << std::endl;
 
-	basic::uri transformedURL = transformURI (uri);
+	basic::uri transformedURL = transformURI (getExecutionContext () -> getWorldURL (), uri);
 	std::clog << "\tResolved URL is '" << transformedURL << "'" << std::endl;
 
 	basic::ifilestream stream (basic::http::GET, transformedURL);
@@ -285,7 +244,7 @@ throw (Error <INVALID_URL>,
 			worldURL = uri;
 		}
 		else
-			worldURL = transformedURL;
+			 worldURL = transformedURL;
 
 		std::clog << "\tLoaded URL is '" << worldURL << "': " << std::endl;
 		std::clog << "Done." << std::endl;
@@ -303,10 +262,16 @@ throw (Error <INVALID_URL>,
 MFString
 X3DUrlObject::transformURI (const MFString & uri)
 {
+	return transformURI (getExecutionContext () -> getWorldURL (), uri);
+}
+
+MFString
+X3DUrlObject::transformURI (const basic::uri & base, const MFString & uri)
+{
 	MFString url;
 
 	for (const auto & URI : uri)
-		url .push_back (transformURI (URI .str ()) .str ());
+		url .push_back (transformURI (base, URI .str ()) .str ());
 
 	return url;
 }
@@ -314,18 +279,20 @@ X3DUrlObject::transformURI (const MFString & uri)
 basic::uri
 X3DUrlObject::transformURI (const basic::uri & uri)
 {
+	return transformURI (getExecutionContext () -> getWorldURL (), uri);
+}
+
+basic::uri
+X3DUrlObject::transformURI (const basic::uri & _base, const basic::uri & uri)
+{
 	if (uri .is_absolute () and uri .is_network ())
 		return getURL (uri);
 
-	const basic::uri & base = getURL (getExecutionContext () -> getWorldURL ());
+	const basic::uri & base = getURL (_base);
 
 	std::clog << "\t\tWorld URL is '" << base << "'" << std::endl;
 
 	auto transformedURL = base .transform (uri);
-
-	//	print_uri (uri);
-	//	print_uri (base);
-	//	print_uri (transformedURL);
 
 	return transformedURL;
 }
@@ -369,40 +336,6 @@ X3DUrlObject::getURNs ()
 void
 X3DUrlObject::dispose ()
 { }
-
-static
-void
-print_uri (const basic::uri & uri)
-{
-	std::clog << std::endl;
-	std::clog << "uri:    '" << uri << "'" << std::endl;
-	std::clog << "copy:   '" << basic::uri (uri) << "'" << std::endl;
-
-	std::clog << "is equal:     " << std::boolalpha << (uri == uri) << std::endl;
-	std::clog << "is absolute:  " << uri .is_absolute () << std::endl;
-	std::clog << "is relative:  " << uri .is_relative () << std::endl;
-	std::clog << "is local:     " << uri .is_local () << std::endl;
-	std::clog << "is directory: " << uri .is_directory () << std::endl;
-	std::clog << "is file:      " << uri .is_file () << std::endl;
-
-	std::clog << "Scheme:        " << uri .scheme () << std::endl;
-	std::clog << "Authority:     " << uri .authority () << std::endl;
-	std::clog << "HierarchyPart: " << uri .hierarchy () << std::endl;
-	std::clog << "Host:          " << uri .host () << std::endl;
-	std::clog << "Port:          " << uri .port () << std::endl;
-	std::clog << "WellKnownPort: " << uri .well_known_port () << std::endl;
-	std::clog << "Path:          " << uri .path () << std::endl;
-	std::clog << "Query:         " << uri .query () << std::endl;
-	std::clog << "Fragment:      " << uri .fragment () << std::endl;
-
-	std::clog << "Root:     " << uri .root () << std::endl;
-	std::clog << "Base:     " << uri .base () << std::endl;
-	std::clog << "Parent:   " << uri .parent () << std::endl;
-
-	std::clog << "Filename: " << uri .filename () << std::endl;
-	std::clog << "Basename: " << uri .basename () << std::endl;
-	std::clog << "Suffix:   " << uri .suffix () << std::endl;
-}
 
 } // X3D
 } // titania

@@ -51,51 +51,56 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JAVA_SCRIPT_CONTEXT_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JAVA_SCRIPT_CONTEXT_H__
 
-#include "../../Basic/X3DFieldDefinition.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Types/Time.h"
-#include <iostream>
+#include "../../Components/Core/X3DNode.h"
+#include "../../Components/Networking/X3DUrlObject.h"
+#include "../../Components/Scripting/X3DScriptNode.h"
 #include <jsapi.h>
-#include <map>
-#include <string>
 
 namespace titania {
 namespace X3D {
 
-class Browser;
-class X3DScriptNode;
-
-class JavaScriptContext
+class JavaScriptContext :
+	public X3DNode, public X3DUrlObject
 {
 public:
 
-	JavaScriptContext (X3DScriptNode*, const std::string &, size_t);
+	JavaScriptContext (X3DScriptNode*, const std::string &, const basic::uri &, size_t);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const;
 
 	virtual
 	X3DScriptNode*
-	getNode () const;
+	getNode () const
+	{ return script; }
+
+	JSBool
+	require (const basic::uri &, jsval &);
+
+	void
+	set_prepareEvents ();
+
+	void
+	set_eventsProcessed ();
+
+	void
+	set_shutdown ();
 
 	virtual
 	void
-	initialize ();
-
-	virtual
-	void
-	prepareEvents ();
-
-	virtual
-	void
-	eventsProcessed ();
-
-	virtual
-	void
-	shutdown ();
-
+	dispose ();
+	
 	virtual
 	~JavaScriptContext ();
 
 
 private:
+
+	virtual
+	void
+	initialize () final;
 
 	void
 	initContext ();
@@ -113,8 +118,11 @@ private:
 	void
 	initEventHandler ();
 
-	void
-	evaluate (const std::string &, const std::string & = "<inline>");
+	JSBool
+	evaluate (const std::string &, const std::string &);
+
+	JSBool
+	evaluate (const std::string &, const std::string &, jsval &);
 
 	static JSBool getBuildInProperty (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool getProperty        (JSContext *, JSObject *, jsid, jsval*);
@@ -122,6 +130,9 @@ private:
 
 	void
 	set_field (X3DFieldDefinition*);
+
+	void
+	set_initialize ();
 
 	jsval
 	getFunction (const std::string &);
@@ -142,7 +153,7 @@ private:
 	JSContext*     context;
 	JSObject*      global;
 	X3DBrowser*    browser;
-	X3DScriptNode* node;
+	X3DScriptNode* script;
 	size_t         index;
 
 	jsval initializeFn;
@@ -152,6 +163,8 @@ private:
 
 	std::map <std::string, jsval>         fields;
 	std::map <X3DFieldDefinition*, jsval> functions;
+	std::map <basic::uri, jsval>          files;
+	std::deque <basic::uri>               worldURL;
 
 };
 

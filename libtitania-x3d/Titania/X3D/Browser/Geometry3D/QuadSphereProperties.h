@@ -111,7 +111,7 @@ private:
 	createTexCoord ();
 
 	std::deque <int32_t>
-	createIndices ();
+	createCoordIndices ();
 
 	std::deque <Vector3f>
 	createPoints ();

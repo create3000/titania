@@ -62,6 +62,8 @@ class Script :
 {
 public:
 
+	using X3DScriptNode::loadDocument;
+
 	Script (X3DExecutionContext* const);
 
 	virtual
@@ -86,19 +88,24 @@ public:
 	mustEvaluate () const
 	{ return *fields .mustEvaluate; }
 
+	virtual
+	bool
+	loadDocument (const SFString &, std::string &) final;
+	
+	virtual
 	void
-	eventsProcessed ();
+	eventsProcessed () final;
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	void
 	prepareEvents ();
@@ -113,7 +120,7 @@ private:
 
 	Fields fields;
 
-	std::unique_ptr <JavaScriptContext> javaScript;
+	SFNode <JavaScriptContext> javaScript;
 
 };
 

@@ -142,7 +142,7 @@ QuadSphereProperties::createTexCoord ()
 }
 
 std::deque <int32_t>
-QuadSphereProperties::createIndices ()
+QuadSphereProperties::createCoordIndices ()
 {
 	std::deque <int32_t> indices;
 
@@ -199,7 +199,7 @@ QuadSphereProperties::build ()
 {
 	std::deque <int32_t>  texIndices = createTexIndices ();
 	std::deque <Vector3f> texCoord   = createTexCoord ();
-	std::deque <int32_t>  indices    = createIndices ();
+	std::deque <int32_t>  indices    = createCoordIndices ();
 	std::deque <Vector3f> points     = createPoints ();
 
 	auto index    = indices .begin ();

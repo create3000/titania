@@ -1,3 +1,18 @@
+2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Script.h:
+	* Script.cpp:
+	* jsGlobals.h:
+	* X3DScriptNode.h:
+	* X3DUrlObject.h:
+	* jsGlobals.cpp:
+	* X3DScriptNode.cpp:
+	* X3DUrlObject.cpp:
+	* QuadSphereProperties.h:
+	* JavaScriptContext.h:
+	* QuadSphereProperties.cpp:
+	* JavaScriptContext.cpp: 
+
 2013-05-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* IndexedLineSet.cpp: 

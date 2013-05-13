@@ -75,6 +75,8 @@ Script::Script (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "url",          url ());
 	addField (initializeOnly, "directOutput", directOutput ());
 	addField (initializeOnly, "mustEvaluate", mustEvaluate ());
+
+	setChildren (javaScript);
 }
 
 X3DBaseNode*
@@ -96,19 +98,11 @@ Script::initialize ()
 	{
 		std::string ecmascript;
 
-		if (RegEx::ECMAScript .FullMatch (URL .str (), &ecmascript))
+		if (loadDocument (URL, ecmascript))
 		{
-			javaScript .reset (new JavaScriptContext (this, ecmascript, index));
+			javaScript = new JavaScriptContext (this, ecmascript, getWorldURL () .str (), index);
 			break;
 		}
-		
-		try
-		{
-			javaScript .reset (new JavaScriptContext (this, loadDocument (URL), index));
-			break;
-		}
-		catch (const X3DError &)
-		{ }
 
 		++ index;
 	}
@@ -116,19 +110,36 @@ Script::initialize ()
 	// Assign an empty script if no working script is found.
 
 	if (not javaScript)
-		javaScript .reset (new JavaScriptContext (this, "", 0));
+		javaScript = new JavaScriptContext (this, "", "", 0);
 
 	// Initialize.
 
-	javaScript -> initialize ();
+	javaScript -> setup ();
 
-	shutdown .addInterest (javaScript .get (), &JavaScriptContext::shutdown);
+	shutdown .addInterest (*javaScript, &JavaScriptContext::set_shutdown);
+}
+
+bool
+Script::loadDocument (const SFString & URL, std::string & ecmascript)
+{
+	if (RegEx::ECMAScript .FullMatch (URL .str (), &ecmascript))
+		return true;
+	
+	try
+	{
+		ecmascript = std::move (loadDocument (URL));
+		return true;
+	}
+	catch (const X3DError &)
+	{ }
+	
+	return false;
 }
 
 void
 Script::prepareEvents ()
 {
-	javaScript -> prepareEvents ();
+	javaScript -> set_prepareEvents ();
 }
 
 void
@@ -136,7 +147,7 @@ Script::eventsProcessed ()
 {
 	X3DScriptNode::eventsProcessed ();
 
-	javaScript -> eventsProcessed ();
+	javaScript -> set_eventsProcessed ();
 }
 
 void
@@ -144,7 +155,8 @@ Script::dispose ()
 {
 	X3DScriptNode::dispose ();
 
-	javaScript .reset ();
+	// Dispose later thus shutdown can be called.
+	javaScript .dispose ();
 }
 
 } // X3D
