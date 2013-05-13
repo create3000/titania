@@ -1,5 +1,9 @@
 2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* jsBrowser.cpp: 
+
+2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Error.h:
