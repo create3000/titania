@@ -62,15 +62,6 @@
 namespace titania {
 namespace X3D {
 
-enum LoadState
-{
-	NOT_STARTED_STATE,
-	IN_PROGRESS_STATE,
-	COMPLETE_STATE,
-	FAILED_STATE
-
-};
-
 typedef std::map <const basic::uri, basic::uri> URNIndex;
 
 class X3DUrlObject :

@@ -94,6 +94,11 @@ BrowserWindow::initialize ()
 
 	// OutlineEditor
 	getOutlineEditor () .reparent (getOutlineEditorBox (), getWindow ());
+	
+	// Console
+	Pango::FontDescription font;
+	font .set_family ("monospace");
+	getConsole () .override_font (font);
 
 	getWindow () .grab_focus ();
 }

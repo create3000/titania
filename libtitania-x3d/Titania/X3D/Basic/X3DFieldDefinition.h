@@ -62,15 +62,6 @@
 namespace titania {
 namespace X3D {
 
-enum AccessType
-{
-	initializeOnly = 1, // 0b001
-	inputOnly      = 2, // 0b010
-	outputOnly     = 4, // 0b100
-	inputOutput    = 7  // 0b111
-
-};
-
 class X3DExecutionContext;
 
 class X3DFieldDefinition :

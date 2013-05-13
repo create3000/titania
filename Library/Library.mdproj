@@ -1999,6 +1999,8 @@
     <None Include="Prototypes\Geometry3D\QuadSphere\QuadSphere.wrl" />
     <None Include="Prototypes\Geometry3D\QuadSphere\example.wrl" />
     <None Include="Prototypes\Geometry3D\QuadSphere\earth.png" />
+    <None Include="Tests\Scripting\Scene.wrl" />
+    <None Include="Tests\Scripting\X3DConstants.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

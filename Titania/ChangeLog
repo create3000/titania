@@ -1,6 +1,11 @@
 2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.ui:
+	* BrowserWindow.cpp: 
+
+2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.ui:
 	* HistoryEditor.cpp:
 	* X3DBrowserWindowUI.h:
 	* X3DBrowserWindowUI.cpp: 

@@ -1,5 +1,23 @@
 2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Error.h:
+	* X3DConstants.h:
+	* X3DConstants.cpp:
+	* X3DFieldDefinition.h:
+	* jsBrowser.h:
+	* X3DUrlObject.h:
+	* jsBrowser.cpp:
+	* jsX3DScene.cpp:
+	* jsX3DConstants.h:
+	* jsX3DConstants.cpp:
+	* JavaScriptContext.cpp:
+	* jsX3DExecutionContext.h:
+	* jsX3DExecutionContext.cpp: 
+
+2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.cpp:
 	* Proto.h:
 	* Proto.cpp:

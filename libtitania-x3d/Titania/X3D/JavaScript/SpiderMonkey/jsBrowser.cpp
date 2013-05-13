@@ -76,14 +76,14 @@ JSClass jsBrowser::static_class = {
 
 // X3D properties
 JSPropertySpec jsBrowser::properties [ ] = {
-	{ "name",                NAME,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, name,                NULL },
-	{ "version",             VERSION,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, version,             NULL },
-	{ "currentSpeed",        CURRENTSPEED,        JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentSpeed,        NULL },
-	{ "currentFrameRate",    CURRENTFRAMERATE,    JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentFrameRate,    NULL },
-	{ "description",         DESCRIPTION,         JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT,                   description,         description },
-	{ "supportedComponents", SUPPORTEDCOMPONENTS, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, supportedComponents, NULL },
-	{ "supportedProfiles",   SUPPORTEDPROFILES,   JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, supportedProfiles,   NULL },
-	{ "currentScene",        CURRENTSCENE,        JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentScene,        NULL },
+	{ "name",                NAME,                 JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, name,                NULL },
+	{ "version",             VERSION,              JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, version,             NULL },
+	{ "currentSpeed",        CURRENT_SPEED,        JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentSpeed,        NULL },
+	{ "currentFrameRate",    CURRENT_FRAMERATE,    JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentFrameRate,    NULL },
+	{ "description",         DESCRIPTION,          JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT,                   description,         description },
+	{ "supportedComponents", SUPPORTED_COMPONENTS, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, supportedComponents, NULL },
+	{ "supportedProfiles",   SUPPORTED_PROFILES,   JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, supportedProfiles,   NULL },
+	{ "currentScene",        CURRENT_SCENE,        JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentScene,        NULL },
 	{ 0 }
 
 };
@@ -193,13 +193,10 @@ jsBrowser::currentScene (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 
 	if (scene)
 		return jsX3DScene::create (context, scene, vp);
+		
+	X3DExecutionContext* executionContext = script -> getExecutionContext ();
 
-	X3DExecutionContext* executionContext = dynamic_cast <X3DExecutionContext*> (scene -> getExecutionContext ());
-
-	if (executionContext)
-		return jsX3DExecutionContext::create (context, executionContext, vp);
-
-	return JS_FALSE;
+	return jsX3DExecutionContext::create (context, executionContext, vp);
 }
 
 // X3D functions

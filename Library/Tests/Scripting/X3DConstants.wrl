@@ -1,0 +1,166 @@
+#VRML V2.0 utf8
+
+META "title" "X3DConstants"
+
+DEF Touch TouchSensor { }
+
+Shape {
+  appearance Appearance {
+    material Material { }
+  }
+  geometry Box { }
+}
+
+DEF Debug Script {
+  eventIn SFTime set_time
+
+  url "vrmlscript:
+
+function set_time ()
+{
+	print ();
+	print ('+ X3DConstants ++++++++++++++++++++++++++++++++++++++++');	
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
+
+	print ();
+	print (X3DConstants);
+	
+	print ();
+	print ('INITIALIZED_EVENT: ' + X3DConstants .INITIALIZED_EVENT);
+	print ('SHUTDOWN_EVENT:    ' + X3DConstants .SHUTDOWN_EVENT);
+	
+	print ();
+	print ('CONNECTION_ERROR:  ' + X3DConstants .CONNECTION_ERROR);
+	print ('INITIALIZED_ERROR: ' + X3DConstants .INITIALIZED_ERROR);
+	
+	print ();
+	print ('NOT_STARTED_STATE: ' + X3DConstants .NOT_STARTED_STATE);
+	print ('IN_PROGRESS_STATE: ' + X3DConstants .IN_PROGRESS_STATE);
+	print ('COMPLETE_STATE:    ' + X3DConstants .COMPLETE_STATE);
+	print ('FAILED_STATE:      ' + X3DConstants .FAILED_STATE);
+
+	print ();
+	print ('initializeOnly: ' + X3DConstants .initializeOnly);
+	print ('inputOnly:      ' + X3DConstants .inputOnly);
+	print ('outputOnly:     ' + X3DConstants .outputOnly);
+	print ('inputOutput:    ' + X3DConstants .inputOutput);
+
+	print ();
+	print ('SFBool:      ' + X3DConstants .SFBool);
+	print ('SFColor:     ' + X3DConstants .SFColor);
+	print ('SFColorRGBA: ' + X3DConstants .SFColorRGBA);
+	print ('SFDouble:    ' + X3DConstants .SFDouble);
+	print ('SFFloat:     ' + X3DConstants .SFFloat);
+	print ('SFInt32:     ' + X3DConstants .SFInt32);
+	print ('SFImage:     ' + X3DConstants .SFImage);
+	print ('SFMatrix3d:  ' + X3DConstants .SFMatrix3d);
+	print ('SFMatrix3f:  ' + X3DConstants .SFMatrix3f);
+	print ('SFMatrix4d:  ' + X3DConstants .SFMatrix4d);
+	print ('SFMatrix4f:  ' + X3DConstants .SFMatrix4f);
+	print ('SFNode:      ' + X3DConstants .SFNode);
+	print ('SFRotation:  ' + X3DConstants .SFRotation);
+	print ('SFString:    ' + X3DConstants .SFString);
+	print ('SFTime:      ' + X3DConstants .SFTime);
+	print ('SFVec2d:     ' + X3DConstants .SFVec2d);
+	print ('SFVec2f:     ' + X3DConstants .SFVec2f);
+	print ('SFVec3d:     ' + X3DConstants .SFVec3d);
+	print ('SFVec3f:     ' + X3DConstants .SFVec3f);
+	print ('SFVec4d:     ' + X3DConstants .SFVec4d);
+	print ('SFVec4f:     ' + X3DConstants .SFVec4f);
+	print ('MFBool:      ' + X3DConstants .MFBool);
+	print ('MFColor:     ' + X3DConstants .MFColor);
+	print ('MFColorRGBA: ' + X3DConstants .MFColorRGBA);
+	print ('MFDouble:    ' + X3DConstants .MFDouble);
+	print ('MFFloat:     ' + X3DConstants .MFFloat);
+	print ('MFImage:     ' + X3DConstants .MFImage);
+	print ('MFInt32:     ' + X3DConstants .MFInt32);
+	print ('MFMatrix3d:  ' + X3DConstants .MFMatrix3d);
+	print ('MFMatrix3f:  ' + X3DConstants .MFMatrix3f);
+	print ('MFMatrix4d:  ' + X3DConstants .MFMatrix4d);
+	print ('MFMatrix4f:  ' + X3DConstants .MFMatrix4f);
+	print ('MFNode:      ' + X3DConstants .MFNode);
+	print ('MFRotation:  ' + X3DConstants .MFRotation);
+	print ('MFString:    ' + X3DConstants .MFString);
+	print ('MFTime:      ' + X3DConstants .MFTime);
+	print ('MFVec2d:     ' + X3DConstants .MFVec2d);
+	print ('MFVec2f:     ' + X3DConstants .MFVec2f);
+	print ('MFVec3d:     ' + X3DConstants .MFVec3d);
+	print ('MFVec3f:     ' + X3DConstants .MFVec3f);
+	print ('MFVec4d:     ' + X3DConstants .MFVec4d);
+	print ('MFVec4f:     ' + X3DConstants .MFVec4f);
+	
+	print ();
+	print ('X3DAppearanceChildNode:           ' + X3DConstants .X3DAppearanceChildNode);
+	print ('X3DAppearanceNode:                ' + X3DConstants .X3DAppearanceNode);
+	print ('X3DBackgroundNode:                ' + X3DConstants .X3DBackgroundNode);
+	print ('X3DBindableNode:                  ' + X3DConstants .X3DBindableNode);
+	print ('X3DBoundedObject:                 ' + X3DConstants .X3DBoundedObject);
+	print ('X3DChaserNode:                    ' + X3DConstants .X3DChaserNode);
+	print ('X3DChildNode:                     ' + X3DConstants .X3DChildNode);
+	print ('X3DColorNode:                     ' + X3DConstants .X3DColorNode);
+	print ('X3DComposedGeometryNode:          ' + X3DConstants .X3DComposedGeometryNode);
+	print ('X3DCoordinateNode:                ' + X3DConstants .X3DCoordinateNode);
+	print ('X3DDamperNode:                    ' + X3DConstants .X3DDamperNode);
+	print ('X3DDragSensorNode:                ' + X3DConstants .X3DDragSensorNode);
+	print ('X3DEnvironmentalSensorNode:       ' + X3DConstants .X3DEnvironmentalSensorNode);
+	print ('X3DEnvironmentTextureNode:        ' + X3DConstants .X3DEnvironmentTextureNode);
+	print ('X3DFogObject:                     ' + X3DConstants .X3DFogObject);
+	print ('X3DFollowerNode:                  ' + X3DConstants .X3DFollowerNode);
+	print ('X3DFontStyleNode:                 ' + X3DConstants .X3DFontStyleNode);
+	print ('X3DGeometricPropertyNode:         ' + X3DConstants .X3DGeometricPropertyNode);
+	print ('X3DGeometryNode:                  ' + X3DConstants .X3DGeometryNode);
+	print ('X3DGroupingNode:                  ' + X3DConstants .X3DGroupingNode);
+	print ('X3DInfoNode:                      ' + X3DConstants .X3DInfoNode);
+	print ('X3DInterpolatorNode:              ' + X3DConstants .X3DInterpolatorNode);
+	print ('X3DKeyDeviceSensorNode:           ' + X3DConstants .X3DKeyDeviceSensorNode);
+	print ('X3DLayerNode:                     ' + X3DConstants .X3DLayerNode);
+	print ('X3DLayoutNode:                    ' + X3DConstants .X3DLayoutNode);
+	print ('X3DLightNode:                     ' + X3DConstants .X3DLightNode);
+	print ('X3DMaterialNode:                  ' + X3DConstants .X3DMaterialNode);
+	print ('X3DMetadataObject:                ' + X3DConstants .X3DMetadataObject);
+	print ('X3DNBodyCollidableNode:           ' + X3DConstants .X3DNBodyCollidableNode);
+	print ('X3DNBodyCollisionSpaceNode:       ' + X3DConstants .X3DNBodyCollisionSpaceNode);
+	print ('X3DNetworkSensorNode:             ' + X3DConstants .X3DNetworkSensorNode);
+	print ('X3DNode:                          ' + X3DConstants .X3DNode);
+	print ('X3DNormalNode:                    ' + X3DConstants .X3DNormalNode);
+	print ('X3DNurbsControlCurveNode:         ' + X3DConstants .X3DNurbsControlCurveNode);
+	print ('X3DNurbsSurfaceGeometryNode:      ' + X3DConstants .X3DNurbsSurfaceGeometryNode);
+	print ('X3DParametricGeometryNode:        ' + X3DConstants .X3DParametricGeometryNode);
+	print ('X3DParticleEmitterNode:           ' + X3DConstants .X3DParticleEmitterNode);
+	print ('X3DParticlePhysicsModelNode:      ' + X3DConstants .X3DParticlePhysicsModelNode);
+	print ('X3DPickableObject:                ' + X3DConstants .X3DPickableObject);
+	print ('X3DPickingNode:                   ' + X3DConstants .X3DPickingNode);
+	print ('X3DPickSensorNode:                ' + X3DConstants .X3DPickSensorNode);
+	print ('X3DPointingDeviceSensorNode:      ' + X3DConstants .X3DPointingDeviceSensorNode);
+	print ('X3DProductStructureChildNode:     ' + X3DConstants .X3DProductStructureChildNode);
+	print ('X3DProgrammableShaderObject:      ' + X3DConstants .X3DProgrammableShaderObject);
+	print ('X3DPropertyNode:                  ' + X3DConstants .X3DPropertyNode);
+	print ('X3DPrototypeInstance:             ' + X3DConstants .X3DPrototypeInstance);
+	print ('X3DRigidJointNode:                ' + X3DConstants .X3DRigidJointNode);
+	print ('X3DScriptNode:                    ' + X3DConstants .X3DScriptNode);
+	print ('X3DSensorNode:                    ' + X3DConstants .X3DSensorNode);
+	print ('X3DSequencerNode:                 ' + X3DConstants .X3DSequencerNode);
+	print ('X3DShaderNode:                    ' + X3DConstants .X3DShaderNode);
+	print ('X3DShapeNode:                     ' + X3DConstants .X3DShapeNode);
+	print ('X3DSoundNode:                     ' + X3DConstants .X3DSoundNode);
+	print ('X3DSoundSourceNode:               ' + X3DConstants .X3DSoundSourceNode);
+	print ('X3DTexture2DNode:                 ' + X3DConstants .X3DTexture2DNode);
+	print ('X3DTexture3DNode:                 ' + X3DConstants .X3DTexture3DNode);
+	print ('X3DTextureCoordinateNode:         ' + X3DConstants .X3DTextureCoordinateNode);
+	print ('X3DTextureNode:                   ' + X3DConstants .X3DTextureNode);
+	print ('X3DTextureTransformNode:          ' + X3DConstants .X3DTextureTransformNode);
+	print ('X3DTimeDependentNode:             ' + X3DConstants .X3DTimeDependentNode);
+	print ('X3DTouchSensorNode:               ' + X3DConstants .X3DTouchSensorNode);
+	print ('X3DTriggerNode:                   ' + X3DConstants .X3DTriggerNode);
+	print ('X3DUrlObject:                     ' + X3DConstants .X3DUrlObject);
+	print ('X3DVertexAttributeNode:           ' + X3DConstants .X3DVertexAttributeNode);
+	print ('X3DViewpointNode:                 ' + X3DConstants .X3DViewpointNode);
+	print ('X3DViewpointObject:               ' + X3DConstants .X3DViewpointObject);
+	print ('X3DViewportNode:                  ' + X3DConstants .X3DViewportNode);
+
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
+}
+"
+}
+
+ROUTE Touch.touchTime TO Debug.set_time

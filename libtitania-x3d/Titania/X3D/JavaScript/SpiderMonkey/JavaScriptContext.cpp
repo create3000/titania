@@ -52,6 +52,7 @@
 
 #include "String.h"
 #include "jsBrowser.h"
+#include "jsX3DConstants.h"
 #include "jsFields.h"
 #include "jsGlobals.h"
 #include "jsfield.h"
@@ -151,6 +152,7 @@ JavaScriptContext::initContext ()
 	JS_SetContextPrivate (context, this);
 
 	jsBrowser::defineObject (context, global);
+	jsX3DConstants::defineObject (context, global);
 
 	jsSFColor::init     (context, global);
 	jsSFColorRGBA::init (context, global);

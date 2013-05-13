@@ -490,7 +490,6 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsComponentInfoArray.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsProfileInfoArray.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DExecutionContext.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DScene.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\String.h" />
     <None Include="Titania\X3D\Types\String.h" />
     <None Include="Titania\X3D\Basic\X3DBaseNode.h" />
@@ -540,6 +539,8 @@
     <None Include="Titania\X3D\Bits\config.h" />
     <None Include="share\titania\handles\TransformHandle.wrl" />
     <None Include="Titania\X3D\Parser\Grammar.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DScene.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstants.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -569,7 +570,6 @@
     <Compile Include="Titania\X3D\Basic\X3DContext.cpp" />
     <Compile Include="Titania\X3D\Basic\X3DFieldDefinition.cpp" />
     <Compile Include="Titania\X3D\Bits\Error.cpp" />
-    <Compile Include="Titania\X3D\Bits\X3DConstants.cpp" />
     <Compile Include="Titania\X3D\Browser\Browser.cpp" />
     <Compile Include="Titania\X3D\Browser\HitArray.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DBrowser.cpp" />
@@ -914,7 +914,6 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsComponentInfoArray.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsProfileInfoArray.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DExecutionContext.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DScene.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\String.cpp" />
     <Compile Include="Titania\X3D\Basic\X3DBaseNode.cpp" />
     <Compile Include="Titania\X3D\Base\X3DChildObject.cpp" />
@@ -957,6 +956,8 @@
     <Compile Include="Titania\X3D\Handles\TransformHandle.cpp" />
     <Compile Include="Titania\X3D\Bits\config.cpp" />
     <Compile Include="Titania\X3D\Parser\Grammar.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DScene.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstants.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

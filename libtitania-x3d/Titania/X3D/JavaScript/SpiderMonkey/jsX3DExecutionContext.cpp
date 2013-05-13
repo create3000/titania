@@ -68,7 +68,11 @@ JSClass jsX3DExecutionContext::static_class = {
 };
 
 JSPropertySpec jsX3DExecutionContext::properties [ ] = {
-	{ "rootNodes", ROOTNODES, JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, rootNodes, rootNodes },
+	{ "specificationVersion", SPECIFICATION_VERSION, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, specificationVersion, NULL },
+	{ "encoding",             ENCODING,              JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, encoding, NULL },
+	{ "worldURL",             WORLD_URL,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, worldURL, NULL },
+	
+	{ "rootNodes",            ROOT_NODES,            JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, rootNodes, rootNodes },
 	{ 0 }
 
 };
@@ -105,6 +109,30 @@ jsX3DExecutionContext::create (JSContext* context, X3DExecutionContext* executio
 	*vp = OBJECT_TO_JSVAL (result);
 
 	return JS_TRUE;
+}
+
+JSBool
+jsX3DExecutionContext::specificationVersion (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+
+	return JS_NewStringValue (context, executionContext -> getSpecificationVersion (), vp);
+}
+
+JSBool
+jsX3DExecutionContext::encoding (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+
+	return JS_NewStringValue (context, executionContext -> getEncoding (), vp);
+}
+
+JSBool
+jsX3DExecutionContext::worldURL (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+
+	return JS_NewStringValue (context, executionContext -> getWorldURL (), vp);
 }
 
 JSBool
@@ -157,8 +185,8 @@ jsX3DExecutionContext::createNode (JSContext* context, uintN argc, jsval* vp)
 				return JS_FALSE;
 
 			auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
-			auto node = executionContext -> createNode (JS_GetString (context, name));
-	
+			auto node             = executionContext -> createNode (JS_GetString (context, name));
+
 			node -> setup ();
 
 			return jsSFNode::create (context, new SFNode <X3DBaseNode> (node), &JS_RVAL (context, vp));
@@ -191,7 +219,7 @@ jsX3DExecutionContext::createProto (JSContext* context, uintN argc, jsval* vp)
 
 			auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 			auto node             = executionContext -> createProtoInstance (JS_GetString (context, name));
-	
+
 			node -> setup ();
 
 			return jsSFNode::create (context, new SFNode <X3DBaseNode> (*node), &JS_RVAL (context, vp));

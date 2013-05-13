@@ -23,7 +23,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \
 	Titania/X3D/Bits/config.cpp \
 	Titania/X3D/Bits/Error.cpp \
-	Titania/X3D/Bits/X3DConstants.cpp \
 	Titania/X3D/Browser/Browser.cpp \
 	Titania/X3D/Browser/Console.cpp \
 	Titania/X3D/Browser/Geometry2D/Arc2DProperties.cpp \
@@ -395,6 +394,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/jsGlobals.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsProfileInfoArray.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DArrayField.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/jsX3DConstants.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DExecutionContext.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DFieldDefinition.cpp \

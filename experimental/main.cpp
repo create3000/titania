@@ -184,6 +184,18 @@ typedef math::sphere3 <float>   Sphere3f;
 
 #include <Titania/InputOutput.h>
 
+namespace foo {
+ enum bar {
+  A, B
+ };
+}
+
+ using foo::bar;
+ using foo::A;
+ using foo::B;
+
+bar a = A;
+
 std::string
 create_string ()
 { return std::string (200000000, '#'); }

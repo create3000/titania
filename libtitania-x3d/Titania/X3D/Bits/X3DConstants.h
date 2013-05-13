@@ -54,9 +54,49 @@
 namespace titania {
 namespace X3D {
 
-class X3DConstants
+namespace X3DConstants
 {
-public:
+	enum EventType
+	{
+		INITIALIZED_EVENT,
+		SHUTDOWN_EVENT
+	};
+
+	enum ErrorType
+	{
+		BROWSER_UNAVAILABLE,
+		CONNECTION_ERROR,
+		DISPOSED,
+		IMPORTED_NODE,
+		INITIALIZED_ERROR,
+		INSUFFICIENT_CAPABILITIES,
+		INVALID_ACCESS_TYPE,
+		INVALID_BROWSER,
+		INVALID_DOCUMENT,
+		INVALID_EXECUTION_CONTEXT,
+		INVALID_FIELD,
+		INVALID_NAME,
+		INVALID_NODE,
+		INVALID_OPERATION_TIMING,
+		INVALID_SCENE,
+		INVALID_URL,
+		INVALID_X3D,
+		NODE_IN_USE,
+		NODE_NOT_AVAILABLE,
+		NOT_SHARED,
+		NOT_SUPPORTED,
+		URL_UNAVAILABLE
+
+	};
+
+	enum LoadState
+	{
+		NOT_STARTED_STATE,
+		IN_PROGRESS_STATE,
+		COMPLETE_STATE,
+		FAILED_STATE
+
+	};
 
 	enum AccessType
 	{
@@ -187,6 +227,42 @@ public:
 	};
 
 };
+
+using X3DConstants::LoadState;
+using X3DConstants::NOT_STARTED_STATE;
+using X3DConstants::IN_PROGRESS_STATE;
+using X3DConstants::COMPLETE_STATE;
+using X3DConstants::FAILED_STATE;
+
+using X3DConstants::ErrorType;
+using X3DConstants::BROWSER_UNAVAILABLE;
+using X3DConstants::CONNECTION_ERROR;
+using X3DConstants::DISPOSED;
+using X3DConstants::IMPORTED_NODE;
+using X3DConstants::INITIALIZED_ERROR;
+using X3DConstants::INSUFFICIENT_CAPABILITIES;
+using X3DConstants::INVALID_ACCESS_TYPE;
+using X3DConstants::INVALID_BROWSER;
+using X3DConstants::INVALID_DOCUMENT;
+using X3DConstants::INVALID_EXECUTION_CONTEXT;
+using X3DConstants::INVALID_FIELD;
+using X3DConstants::INVALID_NAME;
+using X3DConstants::INVALID_NODE;
+using X3DConstants::INVALID_OPERATION_TIMING;
+using X3DConstants::INVALID_SCENE;
+using X3DConstants::INVALID_URL;
+using X3DConstants::INVALID_X3D;
+using X3DConstants::NODE_IN_USE;
+using X3DConstants::NODE_NOT_AVAILABLE;
+using X3DConstants::NOT_SHARED;
+using X3DConstants::NOT_SUPPORTED;
+using X3DConstants::URL_UNAVAILABLE;
+
+using X3DConstants::AccessType;
+using X3DConstants::initializeOnly;
+using X3DConstants::inputOnly;
+using X3DConstants::outputOnly;
+using X3DConstants::inputOutput;
 
 } // X3D
 } // titania

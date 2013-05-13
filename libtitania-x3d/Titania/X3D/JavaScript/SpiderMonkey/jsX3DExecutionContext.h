@@ -80,16 +80,20 @@ private:
 
 	enum Property
 	{
-		SPECIFICATIONVERSION,
+		SPECIFICATION_VERSION,
 		ENCODING,
+		WORLD_URL,
 		PROFILE,
 		COMPONENTS,
-		WORLDURL,
-		ROOTNODES,
+		ROOT_NODES,
 		PROTOS,
 		EXTERNPROTOS,
 		ROUTES
 	};
+
+	static JSBool specificationVersion (JSContext* context, JSObject* obj, jsid id, jsval* vp);
+	static JSBool encoding (JSContext* context, JSObject* obj, jsid id, jsval* vp);
+	static JSBool worldURL (JSContext* context, JSObject* obj, jsid id, jsval* vp);
 
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, JSBool, jsval*);

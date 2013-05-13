@@ -1,0 +1,48 @@
+#VRML V2.0 utf8
+
+META "title" "Scene"
+
+PROTO Test [ ]
+{
+  Group { }
+}
+
+DEF Touch TouchSensor { }
+
+Shape {
+  appearance Appearance {
+    material Material { }
+  }
+  geometry Box { }
+}
+
+DEF Debug Script {
+  eventIn SFTime set_time
+
+  url "vrmlscript:
+
+function set_time ()
+{
+	print ();
+	print ('+ Scene +++++++++++++++++++++++++++++++++++++++++++++++');	
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+
+	var scene = Browser .currentScene;
+	
+	print ();
+	print (scene);
+	
+	print ();
+	print ('specificationVersion: ' + scene .specificationVersion);	
+	print ('encoding:             ' + scene .encoding);	
+	print ('worldURL:             ' + scene .worldURL);
+
+	print ();
+	print ('createProto:          ' + scene .createProto ('Test'));
+
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
+}
+"
+}
+
+ROUTE Touch.touchTime TO Debug.set_time
