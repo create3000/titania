@@ -5,7 +5,9 @@ META "title" "TriangleSphere"
 EXTERNPROTO TriangleSphere [
   field SFString type
   field SFInt32  order
+  field SFFloat  radius
   field SFBool   solid
+  field SFFloat  creaseAngle
 ]
 "TriangleSphere.wrl"
 
@@ -24,6 +26,7 @@ Transform {
       geometry TriangleSphere {
         type "OCTAHEDRON"
         order 0
+        creaseAngle 0
       }
     }
     Shape {
@@ -50,6 +53,7 @@ Transform {
       geometry TriangleSphere {
         type "OCTAHEDRON"
         order 1
+        creaseAngle 0
       }
     }
     Shape {
@@ -76,6 +80,7 @@ Transform {
       geometry TriangleSphere {
         type "OCTAHEDRON"
         order 2
+        creaseAngle 0
       }
     }
     Shape {
@@ -102,6 +107,7 @@ Transform {
       geometry TriangleSphere {
         type "OCTAHEDRON"
         order 3
+        creaseAngle 0
       }
     }
     Shape {
@@ -128,6 +134,7 @@ Transform {
       geometry TriangleSphere {
         type "ICOSAHEDRON"
         order 0
+        creaseAngle 0
       }
     }
     Shape {
@@ -154,6 +161,7 @@ Transform {
       geometry TriangleSphere {
         type "ICOSAHEDRON"
         order 1
+        creaseAngle 0
       }
     }
     Shape {
@@ -180,6 +188,7 @@ Transform {
       geometry TriangleSphere {
         type "ICOSAHEDRON"
         order 2
+        creaseAngle 0
       }
     }
     Shape {
@@ -206,6 +215,7 @@ Transform {
       geometry TriangleSphere {
         type "ICOSAHEDRON"
         order 3
+        creaseAngle 0
       }
     }
     Shape {

@@ -156,9 +156,10 @@ jsX3DExecutionContext::createNode (JSContext* context, uintN argc, jsval* vp)
 			if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 				return JS_FALSE;
 
-			X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-
-			SFNode <X3DBaseNode> node = executionContext -> createNode (JS_GetString (context, name));
+			auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			auto node = executionContext -> createNode (JS_GetString (context, name));
+	
+			node -> setup ();
 
 			return jsSFNode::create (context, new SFNode <X3DBaseNode> (node), &JS_RVAL (context, vp));
 		}
@@ -188,11 +189,12 @@ jsX3DExecutionContext::createProto (JSContext* context, uintN argc, jsval* vp)
 			if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 				return JS_FALSE;
 
-			X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+			auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			auto node             = executionContext -> createProtoInstance (JS_GetString (context, name));
+	
+			node -> setup ();
 
-			SFNode <X3DPrototypeInstance> node = executionContext -> createProtoInstance (JS_GetString (context, name));
-
-			return jsSFNode::create (context, new SFNode <X3DBaseNode> (node .getValue ()), &JS_RVAL (context, vp));
+			return jsSFNode::create (context, new SFNode <X3DBaseNode> (*node), &JS_RVAL (context, vp));
 		}
 		catch (const X3DError & exception)
 		{

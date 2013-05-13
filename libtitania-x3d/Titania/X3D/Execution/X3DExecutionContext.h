@@ -154,14 +154,15 @@ public:
 	       Error <DISPOSED>);
 
 	SFNode <X3DBaseNode>
-	createNode (const std::string &, bool = true)
+	createNode (const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	SFNode <X3DPrototypeInstance>
-	createProtoInstance (const std::string &, bool = true)
+	createProtoInstance (const std::string &)
 	throw (Error <INVALID_NAME>,
+	       Error <INVALID_X3D>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);

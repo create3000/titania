@@ -69,7 +69,7 @@ public:
 
 	virtual
 	X3DPrototypeInstance*
-	createInstance (bool) = 0;
+	createInstance () = 0;
 
 	///  @name Comment handling
 

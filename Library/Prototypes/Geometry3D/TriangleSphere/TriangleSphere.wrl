@@ -13,9 +13,9 @@
 PROTO TriangleSphere [
   field SFString type "OCTAHEDRON"
   field SFInt32  order 2
+  field SFFloat  radius 1
   field SFBool   solid TRUE
-  # 3.1415927
-  field SFFloat  creaseAngle 0
+  field SFFloat  creaseAngle 3.1415927
 ]
 {
   DEF Geometry IndexedFaceSet {

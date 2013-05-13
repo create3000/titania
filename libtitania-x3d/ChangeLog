@@ -1,5 +1,19 @@
 2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.cpp:
+	* Proto.h:
+	* Proto.cpp:
+	* X3DProto.h:
+	* ExternProto.h:
+	* ExternProto.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DPrototypeInstance.cpp:
+	* jsX3DExecutionContext.cpp: 
+
+2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Script.h:
 	* Script.cpp:
 	* jsGlobals.h:

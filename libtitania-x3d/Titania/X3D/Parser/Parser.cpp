@@ -1255,11 +1255,11 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 
 		try
 		{
-			_node = getExecutionContext () -> createNode (_nodeTypeId, false);
+			_node = getExecutionContext () -> createNode (_nodeTypeId);
 		}
 		catch (const Error <INVALID_NAME> &)
 		{
-			_node = getExecutionContext () -> createProtoInstance (_nodeTypeId, false) .getValue ();
+			_node = getExecutionContext () -> createProtoInstance (_nodeTypeId) .getValue ();
 		}
 
 		X3DBaseNode* _basicNode = _node .getValue ();

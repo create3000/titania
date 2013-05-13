@@ -229,7 +229,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 SFNode <X3DBaseNode>
-X3DExecutionContext::createNode (const std::string & name, bool setup)
+X3DExecutionContext::createNode (const std::string & name)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -250,35 +250,37 @@ throw (Error <INVALID_NAME>,
 
 	SFNode <X3DBaseNode> node = declaration -> create (this);
 
-	if (setup)
-		node -> setup ();
-
 	return node;
 }
 
 SFNode <X3DPrototypeInstance>
-X3DExecutionContext::createProtoInstance (const std::string & name, bool setup)
+X3DExecutionContext::createProtoInstance (const std::string & name)
 throw (Error <INVALID_NAME>,
+       Error <INVALID_X3D>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	try
 	{
-		return protos .find_last (name) -> createInstance (setup);
+		return protos .find_last (name) -> createInstance ();
 	}
 	catch (const std::out_of_range &)
 	{
 		try
 		{
-			return externProtos .find_last (name) -> createInstance (setup);
+			return externProtos .find_last (name) -> createInstance ();
 		}
 		catch (const std::out_of_range &)
 		{
 			if (not isScene ())
-				return getExecutionContext () -> createProtoInstance (name, setup);
+				return getExecutionContext () -> createProtoInstance (name);
 
 			throw Error <INVALID_NAME> ("Unknown proto type '" + name + "'.");
+		}
+		catch (const X3DError & error)
+		{
+			throw Error <INVALID_X3D> (error .what ());		
 		}
 	}
 }

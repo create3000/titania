@@ -3,11 +3,11 @@
 META "title" "QuadSphere"
 
 EXTERNPROTO QuadSphere [
-  exposedField SFInt32 uDimension
-  exposedField SFInt32 vDimension
-  exposedField SFFloat radius
-  field        SFBool  solid
-  field        SFFloat creaseAngle
+  field SFInt32 uDimension
+  field SFInt32 vDimension
+  field SFFloat radius
+  field SFBool  solid
+  field SFFloat creaseAngle
 ]
 "QuadSphere.wrl"
 

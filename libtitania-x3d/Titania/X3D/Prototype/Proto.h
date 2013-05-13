@@ -70,7 +70,7 @@ public:
 
 	virtual
 	X3DPrototypeInstance*
-	createInstance (bool = true);
+	createInstance ();
 
 	///  @name Tests
 

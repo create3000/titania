@@ -64,7 +64,7 @@ class X3DPrototypeInstance :
 {
 public:
 
-	X3DPrototypeInstance (X3DExecutionContext* const, Proto* const);
+	X3DPrototypeInstance (X3DExecutionContext* const, const SFNode <Proto> &);
 
 	virtual
 	void
