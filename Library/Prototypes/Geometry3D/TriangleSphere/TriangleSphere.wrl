@@ -380,11 +380,11 @@ TriangleSphere .prototype .resolveOverlap = function (i0, i1)
 
 TriangleSphere .prototype .applyRadius = function ()
 {
-	if (radius == 1)
+	if (this .radius == 1)
 		return;
 
 	for (var i = 0; i < this .point .length; ++ i)
-		this .point [i] = this .point [i] .multiply (radius);
+		this .point [i] = this .point [i] .multiply (this .radius);
 }
 
 function initialize ()
