@@ -6,6 +6,7 @@
 # TriangleSphere : IndexedFaceSet [
 #   SFString  [ ]  type        "ICOSAHEDRON" [OCTAHEDRON, ICOSAHEDRON]
 #   SFInt32   [ ]  order       2             (0,∞)
+#   SFFloat   [ ]  radius      1             (0,∞)
 #   SFBool    [ ]  solid       TRUE
 #   SFFloat   [ ]  creaseAngle π             (0,∞)
 # }
@@ -28,19 +29,22 @@ PROTO TriangleSphere [
   DEF TriangleSphere Script {
     field SFString type IS type
     field SFInt32  order IS order
+    field SFFloat  radius IS radius
     field SFNode   geometry USE Geometry
 
     url "javascript:
 
 var p = (1 + Math .sqrt (5)) / 2; // Golden ratio
 
-TriangleSphere = function (type, order)
+TriangleSphere = function (type, order, radius)
 {
-	this .type  = type;
-	this .order = order;
+	this .type   = type;
+	this .order  = order;
+	this .radius = radius;
 
 	this .coord ();
 	this .sphericalMapping (this .coordIndex, this .point);
+	this .applyRadius ();
 }
 
 TriangleSphere .prototype .getCoordIndex = function ()
@@ -374,9 +378,18 @@ TriangleSphere .prototype .resolveOverlap = function (i0, i1)
 	return texCoordIndex [i1];
 }
 
+TriangleSphere .prototype .applyRadius = function ()
+{
+	if (radius == 1)
+		return;
+
+	for (var i = 0; i < this .point .length; ++ i)
+		this .point [i] = this .point [i] .multiply (radius);
+}
+
 function initialize ()
 {
-	var icoSphere = new TriangleSphere (type, order);
+	var icoSphere = new TriangleSphere (type, order, radius);
 
 	geometry .set_texCoordIndex = icoSphere .getTexCoordIndex ();
 	geometry .texCoord .point   = icoSphere .getTexPoint ();
