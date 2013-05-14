@@ -94,7 +94,7 @@ jsSFNode::init (JSContext* context, JSObject* global)
 }
 
 JSBool
-jsSFNode::create (JSContext* context, X3DField <X3DBaseNode*>* field, jsval* vp, const bool seal)
+jsSFNode::create (JSContext* context, SFNode <X3DBaseNode>* field, jsval* vp, const bool seal)
 {
 	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 
@@ -157,7 +157,7 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 JSBool
 jsSFNode::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
-	X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, obj);
+	SFNode <X3DBaseNode>* sfnode = (SFNode <X3DBaseNode>*)JS_GetPrivate (context, obj);
 
 	if (not sfnode or not * sfnode or not sfnode -> getValue () -> getFieldDefinitions () .size ())
 	{
@@ -217,7 +217,7 @@ jsSFNode::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	if (JSID_IS_STRING (id))
 	{
-		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, obj);
+		SFNode <X3DBaseNode>* sfnode = (SFNode <X3DBaseNode>*)JS_GetPrivate (context, obj);
 
 		if (sfnode -> getValue ())
 		{
@@ -244,7 +244,7 @@ jsSFNode::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict
 {
 	if (JSID_IS_STRING (id))
 	{
-		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, obj);
+		SFNode <X3DBaseNode>* sfnode = (SFNode <X3DBaseNode>*)JS_GetPrivate (context, obj);
 
 		if (sfnode -> getValue ())
 		{
@@ -273,7 +273,7 @@ jsSFNode::getNodeName (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		SFNode <X3DBaseNode>* sfnode = (SFNode <X3DBaseNode>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		return JS_NewStringValue (context, *sfnode ? sfnode -> getValue () -> getName () : "", &JS_RVAL (context, vp));
 	}
@@ -288,7 +288,7 @@ jsSFNode::getNodeType (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		SFNode <X3DBaseNode>* sfnode = (SFNode <X3DBaseNode>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* result;
 
@@ -326,7 +326,7 @@ jsSFNode::getFieldDefinitions (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		SFNode <X3DBaseNode>* sfnode = (SFNode <X3DBaseNode>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		if (*sfnode)
 			return jsFieldDefinitionArray::create (context, &sfnode -> getValue () -> getFieldDefinitions (), &JS_RVAL (context, vp));
@@ -344,7 +344,7 @@ jsSFNode::toVRMLString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		SFNode <X3DBaseNode>* sfnode = (SFNode <X3DBaseNode>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		return JS_NewStringValue (context, sfnode -> toString (), &JS_RVAL (context, vp));
 	}
@@ -359,7 +359,7 @@ jsSFNode::toXMLString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		//X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		//SFNode <X3DBaseNode>* sfnode = (SFNode <X3DBaseNode>*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		return JS_NewStringValue (context, "", &JS_RVAL (context, vp));
 	}
@@ -374,7 +374,7 @@ jsSFNode::toString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DField <X3DBaseNode*>* sfnode = (X3DField <X3DBaseNode*>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		SFNode <X3DBaseNode>* sfnode = (SFNode <X3DBaseNode>*)JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		if (*sfnode)
 			return JS_NewStringValue (context, sfnode -> getValue () -> getTypeName () + " { }", &JS_RVAL (context, vp));

@@ -457,7 +457,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		X3DField <X3DBaseNode*>* sfnode = static_cast <X3DField <X3DBaseNode*>*> (JS_GetPrivate (context, onode));
+		SFNode <X3DBaseNode>* sfnode = static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, onode));
 
 		if (*sfnode)
 		{
@@ -493,16 +493,16 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 						return JS_TRUE;
 					}
 					else
-						JS_ReportError (context, (std::string ("Browser .createVrmlFromURL: field '") + JS_GetString (context, event) + "' is not a MFNode") .c_str ());
+						JS_ReportError (context, ("Browser .createVrmlFromURL: field '" + JS_GetString (context, event) + "' is not a MFNode") .c_str ());
 				}
 				else
-					JS_ReportError (context, (std::string ("Browser .createVrmlFromURL: field '") + JS_GetString (context, event) + "' is not an eventIn") .c_str ());
+					JS_ReportError (context, ("Browser .createVrmlFromURL: field '" + JS_GetString (context, event) + "' is not an eventIn") .c_str ());
 			}
 			else
-				JS_ReportError (context, (std::string ("Browser .createVrmlFromURL: no such field '") + JS_GetString (context, event) + "'") .c_str ());
+				JS_ReportError (context, ("Browser .createVrmlFromURL: no such field '" + JS_GetString (context, event) + "'") .c_str ());
 		}
 		else
-			JS_ReportError (context, "Browser .createVrmlFromURL: node is null");
+			JS_ReportError (context, "Browser .createVrmlFromURL: node is NULL");
 	}
 	else
 		JS_ReportError (context, "Browser .createVrmlFromURL: wrong number of arguments");
@@ -534,7 +534,7 @@ jsBrowser::addRoute (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		X3DField <X3DBaseNode*>* fromNode = static_cast <X3DField <X3DBaseNode*>*> (JS_GetPrivate (context, ofromNode));
+		SFNode <X3DBaseNode>* fromNode = static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, ofromNode));
 
 		if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
 		{
@@ -542,7 +542,7 @@ jsBrowser::addRoute (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		X3DField <X3DBaseNode*>* toNode = static_cast <X3DField <X3DBaseNode*>*> (JS_GetPrivate (context, otoNode));
+		SFNode <X3DBaseNode>* toNode = static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, otoNode));
 
 		try
 		{
@@ -587,7 +587,7 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		X3DField <X3DBaseNode*>* fromNode = static_cast <X3DField <X3DBaseNode*>*> (JS_GetPrivate (context, ofromNode));
+		SFNode <X3DBaseNode>* fromNode = static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, ofromNode));
 
 		if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
 		{
@@ -595,7 +595,7 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		X3DField <X3DBaseNode*>* toNode = static_cast <X3DField <X3DBaseNode*>*> (JS_GetPrivate (context, otoNode));
+		SFNode <X3DBaseNode>* toNode = static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, otoNode));
 
 		try
 		{

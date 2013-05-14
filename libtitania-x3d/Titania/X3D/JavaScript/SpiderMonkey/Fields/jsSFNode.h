@@ -70,7 +70,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext*, X3DField <X3DBaseNode*>*, jsval*, const bool = false);
+	create (JSContext*, SFNode <X3DBaseNode>*, jsval*, const bool = false);
 
 	static
 	JSClass*
