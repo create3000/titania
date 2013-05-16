@@ -239,14 +239,11 @@ X3DFieldDefinition::processEvent (Event & event)
 void
 X3DFieldDefinition::dispose ()
 {
-	for (const auto & route : inputRoutes)
+	for (const auto & route : RouteSet (std::move (inputRoutes)))
 		route -> disconnect ();
 
-	for (const auto & route : outputRoutes)
+	for (const auto & route : RouteSet (std::move (outputRoutes)))
 		route -> disconnect ();
-
-	inputRoutes  .clear ();
-	outputRoutes .clear ();
 
 	interests .clear ();
 

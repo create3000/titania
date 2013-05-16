@@ -1,5 +1,9 @@
 2013-05-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DFieldDefinition.cpp: 
+
+2013-05-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ChangeLog:
 	* X3D.cpp:
 	* libtitania-x3d.cproj:
