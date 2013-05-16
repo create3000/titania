@@ -51,6 +51,7 @@
 #include "jsSFImage.h"
 
 #include "jsMFInt32.h"
+#include "../JavaScriptContext.h"
 
 namespace titania {
 namespace X3D {
@@ -104,6 +105,8 @@ jsSFImage::create (JSContext* context, SFImage* field, jsval* vp, const bool sea
 
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
+
+	static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> addField (field);
 
 	*vp = OBJECT_TO_JSVAL (result);
 

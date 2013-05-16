@@ -53,6 +53,7 @@
 
 #include "String.h"
 #include "jsX3DField.h"
+#include "JavaScriptContext.h"
 
 namespace titania {
 namespace X3D {
@@ -161,6 +162,8 @@ jsX3DArrayField <Type, FieldType>::create (JSContext* context, FieldType* field,
 
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
+
+	static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> addField (field);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
@@ -277,7 +280,7 @@ jsX3DArrayField <Type, FieldType>::get1Value (JSContext* context, JSObject* obj,
 
 	FieldType* field = (FieldType*) JS_GetPrivate (context, obj);
 
-	return value_type::create (context, &field -> get1Value (index), vp);
+	return value_type::create (context, field -> get1Value (index), vp);
 }
 
 template <class Type, class FieldType>
@@ -459,7 +462,7 @@ jsX3DArrayField <Type, FieldType>::length (JSContext* context, JSObject* obj, js
 
 	if (not JS_ValueToECMAUint32 (context, *vp, &value))
 		return JS_FALSE;
-
+	
 	field -> resize (value);
 
 	return JS_TRUE;

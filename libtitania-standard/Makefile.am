@@ -7,7 +7,6 @@ lib_LTLIBRARIES =  \
 libtitania_standard_la_SOURCES =  \
 	Titania/Basic/Id.cpp \
 	Titania/Basic/IndexedMultiMap.cpp \
-	Titania/Basic/InputOutput/Generator.cpp \
 	Titania/Basic/Path.cpp \
 	Titania/Basic/URI.cpp \
 	Titania/Chrono/ClockBase.cpp \
@@ -17,6 +16,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Chrono/SystemClock.cpp \
 	Titania/InputOutput/Character.cpp \
 	Titania/InputOutput/Comment.cpp \
+	Titania/InputOutput/Generator.cpp \
 	Titania/InputOutput/QuotedString.cpp \
 	Titania/InputOutput/Sequence.cpp \
 	Titania/InputOutput/String.cpp \

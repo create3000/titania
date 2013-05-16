@@ -83,7 +83,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 X3DPrototypeInstance*
 X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 {
-	return new X3DPrototypeInstance (executionContext, *proto);
+	return new X3DPrototypeInstance (executionContext, proto);
 }
 
 void

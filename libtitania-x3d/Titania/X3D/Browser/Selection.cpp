@@ -99,7 +99,7 @@ Selection::removeChild (const SFNode <X3DBaseNode> & child)
 	                                      fields .children .end (),
 	                                      child),
 	                         fields .children .end ()); // XXX pointer fields
-
+	                         
 	// Handle
 
 	removeHandle (child);
@@ -109,7 +109,7 @@ void
 Selection::clear ()
 {
 	for (const auto & child : children ())
-		removeHandle (child);
+		removeHandle (*child);
 
 	fields .children .clear ();
 }

@@ -5,5 +5,7 @@
   <Task file="" description="in Geometry2D TwoSidedMaterial aktivieren" />
   <Task file="" description="Collision beim aufsteigen aktivieren" />
   <Task file="" description="IndexedFaceSet coordIndex check" />
-  <Task file="" description="OpenGL error in TextureCoordinateGenerator" />
+  <Task file="" description="jsX3DScene und jsX3DExecutionContext als SFNode" />
+  <Task file="" description="X3DGeometryNode setup: nicht wenn PROTO" />
+  <Task file="" description="Vattenfall MovieTexture zweimal in GarbageCollector" />
 </ListOfTask>

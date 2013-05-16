@@ -184,7 +184,7 @@ throw (Error <INVALID_URL>,
 			}
 			catch (const X3DError & error)
 			{
-				urlError () .push_back (error .what ());
+				urlError () .emplace_back (error .what ());
 			}
 		}
 
@@ -228,7 +228,7 @@ throw (Error <INVALID_URL>,
 
 	std::clog << "Trying to load URI '" << uri << "': " << std::endl;
 
-	basic::uri transformedURL = transformURI (getExecutionContext () -> getWorldURL (), uri);
+	basic::uri transformedURL = transformURI (uri);
 	std::clog << "\tResolved URL is '" << transformedURL << "'" << std::endl;
 
 	basic::ifilestream stream (basic::http::GET, transformedURL);
@@ -271,7 +271,7 @@ X3DUrlObject::transformURI (const basic::uri & base, const MFString & uri)
 	MFString url;
 
 	for (const auto & URI : uri)
-		url .push_back (transformURI (base, URI .str ()) .str ());
+		url .emplace_back (transformURI (base, URI .str ()) .str ());
 
 	return url;
 }

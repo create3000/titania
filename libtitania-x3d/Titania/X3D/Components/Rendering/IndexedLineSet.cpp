@@ -118,14 +118,14 @@ IndexedLineSet::set_coordIndex ()
 		if (coordIndex () .empty ())
 		{
 			for (size_t i = 0; i < _coord -> point () .size (); ++ i)
-				coordIndex () .push_back (i);
+				coordIndex () .emplace_back (i);
 		}
 
 		if (coordIndex () .size ())
 		{
 			// Add -1 (polylines end marker) to coordIndex if not present.
 			if (coordIndex () .back () >= 0)
-				coordIndex () .push_back (-1);
+				coordIndex () .emplace_back (-1);
 
 			// Construct polylines array and determine the number of used points.
 			size_t  i         = 0;
@@ -186,14 +186,14 @@ IndexedLineSet::set_colorIndex ()
 		{
 			for (size_t i = colorIndex () .size (); i < coordIndex () .size (); ++ i)
 			{
-				colorIndex () .push_back (coordIndex () [i]);
+				colorIndex () .emplace_back (coordIndex () [i]);
 			}
 		}
 		else
 		{
 			for (size_t i = colorIndex () .size (); i < polylines .size (); ++ i)
 			{
-				colorIndex () .push_back (i);
+				colorIndex () .emplace_back (i);
 			}
 		}
 

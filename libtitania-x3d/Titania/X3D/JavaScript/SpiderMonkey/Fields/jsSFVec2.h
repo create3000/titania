@@ -53,6 +53,7 @@
 
 #include "../../../Fields/SFVec2.h"
 #include "../jsX3DField.h"
+#include "../JavaScriptContext.h"
 
 namespace titania {
 namespace X3D {
@@ -169,6 +170,8 @@ jsSFVec2 <Type>::create (JSContext* context, Type* field, jsval* vp, const bool 
 
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
+
+	static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> addField (field);
 
 	*vp = OBJECT_TO_JSVAL (result);
 

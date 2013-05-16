@@ -82,13 +82,16 @@ JavaScriptContext::JavaScriptContext (X3DScriptNode* script, const std::string &
 	  prepareEventsFn (),                      
 	eventsProcessedFn (),                      
 	       shutdownFn (),                      
-	           fields (),                      
+	           fields (), 
 	        functions (),                      
+	       references (),                     
 	            files (),
 	         worldURL ({ uri })                       
 {
 	setComponent ("Browser");
 	setTypeName ("JavaScriptContext");
+	
+	addField (inputOutput, "metadata", metadata ());
 
 	// Create a JS runtime.
 	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
@@ -136,10 +139,6 @@ JavaScriptContext::initialize ()
 {
 	X3DNode::initialize ();
 	X3DUrlObject::initialize ();
-
-	set_initialize ();
-
-	JS_GC (context);
 }
 
 void
@@ -206,7 +205,7 @@ JavaScriptContext::initNode ()
 			case initializeOnly :
 			case outputOnly     :
 				{
-					addField (field);
+					addUserDefinedField (field);
 					defineProperty (context, global, field, field -> getName (), JSPROP_ENUMERATE);
 					break;
 				}
@@ -214,7 +213,7 @@ JavaScriptContext::initNode ()
 				break;
 			case inputOutput:
 			{
-				addField (field);
+				addUserDefinedField (field);
 				defineProperty (context, global, field, field -> getName (),              JSPROP_ENUMERATE);
 				defineProperty (context, global, field, "set_" + field -> getName (),     0);
 				defineProperty (context, global, field, field -> getName () + "_changed", 0);
@@ -225,7 +224,7 @@ JavaScriptContext::initNode ()
 }
 
 void
-JavaScriptContext::addField (X3DFieldDefinition* const field)
+JavaScriptContext::addUserDefinedField (X3DFieldDefinition* const field)
 {
 	switch (field -> getType ())
 	{
@@ -288,7 +287,7 @@ JavaScriptContext::initEventHandler ()
 	initializeFn      = getFunction ("initialize");
 	prepareEventsFn   = getFunction ("prepareEvents");
 	eventsProcessedFn = getFunction ("eventsProcessed");
-	shutdownFn        = getFunction ("shutdownFn");
+	shutdownFn        = getFunction ("shutdown");
 
 	for (auto & field : script -> getUserDefinedFields ())
 	{
@@ -445,28 +444,28 @@ JavaScriptContext::set_field (X3DFieldDefinition* field)
 }
 
 void
-JavaScriptContext::set_initialize ()
+JavaScriptContext::set_initialized ()
 {
 	if (not JSVAL_IS_VOID (initializeFn))
 		callFunction (initializeFn);
 }
 
 void
-JavaScriptContext::set_prepareEvents ()
+JavaScriptContext::prepareEvents ()
 {
 	if (not JSVAL_IS_VOID (prepareEventsFn))
 		callFunction (prepareEventsFn);
 }
 
 void
-JavaScriptContext::set_eventsProcessed ()
+JavaScriptContext::eventsProcessed ()
 {
 	if (not JSVAL_IS_VOID (eventsProcessedFn))
 		callFunction (eventsProcessedFn);
 }
 
 void
-JavaScriptContext::set_shutdown ()
+JavaScriptContext::shutdown ()
 {
 	if (not JSVAL_IS_VOID (shutdownFn))
 		callFunction (shutdownFn);
@@ -507,7 +506,38 @@ JavaScriptContext::callFunction (jsval function)
 
 	JS_CallFunctionValue (context, global, function, 0, NULL, &rval);
 
-	//JS_GC (context);
+	JS_GC (context);
+}
+
+void
+JavaScriptContext::addField (X3DFieldDefinition* field)
+{
+	auto reference = references .find (field);
+
+	if (reference == references .end ())
+	{
+		references .insert (std::make_pair (field, 1));
+		
+		field -> addParent (this);
+	}
+	else
+		++ reference -> second;
+}
+
+void
+JavaScriptContext::removeField (X3DFieldDefinition* field)
+{
+	auto reference = references .find (field);
+	
+	if (-- reference -> second == 0)
+	{
+		references .erase (reference);
+		
+		field -> removeParent (this);
+
+		if (field -> getParents () .empty ())
+			getGarbageCollector () .addObject (field);
+	}
 }
 
 void
@@ -577,15 +607,27 @@ JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport
 void
 JavaScriptContext::dispose ()
 {
+	shutdown ();
+	
+	for (auto & field : fields)
+		JS_RemoveValueRoot (context, &field .second);
+	
+	for (auto & file : files)
+		JS_RemoveValueRoot (context, &file .second);
+
+	// Cleanup.
+	JS_GC (context);
+	JS_DestroyContext (context);
+	JS_DestroyRuntime (runtime);
+	
+	assert (references .size () == 0);
+
 	X3DUrlObject::dispose ();
 	X3DNode::dispose ();
 }
 
 JavaScriptContext::~JavaScriptContext ()
 {
-	// Cleanup.
-	JS_DestroyContext (context);
-	JS_DestroyRuntime (runtime);
 }
 
 } // X3D

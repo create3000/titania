@@ -39,8 +39,6 @@ componentIndex ()
 {
 	auto browser = X3D::getBrowser ();
 
-	browser -> setup ();
-
 	const X3D::ComponentInfoArray & components = browser -> getSupportedComponents ();
 
 	for (const auto & component : components)

@@ -258,11 +258,11 @@ private:
 
 	virtual
 	void
-	registerEvent (X3DChildObject*) final;
+	registerEvent (X3DChildObject*) override;
 
 	virtual
 	void
-	registerEvent (X3DChildObject*, const Event &) final;
+	registerEvent (X3DChildObject*, const Event &) override;
 
 	X3DBrowser* const          browser;
 	X3DExecutionContext* const executionContext;

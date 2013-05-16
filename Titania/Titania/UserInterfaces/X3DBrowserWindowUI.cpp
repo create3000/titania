@@ -61,12 +61,12 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_revertAction       = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("RevertAction"));
 	m_fileFilerX3D       = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilerX3D"));
 	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
 	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
 	m_newAction          = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("NewAction"));
 	m_openAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("OpenAction"));
+	m_revertAction       = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("RevertAction"));
 	m_saveAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("SaveAction"));
 	m_menuAccelGroup     = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
 
@@ -74,7 +74,6 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder -> get_widget ("FileOpenDialog", m_fileOpenDialog);
 	m_builder -> get_widget ("FileSaveDialog", m_fileSaveDialog);
 	m_builder -> get_widget ("SaveCompressedButton", m_saveCompressedButton);
-	m_builder -> get_widget ("MessageDialog", m_messageDialog);
 	m_builder -> get_widget ("Window", m_window);
 	m_builder -> get_widget ("Widget", m_widget);
 	m_builder -> get_widget ("MenuBar", m_menuBar);
@@ -140,19 +139,17 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_builder -> get_widget ("ViewpointEditorBox", m_viewpointEditorBox);
 	m_builder -> get_widget ("OutlineEditorBox", m_outlineEditorBox);
 	m_builder -> get_widget ("StatusBar", m_statusBar);
+	m_builder -> get_widget ("MessageDialog", m_messageDialog);
 
-	// Connect object Gtk::Action with id 'RevertAction'.
-	connections .emplace_back (m_revertAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_revert_to_saved)));
+	// Connect object Gtk::Action with id 'NewAction'.
 	connections .emplace_back (m_newAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_new)));
 	connections .emplace_back (m_openAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_open)));
+	connections .emplace_back (m_revertAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_revert_to_saved)));
 	connections .emplace_back (m_saveAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_save)));
 
 	// Connect object Gtk::FileChooserDialog with id 'FileOpenDialog'.
 	connections .emplace_back (m_fileOpenDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_fileOpenDialog_response)));
 	connections .emplace_back (m_fileSaveDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_fileSaveDialog_response)));
-
-	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
-	connections .emplace_back (m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_messageDialog_response)));
 
 	// Connect object Gtk::ImageMenuItem with id 'SaveMenuItem'.
 	connections .emplace_back (m_saveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_save)));
@@ -205,6 +202,9 @@ X3DBrowserWindowUI::create (const std::string & filename)
 
 	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
 	connections .emplace_back (m_lookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_look_at_toggled)));
+
+	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
+	connections .emplace_back (m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_messageDialog_response)));
 
 	// Call construct handler of base class.
 	construct ();

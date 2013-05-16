@@ -51,7 +51,7 @@
 #include "Generator.h"
 
 namespace titania {
-namespace basic {
+namespace io {
 
 //
 
@@ -59,16 +59,16 @@ namespace basic {
 } // titania
 
 // Implicit template instantiations.
-template std::ostream & titania::basic::Generator::Comment       (std::ostream &);
-template std::ostream & titania::basic::Generator::Space         (std::ostream &);
-template std::ostream & titania::basic::Generator::TidySpace     (std::ostream &);
-template std::ostream & titania::basic::Generator::Break         (std::ostream &);
-template std::ostream & titania::basic::Generator::TidyBreak     (std::ostream &);
-template std::ostream & titania::basic::Generator::ListBreak     (std::ostream &);
-template std::ostream & titania::basic::Generator::Comma         (std::ostream &);
-template std::ostream & titania::basic::Generator::Indent        (std::ostream &);
-template std::ostream & titania::basic::Generator::IncIndent     (std::ostream &);
-template std::ostream & titania::basic::Generator::DecIndent     (std::ostream &);
-template std::ostream & titania::basic::Generator::OpenBracket   (std::ostream &);
-template std::ostream & titania::basic::Generator::CloseBracket  (std::ostream &);
-template std::ostream & titania::basic::Generator::EmptyBrackets (std::ostream &);
+template std::ostream & titania::io::Generator::Comment       (std::ostream &);
+template std::ostream & titania::io::Generator::Space         (std::ostream &);
+template std::ostream & titania::io::Generator::TidySpace     (std::ostream &);
+template std::ostream & titania::io::Generator::Break         (std::ostream &);
+template std::ostream & titania::io::Generator::TidyBreak     (std::ostream &);
+template std::ostream & titania::io::Generator::ListBreak     (std::ostream &);
+template std::ostream & titania::io::Generator::Comma         (std::ostream &);
+template std::ostream & titania::io::Generator::Indent        (std::ostream &);
+template std::ostream & titania::io::Generator::IncIndent     (std::ostream &);
+template std::ostream & titania::io::Generator::DecIndent     (std::ostream &);
+template std::ostream & titania::io::Generator::OpenBracket   (std::ostream &);
+template std::ostream & titania::io::Generator::CloseBracket  (std::ostream &);
+template std::ostream & titania::io::Generator::EmptyBrackets (std::ostream &);

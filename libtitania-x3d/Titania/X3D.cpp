@@ -66,7 +66,10 @@ throw (Error <BROWSER_UNAVAILABLE>)
 	if (not browserApplication)
 	{
 		std::clog << "Creating BrowserApplication ..." << std::endl;
+		
 		browserApplication = new BrowserApplication ();
+
+		browserApplication -> setup ();
 		
 		std::clog << "Done creating BrowserApplication." << std::endl;
 	}

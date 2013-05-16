@@ -106,6 +106,8 @@ jsSFNode::create (JSContext* context, SFNode <X3DBaseNode>* field, jsval* vp, co
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
 
+	static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> addField (field);
+
 	*vp = OBJECT_TO_JSVAL (result);
 
 	return JS_TRUE;

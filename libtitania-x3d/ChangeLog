@@ -1,85 +1,52 @@
-2013-05-14  Holger Seelig  <holger.seelig@yahoo.de>
+2013-05-16  Holger Seelig  <holger.seelig@yahoo.de>
 
-	* jsfield.cpp:
-	* jsBrowser.cpp:
-	* jsSFNode.h:
-	* jsSFNode.cpp: 
-
-2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* jsBrowser.cpp: 
-
-2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* Makefile.am:
+	* ChangeLog:
+	* X3D.cpp:
 	* libtitania-x3d.cproj:
-	* Error.h:
-	* X3DConstants.h:
-	* X3DConstants.cpp:
-	* X3DFieldDefinition.h:
-	* jsBrowser.h:
-	* X3DUrlObject.h:
-	* jsBrowser.cpp:
-	* jsX3DScene.cpp:
-	* jsX3DConstants.h:
-	* jsX3DConstants.cpp:
-	* JavaScriptContext.cpp:
-	* jsX3DExecutionContext.h:
-	* jsX3DExecutionContext.cpp: 
-
-2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* Parser.cpp:
-	* Proto.h:
-	* Proto.cpp:
-	* X3DProto.h:
-	* ExternProto.h:
-	* ExternProto.cpp:
-	* X3DExecutionContext.h:
-	* X3DExecutionContext.cpp:
-	* X3DPrototypeInstance.h:
-	* X3DPrototypeInstance.cpp:
-	* jsX3DExecutionContext.cpp: 
-
-2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* Script.h:
-	* Script.cpp:
-	* jsGlobals.h:
-	* X3DScriptNode.h:
-	* X3DUrlObject.h:
-	* jsGlobals.cpp:
-	* X3DScriptNode.cpp:
-	* X3DUrlObject.cpp:
-	* QuadSphereProperties.h:
-	* JavaScriptContext.h:
-	* QuadSphereProperties.cpp:
-	* JavaScriptContext.cpp: 
-
-2013-05-12  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* IndexedLineSet.cpp: 
-
-2013-05-12  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* IndexedFaceSet.cpp: 
-
-2013-05-11  Holger Seelig  <holger.seelig@yahoo.de>
-
+	* Array.h:
+	* MFNode.h:
+	* X3DField.h:
+	* MFNode.cpp:
+	* SFNode.cpp:
+	* Scene.cpp:
+	* X3DBaseNode.h:
+	* X3DBrowser.h:
+	* X3DArrayField.h:
+	* Selection.cpp:
 	* X3DBaseNode.cpp:
-	* X3DGeometryNode.h:
-	* X3DGeometryNode.cpp:
-	* IndexedFaceSet.cpp: 
-
-2013-05-11  Holger Seelig  <holger.seelig@yahoo.de>
-
 	* X3DBrowser.cpp:
+	* X3DChildObject.cpp:
+	* Generator.h:
+	* ExternProto.cpp:
+	* X3DArrayFieldIterator.h:
 	* X3DBrowserContext.cpp:
-	* JavaScriptContext.cpp: 
-
-2013-05-10  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* X3DGeometryNode.cpp: 
+	* Script.cpp:
+	* X3DExecutionContext.cpp:
+	* jsGlobals.cpp:
+	* X3DUrlObject.cpp:
+	* X3DGeometryNode.h:
+	* IndexedLineSet.cpp:
+	* IndexedFaceSet.cpp:
+	* X3DGeometryNode.cpp:
+	* X3DPrototypeInstance.cpp:
+	* jsSFVec4.h:
+	* jsSFVec2.h:
+	* jsSFVec3.h:
+	* jsX3DArrayField.h:
+	* RenderingProperties.cpp:
+	* JavaScriptContext.h:
+	* jsSFNode.cpp:
+	* jsSFMatrix3.h:
+	* jsSFImage.cpp:
+	* jsSFColor.cpp:
+	* jsSFMatrix4.h:
+	* JavaScriptContext.cpp:
+	* jsX3DFieldDefinition.h:
+	* X3DSequencerNode.cpp:
+	* jsSFRotation.cpp:
+	* X3DInterpolatorNode.cpp:
+	* jsSFColorRGBA.cpp:
+	* jsX3DFieldDefinition.cpp: 
 
 2013-05-10  Holger Seelig  <holger.seelig@yahoo.de>
 

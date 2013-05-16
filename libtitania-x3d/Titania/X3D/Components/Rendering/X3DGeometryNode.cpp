@@ -50,8 +50,6 @@
 
 #include "X3DGeometryNode.h"
 
-#include "../../Execution/X3DExecutionContext.h"
-
 namespace titania {
 namespace X3D {
 
@@ -81,9 +79,6 @@ void
 X3DGeometryNode::setup ()
 {
 	X3DNode::setup ();
-	
-	if (getExecutionContext () -> isProto ())
-		return;
 
 	if (GLEW_ARB_vertex_buffer_object)
 	{
@@ -94,6 +89,12 @@ X3DGeometryNode::setup ()
 
 		update ();
 	}
+}
+
+void
+X3DGeometryNode::initialize ()
+{
+	X3DNode::initialize ();
 }
 
 void

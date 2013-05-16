@@ -56,7 +56,7 @@
 #include <string>
 #include <vector>
 
-#include <Titania/Basic/InputOutput/Generator.h>
+#include <Titania/InputOutput/Generator.h>
 
 namespace titania {
 namespace X3D {
@@ -65,7 +65,7 @@ class X3DFieldDefinition;
 class X3DBaseNode;
 
 class Generator :
-	public basic::Generator
+	public io::Generator
 {
 private:
 

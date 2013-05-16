@@ -116,7 +116,7 @@ Script::initialize ()
 
 	javaScript -> setup ();
 
-	shutdown .addInterest (*javaScript, &JavaScriptContext::set_shutdown);
+	initialized .addInterest (*javaScript, &JavaScriptContext::set_initialized);
 }
 
 bool
@@ -139,7 +139,7 @@ Script::loadDocument (const SFString & URL, std::string & ecmascript)
 void
 Script::prepareEvents ()
 {
-	javaScript -> set_prepareEvents ();
+	javaScript -> prepareEvents ();
 }
 
 void
@@ -147,16 +147,15 @@ Script::eventsProcessed ()
 {
 	X3DScriptNode::eventsProcessed ();
 
-	javaScript -> set_eventsProcessed ();
+	javaScript -> eventsProcessed ();
 }
 
 void
 Script::dispose ()
 {
-	X3DScriptNode::dispose ();
-
-	// Dispose later thus shutdown can be called.
 	javaScript .dispose ();
+
+	X3DScriptNode::dispose ();
 }
 
 } // X3D

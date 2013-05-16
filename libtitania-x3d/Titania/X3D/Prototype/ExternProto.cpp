@@ -69,6 +69,9 @@ ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
 	setTypeName ("ExternProto");
 
 	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "url",      url ());
+
+	setChildren (scene, proto);
 }
 
 X3DBaseNode*
@@ -82,7 +85,7 @@ ExternProto::clone (X3DExecutionContext* const executionContext) const
 {
 	ExternProto* copy = dynamic_cast <ExternProto*> (X3DProto::clone (executionContext));
 
-	copy -> proto = proto;
+	copy -> url () = url ();
 
 	return copy;
 }
@@ -309,13 +312,12 @@ ExternProto::dispose ()
 	scene .dispose ();
 	proto .dispose ();
 
+	X3DUrlObject::dispose ();
 	X3DProto::dispose ();
 }
 
 ExternProto::~ExternProto ()
-{
-	delete &url ();
-}
+{ }
 
 } // X3D
 } // titania

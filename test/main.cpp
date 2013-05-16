@@ -72,6 +72,40 @@
 using namespace titania;
 using namespace titania::Test;
 
+template <class InputIterator>
+void
+set (X3D::MFString & array, InputIterator first, InputIterator last)
+{
+	X3D::MFString::iterator current = array .begin ();
+
+	for ( ; first not_eq last && current not_eq array .end (); ++ current, ++ first)
+	{
+		__LOG__ << std::endl;
+		current -> set (*first);
+	}
+
+	if (first == last)
+	{
+		__LOG__ << std::endl;
+		array .resize (current - array .begin ());
+	}
+	else // insert at end
+	{
+		__LOG__ << std::endl;
+		X3D::MFString::size_type current_size = array .size ();
+
+		while (first not_eq last)
+		{
+			__LOG__ << std::endl;
+			__LOG__ << (*first ++) << std::endl;
+			
+			//array .emplace_back (*first ++);
+
+			__LOG__ << std::endl;
+		}
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int
@@ -81,6 +115,8 @@ main (int argc, char* argv [ ])
 	
 	gtk_init (0, 0);
 	Gtk::Main::init_gtkmm_internals ();
+	
+	std::clog << std::boolalpha << std::endl;
 
 	std::clog << "Test started ..." << std::endl << std::endl;
 	{
@@ -88,13 +124,15 @@ main (int argc, char* argv [ ])
 
 		{
 			auto browser = X3D::getBrowser ();
-			browser -> setup ();
 
-			X3D::MFNode mfnode;
-			mfnode .push_back (browser -> getExecutionContext () -> createNode ("Transform"));
+			std::vector <X3D::SFInt32> v ({ X3D::SFInt32 (1) });
 
-			std::clog << mfnode << std::endl;
-			std::clog << mfnode [0] .getParents () .size () << std::endl;
+			X3D::Array <X3D::SFInt32> a1 (v. begin (), v .end ());
+			X3D::Array <X3D::SFInt32> a2 (v. begin (), v .end ());
+			
+			std::clog << (a1 == a2) << std::endl;
+			std::clog << (a1 != a2) << std::endl;
+			
 		}
 
 		std::clog << "End of block ..." << std::endl;

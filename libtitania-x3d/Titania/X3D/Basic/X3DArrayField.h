@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_BASIC_X3DARRAY_FIELD_H__
 #define __TITANIA_X3D_BASIC_X3DARRAY_FIELD_H__
 
+#include "../Basic/X3DArrayFieldIterator.h"
 #include "../Basic/X3DField.h"
 #include "../Types/Array.h"
 
@@ -70,15 +71,17 @@ public:
 	typedef ValueType                                          scalar_type;
 	typedef typename X3DField <Array <ValueType>>::value_type value_type;
 
-	typedef typename value_type::iterator               iterator;
-	typedef typename value_type::const_iterator         const_iterator;
-	typedef typename value_type::reverse_iterator       reverse_iterator;
-	typedef typename value_type::const_reverse_iterator const_reverse_iterator;
-	typedef typename value_type::difference_type        difference_type;
-	typedef typename value_type::size_type              size_type;
+	typedef X3DArrayFieldIterator <typename value_type::iterator, ValueType>                     iterator;
+	typedef X3DArrayFieldIterator <typename value_type::reverse_iterator, ValueType>             reverse_iterator;
+	typedef X3DArrayFieldIterator <typename value_type::const_iterator, const ValueType>         const_iterator;
+	typedef X3DArrayFieldIterator <typename value_type::const_reverse_iterator, const ValueType> const_reverse_iterator;
+
+	typedef typename value_type::difference_type difference_type;
+	typedef typename value_type::size_type       size_type;
 
 	using X3DField <value_type>::getValue;
 	using X3DField <value_type>::operator =;
+	using X3DField <value_type>::getGarbageCollector;
 
 	///  Default constructor.
 	X3DArrayField () :
@@ -89,7 +92,7 @@ public:
 	X3DArrayField (const X3DArrayField & field) :
 		X3DField <value_type> (field)
 	{
-		addChildren (begin (), end ());
+		addChildren (get () .begin (), get () .end ());
 	}
 
 	//	///  Move constructor.
@@ -105,7 +108,7 @@ public:
 	X3DArrayField (const value_type & value) :
 		X3DField <value_type> (value)
 	{
-		addChildren (begin (), end ());
+		addChildren (get () .begin (), get () .end ());
 	}
 
 	///  Moves elements from basic type @a value.
@@ -113,54 +116,59 @@ public:
 	X3DArrayField (value_type && value) :
 		X3DField <value_type> (value)
 	{
-		addChildren (begin (), end ());
+		addChildren (get () .begin (), get () .end ());
 	}
 
 	template <const size_t Size>
 	X3DArrayField (const ValueType (&value) [Size]) :
 		X3DField <value_type> (std::move (value_type (value, value + Size)))
 	{
-		addChildren (begin (), end ());
+		addChildren (get () .begin (), get () .end ());
 	}
 
 	template <const size_t Size>
 	X3DArrayField (const typename ValueType::value_type (&value) [Size]) :
 		X3DField <value_type> (std::move (value_type (value, value + Size)))
 	{
-		addChildren (begin (), end ());
+		addChildren (get () .begin (), get () .end ());
 	}
 
-	X3DArrayField (std::initializer_list <ValueType> initializer_list) :
-		X3DField <value_type> (std::move (value_type (initializer_list .begin (), initializer_list .end ())))
+	X3DArrayField (std::initializer_list <ValueType> list) :
+		X3DField <value_type> (std::move (value_type (list .begin (), list .end ())))
 	{
-		addChildren (begin (), end ());
+		addChildren (get () .begin (), get () .end ());
 	}
 
-	X3DArrayField (std::initializer_list <typename ValueType::value_type> initializer_list) :
-		X3DField <value_type> (std::move (value_type (initializer_list .begin (), initializer_list .end ())))
+	X3DArrayField (std::initializer_list <const typename ValueType::value_type> list) :
+		X3DField <value_type> (std::move (value_type (list .begin (), list .end ())))
 	{
-		addChildren (begin (), end ());
+		addChildren (get () .begin (), get () .end ());
 	}
 
 	template <class InputIterator>
 	X3DArrayField (InputIterator first, InputIterator last) :
 		X3DField <value_type> (std::move (value_type (first, last)))
 	{
-		addChildren (begin (), end ());
+		addChildren (get () .begin (), get () .end ());
 	}
 
 	virtual
 	X3DArrayField*
-	clone () const { return new X3DArrayField (*this); }
+	clone () const
+	{ return new X3DArrayField (*this); }
 
 	virtual
 	X3DArrayField*
-	clone (X3DExecutionContext* const) const { return clone (); }
+	clone (X3DExecutionContext* const) const
+	{ return clone (); }
+
+	void
+	set1Value (const size_type index, const ValueType &);
 
 	void
 	set1Value (const size_type index, const typename ValueType::value_type &);
 
-	ValueType &
+	ValueType*
 	get1Value (const size_type);
 
 	///  Set @a value to this field without notfying parents.
@@ -169,7 +177,8 @@ public:
 	set (const value_type &);
 
 	template <class InputIterator>
-	void set (InputIterator, InputIterator);
+	void
+	set (InputIterator, InputIterator);
 
 	template <const size_t Size>
 	X3DArrayField &
@@ -202,34 +211,44 @@ public:
 	}
 
 	ValueType &
-	operator [ ] (const size_type index) { return get () [index]; }
+	operator [ ] (const size_type index)
+	{ return *get () [index]; }
 
 	const ValueType &
-	operator [ ] (const size_type index) const { return getValue () [index]; }
+	operator [ ] (const size_type index) const
+	{ return *getValue () [index]; }
 
 	template <class InputIterator>
-	void assign (InputIterator, InputIterator);
+	void
+	assign (InputIterator, InputIterator);
 
 	ValueType &
-	at (const size_type index) { return get () .at (index); }
+	at (const size_type index)
+	{ return *get () .at (index); }
 
 	const ValueType &
-	at (const size_type index) const { return getValue () .at (index); }
+	at (const size_type index) const
+	{ return *getValue () .at (index); }
 
 	ValueType &
-	back () { return get () .back (); }
+	back ()
+	{ return *get () .back (); }
 
 	const ValueType &
-	back () const { return getValue () .back (); }
+	back () const
+	{ return *getValue () .back (); }
 
 	iterator
-	begin () { return get () .begin (); }
+	begin ()
+	{ return iterator (get () .begin ()); }
 
 	const_iterator
-	begin () const { return getValue () .begin (); }
+	begin () const
+	{ return const_iterator (getValue () .begin ()); }
 
 	const_iterator
-	cbegin () const { return getValue () .cbegin (); }
+	cbegin () const
+	{ return const_iterator (getValue () .cbegin ()); }
 
 	//size_type capacity () const { return getValue () .capacity (); };
 
@@ -237,16 +256,20 @@ public:
 	clear ();
 
 	bool
-	empty () const { return getValue () .empty (); }
+	empty () const
+	{ return getValue () .empty (); }
 
 	iterator
-	end () { return get () .end (); }
+	end ()
+	{ return iterator (get () .end ()); }
 
 	const_iterator
-	end () const { return getValue () .end (); }
+	end () const
+	{ return const_iterator (getValue () .end ()); }
 
 	const_iterator
-	cend () const { return getValue () .cend (); }
+	cend () const
+	{ return const_iterator (getValue () .cend ()); }
 
 	iterator
 	erase (iterator);
@@ -255,39 +278,32 @@ public:
 	erase (iterator, iterator);
 
 	ValueType &
-	front () { return get () .front (); }
+	front ()
+	{ return *get () .front (); }
 
 	const ValueType &
-	front () const { return getValue () .front (); }
+	front () const
+	{ return *getValue () .front (); }
 
 	iterator
 	insert (iterator, const ValueType &);
 
-	void insert (iterator, size_type, const ValueType &);
+	iterator
+	insert (iterator, size_type, const ValueType &);
 
 	template <class InputIterator>
-	void insert (iterator, InputIterator, InputIterator);
+	iterator
+	insert (iterator, InputIterator, InputIterator);
 
 	size_type
-	max_size () const { return getValue () .max_size (); }
+	max_size () const
+	{ return getValue () .max_size (); }
 
 	void
 	pop_front ();
 
 	void
 	pop_back ();
-
-	void
-	push_front (const ValueType &);
-
-	void
-	push_front (const typename ValueType::value_type &);
-
-	void
-	push_back (const ValueType &);
-
-	void
-	push_back (const typename ValueType::value_type &);
 
 	template <class ... Args>
 	void
@@ -298,22 +314,28 @@ public:
 	emplace_back (Args && ... args);
 
 	reverse_iterator
-	rbegin () { return get () .rbegin (); }
+	rbegin ()
+	{ return reverse_iterator (get () .rbegin ()); }
 
 	const_reverse_iterator
-	rbegin () const { return getValue () .rbegin (); }
+	rbegin () const
+	{ return const_reverse_iterator (getValue () .rbegin ()); }
 
 	const_reverse_iterator
-	crbegin () const { return getValue () .crbegin (); }
+	crbegin () const
+	{ return const_reverse_iterator (getValue () .crbegin ()); }
 
 	reverse_iterator
-	rend () { return get () .rend (); }
+	rend ()
+	{ return reverse_iterator (get () .rend ()); }
 
 	const_reverse_iterator
-	rend () const { return getValue () .rend (); }
+	rend () const
+	{ return const_reverse_iterator (getValue () .rend ()); }
 
 	const_reverse_iterator
-	crend () const { return getValue () .crend (); }
+	crend () const
+	{ return const_reverse_iterator (getValue () .crend ()); }
 
 	//	void reserve (size_type size) { get () .reserve (size); };
 
@@ -324,31 +346,49 @@ public:
 	resize (size_type, const ValueType &);
 
 	size_type
-	size () const { return getValue () .size (); }
+	size () const
+	{ return getValue () .size (); }
 
 	virtual
-	~X3DArrayField ()
-	{ }
+	~X3DArrayField ();
 
 
 protected:
 
 	using X3DField <value_type>::get;
 
+	virtual
+	void
+	reset ();
+
 
 private:
 
 	using X3DField <value_type>::notifyParents;
 
-	///  Inserts values in the range [@a first, @a last) to the end without notifying parents.
-	template <class InputIterator>
 	void
-	insert_at_end (InputIterator, InputIterator);
+	addChildren (typename iterator::iterator_type,
+	             typename iterator::iterator_type);
 
 	void
-	addChildren (iterator, iterator);
+	addChild (ValueType*);
+
+	void
+	removeChildren (typename iterator::iterator_type,
+	                typename iterator::iterator_type);
+
+	void
+	removeChild (ValueType*);
 
 };
+
+template <class ValueType>
+inline
+void
+X3DArrayField <ValueType>::set1Value (const size_type index, const ValueType & field)
+{
+	set1Value (index, field .getValue ());
+}
 
 template <class ValueType>
 void
@@ -357,11 +397,11 @@ X3DArrayField <ValueType>::set1Value (const size_type index, const typename Valu
 	if (index >= size ())
 		resize (index + 1);
 
-	get () [index] = value;
+	*get () [index] = value;
 }
 
 template <class ValueType>
-ValueType &
+ValueType*
 X3DArrayField <ValueType>::get1Value (const size_type index)
 {
 	if (index >= size ())
@@ -371,11 +411,20 @@ X3DArrayField <ValueType>::get1Value (const size_type index)
 }
 
 template <class ValueType>
-inline
 void
 X3DArrayField <ValueType>::set (const value_type & value)
 {
-	set (value .cbegin (), value .cend ());
+	set (const_iterator (value .cbegin ()), const_iterator (value .cend ()));
+}
+
+template <class ValueType>
+template <class InputIterator>
+void
+X3DArrayField <ValueType>::assign (InputIterator first, InputIterator last)
+{
+	set (first, last);
+
+	notifyParents ();
 }
 
 template <class ValueType>
@@ -385,32 +434,25 @@ X3DArrayField <ValueType>::set (InputIterator first, InputIterator last)
 {
 	iterator current = begin ();
 
-	for ( ; first not_eq last && current not_eq end (); ++ current, ++ first)
+	for (auto end = this -> end () ; first not_eq last && current not_eq end; ++ current, ++ first)
 		current -> set (*first);
 
 	if (first == last)
-		get () .resize (current - begin ());
+		resize (current - begin ());
 
-	else
-		insert_at_end (first, last);
+	else  // insert at end
+	{
+		for ( ; first not_eq last; ++ first)
+			emplace_back (*first);
+	}
 }
 
 template <class ValueType>
-template <class InputIterator>
-inline
-void
-X3DArrayField <ValueType>::assign (InputIterator first, InputIterator last)
-{
-	set (first, last);
-	notifyParents ();
-}
-
-template <class ValueType>
-inline
 void
 X3DArrayField <ValueType>::clear ()
 {
-	get () .clear ();
+	reset ();
+
 	notifyParents ();
 }
 
@@ -418,129 +460,103 @@ template <class ValueType>
 typename X3DArrayField <ValueType>::iterator
 X3DArrayField <ValueType>::erase (iterator location)
 {
-	iterator iter;
+	removeChild (*location .iterator ());
 
-	if (location == begin () or location == end ())
-		iter = get () .erase (location);
-	else
-	{
-		iter = get () .erase (location);
-		addChildren (iter, end ());
-	}
+	auto iter = get () .erase (location .iterator ());
 
 	notifyParents ();
-	return iter;
+	return iterator (iter);
 }
 
 template <class ValueType>
 typename X3DArrayField <ValueType>::iterator
 X3DArrayField <ValueType>::erase (iterator first, iterator last)
 {
-	iterator iter;
+	removeChildren (first .iterator (), last .iterator ());
 
-	if (first == begin () or last == end ())
-		iter = get () .erase (first, last);
-	else
-	{
-		iter = get () .erase (first, last);
-		addChildren (iter, end ());
-	}
+	auto iter = get () .erase (first .iterator (), last .iterator ());
 
 	notifyParents ();
-	return iter;
+	return iterator (iter);
 }
 
 template <class ValueType>
 typename X3DArrayField <ValueType>::iterator
 X3DArrayField <ValueType>::insert (iterator location, const ValueType & value)
 {
-	iterator iter = get () .insert (location, value);
+	auto iter = get () .insert (location .iterator (), new ValueType (value));
 
-	addChildren (iter, end ());
+	addChild (*iter);
 
 	notifyParents ();
-
-	return iter;
+	return iterator (iter);
 }
 
 template <class ValueType>
-void
+typename X3DArrayField <ValueType>::iterator
 X3DArrayField <ValueType>::insert (iterator location, size_type count, const ValueType & value)
 {
-	difference_type i = location - begin ();
+	size_type pos = location - begin ();
 
-	get () .insert (location, count, value);
+	get () .insert (location .iterator (), count, NULL);
 
-	addChildren (begin () + i, end ());
+	auto iter = get () .begin () + pos;
+
+	for (auto & field : basic::adapter (iter, iter + count))
+	{
+		field = new ValueType ();
+
+		addChild (field);
+	}
 
 	notifyParents ();
+	return iterator (iter);
 }
 
 template <class ValueType>
 template <class InputIterator>
-void
+typename X3DArrayField <ValueType>::iterator
 X3DArrayField <ValueType>::insert (iterator location, InputIterator first, InputIterator last)
 {
-	difference_type i = location - begin ();
+	size_type pos   = location - begin ();
+	size_type count = last - first;
 
-	get () .insert (location, first, last);
+	get () .insert (location .iterator (), count, NULL);
 
-	addChildren (begin () + i, end ());
+	auto iter = get () .begin () + pos;
+
+	for (auto & field : basic::adapter (iter, iter + count))
+	{
+		field = new ValueType (*first);
+	
+		addChild (field);
+		
+		 ++ first;
+	}
 
 	notifyParents ();
+	return iterator (iter);
 }
 
 template <class ValueType>
-inline
 void
 X3DArrayField <ValueType>::pop_front ()
 {
+	removeChild (get () .front ());
+
 	get () .pop_front ();
+
 	notifyParents ();
 }
 
 template <class ValueType>
-inline
 void
 X3DArrayField <ValueType>::pop_back ()
 {
+	removeChild (get () .back ());
+
 	get () .pop_back ();
-	notifyParents ();
-}
 
-template <class ValueType>
-void
-X3DArrayField <ValueType>::push_front (const ValueType & field)
-{
-	get () .emplace_front (field);
-	get () .front () .addParent (this);
-	notifyParents ();
-}
-
-template <class ValueType>
-void
-X3DArrayField <ValueType>::push_front (const typename ValueType::value_type & value)
-{
-	get () .emplace_front (value);
-	get () .front () .addParent (this);
-	notifyParents ();
-}
-
-template <class ValueType>
-void
-X3DArrayField <ValueType>::push_back (const ValueType & field)
-{
-	get () .emplace_back (field);
-	get () .back () .addParent (this);
-	notifyParents ();
-}
-
-template <class ValueType>
-void
-X3DArrayField <ValueType>::push_back (const typename ValueType::value_type & value)
-{
-	get () .emplace_back (value);
-	get () .back () .addParent (this);
 	notifyParents ();
 }
 
@@ -549,8 +565,12 @@ template <class ... Args>
 void
 X3DArrayField <ValueType>::emplace_front (Args && ... args)
 {
-	get () .emplace_front (args ...);
-	get () .front () .addParent (this);
+	ValueType* field = new ValueType (args ...);
+
+	get () .emplace_front (field);
+
+	addChild (field);
+
 	notifyParents ();
 }
 
@@ -559,8 +579,12 @@ template <class ... Args>
 void
 X3DArrayField <ValueType>::emplace_back (Args && ... args)
 {
-	get () .emplace_back (args ...);
-	get () .back () .addParent (this);
+	ValueType* field = new ValueType (args ...);
+
+	get () .emplace_back (field);
+
+	addChild (field);
+
 	notifyParents ();
 }
 
@@ -580,37 +604,78 @@ X3DArrayField <ValueType>::resize (size_type count, const ValueType & value)
 
 	if (count > currentSize)
 	{
-		get () .resize (count, value);
-		addChildren (begin () + currentSize, end ());
+		get () .resize (count, NULL);
+
+		for (auto & field : basic::adapter (get () .begin () + currentSize, get () .end ()))
+		{
+			field = new ValueType (value);
+			addChild (field);
+		}
+
 		notifyParents ();
 	}
 	else if (count < currentSize)
 	{
+		removeChildren (get () .begin () + count, get () .end ());
+
 		get () .resize (count);
+
 		notifyParents ();
 	}
-}
-
-template <class ValueType>
-template <class InputIterator>
-void
-X3DArrayField <ValueType>::insert_at_end (InputIterator first, InputIterator last)
-{
-	size_type current_size = size ();
-
-	while (first not_eq last)
-		get () .emplace_back (*first ++);
-
-	addChildren (begin () + current_size, end ());
 }
 
 template <class ValueType>
 inline
 void
-X3DArrayField <ValueType>::addChildren (iterator first, iterator last)
+X3DArrayField <ValueType>::addChildren (typename iterator::iterator_type first,
+                                        typename iterator::iterator_type last)
 {
-	for (auto & child : basic::adapter (first, last))
-		child .addParent (this);
+	for (auto & field : basic::adapter (first, last))
+		addChild (field);
+}
+
+template <class ValueType>
+inline
+void
+X3DArrayField <ValueType>::addChild (ValueType* field)
+{
+	field -> addParent (this);
+}
+
+template <class ValueType>
+inline
+void
+X3DArrayField <ValueType>::removeChildren (typename iterator::iterator_type first,
+                                           typename iterator::iterator_type last)
+{
+	for (auto & field : basic::adapter (first, last))
+		removeChild (field);
+}
+
+template <class ValueType>
+inline
+void
+X3DArrayField <ValueType>::removeChild (ValueType* field)
+{
+	field -> removeParent (this);
+	
+	if (field -> getParents () .empty ())
+		getGarbageCollector () .addObject (field);
+}
+
+template <class ValueType>
+void
+X3DArrayField <ValueType>::reset ()
+{
+	removeChildren (get () .begin (), get () .end ());
+
+	get () .clear ();
+}
+
+template <class ValueType>
+X3DArrayField <ValueType>::~X3DArrayField ()
+{
+	reset ();
 }
 
 } // X3D

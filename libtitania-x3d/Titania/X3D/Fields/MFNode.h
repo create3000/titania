@@ -88,7 +88,7 @@ public:
 	{ }
 
 	explicit
-	MFNode (std::initializer_list <typename SFNode <X3DBaseNode>::value_type> initializer_list) :
+	MFNode (std::initializer_list <const typename SFNode <X3DBaseNode>::value_type> initializer_list) :
 		ArrayField (initializer_list)
 	{ }
 

@@ -134,7 +134,6 @@ main (int argc, char** argv)
 	{
 
 		auto browser = X3D::getBrowser ();
-		browser -> setup ();
 
 		X3D::MFString url (options .getArgv (), options .getArgv () + options .getArgc ());
 

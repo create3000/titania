@@ -1,19 +1,63 @@
-#X3D V3.0 utf8 Titania
+#VRML V2.0 utf8 Titania
 
 META "title" "Scripting test"
 
-Script {
-	url "vrmlscript:
-var Complex = require ('http://titania.create3000.de/Library/JavaScript/Math.js');
+DEF Timer TimeSensor {
+  loop TRUE
+}
 
+DEF Debug2 Script {
+  url "vrmlscript:
 function initialize ()
 {
-	print ('initialize');
+	print ('initialize2');
+}
 
-//	print (Complex);
-//	print (Math .PHI);
-
-	print ('done.');
+function shutdown ()
+{
+	print ('shutdown2');
 }
 "
 }
+
+DEF Debug1 Script {
+  eventIn SFTime set_time
+  field   SFNode debug2 USE Debug2
+  field   SFNode self USE Debug1
+
+  url "vrmlscript:
+var d2 = self .debug2;
+
+function initialize ()
+{
+	print ('initialize1');
+	
+	var array = new MFVec3f (new SFVec3f ());
+	
+	var value = array [0];
+	
+	array .length = 0;
+	
+	print (value);
+	
+	value .x = 1;
+	value .y = 2;
+	value .z = 3;
+	
+	print (value);
+	
+}
+
+function set_time (value)
+{
+	print (value);
+}
+
+function shutdown ()
+{
+	print ('shutdown1');
+}
+"
+}
+
+ROUTE Timer.cycleTime TO Debug1.set_time

@@ -611,7 +611,7 @@ X3DExecutionContext::addRootNode (const SFNode <X3DBaseNode> & rootNode)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	rootNodes .push_back (rootNode);
+	rootNodes .emplace_back (rootNode);
 }
 
 void

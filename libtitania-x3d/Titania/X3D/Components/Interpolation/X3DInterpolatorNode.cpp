@@ -100,7 +100,7 @@ X3DInterpolatorNode::_set_fraction ()
 		return interpolate (key () .size () - 2, key () .size () - 1, 1);
 
 	auto   iter   = std::upper_bound (key () .cbegin (), key () .cend (), set_fraction ());
-	size_t index1 = iter - key () .begin ();
+	size_t index1 = iter - key () .cbegin ();
 	size_t index0 = index1 - 1;
 
 	float weight = (set_fraction () - key () [index0]) / (key () [index1] - key () [index0]);

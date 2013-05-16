@@ -53,6 +53,7 @@
 
 #include "../../../Fields/SFMatrix4.h"
 #include "../jsX3DField.h"
+#include "../JavaScriptContext.h"
 #include "jsSFRotation.h"
 #include "jsSFVec3.h"
 
@@ -166,6 +167,8 @@ jsSFMatrix4 <Type>::create (JSContext* context, Type* field, jsval* vp, const bo
 
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
+
+	static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> addField (field);
 
 	*vp = OBJECT_TO_JSVAL (result);
 

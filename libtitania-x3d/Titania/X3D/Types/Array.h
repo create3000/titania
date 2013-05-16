@@ -52,21 +52,23 @@
 #define __TITANIA_X3D_TYPES_ARRAY_H__
 
 #include "../InputOutput/Generator.h"
+#include <Titania/Utility/Adapter.h>
 #include <deque>
 #include <istream>
 #include <ostream>
+#include <stdexcept>
 
 namespace titania {
 namespace X3D {
 
 template <class Type, template <class, class Allocator = std::allocator <Type>> class ArrayType = std::deque>
 class Array :
-	public ArrayType <Type>
+	public ArrayType <Type*>
 {
 public:
 
 	typedef Type                                        value_type;
-	typedef ArrayType <Type>                            array_type;
+	typedef ArrayType <Type*>                           array_type;
 	typedef typename array_type::iterator               iterator;
 	typedef typename array_type::const_iterator         const_iterator;
 	typedef typename array_type::reverse_iterator       reverse_iterator;
@@ -76,35 +78,38 @@ public:
 
 	///  The default constructor returns an empty Array.
 	Array () :
-		ArrayType <Type> ()
+		ArrayType <Type*> ()
 	{ }
 
 	///  Copy constructor.
 	Array (const Array & value) :
-		ArrayType <Type> (value)
-	{ }
+		ArrayType <Type*> ()
+	{
+		for (const auto & field : value)
+			ArrayType <Type*>::emplace_back (new Type (*field));
+	}
 
 	///  Move constructor.
 	Array (Array && value) :
-		ArrayType <Type> (value)
+		ArrayType <Type*> (value)
 	{ }
 
 	template <class InputIterator>
 	Array (InputIterator first, InputIterator last) :
-		ArrayType <Type> (first, last)
-	{ }
+		ArrayType <Type*> ()
+	{
+		for (const auto & field : basic::adapter (first, last))
+			ArrayType <Type*>::emplace_back (new Type (field));
+	}
 
 	Array &
-	operator = (const Array & value)
-	{
-		ArrayType <Type>::operator = (value);
-		return *this;
-	}
+	operator = (const Array &)
+	{ throw std::domain_error ("Array::operator=: operation not permited!"); }
 
 	Array &
 	operator = (Array && value)
 	{
-		ArrayType <Type>::operator = (value);
+		ArrayType <Type*>::operator = (value);
 		return *this;
 	}
 
@@ -112,6 +117,59 @@ public:
 	{ }
 
 };
+
+template <class Type, template <class, class Allocator> class ArrayType>
+inline
+bool
+operator == (const Array <Type, ArrayType> & lhs, const Array <Type, ArrayType> & rhs)
+{
+	return lhs .size () == rhs .size () &&
+	       std::equal (lhs .begin (), lhs .end (),
+	                   rhs .begin (),
+	                   [ ] (const Type * a, const Type * b){ return *a == *b; });
+}
+
+template <class Type, template <class, class Allocator> class ArrayType>
+inline
+bool
+operator not_eq (const Array <Type, ArrayType> & lhs, const Array <Type, ArrayType> & rhs)
+{
+	return not (lhs == rhs);
+}
+
+template <class Type, template <class, class Allocator> class ArrayType>
+inline
+bool
+operator < (const Array <Type, ArrayType> & lhs, const Array <Type, ArrayType> & rhs)
+{
+	return std::lexicographical_compare (lhs .begin (), lhs .end (),
+	                                     rhs .begin (), rhs .end (),
+	                                     [ ] (const Type * a, const Type * b){ return *a < *b; });
+}
+
+template <class Type, template <class, class Allocator> class ArrayType>
+inline
+bool
+operator > (const Array <Type, ArrayType> & lhs, const Array <Type, ArrayType> & rhs)
+{
+	return rhs < lhs;
+}
+
+template <class Type, template <class, class Allocator> class ArrayType>
+inline
+bool
+operator <= (const Array <Type, ArrayType> & lhs, const Array <Type, ArrayType> & rhs)
+{
+	return not (rhs < lhs);
+}
+
+template <class Type, template <class, class Allocator> class ArrayType>
+inline
+bool
+operator >= (const Array <Type, ArrayType> & lhs, const Array <Type, ArrayType> & rhs)
+{
+	return not (lhs < rhs);
+}
 
 template <class CharT, class Traits, class Type, template <class, class Allocator> class ArrayType>
 std::basic_istream <CharT, Traits> &
@@ -122,7 +180,7 @@ operator >> (std::basic_istream <CharT, Traits> & istream, Array <Type, ArrayTyp
 	Type value;
 
 	while (istream >> value)
-		array .push_back (value);
+		array .emplace_back (new Type (value));
 
 	return istream;
 }
@@ -135,18 +193,19 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const Array <Type, Ar
 	{
 		ostream << Generator::OpenBracket;
 
-		std::copy (array .begin (),
-		           array .end () - 1,
-		           Generator::ListSeparator <Type> (ostream));
+		Generator::ListSeparator <Type> separator (ostream);
 
-		ostream << array .back () << Generator::CloseBracket;
+		for (const auto & field : basic::adapter (array .begin (), array .end () - 1))
+			separator = *field;
+
+		ostream << *array .back () << Generator::CloseBracket;
 
 		return ostream;
 	}
 
 	if (array .size () == 1)
 	{
-		ostream << array .front ();
+		ostream << *array .front ();
 		return ostream;
 	}
 

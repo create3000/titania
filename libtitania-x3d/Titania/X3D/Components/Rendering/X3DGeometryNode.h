@@ -101,6 +101,10 @@ protected:
 
 	X3DGeometryNode ();
 
+	virtual
+	void
+	initialize ();
+
 	///  @name Properties
 
 	std::vector <Vector3f> &

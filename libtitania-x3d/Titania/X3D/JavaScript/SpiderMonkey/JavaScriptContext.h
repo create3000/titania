@@ -65,13 +65,15 @@ class JavaScriptContext :
 {
 public:
 
+	using X3DNode::addField;
+	using X3DNode::removeField;
+
 	JavaScriptContext (X3DScriptNode*, const std::string &, const basic::uri &, size_t);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const;
 
-	virtual
 	X3DScriptNode*
 	getNode () const
 	{ return script; }
@@ -80,13 +82,19 @@ public:
 	require (const basic::uri &, jsval &);
 
 	void
-	set_prepareEvents ();
+	set_initialized ();
 
 	void
-	set_eventsProcessed ();
+	prepareEvents ();
 
 	void
-	set_shutdown ();
+	eventsProcessed ();
+	
+	void
+	addField (X3DFieldDefinition*);
+
+	void
+	removeField (X3DFieldDefinition*);
 
 	virtual
 	void
@@ -109,7 +117,7 @@ private:
 	initNode ();
 
 	void
-	addField (X3DFieldDefinition* const);
+	addUserDefinedField (X3DFieldDefinition* const);
 
 	static
 	void
@@ -132,7 +140,7 @@ private:
 	set_field (X3DFieldDefinition*);
 
 	void
-	set_initialize ();
+	shutdown ();
 
 	jsval
 	getFunction (const std::string &);
@@ -146,6 +154,16 @@ private:
 	static
 	void
 	error (JSContext* context, const char* message, JSErrorReport* report);
+	
+	virtual
+	void
+	registerEvent (X3DChildObject*) final
+	{ }
+
+	virtual
+	void
+	registerEvent (X3DChildObject*, const Event &) final
+	{ }
 
 	static JSClass global_class;
 
@@ -161,10 +179,11 @@ private:
 	jsval eventsProcessedFn;
 	jsval shutdownFn;
 
-	std::map <std::string, jsval>         fields;
-	std::map <X3DFieldDefinition*, jsval> functions;
-	std::map <basic::uri, jsval>          files;
-	std::deque <basic::uri>               worldURL;
+	std::map <std::string, jsval>          fields;
+	std::map <X3DFieldDefinition*, jsval>  functions;
+	std::map <X3DFieldDefinition*, size_t> references;
+	std::map <basic::uri, jsval>           files;
+	std::deque <basic::uri>                worldURL;
 
 };
 

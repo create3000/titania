@@ -1,68 +1,11 @@
-2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
+2013-05-16  Holger Seelig  <holger.seelig@yahoo.de>
 
-	* Library.mdproj:
-	* Scene.wrl:
-	* Browser.wrl:
-	* X3DConstants.wrl: 
-
-2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* TriangleSphere.wrl: 
-
-2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* TriangleSphere.wrl: 
-
-2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* example.wrl:
-	* QuadSphere.wrl:
-	* example.wrl:
-	* TriangleSphere.wrl: 
-
-2013-05-13  Holger Seelig  <holger.seelig@yahoo.de>
-
+	* ChangeLog:
 	* Library.mdproj:
 	* test.wrl:
-	* earth.png:
-	* example.wrl:
-	* QuadSphere.wrl:
-	* example.wrl: 
-
-2013-05-12  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* Library.mdproj:
-	* QuadSphere.wrl:
-	* example.wrl:
-	* TriangleSphere.wrl: 
-
-2013-05-11  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* Library.mdproj:
-	* earth.png:
-	* example.wrl:
-	* IcoSphere.wrl:
-	* earth.png:
-	* example.wrl:
-	* TriangleSphere.wrl: 
-
-2013-05-11  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* example.wrl:
-	* IcoSphere.wrl: 
-
-2013-05-11  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* Library.mdproj:
-	* geodome.wrl:
-	* earth.png:
-	* example.wrl:
-	* IcoSphere.wrl: 
-
-2013-05-10  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* example.wrl:
-	* IcoSphere.wrl: 
+	* Scene.wrl:
+	* Browser.wrl:
+	* X3DScene.wrl: 
 
 2013-05-10  Holger Seelig  <holger.seelig@yahoo.de>
 

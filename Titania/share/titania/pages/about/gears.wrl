@@ -38,8 +38,8 @@ function initialize ()
 {
 	print ('### Generating gear ...');
 
-	var indices = gear .set_coordIndex;
-	var points  = gear .coord .point;
+	var indices = new MFInt32 ();
+	var points  = new MFVec3f ();
 
 	var cos = Math .cos;
 	var sin = Math .sin;
@@ -237,6 +237,9 @@ function initialize ()
 	}
 
 	print ('### Generating gear done.');
+	
+	gear .set_coordIndex = indices;
+	gear .coord .point   = points;
 }
 "
   }

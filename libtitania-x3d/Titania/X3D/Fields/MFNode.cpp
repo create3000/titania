@@ -66,16 +66,16 @@ template class X3DArrayField <SFNode <X3DBaseNode>>;
 MFNode*
 MFNode::clone (X3DExecutionContext* const executionContext) const
 {
-	MFNode* field = new MFNode ();
+	MFNode* clone = new MFNode ();
 
-	for (const auto & node :* this)
+	for (const auto & field :* this)
 	{
-		field -> push_back (node .getValue ()
-		                    ? node .getValue () -> clone (executionContext)
-								  : NULL);
+		clone -> emplace_back (field .getValue ()
+		                       ? field .getValue () -> clone (executionContext)
+								     : NULL);
 	}
 
-	return field;
+	return clone;
 }
 
 void
@@ -98,11 +98,11 @@ MFNode::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak
 			<< Generator::IncIndent;
 
-		for (const auto & value : basic::adapter (cbegin (), cend () - 1))
+		for (const auto & field : basic::adapter (cbegin (), cend () - 1))
 		{
 			ostream
 				<< Generator::Indent
-				<< value
+				<< *field
 				<< Generator::TidyBreak;
 		}
 

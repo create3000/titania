@@ -85,23 +85,6 @@ X3DBrowser::initialize ()
 	X3DBrowserContext::initialize ();
 	X3DUrlObject::initialize ();
 
-	// Welcome
-
-	print (std::boolalpha,
-	       '\n',
-	       std::string (80, '*'), '\n',
-	       std::string (80, '*'), '\n',
-
-	       "Welcome to ", getName (), " X3D Browser ", getVersion (), ':', '\n',
-	       "\tCompiled at ", __DATE__, " ", __TIME__, '\n',
-
-	       renderingProperties, '\n',
-	       javaScriptEngine, '\n',
-
-	       std::string (80, '*'), '\n',
-	       std::string (80, '*'), '\n',
-	       '\n');
-
 	// Initialize scene
 	
 	world = scene = createScene ();
@@ -123,6 +106,23 @@ X3DBrowser::initialize ()
 	scene .addInterest (this, &X3DBrowser::set_scene);
 	world .addInterest (this, &X3DBrowser::set_world);
 	
+	// Welcome
+
+	print (std::boolalpha,
+	       '\n',
+	       std::string (80, '*'), '\n',
+	       std::string (80, '*'), '\n',
+
+	       "Welcome to ", getName (), " X3D Browser ", getVersion (), ':', '\n',
+	       "\tCompiled at ", __DATE__, " ", __TIME__, '\n',
+
+	       renderingProperties, '\n',
+	       javaScriptEngine, '\n',
+
+	       std::string (80, '*'), '\n',
+	       std::string (80, '*'), '\n',
+	       '\n');
+
 	std::clog
 		<< "\tDone initializing Browser." << std::endl
 		<< std::endl;

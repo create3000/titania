@@ -48,10 +48,9 @@
  *
  ******************************************************************************/
 
-#include "../Basic/X3DBaseNode.h"
 #include "SFNode.h"
 
-#include <iostream>
+#include "../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {

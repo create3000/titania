@@ -1,52 +1,29 @@
 #VRML V2.0 utf8
 
-META "title" "Browser"
-
-DEF Touch TouchSensor { }
-
-Shape {
-  appearance Appearance {
-    material Material { }
-  }
-  geometry Box { }
-}
-
-DEF Debug Script {
-  eventIn SFTime set_time
-
+Script {
   url "vrmlscript:
 
-function set_time ()
+function initialize ()
 {
-	print ();
 	print ('+ Browser +++++++++++++++++++++++++++++++++++++++++++++');	
-	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
+	print ('Hello Wörld!');	
 	
-	print ();
-	print (Browser);
-	
-	print ();
-	print ('name:                ' + Browser .name);
-	print ('version:             ' + Browser .version);
-	print ('currentSpeed:        ' + Browser .currentSpeed);
-	print ('currentFrameRate:    ' + Browser .currentFrameRate);
-	print ('description:         ' + Browser .description);
-	print ('supportedComponents: ' + Browser .supportedComponents);
-	print ('supportedProfiles:   ' + Browser .supportedProfiles);
-	print ('currentScene:        ' + Browser .currentScene);
+	print (Browser);	
+	print ('Name: '                + Browser .name);	
+	print ('Version: '             + Browser .version);
+	print ('CurrentSpeed: '        + Browser .currentSpeed);
+	print ('CurrentFrameRate: '    + Browser .currentFrameRate);
+	print ('Description: '         + Browser .description);
+	print ('SupportedComponents: ' + Browser .supportedComponents);
+	print ('SupportedProfiles: '   + Browser .supportedProfiles);
+	print ('CurrentScene: '        + Browser .currentScene);
 
-	print ();
 	print ('+ VRML Browser ++++++++++++++++++++++++++++++++++++++++');	
 
-	// VRML
+	// VRML  
+	print ('WorldURL: ' + Browser .getWorldURL ());
 
-	print ();
-	print ('getWorldURL: ' + Browser .getWorldURL ());
-
-	print ();
 	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
 }
 "
 }
-
-ROUTE Touch.touchTime TO Debug.set_time

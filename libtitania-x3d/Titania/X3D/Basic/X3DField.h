@@ -226,6 +226,7 @@ protected:
 	write (const X3DChildObject &);
 
 	///  Set this field to its default value.
+	virtual
 	void
 	reset ();
 
@@ -316,14 +317,6 @@ X3DField <ValueType>::operator == (const X3DFieldDefinition & field) const
 template <class ValueType>
 inline
 void
-X3DField <ValueType>::reset ()
-{
-	value = ValueType ();
-}
-
-template <class ValueType>
-inline
-void
 X3DField <ValueType>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
@@ -344,12 +337,20 @@ X3DField <ValueType>::toStream (std::ostream & ostream) const
 template <class ValueType>
 inline
 void
+X3DField <ValueType>::reset ()
+{
+	value = ValueType ();
+}
+
+template <class ValueType>
+inline
+void
 X3DField <ValueType>::dispose ()
 {
 	X3DFieldDefinition::dispose ();
 
 	// Reset as final step when parents empty.
-	X3DField::reset ();
+	reset ();
 }
 
 //@{

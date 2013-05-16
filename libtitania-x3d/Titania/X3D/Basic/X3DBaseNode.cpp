@@ -128,6 +128,8 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 {
 	assert (executionContext);
 
+	initialized .setName ("initialized");
+
 	setChildren (initialized);
 }
 
@@ -608,8 +610,8 @@ X3DBaseNode::setup ()
 {
 	executionContext -> addParent (this);
 
-	for (auto & field : fields)
-		field .second -> addParent (this);
+	for (auto & field : fieldDefinitions)
+		field -> addParent (this);
 
 	if (executionContext -> isProto ())
 		return;
@@ -879,29 +881,30 @@ void
 X3DBaseNode::dispose ()
 {
 	X3DChildObject::dispose ();
-
+	
 	shutdown .processInterests ();
+	
+	for (const auto & field : fieldDefinitions)
+	{
+		field -> removeParent (this);
 
-	for (const auto & field : fields)
-		field .second -> dispose ();
-
-	executionContext -> removeParent (this);
-
-	getBrowser () -> getRouter () .removeNode (this);
-
+		if (field -> getParents () .empty ())
+			getGarbageCollector () .addObject (field);
+	}
+	
+	fields .clear ();
+	fieldDefinitions .clear ();
 	events .clear ();
 
+	executionContext -> removeParent (this);
+	getBrowser () -> getRouter () .removeNode (this);
 	getGarbageCollector () .addObject (this);
 }
 
 X3DBaseNode::~X3DBaseNode ()
 {
-	//__LOG__ << typeName << std::endl;
 
-	for (const auto & field : fields)
-		delete field .second;
 
-	//__LOG__ << typeName << std::endl;
 }
 
 template std::istream & operator >> (std::istream &, X3DBaseNode*);

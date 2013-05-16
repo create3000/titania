@@ -171,7 +171,7 @@ IndexedFaceSet::set_texCoordIndex ()
 		// Fill up texCoordIndex if to small.
 		for (size_t i = texCoordIndex () .size (); i < coordIndex () .size (); ++ i)
 		{
-			texCoordIndex () .push_back (coordIndex () [i]);
+			texCoordIndex () .emplace_back (coordIndex () [i]);
 		}
 
 		// Determine number of used texCoords.
@@ -203,14 +203,14 @@ IndexedFaceSet::set_colorIndex ()
 		{
 			for (size_t i = colorIndex () .size (); i < coordIndex () .size (); ++ i)
 			{
-				colorIndex () .push_back (coordIndex () [i]);
+				colorIndex () .emplace_back (coordIndex () [i]);
 			}
 		}
 		else
 		{
 			for (size_t i = colorIndex () .size (); i < numPolygons; ++ i)
 			{
-				colorIndex () .push_back (i);
+				colorIndex () .emplace_back (i);
 			}
 		}
 
@@ -249,14 +249,14 @@ IndexedFaceSet::set_normalIndex ()
 		{
 			for (size_t i = normalIndex () .size (); i < coordIndex () .size (); ++ i)
 			{
-				normalIndex () .push_back (coordIndex () [i]);
+				normalIndex () .emplace_back (coordIndex () [i]);
 			}
 		}
 		else
 		{
 			for (size_t i = normalIndex () .size (); i < numPolygons; ++ i)
 			{
-				normalIndex () .push_back (i);
+				normalIndex () .emplace_back (i);
 			}
 		}
 
@@ -423,14 +423,14 @@ IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numTriangles)
 	if (coordIndex () .empty ())
 	{
 		for (size_t i = 0; i < _coord -> point () .size (); ++ i)
-			coordIndex () .push_back (i);
+			coordIndex () .emplace_back (i);
 	}
 
 	if (coordIndex () .size ())
 	{
 		// Add -1 (polygon end marker) to coordIndex if not present.
 		if (coordIndex () .back () >= 0)
-			coordIndex () .push_back (-1);
+			coordIndex () .emplace_back (-1);
 
 		// Construct triangle array and determine the number of used points.
 		size_t i = 0;

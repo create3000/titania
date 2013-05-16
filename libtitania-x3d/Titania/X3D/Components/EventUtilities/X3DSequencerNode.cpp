@@ -108,7 +108,8 @@ X3DSequencerNode::_set_fraction ()
 	else
 	{
 		auto iter = std::upper_bound (key () .cbegin (), key () .cend (), set_fraction ());
-		i = iter - key () .begin () - 1;
+
+		i = iter - key () .cbegin () - 1;
 	}
 
 	if (i < getSize ())

@@ -73,9 +73,6 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
-	const Glib::RefPtr <Gtk::Action> &
-	getRevertAction () const { return m_revertAction; }
-
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilerX3D () const { return m_fileFilerX3D; }
 
@@ -92,6 +89,9 @@ public:
 	getOpenAction () const { return m_openAction; }
 
 	const Glib::RefPtr <Gtk::Action> &
+	getRevertAction () const { return m_revertAction; }
+
+	const Glib::RefPtr <Gtk::Action> &
 	getSaveAction () const { return m_saveAction; }
 
 	const Glib::RefPtr <Gtk::AccelGroup> &
@@ -105,9 +105,6 @@ public:
 
 	Gtk::CheckButton &
 	getSaveCompressedButton () const { return *m_saveCompressedButton; }
-
-	Gtk::MessageDialog &
-	getMessageDialog () const { return *m_messageDialog; }
 
 	Gtk::Window &
 	getWindow () const { return *m_window; }
@@ -304,9 +301,8 @@ public:
 	Gtk::Statusbar &
 	getStatusBar () const { return *m_statusBar; }
 
-	virtual
-	void
-	on_revert_to_saved () = 0;
+	Gtk::MessageDialog &
+	getMessageDialog () const { return *m_messageDialog; }
 
 	virtual
 	void
@@ -315,6 +311,10 @@ public:
 	virtual
 	void
 	on_open () = 0;
+
+	virtual
+	void
+	on_revert_to_saved () = 0;
 
 	virtual
 	void
@@ -327,10 +327,6 @@ public:
 	virtual
 	void
 	on_fileSaveDialog_response (int response_id) = 0;
-
-	virtual
-	void
-	on_messageDialog_response (int response_id) = 0;
 
 	virtual
 	void
@@ -450,6 +446,10 @@ public:
 
 	virtual
 	void
+	on_messageDialog_response (int response_id) = 0;
+
+	virtual
+	void
 	dispose ();
 
 
@@ -462,18 +462,17 @@ private:
 
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
-	Glib::RefPtr <Gtk::Action>      m_revertAction;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilerX3D;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
 	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::Action>      m_newAction;
 	Glib::RefPtr <Gtk::Action>      m_openAction;
+	Glib::RefPtr <Gtk::Action>      m_revertAction;
 	Glib::RefPtr <Gtk::Action>      m_saveAction;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
 	Gtk::CheckButton*               m_saveCompressedButton;
-	Gtk::MessageDialog*             m_messageDialog;
 	Gtk::Window*                    m_window;
 	Gtk::VBox*                      m_widget;
 	Gtk::MenuBar*                   m_menuBar;
@@ -539,6 +538,7 @@ private:
 	Gtk::Box*                       m_viewpointEditorBox;
 	Gtk::Box*                       m_outlineEditorBox;
 	Gtk::Statusbar*                 m_statusBar;
+	Gtk::MessageDialog*             m_messageDialog;
 
 };
 

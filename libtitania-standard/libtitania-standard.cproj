@@ -51,7 +51,6 @@
     <None Include="ChangeLog" />
     <None Include="info.h" />
     <None Include="Titania\OS.h" />
-    <None Include="Titania\Basic\InputOutput\Generator.h" />
     <None Include="Titania\Basic\Id.h" />
     <None Include="Titania\Basic\BindStack.h" />
     <None Include="Titania\Basic\URI.h" />
@@ -112,9 +111,9 @@
     <None Include="Titania\InputOutput\QuotedString.h" />
     <None Include="Titania\InputOutput\Sequence.h" />
     <None Include="Titania\InputOutput\String.h" />
+    <None Include="Titania\InputOutput\Generator.h" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Titania\Basic\InputOutput\Generator.cpp" />
     <Compile Include="Titania\Basic\Id.cpp" />
     <Compile Include="Titania\Basic\URI.cpp" />
     <Compile Include="Titania\Math\Numbers\Color3.cpp" />
@@ -155,6 +154,7 @@
     <Compile Include="Titania\InputOutput\QuotedString.cpp" />
     <Compile Include="Titania\InputOutput\Sequence.cpp" />
     <Compile Include="Titania\InputOutput\String.cpp" />
+    <Compile Include="Titania\InputOutput\Generator.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

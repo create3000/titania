@@ -57,7 +57,7 @@
 #include <string>
 
 namespace titania {
-namespace basic {
+namespace io {
 
 template <class CharT, class Traits = std::char_traits <CharT>>
 class basic_generator
@@ -297,21 +297,21 @@ basic_generator <CharT, Traits>::Precision (std::basic_ostream <CharT, Traits> &
 
 typedef basic_generator <char> Generator;
 
-} // basic
+} // io
 } // titania
 
-extern template std::ostream & titania::basic::Generator::Comment       (std::ostream &);
-extern template std::ostream & titania::basic::Generator::Space         (std::ostream &);
-extern template std::ostream & titania::basic::Generator::TidySpace     (std::ostream &);
-extern template std::ostream & titania::basic::Generator::Break         (std::ostream &);
-extern template std::ostream & titania::basic::Generator::TidyBreak     (std::ostream &);
-extern template std::ostream & titania::basic::Generator::ListBreak     (std::ostream &);
-extern template std::ostream & titania::basic::Generator::Comma         (std::ostream &);
-extern template std::ostream & titania::basic::Generator::Indent        (std::ostream &);
-extern template std::ostream & titania::basic::Generator::IncIndent     (std::ostream &);
-extern template std::ostream & titania::basic::Generator::DecIndent     (std::ostream &);
-extern template std::ostream & titania::basic::Generator::OpenBracket   (std::ostream &);
-extern template std::ostream & titania::basic::Generator::CloseBracket  (std::ostream &);
-extern template std::ostream & titania::basic::Generator::EmptyBrackets (std::ostream &);
+extern template std::ostream & titania::io::Generator::Comment       (std::ostream &);
+extern template std::ostream & titania::io::Generator::Space         (std::ostream &);
+extern template std::ostream & titania::io::Generator::TidySpace     (std::ostream &);
+extern template std::ostream & titania::io::Generator::Break         (std::ostream &);
+extern template std::ostream & titania::io::Generator::TidyBreak     (std::ostream &);
+extern template std::ostream & titania::io::Generator::ListBreak     (std::ostream &);
+extern template std::ostream & titania::io::Generator::Comma         (std::ostream &);
+extern template std::ostream & titania::io::Generator::Indent        (std::ostream &);
+extern template std::ostream & titania::io::Generator::IncIndent     (std::ostream &);
+extern template std::ostream & titania::io::Generator::DecIndent     (std::ostream &);
+extern template std::ostream & titania::io::Generator::OpenBracket   (std::ostream &);
+extern template std::ostream & titania::io::Generator::CloseBracket  (std::ostream &);
+extern template std::ostream & titania::io::Generator::EmptyBrackets (std::ostream &);
 
 #endif

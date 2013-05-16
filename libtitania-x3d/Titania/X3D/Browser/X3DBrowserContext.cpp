@@ -68,7 +68,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	          displayed (),                                        // [out]  displayed
 	           finished (),                                        // [out]  finished
 	            changed (),                                        // [out]  changed
-	             select (false),                                   // SFNode  [in,out]  select              FALSE
+	             select (false),                                   // SFBool  [in,out]  select              FALSE
 	renderingProperties (new RenderingProperties (this)),          // SFNode  [ ]       renderingProperties NULL   [RenderingProperties]
 	  browserProperties (new BrowserProperties   (this)),          // SFNode  [ ]       browserProperties   NULL   [BrowserProperties]
 	     browserOptions (new BrowserOptions      (this)),          // SFNode  [ ]       browserOptions      NULL   [BrowserOptions]
@@ -91,7 +91,15 @@ X3DBrowserContext::X3DBrowserContext () :
 	       currentSpeed (0),                                       
 	   currentFrameRate (0),                                       
 	            console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
-{ }
+{
+	setChildren (select,
+	             renderingProperties,
+	             browserProperties,
+	             browserOptions,
+	             javaScriptEngine,
+	             selection,
+	             console);
+}
 
 void
 X3DBrowserContext::initialize ()
@@ -454,7 +462,6 @@ X3DBrowserContext::update ()
 		if (errorNum not_eq GL_NO_ERROR)
 			std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toLocaleString () << ": " << gluErrorString (errorNum) << std::endl;
 
-		console -> string_changed () .set ({ });
 	}
 	catch (const std::exception & exception)
 	{
@@ -474,6 +481,13 @@ X3DBrowserContext::dispose ()
 	finished      .dispose ();
 	shutdown      .dispose ();
 	changed       .dispose ();
+	
+	renderingProperties .dispose ();
+	browserProperties   .dispose ();
+	browserOptions      .dispose ();
+	javaScriptEngine    .dispose ();
+	selection           .dispose ();
+	console             .dispose ();
 
 	X3DChildObject::dispose ();
 	//X3DExecutionContext::dispose ();

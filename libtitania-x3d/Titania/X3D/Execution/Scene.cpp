@@ -112,7 +112,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 
 	else
-		layerSet -> getLayers () [0] -> children () .push_back (rootNode);
+		layerSet -> getLayers () [0] -> children () .emplace_back (rootNode);
 }
 
 void
