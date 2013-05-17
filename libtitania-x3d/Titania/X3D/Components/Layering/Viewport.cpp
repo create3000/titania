@@ -92,6 +92,30 @@ Viewport::initialize ()
 	X3DRenderer::initialize ();
 }
 
+float
+Viewport::getLeft ()
+{
+	return clipBoundary () .size () > 0 ? clipBoundary () [0] : 0;
+}
+
+float
+Viewport::getRight ()
+{
+	return clipBoundary () .size () > 1 ? clipBoundary () [1] : 1;
+}
+
+float
+Viewport::getBottom ()
+{
+	return clipBoundary () .size () > 2 ? clipBoundary () [2] : 0;
+}
+
+float
+Viewport::getTop ()
+{
+	return clipBoundary () .size () > 3 ? clipBoundary () [3] : 1;
+}
+
 void
 Viewport::traverse (TraverseType type)
 {
@@ -138,14 +162,21 @@ Viewport::collect (TraverseType type)
 void
 Viewport::push ()
 {
-	MFFloat cB = clipBoundary () .size () < 4 ? MFFloat ({ 0, 1, 0, 1 }) : clipBoundary ();
-
 	glGetIntegerv (GL_VIEWPORT, viewport); // x, y, width, heigth
+	// getBrowser -> getViewport (viewport);
 
-	glViewport (cB [0] * viewport [2],
-	            cB [2] * viewport [3],
-	            cB [1] * viewport [2],
-	            cB [3] * viewport [3]);
+	float left   = getLeft ();
+	float right  = getRight ();
+	float bottom = getBottom ();
+	float top    = getTop ();
+	
+	float widht  = right - left;
+	float height = top - bottom;
+
+	glViewport (left   * viewport [2],
+	            bottom * viewport [3],
+	            widht  * viewport [2],
+	            height * viewport [3]);
 }
 
 void

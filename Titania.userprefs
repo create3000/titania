@@ -1,19 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="test/main.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="214" Column="19" />
       <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="881" Column="4" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DArrayField.h" Line="471" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DFieldDefinition.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/JavaScriptContext.cpp" Line="1" Column="1" />
       <File FileName="Titania/share/titania/pages/about/gears.wrl" Line="55" Column="2" />
       <File FileName="Library/Tests/Scripting/test.wrl" Line="13" Column="19" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsMFBool.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsMFInt32.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsGlobals.cpp" Line="1" Column="1" />
-      <File FileName="test/main.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="7" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -32,6 +25,7 @@
                 <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Geometry3D" expanded="True" />
+                  <Node name="X3DBrowserContext.cpp" selected="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
@@ -51,9 +45,7 @@
               </Node>
             </Node>
           </Node>
-          <Node name="test" expanded="True">
-            <Node name="main.cpp" selected="True" />
-          </Node>
+          <Node name="test" expanded="True" />
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">

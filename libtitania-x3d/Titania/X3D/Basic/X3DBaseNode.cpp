@@ -885,20 +885,14 @@ X3DBaseNode::dispose ()
 	shutdown .processInterests ();
 	
 	for (const auto & field : fieldDefinitions)
-	{
 		field -> removeParent (this);
 
-		if (field -> getParents () .empty ())
-			getGarbageCollector () .addObject (field);
-	}
-	
 	fields .clear ();
 	fieldDefinitions .clear ();
 	events .clear ();
 
 	executionContext -> removeParent (this);
 	getBrowser () -> getRouter () .removeNode (this);
-	getGarbageCollector () .addObject (this);
 }
 
 X3DBaseNode::~X3DBaseNode ()

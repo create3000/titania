@@ -1,3 +1,23 @@
+2013-05-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DArrayField.h:
+	* X3DBaseNode.cpp:
+	* X3DBrowser.cpp:
+	* X3DChildObject.cpp:
+	* GarbargeCollector.cpp:
+	* PointingDevice.cpp:
+	* X3DFieldDefinition.cpp:
+	* X3DBrowserContext.cpp:
+	* Viewport.h:
+	* Script.cpp:
+	* Viewport.cpp:
+	* OrthoViewpoint.h:
+	* OrthoViewpoint.cpp:
+	* RenderingProperties.h:
+	* RenderingProperties.cpp:
+	* JavaScriptContext.h:
+	* JavaScriptContext.cpp: 
+
 2013-05-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DFieldDefinition.cpp: 

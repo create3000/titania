@@ -489,8 +489,7 @@ X3DBrowserContext::dispose ()
 	selection           .dispose ();
 	console             .dispose ();
 
-	X3DChildObject::dispose ();
-	//X3DExecutionContext::dispose ();
+	X3DExecutionContext::dispose ();
 
 	getGarbageCollector () .dispose ();
 }

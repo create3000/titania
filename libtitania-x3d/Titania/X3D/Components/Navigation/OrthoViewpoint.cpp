@@ -93,28 +93,28 @@ OrthoViewpoint::getPosition () const
 	return position ();
 }
 
-std::array <float, 4>
-OrthoViewpoint::getFieldOfView ()
+float
+OrthoViewpoint::getMinimumX ()
 {
+	return fieldOfView () .size () > 0 ? fieldOfView () [0] : -1;
+}
 
-	switch (fieldOfView () .size ())
-	{
-		case 0:
-			return std::array <float, 4> {{ -1, -1, 1, 1 }};
-			
-		case 1:
-			return std::array <float, 4> {{ fieldOfView () [0], -1,
-			                                1, 1 }};
-		case 2:
-			return std::array <float, 4> {{ fieldOfView () [0], fieldOfView () [1],
-			                                1, 1 }};
-		case 3:
-			return std::array <float, 4> {{ fieldOfView () [0], fieldOfView () [1],
-			                                fieldOfView () [2], 1 }};
-		default:
-			return std::array <float, 4> {{ fieldOfView () [0], fieldOfView () [1],
-			                                fieldOfView () [2], fieldOfView () [3] }};
-	}
+float
+OrthoViewpoint::getMinumumY ()
+{
+	return fieldOfView () .size () > 1 ? fieldOfView () [1] : -1;
+}
+
+float
+OrthoViewpoint::getMaximumX ()
+{
+	return fieldOfView () .size () > 2 ? fieldOfView () [2] : 1;
+}
+
+float
+OrthoViewpoint::getMaximumY ()
+{
+	return fieldOfView () .size () > 3 ? fieldOfView () [3] : 1;
 }
 
 Vector3f
@@ -136,11 +136,14 @@ OrthoViewpoint::reshape (const float zNear, const float zFar)
 
 	GLfloat width  = viewport [2];
 	GLfloat height = viewport [3];
+	
+	float minimum_x = getMinimumX ();
+	float minimum_y = getMinumumY ();
+	float maximum_x = getMaximumX ();
+	float maximum_y = getMaximumY ();
 
-	std::array <float, 4> fieldOfView = getFieldOfView ();
-
-	float size_x = abs (getModelViewMatrix () .multDirMatrix (Vector3f (fieldOfView [2] - fieldOfView [0], 0, 0))) / 2;
-	float size_y = abs (getModelViewMatrix () .multDirMatrix (Vector3f (0, fieldOfView [3] - fieldOfView [1], 0))) / 2;
+	float size_x = abs (getModelViewMatrix () .multDirMatrix (Vector3f (maximum_x - minimum_x, 0, 0))) / 2;
+	float size_y = abs (getModelViewMatrix () .multDirMatrix (Vector3f (0, maximum_y - minimum_y, 0))) / 2;
 
 	if (width > height)
 	{

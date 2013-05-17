@@ -125,13 +125,19 @@ main (int argc, char* argv [ ])
 		{
 			auto browser = X3D::getBrowser ();
 
-			std::vector <X3D::SFInt32> v ({ X3D::SFInt32 (1) });
-
-			X3D::Array <X3D::SFInt32> a1 (v. begin (), v .end ());
-			X3D::Array <X3D::SFInt32> a2 (v. begin (), v .end ());
+			for (int i = 0; i < 10; ++ i)
+			{
 			
-			std::clog << (a1 == a2) << std::endl;
-			std::clog << (a1 != a2) << std::endl;
+				X3D::MFInt32 a1;
+
+				a1 .resize (1000000);
+				
+				__LOG__ << a1 .size () << std::endl;
+				
+				sleep (1);
+				
+				a1 .getGarbageCollector () .dispose ();
+			}
 			
 		}
 

@@ -89,15 +89,24 @@ public:
 	Vector3f
 	getPosition () const;
 
-	std::array <float, 4>
-	getFieldOfView ();
-
 	virtual
 	void
 	reshape (const float, const float);
 
 
 private:
+
+	float
+	getMinimumX ();
+
+	float
+	getMinumumY ();
+
+	float
+	getMaximumX ();
+
+	float
+	getMaximumY ();
 
 	virtual
 	Vector3f

@@ -100,8 +100,15 @@ Script::initialize ()
 
 		if (loadDocument (URL, ecmascript))
 		{
-			javaScript = new JavaScriptContext (this, ecmascript, getWorldURL () .str (), index);
-			break;
+			try
+			{
+				javaScript = new JavaScriptContext (this, ecmascript, getWorldURL (), index);
+				break;
+			}
+			catch (const std::invalid_argument & error)
+			{
+				std::clog << error .what () << std::endl;
+			}
 		}
 
 		++ index;

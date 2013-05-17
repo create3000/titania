@@ -176,14 +176,6 @@ public:
 	textureMemory () const
 	{ return *fields .textureMemory; }
 
-	MFString &
-	string ()
-	{ return *fields .string; }
-
-	const MFString &
-	string () const
-	{ return *fields .string; }
-
 	bool
 	hasExtension (const std::string &);
 
@@ -245,7 +237,6 @@ private:
 		SFBool* const antiAliased;
 		SFInt32* const colorDepth;
 		SFDouble* const textureMemory;
-		MFString* const string;
 	};
 
 	Fields fields;
@@ -255,11 +246,12 @@ private:
 	chrono::stopwatch <double> clock;
 	chrono::stopwatch <double> renderClock;
 
-	SFString     fontFamily;
-	size_t       fontHeigth;
-	GLuint       fontListBase;
-	XFontStruct* fontInfo;
-	GLuint       listId;
+	SFString                  fontFamily;
+	size_t                    fontHeigth;
+	GLuint                    fontListBase;
+	XFontStruct*              fontInfo;
+	GLuint                    listId;
+	std::vector <std::string> string;
 
 };
 

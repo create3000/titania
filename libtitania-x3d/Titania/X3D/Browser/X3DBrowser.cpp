@@ -424,12 +424,13 @@ X3DBrowser::dispose ()
 {
 	__LOG__ << (void*) this << std::endl;
 
+	scene .dispose ();
+	world .dispose ();
+
 	supportedFields     .dispose ();
 	supportedNodes      .dispose ();
 	supportedComponents .dispose ();
 	supportedProfiles   .dispose ();
-
-	scene .dispose ();
 
 	X3DBrowserContext::dispose ();
 

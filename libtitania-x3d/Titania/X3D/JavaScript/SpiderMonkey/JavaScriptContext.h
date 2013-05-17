@@ -89,7 +89,7 @@ public:
 
 	void
 	eventsProcessed ();
-	
+
 	void
 	addField (X3DFieldDefinition*);
 
@@ -99,7 +99,7 @@ public:
 	virtual
 	void
 	dispose ();
-	
+
 	virtual
 	~JavaScriptContext ();
 
@@ -154,7 +154,7 @@ private:
 	static
 	void
 	error (JSContext* context, const char* message, JSErrorReport* report);
-	
+
 	virtual
 	void
 	registerEvent (X3DChildObject*) final
@@ -167,12 +167,13 @@ private:
 
 	static JSClass global_class;
 
-	JSRuntime*     runtime;
-	JSContext*     context;
-	JSObject*      global;
-	X3DBrowser*    browser;
-	X3DScriptNode* script;
-	size_t         index;
+	JSRuntime*              runtime;
+	JSContext*              context;
+	JSObject*               global;
+	X3DBrowser*             browser;
+	X3DScriptNode*          script;
+	std::deque <basic::uri> worldURL;
+	size_t                  index;
 
 	jsval initializeFn;
 	jsval prepareEventsFn;
@@ -183,7 +184,6 @@ private:
 	std::map <X3DFieldDefinition*, jsval>  functions;
 	std::map <X3DFieldDefinition*, size_t> references;
 	std::map <basic::uri, jsval>           files;
-	std::deque <basic::uri>                worldURL;
 
 };
 

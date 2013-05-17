@@ -83,8 +83,7 @@ RenderingProperties::Fields::Fields () :
 	maxLights (new SFInt32 ()),
 	antiAliased (new SFBool ()),
 	colorDepth (new SFInt32 ()),
-	textureMemory (new SFDouble ()),
-	string (new MFString ())
+	textureMemory (new SFDouble ())
 { }
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
@@ -95,7 +94,8 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	 fontFamily ("-schumacher-clean-medium-r-normal--12-120-75-75-c-60-iso8859-1"), // SFString [in,out] fontFamily
 	 fontHeigth (0),                                                                
 	   fontInfo (nullptr),                                                          
-	     listId (0)                                                                 
+	     listId (0),
+	     string ()                                                                 
 {
 	setComponent ("Browser"),
 	setTypeName ("RenderingProperties");
@@ -112,7 +112,6 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	addField (outputOnly, "antiAliased",    antiAliased ());
 	addField (outputOnly, "colorDepth",     colorDepth ());
 	addField (outputOnly, "textureMemory",  textureMemory ());
-	addField (outputOnly, "string",         string ());
 }
 
 RenderingProperties*
@@ -289,13 +288,13 @@ RenderingProperties::build ()
 	int i = 0;
 	update ();
 
-	for (const auto & line : string ())
+	for (const auto & line : string)
 	{
 		glPushMatrix ();
 		glLoadIdentity ();
-		glRasterPos2f (10, 10 + (string () .size () - i - 1) * fontHeigth);
+		glRasterPos2f (10, 10 + (string .size () - i - 1) * fontHeigth);
 		glListBase (fontListBase);
-		glCallLists (line .length (), GL_UNSIGNED_BYTE, line .getValue () .c_str ());
+		glCallLists (line .length (), GL_UNSIGNED_BYTE, line .c_str ());
 		glPopMatrix ();
 		++ i;
 	}
@@ -341,81 +340,81 @@ RenderingProperties::update ()
 	//	      traverseTime = getBrowser () -> getRenderer () -> getTraverseTime (),
 	//	      renderInterval     = getBrowser () -> getRenderer () -> getDrawTime ();
 
-	string () .clear ();
+	string .clear ();
 
 	std::ostringstream stringstream;
 
 	stringstream .str (""); stringstream << "Current Graphics Renderer";
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "  Name: " << renderer () .getValue ();
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	stringstream .str ("");
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Rendering properties";
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Texture units:             " << textureUnits ();
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Max texture size:          " << maxTextureSize () << " × " << maxTextureSize () << " pixel";
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Antialiased:               " << antiAliased ();
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Color depth:               " << colorDepth () << " bits";
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Texture Memory:            " << (textureMemory () > 0 ? strfsize (textureMemory ()) : "n/a");
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Available Texture Memory:  " << strfsize (getAvailableTextureMemory ());
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	struct rusage usage;
 	getrusage (RUSAGE_SELF, &usage);
 
 	stringstream .str (""); stringstream << "Memory Usage:              " << strfsize (usage .ru_maxrss * 1024);
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	stringstream .str ("");
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Frame Rate:                " << std::setprecision (1) << std::fixed << 1 / clock .average () << " fps";
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Display:                   " << std::setprecision (2) << std::fixed << renderClock .average () / clock .average () * 100 << " %";
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Routing:                   " << std::setprecision (2) << std::fixed << getBrowser () -> getRouter () .clock .average () / clock .average () * 100 << " %";
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Sensors:                   " << getBrowser () -> sensors .getRequesters () .size ();
-	string () .emplace_back (stringstream .str ());
+	string .emplace_back (stringstream .str ());
 
 	//	//	stringstream .str (""); stringstream << "Event Time:    " << std::setprecision (7) << std::fixed << eventTime << " s (" << maxEventTime << ')';
-	//	//	string () .emplace_back (stringstream .str ());
+	//	//	string .emplace_back (stringstream .str ());
 	//
 	//	//	stringstream .str (""); stringstream << "Traverse Time: " << std::setprecision (7) << std::fixed << traverseTime << " s (" << maxTraverseTime << ')';
-	//	// string () .emplace_back (stringstream .str ());
+	//	// string .emplace_back (stringstream .str ());
 	//
 	//	// stringstream .str (""); stringstream << "Draw Time:                 " << std::setprecision (7) << std::fixed << renderInterval << " s (" << maxDrawTime << ')';
-	//	// string () .emplace_back (stringstream .str ());
+	//	// string .emplace_back (stringstream .str ());
 	//
 	//	//	stringstream .str (""); stringstream << "Nodes:         " << getBrowser () -> getRenderer () -> getNumNodesDrawn () << " / " << getBrowser () -> getRenderer () -> getNumNodes ();
-	//	// string () .emplace_back (stringstream .str ());
+	//	// string .emplace_back (stringstream .str ());
 	//
 	//	//	stringstream .str (""); stringstream << "Transparent:   " << getBrowser () -> getRenderer () -> getNumTransparentNodesDrawn () << " / " << getBrowser () -> getRenderer () -> getNumTransparentNodes ();
-	//	//	string () .emplace_back (stringstream .str ());
+	//	//	string .emplace_back (stringstream .str ());
 	//
 	//	//	stringstream .str (""); stringstream << "Textures:      " << getBrowser () -> getNumTextures ();
-	//	//	string () .emplace_back (stringstream .str ());
+	//	//	string .emplace_back (stringstream .str ());
 	//
 	//	stringstream .str (""); stringstream << "Speed:                     " << std::setprecision (3) << std::fixed << getBrowser () -> getCurrentSpeed () << " m/s";
-	//	string () .emplace_back (stringstream .str ());
+	//	string .emplace_back (stringstream .str ());
 }
 
 void

@@ -658,9 +658,6 @@ void
 X3DArrayField <ValueType>::removeChild (ValueType* field)
 {
 	field -> removeParent (this);
-	
-	if (field -> getParents () .empty ())
-		getGarbageCollector () .addObject (field);
 }
 
 template <class ValueType>

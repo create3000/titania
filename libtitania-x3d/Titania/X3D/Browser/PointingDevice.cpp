@@ -66,36 +66,6 @@ PointingDevice::PointingDevice (Browser* const browser) :
 }
 
 bool
-PointingDevice::on_motion_notify_event (GdkEventMotion* event)
-{
-	if (button == 0 or button == 1)
-	{
-		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
-		{
-			if (not isOver)
-			{
-				getBrowser () -> setCursor (Gdk::HAND2);
-				isOver = true;
-			}
-
-			//return true;
-		}
-		else
-		{
-			if (isOver)
-			{
-				getBrowser () -> setCursor (Gdk::ARROW);
-				isOver = false;
-			}
-		}
-
-		getBrowser () -> motionNotifyEvent ();
-	}
-
-	return false;
-}
-
-bool
 PointingDevice::on_button_press_event (GdkEventButton* event)
 {
 	button = event -> button;
@@ -147,6 +117,36 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 
 		else
 			getBrowser () -> setCursor (Gdk::ARROW);
+	}
+
+	return false;
+}
+
+bool
+PointingDevice::on_motion_notify_event (GdkEventMotion* event)
+{
+	if (button == 0 or button == 1)
+	{
+		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
+		{
+			if (not isOver)
+			{
+				getBrowser () -> setCursor (Gdk::HAND2);
+				isOver = true;
+			}
+
+			//return true;
+		}
+		else
+		{
+			if (isOver)
+			{
+				getBrowser () -> setCursor (Gdk::ARROW);
+				isOver = false;
+			}
+		}
+
+		getBrowser () -> motionNotifyEvent ();
 	}
 
 	return false;

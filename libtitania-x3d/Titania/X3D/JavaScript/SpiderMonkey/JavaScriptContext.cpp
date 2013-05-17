@@ -52,9 +52,9 @@
 
 #include "String.h"
 #include "jsBrowser.h"
-#include "jsX3DConstants.h"
 #include "jsFields.h"
 #include "jsGlobals.h"
+#include "jsX3DConstants.h"
 #include "jsfield.h"
 
 namespace titania {
@@ -69,28 +69,28 @@ JSClass JavaScriptContext::global_class = {
 };
 
 JavaScriptContext::JavaScriptContext (X3DScriptNode* script, const std::string & ecmascript, const basic::uri & uri, size_t index) :
-	      X3DBaseNode (script -> getExecutionContext () -> getBrowser (), script -> getExecutionContext ()),
-	          X3DNode (),
-	     X3DUrlObject (),
-	          runtime (NULL),                  
-	          context (NULL),                  
-	           global (NULL),                  
-	          browser (script -> getBrowser ()), 
-	           script (script),                  
-	            index (index),                 
-	     initializeFn (),                      
-	  prepareEventsFn (),                      
-	eventsProcessedFn (),                      
-	       shutdownFn (),                      
-	           fields (), 
-	        functions (),                      
-	       references (),                     
-	            files (),
-	         worldURL ({ uri })                       
+	      X3DBaseNode (script -> getExecutionContext () -> getBrowser (), script -> getExecutionContext ()), 
+	          X3DNode (),                                                                                    
+	     X3DUrlObject (),                                                                                    
+	          runtime (NULL),                                                                                
+	          context (NULL),                                                                                
+	           global (NULL),                                                                                
+	          browser (script -> getBrowser ()),                                                             
+	           script (script),                                                                              
+	         worldURL ({ uri }),                                                                             
+	            index (index),                                                                               
+	     initializeFn (),                                                                                    
+	  prepareEventsFn (),                                                                                    
+	eventsProcessedFn (),                                                                                    
+	       shutdownFn (),                                                                                    
+	           fields (),                                                                                    
+	        functions (),                                                                                    
+	       references (),                                                                                    
+	            files ()                                                                                     
 {
 	setComponent ("Browser");
 	setTypeName ("JavaScriptContext");
-	
+
 	addField (inputOutput, "metadata", metadata ());
 
 	// Create a JS runtime.
@@ -119,7 +119,11 @@ JavaScriptContext::JavaScriptContext (X3DScriptNode* script, const std::string &
 
 	initNode ();
 
-	evaluate (ecmascript, uri .str ());
+	if (not evaluate (ecmascript, uri .str ()))
+	{
+		dispose ();
+		throw std::invalid_argument ("Couldn't evaluate script.");
+	}
 
 	initEventHandler ();
 }
@@ -367,15 +371,15 @@ JavaScriptContext::require (const basic::uri & uri, jsval & rval)
 	try
 	{
 		// Resolve uri
-		
+
 		basic::uri base = worldURL .back () .size ()
 		                  ? worldURL .back ()
-		                  : getExecutionContext () -> getWorldURL ();
-		                   
+								: getExecutionContext () -> getWorldURL ();
+
 		basic::uri resolvedURL = transformURI (base, uri);
 
 		// Get cached result
-		
+
 		auto file = files .find (resolvedURL);
 
 		if (file not_eq files .end ())
@@ -385,19 +389,19 @@ JavaScriptContext::require (const basic::uri & uri, jsval & rval)
 		}
 
 		// Load document
-		
+
 		std::string document = loadDocument (resolvedURL);
-		
+
 		// Evaluate script
-		
+
 		worldURL .emplace_back (resolvedURL);
-		
+
 		auto success = evaluate (document, resolvedURL, rval);
-		
+
 		worldURL .pop_back ();
 
 		// Cache result
-		
+
 		if (success)
 		{
 			JS_AddValueRoot (context, &rval);
@@ -424,7 +428,7 @@ JavaScriptContext::evaluate (const std::string & string, const std::string & fil
 JSBool
 JavaScriptContext::evaluate (const std::string & string, const std::string & filename, jsval & rval)
 {
-	return JS_EvaluateScript (context, global, 
+	return JS_EvaluateScript (context, global,
 	                          string .c_str (), string .length (),
 	                          filename .size () ? filename .c_str () : NULL,
 	                          1,
@@ -517,7 +521,7 @@ JavaScriptContext::addField (X3DFieldDefinition* field)
 	if (reference == references .end ())
 	{
 		references .insert (std::make_pair (field, 1));
-		
+
 		field -> addParent (this);
 	}
 	else
@@ -528,15 +532,12 @@ void
 JavaScriptContext::removeField (X3DFieldDefinition* field)
 {
 	auto reference = references .find (field);
-	
+
 	if (-- reference -> second == 0)
 	{
 		references .erase (reference);
-		
-		field -> removeParent (this);
 
-		if (field -> getParents () .empty ())
-			getGarbageCollector () .addObject (field);
+		field -> removeParent (this);
 	}
 }
 
@@ -565,9 +566,9 @@ JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport
 		script -> loadDocument (script -> url () [javaScript -> index], ecmascript);
 
 	// Find error line
-	
+
 	std::string line = "Couldn't load file!";
-	
+
 	if (ecmascript .size ())
 	{
 		char nl = ecmascript .find ('\n', 0) == String::npos ? '\r' : '\n';
@@ -589,9 +590,9 @@ JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport
 		{
 			if ((end = ecmascript .find (nl, start)) == String::npos)
 				end = ecmascript .length ();
+				
+			line = ecmascript .substr (start, end - start);
 		}
-
-		line = ecmascript .substr (start, end - start);
 	}
 
 	// Pretty print error
@@ -608,10 +609,10 @@ void
 JavaScriptContext::dispose ()
 {
 	shutdown ();
-	
+
 	for (auto & field : fields)
 		JS_RemoveValueRoot (context, &field .second);
-	
+
 	for (auto & file : files)
 		JS_RemoveValueRoot (context, &file .second);
 
@@ -619,7 +620,7 @@ JavaScriptContext::dispose ()
 	JS_GC (context);
 	JS_DestroyContext (context);
 	JS_DestroyRuntime (runtime);
-	
+
 	assert (references .size () == 0);
 
 	X3DUrlObject::dispose ();
@@ -627,8 +628,7 @@ JavaScriptContext::dispose ()
 }
 
 JavaScriptContext::~JavaScriptContext ()
-{
-}
+{ }
 
 } // X3D
 

@@ -101,6 +101,18 @@ private:
 	void
 	initialize ();
 
+	float
+	getLeft ();
+
+	float
+	getRight ();
+
+	float
+	getBottom ();
+
+	float
+	getTop ();
+
 	virtual
 	void
 	collect (TraverseType);
