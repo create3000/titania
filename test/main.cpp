@@ -72,39 +72,22 @@
 using namespace titania;
 using namespace titania::Test;
 
-template <class InputIterator>
-void
-set (X3D::MFString & array, InputIterator first, InputIterator last)
+
+template <class Type>
+class X3DArrayField :
 {
-	X3D::MFString::iterator current = array .begin ();
+public:
 
-	for ( ; first not_eq last && current not_eq array .end (); ++ current, ++ first)
+	void
+	resize (size_t size)
 	{
-		__LOG__ << std::endl;
-		current -> set (*first);
+		
 	}
 
-	if (first == last)
-	{
-		__LOG__ << std::endl;
-		array .resize (current - array .begin ());
-	}
-	else // insert at end
-	{
-		__LOG__ << std::endl;
-		X3D::MFString::size_type current_size = array .size ();
+private:
 
-		while (first not_eq last)
-		{
-			__LOG__ << std::endl;
-			__LOG__ << (*first ++) << std::endl;
-			
-			//array .emplace_back (*first ++);
-
-			__LOG__ << std::endl;
-		}
-	}
-}
+	X3D::Array <Type> value;
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -124,21 +107,23 @@ main (int argc, char* argv [ ])
 
 		{
 			auto browser = X3D::getBrowser ();
+			
+			X3D::MFInt32 o;
 
 			for (int i = 0; i < 10; ++ i)
 			{
-			
-				X3D::MFInt32 a1;
+				{
+					X3D::MFInt32 a1;
 
-				a1 .resize (1000000);
+					a1 .resize (2000000);
 				
-				__LOG__ << a1 .size () << std::endl;
-				
+					__LOG__ << a1 .size () << std::endl;
+				}
+
+				o .getGarbageCollector () .dispose ();
+	
 				sleep (1);
-				
-				a1 .getGarbageCollector () .dispose ();
 			}
-			
 		}
 
 		std::clog << "End of block ..." << std::endl;

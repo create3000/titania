@@ -142,7 +142,9 @@ BrowserWindow::on_save_as ()
 
 void
 BrowserWindow::on_close ()
-{ }
+{
+	close ();
+}
 
 void
 BrowserWindow::on_revert_to_saved ()

@@ -898,7 +898,6 @@ X3DBaseNode::dispose ()
 X3DBaseNode::~X3DBaseNode ()
 {
 
-
 }
 
 template std::istream & operator >> (std::istream &, X3DBaseNode*);

@@ -97,6 +97,9 @@ public:
 	void
 	dispose ();
 
+	virtual
+	~X3DBrowserWindow ();
+
 
 protected:
 
