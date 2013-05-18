@@ -68,8 +68,8 @@ class X3DArrayField :
 {
 public:
 
-	typedef ValueType                                          scalar_type;
-	typedef typename X3DField <Array <ValueType>>::value_type value_type;
+	typedef ValueType         scalar_type;
+	typedef Array <ValueType> value_type;
 
 	typedef X3DArrayFieldIterator <typename value_type::iterator, ValueType>                     iterator;
 	typedef X3DArrayFieldIterator <typename value_type::reverse_iterator, ValueType>             reverse_iterator;
@@ -90,10 +90,8 @@ public:
 
 	///  Copy constructor.
 	X3DArrayField (const X3DArrayField & field) :
-		X3DField <value_type> (field)
-	{
-		addChildren (get () .begin (), get () .end ());
-	}
+		X3DArrayField <ValueType> (field .begin (), field .end ())
+	{ }
 
 	//	///  Move constructor.
 	//	X3DArrayField (X3DArrayField && field) :
@@ -106,60 +104,57 @@ public:
 	///  Construct an X3DArrayField from basic type @a value.
 	explicit
 	X3DArrayField (const value_type & value) :
-		X3DField <value_type> (value)
-	{
-		addChildren (get () .begin (), get () .end ());
-	}
+		X3DArrayField <ValueType> (const_iterator (value .begin ()), const_iterator (value .end ()))
+	{ }
 
-	///  Moves elements from basic type @a value.
-	explicit
-	X3DArrayField (value_type && value) :
-		X3DField <value_type> (value)
-	{
-		addChildren (get () .begin (), get () .end ());
-	}
+	//	///  Moves elements from basic type @a value.
+	//	explicit
+	//	X3DArrayField (value_type && value) :
+	//		X3DField <value_type> (value)
+	//	{
+	//		addChildren (get () .begin (), get () .end ());
+	//	}
 
 	template <const size_t Size>
 	X3DArrayField (const ValueType (&value) [Size]) :
-		X3DField <value_type> (std::move (value_type (value, value + Size)))
-	{
-		addChildren (get () .begin (), get () .end ());
-	}
+		X3DArrayField <ValueType> (value, value + Size)
+	{ }
 
 	template <const size_t Size>
 	X3DArrayField (const typename ValueType::value_type (&value) [Size]) :
-		X3DField <value_type> (std::move (value_type (value, value + Size)))
-	{
-		addChildren (get () .begin (), get () .end ());
-	}
+		X3DArrayField <ValueType> (value, value + Size)
+	{ }
 
 	X3DArrayField (std::initializer_list <ValueType> list) :
-		X3DField <value_type> (std::move (value_type (list .begin (), list .end ())))
-	{
-		addChildren (get () .begin (), get () .end ());
-	}
+		X3DArrayField <ValueType> (list .begin (), list .end ())
+	{ }
 
 	X3DArrayField (std::initializer_list <const typename ValueType::value_type> list) :
-		X3DField <value_type> (std::move (value_type (list .begin (), list .end ())))
-	{
-		addChildren (get () .begin (), get () .end ());
-	}
+		X3DArrayField <ValueType> (list .begin (), list .end ())
+	{ }
 
 	template <class InputIterator>
 	X3DArrayField (InputIterator first, InputIterator last) :
-		X3DField <value_type> (std::move (value_type (first, last)))
+		X3DField <value_type> ()
 	{
-		addChildren (get () .begin (), get () .end ());
+		for (const auto & value : basic::adapter (first, last))
+		{
+			ValueType* field = new ValueType (value);
+			
+			get () .emplace_back (field);
+			
+			addChild (field);
+		}
 	}
 
 	virtual
 	X3DArrayField*
-	clone () const
+	clone () const override
 	{ return new X3DArrayField (*this); }
 
 	virtual
 	X3DArrayField*
-	clone (X3DExecutionContext* const) const
+	clone (X3DExecutionContext* const) const override
 	{ return clone (); }
 
 	void
@@ -349,6 +344,20 @@ public:
 	size () const
 	{ return getValue () .size (); }
 
+	///  @name Input operator.
+	virtual
+	void
+	fromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
+
+	///  @name Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const override;
+
 	virtual
 	~X3DArrayField ();
 
@@ -359,7 +368,7 @@ protected:
 
 	virtual
 	void
-	reset ();
+	reset () override;
 
 
 private:
@@ -622,6 +631,48 @@ X3DArrayField <ValueType>::resize (size_type count, const ValueType & value)
 
 		notifyParents ();
 	}
+}
+
+template <class ValueType>
+void
+X3DArrayField <ValueType>::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	clear ();
+
+	ValueType value;
+
+	while (istream >> value)
+		emplace_back (value);
+}
+
+template <class ValueType>
+void
+X3DArrayField <ValueType>::toStream (std::ostream & ostream) const
+{
+	if (size () > 1)
+	{
+		ostream << Generator::OpenBracket;
+
+		std::copy (begin (),
+		           end () - 1,
+		           Generator::ListSeparator <ValueType> (ostream));
+
+		ostream << back () << Generator::CloseBracket;
+
+		return;
+	}
+
+	if (size () == 1)
+	{
+		ostream << front ();
+		return;
+	}
+
+	ostream << Generator::EmptyBrackets;
 }
 
 template <class ValueType>

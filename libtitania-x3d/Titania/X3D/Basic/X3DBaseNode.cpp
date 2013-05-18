@@ -900,8 +900,5 @@ X3DBaseNode::~X3DBaseNode ()
 
 }
 
-template std::istream & operator >> (std::istream &, X3DBaseNode*);
-template std::ostream & operator << (std::ostream &, const X3DBaseNode*);
-
 } // X3D
 } // titania

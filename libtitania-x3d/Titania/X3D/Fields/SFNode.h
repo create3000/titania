@@ -170,6 +170,20 @@ public:
 		addInterest (requester, *this);
 	}
 
+	///  @name Input operator.
+	virtual
+	void
+	fromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final;
+
+	///  @name Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const final;
+
 	///  @name Dispose
 
 	virtual
@@ -306,6 +320,28 @@ SFNode <ValueType>::removeNode (ValueType* const value)
 
 		value -> removeParent (this);
 	}
+}
+
+template <class ValueType>
+inline
+void
+SFNode <ValueType>::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{ }
+
+template <class ValueType>
+inline
+void
+SFNode <ValueType>::toStream (std::ostream & ostream) const
+{
+	if (getValue ())
+		getValue () -> toStream (ostream);
+		
+	else
+		ostream << "NULL";
 }
 
 template <class ValueType>

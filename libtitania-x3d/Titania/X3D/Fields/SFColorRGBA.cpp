@@ -174,6 +174,14 @@ SFColorRGBA::getHSV (scalar_type & h, scalar_type & s, scalar_type & v) const
 }
 
 void
+SFColorRGBA::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{ }
+
+void
 SFColorRGBA::toStream (std::ostream & ostream) const
 {
 	ostream << Generator::Precision <scalar_type><< getValue ();

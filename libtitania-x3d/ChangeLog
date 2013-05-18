@@ -1,5 +1,38 @@
 2013-05-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Array.h:
+	* SFVec2.h:
+	* SFTime.h:
+	* MFNode.h:
+	* SFVec3.h:
+	* SFVec4.h:
+	* SFNode.h:
+	* SFImage.h:
+	* SFColor.h:
+	* MFInt32.h:
+	* X3DField.h:
+	* SFString.h:
+	* MFNode.cpp:
+	* SFTime.cpp:
+	* X3DScalar.h:
+	* SFMatrix4.h:
+	* SFMatrix3.h:
+	* SFColor.cpp:
+	* MFInt32.cpp:
+	* SFImage.cpp:
+	* X3DBaseNode.h:
+	* SFString.cpp:
+	* X3DScalar.cpp:
+	* ArrayFields.h:
+	* SFRotation4.h:
+	* SFColorRGBA.h:
+	* X3DBaseNode.cpp:
+	* X3DArrayField.h:
+	* ArrayFields.cpp:
+	* SFColorRGBA.cpp: 
+
+2013-05-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Browser.cpp:
 	* X3DBrowserContext.cpp:
 	* JavaScriptContext.cpp: 

@@ -60,7 +60,7 @@
 namespace titania {
 namespace X3D {
 
-extern template class Array <SFNode <X3DBaseNode>>;
+//extern template class Array <SFNode <X3DBaseNode>>;
 extern template class X3DField <Array <SFNode <X3DBaseNode>>>;
 extern template class X3DArrayField <SFNode <X3DBaseNode>>;
 
@@ -99,15 +99,17 @@ public:
 
 	virtual
 	MFNode*
-	clone () const { return new MFNode (*this); }
+	clone () const final
+	{ return new MFNode (*this); }
 
 	virtual
 	MFNode*
-	clone (X3DExecutionContext* const executionContext) const;
+	clone (X3DExecutionContext* const executionContext) const final;
 
 	virtual
 	X3DConstants::FieldType
-	getType () const { return X3DConstants::MFNode; }
+	getType () const final
+	{ return X3DConstants::MFNode; }
 
 	virtual
 	void
@@ -115,11 +117,11 @@ public:
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>) final;
 
 	virtual
 	void
-	toStream (std::ostream &) const;
+	toStream (std::ostream &) const final;
 
 };
 

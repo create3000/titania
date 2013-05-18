@@ -7,8 +7,12 @@ DEF Timer TimeSensor {
 }
 
 DEF Debug1 Script {
-  eventIn SFTime set_time
-  field   SFNode self USE Debug1
+  eventIn SFTime  set_time
+  field   SFNode  self USE Debug1
+  field   MFInt32 a1 [ 1, 2, 3 ]
+  field   MFVec3f a2 [ 1 2 3, 1 2 3 ]
+  field   MFInt32 a3 1
+  field   MFVec3f a4 1 2 3
 
   url "vrmlscript:
 function initialize ()

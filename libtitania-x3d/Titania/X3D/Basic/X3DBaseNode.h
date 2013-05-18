@@ -283,32 +283,6 @@ private:
 
 };
 
-template <class CharT, class Traits>
-std::basic_istream <CharT, Traits> &
-operator >> (std::basic_istream <CharT, Traits> & istream, X3DBaseNode* node)
-{
-	//	auto node = executionContext -> createNode ("typeId")
-	//
-	//	node -> fromStream (istream);
-	//
-	return istream;
-}
-
-template <class CharT, class Traits>
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const X3DBaseNode* node)
-{
-	if (node)
-		node -> toStream (ostream);
-	else
-		ostream << "NULL";
-
-	return ostream;
-}
-
-extern template std::istream & operator >> (std::istream &, X3DBaseNode*);
-extern template std::ostream & operator << (std::ostream &, const X3DBaseNode*);
-
 } // X3D
 } // titania
 

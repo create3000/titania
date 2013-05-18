@@ -90,7 +90,7 @@ public:
 
 	virtual
 	SFRotation4*
-	clone () const;
+	clone () const final;
 
 	void
 	setX (const scalar_type &);
@@ -152,10 +152,19 @@ public:
 	SFRotation4*
 	slerp (const SFRotation4 &, const scalar_type &) const;
 
-	///  Output operator.
+	///  @name Input operator.
 	virtual
 	void
-	toStream (std::ostream &) const;
+	fromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final;
+
+	///  @name Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const final;
 
 
 private:
@@ -364,6 +373,16 @@ SFRotation4 <ValueType>::slerp (const SFRotation4 & dest, const scalar_type & t)
 {
 	return new SFRotation4 (math::slerp (getValue (), dest .getValue (), t));
 }
+
+template <class ValueType>
+inline
+void
+SFRotation4 <ValueType>::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{ }
 
 template <class ValueType>
 inline

@@ -59,7 +59,7 @@ const std::string X3DField <Array <SFNode <X3DBaseNode>>>::typeName ("MFNode");
 template <>
 const X3DConstants::FieldType X3DField <Array <SFNode <X3DBaseNode>>>::type = X3DConstants::MFNode;
 
-template class Array <X3D::SFNode <X3DBaseNode>>;
+//template class Array <X3D::SFNode <X3DBaseNode>>;
 template class X3DField <Array <SFNode <X3DBaseNode>>>;
 template class X3DArrayField <SFNode <X3DBaseNode>>;
 

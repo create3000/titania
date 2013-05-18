@@ -59,12 +59,10 @@ const std::string X3DField <Array <SFInt32>>::typeName ("MFInt32");
 template <>
 const X3DConstants::FieldType X3DField <Array <SFInt32>>::type = X3DConstants::MFInt32;
 
-template class Array <SFInt32>;
+//template class Array <SFInt32>;
 template class X3DField <Array <SFInt32>>;
 template class X3DArrayField <SFInt32>;
 
 } // X3D
-
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFInt32> &);
 
 } // titania

@@ -21,6 +21,7 @@ perl -p -e '
 	s/\!=/not_eq/go;                                                         # change != to not_eq
 	s/\|\|/or/go;                                                            # change || to or
 	s/>\s+(?=>)/>/go;                                                        # change > > to >>
+	s/></> </go;                                                             # add space between ><
 	s/(\s+-\>)\s*/$1 /go;                                                    # change variable->member to variable -> member
 	s/([\w\d\)\]])(-\>)\s*/$1 $2 /go;                                        # change variable->member to variable -> member
 	s/-\>\s*\*/->*/go;                                                       # change variable -> * member to variable ->* member

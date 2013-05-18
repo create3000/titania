@@ -70,25 +70,25 @@ namespace titania {
 namespace X3D {
 
 //  Inhibit implicit instantiation for required instantiations.
-extern template class Array <SFBool>;
-extern template class Array <SFColor>;
-extern template class Array <SFColorRGBA>;
-extern template class Array <SFDouble>;
-extern template class Array <SFFloat>;
-extern template class Array <SFImage>;
-extern template class Array <SFMatrix3d>;
-extern template class Array <SFMatrix3f>;
-extern template class Array <SFMatrix4d>;
-extern template class Array <SFMatrix4f>;
-extern template class Array <SFRotation>;
-extern template class Array <SFString>;
-extern template class Array <SFTime>;
-extern template class Array <SFVec2d>;
-extern template class Array <SFVec2f>;
-extern template class Array <SFVec3d>;
-extern template class Array <SFVec3f>;
-extern template class Array <SFVec4d>;
-extern template class Array <SFVec4f>;
+//extern template class Array <SFBool>;
+//extern template class Array <SFColor>;
+//extern template class Array <SFColorRGBA>;
+//extern template class Array <SFDouble>;
+//extern template class Array <SFFloat>;
+//extern template class Array <SFImage>;
+//extern template class Array <SFMatrix3d>;
+//extern template class Array <SFMatrix3f>;
+//extern template class Array <SFMatrix4d>;
+//extern template class Array <SFMatrix4f>;
+//extern template class Array <SFRotation>;
+//extern template class Array <SFString>;
+//extern template class Array <SFTime>;
+//extern template class Array <SFVec2d>;
+//extern template class Array <SFVec2f>;
+//extern template class Array <SFVec3d>;
+//extern template class Array <SFVec3f>;
+//extern template class Array <SFVec4d>;
+//extern template class Array <SFVec4f>;
 
 // Inhibit implicit instantiation for required instantiations.
 extern template class X3DField <Array <SFBool>>;
@@ -154,28 +154,6 @@ typedef X3DArrayField <SFVec4d>     MFVec4d;
 typedef X3DArrayField <SFVec4f>     MFVec4f;
 
 }  // X3D
-
-// Explicit instantiation for required instantiations.
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFBool> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFColor> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFColorRGBA> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFDouble> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFFloat> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFImage> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFMatrix3d> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFMatrix3f> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFMatrix4d> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFMatrix4f> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFRotation> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFString> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFTime> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFVec2d> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFVec2f> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFVec3d> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFVec3f> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFVec4d> &);
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFVec4f> &);
-
 } // titania
 
 #endif

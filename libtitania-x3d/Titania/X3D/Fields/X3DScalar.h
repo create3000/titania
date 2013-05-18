@@ -57,18 +57,6 @@
 namespace titania {
 namespace X3D {
 
-template <>
-void
-X3DField <bool>::toStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DField <Double>::toStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DField <Float>::toStream (std::ostream & ostream) const;
-
 extern template class X3DField <bool>;
 extern template class X3DField <Double>;
 extern template class X3DField <Float>;
@@ -97,9 +85,42 @@ public:
 
 	virtual
 	X3DScalar*
-	clone () const { return new X3DScalar <ValueType> (*this); }
+	clone () const final
+	{ return new X3DScalar <ValueType> (*this); }
+
+	///  @name Input operator.
+	virtual
+	void
+	fromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final
+	{ }
+
+	///  @name Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const final
+	{ }
 
 };
+
+template <>
+void
+X3DScalar <bool>::toStream (std::ostream & ostream) const;
+
+template <>
+void
+X3DScalar <Double>::toStream (std::ostream & ostream) const;
+
+template <>
+void
+X3DScalar <Float>::toStream (std::ostream & ostream) const;
+
+template <>
+void
+X3DScalar <Int32>::toStream (std::ostream & ostream) const;
 
 extern template class X3DScalar <bool>;
 extern template class X3DScalar <Double>;

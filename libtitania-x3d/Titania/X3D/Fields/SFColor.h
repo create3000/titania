@@ -82,7 +82,7 @@ public:
 
 	virtual
 	SFColor*
-	clone () const;
+	clone () const final;
 
 	void
 	setR (const scalar_type &);
@@ -120,10 +120,19 @@ public:
 	void
 	getHSV (scalar_type &, scalar_type &, scalar_type &) const;
 
-	///  Output operator.
+	///  @name Input operator.
 	virtual
 	void
-	toStream (std::ostream &) const;
+	fromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final;
+
+	///  @name Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const final;
 
 
 private:

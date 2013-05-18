@@ -68,13 +68,6 @@ public:
 
 	using X3DFieldDefinition::addInterest;
 
-	/// @name Copy
-
-	///  Returns a copy of this field.
-	virtual
-	X3DField <ValueType>*
-	clone () const;
-
 	/// @name Assignment operators
 
 	///  Default assignment opeator.  Behaves the same as the 6.7.6 setValue service.
@@ -89,18 +82,20 @@ public:
 
 	virtual
 	X3DConstants::FieldType
-	getType () const { return type; }
+	getType () const override
+	{ return type; }
 
 	virtual
 	const std::string &
-	getTypeName () const { return typeName; }
+	getTypeName () const override
+	{ return typeName; }
 
 	///  6.7.5 getValue service.
 	const ValueType &
-	getValue () const { return value; }
+	getValue () const
+	{ return value; }
 
 	///  6.7.6 setValue service.
-	virtual
 	void
 	setValue (const ValueType &);
 
@@ -110,7 +105,8 @@ public:
 	set (const ValueType &);
 
 	///  Conversion operator.
-	operator const ValueType & () const { return value; }
+	operator const ValueType & () const
+	{ return value; }
 
 	///  Returns true if the type and the value of both fields are equal.
 	virtual
@@ -120,12 +116,13 @@ public:
 	///  Returns true if the type or the value of both fields are not equal.
 	virtual
 	bool
-	operator not_eq (const X3DFieldDefinition & field) const { return not (*this == field); }
+	operator not_eq (const X3DFieldDefinition & field) const
+	{ return not (*this == field); }
 
 	///  6.7.7 Add field interest.
 	template <class Class>
 	void
-	addInterest (Class* object, void (Class::* memberFunction) (const X3DField &)) const
+	addInterest (Class* object, void (Class::* memberFunction)(const X3DField &)) const
 	{
 		addInterest (object, memberFunction, *this);
 	}
@@ -164,24 +161,10 @@ public:
 		addInterest (requester, value);
 	}
 
-	///  Input operator.
-	virtual
-	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	///  Output operator.
-	virtual
-	void
-	toStream (std::ostream &) const;
-
 	///  6.7.8 dispose
 	virtual
 	void
-	dispose ();
+	dispose () override;
 
 
 protected:
@@ -252,14 +235,6 @@ const X3DConstants::FieldType X3DField <ValueType>::type = X3DConstants::SFBool;
 
 template <class ValueType>
 inline
-X3DField <ValueType>*
-X3DField <ValueType>::clone () const
-{
-	return new X3DField <ValueType> (*this);
-}
-
-template <class ValueType>
-inline
 X3DField <ValueType> &
 X3DField <ValueType>::operator = (const X3DField & value)
 {
@@ -312,26 +287,6 @@ X3DField <ValueType>::operator == (const X3DFieldDefinition & field) const
 		return getValue () == static_cast <const X3DField &> (field) .getValue ();
 
 	return false;
-}
-
-template <class ValueType>
-inline
-void
-X3DField <ValueType>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	//	istream >> value;
-}
-
-template <class ValueType>
-inline
-void
-X3DField <ValueType>::toStream (std::ostream & ostream) const
-{
-	ostream << value;
 }
 
 template <class ValueType>

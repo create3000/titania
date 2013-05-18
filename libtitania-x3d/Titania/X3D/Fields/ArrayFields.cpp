@@ -172,25 +172,25 @@ template <>
 const X3DConstants::FieldType X3DField <Array <SFVec4f>>::type = X3DConstants::MFVec4f;
 
 // Explicit instantiation for required instantiations.
-template class Array <SFBool>;
-template class Array <SFColor>;
-template class Array <SFColorRGBA>;
-template class Array <SFDouble>;
-template class Array <SFFloat>;
-template class Array <SFImage>;
-template class Array <SFMatrix3d>;
-template class Array <SFMatrix3f>;
-template class Array <SFMatrix4d>;
-template class Array <SFMatrix4f>;
-template class Array <SFRotation>;
-template class Array <SFString>;
-template class Array <SFTime>;
-template class Array <SFVec2d>;
-template class Array <SFVec2f>;
-template class Array <SFVec3d>;
-template class Array <SFVec3f>;
-template class Array <SFVec4d>;
-template class Array <SFVec4f>;
+//template class Array <SFBool>;
+//template class Array <SFColor>;
+//template class Array <SFColorRGBA>;
+//template class Array <SFDouble>;
+//template class Array <SFFloat>;
+//template class Array <SFImage>;
+//template class Array <SFMatrix3d>;
+//template class Array <SFMatrix3f>;
+//template class Array <SFMatrix4d>;
+//template class Array <SFMatrix4f>;
+//template class Array <SFRotation>;
+//template class Array <SFString>;
+//template class Array <SFTime>;
+//template class Array <SFVec2d>;
+//template class Array <SFVec2f>;
+//template class Array <SFVec3d>;
+//template class Array <SFVec3f>;
+//template class Array <SFVec4d>;
+//template class Array <SFVec4f>;
 
 // Explicit instantiation for required instantiations.
 template class X3DField <Array <SFBool>>;
@@ -235,26 +235,4 @@ template class X3DArrayField <SFVec4d>;
 template class X3DArrayField <SFVec4f>;
 
 }  // X3D
-
-// Explicit instantiation for required instantiations.
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFBool> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFColor> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFColorRGBA> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFDouble> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFFloat> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFImage> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFMatrix3d> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFMatrix3f> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFMatrix4d> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFMatrix4f> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFRotation> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFString> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFTime> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFVec2d> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFVec2f> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFVec3d> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFVec3f> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFVec4d> &);
-template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFVec4f> &);
-
 } // titania

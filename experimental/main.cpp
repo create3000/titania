@@ -200,6 +200,12 @@ std::string
 create_string ()
 { return std::string (200000000, '#'); }
 
+template <typename First, typename Second, int Third>
+class SomeType;
+
+template <class Type>
+using Array = std::deque <Type*>;
+
 int
 main (int argc, char** argv)
 {

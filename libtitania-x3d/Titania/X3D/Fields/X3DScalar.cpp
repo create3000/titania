@@ -79,23 +79,30 @@ const X3DConstants::FieldType X3DField <Int32>::type = X3DConstants::SFInt32;
 
 template <>
 void
-X3DField <bool>::toStream (std::ostream & ostream) const
+X3DScalar <bool>::toStream (std::ostream & ostream) const
 {
 	ostream << (getValue () ? "TRUE" : "FALSE");
 }
 
 template <>
 void
-X3DField <Double>::toStream (std::ostream & ostream) const
+X3DScalar <Double>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <Double><< getValue ();
+	ostream << Generator::Precision <Double> << getValue ();
 }
 
 template <>
 void
-X3DField <Float>::toStream (std::ostream & ostream) const
+X3DScalar <Float>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <Float><< getValue ();
+	ostream << Generator::Precision <Float> << getValue ();
+}
+
+template <>
+void
+X3DScalar <Int32>::toStream (std::ostream & ostream) const
+{
+	ostream << getValue ();
 }
 
 template class X3DField <bool>;

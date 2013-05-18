@@ -76,15 +76,15 @@ public:
 
 	virtual
 	SFTime*
-	clone () const;
+	clone () const final;
 
 	virtual
 	const std::string &
-	getTypeName () const;
+	getTypeName () const final;
 
 	virtual
 	X3DConstants::FieldType
-	getType () const;
+	getType () const final;
 
 	std::string
 	toLocaleString () const;
@@ -92,10 +92,19 @@ public:
 	std::string
 	toUTCString () const;
 
-	///  Output operator.
+	///  @name Input operator.
 	virtual
 	void
-	toStream (std::ostream &) const;
+	fromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final;
+
+	///  @name Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const final;
 
 
 private:

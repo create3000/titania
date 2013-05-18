@@ -96,7 +96,7 @@ public:
 
 	virtual
 	SFMatrix3*
-	clone () const;
+	clone () const final;
 
 	void
 	set1Value (const size_type &, const scalar_type &);
@@ -179,10 +179,19 @@ public:
 	vector2_type*
 	multDirMatrix (const vector2_type &) const;
 
-	///  Output operator.
+	///  @name Input operator.
 	virtual
 	void
-	toStream (std::ostream &) const;
+	fromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final;
+
+	///  @name Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const final;
 
 
 private:
@@ -407,6 +416,16 @@ SFMatrix3 <ValueType>::multDirMatrix (const vector2_type &value) const
 {
 	return new vector2_type (getValue () .multDirMatrix (value .getValue ()));
 }
+
+template <class ValueType>
+inline
+void
+SFMatrix3 <ValueType>::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{ }
 
 template <class ValueType>
 inline

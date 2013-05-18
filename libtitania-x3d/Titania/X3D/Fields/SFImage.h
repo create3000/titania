@@ -82,7 +82,7 @@ public:
 
 	virtual
 	SFImage*
-	clone () const;
+	clone () const final;
 
 	void
 	setWidth (const size_type);
@@ -117,9 +117,23 @@ public:
 	void
 	getValue (size_type &, size_type &, size_type &, MFInt32 &) const;
 
+	///  @name Input operator.
 	virtual
 	void
-	dispose ();
+	fromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final;
+
+	///  @name Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const final;
+
+	virtual
+	void
+	dispose () final;
 
 
 private:

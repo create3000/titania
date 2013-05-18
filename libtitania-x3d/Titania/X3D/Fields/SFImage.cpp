@@ -164,6 +164,20 @@ SFImage::getValue (size_type & width, size_type & height, size_type & components
 }
 
 void
+SFImage::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{ }
+
+void
+SFImage::toStream (std::ostream & ostream) const
+{
+	ostream << getValue ();
+}
+
+void
 SFImage::dispose ()
 {
 	X3DField <Image>::dispose ();

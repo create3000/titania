@@ -120,6 +120,14 @@ SFTime::toUTCString () const
 }
 
 void
+SFTime::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{ }
+
+void
 SFTime::toStream (std::ostream & ostream) const
 {
 	ostream << Generator::Precision <scalar_type><< getValue ();

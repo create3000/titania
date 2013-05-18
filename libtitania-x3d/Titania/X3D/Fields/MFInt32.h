@@ -58,15 +58,13 @@ namespace titania {
 namespace X3D {
 
 // Inhibit implicit instantiation for required instantiations.
-extern template class Array <SFInt32>;
+//extern template class Array <SFInt32>;
 extern template class X3DField <Array <SFInt32>>;
 extern template class X3DArrayField <SFInt32>;
 
 typedef X3DArrayField <SFInt32> MFInt32;
 
 } // X3D
-
-extern template std::ostream & X3D::operator << (std::ostream &, const X3D::Array <X3D::SFInt32> &);
 
 } // titania
 

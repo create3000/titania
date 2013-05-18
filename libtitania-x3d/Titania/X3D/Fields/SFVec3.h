@@ -100,7 +100,7 @@ public:
 
 	virtual
 	SFVec3*
-	clone () const;
+	clone () const final;
 
 	void
 	setX (const scalar_type &);
@@ -171,10 +171,19 @@ public:
 	scalar_type
 	length () const;
 
-	///  Output operator.
+	///  @name Input operator.
 	virtual
 	void
-	toStream (std::ostream &) const;
+	fromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final;
+
+	///  @name Output operator.
+	virtual
+	void
+	toStream (std::ostream &) const final;
 
 
 private:
@@ -378,6 +387,16 @@ SFVec3 <ValueType>::length () const
 {
 	return abs (getValue ());
 }
+
+template <class ValueType>
+inline
+void
+SFVec3 <ValueType>::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{ }
 
 template <class ValueType>
 inline

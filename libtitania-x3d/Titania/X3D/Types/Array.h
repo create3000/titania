@@ -51,77 +51,19 @@
 #ifndef __TITANIA_X3D_TYPES_ARRAY_H__
 #define __TITANIA_X3D_TYPES_ARRAY_H__
 
-#include "../InputOutput/Generator.h"
-#include <Titania/Utility/Adapter.h>
+#include "../Basic/X3DField.h"
 #include <deque>
-#include <istream>
-#include <ostream>
-#include <stdexcept>
 
 namespace titania {
 namespace X3D {
 
-template <class Type, template <class, class Allocator = std::allocator <Type>> class ArrayType = std::deque>
-class Array :
-	public ArrayType <Type*>
-{
-public:
+template <class Type>
+using Array = std::deque <Type*>;
 
-	typedef Type                                        value_type;
-	typedef ArrayType <Type*>                           array_type;
-	typedef typename array_type::iterator               iterator;
-	typedef typename array_type::const_iterator         const_iterator;
-	typedef typename array_type::reverse_iterator       reverse_iterator;
-	typedef typename array_type::const_reverse_iterator const_reverse_iterator;
-	typedef typename array_type::difference_type        difference_type;
-	typedef typename array_type::size_type              size_type;
-
-	///  The default constructor returns an empty Array.
-	Array () :
-		ArrayType <Type*> ()
-	{ }
-
-	///  Copy constructor.
-	Array (const Array & value) :
-		ArrayType <Type*> ()
-	{
-		for (const auto & field : value)
-			ArrayType <Type*>::emplace_back (new Type (*field));
-	}
-
-	///  Move constructor.
-	Array (Array && value) :
-		ArrayType <Type*> (value)
-	{ }
-
-	template <class InputIterator>
-	Array (InputIterator first, InputIterator last) :
-		ArrayType <Type*> ()
-	{
-		for (const auto & field : basic::adapter (first, last))
-			ArrayType <Type*>::emplace_back (new Type (field));
-	}
-
-	Array &
-	operator = (const Array &)
-	{ throw std::domain_error ("Array::operator=: operation not permited!"); }
-
-	Array &
-	operator = (Array && value)
-	{
-		ArrayType <Type*>::operator = (value);
-		return *this;
-	}
-
-	~Array ()
-	{ }
-
-};
-
-template <class Type, template <class, class Allocator> class ArrayType>
+template <class Type>
 inline
 bool
-operator == (const Array <Type, ArrayType> & lhs, const Array <Type, ArrayType> & rhs)
+operator == (const Array <X3DField <Type>> & lhs, const Array <X3DField <Type>> & rhs)
 {
 	return lhs .size () == rhs .size () &&
 	       std::equal (lhs .begin (), lhs .end (),
@@ -129,87 +71,46 @@ operator == (const Array <Type, ArrayType> & lhs, const Array <Type, ArrayType> 
 	                   [ ] (const Type * a, const Type * b){ return *a == *b; });
 }
 
-template <class Type, template <class, class Allocator> class ArrayType>
+template <class Type>
 inline
 bool
-operator not_eq (const Array <Type, ArrayType> & lhs, const Array <Type, ArrayType> & rhs)
+operator not_eq (const Array <X3DField <Type>> & lhs, const Array <X3DField <Type>> & rhs)
 {
 	return not (lhs == rhs);
 }
 
-template <class Type, template <class, class Allocator> class ArrayType>
+template <class Type>
 inline
 bool
-operator < (const Array <Type, ArrayType> & lhs, const Array <Type, ArrayType> & rhs)
+operator < (const Array <X3DField <Type>> & lhs, const Array <X3DField <Type>> & rhs)
 {
 	return std::lexicographical_compare (lhs .begin (), lhs .end (),
 	                                     rhs .begin (), rhs .end (),
 	                                     [ ] (const Type * a, const Type * b){ return *a < *b; });
 }
 
-template <class Type, template <class, class Allocator> class ArrayType>
+template <class Type>
 inline
 bool
-operator > (const Array <Type, ArrayType> & lhs, const Array <Type, ArrayType> & rhs)
+operator > (const Array <X3DField <Type>> & lhs, const Array <X3DField <Type>> & rhs)
 {
 	return rhs < lhs;
 }
 
-template <class Type, template <class, class Allocator> class ArrayType>
+template <class Type>
 inline
 bool
-operator <= (const Array <Type, ArrayType> & lhs, const Array <Type, ArrayType> & rhs)
+operator <= (const Array <X3DField <Type>> & lhs, const Array <X3DField <Type>> & rhs)
 {
 	return not (rhs < lhs);
 }
 
-template <class Type, template <class, class Allocator> class ArrayType>
+template <class Type>
 inline
 bool
-operator >= (const Array <Type, ArrayType> & lhs, const Array <Type, ArrayType> & rhs)
+operator >= (const Array <X3DField <Type>> & lhs, const Array <X3DField <Type>> & rhs)
 {
 	return not (lhs < rhs);
-}
-
-template <class CharT, class Traits, class Type, template <class, class Allocator> class ArrayType>
-std::basic_istream <CharT, Traits> &
-operator >> (std::basic_istream <CharT, Traits> & istream, Array <Type, ArrayType> & array)
-{
-	array .clear ();
-
-	Type value;
-
-	while (istream >> value)
-		array .emplace_back (new Type (value));
-
-	return istream;
-}
-
-template <class CharT, class Traits, class Type, template <class, class Allocator> class ArrayType>
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const Array <Type, ArrayType> & array)
-{
-	if (array .size () > 1)
-	{
-		ostream << Generator::OpenBracket;
-
-		Generator::ListSeparator <Type> separator (ostream);
-
-		for (const auto & field : basic::adapter (array .begin (), array .end () - 1))
-			separator = *field;
-
-		ostream << *array .back () << Generator::CloseBracket;
-
-		return ostream;
-	}
-
-	if (array .size () == 1)
-	{
-		ostream << *array .front ();
-		return ostream;
-	}
-
-	return ostream << Generator::EmptyBrackets;
 }
 
 } // X3D
