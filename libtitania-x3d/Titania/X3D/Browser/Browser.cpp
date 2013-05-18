@@ -63,8 +63,6 @@
 #include <iostream>
 #include <limits>
 
-#include <gtkmm/main.h>
-
 namespace titania {
 namespace X3D {
 
@@ -198,9 +196,6 @@ Browser::reshape ()
 void
 Browser::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
-	while (Gtk::Main::events_pending ())
-		Gtk::Main::iteration ();
-
 	X3DBrowser::update ();
 
 	cairo -> set_source_rgb (0.1, 0.1, 0.1);
@@ -216,6 +211,10 @@ Browser::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 void
 Browser::dispose ()
 {
+	initialized .removeInterest (this, &Browser::set_initialized);
+	shutdown    .removeInterest (this, &Browser::set_shutdown);
+	changed     .removeInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
+
 	viewer .reset ();
 	pointingDevice .dispose ();
 	activeLayer = NULL;

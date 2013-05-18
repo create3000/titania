@@ -59,15 +59,11 @@ namespace titania {
 namespace puck {
 
 class X3DBrowserWindow :
-	public Gtk::Application, public X3DBrowserWindowUI
+	public X3DBrowserWindowUI
 {
 public:
 
 	///  @name Application Handling
-
-	virtual
-	void
-	run ();
 
 	void
 	restoreSession ();
@@ -90,12 +86,9 @@ public:
 	void
 	reload ();
 
-	void
-	close ();
-
 	virtual
-	void
-	dispose ();
+	bool
+	close ();
 
 	virtual
 	~X3DBrowserWindow ();
@@ -103,7 +96,7 @@ public:
 
 protected:
 
-	X3DBrowserWindow (int &, char** &);
+	X3DBrowserWindow (const basic::uri &);
 
 	virtual
 	void
@@ -112,8 +105,9 @@ protected:
 
 private:
 
-	void
-	parseOptions (int &, char** &);
+	//	void
+	//	parseOptions (int &, char** &);
+	// Glib::OptionGroup::vecustrings remainingOptions;
 
 	void
 	set_initialized ();
@@ -133,7 +127,6 @@ private:
 	void
 	setTransparent (bool);
 
-	Glib::OptionGroup::vecustrings remainingOptions;
 	double loadTime;
 
 };

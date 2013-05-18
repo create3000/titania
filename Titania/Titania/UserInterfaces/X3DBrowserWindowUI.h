@@ -448,10 +448,6 @@ public:
 	void
 	on_messageDialog_response (int response_id) = 0;
 
-	virtual
-	void
-	dispose ();
-
 
 private:
 

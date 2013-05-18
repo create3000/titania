@@ -1,3 +1,28 @@
+2013-05-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* main.cpp:
+	* BrowserWindow.h:
+	* X3DUserInterface.h:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.cpp:
+	* X3DBrowserWindow.h:
+	* X3DBrowserWindow.cpp:
+	* X3DConsoleUI.h:
+	* X3DConsoleUI.cpp:
+	* X3DHistoryEditorUI.h:
+	* X3DOutlineEditorUI.h:
+	* X3DBrowserWindowUI.h:
+	* X3DBrowserWidgetUI.h:
+	* X3DViewpointEditorUI.h:
+	* X3DBrowserWidgetUI.cpp:
+	* X3DBrowserWindowUI.cpp:
+	* X3DOutlineEditorUI.cpp:
+	* X3DHistoryEditorUI.cpp:
+	* X3DMotionBlurEditorUI.h:
+	* X3DViewpointEditorUI.cpp:
+	* X3DMotionBlurEditorUI.cpp: 
+
 2013-05-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.cpp:

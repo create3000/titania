@@ -93,10 +93,6 @@ public:
 	void
 	on_enabled_toggled () = 0;
 
-	virtual
-	void
-	dispose ();
-
 
 private:
 

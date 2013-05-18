@@ -57,6 +57,77 @@
 using namespace titania;
 using namespace titania::puck;
 
+class BrowserApplication :
+	public Gtk::Application
+{
+public:
+
+	using Gtk::Application::add_window;
+
+	BrowserApplication (int & argc, char** & argv) :
+		Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_FLAGS_NONE)
+	{ }
+
+	virtual
+	void
+	on_activate () final
+	{
+		__LOG__ << std::endl;
+
+		if (browserWindows .empty ())
+			add_window ("");
+
+		else
+			add_window ("about:blank");
+	}
+
+	virtual
+	void
+	on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint) final
+	{
+		__LOG__ << std::endl;
+
+		for (const auto & file : files)
+			add_window (file -> get_uri ());
+	}
+
+	virtual
+	void
+	on_window_removed (Gtk::Window* window) final
+	{
+		__LOG__ << std::endl;
+		
+		auto browserWindow = browserWindows .find (window);
+
+		if (browserWindow not_eq browserWindows .end ())
+			browserWindows .erase (browserWindow);
+		
+		if (browserWindows .empty ())
+			quit ();
+		
+		__LOG__ << std::endl;
+	}
+
+	void
+	add_window (const basic::uri & uri)
+	{
+		auto browserWindow = std::make_shared <BrowserWindow> (uri);
+
+		browserWindow -> getWindow () .show ();
+
+		add_window (browserWindow -> getWindow ());
+
+		browserWindows .insert (std::make_pair (&browserWindow -> getWindow (), browserWindow));
+
+		__LOG__ << browserWindow << std::endl;
+	}
+
+private:
+
+	std::map <Gtk::Window*, std::shared_ptr <BrowserWindow>> browserWindows;
+
+};
+
 int
 main (int argc, char** argv)
 {
@@ -71,7 +142,7 @@ main (int argc, char** argv)
 
 	try
 	{
-		BrowserWindow browserWindow (argc, argv);
+		BrowserApplication browserWindow (argc, argv);
 
 		browserWindow .run ();
 	}

@@ -85,10 +85,6 @@ public:
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const { return *m_scrolledWindow; }
 
-	virtual
-	void
-	dispose ();
-
 
 private:
 

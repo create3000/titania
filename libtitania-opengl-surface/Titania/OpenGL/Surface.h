@@ -122,6 +122,7 @@ private:
 
 	sigc::connection map_connection;
 	sigc::connection construct_connection;
+	sigc::connection draw_connection;
 
 	std::shared_ptr <Context> context;
 

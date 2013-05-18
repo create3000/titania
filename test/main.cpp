@@ -73,22 +73,6 @@ using namespace titania;
 using namespace titania::Test;
 
 
-template <class Type>
-class X3DArrayField :
-{
-public:
-
-	void
-	resize (size_t size)
-	{
-		
-	}
-
-private:
-
-	X3D::Array <Type> value;
-};
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int

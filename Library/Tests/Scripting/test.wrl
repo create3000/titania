@@ -6,51 +6,29 @@ DEF Timer TimeSensor {
   loop TRUE
 }
 
-DEF Debug2 Script {
-  url "vrmlscript:
-function initialize ()
-{
-	print ('initialize2');
-}
-
-function shutdown ()
-{
-	print ('shutdown2');
-}
-"
-}
-
 DEF Debug1 Script {
   eventIn SFTime set_time
-  field   SFNode debug2 USE Debug2
   field   SFNode self USE Debug1
 
   url "vrmlscript:
-var d2 = self .debug2;
-
 function initialize ()
 {
 	print ('initialize1');
 	
-	var array = new MFVec3f (new SFVec3f ());
+	var a = [];
 	
-	var value = array [0];
+	for (var i = 0; i < 400000; ++ i)
+		a .push (new SFVec3f ());
+		
+	print (a .length);
 	
-	array .length = 0;
+	a .length = 0;
 	
-	print (value);
-	
-	value .x = 1;
-	value .y = 2;
-	value .z = 3;
-	
-	print (value);
-	
+	print (a .length);
 }
 
 function set_time (value)
 {
-	print (value);
 }
 
 function shutdown ()

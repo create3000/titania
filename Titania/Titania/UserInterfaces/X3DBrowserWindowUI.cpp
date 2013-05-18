@@ -210,12 +210,5 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	construct ();
 }
 
-void
-X3DBrowserWindowUI::dispose ()
-{
-	for (auto & connection : connections)
-		connection .disconnect ();
-}
-
 } // puck
 } // titania

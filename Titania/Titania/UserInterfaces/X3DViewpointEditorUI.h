@@ -102,10 +102,6 @@ public:
 	void
 	on_fieldOfView_changed () = 0;
 
-	virtual
-	void
-	dispose ();
-
 
 private:
 

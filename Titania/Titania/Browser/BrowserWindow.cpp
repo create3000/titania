@@ -53,8 +53,8 @@
 namespace titania {
 namespace puck {
 
-BrowserWindow::BrowserWindow (int & argc, char** & argv) :
-	X3DBrowserWindow (argc, argv),    
+BrowserWindow::BrowserWindow (const basic::uri & worldURL) :
+	X3DBrowserWindow (worldURL),    
 	motionBlurEditor (getBrowser ()), 
 	 viewpointEditor (getBrowser ()), 
 	   historyEditor (getBrowser ()), 

@@ -82,10 +82,6 @@ public:
 	Gtk::Box &
 	getWidget () const { return *m_widget; }
 
-	virtual
-	void
-	dispose ();
-
 
 private:
 

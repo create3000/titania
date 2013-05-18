@@ -81,12 +81,5 @@ X3DViewpointEditorUI::create (const std::string & filename)
 	construct ();
 }
 
-void
-X3DViewpointEditorUI::dispose ()
-{
-	for (auto & connection : connections)
-		connection .disconnect ();
-}
-
 } // puck
 } // titania

@@ -61,13 +61,11 @@
 namespace titania {
 namespace puck {
 
-X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
-	   Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN), 
+X3DBrowserWindow::X3DBrowserWindow (const basic::uri & worldURL) :
 	 X3DBrowserWindowUI (get_ui ("BrowserWindow.ui"), gconf_dir ())                                                                                        
 {
-	// Options
-
-	parseOptions (argc, argv);
+	if (worldURL .size ())
+		getConfig () .setItem ("worldURL", worldURL);
 
 	// User interface
 
@@ -89,14 +87,6 @@ X3DBrowserWindow::X3DBrowserWindow (int & argc, char** & argv) :
 	// Browser
 	setBrowser (X3D::createBrowser ());
 	getBrowser () -> getBrowserOptions () -> splashScreen () = true;
-}
-
-// Application Handling
-
-void
-X3DBrowserWindow::run ()
-{
-	Gtk::Application::run (getWindow ());
 }
 
 void
@@ -132,48 +122,44 @@ X3DBrowserWindow::set_initialized ()
 	// Initialized
 	getBrowser () -> initialized .removeInterest (this, &X3DBrowserWindow::set_initialized);
 	getBrowser () -> initialized .addInterest (this, &X3DBrowserWindow::set_world);
-
-	// WorldURL
-	if (remainingOptions .size ())
-		open (basic::uri ("file://", remainingOptions [0] .raw ()));
 	
-	else if (getConfig () .hasItem ("worldURL"))
+	if (getConfig () .hasItem ("worldURL"))
 		open (getConfig () .string ("worldURL") .raw ());
 }
 
-void
-X3DBrowserWindow::parseOptions (int & argc, char** & argv)
-{
-	// Create and intialize option parser.
-
-	// Add Remaining options to option group.
-
-	Glib::OptionGroup mainGroup ("example_group", "description of example group", "help description of example group");
-
-	Glib::OptionEntry remaining;
-
-	remaining .set_long_name (G_OPTION_REMAINING);
-	remaining .set_arg_description (G_OPTION_REMAINING);
-
-	mainGroup .add_entry (remaining, remainingOptions);
-
-	// Intialize OptionContext.
-
-	Glib::OptionContext optionContext;
-
-	optionContext .set_main_group (mainGroup);
-
-	// Parse options.
-
-	try
-	{
-		optionContext .parse (argc, argv);
-	}
-	catch (const Glib::Error & error)
-	{
-		std::clog << "Exception: " << error .what () << std::endl;
-	}
-}
+//void
+//X3DBrowserWindow::parseOptions (int & argc, char** & argv)
+//{
+//	// Create and intialize option parser.
+//
+//	// Add Remaining options to option group.
+//
+//	Glib::OptionGroup mainGroup ("example_group", "description of example group", "help description of example group");
+//
+//	Glib::OptionEntry remaining;
+//
+//	remaining .set_long_name (G_OPTION_REMAINING);
+//	remaining .set_arg_description (G_OPTION_REMAINING);
+//
+//	mainGroup .add_entry (remaining, remainingOptions);
+//
+//	// Intialize OptionContext.
+//
+//	Glib::OptionContext optionContext;
+//
+//	optionContext .set_main_group (mainGroup);
+//
+//	// Parse options.
+//
+//	try
+//	{
+//		optionContext .parse (argc, argv);
+//	}
+//	catch (const Glib::Error & error)
+//	{
+//		std::clog << "Exception: " << error .what () << std::endl;
+//	}
+//}
 
 void
 X3DBrowserWindow::restoreSession ()
@@ -325,12 +311,12 @@ X3DBrowserWindow::reload ()
 	open (getBrowser () -> getExecutionContext () -> getWorldURL ());
 }
 
-void
+bool
 X3DBrowserWindow::close ()
 {
 	X3DBrowserWindowUI::close ();
-
-	quit ();
+	
+	return false;
 }
 
 void
@@ -424,10 +410,6 @@ X3DBrowserWindow::setTransparent (bool value)
 			gtk_widget_set_visual (GTK_WIDGET (getWindow () .gobj ()), visual -> gobj ());
 	}
 }
-
-void
-X3DBrowserWindow::dispose ()
-{ }
 
 X3DBrowserWindow::~X3DBrowserWindow ()
 {

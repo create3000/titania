@@ -108,7 +108,7 @@ protected:
 	is_initialized ();
 
 	virtual
-	void
+	bool
 	close ();
 
 	Configuration &

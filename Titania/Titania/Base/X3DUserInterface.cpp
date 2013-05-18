@@ -103,10 +103,7 @@ X3DUserInterface::on_delete_event (GdkEventAny*)
 	else
 		saveInterface ();
 
-	close ();
-
-	// Prevent destroying Window.
-	return true;
+	return close ();
 }
 
 void
@@ -184,11 +181,15 @@ void
 X3DUserInterface::saveSession ()
 { }
 
-void
+bool
 X3DUserInterface::close ()
 {
 	saveSession ();
+
 	getWindow () .hide ();
+	
+	// Prevent destroying Window.
+	return true;
 }
 
 X3DUserInterface::~X3DUserInterface ()

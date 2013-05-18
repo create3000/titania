@@ -65,7 +65,7 @@ class BrowserWindow :
 {
 public:
 
-	BrowserWindow (int &, char** &);
+	BrowserWindow (const basic::uri &);
 
 
 private:

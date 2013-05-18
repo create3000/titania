@@ -78,12 +78,5 @@ X3DMotionBlurEditorUI::create (const std::string & filename)
 	construct ();
 }
 
-void
-X3DMotionBlurEditorUI::dispose ()
-{
-	for (auto & connection : connections)
-		connection .disconnect ();
-}
-
 } // puck
 } // titania

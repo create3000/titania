@@ -52,7 +52,7 @@
 
 #include <gdk/gdkx.h>
 #include <gtkmm/container.h>
-#include <glibmm/main.h>
+#include <gtkmm/main.h>
 
 #include "Context/WindowContext.h"
 
@@ -138,7 +138,7 @@ Surface::set_construct (const Cairo::RefPtr <Cairo::Context> & cairo)
 
 	if (makeCurrent ())
 	{
-		signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_draw));
+		draw_connection = signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_draw));
 
 		construct ();
 	}
@@ -149,6 +149,9 @@ Surface::set_construct (const Cairo::RefPtr <Cairo::Context> & cairo)
 bool
 Surface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
+	//	while (Gtk::Main::events_pending ())
+	//		Gtk::Main::iteration ();
+
 	if (makeCurrent ())
 	{
 		update (cairo);
@@ -160,7 +163,7 @@ Surface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 bool
 Surface::makeCurrent ()
 {
-	return context -> makeCurrent ();
+	return context and context -> makeCurrent ();
 }
 
 void
@@ -174,6 +177,8 @@ Surface::swapBuffers ()
 void
 Surface::dispose ()
 {
+	draw_connection .disconnect ();
+
 	context .reset ();
 }
 

@@ -367,10 +367,10 @@ sub generate
 	$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
 	
 	# Dispose
-	say OUT "  virtual";
-	say OUT "  void";
-	say OUT "  dispose ();";
-	
+	#say OUT "  virtual";
+	#say OUT "  void";
+	#say OUT "  dispose ();";
+
 
 #	say OUT "protected:";
 #	say OUT "Glib::RefPtr <Gtk::Builder> &";
@@ -483,11 +483,11 @@ sub generate
 	}
 	
 	# Dispose
-	say OUT "void";
-	say OUT "$self->{class_name}\::dispose ()";
-	say OUT "{";
-	$self -> cpp_disconnect_signals ();	
-	say OUT "}";
+	#say OUT "void";
+	#say OUT "$self->{class_name}\::dispose ()";
+	#say OUT "{";
+	#$self -> cpp_disconnect_signals ();	
+	#say OUT "}";
 
 	# Namespaces end
 	say OUT "";

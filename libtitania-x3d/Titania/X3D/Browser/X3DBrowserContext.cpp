@@ -490,8 +490,6 @@ X3DBrowserContext::dispose ()
 	console             .dispose ();
 
 	X3DExecutionContext::dispose ();
-
-	getGarbageCollector () .dispose ();
 }
 
 } // X3D
