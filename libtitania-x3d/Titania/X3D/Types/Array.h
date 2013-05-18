@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_TYPES_ARRAY_H__
 #define __TITANIA_X3D_TYPES_ARRAY_H__
 
-#include "../Basic/X3DField.h"
 #include <deque>
 
 namespace titania {
@@ -59,59 +58,6 @@ namespace X3D {
 
 template <class Type>
 using Array = std::deque <Type*>;
-
-template <class Type>
-inline
-bool
-operator == (const Array <X3DField <Type>> & lhs, const Array <X3DField <Type>> & rhs)
-{
-	return lhs .size () == rhs .size () &&
-	       std::equal (lhs .begin (), lhs .end (),
-	                   rhs .begin (),
-	                   [ ] (const Type * a, const Type * b){ return *a == *b; });
-}
-
-template <class Type>
-inline
-bool
-operator not_eq (const Array <X3DField <Type>> & lhs, const Array <X3DField <Type>> & rhs)
-{
-	return not (lhs == rhs);
-}
-
-template <class Type>
-inline
-bool
-operator < (const Array <X3DField <Type>> & lhs, const Array <X3DField <Type>> & rhs)
-{
-	return std::lexicographical_compare (lhs .begin (), lhs .end (),
-	                                     rhs .begin (), rhs .end (),
-	                                     [ ] (const Type * a, const Type * b){ return *a < *b; });
-}
-
-template <class Type>
-inline
-bool
-operator > (const Array <X3DField <Type>> & lhs, const Array <X3DField <Type>> & rhs)
-{
-	return rhs < lhs;
-}
-
-template <class Type>
-inline
-bool
-operator <= (const Array <X3DField <Type>> & lhs, const Array <X3DField <Type>> & rhs)
-{
-	return not (rhs < lhs);
-}
-
-template <class Type>
-inline
-bool
-operator >= (const Array <X3DField <Type>> & lhs, const Array <X3DField <Type>> & rhs)
-{
-	return not (lhs < rhs);
-}
 
 } // X3D
 } // titania

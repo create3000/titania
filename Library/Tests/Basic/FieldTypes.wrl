@@ -1,182 +1,185 @@
 #VRML V2.0 utf8
 
 DEF initializeOnly Script {
-  initializeOnly SFBool      SFBool FALSE
-  initializeOnly SFColor     SFColor 0 0 0
-  initializeOnly SFColorRGBA SFColorRGBA 0 0 0 0
-  initializeOnly SFDouble    SFDouble 0
-  initializeOnly SFFloat     SFFloat 0
-  initializeOnly SFImage     SFImage 0 0 0
-  initializeOnly SFInt32     SFInt32 0
-  initializeOnly SFMatrix3d  SFMatrix3d 0 0 0 0 0 0 0 0 0
-  initializeOnly SFMatrix3f  SFMatrix3f 0 0 0 0 0 0 0 0 0
-  initializeOnly SFMatrix4d  SFMatrix4d 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-  initializeOnly SFMatrix4f  SFMatrix4f 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-  initializeOnly SFNode      SFNode NULL
-  initializeOnly SFRotation  SFRotation 0 0 1 0
-  initializeOnly SFString    SFString ""
-  initializeOnly SFTime      SFTime 0
-  initializeOnly SFVec2d     SFVec2d 0 0
-  initializeOnly SFVec2f     SFVec2f 0 0
-  initializeOnly SFVec3d     SFVec3d 0 0 0
-  initializeOnly SFVec3f     SFVec3f 0 0 0
-  initializeOnly SFVec4d     SFVec4d 0 0 0 0
-  initializeOnly SFVec4f     SFVec4f 0 0 0 0
-  initializeOnly MFBool      MFBool [ ]
-  initializeOnly MFColor     MFColor [ ]
-  initializeOnly MFColorRGBA MFColorRGBA [ ]
-  initializeOnly MFDouble    MFDouble [ ]
-  initializeOnly MFFloat     MFFloat [ ]
-  initializeOnly MFImage     MFImage [ ]
-  initializeOnly MFInt32     MFInt32 [ ]
-  initializeOnly MFMatrix3d  MFMatrix3d [ ]
-  initializeOnly MFMatrix3f  MFMatrix3f [ ]
-  initializeOnly MFMatrix4d  MFMatrix4d [ ]
-  initializeOnly MFMatrix4f  MFMatrix4f [ ]
-  initializeOnly MFNode      MFNode [ ]
-  initializeOnly MFRotation  MFRotation [ ]
-  initializeOnly MFString    MFString [ ]
-  initializeOnly MFTime      MFTime [ ]
-  initializeOnly MFVec2d     MFVec2d [ ]
-  initializeOnly MFVec2f     MFVec2f [ ]
-  initializeOnly MFVec3d     MFVec3d [ ]
-  initializeOnly MFVec3f     MFVec3f [ ]
-  initializeOnly MFVec4d     MFVec4d [ ]
-  initializeOnly MFVec4f     MFVec4f [ ]
+  field SFBool      SFBool FALSE
+  field SFColor     SFColor 0 0 0
+  field SFColorRGBA SFColorRGBA 0 0 0 0
+  field SFDouble    SFDouble 0
+  field SFFloat     SFFloat 0
+  field SFImage     SFImage 0 0 0
+  field SFInt32     SFInt32 0
+  field SFMatrix3d  SFMatrix3d 0 0 0 0 0 0 0 0 0
+  field SFMatrix3f  SFMatrix3f 0 0 0 0 0 0 0 0 0
+  field SFMatrix4d  SFMatrix4d 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  field SFMatrix4f  SFMatrix4f 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  field SFNode      SFNode NULL
+  field SFRotation  SFRotation 0 0 1 0
+  field SFString    SFString ""
+  field SFTime      SFTime 0
+  field SFVec2d     SFVec2d 0 0
+  field SFVec2f     SFVec2f 0 0
+  field SFVec3d     SFVec3d 0 0 0
+  field SFVec3f     SFVec3f 0 0 0
+  field SFVec4d     SFVec4d 0 0 0 0
+  field SFVec4f     SFVec4f 0 0 0 0
+  field MFBool      MFBool [ ]
+  field MFColor     MFColor [ ]
+  field MFColorRGBA MFColorRGBA [ ]
+  field MFDouble    MFDouble [ ]
+  field MFFloat     MFFloat [ ]
+  field MFImage     MFImage [ ]
+  field MFInt32     MFInt32 [ ]
+  field MFMatrix3d  MFMatrix3d [ ]
+  field MFMatrix3f  MFMatrix3f [ ]
+  field MFMatrix4d  MFMatrix4d [ ]
+  field MFMatrix4f  MFMatrix4f [ ]
+  field MFNode      MFNode [ ]
+  field MFRotation  MFRotation [ ]
+  field MFString    MFString [ ]
+  field MFTime      MFTime [ ]
+  field MFVec2d     MFVec2d [ ]
+  field MFVec2f     MFVec2f [ ]
+  field MFVec3d     MFVec3d [ ]
+  field MFVec3f     MFVec3f [ ]
+  field MFVec4d     MFVec4d [ ]
+  field MFVec4f     MFVec4f [ ]
+
 }
 
 DEF inputOnly Script {
-  inputOnly SFBool      set_SFBool
-  inputOnly SFColor     set_SFColor
-  inputOnly SFColorRGBA set_SFColorRGBA
-  inputOnly SFDouble    set_SFDouble
-  inputOnly SFFloat     set_SFFloat
-  inputOnly SFImage     set_SFImage
-  inputOnly SFInt32     set_SFInt32
-  inputOnly SFMatrix3d  set_SFMatrix3d
-  inputOnly SFMatrix3f  set_SFMatrix3f
-  inputOnly SFMatrix4d  set_SFMatrix4d
-  inputOnly SFMatrix4f  set_SFMatrix4f
-  inputOnly SFNode      set_SFNode
-  inputOnly SFRotation  set_SFRotation
-  inputOnly SFString    set_SFString
-  inputOnly SFTime      set_SFTime
-  inputOnly SFVec2d     set_SFVec2d
-  inputOnly SFVec2f     set_SFVec2f
-  inputOnly SFVec3d     set_SFVec3d
-  inputOnly SFVec3f     set_SFVec3f
-  inputOnly SFVec4d     set_SFVec4d
-  inputOnly SFVec4f     set_SFVec4f
-  inputOnly MFBool      set_MFBool
-  inputOnly MFColor     set_MFColor
-  inputOnly MFColorRGBA set_MFColorRGBA
-  inputOnly MFDouble    set_MFDouble
-  inputOnly MFFloat     set_MFFloat
-  inputOnly MFImage     set_MFImage
-  inputOnly MFInt32     set_MFInt32
-  inputOnly MFMatrix3d  set_MFMatrix3d
-  inputOnly MFMatrix3f  set_MFMatrix3f
-  inputOnly MFMatrix4d  set_MFMatrix4d
-  inputOnly MFMatrix4f  set_MFMatrix4f
-  inputOnly MFNode      set_MFNode
-  inputOnly MFRotation  set_MFRotation
-  inputOnly MFString    set_MFString
-  inputOnly MFTime      set_MFTime
-  inputOnly MFVec2d     set_MFVec2d
-  inputOnly MFVec2f     set_MFVec2f
-  inputOnly MFVec3d     set_MFVec3d
-  inputOnly MFVec3f     set_MFVec3f
-  inputOnly MFVec4d     set_MFVec4d
-  inputOnly MFVec4f     set_MFVec4f
+  eventIn SFBool      set_SFBool
+  eventIn SFColor     set_SFColor
+  eventIn SFColorRGBA set_SFColorRGBA
+  eventIn SFDouble    set_SFDouble
+  eventIn SFFloat     set_SFFloat
+  eventIn SFImage     set_SFImage
+  eventIn SFInt32     set_SFInt32
+  eventIn SFMatrix3d  set_SFMatrix3d
+  eventIn SFMatrix3f  set_SFMatrix3f
+  eventIn SFMatrix4d  set_SFMatrix4d
+  eventIn SFMatrix4f  set_SFMatrix4f
+  eventIn SFNode      set_SFNode
+  eventIn SFRotation  set_SFRotation
+  eventIn SFString    set_SFString
+  eventIn SFTime      set_SFTime
+  eventIn SFVec2d     set_SFVec2d
+  eventIn SFVec2f     set_SFVec2f
+  eventIn SFVec3d     set_SFVec3d
+  eventIn SFVec3f     set_SFVec3f
+  eventIn SFVec4d     set_SFVec4d
+  eventIn SFVec4f     set_SFVec4f
+  eventIn MFBool      set_MFBool
+  eventIn MFColor     set_MFColor
+  eventIn MFColorRGBA set_MFColorRGBA
+  eventIn MFDouble    set_MFDouble
+  eventIn MFFloat     set_MFFloat
+  eventIn MFImage     set_MFImage
+  eventIn MFInt32     set_MFInt32
+  eventIn MFMatrix3d  set_MFMatrix3d
+  eventIn MFMatrix3f  set_MFMatrix3f
+  eventIn MFMatrix4d  set_MFMatrix4d
+  eventIn MFMatrix4f  set_MFMatrix4f
+  eventIn MFNode      set_MFNode
+  eventIn MFRotation  set_MFRotation
+  eventIn MFString    set_MFString
+  eventIn MFTime      set_MFTime
+  eventIn MFVec2d     set_MFVec2d
+  eventIn MFVec2f     set_MFVec2f
+  eventIn MFVec3d     set_MFVec3d
+  eventIn MFVec3f     set_MFVec3f
+  eventIn MFVec4d     set_MFVec4d
+  eventIn MFVec4f     set_MFVec4f
+
 }
 
 DEF outputOnly Script {
-  outputOnly SFBool      SFBool_changed
-  outputOnly SFColor     SFColor_changed
-  outputOnly SFColorRGBA SFColorRGBA_changed
-  outputOnly SFDouble    SFDouble_changed
-  outputOnly SFFloat     SFFloat_changed
-  outputOnly SFImage     SFImage_changed
-  outputOnly SFInt32     SFInt32_changed
-  outputOnly SFMatrix3d  SFMatrix3d_changed
-  outputOnly SFMatrix3f  SFMatrix3f_changed
-  outputOnly SFMatrix4d  SFMatrix4d_changed
-  outputOnly SFMatrix4f  SFMatrix4f_changed
-  outputOnly SFNode      SFNode_changed
-  outputOnly SFRotation  SFRotation_changed
-  outputOnly SFString    SFString_changed
-  outputOnly SFTime      SFTime_changed
-  outputOnly SFVec2d     SFVec2d_changed
-  outputOnly SFVec2f     SFVec2f_changed
-  outputOnly SFVec3d     SFVec3d_changed
-  outputOnly SFVec3f     SFVec3f_changed
-  outputOnly SFVec4d     SFVec4d_changed
-  outputOnly SFVec4f     SFVec4f_changed
-  outputOnly MFBool      MFBool_changed
-  outputOnly MFColor     MFColor_changed
-  outputOnly MFColorRGBA MFColorRGBA_changed
-  outputOnly MFDouble    MFDouble_changed
-  outputOnly MFFloat     MFFloat_changed
-  outputOnly MFImage     MFImage_changed
-  outputOnly MFInt32     MFInt32_changed
-  outputOnly MFMatrix3d  MFMatrix3d_changed
-  outputOnly MFMatrix3f  MFMatrix3f_changed
-  outputOnly MFMatrix4d  MFMatrix4d_changed
-  outputOnly MFMatrix4f  MFMatrix4f_changed
-  outputOnly MFNode      MFNode_changed
-  outputOnly MFRotation  MFRotation_changed
-  outputOnly MFString    MFString_changed
-  outputOnly MFTime      MFTime_changed
-  outputOnly MFVec2d     MFVec2d_changed
-  outputOnly MFVec2f     MFVec2f_changed
-  outputOnly MFVec3d     MFVec3d_changed
-  outputOnly MFVec3f     MFVec3f_changed
-  outputOnly MFVec4d     MFVec4d_changed
-  outputOnly MFVec4f     MFVec4f_changed
+  eventOut SFBool      SFBool_changed
+  eventOut SFColor     SFColor_changed
+  eventOut SFColorRGBA SFColorRGBA_changed
+  eventOut SFDouble    SFDouble_changed
+  eventOut SFFloat     SFFloat_changed
+  eventOut SFImage     SFImage_changed
+  eventOut SFInt32     SFInt32_changed
+  eventOut SFMatrix3d  SFMatrix3d_changed
+  eventOut SFMatrix3f  SFMatrix3f_changed
+  eventOut SFMatrix4d  SFMatrix4d_changed
+  eventOut SFMatrix4f  SFMatrix4f_changed
+  eventOut SFNode      SFNode_changed
+  eventOut SFRotation  SFRotation_changed
+  eventOut SFString    SFString_changed
+  eventOut SFTime      SFTime_changed
+  eventOut SFVec2d     SFVec2d_changed
+  eventOut SFVec2f     SFVec2f_changed
+  eventOut SFVec3d     SFVec3d_changed
+  eventOut SFVec3f     SFVec3f_changed
+  eventOut SFVec4d     SFVec4d_changed
+  eventOut SFVec4f     SFVec4f_changed
+  eventOut MFBool      MFBool_changed
+  eventOut MFColor     MFColor_changed
+  eventOut MFColorRGBA MFColorRGBA_changed
+  eventOut MFDouble    MFDouble_changed
+  eventOut MFFloat     MFFloat_changed
+  eventOut MFImage     MFImage_changed
+  eventOut MFInt32     MFInt32_changed
+  eventOut MFMatrix3d  MFMatrix3d_changed
+  eventOut MFMatrix3f  MFMatrix3f_changed
+  eventOut MFMatrix4d  MFMatrix4d_changed
+  eventOut MFMatrix4f  MFMatrix4f_changed
+  eventOut MFNode      MFNode_changed
+  eventOut MFRotation  MFRotation_changed
+  eventOut MFString    MFString_changed
+  eventOut MFTime      MFTime_changed
+  eventOut MFVec2d     MFVec2d_changed
+  eventOut MFVec2f     MFVec2f_changed
+  eventOut MFVec3d     MFVec3d_changed
+  eventOut MFVec3f     MFVec3f_changed
+  eventOut MFVec4d     MFVec4d_changed
+  eventOut MFVec4f     MFVec4f_changed
+
 }
 
 DEF inputOutput Script {
-  inputOutput SFBool      SFBool FALSE
-  inputOutput SFColor     SFColor 0 0 0
-  inputOutput SFColorRGBA SFColorRGBA 0 0 0 0
-  inputOutput SFDouble    SFDouble 0
-  inputOutput SFFloat     SFFloat 0
-  inputOutput SFImage     SFImage 0 0 0
-  inputOutput SFInt32     SFInt32 0
-  inputOutput SFMatrix3d  SFMatrix3d 0 0 0 0 0 0 0 0 0
-  inputOutput SFMatrix3f  SFMatrix3f 0 0 0 0 0 0 0 0 0
-  inputOutput SFMatrix4d  SFMatrix4d 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-  inputOutput SFMatrix4f  SFMatrix4f 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-  inputOutput SFNode      SFNode NULL
-  inputOutput SFRotation  SFRotation 0 0 1 0
-  inputOutput SFString    SFString ""
-  inputOutput SFTime      SFTime 0
-  inputOutput SFVec2d     SFVec2d 0 0
-  inputOutput SFVec2f     SFVec2f 0 0
-  inputOutput SFVec3d     SFVec3d 0 0 0
-  inputOutput SFVec3f     SFVec3f 0 0 0
-  inputOutput SFVec4d     SFVec4d 0 0 0 0
-  inputOutput SFVec4f     SFVec4f 0 0 0 0
-  inputOutput MFBool      MFBool [ ]
-  inputOutput MFColor     MFColor [ ]
-  inputOutput MFColorRGBA MFColorRGBA [ ]
-  inputOutput MFDouble    MFDouble [ ]
-  inputOutput MFFloat     MFFloat [ ]
-  inputOutput MFImage     MFImage [ ]
-  inputOutput MFInt32     MFInt32 [ ]
-  inputOutput MFMatrix3d  MFMatrix3d [ ]
-  inputOutput MFMatrix3f  MFMatrix3f [ ]
-  inputOutput MFMatrix4d  MFMatrix4d [ ]
-  inputOutput MFMatrix4f  MFMatrix4f [ ]
-  inputOutput MFNode      MFNode [ ]
-  inputOutput MFRotation  MFRotation [ ]
-  inputOutput MFString    MFString [ ]
-  inputOutput MFTime      MFTime [ ]
-  inputOutput MFVec2d     MFVec2d [ ]
-  inputOutput MFVec2f     MFVec2f [ ]
-  inputOutput MFVec3d     MFVec3d [ ]
-  inputOutput MFVec3f     MFVec3f [ ]
-  inputOutput MFVec4d     MFVec4d [ ]
-  inputOutput MFVec4f     MFVec4f [ ]
-}
+  exposedField SFBool      SFBool FALSE
+  exposedField SFColor     SFColor 0 0 0
+  exposedField SFColorRGBA SFColorRGBA 0 0 0 0
+  exposedField SFDouble    SFDouble 0
+  exposedField SFFloat     SFFloat 0
+  exposedField SFImage     SFImage 0 0 0
+  exposedField SFInt32     SFInt32 0
+  exposedField SFMatrix3d  SFMatrix3d 0 0 0 0 0 0 0 0 0
+  exposedField SFMatrix3f  SFMatrix3f 0 0 0 0 0 0 0 0 0
+  exposedField SFMatrix4d  SFMatrix4d 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  exposedField SFMatrix4f  SFMatrix4f 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  exposedField SFNode      SFNode NULL
+  exposedField SFRotation  SFRotation 0 0 1 0
+  exposedField SFString    SFString ""
+  exposedField SFTime      SFTime 0
+  exposedField SFVec2d     SFVec2d 0 0
+  exposedField SFVec2f     SFVec2f 0 0
+  exposedField SFVec3d     SFVec3d 0 0 0
+  exposedField SFVec3f     SFVec3f 0 0 0
+  exposedField SFVec4d     SFVec4d 0 0 0 0
+  exposedField SFVec4f     SFVec4f 0 0 0 0
+  exposedField MFBool      MFBool [ ]
+  exposedField MFColor     MFColor [ ]
+  exposedField MFColorRGBA MFColorRGBA [ ]
+  exposedField MFDouble    MFDouble [ ]
+  exposedField MFFloat     MFFloat [ ]
+  exposedField MFImage     MFImage [ ]
+  exposedField MFInt32     MFInt32 [ ]
+  exposedField MFMatrix3d  MFMatrix3d [ ]
+  exposedField MFMatrix3f  MFMatrix3f [ ]
+  exposedField MFMatrix4d  MFMatrix4d [ ]
+  exposedField MFMatrix4f  MFMatrix4f [ ]
+  exposedField MFNode      MFNode [ ]
+  exposedField MFRotation  MFRotation [ ]
+  exposedField MFString    MFString [ ]
+  exposedField MFTime      MFTime [ ]
+  exposedField MFVec2d     MFVec2d [ ]
+  exposedField MFVec2f     MFVec2f [ ]
+  exposedField MFVec3d     MFVec3d [ ]
+  exposedField MFVec3f     MFVec3f [ ]
+  exposedField MFVec4d     MFVec4d [ ]
+  exposedField MFVec4f     MFVec4f [ ]
 
+}

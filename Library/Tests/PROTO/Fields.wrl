@@ -34,12 +34,8 @@ PROTO Proto [
   initializeOnly MFMatrix4d  MFMatrix4d [ ]
   initializeOnly MFMatrix4f  MFMatrix4f [ ]
   initializeOnly MFNode      MFNode [
-    DEF _0 Group {
-      bboxSize -1 -1 -1
-    }
-    DEF _1 Group {
-      bboxSize -1 -1 -1
-    }
+    DEF _0 Group { }
+    DEF _1 Group { }
   ]
   initializeOnly MFRotation  MFRotation [ ]
   initializeOnly MFString    MFString [ ]
@@ -97,34 +93,10 @@ PROTO Proto [
     initializeOnly MFVec4f     MFVec4f IS MFVec4f
     initializeOnly SFNode      this USE Script
     initializeOnly SFNode      self USE Script
+
   }
 }
 
 Proto {
-  SFBool TRUE
-  SFColor 0.1 0.2 0.123457
-  SFColorRGBA 0.1 0.2 0 0.312346
-  SFDouble 0.123457
-  SFFloat 0.123456
   SFImage 2 2 0 0 0 0 0
-  SFInt32 123456789
-  SFMatrix3d 1 2 3 4 5 6 7 8 9.12346
-  SFMatrix3f 1 2 3 4 5 6 7 8 9.12346
-  SFMatrix4d 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1235
-  SFMatrix4f 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1235
-  SFRotation 0.267261 0.534522 0.801784 4
-  SFString "abc'\"'\\'abc"
-  SFTime 0.123457
-  SFVec2d 1 2.12346
-  SFVec2f 1 2.12346
-  SFVec3d 1 2 3.12346
-  SFVec3f 1 2 3.12346
-  SFVec4d 1 2 3 4.12346
-  SFVec4f 1 2 3 4.12346
-  MFBool [ TRUE, FALSE, TRUE, FALSE ]
-  MFNode [
-    USE _0
-    USE _1
-  ]
 }
-

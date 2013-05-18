@@ -102,7 +102,7 @@ MFNode::toStream (std::ostream & ostream) const
 		{
 			ostream
 				<< Generator::Indent
-				<< *field
+				<< field
 				<< Generator::TidyBreak;
 		}
 

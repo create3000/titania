@@ -79,6 +79,7 @@ public:
 	typedef typename value_type::difference_type difference_type;
 	typedef typename value_type::size_type       size_type;
 
+	using X3DField <value_type>::getType;
 	using X3DField <value_type>::getValue;
 	using X3DField <value_type>::operator =;
 	using X3DField <value_type>::getGarbageCollector;
@@ -343,6 +344,10 @@ public:
 	size_type
 	size () const
 	{ return getValue () .size (); }
+
+	virtual
+	bool
+	operator == (const X3DFieldDefinition &) const;
 
 	///  @name Input operator.
 	virtual
@@ -634,6 +639,20 @@ X3DArrayField <ValueType>::resize (size_type count, const ValueType & value)
 }
 
 template <class ValueType>
+bool
+X3DArrayField <ValueType>::operator == (const X3DFieldDefinition & field) const
+{
+	if (getType () == field .getType ())
+	{
+		return size () == static_cast <const X3DArrayField &> (field) .size () &&
+		       std::equal (begin (), end (),
+		                   static_cast <const X3DArrayField &> (field) .begin ());
+   }
+
+	return false;
+}
+
+template <class ValueType>
 void
 X3DArrayField <ValueType>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
@@ -724,6 +743,57 @@ template <class ValueType>
 X3DArrayField <ValueType>::~X3DArrayField ()
 {
 	reset ();
+}
+
+template <class ValueType>
+inline
+bool
+operator == (const X3DArrayField <ValueType> & lhs, const X3DArrayField <ValueType> & rhs)
+{
+	return lhs .size () == rhs .size () &&
+	       std::equal (lhs .begin (), lhs .end (),
+	                   rhs .begin ());
+}
+
+template <class ValueType>
+inline
+bool
+operator != (const X3DArrayField <ValueType> & lhs, const X3DArrayField <ValueType> & rhs)
+{
+	return not (lhs == rhs);
+}
+
+template <class ValueType>
+inline
+bool
+operator < (const X3DArrayField <ValueType> & lhs, const X3DArrayField <ValueType> & rhs)
+{
+	return std::lexicographical_compare (lhs .begin (), lhs .end (),
+	                                     rhs .begin (), rhs .end ());
+}
+
+template <class ValueType>
+inline
+bool
+operator > (const X3DArrayField <ValueType> & lhs, const X3DArrayField <ValueType> & rhs)
+{
+	return rhs < lhs;
+}
+
+template <class ValueType>
+inline
+bool
+operator <= (const X3DArrayField <ValueType> & lhs, const X3DArrayField <ValueType> & rhs)
+{
+	return not (rhs < lhs);
+}
+
+template <class ValueType>
+inline
+bool
+operator >= (const X3DArrayField <ValueType> & lhs, const X3DArrayField <ValueType> & rhs)
+{
+	return not (lhs < rhs);
 }
 
 } // X3D

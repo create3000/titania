@@ -111,18 +111,18 @@ public:
 	///  Returns true if the type and the value of both fields are equal.
 	virtual
 	bool
-	operator == (const X3DFieldDefinition &) const;
+	operator == (const X3DFieldDefinition &) const override;
 
 	///  Returns true if the type or the value of both fields are not equal.
 	virtual
 	bool
-	operator not_eq (const X3DFieldDefinition & field) const
+	operator not_eq (const X3DFieldDefinition & field) const override
 	{ return not (*this == field); }
 
 	///  6.7.7 Add field interest.
 	template <class Class>
 	void
-	addInterest (Class* object, void (Class::* memberFunction)(const X3DField &)) const
+	addInterest (Class* object, void (Class::* memberFunction) (const X3DField &)) const
 	{
 		addInterest (object, memberFunction, *this);
 	}
