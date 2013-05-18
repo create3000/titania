@@ -446,6 +446,7 @@ JavaScriptContext::set_field (X3DFieldDefinition* field)
 	jsval rval;
 	JS_CallFunctionValue (context, global, functions [field], 2, argv, &rval);
 	
+	//JS_MaybeGC (context);
 	JS_GC (context);
 }
 
@@ -512,6 +513,7 @@ JavaScriptContext::callFunction (jsval function)
 
 	JS_CallFunctionValue (context, global, function, 0, NULL, &rval);
 
+	//JS_MaybeGC (context);
 	JS_GC (context);
 }
 

@@ -1,98 +1,98 @@
-#X3D V3.0 utf8
+#VRML V3.0 utf8
 
 PROTO Proto [
-  initializeOnly SFBool      SFBool TRUE
-  initializeOnly SFColor     SFColor 0.1 0.2 0.123457
-  initializeOnly SFColorRGBA SFColorRGBA 0.1 0.2 0 0.312346
-  initializeOnly SFDouble    SFDouble 0.123457
-  initializeOnly SFFloat     SFFloat 0.123456
-  initializeOnly SFImage     SFImage 2 2 0 0x1 0x1 0x1 0x1
-  initializeOnly SFInt32     SFInt32 123456789
-  initializeOnly SFMatrix3d  SFMatrix3d 1 2 3 4 5 6 7 8 9.12346
-  initializeOnly SFMatrix3f  SFMatrix3f 1 2 3 4 5 6 7 8 9.12346
-  initializeOnly SFMatrix4d  SFMatrix4d 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1235
-  initializeOnly SFMatrix4f  SFMatrix4f 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1235
-  initializeOnly SFNode      SFNode NULL
-  initializeOnly SFRotation  SFRotation 0.267261 0.534522 0.801784 4
-  initializeOnly SFString    SFString "abc'\"'\\'abc"
-  initializeOnly SFTime      SFTime 0.123457
-  initializeOnly SFVec2d     SFVec2d 1 2.12346
-  initializeOnly SFVec2f     SFVec2f 1 2.12346
-  initializeOnly SFVec3d     SFVec3d 1 2 3.12346
-  initializeOnly SFVec3f     SFVec3f 1 2 3.12346
-  initializeOnly SFVec4d     SFVec4d 1 2 3 4.12346
-  initializeOnly SFVec4f     SFVec4f 1 2 3 4.12346
-  initializeOnly MFBool      MFBool [ TRUE, FALSE, TRUE, FALSE ]
-  initializeOnly MFColor     MFColor [ ]
-  initializeOnly MFColorRGBA MFColorRGBA [ ]
-  initializeOnly MFDouble    MFDouble [ ]
-  initializeOnly MFFloat     MFFloat [ ]
-  initializeOnly MFImage     MFImage [ ]
-  initializeOnly MFInt32     MFInt32 [ ]
-  initializeOnly MFMatrix3d  MFMatrix3d [ ]
-  initializeOnly MFMatrix3f  MFMatrix3f [ ]
-  initializeOnly MFMatrix4d  MFMatrix4d [ ]
-  initializeOnly MFMatrix4f  MFMatrix4f [ ]
-  initializeOnly MFNode      MFNode [
+  field SFBool      SFBool TRUE
+  field SFColor     SFColor 0.1 0.2 0.123457
+  field SFColorRGBA SFColorRGBA 0.1 0.2 0 0.312346
+  field SFDouble    SFDouble 0.123457
+  field SFFloat     SFFloat 0.123456
+  field SFImage     SFImage 2 2 0 0x1 0x1 0x1 0x1
+  field SFInt32     SFInt32 123456789
+  field SFMatrix3d  SFMatrix3d 1 2 3 4 5 6 7 8 9.12346
+  field SFMatrix3f  SFMatrix3f 1 2 3 4 5 6 7 8 9.12346
+  field SFMatrix4d  SFMatrix4d 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1235
+  field SFMatrix4f  SFMatrix4f 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1235
+  field SFNode      SFNode NULL
+  field SFRotation  SFRotation 0.267261 0.534522 0.801784 4
+  field SFString    SFString "abc'\"'\\'abc"
+  field SFTime      SFTime 0.123457
+  field SFVec2d     SFVec2d 1 2.12346
+  field SFVec2f     SFVec2f 1 2.12346
+  field SFVec3d     SFVec3d 1 2 3.12346
+  field SFVec3f     SFVec3f 1 2 3.12346
+  field SFVec4d     SFVec4d 1 2 3 4.12346
+  field SFVec4f     SFVec4f 1 2 3 4.12346
+  field MFBool      MFBool [ TRUE, FALSE, TRUE, FALSE ]
+  field MFColor     MFColor [ ]
+  field MFColorRGBA MFColorRGBA [ ]
+  field MFDouble    MFDouble [ ]
+  field MFFloat     MFFloat [ ]
+  field MFImage     MFImage [ ]
+  field MFInt32     MFInt32 [ ]
+  field MFMatrix3d  MFMatrix3d [ ]
+  field MFMatrix3f  MFMatrix3f [ ]
+  field MFMatrix4d  MFMatrix4d [ ]
+  field MFMatrix4f  MFMatrix4f [ ]
+  field MFNode      MFNode [
     DEF _0 Group { }
     DEF _1 Group { }
   ]
-  initializeOnly MFRotation  MFRotation [ ]
-  initializeOnly MFString    MFString [ ]
-  initializeOnly MFTime      MFTime [ ]
-  initializeOnly MFVec2d     MFVec2d [ ]
-  initializeOnly MFVec2f     MFVec2f [ ]
-  initializeOnly MFVec3d     MFVec3d [ ]
-  initializeOnly MFVec3f     MFVec3f [ ]
-  initializeOnly MFVec4d     MFVec4d [ ]
-  initializeOnly MFVec4f     MFVec4f [ ]
+  field MFRotation  MFRotation [ ]
+  field MFString    MFString [ ]
+  field MFTime      MFTime [ ]
+  field MFVec2d     MFVec2d [ ]
+  field MFVec2f     MFVec2f [ ]
+  field MFVec3d     MFVec3d [ ]
+  field MFVec3f     MFVec3f [ ]
+  field MFVec4d     MFVec4d [ ]
+  field MFVec4f     MFVec4f [ ]
 ]
 {
   DEF Script Script {
-    initializeOnly SFBool      SFBool IS SFBool
-    initializeOnly SFColor     SFColor IS SFColor
-    initializeOnly SFColorRGBA SFColorRGBA IS SFColorRGBA
-    initializeOnly SFDouble    SFDouble IS SFDouble
-    initializeOnly SFFloat     SFFloat IS SFFloat
-    initializeOnly SFImage     SFImage IS SFImage
-    initializeOnly SFInt32     SFInt32 IS SFInt32
-    initializeOnly SFMatrix3d  SFMatrix3d IS SFMatrix3d
-    initializeOnly SFMatrix3f  SFMatrix3f IS SFMatrix3f
-    initializeOnly SFMatrix4d  SFMatrix4d IS SFMatrix4d
-    initializeOnly SFMatrix4f  SFMatrix4f IS SFMatrix4f
-    initializeOnly SFNode      SFNode IS SFNode
-    initializeOnly SFRotation  SFRotation IS SFRotation
-    initializeOnly SFString    SFString IS SFString
-    initializeOnly SFTime      SFTime IS SFTime
-    initializeOnly SFVec2d     SFVec2d IS SFVec2d
-    initializeOnly SFVec2f     SFVec2f IS SFVec2f
-    initializeOnly SFVec3d     SFVec3d IS SFVec3d
-    initializeOnly SFVec3f     SFVec3f IS SFVec3f
-    initializeOnly SFVec4d     SFVec4d IS SFVec4d
-    initializeOnly SFVec4f     SFVec4f IS SFVec4f
-    initializeOnly MFBool      MFBool IS MFBool
-    initializeOnly MFColor     MFColor IS MFColor
-    initializeOnly MFColorRGBA MFColorRGBA IS MFColorRGBA
-    initializeOnly MFDouble    MFDouble IS MFDouble
-    initializeOnly MFFloat     MFFloat IS MFFloat
-    initializeOnly MFImage     MFImage IS MFImage
-    initializeOnly MFInt32     MFInt32 IS MFInt32
-    initializeOnly MFMatrix3d  MFMatrix3d IS MFMatrix3d
-    initializeOnly MFMatrix3f  MFMatrix3f IS MFMatrix3f
-    initializeOnly MFMatrix4d  MFMatrix4d IS MFMatrix4d
-    initializeOnly MFMatrix4f  MFMatrix4f IS MFMatrix4f
-    initializeOnly MFNode      MFNode IS MFNode
-    initializeOnly MFRotation  MFRotation IS MFRotation
-    initializeOnly MFString    MFString IS MFString
-    initializeOnly MFTime      MFTime IS MFTime
-    initializeOnly MFVec2d     MFVec2d IS MFVec2d
-    initializeOnly MFVec2f     MFVec2f IS MFVec2f
-    initializeOnly MFVec3d     MFVec3d IS MFVec3d
-    initializeOnly MFVec3f     MFVec3f IS MFVec3f
-    initializeOnly MFVec4d     MFVec4d IS MFVec4d
-    initializeOnly MFVec4f     MFVec4f IS MFVec4f
-    initializeOnly SFNode      this USE Script
-    initializeOnly SFNode      self USE Script
+    field SFBool      SFBool IS SFBool
+    field SFColor     SFColor IS SFColor
+    field SFColorRGBA SFColorRGBA IS SFColorRGBA
+    field SFDouble    SFDouble IS SFDouble
+    field SFFloat     SFFloat IS SFFloat
+    field SFImage     SFImage IS SFImage
+    field SFInt32     SFInt32 IS SFInt32
+    field SFMatrix3d  SFMatrix3d IS SFMatrix3d
+    field SFMatrix3f  SFMatrix3f IS SFMatrix3f
+    field SFMatrix4d  SFMatrix4d IS SFMatrix4d
+    field SFMatrix4f  SFMatrix4f IS SFMatrix4f
+    field SFNode      SFNode IS SFNode
+    field SFRotation  SFRotation IS SFRotation
+    field SFString    SFString IS SFString
+    field SFTime      SFTime IS SFTime
+    field SFVec2d     SFVec2d IS SFVec2d
+    field SFVec2f     SFVec2f IS SFVec2f
+    field SFVec3d     SFVec3d IS SFVec3d
+    field SFVec3f     SFVec3f IS SFVec3f
+    field SFVec4d     SFVec4d IS SFVec4d
+    field SFVec4f     SFVec4f IS SFVec4f
+    field MFBool      MFBool IS MFBool
+    field MFColor     MFColor IS MFColor
+    field MFColorRGBA MFColorRGBA IS MFColorRGBA
+    field MFDouble    MFDouble IS MFDouble
+    field MFFloat     MFFloat IS MFFloat
+    field MFImage     MFImage IS MFImage
+    field MFInt32     MFInt32 IS MFInt32
+    field MFMatrix3d  MFMatrix3d IS MFMatrix3d
+    field MFMatrix3f  MFMatrix3f IS MFMatrix3f
+    field MFMatrix4d  MFMatrix4d IS MFMatrix4d
+    field MFMatrix4f  MFMatrix4f IS MFMatrix4f
+    field MFNode      MFNode IS MFNode
+    field MFRotation  MFRotation IS MFRotation
+    field MFString    MFString IS MFString
+    field MFTime      MFTime IS MFTime
+    field MFVec2d     MFVec2d IS MFVec2d
+    field MFVec2f     MFVec2f IS MFVec2f
+    field MFVec3d     MFVec3d IS MFVec3d
+    field MFVec3f     MFVec3f IS MFVec3f
+    field MFVec4d     MFVec4d IS MFVec4d
+    field MFVec4f     MFVec4f IS MFVec4f
+    field SFNode      this USE Script
+    field SFNode      self USE Script
 
   }
 }
