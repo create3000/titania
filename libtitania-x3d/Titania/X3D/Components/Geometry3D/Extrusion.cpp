@@ -63,10 +63,10 @@ Extrusion::Fields::Fields () :
 	ccw (new SFBool (true)),
 	convex (new SFBool (true)),
 	creaseAngle (new SFFloat ()),
-	crossSection (new MFVec2f ()),
-	orientation (new MFRotation ()),
-	scale (new MFVec2f ()),
-	spine (new MFVec3f ())
+	crossSection (new MFVec2f ({ SFVec2f (1, 1), SFVec2f (1, -1), SFVec2f (-1, -1), SFVec2f (-1, 1), SFVec2f (1, 1) })),
+	orientation (new MFRotation ({ SFRotation () })),
+	scale (new MFVec2f ({ SFVec2f (1, 1) })),
+	spine (new MFVec3f ({ SFVec3f (0, 0, 0), SFVec3f (0, 1, 0) }))
 { }
 
 Extrusion::Extrusion (X3DExecutionContext* const executionContext) :

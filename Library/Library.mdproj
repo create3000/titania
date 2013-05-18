@@ -2001,6 +2001,8 @@
     <None Include="Prototypes\Geometry3D\TriangleSphere\TriangleSphere.wrl" />
     <None Include="Prototypes\Geometry3D\TriangleSphere\earth.png" />
     <None Include="Prototypes\Geometry3D\TriangleSphere\example.wrl" />
+    <None Include="Prototypes\Geometry3D\Torus\example.wrl" />
+    <None Include="Prototypes\Geometry3D\Torus\Torus.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2060,6 +2062,9 @@
     <Folder Include="Prototypes\Geometry3D\" />
     <Folder Include="Prototypes\Geometry3D\QuadSphere\" />
     <Folder Include="Prototypes\Geometry3D\TriangleSphere\" />
+    <Folder Include="Prototypes\Geometry3D\Torus\" />
+    <Folder Include="Prototypes\Engines\" />
+    <Folder Include="Prototypes\Engines\Rotor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />
