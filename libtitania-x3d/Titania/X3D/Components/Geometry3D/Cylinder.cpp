@@ -112,105 +112,83 @@ Cylinder::build ()
 {
 	float y1      = height () / 2;
 	float y2      = -y1;
-	float _radius = radius ();
 
-	for (int i = 0; i < SEGMENTS; ++ i)
+	if (side ())
 	{
-		float u1     = i / SEGMENTS;
-		float theta1 = 2 * M_PI * u1;
-		float x1     = -std::sin (theta1);
-		float z1     = -std::cos (theta1);
-
-		float u2     = (i + 1) / SEGMENTS;
-		float theta2 = 2 * M_PI * u2;
-		float x2     = -std::sin (theta2);
-		float z2     = -std::cos (theta2);
-
-		if (top ())
+		for (int i = 0; i < SEGMENTS; ++ i)
 		{
-			/*   p1
-			 *  /  \
-			 * p2 - p3
-			 */
+			float u1     = i / SEGMENTS;
+			float theta1 = 2 * M_PI * u1;
+			float x1     = -std::sin (theta1);
+			float z1     = -std::cos (theta1);
 
-			// p1
-			getTexCoord () .emplace_back (0.5, 0.5, 0);
-			getNormals  () .emplace_back (0, 1, 0);
-			getVertices () .emplace_back (0, y1, 0);
+			float u2     = (i + 1) / SEGMENTS;
+			float theta2 = 2 * M_PI * u2;
+			float x2     = -std::sin (theta2);
+			float z2     = -std::cos (theta2);
 
-			// p2
-			getTexCoord () .emplace_back (+(x1 + 1) / 2, -(z1 - 1) / 2, 0);
-			getNormals  () .emplace_back (0, 1, 0);
-			getVertices () .emplace_back (x1 * _radius, y1, z1 * _radius);
-
-			// p3
-			getTexCoord () .emplace_back (+(x2 + 1) / 2, -(z2 - 1) / 2, 0);
-			getNormals  () .emplace_back (0, 1, 0);
-			getVertices () .emplace_back (x2 * _radius, y1, z2 * _radius);
-		}
-
-		if (side ())
-		{
 			// p1 - p4
-			//  | \ |
+			//  |   |
 			// p2 - p3
 
 			// p1
 			getTexCoord () .emplace_back (u1, 1, 0);
 			getNormals  () .emplace_back (x1, 0, z1);
-			getVertices () .emplace_back (x1 * _radius, y1, z1 * _radius);
+			getVertices () .emplace_back (x1 * radius (), y1, z1 * radius ());
 
 			// p2
 			getTexCoord () .emplace_back (u1, 0, 0);
 			getNormals  () .emplace_back (x1, 0, z1);
-			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
+			getVertices () .emplace_back (x1 * radius (), y2, z1 * radius ());
 
 			// p3
 			getTexCoord () .emplace_back (u2, 0, 0);
 			getNormals  () .emplace_back (x2, 0, z2);
-			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
+			getVertices () .emplace_back (x2 * radius (), y2, z2 * radius ());
 
 			// p4
 			getTexCoord () .emplace_back (u2, 1, 0);
 			getNormals  () .emplace_back (x2, 0, z2);
-			getVertices () .emplace_back (x2 * _radius, y1, z2 * _radius);
-
-			// p1
-			getTexCoord () .emplace_back (u1, 1, 0);
-			getNormals  () .emplace_back (x1, 0, z1);
-			getVertices () .emplace_back (x1 * _radius, y1, z1 * _radius);
-
-			// p3
-			getTexCoord () .emplace_back (u2, 0, 0);
-			getNormals  () .emplace_back (x2, 0, z2);
-			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
+			getVertices () .emplace_back (x2 * radius (), y1, z2 * radius ());
 		}
 
-		if (bottom ())
-		{
-			/*   p1
-			 *  /  \
-			 * p2 - p3
-			 */
-
-			// p1
-			getTexCoord () .emplace_back (0.5, 0.5, 0);
-			getNormals  () .emplace_back (0, -1, 0);
-			getVertices () .emplace_back (0, y2, 0);
-
-			// p3
-			getTexCoord () .emplace_back ((x2 + 1) / 2, (z2 + 1) / 2, 0);
-			getNormals  () .emplace_back (0, -1, 0);
-			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
-
-			// p2
-			getTexCoord () .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2, 0);
-			getNormals  () .emplace_back (0, -1, 0);
-			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
-		}
+		addElements (GL_QUADS, getVertices () .size ());
 	}
 
-	addElements (GL_TRIANGLES, getVertices () .size ());
+	if (top ())
+	{
+		for (int i = 0; i < SEGMENTS; ++ i)
+		{
+			float u1     = i / SEGMENTS;
+			float theta1 = 2 * M_PI * u1;
+			float x1     = -std::sin (theta1);
+			float z1     = -std::cos (theta1);
+
+			getTexCoord () .emplace_back (+(x1 + 1) / 2, -(z1 - 1) / 2, 0);
+			getNormals  () .emplace_back (0, 1, 0);
+			getVertices () .emplace_back (x1 * radius (), y1, z1 * radius ());
+		}
+			
+		addElements (GL_POLYGON, SEGMENTS);
+	}
+
+	if (bottom ())
+	{
+		for (int i = SEGMENTS - 1; i > -1 ; -- i)
+		{
+			float u1     = i / SEGMENTS;
+			float theta1 = 2 * M_PI * u1;
+			float x1     = -std::sin (theta1);
+			float z1     = -std::cos (theta1);
+
+			getTexCoord () .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2, 0);
+			getNormals  () .emplace_back (0, -1, 0);
+			getVertices () .emplace_back (x1 * radius (), y2, z1 * radius ());
+		}
+			
+		addElements (GL_POLYGON, SEGMENTS);
+	}
+
 	setSolid (solid ());
 }
 

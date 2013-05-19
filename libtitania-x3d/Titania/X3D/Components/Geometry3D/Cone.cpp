@@ -111,22 +111,22 @@ Cone::build ()
 	float _radius = bottomRadius ();
 	float ny      = std::atan (_radius / _height);
 
-	for (int i = 0; i < SEGMENTS; ++ i)
+	if (side ())
 	{
-		float u1     = i / SEGMENTS;
-		float theta1 = 2 * M_PI * u1;
-		float x1     = -std::sin (theta1);
-		float z1     = -std::cos (theta1);
-
-		float u2     = (i + 1) / SEGMENTS;
-		float theta2 = 2 * M_PI * u2;
-		float x2     = -std::sin (theta2);
-		float z2     = -std::cos (theta2);
-
-		float u3 = (i + 0.5) / SEGMENTS;
-
-		if (side ())
+		for (int i = 0; i < SEGMENTS; ++ i)
 		{
+			float u1     = i / SEGMENTS;
+			float theta1 = 2 * M_PI * u1;
+			float x1     = -std::sin (theta1);
+			float z1     = -std::cos (theta1);
+
+			float u2     = (i + 1) / SEGMENTS;
+			float theta2 = 2 * M_PI * u2;
+			float x2     = -std::sin (theta2);
+			float z2     = -std::cos (theta2);
+
+			float u3 = (i + 0.5) / SEGMENTS;
+
 			/*    p1
 			 *   /  \
 			 *  /    \
@@ -149,32 +149,26 @@ Cone::build ()
 			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
 		}
 
-		if (bottom ())
+		addElements (GL_TRIANGLES, getVertices () .size ());
+	}
+
+	if (bottom ())
+	{
+		for (int i = SEGMENTS - 1; i > -1; -- i)
 		{
-			/*    p1
-			 *   /  \
-			 *  /    \
-			 * p2 -- p3
-			 */
+			float u1     = i / SEGMENTS;
+			float theta1 = 2 * M_PI * u1;
+			float x1     = -std::sin (theta1);
+			float z1     = -std::cos (theta1);
 
-			// p1
-			getTexCoord () .emplace_back (0.5, 0.5, 0);
-			getNormals  () .emplace_back (0, -1, 0);
-			getVertices () .emplace_back (0, y2, 0);
-
-			// p3
-			getTexCoord () .emplace_back ((x2 + 1) / 2, (z2 + 1) / 2, 0);
-			getNormals  () .emplace_back (0, -1, 0);
-			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
-
-			// p2
 			getTexCoord () .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2, 0);
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
 		}
-	}
 
-	addElements (GL_TRIANGLES, getVertices () .size ());
+		addElements (GL_POLYGON, SEGMENTS);
+	}
+	
 	setSolid (solid ());
 }
 

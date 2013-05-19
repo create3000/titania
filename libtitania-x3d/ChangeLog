@@ -1,5 +1,10 @@
 2013-05-19  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Cone.cpp:
+	* Cylinder.cpp: 
+
+2013-05-19  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Box.cpp:
 	* Cone.cpp:
 	* Arc2D.cpp:
