@@ -214,9 +214,8 @@ TriangleSet::build ()
 	if (not _normal)
 		buildNormals ();
 
-	addElement (getVertices () .size ());
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
-	setVertexMode (GL_TRIANGLES);
+	addElements (GL_TRIANGLES, getVertices () .size ());
 	setSolid (solid ());
 }
 

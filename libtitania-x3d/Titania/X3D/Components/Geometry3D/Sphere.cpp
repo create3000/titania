@@ -122,8 +122,7 @@ Sphere::build ()
 			getVertices () .emplace_back (vertex * radius () .getValue ());
 	}
 
-	addElement (getVertices () .size ());
-	setVertexMode (properties -> getVertexMode ());
+	addElements (properties -> getVertexMode (), getVertices () .size ());
 	setSolid (solid ());
 }
 

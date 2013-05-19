@@ -179,8 +179,6 @@ private:
 	void
 	buildCap (const Tesselator &,
 	          std::vector <Vector3f> &,
-	          std::vector <size_t> &,
-	          NormalIndex &,
 	          const Vector2f &,
 	          const Vector2f &);
 

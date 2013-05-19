@@ -61,8 +61,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	                    colors (),               
 	                colorsRGBA (),               
 	                   normals (),               
-	                  vertices (),               
-	                vertexMode (),               
+	                  vertices (),                             
 	                     solid (true),           
 	                       ccw (true),           
 	                  elements (),               
@@ -144,54 +143,61 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <std::shared_ptr <In
 	{
 		float u, v, t;
 
-		switch (vertexMode)
+		size_t first = 0;
+	
+		for (const auto & element : elements)
 		{
-			case GL_TRIANGLES:
+			switch (element .vertexMode)
 			{
-				for (size_t i = 0, size = vertices .size (); i < size; i += 3)
+				case GL_TRIANGLES:
 				{
-					if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
+					for (size_t i = first, size = first + element .count; i < size; i += 3)
 					{
-						Vector3f texCoord = i < texCoords .size () ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector3f ();
+						if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
+						{
+							Vector3f texCoord = i < texCoords .size () ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector3f ();
 
-						intersections .emplace_back (new Intersection { texCoord,
-						                                                (1 - u - v) * normals  [i] + u * normals  [i + 1] + v * normals  [i + 2],
-						                                                (1 - u - v) * vertices [i] + u * vertices [i + 1] + v * vertices [i + 2] });
-						intersected = true;
+							intersections .emplace_back (new Intersection { texCoord,
+							                                                (1 - u - v) * normals  [i] + u * normals  [i + 1] + v * normals  [i + 2],
+							                                                (1 - u - v) * vertices [i] + u * vertices [i + 1] + v * vertices [i + 2] });
+							intersected = true;
+						}
 					}
-				}
 
-				break;
-			}
-			case GL_QUADS:
-			{
-				for (size_t i = 0, size = vertices .size (); i < size; i += 4)
+					break;
+				}
+				case GL_QUADS:
 				{
-					if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
+					for (size_t i = first, size = first + element .count; i < size; i += 4)
 					{
-						Vector3f texCoord = i < texCoords .size () ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector3f ();
+						if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
+						{
+							Vector3f texCoord = i < texCoords .size () ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector3f ();
 
-						intersections .emplace_back (new Intersection { texCoord,
-						                                                (1 - u - v) * normals  [i] + u * normals  [i + 1] + v * normals  [i + 2],
-						                                                (1 - u - v) * vertices [i] + u * vertices [i + 1] + v * vertices [i + 2] });
-						intersected = true;
+							intersections .emplace_back (new Intersection { texCoord,
+							                                                (1 - u - v) * normals  [i] + u * normals  [i + 1] + v * normals  [i + 2],
+							                                                (1 - u - v) * vertices [i] + u * vertices [i + 1] + v * vertices [i + 2] });
+							intersected = true;
+						}
+
+						if (line .intersect (vertices [i], vertices [i + 2], vertices [i + 3], u, v, t))
+						{
+							Vector3f texCoord = i < texCoords .size () ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector3f ();
+
+							intersections .emplace_back (new Intersection { texCoord,
+							                                                (1 - u - v) * normals  [i] + u * normals  [i + 2] + v * normals  [i + 3],
+							                                                (1 - u - v) * vertices [i] + u * vertices [i + 2] + v * vertices [i + 3] });
+							intersected = true;
+						}
 					}
 
-					if (line .intersect (vertices [i], vertices [i + 2], vertices [i + 3], u, v, t))
-					{
-						Vector3f texCoord = i < texCoords .size () ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector3f ();
-
-						intersections .emplace_back (new Intersection { texCoord,
-						                                                (1 - u - v) * normals  [i] + u * normals  [i + 2] + v * normals  [i + 3],
-						                                                (1 - u - v) * vertices [i] + u * vertices [i + 2] + v * vertices [i + 3] });
-						intersected = true;
-					}
+					break;
 				}
-
-				break;
+				default:
+					break;
 			}
-			default:
-				break;
+			
+			first += element .count;
 		}
 	}
 
@@ -203,33 +209,40 @@ X3DGeometryNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere) co
 {
 	if ((bbox * matrix) .intersect (sphere))
 	{
-		switch (vertexMode)
+		size_t first = 0;
+	
+		for (const auto & element : elements)
 		{
-			case GL_TRIANGLES:
+			switch (element .vertexMode)
 			{
-				for (size_t i = 0, size = vertices .size (); i < size; i += 3)
+				case GL_TRIANGLES:
 				{
-					if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
-						return true;
-				}
+					for (size_t i = first, size = first + element .count; i < size; i += 3)
+					{
+						if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
+							return true;
+					}
 
-				break;
-			}
-			case GL_QUADS:
-			{
-				for (size_t i = 0, size = vertices .size (); i < size; i += 4)
+					break;
+				}
+				case GL_QUADS:
 				{
-					if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
-						return true;
+					for (size_t i = first, size = first + element .count; i < size; i += 4)
+					{
+						if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
+							return true;
 
-					if (sphere .intersect (vertices [i] * matrix, vertices [i + 2] * matrix, vertices [i + 3] * matrix))
-						return true;
+						if (sphere .intersect (vertices [i] * matrix, vertices [i + 2] * matrix, vertices [i + 3] * matrix))
+							return true;
+					}
+
+					break;
 				}
-
-				break;
+				default:
+					break;
 			}
-			default:
-				break;
+			
+			first += element .count;
 		}
 	}
 
@@ -376,9 +389,9 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
  */
 
 void
-X3DGeometryNode::addMirrorVertices (const bool convex)
+X3DGeometryNode::addMirrorVertices (GLenum vertexMode, const bool convex)
 {
-	addElement (getVertices () .size ());
+	addElements (vertexMode, getVertices () .size ());
 
 	switch (vertexMode)
 	{
@@ -541,10 +554,10 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 
 	size_t first = 0;
 
-	for (const auto & n : elements)
+	for (const auto & element : elements)
 	{
-		glDrawArrays (vertexMode, first, n);
-		first += n;
+		glDrawArrays (element .vertexMode, first, element .count);
+		first += element .count;
 	}
 
 	if (textureCoordinateGenerator)

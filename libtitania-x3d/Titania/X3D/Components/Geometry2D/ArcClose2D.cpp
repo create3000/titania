@@ -163,12 +163,11 @@ ArcClose2D::build ()
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}
 
-	addElement (getVertices () .size ());
-	setVertexMode (GL_POLYGON);
+	addElements (GL_POLYGON, getVertices () .size ());
 	setSolid (true);
 
 	if (not solid ())
-		addMirrorVertices (false);
+		addMirrorVertices (GL_POLYGON, false);
 }
 
 void

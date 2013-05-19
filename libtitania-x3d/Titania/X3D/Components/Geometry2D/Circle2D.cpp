@@ -115,8 +115,7 @@ Circle2D::build ()
 			getVertices () .emplace_back (vertex * std::abs (radius ()));
 	}
 
-	addElement (getVertices () .size ());
-	setVertexMode (properties -> getVertexMode ());
+	addElements (properties -> getVertexMode (), getVertices () .size ());
 	setSolid (false);
 }
 

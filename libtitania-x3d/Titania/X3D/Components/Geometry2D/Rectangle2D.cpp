@@ -128,12 +128,11 @@ Rectangle2D::build ()
 			getVertices () .emplace_back (vertex * size1_2);
 	}
 
-	addElement (getVertices () .size ());
-	setVertexMode (properties -> getVertexMode ());
+	addElements (properties -> getVertexMode (), getVertices () .size ());
 	setSolid (true);
 
 	if (not solid ())
-		addMirrorVertices (true);
+		addMirrorVertices (properties -> getVertexMode (), true);
 }
 
 void

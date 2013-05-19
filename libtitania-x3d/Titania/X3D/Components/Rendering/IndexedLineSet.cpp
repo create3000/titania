@@ -283,8 +283,7 @@ IndexedLineSet::build ()
 		++ face;
 	}
 
-	addElement (getVertices () .size ());
-	setVertexMode (GL_LINES);
+	addElements (GL_LINES, getVertices () .size ());
 	setSolid (false);
 }
 

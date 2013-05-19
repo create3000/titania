@@ -1,3 +1,29 @@
+2013-05-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Box.cpp:
+	* Cone.cpp:
+	* Arc2D.cpp:
+	* Disk2D.cpp:
+	* LineSet.cpp:
+	* Sphere.cpp:
+	* PointSet.cpp:
+	* Extrusion.h:
+	* Cylinder.cpp:
+	* Circle2D.cpp:
+	* QuadSet.cpp:
+	* Extrusion.cpp:
+	* TriangleSet.cpp:
+	* ArcClose2D.cpp:
+	* Polyline2D.cpp:
+	* Rectangle2D.cpp:
+	* Polypoint2D.cpp:
+	* X3DGeometryNode.h:
+	* TriangleSet2D.cpp:
+	* ElevationGrid.cpp:
+	* IndexedLineSet.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp: 
+
 2013-05-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Extrusion.cpp: 

@@ -2003,6 +2003,7 @@
     <None Include="Prototypes\Geometry3D\TriangleSphere\example.wrl" />
     <None Include="Prototypes\Geometry3D\Torus\example.wrl" />
     <None Include="Prototypes\Geometry3D\Torus\Torus.wrl" />
+    <None Include="Prototypes\Engines\Rotor\example.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2070,5 +2071,6 @@
     <Content Include="Tests\Navigation\Rotor.wrl" />
     <Content Include="Tests\Layering\LayerSet.wrl" />
     <Content Include="Tests\Layering\Inline.wrl" />
+    <Content Include="Prototypes\Engines\Rotor\Rotor.wrl" />
   </ItemGroup>
 </Project>

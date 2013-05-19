@@ -102,12 +102,11 @@ TriangleSet2D::build ()
 
 	buildTexCoord ();
 
-	addElement (getVertices () .size ());
-	setVertexMode (GL_TRIANGLES);
+	addElements (GL_TRIANGLES, getVertices () .size ());
 	setSolid (true);
 
 	if (not solid ())
-		addMirrorVertices (true);
+		addMirrorVertices (GL_TRIANGLES, true);
 }
 
 void

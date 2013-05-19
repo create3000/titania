@@ -7,6 +7,7 @@ EXTERNPROTO TriangleSphere [
   field SFInt32  order
   field SFFloat  radius
   field SFBool   solid
+  field SFBool   ccw
   field SFFloat  creaseAngle
 ]
 "TriangleSphere.wrl"

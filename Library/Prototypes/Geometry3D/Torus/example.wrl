@@ -2,7 +2,15 @@
 
 META "title" "Torus"
 
-EXTERNPROTO Torus [ ]
+EXTERNPROTO Torus [
+  field SFFloat minorRadius
+  field SFFloat majorRadius
+  field SFInt32 minorDimension
+  field SFInt32 majorDimension
+  field SFBool  solid
+  field SFBool  ccw
+  field SFFloat creaseAngle
+]
 "Torus.wrl"
 
 Transform {
@@ -10,6 +18,11 @@ Transform {
     appearance Appearance {
       material Material { }
     }
-    geometry Torus { }
+    geometry Torus {
+      minorRadius 2
+      majorRadius 2
+      minorDimension 20
+      majorDimension 20
+    }
   }
 }

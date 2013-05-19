@@ -16,11 +16,13 @@ PROTO TriangleSphere [
   field SFInt32  order 2
   field SFFloat  radius 1
   field SFBool   solid TRUE
-  field SFFloat  creaseAngle 3.1415927
+  field SFBool   ccw TRUE
+  field SFFloat  creaseAngle 3.14159
 ]
 {
   DEF Geometry IndexedFaceSet {
     solid IS solid
+    ccw IS ccw
     creaseAngle IS creaseAngle
     texCoord TextureCoordinate { }
     coord Coordinate { }

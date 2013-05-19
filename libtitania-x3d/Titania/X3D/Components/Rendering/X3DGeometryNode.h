@@ -127,10 +127,6 @@ protected:
 	getVertices () { return vertices; }
 
 	void
-	setVertexMode (const GLenum value)
-	{ vertexMode = value; }
-
-	void
 	setSolid (const bool & value)
 	{ solid = value; }
 
@@ -139,8 +135,8 @@ protected:
 	{ ccw = value; }
 
 	void
-	addElement (size_t vertexCount)
-	{ elements .emplace_back (vertexCount); }
+	addElements (const GLenum count, size_t vertexCount)
+	{ elements .emplace_back (count, vertexCount); }
 
 	virtual
 	Box3f
@@ -156,7 +152,7 @@ protected:
 	refineNormals (const NormalIndex &, std::vector <Vector3f> &, float);
 
 	void
-	addMirrorVertices (const bool);
+	addMirrorVertices (GLenum, const bool);
 
 	void
 	update ();
@@ -172,6 +168,18 @@ protected:
 
 private:
 
+	struct Element
+	{
+		Element (GLenum vertexMode, size_t count) :
+			vertexMode (vertexMode),
+			count (count)
+		{ }
+
+		GLenum vertexMode;
+		size_t count;
+
+	};
+
 	void
 	clear ();
 
@@ -185,10 +193,9 @@ private:
 	std::vector <Color4f>       colorsRGBA;
 	std::vector <Vector3f>      normals;
 	std::vector <Vector3f>      vertices;
-	GLenum                      vertexMode;
 	bool                        solid;
 	bool                        ccw;
-	std::deque <size_t>         elements;
+	std::deque <Element>        elements;
 
 	GLenum bufferUsage;
 	GLuint texCoordBufferId;

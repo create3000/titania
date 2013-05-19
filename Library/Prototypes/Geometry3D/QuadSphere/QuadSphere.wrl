@@ -5,6 +5,7 @@ PROTO QuadSphere [
   field SFInt32 vDimension 10
   field SFFloat radius 1
   field SFBool  solid TRUE
+  field SFBool  ccw   TRUE
   field SFFloat creaseAngle 3.14159
 ]
 {
@@ -15,6 +16,7 @@ PROTO QuadSphere [
 
   DEF Geometry IndexedFaceSet {
     solid IS solid
+    ccw IS ccw
     creaseAngle IS creaseAngle
     texCoord TextureCoordinate { }
     coord Coordinate { }

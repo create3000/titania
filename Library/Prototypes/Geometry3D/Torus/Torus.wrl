@@ -1,17 +1,65 @@
 #VRML V2.0 utf8 Titania 0.1
 
-PROTO Torus [ ]
+PROTO Torus [
+  field SFFloat minorRadius 1
+  field SFFloat majorRadius 1
+  field SFInt32 minorDimension 10
+  field SFInt32 majorDimension 10
+  field SFBool  solid TRUE
+  field SFBool  ccw TRUE
+  field SFFloat creaseAngle 3.14159
+]
 {
-  DEF Geometry Extrusion { }
+  DEF Geometry Extrusion {
+    beginCap FALSE
+    endCap FALSE
+    solid IS solid
+    ccw IS ccw
+    creaseAngle IS creaseAngle
+  }
 
   Script {
-    field SFNode geometry USE Geometry
+    field SFFloat minorRadius IS minorRadius
+    field SFFloat majorRadius IS majorRadius
+    field SFInt32 minorDimension IS minorDimension
+    field SFInt32 majorDimension IS majorDimension
+    field SFNode  geometry USE Geometry
 
     url "vrmlscript:
 
 function initialize ()
 {
+	var spine        = new MFVec3f ();
+	var crossSection = new MFVec2f ();
 
+	var i = 0;
+	
+	// CrossSection
+	
+	for (i = 0; i < minorDimension; ++ i)
+	{
+		var x = Math .sin (2 * Math .PI * i / minorDimension);
+		var y = Math .cos (2 * Math .PI * i / minorDimension);
+	
+		crossSection [i] = new SFVec2f (x, y) .multiply (minorRadius);
+	}
+
+	crossSection [i] = crossSection [0];
+	
+	// Spine
+	
+	for (i = 0; i < majorDimension; ++ i)
+	{
+		var x = Math .sin (2 * Math .PI * i / majorDimension);
+		var z = Math .cos (2 * Math .PI * i / majorDimension);
+	
+		spine [i] = new SFVec3f (x, 0, z) .multiply (majorRadius);
+	}
+	
+	spine [i] = spine [0];
+
+	geometry .set_crossSection = crossSection;
+	geometry .set_spine        = spine;
 }
 "
   }

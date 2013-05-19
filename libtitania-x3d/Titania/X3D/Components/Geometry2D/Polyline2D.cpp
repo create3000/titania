@@ -87,8 +87,7 @@ Polyline2D::build ()
 	for (const auto & vertex : lineSegments ())
 		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
 
-	addElement (getVertices () .size ());
-	setVertexMode (GL_LINE_STRIP);
+	addElements (GL_LINE_STRIP, getVertices () .size ());
 	setSolid (false);
 }
 

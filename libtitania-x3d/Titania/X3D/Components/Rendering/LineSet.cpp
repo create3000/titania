@@ -135,7 +135,7 @@ LineSet::build ()
 				getVertices () .emplace_back (_coord -> point () [index]);
 			}
 
-			addElement (count);
+			addElements (GL_LINE_STRIP, count);
 		}
 		else
 		{
@@ -144,7 +144,6 @@ LineSet::build ()
 		}
 	}
 
-	setVertexMode (GL_LINE_STRIP);
 	setSolid (false);
 }
 

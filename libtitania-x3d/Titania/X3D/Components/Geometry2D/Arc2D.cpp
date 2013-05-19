@@ -122,16 +122,17 @@ Arc2D::build ()
 	float  difference = getAngle ();
 	size_t segments   = std::ceil (difference / properties -> minAngle ());
 	float  angle      = difference / segments;
+	GLenum vertexMode = GL_LINE_LOOP;
 
 	getVertices () .reserve (segments + 1);
 
 	if (difference < float (2 * M_PI))
 	{
 		++ segments;
-		setVertexMode (GL_LINE_STRIP);
+		vertexMode = GL_LINE_STRIP;
 	}
 	else
-		setVertexMode (GL_LINE_LOOP);
+		vertexMode = GL_LINE_LOOP;
 
 	for (size_t n = 0; n < segments; ++ n)
 	{
@@ -142,7 +143,7 @@ Arc2D::build ()
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}
 
-	addElement (getVertices () .size ());
+	addElements (vertexMode, getVertices () .size ());
 	setSolid (false);
 }
 
