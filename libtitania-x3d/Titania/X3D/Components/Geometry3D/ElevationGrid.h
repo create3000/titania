@@ -199,9 +199,6 @@ protected:
 
 
 private:
-	
-	void
-	set_ccw ();
 
 	Box3f
 	createBBox ();

@@ -115,15 +115,6 @@ void
 GeoElevationGrid::initialize ()
 {
 	X3DGeometryNode::initialize ();
-
-	ccw () .addInterest (this, &GeoElevationGrid::set_ccw);
-	set_ccw ();
-}
-
-void
-GeoElevationGrid::set_ccw ()
-{
-	setCCW (ccw ());
 }
 
 } // X3D

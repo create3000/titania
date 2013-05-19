@@ -102,15 +102,6 @@ void
 Extrusion::initialize ()
 {
 	X3DGeometryNode::initialize ();
-
-	ccw () .addInterest (this, &Extrusion::set_ccw);
-	set_ccw ();
-}
-
-void
-Extrusion::set_ccw ()
-{
-	setCCW (ccw ());
 }
 
 std::vector <Vector3f>
@@ -345,39 +336,35 @@ Extrusion::build ()
 			//  |       |
 			// p1 ----- p2   n
 
-			Vector3f normal = math::normal (points [INDEX (n, k)], points [INDEX (n, k1)], points [INDEX (n1, k1)]);
-
-			// tri 1
-
 			// p1
 			getTexCoord () .emplace_back (k / (float) (crossSection () .size () - 1), n / (float) (spine () .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n, k));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (normal);
+			getNormals () .emplace_back (math::normal (points [INDEX (n1, k)], points [INDEX (n, k)], points [INDEX (n, k1)]));
 
 			// p2
 			getTexCoord () .emplace_back ((k + 1) / (float) (crossSection () .size () - 1), n / (float) (spine () .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n, k1));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (normal);
+			getNormals () .emplace_back (math::normal (points [INDEX (n, k)], points [INDEX (n, k1)], points [INDEX (n1, k1)]));
 
 			// p3
 			getTexCoord () .emplace_back ((k + 1) / (float) (crossSection () .size () - 1), (n + 1) / (float) (spine () .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n1, k1));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (normal);
+			getNormals () .emplace_back (math::normal (points [INDEX (n, k1)], points [INDEX (n1, k1)], points [INDEX (n1, k)]));
 
 			// p4
 			getTexCoord () .emplace_back (k / (float) (crossSection () .size () - 1), (n + 1) / (float) (spine () .size () - 1), 0);
 			coordIndex .emplace_back (INDEX (n1, k));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (normal);
+			getNormals () .emplace_back (math::normal (points [INDEX (n1, k1)], points [INDEX (n1, k)], points [INDEX (n, k)]));
 		}
 	}
 
 	// Refine normals and build vertices.
 
-	refineNormals (normalIndex, getNormals (), creaseAngle ());
+	refineNormals (normalIndex, getNormals (), creaseAngle (), ccw ());
 
 	for (size_t i = 0; i < coordIndex .size (); i += 4)
 	{
@@ -430,6 +417,7 @@ Extrusion::build ()
 	}
 
 	setSolid (solid ());
+	setCCW (ccw ());
 
 	#undef INDEX
 }

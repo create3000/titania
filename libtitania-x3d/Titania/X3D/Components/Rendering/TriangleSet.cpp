@@ -217,6 +217,7 @@ TriangleSet::build ()
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	addElements (GL_TRIANGLES, getVertices () .size ());
 	setSolid (solid ());
+	setCCW (ccw ());
 }
 
 void

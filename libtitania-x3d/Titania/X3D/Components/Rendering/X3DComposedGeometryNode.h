@@ -157,9 +157,6 @@ protected:
 	initialize ();
 
 private:
-	
-	void
-	set_ccw ();
 
 	struct Fields
 	{

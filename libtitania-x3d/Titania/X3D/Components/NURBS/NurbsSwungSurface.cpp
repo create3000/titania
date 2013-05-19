@@ -87,15 +87,6 @@ void
 NurbsSwungSurface::initialize ()
 {
 	X3DParametricGeometryNode::initialize ();
-
-	ccw () .addInterest (this, &NurbsSwungSurface::set_ccw);
-	set_ccw ();
-}
-
-void
-NurbsSwungSurface::set_ccw ()
-{
-	setCCW (ccw ());
 }
 
 } // X3D

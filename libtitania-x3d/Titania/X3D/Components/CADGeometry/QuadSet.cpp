@@ -217,6 +217,7 @@ QuadSet::build ()
 	addElements (GL_QUADS, getVertices () .size ());
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setSolid (solid ());
+	setCCW (ccw ());
 }
 
 void

@@ -107,9 +107,6 @@ private:
 	virtual
 	void
 	initialize ();
-	
-	void
-	set_ccw ();
 
 	struct Fields
 	{

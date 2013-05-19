@@ -110,8 +110,8 @@ Cylinder::createBBox ()
 void
 Cylinder::build ()
 {
-	float y1      = height () / 2;
-	float y2      = -y1;
+	float y1 = height () / 2;
+	float y2 = -y1;
 
 	if (side ())
 	{
@@ -152,7 +152,7 @@ Cylinder::build ()
 			getVertices () .emplace_back (x2 * radius (), y1, z2 * radius ());
 		}
 
-		addElements (GL_QUADS, getVertices () .size ());
+		addElements (GL_QUADS, SEGMENTS * 4);
 	}
 
 	if (top ())
@@ -174,7 +174,7 @@ Cylinder::build ()
 
 	if (bottom ())
 	{
-		for (int i = SEGMENTS - 1; i > -1 ; -- i)
+		for (int i = SEGMENTS - 1; i > -1; -- i)
 		{
 			float u1     = i / SEGMENTS;
 			float theta1 = 2 * M_PI * u1;

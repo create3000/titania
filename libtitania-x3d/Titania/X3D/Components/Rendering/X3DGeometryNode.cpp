@@ -63,7 +63,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	                   normals (),               
 	                  vertices (),                             
 	                     solid (true),           
-	                       ccw (true),           
+	                       ccw (GL_CCW),           
 	                  elements (),               
 	               bufferUsage (GL_STATIC_DRAW), 
 	          texCoordBufferId (0),              
@@ -348,7 +348,7 @@ X3DGeometryNode::getTexCoordParams (Vector3f & min, float & Ssize, int & Sindex,
  */
 
 void
-X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Vector3f> & normals, float creaseAngle)
+X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Vector3f> & normals, float creaseAngle, bool ccw)
 {
 	if (not ccw)
 	{
@@ -512,8 +512,8 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 
 	else
 		glDisable (GL_CULL_FACE);
-
-	glFrontFace (ccw ? GL_CCW : GL_CW);
+		
+	glFrontFace (ccw);
 
 	if (texture)
 	{

@@ -132,7 +132,7 @@ protected:
 
 	void
 	setCCW (const bool & value)
-	{ ccw = value; }
+	{ ccw = value ? GL_CCW : GL_CW; }
 
 	void
 	addElements (const GLenum count, size_t vertexCount)
@@ -149,7 +149,7 @@ protected:
 	getTexCoordParams (Vector3f &, float &, int &, int &);
 
 	void
-	refineNormals (const NormalIndex &, std::vector <Vector3f> &, float);
+	refineNormals (const NormalIndex &, std::vector <Vector3f> &, float, bool);
 
 	void
 	addMirrorVertices (GLenum, const bool);
@@ -194,7 +194,7 @@ private:
 	std::vector <Vector3f>      normals;
 	std::vector <Vector3f>      vertices;
 	bool                        solid;
-	bool                        ccw;
+	GLenum                      ccw;
 	std::deque <Element>        elements;
 
 	GLenum bufferUsage;

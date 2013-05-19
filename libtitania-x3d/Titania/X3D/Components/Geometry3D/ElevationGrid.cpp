@@ -117,15 +117,6 @@ void
 ElevationGrid::initialize ()
 {
 	X3DGeometryNode::initialize ();
-
-	ccw () .addInterest (this, &ElevationGrid::set_ccw);
-	set_ccw ();
-}
-
-void
-ElevationGrid::set_ccw ()
-{
-	setCCW (ccw ());
 }
 
 Box3f
@@ -203,7 +194,7 @@ ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::
 		normals .resize (normals .size () + 6, normalize (normal));
 	}
 
-	refineNormals (normalIndex, normals, creaseAngle ());
+	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
 
 	return normals;
 }
@@ -428,6 +419,7 @@ ElevationGrid::build ()
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	addElements (GL_TRIANGLES, getVertices () .size ());
 	setSolid (solid ());
+	setCCW (ccw ());
 }
 
 } // X3D

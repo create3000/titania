@@ -105,11 +105,9 @@ Cone::createBBox ()
 void
 Cone::build ()
 {
-	float y1      = height () / 2;
-	float y2      = -y1;
-	float _height = height ();
-	float _radius = bottomRadius ();
-	float ny      = std::atan (_radius / _height);
+	float y1 = height () / 2;
+	float y2 = -y1;
+	float ny = std::atan (bottomRadius () / height ());
 
 	if (side ())
 	{
@@ -141,12 +139,12 @@ Cone::build ()
 			// p2
 			getTexCoord () .emplace_back (u1, 0, 0);
 			getNormals  () .emplace_back (x1, ny, z1);
-			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
+			getVertices () .emplace_back (x1 * bottomRadius (), y2, z1 * bottomRadius ());
 
 			// p3
 			getTexCoord () .emplace_back (u2, 0, 0);
 			getNormals  () .emplace_back (x2, ny, z2);
-			getVertices () .emplace_back (x2 * _radius, y2, z2 * _radius);
+			getVertices () .emplace_back (x2 * bottomRadius (), y2, z2 * bottomRadius ());
 		}
 
 		addElements (GL_TRIANGLES, getVertices () .size ());
@@ -163,12 +161,12 @@ Cone::build ()
 
 			getTexCoord () .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2, 0);
 			getNormals  () .emplace_back (0, -1, 0);
-			getVertices () .emplace_back (x1 * _radius, y2, z1 * _radius);
+			getVertices () .emplace_back (x1 * bottomRadius (), y2, z1 * bottomRadius ());
 		}
 
 		addElements (GL_POLYGON, SEGMENTS);
 	}
-	
+
 	setSolid (solid ());
 }
 

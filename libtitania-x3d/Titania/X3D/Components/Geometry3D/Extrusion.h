@@ -162,9 +162,6 @@ private:
 	virtual
 	void
 	initialize ();
-	
-	void
-	set_ccw ();
 
 	std::vector <Vector3f>
 	createPoints (bool);

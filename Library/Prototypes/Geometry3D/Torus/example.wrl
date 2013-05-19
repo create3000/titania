@@ -19,10 +19,11 @@ Transform {
       material Material { }
     }
     geometry Torus {
-      minorRadius 2
+      minorRadius 3
       majorRadius 2
-      minorDimension 20
-      majorDimension 20
+      minorDimension 4
+      majorDimension 10
+      creaseAngle 0
     }
   }
 }

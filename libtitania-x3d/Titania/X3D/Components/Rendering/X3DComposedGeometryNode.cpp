@@ -77,15 +77,6 @@ void
 X3DComposedGeometryNode::initialize ()
 {
 	X3DGeometryNode::initialize ();
-
-	ccw () .addInterest (this, &X3DComposedGeometryNode::set_ccw);
-	set_ccw ();
-}
-
-void
-X3DComposedGeometryNode::set_ccw ()
-{
-	setCCW (ccw ());
 }
 
 } // X3D

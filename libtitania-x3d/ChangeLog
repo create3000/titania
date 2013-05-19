@@ -1,6 +1,28 @@
 2013-05-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Cone.cpp:
+	* Extrusion.h:
+	* QuadSet.cpp:
+	* Cylinder.cpp:
+	* Extrusion.cpp:
+	* TriangleSet.cpp:
+	* NurbsSweptSurface.h:
+	* NurbsSwungSurface.h:
+	* ElevationGrid.h:
+	* NurbsSwungSurface.cpp:
+	* NurbsSweptSurface.cpp:
+	* X3DGeometryNode.h:
+	* ElevationGrid.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp:
+	* GeoElevationGrid.h:
+	* GeoElevationGrid.cpp:
+	* X3DComposedGeometryNode.h:
+	* X3DComposedGeometryNode.cpp: 
+
+2013-05-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Cone.cpp:
 	* Cylinder.cpp: 
 
 2013-05-19  Holger Seelig  <holger.seelig@yahoo.de>

@@ -408,6 +408,7 @@ IndexedFaceSet::build ()
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	addElements (GL_TRIANGLES, getVertices () .size ());
 	setSolid (solid ());
+	setCCW (ccw ());
 }
 
 void
@@ -616,7 +617,7 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 		normals .emplace_back ();
 	}
 
-	refineNormals (normalIndex, normals, creaseAngle ());
+	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
 
 	for (const auto & polygon : polygons)
 	{

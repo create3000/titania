@@ -87,15 +87,6 @@ void
 NurbsSweptSurface::initialize ()
 {
 	X3DParametricGeometryNode::initialize ();
-
-	ccw () .addInterest (this, &NurbsSweptSurface::set_ccw);
-	set_ccw ();
-}
-
-void
-NurbsSweptSurface::set_ccw ()
-{
-	setCCW (ccw ());
 }
 
 } // X3D
