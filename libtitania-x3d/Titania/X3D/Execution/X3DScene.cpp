@@ -67,7 +67,7 @@ X3DScene::setMetaData (const std::string & key, const std::string & value)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	metadatas .emplace (key, value);
+	metadatas .insert (std::make_pair (key, value));
 }
 
 const std::string &

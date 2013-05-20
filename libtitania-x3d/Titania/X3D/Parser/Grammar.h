@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,7 +53,7 @@
 
 #include <Titania/InputOutput.h>
 #include <pcrecpp.h>
-#include <unordered_set>
+#include <set>
 
 namespace titania {
 namespace X3D {
@@ -99,7 +99,7 @@ public:
 	static io::string eventOut;
 	static io::string exposedField;
 
-	static std::unordered_set <std::string> FieldType;
+	static std::set <std::string> FieldType;
 
 	///  @name Terminal symbols
 	static io::character OpenBrace;
@@ -119,7 +119,7 @@ public:
 private:
 
 	static
-	std::unordered_set <std::string>
+	std::set <std::string>
 	getFieldType ();
 
 };

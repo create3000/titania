@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -92,7 +92,7 @@ io::string Grammar::eventIn ("eventIn");
 io::string Grammar::eventOut ("eventOut");
 io::string Grammar::exposedField ("exposedField");
 
-std::unordered_set <std::string> Grammar::FieldType = std::move (getFieldType ());
+std::set <std::string> Grammar::FieldType = std::move (getFieldType ());
 
 // Terminal symbols
 io::character Grammar::OpenBrace ('{');
@@ -108,13 +108,13 @@ io::string Grammar::HEX ("0X");
 
 io::quoted_string Grammar::string ('\"');
 
-std::unordered_set <std::string>
+std::set <std::string>
 Grammar::getFieldType ()
 {
-	std::unordered_set <std::string> FieldType;
+	std::set <std::string> FieldType;
 
 	for (const auto & field : getBrowser () -> getSupportedFields ())
-		FieldType .emplace (field -> getTypeName ());
+		FieldType .insert (field -> getTypeName ());
 
 	return FieldType;
 }

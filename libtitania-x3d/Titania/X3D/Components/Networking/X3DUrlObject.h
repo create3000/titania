@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,12 +58,12 @@
 #include "../../Fields.h"
 
 #include <Titania/Stream/InputFileStream.h>
-#include <unordered_map>
+#include <map>
 
 namespace titania {
 namespace X3D {
 
-typedef std::unordered_map <basic::uri, basic::uri> URNIndex;
+typedef std::map <basic::uri, basic::uri> URNIndex;
 
 class X3DUrlObject :
 	virtual public X3DBaseNode

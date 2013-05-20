@@ -62,7 +62,7 @@ GarbageCollector::GarbageCollector ()
 { }
 
 void
-GarbageCollector::addObject (X3DChildObject* object)
+GarbageCollector::addObject (X3DObject* object)
 {
 	//	try
 	//	{
@@ -71,7 +71,7 @@ GarbageCollector::addObject (X3DChildObject* object)
 	//	catch (...)
 	//	{ }
 
-	if (not disposedObjects .emplace (object) .second)
+	if (not disposedObjects .insert (object) .second)
 		__LOG__ << object << std::endl;
 }
 
@@ -82,7 +82,7 @@ GarbageCollector::dispose ()
 	{
 		//__LOG__ << disposedObjects .size () << " objects to delete: " << std::flush;
 
-		for (const auto & object : ChildObjectSet (std::move (disposedObjects)))
+		for (const auto & object : ObjectSet (std::move (disposedObjects)))
 		{
 			//__LOG__ << (void*) object << " " << object -> getTypeName () << " " << object -> getName () << std::endl;
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,7 +56,7 @@
 #include "../Core/X3DNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
 
-#include <unordered_map>
+#include <map>
 #include <memory>
 
 namespace titania {
@@ -98,7 +98,7 @@ public:
 
 protected:
 
-	typedef std::unordered_map <size_t, std::vector <size_t>> NormalIndex;
+	typedef std::map <size_t, std::vector <size_t>> NormalIndex;
 
 	X3DGeometryNode ();
 

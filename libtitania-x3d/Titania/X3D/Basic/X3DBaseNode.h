@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,12 +63,12 @@
 #include "../Fields/SFTime.h"
 #include "../Types/Time.h"
 
-#include <unordered_map>
+#include <map>
 
 namespace titania {
 namespace X3D {
 
-typedef std::unordered_map <std::string, X3DFieldDefinition*> FieldsMap;
+typedef std::map <std::string, X3DFieldDefinition*> FieldsMap;
 
 class X3DBrowser;
 class X3DExecutionContext;
@@ -247,7 +247,7 @@ protected:
 
 private:
 
-	typedef std::unordered_map <std::string, std::string> FieldAliasesMap;
+	typedef std::map <std::string, std::string> FieldAliasesMap;
 
 	const std::string &
 	getFieldName (const std::string &) const;

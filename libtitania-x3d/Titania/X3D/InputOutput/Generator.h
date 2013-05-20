@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,8 +52,8 @@
 #define __TITANIA_X3D_INPUT_OUTPUT_GENERATOR_H__
 
 #include <map>
-#include <unordered_set>
-#include <unordered_map>
+#include <set>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -167,8 +167,8 @@ public:
 
 private:
 
-	typedef std::unordered_set <const X3DBaseNode*>              NodeSet;
-	typedef std::unordered_map <const X3DBaseNode*, std::string> NewNamesMap;
+	typedef std::set <const X3DBaseNode*>              NodeSet;
+	typedef std::map <const X3DBaseNode*, std::string> NewNamesMap;
 
 	static size_t      level;
 	static NodeSet     nodes;

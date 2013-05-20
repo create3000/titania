@@ -58,4 +58,4 @@ namespace X3D {
 } // X3D
 } // titania
 
-template class std::unordered_set <titania::X3D::X3DChildObject*>;
+template class std::set <titania::X3D::X3DChildObject*>;

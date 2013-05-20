@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BASE_GARBAGE_COLLECTOR_H__
 #define __TITANIA_X3D_BASE_GARBAGE_COLLECTOR_H__
 
-#include "../Base/ChildObjectSet.h"
+#include "../Base/ObjectSet.h"
 
 namespace titania {
 namespace X3D {
@@ -60,12 +60,12 @@ class GarbageCollector
 {
 public:
 
-	typedef ChildObjectSet::size_type size_type;
+	typedef ObjectSet::size_type size_type;
 
 	GarbageCollector ();
 
 	void
-	addObject (X3DChildObject*);
+	addObject (X3DObject*);
 
 	size_type
 	size ();
@@ -85,7 +85,7 @@ private:
 	GarbageCollector &
 	operator = (const GarbageCollector &) = delete;
 
-	ChildObjectSet disposedObjects;
+	ObjectSet disposedObjects;
 
 };
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,7 +56,7 @@
 #include "../../Components/Networking/X3DUrlObject.h"
 #include "../../Components/Scripting/X3DScriptNode.h"
 #include <map>
-#include <unordered_map>
+#include <map>
 
 #include <jsapi.h>
 
@@ -183,10 +183,10 @@ private:
 	jsval eventsProcessedFn;
 	jsval shutdownFn;
 
-	std::unordered_map <std::string, jsval>          fields;
-	std::unordered_map <X3DFieldDefinition*, jsval>  functions;
-	std::unordered_map <X3DFieldDefinition*, size_t> references;
-	std::unordered_map <basic::uri, jsval>           files;
+	std::map <std::string, jsval>          fields;
+	std::map <X3DFieldDefinition*, jsval>  functions;
+	std::map <X3DFieldDefinition*, size_t> references;
+	std::map <basic::uri, jsval>           files;
 
 };
 

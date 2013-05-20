@@ -74,7 +74,7 @@ public:
 };
 
 class X3DChildObject :
-	virtual public X3DObject
+	public X3DObject
 {
 public:
 
@@ -192,7 +192,7 @@ X3DChildObject::findClosestParents (std::deque <Type*> & parents, ChildObjectSet
 	if (dynamic_cast <Root*> (this))
 		return;
 
-	if (not seen .emplace (this) .second)
+	if (not seen .insert (this) .second)
 		return;
 
 	Type* parent = dynamic_cast <Type*> (this);

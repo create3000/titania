@@ -147,13 +147,13 @@ public:
 	void
 	dispose () override;
 
+	virtual
+	~X3DObject ();
+
 
 protected:
 
 	X3DObject ();
-
-	virtual
-	~X3DObject ();
 
 
 private:

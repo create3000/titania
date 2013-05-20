@@ -406,7 +406,7 @@ JavaScriptContext::require (const basic::uri & uri, jsval & rval)
 		{
 			JS_AddValueRoot (context, &rval);
 
-			files .emplace (resolvedURL, rval);
+			files .insert (std::make_pair (resolvedURL, rval));
 
 			return JS_TRUE;
 		}
@@ -524,7 +524,7 @@ JavaScriptContext::addField (X3DFieldDefinition* field)
 
 	if (reference == references .end ())
 	{
-		references .emplace (field, 1);
+		references .insert (std::make_pair (field, 1));
 
 		field -> addParent (this);
 	}

@@ -51,18 +51,18 @@
 #ifndef __TITANIA_X3D_BASE_CHILD_OBJECT_SET_H__
 #define __TITANIA_X3D_BASE_CHILD_OBJECT_SET_H__
 
-#include <unordered_set>
+#include <set>
 
 namespace titania {
 namespace X3D {
 
 class X3DChildObject;
 
-typedef std::unordered_set <X3DChildObject*> ChildObjectSet;
+typedef std::set <X3DChildObject*> ChildObjectSet;
 
 } // X3D
 } // titania
 
-extern template class std::unordered_set <titania::X3D::X3DChildObject*>;
+extern template class std::set <titania::X3D::X3DChildObject*>;
 
 #endif

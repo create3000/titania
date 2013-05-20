@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,7 +62,7 @@
 #include "../Routing/RouteArray.h"
 
 #include <Titania/Basic/URI.h>
-#include <unordered_map>
+#include <map>
 
 namespace titania {
 namespace X3D {
@@ -404,7 +404,7 @@ private:
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 
-	typedef std::unordered_map <std::string, SFNode <X3DBaseNode>> NamedNodeIndex;
+	typedef std::map <std::string, SFNode <X3DBaseNode>> NamedNodeIndex;
 
 	basic::uri  worldURL;
 	std::string encoding;

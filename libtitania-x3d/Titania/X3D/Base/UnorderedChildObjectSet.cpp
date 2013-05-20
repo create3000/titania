@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "RouteSet.h"
+#include "UnorderedChildObjectSet.h"
 
 namespace titania {
 namespace X3D {
@@ -58,4 +58,4 @@ namespace X3D {
 } // X3D
 } // titania
 
-template class std::set <titania::X3D::X3DRoute*>;
+template class std::unordered_set <titania::X3D::X3DChildObject*>;

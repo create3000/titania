@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,7 +58,7 @@
 
 #include <Titania/Stream/IGZFilter.h>
 #include <ios>
-#include <unordered_map>
+#include <map>
 
 namespace titania {
 namespace X3D {
@@ -71,7 +71,7 @@ class Parser :
 private:
 
 	class AccessTypes :
-		public std::unordered_map <std::string, AccessType>
+		public std::map <std::string, AccessType>
 	{
 	public:
 
@@ -80,7 +80,7 @@ private:
 	};
 
 	class FieldTypes :
-		public std::unordered_map <std::string, const X3DFieldDefinition*>
+		public std::map <std::string, const X3DFieldDefinition*>
 	{
 	public:
 

@@ -48,14 +48,21 @@
  *
  ******************************************************************************/
 
-#include "RouteSet.h"
+#ifndef __TITANIA_X3D_BASE_OBJECT_SET_H__
+#define __TITANIA_X3D_BASE_OBJECT_SET_H__
+
+#include <set>
 
 namespace titania {
 namespace X3D {
 
-//
+class X3DObject;
+
+typedef std::set <X3DObject*> ObjectSet;
 
 } // X3D
 } // titania
 
-template class std::set <titania::X3D::X3DRoute*>;
+extern template class std::set <titania::X3D::X3DObject*>;
+
+#endif

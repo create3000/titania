@@ -543,6 +543,8 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstants.h" />
     <None Include="Titania\X3D\Basic\X3DArrayFieldIterator.h" />
     <None Include="Titania\X3D\Basic\NodeSet.h" />
+    <None Include="Titania\X3D\Base\ObjectSet.h" />
+    <None Include="Titania\X3D\Base\UnorderedChildObjectSet.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -961,6 +963,8 @@
     <Compile Include="Titania\X3D\Parser\Grammar.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstants.cpp" />
     <Compile Include="Titania\X3D\Basic\NodeSet.cpp" />
+    <Compile Include="Titania\X3D\Base\ObjectSet.cpp" />
+    <Compile Include="Titania\X3D\Base\UnorderedChildObjectSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -452,7 +452,7 @@ X3DBaseNode::addField (const AccessType accessType, const basic::id & name, X3DF
 	field .setAliasName (name);
 
 	fieldDefinitions .push_back (&field);
-	fields .emplace (std::make_pair (name, &field));
+	fields .insert (std::make_pair (name, &field));
 }
 
 void
@@ -482,7 +482,7 @@ X3DBaseNode::addFieldAlias (const std::string & name, const std::string & field)
 
 	if (iter not_eq fields .end ())
 	{
-		fieldAliases .emplace (std::make_pair (name, field));
+		fieldAliases .insert (std::make_pair (name, field));
 		iter -> second -> setAliasName (name);
 	}
 }

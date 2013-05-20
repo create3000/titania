@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,12 +52,12 @@
 #define __TITANIA_X3D_EXECUTION_X3DSCENE_H__
 
 #include "../Execution/X3DExecutionContext.h"
-#include <unordered_map>
+#include <map>
 
 namespace titania {
 namespace X3D {
 
-typedef std::unordered_map <std::string, std::string> MetaDataIndex;
+typedef std::map <std::string, std::string> MetaDataIndex;
 
 class X3DScene :
 	public X3DExecutionContext

@@ -51,18 +51,18 @@
 #ifndef __TITANIA_X3D_BASIC_NODE_SET_H__
 #define __TITANIA_X3D_BASIC_NODE_SET_H__
 
-#include <unordered_set>
+#include <set>
 
 namespace titania {
 namespace X3D {
 
 class X3DBaseNode;
 
-typedef std::unordered_set <X3DBaseNode*> NodeSet;
+typedef std::set <X3DBaseNode*> NodeSet;
 
 } // X3D
 } // titania
 
-extern template class std::unordered_set <titania::X3D::X3DBaseNode*>;
+extern template class std::set <titania::X3D::X3DBaseNode*>;
 
 #endif

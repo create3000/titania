@@ -68,10 +68,8 @@ X3DChildObject::registerEvent (X3DChildObject*, const Event & event)
 bool
 X3DChildObject::addParent (X3DChildObject* const parent)
 {
-	return parents .emplace (parent) .second;
+	return parents .insert (parent) .second;
 }
-
-static X3DChildObject* root = NULL;
 
 bool
 X3DChildObject::removeParent (X3DChildObject* const parent)
@@ -81,19 +79,9 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		if (parents .size ())
 		{
 			ChildObjectSet circle;
-			
-			root = NULL;
 
 			if (hasRoots (circle))
-			{
-				if (root)
-				{
-					//__LOG__ << "############################################ " << this -> getTypeName () << std::endl;
-					//__LOG__ << "############################################   " << root -> getTypeName () << " : " << root -> getParents () .size () << std::endl;
-				}
-				
 				return false;
-			}
 
 			for (auto & child : circle)
 				child -> parents .clear ();
@@ -129,7 +117,7 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 {
 	if (getParents () .size ())
 	{
-		if (seen .emplace (this) .second)
+		if (seen .insert (this) .second)
 		{
 			for (auto & parent : getParents ())
 			{
@@ -142,8 +130,6 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 
 		return false;
 	}
-	
-	root = this;
 
 	// this is a root node
 	return true;

@@ -74,7 +74,7 @@ public:
 
 	void
 	registerNode (X3DBaseNode* node)
-	{ nodes .emplace (node); }
+	{ nodes .insert (node); }
 
 	void
 	removeNode (X3DBaseNode* node)

@@ -57,11 +57,11 @@
 namespace titania {
 namespace X3D {
 
-typedef std::unordered_set <X3DRoute*> RouteSet;
+typedef std::set <X3DRoute*> RouteSet;
 
 } // X3D
 } // titania
 
-extern template class std::unordered_set <titania::X3D::X3DRoute*>;
+extern template class std::set <titania::X3D::X3DRoute*>;
 
 #endif

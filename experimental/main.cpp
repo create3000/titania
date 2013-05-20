@@ -210,15 +210,21 @@ template <class Type>
 void
 set_test ()
 {
-	int N = 10000000;
-	int n = 10;
+	int N = 10000;
+	int n = 10000;
+	
+	std::vector <int*> a;
+	
+	for (int i = 0; i < n; ++ i)
+		a .emplace_back (new int ());
+	
 	Type set;
 
 	auto t0 = chrono::now ();
 	{
 		for (int k = 0; k < N; ++ k)
 			for (int i = 0; i < n; ++ i)
-				set .insert (i);
+				set .insert (a [i]);
 	}
 	__LOG__ << chrono::now () - t0 << std::endl;
 		
@@ -226,7 +232,7 @@ set_test ()
 	{
 		for (int k = 0; k < N; ++ k)
 			for (int i = 0; i < n; ++ i)
-				set .find (i);
+				set .find (a [i]);
 	}
 	__LOG__ << chrono::now () - t0 << std::endl;
 }
@@ -240,8 +246,8 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 	
-	set_test <std::unordered_set <int>> ();
-	set_test <std::set <int>> ();
+	set_test <std::unordered_set <int*>> ();
+	set_test <std::set <int*>> ();
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);
