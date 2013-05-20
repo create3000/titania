@@ -433,7 +433,7 @@ X3DBaseNode::getLocalNode ()
 //{
 //	field .setReference (fieldDefinition);
 //
-//	if (not fields .insert (field) -> second)
+//	if (not fields .emplace (field) -> second)
 //		throw Error <INVALID_FIELD> ("In function " + std::string (__func__) + " 'field " + getTypeName () + "." + name + "' already exists in field set'.");
 //}
 
@@ -452,7 +452,7 @@ X3DBaseNode::addField (const AccessType accessType, const basic::id & name, X3DF
 	field .setAliasName (name);
 
 	fieldDefinitions .push_back (&field);
-	fields .insert (std::make_pair (name, &field));
+	fields .emplace (std::make_pair (name, &field));
 }
 
 void
@@ -482,7 +482,7 @@ X3DBaseNode::addFieldAlias (const std::string & name, const std::string & field)
 
 	if (iter not_eq fields .end ())
 	{
-		fieldAliases .insert (std::make_pair (name, field));
+		fieldAliases .emplace (std::make_pair (name, field));
 		iter -> second -> setAliasName (name);
 	}
 }

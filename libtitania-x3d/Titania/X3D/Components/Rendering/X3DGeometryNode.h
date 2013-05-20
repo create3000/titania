@@ -56,6 +56,7 @@
 #include "../Core/X3DNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
 
+#include <unordered_map>
 #include <memory>
 
 namespace titania {
@@ -97,7 +98,7 @@ public:
 
 protected:
 
-	typedef std::map <size_t, std::vector <size_t>> NormalIndex;
+	typedef std::unordered_map <size_t, std::vector <size_t>> NormalIndex;
 
 	X3DGeometryNode ();
 

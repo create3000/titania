@@ -54,6 +54,7 @@
 #include "../../Components/Core/X3DNode.h"
 #include <Titania/Chrono/StopWatch.h>
 
+#include <set>
 #include <stack>
 
 extern "C"

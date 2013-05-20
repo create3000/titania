@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_ROUTING_ROUTER_H__
 
 #include "../Base/Output.h"
+#include "../Basic/NodeSet.h"
 #include "../Basic/X3DBaseNode.h"
 #include <Titania/Chrono/StopWatch.h>
 #include <vector>
@@ -73,7 +74,7 @@ public:
 
 	void
 	registerNode (X3DBaseNode* node)
-	{ nodes .insert (node); }
+	{ nodes .emplace (node); }
 
 	void
 	removeNode (X3DBaseNode* node)
@@ -94,7 +95,6 @@ private:
 	eventsProcessed ();
 
 	typedef std::deque <X3DBaseNode*> EventArray;
-	typedef std::set <X3DBaseNode*>   NodeSet;
 
 	EventArray events;
 	NodeSet    nodes;

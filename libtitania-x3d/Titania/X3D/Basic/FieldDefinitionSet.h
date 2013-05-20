@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BASIC_FIELD_DEFINITION_SET_H__
 #define __TITANIA_X3D_BASIC_FIELD_DEFINITION_SET_H__
 
-#include <set>
+#include <unordered_set>
 
 namespace titania {
 namespace X3D {
@@ -60,11 +60,11 @@ namespace X3D {
 
 class X3DFieldDefinition;
 
-typedef std::set <X3DFieldDefinition*> FieldDefinitionSet;
+typedef std::unordered_set <X3DFieldDefinition*> FieldDefinitionSet;
 
 } // X3D
 } // titania
 
-extern template class std::set <titania::X3D::X3DFieldDefinition*>;
+extern template class std::unordered_set <titania::X3D::X3DFieldDefinition*>;
 
 #endif

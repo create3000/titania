@@ -1,3 +1,45 @@
+2013-05-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* X3D.cpp:
+	* findNode:
+	* libtitania-x3d.cproj:
+	* Hit.h:
+	* Hit.cpp:
+	* NodeSet.h:
+	* Parser.h:
+	* Grammar.h:
+	* Router.h:
+	* NodeSet.cpp:
+	* RouteSet.h:
+	* Grammar.cpp:
+	* X3DBaseNode.h:
+	* X3DScene.h:
+	* RouteSet.cpp:
+	* ChildObjectSet.h:
+	* X3DChildObject.h:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* Generator.h:
+	* X3DChildObject.cpp:
+	* ChildObjectSet.cpp:
+	* Generator.cpp:
+	* FieldDefinitionSet.h:
+	* GarbargeCollector.cpp:
+	* X3DBrowserContext.h:
+	* FieldDefinitionSet.cpp:
+	* X3DFieldDefinition.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DExecutionContext.h:
+	* Anchor.cpp:
+	* X3DUrlObject.h:
+	* X3DGeometryNode.h:
+	* X3DUrlObject.cpp:
+	* RenderingProperties.h:
+	* JavaScriptContext.h:
+	* JavaScriptContext.cpp:
+	* X3DPointingDeviceSensorNode.cpp: 
+
 2013-05-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Cone.cpp:

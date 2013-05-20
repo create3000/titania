@@ -83,7 +83,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	             hitRay (),                                        
 	               hits (),                                        
 	            hitComp (),                                        
-	     enabledSensors ({ std::set <X3DBaseNode*> () }),          
+	     enabledSensors ({ NodeSet () }),          
 	        overSensors (),                                        
 	      activeSensors (),                                        
 	          selection (new Selection (this)),                    // SFNode  [ ]   selection    NULL  [Selection]
@@ -257,7 +257,7 @@ X3DBrowserContext::pick (const double _x, const double _y)
 
 	std::sort (hits .begin (), hits .end (), hitComp);
 
-	enabledSensors = { std::set <X3DBaseNode*> () };
+	enabledSensors = { NodeSet () };
 }
 
 Line3f

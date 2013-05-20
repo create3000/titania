@@ -58,11 +58,12 @@
 #include "../../Fields.h"
 
 #include <Titania/Stream/InputFileStream.h>
+#include <unordered_map>
 
 namespace titania {
 namespace X3D {
 
-typedef std::map <const basic::uri, basic::uri> URNIndex;
+typedef std::unordered_map <basic::uri, basic::uri> URNIndex;
 
 class X3DUrlObject :
 	virtual public X3DBaseNode

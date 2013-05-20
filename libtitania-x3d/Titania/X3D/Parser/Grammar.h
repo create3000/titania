@@ -53,7 +53,7 @@
 
 #include <Titania/InputOutput.h>
 #include <pcrecpp.h>
-#include <set>
+#include <unordered_set>
 
 namespace titania {
 namespace X3D {
@@ -99,7 +99,7 @@ public:
 	static io::string eventOut;
 	static io::string exposedField;
 
-	static std::set <std::string> FieldType;
+	static std::unordered_set <std::string> FieldType;
 
 	///  @name Terminal symbols
 	static io::character OpenBrace;
@@ -119,7 +119,7 @@ public:
 private:
 
 	static
-	std::set <std::string>
+	std::unordered_set <std::string>
 	getFieldType ();
 
 };

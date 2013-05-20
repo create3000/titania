@@ -1249,4 +1249,34 @@ extern template std::wostream & operator << (std::wostream &, const wuri &);
 } // basic
 } // titania
 
+namespace std {
+
+template <>
+struct hash <titania::basic::uri>
+{
+	size_t
+	operator () (const titania::basic::uri & uri) const
+	{
+		return m_hash (uri .str ());
+	}
+
+	hash <std::string> m_hash;
+
+};
+
+template <>
+struct hash <titania::basic::wuri>
+{
+	size_t
+	operator () (const titania::basic::wuri & uri) const
+	{
+		return m_hash (uri .str ());
+	}
+
+	hash <std::wstring> m_hash;
+
+};
+
+} // std
+
 #endif

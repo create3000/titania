@@ -62,6 +62,7 @@
 #include "../Routing/RouteArray.h"
 
 #include <Titania/Basic/URI.h>
+#include <unordered_map>
 
 namespace titania {
 namespace X3D {
@@ -403,7 +404,7 @@ private:
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 
-	typedef std::map <std::string, SFNode <X3DBaseNode>> NamedNodeIndex;
+	typedef std::unordered_map <std::string, SFNode <X3DBaseNode>> NamedNodeIndex;
 
 	basic::uri  worldURL;
 	std::string encoding;

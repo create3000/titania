@@ -48,20 +48,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_ROUTING_ROUTE_SET_H__
-#define __TITANIA_X3D_ROUTING_ROUTE_SET_H__
-
-#include "../Routing/X3DRoute.h"
-#include <set>
+#include "NodeSet.h"
 
 namespace titania {
 namespace X3D {
 
-typedef std::unordered_set <X3DRoute*> RouteSet;
+//
 
 } // X3D
 } // titania
 
-extern template class std::unordered_set <titania::X3D::X3DRoute*>;
-
-#endif
+template class std::unordered_set <titania::X3D::X3DBaseNode*>;

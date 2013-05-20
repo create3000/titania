@@ -51,7 +51,7 @@ template <class Type>
 void
 X3DObject::findParents (std::deque <Type> & parents, ChildObjectSet & seen)
 {
-	if (not seen .insert (this) .second)
+	if (not seen .emplace (this) .second)
 		return;
 
 	Type parent = dynamic_cast <Type> (this);

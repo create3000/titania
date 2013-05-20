@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_HIT_H__
 #define __TITANIA_X3D_BROWSER_HIT_H__
 
+#include "../Basic/NodeSet.h"
 #include "../Browser/Intersection.h"
 #include "../Fields.h"
 #include "../Types/Geometry.h"
@@ -66,17 +67,17 @@ public:
 	Hit (const Matrix4f &,
 	     const Line3f &,
 	     const std::shared_ptr <Intersection> &,
-	     const std::set <X3DBaseNode*> &,
+	     const NodeSet &,
 	     X3DBaseNode* const);
 
-	const Matrix4f                transformationMatrix;
-	const Line3f                  ray;
-	const Vector3f                texCoord;
-	const Vector3f                normal;
-	const Vector3f                point;
-	const float                   distance;
-	const std::set <X3DBaseNode*> sensors;
-	const X3DBaseNode*            node;
+	const Matrix4f     transformationMatrix;
+	const Line3f       ray;
+	const Vector3f     texCoord;
+	const Vector3f     normal;
+	const Vector3f     point;
+	const float        distance;
+	const NodeSet      sensors;
+	const X3DBaseNode* node;
 
 };
 

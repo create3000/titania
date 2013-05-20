@@ -58,6 +58,7 @@
 
 #include <Titania/Stream/IGZFilter.h>
 #include <ios>
+#include <unordered_map>
 
 namespace titania {
 namespace X3D {
@@ -70,7 +71,7 @@ class Parser :
 private:
 
 	class AccessTypes :
-		public std::map <const std::string, AccessType>
+		public std::unordered_map <std::string, AccessType>
 	{
 	public:
 
@@ -79,7 +80,7 @@ private:
 	};
 
 	class FieldTypes :
-		public std::map <const std::string, const X3DFieldDefinition*>
+		public std::unordered_map <std::string, const X3DFieldDefinition*>
 	{
 	public:
 

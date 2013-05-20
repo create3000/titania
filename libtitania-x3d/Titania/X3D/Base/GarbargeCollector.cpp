@@ -66,13 +66,13 @@ GarbageCollector::addObject (X3DChildObject* object)
 {
 	//	try
 	//	{
-	//		__LOG__ << object -> getTypeName () << " '" << object -> getName () << "' " << (void*) object << std::endl;
+	//		__LOG__ << object -> getTypeName () << " '" << object -> getName () << "' " << object << std::endl;
 	//	}
 	//	catch (...)
 	//	{ }
 
-	if (not disposedObjects .insert (object) .second)
-		__LOG__ << object -> getTypeName () << " " << (void*) object << std::endl;
+	if (not disposedObjects .emplace (object) .second)
+		__LOG__ << object << std::endl;
 }
 
 void

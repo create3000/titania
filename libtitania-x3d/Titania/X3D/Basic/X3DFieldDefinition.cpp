@@ -162,7 +162,7 @@ X3DFieldDefinition::isOutput () const
 void
 X3DFieldDefinition::addInputRoute (X3DRoute* const route)
 {
-	inputRoutes .insert (route);
+	inputRoutes .emplace (route);
 }
 
 void
@@ -180,7 +180,7 @@ X3DFieldDefinition::getInputRoutes () const
 void
 X3DFieldDefinition::addOutputRoute (X3DRoute* const route)
 {
-	outputRoutes .insert (route);
+	outputRoutes .emplace (route);
 }
 
 void
@@ -198,13 +198,13 @@ X3DFieldDefinition::getOutputRoutes () const
 void
 X3DFieldDefinition::addInterest (X3DFieldDefinition* const interest)
 {
-	interests .insert (interest);
+	interests .emplace (interest);
 }
 
 void
 X3DFieldDefinition::addInterest (X3DFieldDefinition & interest)
 {
-	interests .insert (&interest);
+	interests .emplace (&interest);
 }
 
 void
@@ -222,7 +222,7 @@ X3DFieldDefinition::removeInterest (X3DFieldDefinition & interest)
 void
 X3DFieldDefinition::processEvent (Event & event)
 {
-	if (not event .sources .insert (this) .second)
+	if (not event .sources .emplace (this) .second)
 		return;
 
 	isTainted (false);

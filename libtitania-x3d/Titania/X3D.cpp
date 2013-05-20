@@ -55,14 +55,14 @@
 namespace titania {
 namespace X3D {
 
-static SFNode <BrowserApplication> browserApplication;
-
 ///  6.2.2 The getBrowser service returns a reference to an instance of an X3D browser through which other service
 ///  requests may be processed.  This is a unique identifier per application instance.
 const SFNode <BrowserApplication> &
 getBrowser (/* parameter */)
 throw (Error <BROWSER_UNAVAILABLE>)
 {
+	static SFNode <BrowserApplication> browserApplication;
+
 	if (not browserApplication)
 	{
 		std::clog << "Creating BrowserApplication ..." << std::endl;

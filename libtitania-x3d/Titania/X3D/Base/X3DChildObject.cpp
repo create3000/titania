@@ -68,7 +68,7 @@ X3DChildObject::registerEvent (X3DChildObject*, const Event & event)
 bool
 X3DChildObject::addParent (X3DChildObject* const parent)
 {
-	return parents .insert (parent) .second;
+	return parents .emplace (parent) .second;
 }
 
 static X3DChildObject* root = NULL;
@@ -129,7 +129,7 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 {
 	if (getParents () .size ())
 	{
-		if (seen .insert (this) .second)
+		if (seen .emplace (this) .second)
 		{
 			for (auto & parent : getParents ())
 			{

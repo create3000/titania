@@ -58,7 +58,7 @@ namespace X3D {
 Hit::Hit (const Matrix4f & transformationMatrix,
           const Line3f & hitRay,
           const std::shared_ptr <Intersection> & intersection,
-          const std::set <X3DBaseNode*> & sensors,
+          const NodeSet & sensors,
           X3DBaseNode* const node) :
 	transformationMatrix (transformationMatrix),        
 	                 ray (hitRay),                      

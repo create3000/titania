@@ -92,7 +92,7 @@ io::string Grammar::eventIn ("eventIn");
 io::string Grammar::eventOut ("eventOut");
 io::string Grammar::exposedField ("exposedField");
 
-std::set <std::string> Grammar::FieldType = std::move (getFieldType ());
+std::unordered_set <std::string> Grammar::FieldType = std::move (getFieldType ());
 
 // Terminal symbols
 io::character Grammar::OpenBrace ('{');
@@ -108,13 +108,13 @@ io::string Grammar::HEX ("0X");
 
 io::quoted_string Grammar::string ('\"');
 
-std::set <std::string>
+std::unordered_set <std::string>
 Grammar::getFieldType ()
 {
-	std::set <std::string> FieldType;
+	std::unordered_set <std::string> FieldType;
 
 	for (const auto & field : getBrowser () -> getSupportedFields ())
-		FieldType .insert (field -> getTypeName ());
+		FieldType .emplace (field -> getTypeName ());
 
 	return FieldType;
 }

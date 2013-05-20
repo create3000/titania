@@ -52,7 +52,8 @@
 #define __TITANIA_X3D_INPUT_OUTPUT_GENERATOR_H__
 
 #include <map>
-#include <set>
+#include <unordered_set>
+#include <unordered_map>
 #include <string>
 #include <vector>
 
@@ -166,11 +167,11 @@ public:
 
 private:
 
-	typedef std::set <const X3DBaseNode*>              NodesSet;
-	typedef std::map <const X3DBaseNode*, std::string> NewNamesMap;
+	typedef std::unordered_set <const X3DBaseNode*>              NodeSet;
+	typedef std::unordered_map <const X3DBaseNode*, std::string> NewNamesMap;
 
 	static size_t      level;
-	static NodesSet    nodes;
+	static NodeSet     nodes;
 	static NewNamesMap newNames;
 	static size_t      newName;
 

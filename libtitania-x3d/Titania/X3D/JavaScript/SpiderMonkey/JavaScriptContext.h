@@ -55,6 +55,9 @@
 #include "../../Components/Core/X3DNode.h"
 #include "../../Components/Networking/X3DUrlObject.h"
 #include "../../Components/Scripting/X3DScriptNode.h"
+#include <map>
+#include <unordered_map>
+
 #include <jsapi.h>
 
 namespace titania {
@@ -180,10 +183,10 @@ private:
 	jsval eventsProcessedFn;
 	jsval shutdownFn;
 
-	std::map <std::string, jsval>          fields;
-	std::map <X3DFieldDefinition*, jsval>  functions;
-	std::map <X3DFieldDefinition*, size_t> references;
-	std::map <basic::uri, jsval>           files;
+	std::unordered_map <std::string, jsval>          fields;
+	std::unordered_map <X3DFieldDefinition*, jsval>  functions;
+	std::unordered_map <X3DFieldDefinition*, size_t> references;
+	std::unordered_map <basic::uri, jsval>           files;
 
 };
 

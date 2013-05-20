@@ -185,7 +185,7 @@ const Generator::AccessTypesIndex     Generator::AccessTypes;
 const Generator::NodeTypesIndex       Generator::NodeTypes;
 
 size_t                 Generator::level = 0;
-Generator::NodesSet    Generator::nodes;
+Generator::NodeSet    Generator::nodes;
 Generator::NewNamesMap Generator::newNames;
 size_t                 Generator::newName = 0;
 
@@ -292,7 +292,7 @@ Generator::ExistsNode (const X3DBaseNode* basicNode)
 void
 Generator::AddNode (const X3DBaseNode* basicNode)
 {
-	nodes .insert (basicNode);
+	nodes .emplace (basicNode);
 }
 
 std::string

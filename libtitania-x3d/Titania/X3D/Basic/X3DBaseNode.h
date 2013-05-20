@@ -63,13 +63,12 @@
 #include "../Fields/SFTime.h"
 #include "../Types/Time.h"
 
-#include <map>
-#include <set>
+#include <unordered_map>
 
 namespace titania {
 namespace X3D {
 
-typedef std::map <std::string, X3DFieldDefinition*> FieldsMap;
+typedef std::unordered_map <std::string, X3DFieldDefinition*> FieldsMap;
 
 class X3DBrowser;
 class X3DExecutionContext;
@@ -248,7 +247,7 @@ protected:
 
 private:
 
-	typedef std::map <std::string, std::string> FieldAliasesMap;
+	typedef std::unordered_map <std::string, std::string> FieldAliasesMap;
 
 	const std::string &
 	getFieldName (const std::string &) const;

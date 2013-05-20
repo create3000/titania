@@ -2004,6 +2004,7 @@
     <None Include="Prototypes\Geometry3D\Torus\example.wrl" />
     <None Include="Prototypes\Geometry3D\Torus\Torus.wrl" />
     <None Include="Prototypes\Engines\Rotor\example.wrl" />
+    <None Include="Examples\Moebius\index.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2066,6 +2067,7 @@
     <Folder Include="Prototypes\Geometry3D\Torus\" />
     <Folder Include="Prototypes\Engines\" />
     <Folder Include="Prototypes\Engines\Rotor\" />
+    <Folder Include="Examples\Moebius\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

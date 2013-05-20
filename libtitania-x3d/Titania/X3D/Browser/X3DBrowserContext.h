@@ -176,7 +176,7 @@ public:
 	void
 	pick (const double, const double);
 
-	std::deque <std::set <X3DBaseNode*>> &
+	std::deque <NodeSet> &
 	getSensors ()
 	{ return enabledSensors; }
 
@@ -207,9 +207,9 @@ public:
 
 	void
 	notify ();
-	
+
 	///  @name Event handling
-	
+
 	virtual
 	void
 	swapBuffers ()
@@ -254,15 +254,15 @@ private:
 	LightStack       lights;
 	TextureUnitStack textureUnits;
 
-	double                                x;
-	double                                y;
-	Line3f                                hitRay;
-	HitArray                              hits;
-	HitComp                               hitComp;
-	std::deque <std::set <X3DBaseNode*>> enabledSensors;
-	std::set <X3DBaseNode*>               overSensors;
-	std::set <X3DBaseNode*>               activeSensors;
-	SFNode <Selection>                    selection;
+	double               x;
+	double               y;
+	Line3f               hitRay;
+	HitArray             hits;
+	HitComp              hitComp;
+	std::deque <NodeSet> enabledSensors;
+	NodeSet              overSensors;
+	NodeSet              activeSensors;
+	SFNode <Selection>   selection;
 
 	time_type        changedTime;
 	Speed <double>   currentSpeed;

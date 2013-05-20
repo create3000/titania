@@ -50,8 +50,6 @@
 
 #include "ChildObjectSet.h"
 
-#include "../Base/X3DObject.h"
-
 namespace titania {
 namespace X3D {
 
@@ -60,4 +58,4 @@ namespace X3D {
 } // X3D
 } // titania
 
-template class std::set <titania::X3D::X3DChildObject*>;
+template class std::unordered_set <titania::X3D::X3DChildObject*>;

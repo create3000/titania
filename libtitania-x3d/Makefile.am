@@ -17,6 +17,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Basic/BasicNodeArray.cpp \
 	Titania/X3D/Basic/FieldDefinitionArray.cpp \
 	Titania/X3D/Basic/FieldDefinitionSet.cpp \
+	Titania/X3D/Basic/NodeSet.cpp \
 	Titania/X3D/Basic/NodeTypeArray.cpp \
 	Titania/X3D/Basic/X3DBaseNode.cpp \
 	Titania/X3D/Basic/X3DContext.cpp \

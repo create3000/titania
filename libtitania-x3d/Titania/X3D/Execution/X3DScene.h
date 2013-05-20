@@ -52,11 +52,12 @@
 #define __TITANIA_X3D_EXECUTION_X3DSCENE_H__
 
 #include "../Execution/X3DExecutionContext.h"
+#include <unordered_map>
 
 namespace titania {
 namespace X3D {
 
-typedef std::map <std::string, std::string> MetaDataIndex;
+typedef std::unordered_map <std::string, std::string> MetaDataIndex;
 
 class X3DScene :
 	public X3DExecutionContext

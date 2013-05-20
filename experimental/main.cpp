@@ -206,6 +206,31 @@ class SomeType;
 template <class Type>
 using Array = std::deque <Type*>;
 
+template <class Type>
+void
+set_test ()
+{
+	int N = 10000000;
+	int n = 10;
+	Type set;
+
+	auto t0 = chrono::now ();
+	{
+		for (int k = 0; k < N; ++ k)
+			for (int i = 0; i < n; ++ i)
+				set .insert (i);
+	}
+	__LOG__ << chrono::now () - t0 << std::endl;
+		
+	t0 = chrono::now ();
+	{
+		for (int k = 0; k < N; ++ k)
+			for (int i = 0; i < n; ++ i)
+				set .find (i);
+	}
+	__LOG__ << chrono::now () - t0 << std::endl;
+}
+
 int
 main (int argc, char** argv)
 {
@@ -214,37 +239,9 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-
-	{
-		{
-			auto t0 = chrono::now ();
-			
-			for (int i = 0; i < 10; ++ i)
-			{
-				{
-					auto s = create_string ();
-				
-					__LOG__ << s .size () << std::endl;
-				}
-			}
-
-			__LOG__ << chrono::now () - t0 << std::endl;
-		}
-		{
-			auto t0 = chrono::now ();
-			
-			for (int i = 0; i < 10; ++ i)
-			{
-				{
-					std::string s (std::move (create_string ()));
-				
-					__LOG__ << s .size () << std::endl;
-				}
-			}
-
-			__LOG__ << chrono::now () - t0 << std::endl;
-		}
-	}
+	
+	set_test <std::unordered_set <int>> ();
+	set_test <std::set <int>> ();
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);
