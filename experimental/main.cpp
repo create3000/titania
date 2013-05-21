@@ -153,7 +153,7 @@ print_time (double time)
  * return stream;
  * }
  */
- 
+
 void
 test_path (const basic::path & path)
 {
@@ -185,20 +185,24 @@ typedef math::sphere3 <float>   Sphere3f;
 #include <Titania/InputOutput.h>
 
 namespace foo {
- enum bar {
-  A, B
- };
+enum bar
+{
+	A, B
+
+};
 }
 
- using foo::bar;
- using foo::A;
- using foo::B;
+using foo::bar;
+using foo::A;
+using foo::B;
 
 bar a = A;
 
 std::string
 create_string ()
-{ return std::string (200000000, '#'); }
+{
+	return std::string (200000000, '#');
+}
 
 template <typename First, typename Second, int Third>
 class SomeType;
@@ -212,12 +216,12 @@ set_test ()
 {
 	int N = 10000;
 	int n = 10000;
-	
+
 	std::vector <int*> a;
-	
+
 	for (int i = 0; i < n; ++ i)
 		a .emplace_back (new int ());
-	
+
 	Type set;
 
 	auto t0 = chrono::now ();
@@ -225,17 +229,259 @@ set_test ()
 		for (int k = 0; k < N; ++ k)
 			for (int i = 0; i < n; ++ i)
 				set .insert (a [i]);
+
 	}
 	__LOG__ << chrono::now () - t0 << std::endl;
-		
+
 	t0 = chrono::now ();
 	{
 		for (int k = 0; k < N; ++ k)
 			for (int i = 0; i < n; ++ i)
 				set .find (a [i]);
+
 	}
 	__LOG__ << chrono::now () - t0 << std::endl;
 }
+
+template <class Type>
+class range_iterator
+{
+public:
+
+	typedef range_iterator <Type>       iterator;
+	typedef range_iterator <const Type> const_iterator;
+
+	typedef std::bidirectional_iterator_tag iterator_category;
+
+	typedef Type*        pointer;
+	typedef Type         value_type;
+	typedef Type &       reference;
+	typedef const Type & const_reference;
+
+	typedef size_t size_type;
+	typedef size_t difference_type;
+
+	range_iterator (Type index, Type step) :
+		m_index (index),
+		m_step (step)
+	{ }
+
+	range_iterator (const range_iterator & iter) :
+		m_index (iter .m_index),
+		m_step (iter .m_step)
+	{ }
+
+	range_iterator &
+	operator = (const range_iterator & iter)
+	{
+		m_index = iter .m_index;
+		m_step  = iter .m_step;
+		return *this;
+	}
+
+	reference
+	operator * ()
+	{ return m_index; }
+
+	const const_reference
+	operator * () const
+	{ return m_index; }
+
+	pointer
+	operator -> ()
+	{ return &m_index; }
+
+	const pointer
+	operator -> () const
+	{ return &m_index; }
+
+	range_iterator &
+	operator ++ ()
+	{
+		m_index += m_step;
+		return *this;
+	}
+
+	range_iterator
+	operator ++ (int)
+	{
+		range_iterator tmp = *this;
+
+		m_index += m_step;
+		return tmp;
+	}
+
+	range_iterator &
+	operator -- ()
+	{
+		m_index -= m_step;
+		return *this;
+	}
+
+	range_iterator
+	operator -- (int)
+	{
+		range_iterator tmp = *this;
+
+		m_index -= m_step;
+		return tmp;
+	}
+
+	range_iterator &
+	operator += (difference_type n)
+	{
+		m_index += n * m_step;
+		return *this;
+	}
+
+	range_iterator &
+	operator -= (difference_type n)
+	{
+		m_index -= n * m_step;
+		return *this;
+	}
+
+private:
+
+	Type m_index;
+	Type m_step;
+
+};
+
+template <class Type>
+inline
+range_iterator <Type>
+operator + (const range_iterator <Type> & iter, size_t n)
+{
+	return range_iterator <Type> (iter) += n;
+}
+
+template <class Type>
+inline
+range_iterator <Type>
+operator + (size_t n, const range_iterator <Type> & iter)
+{
+	return range_iterator <Type> (iter) += n;
+}
+
+template <class Type>
+inline
+range_iterator <Type>
+operator - (const range_iterator <Type> & iter, size_t n)
+{
+	return range_iterator <Type> (iter) -= n;
+}
+
+template <class Type>
+inline
+range_iterator <Type>
+operator - (size_t n, const range_iterator <Type> & iter)
+{
+	return range_iterator <Type> (iter) -= n;
+}
+
+template <class Type>
+inline
+typename range_iterator <Type>::difference_type
+operator - (const range_iterator <Type> & lhs, const range_iterator <Type> & rhs)
+{
+	return lhs .base () - rhs .base ();
+}
+
+template <class Type>
+inline
+bool
+operator == (const range_iterator <Type> & lhs, const range_iterator <Type> & rhs)
+{
+	return *lhs == *rhs;
+}
+
+template <class Type>
+inline
+bool
+operator not_eq (const range_iterator <Type> & lhs, const range_iterator <Type> & rhs)
+{
+	return *lhs not_eq * rhs;
+}
+
+template <class Type>
+inline
+bool
+operator < (const range_iterator <Type> & lhs, const range_iterator <Type> & rhs)
+{
+	return *lhs < *rhs;
+}
+
+template <class Type>
+inline
+bool
+operator > (const range_iterator <Type> & lhs, const range_iterator <Type> & rhs)
+{
+	return *lhs > *rhs;
+}
+
+template <class Type>
+inline
+bool
+operator >= (const range_iterator <Type> & lhs, const range_iterator <Type> & rhs)
+{
+	return *lhs >= *rhs;
+}
+
+template <class Type>
+inline
+bool
+operator <= (const range_iterator <Type> & lhs, const range_iterator <Type> & rhs)
+{
+	return *lhs <= *rhs;
+}
+
+template <class Type>
+class range
+{
+public:
+
+	typedef typename range_iterator <Type>::iterator       iterator;
+	typedef typename range_iterator <Type>::const_iterator const_iterator;
+
+	range (Type begin, Type end, Type step = 1) :
+		m_begin (begin),
+		m_end (end),
+		m_step (step)
+	{ }
+
+	iterator
+	begin ()
+	{ return iterator (m_begin, m_step); }
+
+	const_iterator
+	begin () const
+	{ return const_iterator (m_begin, m_step); }
+
+	const_iterator
+	cbegin () const
+	{ return const_iterator (m_begin, m_step); }
+
+	iterator
+	end ()
+	{ return iterator (m_end, m_step); }
+
+	const_iterator
+	end () const
+	{ return const_iterator (m_end, m_step); }
+
+	const_iterator
+	cend () const
+	{ return const_iterator (m_end, m_step); }
+
+
+private:
+
+	Type m_begin;
+	Type m_end;
+	Type m_step;
+
+};
 
 int
 main (int argc, char** argv)
@@ -245,9 +491,25 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
+
+	size_t n = 1000000000;
+	size_t t = (size_t) new int ();
+	std::vector <char> a (n);
+
+	auto t0 = chrono::now ();
+	for (const auto & i : range <size_t> (0, n))
+	{
+		t += a [i];
+	}
+	__LOG__ << t << std::endl;
+	__LOG__ << chrono::now () - t0 << std::endl;
 	
-	set_test <std::unordered_set <int*>> ();
-	set_test <std::set <int*>> ();
+	t0 = chrono::now ();
+	for (size_t i = 0; i < n; ++ n)
+		t += a [i];
+	__LOG__ << t << std::endl;
+	__LOG__ << chrono::now () - t0 << std::endl;
+
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

@@ -89,7 +89,7 @@ public:
 	}
 
 	const IteratorType &
-	iterator () const
+	base () const
 	{ return iter; }
 
 	reference
@@ -133,14 +133,14 @@ public:
 	}
 
 	X3DArrayFieldIterator &
-	operator += (size_type n)
+	operator += (difference_type n)
 	{
 		iter += n;
 		return *this;
 	}
 
 	X3DArrayFieldIterator &
-	operator -= (size_type n)
+	operator -= (difference_type n)
 	{
 		iter -= n;
 		return *this;
@@ -194,7 +194,7 @@ inline
 typename X3DArrayFieldIterator <IteratorType, Type>::difference_type
 operator - (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArrayFieldIterator <IteratorType, Type> & rhs)
 {
-	return lhs .iterator () - rhs .iterator ();
+	return lhs .base () - rhs .base ();
 }
 
 template <class IteratorType, class Type>
@@ -202,7 +202,7 @@ inline
 bool
 operator == (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArrayFieldIterator <IteratorType, Type> & rhs)
 {
-	return lhs .iterator () == rhs .iterator ();
+	return lhs .base () == rhs .base ();
 }
 
 template <class IteratorType, class Type>
@@ -210,7 +210,7 @@ inline
 bool
 operator not_eq (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArrayFieldIterator <IteratorType, Type> & rhs)
 {
-	return lhs .iterator () not_eq rhs .iterator ();
+	return lhs .base () not_eq rhs .base ();
 }
 
 template <class IteratorType, class Type>
@@ -218,7 +218,7 @@ inline
 bool
 operator < (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArrayFieldIterator <IteratorType, Type> & rhs)
 {
-	return lhs .iterator () < rhs .iterator ();
+	return lhs .base () < rhs .base ();
 }
 
 template <class IteratorType, class Type>
@@ -226,7 +226,7 @@ inline
 bool
 operator > (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArrayFieldIterator <IteratorType, Type> & rhs)
 {
-	return lhs .iterator () > rhs .iterator ();
+	return lhs .base () > rhs .base ();
 }
 
 template <class IteratorType, class Type>
@@ -234,7 +234,7 @@ inline
 bool
 operator >= (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArrayFieldIterator <IteratorType, Type> & rhs)
 {
-	return lhs .iterator () >= rhs .iterator ();
+	return lhs .base () >= rhs .base ();
 }
 
 template <class IteratorType, class Type>
@@ -242,7 +242,7 @@ inline
 bool
 operator <= (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArrayFieldIterator <IteratorType, Type> & rhs)
 {
-	return lhs .iterator () <= rhs .iterator ();
+	return lhs .base () <= rhs .base ();
 }
 
 } // X3D

@@ -67,7 +67,7 @@ HistoryEditor::HistoryEditor (const X3D::SFNode <X3D::Browser> & browser) :
 {
 	setBrowser (browser);
 
-	os::system ("mkdir", "-p", os::home () + "/.config/Titania");
+	os::system ("mkdir", "-p", config_dir ());
 }
 
 void

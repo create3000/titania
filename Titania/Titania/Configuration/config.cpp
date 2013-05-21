@@ -55,9 +55,8 @@
 namespace titania {
 namespace puck {
 
-#define TITANIA_GCONF_DIR  "/apps/titania"
-#define TITANIA_CONFIG_DIR (os::home () + "/.config/Titania/")
-#define TITANIA_DATA_DIR   "titania/"
+static const std::string TITANIA_GCONF_DIR = "/apps/titania";
+static const std::string TITANIA_DATA_DIR  = "titania/";
 
 std::string
 gconf_dir ()
@@ -72,27 +71,33 @@ gconf_dir (const std::string & key)
 }
 
 std::string
-get_user_data (const std::string & filename)
+config_dir ()
 {
-	return TITANIA_CONFIG_DIR + filename;
+	return os::home () + "/.config/Titania/";
+}
+
+std::string
+config_dir (const std::string & filename)
+{
+	return config_dir () + filename;
 }
 
 basic::uri
 get_page (const std::string & filename)
 {
-	return os::find_data_file (TITANIA_DATA_DIR "pages/" + filename);
+	return os::find_data_file (TITANIA_DATA_DIR + "pages/" + filename);
 }
 
 std::string
 get_ui (const std::string & filename)
 {
-	return os::find_data_file (TITANIA_DATA_DIR "ui/" + filename);
+	return os::find_data_file (TITANIA_DATA_DIR + "ui/" + filename);
 }
 
 std::string
 get_icon (const std::string & filename)
 {
-	return os::find_data_file (TITANIA_DATA_DIR "icons/" + filename);
+	return os::find_data_file (TITANIA_DATA_DIR + "icons/" + filename);
 }
 
 } // puck

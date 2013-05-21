@@ -63,7 +63,10 @@ std::string
 gconf_dir (const std::string &);
 
 std::string
-get_user_data (const std::string &);
+config_dir ();
+
+std::string
+config_dir (const std::string &);
 
 basic::uri
 get_page (const std::string &);

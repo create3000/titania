@@ -1,3 +1,12 @@
+2013-05-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DArrayField.h:
+	* X3DBrowser.cpp:
+	* X3DArrayFieldIterator.h:
+	* UnorderedChildObjectSet.cpp: 
+
 2013-05-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

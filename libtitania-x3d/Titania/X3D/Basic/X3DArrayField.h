@@ -474,9 +474,9 @@ template <class ValueType>
 typename X3DArrayField <ValueType>::iterator
 X3DArrayField <ValueType>::erase (iterator location)
 {
-	removeChild (*location .iterator ());
+	removeChild (*location .base ());
 
-	auto iter = get () .erase (location .iterator ());
+	auto iter = get () .erase (location .base ());
 
 	notifyParents ();
 	return iterator (iter);
@@ -486,9 +486,9 @@ template <class ValueType>
 typename X3DArrayField <ValueType>::iterator
 X3DArrayField <ValueType>::erase (iterator first, iterator last)
 {
-	removeChildren (first .iterator (), last .iterator ());
+	removeChildren (first .base (), last .base ());
 
-	auto iter = get () .erase (first .iterator (), last .iterator ());
+	auto iter = get () .erase (first .base (), last .base ());
 
 	notifyParents ();
 	return iterator (iter);
@@ -498,7 +498,7 @@ template <class ValueType>
 typename X3DArrayField <ValueType>::iterator
 X3DArrayField <ValueType>::insert (iterator location, const ValueType & value)
 {
-	auto iter = get () .insert (location .iterator (), new ValueType (value));
+	auto iter = get () .insert (location .base (), new ValueType (value));
 
 	addChild (*iter);
 
@@ -512,7 +512,7 @@ X3DArrayField <ValueType>::insert (iterator location, size_type count, const Val
 {
 	size_type pos = location - begin ();
 
-	get () .insert (location .iterator (), count, NULL);
+	get () .insert (location .base (), count, NULL);
 
 	auto iter = get () .begin () + pos;
 
@@ -535,7 +535,7 @@ X3DArrayField <ValueType>::insert (iterator location, InputIterator first, Input
 	size_type pos   = location - begin ();
 	size_type count = last - first;
 
-	get () .insert (location .iterator (), count, NULL);
+	get () .insert (location .base (), count, NULL);
 
 	auto iter = get () .begin () + pos;
 

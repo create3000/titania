@@ -10,7 +10,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Base/GarbargeCollector.cpp \
 	Titania/X3D/Base/ObjectSet.cpp \
 	Titania/X3D/Base/Output.cpp \
-	Titania/X3D/Base/UnorderedChildObjectSet.cpp \
 	Titania/X3D/Base/X3DBase.cpp \
 	Titania/X3D/Base/X3DChildObject.cpp \
 	Titania/X3D/Base/X3DInput.cpp \

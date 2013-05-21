@@ -57,7 +57,7 @@ namespace titania {
 namespace puck {
 
 History::History () :
-	database (get_user_data ("history.db")) 
+	database (config_dir ("history.db")) 
 {
 	database .query ("CREATE TABLE IF NOT EXISTS History ("
 	                 "id           INTEGER, "

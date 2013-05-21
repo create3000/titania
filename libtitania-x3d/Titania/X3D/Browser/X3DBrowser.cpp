@@ -330,25 +330,13 @@ throw (Error <INVALID_URL>,
 {
 	// where parameter is "target=nameOfFrame"
 
-	SFNode <Scene> scene = getExecutionContext ();
+	SFNode <Scene> scene = createScene ();
+	
+	parseIntoScene (scene, url);
 
-	replaceWorld (createScene ());
-
-	try
-	{
-		parseIntoScene (getExecutionContext (), url);
-		clock -> advance ();
-	}
-	catch (const Error <INVALID_URL> & error)
-	{
-		replaceWorld (scene);
-		throw error;
-	}
-	catch (const Error <URL_UNAVAILABLE> & error)
-	{
-		replaceWorld (scene);
-		throw error;
-	}
+	replaceWorld (scene);
+	
+	clock -> advance ();
 }
 
 SFNode <Scene>

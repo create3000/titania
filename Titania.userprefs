@@ -1,39 +1,29 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Prototypes/Engines/Rotor/Rotor.wrl">
+  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="208" Column="1" />
-      <File FileName="Library/Tests/Scripting/test.wrl" Line="16" Column="1" />
-      <File FileName="Library/Prototypes/Geometry3D/Torus/example.wrl" Line="25" Column="23" />
-      <File FileName="Library/Prototypes/Geometry3D/Torus/Torus.wrl" Line="10" Column="36" />
-      <File FileName="Library/Prototypes/Engines/Rotor/example.wrl" Line="85" Column="26" />
-      <File FileName="Library/Prototypes/Engines/Rotor/Rotor.wrl" Line="32" Column="4" />
+      <File FileName="experimental/main.cpp" Line="215" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="miscellaneous" expanded="True">
-            <Node name="glade2c++" expanded="True" />
-            <Node name="uncrustify-all" expanded="True" />
-          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True" />
+            <Node name="Examples" expanded="True">
+              <Node name="Moebius" expanded="True" />
+            </Node>
             <Node name="Prototypes" expanded="True">
               <Node name="Engines" expanded="True">
-                <Node name="Rotor" expanded="True">
-                  <Node name="Rotor.wrl" selected="True" />
-                </Node>
+                <Node name="Rotor" expanded="True" />
               </Node>
               <Node name="Geometry3D" expanded="True">
                 <Node name="Torus" expanded="True" />
               </Node>
             </Node>
             <Node name="Tests" expanded="True">
-              <Node name="Basic" expanded="True" />
-              <Node name="Extrusion" expanded="True" />
-              <Node name="PROTO" expanded="True" />
+              <Node name="Rendering" expanded="True" />
               <Node name="Scripting" expanded="True" />
+              <Node name="Shape" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-opengl-surface" expanded="True">
@@ -51,27 +41,30 @@
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
-                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
-                  <Node name="Geometry3D" expanded="True" />
                   <Node name="Properties" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="CADGeometry" expanded="True" />
-                  <Node name="Core" expanded="True" />
                   <Node name="Geometry2D" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
+                  <Node name="Geospatial" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
                   <Node name="Networking" expanded="True" />
+                  <Node name="NURBS" expanded="True" />
+                  <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                   <Node name="Scripting" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
+                <Node name="InputOutput" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="SpiderMonkey" expanded="True" />
                 </Node>
                 <Node name="Parser" expanded="True" />
                 <Node name="Prototype" expanded="True" />
+                <Node name="Routing" expanded="True" />
                 <Node name="Types" expanded="True" />
               </Node>
             </Node>
