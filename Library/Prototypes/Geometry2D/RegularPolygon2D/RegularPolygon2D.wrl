@@ -1,45 +1,46 @@
-#X3D V3.0 utf8 Titania 0.1
+#VRML V2.0 utf8 Titania 0.1
 
 PROTO RegularPolygon2D [
-  initializeOnly SFInt32 vertices 3
-  initializeOnly SFVec2f size 2 2
-  initializeOnly SFBool  solid TRUE
+  field SFInt32 vertices 3
+  field SFVec2f size 2 2
+  field SFBool  solid TRUE
+  field SFBool  ccw TRUE
 ]
 {
-  DEF Polygon IndexedFaceSet {
+  DEF Geometry IndexedFaceSet {
     solid IS solid
+    ccw IS ccw
     coord Coordinate { }
   }
 
   Script {
-    initializeOnly SFInt32 vertices IS vertices
-    initializeOnly SFVec2f size IS size
-    initializeOnly SFNode  polygon USE Polygon
+    field SFInt32 vertices IS vertices
+    field SFVec2f size IS size
+    field SFNode  geometry USE Geometry
 
     url "vrmlscript:
 
 function initialize ()
 {
-	var point = new SFVec3f (1, 0, 0);
-	var scale = new SFMatrix4f (size .x,       0, 0, 0,
-	                                  0, size .y, 0, 0,
-	                                  0,       0, 0, 0,
-	                                  0,       0, 0, 1);
+	var coordIndex = new MFInt32 ();
+	var point      = geometry .coord .point;
+
+	var vertex = new SFVec3f (1, 0, 0);
+	var scale  = new SFMatrix4f (size .x,       0, 0, 0,
+	                                   0, size .y, 0, 0,
+	                                   0,       0, 0, 0,
+	                                   0,       0, 0, 1);
 
 	for (var i = 0; i < vertices; ++ i)
 	{
-		polygon .coordIndex   [i] = i;
-		polygon .coord .point [i] = scale .multMatrixVec (new SFRotation (0, 0, 1, 2 * Math. PI * i / vertices) .multVec (point));
+		geometry .coordIndex [i] = i;
+		point [i] = scale .multMatrixVec (new SFRotation (0, 0, 1, 2 * Math. PI * i / vertices) .multVec (vertex));
 	}
-	
-	print (polygon .coord .getName ());
+
+	geometry .coordIndex = coordIndex;
 }
-      "
+"
+    directOutput TRUE
   }
 }
 
-Viewpoint { }
-
-Shape {
-  geometry RegularPolygon2D { }
-}

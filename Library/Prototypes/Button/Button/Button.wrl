@@ -71,6 +71,7 @@ function choose ()
 		button .whichChoice = DEFAULT;
 }
 "
+    directOutput TRUE
   }
 
   ROUTE Touch.enabled_changed TO Button.set_enabled

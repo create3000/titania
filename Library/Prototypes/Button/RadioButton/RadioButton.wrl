@@ -84,6 +84,7 @@ function set_children (value)
 	set_whichChoice (fields .whichChoice);
 }
 "
+    directOutput TRUE
   }
 
   ROUTE Buttons.children_changed TO RadioButton.set_children
