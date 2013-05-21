@@ -112,7 +112,7 @@ public:
 	find_first (const key_type &) const;
 
 	const value_type &
-	find_last (const key_type &) const;
+	rfind (const key_type &) const;
 	//@}
 
 	//@{
@@ -203,7 +203,7 @@ indexed_multimap <Key, ValueType>::find_first (const key_type &key) const
 
 template <class Key, class ValueType>
 const typename indexed_multimap <Key, ValueType>::value_type &
-indexed_multimap <Key, ValueType>::find_last (const key_type &key) const
+indexed_multimap <Key, ValueType>::rfind (const key_type &key) const
 {
 	auto range = map .equal_range (key);
 

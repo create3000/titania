@@ -125,15 +125,22 @@ public:
 
 private:
 
-	typedef std::deque <size_t>    Vertices;
-	typedef std::array <size_t, 3> Triangle;
-	typedef std::deque <Triangle>  TriangleArray;
-	typedef struct
+	typedef std::deque <size_t>   Vertices;
+	typedef std::deque <size_t>   Element;
+	typedef std::deque <Element>  ElementArray;
+
+	struct Polygon
 	{
+		Polygon (Vertices && vertices, ElementArray && elements) :
+			vertices (std::move (vertices)),
+			elements (std::move (elements))
+		{ }
+	
 		Vertices vertices;
-		TriangleArray triangles;
-	}
-	Polygon;
+		ElementArray elements;
+
+	};
+
 	typedef std::deque <Polygon> PolygonArray;
 
 	virtual
@@ -159,7 +166,7 @@ private:
 	void
 	tesselate (PolygonArray &, size_t &);
 
-	TriangleArray
+	ElementArray
 	tesselate (const Vertices & polygon);
 
 	void

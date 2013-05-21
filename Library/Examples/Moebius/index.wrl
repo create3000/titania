@@ -17,7 +17,7 @@ PROTO MobiusStrip [
     
 function initialize ()
 {
-	var dimension = 20;
+	var dimension = 5;
 
 	var point = geometry .coord .point;
 	var step  = dimension / 2;

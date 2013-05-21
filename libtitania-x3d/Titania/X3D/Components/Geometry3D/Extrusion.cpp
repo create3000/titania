@@ -279,6 +279,22 @@ Extrusion::createRotations ()
 	return rotations;
 }
 
+static
+inline
+GLenum
+getVertexMode (size_t n)
+{
+	switch (n)
+	{
+		case 3:
+			return GL_TRIANGLES;
+		case 4:
+			return GL_QUADS;
+		default:
+			return GL_POLYGON;
+	}
+}
+
 void
 Extrusion::build ()
 {
@@ -384,35 +400,66 @@ Extrusion::build ()
 		{
 			size_t j = spine () .size ();
 
-			Tesselator tesselator;
+			if (convex ())
+			{
+				Vector3f normal = math::normal (points [INDEX (j, 2)],
+				                                points [INDEX (j, 1)],
+				                                points [INDEX (j, 0)]);
+	
+				for (size_t k = 0; k < numCapPoints; ++ k)
+				{						                        
+					Vector2f t = (min + crossSection () [numCapPoints - 1 - k]) / capSize;
+					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
+					getNormals () .emplace_back (normal);
+					getVertices () .emplace_back (points [INDEX (j, numCapPoints - 1 - k)]);
+				}
 
-			for (size_t k = 0; k < numCapPoints; ++ k)
-				tesselator .add_vertex (points [INDEX (j, numCapPoints - 1 - k)], INDEX (j, numCapPoints - 1 - k), numCapPoints - 1 - k);
+				addElements (getVertexMode (numCapPoints), numCapPoints);
+			}
+			else
+			{
+				Tesselator tesselator;
 
-			tesselator .tesselate ();
+				for (size_t k = 0; k < numCapPoints; ++ k)
+					tesselator .add_vertex (points [INDEX (j, numCapPoints - 1 - k)], INDEX (j, numCapPoints - 1 - k), numCapPoints - 1 - k);
 
-			buildCap (tesselator,
-			          points,
-			          min,
-			          capSize);
+				tesselator .tesselate ();
+
+				tesselateCap (tesselator, points, min, capSize);
+			}
 		}
 
 		if (endCap ())
 		{
 			size_t j = spine () .size () + beginCap ();
 
-			Tesselator tesselator;
+			if (convex ())
+			{
+				Vector3f normal = math::normal (points [INDEX (j, 0)],
+				                                points [INDEX (j, 1)],
+				                                points [INDEX (j, 2)]);
+	
+				for (size_t k = 0; k < numCapPoints; ++ k)
+				{						                        
+					Vector2f t = (min + crossSection () [k]) / capSize;
+					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
+					getNormals () .emplace_back (normal);
+					getVertices () .emplace_back (points [INDEX (j, k)]);
+				}
 
-			for (size_t k = 0; k < numCapPoints; ++ k)
-				tesselator .add_vertex (points [INDEX (j, k)], INDEX (j, k), k);
+				addElements (getVertexMode (numCapPoints), numCapPoints);
+			}
+			else
+			{
+				Tesselator tesselator;
 
-			tesselator .tesselate ();
+				for (size_t k = 0; k < numCapPoints; ++ k)
+					tesselator .add_vertex (points [INDEX (j, k)], INDEX (j, k), k);
 
-			buildCap (tesselator,
-			          points,
-			          min,
-			          capSize);
+				tesselator .tesselate ();
 
+				tesselateCap (tesselator, points, min, capSize);
+			}
 		}
 	}
 
@@ -423,10 +470,10 @@ Extrusion::build ()
 }
 
 void
-Extrusion::buildCap (const Tesselator & tesselator,
-                     std::vector <Vector3f> & points,
-                     const Vector2f & min,
-                     const Vector2f & capSize)
+Extrusion::tesselateCap (const Tesselator & tesselator,
+                         std::vector <Vector3f> & points,
+                         const Vector2f & min,
+                         const Vector2f & capSize)
 {
 	#define I 0
 	#define K 1
@@ -490,17 +537,17 @@ Extrusion::buildCap (const Tesselator & tesselator,
 						Vector2f t = (min + crossSection () [std::get < K > (polygonElement [0] .data ())]) / capSize;
 						getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 						getNormals () .emplace_back (normal);
-						getVertices () .emplace_back (points [std::get <0> (polygonElement [0] .data ())]);
+						getVertices () .emplace_back (points [std::get <I> (polygonElement [0] .data ())]);
 
 						t = (min + crossSection () [std::get < K > (polygonElement [i] .data ())]) / capSize;
 						getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 						getNormals () .emplace_back (normal);
-						getVertices () .emplace_back (points [std::get <0> (polygonElement [i] .data ())]);
+						getVertices () .emplace_back (points [std::get <I> (polygonElement [i] .data ())]);
 
 						t = (min + crossSection () [std::get < K > (polygonElement [i + 1] .data ())]) / capSize;
 						getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 						getNormals () .emplace_back (normal);
-						getVertices () .emplace_back (points [std::get <0> (polygonElement [i + 1] .data ())]);
+						getVertices () .emplace_back (points [std::get <I> (polygonElement [i + 1] .data ())]);
 					}
 
 					break;
@@ -512,17 +559,17 @@ Extrusion::buildCap (const Tesselator & tesselator,
 					Vector2f t = (min + crossSection () [std::get < K > (polygonElement [i % 2 ? i + 1 : i] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <0> (polygonElement [i % 2 ? i + 1 : i] .data ())]);
+					getVertices () .emplace_back (points [std::get <I> (polygonElement [i % 2 ? i + 1 : i] .data ())]);
 
 					t = (min + crossSection () [std::get < K > (polygonElement [i % 2 ? i : i + 1] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <0> (polygonElement [i % 2 ? i : i + 1] .data ())]);
+					getVertices () .emplace_back (points [std::get <I> (polygonElement [i % 2 ? i : i + 1] .data ())]);
 
 					t = (min + crossSection () [std::get < K > (polygonElement [i + 2] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <0> (polygonElement [i + 2] .data ())]);
+					getVertices () .emplace_back (points [std::get <I> (polygonElement [i + 2] .data ())]);
 				}
 
 				break;
@@ -534,17 +581,17 @@ Extrusion::buildCap (const Tesselator & tesselator,
 					Vector2f t = (min + crossSection () [std::get < K > (polygonElement [i] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <0> (polygonElement [i] .data ())]);
+					getVertices () .emplace_back (points [std::get <I> (polygonElement [i] .data ())]);
 
 					t = (min + crossSection () [std::get < K > (polygonElement [i + 1] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <0> (polygonElement [i + 1] .data ())]);
+					getVertices () .emplace_back (points [std::get <I> (polygonElement [i + 1] .data ())]);
 
 					t = (min + crossSection () [std::get < K > (polygonElement [i + 2] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <0> (polygonElement [i + 2] .data ())]);
+					getVertices () .emplace_back (points [std::get <I> (polygonElement [i + 2] .data ())]);
 				}
 
 				break;

@@ -1,5 +1,19 @@
 2013-05-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DExecutionContext.h:
+	* SupportedNodes.cpp:
+	* SupportedFields.cpp:
+	* X3DExecutionContext.cpp:
+	* Extrusion.h:
+	* Extrusion.cpp:
+	* SupportedProfiles.cpp:
+	* ComposedShader.cpp:
+	* SupportedComponents.cpp:
+	* IndexedFaceSet.h:
+	* IndexedFaceSet.cpp: 
+
+2013-05-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DArrayField.h:

@@ -491,7 +491,7 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-
+	
 	size_t n = 1000000000;
 	size_t t = (size_t) new int ();
 	std::vector <char> a (n);

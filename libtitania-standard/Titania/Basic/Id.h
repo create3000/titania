@@ -125,6 +125,10 @@ public:
 	operator const string_type & () const
 	{ return first (); }
 
+	const char_type*
+	c_str () const
+	{ return first () .c_str (); }
+
 	const string_type &
 	first () const
 	{ return operator [ ] (0); }

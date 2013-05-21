@@ -174,10 +174,10 @@ private:
 	build ();
 
 	void
-	buildCap (const Tesselator &,
-	          std::vector <Vector3f> &,
-	          const Vector2f &,
-	          const Vector2f &);
+	tesselateCap (const Tesselator &,
+	              std::vector <Vector3f> &,
+	              const Vector2f &,
+	              const Vector2f &);
 
 	struct Fields
 	{

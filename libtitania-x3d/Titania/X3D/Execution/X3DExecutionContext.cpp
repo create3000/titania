@@ -240,7 +240,7 @@ throw (Error <INVALID_NAME>,
 	{
 		try
 		{
-			components .find_last (declaration -> getComponentName ());
+			components .rfind (declaration -> getComponentName ());
 		}
 		catch (const std::out_of_range &)
 		{
@@ -263,13 +263,13 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return protos .find_last (name) -> createInstance ();
+		return protos .rfind (name) -> createInstance ();
 	}
 	catch (const std::out_of_range &)
 	{
 		try
 		{
-			return externProtos .find_last (name) -> createInstance ();
+			return externProtos .rfind (name) -> createInstance ();
 		}
 		catch (const std::out_of_range &)
 		{
@@ -357,12 +357,14 @@ throw (Error <INVALID_NAME>,
 
 	const SFNode <X3DBaseNode> & node = getNode (localName);
 
-	exportedNodes .push_back (exportedName, node);
+	SFNode <X3DBaseNode> & exportedNode = exportedNodes .push_back (exportedName, node);
+	exportedNode .addParent (this);
 	exportedNodes .back () .setName ({ localName, exportedName });
+	exportedNodes .back () .addParent (this);
 }
 
 void
-X3DExecutionContext::removeExportedNode (const std::string & localName, const std::string & exportedName)
+X3DExecutionContext::removeExportedNode (const std::string & exportedName)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 { }
@@ -382,7 +384,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return exportedNodes .find_last (name);
+		return exportedNodes .rfind (name);
 	}
 	catch (const std::out_of_range &)
 	{
@@ -416,8 +418,12 @@ throw (Error <INVALID_NAME>,
 	{
 		SFNode <X3DBaseNode> node = inlineNode -> getScene () -> getExportedNode (exportedName);
 
-		importedNodes .push_back (localName, node) .setName ({ inlineNode .getNodeName (), exportedName, localName });
-		importedNodes .back ()                     .setName ({ inlineNode .getNodeName (), exportedName, localName });
+		SFNode <X3DBaseNode> & importedNode = importedNodes .push_back (localName, node);
+		importedNode .setName ({ inlineNode .getNodeName (), exportedName, localName });
+		importedNode .addParent (this);
+		
+		importedNodes .back () .setName ({ inlineNode .getNodeName (), exportedName, localName });
+		importedNodes .back () .addParent (this);
 	}
 	else
 		throw Error <URL_UNAVAILABLE> ("Imported node error: Could not load Inline '" + inlineNode .getNodeName () + "'.");
@@ -446,7 +452,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return importedNodes .find_last (name);
+		return importedNodes .rfind (name);
 	}
 	catch (const std::out_of_range &)
 	{
@@ -498,7 +504,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return protos .find_last (name);
+		return protos .rfind (name);
 	}
 	catch (const std::out_of_range &)
 	{
@@ -573,7 +579,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return externProtos .find_last (name);
+		return externProtos .rfind (name);
 	}
 	catch (const std::out_of_range &)
 	{
@@ -644,7 +650,7 @@ throw (Error <INVALID_NODE>,
 	{
 		// Silently return if route already exists.
 
-		return routes .find_last (fields);
+		return routes .rfind (fields);
 	}
 	catch (const std::out_of_range &)
 	{
@@ -670,7 +676,7 @@ throw (Error <INVALID_NODE>,
 
 	try
 	{
-		routes .find_last (fields) -> disconnect ();
+		routes .rfind (fields) -> disconnect ();
 		routes .erase (fields);
 	}
 	catch (const std::out_of_range &)

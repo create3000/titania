@@ -197,7 +197,7 @@ public:
 	       Error <DISPOSED>);
 
 	void
-	removeExportedNode (const std::string &, const std::string &)
+	removeExportedNode (const std::string &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 

@@ -146,7 +146,7 @@ ComposedShader::set_field (X3DFieldDefinition* field)
 {
 	glUseProgram (shaderProgram);
 
-	GLint location = glGetUniformLocation (shaderProgram, field -> getName () [0] .c_str ());
+	GLint location = glGetUniformLocation (shaderProgram, field -> getName () .c_str ());
 
 	if (location not_eq - 1)
 	{
