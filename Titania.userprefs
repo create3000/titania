@@ -1,8 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h">
     <Files>
-      <File FileName="experimental/main.cpp" Line="215" Column="2" />
+      <File FileName="experimental/main.cpp" Line="494" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.h" Line="136" Column="23" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="279" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.h" Line="180" Column="16" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="281" Column="1" />
+      <File FileName="Library/Examples/Moebius/index.wrl" Line="20" Column="19" />
+      <File FileName="Titania/share/titania/pages/about/gears.wrl" Line="229" Column="3" />
+      <File FileName="../../../../usr/include/c++/4.7/bits/deque.tcc" Line="139" Column="6" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="139" Column="6" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -41,6 +49,7 @@
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Properties" expanded="True" />
                 </Node>
@@ -53,8 +62,11 @@
                   <Node name="Networking" expanded="True" />
                   <Node name="NURBS" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
+                  <Node name="Rendering" expanded="True">
+                    <Node name="X3DGeometryNode.h" selected="True" />
+                  </Node>
                   <Node name="Scripting" expanded="True" />
+                  <Node name="Shaders" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
@@ -64,6 +76,7 @@
                 </Node>
                 <Node name="Parser" expanded="True" />
                 <Node name="Prototype" expanded="True" />
+                <Node name="Rendering" expanded="True" />
                 <Node name="Routing" expanded="True" />
                 <Node name="Types" expanded="True" />
               </Node>
@@ -83,6 +96,7 @@
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
+              <Node name="Configuration" expanded="True" />
               <Node name="HistoryEditor" expanded="True" />
               <Node name="UserInterfaces" expanded="True" />
             </Node>

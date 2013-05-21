@@ -279,22 +279,6 @@ Extrusion::createRotations ()
 	return rotations;
 }
 
-static
-inline
-GLenum
-getVertexMode (size_t n)
-{
-	switch (n)
-	{
-		case 3:
-			return GL_TRIANGLES;
-		case 4:
-			return GL_QUADS;
-		default:
-			return GL_POLYGON;
-	}
-}
-
 void
 Extrusion::build ()
 {

@@ -276,22 +276,6 @@ IndexedFaceSet::set_normalIndex ()
 	}
 }
 
-static
-inline
-GLenum
-getVertexMode (size_t n)
-{
-	switch (n)
-	{
-		case 3:
-			return GL_TRIANGLES;
-		case 4:
-			return GL_QUADS;
-		default:
-			return GL_POLYGON;
-	}
-}
-
 void
 IndexedFaceSet::build ()
 {
@@ -372,7 +356,7 @@ IndexedFaceSet::build ()
 
 			currentVertexMode = getVertexMode (element .size ());
 
-			if (face and (currentVertexMode not_eq vertexMode or vertexMode == GL_POLYGON))
+			if (currentVertexMode not_eq vertexMode or vertexMode == GL_POLYGON)
 			{
 				size_t size  = getVertices () .size ();
 				size_t count = size - vertices;
@@ -624,9 +608,12 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 
 		for (const auto & element : polygon .elements)
 		{
-			normal += math::normal <float> (_coord -> point () [coordIndex () [element [0]]],
-			                                _coord -> point () [coordIndex () [element [1]]],
-			                                _coord -> point () [coordIndex () [element [2]]]);
+			for (size_t i = 1, size = element .size () - 1; i < size; ++ i)
+			{
+				normal += math::normal <float> (_coord -> point () [coordIndex () [element [0]]],
+				                                _coord -> point () [coordIndex () [element [i]]],
+				                                _coord -> point () [coordIndex () [element [i + 1]]]);
+			}
 		}
 
 		// Add a normal index for each point.

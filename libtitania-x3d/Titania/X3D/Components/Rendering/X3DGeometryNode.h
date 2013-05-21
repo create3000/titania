@@ -109,23 +109,28 @@ protected:
 	///  @name Properties
 
 	std::vector <Vector3f> &
-	getTexCoord () { return texCoords; }
+	getTexCoord ()
+	{ return texCoords; }
 
 	void
 	setTextureCoordinateGenerator (TextureCoordinateGenerator* value)
 	{ textureCoordinateGenerator = value; }
 
 	std::vector <Color3f> &
-	getColors () { return colors; }
+	getColors ()
+	{ return colors; }
 
 	std::vector <Color4f> &
-	getColorsRGBA () { return colorsRGBA; }
+	getColorsRGBA ()
+	{ return colorsRGBA; }
 
 	std::vector <Vector3f> &
-	getNormals () { return normals; }
+	getNormals ()
+	{ return normals; }
 
 	std::vector <Vector3f> &
-	getVertices () { return vertices; }
+	getVertices ()
+	{ return vertices; }
 
 	void
 	setSolid (const bool & value)
@@ -134,6 +139,21 @@ protected:
 	void
 	setCCW (const bool & value)
 	{ ccw = value ? GL_CCW : GL_CW; }
+
+	static
+	GLenum
+	getVertexMode (size_t n)
+	{
+		switch (n)
+		{
+			case 3:
+				return GL_TRIANGLES;
+			case 4:
+				return GL_QUADS;
+			default:
+				return GL_POLYGON;
+		}
+	}
 
 	void
 	addElements (const GLenum count, size_t vertexCount)
