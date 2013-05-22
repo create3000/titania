@@ -327,6 +327,17 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	virtual
+	void
+	setRootNode (size_t, const SFNode <X3DBaseNode> &)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	const SFNode <X3DBaseNode> &
+	getRootNode (size_t)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	const MFNode &
 	getRootNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,

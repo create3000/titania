@@ -621,10 +621,34 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-X3DExecutionContext::removeRootNode (const SFNode <X3DBaseNode> &)
+X3DExecutionContext::removeRootNode (const SFNode <X3DBaseNode> & rootNode)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
-{ }
+{
+	std::remove (rootNodes .begin (), rootNodes .end (), rootNode);
+}
+
+void
+X3DExecutionContext::setRootNode (size_t index, const SFNode <X3DBaseNode> & rootNode)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (rootNodes .size () <= index)
+		rootNodes .resize (index + 1);
+
+	rootNodes [index] = rootNode;
+}
+
+const SFNode <X3DBaseNode> &
+X3DExecutionContext::getRootNode (size_t index)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (rootNodes .size () <= index)
+		rootNodes .resize (index + 1);
+
+	return rootNodes [index];
+}
 
 const MFNode &
 X3DExecutionContext::getRootNodes () const

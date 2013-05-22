@@ -339,7 +339,7 @@ X3DBrowserWindow::set_console ()
 	buffer -> move_mark (buffer -> get_insert (), buffer -> end ());
 
 	getConsole () .scroll_to (buffer -> get_insert ());
-	getConsole () .queue_draw ();
+	//getConsole () .queue_draw ();
 }
 
 void
