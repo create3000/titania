@@ -257,7 +257,7 @@ throw (Error <INVALID_SCENE>)
 	// Replace world.
 
 	std::clog << "The browser is requested to replace the world:" << std::endl;
-	print ("*** The browser is requested to replace the world\n");
+	print ("*** The browser is requested to replace the world with '", value -> getWorldURL (), "'.\n");
 
 	if (not value)
 		throw Error <INVALID_SCENE> ("Scene is NULL.");
