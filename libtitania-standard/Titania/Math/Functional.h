@@ -58,6 +58,15 @@
 namespace titania {
 namespace math {
 
+///  Calculate the square of @a value.
+template <class Type>
+inline
+constexpr Type
+sqr (const Type & value)
+{
+	return value * value;
+}
+
 ///  Convert @a value from degrees to radiants.
 template <class Type>
 inline

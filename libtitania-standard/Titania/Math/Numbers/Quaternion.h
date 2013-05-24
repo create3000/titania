@@ -55,10 +55,22 @@
 #include <istream>
 #include <ostream>
 
+#include "../Functional.h"
 #include "Vector3.h"
 
 namespace titania {
 namespace math {
+
+template <class Type>
+class quaternion;
+
+template <class Type>
+quaternion <Type>
+log (const quaternion <Type> &);
+
+template <class Type>
+quaternion <Type>
+exp (const quaternion <Type> &);
 
 /**
  *  Template to represent quaternion numbers.
@@ -218,8 +230,24 @@ public:
 	quaternion &
 	normalize ();
 
+	///  Spherical cubic interpolation @a q0, @a q1, @a q2 and @a q3 by an amout of @a t.
+	template <class T>
+	static
+	quaternion
+	squad (const quaternion &,
+	       const quaternion &,
+	       const quaternion &,
+	       const quaternion &,
+	       const T &);
+
 
 private:
+
+	static
+	quaternion
+	inner_quad_point (const quaternion &,
+	                  const quaternion &,
+	                  const quaternion &);
 
 	Type value [size ()];
 
@@ -374,6 +402,32 @@ quaternion <Type>::normalize ()
 		return *this /= length;
 
 	return *this;
+}
+
+template <class Type>
+template <class T>
+quaternion <Type>
+quaternion <Type>::squad (const quaternion <Type> & q0,
+                          const quaternion <Type> & q1,
+                          const quaternion <Type> & q2,
+                          const quaternion <Type> & q3,
+                          const T & t)
+{
+	quaternion <Type> a = inner_quad_point (q0, q1, q2);
+	quaternion <Type> b = inner_quad_point (q1, q2, q3);
+
+	return slerp (slerp (q1, q2, t), slerp (a, b, t), 2 * t * (1 - t));
+}
+
+template <class Type>
+quaternion <Type>
+quaternion <Type>::inner_quad_point (const quaternion <Type> & q0,
+                                     const quaternion <Type> & q1,
+                                     const quaternion <Type> & q2)
+{
+	quaternion q1_i = ~q1;
+
+	return q1 * exp ((log (q1_i * q2) + log (q1_i * q0)) * Type (-0.25));
 }
 
 ///  @name Element access
@@ -563,6 +617,24 @@ dot (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 	       lhs .w () * rhs .w ();
 }
 
+///  Returns whether @a quaternion is pure real.
+template <class Type>
+inline
+constexpr Type
+is_real (const quaternion <Type> & quat)
+{
+	return not (quat .x () or quat .y () or quat .z ());
+}
+
+///  Returns whether @a quaternion is pure imaginary.
+template <class Type>
+inline
+constexpr Type
+is_imag (const quaternion <Type> & quat)
+{
+	return not (quat .w ());
+}
+
 ///  Returns @a quaternion magnitude.
 template <class Type>
 inline
@@ -588,6 +660,97 @@ quaternion <Type>
 normalize (const quaternion <Type> & quat)
 {
 	return quaternion <Type> (quat) .normalize ();
+}
+
+///  Raise @a quaternion to @a quaternion power.
+template <class Type>
+quaternion <Type>
+pow (const quaternion <Type> & base, const quaternion <Type> & exponent)
+{
+	// For quaternion^quaternion, we use exp and log.
+	// b^x = e^{x*ln b}
+	return exp (exponent * log (base));
+}
+
+///  Raise @a quaternion to @a scalar power.
+template <class Type>
+quaternion <Type>
+pow (const quaternion <Type> & base, const Type & exponent)
+{
+	Type n     = norm (base);
+	Type theta = std::acos (base .w () / n);
+	Type ni    = norm (imag (base));
+	Type ntov  = std::pow (n, exponent);
+	Type vt    = exponent * theta;
+	Type scale = ntov / ni * std::sin (vt);
+
+	return quaternion <Type> (base .x () * scale,
+	                          base .y () * scale,
+	                          base .z () * scale,
+	                          ntov * std::cos (vt));
+}
+
+///  Returns the logarithm of its argument. The logarithm of a negative
+///  real quaternion can take any value of them form (log(-q0),u*pi) for
+///  any unit vector u. In these cases, u is chosen to be (1,0,0).
+template <class Type>
+quaternion <Type>
+log (const quaternion <Type> & quad)
+{
+	if (is_real (quad))
+	{
+		if (quad .w () > 0)
+			return quaternion <Type> (0, 0, 0, std::log (quad .w ()));
+
+		else
+			return quaternion <Type> (M_PI, 0, 0, std::log (-quad .w ()));
+	}
+
+	Type vl = norm (imag (quad)); // mod of quat part
+	Type vs = std::atan2 (vl, quad .w ()) / vl;
+	Type ln = std::log (norm (quad));
+
+	return quaternion <Type> (vs * quad .x (),
+	                          vs * quad .y (),
+	                          vs * quad .z (),
+	                          ln);
+}
+
+///  Exponential operator e^q.
+template <class Type>
+quaternion <Type>
+exp (const quaternion <Type> & quad)
+{
+	if (is_real (quad))
+		return quaternion <Type> (0, 0, 0, std::exp (quad .w ()));
+
+	Type vl = norm (imag (quad)); // length of pure-quat part
+
+	// unit vector
+	Type ux = quad .x () / vl;
+	Type uy = quad .y () / vl;
+	Type uz = quad .z () / vl;
+
+	Type ws = std::exp (quad .w ());
+	Type vs = ws * std::sin (vl);
+
+	return quaternion <Type> (vs * ux,
+	                          vs * uy,
+	                          vs * uz,
+	                          ws * std::cos (vl));
+}
+
+///  Spherical cubic interpolation @a q0, @a q1, @a q2 and @a q3 by an amout of @a t.
+template <class Type, class T>
+inline
+quaternion <Type>
+squad (const quaternion <Type> & q0,
+       const quaternion <Type> & q1,
+       const quaternion <Type> & q2,
+       const quaternion <Type> & q3,
+       const T & t)
+{
+	return quaternion <Type>::squad (q0, q1, q2, q3, t);
 }
 
 ///  Spherical linear interpolate between @a source quaternion and @a destination quaternion by an amout of @a t.

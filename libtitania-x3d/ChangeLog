@@ -1,3 +1,10 @@
+2013-05-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Scene.cpp:
+	* EaseInEaseOut.h:
+	* EaseInEaseOut.cpp:
+	* X3DInterpolatorNode.cpp: 
+
 2013-05-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Scene.h:

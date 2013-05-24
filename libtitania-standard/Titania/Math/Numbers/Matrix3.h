@@ -66,35 +66,35 @@
 namespace titania {
 namespace math {
 
-template <typename Type>
+template <class Type>
 class matrix3;
 
-template <typename Type>
+template <class Type>
 inline
 matrix3 <Type>
 operator ! (const matrix3 <Type> & matrix);
 
-template <typename Type>
+template <class Type>
 inline
 matrix3 <Type>
 transpose (const matrix3 <Type> & matrix);
 
-template <typename Type>
+template <class Type>
 inline
 matrix3 <Type>
 operator ~ (const matrix3 <Type> & matrix);
 
-template <typename Type>
+template <class Type>
 inline
 matrix3 <Type>
 inverse (const matrix3 <Type> & matrix);
 
-template <typename Type>
+template <class Type>
 inline
 matrix3 <Type>
 operator * (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs);
 
-template <typename Type>
+template <class Type>
 class matrix3
 {
 private:
@@ -140,7 +140,7 @@ public:
 	{ }
 
 	///  Copy constructor.
-	template <typename Up>
+	template <class Up>
 	constexpr
 	matrix3 (const matrix3 <Up> & matrix) :
 		value (matrix [0], matrix [1], matrix [2])
@@ -176,7 +176,7 @@ public:
 
 	///  @name Assignment operators
 
-	template <typename T>
+	template <class T>
 	matrix3 &
 	operator = (const matrix3 <T> &);
 
@@ -278,7 +278,7 @@ public:
 	operator *= (const Type &);
 
 	///  Returns this matrix right multiplied by @a matrix.
-	template <typename T>
+	template <class T>
 	matrix3 &
 	operator *= (const matrix3 <T> &);
 
@@ -287,32 +287,32 @@ public:
 	operator /= (const Type &);
 
 	///  Returns this matrix left multiplied by @a matrix.
-	template <typename T>
+	template <class T>
 	matrix3 &
 	multLeft (const matrix3 <T> &);
 
 	///  Returns this matrix right multiplied by @a matrix.
-	template <typename T>
+	template <class T>
 	matrix3 &
 	multRight (const matrix3 <T> &);
 
 	///  Returns a new vector that is @vector multiplies by matrix.
-	template <typename T>
+	template <class T>
 	vector2 <Type>
 	multVecMatrix (const vector2 <T> &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector.
-	template <typename T>
+	template <class T>
 	vector2 <Type>
 	multMatrixVec (const vector2 <T> &) const;
 
 	///  Returns a new vector that is @vector (a normal or direction vector) multiplies by matrix.
-	template <typename T>
+	template <class T>
 	vector2 <Type>
 	multDirMatrix (const vector2 <T> &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector (a normal or direction vector).
-	template <typename T>
+	template <class T>
 	vector2 <Type>
 	multMatrixDir (const vector2 <T> &) const;
 
@@ -350,7 +350,7 @@ private:
 
 };
 
-template <typename Type>
+template <class Type>
 const matrix3 <Type> matrix3 <Type>::Identity = { 1, 0, 0,
 	                                               0, 1, 0,
 	                                               0, 0, 1 };
@@ -365,7 +365,7 @@ matrix3 <Type>::operator = (const matrix3 <Up> & matrix)
 	return *this;
 }
 
-template <typename Type>
+template <class Type>
 vector2 <Type>
 matrix3 <Type>::translation () const
 {
@@ -373,7 +373,7 @@ matrix3 <Type>::translation () const
 	                       array [7]);
 }
 
-template <typename Type>
+template <class Type>
 void
 matrix3 <Type>::rotation (const Type & rotation)
 {
@@ -388,21 +388,21 @@ matrix3 <Type>::rotation (const Type & rotation)
 	array [4] = cosAngle;
 }
 
-template <typename Type>
+template <class Type>
 Type
 matrix3 <Type>::rotation () const
 {
 	return std::atan2 (array [1], array [0]);
 }
 
-template <typename Type>
+template <class Type>
 void
 matrix3 <Type>::set ()
 {
 	value = Identity .value;
 }
 
-template <typename Type>
+template <class Type>
 void
 matrix3 <Type>::set (const vector2 <Type> & translation)
 {
@@ -411,7 +411,7 @@ matrix3 <Type>::set (const vector2 <Type> & translation)
 	value [2] = vector3 <Type> (translation .x (), translation .y (), 1);
 }
 
-template <typename Type>
+template <class Type>
 void
 matrix3 <Type>::set (const vector2 <Type> & translation,
                      const Type & rotation)
@@ -422,7 +422,7 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
 		rotate (rotation);
 }
 
-template <typename Type>
+template <class Type>
 void
 matrix3 <Type>::set (const vector2 <Type> & translation,
                      const Type & rotation,
@@ -437,7 +437,7 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
 		scale (scaleFactor);
 }
 
-template <typename Type>
+template <class Type>
 void
 matrix3 <Type>::set (const vector2 <Type> & translation,
                      const Type & rotation,
@@ -461,7 +461,7 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
 	}
 }
 
-template <typename Type>
+template <class Type>
 void
 matrix3 <Type>::set (const vector2 <Type> & translation,
                      const Type & rotation,
@@ -492,14 +492,14 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
 		translate (-center);
 }
 
-template <typename Type>
+template <class Type>
 void
 matrix3 <Type>::get (vector2 <Type> & translation) const
 {
 	translation = this -> translation ();
 }
 
-template <typename Type>
+template <class Type>
 void
 matrix3 <Type>::get (vector2 <Type> & translation,
                      Type & rotation) const
@@ -510,7 +510,7 @@ matrix3 <Type>::get (vector2 <Type> & translation,
 	rotation = rot .rotation ();
 }
 
-template <typename Type>
+template <class Type>
 void
 matrix3 <Type>::get (vector2 <Type> & translation,
                      Type & rotation,
@@ -521,7 +521,7 @@ matrix3 <Type>::get (vector2 <Type> & translation,
 	rotation = rot .rotation ();
 }
 
-template <typename Type>
+template <class Type>
 void
 matrix3 <Type>::get (vector2 <Type> & translation,
                      Type & rotation,
@@ -534,7 +534,7 @@ matrix3 <Type>::get (vector2 <Type> & translation,
 	scaleOrientation = so .rotation ();
 }
 
-template <typename Type>
+template <class Type>
 void
 matrix3 <Type>::get (vector2 <Type> & translation,
                      Type & rotation,
@@ -552,7 +552,7 @@ matrix3 <Type>::get (vector2 <Type> & translation,
 	m .get (translation, rotation, scaleFactor, scaleOrientation);
 }
 
-template <typename Type>
+template <class Type>
 bool
 matrix3 <Type>::factor (vector2 <Type> & translation,
                         matrix3 & rotation,
@@ -608,7 +608,7 @@ matrix3 <Type>::factor (vector2 <Type> & translation,
 	return true;
 }
 
-template <typename Type>
+template <class Type>
 Type
 matrix3 <Type>::det2 () const
 {
@@ -617,7 +617,7 @@ matrix3 <Type>::det2 () const
 	   array [1] * array [3];
 }
 
-template <typename Type>
+template <class Type>
 Type
 matrix3 <Type>::determinant () const
 {
@@ -626,7 +626,7 @@ matrix3 <Type>::determinant () const
 	       array [2] * (array [3] * array [7] - array [4] * array [6]);
 }
 
-template <typename Type>
+template <class Type>
 matrix3 <Type> &
 matrix3 <Type>::transpose ()
 {
@@ -635,7 +635,7 @@ matrix3 <Type>::transpose ()
 	                               array [2], array [5], array [8]);
 }
 
-template <typename Type>
+template <class Type>
 matrix3 <Type> &
 matrix3 <Type>::inverse ()
 {
@@ -676,7 +676,7 @@ matrix3 <Type>::inverse ()
 	                               (t4 - t8) / d);
 }
 
-template <typename Type>
+template <class Type>
 matrix3 <Type> &
 matrix3 <Type>::operator *= (const Type & t)
 {
@@ -687,15 +687,15 @@ matrix3 <Type>::operator *= (const Type & t)
 	return *this;
 }
 
-template <typename Type>
-template <typename T>
+template <class Type>
+template <class T>
 matrix3 <Type> &
 matrix3 <Type>::operator *= (const matrix3 <T> & matrix)
 {
 	return multRight (matrix);
 }
 
-template <typename Type>
+template <class Type>
 matrix3 <Type> &
 matrix3 <Type>::operator /= (const Type & t)
 {
@@ -706,8 +706,8 @@ matrix3 <Type>::operator /= (const Type & t)
 	return *this;
 }
 
-template <typename Type>
-template <typename T>
+template <class Type>
+template <class T>
 matrix3 <Type> &
 matrix3 <Type>::multLeft (const matrix3 <T> & matrix)
 {
@@ -731,8 +731,8 @@ matrix3 <Type>::multLeft (const matrix3 <T> & matrix)
 	#undef MULT_LEFT
 }
 
-template <typename Type>
-template <typename T>
+template <class Type>
+template <class T>
 matrix3 <Type> &
 matrix3 <Type>::multRight (const matrix3 <T> & matrix)
 {
@@ -756,8 +756,8 @@ matrix3 <Type>::multRight (const matrix3 <T> & matrix)
 	#undef MULT_RIGHT
 }
 
-template <typename Type>
-template <typename T>
+template <class Type>
+template <class T>
 vector2 <Type>
 matrix3 <Type>::multVecMatrix (const vector2 <T> & vector) const
 {
@@ -767,8 +767,8 @@ matrix3 <Type>::multVecMatrix (const vector2 <T> & vector) const
 	                       (vector .x () * array [1] + vector .y () * array [4] + array [7]) / w);
 }
 
-template <typename Type>
-template <typename T>
+template <class Type>
+template <class T>
 vector2 <Type>
 matrix3 <Type>::multMatrixVec (const vector2 <T> & vector) const
 {
@@ -778,8 +778,8 @@ matrix3 <Type>::multMatrixVec (const vector2 <T> & vector) const
 	                       (vector .x () * array [3] + vector .y () * array [4] + array [5]) / w);
 }
 
-template <typename Type>
-template <typename T>
+template <class Type>
+template <class T>
 vector2 <Type>
 matrix3 <Type>::multDirMatrix (const vector2 <T> & vector) const
 {
@@ -787,8 +787,8 @@ matrix3 <Type>::multDirMatrix (const vector2 <T> & vector) const
 	                       vector .x () * array [1] + vector .y () * array [4]);
 }
 
-template <typename Type>
-template <typename T>
+template <class Type>
+template <class T>
 vector2 <Type>
 matrix3 <Type>::multMatrixDir (const vector2 <T> & vector) const
 {
@@ -796,7 +796,7 @@ matrix3 <Type>::multMatrixDir (const vector2 <T> & vector) const
 	                       vector .x () * array [3] + vector .y () * array [4]);
 }
 
-template <typename Type>
+template <class Type>
 matrix3 <Type> &
 matrix3 <Type>::translate (const vector2 <Type> & translation)
 {
@@ -812,14 +812,14 @@ matrix3 <Type>::translate (const vector2 <Type> & translation)
 	return *this;
 }
 
-template <typename Type>
+template <class Type>
 matrix3 <Type> &
 matrix3 <Type>::rotate (const Type & rotation)
 {
 	return multLeft (matrix3 <Type> (rotation));
 }
 
-template <typename Type>
+template <class Type>
 matrix3 <Type> &
 matrix3 <Type>::scale (const vector2 <Type> & scaleFactor)
 {
@@ -837,7 +837,7 @@ matrix3 <Type>::scale (const vector2 <Type> & scaleFactor)
 
 ///  Compares two matrix3 numbers.
 ///  Return true if @a a is equal to @a b.
-template <typename Type>
+template <class Type>
 bool
 operator == (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 {
@@ -846,7 +846,7 @@ operator == (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 
 ///  Compares two matrix3 numbers.
 ///  Return true if @a a is not equal to @a b.
-template <typename Type>
+template <class Type>
 inline
 bool
 operator not_eq (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
@@ -858,7 +858,7 @@ operator not_eq (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 ///  @name Arithmetic operations
 
 ///  Returns the transpose of the @a matrix.
-template <typename Type>
+template <class Type>
 inline
 matrix3 <Type>
 operator ! (const matrix3 <Type> & matrix)
@@ -867,7 +867,7 @@ operator ! (const matrix3 <Type> & matrix)
 }
 
 ///  Returns the transpose of the @a matrix.
-template <typename Type>
+template <class Type>
 inline
 matrix3 <Type>
 transpose (const matrix3 <Type> & matrix)
@@ -876,7 +876,7 @@ transpose (const matrix3 <Type> & matrix)
 }
 
 ///  Returns the inverse of the @a matrix.
-template <typename Type>
+template <class Type>
 inline
 matrix3 <Type>
 operator ~ (const matrix3 <Type> & matrix)
@@ -885,7 +885,7 @@ operator ~ (const matrix3 <Type> & matrix)
 }
 
 ///  Returns the inverse of the @a matrix.
-template <typename Type>
+template <class Type>
 inline
 matrix3 <Type>
 inverse (const matrix3 <Type> & matrix)
@@ -894,7 +894,7 @@ inverse (const matrix3 <Type> & matrix)
 }
 
 ///  Return matrix value @a lhs right multiplied by @a rhs.
-template <typename Type>
+template <class Type>
 inline
 matrix3 <Type>
 operator * (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
@@ -924,7 +924,7 @@ operator * (const vector2 <Type> & lhs, const matrix3 <Type> & rhs)
 ///  @name Input/Output operations
 
 ///  Extraction operator for vector values.
-template <typename CharT, class Traits, typename Type>
+template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
 operator >> (std::basic_istream <CharT, Traits> & istream, matrix3 <Type> & matrix)
 {
@@ -953,7 +953,7 @@ operator >> (std::basic_istream <CharT, Traits> & istream, matrix3 <Type> & matr
 }
 
 ///  Insertion operator for vector values.
-template <typename CharT, class Traits, typename Type>
+template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const matrix3 <Type> & matrix)
 {

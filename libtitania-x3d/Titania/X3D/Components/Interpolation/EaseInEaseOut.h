@@ -51,13 +51,13 @@
 #ifndef __TITANIA_X3D_COMPONENTS_INTERPOLATION_EASE_IN_EASE_OUT_H__
 #define __TITANIA_X3D_COMPONENTS_INTERPOLATION_EASE_IN_EASE_OUT_H__
 
-#include "../Core/X3DNode.h"
+#include "../Interpolation/X3DInterpolatorNode.h"
 
 namespace titania {
 namespace X3D {
 
 class EaseInEaseOut :
-	virtual public X3DNode
+	virtual public X3DInterpolatorNode
 {
 public:
 
@@ -69,14 +69,6 @@ public:
 
 	///  @name Fields
 
-	SFFloat &
-	set_fraction ()
-	{ return *fields .set_fraction; }
-
-	const SFFloat &
-	set_fraction () const
-	{ return *fields .set_fraction; }
-
 	MFVec2f &
 	easeInEaseOut ()
 	{ return *fields .easeInEaseOut; }
@@ -84,14 +76,6 @@ public:
 	const MFVec2f &
 	easeInEaseOut () const
 	{ return *fields .easeInEaseOut; }
-
-	MFFloat &
-	key ()
-	{ return *fields .key; }
-
-	const MFFloat &
-	key () const
-	{ return *fields .key; }
 
 	SFFloat &
 	modifiedFraction_changed ()
@@ -106,15 +90,21 @@ private:
 
 	virtual
 	void
-	interpolate (size_t, float);
+	initialize ();
+
+	virtual
+	void
+	set_keyValue ();
+
+	virtual
+	void
+	interpolate (size_t, size_t, float);
 
 	struct Fields
 	{
 		Fields ();
 
-		SFFloat* const set_fraction;
 		MFVec2f* const easeInEaseOut;
-		MFFloat* const key;
 		SFFloat* const modifiedFraction_changed;
 	};
 

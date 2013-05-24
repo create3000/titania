@@ -65,7 +65,7 @@ public:
 	using Gtk::Application::add_window;
 
 	BrowserApplication (int & argc, char** & argv) :
-		Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_FLAGS_NONE)
+		Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN)
 	{ }
 
 	virtual
@@ -88,7 +88,7 @@ public:
 		__LOG__ << std::endl;
 
 		for (const auto & file : files)
-			add_window (file -> get_uri ());
+			add_window (Glib::uri_unescape_string (file -> get_uri ()));
 	}
 
 	virtual

@@ -2047,6 +2047,7 @@
     <None Include="Prototypes\Fields\SFVec4d\SFVec4d.wrl" />
     <None Include="Prototypes\Fields\SFVec4f\SFVec4f.wrl" />
     <None Include="Prototypes\Geometry2D\RegularPolygon2D\example.wrl" />
+    <None Include="Tests\Interpolation\EaseInEaseOut.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

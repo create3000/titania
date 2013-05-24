@@ -164,16 +164,17 @@ test_path (const basic::path & path)
 
 }
 
-typedef math::vector2 <float>   Vector2f;
-typedef math::vector3 <float>   Vector3f;
-typedef math::rotation4 <float> Rotation4f;
-typedef math::matrix4 <float>   Matrix4f;
-typedef math::box2 <float>      Box2f;
-typedef math::box3 <float>      Box3f;
-typedef math::cylinder3 <float> Cylinder3f;
-typedef math::plane3 <float>    Plane3f;
-typedef math::line3 <float>     Line3f;
-typedef math::sphere3 <float>   Sphere3f;
+typedef math::quaternion <float> Quaternionf;
+typedef math::vector2 <float>    Vector2f;
+typedef math::vector3 <float>    Vector3f;
+typedef math::rotation4 <float>  Rotation4f;
+typedef math::matrix4 <float>    Matrix4f;
+typedef math::box2 <float>       Box2f;
+typedef math::box3 <float>       Box3f;
+typedef math::cylinder3 <float>  Cylinder3f;
+typedef math::plane3 <float>     Plane3f;
+typedef math::line3 <float>      Line3f;
+typedef math::sphere3 <float>    Sphere3f;
 
 #include <v8.h>
 
@@ -491,25 +492,6 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-	
-	size_t n = 1000000000;
-	size_t t = (size_t) new int ();
-	std::vector <char> a (n);
-
-	auto t0 = chrono::now ();
-	for (const auto & i : range <size_t> (0, n))
-	{
-		t += a [i];
-	}
-	__LOG__ << t << std::endl;
-	__LOG__ << chrono::now () - t0 << std::endl;
-	
-	t0 = chrono::now ();
-	for (size_t i = 0; i < n; ++ n)
-		t += a [i];
-	__LOG__ << t << std::endl;
-	__LOG__ << chrono::now () - t0 << std::endl;
-
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

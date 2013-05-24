@@ -99,13 +99,17 @@ X3DInterpolatorNode::_set_fraction ()
 	if (set_fraction () >= key () .at (key () .size () - 1))
 		return interpolate (key () .size () - 2, key () .size () - 1, 1);
 
-	auto   iter   = std::upper_bound (key () .cbegin (), key () .cend (), set_fraction ());
-	size_t index1 = iter - key () .cbegin ();
-	size_t index0 = index1 - 1;
+	auto iter = std::upper_bound (key () .cbegin (), key () .cend (), set_fraction ());
+	
+	if (iter not_eq key () .cend ())
+	{
+		size_t index1 = iter - key () .cbegin ();
+		size_t index0 = index1 - 1;
 
-	float weight = (set_fraction () - key () [index0]) / (key () [index1] - key () [index0]);
+		float weight = (set_fraction () - key () [index0]) / (key () [index1] - key () [index0]);
 
-	interpolate (index0, index1, math::clamp (weight, 0.0f, 1.0f));
+		interpolate (index0, index1, math::clamp (weight, 0.0f, 1.0f));
+	}
 }
 
 void

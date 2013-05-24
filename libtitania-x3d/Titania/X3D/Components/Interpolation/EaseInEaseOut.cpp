@@ -56,16 +56,14 @@ namespace titania {
 namespace X3D {
 
 EaseInEaseOut::Fields::Fields () :
-	set_fraction (new SFFloat ()),
 	easeInEaseOut (new MFVec2f ()),
-	key (new MFFloat ()),
 	modifiedFraction_changed (new SFFloat ())
 { }
 
 EaseInEaseOut::EaseInEaseOut (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DNode (),                                                    
-	     fields ()                                                     
+	X3DInterpolatorNode (),                                                    
+	             fields ()                                                     
 {
 	setComponent ("Interpolation");
 	setTypeName ("EaseInEaseOut");
@@ -84,8 +82,54 @@ EaseInEaseOut::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-EaseInEaseOut::interpolate (size_t index, float weight)
-{ }
+EaseInEaseOut::initialize ()
+{
+	X3DInterpolatorNode::initialize ();
+
+	easeInEaseOut () .addInterest (this, &EaseInEaseOut::set_keyValue);
+}
+
+void
+EaseInEaseOut::set_keyValue ()
+{
+	if (easeInEaseOut () .size () < key () .size ())
+		easeInEaseOut () .resize (key () .size (), easeInEaseOut () .size () ? easeInEaseOut () .back () : SFVec2f ());
+}
+
+void
+EaseInEaseOut::interpolate (size_t index0, size_t index1, float weight)
+{
+	float easeOut = easeInEaseOut () [index0] .getY ();
+	float easeIn  = easeInEaseOut () [index1] .getX ();
+	float sum     = easeOut * easeIn;
+	
+	if (sum < 0)
+		modifiedFraction_changed () = weight;
+		
+	else
+	{	
+		if (sum > 1)
+		{
+			easeIn  /= sum;
+			easeOut /= sum;
+		}
+		
+		float t = 1 / (2 - easeOut - easeIn);
+		
+		if (weight < easeOut)
+		{
+			modifiedFraction_changed () = (t / easeOut) * math::sqr (weight);
+		}
+		else if (weight < 1 - easeIn)
+		{
+			modifiedFraction_changed () = t * (2 * weight - easeOut);
+		}
+		else
+		{
+			modifiedFraction_changed () = 1 - ((t * math::sqr (1 - weight)) / easeIn);
+		}
+	}
+}
 
 } // X3D
 } // titania

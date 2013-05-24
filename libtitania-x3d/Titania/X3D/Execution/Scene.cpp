@@ -109,7 +109,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		layerSet                                        = rootLayerSet;
 	}
 
-	else
+	else // remove else and add layer set to layer 0 children, this syncs rootNodes and layer 0 children
 		layerSet -> getLayers () [0] -> children () .emplace_back (rootNode);
 
 	X3DScene::addRootNode (rootNode);

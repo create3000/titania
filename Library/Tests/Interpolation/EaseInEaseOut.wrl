@@ -1,0 +1,31 @@
+#X3D V3.0 utf8
+
+META "title" "EaseInEaseOut"
+
+DEF Box Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box { }
+  }
+}
+
+DEF Timer TimeSensor {
+  cycleInterval 10
+  loop TRUE
+}
+
+DEF Ease EaseInEaseOut {
+  easeInEaseOut [ 0 0, 1 1, 0 0 ]
+  key [ 0, 0.5, 1 ]
+}
+
+DEF Pos PositionInterpolator {
+  key [ 0, 0.5, 1 ]
+  keyValue [ -5 0 0, 0 0 0, 5 0 0 ]
+}
+
+ROUTE Timer.fraction_changed TO Ease.set_fraction
+ROUTE Ease.modifiedFraction_changed TO Pos.set_fraction
+ROUTE Pos.value_changed TO Box.set_translation

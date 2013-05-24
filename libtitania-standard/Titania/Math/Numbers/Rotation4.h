@@ -538,14 +538,31 @@ operator / (const Type & t, const rotation4 <Type> & rotation)
 }
 
 ///  Spherical linear interpolate between @a source quaternion and @a destination quaternion by an amout of @a t.
-template <class Type>
+template <class Type, class T>
 inline
 rotation4 <Type>
 slerp (const rotation4 <Type> & source,
        const rotation4 <Type> & destination,
-       const Type & t)
+       const T & t)
 {
 	return rotation4 <Type> (math::slerp (source .quat (), destination .quat (), t));
+}
+
+///  Spherical cubic interpolation @a r0, @a r1, @a r2 and @a r3 by an amout of @a t.
+template <class Type, class T>
+inline
+rotation4 <Type>
+squad (const rotation4 <Type> & r0,
+       const rotation4 <Type> & r1,
+       const rotation4 <Type> & r2,
+       const rotation4 <Type> & r3,
+       const T & t)
+{
+	return rotation4 <Type> (squad (r0 .quad (),
+	                                r1 .quad (),
+	                                r2 .quad (),
+	                                r3 .quad (),
+	                                t));
 }
 
 ///  @relates rotation4

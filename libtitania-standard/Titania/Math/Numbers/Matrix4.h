@@ -69,30 +69,30 @@
 namespace titania {
 namespace math {
 
-template <typename Type>
+template <class Type>
 class matrix4;
 
-template <typename Type>
+template <class Type>
 inline
 matrix4 <Type>
 operator ! (const matrix4 <Type> & matrix);
 
-template <typename Type>
+template <class Type>
 inline
 matrix4 <Type>
 transpose (const matrix4 <Type> & matrix);
 
-template <typename Type>
+template <class Type>
 inline
 matrix4 <Type>
 operator ~ (const matrix4 <Type> & matrix);
 
-template <typename Type>
+template <class Type>
 inline
 matrix4 <Type>
 inverse (const matrix4 <Type> & matrix);
 
-template <typename Type>
+template <class Type>
 inline
 matrix4 <Type>
 operator * (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs);
@@ -817,8 +817,8 @@ matrix4 <Type>::operator *= (const Type & t)
 	return *this;
 }
 
-template <typename Type>
-template <typename T>
+template <class Type>
+template <class T>
 matrix4 <Type> &
 matrix4 <Type>::operator *= (const matrix4 <T> & matrix)
 {
