@@ -17,8 +17,8 @@ DEF Timer TimeSensor {
 }
 
 DEF Ease EaseInEaseOut {
-  easeInEaseOut [ 0 0, 1 1, 0 0 ]
-  key [ 0, 0.5, 1 ]
+  key [ 0, 1 ]
+  easeInEaseOut [ 0 1, 1 0 ]
 }
 
 DEF Pos PositionInterpolator {

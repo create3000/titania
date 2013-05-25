@@ -70,8 +70,8 @@ EaseInEaseOut::EaseInEaseOut (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",                 metadata ());
 	addField (inputOnly,   "set_fraction",             set_fraction ());
-	addField (inputOutput, "easeInEaseOut",            easeInEaseOut ());
 	addField (inputOutput, "key",                      key ());
+	addField (inputOutput, "easeInEaseOut",            easeInEaseOut ());
 	addField (outputOnly,  "modifiedFraction_changed", modifiedFraction_changed ());
 }
 
@@ -101,7 +101,7 @@ EaseInEaseOut::interpolate (size_t index0, size_t index1, float weight)
 {
 	float easeOut = easeInEaseOut () [index0] .getY ();
 	float easeIn  = easeInEaseOut () [index1] .getX ();
-	float sum     = easeOut * easeIn;
+	float sum     = easeOut + easeIn;
 	
 	if (sum < 0)
 		modifiedFraction_changed () = weight;
