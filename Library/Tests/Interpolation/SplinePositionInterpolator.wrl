@@ -10,6 +10,7 @@ EXTERNPROTO LineTrail [
 "LineTrail.wrl"
 
 DEF Box Transform {
+  scale 0.1 0.1 0.1
   children Shape {
     appearance Appearance {
       material Material { }
@@ -40,6 +41,7 @@ DEF Interpolator SplinePositionInterpolator {
   keyValue [ -5 0 0, 0 -2 0, 5 0 0 ]
 }
 
+ROUTE Timer.cycleTime TO Trail.set_resetTime
 ROUTE Timer.fraction_changed TO Interpolator.set_fraction
 ROUTE Interpolator.value_changed TO Box.set_translation
 ROUTE Interpolator.value_changed TO Trail.set_point

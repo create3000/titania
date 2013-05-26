@@ -112,7 +112,7 @@ SplinePositionInterpolator::set_keyVelocity ()
 	if (keyVelocity () .size ())
 	{
 		if (keyVelocity () .size () < key () .size ())
-			keyVelocity () .resize (key () .size (), keyVelocity () .size () ? keyVelocity () .back () : SFVec3f ());
+			keyVelocity () .resize (key () .size ());
 	}
 	
 	spline .generate (closed (), key (), keyValue (), keyVelocity (), normalizeVelocity ());

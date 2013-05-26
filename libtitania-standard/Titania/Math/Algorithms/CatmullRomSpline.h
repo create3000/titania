@@ -92,7 +92,7 @@ template <class Key, class KeyValue, class KeyVelocity>
 void
 catmull_rom_spline <Type, Scalar>::generate (bool closed, const Key & key, const KeyValue keyValue, const KeyVelocity & keyVelocity, bool normalizeVelocity)
 {
-	std::vector <Type>   T;
+	std::vector <Type>   T, T0, T1;
 	std::vector <Scalar> Fp, Fm;
 
 	T  .reserve (key .size ());
@@ -101,76 +101,84 @@ catmull_rom_spline <Type, Scalar>::generate (bool closed, const Key & key, const
 	Fp .reserve (key .size ());
 	Fm .reserve (key .size ());
 
-	// T
-
-	if (keyVelocity .empty ())
+	if (key .size () > 1)
 	{
-		if (closed)
-			T .emplace_back ((keyValue [1] - keyValue [keyValue .size () - 2]) / 2.0f);
+		// T
 
-		else
-			T .emplace_back ();
-
-		for (size_t i = 1, size = keyValue .size () - 1; i < size; ++ i)
-			T .emplace_back ((keyValue [i + 1] - keyValue [i - 1]) / 2.0f);
-
-		T .emplace_back (T . front ());
-	}
-	else
-	{
-		T .assign (keyVelocity .begin (), keyVelocity .end ());
-
-		if (normalizeVelocity)
+		if (keyVelocity .empty ())
 		{
-			Scalar Dtot = 0;
+			if (closed)
+				T .emplace_back ((keyValue [1] - keyValue [keyValue .size () - 2]) / 2.0f);
 
-			for (size_t i = 0, size = keyValue .size () - 1; i < size; ++ i)
-				Dtot += math::abs (keyValue [i] - keyValue [i + 1]);
+			else
+				T .emplace_back ();
 
-			for (auto & Ti : T)
-				Ti *= Dtot / math::abs (Ti);
+			for (size_t i = 1, size = keyValue .size () - 1; i < size; ++ i)
+				T .emplace_back ((keyValue [i + 1] - keyValue [i - 1]) / 2.0f);
+
+			T .emplace_back (T . front ());
+		}
+		else
+		{
+			T .assign (keyVelocity .begin (), keyVelocity .end ());
+
+			if (normalizeVelocity)
+			{
+				Scalar Dtot = 0;
+
+				for (size_t i = 0, size = keyValue .size () - 1; i < size; ++ i)
+					Dtot += math::abs (keyValue [i] - keyValue [i + 1]);
+
+				for (auto & Ti : T)
+					Ti *= Dtot / math::abs (Ti);
+			}
+		}
+
+		// Fm, Fp
+
+		if (closed)
+		{
+			size_t i_1 = key .size () - 1;
+			size_t i_2 = key .size () - 2;
+
+			Scalar d = key [1] - key [0] + key [i_1] - key [i_2];
+
+			Fm .emplace_back (2 * (key [1] - key [0]) / d);
+			Fp .emplace_back (2 * (key [i_1] - key [i_2]) / d);
+		}
+		else
+		{
+			Fm .emplace_back (1);
+			Fp .emplace_back (1);
+		}
+
+		for (size_t i = 1, size = key .size () - 1; i < size; ++ i)
+		{
+			Scalar d = key [i + 1] - key [i - 1];
+
+			Fm .emplace_back (2 * (key [i + 1] - key [i]) / d);
+			Fp .emplace_back (2 * (key [i] - key [i - 1]) / d);
+		}
+
+		Fm .emplace_back (Fm .front ());
+		Fp .emplace_back (Fp .front ());
+
+		// T0, T1
+
+		for (size_t i = 0, size = T .size (); i < size; ++ i)
+		{
+			T0 .emplace_back (Fp [i] * T [i]);
+			T1 .emplace_back (Fm [i] * T [i]);
 		}
 	}
-
-	// Fm, Fp
-
-	if (closed)
-	{
-		size_t i_1 = key .size () - 1;
-		size_t i_2 = key .size () - 2;
-
-		Scalar d = key [1] - key [0] + key [i_1] - key [i_2];
-
-		Fm .emplace_back (2 * (key [1] - key [0]) / d);
-		Fp .emplace_back (2 * (key [i_1] - key [i_2]) / d);
-	}
 	else
 	{
-		Fm .emplace_back (1);
-		Fp .emplace_back (1);
+		T0 .emplace_back ();
+		T1 .emplace_back ();
 	}
 
-	for (size_t i = 1, size = key .size () - 1; i < size; ++ i)
-	{
-		Scalar d = key [i + 1] - key [i - 1];
-
-		Fm .emplace_back (2 * (key [i + 1] - key [i]) / d);
-		Fp .emplace_back (2 * (key [i] - key [i - 1]) / d);
-	}
-
-	Fm .emplace_back (Fm .front ());
-	Fp .emplace_back (Fp .front ());
-
-	// T0, T1
-
-	for (size_t i = 0, size = T .size (); i < size; ++ i)
-	{
-		T0 .emplace_back (Fp [i] * T [i]);
-		T1 .emplace_back (Fm [i] * T [i]);
-	}
-
-	T0 .shrink_to_fit ();
-	T1 .shrink_to_fit ();
+	this -> T0 = std::move (T0);
+	this -> T1 = std::move (T1);
 }
 
 template <class Type, class Scalar>
