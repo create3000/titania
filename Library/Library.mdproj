@@ -2051,6 +2051,8 @@
     <None Include="Tests\Interpolation\SplinePositionInterpolator.wrl" />
     <None Include="Tests\Interpolation\SplinePositionInterpolator2.wrl" />
     <None Include="Tests\Interpolation\LineTrail.wrl" />
+    <None Include="Tests\Interpolation\SplineScalarInterpolator.wrl" />
+    <None Include="Tests\Interpolation\ComposeSFVec3f.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

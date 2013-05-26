@@ -1,5 +1,16 @@
 2013-05-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFVec2.h:
+	* SFVec4.h:
+	* SplineScalarInterpolator.h:
+	* SplineScalarInterpolator.cpp:
+	* SplinePositionInterpolator.h:
+	* SplinePositionInterpolator.cpp:
+	* SplinePositionInterpolator2D.h:
+	* SplinePositionInterpolator2D.cpp: 
+
+2013-05-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SplinePositionInterpolator.cpp: 
 
 2013-05-26  Holger Seelig  <holger.seelig@yahoo.de>

@@ -48,104 +48,19 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_INTERPOLATION_SPLINE_POSITION_INTERPOLATOR2D_H__
-#define __TITANIA_X3D_COMPONENTS_INTERPOLATION_SPLINE_POSITION_INTERPOLATOR2D_H__
-
-#include "../Interpolation/X3DInterpolatorNode.h"
-#include <Titania/Math/Algorithms/CatmullRomSpline.h>
+#include "CatmullRomSpline.h"
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-class SplinePositionInterpolator2D :
-	public X3DInterpolatorNode
-{
-public:
+template class catmull_rom_spline <float, float>;
+template class catmull_rom_spline <double, double>;
+template class catmull_rom_spline <vector2 <float>, float>;
+template class catmull_rom_spline <vector2 <double>, double>;
+template class catmull_rom_spline <vector3 <float>, float>;
+template class catmull_rom_spline <vector3 <double>, double>;
+template class catmull_rom_spline <vector4 <float>, float>;
+template class catmull_rom_spline <vector4 <double>, double>;
 
-	SplinePositionInterpolator2D (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
-
-	///  @name Fields
-
-	SFBool &
-	closed ()
-	{ return *fields .closed; }
-
-	const SFBool &
-	closed () const
-	{ return *fields .closed; }
-
-	MFVec2f &
-	keyValue ()
-	{ return *fields .keyValue; }
-
-	const MFVec2f &
-	keyValue () const
-	{ return *fields .keyValue; }
-
-	MFVec2f &
-	keyVelocity ()
-	{ return *fields .keyVelocity; }
-
-	const MFVec2f &
-	keyVelocity () const
-	{ return *fields .keyVelocity; }
-
-	SFBool &
-	normalizeVelocity ()
-	{ return *fields .normalizeVelocity; }
-
-	const SFBool &
-	normalizeVelocity () const
-	{ return *fields .normalizeVelocity; }
-
-	SFVec2f &
-	value_changed ()
-	{ return *fields .value_changed; }
-
-	const SFVec2f &
-	value_changed () const
-	{ return *fields .value_changed; }
-
-
-private:
-
-	virtual
-	void
-	initialize ();
-
-	virtual
-	void
-	set_keyValue ();
-
-	void
-	set_keyVelocity ();
-
-	virtual
-	void
-	interpolate (size_t, size_t, float);
-
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const closed;
-		MFVec2f* const keyValue;
-		MFVec2f* const keyVelocity;
-		SFBool* const normalizeVelocity;
-		SFVec2f* const value_changed;
-	};
-
-	Fields fields;
-
-	math::catmull_rom_spline <Vector2f, float> spline;
-
-};
-
-} // X3D
+} // math
 } // titania
-
-#endif

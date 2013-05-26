@@ -430,6 +430,71 @@ SFVec4 <ValueType>::toStream (std::ostream & ostream) const
 	ostream << Generator::Precision <scalar_type><< getValue ();
 }
 
+// Aritmetic operators.
+
+//@{
+template <class ValueType>
+inline
+ValueType
+operator - (const SFVec4 <ValueType> & vector)
+{
+	return -vector .getValue ();
+}
+//@}
+
+//@{
+template <class ValueType>
+inline
+ValueType
+operator + (const SFVec4 <ValueType> & lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs .getValue () + rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator + (const SFVec4 <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () + rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator + (const ValueType & lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs + rhs .getValue ();
+}
+//@}
+
+//@{
+template <class ValueType>
+inline
+ValueType
+operator - (const SFVec4 <ValueType> & lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs .getValue () - rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator - (const SFVec4 <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () - rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator - (const ValueType & lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs - rhs .getValue ();
+}
+//@}
+
+
 //extern template class X3DField <Vector4d>;
 //extern template class X3DField <Vector4f>;
 

@@ -58,6 +58,8 @@
 namespace titania {
 namespace math {
 
+using std::abs;
+
 ///  Calculate the square of @a value.
 template <class Type>
 inline

@@ -112,6 +112,7 @@
     <None Include="Titania\InputOutput\Sequence.h" />
     <None Include="Titania\InputOutput\String.h" />
     <None Include="Titania\InputOutput\Generator.h" />
+    <None Include="Titania\Math\Algorithms\CatmullRomSpline.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\Id.cpp" />
@@ -155,6 +156,7 @@
     <Compile Include="Titania\InputOutput\Sequence.cpp" />
     <Compile Include="Titania\InputOutput\String.cpp" />
     <Compile Include="Titania\InputOutput\Generator.cpp" />
+    <Compile Include="Titania\Math\Algorithms\CatmullRomSpline.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

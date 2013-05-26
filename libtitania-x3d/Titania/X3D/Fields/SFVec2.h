@@ -391,25 +391,51 @@ operator - (const SFVec2 <ValueType> & vector)
 template <class ValueType>
 inline
 ValueType
-operator + (const SFVec2 <ValueType> & a, const SFVec2 <ValueType> & b)
+operator + (const SFVec2 <ValueType> & lhs, const SFVec2 <ValueType> & rhs)
 {
-	return a .getValue () + b .getValue ();
+	return lhs .getValue () + rhs .getValue ();
 }
 
 template <class ValueType>
 inline
 ValueType
-operator + (const SFVec2 <ValueType> & a, const ValueType & b)
+operator + (const SFVec2 <ValueType> & lhs, const ValueType & rhs)
 {
-	return a .getValue () + b;
+	return lhs .getValue () + rhs;
 }
 
 template <class ValueType>
 inline
 ValueType
-operator + (const ValueType & a, const SFVec2 <ValueType> & b)
+operator + (const ValueType & lhs, const SFVec2 <ValueType> & rhs)
 {
-	return a + b .getValue ();
+	return lhs + rhs .getValue ();
+}
+//@}
+
+//@{
+template <class ValueType>
+inline
+ValueType
+operator - (const SFVec2 <ValueType> & lhs, const SFVec2 <ValueType> & rhs)
+{
+	return lhs .getValue () - rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator - (const SFVec2 <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () - rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator - (const ValueType & lhs, const SFVec2 <ValueType> & rhs)
+{
+	return lhs - rhs .getValue ();
 }
 //@}
 

@@ -1,0 +1,65 @@
+#X3D V3.0 utf8
+
+META "title" "SplineScalarInterpolator"
+
+EXTERNPROTO ComposeSFVec3f [
+  inputOutput SFFloat x
+  inputOutput SFFloat y
+  inputOutput SFFloat z
+  outputOnly  SFVec3f value_changed
+]
+"ComposeSFVec3f.wrl"
+
+EXTERNPROTO LineTrail [
+  inputOutput    SFTime  cycleInterval
+  inputOutput    SFTime  resetTime
+  inputOutput    SFVec3f point
+  initializeOnly SFInt32 dimension
+]
+"LineTrail.wrl"
+
+Transform {
+  translation -5 0 0
+  scale 10 1 1
+  children [
+    DEF Box Transform {
+      scale 0.01 0.1 0.1
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Box { }
+      }
+    }
+    Shape {
+      appearance Appearance {
+        material Material {
+          emissiveColor 0 0.8 0.8
+        }
+      }
+      geometry DEF Trail LineTrail {
+        cycleInterval 0.1
+        dimension 50
+      }
+    }
+  ]
+}
+
+DEF Timer TimeSensor {
+  cycleInterval 10
+  loop TRUE
+}
+
+DEF Interpolator SplineScalarInterpolator {
+  key [ 0, 0.25, 0.5, 0.75, 1 ]
+  keyValue [ 0, -2, 2, -1, 0 ]
+}
+
+DEF Composer ComposeSFVec3f { }
+
+ROUTE Timer.cycleTime TO Trail.set_resetTime
+ROUTE Timer.fraction_changed TO Interpolator.set_fraction
+ROUTE Timer.fraction_changed TO Composer.set_x
+ROUTE Interpolator.value_changed TO Composer.set_y
+ROUTE Composer.value_changed TO Box.set_translation
+ROUTE Composer.value_changed TO Trail.set_point

@@ -2,11 +2,13 @@
 
 PROTO LineTrail [
   exposedField SFTime  cycleInterval 1
+  exposedField SFTime  resetTime 0
   exposedField SFVec3f point 0 0 0
   field        SFInt32 dimension 20
 ]
 {
   PROTO Fields [
+    exposedField SFTime  resetTime 0
     exposedField SFVec3f point 0 0 0
   ]
   {
@@ -18,6 +20,7 @@ PROTO LineTrail [
   }
 
   DEF LineTrail Script {
+    eventIn SFTime  set_resetTime
     eventIn SFVec3f set_point
     eventIn SFTime  set_time
     field   SFInt32 dimension IS dimension
@@ -28,6 +31,7 @@ PROTO LineTrail [
     }
     field   SFNode  trail USE Trail
     field   SFNode  fields DEF Fields Fields {
+      resetTime IS resetTime
       point IS point
     }
     field   SFNode  self USE LineTrail
@@ -36,6 +40,12 @@ PROTO LineTrail [
   
 function initialize ()
 { }
+
+function set_resetTime (value, time)
+{
+	trail .set_coordIndex       = new MFInt32 ();
+	trail .coord .point .length = 0;;
+}
 
 function set_point (value, time)
 {
@@ -60,6 +70,7 @@ function set_time (value, time)
     mustEvaluate TRUE
   }
 
+  ROUTE Fields.resetTime_changed TO LineTrail.set_resetTime
   ROUTE Fields.point_changed TO LineTrail.set_point
   ROUTE Timer.cycleTime TO LineTrail.set_time
 }

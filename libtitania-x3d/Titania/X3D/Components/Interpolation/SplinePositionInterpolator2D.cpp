@@ -73,8 +73,8 @@ SplinePositionInterpolator2D::SplinePositionInterpolator2D (X3DExecutionContext*
 
 	addField (inputOutput, "metadata",          metadata ());
 	addField (inputOnly,   "set_fraction",      set_fraction ());
-	addField (inputOutput, "key",               key ());
 	addField (inputOutput, "closed",            closed ());
+	addField (inputOutput, "key",               key ());
 	addField (inputOutput, "keyValue",          keyValue ());
 	addField (inputOutput, "keyVelocity",       keyVelocity ());
 	addField (inputOutput, "normalizeVelocity", normalizeVelocity ());
@@ -92,7 +92,8 @@ SplinePositionInterpolator2D::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue () .addInterest (this, &SplinePositionInterpolator2D::set_keyValue);
+	keyValue ()    .addInterest (this, &SplinePositionInterpolator2D::set_keyValue);
+	keyVelocity () .addInterest (this, &SplinePositionInterpolator2D::set_keyVelocity);
 }
 
 void
@@ -100,11 +101,27 @@ SplinePositionInterpolator2D::set_keyValue ()
 {
 	if (keyValue () .size () < key () .size ())
 		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFVec2f ());
+
+	set_keyVelocity ();
+}
+
+void
+SplinePositionInterpolator2D::set_keyVelocity ()
+{
+	if (keyVelocity () .size ())
+	{
+		if (keyVelocity () .size () < key () .size ())
+			keyVelocity () .resize (key () .size (), keyVelocity () .size () ? keyVelocity () .back () : SFVec2f ());
+	}
+	
+	spline .generate (closed (), key (), keyValue (), keyVelocity (), normalizeVelocity ());
 }
 
 void
 SplinePositionInterpolator2D::interpolate (size_t index0, size_t index1, float weight)
-{ }
+{
+	value_changed () = spline .evaluate (index0, index1, weight, keyValue ());
+}
 
 } // X3D
 } // titania

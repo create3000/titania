@@ -66,9 +66,8 @@ SplinePositionInterpolator::Fields::Fields () :
 SplinePositionInterpolator::SplinePositionInterpolator (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
-	             fields (),                                                    
-	                 T0 (),                                                    
-	                 T1 ()                                                     
+	             fields (),
+	             spline ()                                                    
 {
 	setComponent ("Interpolation");
 	setTypeName ("SplinePositionInterpolator");
@@ -96,8 +95,6 @@ SplinePositionInterpolator::initialize ()
 
 	keyValue ()    .addInterest (this, &SplinePositionInterpolator::set_keyValue);
 	keyVelocity () .addInterest (this, &SplinePositionInterpolator::set_keyVelocity);
-
-	set_keyVelocity ();
 }
 
 void
@@ -117,105 +114,14 @@ SplinePositionInterpolator::set_keyVelocity ()
 		if (keyVelocity () .size () < key () .size ())
 			keyVelocity () .resize (key () .size (), keyVelocity () .size () ? keyVelocity () .back () : SFVec3f ());
 	}
-
-	std::vector <Vector3f> T;
-	std::vector <float>    Fp, Fm;
-
-	T  .reserve (key () .size ());
-	T0 .reserve (key () .size ());
-	T1 .reserve (key () .size ());
-	Fp .reserve (key () .size ());
-	Fm .reserve (key () .size ());
-
-	// T
-
-	if (keyVelocity () .empty ())
-	{
-		if (closed ())
-			T .emplace_back ((keyValue () [1] - keyValue () [keyValue () .size () - 2]) / 2.0f);
-
-		else
-			T .emplace_back ();
-
-		for (size_t i = 1, size = keyValue () .size () - 1; i < size; ++ i)
-			T .emplace_back ((keyValue () [i + 1] - keyValue () [i - 1]) / 2.0f);
-
-		T .emplace_back (T . front ());
-	}
-	else
-	{
-		T .assign (keyVelocity () .begin (), keyVelocity () .end ());
-
-		if (normalizeVelocity ())
-		{
-			float Dtot = 0;
-
-			for (size_t i = 0, size = keyValue () .size () - 1; i < size; ++ i)
-				Dtot += math::abs (keyValue () [i] - keyValue () [i + 1]);
-
-			for (auto & Ti : T)
-				Ti *= Dtot / math::abs (Ti);
-		}
-	}
-
-	// Fm, Fp
-
-	if (closed ())
-	{
-		size_t i_1 = key () .size () - 1;
-		size_t i_2 = key () .size () - 2;
-
-		float d = key () [1] - key () [0] + key () [i_1] - key () [i_2];
-
-		Fm .emplace_back (2 * (key () [1] - key () [0]) / d);
-		Fp .emplace_back (2 * (key () [i_1] - key () [i_2]) / d);
-	}
-	else
-	{
-		Fm .emplace_back (1);
-		Fp .emplace_back (1);
-	}
-
-	for (size_t i = 1, size = key () .size () - 1; i < size; ++ i)
-	{
-		float d = key () [i + 1] - key () [i - 1];
-
-		Fm .emplace_back (2 * (key () [i + 1] - key () [i]) / d);
-		Fp .emplace_back (2 * (key () [i] - key () [i - 1]) / d);
-	}
-
-	Fm .emplace_back (Fm .front ());
-	Fp .emplace_back (Fp .front ());
-
-	// T0, T1
-
-	for (size_t i = 0, size = T .size (); i < size; ++ i)
-	{
-		T0 .emplace_back (Fp [i] * T [i]);
-		T1 .emplace_back (Fm [i] * T [i]);
-	}
-
-	T0 .shrink_to_fit ();
-	T1 .shrink_to_fit ();
+	
+	spline .generate (closed (), key (), keyValue (), keyVelocity (), normalizeVelocity ());
 }
 
 void
 SplinePositionInterpolator::interpolate (size_t index0, size_t index1, float weight)
 {
-	Vector4f S (std::pow (weight, 3), math::sqr (weight), weight, 1);
-
-	static Matrix4f H (2, -2,  1,  1,
-	                   -3,  3, -2, -1,
-	                   0,  0,  1,  0,
-	                   1,  0,  0,  0);
-
-	Vector3f C [4] = { keyValue () [index0], keyValue () [index1], T0 [index0], T1 [index1] };
-
-	Vector4f SH = S * H;
-
-	value_changed () = Vector3f (SH [0] * C [0] [0] + SH [1] * C [1] [0] + SH [2] * C [2] [0] + SH [3] * C [3] [0],
-	                             SH [0] * C [0] [1] + SH [1] * C [1] [1] + SH [2] * C [2] [1] + SH [3] * C [3] [1],
-	                             SH [0] * C [0] [2] + SH [1] * C [1] [2] + SH [2] * C [2] [2] + SH [3] * C [3] [2]);
+	value_changed () = spline .evaluate (index0, index1, weight, keyValue ());
 }
 
 } // X3D

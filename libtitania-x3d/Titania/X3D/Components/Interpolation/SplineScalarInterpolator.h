@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_INTERPOLATION_SPLINE_SCALAR_INTERPOLATOR_H__
 
 #include "../Interpolation/X3DInterpolatorNode.h"
+#include <Titania/Math/Algorithms/CatmullRomSpline.h>
 
 namespace titania {
 namespace X3D {
@@ -120,6 +121,9 @@ private:
 	void
 	set_keyValue ();
 
+	void
+	set_keyVelocity ();
+
 	virtual
 	void
 	interpolate (size_t, size_t, float);
@@ -136,6 +140,8 @@ private:
 	};
 
 	Fields fields;
+
+	math::catmull_rom_spline <float, float> spline;
 
 };
 
