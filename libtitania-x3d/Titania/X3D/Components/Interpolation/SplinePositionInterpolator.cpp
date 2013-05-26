@@ -66,8 +66,8 @@ SplinePositionInterpolator::Fields::Fields () :
 SplinePositionInterpolator::SplinePositionInterpolator (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
-	             fields (),
-	                 T0 (),
+	             fields (),                                                    
+	                 T0 (),                                                    
 	                 T1 ()                                                     
 {
 	setComponent ("Interpolation");
@@ -112,8 +112,11 @@ SplinePositionInterpolator::set_keyValue ()
 void
 SplinePositionInterpolator::set_keyVelocity ()
 {
-	if (keyVelocity () .size () < key () .size ())
-		keyVelocity () .resize (key () .size (), keyVelocity () .size () ? keyVelocity () .back () : SFVec3f ());
+	if (keyVelocity () .size ())
+	{
+		if (keyVelocity () .size () < key () .size ())
+			keyVelocity () .resize (key () .size (), keyVelocity () .size () ? keyVelocity () .back () : SFVec3f ());
+	}
 
 	std::vector <Vector3f> T;
 	std::vector <float>    Fp, Fm;
@@ -161,7 +164,7 @@ SplinePositionInterpolator::set_keyVelocity ()
 	{
 		size_t i_1 = key () .size () - 1;
 		size_t i_2 = key () .size () - 2;
-		
+
 		float d = key () [1] - key () [0] + key () [i_1] - key () [i_2];
 
 		Fm .emplace_back (2 * (key () [1] - key () [0]) / d);
@@ -176,7 +179,7 @@ SplinePositionInterpolator::set_keyVelocity ()
 	for (size_t i = 1, size = key () .size () - 1; i < size; ++ i)
 	{
 		float d = key () [i + 1] - key () [i - 1];
-	
+
 		Fm .emplace_back (2 * (key () [i + 1] - key () [i]) / d);
 		Fp .emplace_back (2 * (key () [i] - key () [i - 1]) / d);
 	}
@@ -191,7 +194,7 @@ SplinePositionInterpolator::set_keyVelocity ()
 		T0 .emplace_back (Fp [i] * T [i]);
 		T1 .emplace_back (Fm [i] * T [i]);
 	}
-	
+
 	T0 .shrink_to_fit ();
 	T1 .shrink_to_fit ();
 }
@@ -201,10 +204,10 @@ SplinePositionInterpolator::interpolate (size_t index0, size_t index1, float wei
 {
 	Vector4f S (std::pow (weight, 3), math::sqr (weight), weight, 1);
 
-	Matrix4f H (2, -2,  1,  1,
-	            -3,  3, -2, -1,
-	            0,  0,  1,  0,
-	            1,  0,  0,  0);
+	static Matrix4f H (2, -2,  1,  1,
+	                   -3,  3, -2, -1,
+	                   0,  0,  1,  0,
+	                   1,  0,  0,  0);
 
 	Vector3f C [4] = { keyValue () [index0], keyValue () [index1], T0 [index0], T1 [index1] };
 
