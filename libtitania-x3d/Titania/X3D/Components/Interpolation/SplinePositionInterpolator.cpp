@@ -66,7 +66,9 @@ SplinePositionInterpolator::Fields::Fields () :
 SplinePositionInterpolator::SplinePositionInterpolator (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
-	             fields ()                                                     
+	             fields (),
+	                 T0 (),
+	                 T1 ()                                                     
 {
 	setComponent ("Interpolation");
 	setTypeName ("SplinePositionInterpolator");
@@ -92,7 +94,10 @@ SplinePositionInterpolator::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue () .addInterest (this, &SplinePositionInterpolator::set_keyValue);
+	keyValue ()    .addInterest (this, &SplinePositionInterpolator::set_keyValue);
+	keyVelocity () .addInterest (this, &SplinePositionInterpolator::set_keyVelocity);
+
+	set_keyVelocity ();
 }
 
 void
@@ -100,12 +105,17 @@ SplinePositionInterpolator::set_keyValue ()
 {
 	if (keyValue () .size () < key () .size ())
 		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFVec3f ());
+
+	set_keyVelocity ();
 }
 
 void
-SplinePositionInterpolator::interpolate (size_t index0, size_t index1, float weight)
+SplinePositionInterpolator::set_keyVelocity ()
 {
-	std::vector <Vector3f> T, T0, T1;
+	if (keyVelocity () .size () < key () .size ())
+		keyVelocity () .resize (key () .size (), keyVelocity () .size () ? keyVelocity () .back () : SFVec3f ());
+
+	std::vector <Vector3f> T;
 	std::vector <float>    Fp, Fm;
 
 	T  .reserve (key () .size ());
@@ -181,9 +191,14 @@ SplinePositionInterpolator::interpolate (size_t index0, size_t index1, float wei
 		T0 .emplace_back (Fp [i] * T [i]);
 		T1 .emplace_back (Fm [i] * T [i]);
 	}
+	
+	T0 .shrink_to_fit ();
+	T1 .shrink_to_fit ();
+}
 
-	//
-
+void
+SplinePositionInterpolator::interpolate (size_t index0, size_t index1, float weight)
+{
 	Vector4f S (std::pow (weight, 3), math::sqr (weight), weight, 1);
 
 	Matrix4f H (2, -2,  1,  1,
@@ -198,212 +213,6 @@ SplinePositionInterpolator::interpolate (size_t index0, size_t index1, float wei
 	value_changed () = Vector3f (SH [0] * C [0] [0] + SH [1] * C [1] [0] + SH [2] * C [2] [0] + SH [3] * C [3] [0],
 	                             SH [0] * C [0] [1] + SH [1] * C [1] [1] + SH [2] * C [2] [1] + SH [3] * C [3] [1],
 	                             SH [0] * C [0] [2] + SH [1] * C [1] [2] + SH [2] * C [2] [2] + SH [3] * C [3] [2]);
-
-	//	{
-	//		std::vector <Vector3f> T;
-	//		std::vector <float>    F1;
-	//		std::vector <float>    F2;
-	//		Vector3f               T0;
-	//		Vector3f               T1;
-	//
-	//		if (index0 >= 0 && (index0 + 1) < keyValue () .size ())
-	//		{
-	//
-	//			int   tMinus1      = (key () .size () - 2);
-	//			int   tN           = 1;
-	//			float D            = 0.0;
-	//			bool  specified    = false;
-	//			bool  notSpecified = false;
-	//			bool  ignoreClosed = false;
-	//
-	//			//if the first and last value in keyValue aren't the same, ignore closed
-	//			if ((math::norm (keyValue () [0] - keyValue () [(key () .size () - 1)])) > 0.00001)
-	//			{
-	//				ignoreClosed = true;
-	//			}
-	//
-	//			//Calculate  D = distance from keyValue[0] -> keyValue[N-1]
-	//			for (size_t i = 0; i < key () .size () - 1; i ++)  //n=keys.size()
-	//			{
-	//				D = D + (math::abs (keyValue () [i] - keyValue () [i + 1]));
-	//			}
-	//
-	//			// Calculate T for the different conditions
-	//			if (keyVelocity ().size () == keyValue () .size ())
-	//			{
-	//				if (! normalizeVelocity ())
-	//				{
-	//					T .assign (keyVelocity () .begin (), keyVelocity () .end ());
-	//				}
-	//				else if (normalizeVelocity ())
-	//				{
-	//					Vector3f a;
-	//
-	//					for (size_t i = 0; i < key () .size (); i ++)
-	//					{
-	//						a = keyVelocity () [i];
-	//						T .push_back (keyVelocity () [i] * (D / math::abs (a)));
-	//					}
-	//				}
-	//
-	//				specified = true;
-	//			}
-	//
-	//			else if (closed () && ! ignoreClosed)
-	//			{
-	//				for (size_t i = 0; i < key () .size (); i ++)
-	//				{
-	//					if (i == 0)
-	//					{
-	//						T .push_back ((keyValue () [i + 1] - keyValue () [tMinus1]) / 2.0f);
-	//					}
-	//					else if (i == (key () .size () - 1))
-	//					{
-	//						T .push_back ((keyValue () [tN] - keyValue () [i - 1]) / 2.0f);
-	//					}
-	//					else
-	//					{
-	//						T .push_back ((keyValue () [i + 1] - keyValue () [i - 1]) / 2.0f);
-	//					}
-	//				}
-	//			}
-	//
-	//			else if (! closed () or ignoreClosed)
-	//			{
-	//				T .push_back (Vector3f (0, 0, 0));
-	//
-	//				for (size_t i = 1; i < key () .size () - 1; i ++)
-	//				{
-	//					T .push_back ((keyValue () [i + 1] - keyValue () [i - 1]) / 2.0f);
-	//				}
-	//
-	//				notSpecified = true;
-	//			}
-	//
-	//			if (keyVelocity ().size () == 2)
-	//			{
-	//				if (! normalizeVelocity ())
-	//				{
-	//					T [0] = keyVelocity () [0];
-	//
-	//					if (notSpecified)
-	//					{
-	//						T .push_back (keyVelocity () [1]);
-	//					}
-	//					else
-	//					{
-	//						T [key () .size () - 1] = keyVelocity () [1];
-	//					}
-	//				}
-	//				else if (normalizeVelocity ())
-	//				{
-	//					Vector3f a = keyVelocity () [0];
-	//					T [0] = (keyVelocity () [0] * (D / (math::abs (a))));
-	//
-	//					if (notSpecified)
-	//					{
-	//						Vector3f b = keyVelocity () [1];
-	//						T .push_back (keyVelocity () [1] * (D / math::abs (b)));
-	//					}
-	//					else
-	//					{
-	//						Vector3f b = keyVelocity () [1];
-	//						T [(key () .size () - 1)] = (keyVelocity () [1] * (D / math::abs (b)));
-	//					}
-	//				}
-	//
-	//				specified = true;
-	//			}     // Calculations for T are ready
-	//
-	//			//Calculate F1, F2, T0, T1
-	//			if (! closed () or specified or ignoreClosed)
-	//			{
-	//				for (size_t i = 1; i < key () .size () - 1; i ++)
-	//				{
-	//					F1 .push_back (2 * ((key () [i] - key () [i - 1]) / (key () [i + 1] - key () [i - 1])));
-	//					F2 .push_back (2 * ((key () [i + 1] - key () [i]) / (key () [i + 1] - key () [i - 1])));
-	//				}
-	//
-	//				if ((index0 > 0) && (index0 < key () .size () - 2))
-	//				{
-	//					T0 = (T [index0] * F1 [index0 - 1]);
-	//					T1 = (F2 [index0] * T [index0 + 1]);
-	//				}
-	//				else if (specified && (index0 == 0))
-	//				{
-	//					T0 = T [0];
-	//					T1 = (F2 [index0] * T [index0 + 1]);
-	//				}
-	//				else if (notSpecified && (index0 == 0))
-	//				{
-	//					T0 = Vector3f (0, 0, 0);
-	//					T1 = (F2 [index0] * T [index0 + 1]);
-	//				}
-	//				else if (specified && (index0 == (key () .size () - 2)))
-	//				{
-	//					T0 = keyValue () [key () .size () - 1];
-	//					T1 = T [key () .size () - 1];
-	//				}
-	//				else if (notSpecified && (index0 == (key () .size () - 1)))
-	//				{
-	//					T0 = (F1 [index0 - 1] * T [index0]);
-	//					T1 = Vector3f (0, 0, 0);
-	//				}
-	//			}
-	//
-	//			else if (closed () && ! ignoreClosed)
-	//			{
-	//				for (size_t i = 0; i < key () .size (); i ++)
-	//				{
-	//					if (i == 0)
-	//					{
-	//						F1 .push_back (2 * ((key () [i] - key () [tMinus1]) / (key () [i + 1] - key () [tMinus1])));
-	//						F2 .push_back (2 * ((key () [i + 1] - key () [i]) / (key () [i + 1] - key () [tMinus1])));
-	//					}
-	//					else if (i == (key () .size () - 1))
-	//					{
-	//						F1 .push_back ((key () [i] - key () [i - 1]) / (key () [tN] - key () [i - 1]));
-	//						F2 .push_back (2 * ((key () [tN] - key () [i]) / (key () [tN] - key () [i - 1])));
-	//					}
-	//					else
-	//					{
-	//						F1 .push_back (2 * ((key () [i] - key () [i - 1]) / (key () [i + 1] - key () [i - 1])));
-	//						F2 .push_back (2 * ((key () [i + 1] - key () [i]) / (key () [i + 1] - key () [i - 1])));
-	//					}
-	//				}
-	//
-	//				T0 = (F1 [index0] * T [index0]);
-	//				T1 = (F2 [index0 + 1] * T [index0 + 1]);
-	//			}
-	//
-	//			std::vector <Vector3f> C;
-	//			C .push_back (keyValue () [index0]);
-	//			C .push_back (keyValue () [index0 + 1]);
-	//			C .push_back (T0);
-	//			C .push_back (T1);
-	//
-	//			Vector4f S = Vector4f (std::pow (weight, 3), std::pow (weight, 2), weight, 1);
-	//
-	//			Matrix4f H = Matrix4f (2, -2, 1, 1, -3, 3, -2, -1, 0, 0, 1, 0, 1, 0, 0, 0);
-	//
-	//			Vector3f HC0 = Vector3f ((H [0] [0] * C [0] [0] + H [0] [1] * C [1] [0] + H [0] [2] * C [2] [0] + H [0] [3] * C [3] [0]), (H [0] [0] * C [0] [1] + H [0] [1] * C [1] [1] + H [0] [2] * C [2] [1] + H [0] [3] * C [3] [1]), (H [0] [0] * C [0] [2] + H [0] [1] * C [1] [2] + H [0] [2] * C [2] [2] + H [0] [3] * C [3] [2]));
-	//			Vector3f HC1 = Vector3f ((H [1] [0] * C [0] [0] + H [1] [1] * C [1] [0] + H [1] [2] * C [2] [0] + H [1] [3] * C [3] [0]), (H [1] [0] * C [0] [1] + H [1] [1] * C [1] [1] + H [1] [2] * C [2] [1] + H [1] [3] * C [3] [1]), (H [1] [0] * C [0] [2] + H [1] [1] * C [1] [2] + H [1] [2] * C [2] [2] + H [1] [3] * C [3] [2]));
-	//			Vector3f HC2 = Vector3f ((H [2] [0] * C [0] [0] + H [2] [1] * C [1] [0] + H [2] [2] * C [2] [0] + H [2] [3] * C [3] [0]), (H [2] [0] * C [0] [1] + H [2] [1] * C [1] [1] + H [2] [2] * C [2] [1] + H [2] [3] * C [3] [1]), (H [2] [0] * C [0] [2] + H [2] [1] * C [1] [2] + H [2] [2] * C [2] [2] + H [2] [3] * C [3] [2]));
-	//			Vector3f HC3 = Vector3f ((H [3] [0] * C [0] [0] + H [3] [1] * C [1] [0] + H [3] [2] * C [2] [0] + H [3] [3] * C [3] [0]), (H [3] [0] * C [0] [1] + H [3] [1] * C [1] [1] + H [3] [2] * C [2] [1] + H [3] [3] * C [3] [1]), (H [3] [0] * C [0] [2] + H [3] [1] * C [1] [2] + H [3] [2] * C [2] [2] + H [3] [3] * C [3] [2]));
-	//
-	//			std::vector <Vector3f> HC;
-	//			HC .push_back (HC0);
-	//			HC .push_back (HC1);
-	//			HC .push_back (HC2);
-	//			HC .push_back (HC3);
-	//
-	//			float HCS0 = (HC [0] [0] * S [0] + HC [1] [0] * S [1] + HC [2] [0] * S [2] + HC [3] [0] * S [3]);
-	//			float HCS1 = (HC [0] [1] * S [0] + HC [1] [1] * S [1] + HC [2] [1] * S [2] + HC [3] [1] * S [3]);
-	//			float HCS2 = (HC [0] [2] * S [0] + HC [1] [2] * S [1] + HC [2] [2] * S [2] + HC [3] [2] * S [3]);
-	//
-	//			value_changed () = Vector3f (HCS0, HCS1, HCS2);
-	//		}
-	//	}
 }
 
 } // X3D

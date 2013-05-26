@@ -120,6 +120,9 @@ private:
 	void
 	set_keyValue ();
 
+	void
+	set_keyVelocity ();
+
 	virtual
 	void
 	interpolate (size_t, size_t, float);
@@ -136,6 +139,9 @@ private:
 	};
 
 	Fields fields;
+	
+	std::vector <Vector3f> T0;
+	std::vector <Vector3f> T1;
 
 };
 
