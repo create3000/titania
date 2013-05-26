@@ -2,12 +2,31 @@
 
 META "title" "SplinePositionInterpolator"
 
+EXTERNPROTO LineTrail [
+  exposedField SFTime  cycleInterval
+  exposedField SFVec3f point
+  field        SFInt32 dimension
+]
+"LineTrail.wrl"
+
 DEF Box Transform {
   children Shape {
     appearance Appearance {
       material Material { }
     }
     geometry Box { }
+  }
+}
+
+Shape {
+  appearance Appearance {
+    material Material {
+      emissiveColor 0 0.8 0.8
+    }
+  }
+  geometry DEF Trail LineTrail {
+    cycleInterval 0.1
+    dimension 100
   }
 }
 
@@ -23,3 +42,4 @@ DEF Interpolator SplinePositionInterpolator {
 
 ROUTE Timer.fraction_changed TO Interpolator.set_fraction
 ROUTE Interpolator.value_changed TO Box.set_translation
+ROUTE Interpolator.value_changed TO Trail.set_point
