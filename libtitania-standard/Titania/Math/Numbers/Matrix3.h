@@ -301,10 +301,20 @@ public:
 	vector2 <Type>
 	multVecMatrix (const vector2 <T> &) const;
 
+	///  Returns a new vector that is @vector multiplies by matrix.
+	template <class T>
+	vector3 <Type>
+	multVecMatrix (const vector3 <T> &) const;
+
 	///  Returns a new vector that is matrix multiplies by @vector.
 	template <class T>
 	vector2 <Type>
 	multMatrixVec (const vector2 <T> &) const;
+
+	///  Returns a new vector that is matrix multiplies by @vector.
+	template <class T>
+	vector3 <Type>
+	multMatrixVec (const vector3 <T> &) const;
 
 	///  Returns a new vector that is @vector (a normal or direction vector) multiplies by matrix.
 	template <class T>
@@ -769,6 +779,16 @@ matrix3 <Type>::multVecMatrix (const vector2 <T> & vector) const
 
 template <class Type>
 template <class T>
+vector3 <Type>
+matrix3 <Type>::multVecMatrix (const vector3 <T> & vector) const
+{
+	return vector3 <Type> (vector .x () * array [0] + vector .y () * array [3] + vector .z () * array [6],
+	                       vector .x () * array [1] + vector .y () * array [4] + vector .z () * array [7],
+	                       vector .x () * array [2] + vector .y () * array [5] + vector .z () * array [8]);
+}
+
+template <class Type>
+template <class T>
 vector2 <Type>
 matrix3 <Type>::multMatrixVec (const vector2 <T> & vector) const
 {
@@ -776,6 +796,16 @@ matrix3 <Type>::multMatrixVec (const vector2 <T> & vector) const
 
 	return vector2 <Type> ((vector .x () * array [0] + vector .y () * array [1] + array [2]) / w,
 	                       (vector .x () * array [3] + vector .y () * array [4] + array [5]) / w);
+}
+
+template <class Type>
+template <class T>
+vector3 <Type>
+matrix3 <Type>::multMatrixVec (const vector3 <T> & vector) const
+{
+	return vector3 <Type> (vector .x () * array [0] + vector .y () * array [1] + vector .z () * array [2],
+	                       vector .x () * array [3] + vector .y () * array [4] + vector .z () * array [5],
+	                       vector .x () * array [6] + vector .y () * array [7] + vector .z () * array [8]);
 }
 
 template <class Type>
@@ -914,8 +944,26 @@ operator * (const matrix3 <Type> & lhs, const vector2 <Type> & rhs)
 ///  Return vector value @a rhs multiplied by @a lhs.
 template <class Type>
 inline
+vector3 <Type>
+operator * (const matrix3 <Type> & lhs, const vector3 <Type> & rhs)
+{
+	return lhs .multMatrixVec (rhs);
+}
+
+///  Return vector value @a rhs multiplied by @a lhs.
+template <class Type>
+inline
 vector2 <Type>
 operator * (const vector2 <Type> & lhs, const matrix3 <Type> & rhs)
+{
+	return rhs .multVecMatrix (lhs);
+}
+
+///  Return vector value @a rhs multiplied by @a lhs.
+template <class Type>
+inline
+vector3 <Type>
+operator * (const vector3 <Type> & lhs, const matrix3 <Type> & rhs)
 {
 	return rhs .multVecMatrix (lhs);
 }

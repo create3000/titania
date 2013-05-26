@@ -1,0 +1,46 @@
+#X3D V3.0 utf8
+
+META "title" "SplinePositionInterpolator closed"
+
+EXTERNPROTO LineTrail [
+  exposedField SFTime  cycleInterval
+  exposedField SFVec3f point
+  field        SFInt32 dimension
+]
+"LineTrail.wrl"
+
+DEF Box Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box { }
+  }
+}
+
+Shape {
+  appearance Appearance {
+    material Material {
+      emissiveColor 0 0.8 0.8
+    }
+  }
+  geometry DEF Trail LineTrail {
+    cycleInterval 0.1
+    dimension 100
+  }
+}
+
+DEF Timer TimeSensor {
+  cycleInterval 10
+  loop TRUE
+}
+
+DEF Interpolator SplinePositionInterpolator {
+  closed TRUE
+  key [ 0, 0.25, 0.5, 0.75, 1 ]
+  keyValue [ -2 0 0, 0 -2 0, 2 0 0, 0 2 0, -2 0 0 ]
+}
+
+ROUTE Timer.fraction_changed TO Interpolator.set_fraction
+ROUTE Interpolator.value_changed TO Box.set_translation
+ROUTE Interpolator.value_changed TO Trail.set_point

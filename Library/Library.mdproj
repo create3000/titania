@@ -2048,6 +2048,9 @@
     <None Include="Prototypes\Fields\SFVec4f\SFVec4f.wrl" />
     <None Include="Prototypes\Geometry2D\RegularPolygon2D\example.wrl" />
     <None Include="Tests\Interpolation\EaseInEaseOut.wrl" />
+    <None Include="Tests\Interpolation\SplinePositionInterpolator.wrl" />
+    <None Include="Tests\Interpolation\SplinePositionInterpolator2.wrl" />
+    <None Include="Tests\Interpolation\LineTrail.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

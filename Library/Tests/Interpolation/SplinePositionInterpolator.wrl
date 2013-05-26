@@ -1,0 +1,25 @@
+#X3D V3.0 utf8
+
+META "title" "SplinePositionInterpolator"
+
+DEF Box Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box { }
+  }
+}
+
+DEF Timer TimeSensor {
+  cycleInterval 10
+  loop TRUE
+}
+
+DEF Interpolator SplinePositionInterpolator {
+  key [ 0, 0.5, 1 ]
+  keyValue [ -5 0 0, 0 -2 0, 5 0 0 ]
+}
+
+ROUTE Timer.fraction_changed TO Interpolator.set_fraction
+ROUTE Interpolator.value_changed TO Box.set_translation

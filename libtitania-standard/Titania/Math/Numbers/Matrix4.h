@@ -333,10 +333,20 @@ public:
 	vector3 <Type>
 	multVecMatrix (const vector3 <T> &) const;
 
+	///  Returns a new vector that is @vector multiplies by matrix.
+	template <class T>
+	vector4 <Type>
+	multVecMatrix (const vector4 <T> &) const;
+
 	///  Returns a new vector that is matrix multiplies by @vector.
 	template <class T>
 	vector3 <Type>
 	multMatrixVec (const vector3 <T> &) const;
+
+	///  Returns a new vector that is matrix multiplies by @vector.
+	template <class T>
+	vector4 <Type>
+	multMatrixVec (const vector4 <T> &) const;
 
 	///  Returns a new vector that is @vector (a normal or direction vector) multiplies by matrix.
 	template <class T>
@@ -695,7 +705,7 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
 	Type det_sign = (det < 0 ? -1 : 1);
 
 	if (det_sign * det == 0)
-		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              // singular
+		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   // singular
 
 	// (4) B = A * !A  (here !A means A transpose)
 	matrix4 b = a * ! a;
@@ -927,6 +937,20 @@ matrix4 <Type>::multVecMatrix (const vector3 <T> & vector) const
 }
 
 /**
+ * It takes 16 multiplies and 12 adds.
+ */
+template <class Type>
+template <class T>
+vector4 <Type>
+matrix4 <Type>::multVecMatrix (const vector4 <T> & vector) const
+{
+	return vector4 <Type> (vector .x () * array [0] + vector .y () * array [4] + vector .z () * array [ 8] + vector .w () * array [12],
+	                       vector .x () * array [1] + vector .y () * array [5] + vector .z () * array [ 9] + vector .w () * array [13],
+	                       vector .x () * array [2] + vector .y () * array [6] + vector .z () * array [10] + vector .w () * array [14],
+	                       vector .x () * array [3] + vector .y () * array [7] + vector .z () * array [11] + vector .w () * array [15]);
+}
+
+/**
  * It takes 12 multiplies, 3 divs and 12 adds.
  */
 template <class Type>
@@ -939,6 +963,20 @@ matrix4 <Type>::multMatrixVec (const vector3 <T> & vector) const
 	return vector3 <Type> ((vector .x () * array [0] + vector .y () * array [1] + vector .z () * array [ 2] + array [ 3]) / w,
 	                       (vector .x () * array [4] + vector .y () * array [5] + vector .z () * array [ 6] + array [ 7]) / w,
 	                       (vector .x () * array [8] + vector .y () * array [9] + vector .z () * array [10] + array [11]) / w);
+}
+
+/**
+ * It takes 16 multiplies and 12 adds.
+ */
+template <class Type>
+template <class T>
+vector4 <Type>
+matrix4 <Type>::multMatrixVec (const vector4 <T> & vector) const
+{
+	return vector4 <Type> (vector .x () * array [ 0] + vector .y () * array [ 1] + vector .z () * array [ 2] + vector .w () * array [ 3],
+	                       vector .x () * array [ 4] + vector .y () * array [ 5] + vector .z () * array [ 6] + vector .w () * array [ 7],
+	                       vector .x () * array [ 8] + vector .y () * array [ 9] + vector .z () * array [10] + vector .w () * array [11],
+	                       vector .x () * array [12] + vector .y () * array [13] + vector .z () * array [14] + vector .w () * array [15]);
 }
 
 /**
@@ -1104,8 +1142,26 @@ operator * (const matrix4 <Type> & lhs, const vector3 <Type> & rhs)
 ///  Return vector value @a rhs multiplied by @a lhs.
 template <class Type>
 inline
+vector4 <Type>
+operator * (const matrix4 <Type> & lhs, const vector4 <Type> & rhs)
+{
+	return lhs .multMatrixVec (rhs);
+}
+
+///  Return vector value @a rhs multiplied by @a lhs.
+template <class Type>
+inline
 vector3 <Type>
 operator * (const vector3 <Type> & lhs, const matrix4 <Type> & rhs)
+{
+	return rhs .multVecMatrix (lhs);
+}
+
+///  Return vector value @a rhs multiplied by @a lhs.
+template <class Type>
+inline
+vector4 <Type>
+operator * (const vector4 <Type> & lhs, const matrix4 <Type> & rhs)
 {
 	return rhs .multVecMatrix (lhs);
 }
