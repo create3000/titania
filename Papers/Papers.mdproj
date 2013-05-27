@@ -26,5 +26,7 @@
     <None Include="Sphere - Triangle Intersection.pdf" />
     <None Include="Fast MinimumStorage RayTriangle Intersection.pdf" />
     <None Include="Ray-Sphere Intersection.gif" />
+    <None Include="Animating Rotations 98-5.pdf" />
+    <None Include="quaternion-interpolation.pdf" />
   </ItemGroup>
 </Project>

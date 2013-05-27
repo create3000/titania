@@ -64,20 +64,22 @@ namespace titania {
 namespace math {
 
 template <class Type, class Scalar>
-class catmull_rom_spline
+class catmull_rom_spline_interpolator
 {
 public:
 
-	catmull_rom_spline ()
+	typedef typename std::vector <Type>::size_type size_type;
+
+	catmull_rom_spline_interpolator ()
 	{ }
 
 	template <class Key, class KeyValue, class KeyVelocity>
 	void
-	generate (bool, const Key &, const KeyValue, const KeyVelocity &, bool);
+	generate (bool, const Key &, const KeyValue &, const KeyVelocity &, bool);
 
 	template <class KeyValue>
 	Type
-	evaluate (size_t, size_t, const Scalar &, const KeyValue &);
+	evaluate (size_type, size_type, const Scalar &, const KeyValue &);
 
 
 private:
@@ -90,7 +92,11 @@ private:
 template <class Type, class Scalar>
 template <class Key, class KeyValue, class KeyVelocity>
 void
-catmull_rom_spline <Type, Scalar>::generate (bool closed, const Key & key, const KeyValue keyValue, const KeyVelocity & keyVelocity, bool normalizeVelocity)
+catmull_rom_spline_interpolator <Type, Scalar>::generate (bool closed,
+                                             const Key & key,
+                                             const KeyValue & keyValue,
+                                             const KeyVelocity & keyVelocity,
+                                             bool normalizeVelocity)
 {
 	std::vector <Type>   T, T0, T1;
 	std::vector <Scalar> Fp, Fm;
@@ -127,10 +133,10 @@ catmull_rom_spline <Type, Scalar>::generate (bool closed, const Key & key, const
 				Scalar Dtot = 0;
 
 				for (size_t i = 0, size = keyValue .size () - 1; i < size; ++ i)
-					Dtot += math::abs (keyValue [i] - keyValue [i + 1]);
+					Dtot += abs (keyValue [i] - keyValue [i + 1]);
 
 				for (auto & Ti : T)
-					Ti *= Dtot / math::abs (Ti);
+					Ti *= Dtot / abs (Ti);
 			}
 		}
 
@@ -184,7 +190,10 @@ catmull_rom_spline <Type, Scalar>::generate (bool closed, const Key & key, const
 template <class Type, class Scalar>
 template <class KeyValue>
 Type
-catmull_rom_spline <Type, Scalar>::evaluate (size_t index0, size_t index1, const Scalar & weight, const KeyValue & keyValue)
+catmull_rom_spline_interpolator <Type, Scalar>::evaluate (size_type index0,
+                                             size_type index1,
+                                             const Scalar & weight,
+                                             const KeyValue & keyValue)
 {
 	vector4 <Scalar> S (std::pow (weight, 3), math::sqr (weight), weight, 1);
 
@@ -197,24 +206,24 @@ catmull_rom_spline <Type, Scalar>::evaluate (size_t index0, size_t index1, const
 	const Type & C1 = keyValue [index1];
 	const Type & C2 = T0 [index0];
 	const Type & C3 = T1 [index1];
-	
+
 	// vs = S^T H C
 
 	vector4 <Scalar> SH = S * H;
-	
+
 	// Taking dot product from SH and C;
 
 	return SH [0] * C0 + SH [1] * C1 + SH [2] * C2 + SH [3] * C3;
 }
 
-extern template class catmull_rom_spline <float, float>;
-extern template class catmull_rom_spline <double, double>;
-extern template class catmull_rom_spline <vector2 <float>, float>;
-extern template class catmull_rom_spline <vector2 <double>, double>;
-extern template class catmull_rom_spline <vector3 <float>, float>;
-extern template class catmull_rom_spline <vector3 <double>, double>;
-extern template class catmull_rom_spline <vector4 <float>, float>;
-extern template class catmull_rom_spline <vector4 <double>, double>;
+extern template class catmull_rom_spline_interpolator <float, float>;
+extern template class catmull_rom_spline_interpolator <double, double>;
+extern template class catmull_rom_spline_interpolator <vector2 <float>, float>;
+extern template class catmull_rom_spline_interpolator <vector2 <double>, double>;
+extern template class catmull_rom_spline_interpolator <vector3 <float>, float>;
+extern template class catmull_rom_spline_interpolator <vector3 <double>, double>;
+extern template class catmull_rom_spline_interpolator <vector4 <float>, float>;
+extern template class catmull_rom_spline_interpolator <vector4 <double>, double>;
 
 } // math
 } // titania

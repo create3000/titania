@@ -1,0 +1,66 @@
+#VRML V2.0 utf8
+
+META "title" "OrientationInterpolator"
+
+EXTERNPROTO ParticleShape [
+  exposedField SFColor color
+]
+"ParticleShape.wrl"
+
+EXTERNPROTO LineTrail [
+  exposedField SFTime  cycleInterval
+  exposedField SFVec3f point
+  field        SFInt32 dimension
+]
+"LineTrail.wrl"
+
+Viewpoint {
+  position 0 0 5
+}
+
+DEF Cone Transform {
+  children ParticleShape {
+    color 1 0 1
+  }
+}
+
+Shape {
+  appearance Appearance {
+    material Material {
+      emissiveColor 0 0.8 0.8
+    }
+  }
+  geometry DEF Trail LineTrail {
+    cycleInterval 0.1
+    dimension 100
+  }
+}
+
+DEF Timer TimeSensor {
+  cycleInterval 10
+  loop TRUE
+}
+
+DEF Interpolator OrientationInterpolator {
+  key [ 0, 0.25, 0.5, 0.75, 1 ]
+  keyValue [ -0 -1 -0 0.785398, 1 0 0 0.785398, 0 1 0 0.785398, -1 -0 -0 0.785398, -0 -1 -0 0.785398 ]
+}
+
+DEF MultVec Script {
+  eventIn  SFRotation set_rotation
+  eventOut SFVec3f    vector_changed
+  field    SFVec3f    vector 0 0 1
+
+  url "vrmlscript:
+function set_rotation (value, time)
+{
+	vector_changed = value .multVec (vector);
+}
+"
+}
+
+ROUTE Timer.cycleTime TO Trail.set_resetTime
+ROUTE Timer.fraction_changed TO Interpolator.set_fraction
+ROUTE Interpolator.value_changed TO Cone.set_rotation
+ROUTE Interpolator.value_changed TO MultVec.set_rotation
+ROUTE MultVec.vector_changed TO Trail.set_point

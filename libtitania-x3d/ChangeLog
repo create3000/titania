@@ -1,3 +1,12 @@
+2013-05-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SplineScalarInterpolator.h:
+	* SplineScalarInterpolator.cpp:
+	* SplinePositionInterpolator.h:
+	* SquadOrientationInterpolator.h:
+	* SplinePositionInterpolator2D.h:
+	* SquadOrientationInterpolator.cpp: 
+
 2013-05-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SplinePositionInterpolator.cpp:

@@ -2053,6 +2053,9 @@
     <None Include="Tests\Interpolation\LineTrail.wrl" />
     <None Include="Tests\Interpolation\SplineScalarInterpolator.wrl" />
     <None Include="Tests\Interpolation\ComposeSFVec3f.wrl" />
+    <None Include="Tests\Interpolation\ParticleShape.wrl" />
+    <None Include="Tests\Interpolation\SquadOrientationInterpolator.wrl" />
+    <None Include="Tests\Interpolation\OrientationInterpolator.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

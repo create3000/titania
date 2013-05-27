@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_INTERPOLATION_SPLINE_POSITION_INTERPOLATOR_H__
 
 #include "../Interpolation/X3DInterpolatorNode.h"
-#include <Titania/Math/Algorithms/CatmullRomSpline.h>
+#include <Titania/Math/Algorithms/CatmullRomSplineInterpolator.h>
 
 namespace titania {
 namespace X3D {
@@ -141,7 +141,7 @@ private:
 
 	Fields fields;
 
-	math::catmull_rom_spline <Vector3f, float> spline;
+	math::catmull_rom_spline_interpolator <Vector3f, float> spline;
 
 };
 

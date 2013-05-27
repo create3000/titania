@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,19 +48,14 @@
  *
  ******************************************************************************/
 
-#include "CatmullRomSpline.h"
+#include "SquadOrientationInterpolator.h"
 
 namespace titania {
 namespace math {
 
-template class catmull_rom_spline <float, float>;
-template class catmull_rom_spline <double, double>;
-template class catmull_rom_spline <vector2 <float>, float>;
-template class catmull_rom_spline <vector2 <double>, double>;
-template class catmull_rom_spline <vector3 <float>, float>;
-template class catmull_rom_spline <vector3 <double>, double>;
-template class catmull_rom_spline <vector4 <float>, float>;
-template class catmull_rom_spline <vector4 <double>, double>;
+template class squad_orientation_interpolator <float>;
+template class squad_orientation_interpolator <double>;
+template class squad_orientation_interpolator <long double>;
 
 } // math
 } // titania

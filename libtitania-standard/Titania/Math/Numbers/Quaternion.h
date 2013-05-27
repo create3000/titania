@@ -230,16 +230,6 @@ public:
 	quaternion &
 	normalize ();
 
-	///  Spherical cubic interpolation @a q0, @a q1, @a q2 and @a q3 by an amout of @a t.
-	template <class T>
-	static
-	quaternion
-	squad (const quaternion &,
-	       const quaternion &,
-	       const quaternion &,
-	       const quaternion &,
-	       const T &);
-
 
 private:
 
@@ -402,32 +392,6 @@ quaternion <Type>::normalize ()
 		return *this /= length;
 
 	return *this;
-}
-
-template <class Type>
-template <class T>
-quaternion <Type>
-quaternion <Type>::squad (const quaternion <Type> & q0,
-                          const quaternion <Type> & q1,
-                          const quaternion <Type> & q2,
-                          const quaternion <Type> & q3,
-                          const T & t)
-{
-	quaternion <Type> a = inner_quad_point (q0, q1, q2);
-	quaternion <Type> b = inner_quad_point (q1, q2, q3);
-
-	return slerp (slerp (q1, q2, t), slerp (a, b, t), 2 * t * (1 - t));
-}
-
-template <class Type>
-quaternion <Type>
-quaternion <Type>::inner_quad_point (const quaternion <Type> & q0,
-                                     const quaternion <Type> & q1,
-                                     const quaternion <Type> & q2)
-{
-	quaternion q1_i = ~q1;
-
-	return q1 * exp ((log (q1_i * q2) + log (q1_i * q0)) * Type (-0.25));
 }
 
 ///  @name Element access
@@ -682,7 +646,7 @@ pow (const quaternion <Type> & base, const Type & exponent)
 	Type ni    = norm (imag (base));
 	Type ntov  = std::pow (n, exponent);
 	Type vt    = exponent * theta;
-	Type scale = ntov / ni * std::sin (vt);
+	Type scale = ntov / ni* std::sin (vt);
 
 	return quaternion <Type> (base .x () * scale,
 	                          base .y () * scale,
@@ -745,12 +709,37 @@ template <class Type, class T>
 inline
 quaternion <Type>
 squad (const quaternion <Type> & q0,
+       const quaternion <Type> & a,
+       const quaternion <Type> & b,
        const quaternion <Type> & q1,
-       const quaternion <Type> & q2,
-       const quaternion <Type> & q3,
        const T & t)
 {
-	return quaternion <Type>::squad (q0, q1, q2, q3, t);
+	return slerp_no_invert (slerp_no_invert (q0, q1, t), slerp_no_invert (a, b, t), 2 * t * (1 - t));
+}
+
+///  Shoemake-Bezier interpolation using De Castlejau algorithm
+template <class Type>
+quaternion <Type>
+bezier (const quaternion <Type> & q0, const quaternion <Type> & a, const quaternion <Type> & b, const quaternion <Type> & q1, float t)
+{
+	quaternion <Type> q11 = slerp_no_invert (q0, a, t);
+	quaternion <Type> q12 = slerp_no_invert (a, b, t);
+	quaternion <Type> q13 = slerp_no_invert (b, q1, t);
+
+	return slerp_no_invert (slerp_no_invert (q11, q12, t), slerp_no_invert (q12, q13, t), t);
+}
+
+//! Given 3 quaternions, qn-1,qn and qn+1, calculate a control point to be used in squad interpolation
+template <class Type>
+inline
+quaternion <Type>
+spline (const quaternion <Type> & q0,
+        const quaternion <Type> & q1,
+        const quaternion <Type> & q2)
+{
+	quaternion <Type> q1_i = ~q1;
+
+	return q1 * exp ((log (q1_i * q2) + log (q1_i * q0)) * Type (-0.25));
 }
 
 ///  Spherical linear interpolate between @a source quaternion and @a destination quaternion by an amout of @a t.

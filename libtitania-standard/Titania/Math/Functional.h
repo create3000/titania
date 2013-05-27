@@ -134,10 +134,9 @@ lerp (const Type & source, const Type & destination, const T & t)
 ///  and @a destination vector by an amout of @a t.
 template <typename Type, typename T>
 Type
-slerp (const Type & source, const Type & destination, const T & t)
+slerp (const Type & source, Type destination, const T & t)
 {
-	Type dest  = destination;
-	T    cosom = dot (source, destination);
+	T cosom = dot (source, destination);
 
 	if (cosom <= -1)
 		throw std::domain_error ("slerp is not possible: vectors are inverse collinear.");
@@ -148,8 +147,8 @@ slerp (const Type & source, const Type & destination, const T & t)
 	if (cosom < 0)
 	{
 		// Reverse signs so we travel the short way round
-		cosom = -cosom;
-		dest  = -dest;
+		cosom       = -cosom;
+		destination = -destination;
 	}
 
 	T omega = std::acos (cosom);
@@ -158,7 +157,23 @@ slerp (const Type & source, const Type & destination, const T & t)
 	T scale0 = std::sin ((1 - t) * omega);
 	T scale1 = std::sin (t * omega);
 
-	return (scale0 * source + scale1 * dest) / sinom;
+	return (scale0 * source + scale1 * destination) / sinom;
+}
+
+template <typename Type, typename T>
+Type
+slerp_no_invert (const Type & source, const Type & destination, T t)
+{
+	T cosom = dot (source, destination);
+
+	if (cosom > -1 and cosom < 1)
+	{
+		T omega = std::acos (cosom);
+		return (source * std::sin (omega * (1 - t)) + destination * std::sin (omega * t)) / std::sin (omega);
+	}
+	else
+		// if the angle is small, use linear interpolation
+		return lerp (source, destination, t);
 }
 
 ///  Returns true if @a i is a power of two otherwise false.

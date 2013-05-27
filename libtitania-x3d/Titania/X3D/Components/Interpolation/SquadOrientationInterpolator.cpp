@@ -56,24 +56,29 @@ namespace titania {
 namespace X3D {
 
 SquadOrientationInterpolator::Fields::Fields () :
+	closed (new SFBool ()),
 	keyValue (new MFRotation ()),
-	normalizeVelocity (new SFBool ()),
+	//	keyVelocity (new MFFloat ()),
+	//	normalizeVelocity (new SFBool ()),
 	value_changed (new SFRotation ())
 { }
 
 SquadOrientationInterpolator::SquadOrientationInterpolator (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DInterpolatorNode (),                                                    
-	             fields ()                                                     
+	             fields (),                                                    
+	              squad ()                                                     
 {
 	setComponent ("Interpolation");
 	setTypeName ("SquadOrientationInterpolator");
 
 	addField (inputOutput, "metadata",          metadata ());
 	addField (inputOnly,   "set_fraction",      set_fraction ());
+	addField (inputOutput, "closed",            closed ());
 	addField (inputOutput, "key",               key ());
 	addField (inputOutput, "keyValue",          keyValue ());
-	addField (inputOutput, "normalizeVelocity", normalizeVelocity ());
+	//	addField (inputOutput, "keyVelocity",       keyVelocity ());
+	//	addField (inputOutput, "normalizeVelocity", normalizeVelocity ());
 	addField (outputOnly,  "value_changed",     value_changed ());
 }
 
@@ -96,11 +101,27 @@ SquadOrientationInterpolator::set_keyValue ()
 {
 	if (keyValue () .size () < key () .size ())
 		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFRotation ());
+
+	squad .generate (closed (), key (), keyValue ());
 }
+
+//void
+//SquadOrientationInterpolator::set_keyVelocity ()
+//{
+//	if (keyVelocity () .size ())
+//	{
+//		if (keyVelocity () .size () < key () .size ())
+//			keyVelocity () .resize (key () .size ());
+//	}
+//
+//	squad .generate (closed (), key (), keyValue (), keyVelocity (), normalizeVelocity ());
+//}
 
 void
 SquadOrientationInterpolator::interpolate (size_t index0, size_t index1, float weight)
-{ }
+{
+	value_changed () = squad .evaluate (index0, index1, weight, keyValue ());
+}
 
 } // X3D
 } // titania

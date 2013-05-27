@@ -108,6 +108,7 @@ public:
 
 	///  Construct a rotation from normalized @a quaternion.
 	template <class T>
+	explicit
 	constexpr
 	rotation4 (const quaternion <T> & quaternion) :
 		value (quaternion) { }
@@ -453,6 +454,16 @@ rotation4 <Type>::operator /= (const Type & t)
 ///  Returns true if @a a is equal to @a b.
 template <class Type>
 inline
+constexpr quaternion <Type>
+quat (const rotation4 <Type> & rotation)
+{
+	return rotation .quat ();
+}
+
+///  Compares two rotation numbers.
+///  Returns true if @a a is equal to @a b.
+template <class Type>
+inline
 constexpr bool
 operator == (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs)
 {
@@ -546,23 +557,6 @@ slerp (const rotation4 <Type> & source,
        const T & t)
 {
 	return rotation4 <Type> (math::slerp (source .quat (), destination .quat (), t));
-}
-
-///  Spherical cubic interpolation @a r0, @a r1, @a r2 and @a r3 by an amout of @a t.
-template <class Type, class T>
-inline
-rotation4 <Type>
-squad (const rotation4 <Type> & r0,
-       const rotation4 <Type> & r1,
-       const rotation4 <Type> & r2,
-       const rotation4 <Type> & r3,
-       const T & t)
-{
-	return rotation4 <Type> (squad (r0 .quad (),
-	                                r1 .quad (),
-	                                r2 .quad (),
-	                                r3 .quad (),
-	                                t));
 }
 
 ///  @relates rotation4
