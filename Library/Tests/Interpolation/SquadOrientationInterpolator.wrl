@@ -63,7 +63,7 @@ function set_rotation (value, time)
 }
 
 
-#ROUTE Timer.cycleTime TO Trail.set_resetTime
+ROUTE Timer.cycleTime TO Trail.set_resetTime
 
 ROUTE Timer.fraction_changed TO Interpolator.set_fraction
 ROUTE Interpolator.value_changed TO Cone.set_rotation

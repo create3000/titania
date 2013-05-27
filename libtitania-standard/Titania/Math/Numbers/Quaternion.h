@@ -739,7 +739,7 @@ spline (const quaternion <Type> & q0,
 {
 	quaternion <Type> q1_i = ~q1;
 
-	return q1 * exp ((log (q1_i * q2) + log (q1_i * q0)) * Type (-0.25));
+	return normalize (q1 * exp ((log (q1_i * q2) + log (q1_i * q0)) * Type (-0.25)));
 }
 
 ///  Spherical linear interpolate between @a source quaternion and @a destination quaternion by an amout of @a t.
