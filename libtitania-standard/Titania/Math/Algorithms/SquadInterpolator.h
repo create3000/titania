@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,14 +48,98 @@
  *
  ******************************************************************************/
 
-#include "SquadOrientationInterpolator.h"
+#ifndef __TITANIA_MATH_ALGORITHMS_SQUAD_INTERPOLATOR_H__
+#define __TITANIA_MATH_ALGORITHMS_SQUAD_INTERPOLATOR_H__
+
+#include "../Numbers/Rotation4.h"
+
+#include <cmath>
+#include <vector>
 
 namespace titania {
 namespace math {
 
-template class squad_orientation_interpolator <float>;
-template class squad_orientation_interpolator <double>;
-template class squad_orientation_interpolator <long double>;
+template <class Type, class Scalar>
+class squad_interpolator
+{
+public:
+
+	squad_interpolator ()
+	{ }
+
+	template <class Key, class KeyValue>
+	void
+	generate (bool, const Key &, const KeyValue &);
+
+	template <class KeyValue>
+	Type
+	evaluate (size_t, size_t, const Scalar &, const KeyValue &);
+
+
+private:
+
+	std::vector <Type> a;
+
+};
+
+template <class Type, class Scalar>
+template <class Key, class KeyValue>
+void
+squad_interpolator <Type, Scalar>::generate (bool closed,
+                                             const Key & key,
+                                             const KeyValue & keyValue)
+{
+	std::vector <Type> a;
+
+	if (key .size () > 1)
+	{
+		if (closed)
+		{
+			a .emplace_back (spline <Scalar> (keyValue [keyValue .size () - 2],
+			                                  keyValue [0],
+			                                  keyValue [1]));
+		}
+		else
+		{
+			a .emplace_back (keyValue .front ());
+		}
+
+		for (size_t i = 1, size = keyValue .size () - 1; i < size; ++ i)
+		{
+			a .emplace_back (spline <Scalar> (keyValue [i - 1],
+			                                  keyValue [i],
+			                                  keyValue [i + 1]));
+		}
+
+		if (closed)
+		{
+			a .emplace_back (spline <Scalar> (keyValue [keyValue .size () - 2],
+			                                  keyValue .back (),
+			                                  keyValue [1]));
+		}
+		else
+		{
+			a .emplace_back (keyValue .back ());
+		}
+	}
+	else if (key .size () > 0)
+		a .emplace_back (keyValue .front ());
+
+	this -> a = std::move (a);
+}
+
+template <class Type, class Scalar>
+template <class KeyValue>
+Type
+squad_interpolator <Type, Scalar>::evaluate (size_t index0,
+                                             size_t index1,
+                                             const Scalar & weight,
+                                             const KeyValue & keyValue)
+{
+	return squad <Scalar, Scalar> (keyValue [index0], a [index0], a [index1], keyValue [index1], weight);
+}
 
 } // math
 } // titania
+
+#endif

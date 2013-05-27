@@ -1,5 +1,17 @@
 2013-05-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* Functional.h:
+	* libtitania-standard.cproj:
+	* Rotation4.h:
+	* Quaternion.h:
+	* SquadInterpolator.h:
+	* SquadInterpolator.cpp:
+	* SquadOrientationInterpolator.h:
+	* SquadOrientationInterpolator.cpp: 
+
+2013-05-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ChangeLog:
 	* Makefile.am:
 	* Functional.h:

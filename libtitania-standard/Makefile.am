@@ -21,7 +21,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/InputOutput/Sequence.cpp \
 	Titania/InputOutput/String.cpp \
 	Titania/Math/Algorithms/CatmullRomSplineInterpolator.cpp \
-	Titania/Math/Algorithms/SquadOrientationInterpolator.cpp \
+	Titania/Math/Algorithms/SquadInterpolator.cpp \
 	Titania/Math/Geometry/Box2.cpp \
 	Titania/Math/Geometry/Box3.cpp \
 	Titania/Math/Geometry/Cylinder3.cpp \

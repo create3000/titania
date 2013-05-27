@@ -704,29 +704,29 @@ exp (const quaternion <Type> & quad)
 	                          ws * std::cos (vl));
 }
 
-///  Spherical cubic interpolation @a q0, @a q1, @a q2 and @a q3 by an amout of @a t.
+///  Spherical cubic interpolation of @a source, @a a, @a b and @a destination by an amout of @a t.
 template <class Type, class T>
 inline
 quaternion <Type>
-squad (const quaternion <Type> & q0,
+squad (const quaternion <Type> & source,
        const quaternion <Type> & a,
        const quaternion <Type> & b,
-       const quaternion <Type> & q1,
+       const quaternion <Type> & destination,
        const T & t)
 {
-	return slerp_no_invert (slerp_no_invert (q0, q1, t), slerp_no_invert (a, b, t), 2 * t * (1 - t));
+	return simple_slerp (simple_slerp (source, destination, t), simple_slerp (a, b, t), 2 * t * (1 - t));
 }
 
 ///  Shoemake-Bezier interpolation using De Castlejau algorithm
-template <class Type>
+template <class Type, class T>
 quaternion <Type>
-bezier (const quaternion <Type> & q0, const quaternion <Type> & a, const quaternion <Type> & b, const quaternion <Type> & q1, float t)
+bezier (const quaternion <Type> & q0, const quaternion <Type> & a, const quaternion <Type> & b, const quaternion <Type> & q1, T t)
 {
-	quaternion <Type> q11 = slerp_no_invert (q0, a, t);
-	quaternion <Type> q12 = slerp_no_invert (a, b, t);
-	quaternion <Type> q13 = slerp_no_invert (b, q1, t);
+	quaternion <Type> q11 = simple_slerp (q0, a, t);
+	quaternion <Type> q12 = simple_slerp (a, b, t);
+	quaternion <Type> q13 = simple_slerp (b, q1, t);
 
-	return slerp_no_invert (slerp_no_invert (q11, q12, t), slerp_no_invert (q12, q13, t), t);
+	return simple_slerp (simple_slerp (q11, q12, t), simple_slerp (q12, q13, t), t);
 }
 
 //! Given 3 quaternions, qn-1,qn and qn+1, calculate a control point to be used in squad interpolation

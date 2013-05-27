@@ -124,6 +124,7 @@ project (const Type & value, const Type & fromLow, const Type & fromHigh, const 
 
 ///  Linear interpolate between @a source and @a destination by an amout of @a t.
 template <class Type, class T>
+inline
 constexpr Type
 lerp (const Type & source, const Type & destination, const T & t)
 {
@@ -160,9 +161,12 @@ slerp (const Type & source, Type destination, const T & t)
 	return (scale0 * source + scale1 * destination) / sinom;
 }
 
+///  Spherical linear interpolate between two normal vectors @a source vector
+///  and @a destination vector by an amout of @a t. This version does not travel
+///  the short way when appropriate.
 template <typename Type, typename T>
 Type
-slerp_no_invert (const Type & source, const Type & destination, T t)
+simple_slerp (const Type & source, const Type & destination, T t)
 {
 	T cosom = dot (source, destination);
 

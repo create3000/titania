@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,104 +48,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_INTERPOLATION_SQUAD_ORIENTATION_INTERPOLATOR_H__
-#define __TITANIA_X3D_COMPONENTS_INTERPOLATION_SQUAD_ORIENTATION_INTERPOLATOR_H__
-
-#include "../Interpolation/X3DInterpolatorNode.h"
-#include <Titania/Math/Algorithms/SquadInterpolator.h>
+#include "SquadInterpolator.h"
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-class SquadOrientationInterpolator :
-	public X3DInterpolatorNode
-{
-public:
-
-	SquadOrientationInterpolator (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
-
-	///  @name Fields
-
-	SFBool &
-	closed ()
-	{ return *fields .closed; }
-
-	const SFBool &
-	closed () const
-	{ return *fields .closed; }
-
-	MFRotation &
-	keyValue ()
-	{ return *fields .keyValue; }
-
-	const MFRotation &
-	keyValue () const
-	{ return *fields .keyValue; }
-
-	//	MFFloat &
-	//	keyVelocity ()
-	//	{ return *fields .keyVelocity; }
-	//
-	//	const MFFloat &
-	//	keyVelocity () const
-	//	{ return *fields .keyVelocity; }
-	//
-	//	SFBool &
-	//	normalizeVelocity ()
-	//	{ return *fields .normalizeVelocity; }
-	//
-	//	const SFBool &
-	//	normalizeVelocity () const
-	//	{ return *fields .normalizeVelocity; }
-
-	SFRotation &
-	value_changed ()
-	{ return *fields .value_changed; }
-
-	const SFRotation &
-	value_changed () const
-	{ return *fields .value_changed; }
-
-
-private:
-
-	virtual
-	void
-	initialize ();
-
-	virtual
-	void
-	set_keyValue ();
-
-	//	void
-	//	set_keyVelocity ();
-
-	virtual
-	void
-	interpolate (size_t, size_t, float);
-
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const closed;
-		MFRotation* const keyValue;
-		//		MFFloat* const keyVelocity;
-		//		SFBool* const normalizeVelocity;
-		SFRotation* const value_changed;
-	};
-
-	Fields fields;
-
-	math::squad_interpolator <Rotation4f, float> squad;
-
-};
-
-} // X3D
+} // math
 } // titania
-
-#endif

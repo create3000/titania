@@ -113,7 +113,7 @@
     <None Include="Titania\InputOutput\String.h" />
     <None Include="Titania\InputOutput\Generator.h" />
     <None Include="Titania\Math\Algorithms\CatmullRomSplineInterpolator.h" />
-    <None Include="Titania\Math\Algorithms\SquadOrientationInterpolator.h" />
+    <None Include="Titania\Math\Algorithms\SquadInterpolator.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\Id.cpp" />
@@ -158,7 +158,7 @@
     <Compile Include="Titania\InputOutput\String.cpp" />
     <Compile Include="Titania\InputOutput\Generator.cpp" />
     <Compile Include="Titania\Math\Algorithms\CatmullRomSplineInterpolator.cpp" />
-    <Compile Include="Titania\Math\Algorithms\SquadOrientationInterpolator.cpp" />
+    <Compile Include="Titania\Math\Algorithms\SquadInterpolator.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
