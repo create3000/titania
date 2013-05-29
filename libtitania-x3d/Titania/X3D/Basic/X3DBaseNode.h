@@ -105,11 +105,8 @@ public:
 	getBrowser () const
 	{ return browser; }
 
-	virtual
 	X3DExecutionContext*
 	getExecutionContext () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return executionContext; }
 
 	size_t

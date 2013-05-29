@@ -221,12 +221,12 @@ throw (Error <NOT_SUPPORTED>)
 	return supportedProfiles .get (name);
 }
 
-Scene*
+const SFNode <Scene> &
 X3DBrowser::getExecutionContext () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return *scene;
+	return scene;
 }
 
 SFNode <Scene>

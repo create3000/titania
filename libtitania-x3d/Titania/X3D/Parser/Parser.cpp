@@ -115,7 +115,7 @@ Parser::getMessageFromError (const X3DError & error)
 	//__LOG__ << istream .peek () << std::endl;
 	
 	istream .clear ();
-	
+
 	size_t lineNumber = std::count (whitespaces .begin (), whitespaces .end (), '\n') + 1;
 
 	std::string rest    = getline ();
@@ -169,6 +169,8 @@ Parser::getline ()
 			break;
 	}
 
+	istream .clear ();
+
 	return string;
 }
 
@@ -196,6 +198,8 @@ Parser::rgetline ()
 		else
 			break;
 	}
+
+	istream .clear ();
 
 	return std::string (string .rbegin (), string .rend ());
 }

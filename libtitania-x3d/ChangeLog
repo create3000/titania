@@ -1,5 +1,14 @@
 2013-05-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.cpp:
+	* X3DBaseNode.h:
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* X3DBrowserContext.h:
+	* TriangleStripSet.cpp: 
+
+2013-05-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* QuadSet.cpp:
 	* TriangleSet.cpp:
 	* TriangleFanSet.h:

@@ -117,13 +117,11 @@ TriangleStripSet::set_stripCount ()
 	
 	for (const auto & vertexCount : stripCount ())
 	{
-		int32_t first = index;
-	
-		for (int32_t i = 1, size = vertexCount - 1; i < size; ++ i)
+		for (int32_t i = 0, size = vertexCount - 2; i < size; ++ i)
 		{
-			coordIndex .emplace_back (first);
-			coordIndex .emplace_back (index + i);
-			coordIndex .emplace_back (index + i + 1);
+			coordIndex .emplace_back (index + (i % 2 ? i + 1 : i));
+			coordIndex .emplace_back (index + (i % 2 ? i : i + 1));
+			coordIndex .emplace_back (index + (i + 2));
 		}
 		
 		index += vertexCount;

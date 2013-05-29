@@ -115,7 +115,7 @@ public:
 	       Error <DISPOSED>);
 
 	virtual
-	Scene*
+	const SFNode <Scene> &
 	getExecutionContext () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) = 0;

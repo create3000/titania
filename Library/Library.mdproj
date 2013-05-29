@@ -2059,6 +2059,7 @@
     <None Include="Prototypes\Composer\ComposeSFVec3f\ComposeSFVec3f.wrl" />
     <None Include="Prototypes\Composer\ComposeSFVec2f\ComposeSFVec2f.wrl" />
     <None Include="Tests\Rendering\TriangleFanSet.wrl" />
+    <None Include="Tests\Rendering\TriangleStripSet.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
