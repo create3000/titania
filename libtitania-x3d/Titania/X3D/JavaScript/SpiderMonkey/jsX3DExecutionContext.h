@@ -94,6 +94,9 @@ private:
 	static JSBool specificationVersion (JSContext* context, JSObject* obj, jsid id, jsval* vp);
 	static JSBool encoding (JSContext* context, JSObject* obj, jsid id, jsval* vp);
 	static JSBool worldURL (JSContext* context, JSObject* obj, jsid id, jsval* vp);
+	
+	static JSBool addRootNode    (JSContext*, uintN, jsval*);
+	static JSBool removeRootNode (JSContext*, uintN, jsval*);
 
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, JSBool, jsval*);

@@ -50,6 +50,14 @@
 
 #include "X3DComposedGeometryNode.h"
 
+#include "../../Bits/Cast.h"
+#include "../Rendering/Color.h"
+#include "../Rendering/ColorRGBA.h"
+#include "../Rendering/Coordinate.h"
+#include "../Rendering/Normal.h"
+#include "../Texturing/TextureCoordinate.h"
+#include "../Texturing/TextureCoordinateGenerator.h"
+
 namespace titania {
 namespace X3D {
 
@@ -77,6 +85,154 @@ void
 X3DComposedGeometryNode::initialize ()
 {
 	X3DGeometryNode::initialize ();
+}
+
+void
+X3DComposedGeometryNode::buildTriangles (size_t size)
+{
+	static constexpr size_t VERTEX_COUNT = 3;
+
+	auto _coord = x3d_cast <Coordinate*> (coord ());
+
+	if (not _coord or not _coord -> point () .size ())
+		return;
+
+	// Set size to a multiple of three.
+	
+	size = size / VERTEX_COUNT * VERTEX_COUNT; // Integer division and multiplication
+
+	// Color
+
+	auto _color     = x3d_cast <Color*> (color ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
+
+	if (_color)
+	{
+		_color -> resize (colorPerVertex () ? size : size / VERTEX_COUNT);
+		getColors () .reserve (size);
+	}
+
+	else if (_colorRGBA)
+	{
+		_colorRGBA -> resize (colorPerVertex () ? size : size / VERTEX_COUNT);
+		getColorsRGBA () .reserve (size);
+	}
+
+	// TextureCoordinate
+
+	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord ());
+	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord ());
+
+	if (_textureCoordinate)
+		_textureCoordinate -> resize (size);
+
+	if (_textureCoordinate or not _textureCoordinateGenerator)
+		getTexCoord () .reserve (size);
+
+	// Normal
+
+	auto _normal = x3d_cast <Normal*> (normal ());
+
+	if (_normal)
+		_normal -> resize (normalPerVertex () ? size : size / VERTEX_COUNT);
+
+	getNormals () .reserve (size);
+
+	// Vertices
+
+	getVertices () .reserve (size);
+
+	// Fill GeometryNode
+	
+	for (size_t index = 0, face = 0; index < size; ++ face)
+	{
+		Vector3f    faceNormal;
+		SFColor     faceColor;
+		SFColorRGBA faceColorRGBA;
+
+		if (not colorPerVertex ())
+		{
+			if (_color)
+				faceColor = _color -> color () [face];
+
+			else if (_colorRGBA)
+				faceColorRGBA = _colorRGBA -> color () [face];
+		}
+
+		if (_normal)
+		{
+			if (not normalPerVertex ())
+				faceNormal = _normal -> vector () [face];
+		}
+
+		for (size_t i = 0; i < VERTEX_COUNT; ++ i, ++ index)
+		{
+			if (_color)
+			{
+				if (colorPerVertex ())
+					getColors () .emplace_back (_color -> color () [getIndex (index)]);
+
+				else
+					getColors () .emplace_back (faceColor);
+			}
+			else if (_colorRGBA)
+			{
+				if (colorPerVertex ())
+					getColorsRGBA () .emplace_back (_colorRGBA -> color () [getIndex (index)]);
+
+				else
+					getColorsRGBA () .emplace_back (faceColorRGBA);
+			}
+
+			if (_textureCoordinate)
+			{
+				const auto & t = _textureCoordinate -> point () [getIndex (index)];
+				getTexCoord () .emplace_back (t .getX (), t .getY (), 0);
+			}
+
+			if (_normal)
+			{
+				if (normalPerVertex ())
+					getNormals () .emplace_back (_normal -> vector () [getIndex (index)]);
+
+				else
+					getNormals () .emplace_back (faceNormal);
+			}
+
+			getVertices () .emplace_back (_coord -> point () [getIndex (index)]);
+		}
+	}
+
+	// Autogenerate normal and texCoord if not specified
+
+	if (not _textureCoordinate and not _textureCoordinateGenerator)
+		buildTexCoord ();
+
+	if (not _normal)
+		buildTriangleNormals (size);
+
+	setTextureCoordinateGenerator (_textureCoordinateGenerator);
+	addElements (GL_TRIANGLES, getVertices () .size ());
+	setSolid (solid ());
+	setCCW (ccw ());
+}
+
+void
+X3DComposedGeometryNode::buildTriangleNormals (size_t size)
+{
+	static constexpr size_t VERTEX_COUNT = 3;
+
+	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
+
+	for (size_t index = 0; index < size; index += VERTEX_COUNT)
+	{
+		// Determine polygon normal.
+		Vector3f normal = math::normal <float> (_coord -> point () [getIndex (index)],
+		                                        _coord -> point () [getIndex (index + 1)],
+		                                        _coord -> point () [getIndex (index + 2)]);
+
+		getNormals () .resize (getNormals () .size () + VERTEX_COUNT, normal);
+	}
 }
 
 } // X3D

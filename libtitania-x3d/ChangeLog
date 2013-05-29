@@ -1,3 +1,15 @@
+2013-05-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Parser.cpp:
+	* TriangleSet.h:
+	* TriangleSet.cpp:
+	* TriangleFanSet.h:
+	* TriangleFanSet.cpp:
+	* X3DComposedGeometryNode.h:
+	* jsX3DExecutionContext.h:
+	* X3DComposedGeometryNode.cpp:
+	* jsX3DExecutionContext.cpp: 
+
 2013-05-27  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SquadOrientationInterpolator.h: 

@@ -74,9 +74,6 @@ private:
 	void
 	build () final;
 
-	void
-	buildNormals ();
-
 };
 
 } // X3D

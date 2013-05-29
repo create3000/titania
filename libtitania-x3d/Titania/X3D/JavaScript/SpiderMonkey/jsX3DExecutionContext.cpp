@@ -80,6 +80,10 @@ JSPropertySpec jsX3DExecutionContext::properties [ ] = {
 JSFunctionSpec jsX3DExecutionContext::functions [ ] = {
 	{ "createNode",  createNode,  1, 0 },
 	{ "createProto", createProto, 1, 0 },
+
+	{ "addRootNode",    addRootNode,    1, 0 },
+	{ "removeRootNode", removeRootNode, 1, 0 },
+	
 	{ 0 }
 
 };
@@ -133,41 +137,6 @@ jsX3DExecutionContext::worldURL (JSContext* context, JSObject* obj, jsid id, jsv
 	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, executionContext -> getWorldURL (), vp);
-}
-
-JSBool
-jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
-
-	//	return jsMFNode::create (context, const_cast <X3DExecutionContext*> (&executionContext -> getRootNodes ()), vp, true);
-	return JS_TRUE;
-}
-
-JSBool
-jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
-{
-	//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
-	//
-	//	if (not dynamic_cast <Scene*> (executionContext))
-	//		return JS_TRUE;
-	//
-	//	JSObject* obj2;
-	//
-	//	if (not JS_ValueToObject (context, *vp, &obj2))
-	//		return JS_FALSE;
-	//
-	//	if (JS_GetClass (context, obj2) not_eq jsMFNode::getClass ())
-	//	{
-	//		JS_ReportError (context, "Type of argument is invalid - should be MFNode, is %s", JS_GetClass (context, obj2) -> name);
-	//		return JS_FALSE;
-	//	}
-	//
-	//	MFNode* mfnode = (MFNode*) JS_GetPrivate (context, obj2);
-	//
-	//	*executionContext -> getRootNodes () = *mfnode;
-
-	return JS_TRUE;
 }
 
 JSBool
@@ -234,6 +203,68 @@ jsX3DExecutionContext::createProto (JSContext* context, uintN argc, jsval* vp)
 	JS_ReportError (context, "wrong number of arguments");
 
 	return JS_FALSE;
+}
+
+JSBool
+jsX3DExecutionContext::addRootNode (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		*vp = JSVAL_VOID;
+
+		return JS_TRUE;
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsX3DExecutionContext::removeRootNode (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		*vp = JSVAL_VOID;
+
+		return JS_TRUE;
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
+
+	//	return jsMFNode::create (context, const_cast <X3DExecutionContext*> (&executionContext -> getRootNodes ()), vp, true);
+	return JS_TRUE;
+}
+
+JSBool
+jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+{
+	//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
+	//
+	//	JSObject* omfnode;
+	//
+	//	if (not JS_ValueToObject (context, *vp, &omfnode))
+	//		return JS_FALSE;
+	//
+	//	if (JS_GetClass (context, omfnode) not_eq jsMFNode::getClass ())
+	//	{
+	//		JS_ReportError (context, "Type of argument is invalid - should be MFNode, is %s", JS_GetClass (context, omfnode) -> name);
+	//		return JS_FALSE;
+	//	}
+	//
+	//	MFNode* mfnode = static_cast <MFNode*> (JS_GetPrivate (context, omfnode));
+	//
+	//	executionContext -> setRootNodes (*mfnode);
+
+	return JS_TRUE;
 }
 
 } // X3D

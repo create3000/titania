@@ -155,8 +155,20 @@ protected:
 	virtual
 	void
 	initialize ();
+	
+	virtual
+	size_t
+	getIndex (size_t index)
+	{ return index; }
+	
+	void
+	buildTriangles (size_t);
+
 
 private:
+
+	void
+	buildTriangleNormals (size_t);
 
 	struct Fields
 	{

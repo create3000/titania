@@ -1,0 +1,42 @@
+#VRML V2.0 utf8
+
+PROTO ComposeSFVec2f [
+  exposedField SFFloat x 0
+  exposedField SFFloat y 0
+  eventOut     SFVec2f value_changed
+]
+{
+  PROTO Fields [
+    exposedField SFFloat x 0
+    exposedField SFFloat y 0
+  ]
+  {
+    Group { }
+  }
+
+  DEF ComposeSFVec2f Script {
+    eventIn  SFFloat set_x
+    eventIn  SFFloat set_y
+    eventOut SFVec2f value_changed IS value_changed
+    field    SFNode  fields DEF Fields Fields {
+      x IS x
+      y IS y
+    }
+
+    url "vrmlscript:
+
+function set_x (value, time) { }
+function set_y (value, time) { }
+
+function eventsProcessed ()
+{
+	value_changed = new SFVec2f (fields .x, fields .y);
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Fields.x_changed TO ComposeSFVec2f.set_x
+  ROUTE Fields.y_changed TO ComposeSFVec2f.set_y
+}
+

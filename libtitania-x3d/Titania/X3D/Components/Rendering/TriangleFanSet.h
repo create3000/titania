@@ -80,6 +80,21 @@ public:
 
 private:
 
+	virtual
+	void
+	initialize () final;
+	
+	virtual
+	size_t
+	getIndex (size_t index) final
+	{ return coordIndex [index]; }
+	
+	void
+	set_fanCount ();
+
+	void
+	build ();
+
 	struct Fields
 	{
 		Fields ();
@@ -88,6 +103,8 @@ private:
 	};
 
 	Fields fields;
+
+	std::deque <int32_t> coordIndex;
 
 };
 

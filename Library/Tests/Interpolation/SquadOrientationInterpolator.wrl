@@ -43,10 +43,10 @@ DEF Timer TimeSensor {
 
 DEF Interpolator SquadOrientationInterpolator {
   #closed TRUE
-  key [ 0, 0.25, 0.5, 0.75, 1 ]
-  keyValue [ -0 -1 -0 0.785398, 1 0 0 0.785398, 0 1 0 0.785398, -1 -0 -0 0.785398, -0 -1 -0 0.785398 ]
-  #key [ 0, 0.2, 0.4, 0.6, 0.8, 1 ]
-  #keyValue [ 0.316228 0.948683 0 1, -1 0 0 1.9, 0 0 1 0, -0.6 -0.8 -0 2, 0.242536 -0.970142 -0 1, 0.316228 0.948683 0 1 ]
+  #key [ 0, 0.25, 0.5, 0.75, 1 ]
+  #keyValue [ -0 -1 -0 0.785398, 1 0 0 0.785398, 0 1 0 0.785398, -1 -0 -0 0.785398, -0 -1 -0 0.785398 ]
+  key [ 0, 0.2, 0.4, 0.6, 0.8, 1 ]
+  keyValue [ 0.316228 0.948683 0 1, -1 0 0 1.9, 0 0 1 0, -0.6 -0.8 -0 2, 0.242536 -0.970142 -0 1, 0.316228 0.948683 0 1 ]
 }
 
 DEF MultVec Script {
@@ -63,7 +63,7 @@ function set_rotation (value, time)
 }
 
 
-ROUTE Timer.cycleTime TO Trail.set_resetTime
+#ROUTE Timer.cycleTime TO Trail.set_resetTime
 
 ROUTE Timer.fraction_changed TO Interpolator.set_fraction
 ROUTE Interpolator.value_changed TO Cone.set_rotation

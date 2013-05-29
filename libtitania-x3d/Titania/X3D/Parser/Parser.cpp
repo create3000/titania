@@ -131,7 +131,6 @@ Parser::getMessageFromError (const X3DError & error)
 		<< std::string (80, '*') << std::endl
 		<< "Parser error at - line " << lineNumber << ':' << linePos << std::endl
 		<< std::endl
-		<< "rest: " << rest << std::endl
 		<< preLine << std::endl
 		<< line << std::endl
 		<< std::string (linePos, ' ') << '^' << std::endl
@@ -1869,6 +1868,8 @@ Parser::sfcolorValue (SFColor* _field)
 				return true;
 			}
 		}
+
+		throw Error <INVALID_X3D> ("To less values, must be a multiple of 3.");
 	}
 
 	return false;
@@ -1936,6 +1937,8 @@ Parser::sfcolorRGBAValue (SFColorRGBA* _field)
 				}
 			}
 		}
+
+		throw Error <INVALID_X3D> ("To less values, must be a multiple of 4.");
 	}
 
 	return false;
@@ -2268,6 +2271,8 @@ Parser::sfmatrix3dValue (SFMatrix3d* _field)
 				}
 			}
 		}
+
+		throw Error <INVALID_X3D> ("To less values, must be a multiple of 9.");
 	}
 
 	return false;
@@ -2350,6 +2355,8 @@ Parser::sfmatrix3fValue (SFMatrix3f* _field)
 				}
 			}
 		}
+
+		throw Error <INVALID_X3D> ("To less values, must be a multiple of 9.");
 	}
 
 	return false;
@@ -2453,6 +2460,8 @@ Parser::sfmatrix4dValue (SFMatrix4d* _field)
 				}
 			}
 		}
+
+		throw Error <INVALID_X3D> ("To less values, must be a multiple of 16.");
 	}
 
 	return false;
@@ -2556,6 +2565,8 @@ Parser::sfmatrix4fValue (SFMatrix4f* _field)
 				}
 			}
 		}
+
+		throw Error <INVALID_X3D> ("To less values, must be a multiple of 16.");
 	}
 
 	return false;
@@ -2850,6 +2861,8 @@ Parser::sfvec2dValue (SFVec2d* _field)
 			_field -> setValue (x, y);
 			return true;
 		}
+
+		throw Error <INVALID_X3D> ("To less values, must be a multiple of 2.");
 	}
 
 	return false;
@@ -2911,6 +2924,8 @@ Parser::sfvec2fValue (SFVec2f* _field)
 			_field -> setValue (x, y);
 			return true;
 		}
+
+		throw Error <INVALID_X3D> ("To less values, must be a multiple of 2.");
 	}
 
 	return false;
@@ -2975,6 +2990,8 @@ Parser::sfvec3dValue (SFVec3d* _field)
 				return true;
 			}
 		}
+
+		throw Error <INVALID_X3D> ("To less values, must be a multiple of 3.");
 	}
 
 	return false;
@@ -3039,6 +3056,8 @@ Parser::sfvec3fValue (SFVec3f* _field)
 				return true;
 			}
 		}
+
+		throw Error <INVALID_X3D> ("To less values, must be a multiple of 3.");
 	}
 
 	return false;
@@ -3106,6 +3125,8 @@ Parser::sfvec4dValue (SFVec4d* _field)
 				}
 			}
 		}
+
+		throw Error <INVALID_X3D> ("To less values, must be a multiple of 4.");
 	}
 
 	return false;
@@ -3173,6 +3194,8 @@ Parser::sfvec4fValue (SFVec4f* _field)
 				}
 			}
 		}
+
+		throw Error <INVALID_X3D> ("To less values, must be a multiple of 4.");
 	}
 
 	return false;

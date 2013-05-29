@@ -50,7 +50,9 @@
 
 #include "TriangleFanSet.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/Coordinate.h"
 
 namespace titania {
 namespace X3D {
@@ -62,29 +64,81 @@ TriangleFanSet::Fields::Fields () :
 TriangleFanSet::TriangleFanSet (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DComposedGeometryNode (),                                                    
-	                 fields ()                                                     
+	                 fields (),
+	             coordIndex ()                                                     
 {
 	setComponent ("Rendering");
 	setTypeName ("TriangleFanSet");
 
 	addField (inputOutput,    "metadata",        metadata ());
+
+	addField (inputOutput,    "fanCount",        fanCount ());
+	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "ccw",             ccw ());
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
+	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+	
 	addField (inputOutput,    "attrib",          attrib ());
-	addField (inputOutput,    "coord",           coord ());
+	addField (inputOutput,    "fogCoord",        fogCoord ());
 	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "color",           color ());
 	addField (inputOutput,    "normal",          normal ());
-	addField (inputOutput,    "fogCoord",        fogCoord ());
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
-	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-	addField (initializeOnly, "solid",           solid ());
-	addField (initializeOnly, "ccw",             ccw ());
-	addField (inputOutput,    "fanCount",        fanCount ());
+	addField (inputOutput,    "coord",           coord ());
 }
 
 X3DBaseNode*
 TriangleFanSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new TriangleFanSet (executionContext);
+}
+
+void
+TriangleFanSet::initialize ()
+{
+	X3DComposedGeometryNode::initialize ();
+	
+	fanCount () .addInterest (this, &TriangleFanSet::set_fanCount);
+	
+	set_fanCount ();
+}
+
+void
+TriangleFanSet::set_fanCount ()
+{
+	auto _coord = x3d_cast <Coordinate*> (coord ());
+
+	if (not _coord or not _coord -> point () .size ())
+		return;
+		
+	// Build coordIndex
+	
+	coordIndex .clear ();
+
+	size_t index = 0;
+	
+	for (const auto & vertexCount : fanCount ())
+	{
+		int32_t first = index;
+	
+		for (int32_t i = 1, size = vertexCount - 1; i < size; ++ i)
+		{
+			coordIndex .emplace_back (first);
+			coordIndex .emplace_back (index + i);
+			coordIndex .emplace_back (index + i + 1);
+		}
+		
+		index += vertexCount;
+	}
+
+	// Resize coord if to small
+	if (coordIndex .size ())
+		_coord -> resize (index);
+}
+
+void
+TriangleFanSet::build ()
+{
+	buildTriangles (coordIndex .size ());
 }
 
 } // X3D

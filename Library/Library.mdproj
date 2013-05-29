@@ -2056,6 +2056,9 @@
     <None Include="Tests\Interpolation\ParticleShape.wrl" />
     <None Include="Tests\Interpolation\SquadOrientationInterpolator.wrl" />
     <None Include="Tests\Interpolation\OrientationInterpolator.wrl" />
+    <None Include="Prototypes\Composer\ComposeSFVec3f\ComposeSFVec3f.wrl" />
+    <None Include="Prototypes\Composer\ComposeSFVec2f\ComposeSFVec2f.wrl" />
+    <None Include="Tests\Rendering\TriangleFanSet.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2161,6 +2164,9 @@
     <Folder Include="Prototypes\Fields\SFVec3f\" />
     <Folder Include="Prototypes\Fields\SFVec4d\" />
     <Folder Include="Prototypes\Fields\SFVec4f\" />
+    <Folder Include="Prototypes\Composer\" />
+    <Folder Include="Prototypes\Composer\ComposeSFVec3f\" />
+    <Folder Include="Prototypes\Composer\ComposeSFVec2f\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />
