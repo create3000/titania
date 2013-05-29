@@ -170,7 +170,6 @@ private:
 
 	static JSClass global_class;
 
-	JSRuntime*              runtime;
 	JSContext*              context;
 	JSObject*               global;
 	X3DBrowser*             browser;

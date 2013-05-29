@@ -124,6 +124,12 @@ public:
 
 	Router &
 	getRouter ();
+	
+	///  @name JavaScript handling
+
+	const SFNode <JavaScriptEngine> &
+	getJavaScriptEngine () const
+	{ return javaScriptEngine; }
 
 	///  @name Renderer handling
 

@@ -50,18 +50,17 @@
 
 #include "../JavaScript/JavaScriptEngine.h"
 
-#include <jsapi.h>
-
 namespace titania {
 namespace X3D {
 
 JavaScriptEngine::JavaScriptEngine (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DPropertyNode (),                                                    
-	         vendor (),                                                    
-	           name (),                                                    
-	    description (),                                                    
-	        version ()                                                     
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	  X3DPropertyNode (),                                                    
+	           vendor (),                                                    
+	             name (),                                                    
+	      description (),                                                    
+	          version (),                                                    
+	javaScriptRuntime (NULL)                                                 
 {
 	setComponent ("Browser"),
 	setTypeName ("JavaScriptEngine");
@@ -76,7 +75,7 @@ JavaScriptEngine::create (X3DExecutionContext* const executionContext)  const
 void
 JavaScriptEngine::initialize ()
 {
-	JSRuntime* javaScriptRuntime = JS_NewRuntime (8 * 1024 * 1024);
+	javaScriptRuntime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 
 	if (javaScriptRuntime)
 	{
@@ -92,8 +91,6 @@ JavaScriptEngine::initialize ()
 
 			JS_DestroyContext (javaScriptContext);
 		}
-
-		JS_DestroyRuntime (javaScriptRuntime);
 	}
 }
 
@@ -105,6 +102,12 @@ JavaScriptEngine::toStream (std::ostream & stream) const
 		<< "\t\tName: " << vendor .getValue () << ' ' << name .getValue () << std::endl
 		<< "\t\tDescription: " << description .getValue () << std::endl
 		<< "\t\tVersion: " << version .getValue ();
+}
+
+void
+JavaScriptEngine::dispose ()
+{
+	JS_DestroyRuntime (javaScriptRuntime);
 }
 
 } // X3D

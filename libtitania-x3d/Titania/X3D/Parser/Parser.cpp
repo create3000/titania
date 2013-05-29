@@ -1291,9 +1291,12 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 
 			if (Grammar::CloseBrace (istream))
 			{
+				//__LOG__ << _nodeTypeId << std::endl;
+
 				_basicNode -> setup ();
 				_basicNode -> addInnerComments (getComments ());
 
+				//__LOG__ << _nodeTypeId << std::endl;
 				return true;
 			}
 			else

@@ -71,8 +71,7 @@ JSClass JavaScriptContext::global_class = {
 JavaScriptContext::JavaScriptContext (X3DScriptNode* script, const std::string & ecmascript, const basic::uri & uri, size_t index) :
 	      X3DBaseNode (script -> getExecutionContext () -> getBrowser (), script -> getExecutionContext ()), 
 	          X3DNode (),                                                                                    
-	     X3DUrlObject (),                                                                                    
-	          runtime (NULL),                                                                                
+	     X3DUrlObject (),                                                                                                                                                                 
 	          context (NULL),                                                                                
 	           global (NULL),                                                                                
 	          browser (script -> getBrowser ()),                                                             
@@ -93,8 +92,8 @@ JavaScriptContext::JavaScriptContext (X3DScriptNode* script, const std::string &
 
 	addField (inputOutput, "metadata", metadata ());
 
-	// Create a JS runtime.
-	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
+	// Get a JS runtime.
+	JSRuntime* runtime = getBrowser () -> getJavaScriptEngine () -> getRuntime ();
 
 	if (runtime == NULL)
 		return;
@@ -446,8 +445,8 @@ JavaScriptContext::set_field (X3DFieldDefinition* field)
 	jsval rval;
 	JS_CallFunctionValue (context, global, functions [field], 2, argv, &rval);
 	
-	//JS_MaybeGC (context);
-	JS_GC (context);
+	JS_MaybeGC (context);
+	//JS_GC (context);
 }
 
 void
@@ -513,8 +512,8 @@ JavaScriptContext::callFunction (jsval function)
 
 	JS_CallFunctionValue (context, global, function, 0, NULL, &rval);
 
-	//JS_MaybeGC (context);
-	JS_GC (context);
+	JS_MaybeGC (context);
+	//JS_GC (context);
 }
 
 void
@@ -621,11 +620,9 @@ JavaScriptContext::dispose ()
 		JS_RemoveValueRoot (context, &file .second);
 
 	// Cleanup.
-	JS_GC (context);
 	JS_DestroyContext (context);
-	JS_DestroyRuntime (runtime);
 
-	assert (references .size () == 0);
+	//assert (references .size () == 0);
 
 	X3DUrlObject::dispose ();
 	X3DNode::dispose ();

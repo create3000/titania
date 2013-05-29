@@ -54,6 +54,8 @@
 #include "../Components/Core/X3DPropertyNode.h"
 #include "../Execution/X3DExecutionContext.h"
 
+#include <jsapi.h>
+
 namespace titania {
 namespace X3D {
 
@@ -68,10 +70,18 @@ public:
 	SFString version;
 
 	JavaScriptEngine (X3DExecutionContext* const);
+	
+	JSRuntime*
+	getRuntime () const
+	{ return javaScriptRuntime; }
 
 	virtual
 	void
-	toStream (std::ostream &) const;
+	toStream (std::ostream &) const final;
+	
+	virtual
+	void
+	dispose () final;
 
 
 private:
@@ -83,7 +93,8 @@ private:
 	virtual
 	void
 	initialize ();
-
+	
+	JSRuntime* javaScriptRuntime;
 };
 
 } // X3D
