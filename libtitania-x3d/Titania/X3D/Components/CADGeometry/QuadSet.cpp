@@ -237,6 +237,12 @@ QuadSet::buildNormals ()
 
 		getNormals () .resize (getNormals () .size () + VERTEX_COUNT, normal);
 	}
+	
+	if (not ccw ())
+	{
+		for (auto & normal : getNormals ())
+			normal .negate ();
+	}
 }
 
 } // X3D

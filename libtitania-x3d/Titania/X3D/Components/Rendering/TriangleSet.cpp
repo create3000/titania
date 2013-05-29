@@ -92,7 +92,7 @@ TriangleSet::build ()
 {
 	auto _coord = x3d_cast <Coordinate*> (coord ());
 
-	buildTriangles (_coord -> point () .size ());
+	buildTriangles (_coord -> point () .size (), colorPerVertex ());
 }
 
 } // X3D

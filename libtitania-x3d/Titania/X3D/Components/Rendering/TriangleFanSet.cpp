@@ -138,7 +138,23 @@ TriangleFanSet::set_fanCount ()
 void
 TriangleFanSet::build ()
 {
-	buildTriangles (coordIndex .size ());
+	buildTriangles (coordIndex .size (), true);
+}
+
+void
+TriangleFanSet::buildTriangleNormals (size_t size)
+{
+	X3DComposedGeometryNode::buildTriangleNormals (size);
+	
+	if (normalPerVertex ())
+	{
+		NormalIndex normalIndex;
+
+		for (size_t i = 0, size = coordIndex .size (); i < size; ++ i)
+			normalIndex [coordIndex [i]] .emplace_back (i);
+
+		refineNormals (normalIndex, getNormals (), M_PI, true);
+	}
 }
 
 } // X3D

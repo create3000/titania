@@ -372,7 +372,7 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 
 			for (const auto & index : point .second)
 			{
-				if (dot (normals [index], m) > cosCreaseAngle)
+				if (dot (normals [index], m) >= cosCreaseAngle)
 					n += normals [index];
 			}
 

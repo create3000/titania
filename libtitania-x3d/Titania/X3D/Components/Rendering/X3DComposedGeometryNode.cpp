@@ -88,7 +88,7 @@ X3DComposedGeometryNode::initialize ()
 }
 
 void
-X3DComposedGeometryNode::buildTriangles (size_t size)
+X3DComposedGeometryNode::buildTriangles (size_t size, bool colorPerVertex)
 {
 	static constexpr size_t VERTEX_COUNT = 3;
 
@@ -108,13 +108,13 @@ X3DComposedGeometryNode::buildTriangles (size_t size)
 
 	if (_color)
 	{
-		_color -> resize (colorPerVertex () ? size : size / VERTEX_COUNT);
+		_color -> resize (colorPerVertex ? size : size / VERTEX_COUNT);
 		getColors () .reserve (size);
 	}
 
 	else if (_colorRGBA)
 	{
-		_colorRGBA -> resize (colorPerVertex () ? size : size / VERTEX_COUNT);
+		_colorRGBA -> resize (colorPerVertex ? size : size / VERTEX_COUNT);
 		getColorsRGBA () .reserve (size);
 	}
 
@@ -150,7 +150,7 @@ X3DComposedGeometryNode::buildTriangles (size_t size)
 		SFColor     faceColor;
 		SFColorRGBA faceColorRGBA;
 
-		if (not colorPerVertex ())
+		if (not colorPerVertex)
 		{
 			if (_color)
 				faceColor = _color -> color () [face];
@@ -169,7 +169,7 @@ X3DComposedGeometryNode::buildTriangles (size_t size)
 		{
 			if (_color)
 			{
-				if (colorPerVertex ())
+				if (colorPerVertex)
 					getColors () .emplace_back (_color -> color () [getIndex (index)]);
 
 				else
@@ -177,7 +177,7 @@ X3DComposedGeometryNode::buildTriangles (size_t size)
 			}
 			else if (_colorRGBA)
 			{
-				if (colorPerVertex ())
+				if (colorPerVertex)
 					getColorsRGBA () .emplace_back (_colorRGBA -> color () [getIndex (index)]);
 
 				else
@@ -232,6 +232,12 @@ X3DComposedGeometryNode::buildTriangleNormals (size_t size)
 		                                        _coord -> point () [getIndex (index + 2)]);
 
 		getNormals () .resize (getNormals () .size () + VERTEX_COUNT, normal);
+	}
+
+	if (not ccw ())
+	{
+		for (auto & normal : getNormals ())
+			normal .negate ();
 	}
 }
 

@@ -162,13 +162,14 @@ protected:
 	{ return index; }
 	
 	void
-	buildTriangles (size_t);
+	buildTriangles (size_t, bool);
+
+	virtual
+	void
+	buildTriangleNormals (size_t);
 
 
 private:
-
-	void
-	buildTriangleNormals (size_t);
 
 	struct Fields
 	{

@@ -50,7 +50,9 @@
 
 #include "TriangleStripSet.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/Coordinate.h"
 
 namespace titania {
 namespace X3D {
@@ -68,23 +70,90 @@ TriangleStripSet::TriangleStripSet (X3DExecutionContext* const executionContext)
 	setTypeName ("TriangleStripSet");
 
 	addField (inputOutput,    "metadata",        metadata ());
+	
+	addField (inputOutput,    "stripCount",      stripCount ());
+	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "ccw",             ccw ());
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
+	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+	
 	addField (inputOutput,    "attrib",          attrib ());
-	addField (inputOutput,    "coord",           coord ());
+	addField (inputOutput,    "fogCoord",        fogCoord ());
 	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "color",           color ());
 	addField (inputOutput,    "normal",          normal ());
-	addField (inputOutput,    "fogCoord",        fogCoord ());
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
-	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-	addField (initializeOnly, "solid",           solid ());
-	addField (initializeOnly, "ccw",             ccw ());
-	addField (inputOutput,    "stripCount",      stripCount ());
+	addField (inputOutput,    "coord",           coord ());
 }
 
 X3DBaseNode*
 TriangleStripSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new TriangleStripSet (executionContext);
+}
+
+void
+TriangleStripSet::initialize ()
+{
+	X3DComposedGeometryNode::initialize ();
+	
+	stripCount () .addInterest (this, &TriangleStripSet::set_stripCount);
+	
+	set_stripCount ();
+}
+
+void
+TriangleStripSet::set_stripCount ()
+{
+	auto _coord = x3d_cast <Coordinate*> (coord ());
+
+	if (not _coord or not _coord -> point () .size ())
+		return;
+		
+	// Build coordIndex
+	
+	coordIndex .clear ();
+
+	size_t index = 0;
+	
+	for (const auto & vertexCount : stripCount ())
+	{
+		int32_t first = index;
+	
+		for (int32_t i = 1, size = vertexCount - 1; i < size; ++ i)
+		{
+			coordIndex .emplace_back (first);
+			coordIndex .emplace_back (index + i);
+			coordIndex .emplace_back (index + i + 1);
+		}
+		
+		index += vertexCount;
+	}
+
+	// Resize coord if to small
+	if (coordIndex .size ())
+		_coord -> resize (index);
+}
+
+void
+TriangleStripSet::build ()
+{
+	buildTriangles (coordIndex .size (), true);
+}
+
+void
+TriangleStripSet::buildTriangleNormals (size_t size)
+{
+	X3DComposedGeometryNode::buildTriangleNormals (size);
+	
+	if (normalPerVertex ())
+	{
+		NormalIndex normalIndex;
+
+		for (size_t i = 0, size = coordIndex .size (); i < size; ++ i)
+			normalIndex [coordIndex [i]] .emplace_back (i);
+
+		refineNormals (normalIndex, getNormals (), M_PI, true);
+	}
 }
 
 } // X3D

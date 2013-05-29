@@ -79,6 +79,25 @@ public:
 
 
 private:
+	
+	virtual
+	void
+	initialize () final;
+
+	virtual
+	size_t
+	getIndex (size_t index) final
+	{ return coordIndex [index]; }
+	
+	void
+	set_stripCount ();
+
+	void
+	build ();
+
+	virtual
+	void
+	buildTriangleNormals (size_t) final;
 
 	struct Fields
 	{
@@ -88,6 +107,8 @@ private:
 	};
 
 	Fields fields;
+
+	std::deque <int32_t> coordIndex;
 
 };
 

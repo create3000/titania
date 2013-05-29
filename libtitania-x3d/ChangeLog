@@ -1,5 +1,18 @@
 2013-05-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* QuadSet.cpp:
+	* TriangleSet.cpp:
+	* TriangleFanSet.h:
+	* X3DGeometryNode.h:
+	* TriangleStripSet.h:
+	* TriangleFanSet.cpp:
+	* X3DGeometryNode.cpp:
+	* TriangleStripSet.cpp:
+	* X3DComposedGeometryNode.h:
+	* X3DComposedGeometryNode.cpp: 
+
+2013-05-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.cpp:
 	* TriangleSet.h:
 	* TriangleSet.cpp:

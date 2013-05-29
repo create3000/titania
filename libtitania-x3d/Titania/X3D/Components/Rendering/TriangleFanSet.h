@@ -95,6 +95,10 @@ private:
 	void
 	build ();
 
+	virtual
+	void
+	buildTriangleNormals (size_t) final;
+
 	struct Fields
 	{
 		Fields ();

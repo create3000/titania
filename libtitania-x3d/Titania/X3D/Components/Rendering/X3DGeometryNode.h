@@ -98,7 +98,7 @@ public:
 
 protected:
 
-	typedef std::map <size_t, std::vector <size_t>> NormalIndex;
+	typedef std::map <size_t, std::deque <size_t>> NormalIndex;
 
 	X3DGeometryNode ();
 
