@@ -50,6 +50,8 @@
 
 #include "X3DGeometryNode.h"
 
+#include "../../Execution/X3DExecutionContext.h"
+
 namespace titania {
 namespace X3D {
 
@@ -86,7 +88,9 @@ X3DGeometryNode::setup ()
 		glGenBuffers (1, &normalBufferId);
 		glGenBuffers (1, &pointBufferId);
 
-		update ();
+		// Update only initalized nodes
+		if (not getExecutionContext () -> isProto ())
+			update ();
 	}
 }
 

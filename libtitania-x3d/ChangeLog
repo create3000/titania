@@ -1,5 +1,10 @@
 2013-05-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp: 
+
+2013-05-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.cpp:
 	* X3DBaseNode.h:
 	* X3DBrowser.h:

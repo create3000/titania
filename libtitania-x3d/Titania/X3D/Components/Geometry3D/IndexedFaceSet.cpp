@@ -126,7 +126,7 @@ IndexedFaceSet::initialize ()
 void
 IndexedFaceSet::set_coordIndex ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord ());
 
 	numPolygons = 0;
 
@@ -164,7 +164,7 @@ IndexedFaceSet::set_coordIndex ()
 void
 IndexedFaceSet::set_texCoordIndex ()
 {
-	auto _textureCoordinate = x3d_cast <TextureCoordinate*> (texCoord () .getValue ());
+	auto _textureCoordinate = x3d_cast <TextureCoordinate*> (texCoord ());
 
 	if (_textureCoordinate)
 	{
@@ -193,8 +193,8 @@ IndexedFaceSet::set_texCoordIndex ()
 void
 IndexedFaceSet::set_colorIndex ()
 {
-	auto _color     = x3d_cast <Color*> (color () .getValue ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color () .getValue ());
+	auto _color     = x3d_cast <Color*> (color ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
 
 	if (_color or _colorRGBA)
 	{
@@ -240,7 +240,7 @@ IndexedFaceSet::set_colorIndex ()
 void
 IndexedFaceSet::set_normalIndex ()
 {
-	auto _normal = x3d_cast <Normal*> (normal () .getValue ());
+	auto _normal = x3d_cast <Normal*> (normal ());
 
 	if (_normal)
 	{
@@ -279,7 +279,7 @@ IndexedFaceSet::set_normalIndex ()
 void
 IndexedFaceSet::build ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord ());
 
 	// Tesselate
 
@@ -293,11 +293,10 @@ IndexedFaceSet::build ()
 	if (not _coord or not polygons .size ())
 		return;
 
-
 	// Color
 
-	auto _color     = x3d_cast <Color*> (color () .getValue ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color () .getValue ());
+	auto _color     = x3d_cast <Color*> (color ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
 
 	if (_color)
 		getColors () .reserve (reserve);
@@ -307,15 +306,15 @@ IndexedFaceSet::build ()
 
 	// TextureCoordinate
 
-	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord () .getValue ());
-	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord () .getValue ());
+	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord ());
+	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord ());
 
 	if (_textureCoordinate or not _textureCoordinateGenerator)
 		getTexCoord () .reserve (reserve);
 
 	// Normal
 
-	auto _normal = x3d_cast <Normal*> (normal () .getValue ());
+	auto _normal = x3d_cast <Normal*> (normal ());
 
 	getNormals () .reserve (reserve);
 
@@ -431,7 +430,7 @@ IndexedFaceSet::build ()
 void
 IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numVertices)
 {
-	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord ());
 
 	if (not _coord)
 		return;
@@ -501,7 +500,7 @@ IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numVertices)
 IndexedFaceSet::ElementArray
 IndexedFaceSet::tesselate (const Vertices & vertices)
 {
-	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord ());
 
 	if (convex ())
 		return ElementArray { vertices };
@@ -573,7 +572,7 @@ IndexedFaceSet::tesselate (const Vertices & vertices)
 //
 //	getTexCoordParams (min, Ssize, Sindex, Tindex);
 //
-//	auto _coord = x3d_cast <Coordinate*> (coord .getValue ());
+//	auto _coord = x3d_cast <Coordinate*> (coord);
 //
 //	for (const auto & polygon : polygons)
 //	{
@@ -599,7 +598,7 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 
 	NormalIndex normalIndex;
 
-	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord ());
 
 	for (const auto & polygon : polygons)
 	{
