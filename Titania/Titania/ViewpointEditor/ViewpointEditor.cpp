@@ -122,5 +122,10 @@ ViewpointEditor::on_fieldOfView_changed ()
 		viewpoint -> fieldOfView () = getFieldOfView () .get_value ();
 }
 
+ViewpointEditor::~ViewpointEditor ()
+{
+	getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpoints () .removeInterest (this, &ViewpointEditor::set_viewpoints);
+}
+
 } // puck
 } // titania

@@ -65,6 +65,8 @@ public:
 
 	ViewpointEditor (const X3D::SFNode <X3D::Browser> &);
 
+	~ViewpointEditor ();
+
 
 private:
 
