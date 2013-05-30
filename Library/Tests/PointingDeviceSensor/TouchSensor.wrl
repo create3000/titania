@@ -74,9 +74,11 @@ Transform {
             Transform {
               children Shape {
                 appearance Appearance {
-                  material Material { }
+                  material Material {
+                    diffuseColor 1 0 0
+                  }
                 }
-                geometry USE Cube
+                geometry Cylinder { }
               }
             }
           ]

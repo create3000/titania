@@ -186,11 +186,28 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <std::shared_ptr <In
 
 						if (line .intersect (vertices [i], vertices [i + 2], vertices [i + 3], u, v, t))
 						{
-							Vector3f texCoord = i < texCoords .size () ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector3f ();
+							Vector3f texCoord = i < texCoords .size () ? (1 - u - v) * texCoords [i] + u * texCoords [i + 2] + v * texCoords [i + 3] : Vector3f ();
 
 							intersections .emplace_back (new Intersection { texCoord,
 							                                                (1 - u - v) * normals  [i] + u * normals  [i + 2] + v * normals  [i + 3],
 							                                                (1 - u - v) * vertices [i] + u * vertices [i + 2] + v * vertices [i + 3] });
+							intersected = true;
+						}
+					}
+
+					break;
+				}
+				case GL_POLYGON:
+				{
+					for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
+					{
+						if (line .intersect (vertices [first], vertices [i], vertices [i + 1], u, v, t))
+						{
+							Vector3f texCoord = (size_t) i < texCoords .size () ? (1 - u - v) * texCoords [first] + u * texCoords [i] + v * texCoords [i + 1] : Vector3f ();
+
+							intersections .emplace_back (new Intersection { texCoord,
+							                                                (1 - u - v) * normals  [first] + u * normals  [i] + v * normals  [i + 1],
+							                                                (1 - u - v) * vertices [first] + u * vertices [i] + v * vertices [i + 1] });
 							intersected = true;
 						}
 					}
@@ -237,6 +254,16 @@ X3DGeometryNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere) co
 							return true;
 
 						if (sphere .intersect (vertices [i] * matrix, vertices [i + 2] * matrix, vertices [i + 3] * matrix))
+							return true;
+					}
+
+					break;
+				}
+				case GL_POLYGON:
+				{
+					for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
+					{
+						if (sphere .intersect (vertices [first] * matrix, vertices [i] * matrix, vertices [i + 1] * matrix))
 							return true;
 					}
 
