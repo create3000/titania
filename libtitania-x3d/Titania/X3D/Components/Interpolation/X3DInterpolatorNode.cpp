@@ -73,7 +73,9 @@ X3DInterpolatorNode::setup ()
 	// value for the respective field type is returned (EXAMPLE  (0, 0, 0) for SFVec3f);
 
 	set_key ();
-	interpolate (0, 0, 0);
+
+	if (key () .size ())
+		interpolate (0, 0, 0);
 
 	X3DChildNode::setup ();
 }
