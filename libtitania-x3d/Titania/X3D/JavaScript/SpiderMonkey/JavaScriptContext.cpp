@@ -104,7 +104,7 @@ JavaScriptContext::JavaScriptContext (X3DScriptNode* script, const std::string &
 	if (context == NULL)
 		return;
 
-	JS_SetOptions (context, JSOPTION_VAROBJFIX | JSOPTION_METHODJIT);
+	JS_SetOptions (context, JSOPTION_ATLINE | JSOPTION_VAROBJFIX | JSOPTION_METHODJIT);
 	JS_SetVersion (context, JSVERSION_LATEST);
 	JS_SetErrorReporter (context, error);
 
@@ -620,9 +620,12 @@ JavaScriptContext::dispose ()
 		JS_RemoveValueRoot (context, &file .second);
 
 	// Cleanup.
-	JS_DestroyContext (context);
+	JS_DestroyContext (context); // XXX slow
 
 	//assert (references .size () == 0);
+	
+	for (auto & reference : references)
+		reference .first -> removeParent (this);
 
 	X3DUrlObject::dispose ();
 	X3DNode::dispose ();

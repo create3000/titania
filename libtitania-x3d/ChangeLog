@@ -1,3 +1,9 @@
+2013-05-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBrowserContext.cpp:
+	* X3DFontStyleNode.cpp:
+	* JavaScriptContext.cpp: 
+
 2013-05-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.cpp:

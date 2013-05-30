@@ -129,8 +129,6 @@ X3DFontStyleNode::getMinorAlignment () const
 std::string
 X3DFontStyleNode::getFilename () const
 {
-	__LOG__ << family () << std::endl;
-
 	FcPattern* pattern = family () .size ()
 	                     ? FcNameParse ((FcChar8*) (family () [0] .getValue () .c_str ()))
 								: FcPatternCreate ();
@@ -149,7 +147,6 @@ X3DFontStyleNode::getFilename () const
 
 	FcPatternDestroy (pattern);
 
-	__LOG__ << file << std::endl;
 	return std::string ((char*) file);
 }
 

@@ -485,9 +485,10 @@ X3DBrowserContext::dispose ()
 	renderingProperties .dispose ();
 	browserProperties   .dispose ();
 	browserOptions      .dispose ();
-	javaScriptEngine    .dispose ();
 	selection           .dispose ();
 	console             .dispose ();
+	
+	javaScriptEngine .dispose ();
 
 	X3DExecutionContext::dispose ();
 }
