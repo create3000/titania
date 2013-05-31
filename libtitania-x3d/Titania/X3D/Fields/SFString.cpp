@@ -126,17 +126,17 @@ throw (Error <INVALID_X3D>,
 void
 SFString::toStream (std::ostream & ostream) const
 {
-	ostream .put ('"');
+	ostream << '"';
 
-	for (const auto & c : getValue ())
+	for (const auto & c : getValue () .raw ())
 	{
 		if (c == '"')
-			ostream .put ('\\');
+			ostream << '\\';
 			
-		ostream .put (c);
+		ostream << c;
 	}
 
-	ostream .put ('"');
+	ostream << '"';
 }
 
 } // X3D
