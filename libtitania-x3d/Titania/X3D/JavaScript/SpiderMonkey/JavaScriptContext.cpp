@@ -71,7 +71,8 @@ JSClass JavaScriptContext::global_class = {
 JavaScriptContext::JavaScriptContext (X3DScriptNode* script, const std::string & ecmascript, const basic::uri & uri, size_t index) :
 	      X3DBaseNode (script -> getExecutionContext () -> getBrowser (), script -> getExecutionContext ()), 
 	          X3DNode (),                                                                                    
-	     X3DUrlObject (),                                                                                                                                                                 
+	     X3DUrlObject (),
+	          runtime (NULL),                                                                                                                                                                 
 	          context (NULL),                                                                                
 	           global (NULL),                                                                                
 	          browser (script -> getBrowser ()),                                                             
@@ -93,13 +94,13 @@ JavaScriptContext::JavaScriptContext (X3DScriptNode* script, const std::string &
 	addField (inputOutput, "metadata", metadata ());
 
 	// Get a JS runtime.
-	JSRuntime* runtime = getBrowser () -> getJavaScriptEngine () -> getRuntime ();
+	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 
 	if (runtime == NULL)
 		return;
 
 	// Create a context.
-	context = JS_NewContext (runtime, 8192);
+	context = JS_NewContext (runtime, 512);
 
 	if (context == NULL)
 		return;
@@ -620,12 +621,13 @@ JavaScriptContext::dispose ()
 		JS_RemoveValueRoot (context, &file .second);
 
 	// Cleanup.
-	JS_DestroyContext (context); // XXX slow
+	JS_DestroyContext (context);
+	JS_DestroyRuntime (runtime);
 
-	//assert (references .size () == 0);
-	
-	for (auto & reference : references)
-		reference .first -> removeParent (this);
+	assert (references .size () == 0);
+
+	//for (auto & reference : references)
+	//	reference .first -> removeParent (this);
 
 	X3DUrlObject::dispose ();
 	X3DNode::dispose ();

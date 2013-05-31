@@ -13,22 +13,15 @@ DEF Debug1 Script {
   field   MFVec3f a2 [ 1 2 3, 1 2 3 ]
   field   MFInt32 a3 1
   field   MFVec3f a4 1 2 3
+  field   SFNode data NULL
 
   url "vrmlscript:
 function initialize ()
 {
 	print ('initialize1');
 	
-	var a = [];
 	
-	for (var i = 0; i < 400000; ++ i)
-		a .push (new SFVec3f ());
-		
-	print (a .length);
-	
-	a .length = 0;
-	
-	print (a .length);
+	print (data .getName ());
 }
 
 function set_time (value)

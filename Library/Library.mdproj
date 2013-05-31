@@ -2074,6 +2074,9 @@
     <None Include="Examples\CIS2\TrainingStructure.wrl" />
     <None Include="Examples\WTC\wtc.wrl" />
     <None Include="Examples\WTC\wtc.wrl.gz" />
+    <None Include="Tests\PROTO\SimpleExternproto.wrl" />
+    <None Include="Examples\WTC\facade.wrl.gz" />
+    <None Include="Examples\WTC\facade.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
