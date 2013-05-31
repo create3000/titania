@@ -126,10 +126,17 @@ throw (Error <INVALID_X3D>,
 void
 SFString::toStream (std::ostream & ostream) const
 {
-	std::string value = getValue ();
+	ostream .put ('"');
 
-	RegEx::QuotationMark .GlobalReplace ("\\\\\"", &value);
-	ostream << '"' << value << '"';
+	for (const auto & c : getValue ())
+	{
+		if (c == '"')
+			ostream .put ('\\');
+			
+		ostream .put (c);
+	}
+
+	ostream .put ('"');
 }
 
 } // X3D

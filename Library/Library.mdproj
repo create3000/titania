@@ -2072,6 +2072,8 @@
     <None Include="Examples\CIS2\Revit1.wrl" />
     <None Include="Examples\CIS2\Stadium.wrl" />
     <None Include="Examples\CIS2\TrainingStructure.wrl" />
+    <None Include="Examples\WTC\wtc.wrl" />
+    <None Include="Examples\WTC\wtc.wrl.gz" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2181,6 +2183,8 @@
     <Folder Include="Prototypes\Composer\ComposeSFVec3f\" />
     <Folder Include="Prototypes\Composer\ComposeSFVec2f\" />
     <Folder Include="Examples\CIS2\" />
+    <Folder Include="Examples\DLMF\" />
+    <Folder Include="Examples\WTC\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

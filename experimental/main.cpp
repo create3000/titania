@@ -492,6 +492,20 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
+	
+	std::string s = "\"ab'\"cd\"";
+	
+	std::clog << s << std::endl;
+	
+	for (const auto & c : s)
+	{
+		if (c == '"')
+			std::clog .put ('\\');
+			
+		std::clog .put (c);
+	}
+	
+	std::clog << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

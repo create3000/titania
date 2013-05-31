@@ -174,24 +174,14 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	if (getMetaDatas () .size ())
 	{
-		for (const auto & meta : getMetaDatas ())
+		for (const auto & metaData : getMetaDatas ())
 		{
-			std::string key   = meta .first;
-			std::string value = meta .second;
-
-			RegEx::QuotationMark .GlobalReplace ("\\\\\"", &key);
-			RegEx::QuotationMark .GlobalReplace ("\\\\\"", &value);
-
 			ostream
 				<< "META"
 				<< Generator::Space
-				<< '"'
-				<< key
-				<< '"'
+				<< SFString (metaData .first)
 				<< Generator::Space
-				<< '"'
-				<< value
-				<< '"'
+				<< SFString (metaData .second)
 				<< Generator::Break;
 		}
 

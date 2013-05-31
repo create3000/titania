@@ -62,7 +62,6 @@ public:
 
 	// Execution
 
-	static const pcrecpp::RE QuotationMark;
 	static const pcrecpp::RE _Num;
 	static const pcrecpp::RE ECMAScript;
 
