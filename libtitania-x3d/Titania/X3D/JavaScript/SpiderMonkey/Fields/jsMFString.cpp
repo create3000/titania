@@ -50,7 +50,7 @@
 
 #include "jsMFString.h"
 
-#include "../String.h"
+#include "../jsString.h"
 
 namespace titania {
 namespace X3D {

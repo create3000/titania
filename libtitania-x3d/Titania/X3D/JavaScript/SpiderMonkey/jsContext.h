@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JAVA_SCRIPT_CONTEXT_H__
 
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Core/X3DNode.h"
+#include "../X3DJavaScriptContext.h"
 #include "../../Components/Networking/X3DUrlObject.h"
 #include "../../Components/Scripting/X3DScriptNode.h"
 #include <map>
@@ -63,15 +63,15 @@
 namespace titania {
 namespace X3D {
 
-class JavaScriptContext :
-	public X3DNode, public X3DUrlObject
+class jsContext :
+	public X3DJavaScriptContext, public X3DUrlObject
 {
 public:
 
-	using X3DNode::addField;
-	using X3DNode::removeField;
+	using X3DJavaScriptContext::addField;
+	using X3DJavaScriptContext::removeField;
 
-	JavaScriptContext (X3DScriptNode*, const std::string &, const basic::uri &, size_t);
+	jsContext (X3DScriptNode*, const std::string &, const basic::uri &, size_t);
 
 	virtual
 	X3DBaseNode*
@@ -84,14 +84,13 @@ public:
 	JSBool
 	require (const basic::uri &, jsval &);
 
+	virtual
 	void
-	set_initialized ();
+	set_initialized () final;
 
+	virtual
 	void
-	prepareEvents ();
-
-	void
-	eventsProcessed ();
+	eventsProcessed () final;
 
 	void
 	addField (X3DFieldDefinition*);
@@ -101,10 +100,10 @@ public:
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 	virtual
-	~JavaScriptContext ();
+	~jsContext ();
 
 
 private:
@@ -141,6 +140,9 @@ private:
 
 	void
 	set_field (X3DFieldDefinition*);
+
+	void
+	prepareEvents ();
 
 	void
 	shutdown ();

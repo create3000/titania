@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,8 +53,8 @@
 #include "../../Components/Scripting/X3DScriptNode.h"
 #include "../../InputOutput/Generator.h"
 #include "Fields/jsSFNode.h"
-#include "JavaScriptContext.h"
-#include "String.h"
+#include "jsContext.h"
+#include "jsString.h"
 
 #include <Titania/LOG.h>
 
@@ -111,7 +111,7 @@ jsGlobals::_true (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsGlobals::require (JSContext* context, uintN argc, jsval* vp)
 {
-	auto javaScript = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context));
+	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 	
 	JSBool success = JS_FALSE;
 
@@ -134,7 +134,7 @@ jsGlobals::require (JSContext* context, uintN argc, jsval* vp)
 JSBool
 jsGlobals::print (JSContext* context, uintN argc, jsval* vp)
 {
-	X3DBrowser* browser = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode () -> getBrowser ();
+	X3DBrowser* browser = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode () -> getBrowser ();
 
 	jsval* argv = JS_ARGV (context, vp);
 

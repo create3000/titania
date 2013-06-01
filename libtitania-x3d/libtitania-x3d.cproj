@@ -423,7 +423,6 @@
     <None Include="Titania\X3D\Types\Array.h" />
     <None Include="Titania\X3D\Types\Image.h" />
     <None Include="Titania\X3D\Types\Time.h" />
-    <None Include="Titania\X3D\JavaScript\JavaScriptEngine.h" />
     <None Include="Titania\X3D\Configuration\ComponentInfo.h" />
     <None Include="Titania\X3D\Configuration\ProfileInfo.h" />
     <None Include="Titania\X3D\Configuration\SupportedComponents.h" />
@@ -491,7 +490,6 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsProfileInfoArray.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DExecutionContext.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DScene.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\String.h" />
     <None Include="Titania\X3D\Types\String.h" />
     <None Include="Titania\X3D\Basic\X3DBaseNode.h" />
     <None Include="Titania\X3D\Base\X3DChildObject.h" />
@@ -509,7 +507,6 @@
     <None Include="Titania\X3D\Browser\Geometry3D\QuadSphereProperties.h" />
     <None Include="Titania\X3D\Browser\Geometry3D\X3DSpherePropertyNode.h" />
     <None Include="Titania\X3D\Browser\Properties\MotionBlur.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\JavaScriptContext.h" />
     <None Include="Titania\X3D\Browser\BrowserApplication.h" />
     <None Include="Titania\X3D\Components\Navigation\X3DViewpointObject.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Rectangle2DProperties.h" />
@@ -544,6 +541,11 @@
     <None Include="Titania\X3D\Basic\X3DArrayFieldIterator.h" />
     <None Include="Titania\X3D\Basic\NodeSet.h" />
     <None Include="Titania\X3D\Base\ObjectSet.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey.h" />
+    <None Include="Titania\X3D\JavaScript\X3DJavaScriptEngine.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsContext.h" />
+    <None Include="Titania\X3D\JavaScript\X3DJavaScriptContext.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsString.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -584,7 +586,6 @@
     <Compile Include="Titania\X3D\Configuration\SupportedProfiles.cpp" />
     <Compile Include="Titania\X3D\Fields\X3DScalar.cpp" />
     <Compile Include="Titania\X3D\InputOutput\Generator.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\JavaScriptEngine.cpp" />
     <Compile Include="Titania\X3D\Parser\Parser.cpp" />
     <Compile Include="Titania\X3D\Parser\RegEx.cpp" />
     <Compile Include="Titania\X3D\Parser\X3DParser.cpp" />
@@ -918,7 +919,6 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsProfileInfoArray.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DExecutionContext.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DScene.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\String.cpp" />
     <Compile Include="Titania\X3D\Basic\X3DBaseNode.cpp" />
     <Compile Include="Titania\X3D\Base\X3DChildObject.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsSFVec3.cpp" />
@@ -935,7 +935,6 @@
     <Compile Include="Titania\X3D\Browser\Geometry3D\QuadSphereProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\X3DSpherePropertyNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\MotionBlur.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\JavaScriptContext.cpp" />
     <Compile Include="Titania\X3D\Components\Navigation\X3DViewpointObject.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Rectangle2DProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Circle2DProperties.cpp" />
@@ -963,6 +962,11 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstants.cpp" />
     <Compile Include="Titania\X3D\Basic\NodeSet.cpp" />
     <Compile Include="Titania\X3D\Base\ObjectSet.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\X3DJavaScriptEngine.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsContext.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\X3DJavaScriptContext.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsString.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

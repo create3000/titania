@@ -69,6 +69,7 @@
 #include <set>
 #include <unordered_set>
 #include <vector>
+#include <regex>
 
 using namespace titania;
 using namespace titania::basic;
@@ -180,8 +181,10 @@ typedef math::sphere3 <float>    Sphere3f;
 
 // https://www.homepluspower.info/2010/06/v8-javascript-engine-tutorial-part-1.html
 // https://www.homepluspower.info/2010/06/v8-javascript-engine-tutorial-part-2.html
-
-#include <regex>
+// http://athile.net/library/wiki/index.php/Library/V8/Tutorial
+// http://www.codeproject.com/Articles/29109/Using-V8-Google-s-Chrome-JavaScript-Virtual-Machin
+// http://v8.googlecode.com/svn/trunk/samples/shell.cc
+// http://stackoverflow.com/questions/11387015/calling-a-v8-javascript-function-from-c-with-an-argument
 
 #include <Titania/InputOutput.h>
 

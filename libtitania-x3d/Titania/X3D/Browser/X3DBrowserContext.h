@@ -62,7 +62,7 @@
 #include "../Components/Navigation/Viewpoint.h"
 #include "../Execution/Scene.h"
 #include "../Execution/X3DExecutionContext.h"
-#include "../JavaScript/JavaScriptEngine.h"
+#include "../JavaScript/X3DJavaScriptEngine.h"
 
 #include "../Browser/HitArray.h"
 #include "../Rendering/X3DRenderer.h"
@@ -127,7 +127,7 @@ public:
 	
 	///  @name JavaScript handling
 
-	const SFNode <JavaScriptEngine> &
+	const SFNode <X3DJavaScriptEngine> &
 	getJavaScriptEngine () const
 	{ return javaScriptEngine; }
 
@@ -232,7 +232,7 @@ protected:
 	SFNode <RenderingProperties> renderingProperties;
 	SFNode <BrowserProperties>   browserProperties;
 	SFNode <BrowserOptions>      browserOptions;
-	SFNode <JavaScriptEngine>    javaScriptEngine;
+	SFNode <X3DJavaScriptEngine> javaScriptEngine;
 
 	///  @name Constructor
 

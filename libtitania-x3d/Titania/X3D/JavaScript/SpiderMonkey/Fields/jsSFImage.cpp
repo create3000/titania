@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,7 +51,7 @@
 #include "jsSFImage.h"
 
 #include "jsMFInt32.h"
-#include "../JavaScriptContext.h"
+#include "../jsContext.h"
 
 namespace titania {
 namespace X3D {
@@ -106,7 +106,7 @@ jsSFImage::create (JSContext* context, SFImage* field, jsval* vp, const bool sea
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
 
-	static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> addField (field);
+	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addField (field);
 
 	*vp = OBJECT_TO_JSVAL (result);
 

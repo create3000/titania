@@ -51,9 +51,9 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DARRAY_FIELD_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DARRAY_FIELD_H__
 
-#include "String.h"
+#include "jsString.h"
 #include "jsX3DField.h"
-#include "JavaScriptContext.h"
+#include "jsContext.h"
 
 namespace titania {
 namespace X3D {
@@ -163,7 +163,7 @@ jsX3DArrayField <Type, FieldType>::create (JSContext* context, FieldType* field,
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
 
-	static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> addField (field);
+	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addField (field);
 
 	*vp = OBJECT_TO_JSVAL (result);
 

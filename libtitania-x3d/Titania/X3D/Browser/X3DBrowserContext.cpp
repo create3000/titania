@@ -54,6 +54,8 @@
 #include "../Components/PointingDeviceSensor/X3DDragSensorNode.h"
 #include "../Components/PointingDeviceSensor/X3DTouchSensorNode.h"
 
+#include "../JavaScript/SpiderMonkey.h"
+
 #include <Titania/Chrono/CountingClock.h>
 #include <Titania/Chrono/SystemClock.h>
 
@@ -72,7 +74,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	renderingProperties (new RenderingProperties (this)),          // SFNode  [ ]       renderingProperties NULL   [RenderingProperties]
 	  browserProperties (new BrowserProperties   (this)),          // SFNode  [ ]       browserProperties   NULL   [BrowserProperties]
 	     browserOptions (new BrowserOptions      (this)),          // SFNode  [ ]       browserOptions      NULL   [BrowserOptions]
-	   javaScriptEngine (new JavaScriptEngine    (this)),          // SFNode  [ ]       javaScriptEngine    NULL   [JavaScriptEngine]
+	   javaScriptEngine (new SpiderMonkey        (this)),          // SFNode  [ ]       javaScriptEngine    NULL   [JavaScriptEngine]
 	              clock (new chrono::system_clock <time_type> ()), 
 	             router (),                                        
 	             layers (),                                        

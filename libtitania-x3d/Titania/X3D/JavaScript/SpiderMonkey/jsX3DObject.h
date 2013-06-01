@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DOBJECT_H__
 
 #include "../../Base/X3DChildObject.h"
-#include "String.h"
+#include "jsString.h"
 #include <jsapi.h>
 
 namespace titania {

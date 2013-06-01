@@ -48,56 +48,47 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_JAVA_SCRIPT_ENGINE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_JAVA_SCRIPT_ENGINE_H__
+#include "jsString.h"
 
-#include "../Components/Core/X3DPropertyNode.h"
-#include "../Execution/X3DExecutionContext.h"
-
-#include <jsapi.h>
+#include <cstring>
 
 namespace titania {
 namespace X3D {
 
-class JavaScriptEngine :
-	public X3DPropertyNode
+JSBool
+JS_NewStringValue (JSContext* context, const std::string & string, jsval* vp)
 {
-public:
+	char* chars = (char*) JS_malloc (context, sizeof (char) * (string .length () + 1));
 
-	SFString vendor;
-	SFString name;
-	SFString description;
-	SFString version;
+	if (not chars)
+		return JS_FALSE;
 
-	JavaScriptEngine (X3DExecutionContext* const);
-	
-	JSRuntime*
-	getRuntime () const
-	{ return javaScriptRuntime; }
+	(void) memmove (chars, string .c_str (), sizeof (char) * (string .length () + 1));
 
-	virtual
-	void
-	toStream (std::ostream &) const final;
-	
-	virtual
-	void
-	dispose () final;
+	JSString* result = JS_NewStringCopyN (context, chars, string .length ());
 
+	if (not result)
+	{
+		JS_free (context, chars);
+		return JS_FALSE;
+	}
 
-private:
+	JS_SET_RVAL (context, vp, STRING_TO_JSVAL (result));
 
-	virtual
-	JavaScriptEngine*
-	create (X3DExecutionContext* const)  const;
+	return JS_TRUE;
+}
 
-	virtual
-	void
-	initialize ();
-	
-	JSRuntime* javaScriptRuntime;
-};
+std::string
+JS_GetString (JSContext* context, JSString* jsstring)
+{
+	char* chars = JS_EncodeString (context, jsstring);
+
+	std::string string = chars ? chars : "";
+
+	JS_free (context, chars);
+
+	return string;
+}
 
 } // X3D
 } // titania
-
-#endif

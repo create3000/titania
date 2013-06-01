@@ -53,7 +53,7 @@
 #include "../../Execution/Scene.h"
 #include "Fields/jsMFNode.h"
 #include "Fields/jsSFNode.h"
-#include "String.h"
+#include "jsString.h"
 #include "jsX3DExecutionContext.h"
 
 namespace titania {

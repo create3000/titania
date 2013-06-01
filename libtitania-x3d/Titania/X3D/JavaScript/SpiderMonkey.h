@@ -48,116 +48,50 @@
  *
  ******************************************************************************/
 
-#include "Script.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_H__
 
-#include "../../Browser/X3DBrowser.h"
-#include "../../Execution/X3DExecutionContext.h"
-#include "../../Parser/RegEx.h"
+#include "../JavaScript/X3DJavaScriptEngine.h"
+
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 
-Script::Fields::Fields () :
-	directOutput (new SFBool ()),
-	mustEvaluate (new SFBool ())
-{ }
-
-Script::Script (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DScriptNode (),                                                    
-	       fields (),                                                    
-	   javaScript ()                                                     
+class SpiderMonkey :
+	public X3DJavaScriptEngine
 {
-	setComponent ("Scripting");
-	setTypeName ("Script");
+public:
 
-	addField (inputOutput,    "metadata",     metadata ());
-	addField (inputOutput,    "url",          url ());
-	addField (initializeOnly, "directOutput", directOutput ());
-	addField (initializeOnly, "mustEvaluate", mustEvaluate ());
+	SFString vendor;
+	SFString name;
+	SFString description;
+	SFString version;
 
-	setChildren (javaScript);
-}
+	SpiderMonkey (X3DExecutionContext* const);
 
-X3DBaseNode*
-Script::create (X3DExecutionContext* const executionContext) const
-{
-	return new Script (executionContext);
-}
+	virtual
+	SFNode <X3DJavaScriptContext>
+	createContext (X3DScriptNode *, const std::string &, const basic::uri &, size_t) final;
 
-void
-Script::initialize ()
-{
-	X3DScriptNode::initialize ();
+	virtual
+	void
+	toStream (std::ostream &) const final;
 
-	// Find first working script.
 
-	size_t index = 0;
+private:
 
-	for (const auto & URL : url ())
-	{
-		std::string ecmascript;
+	virtual
+	SpiderMonkey*
+	create (X3DExecutionContext* const)  const;
 
-		if (loadDocument (URL, ecmascript))
-		{
-			try
-			{
-				javaScript = getBrowser () -> getJavaScriptEngine () -> createContext (this, ecmascript, getWorldURL (), index);
-				break;
-			}
-			catch (const std::invalid_argument & error)
-			{
-				std::clog << error .what () << std::endl;
-			}
-		}
+	virtual
+	void
+	initialize ();
 
-		++ index;
-	}
-
-	// Assign an empty script if no working script is found.
-
-	if (not javaScript)
-		javaScript = getBrowser () -> getJavaScriptEngine () -> createContext (this, "", "", 0);
-
-	// Initialize.
-
-	javaScript -> setup ();
-
-	initialized .addInterest (*javaScript, &X3DJavaScriptContext::set_initialized);
-}
-
-bool
-Script::loadDocument (const SFString & URL, std::string & ecmascript)
-{
-	if (RegEx::ECMAScript .FullMatch (URL .str (), &ecmascript))
-		return true;
-	
-	try
-	{
-		ecmascript = std::move (loadDocument (URL));
-		return true;
-	}
-	catch (const X3DError &)
-	{ }
-	
-	return false;
-}
-
-void
-Script::eventsProcessed ()
-{
-	X3DScriptNode::eventsProcessed ();
-
-	javaScript -> eventsProcessed ();
-}
-
-void
-Script::dispose ()
-{
-	javaScript .dispose ();
-
-	X3DScriptNode::dispose ();
-}
+};
 
 } // X3D
 } // titania
+
+#endif

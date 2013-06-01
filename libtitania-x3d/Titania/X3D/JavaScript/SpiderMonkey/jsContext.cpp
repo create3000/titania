@@ -48,9 +48,9 @@
  *
  ******************************************************************************/
 
-#include "JavaScriptContext.h"
+#include "jsContext.h"
 
-#include "String.h"
+#include "jsString.h"
 #include "jsBrowser.h"
 #include "jsFields.h"
 #include "jsGlobals.h"
@@ -60,7 +60,7 @@
 namespace titania {
 namespace X3D {
 
-JSClass JavaScriptContext::global_class = {
+JSClass jsContext::global_class = {
 	"global", JSCLASS_GLOBAL_FLAGS,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
@@ -68,30 +68,28 @@ JSClass JavaScriptContext::global_class = {
 
 };
 
-JavaScriptContext::JavaScriptContext (X3DScriptNode* script, const std::string & ecmascript, const basic::uri & uri, size_t index) :
-	      X3DBaseNode (script -> getExecutionContext () -> getBrowser (), script -> getExecutionContext ()), 
-	          X3DNode (),                                                                                    
-	     X3DUrlObject (),
-	          runtime (NULL),                                                                                                                                                                 
-	          context (NULL),                                                                                
-	           global (NULL),                                                                                
-	          browser (script -> getBrowser ()),                                                             
-	           script (script),                                                                              
-	         worldURL ({ uri }),                                                                             
-	            index (index),                                                                               
-	     initializeFn (),                                                                                    
-	  prepareEventsFn (),                                                                                    
-	eventsProcessedFn (),                                                                                    
-	       shutdownFn (),                                                                                    
-	           fields (),                                                                                    
-	        functions (),                                                                                    
-	       references (),                                                                                    
-	            files ()                                                                                     
+jsContext::jsContext (X3DScriptNode* script, const std::string & ecmascript, const basic::uri & uri, size_t index) :
+	         X3DBaseNode (script -> getExecutionContext () -> getBrowser (), script -> getExecutionContext ()), 
+	X3DJavaScriptContext (),                                                                                    
+	        X3DUrlObject (),                                                                                    
+	             runtime (NULL),                                                                                
+	             context (NULL),                                                                                
+	              global (NULL),                                                                                
+	             browser (script -> getBrowser ()),                                                             
+	              script (script),                                                                              
+	            worldURL ({ uri }),                                                                             
+	               index (index),                                                                               
+	        initializeFn (),                                                                                    
+	     prepareEventsFn (),                                                                                    
+	   eventsProcessedFn (),                                                                                    
+	          shutdownFn (),                                                                                    
+	              fields (),                                                                                    
+	           functions (),                                                                                    
+	          references (),                                                                                    
+	               files ()                                                                                     
 {
 	setComponent ("Browser");
-	setTypeName ("JavaScriptContext");
-
-	addField (inputOutput, "metadata", metadata ());
+	setTypeName ("jsContext");
 
 	// Get a JS runtime.
 	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
@@ -129,24 +127,24 @@ JavaScriptContext::JavaScriptContext (X3DScriptNode* script, const std::string &
 }
 
 X3DBaseNode*
-JavaScriptContext::create (X3DExecutionContext* const) const
+jsContext::create (X3DExecutionContext* const) const
 {
 	std::string ecmascript;
 
 	script -> loadDocument (script -> url () [index], ecmascript);
 
-	return new JavaScriptContext (script, ecmascript, worldURL .front (), index);
+	return new jsContext (script, ecmascript, worldURL .front (), index);
 }
 
 void
-JavaScriptContext::initialize ()
+jsContext::initialize ()
 {
-	X3DNode::initialize ();
+	X3DJavaScriptContext::initialize ();
 	X3DUrlObject::initialize ();
 }
 
 void
-JavaScriptContext::initContext ()
+jsContext::initContext ()
 {
 	// Populate the global object with the standard globals, like Object and Array.
 	if (not JS_InitStandardClasses (context, global))
@@ -200,7 +198,7 @@ JavaScriptContext::initContext ()
 }
 
 void
-JavaScriptContext::initNode ()
+jsContext::initNode ()
 {
 	for (auto & field : script -> getUserDefinedFields ())
 	{
@@ -228,7 +226,7 @@ JavaScriptContext::initNode ()
 }
 
 void
-JavaScriptContext::addUserDefinedField (X3DFieldDefinition* const field)
+jsContext::addUserDefinedField (X3DFieldDefinition* const field)
 {
 	switch (field -> getType ())
 	{
@@ -255,11 +253,11 @@ JavaScriptContext::addUserDefinedField (X3DFieldDefinition* const field)
 }
 
 void
-JavaScriptContext::defineProperty (JSContext* context,
-                                   JSObject* obj,
-                                   X3DFieldDefinition* const field,
-                                   const std::string & name,
-                                   uintN attrs)
+jsContext::defineProperty (JSContext* context,
+                           JSObject* obj,
+                           X3DFieldDefinition* const field,
+                           const std::string & name,
+                           uintN attrs)
 {
 	switch (field -> getType ())
 	{
@@ -286,7 +284,7 @@ JavaScriptContext::defineProperty (JSContext* context,
 }
 
 void
-JavaScriptContext::initEventHandler ()
+jsContext::initEventHandler ()
 {
 	initializeFn      = getFunction ("initialize");
 	prepareEventsFn   = getFunction ("prepareEvents");
@@ -304,7 +302,7 @@ JavaScriptContext::initEventHandler ()
 					if (not JSVAL_IS_VOID (function))
 					{
 						functions [field] = function;
-						field -> addInterest (this, &JavaScriptContext::set_field, field);
+						field -> addInterest (this, &jsContext::set_field, field);
 					}
 
 					break;
@@ -316,13 +314,13 @@ JavaScriptContext::initEventHandler ()
 }
 
 JSBool
-JavaScriptContext::getBuildInProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsContext::getBuildInProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	jsval name;
 
 	if (JS_IdToValue (context, id, &name))
 	{
-		JavaScriptContext*  javaScript = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context));
+		jsContext*          javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 		X3DScriptNode*      script     = javaScript -> getNode ();
 		X3DFieldDefinition* field      = script -> getField (JS_GetString (context, name));
 
@@ -333,13 +331,13 @@ JavaScriptContext::getBuildInProperty (JSContext* context, JSObject* obj, jsid i
 }
 
 JSBool
-JavaScriptContext::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsContext::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	jsval name;
 
 	if (JS_IdToValue (context, id, &name))
 	{
-		JavaScriptContext* javaScript = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context));
+		jsContext* javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
 		*vp = javaScript -> fields [JS_GetString (context, name)];
 		return JS_TRUE;
@@ -349,13 +347,13 @@ JavaScriptContext::getProperty (JSContext* context, JSObject* obj, jsid id, jsva
 }
 
 JSBool
-JavaScriptContext::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsContext::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	jsval name;
 
 	if (JS_IdToValue (context, id, &name))
 	{
-		X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		X3DFieldDefinition* field = script -> getField (JS_GetString (context, name));
 
@@ -366,7 +364,7 @@ JavaScriptContext::setProperty (JSContext* context, JSObject* obj, jsid id, JSBo
 }
 
 JSBool
-JavaScriptContext::require (const basic::uri & uri, jsval & rval)
+jsContext::require (const basic::uri & uri, jsval & rval)
 {
 	try
 	{
@@ -418,7 +416,7 @@ JavaScriptContext::require (const basic::uri & uri, jsval & rval)
 }
 
 JSBool
-JavaScriptContext::evaluate (const std::string & string, const std::string & filename)
+jsContext::evaluate (const std::string & string, const std::string & filename)
 {
 	jsval rval;
 
@@ -426,7 +424,7 @@ JavaScriptContext::evaluate (const std::string & string, const std::string & fil
 }
 
 JSBool
-JavaScriptContext::evaluate (const std::string & string, const std::string & filename, jsval & rval)
+jsContext::evaluate (const std::string & string, const std::string & filename, jsval & rval)
 {
 	return JS_EvaluateScript (context, global,
 	                          string .c_str (), string .length (),
@@ -436,7 +434,7 @@ JavaScriptContext::evaluate (const std::string & string, const std::string & fil
 }
 
 void
-JavaScriptContext::set_field (X3DFieldDefinition* field)
+jsContext::set_field (X3DFieldDefinition* field)
 {
 	jsval argv [2];
 
@@ -445,41 +443,41 @@ JavaScriptContext::set_field (X3DFieldDefinition* field)
 
 	jsval rval;
 	JS_CallFunctionValue (context, global, functions [field], 2, argv, &rval);
-	
+
 	JS_MaybeGC (context);
 	//JS_GC (context);
 }
 
 void
-JavaScriptContext::set_initialized ()
+jsContext::set_initialized ()
 {
 	if (not JSVAL_IS_VOID (initializeFn))
 		callFunction (initializeFn);
 }
 
 void
-JavaScriptContext::prepareEvents ()
+jsContext::prepareEvents ()
 {
 	if (not JSVAL_IS_VOID (prepareEventsFn))
 		callFunction (prepareEventsFn);
 }
 
 void
-JavaScriptContext::eventsProcessed ()
+jsContext::eventsProcessed ()
 {
 	if (not JSVAL_IS_VOID (eventsProcessedFn))
 		callFunction (eventsProcessedFn);
 }
 
 void
-JavaScriptContext::shutdown ()
+jsContext::shutdown ()
 {
 	if (not JSVAL_IS_VOID (shutdownFn))
 		callFunction (shutdownFn);
 }
 
 jsval
-JavaScriptContext::getFunction (const std::string & name)
+jsContext::getFunction (const std::string & name)
 {
 	jsval     function = JSVAL_VOID;
 	JSObject* objp     = NULL;
@@ -493,7 +491,7 @@ JavaScriptContext::getFunction (const std::string & name)
 }
 
 void
-JavaScriptContext::callFunction (const std::string & name)
+jsContext::callFunction (const std::string & name)
 {
 	jsval     function = JSVAL_VOID;
 	JSObject* objp     = NULL;
@@ -507,7 +505,7 @@ JavaScriptContext::callFunction (const std::string & name)
 }
 
 void
-JavaScriptContext::callFunction (jsval function)
+jsContext::callFunction (jsval function)
 {
 	jsval rval;
 
@@ -518,7 +516,7 @@ JavaScriptContext::callFunction (jsval function)
 }
 
 void
-JavaScriptContext::addField (X3DFieldDefinition* field)
+jsContext::addField (X3DFieldDefinition* field)
 {
 	auto reference = references .find (field);
 
@@ -533,7 +531,7 @@ JavaScriptContext::addField (X3DFieldDefinition* field)
 }
 
 void
-JavaScriptContext::removeField (X3DFieldDefinition* field)
+jsContext::removeField (X3DFieldDefinition* field)
 {
 	auto reference = references .find (field);
 
@@ -546,11 +544,11 @@ JavaScriptContext::removeField (X3DFieldDefinition* field)
 }
 
 void
-JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport* report)
+jsContext::error (JSContext* context, const char* message, JSErrorReport* report)
 {
-	JavaScriptContext* javaScript = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context));
-	X3DScriptNode*     script     = javaScript -> getNode ();
-	X3DBrowser*        browser    = script -> getBrowser ();
+	jsContext*     javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	X3DScriptNode* script     = javaScript -> getNode ();
+	X3DBrowser*    browser    = script -> getBrowser ();
 
 	// Get script
 
@@ -594,7 +592,7 @@ JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport
 		{
 			if ((end = ecmascript .find (nl, start)) == String::npos)
 				end = ecmascript .length ();
-				
+
 			line = ecmascript .substr (start, end - start);
 		}
 	}
@@ -610,9 +608,10 @@ JavaScriptContext::error (JSContext* context, const char* message, JSErrorReport
 }
 
 void
-JavaScriptContext::dispose ()
+jsContext::dispose ()
 {
-	shutdown ();
+	if (initialized)
+		shutdown ();
 
 	for (auto & field : fields)
 		JS_RemoveValueRoot (context, &field .second);
@@ -630,10 +629,10 @@ JavaScriptContext::dispose ()
 	//	reference .first -> removeParent (this);
 
 	X3DUrlObject::dispose ();
-	X3DNode::dispose ();
+	X3DJavaScriptContext::dispose ();
 }
 
-JavaScriptContext::~JavaScriptContext ()
+jsContext::~jsContext ()
 { }
 
 } // X3D

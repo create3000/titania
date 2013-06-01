@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_SCRIPTING_SCRIPT_H__
 #define __TITANIA_X3D_COMPONENTS_SCRIPTING_SCRIPT_H__
 
-#include "../../JavaScript/SpiderMonkey/JavaScriptContext.h"
+#include "../../JavaScript/X3DJavaScriptContext.h"
 #include "../Scripting/X3DScriptNode.h"
 
 namespace titania {
@@ -107,9 +107,6 @@ private:
 	void
 	initialize () final;
 
-	void
-	prepareEvents ();
-
 	struct Fields
 	{
 		Fields ();
@@ -120,7 +117,7 @@ private:
 
 	Fields fields;
 
-	SFNode <JavaScriptContext> javaScript;
+	SFNode <X3DJavaScriptContext> javaScript;
 
 };
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,8 +52,8 @@
 
 #include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Scripting/X3DScriptNode.h"
-#include "../JavaScriptContext.h"
-#include "../String.h"
+#include "../jsContext.h"
+#include "../jsString.h"
 #include "../jsFieldDefinitionArray.h"
 #include "../jsFields.h"
 #include "../jsfield.h"
@@ -106,7 +106,7 @@ jsSFNode::create (JSContext* context, SFNode <X3DBaseNode>* field, jsval* vp, co
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
 
-	static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> addField (field);
+	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addField (field);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
@@ -129,7 +129,7 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "S", &vrmlSyntax))
 			return JS_FALSE;
 
-		X3DScriptNode* script = static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> getNode (); // XXX
+		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode (); // XXX
 
 		SFNode <Scene> scene;
 

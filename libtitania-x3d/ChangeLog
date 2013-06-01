@@ -1,3 +1,47 @@
+2013-06-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* SpiderMonkey.h:
+	* X3DBrowserContext.h:
+	* SpiderMonkey.cpp:
+	* X3DBrowserContext.cpp:
+	* Script.h:
+	* JavaScriptEngine.h:
+	* JavaScriptEngine.cpp:
+	* Script.cpp:
+	* String.h:
+	* X3DJavaScriptEngine.h:
+	* X3DJavaScriptContext.h:
+	* jsString.h:
+	* String.cpp:
+	* X3DJavaScriptEngine.cpp:
+	* jsContext.h:
+	* jsfield.cpp:
+	* X3DJavaScriptContext.cpp:
+	* jsString.cpp:
+	* jsX3DObject.h:
+	* jsBrowser.cpp:
+	* jsGlobals.cpp:
+	* jsContext.cpp:
+	* jsX3DArrayField.h:
+	* jsSFVec4.h:
+	* jsSFVec2.h:
+	* jsSFVec3.h:
+	* jsX3DConstants.cpp:
+	* JavaScriptContext.h:
+	* jsSFNode.cpp:
+	* jsSFMatrix3.h:
+	* jsSFImage.cpp:
+	* jsSFColor.cpp:
+	* jsSFMatrix4.h:
+	* JavaScriptContext.cpp:
+	* jsMFString.cpp:
+	* jsSFRotation.cpp:
+	* jsX3DFieldDefinition.cpp:
+	* jsSFColorRGBA.cpp:
+	* jsX3DExecutionContext.cpp: 
+
 2013-05-31  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* JavaScriptContext.h:

@@ -48,47 +48,30 @@
  *
  ******************************************************************************/
 
-#include "String.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_X3DJAVA_SCRIPT_CONTEXT_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_X3DJAVA_SCRIPT_CONTEXT_H__
 
-#include <cstring>
+#include "../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {
 
-JSBool
-JS_NewStringValue (JSContext* context, const std::string & string, jsval* vp)
+class X3DJavaScriptContext :
+	virtual public X3DBaseNode
 {
-	char* chars = (char*) JS_malloc (context, sizeof (char) * (string .length () + 1));
+public:
 
-	if (not chars)
-		return JS_FALSE;
+	virtual
+	void
+	set_initialized () = 0;
 
-	(void) memmove (chars, string .c_str (), sizeof (char) * (string .length () + 1));
+protected:
 
-	JSString* result = JS_NewStringCopyN (context, chars, string .length ());
+	X3DJavaScriptContext ();
 
-	if (not result)
-	{
-		JS_free (context, chars);
-		return JS_FALSE;
-	}
-
-	JS_SET_RVAL (context, vp, STRING_TO_JSVAL (result));
-
-	return JS_TRUE;
-}
-
-std::string
-JS_GetString (JSContext* context, JSString* jsstring)
-{
-	char* chars = JS_EncodeString (context, jsstring);
-
-	std::string string = chars ? chars : "";
-
-	JS_free (context, chars);
-
-	return string;
-}
+};
 
 } // X3D
 } // titania
+
+#endif

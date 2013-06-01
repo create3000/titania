@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,7 +53,7 @@
 
 #include "../../../Fields/SFMatrix4.h"
 #include "../jsX3DField.h"
-#include "../JavaScriptContext.h"
+#include "../jsContext.h"
 #include "jsSFRotation.h"
 #include "jsSFVec3.h"
 
@@ -168,7 +168,7 @@ jsSFMatrix4 <Type>::create (JSContext* context, Type* field, jsval* vp, const bo
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
 
-	static_cast <JavaScriptContext*> (JS_GetContextPrivate (context)) -> addField (field);
+	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addField (field);
 
 	*vp = OBJECT_TO_JSVAL (result);
 

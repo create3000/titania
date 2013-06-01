@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "String.h"
+#include "jsString.h"
 #include "jsFields.h"
 #include "jsfield.h"
 
