@@ -67,6 +67,7 @@ public:
 	typedef Image::array_type::scalar_type scalar_type;
 	typedef Image::size_type               size_type;
 
+	using X3DField <Image>::addInterest;
 	using X3DField <Image>::setValue;
 	using X3DField <Image>::getValue;
 	using X3DField <Image>::operator =;
@@ -83,6 +84,30 @@ public:
 	virtual
 	SFImage*
 	clone () const final;
+
+	///  6.7.7 Add field interest.
+
+	template <class Class>
+	void
+	addInterest (Class* object, void (Class::* memberFunction) (const SFImage &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	template <class Class>
+	void
+	addInterest (Class & object, void (Class::* memberFunction) (const SFImage &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	void
+	addInterest (void (* requester) (const SFImage &)) const
+	{
+		addInterest (requester, *this);
+	}
+
+	///  Functions
 
 	void
 	setWidth (const size_type);

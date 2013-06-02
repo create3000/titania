@@ -68,6 +68,7 @@ public:
 	typedef value_type::value_type  scalar_type;
 	typedef value_type::size_type   size_type;
 
+	using X3DField <String>::addInterest;
 	using X3DField <String>::operator =;
 
 	SFString ();
@@ -83,6 +84,30 @@ public:
 	virtual
 	SFString*
 	clone () const final;
+
+	///  6.7.7 Add field interest.
+
+	template <class Class>
+	void
+	addInterest (Class* object, void (Class::* memberFunction) (const SFString &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	template <class Class>
+	void
+	addInterest (Class & object, void (Class::* memberFunction) (const SFString &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	void
+	addInterest (void (* requester) (const SFString &)) const
+	{
+		addInterest (requester, *this);
+	}
+
+	///  Functions
 
 	SFString &
 	operator = (const char_type*);

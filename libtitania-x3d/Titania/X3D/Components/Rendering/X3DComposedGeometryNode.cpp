@@ -76,22 +76,37 @@ X3DComposedGeometryNode::Fields::Fields () :
 
 X3DComposedGeometryNode::X3DComposedGeometryNode () :
 	X3DGeometryNode (), 
-	         fields ()  
+	         fields ()
 {
 	addNodeType (X3DConstants::X3DComposedGeometryNode);
 }
 
 void
-X3DComposedGeometryNode::initialize ()
+X3DComposedGeometryNode::set_index (const MFInt32 & index)
 {
-	X3DGeometryNode::initialize ();
+	auto _coord = x3d_cast <Coordinate*> (coord ());
+
+	int32_t numPoints = -1;
+
+	if (index .size ())
+	{
+		// Determine number of points and polygons.
+
+		for (const auto & i : index)
+		{
+			numPoints = std::max <int32_t> (numPoints, i);
+		}
+
+		++ numPoints;
+
+		// Resize coord .point if to small
+		_coord -> resize (numPoints);
+	}
 }
 
 void
-X3DComposedGeometryNode::buildTriangles (size_t size, bool colorPerVertex)
+X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size, bool colorPerVertex)
 {
-	static constexpr size_t VERTEX_COUNT = 3;
-
 	auto _coord = x3d_cast <Coordinate*> (coord ());
 
 	if (not _coord or not _coord -> point () .size ())
@@ -99,7 +114,7 @@ X3DComposedGeometryNode::buildTriangles (size_t size, bool colorPerVertex)
 
 	// Set size to a multiple of three.
 	
-	size = size / VERTEX_COUNT * VERTEX_COUNT; // Integer division and multiplication
+	size = size / vertexCount * vertexCount; // Integer division and multiplication
 
 	// Color
 
@@ -108,13 +123,13 @@ X3DComposedGeometryNode::buildTriangles (size_t size, bool colorPerVertex)
 
 	if (_color)
 	{
-		_color -> resize (colorPerVertex ? size : size / VERTEX_COUNT);
+		_color -> resize (colorPerVertex ? size : size / vertexCount);
 		getColors () .reserve (size);
 	}
 
 	else if (_colorRGBA)
 	{
-		_colorRGBA -> resize (colorPerVertex ? size : size / VERTEX_COUNT);
+		_colorRGBA -> resize (colorPerVertex ? size : size / vertexCount);
 		getColorsRGBA () .reserve (size);
 	}
 
@@ -134,7 +149,7 @@ X3DComposedGeometryNode::buildTriangles (size_t size, bool colorPerVertex)
 	auto _normal = x3d_cast <Normal*> (normal ());
 
 	if (_normal)
-		_normal -> resize (normalPerVertex () ? size : size / VERTEX_COUNT);
+		_normal -> resize (normalPerVertex () ? size : size / vertexCount);
 
 	getNormals () .reserve (size);
 
@@ -165,7 +180,7 @@ X3DComposedGeometryNode::buildTriangles (size_t size, bool colorPerVertex)
 				faceNormal = _normal -> vector () [face];
 		}
 
-		for (size_t i = 0; i < VERTEX_COUNT; ++ i, ++ index)
+		for (size_t i = 0; i < vertexCount; ++ i, ++ index)
 		{
 			if (_color)
 			{
@@ -209,29 +224,48 @@ X3DComposedGeometryNode::buildTriangles (size_t size, bool colorPerVertex)
 		buildTexCoord ();
 
 	if (not _normal)
-		buildTriangleNormals (size);
+		buildNormals (vertexCount, size);
 
 	setTextureCoordinateGenerator (_textureCoordinateGenerator);
-	addElements (GL_TRIANGLES, getVertices () .size ());
+	addElements (getVertexMode (vertexCount), getVertices () .size ());
 	setSolid (solid ());
 	setCCW (ccw ());
 }
 
 void
-X3DComposedGeometryNode::buildTriangleNormals (size_t size)
+X3DComposedGeometryNode::buildNormals (size_t vertexCount, size_t size)
 {
-	static constexpr size_t VERTEX_COUNT = 3;
+	buildFaceNormals (vertexCount, size);
+	
+	if (normalPerVertex ())
+	{
+		NormalIndex normalIndex;
 
+		for (size_t i = 0; i < size; ++ i)
+			normalIndex [getIndex (i)] .emplace_back (i);
+
+		refineNormals (normalIndex, getNormals (), M_PI, true);
+	}
+}
+
+void
+X3DComposedGeometryNode::buildFaceNormals (size_t vertexCount, size_t size)
+{
 	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
 
-	for (size_t index = 0; index < size; index += VERTEX_COUNT)
+	for (size_t index = 0; index < size; index += vertexCount)
 	{
-		// Determine polygon normal.
-		Vector3f normal = math::normal <float> (_coord -> point () [getIndex (index)],
-		                                        _coord -> point () [getIndex (index + 1)],
-		                                        _coord -> point () [getIndex (index + 2)]);
+		Vector3f normal;
+		
+		for (size_t i = 1, size = vertexCount - 1; i < size; ++ i)
+		{
+			// Determine polygon normal.
+			normal += math::normal <float> (_coord -> point () [getIndex (index)],
+			                                _coord -> point () [getIndex (index + i)],
+			                                _coord -> point () [getIndex (index + i + 1)]);
+		}
 
-		getNormals () .resize (getNormals () .size () + VERTEX_COUNT, normal);
+		getNormals () .resize (getNormals () .size () + vertexCount, vertexCount == 3 ? normal : normalize (normal));
 	}
 
 	if (not ccw ())

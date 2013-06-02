@@ -67,6 +67,7 @@ public:
 	typedef Color3f::value_type scalar_type;
 	typedef size_t              size_type;
 
+	using X3DField <Color4f>::addInterest;
 	using X3DField <Color4f>::setValue;
 	using X3DField <Color4f>::getValue;
 	using X3DField <Color4f>::operator =;
@@ -79,6 +80,30 @@ public:
 	SFColorRGBA (const Color4f &);
 
 	SFColorRGBA (const scalar_type &, const scalar_type &, const scalar_type &, const scalar_type &);
+
+	///  6.7.7 Add field interest.
+
+	template <class Class>
+	void
+	addInterest (Class* object, void (Class::* memberFunction) (const SFColorRGBA &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	template <class Class>
+	void
+	addInterest (Class & object, void (Class::* memberFunction) (const SFColorRGBA &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	void
+	addInterest (void (* requester) (const SFColorRGBA &)) const
+	{
+		addInterest (requester, *this);
+	}
+
+	///  Functions
 
 	virtual
 	SFColorRGBA*

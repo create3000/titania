@@ -428,19 +428,60 @@ IndexedFaceSet::build ()
 }
 
 void
+IndexedFaceSet::buildNormals (const PolygonArray & polygons)
+{
+	std::vector <Vector3f> normals;
+
+	NormalIndex normalIndex;
+
+	auto _coord = x3d_cast <Coordinate*> (coord ());
+
+	for (const auto & polygon : polygons)
+	{
+		// Determine polygon normal.
+		Vector3f normal;
+
+		for (const auto & element : polygon .elements)
+		{
+			for (size_t i = 1, size = element .size () - 1; i < size; ++ i)
+			{
+				normal += math::normal <float> (_coord -> point () [coordIndex () [element [0]]],
+				                                _coord -> point () [coordIndex () [element [i]]],
+				                                _coord -> point () [coordIndex () [element [i + 1]]]);
+			}
+		}
+
+		// Add a normal index for each point.
+		for (size_t i = 0, size = polygon .vertices .size (); i < size; ++ i)
+			normalIndex [coordIndex () [polygon .vertices [i]]] .emplace_back (normals .size () + i);
+
+		// Add this normal for each vertex.
+		normals .resize (normals .size () + polygon .vertices .size (), normalize (normal));
+		normals .emplace_back ();
+	}
+
+	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
+
+	for (const auto & polygon : polygons)
+	{
+		for (const auto & element : polygon .elements)
+		{
+			for (const auto & i : element)
+			{
+				getNormals () .emplace_back (normals [i]);
+			}
+		}
+	}
+
+}
+
+void
 IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numVertices)
 {
 	auto _coord = x3d_cast <Coordinate*> (coord ());
 
 	if (not _coord)
 		return;
-
-	// Fill up coordIndex if there are no indices.
-	if (coordIndex () .empty ())
-	{
-		for (size_t i = 0; i < _coord -> point () .size (); ++ i)
-			coordIndex () .emplace_back (i);
-	}
 
 	if (coordIndex () .size ())
 	{
@@ -588,62 +629,6 @@ IndexedFaceSet::tesselate (const Vertices & vertices)
 //		}
 //	}
 //}
-
-void
-IndexedFaceSet::buildNormals (const PolygonArray & polygons)
-{
-	std::vector <Vector3f> normals;
-
-	normals .reserve (coordIndex () .size ());
-
-	NormalIndex normalIndex;
-
-	auto _coord = x3d_cast <Coordinate*> (coord ());
-
-	for (const auto & polygon : polygons)
-	{
-		// Determine polygon normal.
-		Vector3f normal;
-
-		for (const auto & element : polygon .elements)
-		{
-			for (size_t i = 1, size = element .size () - 1; i < size; ++ i)
-			{
-				normal += math::normal <float> (_coord -> point () [coordIndex () [element [0]]],
-				                                _coord -> point () [coordIndex () [element [i]]],
-				                                _coord -> point () [coordIndex () [element [i + 1]]]);
-			}
-		}
-
-		// Add a normal index for each point.
-		for (size_t i = 0, size = polygon .vertices .size (); i < size; ++ i)
-			normalIndex [coordIndex () [polygon .vertices [i]]] .emplace_back (normals .size () + i);
-
-		// Add this normal for each vertex.
-		normals .resize (normals .size () + polygon .vertices .size (), normalize (normal));
-		normals .emplace_back ();
-	}
-
-	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
-
-	for (const auto & polygon : polygons)
-	{
-		for (const auto & element : polygon .elements)
-		{
-			for (const auto & i : element)
-			{
-				getNormals () .emplace_back (normals [i]);
-			}
-		}
-	}
-
-}
-
-void
-IndexedFaceSet::dispose ()
-{
-	X3DComposedGeometryNode::dispose ();
-}
 
 } // X3D
 

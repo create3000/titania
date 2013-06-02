@@ -122,27 +122,6 @@ public:
 	///  6.7.7 Add field interest.
 	template <class Class>
 	void
-	addInterest (Class* object, void (Class::* memberFunction) (const X3DField &)) const
-	{
-		addInterest (object, memberFunction, *this);
-	}
-
-	template <class Class>
-	void
-	addInterest (Class & object, void (Class::* memberFunction) (const X3DField &)) const
-	{
-		addInterest (object, memberFunction, *this);
-	}
-
-	void
-	addInterest (void (* requester) (const X3DField &)) const
-	{
-		addInterest (requester, *this);
-	}
-
-	///  6.7.7 Add field interest.
-	template <class Class>
-	void
 	addInterest (Class* object, void (Class::* memberFunction) (const ValueType &)) const
 	{
 		addInterest (object, memberFunction, value);

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -92,7 +92,13 @@ TriangleSet::build ()
 {
 	auto _coord = x3d_cast <Coordinate*> (coord ());
 
-	buildTriangles (_coord -> point () .size (), colorPerVertex ());
+	buildPolygons (3, _coord -> point () .size (), true);
+}
+
+void
+TriangleSet::buildNormals (size_t vertexCount, size_t size)
+{
+	buildFaceNormals (vertexCount, size);
 }
 
 } // X3D

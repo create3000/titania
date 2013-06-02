@@ -79,6 +79,7 @@ public:
 	typedef typename value_type::difference_type difference_type;
 	typedef typename value_type::size_type       size_type;
 
+	using X3DField <value_type>::addInterest;
 	using X3DField <value_type>::getType;
 	using X3DField <value_type>::getValue;
 	using X3DField <value_type>::operator =;
@@ -158,24 +159,6 @@ public:
 	clone (X3DExecutionContext* const) const override
 	{ return clone (); }
 
-	void
-	set1Value (const size_type index, const ValueType &);
-
-	void
-	set1Value (const size_type index, const typename ValueType::value_type &);
-
-	ValueType*
-	get1Value (const size_type);
-
-	///  Set @a value to this field without notfying parents.
-	virtual
-	void
-	set (const value_type &);
-
-	template <class InputIterator>
-	void
-	set (InputIterator, InputIterator);
-
 	template <const size_t Size>
 	X3DArrayField &
 	operator = (const ValueType (&value) [Size])
@@ -205,6 +188,52 @@ public:
 		assign (list .begin (), list .end ());
 		return *this;
 	}
+
+	virtual
+	bool
+	operator == (const X3DFieldDefinition &) const;
+
+	///  6.7.7 Add field interest.
+
+	template <class Class>
+	void
+	addInterest (Class* object, void (Class::* memberFunction) (const X3DArrayField &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	template <class Class>
+	void
+	addInterest (Class & object, void (Class::* memberFunction) (const X3DArrayField &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	void
+	addInterest (void (* requester) (const X3DArrayField &)) const
+	{
+		addInterest (requester, *this);
+	}
+
+	///  Functions
+
+	void
+	set1Value (const size_type index, const ValueType &);
+
+	void
+	set1Value (const size_type index, const typename ValueType::value_type &);
+
+	ValueType*
+	get1Value (const size_type);
+
+	///  Set @a value to this field without notfying parents.
+	virtual
+	void
+	set (const value_type &);
+
+	template <class InputIterator>
+	void
+	set (InputIterator, InputIterator);
 
 	ValueType &
 	operator [ ] (const size_type index)
@@ -345,10 +374,6 @@ public:
 	size () const
 	{ return getValue () .size (); }
 
-	virtual
-	bool
-	operator == (const X3DFieldDefinition &) const;
-
 	///  @name Input operator.
 	virtual
 	void
@@ -395,6 +420,20 @@ private:
 	removeChild (ValueType*);
 
 };
+
+template <class ValueType>
+bool
+X3DArrayField <ValueType>::operator == (const X3DFieldDefinition & field) const
+{
+	if (getType () == field .getType ())
+	{
+		return size () == static_cast <const X3DArrayField &> (field) .size () &&
+		       std::equal (begin (), end (),
+		                   static_cast <const X3DArrayField &> (field) .begin ());
+   }
+
+	return false;
+}
 
 template <class ValueType>
 inline
@@ -636,20 +675,6 @@ X3DArrayField <ValueType>::resize (size_type count, const ValueType & value)
 
 		notifyParents ();
 	}
-}
-
-template <class ValueType>
-bool
-X3DArrayField <ValueType>::operator == (const X3DFieldDefinition & field) const
-{
-	if (getType () == field .getType ())
-	{
-		return size () == static_cast <const X3DArrayField &> (field) .size () &&
-		       std::equal (begin (), end (),
-		                   static_cast <const X3DArrayField &> (field) .begin ());
-   }
-
-	return false;
 }
 
 template <class ValueType>

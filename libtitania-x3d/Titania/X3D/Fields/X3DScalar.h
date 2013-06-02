@@ -70,6 +70,7 @@ public:
 
 	typedef ValueType scalar_type;
 
+	using X3DField <ValueType>::addInterest;
 	using X3DField <ValueType>::operator =;
 	using X3DField <ValueType>::getValue;
 
@@ -88,7 +89,30 @@ public:
 	clone () const final
 	{ return new X3DScalar <ValueType> (*this); }
 
-	///  @name Input operator.
+	///  6.7.7 Add field interest.
+
+	template <class Class>
+	void
+	addInterest (Class* object, void (Class::* memberFunction) (const X3DScalar &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	template <class Class>
+	void
+	addInterest (Class & object, void (Class::* memberFunction) (const X3DScalar &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	void
+	addInterest (void (* requester) (const X3DScalar &)) const
+	{
+		addInterest (requester, *this);
+	}
+
+	///  @name Input/Output
+	
 	virtual
 	void
 	fromStream (std::istream &)
@@ -98,7 +122,6 @@ public:
 	       Error <DISPOSED>) final
 	{ }
 
-	///  @name Output operator.
 	virtual
 	void
 	toStream (std::ostream &) const final

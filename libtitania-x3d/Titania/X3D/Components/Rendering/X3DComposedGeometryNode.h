@@ -151,22 +151,24 @@ public:
 protected:
 
 	X3DComposedGeometryNode ();
-
-	virtual
+		
 	void
-	initialize ();
-	
+	set_index (const MFInt32 &);
+
 	virtual
 	size_t
 	getIndex (size_t index)
 	{ return index; }
-	
+
 	void
-	buildTriangles (size_t, bool);
+	buildPolygons (size_t, size_t, bool);
 
 	virtual
 	void
-	buildTriangleNormals (size_t);
+	buildNormals (size_t, size_t);
+
+	void
+	buildFaceNormals (size_t, size_t);
 
 
 private:

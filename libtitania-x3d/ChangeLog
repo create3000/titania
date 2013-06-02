@@ -1,3 +1,41 @@
+2013-06-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFVec3.h:
+	* SFVec2.h:
+	* SFTime.h:
+	* SFVec4.h:
+	* MFNode.h:
+	* X3DField.h:
+	* SFColor.h:
+	* SFImage.h:
+	* SFString.h:
+	* SFMatrix3.h:
+	* X3DScalar.h:
+	* SFMatrix4.h:
+	* SFColorRGBA.h:
+	* SFRotation4.h:
+	* X3DArrayField.h:
+	* QuadSet.h:
+	* TriangleSet.h:
+	* QuadSet.cpp:
+	* TriangleSet.cpp:
+	* TriangleFanSet.h:
+	* IndexedFaceSet.h:
+	* IndexedQuadSet.h:
+	* TriangleFanSet.cpp:
+	* TriangleStripSet.h:
+	* IndexedFaceSet.cpp:
+	* TriangleStripSet.cpp:
+	* IndexedTriangleSet.h:
+	* IndexedQuadSet.cpp:
+	* IndexedTriangleSet.cpp:
+	* IndexedTriangleFanSet.h:
+	* X3DComposedGeometryNode.h:
+	* IndexedTriangleStripSet.h:
+	* IndexedTriangleFanSet.cpp:
+	* X3DComposedGeometryNode.cpp:
+	* IndexedTriangleStripSet.cpp: 
+
 2013-06-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

@@ -2077,6 +2077,10 @@
     <None Include="Tests\PROTO\SimpleExternproto.wrl" />
     <None Include="Examples\WTC\facade.wrl.gz" />
     <None Include="Examples\WTC\facade.wrl" />
+    <None Include="Tests\CADGeometry\IndexedQuadSet.wrl" />
+    <None Include="Tests\Rendering\IndexedTriangleSet.wrl" />
+    <None Include="Tests\Rendering\IndexedTriangleFanSet.wrl" />
+    <None Include="Tests\Rendering\IndexedTriangleStripSet.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

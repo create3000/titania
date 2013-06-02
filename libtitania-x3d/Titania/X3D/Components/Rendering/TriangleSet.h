@@ -74,6 +74,10 @@ private:
 	void
 	build () final;
 
+	virtual
+	void
+	buildNormals (size_t, size_t) final;
+
 };
 
 } // X3D

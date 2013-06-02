@@ -70,14 +70,6 @@ public:
 	///  @name Fields
 
 	MFInt32 &
-	set_index ()
-	{ return *fields .set_index; }
-
-	const MFInt32 &
-	set_index () const
-	{ return *fields .set_index; }
-
-	MFInt32 &
 	index ()
 	{ return *fields .index; }
 
@@ -88,15 +80,34 @@ public:
 
 private:
 
+	using X3DComposedGeometryNode::set_index;
+
+	virtual
+	void
+	initialize () final;
+	
+	virtual
+	size_t
+	getIndex (size_t index) final
+	{ return coordIndex [index]; }
+
+	void
+	set_index ();
+
+	virtual
+	void
+	build () final;
+
 	struct Fields
 	{
 		Fields ();
 
-		MFInt32* const set_index;
 		MFInt32* const index;
 	};
 
 	Fields fields;
+
+	std::deque <int32_t> coordIndex;
 
 };
 

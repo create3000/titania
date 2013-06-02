@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -135,23 +135,7 @@ TriangleStripSet::set_stripCount ()
 void
 TriangleStripSet::build ()
 {
-	buildTriangles (coordIndex .size (), true);
-}
-
-void
-TriangleStripSet::buildTriangleNormals (size_t size)
-{
-	X3DComposedGeometryNode::buildTriangleNormals (size);
-	
-	if (normalPerVertex ())
-	{
-		NormalIndex normalIndex;
-
-		for (size_t i = 0, size = coordIndex .size (); i < size; ++ i)
-			normalIndex [coordIndex [i]] .emplace_back (i);
-
-		refineNormals (normalIndex, getNormals (), M_PI, true);
-	}
+	buildPolygons (3, coordIndex .size (), true);
 }
 
 } // X3D

@@ -1,6 +1,6 @@
 #VRML V2.0 utf8
 
-META "title" "QuadSet"
+META "title" "IndexedTriangleSet"
 
 Background {
   skyColor 0.2 0.2 0.2
@@ -14,11 +14,12 @@ Transform {
         url "../images/image.png"
       }
     }
-    geometry QuadSet {
+    geometry IndexedTriangleSet {
       solid FALSE
       coord Coordinate {
         point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
       }
+      index [ 0, 1, 2, 0, 2, 3 ]
     }
   }
 }

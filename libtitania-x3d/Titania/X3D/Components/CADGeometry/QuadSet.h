@@ -74,8 +74,9 @@ private:
 	void
 	build () final;
 
+	virtual
 	void
-	buildNormals ();
+	buildNormals (size_t, size_t) final;
 
 };
 

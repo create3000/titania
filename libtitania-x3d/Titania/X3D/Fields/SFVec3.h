@@ -69,6 +69,7 @@ public:
 	typedef typename ValueType::value_type scalar_type;
 	typedef typename ValueType::size_type  size_type;
 
+	using X3DField <ValueType>::addInterest;
 	using X3DField <ValueType>::setValue;
 	using X3DField <ValueType>::getValue;
 	using X3DField <ValueType>::operator =;
@@ -101,6 +102,30 @@ public:
 	virtual
 	SFVec3*
 	clone () const final;
+
+	///  6.7.7 Add field interest.
+
+	template <class Class>
+	void
+	addInterest (Class* object, void (Class::* memberFunction) (const SFVec3 &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	template <class Class>
+	void
+	addInterest (Class & object, void (Class::* memberFunction) (const SFVec3 &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	void
+	addInterest (void (* requester) (const SFVec3 &)) const
+	{
+		addInterest (requester, *this);
+	}
+
+	///  @name Functions
 
 	void
 	setX (const scalar_type &);

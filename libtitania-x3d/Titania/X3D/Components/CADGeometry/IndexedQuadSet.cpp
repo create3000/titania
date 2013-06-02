@@ -50,13 +50,14 @@
 
 #include "IndexedQuadSet.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/Coordinate.h"
 
 namespace titania {
 namespace X3D {
 
 IndexedQuadSet::Fields::Fields () :
-	set_index (new MFInt32 ()),
 	index (new MFInt32 ())
 { }
 
@@ -69,24 +70,42 @@ IndexedQuadSet::IndexedQuadSet (X3DExecutionContext* const executionContext) :
 	setTypeName ("IndexedQuadSet");
 
 	addField (inputOutput,    "metadata",        metadata ());
+
+	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "ccw",             ccw ());
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
+	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+
 	addField (inputOutput,    "attrib",          attrib ());
-	addField (inputOutput,    "coord",           coord ());
+	addField (inputOutput,    "fogCoord",        fogCoord ());
 	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "color",           color ());
 	addField (inputOutput,    "normal",          normal ());
-	addField (inputOutput,    "fogCoord",        fogCoord ());
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
-	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-	addField (initializeOnly, "solid",           solid ());
-	addField (initializeOnly, "ccw",             ccw ());
-	addField (inputOnly,      "set_index",       set_index ());
-	addField (initializeOnly, "index",           index ());
+	addField (inputOutput,    "coord",           coord ());
+
+	addField (inputOutput,    "index",           index ());
 }
 
 X3DBaseNode*
 IndexedQuadSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new IndexedQuadSet (executionContext);
+}
+
+void
+IndexedQuadSet::initialize ()
+{
+	X3DComposedGeometryNode::initialize ();
+	
+	index () .addInterest (static_cast <X3DComposedGeometryNode*> (this), &IndexedQuadSet::set_index);
+	
+	set_index (index ());
+}
+
+void
+IndexedQuadSet::build ()
+{
+	buildPolygons (4, index () .size (), true);
 }
 
 } // X3D

@@ -56,30 +56,32 @@ namespace titania {
 namespace X3D {
 
 IndexedTriangleStripSet::Fields::Fields () :
-	set_index (new MFInt32 ()),
 	index (new MFInt32 ())
 { }
 
 IndexedTriangleStripSet::IndexedTriangleStripSet (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DComposedGeometryNode (),                                                    
-	                 fields ()                                                     
+	                 fields (),
+	             coordIndex ()                                                     
 {
 	setComponent ("Rendering");
 	setTypeName ("IndexedTriangleStripSet");
 
 	addField (inputOutput,    "metadata",        metadata ());
+	
+	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "ccw",             ccw ());
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
+	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+	
 	addField (inputOutput,    "attrib",          attrib ());
-	addField (inputOutput,    "coord",           coord ());
+	addField (inputOutput,    "fogCoord",        fogCoord ());
 	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "color",           color ());
 	addField (inputOutput,    "normal",          normal ());
-	addField (inputOutput,    "fogCoord",        fogCoord ());
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
-	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-	addField (initializeOnly, "solid",           solid ());
-	addField (initializeOnly, "ccw",             ccw ());
-	addField (inputOnly,      "set_index",       set_index ());
+	addField (inputOutput,    "coord",           coord ());
+	
 	addField (initializeOnly, "index",           index ());
 }
 
@@ -87,6 +89,59 @@ X3DBaseNode*
 IndexedTriangleStripSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new IndexedTriangleStripSet (executionContext);
+}
+
+void
+IndexedTriangleStripSet::initialize ()
+{
+	X3DComposedGeometryNode::initialize ();
+	
+	index () .addInterest (this, &IndexedTriangleStripSet::set_index);
+	
+	set_index ();
+}
+
+void
+IndexedTriangleStripSet::set_index ()
+{
+	set_index (index ());
+
+	// Build coordIndex
+	
+	coordIndex .clear ();
+
+	for (size_t i = 0, size = index () .size (); i < size; ++ i)
+	{
+		int32_t first  = index () [i];
+		
+		++ i;
+
+		if (i < size and index () [i] > -1)
+		{
+			int32_t second = index () [i];
+			
+			++ i;
+
+			for (size_t face = 0; i < size and index () [i] > -1; ++ i, ++ face)
+			{
+				coordIndex .emplace_back (first);
+				coordIndex .emplace_back (second);
+				coordIndex .emplace_back (index () [i]);
+
+				if (face % 2)
+					second = index () [i];
+				
+				else
+					first  = index () [i];
+			}
+		}
+	}
+}
+
+void
+IndexedTriangleStripSet::build ()
+{
+	buildPolygons (3, coordIndex .size (), true);
 }
 
 } // X3D

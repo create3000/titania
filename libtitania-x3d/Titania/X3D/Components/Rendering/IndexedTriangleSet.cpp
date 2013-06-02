@@ -50,13 +50,14 @@
 
 #include "IndexedTriangleSet.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/Coordinate.h"
 
 namespace titania {
 namespace X3D {
 
 IndexedTriangleSet::Fields::Fields () :
-	set_index (new MFInt32 ()),
 	index (new MFInt32 ())
 { }
 
@@ -69,17 +70,19 @@ IndexedTriangleSet::IndexedTriangleSet (X3DExecutionContext* const executionCont
 	setTypeName ("IndexedTriangleSet");
 
 	addField (inputOutput,    "metadata",        metadata ());
+	
+	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "ccw",             ccw ());
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
+	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+	
 	addField (inputOutput,    "attrib",          attrib ());
-	addField (inputOutput,    "coord",           coord ());
+	addField (inputOutput,    "fogCoord",        fogCoord ());
 	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "color",           color ());
 	addField (inputOutput,    "normal",          normal ());
-	addField (inputOutput,    "fogCoord",        fogCoord ());
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
-	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-	addField (initializeOnly, "solid",           solid ());
-	addField (initializeOnly, "ccw",             ccw ());
-	addField (inputOnly,      "set_index",       set_index ());
+	addField (inputOutput,    "coord",           coord ());
+
 	addField (initializeOnly, "index",           index ());
 }
 
@@ -87,6 +90,22 @@ X3DBaseNode*
 IndexedTriangleSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new IndexedTriangleSet (executionContext);
+}
+
+void
+IndexedTriangleSet::initialize ()
+{
+	X3DComposedGeometryNode::initialize ();
+	
+	index () .addInterest (static_cast <X3DComposedGeometryNode*> (this), &IndexedTriangleSet::set_index);
+	
+	set_index (index ());
+}
+
+void
+IndexedTriangleSet::build ()
+{
+	buildPolygons (3, index () .size (), true);
 }
 
 } // X3D

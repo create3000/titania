@@ -71,6 +71,7 @@ public:
 	typedef SFVec3 <typename ValueType::vector3_type> vector3_type;
 	typedef typename ValueType::size_type             size_type;
 
+	using X3DField <ValueType>::addInterest;
 	using X3DField <ValueType>::setValue;
 	using X3DField <ValueType>::getValue;
 	using X3DField <ValueType>::operator =;
@@ -91,6 +92,30 @@ public:
 	virtual
 	SFRotation4*
 	clone () const final;
+
+	///  6.7.7 Add field interest.
+
+	template <class Class>
+	void
+	addInterest (Class* object, void (Class::* memberFunction) (const SFRotation4 &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	template <class Class>
+	void
+	addInterest (Class & object, void (Class::* memberFunction) (const SFRotation4 &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	void
+	addInterest (void (* requester) (const SFRotation4 &)) const
+	{
+		addInterest (requester, *this);
+	}
+
+	///  Functions
 
 	void
 	setX (const scalar_type &);

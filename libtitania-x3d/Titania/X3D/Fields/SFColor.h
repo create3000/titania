@@ -67,6 +67,7 @@ public:
 	typedef Color3f::value_type scalar_type;
 	typedef Color3f::size_type  size_type;
 
+	using X3DField <Color3f>::addInterest;
 	using X3DField <Color3f>::setValue;
 	using X3DField <Color3f>::getValue;
 	using X3DField <Color3f>::operator =;
@@ -83,6 +84,30 @@ public:
 	virtual
 	SFColor*
 	clone () const final;
+
+	///  6.7.7 Add field interest.
+
+	template <class Class>
+	void
+	addInterest (Class* object, void (Class::* memberFunction) (const SFColor &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	template <class Class>
+	void
+	addInterest (Class & object, void (Class::* memberFunction) (const SFColor &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	void
+	addInterest (void (* requester) (const SFColor &)) const
+	{
+		addInterest (requester, *this);
+	}
+
+	///  Functions
 
 	void
 	setR (const scalar_type &);

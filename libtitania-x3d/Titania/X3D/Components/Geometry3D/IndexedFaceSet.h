@@ -118,10 +118,6 @@ public:
 	coordIndex () const
 	{ return *fields .coordIndex; }
 
-	virtual
-	void
-	dispose ();
-
 
 private:
 
@@ -164,13 +160,13 @@ private:
 	build ();
 
 	void
+	buildNormals (const PolygonArray &);
+
+	void
 	tesselate (PolygonArray &, size_t &);
 
 	ElementArray
 	tesselate (const Vertices & polygon);
-
-	void
-	buildNormals (const PolygonArray &);
 
 	struct Fields
 	{

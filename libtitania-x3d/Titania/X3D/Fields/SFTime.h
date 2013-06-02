@@ -65,6 +65,7 @@ public:
 
 	typedef time_type scalar_type;
 
+	using X3DField <time_type>::addInterest;
 	using X3DField <time_type>::operator =;
 
 	SFTime ();
@@ -91,6 +92,28 @@ public:
 
 	std::string
 	toUTCString () const;
+
+	///  6.7.7 Add field interest.
+
+	template <class Class>
+	void
+	addInterest (Class* object, void (Class::* memberFunction) (const SFTime &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	template <class Class>
+	void
+	addInterest (Class & object, void (Class::* memberFunction) (const SFTime &)) const
+	{
+		addInterest (object, memberFunction, *this);
+	}
+
+	void
+	addInterest (void (* requester) (const SFTime &)) const
+	{
+		addInterest (requester, *this);
+	}
 
 	///  @name Input operator.
 	virtual
