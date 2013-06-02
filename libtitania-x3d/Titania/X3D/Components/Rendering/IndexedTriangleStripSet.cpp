@@ -141,7 +141,7 @@ IndexedTriangleStripSet::set_index ()
 void
 IndexedTriangleStripSet::build ()
 {
-	buildPolygons (3, coordIndex .size (), true);
+	buildPolygons (3, coordIndex .size ());
 }
 
 } // X3D

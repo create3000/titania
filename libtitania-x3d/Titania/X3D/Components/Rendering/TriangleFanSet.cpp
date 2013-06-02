@@ -138,7 +138,7 @@ TriangleFanSet::set_fanCount ()
 void
 TriangleFanSet::build ()
 {
-	buildPolygons (3, coordIndex .size (), true);
+	buildPolygons (3, coordIndex .size ());
 }
 
 } // X3D

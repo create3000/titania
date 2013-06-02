@@ -1,5 +1,18 @@
 2013-06-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* QuadSet.cpp:
+	* TriangleSet.cpp:
+	* TriangleFanSet.cpp:
+	* IndexedQuadSet.cpp:
+	* TriangleStripSet.cpp:
+	* IndexedTriangleSet.cpp:
+	* IndexedTriangleFanSet.cpp:
+	* X3DComposedGeometryNode.h:
+	* X3DComposedGeometryNode.cpp:
+	* IndexedTriangleStripSet.cpp: 
+
+2013-06-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFVec3.h:
 	* SFVec2.h:
 	* SFTime.h:

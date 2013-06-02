@@ -105,7 +105,7 @@ IndexedQuadSet::initialize ()
 void
 IndexedQuadSet::build ()
 {
-	buildPolygons (4, index () .size (), true);
+	buildPolygons (4, index () .size ());
 }
 
 } // X3D

@@ -135,7 +135,7 @@ IndexedTriangleFanSet::set_index ()
 void
 IndexedTriangleFanSet::build ()
 {
-	buildPolygons (3, coordIndex .size (), true);
+	buildPolygons (3, coordIndex .size ());
 }
 
 } // X3D

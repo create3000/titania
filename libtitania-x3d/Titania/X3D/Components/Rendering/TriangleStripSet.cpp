@@ -135,7 +135,7 @@ TriangleStripSet::set_stripCount ()
 void
 TriangleStripSet::build ()
 {
-	buildPolygons (3, coordIndex .size (), true);
+	buildPolygons (3, coordIndex .size ());
 }
 
 } // X3D

@@ -161,7 +161,7 @@ protected:
 	{ return index; }
 
 	void
-	buildPolygons (size_t, size_t, bool);
+	buildPolygons (size_t, size_t);
 
 	virtual
 	void

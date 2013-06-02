@@ -105,16 +105,18 @@ X3DComposedGeometryNode::set_index (const MFInt32 & index)
 }
 
 void
-X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size, bool colorPerVertex)
+X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 {
 	auto _coord = x3d_cast <Coordinate*> (coord ());
 
 	if (not _coord or not _coord -> point () .size ())
 		return;
+		
+	size_t faces = size / vertexCount; // Integer division
 
-	// Set size to a multiple of three.
+	// Set size to a multiple of vertexCount.
 	
-	size = size / vertexCount * vertexCount; // Integer division and multiplication
+	size = faces * vertexCount;
 
 	// Color
 
@@ -123,13 +125,13 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size, bool co
 
 	if (_color)
 	{
-		_color -> resize (colorPerVertex ? size : size / vertexCount);
+		_color -> resize (colorPerVertex () ? size : faces);
 		getColors () .reserve (size);
 	}
 
 	else if (_colorRGBA)
 	{
-		_colorRGBA -> resize (colorPerVertex ? size : size / vertexCount);
+		_colorRGBA -> resize (colorPerVertex () ? size : faces);
 		getColorsRGBA () .reserve (size);
 	}
 
@@ -149,7 +151,7 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size, bool co
 	auto _normal = x3d_cast <Normal*> (normal ());
 
 	if (_normal)
-		_normal -> resize (normalPerVertex () ? size : size / vertexCount);
+		_normal -> resize (normalPerVertex () ? size : faces);
 
 	getNormals () .reserve (size);
 
@@ -165,7 +167,7 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size, bool co
 		SFColor     faceColor;
 		SFColorRGBA faceColorRGBA;
 
-		if (not colorPerVertex)
+		if (not colorPerVertex ())
 		{
 			if (_color)
 				faceColor = _color -> color () [face];
@@ -184,7 +186,7 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size, bool co
 		{
 			if (_color)
 			{
-				if (colorPerVertex)
+				if (colorPerVertex ())
 					getColors () .emplace_back (_color -> color () [getIndex (index)]);
 
 				else
@@ -192,7 +194,7 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size, bool co
 			}
 			else if (_colorRGBA)
 			{
-				if (colorPerVertex)
+				if (colorPerVertex ())
 					getColorsRGBA () .emplace_back (_colorRGBA -> color () [getIndex (index)]);
 
 				else

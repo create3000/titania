@@ -105,7 +105,7 @@ IndexedTriangleSet::initialize ()
 void
 IndexedTriangleSet::build ()
 {
-	buildPolygons (3, index () .size (), true);
+	buildPolygons (3, index () .size ());
 }
 
 } // X3D
