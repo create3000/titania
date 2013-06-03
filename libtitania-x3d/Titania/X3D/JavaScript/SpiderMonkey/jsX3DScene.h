@@ -78,8 +78,9 @@ public:
 
 private:
 
-	static void
-	initObject (JSContext*, JSObject*);
+	static void initObject (JSContext*, JSObject*);
+	
+	static void finalize (JSContext*, JSObject*);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

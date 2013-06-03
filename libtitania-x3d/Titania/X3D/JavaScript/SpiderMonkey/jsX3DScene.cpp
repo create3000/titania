@@ -50,13 +50,15 @@
 
 #include "jsX3DScene.h"
 
+#include "jsContext.h"
+
 namespace titania {
 namespace X3D {
 
 JSClass jsX3DScene::static_class = {
 	"X3DScene", JSCLASS_HAS_PRIVATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -88,9 +90,14 @@ jsX3DScene::create (JSContext* context, Scene* scene, jsval* vp, const bool seal
 	if (result == NULL)
 		return JS_FALSE;
 
+	initObject (context, result);
+	
 	JS_SetPrivate (context, result, scene);
 
-	initObject (context, result);
+	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	
+	if (scene not_eq javaScript -> getExecutionContext ())
+		scene -> addParent (javaScript);
 
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
@@ -99,6 +106,17 @@ jsX3DScene::create (JSContext* context, Scene* scene, jsval* vp, const bool seal
 
 	return JS_TRUE;
 }
+
+void
+jsX3DScene::finalize (JSContext* context, JSObject* obj)
+{
+	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	auto scene      = static_cast <Scene*> (JS_GetPrivate (context, obj));
+
+	if (scene not_eq javaScript -> getExecutionContext ())
+		scene -> removeParent (javaScript);
+}
+
 
 } // X3D
 } // titania

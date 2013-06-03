@@ -2081,6 +2081,8 @@
     <None Include="Tests\Rendering\IndexedTriangleSet.wrl" />
     <None Include="Tests\Rendering\IndexedTriangleFanSet.wrl" />
     <None Include="Tests\Rendering\IndexedTriangleStripSet.wrl" />
+    <None Include="Tests\Scripting\createX3DFromURL.wrl" />
+    <None Include="Tests\Scripting\external\test.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2192,6 +2194,7 @@
     <Folder Include="Examples\CIS2\" />
     <Folder Include="Examples\DLMF\" />
     <Folder Include="Examples\WTC\" />
+    <Folder Include="Tests\Scripting\external\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

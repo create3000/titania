@@ -96,6 +96,7 @@ private:
 	// X3D functions
 	static JSBool replaceWorld         (JSContext *, uintN, jsval*);
 	static JSBool createX3DFromString  (JSContext *, uintN, jsval*);
+	static JSBool createX3DFromURL     (JSContext *, uintN, jsval*);
 	static JSBool loadURL              (JSContext *, uintN, jsval*);
 
 	// VRML97 functions

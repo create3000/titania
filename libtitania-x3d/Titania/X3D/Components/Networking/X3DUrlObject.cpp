@@ -236,7 +236,7 @@ throw (Error <INVALID_URL>,
 	if (stream)
 	{
 		stream .request_header ("User-Agent", userAgent);
-		stream .request_header ("Referer",    getExecutionContext () -> getWorldURL ());
+		stream .request_header ("Referer",    getReferer ());
 		stream .send ();
 
 		if (uri .is_network ())
@@ -262,7 +262,7 @@ throw (Error <INVALID_URL>,
 MFString
 X3DUrlObject::transformURI (const MFString & uri)
 {
-	return transformURI (getExecutionContext () -> getWorldURL (), uri);
+	return transformURI (getReferer (), uri);
 }
 
 MFString
@@ -279,7 +279,7 @@ X3DUrlObject::transformURI (const basic::uri & base, const MFString & uri)
 basic::uri
 X3DUrlObject::transformURI (const basic::uri & uri)
 {
-	return transformURI (getExecutionContext () -> getWorldURL (), uri);
+	return transformURI (getReferer (), uri);
 }
 
 basic::uri

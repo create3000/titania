@@ -65,6 +65,14 @@ X3DScriptNode::initialize ()
 {
 	X3DChildNode::initialize ();
 	X3DUrlObject::initialize ();
+	
+	setWorldURL (X3DUrlObject::getReferer ());
+}
+
+const basic::uri &
+X3DScriptNode::getReferer () const
+{
+	return getWorldURL ();
 }
 
 void

@@ -90,6 +90,7 @@ jsContext::jsContext (X3DScriptNode* script, const std::string & ecmascript, con
 {
 	setComponent ("Browser");
 	setTypeName ("jsContext");
+	setWorldURL (uri);
 
 	// Get a JS runtime.
 	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
@@ -477,7 +478,7 @@ jsContext::shutdown ()
 }
 
 jsval
-jsContext::getFunction (const std::string & name)
+jsContext::getFunction (const std::string & name) const
 {
 	jsval     function = JSVAL_VOID;
 	JSObject* objp     = NULL;
@@ -491,7 +492,7 @@ jsContext::getFunction (const std::string & name)
 }
 
 void
-jsContext::callFunction (const std::string & name)
+jsContext::callFunction (const std::string & name) const
 {
 	jsval     function = JSVAL_VOID;
 	JSObject* objp     = NULL;
@@ -505,7 +506,7 @@ jsContext::callFunction (const std::string & name)
 }
 
 void
-jsContext::callFunction (jsval function)
+jsContext::callFunction (jsval function) const
 {
 	jsval rval;
 

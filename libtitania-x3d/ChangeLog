@@ -1,3 +1,17 @@
+2013-06-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Script.cpp:
+	* jsContext.h:
+	* jsBrowser.h:
+	* jsX3DScene.h:
+	* X3DScriptNode.h:
+	* X3DUrlObject.h:
+	* jsContext.cpp:
+	* jsBrowser.cpp:
+	* X3DUrlObject.cpp:
+	* jsX3DScene.cpp:
+	* X3DScriptNode.cpp: 
+
 2013-06-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* QuadSet.cpp:

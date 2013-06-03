@@ -84,6 +84,13 @@ public:
 	JSBool
 	require (const basic::uri &, jsval &);
 
+	JSObject*
+	getGlobal () const
+	{ return global; }
+
+	jsval
+	getFunction (const std::string &) const;
+
 	virtual
 	void
 	set_initialized () final;
@@ -147,14 +154,11 @@ private:
 	void
 	shutdown ();
 
-	jsval
-	getFunction (const std::string &);
+	void
+	callFunction (const std::string &) const;
 
 	void
-	callFunction (const std::string &);
-
-	void
-	callFunction (jsval);
+	callFunction (jsval) const;
 
 	static
 	void

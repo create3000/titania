@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,12 +56,13 @@
 #include "Fields/jsMFNode.h"
 #include "Fields/jsMFString.h"
 #include "Fields/jsSFNode.h"
-#include "jsContext.h"
-#include "jsString.h"
 #include "jsComponentInfoArray.h"
+#include "jsContext.h"
 #include "jsProfileInfoArray.h"
+#include "jsString.h"
 #include "jsX3DExecutionContext.h"
 #include "jsX3DScene.h"
+#include "jsfield.h"
 
 namespace titania {
 namespace X3D {
@@ -92,6 +93,7 @@ JSFunctionSpec jsBrowser::functions [ ] = {
 	// X3D functions
 	{ "replaceWorld",         replaceWorld,         1, 0 },
 	{ "createX3DFromString",  createX3DFromString,  1, 0 },
+	{ "createX3DFromURL",     createX3DFromURL,     1, 0 },
 	{ "loadURL",              loadURL,              2, 0 },
 
 	// VRML functions
@@ -193,7 +195,7 @@ jsBrowser::currentScene (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 
 	if (scene)
 		return jsX3DScene::create (context, scene, vp);
-		
+
 	X3DExecutionContext* executionContext = script -> getExecutionContext ();
 
 	return jsX3DExecutionContext::create (context, executionContext, vp);
@@ -267,6 +269,133 @@ jsBrowser::createX3DFromString (JSContext* context, uintN argc, jsval* vp)
 }
 
 JSBool
+jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc > 0 and argc < 4)
+	{
+		auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+		auto script     = javaScript -> getNode ();
+
+		JSObject* ourl;
+		JSObject* onode;
+		JSString* event;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "o/So", &ourl, &event, &onode))
+			return JS_FALSE;
+
+		if (JS_GetClass (context, ourl) not_eq jsMFString::getClass ())
+		{
+			JS_ReportError (context, "Type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, ourl) -> name);
+			return JS_FALSE;
+		}
+
+		MFString* url = static_cast <MFString*> (JS_GetPrivate (context, ourl));
+
+		if (argc > 1)
+		{
+			if (argc == 3 and JS_GetClass (context, onode) == jsSFNode::getClass ())
+			{
+				SFNode <X3DBaseNode>* sfnode = static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, onode));
+
+				if (*sfnode)
+				{
+					X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, event));
+
+					if (field)
+					{
+						if (field -> isInput ())
+						{
+							if (field -> getType () == X3DConstants::MFNode)
+							{
+								try
+								{
+									SFNode <Scene> scene = script -> createX3DFromURL (*url);
+
+									if (scene)
+									{
+										field -> write (scene -> getRootNodes ());
+										field -> notifyParents ();
+									}
+								}
+								catch (const X3DError & error)
+								{
+									field -> write (MFNode ());
+									field -> notifyParents ();
+
+									JS_ReportError (context, error .what ());
+								}
+
+								//std::cout << "createVrmlFromURL " << *url << std::endl;
+								JS_SET_RVAL (context, vp, JSVAL_VOID);
+
+								return JS_TRUE;
+							}
+							else
+								JS_ReportError (context, ("Browser .createX3DFromURL: field '" + JS_GetString (context, event) + "' is not a MFNode") .c_str ());
+						}
+						else
+							JS_ReportError (context, ("Browser .createX3DFromURL: field '" + JS_GetString (context, event) + "' is not an eventIn") .c_str ());
+					}
+					else
+						JS_ReportError (context, ("Browser .createX3DFromURL: no such field '" + JS_GetString (context, event) + "'") .c_str ());
+				}
+				else
+					JS_ReportError (context, "Browser .createX3DFromURL: node is NULL");
+			}
+			else
+			{
+				try
+				{
+					SFNode <Scene> scene = script -> createX3DFromURL (*url);
+
+					if (argc == 2)
+						onode = javaScript -> getGlobal ();
+
+					jsval argv [2];
+					
+					jsX3DScene::create (context, *scene, &argv [0]);
+					JS_NewNumberValue (context, script -> getCurrentTime (), &argv [1]);
+
+					jsval rval;
+				
+					if (JS_CallFunctionName (context, onode, JS_GetString (context, event) .c_str (), 2, argv, &rval))
+					{
+						JS_SET_RVAL (context, vp, JSVAL_VOID);
+
+						return JS_TRUE;
+					}
+
+					JS_ReportError (context, "Couldn't call function '%s'.", JS_GetString (context, event) .c_str ());
+				}
+				catch (const X3DError & error)
+				{
+					JS_ReportError (context, error .what ());
+				}
+			}
+		}
+		else
+		{
+			try
+			{
+				SFNode <Scene> scene = script -> createX3DFromURL (*url);
+
+				return jsX3DScene::create (context, *scene, vp);
+			}
+			catch (const X3DError & error)
+			{
+				JS_ReportError (context, error .what ());
+			}
+		}
+	}
+	else
+		JS_ReportError (context, "Browser .createX3DFromURL: wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
 jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 2)
@@ -324,7 +453,7 @@ jsBrowser::getName (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 0)
 	{
 		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
-		
+
 		return JS_NewStringValue (context, script -> getBrowser () -> getName (), &JS_RVAL (context, vp));
 	}
 
@@ -339,7 +468,7 @@ jsBrowser::getVersion (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 0)
 	{
 		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
-		
+
 		return JS_NewStringValue (context, script -> getBrowser () -> getVersion (), &JS_RVAL (context, vp));
 	}
 
@@ -354,7 +483,7 @@ jsBrowser::getCurrentSpeed (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 0)
 	{
 		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
-		
+
 		return JS_NewNumberValue (context, script -> getBrowser () -> getCurrentSpeed (), &JS_RVAL (context, vp));
 	}
 
@@ -369,7 +498,7 @@ jsBrowser::getCurrentFrameRate (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 0)
 	{
 		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
-		
+
 		return JS_NewNumberValue (context, script -> getBrowser () -> getCurrentFrameRate (), &JS_RVAL (context, vp));
 	}
 
@@ -384,7 +513,7 @@ jsBrowser::getWorldURL (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 0)
 	{
 		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
-		
+
 		return JS_NewStringValue (context, script -> getBrowser () -> getWorldURL (), &JS_RVAL (context, vp));
 	}
 

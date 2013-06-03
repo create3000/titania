@@ -130,7 +130,10 @@ bool
 Script::loadDocument (const SFString & URL, std::string & ecmascript)
 {
 	if (RegEx::ECMAScript .FullMatch (URL .str (), &ecmascript))
+	{
+		setWorldURL (getExecutionContext () -> getWorldURL ());
 		return true;
+	}
 	
 	try
 	{

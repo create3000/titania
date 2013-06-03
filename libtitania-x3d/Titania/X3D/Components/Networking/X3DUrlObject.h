@@ -95,9 +95,14 @@ public:
 	const MFString &
 	urlError () const
 	{ return fields .urlError; }
+	
+	virtual
+	const basic::uri &
+	getWorldURL () const
+	{ return worldURL; }
 
 	LoadState
-	checkLoadState ()
+	checkLoadState () const
 	{ return loadState; }
 
 	///  @name File operations
@@ -206,16 +211,16 @@ protected:
 	initialize () override;
 
 	///  @name Element Access
+	
+	virtual
+	const basic::uri &
+	getReferer () const
+	{ return getExecutionContext () -> getWorldURL (); }
 
 	virtual
 	void
 	setWorldURL (const basic::uri & value)
 	{ worldURL = value; }
-
-	virtual
-	const basic::uri &
-	getWorldURL ()
-	{ return worldURL; }
 
 	void
 	setLoadState (LoadState);

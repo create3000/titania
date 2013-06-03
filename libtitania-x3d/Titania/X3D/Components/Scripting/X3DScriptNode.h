@@ -70,7 +70,7 @@ public:
 
 	virtual
 	void
-	dispose ();
+	dispose () override;
 
 
 protected:
@@ -79,7 +79,11 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
+	
+	virtual
+	const basic::uri &
+	getReferer () const final;
 
 };
 
