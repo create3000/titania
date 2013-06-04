@@ -30,6 +30,7 @@ function set_time ()
 	print ('supportedProfiles:   ' + Browser .supportedProfiles);
 	print ('currentScene:        ' + Browser .currentScene);
 
+	print ();
 	print ('+ VRML Browser ++++++++++++++++++++++++++++++++++++++++');	
 
 	// VRML  
@@ -39,7 +40,32 @@ function set_time ()
 	print ('getCurrentFrameRate: ' + Browser .getCurrentFrameRate ());
 	print ('getWorldURL:         ' + Browser .getWorldURL ());
 
-	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
+	print ();
+	print ('+ SupportedProfiles +++++++++++++++++++++++++++++++++++');
+	
+	var supportedProfiles = Browser .supportedProfiles;
+	
+	print ('length: ' + supportedProfiles .length);
+
+	for (var i in supportedProfiles)
+	{
+		print ();
+		print ('name:        ', supportedProfiles [i] .name);
+		print ('title:       ', supportedProfiles [i] .title);
+		print ('providerUrl: ', supportedProfiles [i] .providerUrl);
+		print ('components:  ', supportedProfiles [i] .components);
+		
+		var components = supportedProfiles [i] .components;
+		
+		for (var c in components)
+		{
+			print ();
+			print ('\t', 'name:        ', components [c] .name);
+			print ('\t', 'level:       ', components [c] .level);
+			print ('\t', 'title:       ', components [c] .title);
+			print ('\t', 'providerUrl: ', components [c] .providerUrl);
+		}
+	}	
 }
 "
 }

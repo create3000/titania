@@ -52,35 +52,15 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_COMPONENT_INFO_ARRAY_H__
 
 #include "../../Configuration/ComponentInfoArray.h"
-#include <jsapi.h>
+#include "jsConstArray.h"
+#include "jsComponentInfo.h"
 
 namespace titania {
 namespace X3D {
 
-class jsComponentInfoArray
-{
-public:
+typedef jsConstArray <ComponentInfoArray, jsComponentInfo> jsComponentInfoArray;
 
-	static
-	void
-	init (JSContext*, JSObject*);
-
-	static
-	JSBool
-	create (JSContext*, ComponentInfoArray*, jsval*, const bool = false);
-
-	static
-	JSClass*
-	getClass () { return &static_class; }
-
-
-private:
-
-	static JSClass        static_class;
-	static JSPropertySpec properties [ ];
-	static JSFunctionSpec functions [ ];
-
-};
+extern template class jsConstArray <ComponentInfoArray, jsComponentInfo>;
 
 } // X3D
 } // titania

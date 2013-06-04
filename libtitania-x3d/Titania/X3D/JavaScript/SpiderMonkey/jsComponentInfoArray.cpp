@@ -53,42 +53,16 @@
 namespace titania {
 namespace X3D {
 
-JSClass jsComponentInfoArray::static_class = {
-	"ComponentInfoArray", JSCLASS_HAS_PRIVATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+template <>
+JSClass jsConstArray <ComponentInfoArray, jsComponentInfo>::static_class = {
+	"ComponentInfoArray", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, get1Value, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
-JSPropertySpec jsComponentInfoArray::properties [ ] = {
-	{ 0 }
-
-};
-
-JSFunctionSpec jsComponentInfoArray::functions [ ] = {
-	//	{"toString", toString, 0, 0},
-	{ 0, 0, 0, 0 }
-
-};
-
-JSBool
-jsComponentInfoArray::create (JSContext* context, ComponentInfoArray* componentInfoArray, jsval* vp, const bool seal)
-{
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
-
-	if (result == NULL)
-		return JS_FALSE;
-
-	JS_SetPrivate (context, result, componentInfoArray);
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
-
-	*vp = OBJECT_TO_JSVAL (result);
-
-	return JS_TRUE;
-}
+template class jsConstArray <ComponentInfoArray, jsComponentInfo>;
 
 } // X3D
 } // titania

@@ -48,21 +48,53 @@
  *
  ******************************************************************************/
 
-#include "jsFieldDefinitionArray.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_PROFILE_INFO_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_PROFILE_INFO_H__
+
+#include "../../Configuration/ProfileInfo.h"
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 
-template <>
-JSClass jsConstArray <FieldDefinitionArray, jsX3DFieldDefinition>::static_class = {
-	"FieldDefinitionArray", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
-	JSCLASS_NO_OPTIONAL_MEMBERS
+class jsProfileInfo
+{
+public:
+
+	static
+	JSBool
+	create (JSContext*, const ProfileInfo*, jsval*, const bool = false);
+
+	static
+	JSClass*
+	getClass () { return &static_class; }
+
+
+private:
+
+	enum Property {
+		NAME,
+		TITLE,
+		PROVIDER_URL,
+		COMPONENTS
+	};
+
+	static
+	void
+	initObject (JSContext*, JSObject*);
+
+	static JSBool name        (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool title       (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool providerUrl (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool components  (JSContext *, JSObject *, jsid, jsval*);
+
+	static JSClass        static_class;
+	static JSPropertySpec properties [ ];
+	static JSFunctionSpec functions [ ];
 
 };
 
-template class jsConstArray <FieldDefinitionArray, jsX3DFieldDefinition>;
-
 } // X3D
 } // titania
+
+#endif

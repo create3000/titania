@@ -53,41 +53,16 @@
 namespace titania {
 namespace X3D {
 
-JSClass jsProfileInfoArray::static_class = {
-	"ProfileInfoArray", JSCLASS_HAS_PRIVATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+template <>
+JSClass jsConstArray <ProfileInfoArray, jsProfileInfo>::static_class = {
+	"ProfileInfoArray", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, get1Value, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
-JSPropertySpec jsProfileInfoArray::properties [ ] = {
-	{ 0 }
-
-};
-
-JSFunctionSpec jsProfileInfoArray::functions [ ] = {
-	{ 0, 0, 0, 0 }
-
-};
-
-JSBool
-jsProfileInfoArray::create (JSContext* context, ProfileInfoArray* profileInfoArray, jsval* vp, const bool seal)
-{
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
-
-	if (result == NULL)
-		return JS_FALSE;
-
-	JS_SetPrivate (context, result, profileInfoArray);
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
-
-	*vp = OBJECT_TO_JSVAL (result);
-
-	return JS_TRUE;
-}
+template class jsConstArray <ProfileInfoArray, jsProfileInfo>;
 
 } // X3D
 } // titania

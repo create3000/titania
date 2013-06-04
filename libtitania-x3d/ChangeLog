@@ -1,5 +1,23 @@
 2013-06-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* ProfileInfo.h:
+	* jsBrowser.cpp:
+	* jsConstArray.h:
+	* jsProfileInfo.h:
+	* jsComponentInfo.h:
+	* jsProfileInfo.cpp:
+	* jsComponentInfo.cpp:
+	* jsProfileInfoArray.h:
+	* jsProfileInfoArray.cpp:
+	* jsComponentInfoArray.h:
+	* jsComponentInfoArray.cpp:
+	* jsFieldDefinitionArray.h:
+	* jsFieldDefinitionArray.cpp: 
+
+2013-06-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.h:
 	* X3DBaseNode.cpp:
 	* LOD.cpp:

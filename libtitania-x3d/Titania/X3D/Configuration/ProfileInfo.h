@@ -69,21 +69,24 @@ public:
 	create (X3DExecutionContext* const) const final;
 
 	const std::string &
-	getTitle () const { return title; }
+	getTitle () const
+	{ return title; }
 
 	const std::string &
-	getProviderUrl () const { return providerUrl; }
+	getProviderUrl () const
+	{ return providerUrl; }
 
-	const ComponentInfoArray
-	getComponents () const { return components; }
+	const ComponentInfoArray &
+	getComponents () const
+	{ return components; }
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 	virtual
 	std::ostream &
-	operator >> (std::ostream &) const;
+	operator >> (std::ostream &) const final;
 
 
 private:

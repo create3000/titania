@@ -179,15 +179,17 @@ jsBrowser::description (JSContext* context, JSObject* obj, jsid id, JSBool stric
 JSBool
 jsBrowser::supportedComponents (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	//script -> getBrowser() -> getSupportedComponents()
-	return jsComponentInfoArray::create (context, NULL, vp);
+	X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+
+	return jsComponentInfoArray::create (context, &script -> getBrowser() -> getSupportedComponents (), vp);
 }
 
 JSBool
 jsBrowser::supportedProfiles (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	//script -> getBrowser() -> getSupportedProfiles();
-	return jsProfileInfoArray::create (context, NULL, vp);
+	X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+	
+	return jsProfileInfoArray::create (context, &script -> getBrowser() -> getSupportedProfiles (), vp);
 }
 
 JSBool

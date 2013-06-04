@@ -52,35 +52,15 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_PROFILE_INFO_ARRAY_H__
 
 #include "../../Configuration/ProfileInfoArray.h"
-#include <jsapi.h>
+#include "jsConstArray.h"
+#include "jsProfileInfo.h"
 
 namespace titania {
 namespace X3D {
 
-class jsProfileInfoArray
-{
-public:
+typedef jsConstArray <ProfileInfoArray, jsProfileInfo> jsProfileInfoArray;
 
-	static
-	void
-	init (JSContext*, JSObject*);
-
-	static
-	JSBool
-	create (JSContext*, ProfileInfoArray*, jsval*, const bool = false);
-
-	static
-	JSClass*
-	getClass () { return &static_class; }
-
-
-private:
-
-	static JSClass        static_class;
-	static JSPropertySpec properties [ ];
-	static JSFunctionSpec functions [ ];
-
-};
+extern template class jsConstArray <ProfileInfoArray, jsProfileInfo>;
 
 } // X3D
 } // titania
