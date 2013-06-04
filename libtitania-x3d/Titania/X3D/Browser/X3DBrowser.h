@@ -195,7 +195,7 @@ public:
 
 	template <typename ... Args>
 	void
-	println (const Args & ... args) const
+	println (const Args & ... args)
 	throw (Error <DISPOSED>)
 	{
 		print (args ..., '\n');

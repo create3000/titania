@@ -102,6 +102,8 @@ private:
 	static JSBool getBrowserProperty   (JSContext *, uintN, jsval*);
 	static JSBool getBrowserOption     (JSContext *, uintN, jsval*);
 	static JSBool setBrowserOption     (JSContext *, uintN, jsval*);
+	static JSBool print                (JSContext *, uintN, jsval*);
+	static JSBool println              (JSContext *, uintN, jsval*);
 
 	// VRML97 functions
 	static JSBool getName              (JSContext *, uintN, jsval*);

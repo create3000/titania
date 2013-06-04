@@ -1,5 +1,11 @@
 2013-06-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowser.h:
+	* jsBrowser.h:
+	* jsBrowser.cpp: 
+
+2013-06-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* ProfileInfo.h:

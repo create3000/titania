@@ -99,6 +99,8 @@ JSFunctionSpec jsBrowser::functions [ ] = {
 	{ "getBrowserProperty",   getBrowserProperty,   1, 0 },
 	{ "getBrowserOption",     getBrowserOption,     1, 0 },
 	{ "setBrowserOption",     setBrowserOption,     2, 0 },
+	{ "print",                print,                1, 0 },
+	{ "println",              println,              1, 0 },
 
 	// VRML functions
 	{ "getName",              getName,              0, 0 },
@@ -564,6 +566,54 @@ jsBrowser::setBrowserOption (JSContext* context, uintN argc, jsval* vp)
 	}
 	else
 		JS_ReportError (context, "Browser .setBrowserOption: wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsBrowser::print (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+
+		JSString* object;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "S", &object))
+			return JS_FALSE;
+			
+		script -> getBrowser () -> print (JS_GetString (context, object));
+
+		return JS_TRUE;
+	}
+	else
+		JS_ReportError (context, "Browser .print: wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsBrowser::println (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+
+		JSString* object;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "S", &object))
+			return JS_FALSE;
+			
+		script -> getBrowser () -> println (JS_GetString (context, object));
+
+		return JS_TRUE;
+	}
+	else
+		JS_ReportError (context, "Browser .println: wrong number of arguments");
 
 	return JS_FALSE;
 }

@@ -65,7 +65,25 @@ function set_time ()
 			print ('\t', 'title:       ', components [c] .title);
 			print ('\t', 'providerUrl: ', components [c] .providerUrl);
 		}
-	}	
+	}
+	
+	print ();
+	print ('+ SupportedComponents ++++++++++++++++++++++++++++++++++');
+
+	var supportedComponents = Browser .supportedComponents;
+
+	for (var i in supportedComponents)
+	{
+		print ();
+		print ('name:        ', supportedComponents [i] .name);
+		print ('level:       ', supportedComponents [i] .level);
+		print ('title:       ', supportedComponents [i] .title);
+		print ('providerUrl: ', supportedComponents [i] .providerUrl);
+	}
+	
+	Browser .print (Browser);
+	Browser .println (Browser);
+	Browser .println (Browser);
 }
 "
 }
