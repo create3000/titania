@@ -2083,6 +2083,9 @@
     <None Include="Tests\Rendering\IndexedTriangleStripSet.wrl" />
     <None Include="Tests\Scripting\createX3DFromURL.wrl" />
     <None Include="Tests\Scripting\external\test.js" />
+    <None Include="Tests\Scripting\BrowserOptions.wrl" />
+    <None Include="Tests\Scripting\BrowserProperties.wrl" />
+    <None Include="Tests\Scripting\RenderingProperties.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

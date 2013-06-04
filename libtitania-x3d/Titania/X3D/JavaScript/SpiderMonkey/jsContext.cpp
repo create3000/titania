@@ -371,11 +371,7 @@ jsContext::require (const basic::uri & uri, jsval & rval)
 	{
 		// Resolve uri
 
-		basic::uri base = worldURL .back () .size ()
-		                  ? worldURL .back ()
-								: getExecutionContext () -> getWorldURL ();
-
-		basic::uri resolvedURL = transformURI (base, uri);
+		basic::uri resolvedURL = transformURI (worldURL .back (), uri);
 
 		// Get cached result
 
@@ -403,9 +399,9 @@ jsContext::require (const basic::uri & uri, jsval & rval)
 
 		if (success)
 		{
-			JS_AddValueRoot (context, &rval);
-
 			files .insert (std::make_pair (resolvedURL, rval));
+
+			JS_AddValueRoot (context, &files [resolvedURL]);
 
 			return JS_TRUE;
 		}

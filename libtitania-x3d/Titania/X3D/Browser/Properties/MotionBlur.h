@@ -65,7 +65,7 @@ public:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
+	create (X3DExecutionContext* const) const final;
 
 	///  @name Fields
 
@@ -90,14 +90,14 @@ public:
 
 	virtual
 	void
-	display ();
+	display () final;
 
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	void
 	set_enabled ();

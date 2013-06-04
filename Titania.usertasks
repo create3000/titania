@@ -7,4 +7,5 @@
   <Task file="" description="X3DGeometryNode setup: nicht wenn PROTO??? Warum? Test ist irgend wo bei ..." />
   <Task file="" description="Vattenfall MovieTexture zweimal in GarbageCollector" />
   <Task file="" description="Collision mit Polygonen und anderen Dreiecken" />
+  <Task file="" description="getField mit exception" />
 </ListOfTask>

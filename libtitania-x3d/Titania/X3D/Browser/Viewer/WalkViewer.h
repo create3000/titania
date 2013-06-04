@@ -65,7 +65,7 @@ public:
 
 	virtual
 	ViewerType
-	getType () const
+	getType () const final
 	{ return ViewerType::WALK; }
 
 	virtual

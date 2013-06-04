@@ -142,7 +142,7 @@ private:
 
 	virtual
 	BrowserProperties*
-	create (X3DExecutionContext* const executionContext) const;
+	create (X3DExecutionContext* const executionContext) const final;
 
 	struct Fields
 	{

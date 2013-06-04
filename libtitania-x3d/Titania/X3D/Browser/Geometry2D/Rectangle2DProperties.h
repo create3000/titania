@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -67,26 +67,27 @@ public:
 
 	virtual
 	GLenum
-	getVertexMode () const { return GL_QUADS; }
+	getVertexMode () const final
+	{ return GL_QUADS; }
 
 
 private:
 
 	virtual
 	Rectangle2DProperties*
-	create (X3DExecutionContext* const) const;
+	create (X3DExecutionContext* const) const final;
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	virtual
 	void
-	eventsProcessed ();
+	eventsProcessed () final;
 
 	virtual
 	void
-	build ();
+	build () final;
 
 };
 

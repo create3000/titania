@@ -69,8 +69,9 @@ public:
 
 	X3DFlyViewer (Browser* const, NavigationInfo*);
 
+	virtual
 	void
-	initialize ();
+	initialize () override;
 
 	virtual
 	~X3DFlyViewer ();

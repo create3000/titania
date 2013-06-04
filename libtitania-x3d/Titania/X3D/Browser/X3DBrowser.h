@@ -69,19 +69,16 @@ public:
 	const basic::uri &
 	getWorldURL () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>) final;
 
-	virtual
 	const FieldTypesArray &
 	getSupportedFields () const
 	throw (Error <DISPOSED>);
 
-	virtual
 	const BasicNodeArray &
 	getSupportedNodes () const
 	throw (Error <DISPOSED>);
 
-	virtual
 	const ComponentInfoArray &
 	getSupportedComponents () const
 	throw (Error <DISPOSED>);
@@ -90,17 +87,14 @@ public:
 	getSupportedProfiles () const
 	throw (Error <DISPOSED>);
 
-	virtual
 	const X3DFieldDefinition*
 	getFieldType (const std::string &) const
 	throw (Error <INVALID_NAME>);
 
-	virtual
 	const X3DBaseNode*
 	getNode (const std::string &) const
 	throw (Error <INVALID_NAME>);
 
-	virtual
 	const ComponentInfo*
 	getComponent (const std::string &, const size_t) const
 	throw (Error <NOT_SUPPORTED>);
@@ -113,7 +107,7 @@ public:
 	const SFNode <Scene> &
 	getExecutionContext () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>) final;
 
 	SFNode <Scene>
 	createScene () const
@@ -138,7 +132,7 @@ public:
 	void
 	loadURL (const MFString &, const MFString &)
 	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
+	       Error <URL_UNAVAILABLE>) final;
 
 	SFNode <Scene>
 	importDocument (/*const XML DOMNode &*/)
@@ -214,7 +208,7 @@ public:
 
 	virtual
 	void
-	dispose ();
+	dispose () override;
 
 	////
 
@@ -225,7 +219,7 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
 
 	virtual
 	~X3DBrowser ();

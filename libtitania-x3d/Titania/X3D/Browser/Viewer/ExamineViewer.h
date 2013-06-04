@@ -74,7 +74,7 @@ public:
 
 	virtual
 	ViewerType
-	getType () const
+	getType () const final
 	{ return ViewerType::EXAMINE; }
 
 	virtual

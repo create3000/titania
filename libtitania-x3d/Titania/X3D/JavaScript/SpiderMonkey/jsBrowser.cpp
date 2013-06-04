@@ -95,6 +95,10 @@ JSFunctionSpec jsBrowser::functions [ ] = {
 	{ "createX3DFromString",  createX3DFromString,  1, 0 },
 	{ "createX3DFromURL",     createX3DFromURL,     1, 0 },
 	{ "loadURL",              loadURL,              2, 0 },
+	{ "getRenderingProperty", getRenderingProperty, 1, 0 },
+	{ "getBrowserProperty",   getBrowserProperty,   1, 0 },
+	{ "getBrowserOption",     getBrowserOption,     1, 0 },
+	{ "setBrowserOption",     setBrowserOption,     2, 0 },
 
 	// VRML functions
 	{ "getName",              getName,              0, 0 },
@@ -441,6 +445,123 @@ jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
 	}
 	else
 		JS_ReportError (context, "Browser .loadURL: wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsBrowser::getRenderingProperty (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+
+		JSString* name;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
+			return JS_FALSE;
+			
+		auto field = script -> getBrowser () -> getRenderingProperties () -> getField (JS_GetString (context, name));
+		
+		if (field)
+			return JS_NewFieldValue (context, field, vp);
+
+		JS_ReportError (context, "Browser .getRenderingProperty: unknown property '%s'.", JS_GetString (context, name) .c_str ());		
+	}
+	else
+		JS_ReportError (context, "Browser .getRenderingProperty: wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsBrowser::getBrowserProperty (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+
+		JSString* name;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
+			return JS_FALSE;
+			
+		auto field = script -> getBrowser () -> getBrowserProperties () -> getField (JS_GetString (context, name));
+		
+		if (field)
+			return JS_NewFieldValue (context, field, vp);
+
+		JS_ReportError (context, "Browser .getBrowserProperty: unknown property '%s'.", JS_GetString (context, name) .c_str ());		
+	}
+	else
+		JS_ReportError (context, "Browser .getBrowserProperty: wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsBrowser::getBrowserOption (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+
+		JSString* name;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
+			return JS_FALSE;
+			
+		auto field = script -> getBrowser () -> getBrowserOptions () -> getField (JS_GetString (context, name));
+		
+		if (field)
+			return JS_NewFieldValue (context, field, vp);
+
+		JS_ReportError (context, "Browser .getBrowserOption: unknown option '%s'.", JS_GetString (context, name) .c_str ());		
+	}
+	else
+		JS_ReportError (context, "Browser .getBrowserOption: wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsBrowser::setBrowserOption (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 2)
+	{
+		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+
+		JSString* name;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
+			return JS_FALSE;
+			
+		auto field = script -> getBrowser () -> getBrowserOptions () -> getField (JS_GetString (context, name));
+		
+		if (field)
+		{
+			if (JS_ValueToField (context, field, &argv [1]))
+			{
+				JS_SET_RVAL (context, vp, JSVAL_VOID);
+
+				return JS_TRUE;
+			}
+			else
+				JS_ReportError (context, "Browser .setBrowserOption: couldn't set value for option '%s'.", JS_GetString (context, name) .c_str ());		
+		}
+		else
+			JS_ReportError (context, "Browser .setBrowserOption: unknown option '%s'.", JS_GetString (context, name) .c_str ());		
+	}
+	else
+		JS_ReportError (context, "Browser .setBrowserOption: wrong number of arguments");
 
 	return JS_FALSE;
 }

@@ -65,7 +65,7 @@ public:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const;
+	create (X3DExecutionContext* const) const final;
 
 	///  @name Fields
 

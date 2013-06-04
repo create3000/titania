@@ -1,0 +1,37 @@
+#VRML V2.0 utf8 Titania
+
+META "title" "BrowserOptions"
+
+DEF Touch TouchSensor { }
+
+Shape {
+  appearance Appearance {
+    material Material { }
+  }
+  geometry Box { }
+}
+
+DEF Debug Script {
+  eventIn SFTime set_time
+
+  url [ "vrmlscript:
+
+function set_time (value)
+{
+	print ('SplashScreen:           ', Browser .getBrowserOption ('SplashScreen'));
+	print ('Dashboard:              ', Browser .getBrowserOption ('Dashboard'));
+	print ('Rubberband:             ', Browser .getBrowserOption ('Rubberband'));
+	print ('EnableInlineViewpoints: ', Browser .getBrowserOption ('EnableInlineViewpoints'));
+	print ('Antialiased:            ', Browser .getBrowserOption ('Antialiased'));
+	print ('TextureQuality:         ', Browser .getBrowserOption ('TextureQuality'));
+	print ('PrimitiveQuality:       ', Browser .getBrowserOption ('PrimitiveQuality'));
+	print ('QualityWhenMoving:      ', Browser .getBrowserOption ('QualityWhenMoving'));
+	print ('Shading:                ', Browser .getBrowserOption ('Shading'));
+	print ('MotionBlur:             ', Browser .getBrowserOption ('MotionBlur'));
+	
+	Browser .setBrowserOption ('Shading', 'WIREFRAME');
+}
+" ]
+}
+
+ROUTE Touch.touchTime TO Debug.set_time

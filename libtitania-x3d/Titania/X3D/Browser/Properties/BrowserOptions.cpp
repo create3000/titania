@@ -62,6 +62,19 @@ extern "C"
 namespace titania {
 namespace X3D {
 
+// Table 9.2 — Browser options
+// Name                    Type/valid range                         Default                      Description
+// SplashScreen            Boolean                                  Implementation-dependent     Display browser splash screen on startup
+// Dashboard               Boolean                                  False                        Specified by bound NavigationInfo in content. Display browser navigation user interface.
+// Rubberband              Boolean                                  True                         Specified by bound NavigationInfo in content. Display rubber band navigation hint.
+// EnableInlineViewpoints  Boolean                                  True                         Viewpoints from Inline nodes are included in list of viewpoints if made available by the Inline node.
+// Antialiased             Boolean                                  False                        Render using hardware antialiasing if available
+// TextureQuality          Low, Medium, High                        Medium                       Quality of texture map display
+// PrimitiveQuality        Low, Medium, High                        Medium                       Render quality (tesselation level) for Box, Cone, Cylinder, Sphere
+// QualityWhenMoving       Low, Medium, High,                       Same (as while stationary)   SameRender quality while camera is moving
+// Shading                 Point, Wireframe, Flat, Gouraud, Phong   Gouraud                      Specify shading mode for all objects
+// MotionBlur              Boolean                                  False                        Render animations with motion blur
+
 BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	splashScreen (new SFBool (false)),
 	dashboard (new SFBool ()),
@@ -72,16 +85,17 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	primitiveQuality (new SFString ("MEDIUM")),
 	qualityWhenMoving (new SFString ("MEDIUM")),
 	shading (new SFString ("GOURAUD")),
-	motionBlur (new SFNode <MotionBlur> (new MotionBlur (executionContext))),
-	textureProperties (new SFNode <TextureProperties> (new TextureProperties (executionContext))),
-	arc2DProperties (new SFNode <Arc2DProperties> (new Arc2DProperties (executionContext))),
-	arcClose2DProperties (new SFNode <ArcClose2DProperties> (new ArcClose2DProperties (executionContext))),
-	circle2DProperties (new SFNode <Circle2DProperties> (new Circle2DProperties (executionContext))),
-	disc2DProperties (new SFNode <Disk2DProperties> (new Disk2DProperties (executionContext))),
-	rectangle2DProperties (new SFNode <Rectangle2DProperties> (new Rectangle2DProperties (executionContext))),
-	boxProperties (new SFNode <BoxProperties> (new BoxProperties (executionContext))),
-	sphereProperties (new SFNode <X3DSpherePropertyNode> (new QuadSphereProperties (executionContext))),
-	fontStyle (new SFNode <X3DFontStyleNode> (new FontStyle (executionContext)))
+	motionBlur (new SFBool ()),
+	motionBlurProperties (new MotionBlur (executionContext)),
+	textureProperties (new TextureProperties (executionContext)),
+	arc2DProperties (new Arc2DProperties (executionContext)),
+	arcClose2DProperties (new ArcClose2DProperties (executionContext)),
+	circle2DProperties (new Circle2DProperties (executionContext)),
+	disc2DProperties (new Disk2DProperties (executionContext)),
+	rectangle2DProperties (new Rectangle2DProperties (executionContext)),
+	boxProperties (new BoxProperties (executionContext)),
+	sphereProperties (new QuadSphereProperties (executionContext)),
+	fontStyle (new FontStyle (executionContext))
 { }
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
@@ -92,25 +106,27 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	setComponent ("Browser"),
 	setTypeName ("BrowserOptions");
 
-	addField (inputOutput, "splashScreen",           splashScreen ());
-	addField (inputOutput, "dashboard",              dashboard ());
-	addField (inputOutput, "enableInlineViewpoints", enableInlineViewpoints ());
-	addField (inputOutput, "antialiased",            antialiased ());
-	addField (inputOutput, "textureQuality",         textureQuality ());
-	addField (inputOutput, "primitiveQuality",       primitiveQuality ());
-	addField (inputOutput, "qualityWhenMoving",      qualityWhenMoving ());
-	addField (inputOutput, "shading",                shading ());
+	addField (inputOutput, "SplashScreen",           splashScreen ());
+	addField (inputOutput, "Dashboard",              dashboard ());
+	addField (inputOutput, "Rubberband",             rubberBand ());
+	addField (inputOutput, "EnableInlineViewpoints", enableInlineViewpoints ());
+	addField (inputOutput, "Antialiased",            antialiased ());
+	addField (inputOutput, "TextureQuality",         textureQuality ());
+	addField (inputOutput, "PrimitiveQuality",       primitiveQuality ());
+	addField (inputOutput, "QualityWhenMoving",      qualityWhenMoving ());
+	addField (inputOutput, "Shading",                shading ());
+	addField (inputOutput, "MotionBlur",             motionBlur ());
 
-	addField (inputOutput, "motionBlur",             motionBlur ());
-	addField (inputOutput, "textureProperties",      textureProperties ());
-	addField (inputOutput, "arc2DProperties",        arc2DProperties ());
-	addField (inputOutput, "arcClose2DProperties",   arcClose2DProperties ());
-	addField (inputOutput, "circle2DProperties",     circle2DProperties ());
-	addField (inputOutput, "disc2DProperties",       disc2DProperties ());
-	addField (inputOutput, "rectangle2DProperties",  rectangle2DProperties ());
-	addField (inputOutput, "boxProperties",          boxProperties ());
-	addField (inputOutput, "sphereProperties",       sphereProperties ());
-	addField (inputOutput, "fontStyle",              fontStyle ());
+	setChildren (motionBlurProperties (),
+	             textureProperties (),
+	             arc2DProperties (),
+	             arcClose2DProperties (),
+	             circle2DProperties (),
+	             disc2DProperties (),
+	             rectangle2DProperties (),
+	             boxProperties (),
+	             sphereProperties (),
+	             fontStyle ());
 }
 
 BrowserOptions*
@@ -124,7 +140,7 @@ BrowserOptions::initialize ()
 {
 	X3DPropertyNode::initialize ();
 
-	motionBlur ()            -> setup ();
+	motionBlurProperties ()  -> setup ();
 	textureProperties ()     -> setup ();
 	arc2DProperties ()       -> setup ();
 	arcClose2DProperties ()  -> setup ();
@@ -235,6 +251,21 @@ BrowserOptions::set_shading ()
 		glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
 		glShadeModel (GL_SMOOTH);
 	}
+}
+
+void
+BrowserOptions::dispose ()
+{
+	motionBlurProperties ()  .dispose ();
+	textureProperties ()     .dispose ();
+	arc2DProperties ()       .dispose ();
+	arcClose2DProperties ()  .dispose ();
+	circle2DProperties ()    .dispose ();
+	disc2DProperties ()      .dispose ();
+	rectangle2DProperties () .dispose ();
+	boxProperties ()         .dispose ();
+	sphereProperties ()      .dispose ();
+	fontStyle ()             .dispose ();
 }
 
 } // X3D

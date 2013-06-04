@@ -66,13 +66,13 @@ namespace X3D {
 //	BINARY_ENCODING         Boolean              The browser supports the binary file format encoding.
 
 BrowserProperties::Fields::Fields () :
-	abstractNodes (new SFBool ()),
-	concreteNodes (new SFBool ()),
+	abstractNodes (new SFBool (true)),
+	concreteNodes (new SFBool (true)),
 	externalInteractions (new SFBool ()),
-	prototypeCreate (new SFBool ()),
+	prototypeCreate (new SFBool (true)),
 	domImport (new SFBool ()),
 	xmlEncoding (new SFBool ()),
-	classicVrmlEncoding (new SFBool ()),
+	classicVrmlEncoding (new SFBool (true)),
 	binaryEncoding (new SFBool ())
 { }
 
@@ -84,14 +84,14 @@ BrowserProperties::BrowserProperties (X3DExecutionContext* const executionContex
 	setComponent ("Browser"),
 	setTypeName ("BrowserProperties");
 
-	addField (initializeOnly, "abstractNodes",        abstractNodes ());
-	addField (initializeOnly, "concreteNodes",        concreteNodes ());
-	addField (initializeOnly, "externalInteractions", externalInteractions ());
-	addField (initializeOnly, "prototypeCreate",      prototypeCreate ());
-	addField (initializeOnly, "domImport",            domImport ());
-	addField (initializeOnly, "xmlEncoding",          xmlEncoding ());
-	addField (initializeOnly, "classicVrmlEncoding",  classicVrmlEncoding ());
-	addField (initializeOnly, "binaryEncoding",       binaryEncoding ());
+	addField (initializeOnly, "ABSTRACT_NODES",        abstractNodes ());
+	addField (initializeOnly, "CONCRETE_NODES",        concreteNodes ());
+	addField (initializeOnly, "EXTERNAL_INTERACTIONS", externalInteractions ());
+	addField (initializeOnly, "PROTOTYPE_CREATE",      prototypeCreate ());
+	addField (initializeOnly, "DOM_IMPORT",            domImport ());
+	addField (initializeOnly, "XML_ENCODING",          xmlEncoding ());
+	addField (initializeOnly, "CLASSIC_VRML_ENCODING", classicVrmlEncoding ());
+	addField (initializeOnly, "BINARY_ENCODING",       binaryEncoding ());
 }
 
 BrowserProperties*

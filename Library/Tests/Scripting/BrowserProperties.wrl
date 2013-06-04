@@ -1,0 +1,33 @@
+#VRML V2.0 utf8 Titania
+
+META "title" "BrowserProperties"
+
+DEF Touch TouchSensor { }
+
+Shape {
+  appearance Appearance {
+    material Material { }
+  }
+  geometry Box { }
+}
+
+DEF Debug Script {
+  eventIn SFTime set_time
+
+  url [ "vrmlscript:
+
+function set_time (value)
+{
+	print ('ABSTRACT_NODES:        ', Browser .getBrowserProperty ('ABSTRACT_NODES'));
+	print ('CONCRETE_NODES:        ', Browser .getBrowserProperty ('CONCRETE_NODES'));
+	print ('EXTERNAL_INTERACTIONS: ', Browser .getBrowserProperty ('EXTERNAL_INTERACTIONS'));
+	print ('PROTOTYPE_CREATE:      ', Browser .getBrowserProperty ('PROTOTYPE_CREATE'));
+	print ('DOM_IMPORT:            ', Browser .getBrowserProperty ('DOM_IMPORT'));
+	print ('XML_ENCODING:          ', Browser .getBrowserProperty ('XML_ENCODING'));
+	print ('CLASSIC_VRML_ENCODING: ', Browser .getBrowserProperty ('CLASSIC_VRML_ENCODING'));
+	print ('BINARY_ENCODING:       ', Browser .getBrowserProperty ('BINARY_ENCODING'));
+}
+" ]
+}
+
+ROUTE Touch.touchTime TO Debug.set_time

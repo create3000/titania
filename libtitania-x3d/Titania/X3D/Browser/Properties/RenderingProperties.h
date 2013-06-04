@@ -79,23 +79,24 @@ class RenderingProperties :
 public:
 
 	RenderingProperties (X3DExecutionContext* const);
+
 	///  @name Fields
 
 	SFBool &
 	enabled ()
-	{ return *fields .enabled; }
+	{ return fields .enabled; }
 
 	const SFBool &
 	enabled () const
-	{ return *fields .enabled; }
+	{ return fields .enabled; }
 
 	SFFloat &
 	cycleInterval ()
-	{ return *fields .cycleInterval; }
+	{ return fields .cycleInterval; }
 
 	const SFFloat &
 	cycleInterval () const
-	{ return *fields .cycleInterval; }
+	{ return fields .cycleInterval; }
 
 	SFString &
 	vendor ()
@@ -122,12 +123,10 @@ public:
 	{ return *fields .version; }
 
 	SFString &
-	shading ()
-	{ return *fields .shading; }
+	shading ();
 
 	const SFString &
-	shading () const
-	{ return *fields .shading; }
+	shading () const;
 
 	SFInt32 &
 	maxTextureSize ()
@@ -154,12 +153,10 @@ public:
 	{ return *fields .maxLights; }
 
 	SFBool &
-	antiAliased ()
-	{ return *fields .antiAliased; }
+	antialiased ();
 
 	const SFBool &
-	antiAliased () const
-	{ return *fields .antiAliased; }
+	antialiased () const;
 
 	SFInt32 &
 	colorDepth ()
@@ -191,18 +188,22 @@ public:
 
 	virtual
 	void
-	toStream (std::ostream &) const;
+	toStream (std::ostream &) const final;
+
+	virtual
+	void
+	dispose () final;
 
 
 private:
 
 	virtual
 	RenderingProperties*
-	create (X3DExecutionContext* const) const;
+	create (X3DExecutionContext* const) const final;
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	void
 	set_enabled ();
@@ -219,23 +220,18 @@ private:
 	void
 	update ();
 
-	void
-	dispose ();
-
 	struct Fields
 	{
 		Fields ();
 
-		SFBool* const enabled;
-		SFFloat* const cycleInterval;
+		SFBool enabled;
+		SFFloat cycleInterval;
 		SFString* const vendor;
 		SFString* const renderer;
 		SFString* const version;
-		SFString* const shading;
 		SFInt32* const maxTextureSize;
 		SFInt32* const textureUnits;
 		SFInt32* const maxLights;
-		SFBool* const antiAliased;
 		SFInt32* const colorDepth;
 		SFDouble* const textureMemory;
 	};

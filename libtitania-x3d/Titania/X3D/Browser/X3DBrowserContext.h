@@ -102,7 +102,7 @@ public:
 	time_type
 	getCurrentTime () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>) override;
 
 	double
 	getCurrentSpeed () const
@@ -240,7 +240,7 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
 
 	virtual
 	void

@@ -80,7 +80,7 @@ private:
 
 	virtual
 	ArcClose2DProperties*
-	create (X3DExecutionContext* const) const;
+	create (X3DExecutionContext* const) const final;
 
 	struct Fields
 	{

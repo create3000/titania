@@ -94,7 +94,7 @@ private:
 
 	virtual
 	void
-	construct ();
+	construct () final;
 
 	void
 	set_initialized ();
