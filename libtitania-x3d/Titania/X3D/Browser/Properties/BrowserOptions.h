@@ -162,12 +162,16 @@ public:
 	{ return *fields .shading; }
 
 	SFBool &
-	motionBlur ()
-	{ return *fields .motionBlur; }
+	motionBlur ();
 
 	const SFBool &
-	motionBlur () const
-	{ return *fields .motionBlur; }
+	motionBlur () const;
+	
+	SFFloat &
+	motionBlurIntensity ();
+
+	const SFFloat &
+	motionBlurIntensity () const;
 
 	SFNode <MotionBlur> &
 	motionBlurProperties ()
@@ -286,7 +290,6 @@ private:
 		SFString* const primitiveQuality;
 		SFString* const qualityWhenMoving;
 		SFString* const shading;
-		SFBool* const motionBlur;
 		SFNode <MotionBlur> motionBlurProperties;
 		SFNode <TextureProperties> textureProperties;
 		SFNode <Arc2DProperties> arc2DProperties;

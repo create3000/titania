@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -83,7 +83,7 @@ LOD::LOD (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
 
-	addFieldAlias ("level", "children");
+	addField ("level", "children");
 }
 
 X3DBaseNode*

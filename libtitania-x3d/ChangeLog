@@ -1,5 +1,16 @@
 2013-06-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* LOD.cpp:
+	* Switch.cpp:
+	* Collision.cpp:
+	* BrowserOptions.h:
+	* BrowserOptions.cpp:
+	* RenderingProperties.cpp: 
+
+2013-06-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Route.h:
 	* Proto.h:
 	* Scene.h:

@@ -124,7 +124,7 @@ RenderingProperties::initialize ()
 	addField (outputOnly, "Shading",     getBrowser () -> getBrowserOptions () -> shading ());
 	addField (outputOnly, "Antialiased", getBrowser () -> getBrowserOptions () -> antialiased ());
 
-	addFieldAlias ("AntiAliased", "Antialiased");
+	addField ("AntiAliased", "Antialiased");
 
 	if (glXGetCurrentContext ())
 	{

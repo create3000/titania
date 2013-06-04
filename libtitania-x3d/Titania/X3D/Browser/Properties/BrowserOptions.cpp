@@ -85,7 +85,6 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	primitiveQuality (new SFString ("MEDIUM")),
 	qualityWhenMoving (new SFString ("MEDIUM")),
 	shading (new SFString ("GOURAUD")),
-	motionBlur (new SFBool ()),
 	motionBlurProperties (new MotionBlur (executionContext)),
 	textureProperties (new TextureProperties (executionContext)),
 	arc2DProperties (new Arc2DProperties (executionContext)),
@@ -116,6 +115,9 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "QualityWhenMoving",      qualityWhenMoving ());
 	addField (inputOutput, "Shading",                shading ());
 	addField (inputOutput, "MotionBlur",             motionBlur ());
+	addField (inputOutput, "MotionBlurIntensity",    motionBlurIntensity ());
+	
+	addField ("AntiAliased", "Antialiased");
 
 	setChildren (motionBlurProperties (),
 	             textureProperties (),
@@ -157,6 +159,30 @@ BrowserOptions::initialize ()
 	set_textureQuality ();
 	set_primitiveQuality ();
 	set_shading ();
+}
+
+SFBool &
+BrowserOptions::motionBlur ()
+{
+	return motionBlurProperties () -> enabled ();
+}
+
+const SFBool &
+BrowserOptions::motionBlur () const
+{
+	return motionBlurProperties () -> enabled ();
+}
+
+SFFloat &
+BrowserOptions::motionBlurIntensity ()
+{
+	return motionBlurProperties () -> intensity ();
+}
+
+const SFFloat &
+BrowserOptions::motionBlurIntensity () const
+{
+	return motionBlurProperties () -> intensity ();
 }
 
 void

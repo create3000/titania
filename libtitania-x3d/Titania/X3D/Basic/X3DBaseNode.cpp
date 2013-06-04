@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -476,7 +476,7 @@ X3DBaseNode::removeField (const basic::id & name)
 }
 
 void
-X3DBaseNode::addFieldAlias (const std::string & name, const std::string & field)
+X3DBaseNode::addField (const std::string & name, const std::string & field)
 {
 	const auto iter = fields .find (field);
 

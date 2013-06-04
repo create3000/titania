@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -82,7 +82,7 @@ Collision::Collision (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "addChildren",    addChildren ());
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
-	addFieldAlias ("collide", "enabled");
+	addField ("collide", "enabled");
 }
 
 X3DBaseNode*

@@ -232,7 +232,7 @@ protected:
 	removeField (const basic::id &);
 
 	void
-	addFieldAlias (const std::string &, const std::string &);
+	addField (const std::string &, const std::string &);
 
 	const FieldsMap &
 	getFields () const;
