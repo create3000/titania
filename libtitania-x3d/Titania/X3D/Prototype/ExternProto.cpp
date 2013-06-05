@@ -69,9 +69,8 @@ ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
 	setTypeName ("ExternProto");
 
 	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "url",      url ());
 
-	setChildren (scene, proto);
+	setChildren (url (), scene, proto);
 }
 
 X3DBaseNode*
@@ -309,6 +308,8 @@ ExternProto::toStream (std::ostream & ostream) const
 void
 ExternProto::dispose ()
 {
+	url () .removeParent (this);
+
 	scene .dispose ();
 	proto .dispose ();
 

@@ -68,27 +68,28 @@ public:
 
 	virtual
 	ExternProto*
-	clone (X3DExecutionContext* const) const;
+	clone (X3DExecutionContext* const) const final;
 
 	virtual
 	bool
-	isExternproto () const { return true; }
+	isExternproto () const
+	{ return true; }
 
 	virtual
 	X3DPrototypeInstance*
-	createInstance ();
+	createInstance () final;
 
 	virtual
 	void
-	requestImmediateLoad ();
+	requestImmediateLoad () final;
 
 	virtual
 	void
-	toStream (std::ostream &) const;
+	toStream (std::ostream &) const final;
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 	virtual
 	~ExternProto ();

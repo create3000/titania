@@ -8,4 +8,5 @@
   <Task file="" description="Vattenfall MovieTexture zweimal in GarbageCollector" />
   <Task file="" description="Collision mit Polygonen und anderen Dreiecken" />
   <Task file="" description="getField mit exception" />
+  <Task file="" description="JavaScript jsSFNode getFieldDefinitions ist nicht save" />
 </ListOfTask>

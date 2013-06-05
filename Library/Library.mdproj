@@ -2086,6 +2086,7 @@
     <None Include="Tests\Scripting\BrowserOptions.wrl" />
     <None Include="Tests\Scripting\BrowserProperties.wrl" />
     <None Include="Tests\Scripting\RenderingProperties.wrl" />
+    <None Include="Tests\Scripting\ExternProto.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

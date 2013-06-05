@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_EXECUTION_X3DEXECUTION_CONTEXT_H__
 
 #include "../Basic/X3DContext.h"
-#include "../Components/Core/X3DChildNode.h"
+#include "../Components/Core/X3DNode.h"
 #include "../Configuration/ComponentInfoArray.h"
 #include "../Configuration/ProfileInfo.h"
 #include "../Execution/ExportedNodeArray.h"
@@ -73,7 +73,7 @@ class X3DBrowser;
 class X3DPrototypeInstance;
 
 class X3DExecutionContext :
-	public X3DChildNode, public X3DContext
+	virtual public X3DNode, public X3DContext
 {
 public:
 

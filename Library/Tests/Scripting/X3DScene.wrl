@@ -7,7 +7,12 @@ COMPONENT Scripting : 1
 
 META "title" "Scene"
 
-PROTO Test [ ]
+EXTERNPROTO ExternProto []
+"ExternProto.wrl"
+
+PROTO Test [
+	field SFBool name TRUE
+]
 {
   Group { }
 }
@@ -42,11 +47,61 @@ function set_time ()
 	print ('encoding:             ' + scene .encoding);	
 	print ('worldURL:             ' + scene .worldURL);
 
-	print ('profile :             ' + scene .profile);
-	print ('components :          ' + scene .components);
+	print ('profile:              ' + scene .profile);
+	print ('components:           ' + scene .components);
 
 	for (var i in scene .components)
 		print ('\t' + scene .components [i] .name);
+
+	print ('externprotos:         ' + scene .externprotos);
+
+	var externprotos = scene .externprotos;
+
+	for (var i in externprotos)
+	{
+		print ('\t' + 'name:           ' + externprotos [i] .name);
+		print ('\t' + 'fields:         ' + externprotos [i] .fields);
+		
+		var fields = externprotos [i] .fields;
+		
+		for (var f in fields)
+		{
+			print ('\t\t' + 'name:       ' + fields [f] .name);
+			print ('\t\t' + 'accessType: ' + fields [f] .accessType);
+			print ('\t\t' + 'dataType:   ' + fields [f] .dataType);
+		}
+		
+		print ('\t' + 'urls:           ' + externprotos [i] .urls);
+		print ('\t' + 'isExternProto:  ' + externprotos [i] .isExternProto);
+		print ('\t' + 'loadState:      ' + externprotos [i] .loadState);
+		
+		externprotos [i] .loadNow ();
+
+		print ('\t' + 'loadState:      ' + externprotos [i] .loadState);
+		print ('\t' + 'createInstance: ' + externprotos [i] .newInstance ());
+	}
+
+	print ('protos:              ' + scene .protos);
+
+	var protos = scene .protos;
+
+	for (var i in protos)
+	{
+		print ('\t' + 'name:           ' + protos [i] .name);
+		print ('\t' + 'fields:         ' + protos [i] .fields);
+		
+		var fields = protos [i] .fields;
+		
+		for (var f in fields)
+		{
+			print ('\t\t' + 'name:       ' + fields [f] .name);
+			print ('\t\t' + 'accessType: ' + fields [f] .accessType);
+			print ('\t\t' + 'dataType:   ' + fields [f] .dataType);
+		}
+		
+		print ('\t' + 'isExternProto:  ' + protos [i] .isExternProto);
+		print ('\t' + 'createInstance: ' + protos [i] .newInstance ());
+	}
 
 	print ();
 	print ('createNode:           ' + scene .createNode ('Transform'));

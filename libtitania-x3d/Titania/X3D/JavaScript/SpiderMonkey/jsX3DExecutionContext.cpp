@@ -57,6 +57,9 @@
 #include "Fields/jsSFNode.h"
 #include "jsProfileInfo.h"
 #include "jsComponentInfoArray.h"
+#include "jsExternProtoDeclarationArray.h"
+#include "jsProtoDeclarationArray.h"
+#include "jsRouteArray.h"
 #include "jsString.h"
 
 namespace titania {
@@ -75,10 +78,13 @@ JSPropertySpec jsX3DExecutionContext::properties [ ] = {
 	{ "encoding",             ENCODING,              JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, encoding,             NULL },
 	{ "worldURL",             WORLD_URL,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, worldURL,             NULL },
 
-	{ "profile",              PROFILE,               JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, profile,    NULL },
-	{ "components",           COMPONENTS,            JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, components, NULL },
+	{ "profile",              PROFILE,               JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, profile,     NULL },
+	{ "components",           COMPONENTS,            JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, components,  NULL },
 
-	{ "rootNodes",            ROOT_NODES,            JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, rootNodes, rootNodes },
+	{ "externprotos",         EXTERNPROTOS,          JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, externprotos, NULL },
+	{ "protos",               PROTOS,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, protos,       NULL },
+	{ "rootNodes",            ROOT_NODES,            JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT,                   rootNodes,    rootNodes },
+	{ "routes",               ROUTES,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, routes,       NULL },
 	{ 0 }
 
 };
@@ -120,6 +126,8 @@ jsX3DExecutionContext::create (JSContext* context, X3DExecutionContext* executio
 
 	return JS_TRUE;
 }
+
+// Properties
 
 JSBool
 jsX3DExecutionContext::specificationVersion (JSContext* context, JSObject* obj, jsid id, jsval* vp)
@@ -167,6 +175,64 @@ jsX3DExecutionContext::components (JSContext* context, JSObject* obj, jsid id, j
 
 	return jsComponentInfoArray::create (context, &executionContext -> getComponents (), vp);
 }
+
+JSBool
+jsX3DExecutionContext::externprotos (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+
+	return jsExternProtoDeclarationArray::create (context, &executionContext -> getExternProtoDeclarations (), vp);
+}
+
+JSBool
+jsX3DExecutionContext::protos (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+
+	return jsProtoDeclarationArray::create (context, &executionContext -> getProtoDeclarations (), vp);
+}
+
+JSBool
+jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
+
+	//	return jsMFNode::create (context, const_cast <X3DExecutionContext*> (&executionContext -> getRootNodes ()), vp, true);
+	return JS_TRUE;
+}
+
+JSBool
+jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+{
+	//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
+	//
+	//	JSObject* omfnode;
+	//
+	//	if (not JS_ValueToObject (context, *vp, &omfnode))
+	//		return JS_FALSE;
+	//
+	//	if (JS_GetClass (context, omfnode) not_eq jsMFNode::getClass ())
+	//	{
+	//		JS_ReportError (context, "Type of argument is invalid - should be MFNode, is %s", JS_GetClass (context, omfnode) -> name);
+	//		return JS_FALSE;
+	//	}
+	//
+	//	MFNode* mfnode = static_cast <MFNode*> (JS_GetPrivate (context, omfnode));
+	//
+	//	executionContext -> setRootNodes (*mfnode);
+
+	return JS_TRUE;
+}
+
+JSBool
+jsX3DExecutionContext::routes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+
+	return jsRouteArray::create (context, &executionContext -> getRoutes (), vp);
+}
+
+// Functions
 
 JSBool
 jsX3DExecutionContext::createNode (JSContext* context, uintN argc, jsval* vp)
@@ -262,38 +328,6 @@ jsX3DExecutionContext::removeRootNode (JSContext* context, uintN argc, jsval* vp
 	JS_ReportError (context, "wrong number of arguments");
 
 	return JS_FALSE;
-}
-
-JSBool
-jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
-
-	//	return jsMFNode::create (context, const_cast <X3DExecutionContext*> (&executionContext -> getRootNodes ()), vp, true);
-	return JS_TRUE;
-}
-
-JSBool
-jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
-{
-	//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
-	//
-	//	JSObject* omfnode;
-	//
-	//	if (not JS_ValueToObject (context, *vp, &omfnode))
-	//		return JS_FALSE;
-	//
-	//	if (JS_GetClass (context, omfnode) not_eq jsMFNode::getClass ())
-	//	{
-	//		JS_ReportError (context, "Type of argument is invalid - should be MFNode, is %s", JS_GetClass (context, omfnode) -> name);
-	//		return JS_FALSE;
-	//	}
-	//
-	//	MFNode* mfnode = static_cast <MFNode*> (JS_GetPrivate (context, omfnode));
-	//
-	//	executionContext -> setRootNodes (*mfnode);
-
-	return JS_TRUE;
 }
 
 } // X3D

@@ -65,7 +65,8 @@ public:
 	defineObject (JSContext*, JSObject*);
 
 	static JSClass*
-	getClass () { return &static_class; }
+	getClass ()
+	{ return &static_class; }
 
 
 private:

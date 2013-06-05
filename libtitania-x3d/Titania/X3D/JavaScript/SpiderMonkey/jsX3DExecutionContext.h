@@ -67,7 +67,8 @@ public:
 
 	static
 	JSClass*
-	getClass () { return &static_class; }
+	getClass ()
+	{ return &static_class; }
 
 
 protected:
@@ -85,9 +86,9 @@ private:
 		WORLD_URL,
 		PROFILE,
 		COMPONENTS,
-		ROOT_NODES,
-		PROTOS,
 		EXTERNPROTOS,
+		PROTOS,
+		ROOT_NODES,
 		ROUTES
 	};
 
@@ -101,8 +102,11 @@ private:
 	static JSBool addRootNode    (JSContext*, uintN, jsval*);
 	static JSBool removeRootNode (JSContext*, uintN, jsval*);
 
-	static JSBool rootNodes (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool rootNodes (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool externprotos (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool protos       (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool rootNodes    (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool rootNodes    (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool routes       (JSContext *, JSObject *, jsid, jsval*);
 
 	static JSBool createNode  (JSContext *, uintN, jsval*);
 	static JSBool createProto (JSContext *, uintN, jsval*);

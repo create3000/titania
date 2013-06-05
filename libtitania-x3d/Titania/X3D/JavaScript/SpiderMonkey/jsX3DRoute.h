@@ -48,15 +48,58 @@
  *
  ******************************************************************************/
 
-#include "X3DProto.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DROUTE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DROUTE_H__
+
+#include "../../Routing/Route.h"
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 
-X3DProto::X3DProto () :
-	 X3DNode (), 
-	comments ()  
-{ }
+class jsX3DRoute
+{
+public:
+
+	static
+	JSBool
+	create (JSContext*, const SFNode <Route> &, jsval*, const bool = false);
+
+	static
+	JSClass*
+	getClass ()
+	{ return &static_class; }
+
+
+private:
+
+	enum Property
+	{
+		SOURCE_NODE,
+		SOURCE_FIELD,
+		DESTINATION_NODE,
+		DESTINATION_FIELD
+	};
+
+	static
+	void
+	initObject (JSContext*, JSObject*);
+
+	static JSBool sourceNode       (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool sourceField      (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool destinationNode  (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool destinationField (JSContext *, JSObject *, jsid, jsval*);
+
+	static void
+	finalize (JSContext*, JSObject*);
+
+	static JSClass        static_class;
+	static JSPropertySpec properties [ ];
+	static JSFunctionSpec functions [ ];
+
+};
 
 } // X3D
 } // titania
+
+#endif

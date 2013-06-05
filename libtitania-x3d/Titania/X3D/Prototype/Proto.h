@@ -70,18 +70,18 @@ public:
 
 	virtual
 	X3DPrototypeInstance*
-	createInstance ();
+	createInstance () final;
 
 	///  @name Tests
 
 	virtual
 	bool
-	isProto () const
+	isProto () const final
 	{ return true; }
 
 	virtual
 	bool
-	isExternproto () const
+	isExternproto () const final
 	{ return false; }
 
 	///  @name Tests
@@ -93,7 +93,7 @@ public:
 
 	virtual
 	void
-	toStream (std::ostream &) const;
+	toStream (std::ostream &) const final;
 
 
 private:

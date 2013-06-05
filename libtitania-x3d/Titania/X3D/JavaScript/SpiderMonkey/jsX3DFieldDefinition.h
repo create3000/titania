@@ -68,7 +68,8 @@ public:
 
 	static
 	JSClass*
-	getClass () { return &static_class; }
+	getClass ()
+	{ return &static_class; }
 
 	static JSBool name       (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool accessType (JSContext *, JSObject *, jsid, jsval*);

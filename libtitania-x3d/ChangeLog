@@ -1,5 +1,36 @@
 2013-06-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Proto.h:
+	* X3DProto.cpp:
+	* ExternProto.h:
+	* ExternProto.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* jsBrowser.h:
+	* jsX3DRoute.h:
+	* jsX3DScene.h:
+	* jsX3DRoute.cpp:
+	* jsProfileInfo.h:
+	* jsRouteArray.cpp:
+	* jsComponentInfo.h:
+	* jsX3DArrayField.h:
+	* jsX3DFieldDefinition.h:
+	* jsX3DExecutionContext.h:
+	* jsProtoDeclarationArray.h:
+	* jsX3DExecutionContext.cpp:
+	* jsX3DProtoDeclaration.cpp:
+	* jsProtoDeclarationArray.cpp:
+	* jsX3DExternProtoDeclaration.h:
+	* jsExternProtoDeclarationArray.h:
+	* jsX3DExternProtoDeclaration.cpp:
+	* jsExternProtoDeclarationArray.cpp:
+	* jsX3DExternProtoDeclaration (Kopie).h:
+	* jsExternProtoDeclarationArray (Kopie).h: 
+
+2013-06-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DScene.cpp:
 	* ProfileInfo.h:
 	* ComponentInfo.h:

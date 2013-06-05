@@ -188,20 +188,6 @@ typedef math::sphere3 <float>    Sphere3f;
 
 #include <Titania/InputOutput.h>
 
-namespace foo {
-enum bar
-{
-	A, B
-
-};
-}
-
-using foo::bar;
-using foo::A;
-using foo::B;
-
-bar a = A;
-
 std::string
 create_string ()
 {
@@ -487,6 +473,35 @@ private:
 
 };
 
+class A
+{
+public:
+};
+
+class B :
+	virtual public A
+{
+public:
+};
+
+class C :
+	virtual public A
+{
+public:
+};
+
+class D :
+	public C
+{
+public:
+};
+
+class E :
+	public D, virtual public A
+{
+public:
+};
+
 int
 main (int argc, char** argv)
 {
@@ -495,20 +510,11 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-	
-	std::string s = "\"ab'\"cd\"";
-	
-	std::clog << s << std::endl;
-	
-	for (const auto & c : s)
-	{
-		if (c == '"')
-			std::clog .put ('\\');
+
+	E* e = new E ();
+	A* a = e;
 			
-		std::clog .put (c);
-	}
-	
-	std::clog << std::endl;
+	std::clog << a << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

@@ -48,15 +48,21 @@
  *
  ******************************************************************************/
 
-#include "X3DProto.h"
+#include "jsRouteArray.h"
 
 namespace titania {
 namespace X3D {
 
-X3DProto::X3DProto () :
-	 X3DNode (), 
-	comments ()  
-{ }
+template <>
+JSClass jsConstArray <RouteArray, jsX3DRoute>::static_class = {
+	"RouteArray", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, get1Value, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+template class jsConstArray <RouteArray, jsX3DRoute>;
 
 } // X3D
 } // titania

@@ -48,15 +48,63 @@
  *
  ******************************************************************************/
 
-#include "X3DProto.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DEXTERN_PROTO_DECLARATION_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DEXTERN_PROTO_DECLARATION_H__
+
+#include "../../Prototype/ExternProto.h"
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 
-X3DProto::X3DProto () :
-	 X3DNode (), 
-	comments ()  
-{ }
+class jsX3DExternProtoDeclaration
+{
+public:
+
+	static
+	JSBool
+	create (JSContext*, const SFNode <ExternProto> &, jsval*, const bool = false);
+
+	static
+	JSClass*
+	getClass ()
+	{ return &static_class; }
+
+
+private:
+
+	enum Property
+	{
+		NAME,
+		FIELDS,
+		URLS,
+		IS_EXTERNPROTO,
+		LOAD_STATE
+	};
+
+	static
+	void
+	initObject (JSContext*, JSObject*);
+
+	static JSBool name          (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool fields        (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool urls          (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool isExternProto (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool loadState     (JSContext *, JSObject *, jsid, jsval*);
+
+	static JSBool newInstance (JSContext *, uintN, jsval*);
+	static JSBool loadNow     (JSContext *, uintN, jsval*);
+
+	static void
+	finalize (JSContext*, JSObject*);
+
+	static JSClass        static_class;
+	static JSPropertySpec properties [ ];
+	static JSFunctionSpec functions [ ];
+
+};
 
 } // X3D
 } // titania
+
+#endif

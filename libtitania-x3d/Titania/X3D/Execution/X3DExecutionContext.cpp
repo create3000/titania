@@ -66,7 +66,7 @@ namespace titania {
 namespace X3D {
 
 X3DExecutionContext::X3DExecutionContext () :
-	        X3DChildNode (),              
+	             X3DNode (),              
 	            worldURL (),              
 	            encoding ("X3D"),         
 	specificationVersion ("3.0"),         
@@ -86,7 +86,7 @@ X3DExecutionContext::X3DExecutionContext () :
 void
 X3DExecutionContext::setup ()
 {
-	X3DChildNode::setup ();
+	X3DNode::setup ();
 
 	// Add rootNodes here as child. This prevents X3DProtoypeInstances from being disposed on construction.
 	setChildren (rootNodes);
@@ -912,7 +912,7 @@ X3DExecutionContext::dispose ()
 
 	rootNodes .dispose ();
 
-	X3DChildNode::dispose ();
+	X3DNode::dispose ();
 }
 
 X3DExecutionContext::~X3DExecutionContext ()

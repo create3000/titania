@@ -48,15 +48,21 @@
  *
  ******************************************************************************/
 
-#include "X3DProto.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_PROTO_DECLARATION_ARRAY_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_PROTO_DECLARATION_ARRAY_H__
+
+#include "../../Prototype/ProtoArray.h"
+#include "jsConstArray.h"
+#include "jsX3DProtoDeclaration.h"
 
 namespace titania {
 namespace X3D {
 
-X3DProto::X3DProto () :
-	 X3DNode (), 
-	comments ()  
-{ }
+typedef jsConstArray <ProtoArray, jsX3DProtoDeclaration> jsProtoDeclarationArray;
+
+extern template class jsConstArray <ProtoArray, jsX3DProtoDeclaration>;
 
 } // X3D
 } // titania
+
+#endif
