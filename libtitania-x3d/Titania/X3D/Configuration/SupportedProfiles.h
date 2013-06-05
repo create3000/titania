@@ -86,7 +86,7 @@ public:
 private:
 
 	void
-	add (const std::string &, const SupportedComponents &);
+	add (const std::string &, std::initializer_list <const ComponentInfo*>);
 
 	X3DExecutionContext* const executionContext;
 

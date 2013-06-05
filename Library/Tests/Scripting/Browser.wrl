@@ -71,6 +71,8 @@ function set_time ()
 	print ('+ SupportedComponents ++++++++++++++++++++++++++++++++++');
 
 	var supportedComponents = Browser .supportedComponents;
+	
+	print ('length: ' + supportedComponents .length);
 
 	for (var i in supportedComponents)
 	{

@@ -48,13 +48,16 @@
  *
  ******************************************************************************/
 
+#include "jsX3DExecutionContext.h"
+
 #include "../../Bits/Error.h"
 #include "../../Components/Core/X3DPrototypeInstance.h"
 #include "../../Execution/Scene.h"
 #include "Fields/jsMFNode.h"
 #include "Fields/jsSFNode.h"
+#include "jsProfileInfo.h"
+#include "jsComponentInfoArray.h"
 #include "jsString.h"
-#include "jsX3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
@@ -69,9 +72,12 @@ JSClass jsX3DExecutionContext::static_class = {
 
 JSPropertySpec jsX3DExecutionContext::properties [ ] = {
 	{ "specificationVersion", SPECIFICATION_VERSION, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, specificationVersion, NULL },
-	{ "encoding",             ENCODING,              JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, encoding, NULL },
-	{ "worldURL",             WORLD_URL,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, worldURL, NULL },
-	
+	{ "encoding",             ENCODING,              JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, encoding,             NULL },
+	{ "worldURL",             WORLD_URL,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, worldURL,             NULL },
+
+	{ "profile",              PROFILE,               JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, profile,    NULL },
+	{ "components",           COMPONENTS,            JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, components, NULL },
+
 	{ "rootNodes",            ROOT_NODES,            JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, rootNodes, rootNodes },
 	{ 0 }
 
@@ -137,6 +143,29 @@ jsX3DExecutionContext::worldURL (JSContext* context, JSObject* obj, jsid id, jsv
 	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, executionContext -> getWorldURL (), vp);
+}
+
+JSBool
+jsX3DExecutionContext::profile (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	
+	auto profile = executionContext -> getProfile ();
+
+	if (profile)
+		return jsProfileInfo::create (context, profile, vp);
+
+	JS_SET_RVAL (context, vp, JSVAL_VOID);
+
+	return JS_TRUE;
+}
+
+JSBool
+jsX3DExecutionContext::components (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+
+	return jsComponentInfoArray::create (context, &executionContext -> getComponents (), vp);
 }
 
 JSBool

@@ -86,6 +86,18 @@ public:
 		map ()
 	{ }
 
+	///  Copy constructor.
+	indexed_multimap (const indexed_multimap & value) :
+		array (value .array),
+		map (value .map)
+	{ }
+
+	///  Move constructor.
+	indexed_multimap (indexed_multimap && value) :
+		array (std::move (value .array)),
+		map (std::move (value .map))
+	{ }
+
 	/// @name Element access
 
 	//@{

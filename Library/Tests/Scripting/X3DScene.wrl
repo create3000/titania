@@ -1,5 +1,10 @@
 #VRML V2.0 utf8
 
+PROFILE Interchange
+
+COMPONENT PointingDeviceSensor : 1
+COMPONENT Scripting : 1
+
 META "title" "Scene"
 
 PROTO Test [ ]
@@ -28,16 +33,23 @@ function set_time ()
 	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 
 	var scene = Browser .currentScene;
-	
+
 	print ();
 	print (scene);
-	
+
 	print ();
 	print ('specificationVersion: ' + scene .specificationVersion);	
 	print ('encoding:             ' + scene .encoding);	
 	print ('worldURL:             ' + scene .worldURL);
 
+	print ('profile :             ' + scene .profile);
+	print ('components :          ' + scene .components);
+
+	for (var i in scene .components)
+		print ('\t' + scene .components [i] .name);
+
 	print ();
+	print ('createNode:           ' + scene .createNode ('Transform'));
 	print ('createProto:          ' + scene .createProto ('Test'));
 
 	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	

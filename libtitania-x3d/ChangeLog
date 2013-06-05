@@ -1,3 +1,16 @@
+2013-06-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DScene.cpp:
+	* ProfileInfo.h:
+	* ComponentInfo.h:
+	* ProfileInfo.cpp:
+	* ComponentInfo.cpp:
+	* X3DExecutionContext.cpp:
+	* SupportedProfiles.h:
+	* SupportedProfiles.cpp:
+	* jsX3DExecutionContext.h:
+	* jsX3DExecutionContext.cpp: 
+
 2013-06-04  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowser.h:

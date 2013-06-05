@@ -56,11 +56,11 @@
 namespace titania {
 namespace X3D {
 
-ProfileInfo::ProfileInfo (X3DExecutionContext* const executionContext, const std::string & name, const ComponentInfoArray & components) :
+ProfileInfo::ProfileInfo (X3DExecutionContext* const executionContext, const std::string & name, ComponentInfoArray && components) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	      title (name + " Profile"),                                   
 	providerUrl ("http://titania.create3000.de"),                      
-	 components (components)                                           
+	 components (std::move (components))                               
 {
 	setTypeName ("ProfileInfo");
 	setName (name);
@@ -69,16 +69,18 @@ ProfileInfo::ProfileInfo (X3DExecutionContext* const executionContext, const std
 X3DBaseNode*
 ProfileInfo::create (X3DExecutionContext* const executionContext) const
 {
-	return new ProfileInfo (executionContext, getName (), getComponents ());
+	ComponentInfoArray components (getComponents ());
+
+	return new ProfileInfo (executionContext, getName (), std::move (components));
 }
 
-std::ostream &
-ProfileInfo::operator >> (std::ostream & ostream) const
+void
+ProfileInfo::toStream (std::ostream & ostream) const
 {
-	return ostream
-	       << "PROFILE"
-	       << Generator::Space
-	       << getName ();
+	ostream
+		<< "PROFILE"
+		<< Generator::Space
+		<< getName ();
 }
 
 void

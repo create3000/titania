@@ -62,7 +62,7 @@ class ProfileInfo :
 {
 public:
 
-	ProfileInfo (X3DExecutionContext* const, const std::string &, const ComponentInfoArray &);
+	ProfileInfo (X3DExecutionContext* const, const std::string &, ComponentInfoArray &&);
 
 	virtual
 	X3DBaseNode*
@@ -82,11 +82,11 @@ public:
 
 	virtual
 	void
-	dispose () final;
+	toStream (std::ostream & ostream) const final;
 
 	virtual
-	std::ostream &
-	operator >> (std::ostream &) const final;
+	void
+	dispose () final;
 
 
 private:

@@ -72,15 +72,17 @@ ComponentInfo::create (X3DExecutionContext* const executionContext) const
 	return new ComponentInfo (executionContext, getName (), getLevel ());
 }
 
-std::ostream &
-ComponentInfo::operator >> (std::ostream & ostream) const
+void
+ComponentInfo::toStream (std::ostream & ostream) const
 {
-	return ostream
-	       << "COMPONENT"
-	       << Generator::Space
-	       << getName ()
-	       << ':'
-	       << getLevel ();
+	ostream
+		<< "COMPONENT"
+		<< Generator::Space
+		<< getName ()
+		<< Generator::Space
+		<< ':'
+		<< Generator::TidySpace
+		<< getLevel ();
 }
 
 } // X3D

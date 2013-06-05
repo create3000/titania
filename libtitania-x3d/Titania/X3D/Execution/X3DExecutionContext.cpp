@@ -215,9 +215,6 @@ void
 X3DExecutionContext::setProfile (const ProfileInfo* value)
 {
 	profile = value;
-
-	if (profile)
-		addComponents (profile -> getComponents ());
 }
 
 const ProfileInfo*
@@ -236,16 +233,36 @@ throw (Error <INVALID_NAME>,
 {
 	const X3DBaseNode* declaration = getBrowser () -> getNode (name);
 
-	if (getComponents () .size ())
+	if (getProfile () or getComponents () .size ())
 	{
-		try
+		bool found = false;
+	
+		if (getProfile ())
 		{
-			components .rfind (declaration -> getComponentName ());
+			try
+			{
+				profile -> getComponents () .rfind (declaration -> getComponentName ());
+				
+				found = true;
+			}
+			catch (const std::out_of_range &)
+			{ }
 		}
-		catch (const std::out_of_range &)
+	
+		if (not found)
 		{
+			try
+			{
+				components .rfind (declaration -> getComponentName ());
+				
+				found = true;
+			}
+			catch (const std::out_of_range &)
+			{ }
+		}
+
+		if (not found)
 			throw Error <INVALID_NAME> ("Node type '" + name + "' not supported by profile or component specification.");
-		}
 	}
 
 	SFNode <X3DBaseNode> node = declaration -> create (this);

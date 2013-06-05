@@ -155,7 +155,7 @@ X3DScene::toStream (std::ostream & ostream) const
 	if (getProfile ())
 	{
 		ostream
-			<< getProfile ()
+			<< *getProfile ()
 			<< Generator::Break
 			<< Generator::TidyBreak;
 	}
@@ -165,7 +165,7 @@ X3DScene::toStream (std::ostream & ostream) const
 		for (const auto & component : getComponents ())
 		{
 			ostream
-				<< component
+				<< *component
 				<< Generator::Break;
 		}
 

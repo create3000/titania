@@ -78,8 +78,8 @@ public:
 	getProviderUrl () const { return providerUrl; }
 
 	virtual
-	std::ostream &
-	operator >> (std::ostream &) const;
+	void
+	toStream (std::ostream & ostream) const final;
 
 
 private:
