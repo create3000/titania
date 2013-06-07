@@ -64,6 +64,8 @@ class ExternProto :
 {
 public:
 
+	using X3DProto::createInstance;
+
 	ExternProto (X3DExecutionContext* const);
 
 	virtual
@@ -72,12 +74,12 @@ public:
 
 	virtual
 	bool
-	isExternproto () const
+	isExternproto () const final
 	{ return true; }
 
 	virtual
 	X3DPrototypeInstance*
-	createInstance () final;
+	createInstance (X3DExecutionContext* const) final;
 
 	virtual
 	void
@@ -97,8 +99,9 @@ public:
 
 private:
 
+	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	virtual
 	X3DBaseNode*

@@ -173,7 +173,7 @@ public:
 	AddNode (const X3DBaseNode*);
 
 	static
-	std::string
+	const std::string &
 	GetName (const X3DBaseNode*);
 
 	static
@@ -193,13 +193,13 @@ private:
 
 	typedef std::set <const X3DBaseNode*>              NodeSet;
 	typedef std::map <const X3DBaseNode*, std::string> NewNamesIndex;
-	typedef std::map <const X3DBaseNode*, std::string> ImportedNodesIndex;
+	typedef std::map <const X3DBaseNode*, std::string> ImportedNamesIndex;
 
 	static size_t             level;
 	static NodeSet            nodes;
 	static NewNamesIndex      newNames;
 	static size_t             newName;
-	static ImportedNodesIndex importedNodes;
+	static ImportedNamesIndex importedNames;
 
 	static bool        expandNodes;
 	static std::string style;

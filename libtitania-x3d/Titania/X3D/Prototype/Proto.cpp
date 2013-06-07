@@ -70,15 +70,15 @@ Proto::Proto (X3DExecutionContext* const executionContext) :
 }
 
 X3DBaseNode*
-Proto::create (X3DExecutionContext* executionContext) const
+Proto::create (X3DExecutionContext* const executionContext) const
 {
 	return new Proto (executionContext);
 }
 
 X3DPrototypeInstance*
-Proto::createInstance ()
+Proto::createInstance (X3DExecutionContext* const executionContext)
 {
-	return new X3DPrototypeInstance (getExecutionContext (), this);
+	return new X3DPrototypeInstance (executionContext, this);
 }
 
 X3DBaseNode*

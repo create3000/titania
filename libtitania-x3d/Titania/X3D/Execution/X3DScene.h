@@ -87,7 +87,8 @@ public:
 
 	const SFNode <ExportedNode> &
 	addExportedNode (const std::string &, const SFNode <X3DBaseNode> &)
-	throw (Error <INVALID_NAME>,
+	throw (Error <NODE_IN_USE>,
+	       Error <INVALID_NAME>,
 	       Error <INVALID_NODE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);

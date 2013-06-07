@@ -50,6 +50,7 @@
 
 #include "X3DExecutionContext.h"
 
+#include "../Bits/Cast.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
@@ -75,7 +76,8 @@ X3DExecutionContext::X3DExecutionContext () :
 	          components (),              
 	             profile (NULL),          
 	          namedNodes (),              
-	       importedNodes (),              
+	       importedNodes (),
+	       importedNames (),              
 	              protos (),              
 	        externProtos (),              
 	              routes (),              
@@ -114,9 +116,9 @@ X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
 		addRootNode (rootNode .getValue () -> clone (this));
 
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
-		addImportedNode (SFNode <Inline> (dynamic_cast <Inline*> (getNamedNode (importedNode .getName () [0]) .getValue ())),
-		                 importedNode .getName () [1],
-		                 importedNode .getName () [2]);
+		addImportedNode (x3d_cast <Inline*> (getNamedNode (importedNode -> getInlineNode () -> getName ()) .getValue ()),
+		                 importedNode -> getExportedName (),
+		                 importedNode -> getLocalName ());
 
 	//	for (const auto & exportedNode : executionContext -> getExportedNodes ())
 	//		addExportedNode (exportedNode .getName () [0], exportedNode .getName () [1]);
@@ -277,22 +279,33 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	return getX3DProtoDeclaration (name) -> createInstance (this);
+}
+
+X3DProto*
+X3DExecutionContext::getX3DProtoDeclaration (const std::string & name)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_X3D>,
+       Error <URL_UNAVAILABLE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
 	try
 	{
-		return protos .rfind (name) -> createInstance ();
+		return protos .rfind (name) .getValue ();
 	}
 	catch (const std::out_of_range &)
 	{
 		try
 		{
-			return externProtos .rfind (name) -> createInstance ();
+			return externProtos .rfind (name) .getValue ();
 		}
 		catch (const std::out_of_range &)
 		{
 			if (not isScene ())
-				return getExecutionContext () -> createProtoInstance (name);
+				return getExecutionContext () -> getX3DProtoDeclaration (name);
 
-			throw Error <INVALID_NAME> ("Unknown proto type '" + name + "'.");
+			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + name + "'.");
 		}
 		catch (const X3DError & error)
 		{
@@ -328,12 +341,17 @@ throw (Error <INVALID_NAME>,
 
 void
 X3DExecutionContext::addNamedNode (const std::string & name, const SFNode <X3DBaseNode> & node)
-throw (Error <IMPORTED_NODE>,
+throw (Error <NODE_IN_USE>,
+       Error <IMPORTED_NODE>,
        Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	updateNamedNode (name, node);
+	if (namedNodes .find (name) == namedNodes .end ())
+		updateNamedNode (name, node);
+		
+	else
+		throw Error <NODE_IN_USE> ("Couldn't add named node: Node named '" + name + "' already exists.");
 }
 
 void
@@ -407,24 +425,11 @@ throw (Error <INVALID_NODE>,
 
 	const std::string & localName = localNameId .size () ? localNameId : exportedName;
 
-	// If the inline node is inside a proto it will not be loaded.
-
-	if (not inlineNode -> getExecutionContext () -> isProto ())
-	{
-		inlineNode -> requestImmediateLoad ();
-
-		if (inlineNode -> checkLoadState () == COMPLETE_STATE)
-		{
-			// Test if exported node exists.
-			inlineNode -> getScene () -> getExportedNode (exportedName);
-		}
-		else
-			throw Error <URL_UNAVAILABLE> ("Imported node error: Could not load Inline '" + inlineNode .getNodeName () + "'.");
-	}
-
 	SFNode <ImportedNode> & importedNode = importedNodes .push_back (localName, new ImportedNode (this, inlineNode, exportedName, localName));
 	importedNode .addParent (this);
 	importedNodes .back () .addParent (this);
+
+	importedNames [inlineNode -> getExportedNode (exportedName)] = localName;
 
 	return importedNode;
 }
@@ -458,6 +463,23 @@ throw (Error <INVALID_NAME>,
 	{
 		throw Error <INVALID_NAME> ("Imported node '" + localName + "' not found.");
 	}
+}
+
+const std::string &
+X3DExecutionContext::getLocalName (const SFNode <X3DBaseNode> & node) const
+throw (Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	auto importedName = importedNames .find (node);
+	
+	if (importedName not_eq importedNames .end ())
+		return importedName -> second;
+		
+	if (node -> getExecutionContext () == this)
+		return node -> getName ();
+		
+	throw Error <INVALID_NODE> ("Couldn' get local name.");
 }
 
 //	Proto declaration handling
@@ -846,6 +868,7 @@ X3DExecutionContext::dispose ()
 
 	namedNodes    .clear ();
 	importedNodes .clear ();
+	importedNames .clear ();
 	protos        .clear ();
 	externProtos  .clear ();
 	routes        .clear ();

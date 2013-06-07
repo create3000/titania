@@ -119,13 +119,14 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const_cast <Inline*> (this) -> requestImmediateLoad ();
+	if (load ())
+		const_cast <Inline*> (this) -> requestImmediateLoad ();
 
 	if (checkLoadState () == COMPLETE_STATE)
 		return scene -> getExportedNode (exportedName);
 
 	else
-		throw Error <INVALID_NAME> ("Imported node error: Could not load Inline '" + getName () + "'.");
+		throw Error <INVALID_NAME> ("Imported node error: Inline node '" + getName () + "' is not loaded.");
 }
 
 void

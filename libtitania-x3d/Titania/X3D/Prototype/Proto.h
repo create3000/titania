@@ -62,6 +62,7 @@ class Proto :
 {
 public:
 
+	using X3DProto::createInstance;
 	using X3DExecutionContext::dispose;
 
 	///  @name Creation
@@ -70,7 +71,7 @@ public:
 
 	virtual
 	X3DPrototypeInstance*
-	createInstance () final;
+	createInstance (X3DExecutionContext* const) final;
 
 	///  @name Tests
 

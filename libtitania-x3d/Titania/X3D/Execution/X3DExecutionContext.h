@@ -67,7 +67,7 @@ namespace titania {
 namespace X3D {
 
 class Inline;
-class Proto;
+class X3DProto;
 class X3DBrowser;
 class X3DPrototypeInstance;
 
@@ -167,17 +167,26 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	///  @name Named node handling
+	///  @name Named/Imported node handling
 
 	const SFNode <X3DBaseNode> &
 	getNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
+	
+	const std::string &
+	getLocalName (const SFNode <X3DBaseNode> &) const
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	///  @name Named node handling
 
 	void
 	addNamedNode (const std::string &, const SFNode <X3DBaseNode> &)
-	throw (Error <IMPORTED_NODE>,
+	throw (Error <NODE_IN_USE>,
+	       Error <IMPORTED_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -379,6 +388,14 @@ protected:
 
 private:
 
+	X3DProto*
+	getX3DProtoDeclaration (const std::string & name)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_X3D>,
+	       Error <URL_UNAVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	SFNode <Proto>
 	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -396,6 +413,7 @@ private:
 	       Error <INVALID_FIELD>);
 
 	typedef std::map <std::string, SFNode <X3DBaseNode>> NamedNodeIndex;
+	typedef std::map <X3DBaseNode*, std::string>         ImportedNamesIndex;
 
 	basic::uri  worldURL;
 	std::string encoding;
@@ -406,11 +424,12 @@ private:
 	ComponentInfoArray components;
 	const ProfileInfo* profile;
 
-	NamedNodeIndex    namedNodes;
-	ImportedNodeArray importedNodes;
-	ProtoArray        protos;
-	ExternProtoArray  externProtos;
-	RouteArray        routes;
+	NamedNodeIndex     namedNodes;
+	ImportedNodeArray  importedNodes;
+	ImportedNamesIndex importedNames;
+	ProtoArray         protos;
+	ExternProtoArray   externProtos;
+	RouteArray         routes;
 
 	MFNode rootNodes;
 

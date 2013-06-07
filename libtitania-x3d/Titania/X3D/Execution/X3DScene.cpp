@@ -99,7 +99,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 const SFNode <ExportedNode> &
 X3DScene::addExportedNode (const std::string & exportedName, const SFNode <X3DBaseNode> & node)
-throw (Error <INVALID_NAME>,
+throw (Error <NODE_IN_USE>,
+       Error <INVALID_NAME>,
        Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -245,6 +246,8 @@ X3DScene::toStream (std::ostream & ostream) const
 		ostream << Generator::TidyBreak;
 	}
 
+	Generator::PushLevel ();
+
 	X3DExecutionContext::toStream (ostream);
 
 	if (getExportedNodes () .size ())
@@ -252,6 +255,8 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	for (const auto & exportedNode : getExportedNodes ())
 		ostream << exportedNode;
+	
+	Generator::PopLevel ();
 
 	ostream << std::flush;
 }

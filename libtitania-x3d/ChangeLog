@@ -1,5 +1,22 @@
 2013-06-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Proto.h:
+	* Route.cpp:
+	* Proto.cpp:
+	* X3DScene.h:
+	* X3DProto.h:
+	* X3DScene.cpp:
+	* Generator.h:
+	* ExternProto.h:
+	* ExternProto.cpp:
+	* Generator.cpp:
+	* ExportedNode.cpp:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp: 
+
+2013-06-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Route.h:

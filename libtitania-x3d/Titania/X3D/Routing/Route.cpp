@@ -96,13 +96,12 @@ Route::add (X3DExecutionContext* const executionContext) const
 
 	try
 	{
-		const SFNode <X3DBaseNode> & sourceNode = executionContext -> getNode (getSourceNode () .getName () .last ());
-
-		const SFNode <X3DBaseNode> & destinationNode = executionContext -> getNode (getDestinationNode () .getName () .last ());
+		const SFNode <X3DBaseNode> & sourceNode      = executionContext -> getNode (getExecutionContext () -> getLocalName (getSourceNode ()));
+		const SFNode <X3DBaseNode> & destinationNode = executionContext -> getNode (getExecutionContext () -> getLocalName (getDestinationNode ()));
 
 		executionContext -> addRoute (sourceNode, getSourceField (), destinationNode, getDestinationField ());
 	}
-	catch (const Error <INVALID_NAME> & error)
+	catch (const X3DError & error)
 	{
 		throw Error <INVALID_NAME> ("Bad ROUTE specification in copy: " + std::string (error .what ()));
 	}
@@ -174,64 +173,56 @@ Route::disconnect ()
 void
 Route::toStream (std::ostream & ostream) const
 {
-
-	if (getComments () .size ())
+	try
 	{
-		ostream << Generator::TidyBreak;
-		
-		for (const auto & comment : getComments ())
+		std::string sourceNodeName      = Generator::GetLocalName (sourceNode);
+		std::string destinationNodeName = Generator::GetLocalName (destinationNode);
+
+		if (getComments () .size ())
 		{
-			ostream
-				<< Generator::Indent
-				<< Generator::Comment
-				<< comment
-				<< Generator::Break;
+			ostream << Generator::TidyBreak;
+			
+			for (const auto & comment : getComments ())
+			{
+				ostream
+					<< Generator::Indent
+					<< Generator::Comment
+					<< comment
+					<< Generator::Break;
+			}
+
+			ostream << Generator::TidyBreak;
 		}
 
-		ostream << Generator::TidyBreak;
-	}
+		ostream
+			<< Generator::Indent
+			<< "ROUTE"
+			<< Generator::Space
+			<< sourceNodeName;
 
-	ostream
-		<< Generator::Indent
-		<< "ROUTE"
-		<< Generator::Space;
+		ostream << '.';
 
-	try
-	{
-		ostream << Generator::GetLocalName (sourceNode);
-	}
-	catch (...)
-	{
-		ostream << Generator::GetName (sourceNode);
-	}
+		ostream << sourceField -> getName ();
 
-	ostream << '.';
+		if (sourceField -> getAccessType () == inputOutput)
+			ostream << "_changed";
 
-	ostream << sourceField -> getName ();
+		ostream
+			<< Generator::Space
+			<< "TO"
+			<< Generator::Space
+			<< destinationNodeName;
 
-	if (sourceField -> getAccessType () == inputOutput)
-		ostream << "_changed";
+		ostream << '.';
 
-	ostream
-		<< Generator::Space
-		<< "TO"
-		<< Generator::Space;
+		if (destinationField -> getAccessType () == inputOutput)
+			ostream << "set_";
 
-	try
-	{
-		ostream << Generator::GetLocalName (destinationNode);
+		ostream << destinationField -> getName ();
+
 	}
 	catch (...)
-	{
-		ostream << Generator::GetName (destinationNode);
-	}
-
-	ostream << '.';
-
-	if (destinationField -> getAccessType () == inputOutput)
-		ostream << "set_";
-
-	ostream << destinationField -> getName ();
+	{ }
 }
 
 void

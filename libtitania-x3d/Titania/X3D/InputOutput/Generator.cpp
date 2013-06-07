@@ -188,7 +188,7 @@ size_t                        Generator::level = 0;
 Generator::NodeSet            Generator::nodes;
 Generator::NewNamesIndex      Generator::newNames;
 size_t                        Generator::newName = 0;
-Generator::ImportedNodesIndex Generator::importedNodes;
+Generator::ImportedNamesIndex Generator::importedNames;
 
 bool        Generator::expandNodes = false;
 std::string Generator::style       = "tidy";
@@ -281,7 +281,7 @@ Generator::PopLevel ()
 	{
 		nodes .clear ();
 		newNames .clear ();
-		importedNodes .clear ();
+		importedNames .clear ();
 	}
 }
 
@@ -297,7 +297,7 @@ Generator::AddNode (const X3DBaseNode* basicNode)
 	nodes .insert (basicNode);
 }
 
-std::string
+const std::string &
 Generator::GetName (const X3DBaseNode* basicNode)
 {
 	if (basicNode -> getName () .empty ())
@@ -325,7 +325,7 @@ Generator::GetName (const X3DBaseNode* basicNode)
 
 			newNames [basicNode] = name;
 
-			return name;
+			return newNames [basicNode];
 		}
 	}
 
@@ -335,13 +335,23 @@ Generator::GetName (const X3DBaseNode* basicNode)
 void
 Generator::AddImportedNode (const X3DBaseNode* exportedNode, const std::string & localName)
 {
-	importedNodes [exportedNode] = localName;
+	importedNames [exportedNode] = localName;
 }
 
 const std::string &
 Generator::GetLocalName (const X3DBaseNode* node)
 {
-	return importedNodes .at (node);
+	try
+	{
+		return importedNames .at (node);
+	}
+	catch (...)
+	{
+		if (ExistsNode (node))
+			return GetName (node);
+	}
+	
+	throw Error <INVALID_NODE> ("Couldn't get local name.");
 }
 
 } // X3D

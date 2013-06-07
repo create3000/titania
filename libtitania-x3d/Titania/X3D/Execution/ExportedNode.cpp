@@ -93,20 +93,10 @@ ExportedNode::getNode () const
 void
 ExportedNode::toStream (std::ostream & ostream) const
 {
-	std::string localName;
-
 	try
 	{
-		localName = Generator::GetLocalName (node);
-	}
-	catch (...)
-	{
-		if (Generator::ExistsNode (node))
-			localName = Generator::GetName (node);
-	}
+		std::string localName = Generator::GetLocalName (node);
 
-	if (localName .size ())
-	{
 		ostream
 			<< Generator::Indent
 			<< "EXPORT"
@@ -124,6 +114,8 @@ ExportedNode::toStream (std::ostream & ostream) const
 
 		ostream << Generator::Break;
 	}
+	catch (...)
+	{ }
 }
 
 void

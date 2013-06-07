@@ -67,9 +67,13 @@ public:
 	bool
 	isExternproto () const = 0;
 
+	X3DPrototypeInstance*
+	createInstance ()
+	{ return createInstance (getExecutionContext ()); }
+
 	virtual
 	X3DPrototypeInstance*
-	createInstance () = 0;
+	createInstance (X3DExecutionContext* const) = 0;
 
 	///  @name Comment handling
 
