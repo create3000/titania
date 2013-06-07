@@ -26,6 +26,9 @@ Shape {
   geometry Box { }
 }
 
+DEF A Transform { }
+DEF B Group { }
+
 DEF Debug Script {
   eventIn SFTime set_time
 
@@ -103,11 +106,81 @@ function set_time ()
 		print ('\t' + 'createInstance: ' + protos [i] .newInstance ());
 	}
 
+	print ('routes:              ' + scene .routes);
+
+	var routes = scene .routes;
+
+	for (var i in routes)
+	{
+		print ('\t' + 'sourceNode:       ' + routes [i] .sourceNode .getNodeName ());
+		print ('\t' + 'sourceField:      ' + routes [i] .sourceField);
+		print ('\t' + 'destinationNode:  ' + routes [i] .destinationNode .getNodeName ());
+		print ('\t' + 'destinationField: ' + routes [i] .destinationField);
+	}
+
 	print ();
 	print ('createNode:           ' + scene .createNode ('Transform'));
 	print ('createProto:          ' + scene .createProto ('Test'));
 
-	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
+	print ();
+	print ('+ Named node handling +++++++++++++++++++++++++++++++++');	
+
+	print ();
+	print ('getNamedNode: ' + scene .getNamedNode ('A'));
+	print ('getNamedNode: ' + scene .getNamedNode ('B'));
+	
+	try
+	{
+		print ('getNamedNode: ' + scene .getNamedNode ('C'));
+	}
+	catch (error)
+	{
+		print (error);
+	}
+	
+	var a = scene .getNamedNode ('A');
+
+	print ();
+	print ('getNamedNode: ' + a);
+	
+	scene .updateNamedNode ('C', a);
+	print ('updateNamedNode: ' + a .getNodeName ());
+
+	print ();
+	print ('+ Route handling ++++++++++++++++++++++++++++++++++++++');	
+	
+	var route = scene .addRoute (scene .getNamedNode ('C'), 'children', scene .getNamedNode ('B'), 'children');
+
+	print ();
+	print ('addRoute:             ' + route);
+
+	var routes = scene .routes;
+
+	for (var i in routes)
+	{
+		print ();
+		print ('\t' + 'sourceNode:       ' + routes [i] .sourceNode .getNodeName ());
+		print ('\t' + 'sourceField:      ' + routes [i] .sourceField);
+		print ('\t' + 'destinationNode:  ' + routes [i] .destinationNode .getNodeName ());
+		print ('\t' + 'destinationField: ' + routes [i] .destinationField);
+	}
+	
+	scene .deleteRoute (route);
+	print ('deleteRoute:             ' + route);
+
+	var routes = scene .routes;
+
+	for (var i in routes)
+	{
+		print ();
+		print ('\t' + 'sourceNode:       ' + routes [i] .sourceNode .getNodeName ());
+		print ('\t' + 'sourceField:      ' + routes [i] .sourceField);
+		print ('\t' + 'destinationNode:  ' + routes [i] .destinationNode .getNodeName ());
+		print ('\t' + 'destinationField: ' + routes [i] .destinationField);
+	}
+
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+	
 }
 "
 }

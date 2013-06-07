@@ -184,10 +184,11 @@ const Generator::VrmlAccessTypesIndex Generator::VrmlAccessTypes;
 const Generator::AccessTypesIndex     Generator::AccessTypes;
 const Generator::NodeTypesIndex       Generator::NodeTypes;
 
-size_t                 Generator::level = 0;
-Generator::NodeSet    Generator::nodes;
-Generator::NewNamesMap Generator::newNames;
-size_t                 Generator::newName = 0;
+size_t                        Generator::level = 0;
+Generator::NodeSet            Generator::nodes;
+Generator::NewNamesIndex      Generator::newNames;
+size_t                        Generator::newName = 0;
+Generator::ImportedNodesIndex Generator::importedNodes;
 
 bool        Generator::expandNodes = false;
 std::string Generator::style       = "tidy";
@@ -280,6 +281,7 @@ Generator::PopLevel ()
 	{
 		nodes .clear ();
 		newNames .clear ();
+		importedNodes .clear ();
 	}
 }
 
@@ -328,6 +330,18 @@ Generator::GetName (const X3DBaseNode* basicNode)
 	}
 
 	return basicNode -> getName ();
+}
+
+void
+Generator::AddImportedNode (const X3DBaseNode* exportedNode, const std::string & localName)
+{
+	importedNodes [exportedNode] = localName;
+}
+
+const std::string &
+Generator::GetLocalName (const X3DBaseNode* node)
+{
+	return importedNodes .at (node);
 }
 
 } // X3D

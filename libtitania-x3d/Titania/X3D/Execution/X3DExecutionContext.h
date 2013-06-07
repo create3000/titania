@@ -55,7 +55,6 @@
 #include "../Components/Core/X3DNode.h"
 #include "../Configuration/ComponentInfoArray.h"
 #include "../Configuration/ProfileInfo.h"
-#include "../Execution/ExportedNodeArray.h"
 #include "../Execution/ImportedNodeArray.h"
 #include "../Prototype/ExternProtoArray.h"
 #include "../Prototype/ProtoArray.h"
@@ -79,7 +78,7 @@ public:
 
 	virtual
 	void
-	setup ();
+	setup () override;
 
 	void
 	assign (const X3DExecutionContext* const);
@@ -177,9 +176,22 @@ public:
 	       Error <DISPOSED>);
 
 	void
+	addNamedNode (const std::string &, const SFNode <X3DBaseNode> &)
+	throw (Error <IMPORTED_NODE>,
+	       Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
 	updateNamedNode (const std::string &, const SFNode <X3DBaseNode> &)
 	throw (Error <IMPORTED_NODE>,
+	       Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	removeNamedNode (const std::string &)
+	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	const SFNode <X3DBaseNode> &
@@ -188,54 +200,24 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	///  @name Exported nodes handling
-
-	void
-	addExportedNode (const std::string &, const std::string & = "")
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	void
-	removeExportedNode (const std::string &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	void
-	updateExportedNode (const std::string &, const std::string &)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	const SFNode <X3DBaseNode> &
-	getExportedNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	const ExportedNodeArray &
-	getExportedNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return exportedNodes; }
-
 	///  @name Imported nodes handling
 
-	void
+	const SFNode <ImportedNode> &
 	addImportedNode (const SFNode <Inline> &, const std::string &, const std::string & = "")
-	throw (Error <INVALID_NAME>,
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_NAME>,
 	       Error <NODE_IN_USE>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	void
-	removeImportedNode (const std::string &, const std::string &)
+	removeImportedNode (const std::string &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	void
-	updateImportedNode (const SFNode <Inline> &, const std::string &, const std::string &)
+	updateImportedNode (const std::string &, const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <NODE_IN_USE>,
 	       Error <URL_UNAVAILABLE>,
@@ -377,13 +359,11 @@ public:
 	void
 	toStream (std::ostream &) const;
 
-	///  @name Dispose
+	///  @name Destruction
 
 	virtual
 	void
-	dispose ();
-
-	///  @name Destructor
+	dispose () override;
 
 	virtual
 	~X3DExecutionContext ();
@@ -427,7 +407,6 @@ private:
 	const ProfileInfo* profile;
 
 	NamedNodeIndex    namedNodes;
-	ExportedNodeArray exportedNodes;
 	ImportedNodeArray importedNodes;
 	ProtoArray        protos;
 	ExternProtoArray  externProtos;

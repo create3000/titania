@@ -1,0 +1,17 @@
+#X3D V3.0 utf8
+
+META "title" "Basic EXPORT"
+
+DEF Cube Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box { }
+  }
+}
+
+# Comment
+# Comment 2
+
+EXPORT Cube AS CubeExport

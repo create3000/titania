@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_EXECUTION_X3DSCENE_H__
 
 #include "../Execution/X3DExecutionContext.h"
+#include "../Execution/ExportedNodeArray.h"
 #include <map>
 
 namespace titania {
@@ -82,7 +83,41 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	// Input:
+	///  @name Exported nodes handling
+
+	const SFNode <ExportedNode> &
+	addExportedNode (const std::string &, const SFNode <X3DBaseNode> &)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	removeExportedNode (const std::string &)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	updateExportedNode (const std::string &, const SFNode <X3DBaseNode> &)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	const SFNode <X3DBaseNode> &
+	getExportedNode (const std::string &) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	const ExportedNodeArray &
+	getExportedNodes () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return exportedNodes; }
+
+	///  @name Input/Output
+
 	void
 	fromStream (const basic::uri &, std::istream & istream)
 	throw (Error <INVALID_X3D>,
@@ -96,17 +131,23 @@ public:
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>) override;
 
-	// Output:
 	virtual
 	void
-	toStream (std::ostream &) const;
+	toStream (std::ostream &) const override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
 
 
 private:
 
-	MetaDataIndex metadatas;
+	MetaDataIndex     metadatas;
+	ExportedNodeArray exportedNodes;
 
 };
 

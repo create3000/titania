@@ -346,7 +346,10 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Configuration/SupportedProfiles.cpp \
 	Titania/X3D/Execution/BindableNodeList.cpp \
 	Titania/X3D/Execution/BindableNodeStack.cpp \
-	Titania/X3D/Execution/NodeArray.cpp \
+	Titania/X3D/Execution/ExportedNode.cpp \
+	Titania/X3D/Execution/ExportedNodeArray.cpp \
+	Titania/X3D/Execution/ImportedNode.cpp \
+	Titania/X3D/Execution/ImportedNodeArray.cpp \
 	Titania/X3D/Execution/Scene.cpp \
 	Titania/X3D/Execution/X3DExecutionContext.cpp \
 	Titania/X3D/Execution/X3DScene.cpp \

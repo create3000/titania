@@ -48,15 +48,104 @@
  *
  ******************************************************************************/
 
-#include "NodeArray.h"
+#include "ImportedNode.h"
+
+#include "../Components/Networking/Inline.h"
+#include "../Execution/X3DExecutionContext.h"
+
+#include <iostream>
 
 namespace titania {
 namespace X3D {
 
-//
+ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
+                            const SFNode <Inline> & inlineNode, const std::string & exportedName, const std::string & localName) :
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	  inlineNode (inlineNode),                                          
+	exportedName (exportedName),                                        
+	   localName (localName)                                            
+{
+	setComponent ("Browser");
+	setTypeName ("ImportedNode");
+
+	setChildren (this -> inlineNode);
+
+	setup ();
+}
+
+X3DBaseNode*
+ImportedNode::create (X3DExecutionContext* const executionConstext) const
+{
+	return new ImportedNode (executionConstext, inlineNode, exportedName, localName);
+}
+
+const SFNode <Inline> &
+ImportedNode::getInlineNode () const
+{
+	return inlineNode;
+}
+
+const std::string &
+ImportedNode::getExportedName () const
+{
+	return exportedName;
+}
+
+const std::string &
+ImportedNode::getLocalName () const
+{
+	return localName;
+}
+
+const SFNode <X3DBaseNode> &
+ImportedNode::getExportedNode () const
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return inlineNode -> getExportedNode (exportedName);
+}
+
+void
+ImportedNode::toStream (std::ostream & ostream) const
+{
+	try
+	{
+		if (Generator::ExistsNode (inlineNode))
+		{
+			Generator::AddImportedNode (getExportedNode (), localName);
+
+			ostream
+				<< Generator::Indent
+				<< "IMPORT"
+				<< Generator::Space
+				<< inlineNode -> getName ()
+				<< '.'
+				<< exportedName;
+
+			if (localName not_eq exportedName)
+			{
+				ostream
+					<< Generator::Space
+					<< "AS"
+					<< Generator::Space
+					<< localName;
+			}
+
+			ostream << Generator::Break;
+		}
+	}
+	catch (const X3DError &)
+	{ }
+}
+
+void
+ImportedNode::dispose ()
+{
+	inlineNode .dispose ();
+
+	X3DBaseNode::dispose ();
+}
 
 } // X3D
-
-template class basic::indexed_multimap <std::string, X3D::SFNode <X3D::X3DBaseNode>>;
-
 } // titania

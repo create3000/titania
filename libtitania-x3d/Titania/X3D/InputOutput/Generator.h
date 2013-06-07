@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,8 +52,8 @@
 #define __TITANIA_X3D_INPUT_OUTPUT_GENERATOR_H__
 
 #include <map>
-#include <set>
 #include <map>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -112,53 +112,77 @@ private:
 
 public:
 
-	static void
+	static
+	void
 	Style (const std::string &);
 
-	static const std::string &
+	static
+	const std::string &
 	Style () { return style; }
 
-	static void
+	static
+	void
 	CleanStyle ();
 
-	static void
+	static
+	void
 	CompactStyle ();
 
-	static void
+	static
+	void
 	TidyStyle ();
 
-	static void
+	static
+	void
 	ExpandNodes (const bool value) { expandNodes = value; }
 
-	static bool
+	static
+	bool
 	ExpandNodes () { return expandNodes; }
 
-	static void
+	static
+	void
 	X3DFieldNames (const bool value) { x3dFieldNames = value; }
 
-	static bool
+	static
+	bool
 	X3DFieldNames () { return x3dFieldNames; }
 
-	static void
+	static
+	void
 	X3DAccessTypes (const bool value) { x3dAccessTypes = value; }
 
-	static bool
+	static
+	bool
 	X3DAccessTypes () { return x3dAccessTypes; }
 
-	static void
+	static
+	void
 	PushLevel ();
 
-	static void
+	static
+	void
 	PopLevel ();
 
-	static bool
+	static
+	bool
 	ExistsNode (const X3DBaseNode*);
 
-	static void
+	static
+	void
 	AddNode (const X3DBaseNode*);
 
-	static std::string
+	static
+	std::string
 	GetName (const X3DBaseNode*);
+
+	static
+	void
+	AddImportedNode (const X3DBaseNode*, const std::string &);
+
+	static
+	const std::string &
+	GetLocalName (const X3DBaseNode*);
 
 	static const VrmlAccessTypesIndex VrmlAccessTypes;
 	static const AccessTypesIndex     AccessTypes;
@@ -168,12 +192,14 @@ public:
 private:
 
 	typedef std::set <const X3DBaseNode*>              NodeSet;
-	typedef std::map <const X3DBaseNode*, std::string> NewNamesMap;
+	typedef std::map <const X3DBaseNode*, std::string> NewNamesIndex;
+	typedef std::map <const X3DBaseNode*, std::string> ImportedNodesIndex;
 
-	static size_t      level;
-	static NodeSet     nodes;
-	static NewNamesMap newNames;
-	static size_t      newName;
+	static size_t             level;
+	static NodeSet            nodes;
+	static NewNamesIndex      newNames;
+	static size_t             newName;
+	static ImportedNodesIndex importedNodes;
 
 	static bool        expandNodes;
 	static std::string style;

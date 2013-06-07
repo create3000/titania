@@ -70,6 +70,7 @@ public:
 	getClass ()
 	{ return &static_class; }
 
+	static JSBool addRoute (JSContext *, uintN, jsval*);
 
 protected:
 
@@ -99,9 +100,6 @@ private:
 	static JSBool profile    (JSContext* context, JSObject* obj, jsid id, jsval* vp);
 	static JSBool components (JSContext* context, JSObject* obj, jsid id, jsval* vp);
 
-	static JSBool addRootNode    (JSContext*, uintN, jsval*);
-	static JSBool removeRootNode (JSContext*, uintN, jsval*);
-
 	static JSBool externprotos (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool protos       (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool rootNodes    (JSContext *, JSObject *, jsid, jsval*);
@@ -110,6 +108,24 @@ private:
 
 	static JSBool createNode  (JSContext *, uintN, jsval*);
 	static JSBool createProto (JSContext *, uintN, jsval*);
+
+	static JSBool addNamedNode    (JSContext *, uintN, jsval*);
+	static JSBool removeNamedNode (JSContext *, uintN, jsval*);
+	static JSBool updateNamedNode (JSContext *, uintN, jsval*);
+	static JSBool getNamedNode    (JSContext *, uintN, jsval*);
+
+	static JSBool addImportedNode    (JSContext *, uintN, jsval*);
+	static JSBool removeImportedNode (JSContext *, uintN, jsval*);
+	static JSBool updateImportedNode (JSContext *, uintN, jsval*);
+	static JSBool getImportedNode    (JSContext *, uintN, jsval*);
+
+	static JSBool addRootNode    (JSContext*, uintN, jsval*);
+	static JSBool removeRootNode (JSContext*, uintN, jsval*);
+
+	static JSBool deleteRoute (JSContext *, uintN, jsval*);
+
+	static JSBool toVRMLString (JSContext *, uintN, jsval*);
+	static JSBool toXMLString  (JSContext *, uintN, jsval*);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

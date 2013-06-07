@@ -266,8 +266,7 @@ jsBrowser::createX3DFromString (JSContext* context, uintN argc, jsval* vp)
 		catch (const X3DError & error)
 		{
 			JS_ReportError (context, error .what ());
-
-			return jsX3DScene::create (context, script -> getBrowser () -> createScene (), vp);
+			return JS_FALSE;
 		}
 	}
 
@@ -332,7 +331,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 									field -> write (MFNode ());
 									field -> notifyParents ();
 
-									JS_ReportError (context, error .what ());
+									script -> getBrowser () -> print (error .what ());
 								}
 
 								//std::cout << "createVrmlFromURL " << *url << std::endl;
@@ -351,6 +350,8 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 				}
 				else
 					JS_ReportError (context, "Browser .createX3DFromURL: node is NULL");
+	
+				return JS_FALSE;
 			}
 			else
 			{
@@ -376,10 +377,12 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 					}
 
 					JS_ReportError (context, "Couldn't call function '%s'.", JS_GetString (context, event) .c_str ());
+					return JS_FALSE;
 				}
 				catch (const X3DError & error)
 				{
 					JS_ReportError (context, error .what ());
+					return JS_FALSE;
 				}
 			}
 		}
@@ -394,11 +397,12 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 			catch (const X3DError & error)
 			{
 				JS_ReportError (context, error .what ());
+				return JS_FALSE;
 			}
 		}
 	}
-	else
-		JS_ReportError (context, "Browser .createX3DFromURL: wrong number of arguments");
+
+	JS_ReportError (context, "Browser .createX3DFromURL: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -441,14 +445,15 @@ jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
 		catch (const X3DError & error)
 		{
 			JS_ReportError (context, error .what ());
+			return JS_FALSE;
 		}
 
 		JS_SET_RVAL (context, vp, JSVAL_VOID);
 
 		return JS_TRUE;
 	}
-	else
-		JS_ReportError (context, "Browser .loadURL: wrong number of arguments");
+	
+	JS_ReportError (context, "Browser .loadURL: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -588,8 +593,8 @@ jsBrowser::print (JSContext* context, uintN argc, jsval* vp)
 
 		return JS_TRUE;
 	}
-	else
-		JS_ReportError (context, "Browser .print: wrong number of arguments");
+	
+	JS_ReportError (context, "Browser .print: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -612,8 +617,8 @@ jsBrowser::println (JSContext* context, uintN argc, jsval* vp)
 
 		return JS_TRUE;
 	}
-	else
-		JS_ReportError (context, "Browser .println: wrong number of arguments");
+	
+	JS_ReportError (context, "Browser .println: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -717,7 +722,7 @@ jsBrowser::createVrmlFromString (JSContext* context, uintN argc, jsval* vp)
 		}
 		catch (const X3DError & error)
 		{
-			JS_ReportError (context, error .what ());
+			script -> getBrowser () -> print (error .what ());
 
 			return jsMFNode::create (context, new MFNode (), &JS_RVAL (context, vp));
 		}
@@ -812,57 +817,16 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
-//void addRoute(SFNode fromNode, String fromEventOut, SFNode toNode, String toEventIn)
 JSBool
 jsBrowser::addRoute (JSContext* context, uintN argc, jsval* vp)
 {
-	if (argc == 4)
+	if (jsX3DExecutionContext::addRoute (context, argc, vp))
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		JS_SET_RVAL (context, vp, JSVAL_VOID);
 
-		JSObject* ofromNode;
-		JSObject* otoNode;
-		JSString* fromEventOut;
-		JSString* toEventIn;
-
-		jsval* argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
-			return JS_FALSE;
-
-		if (JS_GetClass (context, ofromNode) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, ofromNode) -> name);
-			return JS_FALSE;
-		}
-
-		SFNode <X3DBaseNode>* fromNode = static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, ofromNode));
-
-		if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 3 is invalid - should be SFNode, is %s", JS_GetClass (context, otoNode) -> name);
-			return JS_FALSE;
-		}
-
-		SFNode <X3DBaseNode>* toNode = static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, otoNode));
-
-		try
-		{
-			script -> getExecutionContext () -> addRoute (fromNode -> getValue (), JS_GetString (context, fromEventOut),
-			                                              toNode -> getValue (),   JS_GetString (context, toEventIn));
-
-			JS_SET_RVAL (context, vp, JSVAL_VOID);
-
-			return JS_TRUE;
-		}
-		catch (const X3DError & error)
-		{
-			JS_ReportError (context, error .what ());
-		}
+		return JS_TRUE;
 	}
-	else
-		JS_ReportError (context, "Browser .addRoute: wrong number of arguments");
-
+	
 	return JS_FALSE;
 }
 
@@ -889,7 +853,7 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		SFNode <X3DBaseNode>* fromNode = static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, ofromNode));
+		auto & fromNode = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, ofromNode));
 
 		if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
 		{
@@ -897,12 +861,12 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		SFNode <X3DBaseNode>* toNode = static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, otoNode));
+		auto & toNode = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, otoNode));
 
 		try
 		{
-			script -> getExecutionContext () -> deleteRoute (fromNode -> getValue (), JS_GetString (context, fromEventOut),
-			                                                 toNode -> getValue (),   JS_GetString (context, toEventIn));
+			script -> getExecutionContext () -> deleteRoute (fromNode, JS_GetString (context, fromEventOut),
+			                                                 toNode,   JS_GetString (context, toEventIn));
 
 			JS_SET_RVAL (context, vp, JSVAL_VOID);
 
@@ -911,10 +875,11 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 		catch (const X3DError & error)
 		{
 			JS_ReportError (context, error .what ());
+			return JS_FALSE;
 		}
 	}
-	else
-		JS_ReportError (context, "Browser .deleteRoute: wrong number of arguments");
+
+	JS_ReportError (context, "Browser .deleteRoute: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -939,8 +904,8 @@ jsBrowser::setDescription (JSContext* context, uintN argc, jsval* vp)
 
 		return JS_TRUE;
 	}
-	else
-		JS_ReportError (context, "Browser .setDescription: wrong number of arguments");
+	
+	JS_ReportError (context, "Browser .setDescription: wrong number of arguments");
 
 	return JS_FALSE;
 }

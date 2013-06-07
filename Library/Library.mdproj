@@ -2087,6 +2087,9 @@
     <None Include="Tests\Scripting\BrowserProperties.wrl" />
     <None Include="Tests\Scripting\RenderingProperties.wrl" />
     <None Include="Tests\Scripting\ExternProto.wrl" />
+    <None Include="Tests\Scripting\X3DScene.importedNode.wrl" />
+    <None Include="Tests\Basic\EXPORT.wrl" />
+    <None Include="Tests\Basic\IMPORT.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

@@ -113,6 +113,21 @@ Inline::getBBox ()
 	return X3DBoundedObject::getBBox (scene -> getRootNodes ());
 }
 
+const SFNode <X3DBaseNode> &
+Inline::getExportedNode (const std::string & exportedName) const
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	const_cast <Inline*> (this) -> requestImmediateLoad ();
+
+	if (checkLoadState () == COMPLETE_STATE)
+		return scene -> getExportedNode (exportedName);
+
+	else
+		throw Error <INVALID_NAME> ("Imported node error: Could not load Inline '" + getName () + "'.");
+}
+
 void
 Inline::set_load ()
 {

@@ -50,6 +50,7 @@
 
 #include "Parser.h"
 
+#include "../Bits/Cast.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Networking/Inline.h"
@@ -478,13 +479,17 @@ Parser::exportStatement ()
 
 			comments ();
 
+			const SFNode <X3DBaseNode> & node = scene -> getNode (_localNodeNameId);
+			
 			if (Grammar::AS (istream))
 			{
 				if (not exportedNodeNameId (_exportedNodeNameId))
 					throw Error <INVALID_X3D> ("No name given after AS.");
 			}
+			else
+				_exportedNodeNameId = _localNodeNameId;
 
-			getExecutionContext () -> addExportedNode (_localNodeNameId, _exportedNodeNameId);
+			scene -> addExportedNode (_exportedNodeNameId, node);
 
 			return true;
 		}
@@ -508,7 +513,7 @@ Parser::importStatement ()
 
 		if (inlineNodeNameId (_inlineNodeNameId))
 		{
-			const SFNode <Inline> _inlineNode = dynamic_cast <Inline*> (getExecutionContext () -> getNamedNode (_inlineNodeNameId) .getValue ());
+			const SFNode <Inline> _inlineNode = x3d_cast <Inline*> (getExecutionContext () -> getNamedNode (_inlineNodeNameId) .getValue ());
 
 			if (_inlineNode)
 			{

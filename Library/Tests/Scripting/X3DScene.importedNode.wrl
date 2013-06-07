@@ -1,0 +1,43 @@
+#VRML V2.0 utf8
+
+META "title" "Scene.importedNode"
+
+DEF Touch TouchSensor { }
+
+DEF Inline Inline {
+	url "../Basic/EXPORT.wrl"
+}
+
+DEF Debug Script {
+  eventIn SFTime set_time
+
+  url "vrmlscript:
+
+function set_time ()
+{
+	print ();
+	print ('+ Scene +++++++++++++++++++++++++++++++++++++++++++++++');	
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+
+	var scene = Browser .currentScene;
+
+	print ();
+	print (scene);
+	
+	scene .addImportedNode (scene .getNamedNode ('Inline'), 'CubeExport', 'CubeImport');
+	
+	var cube = scene .getImportedNode ('CubeImport');
+	scene .addRoute (cube, 'children', cube, 'children')
+	
+	var nodes = Browser .createVrmlFromString ('Inline { url \"../Basic/EXPORT.wrl\" }');
+
+	scene .addImportedNode (nodes [0], 'CubeExport', 'Cube2');
+	
+	print (scene .toVRMLString ());
+
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+}
+"
+}
+
+ROUTE Touch.touchTime TO Debug.set_time

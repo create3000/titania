@@ -194,8 +194,9 @@ jsX3DArrayField <Type, FieldType>::construct (JSContext* context, uintN argc, js
 
 			if (not JS_InstanceOf (context, value, value_type::getClass (), NULL))
 			{
-				JS_ReportError (context, "Type of argument %d is invalid - should be %s, is %s",
-				                i,
+				JS_ReportError (context, "new %s: Type of argument %d is invalid - should be %s, is %s",
+				                getClass () -> name,
+				                i + 1,
 				                value_type::getClass () -> name,
 				                JS_GetClass (context, value) -> name);
 

@@ -51,14 +51,21 @@
 #ifndef __TITANIA_X3D_EXECUTION_EXPORTED_NODE_ARRAY_H__
 #define __TITANIA_X3D_EXECUTION_EXPORTED_NODE_ARRAY_H__
 
-#include "../Execution/NodeArray.h"
+#include <Titania/Basic/IndexedMultiMap.h>
+
+#include "../Execution/ExportedNode.h"
+#include "../Fields/SFNode.h"
+#include <string>
 
 namespace titania {
 namespace X3D {
 
-typedef NodeArray ExportedNodeArray;
+typedef basic::indexed_multimap <std::string, SFNode <ExportedNode>> ExportedNodeArray;
 
 } // X3D
+
+extern template class basic::indexed_multimap <std::string, X3D::SFNode <X3D::ExportedNode>>;
+
 } // titania
 
 #endif

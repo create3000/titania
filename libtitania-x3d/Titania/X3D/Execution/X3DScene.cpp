@@ -59,8 +59,11 @@ namespace X3D {
 
 X3DScene::X3DScene () :
 	X3DExecutionContext (), 
-	          metadatas ()  
+	          metadatas (),
+	      exportedNodes ()
 { }
+
+// MetaData handling
 
 void
 X3DScene::setMetaData (const std::string & key, const std::string & value)
@@ -91,6 +94,60 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	return metadatas;
 }
+
+// Exported nodes handling
+
+const SFNode <ExportedNode> &
+X3DScene::addExportedNode (const std::string & exportedName, const SFNode <X3DBaseNode> & node)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (exportedName .empty ())
+		throw Error <INVALID_NAME> ("Bad exported node specification: exported node name is empty.");
+
+	if (not node)
+		throw Error <INVALID_NODE> ("Bad exported node specification: node is NULL.");
+
+	SFNode <ExportedNode> & exportedNode = exportedNodes .push_back (exportedName, new ExportedNode (this, exportedName, node));
+	exportedNode .addParent (this);
+	exportedNodes .back () .addParent (this);
+	
+	return exportedNode;
+}
+
+void
+X3DScene::removeExportedNode (const std::string & exportedName)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{ }
+
+void
+X3DScene::updateExportedNode (const std::string & exportedName,  const SFNode <X3DBaseNode> & node)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{ }
+
+const SFNode <X3DBaseNode> &
+X3DScene::getExportedNode (const std::string & exportedName) const
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	try
+	{
+		return exportedNodes .rfind (exportedName) -> getNode ();
+	}
+	catch (const std::out_of_range &)
+	{
+		throw Error <INVALID_NAME> ("Exported node '" + exportedName + "' not found.");
+	}
+}
+
+// Input/Output
 
 void
 X3DScene::fromStream (const basic::uri & worldURL, std::istream & istream)
@@ -190,7 +247,21 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	X3DExecutionContext::toStream (ostream);
 
+	if (getExportedNodes () .size ())
+		ostream << Generator::TidyBreak;
+
+	for (const auto & exportedNode : getExportedNodes ())
+		ostream << exportedNode;
+
 	ostream << std::flush;
+}
+
+void
+X3DScene::dispose ()
+{
+	exportedNodes .clear ();
+
+	X3DExecutionContext::dispose ();
 }
 
 } // X3D

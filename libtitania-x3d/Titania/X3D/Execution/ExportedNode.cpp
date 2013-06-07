@@ -48,24 +48,91 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_EXECUTION_IMPORTED_NODE_ARRAY_H__
-#define __TITANIA_X3D_EXECUTION_IMPORTED_NODE_ARRAY_H__
+#include "ExportedNode.h"
 
-#include <Titania/Basic/IndexedMultiMap.h>
+#include "../Components/Networking/Inline.h"
+#include "../Execution/X3DExecutionContext.h"
 
-#include "../Execution/ImportedNode.h"
-#include "../Fields/SFNode.h"
-#include <string>
+#include <iostream>
 
 namespace titania {
 namespace X3D {
 
-typedef basic::indexed_multimap <std::string, SFNode <ImportedNode>> ImportedNodeArray;
+ExportedNode::ExportedNode (X3DExecutionContext* const executionContext,
+                            const std::string & exportedName, const SFNode <X3DBaseNode> & node) :
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	exportedName (exportedName),                                        
+	        node (node)                                        
+{
+	setComponent ("Browser");
+	setTypeName ("ExportedNode");
+
+	setChildren (this -> node);
+
+	setup ();
+}
+
+X3DBaseNode*
+ExportedNode::create (X3DExecutionContext* const executionConstext) const
+{
+	return new ExportedNode (executionConstext, exportedName, node);
+}
+
+const std::string &
+ExportedNode::getExportedName () const
+{
+	return exportedName;
+}
+
+const SFNode <X3DBaseNode> &
+ExportedNode::getNode () const
+{
+	return node;
+}
+
+void
+ExportedNode::toStream (std::ostream & ostream) const
+{
+	std::string localName;
+
+	try
+	{
+		localName = Generator::GetLocalName (node);
+	}
+	catch (...)
+	{
+		if (Generator::ExistsNode (node))
+			localName = Generator::GetName (node);
+	}
+
+	if (localName .size ())
+	{
+		ostream
+			<< Generator::Indent
+			<< "EXPORT"
+			<< Generator::Space
+			<< localName;
+
+		if (exportedName not_eq localName)
+		{
+			ostream
+				<< Generator::Space
+				<< "AS"
+				<< Generator::Space
+				<< exportedName;
+		}
+
+		ostream << Generator::Break;
+	}
+}
+
+void
+ExportedNode::dispose ()
+{
+	node .dispose ();
+
+	X3DBaseNode::dispose ();
+}
 
 } // X3D
-
-extern template class basic::indexed_multimap <std::string, X3D::SFNode <X3D::ImportedNode>>;
-
 } // titania
-
-#endif

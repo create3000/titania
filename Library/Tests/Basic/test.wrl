@@ -2,7 +2,7 @@
 
 META "title" "Basic Test"
 
-Shape {
+DEF Cube Shape {
   appearance Appearance {
     material Material { }
   }

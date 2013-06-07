@@ -69,13 +69,10 @@ Route::Route (X3DExecutionContext* const executionContext,
 	destinationField (destinationField),                                    
 	       connected (false)                                                
 {
+	setComponent ("Browser");
 	setTypeName ("Route");
 
-	sourceNode      .setName (_sourceNode      .getName ());
-	destinationNode .setName (_destinationNode .getName ());
-
-	setChildren (sourceNode,
-	             destinationNode);
+	setChildren (sourceNode, destinationNode);
 
 	setup ();
 }
@@ -199,10 +196,14 @@ Route::toStream (std::ostream & ostream) const
 		<< "ROUTE"
 		<< Generator::Space;
 
-	if (sourceNode .getName () .count ())
-		ostream << sourceNode .getName () .last ();
-	else
+	try
+	{
+		ostream << Generator::GetLocalName (sourceNode);
+	}
+	catch (...)
+	{
 		ostream << Generator::GetName (sourceNode);
+	}
 
 	ostream << '.';
 
@@ -216,10 +217,14 @@ Route::toStream (std::ostream & ostream) const
 		<< "TO"
 		<< Generator::Space;
 
-	if (destinationNode .getName () .count ())
-		ostream << destinationNode .getName () .last ();
-	else
+	try
+	{
+		ostream << Generator::GetLocalName (destinationNode);
+	}
+	catch (...)
+	{
 		ostream << Generator::GetName (destinationNode);
+	}
 
 	ostream << '.';
 

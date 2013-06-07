@@ -118,7 +118,7 @@ jsContext::jsContext (X3DScriptNode* script, const std::string & ecmascript, con
 
 	initNode ();
 
-	if (not evaluate (ecmascript, uri .str ()))
+	if (not evaluate (ecmascript, uri == getExecutionContext () -> getWorldURL () ? "" : uri .str ()))
 	{
 		dispose ();
 		throw std::invalid_argument ("Couldn't evaluate script.");
@@ -574,11 +574,12 @@ jsContext::error (JSContext* context, const char* message, JSErrorReport* report
 
 		std::string::size_type start = 0;
 		std::string::size_type end   = 0;
-		size_t                 i     = 0;
 
-		for ( ; i < report -> lineno - 1; ++ i)
+		for (size_t i = 0 ; i < report -> lineno - 1; ++ i)
 		{
-			if ((start = ecmascript .find (nl, start)) == String::npos)
+			start = ecmascript .find (nl, start);
+		
+			if (start == String::npos)
 				break;
 
 			else

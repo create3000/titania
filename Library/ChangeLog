@@ -1,3 +1,12 @@
+2013-06-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
+	* test.wrl:
+	* EXPORT.wrl:
+	* IMPORT.wrl:
+	* X3DScene.wrl:
+	* X3DScene.importedNode.wrl: 
+
 2013-06-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Library.mdproj:

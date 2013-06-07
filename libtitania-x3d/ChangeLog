@@ -1,3 +1,33 @@
+2013-06-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Route.h:
+	* Parser.cpp:
+	* Route.cpp:
+	* X3DScene.h:
+	* NodeArray.h:
+	* X3DScene.cpp:
+	* NodeArray.cpp:
+	* Generator.h:
+	* Generator.cpp:
+	* ExportedNode.cpp:
+	* ImportedNode.cpp:
+	* ExportedNodeArray.h:
+	* ImportedNodeArray.h:
+	* Inline.h:
+	* ExportedNodeArray.cpp:
+	* X3DExecutionContext.h:
+	* ImportedNodeArray.cpp:
+	* ImportedNode (Kopie).h:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp:
+	* jsContext.cpp:
+	* jsBrowser.cpp:
+	* jsX3DArrayField.h:
+	* jsX3DExecutionContext.h:
+	* jsX3DExecutionContext.cpp: 
+
 2013-06-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

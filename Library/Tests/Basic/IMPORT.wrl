@@ -1,0 +1,11 @@
+#X3D V3.0 utf8
+
+META "title" "Basic IMPORT"
+
+DEF Inline Inline {
+  url "EXPORT.wrl"
+}
+
+IMPORT Inline.CubeExport AS CubeImport
+
+EXPORT CubeImport AS CubeExport

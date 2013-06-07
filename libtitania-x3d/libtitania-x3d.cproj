@@ -449,7 +449,6 @@
     <None Include="Titania\X3D\Configuration\ComponentInfoArray.h" />
     <None Include="Titania\X3D\Configuration\ProfileInfoArray.h" />
     <None Include="Titania\X3D\Configuration\SupportedFields.h" />
-    <None Include="Titania\X3D\Execution\NodeArray.h" />
     <None Include="Titania\X3D\Execution\X3DScene.h" />
     <None Include="Titania\X3D\Configuration\FieldTypesArray.h" />
     <None Include="Titania\X3D\Basic\BasicNodeArray.h" />
@@ -555,6 +554,8 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsProtoDeclarationArray.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DRoute.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsRouteArray.h" />
+    <None Include="Titania\X3D\Execution\ImportedNode.h" />
+    <None Include="Titania\X3D\Execution\ExportedNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -892,7 +893,6 @@
     <Compile Include="Titania\X3D\Components\Text\X3DFontStyleNode.cpp" />
     <Compile Include="Titania\X3D\Components\Time\TimeSensor.cpp" />
     <Compile Include="Titania\X3D\Components\Time\X3DTimeDependentNode.cpp" />
-    <Compile Include="Titania\X3D\Execution\NodeArray.cpp" />
     <Compile Include="Titania\X3D\Execution\X3DScene.cpp" />
     <Compile Include="Titania\X3D\Configuration\ComponentInfoArray.cpp" />
     <Compile Include="Titania\X3D\Configuration\ProfileInfoArray.cpp" />
@@ -984,6 +984,10 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsProtoDeclarationArray.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DRoute.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsRouteArray.cpp" />
+    <Compile Include="Titania\X3D\Execution\ImportedNode.cpp" />
+    <Compile Include="Titania\X3D\Execution\ImportedNodeArray.cpp" />
+    <Compile Include="Titania\X3D\Execution\ExportedNode.cpp" />
+    <Compile Include="Titania\X3D\Execution\ExportedNodeArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

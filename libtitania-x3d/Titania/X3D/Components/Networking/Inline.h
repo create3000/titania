@@ -88,6 +88,12 @@ public:
 
 	const SFNode <Scene> &
 	getScene () { return scene; }
+	
+	const SFNode <X3DBaseNode> &
+	getExportedNode (const std::string &) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	virtual
 	void

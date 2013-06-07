@@ -75,7 +75,6 @@ X3DExecutionContext::X3DExecutionContext () :
 	          components (),              
 	             profile (NULL),          
 	          namedNodes (),              
-	       exportedNodes (),              
 	       importedNodes (),              
 	              protos (),              
 	        externProtos (),              
@@ -119,8 +118,8 @@ X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
 		                 importedNode .getName () [1],
 		                 importedNode .getName () [2]);
 
-	for (const auto & exportedNode : executionContext -> getExportedNodes ())
-		addExportedNode (exportedNode .getName () [0], exportedNode .getName () [1]);
+	//	for (const auto & exportedNode : executionContext -> getExportedNodes ())
+	//		addExportedNode (exportedNode .getName () [0], exportedNode .getName () [1]);
 
 	for (const auto & route : executionContext -> getRoutes ())
 		route -> add (this);
@@ -236,25 +235,25 @@ throw (Error <INVALID_NAME>,
 	if (getProfile () or getComponents () .size ())
 	{
 		bool found = false;
-	
+
 		if (getProfile ())
 		{
 			try
 			{
 				profile -> getComponents () .rfind (declaration -> getComponentName ());
-				
+
 				found = true;
 			}
 			catch (const std::out_of_range &)
 			{ }
 		}
-	
+
 		if (not found)
 		{
 			try
 			{
 				components .rfind (declaration -> getComponentName ());
-				
+
 				found = true;
 			}
 			catch (const std::out_of_range &)
@@ -297,7 +296,7 @@ throw (Error <INVALID_NAME>,
 		}
 		catch (const X3DError & error)
 		{
-			throw Error <INVALID_X3D> (error .what ());		
+			throw Error <INVALID_X3D> (error .what ());
 		}
 	}
 }
@@ -328,21 +327,51 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-X3DExecutionContext::updateNamedNode (const std::string & name, const SFNode <X3DBaseNode> & node)
+X3DExecutionContext::addNamedNode (const std::string & name, const SFNode <X3DBaseNode> & node)
 throw (Error <IMPORTED_NODE>,
+       Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	namedNodes .erase (node .getNodeName ());
+	updateNamedNode (name, node);
+}
+
+void
+X3DExecutionContext::updateNamedNode (const std::string & name, const SFNode <X3DBaseNode> & node)
+throw (Error <IMPORTED_NODE>,
+       Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (node -> getExecutionContext () not_eq this)
+		throw Error <IMPORTED_NODE> ("Couldn't update named node: the node does not belong to this execution context.");
 
 	if (name .length ())
 	{
+		namedNodes .erase (node .getNodeName ());
+
 		namedNodes [name] = node;
 		namedNodes [name] .addParent (this);
-		namedNodes [name] .setName (name);
-	}
 
-	node .setNodeName (name);
+		node .setNodeName (name);
+	}
+	else
+		throw Error <INVALID_NAME> ("Couldn't update named node: node name is empty.");
+}
+
+void
+X3DExecutionContext::removeNamedNode (const std::string & name)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	const auto namedNode = namedNodes .find (name);
+
+	if (namedNode not_eq namedNodes .end ())
+	{
+		namedNode -> second .setNodeName ("");
+
+		namedNodes .erase (namedNode);
+	}
 }
 
 const SFNode <X3DBaseNode> &
@@ -351,109 +380,63 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const auto iter = namedNodes .find (name);
+	const auto namedNode = namedNodes .find (name);
 
-	if (iter not_eq namedNodes .end ())
-		return iter -> second;
+	if (namedNode not_eq namedNodes .end ())
+		return namedNode -> second;
 
 	throw Error <INVALID_NAME> ("Named node '" + name + "' not found.");
 }
 
-// Exported nodes handling
-
-void
-X3DExecutionContext::addExportedNode (const std::string & localName, const std::string & exportedNameId)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (localName .empty ())
-		throw Error <INVALID_NAME> ("Bad exported node specification: local node name is empty.");
-
-	const std::string & exportedName = exportedNameId .size () ? exportedNameId : localName;
-
-	const SFNode <X3DBaseNode> & node = getNode (localName);
-
-	SFNode <X3DBaseNode> & exportedNode = exportedNodes .push_back (exportedName, node);
-	exportedNode .addParent (this);
-	exportedNodes .back () .setName ({ localName, exportedName });
-	exportedNodes .back () .addParent (this);
-}
-
-void
-X3DExecutionContext::removeExportedNode (const std::string & exportedName)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{ }
-
-void
-X3DExecutionContext::updateExportedNode (const std::string & localName, const std::string & exportedName)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{ }
-
-const SFNode <X3DBaseNode> &
-X3DExecutionContext::getExportedNode (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	try
-	{
-		return exportedNodes .rfind (name);
-	}
-	catch (const std::out_of_range &)
-	{
-		throw Error <INVALID_NAME> ("Exported node '" + name + "' not found.");
-	}
-}
-
 // Imported nodes handling
 
-void
+const SFNode <ImportedNode> &
 X3DExecutionContext::addImportedNode (const SFNode <Inline> & inlineNode, const std::string & exportedName, const std::string & localNameId)
-throw (Error <INVALID_NAME>,
+throw (Error <INVALID_NODE>,
+       Error <INVALID_NAME>,
        Error <NODE_IN_USE>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (not inlineNode)
-		throw Error <INVALID_NODE> ("Bad imported node specification: '" + inlineNode .getNodeName () + "' is not an Inline node.");
+		throw Error <INVALID_NODE> ("Bad imported node specification: inline node is NULL.");
 
 	if (exportedName .empty ())
 		throw Error <INVALID_NAME> ("Bad imported node specification: exported node name is empty.");
 
 	const std::string & localName = localNameId .size () ? localNameId : exportedName;
 
-	// if the inline node is inside a proto it should not be loaded. And maybe inline shouldn have a scene at startup.
+	// If the inline node is inside a proto it will not be loaded.
 
-	inlineNode -> requestImmediateLoad ();
-
-	if (inlineNode -> checkLoadState () == COMPLETE_STATE)
+	if (not inlineNode -> getExecutionContext () -> isProto ())
 	{
-		SFNode <X3DBaseNode> node = inlineNode -> getScene () -> getExportedNode (exportedName);
+		inlineNode -> requestImmediateLoad ();
 
-		SFNode <X3DBaseNode> & importedNode = importedNodes .push_back (localName, node);
-		importedNode .setName ({ inlineNode .getNodeName (), exportedName, localName });
-		importedNode .addParent (this);
-		
-		importedNodes .back () .setName ({ inlineNode .getNodeName (), exportedName, localName });
-		importedNodes .back () .addParent (this);
+		if (inlineNode -> checkLoadState () == COMPLETE_STATE)
+		{
+			// Test if exported node exists.
+			inlineNode -> getScene () -> getExportedNode (exportedName);
+		}
+		else
+			throw Error <URL_UNAVAILABLE> ("Imported node error: Could not load Inline '" + inlineNode .getNodeName () + "'.");
 	}
-	else
-		throw Error <URL_UNAVAILABLE> ("Imported node error: Could not load Inline '" + inlineNode .getNodeName () + "'.");
+
+	SFNode <ImportedNode> & importedNode = importedNodes .push_back (localName, new ImportedNode (this, inlineNode, exportedName, localName));
+	importedNode .addParent (this);
+	importedNodes .back () .addParent (this);
+
+	return importedNode;
 }
 
 void
-X3DExecutionContext::removeImportedNode (const std::string & exportedName, const std::string & localName)
+X3DExecutionContext::removeImportedNode (const std::string & localName)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 { }
 
 void
-X3DExecutionContext::updateImportedNode (const SFNode <Inline> & inlineNode, const std::string & exportedName, const std::string & localName)
+X3DExecutionContext::updateImportedNode (const std::string & exportedName, const std::string & localName)
 throw (Error <INVALID_NAME>,
        Error <NODE_IN_USE>,
        Error <URL_UNAVAILABLE>,
@@ -462,18 +445,18 @@ throw (Error <INVALID_NAME>,
 { }
 
 const SFNode <X3DBaseNode> &
-X3DExecutionContext::getImportedNode (const std::string & name) const
+X3DExecutionContext::getImportedNode (const std::string & localName) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	try
 	{
-		return importedNodes .rfind (name);
+		return importedNodes .rfind (localName) -> getExportedNode ();
 	}
 	catch (const std::out_of_range &)
 	{
-		throw Error <INVALID_NAME> ("Imported node '" + name + "' not found.");
+		throw Error <INVALID_NAME> ("Imported node '" + localName + "' not found.");
 	}
 }
 
@@ -826,49 +809,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 		ostream << Generator::TidyBreak;
 
 	for (const auto & importedNode : getImportedNodes ())
-	{
-		ostream
-			<< Generator::Indent
-			<< "IMPORT"
-			<< Generator::Space
-			<< importedNode .getName () [0]
-			<< '.'
-			<< importedNode .getName () [1];
-
-		if (importedNode .getName () [1] not_eq importedNode .getName () [2])
-		{
-			ostream
-				<< Generator::Space
-				<< "AS"
-				<< Generator::Space
-				<< importedNode .getName () [2];
-		}
-
-		ostream << Generator::Break;
-	}
-
-	if (getExportedNodes () .size ())
-		ostream << Generator::TidyBreak;
-
-	for (const auto & exportedNode : getExportedNodes ())
-	{
-		ostream
-			<< Generator::Indent
-			<< "EXPORT"
-			<< Generator::Space
-			<< exportedNode .getName () [0];
-
-		if (exportedNode .getName () [0] not_eq exportedNode .getName () [1])
-		{
-			ostream
-				<< Generator::Space
-				<< "AS"
-				<< Generator::Space
-				<< exportedNode .getName () [1];
-		}
-
-		ostream << Generator::Break;
-	}
+		ostream << importedNode;
 
 	if (getRoutes () .size ())
 		ostream << Generator::TidyBreak;
@@ -883,7 +824,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 	if (getInnerComments () .size ())
 	{
 		ostream << Generator::TidyBreak;
-	
+
 		for (const auto & comment : getInnerComments ())
 		{
 			ostream
@@ -904,7 +845,6 @@ X3DExecutionContext::dispose ()
 	components .clear ();
 
 	namedNodes    .clear ();
-	exportedNodes .clear ();
 	importedNodes .clear ();
 	protos        .clear ();
 	externProtos  .clear ();
