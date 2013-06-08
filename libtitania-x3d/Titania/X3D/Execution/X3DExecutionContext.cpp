@@ -337,6 +337,7 @@ void
 X3DExecutionContext::addNamedNode (const std::string & name, const SFNode <X3DBaseNode> & node)
 throw (Error <NODE_IN_USE>,
        Error <IMPORTED_NODE>,
+       Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -351,21 +352,25 @@ throw (Error <NODE_IN_USE>,
 void
 X3DExecutionContext::updateNamedNode (const std::string & name, const SFNode <X3DBaseNode> & node)
 throw (Error <IMPORTED_NODE>,
+       Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (not node)
+		throw Error <INVALID_NODE> ("Couldn't update named node: node IS NULL.");
+
 	if (node -> getExecutionContext () not_eq this)
 		throw Error <IMPORTED_NODE> ("Couldn't update named node: the node does not belong to this execution context.");
 
 	if (name .length ())
 	{
-		namedNodes .erase (node .getNodeName ());
+		namedNodes .erase (node -> getName ());
 
 		namedNodes [name] = node;
 		namedNodes [name] .addParent (this);
 
-		node .setNodeName (name);
+		node -> setName (name);
 	}
 	else
 		throw Error <INVALID_NAME> ("Couldn't update named node: node name is empty.");
@@ -411,37 +416,66 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (not inlineNode)
-		throw Error <INVALID_NODE> ("Bad imported node specification: inline node is NULL.");
-
-	if (exportedName .empty ())
-		throw Error <INVALID_NAME> ("Bad imported node specification: exported node name is empty.");
-
 	const std::string & localName = localNameId .size () ? localNameId : exportedName;
 
-	SFNode <ImportedNode> & importedNode = importedNodes .push_back (localName, new ImportedNode (this, inlineNode, exportedName, localName));
-	importedNode .addParent (this);
-	importedNodes .back () .addParent (this);
+	if (not inlineNode)
+		throw Error <INVALID_NODE> ("Couldn't add imported node: inline node is NULL.");
 
-	importedNames [inlineNode -> getExportedNode (exportedName)] = localName;
+	if (exportedName .empty ())
+		throw Error <INVALID_NAME> ("Couldn't add imported node: exported node name is empty.");
+		
+	try
+	{
+		importedNodes .rfind (localName);
+		throw Error <NODE_IN_USE> ("Couldn't add imported node: local name '" + localName + "' already exists.");
+	}
+	catch (const std::out_of_range &)
+	{
+		SFNode <ImportedNode> & importedNode = importedNodes .push_back (localName, new ImportedNode (this, inlineNode, exportedName, localName));
+		importedNode .addParent (this);
+		importedNodes .back () .addParent (this);
 
-	return importedNode;
+		importedNames [inlineNode -> getExportedNode (exportedName)] = localName;
+
+		return importedNode;
+	}
 }
 
 void
 X3DExecutionContext::removeImportedNode (const std::string & localName)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
-{ }
+{
+	importedNodes .erase (localName);
+}
 
 void
-X3DExecutionContext::updateImportedNode (const std::string & exportedName, const std::string & localName)
+X3DExecutionContext::updateImportedNode (const std::string & localName, const std::string & newLocalName)
 throw (Error <INVALID_NAME>,
-       Error <NODE_IN_USE>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
-{ }
+{
+	if (localName .empty ())
+		throw Error <INVALID_NAME> ("Couldn't update imported node: local node name is empty.");
+
+	if (newLocalName .empty ())
+		throw Error <INVALID_NAME> ("Couldn't update imported node: new local node name is empty.");
+
+	try
+	{
+		auto importedNode = importedNodes .rfind (localName);
+		
+		importedNodes .erase (localName);
+		// override importedName in addImportedNode
+		
+		addImportedNode (importedNode -> getInlineNode (), importedNode -> getExportedName (), newLocalName);
+	}
+	catch (const std::out_of_range &)
+	{
+		throw Error <INVALID_NAME> ("Couldn't update imported node: node named '" + localName + "' does not exists.");
+	}
+}
 
 const SFNode <X3DBaseNode> &
 X3DExecutionContext::getImportedNode (const std::string & localName) const

@@ -121,7 +121,7 @@ public:
 	at (const size_type & index) const { return array .at (index); }
 
 	const value_type &
-	find_first (const key_type &) const;
+	find (const key_type &) const;
 
 	const value_type &
 	rfind (const key_type &) const;
@@ -203,7 +203,7 @@ private:
 
 template <class Key, class ValueType>
 const typename indexed_multimap <Key, ValueType>::value_type &
-indexed_multimap <Key, ValueType>::find_first (const key_type &key) const
+indexed_multimap <Key, ValueType>::find (const key_type &key) const
 {
 	const auto range = map .equal_range (key);
 
@@ -253,8 +253,8 @@ indexed_multimap <Key, ValueType>::erase (const key_type & key)
 	{
 		// remove range from array
 
-		const auto new_end = basic::remove_ordered (array .begin (), array .end (),
-		                                            equal_range .first, equal_range .second);
+		const auto new_end = basic::remove (array .begin (), array .end (),
+		                                    equal_range .first, equal_range .second);
 
 		// erase from map and resize array
 

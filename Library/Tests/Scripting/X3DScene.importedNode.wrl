@@ -32,6 +32,8 @@ function set_time ()
 	var nodes = Browser .createVrmlFromString ('Inline { url \"../Basic/EXPORT.wrl\" }');
 
 	scene .addImportedNode (nodes [0], 'CubeExport', 'Cube2');
+
+	scene .updateImportedNode ('CubeImport', 'NewCubeImport');
 	
 	print (scene .toVRMLString ());
 

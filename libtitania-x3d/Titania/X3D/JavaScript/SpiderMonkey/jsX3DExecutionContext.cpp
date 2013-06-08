@@ -566,19 +566,19 @@ jsX3DExecutionContext::updateImportedNode (JSContext* context, uintN argc, jsval
 {
 	if (argc == 2)
 	{
-		JSString* exportedName;
 		JSString* localName;
+		JSString* newLocalName;
 
 		jsval* argv = JS_ARGV (context, vp);
 
-		if (not JS_ConvertArguments (context, argc, argv, "SS", &exportedName, &localName))
+		if (not JS_ConvertArguments (context, argc, argv, "SS", &localName, &newLocalName))
 			return JS_FALSE;
 
 		try
 		{
 			auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 		
-			executionContext -> updateImportedNode (JS_GetString (context, exportedName), JS_GetString (context, localName));
+			executionContext -> updateImportedNode (JS_GetString (context, localName), JS_GetString (context, newLocalName));
 	
 			JS_SET_RVAL (context, vp, JSVAL_VOID);
 

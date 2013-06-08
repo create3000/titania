@@ -187,6 +187,7 @@ public:
 	addNamedNode (const std::string &, const SFNode <X3DBaseNode> &)
 	throw (Error <NODE_IN_USE>,
 	       Error <IMPORTED_NODE>,
+	       Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -194,6 +195,7 @@ public:
 	void
 	updateNamedNode (const std::string &, const SFNode <X3DBaseNode> &)
 	throw (Error <IMPORTED_NODE>,
+	       Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -228,7 +230,6 @@ public:
 	void
 	updateImportedNode (const std::string &, const std::string &)
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_IN_USE>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
