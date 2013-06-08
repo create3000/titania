@@ -50,7 +50,6 @@
 
 #include "X3DExecutionContext.h"
 
-#include "../Bits/Cast.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
@@ -116,15 +115,10 @@ X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
 		addRootNode (rootNode .getValue () -> clone (this));
 
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
-		addImportedNode (x3d_cast <Inline*> (getNamedNode (importedNode -> getInlineNode () -> getName ()) .getValue ()),
-		                 importedNode -> getExportedName (),
-		                 importedNode -> getLocalName ());
-
-	//	for (const auto & exportedNode : executionContext -> getExportedNodes ())
-	//		addExportedNode (exportedNode .getName () [0], exportedNode .getName () [1]);
+		importedNode -> clone (this);
 
 	for (const auto & route : executionContext -> getRoutes ())
-		route -> add (this);
+		route -> clone (this);
 }
 
 void
@@ -690,7 +684,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	auto fields = createRouteFieldsPair (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
+	auto fields = getRouteId (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
 
 	try
 	{
@@ -718,12 +712,12 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	auto fields = createRouteFieldsPair (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
-
 	try
 	{
-		routes .rfind (fields) -> disconnect ();
-		routes .erase (fields);
+		auto routeId = getRouteId (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
+
+		routes .rfind (routeId) -> disconnect ();
+		routes .erase (routeId);
 	}
 	catch (const std::out_of_range &)
 	{
@@ -731,9 +725,22 @@ throw (Error <INVALID_NODE>,
 	}
 }
 
-std::pair <X3DFieldDefinition*, X3DFieldDefinition*>
-X3DExecutionContext::createRouteFieldsPair (const SFNode <X3DBaseNode> & sourceNode,      const std::string & sourceFieldId,
-                                            const SFNode <X3DBaseNode> & destinationNode, const std::string & destinationFieldId)
+void
+X3DExecutionContext::deleteRoute (Route* route)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (not route)
+		throw Error <INVALID_NODE> ("Bad ROUTE specification: route is NULL in deleteRoute.");		
+
+	route -> disconnect ();
+	routes .erase (route -> getId ());
+}
+
+RouteId
+X3DExecutionContext::getRouteId (const SFNode <X3DBaseNode> & sourceNode,      const std::string & sourceFieldId,
+                                 const SFNode <X3DBaseNode> & destinationNode, const std::string & destinationFieldId)
 throw (Error <INVALID_NODE>,
        Error <INVALID_FIELD>)
 {

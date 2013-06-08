@@ -19,5 +19,4 @@ DEF GoldenSphere Transform {
   children GoldenSphere { }
 }
 
-
 EXPORT GoldenSphere

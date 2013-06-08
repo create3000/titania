@@ -734,8 +734,7 @@ jsX3DExecutionContext::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 		
 		try
 		{
-			script -> getExecutionContext () -> deleteRoute (route -> getSourceNode (),      route -> getSourceField (),
-			                                                 route -> getDestinationNode (), route -> getDestinationField ());
+			script -> getExecutionContext () -> deleteRoute (route);
 
 			JS_SET_RVAL (context, vp, JSVAL_VOID);
 

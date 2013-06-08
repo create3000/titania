@@ -352,6 +352,12 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	void
+	deleteRoute (Route*)
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	const RouteArray &
 	getRoutes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -406,9 +412,9 @@ private:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	std::pair <X3DFieldDefinition*, X3DFieldDefinition*>
-	createRouteFieldsPair (const SFNode <X3DBaseNode> &, const std::string &,
-	                       const SFNode <X3DBaseNode> &, const std::string &)
+	RouteId
+	getRouteId (const SFNode <X3DBaseNode> &, const std::string &,
+	            const SFNode <X3DBaseNode> &, const std::string &)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 

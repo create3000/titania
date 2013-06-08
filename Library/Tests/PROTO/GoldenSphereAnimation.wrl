@@ -1,4 +1,4 @@
-#X3D V3.0 utf8
+#VRML V2.0 utf8
 
 EXTERNPROTO Rotor [
   exposedField SFTime     cycleInterval
@@ -8,21 +8,21 @@ EXTERNPROTO Rotor [
 "Rotor.wrl"
 
 PROTO GoldenSphereAnimation [
-  inputOutput SFVec3f translation 0 0 0
+  exposedField SFVec3f translation 0 0 0
 ]
 {
   DEF SphereA Transform {
-    rotation 1 0 0 1.5707963
     translation IS translation
+    rotation 1 0 0 1.5708
     children DEF Inline Inline {
       url "GoldenSphere.wrl"
     }
   }
 
-	DEF Rotor Rotor {
-		cycleInterval 10
-		loop TRUE
-	}
+  DEF Rotor Rotor {
+    cycleInterval 10
+    loop TRUE
+  }
 
   IMPORT Inline.GoldenSphere AS Sphere
 
@@ -30,49 +30,47 @@ PROTO GoldenSphereAnimation [
 }
 
 DEF SphereRotor Rotor {
-	cycleInterval 7
-	loop TRUE
+  cycleInterval 7
+  loop TRUE
 }
 
 DEF GoldenRotor Rotor {
-	cycleInterval 9
-	loop TRUE
+  cycleInterval 9
+  loop TRUE
 }
 
 DEF RedRotor Rotor {
-	cycleInterval 11
-	loop TRUE
+  cycleInterval 11
+  loop TRUE
 }
 
 Transform {
   children Transform {
     children [
       GoldenSphereAnimation { }
-		Transform {
-        rotation 1 0 0 1.5707963
-		  children
-			DEF Golden Transform {
-			  translation 4 0 0
-			  scale 0.3 0.3 0.3
-			  center -4 0 0
-			  children DEF GoldenInline Inline {
-			    url "GoldenSphere.wrl"
-			  }
-			}
-		}
-		Transform {
-        rotation 1 0 0 1.5707963
-		  children
-			DEF Red Transform {
-			  translation 5 0 0
-			  scale 0.4 0.4 0.4
-			  center -5 0 0
-			  children DEF RedInline Inline {
-			    url "Geometry.wrl"
-			  }
-			}
-		}
-	]
+      Transform {
+        rotation 1 0 0 1.5708
+        children DEF Golden Transform {
+          translation 4 0 0
+          scale 0.3 0.3 0.3
+          center -4 0 0
+          children DEF GoldenInline Inline {
+            url "GoldenSphere.wrl"
+          }
+        }
+      }
+      Transform {
+        rotation 1 0 0 1.5708
+        children DEF Red Transform {
+          translation 5 0 0
+          scale 0.4 0.4 0.4
+          center -5 0 0
+          children DEF RedInline Inline {
+            url "Geometry.wrl"
+          }
+        }
+      }
+    ]
   }
 }
 

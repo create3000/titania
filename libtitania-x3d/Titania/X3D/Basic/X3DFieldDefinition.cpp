@@ -240,10 +240,10 @@ void
 X3DFieldDefinition::dispose ()
 {
 	for (const auto & route : RouteSet (std::move (inputRoutes)))
-		route -> disconnect ();
+		route -> remove ();
 
 	for (const auto & route : RouteSet (std::move (outputRoutes)))
-		route -> disconnect ();
+		route -> remove ();
 
 	interests .clear ();
 

@@ -58,10 +58,16 @@
 namespace titania {
 namespace X3D {
 
+typedef std::pair <X3DFieldDefinition*, X3DFieldDefinition*> RouteId;
+
 class Route :
 	virtual public X3DBaseNode, public X3DRoute
 {
 public:
+
+	Route (X3DExecutionContext* const,
+	       const SFNode <X3DBaseNode> &, X3DFieldDefinition* const,
+	       const SFNode <X3DBaseNode> &, X3DFieldDefinition* const);
 
 	virtual
 	Route*
@@ -70,6 +76,9 @@ public:
 	virtual
 	bool
 	isConnected ();
+	
+	RouteId
+	getId () const;
 
 	const SFNode <X3DBaseNode> &
 	getSourceNode () const;
@@ -89,24 +98,15 @@ public:
 
 	virtual
 	void
+	remove ();
+
+	virtual
+	void
 	toStream (std::ostream &) const;
 
 	virtual
 	void
 	dispose ();
-
-
-protected:
-
-	friend class X3DExecutionContext;
-
-	Route (X3DExecutionContext* const,
-	       const SFNode <X3DBaseNode> &, X3DFieldDefinition* const,
-	       const SFNode <X3DBaseNode> &, X3DFieldDefinition* const);
-
-	// Only X3DExecutionContext can clone routes.
-	void
-	add (X3DExecutionContext* const) const;
 
 
 private:

@@ -69,6 +69,10 @@ public:
 	void
 	disconnect () = 0;
 
+	virtual
+	void
+	remove () = 0;
+
 };
 
 } // X3D

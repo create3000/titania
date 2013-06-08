@@ -50,6 +50,7 @@
 
 #include "ImportedNode.h"
 
+#include "../Bits/Cast.h"
 #include "../Components/Networking/Inline.h"
 #include "../Execution/X3DExecutionContext.h"
 
@@ -74,9 +75,24 @@ ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
 }
 
 X3DBaseNode*
-ImportedNode::create (X3DExecutionContext* const executionConstext) const
+ImportedNode::create (X3DExecutionContext* const executionContext) const
 {
-	return new ImportedNode (executionConstext, inlineNode, exportedName, localName);
+	return new ImportedNode (executionContext, inlineNode, exportedName, localName);
+}
+
+ImportedNode*
+ImportedNode::clone (X3DExecutionContext* const executionContext) const
+{
+	try
+	{
+		return *executionContext -> addImportedNode (x3d_cast <Inline*> (executionContext -> getNamedNode (inlineNode -> getName ()) .getValue ()),
+		                                             exportedName,
+		                                             localName);
+	}
+	catch (const X3DError & error)
+	{
+		throw Error <INVALID_NAME> ("Bad IMPORT specification in copy: " + std::string (error .what ()));
+	}
 }
 
 const SFNode <Inline> &

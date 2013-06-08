@@ -86,12 +86,6 @@ Route::create (X3DExecutionContext* const) const
 Route*
 Route::clone (X3DExecutionContext* const executionContext) const
 {
-	throw Error <NOT_SUPPORTED> ("Cloning routes is not supported.");
-}
-
-void
-Route::add (X3DExecutionContext* const executionContext) const
-{
 	//	std::clog << __func__ << ": " << getTypeName () << " " << getName () << std::endl;
 
 	try
@@ -99,7 +93,7 @@ Route::add (X3DExecutionContext* const executionContext) const
 		const SFNode <X3DBaseNode> & sourceNode      = executionContext -> getNode (getExecutionContext () -> getLocalName (getSourceNode ()));
 		const SFNode <X3DBaseNode> & destinationNode = executionContext -> getNode (getExecutionContext () -> getLocalName (getDestinationNode ()));
 
-		executionContext -> addRoute (sourceNode, getSourceField (), destinationNode, getDestinationField ());
+		return *executionContext -> addRoute (sourceNode, getSourceField (), destinationNode, getDestinationField ());
 	}
 	catch (const X3DError & error)
 	{
@@ -118,6 +112,12 @@ bool
 Route::isConnected ()
 {
 	return connected;
+}
+
+RouteId
+Route::getId () const
+{
+	return std::make_pair (sourceField, destinationField);
 }
 
 const SFNode <X3DBaseNode> &
@@ -164,10 +164,16 @@ Route::disconnect ()
 	{
 		sourceField -> removeInterest (destinationField);
 		sourceField -> removeOutputRoute (this);
-		destinationField  -> removeInputRoute  (this);
+		destinationField -> removeInputRoute  (this);
 
 		connected = false;
 	}
+}
+
+void
+Route::remove ()
+{
+	getExecutionContext () -> deleteRoute (this);
 }
 
 void
@@ -219,7 +225,6 @@ Route::toStream (std::ostream & ostream) const
 			ostream << "set_";
 
 		ostream << destinationField -> getName ();
-
 	}
 	catch (...)
 	{ }
