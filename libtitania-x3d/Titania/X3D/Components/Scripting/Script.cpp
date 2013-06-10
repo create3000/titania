@@ -129,13 +129,14 @@ Script::loadDocument (const SFString & URL, std::string & ecmascript)
 {
 	if (RegEx::ECMAScript .FullMatch (URL .str (), &ecmascript))
 	{
-		setWorldURL (getExecutionContext () -> getWorldURL ());
+		setReferer (getExecutionContext () -> getWorldURL ());
 		return true;
 	}
 	
 	try
 	{
 		ecmascript = std::move (loadDocument (URL));
+		setReferer (getWorldURL ());
 		return true;
 	}
 	catch (const X3DError &)

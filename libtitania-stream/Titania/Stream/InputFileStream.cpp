@@ -45,7 +45,8 @@ ifilestream::ifilestream (const http::method method, const basic::uri & url) :
 	         http_istream (NULL), 
 	              istream (NULL), 
 	 file_request_headers (),     
-	file_response_headers ()      
+	file_response_headers (),
+	                m_url (url)      
 {
 	open (method, url);
 }
@@ -57,7 +58,8 @@ ifilestream::ifilestream (ifilestream && other) :
 	         http_istream (other .http_istream),
 	              istream (other .istream),
 	 file_request_headers (std::move (other .file_request_headers)),
-	file_response_headers (std::move (other .file_response_headers))
+	file_response_headers (std::move (other .file_response_headers)),
+	                m_url (std::move (other .m_url))      
 {
 	other .data_istream = NULL;
 	other .file_istream = NULL;

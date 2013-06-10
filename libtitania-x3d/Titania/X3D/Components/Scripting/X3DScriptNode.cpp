@@ -55,7 +55,8 @@ namespace X3D {
 
 X3DScriptNode::X3DScriptNode () :
 	X3DChildNode (), 
-	X3DUrlObject ()  
+	X3DUrlObject (),
+	     referer ()
 {
 	addNodeType (X3DConstants::X3DScriptNode);
 }
@@ -66,13 +67,7 @@ X3DScriptNode::initialize ()
 	X3DChildNode::initialize ();
 	X3DUrlObject::initialize ();
 	
-	setWorldURL (X3DUrlObject::getReferer ());
-}
-
-const basic::uri &
-X3DScriptNode::getReferer () const
-{
-	return getWorldURL ();
+	referer = X3DUrlObject::getReferer ();
 }
 
 void

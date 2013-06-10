@@ -39,7 +39,7 @@ function set_time ()
 
 	scene .updateExportedNode ('NewExportedNode', scene .getNamedNode ('Node'));
 	
-	print (scene .toVRMLString ());
+	//print (scene .toVRMLString ());
 	
 	scene = Browser .createX3DFromURL (new MFString ('../Basic/EXPORT.wrl'));
 	
@@ -49,7 +49,7 @@ function set_time ()
 	print (scene .getExportedNode ('CubeExport'));
 	print (scene .getExportedNode ('SphereExport'));
 	
-	children_changed = new MFNode (scene .getExportedNode ('SphereExport'));
+	//children_changed = new MFNode (scene .getExportedNode ('SphereExport'));
 
 	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 }
@@ -57,4 +57,4 @@ function set_time ()
 }
 
 ROUTE Touch.touchTime TO Debug.set_time
-ROUTE Debug.children_changed TO Sphere.addChildren
+ROUTE Debug.children_changed TO Sphere.set_children

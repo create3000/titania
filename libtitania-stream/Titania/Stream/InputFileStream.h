@@ -74,6 +74,10 @@ public:
 
 	ifilestream (ifilestream &&);
 
+	const basic::uri &
+	url ()
+	{ return m_url; }
+
 	/// @name Connection handling
 
 	void
@@ -130,6 +134,8 @@ private:
 
 	headers_type file_request_headers;
 	headers_type file_response_headers;
+
+	basic::uri m_url;
 
 };
 

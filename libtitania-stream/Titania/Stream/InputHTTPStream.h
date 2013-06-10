@@ -88,6 +88,12 @@ public:
 
 	ihttpstream (ihttpstream &&);
 
+	/// @name Properties
+
+	const basic::uri &
+	url ()
+	{ return buf -> url (); }
+
 	/// @name Connection handling
 
 	void
@@ -137,10 +143,6 @@ public:
 
 
 private:
-
-	const basic::uri &
-	url ()
-	{ return buf -> url (); }
 
 	void
 	parse_status_line ();
