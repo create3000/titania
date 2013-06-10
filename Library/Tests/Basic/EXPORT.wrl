@@ -11,7 +11,14 @@ DEF Cube Transform {
   }
 }
 
-DEF Node Group { }
+Switch {
+  children DEF Sphere Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Sphere { }
+  }
+}
 
 DEF Debug Script {
   url "vrmlscript:
@@ -20,7 +27,7 @@ function initialize ()
 {
 	var scene = Browser .currentScene;
 	
-	scene .updateExportedNode ('ExportedNode', scene .getNamedNode ('Node'));
+	scene .updateExportedNode ('SphereExport', scene .getNamedNode ('Sphere'));
 }
 "
 }

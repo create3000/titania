@@ -8,12 +8,17 @@ DEF Inline Inline {
 	url "../Basic/EXPORT.wrl"
 }
 
+DEF Sphere Transform {
+	translation 3 0 0
+}
+
 DEF Node Group { }
 
 DEF Touch TouchSensor { }
 
 DEF Debug Script {
   eventIn SFTime set_time
+  eventOut MFNode children_changed
 
   url "vrmlscript:
 
@@ -42,7 +47,9 @@ function set_time ()
 	print (scene);
 	
 	print (scene .getExportedNode ('CubeExport'));
-	print (scene .getExportedNode ('ExportedNode'));
+	print (scene .getExportedNode ('SphereExport'));
+	
+	children_changed = new MFNode (scene .getExportedNode ('SphereExport'));
 
 	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 }
@@ -50,3 +57,4 @@ function set_time ()
 }
 
 ROUTE Touch.touchTime TO Debug.set_time
+ROUTE Debug.children_changed TO Sphere.addChildren
