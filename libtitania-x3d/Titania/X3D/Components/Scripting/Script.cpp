@@ -122,8 +122,6 @@ Script::initialize ()
 	// Initialize.
 
 	javaScript -> setup ();
-
-	initialized .addInterest (*javaScript, &X3DJavaScriptContext::set_initialized);
 }
 
 bool

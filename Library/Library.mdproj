@@ -2090,6 +2090,7 @@
     <None Include="Tests\Scripting\X3DScene.importedNode.wrl" />
     <None Include="Tests\Basic\EXPORT.wrl" />
     <None Include="Tests\Basic\IMPORT.wrl" />
+    <None Include="Tests\Scripting\X3DScene.exportedNode.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

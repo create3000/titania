@@ -1,5 +1,10 @@
 2013-06-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Script.cpp:
+	* jsContext.cpp: 
+
+2013-06-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* jsX3DField.h:
 	* jsX3DField.cpp:
 	* jsSFVec2.h:

@@ -142,6 +142,8 @@ jsContext::initialize ()
 {
 	X3DJavaScriptContext::initialize ();
 	X3DUrlObject::initialize ();
+	
+	set_initialized ();
 }
 
 void

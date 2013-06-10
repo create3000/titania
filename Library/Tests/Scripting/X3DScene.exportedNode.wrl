@@ -1,0 +1,52 @@
+#VRML V2.0 utf8
+
+META "title" "Scene.exportedNode"
+
+DEF Touch TouchSensor { }
+
+DEF Inline Inline {
+	url "../Basic/EXPORT.wrl"
+}
+
+DEF Node Group { }
+
+DEF Touch TouchSensor { }
+
+DEF Debug Script {
+  eventIn SFTime set_time
+
+  url "vrmlscript:
+
+function set_time ()
+{
+	print ();
+	print ('+ Scene +++++++++++++++++++++++++++++++++++++++++++++++');	
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+
+	var scene = Browser .currentScene;
+
+	print ();
+	print (scene);
+	
+	scene .addExportedNode ('ExportedNode', scene .getNamedNode ('Node'));
+	
+	print (scene .getExportedNode ('ExportedNode'));
+
+	scene .updateExportedNode ('NewExportedNode', scene .getNamedNode ('Node'));
+	
+	print (scene .toVRMLString ());
+	
+	scene = Browser .createX3DFromURL (new MFString ('../Basic/EXPORT.wrl'));
+	
+	print ();
+	print (scene);
+	
+	print (scene .getExportedNode ('CubeExport'));
+	print (scene .getExportedNode ('ExportedNode'));
+
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+}
+"
+}
+
+ROUTE Touch.touchTime TO Debug.set_time

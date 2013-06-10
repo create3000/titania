@@ -11,7 +11,18 @@ DEF Cube Transform {
   }
 }
 
-# Comment
-# Comment 2
+DEF Node Group { }
+
+DEF Debug Script {
+  url "vrmlscript:
+
+function initialize ()
+{
+	var scene = Browser .currentScene;
+	
+	scene .updateExportedNode ('ExportedNode', scene .getNamedNode ('Node'));
+}
+"
+}
 
 EXPORT Cube AS CubeExport
