@@ -55,7 +55,54 @@
 namespace titania {
 namespace X3D {
 
-template JSBool jsX3DField::getType <X3DChildObject> (JSContext *, uintN, jsval*);
+JSBool
+jsX3DField::getType (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+
+		return JS_NewNumberValue (context, field -> getType (), vp);
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsX3DField::isReadable (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+
+		JS_SET_RVAL (context, vp, field -> getAccessType () != inputOnly ? JSVAL_TRUE : JSVAL_FALSE);
+
+		return JS_TRUE;
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsX3DField::isWritable (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+
+		JS_SET_RVAL (context, vp, field -> getAccessType () != initializeOnly ? JSVAL_TRUE : JSVAL_FALSE);
+
+		return JS_TRUE;
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
 
 } // X3D
 } // Titania

@@ -129,7 +129,9 @@ template <class Type, class FieldType>
 JSFunctionSpec jsX3DArrayField <Type, FieldType>::functions [ ] = {
 	{ "getName",     getName <X3DChildObject>,     0, 0 },
 	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
-	{ "getType",     getType <X3DChildObject>,     0, 0 },
+	{ "getType",     getType,                      0, 0 },
+	{ "isReadable",  isReadable,                   0, 0 },
+	{ "isWritable",  isWritable,                   0, 0 },
 
 	{ "unshift",     unshift, 1, 0 },
 	{ "push",        push,    1, 0 },

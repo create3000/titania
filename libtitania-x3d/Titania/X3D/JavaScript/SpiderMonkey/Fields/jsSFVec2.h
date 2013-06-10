@@ -129,7 +129,9 @@ template <class Type>
 JSFunctionSpec jsSFVec2 <Type>::functions [ ] = {
 	{ "getName",     getName <X3DChildObject>,     0, 0 },
 	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
-	{ "getType",     getType <X3DFieldDefinition>, 0, 0 },
+	{ "getType",     getType,                      0, 0 },
+	{ "isReadable",  isReadable,                   0, 0 },
+	{ "isWritable",  isWritable,                   0, 0 },
 
 	{ "negate",      normalize,   0, 0 },
 	{ "add",         add,         1, 0 },

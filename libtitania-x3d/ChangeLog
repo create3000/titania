@@ -1,5 +1,21 @@
 2013-06-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* jsX3DField.h:
+	* jsX3DField.cpp:
+	* jsSFVec2.h:
+	* jsSFVec3.h:
+	* jsX3DArrayField.h:
+	* jsSFVec4.h:
+	* jsSFNode.cpp:
+	* jsSFImage.cpp:
+	* jsSFColor.cpp:
+	* jsSFMatrix4.h:
+	* jsSFMatrix3.h:
+	* jsSFRotation.cpp:
+	* jsSFColorRGBA.cpp: 
+
+2013-06-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DScene.h:
 	* X3DScene.cpp:
 	* X3DExecutionContext.cpp:
