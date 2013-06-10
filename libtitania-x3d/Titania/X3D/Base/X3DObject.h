@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,7 +55,6 @@
 #include "../Base/X3DInput.h"
 #include "../Base/X3DOutput.h"
 #include "../Bits/Error.h"
-#include <Titania/Basic/Id.h>
 #include <Titania/LOG.h>
 #include <deque>
 #include <istream>
@@ -72,10 +71,10 @@ public:
 	///  @name Type Information
 
 	void
-	setName (const basic::id & value)
+	setName (const std::string & value)
 	{ name = value; }
 
-	const basic::id &
+	const std::string &
 	getName () const
 	{ return name; }
 
@@ -158,7 +157,7 @@ protected:
 
 private:
 
-	basic::id                name;
+	std::string                name;
 	std::deque <std::string> comments;
 
 	X3DBase* userData;

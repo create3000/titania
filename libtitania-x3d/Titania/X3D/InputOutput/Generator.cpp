@@ -333,9 +333,9 @@ Generator::GetName (const X3DBaseNode* basicNode)
 }
 
 void
-Generator::AddImportedNode (const X3DBaseNode* exportedNode, const std::string & localName)
+Generator::AddImportedNode (const X3DBaseNode* exportedNode, const std::string & importedName)
 {
-	importedNames [exportedNode] = localName;
+	importedNames [exportedNode] = importedName;
 }
 
 const std::string &

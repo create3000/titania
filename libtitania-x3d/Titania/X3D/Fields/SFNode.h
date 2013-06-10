@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -113,9 +113,9 @@ public:
 	getNodeType () const;
 
 	void
-	setNodeName (const basic::id &) const;
+	setNodeName (const std::string &) const;
 
-	const basic::id &
+	const std::string &
 	getNodeName () const;
 
 	const FieldDefinitionArray &
@@ -260,13 +260,13 @@ SFNode <ValueType>::getNodeType () const
 
 template <class ValueType>
 void
-SFNode <ValueType>::setNodeName (const basic::id & name) const
+SFNode <ValueType>::setNodeName (const std::string & name) const
 {
 	return getValue () -> setName (name);
 }
 
 template <class ValueType>
-const basic::id &
+const std::string &
 SFNode <ValueType>::getNodeName () const
 {
 	return getValue () -> getName ();

@@ -99,7 +99,7 @@ X3DPrototypeInstance::getTypeName () const
 throw (Error <DISPOSED>)
 {
 	if (proto)
-		return proto .getNodeName () [0];
+		return proto -> getName ();
 
 	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getTypeName: node is already disposed.");
 }

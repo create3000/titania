@@ -408,7 +408,7 @@ throw (Error <INVALID_NAME>,
 // Imported nodes handling
 
 const SFNode <ImportedNode> &
-X3DExecutionContext::addImportedNode (const SFNode <Inline> & inlineNode, const std::string & exportedName, const std::string & localNameId)
+X3DExecutionContext::addImportedNode (const SFNode <Inline> & inlineNode, const std::string & exportedName, std::string importedName)
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <NODE_IN_USE>,
@@ -416,80 +416,77 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const std::string & localName = localNameId .size () ? localNameId : exportedName;
-
 	if (not inlineNode)
 		throw Error <INVALID_NODE> ("Couldn't add imported node: inline node is NULL.");
 
 	if (exportedName .empty ())
 		throw Error <INVALID_NAME> ("Couldn't add imported node: exported node name is empty.");
 		
+	if (importedName .empty ())
+		importedName = exportedName;
+
 	try
 	{
-		importedNodes .rfind (localName);
-		throw Error <NODE_IN_USE> ("Couldn't add imported node: local name '" + localName + "' already exists.");
+		importedNodes .rfind (importedName);
+		throw Error <NODE_IN_USE> ("Couldn't add imported node: imported name '" + importedName + "' already exists.");
 	}
 	catch (const std::out_of_range &)
 	{
-		SFNode <ImportedNode> & importedNode = importedNodes .push_back (localName, new ImportedNode (this, inlineNode, exportedName, localName));
+		SFNode <ImportedNode> & importedNode = importedNodes .push_back (importedName, new ImportedNode (this, inlineNode, exportedName, importedName));
 		importedNode .addParent (this);
 		importedNodes .back () .addParent (this);
 
-		importedNames [inlineNode -> getExportedNode (exportedName)] = localName;
+		importedNames [inlineNode -> getExportedNode (exportedName)] = importedName;
 
 		return importedNode;
 	}
 }
 
 void
-X3DExecutionContext::removeImportedNode (const std::string & localName)
+X3DExecutionContext::removeImportedNode (const std::string & importedName)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	importedNodes .erase (localName);
+	importedNodes .erase (importedName);
 }
 
 void
-X3DExecutionContext::updateImportedNode (const std::string & localName, const std::string & newLocalName)
-throw (Error <INVALID_NAME>,
+X3DExecutionContext::updateImportedNode (const SFNode <Inline> & inlineNode, const std::string & exportedName, std::string importedName)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_NAME>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (localName .empty ())
-		throw Error <INVALID_NAME> ("Couldn't update imported node: local node name is empty.");
+	if (not inlineNode)
+		throw Error <INVALID_NODE> ("Couldn't update imported node: inline node is NULL.");
 
-	if (newLocalName .empty ())
-		throw Error <INVALID_NAME> ("Couldn't update imported node: new local node name is empty.");
+	if (exportedName .empty ())
+		throw Error <INVALID_NAME> ("Couldn't update imported node: exported node name is empty.");
+		
+	auto iter = importedNames .find (inlineNode -> getExportedNode (exportedName));
+		
+	if (iter not_eq importedNames .end ())
+		importedNodes .erase (iter -> second);
 
-	try
-	{
-		auto importedNode = importedNodes .rfind (localName);
-		
-		importedNodes .erase (localName);
-		// override importedName in addImportedNode
-		
-		addImportedNode (importedNode -> getInlineNode (), importedNode -> getExportedName (), newLocalName);
-	}
-	catch (const std::out_of_range &)
-	{
-		throw Error <INVALID_NAME> ("Couldn't update imported node: node named '" + localName + "' does not exists.");
-	}
+	importedNodes .erase (importedName);
+
+	addImportedNode (inlineNode, exportedName, importedName);
 }
 
 const SFNode <X3DBaseNode> &
-X3DExecutionContext::getImportedNode (const std::string & localName) const
+X3DExecutionContext::getImportedNode (const std::string & importedName) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	try
 	{
-		return importedNodes .rfind (localName) -> getExportedNode ();
+		return importedNodes .rfind (importedName) -> getExportedNode ();
 	}
 	catch (const std::out_of_range &)
 	{
-		throw Error <INVALID_NAME> ("Imported node '" + localName + "' not found.");
+		throw Error <INVALID_NAME> ("Imported node '" + importedName + "' not found.");
 	}
 }
 

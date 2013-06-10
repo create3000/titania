@@ -60,11 +60,11 @@ namespace titania {
 namespace X3D {
 
 ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
-                            const SFNode <Inline> & inlineNode, const std::string & exportedName, const std::string & localName) :
+                            const SFNode <Inline> & inlineNode, const std::string & exportedName, const std::string & importedName) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	  inlineNode (inlineNode),                                          
 	exportedName (exportedName),                                        
-	   localName (localName)                                            
+	importedName (importedName)                                            
 {
 	setComponent ("Browser");
 	setTypeName ("ImportedNode");
@@ -77,7 +77,7 @@ ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
 X3DBaseNode*
 ImportedNode::create (X3DExecutionContext* const executionContext) const
 {
-	return new ImportedNode (executionContext, inlineNode, exportedName, localName);
+	return new ImportedNode (executionContext, inlineNode, exportedName, importedName);
 }
 
 ImportedNode*
@@ -87,7 +87,7 @@ ImportedNode::clone (X3DExecutionContext* const executionContext) const
 	{
 		return *executionContext -> addImportedNode (x3d_cast <Inline*> (executionContext -> getNamedNode (inlineNode -> getName ()) .getValue ()),
 		                                             exportedName,
-		                                             localName);
+		                                             importedName);
 	}
 	catch (const X3DError & error)
 	{
@@ -108,9 +108,9 @@ ImportedNode::getExportedName () const
 }
 
 const std::string &
-ImportedNode::getLocalName () const
+ImportedNode::getImportedName () const
 {
-	return localName;
+	return importedName;
 }
 
 const SFNode <X3DBaseNode> &
@@ -129,7 +129,7 @@ ImportedNode::toStream (std::ostream & ostream) const
 	{
 		if (Generator::ExistsNode (inlineNode))
 		{
-			Generator::AddImportedNode (getExportedNode (), localName);
+			Generator::AddImportedNode (getExportedNode (), importedName);
 
 			ostream
 				<< Generator::Indent
@@ -139,13 +139,13 @@ ImportedNode::toStream (std::ostream & ostream) const
 				<< '.'
 				<< exportedName;
 
-			if (localName not_eq exportedName)
+			if (importedName not_eq exportedName)
 			{
 				ostream
 					<< Generator::Space
 					<< "AS"
 					<< Generator::Space
-					<< localName;
+					<< importedName;
 			}
 
 			ostream << Generator::Break;

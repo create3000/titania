@@ -51,6 +51,7 @@
 #include "jsX3DScene.h"
 
 #include "jsContext.h"
+#include "Fields/jsSFNode.h"
 
 namespace titania {
 namespace X3D {
@@ -69,6 +70,11 @@ JSPropertySpec jsX3DScene::properties [ ] = {
 };
 
 JSFunctionSpec jsX3DScene::functions [ ] = {
+	{ "addExportedNode",    addExportedNode,    2, 0 },
+	{ "removeExportedNode", removeExportedNode, 1, 0 },
+	{ "updateExportedNode", updateExportedNode, 2, 0 },
+	{ "getExportedNode",    getExportedNode,    1, 0 },
+
 	{ 0, 0, 0, 0 }
 
 };
@@ -105,6 +111,158 @@ jsX3DScene::create (JSContext* context, Scene* scene, jsval* vp, const bool seal
 	*vp = OBJECT_TO_JSVAL (result);
 
 	return JS_TRUE;
+}
+
+JSBool
+jsX3DScene::addExportedNode (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 2)
+	{
+		JSString* exportedName;
+		JSObject* oNode;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "So", &exportedName, &oNode))
+			return JS_FALSE;
+
+		if (JS_GetClass (context, oNode) not_eq jsSFNode::getClass ())
+		{
+			JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, oNode) -> name);
+			return JS_FALSE;
+		}
+
+		auto & node = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, oNode));
+
+		try
+		{
+			auto scene = static_cast <Scene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+
+			scene -> addExportedNode (JS_GetString (context, exportedName), node);
+
+			JS_SET_RVAL (context, vp, JSVAL_VOID);
+
+			return JS_TRUE;
+		}
+		catch (const X3DError & exception)
+		{
+			JS_ReportError (context, exception .what ());
+			return JS_FALSE;
+		}
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsX3DScene::removeExportedNode (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		JSString* exportedName;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "S", &exportedName))
+			return JS_FALSE;
+		
+		try
+		{
+			auto scene = static_cast <Scene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		
+			scene -> removeImportedNode (JS_GetString (context, exportedName));
+			
+			JS_SET_RVAL (context, vp, JSVAL_VOID);
+
+			return JS_TRUE;
+		}
+		catch (const X3DError & exception)
+		{
+			JS_ReportError (context, exception .what ());
+			return JS_FALSE;
+		}
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsX3DScene::updateExportedNode (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 2)
+	{
+		JSString* exportedName;
+		JSObject* oNode;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "So", &exportedName, &oNode))
+			return JS_FALSE;
+
+		if (JS_GetClass (context, oNode) not_eq jsSFNode::getClass ())
+		{
+			JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, oNode) -> name);
+			return JS_FALSE;
+		}
+
+		auto & node = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, oNode));
+
+		try
+		{
+			auto scene = static_cast <Scene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+
+			scene -> updateExportedNode (JS_GetString (context, exportedName), node);
+
+			JS_SET_RVAL (context, vp, JSVAL_VOID);
+
+			return JS_TRUE;
+		}
+		catch (const X3DError & exception)
+		{
+			JS_ReportError (context, exception .what ());
+			return JS_FALSE;
+		}
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsX3DScene::getExportedNode (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		JSString* exportedName;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "S", &exportedName))
+			return JS_FALSE;
+		
+		try
+		{
+			auto scene = static_cast <Scene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		
+			const auto & namedNode = scene -> getExportedNode (JS_GetString (context, exportedName));
+			
+			return jsSFNode::create (context, new SFNode <X3DBaseNode> (namedNode), &JS_RVAL (context, vp));
+		}
+		catch (const X3DError & exception)
+		{
+			JS_ReportError (context, exception .what ());
+			return JS_FALSE;
+		}
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
 }
 
 void

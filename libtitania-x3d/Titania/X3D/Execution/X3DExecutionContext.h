@@ -214,7 +214,7 @@ public:
 	///  @name Imported nodes handling
 
 	const SFNode <ImportedNode> &
-	addImportedNode (const SFNode <Inline> &, const std::string &, const std::string & = "")
+	addImportedNode (const SFNode <Inline> &, const std::string &, std::string = "")
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <NODE_IN_USE>,
@@ -228,8 +228,9 @@ public:
 	       Error <DISPOSED>);
 
 	void
-	updateImportedNode (const std::string &, const std::string &)
-	throw (Error <INVALID_NAME>,
+	updateImportedNode (const SFNode <Inline> &, const std::string &, std::string = "")
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_NAME>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);

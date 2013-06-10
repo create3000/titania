@@ -81,6 +81,11 @@ private:
 
 	static void initObject (JSContext*, JSObject*);
 	
+	static JSBool addExportedNode    (JSContext *, uintN, jsval*);
+	static JSBool removeExportedNode (JSContext *, uintN, jsval*);
+	static JSBool updateExportedNode (JSContext *, uintN, jsval*);
+	static JSBool getExportedNode    (JSContext *, uintN, jsval*);
+
 	static void finalize (JSContext*, JSObject*);
 
 	static JSClass        static_class;

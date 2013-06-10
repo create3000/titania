@@ -5,7 +5,6 @@ lib_LTLIBRARIES =  \
 	libtitania-standard.la
 
 libtitania_standard_la_SOURCES =  \
-	Titania/Basic/Id.cpp \
 	Titania/Basic/IndexedMultiMap.cpp \
 	Titania/Basic/Path.cpp \
 	Titania/Basic/URI.cpp \

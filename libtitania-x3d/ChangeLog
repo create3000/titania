@@ -1,3 +1,25 @@
+2013-06-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Route.h:
+	* SFNode.h:
+	* X3DObject.h:
+	* Route.cpp:
+	* X3DObject.cpp:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* Generator.cpp:
+	* ExternProto.cpp:
+	* ImportedNode.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* X3DUrlObject.h:
+	* jsX3DScene.h:
+	* jsContext.cpp:
+	* X3DUrlObject.cpp:
+	* jsX3DScene.cpp:
+	* X3DPrototypeInstance.cpp:
+	* jsX3DExecutionContext.cpp: 
+
 2013-06-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DExecutionContext.h:

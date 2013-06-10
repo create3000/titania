@@ -201,7 +201,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 				{
 					auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object);
 
-					val .set (field -> getName () .first ());
+					val .set (field -> getName ());
 
 					break;
 				}

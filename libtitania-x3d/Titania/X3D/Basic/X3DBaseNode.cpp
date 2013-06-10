@@ -155,7 +155,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 {
 	X3DBaseNode* copy = create (executionContext);
 
-	if (getName () .count ())
+	if (getName () .size ())
 		executionContext -> updateNamedNode (getName (), copy);
 
 	for (const auto & fieldDefinition : fieldDefinitions)
@@ -438,7 +438,7 @@ X3DBaseNode::getLocalNode ()
 //}
 
 void
-X3DBaseNode::addField (const AccessType accessType, const basic::id & name, X3DFieldDefinition & field)
+X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3DFieldDefinition & field)
 {
 	if (fields .find (name) not_eq fields .end ())
 	{
@@ -456,7 +456,7 @@ X3DBaseNode::addField (const AccessType accessType, const basic::id & name, X3DF
 }
 
 void
-X3DBaseNode::removeField (const basic::id & name)
+X3DBaseNode::removeField (const std::string & name)
 {
 	auto field = fields .find (name);
 
@@ -552,7 +552,7 @@ X3DBaseNode::getFieldDefinitions () const
 }
 
 void
-X3DBaseNode::addUserDefinedField (const AccessType accessType, const basic::id & name, X3DFieldDefinition* const field)
+X3DBaseNode::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
 {
 	addField (accessType, name, *field);
 

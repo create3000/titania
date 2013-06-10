@@ -127,7 +127,7 @@ ExternProto::requestImmediateLoad ()
 
 	std::string protoName = getWorldURL () .fragment () .length ()
 	                        ? getWorldURL () .fragment ()
-									: getName () .first ();
+									: getName ();
 
 	proto = scene -> getProtoDeclaration (protoName);
 

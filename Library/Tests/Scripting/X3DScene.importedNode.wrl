@@ -33,7 +33,7 @@ function set_time ()
 
 	scene .addImportedNode (nodes [0], 'CubeExport', 'Cube2');
 
-	scene .updateImportedNode ('CubeImport', 'NewCubeImport');
+	scene .updateImportedNode (scene .getNamedNode ('Inline'), 'CubeExport', 'NewCubeImport');
 	
 	print (scene .toVRMLString ());
 

@@ -83,13 +83,13 @@ public:
 	const SFNode <X3DBaseNode> &
 	getSourceNode () const;
 
-	const basic::id &
+	const std::string &
 	getSourceField () const;
 
 	const SFNode <X3DBaseNode> &
 	getDestinationNode () const;
 
-	const basic::id &
+	const std::string &
 	getDestinationField () const;
 
 	virtual

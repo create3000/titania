@@ -50,6 +50,8 @@
 
 #include "X3DObject.h"
 
+#include <sstream>
+
 namespace titania {
 namespace X3D {
 

@@ -144,7 +144,7 @@ public:
 	getFieldDefinitions () const;
 
 	void
-	addUserDefinedField (const AccessType, const basic::id &, X3DFieldDefinition* const);
+	addUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const);
 
 	FieldDefinitionArray
 	getPreDefinedFields () const;
@@ -226,10 +226,10 @@ protected:
 	addNodeType (const X3DConstants::NodeType);
 
 	void
-	addField (const AccessType, const basic::id &, X3DFieldDefinition &);
+	addField (const AccessType, const std::string &, X3DFieldDefinition &);
 
 	void
-	removeField (const basic::id &);
+	removeField (const std::string &);
 
 	void
 	addField (const std::string &, const std::string &);

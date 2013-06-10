@@ -440,9 +440,6 @@ jsContext::set_field (X3DFieldDefinition* field)
 
 	jsval rval;
 	JS_CallFunctionValue (context, global, functions [field], 2, argv, &rval);
-
-	JS_MaybeGC (context);
-	//JS_GC (context);
 }
 
 void
@@ -450,6 +447,9 @@ jsContext::set_initialized ()
 {
 	if (not JSVAL_IS_VOID (initializeFn))
 		callFunction (initializeFn);
+
+	//JS_MaybeGC (context);
+	JS_GC (context);
 }
 
 void
@@ -464,6 +464,9 @@ jsContext::eventsProcessed ()
 {
 	if (not JSVAL_IS_VOID (eventsProcessedFn))
 		callFunction (eventsProcessedFn);
+
+	//JS_MaybeGC (context);
+	JS_GC (context);
 }
 
 void
@@ -507,9 +510,6 @@ jsContext::callFunction (jsval function) const
 	jsval rval;
 
 	JS_CallFunctionValue (context, global, function, 0, NULL, &rval);
-
-	JS_MaybeGC (context);
-	//JS_GC (context);
 }
 
 void
