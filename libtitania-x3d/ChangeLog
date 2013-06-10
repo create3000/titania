@@ -1,5 +1,13 @@
 2013-06-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DScene.h:
+	* X3DScene.cpp:
+	* X3DExecutionContext.cpp:
+	* jsX3DScene.h:
+	* jsX3DScene.cpp: 
+
+2013-06-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Route.h:
 	* SFNode.h:
 	* X3DObject.h:

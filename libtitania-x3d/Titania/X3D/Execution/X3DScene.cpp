@@ -60,7 +60,8 @@ namespace X3D {
 X3DScene::X3DScene () :
 	X3DExecutionContext (), 
 	          metadatas (),
-	      exportedNodes ()
+	      exportedNodes (),
+	      exportedNames ()
 { }
 
 // MetaData handling
@@ -70,7 +71,7 @@ X3DScene::setMetaData (const std::string & key, const std::string & value)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	metadatas .insert (std::make_pair (key, value));
+	metadatas [key] = value;
 }
 
 const std::string &
@@ -106,15 +107,17 @@ throw (Error <NODE_IN_USE>,
        Error <DISPOSED>)
 {
 	if (exportedName .empty ())
-		throw Error <INVALID_NAME> ("Bad exported node specification: exported node name is empty.");
+		throw Error <INVALID_NAME> ("Couldn't add exported node: exported node name is empty.");
 
 	if (not node)
-		throw Error <INVALID_NODE> ("Bad exported node specification: node is NULL.");
+		throw Error <INVALID_NODE> ("Couldn't add exported node: node is NULL.");
 
 	SFNode <ExportedNode> & exportedNode = exportedNodes .push_back (exportedName, new ExportedNode (this, exportedName, node));
 	exportedNode .addParent (this);
 	exportedNodes .back () .addParent (this);
 	
+	exportedNames [node] = exportedName;
+
 	return exportedNode;
 }
 
@@ -122,7 +125,9 @@ void
 X3DScene::removeExportedNode (const std::string & exportedName)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
-{ }
+{
+	exportedNodes .erase (exportedName);
+}
 
 void
 X3DScene::updateExportedNode (const std::string & exportedName,  const SFNode <X3DBaseNode> & node)
@@ -130,7 +135,24 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
-{ }
+{
+	if (exportedName .empty ())
+		throw Error <INVALID_NAME> ("Couldn't update exported node: exported node name is empty.");
+
+	if (not node)
+		throw Error <INVALID_NODE> ("Couldn't update exported node: node is NULL.");
+
+	try
+	{
+		exportedNodes .erase (exportedNames .at (node));
+	}
+	catch (const std::out_of_range &)
+	{ }
+
+	exportedNodes .erase (exportedName);
+	
+	addExportedNode (exportedName, node);
+}
 
 const SFNode <X3DBaseNode> &
 X3DScene::getExportedNode (const std::string & exportedName) const
@@ -265,6 +287,7 @@ void
 X3DScene::dispose ()
 {
 	exportedNodes .clear ();
+	exportedNames .clear ();
 
 	X3DExecutionContext::dispose ();
 }

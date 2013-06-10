@@ -147,8 +147,11 @@ public:
 
 private:
 
-	MetaDataIndex     metadatas;
-	ExportedNodeArray exportedNodes;
+	typedef std::map <X3DBaseNode*, std::string> ExportedNamesIndex;
+
+	MetaDataIndex      metadatas;
+	ExportedNodeArray  exportedNodes;
+	ExportedNamesIndex exportedNames;
 
 };
 

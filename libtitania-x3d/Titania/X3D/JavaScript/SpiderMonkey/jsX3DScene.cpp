@@ -70,6 +70,9 @@ JSPropertySpec jsX3DScene::properties [ ] = {
 };
 
 JSFunctionSpec jsX3DScene::functions [ ] = {
+	{ "setMetaData", setMetaData, 2, 0 },
+	{ "getMetaData", getMetaData, 1, 0 },
+
 	{ "addExportedNode",    addExportedNode,    2, 0 },
 	{ "removeExportedNode", removeExportedNode, 1, 0 },
 	{ "updateExportedNode", updateExportedNode, 2, 0 },
@@ -111,6 +114,62 @@ jsX3DScene::create (JSContext* context, Scene* scene, jsval* vp, const bool seal
 	*vp = OBJECT_TO_JSVAL (result);
 
 	return JS_TRUE;
+}
+
+JSBool
+jsX3DScene::setMetaData (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 2)
+	{
+		JSString* key;
+		JSString* value;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "SS", &key, &value))
+			return JS_FALSE;
+
+		auto scene = static_cast <Scene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+
+		scene -> setMetaData (JS_GetString (context, key), JS_GetString (context, value));
+
+		JS_SET_RVAL (context, vp, JSVAL_VOID);
+
+		return JS_TRUE;
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsX3DScene::getMetaData (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		JSString* key;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "S", &key))
+			return JS_FALSE;
+			
+		try
+		{
+			auto scene = static_cast <Scene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+
+			return JS_NewStringValue (context, scene -> getMetaData (JS_GetString (context, key)), &JS_RVAL (context, vp));
+		}
+		catch (const Error <INVALID_NAME> &)
+		{
+			return JS_NewStringValue (context, "", &JS_RVAL (context, vp));
+		}
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
 }
 
 JSBool

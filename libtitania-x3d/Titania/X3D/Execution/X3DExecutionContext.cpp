@@ -464,10 +464,12 @@ throw (Error <INVALID_NODE>,
 	if (exportedName .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update imported node: exported node name is empty.");
 		
-	auto iter = importedNames .find (inlineNode -> getExportedNode (exportedName));
-		
-	if (iter not_eq importedNames .end ())
-		importedNodes .erase (iter -> second);
+	try
+	{
+		importedNodes .erase (importedNames .at (inlineNode -> getExportedNode (exportedName)));
+	}
+	catch (const std::out_of_range &)
+	{ }
 
 	importedNodes .erase (importedName);
 

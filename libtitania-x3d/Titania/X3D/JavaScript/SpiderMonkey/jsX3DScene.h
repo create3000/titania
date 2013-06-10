@@ -80,6 +80,9 @@ public:
 private:
 
 	static void initObject (JSContext*, JSObject*);
+
+	static JSBool setMetaData (JSContext *, uintN, jsval*);
+	static JSBool getMetaData (JSContext *, uintN, jsval*);
 	
 	static JSBool addExportedNode    (JSContext *, uintN, jsval*);
 	static JSBool removeExportedNode (JSContext *, uintN, jsval*);
