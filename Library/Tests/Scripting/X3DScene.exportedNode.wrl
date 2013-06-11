@@ -49,9 +49,11 @@ function set_time ()
 	print (scene .getExportedNode ('CubeExport'));
 	print (scene .getExportedNode ('SphereExport'));
 	
-	//children_changed = new MFNode (scene .getExportedNode ('SphereExport'));
+	children_changed = new MFNode (scene .getExportedNode ('SphereExport'));
 
 	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+
+	print (parseInt ('123'));
 }
 "
 }

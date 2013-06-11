@@ -294,6 +294,9 @@ jsContext::initEventHandler ()
 	eventsProcessedFn = getFunction ("eventsProcessed");
 	shutdownFn        = getFunction ("shutdown");
 
+	if (not JSVAL_IS_VOID (prepareEventsFn))
+		getBrowser () -> prepareEvents .addInterest (this, &jsContext::prepareEvents);
+
 	for (auto & field : script -> getUserDefinedFields ())
 	{
 		switch (field -> getAccessType ())
@@ -612,6 +615,8 @@ jsContext::dispose ()
 {
 	if (initialized)
 		shutdown ();
+		
+	getBrowser () -> prepareEvents .removeInterest (this, &jsContext::prepareEvents);
 
 	for (auto & field : fields)
 		JS_RemoveValueRoot (context, &field .second);

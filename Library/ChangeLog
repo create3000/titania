@@ -1,3 +1,9 @@
+2013-06-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
+	* X3DScene.exportedNode.wrl:
+	* PerFrameNotificationECMAScript.x3dv: 
+
 2013-06-10  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DScene.exportedNode.wrl: 
