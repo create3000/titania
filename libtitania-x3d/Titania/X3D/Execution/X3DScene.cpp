@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -268,7 +268,7 @@ X3DScene::toStream (std::ostream & ostream) const
 		ostream << Generator::TidyBreak;
 	}
 
-	Generator::PushLevel ();
+	Generator::PushContext ();
 
 	X3DExecutionContext::toStream (ostream);
 
@@ -278,7 +278,7 @@ X3DScene::toStream (std::ostream & ostream) const
 	for (const auto & exportedNode : getExportedNodes ())
 		ostream << exportedNode;
 	
-	Generator::PopLevel ();
+	Generator::PopContext ();
 
 	ostream << std::flush;
 }

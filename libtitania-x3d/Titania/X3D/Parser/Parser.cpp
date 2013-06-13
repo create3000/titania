@@ -244,7 +244,7 @@ Parser::addRootNode (const SFNode <X3DBaseNode> & rootNode)
 {
 	//__LOG__ << std::endl;
 
-	getExecutionContext () -> addRootNode (rootNode);
+	getExecutionContext () -> getRootNodes () .emplace_back (rootNode);
 }
 
 void

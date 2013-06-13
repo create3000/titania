@@ -69,6 +69,8 @@ public:
 
 	OutlineTreeView (const X3D::SFNode <X3D::Browser> &);
 
+	virtual
+	~OutlineTreeView ();
 
 private:
 
@@ -137,7 +139,7 @@ private:
 		bool shift_r;
 
 	};
-
+	
 	OutlineSelection selection;
 	Keys             keys;
 

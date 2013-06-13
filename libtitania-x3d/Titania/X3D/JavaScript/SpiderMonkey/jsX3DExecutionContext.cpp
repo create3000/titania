@@ -85,7 +85,7 @@ JSPropertySpec jsX3DExecutionContext::properties [ ] = {
 
 	{ "externprotos",         EXTERNPROTOS,          JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, externprotos, NULL },
 	{ "protos",               PROTOS,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, protos,       NULL },
-	{ "rootNodes",            ROOT_NODES,            JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT,                   rootNodes,    rootNodes },
+	{ "rootNodes",            ROOT_NODES,            JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, rootNodes,    NULL },
 	{ "routes",               ROUTES,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, routes,       NULL },
 	{ 0 }
 
@@ -104,9 +104,6 @@ JSFunctionSpec jsX3DExecutionContext::functions [ ] = {
 	{ "removeImportedNode", removeImportedNode, 1, 0 },
 	{ "updateImportedNode", updateImportedNode, 2, 0 },
 	{ "getImportedNode",    getImportedNode,    1, 0 },
-
-	{ "addRootNode",    addRootNode,    1, 0 },
-	{ "removeRootNode", removeRootNode, 1, 0 },
 
 	{ "addRoute",    addRoute,    4, 0 },
 	{ "deleteRoute", deleteRoute, 1, 0 },
@@ -213,33 +210,9 @@ jsX3DExecutionContext::protos (JSContext* context, JSObject* obj, jsid id, jsval
 JSBool
 jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
+	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
 
-	//	return jsMFNode::create (context, const_cast <X3DExecutionContext*> (&executionContext -> getRootNodes ()), vp, true);
-	return JS_TRUE;
-}
-
-JSBool
-jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
-{
-	//	X3DExecutionContext* executionContext = (X3DExecutionContext*) JS_GetPrivate (context, obj);
-	//
-	//	JSObject* omfnode;
-	//
-	//	if (not JS_ValueToObject (context, *vp, &omfnode))
-	//		return JS_FALSE;
-	//
-	//	if (JS_GetClass (context, omfnode) not_eq jsMFNode::getClass ())
-	//	{
-	//		JS_ReportError (context, "Type of argument is invalid - should be MFNode, is %s", JS_GetClass (context, omfnode) -> name);
-	//		return JS_FALSE;
-	//	}
-	//
-	//	MFNode* mfnode = static_cast <MFNode*> (JS_GetPrivate (context, omfnode));
-	//
-	//	executionContext -> setRootNodes (*mfnode);
-
-	return JS_TRUE;
+	return jsMFNode::create (context, new MFNode (executionContext -> getRootNodes ()), vp, true);
 }
 
 JSBool
@@ -643,36 +616,6 @@ jsX3DExecutionContext::getImportedNode (JSContext* context, uintN argc, jsval* v
 			JS_ReportError (context, exception .what ());
 			return JS_FALSE;
 		}
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-JSBool
-jsX3DExecutionContext::addRootNode (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 1)
-	{
-		JS_SET_RVAL (context, vp, JSVAL_VOID);
-
-		return JS_TRUE;
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-JSBool
-jsX3DExecutionContext::removeRootNode (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 1)
-	{
-		JS_SET_RVAL (context, vp, JSVAL_VOID);
-
-		return JS_TRUE;
 	}
 
 	JS_ReportError (context, "wrong number of arguments");

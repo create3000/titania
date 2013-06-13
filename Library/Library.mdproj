@@ -2092,6 +2092,8 @@
     <None Include="Tests\Basic\IMPORT.wrl" />
     <None Include="Tests\Scripting\X3DScene.exportedNode.wrl" />
     <None Include="Tests\Scripting\PerFrameNotificationECMAScript.x3dv" />
+    <None Include="Tests\Scripting\X3DScene.rootNodes.wrl" />
+    <None Include="Tests\Scripting\Proto.rootNodes.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

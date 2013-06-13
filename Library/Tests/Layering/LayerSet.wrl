@@ -3,7 +3,7 @@
 META "title" "LayerSet"
 
 LayerSet {
-  activeLayer 1
+  activeLayer 2
   order [ 1, 2 ]
   layers [
     DEF Left Layer {

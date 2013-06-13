@@ -103,7 +103,6 @@ private:
 	static JSBool externprotos (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool protos       (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool rootNodes    (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool rootNodes    (JSContext *, JSObject *, jsid, JSBool, jsval*);
 	static JSBool routes       (JSContext *, JSObject *, jsid, jsval*);
 
 	static JSBool createNode  (JSContext *, uintN, jsval*);
@@ -118,9 +117,6 @@ private:
 	static JSBool removeImportedNode (JSContext *, uintN, jsval*);
 	static JSBool updateImportedNode (JSContext *, uintN, jsval*);
 	static JSBool getImportedNode    (JSContext *, uintN, jsval*);
-
-	static JSBool addRootNode    (JSContext*, uintN, jsval*);
-	static JSBool removeRootNode (JSContext*, uintN, jsval*);
 
 	static JSBool deleteRoute (JSContext *, uintN, jsval*);
 

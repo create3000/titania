@@ -51,7 +51,6 @@
 #include "OutlineTreeView.h"
 
 #include "../OutlineEditor/OutlineTreeModel.h"
-#include <Titania/X3D.h>
 
 namespace titania {
 namespace puck {
@@ -349,6 +348,9 @@ OutlineTreeView::select (const Gtk::TreeModel::iterator & iter, const Gtk::TreeM
 		selection .select (*static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (data -> object));
 	}
 }
+
+OutlineTreeView::~OutlineTreeView ()
+{ }
 
 } // puck
 } // titania

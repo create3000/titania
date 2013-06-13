@@ -112,7 +112,7 @@ X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
 		updateProtoDeclaration (proto .getNodeName (), proto);
 
 	for (const auto & rootNode : executionContext -> getRootNodes ())
-		addRootNode (rootNode .getValue () -> clone (this));
+		getRootNodes () .emplace_back (rootNode -> clone (this));
 
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
 		importedNode -> clone (this);
@@ -659,54 +659,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return externProto;
 }
 
-// Root nodes handling
-
-void
-X3DExecutionContext::addRootNode (const SFNode <X3DBaseNode> & rootNode)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	rootNodes .emplace_back (rootNode);
-}
-
-void
-X3DExecutionContext::removeRootNode (const SFNode <X3DBaseNode> & rootNode)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	std::remove (rootNodes .begin (), rootNodes .end (), rootNode);
-}
-
-void
-X3DExecutionContext::setRootNode (size_t index, const SFNode <X3DBaseNode> & rootNode)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (rootNodes .size () <= index)
-		rootNodes .resize (index + 1);
-
-	rootNodes [index] = rootNode;
-}
-
-const SFNode <X3DBaseNode> &
-X3DExecutionContext::getRootNode (size_t index)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (rootNodes .size () <= index)
-		rootNodes .resize (index + 1);
-
-	return rootNodes [index];
-}
-
-const MFNode &
-X3DExecutionContext::getRootNodes () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return rootNodes;
-}
-
 //	Dynamic route handling
 
 const SFNode <Route> &
@@ -832,7 +784,7 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::toStream (std::ostream & ostream) const
 {
-	Generator::PushLevel ();
+	Generator::PushContext ();
 
 	for (const auto & externProto : getExternProtoDeclarations ())
 	{
@@ -897,7 +849,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 		}
 	}
 
-	Generator::PopLevel ();
+	Generator::PopContext ();
 }
 
 void

@@ -52,6 +52,7 @@
 
 #include "jsContext.h"
 #include "Fields/jsSFNode.h"
+#include "Fields/jsMFNode.h"
 
 namespace titania {
 namespace X3D {
@@ -65,6 +66,7 @@ JSClass jsX3DScene::static_class = {
 };
 
 JSPropertySpec jsX3DScene::properties [ ] = {
+	{ "rootNodes", ROOT_NODES, JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, rootNodes, rootNodes },
 	{ 0 }
 
 };
@@ -86,6 +88,8 @@ void
 jsX3DScene::initObject (JSContext* context, JSObject* object)
 {
 	jsX3DExecutionContext::initObject (context, object);
+	
+	JS_DeleteProperty (context, object, "rootNodes");
 
 	JS_DefineProperties (context, object, properties);
 	JS_DefineFunctions (context, object, functions);
@@ -112,6 +116,35 @@ jsX3DScene::create (JSContext* context, Scene* scene, jsval* vp, const bool seal
 	//	JS_SealObject (context, result, JS_FALSE);
 
 	*vp = OBJECT_TO_JSVAL (result);
+
+	return JS_TRUE;
+}
+
+JSBool
+jsX3DScene::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	auto scene = static_cast <Scene*> (JS_GetPrivate (context, obj));
+
+	return jsMFNode::create (context, &scene -> getRootNodes (), vp, true);
+}
+
+JSBool
+jsX3DScene::rootNodes (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+{
+	auto scene = static_cast <Scene*> (JS_GetPrivate (context, obj));
+
+	JSObject* omfnode;
+
+	if (not JS_ValueToObject (context, *vp, &omfnode))
+		return JS_FALSE;
+
+	if (JS_GetClass (context, omfnode) not_eq jsMFNode::getClass ())
+	{
+		JS_ReportError (context, "Type of argument is invalid - should be MFNode, is %s", JS_GetClass (context, omfnode) -> name);
+		return JS_FALSE;
+	}
+
+	scene -> getRootNodes () = *static_cast <MFNode*> (JS_GetPrivate (context, omfnode));
 
 	return JS_TRUE;
 }

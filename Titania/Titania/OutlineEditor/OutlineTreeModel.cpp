@@ -70,6 +70,8 @@ OutlineTreeModel::OutlineTreeModel (const X3D::SFNode <X3D::Browser> & browser) 
 
 	for (const auto & field : browser -> getSupportedFields ())
 		fieldTypeImages [field -> getType ()] = Gdk::Pixbuf::create_from_file (get_icon (field -> getTypeName () + ".png"));
+
+	executionContext -> getRootNodes () .addInterest (this, &OutlineTreeModel::set_rootNodes);
 }
 
 Glib::RefPtr <OutlineTreeModel>
@@ -77,6 +79,37 @@ OutlineTreeModel::create (const X3D::SFNode <X3D::Browser> & browser)
 {
 	//__LOG__ << std::endl;
 	return Glib::RefPtr <OutlineTreeModel> (new OutlineTreeModel (browser));
+}
+
+void
+OutlineTreeModel::set_rootNodes ()
+{
+	//__LOG__ << std::endl;
+
+	size_t size = tree .getChildren () .size ();
+
+	tree .clear ();
+
+	for (int i = size; i >= 0; -- i)
+	{
+		Path path;
+		path .push_back (i);
+		
+		row_deleted (path);
+	}
+	
+	size = executionContext -> getRootNodes () .size ();
+
+	for (size_t i = 0; i < size; ++ i)
+	{
+		Path path;
+		path .push_back (i);
+		
+		iterator iter = get_iter (path);
+
+		row_inserted (path, iter);
+		row_has_child_toggled (path, iter);
+	}
 }
 
 Gtk::TreeModelFlags
@@ -614,31 +647,31 @@ OutlineTreeModel::unref_node_vfunc (const iterator & iter) const
 void
 OutlineTreeModel::on_row_changed (const Path & path, const iterator & iter)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 }
 
 void
 OutlineTreeModel::on_row_inserted (const Path & path, const iterator & iter)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 }
 
 void
 OutlineTreeModel::on_row_has_child_toggled (const Path & path, const iterator & iter)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 }
 
 void
 OutlineTreeModel::on_row_deleted (const Path & path)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 }
 
 void
 OutlineTreeModel::on_rows_reordered (const Path & path, const iterator & iter, int* new_order)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 }
 
 void
@@ -737,6 +770,8 @@ OutlineTreeModel::getData (const iterator & iter)
 OutlineTreeModel::~OutlineTreeModel ()
 {
 	//__LOG__ << std::endl;
+
+	executionContext -> getRootNodes () .removeInterest (this, &OutlineTreeModel::set_rootNodes);
 }
 
 } // puck

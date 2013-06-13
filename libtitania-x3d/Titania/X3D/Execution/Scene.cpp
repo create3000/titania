@@ -84,6 +84,8 @@ Scene::initialize ()
 	X3DScene::initialize ();
 
 	layerSet -> setup ();
+	
+	getRootNodes () .addInterest (this, &Scene::set_rootNodes);
 }
 
 // BBox
@@ -96,67 +98,44 @@ Scene::getBBox ()
 
 // Root node handling
 
-void
-Scene::addRootNode (const SFNode <X3DBaseNode> & rootNode)
+MFNode &
+Scene::getRootNodes ()
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	SFNode <LayerSet> rootLayerSet = x3d_cast <LayerSet*> (rootNode .getValue ());
+	return layerSet -> getLayers () [0] -> children ();
+}
 
-	if (rootLayerSet)
+const MFNode &
+Scene::getRootNodes () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return layerSet -> getLayers () [0] -> children ();
+}
+
+void
+Scene::set_rootNodes ()
+{
+	for (const auto & rootNode : basic::adapter (getRootNodes () .rbegin (), getRootNodes () .rend ()))
 	{
-		rootLayerSet -> getLayers () [0] -> children () = layerSet -> getLayers () [0] -> children ();
-		layerSet                                        = rootLayerSet;
+		auto rootLayerSet = x3d_cast <LayerSet*> (rootNode .getValue ());
+		
+		if (rootLayerSet)
+		{
+			if (rootLayerSet == layerSet)
+				break;
+		
+			getRootNodes () .removeInterest (this, &Scene::set_rootNodes);
+			
+			rootLayerSet -> getLayers () [0] -> children () = getRootNodes ();
+			layerSet                                        = rootLayerSet;
+			
+			getRootNodes () .addInterest (this, &Scene::set_rootNodes);
+		
+			break;
+		}
 	}
-
-	else // remove else and add layer set to layer 0 children, this syncs rootNodes and layer 0 children
-		layerSet -> getLayers () [0] -> children () .emplace_back (rootNode);
-
-	X3DScene::addRootNode (rootNode);
-}
-
-void
-Scene::removeRootNode (const SFNode <X3DBaseNode> & rootNode)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-//	MFNode & children = layerSet -> getLayers () [0] -> children ();
-//
-//	std::remove (children .begin (), children .end (), rootNode);
-//	
-//	// 
-//	
-//	SFNode <LayerSet> rootLayerSet = x3d_cast <LayerSet*> (rootNode .getValue ());
-//	
-//	if (rootLayerSet == layerSet)
-//		new LayerSet (this);
-//
-//	X3DScene::removeRootNode (rootNode);
-}
-
-void
-Scene::setRootNode (size_t index, const SFNode <X3DBaseNode> & rootNode)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-//	SFNode <LayerSet> rootLayerSet = x3d_cast <LayerSet*> (rootNode .getValue ());
-//
-//	MFNode & children = layerSet -> getLayers () [0] -> children ();
-//
-//	if (children .size () <= index)
-//		children .resize (index + 1) ;
-//		
-//	children [index] = rootNode;
-//
-//	X3DScene::setRootNode (index, rootNode);
-}
-
-const SFNode <X3DBaseNode> &
-Scene::getRootNode (size_t index)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return X3DScene::getRootNode (index);
 }
 
 // Traveral
@@ -184,6 +163,8 @@ throw (Error <INVALID_X3D>,
 void
 Scene::dispose ()
 {
+	getRootNodes () .removeInterest (this, &Scene::set_rootNodes);
+
 	layerSet .dispose ();
 
 	X3DScene::dispose ();

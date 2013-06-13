@@ -79,7 +79,15 @@ public:
 
 private:
 
+	enum Property
+	{
+		ROOT_NODES
+	};
+
 	static void initObject (JSContext*, JSObject*);
+	
+	static JSBool rootNodes (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool rootNodes (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
 	static JSBool setMetaData (JSContext *, uintN, jsval*);
 	static JSBool getMetaData (JSContext *, uintN, jsval*);

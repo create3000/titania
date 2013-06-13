@@ -109,6 +109,14 @@ public:
 		data (NULL),
 		children ()
 	{ }
+	
+	const std::deque <OutlineNode> &
+	getChildren ()
+	{ return children; }
+
+	void
+	clear ()
+	{ children .clear (); }
 
 	~OutlineNode ()
 	{
@@ -167,8 +175,13 @@ public:
 
 	OutlineTreeModel (const X3D::SFNode <X3D::Browser> &);
 
-	static Glib::RefPtr <OutlineTreeModel>
+	static
+	Glib::RefPtr <OutlineTreeModel>
 	create (const X3D::SFNode <X3D::Browser> &);
+	
+	const X3D::SFNode <X3D::X3DExecutionContext> &
+	getExecutionContext ()
+	{ return executionContext; }
 
 	void
 	collapse_row (const Path &, const iterator &);
@@ -191,10 +204,15 @@ public:
 
 private:
 
-	virtual Gtk::TreeModelFlags
+	void
+	set_rootNodes ();
+
+	virtual
+	Gtk::TreeModelFlags
 	get_flags_vfunc () const;
 
-	virtual int
+	virtual
+	int
 	get_n_columns_vfunc () const;
 
 	virtual GType

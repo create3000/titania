@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -91,7 +91,7 @@ MFNode::toStream (std::ostream & ostream) const
 {
 	if (size () > 1)
 	{
-		Generator::PushLevel ();
+		Generator::PushContext ();
 
 		ostream
 			<< '['
@@ -114,16 +114,16 @@ MFNode::toStream (std::ostream & ostream) const
 			<< Generator::Indent
 			<< ']';
 
-		Generator::PopLevel ();
+		Generator::PopContext ();
 
 		return;
 	}
 
 	if (size () == 1)
 	{
-		Generator::PushLevel ();
+		Generator::PushContext ();
 		ostream << front ();
-		Generator::PopLevel ();
+		Generator::PopContext ();
 
 		return;
 	}

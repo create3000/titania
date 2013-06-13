@@ -1,3 +1,22 @@
+2013-06-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Scene.h:
+	* Parser.cpp:
+	* MFNode.cpp:
+	* Proto.cpp:
+	* Scene.cpp:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* Generator.h:
+	* Generator.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* jsX3DScene.h:
+	* jsContext.cpp:
+	* jsX3DScene.cpp:
+	* jsX3DExecutionContext.h:
+	* jsX3DExecutionContext.cpp: 
+
 2013-06-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* jsContext.cpp: 

@@ -1,0 +1,43 @@
+#VRML V2.0 utf8
+
+META "title" "Scene.rootNodes"
+
+DEF Touch TouchSensor { }
+
+DEF Inline Inline {
+	url "../Basic/EXPORT.wrl"
+}
+
+DEF Debug Script {
+  eventIn SFTime set_time
+
+  url "vrmlscript:
+
+function set_time ()
+{
+	print ();
+	print ('+ Scene +++++++++++++++++++++++++++++++++++++++++++++++');	
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+
+	var scene = Browser .currentScene;
+
+	print ();
+	print (scene);
+	print (scene .rootNodes);
+
+	scene .rootNodes .length = 0;
+	
+	var shape  = scene .createNode ('Shape');
+
+	shape .appearance = scene .createNode ('Appearance');
+	shape .appearance .material = scene .createNode ('Material');
+	shape .geometry = scene .createNode ('Sphere');
+
+	scene .rootNodes [0] = shape;
+
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+}
+"
+}
+
+ROUTE Touch.touchTime TO Debug.set_time

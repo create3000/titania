@@ -92,26 +92,14 @@ public:
 	///  @name Root node handling
 
 	virtual
-	void
-	addRootNode (const SFNode <X3DBaseNode> &)
+	MFNode &
+	getRootNodes ()
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	virtual
-	void
-	removeRootNode (const SFNode <X3DBaseNode> &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	virtual
-	void
-	setRootNode (size_t, const SFNode <X3DBaseNode> &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	virtual
-	const SFNode <X3DBaseNode> &
-	getRootNode (size_t)
+	const MFNode &
+	getRootNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
@@ -157,6 +145,9 @@ private:
 	virtual
 	void
 	initialize ();
+	
+	void
+	set_rootNodes ();
 
 	SFNode <LayerSet> layerSet;
 

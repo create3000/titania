@@ -9,4 +9,5 @@
   <Task file="" description="Collision mit Polygonen und anderen Dreiecken" />
   <Task file="" description="getField mit exception" />
   <Task file="" description="JavaScript jsSFNode getFieldDefinitions ist nicht save" />
+  <Task file="" description="addMetaData" />
 </ListOfTask>

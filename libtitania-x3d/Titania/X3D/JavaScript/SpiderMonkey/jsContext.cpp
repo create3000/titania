@@ -104,7 +104,7 @@ jsContext::jsContext (X3DScriptNode* script, const std::string & ecmascript, con
 	if (context == NULL)
 		return;
 
-	JS_SetOptions (context, JSOPTION_ATLINE | JSOPTION_VAROBJFIX | JSOPTION_METHODJIT);
+	JS_SetOptions (context, JSOPTION_ATLINE | JSOPTION_VAROBJFIX | JSOPTION_JIT | JSOPTION_METHODJIT);
 	JS_SetVersion (context, JSVERSION_LATEST);
 	JS_SetErrorReporter (context, error);
 

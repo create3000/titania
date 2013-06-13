@@ -309,32 +309,18 @@ public:
 	///  @name Root node handling
 
 	virtual
-	void
-	addRootNode (const SFNode <X3DBaseNode> &)
+	MFNode &
+	getRootNodes ()
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return rootNodes; }
 
 	virtual
-	void
-	removeRootNode (const SFNode <X3DBaseNode> &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	virtual
-	void
-	setRootNode (size_t, const SFNode <X3DBaseNode> &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	const SFNode <X3DBaseNode> &
-	getRootNode (size_t)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
 	const MFNode &
 	getRootNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return rootNodes; }
 
 	///  @name Dynamic route node handling
 
