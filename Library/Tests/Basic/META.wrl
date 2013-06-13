@@ -1,0 +1,16 @@
+#X3D V3.0 utf8
+
+META "creator" "Holger Seelig"
+META "description" "This example shows how to use the META statement. You can use one key multiple times. But only the last one is found via JavaScript."
+META "generator" "x3dtidy"
+META "generator" "x3dtidy, http://titania.create3000.de"
+META "identifier" "Basic/META.wrl"
+META "license" "../license.html"
+META "modified" "13 June 2013"
+META "reference" "web3d.org"
+META "subject" "Basic"
+META "title" "Basic META"
+META "title" "Basic META title with
+break"
+META "title" "Basic META \"title with quotes\""
+

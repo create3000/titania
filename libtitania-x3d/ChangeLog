@@ -1,5 +1,11 @@
 2013-06-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.cpp:
+	* X3DScene.h:
+	* X3DScene.cpp: 
+
+2013-06-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Scene.h:
 	* Parser.cpp:
 	* MFNode.cpp:

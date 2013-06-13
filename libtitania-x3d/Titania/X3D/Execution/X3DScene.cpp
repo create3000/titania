@@ -67,11 +67,20 @@ X3DScene::X3DScene () :
 // MetaData handling
 
 void
+X3DScene::addMetaData (const std::string & key, const std::string & value)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	metadatas .insert (std::make_pair (key, value));
+}
+
+void
 X3DScene::setMetaData (const std::string & key, const std::string & value)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	metadatas [key] = value;
+	metadatas .erase (key);
+	addMetaData (key, value);
 }
 
 const std::string &
@@ -80,10 +89,10 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	auto metadata = metadatas .find (key);
+	auto range = metadatas .equal_range (key);
 
-	if (metadata not_eq metadatas .end ())
-		return metadata -> second;
+	if (range .first not_eq range .second)
+		return (-- range .second) -> second;
 
 	throw Error <INVALID_NAME> ("Unkown meta key '" + key + "'.");
 }

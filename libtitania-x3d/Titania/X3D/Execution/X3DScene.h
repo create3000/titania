@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-typedef std::map <std::string, std::string> MetaDataIndex;
+typedef std::multimap <std::string, std::string> MetaDataIndex;
 
 class X3DScene :
 	public X3DExecutionContext
@@ -66,6 +66,11 @@ class X3DScene :
 public:
 
 	X3DScene ();
+
+	void
+	addMetaData (const std::string &, const std::string &)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	void
 	setMetaData (const std::string &, const std::string &)

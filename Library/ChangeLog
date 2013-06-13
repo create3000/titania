@@ -1,6 +1,11 @@
 2013-06-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Library.mdproj:
+	* META.wrl: 
+
+2013-06-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
 	* LayerSet.wrl:
 	* Proto.rootNodes.wrl:
 	* X3DScene.rootNodes.wrl: 

@@ -582,7 +582,7 @@ Parser::metaStatement ()
 			if (metavalue (_metavalue))
 			{
 				scene -> addComments (getComments ());
-				scene -> setMetaData (_metakey, _metavalue);
+				scene -> addMetaData (_metakey, _metavalue);
 				return true;
 			}
 			else
