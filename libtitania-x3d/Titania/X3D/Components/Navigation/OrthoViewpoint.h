@@ -61,7 +61,7 @@ class OrthoViewpoint :
 {
 public:
 
-	OrthoViewpoint (X3DExecutionContext* const, bool = true);
+	OrthoViewpoint (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*

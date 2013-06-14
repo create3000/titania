@@ -70,9 +70,9 @@ NavigationInfo::Fields::Fields () :
 	transitionComplete (new SFBool ())
 { }
 
-NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, bool displayed) :
+NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	 X3DBindableNode (displayed),                                           
+	 X3DBindableNode (),                                           
 	          fields (),                                                    
 	directionalLight (new DirectionalLight (executionContext)),             
 	           light ()                                                     
@@ -99,7 +99,7 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext, boo
 X3DBaseNode*
 NavigationInfo::create (X3DExecutionContext* const executionContext) const
 {
-	return new NavigationInfo (executionContext, true);
+	return new NavigationInfo (executionContext);
 }
 
 void
@@ -172,18 +172,6 @@ NavigationInfo::getFarPlane () const
 }
 
 void
-NavigationInfo::addToLayer (X3DLayerNode* const layer)
-{
-	layer -> getNavigationInfos () .push_back (this);
-}
-
-void
-NavigationInfo::removeFromLayer (X3DLayerNode* const layer)
-{
-	layer -> getNavigationInfos () .erase (this);
-}
-
-void
 NavigationInfo::bindToLayer (X3DLayerNode* const layer)
 {
 	layer -> getNavigationInfoStack () .push (this);
@@ -207,6 +195,21 @@ NavigationInfo::disable ()
 {
 	if (headlight ())
 		light -> disable ();
+}
+
+void
+NavigationInfo::traverse (TraverseType type)
+{
+	switch (type)
+	{
+		case TraverseType::COLLECT:
+		{
+			getCurrentLayer () -> getNavigationInfos () .push_back (this);
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 void

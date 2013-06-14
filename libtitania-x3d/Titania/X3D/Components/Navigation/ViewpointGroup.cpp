@@ -50,6 +50,7 @@
 
 #include "ViewpointGroup.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -146,7 +147,7 @@ ViewpointGroup::set_children ()
 
 	for (const auto & child : children ())
 	{
-		X3DViewpointObject* viewpointObject = dynamic_cast <X3DViewpointObject*> (child .getValue ());
+		X3DViewpointObject* viewpointObject = x3d_cast <X3DViewpointObject*> (child .getValue ());
 
 		if (viewpointObject)
 			viewpointObjects .emplace_back (viewpointObject);

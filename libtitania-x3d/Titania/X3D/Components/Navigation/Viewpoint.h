@@ -61,7 +61,7 @@ class Viewpoint :
 {
 public:
 
-	Viewpoint (X3DExecutionContext* const, bool = true);
+	Viewpoint (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*

@@ -77,8 +77,8 @@ X3DBackgroundNode::Fields::Fields () :
 	transparency (new SFFloat ())
 { }
 
-X3DBackgroundNode::X3DBackgroundNode (bool displayed) :
-	X3DBindableNode (displayed), 
+X3DBackgroundNode::X3DBackgroundNode () :
+	X3DBindableNode (), 
 	         fields ()           
 {
 	addNodeType (X3DConstants::X3DBackgroundNode);
@@ -90,18 +90,6 @@ X3DBackgroundNode::initialize ()
 	X3DBindableNode::initialize ();
 
 	build ();
-}
-
-void
-X3DBackgroundNode::addToLayer (X3DLayerNode* const layer)
-{
-	layer -> getBackgrounds () .push_back (this);
-}
-
-void
-X3DBackgroundNode::removeFromLayer (X3DLayerNode* const layer)
-{
-	layer -> getBackgrounds () .erase (this);
 }
 
 void
@@ -365,8 +353,19 @@ X3DBackgroundNode::build ()
 void
 X3DBackgroundNode::traverse (TraverseType type)
 {
-	if (type == TraverseType::COLLECT)
-		matrix = ModelViewMatrix4f ();
+	switch (type)
+	{
+		case TraverseType::COLLECT:
+		{
+			getCurrentLayer () -> getBackgrounds () .push_back (this);
+			
+			matrix = ModelViewMatrix4f ();
+			
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 void

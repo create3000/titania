@@ -144,14 +144,6 @@ public:
 
 	virtual
 	void
-	addToLayer (X3DLayerNode* const);
-
-	virtual
-	void
-	removeFromLayer (X3DLayerNode* const);
-
-	virtual
-	void
 	lookAt (Box3f);
 
 	void
@@ -175,7 +167,7 @@ public:
 
 protected:
 
-	X3DViewpointNode (bool);
+	X3DViewpointNode ();
 
 	void
 	setModelViewMatrix (const Matrix4f & value)

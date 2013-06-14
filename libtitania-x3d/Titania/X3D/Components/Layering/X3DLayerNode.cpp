@@ -70,10 +70,10 @@ X3DLayerNode::X3DLayerNode () :
 	          X3DRenderer (),                                                   
 	               fields (),                                                   
 	      defaultViewport (new Viewport (getExecutionContext ())),              
-	defaultNavigationInfo (new NavigationInfo (getExecutionContext (), false)), 
-	    defaultBackground (new Background     (getExecutionContext (), false)), 
-	           defaultFog (new Fog            (getExecutionContext (), false)), 
-	     defaultViewpoint (new Viewpoint      (getExecutionContext (), false)), 
+	defaultNavigationInfo (new NavigationInfo (getExecutionContext ())), 
+	    defaultBackground (new Background     (getExecutionContext ())), 
+	           defaultFog (new Fog            (getExecutionContext ())), 
+	     defaultViewpoint (new Viewpoint      (getExecutionContext ())), 
 	      currentViewport (*defaultViewport),                                   
 	  navigationInfoStack (*defaultNavigationInfo),                             
 	      backgroundStack (*defaultBackground),                                 
@@ -279,7 +279,7 @@ X3DLayerNode::navigation ()
 
 	// Get NavigationInfo values
 
-	auto navigationInfo = getCurrentNavigationInfo ();
+	auto navigationInfo = getNavigationInfo ();
 
 	float zNear           = navigationInfo -> getNearPlane ();
 	float zFar            = navigationInfo -> getFarPlane ();
@@ -323,7 +323,7 @@ X3DLayerNode::collision ()
 
 	// Transform viewpoint
 
-	auto viewpoint = getCurrentViewpoint ();
+	auto viewpoint = getViewpoint ();
 
 	Matrix4f cameraSpaceMatrix = viewpoint -> getModelViewMatrix ();
 
@@ -352,8 +352,12 @@ X3DLayerNode::collect ()
 	getViewpoint ()      -> reshape ();
 	getViewpoint ()      -> transform ();
 
-	defaultViewpoint -> traverse (TraverseType::COLLECT);
 	render (TraverseType::COLLECT);
+
+	navigationInfos .update ();
+	backgrounds     .update ();
+	viewpoints      .update ();
+	fogs            .update ();
 
 	getNavigationInfo () -> disable ();
 	currentViewport -> pop ();

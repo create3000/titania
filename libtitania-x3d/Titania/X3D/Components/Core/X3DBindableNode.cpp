@@ -64,10 +64,9 @@ X3DBindableNode::Fields::Fields () :
 	isBound (new SFBool ())
 { }
 
-X3DBindableNode::X3DBindableNode (bool displayed) :
+X3DBindableNode::X3DBindableNode () :
 	X3DChildNode (),         
-	      fields (),         
-	   displayed (displayed) 
+	      fields ()
 {
 	addNodeType (X3DConstants::X3DBindableNode);
 }
@@ -77,17 +76,7 @@ X3DBindableNode::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	if (displayed)
-		initialized .addInterest (this, &X3DBindableNode::set_initialized);
-
 	set_bind () .addInterest (this, &X3DBindableNode::_set_bind);
-}
-
-void
-X3DBindableNode::set_initialized ()
-{
-	for (auto & layer : getLayers ())
-		addToLayer (layer);
 }
 
 void

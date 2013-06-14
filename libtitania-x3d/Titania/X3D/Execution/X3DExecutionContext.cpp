@@ -50,6 +50,7 @@
 
 #include "X3DExecutionContext.h"
 
+#include "../Bits/Cast.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
@@ -764,7 +765,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		auto viewpoint = dynamic_cast <X3DViewpointNode*> (getNamedNode (name) .getValue ());
+		auto viewpoint = x3d_cast <X3DViewpointNode*> (getNamedNode (name) .getValue ());
 
 		if (viewpoint)
 			viewpoint -> set_bind () = true;

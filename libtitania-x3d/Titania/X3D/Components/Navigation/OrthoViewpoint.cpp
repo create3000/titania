@@ -60,9 +60,9 @@ OrthoViewpoint::Fields::Fields () :
 	fieldOfView (new MFFloat ({ -1 }))
 { }
 
-OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext, bool displayed) :
+OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DViewpointNode (displayed),                                           
+	X3DViewpointNode (),                                           
 	          fields ()                                                     
 {
 	setComponent ("Navigation");
@@ -84,7 +84,7 @@ OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext, boo
 X3DBaseNode*
 OrthoViewpoint::create (X3DExecutionContext* const executionContext) const
 {
-	return new OrthoViewpoint (executionContext, true);
+	return new OrthoViewpoint (executionContext);
 }
 
 Vector3f

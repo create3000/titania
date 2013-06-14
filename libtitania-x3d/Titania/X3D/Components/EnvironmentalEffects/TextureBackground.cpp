@@ -64,9 +64,9 @@ TextureBackground::Fields::Fields () :
 	topTexture (new SFNode <X3DBaseNode> ())
 { }
 
-TextureBackground::TextureBackground (X3DExecutionContext* const executionContext, bool displayed) :
+TextureBackground::TextureBackground (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DBackgroundNode (displayed),                                           
+	X3DBackgroundNode (),                                           
 	           fields ()                                                     
 {
 	setComponent ("EnvironmentalEffects");
@@ -92,7 +92,7 @@ TextureBackground::TextureBackground (X3DExecutionContext* const executionContex
 X3DBaseNode*
 TextureBackground::create (X3DExecutionContext* const executionContext) const
 {
-	return new TextureBackground (executionContext, true);
+	return new TextureBackground (executionContext);
 }
 
 } // X3D

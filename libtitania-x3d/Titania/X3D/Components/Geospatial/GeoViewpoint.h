@@ -61,7 +61,7 @@ class GeoViewpoint :
 {
 public:
 
-	GeoViewpoint (X3DExecutionContext* const, bool = true);
+	GeoViewpoint (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*

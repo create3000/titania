@@ -65,7 +65,7 @@ class NavigationInfo :
 {
 public:
 
-	NavigationInfo (X3DExecutionContext* const, bool = true);
+	NavigationInfo (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
@@ -152,19 +152,15 @@ public:
 	float
 	getFarPlane () const;
 
-	virtual
-	void
-	addToLayer (X3DLayerNode* const);
-
-	virtual
-	void
-	removeFromLayer (X3DLayerNode* const);
-
 	void
 	enable ();
 
 	void
 	disable ();
+
+	virtual
+	void
+	traverse (TraverseType);
 
 	virtual
 	void

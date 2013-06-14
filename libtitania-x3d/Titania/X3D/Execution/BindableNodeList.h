@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_EXECUTION_BINDABLE_NODE_LIST_H__
 
 #include "../Base/X3DOutput.h"
-#include <Titania/Basic/IndexedMultiMap.h>
 
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
@@ -66,15 +65,12 @@ template <class Type>
 class BindableNodeList :
 	public X3DOutput
 {
-private:
-
-	typedef basic::indexed_multimap <Type*, Type*> list_type;
-
-
 public:
 
-	typedef typename list_type::array_const_iterator const_iterator;
-	typedef typename list_type::size_type            size_type;
+	typedef Type*                              value_type;
+	typedef std::deque <value_type>            list_type;
+	typedef typename list_type::const_iterator const_iterator;
+	typedef typename list_type::size_type      size_type;
 
 	/// @name Constructors
 
@@ -86,49 +82,80 @@ public:
 	/// @name Iterators
 
 	const_iterator
-	begin () const { return list .cbegin (); }
+	begin () const
+	{ return list .cbegin (); }
 
 	const_iterator
-	cbegin () const { return list .cbegin (); }
+	cbegin () const
+	{ return list .cbegin (); }
 
 	const_iterator
-	end () const { return list .cend (); }
+	end () const
+	{ return list .cend (); }
 
 	const_iterator
-	cend () const { return list .cend (); }
+	cend () const
+	{ return list .cend (); }
 
-	Type*
+	///  @a name Element access
+
+	value_type
 	operator [ ] (const size_type & index) const
 	{ return list [index]; }
+
+	value_type
+	at (const size_type & index) const
+	{ return list .at (index); }
 
 	/// @name Capacity
 
 	bool
-	empty () const { return list .empty (); }
+	empty () const
+	{ return list .empty (); }
 
 	size_type
-	size () const { return list .size (); }
+	size () const
+	{ return list .size (); }
 
 	size_type
-	max_size () const { return list .max_size (); }
+	max_size () const
+	{ return list .max_size (); }
 
 	/// @name Modifiers
 
 	void
-	push_back (Type* node)
+	push_back (value_type node)
+	{ temp .emplace_back (node); }
+
+	void
+	update ()
 	{
-		if (list .push_back (node, node))
+		if (temp not_eq list)
 		{
-			node -> shutdown .addInterest (this, &BindableNodeList::erase, node);
+			for (auto & node : list)
+				node -> shutdown .removeInterest (this, &BindableNodeList::erase);
+			
+			list = std::move (temp);
+			
+			for (auto & node : list)
+				node -> shutdown .addInterest (this, &BindableNodeList::erase, node);
+			
 			processInterests ();
 		}
+		else
+			temp .clear ();
 	}
 
 	void
-	erase (Type* node)
+	erase (value_type node)
 	{
-		if (list .erase (node))
+		auto end = std::remove (list .begin (), list .end (), node);
+	
+		if (end not_eq list .end ())
+		{
+			list .erase (end, list .end ());
 			processInterests ();
+		}
 	}
 
 	void
@@ -150,6 +177,7 @@ public:
 
 private:
 
+	list_type temp;
 	list_type list;
 
 };

@@ -62,19 +62,15 @@ class Fog :
 {
 public:
 
-	Fog (X3DExecutionContext* const, bool = true);
+	Fog (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
-
+	
 	virtual
 	void
-	addToLayer (X3DLayerNode* const);
-
-	virtual
-	void
-	removeFromLayer (X3DLayerNode* const);
+	traverse (TraverseType);
 
 	virtual
 	void

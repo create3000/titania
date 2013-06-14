@@ -60,9 +60,9 @@ Viewpoint::Fields::Fields () :
 	fieldOfView (new SFFloat (0.785398))
 { }
 
-Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool displayed) :
+Viewpoint::Viewpoint (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DViewpointNode (displayed),                                           
+	X3DViewpointNode (),                                           
 	          fields ()                                                     
 {
 	setComponent ("Navigation");
@@ -84,7 +84,7 @@ Viewpoint::Viewpoint (X3DExecutionContext* const executionContext, bool displaye
 X3DBaseNode*
 Viewpoint::create (X3DExecutionContext* const executionContext) const
 {
-	return new Viewpoint (executionContext, true);
+	return new Viewpoint (executionContext);
 }
 
 Vector3f

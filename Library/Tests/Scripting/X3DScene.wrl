@@ -6,6 +6,8 @@ COMPONENT PointingDeviceSensor : 1
 COMPONENT Scripting : 1
 
 META "title" "Scene"
+META "generator" "Titania X3D Browser"
+META "generator" "x3dtidy"
 
 EXTERNPROTO ExternProto []
 "ExternProto.wrl"
@@ -34,7 +36,7 @@ DEF Debug Script {
 
   url "vrmlscript:
 
-function set_time ()
+function set_time (value, time)
 {
 	print ();
 	print ('+ Scene +++++++++++++++++++++++++++++++++++++++++++++++');	
@@ -121,6 +123,16 @@ function set_time ()
 	print ();
 	print ('createNode:           ' + scene .createNode ('Transform'));
 	print ('createProto:          ' + scene .createProto ('Test'));
+
+	print ();
+	print ('+ Metadata handling +++++++++++++++++++++++++++++++++');
+	
+	print ('title: ' + scene .getMetaData ('title'));
+	print ('title: ' + scene .getMetaData ('generator'));
+
+	scene .setMetaData ('time', time);
+
+	print ('time:  ' + scene .getMetaData ('time'));
 
 	print ();
 	print ('+ Named node handling +++++++++++++++++++++++++++++++++');	

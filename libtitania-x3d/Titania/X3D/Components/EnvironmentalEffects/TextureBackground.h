@@ -61,7 +61,7 @@ class TextureBackground :
 {
 public:
 
-	TextureBackground (X3DExecutionContext* const, bool = true);
+	TextureBackground (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*

@@ -67,9 +67,9 @@ GeoViewpoint::Fields::Fields () :
 	speedFactor (new SFFloat (1))
 { }
 
-GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext, bool displayed) :
+GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DViewpointNode (displayed),                                           
+	X3DViewpointNode (),                                           
 	          fields ()                                                     
 {
 	setComponent ("Geospatial");
@@ -98,7 +98,7 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext, bool di
 X3DBaseNode*
 GeoViewpoint::create (X3DExecutionContext* const executionContext) const
 {
-	return new GeoViewpoint (executionContext, true);
+	return new GeoViewpoint (executionContext);
 }
 
 Vector3f

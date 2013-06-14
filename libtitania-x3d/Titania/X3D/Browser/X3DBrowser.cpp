@@ -292,21 +292,28 @@ X3DBrowser::set_world ()
 void
 X3DBrowser::bind ()
 {
+	scene -> traverse (TraverseType::CAMERA);
+	scene -> traverse (TraverseType::COLLECT);
+
 	for (auto & layer : scene -> getLayerSet () -> getLayers ())
 	{
-		if (layer -> getNavigationInfos () .size ())
-			layer -> getNavigationInfos () [0] -> set_bind () = true;
+		if (layer -> getNavigationInfoStack () .size () == 1)
+			if (layer -> getNavigationInfos () .size ())
+				layer -> getNavigationInfos () [0] -> set_bind () = true;
 
-		if (layer -> getBackgrounds () .size ())
-			layer -> getBackgrounds () [0] -> set_bind () = true;
+		if (layer -> getBackgroundStack () .size () == 1)
+			if (layer -> getBackgrounds () .size ())
+				layer -> getBackgrounds () [0] -> set_bind () = true;
 
-		if (layer -> getFogs () .size ())
-			layer -> getFogs () [0] -> set_bind () = true;
+		if (layer -> getFogStack () .size () == 1)
+			if (layer -> getFogs () .size ())
+				layer -> getFogs () [0] -> set_bind () = true;
 
 		// Bind first viewpoint in viewpoint stack.
 
-		if (layer -> getViewpoints () .size ())
-			layer -> getViewpoints () [0] -> set_bind () = true;
+		if (layer -> getViewpointStack () .size () == 1)
+			if (layer -> getViewpoints () .size ())
+				layer -> getViewpoints () [0] -> set_bind () = true;
 	}
 
 	// Bind viewpoint from URL.

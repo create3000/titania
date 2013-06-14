@@ -87,22 +87,12 @@ public:
 	isBound () const
 	{ return *fields .isBound; }
 
-	///  @name Layer handling
-
-	virtual
-	void
-	addToLayer (X3DLayerNode* const) = 0;
-
-	virtual
-	void
-	removeFromLayer (X3DLayerNode* const) = 0;
-
 
 protected:
 
 	///  @name Construction
 
-	X3DBindableNode (bool);
+	X3DBindableNode ();
 
 	virtual
 	void
@@ -124,9 +114,6 @@ private:
 	///  @name Event handlers
 
 	void
-	set_initialized ();
-
-	void
 	_set_bind ();
 
 	struct Fields
@@ -139,8 +126,6 @@ private:
 	};
 
 	Fields fields;
-
-	bool displayed;
 
 };
 

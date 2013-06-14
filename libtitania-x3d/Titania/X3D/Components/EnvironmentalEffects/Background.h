@@ -63,7 +63,7 @@ class Background :
 {
 public:
 
-	Background (X3DExecutionContext* const, bool = true);
+	Background (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*

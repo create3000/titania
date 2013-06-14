@@ -64,9 +64,9 @@ Background::Fields::Fields () :
 	bottomUrl (new MFString ())
 { }
 
-Background::Background (X3DExecutionContext* const executionContext, bool displayed) :
+Background::Background (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DBackgroundNode (displayed),                                           
+	X3DBackgroundNode (),                                           
 	           fields (),                                                    
 	     frontTexture (new ImageTexture (executionContext)),                 
 	      backTexture (new ImageTexture (executionContext)),                 
@@ -107,7 +107,7 @@ Background::Background (X3DExecutionContext* const executionContext, bool displa
 X3DBaseNode*
 Background::create (X3DExecutionContext* const executionContext) const
 {
-	return new Background (executionContext, true);
+	return new Background (executionContext);
 }
 
 void

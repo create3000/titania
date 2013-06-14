@@ -96,9 +96,8 @@ Inline::initialize ()
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
 
-	load ()  .addInterest (this, &Inline::set_load);
-	url ()   .addInterest (this, &Inline::set_url);
-	scene .addInterest (this, &Inline::set_scene);
+	load () .addInterest (this, &Inline::set_load);
+	url ()  .addInterest (this, &Inline::set_url);
 
 	if (load ())
 		requestLoad ();
@@ -149,33 +148,6 @@ Inline::set_url ()
 }
 
 void
-Inline::set_scene ()
-{
-	const_cast <MFNode &> (scene -> getRootNodes ()) .addParent (this);
-
-	if (getBrowser () -> getBrowserOptions () -> enableInlineViewpoints ())
-	{
-		for (auto & layer : getLayers ())
-		{
-			for (const auto & sceneLayer : scene -> getLayerSet () -> getLayers ())
-			{
-				for (auto & navigationInfo : sceneLayer -> getNavigationInfos ())
-					navigationInfo -> addToLayer (layer);
-
-				for (auto & background : sceneLayer -> getBackgrounds ())
-					background -> addToLayer (layer);
-
-				for (auto & fog : sceneLayer -> getFogs ())
-					fog -> addToLayer (layer);
-
-				for (auto & viewpoint : sceneLayer -> getViewpoints ())
-					viewpoint -> addToLayer (layer);
-			}
-		}
-	}
-}
-
-void
 Inline::requestLoad ()
 {
 	requestImmediateLoad ();
@@ -195,6 +167,8 @@ Inline::requestImmediateLoad ()
 			const_cast <MFNode &> (scene -> getRootNodes ()) .removeParent (this);
 
 		scene = createX3DFromURL (url ());
+		
+		const_cast <MFNode &> (scene -> getRootNodes ()) .addParent (this);
 
 		setLoadState (COMPLETE_STATE);
 	}

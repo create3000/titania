@@ -103,14 +103,6 @@ public:
 
 	virtual
 	void
-	addToLayer (X3DLayerNode* const);
-
-	virtual
-	void
-	removeFromLayer (X3DLayerNode* const);
-
-	virtual
-	void
 	traverse (TraverseType);
 
 	virtual
@@ -120,7 +112,7 @@ public:
 
 protected:
 
-	X3DBackgroundNode (bool);
+	X3DBackgroundNode ();
 
 	virtual
 	void

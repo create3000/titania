@@ -182,7 +182,7 @@ DEF _2 Switch {
                     }
                     DEF hudSwitch Transform {
                       children DEF _7 Switch {
-                        whichChoice 2
+                        whichChoice 0
                         choice [
                           DEF intro Transform {
                             children DEF WorldVS Transform {
@@ -1391,7 +1391,7 @@ function set_startTime(value, time)
         }
         DEF worlds Transform {
           children DEF _108 Switch {
-            whichChoice 2
+            whichChoice 0
             choice [
               DEF intro Transform {
                 center -0.627419 0.746411 -0.0483251

@@ -66,8 +66,8 @@ X3DViewpointNode::Fields::Fields () :
 	centerOfRotationOffset ()
 { }
 
-X3DViewpointNode::X3DViewpointNode (bool displayed) :
-	            X3DBindableNode (displayed),                                        
+X3DViewpointNode::X3DViewpointNode () :
+	            X3DBindableNode (),                                        
 	         X3DViewpointObject (),                                                 
 	                     fields (),                                                 
 	            modelViewMatrix (),                                                 
@@ -134,21 +134,9 @@ X3DViewpointNode::setTransformationMatrix (const Matrix4f & value)
 }
 
 void
-X3DViewpointNode::addToLayer (X3DLayerNode* const layer)
-{
-	layer -> getViewpoints () .push_back (this);
-}
-
-void
-X3DViewpointNode::removeFromLayer (X3DLayerNode* const layer)
-{
-	layer -> getViewpoints () .erase (this);
-}
-
-void
 X3DViewpointNode::bindToLayer (X3DLayerNode* const layer)
 {
-	std::clog << "Trying to bind X3DViewpoint '" << description () << "' to layer '" << layer -> getName () << "': " << std::flush;
+	std::clog << "Trying to bind X3DViewpoint '" << getName () << ":" << description () << "' to layer '" << layer -> getName () << "': " << std::flush;
 
 	layer -> getViewpointStack () .push (this);
 
@@ -270,6 +258,8 @@ X3DViewpointNode::camera ()
 void
 X3DViewpointNode::collect ()
 {
+	getCurrentLayer () -> getViewpoints () .push_back (this);
+
 	if (not isBound ())
 	{
 		if (not jump ())

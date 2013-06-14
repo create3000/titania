@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-Fog::Fog (X3DExecutionContext* const executionContext, bool displayed) :
+Fog::Fog (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DBindableNode (displayed),                                           
+	X3DBindableNode (),                                           
 	   X3DFogObject ()                                                     
 {
 	setComponent ("EnvironmentalEffects");
@@ -77,7 +77,7 @@ Fog::Fog (X3DExecutionContext* const executionContext, bool displayed) :
 X3DBaseNode*
 Fog::create (X3DExecutionContext* const executionContext) const
 {
-	return new Fog (executionContext, true);
+	return new Fog (executionContext);
 }
 
 void
@@ -85,18 +85,6 @@ Fog::initialize ()
 {
 	X3DBindableNode::initialize ();
 	X3DFogObject::initialize ();
-}
-
-void
-Fog::addToLayer (X3DLayerNode* const layer)
-{
-	layer -> getFogs () .push_back (this);
-}
-
-void
-Fog::removeFromLayer (X3DLayerNode* const layer)
-{
-	layer -> getFogs () .erase (this);
 }
 
 void
@@ -109,6 +97,21 @@ void
 Fog::unbindFromLayer (X3DLayerNode* const layer)
 {
 	layer -> getFogStack () .pop (this);
+}
+
+void
+Fog::traverse (TraverseType type)
+{
+	switch (type)
+	{
+		case TraverseType::COLLECT:
+		{
+			getCurrentLayer () -> getFogs () .push_back (this);			
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 void
