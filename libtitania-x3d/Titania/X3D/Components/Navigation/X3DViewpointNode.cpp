@@ -150,6 +150,14 @@ X3DViewpointNode::unbindFromLayer (X3DLayerNode* const layer)
 }
 
 void
+X3DViewpointNode::resetUserOffsets ()
+{
+	positionOffset ()         = Vector3f ();
+	orientationOffset ()      = Rotation4f ();
+	centerOfRotationOffset () = Vector3f ();
+}
+
+void
 X3DViewpointNode::lookAt (Box3f bbox)
 {
 	std::clog << "Look at using viewpoint: " << description () << "." << std::endl;
@@ -189,22 +197,17 @@ X3DViewpointNode::_set_bind ()
 		if (jump ())
 		{
 			if (not retainUserOffsets ())
-			{
-				// Reinitialize user offsets.
-				positionOffset ()         = Vector3f ();
-				orientationOffset ()      = Rotation4f ();
-				centerOfRotationOffset () = Vector3f ();
-			}
+				resetUserOffsets ();
 		}
 		else
 		{
 			// Apply relative transformations from previous viewpoint.
-			Vector3f   p;
-			Rotation4f o;
-			differenceMatrix .get (p, o);
+			Vector3f   position;
+			Rotation4f orientation;
+			differenceMatrix .get (position, orientation);
 
-			positionOffset ()    = p;
-			orientationOffset () = o;
+			positionOffset ()    = position;
+			orientationOffset () = orientation;
 		}
 	}
 }

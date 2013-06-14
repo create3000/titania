@@ -1,5 +1,11 @@
 2013-06-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DLayerNode.h:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp: 
+
+2013-06-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.cpp:
 	* BindableNodeList.h:
 	* Inline.h:

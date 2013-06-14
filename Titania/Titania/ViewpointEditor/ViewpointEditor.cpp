@@ -73,12 +73,18 @@ ViewpointEditor::initialize ()
 		set_world ();
 }
 
+X3D::ViewpointList &
+ViewpointEditor::getViewpoints ()
+{
+	return getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpoints ();
+}
+
 void
 ViewpointEditor::set_world ()
 {
 	//	getBrowser () -> getActiveViewpoint () .addInterest (this, &ViewpointEditor::set_currentViewpoint);
 
-	getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpoints () .addInterest (this, &ViewpointEditor::set_viewpoints);
+	getViewpoints () .addInterest (this, &ViewpointEditor::set_viewpoints);
 
 	set_viewpoints ();
 }
@@ -90,7 +96,7 @@ ViewpointEditor::set_viewpoints ()
 	getListStore () -> clear ();
 
 	// Fill the TreeView's model
-	for (const auto & viewpoint : getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpoints ())
+	for (const auto & viewpoint : getViewpoints ())
 	{
 		if (viewpoint -> description () .length ())
 			getListStore () -> append () -> set_value (0, viewpoint -> description () .getValue ());
@@ -102,7 +108,7 @@ ViewpointEditor::set_viewpoints ()
 void
 ViewpointEditor::set_currentViewpoint ()
 {
-	X3D::Viewpoint* viewpoint = dynamic_cast <X3D::Viewpoint*> (getBrowser () -> getActiveViewpoint ());
+	auto viewpoint = dynamic_cast <X3D::Viewpoint*> (getBrowser () -> getActiveViewpoint ());
 
 	if (viewpoint)
 		getFieldOfView () .set_value (viewpoint -> fieldOfView ());
@@ -111,13 +117,17 @@ ViewpointEditor::set_currentViewpoint ()
 void
 ViewpointEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
-	getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpoints () [path .front ()] -> set_bind () = true;
+	auto viewpoint = getViewpoints () [path .front ()];
+	
+	viewpoint -> resetUserOffsets ();
+	
+	viewpoint -> set_bind () = true;
 }
 
 void
 ViewpointEditor::on_fieldOfView_changed ()
 {
-	X3D::Viewpoint* viewpoint = dynamic_cast <X3D::Viewpoint*> (getBrowser () -> getActiveViewpoint ());
+	auto viewpoint = dynamic_cast <X3D::Viewpoint*> (getBrowser () -> getActiveViewpoint ());
 
 	if (viewpoint)
 		viewpoint -> fieldOfView () = getFieldOfView () .get_value ();
@@ -125,7 +135,7 @@ ViewpointEditor::on_fieldOfView_changed ()
 
 ViewpointEditor::~ViewpointEditor ()
 {
-	getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpoints () .removeInterest (this, &ViewpointEditor::set_viewpoints);
+	getViewpoints () .removeInterest (this, &ViewpointEditor::set_viewpoints);
 }
 
 } // puck

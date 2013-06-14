@@ -141,6 +141,9 @@ public:
 	const Matrix4f &
 	getModelViewMatrix () const
 	{ return modelViewMatrix; }
+	
+	void
+	resetUserOffsets ();
 
 	virtual
 	void
@@ -158,11 +161,11 @@ public:
 
 	virtual
 	void
-	traverse (TraverseType);
+	traverse (TraverseType) override;
 
 	virtual
 	void
-	dispose ();
+	dispose () override;
 
 
 protected:
@@ -178,7 +181,7 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
 
 	virtual
 	Vector3f
@@ -186,11 +189,11 @@ private:
 
 	virtual
 	void
-	bindToLayer (X3DLayerNode* const);
+	bindToLayer (X3DLayerNode* const) override;
 
 	virtual
 	void
-	unbindFromLayer (X3DLayerNode* const);
+	unbindFromLayer (X3DLayerNode* const) override;
 
 	void
 	set_isActive (const bool &);

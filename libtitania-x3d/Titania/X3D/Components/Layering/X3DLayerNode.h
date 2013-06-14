@@ -143,35 +143,44 @@ public:
 	///  @name X3DBindableNode stack handling
 
 	BindableNodeStack <NavigationInfo> &
-	getNavigationInfoStack () { return navigationInfoStack; }
+	getNavigationInfoStack ()
+	{ return navigationInfoStack; }
 
 	BindableNodeStack <X3DBackgroundNode> &
-	getBackgroundStack () { return backgroundStack; }
+	getBackgroundStack ()
+	{ return backgroundStack; }
 
 	BindableNodeStack <Fog> &
-	getFogStack () { return fogStack; }
+	getFogStack ()
+	{ return fogStack; }
 
 	BindableNodeStack <X3DViewpointNode> &
-	getViewpointStack () { return viewpointStack; }
+	getViewpointStack ()
+	{ return viewpointStack; }
 
 	///  @name X3DBindableNode list handling
 
 	NavigationInfoList &
-	getNavigationInfos () { return navigationInfos; }
+	getNavigationInfos ()
+	{ return navigationInfos; }
 
 	BackgroundList &
-	getBackgrounds () { return backgrounds; }
+	getBackgrounds ()
+	{ return backgrounds; }
 
 	FogList &
-	getFogs () { return fogs; }
+	getFogs ()
+	{ return fogs; }
 
 	ViewpointList &
-	getViewpoints () { return viewpoints; }
+	getViewpoints ()
+	{ return viewpoints; }
 
 	///  @name Fog handling
 
 	LocalFogStack &
-	getLocalFogs () { return localFogs; }
+	getLocalFogs ()
+	{ return localFogs; }
 
 	///  @name Light handling
 
@@ -179,22 +188,26 @@ public:
 	pushLocalLight (X3DLightNode*);
 
 	void
-	popLocalLight () { localLights .pop_back (); }
+	popLocalLight ()
+	{ localLights .pop_back (); }
 
 	const LightContainerArray &
-	getLocalLights () { return localLights; }
+	getLocalLights ()
+	{ return localLights; }
 
 	void
 	addGlobalLight (X3DLightNode* light)
 	{ globalLights .push_back (new LightContainer (ModelViewMatrix4f (), light)); }
 
 	const LightContainerArray &
-	getGlobalLights () { return globalLights; }
+	getGlobalLights ()
+	{ return globalLights; }
 
 	///  @name Collision handling
 
 	CollisionArray &
-	getCollisions () { return collisions; }
+	getCollisions ()
+	{ return collisions; }
 
 	///  @name ...
 
@@ -207,11 +220,11 @@ public:
 
 	virtual
 	void
-	traverse (TraverseType);
+	traverse (TraverseType) override;
 
 	virtual
 	void
-	dispose ();
+	dispose () override;
 
 
 protected:
@@ -220,7 +233,7 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
 
 
 private:
@@ -254,7 +267,7 @@ private:
 
 	virtual
 	void
-	collect (TraverseType);
+	collect (TraverseType) override;
 
 	struct Fields
 	{

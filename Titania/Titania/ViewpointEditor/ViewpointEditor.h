@@ -74,6 +74,9 @@ private:
 	void
 	initialize ();
 
+	X3D::ViewpointList &
+	getViewpoints ();
+
 	void
 	set_world ();
 
