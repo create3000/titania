@@ -253,7 +253,7 @@ X3DComposedGeometryNode::buildNormals (size_t vertexCount, size_t size)
 void
 X3DComposedGeometryNode::buildFaceNormals (size_t vertexCount, size_t size)
 {
-	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord ());
 
 	for (size_t index = 0; index < size; index += vertexCount)
 	{

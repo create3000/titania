@@ -65,11 +65,12 @@ LayerSet::Fields::Fields () :
 { }
 
 LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DNode (),                                                    
-	     fields (),                                                    
-	   children ({ new Layer (executionContext) }),                    
-	     layer0 (children [0])                                         
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	        X3DNode (),                                                    
+	         fields (),                                                    
+	       children ({ new Layer (executionContext) }),                    
+	         layer0 (children [0]),
+	activeLayerNode ()                                        
 {
 	setComponent ("Layering");
 	setTypeName ("LayerSet");
@@ -79,7 +80,7 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "order",       order ());
 	addField (inputOutput, "layers",      layers ());
 
-	setChildren (layer0);
+	setChildren (layer0, activeLayerNode);
 }
 
 X3DBaseNode*
@@ -93,13 +94,12 @@ LayerSet::initialize ()
 {
 	X3DNode::initialize ();
 
-	children [0] -> setup ();
-	children [0] -> getBackgroundStack () .bottom () -> transparency () = 0;
+	layer0 -> setup ();
+	layer0 -> getBackgroundStack () .bottom () -> transparency () = 0;
 
 	activeLayer () .addInterest (this, &LayerSet::set_activeLayer);
 	layers ()      .addInterest (this, &LayerSet::set_layers);
 
-	set_activeLayer ();
 	set_layers ();
 }
 
@@ -109,18 +109,24 @@ LayerSet::getBBox ()
 	return getActiveLayer () -> getBBox ();                     // XXX get bbox from all layers;
 }
 
-X3DLayerNode*
-LayerSet::getActiveLayer () const
+void
+LayerSet::setLayer0 (const SFNode <X3DLayerNode> & value)
 {
-	if (activeLayer () >= 0 and activeLayer () < (int32_t) children .size ())
-		return children [activeLayer ()];
+	layer0       = value;
+	children [0] = value;
 
-	return children [0];
+	set_activeLayer ();
 }
 
 void
 LayerSet::set_activeLayer ()
-{ }
+{
+	if (activeLayer () >= 0 and activeLayer () < (int32_t) children .size ())
+		activeLayerNode = children [activeLayer ()];
+
+	else
+		activeLayerNode = NULL;
+}
 
 void
 LayerSet::set_layers ()
@@ -129,11 +135,13 @@ LayerSet::set_layers ()
 
 	for (const auto & layer : layers ())
 	{
-		auto child = x3d_cast <X3DLayerNode*> (layer .getValue ());
+		auto child = x3d_cast <X3DLayerNode*> (layer);
 
 		if (child)
 			children .emplace_back (child);
 	}
+
+	set_activeLayer ();
 }
 
 void
@@ -153,7 +161,8 @@ LayerSet::dispose ()
 {
 	children .clear ();
 
-	layer0 .dispose ();
+	layer0          .dispose ();
+	activeLayerNode .dispose ();
 
 	X3DNode::dispose ();
 }

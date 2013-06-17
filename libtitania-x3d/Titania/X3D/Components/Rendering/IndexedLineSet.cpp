@@ -108,7 +108,7 @@ IndexedLineSet::initialize ()
 void
 IndexedLineSet::set_coordIndex ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord ());
 
 	polylines .clear ();
 
@@ -176,8 +176,8 @@ IndexedLineSet::set_coordIndex ()
 void
 IndexedLineSet::set_colorIndex ()
 {
-	auto _color     = x3d_cast <Color*> (color () .getValue ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color () .getValue ());
+	auto _color     = x3d_cast <Color*> (color ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
 
 	if (_color or _colorRGBA)
 	{
@@ -223,15 +223,15 @@ IndexedLineSet::set_colorIndex ()
 void
 IndexedLineSet::build ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord ());
 
 	if (not _coord or not _coord -> point () .size ())
 		return;
 
 	// Color
 
-	auto _color     = x3d_cast <Color*> (color () .getValue ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color () .getValue ());
+	auto _color     = x3d_cast <Color*> (color ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
 
 	// Fill GeometryNode
 

@@ -33,11 +33,11 @@ function initialize ()
 
 	for (var i = 0; i < vertices; ++ i)
 	{
-		geometry .coordIndex [i] = i;
+		coordIndex [i] = i;
 		point [i] = scale .multMatrixVec (new SFRotation (0, 0, 1, 2 * Math. PI * i / vertices) .multVec (vertex));
 	}
 
-	geometry .coordIndex = coordIndex;
+	geometry .set_coordIndex = coordIndex;
 }
 "
     directOutput TRUE

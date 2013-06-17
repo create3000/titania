@@ -90,13 +90,13 @@ PointSet::create (X3DExecutionContext* const executionContext) const
 void
 PointSet::build ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord ());
 
 	if (not _coord)
 		return;
 
-	auto _color     = x3d_cast <Color*> (color () .getValue ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color () .getValue ());
+	auto _color     = x3d_cast <Color*> (color ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
 
 	if (_color)
 	{

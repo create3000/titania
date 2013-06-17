@@ -114,12 +114,12 @@ ComposedCubeMapTexture::set_children ()
 	glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	auto _front  = x3d_cast <X3DTexture2DNode*> (front ()  .getValue ());
-	auto _back   = x3d_cast <X3DTexture2DNode*> (back ()   .getValue ());
-	auto _left   = x3d_cast <X3DTexture2DNode*> (left ()   .getValue ());
-	auto _right  = x3d_cast <X3DTexture2DNode*> (right ()  .getValue ());
-	auto _bottom = x3d_cast <X3DTexture2DNode*> (bottom () .getValue ());
-	auto _top    = x3d_cast <X3DTexture2DNode*> (top ()    .getValue ());
+	auto _front  = x3d_cast <X3DTexture2DNode*> (front ());
+	auto _back   = x3d_cast <X3DTexture2DNode*> (back ());
+	auto _left   = x3d_cast <X3DTexture2DNode*> (left ());
+	auto _right  = x3d_cast <X3DTexture2DNode*> (right ());
+	auto _bottom = x3d_cast <X3DTexture2DNode*> (bottom ());
+	auto _top    = x3d_cast <X3DTexture2DNode*> (top ());
 
 	size_t width = 0, height = 0;
 

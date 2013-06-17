@@ -82,7 +82,7 @@ X3DBoundedObject::getBBox (const MFNode & boundedObjects)
 
 	for ( ; first not_eq boundedObjects .end (); ++ first)
 	{
-		auto boundedObject = x3d_cast <X3DBoundedObject*> (first -> getValue ());
+		auto boundedObject = x3d_cast <X3DBoundedObject*> (*first);
 
 		if (boundedObject)
 		{
@@ -102,7 +102,7 @@ X3DBoundedObject::getBBox (const MFNode & boundedObjects)
 	{
 		for (++ first; first not_eq boundedObjects .end (); ++ first)
 		{
-			auto boundedObject = x3d_cast <X3DBoundedObject*> (first -> getValue ());
+			auto boundedObject = x3d_cast <X3DBoundedObject*> (*first);
 
 			if (boundedObject)
 			{

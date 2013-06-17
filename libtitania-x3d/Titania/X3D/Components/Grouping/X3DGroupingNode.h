@@ -121,8 +121,8 @@ private:
 	void
 	set_removeChildren ();
 
-	void
-	set_endChildren ();
+	//void
+	//set_endChildren ();
 
 	void
 	set_children ();
@@ -147,10 +147,10 @@ private:
 
 	Fields fields;
 
-	std::deque <X3DPointingDeviceSensorNode*> pointingDeviceSensors;
-	std::deque <X3DLightNode*>                lights;
-	std::deque <LocalFog*>                    localFogs;
-	std::deque <X3DChildNode*>                childNodes;
+	std::vector <X3DPointingDeviceSensorNode*> pointingDeviceSensors;
+	std::vector <X3DLightNode*>                lights;
+	std::vector <LocalFog*>                    localFogs;
+	std::vector <X3DChildNode*>                childNodes;
 
 };
 

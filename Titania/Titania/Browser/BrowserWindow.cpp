@@ -305,9 +305,10 @@ BrowserWindow::on_fullscreen_toggled ()
 void
 BrowserWindow::on_headlight_toggled ()
 {
-	const X3D::SFNode <X3D::NavigationInfo> & navigationInfo = getBrowser () -> getActiveNavigationInfo ();
+	auto navigationInfo = getBrowser () -> getActiveNavigationInfo ();
 
-	navigationInfo -> headlight () = getHeadlightMenuItem () .get_active ();
+	if (navigationInfo)
+		navigationInfo -> headlight () = getHeadlightMenuItem () .get_active ();
 }
 
 void

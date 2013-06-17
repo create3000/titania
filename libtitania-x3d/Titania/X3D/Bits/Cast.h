@@ -58,7 +58,7 @@ namespace X3D {
 
 template <class Type, class Up>
 Type
-x3d_cast (Up value)
+x3d_cast (Up & value)
 {
 	if (value)
 		return dynamic_cast <Type> (value -> getLocalNode ());

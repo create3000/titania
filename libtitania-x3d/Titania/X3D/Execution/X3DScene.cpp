@@ -188,7 +188,10 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	clear ();
+
 	setWorldURL (worldURL);
+
 	fromStream (istream);
 }
 
@@ -199,6 +202,8 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	clear ();
+
 	Parser (istream, this) .parseIntoScene ();
 }
 
@@ -293,8 +298,19 @@ X3DScene::toStream (std::ostream & ostream) const
 }
 
 void
+X3DScene::clear ()
+{
+	metadatas     .clear ();
+	exportedNodes .clear ();
+	exportedNames .clear ();
+
+	X3DExecutionContext::clear ();
+}
+
+void
 X3DScene::dispose ()
 {
+	metadatas     .clear ();
 	exportedNodes .clear ();
 	exportedNames .clear ();
 

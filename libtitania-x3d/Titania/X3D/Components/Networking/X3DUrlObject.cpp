@@ -116,7 +116,7 @@ throw (Error <INVALID_X3D>,
 {
 	SFNode <Scene> scene = getBrowser () -> createScene ();
 
-	scene -> fromStream (worldURL, istream);
+	scene -> fromStream (getReferer (), istream);
 
 	return scene;
 }
@@ -134,7 +134,7 @@ throw (Error <INVALID_URL>,
 {
 	SFNode <Scene> scene = getBrowser () -> createScene ();
 
-	parseIntoScene (*scene, url);
+	parseIntoScene (scene, url);
 
 	return scene;
 }

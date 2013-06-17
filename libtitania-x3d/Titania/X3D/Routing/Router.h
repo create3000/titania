@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_ROUTING_ROUTER_H__
 #define __TITANIA_X3D_ROUTING_ROUTER_H__
 
-#include "../Base/Output.h"
+#include "../Base/X3DOutput.h"
 #include "../Basic/NodeSet.h"
 #include "../Basic/X3DBaseNode.h"
 #include <Titania/Chrono/StopWatch.h>
@@ -60,11 +60,10 @@
 namespace titania {
 namespace X3D {
 
-class Router
+class Router :
+	public X3DOutput
 {
 public:
-
-	chrono::stopwatch <double> clock;
 
 	Router ();
 

@@ -121,12 +121,12 @@ Text::getLength (const size_t index)
 const X3DFontStyleNode*
 Text::getFontStyle () const
 {
-	auto _fontStyle = x3d_cast <X3DFontStyleNode*> (fontStyle () .getValue ());
+	auto _fontStyle = x3d_cast <X3DFontStyleNode*> (fontStyle ());
 
 	if (_fontStyle)
 		return _fontStyle;
 
-	return getBrowser () -> getBrowserOptions () -> fontStyle () .getValue ();
+	return getBrowser () -> getBrowserOptions () -> fontStyle ();
 }
 
 void

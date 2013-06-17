@@ -191,6 +191,8 @@ public:
 		getConsole () -> string_changed () .clear ();
 		getConsole () -> string_changed () .emplace_back (stream .str ());
 		getConsole () -> processEvents ();
+		
+		std::clog << stream .str ();
 	}
 
 	template <typename ... Args>
@@ -246,9 +248,6 @@ private:
 
 	void
 	set_world ();
-	
-	void
-	bind ();
 
 	static const std::string version;
 
@@ -259,8 +258,8 @@ private:
 
 	SFString description;
 
-	SFNode <Scene> scene;
-	SFNode <Scene> world;
+	SFNode <Scene>    scene;
+	SFNode <Scene>    world;
 
 };
 

@@ -76,10 +76,6 @@ class X3DExecutionContext :
 {
 public:
 
-	virtual
-	void
-	setup () override;
-
 	void
 	assign (const X3DExecutionContext* const);
 
@@ -379,6 +375,10 @@ protected:
 	void
 	setWorldURL (const basic::uri &);
 
+	virtual
+	void
+	clear ();
+	
 
 private:
 

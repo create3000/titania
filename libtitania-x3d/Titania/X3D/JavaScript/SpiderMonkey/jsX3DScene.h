@@ -69,7 +69,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext*, Scene*, jsval*, const bool = false);
+	create (JSContext*, X3DScene*, jsval*, const bool = false);
 
 	static
 	JSClass*

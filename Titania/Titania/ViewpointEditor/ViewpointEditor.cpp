@@ -56,8 +56,24 @@
 namespace titania {
 namespace puck {
 
+namespace Columns {
+
+constexpr int Index       = 0;
+constexpr int Description = 1;
+constexpr int Weight      = 2;
+
+};
+
+namespace Weight {
+
+constexpr int Normal = 400;
+constexpr int Bold   = 700;
+
+};
+
 ViewpointEditor::ViewpointEditor (const X3D::SFNode <X3D::Browser> & browser) :
-	X3DViewpointEditorUI (get_ui ("ViewpointEditor.ui"), gconf_dir ()) 
+	X3DViewpointEditorUI (get_ui ("ViewpointEditor.ui"), gconf_dir ()),
+	activeLayer ()
 {
 	setBrowser (browser);
 }
@@ -67,26 +83,52 @@ ViewpointEditor::initialize ()
 {
 	X3DViewpointEditorUI::initialize ();
 
-	getBrowser () -> initialized .addInterest (this, &ViewpointEditor::set_world);
+	getCellRendererDescription () -> property_weight_set () = true;
 
-	if (getBrowser () -> initialized)
-		set_world ();
+	getBrowser () -> getActiveLayer () .addInterest (this, &ViewpointEditor::set_activeLayer);
+
+	set_activeLayer ();
 }
 
 X3D::ViewpointList &
 ViewpointEditor::getViewpoints ()
 {
-	return getBrowser () -> getExecutionContext () -> getActiveLayer () -> getViewpoints ();
+	return activeLayer -> getViewpoints ();
+}
+
+X3D::UserViewpointList
+ViewpointEditor::getUserViewpoints ()
+{
+	return activeLayer -> getUserViewpoints ();
+}
+
+X3D::ViewpointStack &
+ViewpointEditor::getViewpointStack ()
+{
+	return activeLayer -> getViewpointStack ();
 }
 
 void
-ViewpointEditor::set_world ()
+ViewpointEditor::set_activeLayer ()
 {
-	//	getBrowser () -> getActiveViewpoint () .addInterest (this, &ViewpointEditor::set_currentViewpoint);
+	if (activeLayer)
+	{
+		getViewpoints ()     .removeInterest (this, &ViewpointEditor::set_viewpoints);
+		getViewpointStack () .removeInterest (this, &ViewpointEditor::set_currentViewpoint);
+	}
+	
+	activeLayer = getBrowser () -> getActiveLayer ();
 
-	getViewpoints () .addInterest (this, &ViewpointEditor::set_viewpoints);
+	if (activeLayer)
+	{
+		getViewpoints ()     .addInterest (this, &ViewpointEditor::set_viewpoints);
+		getViewpointStack () .addInterest (this, &ViewpointEditor::set_currentViewpoint);
 
-	set_viewpoints ();
+		set_viewpoints ();
+		set_currentViewpoint ();
+	}
+	else
+		getListStore () -> clear ();
 }
 
 void
@@ -95,19 +137,36 @@ ViewpointEditor::set_viewpoints ()
 	// Clear
 	getListStore () -> clear ();
 
+	guint index = 0;
+
 	// Fill the TreeView's model
 	for (const auto & viewpoint : getViewpoints ())
 	{
 		if (viewpoint -> description () .length ())
-			getListStore () -> append () -> set_value (0, viewpoint -> description () .getValue ());
-	}
+		{
+			auto row = getListStore () -> append ();
+			row -> set_value (Columns::Index,       index);
+			row -> set_value (Columns::Description, viewpoint -> description () .getValue ());
+			row -> set_value (Columns::Weight,      viewpoint -> isBound () .getValue () ? Weight::Bold : Weight::Normal);
+		}
 
-	getTreeView () .queue_draw ();
+		++ index;
+	}
 }
 
 void
 ViewpointEditor::set_currentViewpoint ()
 {
+	// Update list store
+
+	auto userViewpoints = getUserViewpoints ();
+	auto rows           = getListStore () -> children ();
+
+	for (size_t i = 0, size = rows .size (); i < size; ++ i)
+		rows [i] -> set_value (Columns::Weight, userViewpoints [i] -> isBound () .getValue () ? Weight::Bold : Weight::Normal);
+
+	// Update fieldOfView widget
+
 	auto viewpoint = dynamic_cast <X3D::Viewpoint*> (getBrowser () -> getActiveViewpoint ());
 
 	if (viewpoint)
@@ -117,10 +176,14 @@ ViewpointEditor::set_currentViewpoint ()
 void
 ViewpointEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
-	auto viewpoint = getViewpoints () [path .front ()];
-	
+	guint index;
+
+	getListStore () -> get_iter (path) -> get_value (Columns::Index, index);
+
+	auto viewpoint = getViewpoints () [index];
+
 	viewpoint -> resetUserOffsets ();
-	
+
 	viewpoint -> set_bind () = true;
 }
 
@@ -135,7 +198,11 @@ ViewpointEditor::on_fieldOfView_changed ()
 
 ViewpointEditor::~ViewpointEditor ()
 {
-	getViewpoints () .removeInterest (this, &ViewpointEditor::set_viewpoints);
+	if (activeLayer)
+	{
+		getViewpoints ()     .removeInterest (this, &ViewpointEditor::set_viewpoints);
+		getViewpointStack () .removeInterest (this, &ViewpointEditor::set_currentViewpoint);
+	}
 }
 
 } // puck

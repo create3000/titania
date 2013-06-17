@@ -151,6 +151,11 @@ private:
 
 };
 
+typedef BindableNodeStack <NavigationInfo> NavigationInfoStack;
+typedef BindableNodeStack <X3DBackgroundNode> BackgroundStack;
+typedef BindableNodeStack <Fog> FogStack;
+typedef BindableNodeStack <X3DViewpointNode> ViewpointStack;
+
 } // X3D
 
 extern template class basic::bind_stack <X3D::NavigationInfo*>;

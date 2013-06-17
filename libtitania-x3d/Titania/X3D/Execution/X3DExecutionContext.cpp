@@ -82,14 +82,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	        externProtos (),              
 	              routes (),              
 	           rootNodes ()               
-{ }
-
-void
-X3DExecutionContext::setup ()
 {
-	X3DNode::setup ();
-
-	// Add rootNodes here as child. This prevents X3DProtoypeInstances from being disposed on construction.
 	setChildren (rootNodes);
 }
 
@@ -113,7 +106,17 @@ X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
 		updateProtoDeclaration (proto .getNodeName (), proto);
 
 	for (const auto & rootNode : executionContext -> getRootNodes ())
-		getRootNodes () .emplace_back (rootNode -> clone (this));
+	{
+		try
+		{
+			getRootNodes () .emplace_back (rootNode -> clone (this));
+		}
+		catch (const Error <INVALID_NAME> &)
+		{
+			getRootNodes () .emplace_back (rootNode -> copy (this));
+			getRootNodes () .back () -> setup ();
+		}
+	}
 
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
 		importedNode -> clone (this);
@@ -765,7 +768,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		auto viewpoint = x3d_cast <X3DViewpointNode*> (getNamedNode (name) .getValue ());
+		auto viewpoint = x3d_cast <X3DViewpointNode*> (getNamedNode (name));
 
 		if (viewpoint)
 			viewpoint -> set_bind () = true;
@@ -851,6 +854,22 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 	}
 
 	Generator::PopContext ();
+}
+
+void
+X3DExecutionContext::clear ()
+{
+	profile = NULL;
+	components .clear ();
+
+	namedNodes    .clear ();
+	importedNodes .clear ();
+	importedNames .clear ();
+	protos        .clear ();
+	externProtos  .clear ();
+	routes        .clear ();
+
+	rootNodes .clear ();
 }
 
 void

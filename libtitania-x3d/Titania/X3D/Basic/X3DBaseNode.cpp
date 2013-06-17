@@ -136,18 +136,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 X3DBaseNode*
 X3DBaseNode::clone (X3DExecutionContext* const executionContext) const
 {
-	// We first try to get a named node if this node has a name and return this named node
-	// instead of cloning this node. This is important for copying Proto nodes to create
-	// PrototypeInstances.
-
-	try
-	{
-		return executionContext -> getNamedNode (getName ());
-	}
-	catch (const Error <INVALID_NAME> &)
-	{ }
-
-	return copy (executionContext);
+	return executionContext -> getNamedNode (getName ());
 }
 
 X3DBaseNode*
@@ -213,8 +202,6 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 			}
 		}
 	}
-
-	copy -> setup ();
 
 	return copy;
 }
@@ -634,13 +621,22 @@ X3DBaseNode::registerEvent (X3DChildObject* object)
 void
 X3DBaseNode::registerEvent (X3DChildObject* object, const Event & event)
 {
-	events .emplace_back (object, event);
-
+	// Register for processEvents
+	
+	if (events .empty ())
+	{
+		getBrowser () -> getRouter () .registerEvent (this);
+		getBrowser () -> notify ();
+	}
+	
+	// Register for eventsProcessed
+	
 	if (object -> isInput ())
 		getBrowser () -> getRouter () .registerNode (this);
 
-	getBrowser () -> getRouter () .registerEvent (this);
-	getBrowser () -> notify ();
+	// Add event
+
+	events .emplace_back (object, event);
 }
 
 void

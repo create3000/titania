@@ -116,7 +116,7 @@ Collision::set_active (bool value)
 void
 Collision::set_proxy ()
 {
-	_proxy = x3d_cast <X3DChildNode*> (proxy () .getValue ());
+	_proxy = x3d_cast <X3DChildNode*> (proxy ());
 }
 
 void

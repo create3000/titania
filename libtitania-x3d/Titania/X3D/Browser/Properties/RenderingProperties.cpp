@@ -349,7 +349,6 @@ RenderingProperties::display ()
 
 		clock       .reset ();
 		renderClock .reset ();
-		getBrowser () -> getRouter () .clock .reset ();
 	}
 
 	//
@@ -414,32 +413,8 @@ RenderingProperties::update ()
 	stringstream .str (""); stringstream << "Display:                   " << std::setprecision (2) << std::fixed << renderClock .average () / clock .average () * 100 << " %";
 	string .emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Routing:                   " << std::setprecision (2) << std::fixed << getBrowser () -> getRouter () .clock .average () / clock .average () * 100 << " %";
-	string .emplace_back (stringstream .str ());
-
 	stringstream .str (""); stringstream << "Sensors:                   " << getBrowser () -> sensors .getRequesters () .size ();
 	string .emplace_back (stringstream .str ());
-
-	//	//	stringstream .str (""); stringstream << "Event Time:    " << std::setprecision (7) << std::fixed << eventTime << " s (" << maxEventTime << ')';
-	//	//	string .emplace_back (stringstream .str ());
-	//
-	//	//	stringstream .str (""); stringstream << "Traverse Time: " << std::setprecision (7) << std::fixed << traverseTime << " s (" << maxTraverseTime << ')';
-	//	// string .emplace_back (stringstream .str ());
-	//
-	//	// stringstream .str (""); stringstream << "Draw Time:                 " << std::setprecision (7) << std::fixed << renderInterval << " s (" << maxDrawTime << ')';
-	//	// string .emplace_back (stringstream .str ());
-	//
-	//	//	stringstream .str (""); stringstream << "Nodes:         " << getBrowser () -> getRenderer () -> getNumNodesDrawn () << " / " << getBrowser () -> getRenderer () -> getNumNodes ();
-	//	// string .emplace_back (stringstream .str ());
-	//
-	//	//	stringstream .str (""); stringstream << "Transparent:   " << getBrowser () -> getRenderer () -> getNumTransparentNodesDrawn () << " / " << getBrowser () -> getRenderer () -> getNumTransparentNodes ();
-	//	//	string .emplace_back (stringstream .str ());
-	//
-	//	//	stringstream .str (""); stringstream << "Textures:      " << getBrowser () -> getNumTextures ();
-	//	//	string .emplace_back (stringstream .str ());
-	//
-	//	stringstream .str (""); stringstream << "Speed:                     " << std::setprecision (3) << std::fixed << getBrowser () -> getCurrentSpeed () << " m/s";
-	//	string .emplace_back (stringstream .str ());
 }
 
 void

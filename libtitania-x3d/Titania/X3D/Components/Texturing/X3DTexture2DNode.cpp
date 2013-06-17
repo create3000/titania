@@ -88,12 +88,12 @@ X3DTexture2DNode::X3DTexture2DNode () :
 const TextureProperties*
 X3DTexture2DNode::getTextureProperties () const
 {
-	auto _textureProperties = x3d_cast <TextureProperties*> (textureProperties () .getValue ());
+	auto _textureProperties = x3d_cast <TextureProperties*> (textureProperties ());
 
 	if (_textureProperties)
 		return _textureProperties;
 
-	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties () .getValue ());
+	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ());
 }
 
 void

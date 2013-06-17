@@ -10,4 +10,6 @@
   <Task file="" description="getField mit exception" />
   <Task file="" description="JavaScript jsSFNode getFieldDefinitions ist nicht save" />
   <Task file="" description="addMetaData" />
+  <Task file="" description="Es gibt in X3DBaseNode bei processEvents Fälle wo events .size () == 0 ist. Warum? Vermeiden." />
+  <Task file="" description="replaceWorld mit NULL Scene nach Docu erlauben" />
 </ListOfTask>

@@ -92,15 +92,15 @@ LineSet::create (X3DExecutionContext* const executionContext) const
 void
 LineSet::build ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord () .getValue ());
+	auto _coord = x3d_cast <Coordinate*> (coord ());
 
 	if (not _coord or not _coord -> point () .size ())
 		return;
 
 	// Color
 
-	auto _color     = x3d_cast <Color*> (color () .getValue ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color () .getValue ());
+	auto _color     = x3d_cast <Color*> (color ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
 
 	if (_color)
 		_color -> resize (_coord -> point () .size ());

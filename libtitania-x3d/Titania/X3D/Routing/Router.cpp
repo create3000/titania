@@ -56,15 +56,14 @@ namespace titania {
 namespace X3D {
 
 Router::Router () :
-	events (), 
-	 nodes ()  
+	X3DOutput (),  
+	   events (), 
+	    nodes ()  
 { }
 
 void
 Router::processEvents ()
 {
-	clock .start ();
-
 	while (events .size ())
 	{
 		do
@@ -79,7 +78,7 @@ Router::processEvents ()
 		eventsProcessed ();
 	}
 
-	clock .stop ();
+	processInterests ();
 }
 
 //}

@@ -79,6 +79,9 @@ public:
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getDescriptionColumn () const { return m_descriptionColumn; }
 
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getCellRendererDescription () const { return m_cellRendererDescription; }
+
 	Gtk::Window &
 	getWindow () const { return *m_window; }
 
@@ -110,15 +113,16 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::deque <sigc::connection>      connections;
-	Glib::RefPtr <Gtk::Builder>        m_builder;
-	Glib::RefPtr <Gtk::ListStore>      m_listStore;
-	Glib::RefPtr <Gtk::TreeViewColumn> m_descriptionColumn;
-	Gtk::Window*                       m_window;
-	Gtk::Box*                          m_widget;
-	Gtk::ScrolledWindow*               m_scrolledWindow;
-	Gtk::TreeView*                     m_treeView;
-	Gtk::HScale*                       m_fieldOfView;
+	std::deque <sigc::connection>        connections;
+	Glib::RefPtr <Gtk::Builder>          m_builder;
+	Glib::RefPtr <Gtk::ListStore>        m_listStore;
+	Glib::RefPtr <Gtk::TreeViewColumn>   m_descriptionColumn;
+	Glib::RefPtr <Gtk::CellRendererText> m_cellRendererDescription;
+	Gtk::Window*                         m_window;
+	Gtk::Box*                            m_widget;
+	Gtk::ScrolledWindow*                 m_scrolledWindow;
+	Gtk::TreeView*                       m_treeView;
+	Gtk::HScale*                         m_fieldOfView;
 
 };
 

@@ -1,3 +1,70 @@
+2013-06-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Cast.h:
+	* SFNode.h:
+	* Router.h:
+	* Browser.h:
+	* Scene.h:
+	* MFNode.cpp:
+	* Parser.cpp:
+	* X3DOutput.cpp:
+	* Router.cpp:
+	* Scene.cpp:
+	* X3DBaseNode.h:
+	* Browser.cpp:
+	* X3DScene.h:
+	* X3DBrowser.h:
+	* X3DChildObject.h:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* X3DBrowser.cpp:
+	* Text.cpp:
+	* ExportedNode.h:
+	* ImportedNode.h:
+	* ImportedNode.cpp:
+	* GarbargeCollector.cpp:
+	* Sound.cpp:
+	* X3DNode.cpp:
+	* BindableNodeList.h:
+	* X3DBrowserContext.cpp:
+	* BindableNodeStack.h:
+	* Inline.h:
+	* LayerSet.h:
+	* Appearance.cpp:
+	* X3DExecutionContext.h:
+	* LineSet.cpp:
+	* Inline.cpp:
+	* LayerSet.cpp:
+	* X3DShapeNode.cpp:
+	* PointSet.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DLayerNode.h:
+	* Viewpoint.cpp:
+	* Collision.cpp:
+	* jsX3DScene.h:
+	* X3DLayerNode.cpp:
+	* ComposedShader.cpp:
+	* X3DGroupingNode.h:
+	* jsGlobals.cpp:
+	* jsBrowser.cpp:
+	* jsX3DScene.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DUrlObject.cpp:
+	* ElevationGrid.cpp:
+	* X3DGroupingNode.cpp:
+	* IndexedLineSet.cpp:
+	* X3DPrototypeInstance.cpp:
+	* ViewpointGroup.cpp:
+	* IndexedFaceSet.cpp:
+	* X3DBoundedObject.cpp:
+	* X3DTexture2DNode.cpp:
+	* TextureProperties.cpp:
+	* RenderingProperties.cpp:
+	* X3DComposedGeometryNode.cpp:
+	* jsX3DExecutionContext.cpp:
+	* OrientationInterpolator.cpp:
+	* ComposedCubeMapTexture.cpp: 
+
 2013-06-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DLayerNode.h:

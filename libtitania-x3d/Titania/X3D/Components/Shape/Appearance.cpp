@@ -137,31 +137,31 @@ Appearance::isTransparent () const
 void
 Appearance::set_lineProperties ()
 {
-	_lineProperties = x3d_cast <LineProperties*> (lineProperties () .getValue ());
+	_lineProperties = x3d_cast <LineProperties*> (lineProperties ());
 }
 
 void
 Appearance::set_fillProperties ()
 {
-	_fillProperties = x3d_cast <FillProperties*> (fillProperties () .getValue ());
+	_fillProperties = x3d_cast <FillProperties*> (fillProperties ());
 }
 
 void
 Appearance::set_material ()
 {
-	_material = x3d_cast <X3DMaterialNode*> (material () .getValue ());
+	_material = x3d_cast <X3DMaterialNode*> (material ());
 }
 
 void
 Appearance::set_texture ()
 {
-	_texture = x3d_cast <X3DTextureNode*> (texture () .getValue ());
+	_texture = x3d_cast <X3DTextureNode*> (texture ());
 }
 
 void
 Appearance::set_textureTransform ()
 {
-	_textureTransform = x3d_cast <X3DTextureTransformNode*> (textureTransform () .getValue ());
+	_textureTransform = x3d_cast <X3DTextureTransformNode*> (textureTransform ());
 }
 
 void
@@ -171,7 +171,7 @@ Appearance::set_shaders ()
 
 	for (const auto & shader : shaders ())
 	{
-		auto _shader = x3d_cast <X3DShaderNode*> (shader .getValue ());
+		auto _shader = x3d_cast <X3DShaderNode*> (shader);
 
 		if (_shader)
 			_shaders .emplace_back (_shader);

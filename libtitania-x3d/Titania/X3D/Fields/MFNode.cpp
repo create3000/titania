@@ -70,9 +70,20 @@ MFNode::clone (X3DExecutionContext* const executionContext) const
 
 	for (const auto & field :* this)
 	{
-		clone -> emplace_back (field .getValue ()
-		                       ? field .getValue () -> clone (executionContext)
-								     : NULL);
+		if (field)
+		{
+			try
+			{
+				clone -> emplace_back (field -> clone (executionContext));
+			}
+			catch (const Error <INVALID_NAME> &)
+			{
+				clone -> emplace_back (field -> copy (executionContext));
+				clone -> back () -> setup ();
+			}
+		}
+		else
+			clone -> emplace_back ();
 	}
 
 	return clone;

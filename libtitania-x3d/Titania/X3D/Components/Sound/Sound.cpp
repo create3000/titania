@@ -113,7 +113,7 @@ Sound::initialize ()
 void
 Sound::set_source ()
 {
-	_source = x3d_cast <X3DSoundSourceNode*> (source () .getValue ());
+	_source = x3d_cast <X3DSoundSourceNode*> (source ());
 }
 
 void

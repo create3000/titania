@@ -328,7 +328,7 @@ IndexedFaceSet::build ()
 
 	GLenum vertexMode        = getVertexMode (polygons [0] .elements [0] .size ());
 	GLenum currentVertexMode = 0;
-	size_t vertices          = getVertices () .size ();
+	size_t vertices          = 0;
 
 	for (const auto polygon : polygons)
 	{
@@ -541,10 +541,10 @@ IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numVertices)
 IndexedFaceSet::ElementArray
 IndexedFaceSet::tesselate (const Vertices & vertices)
 {
-	auto _coord = x3d_cast <Coordinate*> (coord ());
-
 	if (convex ())
 		return ElementArray { vertices };
+
+	auto _coord = x3d_cast <Coordinate*> (coord ());
 
 	ElementArray elements;
 

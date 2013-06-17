@@ -199,7 +199,7 @@ jsBrowser::currentScene (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-	Scene* scene = dynamic_cast <Scene*> (script -> getExecutionContext ());
+	auto scene = dynamic_cast <X3DScene*> (script -> getExecutionContext ());
 
 	if (scene)
 		return jsX3DScene::create (context, scene, vp);

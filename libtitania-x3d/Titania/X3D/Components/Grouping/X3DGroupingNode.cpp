@@ -125,12 +125,12 @@ X3DGroupingNode::set_removeChildren ()
 	}
 }
 
-void
-X3DGroupingNode::set_endChildren ()
-{
-	children () .removeInterest (this, &X3DGroupingNode::set_endChildren);
-	children () .addInterest    (this, &X3DGroupingNode::set_children);
-}
+//void
+//X3DGroupingNode::set_endChildren ()
+//{
+//	children () .removeInterest (this, &X3DGroupingNode::set_endChildren);
+//	children () .addInterest    (this, &X3DGroupingNode::set_children);
+//}
 
 void
 X3DGroupingNode::set_children ()
@@ -148,28 +148,28 @@ X3DGroupingNode::add (const MFNode & children)
 {
 	for (const auto & child : children)
 	{
-		auto pointingDeviceSensorNode = x3d_cast <X3DPointingDeviceSensorNode*> (child .getValue ());
+		auto pointingDeviceSensorNode = x3d_cast <X3DPointingDeviceSensorNode*> (child);
 
 		if (pointingDeviceSensorNode)
 			pointingDeviceSensors .emplace_back (pointingDeviceSensorNode);
 
 		else
 		{
-			auto lightNode = x3d_cast <X3DLightNode*> (child .getValue ());
+			auto lightNode = x3d_cast <X3DLightNode*> (child);
 
 			if (lightNode)
 				lights .emplace_back (lightNode);
 
 			else
 			{
-				auto localFog = x3d_cast <LocalFog*> (child .getValue ());
+				auto localFog = x3d_cast <LocalFog*> (child);
 
 				if (localFog)
 					localFogs .emplace_back (localFog);
 
 				else
 				{
-					auto childNode = x3d_cast <X3DChildNode*> (child .getValue ());
+					auto childNode = x3d_cast <X3DChildNode*> (child);
 
 					if (childNode)
 						childNodes .emplace_back (childNode);

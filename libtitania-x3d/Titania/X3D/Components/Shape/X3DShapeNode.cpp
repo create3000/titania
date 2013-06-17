@@ -125,13 +125,13 @@ X3DShapeNode::isTransparent () const
 void
 X3DShapeNode::set_appearance ()
 {
-	_appearance = x3d_cast <X3DAppearanceNode*> (appearance () .getValue ());
+	_appearance = x3d_cast <X3DAppearanceNode*> (appearance ());
 }
 
 void
 X3DShapeNode::set_geometry ()
 {
-	_geometry = x3d_cast <X3DGeometryNode*> (geometry () .getValue ());
+	_geometry = x3d_cast <X3DGeometryNode*> (geometry ());
 }
 
 void

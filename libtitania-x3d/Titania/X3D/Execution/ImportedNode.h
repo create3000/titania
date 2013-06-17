@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,101 +48,62 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_LAYERING_LAYER_SET_H__
-#define __TITANIA_X3D_COMPONENTS_LAYERING_LAYER_SET_H__
+#ifndef __TITANIA_X3D_EXECUTION_IMPORTED_NODE_H__
+#define __TITANIA_X3D_EXECUTION_IMPORTED_NODE_H__
 
-#include "../Core/X3DNode.h"
-#include "../Layering/X3DLayerNode.h"
+#include "../Basic/X3DBaseNode.h"
+#include "../Fields.h"
 
 namespace titania {
 namespace X3D {
 
-class LayerSet :
-	virtual public X3DNode
+class Inline;
+
+class ImportedNode :
+	virtual public X3DBaseNode
 {
 public:
 
-	LayerSet (X3DExecutionContext* const);
+	ImportedNode (X3DExecutionContext* const,
+	              const SFNode <Inline> &, const std::string &, const std::string &);
+
+	virtual
+	ImportedNode*
+	clone (X3DExecutionContext* const) const;
+
+	const SFNode <Inline> &
+	getInlineNode () const;
+
+	const std::string &
+	getExportedName () const;
+
+	const std::string &
+	getImportedName () const;
+
+	const SFNode <X3DBaseNode> &
+	getExportedNode () const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	virtual
+	void
+	toStream (std::ostream &) const final;
+
+	virtual
+	void
+	dispose () final;
+
+private:
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
 
-	///  @name Fields
+	SFNode <Inline> inlineNode;
 
-	SFInt32 &
-	activeLayer ()
-	{ return *fields .activeLayer; }
-
-	const SFInt32 &
-	activeLayer () const
-	{ return *fields .activeLayer; }
-
-	MFInt32 &
-	order ()
-	{ return *fields .order; }
-
-	const MFInt32 &
-	order () const
-	{ return *fields .order; }
-
-	MFNode &
-	layers ()
-	{ return *fields .layers; }
-
-	const MFNode &
-	layers () const
-	{ return *fields .layers; }
-
-	Box3f
-	getBBox ();
-	
-	void
-	setLayer0 (const SFNode <X3DLayerNode> &);
-
-	const SFNode <X3DLayerNode> &
-	getActiveLayer () const
-	{ return activeLayerNode; }
-
-	const std::deque <X3DLayerNode*> &
-	getLayers () const
-	{ return children; }
-
-	virtual
-	void
-	traverse (TraverseType);
-
-	virtual
-	void
-	dispose ();
-
-
-private:
-
-	virtual
-	void
-	initialize ();
-
-	void
-	set_activeLayer ();
-
-	void
-	set_layers ();
-
-	struct Fields
-	{
-		Fields ();
-
-		SFInt32* const activeLayer;
-		MFInt32* const order;
-		MFNode* const layers;
-	};
-
-	Fields fields;
-
-	std::deque <X3DLayerNode*> children;
-	SFNode <X3DLayerNode>      layer0;
-	SFNode <X3DLayerNode>      activeLayerNode;
+	const std::string exportedName;
+	const std::string importedName;
 
 };
 

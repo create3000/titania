@@ -136,19 +136,19 @@ X3DLayerNode::getBBox ()
 }
 
 NavigationInfo*
-X3DLayerNode::getNavigationInfo ()
+X3DLayerNode::getNavigationInfo () const
 {
 	return navigationInfoStack .top ();
 }
 
 X3DBackgroundNode*
-X3DLayerNode::getBackground ()
+X3DLayerNode::getBackground () const
 {
 	return backgroundStack .top ();
 }
 
 X3DFogObject*
-X3DLayerNode::getFog ()
+X3DLayerNode::getFog () const
 {
 	if (localFogs .size ())
 		return localFogs .top ();
@@ -157,9 +157,23 @@ X3DLayerNode::getFog ()
 }
 
 X3DViewpointNode*
-X3DLayerNode::getViewpoint ()
+X3DLayerNode::getViewpoint () const
 {
 	return viewpointStack .top ();
+}
+
+UserViewpointList
+X3DLayerNode::getUserViewpoints () const
+{
+	UserViewpointList userViewpoints;
+
+	for (const auto & viewpoint : getViewpoints ())
+	{
+		if (viewpoint -> description () .length ())
+			userViewpoints .emplace_back (viewpoint);
+	}
+	
+	return userViewpoints;
 }
 
 void
@@ -194,7 +208,7 @@ X3DLayerNode::lookAt ()
 void
 X3DLayerNode::set_viewport ()
 {
-	currentViewport = x3d_cast <X3DViewportNode*> (viewport () .getValue ());
+	currentViewport = x3d_cast <X3DViewportNode*> (viewport ());
 
 	if (not currentViewport)
 		currentViewport = defaultViewport .getValue ();

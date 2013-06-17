@@ -30,6 +30,7 @@ perl -p -e '
 	s/(\s[\w\d\)\]]+)\.([a-zA-Z])/$1 .$2/go
 		unless /\w\.\w+?[\>"]/ or /^\s*(\/?\*|\/\/)/go;                                   # change variable.member to variable .member
    s/\)and/) and/sgo;
+   s/([^\s])(override|final)/$1 $2/;                                        # add space before final or override
 ' | \
 perl -e '
 	# indent constuctor bases and member initialization

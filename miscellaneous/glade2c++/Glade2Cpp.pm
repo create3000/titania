@@ -16,8 +16,9 @@ my %objects = ();
 $objects {$_} = true foreach qw(
 	Gtk::FileFilter
 	Gtk::AccelGroup
-	Gtk::IconFactory
 	Gtk::Action
+	Gtk::Adjustment
+	Gtk::IconFactory
 	Gtk::RadioAction
 	Gtk::RecentAction
 	Gtk::ToggleAction

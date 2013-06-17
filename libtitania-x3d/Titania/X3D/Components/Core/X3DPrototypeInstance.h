@@ -67,37 +67,33 @@ public:
 	X3DPrototypeInstance (X3DExecutionContext* const, const SFNode <Proto> &);
 
 	virtual
-	void
-	setup ();
-
-	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>);
+	throw (Error <DISPOSED>) final;
 
 	virtual
 	const X3DBaseNode*
 	getType () const
-	throw (Error <DISPOSED>);
+	throw (Error <DISPOSED>) final;
 
 	virtual
 	X3DBaseNode*
-	getLocalNode ();
+	getLocalNode () final;
 
 	X3DBaseNode*
 	getRootNode () const;
 
 	virtual
 	void
-	traverse (TraverseType);
+	traverse (TraverseType) final;
 
 	virtual
 	void
-	toStream (std::ostream &) const;
+	toStream (std::ostream &) const final;
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 	virtual
 	~X3DPrototypeInstance ();
@@ -108,6 +104,10 @@ private:
 	virtual
 	X3DPrototypeInstance*
 	create (X3DExecutionContext* const) const final;
+
+	virtual
+	void
+	initialize () final;
 
 	SFNode <Proto> proto;
 

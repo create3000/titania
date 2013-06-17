@@ -74,6 +74,8 @@ Browser::Browser () :
 	pointingDevice  (this),       
 	    activeLayer ()            
 {
+	setChildren (activeLayer);
+
 	add_events (Gdk::BUTTON_PRESS_MASK |
 	            Gdk::POINTER_MOTION_MASK |
 	            Gdk::POINTER_MOTION_HINT_MASK |
@@ -106,7 +108,7 @@ Browser::construct ()
 void
 Browser::set_initialized ()
 {
-	getExecutionContext () -> getLayerSet () -> activeLayer () .addInterest (this, &Browser::set_activeLayer);
+	getExecutionContext () -> getActiveLayer () .addInterest (this, &Browser::set_activeLayer);
 
 	set_activeLayer ();
 }
@@ -114,70 +116,70 @@ Browser::set_initialized ()
 void
 Browser::set_shutdown ()
 {
-	getExecutionContext () -> getLayerSet () -> activeLayer () .removeInterest (this, &Browser::set_activeLayer);
-
 	if (activeLayer)
 	{
-		activeLayer -> shutdown .removeInterest (this, &Browser::remove_activeLayer);
+	   activeLayer -> removeInterest (this, &Browser::set_activeLayer);
 		activeLayer -> getNavigationInfoStack () .removeInterest (this, &Browser::set_navigationInfo);
+		activeLayer = NULL;
 	}
 }
 
 void
 Browser::set_activeLayer ()
 {
+	if (activeLayer)
+		activeLayer -> getNavigationInfoStack () .removeInterest (this, &Browser::set_navigationInfo);
+
 	activeLayer = getExecutionContext () -> getActiveLayer ();
-	activeLayer -> shutdown .addInterest (this, &Browser::remove_activeLayer);
-	activeLayer -> getNavigationInfoStack () .addInterest (this, &Browser::set_navigationInfo);
+
+	if (activeLayer)
+	{
+		activeLayer -> getNavigationInfoStack () .addInterest (this, &Browser::set_navigationInfo);
+	}
 
 	set_navigationInfo ();
 }
 
 void
-Browser::remove_activeLayer ()
-{
-	__LOG__ << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
-
-	activeLayer = NULL;
-}
-
-void
 Browser::set_navigationInfo ()
 {
-	NavigationInfo* navigationInfo = getActiveNavigationInfo ();
-
 	viewer .reset ();
 
-	for (const auto & type : navigationInfo -> type ())
+	NavigationInfo* navigationInfo = getActiveNavigationInfo ();
+
+	if (navigationInfo)
 	{
-		if (type == "NONE")
+		for (const auto & type : navigationInfo -> type ())
 		{
-			viewer .reset (new NoneViewer (this));
-			break;
-		}
+			if (type == "NONE")
+			{
+				viewer .reset (new NoneViewer (this));
+				break;
+			}
 
-		else if (type == "WALK")
-		{
-			viewer .reset (new WalkViewer (this, navigationInfo));
-			break;
-		}
+			else if (type == "WALK")
+			{
+				viewer .reset (new WalkViewer (this, navigationInfo));
+				break;
+			}
 
-		else if (type == "FLY")
-		{
-			viewer .reset (new FlyViewer (this, navigationInfo));
-			break;
-		}
+			else if (type == "FLY")
+			{
+				viewer .reset (new FlyViewer (this, navigationInfo));
+				break;
+			}
 
-		else if (type == "LOOKAT")
-		{ }
+			else if (type == "LOOKAT")
+			{ }
 
-		else if (type == "ANY")
-		{ }
+			else if (type == "ANY")
+			{ }
 
-		else
-		{
-			viewer .reset (new ExamineViewer (this, navigationInfo));
-			break;
+			else
+			{
+				viewer .reset (new ExamineViewer (this, navigationInfo));
+				break;
+			}
 		}
 	}
 
@@ -217,7 +219,7 @@ Browser::dispose ()
 
 	viewer .reset ();
 	pointingDevice .dispose ();
-	activeLayer = NULL;
+	activeLayer .dispose ();
 
 	opengl::Surface::dispose ();
 	X3DBrowser::dispose ();

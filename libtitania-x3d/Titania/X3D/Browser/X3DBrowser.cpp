@@ -91,14 +91,15 @@ X3DBrowser::initialize ()
 	
 	if (browserOptions -> splashScreen ())
 		world = scene = createX3DFromURL ({ "about:splash" });
-		
+	
+	scene -> bind ();
+
 	// Process outstanding events
 	
 	getRouter () .processEvents ();
 	
 	// Update display
 	
-	bind ();
 	update ();
 
 	// Replace world service.
@@ -256,7 +257,6 @@ throw (Error <INVALID_SCENE>)
 {
 	// Replace world.
 
-	std::clog << "The browser is requested to replace the world:" << std::endl;
 	print ("*** The browser is requested to replace the world with '", value -> getWorldURL (), "'.\n");
 
 	if (not value)
@@ -282,44 +282,9 @@ X3DBrowser::set_scene ()
 void
 X3DBrowser::set_world ()
 {
-	bind ();
-
 	// Generate initialized event immediately upon receiving this service.
 
 	initialized = getCurrentTime ();
-}
-
-void
-X3DBrowser::bind ()
-{
-	scene -> traverse (TraverseType::CAMERA);
-	scene -> traverse (TraverseType::COLLECT);
-
-	for (auto & layer : scene -> getLayerSet () -> getLayers ())
-	{
-		if (layer -> getNavigationInfoStack () .size () == 1)
-			if (layer -> getNavigationInfos () .size ())
-				layer -> getNavigationInfos () [0] -> set_bind () = true;
-
-		if (layer -> getBackgroundStack () .size () == 1)
-			if (layer -> getBackgrounds () .size ())
-				layer -> getBackgrounds () [0] -> set_bind () = true;
-
-		if (layer -> getFogStack () .size () == 1)
-			if (layer -> getFogs () .size ())
-				layer -> getFogs () [0] -> set_bind () = true;
-
-		// Bind first viewpoint in viewpoint stack.
-
-		if (layer -> getViewpointStack () .size () == 1)
-			if (layer -> getViewpoints () .size ())
-				layer -> getViewpoints () [0] -> set_bind () = true;
-	}
-
-	// Bind viewpoint from URL.
-
-	if (scene -> getWorldURL () .fragment () .length ())
-		changeViewpoint (scene -> getWorldURL () .fragment ());
 }
 
 void
@@ -342,6 +307,8 @@ throw (Error <INVALID_URL>,
 	parseIntoScene (scene, url);
 
 	replaceWorld (scene);
+	
+	scene -> bind ();
 	
 	clock -> advance ();
 }
@@ -417,7 +384,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 X3DBrowser::dispose ()
 {
-	__LOG__ << (void*) this << std::endl;
+	__LOG__ << this << std::endl;
 
 	scene .dispose ();
 	world .dispose ();

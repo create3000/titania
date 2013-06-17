@@ -464,7 +464,7 @@ jsX3DExecutionContext::addImportedNode (JSContext* context, uintN argc, jsval* v
 		}
 
 		auto & node     = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, oInline));
-		auto inlineNode = x3d_cast <Inline*> (node .getValue ());
+		auto inlineNode = x3d_cast <Inline*> (node);
 
 		if (inlineNode)
 		{
@@ -555,7 +555,7 @@ jsX3DExecutionContext::updateImportedNode (JSContext* context, uintN argc, jsval
 		}
 
 		auto & node     = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, oInline));
-		auto inlineNode = x3d_cast <Inline*> (node .getValue ());
+		auto inlineNode = x3d_cast <Inline*> (node);
 
 		if (inlineNode)
 		{

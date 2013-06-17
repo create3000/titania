@@ -275,8 +275,8 @@ ElevationGrid::build ()
 
 	std::vector <Vector3f> _texCoord;
 
-	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord () .getValue ());
-	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord () .getValue ());
+	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord ());
+	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord ());
 
 	if (_textureCoordinate)
 	{
@@ -293,7 +293,7 @@ ElevationGrid::build ()
 		getTexCoord () .reserve (coordIndex .size ());
 	}
 
-	auto _color = x3d_cast <Color*> (color () .getValue ());
+	auto _color = x3d_cast <Color*> (color ());
 
 	if (_color)
 	{
@@ -311,7 +311,7 @@ ElevationGrid::build ()
 		getColors () .reserve (coordIndex .size ());
 	}
 
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color () .getValue ());
+	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
 
 	if (_colorRGBA)
 	{
@@ -331,7 +331,7 @@ ElevationGrid::build ()
 
 	std::vector <Vector3f> normals;
 
-	auto _normal = x3d_cast <Normal*> (normal () .getValue ());
+	auto _normal = x3d_cast <Normal*> (normal ());
 
 	if (_normal)
 	{

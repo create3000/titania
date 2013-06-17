@@ -58,6 +58,8 @@
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 
+#include <vector>
+
 namespace titania {
 namespace X3D {
 
@@ -68,7 +70,7 @@ class BindableNodeList :
 public:
 
 	typedef Type*                              value_type;
-	typedef std::deque <value_type>            list_type;
+	typedef std::vector <value_type>           list_type;
 	typedef typename list_type::const_iterator const_iterator;
 	typedef typename list_type::size_type      size_type;
 
@@ -181,6 +183,11 @@ private:
 	list_type list;
 
 };
+
+typedef BindableNodeList <NavigationInfo>    NavigationInfoList;
+typedef BindableNodeList <X3DBackgroundNode> BackgroundList;
+typedef BindableNodeList <Fog>               FogList;
+typedef BindableNodeList <X3DViewpointNode>  ViewpointList;
 
 extern template class BindableNodeList <NavigationInfo>;
 extern template class BindableNodeList <X3DBackgroundNode>;

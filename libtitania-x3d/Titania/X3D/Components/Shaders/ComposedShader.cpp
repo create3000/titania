@@ -121,7 +121,7 @@ ComposedShader::set_parts ()
 	{
 		for (const auto & part : parts ())
 		{
-			auto _part = x3d_cast <ShaderPart*> (part .getValue ());
+			auto _part = x3d_cast <ShaderPart*> (part);
 
 			glAttachShader (shaderProgram, _part -> getShaderId ());
 
@@ -214,7 +214,7 @@ ComposedShader::set_field (X3DFieldDefinition* field)
 			{
 				auto node = static_cast <SFNode <X3DBaseNode>*> (field);
 
-				auto texture = x3d_cast <X3DTextureNode*> (node -> getValue ());
+				auto texture = x3d_cast <X3DTextureNode*> (*node);
 
 				if (texture)
 				{
@@ -434,7 +434,7 @@ ComposedShader::set_field (X3DFieldDefinition* field)
 
 				for (const auto & node :* array)
 				{
-					auto texture = x3d_cast <X3DTextureNode*> (node .getValue ());
+					auto texture = x3d_cast <X3DTextureNode*> (node);
 
 					if (texture)
 					{

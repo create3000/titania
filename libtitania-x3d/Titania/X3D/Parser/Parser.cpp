@@ -513,7 +513,7 @@ Parser::importStatement ()
 
 		if (inlineNodeNameId (_inlineNodeNameId))
 		{
-			const SFNode <Inline> _inlineNode = x3d_cast <Inline*> (getExecutionContext () -> getNamedNode (_inlineNodeNameId) .getValue ());
+			const SFNode <Inline> _inlineNode = x3d_cast <Inline*> (getExecutionContext () -> getNamedNode (_inlineNodeNameId));
 
 			if (_inlineNode)
 			{
@@ -766,7 +766,6 @@ Parser::proto ()
 					if (Grammar::OpenBrace (istream))
 					{
 						const SFNode <Proto> & _proto = getExecutionContext () -> addProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
-						
 
 						pushExecutionContext (*_proto);
 

@@ -67,15 +67,19 @@ public:
 
 	Browser ();
 
-	void
-	setCursor (Gdk::CursorType cursor_type)
-	{ get_window () -> set_cursor (Gdk::Cursor::create (cursor_type)); }
+	const SFNode <X3DLayerNode> &
+	getActiveLayer () const
+	{ return activeLayer; }
 
 	virtual
 	ViewerType
 	getViewerType () const final
 	{ return viewer -> getType (); }
-	
+
+	void
+	setCursor (Gdk::CursorType cursor_type)
+	{ get_window () -> set_cursor (Gdk::Cursor::create (cursor_type)); }
+
 	virtual
 	void
 	swapBuffers () final
@@ -106,9 +110,6 @@ private:
 	set_activeLayer ();
 
 	void
-	remove_activeLayer ();
-
-	void
 	set_navigationInfo ();
 
 	virtual
@@ -121,7 +122,7 @@ private:
 
 	std::unique_ptr <X3DViewer> viewer;
 	PointingDevice              pointingDevice;
-	X3DLayerNode*               activeLayer;
+	SFNode <X3DLayerNode>       activeLayer;
 
 };
 

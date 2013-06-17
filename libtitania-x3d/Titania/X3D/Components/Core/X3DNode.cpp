@@ -86,7 +86,7 @@ X3DNode::getCurrentLayer () const
 std::deque <X3DLayerNode*>
 X3DNode::getLayers () const
 {
-	return findClosestParents <Scene, X3DLayerNode> ();
+	return findParents <X3DLayerNode> ();
 }
 
 NavigationInfo*

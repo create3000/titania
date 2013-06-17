@@ -217,7 +217,10 @@ X3DBrowserContext::getRouter ()
 NavigationInfo*
 X3DBrowserContext::getActiveNavigationInfo () const
 {
-	return getExecutionContext () -> getActiveLayer () -> getNavigationInfo ();
+	if (getExecutionContext () -> getActiveLayer ())
+		return getExecutionContext () -> getActiveLayer () -> getNavigationInfo ();
+	
+	return NULL;
 }
 
 // Viewpoint handling
@@ -225,7 +228,10 @@ X3DBrowserContext::getActiveNavigationInfo () const
 X3DViewpointNode*
 X3DBrowserContext::getActiveViewpoint () const
 {
-	return getExecutionContext () -> getActiveLayer () -> getViewpoint ();
+	if (getExecutionContext () -> getActiveLayer ())
+		return getExecutionContext () -> getActiveLayer () -> getViewpoint ();
+	
+	return NULL;
 }
 
 // Selection

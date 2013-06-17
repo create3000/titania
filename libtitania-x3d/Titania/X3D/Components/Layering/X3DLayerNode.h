@@ -66,11 +66,7 @@
 namespace titania {
 namespace X3D {
 
-typedef BindableNodeList <NavigationInfo>    NavigationInfoList;
-typedef BindableNodeList <X3DBackgroundNode> BackgroundList;
-typedef BindableNodeList <Fog>               FogList;
-typedef BindableNodeList <X3DViewpointNode>  ViewpointList;
-
+typedef std::deque <X3D::X3DViewpointNode*> UserViewpointList;
 typedef std::stack <LocalFog*> LocalFogStack;
 
 class X3DLayerNode :
@@ -129,33 +125,49 @@ public:
 	///  @name Bindable node stack handling
 
 	NavigationInfo*
-	getNavigationInfo ();
+	getNavigationInfo () const;
 
 	X3DBackgroundNode*
-	getBackground ();
+	getBackground () const;
 
 	X3DFogObject*
-	getFog ();
+	getFog () const;
 
 	X3DViewpointNode*
-	getViewpoint ();
+	getViewpoint () const;
 
 	///  @name X3DBindableNode stack handling
 
-	BindableNodeStack <NavigationInfo> &
+	NavigationInfoStack &
 	getNavigationInfoStack ()
 	{ return navigationInfoStack; }
 
-	BindableNodeStack <X3DBackgroundNode> &
+	const NavigationInfoStack &
+	getNavigationInfoStack () const
+	{ return navigationInfoStack; }
+
+	BackgroundStack &
 	getBackgroundStack ()
 	{ return backgroundStack; }
 
-	BindableNodeStack <Fog> &
+	const BackgroundStack &
+	getBackgroundStack () const
+	{ return backgroundStack; }
+
+	FogStack &
 	getFogStack ()
 	{ return fogStack; }
 
-	BindableNodeStack <X3DViewpointNode> &
+	const FogStack &
+	getFogStack () const
+	{ return fogStack; }
+
+	ViewpointStack &
 	getViewpointStack ()
+	{ return viewpointStack; }
+
+	const ViewpointStack &
+	getViewpointStack () const
 	{ return viewpointStack; }
 
 	///  @name X3DBindableNode list handling
@@ -164,17 +176,36 @@ public:
 	getNavigationInfos ()
 	{ return navigationInfos; }
 
+	const NavigationInfoList &
+	getNavigationInfos () const
+	{ return navigationInfos; }
+
 	BackgroundList &
 	getBackgrounds ()
+	{ return backgrounds; }
+
+	const BackgroundList &
+	getBackgrounds () const
 	{ return backgrounds; }
 
 	FogList &
 	getFogs ()
 	{ return fogs; }
 
+	const FogList &
+	getFogs () const
+	{ return fogs; }
+
 	ViewpointList &
 	getViewpoints ()
 	{ return viewpoints; }
+	
+	const ViewpointList &
+	getViewpoints () const
+	{ return viewpoints; }
+	
+	UserViewpointList
+	getUserViewpoints () const;
 
 	///  @name Fog handling
 
@@ -290,10 +321,10 @@ private:
 
 	X3DViewportNode* currentViewport;
 
-	BindableNodeStack <NavigationInfo>    navigationInfoStack;
-	BindableNodeStack <X3DBackgroundNode> backgroundStack;
-	BindableNodeStack <Fog>               fogStack;
-	BindableNodeStack <X3DViewpointNode>  viewpointStack;
+	NavigationInfoStack    navigationInfoStack;
+	BackgroundStack        backgroundStack;
+	FogStack               fogStack;
+	ViewpointStack         viewpointStack;
 
 	NavigationInfoList navigationInfos;
 	BackgroundList     backgrounds;

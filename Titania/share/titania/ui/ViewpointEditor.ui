@@ -3,12 +3,15 @@
   <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkListStore" id="ListStore">
     <columns>
+      <!-- column-name Index -->
+      <column type="guint"/>
       <!-- column-name Description -->
       <column type="gchararray"/>
+      <!-- column-name Weight -->
+      <column type="gint"/>
     </columns>
   </object>
   <object class="GtkAdjustment" id="adjustment1">
-    <property name="lower">0.01</property>
     <property name="upper">3.1400000000000001</property>
     <property name="value">0.01</property>
     <property name="step_increment">0.01</property>
@@ -33,18 +36,21 @@
                 <property name="can_focus">True</property>
                 <property name="model">ListStore</property>
                 <property name="rules_hint">True</property>
-                <property name="search_column">0</property>
+                <property name="search_column">1</property>
                 <signal name="row-activated" handler="on_row_activated" swapped="no"/>
                 <child internal-child="selection">
-                  <object class="GtkTreeSelection" id="treeview-selection"/>
+                  <object class="GtkTreeSelection" id="treeview-selection">
+                    <property name="mode">none</property>
+                  </object>
                 </child>
                 <child>
                   <object class="GtkTreeViewColumn" id="DescriptionColumn">
                     <property name="title" translatable="yes">Description</property>
                     <child>
-                      <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                      <object class="GtkCellRendererText" id="CellRendererDescription"/>
                       <attributes>
-                        <attribute name="text">0</attribute>
+                        <attribute name="text">1</attribute>
+                        <attribute name="weight">2</attribute>
                       </attributes>
                     </child>
                   </object>

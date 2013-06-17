@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -81,27 +81,8 @@ public:
 
 	virtual
 	bool
-	isScene () const
+	isScene () const final
 	{ return true; }
-
-	///  @name BBox
-
-	Box3f
-	getBBox ();
-
-	///  @name Root node handling
-
-	virtual
-	MFNode &
-	getRootNodes ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	virtual
-	const MFNode &
-	getRootNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
 
 	///  @name Layer handling
 
@@ -109,32 +90,41 @@ public:
 	getLayerSet () const
 	{ return layerSet; }
 
-	X3DLayerNode*
+	const SFNode <X3DLayerNode> &
 	getActiveLayer () const
-	{ return layerSet -> getActiveLayer (); }
+	{ return activeLayer; }
+
+	///  @name Root node handling
+
+	virtual
+	MFNode &
+	getRootNodes ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final
+	{ return layer0 -> children (); }
+
+	virtual
+	const MFNode &
+	getRootNodes () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final
+	{ return layer0 -> children (); }
 
 	///  @name Display
 
-	virtual
 	void
-	traverse (TraverseType);
-
-	///  @name Input/Output
+	bind ();
 
 	virtual
 	void
-	fromStream (std::istream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	traverse (TraverseType type) final
+	{ layerSet -> traverse (type); }
 
-	///  @name Dispose
+	///  @name Destruction
 
-	// Object:
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 	virtual
 	~Scene ();
@@ -144,12 +134,22 @@ private:
 
 	virtual
 	void
-	initialize ();
-	
+	initialize () final;
+
+	void
+	set_activeLayer ();
+
 	void
 	set_rootNodes ();
 
-	SFNode <LayerSet> layerSet;
+	virtual
+	void
+	clear () final;
+
+	SFNode <LayerSet>     layerSet;
+	SFNode <LayerSet>     defaultLayerSet;
+	SFNode <X3DLayerNode> layer0;
+	SFNode <X3DLayerNode> activeLayer;
 
 };
 

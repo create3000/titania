@@ -1,106 +1,42 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Execution/Scene.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="517" Column="16" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DExecutionContext.h" Line="122" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DExecutionContext.cpp" Line="60" Column="1" />
-      <File FileName="Library/Tests/Scripting/X3DScene.wrl" Line="167" Column="1" />
-      <File FileName="Library/Tests/Scripting/X3DScene.importedNode.wrl" Line="37" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.h" Line="91" Column="9" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.cpp" Line="136" Column="60" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DScene.cpp" Line="73" Column="46" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DScene.h" Line="85" Column="30" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="464" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.cpp" Line="136" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/Scene.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/Scene.cpp" Line="110" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True">
-              <Node name="Moebius" expanded="True" />
-              <Node name="WTC" expanded="True" />
-            </Node>
-            <Node name="Prototypes" expanded="True">
-              <Node name="Engines" expanded="True">
-                <Node name="Rotor" expanded="True" />
-              </Node>
-              <Node name="Geometry3D" expanded="True">
-                <Node name="Torus" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="Tests" expanded="True">
-              <Node name="Basic" expanded="True" />
-              <Node name="CADGeometry" expanded="True" />
-              <Node name="Interpolation" expanded="True" />
-              <Node name="PointingDeviceSensor" expanded="True" />
-              <Node name="PROTO" expanded="True" />
-              <Node name="Rendering" expanded="True" />
-              <Node name="Scripting" expanded="True" />
-              <Node name="Shape" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-opengl-surface" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="OpenGL" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Algorithm" expanded="True" />
-              <Node name="Basic" expanded="True" />
-              <Node name="Utility" expanded="True" />
-            </Node>
+            <Node name="Examples" expanded="True" />
+            <Node name="Prototypes" expanded="True" />
+            <Node name="Tests" expanded="True" />
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Basic" expanded="True" />
-                <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Viewer" expanded="True" />
-                </Node>
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
                   <Node name="Networking" expanded="True" />
                 </Node>
-                <Node name="Execution" expanded="True" />
-                <Node name="InputOutput" expanded="True" />
-                <Node name="JavaScript" expanded="True">
-                  <Node name="SpiderMonkey" expanded="True">
-                    <Node name="jsContext.cpp" selected="True" />
-                  </Node>
+                <Node name="Execution" expanded="True">
+                  <Node name="Scene.cpp" selected="True" />
                 </Node>
-                <Node name="Prototype" expanded="True" />
                 <Node name="Routing" expanded="True" />
               </Node>
             </Node>
           </Node>
-          <Node name="Papers" expanded="True" />
           <Node name="test" expanded="True" />
           <Node name="Titania" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="pages" expanded="True">
-                  <Node name="about" expanded="True" />
-                  <Node name="Library" expanded="True" />
-                </Node>
-                <Node name="ui" expanded="True" />
-              </Node>
-            </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
-              <Node name="Configuration" expanded="True" />
-              <Node name="HistoryEditor" expanded="True" />
-              <Node name="MotionBlurEditor" expanded="True" />
-              <Node name="UserInterfaces" expanded="True" />
               <Node name="ViewpointEditor" expanded="True" />
             </Node>
           </Node>
-          <Node name="x3dtidy" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

@@ -142,11 +142,6 @@ jsGlobals::print (JSContext* context, uintN argc, jsval* vp)
 		browser -> print (JS_GetString (context, argv [i]));
 
 	browser -> print ('\n');
-	
-	for (uintN i = 0; i < argc; ++ i)
-		std::clog << JS_GetString (context, argv [i]);
-
-	std::clog << std::endl;
 
 	JS_SET_RVAL (context, vp, JSVAL_VOID);
 	return JS_TRUE;

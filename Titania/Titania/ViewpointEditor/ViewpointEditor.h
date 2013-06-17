@@ -77,8 +77,14 @@ private:
 	X3D::ViewpointList &
 	getViewpoints ();
 
+	X3D::UserViewpointList
+	getUserViewpoints ();
+
+	X3D::ViewpointStack &
+	getViewpointStack ();
+
 	void
-	set_world ();
+	set_activeLayer ();
 
 	void
 	set_viewpoints ();
@@ -93,6 +99,8 @@ private:
 	virtual
 	void
 	on_fieldOfView_changed ();
+	
+	X3D::SFNode <X3D::X3DLayerNode> activeLayer;
 
 };
 

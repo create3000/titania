@@ -238,8 +238,20 @@ SFNode <ValueType>*
 SFNode <ValueType>::clone (X3DExecutionContext* const executionContext) const
 {
 	if (getValue ())
-		return new SFNode (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));
+	{
+		try
+		{
+			return new SFNode (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));
+		}
+		catch (const Error <INVALID_NAME> &)
+		{
+			auto clone = new SFNode (dynamic_cast <ValueType*> (getValue () -> copy (executionContext)));
 
+			(*clone) -> setup ();
+
+			return clone;	
+		}
+	}
 	else
 		return new SFNode ();
 }

@@ -147,7 +147,7 @@ ViewpointGroup::set_children ()
 
 	for (const auto & child : children ())
 	{
-		X3DViewpointObject* viewpointObject = x3d_cast <X3DViewpointObject*> (child .getValue ());
+		X3DViewpointObject* viewpointObject = x3d_cast <X3DViewpointObject*> (child);
 
 		if (viewpointObject)
 			viewpointObjects .emplace_back (viewpointObject);

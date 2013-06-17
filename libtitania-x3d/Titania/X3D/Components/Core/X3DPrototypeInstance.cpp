@@ -87,11 +87,11 @@ X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-X3DPrototypeInstance::setup ()
+X3DPrototypeInstance::initialize ()
 {
-	assign (*proto);
+	X3DExecutionContext::initialize ();
 
-	X3DExecutionContext::setup ();
+	assign (*proto);
 }
 
 const std::string &

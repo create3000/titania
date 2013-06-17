@@ -51,8 +51,9 @@
 #ifndef __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
 #define __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
 
-#include "../Grouping/X3DBoundedObject.h"
+#include "../Grouping/Group.h"
 #include "../Networking/X3DUrlObject.h"
+#include "../../Execution/X3DScene.h"
 
 namespace titania {
 namespace X3D {
@@ -60,9 +61,11 @@ namespace X3D {
 class Scene;
 
 class Inline :
-	public X3DChildNode, public X3DBoundedObject, public X3DUrlObject
+	private X3DScene, public X3DChildNode, public X3DBoundedObject, public X3DUrlObject
 {
 public:
+
+	using X3DScene::setup;
 
 	Inline (X3DExecutionContext* const);
 
@@ -80,14 +83,13 @@ public:
 	load () const
 	{ return *fields .load; }
 
+	virtual
 	Box3f
-	getBBox ();
+	getBBox () final;
 
+	virtual
 	void
-	requestImmediateLoad ();
-
-	const SFNode <Scene> &
-	getScene () { return scene; }
+	requestImmediateLoad () final;
 	
 	const SFNode <X3DBaseNode> &
 	getExportedNode (const std::string &) const
@@ -97,18 +99,23 @@ public:
 
 	virtual
 	void
-	traverse (TraverseType);
+	traverse (TraverseType) final;
 
 	virtual
 	void
-	dispose ();
+	toStream (std::ostream & ostream) const final
+	{ X3DBaseNode::toStream (ostream); }
+
+	virtual
+	void
+	dispose () final;
 
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	void
 	set_load ();
@@ -131,7 +138,7 @@ private:
 
 	Fields fields;
 
-	SFNode <Scene> scene;
+	SFNode <Group> group;
 
 };
 

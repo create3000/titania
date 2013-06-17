@@ -2,8 +2,7 @@
 
 META "title" "Mobius"
 
-PROTO MobiusStrip [
-]
+PROTO MobiusStrip [ ]
 {
   DEF Geometry IndexedFaceSet {
     solid FALSE
@@ -17,6 +16,8 @@ PROTO MobiusStrip [
     
 function initialize ()
 {
+	print ('initialize');
+
 	var dimension = 5;
 
 	var point = geometry .coord .point;
@@ -57,16 +58,21 @@ function initialize ()
 	coordIndex [coordIndex .length] = -1;
 	
 	geometry .set_coordIndex = coordIndex;
+
+	print ('initialize done ...');
 }
 "
     directOutput TRUE
   }
 }
 
+Viewpoint {
+  description "Home"
+}
+
 Shape {
   appearance Appearance {
-    material Material {
-    }
+    material Material { }
   }
   geometry MobiusStrip { }
 }

@@ -50,6 +50,7 @@
 
 #include "OrientationInterpolator.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -99,7 +100,14 @@ OrientationInterpolator::set_keyValue ()
 void
 OrientationInterpolator::interpolate (size_t index0, size_t index1, float weight)
 {
-	value_changed () = math::slerp <float> (keyValue () [index0], keyValue () [index1], weight);
+	try
+	{
+		value_changed () = math::slerp <float> (keyValue () [index0], keyValue () [index1], weight);
+	}
+	catch (const std::domain_error & error)
+	{
+		getBrowser () -> println ("OrientationInterpolator: ", error .what ());
+	}
 }
 
 } // X3D

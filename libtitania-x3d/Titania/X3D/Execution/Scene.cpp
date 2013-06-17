@@ -52,24 +52,23 @@
 
 #include "../Bits/Cast.h"
 #include "../Browser/X3DBrowser.h"
-#include <iostream>
+#include "../Components/Layering/Layer.h"
 
 namespace titania {
 namespace X3D {
 
 Scene::Scene (X3DBrowser* const browser) :
-	X3DBaseNode (browser, this),      
-	   X3DScene (),                   
-	   layerSet (new LayerSet (this)) 
+	    X3DBaseNode (browser, this),      
+	       X3DScene (),                   
+	       layerSet (new LayerSet (this)),
+	defaultLayerSet (layerSet),
+	         layer0 (new Layer (this)),
+	    activeLayer (layer0)
 {
-	std::clog << "Constructing Scene:" << std::endl;
-
 	setComponent ("Browser");
 	setTypeName ("Scene");
 
-	setChildren (layerSet);
-
-	std::clog << "\tDone constructing Scene." << std::endl;
+	setChildren (layerSet, defaultLayerSet, layer0, activeLayer);
 }
 
 Scene*
@@ -83,79 +82,88 @@ Scene::initialize ()
 {
 	X3DScene::initialize ();
 
+	layer0 -> setup ();
+	layer0 -> getBackgroundStack () .bottom () -> transparency () = 0;
+
 	layerSet -> setup ();
-	
+	layerSet -> setLayer0 (layer0);
+
 	getRootNodes () .addInterest (this, &Scene::set_rootNodes);
-}
-
-// BBox
-
-Box3f
-Scene::getBBox ()
-{
-	return getLayerSet () -> getBBox ();
-}
-
-// Root node handling
-
-MFNode &
-Scene::getRootNodes ()
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return layerSet -> getLayers () [0] -> children ();
-}
-
-const MFNode &
-Scene::getRootNodes () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return layerSet -> getLayers () [0] -> children ();
 }
 
 void
 Scene::set_rootNodes ()
 {
-	for (const auto & rootNode : basic::adapter (getRootNodes () .rbegin (), getRootNodes () .rend ()))
+	layerSet -> getActiveLayer () .removeInterest (this, &Scene::set_activeLayer);
+
+	layerSet = defaultLayerSet;
+
+	for (const auto & rootNode : getRootNodes ())
 	{
-		auto rootLayerSet = x3d_cast <LayerSet*> (rootNode .getValue ());
-		
+		auto rootLayerSet = x3d_cast <LayerSet*> (rootNode);
+
 		if (rootLayerSet)
 		{
-			if (rootLayerSet == layerSet)
-				break;
-		
-			getRootNodes () .removeInterest (this, &Scene::set_rootNodes);
-			
-			rootLayerSet -> getLayers () [0] -> children () = getRootNodes ();
-			layerSet                                        = rootLayerSet;
-			
-			getRootNodes () .addInterest (this, &Scene::set_rootNodes);
-		
-			break;
+			rootLayerSet -> setLayer0 (layer0);
+			layerSet = rootLayerSet;
 		}
 	}
+
+	layer0 -> processEvents ();
+	layer0 -> getGroup () -> processEvents ();
+
+	layerSet -> getActiveLayer () .addInterest (this, &Scene::set_activeLayer);
+	
+	set_activeLayer ();
 }
 
-// Traveral
-
 void
-Scene::traverse (TraverseType type)
+Scene::set_activeLayer ()
 {
-	layerSet -> traverse (type);
+	activeLayer = layerSet -> getActiveLayer ();
 }
 
-// Input/Output
+void
+Scene::bind ()
+{
+	set_rootNodes ();
+
+	traverse (TraverseType::CAMERA);
+	traverse (TraverseType::COLLECT);
+
+	for (auto & layer : layerSet -> getLayers ())
+	{
+		if (layer -> getNavigationInfos () .size ())
+			layer -> getNavigationInfos () [0] -> set_bind () = true;
+
+		if (layer -> getBackgrounds () .size ())
+			layer -> getBackgrounds () [0] -> set_bind () = true;
+
+		if (layer -> getFogs () .size ())
+			layer -> getFogs () [0] -> set_bind () = true;
+
+		// Bind first viewpoint in viewpoint stack.
+
+		if (layer -> getViewpoints () .size ())
+			layer -> getViewpoints () [0] -> set_bind () = true;
+	}
+
+	// Bind viewpoint from URL.
+
+	if (getWorldURL () .fragment () .length ())
+		changeViewpoint (getWorldURL () .fragment ());
+}
 
 void
-Scene::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+Scene::clear ()
 {
-	X3DScene::fromStream (istream);
+	layerSet -> getActiveLayer () .removeInterest (this, &Scene::set_activeLayer);
+	layerSet = defaultLayerSet;
+
+	layer0 -> children () .clear ();
+	activeLayer = layer0;
+
+	X3DScene::clear ();
 }
 
 // Dispose
@@ -164,8 +172,12 @@ void
 Scene::dispose ()
 {
 	getRootNodes () .removeInterest (this, &Scene::set_rootNodes);
+	layerSet -> getActiveLayer () .removeInterest (this, &Scene::set_activeLayer);
 
-	layerSet .dispose ();
+	layerSet        .dispose ();
+	defaultLayerSet .dispose ();
+	layer0          .dispose ();
+	activeLayer     .dispose ();
 
 	X3DScene::dispose ();
 }

@@ -1,3 +1,12 @@
+2013-06-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.cpp:
+	* ViewpointEditor.ui:
+	* ViewpointEditor.h:
+	* ViewpointEditor.cpp:
+	* X3DViewpointEditorUI.h:
+	* X3DViewpointEditorUI.cpp: 
+
 2013-06-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ViewpointEditor.h:
