@@ -92,7 +92,10 @@ public:
 		if (stack .top () not_eq node)
 		{
 			if (stack .top () -> isBound ())
-				stack .top () -> isBound () = false;
+			{
+				stack .top () -> set_bind () = false;
+				stack .top () -> isBound ()  = false;
+			}
 
 			if (not node -> isBound ())
 			{
@@ -120,7 +123,10 @@ public:
 			stack .pop ();
 			
 			if (not stack .top () -> isBound ())
-				stack .top () -> isBound () = true;
+			{
+				stack .top () -> isBound ()  = true;
+				stack .top () -> bindTime () = stack .top () -> getCurrentTime ();
+			}
 			
 			processInterests ();
 			
