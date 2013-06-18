@@ -133,9 +133,7 @@ Browser::set_activeLayer ()
 	activeLayer = getExecutionContext () -> getActiveLayer ();
 
 	if (activeLayer)
-	{
 		activeLayer -> getNavigationInfoStack () .addInterest (this, &Browser::set_navigationInfo);
-	}
 
 	set_navigationInfo ();
 }
@@ -217,9 +215,12 @@ Browser::dispose ()
 	shutdown    .removeInterest (this, &Browser::set_shutdown);
 	changed     .removeInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
 
+	if (activeLayer)
+		activeLayer -> getNavigationInfoStack () .removeInterest (this, &Browser::set_navigationInfo);
+
 	viewer .reset ();
 	pointingDevice .dispose ();
-	activeLayer .dispose ();
+	activeLayer    .dispose ();
 
 	opengl::Surface::dispose ();
 	X3DBrowser::dispose ();

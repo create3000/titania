@@ -2096,6 +2096,7 @@
     <None Include="Tests\Scripting\Proto.rootNodes.wrl" />
     <None Include="Tests\Basic\META.wrl" />
     <None Include="Tests\Scripting\replaceWorld.wrl" />
+    <None Include="Tests\Navigation\Viewpoint.bind.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

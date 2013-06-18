@@ -109,9 +109,6 @@ Scene::set_rootNodes ()
 		}
 	}
 
-	layer0 -> processEvents ();
-	layer0 -> getGroup () -> processEvents ();
-
 	layerSet -> getActiveLayer () .addInterest (this, &Scene::set_activeLayer);
 	
 	set_activeLayer ();
@@ -127,6 +124,9 @@ void
 Scene::bind ()
 {
 	set_rootNodes ();
+
+	layer0 -> processEvents ();
+	layer0 -> getGroup () -> processEvents ();
 
 	traverse (TraverseType::CAMERA);
 	traverse (TraverseType::COLLECT);

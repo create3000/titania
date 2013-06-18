@@ -1,6 +1,12 @@
 2013-06-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Library.mdproj:
+	* Viewpoint.bind.wrl:
+	* createX3DFromURL.wrl: 
+
+2013-06-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
 	* replaceWorld.wrl:
 	* createX3DFromURL.wrl: 
 

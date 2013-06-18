@@ -1,5 +1,14 @@
 2013-06-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Scene.cpp:
+	* Browser.cpp:
+	* BindableNodeStack.h:
+	* X3DBindableNode.cpp:
+	* jsGlobals.cpp:
+	* X3DViewpointNode.cpp: 
+
+2013-06-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.cpp:
 	* jsBrowser.cpp:
 	* jsRouteArray.h:

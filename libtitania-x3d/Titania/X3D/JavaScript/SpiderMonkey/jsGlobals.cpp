@@ -62,7 +62,7 @@ namespace titania {
 namespace X3D {
 
 JSPropertySpec jsGlobals::properties [ ] = {
-	{ "NULL",  0,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _null,  NULL },
+	//{ "NULL",  0,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _null,  NULL },
 	{ "FALSE", false, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _false, NULL },
 	{ "TRUE",  true,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _true,  NULL },
 	{ 0 }

@@ -163,7 +163,7 @@ ViewpointEditor::set_currentViewpoint ()
 	auto rows           = getListStore () -> children ();
 
 	for (size_t i = 0, size = rows .size (); i < size; ++ i)
-		rows [i] -> set_value (Columns::Weight, userViewpoints [i] -> isBound () .getValue () ? Weight::Bold : Weight::Normal);
+		rows [i] -> set_value (Columns::Weight, userViewpoints [i] -> isBound () ? Weight::Bold : Weight::Normal);
 
 	// Update fieldOfView widget
 

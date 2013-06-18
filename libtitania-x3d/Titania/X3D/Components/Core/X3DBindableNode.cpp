@@ -88,18 +88,15 @@ X3DBindableNode::_set_bind ()
 		{
 			for (auto & layer : getLayers ())
 				bindToLayer (layer);
-
-			isBound ()  = true;
-			bindTime () = getCurrentTime ();
 		}
 	}
 	else
 	{
 		if (isBound ())
-			isBound () = false;
-
-		for (auto & layer : getLayers ())
-			unbindFromLayer (layer);
+		{
+			for (auto & layer : getLayers ())
+				unbindFromLayer (layer);
+		}
 	}
 }
 

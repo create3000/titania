@@ -1,0 +1,151 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "Viewpoint.bind"
+
+Transform {
+  translation -4 0 0
+  children [
+    DEF T1 TouchSensor { }
+    DEF VP1 Viewpoint {
+      description "Red"
+    }
+    Transform {
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 0 0
+          }
+        }
+        geometry Box { }
+      }
+    }
+  ]
+}
+Transform {
+  translation -2 0 0
+  children [
+    DEF T2 TouchSensor { }
+    DEF VP2 Viewpoint {
+      description "Green"
+    }
+    Transform {
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0 1 0
+          }
+        }
+        geometry Box { }
+      }
+    }
+  ]
+}
+Transform {
+  translation 0 0 0
+  children [
+    DEF T3 TouchSensor { }
+    DEF VP3 Viewpoint {
+      description "Blue"
+    }
+    Transform {
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0 0 1
+          }
+        }
+        geometry Box { }
+      }
+    }
+  ]
+}
+Transform {
+  translation 2 0 0
+  children [
+    DEF T4 TouchSensor { }
+    DEF VP4 Viewpoint {
+      description "Magenta"
+    }
+    Transform {
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 0 1
+          }
+        }
+        geometry Box { }
+      }
+    }
+  ]
+}
+Transform {
+  translation 4 0 0
+  children [
+    DEF T5 TouchSensor { }
+    DEF VP5 Viewpoint {
+      description "Yellow"
+    }
+    Transform {
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 1 0
+          }
+        }
+        geometry Box { }
+      }
+    }
+  ]
+}
+
+DEF Debug Script {
+	eventIn SFTime set_1
+	eventIn SFTime set_2
+	eventIn SFTime set_3
+	eventIn SFTime set_4
+	eventIn SFTime set_5
+	eventOut SFBool bind_1
+	eventOut SFBool bind_2
+	eventOut SFBool bind_3
+	eventOut SFBool bind_4
+	eventOut SFBool bind_5
+
+	url "vrmlscript:
+function set_1 ()
+{
+	bind_1 = TRUE;
+}
+function set_2 ()
+{
+	bind_2 = TRUE;
+}
+function set_3 ()
+{
+	bind_3 = TRUE;
+}
+function set_4 ()
+{
+	bind_4 = TRUE;
+}
+function set_5 ()
+{
+	bind_5 = TRUE;
+}
+"
+}
+
+ROUTE T1.touchTime TO Debug.set_1
+ROUTE Debug.bind_1 TO VP1.set_bind
+
+ROUTE T2.touchTime TO Debug.set_2
+ROUTE Debug.bind_2 TO VP2.set_bind
+
+ROUTE T3.touchTime TO Debug.set_3
+ROUTE Debug.bind_3 TO VP3.set_bind
+
+ROUTE T4.touchTime TO Debug.set_4
+ROUTE Debug.bind_4 TO VP4.set_bind
+
+ROUTE T5.touchTime TO Debug.set_5
+ROUTE Debug.bind_5 TO VP5.set_bind
+
