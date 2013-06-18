@@ -2095,6 +2095,7 @@
     <None Include="Tests\Scripting\X3DScene.rootNodes.wrl" />
     <None Include="Tests\Scripting\Proto.rootNodes.wrl" />
     <None Include="Tests\Basic\META.wrl" />
+    <None Include="Tests\Scripting\replaceWorld.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

@@ -221,17 +221,23 @@ jsBrowser::replaceWorld (JSContext* context, uintN argc, jsval* vp)
 		JSObject* scene;
 
 		jsval* argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "o", &scene))
-			return JS_FALSE;
-
-		if (not JS_InstanceOf (context, scene, jsX3DScene::getClass (), NULL))
+		
+		if (JSVAL_IS_NULL (argv [0]))
+			script -> getBrowser () -> replaceWorld (NULL);
+			
+		else
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be X3DScene, is %s", JS_GetClass (context, scene) -> name);
-			return JS_FALSE;
-		}
+			if (not JS_ConvertArguments (context, argc, argv, "o", &scene))
+				return JS_FALSE;
 
-		script -> getBrowser () -> replaceWorld (static_cast <Scene*> (JS_GetPrivate (context, scene)));
+			if (not JS_InstanceOf (context, scene, jsX3DScene::getClass (), NULL))
+			{
+				JS_ReportError (context, "Type of argument 1 is invalid - should be X3DScene, is %s", JS_GetClass (context, scene) -> name);
+				return JS_FALSE;
+			}
+
+			script -> getBrowser () -> replaceWorld (static_cast <Scene*> (JS_GetPrivate (context, scene)));
+		}
 
 		JS_SET_RVAL (context, vp, JSVAL_VOID);
 

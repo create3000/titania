@@ -257,19 +257,18 @@ throw (Error <INVALID_SCENE>)
 {
 	// Replace world.
 
-	print ("*** The browser is requested to replace the world with '", value -> getWorldURL (), "'.\n");
-
-	if (not value)
-		throw Error <INVALID_SCENE> ("Scene is NULL.");
-
 	clock -> advance ();
 
 	if (scene)
 		shutdown .processInterests ();
 
-	scene = value;
+	if (value)
+		scene = value;
+		
+	else
+		scene = createScene ();
 	
-	std::clog << "Replacing world done." << std::endl;
+	print ("*** The browser is requested to replace the world with '", scene -> getWorldURL (), "'.\n");
 }
 
 void
@@ -285,6 +284,8 @@ X3DBrowser::set_world ()
 	// Generate initialized event immediately upon receiving this service.
 
 	initialized = getCurrentTime ();
+
+	std::clog << "Replacing world done." << std::endl;
 }
 
 void
