@@ -92,10 +92,7 @@ public:
 		if (stack .top () not_eq node)
 		{
 			if (stack .top () -> isBound ())
-			{
-				stack .top () -> set_bind () = false;
 				stack .top () -> isBound ()  = false;
-			}
 
 			if (not node -> isBound ())
 			{

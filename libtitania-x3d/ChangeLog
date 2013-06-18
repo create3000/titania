@@ -5,6 +5,11 @@
 
 2013-06-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BindableNodeStack.h:
+	* X3DBindableNode.cpp: 
+
+2013-06-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Scene.cpp:
 	* Browser.cpp:
 	* BindableNodeStack.h:
