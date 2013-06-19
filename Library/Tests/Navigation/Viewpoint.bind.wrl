@@ -1,116 +1,393 @@
-#X3D V3.0 utf8 Titania
+#VRML V2.0 utf8 Titania
 
 META "title" "Viewpoint.bind"
 
-Transform {
-  translation -4 0 0
+EXTERNPROTO toSFInt32 [
+  eventOut     SFInt32 value_changed
+  exposedField MFNode  children
+]
+"toSFInt32.wrl"
+
+EXTERNPROTO SFBool [
+  exposedField SFBool keyValue
+  exposedField SFTime startTime
+  eventOut     SFBool value_changed
+]
+"SFBool.wrl"
+
+EXTERNPROTO SFInt32 [
+  exposedField SFInt32 keyValue
+  exposedField SFTime  startTime
+  eventOut     SFInt32 value_changed
+]
+"SFInt32.wrl"
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+DEF ActiveLayer1 Transform {
+  translation -4 3 0
+  scale 0.5 0.5 0.5
   children [
-    DEF T1 TouchSensor { }
-    DEF VP1 Viewpoint {
-      description "Red"
+    DEF L1 TouchSensor { }
+    DEF A1 SFInt32 {
+      keyValue 1
     }
-    Transform {
-      children Shape {
-        appearance Appearance {
-          material Material {
-            diffuseColor 1 0 0
-          }
-        }
-        geometry Box { }
+    Shape {
+      appearance Appearance {
+        material Material { }
       }
+      geometry Box { }
     }
   ]
 }
-Transform {
-  translation -2 0 0
+
+DEF ActiveLayer2 Transform {
+  translation 2 3 0
+  scale 0.5 0.5 0.5
   children [
-    DEF T2 TouchSensor { }
-    DEF VP2 Viewpoint {
-      description "Green"
+    DEF L2 TouchSensor { }
+    DEF A2 SFInt32 {
+      keyValue 2
     }
-    Transform {
-      children Shape {
-        appearance Appearance {
-          material Material {
-            diffuseColor 0 1 0
-          }
-        }
-        geometry Box { }
+    Shape {
+      appearance Appearance {
+        material Material { }
       }
+      geometry Box { }
     }
   ]
 }
+
 Transform {
-  translation 0 0 0
-  children [
-    DEF T3 TouchSensor { }
-    DEF VP3 Viewpoint {
-      description "Blue"
-    }
-    Transform {
-      children Shape {
-        appearance Appearance {
-          material Material {
-            diffuseColor 0 0 1
-          }
-        }
-        geometry Box { }
+  translation -8 0 0
+  children Shape {
+    appearance DEF White Appearance {
+      material Material {
+        diffuseColor 1 1 1
       }
     }
-  ]
+    geometry Text {
+      string "bind"
+    }
+  }
 }
+
 Transform {
-  translation 2 0 0
-  children [
-    DEF T4 TouchSensor { }
-    DEF VP4 Viewpoint {
-      description "Magenta"
+  translation -8 -2 0
+  children Shape {
+    appearance USE White
+    geometry Text {
+      string "unbind"
     }
-    Transform {
-      children Shape {
-        appearance Appearance {
-          material Material {
-            diffuseColor 1 0 1
-          }
-        }
-        geometry Box { }
-      }
-    }
-  ]
+  }
 }
+
 Transform {
-  translation 4 0 0
-  children [
-    DEF T5 TouchSensor { }
-    DEF VP5 Viewpoint {
-      description "Yellow"
-    }
-    Transform {
-      children Shape {
-        appearance Appearance {
-          material Material {
-            diffuseColor 1 1 0
-          }
-        }
-        geometry Box { }
+  translation -8 3 0
+  children Shape {
+    appearance USE White
+    geometry Text {
+      string "activeLayer"
+      fontStyle FontStyle {
+        size 0.5
       }
+    }
+  }
+}
+
+DEF LayerSet LayerSet {
+  activeLayer 1
+  order [ 0, 1, 2 ]
+  layers [
+    DEF Layer1 Layer {
+      children [
+        DEF _0 Transform {
+          translation -4 0 0
+          children [
+            Transform {
+              children [
+                DEF T1 TouchSensor { }
+                DEF S1 Shape {
+                  appearance Appearance {
+                    material Material {
+                      diffuseColor 1 0 0
+                    }
+                  }
+                  geometry Box { }
+                }
+              ]
+            }
+            Transform {
+              translation 0 -2 0
+              scale 0.5 0.5 0.5
+              children [
+                DEF U1 TouchSensor { }
+                USE S1
+              ]
+            }
+            Transform {
+              translation 0 1 0
+              scale 0.5 0.5 0.5
+              children DEF S1 Switch {
+                choice [
+                  DEF I1 toSFInt32 {
+                    children DEF B1 SFBool { }
+                  }
+                  DEF Bound Transform {
+                    children Shape {
+                      appearance Appearance {
+                        material Material { }
+                      }
+                      geometry Sphere { }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+        DEF VP1 Viewpoint {
+          description "Red"
+        }
+        DEF _1 Transform {
+          translation -2 0 0
+          children [
+            Transform {
+              children [
+                DEF T2 TouchSensor { }
+                DEF S2 Shape {
+                  appearance Appearance {
+                    material Material {
+                      diffuseColor 0 1 0
+                    }
+                  }
+                  geometry Box { }
+                }
+              ]
+            }
+            Transform {
+              translation 0 -2 0
+              scale 0.5 0.5 0.5
+              children [
+                DEF U2 TouchSensor { }
+                USE S2
+              ]
+            }
+            Transform {
+              translation 0 1 0
+              scale 0.5 0.5 0.5
+              children DEF S2 Switch {
+                choice [
+                  DEF I2 toSFInt32 {
+                    children DEF B2 SFBool { }
+                  }
+                  USE Bound
+                ]
+              }
+            }
+          ]
+        }
+        DEF VP2 Viewpoint {
+          description "Green"
+        }
+        DEF _2 Transform {
+          translation 0 2 0
+          children [
+            Transform {
+              children [
+                DEF T3 TouchSensor { }
+                DEF S3 Shape {
+                  appearance Appearance {
+                    material Material {
+                      diffuseColor 0 0 1
+                    }
+                  }
+                  geometry Box { }
+                }
+              ]
+            }
+            Transform {
+              translation 0 -2 0
+              scale 0.5 0.5 0.5
+              children [
+                DEF U3 TouchSensor { }
+                USE S3
+              ]
+            }
+            Transform {
+              translation 0 1 0
+              scale 0.5 0.5 0.5
+              children DEF S3 Switch {
+                choice [
+                  DEF I3 toSFInt32 {
+                    children DEF B3 SFBool { }
+                  }
+                  USE Bound
+                ]
+              }
+            }
+          ]
+        }
+        DEF VP3 Viewpoint {
+          description "Blue"
+        }
+        DEF _5 Transform {
+          translation 0 -2 0
+          children [
+            Transform {
+              children [
+                DEF T6 TouchSensor { }
+                DEF S6 Shape {
+                  appearance Appearance {
+                    material Material {
+                      diffuseColor 0 1 1
+                    }
+                  }
+                  geometry Box { }
+                }
+              ]
+            }
+            Transform {
+              translation 0 -2 0
+              scale 0.5 0.5 0.5
+              children [
+                DEF U6 TouchSensor { }
+                USE S6
+              ]
+            }
+            Transform {
+              translation 0 1 0
+              scale 0.5 0.5 0.5
+              children DEF S6 Switch {
+                choice [
+                  DEF I6 toSFInt32 {
+                    children DEF B6 SFBool { }
+                  }
+                  USE Bound
+                ]
+              }
+            }
+          ]
+        }
+        DEF VP6 Viewpoint {
+          description "Cyan"
+        }
+      ]
+    }
+    DEF Layer2 Layer {
+      children [
+        DEF _3 Transform {
+          translation 2 0 0
+          children [
+            Transform {
+              children [
+                DEF T4 TouchSensor { }
+                DEF S4 Shape {
+                  appearance Appearance {
+                    material Material {
+                      diffuseColor 1 0 1
+                    }
+                  }
+                  geometry Box { }
+                }
+              ]
+            }
+            Transform {
+              translation 0 -2 0
+              scale 0.5 0.5 0.5
+              children [
+                DEF U4 TouchSensor { }
+                USE S4
+              ]
+            }
+            Transform {
+              translation 0 1 0
+              scale 0.5 0.5 0.5
+              children DEF S4 Switch {
+                choice [
+                  DEF I4 toSFInt32 {
+                    children DEF B4 SFBool { }
+                  }
+                  USE Bound
+                ]
+              }
+            }
+          ]
+        }
+        DEF VP4 Viewpoint {
+          description "Magenta"
+        }
+        DEF _4 Transform {
+          translation 4 0 0
+          children [
+            Transform {
+              children [
+                DEF T5 TouchSensor { }
+                DEF S5 Shape {
+                  appearance Appearance {
+                    material Material {
+                      diffuseColor 1 1 0
+                    }
+                  }
+                  geometry Box { }
+                }
+              ]
+            }
+            Transform {
+              translation 0 -2 0
+              scale 0.5 0.5 0.5
+              children [
+                DEF U5 TouchSensor { }
+                USE S5
+              ]
+            }
+            Transform {
+              translation 0 1 0
+              scale 0.5 0.5 0.5
+              children DEF S5 Switch {
+                choice [
+                  DEF I5 toSFInt32 {
+                    children DEF B5 SFBool { }
+                  }
+                  USE Bound
+                ]
+              }
+            }
+          ]
+        }
+        DEF VP5 Viewpoint {
+          description "Yellow"
+        }
+        USE VP3
+        USE VP6
+      ]
     }
   ]
 }
 
 DEF Debug Script {
-	eventIn SFTime set_1
-	eventIn SFTime set_2
-	eventIn SFTime set_3
-	eventIn SFTime set_4
-	eventIn SFTime set_5
-	eventOut SFBool bind_1
-	eventOut SFBool bind_2
-	eventOut SFBool bind_3
-	eventOut SFBool bind_4
-	eventOut SFBool bind_5
+  eventIn  SFTime set_1
+  eventIn  SFTime set_2
+  eventIn  SFTime set_3
+  eventIn  SFTime set_4
+  eventIn  SFTime set_5
+  eventIn  SFTime set_6
+  eventIn  SFTime unset_1
+  eventIn  SFTime unset_2
+  eventIn  SFTime unset_3
+  eventIn  SFTime unset_4
+  eventIn  SFTime unset_5
+  eventIn  SFTime unset_6
+  eventOut SFBool bind_1
+  eventOut SFBool bind_2
+  eventOut SFBool bind_3
+  eventOut SFBool bind_4
+  eventOut SFBool bind_5
+  eventOut SFBool bind_6
 
-	url "vrmlscript:
+  url "vrmlscript:
 function set_1 ()
 {
 	bind_1 = TRUE;
@@ -131,21 +408,89 @@ function set_5 ()
 {
 	bind_5 = TRUE;
 }
+function set_6 ()
+{
+	bind_6 = TRUE;
+}
+function unset_1 ()
+{
+	bind_1 = FALSE;
+}
+function unset_2 ()
+{
+	bind_2 = FALSE;
+}
+function unset_3 ()
+{
+	bind_3 = FALSE;
+}
+function unset_4 ()
+{
+	bind_4 = FALSE;
+}
+function unset_5 ()
+{
+	bind_5 = FALSE;
+}
+function unset_6 ()
+{
+	bind_6 = FALSE;
+}
 "
 }
 
+
+# activeLayer
+
+ROUTE L1.touchTime TO A1.set_startTime
+ROUTE A1.value_changed TO LayerSet.set_activeLayer
+ROUTE L2.touchTime TO A2.set_startTime
+ROUTE A2.value_changed TO LayerSet.set_activeLayer
+
+# VP1
+
 ROUTE T1.touchTime TO Debug.set_1
+ROUTE U1.touchTime TO Debug.unset_1
 ROUTE Debug.bind_1 TO VP1.set_bind
+ROUTE VP1.isBound TO B1.set_keyValue
+ROUTE I1.value_changed TO S1.set_whichChoice
+
+# VP2
 
 ROUTE T2.touchTime TO Debug.set_2
+ROUTE U2.touchTime TO Debug.unset_2
 ROUTE Debug.bind_2 TO VP2.set_bind
+ROUTE VP2.isBound TO B2.set_keyValue
+ROUTE I2.value_changed TO S2.set_whichChoice
+
+# VP3
 
 ROUTE T3.touchTime TO Debug.set_3
+ROUTE U3.touchTime TO Debug.unset_3
 ROUTE Debug.bind_3 TO VP3.set_bind
+ROUTE VP3.isBound TO B3.set_keyValue
+ROUTE I3.value_changed TO S3.set_whichChoice
+
+# VP4
 
 ROUTE T4.touchTime TO Debug.set_4
+ROUTE U4.touchTime TO Debug.unset_4
 ROUTE Debug.bind_4 TO VP4.set_bind
+ROUTE VP4.isBound TO B4.set_keyValue
+ROUTE I4.value_changed TO S4.set_whichChoice
+
+# VP5
 
 ROUTE T5.touchTime TO Debug.set_5
+ROUTE U5.touchTime TO Debug.unset_5
 ROUTE Debug.bind_5 TO VP5.set_bind
+ROUTE VP5.isBound TO B5.set_keyValue
+ROUTE I5.value_changed TO S5.set_whichChoice
 
+# VP6
+
+ROUTE T6.touchTime TO Debug.set_6
+ROUTE U6.touchTime TO Debug.unset_6
+ROUTE Debug.bind_6 TO VP6.set_bind
+ROUTE VP6.isBound TO B6.set_keyValue
+ROUTE I6.value_changed TO S6.set_whichChoice

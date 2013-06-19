@@ -136,7 +136,7 @@ X3DViewpointNode::setTransformationMatrix (const Matrix4f & value)
 void
 X3DViewpointNode::bindToLayer (X3DLayerNode* const layer)
 {
-	std::clog << "Trying to bind X3DViewpoint '" << getName () << ":" << description () << "' to layer '" << layer << "': " << std::flush;
+	std::clog << "Trying to bind X3DViewpoint '" << getName () << ":" << description () << "' to layer '" << layer -> getName () << ":" << layer << "': " << std::flush;
 
 	layer -> getViewpointStack () .push (this);
 

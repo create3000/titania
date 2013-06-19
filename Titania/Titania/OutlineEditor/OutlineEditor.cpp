@@ -78,7 +78,7 @@ OutlineEditor::initialize ()
 bool
 OutlineEditor::on_button_release_event (GdkEventButton* event)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	return false;
 }

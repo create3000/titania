@@ -93,7 +93,7 @@ public:
 	bool
 	hasRoots (ChildObjectSet &);
 
-	template <class Type>
+	template <class Root, class Type>
 	std::deque <Type*>
 	findParents () const;
 
@@ -153,7 +153,7 @@ protected:
 
 private:
 
-	template <class Type>
+	template <class Root, class Type>
 	void
 	findParents (std::deque <Type*> &, ChildObjectSet &);
 
@@ -171,7 +171,7 @@ X3DChildObject::setChildren (Args & ... args)
 	basic::pass ((setChild (args), 1) ...);
 }
 
-template <class Type>
+template <class Root, class Type>
 std::deque <Type*>
 X3DChildObject::findParents () const
 {
@@ -179,15 +179,18 @@ X3DChildObject::findParents () const
 	ChildObjectSet     seen;
 
 	for (const auto & object : getParents ())
-		object -> findParents <Type> (parents, seen);
+		object -> findParents <Root, Type> (parents, seen);
 
 	return parents;
 }
 
-template <class Type>
+template <class Root, class Type>
 void
 X3DChildObject::findParents (std::deque <Type*> & parents, ChildObjectSet & seen)
 {
+	if (dynamic_cast <Root*> (this))
+		return;
+
 	if (not seen .insert (this) .second)
 		return;
 
@@ -200,7 +203,7 @@ X3DChildObject::findParents (std::deque <Type*> & parents, ChildObjectSet & seen
 	}
 
 	for (const auto & object : getParents ())
-		object -> findParents <Type> (parents, seen);
+		object -> findParents <Root, Type> (parents, seen);
 }
 
 } // X3D

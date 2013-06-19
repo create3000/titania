@@ -1,3 +1,11 @@
+2013-06-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DChildObject.h:
+	* X3DNode.cpp:
+	* BindableNodeStack.h:
+	* X3DBindableNode.cpp:
+	* X3DViewpointNode.cpp: 
+
 2013-06-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BindableNodeStack.h:

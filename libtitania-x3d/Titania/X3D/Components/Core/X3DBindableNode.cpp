@@ -84,19 +84,13 @@ X3DBindableNode::_set_bind ()
 {
 	if (set_bind ())
 	{
-		if (not isBound ())
-		{
-			for (auto & layer : getLayers ())
-				bindToLayer (layer);
-		}
+		for (auto & layer : getLayers ())
+			bindToLayer (layer);
 	}
 	else
 	{
-		if (isBound ())
-		{
-			for (auto & layer : getLayers ())
-				unbindFromLayer (layer);
-		}
+		for (auto & layer : getLayers ())
+			unbindFromLayer (layer);
 	}
 }
 

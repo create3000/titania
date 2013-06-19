@@ -1,0 +1,64 @@
+#VRML V2.0 utf8
+
+PROTO toSFInt32 [
+  eventOut     SFInt32 value_changed
+  exposedField MFNode  children [ ]
+]
+{
+  PROTO Fields [
+    exposedField MFNode children [ ]
+  ]
+  {
+    Group { }
+  }
+
+  DEF toSFInt32 Script {
+    eventOut SFInt32  value_changed IS value_changed
+    eventIn  SFBool   set_SFBool
+    eventIn  SFFloat  set_SFDouble
+    eventIn  SFFloat  set_SFFloat
+    eventIn  SFInt32  set_SFInt32
+    eventIn  SFString set_SFString
+    eventIn  SFTime   set_SFTime
+    eventIn  MFNode   set_children
+    field    MFNode   children [ ]
+    field    SFNode   self USE toSFInt32
+    field    SFNode   fields DEF Fields Fields {
+      children IS children
+    }
+
+    url "vrmlscript:
+function  initialize ()
+{
+	set_children (fields .children);
+}
+
+function set_SFBool   (value) { value_changed = value; }
+function set_SFDouble (value) { value_changed = value; }
+function set_SFFloat  (value) { value_changed = value; }
+function set_SFInt32  (value) { value_changed = value; }
+function set_SFString (value) { value_changed = parseInt (value); }
+function set_SFTime   (value) { value_changed = value; }
+
+function set_children (value)
+{
+	for (var i = 0; i < children .length; ++ i)
+		Browser .deleteRoute (children [i], 'keyValue_changed', self, 'set_' + fieldType (children [i]));
+	
+	children = value;
+	
+	for (var i = 0; i < children .length; ++ i)
+		Browser .addRoute (children [i], 'keyValue_changed', self, 'set_' + fieldType (children [i]));
+}
+
+function fieldType (node)
+{
+	var name = node .toString ();
+	return name .substring (0, name .length - 4);
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Fields.children_changed TO toSFInt32.set_children
+}
