@@ -61,7 +61,7 @@ namespace X3D {
 class Scene;
 
 class Inline :
-	private X3DScene, public X3DChildNode, public X3DBoundedObject, public X3DUrlObject
+	public X3DScene, public X3DChildNode, public X3DBoundedObject, public X3DUrlObject
 {
 public:
 
@@ -91,11 +91,19 @@ public:
 	void
 	requestImmediateLoad () final;
 	
-	const SFNode <X3DBaseNode> &
-	getExportedNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	virtual
+	MFNode &
+	getRootNodes ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final
+	{ return group -> children (); }
+
+	virtual
+	const MFNode &
+	getRootNodes () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final
+	{ return group -> children (); }
 
 	virtual
 	void

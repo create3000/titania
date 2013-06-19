@@ -98,15 +98,17 @@ Inline::initialize ()
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
 
-	load () .addInterest (this, &Inline::set_load);
-	url ()  .addInterest (this, &Inline::set_url);
+	load ()       .addInterest (this, &Inline::set_load);
+	url ()        .addInterest (this, &Inline::set_url);
+	bboxSize ()   .addInterest (group -> bboxSize ());
+	bboxCenter () .addInterest (group -> bboxCenter ());
+
+	group -> bboxSize ()   = bboxSize ();
+	group -> bboxCenter () = bboxCenter ();
 
 	if (load ())
 		requestLoad ();
-
-	getRootNodes () .addInterest (group -> children ());
-
-	group -> children () = getRootNodes ();
+		
 	group -> setup ();
 }
 
@@ -114,22 +116,6 @@ Box3f
 Inline::getBBox ()
 {
 	return group -> getBBox ();
-}
-
-const SFNode <X3DBaseNode> &
-Inline::getExportedNode (const std::string & exportedName) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (load ())
-		const_cast <Inline*> (this) -> requestImmediateLoad ();
-
-	if (checkLoadState () == COMPLETE_STATE)
-		return X3DScene::getExportedNode (exportedName);
-
-	else
-		throw Error <INVALID_NAME> ("Imported node error: Inline node '" + getName () + "' is not loaded.");
 }
 
 void

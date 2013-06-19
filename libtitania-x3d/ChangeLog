@@ -1,5 +1,10 @@
 2013-06-19  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Inline.h:
+	* Inline.cpp: 
+
+2013-06-19  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DChildObject.h:
 	* X3DNode.cpp:
 	* BindableNodeStack.h:
