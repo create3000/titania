@@ -2102,6 +2102,7 @@
     <None Include="Tests\Navigation\toSFInt32.wrl" />
     <None Include="Tests\Navigation\SFBool.wrl" />
     <None Include="Tests\Navigation\SFInt32.wrl" />
+    <None Include="Prototypes\Converter\toSFInt32\example.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
