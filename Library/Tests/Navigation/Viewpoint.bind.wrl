@@ -10,14 +10,14 @@ EXTERNPROTO toSFInt32 [
 
 EXTERNPROTO SFBool [
   exposedField SFBool keyValue
-  exposedField SFTime startTime
+  exposedField SFTime triggerTime
   eventOut     SFBool value_changed
 ]
 "SFBool.wrl"
 
 EXTERNPROTO SFInt32 [
   exposedField SFInt32 keyValue
-  exposedField SFTime  startTime
+  exposedField SFTime  triggerTime
   eventOut     SFInt32 value_changed
 ]
 "SFInt32.wrl"
@@ -442,9 +442,9 @@ function unset_6 ()
 
 # activeLayer
 
-ROUTE L1.touchTime TO A1.set_startTime
+ROUTE L1.touchTime TO A1.set_triggerTime
 ROUTE A1.value_changed TO LayerSet.set_activeLayer
-ROUTE L2.touchTime TO A2.set_startTime
+ROUTE L2.touchTime TO A2.set_triggerTime
 ROUTE A2.value_changed TO LayerSet.set_activeLayer
 
 # VP1

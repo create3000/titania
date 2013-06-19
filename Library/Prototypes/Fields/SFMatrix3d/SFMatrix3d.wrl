@@ -2,13 +2,13 @@
 
 PROTO SFMatrix3d [
   exposedField SFMatrix3d keyValue 1 0 0 0 1 0 0 0 1
-  exposedField SFTime     startTime 0
+  exposedField SFTime     triggerTime 0
   eventOut     SFMatrix3d value_changed
 ]
 {
   PROTO Fields [
     exposedField SFMatrix3d keyValue 1 0 0 0 1 0 0 0 1
-    exposedField SFTime     startTime 0
+    exposedField SFTime     triggerTime 0
   ]
   {
     Group { }
@@ -16,22 +16,22 @@ PROTO SFMatrix3d [
 
   DEF Fields Fields {
     keyValue IS keyValue
-    startTime IS startTime
+    triggerTime IS triggerTime
   }
 
   DEF SFMatrix3d Script {
-    eventIn  SFTime     set_startTime
+    eventIn  SFTime     set_triggerTime
     eventOut SFMatrix3d value_changed IS value_changed
     field    SFNode     fields USE Fields
 
     url "vrmlscript:
 function initialize ()
 {
-	if (fields .startTime)
-		set_startTime (0, 0);
+	if (fields .triggerTime)
+		set_triggerTime (0, 0);
 }
 
-function set_startTime (value, time)
+function set_triggerTime (value, time)
 {
 	value_changed = fields .keyValue;
 }
@@ -39,7 +39,7 @@ function set_startTime (value, time)
     directOutput TRUE
   }
 
-  ROUTE Fields.startTime_changed TO SFMatrix3d.set_startTime
+  ROUTE Fields.triggerTime_changed TO SFMatrix3d.set_triggerTime
 }
 
 

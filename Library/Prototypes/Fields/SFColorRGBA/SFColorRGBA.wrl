@@ -2,13 +2,13 @@
 
 PROTO SFColorRGBA [
   exposedField SFColorRGBA keyValue 0 0 0 0
-  exposedField SFTime      startTime 0
+  exposedField SFTime      triggerTime 0
   eventOut     SFColorRGBA value_changed
 ]
 {
   PROTO Fields [
     exposedField SFColorRGBA keyValue 0 0 0 0
-    exposedField SFTime      startTime 0
+    exposedField SFTime      triggerTime 0
   ]
   {
     Group { }
@@ -16,22 +16,22 @@ PROTO SFColorRGBA [
 
   DEF Fields Fields {
     keyValue IS keyValue
-    startTime IS startTime
+    triggerTime IS triggerTime
   }
 
   DEF SFColorRGBA Script {
-    eventIn  SFTime      set_startTime
+    eventIn  SFTime      set_triggerTime
     eventOut SFColorRGBA value_changed IS value_changed
     field    SFNode      fields USE Fields
 
     url "vrmlscript:
 function initialize ()
 {
-	if (fields .startTime)
-		set_startTime (0, 0);
+	if (fields .triggerTime)
+		set_triggerTime (0, 0);
 }
 
-function set_startTime (value, time)
+function set_triggerTime (value, time)
 {
 	value_changed = fields .keyValue;
 }
@@ -39,7 +39,7 @@ function set_startTime (value, time)
     directOutput TRUE
   }
 
-  ROUTE Fields.startTime_changed TO SFColorRGBA.set_startTime
+  ROUTE Fields.triggerTime_changed TO SFColorRGBA.set_triggerTime
 }
 
 

@@ -1,5 +1,53 @@
 2013-06-19  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFBool.wrl:
+	* SFInt32.wrl:
+	* MFNode.wrl:
+	* MFTime.wrl:
+	* SFTime.wrl:
+	* SFBool.wrl:
+	* MFBool.wrl:
+	* Viewpoint.bind.wrl:
+	* SFNode.wrl:
+	* SFColor.wrl:
+	* MFVec4f.wrl:
+	* SFImage.wrl:
+	* SFFloat.wrl:
+	* SFInt32.wrl:
+	* SFVec3f.wrl:
+	* SFVec4d.wrl:
+	* SFVec4f.wrl:
+	* SFVec2d.wrl:
+	* SFVec2f.wrl:
+	* SFVec3d.wrl:
+	* MFVec2d.wrl:
+	* MFVec2f.wrl:
+	* MFImage.wrl:
+	* MFInt32.wrl:
+	* MFFloat.wrl:
+	* MFVec3f.wrl:
+	* MFVec4d.wrl:
+	* MFColor.wrl:
+	* MFVec3d.wrl:
+	* SFString.wrl:
+	* SFDouble.wrl:
+	* MFString.wrl:
+	* MFDouble.wrl:
+	* MFMatrix4d.wrl:
+	* MFMatrix3d.wrl:
+	* MFMatrix3f.wrl:
+	* SFMatrix4d.wrl:
+	* SFMatrix3f.wrl:
+	* SFMatrix3d.wrl:
+	* SFMatrix4f.wrl:
+	* MFMatrix4f.wrl:
+	* SFRotation.wrl:
+	* MFRotation.wrl:
+	* SFColorRGBA.wrl:
+	* MFColorRGBA.wrl: 
+
+2013-06-19  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Library.mdproj:
 	* SFBool.wrl:
 	* SFInt32.wrl:
