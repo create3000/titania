@@ -534,6 +534,9 @@ Parser::importStatement ()
 							if (not nodeNameId (_nodeNameId))
 								throw Error <INVALID_X3D> ("No name given after AS.");
 						}
+						
+						if (isInsideProtoDefinition () and _inlineNode -> load ())
+							_inlineNode -> requestImmediateLoad ();
 
 						getExecutionContext () -> addImportedNode (_inlineNode, _exportedNodeNameId, _nodeNameId);
 

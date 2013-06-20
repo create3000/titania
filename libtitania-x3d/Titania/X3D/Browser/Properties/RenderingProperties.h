@@ -57,11 +57,6 @@
 #include <set>
 #include <stack>
 
-extern "C"
-{
-#include <GL/glx.h>
-}
-
 namespace titania {
 namespace X3D {
 

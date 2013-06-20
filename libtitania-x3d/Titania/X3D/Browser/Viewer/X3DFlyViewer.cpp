@@ -296,8 +296,7 @@ X3DFlyViewer::roll ()
 Vector3f
 X3DFlyViewer::getTranslation (const Vector3f & translation) const
 {
-	auto activeLayer    = getBrowser () -> getExecutionContext () -> getActiveLayer ();
-	auto navigationInfo = activeLayer -> getNavigationInfo ();
+	auto navigationInfo = getBrowser () -> getActiveNavigationInfo ();
 
 	float zFar            = navigationInfo -> getFarPlane ();
 	float collisionRadius = navigationInfo -> getCollisionRadius ();
@@ -339,14 +338,15 @@ X3DFlyViewer::getDistance (const Vector3f & direction) const
 {
 	glLoadIdentity ();
 
-	auto activeLayer = getBrowser () -> getExecutionContext () -> getActiveLayer ();
-	auto viewpoint   = activeLayer -> getViewpoint ();
+	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	Matrix4f cameraSpaceMatrix = viewpoint -> getModelViewMatrix ();
 
 	cameraSpaceMatrix .translate (viewpoint -> getUserPosition ());
 	cameraSpaceMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction));
 	glMultMatrixf (inverse (cameraSpaceMatrix) .data ());
+
+	const auto & activeLayer = getBrowser () -> getActiveLayer ();
 
 	activeLayer -> traverse (TraverseType::NAVIGATION);
 

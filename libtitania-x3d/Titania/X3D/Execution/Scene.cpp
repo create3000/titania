@@ -50,136 +50,21 @@
 
 #include "Scene.h"
 
-#include "../Bits/Cast.h"
-#include "../Browser/X3DBrowser.h"
-#include "../Components/Layering/Layer.h"
-
 namespace titania {
 namespace X3D {
 
 Scene::Scene (X3DBrowser* const browser) :
 	    X3DBaseNode (browser, this),      
-	       X3DScene (),                   
-	       layerSet (new LayerSet (this)),
-	defaultLayerSet (layerSet),
-	         layer0 (new Layer (this)),
-	    activeLayer (layer0)
+	       X3DScene ()                   
 {
 	setComponent ("Browser");
 	setTypeName ("Scene");
-
-	setChildren (layerSet, defaultLayerSet, layer0, activeLayer);
 }
 
 Scene*
 Scene::create (X3DExecutionContext* const executionContext) const
 {
 	return new Scene (executionContext -> getBrowser ());
-}
-
-void
-Scene::initialize ()
-{
-	X3DScene::initialize ();
-
-	layer0 -> setup ();
-	layer0 -> getBackgroundStack () .bottom () -> transparency () = 0;
-
-	layerSet -> setup ();
-	layerSet -> setLayer0 (layer0);
-
-	getRootNodes () .addInterest (this, &Scene::set_rootNodes);
-}
-
-void
-Scene::set_rootNodes ()
-{
-	layerSet -> getActiveLayer () .removeInterest (this, &Scene::set_activeLayer);
-
-	layerSet = defaultLayerSet;
-
-	for (const auto & rootNode : getRootNodes ())
-	{
-		auto rootLayerSet = x3d_cast <LayerSet*> (rootNode);
-
-		if (rootLayerSet)
-		{
-			rootLayerSet -> setLayer0 (layer0);
-			layerSet = rootLayerSet;
-		}
-	}
-
-	layerSet -> getActiveLayer () .addInterest (this, &Scene::set_activeLayer);
-	
-	set_activeLayer ();
-}
-
-void
-Scene::set_activeLayer ()
-{
-	activeLayer = layerSet -> getActiveLayer ();
-}
-
-void
-Scene::bind ()
-{
-	set_rootNodes ();
-
-	layer0 -> processEvents ();
-	layer0 -> getGroup () -> processEvents ();
-
-	traverse (TraverseType::CAMERA);
-	traverse (TraverseType::COLLECT);
-
-	for (auto & layer : layerSet -> getLayers ())
-	{
-		if (layer -> getNavigationInfos () .size ())
-			layer -> getNavigationInfos () [0] -> set_bind () = true;
-
-		if (layer -> getBackgrounds () .size ())
-			layer -> getBackgrounds () [0] -> set_bind () = true;
-
-		if (layer -> getFogs () .size ())
-			layer -> getFogs () [0] -> set_bind () = true;
-
-		// Bind first viewpoint in viewpoint stack.
-
-		if (layer -> getViewpoints () .size ())
-			layer -> getViewpoints () [0] -> set_bind () = true;
-	}
-
-	// Bind viewpoint from URL.
-
-	if (getWorldURL () .fragment () .length ())
-		changeViewpoint (getWorldURL () .fragment ());
-}
-
-void
-Scene::clear ()
-{
-	layerSet -> getActiveLayer () .removeInterest (this, &Scene::set_activeLayer);
-	layerSet = defaultLayerSet;
-
-	layer0 -> children () .clear ();
-	activeLayer = layer0;
-
-	X3DScene::clear ();
-}
-
-// Dispose
-
-void
-Scene::dispose ()
-{
-	getRootNodes () .removeInterest (this, &Scene::set_rootNodes);
-	layerSet -> getActiveLayer () .removeInterest (this, &Scene::set_activeLayer);
-
-	layerSet        .dispose ();
-	defaultLayerSet .dispose ();
-	layer0          .dispose ();
-	activeLayer     .dispose ();
-
-	X3DScene::dispose ();
 }
 
 Scene::~Scene ()

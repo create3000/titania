@@ -36,6 +36,7 @@
 #include "../Configuration/SupportedFields.h"
 #include "../Configuration/SupportedNodes.h"
 #include "../Configuration/SupportedProfiles.h"
+#include "../Execution/Scene.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -53,17 +54,20 @@ public:
 
 	const std::string &
 	getVersion () const
-	throw (Error <DISPOSED>);
+	throw (Error <DISPOSED>)
+	{ return version; }
 
 	void
 	setDescription (const std::string & value)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ description = value; }
 
 	const SFString &
 	getDescription ()
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return description; }
 
 	virtual
 	const basic::uri &
@@ -103,11 +107,11 @@ public:
 	getProfile (const std::string &) const
 	throw (Error <NOT_SUPPORTED>);
 
-	virtual
 	const SFNode <Scene> &
 	getExecutionContext () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final;
+	       Error <DISPOSED>)
+	{ return scene; }
 
 	SFNode <Scene>
 	createScene () const
@@ -152,17 +156,25 @@ public:
 	const SFNode <RenderingProperties> &
 	getRenderingProperties () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return renderingProperties; }
 
 	const SFNode <BrowserProperties> &
 	getBrowserProperties () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return browserProperties; }
+
+	//	bool
+	//	setBrowserOption (SAIString, SAIObject)
+	//	throw (Error <INVALID_OPERATION_TIMING>,
+	//	       Error <DISPOSED>);
 
 	const SFNode <BrowserOptions> &
 	getBrowserOptions () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return browserOptions; }
 
 	void
 	changeViewpoint (const std::string &)
@@ -178,6 +190,22 @@ public:
 	//	changeViewpoint (SAIAction, int32_t SAILayerID)
 	//	throw (Error <INVALID_OPERATION_TIMING>,
 	//	       Error <DISPOSED>);
+
+	///  @name Layer handling
+
+	const SFNode <X3DLayerNode> &
+	getActiveLayer () const
+	{ return activeLayer; }
+
+	virtual
+	NavigationInfo*
+	getActiveNavigationInfo () const final;
+
+	virtual
+	X3DViewpointNode*
+	getActiveViewpoint () const final;
+
+	///  @name print
 
 	template <typename ... Args>
 	void
@@ -203,16 +231,11 @@ public:
 		print (args ..., '\n');
 	}
 
-	//	bool
-	//	setBrowserOption (SAIString, SAIObject)
-	//	throw (Error <INVALID_OPERATION_TIMING>,
-	//	       Error <DISPOSED>);
+	///  @name Destruction
 
 	virtual
 	void
 	dispose () override;
-
-	////
 
 
 protected:
@@ -228,6 +251,11 @@ protected:
 
 
 private:
+
+	virtual
+	const SFNode <World> &
+	getWorld () const final
+	{ return world; }
 
 	template <typename Arg, typename ... Args>
 	void
@@ -247,7 +275,12 @@ private:
 	set_scene ();
 
 	void
-	set_world ();
+	set_activeLayer ();
+	
+	virtual
+	void
+	set_navigationInfo ()
+	{ }
 
 	static const std::string version;
 
@@ -258,8 +291,9 @@ private:
 
 	SFString description;
 
-	SFNode <Scene>    scene;
-	SFNode <Scene>    world;
+	SFNode <Scene>        scene;
+	SFNode <World>        world;
+	SFNode <X3DLayerNode> activeLayer;
 
 };
 

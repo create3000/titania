@@ -48,68 +48,79 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_BROWSER_H__
-#define __TITANIA_X3D_BROWSER_BROWSER_H__
+#ifndef __TITANIA_X3D_EXECUTION_WORLD_H__
+#define __TITANIA_X3D_EXECUTION_WORLD_H__
 
-#include <Titania/OpenGL/Surface.h>
-
-#include "../Browser/PointingDevice.h"
-#include "../Browser/Viewer/X3DViewer.h"
-#include "../Browser/X3DBrowser.h"
+#include "../Execution/Scene.h"
+#include "../Components/Layering/LayerSet.h"
 
 namespace titania {
 namespace X3D {
 
-class Browser :
-	public opengl::Surface, public X3DBrowser
+class World :
+	public X3DBaseNode
 {
 public:
 
-	Browser ();
+	///  @name Construction
 
-	virtual
-	ViewerType
-	getViewerType () const final
-	{ return viewer -> getType (); }
+	World (const SFNode <Scene> &);
+
+	///  @name Scene handling
+
+	const SFNode <Scene> &
+	getScene () const
+	{ return scene; }
+
+	const SFNode <LayerSet> &
+	getLayerSet () const
+	{ return layerSet; }
+
+	const SFNode <X3DLayerNode> &
+	getActiveLayer () const
+	{ return activeLayer; }
+
+	///  @name Display
 
 	void
-	setCursor (Gdk::CursorType cursor_type)
-	{ get_window () -> set_cursor (Gdk::Cursor::create (cursor_type)); }
+	bind ();
 
 	virtual
 	void
-	swapBuffers () final
-	{ opengl::Surface::swapBuffers (); }
+	traverse (TraverseType type) final
+	{ layerSet -> traverse (type); }
+
+	///  @name Destruction
 
 	virtual
 	void
 	dispose () final;
 
+	virtual
+	~World ();
+
 
 private:
 
 	virtual
-	X3DBaseNode*
+	World*
 	create (X3DExecutionContext* const) const final;
 
 	virtual
 	void
-	construct () final;
+	initialize () final;
 
-	virtual
 	void
-	set_navigationInfo () final;
+	set_activeLayer ();
 
-	virtual
 	void
-	reshape () final;
+	set_rootNodes ();
 
-	virtual
-	void
-	update (const Cairo::RefPtr <Cairo::Context> &) final;
-
-	std::unique_ptr <X3DViewer> viewer;
-	PointingDevice              pointingDevice;
+	SFNode <Scene>        scene;
+	SFNode <LayerSet>     layerSet;
+	SFNode <LayerSet>     defaultLayerSet;
+	SFNode <X3DLayerNode> layer0;
+	SFNode <X3DLayerNode> activeLayer;
 
 };
 

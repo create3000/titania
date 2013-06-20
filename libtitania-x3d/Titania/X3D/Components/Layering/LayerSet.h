@@ -93,9 +93,6 @@ public:
 	const MFNode &
 	layers () const
 	{ return *fields .layers; }
-
-	Box3f
-	getBBox ();
 	
 	void
 	setLayer0 (const SFNode <X3DLayerNode> &);

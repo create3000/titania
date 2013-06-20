@@ -62,6 +62,8 @@ extern "C"
 #include <GL/glu.h>
 
 #include <GL/gl.h>
+
+#include <GL/glx.h>
 }
 
 namespace titania {

@@ -51,13 +51,7 @@
 #ifndef __TITANIA_X3D_EXECUTION_SCENE_H__
 #define __TITANIA_X3D_EXECUTION_SCENE_H__
 
-#include "../Components/EnvironmentalEffects/Fog.h"
-#include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
-#include "../Components/Layering/LayerSet.h"
-#include "../Components/Navigation/NavigationInfo.h"
-#include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Execution/X3DScene.h"
-#include "../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
@@ -66,8 +60,6 @@ class Scene :
 	public X3DScene
 {
 public:
-
-	using X3DScene::fromStream;
 
 	///  @name Construction
 
@@ -84,72 +76,10 @@ public:
 	isScene () const final
 	{ return true; }
 
-	///  @name Layer handling
-
-	const SFNode <LayerSet> &
-	getLayerSet () const
-	{ return layerSet; }
-
-	const SFNode <X3DLayerNode> &
-	getActiveLayer () const
-	{ return activeLayer; }
-
-	///  @name Root node handling
-
-	virtual
-	MFNode &
-	getRootNodes ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final
-	{ return layer0 -> children (); }
-
-	virtual
-	const MFNode &
-	getRootNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final
-	{ return layer0 -> children (); }
-
-	///  @name Display
-
-	void
-	bind ();
-
-	virtual
-	void
-	traverse (TraverseType type) final
-	{ layerSet -> traverse (type); }
-
 	///  @name Destruction
 
 	virtual
-	void
-	dispose () final;
-
-	virtual
 	~Scene ();
-
-
-private:
-
-	virtual
-	void
-	initialize () final;
-
-	void
-	set_activeLayer ();
-
-	void
-	set_rootNodes ();
-
-	virtual
-	void
-	clear () final;
-
-	SFNode <LayerSet>     layerSet;
-	SFNode <LayerSet>     defaultLayerSet;
-	SFNode <X3DLayerNode> layer0;
-	SFNode <X3DLayerNode> activeLayer;
 
 };
 

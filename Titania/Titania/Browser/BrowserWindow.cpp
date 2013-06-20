@@ -320,7 +320,8 @@ BrowserWindow::on_rubberband_toggled ()
 void
 BrowserWindow::on_look_at_all_activate ()
 {
-	getBrowser () -> getExecutionContext () -> getActiveLayer () -> lookAt ();
+	if (getBrowser () -> getActiveLayer ())
+		getBrowser () -> getActiveLayer () -> lookAt ();
 }
 
 void
@@ -390,7 +391,8 @@ BrowserWindow::on_arrow_button_toggled ()
 void
 BrowserWindow::on_look_at_all_clicked ()
 {
-	getBrowser () -> getExecutionContext () -> getActiveLayer () -> lookAt ();
+	if (getBrowser () -> getActiveLayer ())
+		getBrowser () -> getActiveLayer () -> lookAt ();
 }
 
 void

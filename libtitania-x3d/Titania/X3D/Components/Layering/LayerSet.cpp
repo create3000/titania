@@ -103,12 +103,6 @@ LayerSet::initialize ()
 	set_layers ();
 }
 
-Box3f
-LayerSet::getBBox ()
-{
-	return getActiveLayer () -> getBBox ();                     // XXX get bbox from all layers;
-}
-
 void
 LayerSet::setLayer0 (const SFNode <X3DLayerNode> & value)
 {

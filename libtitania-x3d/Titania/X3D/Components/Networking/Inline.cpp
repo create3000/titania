@@ -65,11 +65,11 @@ Inline::Fields::Fields () :
 
 Inline::Inline (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	        X3DScene (),                                                    
 	    X3DChildNode (),                                                    
 	X3DBoundedObject (),                                                    
 	    X3DUrlObject (),
-	          fields (),                                                    
+	          fields (),
+	           scene (),                                                    
 	           group (new Group (executionContext))                                                     
 {
 	setComponent ("Networking");
@@ -81,7 +81,7 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxSize",   bboxSize ());
 	addField (initializeOnly, "bboxCenter", bboxCenter ());
 
-	setChildren (group);
+	setChildren (scene, group);
 }
 
 X3DBaseNode*
@@ -93,29 +93,54 @@ Inline::create (X3DExecutionContext* const executionContext) const
 void
 Inline::initialize ()
 {
-	//X3DChildNode::initialize ();
-	X3DScene::initialize ();
+	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
 
-	load ()       .addInterest (this, &Inline::set_load);
-	url ()        .addInterest (this, &Inline::set_url);
-	bboxSize ()   .addInterest (group -> bboxSize ());
-	bboxCenter () .addInterest (group -> bboxCenter ());
-
-	group -> bboxSize ()   = bboxSize ();
-	group -> bboxCenter () = bboxCenter ();
+	load () .addInterest (this, &Inline::set_load);
+	url ()  .addInterest (this, &Inline::set_url);
 
 	if (load ())
 		requestLoad ();
+	
+	else
+		setScene (getBrowser () -> createScene ());
 		
 	group -> setup ();
+}
+
+void
+Inline::setScene (const SFNode <Scene> & value)
+{
+	if (scene)
+		scene -> getRootNodes () .removeInterest (group -> children ());
+
+	scene = value;
+	scene -> getRootNodes () .addInterest (group -> children ());
+	
+	group -> children () = scene -> getRootNodes ();
 }
 
 Box3f
 Inline::getBBox ()
 {
-	return group -> getBBox ();
+	if (bboxSize () == Vector3f (-1, -1, -1))
+		return group -> getBBox ();
+
+	return Box3f (bboxSize (), bboxCenter ());
+}
+
+const SFNode <X3DBaseNode> &
+Inline::getExportedNode (const std::string & exportedName) const
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (checkLoadState () == COMPLETE_STATE)
+		return scene -> getExportedNode (exportedName);
+
+	else
+		throw Error <INVALID_NAME> ("Imported node error: Inline node '" + getName () + "' is not loaded.");
 }
 
 void
@@ -151,7 +176,7 @@ Inline::requestImmediateLoad ()
 
 	try
 	{
-		parseIntoScene (this, url ());
+		setScene (createX3DFromURL (url ()));
 
 		setLoadState (COMPLETE_STATE);
 	}
@@ -172,8 +197,7 @@ Inline::requestUnload ()
 	if (checkLoadState () == NOT_STARTED_STATE or checkLoadState () == FAILED_STATE)
 		return;
 
-	clear ();
-	group -> children () .clear ();
+	setScene (getBrowser () -> createScene ());
 
 	setLoadState (NOT_STARTED_STATE);
 }
@@ -187,12 +211,12 @@ Inline::traverse (TraverseType type)
 void
 Inline::dispose ()
 {
+	scene .dispose ();
 	group .dispose ();
 
 	X3DUrlObject::dispose ();
 	X3DBoundedObject::dispose ();
-	//X3DChildNode::dispose ();
-	X3DScene::dispose ();
+	X3DChildNode::dispose ();
 }
 
 } // X3D

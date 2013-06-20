@@ -556,6 +556,7 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsRouteArray.h" />
     <None Include="Titania\X3D\Execution\ImportedNode.h" />
     <None Include="Titania\X3D\Execution\ExportedNode.h" />
+    <None Include="Titania\X3D\Execution\World.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -988,6 +989,7 @@
     <Compile Include="Titania\X3D\Execution\ImportedNodeArray.cpp" />
     <Compile Include="Titania\X3D\Execution\ExportedNode.cpp" />
     <Compile Include="Titania\X3D\Execution\ExportedNodeArray.cpp" />
+    <Compile Include="Titania\X3D\Execution\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

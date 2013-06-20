@@ -56,6 +56,7 @@
 #include "../Browser/Viewer/WalkViewer.h"
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
+#include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
 
 #include <algorithm>
@@ -71,11 +72,8 @@ Browser::Browser () :
 	opengl::Surface (),           
 	     X3DBrowser (),           
 	        viewer  (new NoneViewer (this)),           
-	pointingDevice  (this),       
-	    activeLayer ()            
+	pointingDevice  (this)         
 {
-	setChildren (activeLayer);
-
 	add_events (Gdk::BUTTON_PRESS_MASK |
 	            Gdk::POINTER_MOTION_MASK |
 	            Gdk::POINTER_MOTION_HINT_MASK |
@@ -86,9 +84,7 @@ Browser::Browser () :
 
 	set_can_focus (true);
 
-	initialized .addInterest (this, &Browser::set_initialized);
-	shutdown    .addInterest (this, &Browser::set_shutdown);
-	changed     .addInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
+	changed .addInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
 }
 
 X3DBaseNode*
@@ -103,39 +99,6 @@ Browser::construct ()
 	setup ();
 
 	setCursor (Gdk::ARROW);
-}
-
-void
-Browser::set_initialized ()
-{
-	getExecutionContext () -> getActiveLayer () .addInterest (this, &Browser::set_activeLayer);
-
-	set_activeLayer ();
-}
-
-void
-Browser::set_shutdown ()
-{
-	if (activeLayer)
-	{
-	   activeLayer -> removeInterest (this, &Browser::set_activeLayer);
-		activeLayer -> getNavigationInfoStack () .removeInterest (this, &Browser::set_navigationInfo);
-		activeLayer = NULL;
-	}
-}
-
-void
-Browser::set_activeLayer ()
-{
-	if (activeLayer)
-		activeLayer -> getNavigationInfoStack () .removeInterest (this, &Browser::set_navigationInfo);
-
-	activeLayer = getExecutionContext () -> getActiveLayer ();
-
-	if (activeLayer)
-		activeLayer -> getNavigationInfoStack () .addInterest (this, &Browser::set_navigationInfo);
-
-	set_navigationInfo ();
 }
 
 void
@@ -211,16 +174,10 @@ Browser::update (const Cairo::RefPtr <Cairo::Context> & cairo)
 void
 Browser::dispose ()
 {
-	initialized .removeInterest (this, &Browser::set_initialized);
-	shutdown    .removeInterest (this, &Browser::set_shutdown);
-	changed     .removeInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
-
-	if (activeLayer)
-		activeLayer -> getNavigationInfoStack () .removeInterest (this, &Browser::set_navigationInfo);
+	changed .removeInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
 
 	viewer .reset ();
 	pointingDevice .dispose ();
-	activeLayer    .dispose ();
 
 	opengl::Surface::dispose ();
 	X3DBrowser::dispose ();

@@ -304,14 +304,12 @@ public:
 
 	///  @name Root node handling
 
-	virtual
 	MFNode &
 	getRootNodes ()
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return rootNodes; }
 
-	virtual
 	const MFNode &
 	getRootNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,

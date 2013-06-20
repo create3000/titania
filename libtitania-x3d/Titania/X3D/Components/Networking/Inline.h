@@ -53,19 +53,15 @@
 
 #include "../Grouping/Group.h"
 #include "../Networking/X3DUrlObject.h"
-#include "../../Execution/X3DScene.h"
+#include "../../Execution/Scene.h"
 
 namespace titania {
 namespace X3D {
 
-class Scene;
-
 class Inline :
-	public X3DScene, public X3DChildNode, public X3DBoundedObject, public X3DUrlObject
+	public X3DChildNode, public X3DBoundedObject, public X3DUrlObject
 {
 public:
-
-	using X3DScene::setup;
 
 	Inline (X3DExecutionContext* const);
 
@@ -90,20 +86,12 @@ public:
 	virtual
 	void
 	requestImmediateLoad () final;
-	
-	virtual
-	MFNode &
-	getRootNodes ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final
-	{ return group -> children (); }
 
-	virtual
-	const MFNode &
-	getRootNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final
-	{ return group -> children (); }
+	const SFNode <X3DBaseNode> &
+	getExportedNode (const std::string &) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	virtual
 	void
@@ -124,6 +112,9 @@ private:
 	virtual
 	void
 	initialize () final;
+	
+	void
+	setScene (const SFNode <Scene> &);
 
 	void
 	set_load ();
@@ -146,6 +137,7 @@ private:
 
 	Fields fields;
 
+	SFNode <Scene> scene;
 	SFNode <Group> group;
 
 };

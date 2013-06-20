@@ -212,28 +212,6 @@ X3DBrowserContext::getRouter ()
 	return router;
 }
 
-// NavigationInfo handling
-
-NavigationInfo*
-X3DBrowserContext::getActiveNavigationInfo () const
-{
-	if (getExecutionContext () -> getActiveLayer ())
-		return getExecutionContext () -> getActiveLayer () -> getNavigationInfo ();
-	
-	return NULL;
-}
-
-// Viewpoint handling
-
-X3DViewpointNode*
-X3DBrowserContext::getActiveViewpoint () const
-{
-	if (getExecutionContext () -> getActiveLayer ())
-		return getExecutionContext () -> getActiveLayer () -> getViewpoint ();
-	
-	return NULL;
-}
-
 // Selection
 
 void
@@ -259,7 +237,7 @@ X3DBrowserContext::pick (const double _x, const double _y)
 
 	// Pick.
 
-	getExecutionContext () -> traverse (TraverseType::PICKING);
+	getWorld () -> traverse (TraverseType::PICKING);
 
 	// Selection end.
 
@@ -441,8 +419,8 @@ X3DBrowserContext::update ()
 
 		router .processEvents ();
 
-		getExecutionContext () -> traverse (TraverseType::CAMERA);
-		getExecutionContext () -> traverse (TraverseType::COLLISION);
+		getWorld () -> traverse (TraverseType::CAMERA);
+		getWorld () -> traverse (TraverseType::COLLISION);
 
 		sensors .processInterests ();
 
@@ -455,7 +433,7 @@ X3DBrowserContext::update ()
 		glClearColor (0, 0, 0, 0);
 		glClear (GL_COLOR_BUFFER_BIT);
 
-		getExecutionContext () -> traverse (TraverseType::COLLECT);
+		getWorld () -> traverse (TraverseType::COLLECT);
 
 		displayed .processInterests ();
 		

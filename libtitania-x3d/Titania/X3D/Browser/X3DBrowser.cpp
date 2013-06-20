@@ -57,7 +57,8 @@ X3DBrowser::X3DBrowser () :
 	  supportedProfiles (this, supportedComponents), 
 	        description (),                          // SFString  [in,out] description ""
 	              scene (),                          // SFNode    [in,out] scene       NULL
-	              world ()                           // SFNode    [in,out] world       NULL
+	              world (),                          // SFNode    [in,out] world       NULL
+	        activeLayer ()
 {
 	std::clog << "Constructing Browser:" << std::endl;
 
@@ -70,7 +71,7 @@ X3DBrowser::X3DBrowser () :
 
 	addField (outputOnly, "url", url ());
 
-	setChildren (description, scene, world);
+	setChildren (description, scene, world, activeLayer);
 
 	X3D::X3DUrlObject::addURN ("about:splash", get_page ("about/splash.wrl"));
 
@@ -87,12 +88,12 @@ X3DBrowser::initialize ()
 
 	// Initialize scene
 	
-	world = scene = createScene ();
+	replaceWorld (scene = createScene ());
 	
 	if (browserOptions -> splashScreen ())
-		world = scene = createX3DFromURL ({ "about:splash" });
-	
-	scene -> bind ();
+		replaceWorld (createX3DFromURL ({ "about:splash" }));
+
+	world -> bind ();
 
 	// Process outstanding events
 	
@@ -105,8 +106,7 @@ X3DBrowser::initialize ()
 	// Replace world service.
 
 	scene .addInterest (this, &X3DBrowser::set_scene);
-	world .addInterest (this, &X3DBrowser::set_world);
-	
+
 	// Welcome
 
 	print (std::boolalpha,
@@ -133,29 +133,6 @@ X3DBrowser*
 X3DBrowser::getBrowser () const
 {
 	return const_cast <X3DBrowser*> (this);
-}
-
-const std::string &
-X3DBrowser::getVersion () const
-throw (Error <DISPOSED>)
-{
-	return version;
-}
-
-void
-X3DBrowser::setDescription (const std::string & value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	description = value;
-}
-
-const SFString &
-X3DBrowser::getDescription ()
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return description;
 }
 
 const basic::uri &
@@ -222,14 +199,6 @@ throw (Error <NOT_SUPPORTED>)
 	return supportedProfiles .get (name);
 }
 
-const SFNode <Scene> &
-X3DBrowser::getExecutionContext () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return scene;
-}
-
 SFNode <Scene>
 X3DBrowser::createScene () const
 throw (Error <INVALID_OPERATION_TIMING>,
@@ -259,7 +228,7 @@ throw (Error <INVALID_SCENE>)
 
 	clock -> advance ();
 
-	if (scene)
+	if (initialized)
 		shutdown .processInterests ();
 
 	if (value)
@@ -267,25 +236,36 @@ throw (Error <INVALID_SCENE>)
 		
 	else
 		scene = createScene ();
-	
+		
+	world = new World (scene);
+	world -> getActiveLayer () .addInterest (this, &X3DBrowser::set_activeLayer);
+	world -> setup ();
+
 	print ("*** The browser is requested to replace the world with '", scene -> getWorldURL (), "'.\n");
 }
 
 void
 X3DBrowser::set_scene ()
 {
-	if (scene not_eq world)
-		world = scene;
-}
-
-void
-X3DBrowser::set_world ()
-{
 	// Generate initialized event immediately upon receiving this service.
 
 	initialized = getCurrentTime ();
 
 	std::clog << "Replacing world done." << std::endl;
+}
+
+void
+X3DBrowser::set_activeLayer ()
+{
+	if (activeLayer)
+		activeLayer -> getNavigationInfoStack () .removeInterest (this, &X3DBrowser::set_navigationInfo);
+
+	activeLayer = world -> getActiveLayer ();
+
+	if (activeLayer)
+		activeLayer -> getNavigationInfoStack () .addInterest (this, &X3DBrowser::set_navigationInfo);
+		
+	set_navigationInfo ();
 }
 
 void
@@ -309,7 +289,7 @@ throw (Error <INVALID_URL>,
 
 	replaceWorld (scene);
 	
-	scene -> bind ();
+	world -> bind ();
 	
 	clock -> advance ();
 }
@@ -343,30 +323,6 @@ throw (Error <DISPOSED>)
 	// remove parents from
 }
 
-const SFNode <RenderingProperties> &
-X3DBrowser::getRenderingProperties () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return renderingProperties;
-}
-
-const SFNode <BrowserProperties> &
-X3DBrowser::getBrowserProperties () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return browserProperties;
-}
-
-const SFNode <BrowserOptions> &
-X3DBrowser::getBrowserOptions () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return browserOptions;
-}
-
 void
 X3DBrowser::changeViewpoint (const std::string & name)
 throw (Error <INVALID_OPERATION_TIMING>,
@@ -382,13 +338,39 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
+// Layer handling
+
+NavigationInfo*
+X3DBrowser::getActiveNavigationInfo () const
+{
+	if (activeLayer)
+		return activeLayer -> getNavigationInfo ();
+	
+	return NULL;
+}
+
+X3DViewpointNode*
+X3DBrowser::getActiveViewpoint () const
+{
+	if (activeLayer)
+		return activeLayer -> getViewpoint ();
+	
+	return NULL;
+}
+
+// Destruction
+
 void
 X3DBrowser::dispose ()
 {
 	__LOG__ << this << std::endl;
 
-	scene .dispose ();
-	world .dispose ();
+	if (activeLayer)
+		activeLayer -> getNavigationInfoStack () .removeInterest (this, &X3DBrowser::set_navigationInfo);
+
+	scene       .dispose ();
+	world       .dispose ();
+	activeLayer .dispose ();
 
 	supportedFields     .dispose ();
 	supportedNodes      .dispose ();

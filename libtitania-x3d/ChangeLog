@@ -1,3 +1,31 @@
+2013-06-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Parser.cpp:
+	* Scene.h:
+	* Browser.h:
+	* World.h:
+	* Scene.cpp:
+	* World.cpp:
+	* Browser.cpp:
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* X3DNode.h:
+	* X3DBrowserContext.h:
+	* BindableNodeStack.h:
+	* X3DBrowserContext.cpp:
+	* Inline.h:
+	* AudioClip.cpp:
+	* LayerSet.h:
+	* X3DExecutionContext.h:
+	* X3DFlyViewer.cpp:
+	* Inline.cpp:
+	* LayerSet.cpp:
+	* X3DGroupingNode.cpp:
+	* RenderingProperties.h:
+	* ComposedCubeMapTexture.cpp: 
+
 2013-06-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Inline.h:

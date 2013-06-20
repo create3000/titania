@@ -60,7 +60,7 @@
 #include "../Components/Core/X3DSensorNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/Viewpoint.h"
-#include "../Execution/Scene.h"
+#include "../Execution/World.h"
 #include "../Execution/X3DExecutionContext.h"
 #include "../JavaScript/X3DJavaScriptEngine.h"
 
@@ -114,12 +114,6 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	virtual
-	const SFNode <Scene> &
-	getExecutionContext () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
-
 	///  @name Event handling
 
 	Router &
@@ -161,15 +155,15 @@ public:
 	getTextureUnits ()
 	{ return textureUnits; }
 
-	///  @name NavigationInfo handling
+	///  @name Layer handling
 
+	virtual
 	NavigationInfo*
-	getActiveNavigationInfo () const;
+	getActiveNavigationInfo () const = 0;
 
-	///  @name Viewpoint handling
-
+	virtual
 	X3DViewpointNode*
-	getActiveViewpoint () const;
+	getActiveViewpoint () const = 0;
 
 	///  @name Console handling
 
@@ -241,6 +235,10 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	virtual
+	const SFNode <World> &
+	getWorld () const = 0;
 
 	virtual
 	void

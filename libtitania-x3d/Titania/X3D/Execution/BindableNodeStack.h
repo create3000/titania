@@ -124,6 +124,7 @@ public:
 			
 			if (not stack .top () -> isBound ())
 			{
+				stack .top () -> set_bind () = true;
 				stack .top () -> isBound ()  = true;
 				stack .top () -> bindTime () = stack .top () -> getCurrentTime ();
 			}
