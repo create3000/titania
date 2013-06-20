@@ -394,25 +394,33 @@ jsSFRotation::slerp (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 2)
 	{
-		SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-
-		JSObject* obj2;
-		jsdouble  t;
-
-		jsval* argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "od", &obj2, &t))
-			return JS_FALSE;
-
-		if (not JS_InstanceOf (context, obj2, getClass (), NULL))
+		try
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFRotation, is %s", JS_GetClass (context, obj2) -> name);
-			return JS_FALSE;
+			SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+
+			JSObject* obj2;
+			jsdouble  t;
+
+			jsval* argv = JS_ARGV (context, vp);
+
+			if (not JS_ConvertArguments (context, argc, argv, "od", &obj2, &t))
+				return JS_FALSE;
+
+			if (not JS_InstanceOf (context, obj2, getClass (), NULL))
+			{
+				JS_ReportError (context, "Type of argument 1 is invalid - should be SFRotation, is %s", JS_GetClass (context, obj2) -> name);
+				return JS_FALSE;
+			}
+
+			SFRotation4f* dest = (SFRotation4f*) JS_GetPrivate (context, obj2);
+
+			return create (context, sfrotation -> slerp (*dest, t), &JS_RVAL (context, vp));
 		}
-
-		SFRotation4f* dest = (SFRotation4f*) JS_GetPrivate (context, obj2);
-
-		return create (context, sfrotation -> slerp (*dest, t), &JS_RVAL (context, vp));
+		catch (const std::domain_error & error)
+		{
+			JS_ReportError (context, "%s .slerp: %s", getClass () -> name, error .what ());
+			return JS_FALSE;		
+		}	
 	}
 
 	JS_ReportError (context, "wrong number of arguments");

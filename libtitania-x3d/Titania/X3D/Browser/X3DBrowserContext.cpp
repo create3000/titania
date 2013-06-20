@@ -405,6 +405,9 @@ X3DBrowserContext::update ()
 		
 		if (activeViewpoint)
 			currentSpeed .setPosition (activeViewpoint -> getTransformationMatrix () .translation (), currentFrameRate);
+		
+		else
+			currentSpeed .setPosition (Vector3f (), 0);
 	
 		currentFrameRate = 1 / clock -> interval ();
 

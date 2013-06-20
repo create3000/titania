@@ -496,9 +496,17 @@ jsSFMatrix3 <Type>::inverse (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		try
+		{
+			Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		return create (context, self -> inverse (), &JS_RVAL (context, vp));
+			return create (context, self -> inverse (), &JS_RVAL (context, vp));
+		}
+		catch (const std::domain_error & error)
+		{
+			JS_ReportError (context, "%s .inverse: %s", getClass () -> name, error .what ());
+			return JS_FALSE;		
+		}
 	}
 
 	JS_ReportError (context, "wrong number of arguments");

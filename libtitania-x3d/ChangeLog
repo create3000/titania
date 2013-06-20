@@ -1,5 +1,12 @@
 2013-06-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserContext.cpp:
+	* jsSFMatrix4.h:
+	* jsSFMatrix3.h:
+	* jsSFRotation.cpp: 
+
+2013-06-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Browser.cpp:
 	* X3DBrowserContext.h:
 	* X3DBrowserContext.cpp:
