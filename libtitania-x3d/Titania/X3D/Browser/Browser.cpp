@@ -142,10 +142,12 @@ Browser::set_navigationInfo ()
 				break;
 			}
 		}
-	}
 
-	if (not viewer)
-		viewer .reset (new ExamineViewer (this, navigationInfo));
+		if (not viewer)
+			viewer .reset (new ExamineViewer (this, navigationInfo));
+	}
+	else
+		viewer .reset (new NoneViewer (this));
 
 	viewer -> setup ();
 }

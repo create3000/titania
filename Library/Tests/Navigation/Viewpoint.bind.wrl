@@ -60,6 +60,23 @@ DEF ActiveLayer2 Transform {
   ]
 }
 
+DEF ActiveLayerNone Transform {
+  translation 6 3 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF LN TouchSensor { }
+    DEF AN SFInt32 {
+      keyValue -1
+    }
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box { }
+    }
+  ]
+}
+
 Transform {
   translation -8 0 0
   children Shape {
@@ -446,6 +463,8 @@ ROUTE L1.touchTime TO A1.set_triggerTime
 ROUTE A1.value_changed TO LayerSet.set_activeLayer
 ROUTE L2.touchTime TO A2.set_triggerTime
 ROUTE A2.value_changed TO LayerSet.set_activeLayer
+ROUTE LN.touchTime TO AN.set_triggerTime
+ROUTE AN.value_changed TO LayerSet.set_activeLayer
 
 # VP1
 

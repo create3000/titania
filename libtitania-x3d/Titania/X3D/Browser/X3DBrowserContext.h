@@ -180,6 +180,10 @@ public:
 	getSensors ()
 	{ return enabledSensors; }
 
+	void
+	updateHitRay ()
+	{ hitRay = getHitRay (); }
+
 	Line3f
 	getHitRay () const;
 

@@ -263,6 +263,7 @@ X3DLayerNode::pick ()
 	glLoadIdentity ();
 
 	getViewpoint () -> reshape ();
+	getBrowser ()   -> updateHitRay ();	
 	getViewpoint () -> transform ();
 
 	group -> traverse (TraverseType::PICKING);

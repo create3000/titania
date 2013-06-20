@@ -1,5 +1,12 @@
 2013-06-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Browser.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* X3DLayerNode.cpp: 
+
+2013-06-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Parser.cpp:

@@ -68,9 +68,7 @@ public:
 
 	HistoryEditor (const X3D::SFNode <X3D::Browser> &);
 
-	const History &
-	getHistory ();
-
+	virtual
 	~HistoryEditor ();
 
 
@@ -85,10 +83,6 @@ private:
 
 	std::string
 	getTitle (const basic::uri &);
-
-	virtual
-	void
-	on_map ();
 
 	void
 	set_world ();

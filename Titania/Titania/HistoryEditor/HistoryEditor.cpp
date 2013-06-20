@@ -75,6 +75,14 @@ HistoryEditor::initialize ()
 {
 	X3DHistoryEditorUI::initialize ();
 
+	for (const auto & item : history .getItems ())
+	{
+		auto row = getListStore () -> append ();
+		row -> set_value (ICON_COLUMN,      std::string ("BlankIcon"));
+		row -> set_value (TITLE_COLUMN,     item .at ("title"));
+		row -> set_value (WORLD_URL_COLUMN, item .at ("worldURL"));
+	}
+
 	getBrowser () -> initialized .addInterest (this, &HistoryEditor::set_initialized);
 }
 
@@ -83,12 +91,6 @@ HistoryEditor::set_initialized ()
 {
 	getBrowser () -> initialized .removeInterest (this, &HistoryEditor::set_initialized);
 	getBrowser () -> initialized .addInterest    (this, &HistoryEditor::set_world);
-}
-
-const History &
-HistoryEditor::getHistory ()
-{
-	return history;
 }
 
 std::string
@@ -106,22 +108,6 @@ HistoryEditor::getTitle (const basic::uri & worldURL)
 	}
 
 	return title;
-}
-
-void
-HistoryEditor::on_map ()
-{
-	getListStore () -> clear ();
-
-	for (const auto & item : history .getItems ())
-	{
-		auto row = getListStore () -> append ();
-		row -> set_value (ICON_COLUMN,      std::string ("BlankIcon"));
-		row -> set_value (TITLE_COLUMN,     item .at ("title"));
-		row -> set_value (WORLD_URL_COLUMN, item .at ("worldURL"));
-	}
-
-	getTreeView () .queue_draw ();
 }
 
 void

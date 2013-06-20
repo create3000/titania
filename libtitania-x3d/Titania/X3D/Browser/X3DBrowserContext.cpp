@@ -220,17 +220,6 @@ X3DBrowserContext::pick (const double _x, const double _y)
 	x = _x;
 	y = _y;
 
-	// Get hitRay
-
-	X3DViewpointNode* viewpoint      = getActiveViewpoint ();
-	NavigationInfo*   navigationInfo = getActiveNavigationInfo ();
-
-	viewpoint -> reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
-
-	glLoadIdentity ();
-
-	hitRay = getHitRay ();
-
 	// Clear hits.
 
 	hits .clear ();
@@ -412,18 +401,20 @@ X3DBrowserContext::update ()
 
 		clock -> advance ();
 
+		X3DViewpointNode* activeViewpoint = getActiveViewpoint ();
+		
+		if (activeViewpoint)
+			currentSpeed .setPosition (activeViewpoint -> getTransformationMatrix () .translation (), currentFrameRate);
+	
 		currentFrameRate = 1 / clock -> interval ();
-		currentSpeed .setPosition (getActiveViewpoint () -> getTransformationMatrix () .translation (), currentFrameRate);
 
 		prepareEvents .processInterests ();
-
 		router .processEvents ();
 
 		getWorld () -> traverse (TraverseType::CAMERA);
 		getWorld () -> traverse (TraverseType::COLLISION);
 
 		sensors .processInterests ();
-
 		router .processEvents ();
 
 		getGarbageCollector () .dispose ();

@@ -75,9 +75,6 @@ X3DHistoryEditorUI::create (const std::string & filename)
 	m_builder -> get_widget ("ScrolledWindow", m_scrolledWindow);
 	m_builder -> get_widget ("TreeView", m_treeView);
 
-	// Connect object Gtk::Box with id 'Widget'.
-	connections .emplace_back (m_widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DHistoryEditorUI::on_map)));
-
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	connections .emplace_back (m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DHistoryEditorUI::on_row_activated)));
 
