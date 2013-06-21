@@ -225,10 +225,10 @@ jsSFNode::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 
 		if (sfnode -> getValue ())
 		{
-			X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, id));
-
-			if (field)
+			try
 			{
+				X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, id));
+
 				if (field -> getAccessType () == inputOnly)
 				{
 					*vp = JSVAL_VOID;
@@ -237,6 +237,8 @@ jsSFNode::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 
 				return JS_NewFieldValue (context, field, vp);
 			}
+			catch (const Error <INVALID_NAME> &)
+			{ }
 		}
 	}
 
@@ -252,10 +254,10 @@ jsSFNode::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict
 
 		if (sfnode -> getValue ())
 		{
-			X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, id));
-
-			if (field)
+			try
 			{
+				X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, id));
+
 				if (field -> getAccessType () == initializeOnly or field -> getAccessType () == outputOnly)
 					return JS_TRUE;
 
@@ -266,6 +268,8 @@ jsSFNode::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict
 
 				return JS_TRUE;
 			}
+			catch (const Error <INVALID_NAME> &)
+			{ }
 		}
 	}
 

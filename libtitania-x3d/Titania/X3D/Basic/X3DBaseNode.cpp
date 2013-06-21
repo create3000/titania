@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -123,8 +123,8 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	              fields (),                 
 	        fieldAliases (),                 
 	numUserDefinedFields (0),                
-	              events (),
-	            comments ()                 
+	              events (),                 
+	            comments ()                  
 {
 	assert (executionContext);
 
@@ -149,26 +149,28 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 
 	for (const auto & fieldDefinition : fieldDefinitions)
 	{
-		X3DFieldDefinition* field = copy -> getField (fieldDefinition -> getName ());
-
-		if (field)
+		try
 		{
+			X3DFieldDefinition* field = copy -> getField (fieldDefinition -> getName ());
+
 			// default fields
 			if (fieldDefinition -> getReference ())
 			{
 				// IS relationship
 
-				X3DFieldDefinition* reference = executionContext -> getField (fieldDefinition -> getReference () -> getName ());
-
-				if (reference)
+				try
 				{
+					X3DFieldDefinition* reference = executionContext -> getField (fieldDefinition -> getReference () -> getName ());
+
 					// Field is also defined in prototype definiton head.
 
 					// create IS relationship
 					field -> setReference (reference);
 				}
-				else
+				catch (const Error <INVALID_NAME> &)
+				{
 					throw Error <INVALID_NAME> ("No such event or field '" + fieldDefinition -> getReference () -> getName () + ".");
+				}
 			}
 			else
 			{
@@ -182,7 +184,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 				}
 			}
 		}
-		else  // user defined fields (Script and Shader)
+		catch (const Error <INVALID_NAME> &)       // user defined fields (Script and Shader)
 		{
 			X3DFieldDefinition* field = fieldDefinition -> clone (executionContext);
 
@@ -190,15 +192,18 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 
 			if (fieldDefinition -> getReference ()) // IS relationship
 			{
-				X3DFieldDefinition* reference = executionContext -> getField (fieldDefinition -> getReference () -> getName ());
-
-				if (reference) // field is also defined in EXTERNPROTO
+				try
 				{
+					// field is also defined in EXTERNPROTO
+					X3DFieldDefinition* reference = executionContext -> getField (fieldDefinition -> getReference () -> getName ());
+
 					// create IS relationship
 					field -> setReference (reference);
 				}
-				else
+				catch (const Error <INVALID_NAME> &)
+				{
 					throw Error <INVALID_NAME> ("No such event or field '" + fieldDefinition -> getReference () -> getName () + " inside node.");
+				}
 			}
 		}
 	}
@@ -353,76 +358,12 @@ X3DBaseNode::getNumClones () const
 	return numClones;
 }
 
-void
-X3DBaseNode::setComponent (const std::string & value)
-{
-	component = value;
-}
-
-const std::string &
-X3DBaseNode::getComponentName () const
-{
-	return component;
-}
-
-void
-X3DBaseNode::setTypeName (const std::string & value)
-{
-	//	std::clog << __FILE__ << ":" << __LINE__ << ": in function " << __func__ << ": " << value << std::endl;
-	typeName = value;
-}
-
-const std::string &
-X3DBaseNode::getTypeName () const
-throw (Error <DISPOSED>)
-{
-	return typeName;
-}
-
 const X3DBaseNode*
 X3DBaseNode::getType () const
 throw (Error <DISPOSED>)
 {
 	return getBrowser () -> getNode (getTypeName ());
 }
-
-void
-X3DBaseNode::addNodeType (const X3DConstants::NodeType value)
-{
-	//	std::clog << __FILE__ << ":" << __LINE__ << ": in function " << __func__ << ": " << Generator::NodeTypes .at (value) << std::endl;
-	nodeType .push_back (value);
-}
-
-const NodeTypeArray &
-X3DBaseNode::getNodeType () const
-{
-	return nodeType;
-}
-
-X3DBaseNode*
-X3DBaseNode::getLocalNode ()
-{
-	return this;
-}
-
-//void
-//X3DBaseNode::addFields (std::initializer_list <X3DFieldDefinition &> fields)
-//throw (Error <INVALID_FIELD>)
-//{
-//	size_t i = 0;
-//	for (const auto & field : fields)
-//		addField (field, getFieldDefintions () [i++]);
-//}
-
-//void
-//X3DBaseNode::addField (X3DFieldDefinition & field, const X3DFieldDefinition & fieldDefinition)
-//throw (Error <INVALID_FIELD>)
-//{
-//	field .setReference (fieldDefinition);
-//
-//	if (not fields .emplace (field) -> second)
-//		throw Error <INVALID_FIELD> ("In function " + std::string (__func__) + " 'field " + getTypeName () + "." + name + "' already exists in field set'.");
-//}
 
 void
 X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3DFieldDefinition & field)
@@ -501,7 +442,7 @@ throw (Error <INVALID_NAME>,
 			return field -> second;
 	}
 
-	return NULL;
+	throw Error <INVALID_NAME> ("No such field '" + name + "' in node " + getTypeName () + ".");
 }
 
 const std::string &
@@ -525,18 +466,6 @@ X3DBaseNode::getFieldName (const std::string & name) const
 //
 //	return field -> getName ();
 //}
-
-const FieldsMap &
-X3DBaseNode::getFields () const
-{
-	return fields;
-}
-
-const FieldDefinitionArray &
-X3DBaseNode::getFieldDefinitions () const
-{
-	return fieldDefinitions;
-}
 
 void
 X3DBaseNode::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
@@ -583,13 +512,16 @@ X3DBaseNode::getInitializeableFields (const bool all) const
 bool
 X3DBaseNode::isDefaultValue (const X3DFieldDefinition* const field) const
 {
-	const X3DBaseNode*        declaration      = getType ();
-	const X3DFieldDefinition* declarationField = declaration -> getField (field -> getName ());
+	try
+	{
+		const X3DFieldDefinition* declarationField = getType () -> getField (field -> getName ());
 
-	if (declarationField)
 		return *field == *declarationField;
-
-	return false;
+	}
+	catch (const Error <INVALID_NAME> &)
+	{
+		return false;
+	}
 }
 
 void
@@ -622,15 +554,15 @@ void
 X3DBaseNode::registerEvent (X3DChildObject* object, const Event & event)
 {
 	// Register for processEvents
-	
+
 	if (events .empty ())
 	{
 		getBrowser () -> getRouter () .registerEvent (this);
 		getBrowser () -> notify ();
 	}
-	
+
 	// Register for eventsProcessed
-	
+
 	if (object -> isInput ())
 		getBrowser () -> getRouter () .registerNode (this);
 
@@ -645,10 +577,6 @@ X3DBaseNode::processEvents ()
 	for (auto & pair : EventArray (std::move (events)))
 		pair .first -> processEvent (pair .second);
 }
-
-void
-X3DBaseNode::eventsProcessed ()
-{ }
 
 void
 X3DBaseNode::fromStream (std::istream & istream)
@@ -681,14 +609,14 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 			return;
 		}
 	}
-	
+
 	if (getComments () .size ())
 	{
 		ostream
 			<< Generator::Comment
 			<< getComments () .front ()
 			<< Generator::Break;
-	
+
 		for (const auto & comment : basic::adapter (getComments () .begin () + 1, getComments (). end ()))
 		{
 			ostream
@@ -748,7 +676,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 					<< comment
 					<< Generator::Break;
 			}
-		
+
 			ostream
 				<< Generator::Indent
 				<< std::setiosflags (std::ios::left)
@@ -811,7 +739,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 					<< comment
 					<< Generator::Break;
 			}
-		
+
 			ostream << Generator::Indent;
 
 			if (Generator::X3DFieldNames ())
@@ -862,7 +790,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 				<< comment
 				<< Generator::Break;
 		}
-		
+
 		ostream
 			<< Generator::DecIndent
 			<< Generator::Indent;
@@ -877,9 +805,9 @@ void
 X3DBaseNode::dispose ()
 {
 	X3DChildObject::dispose ();
-	
+
 	shutdown .processInterests ();
-	
+
 	for (const auto & field : fieldDefinitions)
 		field -> removeParent (this);
 
@@ -892,9 +820,7 @@ X3DBaseNode::dispose ()
 }
 
 X3DBaseNode::~X3DBaseNode ()
-{
-
-}
+{ }
 
 } // X3D
 } // titania

@@ -2097,12 +2097,12 @@
     <None Include="Tests\Basic\META.wrl" />
     <None Include="Tests\Scripting\replaceWorld.wrl" />
     <None Include="Tests\Navigation\Viewpoint.bind.wrl" />
-    <None Include="Prototypes\Converter\toSFFloat\toSFFloat.wrl" />
-    <None Include="Prototypes\Converter\toSFInt32\toSFInt32.wrl" />
-    <None Include="Tests\Navigation\toSFInt32.wrl" />
     <None Include="Tests\Navigation\SFBool.wrl" />
     <None Include="Tests\Navigation\SFInt32.wrl" />
-    <None Include="Prototypes\Converter\toSFInt32\example.wrl" />
+    <None Include="Prototypes\Converter\SFFloatConverter\SFFloatConverter.wrl" />
+    <None Include="Prototypes\Converter\SFInt32Converter\example.wrl" />
+    <None Include="Prototypes\Converter\SFInt32Converter\SFInt32Converter.wrl" />
+    <None Include="Tests\Navigation\SFInt32Converter.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2216,7 +2216,7 @@
     <Folder Include="Examples\WTC\" />
     <Folder Include="Tests\Scripting\external\" />
     <Folder Include="Prototypes\Converter\" />
-    <Folder Include="Prototypes\Converter\toSFInt32\" />
+    <Folder Include="Prototypes\Converter\SFInt32Converter\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

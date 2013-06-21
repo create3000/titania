@@ -1174,60 +1174,68 @@ Parser::routeStatement ()
 
 				if (outputOnlyId (_eventOutId))
 				{
-					X3DFieldDefinition* _eventOut = _fromNode .getField (_eventOutId);
-
-					if (_eventOut)
+					X3DFieldDefinition* _eventOut = NULL;
+					
+					try
 					{
-						comments ();
+						_eventOut = _fromNode .getField (_eventOutId);
+					}
+					catch (const Error <INVALID_NAME> &)
+					{
+						throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventOut '" + _eventOutId + "' in node '" + _fromNodeId + "' class " + _fromNode .getNodeTypeName ());
+					}
+						
+					comments ();
 
-						if (Grammar::TO (istream))
+					if (Grammar::TO (istream))
+					{
+						std::string _toNodeId;
+
+						if (nodeNameId (_toNodeId))
 						{
-							std::string _toNodeId;
+							const SFNode <X3DBaseNode> & _toNode = getExecutionContext () -> getNode (_toNodeId);
 
-							if (nodeNameId (_toNodeId))
+							comments ();
+
+							if (Grammar::Period (istream))
 							{
-								const SFNode <X3DBaseNode> & _toNode = getExecutionContext () -> getNode (_toNodeId);
+								std::string _eventInId;
 
-								comments ();
-
-								if (Grammar::Period (istream))
+								if (inputOnlyId (_eventInId))
 								{
-									std::string _eventInId;
-
-									if (inputOnlyId (_eventInId))
+									X3DFieldDefinition* _eventIn = NULL;
+									
+									try
 									{
-										X3DFieldDefinition* _eventIn = _toNode .getField (_eventInId);
+										_eventIn = _toNode .getField (_eventInId);
+									}
+									catch (const Error <INVALID_NAME> &)
+									{
+										throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventIn '" + _eventInId + "' in node '" + _toNodeId + "' class " + _toNode .getNodeTypeName ());
+									}
+										
+									if (_eventOut -> getType () == _eventIn -> getType ())
+									{
+										const SFNode <Route> & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
 
-										if (_eventIn)
-										{
-											if (_eventOut -> getType () == _eventIn -> getType ())
-											{
-												const SFNode <Route> & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
+										_route -> addComments (getComments ());
 
-												_route -> addComments (getComments ());
-
-												return true;
-											}
-											else
-												throw Error <INVALID_X3D> ("ROUTE types " + _eventOut -> getTypeName () + " and " + _eventIn -> getTypeName () + " do not match.");
-										}
-										else
-											throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventIn '" + _eventInId + "' in node '" + _toNodeId + "' class " + _toNode .getNodeTypeName ());
+										return true;
 									}
 									else
-										throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a field name.");
+										throw Error <INVALID_X3D> ("ROUTE types " + _eventOut -> getTypeName () + " and " + _eventIn -> getTypeName () + " do not match.");
 								}
 								else
-									throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a '.' after node name.");
+									throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a field name.");
 							}
 							else
-								throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a node name.");
+								throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a '.' after node name.");
 						}
 						else
-							throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a 'TO'.");
+							throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a node name.");
 					}
 					else
-						throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventOut '" + _eventOutId + "' in node '" + _fromNodeId + "' class " + _fromNode .getNodeTypeName ());
+						throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a 'TO'.");
 				}
 				else
 					throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a field name.");
@@ -1269,7 +1277,14 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 		}
 		catch (const Error <INVALID_NAME> &)
 		{
-			_node = getExecutionContext () -> createProtoInstance (_nodeTypeId) .getValue ();
+			try
+			{
+				_node = getExecutionContext () -> createProtoInstance (_nodeTypeId) .getValue ();
+			}
+			catch (const X3DError & error)
+			{
+				throw Error <INVALID_X3D> (error .what ());
+			}
 		}
 
 		X3DBaseNode* _basicNode = _node .getValue ();
@@ -1359,35 +1374,39 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 
 							if (Id (_isId))
 							{
-								X3DFieldDefinition* _reference = getExecutionContext () -> getField (_isId);
-
-								if (_reference)
+								X3DFieldDefinition* _reference = NULL;
+								
+								try
 								{
-									const X3DFieldDefinition* _supportedField = getBrowser () -> getFieldType (_fieldType);
+									_reference = getExecutionContext () -> getField (_isId);
+								}
+								catch (const Error <INVALID_NAME> &)
+								{
+									throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName () + " head.");
+								}
+									
+								const X3DFieldDefinition* _supportedField = getBrowser () -> getFieldType (_fieldType);
 
-									if (_supportedField -> getType () == _reference -> getType ())
+								if (_supportedField -> getType () == _reference -> getType ())
+								{
+									if (_accessType -> second == _reference -> getAccessType () or _accessType -> second == inputOutput)
 									{
-										if (_accessType -> second == _reference -> getAccessType () or _accessType -> second == inputOutput)
-										{
-											X3DFieldDefinition* _field = _supportedField -> clone ();
+										X3DFieldDefinition* _field = _supportedField -> clone ();
 
-											_field -> setReference (_reference);
-											_field -> addComments (getComments ());
+										_field -> setReference (_reference);
+										_field -> addComments (getComments ());
 
-											_basicNode -> addUserDefinedField (_accessType -> second,
-											                                   _fieldId,
-											                                   _field);
+										_basicNode -> addUserDefinedField (_accessType -> second,
+										                                   _fieldId,
+										                                   _field);
 
-											return true;
-										}
-										else
-											throw Error <INVALID_X3D> ("Field '" + _fieldId + "' and '" + _reference -> getName () + "' in PROTO '" + getExecutionContext () -> getName () + "' are incompatible as an IS mapping.");
+										return true;
 									}
 									else
-										throw Error <INVALID_X3D> ("Field '" + _fieldId + "' and '" + _reference -> getName () + "' in PROTO '" + getExecutionContext () -> getName () + "' have different types.");
+										throw Error <INVALID_X3D> ("Field '" + _fieldId + "' and '" + _reference -> getName () + "' in PROTO '" + getExecutionContext () -> getName () + "' are incompatible as an IS mapping.");
 								}
 								else
-									throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName () + " head.");
+									throw Error <INVALID_X3D> ("Field '" + _fieldId + "' and '" + _reference -> getName () + "' in PROTO '" + getExecutionContext () -> getName () + "' have different types.");
 							}
 							else
 								throw Error <INVALID_X3D> ("No name give after IS statement.");
@@ -1440,63 +1459,71 @@ Parser::nodeBodyElement (X3DBaseNode* const _basicNode)
 
 	if (Id (_fieldId))
 	{
-		X3DFieldDefinition* _field = _basicNode -> getField (_fieldId);
-
-		if (_field)
+		X3DFieldDefinition* _field = NULL;
+		
+		try
 		{
-			comments ();
+			_field = _basicNode -> getField (_fieldId);
+		}
+		catch (const Error <INVALID_NAME> &)
+		{
+			throw Error <INVALID_X3D> ("Unknown field '" + _fieldId + "' in class '" + _basicNode -> getTypeName () + "'.");
+		}
+			
+		comments ();
 
-			if (Grammar::IS (istream))
+		if (Grammar::IS (istream))
+		{
+			if (isInsideProtoDefinition ())
 			{
-				if (isInsideProtoDefinition ())
+				std::string _isId;
+
+				if (Id (_isId))
 				{
-					std::string _isId;
-
-					if (Id (_isId))
+					X3DFieldDefinition* _reference = NULL;
+					
+					try
 					{
-						X3DFieldDefinition* _reference = getExecutionContext () -> getField (_isId);
+						_reference = getExecutionContext () -> getField (_isId);
+					}
+					catch (const Error <INVALID_NAME> &)
+					{
+						throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName ());
+					}
 
-						if (_reference)
+					if (_field -> getType () == _reference -> getType ())
+					{
+						if (_field -> getAccessType () == _reference -> getAccessType () or _field -> getAccessType () == inputOutput)
 						{
-							if (_field -> getType () == _reference -> getType ())
-							{
-								if (_field -> getAccessType () == _reference -> getAccessType () or _field -> getAccessType () == inputOutput)
-								{
-									_field -> setReference (_reference);
-									_field -> addComments (getComments ());
-									return true;
-								}
-								else
-									throw Error <INVALID_X3D> ("Field '" + _field -> getName () + "' and '" + _reference -> getName () + "' in PROTO " + getExecutionContext () -> getName () + " are incompatible as an IS mapping.");
-							}
-							else
-								throw Error <INVALID_X3D> ("Field '" + _field -> getName () + "' and '" + _reference -> getName () + "' in PROTO " + getExecutionContext () -> getName () + " have different types.");
+							_field -> setReference (_reference);
+							_field -> addComments (getComments ());
+							return true;
 						}
 						else
-							throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName ());
+							throw Error <INVALID_X3D> ("Field '" + _field -> getName () + "' and '" + _reference -> getName () + "' in PROTO " + getExecutionContext () -> getName () + " are incompatible as an IS mapping.");
 					}
 					else
-						throw Error <INVALID_X3D> ("No name give after IS statement.");
+						throw Error <INVALID_X3D> ("Field '" + _field -> getName () + "' and '" + _reference -> getName () + "' in PROTO " + getExecutionContext () -> getName () + " have different types.");
 				}
 				else
-					throw Error <INVALID_X3D> ("IS statement outside PROTO definition.");
-			}
-
-			if (_field -> isInitializeable ())
-			{
-				if (fieldValue (_field))
-				{
-					_field -> addComments (getComments ());
-					return true;
-				}
-				else
-					throw Error <INVALID_X3D> ("Couldn't read value for field '" + _fieldId + "'.");
+					throw Error <INVALID_X3D> ("No name give after IS statement.");
 			}
 			else
-				throw Error <INVALID_X3D> ("Couldn't assign value for " + Generator::AccessTypes [_field] + " '" + _fieldId + "'.");
+				throw Error <INVALID_X3D> ("IS statement outside PROTO definition.");
+		}
+
+		if (_field -> isInitializeable ())
+		{
+			if (fieldValue (_field))
+			{
+				_field -> addComments (getComments ());
+				return true;
+			}
+			else
+				throw Error <INVALID_X3D> ("Couldn't read value for field '" + _fieldId + "'.");
 		}
 		else
-			throw Error <INVALID_X3D> ("Unknown field '" + _fieldId + "' in class '" + _basicNode -> getTypeName () + "'.");
+			throw Error <INVALID_X3D> ("Couldn't assign value for " + Generator::AccessTypes [_field] + " '" + _fieldId + "'.");
 	}
 
 	return false;

@@ -2,11 +2,11 @@
 
 META "title" "Viewpoint.bind"
 
-EXTERNPROTO toSFInt32 [
+EXTERNPROTO SFInt32Converter [
   eventOut     SFInt32 value_changed
   exposedField MFNode  children
 ]
-"toSFInt32.wrl"
+"SFInt32Converter.wrl"
 
 EXTERNPROTO SFBool [
   exposedField SFBool keyValue
@@ -149,7 +149,7 @@ DEF LayerSet LayerSet {
               scale 0.5 0.5 0.5
               children DEF S1 Switch {
                 choice [
-                  DEF I1 toSFInt32 {
+                  DEF I1 SFInt32Converter {
                     children DEF B1 SFBool { }
                   }
                   DEF Bound Transform {
@@ -197,7 +197,7 @@ DEF LayerSet LayerSet {
               scale 0.5 0.5 0.5
               children DEF S2 Switch {
                 choice [
-                  DEF I2 toSFInt32 {
+                  DEF I2 SFInt32Converter {
                     children DEF B2 SFBool { }
                   }
                   USE Bound
@@ -238,7 +238,7 @@ DEF LayerSet LayerSet {
               scale 0.5 0.5 0.5
               children DEF S3 Switch {
                 choice [
-                  DEF I3 toSFInt32 {
+                  DEF I3 SFInt32Converter {
                     children DEF B3 SFBool { }
                   }
                   USE Bound
@@ -279,7 +279,7 @@ DEF LayerSet LayerSet {
               scale 0.5 0.5 0.5
               children DEF S6 Switch {
                 choice [
-                  DEF I6 toSFInt32 {
+                  DEF I6 SFInt32Converter {
                     children DEF B6 SFBool { }
                   }
                   USE Bound
@@ -324,7 +324,7 @@ DEF LayerSet LayerSet {
               scale 0.5 0.5 0.5
               children DEF S4 Switch {
                 choice [
-                  DEF I4 toSFInt32 {
+                  DEF I4 SFInt32Converter {
                     children DEF B4 SFBool { }
                   }
                   USE Bound
@@ -365,7 +365,7 @@ DEF LayerSet LayerSet {
               scale 0.5 0.5 0.5
               children DEF S5 Switch {
                 choice [
-                  DEF I5 toSFInt32 {
+                  DEF I5 SFInt32Converter {
                     children DEF B5 SFBool { }
                   }
                   USE Bound

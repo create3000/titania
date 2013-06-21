@@ -1,3 +1,16 @@
+2013-06-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Parser.cpp:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* ExternProto.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* jsBrowser.cpp:
+	* X3DGeometryNode.h:
+	* X3DGeometryNode.cpp:
+	* jsSFNode.cpp: 
+
 2013-06-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserContext.cpp:

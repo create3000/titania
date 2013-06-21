@@ -314,10 +314,10 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 
 				if (*sfnode)
 				{
-					X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, event));
-
-					if (field)
+					try
 					{
+						X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, event));
+
 						if (field -> isInput ())
 						{
 							if (field -> getType () == X3DConstants::MFNode)
@@ -351,8 +351,10 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 						else
 							JS_ReportError (context, ("Browser .createX3DFromURL: field '" + JS_GetString (context, event) + "' is not an eventIn") .c_str ());
 					}
-					else
+					catch (const Error <INVALID_NAME> &)
+					{
 						JS_ReportError (context, ("Browser .createX3DFromURL: no such field '" + JS_GetString (context, event) + "'") .c_str ());
+					}
 				}
 				else
 					JS_ReportError (context, "Browser .createX3DFromURL: node is NULL");
@@ -478,12 +480,16 @@ jsBrowser::getRenderingProperty (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 			return JS_FALSE;
 			
-		auto field = script -> getBrowser () -> getRenderingProperties () -> getField (JS_GetString (context, name));
-		
-		if (field)
+		try
+		{
+			auto field = script -> getBrowser () -> getRenderingProperties () -> getField (JS_GetString (context, name));
+			
 			return JS_NewFieldValue (context, field, vp);
-
-		JS_ReportError (context, "Browser .getRenderingProperty: unknown property '%s'.", JS_GetString (context, name) .c_str ());		
+		}
+		catch (const Error <INVALID_NAME> &)
+		{
+			JS_ReportError (context, "Browser .getRenderingProperty: unknown property '%s'.", JS_GetString (context, name) .c_str ());
+		}
 	}
 	else
 		JS_ReportError (context, "Browser .getRenderingProperty: wrong number of arguments");
@@ -505,12 +511,16 @@ jsBrowser::getBrowserProperty (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 			return JS_FALSE;
 			
-		auto field = script -> getBrowser () -> getBrowserProperties () -> getField (JS_GetString (context, name));
-		
-		if (field)
+		try
+		{
+			auto field = script -> getBrowser () -> getBrowserProperties () -> getField (JS_GetString (context, name));
+			
 			return JS_NewFieldValue (context, field, vp);
-
-		JS_ReportError (context, "Browser .getBrowserProperty: unknown property '%s'.", JS_GetString (context, name) .c_str ());		
+		}
+		catch (const Error <INVALID_NAME> &)
+		{
+			JS_ReportError (context, "Browser .getBrowserProperty: unknown property '%s'.", JS_GetString (context, name) .c_str ());
+		}
 	}
 	else
 		JS_ReportError (context, "Browser .getBrowserProperty: wrong number of arguments");
@@ -532,12 +542,16 @@ jsBrowser::getBrowserOption (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 			return JS_FALSE;
 			
-		auto field = script -> getBrowser () -> getBrowserOptions () -> getField (JS_GetString (context, name));
-		
-		if (field)
+		try
+		{
+			auto field = script -> getBrowser () -> getBrowserOptions () -> getField (JS_GetString (context, name));
+			
 			return JS_NewFieldValue (context, field, vp);
-
-		JS_ReportError (context, "Browser .getBrowserOption: unknown option '%s'.", JS_GetString (context, name) .c_str ());		
+		}
+		catch (const Error <INVALID_NAME> &)
+		{
+			JS_ReportError (context, "Browser .getBrowserOption: unknown option '%s'.", JS_GetString (context, name) .c_str ());		
+		}
 	}
 	else
 		JS_ReportError (context, "Browser .getBrowserOption: wrong number of arguments");
@@ -559,10 +573,10 @@ jsBrowser::setBrowserOption (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 			return JS_FALSE;
 			
-		auto field = script -> getBrowser () -> getBrowserOptions () -> getField (JS_GetString (context, name));
-		
-		if (field)
+		try
 		{
+			auto field = script -> getBrowser () -> getBrowserOptions () -> getField (JS_GetString (context, name));
+			
 			if (JS_ValueToField (context, field, &argv [1]))
 			{
 				JS_SET_RVAL (context, vp, JSVAL_VOID);
@@ -572,8 +586,10 @@ jsBrowser::setBrowserOption (JSContext* context, uintN argc, jsval* vp)
 			else
 				JS_ReportError (context, "Browser .setBrowserOption: couldn't set value for option '%s'.", JS_GetString (context, name) .c_str ());		
 		}
-		else
+		catch (const Error <INVALID_NAME> &)
+		{
 			JS_ReportError (context, "Browser .setBrowserOption: unknown option '%s'.", JS_GetString (context, name) .c_str ());		
+		}
 	}
 	else
 		JS_ReportError (context, "Browser .setBrowserOption: wrong number of arguments");
@@ -774,10 +790,10 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 
 		if (*sfnode)
 		{
-			X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, event));
-
-			if (field)
+			try
 			{
+				X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, event));
+
 				if (field -> isInput ())
 				{
 					if (field -> getType () == X3DConstants::MFNode)
@@ -811,8 +827,10 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 				else
 					JS_ReportError (context, ("Browser .createVrmlFromURL: field '" + JS_GetString (context, event) + "' is not an eventIn") .c_str ());
 			}
-			else
+			catch (const Error <INVALID_NAME> &)
+			{
 				JS_ReportError (context, ("Browser .createVrmlFromURL: no such field '" + JS_GetString (context, event) + "'") .c_str ());
+			}
 		}
 		else
 			JS_ReportError (context, "Browser .createVrmlFromURL: node is NULL");

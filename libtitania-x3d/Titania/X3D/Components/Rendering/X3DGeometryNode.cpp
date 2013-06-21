@@ -95,12 +95,6 @@ X3DGeometryNode::setup ()
 }
 
 void
-X3DGeometryNode::initialize ()
-{
-	X3DNode::initialize ();
-}
-
-void
 X3DGeometryNode::eventsProcessed ()
 {
 	X3DNode::eventsProcessed ();

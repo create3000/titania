@@ -2,8 +2,18 @@
 
 META "title" "Scripting test"
 
+EXTERNPROTO SFFloatConverter [
+  eventOut     SFFloat value_changed
+  exposedField MFNode  children
+]
+"../../Prototypes/Converter/SFFloatConverter/SFFloatConverter.wrl"
+
 DEF Timer TimeSensor {
   loop TRUE
+}
+
+DEF SFFloatConverter SFFloatConverter {
+	children SFFloatConverter {}
 }
 
 DEF Debug1 Script {
@@ -13,13 +23,17 @@ DEF Debug1 Script {
   field   MFVec3f a2 [ 1 2 3, 1 2 3 ]
   field   MFInt32 a3 1
   field   MFVec3f a4 1 2 3
-  field   SFNode data NULL
+  field   SFNode data Transform {}
 
   url "vrmlscript:
 function initialize ()
 {
 	print ('initialize1');
 	
+	for each (var fieldDefinition in Browser .currentScene .getNamedNode ('SFFloatConverter') .getFieldDefinitions ())
+		print (fieldDefinition .name);
+	
+	print (data instanceof SFNode);
 	
 	print (data .getName ());
 }

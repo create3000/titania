@@ -273,6 +273,8 @@ SFNode <X3DPrototypeInstance>
 X3DExecutionContext::createProtoInstance (const std::string & name)
 throw (Error <INVALID_NAME>,
        Error <INVALID_X3D>,
+       Error <INVALID_FIELD>,
+       Error <INVALID_ACCESS_TYPE>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -304,10 +306,6 @@ throw (Error <INVALID_NAME>,
 				return getExecutionContext () -> getX3DProtoDeclaration (name);
 
 			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + name + "'.");
-		}
-		catch (const X3DError & error)
-		{
-			throw Error <INVALID_X3D> (error .what ());
 		}
 	}
 }
@@ -739,15 +737,27 @@ throw (Error <INVALID_NODE>,
 	if (not destinationNode .getValue ())
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: destination node is NULL.");
 
-	X3DFieldDefinition* sourceField = sourceNode .getField (sourceFieldId);
-
-	if (not sourceField)
+	X3DFieldDefinition* sourceField = NULL;
+	
+	try
+	{
+		sourceField = sourceNode .getField (sourceFieldId);
+	}
+	catch (const Error <INVALID_NAME> &)
+	{
 		throw Error <INVALID_FIELD> ("Bad ROUTE specification: Unknown eventOut '" + sourceFieldId + "' in node '" + sourceNode .getNodeName () + "'.");
+	}
 
-	X3DFieldDefinition* destinationField = destinationNode .getField (destinationFieldId);
-
-	if (not destinationField)
+	X3DFieldDefinition* destinationField = NULL;
+	
+	try
+	{
+		destinationField = destinationNode .getField (destinationFieldId);
+	}
+	catch (const Error <INVALID_NAME> &)
+	{
 		throw Error <INVALID_FIELD> ("Bad ROUTE specification: Unknown eventIn '" + destinationFieldId + "' in node '" + destinationNode .getNodeName () + "'.");
+	}
 
 	return std::make_pair (sourceField, destinationField);
 }

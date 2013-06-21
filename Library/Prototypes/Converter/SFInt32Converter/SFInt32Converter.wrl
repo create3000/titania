@@ -1,6 +1,6 @@
 #VRML V2.0 utf8
 
-PROTO toSFInt32 [
+PROTO SFInt32Converter [
   eventOut     SFInt32 value_changed
   exposedField MFNode  children [ ]
 ]
@@ -12,7 +12,7 @@ PROTO toSFInt32 [
     Group { }
   }
 
-  DEF toSFInt32 Script {
+  DEF SFInt32Converter Script {
     eventOut SFInt32  value_changed IS value_changed
     eventIn  SFBool   set_SFBool
     eventIn  SFFloat  set_SFDouble
@@ -22,7 +22,7 @@ PROTO toSFInt32 [
     eventIn  SFTime   set_SFTime
     eventIn  MFNode   set_children
     field    MFNode   children [ ]
-    field    SFNode   self USE toSFInt32
+    field    SFNode   self USE SFInt32Converter
     field    SFNode   fields DEF Fields Fields {
       children IS children
     }
@@ -60,5 +60,5 @@ function fieldType (node)
     directOutput TRUE
   }
 
-  ROUTE Fields.children_changed TO toSFInt32.set_children
+  ROUTE Fields.children_changed TO SFInt32Converter.set_children
 }

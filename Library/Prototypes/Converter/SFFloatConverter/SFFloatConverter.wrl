@@ -1,6 +1,6 @@
 #VRML V2.0 utf8
 
-PROTO toSFFloat [
+PROTO SFFloatConverter [
   eventOut     SFFloat value_changed
   exposedField MFNode  children [ ]
 ]
@@ -12,7 +12,7 @@ PROTO toSFFloat [
     Group { }
   }
 
-  DEF toSFFloat Script {
+  DEF SFFloatConverter Script {
     eventOut SFFloat  value_changed IS value_changed
     eventIn  SFBool   set_SFBool
     eventIn  SFFloat  set_SFDouble
@@ -22,7 +22,7 @@ PROTO toSFFloat [
     eventIn  SFTime   set_SFTime
     eventIn  MFNode   set_children
     field    MFNode   children [ ]
-    field    SFNode   self USE toSFFloat
+    field    SFNode   self USE SFFloatConverter
     field    SFNode   fields DEF Fields Fields {
       children IS children
     }
@@ -60,5 +60,5 @@ function fieldType (node)
     directOutput TRUE
   }
 
-  ROUTE Fields.children_changed TO toSFFloat.set_children
+  ROUTE Fields.children_changed TO SFFloatConverter.set_children
 }

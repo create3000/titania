@@ -1,10 +1,10 @@
 #VRML V2.0 utf8
 
-EXTERNPROTO toSFInt32 [
+EXTERNPROTO SFInt32Converter [
   eventOut     SFInt32 value_changed
   exposedField MFNode  children
 ]
-"toSFInt32.wrl"
+"SFInt32Converter.wrl"
 
 EXTERNPROTO SFBool [
   exposedField SFBool keyValue
@@ -17,7 +17,7 @@ DEF Touch TouchSensor { }
 
 DEF Timer TimeSensor { }
 
-DEF I toSFInt32 {
+DEF I SFInt32Converter {
   children DEF B SFBool { }
 }
 

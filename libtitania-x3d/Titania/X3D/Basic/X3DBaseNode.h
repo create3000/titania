@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -112,12 +112,14 @@ public:
 	getNumClones () const;
 
 	const std::string &
-	getComponentName () const;
+	getComponentName () const
+	{ return component; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>)override;
+	throw (Error <DISPOSED>) override
+	{ return typeName; }
 
 	virtual
 	const X3DBaseNode*
@@ -125,11 +127,13 @@ public:
 	throw (Error <DISPOSED>);
 
 	const NodeTypeArray &
-	getNodeType () const;
+	getNodeType () const
+	{ return nodeType; }
 
 	virtual
 	X3DBaseNode*
-	getLocalNode ();
+	getLocalNode ()
+	{ return this; }
 
 	///  @name Field handling
 
@@ -140,7 +144,10 @@ public:
 	       Error <DISPOSED>);
 
 	const FieldDefinitionArray &
-	getFieldDefinitions () const;
+	getFieldDefinitions () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return fieldDefinitions; }
 
 	void
 	addUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const);
@@ -167,7 +174,8 @@ public:
 
 	virtual
 	void
-	eventsProcessed ();
+	eventsProcessed ()
+	{ }
 
 	///  @name Traversal handling
 
@@ -193,7 +201,7 @@ public:
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)override;
+	       Error <DISPOSED>) override;
 
 	virtual
 	void
@@ -216,13 +224,16 @@ protected:
 	X3DBaseNode (X3DBrowser* const = nullptr, X3DExecutionContext* const = nullptr);
 
 	void
-	setComponent (const std::string &);
+	setComponent (const std::string & value)
+	{ component = value; }
 
 	void
-	setTypeName (const std::string &);
+	setTypeName (const std::string & value)
+	{ typeName = value; }
 
 	void
-	addNodeType (const X3DConstants::NodeType);
+	addNodeType (const X3DConstants::NodeType value)
+	{ nodeType .push_back (value); }
 
 	void
 	addField (const AccessType, const std::string &, X3DFieldDefinition &);
@@ -233,12 +244,10 @@ protected:
 	void
 	addField (const std::string &, const std::string &);
 
-	const FieldsMap &
-	getFields () const;
-
 	virtual
 	void
-	initialize () { }
+	initialize ()
+	{ }
 
 
 private:

@@ -135,10 +135,10 @@ ExternProto::requestImmediateLoad ()
 	{
 		for (const auto & fieldDefinition : getUserDefinedFields ())
 		{
-			X3DFieldDefinition* protoField = proto .getField (fieldDefinition -> getName ());
-
-			if (protoField)
+			try
 			{
+				X3DFieldDefinition* protoField = proto -> getField (fieldDefinition -> getName ());
+
 				if (protoField -> getAccessType () == fieldDefinition -> getAccessType ())
 				{
 					if (protoField -> getType () == fieldDefinition -> getType ())
@@ -157,10 +157,10 @@ ExternProto::requestImmediateLoad ()
 					throw Error <INVALID_ACCESS_TYPE> ("EXTERNPROTO '" + getName () + "' field '" + fieldDefinition -> getName () + "' and PROTO field have different access types");
 				}
 			}
-			else
+			catch (const Error <INVALID_NAME> &)
 			{
 				setLoadState (FAILED_STATE);
-				throw Error <INVALID_NAME> ("EXTERNPROTO field '" + fieldDefinition -> getName () + "' not found in PROTO '" + proto .getNodeName () + "'");
+				throw Error <INVALID_NAME> ("EXTERNPROTO field '" + fieldDefinition -> getName () + "' not found in PROTO '" + proto -> getName () + "'");
 			}
 		}
 
