@@ -100,10 +100,13 @@ public:
 	eventsProcessed () final;
 
 	void
-	addField (X3DFieldDefinition*);
+	addObject (X3DFieldDefinition*, JSObject*);
 
 	void
-	removeField (X3DFieldDefinition*);
+	removeObject (X3DFieldDefinition*);
+
+	JSObject*
+	getObject (X3DFieldDefinition*);
 
 	virtual
 	void
@@ -189,10 +192,10 @@ private:
 	jsval eventsProcessedFn;
 	jsval shutdownFn;
 
-	std::map <std::string, jsval>          fields;
-	std::map <X3DFieldDefinition*, jsval>  functions;
-	std::map <X3DFieldDefinition*, size_t> references;
-	std::map <basic::uri, jsval>           files;
+	std::map <std::string, jsval>             fields;
+	std::map <X3DFieldDefinition*, jsval>     functions;
+	std::map <X3DFieldDefinition*, JSObject*> objects;
+	std::map <basic::uri, jsval>              files;
 
 };
 

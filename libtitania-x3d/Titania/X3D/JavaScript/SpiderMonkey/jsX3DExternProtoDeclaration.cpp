@@ -109,7 +109,7 @@ jsX3DExternProtoDeclaration::create (JSContext* context, const SFNode <ExternPro
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
 
-	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addField (field);
+	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addObject (field, result);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
@@ -191,7 +191,7 @@ jsX3DExternProtoDeclaration::finalize (JSContext* context, JSObject* obj)
 {
 	auto externproto = static_cast <SFNode <ExternProto>*> (JS_GetPrivate (context, obj));
 
-	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeField (externproto);
+	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (externproto);
 }
 
 } // X3D

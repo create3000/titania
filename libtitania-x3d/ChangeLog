@@ -1,5 +1,31 @@
 2013-06-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DOutput.h:
+	* X3DOutput.cpp:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* X3DArrayField.h:
+	* jsContext.h:
+	* jsfield.cpp:
+	* jsContext.cpp:
+	* jsX3DRoute.cpp:
+	* jsSFVec2.h:
+	* jsSFVec3.h:
+	* jsX3DArrayField.h:
+	* jsSFVec4.h:
+	* jsSFNode.cpp:
+	* jsSFImage.cpp:
+	* jsSFColor.cpp:
+	* jsSFMatrix4.h:
+	* jsSFMatrix3.h:
+	* jsSFRotation.cpp:
+	* jsX3DFieldDefinition.cpp:
+	* jsSFColorRGBA.cpp:
+	* jsX3DProtoDeclaration.cpp:
+	* jsX3DExternProtoDeclaration.cpp: 
+
+2013-06-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.cpp: 
 
 2013-06-21  Holger Seelig  <holger.seelig@yahoo.de>

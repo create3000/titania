@@ -85,7 +85,7 @@ jsContext::jsContext (X3DScriptNode* script, const std::string & ecmascript, con
 	          shutdownFn (),                                                                                    
 	              fields (),                                                                                    
 	           functions (),                                                                                    
-	          references (),                                                                                    
+	             objects (),                                                                                    
 	               files ()                                                                                     
 {
 	setComponent ("Browser");
@@ -518,31 +518,25 @@ jsContext::callFunction (jsval function) const
 }
 
 void
-jsContext::addField (X3DFieldDefinition* field)
+jsContext::addObject (X3DFieldDefinition* field, JSObject* object)
 {
-	auto reference = references .find (field);
-
-	if (reference == references .end ())
-	{
-		references .insert (std::make_pair (field, 1));
-
-		field -> addParent (this);
-	}
-	else
-		++ reference -> second;
+	if (not objects .insert (std::make_pair (field, object)) .second)
+		throw Error <INVALID_FIELD> ("Object already exists in jsContext.");
+	
+	field -> addParent (this);
 }
 
 void
-jsContext::removeField (X3DFieldDefinition* field)
+jsContext::removeObject (X3DFieldDefinition* field)
 {
-	auto reference = references .find (field);
-
-	if (-- reference -> second == 0)
-	{
-		references .erase (reference);
-
+	if (objects .erase (field))
 		field -> removeParent (this);
-	}
+}
+
+JSObject*
+jsContext::getObject (X3DFieldDefinition* field)
+{
+	return objects .at (field);
 }
 
 void
@@ -628,10 +622,7 @@ jsContext::dispose ()
 	JS_DestroyContext (context);
 	JS_DestroyRuntime (runtime);
 
-	assert (references .size () == 0);
-
-	//for (auto & reference : references)
-	//	reference .first -> removeParent (this);
+	assert (objects .size () == 0);
 
 	X3DUrlObject::dispose ();
 	X3DJavaScriptContext::dispose ();

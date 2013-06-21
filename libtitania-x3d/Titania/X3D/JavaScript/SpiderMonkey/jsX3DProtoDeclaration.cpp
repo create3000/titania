@@ -106,7 +106,7 @@ jsX3DProtoDeclaration::create (JSContext* context, const SFNode <Proto> & proto,
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
 
-	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addField (field);
+	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addObject (field, result);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
@@ -160,7 +160,7 @@ jsX3DProtoDeclaration::finalize (JSContext* context, JSObject* obj)
 {
 	auto proto = static_cast <SFNode <Proto>*> (JS_GetPrivate (context, obj));
 
-	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeField (proto);
+	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (proto);
 }
 
 } // X3D

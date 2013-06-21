@@ -2,51 +2,63 @@
 
 META "title" "Scripting test"
 
-EXTERNPROTO SFFloatConverter [
-  eventOut     SFFloat value_changed
-  exposedField MFNode  children
+EXTERNPROTO Particle [
+  exposedField SFBool     enabled
+  exposedField SFDouble   maximumSpeed
+  exposedField SFDouble   mass
+  exposedField SFVec3f    acceleration
+  exposedField SFVec3f    velocity
+  exposedField SFVec3f    translation
+  exposedField SFRotation rotation
+  exposedField SFTime     startTime
+  exposedField SFTime     stopTime
+  eventOut     SFBool     isActive
+  exposedField MFNode     friends
+  eventIn      MFNode     addChildren
+  eventIn      MFNode     removeChildren
+  exposedField MFNode     children
 ]
-"../../Prototypes/Converter/SFFloatConverter/SFFloatConverter.wrl"
+"/home/holger/Arbeitsfläche/Particle/Particle.wrl"
 
-DEF Timer TimeSensor {
-  loop TRUE
-}
+PROTO Test [
+  exposedField MFNode children [ ]
+]
+{
+  DEF Group Group {
+    children IS children
+  }
 
-DEF SFFloatConverter SFFloatConverter {
-	children SFFloatConverter {}
-}
+  DEF ParticleGroup Script {
+    eventIn MFNode set_children
+    field   SFNode group USE Group
+    field   SFNode self USE ParticleGroup
 
-DEF Debug1 Script {
-  eventIn SFTime  set_time
-  field   SFNode  self USE Debug1
-  field   MFInt32 a1 [ 1, 2, 3 ]
-  field   MFVec3f a2 [ 1 2 3, 1 2 3 ]
-  field   MFInt32 a3 1
-  field   MFVec3f a4 1 2 3
-  field   SFNode data Transform {}
-
-  url "vrmlscript:
+    url "vrmlscript:
 function initialize ()
 {
-	print ('initialize1');
-	
-	for each (var fieldDefinition in Browser .currentScene .getNamedNode ('SFFloatConverter') .getFieldDefinitions ())
-		print (fieldDefinition .name);
-	
-	print (data instanceof SFNode);
-	
-	print (data .getName ());
+	print ('initialize');
+
+	Browser .addRoute (group, 'children', self, 'set_children');
+
+	group .children = group .children;
 }
 
-function set_time (value)
+function set_children (value, time)
 {
+	print ('children: ', time, ' ', value .length);
+		
+	for (var particle in value)
+	{
+		for (var friend in value)
+		{
+			if (friend != particle)
+				value [particle] .friends [value [particle] .friends .length] = value [friend];
+		}
+	}
+}
+    "
+    directOutput TRUE
+  }
 }
 
-function shutdown ()
-{
-	print ('shutdown1');
-}
-"
-}
-
-ROUTE Timer.cycleTime TO Debug1.set_time
+Test { children [ Particle { enabled FALSE } ] }

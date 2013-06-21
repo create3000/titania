@@ -111,19 +111,28 @@ jsSFRotation::init (JSContext* context, JSObject* global)
 JSBool
 jsSFRotation::create (JSContext* context, SFRotation4f* field, jsval* vp, const bool seal)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
+	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
-	if (result == NULL)
-		return JS_FALSE;
+	try
+	{
+		*vp = OBJECT_TO_JSVAL (javaScript -> getObject (field));
+	}
+	catch (const std::out_of_range &)
+	{
+		JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 
-	JS_SetPrivate (context, result, field);
+		if (result == NULL)
+			return JS_FALSE;
 
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
+		JS_SetPrivate (context, result, field);
 
-	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addField (field);
+		//if (seal)
+		//	JS_SealObject (context, result, JS_FALSE);
 
-	*vp = OBJECT_TO_JSVAL (result);
+		javaScript -> addObject (field, result);
+
+		*vp = OBJECT_TO_JSVAL (result);
+	}
 
 	return JS_TRUE;
 }

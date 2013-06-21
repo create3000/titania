@@ -129,7 +129,7 @@ jsX3DFieldDefinition::finalize (JSContext* context, JSObject* obj)
 	
 	if (field) // XXX there are sometimes objects without field
 	{
-		javaScript -> removeField (field);
+		javaScript -> removeObject (field);
 	}
 }
 

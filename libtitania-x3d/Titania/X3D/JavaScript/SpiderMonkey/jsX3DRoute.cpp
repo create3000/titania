@@ -104,7 +104,7 @@ jsX3DRoute::create (JSContext* context, const SFNode <Route> & route, jsval* vp,
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
 
-	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addField (field);
+	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addObject (field, result);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
@@ -150,7 +150,7 @@ jsX3DRoute::finalize (JSContext* context, JSObject* obj)
 {
 	auto route = static_cast <SFNode <Route>*> (JS_GetPrivate (context, obj));
 
-	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeField (route);
+	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (route);
 }
 
 } // X3D

@@ -169,6 +169,14 @@ public:
 
 	///  @name Event handling
 
+	virtual
+	void
+	registerEvent (X3DChildObject*) override;
+
+	virtual
+	void
+	registerEvent (X3DChildObject*, const Event &) override;
+
 	void
 	processEvents ();
 
@@ -259,14 +267,6 @@ private:
 
 	FieldDefinitionArray
 	getInitializeableFields (const bool = false) const;
-
-	virtual
-	void
-	registerEvent (X3DChildObject*) override;
-
-	virtual
-	void
-	registerEvent (X3DChildObject*, const Event &) override;
 
 	X3DBrowser* const          browser;
 	X3DExecutionContext* const executionContext;

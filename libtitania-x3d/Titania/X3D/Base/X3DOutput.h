@@ -53,6 +53,7 @@
 
 #include "../Base/X3DBase.h"
 #include <functional>
+#include <vector>
 #include <list>
 #include <map>
 
@@ -171,9 +172,8 @@ public:
 
 	///  @name Process interests service
 
-	virtual
 	void
-	processInterests ();
+	processInterests () const;
 
 	///  @name Dispose service
 
@@ -204,6 +204,7 @@ private:
 
 	mutable RequesterArray requesters;
 	mutable RequesterIndex requesterIndex;
+	mutable std::vector <Requester> copy;
 
 };
 

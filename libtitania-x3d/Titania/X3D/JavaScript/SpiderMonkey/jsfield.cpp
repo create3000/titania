@@ -746,10 +746,7 @@ JS_NewFieldValue (JSContext* context, X3DFieldDefinition* field, jsval* vp, cons
 	switch (field -> getType ())
 	{
 		case X3DConstants::SFBool:
-		{
-			*vp = *(SFBool*) field ? JSVAL_TRUE : JSVAL_FALSE;
-			return JS_TRUE;
-		}
+			return jsSFBool::create (context, (SFBool*) field, vp, seal);
 
 		case X3DConstants::SFColor:
 			return jsSFColor::create (context, (SFColor*) field, vp, seal);

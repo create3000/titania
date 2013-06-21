@@ -50,16 +50,13 @@
 
 #include "X3DOutput.h"
 
-#include <Titania/LOG.h>
-#include <algorithm>
-#include <deque>
-
 namespace titania {
 namespace X3D {
 
 X3DOutput::X3DOutput () :
 	    requesters (), 
-	requesterIndex ()  
+	requesterIndex (),
+	          copy ()  
 { }
 
 const RequesterArray &
@@ -117,20 +114,15 @@ X3DOutput::eraseInterest (const void* object, const void* memberFunction) const
 }
 
 void
-X3DOutput::processInterests ()
+X3DOutput::processInterests () const
 {
-	size_t size = requesters .size ();
+	if (requesters .empty ())
+		return;
 
-	if (size)
-	{
-		std::vector <Requester> copy;
-		
-		copy .reserve (size);
-		copy .assign (requesters .cbegin (), requesters .cend ());
+	copy .assign (requesters .cbegin (), requesters .cend ());
 
-		for (const auto & requester : copy)
-			requester ();
-	}
+	for (const auto & requester : copy)
+		requester ();
 }
 
 void

@@ -491,12 +491,27 @@ X3DArrayField <ValueType>::set (InputIterator first, InputIterator last)
 		current -> set (*first);
 
 	if (first == last)
-		resize (current - begin ());
-
-	else  // insert at end
 	{
+		// Remove trailing fields
+	
+		size_t count = current - begin ();
+	
+		removeChildren (get () .begin () + count, get () .end ());
+
+		get () .resize (count);
+	}
+	else
+	{
+		// Insert at end
+
 		for ( ; first not_eq last; ++ first)
-			emplace_back (*first);
+		{
+			ValueType* field = new ValueType (*first);
+
+			get () .emplace_back (field);
+
+			addChild (field);
+		}
 	}
 }
 
