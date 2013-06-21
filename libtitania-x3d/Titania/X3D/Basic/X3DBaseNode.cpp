@@ -543,11 +543,12 @@ X3DBaseNode::setup ()
 void
 X3DBaseNode::registerEvent (X3DChildObject* object)
 {
-	if (not object -> isTainted ())
-	{
-		object -> isTainted (true);
-		registerEvent (object, Event (object));
-	}
+	if (object -> isTainted ())
+		return;
+
+	object -> isTainted (true);
+
+	registerEvent (object, Event (object));
 }
 
 void
