@@ -530,7 +530,14 @@ X3DBaseNode::setup ()
 {
 	executionContext -> addParent (this);
 
-	events .clear ();
+	{
+		for (auto & pair : events)
+			pair .first -> isTainted (false);
+			
+		events .clear ();
+
+		getBrowser () -> getRouter () .removeNode (this);
+	}
 
 	if (executionContext -> isProto ())
 		return;
@@ -554,7 +561,7 @@ X3DBaseNode::registerEvent (X3DChildObject* object)
 void
 X3DBaseNode::registerEvent (X3DChildObject* object, const Event & event)
 {
-	//__LOG__ << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << std::endl;
+	// __LOG__ << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << std::endl;
 
 	// Register for processEvents
 
@@ -819,10 +826,11 @@ X3DBaseNode::dispose ()
 
 	fields .clear ();
 	fieldDefinitions .clear ();
+
 	events .clear ();
+	getBrowser () -> getRouter () .removeNode (this);
 
 	executionContext -> removeParent (this);
-	getBrowser () -> getRouter () .removeNode (this);
 }
 
 X3DBaseNode::~X3DBaseNode ()
