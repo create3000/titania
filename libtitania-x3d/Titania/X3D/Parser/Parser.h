@@ -519,7 +519,7 @@ private:
 	basic::igzfilter          istream;
 	X3DScene*                 scene;
 	ExecutionContextStack     executionContextStack;
-	std::deque <X3DBaseNode*> nodes;
+	MFNode                    nodes;
 	std::deque <std::string>  currentComments;
 	std::string               whitespaces;
 

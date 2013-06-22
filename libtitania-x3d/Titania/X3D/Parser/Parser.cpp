@@ -1323,7 +1323,7 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 
 				_basicNode -> addInnerComments (getComments ());
 
-				nodes .emplace_back (_basicNode);
+				nodes .emplace_back (_node);
 
 				//__LOG__ << _nodeTypeId << std::endl;
 				return true;
