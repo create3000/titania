@@ -375,6 +375,7 @@ X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3
 		std::clog << "Warning: In function " << std::string (__func__) << " 'field " << getTypeName () << "." << name << "' already exists in field set'." << std::endl;
 	}
 
+	field .addParent (this);
 	field .setAccessType (accessType);
 	field .setName (name);
 	field .setAliasName (name);
@@ -394,7 +395,7 @@ X3DBaseNode::removeField (const std::string & name)
 
 		if (fieldDefinitions .end () - iter <= FieldDefinitionArray::difference_type (numUserDefinedFields))
 		{
-			delete *iter;
+			(*iter) -> removeParent (this);
 			-- numUserDefinedFields;
 		}
 
@@ -529,8 +530,7 @@ X3DBaseNode::setup ()
 {
 	executionContext -> addParent (this);
 
-	for (auto & field : fieldDefinitions)
-		field -> addParent (this);
+	events .clear ();
 
 	if (executionContext -> isProto ())
 		return;

@@ -247,7 +247,7 @@ Parser::addRootNode (const SFNode <X3DBaseNode> & rootNode)
 	
 	for (auto & node : nodes)
 		node -> setup ();
-		
+
 	nodes .clear ();
 
 	getExecutionContext () -> getRootNodes () .emplace_back (rootNode);
@@ -1323,7 +1323,7 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 
 				_basicNode -> addInnerComments (getComments ());
 
-				nodes .emplace_back (_node);
+				nodes .emplace_back (_basicNode);
 
 				//__LOG__ << _nodeTypeId << std::endl;
 				return true;

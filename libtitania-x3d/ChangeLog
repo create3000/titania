@@ -1,6 +1,12 @@
 2013-06-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.h:
+	* Parser.cpp:
+	* X3DBaseNode.cpp: 
+
+2013-06-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Parser.h:
 	* Parser.cpp: 
 
 2013-06-22  Holger Seelig  <holger.seelig@yahoo.de>
