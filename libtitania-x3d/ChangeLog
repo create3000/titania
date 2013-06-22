@@ -1,5 +1,15 @@
 2013-06-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Router.h:
+	* X3DBaseNode.h:
+	* X3DChildObject.h:
+	* X3DBaseNode.cpp:
+	* X3DChildObject.cpp:
+	* X3DFieldDefinition.cpp:
+	* jsContext.h: 
+
+2013-06-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.cpp: 
 
 2013-06-22  Holger Seelig  <holger.seelig@yahoo.de>

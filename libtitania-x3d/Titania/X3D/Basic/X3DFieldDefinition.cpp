@@ -233,7 +233,7 @@ X3DFieldDefinition::processEvent (Event & event)
 	processInterests ();
 
 	for (const auto & fieldDefinition : interests)
-		fieldDefinition -> registerEvent (fieldDefinition, event);
+		fieldDefinition -> addEvent (fieldDefinition, event);
 }
 
 void

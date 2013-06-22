@@ -530,14 +530,7 @@ X3DBaseNode::setup ()
 {
 	executionContext -> addParent (this);
 
-	{
-		for (auto & pair : events)
-			pair .first -> isTainted (false);
-			
-		events .clear ();
-
-		getBrowser () -> getRouter () .removeNode (this);
-	}
+	removeEvents ();
 
 	if (executionContext -> isProto ())
 		return;
@@ -548,18 +541,18 @@ X3DBaseNode::setup ()
 }
 
 void
-X3DBaseNode::registerEvent (X3DChildObject* object)
+X3DBaseNode::addEvent (X3DChildObject* object)
 {
 	if (object -> isTainted ())
 		return;
 
 	object -> isTainted (true);
 
-	registerEvent (object, Event (object));
+	addEvent (object, Event (object));
 }
 
 void
-X3DBaseNode::registerEvent (X3DChildObject* object, const Event & event)
+X3DBaseNode::addEvent (X3DChildObject* object, const Event & event)
 {
 	// __LOG__ << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << std::endl;
 
@@ -567,14 +560,14 @@ X3DBaseNode::registerEvent (X3DChildObject* object, const Event & event)
 
 	if (events .empty ())
 	{
-		getBrowser () -> getRouter () .registerEvent (this);
+		getBrowser () -> getRouter () .addEvent (this);
 		getBrowser () -> notify ();
 	}
 
 	// Register for eventsProcessed
 
 	if (object -> isInput ())
-		getBrowser () -> getRouter () .registerNode (this);
+		getBrowser () -> getRouter () .addNode (this);
 
 	// Add event
 
@@ -589,6 +582,17 @@ X3DBaseNode::processEvents ()
 		// __LOG__ << pair .first -> getName () << " : " << pair .first -> getTypeName () << " : " << getName () << " : " << getTypeName () << std::endl;
 		pair .first -> processEvent (pair .second);
 	}
+}
+
+void
+X3DBaseNode::removeEvents ()
+{
+	for (auto & pair : events)
+		pair .first -> isTainted (false);
+		
+	events .clear ();
+
+	getBrowser () -> getRouter () .removeNode (this);
 }
 
 void
@@ -821,14 +825,13 @@ X3DBaseNode::dispose ()
 
 	shutdown .processInterests ();
 
+	removeEvents ();
+
 	for (const auto & field : fieldDefinitions)
 		field -> removeParent (this);
 
 	fields .clear ();
 	fieldDefinitions .clear ();
-
-	events .clear ();
-	getBrowser () -> getRouter () .removeNode (this);
 
 	executionContext -> removeParent (this);
 }

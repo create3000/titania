@@ -169,12 +169,12 @@ private:
 
 	virtual
 	void
-	registerEvent (X3DChildObject*) final
+	addEvent (X3DChildObject*) final
 	{ }
 
 	virtual
 	void
-	registerEvent (X3DChildObject*, const Event &) final
+	addEvent (X3DChildObject*, const Event &) final
 	{ }
 
 	static JSClass global_class;

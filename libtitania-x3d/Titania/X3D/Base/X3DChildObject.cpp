@@ -47,20 +47,20 @@ void
 X3DChildObject::notifyParents ()
 {
 	for (const auto & parent : getParents ())
-		parent -> registerEvent (this);
+		parent -> addEvent (this);
 }
 
 void
-X3DChildObject::registerEvent (X3DChildObject* const)
+X3DChildObject::addEvent (X3DChildObject* const)
 {
 	notifyParents ();
 }
 
 void
-X3DChildObject::registerEvent (X3DChildObject*, const Event & event)
+X3DChildObject::addEvent (X3DChildObject*, const Event & event)
 {
 	for (const auto & parent : getParents ())
-		parent -> registerEvent (this, event);
+		parent -> addEvent (this, event);
 }
 
 // Child
