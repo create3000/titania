@@ -1,7 +1,27 @@
 #VRML V2.0 utf8
 
-DEF Reference Script {
-  field SFNode SFNode USE Reference
-  field MFNode MFNode [ USE Reference NULL ]
+DEF Transform Transform {
+	children DEF Reference Script {
+	  field SFNode transform USE Transform
+	  field SFNode self USE Reference
+	  field MFNode array [ USE Reference NULL ]
+	  field SFVec3f vector 1 2 3
+	  
+	  url "vrmlscript:
 
+function initialize ()
+{
+	//for each (var fieldDefinition in self .getFieldDefinitions ())
+	//{
+	//	print (fieldDefinition .name + ': ' + self [fieldDefinition .name]);
+	//}
+	for each (var fieldDefinition in transform .getFieldDefinitions ())
+	{
+		print (fieldDefinition .name + ': ' + transform [fieldDefinition .name]);
+	}
+}
+	"
+	  directOutput TRUE
+	}
+	translation 1 2 3
 }

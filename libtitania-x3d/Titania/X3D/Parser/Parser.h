@@ -516,11 +516,12 @@ private:
 	X3DFieldDefinition*
 	createField (const std::type_info &);
 
-	basic::igzfilter         istream;
-	X3DScene*                scene;
-	ExecutionContextStack    executionContextStack;
-	std::deque <std::string> currentComments;
-	std::string              whitespaces;
+	basic::igzfilter          istream;
+	X3DScene*                 scene;
+	ExecutionContextStack     executionContextStack;
+	std::deque <X3DBaseNode*> nodes;
+	std::deque <std::string>  currentComments;
+	std::string               whitespaces;
 
 };
 

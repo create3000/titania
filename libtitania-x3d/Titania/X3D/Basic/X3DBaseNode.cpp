@@ -554,7 +554,7 @@ X3DBaseNode::registerEvent (X3DChildObject* object)
 void
 X3DBaseNode::registerEvent (X3DChildObject* object, const Event & event)
 {
-	// __LOG__ << std::endl << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << std::endl;
+	//__LOG__ << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << std::endl;
 
 	// Register for processEvents
 
@@ -578,7 +578,10 @@ void
 X3DBaseNode::processEvents ()
 {
 	for (auto & pair : EventArray (std::move (events)))
+	{
+		// __LOG__ << pair .first -> getName () << " : " << pair .first -> getTypeName () << " : " << getName () << " : " << getTypeName () << std::endl;
 		pair .first -> processEvent (pair .second);
+	}
 }
 
 void
