@@ -79,7 +79,7 @@ X3DBackgroundNode::Fields::Fields () :
 
 X3DBackgroundNode::X3DBackgroundNode () :
 	X3DBindableNode (), 
-	         fields ()           
+	         fields ()  
 {
 	addNodeType (X3DConstants::X3DBackgroundNode);
 }
@@ -140,211 +140,218 @@ X3DBackgroundNode::build ()
 	if (transparency () == 1.0f)
 		return;
 
-	float radius  = 10000;
 	float opacity = 1 - math::clamp <float> (transparency (), 0, 1);
-	float PI2     = 2 * M_PI;
 
-	// p2 --- p1
-	//  |     |
-	//  |     |
-	// p3 --- p4
-
-	if (skyColor () .size () > skyAngle () .size ())
+	if (groundColor () .size () == 0 and skyColor () .size () == 1)
 	{
-		float vmax = groundColor () .size () > groundAngle () .size () ? (SPHERE_VSEG / 2) - 1 : SPHERE_VSEG - 1;
+		// Draw cube
+	
+		float r = 10000;
 
-		for (int v = 0; v < vmax; ++ v)
+		const Color3f & c = skyColor () [0];
+
+		numIndices = 24;
+
+		for (int i = 0; i < numIndices; ++ i)
+			glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
+
+		// Back
+		glPoints .emplace_back (-r,  r, -r);
+		glPoints .emplace_back (r,  r, -r);
+		glPoints .emplace_back (r, -r, -r);
+		glPoints .emplace_back (-r, -r, -r);
+
+		// Front
+		glPoints .emplace_back (r,  r,  r);
+		glPoints .emplace_back (-r,  r,  r);
+		glPoints .emplace_back (-r, -r,  r);
+		glPoints .emplace_back (r, -r,  r);
+
+		// Left
+		glPoints .emplace_back (-r,  r,  r);
+		glPoints .emplace_back (-r,  r, -r);
+		glPoints .emplace_back (-r, -r, -r);
+		glPoints .emplace_back (-r, -r,  r);
+
+		// Right
+		glPoints .emplace_back (r,  r, -r);
+		glPoints .emplace_back (r,  r,  r);
+		glPoints .emplace_back (r, -r,  r);
+		glPoints .emplace_back (r, -r, -r);
+
+		// Top
+		glPoints .emplace_back (-r,  r,  r);
+		glPoints .emplace_back (r,  r,  r);
+		glPoints .emplace_back (r,  r, -r);
+		glPoints .emplace_back (-r,  r, -r);
+
+		// Bottom
+		glPoints .emplace_back (r, -r,  r);
+		glPoints .emplace_back (-r, -r,  r);
+		glPoints .emplace_back (-r, -r, -r);
+		glPoints .emplace_back (r, -r, -r);
+	}
+	else
+	{
+		// Draw sphere
+	
+		float radius = 10000;
+		float PI2    = 2 * M_PI;
+
+		// p2 --- p1
+		//  |     |
+		//  |     |
+		// p3 --- p4
+
+		if (skyColor () .size () > skyAngle () .size ())
 		{
-			for (int u = 0; u < SPHERE_USEG - 1; ++ u)
+			float vmax = groundColor () .size () > groundAngle () .size () ? (SPHERE_VSEG / 2) - 1 : SPHERE_VSEG - 1;
+
+			for (int v = 0; v < vmax; ++ v)
 			{
-				float    y, r, x, z, theta, phi;
-				Vector3f p;
-				Color3f  c;
+				for (int u = 0; u < SPHERE_USEG - 1; ++ u)
+				{
+					float    y, r, x, z, theta, phi;
+					Vector3f p;
+					Color3f  c;
 
-				// p1
-				theta = M_PI * (v / (SPHERE_VSEG - 1));
-				phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
-				y     = cos (theta);
-				r     = sin (theta);
-				x     = -sin (phi) * r;
-				z     = -cos (phi) * r;
+					// p1
+					theta = M_PI * (v / (SPHERE_VSEG - 1));
+					phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
+					y     = cos (theta);
+					r     = sin (theta);
+					x     = -sin (phi) * r;
+					z     = -cos (phi) * r;
 
-				p = Vector3f (x, y, z) * radius;
-				c = getColor (theta, skyColor (), skyAngle ());
+					p = Vector3f (x, y, z) * radius;
+					c = getColor (theta, skyColor (), skyAngle ());
 
-				glColors .push_back (c .r ());
-				glColors .push_back (c .g ());
-				glColors .push_back (c .b ());
-				glColors .push_back (opacity);
+					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
+					glPoints .emplace_back (p);
 
-				glPoints .push_back (p .x ());
-				glPoints .push_back (p .y ());
-				glPoints .push_back (p .z ());
+					++ numIndices;
 
-				++ numIndices;
+					// p2
+					theta = M_PI * (v / (SPHERE_VSEG - 1));
+					phi   = PI2 * (u / (SPHERE_USEG - 1));
+					y     = cos (theta);
+					r     = sin (theta);
+					x     = -sin (phi) * r;
+					z     = -cos (phi) * r;
 
-				// p2
-				theta = M_PI * (v / (SPHERE_VSEG - 1));
-				phi   = PI2 * (u / (SPHERE_USEG - 1));
-				y     = cos (theta);
-				r     = sin (theta);
-				x     = -sin (phi) * r;
-				z     = -cos (phi) * r;
+					p = Vector3f (x, y, z) * radius;
 
-				p = Vector3f (x, y, z) * radius;
+					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
+					glPoints .emplace_back (p);
 
-				glColors .push_back (c .r ());
-				glColors .push_back (c .g ());
-				glColors .push_back (c .b ());
-				glColors .push_back (opacity);
+					++ numIndices;
 
-				glPoints .push_back (p .x ());
-				glPoints .push_back (p .y ());
-				glPoints .push_back (p .z ());
+					// p3
+					theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
+					phi   = PI2 * (u / (SPHERE_USEG - 1));
+					y     = cos (theta);
+					r     = sin (theta);
+					x     = -sin (phi) * r;
+					z     = -cos (phi) * r;
 
-				++ numIndices;
+					p = Vector3f (x, y, z) * radius;
+					c = getColor (theta, skyColor (), skyAngle ());
 
-				// p3
-				theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
-				phi   = PI2 * (u / (SPHERE_USEG - 1));
-				y     = cos (theta);
-				r     = sin (theta);
-				x     = -sin (phi) * r;
-				z     = -cos (phi) * r;
+					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
+					glPoints .emplace_back (p);
 
-				p = Vector3f (x, y, z) * radius;
-				c = getColor (theta, skyColor (), skyAngle ());
+					++ numIndices;
 
-				glColors .push_back (c .r ());
-				glColors .push_back (c .g ());
-				glColors .push_back (c .b ());
-				glColors .push_back (opacity);
+					// p4
+					theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
+					phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
+					y     = cos (theta);
+					r     = sin (theta);
+					x     = -sin (phi) * r;
+					z     = -cos (phi) * r;
 
-				glPoints .push_back (p .x ());
-				glPoints .push_back (p .y ());
-				glPoints .push_back (p .z ());
+					p = Vector3f (x, y, z) * radius;
 
-				++ numIndices;
+					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
+					glPoints .emplace_back (p);
 
-				// p4
-				theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
-				phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
-				y     = cos (theta);
-				r     = sin (theta);
-				x     = -sin (phi) * r;
-				z     = -cos (phi) * r;
-
-				p = Vector3f (x, y, z) * radius;
-
-				glColors .push_back (c .r ());
-				glColors .push_back (c .g ());
-				glColors .push_back (c .b ());
-				glColors .push_back (opacity);
-
-				glPoints .push_back (p .x ());
-				glPoints .push_back (p .y ());
-				glPoints .push_back (p .z ());
-
-				++ numIndices;
+					++ numIndices;
+				}
 			}
 		}
-	}
 
-	if (groundColor () .size () > groundAngle () .size ())
-	{
-		for (int v = SPHERE_VSEG / 2; v < SPHERE_VSEG - 1; ++ v)
+		if (groundColor () .size () > groundAngle () .size ())
 		{
-			for (int u = 0; u < SPHERE_USEG - 1; ++ u)
+			for (int v = SPHERE_VSEG / 2; v < SPHERE_VSEG - 1; ++ v)
 			{
-				float    y, r, x, z, theta, phi;
-				Vector3f p;
-				Color3f  c;
+				for (int u = 0; u < SPHERE_USEG - 1; ++ u)
+				{
+					float    y, r, x, z, theta, phi;
+					Vector3f p;
+					Color3f  c;
 
-				// p1
-				theta = M_PI * (v / (SPHERE_VSEG - 1));
-				phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
-				y     = cos (theta);
-				r     = sin (theta);
-				x     = -sin (phi) * r;
-				z     = -cos (phi) * r;
+					// p1
+					theta = M_PI * (v / (SPHERE_VSEG - 1));
+					phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
+					y     = cos (theta);
+					r     = sin (theta);
+					x     = -sin (phi) * r;
+					z     = -cos (phi) * r;
 
-				p = Vector3f (x, y, z) * radius;
-				c = getColor (M_PI - theta, groundColor (), groundAngle ());
+					p = Vector3f (x, y, z) * radius;
+					c = getColor (M_PI - theta, groundColor (), groundAngle ());
 
-				glColors .push_back (c .r ());
-				glColors .push_back (c .g ());
-				glColors .push_back (c .b ());
-				glColors .push_back (opacity);
+					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
+					glPoints .emplace_back (p);
 
-				glPoints .push_back (p .x ());
-				glPoints .push_back (p .y ());
-				glPoints .push_back (p .z ());
+					++ numIndices;
 
-				++ numIndices;
+					// p2
+					theta = M_PI * (v / (SPHERE_VSEG - 1));
+					phi   = PI2 * (u / (SPHERE_USEG - 1));
+					y     = cos (theta);
+					r     = sin (theta);
+					x     = -sin (phi) * r;
+					z     = -cos (phi) * r;
 
-				// p2
-				theta = M_PI * (v / (SPHERE_VSEG - 1));
-				phi   = PI2 * (u / (SPHERE_USEG - 1));
-				y     = cos (theta);
-				r     = sin (theta);
-				x     = -sin (phi) * r;
-				z     = -cos (phi) * r;
+					p = Vector3f (x, y, z) * radius;
 
-				p = Vector3f (x, y, z) * radius;
+					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
+					glPoints .emplace_back (p);
 
-				glColors .push_back (c .r ());
-				glColors .push_back (c .g ());
-				glColors .push_back (c .b ());
-				glColors .push_back (opacity);
+					++ numIndices;
 
-				glPoints .push_back (p .x ());
-				glPoints .push_back (p .y ());
-				glPoints .push_back (p .z ());
+					// p3
+					theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
+					phi   = PI2 * (u / (SPHERE_USEG - 1));
+					y     = cos (theta);
+					r     = sin (theta);
+					x     = -sin (phi) * r;
+					z     = -cos (phi) * r;
 
-				++ numIndices;
+					p = Vector3f (x, y, z) * radius;
+					c = getColor (M_PI - theta, groundColor (), groundAngle ());
 
-				// p3
-				theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
-				phi   = PI2 * (u / (SPHERE_USEG - 1));
-				y     = cos (theta);
-				r     = sin (theta);
-				x     = -sin (phi) * r;
-				z     = -cos (phi) * r;
+					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
+					glPoints .emplace_back (p);
 
-				p = Vector3f (x, y, z) * radius;
-				c = getColor (M_PI - theta, groundColor (), groundAngle ());
+					++ numIndices;
 
-				glColors .push_back (c .r ());
-				glColors .push_back (c .g ());
-				glColors .push_back (c .b ());
-				glColors .push_back (opacity);
+					// p4
+					theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
+					phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
+					y     = cos (theta);
+					r     = sin (theta);
+					x     = -sin (phi) * r;
+					z     = -cos (phi) * r;
 
-				glPoints .push_back (p .x ());
-				glPoints .push_back (p .y ());
-				glPoints .push_back (p .z ());
+					p = Vector3f (x, y, z) * radius;
 
-				++ numIndices;
+					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
+					glPoints .emplace_back (p);
 
-				// p4
-				theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
-				phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
-				y     = cos (theta);
-				r     = sin (theta);
-				x     = -sin (phi) * r;
-				z     = -cos (phi) * r;
-
-				p = Vector3f (x, y, z) * radius;
-
-				glColors .push_back (c .r ());
-				glColors .push_back (c .g ());
-				glColors .push_back (c .b ());
-				glColors .push_back (opacity);
-
-				glPoints .push_back (p .x ());
-				glPoints .push_back (p .y ());
-				glPoints .push_back (p .z ());
-
-				++ numIndices;
+					++ numIndices;
+				}
 			}
 		}
 	}
@@ -358,9 +365,9 @@ X3DBackgroundNode::traverse (TraverseType type)
 		case TraverseType::COLLECT:
 		{
 			getCurrentLayer () -> getBackgrounds () .push_back (this);
-			
+
 			matrix = ModelViewMatrix4f ();
-			
+
 			break;
 		}
 		default:
@@ -393,6 +400,9 @@ X3DBackgroundNode::draw ()
 
 		getCurrentViewpoint () -> reshape (1, 20000);
 
+		glLoadIdentity ();
+		glRotatef (math::degree (angle), x, y, z);
+
 		//
 
 		glDisable (GL_DEPTH_TEST);
@@ -407,14 +417,11 @@ X3DBackgroundNode::draw ()
 
 		glFrontFace (GL_CW);
 
-		glLoadIdentity ();
-		glRotatef (math::degree (angle), x, y, z);
-
 		glEnableClientState (GL_COLOR_ARRAY);
-		glColorPointer (4, GL_FLOAT, 0, &glColors [0]);
+		glColorPointer (4, GL_FLOAT, 0, glColors .data ());
 
 		glEnableClientState (GL_VERTEX_ARRAY);
-		glVertexPointer (3, GL_FLOAT, 0, &glPoints [0]);
+		glVertexPointer (3, GL_FLOAT, 0, glPoints .data ());
 
 		glDrawArrays (GL_QUADS, 0, numIndices);
 

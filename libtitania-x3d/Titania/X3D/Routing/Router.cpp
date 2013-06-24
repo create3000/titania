@@ -73,6 +73,22 @@ Router::processEvents ()
 
 		eventsProcessed ();
 	}
+
+// std::vector is probaly faster
+//
+//	while (events .size ())
+//	{
+//		do
+//		{
+//			for (auto & event : EventList (std::move (events)))
+//			{
+//				event .first -> processEvent (event .second);
+//			}
+//		}
+//		while (events .size ());
+//
+//		eventsProcessed ();
+//	}
 }
 
 void

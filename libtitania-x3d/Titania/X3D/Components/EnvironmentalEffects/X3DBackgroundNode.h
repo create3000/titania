@@ -148,10 +148,10 @@ private:
 
 	Fields fields;
 
-	Matrix4d              matrix;
-	std::vector <GLfloat> glColors;
-	std::vector <GLfloat> glPoints;
-	GLsizei               numIndices;
+	Matrix4d               matrix;
+	std::vector <Color4f>  glColors;
+	std::vector <Vector3f> glPoints;
+	GLsizei                numIndices;
 
 };
 
