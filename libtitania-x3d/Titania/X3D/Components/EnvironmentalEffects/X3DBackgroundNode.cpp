@@ -208,6 +208,9 @@ X3DBackgroundNode::build ()
 			MFFloat angle = skyAngle ();
 			angle .emplace_front (0);
 			angle .emplace_back (M_PI / 2);
+
+			if (groundColor () .size () <= groundAngle () .size ())
+				angle .emplace_back (M_PI);
 		
 			for (size_t v = 0; v < angle .size () - 1; ++ v)
 			{
