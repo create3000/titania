@@ -392,7 +392,7 @@ X3DBackgroundNode::draw ()
 	GLint polygonMode [2] = { 0, 0 }; // Front and back value.
 	glGetIntegerv (GL_POLYGON_MODE, polygonMode);
 
-	// glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+	glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 	{
 		Vector3d   translation;
 		Rotation4f rotation;
