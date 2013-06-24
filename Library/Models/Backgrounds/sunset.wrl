@@ -4,8 +4,8 @@ Background {
   skyAngle [
     0.8,
     1.2,
-    1.56,
-    1.565,
+    1.5,
+    1.55,
     1.5708
   ]
   skyColor [

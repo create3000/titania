@@ -205,9 +205,11 @@ X3DBackgroundNode::build ()
 
 		if (skyColor () .size () > skyAngle () .size ())
 		{
-			float vmax = groundColor () .size () > groundAngle () .size () ? (SPHERE_VSEG / 2) - 1 : SPHERE_VSEG - 1;
-
-			for (int v = 0; v < vmax; ++ v)
+			MFFloat angle = skyAngle ();
+			angle .emplace_front (0);
+			angle .emplace_back (M_PI / 2);
+		
+			for (size_t v = 0; v < angle .size () - 1; ++ v)
 			{
 				for (int u = 0; u < SPHERE_USEG - 1; ++ u)
 				{
@@ -216,7 +218,7 @@ X3DBackgroundNode::build ()
 					Color3f  c;
 
 					// p1
-					theta = M_PI * (v / (SPHERE_VSEG - 1));
+					theta = angle [v];
 					phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
@@ -232,7 +234,6 @@ X3DBackgroundNode::build ()
 					++ numIndices;
 
 					// p2
-					theta = M_PI * (v / (SPHERE_VSEG - 1));
 					phi   = PI2 * (u / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
@@ -247,7 +248,7 @@ X3DBackgroundNode::build ()
 					++ numIndices;
 
 					// p3
-					theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
+					theta = angle [v + 1];
 					phi   = PI2 * (u / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
@@ -263,7 +264,6 @@ X3DBackgroundNode::build ()
 					++ numIndices;
 
 					// p4
-					theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
 					phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
@@ -282,7 +282,15 @@ X3DBackgroundNode::build ()
 
 		if (groundColor () .size () > groundAngle () .size ())
 		{
-			for (int v = SPHERE_VSEG / 2; v < SPHERE_VSEG - 1; ++ v)
+			MFFloat angle;
+			angle .assign (groundAngle () .rbegin (), groundAngle () .rend ());
+			angle .emplace_front (M_PI / 2);
+			angle .emplace_back (0);
+			
+			__LOG__ << groundAngle () .size () << std::endl;
+			__LOG__ << angle .size () << std::endl;
+
+			for (size_t v = 0; v < angle .size () - 1; ++ v)
 			{
 				for (int u = 0; u < SPHERE_USEG - 1; ++ u)
 				{
@@ -291,7 +299,7 @@ X3DBackgroundNode::build ()
 					Color3f  c;
 
 					// p1
-					theta = M_PI * (v / (SPHERE_VSEG - 1));
+					theta = M_PI - angle [v];
 					phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
@@ -299,7 +307,7 @@ X3DBackgroundNode::build ()
 					z     = -cos (phi) * r;
 
 					p = Vector3f (x, y, z) * radius;
-					c = getColor (M_PI - theta, groundColor (), groundAngle ());
+					c = getColor (angle [v], groundColor (), groundAngle ());
 
 					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
 					glPoints .emplace_back (p);
@@ -307,7 +315,6 @@ X3DBackgroundNode::build ()
 					++ numIndices;
 
 					// p2
-					theta = M_PI * (v / (SPHERE_VSEG - 1));
 					phi   = PI2 * (u / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
@@ -322,7 +329,7 @@ X3DBackgroundNode::build ()
 					++ numIndices;
 
 					// p3
-					theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
+					theta = M_PI - angle [v + 1];
 					phi   = PI2 * (u / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
@@ -330,7 +337,7 @@ X3DBackgroundNode::build ()
 					z     = -cos (phi) * r;
 
 					p = Vector3f (x, y, z) * radius;
-					c = getColor (M_PI - theta, groundColor (), groundAngle ());
+					c = getColor (angle [v + 1], groundColor (), groundAngle ());
 
 					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
 					glPoints .emplace_back (p);
@@ -338,7 +345,6 @@ X3DBackgroundNode::build ()
 					++ numIndices;
 
 					// p4
-					theta = M_PI * ((v + 1) / (SPHERE_VSEG - 1));
 					phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
@@ -386,7 +392,7 @@ X3DBackgroundNode::draw ()
 	GLint polygonMode [2] = { 0, 0 }; // Front and back value.
 	glGetIntegerv (GL_POLYGON_MODE, polygonMode);
 
-	glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+	// glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 	{
 		Vector3d   translation;
 		Rotation4f rotation;
