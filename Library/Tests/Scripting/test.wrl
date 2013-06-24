@@ -61,4 +61,8 @@ function set_children (value, time)
   }
 }
 
-Test { children [ Particle { enabled FALSE } ] }
+Test {
+  children Particle {
+    enabled FALSE
+  }
+}

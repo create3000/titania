@@ -407,7 +407,7 @@ RenderingProperties::update ()
 	stringstream .str ("");
 	string .emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Frame Rate:                " << std::setprecision (1) << std::fixed << 1 / clock .average () << " fps";
+	stringstream .str (""); stringstream << "Frame Rate:                " << std::setprecision (1) << std::fixed << fps () << " fps";
 	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Display:                   " << std::setprecision (2) << std::fixed << renderClock .average () / clock .average () * 100 << " %";

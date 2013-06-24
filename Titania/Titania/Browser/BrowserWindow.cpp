@@ -57,7 +57,7 @@ BrowserWindow::BrowserWindow (const basic::uri & worldURL) :
 	X3DBrowserWindow (worldURL),    
 	motionBlurEditor (getBrowser ()), 
 	 viewpointEditor (getBrowser ()), 
-	   historyEditor (getBrowser ()), 
+	   historyEditor (this), 
 	   outlineEditor (getBrowser ())  
 { }
 

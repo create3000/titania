@@ -127,7 +127,11 @@ private:
 	void
 	setTransparent (bool);
 
-	double loadTime;
+	bool
+	statistics ();
+
+	double           loadTime;
+	sigc::connection timeout;
 
 };
 

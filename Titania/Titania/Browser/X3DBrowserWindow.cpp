@@ -62,7 +62,7 @@ namespace titania {
 namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (const basic::uri & worldURL) :
-	 X3DBrowserWindowUI (get_ui ("BrowserWindow.ui"), gconf_dir ())                                                                                        
+	 X3DBrowserWindowUI (get_ui ("BrowserWindow.ui"), gconf_dir ())
 {
 	if (worldURL .size ())
 		getConfig () .setItem ("worldURL", worldURL);
@@ -322,11 +322,32 @@ X3DBrowserWindow::close ()
 void
 X3DBrowserWindow::set_world ()
 {
-	std::clog << "Load Time: " << chrono::now () - loadTime << std::endl;
+	loadTime = chrono::now () - loadTime;
+
+	timeout .disconnect ();
+	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWindow::statistics), 5 * 1000);
 
 	loadIcon ();
 }
 
+bool
+X3DBrowserWindow::statistics ()
+{
+	std::string title = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	
+	try
+	{
+		title = getBrowser () -> getExecutionContext () -> getMetaData ("title");
+		std::clog << "Statistics for: " << title << std::endl;
+	}
+	catch (...)
+	{ }
+
+	std::clog << "Load Time: " << loadTime << std::endl;
+	std::clog << "FPS: " << getBrowser () -> getRenderingProperties () -> fps () << std::endl;
+	
+	return false;
+}
 
 void
 X3DBrowserWindow::set_console ()
@@ -339,7 +360,6 @@ X3DBrowserWindow::set_console ()
 	buffer -> move_mark (buffer -> get_insert (), buffer -> end ());
 
 	getConsole () .scroll_to (buffer -> get_insert ());
-	//getConsole () .queue_draw ();
 }
 
 void

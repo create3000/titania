@@ -10,8 +10,8 @@ sub find {
 
 	while (<>)
 	{
-		print $_;
-		$name = $1, last if $_ =~ /^Rendering statistics for: (.*)$/;
+		print $_; $| = 1;
+		$name = $1, last if $_ =~ /^Statistics for: (.*)$/;
 	}
 
 	save ($name) if $name;
@@ -23,7 +23,9 @@ sub save {
 	say "Saving statistics for: ", $name;
 
 	# Load Time
-	my $line = <>;	$line =~ m/Load Time:\s*([\d.]+)/; my $value = $1;
+	my $line = <>;
+	print $line;
+	$line =~ m/Load Time:\s*([\d.]+)/; my $value = $1;
 	return unless $value;
 	my $message = "id=d1880b304f26c14a40be0fc0cd3273d76aa6634c"
 		. "&" . "name=$name (Load Time)"
@@ -32,51 +34,13 @@ sub save {
 	#say $message;
 	get "http://library.modulejs.org/module/Test/Benchmark/store.php?$message";
 
-	# App FPS
-	my $line = <>;	$line =~ m/\(([\d.]+)\)/; my $value = $1;
+	# FPS
+	my $line = <>;
+	print $line;
+	$line =~ m/FPS:\s*([\d.]+)/; my $value = $1;
 	return unless $value;
 	my $message = "id=d1880b304f26c14a40be0fc0cd3273d76aa6634c"
-		. "&" . "name=$name (Application FPS)"
-		. "&" . "durations[]=$value"
-	;
-	#say $message;
-	get "http://library.modulejs.org/module/Test/Benchmark/store.php?$message";
-
-	# Render FPS
-	my $line = <>;	$line =~ m/\(([\d.]+)\)/; my $value = $1;
-	return unless $value;
-	my $message = "id=d1880b304f26c14a40be0fc0cd3273d76aa6634c"
-		. "&" . "name=$name (Renderer FPS)"
-		. "&" . "durations[]=$value"
-	;
-	#say $message;
-	get "http://library.modulejs.org/module/Test/Benchmark/store.php?$message";
-
-	# Event Time
-	my $line = <>;	$line =~ m/\(([\d.]+)\)/; my $value = $1;
-	return unless $value;
-	my $message = "id=d1880b304f26c14a40be0fc0cd3273d76aa6634c"
-		. "&" . "name=$name (Event Time)"
-		. "&" . "durations[]=$value"
-	;
-	#say $message;
-	get "http://library.modulejs.org/module/Test/Benchmark/store.php?$message";
-
-	# Traverse Time
-	my $line = <>;	$line =~ m/\(([\d.]+)\)/; my $value = $1;
-	return unless $value;
-	my $message = "id=d1880b304f26c14a40be0fc0cd3273d76aa6634c"
-		. "&" . "name=$name (Traverse Time)"
-		. "&" . "durations[]=$value"
-	;
-	#say $message;
-	get "http://library.modulejs.org/module/Test/Benchmark/store.php?$message";
-
-	# Draw Time
-	my $line = <>;	$line =~ m/\(([\d.]+)\)/; my $value = $1;
-	return unless $value;
-	my $message = "id=d1880b304f26c14a40be0fc0cd3273d76aa6634c"
-		. "&" . "name=$name (Draw Time)"
+		. "&" . "name=$name (FPS)"
 		. "&" . "durations[]=$value"
 	;
 	#say $message;

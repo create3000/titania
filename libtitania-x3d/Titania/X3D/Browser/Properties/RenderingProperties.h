@@ -169,6 +169,10 @@ public:
 	textureMemory () const
 	{ return *fields .textureMemory; }
 
+	double
+	fps () const
+	{ return 1 / clock .average (); }
+
 	bool
 	hasExtension (const std::string &);
 

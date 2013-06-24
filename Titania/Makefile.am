@@ -58,5 +58,5 @@ AM_CPPFLAGS = $(TITANIA_CFLAGS) \
 	
 run:
 	env XDG_DATA_DIRS="/home/holger/Projekte/Titania/Titania/share:/home/holger/Projekte/Titania/libtitania-x3d/share:"${XDG_DATA_DIRS} \
-	$(builddir)/$(bin_PROGRAMS)
+	$(builddir)/$(bin_PROGRAMS) 2>&1 | $(builddir)/../miscellaneous/benchmarks/save.pl
 

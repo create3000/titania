@@ -1,5 +1,10 @@
 2013-06-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* RenderingProperties.h:
+	* RenderingProperties.cpp: 
+
+2013-06-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* Router.h:
 	* Console.h:

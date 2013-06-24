@@ -1,5 +1,14 @@
 2013-06-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* BrowserWindow.cpp:
+	* X3DBrowserWindow.h:
+	* X3DBrowserWindow.cpp:
+	* HistoryEditor.h:
+	* HistoryEditor.cpp: 
+
+2013-06-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* HistoryEditor.ui: 
 
 2013-06-20  Holger Seelig  <holger.seelig@yahoo.de>

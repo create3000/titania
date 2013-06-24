@@ -50,6 +50,7 @@
 
 #include "HistoryEditor.h"
 
+#include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
 #include <Titania/OS.h>
 #include <iostream>
@@ -61,11 +62,12 @@ static constexpr int ICON_COLUMN      = 0;
 static constexpr int TITLE_COLUMN     = 1;
 static constexpr int WORLD_URL_COLUMN = 2;
 
-HistoryEditor::HistoryEditor (const X3D::SFNode <X3D::Browser> & browser) :
-	X3DHistoryEditorUI (get_ui ("HistoryEditor.ui"), gconf_dir ()), 
+HistoryEditor::HistoryEditor (BrowserWindow* browserWindow) :
+	X3DHistoryEditorUI (get_ui ("HistoryEditor.ui"), gconf_dir ()),
+	     browserWindow (browserWindow),
 	           history ()                                           
 {
-	setBrowser (browser);
+	setBrowser (browserWindow -> getBrowser ());
 
 	os::system ("mkdir", "-p", config_dir ());
 }
@@ -142,12 +144,7 @@ HistoryEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 {
 	// Open worldURL.
 
-	try
-	{
-		getBrowser () -> loadURL ({ history .getItemFromIndex (path .to_string ()) .at ("worldURL") });
-	}
-	catch (const X3D::X3DError &)
-	{ }
+	browserWindow -> open ({ history .getItemFromIndex (path .to_string ()) .at ("worldURL") });
 }
 
 HistoryEditor::~HistoryEditor ()

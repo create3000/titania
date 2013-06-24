@@ -59,14 +59,14 @@
 namespace titania {
 namespace puck {
 
-class X3DBrowserWindow;
+class BrowserWindow;
 
 class HistoryEditor :
 	public X3DHistoryEditorUI
 {
 public:
 
-	HistoryEditor (const X3D::SFNode <X3D::Browser> &);
+	HistoryEditor (BrowserWindow*);
 
 	virtual
 	~HistoryEditor ();
@@ -91,6 +91,7 @@ private:
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
 
+	BrowserWindow* browserWindow;
 	History history;
 
 };
