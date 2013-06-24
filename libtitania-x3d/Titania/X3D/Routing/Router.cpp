@@ -50,15 +50,12 @@
 
 #include "Router.h"
 
-#include <glibmm/thread.h>
-
 namespace titania {
 namespace X3D {
 
 Router::Router () :
-	X3DOutput (),  
-	   events (), 
-	    nodes ()  
+	events (), 
+	 nodes ()  
 { }
 
 void
@@ -66,28 +63,23 @@ Router::processEvents ()
 {
 	while (events .size ())
 	{
-		do
+		for (auto & event : events)
 		{
-			for (auto & node : EventArray (std::move (events)))
-			{
-				node -> processEvents ();
-			}
+			// __LOG__ << event .first << std::endl;
+			event .first -> processEvent (event .second);
 		}
-		while (events .size ());
+
+		events .clear ();
 
 		eventsProcessed ();
 	}
-
-	processInterests ();
 }
-
-//}
 
 void
 Router::eventsProcessed ()
 {
-	for (const auto & node : NodeSet (std::move (nodes)))
-		node -> eventsProcessed ();
+	for (const auto & node : NodeList (std::move (nodes)))
+		node -> processEvents ();
 }
 
 } // X3D

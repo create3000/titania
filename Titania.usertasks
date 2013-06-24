@@ -12,4 +12,5 @@
   <Task file="" description="add disposed output to input" />
   <Task file="" description="FieldDefinitionArray als X3DArrayField &lt;X3DFieldDefinition*&gt; machen" />
   <Task file="" description="proto externproto route executioncontext und scene vergleichen nicht in JavaScript" />
+  <Task file="" description="X3DBackground optimieren" />
 </ListOfTask>

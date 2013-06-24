@@ -1,3 +1,26 @@
+2013-06-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* Router.h:
+	* Console.h:
+	* Parser.cpp:
+	* NodeList.h:
+	* Router.cpp:
+	* World.cpp:
+	* X3DBaseNode.h:
+	* Console.cpp:
+	* EventList.h:
+	* X3DBrowser.h:
+	* X3DBaseNode.cpp:
+	* X3DArrayField.h:
+	* X3DScene.cpp:
+	* X3DBrowser.cpp:
+	* X3DArrayFieldIterator.h:
+	* X3DBrowserContext.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DJavaScriptContext.h:
+	* X3DViewpointNode.cpp: 
+
 2013-06-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Router.h:

@@ -119,6 +119,8 @@ X3DBrowser::initialize ()
 
 	       renderingProperties, '\n',
 	       javaScriptEngine, '\n',
+	       
+	       "\tId: ", this, '\n',
 
 	       std::string (80, '*'), '\n',
 	       std::string (80, '*'), '\n',

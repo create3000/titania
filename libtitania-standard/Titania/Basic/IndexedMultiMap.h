@@ -52,6 +52,7 @@
 #define __TITANIA_BASIC_INDEXED_MULTI_MAP_H__
 
 #include "../Algorithm/Remove.h"
+#include "../Basic/ReferenceIterator.h"
 
 #include <deque>
 #include <map>
@@ -65,133 +66,155 @@ class indexed_multimap
 {
 public:
 
-	typedef Key       key_type;
-	typedef ValueType value_type;
-	typedef size_t    size_type;
+	typedef Key        key_type;
+	typedef ValueType  value_type;
+	typedef ValueType* pointer_type;
+	typedef size_t     size_type;
 
-	typedef std::deque <ValueType>         array_type;
-	typedef std::multimap <Key, ValueType> map_type;
+	typedef std::deque <pointer_type>         array_type;
+	typedef std::multimap <Key, pointer_type> map_type;
 
-	typedef typename array_type::iterator       array_iterator;
-	typedef typename array_type::const_iterator array_const_iterator;
-
-	typedef typename map_type::iterator       map_iterator;
-	typedef typename map_type::const_iterator map_const_iterator;
+	typedef reference_iterator <typename array_type::iterator, ValueType>                     iterator;
+	typedef reference_iterator <typename array_type::reverse_iterator, ValueType>             reverse_iterator;
+	typedef reference_iterator <typename array_type::const_iterator, const ValueType>         const_iterator;
+	typedef reference_iterator <typename array_type::const_reverse_iterator, const ValueType> const_reverse_iterator;
 
 	/// @name Constructors
 
-	///  Default constructor.
+	///  Default constructor
 	indexed_multimap () :
 		array (),
 		map ()
 	{ }
 
-	///  Copy constructor.
+	///  Copy constructor
 	indexed_multimap (const indexed_multimap & value) :
-		array (value .array),
-		map (value .map)
-	{ }
-
-	///  Move constructor.
+		array (),
+		map ()
+	{
+		for (const auto & pair : map)
+			push_back (pair .first, *pair .second);
+	}
+	
+	///  Move constructor
 	indexed_multimap (indexed_multimap && value) :
 		array (std::move (value .array)),
 		map (std::move (value .map))
 	{ }
 
+	///  Assignment operator
+	indexed_multimap &
+	operator = (const indexed_multimap & value)
+	{
+		clear ();
+		
+		for (const auto & pair : map)
+			push_back (pair .first, *pair .second);
+		
+		return *this;
+	}
+
+	indexed_multimap &
+	operator = (indexed_multimap && value)
+	{
+		clear ();
+		
+		array = std::move (value .array);
+		map   = std::move (value .map);
+		
+		return *this;
+	}
+
 	/// @name Element access
 
-	//@{
 	value_type &
-	front () { return array .front (); }
+	front ()
+	{ return *array .front (); }
 
 	const value_type &
-	front () const { return array .front (); }
-	//@}
+	front () const
+	{ return *array .front (); }
 
-	//@{
 	value_type &
-	back () { return array .back (); }
+	back ()
+	{ return *array .back (); }
 
 	const value_type &
-	back () const { return array .back (); }
-	//@}
+	back () const
+	{ return *array .back (); }
 
-	//@{
 	const value_type &
-	at (const size_type & index) const { return array .at (index); }
+	at (const size_type & index) const
+	{ return *array .at (index); }
 
 	const value_type &
 	find (const key_type &) const;
 
 	const value_type &
 	rfind (const key_type &) const;
-	//@}
 
-	//@{
 	const value_type &
 	operator [ ] (const size_type & index) const
-	{ return array [index]; }
-	//@}
+	{ return *array [index]; }
 
 	/// @name Lookup
 
-	//@{
 	size_type
-	count (const key_type & key) const { return map .count (key); }
-	//@}
+	count (const key_type & key) const
+	{ return map .count (key); }
 
 	/// @name Iterators
 
-	//@{
-	array_iterator
-	begin () { return array .begin (); }
+	iterator
+	begin ()
+	{ return iterator (array .begin ()); }
 
-	array_const_iterator
-	begin () const { return array .cbegin (); }
+	const_iterator
+	begin () const
+	{ return const_iterator (array .cbegin ()); }
 
-	array_const_iterator
-	cbegin () const { return array .cbegin (); }
-	//@}
+	const_iterator
+	cbegin () const
+	{ return const_iterator (array .cbegin ()); }
 
-	//@{
-	array_iterator
-	end () { return array .end (); }
+	iterator
+	end ()
+	{ return iterator (array .end ()); }
 
-	array_const_iterator
-	end () const { return array .cend (); }
+	const_iterator
+	end () const
+	{ return const_iterator (array .cend ()); }
 
-	array_const_iterator
-	cend () const { return array .cend (); }
-	//@}
+	const_iterator
+	cend () const
+	{ return const_iterator (array .cend ()); }
 
 	/// @name Capacity
 
-	//@{
 	bool
-	empty () const { return array .empty (); }
+	empty () const
+	{ return array .empty (); }
 
 	size_type
-	size () const { return array .size (); }
+	size () const
+	{ return array .size (); }
 
 	size_type
-	max_size () const { return array .max_size (); }
-	//@}
+	max_size () const
+	{ return array .max_size (); }
 
 	/// @name Modifiers
 
-	//@{
-	ValueType &
+	void
 	push_back (const key_type &, const value_type &);
-
-	ValueType &
-	replace (const key_type &, const key_type &, const value_type &);
 
 	bool
 	erase (const key_type &);
 
 	void
 	clear ();
-	//@}
+	
+	~indexed_multimap ();
 
 
 private:
@@ -208,7 +231,7 @@ indexed_multimap <Key, ValueType>::find (const key_type &key) const
 	const auto range = map .equal_range (key);
 
 	if (range .first not_eq range .second)
-		return range .first -> second;
+		return *range .first -> second;
 
 	throw std::out_of_range ("indexed_multimap::first");
 }
@@ -220,25 +243,20 @@ indexed_multimap <Key, ValueType>::rfind (const key_type &key) const
 	auto range = map .equal_range (key);
 
 	if (range .first not_eq range .second)
-		return (-- range .second) -> second;
+		return *(-- range .second) -> second;
 
 	throw std::out_of_range ("indexed_multimap::last");
 }
 
 template <class Key, class ValueType>
-ValueType &
+void
 indexed_multimap <Key, ValueType>::push_back (const key_type & key, const value_type & value)
 {
-	array .emplace_back (value);
-	return map .insert (std::make_pair (key, value)) -> second;
-}
+	pointer_type element = new value_type (value);
+	
+	array .emplace_back (element);
 
-template <class Key, class ValueType>
-ValueType &
-indexed_multimap <Key, ValueType>::replace (const key_type & currentKey, const key_type & key, const value_type & value)
-{
-	erase (currentKey);
-	return push_back (key, value);
+	map .insert (std::make_pair (key, element)) -> second;
 }
 
 template <class Key, class ValueType>
@@ -251,6 +269,11 @@ indexed_multimap <Key, ValueType>::erase (const key_type & key)
 
 	if (equal_range .first not_eq equal_range .second)
 	{
+		// delete elements
+
+		for (const auto & pair : basic::adapter (equal_range .first, equal_range .second))
+			delete pair .second;
+
 		// remove range from array
 
 		const auto new_end = basic::remove (array .begin (), array .end (),
@@ -271,8 +294,17 @@ template <class Key, class ValueType>
 void
 indexed_multimap <Key, ValueType>::clear ()
 {
+	for (const auto & element : array)
+		delete element;
+
 	array .clear ();
 	map   .clear ();
+}
+
+template <class Key, class ValueType>
+indexed_multimap <Key, ValueType>::~indexed_multimap ()
+{
+	clear ();
 }
 
 } // basic

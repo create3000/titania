@@ -131,16 +131,16 @@ Parser::getMessageFromError (const X3DError & error)
 	
 	stringstream
 		<< std::string (80, '*') << std::endl
-		<< "Parser error at - line " << lineNumber << ':' << linePos << std::endl
+		<< "Parser error at line " << lineNumber << ':' << linePos + 1 << std::endl
+		<< "in '" << scene -> getWorldURL () << '\'' << std::endl
 		<< std::endl
 		<< preLine << std::endl
 		<< line << std::endl
 		<< std::string (linePos, ' ') << '^' << std::endl
 		<< error .what () << std::endl
-		<< std::string (80, '*') << std::endl
-		<< "in '" << scene -> getWorldURL () << '\'' << std::endl;
+		<< std::string (80, '*') << std::endl;
 
-	std::clog << stringstream .str () << std::endl;
+	getBrowser () -> print (stringstream .str ());
 
 	return stringstream .str ();
 }
@@ -1275,14 +1275,16 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 
 	if (nodeTypeId (_nodeTypeId))
 	{
-		//__LOG__ << _nodeTypeId << std::endl;
+		// __LOG__ << _nodeTypeId << std::endl;
 
 		try
 		{
 			_node = getExecutionContext () -> createNode (_nodeTypeId);
 		}
-		catch (const Error <INVALID_NAME> &)
+		catch (const Error <INVALID_NAME> & error)
 		{
+			// __LOG__ << error .what () << std::endl;
+		
 			try
 			{
 				_node = getExecutionContext () -> createProtoInstance (_nodeTypeId) .getValue ();

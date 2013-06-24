@@ -121,13 +121,13 @@ throw (Error <NODE_IN_USE>,
 	if (not node)
 		throw Error <INVALID_NODE> ("Couldn't add exported node: node is NULL.");
 
-	SFNode <ExportedNode> & exportedNode = exportedNodes .push_back (exportedName, new ExportedNode (this, exportedName, node));
-	exportedNode .addParent (this);
+	exportedNodes .push_back (exportedName, new ExportedNode (this, exportedName, node));
+	exportedNodes .back () .isTainted (true);
 	exportedNodes .back () .addParent (this);
 	
 	exportedNames [node] = exportedName;
 
-	return exportedNode;
+	return exportedNodes .back ();
 }
 
 void

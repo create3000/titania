@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -70,6 +70,14 @@ public:
 	///  @name Fields
 
 	MFString &
+	set_string ()
+	{ return *fields .set_string; }
+
+	const MFString &
+	set_string () const
+	{ return *fields .set_string; }
+
+	MFString &
 	string_changed ()
 	{ return *fields .string_changed; }
 
@@ -80,14 +88,27 @@ public:
 
 private:
 
+	virtual
+	void
+	initialize () final;
+
+	void
+	_set_string ();
+
+	virtual
+	void
+	eventsProcessed () final;
+
 	struct Fields
 	{
 		Fields ();
 
+		MFString* const set_string;
 		MFString* const string_changed;
 	};
 
-	Fields fields;
+	Fields   fields;
+	MFString string;
 
 };
 

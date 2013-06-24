@@ -216,10 +216,7 @@ public:
 
 		print (stream, args ...);
 
-		getConsole () -> string_changed () .clear ();
-		getConsole () -> string_changed () .emplace_back (stream .str ());
-		getConsole () -> processEvents ();
-		
+		getConsole () -> set_string () .emplace_back (stream .str ());
 		std::clog << stream .str ();
 	}
 

@@ -123,7 +123,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	              fields (),                 
 	        fieldAliases (),                 
 	numUserDefinedFields (0),                
-	              events (),                 
+	              nodeId (),                 
 	            comments ()                  
 {
 	assert (executionContext);
@@ -372,9 +372,10 @@ X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3
 	{
 		removeField (name);
 
-		std::clog << "Warning: In function " << std::string (__func__) << " 'field " << getTypeName () << "." << name << "' already exists in field set'." << std::endl;
+		__LOG__ << " field " << getTypeName () << "." << name << " already exists in this node'." << std::endl;
 	}
 
+	field .isTainted (true);
 	field .addParent (this);
 	field .setAccessType (accessType);
 	field .setName (name);
@@ -530,10 +531,11 @@ X3DBaseNode::setup ()
 {
 	executionContext -> addParent (this);
 
-	removeEvents ();
-
 	if (executionContext -> isProto ())
 		return;
+
+	for (const auto & field : fieldDefinitions)
+		field -> isTainted (false);
 
 	initialize ();
 
@@ -554,45 +556,39 @@ X3DBaseNode::addEvent (X3DChildObject* object)
 void
 X3DBaseNode::addEvent (X3DChildObject* object, const Event & event)
 {
-	// __LOG__ << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << std::endl;
+	// __LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
+
+	getBrowser () -> notify ();
 
 	// Register for processEvents
 
-	if (events .empty ())
-	{
-		getBrowser () -> getRouter () .addEvent (this);
-		getBrowser () -> notify ();
-	}
+	getBrowser () -> getRouter () .addEvent (object, event);
 
 	// Register for eventsProcessed
 
 	if (object -> isInput ())
-		getBrowser () -> getRouter () .addNode (this);
-
-	// Add event
-
-	events .emplace_back (object, event);
+	{
+		if (isNotValid (nodeId))
+			nodeId = getBrowser () -> getRouter () .addNode (this);
+	}
 }
 
 void
 X3DBaseNode::processEvents ()
 {
-	for (auto & pair : EventArray (std::move (events)))
-	{
-		// __LOG__ << pair .first -> getName () << " : " << pair .first -> getTypeName () << " : " << getName () << " : " << getTypeName () << std::endl;
-		pair .first -> processEvent (pair .second);
-	}
+	reset (nodeId);
+
+	eventsProcessed ();
 }
 
 void
 X3DBaseNode::removeEvents ()
 {
-	for (auto & pair : events)
-		pair .first -> isTainted (false);
-		
-	events .clear ();
-
-	getBrowser () -> getRouter () .removeNode (this);
+	if (isValid (nodeId))
+	{
+		getBrowser () -> getRouter () .removeNode (nodeId);
+		reset (nodeId);
+	}
 }
 
 void
@@ -824,6 +820,7 @@ X3DBaseNode::dispose ()
 	X3DChildObject::dispose ();
 
 	shutdown .processInterests ();
+	initialized .dispose ();
 
 	removeEvents ();
 

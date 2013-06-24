@@ -1,0 +1,15 @@
+#VRML V2.0 utf8
+
+META "title" "Double field"
+
+PROTO Cube [
+	field SFVec3f size 1 2 3
+	field SFVec3f size 2 3 4
+]
+{
+  Box { size IS size }
+}
+
+Shape {
+  geometry Cube { }
+}

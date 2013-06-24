@@ -48,62 +48,18 @@
  *
  ******************************************************************************/
 
-#include "Console.h"
+#ifndef __TITANIA_X3D_ROUTING_EVENT_LIST_H__
+#define __TITANIA_X3D_ROUTING_EVENT_LIST_H__
 
-#include "../Browser/X3DBrowser.h"
-#include "../Execution/X3DExecutionContext.h"
+#include "../Base/X3DChildObject.h"
+#include <list>
 
 namespace titania {
 namespace X3D {
 
-Console::Fields::Fields () :
-	set_string (new MFString ()),
-	string_changed (new MFString ())
-{ }
-
-Console::Console (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DNode (),                                                    
-	     fields (),                                                    
-	     string ()                                                     
-{
-	setComponent ("Browser");
-	setTypeName ("Console");
-
-	addField (inputOutput, "metadata",       metadata ());
-	addField (inputOnly,   "set_string",     set_string ());
-	addField (outputOnly,  "string_changed", string_changed ());
-}
-
-X3DBaseNode*
-Console::create (X3DExecutionContext* const executionContext) const
-{
-	return new Console (executionContext);
-}
-
-void
-Console::initialize ()
-{
-	X3DBaseNode::initialize ();
-
-	set_string () .addInterest (this, &Console::_set_string);
-}
-
-void
-Console::_set_string ()
-{
-	string .insert (string .end (), set_string () .begin (), set_string () .end ());
-	set_string () .set ({ });
-}
-
-void
-Console::eventsProcessed ()
-{
-	X3DBaseNode::eventsProcessed ();
-
-	string_changed () = string;
-	string .clear ();
-}
+typedef std::list <std::pair <X3DChildObject*, Event>> EventList;
 
 } // X3D
 } // titania
+
+#endif

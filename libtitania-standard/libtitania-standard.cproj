@@ -113,6 +113,7 @@
     <None Include="Titania\InputOutput\Generator.h" />
     <None Include="Titania\Math\Algorithms\CatmullRomSplineInterpolator.h" />
     <None Include="Titania\Math\Algorithms\SquadInterpolator.h" />
+    <None Include="Titania\Basic\ReferenceIterator.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

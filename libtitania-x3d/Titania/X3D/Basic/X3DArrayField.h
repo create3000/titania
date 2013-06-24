@@ -51,11 +51,11 @@
 #ifndef __TITANIA_X3D_BASIC_X3DARRAY_FIELD_H__
 #define __TITANIA_X3D_BASIC_X3DARRAY_FIELD_H__
 
-#include "../Basic/X3DArrayFieldIterator.h"
 #include "../Basic/X3DField.h"
 #include "../Types/Array.h"
 
 #include <Titania/Algorithm/Remove.h>
+#include <Titania/Basic/ReferenceIterator.h>
 #include <Titania/Utility/Adapter.h>
 #include <initializer_list>
 
@@ -71,10 +71,10 @@ public:
 	typedef ValueType         scalar_type;
 	typedef Array <ValueType> value_type;
 
-	typedef X3DArrayFieldIterator <typename value_type::iterator, ValueType>                     iterator;
-	typedef X3DArrayFieldIterator <typename value_type::reverse_iterator, ValueType>             reverse_iterator;
-	typedef X3DArrayFieldIterator <typename value_type::const_iterator, const ValueType>         const_iterator;
-	typedef X3DArrayFieldIterator <typename value_type::const_reverse_iterator, const ValueType> const_reverse_iterator;
+	typedef basic::reference_iterator <typename value_type::iterator, ValueType>                     iterator;
+	typedef basic::reference_iterator <typename value_type::reverse_iterator, ValueType>             reverse_iterator;
+	typedef basic::reference_iterator <typename value_type::const_iterator, const ValueType>         const_iterator;
+	typedef basic::reference_iterator <typename value_type::const_reverse_iterator, const ValueType> const_reverse_iterator;
 
 	typedef typename value_type::difference_type difference_type;
 	typedef typename value_type::size_type       size_type;

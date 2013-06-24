@@ -82,16 +82,15 @@ World::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	layer0 -> setup ();
-	layer0 -> getBackgroundStack () .bottom () -> transparency () = 0;
-
 	layerSet -> setup ();
 	layerSet -> setLayer0 (layer0);
 
-	scene -> processEvents ();
 	scene -> getRootNodes () .addInterest (this, &World::set_rootNodes);
 	
-	set_rootNodes ();
+	set_rootNodes (); // This can happen twice when rootNodes is tainted
+
+	layer0 -> setup ();
+	layer0 -> getBackgroundStack () .bottom () -> transparency () = 0;
 }
 
 void
@@ -128,9 +127,6 @@ World::set_activeLayer ()
 void
 World::bind ()
 {
-	layer0 -> processEvents ();
-	layer0 -> getGroup () -> processEvents ();
-
 	layerSet -> traverse (TraverseType::CAMERA);
 	layerSet -> traverse (TraverseType::COLLECT);
 

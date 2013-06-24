@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,36 +51,46 @@
 #ifndef __TITANIA_X3D_ROUTING_ROUTER_H__
 #define __TITANIA_X3D_ROUTING_ROUTER_H__
 
-#include "../Base/X3DOutput.h"
 #include "../Basic/NodeSet.h"
 #include "../Basic/X3DBaseNode.h"
-#include <Titania/Chrono/StopWatch.h>
-#include <vector>
+#include "../Routing/EventList.h"
+#include "../Routing/NodeList.h"
 
 namespace titania {
 namespace X3D {
 
-class Router :
-	public X3DOutput
+class Router
 {
 public:
 
 	Router ();
 
 	void
-	addEvent (X3DBaseNode* node)
-	{ events .emplace_back (node); }
+	addEvent (X3DChildObject* object, const Event & event)
+	{ events .emplace_back (object, event); }
 
-	void
+	NodeId
 	addNode (X3DBaseNode* node)
-	{ nodes .insert (node); }
+	{
+		nodes .emplace_back (node);
+		return -- nodes .end ();
+	}
 
 	void
-	removeNode (X3DBaseNode* node)
-	{ nodes .erase (node); }
+	removeNode (const NodeId & node)
+	{
+		if (nodes .empty ())
+			return;
+
+		nodes .erase (node);
+	}
 
 	void
 	processEvents ();
+
+	size_t
+	size ()
+	{ return events .size (); }
 
 
 private:
@@ -93,10 +103,8 @@ private:
 	void
 	eventsProcessed ();
 
-	typedef std::deque <X3DBaseNode*> EventArray;
-
-	EventArray events;
-	NodeSet    nodes;
+	EventList events;
+	NodeList  nodes;
 
 };
 

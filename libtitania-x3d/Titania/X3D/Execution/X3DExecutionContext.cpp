@@ -234,39 +234,31 @@ throw (Error <INVALID_NAME>,
 
 	if (getProfile () or getComponents () .size ())
 	{
-		bool found = false;
-
 		if (getProfile ())
 		{
 			try
 			{
 				profile -> getComponents () .rfind (declaration -> getComponentName ());
 
-				found = true;
+				return declaration -> create (this);
 			}
 			catch (const std::out_of_range &)
 			{ }
 		}
 
-		if (not found)
+		try
 		{
-			try
-			{
-				components .rfind (declaration -> getComponentName ());
+			components .rfind (declaration -> getComponentName ());
 
-				found = true;
-			}
-			catch (const std::out_of_range &)
-			{ }
+			return declaration -> create (this);
 		}
+		catch (const std::out_of_range &)
+		{ }
 
-		if (not found)
-			throw Error <INVALID_NAME> ("Node type '" + name + "' not supported by profile or component specification.");
+		throw Error <INVALID_NAME> ("Node type '" + name + "' not supported by profile or component specification.");
 	}
 
-	SFNode <X3DBaseNode> node = declaration -> create (this);
-
-	return node;
+	return declaration -> create (this);
 }
 
 SFNode <X3DPrototypeInstance>
@@ -370,6 +362,7 @@ throw (Error <IMPORTED_NODE>,
 		namedNodes .erase (node -> getName ());
 
 		namedNodes [name] = node;
+		namedNodes [name] .isTainted (true);
 		namedNodes [name] .addParent (this);
 
 		node -> setName (name);
@@ -387,7 +380,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (namedNode not_eq namedNodes .end ())
 	{
-		namedNode -> second .setNodeName ("");
+		namedNode -> second -> setName ("");
 
 		namedNodes .erase (namedNode);
 	}
@@ -434,13 +427,13 @@ throw (Error <INVALID_NODE>,
 	}
 	catch (const std::out_of_range &)
 	{
-		SFNode <ImportedNode> & importedNode = importedNodes .push_back (importedName, new ImportedNode (this, inlineNode, exportedName, importedName));
-		importedNode .addParent (this);
+		importedNodes .push_back (importedName, new ImportedNode (this, inlineNode, exportedName, importedName));
+		importedNodes .back () .isTainted (true);
 		importedNodes .back () .addParent (this);
 
 		importedNames [inlineNode -> getExportedNode (exportedName)] = importedName;
 
-		return importedNode;
+		return importedNodes .back ();
 	}
 }
 
@@ -518,9 +511,8 @@ X3DExecutionContext::addProtoDeclaration (const std::string & name, const FieldD
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	auto & proto = protos .push_back (name, createProtoDeclaration (name, interfaceDeclarations));
-
-	proto .addParent (this);
+	protos .push_back (name, createProtoDeclaration (name, interfaceDeclarations));
+	protos .back () .isTainted (true);
 	protos .back () .addParent (this);
 
 	return protos .back ();
@@ -539,12 +531,12 @@ X3DExecutionContext::updateProtoDeclaration (const std::string & name, const SFN
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	auto & proto = protos .replace (protoDeclaration .getNodeName (), name, protoDeclaration);
-
-	proto .addParent (this);
+	protos .erase (protoDeclaration -> getName ());
+	protos .push_back (name, protoDeclaration);
+	protos .back () .isTainted (true);
 	protos .back () .addParent (this);
 
-	proto .setNodeName (name);
+	protoDeclaration -> setName (name);
 }
 
 const SFNode <Proto> &
@@ -568,7 +560,7 @@ X3DExecutionContext::createProtoDeclaration (const std::string & name, const Fie
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	Proto* proto = new Proto (this);
+	SFNode <Proto> proto = new Proto (this);
 
 	proto -> setName (name);
 
@@ -591,9 +583,8 @@ X3DExecutionContext::addExternProtoDeclaration (const std::string & name, const 
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	auto & externProto = externProtos .push_back (name, createExternProtoDeclaration (name, externInterfaceDeclarations, URLList));
-
-	externProto .addParent (this);
+	externProtos .push_back (name, createExternProtoDeclaration (name, externInterfaceDeclarations, URLList));
+	externProtos .back () .isTainted (true);
 	externProtos .back () .addParent (this);
 
 	return externProtos .back ();
@@ -612,12 +603,12 @@ X3DExecutionContext::updateExternProtoDeclaration (const std::string & name, con
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	auto & externProto = externProtos .replace (externProtoDeclaration .getNodeName (), name, externProtoDeclaration);
-
-	externProto .addParent (this);
+	externProtos .erase (externProtoDeclaration -> getName ());
+	externProtos .push_back (name, externProtoDeclaration);
+	externProtos .back () .isTainted (true);
 	externProtos .back () .addParent (this);
 
-	externProto .setNodeName (name);
+	externProtoDeclaration -> setName (name);
 }
 
 const
@@ -643,7 +634,7 @@ X3DExecutionContext::createExternProtoDeclaration (const std::string & name, con
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	ExternProto* externProto = new ExternProto (this);
+	SFNode <ExternProto> externProto = new ExternProto (this);
 
 	externProto -> setName (name);
 
@@ -683,10 +674,10 @@ throw (Error <INVALID_NODE>,
 	{
 		// Add route.
 
-		auto & route = routes .push_back (fields, new Route (this, sourceNode, fields .first, destinationNode, fields .second));
-
-		route .addParent (this);
+		routes .push_back (fields, new Route (this, sourceNode, fields .first, destinationNode, fields .second));
+		routes .back () .isTainted (true);
 		routes .back () .addParent (this);
+
 		return routes .back ();
 	}
 }

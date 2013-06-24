@@ -48,62 +48,43 @@
  *
  ******************************************************************************/
 
-#include "Console.h"
+#ifndef __TITANIA_X3D_ROUTING_NODE_LIST_H__
+#define __TITANIA_X3D_ROUTING_NODE_LIST_H__
 
-#include "../Browser/X3DBrowser.h"
-#include "../Execution/X3DExecutionContext.h"
+#include <list>
 
 namespace titania {
 namespace X3D {
 
-Console::Fields::Fields () :
-	set_string (new MFString ()),
-	string_changed (new MFString ())
-{ }
+class X3DBaseNode;
 
-Console::Console (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DNode (),                                                    
-	     fields (),                                                    
-	     string ()                                                     
+typedef std::list <X3DBaseNode*> NodeList;
+typedef NodeList::iterator       NodeId;
+
+static const NodeId NODE_ID_NULL;
+
+inline
+bool
+isValid (const NodeId & nodeId)
 {
-	setComponent ("Browser");
-	setTypeName ("Console");
-
-	addField (inputOutput, "metadata",       metadata ());
-	addField (inputOnly,   "set_string",     set_string ());
-	addField (outputOnly,  "string_changed", string_changed ());
+	return nodeId not_eq NODE_ID_NULL;
 }
 
-X3DBaseNode*
-Console::create (X3DExecutionContext* const executionContext) const
+inline
+bool
+isNotValid (const NodeId & nodeId)
 {
-	return new Console (executionContext);
+	return nodeId == NODE_ID_NULL;
 }
 
+inline
 void
-Console::initialize ()
+reset (NodeId & nodeId)
 {
-	X3DBaseNode::initialize ();
-
-	set_string () .addInterest (this, &Console::_set_string);
-}
-
-void
-Console::_set_string ()
-{
-	string .insert (string .end (), set_string () .begin (), set_string () .end ());
-	set_string () .set ({ });
-}
-
-void
-Console::eventsProcessed ()
-{
-	X3DBaseNode::eventsProcessed ();
-
-	string_changed () = string;
-	string .clear ();
+	nodeId = NODE_ID_NULL;
 }
 
 } // X3D
 } // titania
+
+#endif

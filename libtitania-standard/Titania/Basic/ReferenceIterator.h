@@ -48,16 +48,16 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASIC_X3DARRAY_FIELD_ITERATOR_H__
-#define __TITANIA_X3D_BASIC_X3DARRAY_FIELD_ITERATOR_H__
+#ifndef __TITANIA_BASIC_REFERENCE_ITERATOR_H__
+#define __TITANIA_BASIC_REFERENCE_ITERATOR_H__
 
 #include <cstddef>
 
 namespace titania {
-namespace X3D {
+namespace basic {
 
 template <class IteratorType, class Type>
-class X3DArrayFieldIterator
+class reference_iterator
 {
 public:
 
@@ -73,16 +73,16 @@ public:
 	typedef size_t difference_type;
 
 	explicit
-	X3DArrayFieldIterator (const IteratorType & iter) :
+	reference_iterator (const IteratorType & iter) :
 		iter (iter)
 	{ }
 
-	X3DArrayFieldIterator (const X3DArrayFieldIterator & value) :
+	reference_iterator (const reference_iterator & value) :
 		iter (value .iter)
 	{ }
 
-	X3DArrayFieldIterator &
-	operator = (const X3DArrayFieldIterator & value)
+	reference_iterator &
+	operator = (const reference_iterator & value)
 	{
 		iter = value .iter;
 		return *this;
@@ -100,46 +100,46 @@ public:
 	operator -> ()
 	{ return *iter; }
 
-	X3DArrayFieldIterator &
+	reference_iterator &
 	operator ++ ()
 	{
 		++ iter;
 		return *this;
 	}
 
-	X3DArrayFieldIterator
+	reference_iterator
 	operator ++ (int)
 	{
-		X3DArrayFieldIterator tmp = *this;
+		reference_iterator tmp = *this;
 
 		++ iter;
 		return tmp;
 	}
 
-	X3DArrayFieldIterator &
+	reference_iterator &
 	operator -- ()
 	{
 		-- iter;
 		return *this;
 	}
 
-	X3DArrayFieldIterator
+	reference_iterator
 	operator -- (int)
 	{
-		X3DArrayFieldIterator tmp = *this;
+		reference_iterator tmp = *this;
 
 		-- iter;
 		return tmp;
 	}
 
-	X3DArrayFieldIterator &
+	reference_iterator &
 	operator += (difference_type n)
 	{
 		iter += n;
 		return *this;
 	}
 
-	X3DArrayFieldIterator &
+	reference_iterator &
 	operator -= (difference_type n)
 	{
 		iter -= n;
@@ -159,40 +159,40 @@ private:
 
 template <class IteratorType, class Type>
 inline
-X3DArrayFieldIterator <IteratorType, Type>
-operator + (const X3DArrayFieldIterator <IteratorType, Type> & iter, size_t n)
+reference_iterator <IteratorType, Type>
+operator + (const reference_iterator <IteratorType, Type> & iter, size_t n)
 {
-	return X3DArrayFieldIterator <IteratorType, Type> (iter) += n;
+	return reference_iterator <IteratorType, Type> (iter) += n;
 }
 
 template <class IteratorType, class Type>
 inline
-X3DArrayFieldIterator <IteratorType, Type>
-operator + (size_t n, const X3DArrayFieldIterator <IteratorType, Type> & iter)
+reference_iterator <IteratorType, Type>
+operator + (size_t n, const reference_iterator <IteratorType, Type> & iter)
 {
-	return X3DArrayFieldIterator <IteratorType, Type> (iter) += n;
+	return reference_iterator <IteratorType, Type> (iter) += n;
 }
 
 template <class IteratorType, class Type>
 inline
-X3DArrayFieldIterator <IteratorType, Type>
-operator - (const X3DArrayFieldIterator <IteratorType, Type> & iter, size_t n)
+reference_iterator <IteratorType, Type>
+operator - (const reference_iterator <IteratorType, Type> & iter, size_t n)
 {
-	return X3DArrayFieldIterator <IteratorType, Type> (iter) -= n;
+	return reference_iterator <IteratorType, Type> (iter) -= n;
 }
 
 template <class IteratorType, class Type>
 inline
-X3DArrayFieldIterator <IteratorType, Type>
-operator - (size_t n, const X3DArrayFieldIterator <IteratorType, Type> & iter)
+reference_iterator <IteratorType, Type>
+operator - (size_t n, const reference_iterator <IteratorType, Type> & iter)
 {
-	return X3DArrayFieldIterator <IteratorType, Type> (iter) -= n;
+	return reference_iterator <IteratorType, Type> (iter) -= n;
 }
 
 template <class IteratorType, class Type>
 inline
-typename X3DArrayFieldIterator <IteratorType, Type>::difference_type
-operator - (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArrayFieldIterator <IteratorType, Type> & rhs)
+typename reference_iterator <IteratorType, Type>::difference_type
+operator - (const reference_iterator <IteratorType, Type> & lhs, const reference_iterator <IteratorType, Type> & rhs)
 {
 	return lhs .base () - rhs .base ();
 }
@@ -200,7 +200,7 @@ operator - (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArr
 template <class IteratorType, class Type>
 inline
 bool
-operator == (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArrayFieldIterator <IteratorType, Type> & rhs)
+operator == (const reference_iterator <IteratorType, Type> & lhs, const reference_iterator <IteratorType, Type> & rhs)
 {
 	return lhs .base () == rhs .base ();
 }
@@ -208,7 +208,7 @@ operator == (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DAr
 template <class IteratorType, class Type>
 inline
 bool
-operator not_eq (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArrayFieldIterator <IteratorType, Type> & rhs)
+operator not_eq (const reference_iterator <IteratorType, Type> & lhs, const reference_iterator <IteratorType, Type> & rhs)
 {
 	return lhs .base () not_eq rhs .base ();
 }
@@ -216,7 +216,7 @@ operator not_eq (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X
 template <class IteratorType, class Type>
 inline
 bool
-operator < (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArrayFieldIterator <IteratorType, Type> & rhs)
+operator < (const reference_iterator <IteratorType, Type> & lhs, const reference_iterator <IteratorType, Type> & rhs)
 {
 	return lhs .base () < rhs .base ();
 }
@@ -224,7 +224,7 @@ operator < (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArr
 template <class IteratorType, class Type>
 inline
 bool
-operator > (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArrayFieldIterator <IteratorType, Type> & rhs)
+operator > (const reference_iterator <IteratorType, Type> & lhs, const reference_iterator <IteratorType, Type> & rhs)
 {
 	return lhs .base () > rhs .base ();
 }
@@ -232,7 +232,7 @@ operator > (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArr
 template <class IteratorType, class Type>
 inline
 bool
-operator >= (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArrayFieldIterator <IteratorType, Type> & rhs)
+operator >= (const reference_iterator <IteratorType, Type> & lhs, const reference_iterator <IteratorType, Type> & rhs)
 {
 	return lhs .base () >= rhs .base ();
 }
@@ -240,12 +240,12 @@ operator >= (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DAr
 template <class IteratorType, class Type>
 inline
 bool
-operator <= (const X3DArrayFieldIterator <IteratorType, Type> & lhs, const X3DArrayFieldIterator <IteratorType, Type> & rhs)
+operator <= (const reference_iterator <IteratorType, Type> & lhs, const reference_iterator <IteratorType, Type> & rhs)
 {
 	return lhs .base () <= rhs .base ();
 }
 
-} // X3D
+} // basic
 } // titania
 
 #endif

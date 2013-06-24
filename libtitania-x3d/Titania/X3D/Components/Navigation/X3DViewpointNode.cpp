@@ -74,8 +74,8 @@ X3DViewpointNode::X3DViewpointNode () :
 	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),  
 	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1), 
 	           differenceMatrix (),                                                 
-	                 timeSensor (),                                                 
-	       positionInterpolator ()                                                  
+	                 timeSensor (new TimeSensor (getExecutionContext ())),                                                 
+	       positionInterpolator (new PositionInterpolator (getExecutionContext ()))                                                  
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
 
@@ -92,12 +92,10 @@ X3DViewpointNode::initialize ()
 	X3DBindableNode::initialize ();
 	X3DViewpointObject::initialize ();
 
-	timeSensor                     = new TimeSensor (getExecutionContext ());
 	timeSensor -> stopTime ()      = 1;
 	timeSensor -> cycleInterval () = 0.2;
 	timeSensor -> setup ();
 
-	positionInterpolator           = new PositionInterpolator (getExecutionContext ());
 	positionInterpolator -> key () = { 0, 1 };
 	positionInterpolator -> setup ();
 

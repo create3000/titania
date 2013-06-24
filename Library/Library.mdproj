@@ -2103,6 +2103,7 @@
     <None Include="Prototypes\Converter\SFInt32Converter\example.wrl" />
     <None Include="Prototypes\Converter\SFInt32Converter\SFInt32Converter.wrl" />
     <None Include="Tests\Navigation\SFInt32Converter.wrl" />
+    <None Include="Tests\PROTO\DoubleField.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

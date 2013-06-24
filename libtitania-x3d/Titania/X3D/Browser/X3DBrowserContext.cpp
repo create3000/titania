@@ -419,8 +419,9 @@ X3DBrowserContext::update ()
 
 		sensors .processInterests ();
 		router .processEvents ();
-
+		
 		getGarbageCollector () .dispose ();
+		assert (router .size () == 0);
 		
 		// Display
 

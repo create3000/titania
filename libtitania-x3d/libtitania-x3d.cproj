@@ -537,7 +537,6 @@
     <None Include="share\titania\handles\TransformHandle.wrl" />
     <None Include="Titania\X3D\Parser\Grammar.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstants.h" />
-    <None Include="Titania\X3D\Basic\X3DArrayFieldIterator.h" />
     <None Include="Titania\X3D\Basic\NodeSet.h" />
     <None Include="Titania\X3D\Base\ObjectSet.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey.h" />
@@ -557,6 +556,8 @@
     <None Include="Titania\X3D\Execution\ImportedNode.h" />
     <None Include="Titania\X3D\Execution\ExportedNode.h" />
     <None Include="Titania\X3D\Execution\World.h" />
+    <None Include="Titania\X3D\Routing\EventList.h" />
+    <None Include="Titania\X3D\Routing\NodeList.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

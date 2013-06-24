@@ -61,6 +61,8 @@
 #include "../Bits/TraverseType.h"
 #include "../Bits/X3DConstants.h"
 #include "../Fields/SFTime.h"
+#include "../Routing/EventList.h"
+#include "../Routing/NodeList.h"
 #include "../Types/Time.h"
 
 #include <map>
@@ -180,11 +182,6 @@ public:
 	void
 	processEvents ();
 
-	virtual
-	void
-	eventsProcessed ()
-	{ }
-
 	///  @name Traversal handling
 
 	virtual
@@ -256,6 +253,11 @@ protected:
 	void
 	initialize ()
 	{ }
+	
+	virtual
+	void
+	eventsProcessed ()
+	{ }
 
 
 private:
@@ -267,7 +269,7 @@ private:
 
 	FieldDefinitionArray
 	getInitializeableFields (const bool = false) const;
-	
+
 	void
 	removeEvents ();
 
@@ -278,14 +280,13 @@ private:
 	std::string   typeName;
 	NodeTypeArray nodeType;
 
-	FieldDefinitionArray fieldDefinitions;      // pre-defined and user-defined field definitions
-	FieldsMap            fields;                // pre-defined and user-defined fields
+	FieldDefinitionArray fieldDefinitions;     // pre-defined and user-defined field definitions
+	FieldsMap            fields;               // pre-defined and user-defined fields
 	FieldAliasesMap      fieldAliases;
 	size_t               numUserDefinedFields;
 
-	typedef std::deque <std::pair <X3DChildObject*, Event>> EventArray;
+	NodeId nodeId;
 
-	EventArray               events;
 	std::deque <std::string> comments;
 
 };
