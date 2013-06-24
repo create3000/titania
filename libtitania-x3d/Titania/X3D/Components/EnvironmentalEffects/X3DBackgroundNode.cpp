@@ -193,9 +193,6 @@ X3DBackgroundNode::build ()
 		// Draw sphere
 	
 		float radius = std::sqrt (2 * std::pow (10000, 2));
-		float PI2    = 2 * M_PI;
-		
-		__LOG__ << radius << std::endl;
 
 		// p2 --- p1
 		//  |     |
@@ -221,7 +218,7 @@ X3DBackgroundNode::build ()
 
 					// p1
 					theta = angle [v];
-					phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
+					phi   = M_PI2 * ((u + 1) / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
 					x     = -sin (phi) * r;
@@ -236,7 +233,7 @@ X3DBackgroundNode::build ()
 					++ numIndices;
 
 					// p2
-					phi   = PI2 * (u / (SPHERE_USEG - 1));
+					phi   = M_PI2 * (u / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
 					x     = -sin (phi) * r;
@@ -251,7 +248,7 @@ X3DBackgroundNode::build ()
 
 					// p3
 					theta = angle [v + 1];
-					phi   = PI2 * (u / (SPHERE_USEG - 1));
+					phi   = M_PI2 * (u / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
 					x     = -sin (phi) * r;
@@ -266,7 +263,7 @@ X3DBackgroundNode::build ()
 					++ numIndices;
 
 					// p4
-					phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
+					phi   = M_PI2 * ((u + 1) / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
 					x     = -sin (phi) * r;
@@ -299,7 +296,7 @@ X3DBackgroundNode::build ()
 
 					// p1
 					theta = M_PI - angle [v];
-					phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
+					phi   = M_PI2 * ((u + 1) / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
 					x     = -sin (phi) * r;
@@ -314,7 +311,7 @@ X3DBackgroundNode::build ()
 					++ numIndices;
 
 					// p2
-					phi   = PI2 * (u / (SPHERE_USEG - 1));
+					phi   = M_PI2 * (u / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
 					x     = -sin (phi) * r;
@@ -329,7 +326,7 @@ X3DBackgroundNode::build ()
 
 					// p3
 					theta = M_PI - angle [v + 1];
-					phi   = PI2 * (u / (SPHERE_USEG - 1));
+					phi   = M_PI2 * (u / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
 					x     = -sin (phi) * r;
@@ -344,7 +341,7 @@ X3DBackgroundNode::build ()
 					++ numIndices;
 
 					// p4
-					phi   = PI2 * ((u + 1) / (SPHERE_USEG - 1));
+					phi   = M_PI2 * ((u + 1) / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
 					x     = -sin (phi) * r;
