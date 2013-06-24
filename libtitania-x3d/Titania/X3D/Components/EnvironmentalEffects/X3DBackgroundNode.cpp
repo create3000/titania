@@ -286,9 +286,6 @@ X3DBackgroundNode::build ()
 			angle .assign (groundAngle () .rbegin (), groundAngle () .rend ());
 			angle .emplace_front (M_PI / 2);
 			angle .emplace_back (0);
-			
-			__LOG__ << groundAngle () .size () << std::endl;
-			__LOG__ << angle .size () << std::endl;
 
 			for (size_t v = 0; v < angle .size () - 1; ++ v)
 			{
