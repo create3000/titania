@@ -56,15 +56,12 @@
 
 // LOW
 //#define SPHERE_USEG 16.0
-//#define SPHERE_VSEG 15.0
 
 // HIGH
 //#define SPHERE_USEG 32.0
-//#define SPHERE_VSEG 41.0
 
 // MEDIUM
 #define SPHERE_USEG 22.0
-#define SPHERE_VSEG 31.0
 
 namespace titania {
 namespace X3D {
@@ -137,7 +134,7 @@ X3DBackgroundNode::build ()
 	glPoints .clear ();
 	numIndices = 0;
 
-	if (transparency () == 1.0f)
+	if (transparency () >= 1.0f)
 		return;
 
 	float opacity = 1 - math::clamp <float> (transparency (), 0, 1);
@@ -195,8 +192,10 @@ X3DBackgroundNode::build ()
 	{
 		// Draw sphere
 	
-		float radius = 10000;
+		float radius = std::sqrt (2 * std::pow (10000, 2));
 		float PI2    = 2 * M_PI;
+		
+		__LOG__ << radius << std::endl;
 
 		// p2 --- p1
 		//  |     |
@@ -384,7 +383,7 @@ X3DBackgroundNode::traverse (TraverseType type)
 void
 X3DBackgroundNode::draw ()
 {
-	if (transparency () == 1.0f)
+	if (transparency () >= 1.0f)
 		return;
 
 	//
