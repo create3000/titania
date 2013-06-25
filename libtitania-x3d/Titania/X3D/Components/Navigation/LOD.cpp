@@ -92,7 +92,7 @@ LOD::create (X3DExecutionContext* const executionContext) const
 	return new LOD (executionContext);
 }
 
-int32_t
+size_t
 LOD::getLevel (TraverseType type)
 {
 	Matrix4f matrix = ModelViewMatrix4f ();
@@ -103,54 +103,28 @@ LOD::getLevel (TraverseType type)
 	matrix .translate (center ());
 
 	float distance = math::abs (matrix .translation ());
+	
+	auto iter = std::upper_bound (range () .cbegin (), range () .cend (), distance);
 
-	int32_t level = -1;
-
-	if (range () .size ())
-	{
-		int32_t n = std::min (range () .size (), children () .size () - 1);
-
-		if (distance < range () [0])
-			level = 0;
-
-		else
-		{
-			int32_t i;
-
-			for (i = 0; i < n - 1; ++ i)
-			{
-				if (range () [i] <= distance and distance < range () [i + 1])
-					level = i + 1;
-			}
-
-			if (level == -1)
-				level = n;
-		}
-	}
-	else
-	{
-		level = 0;
-	}
-
-	return level;
+	return iter - range () .cbegin ();
 }
 
 void
 LOD::traverse (TraverseType type)
 {
-	if (not children () .size ())
-		return;
+	size_t level = getLevel (type);
 
-	int32_t level = getLevel (type);
-
-	if (type == TraverseType::CAMERA)
+	if (level < children () .size ())
 	{
-		if (level_changed () not_eq level)
-			level_changed () = level;
-	}
+		if (type == TraverseType::CAMERA)
+		{
+			if (level_changed () not_eq (int32_t) level)
+				level_changed () = level;
+		}
 
-	if (children () [level])
-		children () [level] -> traverse (type);
+		if (children () [level])
+			children () [level] -> traverse (type);
+	}
 }
 
 } // X3D

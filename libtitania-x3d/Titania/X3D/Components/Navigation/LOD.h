@@ -108,7 +108,7 @@ public:
 
 private:
 
-	int32_t
+	size_t
 	getLevel (TraverseType);
 
 	struct Fields
