@@ -198,8 +198,7 @@ X3DTimeDependentNode::do_resume ()
 void
 X3DTimeDependentNode::addTimeout (sigc::connection & timeout, TimeoutHandler callback, const time_type time)
 {
-	if (timeout .connected ())
-		timeout .disconnect ();
+	timeout .disconnect ();
 
 	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, callback),
 	                                            (time - getCurrentTime ()) * 1000,

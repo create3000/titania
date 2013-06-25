@@ -2,6 +2,10 @@
 
 META "title" "Scripting test"
 
+Background {
+	transparency 1
+}
+
 EXTERNPROTO Particle [
   exposedField SFBool     enabled
   exposedField SFDouble   maximumSpeed

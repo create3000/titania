@@ -2104,6 +2104,16 @@
     <None Include="Prototypes\Converter\SFInt32Converter\SFInt32Converter.wrl" />
     <None Include="Tests\Navigation\SFInt32Converter.wrl" />
     <None Include="Tests\PROTO\DoubleField.wrl" />
+    <None Include="Tests\PROTO\Particle\Datei" />
+    <None Include="Tests\PROTO\Particle\Grid.wrl" />
+    <None Include="Tests\PROTO\Particle\LineTrail.wrl" />
+    <None Include="Tests\PROTO\Particle\Particle.wrl" />
+    <None Include="Tests\PROTO\Particle\ParticleGroup.wrl" />
+    <None Include="Tests\PROTO\Particle\ParticleShape.wrl" />
+    <None Include="Tests\PROTO\Particle\cone-pink.wrl" />
+    <None Include="Tests\PROTO\Particle\index.wrl" />
+    <None Include="Tests\PROTO\Particle\particleEmmiter.wrl" />
+    <None Include="Tests\PROTO\Perceptron\Peceptron.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2218,6 +2228,8 @@
     <Folder Include="Tests\Scripting\external\" />
     <Folder Include="Prototypes\Converter\" />
     <Folder Include="Prototypes\Converter\SFInt32Converter\" />
+    <Folder Include="Tests\PROTO\Particle\" />
+    <Folder Include="Tests\PROTO\Perceptron\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

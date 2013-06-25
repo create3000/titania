@@ -159,10 +159,10 @@ X3DBackgroundNode::build ()
 		glPoints .emplace_back (-r, -r, -r);
 
 		// Front
-		glPoints .emplace_back (r,  r,  r);
-		glPoints .emplace_back (-r,  r,  r);
-		glPoints .emplace_back (-r, -r,  r);
-		glPoints .emplace_back (r, -r,  r);
+		// glPoints .emplace_back (r,  r,  r);
+		// glPoints .emplace_back (-r,  r,  r);
+		// glPoints .emplace_back (-r, -r,  r);
+		// glPoints .emplace_back (r, -r,  r);
 
 		// Left
 		glPoints .emplace_back (-r,  r,  r);
@@ -390,22 +390,19 @@ X3DBackgroundNode::draw ()
 
 	glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 	{
-		Vector3d   translation;
-		Rotation4f rotation;
-
-		matrix .get (translation, rotation);
-
-		float x, y, z, angle;
-		rotation .get (x, y, z, angle);
-
-		//
-
 		getCurrentViewpoint () -> reshape (1, 20000);
 
-		glLoadIdentity ();
-		glRotatef (math::degree (angle), x, y, z);
+		if (groundColor () .size () > 0 and skyColor () .size () > 1)
+		{
+			Vector3d   translation;
+			Rotation4f rotation;
+			float x, y, z, angle;
 
-		//
+			matrix .get (translation, rotation);
+			rotation .get (x, y, z, angle);
+
+			glRotatef (math::degree (angle), x, y, z);
+		}
 
 		glDisable (GL_DEPTH_TEST);
 		glDepthMask (GL_FALSE);

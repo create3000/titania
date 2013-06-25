@@ -1,0 +1,85 @@
+#VRML V2.0 utf8
+
+META "title" "ParticleEmitter"
+
+EXTERNPROTO Grid [
+  field        SFBool  solid
+  exposedField SFInt32 xDimension
+  exposedField SFFloat xSpacing
+  exposedField SFInt32 zDimension
+  exposedField SFFloat zSpacing
+  exposedField SFColor color
+  exposedField SFFloat transparency
+]
+"Grid.wrl"
+
+EXTERNPROTO Particle [
+  exposedField SFBool     enabled
+  exposedField SFDouble   maximumSpeed
+  exposedField SFDouble   mass
+  exposedField SFVec3f    acceleration
+  exposedField SFVec3f    velocity
+  exposedField SFVec3f    translation
+  exposedField SFRotation rotation
+  exposedField SFTime     startTime
+  exposedField SFTime     stopTime
+  eventOut     SFBool     isActive
+  exposedField MFNode     friends
+  eventIn      MFNode     addChildren
+  eventIn      MFNode     removeChildren
+  exposedField MFNode     children
+]
+"Particle.wrl"
+
+EXTERNPROTO ParticleShape [
+  exposedField SFColor color
+]
+"ParticleShape.wrl"
+
+PROTO ParticleEmitter [
+  eventIn      MFNode addChildren
+  eventIn      MFNode removeChildren
+  exposedField MFNode children [ ]
+]
+{
+  DEF Group Group {
+    addChildren IS addChildren
+    removeChildren IS removeChildren
+    children IS children
+  }
+
+  DEF ParticleEmitter Script {
+    field SFNode group USE Group
+
+    url "vrmlscript:
+function initialize ()
+{
+}
+"
+  }
+}
+
+Viewpoint {
+  description "Pespective"
+  position 5.25938 11.9066 14.585
+  orientation -0.888734 0.442501 0.119768 0.734172
+}
+
+Viewpoint {
+  description "Top"
+  position 0 20 0
+  orientation -1 -0 -0 1.5708
+}
+
+Grid {
+  solid FALSE
+}
+
+ParticleEmitter {
+  children [
+    ParticleShape {
+      color 0 0.8 0.8
+    }
+  ]
+}
+

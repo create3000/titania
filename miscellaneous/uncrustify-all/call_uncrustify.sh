@@ -107,8 +107,10 @@ perl -e '
 			last unless $_ =~ $member_rx;
 			$pad1 = $lm - length ($2);
 			$pad2 = $lc - length ($3) + 1;
-			print $1, " " x $pad1, $2, $3;
-			print " " x $pad2, $5, "\n" unless $3 =~ /\n/o;
+			$line = $1 . (" " x $pad1) . $2 . $3;
+			$line .= (" " x $pad2) . $5, "\n" unless $3 =~ /\n/o;
+			$line =~ s/(.*?)\s*$/$1\n/o;
+			print $line;
 		}
 		print $_;
 	}

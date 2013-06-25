@@ -1,0 +1,39 @@
+#VRML V2.0 utf8
+
+PROTO ParticleGroup [
+  exposedField MFNode children [ ]
+]
+{
+  DEF Group Group {
+    children IS children
+  }
+
+  DEF ParticleGroup Script {
+    eventIn MFNode set_children
+    field   SFNode group USE Group
+    field   SFNode self USE ParticleGroup
+
+    url "vrmlscript:
+function initialize ()
+{
+	Browser .addRoute (group, 'children', self, 'set_children');
+
+	group .children = group .children;
+}
+
+function set_children (value, time)
+{
+	for (var particle in value)
+	{
+		for (var friend in value)
+		{
+			if (friend != particle)
+				value [particle] .friends [value [particle] .friends .length] = value [friend];
+		}
+	}
+}
+    "
+    directOutput TRUE
+  }
+}
+

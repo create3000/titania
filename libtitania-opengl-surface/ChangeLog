@@ -1,3 +1,9 @@
+2013-06-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* SurfaceN.h:
+	* SurfaceN.cpp: 
+
 2013-05-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Surface.h:

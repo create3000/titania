@@ -1,0 +1,130 @@
+#VRML V2.0 utf8
+
+PROTO Particle [
+  exposedField SFBool     enabled TRUE
+  exposedField SFDouble   maximumSpeed 299792458
+  exposedField SFDouble   mass 0
+  exposedField SFVec3f    acceleration 0 0 0
+  exposedField SFVec3f    velocity 0 0 0
+  exposedField SFVec3f    translation 0 0 0
+  exposedField SFRotation rotation 0 0 1 0
+  exposedField SFTime     startTime 0
+  exposedField SFTime     stopTime 0
+  eventOut     SFBool     isActive
+  exposedField MFNode     friends [ ]
+  eventIn      MFNode     addChildren
+  eventIn      MFNode     removeChildren
+  exposedField MFNode     children [ ]
+]
+{
+  PROTO Fields [
+    exposedField SFDouble maximumSpeed 0
+    exposedField SFVec3f  acceleration 0 0 0
+    exposedField SFVec3f  velocity 0 0 0
+    exposedField MFNode   friends [ ]
+  ]
+  {
+    Group { }
+  }
+
+  DEF Transform Transform {
+    translation IS translation
+    rotation IS rotation
+    addChildren IS addChildren
+    removeChildren IS removeChildren
+    children IS children
+  }
+
+  DEF Particle Script {
+    eventIn SFDouble set_maximumSpeed
+    eventIn SFVec3f  set_velocity
+    eventIn SFTime   set_time
+    eventIn MFNode   set_friends
+    eventIn SFVec3f  set_translation
+    field   SFNode   timeSensor DEF Timer TimeSensor {
+      enabled IS enabled
+      loop TRUE
+      startTime IS startTime
+      stopTime IS stopTime
+      isActive IS isActive
+    }
+    field   MFNode   friends [ ]
+    field   SFNode   fields DEF Fields Fields {
+      maximumSpeed IS maximumSpeed
+      acceleration IS acceleration
+      velocity IS velocity
+      friends IS friends
+    }
+    field   SFNode   transform USE Transform
+    field   SFNode   self USE Particle
+
+    url "vrmlscript:
+var maximumSpeed2;
+var G = 6.6738480E-11;
+
+function initialize ()
+{
+	set_maximumSpeed (fields .maximumSpeed, 0);
+	set_friends      (fields .friends,      0);
+}
+
+function set_maximumSpeed (value, time)
+{
+	maximumSpeed2 = value * value;
+}
+
+function set_velocity (value, time)
+{
+	transform .rotation = new SFRotation (new SFVec3f (0, 0, 1), value);
+}
+
+function set_time (value, time)
+{
+	fields .velocity = rel_add (fields .velocity, fields .acceleration .divide (Browser .getCurrentFrameRate ()));
+
+	transform .translation = transform .translation .add (fields .velocity .divide (Browser .getCurrentFrameRate ()));
+}
+
+function set_friends (value, time)
+{
+	for (var i in friends)
+		Browser .deleteRoute (friends [i], 'translation', self, 'set_translation');
+
+	friends = value;
+
+	for (var i in friends)
+		Browser .addRoute (friends [i], 'translation', self, 'set_translation');
+}
+
+function set_translation (value, time)
+{
+	// http://wwwex.physik.uni-ulm.de/lehre/gk1-2005-2006/node19.html
+
+	var acceleration = new SFVec3f ();
+
+	for (var i in friends)
+	{
+		var distance = friends [i] .translation .subtract (transform .translation);
+	
+		acceleration = acceleration .add (distance .multiply (friends [i] .mass) .divide (Math .pow (distance .length (), 3)));
+	}
+
+	acceleration = acceleration .multiply (G);
+
+	fields .acceleration = acceleration .divide (Math .pow (1 + acceleration .dot (acceleration) / maximumSpeed2, 3/2));
+}
+
+function rel_add (v, u)
+{
+	return v .add (u) .divide (1 + (Math .abs (v .dot (u)) / maximumSpeed2));
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Fields.velocity_changed TO Particle.set_velocity
+  ROUTE Fields.friends_changed TO Particle.set_friends
+  ROUTE Timer.time TO Particle.set_time
+}
+
+

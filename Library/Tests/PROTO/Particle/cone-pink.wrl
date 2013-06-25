@@ -1,0 +1,45 @@
+#VRML V2.0 utf8 CosmoWorlds V1.0
+
+DEF Cross Transform {
+  rotation 1 0 0 1.5708
+  children Shape {
+    appearance Appearance {
+      material DEF _0 Material {
+        diffuseColor 0.8 0 0.8
+      }
+    }
+    geometry IndexedLineSet {
+      coordIndex [ 0, 1, -1, 2, 3, -1 ]
+      coord Coordinate {
+        point [ -1 0 0, 1 0 0, 0 0 1, 0 0 -1 ]
+      }
+    }
+  }
+}
+
+DEF Cone Transform {
+  translation 0 0 0.1
+  rotation 1 0 0 1.5708
+  children Shape {
+    appearance Appearance {
+      material USE _0
+    }
+    geometry Cone {
+      height 1.6
+      bottomRadius 0.7
+    }
+  }
+}
+
+DEF Sphere Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.8 0 0.8
+        transparency 0.3
+      }
+    }
+    geometry Sphere { }
+  }
+}
+

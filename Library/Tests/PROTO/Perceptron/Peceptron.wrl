@@ -1,0 +1,268 @@
+#VRML V2.0 utf8 Titania 0.1
+
+EXTERNPROTO Button [
+  exposedField SFBool enabled
+  eventOut     SFBool isOver
+  eventOut     SFBool isActive
+  eventOut     SFTime touchTime
+  eventIn      MFNode addChildren
+  eventIn      MFNode removeChildren
+  exposedField MFNode children
+]
+"/home/holger/Projekte/Titania/Library/Prototypes/Button/Button/Button.wrl"
+
+EXTERNPROTO CheckButton [
+  exposedField SFBool enabled
+  eventOut     SFBool isActive
+  eventOut     SFTime enterTime
+  eventOut     SFTime exitTime
+  eventIn      MFNode addChildren
+  eventIn      MFNode removeChildren
+  exposedField MFNode children
+]
+"/home/holger/Projekte/Titania/Library/Prototypes/Button/CheckButton/CheckButton.wrl"
+
+EXTERNPROTO SFBool [
+  exposedField SFBool keyValue
+  exposedField SFTime triggerTime
+  eventOut     SFBool value_changed
+]
+"/home/holger/Projekte/Titania/Library/Prototypes/Fields/SFBool/SFBool.wrl"
+
+EXTERNPROTO SFFloat [
+  exposedField SFFloat keyValue
+  exposedField SFTime  triggerTime
+  eventOut     SFFloat value_changed
+]
+"/home/holger/Projekte/Titania/Library/Prototypes/Fields/SFFloat/SFFloat.wrl"
+
+EXTERNPROTO SFFloatConverter [
+  eventOut     SFFloat value_changed
+  exposedField MFNode  children
+]
+"/home/holger/Projekte/Titania/Library/Prototypes/Converter/SFFloatConverter/SFFloatConverter.wrl"
+
+PROTO Perceptron [
+  eventIn      SFFloat set_value
+  exposedField SFFloat learningFactor 0.5
+  eventOut     SFFloat keyValue_changed
+  exposedField MFFloat weight [ ]
+  exposedField MFNode  children [ ]
+]
+{
+  PROTO Fields [
+    exposedField MFFloat weight [ ]
+    exposedField MFNode  children [ ]
+  ]
+  {
+    Group { }
+  }
+
+  DEF Perceptron Script {
+    eventIn      SFFloat set_value IS set_value
+    eventIn      SFFloat set_keyValue
+    eventIn      MFFloat set_weight
+    eventIn      MFNode  set_children
+    eventOut     SFFloat keyValue_changed IS keyValue_changed
+    exposedField SFFloat learningFactor IS learningFactor
+    field        MFNode  children [ ]
+    field        SFNode  fields DEF Fields Fields {
+      weight IS weight
+      children IS children
+    }
+    field        SFNode  self USE Perceptron
+
+    url "vrmlscript:
+function initialize ()
+{
+	set_weight (fields .weight);
+	set_children (fields .children);
+}
+
+function set_value (value)
+{
+	for (var i = 0; i < children .length; ++ i)
+	{
+		fields .weight [i] += learningFactor * children [i] .keyValue_changed 
+		                      * (value - keyValue_changed);
+	}
+}
+
+function set_keyValue ()
+{
+	keyValue_changed = 0;
+	
+	for (var i = 0; i < children .length; ++ i)
+		keyValue_changed += fields .weight [i] * children [i] .keyValue_changed;
+		
+	print (keyValue_changed);
+}
+
+function set_weight (value)
+{
+	for (var i = fields .weight .length; i < fields .children .length; ++ i)
+		fields .weight [i] = 0;
+
+	fields .weight .length = fields .children .length;
+}
+
+function set_children (value)
+{
+	for (var i = 0; i < children .length; ++i)
+		Browser .deleteRoute (children [i], 'keyValue_changed', self, 'set_keyValue');
+		
+	children = value;
+
+	for (var i = 0; i < children .length; ++i)
+		Browser .addRoute (children [i], 'keyValue_changed', self, 'set_keyValue');
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Fields.weight_changed TO Perceptron.set_weight
+  ROUTE Fields.children_changed TO Perceptron.set_children
+}
+
+DEF A_Button CheckButton {
+  children [
+    Button {
+      children [
+        DEF _0 Transform {
+          translation -2.5 0 0
+          children DEF Default Shape {
+            appearance Appearance {
+              material Material { }
+            }
+            geometry Box { }
+          }
+        }
+        USE _0
+        USE _0
+      ]
+    }
+    Button {
+      children [
+        DEF _1 Transform {
+          translation -2.5 0 0
+          children DEF Active Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0.4 0.4 0.4
+              }
+            }
+            geometry Box { }
+          }
+        }
+        USE _1
+        USE _1
+      ]
+    }
+  ]
+}
+
+DEF B_Button CheckButton {
+  children [
+    Button {
+      children [
+        DEF _2 Transform {
+          children USE Default
+        }
+        USE _2
+        USE _2
+      ]
+    }
+    Button {
+      children [
+        DEF _3 Transform {
+          children USE Active
+        }
+        USE _3
+        USE _3
+      ]
+    }
+  ]
+}
+
+DEF ResultButton CheckButton {
+  children [
+    Button {
+      children [
+        DEF _4 Transform {
+          translation 2.5 0 0
+          children USE Default
+        }
+        USE _4
+        USE _4
+      ]
+    }
+    Button {
+      children [
+        DEF _5 Transform {
+          translation 2.5 0 0
+          children USE Active
+        }
+        USE _5
+        USE _5
+      ]
+    }
+  ]
+}
+
+DEF Learn Transform {
+  translation 2.5 -2.5 0
+  children DEF LearnButton Button {
+    children [
+      USE Default
+      USE Default
+      USE Active
+    ]
+  }
+}
+
+DEF _6 SFFloatConverter {
+  children DEF Input_A SFBool { }
+}
+
+DEF _8 SFFloatConverter {
+  children DEF Input_B SFBool { }
+}
+
+DEF AND Perceptron {
+  weight [ 0, 0 ]
+  children [
+    DEF _10 SFFloat { }
+    DEF _11 SFFloat { }
+  ]
+}
+
+DEF Level Script {
+  eventIn  SFFloat set_keyValue
+  eventOut SFBool  value_changed
+  field    SFFloat level 0.5
+
+  url "vrmlscript:
+function set_keyValue (value)
+{
+	value_changed = value > 0.5;
+}
+"
+}
+
+DEF Result SFBool { }
+
+DEF _12 SFFloatConverter {
+  children DEF _13 SFBool { }
+}
+
+ROUTE A_Button.enabled_changed TO Input_A.set_keyValue
+ROUTE B_Button.enabled_changed TO Input_B.set_keyValue
+ROUTE _6.value_changed TO _10.set_keyValue
+ROUTE _8.value_changed TO _11.set_keyValue
+ROUTE AND.keyValue_changed TO Level.set_keyValue
+ROUTE Level.value_changed TO ResultButton.set_enabled
+ROUTE ResultButton.enabled_changed TO Result.set_keyValue
+ROUTE LearnButton.touchTime TO Result.set_triggerTime
+ROUTE Result.value_changed TO _13.set_keyValue
+ROUTE _12.value_changed TO AND.set_value
+ROUTE Learn.translation_changed TO _0.set_translation

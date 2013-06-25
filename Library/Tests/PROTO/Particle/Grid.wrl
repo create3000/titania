@@ -1,0 +1,149 @@
+#VRML V2.0 utf8 Titania 0.1
+
+PROTO Grid [
+  field        SFBool  solid TRUE
+  exposedField SFInt32 xDimension 10
+  exposedField SFFloat xSpacing 1
+  exposedField SFInt32 zDimension 10
+  exposedField SFFloat zSpacing 1
+  exposedField SFColor color 1 0.5 0
+  exposedField SFFloat transparency 0.5
+]
+{
+  PROTO Fields [
+    exposedField SFInt32 xDimension 10
+    exposedField SFFloat xSpacing 1
+    exposedField SFInt32 zDimension 10
+    exposedField SFFloat zSpacing 1
+    exposedField SFFloat transparency 0.66
+  ]
+  {
+    Group { }
+  }
+
+  Transform {
+    children [
+      DEF Plane Transform {
+        rotation 1 0 0 1.5708
+        children Shape {
+          appearance Appearance {
+            material DEF Material2 Material {
+              diffuseColor IS color
+            }
+          }
+          geometry Rectangle2D {
+            size 1 1
+            solid IS solid
+          }
+        }
+      }
+      Transform {
+        children Shape {
+          appearance Appearance {
+            material DEF Material3 Material {
+              emissiveColor IS color
+            }
+          }
+          geometry DEF Axis IndexedLineSet {
+            coordIndex [ 0, 1, -1, 2, 3, -1 ]
+            coord Coordinate {
+              point [ 0 0 0, 0 0 0, 0 0 0, 0 0 0 ]
+            }
+          }
+        }
+      }
+      Transform {
+        children Shape {
+          appearance Appearance {
+            material DEF Material1 Material {
+              emissiveColor IS color
+            }
+          }
+          geometry DEF Grid IndexedLineSet {
+            coord Coordinate { }
+          }
+        }
+      }
+    ]
+  }
+
+  DEF _Grid Script {
+    field SFNode plane USE Plane
+    field SFNode axis USE Axis
+    field SFNode grid USE Grid
+    field SFNode axisMaterial USE Material3
+    field SFNode fields DEF Fields Fields {
+      xDimension IS xDimension
+      xSpacing IS xSpacing
+      zDimension IS zDimension
+      zSpacing IS zSpacing
+      transparency IS transparency
+    }
+
+    url "vrmlscript:
+function set_dimension ()
+{
+}
+
+function set_spacing ()
+{
+}
+
+function initialize ()
+{
+	fields .transparency = fields .transparency;
+
+	// Plane
+
+	plane .scale = new SFVec3f (fields .xDimension * fields .xSpacing, fields .zDimension * fields .zSpacing, 1);
+	
+	// Axis
+
+	axis .coord .point = new MFVec3f (new SFVec3f (-plane .scale .x / 2 - fields .xSpacing / 4, 0, 0),
+	                                  new SFVec3f ( plane .scale .x / 2 + fields .xSpacing / 4, 0, 0),
+	                                  new SFVec3f (0, 0, -plane .scale .y / 2 - fields .zSpacing / 4),
+	                                  new SFVec3f (0, 0,  plane .scale .y / 2 + fields .zSpacing / 4));
+  
+	axisMaterial .transparency = Math .pow (fields .transparency, 3 / 4);
+
+	// Grid
+
+	var coordIndex     = new MFInt32 ();
+	coordIndex .length = 3 * (fields .xDimension + fields .zDimension);
+	
+	var point     = grid .coord .point;
+	point .length = 2 * (fields .xDimension + fields .zDimension);
+
+	var i = 0;
+	
+	for (; i < fields .xDimension + 1; ++ i)
+	{
+		point [2 * i]          = new SFVec3f (-plane .scale .x / 2 + fields .xSpacing * i, 0, -plane .scale .y / 2);
+		point [2 * i + 1]      = new SFVec3f (-plane .scale .x / 2 + fields .xSpacing * i, 0,  plane .scale .y / 2);
+		coordIndex [3 * i]     = 2 * i;
+		coordIndex [3 * i + 1] = 2 * i + 1;
+		coordIndex [3 * i + 2] = -1;
+	}
+	
+	for (; i < fields .zDimension + 1 + fields .xDimension + 1; ++ i)
+	{
+		point [2 * i]          = new SFVec3f (-plane .scale .x / 2, 0, -plane .scale .y / 2 + fields .zSpacing * (i - fields .xDimension - 1));
+		point [2 * i + 1]      = new SFVec3f ( plane .scale .x / 2, 0, -plane .scale .y / 2 + fields .zSpacing * (i - fields .xDimension - 1));
+		coordIndex [3 * i]     = 2 * i;
+		coordIndex [3 * i + 1] = 2 * i + 1;
+		coordIndex [3 * i + 2] = -1;
+	}
+
+	grid .set_coordIndex = coordIndex;
+}
+"
+    directOutput TRUE
+    mustEvaluate TRUE
+  }
+
+  ROUTE Fields.transparency_changed TO Material1.set_transparency
+  ROUTE Material1.transparency_changed TO Material2.set_transparency
+  ROUTE Material1.diffuseColor_changed TO Material3.set_diffuseColor
+}
+
+

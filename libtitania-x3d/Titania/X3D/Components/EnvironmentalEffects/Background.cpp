@@ -152,8 +152,6 @@ Background::initialize ()
 void
 Background::draw ()
 {
-	glPushMatrix ();
-
 	X3DBackgroundNode::draw ();
 
 	float radius = 10000;
@@ -289,7 +287,6 @@ Background::draw ()
 	}
 
 	glDisable (GL_TEXTURE_2D);
-	glPopMatrix ();
 }
 
 void

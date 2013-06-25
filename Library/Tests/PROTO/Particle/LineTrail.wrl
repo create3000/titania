@@ -1,0 +1,64 @@
+#VRML V2.0 utf8
+
+PROTO LineTrail [
+  exposedField SFVec3f point 0 0 0
+  field        SFInt32 dimension 20
+]
+{
+  PROTO Fields [
+    exposedField SFVec3f point 0 0 0
+  ]
+  {
+    Group { }
+  }
+
+  DEF Trail IndexedLineSet {
+    coord Coordinate { }
+  }
+
+  DEF LineTrail Script {
+    eventIn SFVec3f set_point
+    eventIn SFTime  set_time
+    field   SFInt32 dimension IS dimension
+    field   SFNode  timer DEF Timer TimeSensor {
+      loop TRUE
+      stopTime 1
+    }
+    field   SFNode  trail USE Trail
+    field   SFNode  fields DEF Fields Fields {
+      point IS point
+    }
+    field   SFNode  self USE LineTrail
+
+    url "vrmlscript:
+  
+function initialize ()
+{ }
+
+function set_point (value, time)
+{
+	Browser .deleteRoute (fields, 'point', self, 'set_point');
+	timer .startTime = time;
+}
+
+function set_time (value, time)
+{
+	trail .coord .point .unshift (fields .point);
+
+	var length = trail .coord .point .length;
+	
+	if (length > dimension)
+		trail .coord .point .pop ();
+		
+	else
+		trail .coordIndex [length - 1] = length - 1;
+}
+"
+    directOutput TRUE
+    mustEvaluate TRUE
+  }
+
+  ROUTE Fields.point_changed TO LineTrail.set_point
+  ROUTE Timer.cycleTime TO LineTrail.set_time
+}
+

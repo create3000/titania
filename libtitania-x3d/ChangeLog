@@ -1,3 +1,12 @@
+2013-06-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.md.pc:
+	* Browser.cpp:
+	* X3DLayerNode.cpp:
+	* X3DTimeDependentNode.cpp:
+	* Background.cpp:
+	* X3DBackgroundNode.cpp: 
+
 2013-06-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBackgroundNode.cpp: 

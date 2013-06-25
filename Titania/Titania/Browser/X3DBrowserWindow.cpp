@@ -325,7 +325,7 @@ X3DBrowserWindow::set_world ()
 	loadTime = chrono::now () - loadTime;
 
 	timeout .disconnect ();
-	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWindow::statistics), 5 * 1000);
+	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWindow::statistics), 10 * 1000);
 
 	loadIcon ();
 }

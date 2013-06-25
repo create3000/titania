@@ -66,28 +66,28 @@ X3DLayerNode::Fields::Fields () :
 { }
 
 X3DLayerNode::X3DLayerNode () :
-	              X3DNode (),                                                   
-	          X3DRenderer (),                                                   
-	               fields (),                                                   
-	      defaultViewport (new Viewport (getExecutionContext ())),              
-	defaultNavigationInfo (new NavigationInfo (getExecutionContext ())), 
-	    defaultBackground (new Background     (getExecutionContext ())), 
-	           defaultFog (new Fog            (getExecutionContext ())), 
-	     defaultViewpoint (new Viewpoint      (getExecutionContext ())), 
-	      currentViewport (*defaultViewport),                                   
-	  navigationInfoStack (*defaultNavigationInfo),                             
-	      backgroundStack (*defaultBackground),                                 
-	             fogStack (*defaultFog),                                        
-	       viewpointStack (*defaultViewpoint),                                  
-	      navigationInfos (),                                                   
-	          backgrounds (),                                                   
-	                 fogs (),                                                   
-	           viewpoints (),                                                   
-	            localFogs (),                                                   
-	          localLights (),                                                   
-	    cachedLocalLights (),                                                   
-	         globalLights (),                                                   
-	                group (new Group (getExecutionContext ()))                  
+	              X3DNode (),
+	          X3DRenderer (),
+	               fields (),
+	      defaultViewport (new Viewport (getExecutionContext ())),
+	defaultNavigationInfo (new NavigationInfo (getExecutionContext ())),
+	    defaultBackground (new Background     (getExecutionContext ())),
+	           defaultFog (new Fog            (getExecutionContext ())),
+	     defaultViewpoint (new Viewpoint      (getExecutionContext ())),
+	      currentViewport (*defaultViewport),
+	  navigationInfoStack (*defaultNavigationInfo),
+	      backgroundStack (*defaultBackground),
+	             fogStack (*defaultFog),
+	       viewpointStack (*defaultViewpoint),
+	      navigationInfos (),
+	          backgrounds (),
+	                 fogs (),
+	           viewpoints (),
+	            localFogs (),
+	          localLights (),
+	    cachedLocalLights (),
+	         globalLights (),
+	                group (new Group (getExecutionContext ()))
 {
 	addNodeType (X3DConstants::X3DLayerNode);
 
@@ -113,20 +113,19 @@ X3DLayerNode::initialize ()
 	defaultFog            -> setup ();
 	defaultViewpoint      -> setup ();
 
+	group -> children () = children ();
+	group -> setup ();
+
 	defaultBackground -> transparency () = 1;
 	defaultFog        -> transparency () = 1;
 	defaultViewpoint  -> isBound ()      = true;
 
-	viewport () .addInterest (this, &X3DLayerNode::set_viewport);
-
+	viewport ()       .addInterest (this, &X3DLayerNode::set_viewport);
 	addChildren ()    .addInterest (group -> addChildren ());
 	removeChildren () .addInterest (group -> removeChildren ());
 	children ()       .addInterest (group -> children ());
 
 	set_viewport ();
-
-	group -> children () = children ();
-	group -> setup ();
 }
 
 Box3f
@@ -172,7 +171,7 @@ X3DLayerNode::getUserViewpoints () const
 		if (viewpoint -> description () .length ())
 			userViewpoints .emplace_back (viewpoint);
 	}
-	
+
 	return userViewpoints;
 }
 
@@ -181,8 +180,8 @@ X3DLayerNode::pushLocalLight (X3DLightNode* light)
 {
 	LightContainer* lightContainer = new LightContainer (ModelViewMatrix4f (), light);
 
-	localLights .push_back (lightContainer);
-	cachedLocalLights .push_back (lightContainer);
+	localLights .emplace_back (lightContainer);
+	cachedLocalLights .emplace_back (lightContainer);
 }
 
 void
@@ -211,7 +210,7 @@ X3DLayerNode::set_viewport ()
 	currentViewport = x3d_cast <X3DViewportNode*> (viewport ());
 
 	if (not currentViewport)
-		currentViewport = defaultViewport .getValue ();
+		currentViewport = defaultViewport;
 }
 
 void
@@ -263,7 +262,7 @@ X3DLayerNode::pick ()
 	glLoadIdentity ();
 
 	getViewpoint () -> reshape ();
-	getBrowser ()   -> updateHitRay ();	
+	getBrowser ()   -> updateHitRay ();
 	getViewpoint () -> transform ();
 
 	group -> traverse (TraverseType::PICKING);
@@ -360,9 +359,11 @@ X3DLayerNode::collect ()
 	currentViewport -> push ();
 
 	glClear (GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity ();
 
-	getBackground ()     -> draw ();
+	glLoadIdentity ();
+	getBackground () -> draw ();
+
+	glLoadIdentity ();
 	getNavigationInfo () -> enable ();
 	getViewpoint ()      -> reshape ();
 	getViewpoint ()      -> transform ();
