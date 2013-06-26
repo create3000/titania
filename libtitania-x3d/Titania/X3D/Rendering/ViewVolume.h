@@ -64,6 +64,8 @@ public:
 
 	ViewVolume ();
 
+	ViewVolume (const Matrix4d &);
+
 	ViewVolume (const Matrix4d &, const Matrix4d &);
 
 	bool

@@ -47,61 +47,60 @@ EXTERNPROTO LineTrail [
 ]
 "LineTrail.wrl"
 
-Viewpoint {
-  description "Pespective"
-  position 5.25938 11.9066 14.585
-  orientation -0.888734 0.442501 0.119768 0.734172
-}
-
-Viewpoint {
-  description "Top"
-  position 0 20 0
-  orientation -1 -0 -0 1.5708
-}
-
-Grid {
-  solid FALSE
-}
-
-ParticleGroup {
+Collision {
+  collide FALSE
   children [
-    DEF _0 Particle {
-      mass 20000000000
-      velocity 0 -0.28 0
-      translation -4 0 0
-      children ParticleShape {
-        color 0 0.8 0.8
-      }
+    Viewpoint {
+      description "Pespective"
+      position 5.25938 11.9066 14.585
+      orientation -0.888734 0.442501 0.119768 0.734172
     }
-    DEF _2 Particle {
-      mass 20000000000
-      velocity 0 0.28 0
-      translation 4 0 0
-      children ParticleShape {
-        color 0.8 0 0.8
+    Viewpoint {
+      description "Top"
+      position 0 20 0
+      orientation -1 -0 -0 1.5708
+    }
+    Grid {
+      solid FALSE
+    }
+    ParticleGroup {
+      children [
+        DEF _0 Particle {
+          mass 20000000000
+          velocity 0 -0.28 0
+          translation -4 0 0
+          children ParticleShape {
+            color 0 0.8 0.8
+          }
+        }
+        DEF _2 Particle {
+          mass 20000000000
+          velocity 0 0.28 0
+          translation 4 0 0
+          children ParticleShape {
+            color 0.8 0 0.8
+          }
+        }
+      ]
+    }
+    Shape {
+      appearance Appearance {
+        material Material {
+          emissiveColor 0 0.8 0.8
+        }
       }
+      geometry DEF _1 LineTrail { }
+    }
+    Shape {
+      appearance Appearance {
+        material Material {
+          emissiveColor 0.8 0 0.8
+        }
+      }
+      geometry DEF _3 LineTrail { }
     }
   ]
 }
 
-Shape {
-  appearance Appearance {
-    material Material {
-      emissiveColor 0 0.8 0.8
-    }
-  }
-  geometry DEF _1 LineTrail { }
-}
-
-Shape {
-  appearance Appearance {
-    material Material {
-      emissiveColor 0.8 0 0.8
-    }
-  }
-  geometry DEF _3 LineTrail { }
-}
-
 ROUTE _0.translation_changed TO _1.set_point
 ROUTE _2.translation_changed TO _3.set_point
-

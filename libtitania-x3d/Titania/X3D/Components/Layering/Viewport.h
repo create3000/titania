@@ -84,22 +84,22 @@ public:
 
 	virtual
 	void
-	push ();
+	push () final;
 
 	virtual
 	void
-	pop ();
+	pop () final;
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	float
 	getLeft ();
@@ -115,7 +115,7 @@ private:
 
 	virtual
 	void
-	collect (TraverseType);
+	collect (TraverseType) final;
 
 	struct Fields
 	{

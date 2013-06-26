@@ -50,6 +50,7 @@
 
 #include "jsContext.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "jsString.h"
 #include "jsBrowser.h"
 #include "jsFields.h"
@@ -69,13 +70,12 @@ JSClass jsContext::global_class = {
 };
 
 jsContext::jsContext (X3DScriptNode* script, const std::string & ecmascript, const basic::uri & uri, size_t index) :
-	         X3DBaseNode (script -> getExecutionContext () -> getBrowser (), script -> getExecutionContext ()), 
+	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()), 
 	X3DJavaScriptContext (),                                                                                    
 	        X3DUrlObject (),                                                                                    
 	             runtime (NULL),                                                                                
 	             context (NULL),                                                                                
 	              global (NULL),                                                                                
-	             browser (script -> getBrowser ()),                                                             
 	              script (script),                                                                              
 	            worldURL ({ uri }),                                                                             
 	               index (index),                                                                               
@@ -441,7 +441,7 @@ jsContext::set_field (X3DFieldDefinition* field)
 	jsval argv [2];
 
 	JS_NewFieldValue (context, field, &argv [0], true);
-	JS_NewNumberValue (context, browser -> getCurrentTime (), &argv [1]);
+	JS_NewNumberValue (context, getCurrentTime (), &argv [1]);
 
 	jsval rval;
 	JS_CallFunctionValue (context, global, functions [field], 2, argv, &rval);

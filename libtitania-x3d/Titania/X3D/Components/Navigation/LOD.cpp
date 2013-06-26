@@ -50,6 +50,7 @@
 
 #include "LOD.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/Matrix.h"
@@ -92,6 +93,27 @@ LOD::create (X3DExecutionContext* const executionContext) const
 	return new LOD (executionContext);
 }
 
+Box3f
+LOD::getBBox ()
+{
+	if (bboxSize () == Vector3f (-1, -1, -1))
+	{
+		size_t level = level_changed ();
+
+		if (level < children () .size ())
+		{
+			auto child = x3d_cast <X3DBoundedObject*> (children () [level]);
+
+			if (child)
+				return child -> getBBox ();
+
+			return Box3f ();
+		}
+	}
+
+	return Box3f (bboxSize (), bboxCenter ());
+}
+
 size_t
 LOD::getLevel (TraverseType type)
 {
@@ -113,15 +135,15 @@ void
 LOD::traverse (TraverseType type)
 {
 	size_t level = getLevel (type);
+	
+	if (type == TraverseType::CAMERA)
+	{
+		if (level_changed () not_eq (int32_t) level)
+			level_changed () = level;
+	}
 
 	if (level < children () .size ())
 	{
-		if (type == TraverseType::CAMERA)
-		{
-			if (level_changed () not_eq (int32_t) level)
-				level_changed () = level;
-		}
-
 		if (children () [level])
 			children () [level] -> traverse (type);
 	}

@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JAVA_SCRIPT_CONTEXT_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JAVA_SCRIPT_CONTEXT_H__
 
-#include "../../Browser/X3DBrowser.h"
 #include "../X3DJavaScriptContext.h"
 #include "../../Components/Networking/X3DUrlObject.h"
 #include "../../Components/Scripting/X3DScriptNode.h"
@@ -182,7 +181,6 @@ private:
 	JSRuntime*              runtime;
 	JSContext*              context;
 	JSObject*               global;
-	X3DBrowser*             browser;
 	X3DScriptNode*          script;
 	std::deque <basic::uri> worldURL;
 	size_t                  index;

@@ -77,6 +77,10 @@ ViewVolume::ViewVolume () :
 	ViewVolume (ModelViewMatrix4d (), ProjectionMatrix4d ()) 
 { }
 
+ViewVolume::ViewVolume (const Matrix4d & modelview) :
+	ViewVolume (modelview, ProjectionMatrix4d ()) 
+{ }
+
 ViewVolume::ViewVolume (const Matrix4d & modelview, const Matrix4d & projection)
 {
 	GLint viewport [4];

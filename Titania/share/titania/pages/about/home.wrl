@@ -11,7 +11,7 @@ EXTERNPROTO Rotor [
 "../Library/Rotor.wrl"
 
 DEF NavigationInfo NavigationInfo {
-  headlight FALSE
+  headlight TRUE
 }
 
 DEF Home Viewpoint {

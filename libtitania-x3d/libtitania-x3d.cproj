@@ -558,6 +558,7 @@
     <None Include="Titania\X3D\Execution\World.h" />
     <None Include="Titania\X3D\Routing\EventList.h" />
     <None Include="Titania\X3D\Routing\NodeList.h" />
+    <None Include="Titania\X3D\Rendering\DepthBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -991,6 +992,7 @@
     <Compile Include="Titania\X3D\Execution\ExportedNode.cpp" />
     <Compile Include="Titania\X3D\Execution\ExportedNodeArray.cpp" />
     <Compile Include="Titania\X3D\Execution\World.cpp" />
+    <Compile Include="Titania\X3D\Rendering\DepthBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

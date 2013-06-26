@@ -1,3 +1,33 @@
+2013-06-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* ViewVolume.h:
+	* X3DRenderer.h:
+	* DepthBuffer.h:
+	* ViewVolume.cpp:
+	* DepthBuffer.cpp:
+	* X3DRenderer.cpp:
+	* CollisionShape.h:
+	* ShapeContainer.h:
+	* LOD.h:
+	* CollisionShape.cpp:
+	* ShapeContainer.cpp:
+	* Switch.h:
+	* LOD.cpp:
+	* Viewport.h:
+	* LayerSet.h:
+	* Switch.cpp:
+	* StaticGroup.h:
+	* X3DLayerNode.h:
+	* jsContext.h:
+	* X3DLayerNode.cpp:
+	* jsContext.cpp:
+	* jsGlobals.cpp:
+	* X3DGroupingNode.h:
+	* X3DBoundedObject.h:
+	* X3DViewpointNode.cpp: 
+
 2013-06-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* LOD.h:

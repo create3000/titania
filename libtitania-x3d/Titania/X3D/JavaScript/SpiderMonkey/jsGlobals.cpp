@@ -50,6 +50,7 @@
 
 #include "jsGlobals.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Scripting/X3DScriptNode.h"
 #include "../../InputOutput/Generator.h"
 #include "Fields/jsSFNode.h"
@@ -134,7 +135,7 @@ jsGlobals::require (JSContext* context, uintN argc, jsval* vp)
 JSBool
 jsGlobals::print (JSContext* context, uintN argc, jsval* vp)
 {
-	X3DBrowser* browser = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode () -> getBrowser ();
+	X3DBrowser* browser = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getBrowser ();
 
 	jsval* argv = JS_ARGV (context, vp);
 

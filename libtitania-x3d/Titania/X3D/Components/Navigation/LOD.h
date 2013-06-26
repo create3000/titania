@@ -102,8 +102,12 @@ public:
 	{ return *fields .level_changed; }
 
 	virtual
+	Box3f
+	getBBox () final;
+
+	virtual
 	void
-	traverse (TraverseType);
+	traverse (TraverseType) final;
 
 
 private:

@@ -50,7 +50,6 @@
 
 #include "ShapeContainer.h"
 
-#include "../Rendering/ViewVolume.h"
 #include <Titania/Utility/Adapter.h>
 
 namespace titania {
@@ -58,62 +57,45 @@ namespace X3D {
 
 ShapeContainer::ShapeContainer (X3DShapeNode* shape,
                                 X3DFogObject* fog,
-                                const LightContainerArray & localLights) :
+                                const LightContainerArray & localLights,
+                                const Matrix4f & matrix,
+                                float distance) :
 	      shape (shape),                      
 	        fog (fog),                        
 	localLights (localLights),                
-	     matrix (ModelViewMatrix4f ()),       
-	   distance (getDistance (shape, matrix)) 
+	     matrix (matrix),       
+	   distance (distance) 
 { }
 
 void
 ShapeContainer::assign (X3DShapeNode* shape,
                         X3DFogObject* fog,
-                        const LightContainerArray & localLights)
+                        const LightContainerArray & localLights,
+                        const Matrix4f & matrix,
+                        float distance)
 {
 	this -> shape       = shape;
 	this -> fog         = fog;
 	this -> localLights = localLights;
-	this -> matrix      = ModelViewMatrix4f ();
-	this -> distance    = getDistance (shape, this -> matrix);
+	this -> matrix      = matrix;
+	this -> distance    = distance;
 }
 
-bool
+void
 ShapeContainer::draw ()
 {
-	bool drawn = false;
+	glLoadMatrixf (matrix .data ());
 
-	if (distance < 0)
-	{
-		glLoadMatrixf (matrix .data ());
+	for (const auto & light : localLights)
+		light -> enable ();
 
-		if (ViewVolume () .intersect (shape -> getBBox ()))
-		{
-			for (const auto & light : localLights)
-				light -> enable ();
+	if (fog)
+		fog -> enable ();
 
-			if (fog)
-				fog -> enable ();
+	shape -> draw ();
 
-			shape -> draw ();
-
-			for (const auto & light : basic::adapter (localLights .crbegin (), localLights .crend ()))
-				light -> disable ();
-
-			drawn = true;
-		}
-	}
-
-	return drawn;
-}
-
-float
-ShapeContainer::getDistance (X3DShapeNode* shape, const Matrix4f & matrix)
-{
-	Box3f bbox  = shape -> getBBox () * matrix;
-	float depth = bbox .size () .z () * 0.5f;
-
-	return bbox .center () .z () - depth;
+	for (const auto & light : basic::adapter (localLights .crbegin (), localLights .crend ()))
+		light -> disable ();
 }
 
 } // X3D

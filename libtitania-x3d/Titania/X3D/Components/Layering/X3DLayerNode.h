@@ -242,7 +242,6 @@ public:
 
 	///  @name ...
 
-	virtual
 	Box3f
 	getBBox ();
 

@@ -78,8 +78,12 @@ public:
 	{ return *fields .whichChoice; }
 
 	virtual
+	Box3f
+	getBBox () final;
+
+	virtual
 	void
-	traverse (TraverseType);
+	traverse (TraverseType) final;
 
 
 private:

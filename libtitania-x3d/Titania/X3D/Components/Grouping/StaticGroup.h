@@ -78,19 +78,20 @@ public:
 	children () const
 	{ return *fields .children; }
 
+	virtual
 	Box3f
-	getBBox ();
+	getBBox () final;
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	struct Fields
 	{

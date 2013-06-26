@@ -50,6 +50,7 @@
 
 #include "Switch.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -81,6 +82,25 @@ X3DBaseNode*
 Switch::create (X3DExecutionContext* const executionContext) const
 {
 	return new Switch (executionContext);
+}
+
+Box3f
+Switch::getBBox ()
+{
+	if (bboxSize () == Vector3f (-1, -1, -1))
+	{
+		if (whichChoice () >= 0 and whichChoice () < (int32_t) children () .size ())
+		{
+			auto child = x3d_cast <X3DBoundedObject*> (children () [whichChoice ()]);
+
+			if (child)
+				return child -> getBBox ();
+
+			return Box3f ();
+		}
+	}
+
+	return Box3f (bboxSize (), bboxCenter ());
 }
 
 void

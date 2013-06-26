@@ -48,64 +48,53 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_RENDERING_SHAPE_CONTAINER_H__
-#define __TITANIA_X3D_RENDERING_SHAPE_CONTAINER_H__
+#ifndef __TITANIA_X3D_RENDERING_DEPTH_BUFFER_H__
+#define __TITANIA_X3D_RENDERING_DEPTH_BUFFER_H__
 
-#include "../Components/EnvironmentalEffects/X3DFogObject.h"
-#include "../Components/Shape/X3DShapeNode.h"
-#include "LightContainerArray.h"
+#include <vector>
 
-#include "../Types/Geometry.h"
-#include "../Types/Numbers.h"
+extern "C"
+{
+#include <GL/glew.h>
+
+#include <GL/glu.h>
+
+#include <GL/gl.h>
+
+#include <GL/glx.h>
+}
 
 namespace titania {
 namespace X3D {
 
-class ShapeContainer
+class DepthBuffer
 {
 public:
 
-	ShapeContainer (X3DShapeNode*,
-	                X3DFogObject*,
-	                const LightContainerArray &,
-	                const Matrix4f &,
-	                float);
+	DepthBuffer (size_t, size_t);
+
+	double
+	getDistance (float, float);
 
 	void
-	assign (X3DShapeNode*,
-	        X3DFogObject*,
-	        const LightContainerArray &,
-	        const Matrix4f &,
-	        float);
-
-	float
-	getDistance () const
-	{ return distance; }
+	bind ();
 
 	void
-	draw ();
+	unbind ();
+
+	~DepthBuffer ();
 
 
 private:
 
-	X3DShapeNode*       shape;
-	X3DFogObject*       fog;
-	LightContainerArray localLights;
+	size_t width;
+	size_t height;
 
-	Matrix4f matrix;
-	float    distance;
-
-};
-
-class ShapeContainerComp
-{
-public:
-
-	bool
-	operator () (const ShapeContainer* lhs, const ShapeContainer* rhs) const
-	{
-		return lhs -> getDistance () < rhs -> getDistance ();
-	}
+	GLuint                id;
+	GLuint                colorBuffer;
+	GLuint                depthBuffer;
+	std::vector <GLfloat> depth;
+	GLint                 viewport [4];
 
 };
 

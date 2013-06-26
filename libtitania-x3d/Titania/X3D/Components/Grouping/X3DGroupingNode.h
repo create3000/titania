@@ -93,15 +93,15 @@ public:
 
 	virtual
 	Box3f
-	getBBox ();
+	getBBox () override;
 
 	virtual
 	void
-	traverse (TraverseType);
+	traverse (TraverseType) override;
 
 	virtual
 	void
-	dispose ();
+	dispose () override;
 
 
 protected:
@@ -110,7 +110,7 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
 
 
 private:

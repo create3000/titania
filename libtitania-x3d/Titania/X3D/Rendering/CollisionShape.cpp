@@ -52,27 +52,31 @@
 
 #include "../Components/Rendering/X3DGeometryNode.h"
 #include "../Rendering/Matrix.h"
-#include "../Rendering/ViewVolume.h"
 #include <Titania/Utility/Adapter.h>
 
 namespace titania {
 namespace X3D {
 
-CollisionShape::CollisionShape (X3DShapeNode* shape, const CollisionArray & collisions) :
+CollisionShape::CollisionShape (X3DShapeNode* shape,
+                                const CollisionArray & collisions,
+                                const Matrix4f & matrix,
+                                float distance) :
 	     shape (shape),                      
 	collisions (collisions),                 
-	    matrix (ModelViewMatrix4f ()),       
-	  distance (getDistance (shape, matrix)) 
+	    matrix (matrix),       
+	  distance (distance) 
 { }
 
 void
 CollisionShape::assign (X3DShapeNode* shape,
-                        const CollisionArray & collisions)
+                        const CollisionArray & collisions,
+                        const Matrix4f & matrix,
+                        float distance)
 {
 	this -> shape      = shape;
 	this -> collisions = collisions;
-	this -> matrix     = ModelViewMatrix4f ();
-	this -> distance   = getDistance (shape, this -> matrix);
+	this -> matrix     = matrix;
+	this -> distance   = distance;
 }
 
 bool
@@ -87,24 +91,9 @@ CollisionShape::intersect (const Sphere3f & sphere) const
 void
 CollisionShape::draw ()
 {
-	if (distance < 0)
-	{
-		glLoadMatrixf (matrix .data ());
+	glLoadMatrixf (matrix .data ());
 
-		if (ViewVolume () .intersect (shape -> getBBox ()))
-		{
-			shape -> getGeometry () -> draw (false, false, false);
-		}
-	}
-}
-
-float
-CollisionShape::getDistance (X3DShapeNode* shape, const Matrix4f & matrix)
-{
-	Box3f bbox  = shape -> getBBox () * matrix;
-	float depth = bbox .size () .z () * 0.5f;
-
-	return bbox .center () .z () - depth;
+	shape -> getGeometry () -> draw (false, false, false);
 }
 
 } // X3D

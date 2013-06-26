@@ -48,68 +48,97 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_RENDERING_SHAPE_CONTAINER_H__
-#define __TITANIA_X3D_RENDERING_SHAPE_CONTAINER_H__
+#include "DepthBuffer.h"
 
-#include "../Components/EnvironmentalEffects/X3DFogObject.h"
-#include "../Components/Shape/X3DShapeNode.h"
-#include "LightContainerArray.h"
-
-#include "../Types/Geometry.h"
-#include "../Types/Numbers.h"
+#include <stdexcept>
 
 namespace titania {
 namespace X3D {
 
-class ShapeContainer
+DepthBuffer::DepthBuffer (size_t width, size_t height) :
+	      width (width),
+	     height (height),
+	         id (0),
+	colorBuffer (0),
+	depthBuffer (0),
+	      depth (width * height)
 {
-public:
-
-	ShapeContainer (X3DShapeNode*,
-	                X3DFogObject*,
-	                const LightContainerArray &,
-	                const Matrix4f &,
-	                float);
-
-	void
-	assign (X3DShapeNode*,
-	        X3DFogObject*,
-	        const LightContainerArray &,
-	        const Matrix4f &,
-	        float);
-
-	float
-	getDistance () const
-	{ return distance; }
-
-	void
-	draw ();
-
-
-private:
-
-	X3DShapeNode*       shape;
-	X3DFogObject*       fog;
-	LightContainerArray localLights;
-
-	Matrix4f matrix;
-	float    distance;
-
-};
-
-class ShapeContainerComp
-{
-public:
-
-	bool
-	operator () (const ShapeContainer* lhs, const ShapeContainer* rhs) const
+	if (glXGetCurrentContext ()) // GL_EXT_framebuffer_object
 	{
-		return lhs -> getDistance () < rhs -> getDistance ();
+		glGenFramebuffers (1, &id);
+
+		// Bind frame buffer.
+		glBindFramebuffer (GL_FRAMEBUFFER, id);
+
+		// The color buffer 1
+		//			glGenRenderbuffers (1, &colorBuffer);
+		//			glBindRenderbuffer (GL_RENDERBUFFER, colorBuffer);
+		//			glRenderbufferStorage (GL_RENDERBUFFER, GL_RGBA8, width, height);
+		//			glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBuffer);
+
+		// The depth buffer
+		glGenRenderbuffers (1, &depthBuffer);
+		glBindRenderbuffer (GL_RENDERBUFFER, depthBuffer);
+		glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+		glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+
+		// Always check that our framebuffer is ok
+		if (glCheckFramebufferStatus (GL_FRAMEBUFFER) not_eq GL_FRAMEBUFFER_COMPLETE)
+			throw std::runtime_error ("Couldn't create frame buffer.");
+
+		glBindFramebuffer (GL_FRAMEBUFFER, 0);
+	}
+}
+
+double
+DepthBuffer::getDistance (float zNear, float zFar)
+{
+	glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
+
+	float distance = zNear + (zFar - zNear) * depth [0];
+
+	for (const auto & d : depth)
+	{
+		distance = std::min (distance, zNear + (zFar - zNear) * d);
 	}
 
-};
+	return distance;
+}
+
+void
+DepthBuffer::bind ()
+{
+	// Bind frame buffer.
+	glBindFramebuffer (GL_FRAMEBUFFER, id);
+
+	glGetIntegerv (GL_VIEWPORT, viewport);
+	glViewport (0, 0, width, height);
+	glScissor  (0, 0, width, height);
+	glEnable (GL_SCISSOR_TEST);
+	glClear (GL_DEPTH_BUFFER_BIT);
+}
+
+void
+DepthBuffer::unbind ()
+{
+	glDisable (GL_SCISSOR_TEST);
+	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
+
+	// Bind frame buffer.
+	glBindFramebuffer (GL_FRAMEBUFFER, 0);
+}
+
+DepthBuffer::~DepthBuffer ()
+{
+	if (colorBuffer)
+		glDeleteRenderbuffers (1, &colorBuffer);
+
+	if (depthBuffer)
+		glDeleteRenderbuffers (1, &depthBuffer);
+
+	if (id)
+		glDeleteFramebuffers (1, &id);
+}
 
 } // X3D
 } // titania
-
-#endif

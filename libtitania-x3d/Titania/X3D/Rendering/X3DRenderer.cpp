@@ -52,117 +52,17 @@
 
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
+#include "../Rendering/ViewVolume.h"
 
 #include <Titania/Physics/Constants.h>
 #include <Titania/Utility/Adapter.h>
 #include <algorithm>
-#include <stdexcept>
 
 #define DEPTH_BUFFER_WIDTH   16
 #define DEPTH_BUFFER_HEIGHT  16
 
 namespace titania {
 namespace X3D {
-
-class X3DRenderer::DepthBuffer
-{
-public:
-
-	DepthBuffer (size_t width, size_t height) :
-		width (width),
-		height (height),
-		id (0),
-		colorBuffer (0),
-		depthBuffer (0),
-		depth (width * height)
-	{
-		if (glXGetCurrentContext ()) // GL_EXT_framebuffer_object
-		{
-			glGenFramebuffers (1, &id);
-
-			// Bind frame buffer.
-			glBindFramebuffer (GL_FRAMEBUFFER, id);
-
-			// The color buffer 1
-			//			glGenRenderbuffers (1, &colorBuffer);
-			//			glBindRenderbuffer (GL_RENDERBUFFER, colorBuffer);
-			//			glRenderbufferStorage (GL_RENDERBUFFER, GL_RGBA8, width, height);
-			//			glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBuffer);
-
-			// The depth buffer
-			glGenRenderbuffers (1, &depthBuffer);
-			glBindRenderbuffer (GL_RENDERBUFFER, depthBuffer);
-			glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-			glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
-
-			// Always check that our framebuffer is ok
-			if (glCheckFramebufferStatus (GL_FRAMEBUFFER) not_eq GL_FRAMEBUFFER_COMPLETE)
-				throw std::runtime_error ("Couldn't create frame buffer.");
-
-			glBindFramebuffer (GL_FRAMEBUFFER, 0);
-		}
-	}
-
-	double
-	getDistance (const float & zNear, const float & zFar)
-	{
-		glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
-
-		float distance = zNear + (zFar - zNear) * depth [0];
-
-		for (const auto & d : depth)
-		{
-			distance = std::min (distance, zNear + (zFar - zNear) * d);
-		}
-
-		return distance;
-	}
-
-	void
-	bind ()
-	{
-		// Bind frame buffer.
-		glBindFramebuffer (GL_FRAMEBUFFER, id);
-
-		glGetIntegerv (GL_VIEWPORT, viewport);
-		glViewport (0, 0, width, height);
-		glScissor  (0, 0, width, height);
-		glEnable (GL_SCISSOR_TEST);
-		glClear (GL_DEPTH_BUFFER_BIT);
-	}
-
-	void
-	unbind ()
-	{
-		glDisable (GL_SCISSOR_TEST);
-		glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
-
-		// Bind frame buffer.
-		glBindFramebuffer (GL_FRAMEBUFFER, 0);
-	}
-
-	~DepthBuffer ()
-	{
-		if (colorBuffer)
-			glDeleteRenderbuffers (1, &colorBuffer);
-
-		if (depthBuffer)
-			glDeleteRenderbuffers (1, &depthBuffer);
-
-		if (id)
-			glDeleteFramebuffers (1, &id);
-	}
-
-	size_t width;
-	size_t height;
-
-	GLuint                id;
-	GLuint                colorBuffer;
-	GLuint                depthBuffer;
-	std::vector <GLfloat> depth;
-	GLint                 viewport [4];
-
-};
 
 X3DRenderer::X3DRenderer () :
 	             X3DNode (),  
@@ -187,40 +87,67 @@ X3DRenderer::initialize ()
 void
 X3DRenderer::addShape (X3DShapeNode* shape)
 {
-	X3DFogObject*               fog         = getCurrentLayer () -> getFog ();
-	const LightContainerArray & localLights = getCurrentLayer () -> getLocalLights ();
-
-	if (shape -> isTransparent ())
+   Matrix4f matrix   = ModelViewMatrix4f ();
+   float    distance = getDistance (shape, matrix);
+  
+	if (distance < 0)
 	{
-		if (numTransparentShapes < transparentShapes .size ())
-			transparentShapes [numTransparentShapes] -> assign (shape, fog, localLights);
-		else
-			transparentShapes .emplace_back (new ShapeContainer (shape, fog, localLights));
+		if (ViewVolume (matrix) .intersect (shape -> getBBox ()))
+		{
+			X3DFogObject*               fog         = getCurrentLayer () -> getFog ();
+			const LightContainerArray & localLights = getCurrentLayer () -> getLocalLights ();
 
-		++ numTransparentShapes;
-	}
-	else
-	{
-		if (numOpaqueShapes < shapes .size ())
-			shapes [numOpaqueShapes] -> assign (shape, fog, localLights);
-		else
-			shapes .emplace_back (new ShapeContainer (shape, fog, localLights));
+			if (shape -> isTransparent ())
+			{
+				if (numTransparentShapes < transparentShapes .size ())
+					transparentShapes [numTransparentShapes] -> assign (shape, fog, localLights, matrix, distance);
+				else
+					transparentShapes .emplace_back (new ShapeContainer (shape, fog, localLights, matrix, distance));
 
-		++ numOpaqueShapes;
+				++ numTransparentShapes;
+			}
+			else
+			{
+				if (numOpaqueShapes < shapes .size ())
+					shapes [numOpaqueShapes] -> assign (shape, fog, localLights, matrix, distance);
+				else
+					shapes .emplace_back (new ShapeContainer (shape, fog, localLights, matrix, distance));
+
+				++ numOpaqueShapes;
+			}
+		}
 	}
 }
 
 void
 X3DRenderer::addCollision (X3DShapeNode* shape)
 {
-	const CollisionArray & collisions = getCurrentLayer () -> getCollisions ();
+   Matrix4f matrix   = ModelViewMatrix4f ();
+   float    distance = getDistance (shape, matrix);
+  
+	if (distance < 0)
+	{
+		if (ViewVolume (matrix) .intersect (shape -> getBBox ()))
+		{
+			const CollisionArray & collisions = getCurrentLayer () -> getCollisions ();
 
-	if (numCollisionShapes < collisionShapes .size ())
-		collisionShapes [numCollisionShapes] -> assign (shape, collisions);
-	else
-		collisionShapes .emplace_back (new CollisionShape (shape, collisions));
+			if (numCollisionShapes < collisionShapes .size ())
+				collisionShapes [numCollisionShapes] -> assign (shape, collisions, matrix, distance);
+			else
+				collisionShapes .emplace_back (new CollisionShape (shape, collisions, matrix, distance));
 
-	++ numCollisionShapes;
+			++ numCollisionShapes;
+		}
+	}
+}
+
+float
+X3DRenderer::getDistance (X3DShapeNode* shape, const Matrix4f & matrix)
+{
+	Box3f bbox  = shape -> getBBox () * matrix;
+	float depth = bbox .size () .z () * 0.5f;
+
+	return bbox .center () .z () - depth;
 }
 
 void
@@ -275,8 +202,6 @@ X3DRenderer::draw ()
 	{
 		// Sorted blend
 
-		size_t numNodesDrawn = 0;
-
 		// Render opaque objects first
 
 		glEnable (GL_DEPTH_TEST);
@@ -284,7 +209,7 @@ X3DRenderer::draw ()
 		glDisable (GL_BLEND);
 
 		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
-			numNodesDrawn += shape -> draw ();
+			shape -> draw ();
 
 		// Render transparent objects
 
@@ -294,18 +219,14 @@ X3DRenderer::draw ()
 		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, ShapeContainerComp ());
 
 		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentShapes))
-			numNodesDrawn += shape -> draw ();
+			shape -> draw ();
 
 		glDepthMask (GL_TRUE);
 		glDisable (GL_BLEND);
-
-		//__LOG__ << numOpaqueShapes + numTransparentShapes << " : " << numNodesDrawn << std::endl;
 	}
 	else
 	{
 		//	http://wiki.delphigl.com/index.php/Blenden
-
-		size_t numNodesDrawn = 0;
 
 		// Double blend
 
@@ -340,7 +261,7 @@ X3DRenderer::draw ()
 		glBlendFuncSeparate (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
 		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
-			numNodesDrawn += shape -> draw ();
+			shape -> draw ();
 
 		glDisable (GL_BLEND);
 		glDepthFunc (GL_LEQUAL);

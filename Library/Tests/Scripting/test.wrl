@@ -22,7 +22,7 @@ EXTERNPROTO Particle [
   eventIn      MFNode     removeChildren
   exposedField MFNode     children
 ]
-"/home/holger/Arbeitsfläche/Particle/Particle.wrl"
+"../PROTO/Particle/Particle.wrl"
 
 PROTO Test [
   exposedField MFNode children [ ]

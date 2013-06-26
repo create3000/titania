@@ -14,8 +14,8 @@ Transform {
     Viewpoint {
       description "Home"
     }
-    LOD {
-      range [ 20, 30 ]
+    DEF LOD LOD {
+      range [ 20, 30, 40 ]
       level [
         Transform {
           children Shape {
@@ -50,20 +50,27 @@ Transform {
       ]
     }
     DEF Proxy ProximitySensor {
-      size 100 100 100
+      size 1000 1000 1000
     }
   ]
 }
 
 DEF Debug Script {
   eventIn SFVec3f set_position
+  eventIn SFInt32 set_level
 
   url "vrmlscript:
 function set_position (value)
 {
-	print (value .length ());
+	print ('position: ' + value .length ());
+}
+
+function set_level (value)
+{
+	print ('level:    ' + value);
 }
 	"
 }
 
 ROUTE Proxy.position_changed TO Debug.set_position
+ROUTE LOD.level_changed TO Debug.set_level

@@ -65,12 +65,18 @@ class CollisionShape
 {
 public:
 
-	CollisionShape (X3DShapeNode*, const CollisionArray &);
+	CollisionShape (X3DShapeNode*,
+	                const CollisionArray &,
+	                const Matrix4f &,
+	                float);
 
 	void
-	assign (X3DShapeNode*, const CollisionArray &);
+	assign (X3DShapeNode*,
+	        const CollisionArray &,
+	        const Matrix4f &,
+	        float);
 
-	const float &
+	float
 	getDistance () const
 	{ return distance; }
 
@@ -86,10 +92,6 @@ public:
 
 
 private:
-
-	static
-	float
-	getDistance (X3DShapeNode*, const Matrix4f &);
 
 	X3DShapeNode*  shape;
 	CollisionArray collisions;

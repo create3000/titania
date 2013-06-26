@@ -55,6 +55,7 @@
 #include "../Components/Core/X3DNode.h"
 #include "../Rendering/CollisionShape.h"
 #include "../Rendering/ShapeContainer.h"
+#include "../Rendering/DepthBuffer.h"
 
 #include <memory>
 
@@ -98,6 +99,10 @@ private:
 	typedef std::vector <ShapeContainer*> ShapeContainerArray;
 	typedef std::vector <CollisionShape*> CollisionShapeArray;
 
+	static
+	float
+	getDistance (X3DShapeNode*, const Matrix4f &);
+
 	virtual
 	void
 	collect (TraverseType) = 0;
@@ -116,8 +121,6 @@ private:
 
 	void
 	clear ();
-
-	class DepthBuffer;
 
 	ShapeContainerArray     shapes;
 	ShapeContainerArray     transparentShapes;

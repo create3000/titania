@@ -239,20 +239,10 @@ X3DViewpointNode::camera ()
 	{
 		Matrix4f transformationMatrix = ModelViewMatrix4f ();
 
-		if (jump ())
-		{
-			transformationMatrix .translate (getUserPosition ());
-			transformationMatrix .rotate (getUserOrientation ());
+		transformationMatrix .translate (getUserPosition ());
+		transformationMatrix .rotate (getUserOrientation ());
 
-			setTransformationMatrix (transformationMatrix);
-		}
-		else
-		{
-			transformationMatrix .translate (getUserPosition ());
-			transformationMatrix .rotate (getUserOrientation ());
-
-			setTransformationMatrix (transformationMatrix);
-		}
+		setTransformationMatrix (transformationMatrix);
 	}
 }
 
@@ -294,8 +284,8 @@ X3DViewpointNode::dispose ()
 	timeSensor           .dispose ();
 	positionInterpolator .dispose ();
 
-	X3DBindableNode::dispose ();
 	X3DViewpointObject::dispose ();
+	X3DBindableNode::dispose ();
 }
 
 } // X3D

@@ -277,6 +277,8 @@ X3DLayerNode::camera ()
 {
 	glPushMatrix ();
 	glLoadIdentity ();
+	
+	//getBBox ();
 
 	getViewpoint ()  -> reshape ();
 

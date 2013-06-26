@@ -107,18 +107,18 @@ public:
 
 	virtual
 	void
-	traverse (TraverseType);
+	traverse (TraverseType) final;
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	void
 	set_activeLayer ();
