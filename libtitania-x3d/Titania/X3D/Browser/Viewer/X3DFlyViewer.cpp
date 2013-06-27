@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,18 +71,18 @@ static constexpr float FRAME_RATE             = 100;
 Vector3f X3DFlyViewer::upVector (0, 1, 0);
 
 X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* navigationInfo) :
-	     X3DViewer (browser),        
-	navigationInfo (navigationInfo), 
-	    fromVector (),               
-	      toVector (),               
-	     direction (),               
-	      rotation (),               
-	     startTime (),               
-	        button (0),              
-	          keys (),               
-	        fly_id (),               
-	        pan_id (),               
-	       roll_id ()                
+	     X3DViewer (browser),
+	navigationInfo (navigationInfo),
+	    fromVector (),
+	      toVector (),
+	     direction (),
+	      rotation (),
+	     startTime (),
+	        button (0),
+	          keys (),
+	        fly_id (),
+	        pan_id (),
+	       roll_id ()
 { }
 
 void
@@ -336,18 +336,25 @@ X3DFlyViewer::getTranslation (const Vector3f & translation) const
 float
 X3DFlyViewer::getDistance (const Vector3f & direction) const
 {
-	glLoadIdentity ();
+	// Calculate position offset
 
-	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+	NavigationInfo* navigationInfo  = getBrowser () -> getActiveNavigationInfo ();
+	float           collisionRadius = navigationInfo -> getCollisionRadius ();
+	float           positionOffset  = (collisionRadius + navigationInfo -> getAvatarHeight () - navigationInfo -> getStepHeight ()) / 2 - collisionRadius;
 
-	Matrix4f cameraSpaceMatrix = viewpoint -> getModelViewMatrix ();
+	// Translate camera
 
-	cameraSpaceMatrix .translate (viewpoint -> getUserPosition ());
+	X3DViewpointNode* viewpoint         = getBrowser () -> getActiveViewpoint ();
+	Matrix4f          cameraSpaceMatrix = viewpoint -> getModelViewMatrix ();
+
+	cameraSpaceMatrix .translate (viewpoint -> getUserPosition () - Vector3f (0, positionOffset, 0));
 	cameraSpaceMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction));
-	glMultMatrixf (inverse (cameraSpaceMatrix) .data ());
+
+	glLoadMatrixf (inverse (cameraSpaceMatrix) .data ());
+
+	// Traverse and get distance
 
 	const auto & activeLayer = getBrowser () -> getActiveLayer ();
-
 	activeLayer -> traverse (TraverseType::NAVIGATION);
 
 	return activeLayer -> getDistance ();

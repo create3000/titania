@@ -277,7 +277,7 @@ X3DLayerNode::camera ()
 {
 	glPushMatrix ();
 	glLoadIdentity ();
-	
+
 	//getBBox ();
 
 	getViewpoint ()  -> reshape ();
@@ -293,19 +293,20 @@ X3DLayerNode::navigation ()
 {
 	currentViewport -> push ();
 
-	// Get NavigationInfo values
+	// Get width and height of camera
 
 	auto navigationInfo = getNavigationInfo ();
 
-	float zNear           = navigationInfo -> getNearPlane ();
-	float zFar            = navigationInfo -> getFarPlane ();
-	float collisionRadius = navigationInfo -> getCollisionRadius () / std::sqrt (2.0f);
+	float zNear     = navigationInfo -> getNearPlane ();
+	float zFar      = navigationInfo -> getFarPlane ();
+	float width1_2  = navigationInfo -> getCollisionRadius ();
+	float height1_2 = (width1_2 + navigationInfo -> getAvatarHeight () - navigationInfo -> getStepHeight ()) / 2;
 
 	// Reshape viewpoint
 
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
-	glOrtho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar);
+	glOrtho (-width1_2, width1_2, -height1_2, height1_2, zNear, zFar);
 	glMatrixMode (GL_MODELVIEW);
 
 	// Render
@@ -319,8 +320,6 @@ void
 X3DLayerNode::collision ()
 {
 	currentViewport -> push ();
-
-	glLoadIdentity ();
 
 	// Get NavigationInfo values
 
@@ -346,7 +345,7 @@ X3DLayerNode::collision ()
 	cameraSpaceMatrix .translate (viewpoint -> getUserPosition ());
 	cameraSpaceMatrix .rotate (viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
 
-	glMultMatrixf (inverse (cameraSpaceMatrix) .data ());
+	glLoadMatrixf (inverse (cameraSpaceMatrix) .data ());
 
 	// Render
 

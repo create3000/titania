@@ -13,5 +13,4 @@
   <Task file="" description="FieldDefinitionArray als X3DArrayField &lt;X3DFieldDefinition*&gt; machen" />
   <Task file="" description="proto externproto route executioncontext und scene vergleichen nicht in JavaScript" />
   <Task file="" description="X3DBackground optimieren" />
-  <Task file="" description="Collision mit niedrigen Objekten" />
 </ListOfTask>

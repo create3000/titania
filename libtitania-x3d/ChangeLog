@@ -1,3 +1,8 @@
+2013-06-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DFlyViewer.cpp:
+	* X3DLayerNode.cpp: 
+
 2013-06-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:
