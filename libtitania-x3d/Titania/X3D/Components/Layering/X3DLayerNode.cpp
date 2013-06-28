@@ -134,6 +134,74 @@ X3DLayerNode::getBBox ()
 	return group -> getBBox ();
 }
 
+Vector3f
+X3DLayerNode::getTranslation (const Vector3f & positionOffset, float width, float height, const Vector3f & translation)
+{
+	float zFar            = getNavigationInfo () -> getFarPlane ();
+	float collisionRadius = getNavigationInfo () -> getCollisionRadius ();
+
+	float distance = getDistance (positionOffset, width, height, translation);
+	float length   = math::abs (translation);
+
+	if (zFar - distance > 0) // Are there polygons under the viewer
+	{
+		distance -= collisionRadius;
+
+		if (distance > 0)
+		{
+			// Move
+
+			if (length > distance)
+			{
+				// Collision: The wall is reached.
+				return normalize (translation) * distance;
+			}
+
+			else
+				return translation;
+		}
+		else
+		{
+			// Collision
+			return Vector3f ();
+		}
+	}
+	else
+		return translation;
+}
+
+float
+X3DLayerNode::getDistance (const Vector3f & positionOffset, float width, float height, const Vector3f & direction)
+{
+	float width1_2  = width / 2;
+	float height1_2 = height / 2;
+	
+	float zNear = getNavigationInfo () -> getNearPlane ();
+	float zFar  = getNavigationInfo () -> getFarPlane ();
+
+	// Reshape camera
+
+	glMatrixMode (GL_PROJECTION);
+	glLoadIdentity ();
+	glOrtho (-width1_2, width1_2, -height1_2, height1_2, zNear, zFar);
+	glMatrixMode (GL_MODELVIEW);
+
+	// Translate camera
+
+	Matrix4f cameraSpaceMatrix = getViewpoint () -> getModelViewMatrix ();
+
+	cameraSpaceMatrix .translate (getViewpoint () -> getUserPosition () + positionOffset);
+	cameraSpaceMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction));
+
+	glLoadMatrixf (inverse (cameraSpaceMatrix) .data ());
+
+	// Traverse and get distance
+
+	traverse (TraverseType::NAVIGATION);
+
+	return X3DRenderer::getDistance ();
+}
+
 NavigationInfo*
 X3DLayerNode::getNavigationInfo () const
 {
@@ -238,6 +306,7 @@ X3DLayerNode::traverse (TraverseType type)
 		case TraverseType::COLLISION:
 		{
 			collision ();
+			gravite ();
 			break;
 		}
 		case TraverseType::COLLECT:
@@ -253,61 +322,36 @@ X3DLayerNode::traverse (TraverseType type)
 void
 X3DLayerNode::pick ()
 {
-	if (not isPickable ())
-		return;
+	if (isPickable ())
+	{
+		currentViewport -> push ();
 
-	currentViewport -> push ();
+		glLoadIdentity ();
+		getBrowser () -> updateHitRay ();
 
-	glPushMatrix ();
-	glLoadIdentity ();
+		getViewpoint () -> reshape ();
+		getViewpoint () -> transform ();
 
-	getViewpoint () -> reshape ();
-	getBrowser ()   -> updateHitRay ();
-	getViewpoint () -> transform ();
+		group -> traverse (TraverseType::PICKING);
 
-	group -> traverse (TraverseType::PICKING);
-
-	glPopMatrix ();
-
-	currentViewport -> pop ();
+		currentViewport -> pop ();
+	}
 }
 
 void
 X3DLayerNode::camera ()
 {
-	glPushMatrix ();
 	glLoadIdentity ();
-
-	//getBBox ();
-
-	getViewpoint ()  -> reshape ();
+	getViewpoint () -> reshape ();
 
 	defaultViewpoint -> traverse (TraverseType::CAMERA);
 	group -> traverse (TraverseType::CAMERA);
-
-	glPopMatrix ();
 }
 
 void
 X3DLayerNode::navigation ()
 {
 	currentViewport -> push ();
-
-	// Get width and height of camera
-
-	auto navigationInfo = getNavigationInfo ();
-
-	float zNear     = navigationInfo -> getNearPlane ();
-	float zFar      = navigationInfo -> getFarPlane ();
-	float width1_2  = navigationInfo -> getCollisionRadius ();
-	float height1_2 = (width1_2 + navigationInfo -> getAvatarHeight () - navigationInfo -> getStepHeight ()) / 2;
-
-	// Reshape viewpoint
-
-	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity ();
-	glOrtho (-width1_2, width1_2, -height1_2, height1_2, zNear, zFar);
-	glMatrixMode (GL_MODELVIEW);
 
 	// Render
 
@@ -364,7 +408,6 @@ X3DLayerNode::collect ()
 	glLoadIdentity ();
 	getBackground () -> draw ();
 
-	glLoadIdentity ();
 	getNavigationInfo () -> enable ();
 	getViewpoint ()      -> reshape ();
 	getViewpoint ()      -> transform ();

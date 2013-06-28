@@ -6,11 +6,12 @@
   <Task file="" description="Vattenfall MovieTexture zweimal in GarbageCollector" />
   <Task file="" description="Picking und Collision mit Text" />
   <Task file="" description="JavaScript jsSFNode getFieldDefinitions ist nicht save" />
-  <Task file="" description="Es gibt in X3DBaseNode bei processEvents Fälle wo events .size () == 0 ist. Warum? Vermeiden." />
   <Task file="" description="comments für import und export" />
   <Task file="" description="vrmlName entfernen" />
   <Task file="" description="add disposed output to input" />
   <Task file="" description="FieldDefinitionArray als X3DArrayField &lt;X3DFieldDefinition*&gt; machen" />
   <Task file="" description="proto externproto route executioncontext und scene vergleichen nicht in JavaScript" />
   <Task file="" description="X3DBackground optimieren" />
+  <Task file="" description="an der Wand lang rutschen" />
+  <Task file="" description="von Geistern schieben lassen" />
 </ListOfTask>

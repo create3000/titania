@@ -129,58 +129,71 @@ public:
 
 	///  Set x component of this quaternion.
 	void
-	x (const Type & v) { value [0] = v; }
+	x (const Type & v)
+	{ value [0] = v; }
 
 	///  Return x component of this quaternion.
 	constexpr Type
-	x () const { return value [0]; }
+	x () const
+	{ return value [0]; }
 
 	///  Set y component of this quaternion.
 	void
-	y (const Type & v) { value [1] = v; }
+	y (const Type & v)
+	{ value [1] = v; }
 
 	///  Return y component of this quaternion.
 	constexpr Type
-	y () const { return value [1]; }
+	y () const
+	{ return value [1]; }
 
 	///  Set z component of this quaternion.
 	void
-	z (const Type & v) { value [2] = v; }
+	z (const Type & v)
+	{ value [2] = v; }
 
 	///  Return z component of this quaternion.
 	constexpr Type
-	z () const { return value [2]; }
+	z () const
+	{ return value [2]; }
 
 	///  Set w component of this quaternion which is the real part.
 	void
-	w (const Type & v) { value [3] = v; }
+	w (const Type & v)
+	{ value [3] = v; }
 
 	///  Return w component of this quaternion which is the real part.
 	constexpr Type
-	w () const { return value [3]; }
+	w () const
+	{ return value [3]; }
 
 	///  Access components by @a index.
 	Type &
-	operator [ ] (const size_type index) { return value [index]; }
+	operator [ ] (const size_type index)
+	{ return value [index]; }
 
 	///  Access components by @a index.
 	constexpr Type
-	operator [ ] (const size_type index) const { return value [index]; }
+	operator [ ] (const size_type index) const
+	{ return value [index]; }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	Type*
-	data () { return value; }
+	data ()
+	{ return value; }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	const Type*
-	data () const { return value; }
+	data () const
+	{ return value; }
 
 	///  @name Capacity
 
 	///  Return number of components.
 	static
 	constexpr size_type
-	size () { return 4; }
+	size ()
+	{ return 4; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this quaternion inplace.
@@ -705,22 +718,26 @@ exp (const quaternion <Type> & quad)
 }
 
 ///  Spherical cubic interpolation of @a source, @a a, @a b and @a destination by an amout of @a t.
-template <class Type, class T>
+template <class Type>
 inline
 quaternion <Type>
 squad (const quaternion <Type> & source,
        const quaternion <Type> & a,
        const quaternion <Type> & b,
        const quaternion <Type> & destination,
-       const T & t)
+       const Type & t)
 {
 	return simple_slerp (simple_slerp (source, destination, t), simple_slerp (a, b, t), 2 * t * (1 - t));
 }
 
 ///  Shoemake-Bezier interpolation using De Castlejau algorithm
-template <class Type, class T>
+template <class Type>
 quaternion <Type>
-bezier (const quaternion <Type> & q0, const quaternion <Type> & a, const quaternion <Type> & b, const quaternion <Type> & q1, T t)
+bezier (const quaternion <Type> & q0, 
+        const quaternion <Type> & a,
+        const quaternion <Type> & b,
+        const quaternion <Type> & q1,
+        Type t)
 {
 	quaternion <Type> q11 = simple_slerp (q0, a, t);
 	quaternion <Type> q12 = simple_slerp (a, b, t);

@@ -245,6 +245,9 @@ public:
 	Box3f
 	getBBox ();
 
+	Vector3f
+	getTranslation (const Vector3f &, float, float, const Vector3f &);
+
 	void
 	lookAt ();
 
@@ -268,11 +271,8 @@ protected:
 
 private:
 
-	void
-	enableHeadlight ();
-
-	void
-	disableHeadlight ();
+	float
+	getDistance (const Vector3f &, float, float, const Vector3f &);
 
 	void
 	clearLights ();

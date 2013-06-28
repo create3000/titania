@@ -136,7 +136,7 @@ squad_interpolator <Type, Scalar>::evaluate (size_t index0,
                                              const Scalar & weight,
                                              const KeyValue & keyValue)
 {
-	return squad <Scalar, Scalar> (keyValue [index0], a [index0], a [index1], keyValue [index1], weight);
+	return squad <Scalar> (keyValue [index0], a [index0], a [index1], keyValue [index1], weight);
 }
 
 } // math

@@ -8,11 +8,17 @@ Transform {
     NavigationInfo {
       type "WALK"
     }
-    DirectionalLight {
-      direction 0 -1 0
+    Viewpoint {
+      description "Home"
+      position 0 10 30
     }
     Viewpoint {
-      position 0 10 30
+      description "Back"
+      position 0 10 -30
+      orientation 0 1 0 3.14158
+    }
+    DirectionalLight {
+      direction 0 -1 0
     }
     DEF Floor Transform {
       scale 100 1 100
@@ -26,7 +32,7 @@ Transform {
         geometry Box { }
       }
     }
-    Transform {
+    DEF Step1 Transform {
       scale 2 1.5 2
       children Shape {
         appearance Appearance {
@@ -35,7 +41,7 @@ Transform {
         geometry Box { }
       }
     }
-    Collision {
+    DEF Step2 Collision {
       enabled FALSE
       children Transform {
         translation 0 0 -4
@@ -50,20 +56,61 @@ Transform {
         }
       }
     }
-    Transform {
-      translation -10 0 -4
-      scale 3 3 3
-      children Shape {
-        appearance Appearance {
-          texture ImageTexture {
-            url "../images/image.png"
+    DEF Box Collision {
+      children Transform {
+        translation -10 0 -4
+        scale 6 6 6
+        children Shape {
+          appearance Appearance {
+            texture ImageTexture {
+              url "../images/image.png"
+            }
+          }
+          geometry Box {
+            solid FALSE
           }
         }
-        geometry Box {
-          solid FALSE
-          size 3 3 3
+      }
+    }
+    DEF Stairs Transform {
+      translation 0 0 -4
+      rotation -1 -0 -0 0.7
+      scale 2 50 0.5
+      children Shape {
+        appearance Appearance {
+          material Material { }
         }
+        geometry Box { }
+      }
+    }
+    DEF Roof Transform {
+      translation 0 20 0
+      scale 2 1 20
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Box { }
       }
     }
   ]
 }
+
+DEF Debug Script {
+  inputOnly SFBool set_active
+  inputOnly SFTime set_collideTime
+
+  url "vrmlscript:
+function set_active (value)
+{
+	print ('isActive:    ' + value);
+}
+function set_collideTime (value)
+{
+	print ('collideTime: ' + value);
+}
+"
+}
+
+ROUTE Box.isActive TO Debug.set_active
+ROUTE Box.collideTime TO Debug.set_collideTime

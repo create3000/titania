@@ -112,9 +112,6 @@ private:
 	Vector3f
 	getTranslation (const Vector3f &) const;
 
-	float
-	getDistance (const Vector3f &) const;
-
 	void
 	addFly ();
 
@@ -154,7 +151,8 @@ private:
 	Vector3f         fromVector;
 	Vector3f         toVector;
 	Vector3f         direction;
-	Rotation4f       rotation;
+	Rotation4f       sourceRotation;
+	Rotation4f       destinationRotation;
 	time_type        startTime;
 	guint            button;
 	Keys             keys;

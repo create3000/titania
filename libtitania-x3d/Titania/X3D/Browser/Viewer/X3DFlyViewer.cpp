@@ -59,30 +59,30 @@
 namespace titania {
 namespace X3D {
 
-static constexpr float SPEED_FACTOR          = 0.007;
-static constexpr float SHIFT_SPEED_FACTOR    = 4;
-static constexpr float ROTATION_SPEED_FACTOR = 0.3;
-//static constexpr float PAN_SPEED_FACTOR       = 2;
-static constexpr float PAN_SHIFT_SPEED_FACTOR = 4;
-static constexpr float ROLL_ANGLE             = M_PI / 16;
-static constexpr float ROLL_TIME              = 0.2;
-static constexpr float FRAME_RATE             = 100;
+static constexpr float     SPEED_FACTOR           = 0.007;
+static constexpr float     SHIFT_SPEED_FACTOR     = 4;
+static constexpr float     ROTATION_SPEED_FACTOR  = 0.3;
+static constexpr float     PAN_SHIFT_SPEED_FACTOR = 4;
+static constexpr float     ROLL_ANGLE             = M_PI / 32;
+static constexpr time_type ROLL_TIME              = 0.2;
+static constexpr double    FRAME_RATE             = 100;
 
 Vector3f X3DFlyViewer::upVector (0, 1, 0);
 
 X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* navigationInfo) :
-	     X3DViewer (browser),
-	navigationInfo (navigationInfo),
-	    fromVector (),
-	      toVector (),
-	     direction (),
-	      rotation (),
-	     startTime (),
-	        button (0),
-	          keys (),
-	        fly_id (),
-	        pan_id (),
-	       roll_id ()
+	          X3DViewer (browser),
+	     navigationInfo (navigationInfo),
+	         fromVector (),
+	           toVector (),
+	          direction (),
+	     sourceRotation (),
+	destinationRotation (),
+	          startTime (),
+	             button (0),
+	               keys (),
+	             fly_id (),
+	             pan_id (),
+	            roll_id ()
 { }
 
 void
@@ -148,8 +148,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 
 	if (button == 1)
 	{
-		toVector = Vector3f (event -> x, 0, event -> y);
-
+		toVector  = Vector3f (event -> x, 0, event -> y);
 		direction = (toVector - fromVector) * SPEED_FACTOR * navigationInfo -> speed () .getValue ();
 
 		addFly ();
@@ -159,8 +158,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 
 	else if (button == 2)
 	{
-		toVector = Vector3f (event -> x, -event -> y, 0);
-
+		toVector  = Vector3f (event -> x, -event -> y, 0);
 		direction = (toVector - fromVector) * SPEED_FACTOR * navigationInfo -> speed () .getValue ();
 
 		addPan ();
@@ -180,15 +178,17 @@ X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 
 	if (event -> direction == 0)      // Roll up.
 	{
-		rotation  = Rotation4f (viewpoint -> getUserOrientation () * Vector3f (-1, 0, 0), ROLL_ANGLE / ROLL_TIME);
-		startTime = chrono::now ();
+		sourceRotation      = viewpoint -> orientationOffset ();
+		destinationRotation = sourceRotation * Rotation4f (viewpoint -> getUserOrientation () * Vector3f (-1, 0, 0), ROLL_ANGLE);
+		startTime           = chrono::now ();
 		addRoll ();
 	}
 
 	else if (event -> direction == 1) // Roll down.
 	{
-		rotation  = Rotation4f (viewpoint -> getUserOrientation () * Vector3f (1, 0, 0), ROLL_ANGLE / ROLL_TIME);
-		startTime = chrono::now ();
+		sourceRotation      = viewpoint -> orientationOffset ();
+		destinationRotation = sourceRotation * Rotation4f (viewpoint -> getUserOrientation () * Vector3f (1, 0, 0), ROLL_ANGLE);
+		startTime           = chrono::now ();
 		addRoll ();
 	}
 
@@ -234,61 +234,63 @@ X3DFlyViewer::on_key_release_event (GdkEventKey* event)
 bool
 X3DFlyViewer::fly ()
 {
+	time_type now = chrono::now ();
+	float     dt  = now - startTime;
+
 	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
 
-	float frameRate = getBrowser () -> getCurrentFrameRate ();
-
-	// Orientation offeset
+	// Orientation offset
 
 	Rotation4f rotation = direction .z () > 0
-	                      ? ~Rotation4f (Vector3f (0, 0, 1), direction)
+	                      ? Rotation4f (direction, Vector3f (0, 0, 1))
 								 : Rotation4f (Vector3f (0, 0, -1), direction);
 
-	float angle = rotation .angle ();
-
-	viewpoint -> orientationOffset () *= rotation * (math::abs (direction) * ROTATION_SPEED_FACTOR / frameRate);
+	viewpoint -> orientationOffset () *= math::slerp <float> (Rotation4f (), rotation, math::abs (direction) * ROTATION_SPEED_FACTOR * dt);
 
 	// Position offset
 
 	float speed_factor = keys .shift () ? SHIFT_SPEED_FACTOR : 1;
-	speed_factor *= 1 - angle / M_PI1_2;
+	speed_factor *= 1 - rotation .angle () / M_PI1_2;
 
 	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
-	Vector3f   translation = orientation * direction * speed_factor / frameRate;
+	Vector3f   translation = orientation * direction * (speed_factor * dt);
 
 	viewpoint -> positionOffset () += getTranslation (translation);
-
+	
+	startTime = now;
 	return true;
 }
 
 bool
 X3DFlyViewer::pan ()
 {
-	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+	time_type now = chrono::now ();
+	float     dt  = now - startTime;
 
-	float frameRate = getBrowser () -> getCurrentFrameRate ();
+	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	float speed_factor = keys .shift () ? PAN_SHIFT_SPEED_FACTOR : 1;
 
 	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
-	Vector3f   translation = orientation * direction * speed_factor / frameRate;
+	Vector3f   translation = orientation * direction * (speed_factor * dt);
 
 	viewpoint -> positionOffset () += getTranslation (translation);
-
+	
+	startTime = now;
 	return true;
 }
 
 bool
 X3DFlyViewer::roll ()
 {
-	if (chrono::now () - startTime > ROLL_TIME)
+	time_type elapsedTime = chrono::now () - startTime;
+
+	if (elapsedTime > ROLL_TIME)
 		return false;
 
 	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
 
-	float frameRate = getBrowser () -> getCurrentFrameRate ();
-
-	viewpoint -> orientationOffset () *= Rotation4f (rotation .axis (), rotation .angle () / frameRate);
+	viewpoint -> orientationOffset () = math::slerp <float> (sourceRotation, destinationRotation, elapsedTime / ROLL_TIME);
 
 	return true;
 }
@@ -296,82 +298,38 @@ X3DFlyViewer::roll ()
 Vector3f
 X3DFlyViewer::getTranslation (const Vector3f & translation) const
 {
-	auto navigationInfo = getBrowser () -> getActiveNavigationInfo ();
+	// Get position offset
 
-	float zFar            = navigationInfo -> getFarPlane ();
+	auto  navigationInfo  = getBrowser () -> getActiveNavigationInfo ();
 	float collisionRadius = navigationInfo -> getCollisionRadius ();
+	float positionOffset  = (collisionRadius + navigationInfo -> getAvatarHeight () - navigationInfo -> getStepHeight ()) / 2 - collisionRadius;
 
-	float distance = getDistance (translation);
-	float length   = math::abs (translation);
+	// Get width and height of camera
 
-	if (zFar - distance > 0) // Are there polygons under the viewer
-	{
-		distance -= collisionRadius;
+	float width  = collisionRadius * 2;
+	float height = collisionRadius + navigationInfo -> getAvatarHeight () - navigationInfo -> getStepHeight ();
 
-		if (distance > 0)
-		{
-			// Move
-
-			if (length > distance)
-			{
-				// Collision: The ground is reached.
-				//__LOG__ << std::endl;
-				return normalize (translation) * distance;
-			}
-
-			else
-				return translation;
-		}
-		else
-		{
-			// Collision
-			//__LOG__ << std::endl;
-			return Vector3f ();
-		}
-	}
-	else
-		return translation;
-}
-
-float
-X3DFlyViewer::getDistance (const Vector3f & direction) const
-{
-	// Calculate position offset
-
-	NavigationInfo* navigationInfo  = getBrowser () -> getActiveNavigationInfo ();
-	float           collisionRadius = navigationInfo -> getCollisionRadius ();
-	float           positionOffset  = (collisionRadius + navigationInfo -> getAvatarHeight () - navigationInfo -> getStepHeight ()) / 2 - collisionRadius;
-
-	// Translate camera
-
-	X3DViewpointNode* viewpoint         = getBrowser () -> getActiveViewpoint ();
-	Matrix4f          cameraSpaceMatrix = viewpoint -> getModelViewMatrix ();
-
-	cameraSpaceMatrix .translate (viewpoint -> getUserPosition () - Vector3f (0, positionOffset, 0));
-	cameraSpaceMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction));
-
-	glLoadMatrixf (inverse (cameraSpaceMatrix) .data ());
-
-	// Traverse and get distance
-
-	const auto & activeLayer = getBrowser () -> getActiveLayer ();
-	activeLayer -> traverse (TraverseType::NAVIGATION);
-
-	return activeLayer -> getDistance ();
+	return getBrowser () -> getActiveLayer () -> getTranslation (Vector3f (0, -positionOffset, 0), width, height, translation);
 }
 
 void
 X3DFlyViewer::addFly ()
 {
 	if (not fly_id .connected ())
-		fly_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DFlyViewer::fly), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
+	{
+		startTime = chrono::now ();
+		fly_id    = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DFlyViewer::fly), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
+	}
 }
 
 void
 X3DFlyViewer::addPan ()
 {
 	if (not pan_id .connected ())
-		pan_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DFlyViewer::pan), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
+	{
+		startTime = chrono::now ();
+		pan_id    = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DFlyViewer::pan), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
+	}
 }
 
 void

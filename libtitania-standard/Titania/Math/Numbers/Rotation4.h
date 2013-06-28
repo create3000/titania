@@ -141,7 +141,8 @@ public:
 
 	///  Returns x axis of this rotation.
 	Type
-	x () const { return axis () .x (); }
+	x () const
+	{ return axis () .x (); }
 
 	///  Set y axis of this rotation.
 	void
@@ -149,7 +150,8 @@ public:
 
 	///  Returns y axis of this rotation.
 	Type
-	y () const { return axis () .y (); }
+	y () const
+	{ return axis () .y (); }
 
 	///  Set z axis of this rotation.
 	void
@@ -157,12 +159,14 @@ public:
 
 	///  Returns z axis of this rotation.
 	Type
-	z () const { return axis () .z (); }
+	z () const
+	{ return axis () .z (); }
 
 	///  Set @a axis of this rotation from vector.
 	template <class T>
 	void
-	axis (const vector3 <T> & value) { *this = rotation4 (value, angle ()); }
+	axis (const vector3 <T> & value)
+	{ *this = rotation4 (value, angle ()); }
 
 	///  Returns axis of this rotation.
 	vector3_type
@@ -190,11 +194,13 @@ public:
 	///  Set quaternion of this rotation.
 	template <class T>
 	void
-	quat (const quaternion <T> & q) { value = q; }
+	quat (const quaternion <T> & q)
+	{ value = q; }
 
 	///  Returns quaternion of this rotation.
 	const quaternion <Type> &
-	quat () const { return value; }
+	quat () const
+	{ return value; }
 
 	///  @name Arithmetic operations
 
@@ -202,18 +208,10 @@ public:
 	rotation4 &
 	inverse ();
 
-	///  Multiply this rotations angle by @a value.
-	rotation4 &
-	operator *= (const Type &);
-
 	///  Multiply this rotation by @a rotation.
 	template <class T>
 	rotation4 &
 	operator *= (const rotation4 <T> &);
-
-	///  Divide this rotations angle by @a value.
-	rotation4 &
-	operator /= (const Type &);
 
 
 private:
@@ -422,28 +420,12 @@ rotation4 <Type>::inverse ()
 }
 
 template <class Type>
-rotation4 <Type> &
-rotation4 <Type>::operator *= (const Type & t)
-{
-	angle (angle () * t);
-	return *this;
-}
-
-template <class Type>
 template <class T>
 inline
 rotation4 <Type> &
 rotation4 <Type>::operator *= (const rotation4 <T> & rotation)
 {
 	value .multLeft (rotation .quat ());
-	return *this;
-}
-
-template <class Type>
-rotation4 <Type> &
-rotation4 <Type>::operator /= (const Type & t)
-{
-	angle (angle () / t);
 	return *this;
 }
 
@@ -492,24 +474,6 @@ operator ~ (const rotation4 <Type> & rotation)
 	return rotation4 <Type> (rotation) .inverse ();
 }
 
-///  Multiply the angle of @a rotation by @a t.
-template <class Type>
-inline
-rotation4 <Type>
-operator * (const rotation4 <Type> & rotation, const Type & t)
-{
-	return rotation4 <Type> (rotation) *= t;
-}
-
-///  Multiply the angle of @a rotation by @a t.
-template <class Type>
-inline
-rotation4 <Type>
-operator * (const Type & t, const rotation4 <Type> & rotation)
-{
-	return rotation4 <Type> (rotation) *= t;
-}
-
 ///  Left multiply @a lhs by @a rhs.
 template <class Type>
 inline
@@ -528,46 +492,26 @@ operator * (const rotation4 <Type> & rotation, const vector3 <Type> & vector)
 	return rotation .quat () * vector;
 }
 
-///  Divide the angle of @a rotation by @a t.
-template <class Type>
-inline
-rotation4 <Type>
-operator / (const rotation4 <Type> & rotation, const Type & t)
-{
-	return rotation4 <Type> (rotation) /= t;
-}
-
-///  Return a rotation where the angle is @a t / angle.
-template <class Type>
-inline
-rotation4 <Type>
-operator / (const Type & t, const rotation4 <Type> & rotation)
-{
-	rotation4 <Type> r = rotation4 <Type> (rotation);
-	r .angle (t / r .angle ());
-	return r;
-}
-
 ///  Spherical linear interpolate between @a source quaternion and @a destination quaternion by an amout of @a t.
-template <class Type, class T>
+template <class Type>
 inline
 rotation4 <Type>
 slerp (const rotation4 <Type> & source,
        const rotation4 <Type> & destination,
-       const T & t)
+       const Type & t)
 {
 	return rotation4 <Type> (math::slerp (source .quat (), destination .quat (), t));
 }
 
 ///  Spherical cubic interpolation of @a source, @a ab, @a b and @a destination by an amout of @a t.
-template <class Type, class T>
+template <class Type>
 inline
 rotation4 <Type>
 squad (const rotation4 <Type> & source,
        const rotation4 <Type> & a,
        const rotation4 <Type> & b,
        const rotation4 <Type> & destination,
-       const T & t)
+       const Type & t)
 {
 	return rotation4 <Type> (math::squad (source .quat (), a .quat (), b .quat (), destination .quat (), t));
 }

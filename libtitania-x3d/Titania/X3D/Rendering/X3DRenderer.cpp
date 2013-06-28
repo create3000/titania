@@ -171,7 +171,6 @@ X3DRenderer::render (TraverseType type)
 		case TraverseType::COLLISION:
 		{
 			collide ();
-			gravite ();
 			break;
 		}
 		case TraverseType::COLLECT:
@@ -575,9 +574,13 @@ X3DRenderer::gravite ()
 
 	glPopMatrix ();
 
-	// Gravite or step up
+	// Get distance and unbind buffer
 
 	float distance = depthBuffer -> getDistance (zNear, zFar);
+
+	depthBuffer -> unbind ();
+
+	// Gravite or step up
 
 	if (zFar - distance > 0) // Are there polygons under the viewer
 	{
@@ -587,7 +590,7 @@ X3DRenderer::gravite ()
 		{
 			// Gravite
 
-			float currentFrameRate = getBrowser () -> getCurrentFrameRate ();
+			float currentFrameRate = speed ? getBrowser () -> getCurrentFrameRate () : 1000000;
 
 			speed += P_GN / currentFrameRate;
 
@@ -606,17 +609,20 @@ X3DRenderer::gravite ()
 		{
 			speed = 0;
 
-			if (-distance > 0.01 and - distance < stepHeight)
+			if (-distance > 0.01 and -distance < stepHeight)
 			{
+				// Get size of camera
+				float size = getCurrentNavigationInfo () -> getCollisionRadius () * 2;
+			
 				// Step up
-				getCurrentViewpoint () -> positionOffset () += Vector3f (0, -distance, 0);
+				getCurrentViewpoint () -> positionOffset () += getCurrentLayer () -> getTranslation (Vector3f (), size, size, Vector3f (0, -distance, 0));
 			}
 		}
 	}
-
-	// Unbind buffer
-
-	depthBuffer -> unbind ();
+	else
+	{
+		speed = 0;
+	}
 }
 
 void

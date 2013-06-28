@@ -54,8 +54,8 @@
 #include "../Base/Output.h"
 #include "../Components/Core/X3DNode.h"
 #include "../Rendering/CollisionShape.h"
-#include "../Rendering/ShapeContainer.h"
 #include "../Rendering/DepthBuffer.h"
+#include "../Rendering/ShapeContainer.h"
 
 #include <memory>
 
@@ -66,12 +66,6 @@ class X3DRenderer :
 	virtual public X3DNode
 {
 public:
-
-	X3DRenderer ();
-
-	virtual
-	void
-	initialize ();
 
 	float
 	getDistance () const
@@ -86,12 +80,24 @@ public:
 	void
 	render (TraverseType);
 
+	void
+	gravite ();
+
 	virtual
 	void
-	dispose ();
+	dispose () override;
 
 	virtual
 	~X3DRenderer ();
+
+
+protected:
+
+	X3DRenderer ();
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
@@ -115,9 +121,6 @@ private:
 
 	void
 	collide ();
-
-	void
-	gravite ();
 
 	void
 	clear ();
