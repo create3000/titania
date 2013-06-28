@@ -2,6 +2,12 @@
 
 	* X3DRenderer.h:
 	* X3DRenderer.cpp:
+	* X3DFlyViewer.cpp: 
+
+2013-06-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DRenderer.h:
+	* X3DRenderer.cpp:
 	* X3DFlyViewer.h:
 	* X3DFlyViewer.cpp:
 	* X3DLayerNode.h:

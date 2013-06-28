@@ -122,6 +122,12 @@ private:
 	void
 	collide ();
 
+	bool
+	stepUp ();
+
+	void
+	addStepUp ();
+
 	void
 	clear ();
 

@@ -180,7 +180,6 @@ X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 	{
 		sourceRotation      = viewpoint -> orientationOffset ();
 		destinationRotation = sourceRotation * Rotation4f (viewpoint -> getUserOrientation () * Vector3f (-1, 0, 0), ROLL_ANGLE);
-		startTime           = chrono::now ();
 		addRoll ();
 	}
 
@@ -188,7 +187,6 @@ X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 	{
 		sourceRotation      = viewpoint -> orientationOffset ();
 		destinationRotation = sourceRotation * Rotation4f (viewpoint -> getUserOrientation () * Vector3f (1, 0, 0), ROLL_ANGLE);
-		startTime           = chrono::now ();
 		addRoll ();
 	}
 
@@ -336,7 +334,10 @@ void
 X3DFlyViewer::addRoll ()
 {
 	if (not roll_id .connected ())
+	{
+		startTime = chrono::now ();
 		roll_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DFlyViewer::roll), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
+	}
 }
 
 void

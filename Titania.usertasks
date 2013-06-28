@@ -2,7 +2,7 @@
   <Task file="" description="INVALID_OPERATION_TIMING ist wenn kein GL context vorhanden" />
   <Task file="" description="Collisions radius" />
   <Task file="" description="in Geometry2D TwoSidedMaterial aktivieren (geht gar nicht)" />
-  <Task file="" description="Collision beim aufsteigen aktivieren" />
+  <Task file="" description="Collision beim aufsteigen aktivieren" completed="True" />
   <Task file="" description="Vattenfall MovieTexture zweimal in GarbageCollector" />
   <Task file="" description="Picking und Collision mit Text" />
   <Task file="" description="JavaScript jsSFNode getFieldDefinitions ist nicht save" />
@@ -14,4 +14,5 @@
   <Task file="" description="X3DBackground optimieren" />
   <Task file="" description="an der Wand lang rutschen" />
   <Task file="" description="von Geistern schieben lassen" />
+  <Task file="" description="bei jump collisision speed auf 0 setzen" />
 </ListOfTask>

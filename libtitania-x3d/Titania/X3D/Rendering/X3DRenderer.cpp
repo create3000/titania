@@ -58,11 +58,11 @@
 #include <Titania/Utility/Adapter.h>
 #include <algorithm>
 
-#define DEPTH_BUFFER_WIDTH   16
-#define DEPTH_BUFFER_HEIGHT  16
-
 namespace titania {
 namespace X3D {
+
+static constexpr size_t DEPTH_BUFFER_WIDTH  = 16;
+static constexpr size_t DEPTH_BUFFER_HEIGHT = 16;
 
 X3DRenderer::X3DRenderer () :
 	             X3DNode (),  
@@ -494,47 +494,7 @@ X3DRenderer::collide ()
 		collision -> set_active (true);
 }
 
-//void
-//X3DBrowserContext::motionNotifyEvent ()
-//{
-//	// Set isOver to FALSE for appropriate nodes
-//
-//	std::deque <X3DBaseNode*> difference;
-//
-//	if (getHits () .size ())
-//	{
-//		std::set_difference (overSensors .begin (), overSensors .end (),
-//		                     getHits () .front () -> nodes .begin (), getHits () .front () -> nodes .end (),
-//		                     std::back_inserter (difference));
-//	}
-//	else
-//		difference = overSensors;
-//
-//	for (const auto & node : difference)
-//	{
-//		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
-//
-//		if (pointingDeviceSensorNode)
-//			pointingDeviceSensorNode -> set_over (false);
-//	}
-//
-//	// Set isOver to TRUE for appropriate nodes
-//
-//	if (getHits () .size ())
-//	{
-//		overSensors = getHits () .front () -> nodes;
-//
-//		for (const auto & node : overSensors)
-//		{
-//			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
-//
-//			if (pointingDeviceSensorNode)
-//				pointingDeviceSensorNode -> set_over (true);
-//		}
-//	}
-//	else
-//		overSensors .clear ();
-//}
+static X3DViewpointNode* currentViewpoint = NULL;
 
 void
 X3DRenderer::gravite ()
@@ -648,6 +608,7 @@ void
 X3DRenderer::dispose ()
 {
 	depthBuffer .reset ();
+	step_up_id .disconnect ();
 }
 
 X3DRenderer::~X3DRenderer ()
