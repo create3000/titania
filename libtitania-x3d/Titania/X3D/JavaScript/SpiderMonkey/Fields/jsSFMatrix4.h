@@ -105,6 +105,8 @@ private:
 	static JSBool multRight     (JSContext *, uintN, jsval*);
 	static JSBool multVecMatrix (JSContext *, uintN, jsval*);
 	static JSBool multMatrixVec (JSContext *, uintN, jsval*);
+	static JSBool multDirMatrix (JSContext *, uintN, jsval*);
+	static JSBool multMatrixDir (JSContext *, uintN, jsval*);
 
 	static const size_t   size;
 	static JSClass        static_class;
@@ -141,6 +143,8 @@ JSFunctionSpec jsSFMatrix4 <Type>::functions [ ] = {
 	{ "multRight",     multRight,     1, 0 },
 	{ "multVecMatrix", multVecMatrix, 1, 0 },
 	{ "multMatrixVec", multMatrixVec, 1, 0 },
+	{ "multDirMatrix", multDirMatrix, 1, 0 },
+	{ "multMatrixDir", multMatrixDir, 1, 0 },
 
 	{ "toString",      toString <X3DChildObject>, 0, 0 },
 
@@ -649,6 +653,74 @@ jsSFMatrix4 <Type>::multMatrixVec (JSContext* context, uintN argc, jsval* vp)
 		vector3_field_type* vector = (vector3_field_type*) JS_GetPrivate (context, rhs);
 
 		return vector3_type::create (context, self -> multMatrixVec (*vector), &JS_RVAL (context, vp));
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+template <class Type>
+JSBool
+jsSFMatrix4 <Type>::multDirMatrix (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+
+		JSObject* rhs;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
+			return JS_FALSE;
+
+		if (not JS_InstanceOf (context, rhs, vector3_type::getClass (), NULL))
+		{
+			JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s",
+			                vector3_type::getClass () -> name,
+			                JS_GetClass (context, rhs) -> name);
+
+			return JS_FALSE;
+		}
+
+		vector3_field_type* vector = (vector3_field_type*) JS_GetPrivate (context, rhs);
+
+		return vector3_type::create (context, self -> multDirMatrix (*vector), &JS_RVAL (context, vp));
+	}
+
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+template <class Type>
+JSBool
+jsSFMatrix4 <Type>::multMatrixDir (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+
+		JSObject* rhs;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
+			return JS_FALSE;
+
+		if (not JS_InstanceOf (context, rhs, vector3_type::getClass (), NULL))
+		{
+			JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s",
+			                vector3_type::getClass () -> name,
+			                JS_GetClass (context, rhs) -> name);
+
+			return JS_FALSE;
+		}
+
+		vector3_field_type* vector = (vector3_field_type*) JS_GetPrivate (context, rhs);
+
+		return vector3_type::create (context, self -> multMatrixDir (*vector), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");

@@ -1,5 +1,13 @@
 2013-06-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFMatrix4.h:
+	* SFMatrix3.h:
+	* X3DFlyViewer.cpp:
+	* jsSFMatrix4.h:
+	* jsSFMatrix3.h: 
+
+2013-06-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DRenderer.cpp:
 	* X3DFlyViewer.cpp: 
 

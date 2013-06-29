@@ -196,13 +196,16 @@ public:
 	multRight (const SFMatrix3 &) const;
 
 	vector2_type*
-	multMatrixVec (const vector2_type &) const;
-
-	vector2_type*
 	multVecMatrix (const vector2_type &) const;
 
 	vector2_type*
+	multMatrixVec (const vector2_type &) const;
+
+	vector2_type*
 	multDirMatrix (const vector2_type &) const;
+
+	vector2_type*
+	multMatrixDir (const vector2_type &) const;
 
 	///  @name Input operator.
 	virtual
@@ -421,14 +424,6 @@ SFMatrix3 <ValueType>::multRight (const SFMatrix3 & value) const
 template <class ValueType>
 inline
 typename SFMatrix3 <ValueType>::vector2_type *
-SFMatrix3 <ValueType>::multMatrixVec (const vector2_type &value) const
-{
-	return new vector2_type (getValue () .multMatrixVec (value .getValue ()));
-}
-
-template <class ValueType>
-inline
-typename SFMatrix3 <ValueType>::vector2_type *
 SFMatrix3 <ValueType>::multVecMatrix (const vector2_type &value) const
 {
 	return new vector2_type (getValue () .multVecMatrix (value .getValue ()));
@@ -437,9 +432,25 @@ SFMatrix3 <ValueType>::multVecMatrix (const vector2_type &value) const
 template <class ValueType>
 inline
 typename SFMatrix3 <ValueType>::vector2_type *
+SFMatrix3 <ValueType>::multMatrixVec (const vector2_type &value) const
+{
+	return new vector2_type (getValue () .multMatrixVec (value .getValue ()));
+}
+
+template <class ValueType>
+inline
+typename SFMatrix3 <ValueType>::vector2_type *
 SFMatrix3 <ValueType>::multDirMatrix (const vector2_type &value) const
 {
 	return new vector2_type (getValue () .multDirMatrix (value .getValue ()));
+}
+
+template <class ValueType>
+inline
+typename SFMatrix3 <ValueType>::vector2_type *
+SFMatrix3 <ValueType>::multMatrixDir (const vector2_type &value) const
+{
+	return new vector2_type (getValue () .multMatrixDir (value .getValue ()));
 }
 
 template <class ValueType>

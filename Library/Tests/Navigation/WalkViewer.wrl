@@ -3,6 +3,7 @@
 META "title" "Walk viewer"
 
 DEF _0 Transform {
+  rotation 0 0 1 3.14159
   scale 0.1 0.1 0.1
   children [
     NavigationInfo {

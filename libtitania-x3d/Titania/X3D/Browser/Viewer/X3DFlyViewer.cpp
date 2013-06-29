@@ -149,7 +149,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 	if (button == 1)
 	{
 		toVector  = Vector3f (event -> x, 0, event -> y);
-		direction = (toVector - fromVector) * SPEED_FACTOR * navigationInfo -> speed () .getValue ();
+		direction = (toVector - fromVector) * (SPEED_FACTOR * navigationInfo -> speed ());
 
 		addFly ();
 
@@ -159,7 +159,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 	else if (button == 2)
 	{
 		toVector  = Vector3f (event -> x, -event -> y, 0);
-		direction = (toVector - fromVector) * SPEED_FACTOR * navigationInfo -> speed () .getValue ();
+		direction = (toVector - fromVector) * (SPEED_FACTOR * navigationInfo -> speed ());
 
 		addPan ();
 
