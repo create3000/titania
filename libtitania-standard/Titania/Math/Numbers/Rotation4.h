@@ -98,20 +98,23 @@ public:
 	///  The rotation will be set to its default value 0 0 1  0.
 	constexpr
 	rotation4 () :
-		value (Type (), Type (), Type (), Type (1)) { }
+		value (Type (), Type (), Type (), Type (1))
+	{ }
 
 	///  Copy constructor.
 	template <class T>
 	constexpr
 	rotation4 (const rotation4 <T> & rotation) :
-		value (rotation .quat ()) { }
+		value (rotation .quat ())
+	{ }
 
 	///  Construct a rotation from normalized @a quaternion.
 	template <class T>
 	explicit
 	constexpr
 	rotation4 (const quaternion <T> & quaternion) :
-		value (quaternion) { }
+		value (quaternion)
+	{ }
 
 	///  Components constructor. Construct a rotation from @a x, @a y, @a z and @a angle.
 	rotation4 (const Type & x, const Type & y, const Type & z, const Type & angle);
@@ -245,10 +248,9 @@ rotation4 <Type>::rotation4 (const Type & x, const Type & y, const Type & z, con
 template <class Type>
 template <class T>
 inline
-rotation4 <Type>::rotation4 (const vector3 <T> & axis, const Type & angle)
-{
-	*this = rotation4 (axis .x (), axis .y (), axis .z (), angle);
-}
+rotation4 <Type>::rotation4 (const vector3 <T> & axis, const Type & angle) :
+	rotation4 (axis .x (), axis .y (), axis .z (), angle)
+{ }
 
 template <class Type>
 template <class T>

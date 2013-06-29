@@ -2,8 +2,8 @@
 
 META "title" "Walk viewer"
 
-Transform {
-  #scale 0.1 0.1 0.1
+DEF _0 Transform {
+  scale 0.1 0.1 0.1
   children [
     NavigationInfo {
       type "WALK"
@@ -32,14 +32,30 @@ Transform {
         geometry Box { }
       }
     }
-    DEF Step1 Transform {
+    DEF Step8 Transform {
+      translation 8 1.4 0
+      scale 4 0.8 4
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 0 0
+          }
+        }
+        geometry Box {
+          size 1 1 1
+        }
+      }
+    }
+    DEF Step7 Transform {
       translation 4 1.35 0
       scale 4 0.7 4
       children Shape {
         appearance Appearance {
           material Material { }
         }
-        geometry Box { size 1 1 1 }
+        geometry Box {
+          size 1 1 1
+        }
       }
     }
     DEF Step1 Transform {
@@ -51,7 +67,7 @@ Transform {
         geometry Box { }
       }
     }
-    DEF Step2 Collision {
+    DEF NoStep Collision {
       enabled FALSE
       children Transform {
         translation 0 0 -4
@@ -59,7 +75,7 @@ Transform {
         children Shape {
           appearance Appearance {
             material Material {
-              diffuseColor 1 0 0
+              diffuseColor 0 1 0
             }
           }
           geometry Box { }

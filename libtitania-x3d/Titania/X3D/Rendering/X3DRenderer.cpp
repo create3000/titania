@@ -65,17 +65,17 @@ static constexpr size_t DEPTH_BUFFER_WIDTH  = 16;
 static constexpr size_t DEPTH_BUFFER_HEIGHT = 16;
 
 X3DRenderer::X3DRenderer () :
-	             X3DNode (),  
-	              shapes (),  
-	   transparentShapes (),  
-	     collisionShapes (),  
-	    activeCollisions (),  
-	         depthBuffer (),  
-	               speed (),  
-	            distance (),  
-	     numOpaqueShapes (0), 
-	numTransparentShapes (0), 
-	  numCollisionShapes (0)  
+	             X3DNode (),
+	              shapes (),
+	   transparentShapes (),
+	     collisionShapes (),
+	    activeCollisions (),
+	         depthBuffer (),
+	               speed (),
+	            distance (),
+	     numOpaqueShapes (0),
+	numTransparentShapes (0),
+	  numCollisionShapes (0)
 { }
 
 void
@@ -87,9 +87,9 @@ X3DRenderer::initialize ()
 void
 X3DRenderer::addShape (X3DShapeNode* shape)
 {
-   Matrix4f matrix   = ModelViewMatrix4f ();
-   float    distance = getDistance (shape, matrix);
-  
+	Matrix4f matrix   = ModelViewMatrix4f ();
+	float    distance = getDistance (shape, matrix);
+
 	if (distance < 0)
 	{
 		if (ViewVolume (matrix) .intersect (shape -> getBBox ()))
@@ -122,9 +122,9 @@ X3DRenderer::addShape (X3DShapeNode* shape)
 void
 X3DRenderer::addCollision (X3DShapeNode* shape)
 {
-   Matrix4f matrix   = ModelViewMatrix4f ();
-   float    distance = getDistance (shape, matrix);
-  
+	Matrix4f matrix   = ModelViewMatrix4f ();
+	float    distance = getDistance (shape, matrix);
+
 	if (distance < 0)
 	{
 		if (ViewVolume (matrix) .intersect (shape -> getBBox ()))
@@ -569,14 +569,18 @@ X3DRenderer::gravite ()
 		{
 			speed = 0;
 
-			if (-distance > 0.01 and -distance < stepHeight)
+			if (-distance > 0.01 and - distance < stepHeight)
 			{
 				// Get size of camera
 				float size = getCurrentNavigationInfo () -> getCollisionRadius () * 2;
-			
-				// Step up				
-				Vector3f translation = getCurrentLayer () -> getTranslation (Vector3f (), size, size, Vector3f (0, -distance, 0));		
-				Vector3f offset (0, getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate (), 0);
+
+				// Step up
+				Vector3f translation = getCurrentLayer () -> getTranslation (Vector3f (), size, size, Vector3f (0, -distance, 0));
+
+				Vector3f offset (0,
+				                 math::abs (getCurrentViewpoint () -> getInverseTransformationMatrix () .multMatrixDir (
+				                            Vector3f (0, getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate (), 0))),
+				                 0);
 
 				if (math::abs (offset) > math::abs (translation))
 					offset = translation;

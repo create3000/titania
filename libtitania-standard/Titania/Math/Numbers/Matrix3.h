@@ -134,9 +134,8 @@ public:
 	///  @name Constructors
 
 	///  Default constructor. A new matrix initialized with the identity matrix is created and returned.
-	constexpr
 	matrix3 () :
-		value (Identity .value)
+		matrix3 (Identity)
 	{ }
 
 	///  Copy constructor.
@@ -145,6 +144,10 @@ public:
 	matrix3 (const matrix3 <Up> & matrix) :
 		value (matrix [0], matrix [1], matrix [2])
 	{ }
+
+	///  Copy constructor.
+	matrix3 (const matrix3 & matrix)
+	{ *this = matrix; }
 
 	///  Value constructor.
 	explicit
@@ -155,7 +158,8 @@ public:
 		matrix [ 0], matrix [ 1], matrix [ 2],
 		matrix [ 3], matrix [ 4], matrix [ 5],
 		matrix [ 6], matrix [ 7], matrix [ 8]
-	} { }
+	}
+	{ }
 
 	///  Components constructor. Set values from @a e11 to @a e33.
 	constexpr
@@ -167,7 +171,8 @@ public:
 		e11, e12, e13,
 		e21, e22, e23,
 		e31, e32, e33
-	} { }
+	}
+	{ }
 
 	///  Constructs a matrix4 from a rotation4.
 	explicit
@@ -179,6 +184,9 @@ public:
 	template <class T>
 	matrix3 &
 	operator = (const matrix3 <T> &);
+
+	matrix3 &
+	operator = (const matrix3 &);
 
 	///  @name Element access
 
@@ -226,37 +234,45 @@ public:
 
 	///  Access rows by @a index.
 	vector3_type &
-	operator [ ] (const size_type index) { return value [index]; }
+	operator [ ] (const size_type index)
+	{ return value [index]; }
 
-	constexpr vector3_type
-	operator [ ] (const size_type index) const { return value [index]; }
+	const vector3_type &
+	operator [ ] (const size_type index) const
+	{ return value [index]; }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	///  Specifically the pointer is such that range [data (); data () + size ()) is valid.
 	Type*
-	data () { return array; }
+	data ()
+	{ return array; }
 
 	const Type*
-	data () const { return array; }
+	data () const
+	{ return array; }
 
 	///  Get access to the underlying vector representation of this matrix.
 	void
-	vector (const vector_type & vector) { value = vector; }
+	vector (const vector_type & vector)
+	{ value = vector; }
 
-	constexpr vector_type
-	vector () const { return value; }
+	const vector_type &
+	vector () const
+	{ return value; }
 
 	///  @name Capacity
 
 	///  Returns the order of the matrix.
 	static
 	constexpr size_type
-	order () { return Order; }
+	order ()
+	{ return Order; }
 
 	///  Returns the number of elements in the matrix. The size is the same as order () * order ().
 	static
 	constexpr size_type
-	size () { return Size; }
+	size ()
+	{ return Size; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this matrix4 inplace.
@@ -372,6 +388,15 @@ matrix3 <Type> &
 matrix3 <Type>::operator = (const matrix3 <Up> & matrix)
 {
 	value = matrix .vector ();
+	return *this;
+}
+
+template <class Type>
+inline
+matrix3 <Type> &
+matrix3 <Type>::operator = (const matrix3 <Type> & matrix)
+{
+	std::memmove (data (), matrix .data (), size () * sizeof (Type));
 	return *this;
 }
 

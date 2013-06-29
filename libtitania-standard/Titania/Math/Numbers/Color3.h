@@ -75,13 +75,15 @@ public:
 	///  Default constructor.  All values default to 0.
 	constexpr
 	color3 () :
-		value { Type (), Type (), Type () } { }
+		value { Type (), Type (), Type () }
+	{ }
 
 	///  Copy constructor.
 	template <typename T>
 	constexpr
 	color3 (const color3 <T> & color) :
-		value { color .r (), color .g (), color .b () } { }
+		value { color .r (), color .g (), color .b () }
+	{ }
 
 	///  Components constructor. Set values to @a x, @a y and @a z.
 	constexpr
@@ -91,10 +93,12 @@ public:
 		math::clamp (r, Type (), Type (1)),
 		math::clamp (g, Type (), Type (1)),
 		math::clamp (b, Type (), Type (1))
-	} { }
+	}
+	{ }
 
 	///  Construct a color from hsv.
-	static color3
+	static
+	color3
 	HSV (const Type & h, const Type & s, const Type & v)
 	{
 		color3 <Type> color;
@@ -103,48 +107,59 @@ public:
 	}
 
 	///  Return number of components.
-	constexpr static size_type
-	size () { return 3; }
+	static
+	constexpr size_type
+	size ()
+	{ return 3; }
 
 	///  Set red component of this color.
 	void
-	r (const Type & r) { value [0] = math::clamp (r, Type (), Type (1)); }
+	r (const Type & r)
+	{ value [0] = math::clamp (r, Type (), Type (1)); }
 
 	///  Return red component of this color.
-	constexpr Type
-	r () const { return value [0]; }
+	const Type &
+	r () const
+	{ return value [0]; }
 
 	///  Set green component of this color.
 	void
-	g (const Type & g) { value [1] = math::clamp (g, Type (), Type (1)); }
+	g (const Type & g)
+	{ value [1] = math::clamp (g, Type (), Type (1)); }
 
 	///  Return green component of this color.
-	constexpr Type
+	const Type &
 	g () const { return value [1]; }
 
 	///  Set blue component of this color.
 	void
-	b (const Type & b) { value [2] = math::clamp (b, Type (), Type (1)); }
+	b (const Type & b)
+	{ value [2] = math::clamp (b, Type (), Type (1)); }
 
 	///  Return blue component of this color.
-	constexpr Type
-	b () const { return value [2]; }
+	const Type &
+	b () const
+	{ return value [2]; }
 
 	///  Access components by @a index.
 	Type &
-	operator [ ] (const size_type index) { return value [index]; }
+	operator [ ] (const size_type index)
+	{ return value [index]; }
 
 	///  Access components by @a index.
-	constexpr Type
-	operator [ ] (const size_type index) const { return value [index]; }
+	const Type &
+	operator [ ] (const size_type index) const
+	{ return value [index]; }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	Type*
-	data () { return value; }
+	data ()
+	{ return value; }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	const Type*
-	data () const { return value; }
+	data () const
+	{ return value; }
 
 	//  Set all components.
 	void

@@ -99,24 +99,28 @@ public:
 	///  Default constructor.  All values default to 0.
 	constexpr
 	quaternion () :
-		value { Type (), Type (), Type (), Type () } { }
+		value { Type (), Type (), Type (), Type () }
+	{ }
 
 	///  Copy constructor.
 	template <class T>
 	constexpr
 	quaternion (const quaternion <T> & quat) :
-		value { quat .x (), quat .y (), quat .z (), quat .w () } { }
+		value { quat .x (), quat .y (), quat .z (), quat .w () }
+	{ }
 
 	///  Component constructor. Set values to @a x, @a y and @a z.
 	constexpr
 	quaternion (const Type & x, const Type & y, const Type & z, const Type & w) :
-		value { x, y, z, w } { }
+		value { x, y, z, w }
+	{ }
 
 	///  Construct quaternion from vector @a imag and @a w.
 	template <class T>
 	constexpr
 	quaternion (const vector3 <T> & imag, const Type & w) :
-		value { imag .x (), imag .y (), imag .z (), w } { }
+		value{ imag .x (), imag .y (), imag .z (), w }
+	{ }
 
 	///  @name Assignment operator
 
@@ -133,7 +137,7 @@ public:
 	{ value [0] = v; }
 
 	///  Return x component of this quaternion.
-	constexpr Type
+	const Type &
 	x () const
 	{ return value [0]; }
 
@@ -143,7 +147,7 @@ public:
 	{ value [1] = v; }
 
 	///  Return y component of this quaternion.
-	constexpr Type
+	const Type &
 	y () const
 	{ return value [1]; }
 
@@ -153,7 +157,7 @@ public:
 	{ value [2] = v; }
 
 	///  Return z component of this quaternion.
-	constexpr Type
+	const Type &
 	z () const
 	{ return value [2]; }
 
@@ -163,7 +167,7 @@ public:
 	{ value [3] = v; }
 
 	///  Return w component of this quaternion which is the real part.
-	constexpr Type
+	const Type &
 	w () const
 	{ return value [3]; }
 
@@ -173,7 +177,7 @@ public:
 	{ return value [index]; }
 
 	///  Access components by @a index.
-	constexpr Type
+	const Type &
 	operator [ ] (const size_type index) const
 	{ return value [index]; }
 

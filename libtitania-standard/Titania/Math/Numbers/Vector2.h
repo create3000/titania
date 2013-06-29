@@ -82,18 +82,21 @@ public:
 	///  Default constructor.  All values default to 0.
 	constexpr
 	vector2 () :
-		value { Type (), Type () } { }
+		value { Type (), Type () }
+	{ }
 
 	///  Copy constructor.
 	template <class T>
 	constexpr
 	vector2 (const vector2 <T> & vector) :
-		value { vector .x (), vector .y () } { }
+		value { vector .x (), vector .y () }
+	{ }
 
 	///  Components constructor. Set values to @a x, @a y and @a z.
 	constexpr
 	vector2 (const Type & x, const Type & y) :
-		value { x, y } { }
+		value { x, y }
+	{ }
 
 	///  @name Assignment operator
 
@@ -106,42 +109,51 @@ public:
 
 	///  Set x component of this vector.
 	void
-	x (const Type & t) { value [0] = t; }
+	x (const Type & t)
+	{ value [0] = t; }
 
 	///  Returns x component of this vector.
-	constexpr Type
-	x () const { return value [0]; }
+	const Type &
+	x () const
+	{ return value [0]; }
 
 	///  Set y component of this vector.
 	void
-	y (const Type & t) { value [1] = t; }
+	y (const Type & t)
+	{ value [1] = t; }
 
 	///  Returns y component of this vector.
-	constexpr Type
-	y () const { return value [1]; }
+	const Type &
+	y () const
+	{ return value [1]; }
 
 	///  Access components by @a index.
 	Type &
-	operator [ ] (const size_type index) { return value [index]; }
+	operator [ ] (const size_type index)
+	{ return value [index]; }
 
 	///  Access components by @a index.
-	constexpr Type
-	operator [ ] (const size_type index) const { return value [index]; }
+	const Type &
+	operator [ ] (const size_type index) const
+	{ return value [index]; }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	Type*
-	data () { return value; }
+	data ()
+	{ return value; }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	const Type*
-	data () const { return value; }
+	data () const
+	{ return value; }
 
 	///  @name Capacity
 
 	///  Returns number of components.
 	static
 	constexpr size_type
-	size () { return 2; }
+	size ()
+	{ return 2; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this vector2 inplace.

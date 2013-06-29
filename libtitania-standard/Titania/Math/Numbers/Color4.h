@@ -77,13 +77,15 @@ public:
 	///  Default constructor.  All values default to 0.
 	constexpr
 	color4 () :
-		value { Type (), Type (), Type (), Type () } { }
+		value { Type (), Type (), Type (), Type () }
+	{ }
 
 	///  Copy constructor.
 	template <typename T>
 	constexpr
 	color4 (const color4 <T> & color) :
-		value { color .r (), color .g (), color .b (), color .a () } { }
+		value { color .r (), color .g (), color .b (), color .a () }
+	{ }
 
 	///  Components constructor. Set values to @a x, @a y and @a z.
 	constexpr
@@ -94,10 +96,12 @@ public:
 		math::clamp (g, Type (), Type (1)),
 		math::clamp (b, Type (), Type (1)),
 		math::clamp (a, Type (), Type (1))
-	} { }
+	}
+	{ }
 
 	///  Construct a color from hsv and alpha.
-	static color4
+	static
+	color4
 	HSVA (const Type & h, const Type & s, const Type & v, const Type & a)
 	{
 		color4 <Type> color;
@@ -107,56 +111,70 @@ public:
 	}
 
 	///  Return number of components.
-	constexpr static size_type
-	size () { return 4; }
+	static
+	constexpr size_type
+	size ()
+	{ return 4; }
 
 	///  Set red component of this color.
 	void
-	r (const Type & r) { value [0] = math::clamp (r, Type (), Type (1)); }
+	r (const Type & r)
+	{ value [0] = math::clamp (r, Type (), Type (1)); }
 
 	///  Return red component of this color.
-	constexpr Type
-	r () const { return value [0]; }
+	const Type &
+	r () const
+	{ return value [0]; }
 
 	///  Set green component of this color.
 	void
-	g (const Type & g) { value [1] = math::clamp (g, Type (), Type (1)); }
+	g (const Type & g)
+	{ value [1] = math::clamp (g, Type (), Type (1)); }
 
 	///  Return green component of this color.
-	constexpr Type
-	g () const { return value [1]; }
+	const Type &
+	g () const
+	{ return value [1]; }
 
 	///  Set blue component of this color.
 	void
-	b (const Type & b) { value [2] = math::clamp (b, Type (), Type (1)); }
+	b (const Type & b)
+	{ value [2] = math::clamp (b, Type (), Type (1)); }
 
 	///  Return blue component of this color.
-	constexpr Type
-	b () const { return value [2]; }
+	const Type &
+	b () const
+	{ return value [2]; }
 
 	///  Set alpha component of this color.
 	void
-	a (const Type & a) { value [3] = math::clamp (a, Type (), Type (1)); }
+	a (const Type & a)
+	{ value [3] = math::clamp (a, Type (), Type (1)); }
 
 	///  Return alpha component of this color.
-	constexpr Type
-	a () const { return value [3]; }
+	const Type &
+	a () const
+	{ return value [3]; }
 
 	///  Access components by @a index.
 	Type &
-	operator [ ] (const size_type index) { return value [index]; }
+	operator [ ] (const size_type index)
+	{ return value [index]; }
 
 	///  Access components by @a index.
-	constexpr Type
-	operator [ ] (const size_type index) const { return value [index]; }
+	const Type &
+	operator [ ] (const size_type index) const
+	{ return value [index]; }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	Type*
-	data () { return value; }
+	data ()
+	{ return value; }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	const Type*
-	data () const { return value; }
+	data () const
+	{ return value; }
 
 	//  Set all components.
 	void

@@ -82,18 +82,21 @@ public:
 	///  Default constructor.  All values default to 0.
 	constexpr
 	vector4 () :
-		value { Type (), Type (), Type (), Type () } { }
+		value { Type (), Type (), Type (), Type () }
+	{ }
 
 	///  Copy constructor.
 	template <class T>
 	constexpr
 	vector4 (const vector4 <T> & vector) :
-		value { vector .x (), vector .y (), vector .z (), vector .w () } { }
+		value { vector .x (), vector .y (), vector .z (), vector .w () }
+	{ }
 
 	///  Components constructor. Set values to @a x, @a y, @a z and @a w.
 	constexpr
 	vector4 (const Type & x, const Type & y, const Type & z, const Type & w) :
-		value { x, y, z, w } { }
+		value { x, y, z, w }
+	{ }
 
 	///  @name Assignment operator
 
@@ -106,57 +109,71 @@ public:
 
 	///  Set x component of this vector.
 	void
-	x (const Type & t) { value [0] = t; }
+	x (const Type & t)
+	{ value [0] = t; }
 
 	///  Return x component of this vector.
-	constexpr Type
-	x () const { return value [0]; }
+	const Type &
+	x () const
+	{ return value [0]; }
 
 	///  Set y component of this vector.
 	void
-	y (const Type & t) { value [1] = t; }
+	y (const Type & t)
+	{ value [1] = t; }
 
 	///  Return y component of this vector.
-	constexpr Type
-	y () const { return value [1]; }
+	const Type &
+	y () const
+	{ return value [1]; }
 
 	///  Set z component of this vector.
 	void
-	z (const Type & t) { value [2] = t; }
+	z (const Type & t)
+	{ value [2] = t; }
 
 	///  Return z component of this vector.
-	constexpr Type
-	z () const { return value [2]; }
+	const Type &
+	z () const
+	{ return value [2]; }
 
 	///  Set w component of this vector.
 	void
-	w (const Type & t) { value [3] = t; }
+	w (const Type & t)
+	{ value [3] = t; }
 
 	///  Return w component of this vector.
-	constexpr Type
-	w () const { return value [3]; }
+	const Type &
+	w () const
+	{ return value [3]; }
 
 	///  Access components by @a index.
 	Type &
-	operator [ ] (const size_type index) { return value [index]; }
+	operator [ ] (const size_type index)
+	{ return value [index]; }
 
 	///  Access components by @a index.
-	constexpr Type
-	operator [ ] (const size_type index) const { return value [index]; }
+	const Type &
+	operator [ ] (const size_type index) const
+	{ return value [index]; }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	Type*
-	data () { return value; }
+	data ()
+	{ return value; }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	const Type*
-	data () const { return value; }
+	data () const
+	{ return value; }
 
 	///  @name Capacity
 
 	///  Return number of components.
-	static constexpr size_type
-	size () { return 4; }
+	static
+	constexpr size_type
+	size ()
+	{ return 4; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this vector2 inplace.
