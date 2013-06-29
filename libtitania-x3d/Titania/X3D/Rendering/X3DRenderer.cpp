@@ -576,16 +576,21 @@ X3DRenderer::gravite ()
 
 				// Step up
 				Vector3f translation = getCurrentLayer () -> getTranslation (Vector3f (), size, size, Vector3f (0, -distance, 0));
+				
+				if (getBrowser () -> getBrowserOptions () -> animateStairWalks ())
+				{
+					float step = math::abs (getCurrentViewpoint () -> getInverseTransformationMatrix () .multMatrixDir (
+					                        Vector3f (0, getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate (), 0)));
 
-				Vector3f offset (0,
-				                 math::abs (getCurrentViewpoint () -> getInverseTransformationMatrix () .multMatrixDir (
-				                            Vector3f (0, getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate (), 0))),
-				                 0);
+					Vector3f offset (0, step, 0);
+					
+					if (math::abs (offset) > math::abs (translation) or getBrowser () -> getCurrentSpeed () == 0)
+						offset = translation;
 
-				if (math::abs (offset) > math::abs (translation))
-					offset = translation;
-
-				getCurrentViewpoint () -> positionOffset () += offset;
+					getCurrentViewpoint () -> positionOffset () += offset;
+				}
+				else
+					getCurrentViewpoint () -> positionOffset () += translation;
 			}
 		}
 	}

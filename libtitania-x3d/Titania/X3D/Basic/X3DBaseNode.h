@@ -96,6 +96,9 @@ public:
 
 	void
 	replace (X3DBaseNode* const);
+	
+	void
+	assign (const X3DBaseNode*);
 
 	virtual
 	time_type

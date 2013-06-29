@@ -29,6 +29,10 @@ function set_time (value)
 	print ('Shading:                ', Browser .getBrowserOption ('Shading'));
 	print ('MotionBlur:             ', Browser .getBrowserOption ('MotionBlur'));
 	
+	// Non standard
+	print ('MotionBlurIntensity:    ', Browser .getBrowserOption ('MotionBlurIntensity'));
+	print ('AnimateStairWalks:      ', Browser .getBrowserOption ('AnimateStairWalks'));
+	
 	Browser .setBrowserOption ('Shading', 'WIREFRAME');
 }
 " ]

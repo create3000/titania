@@ -293,6 +293,13 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 	}
 }
 
+void
+X3DBaseNode::assign (const X3DBaseNode* value)
+{
+	for (const auto & field : getFieldDefinitions ())
+		*field = *value -> getField (field -> getName ());
+}
+
 time_type
 X3DBaseNode::getCurrentTime () const
 {

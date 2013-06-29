@@ -2,6 +2,29 @@
 
 META "title" "Walk viewer"
 
+DEF Setup Script {
+  eventIn SFTime set_triggerTime
+
+  url "vrmlscript:
+function initialize ()
+{
+	Browser .currentScene .getNamedNode ('Setup') .set_triggerTime = 1;
+}
+
+function set_triggerTime ()
+{
+	try
+	{
+		Browser .setBrowserOption ('AnimateStairWalks', true);
+
+		print ('AnimateStairWalks: ', Browser .getBrowserOption ('AnimateStairWalks'));
+	}
+	catch (error)
+	{ }
+}
+"
+}
+
 DEF _0 Transform {
   rotation 0 0 1 3.14159
   scale 0.1 0.1 0.1

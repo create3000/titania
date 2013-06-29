@@ -53,7 +53,6 @@
 #include "../Components/Networking/Anchor.h"
 #include "../Components/PointingDeviceSensor/X3DDragSensorNode.h"
 #include "../Components/PointingDeviceSensor/X3DTouchSensorNode.h"
-
 #include "../JavaScript/SpiderMonkey.h"
 
 #include <Titania/Chrono/CountingClock.h>

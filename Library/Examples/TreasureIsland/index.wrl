@@ -2,6 +2,29 @@
 
 META "title" "Treasure Island"
 
+DEF Setup Script {
+  eventIn SFTime set_triggerTime
+
+  url "vrmlscript:
+function initialize ()
+{
+	Browser .currentScene .getNamedNode ('Setup') .set_triggerTime = 1;
+}
+
+function set_triggerTime ()
+{
+	try
+	{
+		Browser .setBrowserOption ('AnimateStairWalks', true);
+
+		print ('AnimateStairWalks: ', Browser .getBrowserOption ('AnimateStairWalks'));
+	}
+	catch (error)
+	{ }
+}
+"
+}
+
 Inline {
   url "stage/index.wrl"
 }

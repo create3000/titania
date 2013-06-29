@@ -61,7 +61,7 @@ namespace X3D {
 
 static constexpr float     SPEED_FACTOR           = 0.007;
 static constexpr float     SHIFT_SPEED_FACTOR     = 4;
-static constexpr float     ROTATION_SPEED_FACTOR  = 0.3;
+static constexpr float     ROTATION_SPEED_FACTOR  = 0.48;
 static constexpr float     PAN_SHIFT_SPEED_FACTOR = 4;
 static constexpr float     ROLL_ANGLE             = M_PI / 32;
 static constexpr time_type ROLL_TIME              = 0.2;
@@ -241,7 +241,7 @@ X3DFlyViewer::fly ()
 	                      ? Rotation4f (direction, Vector3f (0, 0, 1))
 								 : Rotation4f (Vector3f (0, 0, -1), direction);
 
-	viewpoint -> orientationOffset () *= math::slerp <float> (Rotation4f (), rotation, math::abs (direction) * ROTATION_SPEED_FACTOR * dt);
+	viewpoint -> orientationOffset () *= math::slerp <float> (Rotation4f (), rotation, math::abs (direction) / navigationInfo -> getAvatarHeight () * ROTATION_SPEED_FACTOR * dt);
 
 	// Position offset
 

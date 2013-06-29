@@ -1281,7 +1281,7 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 		{
 			_node = getExecutionContext () -> createNode (_nodeTypeId);
 		}
-		catch (const Error <INVALID_NAME> & error)
+		catch (const Error <INVALID_NAME> & error1)
 		{
 			// __LOG__ << error .what () << std::endl;
 		
@@ -1289,9 +1289,9 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 			{
 				_node = getExecutionContext () -> createProtoInstance (_nodeTypeId) .getValue ();
 			}
-			catch (const X3DError & error)
+			catch (const X3DError & error2)
 			{
-				throw Error <INVALID_X3D> (error .what ());
+				throw Error <INVALID_X3D> (error1 .what () + std::string ("\n") + error2 .what ());
 			}
 		}
 

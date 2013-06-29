@@ -71,9 +71,11 @@ namespace X3D {
 // Antialiased             Boolean                                  False                        Render using hardware antialiasing if available
 // TextureQuality          Low, Medium, High                        Medium                       Quality of texture map display
 // PrimitiveQuality        Low, Medium, High                        Medium                       Render quality (tesselation level) for Box, Cone, Cylinder, Sphere
-// QualityWhenMoving       Low, Medium, High,                       Same (as while stationary)   SameRender quality while camera is moving
+// QualityWhenMoving       Low, Medium, High,                       Same (as while stationary)   Render quality while camera is moving
 // Shading                 Point, Wireframe, Flat, Gouraud, Phong   Gouraud                      Specify shading mode for all objects
 // MotionBlur              Boolean                                  False                        Render animations with motion blur
+// MotionBlurIntesity      Number                                   0.25                         Motion blur intesity in the range (0, 1)
+// AnimateStairWalks       Boolean                                  False                        Animate stair walks. This can give unexpected results when the floor is animated.
 
 BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	splashScreen (new SFBool (false)),
@@ -85,6 +87,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	primitiveQuality (new SFString ("MEDIUM")),
 	qualityWhenMoving (new SFString ("MEDIUM")),
 	shading (new SFString ("GOURAUD")),
+	animateStairWalks (new SFBool ()),
 	motionBlurProperties (new MotionBlur (executionContext)),
 	textureProperties (new TextureProperties (executionContext)),
 	arc2DProperties (new Arc2DProperties (executionContext)),
@@ -116,6 +119,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "Shading",                shading ());
 	addField (inputOutput, "MotionBlur",             motionBlur ());
 	addField (inputOutput, "MotionBlurIntensity",    motionBlurIntensity ());
+	addField (inputOutput, "AnimateStairWalks",      animateStairWalks ());
 	
 	addField ("AntiAliased", "Antialiased");
 

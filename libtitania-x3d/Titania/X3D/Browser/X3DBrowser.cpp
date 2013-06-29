@@ -26,6 +26,8 @@
 //  *
 //  ************************************************************************/
 
+#include "../../X3D.h"
+
 #include "X3DBrowser.h"
 
 #include "../Components/Navigation/X3DViewpointNode.h"
@@ -88,9 +90,11 @@ X3DBrowser::initialize ()
 
 	// Initialize scene
 	
+	bool splashScreen = browserOptions -> splashScreen ();
+	
 	replaceWorld (scene = createScene ());
 	
-	if (browserOptions -> splashScreen ())
+	if (splashScreen)
 		replaceWorld (createX3DFromURL ({ "about:splash" }));
 
 	world -> bind ();
@@ -242,6 +246,8 @@ throw (Error <INVALID_SCENE>)
 	world = new World (scene);
 	world -> getActiveLayer () .addInterest (this, &X3DBrowser::set_activeLayer);
 	world -> setup ();
+
+	browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
 
 	print ("*** The browser is requested to replace the world with '", scene -> getWorldURL (), "'.\n");
 }

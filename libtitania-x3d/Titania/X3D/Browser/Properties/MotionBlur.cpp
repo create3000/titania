@@ -58,7 +58,7 @@ namespace X3D {
 
 MotionBlur::Fields::Fields () :
 	enabled (new SFBool ()),
-	intensity (new SFFloat (0))
+	intensity (new SFFloat (0.25))
 { }
 
 MotionBlur::MotionBlur (X3DExecutionContext* const executionContext) :

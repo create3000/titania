@@ -69,6 +69,14 @@ X3DFieldDefinition::clone (X3DExecutionContext* const) const
 	return clone ();
 }
 
+X3DFieldDefinition &
+X3DFieldDefinition::operator = (const X3DFieldDefinition & value)
+{
+	write (value);
+	notifyParents ();
+	return *this;
+}
+
 void
 X3DFieldDefinition::setReference (X3DFieldDefinition* const value)
 {

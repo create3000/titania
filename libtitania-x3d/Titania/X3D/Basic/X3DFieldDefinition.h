@@ -79,6 +79,9 @@ public:
 	virtual
 	X3DFieldDefinition*
 	clone (X3DExecutionContext* const) const;
+	
+	X3DFieldDefinition &
+	operator = (const X3DFieldDefinition &);
 
 	virtual
 	X3DConstants::FieldType
