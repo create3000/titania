@@ -574,8 +574,14 @@ X3DRenderer::gravite ()
 				// Get size of camera
 				float size = getCurrentNavigationInfo () -> getCollisionRadius () * 2;
 			
-				// Step up
-				getCurrentViewpoint () -> positionOffset () += getCurrentLayer () -> getTranslation (Vector3f (), size, size, Vector3f (0, -distance, 0));
+				// Step up				
+				Vector3f translation = getCurrentLayer () -> getTranslation (Vector3f (), size, size, Vector3f (0, -distance, 0));		
+				Vector3f offset (0, getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate (), 0);
+
+				if (math::abs (offset) > math::abs (translation))
+					offset = translation;
+
+				getCurrentViewpoint () -> positionOffset () += offset;
 			}
 		}
 	}
@@ -608,7 +614,6 @@ void
 X3DRenderer::dispose ()
 {
 	depthBuffer .reset ();
-	step_up_id .disconnect ();
 }
 
 X3DRenderer::~X3DRenderer ()

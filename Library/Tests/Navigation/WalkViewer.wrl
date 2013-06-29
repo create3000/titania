@@ -33,6 +33,16 @@ Transform {
       }
     }
     DEF Step1 Transform {
+      translation 4 1.35 0
+      scale 4 0.7 4
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Box { size 1 1 1 }
+      }
+    }
+    DEF Step1 Transform {
       scale 2 1.5 2
       children Shape {
         appearance Appearance {

@@ -100,7 +100,6 @@ X3DViewpointNode::initialize ()
 	positionInterpolator -> setup ();
 
 	timeSensor           -> fraction_changed () .addInterest (positionInterpolator -> set_fraction ());
-	timeSensor           -> isActive ()         .addInterest (this, &X3DViewpointNode::set_isActive);
 	positionInterpolator -> value_changed ()    .addInterest (positionOffset ());
 
 	isBound () .addInterest (this, &X3DViewpointNode::_set_bind);
@@ -162,8 +161,8 @@ X3DViewpointNode::lookAt (Box3f bbox)
 
 	bbox *= ~getModelViewMatrix ();
 
-	timeSensor -> startTime ()          = 1;
-	positionInterpolator -> keyValue () = { this -> positionOffset (), lookAtPositionOffset (bbox) };
+	timeSensor -> startTime ()          = getCurrentTime ();
+	positionInterpolator -> keyValue () = { positionOffset (), lookAtPositionOffset (bbox) };
 
 	centerOfRotation ()       = bbox .center ();
 	centerOfRotationOffset () = Vector3f ();
@@ -184,6 +183,8 @@ X3DViewpointNode::set_isActive (const bool & value)
 	{
 		for (const auto & layer : getLayers ())
 			layer -> getNavigationInfo () -> transitionComplete () = getCurrentTime ();
+
+		timeSensor -> isActive () .removeInterest (this, &X3DViewpointNode::set_isActive);
 	}
 }
 
