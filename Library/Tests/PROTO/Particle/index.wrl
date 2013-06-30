@@ -47,60 +47,145 @@ EXTERNPROTO LineTrail [
 ]
 "LineTrail.wrl"
 
-Collision {
-  collide FALSE
-  children [
-    Viewpoint {
-      description "Pespective"
-      position 5.25938 11.9066 14.585
-      orientation -0.888734 0.442501 0.119768 0.734172
-    }
-    Viewpoint {
-      description "Top"
-      position 0 20 0
-      orientation -1 -0 -0 1.5708
-    }
-    Grid {
-      solid FALSE
-    }
-    ParticleGroup {
-      children [
-        DEF _0 Particle {
-          mass 20000000000
-          velocity 0 -0.28 0
-          translation -4 0 0
-          children ParticleShape {
-            color 0 0.8 0.8
+EXTERNPROTO MFNode [
+  exposedField MFNode keyValue
+  exposedField SFTime triggerTime
+  eventOut     MFNode value_changed
+]
+"MFNode.wrl"
+
+LayerSet {
+  activeLayer 1
+  order [ 1, 2 ]
+  layers [
+    Layer {
+      children DEF _4 Collision {
+        collide FALSE
+        children [
+          Background {
+            skyColor 0.2 0.2 0.2
           }
-        }
-        DEF _2 Particle {
-          mass 20000000000
-          velocity 0 0.28 0
-          translation 4 0 0
-          children ParticleShape {
-            color 0.8 0 0.8
+          Viewpoint {
+            description "Pespective"
+            position 5.25938 11.9066 14.585
+            orientation -0.888734 0.442501 0.119768 0.734172
           }
-        }
-      ]
-    }
-    Shape {
-      appearance Appearance {
-        material Material {
-          emissiveColor 0 0.8 0.8
-        }
+          Viewpoint {
+            description "Top"
+            position 0 20 0
+            orientation -1 -0 -0 1.5708
+          }
+          Grid {
+            solid FALSE
+          }
+          DEF ParticleGroup ParticleGroup {
+            children [
+              DEF Particle1 Particle {
+                mass 20000000000
+                velocity 0 -0.28 0
+                translation -4 0 0
+                children ParticleShape {
+                  color 0 0.8 0.8
+                }
+              }
+              DEF Particle2 Particle {
+                mass 20000000000
+                velocity 0 0.28 0
+                translation 4 0 0
+                children ParticleShape {
+                  color 0.8 0 0.8
+                }
+              }
+            ]
+          }
+          Shape {
+            appearance Appearance {
+              material Material {
+                emissiveColor 0 0.8 0.8
+              }
+            }
+            geometry DEF LineTrail1 LineTrail { }
+          }
+          Shape {
+            appearance Appearance {
+              material Material {
+                emissiveColor 0.8 0 0.8
+              }
+            }
+            geometry DEF LineTrail2 LineTrail { }
+          }
+        ]
       }
-      geometry DEF _1 LineTrail { }
     }
-    Shape {
-      appearance Appearance {
-        material Material {
-          emissiveColor 0.8 0 0.8
-        }
+    Layer {
+      children DEF _0 Collision {
+        collide FALSE
+        children [
+          OrthoViewpoint { }
+          Transform {
+            translation 1 -0.9 0
+            scale 0.1 0.1 0.1
+            children [
+              DEF Touch2 TouchSensor { }
+              Shape {
+                appearance Appearance {
+                  material Material { }
+                }
+                geometry Rectangle2D {
+                  size 1 1
+                }
+              }
+              DEF ParticleContainer2 MFNode {
+                keyValue [
+                  USE Particle1
+                  USE Particle2
+                ]
+              }
+            ]
+          }
+          Transform {
+            translation 1.2 -0.9 0
+            scale 0.1 0.1 0.1
+            children [
+              DEF Touch3 TouchSensor { }
+              Shape {
+                appearance Appearance {
+                  material Material { }
+                }
+                geometry Rectangle2D {
+                  size 1 1
+                }
+              }
+              DEF ParticleContainer3 MFNode {
+                keyValue [
+                  USE Particle1
+                  USE Particle2
+                  DEF Particle3 Particle {
+                    mass 2000000000
+                    children ParticleShape {
+                      color 0.8 0.8 0
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
-      geometry DEF _3 LineTrail { }
     }
   ]
 }
 
-ROUTE _0.translation_changed TO _1.set_point
-ROUTE _2.translation_changed TO _3.set_point
+ROUTE Particle1.translation_changed TO LineTrail1.set_point
+ROUTE Particle2.translation_changed TO LineTrail2.set_point
+
+# 2 Particles
+
+ROUTE Touch2.touchTime TO ParticleContainer2.set_triggerTime
+ROUTE ParticleContainer2.value_changed TO ParticleGroup.set_children
+
+# 3 Particles
+
+ROUTE Touch3.touchTime TO ParticleContainer3.set_triggerTime
+ROUTE ParticleContainer3.value_changed TO ParticleGroup.set_children
+

@@ -14,15 +14,13 @@ PROTO SFBool [
     Group { }
   }
 
-  DEF Fields Fields {
-    keyValue IS keyValue
-    triggerTime IS triggerTime
-  }
-
   DEF SFBool Script {
     eventIn  SFTime set_triggerTime
     eventOut SFBool value_changed IS value_changed
-    field    SFNode fields USE Fields
+    field    SFNode fields DEF Fields Fields {
+      keyValue IS keyValue
+      triggerTime IS triggerTime
+    }
 
     url "vrmlscript:
 function initialize ()

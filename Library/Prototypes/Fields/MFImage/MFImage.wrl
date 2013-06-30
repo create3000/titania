@@ -14,15 +14,13 @@ PROTO MFImage [
     Group { }
   }
 
-  DEF Fields Fields {
-    keyValue IS keyValue
-    triggerTime IS triggerTime
-  }
-
   DEF MFImage Script {
     eventIn  SFTime  set_triggerTime
     eventOut MFImage value_changed IS value_changed
-    field    SFNode  fields USE Fields
+    field    SFNode  fields DEF Fields Fields {
+      keyValue IS keyValue
+      triggerTime IS triggerTime
+    }
 
     url "vrmlscript:
 function initialize ()
@@ -41,5 +39,4 @@ function set_triggerTime (value, time)
 
   ROUTE Fields.triggerTime_changed TO MFImage.set_triggerTime
 }
-
 

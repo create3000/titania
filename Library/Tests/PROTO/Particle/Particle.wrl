@@ -87,13 +87,13 @@ function set_time (value, time)
 
 function set_friends (value, time)
 {
-	for (var i in friends)
-		Browser .deleteRoute (friends [i], 'translation', self, 'set_translation');
+	for each (var friend in friends)
+		Browser .deleteRoute (friend, 'translation', self, 'set_translation');
 
 	friends = value;
 
-	for (var i in friends)
-		Browser .addRoute (friends [i], 'translation', self, 'set_translation');
+	for each (var friend in friends)
+		Browser .addRoute (friend, 'translation', self, 'set_translation');
 }
 
 function set_translation (value, time)
@@ -102,11 +102,11 @@ function set_translation (value, time)
 
 	var acceleration = new SFVec3f ();
 
-	for (var i in friends)
+	for each (var friend in friends)
 	{
-		var distance = friends [i] .translation .subtract (transform .translation);
+		var distance = friend .translation .subtract (transform .translation);
 	
-		acceleration = acceleration .add (distance .multiply (friends [i] .mass) .divide (Math .pow (distance .length (), 3)));
+		acceleration = acceleration .add (distance .multiply (friend .mass) .divide (Math .pow (distance .length (), 3)));
 	}
 
 	acceleration = acceleration .multiply (G);

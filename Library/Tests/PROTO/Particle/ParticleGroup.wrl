@@ -11,6 +11,7 @@ PROTO ParticleGroup [
   DEF ParticleGroup Script {
     eventIn MFNode set_children
     field   SFNode group USE Group
+    field   MFNode children [ ]
     field   SFNode self USE ParticleGroup
 
     url "vrmlscript:
@@ -23,12 +24,17 @@ function initialize ()
 
 function set_children (value, time)
 {
-	for (var particle in value)
+	for each (var particle in children)
+		particle .friends = new MFNode ();
+
+	children = value;
+
+	for each (var particle in children)
 	{
-		for (var friend in value)
+		for each (var friend in children)
 		{
 			if (friend != particle)
-				value [particle] .friends [value [particle] .friends .length] = value [friend];
+				particle .friends [particle .friends .length] = friend;
 		}
 	}
 }

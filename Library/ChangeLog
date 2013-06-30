@@ -1,3 +1,53 @@
+2013-06-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
+	* index.wrl:
+	* MFNode.wrl:
+	* Particle.wrl:
+	* MFTime.wrl:
+	* MFNode.wrl:
+	* SFBool.wrl:
+	* SFTime.wrl:
+	* SFNode.wrl:
+	* MFBool.wrl:
+	* SFImage.wrl:
+	* SFInt32.wrl:
+	* SFVec2d.wrl:
+	* MFFloat.wrl:
+	* SFColor.wrl:
+	* SFFloat.wrl:
+	* SFVec4d.wrl:
+	* SFVec4f.wrl:
+	* MFColor.wrl:
+	* SFVec2f.wrl:
+	* SFVec3d.wrl:
+	* SFVec3f.wrl:
+	* MFVec4f.wrl:
+	* MFVec2f.wrl:
+	* MFVec3d.wrl:
+	* MFImage.wrl:
+	* MFVec2d.wrl:
+	* MFVec3f.wrl:
+	* MFVec4d.wrl:
+	* MFInt32.wrl:
+	* ParticleGroup.wrl:
+	* MFDouble.wrl:
+	* SFString.wrl:
+	* MFString.wrl:
+	* SFDouble.wrl:
+	* MFMatrix4f.wrl:
+	* MFRotation.wrl:
+	* MFMatrix3d.wrl:
+	* MFMatrix3f.wrl:
+	* MFMatrix4d.wrl:
+	* SFMatrix4d.wrl:
+	* SFRotation.wrl:
+	* SFMatrix4f.wrl:
+	* SFMatrix3d.wrl:
+	* SFMatrix3f.wrl:
+	* MFColorRGBA.wrl:
+	* SFColorRGBA.wrl: 
+
 2013-06-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* index.wrl:

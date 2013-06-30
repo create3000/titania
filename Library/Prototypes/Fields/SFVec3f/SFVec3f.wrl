@@ -14,15 +14,13 @@ PROTO SFVec3f [
     Group { }
   }
 
-  DEF Fields Fields {
-    keyValue IS keyValue
-    triggerTime IS triggerTime
-  }
-
   DEF SFVec3f Script {
     eventIn  SFTime  set_triggerTime
     eventOut SFVec3f value_changed IS value_changed
-    field    SFNode  fields USE Fields
+    field    SFNode  fields DEF Fields Fields {
+      keyValue IS keyValue
+      triggerTime IS triggerTime
+    }
 
     url "vrmlscript:
 function initialize ()
@@ -41,5 +39,4 @@ function set_triggerTime (value, time)
 
   ROUTE Fields.triggerTime_changed TO SFVec3f.set_triggerTime
 }
-
 

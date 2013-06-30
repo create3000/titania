@@ -2114,6 +2114,7 @@
     <None Include="Tests\PROTO\Particle\index.wrl" />
     <None Include="Tests\PROTO\Particle\particleEmmiter.wrl" />
     <None Include="Tests\PROTO\Perceptron\Peceptron.wrl" />
+    <None Include="Tests\PROTO\Particle\MFNode.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
