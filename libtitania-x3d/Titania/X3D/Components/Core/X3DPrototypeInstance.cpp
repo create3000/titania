@@ -78,6 +78,11 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	}
 
 	setChildren (proto);
+
+	// Assign protos and root nodes
+
+	if (not executionContext -> isProto ())
+		assign1 (proto);
 }
 
 X3DPrototypeInstance*
@@ -90,8 +95,10 @@ void
 X3DPrototypeInstance::initialize ()
 {
 	X3DExecutionContext::initialize ();
+	
+	// Defer assigning imports and routes until now
 
-	assign (*proto);
+	assign2 (proto);
 }
 
 const std::string &

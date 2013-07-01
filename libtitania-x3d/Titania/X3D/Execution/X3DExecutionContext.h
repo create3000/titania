@@ -76,8 +76,9 @@ class X3DExecutionContext :
 {
 public:
 
+	virtual
 	void
-	assign (const X3DExecutionContext* const);
+	setup ();
 
 	///  @name Tests
 
@@ -97,57 +98,67 @@ public:
 	const basic::uri &
 	getWorldURL () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return worldURL; }
 
 	void
-	setEncoding (const std::string &);
+	setEncoding (const std::string & value)
+	{ encoding = value; }
 
 	const std::string &
 	getEncoding () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return encoding; }
 
 	void
-	setSpecificationVersion (const std::string &);
+	setSpecificationVersion (const std::string & value)
+	{ specificationVersion = value; }
 
 	const std::string &
 	getSpecificationVersion () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return specificationVersion; }
 
 	void
-	setCharacterEncoding (const std::string &);
+	setCharacterEncoding (const std::string & value)
+	{ characterEncoding = value; }
 
 	const std::string &
 	getCharacterEncoding () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return characterEncoding; }
 
 	void
-	setComment (const std::string &);
+	setComment (const std::string & value)
+	{ comment = value; }
 
 	const std::string &
 	getComment () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return comment; }
 
-	virtual
 	void
 	addComponents (const ComponentInfoArray &);
 
-	virtual
 	const ComponentInfoArray &
 	getComponents () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return components; }
 
 	void
-	setProfile (const ProfileInfo*);
+	setProfile (const ProfileInfo* value)
+	{ profile = value; }
 
 	const ProfileInfo*
-	getProfile () const
+	getProfile ()  const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return profile; }
 
 	SFNode <X3DBaseNode>
 	createNode (const std::string &)
@@ -164,6 +175,12 @@ public:
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
+	
+	/// Add uninitialized node
+	virtual
+	void
+	addNode (X3DBaseNode* node)
+	{ nodes .emplace_back (node); }
 
 	///  @name Named/Imported node handling
 
@@ -253,9 +270,10 @@ public:
 	       Error <DISPOSED>);
 
 	void
-	removeProtoDeclaration (const std::string &)
+	removeProtoDeclaration (const std::string & name)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ protos .erase (name); }
 
 	void
 	updateProtoDeclaration (const std::string &, const SFNode <Proto> &)
@@ -282,9 +300,10 @@ public:
 	       Error <DISPOSED>);
 
 	void
-	removeExternProtoDeclaration (const std::string &)
+	removeExternProtoDeclaration (const std::string & name)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ externProtos .erase (name); }
 
 	void
 	updateExternProtoDeclaration (const std::string &, const SFNode <ExternProto> &)
@@ -345,7 +364,8 @@ public:
 	const RouteArray &
 	getRoutes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return routes; }
 
 	void
 	changeViewpoint (const std::string &)
@@ -373,7 +393,17 @@ protected:
 	X3DExecutionContext ();
 
 	void
-	setWorldURL (const basic::uri &);
+	setWorldURL (const basic::uri & value)
+	{ worldURL = value; }
+
+	void
+	assign1 (const X3DExecutionContext* const);
+
+	void
+	assign2 (const X3DExecutionContext* const);
+
+	void
+	setupNodes ();
 
 	virtual
 	void
@@ -424,8 +454,9 @@ private:
 	ProtoArray         protos;
 	ExternProtoArray   externProtos;
 	RouteArray         routes;
+	MFNode             rootNodes;
 
-	MFNode rootNodes;
+	std::deque <X3DBaseNode*> nodes;
 
 };
 

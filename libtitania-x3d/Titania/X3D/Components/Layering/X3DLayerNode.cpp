@@ -327,11 +327,10 @@ X3DLayerNode::pick ()
 		currentViewport -> push ();
 
 		glLoadIdentity ();
-		getBrowser () -> updateHitRay ();
-
 		getViewpoint () -> reshape ();
-		getViewpoint () -> transform ();
+		getBrowser ()   -> updateHitRay ();
 
+		getViewpoint () -> transform ();
 		group -> traverse (TraverseType::PICKING);
 
 		currentViewport -> pop ();

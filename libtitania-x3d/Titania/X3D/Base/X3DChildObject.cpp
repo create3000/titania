@@ -46,7 +46,7 @@ X3DChildObject::X3DChildObject () :
 void
 X3DChildObject::notifyParents ()
 {
-	for (const auto & parent : getParents ())
+	for (const auto & parent : parents)
 		parent -> addEvent (this);
 }
 
@@ -59,7 +59,7 @@ X3DChildObject::addEvent (X3DChildObject* const)
 void
 X3DChildObject::addEvent (X3DChildObject*, const Event & event)
 {
-	for (const auto & parent : getParents ())
+	for (const auto & parent : parents)
 		parent -> addEvent (this, event);
 }
 
@@ -115,11 +115,11 @@ X3DChildObject::getParents () const
 bool
 X3DChildObject::hasRoots (ChildObjectSet & seen)
 {
-	if (getParents () .size ())
+	if (parents .size ())
 	{
 		if (seen .insert (this) .second)
 		{
-			for (auto & parent : getParents ())
+			for (auto & parent : parents)
 			{
 				if (parent -> hasRoots (seen))
 					return true;

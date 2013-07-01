@@ -81,13 +81,22 @@ X3DExecutionContext::X3DExecutionContext () :
 	              protos (),              
 	        externProtos (),              
 	              routes (),              
-	           rootNodes ()               
+	           rootNodes (),
+	               nodes ()               
 {
 	setChildren (rootNodes);
 }
 
 void
-X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::setup ()
+{
+	X3DNode::setup ();
+
+	// Add rootNodes here as child. This prevents X3DProtoypeInstances from being disposed on construction.
+}
+
+void
+X3DExecutionContext::assign1 (const X3DExecutionContext* const executionContext)
 {
 	setEncoding             (executionContext -> getEncoding ());
 	setSpecificationVersion (executionContext -> getSpecificationVersion ());
@@ -114,9 +123,14 @@ X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
 		catch (const Error <INVALID_NAME> &)
 		{
 			getRootNodes () .emplace_back (rootNode -> copy (this));
-			getRootNodes () .back () -> setup ();
 		}
 	}
+}
+
+void
+X3DExecutionContext::assign2 (const X3DExecutionContext* const executionContext)
+{
+	setupNodes ();
 
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
 		importedNode -> clone (this);
@@ -126,102 +140,10 @@ X3DExecutionContext::assign (const X3DExecutionContext* const executionContext)
 }
 
 void
-X3DExecutionContext::setWorldURL (const basic::uri & value)
-{
-	worldURL = value;
-}
-
-const basic::uri &
-X3DExecutionContext::getWorldURL () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return worldURL;
-}
-
-void
-X3DExecutionContext::setEncoding (const std::string & value)
-{
-	encoding = value;
-}
-
-const std::string &
-X3DExecutionContext::getEncoding () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return encoding;
-}
-
-void
-X3DExecutionContext::setSpecificationVersion (const std::string & value)
-{
-	specificationVersion = value;
-}
-
-const std::string &
-X3DExecutionContext::getSpecificationVersion () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return specificationVersion;
-}
-
-void
-X3DExecutionContext::setCharacterEncoding (const std::string & value)
-{
-	characterEncoding = value;
-}
-
-const std::string &
-X3DExecutionContext::getCharacterEncoding () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return characterEncoding;
-}
-
-void
-X3DExecutionContext::setComment (const std::string & value)
-{
-	comment = value;
-}
-
-const std::string &
-X3DExecutionContext::getComment () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return comment;
-}
-
-void
 X3DExecutionContext::addComponents (const ComponentInfoArray & value)
 {
 	for (const auto & component : value)
 		components .push_back (component -> getName (), component);
-}
-
-const ComponentInfoArray &
-X3DExecutionContext::getComponents () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return components;
-}
-
-void
-X3DExecutionContext::setProfile (const ProfileInfo* value)
-{
-	profile = value;
-}
-
-const ProfileInfo*
-X3DExecutionContext::getProfile ()  const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return profile;
 }
 
 SFNode <X3DBaseNode>
@@ -300,6 +222,15 @@ throw (Error <INVALID_NAME>,
 			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + name + "'.");
 		}
 	}
+}
+
+void
+X3DExecutionContext::setupNodes ()
+{
+	for (auto & node : nodes)
+		node -> setup ();
+
+	nodes .clear ();
 }
 
 // Named node handling
@@ -427,6 +358,8 @@ throw (Error <INVALID_NODE>,
 	}
 	catch (const std::out_of_range &)
 	{
+		inlineNode -> setup ();
+
 		importedNodes .push_back (importedName, new ImportedNode (this, inlineNode, exportedName, importedName));
 		importedNodes .back () .isTainted (true);
 		importedNodes .back () .addParent (this);
@@ -461,6 +394,8 @@ throw (Error <INVALID_NODE>,
 		
 	try
 	{
+		inlineNode -> setup ();
+
 		importedNodes .erase (importedNames .at (inlineNode -> getExportedNode (exportedName)));
 	}
 	catch (const std::out_of_range &)
@@ -516,14 +451,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	protos .back () .addParent (this);
 
 	return protos .back ();
-}
-
-void
-X3DExecutionContext::removeProtoDeclaration (const std::string & name)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	protos .erase (name);
 }
 
 void
@@ -588,14 +515,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	externProtos .back () .addParent (this);
 
 	return externProtos .back ();
-}
-
-void
-X3DExecutionContext::removeExternProtoDeclaration (const std::string & name)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	externProtos .erase (name);
 }
 
 void
@@ -751,14 +670,6 @@ throw (Error <INVALID_NODE>,
 	}
 
 	return std::make_pair (sourceField, destinationField);
-}
-
-const RouteArray &
-X3DExecutionContext::getRoutes () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return routes;
 }
 
 void

@@ -167,7 +167,7 @@ jsX3DExternProtoDeclaration::newInstance (JSContext* context, uintN argc, jsval*
 {
 	auto & externproto = *static_cast <SFNode <ExternProto>*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
-	auto instance = externproto -> createInstance ();
+	SFNode <X3DPrototypeInstance> instance = externproto -> createInstance ();
 
 	instance -> setup ();
 

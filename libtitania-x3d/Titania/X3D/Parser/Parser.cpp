@@ -83,7 +83,6 @@ Parser::Parser (std::istream & istream, X3DScene* scene) :
 	              istream (basic::gunzip (istream)),       
 	                scene (scene),                         
 	executionContextStack (),
-	                nodes (),
 	      currentComments (),                              
 	          whitespaces ()                               
 {
@@ -244,11 +243,6 @@ void
 Parser::addRootNode (const SFNode <X3DBaseNode> & rootNode)
 {
 	//__LOG__ << std::endl;
-	
-	for (auto & node : nodes)
-		node -> setup ();
-
-	nodes .clear ();
 
 	getExecutionContext () -> getRootNodes () .emplace_back (rootNode);
 }
@@ -1325,7 +1319,7 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 
 				_basicNode -> addInnerComments (getComments ());
 
-				nodes .emplace_back (_basicNode);
+				getExecutionContext () -> addNode (_basicNode);
 
 				//__LOG__ << _nodeTypeId << std::endl;
 				return true;

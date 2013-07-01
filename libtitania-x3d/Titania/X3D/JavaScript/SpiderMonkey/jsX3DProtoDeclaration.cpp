@@ -148,7 +148,7 @@ jsX3DProtoDeclaration::newInstance (JSContext* context, uintN argc, jsval* vp)
 {
 	auto & proto = *static_cast <SFNode <Proto>*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
-	auto instance = proto -> createInstance ();
+	SFNode <X3DPrototypeInstance> instance = proto -> createInstance ();
 
 	instance -> setup ();
 

@@ -140,26 +140,23 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "S", &vrmlSyntax))
 			return JS_FALSE;
 
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode (); // XXX
-
-		SFNode <Scene> scene;
-
 		try
 		{
-			scene = script -> createX3DFromString (JS_GetString (context, vrmlSyntax));                           // XXX X3DBaseNode::createX3DFromString
+			X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+
+			SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, vrmlSyntax));
+
+			return create (context,
+			               scene and scene -> getRootNodes () .size ()
+			               ? new SFNode <X3DBaseNode> (scene -> getRootNodes () [0])
+								: new SFNode <X3DBaseNode> (),
+			               &JS_RVAL (context, vp));
 		}
 		catch (const X3DError & error)
 		{
-			std::cerr << "Warning Browser: " << std::endl << error .what () << std::endl;
+			JS_ReportError (context, error .what ());
+			return JS_FALSE;
 		}
-
-		// XXX save X3DExecutionContext for generated nodes.
-
-		return create (context,
-		               scene and scene -> getRootNodes () .size ()
-		               ? new SFNode <X3DBaseNode> (scene -> getRootNodes () [0])
-							: new SFNode <X3DBaseNode> (),
-		               &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "wrong number of arguments");

@@ -85,7 +85,7 @@ public:
 	isExternproto () const final
 	{ return false; }
 
-	///  @name Tests
+	///  @name RootNodes handling
 
 	X3DBaseNode*
 	getRootNode () const;
@@ -102,6 +102,11 @@ private:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
+
+	virtual
+	void
+	addNode (X3DBaseNode* node) final
+	{ }
 
 };
 

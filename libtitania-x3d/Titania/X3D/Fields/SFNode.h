@@ -92,6 +92,10 @@ public:
 	SFNode*
 	clone (X3DExecutionContext* const) const final;
 
+	virtual
+	void
+	clone (X3DExecutionContext* const, X3DFieldDefinition*) const final;
+
 	///  @name Field services
 
 	virtual
@@ -153,22 +157,16 @@ public:
 	template <class Class>
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (const SFNode &)) const
-	{
-		addInterest (object, memberFunction, *this);
-	}
+	{ addInterest (object, memberFunction, *this); }
 
 	template <class Class>
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (const SFNode &)) const
-	{
-		addInterest (object, memberFunction, *this);
-	}
+	{ addInterest (object, memberFunction, *this); }
 
 	void
 	addInterest (void (* requester) (const SFNode &)) const
-	{
-		addInterest (requester, *this);
-	}
+	{ addInterest (requester, *this); }
 
 	///  @name Input operator.
 	virtual
@@ -237,23 +235,32 @@ template <class ValueType>
 SFNode <ValueType>*
 SFNode <ValueType>::clone (X3DExecutionContext* const executionContext) const
 {
+	SFNode* field = new SFNode ();
+	
+	clone (executionContext, field);
+	
+	return field;
+}
+
+template <class ValueType>
+void
+SFNode <ValueType>::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
+{
+	SFNode* field = static_cast <SFNode*> (fieldDefinition);
+
 	if (getValue ())
 	{
 		try
 		{
-			return new SFNode (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));
+			field -> set (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));
 		}
 		catch (const Error <INVALID_NAME> &)
 		{
-			auto clone = new SFNode (dynamic_cast <ValueType*> (getValue () -> copy (executionContext)));
-
-			(*clone) -> setup ();
-
-			return clone;	
+			field -> set (dynamic_cast <ValueType*> (getValue () -> copy (executionContext)));
 		}
 	}
 	else
-		return new SFNode ();
+		field -> set (nullptr);
 }
 
 template <class ValueType>

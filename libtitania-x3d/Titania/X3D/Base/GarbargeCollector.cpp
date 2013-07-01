@@ -66,7 +66,7 @@ GarbageCollector::addObject (X3DObject* object)
 {
 	//	try
 	//	{
-	//		__LOG__ << object -> getTypeName () << " '" << object -> getName () << "' " << object << std::endl;
+	//		__LOG__ << object -> getTypeName () << " '" << object -> getName () << "' " << (X3DChildObject*) object << std::endl;
 	//	}
 	//	catch (...)
 	//	{ }
@@ -75,7 +75,7 @@ GarbageCollector::addObject (X3DObject* object)
 	{
 		try
 		{
-			__LOG__ << object -> getTypeName () << " '" << object -> getName () << "' " << object << std::endl;
+			__LOG__ << object -> getTypeName () << " '" << object -> getName () << "' " << (X3DChildObject*) object << std::endl;
 		}
 		catch (...)
 		{ }
@@ -87,16 +87,12 @@ GarbageCollector::dispose ()
 {
 	while (disposedObjects .size ())
 	{
-		//__LOG__ << disposedObjects .size () << " objects to delete: " << std::flush;
-
 		for (const auto & object : ObjectSet (std::move (disposedObjects)))
 		{
-			//__LOG__ << (void*) object << " " << object -> getTypeName () << " " << object -> getName () << std::endl;
+			// __LOG__ << (X3DChildObject*) object << " " << object -> getName () << std::endl;
 
 			delete object;
 		}
-
-		//__LOG__ << "Done." << std::endl;
 	}
 }
 

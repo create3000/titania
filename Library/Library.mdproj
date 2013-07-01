@@ -2115,6 +2115,10 @@
     <None Include="Tests\PROTO\Particle\particleEmmiter.wrl" />
     <None Include="Tests\PROTO\Perceptron\Peceptron.wrl" />
     <None Include="Tests\PROTO\Particle\MFNode.wrl" />
+    <None Include="Examples\VRMLBanner\vrmlbanner.wrl" />
+    <None Include="Examples\VRMLBanner\globe.jpg" />
+    <None Include="Examples\VRMLBanner\stripe.png" />
+    <None Include="Examples\VRMLBanner\tonerow3d_16_22.wav" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2231,6 +2235,7 @@
     <Folder Include="Prototypes\Converter\SFInt32Converter\" />
     <Folder Include="Tests\PROTO\Particle\" />
     <Folder Include="Tests\PROTO\Perceptron\" />
+    <Folder Include="Examples\VRMLBanner\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

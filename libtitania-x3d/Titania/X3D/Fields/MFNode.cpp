@@ -66,27 +66,34 @@ template class X3DArrayField <SFNode <X3DBaseNode>>;
 MFNode*
 MFNode::clone (X3DExecutionContext* const executionContext) const
 {
-	MFNode* clone = new MFNode ();
+	MFNode* field = new MFNode ();
 
-	for (const auto & field :* this)
+	clone (executionContext, field);
+
+	return field;
+}
+
+void
+MFNode::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
+{
+	MFNode* field = static_cast <MFNode*> (fieldDefinition);
+
+	for (const auto & value :* this)
 	{
-		if (field)
+		if (value)
 		{
 			try
 			{
-				clone -> emplace_back (field -> clone (executionContext));
+				field -> emplace_back (value -> clone (executionContext));
 			}
 			catch (const Error <INVALID_NAME> &)
 			{
-				clone -> emplace_back (field -> copy (executionContext));
-				clone -> back () -> setup ();
+				field -> emplace_back (value -> copy (executionContext));
 			}
 		}
 		else
-			clone -> emplace_back ();
+			field -> emplace_back ();
 	}
-
-	return clone;
 }
 
 void

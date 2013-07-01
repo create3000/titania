@@ -109,6 +109,10 @@ public:
 	clone (X3DExecutionContext* const executionContext) const final;
 
 	virtual
+	void
+	clone (X3DExecutionContext* const, X3DFieldDefinition*) const final;
+
+	virtual
 	X3DConstants::FieldType
 	getType () const final
 	{ return X3DConstants::MFNode; }

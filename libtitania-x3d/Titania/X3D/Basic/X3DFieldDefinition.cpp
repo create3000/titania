@@ -55,19 +55,13 @@ namespace X3D {
 
 X3DFieldDefinition::X3DFieldDefinition () :
 	X3DChildObject (),               
-	     reference (nullptr),        
+	     reference (NULL),        
 	    accessType (initializeOnly), 
 	     aliasName (),               
 	   inputRoutes (),               
 	  outputRoutes (),               
 	     interests ()                
 { }
-
-X3DFieldDefinition*
-X3DFieldDefinition::clone (X3DExecutionContext* const) const
-{
-	return clone ();
-}
 
 X3DFieldDefinition &
 X3DFieldDefinition::operator = (const X3DFieldDefinition & value)
@@ -76,7 +70,6 @@ X3DFieldDefinition::operator = (const X3DFieldDefinition & value)
 	notifyParents ();
 	return *this;
 }
-
 void
 X3DFieldDefinition::setReference (X3DFieldDefinition* const value)
 {
@@ -86,20 +79,63 @@ X3DFieldDefinition::setReference (X3DFieldDefinition* const value)
 	switch (getAccessType () & reference -> getAccessType ())
 	{
 		case initializeOnly:
-			write (*reference);
 			break;
 		case inputOnly:
 			reference -> addInterest (this);
 			break;
 		case outputOnly:
 			addInterest (reference);
-			//write (reference);
 			break;
 		case inputOutput:
-			write (*reference);
 			reference -> addInterest (this);
 			addInterest (reference);
 			break;
+	}
+
+	updateReference ();
+}
+
+void
+X3DFieldDefinition::updateReference ()
+{
+	if (reference)
+	{
+		switch (getAccessType () & reference -> getAccessType ())
+		{
+			case inputOnly:
+			case outputOnly:
+				break;
+			case initializeOnly:
+			case inputOutput:
+				write (*reference);
+				break;
+		}
+	}
+}
+
+void
+X3DFieldDefinition::removeReference ()
+{
+	if (reference)
+	{
+		// remove IS relationship
+		switch (getAccessType () & reference -> getAccessType ())
+		{
+			case initializeOnly:
+				break;
+			case inputOnly:
+				reference -> removeInterest (this);
+				break;
+			case outputOnly:
+				removeInterest (reference);
+				break;
+			case inputOutput:
+				reference -> removeInterest (this);
+				removeInterest (reference);
+				break;
+		}
+		
+		reference = NULL;
 	}
 }
 
@@ -117,114 +153,6 @@ X3DFieldDefinition::hasRoots (ChildObjectSet & seen)
 
 	// this is a root node
 	return true;
-}
-
-X3DFieldDefinition*
-X3DFieldDefinition::getReference () const
-{
-	return reference;
-}
-
-void
-X3DFieldDefinition::setAliasName (const std::string & value)
-{
-	aliasName = value;
-}
-
-const std::string &
-X3DFieldDefinition::getAliasName () const
-{
-	return aliasName;
-}
-
-void
-X3DFieldDefinition::setAccessType (const AccessType value)
-{
-	accessType = value;
-}
-
-AccessType
-X3DFieldDefinition::getAccessType () const
-{
-	return accessType;
-}
-
-bool
-X3DFieldDefinition::isInitializeable () const
-{
-	return accessType & initializeOnly;
-}
-
-bool
-X3DFieldDefinition::isInput () const
-{
-	return accessType & inputOnly;
-}
-
-bool
-X3DFieldDefinition::isOutput () const
-{
-	return accessType & outputOnly;
-}
-
-void
-X3DFieldDefinition::addInputRoute (X3DRoute* const route)
-{
-	inputRoutes .insert (route);
-}
-
-void
-X3DFieldDefinition::removeInputRoute (X3DRoute* const route)
-{
-	inputRoutes .erase (route);
-}
-
-const RouteSet &
-X3DFieldDefinition::getInputRoutes () const
-{
-	return inputRoutes;
-}
-
-void
-X3DFieldDefinition::addOutputRoute (X3DRoute* const route)
-{
-	outputRoutes .insert (route);
-}
-
-void
-X3DFieldDefinition::removeOutputRoute (X3DRoute* const route)
-{
-	outputRoutes .erase (route);
-}
-
-const RouteSet &
-X3DFieldDefinition::getOutputRoutes () const
-{
-	return outputRoutes;
-}
-
-void
-X3DFieldDefinition::addInterest (X3DFieldDefinition* const interest)
-{
-	interests .insert (interest);
-}
-
-void
-X3DFieldDefinition::addInterest (X3DFieldDefinition & interest)
-{
-	interests .insert (&interest);
-}
-
-void
-X3DFieldDefinition::removeInterest (X3DFieldDefinition* const interest)
-{
-	interests .erase (interest);
-}
-
-void
-X3DFieldDefinition::removeInterest (X3DFieldDefinition & interest)
-{
-	interests .erase (&interest);
 }
 
 void
@@ -247,6 +175,8 @@ X3DFieldDefinition::processEvent (Event & event)
 void
 X3DFieldDefinition::dispose ()
 {
+	// removeReference ();
+
 	for (const auto & route : RouteSet (std::move (inputRoutes)))
 		route -> remove ();
 

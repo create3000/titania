@@ -85,9 +85,9 @@ ImportedNode::clone (X3DExecutionContext* const executionContext) const
 {
 	try
 	{
-		return *executionContext -> addImportedNode (x3d_cast <Inline*> (executionContext -> getNamedNode (inlineNode -> getName ())),
-		                                             exportedName,
-		                                             importedName);
+		auto localInlineNode = x3d_cast <Inline*> (executionContext -> getNamedNode (inlineNode -> getName ()));
+
+		return *executionContext -> addImportedNode (localInlineNode, exportedName, importedName);
 	}
 	catch (const X3DError & error)
 	{

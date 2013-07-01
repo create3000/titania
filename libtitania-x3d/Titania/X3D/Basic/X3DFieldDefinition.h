@@ -78,7 +78,12 @@ public:
 
 	virtual
 	X3DFieldDefinition*
-	clone (X3DExecutionContext* const) const;
+	clone (X3DExecutionContext* const) const
+	{ return clone (); }
+	
+	virtual
+	void
+	clone (X3DExecutionContext* const, X3DFieldDefinition*) const = 0;
 	
 	X3DFieldDefinition &
 	operator = (const X3DFieldDefinition &);
@@ -94,31 +99,45 @@ public:
 	void
 	setReference (X3DFieldDefinition* const);
 
-	X3DFieldDefinition*
-	getReference () const;
+	void
+	updateReference ();
 
 	void
-	setAliasName (const std::string &);
+	removeReference ();
+
+	X3DFieldDefinition*
+	getReference () const
+	{ return reference; }
+
+	void
+	setAliasName (const std::string & value)
+	{ aliasName = value; }
 
 	const std::string &
-	getAliasName () const;
+	getAliasName () const
+	{ return aliasName; }
 
 	void
-	setAccessType (const AccessType);
+	setAccessType (const AccessType value)
+	{ accessType = value; }
 
 	AccessType
-	getAccessType () const;
+	getAccessType () const
+	{ return accessType; }
 
 	bool
-	isInitializeable () const;
-
-	virtual
-	bool
-	isInput () const override;
+	isInitializeable () const
+	{ return accessType & initializeOnly; }
 
 	virtual
 	bool
-	isOutput () const override;
+	isInput () const override
+	{ return accessType & inputOnly; }
+
+	virtual
+	bool
+	isOutput () const override
+	{ return accessType & outputOnly; }
 
 	virtual
 	bool
@@ -129,34 +148,44 @@ public:
 	operator not_eq (const X3DFieldDefinition &) const = 0;
 
 	void
-	addInputRoute (X3DRoute* const);
+	addInputRoute (X3DRoute* const route)
+	{ inputRoutes .insert (route); }
 
 	void
-	removeInputRoute (X3DRoute* const);
+	removeInputRoute (X3DRoute* const route)
+	{ inputRoutes .erase (route); }
 
 	const RouteSet &
-	getInputRoutes () const;
+	getInputRoutes () const
+	{ return inputRoutes; }
 
 	void
-	addOutputRoute (X3DRoute* const);
+	addOutputRoute (X3DRoute* const route)
+	{ outputRoutes .insert (route); }
 
 	void
-	removeOutputRoute (X3DRoute* const);
+	removeOutputRoute (X3DRoute* const route)
+	{ outputRoutes .erase (route); }
 
 	const RouteSet &
-	getOutputRoutes () const;
+	getOutputRoutes () const
+	{ return outputRoutes; }
 
 	void
-	addInterest (X3DFieldDefinition* const);
+	addInterest (X3DFieldDefinition* const interest)
+	{ interests .insert (interest); }
 
 	void
-	addInterest (X3DFieldDefinition &);
+	addInterest (X3DFieldDefinition & interest)
+	{ interests .insert (&interest); }
 
 	void
-	removeInterest (X3DFieldDefinition* const);
+	removeInterest (X3DFieldDefinition* const interest)
+	{ interests .erase (interest); }
 
 	void
-	removeInterest (X3DFieldDefinition &);
+	removeInterest (X3DFieldDefinition & interest)
+	{ interests .erase (&interest); }
 
 	virtual
 	void

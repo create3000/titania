@@ -1,3 +1,30 @@
+2013-07-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFNode.h:
+	* Parser.h:
+	* MFNode.h:
+	* X3DField.h:
+	* Proto.h:
+	* MFNode.cpp:
+	* Parser.cpp:
+	* X3DBaseNode.cpp:
+	* X3DBrowser.cpp:
+	* X3DScene.cpp:
+	* X3DChildObject.cpp:
+	* X3DFieldDefinition.h:
+	* GarbargeCollector.cpp:
+	* ImportedNode.cpp:
+	* X3DFieldDefinition.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* X3DLayerNode.cpp:
+	* X3DPrototypeInstance.cpp:
+	* jsSFNode.cpp:
+	* jsX3DProtoDeclaration.cpp:
+	* jsX3DExecutionContext.cpp:
+	* X3DBackgroundNode.cpp:
+	* jsX3DExternProtoDeclaration.cpp: 
+
 2013-06-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.cpp:

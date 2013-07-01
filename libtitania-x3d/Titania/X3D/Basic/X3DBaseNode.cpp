@@ -175,23 +175,17 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 			else
 			{
 				if (fieldDefinition -> isInitializeable ())
-				{
-					X3DFieldDefinition* copy = fieldDefinition -> clone (executionContext);
-
-					field -> write (*copy);
-
-					delete copy;
-				}
+					fieldDefinition -> clone (executionContext, field);
 			}
 		}
 		catch (const Error <INVALID_NAME> &)       // user defined fields (Script and Shader)
 		{
-			X3DFieldDefinition* field = fieldDefinition -> clone (executionContext);
-
-			copy -> addUserDefinedField (fieldDefinition -> getAccessType (), fieldDefinition -> getName (), field);
-
 			if (fieldDefinition -> getReference ()) // IS relationship
 			{
+				X3DFieldDefinition* field = fieldDefinition -> clone ();
+
+				copy -> addUserDefinedField (fieldDefinition -> getAccessType (), fieldDefinition -> getName (), field);
+
 				try
 				{
 					// field is also defined in EXTERNPROTO
@@ -205,8 +199,16 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 					throw Error <INVALID_NAME> ("No such event or field '" + fieldDefinition -> getReference () -> getName () + " inside node.");
 				}
 			}
+			else
+			{
+				X3DFieldDefinition* field = fieldDefinition -> clone (executionContext);
+
+				copy -> addUserDefinedField (fieldDefinition -> getAccessType (), fieldDefinition -> getName (), field);
+			}
 		}
 	}
+	
+	executionContext -> addNode (copy);
 
 	return copy;
 }
@@ -536,13 +538,19 @@ X3DBaseNode::isDefaultValue (const X3DFieldDefinition* const field) const
 void
 X3DBaseNode::setup ()
 {
+	if (initialized)  
+		return;
+
 	executionContext -> addParent (this);
 
 	if (executionContext -> isProto ())
 		return;
 
 	for (const auto & field : fieldDefinitions)
+	{
 		field -> isTainted (false);
+		field -> updateReference ();
+	}
 
 	initialize ();
 

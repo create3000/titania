@@ -68,6 +68,11 @@ public:
 
 	using X3DFieldDefinition::addInterest;
 
+	virtual
+	void
+	clone (X3DExecutionContext* const, X3DFieldDefinition* field) const override
+	{ static_cast <X3DField*> (field) -> set (value); }
+
 	/// @name Assignment operators
 
 	///  Default assignment opeator.  Behaves the same as the 6.7.6 setValue service.

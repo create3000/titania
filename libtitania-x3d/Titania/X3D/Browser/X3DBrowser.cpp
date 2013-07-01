@@ -89,12 +89,10 @@ X3DBrowser::initialize ()
 	X3DUrlObject::initialize ();
 
 	// Initialize scene
-	
-	bool splashScreen = browserOptions -> splashScreen ();
-	
+		
 	replaceWorld (scene = createScene ());
-	
-	if (splashScreen)
+
+	if (browserOptions -> splashScreen ())
 		replaceWorld (createX3DFromURL ({ "about:splash" }));
 
 	world -> bind ();
