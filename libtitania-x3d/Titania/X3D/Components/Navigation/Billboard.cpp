@@ -57,6 +57,9 @@
 namespace titania {
 namespace X3D {
 
+static constexpr Vector3f yAxis (0, 1, 0);
+static constexpr Vector3f zAxis (0, 0, 1);
+
 Billboard::Fields::Fields () :
 	axisOfRotation (new SFVec3f (0, 1, 0))
 { }
@@ -87,40 +90,42 @@ Billboard::create (X3DExecutionContext* const executionContext) const
 void
 Billboard::transform (TraverseType type)
 {
-	Matrix4f matrix = ModelViewMatrix4f ();
+	Matrix4f modelViewMatrix = ModelViewMatrix4f ();
 
 	if (type == TraverseType::CAMERA)
-		matrix *= getCurrentViewpoint () -> getInverseTransformationMatrix ();
+		modelViewMatrix *= getCurrentViewpoint () -> getInverseTransformationMatrix ();
 
-	Vector3f   translation, scale;
-	Rotation4f rotation;
+	Matrix4f inverseModelViewMatrix = ~modelViewMatrix;
 
-	matrix .get (translation, rotation, scale);
+	Vector3f billboardToViewer = normalize (-modelViewMatrix .translation () * inverseModelViewMatrix);
 
-	Vector3f _axisOfRotation   = axisOfRotation ();
-	Vector3f billboardToViewer = -translation;
-
-	static constexpr Vector3f zAxis (0, 0, 1);
-
-	if (_axisOfRotation == Vector3f ())
+	if (axisOfRotation () == Vector3f ())
 	{
-		Rotation4f r = Rotation4f (billboardToViewer, zAxis) * ~rotation;
-		float      x, y, z, angle;
-		r .get (x, y, z, angle);
-		glRotatef (math::degree (angle), x, y, z);
+		Vector3f localYAxis = yAxis * inverseModelViewMatrix;
+		
+		Vector3f v1 = cross (localYAxis, billboardToViewer);
+		Vector3f v2 = cross (billboardToViewer, v1);
+		Vector3f v3 = billboardToViewer;
+		
+		Matrix4f rotation (v1 [0], v1 [1], v1 [2], 0,
+                         v2 [0], v2 [1], v2 [2], 0,
+		                   v3 [0], v3 [1], v3 [2], 0,
+		                        0,      0,      0, 1);
+	
+		glMultMatrixf (rotation .data ());	
 	}
 	else
 	{
-		Vector3f v1 = cross (_axisOfRotation, billboardToViewer);
-		Vector3f v2 = cross (_axisOfRotation, rotation * zAxis);
+		Vector3f v1 = normalize (axisOfRotation () .getValue ());
+		Vector3f v2 = cross (billboardToViewer, v1);
+		Vector3f v3 = cross (v1, v2);
 
-		Rotation4f r = dot (_axisOfRotation, rotation * _axisOfRotation) > 0
-		               ? Rotation4f (v2, v1)
-							: Rotation4f (v1, v2);
-
-		float x, y, z, angle;
-		r .get (x, y, z, angle);
-		glRotatef (math::degree (angle), x, y, z);
+		Matrix4f rotation (v1 [0], v1 [1], v1 [2], 0,
+                         v2 [0], v2 [1], v2 [2], 0,
+		                   v3 [0], v3 [1], v3 [2], 0,
+		                        0,      0,      0, 1);
+	
+		glMultMatrixf (rotation .data ());
 	}
 }
 

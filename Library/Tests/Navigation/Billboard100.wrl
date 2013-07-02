@@ -1,0 +1,64 @@
+#VRML V2.0 utf8
+
+META "title" "Billboard 1 0 0"
+
+Background {
+  skyAngle [ 0.8, 1.3, 1.4, 1.5708 ]
+  skyColor [ 0.21 0.31 0.59, 0.33 0.45 0.7, 0.57 0.66 0.85, 0.6 0.73 0.89, 0.7 0.83 0.98 ]
+  groundAngle [ 0.6, 1.2, 1.3, 1.5708 ]
+  groundColor [ 0.21 0.31 0.59, 0.33 0.45 0.7, 0.57 0.66 0.85, 0.6 0.73 0.89, 0.7 0.83 0.98 ]
+}
+
+Viewpoint {
+  description "Front"
+}
+
+Viewpoint {
+  description "z pi/2"
+  orientation 0 0 1 1.5708
+}
+
+Viewpoint {
+  description "y pi/2"
+  position 10 0 0
+  orientation 0 1 0 1.5708
+}
+
+Billboard {
+  axisOfRotation 1 0 0
+  children [
+  Transform {
+    rotation 1 0 0 1.5708
+    children Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Cone { }
+    }
+  }
+
+
+Shape {
+  appearance Appearance {
+    material Material { }
+  }
+  geometry IndexedLineSet {
+    coordIndex [ 0, 1, -1 ]
+    coord Coordinate {
+      point [ 0 -1 0, 0 1 0 ]
+    }
+  }
+}  ]
+}
+
+Shape {
+  appearance Appearance {
+    material Material { }
+  }
+  geometry IndexedLineSet {
+    coordIndex [ 0, 1, -1 ]
+    coord Coordinate {
+      point [ -1 0 0, 1 0 0 ]
+    }
+  }
+}

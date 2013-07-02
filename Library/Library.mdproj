@@ -2119,6 +2119,7 @@
     <None Include="Examples\VRMLBanner\globe.jpg" />
     <None Include="Examples\VRMLBanner\stripe.png" />
     <None Include="Examples\VRMLBanner\tonerow3d_16_22.wav" />
+    <None Include="Tests\Navigation\Billboard100.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

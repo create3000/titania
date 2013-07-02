@@ -84,7 +84,7 @@ socketstreambuf::open ()
 
 	if (retcode not_eq CURLE_OK)
 	{
-		std::clog << "CURL Error: " << "Can't open URI: " << std::strerror (retcode) << std::endl;
+		std::clog << "CURL Error: " << "Can't open URI '" << URL << "': " << std::strerror (retcode) << std::endl;
 		close ();
 		return NULL;
 	}
