@@ -65,7 +65,7 @@ Router::processEvents ()
 	{
 		for (auto & event : events)
 		{
-			// __LOG__ << event .first << std::endl;
+			// __LOG__ << event .first -> getName () << std::endl;
 			event .first -> processEvent (event .second);
 		}
 

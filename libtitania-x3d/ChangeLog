@@ -1,5 +1,10 @@
 2013-07-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Router.cpp:
+	* jsContext.cpp: 
+
+2013-07-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ViewVolume.h:
 	* ViewVolume.cpp:
 	* X3DBrowserContext.cpp: 
