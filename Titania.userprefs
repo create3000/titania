@@ -1,21 +1,22 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Navigation/Billboard.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Navigation/Billboard110.wrl">
     <Files>
       <File FileName="experimental/main.cpp" Line="861" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.h" Line="78" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="104" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="93" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="223" Column="28" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Billboard.cpp" Line="146" Column="48" />
-      <File FileName="Library/Tests/Navigation/Billboard010.wrl" Line="61" Column="4" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Billboard.cpp" Line="119" Column="34" />
+      <File FileName="Library/Tests/Navigation/Billboard010.wrl" Line="3" Column="1" />
       <File FileName="Library/Tests/Navigation/Billboard.wrl" Line="64" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="106" Column="84" />
       <File FileName="libtitania-standard/Titania/Math/Numbers/Matrix4.h" Line="1" Column="1" />
       <File FileName="Library/Examples/Cathedral/stage/index.wrl" Line="718" Column="24" />
-      <File FileName="Library/Tests/Navigation/Billboard100.wrl" Line="46" Column="22" />
+      <File FileName="Library/Tests/Navigation/Billboard100.wrl" Line="3" Column="1" />
       <File FileName="libtitania-standard/Titania/Math/Geometry/Plane3.h" Line="132" Column="22" />
       <File FileName="libtitania-standard/Titania/Math/Geometry/Line3.h" Line="1" Column="1" />
+      <File FileName="Library/Tests/Navigation/Billboard110.wrl" Line="19" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -33,7 +34,9 @@
             </Node>
             <Node name="Tests" expanded="True">
               <Node name="Basic" expanded="True" />
-              <Node name="Navigation" expanded="True" />
+              <Node name="Navigation" expanded="True">
+                <Node name="Billboard110.wrl" selected="True" />
+              </Node>
               <Node name="PointingDeviceSensor" expanded="True" />
               <Node name="PROTO" expanded="True" />
             </Node>
@@ -62,9 +65,7 @@
                   <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
                   <Node name="Layering" expanded="True" />
-                  <Node name="Navigation" expanded="True">
-                    <Node name="Billboard.cpp" selected="True" />
-                  </Node>
+                  <Node name="Navigation" expanded="True" />
                   <Node name="Networking" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
                 </Node>

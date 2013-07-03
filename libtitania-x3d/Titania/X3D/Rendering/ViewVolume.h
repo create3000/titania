@@ -75,6 +75,7 @@ public:
 private:
 
 	std::vector <Plane3f> planes;
+	bool                  valid;
 
 };
 

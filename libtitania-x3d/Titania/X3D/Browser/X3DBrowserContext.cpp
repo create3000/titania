@@ -251,7 +251,7 @@ X3DBrowserContext::getHitRay () const
 	Vector3f near (px, py, pz);
 
 	// Far plane point
-	gluUnProject (x, y, 1, modelview, projection, viewport, &px, &py, &pz);
+	gluUnProject (x, y, 0.9, modelview, projection, viewport, &px, &py, &pz);
 	Vector3f far (px, py, pz);
 
 	return Line3f (near, far);

@@ -81,7 +81,9 @@ ViewVolume::ViewVolume (const Matrix4d & modelview) :
 	ViewVolume (modelview, ProjectionMatrix4d ()) 
 { }
 
-ViewVolume::ViewVolume (const Matrix4d & modelview, const Matrix4d & projection)
+ViewVolume::ViewVolume (const Matrix4d & modelview, const Matrix4d & projection) :
+	planes (),
+	 valid (true)
 {
 	GLint viewport [4];
 
@@ -89,42 +91,45 @@ ViewVolume::ViewVolume (const Matrix4d & modelview, const Matrix4d & projection)
 
 	GLdouble x, y, z;
 
-	gluUnProject (0, viewport [3], 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p1 = Vector3f (x, y, z);
+	valid &= gluUnProject (0, viewport [3], 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
+	Vector3f p1 (x, y, z);
 
-	gluUnProject (0, 0, 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p2 = Vector3f (x, y, z);
+	valid &= gluUnProject (0, 0, 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
+	Vector3f p2 (x, y, z);
 
-	gluUnProject (0, 0, 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p3 = Vector3f (x, y, z);
+	valid &= gluUnProject (0, 0, 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
+	Vector3f p3 (x, y, z);
 
-	gluUnProject (viewport [2], 0, 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p4 = Vector3f (x, y, z);
+	valid &= gluUnProject (viewport [2], 0, 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
+	Vector3f p4 (x, y, z);
 
-	gluUnProject (viewport [2], viewport [3], 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p5 = Vector3f (x, y, z);
+	valid &= gluUnProject (viewport [2], viewport [3], 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
+	Vector3f p5 (x, y, z);
 
-	gluUnProject (viewport [2], viewport [3], 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p6 = Vector3f (x, y, z);
+	valid &= gluUnProject (viewport [2], viewport [3], 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
+	Vector3f p6 (x, y, z);
 
 	planes .reserve (6);
-	planes .push_back (Plane3f (p4, normalize (cross (p3 - p4, p5 - p4))));  // front
-	planes .push_back (Plane3f (p1, normalize (cross (p2 - p1, p6 - p1))));  // back
-	planes .push_back (Plane3f (p2, normalize (cross (p1 - p2, p3 - p2))));  // left
-	planes .push_back (Plane3f (p5, normalize (cross (p6 - p5, p4 - p5))));  // right
-	planes .push_back (Plane3f (p6, normalize (cross (p5 - p6, p1 - p6))));  // top
-	planes .push_back (Plane3f (p3, normalize (cross (p4 - p3, p2 - p3))));  // bottom
+	planes .emplace_back (p4, normalize (cross (p3 - p4, p5 - p4)));  // front
+	planes .emplace_back (p1, normalize (cross (p2 - p1, p6 - p1)));  // back
+	planes .emplace_back (p2, normalize (cross (p1 - p2, p3 - p2)));  // left
+	planes .emplace_back (p5, normalize (cross (p6 - p5, p4 - p5)));  // right
+	planes .emplace_back (p6, normalize (cross (p5 - p6, p1 - p6)));  // top
+	planes .emplace_back (p3, normalize (cross (p4 - p3, p2 - p3)));  // bottom
 }
 
 bool
 ViewVolume::intersect (const Box3f & bbox) const
 {
-	float nradius = math::abs (bbox .size ()) * 0.5f;
-
-	for (const auto & plane : planes)
+	if (valid)
 	{
-		if (plane .distance (bbox .center ()) + nradius < 0)
-			return false;
+		float nradius = math::abs (bbox .size ()) * 0.5f;
+
+		for (const auto & plane : planes)
+		{
+			if (plane .distance (bbox .center ()) + nradius < 0)
+				return false;
+		}
 	}
 
 	return true;
