@@ -90,6 +90,16 @@ Billboard::create (X3DExecutionContext* const executionContext) const
 	return new Billboard (executionContext);
 }
 
+bool
+intersect (const Plane3f & p1, const Plane3f & p2, Line3f & line)
+{
+	// http://stackoverflow.com/questions/6408670/intersection-between-two-planes
+	
+	line = Line3f (Vector3f (), cross (p1 .normal (), p2 .normal ()));
+
+	return true;
+}
+
 void
 Billboard::transform (TraverseType type)
 {
@@ -109,6 +119,8 @@ Billboard::transform (TraverseType type)
 		Vector3f v1 = cross (localYAxis, billboardToViewer);
 		Vector3f v2 = cross (billboardToViewer, v1);
 		Vector3f v3 = billboardToViewer;
+		
+		//
 
 		v1 .normalize ();
 		v2 .normalize ();
@@ -126,13 +138,42 @@ Billboard::transform (TraverseType type)
 		Vector3f v1 = axisOfRotation () .getValue ();
 		Vector3f v2 = cross (billboardToViewer, v1);
 		Vector3f v3 = cross (v1, v2);
-				
+	
 		v1 .normalize ();
 		v2 .normalize ();
 		v3 .normalize ();
 
+		__LOG__ << v1 << " : " << v2 << " : " << v3 << std::endl;
 
-		if (axisOfRotation () == xAxis)
+		//
+
+		v2 = cross (billboardToViewer, axisOfRotation () .getValue ());
+		v3 = cross (cross (v2, zAxis), v2);
+		v1 = cross (v2, v3);
+
+		//
+	
+		v1 .normalize ();
+		v2 .normalize ();
+		v3 .normalize ();
+
+		__LOG__ << v1 << " : " << v2 << " : " << v3 << std::endl;
+		
+		__LOG__
+			<< dot (normalize (billboardToViewer), normalize (zAxis)) << " : "
+			<< dot (normalize (billboardToViewer), normalize (cross (v2, zAxis))) << " : "
+			<< dot (normalize (billboardToViewer), normalize (axisOfRotation () .getValue ())) << " : "
+			<< dot (normalize (billboardToViewer), normalize (v1)) << " : "
+			<< dot (normalize (billboardToViewer), normalize (v2)) << " : "
+			<< dot (normalize (billboardToViewer), normalize (v3)) << " : "
+			<< std::endl;
+			
+		if (dot (normalize (billboardToViewer), normalize (zAxis)) < 0)
+		{
+			glMultMatrixf (Matrix4f (Rotation4f (v2, M_PI)) .data ());
+		}
+
+		if (axisOfRotation () == xAxis or 1)
 		{
 			Matrix4f rotation (v1 [0], v1 [1], v1 [2], 0,
 			                   v2 [0], v2 [1], v2 [2], 0,
@@ -151,6 +192,8 @@ Billboard::transform (TraverseType type)
 
 			glMultMatrixf (rotation .data ());
 		}
+		
+		//glMultMatrixf (Matrix4f (Rotation4f (axisOfRotation () .getValue (), xAxis)) .data ());
 	}
 }
 
