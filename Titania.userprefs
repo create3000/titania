@@ -1,42 +1,89 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Parser/Parser.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Navigation/Billboard.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="861" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/SFNode.h" Line="248" Column="94" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/SFNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/MFNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/MFNode.cpp" Line="81" Column="37" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.h" Line="85" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="110" Column="44" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.h" Line="12" Column="39" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp" Line="95" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.h" Line="78" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="104" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="93" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="223" Column="28" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Billboard.cpp" Line="146" Column="48" />
+      <File FileName="Library/Tests/Navigation/Billboard010.wrl" Line="61" Column="4" />
+      <File FileName="Library/Tests/Navigation/Billboard.wrl" Line="64" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="106" Column="84" />
+      <File FileName="libtitania-standard/Titania/Math/Numbers/Matrix4.h" Line="1" Column="1" />
+      <File FileName="Library/Examples/Cathedral/stage/index.wrl" Line="718" Column="24" />
+      <File FileName="Library/Tests/Navigation/Billboard100.wrl" Line="46" Column="22" />
+      <File FileName="libtitania-standard/Titania/Math/Geometry/Plane3.h" Line="132" Column="22" />
+      <File FileName="libtitania-standard/Titania/Math/Geometry/Line3.h" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
+              <Node name="Cathedral" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
+              <Node name="MetalBeast" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
               <Node name="VRMLBanner" expanded="True" />
+            </Node>
+            <Node name="Tests" expanded="True">
+              <Node name="Basic" expanded="True" />
+              <Node name="Navigation" expanded="True" />
+              <Node name="PointingDeviceSensor" expanded="True" />
+              <Node name="PROTO" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Math" expanded="True">
+                <Node name="Geometry" expanded="True" />
+                <Node name="Numbers" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+          <Node name="libtitania-stream" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Stream" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
+                  <Node name="EnvironmentalEffects" expanded="True" />
+                  <Node name="Geometry3D" expanded="True" />
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Navigation" expanded="True">
+                    <Node name="Billboard.cpp" selected="True" />
+                  </Node>
+                  <Node name="Networking" expanded="True" />
+                  <Node name="PointingDeviceSensor" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
-                <Node name="Parser" expanded="True">
-                  <Node name="Parser.h" selected="True" />
+                <Node name="JavaScript" expanded="True">
+                  <Node name="SpiderMonkey" expanded="True">
+                    <Node name="Fields" expanded="True" />
+                  </Node>
                 </Node>
+                <Node name="Parser" expanded="True" />
+                <Node name="Prototype" expanded="True" />
               </Node>
+            </Node>
+          </Node>
+          <Node name="Papers" expanded="True" />
+          <Node name="Titania" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Browser" expanded="True" />
             </Node>
           </Node>
         </State>

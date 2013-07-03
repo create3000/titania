@@ -135,65 +135,47 @@ Billboard::transform (TraverseType type)
 	}
 	else
 	{
-		Vector3f v1 = axisOfRotation () .getValue ();
-		Vector3f v2 = cross (billboardToViewer, v1);
-		Vector3f v3 = cross (v1, v2);
+//		Vector3f v1 = axisOfRotation () .getValue ();
+//		Vector3f v2 = cross (billboardToViewer, v1);
+//		Vector3f v3 = cross (v1, v2);
+//	
+//		v1 .normalize ();
+//		v2 .normalize ();
+//		v3 .normalize ();
+//
+//		__LOG__ << v1 << " : " << v2 << " : " << v3 << std::endl;
+
+		//
+
+		Vector3f v2 = cross (billboardToViewer, axisOfRotation () .getValue ());
+		Vector3f v3 = dot (normalize (billboardToViewer), zAxis) < 0 ? cross (v2, cross (v2, zAxis)) : cross (cross (v2, zAxis), v2);
+		Vector3f v1 = cross (v2, v3);
+
+		//
 	
 		v1 .normalize ();
 		v2 .normalize ();
 		v3 .normalize ();
 
-		__LOG__ << v1 << " : " << v2 << " : " << v3 << std::endl;
+//		__LOG__ << v1 << " : " << v2 << " : " << v3 << std::endl;
+//		
+//		__LOG__
+//			<< dot (normalize (billboardToViewer), normalize (zAxis)) << " : "
+//			<< dot (normalize (billboardToViewer), normalize (cross (v2, zAxis))) << " : "
+//			<< dot (normalize (billboardToViewer), normalize (axisOfRotation () .getValue ())) << " : "
+//			<< dot (normalize (billboardToViewer), normalize (v1)) << " : "
+//			<< dot (normalize (billboardToViewer), normalize (v2)) << " : "
+//			<< dot (normalize (billboardToViewer), normalize (v3)) << " : "
+//			<< std::endl;
 
-		//
+		Matrix4f rotation (v1 [0], v1 [1], v1 [2], 0,
+		                   v2 [0], v2 [1], v2 [2], 0,
+		                   v3 [0], v3 [1], v3 [2], 0,
+		                   0,      0,      0,      1);
 
-		v2 = cross (billboardToViewer, axisOfRotation () .getValue ());
-		v3 = cross (cross (v2, zAxis), v2);
-		v1 = cross (v2, v3);
+		glMultMatrixf (rotation .data ());
 
-		//
-	
-		v1 .normalize ();
-		v2 .normalize ();
-		v3 .normalize ();
-
-		__LOG__ << v1 << " : " << v2 << " : " << v3 << std::endl;
-		
-		__LOG__
-			<< dot (normalize (billboardToViewer), normalize (zAxis)) << " : "
-			<< dot (normalize (billboardToViewer), normalize (cross (v2, zAxis))) << " : "
-			<< dot (normalize (billboardToViewer), normalize (axisOfRotation () .getValue ())) << " : "
-			<< dot (normalize (billboardToViewer), normalize (v1)) << " : "
-			<< dot (normalize (billboardToViewer), normalize (v2)) << " : "
-			<< dot (normalize (billboardToViewer), normalize (v3)) << " : "
-			<< std::endl;
-			
-		if (dot (normalize (billboardToViewer), normalize (zAxis)) < 0)
-		{
-			glMultMatrixf (Matrix4f (Rotation4f (v2, M_PI)) .data ());
-		}
-
-		if (axisOfRotation () == xAxis or 1)
-		{
-			Matrix4f rotation (v1 [0], v1 [1], v1 [2], 0,
-			                   v2 [0], v2 [1], v2 [2], 0,
-			                   v3 [0], v3 [1], v3 [2], 0,
-			                   0,      0,      0,      1);
-
-			glMultMatrixf (rotation .data ());
-		}
-
-		else if (axisOfRotation () == yAxis)
-		{
-			Matrix4f rotation (-v2 [0], -v2 [1], -v2 [2], 0,
-			                   v1 [0], v1 [1], v1 [2], 0,
-			                   v3 [0], v3 [1], v3 [2], 0,
-			                   0,      0,      0,      1);
-
-			glMultMatrixf (rotation .data ());
-		}
-		
-		//glMultMatrixf (Matrix4f (Rotation4f (axisOfRotation () .getValue (), xAxis)) .data ());
+		glMultMatrixf (Matrix4f (Rotation4f (axisOfRotation () .getValue (), xAxis)) .data ());
 	}
 }
 

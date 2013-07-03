@@ -2121,6 +2121,7 @@
     <None Include="Examples\VRMLBanner\tonerow3d_16_22.wav" />
     <None Include="Tests\Navigation\Billboard010.wrl" />
     <None Include="Tests\Navigation\Billboard100.wrl" />
+    <None Include="Tests\Navigation\Billboard110.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
