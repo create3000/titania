@@ -1,6 +1,6 @@
 #VRML V2.0 utf8
 
-META "title" "Billboard 1 0 0"
+META "title" "Billboard 0 1 0"
 
 Background {
   skyAngle [ 0.8, 1.3, 1.4, 1.5708 ]
@@ -25,7 +25,6 @@ Viewpoint {
 }
 
 Billboard {
-  axisOfRotation 1 0 0
   children [
     Transform {
       rotation 1 0 0 1.5708
@@ -43,7 +42,7 @@ Billboard {
       geometry IndexedLineSet {
         coordIndex [ 0, 1, -1 ]
         coord Coordinate {
-          point [ 0 -1 0, 0 1 0 ]
+          point [ -1 0 0, 1 0 0 ]
         }
       }
     }
@@ -57,7 +56,7 @@ Shape {
   geometry IndexedLineSet {
     coordIndex [ 0, 1, -1 ]
     coord Coordinate {
-      point [ -1 0 0, 1 0 0 ]
+      point [ 0 -1 0, 0 1 0 ]
     }
   }
 }

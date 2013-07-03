@@ -57,17 +57,20 @@
 namespace titania {
 namespace X3D {
 
+// https://bitbucket.org/Coin3D/coin/src/abc9f50968c9/src/vrml97/Billboard.cpp
+
+static constexpr Vector3f xAxis (1, 0, 0);
 static constexpr Vector3f yAxis (0, 1, 0);
 static constexpr Vector3f zAxis (0, 0, 1);
 
 Billboard::Fields::Fields () :
-	axisOfRotation (new SFVec3f (0, 1, 0))
+	axisOfRotation (new SFVec3f (yAxis))
 { }
 
 Billboard::Billboard (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGroupingNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode (),
+	         fields ()
 {
 	setComponent ("Navigation");
 	setTypeName ("Billboard");
@@ -97,35 +100,57 @@ Billboard::transform (TraverseType type)
 
 	Matrix4f inverseModelViewMatrix = ~modelViewMatrix;
 
-	Vector3f billboardToViewer = normalize (-modelViewMatrix .translation () * inverseModelViewMatrix);
+	Vector3f billboardToViewer = -modelViewMatrix .translation () * inverseModelViewMatrix;
 
 	if (axisOfRotation () == Vector3f ())
 	{
 		Vector3f localYAxis = yAxis * inverseModelViewMatrix;
-		
+
 		Vector3f v1 = cross (localYAxis, billboardToViewer);
 		Vector3f v2 = cross (billboardToViewer, v1);
 		Vector3f v3 = billboardToViewer;
-		
+
+		v1 .normalize ();
+		v2 .normalize ();
+		v3 .normalize ();
+
 		Matrix4f rotation (v1 [0], v1 [1], v1 [2], 0,
-                         v2 [0], v2 [1], v2 [2], 0,
+		                   v2 [0], v2 [1], v2 [2], 0,
 		                   v3 [0], v3 [1], v3 [2], 0,
-		                        0,      0,      0, 1);
-	
-		glMultMatrixf (rotation .data ());	
+		                   0,      0,      0,      1);
+
+		glMultMatrixf (rotation .data ());
 	}
 	else
 	{
-		Vector3f v1 = normalize (axisOfRotation () .getValue ());
+		Vector3f v1 = axisOfRotation () .getValue ();
 		Vector3f v2 = cross (billboardToViewer, v1);
 		Vector3f v3 = cross (v1, v2);
+				
+		v1 .normalize ();
+		v2 .normalize ();
+		v3 .normalize ();
 
-		Matrix4f rotation (v1 [0], v1 [1], v1 [2], 0,
-                         v2 [0], v2 [1], v2 [2], 0,
-		                   v3 [0], v3 [1], v3 [2], 0,
-		                        0,      0,      0, 1);
-	
-		glMultMatrixf (rotation .data ());
+
+		if (axisOfRotation () == xAxis)
+		{
+			Matrix4f rotation (v1 [0], v1 [1], v1 [2], 0,
+			                   v2 [0], v2 [1], v2 [2], 0,
+			                   v3 [0], v3 [1], v3 [2], 0,
+			                   0,      0,      0,      1);
+
+			glMultMatrixf (rotation .data ());
+		}
+
+		else if (axisOfRotation () == yAxis)
+		{
+			Matrix4f rotation (-v2 [0], -v2 [1], -v2 [2], 0,
+			                   v1 [0], v1 [1], v1 [2], 0,
+			                   v3 [0], v3 [1], v3 [2], 0,
+			                   0,      0,      0,      1);
+
+			glMultMatrixf (rotation .data ());
+		}
 	}
 }
 
