@@ -440,7 +440,25 @@ jsContext::set_field (X3DFieldDefinition* field)
 {
 	jsval argv [2];
 
-	JS_NewFieldValue (context, field -> clone (), &argv [0], true);
+	switch (field -> getType ())
+	{
+		case X3DConstants::SFBool:
+		case X3DConstants::SFDouble:
+		case X3DConstants::SFFloat:
+		case X3DConstants::SFInt32:
+		case X3DConstants::SFString:
+		case X3DConstants::SFTime:
+		{
+			JS_NewFieldValue (context, field, &argv [0], true);
+			break;
+		}
+		default:
+		{
+			JS_NewFieldValue (context, field -> clone (), &argv [0], true);
+			break;
+		}
+	}
+
 	JS_NewNumberValue (context, getCurrentTime (), &argv [1]);
 
 	jsval rval;
