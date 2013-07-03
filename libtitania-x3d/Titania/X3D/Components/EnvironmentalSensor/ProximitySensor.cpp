@@ -66,12 +66,12 @@ ProximitySensor::Fields::Fields () :
 { }
 
 ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
-	               X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DEnvironmentalSensorNode (),                                                    
-	                    fields (),                                                    
-	                 viewpoint (NULL),                                                
-	                    matrix (),                                                    
-	                    inside (false)                                                
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DEnvironmentalSensorNode (),
+	                    fields (),
+	                 viewpoint (NULL),
+	           modelViewMatrix (),
+	                    inside (false)
 {
 	setComponent ("EnvironmentalSensor");
 	setTypeName ("ProximitySensor");
@@ -109,6 +109,7 @@ ProximitySensor::set_enabled ()
 {
 	if (enabled ())
 		getBrowser () -> sensors .addInterest (this, &ProximitySensor::update);
+
 	else
 		getBrowser () -> sensors .removeInterest (this, &ProximitySensor::update);
 }
@@ -118,13 +119,13 @@ ProximitySensor::update ()
 {
 	if (inside)
 	{
-		matrix *= viewpoint -> getInverseTransformationMatrix ();
+		modelViewMatrix *= viewpoint -> getInverseTransformationMatrix ();
 
 		Vector3f   translation, scale;
 		Rotation4f rotation;
-		matrix .get (translation, rotation, scale);
+		modelViewMatrix .get (translation, rotation, scale);
 
-		Vector3f   position    = inverse (matrix) .translation ();
+		Vector3f   position    = inverse (modelViewMatrix) .translation ();
 		Rotation4f orientation = ~rotation;
 
 		if (not isActive ())
@@ -167,8 +168,8 @@ ProximitySensor::traverse (TraverseType type)
 	{
 		case TraverseType::CAMERA:
 		{
-			viewpoint = getCurrentViewpoint ();
-			matrix    = ModelViewMatrix4f ();
+			viewpoint       = getCurrentViewpoint ();
+			modelViewMatrix = ModelViewMatrix4f ();
 			break;
 		}
 		case TraverseType::COLLECT:
@@ -176,52 +177,13 @@ ProximitySensor::traverse (TraverseType type)
 			if (inside)
 				break;
 
-			Matrix4f modelViewMatrix = ModelViewMatrix4f ();
-			modelViewMatrix .translate (center ());
-
-			inside = isInside (modelViewMatrix);
+			inside = Box3f (size (), center ()) .intersect (inverse (ModelViewMatrix4f ()) .translation ());
 
 			break;
 		}
 		default:
 			break;
 	}
-}
-
-bool
-ProximitySensor::isInside (const Matrix4f & matrix) const
-{
-	auto size1_2 = size () * 0.5f;
-
-	float x = size1_2 .x ();
-	float y = size1_2 .y ();
-	float z = size1_2 .z ();
-
-	Vector3f points [6] = {
-		Vector3f (0,  0,  z) * matrix,
-		Vector3f (0,  0, -z) * matrix,
-		Vector3f (0,  y,  0) * matrix,
-		Vector3f (0, -y,  0) * matrix,
-		Vector3f (x,  0,  0) * matrix,
-		Vector3f (-x,  0,  0) * matrix
-	};
-
-	Vector3f normals [6] = {
-		normalize (matrix .multDirMatrix (Vector3f (0,  0,  1))),
-		normalize (matrix .multDirMatrix (Vector3f (0,  0, -1))),
-		normalize (matrix .multDirMatrix (Vector3f (0,  1,  0))),
-		normalize (matrix .multDirMatrix (Vector3f (0, -1,  0))),
-		normalize (matrix .multDirMatrix (Vector3f (1,  0,  0))),
-		normalize (matrix .multDirMatrix (Vector3f (-1,  0,  0)))
-	};
-
-	for (int i = 0; i < 6; ++ i)
-	{
-		if (Plane3f (points [i], normals [i]) .distance_from_origin () < 0)
-			return false;
-	}
-
-	return true;
 }
 
 void

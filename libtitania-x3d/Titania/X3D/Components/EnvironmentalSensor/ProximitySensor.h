@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -126,11 +126,8 @@ private:
 
 	Fields fields;
 
-	bool
-	isInside (const Matrix4f &) const;
-
 	X3DViewpointNode* viewpoint;
-	Matrix4f          matrix;
+	Matrix4f          modelViewMatrix;
 	bool              inside;
 
 };
