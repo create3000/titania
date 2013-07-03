@@ -94,7 +94,7 @@ bool
 intersect (const Plane3f & p1, const Plane3f & p2, Line3f & line)
 {
 	// http://stackoverflow.com/questions/6408670/intersection-between-two-planes
-	
+
 	line = Line3f (Vector3f (), cross (p1 .normal (), p2 .normal ()));
 
 	return true;
@@ -114,64 +114,42 @@ Billboard::transform (TraverseType type)
 
 	if (axisOfRotation () == Vector3f ())
 	{
-		Vector3f localYAxis = yAxis * inverseModelViewMatrix;
+		Vector3f viewerYAxis = yAxis * inverseModelViewMatrix;
 
-		Vector3f v1 = cross (localYAxis, billboardToViewer);
-		Vector3f v2 = cross (billboardToViewer, v1);
-		Vector3f v3 = billboardToViewer;
-		
+		Vector3f x = cross (viewerYAxis, billboardToViewer);
+		Vector3f y = cross (billboardToViewer, x);
+		Vector3f z = billboardToViewer;
+
 		//
 
-		v1 .normalize ();
-		v2 .normalize ();
-		v3 .normalize ();
+		x .normalize ();
+		y .normalize ();
+		z .normalize ();
 
-		Matrix4f rotation (v1 [0], v1 [1], v1 [2], 0,
-		                   v2 [0], v2 [1], v2 [2], 0,
-		                   v3 [0], v3 [1], v3 [2], 0,
-		                   0,      0,      0,      1);
+		Matrix4f rotation (x [0], x [1], x [2], 0,
+		                   y [0], y [1], y [2], 0,
+		                   z [0], z [1], z [2], 0,
+		                   0,     0,     0,     1);
 
 		glMultMatrixf (rotation .data ());
 	}
 	else
 	{
-//		Vector3f v1 = axisOfRotation () .getValue ();
-//		Vector3f v2 = cross (billboardToViewer, v1);
-//		Vector3f v3 = cross (v1, v2);
-//	
-//		v1 .normalize ();
-//		v2 .normalize ();
-//		v3 .normalize ();
-//
-//		__LOG__ << v1 << " : " << v2 << " : " << v3 << std::endl;
+		Vector3f y = cross (billboardToViewer, axisOfRotation () .getValue ());                    // normal of plane 1
+		Vector3f n = cross (y, zAxis);                                                             // normal of plane 2
+		Vector3f z = dot (normalize (billboardToViewer), zAxis) < 0 ? cross (y, n) : cross (n, y); // intersection direction of plane 1 and 2
+		Vector3f x = cross (y, z);
 
 		//
 
-		Vector3f v2 = cross (billboardToViewer, axisOfRotation () .getValue ());
-		Vector3f v3 = dot (normalize (billboardToViewer), zAxis) < 0 ? cross (v2, cross (v2, zAxis)) : cross (cross (v2, zAxis), v2);
-		Vector3f v1 = cross (v2, v3);
+		x .normalize ();
+		y .normalize ();
+		z .normalize ();
 
-		//
-	
-		v1 .normalize ();
-		v2 .normalize ();
-		v3 .normalize ();
-
-//		__LOG__ << v1 << " : " << v2 << " : " << v3 << std::endl;
-//		
-//		__LOG__
-//			<< dot (normalize (billboardToViewer), normalize (zAxis)) << " : "
-//			<< dot (normalize (billboardToViewer), normalize (cross (v2, zAxis))) << " : "
-//			<< dot (normalize (billboardToViewer), normalize (axisOfRotation () .getValue ())) << " : "
-//			<< dot (normalize (billboardToViewer), normalize (v1)) << " : "
-//			<< dot (normalize (billboardToViewer), normalize (v2)) << " : "
-//			<< dot (normalize (billboardToViewer), normalize (v3)) << " : "
-//			<< std::endl;
-
-		Matrix4f rotation (v1 [0], v1 [1], v1 [2], 0,
-		                   v2 [0], v2 [1], v2 [2], 0,
-		                   v3 [0], v3 [1], v3 [2], 0,
-		                   0,      0,      0,      1);
+		Matrix4f rotation (x [0], x [1], x [2], 0,
+		                   y [0], y [1], y [2], 0,
+		                   z [0], z [1], z [2], 0,
+		                   0,     0,     0,     1);
 
 		glMultMatrixf (rotation .data ());
 
