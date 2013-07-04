@@ -81,7 +81,6 @@ Background::Background (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",     metadata ());
 	addField (inputOnly,   "set_bind",     set_bind ());
-	addField (outputOnly,  "bindTime",     bindTime ());
 	addField (inputOutput, "frontUrl",     frontUrl ());
 	addField (inputOutput, "backUrl",      backUrl ());
 	addField (inputOutput, "leftUrl",      leftUrl ());
@@ -94,6 +93,7 @@ Background::Background (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "groundColor",  groundColor ());
 	addField (inputOutput, "transparency", transparency ());
 	addField (outputOnly,  "isBound",      isBound ());
+	addField (outputOnly,  "bindTime",     bindTime ());
 
 	setChildren (frontTexture,
 	             backTexture,

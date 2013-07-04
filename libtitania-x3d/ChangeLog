@@ -1,5 +1,13 @@
 2013-07-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Background.h:
+	* Background.cpp:
+	* X3DBackgroundNode.h:
+	* X3DBackgroundNode.cpp:
+	* TextureBackground.cpp: 
+
+2013-07-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserContext.cpp:
 	* X3DFlyViewer.cpp:
 	* Billboard.cpp:

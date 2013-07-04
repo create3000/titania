@@ -116,18 +116,22 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
+
+	virtual
+	void
+	eventsProcessed () override;
 
 
 private:
 
 	virtual
 	void
-	bindToLayer (X3DLayerNode* const);
+	bindToLayer (X3DLayerNode* const) final;
 
 	virtual
 	void
-	unbindFromLayer (X3DLayerNode* const);
+	unbindFromLayer (X3DLayerNode* const) final;
 
 	static Color3f
 	getColor (float, const MFColor &, const MFFloat &);

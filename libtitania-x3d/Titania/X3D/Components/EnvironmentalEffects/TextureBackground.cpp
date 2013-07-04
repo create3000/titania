@@ -74,8 +74,6 @@ TextureBackground::TextureBackground (X3DExecutionContext* const executionContex
 
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_bind",      set_bind ());
-	addField (outputOnly,  "bindTime",      bindTime ());
-	addField (outputOnly,  "isBound",       isBound ());
 	addField (inputOutput, "skyAngle",      skyAngle ());
 	addField (inputOutput, "skyColor",      skyColor ());
 	addField (inputOutput, "groundAngle",   groundAngle ());
@@ -87,6 +85,8 @@ TextureBackground::TextureBackground (X3DExecutionContext* const executionContex
 	addField (inputOutput, "leftTexture",   leftTexture ());
 	addField (inputOutput, "rightTexture",  rightTexture ());
 	addField (inputOutput, "topTexture",    topTexture ());
+	addField (outputOnly,  "isBound",       isBound ());
+	addField (outputOnly,  "bindTime",      bindTime ());
 }
 
 X3DBaseNode*

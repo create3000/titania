@@ -90,6 +90,13 @@ X3DBackgroundNode::initialize ()
 }
 
 void
+X3DBackgroundNode::eventsProcessed ()
+{
+	X3DBindableNode::eventsProcessed ();
+	build ();
+}
+
+void
 X3DBackgroundNode::bindToLayer (X3DLayerNode* const layer)
 {
 	layer -> getBackgroundStack () .push (this);
@@ -104,15 +111,9 @@ X3DBackgroundNode::unbindFromLayer (X3DLayerNode* const layer)
 Color3f
 X3DBackgroundNode::getColor (float theta, const MFColor & color, const MFFloat & angle)
 {
-	size_t i;
-
-	for (i = 0; i < angle .size (); i ++)
-	{
-		if (theta <= angle [i])
-		{
-			break;
-		}
-	}
+	auto iter = std::lower_bound (angle .cbegin (), angle .cend (), theta);
+	
+	size_t i = iter - angle .cbegin ();
 
 	if (i == angle .size ())
 		return color [i];
