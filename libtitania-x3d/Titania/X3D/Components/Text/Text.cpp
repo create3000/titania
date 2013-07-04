@@ -257,6 +257,36 @@ Text::createBBox ()
 	              true);
 }
 
+void
+Text::build ()
+{
+	X3DGeometryNode::build ();
+
+	// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.
+
+	Box3f    bbox = getBBox ();
+	Vector3f min  = bbox .min ();
+	Vector3f max  = bbox .max ();
+
+	getTexCoord () .emplace_back (0, 0, 0);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (min);
+
+	getTexCoord () .emplace_back (1, 0, 0);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (max .x (), min .y (), min .z ());
+	
+	getTexCoord () .emplace_back (1, 1, 0);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (max);
+	
+	getTexCoord () .emplace_back (0, 1, 0);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (min .x (), max .y (), min .z ());
+
+	addElements (GL_QUADS, getVertices () .size ());
+}
+
 Box2f
 Text::getLineBBox (const X3DFontStyleNode* fontStyle, const std::string & line)
 {

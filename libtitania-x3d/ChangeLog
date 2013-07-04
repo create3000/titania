@@ -1,5 +1,10 @@
 2013-07-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Text.h:
+	* Text.cpp: 
+
+2013-07-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Background.h:
 	* Background.cpp:
 	* X3DBackgroundNode.h:
