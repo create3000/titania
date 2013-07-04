@@ -293,12 +293,10 @@ RenderingProperties::build ()
 
 	// Configure HUD
 
-	GLint viewport [4];
+	Vector4i viewport = Viewport4i ();
 
-	glGetIntegerv (GL_VIEWPORT, viewport);
-
-	GLint width  = viewport [2];
-	GLint height = viewport [3];
+	size_t width  = viewport [2];
+	size_t height = viewport [3];
 
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();

@@ -71,8 +71,20 @@ public:
 	bool
 	intersect (const Box3f &) const;
 
+	static
+	Vector3d
+	unProjectPoint (double, double, double, const Matrix4d &, const Matrix4d &, const Vector4i &);
+
+	static
+	Line3d
+	unProjectLine (double, double, const Matrix4d &, const Matrix4d &, const Vector4i &);
+
 
 private:
+
+	static
+	Vector3d
+	unProjectPoint (double, double, double, const Matrix4d &, const Vector4i &);
 
 	std::vector <Plane3f> planes;
 	bool                  valid;

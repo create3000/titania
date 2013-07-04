@@ -94,8 +94,9 @@ public:
 	{ }
 
 	///  Copy constructor.
+	template <class Up>
 	constexpr
-	plane3 (const plane3 & plane) :
+	plane3 (const plane3 <Up> & plane) :
 		value { plane .normal (), plane .distance_from_origin () }
 
 	{ }
@@ -113,10 +114,9 @@ public:
 
 	{ }
 
-	///  Constructs a plane from @a vector. The point the vector points to is taken as a point on a plane
-	///  and the direction of this vector as normal.
-	plane3 (const vector3 <Type> & vector) :
-		value { normalize (vector), abs (vector) }
+	///  Constructs a plane from @a normal and @a distanceFromOrigin.
+	plane3 (const vector3 <Type> & normal, const Type & distanceFromOrigin) :
+		value { normal, distanceFromOrigin }
 
 	{ }
 
@@ -141,7 +141,7 @@ public:
 	closest_point (const vector3 <Type> & point)
 	{
 		vector3 <Type> closest_point;
-		intersect (line3 <Type> (point, point + value .normal), closest_point);
+		intersect (line3 <Type> (point, value .normal), closest_point);
 		return closest_point;
 	}
 
@@ -205,12 +205,13 @@ template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
 operator >> (std::basic_istream <CharT, Traits> & istream, plane3 <Type> & plane)
 {
-	vector3 <Type> vector;
+	vector3 <Type> normal;
+	Type           distance_from_origin;
 
-	istream >> vector;
+	istream >> normal >> distance_from_origin;
 
 	if (istream)
-		plane = plane3 <Type> (vector);
+		plane = plane3 <Type> (normal, distance_from_origin);
 
 	return istream;
 }
@@ -220,7 +221,7 @@ template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const plane3 <Type> & plane)
 {
-	return ostream << plane .normal () * plane .distance_from_origin ();
+	return ostream << plane .normal () << " " << plane .distance_from_origin ();
 }
 
 extern template class plane3 <float>;

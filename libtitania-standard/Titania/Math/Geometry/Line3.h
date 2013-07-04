@@ -77,15 +77,23 @@ public:
 	{ }
 
 	///  Copy constructor.
+	template <class Up>
 	constexpr
-	line3 (const line3 & line) :
+	line3 (const line3 <Up> & line) :
 		value { line .origin (), line .direction () }
+
+	{ }
+
+	///  Constructs a line of from @a origin and @a direction.
+	constexpr
+	line3 (const vector3 <Type> & origin, const vector3 <Type> & direction) :
+		value { origin, direction }
 
 	{ }
 
 	///  Constructs a line of from @a point and @a point.
 	constexpr
-	line3 (const vector3 <Type> & point1, const vector3 <Type> & point2) :
+	line3 (const vector3 <Type> & point1, const vector3 <Type> & point2, bool) :
 		value { point1, normalize (point2 - point1) }
 
 	{ }
@@ -265,13 +273,13 @@ template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
 operator >> (std::basic_istream <CharT, Traits> & istream, line3 <Type> & line)
 {
-	vector3 <Type> point1;
-	vector3 <Type> point2;
+	vector3 <Type> origin;
+	vector3 <Type> direction;
 
-	istream >> point1 >> point2;
+	istream >> origin >> direction;
 
 	if (istream)
-		line = line3 <Type> (point1, point2);
+		line = line3 <Type> (origin, direction);
 
 	return istream;
 }
@@ -281,7 +289,7 @@ template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const line3 <Type> & line)
 {
-	return ostream << line .origin () << " " << line .origin () + line .direction ();
+	return ostream << line .origin () << " " << line .direction ();
 }
 
 extern template class line3 <float>;

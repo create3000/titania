@@ -162,8 +162,7 @@ Viewport::collect (TraverseType type)
 void
 Viewport::push ()
 {
-	glGetIntegerv (GL_VIEWPORT, viewport); // x, y, width, heigth
-	// getBrowser -> getViewport (viewport);
+	viewport = Viewport4i (); // x, y, width, heigth
 
 	float left   = getLeft ();
 	float right  = getRight ();

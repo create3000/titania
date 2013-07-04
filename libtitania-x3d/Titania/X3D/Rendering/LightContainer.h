@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_RENDERING_LIGHT_CONTAINER_H__
 
 #include "../Components/Lighting/X3DLightNode.h"
-#include "Matrix.h"
 
 namespace titania {
 namespace X3D {

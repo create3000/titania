@@ -126,7 +126,7 @@ private:
 
 	Fields fields;
 
-	GLint viewport [4];
+	Vector4i viewport;
 
 };
 

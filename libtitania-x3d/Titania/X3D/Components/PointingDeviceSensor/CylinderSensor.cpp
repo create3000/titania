@@ -202,7 +202,7 @@ CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
 
 		auto axisPoint = p1 + cylinder .axis () .perpendicular_vector (p1);
 
-		auto hitRay = Line3f (p1, axisPoint);
+		auto hitRay = Line3f (p1, axisPoint, true);
 
 		getTrackPoint (hitRay, trackPoint);
 
@@ -213,7 +213,7 @@ CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
 		if (behind)
 			normal .negate ();
 
-		hitRay = Line3f (trackPoint - normal * abs (p1 - trackPoint), axisPoint);
+		hitRay = Line3f (trackPoint - normal * abs (p1 - trackPoint), axisPoint, true);
 
 		getTrackPoint (hitRay, trackPoint);
 	}

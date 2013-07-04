@@ -51,6 +51,7 @@
 #include "Viewpoint.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/Matrix.h"
 
 namespace titania {
 namespace X3D {
@@ -107,11 +108,10 @@ Viewpoint::reshape (const float zNear, const float zFar)
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
 
-	GLfloat viewport [4];
-	glGetFloatv (GL_VIEWPORT, viewport);
+	Vector4i viewport = Viewport4i ();
 
-	GLfloat width  = viewport [2];
-	GLfloat height = viewport [3];
+	size_t width  = viewport [2];
+	size_t height = viewport [3];
 
 	float fov   = fieldOfView () > 0 and fieldOfView () < M_PI ? fieldOfView () : M_PI / 4;
 	float ratio = std::tan (fov / 2) * zNear;

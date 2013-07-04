@@ -155,7 +155,7 @@ SphereSensor::set_motion (const std::shared_ptr <Hit> & hit)
 		Vector3f tangentPoint;
 		zPlane .intersect (hitRay, tangentPoint);
 
-		auto hitRay = Line3f (tangentPoint, sphere .center ());
+		auto hitRay = Line3f (tangentPoint, sphere .center (), true);
 
 		getTrackPoint (hitRay, trackPoint);
 
@@ -165,7 +165,7 @@ SphereSensor::set_motion (const std::shared_ptr <Hit> & hit)
 		auto dirFromCenter = normalize (trackPoint - sphere .center ());
 		auto normal        = cross (triNormal, dirFromCenter);
 
-		hitRay = Line3f (trackPoint - normal * abs (tangentPoint - trackPoint), sphere .center ());
+		hitRay = Line3f (trackPoint - normal * abs (tangentPoint - trackPoint), sphere .center (), true);
 
 		getTrackPoint (hitRay, trackPoint);
 	}

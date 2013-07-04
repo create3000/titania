@@ -51,6 +51,7 @@
 #include "ExamineViewer.h"
 
 #include "../../Components/Navigation/OrthoViewpoint.h"
+#include "../../Rendering/ViewVolume.h"
 #include "../Browser.h"
 
 #include <cmath>
@@ -252,28 +253,32 @@ ExamineViewer::getOrientationOffset ()
 Vector3f
 ExamineViewer::getPoint (const double x, const double y)
 {
-	X3DViewpointNode* viewpoint      = getBrowser () -> getActiveViewpoint ();
-	NavigationInfo*   navigationInfo = getBrowser () -> getActiveNavigationInfo ();
+	try
+	{
+		X3DViewpointNode* viewpoint      = getBrowser () -> getActiveViewpoint ();
+		NavigationInfo*   navigationInfo = getBrowser () -> getActiveNavigationInfo ();
 
-	GLint                viewport [4]; // x, y, width, heigth
-	Matrix4d             modelview;
-	Matrix4d::array_type projection;
+		viewpoint -> reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
 
-	viewpoint -> reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
-	glGetDoublev (GL_PROJECTION_MATRIX, projection);
+		Matrix4d modelview; // Use identity
+		Matrix4d projection = ProjectionMatrix4d ();
+		Vector4i viewport   = Viewport4i ();
 
-	glGetIntegerv (GL_VIEWPORT, viewport);
-	GLdouble px, py, pz;
+		// Far plane point
+		Vector3d far = ViewVolume::unProjectPoint (x, y, 0.9, modelview, projection, viewport);
 
-	// Far plane point
-	gluUnProject (x, y, 1, modelview .data (), projection, viewport, &px, &py, &pz);
+		if (dynamic_cast <OrthoViewpoint*> (viewpoint))
+			return Vector3f (-far .x (), far .y (), -abs (distance));
 
-	if (dynamic_cast <OrthoViewpoint*> (viewpoint))
-		return Vector3f (-px, py, -abs (distance));
+		Vector3f direction = normalize (Vector3f (-far .x (), far .y (), far .z ()));
 
-	Vector3f direction = normalize (Vector3f (-px, py, pz));
-
-	return direction * abs (distance) / dot (direction, Vector3f (0, 0, -1));
+		return direction * abs (distance) / dot (direction, Vector3f (0, 0, -1));
+	}
+	catch (const std::domain_error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+		return Vector3f ();
+	}
 }
 
 Vector3f

@@ -77,8 +77,9 @@ public:
 	{ }
 
 	///  Copy constructor.
+	template <class Up>
 	constexpr
-	sphere3 (const sphere3 & sphere) :
+	sphere3 (const sphere3 <Up> & sphere) :
 		value { sphere .radius (), sphere .center () }
 
 	{ }

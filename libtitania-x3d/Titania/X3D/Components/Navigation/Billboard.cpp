@@ -90,16 +90,6 @@ Billboard::create (X3DExecutionContext* const executionContext) const
 	return new Billboard (executionContext);
 }
 
-bool
-intersect (const Plane3f & p1, const Plane3f & p2, Line3f & line)
-{
-	// http://stackoverflow.com/questions/6408670/intersection-between-two-planes
-
-	line = Line3f (Vector3f (), cross (p1 .normal (), p2 .normal ()));
-
-	return true;
-}
-
 void
 Billboard::transform (TraverseType type)
 {
@@ -153,7 +143,19 @@ Billboard::transform (TraverseType type)
 
 		glMultMatrixf (rotation .data ());
 
+		// Correct rotation
 		glMultMatrixf (Matrix4f (Rotation4f (axisOfRotation () .getValue (), xAxis)) .data ());
+		
+		//		x = normalize (axisOfRotation () .getValue ());
+		//		z = normalize (cross (axisOfRotation () .getValue (), xAxis));
+		//		y = normalize (cross (z, axisOfRotation () .getValue ()));
+		//
+		//		Matrix4f correction (x [0], y [0], z [0], 0,
+		//		                     x [1], y [1], y [1], 0,
+		//		                     x [2], y [2], z [2], 0,
+		//		                     0,     0,     0,     1);
+		//
+		//		glMultMatrixf (rotation .data ());
 	}
 }
 

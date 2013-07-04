@@ -56,6 +56,7 @@
 #include "../../Rendering/CollisionArray.h"
 #include "../../Rendering/LightContainerArray.h"
 #include "../../Rendering/X3DRenderer.h"
+#include "../../Rendering/Matrix.h"
 #include "../EnvironmentalEffects/LocalFog.h"
 #include "../Grouping/Group.h"
 #include "../Grouping/X3DGroupingNode.h"

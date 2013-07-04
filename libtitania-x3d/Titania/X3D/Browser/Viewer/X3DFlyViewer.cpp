@@ -51,6 +51,7 @@
 #include "X3DFlyViewer.h"
 
 #include "../Browser.h"
+#include "../../Rendering/ViewVolume.h"
 
 #include <Titania/Chrono/Now.h>
 #include <cmath>
@@ -353,12 +354,10 @@ X3DFlyViewer::display ()
 {
 	// Configure HUD
 
-	GLint viewport [4];
+	Vector4i viewport = Viewport4i ();
 
-	glGetIntegerv (GL_VIEWPORT, viewport);
-
-	GLint width  = viewport [2];
-	GLint height = viewport [3];
+	size_t width  = viewport [2];
+	size_t height = viewport [3];
 
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
@@ -371,34 +370,30 @@ X3DFlyViewer::display ()
 
 	// Display Rubberband.
 
-	Matrix4d::array_type modelview, projection;
-
-	glGetDoublev (GL_MODELVIEW_MATRIX, modelview);
-	glGetDoublev (GL_PROJECTION_MATRIX, projection);
-
-	GLdouble fx, fy, fz, tx, ty, tz;
+	Matrix4d modelview; // Use identity
+	Matrix4d projection = ProjectionMatrix4d ();
 
 	// From point
-	gluUnProject (fromVector .x (), height - fromVector .z (), 0, modelview, projection, viewport, &fx, &fy, &fz);
+	Vector3d f = ViewVolume::unProjectPoint (fromVector .x (), height - fromVector .z (), 0, modelview, projection, viewport);
 
 	// To point
-	gluUnProject (toVector .x (), height - toVector .z (), 0, modelview, projection, viewport, &tx, &ty, &tz);
+	Vector3d t = ViewVolume::unProjectPoint (toVector .x (), height - toVector .z (), 0, modelview, projection, viewport);
 
 	// Draw a black and a white line
 	glLineWidth (2);
 	glColor3f (0, 0, 0);
 
 	glBegin (GL_LINES);
-	glVertex3f (fx, fy, fz);
-	glVertex3f (tx, ty, tz);
+	glVertex3f (f .x (), f .y (), f .z ());
+	glVertex3f (t .x (), t .y (), t .z ());
 	glEnd ();
 
 	glLineWidth (1);
 	glColor3f (1, 1, 1);
 
 	glBegin (GL_LINES);
-	glVertex3f (fx, fy, fz);
-	glVertex3f (tx, ty, tz);
+	glVertex3f (f .x (), f .y (), f .z ());
+	glVertex3f (t .x (), t .y (), t .z ());
 	glEnd ();
 }
 

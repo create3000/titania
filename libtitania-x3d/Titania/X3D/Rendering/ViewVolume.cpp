@@ -85,37 +85,31 @@ ViewVolume::ViewVolume (const Matrix4d & modelview, const Matrix4d & projection)
 	planes (),
 	 valid (true)
 {
-	GLint viewport [4];
+	Vector4i viewport = Viewport4i ();
 
-	glGetIntegerv (GL_VIEWPORT, viewport);
+	try
+	{
+		Matrix4d matrix = ~(modelview * projection);
 
-	GLdouble x, y, z;
+		Vector3f p1 = unProjectPoint (0, viewport [3], 1, matrix, viewport);
+		Vector3f p2 = unProjectPoint (0, 0, 1, matrix, viewport);
+		Vector3f p3 = unProjectPoint (0, 0, 0, matrix, viewport);
+		Vector3f p4 = unProjectPoint (viewport [2], 0, 0, matrix, viewport);
+		Vector3f p5 = unProjectPoint (viewport [2], viewport [3], 0, matrix, viewport);
+		Vector3f p6 = unProjectPoint (viewport [2], viewport [3], 1, matrix, viewport);
 
-	valid &= gluUnProject (0, viewport [3], 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p1 (x, y, z);
-
-	valid &= gluUnProject (0, 0, 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p2 (x, y, z);
-
-	valid &= gluUnProject (0, 0, 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p3 (x, y, z);
-
-	valid &= gluUnProject (viewport [2], 0, 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p4 (x, y, z);
-
-	valid &= gluUnProject (viewport [2], viewport [3], 0, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p5 (x, y, z);
-
-	valid &= gluUnProject (viewport [2], viewport [3], 1, modelview .data (), projection .data (), viewport, &x, &y, &z);
-	Vector3f p6 (x, y, z);
-
-	planes .reserve (6);
-	planes .emplace_back (p4, normalize (cross (p3 - p4, p5 - p4)));  // front
-	planes .emplace_back (p1, normalize (cross (p2 - p1, p6 - p1)));  // back
-	planes .emplace_back (p2, normalize (cross (p1 - p2, p3 - p2)));  // left
-	planes .emplace_back (p5, normalize (cross (p6 - p5, p4 - p5)));  // right
-	planes .emplace_back (p6, normalize (cross (p5 - p6, p1 - p6)));  // top
-	planes .emplace_back (p3, normalize (cross (p4 - p3, p2 - p3)));  // bottom
+		planes .reserve (6);
+		planes .emplace_back (p4, normalize (cross (p3 - p4, p5 - p4)));  // front
+		planes .emplace_back (p1, normalize (cross (p2 - p1, p6 - p1)));  // back
+		planes .emplace_back (p2, normalize (cross (p1 - p2, p3 - p2)));  // left
+		planes .emplace_back (p5, normalize (cross (p6 - p5, p4 - p5)));  // right
+		planes .emplace_back (p6, normalize (cross (p5 - p6, p1 - p6)));  // top
+		planes .emplace_back (p3, normalize (cross (p4 - p3, p2 - p3)));  // bottom
+	}
+	catch (const std::domain_error & error)
+	{
+		valid = false;
+	}
 }
 
 bool
@@ -133,6 +127,49 @@ ViewVolume::intersect (const Box3f & bbox) const
 	}
 
 	return true;
+}
+
+// http://www.opengl.org/wiki/GluProject_and_gluUnProject_code
+
+Vector3d
+ViewVolume::unProjectPoint (double winx, double winy, double winz, const Matrix4d & modelview, const Matrix4d & projection, const Vector4i & viewport)
+{
+	// Calculation for inverting a matrix, compute projection x modelview
+	// and store in A
+	Matrix4d matrix = ~(modelview * projection);
+
+	return unProjectPoint (winx, winy, winz, matrix, viewport);
+}
+
+Vector3d
+ViewVolume::unProjectPoint (double winx, double winy, double winz, const Matrix4d & matrix, const Vector4i & viewport)
+{
+	// Transformation of normalized coordinates between -1 and 1
+	Vector4d in ((winx - viewport [0]) / viewport [2] * 2 - 1,
+	             (winy - viewport [1]) / viewport [3] * 2 - 1,
+	             2 * winz - 1,
+	             1);
+
+	//Objects coordinates
+	Vector4d out = in * matrix ;
+
+	if (out [3] == 0)
+		throw std::domain_error ("Couldn't project point: divisor is 0.");
+
+	double d = 1 / out [3];
+	
+	return Vector3d (out [0] * d, out [1] * d, out [2] * d);
+}
+
+Line3d
+ViewVolume::unProjectLine (double winx, double winy, const Matrix4d & modelview, const Matrix4d & projection, const Vector4i & viewport)
+{
+	Matrix4d matrix = ~(modelview * projection);
+
+	Vector3f near = ViewVolume::unProjectPoint (winx, winy, 0.0, matrix, viewport);
+	Vector3f far  = ViewVolume::unProjectPoint (winx, winy, 0.9, matrix, viewport);
+
+	return Line3d (near, far, true);
 }
 
 } // X3D

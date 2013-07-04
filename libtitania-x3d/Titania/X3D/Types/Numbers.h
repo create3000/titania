@@ -91,12 +91,15 @@ typedef math::rotation4 <Float>  Rotation4f;
 
 typedef math::vector2 <Double> Vector2d;
 typedef math::vector2 <Float>  Vector2f;
+typedef math::vector2 <int>    Vector2i;
 
 typedef math::vector3 <Double> Vector3d;
 typedef math::vector3 <Float>  Vector3f;
+typedef math::vector3 <int>    Vector3i;
 
 typedef math::vector4 <Double> Vector4d;
 typedef math::vector4 <Float>  Vector4f;
+typedef math::vector4 <int>    Vector4i;
 
 } // X3D
 } // titania

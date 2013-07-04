@@ -79,8 +79,9 @@ public:
 	{ }
 
 	///  Copy constructor.
+	template <class Up>
 	constexpr
-	cylinder3 (const cylinder3 & cylinder) :
+	cylinder3 (const cylinder3 <Up> & cylinder) :
 		value { cylinder .axis (), cylinder .radius () }
 
 	{ }
@@ -143,7 +144,7 @@ cylinder3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & enter, 
 	// find the given line un-translated
 	vector3 <Type> origin = line .origin ();
 	origin -= axis () .origin ();
-	line3 <Type> noTranslationLine (origin, origin + line .direction ());
+	line3 <Type> noTranslationLine (origin, line .direction ());
 
 	// find the un-translated line in unit cylinder's space
 	line3 <Type> cylLine = noTranslationLine .multLineMatrix (toUnitCylSpace);

@@ -54,6 +54,7 @@
 #include "../Components/PointingDeviceSensor/X3DDragSensorNode.h"
 #include "../Components/PointingDeviceSensor/X3DTouchSensorNode.h"
 #include "../JavaScript/SpiderMonkey.h"
+#include "../Rendering/ViewVolume.h"
 
 #include <Titania/Chrono/CountingClock.h>
 #include <Titania/Chrono/SystemClock.h>
@@ -237,24 +238,7 @@ X3DBrowserContext::pick (const double _x, const double _y)
 Line3f
 X3DBrowserContext::getHitRay () const
 {
-	GLint                viewport [4]; // x, y, width, heigth
-	Matrix4d::array_type modelview, projection;
-
-	glGetIntegerv (GL_VIEWPORT, viewport);
-	glGetDoublev (GL_MODELVIEW_MATRIX, modelview);
-	glGetDoublev (GL_PROJECTION_MATRIX, projection);
-
-	GLdouble px, py, pz;
-
-	// Near plane point
-	gluUnProject (x, y, 0, modelview, projection, viewport, &px, &py, &pz);
-	Vector3f near (px, py, pz);
-
-	// Far plane point
-	gluUnProject (x, y, 0.9, modelview, projection, viewport, &px, &py, &pz);
-	Vector3f far (px, py, pz);
-
-	return Line3f (near, far);
+	return ViewVolume::unProjectLine (x, y, ModelViewMatrix4d (), ProjectionMatrix4d (), Viewport4i ());
 }
 
 void

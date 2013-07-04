@@ -64,6 +64,16 @@ namespace titania {
 namespace X3D {
 
 inline
+Vector4i
+Viewport4i ()
+{
+	Vector4i viewport;
+
+	glGetIntegerv (GL_VIEWPORT, viewport .data ());
+	return viewport;
+}
+
+inline
 Matrix4d
 ModelViewMatrix4d ()
 {
