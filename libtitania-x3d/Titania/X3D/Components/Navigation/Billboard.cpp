@@ -145,17 +145,6 @@ Billboard::transform (TraverseType type)
 
 		// Correct rotation
 		glMultMatrixf (Matrix4f (Rotation4f (axisOfRotation () .getValue (), xAxis)) .data ());
-		
-		//		x = normalize (axisOfRotation () .getValue ());
-		//		z = normalize (cross (axisOfRotation () .getValue (), xAxis));
-		//		y = normalize (cross (z, axisOfRotation () .getValue ()));
-		//
-		//		Matrix4f correction (x [0], y [0], z [0], 0,
-		//		                     x [1], y [1], y [1], 0,
-		//		                     x [2], y [2], z [2], 0,
-		//		                     0,     0,     0,     1);
-		//
-		//		glMultMatrixf (rotation .data ());
 	}
 }
 

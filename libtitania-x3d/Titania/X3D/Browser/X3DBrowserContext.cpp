@@ -238,7 +238,14 @@ X3DBrowserContext::pick (const double _x, const double _y)
 Line3f
 X3DBrowserContext::getHitRay () const
 {
-	return ViewVolume::unProjectLine (x, y, ModelViewMatrix4d (), ProjectionMatrix4d (), Viewport4i ());
+	try
+	{
+		return ViewVolume::unProjectLine (x, y, ModelViewMatrix4d (), ProjectionMatrix4d (), Viewport4i ());
+	}
+	catch (const std::domain_error &)
+	{
+		return Line3f (Vector3f (), Vector3f ());
+	}
 }
 
 void

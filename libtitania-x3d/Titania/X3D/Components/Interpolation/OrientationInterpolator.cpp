@@ -106,7 +106,7 @@ OrientationInterpolator::interpolate (size_t index0, size_t index1, float weight
 	}
 	catch (const std::domain_error & error)
 	{
-		getBrowser () -> println ("OrientationInterpolator: ", error .what ());
+		std::clog << "OrientationInterpolator: " << error .what () << std::endl;
 	}
 }
 
