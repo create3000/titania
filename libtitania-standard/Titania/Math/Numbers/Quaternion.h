@@ -417,7 +417,7 @@ quaternion <Type>::normalize ()
 ///  Returns imaginary part of @a quaternion as vector.
 template <class Type>
 inline
-Type
+const Type &
 real (const quaternion <Type> & quat)
 {
 	return quat .w ();
@@ -483,7 +483,7 @@ operator - (const quaternion <Type> & quat)
 
 ///  Returns the inverse quaternion for @a quaternion.
 template <class Type>
-constexpr quaternion <Type>
+quaternion <Type>
 operator ~ (const quaternion <Type> & quat)
 {
 	return quaternion <Type> (quat) .inverse ();

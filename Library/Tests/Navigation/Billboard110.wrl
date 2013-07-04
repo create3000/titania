@@ -24,7 +24,7 @@ Viewpoint {
   orientation 0 1 0 1.5708
 }
 
-Billboard {
+DEF Billboard Billboard {
   axisOfRotation 1 1 0
   children [
     Transform {
@@ -42,7 +42,7 @@ Billboard {
       }
       geometry IndexedLineSet {
         coordIndex [ 0, 1, -1 ]
-        coord Coordinate {
+        coord DEF Local Coordinate {
           point [ 0 0 0, -1 1 0 ]
         }
       }
@@ -56,8 +56,35 @@ Shape {
   }
   geometry IndexedLineSet {
     coordIndex [ 0, 1, -1 ]
-    coord Coordinate {
+    coord DEF Absolute Coordinate {
       point [ -1 -1 0, 1 1 0 ]
     }
   }
 }
+
+DEF Touch TouchSensor { }
+
+DEF AxisScript Script {
+  eventIn SFTime set_time
+  field   SFNode billboard USE Billboard
+  field   SFNode absolute USE Absolute
+  field   SFNode local USE Local
+
+  url "vrmlscript:
+function set_time ()
+{
+	var axisOfRotation = new SFVec3f (Math .random (), Math .random (), Math .random ()) .normalize ();
+
+	billboard .axisOfRotation = axisOfRotation;
+
+	local .point [1] = new SFRotation (0, 0, 1, Math .PI / 2) .multVec (axisOfRotation);
+
+	absolute .point [0] = axisOfRotation .negate ();
+	absolute .point [1] = axisOfRotation;
+
+	print ('axisOfRotation: ' + axisOfRotation);
+}
+"
+}
+
+ROUTE Touch.touchTime TO AxisScript.set_time

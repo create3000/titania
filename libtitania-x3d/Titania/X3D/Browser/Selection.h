@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class Selection :
-	virtual public X3DNode
+	virtual public X3DBaseNode
 {
 public:
 
@@ -79,6 +79,10 @@ public:
 
 	void
 	clear ();
+
+	virtual
+	void
+	dispose () final;
 
 
 private:

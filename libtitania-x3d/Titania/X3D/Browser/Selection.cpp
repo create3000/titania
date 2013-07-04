@@ -64,13 +64,10 @@ Selection::Fields::Fields () :
 
 Selection::Selection (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DNode (),                                                    
 	     fields ()
 {
 	setComponent ("Browser");
 	setTypeName ("Selection");
-
-	addField (inputOutput, "metadata", metadata ());
 
 	setChildren (fields .children);
 }
@@ -126,6 +123,14 @@ Selection::removeHandle (const SFNode <X3DBaseNode> & child)
 {
 	if (dynamic_cast <Transform*> (child .getValue ()))
 		dynamic_cast <Transform*> (child .getValue ()) -> removeHandle ();
+}
+
+void
+Selection::dispose ()
+{
+	fields .children .dispose ();
+
+	X3DBaseNode::dispose ();
 }
 
 } // X3D

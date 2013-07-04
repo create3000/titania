@@ -19,6 +19,7 @@ function set_triggerTime ()
 		Browser .setBrowserOption ('Gravity', 1.62);
 
 		print ('AnimateStairWalks: ', Browser .getBrowserOption ('AnimateStairWalks'));
+		print ('Gravity:           ', Browser .getBrowserOption ('Gravity'));
 	}
 	catch (error)
 	{ }

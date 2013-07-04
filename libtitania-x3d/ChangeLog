@@ -1,5 +1,13 @@
 2013-07-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Selection.h:
+	* Selection.cpp:
+	* jsSFVec4.h:
+	* jsSFVec3.h:
+	* jsSFVec2.h: 
+
+2013-07-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DRenderer.cpp:
 	* BrowserOptions.h:
 	* BrowserOptions.cpp: 

@@ -1,5 +1,12 @@
 2013-07-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Vector3.h:
+	* Vector4.h:
+	* Vector2.h:
+	* Quaternion.h: 
+
+2013-07-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Constants.h: 
 
 2013-07-04  Holger Seelig  <holger.seelig@yahoo.de>

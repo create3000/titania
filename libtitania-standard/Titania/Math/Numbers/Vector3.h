@@ -347,7 +347,7 @@ operator + (const vector3 <Type> & vector)
 
 ///  Returns vector negation of @a vector.
 template <class Type>
-constexpr vector3 <Type>
+vector3 <Type>
 operator - (const vector3 <Type> & vector)
 {
 	return vector3 <Type> (vector) .negate ();

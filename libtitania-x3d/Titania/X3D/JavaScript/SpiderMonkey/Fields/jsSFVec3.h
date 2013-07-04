@@ -135,7 +135,7 @@ JSFunctionSpec jsSFVec3 <Type>::functions [ ] = {
 	{ "isReadable",  isReadable,                   0, 0 },
 	{ "isWritable",  isWritable,                   0, 0 },
 
-	{ "negate",      normalize,   0, 0 },
+	{ "negate",      negate,      0, 0 },
 	{ "add",         add,         1, 0 },
 	{ "subtract",    subtract,    1, 0 },
 	{ "multiply",    multiply,    1, 0 },
