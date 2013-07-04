@@ -81,6 +81,7 @@ namespace X3D {
 // MotionBlur              Boolean                                  False                        Render animations with motion blur
 // MotionBlurIntesity      Number                                   0.25                         Motion blur intesity in the range (0, 1)
 // AnimateStairWalks       Boolean                                  False                        Animate stair walks. This can give unexpected results when the floor is animated.
+// Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
 
 class BrowserOptions :
 	public X3DPropertyNode
@@ -182,6 +183,14 @@ public:
 	SFBool &
 	animateStairWalks ()
 	{ return *fields .animateStairWalks; }
+
+	SFFloat &
+	gravity ()
+	{ return *fields .gravity; }
+
+	const SFFloat &
+	gravity () const
+	{ return *fields .gravity; }
 
 	SFNode <MotionBlur> &
 	motionBlurProperties ()
@@ -301,6 +310,7 @@ private:
 		SFString* const qualityWhenMoving;
 		SFString* const shading;
 		SFBool* const animateStairWalks;
+		SFFloat* const gravity;
 		SFNode <MotionBlur> motionBlurProperties;
 		SFNode <TextureProperties> textureProperties;
 		SFNode <Arc2DProperties> arc2DProperties;

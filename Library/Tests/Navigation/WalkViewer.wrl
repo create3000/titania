@@ -16,6 +16,7 @@ function set_triggerTime ()
 	try
 	{
 		Browser .setBrowserOption ('AnimateStairWalks', true);
+		Browser .setBrowserOption ('Gravity', 1.62);
 
 		print ('AnimateStairWalks: ', Browser .getBrowserOption ('AnimateStairWalks'));
 	}
@@ -34,11 +35,11 @@ DEF _0 Transform {
     }
     Viewpoint {
       description "Home"
-      position 0 10 30
+      position 0 30 30
     }
     Viewpoint {
       description "Back"
-      position 0 10 -30
+      position 0 30 -30
       orientation 0 1 0 3.14158
     }
     DirectionalLight {

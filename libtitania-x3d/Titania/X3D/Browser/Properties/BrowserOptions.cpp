@@ -53,6 +53,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry3D/QuadSphereProperties.h"
 #include <Titania/String/Join.h>
+#include <Titania/Physics/Constants.h>
 
 extern "C"
 {
@@ -76,6 +77,7 @@ namespace X3D {
 // MotionBlur              Boolean                                  False                        Render animations with motion blur
 // MotionBlurIntesity      Number                                   0.25                         Motion blur intesity in the range (0, 1)
 // AnimateStairWalks       Boolean                                  False                        Animate stair walks. This can give unexpected results when the floor is animated.
+// Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
 
 BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	splashScreen (new SFBool (false)),
@@ -88,6 +90,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	qualityWhenMoving (new SFString ("MEDIUM")),
 	shading (new SFString ("GOURAUD")),
 	animateStairWalks (new SFBool ()),
+	gravity (new SFFloat (P_GN)),
 	motionBlurProperties (new MotionBlur (executionContext)),
 	textureProperties (new TextureProperties (executionContext)),
 	arc2DProperties (new Arc2DProperties (executionContext)),
@@ -120,6 +123,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "MotionBlur",             motionBlur ());
 	addField (inputOutput, "MotionBlurIntensity",    motionBlurIntensity ());
 	addField (inputOutput, "AnimateStairWalks",      animateStairWalks ());
+	addField (inputOutput, "Gravity",                gravity ());
 	
 	addField ("AntiAliased", "Antialiased");
 

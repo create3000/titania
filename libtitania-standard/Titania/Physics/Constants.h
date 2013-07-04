@@ -54,7 +54,7 @@
 namespace titania {
 namespace math {
 
-#define P_GN    -9.80665
+#define P_GN    9.80665
 
 } // math
 } // titania

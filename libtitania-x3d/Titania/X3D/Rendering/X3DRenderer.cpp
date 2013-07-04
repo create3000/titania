@@ -54,7 +54,6 @@
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Rendering/ViewVolume.h"
 
-#include <Titania/Physics/Constants.h>
 #include <Titania/Utility/Adapter.h>
 #include <algorithm>
 
@@ -552,7 +551,7 @@ X3DRenderer::gravite ()
 
 			float currentFrameRate = speed ? getBrowser () -> getCurrentFrameRate () : 1000000;
 
-			speed += P_GN / currentFrameRate;
+			speed -= getBrowser () -> getBrowserOptions () -> gravity () / currentFrameRate;
 
 			float translation = speed / currentFrameRate;
 
@@ -576,14 +575,14 @@ X3DRenderer::gravite ()
 
 				// Step up
 				Vector3f translation = getCurrentLayer () -> getTranslation (Vector3f (), size, size, Vector3f (0, -distance, 0));
-				
+
 				if (getBrowser () -> getBrowserOptions () -> animateStairWalks ())
 				{
-					float step = math::abs (getCurrentViewpoint () -> getInverseTransformationMatrix () .multMatrixDir (
-					                        Vector3f (0, getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate (), 0)));
+					float step = getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate ();
+					step = abs (getCurrentViewpoint () -> getInverseTransformationMatrix () .multMatrixDir (Vector3f (0, step, 0)));
 
 					Vector3f offset (0, step, 0);
-					
+
 					if (math::abs (offset) > math::abs (translation) or getBrowser () -> getCurrentSpeed () == 0)
 						offset = translation;
 
