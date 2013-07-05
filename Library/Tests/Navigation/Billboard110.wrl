@@ -266,6 +266,19 @@ DEF Normal Transform {
   ]
 }
 
+    Transform {
+      children Shape {
+          appearance Appearance {
+            material Material {
+              emissiveColor 1 0 0
+            }
+          }
+          geometry Arc2D {
+          }
+        }
+      }
+
+
 DEF AxisScript Script {
   eventIn SFTime     set_x
   eventIn SFTime     set_y
@@ -316,24 +329,33 @@ function set_position ()
 	set_axisOfRotation (billboard .axisOfRotation);
 }
 
+var zAxis = new SFVec3f (0, 0, 1);
+
 function set_axisOfRotation (axisOfRotation)
 {
 	billboard .axisOfRotation = axisOfRotation;
 	
-	var y = axisOfRotation .cross (proxy .position_changed);
+	// Normal of plane between axisOfRotation and billbordToViewer
 
-	normal .rotation = new SFRotation (new SFVec3f (0, 0, 1), y);
+	var vector = axisOfRotation .cross (proxy .position_changed);
+	normal .rotation = new SFRotation (zAxis, vector);
 
-	print ('axisOfRotation: ' + axisOfRotation);
-	print ('y: ', y);
+	// axisOfRotation
 
-	// 
-
-	axisOfRotation = axisOfRotation .normalize () .multiply (2);
-
-	var axisRotation = new SFRotation (new SFVec3f (0, 0, 1), axisOfRotation);
+	var axisRotation = new SFRotation (zAxis, axisOfRotation);
+	
 	absolute .rotation = axisRotation;
 	sensor .offset = axisRotation;
+
+	// Angle between zAxis and axisOfRotation
+	var angle  = Math .acos (zAxis .dot (axisOfRotation .normalize ()));
+
+	print ('axisOfRotation: ' + axisOfRotation);
+	print ('normal:         ', vector);
+	print ('angle:          ', angle);
+
+	print ('position_changed',    proxy .position_changed);
+	print ('orientation_changed', proxy .orientation_changed);
 }
 "
 }

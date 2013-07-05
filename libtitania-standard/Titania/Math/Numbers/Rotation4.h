@@ -255,7 +255,7 @@ rotation4 <Type>::rotation4 (const vector3 <T> & axis, const Type & angle) :
 template <class Type>
 template <class T>
 rotation4 <Type>::rotation4 (const vector3 <T> & fromVector, const vector3 <T> & toVector) :
-	value ()
+	rotation4 ()
 {
 	// https://bitbucket.org/Coin3D/coin/src/abc9f50968c9/src/base/SbRotation.cpp
 
@@ -292,6 +292,8 @@ rotation4 <Type>::rotation4 (const vector3 <T> & fromVector, const vector3 <T> &
 	else
 	{
 		// Vectors are not parallel
+      // The abs () wrapping is to avoid problems when `dot' "overflows" a tiny wee bit,
+      // which can lead to sqrt () returning NaN.
 		crossvec *= std::sqrt (0.5 * std::abs (1 - cos_angle));
 		value     = quaternion <Type> (crossvec [0], crossvec [1], crossvec [2], std::sqrt (0.5 * std::abs (1 + cos_angle)));
 	}
