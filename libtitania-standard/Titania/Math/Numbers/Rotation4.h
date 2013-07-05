@@ -254,36 +254,46 @@ rotation4 <Type>::rotation4 (const vector3 <T> & axis, const Type & angle) :
 
 template <class Type>
 template <class T>
-rotation4 <Type>::rotation4 (const vector3 <T> & fromVector, const vector3 <T> & toVector)
+rotation4 <Type>::rotation4 (const vector3 <T> & fromVector, const vector3 <T> & toVector) :
+	value ()
 {
-	Type cos_theta = dot (normalize (fromVector), normalize (toVector));
+	// https://bitbucket.org/Coin3D/coin/src/abc9f50968c9/src/base/SbRotation.cpp
 
-	if (cos_theta > -1)
+	vector3 <Type> from (normalize (fromVector));
+	vector3 <Type> to (normalize (toVector));
+
+	const Type     cos_angle = dot (from, to);
+	vector3 <Type> crossvec  = normalize (cross (from, to));
+	const Type     crosslen  = abs (crossvec);
+
+	if (crosslen == 0)
 	{
-		Type angle = std::acos (cos_theta);
-		*this = rotation4 (cross (fromVector, toVector), angle);
+		// Parallel vectors
+		// Check if they are pointing in the same direction.
+		if (cos_angle > 0)
+			;  // standard rotation
+
+		// Ok, so they are parallel and pointing in the opposite direction
+		// of each other.
+		else
+		{
+			// Try crossing with x axis.
+			vector3 <Type> t = cross (from, vector3 <Type> (1, 0, 0));
+
+			// If not ok, cross with y axis.
+			if (norm (t) == 0)
+				t = cross (from, vector3 <Type> (0, 1, 0));
+
+			t .normalize ();
+
+			value = quaternion <Type> (t [0], t [1], t [2], 0);
+		}
 	}
 	else
 	{
-		vector3 <Type> normal = normalize (toVector - fromVector);
-
-		if (normal .x ())
-		{
-			Type x = -normal .y () / normal .x ();
-			*this = rotation4 (x, 1, 0, M_PI);
-		}
-		else if (normal .y ())
-		{
-			Type y = -normal .z () / normal .y ();
-			*this = rotation4 (0, y, 1, M_PI);
-		}
-		else if (normal .z ())
-		{
-			Type z = -normal .x () / normal .z ();
-			*this = rotation4 (1, 0, z, M_PI);
-		}
-		else
-			*this = rotation4 (0, 0, 1, 0);
+		// Vectors are not parallel
+		crossvec *= std::sqrt (0.5 * std::abs (1 - cos_angle));
+		value     = quaternion <Type> (crossvec [0], crossvec [1], crossvec [2], std::sqrt (0.5 * std::abs (1 + cos_angle)));
 	}
 }
 

@@ -62,9 +62,9 @@ DEF HUD Transform {
         ]
       }
       Transform {
-        translation 9 0 0
+        translation 6 0 0
         children [
-          DEF TouchZ TouchSensor { }
+          DEF TouchXYZ TouchSensor { }
           Transform {
             children Shape {
               appearance Appearance {
@@ -76,9 +76,9 @@ DEF HUD Transform {
         ]
       }
       Transform {
-        translation 6 0 0
+        translation 9 0 0
         children [
-          DEF TouchXYZ TouchSensor { }
+          DEF TouchZ TouchSensor { }
           Transform {
             children Shape {
               appearance Appearance {
@@ -318,14 +318,14 @@ function set_position ()
 
 function set_axisOfRotation (axisOfRotation)
 {
-	print ('axisOfRotation: ' + axisOfRotation);
-
 	billboard .axisOfRotation = axisOfRotation;
 	
 	var y = axisOfRotation .cross (proxy .position_changed);
 
-	print ('y: ', y);
 	normal .rotation = new SFRotation (new SFVec3f (0, 0, 1), y);
+
+	print ('axisOfRotation: ' + axisOfRotation);
+	print ('y: ', y);
 
 	// 
 

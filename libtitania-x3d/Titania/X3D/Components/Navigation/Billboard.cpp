@@ -90,6 +90,47 @@ Billboard::create (X3DExecutionContext* const executionContext) const
 	return new Billboard (executionContext);
 }
 
+Rotation4f
+rotation (const Vector3f & fromVector, const Vector3f & toVector)
+{
+	Vector3f from (normalize (fromVector));
+	Vector3f to (normalize (toVector));
+
+	const float cos_angle = dot (from, to);
+	Vector3f    crossvec  = normalize (cross (from, to));
+	const float crosslen  = abs (crossvec);
+
+	if (crosslen == 0)
+	{
+		// Parallel vectors
+		// Check if they are pointing in the same direction.
+		if (cos_angle > 0)
+			return Rotation4f ();
+
+		// Ok, so they are parallel and pointing in the opposite direction
+		// of each other.
+		else
+		{
+			// Try crossing with x axis.
+			Vector3f t = cross (from, Vector3f (1, 0, 0));
+
+			// If not ok, cross with y axis.
+			if (norm (t) == 0)
+				t = cross (from, Vector3f (0, 1, 0));
+
+			t .normalize ();
+
+			return Rotation4f (math::quaternion <float> (t [0], t [1], t [2], 0));
+		}
+	}
+	else
+	{
+		// Vectors are not parallel
+		crossvec *= std::sqrt (0.5 * std::abs (1 - cos_angle));
+		return Rotation4f (math::quaternion <float> (crossvec [0], crossvec [1], crossvec [2], std::sqrt (0.5 * std::abs (1 + cos_angle))));
+	}
+}
+
 void
 Billboard::transform (TraverseType type)
 {
