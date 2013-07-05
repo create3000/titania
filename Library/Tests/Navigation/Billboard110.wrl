@@ -62,9 +62,9 @@ DEF HUD Transform {
         ]
       }
       Transform {
-        translation 6 0 0
+        translation 9 0 0
         children [
-          DEF TouchXYZ TouchSensor { }
+          DEF TouchZ TouchSensor { }
           Transform {
             children Shape {
               appearance Appearance {
@@ -76,9 +76,9 @@ DEF HUD Transform {
         ]
       }
       Transform {
-        translation 9 0 0
+        translation 6 0 0
         children [
-          DEF TouchRandom TouchSensor { }
+          DEF TouchXYZ TouchSensor { }
           Transform {
             children Shape {
               appearance Appearance {
@@ -269,8 +269,8 @@ DEF Normal Transform {
 DEF AxisScript Script {
   eventIn SFTime     set_x
   eventIn SFTime     set_y
+  eventIn SFTime     set_z
   eventIn SFTime     set_xyz
-  eventIn SFTime     set_random
   eventIn SFRotation set_rotation
   eventIn SFVec3f    set_position
   field   SFNode     billboard USE Billboard
@@ -296,14 +296,14 @@ function set_y ()
 	set_axisOfRotation (new SFVec3f (0, 1, 0));
 }
 
+function set_z ()
+{
+	set_axisOfRotation (new SFVec3f (0, 0, 1) .normalize () .multiply (2));
+}
+
 function set_xyz ()
 {
 	set_axisOfRotation (new SFVec3f (1, 1, 1));
-}
-
-function set_random ()
-{
-	set_axisOfRotation (new SFVec3f (Math .random (), Math .random (), Math .random ()) .normalize () .multiply (2));
 }
 
 function set_rotation (value)
@@ -322,7 +322,7 @@ function set_axisOfRotation (axisOfRotation)
 
 	billboard .axisOfRotation = axisOfRotation;
 	
-	var y = proxy .position_changed .cross (axisOfRotation);
+	var y = axisOfRotation .cross (proxy .position_changed);
 
 	print ('y: ', y);
 	normal .rotation = new SFRotation (new SFVec3f (0, 0, 1), y);
@@ -343,6 +343,6 @@ ROUTE Proxy.orientation_changed TO HUD.set_rotation
 ROUTE Proxy.position_changed TO AxisScript.set_position
 ROUTE TouchX.touchTime TO AxisScript.set_x
 ROUTE TouchY.touchTime TO AxisScript.set_y
+ROUTE TouchZ.touchTime TO AxisScript.set_z
 ROUTE TouchXYZ.touchTime TO AxisScript.set_xyz
-ROUTE TouchRandom.touchTime TO AxisScript.set_random
 ROUTE AxisSensor.rotation_changed TO AxisScript.set_rotation

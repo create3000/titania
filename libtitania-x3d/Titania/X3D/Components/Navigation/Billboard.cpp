@@ -125,12 +125,12 @@ Billboard::transform (TraverseType type)
 	}
 	else
 	{
-		Vector3f vector = cross (billboardToViewer, axisOfRotation () .getValue ()); // normal of plane
-		float    angle  = std::acos (dot (zAxis, normalize (axisOfRotation () .getValue ())));
+		Vector3f vector = cross (axisOfRotation () .getValue (), billboardToViewer);           // direction vector of plane
+		float    angle  = std::acos (dot (zAxis, normalize (axisOfRotation () .getValue ()))); // angle between zAxis and axisOfRotation
 
-		Vector3f z = Rotation4f (vector, -angle) * axisOfRotation () .getValue ();
+		Vector3f z = Rotation4f (vector, angle) * axisOfRotation () .getValue ();              // intersection of zAxis and plane
 
-		glMultMatrixf (Matrix4f (Rotation4f (zAxis, z)) .data ());
+		glMultMatrixf (Matrix4f (Rotation4f (zAxis, z)) .data ());                             // rotate zAxis in plane
 	}
 }
 
