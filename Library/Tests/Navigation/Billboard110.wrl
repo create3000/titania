@@ -214,6 +214,40 @@ Transform {
   ]
 }
 
+        Shape {
+          appearance Appearance {
+            material Material { }
+          }
+          geometry IndexedLineSet {
+            colorPerVertex FALSE
+            colorIndex [ 0, 1 ]
+            coordIndex [ 0, 1, -1, 1, 2, -1 ]
+            color Color {
+              color [ 1 0 0, 0 1 0 ]
+            }
+            coord Coordinate {
+              point [ 0 0 -2, 0 0 0, 0 0 2 ]
+            }
+          }
+        }
+      Transform {
+        translation 0 0 2
+        scale 0.5 0.5 0.5
+        children Billboard {
+          axisOfRotation 0 0 0
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0 0 0
+              }
+            }
+            geometry Text {
+              string "z"
+            }
+          }
+        }
+      }
+
 # Normal
 DEF Normal Transform {
   children [
@@ -266,14 +300,14 @@ DEF Normal Transform {
   ]
 }
 
-    Transform {
+    DEF Rotation Transform {
       children Shape {
           appearance Appearance {
             material Material {
               emissiveColor 1 0 0
             }
           }
-          geometry Arc2D {
+          geometry DEF Arc Arc2D {
           }
         }
       }
@@ -291,7 +325,9 @@ DEF AxisScript Script {
   field   SFNode     absolute USE AxisOfRotation
   field   SFNode     sensor USE AxisSensor
   field   SFNode     normal USE Normal
-  field   SFNode     proxy USE Proxy
+  field   SFNode     rotation USE Rotation
+   field   SFNode     arc USE Arc
+ field   SFNode     proxy USE Proxy
 
   url "vrmlscript:
 function initialize ()
@@ -348,14 +384,15 @@ function set_axisOfRotation (axisOfRotation)
 	sensor .offset = axisRotation;
 
 	// Angle between zAxis and axisOfRotation
-	var angle  = Math .acos (zAxis .dot (axisOfRotation .normalize ()));
+	var angle = Math .acos (zAxis .dot (axisOfRotation .normalize ()));
+	
+	//rotation .rotation = new SFRotation (zAxis, zAxis .cross (axisOfRotation));
+	arc .endAngle = angle;
 
-	print ('axisOfRotation: ' + axisOfRotation);
+	print ('axisOfRotation: ', axisOfRotation);
 	print ('normal:         ', vector);
 	print ('angle:          ', angle);
-
-	print ('position_changed',    proxy .position_changed);
-	print ('orientation_changed', proxy .orientation_changed);
+	print ('angle:          ', rotation .rotation .angle);
 }
 "
 }

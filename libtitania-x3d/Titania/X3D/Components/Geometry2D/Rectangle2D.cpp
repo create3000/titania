@@ -70,9 +70,9 @@ Rectangle2D::Rectangle2D (X3DExecutionContext* const executionContext) :
 	setComponent ("Geometry2D");
 	setTypeName ("Rectangle2D");
 
-	addField (inputOutput,    "metadata", metadata ());
-	addField (initializeOnly, "size",     size ());
-	addField (initializeOnly, "solid",    solid ());
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "size",     size ());
+	addField (inputOutput, "solid",    solid ());
 }
 
 X3DBaseNode*

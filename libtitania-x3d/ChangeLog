@@ -1,5 +1,14 @@
 2013-07-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Arc2D.cpp:
+	* Disk2D.cpp:
+	* Circle2D.cpp:
+	* ArcClose2D.cpp:
+	* Rectangle2D.cpp:
+	* TriangleSet2D.cpp: 
+
+2013-07-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Billboard.cpp: 
 
 2013-07-05  Holger Seelig  <holger.seelig@yahoo.de>

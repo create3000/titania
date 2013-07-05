@@ -69,8 +69,8 @@ Circle2D::Circle2D (X3DExecutionContext* const executionContext) :
 	setComponent ("Geometry2D");
 	setTypeName ("Circle2D");
 
-	addField (inputOutput,    "metadata", metadata ());
-	addField (initializeOnly, "radius",   radius ());
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "radius",   radius ());
 }
 
 X3DBaseNode*
