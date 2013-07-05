@@ -24,67 +24,325 @@ Viewpoint {
   orientation 0 1 0 1.5708
 }
 
+DEF Proxy ProximitySensor {
+  size 1000 1000 1000
+}
+
+# Buttons for predefined axes and random axis
+DEF HUD Transform {
+  children Transform {
+    translation 0 -0.3 -1
+    scale 0.02 0.02 0.02
+    children [
+      Transform {
+        children [
+          DEF TouchX TouchSensor { }
+          Transform {
+            children Shape {
+              appearance Appearance {
+                material Material { }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 3 0 0
+        children [
+          DEF TouchY TouchSensor { }
+          Transform {
+            children Shape {
+              appearance Appearance {
+                material Material { }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 6 0 0
+        children [
+          DEF TouchXYZ TouchSensor { }
+          Transform {
+            children Shape {
+              appearance Appearance {
+                material Material { }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 9 0 0
+        children [
+          DEF TouchRandom TouchSensor { }
+          Transform {
+            children Shape {
+              appearance Appearance {
+                material Material { }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+
 DEF Billboard Billboard {
-  axisOfRotation 1 1 0
-  children [
-    Transform {
-      rotation 1 0 0 1.5708
-      children Shape {
+  axisOfRotation 1 1 1
+  children DEF XForm Transform {
+    children [
+      Transform {
+        rotation 1 0 0 1.5708
+        children Shape {
+          appearance Appearance {
+            material Material { }
+          }
+          geometry Cone { }
+        }
+      }
+      Shape {
         appearance Appearance {
           material Material { }
         }
-        geometry Cone { }
+        geometry IndexedLineSet {
+          colorIndex [ 0, 1, -1, 2, 3, -1 ]
+          coordIndex [ 0, 1, -1, 2, 3, -1 ]
+          color Color {
+            color [ 0 0 0, 1 1 1, 0 0 0, 1 1 1 ]
+          }
+          coord DEF Local Coordinate {
+            point [ -2 0 0, 2 0 0, 0 -2 0, 0 2 0 ]
+          }
+        }
       }
+      Transform {
+        translation 2 0 0
+        scale 0.5 0.5 0.5
+        children Billboard {
+          axisOfRotation 0 0 0
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0 0 0
+              }
+            }
+            geometry Text {
+              string "x"
+            }
+          }
+        }
+      }
+      Transform {
+        translation 0 2 0
+        scale 0.5 0.5 0.5
+        children Billboard {
+          axisOfRotation 0 0 0
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0 0 0
+              }
+            }
+            geometry Text {
+              string "y"
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+
+# Axis of rotation
+Transform {
+  children [
+    DEF AxisSensor SphereSensor {
+      offset -0.707107 0.707107 0 0.955316
     }
+    DEF AxisOfRotation Transform {
+      rotation -0.707107 0.707107 0 0.955316
+      children [
+        Transform {
+          translation 0 0 2
+          rotation 1 0 0 1.5708
+          scale 0.1 0.1 0.1
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0 1 0
+              }
+            }
+            geometry Cone { }
+          }
+        }
+        Transform {
+          translation 0 0 -2
+          scale 0.1 0.1 0.1
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 1 0 0
+              }
+            }
+            geometry Sphere { }
+          }
+        }
+        Shape {
+          appearance Appearance {
+            material Material { }
+          }
+          geometry IndexedLineSet {
+            colorPerVertex FALSE
+            colorIndex [ 0, 1 ]
+            coordIndex [ 0, 1, -1, 1, 2, -1 ]
+            color Color {
+              color [ 1 0 0, 0 1 0 ]
+            }
+            coord Coordinate {
+              point [ 0 0 -2, 0 0 0, 0 0 2 ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
+# Normal
+DEF Normal Transform {
+  children [
     Shape {
       appearance Appearance {
         material Material { }
       }
       geometry IndexedLineSet {
+        colorPerVertex FALSE
+        colorIndex [ 0, 1 ]
         coordIndex [ 0, 1, -1 ]
-        coord DEF Local Coordinate {
-          point [ 0 0 0, -1 1 0 ]
+        color Color {
+          color [ 1 1 0, 1 1 0 ]
+        }
+        coord Coordinate {
+          point [ 0 0 0, 0 0 2 ]
+        }
+      }
+    }
+    Transform {
+      translation 0 0 2
+      rotation 1 0 0 1.5708
+      scale 0.1 0.1 0.1
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 1 0
+          }
+        }
+        geometry Cone { }
+      }
+    }
+    Transform {
+      translation 0 0 2
+      scale 0.3 0.3 0.3
+      children Billboard {
+        axisOfRotation 0 0 0
+        children Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 0 0
+            }
+          }
+          geometry Text {
+            string " normal"
+          }
         }
       }
     }
   ]
 }
 
-Shape {
-  appearance Appearance {
-    material Material { }
-  }
-  geometry IndexedLineSet {
-    coordIndex [ 0, 1, -1 ]
-    coord DEF Absolute Coordinate {
-      point [ -1 -1 0, 1 1 0 ]
-    }
-  }
-}
-
-DEF Touch TouchSensor { }
-
 DEF AxisScript Script {
-  eventIn SFTime set_time
-  field   SFNode billboard USE Billboard
-  field   SFNode absolute USE Absolute
-  field   SFNode local USE Local
+  eventIn SFTime     set_x
+  eventIn SFTime     set_y
+  eventIn SFTime     set_xyz
+  eventIn SFTime     set_random
+  eventIn SFRotation set_rotation
+  eventIn SFVec3f    set_position
+  field   SFNode     billboard USE Billboard
+  field   SFNode     xform USE XForm
+  field   SFNode     absolute USE AxisOfRotation
+  field   SFNode     sensor USE AxisSensor
+  field   SFNode     normal USE Normal
+  field   SFNode     proxy USE Proxy
 
   url "vrmlscript:
-function set_time ()
+function initialize ()
 {
-	var axisOfRotation = new SFVec3f (Math .random (), Math .random (), Math .random ()) .normalize ();
+	set_xyz ();
+}
+
+function set_x ()
+{
+	set_axisOfRotation (new SFVec3f (1, 0, 0));
+}
+
+function set_y ()
+{
+	set_axisOfRotation (new SFVec3f (0, 1, 0));
+}
+
+function set_xyz ()
+{
+	set_axisOfRotation (new SFVec3f (1, 1, 1));
+}
+
+function set_random ()
+{
+	set_axisOfRotation (new SFVec3f (Math .random (), Math .random (), Math .random ()) .normalize () .multiply (2));
+}
+
+function set_rotation (value)
+{
+	set_axisOfRotation (value .multVec (new SFVec3f (0, 0, 1)));
+}
+
+function set_position ()
+{
+	set_axisOfRotation (billboard .axisOfRotation);
+}
+
+function set_axisOfRotation (axisOfRotation)
+{
+	print ('axisOfRotation: ' + axisOfRotation);
 
 	billboard .axisOfRotation = axisOfRotation;
+	
+	var y = proxy .position_changed .cross (axisOfRotation);
 
-	local .point [1] = new SFRotation (0, 0, 1, Math .PI / 2) .multVec (axisOfRotation);
+	print ('y: ', y);
+	normal .rotation = new SFRotation (new SFVec3f (0, 0, 1), y);
 
-	absolute .point [0] = axisOfRotation .negate ();
-	absolute .point [1] = axisOfRotation;
+	// 
 
-	print ('axisOfRotation: ' + axisOfRotation);
+	axisOfRotation = axisOfRotation .normalize () .multiply (2);
+
+	var axisRotation = new SFRotation (new SFVec3f (0, 0, 1), axisOfRotation);
+	absolute .rotation = axisRotation;
+	sensor .offset = axisRotation;
 }
 "
 }
 
-ROUTE Touch.touchTime TO AxisScript.set_time
+ROUTE Proxy.position_changed TO HUD.set_translation
+ROUTE Proxy.orientation_changed TO HUD.set_rotation
+ROUTE Proxy.position_changed TO AxisScript.set_position
+ROUTE TouchX.touchTime TO AxisScript.set_x
+ROUTE TouchY.touchTime TO AxisScript.set_y
+ROUTE TouchXYZ.touchTime TO AxisScript.set_xyz
+ROUTE TouchRandom.touchTime TO AxisScript.set_random
+ROUTE AxisSensor.rotation_changed TO AxisScript.set_rotation
