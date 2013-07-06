@@ -68,6 +68,8 @@ namespace X3D {
 //constant[2] = 0.5f + 0.5f * BLUE_SATURATION_WEIGHT;
 //constant[3] = 1.0;
 
+constexpr size_t MIN_SCALE_SIZE = 8;
+
 const GLint X3DTexture2DNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
 
 X3DTexture2DNode::Fields::Fields () :
@@ -78,7 +80,9 @@ X3DTexture2DNode::Fields::Fields () :
 
 X3DTexture2DNode::X3DTexture2DNode () :
 	X3DTextureNode (),     
-	        fields (),     
+	        fields (),
+	         width (0),
+	        height (0),     
 	    components (0),    
 	   transparent (false) 
 {
@@ -97,9 +101,7 @@ X3DTexture2DNode::getTextureProperties () const
 }
 
 void
-X3DTexture2DNode::getImageFormat (Magick::Image & image,
-                                  GLenum & format,
-                                  const bool compressed)
+X3DTexture2DNode::getImageFormat (Magick::Image & image, GLenum & format)
 {
 	switch (image .type ())
 	{
@@ -151,12 +153,12 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image,
 			if (image .matte ())
 			{
 				image .type (Magick::TrueColorMatteType);
-				return getImageFormat (image, format, compressed);
+				return getImageFormat (image, format);
 			}
 			else
 			{
 				image .type (Magick::TrueColorType);
-				return getImageFormat (image, format, compressed);
+				return getImageFormat (image, format);
 			}
 		}
 	}
@@ -165,38 +167,39 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image,
 void
 X3DTexture2DNode::scaleImage (Magick::Image & image)
 {
-	bool needs_scaling = false;
+	if (std::max (width, height) < MIN_SCALE_SIZE)
+		return;
 
-	size_t width      = image .size () .width ();
-	size_t height     = image .size () .height ();
-	size_t new_width  = width;
-	size_t new_height = height;
+	bool needsScaling = false;
 
+	size_t width  = this -> width;
+	size_t height = this -> height;
+	
 	GLint max_texture_size;
 
 	glGetIntegerv (GL_MAX_TEXTURE_SIZE, &max_texture_size);
 
-	if (not math::is_power_of_two (new_width))
+	if (not math::is_power_of_two (width))
 	{
-		new_width     = std::min (math::next_power_of_two (new_width), (size_t) max_texture_size);
-		needs_scaling = true;
+		width        = std::min (math::next_power_of_two (width), (size_t) max_texture_size);
+		needsScaling = true;
 	}
 
-	if (not math::is_power_of_two (new_height))
+	if (not math::is_power_of_two (height))
 	{
-		new_height    = std::min (math::next_power_of_two (new_height), (size_t) max_texture_size);
-		needs_scaling = true;
+		height       = std::min (math::next_power_of_two (height), (size_t) max_texture_size);
+		needsScaling = true;
 	}
 
-	if (needs_scaling)
+	if (needsScaling)
 	{
 		std::clog
 			<< "Warning: Texture needs scaling: scaling texture from "
-			<< width << " × " << height
-			<< " to " << new_width << " × " << new_height << " pixel."
+			<< this -> width << " × " << this -> height
+			<< " to " << width << " × " << height << " pixel."
 			<< std::endl;
 
-		X3DTextureNode::scaleImage (image, new_width, new_height);
+		X3DTextureNode::scaleImage (image, width, height);
 	}
 }
 
@@ -205,7 +208,8 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 {
 	// TextureProperties
 
-	bool compressed = false;
+	width  = image .size () .width ();
+	height = image .size () .height ();
 
 	// Flip image in vertical direction
 
@@ -219,7 +223,7 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 
 	GLenum      format;
 	std::string magick;
-	getImageFormat (image, format, compressed);
+	getImageFormat (image, format);
 
 	// convert to blob
 
@@ -272,19 +276,31 @@ X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const v
 void
 X3DTexture2DNode::applyTextureProperties (const TextureProperties* textureProperties) const
 {
-	glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps ());
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureProperties -> getMagnificationFilter ());
-
-	if (this -> textureProperties ())
+	if (std::max (width, height) < MIN_SCALE_SIZE and textureProperties == x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()))
 	{
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
+		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP, false);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [false]);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [false]);
 	}
 	else
 	{
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [repeatS ()]);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [repeatT ()]);
+		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps ());
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureProperties -> getMagnificationFilter ());
+
+		if (this -> textureProperties ())
+		{
+			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
+			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
+		}
+		else
+		{
+			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [repeatS ()]);
+			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [repeatT ()]);
+		}
 	}
 
 	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, textureProperties -> borderColor () .getValue () .data ());

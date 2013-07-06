@@ -123,13 +123,11 @@ protected:
 
 private:
 
-	static void
+	void
 	scaleImage (Magick::Image &);
 
 	void
-	getImageFormat (Magick::Image &,
-	                GLenum &,
-	                const bool);
+	getImageFormat (Magick::Image &, GLenum &);
 
 	struct Fields
 	{
@@ -147,8 +145,10 @@ private:
 
 	static const GLint wrapTypes [2];
 
-	int32_t components;
-	bool    transparent;
+	size_t width;
+	size_t height;
+	size_t components;
+	bool   transparent;
 
 };
 

@@ -200,7 +200,6 @@ BrowserOptions::set_textureQuality ()
 	textureProperties () -> minificationFilter ()  = "NICEST";
 	textureProperties () -> textureCompression ()  = "NICEST";
 	textureProperties () -> generateMipMaps ()     = true;
-
 }
 
 void

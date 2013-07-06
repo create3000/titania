@@ -115,8 +115,6 @@ X3DBackgroundNode::getColor (float theta, const MFColor & color, const MFFloat &
 
 	size_t i = iter - angle .cbegin ();
 
-	__LOG__ << theta << " : " << i << std::endl;
-
 	return color [i];
 }
 
