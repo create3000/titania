@@ -159,21 +159,6 @@ Browser::reshape ()
 }
 
 void
-Browser::update (const Cairo::RefPtr <Cairo::Context> & cairo)
-{
-	X3DBrowser::update ();
-
-	cairo -> set_source_rgb (0.1, 0.1, 0.1);
-
-	cairo -> select_font_face ("monospace",
-	                           Cairo::FONT_SLANT_NORMAL,
-	                           Cairo::FONT_WEIGHT_BOLD);
-
-	cairo -> move_to (20, 30);
-	cairo -> show_text ("Titania");
-}
-
-void
 Browser::dispose ()
 {
 	changed .removeInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);

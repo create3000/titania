@@ -1,5 +1,10 @@
 2013-07-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Browser.h:
+	* Browser.cpp: 
+
+2013-07-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBackgroundNode.cpp: 
 
 2013-07-06  Holger Seelig  <holger.seelig@yahoo.de>

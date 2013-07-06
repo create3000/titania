@@ -163,7 +163,12 @@ BrowserWindow::on_fileOpenDialog_response (int response_id)
 		open (Glib::uri_unescape_string (getFileOpenDialog () .get_uri ()));
 
 	else
-		getFileOpenDialog () .set_current_folder_uri (getBrowser () -> getExecutionContext () -> getWorldURL () .base () .str ());
+	{
+		const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	
+		if (worldURL .is_local ())
+			getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
+	}
 }
 
 void
@@ -175,7 +180,12 @@ BrowserWindow::on_fileSaveDialog_response (int response_id)
 		save (Glib::uri_unescape_string (getFileSaveDialog () .get_filename ()));
 
 	else
-		getFileSaveDialog () .set_current_folder_uri (getBrowser () -> getExecutionContext () -> getWorldURL () .base () .str ());
+	{
+		const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	
+		if (worldURL .is_local ())
+			getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
+	}
 }
 
 // View menu

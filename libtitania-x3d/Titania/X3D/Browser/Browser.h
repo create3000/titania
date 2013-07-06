@@ -106,7 +106,8 @@ private:
 
 	virtual
 	void
-	update (const Cairo::RefPtr <Cairo::Context> &) final;
+	update (const Cairo::RefPtr <Cairo::Context> &) final
+	{ X3DBrowser::update (); }
 
 	std::unique_ptr <X3DViewer> viewer;
 	PointingDevice              pointingDevice;

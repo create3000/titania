@@ -122,6 +122,9 @@ X3DBrowserWindow::set_initialized ()
 	
 	if (getConfig () .hasItem ("worldURL"))
 		open (getConfig () .string ("worldURL") .raw ());
+
+	else
+		open ("about:home");
 }
 
 //void
