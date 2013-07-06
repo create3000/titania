@@ -115,9 +115,9 @@ TimeSensor::prepareEvents ()
 		if (loop ())
 		{
 			cycle              += interval;
+			fraction_changed () = 1;
 			cycleTime ()        = getCurrentTime ();
 			elapsedTime ()      = getElapsedTime ();
-			fraction_changed () = 1;
 		}
 		else
 		{
@@ -161,9 +161,9 @@ TimeSensor::set_start ()
 		interval = cycleInterval ();
 
 		isActive ()         = true;
+		fraction_changed () = 0;
 		cycleTime ()        = getCurrentTime ();
 		elapsedTime ()      = 0;
-		fraction_changed () = 0;
 		time ()             = getCurrentTime ();
 
 		getBrowser () -> prepareEvents .addInterest (this, &TimeSensor::prepareEvents);

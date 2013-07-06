@@ -163,10 +163,10 @@ DEF Billboard Billboard {
 Transform {
   children [
     DEF AxisSensor SphereSensor {
-      offset -0.707107 0.707107 0 0.955316
+      offset -0.707107 0.707107 0 0.955317
     }
     DEF AxisOfRotation Transform {
-      rotation -0.707107 0.707107 0 0.955316
+      rotation -0.707107 0.707107 0 0.955317
       children [
         Transform {
           translation 0 0 2
@@ -214,42 +214,60 @@ Transform {
   ]
 }
 
-        Shape {
-          appearance Appearance {
-            material Material { }
-          }
-          geometry IndexedLineSet {
-            colorPerVertex FALSE
-            colorIndex [ 0, 1 ]
-            coordIndex [ 0, 1, -1, 1, 2, -1 ]
-            color Color {
-              color [ 1 0 0, 0 1 0 ]
-            }
-            coord Coordinate {
-              point [ 0 0 -2, 0 0 0, 0 0 2 ]
-            }
-          }
+DEF ZAxis Transform {
+  children [
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry IndexedLineSet {
+        colorPerVertex FALSE
+        colorIndex [ 0, 1 ]
+        coordIndex [ 0, 1, -1, 1, 2, -1 ]
+        color Color {
+          color [ 0 0 0, 0 0 1 ]
         }
-      Transform {
-        translation 0 0 2
-        scale 0.5 0.5 0.5
-        children Billboard {
-          axisOfRotation 0 0 0
-          children Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 0 0 0
-              }
+        coord Coordinate {
+          point [ 0 0 -2, 0 0 0, 0 0 2 ]
+        }
+      }
+    }
+    Transform {
+      translation 0 0 2
+      scale 0.5 0.5 0.5
+      children Billboard {
+        axisOfRotation 0 0 0
+        children Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 0 0
             }
-            geometry Text {
-              string "z"
-            }
+          }
+          geometry Text {
+            string " z"
           }
         }
       }
+    }
+    Transform {
+      translation 0 0 2
+      rotation 1 0 0 1.5708
+      scale 0.1 0.1 0.1
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0 0 1
+          }
+        }
+        geometry Cone { }
+      }
+    }
+  ]
+}
 
 # Normal
 DEF Normal Transform {
+  rotation 0 1 0 3.14159
   children [
     Shape {
       appearance Appearance {
@@ -300,18 +318,19 @@ DEF Normal Transform {
   ]
 }
 
-    DEF Rotation Transform {
-      children Shape {
-          appearance Appearance {
-            material Material {
-              emissiveColor 1 0 0
-            }
-          }
-          geometry DEF Arc Arc2D {
-          }
-        }
+DEF Rotation Transform {
+  rotation -0.357407 -0.862856 -0.357407 1.71777
+  children Shape {
+    appearance Appearance {
+      material Material {
+        emissiveColor 1 0 0
       }
-
+    }
+    geometry DEF Arc Arc2D {
+      endAngle 0.955317
+    }
+  }
+}
 
 DEF AxisScript Script {
   eventIn SFTime     set_x
@@ -326,8 +345,8 @@ DEF AxisScript Script {
   field   SFNode     sensor USE AxisSensor
   field   SFNode     normal USE Normal
   field   SFNode     rotation USE Rotation
-   field   SFNode     arc USE Arc
- field   SFNode     proxy USE Proxy
+  field   SFNode     arc USE Arc
+  field   SFNode     proxy USE Proxy
 
   url "vrmlscript:
 function initialize ()
@@ -365,6 +384,7 @@ function set_position ()
 	set_axisOfRotation (billboard .axisOfRotation);
 }
 
+var xAxis = new SFVec3f (1, 0, 0);
 var zAxis = new SFVec3f (0, 0, 1);
 
 function set_axisOfRotation (axisOfRotation)
@@ -385,16 +405,17 @@ function set_axisOfRotation (axisOfRotation)
 
 	// Angle between zAxis and axisOfRotation
 	var angle = Math .acos (zAxis .dot (axisOfRotation .normalize ()));
-	
-	//rotation .rotation = new SFRotation (zAxis, zAxis .cross (axisOfRotation));
+	var rot   = new SFRotation (zAxis, zAxis .cross (axisOfRotation));
+	rotation .rotation = rot .multiply (new SFRotation (rot .multVec (xAxis), zAxis));
+
 	arc .endAngle = angle;
 
 	print ('axisOfRotation: ', axisOfRotation);
 	print ('normal:         ', vector);
 	print ('angle:          ', angle);
-	print ('angle:          ', rotation .rotation .angle);
 }
 "
+    directOutput TRUE
 }
 
 ROUTE Proxy.position_changed TO HUD.set_translation
