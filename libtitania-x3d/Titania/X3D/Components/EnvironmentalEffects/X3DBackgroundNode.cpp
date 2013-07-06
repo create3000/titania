@@ -55,13 +55,13 @@
 #include "../Navigation/X3DViewpointNode.h"
 
 // LOW
-//#define SPHERE_USEG 16.0
+//#define SPHERE_USEG 16
 
 // HIGH
-//#define SPHERE_USEG 32.0
+//#define SPHERE_USEG 32
 
 // MEDIUM
-#define SPHERE_USEG 22.0
+#define SPHERE_USEG 22
 
 namespace titania {
 namespace X3D {
@@ -75,8 +75,8 @@ X3DBackgroundNode::Fields::Fields () :
 { }
 
 X3DBackgroundNode::X3DBackgroundNode () :
-	X3DBindableNode (), 
-	         fields ()  
+	X3DBindableNode (),
+	         fields ()
 {
 	addNodeType (X3DConstants::X3DBackgroundNode);
 }
@@ -111,21 +111,96 @@ X3DBackgroundNode::unbindFromLayer (X3DLayerNode* const layer)
 Color3f
 X3DBackgroundNode::getColor (float theta, const MFColor & color, const MFFloat & angle)
 {
-	auto iter = std::lower_bound (angle .cbegin (), angle .cend (), theta);
-	
+	auto iter = std::upper_bound (angle .cbegin (), angle .cend (), theta);
+
 	size_t i = iter - angle .cbegin ();
 
-	if (i == angle .size ())
-		return color [i];
+	__LOG__ << theta << " : " << i << std::endl;
 
-	float weight;
+	return color [i];
+}
 
-	if (i == 0)
-		weight = theta / angle [0];
-	else
-		weight = (theta - angle [i - 1]) / (angle [i] - angle [i - 1]);
+void
+X3DBackgroundNode::build (float radius, const MFFloat & vangle, const MFFloat & angle, const MFColor & color, float opacity, bool bottom)
+{
+	// p1 --- p4
+	//  |     |
+	//  |     |
+	// p2 --- p3
+	
+	float useg1 = SPHERE_USEG - 1;
 
-	return math::clerp <float> (color [i], color [i + 1], weight);
+	for (size_t v = 0; v < vangle .size () - 1; ++ v)
+	{
+		float theta  = math::clamp <float> (vangle [v], 0, M_PI);
+		float theta1 = math::clamp <float> (vangle [v + 1], 0, M_PI);
+
+		if (bottom)
+		{
+			theta  = M_PI - theta;
+			theta1 = M_PI - theta1;			
+		}
+
+		float y  = cos (theta);
+		float y1 = cos (theta1);
+
+		float r  = sin (theta);
+		float r1 = sin (theta1);
+
+		Color3f c  = getColor (vangle [v],     color, angle);
+		Color3f c1 = getColor (vangle [v + 1], color, angle);
+
+		for (size_t u = 0; u < useg1; ++ u)
+		{
+			// The last point is the first one.
+			size_t u1 = u < useg1 - 1 ? u + 1 : 0;
+
+			float    x, z, phi;
+			Vector3f p;
+
+			// p1
+			phi = M_PI2 * (u / useg1);
+			x   = -sin (phi) * r;
+			z   = -cos (phi) * r;
+			p   = Vector3f (x, y, z) * radius;
+
+			glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
+			glPoints .emplace_back (p);
+
+			++ numIndices;
+
+			// p2
+			x = -sin (phi) * r1;
+			z = -cos (phi) * r1;
+			p = Vector3f (x, y1, z) * radius;
+
+			glColors .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
+			glPoints .emplace_back (p);
+
+			++ numIndices;
+
+			// p3
+			phi = M_PI2 * (u1 / useg1);
+			x   = -sin (phi) * r1;
+			z   = -cos (phi) * r1;
+			p   = Vector3f (x, y1, z) * radius;
+
+			glColors .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
+			glPoints .emplace_back (p);
+
+			++ numIndices;
+
+			// p4
+			x = -sin (phi) * r;
+			z = -cos (phi) * r;
+			p = Vector3f (x, y, z) * radius;
+
+			glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
+			glPoints .emplace_back (p);
+
+			++ numIndices;
+		}
+	}
 }
 
 void
@@ -143,7 +218,7 @@ X3DBackgroundNode::build ()
 	if (groundColor () .size () == 0 and skyColor () .size () == 1)
 	{
 		// Draw cube
-	
+
 		float r = 10000;
 
 		const Color3f & c = skyColor () [0];
@@ -192,173 +267,37 @@ X3DBackgroundNode::build ()
 	else
 	{
 		// Draw sphere
-	
-		float radius = std::sqrt (2 * std::pow (10000, 2));
 
-		// p2 --- p1
-		//  |     |
-		//  |     |
-		// p3 --- p4
+		float radius = std::sqrt (2 * std::pow (10000, 2));
 
 		if (skyColor () .size () > skyAngle () .size ())
 		{
-			MFFloat angle = skyAngle ();
-			angle .emplace_front (0);
-			angle .emplace_back (M_PI / 2);
+			MFFloat vangle = skyAngle ();
 
-			if (groundColor () .size () <= groundAngle () .size ())
-				angle .emplace_back (M_PI);
-		
-			for (size_t v = 0; v < angle .size () - 1; ++ v)
-			{
-				for (size_t u = 0; u < SPHERE_USEG - 1; ++ u)
-				{
-					// The last point is the first one.
-					size_t u1 = u < SPHERE_USEG - 2 ? u + 1 : 0;
+			if (vangle .front () > 0)
+				vangle .emplace_front (0);
 
-					float    y, r, x, z, theta, phi;
-					Vector3f p;
-					Color3f  c;
-
-					// p1
-					theta = angle [v];
-					phi   = M_PI2 * (u1 / (SPHERE_USEG - 1));
-					y     = cos (theta);
-					r     = sin (theta);
-					x     = -sin (phi) * r;
-					z     = -cos (phi) * r;
-
-					p = Vector3f (x, y, z) * radius;
-					c = getColor (theta, skyColor (), skyAngle ());
-
-					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
-					glPoints .emplace_back (p);
-
-					++ numIndices;
-
-					// p2
-					phi   = M_PI2 * (u / (SPHERE_USEG - 1));
-					y     = cos (theta);
-					r     = sin (theta);
-					x     = -sin (phi) * r;
-					z     = -cos (phi) * r;
-
-					p = Vector3f (x, y, z) * radius;
-
-					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
-					glPoints .emplace_back (p);
-
-					++ numIndices;
-
-					// p3
-					theta = angle [v + 1];
-					phi   = M_PI2 * (u / (SPHERE_USEG - 1));
-					y     = cos (theta);
-					r     = sin (theta);
-					x     = -sin (phi) * r;
-					z     = -cos (phi) * r;
-
-					p = Vector3f (x, y, z) * radius;
-					c = getColor (theta, skyColor (), skyAngle ());
-
-					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
-					glPoints .emplace_back (p);
-
-					++ numIndices;
-
-					// p4
-					phi   = M_PI2 * (u1 / (SPHERE_USEG - 1));
-					y     = cos (theta);
-					r     = sin (theta);
-					x     = -sin (phi) * r;
-					z     = -cos (phi) * r;
-
-					p = Vector3f (x, y, z) * radius;
-
-					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
-					glPoints .emplace_back (p);
-
-					++ numIndices;
-				}
-			}
+			if (vangle .back () < M_PI1_2)
+				vangle .emplace_back (M_PI1_2);
+	
+			if (groundColor () .size () <= groundAngle () .size () and vangle .back () < M_PI)
+				vangle .emplace_back (M_PI);
+			
+			build (radius, vangle, skyAngle (), skyColor (), opacity, false);
 		}
 
 		if (groundColor () .size () > groundAngle () .size ())
 		{
-			MFFloat angle;
-			angle .assign (groundAngle () .rbegin (), groundAngle () .rend ());
-			angle .emplace_front (M_PI / 2);
-			angle .emplace_back (0);
+			MFFloat vangle;
+			vangle .assign (groundAngle () .rbegin (), groundAngle () .rend ());
+	
+			if (vangle .front () < M_PI1_2)
+				vangle .emplace_front (M_PI1_2);
 
-			for (size_t v = 0; v < angle .size () - 1; ++ v)
-			{
-				for (int u = 0; u < SPHERE_USEG - 1; ++ u)
-				{
-					float    y, r, x, z, theta, phi;
-					Vector3f p;
-					Color3f  c;
+			if (vangle .back () > 0)
+				vangle .emplace_back (0);
 
-					// p1
-					theta = M_PI - angle [v];
-					phi   = M_PI2 * ((u + 1) / (SPHERE_USEG - 1));
-					y     = cos (theta);
-					r     = sin (theta);
-					x     = -sin (phi) * r;
-					z     = -cos (phi) * r;
-
-					p = Vector3f (x, y, z) * radius;
-					c = getColor (angle [v], groundColor (), groundAngle ());
-
-					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
-					glPoints .emplace_back (p);
-
-					++ numIndices;
-
-					// p2
-					phi   = M_PI2 * (u / (SPHERE_USEG - 1));
-					y     = cos (theta);
-					r     = sin (theta);
-					x     = -sin (phi) * r;
-					z     = -cos (phi) * r;
-
-					p = Vector3f (x, y, z) * radius;
-
-					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
-					glPoints .emplace_back (p);
-
-					++ numIndices;
-
-					// p3
-					theta = M_PI - angle [v + 1];
-					phi   = M_PI2 * (u / (SPHERE_USEG - 1));
-					y     = cos (theta);
-					r     = sin (theta);
-					x     = -sin (phi) * r;
-					z     = -cos (phi) * r;
-
-					p = Vector3f (x, y, z) * radius;
-					c = getColor (angle [v + 1], groundColor (), groundAngle ());
-
-					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
-					glPoints .emplace_back (p);
-
-					++ numIndices;
-
-					// p4
-					phi   = M_PI2 * ((u + 1) / (SPHERE_USEG - 1));
-					y     = cos (theta);
-					r     = sin (theta);
-					x     = -sin (phi) * r;
-					z     = -cos (phi) * r;
-
-					p = Vector3f (x, y, z) * radius;
-
-					glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
-					glPoints .emplace_back (p);
-
-					++ numIndices;
-				}
-			}
+			build (radius, vangle, groundAngle (), groundColor (), opacity, true);
 		}
 	}
 }
@@ -392,21 +331,21 @@ X3DBackgroundNode::draw ()
 	GLint polygonMode [2] = { 0, 0 }; // Front and back value.
 	glGetIntegerv (GL_POLYGON_MODE, polygonMode);
 
-	glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+	//glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 	{
 		getCurrentViewpoint () -> reshape (1, 20000);
 
 		// Rotate background
-		
+
 		Vector3d   translation;
 		Rotation4f rotation;
-		float x, y, z, angle;
+		float      x, y, z, angle;
 
 		matrix .get (translation, rotation);
 		rotation .get (x, y, z, angle);
 
 		glRotatef (math::degree (angle), x, y, z);
-		
+
 		// Draw
 
 		glDisable (GL_DEPTH_TEST);

@@ -139,6 +139,9 @@ private:
 	void
 	build ();
 
+	void
+	build (float, const MFFloat &, const MFFloat &, const MFColor &, float, bool);
+
 	struct Fields
 	{
 		Fields ();
