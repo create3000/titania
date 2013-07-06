@@ -211,15 +211,18 @@ X3DBackgroundNode::build ()
 		
 			for (size_t v = 0; v < angle .size () - 1; ++ v)
 			{
-				for (int u = 0; u < SPHERE_USEG - 1; ++ u)
+				for (size_t u = 0; u < SPHERE_USEG - 1; ++ u)
 				{
+					// The last point is the first one.
+					size_t u1 = u < SPHERE_USEG - 2 ? u + 1 : 0;
+
 					float    y, r, x, z, theta, phi;
 					Vector3f p;
 					Color3f  c;
 
 					// p1
 					theta = angle [v];
-					phi   = M_PI2 * ((u + 1) / (SPHERE_USEG - 1));
+					phi   = M_PI2 * (u1 / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
 					x     = -sin (phi) * r;
@@ -264,7 +267,7 @@ X3DBackgroundNode::build ()
 					++ numIndices;
 
 					// p4
-					phi   = M_PI2 * ((u + 1) / (SPHERE_USEG - 1));
+					phi   = M_PI2 * (u1 / (SPHERE_USEG - 1));
 					y     = cos (theta);
 					r     = sin (theta);
 					x     = -sin (phi) * r;

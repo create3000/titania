@@ -1,5 +1,11 @@
 2013-07-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ArcClose2D.cpp:
+	* RenderingProperties.cpp:
+	* X3DBackgroundNode.cpp: 
+
+2013-07-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TimeSensor.cpp: 
 
 2013-07-05  Holger Seelig  <holger.seelig@yahoo.de>

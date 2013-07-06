@@ -139,7 +139,7 @@ ArcClose2D::build ()
 
 	if (difference < float (2 * M_PI))
 	{
-		// If arc add add a center point otherwise it is a circle.
+		// If it is a arc, add a center point otherwise it is a circle.
 
 		if (closureType () not_eq "CHORD")
 		{

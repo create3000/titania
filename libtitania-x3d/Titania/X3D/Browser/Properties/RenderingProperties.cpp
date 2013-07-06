@@ -411,7 +411,7 @@ RenderingProperties::update ()
 	stringstream .str (""); stringstream << "Display:                   " << std::setprecision (2) << std::fixed << renderClock .average () / clock .average () * 100 << " %";
 	string .emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Sensors:                   " << getBrowser () -> sensors .getRequesters () .size ();
+	stringstream .str (""); stringstream << "Sensors:                   " << getBrowser () -> sensors .getRequesters () .size () + getBrowser () -> prepareEvents .getRequesters () .size () - 1; // remove self
 	string .emplace_back (stringstream .str ());
 }
 
