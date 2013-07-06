@@ -1,9 +1,11 @@
 #VRML V2.0 utf8
 
-Background {
-    skyAngle 1.7
-    skyColor [ 1 1 0, 0 0 1 ]
- }
+DEF BG Background{
+ skyColor[0 0 0]
+ skyAngle[]
+ groundColor[0 0 0, 0 0 0]
+ groundAngle[1.57079]
+}
 
 Transform {
   children Shape {

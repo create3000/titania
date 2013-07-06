@@ -272,7 +272,7 @@ X3DBackgroundNode::build ()
 		{
 			MFFloat vangle = skyAngle ();
 
-			if (vangle .front () > 0)
+			if (vangle .empty () or vangle .front () > 0)
 				vangle .emplace_front (0);
 
 			if (vangle .back () < M_PI1_2)
@@ -289,7 +289,7 @@ X3DBackgroundNode::build ()
 			MFFloat vangle;
 			vangle .assign (groundAngle () .rbegin (), groundAngle () .rend ());
 	
-			if (vangle .front () < M_PI1_2)
+			if (vangle .empty () or vangle .front () < M_PI1_2)
 				vangle .emplace_front (M_PI1_2);
 
 			if (vangle .back () > 0)
