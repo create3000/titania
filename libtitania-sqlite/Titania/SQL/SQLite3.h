@@ -78,7 +78,14 @@ public:
 
 	/// @name Constructors
 
+	sqlite3 ();
+
 	sqlite3 (const std::string &);
+	
+	/// @name Database handling
+	void
+	open (const std::string &)
+	throw (std::invalid_argument);
 
 	/// @name Query handling
 
@@ -109,10 +116,6 @@ public:
 
 
 private:
-
-	void
-	open (const std::string &)
-	throw (std::invalid_argument);
 
 	void
 	exec (const std::string & statement, int (* callback) (void*, int, char**, char**)) const

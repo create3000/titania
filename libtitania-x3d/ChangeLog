@@ -4,6 +4,10 @@
 
 2013-07-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBackgroundNode.cpp: 
+
+2013-07-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserOptions.cpp:
 	* X3DTexture2DNode.h:
 	* X3DTexture2DNode.cpp:

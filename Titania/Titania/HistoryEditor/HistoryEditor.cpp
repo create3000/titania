@@ -52,7 +52,6 @@
 
 #include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
-#include <Titania/OS.h>
 #include <iostream>
 
 namespace titania {
@@ -68,8 +67,6 @@ HistoryEditor::HistoryEditor (BrowserWindow* browserWindow) :
 	           history ()                                           
 {
 	setBrowser (browserWindow -> getBrowser ());
-
-	os::system ("mkdir", "-p", config_dir ());
 }
 
 void

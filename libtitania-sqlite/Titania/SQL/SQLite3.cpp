@@ -55,10 +55,14 @@
 namespace titania {
 namespace sql {
 
-sqlite3::sqlite3 (const std::string & filename) :
+sqlite3::sqlite3 () :
 	 database (NULL), 
 	    array (),     
 	array_map ()      
+{ }
+
+sqlite3::sqlite3 (const std::string & filename) :
+  sqlite3 ()
 {
 	open (filename);
 }

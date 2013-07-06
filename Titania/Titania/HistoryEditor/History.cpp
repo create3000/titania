@@ -51,14 +51,19 @@
 #include "History.h"
 
 #include "../Configuration/config.h"
+#include <Titania/OS.h>
 #include <iostream>
 
 namespace titania {
 namespace puck {
 
 History::History () :
-	database (config_dir ("history.db")) 
+	database () 
 {
+	os::system ("mkdir", "-p", config_dir ());
+	
+	database .open (config_dir ("history.db"));
+
 	database .query ("CREATE TABLE IF NOT EXISTS History ("
 	                 "id           INTEGER, "
 	                 "icon         BLOB,"
