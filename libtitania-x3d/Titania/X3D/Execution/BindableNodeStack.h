@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_EXECUTION_BINDABLE_NODE_STACK_H__
 #define __TITANIA_X3D_EXECUTION_BINDABLE_NODE_STACK_H__
 
+#include "../Base/X3DInput.h"
 #include "../Base/X3DOutput.h"
 #include <Titania/Basic/BindStack.h>
 #include <initializer_list>
@@ -65,7 +66,7 @@ namespace X3D {
 
 template <class Type>
 class BindableNodeStack :
-	public X3DOutput
+	public X3DInput, public X3DOutput
 {
 public:
 
@@ -74,17 +75,22 @@ public:
 	typedef typename stack_type::size_type   size_type;
 
 	BindableNodeStack (const pointer_type & node) :
+		X3DInput (),
+		X3DOutput (),
 		stack ({ node })
 	{ }
 
 	const pointer_type &
-	top () const { return stack .top (); }
+	top () const
+	{ return stack .top (); }
 
 	const pointer_type &
-	bottom () const { return stack .bottom (); }
+	bottom () const
+	{ return stack .bottom (); }
 
 	size_type
-	size () const { return stack .size (); }
+	size () const
+	{ return stack .size (); }
 
 	void
 	push (const pointer_type & node)
@@ -137,15 +143,15 @@ public:
 		return false;
 	}
 
+	virtual
 	void
-	dispose ()
+	dispose () final
 	{
-		for (auto & node : stack)
-			node -> shutdown .removeInterest (this, &BindableNodeStack::erase);
-
+		X3DInput::dispose ();
 		X3DOutput::dispose ();
 	}
 
+	virtual
 	~BindableNodeStack ()
 	{ }
 

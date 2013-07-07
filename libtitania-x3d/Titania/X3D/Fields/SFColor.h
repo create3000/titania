@@ -90,22 +90,16 @@ public:
 	template <class Class>
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (const SFColor &)) const
-	{
-		addInterest (object, memberFunction, *this);
-	}
+	{ addInterest (object, memberFunction, *this); }
 
 	template <class Class>
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (const SFColor &)) const
-	{
-		addInterest (object, memberFunction, *this);
-	}
+	{ addInterest (object, memberFunction, *this); }
 
 	void
 	addInterest (void (* requester) (const SFColor &)) const
-	{
-		addInterest (requester, *this);
-	}
+	{ addInterest (requester, *this); }
 
 	///  Functions
 

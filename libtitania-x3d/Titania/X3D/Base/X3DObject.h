@@ -82,18 +82,6 @@ public:
 	const std::string &
 	getTypeName () const = 0;
 
-	///  @name Input/Output
-
-	virtual
-	bool
-	isInput () const
-	{ return true; }
-
-	virtual
-	bool
-	isOutput () const
-	{ return true; }
-
 	///  @name Comment handling
 
 	void
@@ -157,12 +145,11 @@ protected:
 
 private:
 
-	std::string                name;
-	std::deque <std::string> comments;
-
-	X3DBase* userData;
-
 	static GarbageCollector garbageCollector;
+
+	std::string              name;
+	std::deque <std::string> comments;
+	X3DBase*                 userData;
 
 };
 

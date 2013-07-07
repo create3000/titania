@@ -56,32 +56,16 @@ namespace titania {
 namespace X3D {
 
 X3DWidget::X3DWidget (Browser* const browser) :
+	       X3DInput (),
 	sigc::trackable (),       
 	        browser (browser) 
 { }
-
-Browser*
-X3DWidget::getBrowser () const
-{
-	return browser;
-}
 
 void
 X3DWidget::setup ()
 {
 	initialize ();
 }
-
-void
-X3DWidget::initialize ()
-{ }
-
-void
-X3DWidget::dispose ()
-{ }
-
-X3DWidget::~X3DWidget ()
-{ }
 
 } // X3D
 } // titania

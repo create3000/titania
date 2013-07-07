@@ -152,7 +152,7 @@ public:
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:
@@ -161,7 +161,7 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	std::vector <Vector3f>
 	createPoints (bool);
@@ -171,7 +171,7 @@ private:
 
 	virtual
 	void
-	build ();
+	build () final;
 
 	void
 	tesselateCap (const Tesselator &,

@@ -68,9 +68,6 @@ public:
 	getType () const final
 	{ return ViewerType::WALK; }
 
-	virtual
-	~WalkViewer ();
-
 };
 
 } // X3D

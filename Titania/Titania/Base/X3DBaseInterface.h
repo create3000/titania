@@ -52,20 +52,24 @@
 #define __TITANIA_BASE_X3DBASE_INTERFACE_H__
 
 #include <Titania/X3D.h>
+#include <sigc++/trackable.h>
 
 namespace titania {
 namespace puck {
 
-class X3DBaseInterface
+class X3DBaseInterface :
+	public X3D::X3DInput, public sigc::trackable
 {
 public:
 
 	virtual
 	const X3D::SFNode <X3D::Browser> &
-	getBrowser () const;
+	getBrowser () const
+	{ return browser; }
 
 	virtual
-	~X3DBaseInterface ();
+	~X3DBaseInterface ()
+	{ }
 
 
 protected:
@@ -73,7 +77,8 @@ protected:
 	X3DBaseInterface ();
 
 	void
-	setBrowser (const X3D::SFNode <X3D::Browser> &);
+	setBrowser (const X3D::SFNode <X3D::Browser> & value)
+	{ browser = value; }
 
 
 private:

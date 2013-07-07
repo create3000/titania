@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_EXECUTION_BINDABLE_NODE_LIST_H__
 #define __TITANIA_X3D_EXECUTION_BINDABLE_NODE_LIST_H__
 
+#include "../Base/X3DInput.h"
 #include "../Base/X3DOutput.h"
 
 #include "../Components/EnvironmentalEffects/Fog.h"
@@ -65,7 +66,7 @@ namespace X3D {
 
 template <class Type>
 class BindableNodeList :
-	public X3DOutput
+	public X3DInput, public X3DOutput
 {
 public:
 
@@ -78,6 +79,8 @@ public:
 
 	///  Default constructor.
 	BindableNodeList () :
+		X3DInput (),
+		X3DOutput (),
 		list ()
 	{ }
 
@@ -160,19 +163,19 @@ public:
 		}
 	}
 
+	virtual
 	void
-	dispose ()
+	dispose () final
 	{
-		for (auto & node : list)
-			node -> shutdown .removeInterest (this, &BindableNodeList::erase);
-
 		list .clear ();
 
+		X3DInput::dispose ();
 		X3DOutput::dispose ();
 	}
 
 	/// @name Destructor
 
+	virtual
 	~BindableNodeList ()
 	{ }
 

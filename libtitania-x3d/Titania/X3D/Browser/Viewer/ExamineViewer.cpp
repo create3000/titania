@@ -309,10 +309,5 @@ ExamineViewer::tb_project_to_sphere (const float r, const float x, const float y
 	return z;
 }
 
-ExamineViewer::~ExamineViewer ()
-{
-	spin_id .disconnect ();
-}
-
 } // X3D
 } // titania

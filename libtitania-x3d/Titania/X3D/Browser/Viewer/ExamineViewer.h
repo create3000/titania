@@ -77,9 +77,6 @@ public:
 	getType () const final
 	{ return ViewerType::EXAMINE; }
 
-	virtual
-	~ExamineViewer ();
-
 
 private:
 

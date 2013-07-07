@@ -70,9 +70,6 @@ public:
 	getType () const final
 	{ return ViewerType::NONE; }
 
-	virtual
-	~NoneViewer ();
-
 };
 
 } // X3D

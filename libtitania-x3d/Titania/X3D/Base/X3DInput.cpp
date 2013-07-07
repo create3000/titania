@@ -50,18 +50,26 @@
 
 #include "X3DInput.h"
 
+#include <Titania/LOG.h>
+
 namespace titania {
 namespace X3D {
 
-X3DInput::X3DInput ()
+X3DInput::X3DInput () :
+	       X3DBase (),
+	deletedOutput ()
 { }
 
 void
 X3DInput::dispose ()
-{ }
+{
+}
 
 X3DInput::~X3DInput ()
-{ }
+{
+	deletedOutput .processInterests ();
+	deletedOutput .dispose ();
+}
 
 } // X3D
 } // titania

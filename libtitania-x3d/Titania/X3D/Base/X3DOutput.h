@@ -55,10 +55,13 @@
 #include <functional>
 #include <vector>
 #include <list>
+#include <set>
 #include <map>
 
 namespace titania {
 namespace X3D {
+
+class X3DInput;
 
 typedef std::function <void (void)>           Requester;
 typedef std::list <Requester>                 RequesterArray;
@@ -71,6 +74,11 @@ class X3DOutput :
 {
 public:
 
+	virtual
+	bool
+	isOutput () const
+	{ return true; }
+
 	const RequesterArray &
 	getRequesters () const;
 
@@ -81,18 +89,29 @@ public:
 	bool
 	hasInterest (Class* object, void (Class::* memberFunction)()) const
 	{
-		return hasInterest (object, reinterpret_cast <void*> (object ->* memberFunction));
+		return hasInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
 	/// @name Add interest service
 
-	template <class Class, class Argument>
+	template <class Class, class ... Arguments>
 	inline
 	void
-	addInterest (Class* object, void (Class::* memberFunction) (Argument*), Argument* argument) const
+	addInterest (Class* object, void (Class::* memberFunction) (Arguments ...), Arguments ... arguments) const
 	{
-		insertInterest (std::bind (std::mem_fn (memberFunction), object, argument),
-		                object, reinterpret_cast <void*> (object ->* memberFunction));
+		insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
+		insertInterest (std::bind (std::mem_fn (memberFunction), object, arguments ...),
+		                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
+	}
+
+	template <class Class, class ... Arguments>
+	inline
+	void
+	addInterest (const Class* object, void (Class::* memberFunction) (Arguments ...) const, Arguments ... arguments) const
+	{
+		insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
+		insertInterest (std::bind (std::mem_fn (memberFunction), object, arguments ...),
+		                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
 	template <class Class, class Argument>
@@ -100,8 +119,9 @@ public:
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (const Argument &), const Argument & argument) const
 	{
+		insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
 		insertInterest (std::bind (std::mem_fn (memberFunction), object, std::cref (argument)),
-		                object, reinterpret_cast <void*> (object ->* memberFunction));
+		                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
 	template <class Class, class Argument>
@@ -109,8 +129,9 @@ public:
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (const Argument &), const Argument & argument) const
 	{
+		insertInput (&object, reinterpret_cast <void*> (object ->* memberFunction));
 		insertInterest (std::bind (std::mem_fn (memberFunction), object, std::cref (argument)),
-		                &object, reinterpret_cast <void*> (object .* memberFunction));
+		                (X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
 	}
 
 	template <class Argument>
@@ -126,16 +147,18 @@ public:
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (void)) const
 	{
+		insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
 		insertInterest (std::bind (std::mem_fn (memberFunction), object),
-		                object, reinterpret_cast <void*> (object ->* memberFunction));
+		                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
 	template <class Class>
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (void)) const
 	{
+		insertInput (&object, reinterpret_cast <void*> (object ->* memberFunction));
 		insertInterest (std::bind (std::mem_fn (memberFunction), object),
-		                &object, reinterpret_cast <void*> (object .* memberFunction));
+		                (X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
 	}
 
 	//  Add basic interest.
@@ -144,31 +167,46 @@ public:
 	addInterest (const Requester &) const;
 
 	///  @name Remove interest service
+	
+	template <class Class, class ... Arguments>
+	inline
+	void
+	removeInterest (const Class* object, void (Class::* memberFunction) (Arguments ...) const) const
+	{
+		eraseInput (object);
+		eraseInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
+	}
 
 	template <class Class, class Argument>
 	inline
 	void
 	removeInterest (Class* object, void (Class::* memberFunction) (Argument)) const
 	{
-		eraseInterest (object, reinterpret_cast <void*> (object ->* memberFunction));
+		eraseInput (object);
+		eraseInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
 	template <class Class>
 	void
 	removeInterest (Class* object, void (Class::* memberFunction) (void)) const
 	{
-		eraseInterest (object, reinterpret_cast <void*> (object ->* memberFunction));
+		eraseInput (object);
+		eraseInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
 	template <class Class>
 	void
 	removeInterest (Class & object, void (Class::* memberFunction) (void)) const
 	{
-		eraseInterest (&object, reinterpret_cast <void*> (object .* memberFunction));
+		eraseInput (&object);
+		eraseInterest ((X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
 	}
 
 	void
 	removeInterest (const Requester &) const;
+
+	void
+	eraseInterest (const void*, const void*) const;
 
 	///  @name Process interests service
 
@@ -192,6 +230,8 @@ protected:
 
 private:
 
+	typedef std::set <const X3DInput*> InputSet;
+
 	bool
 	hasInterest (const void*, const void*) const;
 
@@ -200,10 +240,22 @@ private:
 	insertInterest (const Requester &, const void*, const void*) const;
 
 	void
-	eraseInterest (const void*, const void*) const;
+	insertInput (const X3DInput*, const void*) const;
+
+	void
+	insertInput (const void*, const void*) const
+	{ }
+
+	void
+	eraseInput (const X3DInput*) const;
+
+	void
+	eraseInput (const void*) const
+	{ }
 
 	mutable RequesterArray requesters;
 	mutable RequesterIndex requesterIndex;
+	mutable InputSet       inputs;
 	mutable std::vector <Requester> copy;
 
 };

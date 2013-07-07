@@ -1,3 +1,15 @@
+2013-07-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* run.pl:
+	* Makefile.am:
+	* X3DBaseInterface.h:
+	* BrowserWindow.ui:
+	* X3DBaseInterface.cpp:
+	* X3DBrowserWindow.cpp:
+	* OutlineTreeModel.cpp:
+	* OutlineSelection.cpp:
+	* ViewpointEditor.cpp: 
+
 2013-07-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.cpp:

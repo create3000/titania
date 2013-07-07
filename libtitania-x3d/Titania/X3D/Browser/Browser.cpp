@@ -161,8 +161,6 @@ Browser::reshape ()
 void
 Browser::dispose ()
 {
-	changed .removeInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
-
 	viewer .reset ();
 	pointingDevice .dispose ();
 

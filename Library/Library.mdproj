@@ -2122,6 +2122,8 @@
     <None Include="Tests\Navigation\Billboard010.wrl" />
     <None Include="Tests\Navigation\Billboard100.wrl" />
     <None Include="Tests\Navigation\Billboard110.wrl" />
+    <None Include="Examples\Pong\stage\4vong.wrl" />
+    <None Include="Examples\Pong\index.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2239,6 +2241,8 @@
     <Folder Include="Tests\PROTO\Particle\" />
     <Folder Include="Tests\PROTO\Perceptron\" />
     <Folder Include="Examples\VRMLBanner\" />
+    <Folder Include="Examples\Pong\" />
+    <Folder Include="Examples\Pong\stage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_X3DWIDGET_H__
 #define __TITANIA_X3D_BROWSER_X3DWIDGET_H__
 
+#include "../Base/X3DInput.h"
 #include <sigc++/trackable.h>
 
 namespace titania {
@@ -59,7 +60,7 @@ namespace X3D {
 class Browser;
 
 class X3DWidget :
-	public sigc::trackable
+	public X3DInput, public sigc::trackable
 {
 public:
 
@@ -71,30 +72,27 @@ public:
 
 	virtual
 	Browser*
-	getBrowser () const;
+	getBrowser () const
+	{ return browser; }
 
 	///  @name Setup
 
 	void
 	setup ();
 
-	///  @name dispose
-
-	virtual
-	void
-	dispose ();
-
 	///  @name Destructors
 
 	virtual
-	~X3DWidget ();
+	~X3DWidget ()
+	{ }
 
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize ()
+	{ }
 
 	Browser* browser;
 

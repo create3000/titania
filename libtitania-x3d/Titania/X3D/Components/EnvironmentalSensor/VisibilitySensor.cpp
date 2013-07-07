@@ -142,14 +142,5 @@ VisibilitySensor::update ()
 	visible = false;
 }
 
-void
-VisibilitySensor::dispose ()
-{
-	if (enabled ())
-		getBrowser () -> sensors .removeInterest (this, &VisibilitySensor::update);
-
-	X3DEnvironmentalSensorNode::dispose ();
-}
-
 } // X3D
 } // titania

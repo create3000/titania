@@ -79,14 +79,14 @@ public:
 
 	virtual
 	void
-	draw ();
+	draw () final;
 
 
 private:
 
 	virtual
 	void
-	build ();
+	build () final;
 
 	struct Fields
 	{

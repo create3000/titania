@@ -627,8 +627,6 @@ jsContext::dispose ()
 {
 	if (initialized)
 		shutdown ();
-		
-	getBrowser () -> prepareEvents .removeInterest (this, &jsContext::prepareEvents);
 
 	for (auto & field : fields)
 		JS_RemoveValueRoot (context, &field .second);

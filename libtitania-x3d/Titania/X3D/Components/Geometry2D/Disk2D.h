@@ -95,29 +95,25 @@ public:
 
 	virtual
 	void
-	draw ();
-
-	virtual
-	void
-	dispose ();
+	draw () final;
 
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	virtual
 	Box3f
-	createBBox ();
+	createBBox () final;
 
 	void
 	set_properties ();
 
 	virtual
 	void
-	build ();
+	build () final;
 
 	struct Fields
 	{

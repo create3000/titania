@@ -123,7 +123,7 @@ ArcClose2D::set_properties ()
 void
 ArcClose2D::build ()
 {
-	const ArcClose2DProperties* properties = getBrowser () -> getBrowserOptions () -> arcClose2DProperties () .getValue ();
+	const ArcClose2DProperties* properties = getBrowser () -> getBrowserOptions () -> arcClose2DProperties ();
 
 	float  difference = getAngle ();
 	size_t segments   = std::ceil (difference / properties -> minAngle ());
@@ -168,14 +168,6 @@ ArcClose2D::build ()
 
 	if (not solid ())
 		addMirrorVertices (GL_POLYGON, false);
-}
-
-void
-ArcClose2D::dispose ()
-{
-	getBrowser () -> getBrowserOptions () -> arcClose2DProperties () .removeInterest (this, &ArcClose2D::set_properties);
-
-	X3DGeometryNode::dispose ();
 }
 
 } // X3D

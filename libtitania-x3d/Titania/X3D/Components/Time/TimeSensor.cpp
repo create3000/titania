@@ -190,13 +190,5 @@ void
 TimeSensor::set_resume ()
 { }
 
-void
-TimeSensor::dispose ()
-{
-	getBrowser () -> prepareEvents .removeInterest (this, &TimeSensor::prepareEvents);
-
-	X3DTimeDependentNode::dispose ();
-}
-
 } // X3D
 } // titania

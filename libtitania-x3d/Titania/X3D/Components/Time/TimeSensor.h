@@ -94,10 +94,6 @@ public:
 	time () const
 	{ return *fields .time; }
 
-	virtual
-	void
-	dispose ();
-
 
 private:
 

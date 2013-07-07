@@ -104,7 +104,7 @@ Box::set_properties ()
 void
 Box::build ()
 {
-	const BoxProperties* properties = getBrowser () -> getBrowserOptions () -> boxProperties () .getValue ();
+	const BoxProperties* properties = getBrowser () -> getBrowserOptions () -> boxProperties ();
 
 	getTexCoord () = properties -> getTexCoord ();
 	getNormals  () = properties -> getNormals  ();
@@ -124,14 +124,6 @@ Box::build ()
 
 	addElements (properties -> getVertexMode (), getVertices () .size ());
 	setSolid (solid ());
-}
-
-void
-Box::dispose ()
-{
-	getBrowser () -> getBrowserOptions () -> boxProperties () .removeInterest (this, &Box::set_properties);
-
-	X3DGeometryNode::dispose ();
 }
 
 } // X3D

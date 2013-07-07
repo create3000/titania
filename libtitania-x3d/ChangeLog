@@ -1,3 +1,74 @@
+2013-07-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFVec2.h:
+	* SFVec4.h:
+	* SFTime.h:
+	* X3DInput.h:
+	* SFVec3.h:
+	* SFColor.h:
+	* SFImage.h:
+	* X3DOutput.h:
+	* X3DObject.h:
+	* X3DField.h:
+	* X3DInput.cpp:
+	* SFString.h:
+	* SFMatrix4.h:
+	* X3DOutput.cpp:
+	* X3DScalar.h:
+	* SFMatrix3.h:
+	* X3DWidget.h:
+	* World.cpp:
+	* Browser.cpp:
+	* SFRotation4.h:
+	* SFColorRGBA.h:
+	* X3DArrayField.h:
+	* X3DWidget.cpp:
+	* X3DBrowser.cpp:
+	* FlyViewer.h:
+	* Box.h:
+	* NoneViewer.h:
+	* WalkViewer.h:
+	* TimeSensor.h:
+	* BindableNodeList.h:
+	* FlyViewer.cpp:
+	* Cone.h:
+	* BindableNodeStack.h:
+	* Box.cpp:
+	* WalkViewer.cpp:
+	* X3DFlyViewer.h:
+	* Arc2D.h:
+	* NoneViewer.cpp:
+	* Sphere.h:
+	* TimeSensor.cpp:
+	* ExamineViewer.h:
+	* Disk2D.h:
+	* X3DFlyViewer.cpp:
+	* Arc2D.cpp:
+	* Sphere.cpp:
+	* Disk2D.cpp:
+	* Circle2D.h:
+	* ExamineViewer.cpp:
+	* Cylinder.h:
+	* Extrusion.h:
+	* Polyline2D.h:
+	* Circle2D.cpp:
+	* ArcClose2D.h:
+	* Rectangle2D.h:
+	* Polypoint2D.h:
+	* ArcClose2D.cpp:
+	* jsContext.cpp:
+	* TriangleSet2D.h:
+	* Rectangle2D.cpp:
+	* ElevationGrid.h:
+	* IndexedFaceSet.h:
+	* X3DSoundSourceNode.cpp:
+	* RenderingProperties.cpp:
+	* X3DGeometryPropertyNode.h:
+	* ProximitySensor.h:
+	* VisibilitySensor.h:
+	* ProximitySensor.cpp:
+	* VisibilitySensor.cpp: 
+
 2013-07-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Browser.h:

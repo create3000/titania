@@ -57,8 +57,5 @@ NoneViewer::NoneViewer (Browser* const browser) :
 	X3DViewer (browser) 
 { }
 
-NoneViewer::~NoneViewer ()
-{ }
-
 } // X3D
 } // titania

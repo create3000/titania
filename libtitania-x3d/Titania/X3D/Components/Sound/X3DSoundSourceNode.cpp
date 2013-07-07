@@ -408,8 +408,6 @@ X3DSoundSourceNode::dispose ()
 {
 	gstream .reset ();
 
-	getBrowser () -> prepareEvents .removeInterest (this, &X3DSoundSourceNode::prepareEvents);
-
 	X3DTimeDependentNode::dispose ();
 }
 

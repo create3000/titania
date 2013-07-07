@@ -57,8 +57,5 @@ WalkViewer::WalkViewer (Browser* const browser, NavigationInfo* navigationInfo) 
 	X3DFlyViewer (browser, navigationInfo) 
 { }
 
-WalkViewer::~WalkViewer ()
-{ }
-
 } // X3D
 } // titania

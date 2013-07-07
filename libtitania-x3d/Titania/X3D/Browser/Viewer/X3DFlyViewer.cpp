@@ -404,12 +404,5 @@ X3DFlyViewer::display ()
 	}
 }
 
-X3DFlyViewer::~X3DFlyViewer ()
-{
-	getBrowser () -> displayed .removeInterest (this, &X3DFlyViewer::display);
-
-	disconnect ();
-}
-
 } // X3D
 } // titania

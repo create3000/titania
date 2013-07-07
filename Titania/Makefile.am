@@ -55,8 +55,6 @@ AM_CPPFLAGS = $(TITANIA_CFLAGS) \
 	-I$(top_builddir)/libtitania-sqlite \
 	-I$(top_builddir)/libtitania-standard \
 	-I$(top_builddir)/libtitania-stream
-	
-run:
-	env XDG_DATA_DIRS="/home/holger/Projekte/Titania/Titania/share:/home/holger/Projekte/Titania/libtitania-x3d/share:"${XDG_DATA_DIRS} \
-	$(builddir)/$(bin_PROGRAMS) 2>&1 | $(builddir)/../miscellaneous/benchmarks/save.pl
 
+run:
+	$(builddir)/run.pl 2>&1 | $(builddir)/../miscellaneous/benchmarks/save.pl

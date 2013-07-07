@@ -107,15 +107,11 @@ public:
 	template <class Class>
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (const SFVec4 &)) const
-	{
-		addInterest (object, memberFunction, *this);
-	}
+	{ addInterest (object, memberFunction, *this); }
 
 	void
 	addInterest (void (* requester) (const SFVec4 &)) const
-	{
-		addInterest (requester, *this);
-	}
+	{ addInterest (requester, *this); }
 
 	///  @name Functions
 

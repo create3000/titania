@@ -85,27 +85,23 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
-	virtual
-	void
-	dispose ();
-
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	void
 	set_properties ();
 
 	virtual
 	Box3f
-	createBBox ();
+	createBBox () final;
 
 	virtual
 	void
-	build ();
+	build () final;
 
 	struct Fields
 	{

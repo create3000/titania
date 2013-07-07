@@ -435,13 +435,13 @@ RenderingProperties::toStream (std::ostream & stream) const
 void
 RenderingProperties::dispose ()
 {
-	X3DNode::dispose ();
-
 	if (fontInfo)
 		glDeleteLists (fontListBase, fontInfo -> max_char_or_byte2);
 
 	if (listId)
 		glDeleteLists (listId, 1);
+
+	X3DNode::dispose ();
 }
 
 } // X3D

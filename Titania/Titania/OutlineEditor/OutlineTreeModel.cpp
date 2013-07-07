@@ -770,8 +770,6 @@ OutlineTreeModel::getData (const iterator & iter)
 OutlineTreeModel::~OutlineTreeModel ()
 {
 	//__LOG__ << std::endl;
-
-	executionContext -> getRootNodes () .removeInterest (this, &OutlineTreeModel::set_rootNodes);
 }
 
 } // puck

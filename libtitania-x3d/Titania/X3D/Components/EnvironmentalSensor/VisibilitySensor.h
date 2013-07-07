@@ -71,10 +71,6 @@ public:
 	void
 	traverse (TraverseType);
 
-	virtual
-	void
-	dispose ();
-
 
 private:
 

@@ -120,11 +120,13 @@ public:
 
 private:
 
+	virtual
 	Box3f
-	createBBox ();
+	createBBox () final;
 
+	virtual
 	void
-	build ();
+	build () final;
 
 	struct Fields
 	{

@@ -92,7 +92,7 @@ OutlineSelection::select (const X3D::SFNode <X3D::X3DBaseNode> & sfnode)
 	{
 		const auto & children = getBrowser () -> getSelection () -> children ();
 
-		bool selected = std::find (children .begin (), children .end (), sfnode) not_eq children .end (); // XXX pointer fields
+		bool selected = std::find (children .begin (), children .end (), sfnode) not_eq children .end ();
 
 		if (selectMultiple)
 		{

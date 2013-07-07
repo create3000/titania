@@ -98,22 +98,16 @@ public:
 	template <class Class>
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (const SFTime &)) const
-	{
-		addInterest (object, memberFunction, *this);
-	}
+	{ addInterest (object, memberFunction, *this); }
 
 	template <class Class>
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (const SFTime &)) const
-	{
-		addInterest (object, memberFunction, *this);
-	}
+	{ addInterest (object, memberFunction, *this); }
 
 	void
 	addInterest (void (* requester) (const SFTime &)) const
-	{
-		addInterest (requester, *this);
-	}
+	{ addInterest (requester, *this); }
 
 	///  @name Input operator.
 	virtual

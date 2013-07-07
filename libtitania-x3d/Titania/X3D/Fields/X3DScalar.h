@@ -94,22 +94,16 @@ public:
 	template <class Class>
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (const X3DScalar &)) const
-	{
-		addInterest (object, memberFunction, *this);
-	}
+	{ addInterest (object, memberFunction, *this); }
 
 	template <class Class>
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (const X3DScalar &)) const
-	{
-		addInterest (object, memberFunction, *this);
-	}
+	{ addInterest (object, memberFunction, *this); }
 
 	void
 	addInterest (void (* requester) (const X3DScalar &)) const
-	{
-		addInterest (requester, *this);
-	}
+	{ addInterest (requester, *this); }
 
 	///  @name Input/Output
 	

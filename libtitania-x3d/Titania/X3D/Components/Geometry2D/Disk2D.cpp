@@ -108,7 +108,7 @@ Disk2D::set_properties ()
 void
 Disk2D::build ()
 {
-	const Disk2DProperties* properties = getBrowser () -> getBrowserOptions () -> disc2DProperties () .getValue ();
+	const Disk2DProperties* properties = getBrowser () -> getBrowserOptions () -> disc2DProperties ();
 
 	if (innerRadius () == outerRadius ())
 	{
@@ -226,14 +226,6 @@ Disk2D::draw ()
 		glDisable (GL_LIGHTING);
 
 	X3DGeometryNode::draw ();
-}
-
-void
-Disk2D::dispose ()
-{
-	getBrowser () -> getBrowserOptions () -> disc2DProperties () .removeInterest (this, &Disk2D::set_properties);
-
-	X3DGeometryNode::dispose ();
 }
 
 } // X3D

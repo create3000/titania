@@ -104,7 +104,7 @@ Rectangle2D::set_properties ()
 void
 Rectangle2D::build ()
 {
-	const Rectangle2DProperties* properties = getBrowser () -> getBrowserOptions () -> rectangle2DProperties () .getValue ();
+	const Rectangle2DProperties* properties = getBrowser () -> getBrowserOptions () -> rectangle2DProperties ();
 
 	size_t elements = solid () ? 1 : 2;
 
@@ -133,14 +133,6 @@ Rectangle2D::build ()
 
 	if (not solid ())
 		addMirrorVertices (properties -> getVertexMode (), true);
-}
-
-void
-Rectangle2D::dispose ()
-{
-	getBrowser () -> getBrowserOptions () -> rectangle2DProperties () .removeInterest (this, &Rectangle2D::set_properties);
-
-	X3DGeometryNode::dispose ();
 }
 
 } // X3D

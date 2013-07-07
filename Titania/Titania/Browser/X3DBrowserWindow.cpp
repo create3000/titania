@@ -432,16 +432,7 @@ X3DBrowserWindow::setTransparent (bool value)
 }
 
 X3DBrowserWindow::~X3DBrowserWindow ()
-{
-	// Console
-	getBrowser () -> getConsole () -> string_changed () .removeInterest (this, &X3DBrowserWindow::set_console);
-	
-	// UrlError
-	getBrowser () -> urlError () .removeInterest (this, &X3DBrowserWindow::set_urlError);
-
-	// Initialized
-	getBrowser () -> initialized .removeInterest (this, &X3DBrowserWindow::set_world);
-}
+{ }
 
 } // puck
 } // titania

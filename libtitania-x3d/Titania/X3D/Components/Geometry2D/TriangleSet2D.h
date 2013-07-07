@@ -90,7 +90,7 @@ private:
 
 	virtual
 	void
-	build ();
+	build () final;
 
 	void
 	buildTexCoord ();

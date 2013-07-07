@@ -128,22 +128,16 @@ public:
 	template <class Class>
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (const ValueType &)) const
-	{
-		addInterest (object, memberFunction, value);
-	}
+	{ addInterest (object, memberFunction, value); }
 
 	template <class Class>
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (const ValueType &)) const
-	{
-		addInterest (object, memberFunction, value);
-	}
+	{ addInterest (object, memberFunction, value); }
 
 	void
 	addInterest (void (* requester) (const ValueType &)) const
-	{
-		addInterest (requester, value);
-	}
+	{ addInterest (requester, value); }
 
 	///  6.7.8 dispose
 	virtual

@@ -154,13 +154,5 @@ Arc2D::draw ()
 	X3DGeometryNode::draw ();
 }
 
-void
-Arc2D::dispose ()
-{
-	getBrowser () -> getBrowserOptions () -> arcClose2DProperties () .removeInterest (this, &Arc2D::set_properties);
-
-	X3DGeometryNode::dispose ();
-}
-
 } // X3D
 } // titania

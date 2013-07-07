@@ -186,14 +186,5 @@ ProximitySensor::traverse (TraverseType type)
 	}
 }
 
-void
-ProximitySensor::dispose ()
-{
-	if (enabled ())
-		getBrowser () -> sensors .removeInterest (this, &ProximitySensor::update);
-
-	X3DEnvironmentalSensorNode::dispose ();
-}
-
 } // X3D
 } // titania

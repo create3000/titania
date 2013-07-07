@@ -102,7 +102,7 @@ Circle2D::set_properties ()
 void
 Circle2D::build ()
 {
-	const Circle2DProperties* properties = getBrowser () -> getBrowserOptions () -> circle2DProperties () .getValue ();
+	const Circle2DProperties* properties = getBrowser () -> getBrowserOptions () -> circle2DProperties ();
 
 	if (std::abs (radius ()) == 1.0f)
 		getVertices () = properties -> getVertices ();
@@ -124,14 +124,6 @@ Circle2D::draw ()
 {
 	glDisable (GL_LIGHTING);
 	X3DGeometryNode::draw ();
-}
-
-void
-Circle2D::dispose ()
-{
-	getBrowser () -> getBrowserOptions () -> circle2DProperties () .removeInterest (this, &Circle2D::set_properties);
-
-	X3DGeometryNode::dispose ();
 }
 
 } // X3D

@@ -197,13 +197,7 @@ ViewpointEditor::on_fieldOfView_changed ()
 }
 
 ViewpointEditor::~ViewpointEditor ()
-{
-	if (activeLayer)
-	{
-		getViewpoints ()     .removeInterest (this, &ViewpointEditor::set_viewpoints);
-		getViewpointStack () .removeInterest (this, &ViewpointEditor::set_currentViewpoint);
-	}
-}
+{ }
 
 } // puck
 } // titania

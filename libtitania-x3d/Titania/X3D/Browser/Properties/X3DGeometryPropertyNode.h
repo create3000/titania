@@ -64,13 +64,16 @@ public:
 	X3DGeometryPropertyNode ();
 
 	const std::vector <Vector3f> &
-	getTexCoord () const { return texCoord; }
+	getTexCoord () const
+	{ return texCoord; }
 
 	const std::vector <Vector3f> &
-	getNormals () const { return normals; }
+	getNormals () const
+	{ return normals; }
 
 	const std::vector <Vector3f> &
-	getVertices () const { return vertices; }
+	getVertices () const
+	{ return vertices; }
 
 	virtual
 	GLenum
@@ -80,13 +83,16 @@ public:
 protected:
 
 	std::vector <Vector3f> &
-	getTexCoord () { return texCoord; }
+	getTexCoord ()
+	{ return texCoord; }
 
 	std::vector <Vector3f> &
-	getNormals () { return normals; }
+	getNormals ()
+	{ return normals; }
 
 	std::vector <Vector3f> &
-	getVertices () { return vertices; }
+	getVertices ()
+	{ return vertices; }
 
 	void
 	update ();

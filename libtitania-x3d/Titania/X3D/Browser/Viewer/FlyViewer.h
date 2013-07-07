@@ -68,9 +68,6 @@ public:
 	getType () const final
 	{ return ViewerType::FLY; }
 
-	virtual
-	~FlyViewer ();
-
 };
 
 } // X3D

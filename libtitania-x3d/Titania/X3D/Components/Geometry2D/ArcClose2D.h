@@ -109,16 +109,12 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
-	virtual
-	void
-	dispose ();
-
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	float
 	getAngle ();
@@ -128,7 +124,7 @@ private:
 
 	virtual
 	void
-	build ();
+	build () final;
 
 	struct Fields
 	{

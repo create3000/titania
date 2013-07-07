@@ -191,17 +191,15 @@ public:
 	{ return *fields .height; }
 
 
-protected:
+private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
-
-private:
-
+	virtual
 	Box3f
-	createBBox ();
+	createBBox () final;
 
 	std::vector <Vector3f>
 	createTexCoord ();
@@ -215,8 +213,9 @@ private:
 	std::vector <Vector3f>
 	createPoints ();
 
+	virtual
 	void
-	build ();
+	build () final;
 
 	struct Fields
 	{

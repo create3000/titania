@@ -106,7 +106,7 @@ Sphere::createBBox ()
 void
 Sphere::build ()
 {
-	const X3DSpherePropertyNode* properties = getBrowser () -> getBrowserOptions () -> sphereProperties () .getValue ();
+	const X3DSpherePropertyNode* properties = getBrowser () -> getBrowserOptions () -> sphereProperties ();
 
 	getTexCoord () = properties -> getTexCoord ();
 	getNormals  () = properties -> getNormals  ();
@@ -124,14 +124,6 @@ Sphere::build ()
 
 	addElements (properties -> getVertexMode (), getVertices () .size ());
 	setSolid (solid ());
-}
-
-void
-Sphere::dispose ()
-{
-	getBrowser () -> getBrowserOptions () -> sphereProperties () .removeInterest (this, &Sphere::set_properties);
-
-	X3DGeometryNode::dispose ();
 }
 
 } // X3D

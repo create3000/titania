@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BASE_X3DINPUT_H__
 
 #include "../Base/X3DBase.h"
+#include "../Base/Output.h"
 
 namespace titania {
 namespace X3D {
@@ -60,6 +61,15 @@ class X3DInput :
 	virtual public X3DBase
 {
 public:
+
+	virtual
+	bool
+	isInput () const
+	{ return true; }
+
+	const Output &
+	deleted () const
+	{ return deletedOutput; }
 
 	virtual
 	void
@@ -75,6 +85,8 @@ protected:
 
 
 private:
+
+	Output deletedOutput;
 
 };
 

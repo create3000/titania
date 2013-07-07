@@ -158,9 +158,6 @@ World::bind ()
 void
 World::dispose ()
 {
-	scene    -> getRootNodes ()   .removeInterest (this, &World::set_rootNodes);
-	layerSet -> getActiveLayer () .removeInterest (this, &World::set_activeLayer);
-
 	scene           .dispose ();
 	layerSet        .dispose ();
 	defaultLayerSet .dispose ();

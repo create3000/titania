@@ -73,9 +73,6 @@ public:
 	void
 	initialize () override;
 
-	virtual
-	~X3DFlyViewer ();
-
 
 private:
 

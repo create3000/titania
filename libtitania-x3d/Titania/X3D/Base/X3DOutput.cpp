@@ -50,12 +50,17 @@
 
 #include "X3DOutput.h"
 
+#include "../Base/X3DInput.h"
+#include <Titania/LOG.h>
+
 namespace titania {
 namespace X3D {
 
 X3DOutput::X3DOutput () :
+          X3DBase (),
 	    requesters (), 
 	requesterIndex (),
+	        inputs (),
 	          copy ()  
 { }
 
@@ -100,6 +105,17 @@ X3DOutput::insertInterest (const Requester & function, const void* object, const
 }
 
 void
+X3DOutput::insertInput (const X3DInput* input, const void* memberFunction) const
+{
+	inputs .insert (input);
+
+	input -> deleted () .addInterest (this, 
+	                                   &X3DOutput::eraseInterest,
+	                                   static_cast <const void*> (input),
+	                                   memberFunction);
+}
+
+void
 X3DOutput::eraseInterest (const void* object, const void* memberFunction) const
 {
 	RequesterPair requesterPair (memberFunction, object);
@@ -110,7 +126,14 @@ X3DOutput::eraseInterest (const void* object, const void* memberFunction) const
 	{
 		requesters .erase (requester -> second);
 		requesterIndex .erase (requester);
+		inputs .erase (static_cast <const X3DInput*> (object));
 	}
+}
+
+void
+X3DOutput::eraseInput (const X3DInput* input) const
+{
+	input -> deleted () .removeInterest (this, &X3DOutput::eraseInterest);
 }
 
 void
@@ -133,7 +156,10 @@ X3DOutput::dispose ()
 }
 
 X3DOutput::~X3DOutput ()
-{ }
+{
+	for (const auto & input : inputs)
+		input -> deleted () .removeInterest (this, &X3DOutput::eraseInterest);
+}
 
 } // X3D
 } // titania
