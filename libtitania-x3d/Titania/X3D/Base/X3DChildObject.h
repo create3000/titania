@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BASE_X3DCHILD_OBJECT_H__
 
 #include "../Base/ChildObjectSet.h"
+#include "../Base/Event.h"
 #include "../Base/X3DObject.h"
 
 #include <Titania/Utility/Pass.h>
@@ -60,19 +61,6 @@
 namespace titania {
 namespace X3D {
 
-class Event
-{
-public:
-
-	Event (X3DChildObject* object) :
-		object (object)
-	{ }
-
-	X3DChildObject* object;
-	ChildObjectSet  sources;
-
-};
-
 class X3DChildObject :
 	public X3DObject
 {
@@ -80,14 +68,15 @@ public:
 
 	///  @name Parent handling
 
-	bool
+	void
 	addParent (X3DChildObject* const);
 
-	bool
+	void
 	removeParent (X3DChildObject* const);
 
 	const ChildObjectSet &
-	getParents () const;
+	getParents () const
+	{ return parents; }
 
 	virtual
 	bool
@@ -96,17 +85,6 @@ public:
 	template <class Root, class Type>
 	std::deque <Type*>
 	findParents () const;
-
-	///  @name Children handling
-
-	//@{
-	template <typename ... Args>
-	void
-	setChildren (Args & ...);
-
-	void
-	setChild (X3DChildObject & child)
-	{ child .addParent (this); }
 
 	///  @name Event Handling
 
@@ -120,15 +98,19 @@ public:
 
 	virtual
 	void
-	write (const X3DChildObject &) { }
+	write (const X3DChildObject &)
+	{ }
 
-	virtual
 	void
 	notifyParents ();
 
+	// Only used in X3DFieldDefinition.
 	virtual
 	void
-	processEvent (Event &) { } // XXX only used in X3DFieldDefinition
+	processEvent (Event &)
+	{ }
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -142,9 +124,32 @@ protected:
 
 	X3DChildObject ();
 
+	///  @name Children handling
+
+	template <typename ... Args>
+	void
+	addChildren (Args & ... args)
+	{ basic::pass ((addChild (args), 1) ...); }
+
+	void
+	addChild (X3DChildObject & child)
+	{ child .addParent (this); }
+
+	template <typename ... Args>
+	void
+	removeChildren (Args & ... args)
+	{ basic::pass ((removeChild (args), 1) ...); }
+
+	void
+	removeChild (X3DChildObject & child)
+	{ child .removeParent (this); }
+
+	///  @name Event handling
+
 	virtual
 	void
-	addEvent (X3DChildObject*);
+	addEvent (X3DChildObject* const)
+	{ notifyParents (); }
 
 	virtual
 	void
@@ -158,18 +163,9 @@ private:
 	findParents (std::deque <Type*> &, ChildObjectSet &);
 
 	ChildObjectSet parents;
-
-	bool tainted;
+	bool           tainted;
 
 };
-
-template <typename ... Args>
-inline
-void
-X3DChildObject::setChildren (Args & ... args)
-{
-	basic::pass ((setChild (args), 1) ...);
-}
 
 template <class Root, class Type>
 std::deque <Type*>

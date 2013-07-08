@@ -78,6 +78,8 @@ public:
 
 private:
 
+	using X3DTexture2DNode::setImage;
+
 	virtual
 	void
 	initialize ();
@@ -85,8 +87,8 @@ private:
 	void
 	set_url ();
 
-	bool
-	loadImage (Magick::Image & image);
+	void
+	setImage (const std::string &);
 
 };
 

@@ -68,8 +68,7 @@ Transform::Transform (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGroupingNode (),                                                    
 	         fields (),
-	         matrix (),
-	         handle ()                                                     
+	         matrix ()                                                    
 {
 	setComponent ("Grouping");
 	setTypeName ("Transform");
@@ -85,8 +84,6 @@ Transform::Transform (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "addChildren",      addChildren ());
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
-	
-	setChildren (handle);
 }
 
 X3DBaseNode*
@@ -109,19 +106,6 @@ Transform::getBBox ()
 }
 
 void
-Transform::addHandle ()
-{
-	handle = new TransformHandle (this, getExecutionContext ());
-	handle -> setup ();
-}
-
-void
-Transform::removeHandle ()
-{
-	handle = NULL;
-}
-
-void
 Transform::eventsProcessed ()
 {
 	X3DGroupingNode::eventsProcessed ();
@@ -141,19 +125,8 @@ Transform::traverse (TraverseType type)
 	glMultMatrixf (matrix .data ());
 
 	X3DGroupingNode::traverse (type);
-	
-	if (handle)
-		handle -> traverse (type);
 
 	glPopMatrix ();
-}
-
-void
-Transform::dispose ()
-{
-	handle .dispose ();
-
-	X3DGroupingNode::dispose ();
 }
 
 } // X3D

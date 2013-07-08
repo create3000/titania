@@ -36,9 +36,9 @@ namespace titania {
 namespace X3D {
 
 X3DChildObject::X3DChildObject () :
-	X3DObject (),     
-	  parents (),     
-	  tainted (false) 
+	X3DObject (),
+	  parents (),
+	  tainted (false)
 { }
 
 // Object
@@ -51,12 +51,6 @@ X3DChildObject::notifyParents ()
 }
 
 void
-X3DChildObject::addEvent (X3DChildObject* const)
-{
-	notifyParents ();
-}
-
-void
 X3DChildObject::addEvent (X3DChildObject*, const Event & event)
 {
 	for (const auto & parent : parents)
@@ -65,13 +59,13 @@ X3DChildObject::addEvent (X3DChildObject*, const Event & event)
 
 // Child
 
-bool
+void
 X3DChildObject::addParent (X3DChildObject* const parent)
 {
-	return parents .insert (parent) .second;
+	parents .insert (parent);
 }
 
-bool
+void
 X3DChildObject::removeParent (X3DChildObject* const parent)
 {
 	if (parents .erase (parent))
@@ -81,7 +75,7 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 			ChildObjectSet circle;
 
 			if (hasRoots (circle))
-				return false;
+				return;
 
 			for (auto & child : circle)
 				child -> parents .clear ();
@@ -89,27 +83,21 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 			for (auto & child : circle)
 			{
 				child -> dispose ();
-				
+
 				getGarbageCollector () .addObject (child);
 			}
 
-			return true;
+			return;
 		}
 
 		dispose ();
-		
+
 		getGarbageCollector () .addObject (this);
 
-		return true;
+		return;
 	}
 
-	return false;
-}
-
-const ChildObjectSet &
-X3DChildObject::getParents () const
-{
-	return parents;
+	return;
 }
 
 bool

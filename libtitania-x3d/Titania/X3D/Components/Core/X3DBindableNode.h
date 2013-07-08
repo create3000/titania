@@ -96,7 +96,7 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
 
 	///  @name Layer handling
 

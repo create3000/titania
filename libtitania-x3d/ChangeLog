@@ -1,3 +1,59 @@
+2013-07-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Event.h:
+	* X3DBase.h:
+	* X3DBase.cpp:
+	* Route.cpp:
+	* World.cpp:
+	* Selection.cpp:
+	* X3DBaseNode.cpp:
+	* X3DChildObject.h:
+	* X3DBrowser.cpp:
+	* X3DChildObject.cpp:
+	* GarbageCollector.h:
+	* TransformHandle.h:
+	* ExternProto.cpp:
+	* X3DRenderer.cpp:
+	* ExportedNode.cpp:
+	* ImportedNode.cpp:
+	* X3DBrowserContext.h:
+	* TransformHandle.cpp:
+	* X3DBrowserContext.cpp:
+	* MetadataSet.h:
+	* MetadataBool.h:
+	* Transform.h:
+	* Script.cpp:
+	* X3DFlyViewer.cpp:
+	* MetadataFloat.h:
+	* LayerSet.cpp:
+	* Inline.cpp:
+	* MetadataDouble.h:
+	* MetadataString.h:
+	* X3DExecutionContext.cpp:
+	* X3DBindableNode.h:
+	* Transform.cpp:
+	* MetadataInteger.h:
+	* X3DPropertyNode.h:
+	* X3DLayerNode.h:
+	* ImageTexture.h:
+	* X3DMetadataObject.h:
+	* X3DUrlObject.h:
+	* X3DLayerNode.cpp:
+	* X3DGroupingNode.h:
+	* BrowserOptions.cpp:
+	* ImageTexture.cpp:
+	* X3DUrlObject.cpp:
+	* X3DGroupingNode.cpp:
+	* ViewpointGroup.cpp:
+	* NavigationInfo.cpp:
+	* X3DPrototypeInstance.cpp:
+	* RenderingProperties.cpp:
+	* X3DViewpointNode.cpp:
+	* Background.cpp:
+	* X3DFogObject.cpp: 
+
 2013-07-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SFVec2.h:

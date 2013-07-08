@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -70,7 +70,7 @@ ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata", metadata ());
 
-	setChildren (url (), scene, proto);
+	addChildren (url (), scene, proto);
 }
 
 X3DBaseNode*
@@ -308,7 +308,7 @@ ExternProto::toStream (std::ostream & ostream) const
 void
 ExternProto::dispose ()
 {
-	url () .removeParent (this);
+	removeChildren (url ());
 
 	scene .dispose ();
 	proto .dispose ();

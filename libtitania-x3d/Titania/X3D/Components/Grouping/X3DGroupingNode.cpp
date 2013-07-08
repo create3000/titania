@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -67,9 +67,12 @@ X3DGroupingNode::Fields::Fields () :
 X3DGroupingNode::X3DGroupingNode () :
 	    X3DChildNode (), 
 	X3DBoundedObject (), 
-	          fields ()  
+	          fields (),
+	          handle () 
 {
 	addNodeType (X3DConstants::X3DGroupingNode);
+	
+	addChildren (handle);
 }
 
 void
@@ -92,6 +95,19 @@ X3DGroupingNode::getBBox ()
 		return X3DBoundedObject::getBBox (children ());
 
 	return Box3f (bboxSize (), bboxCenter ());
+}
+
+void
+X3DGroupingNode::addHandle ()
+{
+	handle = new TransformHandle (this, getExecutionContext ());
+	handle -> setup ();
+}
+
+void
+X3DGroupingNode::removeHandle ()
+{
+	handle = NULL;
 }
 
 void
@@ -202,6 +218,9 @@ X3DGroupingNode::traverse (TraverseType type)
 			break;
 		}
 	}
+	
+	if (handle)
+		handle -> traverse (type);
 }
 
 void
@@ -244,6 +263,8 @@ X3DGroupingNode::collect ()
 void
 X3DGroupingNode::dispose ()
 {
+	handle .dispose ();
+
 	X3DBoundedObject::dispose ();
 	X3DChildNode::dispose ();
 }

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,16 +48,57 @@
  *
  ******************************************************************************/
 
-#include "X3DBase.h"
+#ifndef __TITANIA_X3D_COMPONENTS_TEXTURING_IMAGE_TEXTURE_H__
+#define __TITANIA_X3D_COMPONENTS_TEXTURING_IMAGE_TEXTURE_H__
+
+#include "../Networking/X3DUrlObject.h"
+#include "../Texturing/X3DTexture2DNode.h"
 
 namespace titania {
 namespace X3D {
 
-X3DBase::X3DBase ()
-{ }
+class ImageTexture :
+	public X3DTexture2DNode, public X3DUrlObject
+{
+public:
 
-X3DBase::~X3DBase ()
-{ }
+	ImageTexture (X3DExecutionContext* const);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final;
+
+	void
+	requestImmediateLoad ();
+
+	virtual
+	void
+	dispose ();
+
+
+private:
+
+	using X3DTexture2DNode::setImage;
+
+	virtual
+	void
+	initialize ();
+
+//	void
+//	requestLoad ();
+//
+//	void
+//	set_document (const String &);
+
+	void
+	set_url ();
+
+	void
+	setImage (const std::string &);
+
+};
 
 } // X3D
 } // titania
+
+#endif

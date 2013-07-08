@@ -59,6 +59,7 @@
 
 #include <Titania/Stream/InputFileStream.h>
 #include <map>
+#include <memory>
 
 namespace titania {
 namespace X3D {
@@ -82,19 +83,19 @@ public:
 
 	SFTime &
 	loadTime ()
-	{ return fields .loadTime; }
+	{ return *fields .loadTime; }
 
 	const SFTime &
 	loadTime () const
-	{ return fields .loadTime; }
+	{ return *fields .loadTime; }
 
 	MFString &
 	urlError ()
-	{ return fields .urlError; }
+	{ return *fields .urlError; }
 
 	const MFString &
 	urlError () const
-	{ return fields .urlError; }
+	{ return *fields .urlError; }
 	
 	virtual
 	const basic::uri &
@@ -180,6 +181,7 @@ public:
 	basic::uri
 	transformURI (const basic::uri &);
 
+	static
 	basic::uri
 	transformURI (const basic::uri &, const basic::uri &);
 
@@ -244,15 +246,15 @@ private:
 		Fields ();
 
 		MFString* const url;
-		SFTime loadTime;
-		MFString urlError;
+		SFTime* const loadTime;
+		MFString* const urlError;
 	};
 
 	Fields fields;
 
-	LoadState   loadState;
-	std::string userAgent;
-	basic::uri  worldURL;
+	LoadState    loadState;
+	std::string  userAgent;
+	basic::uri   worldURL;
 
 };
 

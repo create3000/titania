@@ -14,4 +14,6 @@
   <Task file="" description="von Geistern schieben lassen" />
   <Task file="" description="bei jump collisision speed auf 0 setzen" />
   <Task file="" description="FieldDefinitionArray als X3DArrayField &lt;X3DFieldDefinition&gt; machen für JavaScript, sonst da unsave" />
+  <Task file="" description="eventsProcessed als Output von node.registerInterest" />
+  <Task file="" description="RenderContext" />
 </ListOfTask>

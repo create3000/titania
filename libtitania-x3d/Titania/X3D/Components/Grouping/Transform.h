@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_COMPONENTS_GROUPING_TRANSFORM_H__
 
 #include "../Grouping/X3DGroupingNode.h"
-#include "../../Handles/TransformHandle.h"
 
 namespace titania {
 namespace X3D {
@@ -118,19 +117,7 @@ public:
 
 	virtual
 	void
-	addHandle ();
-
-	virtual
-	void
-	removeHandle ();
-
-	virtual
-	void
 	traverse (TraverseType) final;
-
-	virtual
-	void
-	dispose () final;
 
 
 protected:
@@ -160,8 +147,6 @@ private:
 	Fields fields;
 
 	Matrix4f matrix;
-	
-	SFNode <TransformHandle> handle;
 
 };
 

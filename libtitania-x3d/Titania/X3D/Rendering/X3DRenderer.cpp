@@ -493,8 +493,6 @@ X3DRenderer::collide ()
 		collision -> set_active (true);
 }
 
-static X3DViewpointNode* currentViewpoint = NULL;
-
 void
 X3DRenderer::gravite ()
 {

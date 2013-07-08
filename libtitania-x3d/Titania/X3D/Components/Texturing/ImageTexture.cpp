@@ -106,46 +106,14 @@ ImageTexture::requestImmediateLoad ()
 
 	// Load image.
 
-	Magick::Image image;
-
-	if (not loadImage (image))
-	{
-		setLoadState (FAILED_STATE);
-		return;
-	}
-
-	// Set image.
-
-	setImage (image);
-
-	setLoadState (COMPLETE_STATE);
-}
-
-bool
-ImageTexture::loadImage (Magick::Image & image)
-{
 	for (const auto & URL : url ())
 	{
 		try
 		{
-			std::string data = loadDocument (URL);
+			setImage (loadDocument (URL));
 
-			std::list <Magick::Image> images;
-			Magick::readImages (&images, Magick::Blob (data .c_str (), data .length ()));
-
-			switch (images .size ())
-			{
-				case 0:  // I have no idea what to do now.
-					continue;
-
-				case 1:  // Image with one layer image.
-					image = images .back ();
-					return true;
-
-				default: // Flatten image with more than one layer.
-					Magick::flattenImages (&image, images .begin (), images .end ());
-					return true;
-			}
+			setLoadState (COMPLETE_STATE);
+			return;
 		}
 		catch (const X3DError & error)
 		{
@@ -157,7 +125,35 @@ ImageTexture::loadImage (Magick::Image & image)
 		}
 	}
 
-	return false;
+	setLoadState (FAILED_STATE);
+}
+
+void
+ImageTexture::setImage (const std::string & data)
+{
+	std::list <Magick::Image> images;
+	Magick::readImages (&images, Magick::Blob (data .c_str (), data .length ()));
+
+	switch (images .size ())
+	{
+		case 0:  // I have no idea what to do now.
+			throw std::domain_error ("Image contains nothing.");
+
+		case 1:
+		{
+			// Image with one layer image.
+			setImage (images .back ());
+			return;
+		}
+		default:
+		{
+			// Flatten image with more than one layer.
+			Magick::Image image;
+			Magick::flattenImages (&image, images .begin (), images .end ());
+			setImage (image);
+			return;
+		}
+	}
 }
 
 void

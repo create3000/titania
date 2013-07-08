@@ -70,11 +70,9 @@ public:
 	size_type
 	size ();
 
-	virtual
 	void
 	dispose ();
 
-	virtual
 	~GarbageCollector ();
 
 

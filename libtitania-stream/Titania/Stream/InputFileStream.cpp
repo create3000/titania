@@ -38,29 +38,47 @@ namespace basic {
 const std::string ifilestream::reasons [2] = { "OK", "FAILED" };
 const std::string ifilestream::empty_string;
 
-ifilestream::ifilestream (const http::method method, const basic::uri & url) :
-	         std::istream (),     
-	         data_istream (NULL), 
-	         file_istream (NULL), 
-	         http_istream (NULL), 
-	              istream (NULL), 
-	 file_request_headers (),     
+ifilestream::ifilestream () :
+	         std::istream (),
+	         data_istream (NULL),
+	         file_istream (NULL),
+	         http_istream (NULL),
+	              istream (NULL),
+	 file_request_headers (),
 	file_response_headers (),
-	                m_url (url)      
+	                m_url ()
+{ }
+
+ifilestream::ifilestream (const http::method method, const basic::uri & url) :
+	         std::istream (),
+	         data_istream (NULL),
+	         file_istream (NULL),
+	         http_istream (NULL),
+	              istream (NULL),
+	 file_request_headers (),
+	file_response_headers (),
+	                m_url (url)
 {
 	open (method, url);
 }
 
 ifilestream::ifilestream (ifilestream && other) :
-	         std::istream (),     
-	         data_istream (other .data_istream),
-	         file_istream (other .file_istream),
-	         http_istream (other .http_istream),
-	              istream (other .istream),
-	 file_request_headers (std::move (other .file_request_headers)),
-	file_response_headers (std::move (other .file_response_headers)),
-	                m_url (std::move (other .m_url))      
+	          ifilestream ()
 {
+	*this = std::move (other);
+}
+
+ifilestream &
+ifilestream::operator = (ifilestream && other)
+{
+	data_istream          = other .data_istream;
+	file_istream          = other .file_istream;
+	http_istream          = other .http_istream;
+	istream               = other .istream;
+	file_request_headers  = std::move (other .file_request_headers);
+	file_response_headers = std::move (other .file_response_headers);
+	m_url                 = std::move (other .m_url);
+
 	other .data_istream = NULL;
 	other .file_istream = NULL;
 	other .http_istream = NULL;
@@ -70,6 +88,8 @@ ifilestream::ifilestream (ifilestream && other) :
 
 	clear (other .rdstate ());
 	other .clear (std::ios::badbit);
+
+	return *this;
 }
 
 // Connection handling

@@ -210,16 +210,16 @@ public:
 	///  @name Event handling
 
 	void
-	notify ();
+	addEvent ();
 
-	///  @name Event handling
+	///  @name Rendering
 
 	virtual
 	void
 	swapBuffers ()
 	{ }
 
-	///  @name Dispose
+	///  @name Destruction
 
 	void
 	dispose ();

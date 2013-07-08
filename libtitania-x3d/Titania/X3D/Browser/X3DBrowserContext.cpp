@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -94,7 +94,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	   currentFrameRate (0),                                       
 	            console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
 {
-	setChildren (select,
+	addChildren (select,
 	             renderingProperties,
 	             browserProperties,
 	             browserOptions,
@@ -364,7 +364,7 @@ X3DBrowserContext::buttonReleaseEvent ()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
-X3DBrowserContext::notify ()
+X3DBrowserContext::addEvent ()
 {
 	if (changedTime == getCurrentTime ())
 		return;

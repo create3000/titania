@@ -59,12 +59,14 @@ class X3DBase
 public:
 
 	virtual
-	~X3DBase ();
+	~X3DBase ()
+	{ }
 
 
 protected:
 
-	X3DBase ();
+	X3DBase ()
+	{ }
 
 };
 

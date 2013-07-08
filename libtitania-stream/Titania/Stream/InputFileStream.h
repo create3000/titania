@@ -70,9 +70,14 @@ public:
 
 	/// @name Constructors
 
+	ifilestream ();
+
 	ifilestream (const http::method, const basic::uri &);
 
 	ifilestream (ifilestream &&);
+
+	ifilestream &
+	operator = (ifilestream &&);
 
 	const basic::uri &
 	url ()
@@ -123,6 +128,11 @@ public:
 
 
 private:
+
+	ifilestream (const ifilestream &) = delete;
+
+	ifilestream &
+	operator = (const ifilestream &) = delete;
 
 	static const std::string reasons [2];
 	static const std::string empty_string;

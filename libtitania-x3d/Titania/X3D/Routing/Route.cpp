@@ -72,7 +72,7 @@ Route::Route (X3DExecutionContext* const executionContext,
 	setComponent ("Browser");
 	setTypeName ("Route");
 
-	setChildren (sourceNode, destinationNode);
+	addChildren (sourceNode, destinationNode);
 
 	setup ();
 }

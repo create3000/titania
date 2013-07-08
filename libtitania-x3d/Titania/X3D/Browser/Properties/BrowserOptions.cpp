@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ extern "C"
 namespace titania {
 namespace X3D {
 
-// Table 9.2 — Browser options
+// Table 9.2 ï¿½ Browser options
 // Name                    Type/valid range                         Default                      Description
 // SplashScreen            Boolean                                  Implementation-dependent     Display browser splash screen on startup
 // Dashboard               Boolean                                  False                        Specified by bound NavigationInfo in content. Display browser navigation user interface.
@@ -127,7 +127,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	
 	addField ("AntiAliased", "Antialiased");
 
-	setChildren (motionBlurProperties (),
+	addChildren (motionBlurProperties (),
 	             textureProperties (),
 	             arc2DProperties (),
 	             arcClose2DProperties (),

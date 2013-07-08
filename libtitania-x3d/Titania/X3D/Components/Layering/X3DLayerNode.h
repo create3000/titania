@@ -263,6 +263,9 @@ public:
 
 protected:
 
+	using X3DNode::addChildren;
+	using X3DNode::removeChildren;
+
 	X3DLayerNode ();
 
 	virtual

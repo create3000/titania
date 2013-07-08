@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -76,7 +76,7 @@ Script::Script (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "directOutput", directOutput ());
 	addField (initializeOnly, "mustEvaluate", mustEvaluate ());
 
-	setChildren (javaScript);
+	addChildren (javaScript);
 }
 
 X3DBaseNode*

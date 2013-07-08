@@ -86,11 +86,11 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
 
 	virtual
 	void
-	dispose ();
+	dispose () override;
 
 
 private:

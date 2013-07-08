@@ -73,7 +73,7 @@ X3DBrowser::X3DBrowser () :
 
 	addField (outputOnly, "url", url ());
 
-	setChildren (description, scene, world, activeLayer);
+	addChildren (description, scene, world, activeLayer);
 
 	X3D::X3DUrlObject::addURN ("about:splash", get_page ("about/splash.wrl"));
 
@@ -240,7 +240,7 @@ throw (Error <INVALID_SCENE>)
 		
 	else
 		scene = createScene ();
-		
+
 	world = new World (scene);
 	world -> getActiveLayer () .addInterest (this, &X3DBrowser::set_activeLayer);
 	world -> setup ();

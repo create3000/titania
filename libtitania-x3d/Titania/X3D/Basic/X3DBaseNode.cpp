@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -130,7 +130,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 
 	initialized .setName ("initialized");
 
-	setChildren (initialized);
+	addChildren (initialized);
 }
 
 X3DBaseNode*
@@ -573,7 +573,7 @@ X3DBaseNode::addEvent (X3DChildObject* object, const Event & event)
 {
 	// __LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
 
-	getBrowser () -> notify ();
+	getBrowser () -> addEvent ();
 
 	// Register for processEvents
 

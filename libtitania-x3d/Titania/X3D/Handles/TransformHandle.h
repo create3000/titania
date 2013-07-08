@@ -56,14 +56,14 @@
 namespace titania {
 namespace X3D {
 
-class Transform;
+class X3DGroupingNode;
 
 class TransformHandle :
 	public X3DHandleNode
 {
 public:
 
-	TransformHandle (Transform* const, X3DExecutionContext* const);
+	TransformHandle (X3DGroupingNode* const, X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
@@ -84,7 +84,7 @@ private:
 	void
 	initialize ();
 	
-	SFNode <Transform> transform;
+	SFNode <X3DGroupingNode> boundedObject;
 	SFNode <Scene> scene;
 
 };

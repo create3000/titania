@@ -58,6 +58,8 @@
 #include "../Lighting/X3DLightNode.h"
 #include "../PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
 
+#include "../../Handles/TransformHandle.h"
+
 namespace titania {
 namespace X3D {
 
@@ -97,6 +99,14 @@ public:
 
 	virtual
 	void
+	addHandle ();
+
+	virtual
+	void
+	removeHandle ();
+
+	virtual
+	void
 	traverse (TraverseType) override;
 
 	virtual
@@ -105,6 +115,9 @@ public:
 
 
 protected:
+
+	using X3DChildNode::addChildren;
+	using X3DChildNode::removeChildren;
 
 	X3DGroupingNode ();
 
@@ -151,6 +164,8 @@ private:
 	std::vector <X3DLightNode*>                lights;
 	std::vector <LocalFog*>                    localFogs;
 	std::vector <X3DChildNode*>                childNodes;
+	
+	SFNode <TransformHandle> handle;
 
 };
 

@@ -104,7 +104,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 
 	disconnect ();
 
-	getBrowser () -> notify ();
+	getBrowser () -> addEvent ();
 
 	if (button == 1)
 	{
@@ -127,7 +127,7 @@ X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 {
 	disconnect ();
 
-	getBrowser () -> notify ();
+	getBrowser () -> addEvent ();
 
 	if (button == 1)
 	{
@@ -145,7 +145,7 @@ X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 bool
 X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 {
-	getBrowser () -> notify ();
+	getBrowser () -> addEvent ();
 
 	if (button == 1)
 	{

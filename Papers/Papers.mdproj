@@ -28,9 +28,15 @@
     <None Include="Intersection\Fast MinimumStorage RayTriangle Intersection.pdf" />
     <None Include="Intersection\Ray-Sphere Intersection.gif" />
     <None Include="Intersection\Sphere - Triangle Intersection.pdf" />
+    <None Include="X3DUrlObject.h" />
+    <None Include="ImageTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
     <Folder Include="Intersection\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="X3DUrlObject.cpp" />
+    <Compile Include="ImageTexture.cpp" />
   </ItemGroup>
 </Project>

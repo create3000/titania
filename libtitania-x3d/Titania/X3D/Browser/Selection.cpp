@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,7 +53,7 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/X3DExecutionContext.h"
 
-#include "../Components/Grouping/Transform.h"
+#include "../Components/Grouping/X3DGroupingNode.h"
 
 namespace titania {
 namespace X3D {
@@ -69,7 +69,7 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	setComponent ("Browser");
 	setTypeName ("Selection");
 
-	setChildren (fields .children);
+	addChildren (fields .children);
 }
 
 X3DBaseNode*
@@ -114,15 +114,15 @@ Selection::clear ()
 void
 Selection::addHandle (const SFNode <X3DBaseNode> & child)
 {
-	if (dynamic_cast <Transform*> (child .getValue ()))
-		dynamic_cast <Transform*> (child .getValue ()) -> addHandle ();
+	if (dynamic_cast <X3DGroupingNode*> (child .getValue ()))
+		dynamic_cast <X3DGroupingNode*> (child .getValue ()) -> addHandle ();
 }
 
 void
 Selection::removeHandle (const SFNode <X3DBaseNode> & child)
 {
-	if (dynamic_cast <Transform*> (child .getValue ()))
-		dynamic_cast <Transform*> (child .getValue ()) -> removeHandle ();
+	if (dynamic_cast <X3DGroupingNode*> (child .getValue ()))
+		dynamic_cast <X3DGroupingNode*> (child .getValue ()) -> removeHandle ();
 }
 
 void

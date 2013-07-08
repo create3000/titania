@@ -53,6 +53,10 @@
 #include "../../Browser/X3DBrowser.h"
 #include <Titania/Basic/URI.h>
 
+#include <glibmm/thread.h>
+#include <glibmm/dispatcher.h>
+#include <atomic>
+
 namespace titania {
 namespace X3D {
 
@@ -60,8 +64,8 @@ URNIndex X3DUrlObject::URNCache;
 
 X3DUrlObject::Fields::Fields () :
 	url (new MFString ()),
-	loadTime (),
-	urlError ()
+	loadTime (new SFTime ()),
+	urlError (new MFString ())
 { }
 
 X3DUrlObject::X3DUrlObject () :
@@ -69,11 +73,11 @@ X3DUrlObject::X3DUrlObject () :
 	     fields (),                  
 	  loadState (NOT_STARTED_STATE), 
 	  userAgent (),                  
-	   worldURL ()                   
+	   worldURL ()
 {
 	addNodeType (X3DConstants::X3DUrlObject);
 
-	setChildren (fields .loadTime, fields .urlError);
+	addChildren (loadTime (), urlError ());
 }
 
 void
@@ -90,7 +94,9 @@ X3DUrlObject::setLoadState (LoadState value)
 	loadState = value;
 
 	if (loadState == COMPLETE_STATE)
+	{
 		loadTime () = getCurrentTime ();
+	}
 }
 
 //  X3D Creation Handling
@@ -335,7 +341,9 @@ X3DUrlObject::getURNs ()
 
 void
 X3DUrlObject::dispose ()
-{ }
+{
+	removeChildren (loadTime (), urlError ());
+}
 
 } // X3D
 } // titania

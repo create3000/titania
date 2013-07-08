@@ -63,8 +63,9 @@ protected:
 
 	X3DPropertyNode ();
 
+	virtual
 	void
-	eventsProcessed ();
+	eventsProcessed () override;
 
 };
 

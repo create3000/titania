@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,22 +58,22 @@
 namespace titania {
 namespace X3D {
 
-TransformHandle::TransformHandle (Transform* const _transform, X3DExecutionContext* const executionContext) :
+TransformHandle::TransformHandle (X3DGroupingNode* const node, X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DHandleNode (),
-	    transform (_transform),
+	boundedObject (node),
 	        scene ()                                                     
 {
 	setComponent ("Handles");
 	setTypeName ("TransformHandle");
 	
-	setChildren (transform, scene);
+	addChildren (boundedObject, scene);
 }
 
 X3DBaseNode*
 TransformHandle::create (X3DExecutionContext* const executionContext) const
 {
-	return new TransformHandle (transform, executionContext);
+	return new TransformHandle (boundedObject, executionContext);
 }
 
 void
@@ -87,10 +87,10 @@ TransformHandle::initialize ()
 void
 TransformHandle::traverse (TraverseType type)
 {
-	if (type == TraverseType::COLLISION)
+	if (type == TraverseType::COLLECT)
 	{
 		auto handle = scene -> getNamedNode ("Handle");
-		auto bbox   = transform -> X3DGroupingNode::getBBox ();
+		auto bbox   = boundedObject -> getBBox ();
 		
 		auto & translation = *static_cast <SFVec3f*> (handle -> getField ("translation"));
 
@@ -101,17 +101,17 @@ TransformHandle::traverse (TraverseType type)
 
 		if (scale not_eq bbox .size ())
 			scale = bbox .size ();
-	}
 
-	for (const auto & rootNode : scene -> getRootNodes ())
-		rootNode -> traverse (type);
+		for (const auto & rootNode : scene -> getRootNodes ())
+			rootNode -> traverse (type);
+	}
 }
 
 void
 TransformHandle::dispose ()
 {
-	transform .dispose ();
-	scene     .dispose ();
+	boundedObject .dispose ();
+	scene         .dispose ();
 
 	X3DHandleNode::dispose ();
 }

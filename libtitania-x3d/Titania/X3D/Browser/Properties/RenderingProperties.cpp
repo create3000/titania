@@ -98,7 +98,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	setComponent ("Browser"),
 	setTypeName ("RenderingProperties");
 
-	setChildren (enabled (), cycleInterval ());
+	addChildren (enabled (), cycleInterval ());
 
 	addField (outputOnly, "Vendor",         vendor ());
 	addField (outputOnly, "Renderer",       renderer ());

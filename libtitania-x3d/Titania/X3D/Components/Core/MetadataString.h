@@ -80,14 +80,14 @@ public:
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	struct Fields
 	{

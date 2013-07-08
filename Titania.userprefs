@@ -1,27 +1,27 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Navigation/Billboard.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.h">
     <Files>
       <File FileName="experimental/main.cpp" Line="357" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Billboard.cpp" Line="158" Column="19" />
-      <File FileName="Library/Tests/Navigation/Billboard110.wrl" Line="418" Column="5" />
-      <File FileName="Library/Tests/Scripting/test.wrl" Line="1" Column="1" />
-      <File FileName="Library/Tests/EnvironmentalEffects/Background.wrl" Line="9" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.cpp" Line="341" Column="1" />
+      <File FileName="Library/Tests/Scripting/test.wrl" Line="20" Column="10" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.cpp" Line="164" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="267" Column="44" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="58" Column="17" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.h" Line="257" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/ImageTexture.cpp" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
-            <Node name="Tests" expanded="True">
-              <Node name="Basic" expanded="True" />
-              <Node name="EnvironmentalEffects" expanded="True" />
-              <Node name="Geometry2D" expanded="True" />
-              <Node name="Navigation" expanded="True" />
-              <Node name="PointingDeviceSensor" expanded="True" />
-              <Node name="PROTO" expanded="True" />
-              <Node name="Scripting" expanded="True" />
+            <Node name="Examples" expanded="True">
+              <Node name="Astronomy" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
+              <Node name="Pong" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="libtitania-sqlite" expanded="True">
@@ -30,27 +30,19 @@
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Math" expanded="True">
-                <Node name="Geometry" expanded="True" />
-                <Node name="Numbers" expanded="True" />
-              </Node>
-              <Node name="Physics" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-stream" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Stream" expanded="True" />
-            </Node>
+            <Node name="Titania" expanded="True" />
           </Node>
           <Node name="libtitania-x3d" expanded="True">
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="handles" expanded="True" />
+              </Node>
+            </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
                 <Node name="Browser" expanded="True">
-                  <Node name="Geometry2D" expanded="True" />
-                  <Node name="Geometry3D" expanded="True" />
                   <Node name="Properties" expanded="True" />
                   <Node name="Viewer" expanded="True" />
                 </Node>
@@ -62,12 +54,13 @@
                   <Node name="Geometry3D" expanded="True" />
                   <Node name="Grouping" expanded="True" />
                   <Node name="Layering" expanded="True" />
-                  <Node name="Navigation" expanded="True">
-                    <Node name="Billboard.cpp" selected="True" />
+                  <Node name="Navigation" expanded="True" />
+                  <Node name="Networking" expanded="True">
+                    <Node name="X3DUrlObject.h" selected="True" />
                   </Node>
-                  <Node name="Networking" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Rendering" expanded="True" />
+                  <Node name="Sound" expanded="True" />
                   <Node name="Text" expanded="True" />
                   <Node name="Texturing" expanded="True" />
                   <Node name="Time" expanded="True" />
@@ -75,11 +68,6 @@
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
                 <Node name="Handles" expanded="True" />
-                <Node name="JavaScript" expanded="True">
-                  <Node name="SpiderMonkey" expanded="True">
-                    <Node name="Fields" expanded="True" />
-                  </Node>
-                </Node>
                 <Node name="Parser" expanded="True" />
                 <Node name="Prototype" expanded="True" />
                 <Node name="Rendering" expanded="True" />
@@ -94,8 +82,11 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
               <Node name="HistoryEditor" expanded="True" />
+              <Node name="OutlineEditor" expanded="True" />
+              <Node name="ViewpointEditor" expanded="True" />
             </Node>
           </Node>
         </State>
