@@ -1,5 +1,9 @@
 2013-07-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFTime.cpp: 
+
+2013-07-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Event.h:

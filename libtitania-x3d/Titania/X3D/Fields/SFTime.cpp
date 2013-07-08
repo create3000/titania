@@ -53,14 +53,11 @@
 namespace titania {
 namespace X3D {
 
-template <>
-const std::string SFTime::typeName ("SFTime");
-
-template <>
+const std::string             SFTime::typeName ("SFTime");
 const X3DConstants::FieldType SFTime::type = X3DConstants::SFTime;
 
 SFTime::SFTime () :
-	X3DField <time_type> () 
+	X3DField <time_type> ()
 { }
 
 SFTime::SFTime (const SFTime & field) :
@@ -130,7 +127,7 @@ throw (Error <INVALID_X3D>,
 void
 SFTime::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <scalar_type><< getValue ();
+	ostream << Generator::Precision <scalar_type> << getValue ();
 }
 
 } // X3D
