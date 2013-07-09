@@ -30,7 +30,7 @@
         <Package file="/usr/lib/pkgconfig/gstreamermm-0.10.pc" name="gstreamermm" IsProject="false" />
       </Packages>
     </Packages>
-    <ReleaseVersion>0.2</ReleaseVersion>
+    <ReleaseVersion>0.3</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

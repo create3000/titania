@@ -1,19 +1,20 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="357" Column="1" />
+      <File FileName="experimental/main.cpp" Line="146" Column="3" />
       <File FileName="Library/Tests/Scripting/test.wrl" Line="20" Column="10" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.cpp" Line="164" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="267" Column="44" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="58" Column="17" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.h" Line="257" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/ImageTexture.cpp" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="experimental" expanded="True" />
+          <Node name="build" expanded="True">
+            <Node name="debian" expanded="True" />
+          </Node>
+          <Node name="experimental" expanded="True">
+            <Node name="main.cpp" selected="True" />
+          </Node>
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
               <Node name="Astronomy" expanded="True">
@@ -31,6 +32,11 @@
           </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True" />
+          </Node>
+          <Node name="libtitania-stream" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Stream" expanded="True" />
+            </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
@@ -55,9 +61,7 @@
                   <Node name="Grouping" expanded="True" />
                   <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
-                  <Node name="Networking" expanded="True">
-                    <Node name="X3DUrlObject.h" selected="True" />
-                  </Node>
+                  <Node name="Networking" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                   <Node name="Sound" expanded="True" />
@@ -76,11 +80,7 @@
           </Node>
           <Node name="Papers" expanded="True" />
           <Node name="Titania" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="ui" expanded="True" />
-              </Node>
-            </Node>
+            <Node name="config" expanded="True" />
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />

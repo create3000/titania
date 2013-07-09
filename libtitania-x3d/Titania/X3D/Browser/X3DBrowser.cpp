@@ -48,7 +48,7 @@ signal_handler (int sig)
 	exit (1);
 }
 
-const std::string X3DBrowser::version ("0.2");
+const std::string X3DBrowser::version ("0.3");
 
 X3DBrowser::X3DBrowser () :
 	  X3DBrowserContext (),                          
