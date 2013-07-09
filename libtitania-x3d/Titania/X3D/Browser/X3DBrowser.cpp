@@ -374,6 +374,9 @@ X3DBrowser::dispose ()
 {
 	__LOG__ << this << std::endl;
 
+	if (activeLayer)
+		activeLayer -> getNavigationInfoStack () .removeInterest (this, &X3DBrowser::set_navigationInfo);
+
 	scene       .dispose ();
 	world       .dispose ();
 	activeLayer .dispose ();

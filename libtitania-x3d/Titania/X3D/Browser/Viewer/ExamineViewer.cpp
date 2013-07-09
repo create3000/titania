@@ -74,9 +74,7 @@ ExamineViewer::ExamineViewer (Browser* const browser, NavigationInfo* navigation
 	     fromPoint (),               
 	        button (0),              
 	       spin_id ()                
-{
-	__LOG__ << std::endl;
-}
+{ }
 
 void
 ExamineViewer::initialize ()

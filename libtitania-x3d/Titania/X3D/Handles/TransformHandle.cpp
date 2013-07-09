@@ -168,7 +168,19 @@ TransformHandle::traverse (TraverseType type)
 
 	switch (type)
 	{
+		case TraverseType::PICKING:
 		case TraverseType::CAMERA:
+		{
+			glPushMatrix ();
+
+			glMultMatrixf (transform -> getMatrix () .data ());
+
+			for (const auto & rootNode : scene -> getRootNodes ())
+				rootNode -> traverse (type);
+
+			glPopMatrix ();
+			break;
+		}
 		case TraverseType::COLLECT:
 		{
 			glPushMatrix ();
@@ -181,6 +193,7 @@ TransformHandle::traverse (TraverseType type)
 				rootNode -> traverse (type);
 
 			glPopMatrix ();
+			break;
 		}
 		default:
 			break;

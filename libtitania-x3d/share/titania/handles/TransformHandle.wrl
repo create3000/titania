@@ -40,9 +40,14 @@ PROTO TransformHandle [
       DEF X Transform {
         translation IS bboxCenter
         scale 0 0 0
-        children Transform {
+        children [
+          DEF XSensor PlaneSensor {
+            maxPosition 0 -1
+          }
+          Transform {
           rotation 0 0 -1 1.5708
-          children Shape {
+          children
+          Shape {
             appearance Appearance {
               material Material {
                 diffuseColor 1 0 0
@@ -54,6 +59,7 @@ PROTO TransformHandle [
             }
           }
         }
+          ]
       }
       DEF Y Transform {
         translation IS bboxCenter
@@ -88,6 +94,7 @@ PROTO TransformHandle [
   }
 
   DEF TransformHandle Script {
+    eventIn      SFVec3f    set_xTranslation
     exposedField SFMatrix4f inverseCameraSpaceMatrix IS inverseCameraSpaceMatrix
     exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
     exposedField SFVec3f    bboxSize IS bboxSize
@@ -99,6 +106,11 @@ PROTO TransformHandle [
     field        SFNode     arrow USE Arrow
 
     url "vrmlscript:
+function set_xTranslation (value)
+{
+	print (value);
+}
+
 function eventsProcessed ()
 {
 	var translation = new SFVec3f ();
@@ -109,9 +121,11 @@ function eventsProcessed ()
 	var distance = translation .length ();
 	var offset   = arrow .height / 2 * distance;
 
-	x .children [0] .translation = new SFVec3f (offset + bboxSize .x / 2 * scale .x, 0, 0);
+	x .children [1] .translation = new SFVec3f (offset + bboxSize .x / 2 * scale .x, 0, 0);
 	y .children [0] .translation = new SFVec3f (0, offset + bboxSize .y / 2 * scale .y, 0);
 	z .children [0] .translation = new SFVec3f (0, 0, offset + bboxSize .z / 2 * scale .z);
+
+	print (distance);
 
 	scale = new SFVec3f (1 / scale .x, 1 / scale .y, 1 / scale .z);
 	x .scale = scale;
@@ -119,11 +133,13 @@ function eventsProcessed ()
 	z .scale = scale;
 
 	scale = new SFVec3f (distance, distance, distance)
-	x .children [0] .scale = scale;
+	x .children [1] .scale = scale;
 	y .children [0] .scale = scale;
 	z .children [0] .scale = scale;
 }
 "
+
+	ROUTE XSensor.translation_changed TO TransformHandle.set_xTranslation
   }
 }
 
