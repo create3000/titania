@@ -53,7 +53,7 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/X3DExecutionContext.h"
 
-#include "../Components/Grouping/X3DGroupingNode.h"
+#include "../Components/Grouping/Transform.h"
 
 namespace titania {
 namespace X3D {
@@ -86,7 +86,7 @@ Selection::addChild (const SFNode <X3DBaseNode> & child)
 
 	fields .children .emplace_back (child);
 
-	addHandle (child);
+	child -> addHandle ();
 }
 
 void
@@ -95,34 +95,20 @@ Selection::removeChild (const SFNode <X3DBaseNode> & child)
 	fields .children .erase (std::remove (fields .children .begin (),
 	                                      fields .children .end (),
 	                                      child),
-	                         fields .children .end ()); // XXX pointer fields
+	                         fields .children .end ());
 	                         
 	// Handle
 
-	removeHandle (child);
+	child -> removeHandle ();
 }
 
 void
 Selection::clear ()
 {
 	for (const auto & child : children ())
-		removeHandle (*child);
+		child -> removeHandle ();
 
 	fields .children .clear ();
-}
-
-void
-Selection::addHandle (const SFNode <X3DBaseNode> & child)
-{
-	if (dynamic_cast <X3DGroupingNode*> (child .getValue ()))
-		dynamic_cast <X3DGroupingNode*> (child .getValue ()) -> addHandle ();
-}
-
-void
-Selection::removeHandle (const SFNode <X3DBaseNode> & child)
-{
-	if (dynamic_cast <X3DGroupingNode*> (child .getValue ()))
-		dynamic_cast <X3DGroupingNode*> (child .getValue ()) -> removeHandle ();
 }
 
 void

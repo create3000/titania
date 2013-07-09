@@ -68,9 +68,9 @@ TriangleSet2D::TriangleSet2D (X3DExecutionContext* const executionContext) :
 	setComponent ("Geometry2D");
 	setTypeName ("TriangleSet2D");
 
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "vertices", vertices ());
-	addField (inputOutput, "solid",    solid ());
+	addField (inputOutput,    "metadata", metadata ());
+	addField (inputOutput,    "vertices", vertices ());
+	addField (initializeOnly, "solid",    solid ());
 }
 
 X3DBaseNode*

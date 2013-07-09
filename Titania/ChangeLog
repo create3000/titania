@@ -1,3 +1,11 @@
+2013-07-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* run.pl:
+	* X3DBaseInterface.h:
+	* OutlineTreeView.h:
+	* OutlineEditor.cpp:
+	* OutlineTreeView.cpp: 
+
 2013-07-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* run.pl:

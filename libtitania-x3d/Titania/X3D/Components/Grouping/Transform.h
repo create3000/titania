@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class TransformHandle;
+
 class Transform :
 	public X3DGroupingNode
 {
@@ -113,18 +115,32 @@ public:
 
 	virtual
 	Box3f
-	getBBox () final;
+	getBBox () override;
+	
+	Matrix4f
+	getMatrix ()
+	{ return matrix; }
 
 	virtual
 	void
-	traverse (TraverseType) final;
+	addHandle () override;
+
+	virtual
+	void
+	traverse (TraverseType) override;
+
+	virtual
+	void
+	dispose () override;
 
 
 protected:
 
+	using X3DGroupingNode::addHandle;
+
 	virtual
 	void
-	initialize () final;
+	initialize () override;
 
 	virtual
 	void
@@ -148,6 +164,7 @@ private:
 
 	Matrix4f matrix;
 
+	SFNode <TransformHandle> handle;
 };
 
 } // X3D

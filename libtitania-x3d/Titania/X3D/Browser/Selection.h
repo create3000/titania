@@ -87,12 +87,6 @@ public:
 
 private:
 
-	void
-	addHandle (const SFNode <X3DBaseNode> &);
-
-	void
-	removeHandle (const SFNode <X3DBaseNode> &);
-
 	struct Fields
 	{
 		Fields ();

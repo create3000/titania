@@ -125,7 +125,7 @@ LOD::getLevel (TraverseType type)
 	matrix .translate (center ());
 
 	float distance = math::abs (matrix .translation ());
-	
+
 	auto iter = std::upper_bound (range () .cbegin (), range () .cend (), distance);
 
 	return iter - range () .cbegin ();

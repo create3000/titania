@@ -85,7 +85,7 @@ public:
 private:
 
 	void
-	transform (TraverseType);
+	rotate (TraverseType);
 
 	struct Fields
 	{

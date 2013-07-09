@@ -79,6 +79,10 @@ public:
 	reference () const
 	{ return *fields .reference; }
 
+	virtual
+	void
+	dispose () override;
+
 
 protected:
 
@@ -87,10 +91,6 @@ protected:
 	virtual
 	void
 	initialize () override;
-
-	virtual
-	void
-	dispose () override;
 
 
 private:

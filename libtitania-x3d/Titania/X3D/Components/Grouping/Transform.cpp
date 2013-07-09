@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Handles/TransformHandle.h"
 
 namespace titania {
 namespace X3D {
@@ -68,7 +69,8 @@ Transform::Transform (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
 	X3DGroupingNode (),                                                    
 	         fields (),
-	         matrix ()                                                    
+	         matrix (),
+	         handle ()                                                  
 {
 	setComponent ("Grouping");
 	setTypeName ("Transform");
@@ -84,6 +86,8 @@ Transform::Transform (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "addChildren",      addChildren ());
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
+	
+	addChildren (handle);
 }
 
 X3DBaseNode*
@@ -103,6 +107,12 @@ Box3f
 Transform::getBBox ()
 {
 	return X3DGroupingNode::getBBox () * matrix;
+}
+
+void
+Transform::addHandle ()
+{
+	addHandle (new TransformHandle (this, getExecutionContext ()));
 }
 
 void
@@ -127,6 +137,14 @@ Transform::traverse (TraverseType type)
 	X3DGroupingNode::traverse (type);
 
 	glPopMatrix ();
+}
+
+void
+Transform::dispose ()
+{
+	handle .dispose ();
+
+	X3DGroupingNode::dispose ();
 }
 
 } // X3D

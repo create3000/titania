@@ -132,7 +132,7 @@ rotation (const Vector3f & fromVector, const Vector3f & toVector)
 }
 
 void
-Billboard::transform (TraverseType type)
+Billboard::rotate (TraverseType type)
 {
 	Matrix4f modelViewMatrix = ModelViewMatrix4f ();
 
@@ -180,7 +180,7 @@ Billboard::traverse (TraverseType type)
 {
 	glPushMatrix ();
 
-	transform (type);
+	rotate (type);
 
 	X3DGroupingNode::traverse (type);
 

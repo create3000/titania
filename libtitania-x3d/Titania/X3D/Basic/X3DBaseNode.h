@@ -191,6 +191,17 @@ public:
 	void
 	traverse (TraverseType) { }
 
+	///  @name Handle handling
+
+	virtual
+	void
+	addHandle ()
+	{ }
+
+	virtual
+	void
+	removeHandle ();
+
 	///  @name Comment handling
 
 	void
@@ -261,6 +272,9 @@ protected:
 	void
 	eventsProcessed ()
 	{ }
+	
+	void
+	addHandle (X3DBaseNode* const);
 
 
 private:
@@ -288,8 +302,9 @@ private:
 	FieldAliasesMap      fieldAliases;
 	size_t               numUserDefinedFields;
 
-	NodeId nodeId;
+	NodeId nodeId; // Router eventsProcessed id
 
+	X3DBaseNode*             handle;
 	std::deque <std::string> comments;
 
 };

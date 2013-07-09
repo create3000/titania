@@ -16,4 +16,5 @@
   <Task file="" description="FieldDefinitionArray als X3DArrayField &lt;X3DFieldDefinition&gt; machen für JavaScript, sonst da unsave" />
   <Task file="" description="eventsProcessed als Output von node.registerInterest" />
   <Task file="" description="RenderContext" />
+  <Task file="" description="X3DSFNode, SFScene, SFNode" />
 </ListOfTask>

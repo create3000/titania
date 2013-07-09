@@ -531,7 +531,6 @@
     <None Include="Titania\X3D\Base\X3DBase.h" />
     <None Include="Titania\X3D\Browser\Console.h" />
     <None Include="Titania\X3D\Browser\Selection.h" />
-    <None Include="Titania\X3D\Handles\X3DHandleNode.h" />
     <None Include="Titania\X3D\Handles\TransformHandle.h" />
     <None Include="Titania\X3D\Bits\config.h" />
     <None Include="share\titania\handles\TransformHandle.wrl" />
@@ -560,6 +559,7 @@
     <None Include="Titania\X3D\Routing\NodeList.h" />
     <None Include="Titania\X3D\Rendering\DepthBuffer.h" />
     <None Include="Titania\X3D\Base\Event.h" />
+    <None Include="Titania\X3D\Handles\X3DHandleObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -967,7 +967,6 @@
     <Compile Include="Titania\X3D\Browser\Hit.cpp" />
     <Compile Include="Titania\X3D\Browser\Console.cpp" />
     <Compile Include="Titania\X3D\Browser\Selection.cpp" />
-    <Compile Include="Titania\X3D\Handles\X3DHandleNode.cpp" />
     <Compile Include="Titania\X3D\Handles\TransformHandle.cpp" />
     <Compile Include="Titania\X3D\Bits\config.cpp" />
     <Compile Include="Titania\X3D\Parser\Grammar.cpp" />
@@ -993,6 +992,7 @@
     <Compile Include="Titania\X3D\Execution\ExportedNodeArray.cpp" />
     <Compile Include="Titania\X3D\Execution\World.cpp" />
     <Compile Include="Titania\X3D\Rendering\DepthBuffer.cpp" />
+    <Compile Include="Titania\X3D\Handles\X3DHandleObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

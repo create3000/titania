@@ -116,8 +116,10 @@ void
 OutlineTreeView::set_world ()
 {
 	selection .clear ();
-
+	
 	set_model (OutlineTreeModel::create (getBrowser ()));
+	
+	get_model () -> signal_row_has_child_toggled () .connect (sigc::mem_fun (this, &OutlineTreeView::on_row_has_child_toggled));
 }
 
 bool
@@ -158,6 +160,24 @@ OutlineTreeView::on_key_release_event (GdkEventKey* event)
 	selection .setSelectMultiple (keys .shift ());
 
 	return false;
+}
+
+void
+OutlineTreeView::on_row_inserted (const Gtk::TreeModel::Path & path, const Gtk::TreeModel::iterator & iter)
+{ }
+
+void
+OutlineTreeView::on_row_has_child_toggled (const Gtk::TreeModel::Path & path, const Gtk::TreeModel::iterator & iter)
+{
+	// Expand row again if it was previously expanded.
+
+	auto userData = OutlineTreeModel::getUserData (iter);
+
+	if (userData)
+	{
+		if (userData -> expanded)
+			expand_row (path, false);
+	}
 }
 
 bool

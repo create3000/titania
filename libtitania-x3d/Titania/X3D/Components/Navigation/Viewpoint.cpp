@@ -89,16 +89,10 @@ Viewpoint::create (X3DExecutionContext* const executionContext) const
 }
 
 Vector3f
-Viewpoint::getPosition () const
-{
-	return position ();
-}
-
-Vector3f
 Viewpoint::lookAtPositionOffset (Box3f bbox)
 {
 	return bbox .center ()
-	       + getUserOrientation () * (Vector3f (0, 0, (math::abs (bbox .size ()) * 0.5f) / std::tan (fieldOfView () * 0.5f)))
+	       + getUserOrientation () * (Vector3f (0, 0, (abs (bbox .size ()) * 0.5f) / std::tan (fieldOfView () * 0.5f)))
 	       - position ();
 }
 

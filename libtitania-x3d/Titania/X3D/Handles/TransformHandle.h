@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,41 +51,65 @@
 #ifndef __TITANIA_X3D_HANDLES_TRANSFORM_HANDLE_H__
 #define __TITANIA_X3D_HANDLES_TRANSFORM_HANDLE_H__
 
-#include "../Handles/X3DHandleNode.h"
+#include "../Handles/X3DHandleObject.h"
+
+#include "../Components/Grouping/Transform.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DGroupingNode;
+class Transform;
 
 class TransformHandle :
-	public X3DHandleNode
+	public Transform, public X3DHandleObject
 {
 public:
 
-	TransformHandle (X3DGroupingNode* const, X3DExecutionContext* const);
+	TransformHandle (Transform* const, X3DExecutionContext* const);
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
-
-	virtual
-	void
-	traverse (TraverseType type);
+	Box3f
+	getBBox () final;
 
 	virtual
 	void
-	dispose ();
+	addHandle () final
+	{ }
+
+	virtual
+	void
+	removeHandle () final;
+
+	virtual
+	void
+	traverse (TraverseType type) final;
+
+	virtual
+	void
+	dispose () final;
 
 
 private:
 
 	virtual
 	void
-	initialize ();
-	
-	SFNode <X3DGroupingNode> boundedObject;
-	SFNode <Scene> scene;
+	initialize () final;
+
+	virtual
+	void
+	addEvent (X3DChildObject*) final
+	{ }
+
+	virtual
+	void
+	addEvent (X3DChildObject*, const Event &) final
+	{ }
+
+	void
+	reshape ();
+
+	SFNode <Transform> transform;
+	SFNode <Scene>     scene;
 
 };
 

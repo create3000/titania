@@ -96,6 +96,15 @@ X3DExecutionContext::setup ()
 }
 
 void
+X3DExecutionContext::setupNodes ()
+{
+	for (auto & node : nodes)
+		node -> setup ();
+
+	nodes .clear ();
+}
+
+void
 X3DExecutionContext::assign1 (const X3DExecutionContext* const executionContext)
 {
 	setEncoding             (executionContext -> getEncoding ());
@@ -222,15 +231,6 @@ throw (Error <INVALID_NAME>,
 			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + name + "'.");
 		}
 	}
-}
-
-void
-X3DExecutionContext::setupNodes ()
-{
-	for (auto & node : nodes)
-		node -> setup ();
-
-	nodes .clear ();
 }
 
 // Named node handling

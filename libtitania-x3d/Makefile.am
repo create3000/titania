@@ -370,7 +370,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Fields/SFVec4.cpp \
 	Titania/X3D/Fields/X3DScalar.cpp \
 	Titania/X3D/Handles/TransformHandle.cpp \
-	Titania/X3D/Handles/X3DHandleNode.cpp \
+	Titania/X3D/Handles/X3DHandleObject.cpp \
 	Titania/X3D/InputOutput/Generator.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsArrayFields.cpp \

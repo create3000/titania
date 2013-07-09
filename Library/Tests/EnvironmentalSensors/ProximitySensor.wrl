@@ -9,7 +9,7 @@ Background {
 DEF Test Transform {
   translation 10 10 10
   rotation -0.981245 -0.0143457 -0.192232 5.67512
-  scale 10 10 10
+  scale 20 10 5
   children [
     Viewpoint {
       description "Front"
@@ -128,11 +128,12 @@ function set_exitTime (value, time)
 }
   "
 }
-    Viewpoint {
-      description "Outside"
-      position 0 0 5
-      centerOfRotation 0 0 1
-    }
+
+Viewpoint {
+  description "Outside"
+  position 0 0 500
+  centerOfRotation 0 0 1
+}
 
 ROUTE Sensor.position_changed TO Debug.set_position
 ROUTE Sensor.orientation_changed TO Debug.set_orientation

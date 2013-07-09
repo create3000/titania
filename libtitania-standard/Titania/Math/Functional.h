@@ -122,6 +122,21 @@ project (const Type & value, const Type & fromLow, const Type & fromHigh, const 
 	return toLow + ((value - fromLow) / (fromHigh - fromLow)) * (toHigh - toLow);
 }
 
+template <class Type>
+static
+typename Type::value_type
+maximum_norm (const Type & value)
+{
+	typename Type::value_type norm = std::abs (value [0]);
+
+	for (size_t i = 1; i < value .size (); ++ i)
+	{
+		norm = std::max (norm, std::abs (value [i]));
+	}
+	
+	return norm;
+}
+
 ///  Linear interpolate between @a source and @a destination by an amout of @a t.
 template <class Type, class T>
 inline
@@ -134,6 +149,7 @@ lerp (const Type & source, const Type & destination, const T & t)
 ///  Spherical linear interpolate between two normal vectors @a source vector
 ///  and @a destination vector by an amout of @a t.
 template <typename Type, typename T>
+static
 Type
 slerp (const Type & source, Type destination, const T & t)
 {
@@ -165,6 +181,7 @@ slerp (const Type & source, Type destination, const T & t)
 ///  and @a destination vector by an amout of @a t. This version does not travel
 ///  the short way when appropriate.
 template <typename Type, typename T>
+static
 Type
 simple_slerp (const Type & source, const Type & destination, T t)
 {
@@ -196,6 +213,7 @@ is_power_of_two (Type i)
 
 ///  Returns the next power of @a i.
 template <class Type>
+static
 Type
 next_power_of_two (Type i)
 {

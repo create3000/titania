@@ -123,7 +123,8 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	              fields (),                 
 	        fieldAliases (),                 
 	numUserDefinedFields (0),                
-	              nodeId (),                 
+	              nodeId (),
+	              handle (NULL),                 
 	            comments ()                  
 {
 	assert (executionContext);
@@ -227,55 +228,55 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 	setUserData (node -> getUserData ());
 	node -> setUserData (NULL);
 
-	// Copy fields
-
-	for (auto & field : getFieldDefinitions ())
-	{
-		X3DFieldDefinition* original = node -> getField (field -> getName ());
-
-		// Steal UserData
-
-		field -> setUserData (original -> getUserData ());
-		original -> setUserData (NULL);
-
-		// Copy value
-
-		field -> write (*original);
-
-		// Replace routes
-
-		auto inputRoutes = original -> getInputRoutes ();
-
-		for (const auto & route : inputRoutes)
-		{
-			auto inputRoute = static_cast <Route*> (route);
-			auto sourceNode = inputRoute -> getSourceNode () .getValue ();
-
-			if (sourceNode == node)
-				sourceNode = this;
-
-			getExecutionContext () -> addRoute (sourceNode, inputRoute -> getSourceField (), this, field -> getName ());
-
-			node -> getExecutionContext () -> deleteRoute (inputRoute -> getSourceNode (),      inputRoute -> getSourceField (),
-			                                               inputRoute -> getDestinationNode (), inputRoute -> getDestinationField ());
-		}
-
-		auto outputRoutes = original -> getOutputRoutes ();
-
-		for (const auto & route : outputRoutes)
-		{
-			auto outputRoute     = static_cast <Route*> (route);
-			auto destinationNode = outputRoute -> getDestinationNode () .getValue ();
-
-			if (destinationNode == node)
-				destinationNode = this;
-
-			getExecutionContext () -> addRoute (this, field -> getName (), destinationNode, outputRoute -> getDestinationField ());
-
-			node -> getExecutionContext () -> deleteRoute (outputRoute -> getSourceNode (),      outputRoute -> getSourceField (),
-			                                               outputRoute -> getDestinationNode (), outputRoute -> getDestinationField ());
-		}
-	}
+//	// Copy fields
+//
+//	for (auto & field : getFieldDefinitions ())
+//	{
+//		X3DFieldDefinition* original = node -> getField (field -> getName ());
+//
+//		// Steal UserData
+//
+//		field -> setUserData (original -> getUserData ());
+//		original -> setUserData (NULL);
+//
+//		// Copy value
+//
+//		field -> write (*original);
+//
+//		// Replace routes
+//
+//		auto inputRoutes = original -> getInputRoutes ();
+//
+//		for (const auto & route : inputRoutes)
+//		{
+//			auto inputRoute = static_cast <Route*> (route);
+//			auto sourceNode = inputRoute -> getSourceNode () .getValue ();
+//
+//			if (sourceNode == node)
+//				sourceNode = this;
+//
+//			getExecutionContext () -> addRoute (sourceNode, inputRoute -> getSourceField (), this, field -> getName ());
+//
+//			node -> getExecutionContext () -> deleteRoute (inputRoute -> getSourceNode (),      inputRoute -> getSourceField (),
+//			                                               inputRoute -> getDestinationNode (), inputRoute -> getDestinationField ());
+//		}
+//
+//		auto outputRoutes = original -> getOutputRoutes ();
+//
+//		for (const auto & route : outputRoutes)
+//		{
+//			auto outputRoute     = static_cast <Route*> (route);
+//			auto destinationNode = outputRoute -> getDestinationNode () .getValue ();
+//
+//			if (destinationNode == node)
+//				destinationNode = this;
+//
+//			getExecutionContext () -> addRoute (this, field -> getName (), destinationNode, outputRoute -> getDestinationField ());
+//
+//			node -> getExecutionContext () -> deleteRoute (outputRoute -> getSourceNode (),      outputRoute -> getSourceField (),
+//			                                               outputRoute -> getDestinationNode (), outputRoute -> getDestinationField ());
+//		}
+//	}
 
 	// Parents
 
@@ -283,15 +284,15 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 
 	for (auto & parent : parents)
 	{
-		__LOG__ << parent -> getTypeName () << std::endl;
+		//__LOG__ << parent -> getTypeName () << std::endl;
 
 		auto field = dynamic_cast <SFNode <X3DBaseNode>*> (parent);
 
 		if (field)
 			field -> setValue (this);
 
-		else
-			__LOG__ << parent -> getTypeName () << std::endl;
+		//else
+		//	__LOG__ << parent -> getTypeName () << std::endl;
 	}
 }
 
@@ -405,12 +406,12 @@ X3DBaseNode::removeField (const std::string & name)
 
 		if (fieldDefinitions .end () - iter <= FieldDefinitionArray::difference_type (numUserDefinedFields))
 		{
-			(*iter) -> removeParent (this);
 			-- numUserDefinedFields;
 		}
 
 		fieldDefinitions .erase (iter);
 		fields .erase (field);
+		field -> second -> removeParent (this);
 	}
 }
 
@@ -603,6 +604,26 @@ X3DBaseNode::removeEvents ()
 	{
 		getBrowser () -> getRouter () .removeNode (nodeId);
 		reset (nodeId);
+	}
+}
+
+void
+X3DBaseNode::addHandle (X3DBaseNode* const node)
+{
+	handle = node;
+	handle -> addParent (this);
+	handle -> setup ();
+	handle -> replace (this);
+}
+
+void
+X3DBaseNode::removeHandle ()
+{
+	if (handle)
+	{
+		replace (handle);
+		handle -> removeParent (this);
+		handle = NULL;
 	}
 }
 

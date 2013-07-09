@@ -58,7 +58,7 @@ namespace titania {
 namespace puck {
 
 class X3DBaseInterface :
-	public X3D::X3DInput, public sigc::trackable
+	virtual public X3D::X3DInput, virtual public sigc::trackable
 {
 public:
 

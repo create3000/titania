@@ -85,6 +85,12 @@ private:
 	bool
 	on_key_release_event (GdkEventKey*);
 
+	void
+	on_row_inserted (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &);
+
+	void
+	on_row_has_child_toggled (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &);
+
 	virtual
 	bool
 	on_test_expand_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);

@@ -2,6 +2,10 @@
 
 cp "$1" /tmp/uncrustify-last-document.txt
 
+#cat "$1" | uncrustify -q -l CPP -c "$HOME/bin/uncrustify.cfg" > /tmp/uncrustify.txt
+#mv /tmp/uncrustify.txt "$1"
+#exit;
+
 cat "$1" | \
 perl -e '
 	$f = join "", <>;
@@ -31,6 +35,12 @@ perl -p -e '
 		unless /\w\.\w+?[\>"]/ or /^\s*(\/?\*|\/\/)/go;                                   # change variable.member to variable .member
    s/\)and/) and/sgo;
    s/([^\s])(override|final)/$1 $2/;                                        # add space before final or override
+' | \
+perl -e '
+	@lines = <>;
+	$file = join "", @lines;
+   $file =~ s/\<(\w+.*?)\n\s+\>\s\(/<$1> (/sgo;
+   print $file;
 ' | \
 perl -e '
 	# indent constuctor bases and member initialization

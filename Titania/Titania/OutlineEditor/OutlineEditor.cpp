@@ -70,9 +70,9 @@ OutlineEditor::initialize ()
 {
 	X3DOutlineEditorUI::initialize ();
 
-	treeview .show ();
-
 	getScrolledWindow () .add (treeview);
+
+	treeview .show ();
 }
 
 bool

@@ -1,5 +1,39 @@
 2013-07-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DBaseNode.h:
+	* Selection.h:
+	* Selection.cpp:
+	* X3DBaseNode.cpp:
+	* X3DHandleNode.h:
+	* TransformHandle.h:
+	* X3DHandleNode.cpp:
+	* X3DHandleObject.h:
+	* TransformHandle.cpp:
+	* X3DHandleObject.cpp:
+	* LOD.cpp:
+	* TransformHandle.wrl:
+	* Transform.h:
+	* Arc2D.cpp:
+	* Disk2D.cpp:
+	* Billboard.h:
+	* X3DExecutionContext.cpp:
+	* Viewpoint.h:
+	* Transform.cpp:
+	* Circle2D.cpp:
+	* X3DMetadataObject.h:
+	* Billboard.cpp:
+	* Viewpoint.cpp:
+	* ArcClose2D.cpp:
+	* X3DGroupingNode.h:
+	* Rectangle2D.cpp:
+	* X3DGroupingNode.cpp:
+	* TriangleSet2D.cpp:
+	* OrthoViewpoint.cpp: 
+
+2013-07-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* X3DBrowser.cpp: 
 

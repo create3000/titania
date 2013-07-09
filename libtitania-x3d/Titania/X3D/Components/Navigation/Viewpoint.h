@@ -87,7 +87,8 @@ public:
 
 	virtual
 	Vector3f
-	getPosition () const;
+	getPosition () const
+	{ return position (); }
 
 	virtual
 	void

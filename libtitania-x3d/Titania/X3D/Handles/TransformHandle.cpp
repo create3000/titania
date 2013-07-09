@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,62 +58,143 @@
 namespace titania {
 namespace X3D {
 
-TransformHandle::TransformHandle (X3DGroupingNode* const node, X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DHandleNode (),
-	boundedObject (node),
-	        scene ()                                                     
+TransformHandle::TransformHandle (Transform* const node, X3DExecutionContext* const executionContext) :
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	      Transform (executionContext),
+	X3DHandleObject (),
+	      transform (node),
+	          scene ()
 {
-	setComponent ("Handles");
-	setTypeName ("TransformHandle");
-	
-	addChildren (boundedObject, scene);
-}
+	for (auto & field : transform -> getFieldDefinitions ())
+		addField (field -> getAccessType (), field -> getName (), *field);
 
-X3DBaseNode*
-TransformHandle::create (X3DExecutionContext* const executionContext) const
-{
-	return new TransformHandle (boundedObject, executionContext);
+	addChildren (transform, scene);
 }
 
 void
 TransformHandle::initialize ()
 {
-	X3DHandleNode::initialize ();
+	Transform::initialize ();
+	X3DHandleObject::initialize ();
 
-	scene = getBrowser () -> createX3DFromURL ({ get_handle ("TransformHandle.wrl") .str () });
+	try
+	{
+		scene = getBrowser () -> createX3DFromURL ({ get_handle ("TransformHandle.wrl") .str () });
+
+		X3DFieldDefinition* field = scene -> getNamedNode ("Handle") -> getField ("transform");
+
+		static_cast <SFNode <X3DBaseNode>*> (field) -> setValue (transform .getValue ());
+	}
+	catch (const X3DError &)
+	{
+		scene = getBrowser () -> createScene ();
+	}
+}
+
+Box3f
+TransformHandle::getBBox ()
+{
+	return transform -> getBBox ();
+}
+
+void
+TransformHandle::removeHandle ()
+{
+	transform -> removeHandle ();
+}
+
+void
+TransformHandle::reshape ()
+{
+	try
+	{
+		auto handle = scene -> getNamedNode ("Handle");
+		auto bbox   = getBBox () * ~transform -> getMatrix ();
+
+		try
+		{
+			const Matrix4f & inverseCameraSpaceMatrix = getCurrentViewpoint () -> getInverseTransformationMatrix ();
+
+			SFMatrix4f & field = *static_cast <SFMatrix4f*> (handle -> getField ("inverseCameraSpaceMatrix"));
+
+			if (field not_eq inverseCameraSpaceMatrix)
+				field = inverseCameraSpaceMatrix;
+		}
+		catch (const X3DError &)
+		{ }
+
+		try
+		{
+			Matrix4f modelViewMatrix = ModelViewMatrix4f ();
+		
+			SFMatrix4f & field = *static_cast <SFMatrix4f*> (handle -> getField ("modelViewMatrix"));
+
+			if (field not_eq modelViewMatrix)
+				field = modelViewMatrix;
+		}
+		catch (const X3DError &)
+		{ }
+
+		try
+		{
+			SFVec3f & field = *static_cast <SFVec3f*> (handle -> getField ("bboxSize"));
+
+			if (field not_eq bbox .size ())
+				field = bbox .size ();
+		}
+		catch (const X3DError &)
+		{ }
+
+		try
+		{
+			SFVec3f & field = *static_cast <SFVec3f*> (handle -> getField ("bboxCenter"));
+
+			if (field not_eq bbox .center ())
+				field = bbox .center ();
+		}
+		catch (const X3DError &)
+		{ }
+	}
+	catch (const X3DError &)
+	{
+		// catch error from getNamedNode
+	}
 }
 
 void
 TransformHandle::traverse (TraverseType type)
 {
-	if (type == TraverseType::COLLECT)
+	transform -> traverse (type);
+
+	switch (type)
 	{
-		auto handle = scene -> getNamedNode ("Handle");
-		auto bbox   = boundedObject -> getBBox ();
+		case TraverseType::CAMERA:
+		case TraverseType::COLLECT:
+		{
+			glPushMatrix ();
+
+			glMultMatrixf (transform -> getMatrix () .data ());
 		
-		auto & translation = *static_cast <SFVec3f*> (handle -> getField ("translation"));
+			reshape ();
 
-		if (translation not_eq bbox .center ())
-			translation = bbox .center ();
-	
-		auto & scale = *static_cast <SFVec3f*> (handle -> getField ("scale"));
+			for (const auto & rootNode : scene -> getRootNodes ())
+				rootNode -> traverse (type);
 
-		if (scale not_eq bbox .size ())
-			scale = bbox .size ();
-
-		for (const auto & rootNode : scene -> getRootNodes ())
-			rootNode -> traverse (type);
+			glPopMatrix ();
+		}
+		default:
+			break;
 	}
 }
 
 void
 TransformHandle::dispose ()
 {
-	boundedObject .dispose ();
-	scene         .dispose ();
+	transform .dispose ();
+	scene     .dispose ();
 
-	X3DHandleNode::dispose ();
+	X3DHandleObject::dispose ();
+	Transform::dispose ();
 }
 
 } // X3D
