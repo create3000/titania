@@ -168,6 +168,13 @@ public:
 	              const vector3_type &);
 
 	void
+	getTransform (vector3_type &) const;
+
+	void
+	getTransform (vector3_type &,
+	              rotation4f_type &) const;
+
+	void
 	getTransform (vector3_type &,
 	              rotation4f_type &,
 	              vector3_type &) const;
@@ -354,6 +361,31 @@ SFMatrix4 <ValueType>::setTransform (const vector3_type & translation,
 {
 	get () .set (translation, rotation .getValue (), scale, scaleOrientation .getValue (), center);
 	notifyParents ();
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::getTransform (vector3_type & translation) const
+{
+	typename vector3_type::value_type t;
+
+	getValue () .get (t);
+
+	translation = t;
+}
+
+template <class ValueType>
+void
+SFMatrix4 <ValueType>::getTransform (vector3_type & translation,
+                                     rotation4f_type & rotation) const
+{
+	typename vector3_type::value_type t;
+	typename rotation4_type::value_type r;
+
+	getValue () .get (t, r);
+
+	translation = t;
+	rotation    = r;
 }
 
 template <class ValueType>

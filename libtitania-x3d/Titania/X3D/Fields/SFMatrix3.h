@@ -162,6 +162,13 @@ public:
 	              const vector2_type  &);
 
 	void
+	getTransform (vector2_type &) const;
+
+	void
+	getTransform (vector2_type &,
+	              scalar_type &) const;
+
+	void
 	getTransform (vector2_type &,
 	              scalar_type &,
 	              vector2_type &) const;
@@ -335,6 +342,29 @@ SFMatrix3 <ValueType>::setTransform (const vector2_type & translation,
 {
 	get () .set (translation, rotation, scale, scaleOrientation, center);
 	notifyParents ();
+}
+
+template <class ValueType>
+void
+SFMatrix3 <ValueType>::getTransform (vector2_type & translation) const
+{
+	typename vector2_type::value_type t;
+
+	getValue () .get (t);
+
+	translation = t;
+}
+
+template <class ValueType>
+void
+SFMatrix3 <ValueType>::getTransform (vector2_type & translation,
+                                     scalar_type & rotation) const
+{
+	typename vector2_type::value_type t;
+
+	getValue () .get (t, rotation);
+
+	translation = t;
 }
 
 template <class ValueType>

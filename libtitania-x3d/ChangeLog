@@ -1,9 +1,10 @@
-2013-07-09  Holger Seelig  <holger.seelig@yahoo.de>
+2013-07-10  Holger Seelig  <holger.seelig@yahoo.de>
 
-	* X3DBrowser.cpp:
-	* TransformHandle.cpp:
+	* ChangeLog:
+	* SFMatrix4.h:
+	* SFMatrix3.h:
 	* TransformHandle.wrl:
-	* ExamineViewer.cpp: 
+	* jsSFMatrix4.h: 
 
 2013-07-09  Holger Seelig  <holger.seelig@yahoo.de>
 

@@ -435,55 +435,162 @@ template <class Type>
 JSBool
 jsSFMatrix4 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
 {
-	if (argc == 3)
+	if (argc < 5)
 	{
 		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* translationObj, * rotationObj, * scaleObj;
+		JSObject* translationObj      = nullptr;
+		JSObject* rotationObj         = nullptr;
+		JSObject* scaleObj            = nullptr;
+		JSObject* scaleOrientationObj = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
-		if (not JS_ConvertArguments (context, argc, argv, "ooo", &translationObj, &rotationObj, &scaleObj))
+		if (not JS_ConvertArguments (context, argc, argv, "/oooo", &translationObj, &rotationObj, &scaleObj, &scaleOrientationObj))
 			return JS_FALSE;
+			
+		vector3_field_type*  translation      = nullptr;
+		rotation_field_type* rotation         = nullptr;
+		vector3_field_type*  scale            = nullptr;
+		rotation_field_type* scaleOrientation = nullptr;
 
-		if (not JS_InstanceOf (context, translationObj, vector3_type::getClass (), NULL))
+		bool noTranslation      = false;
+		bool noRotation         = false;
+		bool noScale            = false;
+		bool noScaleOrientation = false;
+
+		if (translationObj)
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s",
-			                vector3_type::getClass () -> name,
-			                JS_GetClass (context, translationObj) -> name);
+			if (not JS_InstanceOf (context, translationObj, vector3_type::getClass (), NULL))
+			{
+				JS_ReportError (context, "Type of argument 1 is invalid - should be %s or null, is %s",
+				                vector3_type::getClass () -> name,
+				                JS_GetClass (context, translationObj) -> name);
 
-			return JS_FALSE;
+				return JS_FALSE;
+			}
+			else
+				translation = (vector3_field_type*) JS_GetPrivate (context, translationObj);
+		}
+		else if (argc > 0)
+		{
+			translation   = new vector3_field_type ();
+			noTranslation = true;
 		}
 
-		if (not JS_InstanceOf (context, rotationObj, jsSFRotation::getClass (), NULL))
+		if (rotationObj)
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be rotation_field_type, is %s",
-			                JS_GetClass (context, rotationObj) -> name);
+			if (not JS_InstanceOf (context, rotationObj, jsSFRotation::getClass (), NULL))
+			{
+				JS_ReportError (context, "Type of argument 2 is invalid - should be %s or null, is %s",
+				                rotation_type::getClass () -> name,
+				                JS_GetClass (context, rotationObj) -> name);
 
-			return JS_FALSE;
+				if (noTranslation)
+					delete translation;
+
+				return JS_FALSE;
+			}
+			else
+				rotation = (rotation_field_type*) JS_GetPrivate (context, rotationObj);
+		}
+		else if (argc > 1)
+		{
+			rotation   = new rotation_field_type ();
+			noRotation = true;
 		}
 
-		if (not JS_InstanceOf (context, scaleObj, vector3_type::getClass (), NULL))
+		if (scaleObj)
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s",
-			                vector3_type::getClass () -> name,
-			                JS_GetClass (context, scaleObj) -> name);
+			if (not JS_InstanceOf (context, scaleObj, vector3_type::getClass (), NULL))
+			{
+				JS_ReportError (context, "Type of argument 3 is invalid - should be %s or null, is %s",
+				                vector3_type::getClass () -> name,
+				                JS_GetClass (context, scaleObj) -> name);
+				               
+				if (noTranslation)
+					delete translation;
 
-			return JS_FALSE;
+				if (noRotation)
+					delete rotation;
+
+				return JS_FALSE;
+			}
+			else
+				scale = (vector3_field_type*) JS_GetPrivate (context, scaleObj);
+		}
+		else if (argc > 2)
+		{
+			scale   = new vector3_field_type ();
+			noScale = true;
 		}
 
-		vector3_field_type*  translation = (vector3_field_type*)  JS_GetPrivate (context, translationObj);
-		rotation_field_type* rotation    = (rotation_field_type*) JS_GetPrivate (context, rotationObj);
-		vector3_field_type*  scale       = (vector3_field_type*)  JS_GetPrivate (context, scaleObj);
+		if (scaleOrientationObj)
+		{
+			if (not JS_InstanceOf (context, scaleObj, vector3_type::getClass (), NULL))
+			{
+				JS_ReportError (context, "Type of argument 4 is invalid - should be %s or null, is %s",
+				                rotation_type::getClass () -> name,
+				                JS_GetClass (context, scaleObj) -> name);
 
-		self -> getTransform (*translation, *rotation, *scale);
+				if (noTranslation)
+					delete translation;
+
+				if (noRotation)
+					delete rotation;
+
+				if (noScale)
+					delete scale;
+
+				return JS_FALSE;
+			}
+			else
+				scaleOrientation = (rotation_field_type*) JS_GetPrivate (context, scaleOrientationObj);
+		}
+		else if (argc > 3)
+		{
+			scaleOrientation   = new rotation_field_type ();
+			noScaleOrientation = true;
+		}
+
+		switch (argc)
+		{
+			case 0:
+				break;
+			case 1:
+				self -> getTransform (*translation);
+				break;
+			case 2:
+				self -> getTransform (*translation, *rotation);
+				break;
+			case 3:
+				self -> getTransform (*translation, *rotation, *scale);
+				break;
+			case 4:
+				self -> getTransform (*translation, *rotation, *scale, *scaleOrientation);
+				break;
+		}
+
+		if (noTranslation)
+			delete translation;
+
+		if (noRotation)
+			delete rotation;
+
+		if (noScale)
+			delete scale;
+
+		if (noScaleOrientation)
+			delete scaleOrientation;
 
 		JS_SET_RVAL (context, vp, JSVAL_VOID);
 
 		return JS_TRUE;
 	}
 
-	return JS_TRUE;
+	JS_ReportError (context, "wrong number of arguments");
+
+	return JS_FALSE;
 }
 
 template <class Type>

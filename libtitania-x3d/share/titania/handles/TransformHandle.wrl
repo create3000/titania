@@ -117,6 +117,12 @@ function eventsProcessed ()
 	var rotation    = new SFRotation ();
 	var scale       = new SFVec3f ();
 	modelViewMatrix .multRight (inverseCameraSpaceMatrix) .getTransform (translation, rotation, scale);
+	print (translation);
+	modelViewMatrix .getTransform (translation);
+	
+	print (modelViewMatrix);
+	print (inverseCameraSpaceMatrix);
+	print (translation);
 
 	var distance = translation .length ();
 	var offset   = arrow .height / 2 * distance;
