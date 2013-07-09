@@ -26,6 +26,8 @@ Background {
   skyColor 0.2 0.2 0.2
 }
 
+DEF NavigationInfo NavigationInfo { }
+
 DEF ActiveLayer1 Transform {
   translation -4 3 0
   scale 0.5 0.5 0.5
@@ -120,6 +122,7 @@ DEF LayerSet LayerSet {
   layers [
     DEF Layer1 Layer {
       children [
+        USE NavigationInfo
         DEF _0 Transform {
           translation -4 0 0
           children [
@@ -295,6 +298,7 @@ DEF LayerSet LayerSet {
     }
     DEF Layer2 Layer {
       children [
+        USE NavigationInfo
         DEF _3 Transform {
           translation 2 0 0
           children [

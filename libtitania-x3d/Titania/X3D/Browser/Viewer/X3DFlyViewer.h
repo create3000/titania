@@ -53,7 +53,6 @@
 
 #include <gdkmm.h>
 
-#include "../../Components/Navigation/NavigationInfo.h"
 #include "../../Components/Navigation/Viewpoint.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"
 #include "../../Fields/SFNode.h"
@@ -68,13 +67,18 @@ class X3DFlyViewer :
 public:
 
 	X3DFlyViewer (Browser* const, NavigationInfo*);
+	
+	virtual
+	NavigationInfo*
+	getNavigationInfo () const final
+	{ return navigationInfo; }
+
+
+private:
 
 	virtual
 	void
 	initialize () override;
-
-
-private:
 
 	void
 	set_collisionNormal ();

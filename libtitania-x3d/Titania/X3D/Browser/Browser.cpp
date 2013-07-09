@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -68,11 +68,11 @@ namespace titania {
 namespace X3D {
 
 Browser::Browser () :
-	    X3DBaseNode (this, this), 
-	opengl::Surface (),           
-	     X3DBrowser (),           
-	        viewer  (new NoneViewer (this)),           
-	pointingDevice  (this)         
+	    X3DBaseNode (this, this),
+	opengl::Surface (),
+	     X3DBrowser (),
+	        viewer  (new NoneViewer (this)),
+	pointingDevice  (this)
 {
 	add_events (Gdk::BUTTON_PRESS_MASK |
 	            Gdk::POINTER_MOTION_MASK |
@@ -102,10 +102,41 @@ Browser::construct ()
 }
 
 void
+Browser::setViewer (ViewerType type, NavigationInfo* navigationInfo)
+{
+	if (viewer -> getType () not_eq type or viewer -> getNavigationInfo () not_eq navigationInfo)
+	{
+		switch (type)
+		{
+			case ViewerType::NONE:
+			{
+				viewer .reset (new NoneViewer (this));
+				break;
+			}
+			case ViewerType::FLY:
+			{
+				viewer .reset (new FlyViewer (this, navigationInfo));
+				break;
+			}
+			case ViewerType::EXAMINE:
+			{
+				viewer .reset (new ExamineViewer (this, navigationInfo));
+				break;
+			}
+			case ViewerType::WALK:
+			{
+				viewer .reset (new WalkViewer (this, navigationInfo));
+				break;
+			}
+		}
+
+		viewer -> setup ();
+	}
+}
+
+void
 Browser::set_navigationInfo ()
 {
-	viewer .reset ();
-
 	NavigationInfo* navigationInfo = getActiveNavigationInfo ();
 
 	if (navigationInfo)
@@ -114,20 +145,20 @@ Browser::set_navigationInfo ()
 		{
 			if (type == "NONE")
 			{
-				viewer .reset (new NoneViewer (this));
-				break;
+				setViewer (ViewerType::NONE, nullptr);
+				goto END;
 			}
 
 			else if (type == "WALK")
 			{
-				viewer .reset (new WalkViewer (this, navigationInfo));
-				break;
+				setViewer (ViewerType::WALK, navigationInfo);
+				goto END;
 			}
 
 			else if (type == "FLY")
 			{
-				viewer .reset (new FlyViewer (this, navigationInfo));
-				break;
+				setViewer (ViewerType::FLY, navigationInfo);
+				goto END;
 			}
 
 			else if (type == "LOOKAT")
@@ -138,18 +169,17 @@ Browser::set_navigationInfo ()
 
 			else
 			{
-				viewer .reset (new ExamineViewer (this, navigationInfo));
-				break;
+				setViewer (ViewerType::EXAMINE, navigationInfo);
+				goto END;
 			}
 		}
 
-		if (not viewer)
-			viewer .reset (new ExamineViewer (this, navigationInfo));
+		setViewer (ViewerType::EXAMINE, navigationInfo);
+
+END:;
 	}
 	else
-		viewer .reset (new NoneViewer (this));
-
-	viewer -> setup ();
+		setViewer (ViewerType::NONE, nullptr);
 }
 
 void

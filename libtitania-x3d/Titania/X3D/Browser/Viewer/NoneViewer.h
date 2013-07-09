@@ -70,6 +70,11 @@ public:
 	getType () const final
 	{ return ViewerType::NONE; }
 
+	virtual
+	NavigationInfo*
+	getNavigationInfo () const final
+	{ return nullptr; }
+
 };
 
 } // X3D

@@ -53,7 +53,6 @@
 
 #include <gdkmm.h>
 
-#include "../../Components/Navigation/NavigationInfo.h"
 #include "../../Components/Navigation/Viewpoint.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"
 #include "../../Fields/SFNode.h"
@@ -69,16 +68,22 @@ public:
 
 	ExamineViewer (Browser* const, NavigationInfo*);
 
-	void
-	initialize ();
-
 	virtual
 	ViewerType
 	getType () const final
 	{ return ViewerType::EXAMINE; }
 
+	virtual
+	NavigationInfo*
+	getNavigationInfo () const final
+	{ return navigationInfo; }
+
 
 private:
+
+	virtual
+	void
+	initialize () final;
 
 	void
 	set_viewpoint ();

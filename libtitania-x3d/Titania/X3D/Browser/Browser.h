@@ -96,6 +96,9 @@ private:
 	void
 	construct () final;
 
+	void
+	setViewer (ViewerType, NavigationInfo*);
+
 	virtual
 	void
 	set_navigationInfo () final;

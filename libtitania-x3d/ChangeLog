@@ -1,5 +1,14 @@
 2013-07-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Browser.h:
+	* Browser.cpp:
+	* X3DViewer.h:
+	* NoneViewer.h:
+	* X3DFlyViewer.h:
+	* ExamineViewer.h: 
+
+2013-07-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* World.cpp:
 	* X3DBrowser.cpp:
 	* X3DRenderer.cpp:
