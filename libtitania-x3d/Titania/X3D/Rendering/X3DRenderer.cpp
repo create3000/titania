@@ -280,7 +280,7 @@ X3DRenderer::draw ()
 void
 X3DRenderer::navigation ()
 {
-	// Collision
+	// Measure distance
 
 	// Bind buffer
 

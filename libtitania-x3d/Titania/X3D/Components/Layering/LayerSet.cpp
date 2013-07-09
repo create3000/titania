@@ -116,10 +116,15 @@ void
 LayerSet::set_activeLayer ()
 {
 	if (activeLayer () >= 0 and activeLayer () < (int32_t) children .size ())
-		activeLayerNode = children [activeLayer ()];
-
+	{
+		if (activeLayerNode not_eq children [activeLayer ()])
+			activeLayerNode = children [activeLayer ()];
+	}
 	else
-		activeLayerNode = NULL;
+	{
+		if (activeLayerNode not_eq nullptr)
+			activeLayerNode = nullptr;
+	}
 }
 
 void

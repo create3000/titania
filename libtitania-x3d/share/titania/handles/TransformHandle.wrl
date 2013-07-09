@@ -99,11 +99,6 @@ PROTO TransformHandle [
     field        SFNode     arrow USE Arrow
 
     url "vrmlscript:
-function max (a , b)
-{
-	return a < b ? b : a;
-}    
-
 function eventsProcessed ()
 {
 	var translation = new SFVec3f ();

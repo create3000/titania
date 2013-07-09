@@ -263,15 +263,18 @@ X3DBrowser::set_scene ()
 void
 X3DBrowser::set_activeLayer ()
 {
-	if (activeLayer)
-		activeLayer -> getNavigationInfoStack () .removeInterest (this, &X3DBrowser::set_navigationInfo);
+	if (activeLayer not_eq world -> getActiveLayer ())
+	{
+		if (activeLayer)
+			activeLayer -> getNavigationInfoStack () .removeInterest (this, &X3DBrowser::set_navigationInfo);
 
-	activeLayer = world -> getActiveLayer ();
+		activeLayer = world -> getActiveLayer ();
 
-	if (activeLayer)
-		activeLayer -> getNavigationInfoStack () .addInterest (this, &X3DBrowser::set_navigationInfo);
-		
-	set_navigationInfo ();
+		if (activeLayer)
+			activeLayer -> getNavigationInfoStack () .addInterest (this, &X3DBrowser::set_navigationInfo);
+
+		set_navigationInfo ();
+	}
 }
 
 void

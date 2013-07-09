@@ -1,5 +1,14 @@
 2013-07-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* World.cpp:
+	* X3DBrowser.cpp:
+	* X3DRenderer.cpp:
+	* TransformHandle.wrl:
+	* ExamineViewer.cpp:
+	* LayerSet.cpp: 
+
+2013-07-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TransformHandle.wrl: 
 
 2013-07-09  Holger Seelig  <holger.seelig@yahoo.de>

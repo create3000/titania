@@ -84,9 +84,10 @@ World::initialize ()
 
 	layerSet -> setup ();
 	layerSet -> setLayer0 (layer0);
+	layerSet -> getActiveLayer () .addInterest (this, &World::set_activeLayer);
 
 	scene -> getRootNodes () .addInterest (this, &World::set_rootNodes);
-	
+
 	set_rootNodes (); // This can happen twice when rootNodes is tainted
 
 	layer0 -> setup ();
@@ -96,9 +97,9 @@ World::initialize ()
 void
 World::set_rootNodes ()
 {
-	layer0 -> children () = scene -> getRootNodes ();
+	SFNode <LayerSet> oldLayerSet = layerSet;	
 
-	layerSet -> getActiveLayer () .removeInterest (this, &World::set_activeLayer);
+	layer0 -> children () = scene -> getRootNodes ();
 
 	layerSet = defaultLayerSet;
 
@@ -113,9 +114,13 @@ World::set_rootNodes ()
 		}
 	}
 
-	layerSet -> getActiveLayer () .addInterest (this, &World::set_activeLayer);
-	
-	set_activeLayer ();
+	if (layerSet not_eq oldLayerSet)
+	{
+		oldLayerSet -> getActiveLayer () .removeInterest (this, &World::set_activeLayer);
+		layerSet    -> getActiveLayer () .addInterest    (this, &World::set_activeLayer);
+
+		set_activeLayer ();
+	}
 }
 
 void
