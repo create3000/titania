@@ -49,8 +49,8 @@ PROTO TransformHandle [
               }
             }
             geometry DEF Arrow Cone {
-              height 0.06
-              bottomRadius 0.03
+              height 0.03
+              bottomRadius 0.01
             }
           }
         }
@@ -111,7 +111,7 @@ function eventsProcessed ()
 	var scale       = new SFVec3f ();
 	modelViewMatrix .multRight (inverseCameraSpaceMatrix) .getTransform (translation, rotation, scale);
 
-	var distance = new SFVec3f (translation .x / scale .x, translation .y / scale .y, translation .z / scale .z) .length ();
+	var distance = translation .length ();
 	var offset   = arrow .height / 2 * distance;
 
 	x .children [0] .translation = new SFVec3f (offset + bboxSize .x / 2 * scale .x, 0, 0);
@@ -130,8 +130,6 @@ function eventsProcessed ()
 }
 "
   }
-
-  ROUTE Lines.scale_changed TO TransformHandle.set_bboxSize
 }
 
 DEF Handle TransformHandle { }
