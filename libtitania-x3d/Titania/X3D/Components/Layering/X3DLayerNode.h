@@ -51,8 +51,6 @@
 #ifndef __TITANIA_X3D_COMPONENTS_LAYERING_X3DLAYER_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_LAYERING_X3DLAYER_NODE_H__
 
-#include "../../Execution/BindableNodeList.h"
-#include "../../Execution/BindableNodeStack.h"
 #include "../../Rendering/CollisionArray.h"
 #include "../../Rendering/LightContainerArray.h"
 #include "../../Rendering/X3DRenderer.h"
@@ -62,10 +60,31 @@
 #include "../Grouping/X3DGroupingNode.h"
 #include "../Layering/Viewport.h"
 
+#include "../EnvironmentalEffects/Fog.h"
+#include "../EnvironmentalEffects/X3DBackgroundNode.h"
+#include "../Navigation/NavigationInfo.h"
+#include "../Navigation/X3DViewpointNode.h"
+
 #include <stack>
 
 namespace titania {
 namespace X3D {
+
+template <class Type>
+class X3DBindableNodeStack;
+
+template <class Type>
+class X3DBindableNodeList;
+
+typedef X3DBindableNodeStack <NavigationInfo> NavigationInfoStack;
+typedef X3DBindableNodeStack <X3DBackgroundNode> BackgroundStack;
+typedef X3DBindableNodeStack <Fog> FogStack;
+typedef X3DBindableNodeStack <X3DViewpointNode> ViewpointStack;
+
+typedef X3DBindableNodeList <NavigationInfo>    NavigationInfoList;
+typedef X3DBindableNodeList <X3DBackgroundNode> BackgroundList;
+typedef X3DBindableNodeList <Fog>               FogList;
+typedef X3DBindableNodeList <X3DViewpointNode>  ViewpointList;
 
 typedef std::deque <X3D::X3DViewpointNode*> UserViewpointList;
 typedef std::stack <LocalFog*> LocalFogStack;
@@ -139,72 +158,40 @@ public:
 
 	///  @name X3DBindableNode stack handling
 
-	NavigationInfoStack &
-	getNavigationInfoStack ()
-	{ return navigationInfoStack; }
-
-	const NavigationInfoStack &
+	const SFNode <NavigationInfoStack> &
 	getNavigationInfoStack () const
 	{ return navigationInfoStack; }
 
-	BackgroundStack &
-	getBackgroundStack ()
-	{ return backgroundStack; }
-
-	const BackgroundStack &
+	const SFNode <BackgroundStack> &
 	getBackgroundStack () const
 	{ return backgroundStack; }
 
-	FogStack &
-	getFogStack ()
-	{ return fogStack; }
-
-	const FogStack &
+	const SFNode <FogStack> &
 	getFogStack () const
 	{ return fogStack; }
 
-	ViewpointStack &
-	getViewpointStack ()
-	{ return viewpointStack; }
-
-	const ViewpointStack &
+	const SFNode <ViewpointStack> &
 	getViewpointStack () const
 	{ return viewpointStack; }
 
 	///  @name X3DBindableNode list handling
 
-	NavigationInfoList &
-	getNavigationInfos ()
-	{ return navigationInfos; }
-
-	const NavigationInfoList &
+	const SFNode <NavigationInfoList> &
 	getNavigationInfos () const
 	{ return navigationInfos; }
 
-	BackgroundList &
-	getBackgrounds ()
-	{ return backgrounds; }
-
-	const BackgroundList &
+	const SFNode <BackgroundList> &
 	getBackgrounds () const
 	{ return backgrounds; }
 
-	FogList &
-	getFogs ()
-	{ return fogs; }
-
-	const FogList &
+	const SFNode <FogList> &
 	getFogs () const
 	{ return fogs; }
 
-	ViewpointList &
-	getViewpoints ()
-	{ return viewpoints; }
-	
-	const ViewpointList &
+	const SFNode <ViewpointList> &
 	getViewpoints () const
 	{ return viewpoints; }
-	
+
 	UserViewpointList
 	getUserViewpoints () const;
 
@@ -324,15 +311,15 @@ private:
 
 	X3DViewportNode* currentViewport;
 
-	NavigationInfoStack    navigationInfoStack;
-	BackgroundStack        backgroundStack;
-	FogStack               fogStack;
-	ViewpointStack         viewpointStack;
+	SFNode <NavigationInfoStack> navigationInfoStack;
+	SFNode <BackgroundStack>     backgroundStack;
+	SFNode <FogStack>            fogStack;
+	SFNode <ViewpointStack>      viewpointStack;
 
-	NavigationInfoList navigationInfos;
-	BackgroundList     backgrounds;
-	FogList            fogs;
-	ViewpointList      viewpoints;
+	SFNode <NavigationInfoList> navigationInfos;
+	SFNode <BackgroundList>     backgrounds;
+	SFNode <FogList>            fogs;
+	SFNode <ViewpointList>      viewpoints;
 
 	LocalFogStack       localFogs;
 	LightContainerArray localLights;

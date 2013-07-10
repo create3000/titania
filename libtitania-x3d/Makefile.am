@@ -343,8 +343,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Configuration/SupportedFields.cpp \
 	Titania/X3D/Configuration/SupportedNodes.cpp \
 	Titania/X3D/Configuration/SupportedProfiles.cpp \
-	Titania/X3D/Execution/BindableNodeList.cpp \
-	Titania/X3D/Execution/BindableNodeStack.cpp \
 	Titania/X3D/Execution/ExportedNode.cpp \
 	Titania/X3D/Execution/ExportedNodeArray.cpp \
 	Titania/X3D/Execution/ImportedNode.cpp \

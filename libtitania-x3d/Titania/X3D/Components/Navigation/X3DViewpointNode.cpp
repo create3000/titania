@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,6 +51,8 @@
 #include "X3DViewpointNode.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Execution/BindableNodeList.h"
+#include "../../Execution/BindableNodeStack.h"
 #include "../Layering/X3DLayerNode.h"
 #include "../Navigation/NavigationInfo.h"
 
@@ -67,15 +69,15 @@ X3DViewpointNode::Fields::Fields () :
 { }
 
 X3DViewpointNode::X3DViewpointNode () :
-	            X3DBindableNode (),                                        
-	         X3DViewpointObject (),                                                 
-	                     fields (),                                                 
-	            modelViewMatrix (),                                                 
-	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),  
-	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1), 
-	           differenceMatrix (),                                                 
-	                 timeSensor (new TimeSensor (getExecutionContext ())),                                                 
-	       positionInterpolator (new PositionInterpolator (getExecutionContext ()))                                                  
+	            X3DBindableNode (),
+	         X3DViewpointObject (),
+	                     fields (),
+	            modelViewMatrix (),
+	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),
+	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
+	           differenceMatrix (),
+	                 timeSensor (new TimeSensor (getExecutionContext ())),
+	       positionInterpolator (new PositionInterpolator (getExecutionContext ()))
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
 
@@ -135,15 +137,15 @@ X3DViewpointNode::bindToLayer (X3DLayerNode* const layer)
 {
 	std::clog << "Trying to bind X3DViewpoint '" << getName () << ":" << description () << "' to layer '" << layer -> getName () << ":" << layer << "': " << std::flush;
 
-	layer -> getViewpointStack () .push (this);
+	layer -> getViewpointStack () -> push (this);
 
-	std::clog << (layer -> getViewpointStack () .top () == this ? "success." : "rejected.") << std::endl;
+	std::clog << (layer -> getViewpointStack () -> top () == this ? "success." : "rejected.") << std::endl;
 }
 
 void
 X3DViewpointNode::unbindFromLayer (X3DLayerNode* const layer)
 {
-	layer -> getViewpointStack () .pop (this);
+	layer -> getViewpointStack () -> pop (this);
 }
 
 void
@@ -250,7 +252,7 @@ X3DViewpointNode::camera ()
 void
 X3DViewpointNode::collect ()
 {
-	getCurrentLayer () -> getViewpoints () .push_back (this);
+	getCurrentLayer () -> getViewpoints () -> push_back (this);
 
 	if (not isBound ())
 	{

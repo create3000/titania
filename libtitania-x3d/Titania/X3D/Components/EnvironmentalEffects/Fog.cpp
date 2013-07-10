@@ -51,6 +51,8 @@
 #include "Fog.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Execution/BindableNodeStack.h"
+#include "../../Execution/BindableNodeList.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layering/X3DLayerNode.h"
 
@@ -58,9 +60,9 @@ namespace titania {
 namespace X3D {
 
 Fog::Fog (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DBindableNode (),                                           
-	   X3DFogObject ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DBindableNode (),
+	   X3DFogObject ()
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Fog");
@@ -90,13 +92,13 @@ Fog::initialize ()
 void
 Fog::bindToLayer (X3DLayerNode* const layer)
 {
-	layer -> getFogStack () .push (this);
+	layer -> getFogStack () -> push (this);
 }
 
 void
 Fog::unbindFromLayer (X3DLayerNode* const layer)
 {
-	layer -> getFogStack () .pop (this);
+	layer -> getFogStack () -> pop (this);
 }
 
 void
@@ -106,7 +108,7 @@ Fog::traverse (TraverseType type)
 	{
 		case TraverseType::COLLECT:
 		{
-			getCurrentLayer () -> getFogs () .push_back (this);			
+			getCurrentLayer () -> getFogs () -> push_back (this);
 			break;
 		}
 		default:

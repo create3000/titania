@@ -53,6 +53,9 @@
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../EnvironmentalEffects/Background.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include "../../Execution/BindableNodeStack.h"
+#include "../../Execution/BindableNodeList.h"
 
 namespace titania {
 namespace X3D {
@@ -71,18 +74,18 @@ X3DLayerNode::X3DLayerNode () :
 	               fields (),
 	      defaultViewport (new Viewport (getExecutionContext ())),
 	defaultNavigationInfo (new NavigationInfo (getExecutionContext ())),
-	    defaultBackground (new Background     (getExecutionContext ())),
-	           defaultFog (new Fog            (getExecutionContext ())),
-	     defaultViewpoint (new Viewpoint      (getExecutionContext ())),
-	      currentViewport (*defaultViewport),
-	  navigationInfoStack (*defaultNavigationInfo),
-	      backgroundStack (*defaultBackground),
-	             fogStack (*defaultFog),
-	       viewpointStack (*defaultViewpoint),
-	      navigationInfos (),
-	          backgrounds (),
-	                 fogs (),
-	           viewpoints (),
+	    defaultBackground (new Background (getExecutionContext ())),
+	           defaultFog (new Fog (getExecutionContext ())),
+	     defaultViewpoint (new Viewpoint (getExecutionContext ())),
+	      currentViewport (defaultViewport),
+	  navigationInfoStack (new NavigationInfoStack (getExecutionContext (), *defaultNavigationInfo)),
+	      backgroundStack (new BackgroundStack (getExecutionContext (), *defaultBackground)),
+	             fogStack (new FogStack (getExecutionContext (), *defaultFog)),
+	       viewpointStack (new ViewpointStack (getExecutionContext (), *defaultViewpoint)),
+	      navigationInfos (new NavigationInfoList (getExecutionContext ())),
+	          backgrounds (new BackgroundList (getExecutionContext ())),
+	                 fogs (new FogList (getExecutionContext ())),
+	           viewpoints (new ViewpointList (getExecutionContext ())),
 	            localFogs (),
 	          localLights (),
 	    cachedLocalLights (),
@@ -96,6 +99,14 @@ X3DLayerNode::X3DLayerNode () :
 	             defaultBackground,
 	             defaultFog,
 	             defaultViewpoint,
+	             navigationInfoStack,
+	             backgroundStack,
+	             fogStack,
+	             viewpointStack,
+	             navigationInfos,
+	             backgrounds,
+	             fogs,
+	             viewpoints,
 	             group);
 
 	defaultViewpoint -> description () = "Default Viewpoint";
@@ -112,6 +123,16 @@ X3DLayerNode::initialize ()
 	defaultBackground     -> setup ();
 	defaultFog            -> setup ();
 	defaultViewpoint      -> setup ();
+	
+	navigationInfoStack -> setup ();
+	backgroundStack     -> setup ();
+	viewpointStack      -> setup ();
+	fogStack            -> setup ();
+
+	navigationInfos -> setup ();
+	backgrounds     -> setup ();
+	viewpoints      -> setup ();
+	fogs            -> setup ();
 
 	group -> children () = children ();
 	group -> setup ();
@@ -205,13 +226,13 @@ X3DLayerNode::getDistance (const Vector3f & positionOffset, float width, float h
 NavigationInfo*
 X3DLayerNode::getNavigationInfo () const
 {
-	return navigationInfoStack .top ();
+	return navigationInfoStack -> top ();
 }
 
 X3DBackgroundNode*
 X3DLayerNode::getBackground () const
 {
-	return backgroundStack .top ();
+	return backgroundStack -> top ();
 }
 
 X3DFogObject*
@@ -220,13 +241,13 @@ X3DLayerNode::getFog () const
 	if (localFogs .size ())
 		return localFogs .top ();
 
-	return fogStack .top ();
+	return fogStack -> top ();
 }
 
 X3DViewpointNode*
 X3DLayerNode::getViewpoint () const
 {
-	return viewpointStack .top ();
+	return viewpointStack -> top ();
 }
 
 UserViewpointList
@@ -234,7 +255,7 @@ X3DLayerNode::getUserViewpoints () const
 {
 	UserViewpointList userViewpoints;
 
-	for (const auto & viewpoint : getViewpoints ())
+	for (const auto & viewpoint : **getViewpoints ())
 	{
 		if (viewpoint -> description () .length ())
 			userViewpoints .emplace_back (viewpoint);
@@ -413,10 +434,10 @@ X3DLayerNode::collect ()
 
 	render (TraverseType::COLLECT);
 
-	navigationInfos .update ();
-	backgrounds     .update ();
-	viewpoints      .update ();
-	fogs            .update ();
+	navigationInfos -> update ();
+	backgrounds     -> update ();
+	viewpoints      -> update ();
+	fogs            -> update ();
 
 	getNavigationInfo () -> disable ();
 	currentViewport -> pop ();

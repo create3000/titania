@@ -51,13 +51,7 @@
 #ifndef __TITANIA_X3D_EXECUTION_BINDABLE_NODE_LIST_H__
 #define __TITANIA_X3D_EXECUTION_BINDABLE_NODE_LIST_H__
 
-#include "../Base/X3DInput.h"
-#include "../Base/X3DOutput.h"
-
-#include "../Components/EnvironmentalEffects/Fog.h"
-#include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
-#include "../Components/Navigation/NavigationInfo.h"
-#include "../Components/Navigation/X3DViewpointNode.h"
+#include "../Basic/X3DBaseNode.h"
 
 #include <vector>
 
@@ -65,8 +59,8 @@ namespace titania {
 namespace X3D {
 
 template <class Type>
-class BindableNodeList :
-	public X3DInput, public X3DOutput
+class X3DBindableNodeList :
+	virtual public X3DBaseNode
 {
 public:
 
@@ -78,11 +72,27 @@ public:
 	/// @name Constructors
 
 	///  Default constructor.
-	BindableNodeList () :
-		X3DInput (),
-		X3DOutput (),
+	X3DBindableNodeList (X3DExecutionContext* const executionContext) :
+		X3DBaseNode (executionContext -> getBrowser (), executionContext),
+		fields (),
 		list ()
-	{ }
+	{
+		setComponent ("Browser");
+		setTypeName ("X3DBindableNodeList");
+
+		addField (outputOnly, "bindTime", *fields .bindTime);
+	}
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const executionContext) const final
+	{ return new X3DBindableNodeList (executionContext); }
+
+	/// @name Fields
+
+	const SFTime &
+	bindTime () const
+	{ return *fields .bindTime; }
 
 	/// @name Iterators
 
@@ -102,13 +112,13 @@ public:
 	cend () const
 	{ return list .cend (); }
 
-	///  @a name Element access
+	///  @name Element access
 
-	value_type
+	const value_type &
 	operator [ ] (const size_type & index) const
 	{ return list [index]; }
 
-	value_type
+	const value_type &
 	at (const size_type & index) const
 	{ return list .at (index); }
 
@@ -138,14 +148,14 @@ public:
 		if (temp not_eq list)
 		{
 			for (auto & node : list)
-				node -> shutdown .removeInterest (this, &BindableNodeList::erase);
-			
+				node -> shutdown .removeInterest (this, &X3DBindableNodeList::erase);
+
 			list = std::move (temp);
-			
+
 			for (auto & node : list)
-				node -> shutdown .addInterest (this, &BindableNodeList::erase, node);
-			
-			processInterests ();
+				node -> shutdown .addInterest (this, &X3DBindableNodeList::erase, node);
+
+			*fields .bindTime = getCurrentTime ();
 		}
 		else
 			temp .clear ();
@@ -155,13 +165,15 @@ public:
 	erase (value_type node)
 	{
 		auto end = std::remove (list .begin (), list .end (), node);
-	
+
 		if (end not_eq list .end ())
 		{
 			list .erase (end, list .end ());
-			processInterests ();
+			*fields .bindTime = getCurrentTime ();
 		}
 	}
+
+	/// @name Destruction
 
 	virtual
 	void
@@ -169,33 +181,30 @@ public:
 	{
 		list .clear ();
 
-		X3DInput::dispose ();
-		X3DOutput::dispose ();
+		X3DBaseNode::dispose ();
 	}
 
-	/// @name Destructor
-
-	virtual
-	~BindableNodeList ()
-	{ }
-
-
 private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFTime* const bindTime;
+
+	};
+
+	Fields fields;
 
 	list_type temp;
 	list_type list;
 
 };
 
-typedef BindableNodeList <NavigationInfo>    NavigationInfoList;
-typedef BindableNodeList <X3DBackgroundNode> BackgroundList;
-typedef BindableNodeList <Fog>               FogList;
-typedef BindableNodeList <X3DViewpointNode>  ViewpointList;
-
-extern template class BindableNodeList <NavigationInfo>;
-extern template class BindableNodeList <X3DBackgroundNode>;
-extern template class BindableNodeList <Fog>;
-extern template class BindableNodeList <X3DViewpointNode>;
+template <class Type>
+X3DBindableNodeList <Type>::Fields::Fields () :
+	bindTime (new SFTime ())
+{ }
 
 } // X3D
 } // titania

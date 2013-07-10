@@ -51,6 +51,8 @@
 #include "X3DBackgroundNode.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Execution/BindableNodeList.h"
+#include "../../Execution/BindableNodeStack.h"
 #include "../Layering/X3DLayerNode.h"
 #include "../Navigation/X3DViewpointNode.h"
 
@@ -99,13 +101,13 @@ X3DBackgroundNode::eventsProcessed ()
 void
 X3DBackgroundNode::bindToLayer (X3DLayerNode* const layer)
 {
-	layer -> getBackgroundStack () .push (this);
+	layer -> getBackgroundStack () -> push (this);
 }
 
 void
 X3DBackgroundNode::unbindFromLayer (X3DLayerNode* const layer)
 {
-	layer -> getBackgroundStack () .pop (this);
+	layer -> getBackgroundStack () -> pop (this);
 }
 
 Color3f
@@ -125,7 +127,7 @@ X3DBackgroundNode::build (float radius, const MFFloat & vangle, const MFFloat & 
 	//  |     |
 	//  |     |
 	// p2 --- p3
-	
+
 	float useg1 = SPHERE_USEG - 1;
 
 	for (size_t v = 0; v < vangle .size () - 1; ++ v)
@@ -136,7 +138,7 @@ X3DBackgroundNode::build (float radius, const MFFloat & vangle, const MFFloat & 
 		if (bottom)
 		{
 			theta  = M_PI - theta;
-			theta1 = M_PI - theta1;			
+			theta1 = M_PI - theta1;
 		}
 
 		float y  = cos (theta);
@@ -277,10 +279,10 @@ X3DBackgroundNode::build ()
 
 			if (vangle .back () < M_PI1_2)
 				vangle .emplace_back (M_PI1_2);
-	
+
 			if (groundColor () .size () <= groundAngle () .size () and vangle .back () < M_PI)
 				vangle .emplace_back (M_PI);
-			
+
 			build (radius, vangle, skyAngle (), skyColor (), opacity, false);
 		}
 
@@ -288,7 +290,7 @@ X3DBackgroundNode::build ()
 		{
 			MFFloat vangle;
 			vangle .assign (groundAngle () .rbegin (), groundAngle () .rend ());
-	
+
 			if (vangle .empty () or vangle .front () < M_PI1_2)
 				vangle .emplace_front (M_PI1_2);
 
@@ -307,7 +309,7 @@ X3DBackgroundNode::traverse (TraverseType type)
 	{
 		case TraverseType::COLLECT:
 		{
-			getCurrentLayer () -> getBackgrounds () .push_back (this);
+			getCurrentLayer () -> getBackgrounds () -> push_back (this);
 
 			matrix = ModelViewMatrix4f ();
 

@@ -1,5 +1,27 @@
 2013-07-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* X3D.h:
+	* libtitania-x3d.cproj:
+	* World.cpp:
+	* X3DBrowser.cpp:
+	* BindableNodeList.h:
+	* BindableNodeStack.h:
+	* TransformHandle.wrl:
+	* Layer.cpp:
+	* BindableNodeList.cpp:
+	* BindableNodeStack.cpp:
+	* LayerSet.cpp:
+	* LayoutLayer.cpp:
+	* X3DLayerNode.h:
+	* X3DLayerNode.cpp:
+	* Fog.cpp:
+	* NavigationInfo.cpp:
+	* X3DViewpointNode.cpp:
+	* X3DBackgroundNode.cpp: 
+
+2013-07-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ChangeLog:
 	* SFMatrix4.h:
 	* SFMatrix3.h:

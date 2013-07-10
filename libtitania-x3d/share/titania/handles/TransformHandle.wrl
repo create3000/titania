@@ -98,6 +98,7 @@ PROTO TransformHandle [
     exposedField SFMatrix4f inverseCameraSpaceMatrix IS inverseCameraSpaceMatrix
     exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
     exposedField SFVec3f    bboxSize IS bboxSize
+    exposedField SFVec3f    bboxCenter IS bboxCenter
     exposedField SFNode     transform IS transform
     field        SFNode     x USE X
     field        SFNode     y USE Y
@@ -117,14 +118,14 @@ function eventsProcessed ()
 	var rotation    = new SFRotation ();
 	var scale       = new SFVec3f ();
 	modelViewMatrix .multRight (inverseCameraSpaceMatrix) .getTransform (translation, rotation, scale);
-	print (translation);
 	modelViewMatrix .getTransform (translation);
 	
-	print (modelViewMatrix);
-	print (inverseCameraSpaceMatrix);
-	print (translation);
+	//print (modelViewMatrix);
+	//print (inverseCameraSpaceMatrix);
+	//print (translation);
+	//print (modelViewMatrix .multVecMatrix (bboxCenter));
 
-	var distance = translation .length ();
+	var distance = modelViewMatrix .multVecMatrix (bboxCenter) .length ();
 	var offset   = arrow .height / 2 * distance;
 
 	x .children [1] .translation = new SFVec3f (offset + bboxSize .x / 2 * scale .x, 0, 0);

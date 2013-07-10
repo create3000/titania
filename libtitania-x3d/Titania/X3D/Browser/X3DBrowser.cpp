@@ -266,12 +266,12 @@ X3DBrowser::set_activeLayer ()
 	if (activeLayer not_eq world -> getActiveLayer ())
 	{
 		if (activeLayer)
-			activeLayer -> getNavigationInfoStack () .removeInterest (this, &X3DBrowser::set_navigationInfo);
+			activeLayer -> getNavigationInfoStack () -> bindTime () .removeInterest (this, &X3DBrowser::set_navigationInfo);
 
 		activeLayer = world -> getActiveLayer ();
 
 		if (activeLayer)
-			activeLayer -> getNavigationInfoStack () .addInterest (this, &X3DBrowser::set_navigationInfo);
+			activeLayer -> getNavigationInfoStack () -> bindTime () .addInterest (this, &X3DBrowser::set_navigationInfo);
 
 		set_navigationInfo ();
 	}
@@ -373,9 +373,6 @@ void
 X3DBrowser::dispose ()
 {
 	__LOG__ << this << std::endl;
-
-	if (activeLayer)
-		activeLayer -> getNavigationInfoStack () .removeInterest (this, &X3DBrowser::set_navigationInfo);
 
 	scene       .dispose ();
 	world       .dispose ();

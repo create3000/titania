@@ -90,8 +90,14 @@ ViewpointEditor::initialize ()
 	set_activeLayer ();
 }
 
-X3D::ViewpointList &
-ViewpointEditor::getViewpoints ()
+const X3D::SFNode <X3D::ViewpointStack> &
+ViewpointEditor::getViewpointStack ()
+{
+	return activeLayer -> getViewpointStack ();
+}
+
+const X3D::SFNode <X3D::ViewpointList> &
+ViewpointEditor::getViewpoints () const
 {
 	return activeLayer -> getViewpoints ();
 }
@@ -102,27 +108,21 @@ ViewpointEditor::getUserViewpoints ()
 	return activeLayer -> getUserViewpoints ();
 }
 
-X3D::ViewpointStack &
-ViewpointEditor::getViewpointStack ()
-{
-	return activeLayer -> getViewpointStack ();
-}
-
 void
 ViewpointEditor::set_activeLayer ()
 {
 	if (activeLayer)
 	{
-		getViewpoints ()     .removeInterest (this, &ViewpointEditor::set_viewpoints);
-		getViewpointStack () .removeInterest (this, &ViewpointEditor::set_currentViewpoint);
+		getViewpoints ()     -> bindTime () .removeInterest (this, &ViewpointEditor::set_viewpoints);
+		getViewpointStack () -> bindTime () .removeInterest (this, &ViewpointEditor::set_currentViewpoint);
 	}
 	
 	activeLayer = getBrowser () -> getActiveLayer ();
 
 	if (activeLayer)
 	{
-		getViewpoints ()     .addInterest (this, &ViewpointEditor::set_viewpoints);
-		getViewpointStack () .addInterest (this, &ViewpointEditor::set_currentViewpoint);
+		getViewpoints ()     -> bindTime () .addInterest (this, &ViewpointEditor::set_viewpoints);
+		getViewpointStack () -> bindTime () .addInterest (this, &ViewpointEditor::set_currentViewpoint);
 
 		set_viewpoints ();
 		set_currentViewpoint ();
@@ -140,7 +140,7 @@ ViewpointEditor::set_viewpoints ()
 	guint index = 0;
 
 	// Fill the TreeView's model
-	for (const auto & viewpoint : getViewpoints ())
+	for (const auto & viewpoint : **getViewpoints ())
 	{
 		if (viewpoint -> description () .length ())
 		{
@@ -180,7 +180,7 @@ ViewpointEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeV
 
 	getListStore () -> get_iter (path) -> get_value (Columns::Index, index);
 
-	auto viewpoint = getViewpoints () [index];
+	auto viewpoint = getViewpoints () -> at (index);
 
 	viewpoint -> resetUserOffsets ();
 

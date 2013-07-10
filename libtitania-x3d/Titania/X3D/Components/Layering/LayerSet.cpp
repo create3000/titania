@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Execution/BindableNodeStack.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layering/Layer.h"
 
@@ -65,12 +66,12 @@ LayerSet::Fields::Fields () :
 { }
 
 LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	        X3DNode (),                                                    
-	         fields (),                                                    
-	       children ({ new Layer (executionContext) }),                    
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	        X3DNode (),
+	         fields (),
+	       children ({ new Layer (executionContext) }),
 	         layer0 (children [0]),
-	activeLayerNode ()                                        
+	activeLayerNode ()
 {
 	setComponent ("Layering");
 	setTypeName ("LayerSet");
@@ -95,7 +96,7 @@ LayerSet::initialize ()
 	X3DNode::initialize ();
 
 	layer0 -> setup ();
-	layer0 -> getBackgroundStack () .bottom () -> transparency () = 0;
+	layer0 -> getBackgroundStack () -> bottom () -> transparency () = 0;
 
 	activeLayer () .addInterest (this, &LayerSet::set_activeLayer);
 	layers ()      .addInterest (this, &LayerSet::set_layers);

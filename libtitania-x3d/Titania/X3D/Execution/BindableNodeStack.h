@@ -51,22 +51,17 @@
 #ifndef __TITANIA_X3D_EXECUTION_BINDABLE_NODE_STACK_H__
 #define __TITANIA_X3D_EXECUTION_BINDABLE_NODE_STACK_H__
 
-#include "../Base/X3DInput.h"
-#include "../Base/X3DOutput.h"
+#include "../Basic/X3DBaseNode.h"
+
 #include <Titania/Basic/BindStack.h>
 #include <initializer_list>
-
-#include "../Components/EnvironmentalEffects/Fog.h"
-#include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
-#include "../Components/Navigation/NavigationInfo.h"
-#include "../Components/Navigation/X3DViewpointNode.h"
 
 namespace titania {
 namespace X3D {
 
 template <class Type>
-class BindableNodeStack :
-	public X3DInput, public X3DOutput
+class X3DBindableNodeStack :
+	virtual public X3DBaseNode
 {
 public:
 
@@ -74,11 +69,29 @@ public:
 	typedef basic::bind_stack <pointer_type> stack_type;
 	typedef typename stack_type::size_type   size_type;
 
-	BindableNodeStack (const pointer_type & node) :
-		X3DInput (),
-		X3DOutput (),
+	X3DBindableNodeStack (X3DExecutionContext* const executionContext, const pointer_type & node) :
+		X3DBaseNode (executionContext -> getBrowser (), executionContext),
+		fields (),
 		stack ({ node })
-	{ }
+	{
+		setComponent ("Browser");
+		setTypeName ("X3DBindableNodeList");
+
+		addField (outputOnly, "bindTime", *fields .bindTime);
+   }
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const executionContext) const final
+	{ return new X3DBindableNodeStack (executionContext, bottom ()); }
+
+	/// @name Fields
+
+	const SFTime &
+	bindTime () const
+	{ return *fields .bindTime; }
+
+	///  @name Element access
 
 	const pointer_type &
 	top () const
@@ -110,9 +123,9 @@ public:
 			}
 
 			if (stack .push (node))
-				node -> shutdown .addInterest (this, &BindableNodeStack::erase, node);
+				node -> shutdown .addInterest (this, &X3DBindableNodeStack::erase, node);
 
-			processInterests ();
+			*fields .bindTime = getCurrentTime ();
 		}
 	}
 
@@ -124,7 +137,7 @@ public:
 			if (node -> isBound ())
 				node -> isBound () = false;
 			
-			node -> shutdown .removeInterest (this, &BindableNodeStack::erase);
+			node -> shutdown .removeInterest (this, &X3DBindableNodeStack::erase);
 			
 			stack .pop ();
 			
@@ -135,25 +148,13 @@ public:
 				stack .top () -> bindTime () = stack .top () -> getCurrentTime ();
 			}
 			
-			processInterests ();
+			*fields .bindTime = getCurrentTime ();
 			
 			return true;
 		}
 
 		return false;
 	}
-
-	virtual
-	void
-	dispose () final
-	{
-		X3DInput::dispose ();
-		X3DOutput::dispose ();
-	}
-
-	virtual
-	~BindableNodeStack ()
-	{ }
 
 
 private:
@@ -165,25 +166,26 @@ private:
 			stack .erase (node);
 	}
 
+	struct Fields
+	{
+		Fields ();
+
+		SFTime* const bindTime;
+
+	};
+
+	Fields fields;
+
 	stack_type stack;
 
 };
 
-typedef BindableNodeStack <NavigationInfo> NavigationInfoStack;
-typedef BindableNodeStack <X3DBackgroundNode> BackgroundStack;
-typedef BindableNodeStack <Fog> FogStack;
-typedef BindableNodeStack <X3DViewpointNode> ViewpointStack;
+template <class Type>
+X3DBindableNodeStack <Type>::Fields::Fields () :
+	bindTime (new SFTime ())
+{ }
 
 } // X3D
-
-extern template class basic::bind_stack <X3D::NavigationInfo*>;
-extern template class basic::bind_stack <X3D::X3DBackgroundNode*>;
-extern template class basic::bind_stack <X3D::Fog*>;
-extern template class basic::bind_stack <X3D::X3DViewpointNode*>;
-extern template class X3D::BindableNodeStack <X3D::NavigationInfo>;
-extern template class X3D::BindableNodeStack <X3D::X3DBackgroundNode>;
-extern template class X3D::BindableNodeStack <X3D::Fog>;
-extern template class X3D::BindableNodeStack <X3D::X3DViewpointNode>;
 
 } // titania
 

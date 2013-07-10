@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,6 +51,8 @@
 #include "NavigationInfo.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Execution/BindableNodeList.h"
+#include "../../Execution/BindableNodeStack.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layering/X3DLayerNode.h"
 
@@ -71,11 +73,11 @@ NavigationInfo::Fields::Fields () :
 { }
 
 NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	 X3DBindableNode (),                                           
-	          fields (),                                                    
-	directionalLight (new DirectionalLight (executionContext)),             
-	           light ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	 X3DBindableNode (),
+	          fields (),
+	directionalLight (new DirectionalLight (executionContext)),
+	           light ()
 {
 	setComponent ("Navigation");
 	setTypeName ("NavigationInfo");
@@ -174,13 +176,13 @@ NavigationInfo::getFarPlane () const
 void
 NavigationInfo::bindToLayer (X3DLayerNode* const layer)
 {
-	layer -> getNavigationInfoStack () .push (this);
+	layer -> getNavigationInfoStack () -> push (this);
 }
 
 void
 NavigationInfo::unbindFromLayer (X3DLayerNode* const layer)
 {
-	layer -> getNavigationInfoStack () .pop (this);
+	layer -> getNavigationInfoStack () -> pop (this);
 }
 
 void
@@ -204,7 +206,7 @@ NavigationInfo::traverse (TraverseType type)
 	{
 		case TraverseType::COLLECT:
 		{
-			getCurrentLayer () -> getNavigationInfos () .push_back (this);
+			getCurrentLayer () -> getNavigationInfos () -> push_back (this);
 			break;
 		}
 		default:

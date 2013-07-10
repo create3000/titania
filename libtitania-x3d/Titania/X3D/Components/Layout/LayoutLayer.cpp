@@ -52,6 +52,9 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../../Execution/BindableNodeList.h"
+#include "../../Execution/BindableNodeStack.h"
+
 namespace titania {
 namespace X3D {
 
@@ -60,9 +63,9 @@ LayoutLayer::Fields::Fields () :
 { }
 
 LayoutLayer::LayoutLayer (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DLayerNode (),                                                    
-	      fields ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DLayerNode (),
+	      fields ()
 {
 	setComponent ("Layout");
 	setTypeName ("LayoutLayer");

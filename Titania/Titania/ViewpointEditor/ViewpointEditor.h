@@ -74,14 +74,14 @@ private:
 	void
 	initialize ();
 
-	X3D::ViewpointList &
-	getViewpoints ();
+	const X3D::SFNode <X3D::ViewpointStack> &
+	getViewpointStack ();
+
+	const X3D::SFNode <X3D::ViewpointList> &
+	getViewpoints () const;
 
 	X3D::UserViewpointList
 	getUserViewpoints ();
-
-	X3D::ViewpointStack &
-	getViewpointStack ();
 
 	void
 	set_activeLayer ();

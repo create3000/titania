@@ -905,10 +905,8 @@
     <Compile Include="Titania\X3D\Browser\Properties\RenderingProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\BrowserOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\BrowserProperties.cpp" />
-    <Compile Include="Titania\X3D\Execution\BindableNodeStack.cpp" />
     <Compile Include="Titania\X3D\Base\Output.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DBrowserContext.cpp" />
-    <Compile Include="Titania\X3D\Execution\BindableNodeList.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFBool.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsfield.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DObject.cpp" />

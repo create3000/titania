@@ -59,6 +59,9 @@
 #include "X3D/Bits/Error.h"
 #include "X3D/Components.h"
 
+#include "X3D/Execution/BindableNodeStack.h"
+#include "X3D/Execution/BindableNodeList.h"
+
 namespace titania {
 namespace X3D {
 

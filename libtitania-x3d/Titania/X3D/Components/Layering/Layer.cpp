@@ -51,6 +51,9 @@
 #include "Layer.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+
+#include "../../Execution/BindableNodeList.h"
+#include "../../Execution/BindableNodeStack.h"
 #include "../Grouping/X3DBoundedObject.h"
 #include "../Layering/Viewport.h"
 
@@ -58,8 +61,8 @@ namespace titania {
 namespace X3D {
 
 Layer::Layer (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DLayerNode ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DLayerNode ()
 {
 	setComponent ("Layering");
 	setTypeName ("Layer");

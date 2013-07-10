@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,13 +53,15 @@
 #include "../Bits/Cast.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Layering/Layer.h"
+#include "../Execution/BindableNodeList.h"
+#include "../Execution/BindableNodeStack.h"
 
 namespace titania {
 namespace X3D {
 
 World::World (const SFNode <Scene> & _scene) :
 	    X3DBaseNode (_scene -> getBrowser (), _scene),
-	          scene (_scene),      
+	          scene (_scene),
 	       layerSet (new LayerSet (_scene)),
 	defaultLayerSet (layerSet),
 	         layer0 (new Layer (_scene)),
@@ -91,17 +93,16 @@ World::initialize ()
 	set_rootNodes (); // This can happen twice when rootNodes is tainted
 
 	layer0 -> setup ();
-	layer0 -> getBackgroundStack () .bottom () -> transparency () = 0;
+	layer0 -> getBackgroundStack () -> bottom () -> transparency () = 0;
 }
 
 void
 World::set_rootNodes ()
 {
-	SFNode <LayerSet> oldLayerSet = layerSet;	
+	SFNode <LayerSet> oldLayerSet = layerSet;
+	layerSet = defaultLayerSet;
 
 	layer0 -> children () = scene -> getRootNodes ();
-
-	layerSet = defaultLayerSet;
 
 	for (const auto & rootNode : scene -> getRootNodes ())
 	{
@@ -137,19 +138,19 @@ World::bind ()
 
 	for (auto & layer : layerSet -> getLayers ())
 	{
-		if (layer -> getNavigationInfos () .size ())
-			layer -> getNavigationInfos () [0] -> set_bind () = true;
+		if (layer -> getNavigationInfos () -> size ())
+			layer -> getNavigationInfos () -> at (0) -> set_bind () = true;
 
-		if (layer -> getBackgrounds () .size ())
-			layer -> getBackgrounds () [0] -> set_bind () = true;
+		if (layer -> getBackgrounds () -> size ())
+			layer -> getBackgrounds () -> at (0) -> set_bind () = true;
 
-		if (layer -> getFogs () .size ())
-			layer -> getFogs () [0] -> set_bind () = true;
+		if (layer -> getFogs () -> size ())
+			layer -> getFogs () -> at (0) -> set_bind () = true;
 
 		// Bind first viewpoint in viewpoint stack.
 
-		if (layer -> getViewpoints () .size ())
-			layer -> getViewpoints () [0] -> set_bind () = true;
+		if (layer -> getViewpoints () -> size ())
+			layer -> getViewpoints () -> at (0) -> set_bind () = true;
 	}
 
 	// Bind viewpoint from URL.
