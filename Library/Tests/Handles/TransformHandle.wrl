@@ -18,6 +18,13 @@ Background {
 }
 
 Viewpoint {
+  description "Top"
+  position 4.5875 13.688 11.2671
+  orientation -0.99968 -0.0187101 0.0170465 0.941688
+  centerOfRotation 0 -0.000736713 0
+}
+
+Viewpoint {
   description "Front"
   position 10 0 10
   centerOfRotation 10 0 0
@@ -51,3 +58,29 @@ Transform {
     ]
   }
 }
+Transform {
+  children 
+Transform {
+  rotation 0 1 0 1
+  children Transform {
+    translation 5 0 0
+    rotation 0 1 0 2
+    children [
+      Viewpoint {
+        description "Inside"
+        centerOfRotation 0 0 1
+        retainUserOffsets TRUE
+      }
+      Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.5 0 1
+            transparency 0.5
+          }
+        }
+        geometry Box { }
+      }
+    ]
+  }
+}
+  }

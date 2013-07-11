@@ -261,18 +261,14 @@ function set_bottomTranslation (value)
 
 function add (value)
 {
-	var rotation = new SFRotation ();
-	var scale    = new SFVec3f ();
-	modelViewMatrix .multRight (cameraSpaceMatrix) .getTransform (null, rotation, scale);
-
-	print (scale);
-	print (bboxSize);
+	var scale = new SFVec3f ();
+	modelViewMatrix .multRight (cameraSpaceMatrix) .getTransform (null, null, scale);
 
 	var offset = new SFVec3f (value .x * bboxSize .x * scale .x,
 	                          value .y * bboxSize .y * scale .y,
 	                          value .z * bboxSize .z * scale .z);
 
-	transform .translation = translation .add (rotation .multVec (offset));
+	transform .translation = translation .add (transform .rotation .multVec (offset));
 }
 "
     directOutput TRUE
