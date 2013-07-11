@@ -134,45 +134,50 @@ rotation (const Vector3f & fromVector, const Vector3f & toVector)
 void
 Billboard::rotate (TraverseType type)
 {
-	Matrix4f modelViewMatrix = ModelViewMatrix4f ();
-
-	if (type == TraverseType::CAMERA)
-		modelViewMatrix *= getCurrentViewpoint () -> getInverseTransformationMatrix ();
-
-	Matrix4f inverseModelViewMatrix = ~modelViewMatrix;
-
-	Vector3f billboardToViewer = inverseModelViewMatrix .translation ();
-
-	if (axisOfRotation () == Vector3f ())
+	try
 	{
-		Vector3f viewerYAxis = yAxis * inverseModelViewMatrix;
+		Matrix4f modelViewMatrix = ModelViewMatrix4f ();
 
-		Vector3f x = cross (viewerYAxis, billboardToViewer);
-		Vector3f y = cross (billboardToViewer, x);
-		Vector3f z = billboardToViewer;
+		if (type == TraverseType::CAMERA)
+			modelViewMatrix *= getCurrentViewpoint () -> getInverseTransformationMatrix ();
 
-		//
+		Matrix4f inverseModelViewMatrix = ~modelViewMatrix;
 
-		x .normalize ();
-		y .normalize ();
-		z .normalize ();
+		Vector3f billboardToViewer = inverseModelViewMatrix .translation ();
 
-		Matrix4f rotation (x [0], x [1], x [2], 0,
-		                   y [0], y [1], y [2], 0,
-		                   z [0], z [1], z [2], 0,
-		                   0,     0,     0,     1);
+		if (axisOfRotation () == Vector3f ())
+		{
+			Vector3f viewerYAxis = yAxis * inverseModelViewMatrix;
 
-		glMultMatrixf (rotation .data ());
+			Vector3f x = cross (viewerYAxis, billboardToViewer);
+			Vector3f y = cross (billboardToViewer, x);
+			Vector3f z = billboardToViewer;
+
+			//
+
+			x .normalize ();
+			y .normalize ();
+			z .normalize ();
+
+			Matrix4f rotation (x [0], x [1], x [2], 0,
+			                   y [0], y [1], y [2], 0,
+			                   z [0], z [1], z [2], 0,
+			                   0,     0,     0,     1);
+
+			glMultMatrixf (rotation .data ());
+		}
+		else
+		{
+			Vector3f vector = cross (axisOfRotation () .getValue (), billboardToViewer);           // direction vector of plane
+			float    angle  = std::acos (dot (zAxis, normalize (axisOfRotation () .getValue ()))); // angle between zAxis and axisOfRotation
+
+			Vector3f z = Rotation4f (vector, angle) * axisOfRotation () .getValue ();              // intersection of zAxis and plane
+
+			glMultMatrixf (Matrix4f (Rotation4f (zAxis, z)) .data ());                             // rotate zAxis in plane
+		}
 	}
-	else
-	{
-		Vector3f vector = cross (axisOfRotation () .getValue (), billboardToViewer);           // direction vector of plane
-		float    angle  = std::acos (dot (zAxis, normalize (axisOfRotation () .getValue ()))); // angle between zAxis and axisOfRotation
-
-		Vector3f z = Rotation4f (vector, angle) * axisOfRotation () .getValue ();              // intersection of zAxis and plane
-
-		glMultMatrixf (Matrix4f (Rotation4f (zAxis, z)) .data ());                             // rotate zAxis in plane
-	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void

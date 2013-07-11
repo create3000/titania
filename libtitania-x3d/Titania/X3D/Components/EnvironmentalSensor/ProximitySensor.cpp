@@ -117,48 +117,53 @@ ProximitySensor::set_enabled ()
 void
 ProximitySensor::update ()
 {
-	if (inside)
+	try
 	{
-		modelViewMatrix *= viewpoint -> getInverseTransformationMatrix ();
-
-		Vector3f   translation, scale;
-		Rotation4f rotation;
-		modelViewMatrix .get (translation, rotation, scale);
-
-		Vector3f   position    = inverse (modelViewMatrix) .translation ();
-		Rotation4f orientation = ~rotation;
-
-		if (not isActive ())
+		if (inside)
 		{
-			isActive ()  = true;
-			enterTime () = getCurrentTime ();
+			modelViewMatrix *= viewpoint -> getInverseTransformationMatrix ();
 
-			position_changed ()    = position;
-			orientation_changed () = orientation;
+			Vector3f   translation, scale;
+			Rotation4f rotation;
+			modelViewMatrix .get (translation, rotation, scale);
+
+			Vector3f   position    = inverse (modelViewMatrix) .translation ();
+			Rotation4f orientation = ~rotation;
+
+			if (not isActive ())
+			{
+				isActive ()  = true;
+				enterTime () = getCurrentTime ();
+
+				position_changed ()    = position;
+				orientation_changed () = orientation;
+			}
+			else
+			{
+				if (position_changed () not_eq position)
+					position_changed () = position;
+
+				if (orientation_changed () not_eq orientation)
+					orientation_changed () = orientation;
+			}
+
+			//		std::clog << "#######################" << std::endl;
+			//		std::clog << position << std::endl;
+			//		std::clog << orientation << std::endl;
 		}
 		else
 		{
-			if (position_changed () not_eq position)
-				position_changed () = position;
-
-			if (orientation_changed () not_eq orientation)
-				orientation_changed () = orientation;
+			if (isActive ())
+			{
+				isActive () = false;
+				exitTime () = getCurrentTime ();
+			}
 		}
 
-		//		std::clog << "#######################" << std::endl;
-		//		std::clog << position << std::endl;
-		//		std::clog << orientation << std::endl;
+		inside = false;
 	}
-	else
-	{
-		if (isActive ())
-		{
-			isActive () = false;
-			exitTime () = getCurrentTime ();
-		}
-	}
-
-	inside = false;
+	catch (const std::domain_error &)
+	{ }
 }
 
 void

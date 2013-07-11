@@ -1,5 +1,10 @@
 2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Billboard.cpp:
+	* ProximitySensor.cpp: 
+
+2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TransformHandle.cpp: 
 
 2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
