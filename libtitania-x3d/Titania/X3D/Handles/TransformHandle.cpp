@@ -159,6 +159,8 @@ TransformHandle::reshape ()
 	{
 		// catch error from getNamedNode
 	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void
