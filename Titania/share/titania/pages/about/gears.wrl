@@ -242,6 +242,7 @@ function initialize ()
 	gear .coord .point   = points;
 }
 "
+    directOutput TRUE
   }
 }
 

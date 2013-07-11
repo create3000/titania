@@ -39,7 +39,8 @@ function set_time (value)
 {
 	time .string = new MFString (new Date (value * 1000) .toLocaleString ());
 }
-  "
+"
+  directOutput TRUE
 }
 
 ROUTE Timer.time TO RandomText.set_time

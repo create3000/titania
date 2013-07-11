@@ -91,14 +91,19 @@ TouchSensor::create (X3DExecutionContext* const executionContext) const
 void
 TouchSensor::set_over (const std::shared_ptr <Hit> & hit, bool over)
 {
-	X3DTouchSensorNode::set_over (hit, over);
-
-	if (isOver ())
+	try
 	{
-		hitTexCoord_changed () = Vector2f (hit -> texCoord .x (), hit -> texCoord .y ());
-		hitNormal_changed ()   = hit -> normal;
-		hitPoint_changed ()    = hit -> point * ~getTransformationMatrix ();
+		X3DTouchSensorNode::set_over (hit, over);
+
+		if (isOver ())
+		{
+			hitTexCoord_changed () = Vector2f (hit -> texCoord .x (), hit -> texCoord .y ());
+			hitNormal_changed ()   = hit -> normal;
+			hitPoint_changed ()    = hit -> point * ~getTransformationMatrix ();
+		}
 	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 } // X3D

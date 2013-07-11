@@ -103,8 +103,8 @@ protected:
 	initialize () override;
 
 	Matrix4f
-	getTransformationMatrix () const
-	{ return transformationMatrix; }
+	getModelViewMatrix () const
+	{ return modelViewMatrix; }
 
 
 private:
@@ -122,7 +122,7 @@ private:
 
 	Fields fields;
 
-	Matrix4f transformationMatrix;
+	Matrix4f modelViewMatrix;
 
 };
 

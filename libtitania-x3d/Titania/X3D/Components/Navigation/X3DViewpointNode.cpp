@@ -128,8 +128,16 @@ X3DViewpointNode::getUserCenterOfRotation () const
 void
 X3DViewpointNode::setTransformationMatrix (const Matrix4f & value)
 {
-	transformationMatrix        = value;
-	inverseTransformationMatrix = ~value;
+	try
+	{
+		transformationMatrix        = value;
+		inverseTransformationMatrix = ~value;
+	}
+	catch (const std::domain_error &)
+	{
+		transformationMatrix        = Matrix4f ();
+		inverseTransformationMatrix = Matrix4f ();
+	}
 }
 
 void
@@ -159,22 +167,27 @@ X3DViewpointNode::resetUserOffsets ()
 void
 X3DViewpointNode::lookAt (Box3f bbox)
 {
-	std::clog << "Look at using viewpoint: " << description () << "." << std::endl;
+	try
+	{
+		std::clog << "Look at using viewpoint: " << description () << "." << std::endl;
 
-	bbox *= ~getModelViewMatrix ();
+		bbox *= ~getModelViewMatrix ();
 
-	timeSensor -> startTime ()          = getCurrentTime ();
-	positionInterpolator -> keyValue () = { positionOffset (), lookAtPositionOffset (bbox) };
+		timeSensor -> startTime ()          = getCurrentTime ();
+		positionInterpolator -> keyValue () = { positionOffset (), lookAtPositionOffset (bbox) };
 
-	centerOfRotation ()       = bbox .center ();
-	centerOfRotationOffset () = Vector3f ();
-	set_bind ()               = true;
+		centerOfRotation ()       = bbox .center ();
+		centerOfRotationOffset () = Vector3f ();
+		set_bind ()               = true;
 
-	std::clog << getTypeName () << " {" << std::endl;
-	std::clog << "  position " << getUserPosition () << std::endl;
-	std::clog << "  orientation " << getUserOrientation () << std::endl;
-	std::clog << "  centerOfRotation " << getUserCenterOfRotation () << std::endl;
-	std::clog << "}" << std::endl;
+		std::clog << getTypeName () << " {" << std::endl;
+		std::clog << "  position " << getUserPosition () << std::endl;
+		std::clog << "  orientation " << getUserOrientation () << std::endl;
+		std::clog << "  centerOfRotation " << getUserCenterOfRotation () << std::endl;
+		std::clog << "}" << std::endl;
+	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 // Notify NavigationInfos when transitions are complete.

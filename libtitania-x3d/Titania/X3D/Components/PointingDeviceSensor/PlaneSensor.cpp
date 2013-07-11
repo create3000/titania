@@ -70,7 +70,7 @@ PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	                      plane (),
 	                startOffset (),
 	                 startPoint (),
-	inverseTransformationMatrix ()
+	     inverseModelViewMatrix ()
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("PlaneSensor");
@@ -98,36 +98,41 @@ PlaneSensor::create (X3DExecutionContext* const executionContext) const
 void
 PlaneSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 {
-	X3DDragSensorNode::set_active (hit, active);
-
-	if (isActive ())
+	try
 	{
-		inverseTransformationMatrix = ~getTransformationMatrix () .rotate (axisRotation ());
-		plane                       = Plane3f (hit -> point * inverseTransformationMatrix, Vector3f (0, 0, 1));
+		X3DDragSensorNode::set_active (hit, active);
 
-		auto hitRay = hit -> ray * inverseTransformationMatrix;
-
-		Vector3f trackPoint;
-
-		if (plane .intersect (hitRay, trackPoint))
+		if (isActive ())
 		{
-			startPoint             = trackPoint;
-			trackPoint_changed ()  = trackPoint;
-			translation_changed () = offset ();
-			startOffset            = offset ();
+			inverseModelViewMatrix = ~getModelViewMatrix () .rotate (axisRotation ());
+			plane                  = Plane3f (hit -> point * inverseModelViewMatrix, Vector3f (0, 0, 1));
+
+			auto hitRay = hit -> ray * inverseTransformationMatrix;
+
+			Vector3f trackPoint;
+
+			if (plane .intersect (hitRay, trackPoint))
+			{
+				startPoint             = trackPoint;
+				trackPoint_changed ()  = trackPoint;
+				translation_changed () = offset ();
+				startOffset            = offset ();
+			}
+		}
+		else
+		{
+			if (autoOffset ())
+				offset () = translation_changed ();
 		}
 	}
-	else
-	{
-		if (autoOffset ())
-			offset () = translation_changed ();
-	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void
 PlaneSensor::set_motion (const std::shared_ptr <Hit> & hit)
 {
-	auto hitRay = hit -> ray * inverseTransformationMatrix;
+	auto hitRay = hit -> ray * inverseModelViewMatrix;
 
 	Vector3f trackPoint;
 

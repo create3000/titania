@@ -162,7 +162,7 @@ private:
 	Vector3f   fromVector;
 	float      startOffset;
 	float      angle;
-	Matrix4f   inverseTransformationMatrix;
+	Matrix4f   inverseModelViewMatrix;
 
 };
 

@@ -61,16 +61,16 @@ SphereSensor::Fields::Fields () :
 { }
 
 SphereSensor::SphereSensor (X3DExecutionContext* const executionContext) :
-	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	          X3DDragSensorNode (),
-	                     fields (),
-	                     zPlane (),
-	                     sphere (),
-	                     behind (false),
-	                 fromVector (),
-	                startOffset (),
-	                 startPoint (),
-	inverseTransformationMatrix ()
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	     X3DDragSensorNode (),
+	                fields (),
+	                zPlane (),
+	                sphere (),
+	                behind (false),
+	            fromVector (),
+	           startOffset (),
+	            startPoint (),
+	inverseModelViewMatrix ()
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("SphereSensor");
@@ -111,36 +111,41 @@ SphereSensor::getTrackPoint (const Line3f & hitRay, Vector3f & trackPoint, bool 
 void
 SphereSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 {
-	X3DDragSensorNode::set_active (hit, active);
-
-	if (isActive ())
+	try
 	{
-		inverseTransformationMatrix = ~getTransformationMatrix ();
+		X3DDragSensorNode::set_active (hit, active);
 
-		auto hitPoint = hit -> point * inverseTransformationMatrix;
-		auto center   = Vector3f ();
+		if (isActive ())
+		{
+			inverseModelViewMatrix = ~getModelViewMatrix ();
 
-		zPlane = Plane3f (center, inverseTransformationMatrix .multDirMatrix (Vector3f (0, 0, 1))); // Screen aligned Z-plane
-		sphere = Sphere3f (abs (hitPoint - center), center);
-		behind = zPlane .distance (hitPoint) < 0;
+			auto hitPoint = hit -> point * inverseModelViewMatrix;
+			auto center   = Vector3f ();
 
-		fromVector            = hitPoint - center;
-		trackPoint_changed () = hitPoint;
-		rotation_changed ()   = offset ();
-		startOffset           = offset ();
-		startPoint            = hitPoint;
+			zPlane = Plane3f (center, inverseTransformationMatrix .multDirMatrix (Vector3f (0, 0, 1))); // Screen aligned Z-plane
+			sphere = Sphere3f (abs (hitPoint - center), center);
+			behind = zPlane .distance (hitPoint) < 0;
+
+			fromVector            = hitPoint - center;
+			trackPoint_changed () = hitPoint;
+			rotation_changed ()   = offset ();
+			startOffset           = offset ();
+			startPoint            = hitPoint;
+		}
+		else
+		{
+			if (autoOffset ())
+				offset () = rotation_changed ();
+		}
 	}
-	else
-	{
-		if (autoOffset ())
-			offset () = rotation_changed ();
-	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void
 SphereSensor::set_motion (const std::shared_ptr <Hit> & hit)
 {
-	auto hitRay = hit -> ray * inverseTransformationMatrix;
+	auto hitRay = hit -> ray * inverseModelViewMatrix;
 
 	Vector3f trackPoint, intersection2;
 

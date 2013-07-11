@@ -1,5 +1,17 @@
 2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DViewpointNode.cpp:
+	* PlaneSensor.h:
+	* PlaneSensor.cpp:
+	* TouchSensor.cpp:
+	* SphereSensor.cpp:
+	* CylinderSensor.h:
+	* CylinderSensor.cpp:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorNode.cpp: 
+
+2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SpiderMonkey.h:
 	* SpiderMonkey.cpp:
 	* TransformHandle.wrl:

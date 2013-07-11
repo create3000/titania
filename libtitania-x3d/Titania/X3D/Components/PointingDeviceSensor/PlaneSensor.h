@@ -136,7 +136,7 @@ private:
 	Plane3f  plane;
 	Vector3f startOffset;
 	Vector3f startPoint;
-	Matrix4f inverseTransformationMatrix;
+	Matrix4f inverseModelViewMatrix;
 
 };
 

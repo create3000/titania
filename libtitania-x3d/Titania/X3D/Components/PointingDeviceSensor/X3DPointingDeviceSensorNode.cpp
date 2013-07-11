@@ -63,7 +63,7 @@ X3DPointingDeviceSensorNode::Fields::Fields () :
 X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
 	       X3DSensorNode (),
 	              fields (),
-	transformationMatrix ()
+	     modelViewMatrix ()
 {
 	addNodeType (X3DConstants::X3DPointingDeviceSensorNode);
 }
@@ -110,7 +110,7 @@ X3DPointingDeviceSensorNode::push ()
 	{
 		getBrowser () -> getSensors () .back () .insert (this);
 
-		transformationMatrix = ModelViewMatrix4f ();
+		modelViewMatrix = ModelViewMatrix4f ();
 	}
 }
 

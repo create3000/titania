@@ -143,49 +143,54 @@ CylinderSensor::getAngle (const Rotation4f & rotation) const
 void
 CylinderSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 {
-	X3DDragSensorNode::set_active (hit, active);
-
-	if (isActive ())
+	try
 	{
-		inverseTransformationMatrix = ~getTransformationMatrix ();
+		X3DDragSensorNode::set_active (hit, active);
 
-		auto hitRay   = hit -> ray * inverseTransformationMatrix;
-		auto hitPoint = hit -> point * inverseTransformationMatrix;
+		if (isActive ())
+		{
+			inverseModelViewMatrix = ~getModelViewMatrix () -> rotate (axisRotation ());
 
-		auto yAxis = axisRotation () * Vector3f (0, 1, 0);
-		auto zAxis = inverseTransformationMatrix .multDirMatrix (axisRotation () * Vector3f (0, 0, 1));
+			auto hitRay   = hit -> ray * inverseModelViewMatrix;
+			auto hitPoint = hit -> point * inverseModelViewMatrix;
 
-		auto axis    = Line3f (Vector3f (), yAxis);
-		auto pvector = axis .perpendicular_vector (hitPoint);
+			auto yAxis = axisRotation () * Vector3f (0, 1, 0);
+			auto zAxis = inverseTransformationMatrix .multDirMatrix (Vector3f (0, 0, 1));
 
-		cylinder = Cylinder3f (axis, abs (pvector));
+			auto axis    = Line3f (Vector3f (), yAxis);
+			auto pvector = axis .perpendicular_vector (hitPoint);
 
-		yPlane = Plane3f (Vector3f (), yAxis);  // Sensor aligned Y-plane
-		zPlane = Plane3f (hitPoint, zAxis);     // Screen aligned Z-plane.
+			cylinder = Cylinder3f (axis, abs (pvector));
 
-		disk   = std::abs (dot (hitRay .direction (), yAxis)) > std::cos (diskAngle ());
-		behind = isBehind (hitRay, hitPoint);
+			yPlane = Plane3f (Vector3f (), yAxis);  // Sensor aligned Y-plane
+			zPlane = Plane3f (hitPoint, zAxis);     // Screen aligned Z-plane.
 
-		Vector3f trackPoint;
-		getTrackPoint (hitRay, trackPoint, behind);
+			disk   = std::abs (dot (hitRay .direction (), yAxis)) > std::cos (diskAngle ());
+			behind = isBehind (hitRay, hitPoint);
 
-		fromVector = getVector (hitRay, trackPoint);
+			Vector3f trackPoint;
+			getTrackPoint (hitRay, trackPoint, behind);
 
-		trackPoint_changed () = trackPoint;
-		rotation_changed ()   = Rotation4f (yAxis, offset ());
-		startOffset           = offset ();
+			fromVector = getVector (hitRay, trackPoint);
+
+			trackPoint_changed () = trackPoint;
+			rotation_changed ()   = Rotation4f (yAxis, offset ());
+			startOffset           = offset ();
+		}
+		else
+		{
+			if (autoOffset ())
+				offset () = getAngle (rotation_changed ());
+		}
 	}
-	else
-	{
-		if (autoOffset ())
-			offset () = getAngle (rotation_changed ());
-	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void
 CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
 {
-	auto hitRay = hit -> ray * inverseTransformationMatrix;
+	auto hitRay = hit -> ray * inverseModelViewMatrix;
 
 	Vector3f trackPoint;
 
