@@ -1,5 +1,13 @@
 2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFVec3.h:
+	* SFVec4.h:
+	* SFVec2.h:
+	* World.cpp:
+	* TransformHandle.wrl: 
+
+2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SphereSensor.h:
 	* PlaneSensor.cpp:
 	* TouchSensor.cpp:

@@ -173,7 +173,13 @@ public:
 	subtract (const SFVec3 &) const;
 
 	SFVec3*
+	multiply (const SFVec3 &) const;
+
+	SFVec3*
 	multiply (const scalar_type &) const;
+
+	SFVec3*
+	divide (const SFVec3 &) const;
 
 	SFVec3*
 	divide (const scalar_type &) const;
@@ -346,17 +352,25 @@ SFVec3 <ValueType>::negate () const
 template <class ValueType>
 inline
 SFVec3 <ValueType>*
-SFVec3 <ValueType>::add (const SFVec3 & value) const
+SFVec3 <ValueType>::add (const SFVec3 & field) const
 {
-	return new SFVec3 (getValue () + value .getValue ());
+	return new SFVec3 (getValue () + field .getValue ());
 }
 
 template <class ValueType>
 inline
 SFVec3 <ValueType>*
-SFVec3 <ValueType>::subtract (const SFVec3 & value) const
+SFVec3 <ValueType>::subtract (const SFVec3 & field) const
 {
-	return new SFVec3 (getValue () - value .getValue ());
+	return new SFVec3 (getValue () - field .getValue ());
+}
+
+template <class ValueType>
+inline
+SFVec3 <ValueType>*
+SFVec3 <ValueType>::multiply (const SFVec3 & field) const
+{
+	return new SFVec3 (getValue () * field .getValue ());
 }
 
 template <class ValueType>
@@ -370,6 +384,14 @@ SFVec3 <ValueType>::multiply (const scalar_type & value) const
 template <class ValueType>
 inline
 SFVec3 <ValueType>*
+SFVec3 <ValueType>::divide (const SFVec3 & field) const
+{
+	return new SFVec3 (getValue () / field .getValue ());
+}
+
+template <class ValueType>
+inline
+SFVec3 <ValueType>*
 SFVec3 <ValueType>::divide (const scalar_type & value) const
 {
 	return new SFVec3 (getValue () / value);
@@ -378,17 +400,17 @@ SFVec3 <ValueType>::divide (const scalar_type & value) const
 template <class ValueType>
 inline
 typename SFVec3 <ValueType>::scalar_type
-SFVec3 <ValueType>::dot (const SFVec3 & value) const
+SFVec3 <ValueType>::dot (const SFVec3 & field) const
 {
-	return math::dot (getValue (), value .getValue ());
+	return math::dot (getValue (), field .getValue ());
 }
 
 template <class ValueType>
 inline
 SFVec3 <ValueType>*
-SFVec3 <ValueType>::cross (const SFVec3 & value) const
+SFVec3 <ValueType>::cross (const SFVec3 & field) const
 {
-	return new SFVec3 (math::cross (getValue (), value .getValue ()));
+	return new SFVec3 (math::cross (getValue (), field .getValue ()));
 }
 
 template <class ValueType>

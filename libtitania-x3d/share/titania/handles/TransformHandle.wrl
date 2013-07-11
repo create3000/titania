@@ -1,5 +1,37 @@
 #VRML V2.0 utf8
 
+PROTO DoubleClick [
+  eventIn      SFTime set_time
+  exposedField SFTime doubleClickInterval 0.5
+  eventOut     SFTime doubleClickTime
+]
+{
+  DEF DoubleClick Script {
+    eventIn      SFTime set_time IS set_time
+    exposedField SFTime doubleClickInterval IS doubleClickInterval
+    eventOut     SFTime doubleClickTime IS doubleClickTime
+
+    url "vrmlscript:
+
+var firstTime = 0;
+
+function set_time (value, time)
+{
+	if (firstTime == 0)
+		firstTime = time;
+	
+	else if (time - firstTime < doubleClickInterval)
+	{
+		firstTime = 0;
+		doubleClickTime = time;
+	}
+	else
+		firstTime = time;
+}
+"
+  }
+}
+
 PROTO TransformHandle [
   # required fields
   exposedField SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
@@ -36,66 +68,77 @@ PROTO TransformHandle [
               }
             }
           }
+        ]
+      }
+      DEF Planes Group {
+        children [
           DEF Front Transform {
-            translation 0 0 0.51
-            children [
-              DEF FrontSensor PlaneSensor { }
-              DEF Plane Shape {
-                appearance Appearance {
-                  material Material {
-                    transparency 1
+            children Transform {
+              children [
+                DEF FrontSensor PlaneSensor { }
+                DEF Plane Shape {
+                  appearance Appearance {
+                    material Material {
+                      transparency 1
+                    }
+                  }
+                  geometry Rectangle2D {
+                    size 1 1
                   }
                 }
-                geometry Rectangle2D {
-                  size 1 1
-                }
-              }
-            ]
+              ]
+            }
           }
           DEF Right Transform {
-            translation 0.51 0 0
-            rotation 0 1 0 1.5708
-            children [
-              DEF RightSensor PlaneSensor { }
-              USE Plane
-            ]
+            children Transform {
+              rotation 0 1 0 1.5708
+              children [
+                DEF RightSensor PlaneSensor { }
+                USE Plane
+              ]
+            }
           }
           DEF Back Transform {
-            translation 0 0 -0.51
-            rotation 0 1 0 3.14159
-            children [
-              DEF BackSensor PlaneSensor { }
-              USE Plane
-            ]
+            children Transform {
+              rotation 0 1 0 3.14159
+              children [
+                DEF BackSensor PlaneSensor { }
+                USE Plane
+              ]
+            }
           }
           DEF Left Transform {
-            translation -0.51 0 0
-            rotation 0 -1 0 1.5708
-            children [
-              DEF LeftSensor PlaneSensor { }
-              USE Plane
-            ]
+            children Transform {
+              rotation 0 -1 0 1.5708
+              children [
+                DEF LeftSensor PlaneSensor { }
+                USE Plane
+              ]
+            }
           }
           DEF Top Transform {
-            translation 0 0.51 0
-            rotation -1 0 0 1.5708
-            children [
-              DEF TopSensor PlaneSensor { }
-              USE Plane
-            ]
+            children Transform {
+              rotation -1 0 0 1.5708
+              children [
+                DEF TopSensor PlaneSensor { }
+                USE Plane
+              ]
+            }
           }
           DEF Bottom Transform {
-            translation 0 -0.51 0
-            rotation 1 0 0 1.5708
-            children [
-              DEF BottomSensor PlaneSensor { }
-              USE Plane
-            ]
+            children Transform {
+              rotation 1 0 0 1.5708
+              children [
+                DEF BottomSensor PlaneSensor { }
+                USE Plane
+              ]
+            }
           }
         ]
       }
       Group {
         children [
+          DEF ModeTouch TouchSensor { }
           DEF XAxisSensor PlaneSensor {
             maxPosition -1 0
           }
@@ -123,7 +166,15 @@ PROTO TransformHandle [
                   }
                   Shape {
                     appearance USE Red
-                    geometry DEF Sphere Sphere { radius 0.01 }
+                    geometry DEF Sphere Sphere {
+                      radius 0.01
+                    }
+                  }
+                  Shape {
+                    appearance USE Red
+                    geometry DEF Box Box {
+                      size 0.02 0.02 0.02
+                    }
                   }
                 ]
               }
@@ -132,10 +183,8 @@ PROTO TransformHandle [
         ]
       }
       Group {
-      children [
-      DEF Touch TouchSensor { }
-      Group {
         children [
+          USE ModeTouch
           DEF YAxisSensor PlaneSensor {
             maxPosition 0 -1
           }
@@ -161,6 +210,10 @@ PROTO TransformHandle [
                     appearance USE Green
                     geometry USE Sphere
                   }
+                  Shape {
+                    appearance USE Green
+                    geometry USE Box
+                  }
                 ]
               }
             }
@@ -169,6 +222,7 @@ PROTO TransformHandle [
       }
       Group {
         children [
+          USE ModeTouch
           DEF ZAxisSensor PlaneSensor {
             axisRotation 0 1 0 1.5708
           }
@@ -195,40 +249,86 @@ PROTO TransformHandle [
                     appearance USE Blue
                     geometry USE Sphere
                   }
+                  Shape {
+                    appearance USE Blue
+                    geometry USE Box
+                  }
                 ]
               }
             }
           }
         ]
       }
-      ]}
     ]
   }
 
+  DEF DoubleClick DoubleClick { }
+
   DEF ModeScript Script {
-    eventIn      SFTime     set_time
+    eventIn  SFTime  set_time
     eventOut SFInt32 whichChoice_changed
-    exposedField SFTime doubleClickTime 0.5
-    field SFTime firstTime 0
 
     url "vrmlscript:
 function set_time (value, time)
 {
-	if (firstTime == 0)
-		firstTime = time;
-	
-	else if (time - firstTime < doubleClickTime)
-	{
-		firstTime = 0;
-		whichChoice_changed = (whichChoice_changed + 1) % 2;
-	}
-	else
-		firstTime = time;
+	whichChoice_changed = (whichChoice_changed + 1) % 3;
 }
 "
   }
 
-  DEF ScaleArrows Script {
+  DEF PlanesScript Script {
+    exposedField SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
+    exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
+    exposedField SFVec3f    bboxSize IS bboxSize
+    exposedField SFVec3f    bboxCenter IS bboxCenter
+    exposedField SFNode     transform IS transform
+    field        SFFloat    offset 0.01
+    field        SFNode     front USE Front
+    field        SFNode     right USE Right
+    field        SFNode     back USE Back
+    field        SFNode     left USE Left
+    field        SFNode     top USE Top
+    field        SFNode     bottom USE Bottom
+
+    url "vrmlscript:
+
+function eventsProcessed ()
+{
+	// Position and scale planes
+
+	var scale = new SFVec3f ();
+	modelViewMatrix .multRight (cameraSpaceMatrix) .getTransform (null, null, scale);
+
+	var x = offset / scale .x;
+	var y = offset / scale .y;
+	var z = offset / scale .z;
+
+	front  .translation = bboxCenter .add (new SFVec3f ( 0,  0,  z + bboxSize .z * 0.5));
+	right  .translation = bboxCenter .add (new SFVec3f ( x + bboxSize .x * 0.5,  0,  0));
+	back   .translation = bboxCenter .add (new SFVec3f ( 0,  0, -z - bboxSize .z * 0.5));
+	left   .translation = bboxCenter .add (new SFVec3f (-x - bboxSize .x * 0.5,  0,  0));
+	top    .translation = bboxCenter .add (new SFVec3f ( 0,  y + bboxSize .y * 0.5,  0));
+	bottom .translation = bboxCenter .add (new SFVec3f ( 0, -y - bboxSize .y * 0.5,  0));
+	
+	front  .scale = new SFVec3f (bboxSize .x, bboxSize .y, 1);
+	right  .scale = new SFVec3f (1, bboxSize .y, bboxSize .z);
+	back   .scale = new SFVec3f (bboxSize .x, bboxSize .y, 1);
+	left   .scale = new SFVec3f (1, bboxSize .y, bboxSize .z);
+	top    .scale = new SFVec3f (bboxSize .x, 1, bboxSize .z);
+	bottom .scale = new SFVec3f (bboxSize .x, 1, bboxSize .z);
+	
+	front  .children [0] .children [0] .enabled = bboxSize .x && bboxSize .y;
+	right  .children [0] .children [0] .enabled = bboxSize .y && bboxSize .z;
+	back   .children [0] .children [0] .enabled = bboxSize .x && bboxSize .y;
+	left   .children [0] .children [0] .enabled = bboxSize .y && bboxSize .z;
+	top    .children [0] .children [0] .enabled = bboxSize .x && bboxSize .z;
+	bottom .children [0] .children [0] .enabled = bboxSize .x && bboxSize .z;
+}
+"
+    directOutput TRUE
+  }
+
+  DEF ArrowsScript Script {
     exposedField SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
     exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
     exposedField SFVec3f    bboxSize IS bboxSize
@@ -243,6 +343,8 @@ function set_time (value, time)
 
 function eventsProcessed ()
 {
+	// Position and scale arrows
+
 	var scale = new SFVec3f ();
 	modelViewMatrix .multRight (cameraSpaceMatrix) .getTransform (null, null, scale);
 
@@ -320,47 +422,52 @@ function set_active (value)
 
 function set_frontTranslation (value)
 {
-	add (new SFVec3f (value .x, value .y, 0));
+	add_with_bbox (new SFVec3f (value .x, value .y, 0));
 }
 
 function set_rightTranslation (value)
 {
-	add (new SFVec3f (0, value .y, -value .x));
+	add_with_bbox (new SFVec3f (0, value .y, -value .x));
 }
 
 function set_backTranslation (value)
 {
-	add (new SFVec3f (-value .x, value .y, 0));
+	add_with_bbox (new SFVec3f (-value .x, value .y, 0));
 }
 
 function set_leftTranslation (value)
 {
-	add (new SFVec3f (0, value .y, value .x));
+	add_with_bbox (new SFVec3f (0, value .y, value .x));
 }
 
 function set_topTranslation (value)
 {
-	add (new SFVec3f (value .x, 0, -value .y));
+	add_with_bbox (new SFVec3f (value .x, 0, -value .y));
 }
 
 function set_bottomTranslation (value)
 {
-	add (new SFVec3f (value .x, 0, value .y));
+	add_with_bbox (new SFVec3f (value .x, 0, value .y));
 }
 
 function set_xTranslation (value)
 {
-	add (new SFVec3f (value .x / bboxSize .x, 0, 0));
+	add (new SFVec3f (value .x, 0, 0));
 }
 
 function set_yTranslation (value)
 {
-	add (new SFVec3f (0, value .y / bboxSize .z, 0));
+	add (new SFVec3f (0, value .y, 0));
 }
 
 function set_zTranslation (value)
 {
-	add (new SFVec3f (0, 0, -value .x / bboxSize .z));
+	add (new SFVec3f (0, 0, -value .x));
+}
+
+function add_with_bbox (value)
+{
+	add (multVec (value, bboxSize));
 }
 
 function add (value)
@@ -368,28 +475,34 @@ function add (value)
 	var scale = new SFVec3f ();
 	modelViewMatrix .multRight (cameraSpaceMatrix) .getTransform (null, null, scale);
 
-	var offset = new SFVec3f (value .x * bboxSize .x * scale .x,
-	                          value .y * bboxSize .y * scale .y,
-	                          value .z * bboxSize .z * scale .z);
+	var offset = transform .rotation .multVec (multVec (value, scale));
 
-	transform .translation = translation .add (transform .rotation .multVec (offset));
+	transform .translation = translation .add (offset);
+}
+
+function multVec (a, b)
+{
+	return new SFVec3f (a .x * b .x,
+	                    a .y * b .y,
+	                    a .z * b .z);
 }
 "
     directOutput TRUE
   }
 
 
+  # Mode translate, rotate or scale
+
+  ROUTE ModeTouch.touchTime TO DoubleClick.set_time
+  ROUTE DoubleClick.doubleClickTime TO ModeScript.set_time
+
   #
 
   ROUTE ModeScript.whichChoice_changed TO XSwitch.set_whichChoice
   ROUTE ModeScript.whichChoice_changed TO YSwitch.set_whichChoice
   ROUTE ModeScript.whichChoice_changed TO ZSwitch.set_whichChoice
- 
-  #
-  
-  ROUTE Touch.touchTime TO ModeScript.set_time
 
-  #
+  # Move
 
   ROUTE FrontSensor.isActive TO Move.set_active
   ROUTE RightSensor.isActive TO Move.set_active

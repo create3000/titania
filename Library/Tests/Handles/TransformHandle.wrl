@@ -58,13 +58,12 @@ Transform {
     ]
   }
 }
+
 Transform {
-  children 
-Transform {
-  rotation 0 1 0 1
   children Transform {
-    translation 5 0 0
-    rotation 0 1 0 2
+    translation 10 0 -5
+    rotation 0 -1 0 1.5708
+    scale 1 2 3
     children [
       Viewpoint {
         description "Inside"
@@ -78,9 +77,34 @@ Transform {
             transparency 0.5
           }
         }
-        geometry Box { }
+        geometry Box { size 0 2 2 }
       }
     ]
   }
 }
+
+Transform {
+  children Transform {
+    rotation 0 1 0 1
+    children Transform {
+      translation 5 0 0
+      rotation 0 1 0 2
+      children [
+        Viewpoint {
+          description "Inside"
+          centerOfRotation 0 0 1
+          retainUserOffsets TRUE
+        }
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.5 0 1
+              transparency 0.5
+            }
+          }
+          geometry Box { }
+        }
+      ]
+    }
   }
+}

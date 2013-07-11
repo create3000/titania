@@ -101,6 +101,10 @@ private:
 	on_row_expanded (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
 	virtual
+	bool
+	on_test_collapse_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+
+	virtual
 	void
 	on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path);
 
@@ -116,6 +120,9 @@ private:
 
 	void
 	watch (const Gtk::TreeModel::iterator &, bool);
+
+	void
+	selectFields (const Gtk::TreeModel::iterator &);
 
 	void
 	autoExpandFields (const Gtk::TreeModel::iterator &);

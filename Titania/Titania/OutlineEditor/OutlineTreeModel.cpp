@@ -686,9 +686,8 @@ OutlineTreeModel::getFields (X3D::X3DChildObject* object)
 	auto sfnode = static_cast <X3D::SFNode*> (object);
 	auto node   = sfnode -> getValue ();
 
-	auto userData          = getUserData (node);
-	auto fields            = std::move (node -> getPreDefinedFields ());
-	auto userDefinedFields = std::move (node -> getUserDefinedFields ());
+	auto fields            = node -> getPreDefinedFields ();
+	auto userDefinedFields = node -> getUserDefinedFields ();
 
 	if (fields .size ())
 		fields .insert (fields .begin () + 1, userDefinedFields .begin (), userDefinedFields .end ());
@@ -696,28 +695,18 @@ OutlineTreeModel::getFields (X3D::X3DChildObject* object)
 	else
 		fields = std::move (userDefinedFields);
 
-	if (userData -> showAllFields)
-		return fields;
-
 	//
 
-	X3D::FieldDefinitionArray changedFields;
+	X3D::FieldDefinitionArray visibleFields;
 
 	for (const auto & field : fields)
 	{
-		if (not field -> isInitializeable ())
-			continue;
-
-		if (node -> isDefaultValue (field))
-			continue;
-
-		changedFields .push_back (field);
+		if (getUserData (field) -> visible)
+			visibleFields .push_back (field);
 	}
 
-	if (changedFields .size ())
-		return changedFields;
-
-	userData -> showAllFields = true;
+	if (visibleFields .size ())
+		return visibleFields;
 
 	return fields;
 }

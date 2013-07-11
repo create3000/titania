@@ -173,7 +173,13 @@ public:
 	subtract (const SFVec4 &) const;
 
 	SFVec4*
+	multiply (const SFVec4 &) const;
+
+	SFVec4*
 	multiply (const scalar_type &) const;
+
+	SFVec4*
+	divide (const SFVec4 &) const;
 
 	SFVec4*
 	divide (const scalar_type &) const;
@@ -381,17 +387,25 @@ SFVec4 <ValueType>::negate () const
 template <class ValueType>
 inline
 SFVec4 <ValueType>*
-SFVec4 <ValueType>::add (const SFVec4 & value) const
+SFVec4 <ValueType>::add (const SFVec4 & field) const
 {
-	return new SFVec4 (getValue () + value .getValue ());
+	return new SFVec4 (getValue () + field .getValue ());
 }
 
 template <class ValueType>
 inline
 SFVec4 <ValueType>*
-SFVec4 <ValueType>::subtract (const SFVec4 & value) const
+SFVec4 <ValueType>::subtract (const SFVec4 & field) const
 {
-	return new SFVec4 (getValue () - value .getValue ());
+	return new SFVec4 (getValue () - field .getValue ());
+}
+
+template <class ValueType>
+inline
+SFVec4 <ValueType>*
+SFVec4 <ValueType>::multiply (const SFVec4 & field) const
+{
+	return new SFVec4 (getValue () * field .getValue ());
 }
 
 template <class ValueType>
@@ -404,6 +418,13 @@ SFVec4 <ValueType>::multiply (const scalar_type & value) const
 
 template <class ValueType>
 SFVec4 <ValueType>*
+SFVec4 <ValueType>::divide (const SFVec4 & field) const
+{
+	return new SFVec4 (getValue () / field .getValue ());
+}
+
+template <class ValueType>
+SFVec4 <ValueType>*
 SFVec4 <ValueType>::divide (const scalar_type & value) const
 {
 	return new SFVec4 (getValue () / value);
@@ -412,9 +433,9 @@ SFVec4 <ValueType>::divide (const scalar_type & value) const
 template <class ValueType>
 inline
 typename SFVec4 <ValueType>::scalar_type
-SFVec4 <ValueType>::dot (const SFVec4 & value) const
+SFVec4 <ValueType>::dot (const SFVec4 & field) const
 {
-	return math::dot (getValue (), value .getValue ());
+	return math::dot (getValue (), field .getValue ());
 }
 
 template <class ValueType>

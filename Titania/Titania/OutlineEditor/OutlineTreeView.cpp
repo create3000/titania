@@ -184,6 +184,7 @@ bool
 OutlineTreeView::on_test_expand_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
 {
 	collapseClone (iter);
+	selectFields (iter);
 
 	// Return false to allow expansion, true to reject.
 	return false;
@@ -196,6 +197,13 @@ OutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, const G
 	setExpanded (iter, true);
 	watch (iter, true);
 	autoExpandFields (iter);
+}
+
+bool
+OutlineTreeView::on_test_collapse_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
+{
+	// Return false to allow collapse, true to reject.
+	return false;
 }
 
 void
@@ -247,6 +255,59 @@ OutlineTreeView::watch (const Gtk::TreeModel::iterator & iter, bool value)
 
 			else
 				field -> removeInterest ((Gtk::Widget*) this, &OutlineTreeView::queue_draw);
+		}
+	}
+}
+
+void
+OutlineTreeView::selectFields (const Gtk::TreeModel::iterator & iter)
+{
+	auto data = OutlineTreeModel::getData (iter);
+
+	if (data -> type == OutlineIterType::X3DBaseNode)
+	{
+		auto data         = OutlineTreeModel::getData (iter);
+		auto nodeUserData = OutlineTreeModel::getUserData (iter);
+		auto sfnode       = static_cast <X3D::SFNode*> (data -> object);
+		auto node         = sfnode -> getValue ();
+		
+		bool visible = false;
+
+		for (const auto & field : node -> getFieldDefinitions ())
+		{
+			auto userData = OutlineTreeModel::getUserData (field);
+
+			if (nodeUserData -> showAllFields)
+				userData -> visible = true;
+			
+			else
+			{
+				if (not field -> isInitializeable ())
+				{
+					userData -> visible = false;
+					continue;
+				}
+
+				if (node -> isDefaultValue (field))
+				{
+					userData -> visible = false;
+					continue;
+				}
+
+				userData -> visible = true;
+				visible = true;
+			}
+		}
+		
+		if (not visible)
+		{
+			for (const auto & field : node -> getFieldDefinitions ())
+			{
+				auto userData = OutlineTreeModel::getUserData (field);
+					userData -> visible = true;
+			}
+			
+			nodeUserData -> showAllFields = true;
 		}
 	}
 }
