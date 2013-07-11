@@ -108,16 +108,12 @@ public:
 	template <class Class>
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (const SFVec2 &)) const
-	{ addInterest (object, memberFunction, *this); }
+	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	template <class Class>
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (const SFVec2 &)) const
-	{ addInterest (object, memberFunction, *this); }
-
-	void
-	addInterest (void (* requester) (const SFVec2 &)) const
-	{ addInterest (requester, *this); }
+	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	///  @name Functions
 

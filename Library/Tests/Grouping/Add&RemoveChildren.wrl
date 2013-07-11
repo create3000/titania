@@ -130,6 +130,7 @@ function random (value)
 	return Math .round (Math .random () * value);
 }
 "
+  directOutput TRUE
 }
 
 ROUTE Timer.time TO Felület.set_time

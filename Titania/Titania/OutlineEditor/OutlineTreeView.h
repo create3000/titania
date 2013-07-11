@@ -119,7 +119,19 @@ private:
 	setExpanded (const Gtk::TreeModel::iterator &, bool);
 
 	void
-	watch (const Gtk::TreeModel::iterator &, bool);
+	setAnimated (const Gtk::TreeModel::iterator &, bool);
+
+	void
+	watch (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+
+	void
+	unwatchTree (const Gtk::TreeModel::iterator &);
+
+	void
+	unwatch (const Gtk::TreeModel::iterator &);
+
+	void
+	collapseField (const Gtk::TreeModel::Path &);
 
 	void
 	selectFields (const Gtk::TreeModel::iterator &);

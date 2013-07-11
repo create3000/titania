@@ -90,16 +90,12 @@ public:
 	template <class Class>
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (const SFImage &)) const
-	{ addInterest (object, memberFunction, *this); }
+	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	template <class Class>
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (const SFImage &)) const
-	{ addInterest (object, memberFunction, *this); }
-
-	void
-	addInterest (void (* requester) (const SFImage &)) const
-	{ addInterest (requester, *this); }
+	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	///  Functions
 

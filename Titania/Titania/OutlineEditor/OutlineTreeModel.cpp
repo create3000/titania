@@ -675,7 +675,7 @@ OutlineTreeModel::on_rows_reordered (const Path & path, const iterator & iter, i
 }
 
 void
-OutlineTreeModel::collapse_row (const Path & path, const iterator & iter)
+OutlineTreeModel::collapse_row (const Path & path)
 {
 	tree .removeChildren (path);
 }

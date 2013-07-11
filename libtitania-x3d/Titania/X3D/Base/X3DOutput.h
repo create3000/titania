@@ -84,63 +84,42 @@ public:
 
 	/// @name Has interest service
 
-	template <class Class>
+	template <class Class, class Function>
 	inline
 	bool
-	hasInterest (Class* object, void (Class::* memberFunction)()) const
+	hasInterest (Class* object, Function && memberFunction) const
 	{
 		return hasInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
+	template <class Class, class Function>
+	inline
+	bool
+	hasInterest (Class & object, Function && memberFunction) const
+	{
+		return hasInterest ((X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
+	}
+
 	/// @name Add interest service
 
-	template <class Class, class ... Arguments>
+	template <class Class, class Function, class ... Arguments>
 	inline
 	void
-	addInterest (Class* object, void (Class::* memberFunction) (Arguments ...), Arguments ... arguments) const
+	addInterest (Class* object, Function && memberFunction, Arguments && ... arguments) const
 	{
 		insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
-		insertInterest (std::bind (std::mem_fn (memberFunction), object, arguments ...),
+		insertInterest (std::bind (std::mem_fn (memberFunction), object, std::forward <Arguments> (arguments) ...),
 		                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
-	template <class Class, class ... Arguments>
+	template <class Class, class Function, class ... Arguments>
 	inline
 	void
-	addInterest (const Class* object, void (Class::* memberFunction) (Arguments ...) const, Arguments ... arguments) const
+	addInterest (Class & object, Function && memberFunction, Arguments && ... arguments) const
 	{
-		insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
-		insertInterest (std::bind (std::mem_fn (memberFunction), object, arguments ...),
-		                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
-	}
-
-	template <class Class, class Argument>
-	inline
-	void
-	addInterest (Class* object, void (Class::* memberFunction) (const Argument &), const Argument & argument) const
-	{
-		insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
-		insertInterest (std::bind (std::mem_fn (memberFunction), object, std::cref (argument)),
-		                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
-	}
-
-	template <class Class, class Argument>
-	inline
-	void
-	addInterest (Class & object, void (Class::* memberFunction) (const Argument &), const Argument & argument) const
-	{
-		insertInput (&object, reinterpret_cast <void*> (object ->* memberFunction));
-		insertInterest (std::bind (std::mem_fn (memberFunction), object, std::cref (argument)),
-		                (X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
-	}
-
-	template <class Argument>
-	inline
-	void
-	addInterest (void (* function) (const Argument &), const Argument & argument) const
-	{
-		insertInterest (std::bind (function, std::cref (argument)),
-		                nullptr, reinterpret_cast <void*> (function));
+		insertInput (object, reinterpret_cast <void*> (object .* memberFunction));
+		insertInterest (std::bind (std::mem_fn (memberFunction), object, std::forward <Arguments> (arguments) ...),
+		                (X3DInput*) object, reinterpret_cast <void*> (object .* memberFunction));
 	}
 
 	template <class Class>
@@ -161,44 +140,26 @@ public:
 		                (X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
 	}
 
-	//  Add basic interest.
-
 	void
 	addInterest (const Requester &) const;
 
 	///  @name Remove interest service
 
-	template <class Class, class ... Arguments>
+	template <class Class, class Function>
 	inline
 	void
-	removeInterest (const Class* object, void (Class::* memberFunction) (Arguments ...) const) const
+	removeInterest (Class* object, Function && memberFunction) const
 	{
 		eraseInput (object);
 		eraseInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
-	template <class Class, class Argument>
+	template <class Class, class Function>
 	inline
 	void
-	removeInterest (Class* object, void (Class::* memberFunction) (Argument)) const
+	removeInterest (Class & object, Function && memberFunction) const
 	{
 		eraseInput (object);
-		eraseInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
-	}
-
-	template <class Class>
-	void
-	removeInterest (Class* object, void (Class::* memberFunction) (void)) const
-	{
-		eraseInput (object);
-		eraseInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
-	}
-
-	template <class Class>
-	void
-	removeInterest (Class & object, void (Class::* memberFunction) (void)) const
-	{
-		eraseInput (&object);
 		eraseInterest ((X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
 	}
 

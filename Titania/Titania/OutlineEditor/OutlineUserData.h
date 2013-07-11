@@ -68,7 +68,8 @@ public:
 		expanded (false),
 		showAllFields (false),
 		selected (false),
-		visible (false)
+		visible (false),
+		animated (false)
 	{ }
 
 	Gtk::TreeModel::Path path;
@@ -77,6 +78,7 @@ public:
 	bool showAllFields;
 	bool selected;
 	bool visible;
+	bool animated;
 
 };
 

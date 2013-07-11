@@ -184,7 +184,7 @@ public:
 	{ return executionContext; }
 
 	void
-	collapse_row (const Path &, const iterator &);
+	collapse_row (const Path &);
 
 	static
 	OutlineUserData*

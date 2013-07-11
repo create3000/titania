@@ -122,22 +122,12 @@ public:
 	template <class Class>
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (const MFNode &)) const
-	{
-		addInterest (object, memberFunction, *this);
-	}
+	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	template <class Class>
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (const MFNode &)) const
-	{
-		addInterest (object, memberFunction, *this);
-	}
-
-	void
-	addInterest (void (* requester) (const MFNode &)) const
-	{
-		addInterest (requester, *this);
-	}
+	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	///  Input/Output
 
