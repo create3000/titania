@@ -146,7 +146,7 @@ ViewpointEditor::set_viewpoints ()
 		{
 			auto row = getListStore () -> append ();
 			row -> set_value (Columns::Index,       index);
-			row -> set_value (Columns::Description, viewpoint -> description () .getValue ());
+			row -> set_value (Columns::Description, Glib::Markup::escape_text (viewpoint -> description ()));
 			row -> set_value (Columns::Weight,      viewpoint -> isBound () .getValue () ? Weight::Bold : Weight::Normal);
 		}
 

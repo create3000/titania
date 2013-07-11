@@ -64,7 +64,7 @@ function initialize ()
 
 function set_time (value, time)
 {
-	print ('set_time: ' + space .children .length);
+	//print ('set_time: ' + space .children .length);
 	
 	addChildren    .length = 0;
 	removeChildren .length = 0;

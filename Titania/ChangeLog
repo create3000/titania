@@ -1,5 +1,11 @@
 2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* HistoryEditor.cpp:
+	* OutlineTreeModel.cpp:
+	* ViewpointEditor.cpp: 
+
+2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineTreeView.h:
 	* OutlineUserData.h:
 	* OutlineTreeModel.h:

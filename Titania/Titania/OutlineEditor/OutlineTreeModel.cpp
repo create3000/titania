@@ -226,7 +226,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 				{
 					auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object);
 
-					val .set (field -> toString ());
+					val .set (Glib::Markup::escape_text (field -> toString ()));
 
 					break;
 				}
@@ -234,7 +234,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 				{
 					auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object);
 
-					val .set (field -> getName ());
+					val .set (Glib::Markup::escape_text (field -> getName ()));
 
 					break;
 				}
@@ -243,7 +243,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 					auto sfnode = static_cast <X3D::SFNode*> (data -> object);
 
 					if (*sfnode)
-						val .set ("<b>" + sfnode -> getNodeTypeName () + "</b> " + sfnode -> getNodeName ());
+						val .set ("<b>" + Glib::Markup::escape_text (sfnode -> getNodeTypeName ()) + "</b> " + Glib::Markup::escape_text (sfnode -> getNodeName ()));
 
 					else
 						val .set ("<b>NULL</b>");
