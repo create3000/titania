@@ -115,7 +115,7 @@ private:
 	Vector3f   fromVector;
 	SFRotation startOffset;
 	Vector3f   startPoint;
-	Matrix4f   inverseTransformationMatrix;
+	Matrix4f   inverseModelViewMatrix;
 
 };
 

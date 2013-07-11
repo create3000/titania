@@ -99,7 +99,7 @@ TouchSensor::set_over (const std::shared_ptr <Hit> & hit, bool over)
 		{
 			hitTexCoord_changed () = Vector2f (hit -> texCoord .x (), hit -> texCoord .y ());
 			hitNormal_changed ()   = hit -> normal;
-			hitPoint_changed ()    = hit -> point * ~getTransformationMatrix ();
+			hitPoint_changed ()    = hit -> point * ~getModelViewMatrix ();
 		}
 	}
 	catch (const std::domain_error &)

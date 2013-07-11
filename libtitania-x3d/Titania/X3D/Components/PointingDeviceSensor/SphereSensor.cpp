@@ -122,7 +122,7 @@ SphereSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 			auto hitPoint = hit -> point * inverseModelViewMatrix;
 			auto center   = Vector3f ();
 
-			zPlane = Plane3f (center, inverseTransformationMatrix .multDirMatrix (Vector3f (0, 0, 1))); // Screen aligned Z-plane
+			zPlane = Plane3f (center, inverseModelViewMatrix .multDirMatrix (Vector3f (0, 0, 1))); // Screen aligned Z-plane
 			sphere = Sphere3f (abs (hitPoint - center), center);
 			behind = zPlane .distance (hitPoint) < 0;
 

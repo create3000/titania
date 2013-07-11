@@ -107,7 +107,7 @@ PlaneSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 			inverseModelViewMatrix = ~getModelViewMatrix () .rotate (axisRotation ());
 			plane                  = Plane3f (hit -> point * inverseModelViewMatrix, Vector3f (0, 0, 1));
 
-			auto hitRay = hit -> ray * inverseTransformationMatrix;
+			auto hitRay = hit -> ray * inverseModelViewMatrix;
 
 			Vector3f trackPoint;
 

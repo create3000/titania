@@ -149,13 +149,13 @@ CylinderSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 
 		if (isActive ())
 		{
-			inverseModelViewMatrix = ~getModelViewMatrix () -> rotate (axisRotation ());
+			inverseModelViewMatrix = ~getModelViewMatrix () .rotate (axisRotation ());
 
 			auto hitRay   = hit -> ray * inverseModelViewMatrix;
 			auto hitPoint = hit -> point * inverseModelViewMatrix;
 
 			auto yAxis = axisRotation () * Vector3f (0, 1, 0);
-			auto zAxis = inverseTransformationMatrix .multDirMatrix (Vector3f (0, 0, 1));
+			auto zAxis = inverseModelViewMatrix .multDirMatrix (Vector3f (0, 0, 1));
 
 			auto axis    = Line3f (Vector3f (), yAxis);
 			auto pvector = axis .perpendicular_vector (hitPoint);
