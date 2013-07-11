@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -69,51 +69,51 @@ public:
 
 	///  @name Fields
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	backTexture ()
 	{ return *fields .backTexture; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	backTexture () const
 	{ return *fields .backTexture; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	bottomTexture ()
 	{ return *fields .bottomTexture; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	bottomTexture () const
 	{ return *fields .bottomTexture; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	frontTexture ()
 	{ return *fields .frontTexture; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	frontTexture () const
 	{ return *fields .frontTexture; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	leftTexture ()
 	{ return *fields .leftTexture; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	leftTexture () const
 	{ return *fields .leftTexture; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	rightTexture ()
 	{ return *fields .rightTexture; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	rightTexture () const
 	{ return *fields .rightTexture; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	topTexture ()
 	{ return *fields .topTexture; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	topTexture () const
 	{ return *fields .topTexture; }
 
@@ -124,12 +124,12 @@ private:
 	{
 		Fields ();
 
-		SFNode <X3DBaseNode>* const backTexture;
-		SFNode <X3DBaseNode>* const bottomTexture;
-		SFNode <X3DBaseNode>* const frontTexture;
-		SFNode <X3DBaseNode>* const leftTexture;
-		SFNode <X3DBaseNode>* const rightTexture;
-		SFNode <X3DBaseNode>* const topTexture;
+		SFNode* const backTexture;
+		SFNode* const bottomTexture;
+		SFNode* const frontTexture;
+		SFNode* const leftTexture;
+		SFNode* const rightTexture;
+		SFNode* const topTexture;
 	};
 
 	Fields fields;

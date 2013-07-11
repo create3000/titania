@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,11 +60,11 @@ namespace titania {
 namespace X3D {
 
 ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
-                            const SFNode <Inline> & inlineNode, const std::string & exportedName, const std::string & importedName) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	  inlineNode (inlineNode),                                          
-	exportedName (exportedName),                                        
-	importedName (importedName)                                            
+                            const X3DSFNode <Inline> & inlineNode, const std::string & exportedName, const std::string & importedName) :
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	  inlineNode (inlineNode),
+	exportedName (exportedName),
+	importedName (importedName)
 {
 	setComponent ("Browser");
 	setTypeName ("ImportedNode");
@@ -95,7 +95,7 @@ ImportedNode::clone (X3DExecutionContext* const executionContext) const
 	}
 }
 
-const SFNode <Inline> &
+const X3DSFNode <Inline> &
 ImportedNode::getInlineNode () const
 {
 	return inlineNode;
@@ -113,7 +113,7 @@ ImportedNode::getImportedName () const
 	return importedName;
 }
 
-const SFNode <X3DBaseNode> &
+const SFNode &
 ImportedNode::getExportedNode () const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,

@@ -71,34 +71,34 @@ ElevationGrid::Fields::Fields () :
 	colorPerVertex (new SFBool (true)),
 	normalPerVertex (new SFBool (true)),
 	attrib (new MFNode ()),
-	fogCoord (new SFNode <X3DBaseNode> ()),
-	texCoord (new SFNode <X3DBaseNode> ()),
-	color (new SFNode <X3DBaseNode> ()),
-	normal (new SFNode <X3DBaseNode> ()),
+	fogCoord (new SFNode ()),
+	texCoord (new SFNode ()),
+	color (new SFNode ()),
+	normal (new SFNode ()),
 	height (new MFFloat ())
 { }
 
 ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometryNode (),
+	         fields ()
 {
 	setComponent ("Geometry3D");
 	setTypeName ("ElevationGrid");
 
 	addField (inputOutput,    "metadata",        metadata ());
-	
+
 	addField (initializeOnly, "xDimension",      xDimension ());
 	addField (initializeOnly, "xSpacing",        xSpacing ());
 	addField (initializeOnly, "zDimension",      zDimension ());
 	addField (initializeOnly, "zSpacing",        zSpacing ());
-	
+
 	addField (initializeOnly, "solid",           solid ());
 	addField (initializeOnly, "ccw",             ccw ());
 	addField (initializeOnly, "creaseAngle",     creaseAngle ());
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-	
+
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
 	addField (inputOutput,    "texCoord",        texCoord ());

@@ -57,14 +57,14 @@ namespace X3D {
 
 GeoCoordinate::Fields::Fields () :
 	point (new MFVec3d ()),
-	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoOrigin (new SFNode ()),
 	geoSystem (new MFString ({ "GD", "WE" }))
 { }
 
 GeoCoordinate::GeoCoordinate (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DCoordinateNode (),                                                    
-	           fields ()                                                     
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DCoordinateNode (),
+	           fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoCoordinate");

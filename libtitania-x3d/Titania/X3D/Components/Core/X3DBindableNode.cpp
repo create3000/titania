@@ -65,7 +65,7 @@ X3DBindableNode::Fields::Fields () :
 { }
 
 X3DBindableNode::X3DBindableNode () :
-	X3DChildNode (),         
+	X3DChildNode (),
 	      fields ()
 {
 	addNodeType (X3DConstants::X3DBindableNode);

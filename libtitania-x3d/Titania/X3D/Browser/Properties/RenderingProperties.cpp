@@ -85,15 +85,15 @@ RenderingProperties::Fields::Fields () :
 { }
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),              
-	    X3DNode (),                                                                 
-	     fields (),                                                                 
-	 extensions (),                                                                 
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DNode (),
+	     fields (),
+	 extensions (),
 	 fontFamily ("-schumacher-clean-medium-r-normal--12-120-75-75-c-60-iso8859-1"), // SFString [in,out] fontFamily
-	 fontHeigth (0),                                                                
-	   fontInfo (NULL),                                                          
+	 fontHeigth (0),
+	   fontInfo (NULL),
 	     listId (0),
-	     string ()                                                                 
+	     string ()
 {
 	setComponent ("Browser"),
 	setTypeName ("RenderingProperties");
@@ -120,7 +120,7 @@ void
 RenderingProperties::initialize ()
 {
 	X3DBaseNode::initialize ();
-	
+
 	addField (outputOnly, "Shading",     getBrowser () -> getBrowserOptions () -> shading ());
 	addField (outputOnly, "Antialiased", getBrowser () -> getBrowserOptions () -> antialiased ());
 
@@ -153,7 +153,7 @@ RenderingProperties::initialize ()
 		glGetIntegerv (GL_POLYGON_SMOOTH, &glPolygonSmooth);
 
 		if (hasExtension ("GL_NVX_gpu_memory_info"))
-			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                      // in KBytes
+			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                           // in KBytes
 
 		textureUnits ()   = glTextureUnits;
 		maxTextureSize () = glMaxTextureSize;

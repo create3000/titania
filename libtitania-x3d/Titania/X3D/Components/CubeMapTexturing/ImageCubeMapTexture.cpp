@@ -56,14 +56,14 @@ namespace titania {
 namespace X3D {
 
 ImageCubeMapTexture::Fields::Fields () :
-	textureProperties (new SFNode <X3DBaseNode> ())
+	textureProperties (new SFNode ())
 { }
 
 ImageCubeMapTexture::ImageCubeMapTexture (X3DExecutionContext* const executionContext) :
-	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DEnvironmentTextureNode (),                                                    
-	             X3DUrlObject (),                                                    
-	                   fields ()                                                     
+	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DEnvironmentTextureNode (),
+	             X3DUrlObject (),
+	                   fields ()
 {
 	setComponent ("CubeMapTexturing");
 	setTypeName ("ImageCubeMapTexture");

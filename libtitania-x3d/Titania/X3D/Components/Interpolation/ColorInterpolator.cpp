@@ -61,9 +61,9 @@ ColorInterpolator::Fields::Fields () :
 { }
 
 ColorInterpolator::ColorInterpolator (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DInterpolatorNode (),                                                    
-	             fields ()                                                     
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DInterpolatorNode (),
+	             fields ()
 {
 	setComponent ("Interpolation");
 	setTypeName ("ColorInterpolator");

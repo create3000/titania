@@ -63,23 +63,23 @@ namespace titania {
 namespace X3D {
 
 Appearance::Fields::Fields () :
-	lineProperties (new SFNode <X3DBaseNode> ()),
-	fillProperties (new SFNode <X3DBaseNode> ()),
-	material (new SFNode <X3DBaseNode> ()),
-	texture (new SFNode <X3DBaseNode> ()),
-	textureTransform (new SFNode <X3DBaseNode> ()),
+	lineProperties (new SFNode ()),
+	fillProperties (new SFNode ()),
+	material (new SFNode ()),
+	texture (new SFNode ()),
+	textureTransform (new SFNode ()),
 	shaders (new MFNode ())
 { }
 
 Appearance::Appearance (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DAppearanceNode (),                                                    
-	           fields (),                                                    
-	  _lineProperties (NULL),                                                
-	  _fillProperties (NULL),                                                
-	        _material (NULL),                                                
-	         _texture (NULL),                                                
-	_textureTransform (NULL)                                                 
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DAppearanceNode (),
+	           fields (),
+	  _lineProperties (NULL),
+	  _fillProperties (NULL),
+	        _material (NULL),
+	         _texture (NULL),
+	_textureTransform (NULL)
 {
 	setComponent ("Shape");
 	setTypeName ("Appearance");

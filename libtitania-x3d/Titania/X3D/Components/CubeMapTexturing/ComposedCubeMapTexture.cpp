@@ -57,19 +57,19 @@ namespace titania {
 namespace X3D {
 
 ComposedCubeMapTexture::Fields::Fields () :
-	front (new SFNode <X3DBaseNode> ()),
-	back (new SFNode <X3DBaseNode> ()),
-	left (new SFNode <X3DBaseNode> ()),
-	right (new SFNode <X3DBaseNode> ()),
-	bottom (new SFNode <X3DBaseNode> ()),
-	top (new SFNode <X3DBaseNode> ())
+	front (new SFNode ()),
+	back (new SFNode ()),
+	left (new SFNode ()),
+	right (new SFNode ()),
+	bottom (new SFNode ()),
+	top (new SFNode ())
 { }
 
 ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const executionContext) :
-	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DEnvironmentTextureNode (),                                                    
-	                   fields (),                                                    
-	              transparent (false)                                                
+	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DEnvironmentTextureNode (),
+	                   fields (),
+	              transparent (false)
 {
 	setComponent ("CubeMapTexturing");
 	setTypeName ("ComposedCubeMapTexture");

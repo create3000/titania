@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,10 +61,10 @@
 namespace titania {
 namespace X3D {
 
-X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const SFNode <Proto> & prototype) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DExecutionContext (),                                                    
-	              proto (prototype)                                            
+X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DSFNode <Proto> & prototype) :
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DExecutionContext (),
+	              proto (prototype)
 {
 	addNodeType (X3DConstants::X3DPrototypeInstance);
 
@@ -95,7 +95,7 @@ void
 X3DPrototypeInstance::initialize ()
 {
 	X3DExecutionContext::initialize ();
-	
+
 	// Defer assigning imports and routes until now
 
 	assign2 (proto);

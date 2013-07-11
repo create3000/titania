@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NETWORKING_X3DURL_OBJECT_H__
-#define __TITANIA_X3D_COMPONENTS_NETWORKING_X3DURL_OBJECT_H__
+#ifndef __XXX_X3DURL_OBJECT_H__
+#define __XXX_X3DURL_OBJECT_H__
 
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Bits/Error.h"
@@ -96,7 +96,7 @@ public:
 	const MFString &
 	urlError () const
 	{ return *fields .urlError; }
-	
+
 	virtual
 	const basic::uri &
 	getWorldURL () const
@@ -152,8 +152,8 @@ public:
 
 	///  @name Stream Handling
 
-//	void
-//	loadDocumentAsync (const SFString &);
+	//	void
+	//	loadDocumentAsync (const SFString &);
 
 	///  Returns the contents of @a URL
 	std::string
@@ -216,21 +216,21 @@ public:
 protected:
 
 	X3DUrlObject ();
-	
-//	SFString &
-//	document_changed ()
-//	{ return *fields .document_changed; }
-//
-//	const SFString &
-//	document_changed () const
-//	{ return *fields .document_changed; }
+
+	//	SFString &
+	//	document_changed ()
+	//	{ return *fields .document_changed; }
+	//
+	//	const SFString &
+	//	document_changed () const
+	//	{ return *fields .document_changed; }
 
 	virtual
 	void
 	initialize () override;
 
 	///  @name Element Access
-	
+
 	virtual
 	const basic::uri &
 	getReferer () const
@@ -256,10 +256,10 @@ protected:
 
 private:
 
-//	void
-//	set_loadTime ();
-//
-//	class Thread;
+	//	void
+	//	set_loadTime ();
+	//
+	//	class Thread;
 
 	static URNIndex URNCache;
 
@@ -268,17 +268,17 @@ private:
 		Fields ();
 
 		MFString* const url;
-//		SFString* const document_changed;
+		//		SFString* const document_changed;
 		SFTime* const loadTime;
 		MFString* const urlError;
 	};
 
 	Fields fields;
 
-	LoadState                loadState;
-	std::string              userAgent;
-	basic::uri               worldURL;
-//	std::shared_ptr <Thread> thread;
+	LoadState   loadState;
+	std::string userAgent;
+	basic::uri  worldURL;
+	//	std::shared_ptr <Thread> thread;
 
 };
 

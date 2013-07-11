@@ -56,9 +56,9 @@ namespace titania {
 namespace X3D {
 
 PointingDevice::PointingDevice (Browser* const browser) :
-	X3DWidget (browser), 
-	   button (0),       
-	   isOver (false)    
+	X3DWidget (browser),
+	   button (0),
+	   isOver (false)
 {
 	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);

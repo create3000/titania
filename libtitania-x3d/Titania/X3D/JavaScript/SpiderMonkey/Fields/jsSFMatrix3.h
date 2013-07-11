@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,8 +52,8 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFMATRIX3_H__
 
 #include "../../../Fields/SFMatrix3.h"
-#include "../jsX3DField.h"
 #include "../jsContext.h"
+#include "../jsX3DField.h"
 #include "jsSFRotation.h"
 #include "jsSFVec2.h"
 
@@ -518,7 +518,7 @@ jsSFMatrix3 <Type>::inverse (JSContext* context, uintN argc, jsval* vp)
 		catch (const std::domain_error & error)
 		{
 			JS_ReportError (context, "%s .inverse: %s", getClass () -> name, error .what ());
-			return JS_FALSE;		
+			return JS_FALSE;
 		}
 	}
 
@@ -662,6 +662,7 @@ jsSFMatrix3 <Type>::multMatrixVec (JSContext* context, uintN argc, jsval* vp)
 
 	return JS_FALSE;
 }
+
 template <class Type>
 JSBool
 jsSFMatrix3 <Type>::multDirMatrix (JSContext* context, uintN argc, jsval* vp)

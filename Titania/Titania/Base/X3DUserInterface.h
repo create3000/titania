@@ -140,9 +140,9 @@ private:
 	void
 	saveInterface ();
 
-	Configuration        gconf;
-	sigc::connection     initialized_connection;
-	Array::iterator      userInterface;
+	Configuration    gconf;
+	sigc::connection initialized_connection;
+	Array::iterator  userInterface;
 
 	static Array userInterfaces;
 

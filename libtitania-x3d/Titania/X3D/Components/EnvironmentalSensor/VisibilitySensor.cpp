@@ -57,9 +57,9 @@ namespace titania {
 namespace X3D {
 
 VisibilitySensor::VisibilitySensor (X3DExecutionContext* const executionContext) :
-	               X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DEnvironmentalSensorNode (),                                                    
-	                   visible (false)                                                
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DEnvironmentalSensorNode (),
+	                   visible (false)
 {
 	setComponent ("EnvironmentalSensor");
 	setTypeName ("VisibilitySensor");

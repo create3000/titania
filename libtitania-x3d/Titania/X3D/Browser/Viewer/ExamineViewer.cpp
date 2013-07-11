@@ -65,15 +65,15 @@ static constexpr float SCOLL_FACTOR = 1.0f / 50.0f;
 static constexpr float FRAME_RATE   = 100;
 
 ExamineViewer::ExamineViewer (Browser* const browser, NavigationInfo* navigationInfo) :
-	     X3DViewer (browser),        
-	navigationInfo (navigationInfo), 
-	      distance (),               
-	   orientation (),               
-	      rotation (),               
-	    fromVector (),               
-	     fromPoint (),               
-	        button (0),              
-	       spin_id ()                
+	     X3DViewer (browser),
+	navigationInfo (navigationInfo),
+	      distance (),
+	   orientation (),
+	      rotation (),
+	    fromVector (),
+	     fromPoint (),
+	        button (0),
+	       spin_id ()
 { }
 
 void
@@ -106,7 +106,7 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 	if (button == 1)
 	{
 		set_viewpoint ();
-	
+
 		fromVector = trackballProjectToSphere (event -> x, event -> y);
 		rotation   = Rotation4f ();
 	}
@@ -114,7 +114,7 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 	else if (button == 2)
 	{
 		set_viewpoint ();
-		
+
 		fromPoint = getPoint (event -> x, event -> y);
 	}
 

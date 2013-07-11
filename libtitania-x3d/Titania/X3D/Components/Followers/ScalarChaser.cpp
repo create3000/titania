@@ -66,9 +66,9 @@ ScalarChaser::Fields::Fields () :
 { }
 
 ScalarChaser::ScalarChaser (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DChaserNode (),                                                    
-	       fields ()                                                     
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DChaserNode (),
+	       fields ()
 {
 	setComponent ("Followers");
 	setTypeName ("ScalarChaser");

@@ -107,24 +107,24 @@ public:
 	getProfile (const std::string &) const
 	throw (Error <NOT_SUPPORTED>);
 
-	const SFNode <Scene> &
+	const X3DSFNode <Scene> &
 	getExecutionContext () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return scene; }
 
-	SFNode <Scene>
+	X3DSFNode <Scene>
 	createScene () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	SFNode <Scene>
+	X3DSFNode <Scene>
 	createScene (const ProfileInfo*, const ComponentInfoArray &) const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	void
-	replaceWorld (const SFNode <Scene> &)
+	replaceWorld (const X3DSFNode <Scene> &)
 	throw (Error <INVALID_SCENE>);
 
 	void
@@ -138,7 +138,7 @@ public:
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>) final;
 
-	SFNode <Scene>
+	X3DSFNode <Scene>
 	importDocument (/*const XML DOMNode &*/)
 	throw (Error <INVALID_DOCUMENT>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -153,13 +153,13 @@ public:
 	endUpdate ()
 	throw (Error <DISPOSED>);
 
-	const SFNode <RenderingProperties> &
+	const X3DSFNode <RenderingProperties> &
 	getRenderingProperties () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return renderingProperties; }
 
-	const SFNode <BrowserProperties> &
+	const X3DSFNode <BrowserProperties> &
 	getBrowserProperties () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
@@ -170,7 +170,7 @@ public:
 	//	throw (Error <INVALID_OPERATION_TIMING>,
 	//	       Error <DISPOSED>);
 
-	const SFNode <BrowserOptions> &
+	const X3DSFNode <BrowserOptions> &
 	getBrowserOptions () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
@@ -193,7 +193,7 @@ public:
 
 	///  @name Layer handling
 
-	const SFNode <X3DLayerNode> &
+	const X3DSFNode <X3DLayerNode> &
 	getActiveLayer () const
 	{ return activeLayer; }
 
@@ -250,7 +250,7 @@ protected:
 private:
 
 	virtual
-	const SFNode <World> &
+	const X3DSFNode <World> &
 	getWorld () const final
 	{ return world; }
 
@@ -273,7 +273,7 @@ private:
 
 	void
 	set_activeLayer ();
-	
+
 	virtual
 	void
 	set_navigationInfo ()
@@ -288,9 +288,9 @@ private:
 
 	SFString description;
 
-	SFNode <Scene>        scene;
-	SFNode <World>        world;
-	SFNode <X3DLayerNode> activeLayer;
+	X3DSFNode <Scene>        scene;
+	X3DSFNode <World>        world;
+	X3DSFNode <X3DLayerNode> activeLayer;
 
 };
 

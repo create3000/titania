@@ -61,15 +61,15 @@ namespace X3D {
 
 PointSet::Fields::Fields () :
 	attrib (new MFNode ()),
-	color (new SFNode <X3DBaseNode> ()),
-	coord (new SFNode <X3DBaseNode> ()),
-	fogCoord (new SFNode <X3DBaseNode> ())
+	color (new SFNode ()),
+	coord (new SFNode ()),
+	fogCoord (new SFNode ())
 { }
 
 PointSet::PointSet (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometryNode (),
+	         fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("PointSet");

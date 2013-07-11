@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -69,11 +69,11 @@ public:
 
 	///  @name Fields
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	targetObject ()
 	{ return *fields .targetObject; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	targetObject () const
 	{ return *fields .targetObject; }
 
@@ -100,7 +100,7 @@ private:
 	{
 		Fields ();
 
-		SFNode <X3DBaseNode>* const targetObject;
+		SFNode* const targetObject;
 		SFRotation* const orientation_changed;
 		SFVec3f* const position_changed;
 	};

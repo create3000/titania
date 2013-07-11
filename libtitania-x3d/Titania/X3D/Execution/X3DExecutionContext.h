@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -160,22 +160,22 @@ public:
 	       Error <DISPOSED>)
 	{ return profile; }
 
-	SFNode <X3DBaseNode>
+	SFNode
 	createNode (const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	SFNode <X3DPrototypeInstance>
+	X3DSFNode <X3DPrototypeInstance>
 	createProtoInstance (const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_X3D>,
-          Error <INVALID_FIELD>,
-          Error <INVALID_ACCESS_TYPE>,
+	       Error <INVALID_FIELD>,
+	       Error <INVALID_ACCESS_TYPE>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
-	
+
 	/// Add uninitialized node
 	virtual
 	void
@@ -184,14 +184,14 @@ public:
 
 	///  @name Named/Imported node handling
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	getNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
-	
+
 	const std::string &
-	getLocalName (const SFNode <X3DBaseNode> &) const
+	getLocalName (const SFNode &) const
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -199,7 +199,7 @@ public:
 	///  @name Named node handling
 
 	void
-	addNamedNode (const std::string &, const SFNode <X3DBaseNode> &)
+	addNamedNode (const std::string &, const SFNode &)
 	throw (Error <NODE_IN_USE>,
 	       Error <IMPORTED_NODE>,
 	       Error <INVALID_NODE>,
@@ -208,7 +208,7 @@ public:
 	       Error <DISPOSED>);
 
 	void
-	updateNamedNode (const std::string &, const SFNode <X3DBaseNode> &)
+	updateNamedNode (const std::string &, const SFNode &)
 	throw (Error <IMPORTED_NODE>,
 	       Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
@@ -220,7 +220,7 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	getNamedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -228,8 +228,8 @@ public:
 
 	///  @name Imported nodes handling
 
-	const SFNode <ImportedNode> &
-	addImportedNode (const SFNode <Inline> &, const std::string &, std::string = "")
+	const X3DSFNode <ImportedNode> &
+	addImportedNode (const X3DSFNode <Inline> &, const std::string &, std::string = "")
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <NODE_IN_USE>,
@@ -243,14 +243,14 @@ public:
 	       Error <DISPOSED>);
 
 	void
-	updateImportedNode (const SFNode <Inline> &, const std::string &, std::string = "")
+	updateImportedNode (const X3DSFNode <Inline> &, const std::string &, std::string = "")
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	getImportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -264,7 +264,7 @@ public:
 
 	///  @name Proto declaration handling
 
-	const SFNode <Proto> &
+	const X3DSFNode <Proto> &
 	addProtoDeclaration (const std::string &, const FieldDefinitionArray &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -276,11 +276,11 @@ public:
 	{ protos .erase (name); }
 
 	void
-	updateProtoDeclaration (const std::string &, const SFNode <Proto> &)
+	updateProtoDeclaration (const std::string &, const X3DSFNode <Proto> &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const SFNode <Proto> &
+	const X3DSFNode <Proto> &
 	getProtoDeclaration (const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -294,7 +294,7 @@ public:
 
 	///  @name Exterproto declaration handling
 
-	const SFNode <ExternProto> &
+	const X3DSFNode <ExternProto> &
 	addExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -306,11 +306,11 @@ public:
 	{ externProtos .erase (name); }
 
 	void
-	updateExternProtoDeclaration (const std::string &, const SFNode <ExternProto> &)
+	updateExternProtoDeclaration (const std::string &, const X3DSFNode <ExternProto> &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const SFNode <ExternProto> &
+	const X3DSFNode <ExternProto> &
 	getExternProtoDeclaration (const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <URL_UNAVAILABLE>,
@@ -339,17 +339,17 @@ public:
 
 	///  @name Dynamic route node handling
 
-	const SFNode <Route> &
-	addRoute (const SFNode <X3DBaseNode> &, const std::string &,
-	          const SFNode <X3DBaseNode> &, const std::string &)
+	const X3DSFNode <Route> &
+	addRoute (const SFNode &, const std::string &,
+	          const SFNode &, const std::string &)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	void
-	deleteRoute (const SFNode <X3DBaseNode> &, const std::string &,
-	             const SFNode <X3DBaseNode> &, const std::string &)
+	deleteRoute (const SFNode &, const std::string &,
+	             const SFNode &, const std::string &)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -408,7 +408,7 @@ protected:
 	virtual
 	void
 	clear ();
-	
+
 
 private:
 
@@ -420,24 +420,24 @@ private:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	SFNode <Proto>
+	X3DSFNode <Proto>
 	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	SFNode <ExternProto>
+	X3DSFNode <ExternProto>
 	createExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	RouteId
-	getRouteId (const SFNode <X3DBaseNode> &, const std::string &,
-	            const SFNode <X3DBaseNode> &, const std::string &)
+	getRouteId (const SFNode &, const std::string &,
+	            const SFNode &, const std::string &)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 
-	typedef std::map <std::string, SFNode <X3DBaseNode>> NamedNodeIndex;
-	typedef std::map <X3DBaseNode*, std::string>         ImportedNamesIndex;
+	typedef std::map <std::string, SFNode>       NamedNodeIndex;
+	typedef std::map <X3DBaseNode*, std::string> ImportedNamesIndex;
 
 	basic::uri  worldURL;
 	std::string encoding;

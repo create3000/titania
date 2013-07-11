@@ -61,9 +61,9 @@ PointEmitter::Fields::Fields () :
 { }
 
 PointEmitter::PointEmitter (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DParticleEmitterNode (),                                                    
-	                fields ()                                                     
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DParticleEmitterNode (),
+	                fields ()
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("PointEmitter");

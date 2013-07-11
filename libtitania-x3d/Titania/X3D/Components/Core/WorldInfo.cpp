@@ -61,9 +61,9 @@ WorldInfo::Fields::Fields () :
 { }
 
 WorldInfo::WorldInfo (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DInfoNode (),                                                    
-	     fields ()                                                     
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DInfoNode (),
+	     fields ()
 {
 	setComponent ("Core");
 	setTypeName ("WorldInfo");

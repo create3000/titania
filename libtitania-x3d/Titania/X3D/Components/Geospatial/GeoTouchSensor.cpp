@@ -60,14 +60,14 @@ GeoTouchSensor::Fields::Fields () :
 	hitPoint_changed (new SFVec3f ()),
 	hitTexCoord_changed (new SFVec2f ()),
 	hitGeoCoord_changed (new SFVec3d ()),
-	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoOrigin (new SFNode ()),
 	geoSystem (new MFString ({ "GD", "WE" }))
 { }
 
 GeoTouchSensor::GeoTouchSensor (X3DExecutionContext* const executionContext) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DTouchSensorNode (),                                                    
-	            fields ()                                                     
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTouchSensorNode (),
+	            fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoTouchSensor");

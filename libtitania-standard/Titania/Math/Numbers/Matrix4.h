@@ -163,6 +163,7 @@ public:
 		matrix [ 8], matrix [ 9], matrix [10], matrix [11],
 		matrix [12], matrix [13], matrix [14], matrix [15]
 	}
+
 	{ }
 
 	///  Components constructor. Set values from @a e11 to @a e44.
@@ -178,6 +179,7 @@ public:
 		e31, e32, e33, e34,
 		e41, e42, e43, e44
 	}
+
 	{ }
 
 	///  Constructs a matrix4 from a rotation4.
@@ -727,7 +729,7 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
 	Type det_sign = (det < 0 ? -1 : 1);
 
 	if (det_sign * det == 0)
-		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   // singular
+		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        // singular
 
 	// (4) B = A * !A  (here !A means A transpose)
 	matrix4 b = a * ! a;

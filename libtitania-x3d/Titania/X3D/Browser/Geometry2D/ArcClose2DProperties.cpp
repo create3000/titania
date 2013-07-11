@@ -61,9 +61,9 @@ ArcClose2DProperties::Fields::Fields () :
 { }
 
 ArcClose2DProperties::ArcClose2DProperties (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DPropertyNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DPropertyNode (),
+	         fields ()
 {
 	setComponent ("Browser"),
 	setTypeName ("ArcClose2DProperties");

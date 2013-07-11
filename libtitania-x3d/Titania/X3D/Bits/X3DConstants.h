@@ -54,177 +54,178 @@
 namespace titania {
 namespace X3D {
 
-namespace X3DConstants
+namespace X3DConstants {
+enum EventType
 {
-	enum EventType
-	{
-		INITIALIZED_EVENT,
-		SHUTDOWN_EVENT
-	};
+	INITIALIZED_EVENT,
+	SHUTDOWN_EVENT
 
-	enum ErrorType
-	{
-		BROWSER_UNAVAILABLE,
-		CONNECTION_ERROR,
-		DISPOSED,
-		IMPORTED_NODE,
-		INITIALIZED_ERROR,
-		INSUFFICIENT_CAPABILITIES,
-		INVALID_ACCESS_TYPE,
-		INVALID_BROWSER,
-		INVALID_DOCUMENT,
-		INVALID_EXECUTION_CONTEXT,
-		INVALID_FIELD,
-		INVALID_NAME,
-		INVALID_NODE,
-		INVALID_OPERATION_TIMING,
-		INVALID_SCENE,
-		INVALID_URL,
-		INVALID_X3D,
-		NODE_IN_USE,
-		NODE_NOT_AVAILABLE,
-		NOT_SHARED,
-		NOT_SUPPORTED,
-		URL_UNAVAILABLE
+};
 
-	};
+enum ErrorType
+{
+	BROWSER_UNAVAILABLE,
+	CONNECTION_ERROR,
+	DISPOSED,
+	IMPORTED_NODE,
+	INITIALIZED_ERROR,
+	INSUFFICIENT_CAPABILITIES,
+	INVALID_ACCESS_TYPE,
+	INVALID_BROWSER,
+	INVALID_DOCUMENT,
+	INVALID_EXECUTION_CONTEXT,
+	INVALID_FIELD,
+	INVALID_NAME,
+	INVALID_NODE,
+	INVALID_OPERATION_TIMING,
+	INVALID_SCENE,
+	INVALID_URL,
+	INVALID_X3D,
+	NODE_IN_USE,
+	NODE_NOT_AVAILABLE,
+	NOT_SHARED,
+	NOT_SUPPORTED,
+	URL_UNAVAILABLE
 
-	enum LoadState
-	{
-		NOT_STARTED_STATE,
-		IN_PROGRESS_STATE,
-		COMPLETE_STATE,
-		FAILED_STATE
+};
 
-	};
+enum LoadState
+{
+	NOT_STARTED_STATE,
+	IN_PROGRESS_STATE,
+	COMPLETE_STATE,
+	FAILED_STATE
 
-	enum AccessType
-	{
-		initializeOnly = 1, // 0b001
-		inputOnly      = 2, // 0b010
-		outputOnly     = 4, // 0b100
-		inputOutput    = 7  // 0b111
+};
 
-	};
+enum AccessType
+{
+	initializeOnly = 1, // 0b001
+	inputOnly      = 2, // 0b010
+	outputOnly     = 4, // 0b100
+	inputOutput    = 7  // 0b111
 
-	enum FieldType
-	{
-		SFBool,
-		SFColor,
-		SFColorRGBA,
-		SFDouble,
-		SFFloat,
-		SFImage,
-		SFInt32,
-		SFMatrix3d,
-		SFMatrix3f,
-		SFMatrix4d,
-		SFMatrix4f,
-		SFNode,
-		SFRotation,
-		SFString,
-		SFTime,
-		SFVec2d,
-		SFVec2f,
-		SFVec3d,
-		SFVec3f,
-		SFVec4d,
-		SFVec4f,
+};
 
-		MFBool,
-		MFColor,
-		MFColorRGBA,
-		MFDouble,
-		MFFloat,
-		MFImage,
-		MFInt32,
-		MFMatrix3d,
-		MFMatrix3f,
-		MFMatrix4d,
-		MFMatrix4f,
-		MFNode,
-		MFRotation,
-		MFString,
-		MFTime,
-		MFVec2d,
-		MFVec2f,
-		MFVec3d,
-		MFVec3f,
-		MFVec4d,
-		MFVec4f
-	};
+enum FieldType
+{
+	SFBool,
+	SFColor,
+	SFColorRGBA,
+	SFDouble,
+	SFFloat,
+	SFImage,
+	SFInt32,
+	SFMatrix3d,
+	SFMatrix3f,
+	SFMatrix4d,
+	SFMatrix4f,
+	SFNode,
+	SFRotation,
+	SFString,
+	SFTime,
+	SFVec2d,
+	SFVec2f,
+	SFVec3d,
+	SFVec3f,
+	SFVec4d,
+	SFVec4f,
 
-	enum NodeType
-	{
-		X3DAppearanceChildNode,
-		X3DAppearanceNode,
-		X3DBackgroundNode,
-		X3DBindableNode,
-		X3DBoundedObject,
-		X3DChaserNode,
-		X3DChildNode,
-		X3DColorNode,
-		X3DComposedGeometryNode,
-		X3DCoordinateNode,
-		X3DDamperNode,
-		X3DDragSensorNode,
-		X3DEnvironmentalSensorNode,
-		X3DEnvironmentTextureNode,
-		X3DFogObject,
-		X3DFollowerNode,
-		X3DFontStyleNode,
-		X3DGeometricPropertyNode,
-		X3DGeometryNode,
-		X3DGroupingNode,
-		X3DInfoNode,
-		X3DInterpolatorNode,
-		X3DKeyDeviceSensorNode,
-		X3DLayerNode,
-		X3DLayoutNode,
-		X3DLightNode,
-		X3DMaterialNode,
-		X3DMetadataObject,
-		X3DNBodyCollidableNode,
-		X3DNBodyCollisionSpaceNode,
-		X3DNetworkSensorNode,
-		X3DNode,
-		X3DNormalNode,
-		X3DNurbsControlCurveNode,
-		X3DNurbsSurfaceGeometryNode,
-		X3DParametricGeometryNode,
-		X3DParticleEmitterNode,
-		X3DParticlePhysicsModelNode,
-		X3DPickableObject,
-		X3DPickingNode,
-		X3DPickSensorNode,
-		X3DPointingDeviceSensorNode,
-		X3DProductStructureChildNode,
-		X3DProgrammableShaderObject,
-		X3DPropertyNode,
-		X3DPrototypeInstance,
-		X3DRigidJointNode,
-		X3DScriptNode,
-		X3DSensorNode,
-		X3DSequencerNode,
-		X3DShaderNode,
-		X3DShapeNode,
-		X3DSoundNode,
-		X3DSoundSourceNode,
-		X3DTexture2DNode,
-		X3DTexture3DNode,
-		X3DTextureCoordinateNode,
-		X3DTextureNode,
-		X3DTextureTransformNode,
-		X3DTimeDependentNode,
-		X3DTouchSensorNode,
-		X3DTriggerNode,
-		X3DUrlObject,
-		X3DVertexAttributeNode,
-		X3DViewpointNode,
-		X3DViewpointObject,
-		X3DViewportNode
+	MFBool,
+	MFColor,
+	MFColorRGBA,
+	MFDouble,
+	MFFloat,
+	MFImage,
+	MFInt32,
+	MFMatrix3d,
+	MFMatrix3f,
+	MFMatrix4d,
+	MFMatrix4f,
+	MFNode,
+	MFRotation,
+	MFString,
+	MFTime,
+	MFVec2d,
+	MFVec2f,
+	MFVec3d,
+	MFVec3f,
+	MFVec4d,
+	MFVec4f
 
-	};
+};
+
+enum NodeType
+{
+	X3DAppearanceChildNode,
+	X3DAppearanceNode,
+	X3DBackgroundNode,
+	X3DBindableNode,
+	X3DBoundedObject,
+	X3DChaserNode,
+	X3DChildNode,
+	X3DColorNode,
+	X3DComposedGeometryNode,
+	X3DCoordinateNode,
+	X3DDamperNode,
+	X3DDragSensorNode,
+	X3DEnvironmentalSensorNode,
+	X3DEnvironmentTextureNode,
+	X3DFogObject,
+	X3DFollowerNode,
+	X3DFontStyleNode,
+	X3DGeometricPropertyNode,
+	X3DGeometryNode,
+	X3DGroupingNode,
+	X3DInfoNode,
+	X3DInterpolatorNode,
+	X3DKeyDeviceSensorNode,
+	X3DLayerNode,
+	X3DLayoutNode,
+	X3DLightNode,
+	X3DMaterialNode,
+	X3DMetadataObject,
+	X3DNBodyCollidableNode,
+	X3DNBodyCollisionSpaceNode,
+	X3DNetworkSensorNode,
+	X3DNode,
+	X3DNormalNode,
+	X3DNurbsControlCurveNode,
+	X3DNurbsSurfaceGeometryNode,
+	X3DParametricGeometryNode,
+	X3DParticleEmitterNode,
+	X3DParticlePhysicsModelNode,
+	X3DPickableObject,
+	X3DPickingNode,
+	X3DPickSensorNode,
+	X3DPointingDeviceSensorNode,
+	X3DProductStructureChildNode,
+	X3DProgrammableShaderObject,
+	X3DPropertyNode,
+	X3DPrototypeInstance,
+	X3DRigidJointNode,
+	X3DScriptNode,
+	X3DSensorNode,
+	X3DSequencerNode,
+	X3DShaderNode,
+	X3DShapeNode,
+	X3DSoundNode,
+	X3DSoundSourceNode,
+	X3DTexture2DNode,
+	X3DTexture3DNode,
+	X3DTextureCoordinateNode,
+	X3DTextureNode,
+	X3DTextureTransformNode,
+	X3DTimeDependentNode,
+	X3DTouchSensorNode,
+	X3DTriggerNode,
+	X3DUrlObject,
+	X3DVertexAttributeNode,
+	X3DViewpointNode,
+	X3DViewpointObject,
+	X3DViewportNode
+
+};
 
 };
 

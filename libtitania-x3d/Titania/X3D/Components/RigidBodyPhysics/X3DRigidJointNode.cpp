@@ -54,14 +54,14 @@ namespace titania {
 namespace X3D {
 
 X3DRigidJointNode::Fields::Fields () :
-	body1 (new SFNode <X3DBaseNode> ()),
-	body2 (new SFNode <X3DBaseNode> ()),
+	body1 (new SFNode ()),
+	body2 (new SFNode ()),
 	forceOutput (new MFString ({ "NONE" }))
 { }
 
 X3DRigidJointNode::X3DRigidJointNode () :
-	X3DNode (), 
-	 fields ()  
+	X3DNode (),
+	 fields ()
 {
 	addNodeType (X3DConstants::X3DRigidJointNode);
 }

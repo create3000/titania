@@ -448,7 +448,7 @@ inline
 void
 SFVec4 <ValueType>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <scalar_type><< getValue ();
+	ostream << Generator::Precision <scalar_type> << getValue ();
 }
 
 // Aritmetic operators.
@@ -514,7 +514,6 @@ operator - (const ValueType & lhs, const SFVec4 <ValueType> & rhs)
 	return lhs - rhs .getValue ();
 }
 //@}
-
 
 //extern template class X3DField <Vector4d>;
 //extern template class X3DField <Vector4f>;

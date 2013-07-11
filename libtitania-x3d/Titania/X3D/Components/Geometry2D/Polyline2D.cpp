@@ -64,9 +64,9 @@ Polyline2D::Fields::Fields () :
 { }
 
 Polyline2D::Polyline2D (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometryNode (),
+	         fields ()
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Polyline2D");

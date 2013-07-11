@@ -68,16 +68,16 @@ const Matrix4f textureMatrix = { 1,  0, 0, 0,
 	                              0,  1, 0, 1 };
 
 X3DShapeNode::Fields::Fields () :
-	appearance (new SFNode <X3DBaseNode> ()),
-	geometry (new SFNode <X3DBaseNode> ())
+	appearance (new SFNode ()),
+	geometry (new SFNode ())
 { }
 
 X3DShapeNode::X3DShapeNode () :
-	    X3DChildNode (),     
-	X3DBoundedObject (),     
-	          fields (),     
-	     _appearance (NULL), 
-	       _geometry (NULL)  
+	    X3DChildNode (),
+	X3DBoundedObject (),
+	          fields (),
+	     _appearance (NULL),
+	       _geometry (NULL)
 {
 	addNodeType (X3DConstants::X3DShapeNode);
 }

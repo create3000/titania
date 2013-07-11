@@ -61,9 +61,9 @@ Disk2DProperties::Fields::Fields () :
 { }
 
 Disk2DProperties::Disk2DProperties (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryPropertyNode (),                                                    
-	                 fields ()                                                     
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometryPropertyNode (),
+	                 fields ()
 {
 	setComponent ("Browser"),
 	setTypeName ("Disk2DProperties");

@@ -60,28 +60,28 @@ IndexedTriangleStripSet::Fields::Fields () :
 { }
 
 IndexedTriangleStripSet::IndexedTriangleStripSet (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DComposedGeometryNode (),                                                    
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DComposedGeometryNode (),
 	                 fields (),
-	             coordIndex ()                                                     
+	             coordIndex ()
 {
 	setComponent ("Rendering");
 	setTypeName ("IndexedTriangleStripSet");
 
 	addField (inputOutput,    "metadata",        metadata ());
-	
+
 	addField (initializeOnly, "solid",           solid ());
 	addField (initializeOnly, "ccw",             ccw ());
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-	
+
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
 	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "color",           color ());
 	addField (inputOutput,    "normal",          normal ());
 	addField (inputOutput,    "coord",           coord ());
-	
+
 	addField (initializeOnly, "index",           index ());
 }
 
@@ -95,9 +95,9 @@ void
 IndexedTriangleStripSet::initialize ()
 {
 	X3DComposedGeometryNode::initialize ();
-	
+
 	index () .addInterest (this, &IndexedTriangleStripSet::set_index);
-	
+
 	set_index ();
 }
 
@@ -107,22 +107,22 @@ IndexedTriangleStripSet::set_index ()
 	set_index (index ());
 
 	// Build coordIndex
-	
+
 	coordIndex .clear ();
 
 	for (size_t i = 0, size = index () .size (); i < size; ++ i)
 	{
-		int32_t first  = index () [i];
-		
+		int32_t first = index () [i];
+
 		++ i;
 
-		if (i < size and index () [i] > -1)
+		if (i <size and index () [i]>-1)
 		{
 			int32_t second = index () [i];
-			
+
 			++ i;
 
-			for (size_t face = 0; i < size and index () [i] > -1; ++ i, ++ face)
+			for (size_t face = 0; i <size and index () [i]>-1; ++ i, ++ face)
 			{
 				coordIndex .emplace_back (first);
 				coordIndex .emplace_back (second);
@@ -130,9 +130,9 @@ IndexedTriangleStripSet::set_index ()
 
 				if (face % 2)
 					second = index () [i];
-				
+
 				else
-					first  = index () [i];
+					first = index () [i];
 			}
 		}
 	}

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -77,11 +77,11 @@ public:
 	set_coordinate () const
 	{ return *fields .set_coordinate; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	coord ()
 	{ return *fields .coord; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	coord () const
 	{ return *fields .coord; }
 
@@ -109,7 +109,7 @@ private:
 		Fields ();
 
 		SFInt32* const set_coordinate;
-		SFNode <X3DBaseNode>* const coord;
+		SFNode* const coord;
 		SFVec3f* const direction;
 		MFInt32* const coordIndex;
 	};

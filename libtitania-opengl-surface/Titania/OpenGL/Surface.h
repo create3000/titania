@@ -110,7 +110,7 @@ private:
 
 	bool
 	set_map_event (GdkEventAny*);
-	
+
 	bool
 	set_construct (const Cairo::RefPtr <Cairo::Context> &);
 

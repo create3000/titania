@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,7 +64,7 @@ class X3DPrototypeInstance :
 {
 public:
 
-	X3DPrototypeInstance (X3DExecutionContext* const, const SFNode <Proto> &);
+	X3DPrototypeInstance (X3DExecutionContext* const, const X3DSFNode <Proto> &);
 
 	virtual
 	const std::string &
@@ -109,7 +109,7 @@ private:
 	void
 	initialize () final;
 
-	SFNode <Proto> proto;
+	X3DSFNode <Proto> proto;
 
 };
 

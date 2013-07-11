@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,13 +55,13 @@
 namespace titania {
 namespace puck {
 
-OutlineTreeModel::OutlineTreeModel (const X3D::SFNode <X3D::Browser> & browser) :
-	Glib::ObjectBase (typeid (OutlineTreeModel)),                
-	    Glib::Object (),                                         
-	  Gtk::TreeModel (),                                         
-	executionContext (browser -> getExecutionContext ()),        
-	           stamp ((long int)                          this), 
-	            tree ()                                          
+OutlineTreeModel::OutlineTreeModel (const X3D::X3DSFNode <X3D::Browser> & browser) :
+	Glib::ObjectBase (typeid (OutlineTreeModel)),
+	    Glib::Object (),
+	  Gtk::TreeModel (),
+	executionContext (browser -> getExecutionContext ()),
+	           stamp ((long int)                          this),
+	            tree ()
 {
 	//__LOG__ << std::endl;
 
@@ -75,7 +75,7 @@ OutlineTreeModel::OutlineTreeModel (const X3D::SFNode <X3D::Browser> & browser) 
 }
 
 Glib::RefPtr <OutlineTreeModel>
-OutlineTreeModel::create (const X3D::SFNode <X3D::Browser> & browser)
+OutlineTreeModel::create (const X3D::X3DSFNode <X3D::Browser> & browser)
 {
 	//__LOG__ << std::endl;
 	return Glib::RefPtr <OutlineTreeModel> (new OutlineTreeModel (browser));
@@ -94,17 +94,17 @@ OutlineTreeModel::set_rootNodes ()
 	{
 		Path path;
 		path .push_back (i);
-		
+
 		row_deleted (path);
 	}
-	
+
 	size = executionContext -> getRootNodes () .size ();
 
 	for (size_t i = 0; i < size; ++ i)
 	{
 		Path path;
 		path .push_back (i);
-		
+
 		iterator iter = get_iter (path);
 
 		row_inserted (path, iter);
@@ -240,7 +240,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 				}
 				case OutlineIterType::X3DBaseNode:
 				{
-					auto sfnode = static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (data -> object);
+					auto sfnode = static_cast <X3D::SFNode*> (data -> object);
 
 					if (*sfnode)
 						val .set ("<b>" + sfnode -> getNodeTypeName () + "</b> " + sfnode -> getNodeName ());
@@ -356,7 +356,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 
 		case OutlineIterType::X3DBaseNode:
 		{
-			auto sfnode = static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (data -> object);
+			auto sfnode = static_cast <X3D::SFNode*> (data -> object);
 
 			// Prevent self referencing traversal
 
@@ -364,7 +364,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 			{
 				if (parent .type == OutlineIterType::X3DBaseNode)
 				{
-					auto parent_sfnode = static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (parent .object);
+					auto parent_sfnode = static_cast <X3D::SFNode*> (parent .object);
 
 					if (*sfnode == *parent_sfnode)
 						return 0;
@@ -435,7 +435,7 @@ OutlineTreeModel::iter_n_children_vfunc (const iterator & iter) const
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			auto sfnode = static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (data -> object);
+			auto sfnode = static_cast <X3D::SFNode*> (data -> object);
 
 			if (*sfnode)
 				return getFields (sfnode) .size ();
@@ -480,7 +480,7 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int index, iter
 			{
 				case X3D::X3DConstants::SFNode:
 				{
-					auto sfnode = static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (field);
+					auto sfnode = static_cast <X3D::SFNode*> (field);
 
 					if (index < 1)
 					{
@@ -683,7 +683,7 @@ OutlineTreeModel::collapse_row (const Path & path, const iterator & iter)
 X3D::FieldDefinitionArray
 OutlineTreeModel::getFields (X3D::X3DChildObject* object)
 {
-	auto sfnode = static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (object);
+	auto sfnode = static_cast <X3D::SFNode*> (object);
 	auto node   = sfnode -> getValue ();
 
 	auto userData          = getUserData (node);
@@ -729,7 +729,7 @@ OutlineTreeModel::getUserData (const iterator & iter)
 	auto object = data -> object;
 
 	if (data -> type == OutlineIterType::X3DBaseNode)
-		object = static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (object) -> getValue ();
+		object = static_cast <X3D::SFNode*> (object) -> getValue ();
 
 	if (object)
 		return getUserData (object);

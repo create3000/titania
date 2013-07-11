@@ -62,9 +62,9 @@ IntegerTrigger::Fields::Fields () :
 { }
 
 IntegerTrigger::IntegerTrigger (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DTriggerNode (),                                                    
-	        fields ()                                                     
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTriggerNode (),
+	        fields ()
 {
 	setComponent ("EventUtilities");
 	setTypeName ("IntegerTrigger");
@@ -85,7 +85,7 @@ void
 IntegerTrigger::initialize ()
 {
 	X3DTriggerNode::initialize ();
-	
+
 	set_boolean () .addInterest (this, &IntegerTrigger::_set_boolean);
 }
 

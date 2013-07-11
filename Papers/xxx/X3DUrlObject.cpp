@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,9 +53,9 @@
 #include "../../Browser/X3DBrowser.h"
 #include <Titania/Basic/URI.h>
 
-#include <glibmm/thread.h>
-#include <glibmm/dispatcher.h>
 #include <atomic>
+#include <glibmm/dispatcher.h>
+#include <glibmm/thread.h>
 
 namespace titania {
 namespace X3D {
@@ -72,14 +72,14 @@ namespace X3D {
 //	Glib::Dispatcher &
 //	getLoadTime ()
 //	{ return loadTime; }
-//	
+//
 //	basic::ifilestream
 //	getStream ()
 //	{
 //		Glib::Mutex::Lock lock (mutex);
 //		return std::move (stream);
 //	}
-//	
+//
 //	std::string
 //	getUrlError ()
 //	{
@@ -103,7 +103,7 @@ namespace X3D {
 //
 //		thread = Glib::Thread::create (sigc::mem_fun (*this, &Thread::run), true);
 //	}
-//	
+//
 //	~Thread ()
 //	{
 //		load = false;
@@ -148,18 +148,18 @@ URNIndex X3DUrlObject::URNCache;
 
 X3DUrlObject::Fields::Fields () :
 	url (new MFString ()),
-//	document_changed (new SFString ()),
+	//	document_changed (new SFString ()),
 	loadTime (new SFTime ()),
 	urlError (new MFString ())
 { }
 
 X3DUrlObject::X3DUrlObject () :
-	X3DBaseNode (),                  
-	     fields (),                  
-	  loadState (NOT_STARTED_STATE), 
-	  userAgent (),                  
+	X3DBaseNode (),
+	     fields (),
+	  loadState (NOT_STARTED_STATE),
+	  userAgent (),
 	   worldURL ()
-	   //,thread (new Thread ())                   
+	//,thread (new Thread ())
 {
 	addNodeType (X3DConstants::X3DUrlObject);
 
@@ -171,7 +171,7 @@ X3DUrlObject::initialize ()
 {
 	userAgent = getBrowser () -> getName () + "/" + getBrowser () -> getVersion () + " (X3D Browser; +http://titania.create3000.de)";
 
-//	thread -> getLoadTime () .connect (sigc::mem_fun (*this, &X3DUrlObject::set_loadTime));
+	//	thread -> getLoadTime () .connect (sigc::mem_fun (*this, &X3DUrlObject::set_loadTime));
 }
 
 //  Element Access
@@ -183,7 +183,7 @@ X3DUrlObject::setLoadState (LoadState value)
 
 	if (loadState == COMPLETE_STATE)
 	{
-//		document_changed () .set ("");
+		//		document_changed () .set ("");
 
 		loadTime () = getCurrentTime ();
 	}
@@ -370,7 +370,7 @@ throw (Error <INVALID_URL>,
 			worldURL = uri;
 		}
 		else
-			 worldURL = transformedURL;
+			worldURL = transformedURL;
 
 		std::clog << "\tLoaded URL is '" << worldURL << "': " << std::endl;
 		std::clog << "Done." << std::endl;

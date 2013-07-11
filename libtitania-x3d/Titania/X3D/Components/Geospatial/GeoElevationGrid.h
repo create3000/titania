@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -77,27 +77,27 @@ public:
 	set_height () const
 	{ return *fields .set_height; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	color ()
 	{ return *fields .color; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	color () const
 	{ return *fields .color; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	normal ()
 	{ return *fields .normal; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	normal () const
 	{ return *fields .normal; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	texCoord ()
 	{ return *fields .texCoord; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	texCoord () const
 	{ return *fields .texCoord; }
 
@@ -133,11 +133,11 @@ public:
 	geoGridOrigin () const
 	{ return *fields .geoGridOrigin; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	geoOrigin ()
 	{ return *fields .geoOrigin; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	geoOrigin () const
 	{ return *fields .geoOrigin; }
 
@@ -225,14 +225,14 @@ private:
 		Fields ();
 
 		MFDouble* const set_height;
-		SFNode <X3DBaseNode>* const color;
-		SFNode <X3DBaseNode>* const normal;
-		SFNode <X3DBaseNode>* const texCoord;
+		SFNode* const color;
+		SFNode* const normal;
+		SFNode* const texCoord;
 		SFFloat* const yScale;
 		SFBool* const colorPerVertex;
 		SFDouble* const creaseAngle;
 		SFVec3d* const geoGridOrigin;
-		SFNode <X3DBaseNode>* const geoOrigin;
+		SFNode* const geoOrigin;
 		MFString* const geoSystem;
 		MFDouble* const height;
 		SFBool* const normalPerVertex;

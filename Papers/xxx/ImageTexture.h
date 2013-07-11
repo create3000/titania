@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_TEXTURING_IMAGE_TEXTURE_H__
-#define __TITANIA_X3D_COMPONENTS_TEXTURING_IMAGE_TEXTURE_H__
+#ifndef __XXX_IMAGE_TEXTURE_H__
+#define __XXX_IMAGE_TEXTURE_H__
 
 #include "../Networking/X3DUrlObject.h"
 #include "../Texturing/X3DTexture2DNode.h"
@@ -84,11 +84,11 @@ private:
 	void
 	initialize ();
 
-//	void
-//	requestLoad ();
-//
-//	void
-//	set_document (const String &);
+	//	void
+	//	requestLoad ();
+	//
+	//	void
+	//	set_document (const String &);
 
 	void
 	set_url ();

@@ -53,8 +53,7 @@
 namespace titania {
 namespace chrono {
 
-template double basic_now <double
-                           > ();
+template double basic_now <double> ();
 
 } // chrono
 } // titania

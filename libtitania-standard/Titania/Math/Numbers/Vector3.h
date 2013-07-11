@@ -83,6 +83,7 @@ public:
 	constexpr
 	vector3 () :
 		value { Type (), Type (), Type () }
+
 	{ }
 
 	///  Copy constructor.
@@ -90,12 +91,14 @@ public:
 	constexpr
 	vector3 (const vector3 <T> & vector) :
 		value { vector .x (), vector .y (), vector .z () }
+
 	{ }
 
 	///  Components constructor. Set values to @a x, @a y and @a z.
 	constexpr
 	vector3 (const Type & x, const Type & y, const Type & z) :
 		value { x, y, z }
+
 	{ }
 
 	///  @name Assignment operator

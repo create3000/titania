@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,13 +65,13 @@ class OutlineSelection :
 {
 public:
 
-	OutlineSelection (OutlineTreeView* const, const X3D::SFNode <X3D::Browser> &);
+	OutlineSelection (OutlineTreeView* const, const X3D::X3DSFNode <X3D::Browser> &);
 
 	void
 	setSelectMultiple (bool);
 
 	void
-	select (const X3D::SFNode <X3D::X3DBaseNode> &);
+	select (const X3D::SFNode &);
 
 	void
 	clear ();
@@ -83,7 +83,7 @@ private:
 	set_selection ();
 
 	void
-	remove (const X3D::SFNode <X3D::X3DBaseNode> &);
+	remove (const X3D::SFNode &);
 
 	void
 	select (X3D::X3DBaseNode*, bool);

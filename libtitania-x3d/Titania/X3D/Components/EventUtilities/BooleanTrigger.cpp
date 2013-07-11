@@ -61,9 +61,9 @@ BooleanTrigger::Fields::Fields () :
 { }
 
 BooleanTrigger::BooleanTrigger (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DTriggerNode (),                                                    
-	        fields ()                                                     
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTriggerNode (),
+	        fields ()
 {
 	setComponent ("EventUtilities");
 	setTypeName ("BooleanTrigger");
@@ -83,7 +83,7 @@ void
 BooleanTrigger::initialize ()
 {
 	X3DTriggerNode::initialize ();
-	
+
 	set_triggerTime () .addInterest (this, &BooleanTrigger::_set_triggerTime);
 }
 

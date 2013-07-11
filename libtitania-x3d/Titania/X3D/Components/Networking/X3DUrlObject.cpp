@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,9 +53,9 @@
 #include "../../Browser/X3DBrowser.h"
 #include <Titania/Basic/URI.h>
 
-#include <glibmm/thread.h>
-#include <glibmm/dispatcher.h>
 #include <atomic>
+#include <glibmm/dispatcher.h>
+#include <glibmm/thread.h>
 
 namespace titania {
 namespace X3D {
@@ -69,10 +69,10 @@ X3DUrlObject::Fields::Fields () :
 { }
 
 X3DUrlObject::X3DUrlObject () :
-	X3DBaseNode (),                  
-	     fields (),                  
-	  loadState (NOT_STARTED_STATE), 
-	  userAgent (),                  
+	X3DBaseNode (),
+	     fields (),
+	  loadState (NOT_STARTED_STATE),
+	  userAgent (),
 	   worldURL ()
 {
 	addNodeType (X3DConstants::X3DUrlObject);
@@ -101,7 +101,7 @@ X3DUrlObject::setLoadState (LoadState value)
 
 //  X3D Creation Handling
 
-SFNode <Scene>
+X3DSFNode <Scene>
 X3DUrlObject::createX3DFromString (const std::string & string)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
@@ -113,14 +113,14 @@ throw (Error <INVALID_X3D>,
 	return createX3DFromStream (istringstream);
 }
 
-SFNode <Scene>
+X3DSFNode <Scene>
 X3DUrlObject::createX3DFromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	SFNode <Scene> scene = getBrowser () -> createScene ();
+	X3DSFNode <Scene> scene = getBrowser () -> createScene ();
 
 	scene -> fromStream (getReferer (), istream);
 
@@ -128,17 +128,17 @@ throw (Error <INVALID_X3D>,
 }
 
 void
-X3DUrlObject::createX3DFromURL (const MFString & url, const SFNode <X3DBaseNode> & node, const std::string & fieldName)
+X3DUrlObject::createX3DFromURL (const MFString & url, const SFNode & node, const std::string & fieldName)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 { }
 
-SFNode <Scene>
+X3DSFNode <Scene>
 X3DUrlObject::createX3DFromURL (const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	SFNode <Scene> scene = getBrowser () -> createScene ();
+	X3DSFNode <Scene> scene = getBrowser () -> createScene ();
 
 	parseIntoScene (scene, url);
 
@@ -250,7 +250,7 @@ throw (Error <INVALID_URL>,
 			worldURL = uri;
 		}
 		else
-			 worldURL = transformedURL;
+			worldURL = transformedURL;
 
 		std::clog << "\tLoaded URL is '" << worldURL << "': " << std::endl;
 		std::clog << "Done." << std::endl;

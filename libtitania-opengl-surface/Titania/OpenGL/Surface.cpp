@@ -64,7 +64,7 @@ namespace opengl {
 
 Surface::Surface () :
 	Gtk::DrawingArea (),
-	context (NULL) 
+	         context (NULL)
 {
 	set_double_buffered (false);
 	set_app_paintable (true);

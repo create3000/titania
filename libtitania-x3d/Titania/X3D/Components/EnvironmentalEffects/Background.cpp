@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,16 +65,16 @@ Background::Fields::Fields () :
 { }
 
 Background::Background (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DBackgroundNode (),                                           
-	           fields (),                                                    
-	     frontTexture (new ImageTexture (executionContext)),                 
-	      backTexture (new ImageTexture (executionContext)),                 
-	      leftTexture (new ImageTexture (executionContext)),                 
-	     rightTexture (new ImageTexture (executionContext)),                 
-	       topTexture (new ImageTexture (executionContext)),                 
-	    bottomTexture (new ImageTexture (executionContext)),                 
-	textureProperties (new TextureProperties (executionContext))             
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DBackgroundNode (),
+	           fields (),
+	     frontTexture (new ImageTexture (executionContext)),
+	      backTexture (new ImageTexture (executionContext)),
+	      leftTexture (new ImageTexture (executionContext)),
+	     rightTexture (new ImageTexture (executionContext)),
+	       topTexture (new ImageTexture (executionContext)),
+	    bottomTexture (new ImageTexture (executionContext)),
+	textureProperties (new TextureProperties (executionContext))
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Background");

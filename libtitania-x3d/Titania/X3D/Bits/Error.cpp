@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DError::X3DError (const std::string & message) :
-	message (message) 
+	message (message)
 { }
 
 const char*

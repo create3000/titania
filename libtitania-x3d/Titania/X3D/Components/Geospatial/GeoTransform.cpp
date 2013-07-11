@@ -61,14 +61,14 @@ GeoTransform::Fields::Fields () :
 	scale (new SFVec3f (1, 1, 1)),
 	scaleOrientation (new SFRotation ()),
 	translation (new SFVec3f ()),
-	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoOrigin (new SFNode ()),
 	geoSystem (new MFString ({ "GD", "WE" }))
 { }
 
 GeoTransform::GeoTransform (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGroupingNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode (),
+	         fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoTransform");

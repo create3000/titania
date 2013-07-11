@@ -64,16 +64,16 @@ IndexedLineSet::Fields::Fields () :
 	colorIndex (new MFInt32 ()),
 	coordIndex (new MFInt32 ()),
 	attrib (new MFNode ()),
-	fogCoord (new SFNode <X3DBaseNode> ()),
-	color (new SFNode <X3DBaseNode> ()),
-	coord (new SFNode <X3DBaseNode> ())
+	fogCoord (new SFNode ()),
+	color (new SFNode ()),
+	coord (new SFNode ())
 { }
 
 IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryNode (),                                                    
-	         fields (),                                                    
-	      polylines ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometryNode (),
+	         fields (),
+	      polylines ()
 {
 	setComponent ("Rendering");
 	setTypeName ("IndexedLineSet");

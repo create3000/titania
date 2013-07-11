@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,9 +71,9 @@ constexpr int Bold   = 700;
 
 };
 
-ViewpointEditor::ViewpointEditor (const X3D::SFNode <X3D::Browser> & browser) :
+ViewpointEditor::ViewpointEditor (const X3D::X3DSFNode <X3D::Browser> & browser) :
 	X3DViewpointEditorUI (get_ui ("ViewpointEditor.ui"), gconf_dir ()),
-	activeLayer ()
+	         activeLayer ()
 {
 	setBrowser (browser);
 }
@@ -90,13 +90,13 @@ ViewpointEditor::initialize ()
 	set_activeLayer ();
 }
 
-const X3D::SFNode <X3D::ViewpointStack> &
+const X3D::X3DSFNode <X3D::ViewpointStack> &
 ViewpointEditor::getViewpointStack ()
 {
 	return activeLayer -> getViewpointStack ();
 }
 
-const X3D::SFNode <X3D::ViewpointList> &
+const X3D::X3DSFNode <X3D::ViewpointList> &
 ViewpointEditor::getViewpoints () const
 {
 	return activeLayer -> getViewpoints ();
@@ -116,7 +116,7 @@ ViewpointEditor::set_activeLayer ()
 		getViewpoints ()     -> bindTime () .removeInterest (this, &ViewpointEditor::set_viewpoints);
 		getViewpointStack () -> bindTime () .removeInterest (this, &ViewpointEditor::set_currentViewpoint);
 	}
-	
+
 	activeLayer = getBrowser () -> getActiveLayer ();
 
 	if (activeLayer)
@@ -140,7 +140,7 @@ ViewpointEditor::set_viewpoints ()
 	guint index = 0;
 
 	// Fill the TreeView's model
-	for (const auto & viewpoint : **getViewpoints ())
+	for (const auto & viewpoint :** getViewpoints ())
 	{
 		if (viewpoint -> description () .length ())
 		{

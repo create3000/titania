@@ -57,14 +57,14 @@ namespace X3D {
 
 GeoElevationGrid::Fields::Fields () :
 	set_height (new MFDouble ()),
-	color (new SFNode <X3DBaseNode> ()),
-	normal (new SFNode <X3DBaseNode> ()),
-	texCoord (new SFNode <X3DBaseNode> ()),
+	color (new SFNode ()),
+	normal (new SFNode ()),
+	texCoord (new SFNode ()),
 	yScale (new SFFloat (1)),
 	colorPerVertex (new SFBool (true)),
 	creaseAngle (new SFDouble ()),
 	geoGridOrigin (new SFVec3d ()),
-	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoOrigin (new SFNode ()),
 	geoSystem (new MFString ({ "GD", "WE" })),
 	height (new MFDouble ()),
 	normalPerVertex (new SFBool (true)),
@@ -77,9 +77,9 @@ GeoElevationGrid::Fields::Fields () :
 { }
 
 GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometryNode (),
+	         fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoElevationGrid");

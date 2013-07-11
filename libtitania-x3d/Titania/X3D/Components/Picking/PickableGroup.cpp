@@ -56,9 +56,9 @@ namespace titania {
 namespace X3D {
 
 PickableGroup::PickableGroup (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	  X3DGroupingNode (),                                                    
-	X3DPickableObject ()                                                     
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	  X3DGroupingNode (),
+	X3DPickableObject ()
 {
 	setComponent ("Picking");
 	setTypeName ("PickableGroup");

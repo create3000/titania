@@ -61,9 +61,9 @@ X3DSequencerNode::Fields::Fields () :
 { }
 
 X3DSequencerNode::X3DSequencerNode () :
-	X3DChildNode (), 
-	      fields (), 
-	       index (0) 
+	X3DChildNode (),
+	      fields (),
+	       index (0)
 {
 	addNodeType (X3DConstants::X3DSequencerNode);
 }

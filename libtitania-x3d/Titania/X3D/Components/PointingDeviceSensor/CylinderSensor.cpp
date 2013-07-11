@@ -65,9 +65,9 @@ CylinderSensor::Fields::Fields () :
 { }
 
 CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DDragSensorNode (),                                                    
-	           fields ()                                                     
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DDragSensorNode (),
+	           fields ()
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("CylinderSensor");

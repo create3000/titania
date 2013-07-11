@@ -60,10 +60,10 @@ IndexedTriangleFanSet::Fields::Fields () :
 { }
 
 IndexedTriangleFanSet::IndexedTriangleFanSet (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DComposedGeometryNode (),                                                    
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DComposedGeometryNode (),
 	                 fields (),
-	             coordIndex ()                                                     
+	             coordIndex ()
 {
 	setComponent ("Rendering");
 	setTypeName ("IndexedTriangleFanSet");
@@ -74,7 +74,7 @@ IndexedTriangleFanSet::IndexedTriangleFanSet (X3DExecutionContext* const executi
 	addField (initializeOnly, "ccw",             ccw ());
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-	
+
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
 	addField (inputOutput,    "texCoord",        texCoord ());
@@ -95,9 +95,9 @@ void
 IndexedTriangleFanSet::initialize ()
 {
 	X3DComposedGeometryNode::initialize ();
-	
+
 	index () .addInterest (this, &IndexedTriangleFanSet::set_index);
-	
+
 	set_index ();
 }
 
@@ -107,20 +107,20 @@ IndexedTriangleFanSet::set_index ()
 	set_index (index ());
 
 	// Build coordIndex
-	
+
 	coordIndex .clear ();
 
 	for (size_t i = 0, size = index () .size (); i < size; ++ i)
 	{
-		int32_t first  = index () [i];
-		
+		int32_t first = index () [i];
+
 		++ i;
 
-		if (i < size and index () [i] > -1)
+		if (i <size and index () [i]>-1)
 		{
 			int32_t second = index () [i];
 
-			for (++ i; i < size and index () [i] > -1; ++ i)
+			for (++ i; i <size and index () [i]>-1; ++ i)
 			{
 				coordIndex .emplace_back (first);
 				coordIndex .emplace_back (second);

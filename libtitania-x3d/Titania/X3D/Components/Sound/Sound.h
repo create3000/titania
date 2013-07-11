@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -142,11 +142,11 @@ public:
 	priority () const
 	{ return *fields .priority; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	source ()
 	{ return *fields .source; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	source () const
 	{ return *fields .source; }
 
@@ -180,7 +180,7 @@ private:
 		SFFloat* const maxBack;
 		SFFloat* const maxFront;
 		SFFloat* const priority;
-		SFNode <X3DBaseNode>* const source;
+		SFNode* const source;
 	};
 
 	Fields fields;

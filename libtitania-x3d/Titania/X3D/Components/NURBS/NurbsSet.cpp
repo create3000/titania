@@ -63,10 +63,10 @@ NurbsSet::Fields::Fields () :
 { }
 
 NurbsSet::NurbsSet (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DChildNode (),                                                    
-	X3DBoundedObject (),                                                    
-	          fields ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DChildNode (),
+	X3DBoundedObject (),
+	          fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsSet");

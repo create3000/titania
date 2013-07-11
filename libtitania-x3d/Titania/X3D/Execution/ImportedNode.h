@@ -65,13 +65,13 @@ class ImportedNode :
 public:
 
 	ImportedNode (X3DExecutionContext* const,
-	              const SFNode <Inline> &, const std::string &, const std::string &);
+	              const X3DSFNode <Inline> &, const std::string &, const std::string &);
 
 	virtual
 	ImportedNode*
 	clone (X3DExecutionContext* const) const;
 
-	const SFNode <Inline> &
+	const X3DSFNode <Inline> &
 	getInlineNode () const;
 
 	const std::string &
@@ -80,7 +80,7 @@ public:
 	const std::string &
 	getImportedName () const;
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	getExportedNode () const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -94,13 +94,14 @@ public:
 	void
 	dispose () final;
 
+
 private:
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
 
-	SFNode <Inline> inlineNode;
+	X3DSFNode <Inline> inlineNode;
 
 	const std::string exportedName;
 	const std::string importedName;

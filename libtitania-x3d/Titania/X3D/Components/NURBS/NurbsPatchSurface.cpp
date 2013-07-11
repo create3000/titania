@@ -56,8 +56,8 @@ namespace titania {
 namespace X3D {
 
 NurbsPatchSurface::NurbsPatchSurface (X3DExecutionContext* const executionContext) :
-	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DNurbsSurfaceGeometryNode ()                                                     
+	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DNurbsSurfaceGeometryNode ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsPatchSurface");

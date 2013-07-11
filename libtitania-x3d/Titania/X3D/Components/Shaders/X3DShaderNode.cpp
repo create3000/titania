@@ -61,8 +61,8 @@ X3DShaderNode::Fields::Fields () :
 { }
 
 X3DShaderNode::X3DShaderNode () :
-	X3DAppearanceChildNode (), 
-	                fields ()  
+	X3DAppearanceChildNode (),
+	                fields ()
 {
 	addNodeType (X3DConstants::X3DShaderNode);
 }

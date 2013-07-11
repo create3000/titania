@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -70,51 +70,51 @@ public:
 
 	///  @name Fields
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	front ()
 	{ return *fields .front; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	front () const
 	{ return *fields .front; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	back ()
 	{ return *fields .back; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	back () const
 	{ return *fields .back; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	left ()
 	{ return *fields .left; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	left () const
 	{ return *fields .left; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	right ()
 	{ return *fields .right; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	right () const
 	{ return *fields .right; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	bottom ()
 	{ return *fields .bottom; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	bottom () const
 	{ return *fields .bottom; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	top ()
 	{ return *fields .top; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	top () const
 	{ return *fields .top; }
 
@@ -144,12 +144,12 @@ private:
 	{
 		Fields ();
 
-		SFNode <X3DBaseNode>* const front;
-		SFNode <X3DBaseNode>* const back;
-		SFNode <X3DBaseNode>* const left;
-		SFNode <X3DBaseNode>* const right;
-		SFNode <X3DBaseNode>* const bottom;
-		SFNode <X3DBaseNode>* const top;
+		SFNode* const front;
+		SFNode* const back;
+		SFNode* const left;
+		SFNode* const right;
+		SFNode* const bottom;
+		SFNode* const top;
 	};
 
 	Fields fields;

@@ -62,9 +62,9 @@ LinePickSensor::Fields::Fields () :
 { }
 
 LinePickSensor::LinePickSensor (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DPickSensorNode (),                                                    
-	           fields ()                                                     
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DPickSensorNode (),
+	           fields ()
 {
 	setComponent ("Picking");
 	setTypeName ("LinePickSensor");

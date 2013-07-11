@@ -61,10 +61,10 @@ TextureCoordinateGenerator::Fields::Fields () :
 { }
 
 TextureCoordinateGenerator::TextureCoordinateGenerator (X3DExecutionContext* const executionContext) :
-	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DTextureCoordinateNode (),                                                    
-	                  fields (),                                                    
-	          textureGenMode (GL_SPHERE_MAP)                                        
+	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTextureCoordinateNode (),
+	                  fields (),
+	          textureGenMode (GL_SPHERE_MAP)
 {
 	setComponent ("Texturing");
 	setTypeName ("TextureCoordinateGenerator");

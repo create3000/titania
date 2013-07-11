@@ -60,9 +60,9 @@ GravityPhysicsModel::Fields::Fields () :
 { }
 
 GravityPhysicsModel::GravityPhysicsModel (X3DExecutionContext* const executionContext) :
-	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DParticlePhysicsModelNode (),                                                    
-	                     fields ()                                                     
+	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DParticlePhysicsModelNode (),
+	                     fields ()
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("GravityPhysicsModel");

@@ -52,8 +52,8 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_COMPONENT_INFO_ARRAY_H__
 
 #include "../../Configuration/ComponentInfoArray.h"
-#include "jsConstArray.h"
 #include "jsComponentInfo.h"
+#include "jsConstArray.h"
 
 namespace titania {
 namespace X3D {

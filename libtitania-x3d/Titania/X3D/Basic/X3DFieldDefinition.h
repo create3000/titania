@@ -80,11 +80,11 @@ public:
 	X3DFieldDefinition*
 	clone (X3DExecutionContext* const) const
 	{ return clone (); }
-	
+
 	virtual
 	void
 	clone (X3DExecutionContext* const, X3DFieldDefinition*) const = 0;
-	
+
 	X3DFieldDefinition &
 	operator = (const X3DFieldDefinition &);
 

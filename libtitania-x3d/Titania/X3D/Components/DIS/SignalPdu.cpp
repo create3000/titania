@@ -83,10 +83,10 @@ SignalPdu::Fields::Fields () :
 { }
 
 SignalPdu::SignalPdu (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	   X3DSensorNode (),                                                    
-	X3DBoundedObject (),                                                    
-	          fields ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	   X3DSensorNode (),
+	X3DBoundedObject (),
+	          fields ()
 {
 	setComponent ("DIS");
 	setTypeName ("SignalPdu");

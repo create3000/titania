@@ -67,9 +67,9 @@ Cylinder::Fields::Fields () :
 { }
 
 Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometryNode (),
+	         fields ()
 {
 	setComponent ("Geometry3D");
 	setTypeName ("Cylinder");
@@ -168,7 +168,7 @@ Cylinder::build ()
 			getNormals  () .emplace_back (0, 1, 0);
 			getVertices () .emplace_back (x1 * radius (), y1, z1 * radius ());
 		}
-			
+
 		addElements (GL_POLYGON, SEGMENTS);
 	}
 
@@ -185,7 +185,7 @@ Cylinder::build ()
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (x1 * radius (), y2, z1 * radius ());
 		}
-			
+
 		addElements (GL_POLYGON, SEGMENTS);
 	}
 

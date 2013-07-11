@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,19 +65,19 @@ Text::Fields::Fields () :
 	origin (new SFVec3f ()),
 	textBounds (new SFVec2f ()),
 	lineBounds (new MFVec2f ()),
-	fontStyle (new SFNode <X3DBaseNode> ())
+	fontStyle (new SFNode ())
 { }
 
 Text::Text (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryNode (),                                                    
-	         fields (),                                                    
-	           font (),                                                    
-	     lineHeight (),                                                    
-	   charSpacings (),                                                    
-	 minorAlignment (),                                                    
-	    translation (),                                                    
-	          scale ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometryNode (),
+	         fields (),
+	           font (),
+	     lineHeight (),
+	   charSpacings (),
+	 minorAlignment (),
+	    translation (),
+	          scale ()
 {
 	setComponent ("Text");
 	setTypeName ("Text");
@@ -275,11 +275,11 @@ Text::build ()
 	getTexCoord () .emplace_back (1, 0, 0);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (max .x (), min .y (), min .z ());
-	
+
 	getTexCoord () .emplace_back (1, 1, 0);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (max);
-	
+
 	getTexCoord () .emplace_back (0, 1, 0);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (min .x (), max .y (), min .z ());

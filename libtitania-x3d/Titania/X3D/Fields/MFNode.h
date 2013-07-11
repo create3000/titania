@@ -60,21 +60,21 @@
 namespace titania {
 namespace X3D {
 
-//extern template class Array <SFNode <X3DBaseNode>>;
-extern template class X3DField <Array <SFNode <X3DBaseNode>>>;
-extern template class X3DArrayField <SFNode <X3DBaseNode>>;
+//extern template class Array <SFNode>;
+extern template class X3DField <Array <SFNode>>;
+extern template class X3DArrayField <SFNode>;
 
 class MFNode :
-	public X3DArrayField <SFNode <X3DBaseNode>>
+	public X3DArrayField <SFNode>
 {
 private:
 
-	typedef X3DArrayField <SFNode <X3DBaseNode>> ArrayField;
+	typedef X3DArrayField <SFNode> ArrayField;
 
 
 public:
 
-	using X3DArrayField <SFNode <X3DBaseNode>>::addInterest;
+	using X3DArrayField <SFNode>::addInterest;
 
 	MFNode () :
 		ArrayField ()
@@ -85,12 +85,12 @@ public:
 	{ }
 
 	explicit
-	MFNode (std::initializer_list <SFNode <X3DBaseNode>> initializer_list) :
+	MFNode (std::initializer_list <SFNode> initializer_list) :
 		ArrayField (initializer_list)
 	{ }
 
 	explicit
-	MFNode (std::initializer_list <const typename SFNode <X3DBaseNode>::value_type> initializer_list) :
+	MFNode (std::initializer_list <const typename SFNode::value_type> initializer_list) :
 		ArrayField (initializer_list)
 	{ }
 

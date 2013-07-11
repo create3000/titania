@@ -63,19 +63,19 @@ ParticleSystem::Fields::Fields () :
 	particleLifetime (new SFFloat (5)),
 	particleSize (new SFVec2f (0.02, 0.02)),
 	isActive (new SFBool ()),
-	colorRamp (new SFNode <X3DBaseNode> ()),
+	colorRamp (new SFNode ()),
 	colorKey (new MFFloat ()),
-	emitter (new SFNode <X3DBaseNode> ()),
+	emitter (new SFNode ()),
 	geometryType (new SFString ("QUAD")),
 	physics (new MFNode ()),
-	texCoordRamp (new SFNode <X3DBaseNode> ()),
+	texCoordRamp (new SFNode ()),
 	texCoordKey (new MFFloat ())
 { }
 
 ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DShapeNode (),                                                    
-	      fields ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DShapeNode (),
+	      fields ()
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("ParticleSystem");

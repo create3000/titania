@@ -54,8 +54,8 @@ namespace titania {
 namespace puck {
 
 ViewpointMenuItem::ViewpointMenuItem (X3D::X3DViewpointNode* const viewpoint) :
-	Gtk::MenuItem (viewpoint -> description () .getValue ()), 
-	    viewpoint (viewpoint)                                 
+	Gtk::MenuItem (viewpoint -> description () .getValue ()),
+	    viewpoint (viewpoint)
 { }
 
 void

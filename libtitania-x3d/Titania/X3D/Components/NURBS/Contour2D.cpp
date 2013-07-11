@@ -62,9 +62,9 @@ Contour2D::Fields::Fields () :
 { }
 
 Contour2D::Contour2D (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DNode (),                                                    
-	     fields ()                                                     
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DNode (),
+	     fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("Contour2D");

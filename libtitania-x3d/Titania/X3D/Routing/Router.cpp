@@ -54,8 +54,8 @@ namespace titania {
 namespace X3D {
 
 Router::Router () :
-	events (), 
-	 nodes ()  
+	events (),
+	 nodes ()
 { }
 
 void
@@ -74,21 +74,21 @@ Router::processEvents ()
 		eventsProcessed ();
 	}
 
-// std::vector is probaly faster
-//
-//	while (events .size ())
-//	{
-//		do
-//		{
-//			for (auto & event : EventList (std::move (events)))
-//			{
-//				event .first -> processEvent (event .second);
-//			}
-//		}
-//		while (events .size ());
-//
-//		eventsProcessed ();
-//	}
+	// std::vector is probaly faster
+	//
+	//	while (events .size ())
+	//	{
+	//		do
+	//		{
+	//			for (auto & event : EventList (std::move (events)))
+	//			{
+	//				event .first -> processEvent (event .second);
+	//			}
+	//		}
+	//		while (events .size ());
+	//
+	//		eventsProcessed ();
+	//	}
 }
 
 void

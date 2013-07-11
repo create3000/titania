@@ -62,20 +62,20 @@ IndexedTriangleSet::Fields::Fields () :
 { }
 
 IndexedTriangleSet::IndexedTriangleSet (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DComposedGeometryNode (),                                                    
-	                 fields ()                                                     
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DComposedGeometryNode (),
+	                 fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("IndexedTriangleSet");
 
 	addField (inputOutput,    "metadata",        metadata ());
-	
+
 	addField (initializeOnly, "solid",           solid ());
 	addField (initializeOnly, "ccw",             ccw ());
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-	
+
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
 	addField (inputOutput,    "texCoord",        texCoord ());
@@ -96,9 +96,9 @@ void
 IndexedTriangleSet::initialize ()
 {
 	X3DComposedGeometryNode::initialize ();
-	
+
 	index () .addInterest (static_cast <X3DComposedGeometryNode*> (this), &IndexedTriangleSet::set_index);
-	
+
 	set_index (index ());
 }
 

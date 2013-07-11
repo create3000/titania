@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -85,7 +85,7 @@ jsGlobals::init (JSContext* context, JSObject* global)
 	JS_DefineProperties (context, global, properties);
 	JS_DefineFunctions (context, global, functions);
 
-	jsSFNode::create (context, new SFNode <X3DBaseNode> (), &X3D_JS_NULL);
+	jsSFNode::create (context, new SFNode (), &X3D_JS_NULL);
 }
 
 JSBool
@@ -113,7 +113,7 @@ JSBool
 jsGlobals::require (JSContext* context, uintN argc, jsval* vp)
 {
 	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-	
+
 	JSBool success = JS_FALSE;
 
 	jsval* argv = JS_ARGV (context, vp);

@@ -58,9 +58,9 @@ namespace titania {
 namespace X3D {
 
 ImageTexture::ImageTexture (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DTexture2DNode (),                                                    
-	    X3DUrlObject ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTexture2DNode (),
+	    X3DUrlObject ()
 {
 	setComponent ("Texturing");
 	setTypeName ("ImageTexture");

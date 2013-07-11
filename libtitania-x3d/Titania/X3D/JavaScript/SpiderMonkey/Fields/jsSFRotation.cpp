@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,8 +50,8 @@
 
 #include "jsSFRotation.h"
 
-#include "jsSFVec3.h"
 #include "../jsContext.h"
+#include "jsSFVec3.h"
 
 namespace titania {
 namespace X3D {
@@ -428,8 +428,8 @@ jsSFRotation::slerp (JSContext* context, uintN argc, jsval* vp)
 		catch (const std::domain_error & error)
 		{
 			JS_ReportError (context, "%s .slerp: %s", getClass () -> name, error .what ());
-			return JS_FALSE;		
-		}	
+			return JS_FALSE;
+		}
 	}
 
 	JS_ReportError (context, "wrong number of arguments");

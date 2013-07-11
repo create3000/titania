@@ -57,20 +57,20 @@ namespace X3D {
 
 ///  6.2.2 The getBrowser service returns a reference to an instance of an X3D browser through which other service
 ///  requests may be processed.  This is a unique identifier per application instance.
-const SFNode <BrowserApplication> &
+const X3DSFNode <BrowserApplication> &
 getBrowser (/* parameter */)
 throw (Error <BROWSER_UNAVAILABLE>)
 {
-	static SFNode <BrowserApplication> browserApplication;
+	static X3DSFNode <BrowserApplication> browserApplication;
 
 	if (not browserApplication)
 	{
 		std::clog << "Creating BrowserApplication ..." << std::endl;
-		
+
 		browserApplication = new BrowserApplication ();
 
 		browserApplication -> setup ();
-		
+
 		std::clog << "Done creating BrowserApplication." << std::endl;
 	}
 
@@ -78,12 +78,12 @@ throw (Error <BROWSER_UNAVAILABLE>)
 }
 
 ///  6.2.3 The createBrowser service creates a new instance of a browser application.
-SFNode <Browser>
+X3DSFNode <Browser>
 createBrowser (/* parameter */)
 throw (Error <BROWSER_UNAVAILABLE>)
 {
 	std::clog << "Creating Browser ..." << std::endl;
-	SFNode <Browser> browser = new Browser ();
+	X3DSFNode <Browser> browser = new Browser ();
 
 	std::clog << "Done creating Browser." << std::endl;
 	return browser;

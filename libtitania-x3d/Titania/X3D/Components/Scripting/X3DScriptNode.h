@@ -80,11 +80,11 @@ protected:
 	virtual
 	void
 	initialize () override;
-	
+
 	void
 	setReferer (const basic::uri & value)
 	{ referer = value; }
-	
+
 	virtual
 	const basic::uri &
 	getReferer () const final

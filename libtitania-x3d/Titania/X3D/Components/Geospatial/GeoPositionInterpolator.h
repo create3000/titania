@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -93,11 +93,11 @@ public:
 	value_changed () const
 	{ return *fields .value_changed; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	geoOrigin ()
 	{ return *fields .geoOrigin; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	geoOrigin () const
 	{ return *fields .geoOrigin; }
 
@@ -131,7 +131,7 @@ private:
 		MFVec3d* const keyValue;
 		SFVec3d* const geovalue_changed;
 		SFVec3d* const value_changed;
-		SFNode <X3DBaseNode>* const geoOrigin;
+		SFNode* const geoOrigin;
 		MFString* const geoSystem;
 	};
 

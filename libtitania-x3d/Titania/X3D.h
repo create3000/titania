@@ -59,17 +59,17 @@
 #include "X3D/Bits/Error.h"
 #include "X3D/Components.h"
 
-#include "X3D/Execution/BindableNodeStack.h"
 #include "X3D/Execution/BindableNodeList.h"
+#include "X3D/Execution/BindableNodeStack.h"
 
 namespace titania {
 namespace X3D {
 
-const SFNode <BrowserApplication> &
+const X3DSFNode <BrowserApplication> &
 getBrowser (/* parameter */)
 throw (Error <BROWSER_UNAVAILABLE>);
 
-SFNode <Browser>
+X3DSFNode <Browser>
 createBrowser ()
 throw (Error <BROWSER_UNAVAILABLE>);
 

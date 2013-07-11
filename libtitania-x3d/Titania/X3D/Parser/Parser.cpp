@@ -78,13 +78,13 @@ Parser::AccessTypes::AccessTypes ()
 Parser::AccessTypes Parser::accessTypes;
 
 Parser::Parser (std::istream & istream, X3DScene* scene) :
-	          X3DBaseNode (scene -> getBrowser (), scene), 
-	            X3DParser (),                              
-	              istream (basic::gunzip (istream)),       
-	                scene (scene),                         
+	          X3DBaseNode (scene -> getBrowser (), scene),
+	            X3DParser (),
+	              istream (basic::gunzip (istream)),
+	                scene (scene),
 	executionContextStack (),
-	      currentComments (),                              
-	          whitespaces ()                               
+	      currentComments (),
+	          whitespaces ()
 {
 	setComponent ("Browser");
 	setTypeName ("Parser");
@@ -114,7 +114,7 @@ Parser::getMessageFromError (const X3DError & error)
 	//__LOG__ << std::endl;
 
 	//__LOG__ << istream .peek () << std::endl;
-	
+
 	istream .clear ();
 
 	size_t lineNumber = std::count (whitespaces .begin (), whitespaces .end (), '\n') + 1;
@@ -125,9 +125,9 @@ Parser::getMessageFromError (const X3DError & error)
 	size_t      linePos = line .size () - rest .size ();
 
 	// Format error
-	
+
 	std::ostringstream stringstream;
-	
+
 	stringstream
 		<< std::string (80, '*') << std::endl
 		<< "Parser error at line " << lineNumber << ':' << linePos + 1 << std::endl
@@ -154,7 +154,7 @@ Parser::getline ()
 	for ( ; ;)
 	{
 		char c = istream .get ();
-		
+
 		if (istream)
 		{
 			if (c == '\n' or c == '\r')
@@ -185,9 +185,9 @@ Parser::rgetline ()
 	for ( ; ;)
 	{
 		istream .unget ();
-			
+
 		char c = istream .peek ();
-		
+
 		if (istream)
 		{
 			if (c == '\n' or c == '\r')
@@ -240,7 +240,7 @@ Parser::isInsideProtoDefinition () const
 }
 
 void
-Parser::addRootNode (const SFNode <X3DBaseNode> & rootNode)
+Parser::addRootNode (const SFNode & rootNode)
 {
 	//__LOG__ << std::endl;
 
@@ -271,7 +271,7 @@ Parser::x3dScene ()
 	metaStatements ();
 
 	statements ();
-	
+
 	scene -> addInnerComments (getComments ());
 
 	popExecutionContext ();
@@ -309,7 +309,7 @@ Parser::comment ()
 
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -390,7 +390,7 @@ Parser::componentStatement ()
 				if (componentSupportLevel (_componentSupportLevel))
 				{
 					scene -> addComments (getComments ());
-	
+
 					return getBrowser () -> getComponent (_componentNameId, _componentSupportLevel);
 				}
 				else
@@ -479,8 +479,8 @@ Parser::exportStatement ()
 
 			comments ();
 
-			const SFNode <X3DBaseNode> & node = scene -> getNode (_localNodeNameId);
-			
+			const SFNode & node = scene -> getNode (_localNodeNameId);
+
 			if (Grammar::AS (istream))
 			{
 				if (not exportedNodeNameId (_exportedNodeNameId))
@@ -513,7 +513,7 @@ Parser::importStatement ()
 
 		if (inlineNodeNameId (_inlineNodeNameId))
 		{
-			const SFNode <Inline> _inlineNode = x3d_cast <Inline*> (getExecutionContext () -> getNamedNode (_inlineNodeNameId));
+			const X3DSFNode <Inline> _inlineNode = x3d_cast <Inline*> (getExecutionContext () -> getNamedNode (_inlineNodeNameId));
 
 			if (_inlineNode)
 			{
@@ -534,7 +534,7 @@ Parser::importStatement ()
 							if (not nodeNameId (_nodeNameId))
 								throw Error <INVALID_X3D> ("No name given after AS.");
 						}
-						
+
 						if (isInsideProtoDefinition () and _inlineNode -> load ())
 							_inlineNode -> requestImmediateLoad ();
 
@@ -626,7 +626,7 @@ Parser::statement ()
 	if (exportStatement ())
 		return true;
 
-	SFNode <X3DBaseNode> _node;
+	SFNode _node;
 
 	if (nodeStatement (_node))
 	{
@@ -638,7 +638,7 @@ Parser::statement ()
 }
 
 bool
-Parser::nodeStatement (SFNode <X3DBaseNode> & _node)
+Parser::nodeStatement (SFNode & _node)
 {
 	//__LOG__ << std::endl;
 
@@ -687,7 +687,7 @@ Parser::nodeStatement (SFNode <X3DBaseNode> & _node)
 }
 
 bool
-Parser::rootNodeStatement (SFNode <X3DBaseNode> & _node)
+Parser::rootNodeStatement (SFNode & _node)
 {
 	//__LOG__ << std::endl;
 
@@ -755,7 +755,7 @@ Parser::proto ()
 			if (Grammar::OpenBracket (istream))
 			{
 				auto _comments = std::move (getComments ());
-	
+
 				FieldDefinitionArray _interfaceDeclarations = std::move (interfaceDeclarations ());
 
 				comments ();
@@ -768,7 +768,7 @@ Parser::proto ()
 
 					if (Grammar::OpenBrace (istream))
 					{
-						const SFNode <Proto> & _proto = getExecutionContext () -> addProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
+						const X3DSFNode <Proto> & _proto = getExecutionContext () -> addProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
 
 						pushExecutionContext (*_proto);
 
@@ -781,11 +781,11 @@ Parser::proto ()
 						if (Grammar::CloseBrace (istream))
 						{
 							//__LOG__ << (void*) _proto .getValue () << " " << _nodeTypeId << std::endl;
-							
+
 							_proto -> addInterfaceComments (_interfaceComments);
 							_proto -> addComments (_comments);
 							_proto -> addInnerComments (getComments ());
-							
+
 							return true;
 						}
 						else
@@ -814,7 +814,7 @@ Parser::protoBody ()
 
 	protoStatements ();
 
-	SFNode <X3DBaseNode> _rootNodeStatement;
+	SFNode _rootNodeStatement;
 
 	if (rootNodeStatement (_rootNodeStatement))
 		addRootNode (_rootNodeStatement);
@@ -995,7 +995,7 @@ Parser::externproto ()
 			if (Grammar::OpenBracket (istream))
 			{
 				auto _comments = std::move (getComments ());
-	
+
 				FieldDefinitionArray _externInterfaceDeclarations = std::move (externInterfaceDeclarations ());
 
 				comments ();
@@ -1003,13 +1003,13 @@ Parser::externproto ()
 				if (Grammar::CloseBracket (istream))
 				{
 					auto _interfaceComments = std::move (getComments ());
-				
+
 					MFString _URLList;
 
 					if (URLList (&_URLList))
 					{
-						const SFNode <ExternProto> & _externProto = getExecutionContext () -> addExternProtoDeclaration (_nodeTypeId, _externInterfaceDeclarations, _URLList);
-						
+						const X3DSFNode <ExternProto> & _externProto = getExecutionContext () -> addExternProtoDeclaration (_nodeTypeId, _externInterfaceDeclarations, _URLList);
+
 						_externProto -> addInterfaceComments (_interfaceComments);
 						_externProto -> addComments (_comments);
 						_externProto -> addInnerComments (getComments ());
@@ -1164,7 +1164,7 @@ Parser::routeStatement ()
 
 		if (nodeNameId (_fromNodeId))
 		{
-			const SFNode <X3DBaseNode> & _fromNode = getExecutionContext () -> getNode (_fromNodeId);
+			const SFNode & _fromNode = getExecutionContext () -> getNode (_fromNodeId);
 
 			comments ();
 
@@ -1175,7 +1175,7 @@ Parser::routeStatement ()
 				if (outputOnlyId (_eventOutId))
 				{
 					X3DFieldDefinition* _eventOut = NULL;
-					
+
 					try
 					{
 						_eventOut = _fromNode .getField (_eventOutId);
@@ -1184,7 +1184,7 @@ Parser::routeStatement ()
 					{
 						throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventOut '" + _eventOutId + "' in node '" + _fromNodeId + "' class " + _fromNode .getNodeTypeName ());
 					}
-						
+
 					comments ();
 
 					if (Grammar::TO (istream))
@@ -1193,7 +1193,7 @@ Parser::routeStatement ()
 
 						if (nodeNameId (_toNodeId))
 						{
-							const SFNode <X3DBaseNode> & _toNode = getExecutionContext () -> getNode (_toNodeId);
+							const SFNode & _toNode = getExecutionContext () -> getNode (_toNodeId);
 
 							comments ();
 
@@ -1204,7 +1204,7 @@ Parser::routeStatement ()
 								if (inputOnlyId (_eventInId))
 								{
 									X3DFieldDefinition* _eventIn = NULL;
-									
+
 									try
 									{
 										_eventIn = _toNode .getField (_eventInId);
@@ -1213,10 +1213,10 @@ Parser::routeStatement ()
 									{
 										throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventIn '" + _eventInId + "' in node '" + _toNodeId + "' class " + _toNode .getNodeTypeName ());
 									}
-										
+
 									if (_eventOut -> getType () == _eventIn -> getType ())
 									{
-										const SFNode <Route> & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
+										const X3DSFNode <Route> & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
 
 										_route -> addComments (getComments ());
 
@@ -1261,7 +1261,7 @@ Parser::URLList (MFString* _value)
 //Nodes
 
 bool
-Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
+Parser::node (SFNode & _node, const std::string & _nodeNameId)
 {
 	//__LOG__ << _nodeNameId << std::endl;
 
@@ -1278,7 +1278,7 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 		catch (const Error <INVALID_NAME> & error1)
 		{
 			// __LOG__ << error .what () << std::endl;
-		
+
 			try
 			{
 				_node = getExecutionContext () -> createProtoInstance (_nodeTypeId) .getValue ();
@@ -1301,7 +1301,7 @@ Parser::node (SFNode <X3DBaseNode> & _node, const std::string & _nodeNameId)
 		if (Grammar::OpenBrace (istream))
 		{
 			_basicNode -> addComments (getComments ());
-		
+
 			if (dynamic_cast <Script*> (_basicNode))
 				scriptBody (_basicNode);
 
@@ -1378,7 +1378,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 							if (Id (_isId))
 							{
 								X3DFieldDefinition* _reference = NULL;
-								
+
 								try
 								{
 									_reference = getExecutionContext () -> getField (_isId);
@@ -1387,7 +1387,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 								{
 									throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName () + " head.");
 								}
-									
+
 								const X3DFieldDefinition* _supportedField = getBrowser () -> getFieldType (_fieldType);
 
 								if (_supportedField -> getType () == _reference -> getType ())
@@ -1463,7 +1463,7 @@ Parser::nodeBodyElement (X3DBaseNode* const _basicNode)
 	if (Id (_fieldId))
 	{
 		X3DFieldDefinition* _field = NULL;
-		
+
 		try
 		{
 			_field = _basicNode -> getField (_fieldId);
@@ -1472,7 +1472,7 @@ Parser::nodeBodyElement (X3DBaseNode* const _basicNode)
 		{
 			throw Error <INVALID_X3D> ("Unknown field '" + _fieldId + "' in class '" + _basicNode -> getTypeName () + "'.");
 		}
-			
+
 		comments ();
 
 		if (Grammar::IS (istream))
@@ -1484,7 +1484,7 @@ Parser::nodeBodyElement (X3DBaseNode* const _basicNode)
 				if (Id (_isId))
 				{
 					X3DFieldDefinition* _reference = NULL;
-					
+
 					try
 					{
 						_reference = getExecutionContext () -> getField (_isId);
@@ -1636,7 +1636,7 @@ Parser::fieldValue (X3DFieldDefinition* _field)
 {
 	//__LOG__ << std::endl;
 	//__LOG__ << _field -> getTypeName () << std::endl;
-	
+
 	_field -> addComments (getComments ());
 
 	switch (_field -> getType ())
@@ -1675,7 +1675,7 @@ Parser::fieldValue (X3DFieldDefinition* _field)
 			return sfmatrix4fValue (static_cast <SFMatrix4f*> (_field));
 
 		case X3DConstants::SFNode:
-			return sfnodeValue (static_cast <SFNode <X3DBaseNode>*> (_field));
+			return sfnodeValue (static_cast <SFNode*> (_field));
 
 		case X3DConstants::SFRotation:
 			return sfrotationValue (static_cast <SFRotation*> (_field));
@@ -1811,7 +1811,7 @@ Parser::Int32 (int32_t & _value)
 	comments ();
 
 	if (Grammar::hex (istream) or Grammar::HEX (istream))
-		return Hex ((uint32_t &) _value);
+		return Hex ((uint32_t &)_value);
 
 	if (istream >> std::dec >> _value)
 		return true;
@@ -2659,7 +2659,7 @@ Parser::sfmatrix4fValues (MFMatrix4f* _field)
 }
 
 bool
-Parser::sfnodeValue (SFNode <X3DBaseNode>* _field)
+Parser::sfnodeValue (SFNode* _field)
 {
 	////__LOG__ << std::endl;
 
@@ -2673,7 +2673,7 @@ Parser::mfnodeValue (MFNode* _field)
 
 	_field -> clear ();
 
-	SFNode <X3DBaseNode> value;
+	SFNode value;
 
 	if (nodeStatement (value))
 	{
@@ -2702,7 +2702,7 @@ Parser::nodeStatements (MFNode* _field)
 {
 	////__LOG__ << std::endl;
 
-	SFNode <X3DBaseNode> _node;
+	SFNode _node;
 
 	while (nodeStatement (_node))
 		_field -> emplace_back (_node);

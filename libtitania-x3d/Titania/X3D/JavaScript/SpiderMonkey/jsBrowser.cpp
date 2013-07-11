@@ -183,15 +183,15 @@ jsBrowser::supportedComponents (JSContext* context, JSObject* obj, jsid id, jsva
 {
 	X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-	return jsComponentInfoArray::create (context, &script -> getBrowser() -> getSupportedComponents (), vp);
+	return jsComponentInfoArray::create (context, &script -> getBrowser () -> getSupportedComponents (), vp);
 }
 
 JSBool
 jsBrowser::supportedProfiles (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
-	
-	return jsProfileInfoArray::create (context, &script -> getBrowser() -> getSupportedProfiles (), vp);
+
+	return jsProfileInfoArray::create (context, &script -> getBrowser () -> getSupportedProfiles (), vp);
 }
 
 JSBool
@@ -221,10 +221,10 @@ jsBrowser::replaceWorld (JSContext* context, uintN argc, jsval* vp)
 		JSObject* scene;
 
 		jsval* argv = JS_ARGV (context, vp);
-		
+
 		if (JSVAL_IS_NULL (argv [0]))
 			script -> getBrowser () -> replaceWorld (NULL);
-			
+
 		else
 		{
 			if (not JS_ConvertArguments (context, argc, argv, "o", &scene))
@@ -265,7 +265,7 @@ jsBrowser::createX3DFromString (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, x3dSyntax));
+			X3DSFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, x3dSyntax));
 
 			return jsX3DScene::create (context, scene, vp);
 		}
@@ -310,7 +310,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 		{
 			if (argc == 3 and JS_GetClass (context, onode) == jsSFNode::getClass ())
 			{
-				SFNode <X3DBaseNode>* sfnode = static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, onode));
+				SFNode* sfnode = static_cast <SFNode*> (JS_GetPrivate (context, onode));
 
 				if (*sfnode)
 				{
@@ -324,7 +324,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 							{
 								try
 								{
-									SFNode <Scene> scene = script -> createX3DFromURL (*url);
+									X3DSFNode <Scene> scene = script -> createX3DFromURL (*url);
 
 									if (scene)
 									{
@@ -358,25 +358,25 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 				}
 				else
 					JS_ReportError (context, "Browser .createX3DFromURL: node is NULL");
-	
+
 				return JS_FALSE;
 			}
 			else
 			{
 				try
 				{
-					SFNode <Scene> scene = script -> createX3DFromURL (*url);
+					X3DSFNode <Scene> scene = script -> createX3DFromURL (*url);
 
 					if (argc == 2)
 						onode = javaScript -> getGlobal ();
 
 					jsval argv [2];
-					
+
 					jsX3DScene::create (context, *scene, &argv [0]);
 					JS_NewNumberValue (context, script -> getCurrentTime (), &argv [1]);
 
 					jsval rval;
-				
+
 					if (JS_CallFunctionName (context, onode, JS_GetString (context, event) .c_str (), 2, argv, &rval))
 					{
 						JS_SET_RVAL (context, vp, JSVAL_VOID);
@@ -398,7 +398,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 		{
 			try
 			{
-				SFNode <Scene> scene = script -> createX3DFromURL (*url);
+				X3DSFNode <Scene> scene = script -> createX3DFromURL (*url);
 
 				return jsX3DScene::create (context, *scene, vp);
 			}
@@ -460,7 +460,7 @@ jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
 
 		return JS_TRUE;
 	}
-	
+
 	JS_ReportError (context, "Browser .loadURL: wrong number of arguments");
 
 	return JS_FALSE;
@@ -479,11 +479,11 @@ jsBrowser::getRenderingProperty (JSContext* context, uintN argc, jsval* vp)
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 			return JS_FALSE;
-			
+
 		try
 		{
 			auto field = script -> getBrowser () -> getRenderingProperties () -> getField (JS_GetString (context, name));
-			
+
 			return JS_NewFieldValue (context, field, vp);
 		}
 		catch (const Error <INVALID_NAME> &)
@@ -510,11 +510,11 @@ jsBrowser::getBrowserProperty (JSContext* context, uintN argc, jsval* vp)
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 			return JS_FALSE;
-			
+
 		try
 		{
 			auto field = script -> getBrowser () -> getBrowserProperties () -> getField (JS_GetString (context, name));
-			
+
 			return JS_NewFieldValue (context, field, vp);
 		}
 		catch (const Error <INVALID_NAME> &)
@@ -541,16 +541,16 @@ jsBrowser::getBrowserOption (JSContext* context, uintN argc, jsval* vp)
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 			return JS_FALSE;
-			
+
 		try
 		{
 			auto field = script -> getBrowser () -> getBrowserOptions () -> getField (JS_GetString (context, name));
-			
+
 			return JS_NewFieldValue (context, field, vp);
 		}
 		catch (const Error <INVALID_NAME> &)
 		{
-			JS_ReportError (context, "Browser .getBrowserOption: unknown option '%s'.", JS_GetString (context, name) .c_str ());		
+			JS_ReportError (context, "Browser .getBrowserOption: unknown option '%s'.", JS_GetString (context, name) .c_str ());
 		}
 	}
 	else
@@ -572,11 +572,11 @@ jsBrowser::setBrowserOption (JSContext* context, uintN argc, jsval* vp)
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 			return JS_FALSE;
-			
+
 		try
 		{
 			auto field = script -> getBrowser () -> getBrowserOptions () -> getField (JS_GetString (context, name));
-			
+
 			if (JS_ValueToField (context, field, &argv [1]))
 			{
 				JS_SET_RVAL (context, vp, JSVAL_VOID);
@@ -584,11 +584,11 @@ jsBrowser::setBrowserOption (JSContext* context, uintN argc, jsval* vp)
 				return JS_TRUE;
 			}
 			else
-				JS_ReportError (context, "Browser .setBrowserOption: couldn't set value for option '%s'.", JS_GetString (context, name) .c_str ());		
+				JS_ReportError (context, "Browser .setBrowserOption: couldn't set value for option '%s'.", JS_GetString (context, name) .c_str ());
 		}
 		catch (const Error <INVALID_NAME> &)
 		{
-			JS_ReportError (context, "Browser .setBrowserOption: unknown option '%s'.", JS_GetString (context, name) .c_str ());		
+			JS_ReportError (context, "Browser .setBrowserOption: unknown option '%s'.", JS_GetString (context, name) .c_str ());
 		}
 	}
 	else
@@ -610,12 +610,12 @@ jsBrowser::print (JSContext* context, uintN argc, jsval* vp)
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &object))
 			return JS_FALSE;
-			
+
 		script -> getBrowser () -> print (JS_GetString (context, object));
 
 		return JS_TRUE;
 	}
-	
+
 	JS_ReportError (context, "Browser .print: wrong number of arguments");
 
 	return JS_FALSE;
@@ -634,12 +634,12 @@ jsBrowser::println (JSContext* context, uintN argc, jsval* vp)
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &object))
 			return JS_FALSE;
-			
+
 		script -> getBrowser () -> println (JS_GetString (context, object));
 
 		return JS_TRUE;
 	}
-	
+
 	JS_ReportError (context, "Browser .println: wrong number of arguments");
 
 	return JS_FALSE;
@@ -738,7 +738,7 @@ jsBrowser::createVrmlFromString (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			SFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, vrmlSyntax));
+			X3DSFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, vrmlSyntax));
 
 			return jsMFNode::create (context, new MFNode (scene -> getRootNodes ()), &JS_RVAL (context, vp));
 		}
@@ -786,7 +786,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		SFNode <X3DBaseNode>* sfnode = static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, onode));
+		SFNode* sfnode = static_cast <SFNode*> (JS_GetPrivate (context, onode));
 
 		if (*sfnode)
 		{
@@ -800,7 +800,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 					{
 						try
 						{
-							SFNode <Scene> scene = script -> createX3DFromURL (*url);
+							X3DSFNode <Scene> scene = script -> createX3DFromURL (*url);
 
 							if (scene)
 							{
@@ -850,7 +850,7 @@ jsBrowser::addRoute (JSContext* context, uintN argc, jsval* vp)
 
 		return JS_TRUE;
 	}
-	
+
 	return JS_FALSE;
 }
 
@@ -877,7 +877,7 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		auto & fromNode = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, ofromNode));
+		auto & fromNode = *static_cast <SFNode*> (JS_GetPrivate (context, ofromNode));
 
 		if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
 		{
@@ -885,7 +885,7 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		auto & toNode = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, otoNode));
+		auto & toNode = *static_cast <SFNode*> (JS_GetPrivate (context, otoNode));
 
 		try
 		{
@@ -928,7 +928,7 @@ jsBrowser::setDescription (JSContext* context, uintN argc, jsval* vp)
 
 		return JS_TRUE;
 	}
-	
+
 	JS_ReportError (context, "Browser .setDescription: wrong number of arguments");
 
 	return JS_FALSE;

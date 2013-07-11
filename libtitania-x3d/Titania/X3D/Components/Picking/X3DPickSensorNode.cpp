@@ -55,7 +55,7 @@ namespace X3D {
 
 X3DPickSensorNode::Fields::Fields () :
 	objectType (new MFString ({ "ALL" })),
-	pickingGeometry (new SFNode <X3DBaseNode> ()),
+	pickingGeometry (new SFNode ()),
 	pickTarget (new MFNode ()),
 	pickedGeometry (new MFNode ()),
 	intersectionType (new SFString ("BOUNDS")),
@@ -63,8 +63,8 @@ X3DPickSensorNode::Fields::Fields () :
 { }
 
 X3DPickSensorNode::X3DPickSensorNode () :
-	X3DSensorNode (), 
-	       fields ()  
+	X3DSensorNode (),
+	       fields ()
 {
 	addNodeType (X3DConstants::X3DPickSensorNode);
 }

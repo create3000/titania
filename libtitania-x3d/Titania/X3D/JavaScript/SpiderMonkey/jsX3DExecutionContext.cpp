@@ -241,11 +241,11 @@ jsX3DExecutionContext::createNode (JSContext* context, uintN argc, jsval* vp)
 
 			auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
-			SFNode <X3DBaseNode> node = executionContext -> createNode (JS_GetString (context, name));
+			SFNode node = executionContext -> createNode (JS_GetString (context, name));
 
 			node -> setup ();
 
-			return jsSFNode::create (context, new SFNode <X3DBaseNode> (node), &JS_RVAL (context, vp));
+			return jsSFNode::create (context, new SFNode (node), &JS_RVAL (context, vp));
 		}
 		catch (const X3DError & exception)
 		{
@@ -278,7 +278,7 @@ jsX3DExecutionContext::createProto (JSContext* context, uintN argc, jsval* vp)
 
 			node -> setup ();
 
-			return jsSFNode::create (context, new SFNode <X3DBaseNode> (*node), &JS_RVAL (context, vp));
+			return jsSFNode::create (context, new SFNode (*node), &JS_RVAL (context, vp));
 		}
 		catch (const X3DError & exception)
 		{
@@ -311,7 +311,7 @@ jsX3DExecutionContext::addNamedNode (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		auto & node = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, oNode));
+		auto & node = *static_cast <SFNode*> (JS_GetPrivate (context, oNode));
 
 		try
 		{
@@ -388,7 +388,7 @@ jsX3DExecutionContext::updateNamedNode (JSContext* context, uintN argc, jsval* v
 			return JS_FALSE;
 		}
 
-		auto & node = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, oNode));
+		auto & node = *static_cast <SFNode*> (JS_GetPrivate (context, oNode));
 
 		try
 		{
@@ -430,7 +430,7 @@ jsX3DExecutionContext::getNamedNode (JSContext* context, uintN argc, jsval* vp)
 
 			const auto & namedNode = executionContext -> getNamedNode (JS_GetString (context, name));
 
-			return jsSFNode::create (context, new SFNode <X3DBaseNode> (namedNode), &JS_RVAL (context, vp));
+			return jsSFNode::create (context, new SFNode (namedNode), &JS_RVAL (context, vp));
 		}
 		catch (const X3DError & exception)
 		{
@@ -464,7 +464,7 @@ jsX3DExecutionContext::addImportedNode (JSContext* context, uintN argc, jsval* v
 			return JS_FALSE;
 		}
 
-		auto & node       = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, oInline));
+		auto & node       = *static_cast <SFNode*> (JS_GetPrivate (context, oInline));
 		auto   inlineNode = x3d_cast <Inline*> (node);
 
 		if (inlineNode)
@@ -555,7 +555,7 @@ jsX3DExecutionContext::updateImportedNode (JSContext* context, uintN argc, jsval
 			return JS_FALSE;
 		}
 
-		auto & node       = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, oInline));
+		auto & node       = *static_cast <SFNode*> (JS_GetPrivate (context, oInline));
 		auto   inlineNode = x3d_cast <Inline*> (node);
 
 		if (inlineNode)
@@ -610,7 +610,7 @@ jsX3DExecutionContext::getImportedNode (JSContext* context, uintN argc, jsval* v
 
 			const auto & namedNode = executionContext -> getImportedNode (JS_GetString (context, importedName));
 
-			return jsSFNode::create (context, new SFNode <X3DBaseNode> (namedNode), &JS_RVAL (context, vp));
+			return jsSFNode::create (context, new SFNode (namedNode), &JS_RVAL (context, vp));
 		}
 		catch (const X3DError & exception)
 		{
@@ -647,7 +647,7 @@ jsX3DExecutionContext::addRoute (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		auto & fromNode = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, ofromNode));
+		auto & fromNode = *static_cast <SFNode*> (JS_GetPrivate (context, ofromNode));
 
 		if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
 		{
@@ -655,12 +655,12 @@ jsX3DExecutionContext::addRoute (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		auto & toNode = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, otoNode));
+		auto & toNode = *static_cast <SFNode*> (JS_GetPrivate (context, otoNode));
 
 		try
 		{
-			SFNode <Route> route = script -> getExecutionContext () -> addRoute (fromNode, JS_GetString (context, fromEventOut),
-			                                                                     toNode,   JS_GetString (context, toEventIn));
+			X3DSFNode <Route> route = script -> getExecutionContext () -> addRoute (fromNode, JS_GetString (context, fromEventOut),
+			                                                                        toNode,   JS_GetString (context, toEventIn));
 
 			return jsX3DRoute::create (context, route, &JS_RVAL (context, vp));
 		}
@@ -696,7 +696,7 @@ jsX3DExecutionContext::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		auto & route = *static_cast <SFNode <Route>*> (JS_GetPrivate (context, oRoute));
+		auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, oRoute));
 
 		try
 		{

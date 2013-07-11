@@ -78,6 +78,7 @@ public:
 	constexpr
 	color4 () :
 		value { Type (), Type (), Type (), Type () }
+
 	{ }
 
 	///  Copy constructor.
@@ -85,6 +86,7 @@ public:
 	constexpr
 	color4 (const color4 <T> & color) :
 		value { color .r (), color .g (), color .b (), color .a () }
+
 	{ }
 
 	///  Components constructor. Set values to @a x, @a y and @a z.
@@ -97,6 +99,7 @@ public:
 		math::clamp (b, Type (), Type (1)),
 		math::clamp (a, Type (), Type (1))
 	}
+
 	{ }
 
 	///  Construct a color from hsv and alpha.

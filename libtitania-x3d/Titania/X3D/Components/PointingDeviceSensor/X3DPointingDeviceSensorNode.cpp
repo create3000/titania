@@ -61,9 +61,9 @@ X3DPointingDeviceSensorNode::Fields::Fields () :
 { }
 
 X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
-	       X3DSensorNode (), 
-	              fields (), 
-	transformationMatrix ()  
+	       X3DSensorNode (),
+	              fields (),
+	transformationMatrix ()
 {
 	addNodeType (X3DConstants::X3DPointingDeviceSensorNode);
 }

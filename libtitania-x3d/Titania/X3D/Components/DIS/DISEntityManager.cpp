@@ -66,9 +66,9 @@ DISEntityManager::Fields::Fields () :
 { }
 
 DISEntityManager::DISEntityManager (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DChildNode (),                                                    
-	      fields ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DChildNode (),
+	      fields ()
 {
 	setComponent ("DIS");
 	setTypeName ("DISEntityManager");

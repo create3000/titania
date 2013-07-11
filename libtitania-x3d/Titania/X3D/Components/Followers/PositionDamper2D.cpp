@@ -68,9 +68,9 @@ PositionDamper2D::Fields::Fields () :
 { }
 
 PositionDamper2D::PositionDamper2D (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DDamperNode (),                                                    
-	       fields ()                                                     
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DDamperNode (),
+	       fields ()
 {
 	setComponent ("Followers");
 	setTypeName ("PositionDamper2D");

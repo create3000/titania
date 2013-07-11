@@ -59,7 +59,7 @@ namespace titania {
 namespace X3D {
 
 LayoutLayer::Fields::Fields () :
-	layout (new SFNode <X3DBaseNode> ())
+	layout (new SFNode ())
 { }
 
 LayoutLayer::LayoutLayer (X3DExecutionContext* const executionContext) :

@@ -56,8 +56,8 @@ namespace titania {
 namespace X3D {
 
 Group::Group (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGroupingNode ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode ()
 {
 	setComponent ("Grouping");
 	setTypeName ("Group");

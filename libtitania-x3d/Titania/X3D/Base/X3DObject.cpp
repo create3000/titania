@@ -58,11 +58,11 @@ namespace X3D {
 GarbageCollector X3DObject::garbageCollector;
 
 X3DObject::X3DObject () :
-	 X3DInput (),    
-	X3DOutput (),    
+	 X3DInput (),
+	X3DOutput (),
 	     name (),
-	 comments (),    
-	 userData (NULL) 
+	 comments (),
+	 userData (NULL)
 { }
 
 // String

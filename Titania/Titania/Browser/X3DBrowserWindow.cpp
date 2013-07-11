@@ -50,11 +50,11 @@
 
 #include "X3DBrowserWindow.h"
 
-#include "../Configuration/config.h"
 #include "../Browser/Image.h"
+#include "../Configuration/config.h"
 
-#include <Titania/gzstream.h>
 #include <Titania/String.h>
+#include <Titania/gzstream.h>
 #include <fstream>
 #include <iostream>
 
@@ -62,7 +62,7 @@ namespace titania {
 namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (const basic::uri & worldURL) :
-	 X3DBrowserWindowUI (get_ui ("BrowserWindow.ui"), gconf_dir ())
+	X3DBrowserWindowUI (get_ui ("BrowserWindow.ui"), gconf_dir ())
 {
 	if (worldURL .size ())
 		getConfig () .setItem ("worldURL", worldURL);
@@ -90,14 +90,14 @@ void
 X3DBrowserWindow::initialize ()
 {
 	X3DBrowserWindowUI::initialize ();
-	
+
 	__LOG__ << std::endl;
 
 	// Start with file from options or home page.
 
 	// Console
 	getBrowser () -> getConsole () -> string_changed () .addInterest (this, &X3DBrowserWindow::set_console);
-	
+
 	// UrlError
 	getBrowser () -> urlError () .addInterest (this, &X3DBrowserWindow::set_urlError);
 
@@ -119,7 +119,7 @@ X3DBrowserWindow::set_initialized ()
 	// Initialized
 	getBrowser () -> initialized .removeInterest (this, &X3DBrowserWindow::set_initialized);
 	getBrowser () -> initialized .addInterest (this, &X3DBrowserWindow::set_world);
-	
+
 	if (getConfig () .hasItem ("worldURL"))
 		open (getConfig () .string ("worldURL") .raw ());
 
@@ -182,26 +182,26 @@ X3DBrowserWindow::restoreSession ()
 	// Shading
 	if (getConfig () .string ("shading") == "PHONG")
 		getPhongMenuItem () .activate ();
-		
+
 	else if (getConfig () .string ("shading") == "GOURAUD")
 		getGouraudMenuItem () .activate ();
-		
+
 	else if (getConfig () .string ("shading") == "FLAT")
 		getFlatMenuItem () .activate ();
-		
+
 	else if (getConfig () .string ("shading") == "WIREFRAME")
 		getWireFrameMenuItem () .activate ();
-		
+
 	else if (getConfig () .string ("shading") == "POINTSET")
 		getPointSetMenuItem () .activate ();
 
 	// PrimitiveQuality
 	if (getConfig () .string ("primitiveQuality") == "HIGH")
 		getHighQualityMenuItem () .activate ();
-		
+
 	else if (getConfig () .string ("primitiveQuality") == "MEDIUM")
 		getMediumQualityMenuItem () .activate ();
-		
+
 	else if (getConfig () .string ("primitiveQuality") == "LOW")
 		getLowQualityMenuItem () .activate ();
 
@@ -315,7 +315,7 @@ bool
 X3DBrowserWindow::close ()
 {
 	X3DBrowserWindowUI::close ();
-	
+
 	return false;
 }
 
@@ -334,7 +334,7 @@ bool
 X3DBrowserWindow::statistics ()
 {
 	std::string title = getBrowser () -> getExecutionContext () -> getWorldURL ();
-	
+
 	try
 	{
 		title = getBrowser () -> getExecutionContext () -> getMetaData ("title");
@@ -345,7 +345,7 @@ X3DBrowserWindow::statistics ()
 
 	std::clog << "Load Time: " << loadTime << std::endl;
 	std::clog << "FPS: " << getBrowser () -> getRenderingProperties () -> fps () << std::endl;
-	
+
 	return false;
 }
 

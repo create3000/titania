@@ -57,12 +57,12 @@ X3DTexture3DNode::Fields::Fields () :
 	repeatS (new SFBool ()),
 	repeatT (new SFBool ()),
 	repeatR (new SFBool ()),
-	textureProperties (new SFNode <X3DBaseNode> ())
+	textureProperties (new SFNode ())
 { }
 
 X3DTexture3DNode::X3DTexture3DNode () :
-	X3DTextureNode (), 
-	        fields ()  
+	X3DTextureNode (),
+	        fields ()
 {
 	addNodeType (X3DConstants::X3DTexture3DNode);
 }

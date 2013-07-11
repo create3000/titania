@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_INPUT_OUTPUT_quoted_string_H__
-#define __TITANIA_INPUT_OUTPUT_quoted_string_H__
+#ifndef __TITANIA_INPUT_OUTPUT_QUOTED_STRING_H__
+#define __TITANIA_INPUT_OUTPUT_QUOTED_STRING_H__
 
 #include <istream>
 #include <string>
@@ -89,10 +89,10 @@ basic_quoted_string <CharT, Traits>::operator () (std::basic_istream <CharT, Tra
 
 	if (c == (int_type) delimiter)
 	{
-		for (;;)
+		for ( ; ;)
 		{
 			c = istream .get ();
-			
+
 			if (istream)
 			{
 				if (c == '\\')
@@ -109,7 +109,7 @@ basic_quoted_string <CharT, Traits>::operator () (std::basic_istream <CharT, Tra
 				}
 				else if (c == (int_type) delimiter)
 					return true;
-			
+
 				string .push_back (c);
 			}
 			else

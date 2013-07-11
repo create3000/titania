@@ -67,9 +67,9 @@ DISEntityTypeMapping::Fields::Fields () :
 { }
 
 DISEntityTypeMapping::DISEntityTypeMapping (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DInfoNode (),                                                    
-	     fields ()                                                     
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DInfoNode (),
+	     fields ()
 {
 	setComponent ("DIS");
 	setTypeName ("DISEntityTypeMapping");

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -109,7 +109,7 @@ public:
 		data (NULL),
 		children ()
 	{ }
-	
+
 	const std::deque <OutlineNode> &
 	getChildren ()
 	{ return children; }
@@ -173,13 +173,13 @@ class OutlineTreeModel :
 {
 public:
 
-	OutlineTreeModel (const X3D::SFNode <X3D::Browser> &);
+	OutlineTreeModel (const X3D::X3DSFNode <X3D::Browser> &);
 
 	static
 	Glib::RefPtr <OutlineTreeModel>
-	create (const X3D::SFNode <X3D::Browser> &);
-	
-	const X3D::SFNode <X3D::X3DExecutionContext> &
+	create (const X3D::X3DSFNode <X3D::Browser> &);
+
+	const X3D::X3DSFNode <X3D::X3DExecutionContext> &
 	getExecutionContext ()
 	{ return executionContext; }
 
@@ -307,7 +307,7 @@ private:
 
 	typedef std::map <const X3D::X3DConstants::FieldType, Glib::RefPtr <Gdk::Pixbuf>> FieldTypeImageIndex;
 
-	X3D::SFNode <X3D::X3DExecutionContext> executionContext;
+	X3D::X3DSFNode <X3D::X3DExecutionContext> executionContext;
 
 	icon_column_type           icon_column;
 	data_column_type           data_column;

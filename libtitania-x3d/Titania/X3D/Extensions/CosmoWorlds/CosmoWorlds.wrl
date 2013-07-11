@@ -91,9 +91,9 @@ PROTO CoTextGraph [
   field        SFBool isBeveled TRUE
   field        MFVec2f bevelCoords [ 0 0, 1.44 1.2, 1.44 0 ]
   field        SFBool renderAlternateImage FALSE
-  field        SFNode <X3DBaseNode> fontStyle FontStyle {}
-  field        SFNode <X3DBaseNode> alternateImage NULL
-  field        SFNode <X3DBaseNode> alternateRep NULL
+  field        SFNode fontStyle FontStyle {}
+  field        SFNode alternateImage NULL
+  field        SFNode alternateRep NULL
 ]
 {
 }

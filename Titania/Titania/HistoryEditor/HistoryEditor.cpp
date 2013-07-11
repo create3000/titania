@@ -64,7 +64,7 @@ static constexpr int WORLD_URL_COLUMN = 2;
 HistoryEditor::HistoryEditor (BrowserWindow* browserWindow) :
 	X3DHistoryEditorUI (get_ui ("HistoryEditor.ui"), gconf_dir ()),
 	     browserWindow (browserWindow),
-	           history ()                                           
+	           history ()
 {
 	setBrowser (browserWindow -> getBrowser ());
 }

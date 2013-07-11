@@ -62,7 +62,7 @@ class jsSFNode :
 {
 public:
 
-	typedef SFNode <X3DBaseNode*> field_type;
+	typedef X3DSFNode <X3DBaseNode*> field_type;
 
 	static
 	void
@@ -70,7 +70,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext*, SFNode <X3DBaseNode>*, jsval*, const bool = false);
+	create (JSContext*, SFNode*, jsval*, const bool = false);
 
 	static
 	JSClass*

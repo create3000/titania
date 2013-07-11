@@ -92,7 +92,7 @@ private:
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
 
 	BrowserWindow* browserWindow;
-	History history;
+	History        history;
 
 };
 

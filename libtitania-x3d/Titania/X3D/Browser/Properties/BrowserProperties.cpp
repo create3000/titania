@@ -77,9 +77,9 @@ BrowserProperties::Fields::Fields () :
 { }
 
 BrowserProperties::BrowserProperties (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DPropertyNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DPropertyNode (),
+	         fields ()
 {
 	setComponent ("Browser"),
 	setTypeName ("BrowserProperties");

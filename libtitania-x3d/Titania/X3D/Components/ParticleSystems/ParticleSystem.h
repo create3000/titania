@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -125,11 +125,11 @@ public:
 	isActive () const
 	{ return *fields .isActive; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	colorRamp ()
 	{ return *fields .colorRamp; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	colorRamp () const
 	{ return *fields .colorRamp; }
 
@@ -141,11 +141,11 @@ public:
 	colorKey () const
 	{ return *fields .colorKey; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	emitter ()
 	{ return *fields .emitter; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	emitter () const
 	{ return *fields .emitter; }
 
@@ -165,11 +165,11 @@ public:
 	physics () const
 	{ return *fields .physics; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	texCoordRamp ()
 	{ return *fields .texCoordRamp; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	texCoordRamp () const
 	{ return *fields .texCoordRamp; }
 
@@ -195,12 +195,12 @@ private:
 		SFFloat* const particleLifetime;
 		SFVec2f* const particleSize;
 		SFBool* const isActive;
-		SFNode <X3DBaseNode>* const colorRamp;
+		SFNode* const colorRamp;
 		MFFloat* const colorKey;
-		SFNode <X3DBaseNode>* const emitter;
+		SFNode* const emitter;
 		SFString* const geometryType;
 		MFNode* const physics;
-		SFNode <X3DBaseNode>* const texCoordRamp;
+		SFNode* const texCoordRamp;
 		MFFloat* const texCoordKey;
 	};
 

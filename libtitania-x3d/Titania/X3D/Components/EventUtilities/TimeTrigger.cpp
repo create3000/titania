@@ -61,9 +61,9 @@ TimeTrigger::Fields::Fields () :
 { }
 
 TimeTrigger::TimeTrigger (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DTriggerNode (),                                                    
-	        fields ()                                                     
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTriggerNode (),
+	        fields ()
 {
 	setComponent ("EventUtilities");
 	setTypeName ("TimeTrigger");
@@ -83,7 +83,7 @@ void
 TimeTrigger::initialize ()
 {
 	X3DTriggerNode::initialize ();
-	
+
 	set_boolean () .addInterest (this, &TimeTrigger::_set_boolean);
 }
 

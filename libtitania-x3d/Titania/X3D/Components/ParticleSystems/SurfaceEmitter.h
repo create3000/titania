@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -85,11 +85,11 @@ public:
 	coordIndex () const
 	{ return *fields .coordIndex; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	surface ()
 	{ return *fields .surface; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	surface () const
 	{ return *fields .surface; }
 
@@ -102,7 +102,7 @@ private:
 
 		SFInt32* const set_coordinate;
 		MFInt32* const coordIndex;
-		SFNode <X3DBaseNode>* const surface;
+		SFNode* const surface;
 	};
 
 	Fields fields;

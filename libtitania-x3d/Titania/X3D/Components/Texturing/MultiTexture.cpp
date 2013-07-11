@@ -65,9 +65,9 @@ MultiTexture::Fields::Fields () :
 { }
 
 MultiTexture::MultiTexture (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DTextureNode (),                                                    
-	        fields ()                                                     
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTextureNode (),
+	        fields ()
 {
 	setComponent ("Texturing");
 	setTypeName ("MultiTexture");

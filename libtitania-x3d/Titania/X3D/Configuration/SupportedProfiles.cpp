@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 SupportedProfiles::SupportedProfiles (X3DExecutionContext* const executionContext, const SupportedComponents & supportedComponents) :
-	executionContext (executionContext) 
+	executionContext (executionContext)
 {
 	//std::clog << "Creating profile index:" << std::endl;
 
@@ -197,9 +197,9 @@ void
 SupportedProfiles::add (const std::string & name, std::initializer_list <const ComponentInfo*> component_list)
 {
 	//std::clog << "\tAdding profile " << name << ": " << std::flush;
-	
+
 	ComponentInfoArray components;
-	
+
 	for (const auto & component : component_list)
 		components .push_back (component -> getName (), component);
 

@@ -70,13 +70,13 @@ X3DTimeDependentNode::Fields::Fields () :
 { }
 
 X3DTimeDependentNode::X3DTimeDependentNode () :
-	 X3DChildNode (),  
-	       fields (),  
-	        pause (0), 
-	 startTimeout (),  
-	  stopTimeout (),  
-	 pauseTimeout (),  
-	resumeTimeout ()   
+	 X3DChildNode (),
+	       fields (),
+	        pause (0),
+	 startTimeout (),
+	  stopTimeout (),
+	 pauseTimeout (),
+	resumeTimeout ()
 {
 	addNodeType (X3DConstants::X3DTimeDependentNode);
 }

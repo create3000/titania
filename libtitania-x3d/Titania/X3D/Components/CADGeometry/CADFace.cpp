@@ -56,14 +56,14 @@ namespace titania {
 namespace X3D {
 
 CADFace::Fields::Fields () :
-	shape (new SFNode <X3DBaseNode> ())
+	shape (new SFNode ())
 { }
 
 CADFace::CADFace (X3DExecutionContext* const executionContext) :
-	                 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DProductStructureChildNode (),                                                    
-	            X3DBoundedObject (),                                                    
-	                      fields ()                                                     
+	                 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DProductStructureChildNode (),
+	            X3DBoundedObject (),
+	                      fields ()
 {
 	setComponent ("CADGeometry");
 	setTypeName ("CADFace");

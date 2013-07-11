@@ -60,9 +60,9 @@ ColorRGBA::Fields::Fields () :
 { }
 
 ColorRGBA::ColorRGBA (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DColorNode (),                                                    
-	      fields ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DColorNode (),
+	      fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("ColorRGBA");

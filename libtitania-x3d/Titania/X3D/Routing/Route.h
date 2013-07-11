@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,8 +66,8 @@ class Route :
 public:
 
 	Route (X3DExecutionContext* const,
-	       const SFNode <X3DBaseNode> &, X3DFieldDefinition* const,
-	       const SFNode <X3DBaseNode> &, X3DFieldDefinition* const);
+	       const SFNode &, X3DFieldDefinition* const,
+	       const SFNode &, X3DFieldDefinition* const);
 
 	virtual
 	Route*
@@ -76,17 +76,17 @@ public:
 	virtual
 	bool
 	isConnected ();
-	
+
 	RouteId
 	getId () const;
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	getSourceNode () const;
 
 	const std::string &
 	getSourceField () const;
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	getDestinationNode () const;
 
 	const std::string &
@@ -122,8 +122,8 @@ private:
 	void
 	connect ();
 
-	SFNode <X3DBaseNode> sourceNode;
-	SFNode <X3DBaseNode> destinationNode;
+	SFNode sourceNode;
+	SFNode destinationNode;
 
 	X3DFieldDefinition* const sourceField;
 	X3DFieldDefinition* const destinationField;

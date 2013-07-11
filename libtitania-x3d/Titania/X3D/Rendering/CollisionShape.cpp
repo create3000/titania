@@ -61,10 +61,10 @@ CollisionShape::CollisionShape (X3DShapeNode* shape,
                                 const CollisionArray & collisions,
                                 const Matrix4f & matrix,
                                 float distance) :
-	     shape (shape),                      
-	collisions (collisions),                 
-	    matrix (matrix),       
-	  distance (distance) 
+	     shape (shape),
+	collisions (collisions),
+	    matrix (matrix),
+	  distance (distance)
 { }
 
 void

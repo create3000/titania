@@ -62,10 +62,10 @@ Viewport::Fields::Fields () :
 { }
 
 Viewport::Viewport (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DViewportNode (),                                                    
-	    X3DRenderer (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DViewportNode (),
+	    X3DRenderer (),
+	         fields ()
 {
 	setComponent ("Layering");
 	setTypeName ("Viewport");
@@ -168,13 +168,13 @@ Viewport::push ()
 	float right  = getRight ();
 	float bottom = getBottom ();
 	float top    = getTop ();
-	
+
 	float widht  = right - left;
 	float height = top - bottom;
 
-	glViewport (left   * viewport [2],
+	glViewport (left * viewport [2],
 	            bottom * viewport [3],
-	            widht  * viewport [2],
+	            widht * viewport [2],
 	            height * viewport [3]);
 }
 

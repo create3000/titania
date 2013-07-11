@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 NurbsCurve::Fields::Fields () :
-	controlPoint (new SFNode <X3DBaseNode> ()),
+	controlPoint (new SFNode ()),
 	tessellation (new SFInt32 ()),
 	weight (new MFDouble ()),
 	closed (new SFBool ()),
@@ -65,9 +65,9 @@ NurbsCurve::Fields::Fields () :
 { }
 
 NurbsCurve::NurbsCurve (X3DExecutionContext* const executionContext) :
-	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DParametricGeometryNode (),                                                    
-	                   fields ()                                                     
+	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DParametricGeometryNode (),
+	                   fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsCurve");

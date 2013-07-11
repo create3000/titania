@@ -64,8 +64,9 @@ class X3DJavaScriptEngine :
 public:
 
 	virtual
-	SFNode <X3DJavaScriptContext>
-	createContext (X3DScriptNode*, const std::string &, const basic::uri &, size_t) = 0;
+	X3DSFNode <X3DJavaScriptContext>
+	createContext (X3DScriptNode *, const std::string &, const basic::uri &, size_t) = 0;
+
 
 protected:
 

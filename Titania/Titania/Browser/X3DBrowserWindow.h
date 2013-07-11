@@ -79,10 +79,10 @@ public:
 
 	void
 	open (const basic::uri &);
-	
+
 	void
 	save (const basic::uri &);
-	
+
 	void
 	reload ();
 
@@ -120,7 +120,7 @@ private:
 
 	void
 	set_urlError ();
-	
+
 	void
 	loadIcon ();
 

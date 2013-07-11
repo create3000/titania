@@ -56,10 +56,10 @@ namespace titania {
 namespace X3D {
 
 PackagedShader::PackagedShader (X3DExecutionContext* const executionContext) :
-	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	              X3DShaderNode (),                                                    
-	               X3DUrlObject (),                                                    
-	X3DProgrammableShaderObject ()                                                     
+	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	              X3DShaderNode (),
+	               X3DUrlObject (),
+	X3DProgrammableShaderObject ()
 {
 	setComponent ("Shaders");
 	setTypeName ("PackagedShader");

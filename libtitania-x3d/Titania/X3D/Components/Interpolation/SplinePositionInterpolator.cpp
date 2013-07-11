@@ -64,10 +64,10 @@ SplinePositionInterpolator::Fields::Fields () :
 { }
 
 SplinePositionInterpolator::SplinePositionInterpolator (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DInterpolatorNode (),                                                    
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DInterpolatorNode (),
 	             fields (),
-	             spline ()                                                    
+	             spline ()
 {
 	setComponent ("Interpolation");
 	setTypeName ("SplinePositionInterpolator");
@@ -114,7 +114,7 @@ SplinePositionInterpolator::set_keyVelocity ()
 		if (keyVelocity () .size () < key () .size ())
 			keyVelocity () .resize (key () .size ());
 	}
-	
+
 	spline .generate (closed (), key (), keyValue (), keyVelocity (), normalizeVelocity ());
 }
 

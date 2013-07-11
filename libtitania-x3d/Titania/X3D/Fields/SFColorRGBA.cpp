@@ -62,7 +62,7 @@ const X3DConstants::FieldType X3DField <Color4f>::type = X3DConstants::SFColorRG
 template class X3DField <Color4f>;
 
 SFColorRGBA::SFColorRGBA () :
-	X3DField <Color4f> () 
+	X3DField <Color4f> ()
 { }
 
 SFColorRGBA::SFColorRGBA (const SFColorRGBA & field) :
@@ -184,7 +184,7 @@ throw (Error <INVALID_X3D>,
 void
 SFColorRGBA::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <scalar_type><< getValue ();
+	ostream << Generator::Precision <scalar_type> << getValue ();
 }
 
 } // X3D

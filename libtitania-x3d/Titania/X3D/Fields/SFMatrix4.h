@@ -521,7 +521,7 @@ inline
 void
 SFMatrix4 <ValueType>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <scalar_type><< getValue ();
+	ostream << Generator::Precision <scalar_type> << getValue ();
 }
 
 //extern template class X3DField <Matrix4d>;

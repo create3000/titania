@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DGeometricPropertyNode::X3DGeometricPropertyNode () :
-	X3DPropertyNode () 
+	X3DPropertyNode ()
 {
 	addNodeType (X3DConstants::X3DGeometricPropertyNode);
 }

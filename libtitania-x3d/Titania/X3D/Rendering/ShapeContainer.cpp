@@ -60,11 +60,11 @@ ShapeContainer::ShapeContainer (X3DShapeNode* shape,
                                 const LightContainerArray & localLights,
                                 const Matrix4f & matrix,
                                 float distance) :
-	      shape (shape),                      
-	        fog (fog),                        
-	localLights (localLights),                
-	     matrix (matrix),       
-	   distance (distance) 
+	      shape (shape),
+	        fog (fog),
+	localLights (localLights),
+	     matrix (matrix),
+	   distance (distance)
 { }
 
 void

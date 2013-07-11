@@ -59,7 +59,7 @@ std::locale::id AccessTypes::id;
 
 inline
 AccessTypes::AccessTypes (size_t refs) :
-	std::locale::facet (refs) 
+	std::locale::facet (refs)
 { }
 
 inline

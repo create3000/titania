@@ -32,23 +32,23 @@
 #include <curl/curl.h>
 #include <istream>
 
-#include <stdexcept>
 #include <iostream>
+#include <stdexcept>
 
 namespace titania {
 namespace basic {
 
 socketstreambuf::socketstreambuf (const basic::uri & URL) :
-	std::streambuf (),      
-	          curl (NULL),  
-	        sockfd (-1),    
-	        buffer (),      
-	        opened (false), 
-	           URL (URL),   
-	totalBytesRead (0),     
+	std::streambuf (),
+	          curl (NULL),
+	        sockfd (-1),
+	        buffer (),
+	        opened (false),
+	           URL (URL),
+	totalBytesRead (0),
 	     bytesRead (0),
 	 lastBytesRead (0),
-	     bytesGone (0)    
+	     bytesGone (0)
 {
 	setg (buffer + bufferSize,                    // beginning of putback area
 	      buffer + bufferSize,                    // read position
@@ -215,14 +215,14 @@ socketstreambuf::seekoff (off_type off, std::ios_base::seekdir dir, std::ios_bas
 		if (dir == std::ios_base::cur)
 		{
 			auto pos = gptr () + off;
-		
+
 			if (pos >= eback () and pos <= egptr ())
 			{
 				gbump (off);
 
 				return bytesGone + gptr () - eback ();
 			}
-			
+
 			throw std::out_of_range ("socketstreambuf::seekoff");
 		}
 	}

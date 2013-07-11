@@ -75,16 +75,16 @@ const GLint X3DTexture2DNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
 X3DTexture2DNode::Fields::Fields () :
 	repeatS (new SFBool (true)),
 	repeatT (new SFBool (true)),
-	textureProperties (new SFNode <X3DBaseNode> ())
+	textureProperties (new SFNode ())
 { }
 
 X3DTexture2DNode::X3DTexture2DNode () :
-	X3DTextureNode (),     
+	X3DTextureNode (),
 	        fields (),
 	         width (0),
-	        height (0),     
-	    components (0),    
-	   transparent (false) 
+	        height (0),
+	    components (0),
+	   transparent (false)
 {
 	addNodeType (X3DConstants::X3DTexture2DNode);
 }
@@ -174,7 +174,7 @@ X3DTexture2DNode::scaleImage (Magick::Image & image)
 
 	size_t width  = this -> width;
 	size_t height = this -> height;
-	
+
 	GLint max_texture_size;
 
 	glGetIntegerv (GL_MAX_TEXTURE_SIZE, &max_texture_size);
@@ -281,7 +281,7 @@ X3DTexture2DNode::applyTextureProperties (const TextureProperties* textureProper
 		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP, false);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		
+
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [false]);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [false]);
 	}

@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DParser::X3DParser () :
-	X3DBaseNode () 
+	X3DBaseNode ()
 { }
 
 X3DBaseNode*

@@ -69,14 +69,14 @@ Sound::Fields::Fields () :
 	maxBack (new SFFloat (10)),
 	maxFront (new SFFloat (10)),
 	priority (new SFFloat ()),
-	source (new SFNode <X3DBaseNode> ())
+	source (new SFNode ())
 { }
 
 Sound::Sound (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DSoundNode (),                                                    
-	      fields (),                                                    
-	     _source (NULL)                                                 
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DSoundNode (),
+	      fields (),
+	     _source (NULL)
 {
 	setComponent ("Sound");
 	setTypeName ("Sound");

@@ -96,7 +96,7 @@ public:
 
 	void
 	replace (X3DBaseNode* const);
-	
+
 	void
 	assign (const X3DBaseNode*);
 
@@ -267,12 +267,12 @@ protected:
 	void
 	initialize ()
 	{ }
-	
+
 	virtual
 	void
 	eventsProcessed ()
 	{ }
-	
+
 	void
 	addHandle (X3DBaseNode* const);
 
@@ -297,12 +297,12 @@ private:
 	std::string   typeName;
 	NodeTypeArray nodeType;
 
-	FieldDefinitionArray fieldDefinitions;     // pre-defined and user-defined field definitions
-	FieldsMap            fields;               // pre-defined and user-defined fields
+	FieldDefinitionArray fieldDefinitions; // pre-defined and user-defined field definitions
+	FieldsMap            fields;           // pre-defined and user-defined fields
 	FieldAliasesMap      fieldAliases;
 	size_t               numUserDefinedFields;
 
-	NodeId nodeId; // Router eventsProcessed id
+	NodeId nodeId;                         // Router eventsProcessed id
 
 	X3DBaseNode*             handle;
 	std::deque <std::string> comments;

@@ -50,8 +50,8 @@
 
 #include "X3DFlyViewer.h"
 
-#include "../Browser.h"
 #include "../../Rendering/ViewVolume.h"
+#include "../Browser.h"
 
 #include <Titania/Chrono/Now.h>
 #include <cmath>
@@ -253,7 +253,7 @@ X3DFlyViewer::fly ()
 	Vector3f   translation = orientation * direction * (speed_factor * dt);
 
 	viewpoint -> positionOffset () += getTranslation (translation);
-	
+
 	startTime = now;
 	return true;
 }
@@ -272,7 +272,7 @@ X3DFlyViewer::pan ()
 	Vector3f   translation = orientation * direction * (speed_factor * dt);
 
 	viewpoint -> positionOffset () += getTranslation (translation);
-	
+
 	startTime = now;
 	return true;
 }

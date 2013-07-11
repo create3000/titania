@@ -56,14 +56,14 @@ namespace titania {
 namespace X3D {
 GeoLocation::Fields::Fields () :
 	geoCoords (new SFVec3d ()),
-	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoOrigin (new SFNode ()),
 	geoSystem (new MFString ({ "GD", "WE" }))
 { }
 
 GeoLocation::GeoLocation (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGroupingNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode (),
+	         fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoLocation");

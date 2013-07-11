@@ -96,15 +96,15 @@ public:
 	on_window_removed (Gtk::Window* window) final
 	{
 		__LOG__ << std::endl;
-		
+
 		auto browserWindow = browserWindows .find (window);
 
 		if (browserWindow not_eq browserWindows .end ())
 			browserWindows .erase (browserWindow);
-		
+
 		if (browserWindows .empty ())
 			quit ();
-		
+
 		__LOG__ << std::endl;
 	}
 

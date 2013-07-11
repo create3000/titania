@@ -53,8 +53,8 @@
 
 #include "../../Rendering/CollisionArray.h"
 #include "../../Rendering/LightContainerArray.h"
-#include "../../Rendering/X3DRenderer.h"
 #include "../../Rendering/Matrix.h"
+#include "../../Rendering/X3DRenderer.h"
 #include "../EnvironmentalEffects/LocalFog.h"
 #include "../Grouping/Group.h"
 #include "../Grouping/X3DGroupingNode.h"
@@ -76,10 +76,10 @@ class X3DBindableNodeStack;
 template <class Type>
 class X3DBindableNodeList;
 
-typedef X3DBindableNodeStack <NavigationInfo> NavigationInfoStack;
+typedef X3DBindableNodeStack <NavigationInfo>    NavigationInfoStack;
 typedef X3DBindableNodeStack <X3DBackgroundNode> BackgroundStack;
-typedef X3DBindableNodeStack <Fog> FogStack;
-typedef X3DBindableNodeStack <X3DViewpointNode> ViewpointStack;
+typedef X3DBindableNodeStack <Fog>               FogStack;
+typedef X3DBindableNodeStack <X3DViewpointNode>  ViewpointStack;
 
 typedef X3DBindableNodeList <NavigationInfo>    NavigationInfoList;
 typedef X3DBindableNodeList <X3DBackgroundNode> BackgroundList;
@@ -87,7 +87,7 @@ typedef X3DBindableNodeList <Fog>               FogList;
 typedef X3DBindableNodeList <X3DViewpointNode>  ViewpointList;
 
 typedef std::deque <X3D::X3DViewpointNode*> UserViewpointList;
-typedef std::stack <LocalFog*> LocalFogStack;
+typedef std::stack <LocalFog*>              LocalFogStack;
 
 class X3DLayerNode :
 	virtual public X3DNode, public X3DRenderer
@@ -104,11 +104,11 @@ public:
 	isPickable () const
 	{ return *fields .isPickable; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	viewport ()
 	{ return *fields .viewport; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	viewport () const
 	{ return *fields .viewport; }
 
@@ -138,7 +138,7 @@ public:
 
 	///  @name Children handling
 
-	const SFNode <Group>
+	const X3DSFNode <Group>
 	getGroup () const
 	{ return group; }
 
@@ -158,37 +158,37 @@ public:
 
 	///  @name X3DBindableNode stack handling
 
-	const SFNode <NavigationInfoStack> &
+	const X3DSFNode <NavigationInfoStack> &
 	getNavigationInfoStack () const
 	{ return navigationInfoStack; }
 
-	const SFNode <BackgroundStack> &
+	const X3DSFNode <BackgroundStack> &
 	getBackgroundStack () const
 	{ return backgroundStack; }
 
-	const SFNode <FogStack> &
+	const X3DSFNode <FogStack> &
 	getFogStack () const
 	{ return fogStack; }
 
-	const SFNode <ViewpointStack> &
+	const X3DSFNode <ViewpointStack> &
 	getViewpointStack () const
 	{ return viewpointStack; }
 
 	///  @name X3DBindableNode list handling
 
-	const SFNode <NavigationInfoList> &
+	const X3DSFNode <NavigationInfoList> &
 	getNavigationInfos () const
 	{ return navigationInfos; }
 
-	const SFNode <BackgroundList> &
+	const X3DSFNode <BackgroundList> &
 	getBackgrounds () const
 	{ return backgrounds; }
 
-	const SFNode <FogList> &
+	const X3DSFNode <FogList> &
 	getFogs () const
 	{ return fogs; }
 
-	const SFNode <ViewpointList> &
+	const X3DSFNode <ViewpointList> &
 	getViewpoints () const
 	{ return viewpoints; }
 
@@ -295,7 +295,7 @@ private:
 		Fields ();
 
 		SFBool* const isPickable;
-		SFNode <X3DBaseNode>* const viewport;
+		SFNode* const viewport;
 		MFNode* const addChildren;
 		MFNode* const removeChildren;
 		MFNode* const children;
@@ -303,23 +303,23 @@ private:
 
 	Fields fields;
 
-	SFNode <Viewport>          defaultViewport;
-	SFNode <NavigationInfo>    defaultNavigationInfo;
-	SFNode <X3DBackgroundNode> defaultBackground;
-	SFNode <Fog>               defaultFog;
-	SFNode <X3DViewpointNode>  defaultViewpoint;
+	X3DSFNode <Viewport>          defaultViewport;
+	X3DSFNode <NavigationInfo>    defaultNavigationInfo;
+	X3DSFNode <X3DBackgroundNode> defaultBackground;
+	X3DSFNode <Fog>               defaultFog;
+	X3DSFNode <X3DViewpointNode>  defaultViewpoint;
 
 	X3DViewportNode* currentViewport;
 
-	SFNode <NavigationInfoStack> navigationInfoStack;
-	SFNode <BackgroundStack>     backgroundStack;
-	SFNode <FogStack>            fogStack;
-	SFNode <ViewpointStack>      viewpointStack;
+	X3DSFNode <NavigationInfoStack> navigationInfoStack;
+	X3DSFNode <BackgroundStack>     backgroundStack;
+	X3DSFNode <FogStack>            fogStack;
+	X3DSFNode <ViewpointStack>      viewpointStack;
 
-	SFNode <NavigationInfoList> navigationInfos;
-	SFNode <BackgroundList>     backgrounds;
-	SFNode <FogList>            fogs;
-	SFNode <ViewpointList>      viewpoints;
+	X3DSFNode <NavigationInfoList> navigationInfos;
+	X3DSFNode <BackgroundList>     backgrounds;
+	X3DSFNode <FogList>            fogs;
+	X3DSFNode <ViewpointList>      viewpoints;
 
 	LocalFogStack       localFogs;
 	LightContainerArray localLights;
@@ -327,7 +327,7 @@ private:
 	LightContainerArray globalLights;
 	CollisionArray      collisions;
 
-	SFNode <Group> group;
+	X3DSFNode <Group> group;
 
 };
 

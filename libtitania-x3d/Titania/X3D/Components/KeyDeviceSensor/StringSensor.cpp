@@ -62,9 +62,9 @@ StringSensor::Fields::Fields () :
 { }
 
 StringSensor::StringSensor (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DKeyDeviceSensorNode (),                                                    
-	                fields ()                                                     
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DKeyDeviceSensorNode (),
+	                fields ()
 {
 	setComponent ("KeyDeviceSensor");
 	setTypeName ("StringSensor");
@@ -74,7 +74,7 @@ StringSensor::StringSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "isActive",        isActive ());
 	addField (inputOutput, "deletionAllowed", deletionAllowed ());
 	addField (outputOnly,  "enteredText",     enteredText ());
-	addField (outputOnly,  "finalText",       finalText ());
+	addField (outputOnly,  " finalText",       finalText ());
 }
 
 X3DBaseNode*

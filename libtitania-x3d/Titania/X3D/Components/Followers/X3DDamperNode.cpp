@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DDamperNode::X3DDamperNode () :
-	X3DFollowerNode () 
+	X3DFollowerNode ()
 {
 	addNodeType (X3DConstants::X3DDamperNode);
 }

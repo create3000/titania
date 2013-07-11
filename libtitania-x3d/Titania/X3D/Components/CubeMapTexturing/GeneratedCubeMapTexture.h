@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -85,11 +85,11 @@ public:
 	size () const
 	{ return *fields .size; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	textureProperties ()
 	{ return *fields .textureProperties; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	textureProperties () const
 	{ return *fields .textureProperties; }
 
@@ -111,7 +111,7 @@ private:
 
 		SFString* const update;
 		SFInt32* const size;
-		SFNode <X3DBaseNode>* const textureProperties;
+		SFNode* const textureProperties;
 	};
 
 	Fields fields;

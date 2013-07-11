@@ -58,13 +58,13 @@ namespace X3D {
 SurfaceEmitter::Fields::Fields () :
 	set_coordinate (new SFInt32 ()),
 	coordIndex (new MFInt32 ({ -1 })),
-	surface (new SFNode <X3DBaseNode> ())
+	surface (new SFNode ())
 { }
 
 SurfaceEmitter::SurfaceEmitter (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DParticleEmitterNode (),                                                    
-	                fields ()                                                     
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DParticleEmitterNode (),
+	                fields ()
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("SurfaceEmitter");

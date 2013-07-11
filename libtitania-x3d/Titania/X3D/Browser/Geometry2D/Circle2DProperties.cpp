@@ -61,9 +61,9 @@ Circle2DProperties::Fields::Fields () :
 { }
 
 Circle2DProperties::Circle2DProperties (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryPropertyNode (),                                                    
-	                 fields ()                                                     
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometryPropertyNode (),
+	                 fields ()
 {
 	setComponent ("Browser"),
 	setTypeName ("Circle2DProperties");

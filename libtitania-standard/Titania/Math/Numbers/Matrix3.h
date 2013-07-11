@@ -159,6 +159,7 @@ public:
 		matrix [ 3], matrix [ 4], matrix [ 5],
 		matrix [ 6], matrix [ 7], matrix [ 8]
 	}
+
 	{ }
 
 	///  Components constructor. Set values from @a e11 to @a e33.
@@ -172,6 +173,7 @@ public:
 		e21, e22, e23,
 		e31, e32, e33
 	}
+
 	{ }
 
 	///  Constructs a matrix4 from a rotation4.
@@ -610,7 +612,7 @@ matrix3 <Type>::factor (vector2 <Type> & translation,
 	Type det_sign = (det < 0 ? -1 : 1);
 
 	if (det_sign * det == 0)
-		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             // singular
+		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // singular
 
 	// (4) B = A * !A  (here !A means A transpose)
 	matrix3 b = a * ! a;

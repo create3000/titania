@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -128,11 +128,11 @@ public:
 	lineBounds () const
 	{ return *fields .lineBounds; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	fontStyle ()
 	{ return *fields .fontStyle; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	fontStyle () const
 	{ return *fields .fontStyle; }
 
@@ -182,7 +182,7 @@ private:
 		SFVec3f* const origin;
 		SFVec2f* const textBounds;
 		MFVec2f* const lineBounds;
-		SFNode <X3DBaseNode>* const fontStyle;
+		SFNode* const fontStyle;
 	};
 
 	Fields fields;

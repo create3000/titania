@@ -66,10 +66,10 @@
 #include <limits>
 #include <map>
 #include <queue>
+#include <regex>
 #include <set>
 #include <unordered_set>
 #include <vector>
-#include <regex>
 
 using namespace titania;
 using namespace titania::basic;
@@ -192,27 +192,25 @@ bool
 intersect (const Plane3f & p1, const Plane3f & p2, Line3f & line)
 {
 	// http://stackoverflow.com/questions/6408670/intersection-between-two-planes
-	
+
 	if (dot (p1 .normal (), p2 .normal ()) < 1)
 	{
 		Vector3f direction = normalize (cross (p1 .normal (), p2 .normal ()));
-		
-//		float d1 = p1 .distance (c);
-//		float d2 = p2 .distance (c);
-//		
-//		Vector3f point = (c - (d1 * p1 .normal ()) - (d2 * p2 .normal ()));
+
+		//		float d1 = p1 .distance (c);
+		//		float d2 = p2 .distance (c);
+		//
+		//		Vector3f point = (c - (d1 * p1 .normal ()) - (d2 * p2 .normal ()));
 
 		line = Line3f (Vector3f (), direction);
 
 		return true;
 	}
-	
+
 	// Planes are parallel
-	
+
 	return false;
 }
-
-
 
 template <class Type>
 void
@@ -230,12 +228,12 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	Plane3f p1 (Vector3f (), Vector3f (1, 0, 0));			
+	Plane3f p1 (Vector3f (), Vector3f (1, 0, 0));
 	Plane3f p2 (Vector3f (), Vector3f (0, 1, 0));
-	Line3f l;
-	
-	std::cout << intersect (p1, p2, l) << std::endl;		
-	std::cout << l << std::endl;		
+	Line3f  l;
+
+	std::cout << intersect (p1, p2, l) << std::endl;
+	std::cout << l << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

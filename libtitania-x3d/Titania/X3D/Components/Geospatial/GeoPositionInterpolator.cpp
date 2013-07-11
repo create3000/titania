@@ -59,14 +59,14 @@ GeoPositionInterpolator::Fields::Fields () :
 	keyValue (new MFVec3d ()),
 	geovalue_changed (new SFVec3d ()),
 	value_changed (new SFVec3d ()),
-	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoOrigin (new SFNode ()),
 	geoSystem (new MFString ({ "GD", "WE" }))
 { }
 
 GeoPositionInterpolator::GeoPositionInterpolator (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DInterpolatorNode (),                                                    
-	             fields ()                                                     
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DInterpolatorNode (),
+	             fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoPositionInterpolator");

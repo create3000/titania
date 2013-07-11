@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_ALGORITHMS_CATMULL_ROM_SPLINE_H__
-#define __TITANIA_MATH_ALGORITHMS_CATMULL_ROM_SPLINE_H__
+#ifndef __TITANIA_MATH_ALGORITHMS_CATMULL_ROM_SPLINE_INTERPOLATOR_H__
+#define __TITANIA_MATH_ALGORITHMS_CATMULL_ROM_SPLINE_INTERPOLATOR_H__
 
 #include "../Functional.h"
 #include "../Numbers/Matrix4.h"
@@ -93,10 +93,10 @@ template <class Type, class Scalar>
 template <class Key, class KeyValue, class KeyVelocity>
 void
 catmull_rom_spline_interpolator <Type, Scalar>::generate (bool closed,
-                                             const Key & key,
-                                             const KeyValue & keyValue,
-                                             const KeyVelocity & keyVelocity,
-                                             bool normalizeVelocity)
+                                                          const Key & key,
+                                                          const KeyValue & keyValue,
+                                                          const KeyVelocity & keyVelocity,
+                                                          bool normalizeVelocity)
 {
 	std::vector <Type>   T, T0, T1;
 	std::vector <Scalar> Fp, Fm;
@@ -191,9 +191,9 @@ template <class Type, class Scalar>
 template <class KeyValue>
 Type
 catmull_rom_spline_interpolator <Type, Scalar>::evaluate (size_type index0,
-                                             size_type index1,
-                                             const Scalar & weight,
-                                             const KeyValue & keyValue)
+                                                          size_type index1,
+                                                          const Scalar & weight,
+                                                          const KeyValue & keyValue)
 {
 	vector4 <Scalar> S (std::pow (weight, 3), math::sqr (weight), weight, 1);
 

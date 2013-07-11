@@ -61,9 +61,9 @@ EaseInEaseOut::Fields::Fields () :
 { }
 
 EaseInEaseOut::EaseInEaseOut (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DInterpolatorNode (),                                                    
-	             fields ()                                                     
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DInterpolatorNode (),
+	             fields ()
 {
 	setComponent ("Interpolation");
 	setTypeName ("EaseInEaseOut");
@@ -102,20 +102,20 @@ EaseInEaseOut::interpolate (size_t index0, size_t index1, float weight)
 	float easeOut = easeInEaseOut () [index0] .getY ();
 	float easeIn  = easeInEaseOut () [index1] .getX ();
 	float sum     = easeOut + easeIn;
-	
+
 	if (sum < 0)
 		modifiedFraction_changed () = weight;
-		
+
 	else
-	{	
+	{
 		if (sum > 1)
 		{
 			easeIn  /= sum;
 			easeOut /= sum;
 		}
-		
+
 		float t = 1 / (2 - easeOut - easeIn);
-		
+
 		if (weight < easeOut)
 		{
 			modifiedFraction_changed () = (t / easeOut) * math::sqr (weight);

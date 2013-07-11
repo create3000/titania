@@ -95,7 +95,7 @@ public:
 		for (const auto & pair : map)
 			push_back (pair .first, *pair .second);
 	}
-	
+
 	///  Move constructor
 	indexed_multimap (indexed_multimap && value) :
 		array (std::move (value .array)),
@@ -107,10 +107,10 @@ public:
 	operator = (const indexed_multimap & value)
 	{
 		clear ();
-		
+
 		for (const auto & pair : map)
 			push_back (pair .first, *pair .second);
-		
+
 		return *this;
 	}
 
@@ -118,10 +118,10 @@ public:
 	operator = (indexed_multimap && value)
 	{
 		clear ();
-		
+
 		array = std::move (value .array);
 		map   = std::move (value .map);
-		
+
 		return *this;
 	}
 
@@ -213,7 +213,7 @@ public:
 
 	void
 	clear ();
-	
+
 	~indexed_multimap ();
 
 
@@ -253,7 +253,7 @@ void
 indexed_multimap <Key, ValueType>::push_back (const key_type & key, const value_type & value)
 {
 	pointer_type element = new value_type (value);
-	
+
 	array .emplace_back (element);
 
 	map .insert (std::make_pair (key, element)) -> second;

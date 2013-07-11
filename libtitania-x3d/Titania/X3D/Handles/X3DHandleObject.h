@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_HANDLES_X3DHANDLE_NODE_H__
-#define __TITANIA_X3D_HANDLES_X3DHANDLE_NODE_H__
+#ifndef __TITANIA_X3D_HANDLES_X3DHANDLE_OBJECT_H__
+#define __TITANIA_X3D_HANDLES_X3DHANDLE_OBJECT_H__
 
 #include "../Basic/X3DBaseNode.h"
 
@@ -73,7 +73,7 @@ protected:
 	virtual
 	void
 	initialize () override;
-	
+
 };
 
 } // X3D

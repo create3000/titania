@@ -57,12 +57,12 @@ namespace titania {
 namespace X3D {
 
 SpiderMonkey::SpiderMonkey (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DJavaScriptEngine (),                                                    
-	             vendor (),                                                    
-	               name (),                                                    
-	        description (),                                                    
-	            version ()                                                     
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DJavaScriptEngine (),
+	             vendor (),
+	               name (),
+	        description (),
+	            version ()
 {
 	setComponent ("Browser"),
 	setTypeName ("SpiderMonkey");
@@ -100,7 +100,7 @@ SpiderMonkey::initialize ()
 	}
 }
 
-SFNode <X3DJavaScriptContext>
+X3DSFNode <X3DJavaScriptContext>
 SpiderMonkey::createContext (X3DScriptNode* script, const std::string & ecmascript, const basic::uri & uri, size_t index)
 {
 	return new jsContext (script, ecmascript, uri, index);

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -78,11 +78,11 @@ public:
 	collideTime () const
 	{ return *fields .collideTime; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	proxy ()
 	{ return *fields .proxy; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	proxy () const
 	{ return *fields .proxy; }
 
@@ -108,7 +108,7 @@ private:
 		Fields ();
 
 		SFTime* const collideTime;
-		SFNode <X3DBaseNode>* const proxy;
+		SFNode* const proxy;
 	};
 
 	Fields fields;

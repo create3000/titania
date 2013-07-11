@@ -60,9 +60,9 @@ Polypoint2D::Fields::Fields () :
 { }
 
 Polypoint2D::Polypoint2D (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometryNode (),
+	         fields ()
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Polypoint2D");

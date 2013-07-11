@@ -74,16 +74,16 @@ namespace X3D {
  */
 
 ViewVolume::ViewVolume () :
-	ViewVolume (ModelViewMatrix4d (), ProjectionMatrix4d ()) 
+	ViewVolume (ModelViewMatrix4d (), ProjectionMatrix4d ())
 { }
 
 ViewVolume::ViewVolume (const Matrix4d & modelview) :
-	ViewVolume (modelview, ProjectionMatrix4d ()) 
+	ViewVolume (modelview, ProjectionMatrix4d ())
 { }
 
 ViewVolume::ViewVolume (const Matrix4d & modelview, const Matrix4d & projection) :
-	planes (),
-	 valid (true)
+	    planes (),
+	     valid (true)
 {
 	Vector4i viewport = Viewport4i ();
 
@@ -151,13 +151,13 @@ ViewVolume::unProjectPoint (double winx, double winy, double winz, const Matrix4
 	             1);
 
 	//Objects coordinates
-	Vector4d out = in * matrix ;
+	Vector4d out = in * matrix;
 
 	if (out [3] == 0)
 		throw std::domain_error ("Couldn't project point: divisor is 0.");
 
 	double d = 1 / out [3];
-	
+
 	return Vector3d (out [0] * d, out [1] * d, out [2] * d);
 }
 

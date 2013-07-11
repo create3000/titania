@@ -60,9 +60,9 @@ Coordinate::Fields::Fields () :
 { }
 
 Coordinate::Coordinate (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DCoordinateNode (),                                                    
-	           fields ()                                                     
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DCoordinateNode (),
+	           fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("Coordinate");

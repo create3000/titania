@@ -60,9 +60,9 @@ FontStyle::Fields::Fields () :
 { }
 
 FontStyle::FontStyle (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DFontStyleNode (),                                                    
-	          fields ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DFontStyleNode (),
+	          fields ()
 {
 	setComponent ("Text");
 	setTypeName ("FontStyle");

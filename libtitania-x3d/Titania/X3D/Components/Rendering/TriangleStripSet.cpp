@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,21 +62,21 @@ TriangleStripSet::Fields::Fields () :
 { }
 
 TriangleStripSet::TriangleStripSet (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DComposedGeometryNode (),                                                    
-	                 fields ()                                                     
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DComposedGeometryNode (),
+	                 fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("TriangleStripSet");
 
 	addField (inputOutput,    "metadata",        metadata ());
-	
+
 	addField (inputOutput,    "stripCount",      stripCount ());
 	addField (initializeOnly, "solid",           solid ());
 	addField (initializeOnly, "ccw",             ccw ());
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-	
+
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
 	addField (inputOutput,    "texCoord",        texCoord ());
@@ -95,9 +95,9 @@ void
 TriangleStripSet::initialize ()
 {
 	X3DComposedGeometryNode::initialize ();
-	
+
 	stripCount () .addInterest (this, &TriangleStripSet::set_stripCount);
-	
+
 	set_stripCount ();
 }
 
@@ -108,13 +108,13 @@ TriangleStripSet::set_stripCount ()
 
 	if (not _coord or not _coord -> point () .size ())
 		return;
-		
+
 	// Build coordIndex
-	
+
 	coordIndex .clear ();
 
 	size_t index = 0;
-	
+
 	for (const auto & vertexCount : stripCount ())
 	{
 		for (int32_t i = 0, size = vertexCount - 2; i < size; ++ i)
@@ -123,7 +123,7 @@ TriangleStripSet::set_stripCount ()
 			coordIndex .emplace_back (index + (i % 2 ? i : i + 1));
 			coordIndex .emplace_back (index + (i + 2));
 		}
-		
+
 		index += vertexCount;
 	}
 

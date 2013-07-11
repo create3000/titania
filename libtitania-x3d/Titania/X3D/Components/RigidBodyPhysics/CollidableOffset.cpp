@@ -56,13 +56,13 @@ namespace titania {
 namespace X3D {
 
 CollidableOffset::Fields::Fields () :
-	collidable (new SFNode <X3DBaseNode> ())
+	collidable (new SFNode ())
 { }
 
 CollidableOffset::CollidableOffset (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DNBodyCollidableNode (),                                                    
-	                fields ()                                                     
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DNBodyCollidableNode (),
+	                fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("CollidableOffset");

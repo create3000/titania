@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DParametricGeometryNode::X3DParametricGeometryNode () :
-	X3DGeometryNode () 
+	X3DGeometryNode ()
 {
 	addNodeType (X3DConstants::X3DParametricGeometryNode);
 }

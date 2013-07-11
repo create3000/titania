@@ -61,16 +61,16 @@ GeoViewpoint::Fields::Fields () :
 	fieldOfView (new SFFloat (0.785398)),
 	headlight (new SFBool (true)),
 	navType (new MFString ({ "EXAMINE", "ANY" })),
-	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoOrigin (new SFNode ()),
 	geoSystem (new MFString ({ "GD", "WE" })),
 	position (new SFVec3d ()),
 	speedFactor (new SFFloat (1))
 { }
 
 GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DViewpointNode (),                                           
-	          fields ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DViewpointNode (),
+	          fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoViewpoint");

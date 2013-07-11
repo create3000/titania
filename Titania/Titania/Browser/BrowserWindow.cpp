@@ -54,11 +54,11 @@ namespace titania {
 namespace puck {
 
 BrowserWindow::BrowserWindow (const basic::uri & worldURL) :
-	X3DBrowserWindow (worldURL),    
-	motionBlurEditor (getBrowser ()), 
-	 viewpointEditor (getBrowser ()), 
-	   historyEditor (this), 
-	   outlineEditor (getBrowser ())  
+	X3DBrowserWindow (worldURL),
+	motionBlurEditor (getBrowser ()),
+	 viewpointEditor (getBrowser ()),
+	   historyEditor (this),
+	   outlineEditor (getBrowser ())
 { }
 
 void
@@ -94,11 +94,11 @@ BrowserWindow::initialize ()
 
 	// OutlineEditor
 	getOutlineEditor () .reparent (getOutlineEditorBox (), getWindow ());
-	
+
 	// Console
 	Pango::FontDescription font;
 	font .set_family ("monospace");
-	getConsole () .override_font (font);
+	getConsole () . override_font (font);
 
 	getWindow () .grab_focus ();
 }
@@ -165,7 +165,7 @@ BrowserWindow::on_fileOpenDialog_response (int response_id)
 	else
 	{
 		const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
-	
+
 		if (worldURL .is_local ())
 			getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
 	}
@@ -182,7 +182,7 @@ BrowserWindow::on_fileSaveDialog_response (int response_id)
 	else
 	{
 		const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
-	
+
 		if (worldURL .is_local ())
 			getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
 	}

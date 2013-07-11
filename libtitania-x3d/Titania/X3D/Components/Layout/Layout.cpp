@@ -65,9 +65,9 @@ Layout::Fields::Fields () :
 { }
 
 Layout::Layout (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DLayoutNode (),                                                    
-	       fields ()                                                     
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DLayoutNode (),
+	       fields ()
 {
 	setComponent ("Layout");
 	setTypeName ("Layout");

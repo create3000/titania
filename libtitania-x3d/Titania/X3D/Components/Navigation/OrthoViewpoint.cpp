@@ -62,9 +62,9 @@ OrthoViewpoint::Fields::Fields () :
 { }
 
 OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DViewpointNode (),                                           
-	          fields ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DViewpointNode (),
+	          fields ()
 {
 	setComponent ("Navigation");
 	setTypeName ("OrthoViewpoint");
@@ -136,7 +136,7 @@ OrthoViewpoint::reshape (const float zNear, const float zFar)
 
 	size_t width  = viewport [2];
 	size_t height = viewport [3];
-	
+
 	float minimum_x = getMinimumX ();
 	float minimum_y = getMinumumY ();
 	float maximum_x = getMaximumX ();

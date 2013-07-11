@@ -3,13 +3,13 @@
 META "title" "Particle"
 
 EXTERNPROTO Grid [
-  field        SFBool  solid
   exposedField SFInt32 xDimension
   exposedField SFFloat xSpacing
   exposedField SFInt32 zDimension
   exposedField SFFloat zSpacing
   exposedField SFColor color
   exposedField SFFloat transparency
+  field        SFBool  solid
 ]
 "Grid.wrl"
 

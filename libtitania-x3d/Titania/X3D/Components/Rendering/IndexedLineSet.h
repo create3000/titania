@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -101,27 +101,27 @@ public:
 	attrib () const
 	{ return *fields .attrib; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	fogCoord ()
 	{ return *fields .fogCoord; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	fogCoord () const
 	{ return *fields .fogCoord; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	color ()
 	{ return *fields .color; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	color () const
 	{ return *fields .color; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	coord ()
 	{ return *fields .coord; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	coord () const
 	{ return *fields .coord; }
 
@@ -154,9 +154,9 @@ private:
 		MFInt32* const colorIndex;
 		MFInt32* const coordIndex;
 		MFNode* const attrib;
-		SFNode <X3DBaseNode>* const fogCoord;
-		SFNode <X3DBaseNode>* const color;
-		SFNode <X3DBaseNode>* const coord;
+		SFNode* const fogCoord;
+		SFNode* const color;
+		SFNode* const coord;
 	};
 
 	Fields fields;

@@ -63,9 +63,9 @@ HAnimDisplacer::Fields::Fields () :
 { }
 
 HAnimDisplacer::HAnimDisplacer (X3DExecutionContext* const executionContext) :
-	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometricPropertyNode (),                                                    
-	                  fields ()                                                     
+	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometricPropertyNode (),
+	                  fields ()
 {
 	setComponent ("H-Anim");
 	setTypeName ("HAnimDisplacer");

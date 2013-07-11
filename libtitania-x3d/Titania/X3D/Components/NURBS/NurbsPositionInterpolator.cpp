@@ -57,7 +57,7 @@ namespace X3D {
 
 NurbsPositionInterpolator::Fields::Fields () :
 	set_fraction (new SFFloat ()),
-	controlPoint (new SFNode <X3DBaseNode> ()),
+	controlPoint (new SFNode ()),
 	knot (new MFDouble ()),
 	order (new SFInt32 (3)),
 	weight (new MFDouble ()),
@@ -65,9 +65,9 @@ NurbsPositionInterpolator::Fields::Fields () :
 { }
 
 NurbsPositionInterpolator::NurbsPositionInterpolator (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DChildNode (),                                                    
-	      fields ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DChildNode (),
+	      fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsPositionInterpolator");

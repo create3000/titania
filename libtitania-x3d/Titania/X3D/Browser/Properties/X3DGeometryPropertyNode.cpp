@@ -54,10 +54,10 @@ namespace titania {
 namespace X3D {
 
 X3DGeometryPropertyNode::X3DGeometryPropertyNode () :
-	X3DPropertyNode (), 
-	       texCoord (), 
-	        normals (), 
-	       vertices ()  
+	X3DPropertyNode (),
+	       texCoord (),
+	        normals (),
+	       vertices ()
 { }
 
 void

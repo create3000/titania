@@ -57,7 +57,7 @@ namespace X3D {
 
 NurbsSurfaceInterpolator::Fields::Fields () :
 	set_fraction (new SFVec2f ()),
-	controlPoint (new SFNode <X3DBaseNode> ()),
+	controlPoint (new SFNode ()),
 	weight (new MFDouble ()),
 	position_changed (new SFVec3f ()),
 	normal_changed (new SFVec3f ()),
@@ -70,9 +70,9 @@ NurbsSurfaceInterpolator::Fields::Fields () :
 { }
 
 NurbsSurfaceInterpolator::NurbsSurfaceInterpolator (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DChildNode (),                                                    
-	      fields ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DChildNode (),
+	      fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsSurfaceInterpolator");

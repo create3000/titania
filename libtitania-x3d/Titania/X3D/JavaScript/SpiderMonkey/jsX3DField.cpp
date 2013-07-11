@@ -77,7 +77,7 @@ jsX3DField::isReadable (JSContext* context, uintN argc, jsval* vp)
 	{
 		auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
-		JS_SET_RVAL (context, vp, field -> getAccessType () != inputOnly ? JSVAL_TRUE : JSVAL_FALSE);
+		JS_SET_RVAL (context, vp, field -> getAccessType () not_eq inputOnly ? JSVAL_TRUE : JSVAL_FALSE);
 
 		return JS_TRUE;
 	}
@@ -94,7 +94,7 @@ jsX3DField::isWritable (JSContext* context, uintN argc, jsval* vp)
 	{
 		auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
-		JS_SET_RVAL (context, vp, field -> getAccessType () != initializeOnly ? JSVAL_TRUE : JSVAL_FALSE);
+		JS_SET_RVAL (context, vp, field -> getAccessType () not_eq initializeOnly ? JSVAL_TRUE : JSVAL_FALSE);
 
 		return JS_TRUE;
 	}

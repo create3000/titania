@@ -57,6 +57,6 @@ namespace X3D {
 
 } // X3D
 
-template class basic::indexed_multimap <std::string, X3D::SFNode <X3D::ImportedNode>>;
+template class basic::indexed_multimap <std::string, X3D::X3DSFNode <X3D::ImportedNode>>;
 
 } // titania

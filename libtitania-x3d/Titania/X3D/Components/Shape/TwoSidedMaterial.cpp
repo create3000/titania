@@ -72,21 +72,21 @@ TwoSidedMaterial::Fields::Fields () :
 { }
 
 TwoSidedMaterial::TwoSidedMaterial (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DMaterialNode (),                                                    
-	             fields (),                                                    
-	              alpha (1),                                                   
-	     glAmbientColor (),                                                    
-	     glDiffuseColor (),                                                    
-	    glSpecularColor (),                                                    
-	    glEmissiveColor (),                                                    
-	        glShininess (),                                                    
-	          backAlpha (1),                                                   
-	 glBackAmbientColor (),                                                    
-	 glBackDiffuseColor (),                                                    
-	glBackSpecularColor (),                                                    
-	glBackEmissiveColor (),                                                    
-	    glBackShininess ()                                                     
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DMaterialNode (),
+	             fields (),
+	              alpha (1),
+	     glAmbientColor (),
+	     glDiffuseColor (),
+	    glSpecularColor (),
+	    glEmissiveColor (),
+	        glShininess (),
+	          backAlpha (1),
+	 glBackAmbientColor (),
+	 glBackDiffuseColor (),
+	glBackSpecularColor (),
+	glBackEmissiveColor (),
+	    glBackShininess ()
 {
 	setComponent ("Shape");
 	setTypeName ("TwoSidedMaterial");

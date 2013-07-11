@@ -169,7 +169,7 @@ public:
 
 	const SFBool &
 	motionBlur () const;
-	
+
 	SFFloat &
 	motionBlurIntensity ();
 
@@ -192,83 +192,83 @@ public:
 	gravity () const
 	{ return *fields .gravity; }
 
-	SFNode <MotionBlur> &
+	X3DSFNode <MotionBlur> &
 	motionBlurProperties ()
 	{ return fields .motionBlurProperties; }
 
-	const SFNode <MotionBlur> &
+	const X3DSFNode <MotionBlur> &
 	motionBlurProperties () const
 	{ return fields .motionBlurProperties; }
 
-	SFNode <TextureProperties> &
+	X3DSFNode <TextureProperties> &
 	textureProperties ()
 	{ return fields .textureProperties; }
 
-	const SFNode <TextureProperties> &
+	const X3DSFNode <TextureProperties> &
 	textureProperties () const
 	{ return fields .textureProperties; }
 
-	SFNode <Arc2DProperties> &
+	X3DSFNode <Arc2DProperties> &
 	arc2DProperties ()
 	{ return fields .arc2DProperties; }
 
-	const SFNode <Arc2DProperties> &
+	const X3DSFNode <Arc2DProperties> &
 	arc2DProperties () const
 	{ return fields .arc2DProperties; }
 
-	SFNode <ArcClose2DProperties> &
+	X3DSFNode <ArcClose2DProperties> &
 	arcClose2DProperties ()
 	{ return fields .arcClose2DProperties; }
 
-	const SFNode <ArcClose2DProperties> &
+	const X3DSFNode <ArcClose2DProperties> &
 	arcClose2DProperties () const
 	{ return fields .arcClose2DProperties; }
 
-	SFNode <Circle2DProperties> &
+	X3DSFNode <Circle2DProperties> &
 	circle2DProperties ()
 	{ return fields .circle2DProperties; }
 
-	const SFNode <Circle2DProperties> &
+	const X3DSFNode <Circle2DProperties> &
 	circle2DProperties () const
 	{ return fields .circle2DProperties; }
 
-	SFNode <Disk2DProperties> &
+	X3DSFNode <Disk2DProperties> &
 	disc2DProperties ()
 	{ return fields .disc2DProperties; }
 
-	const SFNode <Disk2DProperties> &
+	const X3DSFNode <Disk2DProperties> &
 	disc2DProperties () const
 	{ return fields .disc2DProperties; }
 
-	SFNode <Rectangle2DProperties> &
+	X3DSFNode <Rectangle2DProperties> &
 	rectangle2DProperties ()
 	{ return fields .rectangle2DProperties; }
 
-	const SFNode <Rectangle2DProperties> &
+	const X3DSFNode <Rectangle2DProperties> &
 	rectangle2DProperties () const
 	{ return fields .rectangle2DProperties; }
 
-	SFNode <BoxProperties> &
+	X3DSFNode <BoxProperties> &
 	boxProperties ()
 	{ return fields .boxProperties; }
 
-	const SFNode <BoxProperties> &
+	const X3DSFNode <BoxProperties> &
 	boxProperties () const
 	{ return fields .boxProperties; }
 
-	SFNode <X3DSpherePropertyNode> &
+	X3DSFNode <X3DSpherePropertyNode> &
 	sphereProperties ()
 	{ return fields .sphereProperties; }
 
-	const SFNode <X3DSpherePropertyNode> &
+	const X3DSFNode <X3DSpherePropertyNode> &
 	sphereProperties () const
 	{ return fields .sphereProperties; }
 
-	SFNode <X3DFontStyleNode> &
+	X3DSFNode <X3DFontStyleNode> &
 	fontStyle ()
 	{ return fields .fontStyle; }
 
-	const SFNode <X3DFontStyleNode> &
+	const X3DSFNode <X3DFontStyleNode> &
 	fontStyle () const
 	{ return fields .fontStyle; }
 
@@ -311,16 +311,16 @@ private:
 		SFString* const shading;
 		SFBool* const animateStairWalks;
 		SFFloat* const gravity;
-		SFNode <MotionBlur> motionBlurProperties;
-		SFNode <TextureProperties> textureProperties;
-		SFNode <Arc2DProperties> arc2DProperties;
-		SFNode <ArcClose2DProperties> arcClose2DProperties;
-		SFNode <Circle2DProperties> circle2DProperties;
-		SFNode <Disk2DProperties> disc2DProperties;
-		SFNode <Rectangle2DProperties> rectangle2DProperties;
-		SFNode <BoxProperties> boxProperties;
-		SFNode <X3DSpherePropertyNode> sphereProperties;
-		SFNode <X3DFontStyleNode> fontStyle;
+		X3DSFNode <MotionBlur> motionBlurProperties;
+		X3DSFNode <TextureProperties> textureProperties;
+		X3DSFNode <Arc2DProperties> arc2DProperties;
+		X3DSFNode <ArcClose2DProperties> arcClose2DProperties;
+		X3DSFNode <Circle2DProperties> circle2DProperties;
+		X3DSFNode <Disk2DProperties> disc2DProperties;
+		X3DSFNode <Rectangle2DProperties> rectangle2DProperties;
+		X3DSFNode <BoxProperties> boxProperties;
+		X3DSFNode <X3DSpherePropertyNode> sphereProperties;
+		X3DSFNode <X3DFontStyleNode> fontStyle;
 	};
 
 	Fields fields;

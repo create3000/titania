@@ -61,19 +61,19 @@ class X3DRigidJointNode :
 {
 public:
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	body1 ()
 	{ return *fields .body1; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	body1 () const
 	{ return *fields .body1; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	body2 ()
 	{ return *fields .body2; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	body2 () const
 	{ return *fields .body2; }
 
@@ -97,8 +97,8 @@ private:
 	{
 		Fields ();
 
-		SFNode <X3DBaseNode>* const body1;
-		SFNode <X3DBaseNode>* const body2;
+		SFNode* const body1;
+		SFNode* const body2;
 		MFString* const forceOutput;
 	};
 

@@ -57,9 +57,9 @@ namespace titania {
 namespace puck {
 
 Configuration::Configuration (const std::string & path, const std::string & name) :
-	path (path),             
-	name (name),             
-	 key (path + '/' + name) 
+	path (path),
+	name (name),
+	 key (path + '/' + name)
 {
 	Gnome::Conf::init ();
 	client = Gnome::Conf::Client::get_default_client ();

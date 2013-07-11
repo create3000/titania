@@ -1,3 +1,12 @@
+2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Surface.h:
+	* Surface.cpp:
+	* DrawingArea.h:
+	* DrawingArea.cpp:
+	* Context.cpp:
+	* WindowContext.cpp: 
+
 2013-06-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

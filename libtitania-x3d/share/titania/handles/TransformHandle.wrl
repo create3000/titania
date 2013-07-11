@@ -2,16 +2,17 @@
 
 PROTO TransformHandle [
   # required fields
-  exposedField SFMatrix4f inverseCameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+  exposedField SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   exposedField SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   exposedField SFVec3f    bboxSize 0 0 0
   exposedField SFVec3f    bboxCenter 0 0 0
   exposedField SFNode     transform NULL
 ]
 {
-  Group {
+  Collision {
+    collide FALSE
     children [
-      DEF Lines Transform {
+      Transform {
         translation IS bboxCenter
         scale IS bboxSize
         children [
@@ -35,6 +36,62 @@ PROTO TransformHandle [
               }
             }
           }
+          DEF Front Transform {
+            translation 0 0 0.51
+            children [
+              DEF FrontSensor PlaneSensor { }
+              DEF Plane Shape {
+                appearance Appearance {
+                  material Material {
+                    transparency 1
+                  }
+                }
+                geometry Rectangle2D {
+                  size 1 1
+                }
+              }
+            ]
+          }
+          DEF Right Transform {
+            translation 0.51 0 0
+            rotation 0 1 0 1.5708
+            children [
+              DEF RightSensor PlaneSensor { }
+              USE Plane
+            ]
+          }
+          DEF Back Transform {
+            translation 0 0 -0.51
+            rotation 0 1 0 3.14159
+            children [
+              DEF BackSensor PlaneSensor { }
+              USE Plane
+            ]
+          }
+          DEF Left Transform {
+            translation -0.51 0 0
+            rotation 0 -1 0 1.5708
+            children [
+              DEF LeftSensor PlaneSensor { }
+              USE Plane
+            ]
+          }
+          DEF Top Transform {
+            translation 0 0.51 0
+            rotation -1 0 0 1.5708
+            children [
+              DEF TopSensor PlaneSensor { }
+              USE Plane
+            ]
+          }
+          DEF Bottom Transform {
+            translation 0 -0.51 0
+            rotation 1 0 0 1.5708
+            children [
+              DEF BottomSensor PlaneSensor { }
+              USE Plane
+            ]
+          }
         ]
       }
       DEF X Transform {
@@ -45,21 +102,20 @@ PROTO TransformHandle [
             maxPosition 0 -1
           }
           Transform {
-          rotation 0 0 -1 1.5708
-          children
-          Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 1 0 0
+            rotation 0 0 -1 1.5708
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 1 0 0
+                }
+              }
+              geometry DEF Arrow Cone {
+                height 0.03
+                bottomRadius 0.01
               }
             }
-            geometry DEF Arrow Cone {
-              height 0.03
-              bottomRadius 0.01
-            }
           }
-        }
-          ]
+        ]
       }
       DEF Y Transform {
         translation IS bboxCenter
@@ -93,9 +149,8 @@ PROTO TransformHandle [
     ]
   }
 
-  DEF TransformHandle Script {
-    eventIn      SFVec3f    set_xTranslation
-    exposedField SFMatrix4f inverseCameraSpaceMatrix IS inverseCameraSpaceMatrix
+  DEF ScaleArrows Script {
+    exposedField SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
     exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
     exposedField SFVec3f    bboxSize IS bboxSize
     exposedField SFVec3f    bboxCenter IS bboxCenter
@@ -103,27 +158,14 @@ PROTO TransformHandle [
     field        SFNode     x USE X
     field        SFNode     y USE Y
     field        SFNode     z USE Z
-    field        SFNode     lines USE Lines
     field        SFNode     arrow USE Arrow
 
     url "vrmlscript:
-function set_xTranslation (value)
-{
-	print (value);
-}
 
 function eventsProcessed ()
 {
-	var translation = new SFVec3f ();
-	var rotation    = new SFRotation ();
-	var scale       = new SFVec3f ();
-	modelViewMatrix .multRight (inverseCameraSpaceMatrix) .getTransform (translation, rotation, scale);
-	modelViewMatrix .getTransform (translation);
-	
-	//print (modelViewMatrix);
-	//print (inverseCameraSpaceMatrix);
-	//print (translation);
-	//print (modelViewMatrix .multVecMatrix (bboxCenter));
+	var scale = new SFVec3f ();
+	modelViewMatrix .multRight (cameraSpaceMatrix) .getTransform (null, null, scale);
 
 	var distance = modelViewMatrix .multVecMatrix (bboxCenter) .length ();
 	var offset   = arrow .height / 2 * distance;
@@ -131,8 +173,6 @@ function eventsProcessed ()
 	x .children [1] .translation = new SFVec3f (offset + bboxSize .x / 2 * scale .x, 0, 0);
 	y .children [0] .translation = new SFVec3f (0, offset + bboxSize .y / 2 * scale .y, 0);
 	z .children [0] .translation = new SFVec3f (0, 0, offset + bboxSize .z / 2 * scale .z);
-
-	print (distance);
 
 	scale = new SFVec3f (1 / scale .x, 1 / scale .y, 1 / scale .z);
 	x .scale = scale;
@@ -145,9 +185,114 @@ function eventsProcessed ()
 	z .children [0] .scale = scale;
 }
 "
-
-	ROUTE XSensor.translation_changed TO TransformHandle.set_xTranslation
+    directOutput TRUE
   }
+
+  DEF Move Script {
+    eventIn      SFBool  set_active
+    eventIn      SFVec3f set_frontTranslation
+    eventIn      SFVec3f set_rightTranslation
+    eventIn      SFVec3f set_backTranslation
+    eventIn      SFVec3f set_leftTranslation
+    eventIn      SFVec3f set_topTranslation
+    eventIn      SFVec3f set_bottomTranslation
+    exposedField SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
+    exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
+    exposedField SFVec3f bboxSize IS bboxSize
+    exposedField SFNode  transform IS transform
+    field        SFVec3f translation 0 0 0
+    field        SFNode  frontSensor USE FrontSensor
+    field        SFNode  rightSensor USE RightSensor
+    field        SFNode  backSensor USE BackSensor
+    field        SFNode  leftSensor USE LeftSensor
+    field        SFNode  topSensor USE TopSensor
+    field        SFNode  bottomSensor USE BottomSensor
+
+    url "vrmlscript:
+
+var null3f = new SFVec3f ();
+
+function set_active (value)
+{
+	if (value)
+	{
+		translation = transform .translation;
+	}
+	else
+	{
+		frontSensor  .offset = null3f;
+		rightSensor  .offset = null3f;
+		backSensor   .offset = null3f;
+		leftSensor   .offset = null3f;
+		topSensor    .offset = null3f;
+		bottomSensor .offset = null3f;
+	}
+}
+
+function set_frontTranslation (value)
+{
+	add (new SFVec3f (value .x, value .y, 0));
+}
+
+function set_rightTranslation (value)
+{
+	add (new SFVec3f (0, value .y, -value .x));
+}
+
+function set_backTranslation (value)
+{
+	add (new SFVec3f (-value .x, value .y, 0));
+}
+
+function set_leftTranslation (value)
+{
+	add (new SFVec3f (0, value .y, value .x));
+}
+
+function set_topTranslation (value)
+{
+	add (new SFVec3f (value .x, 0, -value .y));
+}
+
+function set_bottomTranslation (value)
+{
+	add (new SFVec3f (value .x, 0, value .y));
+}
+
+function add (value)
+{
+	var rotation = new SFRotation ();
+	var scale    = new SFVec3f ();
+	modelViewMatrix .multRight (cameraSpaceMatrix) .getTransform (null, rotation, scale);
+
+	print (scale);
+	print (bboxSize);
+
+	var offset = new SFVec3f (value .x * bboxSize .x * scale .x,
+	                          value .y * bboxSize .y * scale .y,
+	                          value .z * bboxSize .z * scale .z);
+
+	transform .translation = translation .add (rotation .multVec (offset));
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE FrontSensor.isActive TO Move.set_active
+  ROUTE RightSensor.isActive TO Move.set_active
+  ROUTE BackSensor.isActive TO Move.set_active
+  ROUTE LeftSensor.isActive TO Move.set_active
+  ROUTE TopSensor.isActive TO Move.set_active
+  ROUTE BottomSensor.isActive TO Move.set_active
+
+  #
+
+  ROUTE FrontSensor.translation_changed TO Move.set_frontTranslation
+  ROUTE RightSensor.translation_changed TO Move.set_rightTranslation
+  ROUTE BackSensor.translation_changed TO Move.set_backTranslation
+  ROUTE LeftSensor.translation_changed TO Move.set_leftTranslation
+  ROUTE TopSensor.translation_changed TO Move.set_topTranslation
+  ROUTE BottomSensor.translation_changed TO Move.set_bottomTranslation
 }
 
 DEF Handle TransformHandle { }

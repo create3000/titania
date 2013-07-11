@@ -234,5 +234,5 @@ template class X3DArrayField <SFVec3f>;
 template class X3DArrayField <SFVec4d>;
 template class X3DArrayField <SFVec4f>;
 
-}  // X3D
+} // X3D
 } // titania

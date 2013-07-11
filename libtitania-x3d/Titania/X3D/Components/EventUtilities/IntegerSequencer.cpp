@@ -61,9 +61,9 @@ IntegerSequencer::Fields::Fields () :
 { }
 
 IntegerSequencer::IntegerSequencer (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DSequencerNode (),                                                    
-	          fields ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DSequencerNode (),
+	          fields ()
 {
 	setComponent ("EventUtilities");
 	setTypeName ("IntegerSequencer");

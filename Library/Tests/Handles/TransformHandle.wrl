@@ -2,6 +2,17 @@
 
 META "title" "TransformHandle"
 
+EXTERNPROTO Grid [
+  exposedField SFInt32 xDimension
+  exposedField SFFloat xSpacing
+  exposedField SFInt32 zDimension
+  exposedField SFFloat zSpacing
+  exposedField SFColor color
+  exposedField SFFloat transparency
+  field        SFBool  solid
+]
+"Grid.wrl"
+
 Background {
   skyColor 0.3 0.3 0.3
 }
@@ -10,6 +21,11 @@ Viewpoint {
   description "Front"
   position 10 0 10
   centerOfRotation 10 0 0
+}
+
+Grid {
+  xDimension 100
+  zDimension 100
 }
 
 Transform {

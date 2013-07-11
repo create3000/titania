@@ -61,9 +61,9 @@ ClipPlane::Fields::Fields () :
 { }
 
 ClipPlane::ClipPlane (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DChildNode (),                                                    
-	      fields ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DChildNode (),
+	      fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("ClipPlane");

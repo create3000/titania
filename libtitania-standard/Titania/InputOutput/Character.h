@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_INPUT_OUTPUT_CHAR_H__
-#define __TITANIA_INPUT_OUTPUT_CHAR_H__
+#ifndef __TITANIA_INPUT_OUTPUT_CHARACTER_H__
+#define __TITANIA_INPUT_OUTPUT_CHARACTER_H__
 
 #include <istream>
 #include <string>

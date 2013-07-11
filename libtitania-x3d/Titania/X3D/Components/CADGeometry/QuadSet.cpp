@@ -60,8 +60,8 @@ namespace X3D {
 static constexpr size_t VERTEX_COUNT = 4;
 
 QuadSet::QuadSet (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DComposedGeometryNode ()                                                     
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DComposedGeometryNode ()
 {
 	setComponent ("CADGeometry");
 	setTypeName ("QuadSet");

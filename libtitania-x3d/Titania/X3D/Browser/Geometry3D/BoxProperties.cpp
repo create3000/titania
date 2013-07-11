@@ -56,8 +56,8 @@ namespace titania {
 namespace X3D {
 
 BoxProperties::BoxProperties (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryPropertyNode ()                                                     
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometryPropertyNode ()
 {
 	setComponent ("Browser"),
 	setTypeName ("BoxProperties");

@@ -141,7 +141,7 @@ public:
 	const Matrix4f &
 	getModelViewMatrix () const
 	{ return modelViewMatrix; }
-	
+
 	void
 	resetUserOffsets ();
 
@@ -226,8 +226,8 @@ private:
 	Matrix4f inverseTransformationMatrix;
 	Matrix4f differenceMatrix;
 
-	SFNode <TimeSensor>           timeSensor;
-	SFNode <PositionInterpolator> positionInterpolator;
+	X3DSFNode <TimeSensor>           timeSensor;
+	X3DSFNode <PositionInterpolator> positionInterpolator;
 
 };
 

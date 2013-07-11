@@ -64,7 +64,7 @@ const X3DConstants::FieldType X3DField <String>::type = X3DConstants::SFString;
 template class X3DField <String>;
 
 SFString::SFString () :
-	X3DField <String> () 
+	X3DField <String> ()
 { }
 
 SFString::SFString (const SFString & field) :
@@ -132,7 +132,7 @@ SFString::toStream (std::ostream & ostream) const
 	{
 		if (c == '"')
 			ostream << '\\';
-			
+
 		ostream << c;
 	}
 

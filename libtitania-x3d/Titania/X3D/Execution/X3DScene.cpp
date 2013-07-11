@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 X3DScene::X3DScene () :
-	X3DExecutionContext (), 
+	X3DExecutionContext (),
 	          metadatas (),
 	      exportedNodes (),
 	      exportedNames ()
@@ -107,8 +107,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 // Exported nodes handling
 
-const SFNode <ExportedNode> &
-X3DScene::addExportedNode (const std::string & exportedName, const SFNode <X3DBaseNode> & node)
+const X3DSFNode <ExportedNode> &
+X3DScene::addExportedNode (const std::string & exportedName, const SFNode & node)
 throw (Error <NODE_IN_USE>,
        Error <INVALID_NAME>,
        Error <INVALID_NODE>,
@@ -124,7 +124,7 @@ throw (Error <NODE_IN_USE>,
 	exportedNodes .push_back (exportedName, new ExportedNode (this, exportedName, node));
 	exportedNodes .back () .isTainted (true);
 	exportedNodes .back () .addParent (this);
-	
+
 	exportedNames [node] = exportedName;
 
 	return exportedNodes .back ();
@@ -139,7 +139,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-X3DScene::updateExportedNode (const std::string & exportedName,  const SFNode <X3DBaseNode> & node)
+X3DScene::updateExportedNode (const std::string & exportedName,  const SFNode & node)
 throw (Error <INVALID_NAME>,
        Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
@@ -159,11 +159,11 @@ throw (Error <INVALID_NAME>,
 	{ }
 
 	exportedNodes .erase (exportedName);
-	
+
 	addExportedNode (exportedName, node);
 }
 
-const SFNode <X3DBaseNode> &
+const SFNode &
 X3DScene::getExportedNode (const std::string & exportedName) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
@@ -205,7 +205,7 @@ throw (Error <INVALID_X3D>,
 	clear ();
 
 	Parser (istream, this) .parseIntoScene ();
-	
+
 	setupNodes ();
 }
 
@@ -244,7 +244,7 @@ X3DScene::toStream (std::ostream & ostream) const
 				<< comment
 				<< Generator::Break;
 		}
-	
+
 		ostream << Generator::TidyBreak;
 	}
 
@@ -293,7 +293,7 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	for (const auto & exportedNode : getExportedNodes ())
 		ostream << exportedNode;
-	
+
 	Generator::PopContext ();
 
 	ostream << std::flush;

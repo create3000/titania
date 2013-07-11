@@ -56,22 +56,22 @@ namespace titania {
 namespace X3D {
 
 X3DGeometryNode::X3DGeometryNode () :
-	                   X3DNode (),               
-	                      bbox (),               
-	                 texCoords (),               
-	textureCoordinateGenerator (NULL),           
-	                    colors (),               
-	                colorsRGBA (),               
-	                   normals (),               
-	                  vertices (),                             
-	                     solid (true),           
-	                       ccw (GL_CCW),           
-	                  elements (),               
-	               bufferUsage (GL_STATIC_DRAW), 
-	          texCoordBufferId (0),              
-	             colorBufferId (0),              
-	            normalBufferId (0),              
-	             pointBufferId (0)               
+	                   X3DNode (),
+	                      bbox (),
+	                 texCoords (),
+	textureCoordinateGenerator (NULL),
+	                    colors (),
+	                colorsRGBA (),
+	                   normals (),
+	                  vertices (),
+	                     solid (true),
+	                       ccw (GL_CCW),
+	                  elements (),
+	               bufferUsage (GL_STATIC_DRAW),
+	          texCoordBufferId (0),
+	             colorBufferId (0),
+	            normalBufferId (0),
+	             pointBufferId (0)
 {
 	addNodeType (X3DConstants::X3DGeometryNode);
 }
@@ -142,28 +142,28 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <std::shared_ptr <In
 		float u, v, t;
 
 		size_t first = 0;
-	
+
 		for (const auto & element : elements)
 		{
 			switch (element .vertexMode)
 			{
-				case GL_TRIANGLES:
-				{
-					for (size_t i = first, size = first + element .count; i < size; i += 3)
+				case GL_TRIANGLES :
 					{
-						if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
+						for (size_t i = first, size = first + element .count; i < size; i += 3)
 						{
-							Vector3f texCoord = i < texCoords .size () ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector3f ();
+							if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
+							{
+								Vector3f texCoord = i < texCoords .size () ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector3f ();
 
-							intersections .emplace_back (new Intersection { texCoord,
-							                                                (1 - u - v) * normals  [i] + u * normals  [i + 1] + v * normals  [i + 2],
-							                                                (1 - u - v) * vertices [i] + u * vertices [i + 1] + v * vertices [i + 2] });
-							intersected = true;
+								intersections .emplace_back (new Intersection { texCoord,
+								                                                (1 - u - v) * normals  [i] + u * normals  [i + 1] + v * normals  [i + 2],
+								                                                (1 - u - v) * vertices [i] + u * vertices [i + 1] + v * vertices [i + 2] });
+								intersected = true;
+							}
 						}
-					}
 
-					break;
-				}
+						break;
+					}
 				case GL_QUADS:
 				{
 					for (size_t i = first, size = first + element .count; i < size; i += 4)
@@ -211,7 +211,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <std::shared_ptr <In
 				default:
 					break;
 			}
-			
+
 			first += element .count;
 		}
 	}
@@ -225,21 +225,21 @@ X3DGeometryNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere) co
 	if ((bbox * matrix) .intersect (sphere))
 	{
 		size_t first = 0;
-	
+
 		for (const auto & element : elements)
 		{
 			switch (element .vertexMode)
 			{
-				case GL_TRIANGLES:
-				{
-					for (size_t i = first, size = first + element .count; i < size; i += 3)
+				case GL_TRIANGLES :
 					{
-						if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
-							return true;
-					}
+						for (size_t i = first, size = first + element .count; i < size; i += 3)
+						{
+							if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
+								return true;
+						}
 
-					break;
-				}
+						break;
+					}
 				case GL_QUADS:
 				{
 					for (size_t i = first, size = first + element .count; i < size; i += 4)
@@ -266,7 +266,7 @@ X3DGeometryNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere) co
 				default:
 					break;
 			}
-			
+
 			first += element .count;
 		}
 	}
@@ -537,7 +537,7 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 
 	else
 		glDisable (GL_CULL_FACE);
-		
+
 	glFrontFace (ccw);
 
 	if (texture)

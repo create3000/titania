@@ -408,7 +408,7 @@ inline
 void
 SFRotation4 <ValueType>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <scalar_type><< getValue ();
+	ostream << Generator::Precision <scalar_type> << getValue ();
 }
 
 // Aritmetic operators.

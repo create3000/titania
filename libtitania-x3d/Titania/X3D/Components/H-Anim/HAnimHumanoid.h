@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -158,19 +158,19 @@ public:
 	skin () const
 	{ return *fields .skin; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	skinCoord ()
 	{ return *fields .skinCoord; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	skinCoord () const
 	{ return *fields .skinCoord; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	skinNormal ()
 	{ return *fields .skinNormal; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	skinNormal () const
 	{ return *fields .skinNormal; }
 
@@ -227,8 +227,8 @@ private:
 		MFNode* const sites;
 		MFNode* const skeleton;
 		MFNode* const skin;
-		SFNode <X3DBaseNode>* const skinCoord;
-		SFNode <X3DBaseNode>* const skinNormal;
+		SFNode* const skinCoord;
+		SFNode* const skinNormal;
 		SFVec3f* const translation;
 		SFString* const version;
 		MFNode* const viewpoints;

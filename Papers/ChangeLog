@@ -1,3 +1,11 @@
+2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Type.h:
+	* X3DUrlObject.h:
+	* ImageTexture.h:
+	* X3DUrlObject.cpp:
+	* ImageTexture.cpp: 
+
 2013-07-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Type.h:

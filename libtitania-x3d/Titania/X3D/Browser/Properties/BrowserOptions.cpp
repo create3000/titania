@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,8 +52,8 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry3D/QuadSphereProperties.h"
-#include <Titania/String/Join.h>
 #include <Titania/Physics/Constants.h>
+#include <Titania/String/Join.h>
 
 extern "C"
 {
@@ -104,9 +104,9 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 { }
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DPropertyNode (),                                                    
-	         fields (executionContext)                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DPropertyNode (),
+	         fields (executionContext)
 {
 	setComponent ("Browser"),
 	setTypeName ("BrowserOptions");
@@ -124,7 +124,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "MotionBlurIntensity",    motionBlurIntensity ());
 	addField (inputOutput, "AnimateStairWalks",      animateStairWalks ());
 	addField (inputOutput, "Gravity",                gravity ());
-	
+
 	addField ("AntiAliased", "Antialiased");
 
 	addChildren (motionBlurProperties (),

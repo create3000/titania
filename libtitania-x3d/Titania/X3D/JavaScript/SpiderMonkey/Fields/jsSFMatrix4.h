@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,8 +52,8 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFMATRIX4_H__
 
 #include "../../../Fields/SFMatrix4.h"
-#include "../jsX3DField.h"
 #include "../jsContext.h"
+#include "../jsX3DField.h"
 #include "jsSFRotation.h"
 #include "jsSFVec3.h"
 
@@ -448,7 +448,7 @@ jsSFMatrix4 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
 
 		if (not JS_ConvertArguments (context, argc, argv, "/oooo", &translationObj, &rotationObj, &scaleObj, &scaleOrientationObj))
 			return JS_FALSE;
-			
+
 		vector3_field_type*  translation      = nullptr;
 		rotation_field_type* rotation         = nullptr;
 		vector3_field_type*  scale            = nullptr;
@@ -507,7 +507,7 @@ jsSFMatrix4 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
 				JS_ReportError (context, "Type of argument 3 is invalid - should be %s or null, is %s",
 				                vector3_type::getClass () -> name,
 				                JS_GetClass (context, scaleObj) -> name);
-				               
+
 				if (noTranslation)
 					delete translation;
 
@@ -624,7 +624,7 @@ jsSFMatrix4 <Type>::inverse (JSContext* context, uintN argc, jsval* vp)
 		catch (const std::domain_error & error)
 		{
 			JS_ReportError (context, "%s .inverse: %s", getClass () -> name, error .what ());
-			return JS_FALSE;		
+			return JS_FALSE;
 		}
 	}
 

@@ -63,10 +63,10 @@ public:
 
 	static JSBool
 	getType (JSContext *, uintN, jsval*);
-	
+
 	static JSBool
 	isReadable (JSContext *, uintN, jsval*);
-	
+
 	static JSBool
 	isWritable (JSContext *, uintN, jsval*);
 

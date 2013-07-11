@@ -56,15 +56,15 @@ namespace titania {
 namespace X3D {
 
 CollisionSensor::Fields::Fields () :
-	collider (new SFNode <X3DBaseNode> ()),
+	collider (new SFNode ()),
 	intersections (new MFNode ()),
 	contacts (new MFNode ())
 { }
 
 CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DSensorNode (),                                                    
-	       fields ()                                                     
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DSensorNode (),
+	       fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("CollisionSensor");

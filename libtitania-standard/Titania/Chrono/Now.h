@@ -65,8 +65,7 @@ basic_now ()
 	return duration_cast <duration <Type>> (high_resolution_clock::now () .time_since_epoch ()) .count ();
 }
 
-extern template double basic_now <double
-                                  > ();
+extern template double basic_now <double> ();
 
 inline
 double

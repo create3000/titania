@@ -133,7 +133,7 @@ maximum_norm (const Type & value)
 	{
 		norm = std::max (norm, std::abs (value [i]));
 	}
-	
+
 	return norm;
 }
 

@@ -373,7 +373,6 @@
     <None Include="Titania\X3D\Fields\SFColor.h" />
     <None Include="Titania\X3D\Fields\SFColorRGBA.h" />
     <None Include="Titania\X3D\Fields\SFImage.h" />
-    <None Include="Titania\X3D\Fields\SFNode.h" />
     <None Include="Titania\X3D\Fields\SFString.h" />
     <None Include="Titania\X3D.h" />
     <None Include="Titania\X3D\Fields\ArrayFields.h" />
@@ -560,6 +559,8 @@
     <None Include="Titania\X3D\Rendering\DepthBuffer.h" />
     <None Include="Titania\X3D\Base\Event.h" />
     <None Include="Titania\X3D\Handles\X3DHandleObject.h" />
+    <None Include="Titania\X3D\Fields\X3DSFNode.h" />
+    <None Include="Titania\X3D\Fields\SFNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -573,7 +574,6 @@
     <Compile Include="Titania\X3D\Fields\SFImage.cpp" />
     <Compile Include="Titania\X3D\Fields\SFMatrix3.cpp" />
     <Compile Include="Titania\X3D\Fields\SFMatrix4.cpp" />
-    <Compile Include="Titania\X3D\Fields\SFNode.cpp" />
     <Compile Include="Titania\X3D\Fields\SFRotation4.cpp" />
     <Compile Include="Titania\X3D\Fields\SFString.cpp" />
     <Compile Include="Titania\X3D\Fields\SFTime.cpp" />
@@ -991,6 +991,7 @@
     <Compile Include="Titania\X3D\Execution\World.cpp" />
     <Compile Include="Titania\X3D\Rendering\DepthBuffer.cpp" />
     <Compile Include="Titania\X3D\Handles\X3DHandleObject.cpp" />
+    <Compile Include="Titania\X3D\Fields\SFNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

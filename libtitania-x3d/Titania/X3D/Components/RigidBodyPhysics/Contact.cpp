@@ -57,15 +57,15 @@ namespace X3D {
 
 Contact::Fields::Fields () :
 	appliedParameters (new MFString ({ "BOUNCE" })),
-	body1 (new SFNode <X3DBaseNode> ()),
-	body2 (new SFNode <X3DBaseNode> ()),
+	body1 (new SFNode ()),
+	body2 (new SFNode ()),
 	bounce (new SFFloat ()),
 	contactNormal (new SFVec3f (0, 1, 0)),
 	depth (new SFFloat ()),
 	frictionCoefficients (new SFVec2f ()),
 	frictionDirection (new SFVec3f (0, 1, 0)),
-	geometry1 (new SFNode <X3DBaseNode> ()),
-	geometry2 (new SFNode <X3DBaseNode> ()),
+	geometry1 (new SFNode ()),
+	geometry2 (new SFNode ()),
 	minbounceSpeed (new SFFloat ()),
 	position (new SFVec3f ()),
 	slipCoefficients (new SFVec2f ()),
@@ -75,9 +75,9 @@ Contact::Fields::Fields () :
 { }
 
 Contact::Contact (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DNode (),                                                    
-	     fields ()                                                     
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DNode (),
+	     fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("Contact");

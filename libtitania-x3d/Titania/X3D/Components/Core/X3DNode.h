@@ -79,11 +79,11 @@ class X3DNode :
 {
 public:
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	metadata ()
 	{ return *fields .metadata; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	metadata () const
 	{ return *fields .metadata; }
 
@@ -116,7 +116,7 @@ private:
 	{
 		Fields ();
 
-		SFNode <X3DBaseNode>* const metadata;
+		SFNode* const metadata;
 	};
 
 	Fields fields;

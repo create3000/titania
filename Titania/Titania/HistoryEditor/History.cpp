@@ -58,10 +58,10 @@ namespace titania {
 namespace puck {
 
 History::History () :
-	database () 
+	database ()
 {
 	os::system ("mkdir", "-p", config_dir ());
-	
+
 	database .open (config_dir ("history.db"));
 
 	database .query ("CREATE TABLE IF NOT EXISTS History ("

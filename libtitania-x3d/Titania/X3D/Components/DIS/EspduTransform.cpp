@@ -140,10 +140,10 @@ EspduTransform::Fields::Fields () :
 { }
 
 EspduTransform::EspduTransform (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGroupingNode (),                                                    
-	  X3DSensorNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode (),
+	  X3DSensorNode (),
+	         fields ()
 {
 	setComponent ("DIS");
 	setTypeName ("EspduTransform");

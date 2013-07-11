@@ -50,9 +50,9 @@
 
 #include "jsX3DScene.h"
 
-#include "jsContext.h"
-#include "Fields/jsSFNode.h"
 #include "Fields/jsMFNode.h"
+#include "Fields/jsSFNode.h"
+#include "jsContext.h"
 
 namespace titania {
 namespace X3D {
@@ -88,7 +88,7 @@ void
 jsX3DScene::initObject (JSContext* context, JSObject* object)
 {
 	jsX3DExecutionContext::initObject (context, object);
-	
+
 	JS_DeleteProperty (context, object, "rootNodes");
 
 	JS_DefineProperties (context, object, properties);
@@ -104,11 +104,11 @@ jsX3DScene::create (JSContext* context, X3DScene* scene, jsval* vp, const bool s
 		return JS_FALSE;
 
 	initObject (context, result);
-	
+
 	JS_SetPrivate (context, result, scene);
 
 	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-	
+
 	if (scene not_eq javaScript -> getExecutionContext ())
 		scene -> addParent (javaScript);
 
@@ -187,7 +187,7 @@ jsX3DScene::getMetaData (JSContext* context, uintN argc, jsval* vp)
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &key))
 			return JS_FALSE;
-			
+
 		try
 		{
 			auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
@@ -224,7 +224,7 @@ jsX3DScene::addExportedNode (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		auto & node = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, oNode));
+		auto & node = *static_cast <SFNode*> (JS_GetPrivate (context, oNode));
 
 		try
 		{
@@ -259,13 +259,13 @@ jsX3DScene::removeExportedNode (JSContext* context, uintN argc, jsval* vp)
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &exportedName))
 			return JS_FALSE;
-		
+
 		try
 		{
 			auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
-		
+
 			scene -> removeImportedNode (JS_GetString (context, exportedName));
-			
+
 			JS_SET_RVAL (context, vp, JSVAL_VOID);
 
 			return JS_TRUE;
@@ -301,7 +301,7 @@ jsX3DScene::updateExportedNode (JSContext* context, uintN argc, jsval* vp)
 			return JS_FALSE;
 		}
 
-		auto & node = *static_cast <SFNode <X3DBaseNode>*> (JS_GetPrivate (context, oNode));
+		auto & node = *static_cast <SFNode*> (JS_GetPrivate (context, oNode));
 
 		try
 		{
@@ -336,14 +336,14 @@ jsX3DScene::getExportedNode (JSContext* context, uintN argc, jsval* vp)
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &exportedName))
 			return JS_FALSE;
-		
+
 		try
 		{
 			auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
-		
+
 			const auto & namedNode = scene -> getExportedNode (JS_GetString (context, exportedName));
-			
-			return jsSFNode::create (context, new SFNode <X3DBaseNode> (namedNode), &JS_RVAL (context, vp));
+
+			return jsSFNode::create (context, new SFNode (namedNode), &JS_RVAL (context, vp));
 		}
 		catch (const X3DError & exception)
 		{
@@ -358,7 +358,7 @@ jsX3DScene::getExportedNode (JSContext* context, uintN argc, jsval* vp)
 }
 
 void
-jsX3DScene::finalize (JSContext* context, JSObject* obj)
+jsX3DScene:: finalize (JSContext* context, JSObject* obj)
 {
 	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 	auto scene      = static_cast <X3DScene*> (JS_GetPrivate (context, obj));
@@ -366,7 +366,6 @@ jsX3DScene::finalize (JSContext* context, JSObject* obj)
 	if (scene not_eq javaScript -> getExecutionContext ())
 		scene -> removeParent (javaScript);
 }
-
 
 } // X3D
 } // titania

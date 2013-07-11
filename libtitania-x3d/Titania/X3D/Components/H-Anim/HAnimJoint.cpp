@@ -72,9 +72,9 @@ HAnimJoint::Fields::Fields () :
 { }
 
 HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGroupingNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode (),
+	         fields ()
 {
 	setComponent ("H-Anim");
 	setTypeName ("HAnimJoint");

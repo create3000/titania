@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_BASE_X3DINPUT_H__
 #define __TITANIA_X3D_BASE_X3DINPUT_H__
 
-#include "../Base/X3DBase.h"
 #include "../Base/Output.h"
+#include "../Base/X3DBase.h"
 
 namespace titania {
 namespace X3D {

@@ -64,8 +64,8 @@ X3DLightNode::Fields::Fields () :
 { }
 
 X3DLightNode::X3DLightNode () :
-	X3DChildNode (), 
-	      fields ()  
+	X3DChildNode (),
+	      fields ()
 {
 	addNodeType (X3DConstants::X3DLightNode);
 }

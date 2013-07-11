@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,13 +64,13 @@ Inline::Fields::Fields () :
 { }
 
 Inline::Inline (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DChildNode (),                                                    
-	X3DBoundedObject (),                                                    
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DChildNode (),
+	X3DBoundedObject (),
 	    X3DUrlObject (),
 	          fields (),
-	           scene (),                                                    
-	           group (new Group (executionContext))                                                     
+	           scene (),
+	           group (new Group (executionContext))
 {
 	setComponent ("Networking");
 	setTypeName ("Inline");
@@ -102,22 +102,22 @@ Inline::initialize ()
 
 	if (load ())
 		requestLoad ();
-	
+
 	else
 		setScene (getBrowser () -> createScene ());
-		
+
 	group -> setup ();
 }
 
 void
-Inline::setScene (const SFNode <Scene> & value)
+Inline::setScene (const X3DSFNode <Scene> & value)
 {
 	if (scene)
 		scene -> getRootNodes () .removeInterest (group -> children ());
 
 	scene = value;
 	scene -> getRootNodes () .addInterest (group -> children ());
-	
+
 	group -> children () = scene -> getRootNodes ();
 }
 
@@ -130,7 +130,7 @@ Inline::getBBox ()
 	return Box3f (bboxSize (), bboxCenter ());
 }
 
-const SFNode <X3DBaseNode> &
+const SFNode &
 Inline::getExportedNode (const std::string & exportedName) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,

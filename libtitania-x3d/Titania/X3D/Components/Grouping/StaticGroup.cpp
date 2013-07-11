@@ -60,10 +60,10 @@ StaticGroup::Fields::Fields () :
 { }
 
 StaticGroup::StaticGroup (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DChildNode (),                                                    
-	X3DBoundedObject (),                                                    
-	          fields ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DChildNode (),
+	X3DBoundedObject (),
+	          fields ()
 {
 	setComponent ("Grouping");
 	setTypeName ("StaticGroup");

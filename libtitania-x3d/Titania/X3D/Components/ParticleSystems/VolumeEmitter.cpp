@@ -57,16 +57,16 @@ namespace X3D {
 
 VolumeEmitter::Fields::Fields () :
 	set_coordinate (new SFInt32 ()),
-	coord (new SFNode <X3DBaseNode> ()),
+	coord (new SFNode ()),
 	direction (new SFVec3f (0, 1, 0)),
 	coordIndex (new MFInt32 ({ -1 })),
 	internal (new SFBool (true))
 { }
 
 VolumeEmitter::VolumeEmitter (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DParticleEmitterNode (),                                                    
-	                fields ()                                                     
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DParticleEmitterNode (),
+	                fields ()
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("VolumeEmitter");

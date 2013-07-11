@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,13 +50,13 @@
 
 #include "OutlineTreeView.h"
 
-#include "../OutlineEditor/OutlineTreeView.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
+#include "../OutlineEditor/OutlineTreeView.h"
 
 namespace titania {
 namespace puck {
 
-OutlineSelection::OutlineSelection (OutlineTreeView* const treeview, const X3D::SFNode <X3D::Browser> & browser) :
+OutlineSelection::OutlineSelection (OutlineTreeView* const treeview, const X3D::X3DSFNode <X3D::Browser> & browser) :
 	X3DBaseInterface (),
 	        treeview (treeview),
 	  selectMultiple (false),
@@ -72,7 +72,7 @@ OutlineSelection::set_selection ()
 {
 	for (const auto & sfnode : getBrowser () -> getSelection () -> children ())
 		select (sfnode .getValue (), true);
-		
+
 	treeview -> queue_draw ();
 }
 
@@ -86,7 +86,7 @@ OutlineSelection::setSelectMultiple (bool value)
 }
 
 void
-OutlineSelection::select (const X3D::SFNode <X3D::X3DBaseNode> & sfnode)
+OutlineSelection::select (const X3D::SFNode & sfnode)
 {
 	if (sfnode)
 	{
@@ -111,7 +111,7 @@ OutlineSelection::select (const X3D::SFNode <X3D::X3DBaseNode> & sfnode)
 }
 
 void
-OutlineSelection::remove (const X3D::SFNode <X3D::X3DBaseNode> & sfnode)
+OutlineSelection::remove (const X3D::SFNode & sfnode)
 {
 	select (sfnode .getValue (), false);
 
@@ -173,7 +173,7 @@ OutlineSelection::select (X3D::X3DFieldDefinition* field, bool value, X3D::Child
 	{
 		case X3D::X3DConstants::SFNode:
 		{
-			auto sfnode = static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (field);
+			auto sfnode = static_cast <X3D::SFNode*> (field);
 			select (sfnode -> getValue (), value, seen);
 			break;
 		}

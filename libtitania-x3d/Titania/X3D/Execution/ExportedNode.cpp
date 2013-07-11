@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,10 +59,10 @@ namespace titania {
 namespace X3D {
 
 ExportedNode::ExportedNode (X3DExecutionContext* const executionContext,
-                            const std::string & exportedName, const SFNode <X3DBaseNode> & node) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	exportedName (exportedName),                                        
-	        node (node)                                        
+                            const std::string & exportedName, const SFNode & node) :
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	exportedName (exportedName),
+	        node (node)
 {
 	setComponent ("Browser");
 	setTypeName ("ExportedNode");
@@ -84,7 +84,7 @@ ExportedNode::getExportedName () const
 	return exportedName;
 }
 
-const SFNode <X3DBaseNode> &
+const SFNode &
 ExportedNode::getNode () const
 {
 	return node;

@@ -59,8 +59,8 @@ X3DSensorNode::Fields::Fields () :
 { }
 
 X3DSensorNode::X3DSensorNode () :
-	X3DChildNode (), 
-	      fields ()  
+	X3DChildNode (),
+	      fields ()
 {
 	addNodeType (X3DConstants::X3DSensorNode);
 }

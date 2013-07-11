@@ -54,13 +54,13 @@ namespace titania {
 namespace X3D {
 
 X3DFieldDefinition::X3DFieldDefinition () :
-	X3DChildObject (),               
-	     reference (NULL),        
-	    accessType (initializeOnly), 
-	     aliasName (),               
-	   inputRoutes (),               
-	  outputRoutes (),               
-	     interests ()                
+	X3DChildObject (),
+	     reference (NULL),
+	    accessType (initializeOnly),
+	     aliasName (),
+	   inputRoutes (),
+	  outputRoutes (),
+	     interests ()
 { }
 
 X3DFieldDefinition &
@@ -70,6 +70,7 @@ X3DFieldDefinition::operator = (const X3DFieldDefinition & value)
 	notifyParents ();
 	return *this;
 }
+
 void
 X3DFieldDefinition::setReference (X3DFieldDefinition* const value)
 {
@@ -134,7 +135,7 @@ X3DFieldDefinition::removeReference ()
 				removeInterest (reference);
 				break;
 		}
-		
+
 		reference = NULL;
 	}
 }

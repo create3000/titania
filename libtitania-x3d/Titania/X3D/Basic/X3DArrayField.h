@@ -142,9 +142,9 @@ public:
 		for (const auto & value : basic::adapter (first, last))
 		{
 			ValueType* field = new ValueType (value);
-			
+
 			get () .emplace_back (field);
-			
+
 			addChild (field);
 		}
 	}
@@ -424,7 +424,7 @@ X3DArrayField <ValueType>::operator == (const X3DFieldDefinition & field) const
 		return size () == static_cast <const X3DArrayField &> (field) .size () &&
 		       std::equal (begin (), end (),
 		                   static_cast <const X3DArrayField &> (field) .begin ());
-   }
+	}
 
 	return false;
 }
@@ -481,15 +481,15 @@ X3DArrayField <ValueType>::set (InputIterator first, InputIterator last)
 {
 	iterator current = begin ();
 
-	for (auto end = this -> end () ; first not_eq last && current not_eq end; ++ current, ++ first)
+	for (auto end = this -> end (); first not_eq last && current not_eq end; ++ current, ++ first)
 		current -> set (*first);
 
 	if (first == last)
 	{
 		// Remove trailing fields
-	
+
 		size_t count = current - begin ();
-	
+
 		removeChildren (get () .begin () + count, get () .end ());
 
 		get () .resize (count);
@@ -590,10 +590,10 @@ X3DArrayField <ValueType>::insert (iterator location, InputIterator first, Input
 	for (auto & field : basic::adapter (iter, iter + count))
 	{
 		field = new ValueType (*first);
-	
+
 		addChild (field);
-		
-		 ++ first;
+
+		++ first;
 	}
 
 	notifyParents ();
@@ -792,7 +792,7 @@ operator == (const X3DArrayField <ValueType> & lhs, const X3DArrayField <ValueTy
 template <class ValueType>
 inline
 bool
-operator != (const X3DArrayField <ValueType> & lhs, const X3DArrayField <ValueType> & rhs)
+operator not_eq (const X3DArrayField <ValueType> & lhs, const X3DArrayField <ValueType> & rhs)
 {
 	return not (lhs == rhs);
 }

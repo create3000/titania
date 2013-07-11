@@ -60,9 +60,9 @@ TextureCoordinate4D::Fields::Fields () :
 { }
 
 TextureCoordinate4D::TextureCoordinate4D (X3DExecutionContext* const executionContext) :
-	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DTextureCoordinateNode (),                                                    
-	                  fields ()                                                     
+	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTextureCoordinateNode (),
+	                  fields ()
 {
 	setComponent ("Texturing3D");
 	setTypeName ("TextureCoordinate4D");

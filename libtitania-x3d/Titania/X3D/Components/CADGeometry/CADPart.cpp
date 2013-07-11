@@ -64,10 +64,10 @@ CADPart::Fields::Fields () :
 { }
 
 CADPart::CADPart (X3DExecutionContext* const executionContext) :
-	                 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	             X3DGroupingNode (),                                                    
-	X3DProductStructureChildNode (),                                                    
-	                      fields ()                                                     
+	                 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	             X3DGroupingNode (),
+	X3DProductStructureChildNode (),
+	                      fields ()
 {
 	setComponent ("CADGeometry");
 	setTypeName ("CADPart");

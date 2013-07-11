@@ -63,9 +63,9 @@ WindPhysicsModel::Fields::Fields () :
 { }
 
 WindPhysicsModel::WindPhysicsModel (X3DExecutionContext* const executionContext) :
-	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DParticlePhysicsModelNode (),                                                    
-	                     fields ()                                                     
+	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DParticlePhysicsModelNode (),
+	                     fields ()
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("WindPhysicsModel");

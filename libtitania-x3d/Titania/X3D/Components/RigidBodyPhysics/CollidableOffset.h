@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -69,11 +69,11 @@ public:
 
 	///  @name Fields
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	collidable ()
 	{ return *fields .collidable; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	collidable () const
 	{ return *fields .collidable; }
 
@@ -84,7 +84,7 @@ private:
 	{
 		Fields ();
 
-		SFNode <X3DBaseNode>* const collidable;
+		SFNode* const collidable;
 	};
 
 	Fields fields;

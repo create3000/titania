@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BASIC_INPUT_OUTPUT_GENERATOR_H__
-#define __TITANIA_BASIC_INPUT_OUTPUT_GENERATOR_H__
+#ifndef __TITANIA_INPUT_OUTPUT_GENERATOR_H__
+#define __TITANIA_INPUT_OUTPUT_GENERATOR_H__
 
 #include <iomanip>
 #include <limits>

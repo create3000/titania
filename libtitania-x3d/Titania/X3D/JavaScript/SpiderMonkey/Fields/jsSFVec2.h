@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,8 +52,8 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_SFVEC2_H__
 
 #include "../../../Fields/SFVec2.h"
-#include "../jsX3DField.h"
 #include "../jsContext.h"
+#include "../jsX3DField.h"
 
 namespace titania {
 namespace X3D {

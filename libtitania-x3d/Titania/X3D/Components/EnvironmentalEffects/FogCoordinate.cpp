@@ -60,9 +60,9 @@ FogCoordinate::Fields::Fields () :
 { }
 
 FogCoordinate::FogCoordinate (X3DExecutionContext* const executionContext) :
-	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometricPropertyNode (),                                                    
-	                  fields ()                                                     
+	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometricPropertyNode (),
+	                  fields ()
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("FogCoordinate");

@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#include "jsString.h"
 #include "jsFields.h"
+#include "jsString.h"
 #include "jsfield.h"
 
 namespace titania {
@@ -236,7 +236,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				return JS_FALSE;
 			}
 
-			*(SFNode <X3DBaseNode>*)field = *(SFNode <X3DBaseNode>*)JS_GetPrivate (context, value);
+			*(SFNode*) field = *(SFNode*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -779,7 +779,7 @@ JS_NewFieldValue (JSContext* context, X3DFieldDefinition* field, jsval* vp, cons
 			return jsSFMatrix4f::create (context, (SFMatrix4f*) field, vp, seal);
 
 		case X3DConstants::SFNode:
-			return jsSFNode::create (context, (SFNode <X3DBaseNode>*)field, vp, seal);
+			return jsSFNode::create (context, (SFNode*) field, vp, seal);
 
 		case X3DConstants::SFRotation:
 			return jsSFRotation::create (context, (SFRotation*) field, vp, seal);

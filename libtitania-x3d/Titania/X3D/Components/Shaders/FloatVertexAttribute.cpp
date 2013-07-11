@@ -61,9 +61,9 @@ FloatVertexAttribute::Fields::Fields () :
 { }
 
 FloatVertexAttribute::FloatVertexAttribute (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DVertexAttributeNode (),                                                    
-	                fields ()                                                     
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DVertexAttributeNode (),
+	                fields ()
 {
 	setComponent ("Shaders");
 	setTypeName ("FloatVertexAttribute");

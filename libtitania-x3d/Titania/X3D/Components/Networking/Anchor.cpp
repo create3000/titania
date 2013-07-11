@@ -62,10 +62,10 @@ Anchor::Fields::Fields () :
 { }
 
 Anchor::Anchor (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGroupingNode (),                                                    
-	   X3DUrlObject (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode (),
+	   X3DUrlObject (),
+	         fields ()
 {
 	setComponent ("Networking");
 	setTypeName ("Anchor");

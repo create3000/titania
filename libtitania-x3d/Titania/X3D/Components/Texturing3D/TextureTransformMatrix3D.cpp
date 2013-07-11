@@ -60,9 +60,9 @@ TextureTransformMatrix3D::Fields::Fields () :
 { }
 
 TextureTransformMatrix3D::TextureTransformMatrix3D (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DTextureTransformNode (),                                                    
-	                 fields ()                                                     
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTextureTransformNode (),
+	                 fields ()
 {
 	setComponent ("Texturing3D");
 	setTypeName ("TextureTransformMatrix3D");

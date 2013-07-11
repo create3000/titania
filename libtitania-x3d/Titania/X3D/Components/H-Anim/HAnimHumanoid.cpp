@@ -67,18 +67,18 @@ HAnimHumanoid::Fields::Fields () :
 	sites (new MFNode ()),
 	skeleton (new MFNode ()),
 	skin (new MFNode ()),
-	skinCoord (new SFNode <X3DBaseNode> ()),
-	skinNormal (new SFNode <X3DBaseNode> ()),
+	skinCoord (new SFNode ()),
+	skinNormal (new SFNode ()),
 	translation (new SFVec3f ()),
 	version (new SFString ()),
 	viewpoints (new MFNode ())
 { }
 
 HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DChildNode (),                                                    
-	X3DBoundedObject (),                                                    
-	          fields ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DChildNode (),
+	X3DBoundedObject (),
+	          fields ()
 {
 	setComponent ("H-Anim");
 	setTypeName ("HAnimHumanoid");

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ class ViewpointEditor :
 {
 public:
 
-	ViewpointEditor (const X3D::SFNode <X3D::Browser> &);
+	ViewpointEditor (const X3D::X3DSFNode <X3D::Browser> &);
 
 	~ViewpointEditor ();
 
@@ -74,10 +74,10 @@ private:
 	void
 	initialize ();
 
-	const X3D::SFNode <X3D::ViewpointStack> &
+	const X3D::X3DSFNode <X3D::ViewpointStack> &
 	getViewpointStack ();
 
-	const X3D::SFNode <X3D::ViewpointList> &
+	const X3D::X3DSFNode <X3D::ViewpointList> &
 	getViewpoints () const;
 
 	X3D::UserViewpointList
@@ -99,8 +99,8 @@ private:
 	virtual
 	void
 	on_fieldOfView_changed ();
-	
-	X3D::SFNode <X3D::X3DLayerNode> activeLayer;
+
+	X3D::X3DSFNode <X3D::X3DLayerNode> activeLayer;
 
 };
 

@@ -60,9 +60,9 @@ PixelTexture3D::Fields::Fields () :
 { }
 
 PixelTexture3D::PixelTexture3D (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DTexture3DNode (),                                                    
-	          fields ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTexture3DNode (),
+	          fields ()
 {
 	setComponent ("Texturing3D");
 	setTypeName ("PixelTexture3D");

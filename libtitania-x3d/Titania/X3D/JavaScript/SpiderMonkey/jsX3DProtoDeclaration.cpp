@@ -90,7 +90,7 @@ jsX3DProtoDeclaration::initObject (JSContext* context, JSObject* object)
 }
 
 JSBool
-jsX3DProtoDeclaration::create (JSContext* context, const SFNode <Proto> & proto, jsval* vp, const bool seal)
+jsX3DProtoDeclaration::create (JSContext* context, const X3DSFNode <Proto> & proto, jsval* vp, const bool seal)
 {
 	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 
@@ -99,7 +99,7 @@ jsX3DProtoDeclaration::create (JSContext* context, const SFNode <Proto> & proto,
 
 	initObject (context, result);
 
-	auto field = new SFNode <Proto> (proto);
+	auto field = new X3DSFNode <Proto> (proto);
 
 	JS_SetPrivate (context, result, field);
 
@@ -118,7 +118,7 @@ jsX3DProtoDeclaration::create (JSContext* context, const SFNode <Proto> & proto,
 JSBool
 jsX3DProtoDeclaration::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & proto = *static_cast <SFNode <Proto>*> (JS_GetPrivate (context, obj));
+	auto & proto = *static_cast <X3DSFNode <Proto>*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, proto -> getName (), vp);
 }
@@ -126,7 +126,7 @@ jsX3DProtoDeclaration::name (JSContext* context, JSObject* obj, jsid id, jsval* 
 JSBool
 jsX3DProtoDeclaration::fields (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & proto = *static_cast <SFNode <Proto>*> (JS_GetPrivate (context, obj));
+	auto & proto = *static_cast <X3DSFNode <Proto>*> (JS_GetPrivate (context, obj));
 
 	return jsFieldDefinitionArray::create (context, &proto -> getFieldDefinitions (), vp);
 }
@@ -134,7 +134,7 @@ jsX3DProtoDeclaration::fields (JSContext* context, JSObject* obj, jsid id, jsval
 JSBool
 jsX3DProtoDeclaration::isExternProto (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & proto = *static_cast <SFNode <Proto>*> (JS_GetPrivate (context, obj));
+	auto & proto = *static_cast <X3DSFNode <Proto>*> (JS_GetPrivate (context, obj));
 
 	*vp = proto -> isExternproto () ? JSVAL_TRUE : JSVAL_FALSE;
 
@@ -146,19 +146,19 @@ jsX3DProtoDeclaration::isExternProto (JSContext* context, JSObject* obj, jsid id
 JSBool
 jsX3DProtoDeclaration::newInstance (JSContext* context, uintN argc, jsval* vp)
 {
-	auto & proto = *static_cast <SFNode <Proto>*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+	auto & proto = *static_cast <X3DSFNode <Proto>*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
-	SFNode <X3DPrototypeInstance> instance = proto -> createInstance ();
+	X3DSFNode <X3DPrototypeInstance> instance = proto -> createInstance ();
 
 	instance -> setup ();
 
-	return jsSFNode::create (context, new SFNode <X3DBaseNode> (instance), &JS_RVAL (context, vp));
+	return jsSFNode::create (context, new SFNode (instance), &JS_RVAL (context, vp));
 }
 
 void
-jsX3DProtoDeclaration::finalize (JSContext* context, JSObject* obj)
+jsX3DProtoDeclaration:: finalize (JSContext* context, JSObject* obj)
 {
-	auto proto = static_cast <SFNode <Proto>*> (JS_GetPrivate (context, obj));
+	auto proto = static_cast <X3DSFNode <Proto>*> (JS_GetPrivate (context, obj));
 
 	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (proto);
 }

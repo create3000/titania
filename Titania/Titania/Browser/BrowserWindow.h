@@ -52,8 +52,8 @@
 #define __TITANIA_BROWSER_BROWSER_WINDOW_H__
 
 #include "../Browser/X3DBrowserWindow.h"
-#include "../MotionBlurEditor/MotionBlurEditor.h"
 #include "../HistoryEditor/HistoryEditor.h"
+#include "../MotionBlurEditor/MotionBlurEditor.h"
 #include "../OutlineEditor/OutlineEditor.h"
 #include "../ViewpointEditor/ViewpointEditor.h"
 
@@ -82,7 +82,7 @@ private:
 	const MotionBlurEditor &
 	getMotionBlurEditor () const
 	{ return motionBlurEditor; }
-	
+
 	ViewpointEditor &
 	getViewpointEditor ()
 	{ return viewpointEditor; }
@@ -269,17 +269,16 @@ private:
 	virtual
 	void
 	on_look_at_toggled ();
-	
+
 	///  @name Dialog response handling
-	
+
 	void
 	on_messageDialog_response (int);
 
-
 	MotionBlurEditor motionBlurEditor;
-	ViewpointEditor viewpointEditor;
-	HistoryEditor   historyEditor;
-	OutlineEditor   outlineEditor;
+	ViewpointEditor  viewpointEditor;
+	HistoryEditor    historyEditor;
+	OutlineEditor    outlineEditor;
 
 };
 

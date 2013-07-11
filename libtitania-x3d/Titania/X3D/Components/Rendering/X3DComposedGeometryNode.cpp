@@ -67,15 +67,15 @@ X3DComposedGeometryNode::Fields::Fields () :
 	solid (new SFBool (true)),
 	ccw (new SFBool (true)),
 	attrib (new MFNode ()),
-	fogCoord (new SFNode <X3DBaseNode> ()),
-	texCoord (new SFNode <X3DBaseNode> ()),
-	color (new SFNode <X3DBaseNode> ()),
-	normal (new SFNode <X3DBaseNode> ()),
-	coord (new SFNode <X3DBaseNode> ())
+	fogCoord (new SFNode ()),
+	texCoord (new SFNode ()),
+	color (new SFNode ()),
+	normal (new SFNode ()),
+	coord (new SFNode ())
 { }
 
 X3DComposedGeometryNode::X3DComposedGeometryNode () :
-	X3DGeometryNode (), 
+	X3DGeometryNode (),
 	         fields ()
 {
 	addNodeType (X3DConstants::X3DComposedGeometryNode);
@@ -111,11 +111,11 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 
 	if (not _coord or not _coord -> point () .size ())
 		return;
-		
+
 	size_t faces = size / vertexCount; // Integer division
 
 	// Set size to a multiple of vertexCount.
-	
+
 	size = faces * vertexCount;
 
 	// Color
@@ -160,7 +160,7 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 	getVertices () .reserve (size);
 
 	// Fill GeometryNode
-	
+
 	for (size_t index = 0, face = 0; index < size; ++ face)
 	{
 		Vector3f    faceNormal;
@@ -238,7 +238,7 @@ void
 X3DComposedGeometryNode::buildNormals (size_t vertexCount, size_t size)
 {
 	buildFaceNormals (vertexCount, size);
-	
+
 	if (normalPerVertex ())
 	{
 		NormalIndex normalIndex;
@@ -258,7 +258,7 @@ X3DComposedGeometryNode::buildFaceNormals (size_t vertexCount, size_t size)
 	for (size_t index = 0; index < size; index += vertexCount)
 	{
 		Vector3f normal;
-		
+
 		for (size_t i = 1, size = vertexCount - 1; i < size; ++ i)
 		{
 			// Determine polygon normal.

@@ -62,9 +62,9 @@ Viewpoint::Fields::Fields () :
 { }
 
 Viewpoint::Viewpoint (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DViewpointNode (),                                                    
-	          fields ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DViewpointNode (),
+	          fields ()
 {
 	setComponent ("Navigation");
 	setTypeName ("Viewpoint");
@@ -107,7 +107,8 @@ Viewpoint::reshape (const float zNear, const float zFar)
 	size_t width  = viewport [2];
 	size_t height = viewport [3];
 
-	float fov   = fieldOfView () > 0 and fieldOfView () < M_PI ? fieldOfView () : M_PI / 4;
+	float fov = fieldOfView () > 0 and fieldOfView () < M_PI ? fieldOfView () :
+						M_PI / 4;
 	float ratio = std::tan (fov / 2) * zNear;
 
 	if (width > height)

@@ -63,7 +63,7 @@ GeoLOD::Fields::Fields () :
 	child2Url (new MFString ()),
 	child3Url (new MFString ()),
 	child4Url (new MFString ()),
-	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoOrigin (new SFNode ()),
 	geoSystem (new MFString ({ "GD", "WE" })),
 	range (new SFFloat (10)),
 	rootUrl (new MFString ()),
@@ -71,10 +71,10 @@ GeoLOD::Fields::Fields () :
 { }
 
 GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DChildNode (),                                                    
-	X3DBoundedObject (),                                                    
-	          fields ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DChildNode (),
+	X3DBoundedObject (),
+	          fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoLOD");

@@ -68,9 +68,9 @@ ColorDamper::Fields::Fields () :
 { }
 
 ColorDamper::ColorDamper (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DDamperNode (),                                                    
-	       fields ()                                                     
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DDamperNode (),
+	       fields ()
 {
 	setComponent ("Followers");
 	setTypeName ("ColorDamper");

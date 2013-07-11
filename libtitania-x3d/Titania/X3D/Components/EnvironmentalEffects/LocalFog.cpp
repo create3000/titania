@@ -61,10 +61,10 @@ LocalFog::Fields::Fields () :
 { }
 
 LocalFog::LocalFog (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DChildNode (),                                                    
-	X3DFogObject (),                                                    
-	      fields ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DChildNode (),
+	X3DFogObject (),
+	      fields ()
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("LocalFog");

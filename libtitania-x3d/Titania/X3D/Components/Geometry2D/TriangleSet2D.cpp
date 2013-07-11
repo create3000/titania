@@ -61,9 +61,9 @@ TriangleSet2D::Fields::Fields () :
 { }
 
 TriangleSet2D::TriangleSet2D (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometryNode (),
+	         fields ()
 {
 	setComponent ("Geometry2D");
 	setTypeName ("TriangleSet2D");

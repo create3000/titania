@@ -60,10 +60,10 @@ MetadataSet::Fields::Fields () :
 { }
 
 MetadataSet::MetadataSet (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	          X3DNode (),                                                    
-	X3DMetadataObject (),                                                    
-	           fields ()                                                     
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	          X3DNode (),
+	X3DMetadataObject (),
+	           fields ()
 {
 	setComponent ("Core");
 	setTypeName ("MetadataSet");

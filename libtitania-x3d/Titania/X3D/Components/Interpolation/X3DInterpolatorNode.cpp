@@ -59,8 +59,8 @@ X3DInterpolatorNode::Fields::Fields () :
 { }
 
 X3DInterpolatorNode::X3DInterpolatorNode () :
-	X3DChildNode (), 
-	      fields ()  
+	X3DChildNode (),
+	      fields ()
 {
 	addNodeType (X3DConstants::X3DInterpolatorNode);
 }
@@ -102,7 +102,7 @@ X3DInterpolatorNode::_set_fraction ()
 		return interpolate (key () .size () - 2, key () .size () - 1, 1);
 
 	auto iter = std::upper_bound (key () .cbegin (), key () .cend (), set_fraction ());
-	
+
 	if (iter not_eq key () .cend ())
 	{
 		size_t index1 = iter - key () .cbegin ();

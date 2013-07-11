@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -77,11 +77,11 @@ public:
 	centerOfMass () const
 	{ return *fields .centerOfMass; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	coord ()
 	{ return *fields .coord; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	coord () const
 	{ return *fields .coord; }
 
@@ -125,7 +125,7 @@ private:
 		Fields ();
 
 		SFVec3f* const centerOfMass;
-		SFNode <X3DBaseNode>* const coord;
+		SFNode* const coord;
 		MFNode* const displacers;
 		SFFloat* const mass;
 		MFFloat* const momentsOfInertia;

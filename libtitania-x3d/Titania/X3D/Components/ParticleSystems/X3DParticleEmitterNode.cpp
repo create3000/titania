@@ -61,8 +61,8 @@ X3DParticleEmitterNode::Fields::Fields () :
 { }
 
 X3DParticleEmitterNode::X3DParticleEmitterNode () :
-	X3DNode (), 
-	 fields ()  
+	X3DNode (),
+	 fields ()
 {
 	addNodeType (X3DConstants::X3DParticleEmitterNode);
 }

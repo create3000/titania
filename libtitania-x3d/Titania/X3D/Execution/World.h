@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_EXECUTION_WORLD_H__
 #define __TITANIA_X3D_EXECUTION_WORLD_H__
 
-#include "../Execution/Scene.h"
 #include "../Components/Layering/LayerSet.h"
+#include "../Execution/Scene.h"
 
 namespace titania {
 namespace X3D {
@@ -64,19 +64,19 @@ public:
 
 	///  @name Construction
 
-	World (const SFNode <Scene> &);
+	World (const X3DSFNode <Scene> &);
 
 	///  @name Scene handling
 
-	const SFNode <Scene> &
+	const X3DSFNode <Scene> &
 	getScene () const
 	{ return scene; }
 
-	const SFNode <LayerSet> &
+	const X3DSFNode <LayerSet> &
 	getLayerSet () const
 	{ return layerSet; }
 
-	const SFNode <X3DLayerNode> &
+	const X3DSFNode <X3DLayerNode> &
 	getActiveLayer () const
 	{ return activeLayer; }
 
@@ -116,11 +116,11 @@ private:
 	void
 	set_rootNodes ();
 
-	SFNode <Scene>        scene;
-	SFNode <LayerSet>     layerSet;
-	SFNode <LayerSet>     defaultLayerSet;
-	SFNode <X3DLayerNode> layer0;
-	SFNode <X3DLayerNode> activeLayer;
+	X3DSFNode <Scene>        scene;
+	X3DSFNode <LayerSet>     layerSet;
+	X3DSFNode <LayerSet>     defaultLayerSet;
+	X3DSFNode <X3DLayerNode> layer0;
+	X3DSFNode <X3DLayerNode> activeLayer;
 
 };
 

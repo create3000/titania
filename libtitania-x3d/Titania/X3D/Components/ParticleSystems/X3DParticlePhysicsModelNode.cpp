@@ -58,8 +58,8 @@ X3DParticlePhysicsModelNode::Fields::Fields () :
 { }
 
 X3DParticlePhysicsModelNode::X3DParticlePhysicsModelNode () :
-	X3DNode (), 
-	 fields ()  
+	X3DNode (),
+	 fields ()
 {
 	addNodeType (X3DConstants::X3DParticlePhysicsModelNode);
 }

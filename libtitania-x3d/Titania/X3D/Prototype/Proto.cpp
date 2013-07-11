@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,9 +58,9 @@ namespace titania {
 namespace X3D {
 
 Proto::Proto (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	           X3DProto (),                                                    
-	X3DExecutionContext ()                                                     
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	           X3DProto (),
+	X3DExecutionContext ()
 {
 	setTypeName ("Proto");
 
@@ -102,7 +102,7 @@ Proto::toStream (std::ostream & ostream) const
 				<< comment
 				<< Generator::Break;
 		}
-	
+
 		ostream << Generator::TidyBreak;
 	}
 
@@ -145,7 +145,7 @@ Proto::toStream (std::ostream & ostream) const
 					<< comment
 					<< Generator::Break;
 			}
-		
+
 			ostream
 				<< Generator::Indent
 				<< std::setiosflags (std::ios::left)
@@ -168,7 +168,7 @@ Proto::toStream (std::ostream & ostream) const
 
 			ostream << Generator::Break;
 		}
-		
+
 		for (const auto & comment : getInterfaceComments ())
 		{
 			ostream
@@ -177,7 +177,7 @@ Proto::toStream (std::ostream & ostream) const
 				<< comment
 				<< Generator::Break;
 		}
-		
+
 		ostream
 			<< Generator::DecIndent
 			<< Generator::Indent;
@@ -189,7 +189,7 @@ Proto::toStream (std::ostream & ostream) const
 			ostream
 				<< Generator::TidyBreak
 				<< Generator::IncIndent;
-				
+
 			for (const auto & comment : getInterfaceComments ())
 			{
 				ostream
@@ -198,12 +198,12 @@ Proto::toStream (std::ostream & ostream) const
 					<< comment
 					<< Generator::Break;
 			}
-	
+
 			ostream
 				<< Generator::DecIndent
 				<< Generator::Indent;
 		}
-	
+
 		else
 			ostream << Generator::TidySpace;
 	}

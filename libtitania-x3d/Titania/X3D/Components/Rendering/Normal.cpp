@@ -60,9 +60,9 @@ Normal::Fields::Fields () :
 { }
 
 Normal::Normal (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DNormalNode (),                                                    
-	       fields ()                                                     
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DNormalNode (),
+	       fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("Normal");

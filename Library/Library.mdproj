@@ -2275,6 +2275,7 @@
     <None Include="Examples\Astronomy\stage\voyager\html\voyager.jpg" />
     <None Include="Examples\Astronomy\index.wrl" />
     <None Include="Tests\Handles\TransformHandle.wrl" />
+    <None Include="Tests\Handles\Grid.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

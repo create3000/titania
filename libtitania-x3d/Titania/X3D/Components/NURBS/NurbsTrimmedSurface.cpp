@@ -62,9 +62,9 @@ NurbsTrimmedSurface::Fields::Fields () :
 { }
 
 NurbsTrimmedSurface::NurbsTrimmedSurface (X3DExecutionContext* const executionContext) :
-	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DNurbsSurfaceGeometryNode (),                                                    
-	                     fields ()                                                     
+	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DNurbsSurfaceGeometryNode (),
+	                     fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsTrimmedSurface");

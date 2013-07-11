@@ -105,7 +105,7 @@ LayerSet::initialize ()
 }
 
 void
-LayerSet::setLayer0 (const SFNode <X3DLayerNode> & value)
+LayerSet::setLayer0 (const X3DSFNode <X3DLayerNode> & value)
 {
 	layer0       = value;
 	children [0] = value;

@@ -60,9 +60,9 @@ Color::Fields::Fields () :
 { }
 
 Color::Color (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DColorNode (),                                                    
-	      fields ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DColorNode (),
+	      fields ()
 {
 	setComponent ("Rendering");
 	setTypeName ("Color");

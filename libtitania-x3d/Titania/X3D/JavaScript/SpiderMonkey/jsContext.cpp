@@ -51,10 +51,10 @@
 #include "jsContext.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "jsString.h"
 #include "jsBrowser.h"
 #include "jsFields.h"
 #include "jsGlobals.h"
+#include "jsString.h"
 #include "jsX3DConstants.h"
 #include "jsfield.h"
 
@@ -70,23 +70,23 @@ JSClass jsContext::global_class = {
 };
 
 jsContext::jsContext (X3DScriptNode* script, const std::string & ecmascript, const basic::uri & uri, size_t index) :
-	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()), 
-	X3DJavaScriptContext (),                                                                                    
-	        X3DUrlObject (),                                                                                    
-	             runtime (NULL),                                                                                
-	             context (NULL),                                                                                
-	              global (NULL),                                                                                
-	              script (script),                                                                              
-	            worldURL ({ uri }),                                                                             
-	               index (index),                                                                               
-	        initializeFn (),                                                                                    
-	     prepareEventsFn (),                                                                                    
-	   eventsProcessedFn (),                                                                                    
-	          shutdownFn (),                                                                                    
-	              fields (),                                                                                    
-	           functions (),                                                                                    
-	             objects (),                                                                                    
-	               files ()                                                                                     
+	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
+	X3DJavaScriptContext (),
+	        X3DUrlObject (),
+	             runtime (NULL),
+	             context (NULL),
+	              global (NULL),
+	              script (script),
+	            worldURL ({ uri }),
+	               index (index),
+	        initializeFn (),
+	     prepareEventsFn (),
+	   eventsProcessedFn (),
+	          shutdownFn (),
+	              fields (),
+	           functions (),
+	             objects (),
+	               files ()
 {
 	setComponent ("Browser");
 	setTypeName ("jsContext");
@@ -142,7 +142,7 @@ jsContext::initialize ()
 {
 	X3DJavaScriptContext::initialize ();
 	X3DUrlObject::initialize ();
-	
+
 	set_initialized ();
 }
 
@@ -540,7 +540,7 @@ jsContext::addObject (X3DFieldDefinition* field, JSObject* object)
 {
 	if (not objects .insert (std::make_pair (field, object)) .second)
 		throw Error <INVALID_FIELD> ("Object already exists in jsContext.");
-	
+
 	field -> addParent (this);
 }
 
@@ -592,10 +592,10 @@ jsContext::error (JSContext* context, const char* message, JSErrorReport* report
 		std::string::size_type start = 0;
 		std::string::size_type end   = 0;
 
-		for (size_t i = 0 ; i < report -> lineno - 1; ++ i)
+		for (size_t i = 0; i < report -> lineno - 1; ++ i)
 		{
 			start = ecmascript .find (nl, start);
-		
+
 			if (start == String::npos)
 				break;
 

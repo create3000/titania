@@ -62,9 +62,9 @@ LineProperties::Fields::Fields () :
 { }
 
 LineProperties::LineProperties (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DAppearanceChildNode (),                                                    
-	                fields ()                                                     
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DAppearanceChildNode (),
+	                fields ()
 {
 	setComponent ("Shape");
 	setTypeName ("LineProperties");

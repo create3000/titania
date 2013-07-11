@@ -61,9 +61,9 @@ CollisionSpace::Fields::Fields () :
 { }
 
 CollisionSpace::CollisionSpace (X3DExecutionContext* const executionContext) :
-	               X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DNBodyCollisionSpaceNode (),                                                    
-	                    fields ()                                                     
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DNBodyCollisionSpaceNode (),
+	                    fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("CollisionSpace");

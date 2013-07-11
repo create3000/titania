@@ -57,11 +57,11 @@ namespace titania {
 namespace X3D {
 
 X3DOutput::X3DOutput () :
-          X3DBase (),
-	    requesters (), 
+	       X3DBase (),
+	    requesters (),
 	requesterIndex (),
 	        inputs (),
-	          copy ()  
+	          copy ()
 { }
 
 const RequesterArray &
@@ -109,10 +109,10 @@ X3DOutput::insertInput (const X3DInput* input, const void* memberFunction) const
 {
 	inputs .insert (input);
 
-	input -> deleted () .addInterest (this, 
-	                                   &X3DOutput::eraseInterest,
-	                                   static_cast <const void*> (input),
-	                                   memberFunction);
+	input -> deleted () .addInterest (this,
+	                                  &X3DOutput::eraseInterest,
+	                                  static_cast <const void*> (input),
+	                                  memberFunction);
 }
 
 void

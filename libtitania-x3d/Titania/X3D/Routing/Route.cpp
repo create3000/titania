@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,15 +59,15 @@ namespace titania {
 namespace X3D {
 
 Route::Route (X3DExecutionContext* const executionContext,
-              const SFNode <X3DBaseNode> & _sourceNode,      X3DFieldDefinition* const sourceField,
-              const SFNode <X3DBaseNode> & _destinationNode, X3DFieldDefinition* const destinationField) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	        X3DRoute (),                                                    
+              const SFNode & _sourceNode,      X3DFieldDefinition* const sourceField,
+              const SFNode & _destinationNode, X3DFieldDefinition* const destinationField) :
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	        X3DRoute (),
 	      sourceNode (_sourceNode),                                         // SFNode   [ ] sourceNode         NULL
 	 destinationNode (_destinationNode),                                    // SFNode   [ ] destinationNode    NULL
-	     sourceField (sourceField),                                         
-	destinationField (destinationField),                                    
-	       connected (false)                                                
+	     sourceField (sourceField),
+	destinationField (destinationField),
+	       connected (false)
 {
 	setComponent ("Browser");
 	setTypeName ("Route");
@@ -90,8 +90,8 @@ Route::clone (X3DExecutionContext* const executionContext) const
 
 	try
 	{
-		const SFNode <X3DBaseNode> & sourceNode      = executionContext -> getNode (getExecutionContext () -> getLocalName (getSourceNode ()));
-		const SFNode <X3DBaseNode> & destinationNode = executionContext -> getNode (getExecutionContext () -> getLocalName (getDestinationNode ()));
+		const SFNode & sourceNode      = executionContext -> getNode (getExecutionContext () -> getLocalName (getSourceNode ()));
+		const SFNode & destinationNode = executionContext -> getNode (getExecutionContext () -> getLocalName (getDestinationNode ()));
 
 		return *executionContext -> addRoute (sourceNode, getSourceField (), destinationNode, getDestinationField ());
 	}
@@ -120,7 +120,7 @@ Route::getId () const
 	return std::make_pair (sourceField, destinationField);
 }
 
-const SFNode <X3DBaseNode> &
+const SFNode &
 Route::getSourceNode () const
 {
 	return sourceNode;
@@ -132,7 +132,7 @@ Route::getSourceField () const
 	return sourceField -> getName ();
 }
 
-const SFNode <X3DBaseNode> &
+const SFNode &
 Route::getDestinationNode () const
 {
 	return destinationNode;
@@ -187,7 +187,7 @@ Route::toStream (std::ostream & ostream) const
 		if (getComments () .size ())
 		{
 			ostream << Generator::TidyBreak;
-			
+
 			for (const auto & comment : getComments ())
 			{
 				ostream

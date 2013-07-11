@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -96,7 +96,7 @@ public:
 	const MFString &
 	urlError () const
 	{ return *fields .urlError; }
-	
+
 	virtual
 	const basic::uri &
 	getWorldURL () const
@@ -116,7 +116,7 @@ public:
 	///  @name X3D Creation Handling
 
 	///
-	SFNode <Scene>
+	X3DSFNode <Scene>
 	createX3DFromString (const std::string &)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
@@ -124,7 +124,7 @@ public:
 	       Error <DISPOSED>);
 
 	///
-	SFNode <Scene>
+	X3DSFNode <Scene>
 	createX3DFromStream (std::istream &)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
@@ -133,12 +133,12 @@ public:
 
 	///
 	void
-	createX3DFromURL (const MFString &, const SFNode <X3DBaseNode> &, const std::string &)
+	createX3DFromURL (const MFString &, const SFNode &, const std::string &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
 
 	///
-	SFNode <Scene>
+	X3DSFNode <Scene>
 	createX3DFromURL (const MFString &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
@@ -213,7 +213,7 @@ protected:
 	initialize () override;
 
 	///  @name Element Access
-	
+
 	virtual
 	const basic::uri &
 	getReferer () const
@@ -252,9 +252,9 @@ private:
 
 	Fields fields;
 
-	LoadState    loadState;
-	std::string  userAgent;
-	basic::uri   worldURL;
+	LoadState   loadState;
+	std::string userAgent;
+	basic::uri  worldURL;
 
 };
 

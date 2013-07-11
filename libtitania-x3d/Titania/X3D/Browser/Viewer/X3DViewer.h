@@ -70,7 +70,7 @@ public:
 	virtual
 	ViewerType
 	getType () const = 0;
-	
+
 	virtual
 	NavigationInfo*
 	getNavigationInfo () const = 0;

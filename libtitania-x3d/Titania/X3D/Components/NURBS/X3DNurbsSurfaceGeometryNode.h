@@ -69,19 +69,19 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	controlPoint ()
 	{ return *fields .controlPoint; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	controlPoint () const
 	{ return *fields .controlPoint; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	texCoord ()
 	{ return *fields .texCoord; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	texCoord () const
 	{ return *fields .texCoord; }
 
@@ -186,8 +186,8 @@ private:
 		Fields ();
 
 		SFBool* const solid;
-		SFNode <X3DBaseNode>* const controlPoint;
-		SFNode <X3DBaseNode>* const texCoord;
+		SFNode* const controlPoint;
+		SFNode* const texCoord;
 		SFInt32* const uTessellation;
 		SFInt32* const vTessellation;
 		MFDouble* const weight;

@@ -95,9 +95,9 @@ private:
 };
 
 Image::Image () :
-	       image (),     
-	  components (0),    
-	transparency (false) 
+	       image (),
+	  components (0),
+	transparency (false)
 { }
 
 Image::Image (const std::string & data)

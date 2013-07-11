@@ -73,31 +73,31 @@ private:
 	enum Property
 	{
 		// Event types
-		
+
 		_INITIALIZED_EVENT,
 		_SHUTDOWN_EVENT,
-		
+
 		// Error types
 
 		_CONNECTION_ERROR,
 		_INITIALIZED_ERROR,
 
 		// Load state
-		
+
 		_NOT_STARTED_STATE,
 		_IN_PROGRESS_STATE,
 		_COMPLETE_STATE,
 		_FAILED_STATE,
 
 		// Access types
-		
+
 		INITIALIZE_ONLY,
 		INPUT_ONLY,
 		OUTPUT_ONLY,
 		INPUT_OUTPUT,
-		
+
 		// Field types
-	
+
 		SFBOOL,
 		SFCOLOR,
 		SFCOLORRGBA,
@@ -140,9 +140,9 @@ private:
 		MFVEC3F,
 		MFVEC4D,
 		MFVEC4F,
-		
+
 		// Node types
-	
+
 		X3D_APPEARANCECHILD_NODE,
 		X3D_APPEARANCE_NODE,
 		X3D_BACKGROUND_NODE,
@@ -209,33 +209,33 @@ private:
 		X3D_VERTEXATTRIBUTE_NODE,
 		X3D_VIEWPOINT_NODE,
 		X3D_VIEWPOINT_OBJECT,
-		X3D_VIEWPORT_NODE                  
+		X3D_VIEWPORT_NODE
 	};
-	
+
 	// Event types
-	
+
 	static JSBool INITIALIZED_EVENT (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool SHUTDOWN_EVENT    (JSContext *, JSObject *, jsid, jsval*);
-	
+
 	// Error types
-	
+
 	static JSBool CONNECTION_ERROR  (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool INITIALIZED_ERROR (JSContext *, JSObject *, jsid, jsval*);
-	
+
 	// Load state
-	
+
 	static JSBool NOT_STARTED_STATE (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool IN_PROGRESS_STATE (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool COMPLETE_STATE    (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool FAILED_STATE      (JSContext *, JSObject *, jsid, jsval*);
-	
+
 	// Access types
 
 	static JSBool initializeOnly (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool inputOnly      (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool outputOnly     (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool inputOutput    (JSContext *, JSObject *, jsid, jsval*);
-	
+
 	// Field types
 
 	static JSBool SFBool      (JSContext *, JSObject *, jsid, jsval*);
@@ -350,7 +350,7 @@ private:
 	static JSBool X3DViewpointNode             (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DViewpointObject           (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DViewportNode              (JSContext *, JSObject *, jsid, jsval*);
-	
+
 	// Members
 
 	static JSClass        static_class;

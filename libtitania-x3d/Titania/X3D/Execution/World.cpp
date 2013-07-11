@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-World::World (const SFNode <Scene> & _scene) :
+World::World (const X3DSFNode <Scene> & _scene) :
 	    X3DBaseNode (_scene -> getBrowser (), _scene),
 	          scene (_scene),
 	       layerSet (new LayerSet (_scene)),
@@ -99,7 +99,7 @@ World::initialize ()
 void
 World::set_rootNodes ()
 {
-	SFNode <LayerSet> oldLayerSet = layerSet;
+	X3DSFNode <LayerSet> oldLayerSet = layerSet;
 	layerSet = defaultLayerSet;
 
 	layer0 -> children () = scene -> getRootNodes ();

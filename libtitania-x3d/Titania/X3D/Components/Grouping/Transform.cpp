@@ -66,11 +66,11 @@ Transform::Fields::Fields () :
 { }
 
 Transform::Transform (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGroupingNode (),                                                    
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode (),
 	         fields (),
 	         matrix (),
-	         handle ()                                                  
+	         handle ()
 {
 	setComponent ("Grouping");
 	setTypeName ("Transform");
@@ -86,7 +86,7 @@ Transform::Transform (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "addChildren",      addChildren ());
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
-	
+
 	addChildren (handle);
 }
 

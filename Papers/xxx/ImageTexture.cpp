@@ -58,9 +58,9 @@ namespace titania {
 namespace X3D {
 
 ImageTexture::ImageTexture (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DTexture2DNode (),                                                    
-	    X3DUrlObject ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTexture2DNode (),
+	    X3DUrlObject ()
 {
 	setComponent ("Texturing");
 	setTypeName ("ImageTexture");
@@ -85,7 +85,7 @@ ImageTexture::initialize ()
 	X3DUrlObject::initialize ();
 
 	url () .addInterest (this, &ImageTexture::set_url);
-//	document_changed () .addInterest (this, &ImageTexture::set_document);
+	//	document_changed () .addInterest (this, &ImageTexture::set_document);
 
 	requestImmediateLoad ();
 }
@@ -104,10 +104,10 @@ ImageTexture::set_url ()
 //		return;
 //
 //	setLoadState (IN_PROGRESS_STATE);
-//	
+//
 //	if (url () .size ())
 //		loadDocumentAsync (url () [0]);
-//		
+//
 //	else
 //		setLoadState (FAILED_STATE);
 //}

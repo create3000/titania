@@ -61,9 +61,9 @@ BooleanToggle::Fields::Fields () :
 { }
 
 BooleanToggle::BooleanToggle (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DChildNode (),                                                    
-	      fields ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DChildNode (),
+	      fields ()
 {
 	setComponent ("EventUtilities");
 	setTypeName ("BooleanToggle");
@@ -83,7 +83,7 @@ void
 BooleanToggle::initialize ()
 {
 	X3DChildNode::initialize ();
-	
+
 	set_boolean () .addInterest (this, &BooleanToggle::_set_boolean);
 }
 

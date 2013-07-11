@@ -56,18 +56,18 @@ namespace titania {
 namespace X3D {
 
 TextureBackground::Fields::Fields () :
-	backTexture (new SFNode <X3DBaseNode> ()),
-	bottomTexture (new SFNode <X3DBaseNode> ()),
-	frontTexture (new SFNode <X3DBaseNode> ()),
-	leftTexture (new SFNode <X3DBaseNode> ()),
-	rightTexture (new SFNode <X3DBaseNode> ()),
-	topTexture (new SFNode <X3DBaseNode> ())
+	backTexture (new SFNode ()),
+	bottomTexture (new SFNode ()),
+	frontTexture (new SFNode ()),
+	leftTexture (new SFNode ()),
+	rightTexture (new SFNode ()),
+	topTexture (new SFNode ())
 { }
 
 TextureBackground::TextureBackground (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DBackgroundNode (),                                           
-	           fields ()                                                     
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DBackgroundNode (),
+	           fields ()
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("TextureBackground");

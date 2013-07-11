@@ -56,8 +56,8 @@ namespace titania {
 namespace X3D {
 
 VolumePickSensor::VolumePickSensor (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DPickSensorNode ()                                                     
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DPickSensorNode ()
 {
 	setComponent ("Picking");
 	setTypeName ("VolumePickSensor");

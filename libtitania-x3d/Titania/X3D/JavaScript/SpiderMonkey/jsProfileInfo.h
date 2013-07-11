@@ -73,7 +73,8 @@ public:
 
 private:
 
-	enum Property {
+	enum Property
+	{
 		NAME,
 		TITLE,
 		PROVIDER_URL,

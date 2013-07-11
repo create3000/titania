@@ -63,9 +63,9 @@ namespace titania {
 namespace X3D {
 
 AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DSoundSourceNode (),                                                    
-	      X3DUrlObject ()                                                     
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DSoundSourceNode (),
+	      X3DUrlObject ()
 {
 	setComponent ("Sound");
 	setTypeName ("AudioClip");

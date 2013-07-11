@@ -72,6 +72,7 @@ public:
 
 	static JSBool addRoute (JSContext *, uintN, jsval*);
 
+
 protected:
 
 	static void
@@ -93,12 +94,20 @@ private:
 		ROUTES
 	};
 
-	static JSBool specificationVersion (JSContext* context, JSObject* obj, jsid id, jsval* vp);
-	static JSBool encoding (JSContext* context, JSObject* obj, jsid id, jsval* vp);
-	static JSBool worldURL (JSContext* context, JSObject* obj, jsid id, jsval* vp);
-	
-	static JSBool profile    (JSContext* context, JSObject* obj, jsid id, jsval* vp);
-	static JSBool components (JSContext* context, JSObject* obj, jsid id, jsval* vp);
+	static JSBool
+	specificationVersion (JSContext* context, JSObject* obj, jsid id, jsval* vp);
+
+	static JSBool
+	encoding (JSContext* context, JSObject* obj, jsid id, jsval* vp);
+
+	static JSBool
+	worldURL (JSContext* context, JSObject* obj, jsid id, jsval* vp);
+
+	static JSBool
+	profile    (JSContext* context, JSObject* obj, jsid id, jsval* vp);
+
+	static JSBool
+	components (JSContext* context, JSObject* obj, jsid id, jsval* vp);
 
 	static JSBool externprotos (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool protos       (JSContext *, JSObject *, jsid, jsval*);

@@ -83,10 +83,10 @@ ReceiverPdu::Fields::Fields () :
 { }
 
 ReceiverPdu::ReceiverPdu (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	   X3DSensorNode (),                                                    
-	X3DBoundedObject (),                                                    
-	          fields ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	   X3DSensorNode (),
+	X3DBoundedObject (),
+	          fields ()
 {
 	setComponent ("DIS");
 	setTypeName ("ReceiverPdu");

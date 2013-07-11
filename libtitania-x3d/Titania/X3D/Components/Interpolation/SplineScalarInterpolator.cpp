@@ -64,9 +64,9 @@ SplineScalarInterpolator::Fields::Fields () :
 { }
 
 SplineScalarInterpolator::SplineScalarInterpolator (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DInterpolatorNode (),                                                    
-	             fields ()                                                     
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DInterpolatorNode (),
+	             fields ()
 {
 	setComponent ("Interpolation");
 	setTypeName ("SplineScalarInterpolator");
@@ -113,7 +113,7 @@ SplineScalarInterpolator::set_keyVelocity ()
 		if (keyVelocity () .size () < key () .size ())
 			keyVelocity () .resize (key () .size ());
 	}
-	
+
 	spline .generate (closed (), key (), keyValue (), keyVelocity (), normalizeVelocity ());
 }
 

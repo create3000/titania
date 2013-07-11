@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -76,43 +76,43 @@ public:
 
 	///  @name Fields
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	lineProperties ()
 	{ return *fields .lineProperties; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	lineProperties () const
 	{ return *fields .lineProperties; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	fillProperties ()
 	{ return *fields .fillProperties; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	fillProperties () const
 	{ return *fields .fillProperties; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	material ()
 	{ return *fields .material; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	material () const
 	{ return *fields .material; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	texture ()
 	{ return *fields .texture; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	texture () const
 	{ return *fields .texture; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	textureTransform ()
 	{ return *fields .textureTransform; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	textureTransform () const
 	{ return *fields .textureTransform; }
 
@@ -161,11 +161,11 @@ private:
 	{
 		Fields ();
 
-		SFNode <X3DBaseNode>* const lineProperties;
-		SFNode <X3DBaseNode>* const fillProperties;
-		SFNode <X3DBaseNode>* const material;
-		SFNode <X3DBaseNode>* const texture;
-		SFNode <X3DBaseNode>* const textureTransform;
+		SFNode* const lineProperties;
+		SFNode* const fillProperties;
+		SFNode* const material;
+		SFNode* const texture;
+		SFNode* const textureTransform;
 		MFNode* const shaders;
 	};
 

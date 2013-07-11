@@ -64,9 +64,9 @@ NurbsCurve2D::Fields::Fields () :
 { }
 
 NurbsCurve2D::NurbsCurve2D (X3DExecutionContext* const executionContext) :
-	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DNurbsControlCurveNode (),                                                    
-	                  fields ()                                                     
+	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DNurbsControlCurveNode (),
+	                  fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsCurve2D");

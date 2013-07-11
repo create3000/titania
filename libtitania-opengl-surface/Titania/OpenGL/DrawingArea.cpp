@@ -56,7 +56,7 @@ namespace titania {
 namespace opengl {
 
 DrawingArea::DrawingArea () :
-	sigc::trackable () 
+	sigc::trackable ()
 {
 	widget = GTK_DRAWING_AREA (gtk_drawing_area_new ());
 	g_object_ref (widget);
@@ -71,12 +71,12 @@ DrawingArea::DrawingArea () :
 
 	g_signal_connect (G_OBJECT (gobj ()), "map_event",       G_CALLBACK (&DrawingArea::map_event_cb),      this);
 	g_signal_connect (G_OBJECT (gobj ()), "configure_event", G_CALLBACK (&DrawingArea::configure_event_cb), this);
-	
+
 	//if (g_signal_name ("draw"))
-		g_signal_connect (G_OBJECT (gobj ()), "draw", G_CALLBACK (&DrawingArea::draw_cb), this);
-		
+	g_signal_connect (G_OBJECT (gobj ()), "draw", G_CALLBACK (&DrawingArea::draw_cb), this);
+
 	//else
-		g_signal_connect (G_OBJECT (gobj ()), "expose_event", G_CALLBACK (&DrawingArea::expose_event_cb), this);
+	g_signal_connect (G_OBJECT (gobj ()), "expose_event", G_CALLBACK (&DrawingArea::expose_event_cb), this);
 }
 
 DrawingArea::~DrawingArea ()

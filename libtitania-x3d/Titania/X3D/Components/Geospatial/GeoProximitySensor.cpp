@@ -61,14 +61,14 @@ GeoProximitySensor::Fields::Fields () :
 	geoCoord_changed (new SFVec3d ()),
 	orientation_changed (new SFRotation ()),
 	position_changed (new SFVec3f ()),
-	geoOrigin (new SFNode <X3DBaseNode> ()),
+	geoOrigin (new SFNode ()),
 	geoSystem (new MFString ({ "GD", "WE" }))
 { }
 
 GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionContext) :
-	               X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DEnvironmentalSensorNode (),                                                    
-	                    fields ()                                                     
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DEnvironmentalSensorNode (),
+	                    fields ()
 {
 	setComponent ("Geospatial");
 	setTypeName ("GeoProximitySensor");

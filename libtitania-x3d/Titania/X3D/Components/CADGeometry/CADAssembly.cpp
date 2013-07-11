@@ -56,9 +56,9 @@ namespace titania {
 namespace X3D {
 
 CADAssembly::CADAssembly (X3DExecutionContext* const executionContext) :
-	                 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	             X3DGroupingNode (),                                                    
-	X3DProductStructureChildNode ()                                                     
+	                 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	             X3DGroupingNode (),
+	X3DProductStructureChildNode ()
 {
 	setComponent ("CADGeometry");
 	setTypeName ("CADAssembly");

@@ -51,9 +51,9 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DARRAY_FIELD_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DARRAY_FIELD_H__
 
+#include "jsContext.h"
 #include "jsString.h"
 #include "jsX3DField.h"
-#include "jsContext.h"
 
 namespace titania {
 namespace X3D {
@@ -475,7 +475,7 @@ jsX3DArrayField <Type, FieldType>::length (JSContext* context, JSObject* obj, js
 
 	if (not JS_ValueToECMAUint32 (context, *vp, &value))
 		return JS_FALSE;
-	
+
 	field -> resize (value);
 
 	return JS_TRUE;

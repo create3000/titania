@@ -69,11 +69,11 @@ public:
 	objectType () const
 	{ return *fields .objectType; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	pickingGeometry ()
 	{ return *fields .pickingGeometry; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	pickingGeometry () const
 	{ return *fields .pickingGeometry; }
 
@@ -122,7 +122,7 @@ private:
 		Fields ();
 
 		MFString* const objectType;
-		SFNode <X3DBaseNode>* const pickingGeometry;
+		SFNode* const pickingGeometry;
 		MFNode* const pickTarget;
 		MFNode* const pickedGeometry;
 		SFString* const intersectionType;

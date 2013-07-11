@@ -60,9 +60,9 @@ X3DNBodyCollidableNode::Fields::Fields () :
 { }
 
 X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
-	    X3DChildNode (), 
-	X3DBoundedObject (), 
-	          fields ()  
+	    X3DChildNode (),
+	X3DBoundedObject (),
+	          fields ()
 {
 	addNodeType (X3DConstants::X3DNBodyCollidableNode);
 }

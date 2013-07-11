@@ -60,9 +60,9 @@ Matrix3VertexAttribute::Fields::Fields () :
 { }
 
 Matrix3VertexAttribute::Matrix3VertexAttribute (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DVertexAttributeNode (),                                                    
-	                fields ()                                                     
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DVertexAttributeNode (),
+	                fields ()
 {
 	setComponent ("Shaders");
 	setTypeName ("Matrix3VertexAttribute");

@@ -58,13 +58,13 @@ namespace X3D {
 GeneratedCubeMapTexture::Fields::Fields () :
 	update (new SFString ("NONE")),
 	size (new SFInt32 (128)),
-	textureProperties (new SFNode <X3DBaseNode> ())
+	textureProperties (new SFNode ())
 { }
 
 GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const executionContext) :
-	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DEnvironmentTextureNode (),                                                    
-	                   fields ()                                                     
+	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DEnvironmentTextureNode (),
+	                   fields ()
 {
 	setComponent ("CubeMapTexturing");
 	setTypeName ("GeneratedCubeMapTexture");

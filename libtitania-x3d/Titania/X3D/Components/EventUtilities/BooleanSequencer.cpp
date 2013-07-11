@@ -61,9 +61,9 @@ BooleanSequencer::Fields::Fields () :
 { }
 
 BooleanSequencer::BooleanSequencer (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DSequencerNode (),                                                    
-	          fields ()                                                     
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DSequencerNode (),
+	          fields ()
 {
 	setComponent ("EventUtilities");
 	setTypeName ("BooleanSequencer");

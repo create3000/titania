@@ -60,7 +60,7 @@ namespace os {
 bool
 mkdir (const std::string & path)
 {
-	return ::mkdir (path .c_str (), 0700) not_eq -1;
+	return ::mkdir (path .c_str (), 0700) not_eq - 1;
 }
 
 } // os

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -77,19 +77,19 @@ public:
 	appliedParameters () const
 	{ return *fields .appliedParameters; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	body1 ()
 	{ return *fields .body1; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	body1 () const
 	{ return *fields .body1; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	body2 ()
 	{ return *fields .body2; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	body2 () const
 	{ return *fields .body2; }
 
@@ -133,19 +133,19 @@ public:
 	frictionDirection () const
 	{ return *fields .frictionDirection; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	geometry1 ()
 	{ return *fields .geometry1; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	geometry1 () const
 	{ return *fields .geometry1; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	geometry2 ()
 	{ return *fields .geometry2; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	geometry2 () const
 	{ return *fields .geometry2; }
 
@@ -205,15 +205,15 @@ private:
 		Fields ();
 
 		MFString* const appliedParameters;
-		SFNode <X3DBaseNode>* const body1;
-		SFNode <X3DBaseNode>* const body2;
+		SFNode* const body1;
+		SFNode* const body2;
 		SFFloat* const bounce;
 		SFVec3f* const contactNormal;
 		SFFloat* const depth;
 		SFVec2f* const frictionCoefficients;
 		SFVec3f* const frictionDirection;
-		SFNode <X3DBaseNode>* const geometry1;
-		SFNode <X3DBaseNode>* const geometry2;
+		SFNode* const geometry1;
+		SFNode* const geometry2;
 		SFFloat* const minbounceSpeed;
 		SFVec3f* const position;
 		SFVec2f* const slipCoefficients;

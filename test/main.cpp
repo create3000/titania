@@ -72,7 +72,6 @@
 using namespace titania;
 using namespace titania::Test;
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <class Type>
@@ -92,10 +91,10 @@ int
 main (int argc, char* argv [ ])
 {
 	install_signal_hander ();
-	
+
 	gtk_init (0, 0);
 	Gtk::Main::init_gtkmm_internals ();
-	
+
 	std::clog << std::boolalpha << std::endl;
 
 	std::clog << "Test started ..." << std::endl << std::endl;
@@ -104,28 +103,28 @@ main (int argc, char* argv [ ])
 
 		{
 			auto browser = X3D::getBrowser ();
-			
+
 			X3D::Array <X3D::SFInt32> a1;
 			X3D::Array <X3D::SFInt32> a2;
-			
+
 			std::clog << (a1 == a2) << std::endl;
-			
-//			X3D::MFInt32 o;
-//
-//			for (int i = 0; i < 10; ++ i)
-//			{
-//				{
-//					X3D::MFInt32 a1;
-//
-//					a1 .resize (2000000);
-//				
-//					__LOG__ << a1 .size () << std::endl;
-//				}
-//
-//				o .getGarbageCollector () .dispose ();
-//	
-//				sleep (1);
-//			}
+
+			//			X3D::MFInt32 o;
+			//
+			//			for (int i = 0; i < 10; ++ i)
+			//			{
+			//				{
+			//					X3D::MFInt32 a1;
+			//
+			//					a1 .resize (2000000);
+			//
+			//					__LOG__ << a1 .size () << std::endl;
+			//				}
+			//
+			//				o .getGarbageCollector () .dispose ();
+			//
+			//				sleep (1);
+			//			}
 		}
 
 		std::clog << "End of block ..." << std::endl;

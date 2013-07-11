@@ -59,8 +59,8 @@ WindowContext::WindowContext (Display* display,
                               GLXWindow xWindow,
                               const Context & sharingContext,
                               bool direct) :
-	Context (display), 
-	xWindow (xWindow)  
+	Context (display),
+	xWindow (xWindow)
 {
 	setValue    (create (sharingContext .getValue (), direct));
 	setDrawable (xWindow);
@@ -69,8 +69,8 @@ WindowContext::WindowContext (Display* display,
 WindowContext::WindowContext (Display* display,
                               GLXWindow xWindow,
                               bool direct) :
-	Context (display), 
-	xWindow (xWindow)  
+	Context (display),
+	xWindow (xWindow)
 {
 	setValue    (create (NULL, direct));
 	setDrawable (xWindow);

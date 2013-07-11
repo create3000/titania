@@ -38,34 +38,34 @@ namespace basic {
 const ihttpstream::method_array ihttpstream::methods { { "HEAD", "GET", "POST" } };
 
 ihttpstream::ihttpstream () :
-	          std::istream (),     
-	                   buf (NULL), 
-	           http_method (),     
-	 request_headers_array (),     
-	response_headers_array (),     
-	 response_http_version (),     
-	       response_status (0),    
-	       response_reason ()      
+	          std::istream (),
+	                   buf (NULL),
+	           http_method (),
+	 request_headers_array (),
+	response_headers_array (),
+	 response_http_version (),
+	       response_status (0),
+	       response_reason ()
 {
 	clear (std::ios::badbit);
 }
 
 ihttpstream::ihttpstream (const http::method method, const basic::uri & url) :
-	          std::istream (),     
-	                   buf (NULL), 
-	           http_method (),     
-	 request_headers_array (),     
-	response_headers_array (),     
-	 response_http_version (),     
-	       response_status (0),    
-	       response_reason ()      
+	          std::istream (),
+	                   buf (NULL),
+	           http_method (),
+	 request_headers_array (),
+	response_headers_array (),
+	 response_http_version (),
+	       response_status (0),
+	       response_reason ()
 {
 	open (method, url);
 }
 
 ihttpstream::ihttpstream (ihttpstream && other) :
-	          std::istream (),     
-	                   buf (NULL), 
+	          std::istream (),
+	                   buf (NULL),
 	           http_method (std::move (other .http_method)),
 	 request_headers_array (std::move (other .request_headers_array)),
 	response_headers_array (std::move (other .response_headers_array)),

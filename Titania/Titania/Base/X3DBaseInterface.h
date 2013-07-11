@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ class X3DBaseInterface :
 public:
 
 	virtual
-	const X3D::SFNode <X3D::Browser> &
+	const X3D::X3DSFNode <X3D::Browser> &
 	getBrowser () const
 	{ return browser; }
 
@@ -77,13 +77,13 @@ protected:
 	X3DBaseInterface ();
 
 	void
-	setBrowser (const X3D::SFNode <X3D::Browser> & value)
+	setBrowser (const X3D::X3DSFNode <X3D::Browser> & value)
 	{ browser = value; }
 
 
 private:
 
-	X3D::SFNode <X3D::Browser> browser;
+	X3D::X3DSFNode <X3D::Browser> browser;
 
 };
 

@@ -229,7 +229,7 @@ private:
 
 	static
 	gboolean
-	expose_event_cb (GtkWidget *widget, GdkEventExpose *event, gpointer data)
+	expose_event_cb (GtkWidget* widget, GdkEventExpose* event, gpointer data)
 	{ return static_cast <DrawingArea*> (data) -> m_signal_draw .emit (); }
 
 	sigc::signal <bool, GdkEventButton*> m_signal_button_press_event;
@@ -240,9 +240,9 @@ private:
 	sigc::signal <bool, GdkEventKey*> m_signal_key_press_event;
 	sigc::signal <bool, GdkEventKey*> m_signal_key_release_event;
 
-	sigc::signal <bool, GdkEventAny*>                           m_signal_map_event;
-	sigc::signal <bool, GdkEventConfigure*>                     m_signal_configure_event;
-	sigc::signal <bool>                                         m_signal_draw;
+	sigc::signal <bool, GdkEventAny*>       m_signal_map_event;
+	sigc::signal <bool, GdkEventConfigure*> m_signal_configure_event;
+	sigc::signal <bool>                     m_signal_draw;
 
 	GtkDrawingArea* widget;
 

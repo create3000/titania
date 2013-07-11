@@ -85,11 +85,11 @@ public:
 	repeatR () const
 	{ return *fields .repeatR; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	textureProperties ()
 	{ return *fields .textureProperties; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	textureProperties () const
 	{ return *fields .textureProperties; }
 
@@ -112,7 +112,7 @@ private:
 		SFBool* const repeatS;
 		SFBool* const repeatT;
 		SFBool* const repeatR;
-		SFNode <X3DBaseNode>* const textureProperties;
+		SFNode* const textureProperties;
 	};
 
 	Fields fields;

@@ -64,10 +64,10 @@ SquadOrientationInterpolator::Fields::Fields () :
 { }
 
 SquadOrientationInterpolator::SquadOrientationInterpolator (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DInterpolatorNode (),                                                    
-	             fields (),                                                    
-	              squad ()                                                     
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DInterpolatorNode (),
+	             fields (),
+	              squad ()
 {
 	setComponent ("Interpolation");
 	setTypeName ("SquadOrientationInterpolator");

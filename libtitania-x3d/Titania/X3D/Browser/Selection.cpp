@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ Selection::Fields::Fields () :
 { }
 
 Selection::Selection (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     fields ()
 {
 	setComponent ("Browser");
@@ -79,7 +79,7 @@ Selection::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Selection::addChild (const SFNode <X3DBaseNode> & child)
+Selection::addChild (const SFNode & child)
 {
 	if (not child)
 		return;
@@ -90,13 +90,13 @@ Selection::addChild (const SFNode <X3DBaseNode> & child)
 }
 
 void
-Selection::removeChild (const SFNode <X3DBaseNode> & child)
+Selection::removeChild (const SFNode & child)
 {
 	fields .children .erase (std::remove (fields .children .begin (),
 	                                      fields .children .end (),
 	                                      child),
 	                         fields .children .end ());
-	                         
+
 	// Handle
 
 	child -> removeHandle ();

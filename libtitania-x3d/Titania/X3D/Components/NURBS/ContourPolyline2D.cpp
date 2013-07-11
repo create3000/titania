@@ -56,8 +56,8 @@ namespace titania {
 namespace X3D {
 
 ContourPolyline2D::ContourPolyline2D (X3DExecutionContext* const executionContext) :
-	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DNurbsControlCurveNode ()                                                     
+	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DNurbsControlCurveNode ()
 {
 	setComponent ("NURBS");
 	setTypeName ("ContourPolyline2D");

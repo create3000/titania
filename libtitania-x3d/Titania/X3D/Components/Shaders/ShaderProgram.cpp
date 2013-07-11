@@ -60,11 +60,11 @@ ShaderProgram::Fields::Fields () :
 { }
 
 ShaderProgram::ShaderProgram (X3DExecutionContext* const executionContext) :
-	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	                    X3DNode (),                                                    
-	               X3DUrlObject (),                                                    
-	X3DProgrammableShaderObject (),                                                    
-	                     fields ()                                                     
+	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	                    X3DNode (),
+	               X3DUrlObject (),
+	X3DProgrammableShaderObject (),
+	                     fields ()
 {
 	setComponent ("Shaders");
 	setTypeName ("ShaderProgram");

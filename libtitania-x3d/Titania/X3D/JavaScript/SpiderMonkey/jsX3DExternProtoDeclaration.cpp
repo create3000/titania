@@ -93,7 +93,7 @@ jsX3DExternProtoDeclaration::initObject (JSContext* context, JSObject* object)
 }
 
 JSBool
-jsX3DExternProtoDeclaration::create (JSContext* context, const SFNode <ExternProto> & externproto, jsval* vp, const bool seal)
+jsX3DExternProtoDeclaration::create (JSContext* context, const X3DSFNode <ExternProto> & externproto, jsval* vp, const bool seal)
 {
 	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 
@@ -102,7 +102,7 @@ jsX3DExternProtoDeclaration::create (JSContext* context, const SFNode <ExternPro
 
 	initObject (context, result);
 
-	auto field = new SFNode <ExternProto> (externproto);
+	auto field = new X3DSFNode <ExternProto> (externproto);
 
 	JS_SetPrivate (context, result, field);
 
@@ -121,7 +121,7 @@ jsX3DExternProtoDeclaration::create (JSContext* context, const SFNode <ExternPro
 JSBool
 jsX3DExternProtoDeclaration::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & externproto = *static_cast <SFNode <ExternProto>*> (JS_GetPrivate (context, obj));
+	auto & externproto = *static_cast <X3DSFNode <ExternProto>*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, externproto -> getName (), vp);
 }
@@ -129,7 +129,7 @@ jsX3DExternProtoDeclaration::name (JSContext* context, JSObject* obj, jsid id, j
 JSBool
 jsX3DExternProtoDeclaration::fields (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & externproto = *static_cast <SFNode <ExternProto>*> (JS_GetPrivate (context, obj));
+	auto & externproto = *static_cast <X3DSFNode <ExternProto>*> (JS_GetPrivate (context, obj));
 
 	return jsFieldDefinitionArray::create (context, &externproto -> getFieldDefinitions (), vp);
 }
@@ -137,7 +137,7 @@ jsX3DExternProtoDeclaration::fields (JSContext* context, JSObject* obj, jsid id,
 JSBool
 jsX3DExternProtoDeclaration::urls (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & externproto = *static_cast <SFNode <ExternProto>*> (JS_GetPrivate (context, obj));
+	auto & externproto = *static_cast <X3DSFNode <ExternProto>*> (JS_GetPrivate (context, obj));
 
 	return JS_NewFieldValue (context, &externproto -> url (), vp);
 }
@@ -145,7 +145,7 @@ jsX3DExternProtoDeclaration::urls (JSContext* context, JSObject* obj, jsid id, j
 JSBool
 jsX3DExternProtoDeclaration::isExternProto (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & externproto = *static_cast <SFNode <ExternProto>*> (JS_GetPrivate (context, obj));
+	auto & externproto = *static_cast <X3DSFNode <ExternProto>*> (JS_GetPrivate (context, obj));
 
 	*vp = externproto -> isExternproto () ? JSVAL_TRUE : JSVAL_FALSE;
 
@@ -155,7 +155,7 @@ jsX3DExternProtoDeclaration::isExternProto (JSContext* context, JSObject* obj, j
 JSBool
 jsX3DExternProtoDeclaration::loadState (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & externproto = *static_cast <SFNode <ExternProto>*> (JS_GetPrivate (context, obj));
+	auto & externproto = *static_cast <X3DSFNode <ExternProto>*> (JS_GetPrivate (context, obj));
 
 	return JS_NewNumberValue (context, externproto -> checkLoadState (), vp);
 }
@@ -165,19 +165,19 @@ jsX3DExternProtoDeclaration::loadState (JSContext* context, JSObject* obj, jsid 
 JSBool
 jsX3DExternProtoDeclaration::newInstance (JSContext* context, uintN argc, jsval* vp)
 {
-	auto & externproto = *static_cast <SFNode <ExternProto>*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+	auto & externproto = *static_cast <X3DSFNode <ExternProto>*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
-	SFNode <X3DPrototypeInstance> instance = externproto -> createInstance ();
+	X3DSFNode <X3DPrototypeInstance> instance = externproto -> createInstance ();
 
 	instance -> setup ();
 
-	return jsSFNode::create (context, new SFNode <X3DBaseNode> (instance), &JS_RVAL (context, vp));
+	return jsSFNode::create (context, new SFNode (instance), &JS_RVAL (context, vp));
 }
 
 JSBool
 jsX3DExternProtoDeclaration::loadNow (JSContext* context, uintN argc, jsval* vp)
 {
-	auto & externproto = *static_cast <SFNode <ExternProto>*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+	auto & externproto = *static_cast <X3DSFNode <ExternProto>*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 	externproto -> requestImmediateLoad ();
 
@@ -187,9 +187,9 @@ jsX3DExternProtoDeclaration::loadNow (JSContext* context, uintN argc, jsval* vp)
 }
 
 void
-jsX3DExternProtoDeclaration::finalize (JSContext* context, JSObject* obj)
+jsX3DExternProtoDeclaration:: finalize (JSContext* context, JSObject* obj)
 {
-	auto externproto = static_cast <SFNode <ExternProto>*> (JS_GetPrivate (context, obj));
+	auto externproto = static_cast <X3DSFNode <ExternProto>*> (JS_GetPrivate (context, obj));
 
 	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (externproto);
 }

@@ -64,13 +64,13 @@ PlaneSensor::Fields::Fields () :
 { }
 
 PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
-	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	          X3DDragSensorNode (),                                                    
-	                     fields (),                                                    
-	                      plane (),                                                    
-	                startOffset (),                                                    
-	                 startPoint (),                                                    
-	inverseTransformationMatrix ()                                                     
+	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	          X3DDragSensorNode (),
+	                     fields (),
+	                      plane (),
+	                startOffset (),
+	                 startPoint (),
+	inverseTransformationMatrix ()
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("PlaneSensor");

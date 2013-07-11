@@ -71,13 +71,13 @@ RigidBodyCollection::Fields::Fields () :
 	joints (new MFNode ()),
 	maxCorrectionSpeed (new SFFloat (-1)),
 	preferAccuracy (new SFBool ()),
-	collider (new SFNode <X3DBaseNode> ())
+	collider (new SFNode ())
 { }
 
 RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DChildNode (),                                                    
-	      fields ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DChildNode (),
+	      fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("RigidBodyCollection");

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,17 +52,17 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../EnvironmentalEffects/Background.h"
-#include "../../Execution/X3DExecutionContext.h"
-#include "../../Execution/BindableNodeStack.h"
 #include "../../Execution/BindableNodeList.h"
+#include "../../Execution/BindableNodeStack.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include "../EnvironmentalEffects/Background.h"
 
 namespace titania {
 namespace X3D {
 
 X3DLayerNode::Fields::Fields () :
 	isPickable (new SFBool (true)),
-	viewport (new SFNode <X3DBaseNode> ()),
+	viewport (new SFNode ()),
 	addChildren (new MFNode ()),
 	removeChildren (new MFNode ()),
 	children (new MFNode ())
@@ -123,7 +123,7 @@ X3DLayerNode::initialize ()
 	defaultBackground     -> setup ();
 	defaultFog            -> setup ();
 	defaultViewpoint      -> setup ();
-	
+
 	navigationInfoStack -> setup ();
 	backgroundStack     -> setup ();
 	viewpointStack      -> setup ();
@@ -196,7 +196,7 @@ X3DLayerNode::getDistance (const Vector3f & positionOffset, float width, float h
 {
 	float width1_2  = width / 2;
 	float height1_2 = height / 2;
-	
+
 	float zNear = getNavigationInfo () -> getNearPlane ();
 	float zFar  = getNavigationInfo () -> getFarPlane ();
 
@@ -255,7 +255,7 @@ X3DLayerNode::getUserViewpoints () const
 {
 	UserViewpointList userViewpoints;
 
-	for (const auto & viewpoint : **getViewpoints ())
+	for (const auto & viewpoint :** getViewpoints ())
 	{
 		if (viewpoint -> description () .length ())
 			userViewpoints .emplace_back (viewpoint);

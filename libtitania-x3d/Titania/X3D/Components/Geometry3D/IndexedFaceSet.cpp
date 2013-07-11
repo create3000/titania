@@ -74,10 +74,10 @@ IndexedFaceSet::Fields::Fields () :
 { }
 
 IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DComposedGeometryNode (),                                                    
-	                 fields (),                                                    
-	            numPolygons ()                                                     
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DComposedGeometryNode (),
+	                 fields (),
+	            numPolygons ()
 {
 	setComponent ("Geometry3D");
 	setTypeName ("IndexedFaceSet");
@@ -284,7 +284,7 @@ IndexedFaceSet::build ()
 	// Tesselate
 
 	PolygonArray polygons;
-	size_t reserve = 0;
+	size_t       reserve = 0;
 
 	tesselate (polygons, reserve);
 
@@ -359,7 +359,7 @@ IndexedFaceSet::build ()
 			{
 				size_t size  = getVertices () .size ();
 				size_t count = size - vertices;
-				
+
 				addElements (vertexMode, count);
 
 				vertices   = size;
@@ -513,19 +513,19 @@ IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numVertices)
 					if (vertices .size () == 3)
 					{
 						numVertices += 3;
-				
+
 						// Add polygon with one triangle.
 						polygons .emplace_back (std::move (vertices),
 						                        std::move (ElementArray ({ std::move (Element ({ { vertices [0],
 						                                                                           vertices [1],
-						                                                                           vertices [2] } })) })) );
+						                                                                           vertices [2] } })) })));
 					}
 					else if (vertices .size () > 3)
 					{
 						numVertices += convex () ? vertices .size () : (vertices .size () - 2) * 3;
-						
+
 						// Tesselate polygons.
-						polygons .emplace_back (std::move (vertices), std::move (tesselate (vertices)) );
+						polygons .emplace_back (std::move (vertices), std::move (tesselate (vertices)));
 					}
 
 					else

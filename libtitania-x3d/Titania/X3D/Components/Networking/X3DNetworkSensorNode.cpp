@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DNetworkSensorNode::X3DNetworkSensorNode () :
-	X3DSensorNode () 
+	X3DSensorNode ()
 {
 	addNodeType (X3DConstants::X3DNetworkSensorNode);
 }

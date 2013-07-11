@@ -62,10 +62,10 @@ Console::Fields::Fields () :
 { }
 
 Console::Console (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DNode (),                                                    
-	     fields (),                                                    
-	     string ()                                                     
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DNode (),
+	     fields (),
+	     string ()
 {
 	setComponent ("Browser");
 	setTypeName ("Console");

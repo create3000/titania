@@ -83,7 +83,7 @@ TransformHandle::initialize ()
 
 		X3DFieldDefinition* field = scene -> getNamedNode ("Handle") -> getField ("transform");
 
-		static_cast <SFNode <X3DBaseNode>*> (field) -> setValue (transform .getValue ());
+		static_cast <SFNode*> (field) -> setValue (transform .getValue ());
 	}
 	catch (const X3DError &)
 	{
@@ -113,12 +113,12 @@ TransformHandle::reshape ()
 
 		try
 		{
-			const Matrix4f & inverseCameraSpaceMatrix = getCurrentViewpoint () -> getInverseTransformationMatrix ();
+			const Matrix4f & cameraSpaceMatrix = getCurrentViewpoint () -> getTransformationMatrix ();
 
-			SFMatrix4f & field = *static_cast <SFMatrix4f*> (handle -> getField ("inverseCameraSpaceMatrix"));
+			SFMatrix4f & field = *static_cast <SFMatrix4f*> (handle -> getField ("cameraSpaceMatrix"));
 
-			if (field not_eq inverseCameraSpaceMatrix)
-				field = inverseCameraSpaceMatrix;
+			if (field not_eq cameraSpaceMatrix)
+				field = cameraSpaceMatrix;
 		}
 		catch (const X3DError &)
 		{ }
@@ -126,7 +126,7 @@ TransformHandle::reshape ()
 		try
 		{
 			Matrix4f modelViewMatrix = ModelViewMatrix4f ();
-		
+
 			SFMatrix4f & field = *static_cast <SFMatrix4f*> (handle -> getField ("modelViewMatrix"));
 
 			if (field not_eq modelViewMatrix)
@@ -170,6 +170,8 @@ TransformHandle::traverse (TraverseType type)
 	{
 		case TraverseType::PICKING:
 		case TraverseType::CAMERA:
+		case TraverseType::NAVIGATION:
+		case TraverseType::COLLISION:
 		{
 			glPushMatrix ();
 
@@ -186,7 +188,7 @@ TransformHandle::traverse (TraverseType type)
 			glPushMatrix ();
 
 			glMultMatrixf (transform -> getMatrix () .data ());
-		
+
 			reshape ();
 
 			for (const auto & rootNode : scene -> getRootNodes ())
@@ -195,8 +197,6 @@ TransformHandle::traverse (TraverseType type)
 			glPopMatrix ();
 			break;
 		}
-		default:
-			break;
 	}
 }
 

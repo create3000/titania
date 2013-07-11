@@ -61,11 +61,11 @@ namespace X3D {
 
 class Proto;
 
-typedef basic::indexed_multimap <std::string, SFNode <Proto>> ProtoArray;
+typedef basic::indexed_multimap <std::string, X3DSFNode <Proto>> ProtoArray;
 
 } // X3D
 
-extern template class basic::indexed_multimap <std::string, X3D::SFNode <X3D::Proto>>;
+extern template class basic::indexed_multimap <std::string, X3D::X3DSFNode <X3D::Proto>>;
 
 } // titania
 #endif

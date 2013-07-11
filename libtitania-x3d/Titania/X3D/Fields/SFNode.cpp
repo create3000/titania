@@ -50,13 +50,11 @@
 
 #include "SFNode.h"
 
-#include "../Basic/X3DBaseNode.h"
-
 namespace titania {
 namespace X3D {
 
 template class X3DField <X3DBaseNode*>;
-template class SFNode <X3DBaseNode>;
+template class X3DSFNode <X3DBaseNode>;
 
 } // X3D
 } // titania

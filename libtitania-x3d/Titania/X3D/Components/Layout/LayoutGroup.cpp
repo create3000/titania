@@ -56,14 +56,14 @@ namespace titania {
 namespace X3D {
 
 LayoutGroup::Fields::Fields () :
-	layout (new SFNode <X3DBaseNode> ()),
-	viewport (new SFNode <X3DBaseNode> ())
+	layout (new SFNode ()),
+	viewport (new SFNode ())
 { }
 
 LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGroupingNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode (),
+	         fields ()
 {
 	setComponent ("Layout");
 	setTypeName ("LayoutGroup");

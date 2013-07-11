@@ -60,12 +60,12 @@ ShaderPart::Fields::Fields () :
 { }
 
 ShaderPart::ShaderPart (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	     X3DNode (),                                                    
-	X3DUrlObject (),                                                    
-	      fields (),                                                    
-	    shaderId (0),                                                   
-	       valid (false)                                                
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	     X3DNode (),
+	X3DUrlObject (),
+	      fields (),
+	    shaderId (0),
+	       valid (false)
 {
 	setComponent ("Shaders");
 	setTypeName ("ShaderPart");

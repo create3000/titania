@@ -274,7 +274,7 @@ basic_gzfilterbuf <CharT, Traits>::seekoff (off_type off, std::ios_base::seekdir
 
 				return bytesGone + gptr () - eback ();
 			}
-			
+
 			throw std::out_of_range ("basic_gzfilterbuf::seekoff");
 		}
 	}

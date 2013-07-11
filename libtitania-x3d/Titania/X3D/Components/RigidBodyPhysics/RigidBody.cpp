@@ -73,9 +73,9 @@ RigidBody::Fields::Fields () :
 { }
 
 RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	    X3DNode (),                                                    
-	     fields ()                                                     
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DNode (),
+	     fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("RigidBody");

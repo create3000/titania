@@ -88,7 +88,7 @@ jsX3DRoute::initObject (JSContext* context, JSObject* object)
 }
 
 JSBool
-jsX3DRoute::create (JSContext* context, const SFNode <Route> & route, jsval* vp, const bool seal)
+jsX3DRoute::create (JSContext* context, const X3DSFNode <Route> & route, jsval* vp, const bool seal)
 {
 	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 
@@ -97,7 +97,7 @@ jsX3DRoute::create (JSContext* context, const SFNode <Route> & route, jsval* vp,
 
 	initObject (context, result);
 
-	auto field = new SFNode <Route> (route);
+	auto field = new X3DSFNode <Route> (route);
 
 	JS_SetPrivate (context, result, field);
 
@@ -116,15 +116,15 @@ jsX3DRoute::create (JSContext* context, const SFNode <Route> & route, jsval* vp,
 JSBool
 jsX3DRoute::sourceNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & route = *static_cast <SFNode <Route>*> (JS_GetPrivate (context, obj));
+	auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, obj));
 
-	return jsSFNode::create (context, new SFNode <X3DBaseNode> (route -> getSourceNode ()), vp);
+	return jsSFNode::create (context, new SFNode (route -> getSourceNode ()), vp);
 }
 
 JSBool
 jsX3DRoute::sourceField (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & route = *static_cast <SFNode <Route>*> (JS_GetPrivate (context, obj));
+	auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, route -> getSourceField (), vp);
 }
@@ -132,23 +132,23 @@ jsX3DRoute::sourceField (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsX3DRoute::destinationNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & route = *static_cast <SFNode <Route>*> (JS_GetPrivate (context, obj));
+	auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, obj));
 
-	return jsSFNode::create (context, new SFNode <X3DBaseNode> (route -> getDestinationNode ()), vp);
+	return jsSFNode::create (context, new SFNode (route -> getDestinationNode ()), vp);
 }
 
 JSBool
 jsX3DRoute::destinationField (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & route = *static_cast <SFNode <Route>*> (JS_GetPrivate (context, obj));
+	auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, route -> getDestinationField (), vp);
 }
 
 void
-jsX3DRoute::finalize (JSContext* context, JSObject* obj)
+jsX3DRoute:: finalize (JSContext* context, JSObject* obj)
 {
-	auto route = static_cast <SFNode <Route>*> (JS_GetPrivate (context, obj));
+	auto route = static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, obj));
 
 	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (route);
 }

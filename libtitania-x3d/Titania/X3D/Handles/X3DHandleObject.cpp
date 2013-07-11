@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DHandleObject::X3DHandleObject () :
-	X3DBaseNode () 
+	X3DBaseNode ()
 { }
 
 void

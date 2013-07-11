@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,12 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JAVA_SCRIPT_CONTEXT_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JAVA_SCRIPT_CONTEXT_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_CONTEXT_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_CONTEXT_H__
 
-#include "../X3DJavaScriptContext.h"
 #include "../../Components/Networking/X3DUrlObject.h"
 #include "../../Components/Scripting/X3DScriptNode.h"
+#include "../X3DJavaScriptContext.h"
 #include <map>
 #include <map>
 

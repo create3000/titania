@@ -69,9 +69,9 @@ SingleAxisHingeJoint::Fields::Fields () :
 { }
 
 SingleAxisHingeJoint::SingleAxisHingeJoint (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DRigidJointNode (),                                                    
-	           fields ()                                                     
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DRigidJointNode (),
+	           fields ()
 {
 	setComponent ("RigidBodyPhysics");
 	setTypeName ("SingleAxisHingeJoint");

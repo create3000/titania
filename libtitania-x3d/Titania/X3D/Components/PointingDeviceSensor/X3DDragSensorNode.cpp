@@ -59,8 +59,8 @@ X3DDragSensorNode::Fields::Fields () :
 { }
 
 X3DDragSensorNode::X3DDragSensorNode () :
-	X3DPointingDeviceSensorNode (), 
-	                     fields ()  
+	X3DPointingDeviceSensorNode (),
+	                     fields ()
 {
 	addNodeType (X3DConstants::X3DDragSensorNode);
 }

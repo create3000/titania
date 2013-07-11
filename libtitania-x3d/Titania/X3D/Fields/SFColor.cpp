@@ -62,15 +62,15 @@ const X3DConstants::FieldType X3DField <Color3f>::type = X3DConstants::SFColor;
 template class X3DField <Color3f>;
 
 SFColor::SFColor () :
-	X3DField <Color3f> (Color3f ()) 
+	X3DField <Color3f> (Color3f ())
 { }
 
 SFColor::SFColor (const SFColor & field) :
-	X3DField <Color3f> (field)      
+	X3DField <Color3f> (field)
 { }
 
 SFColor::SFColor (const Color3f & value) :
-	X3DField <Color3f> (value)      
+	X3DField <Color3f> (value)
 { }
 
 SFColor::SFColor (const scalar_type & r, const scalar_type & g, const scalar_type & b) :
@@ -171,7 +171,7 @@ throw (Error <INVALID_X3D>,
 void
 SFColor::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <scalar_type><< getValue ();
+	ostream << Generator::Precision <scalar_type> << getValue ();
 }
 
 } // X3D

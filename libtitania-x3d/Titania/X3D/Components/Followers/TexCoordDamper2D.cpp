@@ -68,9 +68,9 @@ TexCoordDamper2D::Fields::Fields () :
 { }
 
 TexCoordDamper2D::TexCoordDamper2D (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DDamperNode (),                                                    
-	       fields ()                                                     
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DDamperNode (),
+	       fields ()
 {
 	setComponent ("Followers");
 	setTypeName ("TexCoordDamper2D");

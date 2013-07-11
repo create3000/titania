@@ -65,19 +65,19 @@ class X3DShapeNode :
 {
 public:
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	appearance ()
 	{ return *fields .appearance; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	appearance () const
 	{ return *fields .appearance; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	geometry ()
 	{ return *fields .geometry; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	geometry () const
 	{ return *fields .geometry; }
 
@@ -129,8 +129,8 @@ private:
 	{
 		Fields ();
 
-		SFNode <X3DBaseNode>* const appearance;
-		SFNode <X3DBaseNode>* const geometry;
+		SFNode* const appearance;
+		SFNode* const geometry;
 	};
 
 	Fields fields;

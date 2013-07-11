@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,11 +55,11 @@
 namespace titania {
 namespace puck {
 
-OutlineTreeView::OutlineTreeView (const X3D::SFNode <X3D::Browser> & browser) :
-	   Gtk::TreeView (),        
-	X3DBaseInterface (),        
-	       selection (this, browser), 
-	            keys ()         
+OutlineTreeView::OutlineTreeView (const X3D::X3DSFNode <X3D::Browser> & browser) :
+	   Gtk::TreeView (),
+	X3DBaseInterface (),
+	       selection (this, browser),
+	            keys ()
 {
 	setBrowser (browser);
 
@@ -116,9 +116,9 @@ void
 OutlineTreeView::set_world ()
 {
 	selection .clear ();
-	
+
 	set_model (OutlineTreeModel::create (getBrowser ()));
-	
+
 	get_model () -> signal_row_has_child_toggled () .connect (sigc::mem_fun (this, &OutlineTreeView::on_row_has_child_toggled));
 }
 
@@ -288,7 +288,7 @@ OutlineTreeView::autoExpandFields (const Gtk::TreeModel::iterator & iter)
 				{
 					case X3D::X3DConstants::SFNode:
 					{
-						auto sfnode = static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (field);
+						auto sfnode = static_cast <X3D::SFNode*> (field);
 
 						if (*sfnode or userData -> expanded)
 							expand_row (Gtk::TreePath (child), false);
@@ -365,7 +365,7 @@ OutlineTreeView::select (const Gtk::TreeModel::iterator & iter, const Gtk::TreeM
 	{
 		Glib::RefPtr <OutlineTreeModel>::cast_dynamic (get_model ()) -> collapse_row (path, iter);
 
-		selection .select (*static_cast <X3D::SFNode <X3D::X3DBaseNode>*> (data -> object));
+		selection .select (*static_cast <X3D::SFNode*> (data -> object));
 	}
 }
 

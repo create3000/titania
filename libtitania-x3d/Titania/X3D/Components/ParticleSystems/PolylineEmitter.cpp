@@ -57,15 +57,15 @@ namespace X3D {
 
 PolylineEmitter::Fields::Fields () :
 	set_coordinate (new SFInt32 ()),
-	coord (new SFNode <X3DBaseNode> ()),
+	coord (new SFNode ()),
 	direction (new SFVec3f (0, 1, 0)),
 	coordIndex (new MFInt32 ({ -1 }))
 { }
 
 PolylineEmitter::PolylineEmitter (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DParticleEmitterNode (),                                                    
-	                fields ()                                                     
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DParticleEmitterNode (),
+	                fields ()
 {
 	setComponent ("ParticleSystems");
 	setTypeName ("PolylineEmitter");

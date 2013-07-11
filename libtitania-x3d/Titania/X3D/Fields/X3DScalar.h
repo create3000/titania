@@ -106,7 +106,7 @@ public:
 	{ addInterest (requester, *this); }
 
 	///  @name Input/Output
-	
+
 	virtual
 	void
 	fromStream (std::istream &)

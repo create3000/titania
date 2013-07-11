@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DViewportNode::X3DViewportNode () :
-	X3DGroupingNode () 
+	X3DGroupingNode ()
 {
 	addNodeType (X3DConstants::X3DViewportNode);
 }

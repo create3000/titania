@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,10 +62,10 @@ TriangleFanSet::Fields::Fields () :
 { }
 
 TriangleFanSet::TriangleFanSet (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DComposedGeometryNode (),                                                    
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DComposedGeometryNode (),
 	                 fields (),
-	             coordIndex ()                                                     
+	             coordIndex ()
 {
 	setComponent ("Rendering");
 	setTypeName ("TriangleFanSet");
@@ -77,7 +77,7 @@ TriangleFanSet::TriangleFanSet (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "ccw",             ccw ());
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-	
+
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
 	addField (inputOutput,    "texCoord",        texCoord ());
@@ -96,9 +96,9 @@ void
 TriangleFanSet::initialize ()
 {
 	X3DComposedGeometryNode::initialize ();
-	
+
 	fanCount () .addInterest (this, &TriangleFanSet::set_fanCount);
-	
+
 	set_fanCount ();
 }
 
@@ -109,24 +109,24 @@ TriangleFanSet::set_fanCount ()
 
 	if (not _coord or not _coord -> point () .size ())
 		return;
-		
+
 	// Build coordIndex
-	
+
 	coordIndex .clear ();
 
 	size_t index = 0;
-	
+
 	for (const auto & vertexCount : fanCount ())
 	{
 		int32_t first = index;
-	
+
 		for (int32_t i = 1, size = vertexCount - 1; i < size; ++ i)
 		{
 			coordIndex .emplace_back (first);
 			coordIndex .emplace_back (index + i);
 			coordIndex .emplace_back (index + i + 1);
 		}
-		
+
 		index += vertexCount;
 	}
 

@@ -118,10 +118,10 @@ public:
 
 	Router &
 	getRouter ();
-	
+
 	///  @name JavaScript handling
 
-	const SFNode <X3DJavaScriptEngine> &
+	const X3DSFNode <X3DJavaScriptEngine> &
 	getJavaScriptEngine () const
 	{ return javaScriptEngine; }
 
@@ -167,7 +167,7 @@ public:
 
 	///  @name Console handling
 
-	const SFNode <Console> &
+	const X3DSFNode <Console> &
 	getConsole () const
 	{ return console; }
 
@@ -203,7 +203,7 @@ public:
 	void
 	buttonReleaseEvent ();
 
-	const SFNode <Selection> &
+	const X3DSFNode <Selection> &
 	getSelection ()
 	{ return selection; }
 
@@ -227,10 +227,10 @@ public:
 
 protected:
 
-	SFNode <RenderingProperties> renderingProperties;
-	SFNode <BrowserProperties>   browserProperties;
-	SFNode <BrowserOptions>      browserOptions;
-	SFNode <X3DJavaScriptEngine> javaScriptEngine;
+	X3DSFNode <RenderingProperties> renderingProperties;
+	X3DSFNode <BrowserProperties>   browserProperties;
+	X3DSFNode <BrowserOptions>      browserOptions;
+	X3DSFNode <X3DJavaScriptEngine> javaScriptEngine;
 
 	///  @name Constructor
 
@@ -241,7 +241,7 @@ protected:
 	initialize () override;
 
 	virtual
-	const SFNode <World> &
+	const X3DSFNode <World> &
 	getWorld () const = 0;
 
 	virtual
@@ -262,20 +262,20 @@ private:
 	LightStack       lights;
 	TextureUnitStack textureUnits;
 
-	double               x;
-	double               y;
-	Line3f               hitRay;
-	HitArray             hits;
-	HitComp              hitComp;
-	std::deque <NodeSet> enabledSensors;
-	NodeSet              overSensors;
-	NodeSet              activeSensors;
-	SFNode <Selection>   selection;
+	double                x;
+	double                y;
+	Line3f                hitRay;
+	HitArray              hits;
+	HitComp               hitComp;
+	std::deque <NodeSet>  enabledSensors;
+	NodeSet               overSensors;
+	NodeSet               activeSensors;
+	X3DSFNode <Selection> selection;
 
-	time_type        changedTime;
-	Speed <double>   currentSpeed;
-	double           currentFrameRate;
-	SFNode <Console> console;
+	time_type           changedTime;
+	Speed <double>      currentSpeed;
+	double              currentFrameRate;
+	X3DSFNode <Console> console;
 
 };
 

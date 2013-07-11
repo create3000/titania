@@ -60,9 +60,9 @@ ProgramShader::Fields::Fields () :
 { }
 
 ProgramShader::ProgramShader (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DShaderNode (),                                                    
-	       fields ()                                                     
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DShaderNode (),
+	       fields ()
 {
 	setComponent ("Shaders");
 	setTypeName ("ProgramShader");

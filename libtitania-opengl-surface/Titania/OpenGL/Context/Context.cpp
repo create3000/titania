@@ -57,8 +57,8 @@ namespace titania {
 namespace opengl {
 
 Context::Context (Display* xDisplay) :
-	xDisplay (xDisplay), 
-	xContext (NULL)      
+	xDisplay (xDisplay),
+	xContext (NULL)
 { }
 
 Display*

@@ -61,16 +61,16 @@ SphereSensor::Fields::Fields () :
 { }
 
 SphereSensor::SphereSensor (X3DExecutionContext* const executionContext) :
-	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	          X3DDragSensorNode (),                                                    
-	                     fields (),                                                    
-	                     zPlane (),                                                    
-	                     sphere (),                                                    
-	                     behind (false),                                               
-	                 fromVector (),                                                    
-	                startOffset (),                                                    
-	                 startPoint (),                                                    
-	inverseTransformationMatrix ()                                                     
+	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	          X3DDragSensorNode (),
+	                     fields (),
+	                     zPlane (),
+	                     sphere (),
+	                     behind (false),
+	                 fromVector (),
+	                startOffset (),
+	                 startPoint (),
+	inverseTransformationMatrix ()
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("SphereSensor");

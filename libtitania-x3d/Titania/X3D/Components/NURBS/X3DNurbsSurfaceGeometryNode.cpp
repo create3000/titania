@@ -55,8 +55,8 @@ namespace X3D {
 
 X3DNurbsSurfaceGeometryNode::Fields::Fields () :
 	solid (new SFBool (true)),
-	controlPoint (new SFNode <X3DBaseNode> ()),
-	texCoord (new SFNode <X3DBaseNode> ()),
+	controlPoint (new SFNode ()),
+	texCoord (new SFNode ()),
 	uTessellation (new SFInt32 ()),
 	vTessellation (new SFInt32 ()),
 	weight (new MFDouble ()),
@@ -71,8 +71,8 @@ X3DNurbsSurfaceGeometryNode::Fields::Fields () :
 { }
 
 X3DNurbsSurfaceGeometryNode::X3DNurbsSurfaceGeometryNode () :
-	X3DParametricGeometryNode (), 
-	                   fields ()  
+	X3DParametricGeometryNode (),
+	                   fields ()
 {
 	addNodeType (X3DConstants::X3DNurbsSurfaceGeometryNode);
 }

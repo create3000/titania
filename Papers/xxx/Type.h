@@ -48,11 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BITS_TYPE_H__
-#define __TITANIA_X3D_BITS_TYPE_H__
+#ifndef __XXX_TYPE_H__
+#define __XXX_TYPE_H__
 
-#include "../Bits/X3DConstants.h"
 #include "../Bits/Error.h"
+#include "../Bits/X3DConstants.h"
 #include "../Types/Numbers.h"
 
 namespace titania {

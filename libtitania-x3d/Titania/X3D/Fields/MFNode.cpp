@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,14 +54,14 @@ namespace titania {
 namespace X3D {
 
 template <>
-const std::string X3DField <Array <SFNode <X3DBaseNode>>>::typeName ("MFNode");
+const std::string X3DField <Array <SFNode>>::typeName ("MFNode");
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFNode <X3DBaseNode>>>::type = X3DConstants::MFNode;
+const X3DConstants::FieldType X3DField <Array <SFNode>>::type = X3DConstants::MFNode;
 
-//template class Array <X3D::SFNode <X3DBaseNode>>;
-template class X3DField <Array <SFNode <X3DBaseNode>>>;
-template class X3DArrayField <SFNode <X3DBaseNode>>;
+//template class Array <X3D::SFNode>;
+template class X3DField <Array <SFNode>>;
+template class X3DArrayField <SFNode>;
 
 MFNode*
 MFNode::clone (X3DExecutionContext* const executionContext) const

@@ -284,9 +284,9 @@ X3DSoundSourceNode::Fields::Fields () :
 { }
 
 X3DSoundSourceNode::X3DSoundSourceNode () :
-	X3DTimeDependentNode (),                  
-	              fields (),                  
-	             gstream (new GStream (this)) 
+	X3DTimeDependentNode (),
+	              fields (),
+	             gstream (new GStream (this))
 {
 	addNodeType (X3DConstants::X3DSoundSourceNode);
 }

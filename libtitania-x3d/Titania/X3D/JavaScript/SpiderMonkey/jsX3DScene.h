@@ -84,20 +84,22 @@ private:
 		ROOT_NODES
 	};
 
-	static void initObject (JSContext*, JSObject*);
-	
+	static void
+	initObject (JSContext*, JSObject*);
+
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
 	static JSBool setMetaData (JSContext *, uintN, jsval*);
 	static JSBool getMetaData (JSContext *, uintN, jsval*);
-	
+
 	static JSBool addExportedNode    (JSContext *, uintN, jsval*);
 	static JSBool removeExportedNode (JSContext *, uintN, jsval*);
 	static JSBool updateExportedNode (JSContext *, uintN, jsval*);
 	static JSBool getExportedNode    (JSContext *, uintN, jsval*);
 
-	static void finalize (JSContext*, JSObject*);
+	static void
+	finalize (JSContext*, JSObject*);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

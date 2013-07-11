@@ -61,9 +61,9 @@ CoordinateInterpolator::Fields::Fields () :
 { }
 
 CoordinateInterpolator::CoordinateInterpolator (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DInterpolatorNode (),                                                    
-	             fields ()                                                     
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DInterpolatorNode (),
+	             fields ()
 {
 	setComponent ("Interpolation");
 	setTypeName ("CoordinateInterpolator");

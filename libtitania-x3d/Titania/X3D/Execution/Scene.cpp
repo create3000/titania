@@ -54,8 +54,8 @@ namespace titania {
 namespace X3D {
 
 Scene::Scene (X3DBrowser* const browser) :
-	    X3DBaseNode (browser, this),      
-	       X3DScene ()                   
+	X3DBaseNode (browser, this),
+	   X3DScene ()
 {
 	setComponent ("Browser");
 	setTypeName ("Scene");

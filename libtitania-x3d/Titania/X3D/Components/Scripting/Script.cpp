@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,10 +63,10 @@ Script::Fields::Fields () :
 { }
 
 Script::Script (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DScriptNode (),                                                    
-	       fields (),                                                    
-	   javaScript ()                                                     
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DScriptNode (),
+	       fields (),
+	   javaScript ()
 {
 	setComponent ("Scripting");
 	setTypeName ("Script");
@@ -132,7 +132,7 @@ Script::loadDocument (const SFString & URL, std::string & ecmascript)
 		setReferer (getExecutionContext () -> getWorldURL ());
 		return true;
 	}
-	
+
 	try
 	{
 		ecmascript = std::move (loadDocument (URL));
@@ -141,7 +141,7 @@ Script::loadDocument (const SFString & URL, std::string & ecmascript)
 	}
 	catch (const X3DError &)
 	{ }
-	
+
 	return false;
 }
 

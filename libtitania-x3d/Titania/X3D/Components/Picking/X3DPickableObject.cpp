@@ -59,8 +59,8 @@ X3DPickableObject::Fields::Fields () :
 { }
 
 X3DPickableObject::X3DPickableObject () :
-	X3DBaseNode (), 
-	     fields ()  
+	X3DBaseNode (),
+	     fields ()
 {
 	addNodeType (X3DConstants::X3DPickableObject);
 }

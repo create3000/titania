@@ -56,8 +56,8 @@ namespace titania {
 namespace X3D {
 
 Shape::Shape (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DShapeNode ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DShapeNode ()
 {
 	setComponent ("Shape");
 	setTypeName ("Shape");

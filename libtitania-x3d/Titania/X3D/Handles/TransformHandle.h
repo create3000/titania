@@ -108,8 +108,8 @@ private:
 	void
 	reshape ();
 
-	SFNode <Transform> transform;
-	SFNode <Scene>     scene;
+	X3DSFNode <Transform> transform;
+	X3DSFNode <Scene>     scene;
 
 };
 

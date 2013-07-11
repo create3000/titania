@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ namespace titania {
 namespace X3D {
 
 X3DBrowserContext::X3DBrowserContext () :
-	X3DExecutionContext (),                                        
+	X3DExecutionContext (),
 	            sensors (),                                        // [out]  sensors
 	           reshaped (),                                        // [out]  reshape
 	      prepareEvents (),                                        // [out]  prepareEvents
@@ -75,23 +75,23 @@ X3DBrowserContext::X3DBrowserContext () :
 	  browserProperties (new BrowserProperties   (this)),          // SFNode  [ ]       browserProperties   NULL   [BrowserProperties]
 	     browserOptions (new BrowserOptions      (this)),          // SFNode  [ ]       browserOptions      NULL   [BrowserOptions]
 	   javaScriptEngine (new SpiderMonkey        (this)),          // SFNode  [ ]       javaScriptEngine    NULL   [JavaScriptEngine]
-	              clock (new chrono::system_clock <time_type> ()), 
-	             router (),                                        
-	             layers (),                                        
-	             lights (),                                        
-	       textureUnits (),                                        
-	                  x (0),                                       
-	                  y (0),                                       
-	             hitRay (),                                        
-	               hits (),                                        
-	            hitComp (),                                        
-	     enabledSensors ({ NodeSet () }),          
-	        overSensors (),                                        
-	      activeSensors (),                                        
+	              clock (new chrono::system_clock <time_type> ()),
+	             router (),
+	             layers (),
+	             lights (),
+	       textureUnits (),
+	                  x (0),
+	                  y (0),
+	             hitRay (),
+	               hits (),
+	            hitComp (),
+	     enabledSensors ({ NodeSet () }),
+	        overSensors (),
+	      activeSensors (),
 	          selection (new Selection (this)),                    // SFNode  [ ]   selection    NULL  [Selection]
-	        changedTime (clock -> cycle ()),                       
-	       currentSpeed (0),                                       
-	   currentFrameRate (0),                                       
+	        changedTime (clock -> cycle ()),
+	       currentSpeed (0),
+	   currentFrameRate (0),
 	            console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
 {
 	addChildren (select,
@@ -392,13 +392,13 @@ X3DBrowserContext::update ()
 		clock -> advance ();
 
 		X3DViewpointNode* activeViewpoint = getActiveViewpoint ();
-		
+
 		if (activeViewpoint)
 			currentSpeed .setPosition (activeViewpoint -> getTransformationMatrix () .translation (), currentFrameRate);
-		
+
 		else
 			currentSpeed .setPosition (Vector3f (), 0);
-	
+
 		currentFrameRate = 1 / clock -> interval ();
 
 		prepareEvents .processInterests ();
@@ -409,10 +409,10 @@ X3DBrowserContext::update ()
 
 		sensors .processInterests ();
 		router .processEvents ();
-		
+
 		getGarbageCollector () .dispose ();
 		assert (router .size () == 0);
-		
+
 		// Display
 
 		glClearColor (0, 0, 0, 0);
@@ -421,7 +421,7 @@ X3DBrowserContext::update ()
 		getWorld () -> traverse (TraverseType::COLLECT);
 
 		displayed .processInterests ();
-		
+
 		swapBuffers ();
 
 		// Finish
@@ -452,13 +452,13 @@ X3DBrowserContext::dispose ()
 	finished      .dispose ();
 	shutdown      .dispose ();
 	changed       .dispose ();
-	
+
 	renderingProperties .dispose ();
 	browserProperties   .dispose ();
 	browserOptions      .dispose ();
 	selection           .dispose ();
 	console             .dispose ();
-	
+
 	javaScriptEngine .dispose ();
 
 	X3DExecutionContext::dispose ();

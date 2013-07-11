@@ -74,7 +74,7 @@ ForwardIterator
 remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, RangeIterator rlast)
 {
 	std::multiset <typename ForwardIterator::value_type> range;
-		
+
 	for (const auto & element : basic::adapter (rfirst, rlast))
 		range .insert (value (element));
 

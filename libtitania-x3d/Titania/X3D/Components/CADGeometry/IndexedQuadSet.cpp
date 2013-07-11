@@ -62,9 +62,9 @@ IndexedQuadSet::Fields::Fields () :
 { }
 
 IndexedQuadSet::IndexedQuadSet (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DComposedGeometryNode (),                                                    
-	                 fields ()                                                     
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DComposedGeometryNode (),
+	                 fields ()
 {
 	setComponent ("CADGeometry");
 	setTypeName ("IndexedQuadSet");
@@ -96,9 +96,9 @@ void
 IndexedQuadSet::initialize ()
 {
 	X3DComposedGeometryNode::initialize ();
-	
+
 	index () .addInterest (static_cast <X3DComposedGeometryNode*> (this), &IndexedQuadSet::set_index);
-	
+
 	set_index (index ());
 }
 

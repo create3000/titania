@@ -61,8 +61,8 @@ X3DEnvironmentalSensorNode::Fields::Fields () :
 { }
 
 X3DEnvironmentalSensorNode::X3DEnvironmentalSensorNode () :
-	X3DSensorNode (), 
-	       fields ()  
+	X3DSensorNode (),
+	       fields ()
 {
 	addNodeType (X3DConstants::X3DEnvironmentalSensorNode);
 }

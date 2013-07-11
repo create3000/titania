@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -123,7 +123,7 @@ private:
 	getExecutionContext () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
-	       
+
 	std::deque <std::string>
 	getComments ()
 	{ return std::move (currentComments); }
@@ -132,7 +132,7 @@ private:
 	isInsideProtoDefinition () const;
 
 	void
-	addRootNode (const SFNode <X3DBaseNode> &);
+	addRootNode (const SFNode &);
 
 	void
 	x3dScene ();
@@ -195,10 +195,10 @@ private:
 	statement ();
 
 	bool
-	nodeStatement (SFNode <X3DBaseNode> &);
+	nodeStatement (SFNode &);
 
 	bool
-	rootNodeStatement (SFNode <X3DBaseNode> &);
+	rootNodeStatement (SFNode &);
 
 	bool
 	protoStatement ();
@@ -237,7 +237,7 @@ private:
 	URLList (MFString*);
 
 	bool
-	node (SFNode <X3DBaseNode> &, const std::string & = "");
+	node (SFNode &, const std::string & = "");
 
 	void
 	scriptBody (X3DBaseNode* const);
@@ -424,7 +424,7 @@ private:
 	sfmatrix4fValues (MFMatrix4f*);
 
 	bool
-	sfnodeValue (SFNode <X3DBaseNode>*);
+	sfnodeValue (SFNode*);
 
 	bool
 	mfnodeValue (MFNode*);
@@ -516,11 +516,11 @@ private:
 	X3DFieldDefinition*
 	createField (const std::type_info &);
 
-	basic::igzfilter          istream;
-	X3DScene*                 scene;
-	ExecutionContextStack     executionContextStack;
-	std::deque <std::string>  currentComments;
-	std::string               whitespaces;
+	basic::igzfilter         istream;
+	X3DScene*                scene;
+	ExecutionContextStack    executionContextStack;
+	std::deque <std::string> currentComments;
+	std::string              whitespaces;
 
 };
 

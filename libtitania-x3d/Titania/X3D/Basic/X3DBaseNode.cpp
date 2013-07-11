@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -113,19 +113,19 @@ namespace X3D {
  */
 
 X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const executionContext) :
-	      X3DChildObject (),                 
-	             browser (browser),          
-	    executionContext (executionContext), 
-	           component (),                 
-	            typeName (),                 
-	            nodeType (),                 
-	    fieldDefinitions (),                 
-	              fields (),                 
-	        fieldAliases (),                 
-	numUserDefinedFields (0),                
+	      X3DChildObject (),
+	             browser (browser),
+	    executionContext (executionContext),
+	           component (),
+	            typeName (),
+	            nodeType (),
+	    fieldDefinitions (),
+	              fields (),
+	        fieldAliases (),
+	numUserDefinedFields (0),
 	              nodeId (),
-	              handle (NULL),                 
-	            comments ()                  
+	              handle (NULL),
+	            comments ()
 {
 	assert (executionContext);
 
@@ -208,7 +208,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 			}
 		}
 	}
-	
+
 	executionContext -> addNode (copy);
 
 	return copy;
@@ -228,55 +228,55 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 	setUserData (node -> getUserData ());
 	node -> setUserData (NULL);
 
-//	// Copy fields
-//
-//	for (auto & field : getFieldDefinitions ())
-//	{
-//		X3DFieldDefinition* original = node -> getField (field -> getName ());
-//
-//		// Steal UserData
-//
-//		field -> setUserData (original -> getUserData ());
-//		original -> setUserData (NULL);
-//
-//		// Copy value
-//
-//		field -> write (*original);
-//
-//		// Replace routes
-//
-//		auto inputRoutes = original -> getInputRoutes ();
-//
-//		for (const auto & route : inputRoutes)
-//		{
-//			auto inputRoute = static_cast <Route*> (route);
-//			auto sourceNode = inputRoute -> getSourceNode () .getValue ();
-//
-//			if (sourceNode == node)
-//				sourceNode = this;
-//
-//			getExecutionContext () -> addRoute (sourceNode, inputRoute -> getSourceField (), this, field -> getName ());
-//
-//			node -> getExecutionContext () -> deleteRoute (inputRoute -> getSourceNode (),      inputRoute -> getSourceField (),
-//			                                               inputRoute -> getDestinationNode (), inputRoute -> getDestinationField ());
-//		}
-//
-//		auto outputRoutes = original -> getOutputRoutes ();
-//
-//		for (const auto & route : outputRoutes)
-//		{
-//			auto outputRoute     = static_cast <Route*> (route);
-//			auto destinationNode = outputRoute -> getDestinationNode () .getValue ();
-//
-//			if (destinationNode == node)
-//				destinationNode = this;
-//
-//			getExecutionContext () -> addRoute (this, field -> getName (), destinationNode, outputRoute -> getDestinationField ());
-//
-//			node -> getExecutionContext () -> deleteRoute (outputRoute -> getSourceNode (),      outputRoute -> getSourceField (),
-//			                                               outputRoute -> getDestinationNode (), outputRoute -> getDestinationField ());
-//		}
-//	}
+	//	// Copy fields
+	//
+	//	for (auto & field : getFieldDefinitions ())
+	//	{
+	//		X3DFieldDefinition* original = node -> getField (field -> getName ());
+	//
+	//		// Steal UserData
+	//
+	//		field -> setUserData (original -> getUserData ());
+	//		original -> setUserData (NULL);
+	//
+	//		// Copy value
+	//
+	//		field -> write (*original);
+	//
+	//		// Replace routes
+	//
+	//		auto inputRoutes = original -> getInputRoutes ();
+	//
+	//		for (const auto & route : inputRoutes)
+	//		{
+	//			auto inputRoute = static_cast <Route*> (route);
+	//			auto sourceNode = inputRoute -> getSourceNode () .getValue ();
+	//
+	//			if (sourceNode == node)
+	//				sourceNode = this;
+	//
+	//			getExecutionContext () -> addRoute (sourceNode, inputRoute -> getSourceField (), this, field -> getName ());
+	//
+	//			node -> getExecutionContext () -> deleteRoute (inputRoute -> getSourceNode (),      inputRoute -> getSourceField (),
+	//			                                               inputRoute -> getDestinationNode (), inputRoute -> getDestinationField ());
+	//		}
+	//
+	//		auto outputRoutes = original -> getOutputRoutes ();
+	//
+	//		for (const auto & route : outputRoutes)
+	//		{
+	//			auto outputRoute     = static_cast <Route*> (route);
+	//			auto destinationNode = outputRoute -> getDestinationNode () .getValue ();
+	//
+	//			if (destinationNode == node)
+	//				destinationNode = this;
+	//
+	//			getExecutionContext () -> addRoute (this, field -> getName (), destinationNode, outputRoute -> getDestinationField ());
+	//
+	//			node -> getExecutionContext () -> deleteRoute (outputRoute -> getSourceNode (),      outputRoute -> getSourceField (),
+	//			                                               outputRoute -> getDestinationNode (), outputRoute -> getDestinationField ());
+	//		}
+	//	}
 
 	// Parents
 
@@ -286,7 +286,7 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 	{
 		//__LOG__ << parent -> getTypeName () << std::endl;
 
-		auto field = dynamic_cast <SFNode <X3DBaseNode>*> (parent);
+		auto field = dynamic_cast <SFNode*> (parent);
 
 		if (field)
 			field -> setValue (this);
@@ -539,7 +539,7 @@ X3DBaseNode::isDefaultValue (const X3DFieldDefinition* const field) const
 void
 X3DBaseNode::setup ()
 {
-	if (initialized)  
+	if (initialized)
 		return;
 
 	executionContext -> addParent (this);

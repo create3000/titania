@@ -78,7 +78,7 @@ public:
 		setTypeName ("X3DBindableNodeList");
 
 		addField (outputOnly, "bindTime", *fields .bindTime);
-   }
+	}
 
 	virtual
 	X3DBaseNode*
@@ -136,26 +136,25 @@ public:
 		{
 			if (node -> isBound ())
 				node -> isBound () = false;
-			
+
 			node -> shutdown .removeInterest (this, &X3DBindableNodeStack::erase);
-			
+
 			stack .pop ();
-			
+
 			if (not stack .top () -> isBound ())
 			{
 				stack .top () -> set_bind () = true;
 				stack .top () -> isBound ()  = true;
 				stack .top () -> bindTime () = stack .top () -> getCurrentTime ();
 			}
-			
+
 			*fields .bindTime = getCurrentTime ();
-			
+
 			return true;
 		}
 
 		return false;
 	}
-
 
 private:
 

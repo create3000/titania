@@ -63,9 +63,9 @@ BooleanFilter::Fields::Fields () :
 { }
 
 BooleanFilter::BooleanFilter (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DChildNode (),                                                    
-	      fields ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DChildNode (),
+	      fields ()
 {
 	setComponent ("EventUtilities");
 	setTypeName ("BooleanFilter");
@@ -87,7 +87,7 @@ void
 BooleanFilter::initialize ()
 {
 	X3DChildNode::initialize ();
-	
+
 	set_boolean () .addInterest (this, &BooleanFilter::_set_boolean);
 }
 
@@ -96,10 +96,10 @@ BooleanFilter::_set_boolean ()
 {
 	if (set_boolean ())
 		inputTrue () = true;
-		
+
 	else
 		inputFalse () = true;
-		
+
 	inputNegate () = not set_boolean ();
 }
 

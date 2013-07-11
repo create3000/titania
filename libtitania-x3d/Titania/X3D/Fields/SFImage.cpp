@@ -65,7 +65,7 @@ std::ostream &
 operator << (std::ostream & ostream, const Image & image);
 
 SFImage::SFImage () :
-	X3DField <Image> () 
+	X3DField <Image> ()
 {
 	get () .array () .addParent (this);
 }

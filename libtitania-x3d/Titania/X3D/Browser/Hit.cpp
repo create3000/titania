@@ -60,14 +60,14 @@ Hit::Hit (const Matrix4f & transformationMatrix,
           const std::shared_ptr <Intersection> & intersection,
           const NodeSet & sensors,
           X3DBaseNode* const node) :
-	transformationMatrix (transformationMatrix),        
-	                 ray (hitRay),                      
-	            texCoord (intersection -> hitTexCoord), 
-	              normal (intersection -> hitNormal),   
-	               point (intersection -> hitPoint),    
-	            distance (std::abs (point .z ())),      
-	             sensors (sensors),                     
-	                node (node)                         
+	transformationMatrix (transformationMatrix),
+	                 ray (hitRay),
+	            texCoord (intersection -> hitTexCoord),
+	              normal (intersection -> hitNormal),
+	               point (intersection -> hitPoint),
+	            distance (std::abs (point .z ())),
+	             sensors (sensors),
+	                node (node)
 { }
 
 } // X3D

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,9 +48,9 @@
  *
  ******************************************************************************/
 
+#include "jsContext.h"
 #include "jsString.h"
 #include "jsX3DFieldDefinition.h"
-#include "jsContext.h"
 
 namespace titania {
 namespace X3D {
@@ -122,11 +122,11 @@ jsX3DFieldDefinition::dataType (JSContext* context, JSObject* obj, jsid id, jsva
 }
 
 void
-jsX3DFieldDefinition::finalize (JSContext* context, JSObject* obj)
+jsX3DFieldDefinition:: finalize (JSContext* context, JSObject* obj)
 {
 	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 	auto field      = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
-	
+
 	if (field) // XXX there are sometimes objects without field
 	{
 		javaScript -> removeObject (field);

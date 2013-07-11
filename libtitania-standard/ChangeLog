@@ -1,3 +1,28 @@
+2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Now.h:
+	* Mkdir.cpp:
+	* InputOutput.h:
+	* Now.cpp:
+	* Functional.h:
+	* Remove.h:
+	* Color4.h:
+	* Color3.h:
+	* Vector2.h:
+	* Matrix4.h:
+	* Matrix3.h:
+	* Vector4.h:
+	* Vector3.h:
+	* Character.h:
+	* IndexedMultiMap.h:
+	* Generator.h:
+	* Rotation4.h:
+	* Quaternion.h:
+	* QuotedString.h:
+	* SquadInterpolator.cpp:
+	* CatmullRomSplineInterpolator.h:
+	* CatmullRomSplineInterpolator.cpp: 
+
 2013-07-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Functional.h: 

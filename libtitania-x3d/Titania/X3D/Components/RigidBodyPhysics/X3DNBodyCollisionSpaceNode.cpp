@@ -58,9 +58,9 @@ X3DNBodyCollisionSpaceNode::Fields::Fields () :
 { }
 
 X3DNBodyCollisionSpaceNode::X3DNBodyCollisionSpaceNode () :
-	         X3DNode (), 
-	X3DBoundedObject (), 
-	          fields ()  
+	         X3DNode (),
+	X3DBoundedObject (),
+	          fields ()
 {
 	addNodeType (X3DConstants::X3DNBodyCollisionSpaceNode);
 }

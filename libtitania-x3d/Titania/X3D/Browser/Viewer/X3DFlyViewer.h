@@ -67,7 +67,7 @@ class X3DFlyViewer :
 public:
 
 	X3DFlyViewer (Browser* const, NavigationInfo*);
-	
+
 	virtual
 	NavigationInfo*
 	getNavigationInfo () const final

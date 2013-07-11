@@ -56,12 +56,12 @@ namespace titania {
 namespace X3D {
 
 X3DNode::Fields::Fields () :
-	metadata (new SFNode <X3DBaseNode> ())
+	metadata (new SFNode ())
 { }
 
 X3DNode::X3DNode () :
-	X3DBaseNode (), 
-	     fields ()  
+	X3DBaseNode (),
+	     fields ()
 {
 	addNodeType (X3DConstants::X3DNode);
 }

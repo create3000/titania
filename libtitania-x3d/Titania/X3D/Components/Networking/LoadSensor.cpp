@@ -64,9 +64,9 @@ LoadSensor::Fields::Fields () :
 { }
 
 LoadSensor::LoadSensor (X3DExecutionContext* const executionContext) :
-	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DNetworkSensorNode (),                                                    
-	              fields ()                                                     
+	         X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DNetworkSensorNode (),
+	              fields ()
 {
 	setComponent ("Networking");
 	setTypeName ("LoadSensor");

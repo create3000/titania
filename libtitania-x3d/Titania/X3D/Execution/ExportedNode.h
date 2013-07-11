@@ -65,7 +65,7 @@ class ExportedNode :
 public:
 
 	ExportedNode (X3DExecutionContext* const,
-	              const std::string &, const SFNode <X3DBaseNode> &);
+	              const std::string &, const SFNode &);
 
 	virtual
 	X3DBaseNode*
@@ -74,7 +74,7 @@ public:
 	const std::string &
 	getExportedName () const;
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	getNode () const;
 
 	virtual
@@ -88,8 +88,8 @@ public:
 
 private:
 
-	const std::string    exportedName;
-	SFNode <X3DBaseNode> node;
+	const std::string exportedName;
+	SFNode            node;
 
 };
 

@@ -60,9 +60,9 @@ MultiTextureCoordinate::Fields::Fields () :
 { }
 
 MultiTextureCoordinate::MultiTextureCoordinate (X3DExecutionContext* const executionContext) :
-	             X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DTextureCoordinateNode (),                                                    
-	                  fields ()                                                     
+	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTextureCoordinateNode (),
+	                  fields ()
 {
 	setComponent ("Texturing");
 	setTypeName ("MultiTextureCoordinate");

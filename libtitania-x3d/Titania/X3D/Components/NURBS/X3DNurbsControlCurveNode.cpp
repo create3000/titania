@@ -58,8 +58,8 @@ X3DNurbsControlCurveNode::Fields::Fields () :
 { }
 
 X3DNurbsControlCurveNode::X3DNurbsControlCurveNode () :
-	X3DNode (), 
-	 fields ()  
+	X3DNode (),
+	 fields ()
 {
 	addNodeType (X3DConstants::X3DNurbsControlCurveNode);
 }

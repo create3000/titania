@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -77,11 +77,11 @@ public:
 	set_fraction () const
 	{ return *fields .set_fraction; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	controlPoint ()
 	{ return *fields .controlPoint; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	controlPoint () const
 	{ return *fields .controlPoint; }
 
@@ -125,7 +125,7 @@ private:
 		Fields ();
 
 		SFFloat* const set_fraction;
-		SFNode <X3DBaseNode>* const controlPoint;
+		SFNode* const controlPoint;
 		MFDouble* const knot;
 		SFInt32* const order;
 		MFDouble* const weight;

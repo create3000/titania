@@ -81,7 +81,7 @@ public:
 	sqlite3 ();
 
 	sqlite3 (const std::string &);
-	
+
 	/// @name Database handling
 	void
 	open (const std::string &)

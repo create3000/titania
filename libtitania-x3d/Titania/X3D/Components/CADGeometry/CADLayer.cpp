@@ -61,9 +61,9 @@ CADLayer::Fields::Fields () :
 { }
 
 CADLayer::CADLayer (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGroupingNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode (),
+	         fields ()
 {
 	setComponent ("CADGeometry");
 	setTypeName ("CADLayer");

@@ -153,7 +153,7 @@ typedef X3DArrayField <SFVec3f>     MFVec3f;
 typedef X3DArrayField <SFVec4d>     MFVec4d;
 typedef X3DArrayField <SFVec4f>     MFVec4f;
 
-}  // X3D
+} // X3D
 } // titania
 
 #endif

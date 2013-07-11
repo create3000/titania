@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,9 +51,9 @@
 #ifndef __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
 #define __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
 
+#include "../../Execution/Scene.h"
 #include "../Grouping/Group.h"
 #include "../Networking/X3DUrlObject.h"
-#include "../../Execution/Scene.h"
 
 namespace titania {
 namespace X3D {
@@ -87,7 +87,7 @@ public:
 	void
 	requestImmediateLoad () final;
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	getExportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -112,9 +112,9 @@ private:
 	virtual
 	void
 	initialize () final;
-	
+
 	void
-	setScene (const SFNode <Scene> &);
+	setScene (const X3DSFNode <Scene> &);
 
 	void
 	set_load ();
@@ -137,8 +137,8 @@ private:
 
 	Fields fields;
 
-	SFNode <Scene> scene;
-	SFNode <Group> group;
+	X3DSFNode <Scene> scene;
+	X3DSFNode <Group> group;
 
 };
 

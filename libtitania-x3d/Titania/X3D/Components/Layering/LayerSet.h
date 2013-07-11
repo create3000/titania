@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -93,11 +93,11 @@ public:
 	const MFNode &
 	layers () const
 	{ return *fields .layers; }
-	
-	void
-	setLayer0 (const SFNode <X3DLayerNode> &);
 
-	const SFNode <X3DLayerNode> &
+	void
+	setLayer0 (const X3DSFNode <X3DLayerNode> &);
+
+	const X3DSFNode <X3DLayerNode> &
 	getActiveLayer () const
 	{ return activeLayerNode; }
 
@@ -138,8 +138,8 @@ private:
 	Fields fields;
 
 	std::deque <X3DLayerNode*> children;
-	SFNode <X3DLayerNode>      layer0;
-	SFNode <X3DLayerNode>      activeLayerNode;
+	X3DSFNode <X3DLayerNode>   layer0;
+	X3DSFNode <X3DLayerNode>   activeLayerNode;
 
 };
 

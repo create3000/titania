@@ -30,8 +30,8 @@
 
 #include "X3DBrowser.h"
 
-#include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Bits/config.h"
+#include "../Components/Navigation/X3DViewpointNode.h"
 
 #include <csignal>
 #include <cstdlib>
@@ -51,12 +51,12 @@ signal_handler (int sig)
 const std::string X3DBrowser::version ("0.3");
 
 X3DBrowser::X3DBrowser () :
-	  X3DBrowserContext (),                          
-	       X3DUrlObject (),                          
-	    supportedFields (this),                      
-	     supportedNodes (this),                      
-	supportedComponents (this),                      
-	  supportedProfiles (this, supportedComponents), 
+	  X3DBrowserContext (),
+	       X3DUrlObject (),
+	    supportedFields (this),
+	     supportedNodes (this),
+	supportedComponents (this),
+	  supportedProfiles (this, supportedComponents),
 	        description (),                          // SFString  [in,out] description ""
 	              scene (),                          // SFNode    [in,out] scene       NULL
 	              world (),                          // SFNode    [in,out] world       NULL
@@ -89,7 +89,7 @@ X3DBrowser::initialize ()
 	X3DUrlObject::initialize ();
 
 	// Initialize scene
-		
+
 	replaceWorld (scene = createScene ());
 
 	if (browserOptions -> splashScreen ())
@@ -98,11 +98,11 @@ X3DBrowser::initialize ()
 	world -> bind ();
 
 	// Process outstanding events
-	
+
 	getRouter () .processEvents ();
-	
+
 	// Update display
-	
+
 	update ();
 
 	// Replace world service.
@@ -121,7 +121,7 @@ X3DBrowser::initialize ()
 
 	       renderingProperties, '\n',
 	       javaScriptEngine, '\n',
-	       
+
 	       "\tId: ", this, '\n',
 
 	       std::string (80, '*'), '\n',
@@ -203,29 +203,29 @@ throw (Error <NOT_SUPPORTED>)
 	return supportedProfiles .get (name);
 }
 
-SFNode <Scene>
+X3DSFNode <Scene>
 X3DBrowser::createScene () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	SFNode <Scene> scene = new Scene (const_cast <X3DBrowser*> (this));
+	X3DSFNode <Scene> scene = new Scene (const_cast <X3DBrowser*> (this));
 	scene -> setup ();
 	return scene;
 }
 
-SFNode <Scene>
+X3DSFNode <Scene>
 X3DBrowser::createScene (const ProfileInfo* profile, const ComponentInfoArray & components) const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	SFNode <Scene> scene = createScene ();
+	X3DSFNode <Scene> scene = createScene ();
 	scene -> setProfile (profile);
 	scene -> addComponents (components);
 	return scene;
 }
 
 void
-X3DBrowser::replaceWorld (const SFNode <Scene> & value)
+X3DBrowser::replaceWorld (const X3DSFNode <Scene> & value)
 throw (Error <INVALID_SCENE>)
 {
 	// Replace world.
@@ -237,7 +237,7 @@ throw (Error <INVALID_SCENE>)
 
 	if (value)
 		scene = value;
-		
+
 	else
 		scene = createScene ();
 
@@ -292,18 +292,18 @@ throw (Error <INVALID_URL>,
 {
 	// where parameter is "target=nameOfFrame"
 
-	SFNode <Scene> scene = createScene ();
-	
+	X3DSFNode <Scene> scene = createScene ();
+
 	parseIntoScene (scene, url);
 
 	replaceWorld (scene);
-	
+
 	world -> bind ();
-	
+
 	clock -> advance ();
 }
 
-SFNode <Scene>
+X3DSFNode <Scene>
 X3DBrowser::importDocument (/*const XML DOMNode &*/)
 throw (Error <INVALID_DOCUMENT>,
        Error <INVALID_OPERATION_TIMING>,
@@ -354,7 +354,7 @@ X3DBrowser::getActiveNavigationInfo () const
 {
 	if (activeLayer)
 		return activeLayer -> getNavigationInfo ();
-	
+
 	return NULL;
 }
 
@@ -363,7 +363,7 @@ X3DBrowser::getActiveViewpoint () const
 {
 	if (activeLayer)
 		return activeLayer -> getViewpoint ();
-	
+
 	return NULL;
 }
 

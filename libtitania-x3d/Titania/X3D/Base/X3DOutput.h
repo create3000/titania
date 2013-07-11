@@ -53,10 +53,10 @@
 
 #include "../Base/X3DBase.h"
 #include <functional>
-#include <vector>
 #include <list>
-#include <set>
 #include <map>
+#include <set>
+#include <vector>
 
 namespace titania {
 namespace X3D {
@@ -167,7 +167,7 @@ public:
 	addInterest (const Requester &) const;
 
 	///  @name Remove interest service
-	
+
 	template <class Class, class ... Arguments>
 	inline
 	void
@@ -253,9 +253,9 @@ private:
 	eraseInput (const void*) const
 	{ }
 
-	mutable RequesterArray requesters;
-	mutable RequesterIndex requesterIndex;
-	mutable InputSet       inputs;
+	mutable RequesterArray          requesters;
+	mutable RequesterIndex          requesterIndex;
+	mutable InputSet                inputs;
 	mutable std::vector <Requester> copy;
 
 };

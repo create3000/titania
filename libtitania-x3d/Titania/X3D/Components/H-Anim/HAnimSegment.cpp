@@ -57,7 +57,7 @@ namespace X3D {
 
 HAnimSegment::Fields::Fields () :
 	centerOfMass (new SFVec3f ()),
-	coord (new SFNode <X3DBaseNode> ()),
+	coord (new SFNode ()),
 	displacers (new MFNode ()),
 	mass (new SFFloat ()),
 	momentsOfInertia (new MFFloat ({ 0, 0, 0, 0, 0, 0, 0, 0, 0 })),
@@ -65,9 +65,9 @@ HAnimSegment::Fields::Fields () :
 { }
 
 HAnimSegment::HAnimSegment (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGroupingNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode (),
+	         fields ()
 {
 	setComponent ("H-Anim");
 	setTypeName ("HAnimSegment");

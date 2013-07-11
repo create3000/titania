@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -148,13 +148,13 @@ private:
 
 	Fields fields;
 
-	SFNode <ImageTexture>      frontTexture;
-	SFNode <ImageTexture>      backTexture;
-	SFNode <ImageTexture>      leftTexture;
-	SFNode <ImageTexture>      rightTexture;
-	SFNode <ImageTexture>      topTexture;
-	SFNode <ImageTexture>      bottomTexture;
-	SFNode <TextureProperties> textureProperties;
+	X3DSFNode <ImageTexture>      frontTexture;
+	X3DSFNode <ImageTexture>      backTexture;
+	X3DSFNode <ImageTexture>      leftTexture;
+	X3DSFNode <ImageTexture>      rightTexture;
+	X3DSFNode <ImageTexture>      topTexture;
+	X3DSFNode <ImageTexture>      bottomTexture;
+	X3DSFNode <TextureProperties> textureProperties;
 
 };
 

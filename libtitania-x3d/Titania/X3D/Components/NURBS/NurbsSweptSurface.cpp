@@ -56,16 +56,16 @@ namespace titania {
 namespace X3D {
 
 NurbsSweptSurface::Fields::Fields () :
-	crossSectionCurve (new SFNode <X3DBaseNode> ()),
-	trajectoryCurve (new SFNode <X3DBaseNode> ()),
+	crossSectionCurve (new SFNode ()),
+	trajectoryCurve (new SFNode ()),
 	solid (new SFBool (true)),
 	ccw (new SFBool (true))
 { }
 
 NurbsSweptSurface::NurbsSweptSurface (X3DExecutionContext* const executionContext) :
-	              X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DParametricGeometryNode (),                                                    
-	                   fields ()                                                     
+	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DParametricGeometryNode (),
+	                   fields ()
 {
 	setComponent ("NURBS");
 	setTypeName ("NurbsSweptSurface");

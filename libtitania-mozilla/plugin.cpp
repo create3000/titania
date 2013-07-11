@@ -69,7 +69,7 @@ struct Plugin
 {
 public:
 
-	Plugin (const SFNode <Browser> & browser) :
+	Plugin (const X3DSFNode <Browser> & browser) :
 		window (0),
 		plug (NULL),
 		browser (browser)
@@ -77,7 +77,7 @@ public:
 
 	Window window;
 	Gtk::Plug* plug;
-	SFNode <Browser> browser;
+	X3DSFNode <Browser> browser;
 
 };
 
@@ -190,7 +190,7 @@ NPP_SetWindow (NPP instance, NPWindow* window)
 {
 	__LOG__ << std::endl;
 	__LOG__ << "window: " << window -> window << std::endl;
-	__LOG__ << "width: "  << window -> width << std::endl;
+	__LOG__ << "width: " << window -> width << std::endl;
 	__LOG__ << "height: " << window -> height << std::endl;
 
 	auto self = static_cast <Plugin*> (instance -> pdata);

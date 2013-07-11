@@ -65,12 +65,12 @@ TimeSensor::Fields::Fields () :
 { }
 
 TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
-	         X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	       X3DSensorNode (),                                                    
-	X3DTimeDependentNode (),                                                    
-	              fields (),                                                    
-	               cycle (),                                                    
-	            interval ()                                                     
+	         X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       X3DSensorNode (),
+	X3DTimeDependentNode (),
+	              fields (),
+	               cycle (),
+	            interval ()
 {
 	setComponent ("Time");
 	setTypeName ("TimeSensor");

@@ -66,9 +66,9 @@ SpotLight::Fields::Fields () :
 { }
 
 SpotLight::SpotLight (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DLightNode (),                                                    
-	      fields ()                                                     
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DLightNode (),
+	      fields ()
 {
 	setComponent ("Lighting");
 	setTypeName ("SpotLight");

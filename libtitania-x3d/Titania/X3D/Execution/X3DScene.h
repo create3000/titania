@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_EXECUTION_X3DSCENE_H__
 #define __TITANIA_X3D_EXECUTION_X3DSCENE_H__
 
-#include "../Execution/X3DExecutionContext.h"
 #include "../Execution/ExportedNodeArray.h"
+#include "../Execution/X3DExecutionContext.h"
 #include <map>
 
 namespace titania {
@@ -90,8 +90,8 @@ public:
 
 	///  @name Exported nodes handling
 
-	const SFNode <ExportedNode> &
-	addExportedNode (const std::string &, const SFNode <X3DBaseNode> &)
+	const X3DSFNode <ExportedNode> &
+	addExportedNode (const std::string &, const SFNode &)
 	throw (Error <NODE_IN_USE>,
 	       Error <INVALID_NAME>,
 	       Error <INVALID_NODE>,
@@ -104,13 +104,13 @@ public:
 	       Error <DISPOSED>);
 
 	void
-	updateExportedNode (const std::string &, const SFNode <X3DBaseNode> &)
+	updateExportedNode (const std::string &, const SFNode &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_NODE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	getExportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,

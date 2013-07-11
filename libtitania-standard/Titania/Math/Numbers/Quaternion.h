@@ -100,6 +100,7 @@ public:
 	constexpr
 	quaternion () :
 		value { Type (), Type (), Type (), Type () }
+
 	{ }
 
 	///  Copy constructor.
@@ -107,19 +108,22 @@ public:
 	constexpr
 	quaternion (const quaternion <T> & quat) :
 		value { quat .x (), quat .y (), quat .z (), quat .w () }
+
 	{ }
 
 	///  Component constructor. Set values to @a x, @a y and @a z.
 	constexpr
 	quaternion (const Type & x, const Type & y, const Type & z, const Type & w) :
 		value { x, y, z, w }
+
 	{ }
 
 	///  Construct quaternion from vector @a imag and @a w.
 	template <class T>
 	constexpr
 	quaternion (const vector3 <T> & imag, const Type & w) :
-		value{ imag .x (), imag .y (), imag .z (), w }
+		value { imag .x (), imag .y (), imag .z (), w }
+
 	{ }
 
 	///  @name Assignment operator
@@ -737,7 +741,7 @@ squad (const quaternion <Type> & source,
 ///  Shoemake-Bezier interpolation using De Castlejau algorithm
 template <class Type>
 quaternion <Type>
-bezier (const quaternion <Type> & q0, 
+bezier (const quaternion <Type> & q0,
         const quaternion <Type> & a,
         const quaternion <Type> & b,
         const quaternion <Type> & q1,

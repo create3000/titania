@@ -63,9 +63,9 @@ QuadSphereProperties::Fields::Fields () :
 { }
 
 QuadSphereProperties::QuadSphereProperties (X3DExecutionContext* const executionContext) :
-	          X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DSpherePropertyNode (),                                                    
-	               fields ()                                                     
+	          X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DSpherePropertyNode (),
+	               fields ()
 {
 	setComponent ("Browser"),
 	setTypeName ("QuadSphereProperties");

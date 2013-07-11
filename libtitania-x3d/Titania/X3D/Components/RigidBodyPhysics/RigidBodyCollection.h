@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -189,11 +189,11 @@ public:
 	preferAccuracy () const
 	{ return *fields .preferAccuracy; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	collider ()
 	{ return *fields .collider; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	collider () const
 	{ return *fields .collider; }
 
@@ -219,7 +219,7 @@ private:
 		MFNode* const joints;
 		SFFloat* const maxCorrectionSpeed;
 		SFBool* const preferAccuracy;
-		SFNode <X3DBaseNode>* const collider;
+		SFNode* const collider;
 	};
 
 	Fields fields;

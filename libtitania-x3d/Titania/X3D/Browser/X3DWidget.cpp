@@ -57,8 +57,8 @@ namespace X3D {
 
 X3DWidget::X3DWidget (Browser* const browser) :
 	       X3DInput (),
-	sigc::trackable (),       
-	        browser (browser) 
+	sigc::trackable (),
+	        browser (browser)
 { }
 
 void

@@ -54,8 +54,8 @@ namespace titania {
 namespace X3D {
 
 X3DTextureNode::X3DTextureNode () :
-	X3DAppearanceChildNode (), 
-	             textureId (0) 
+	X3DAppearanceChildNode (),
+	             textureId (0)
 {
 	addNodeType (X3DConstants::X3DTextureNode);
 }

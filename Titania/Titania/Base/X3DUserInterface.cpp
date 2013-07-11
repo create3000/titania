@@ -59,9 +59,9 @@ namespace puck {
 X3DUserInterface::Array X3DUserInterface::userInterfaces;
 
 X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::string & configKey) :
-	                 gconf (configKey, widgetName), 
-	initialized_connection (),                      
-	         userInterface ()                       
+	                 gconf (configKey, widgetName),
+	initialized_connection (),
+	         userInterface ()
 { }
 
 void
@@ -187,7 +187,7 @@ X3DUserInterface::close ()
 	saveSession ();
 
 	getWindow () .hide ();
-	
+
 	// Prevent destroying Window.
 	return true;
 }

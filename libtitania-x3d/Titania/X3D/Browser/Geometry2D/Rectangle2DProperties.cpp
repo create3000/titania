@@ -56,8 +56,8 @@ namespace titania {
 namespace X3D {
 
 Rectangle2DProperties::Rectangle2DProperties (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DGeometryPropertyNode ()                                                     
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometryPropertyNode ()
 {
 	setComponent ("Browser"),
 	setTypeName ("Rectangle2DProperties");

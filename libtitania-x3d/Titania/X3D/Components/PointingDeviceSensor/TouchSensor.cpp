@@ -64,9 +64,9 @@ TouchSensor::Fields::Fields () :
 { }
 
 TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DTouchSensorNode (),                                                    
-	            fields ()                                                     
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTouchSensorNode (),
+	            fields ()
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("TouchSensor");

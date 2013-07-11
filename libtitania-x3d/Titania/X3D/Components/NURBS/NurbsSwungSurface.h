@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -69,19 +69,19 @@ public:
 
 	///  @name Fields
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	profileCurve ()
 	{ return *fields .profileCurve; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	profileCurve () const
 	{ return *fields .profileCurve; }
 
-	SFNode <X3DBaseNode> &
+	SFNode &
 	trajectoryCurve ()
 	{ return *fields .trajectoryCurve; }
 
-	const SFNode <X3DBaseNode> &
+	const SFNode &
 	trajectoryCurve () const
 	{ return *fields .trajectoryCurve; }
 
@@ -112,8 +112,8 @@ private:
 	{
 		Fields ();
 
-		SFNode <X3DBaseNode>* const profileCurve;
-		SFNode <X3DBaseNode>* const trajectoryCurve;
+		SFNode* const profileCurve;
+		SFNode* const trajectoryCurve;
 		SFBool* const solid;
 		SFBool* const ccw;
 	};

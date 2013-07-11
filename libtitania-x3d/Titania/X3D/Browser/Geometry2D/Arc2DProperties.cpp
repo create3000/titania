@@ -61,9 +61,9 @@ Arc2DProperties::Fields::Fields () :
 { }
 
 Arc2DProperties::Arc2DProperties (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	X3DPropertyNode (),                                                    
-	         fields ()                                                     
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DPropertyNode (),
+	         fields ()
 {
 	setComponent ("Browser"),
 	setTypeName ("Arc2DProperties");

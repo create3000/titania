@@ -16,9 +16,9 @@ Browser::setEditMode(X3DBaseNode* node, BasicNodeArray parents)
 	FieldDefinitionArray::const_iterator field;
 	for( field = node->getFieldDefinitions().begin(); field != node->getFieldDefinitions().end(); ++field )
 	{
-		if (dynamic_cast<SFNode <X3DBaseNode>*>(*field))
+		if (dynamic_cast<SFNode*>(*field))
 		{
-			SFNode <X3DBaseNode>* sfnode = dynamic_cast<SFNode <X3DBaseNode>*>(*field);
+			SFNode* sfnode = dynamic_cast<SFNode*>(*field);
 			setEditMode(sfnode->getValue(), parents);
 		}
 		else if (dynamic_cast<MFNode*>(*field))

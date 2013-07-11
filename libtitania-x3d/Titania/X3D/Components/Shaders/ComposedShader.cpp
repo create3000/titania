@@ -65,13 +65,13 @@ ComposedShader::Fields::Fields () :
 { }
 
 ComposedShader::ComposedShader (X3DExecutionContext* const executionContext) :
-	                X3DBaseNode (executionContext -> getBrowser (), executionContext), 
-	              X3DShaderNode (),                                                    
-	X3DProgrammableShaderObject (),                                                    
-	                     fields (),                                                    
-	              shaderProgram (0),                                                   
-	                shaderParts (),                                                    
-	               textureUnits ()                                                     
+	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	              X3DShaderNode (),
+	X3DProgrammableShaderObject (),
+	                     fields (),
+	              shaderProgram (0),
+	                shaderParts (),
+	               textureUnits ()
 {
 	setComponent ("Shaders");
 	setTypeName ("ComposedShader");
@@ -212,7 +212,7 @@ ComposedShader::set_field (X3DFieldDefinition* field)
 			}
 			case X3DConstants::SFNode:
 			{
-				auto node = static_cast <SFNode <X3DBaseNode>*> (field);
+				auto node = static_cast <SFNode*> (field);
 
 				auto texture = x3d_cast <X3DTextureNode*> (*node);
 
