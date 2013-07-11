@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_X3DJAVA_SCRIPT_ENGINE_H__
 
 #include "../Components/Core/X3DPropertyNode.h"
-#include "../Components/Scripting/X3DScriptNode.h"
+#include "../Components/Scripting/Script.h"
 #include "../JavaScript/X3DJavaScriptContext.h"
 
 namespace titania {
@@ -65,7 +65,7 @@ public:
 
 	virtual
 	X3DSFNode <X3DJavaScriptContext>
-	createContext (X3DScriptNode *, const std::string &, const basic::uri &, size_t) = 0;
+	createContext (Script *, const std::string &, const basic::uri &, size_t) = 0;
 
 
 protected:

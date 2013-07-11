@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -330,7 +330,7 @@ private:
 	static JSBool X3DPropertyNode              (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DPrototypeInstance         (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DRigidJointNode            (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DScriptNode                (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool Script                (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DSensorNode                (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DSequencerNode             (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DShaderNode                (JSContext *, JSObject *, jsid, jsval*);

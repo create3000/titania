@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -101,7 +101,7 @@ SpiderMonkey::initialize ()
 }
 
 X3DSFNode <X3DJavaScriptContext>
-SpiderMonkey::createContext (X3DScriptNode* script, const std::string & ecmascript, const basic::uri & uri, size_t index)
+SpiderMonkey::createContext (Script* script, const std::string & ecmascript, const basic::uri & uri, size_t index)
 {
 	return new jsContext (script, ecmascript, uri, index);
 }

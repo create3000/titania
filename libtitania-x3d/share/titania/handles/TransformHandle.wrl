@@ -94,59 +94,138 @@ PROTO TransformHandle [
           }
         ]
       }
-      DEF X Transform {
-        translation IS bboxCenter
-        scale 0 0 0
+      Group {
         children [
-          DEF XSensor PlaneSensor {
-            maxPosition 0 -1
+          DEF XAxisSensor PlaneSensor {
+            maxPosition -1 0
           }
-          Transform {
-            rotation 0 0 -1 1.5708
-            children Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 1 0 0
-                }
-              }
-              geometry DEF Arrow Cone {
-                height 0.03
-                bottomRadius 0.01
+          DEF XRotationSensor SphereSensor {
+            enabled FALSE
+          }
+          DEF X Transform {
+            translation IS bboxCenter
+            scale 0 0 0
+            children Transform {
+              rotation 0 0 -1 1.5708
+              children DEF XSwitch Switch {
+                whichChoice 0
+                choice [
+                  Shape {
+                    appearance DEF Red Appearance {
+                      material Material {
+                        diffuseColor 1 0 0
+                      }
+                    }
+                    geometry DEF Arrow Cone {
+                      height 0.03
+                      bottomRadius 0.01
+                    }
+                  }
+                  Shape {
+                    appearance USE Red
+                    geometry DEF Sphere Sphere { radius 0.01 }
+                  }
+                ]
               }
             }
           }
         ]
       }
-      DEF Y Transform {
-        translation IS bboxCenter
-        scale 0 0 0
-        children Transform {
-          children Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 0 1 0
+      Group {
+      children [
+      DEF Touch TouchSensor { }
+      Group {
+        children [
+          DEF YAxisSensor PlaneSensor {
+            maxPosition 0 -1
+          }
+          DEF YRotationSensor SphereSensor {
+            enabled FALSE
+          }
+          DEF Y Transform {
+            translation IS bboxCenter
+            scale 0 0 0
+            children Transform {
+              children DEF YSwitch Switch {
+                whichChoice 0
+                choice [
+                  Shape {
+                    appearance DEF Green Appearance {
+                      material Material {
+                        diffuseColor 0 1 0
+                      }
+                    }
+                    geometry USE Arrow
+                  }
+                  Shape {
+                    appearance USE Green
+                    geometry USE Sphere
+                  }
+                ]
               }
             }
-            geometry USE Arrow
           }
-        }
+        ]
       }
-      DEF Z Transform {
-        translation IS bboxCenter
-        scale 0 0 0
-        children Transform {
-          rotation 1 0 0 1.5708
-          children Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 0 0 1
+      Group {
+        children [
+          DEF ZAxisSensor PlaneSensor {
+            axisRotation 0 1 0 1.5708
+          }
+          DEF ZRotationSensor SphereSensor {
+            enabled FALSE
+          }
+          DEF Z Transform {
+            translation IS bboxCenter
+            scale 0 0 0
+            children Transform {
+              rotation 1 0 0 1.5708
+              children DEF ZSwitch Switch {
+                whichChoice 0
+                choice [
+                  Shape {
+                    appearance DEF Blue Appearance {
+                      material Material {
+                        diffuseColor 0 0 1
+                      }
+                    }
+                    geometry USE Arrow
+                  }
+                  Shape {
+                    appearance USE Blue
+                    geometry USE Sphere
+                  }
+                ]
               }
             }
-            geometry USE Arrow
           }
-        }
+        ]
       }
+      ]}
     ]
+  }
+
+  DEF ModeScript Script {
+    eventIn      SFTime     set_time
+    eventOut SFInt32 whichChoice_changed
+    exposedField SFTime doubleClickTime 0.5
+    field SFTime firstTime 0
+
+    url "vrmlscript:
+function set_time (value, time)
+{
+	if (firstTime == 0)
+		firstTime = time;
+	
+	else if (time - firstTime < doubleClickTime)
+	{
+		firstTime = 0;
+		whichChoice_changed = (whichChoice_changed + 1) % 2;
+	}
+	else
+		firstTime = time;
+}
+"
   }
 
   DEF ScaleArrows Script {
@@ -170,7 +249,7 @@ function eventsProcessed ()
 	var distance = modelViewMatrix .multVecMatrix (bboxCenter) .length ();
 	var offset   = arrow .height / 2 * distance;
 
-	x .children [1] .translation = new SFVec3f (offset + bboxSize .x / 2 * scale .x, 0, 0);
+	x .children [0] .translation = new SFVec3f (offset + bboxSize .x / 2 * scale .x, 0, 0);
 	y .children [0] .translation = new SFVec3f (0, offset + bboxSize .y / 2 * scale .y, 0);
 	z .children [0] .translation = new SFVec3f (0, 0, offset + bboxSize .z / 2 * scale .z);
 
@@ -180,7 +259,7 @@ function eventsProcessed ()
 	z .scale = scale;
 
 	scale = new SFVec3f (distance, distance, distance)
-	x .children [1] .scale = scale;
+	x .children [0] .scale = scale;
 	y .children [0] .scale = scale;
 	z .children [0] .scale = scale;
 }
@@ -189,24 +268,30 @@ function eventsProcessed ()
   }
 
   DEF Move Script {
-    eventIn      SFBool  set_active
-    eventIn      SFVec3f set_frontTranslation
-    eventIn      SFVec3f set_rightTranslation
-    eventIn      SFVec3f set_backTranslation
-    eventIn      SFVec3f set_leftTranslation
-    eventIn      SFVec3f set_topTranslation
-    eventIn      SFVec3f set_bottomTranslation
+    eventIn      SFBool     set_active
+    eventIn      SFVec3f    set_frontTranslation
+    eventIn      SFVec3f    set_rightTranslation
+    eventIn      SFVec3f    set_backTranslation
+    eventIn      SFVec3f    set_leftTranslation
+    eventIn      SFVec3f    set_topTranslation
+    eventIn      SFVec3f    set_bottomTranslation
+    eventIn      SFVec3f    set_xTranslation
+    eventIn      SFVec3f    set_yTranslation
+    eventIn      SFVec3f    set_zTranslation
     exposedField SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
     exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
-    exposedField SFVec3f bboxSize IS bboxSize
-    exposedField SFNode  transform IS transform
-    field        SFVec3f translation 0 0 0
-    field        SFNode  frontSensor USE FrontSensor
-    field        SFNode  rightSensor USE RightSensor
-    field        SFNode  backSensor USE BackSensor
-    field        SFNode  leftSensor USE LeftSensor
-    field        SFNode  topSensor USE TopSensor
-    field        SFNode  bottomSensor USE BottomSensor
+    exposedField SFVec3f    bboxSize IS bboxSize
+    exposedField SFNode     transform IS transform
+    field        SFVec3f    translation 0 0 0
+    field        SFNode     frontSensor USE FrontSensor
+    field        SFNode     rightSensor USE RightSensor
+    field        SFNode     backSensor USE BackSensor
+    field        SFNode     leftSensor USE LeftSensor
+    field        SFNode     topSensor USE TopSensor
+    field        SFNode     bottomSensor USE BottomSensor
+    field        SFNode     xSensor USE XAxisSensor
+    field        SFNode     ySensor USE YAxisSensor
+    field        SFNode     zSensor USE ZAxisSensor
 
     url "vrmlscript:
 
@@ -226,6 +311,10 @@ function set_active (value)
 		leftSensor   .offset = null3f;
 		topSensor    .offset = null3f;
 		bottomSensor .offset = null3f;
+
+		xSensor .offset = null3f;
+		ySensor .offset = null3f;
+		zSensor .offset = null3f;
 	}
 }
 
@@ -259,6 +348,21 @@ function set_bottomTranslation (value)
 	add (new SFVec3f (value .x, 0, value .y));
 }
 
+function set_xTranslation (value)
+{
+	add (new SFVec3f (value .x / bboxSize .x, 0, 0));
+}
+
+function set_yTranslation (value)
+{
+	add (new SFVec3f (0, value .y / bboxSize .z, 0));
+}
+
+function set_zTranslation (value)
+{
+	add (new SFVec3f (0, 0, -value .x / bboxSize .z));
+}
+
 function add (value)
 {
 	var scale = new SFVec3f ();
@@ -274,12 +378,28 @@ function add (value)
     directOutput TRUE
   }
 
+
+  #
+
+  ROUTE ModeScript.whichChoice_changed TO XSwitch.set_whichChoice
+  ROUTE ModeScript.whichChoice_changed TO YSwitch.set_whichChoice
+  ROUTE ModeScript.whichChoice_changed TO ZSwitch.set_whichChoice
+ 
+  #
+  
+  ROUTE Touch.touchTime TO ModeScript.set_time
+
+  #
+
   ROUTE FrontSensor.isActive TO Move.set_active
   ROUTE RightSensor.isActive TO Move.set_active
   ROUTE BackSensor.isActive TO Move.set_active
   ROUTE LeftSensor.isActive TO Move.set_active
   ROUTE TopSensor.isActive TO Move.set_active
   ROUTE BottomSensor.isActive TO Move.set_active
+  ROUTE XAxisSensor.isActive TO Move.set_active
+  ROUTE YAxisSensor.isActive TO Move.set_active
+  ROUTE ZAxisSensor.isActive TO Move.set_active
 
   #
 
@@ -289,6 +409,9 @@ function add (value)
   ROUTE LeftSensor.translation_changed TO Move.set_leftTranslation
   ROUTE TopSensor.translation_changed TO Move.set_topTranslation
   ROUTE BottomSensor.translation_changed TO Move.set_bottomTranslation
+  ROUTE XAxisSensor.translation_changed TO Move.set_xTranslation
+  ROUTE YAxisSensor.translation_changed TO Move.set_yTranslation
+  ROUTE ZAxisSensor.translation_changed TO Move.set_zTranslation
 }
 
 DEF Handle TransformHandle { }

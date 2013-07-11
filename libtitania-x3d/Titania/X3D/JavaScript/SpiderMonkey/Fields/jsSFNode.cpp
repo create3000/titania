@@ -51,7 +51,7 @@
 #include "jsSFNode.h"
 
 #include "../../../Browser/X3DBrowser.h"
-#include "../../../Components/Scripting/X3DScriptNode.h"
+#include "../../../Components/Scripting/Script.h"
 #include "../jsContext.h"
 #include "../jsFieldDefinitionArray.h"
 #include "../jsFields.h"
@@ -142,7 +142,7 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+			Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 			X3DSFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, vrmlSyntax));
 
@@ -254,28 +254,33 @@ jsSFNode::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsSFNode::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	if (JSID_IS_STRING (id))
+	Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+
+	if (script -> directOutput ())
 	{
-		SFNode* sfnode = (SFNode*) JS_GetPrivate (context, obj);
-
-		if (sfnode -> getValue ())
+		if (JSID_IS_STRING (id))
 		{
-			try
+			SFNode* sfnode = (SFNode*) JS_GetPrivate (context, obj);
+
+			if (sfnode -> getValue ())
 			{
-				X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, id));
+				try
+				{
+					X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, id));
 
-				if (field -> getAccessType () == initializeOnly or field -> getAccessType () == outputOnly)
+					if (field -> getAccessType () == initializeOnly or field -> getAccessType () == outputOnly)
+						return JS_TRUE;
+
+					if (not JS_ValueToField (context, field, vp))
+						return JS_FALSE;
+
+					*vp = JSVAL_VOID;
+
 					return JS_TRUE;
-
-				if (not JS_ValueToField (context, field, vp))
-					return JS_FALSE;
-
-				*vp = JSVAL_VOID;
-
-				return JS_TRUE;
+				}
+				catch (const Error <INVALID_NAME> &)
+				{ }
 			}
-			catch (const Error <INVALID_NAME> &)
-			{ }
 		}
 	}
 

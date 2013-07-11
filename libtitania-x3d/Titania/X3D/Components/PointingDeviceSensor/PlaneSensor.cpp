@@ -102,8 +102,8 @@ PlaneSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 
 	if (isActive ())
 	{
-		inverseTransformationMatrix = ~getTransformationMatrix ();
-		plane                       = Plane3f (hit -> point * inverseTransformationMatrix, axisRotation () * Vector3f (0, 0, 1));
+		inverseTransformationMatrix = ~getTransformationMatrix () .rotate (axisRotation ());
+		plane                       = Plane3f (hit -> point * inverseTransformationMatrix, Vector3f (0, 0, 1));
 
 		auto hitRay = hit -> ray * inverseTransformationMatrix;
 

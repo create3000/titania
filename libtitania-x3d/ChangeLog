@@ -1,5 +1,21 @@
 2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SpiderMonkey.h:
+	* SpiderMonkey.cpp:
+	* TransformHandle.wrl:
+	* X3DJavaScriptEngine.h:
+	* jsContext.h:
+	* jsGlobals.cpp:
+	* jsBrowser.cpp:
+	* jsContext.cpp:
+	* jsX3DConstants.h:
+	* jsX3DConstants.cpp:
+	* jsSFNode.cpp:
+	* PlaneSensor.cpp:
+	* jsX3DExecutionContext.cpp: 
+
+2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TransformHandle.wrl: 
 
 2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>

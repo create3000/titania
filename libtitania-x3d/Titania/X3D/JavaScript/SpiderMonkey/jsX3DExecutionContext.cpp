@@ -629,45 +629,48 @@ jsX3DExecutionContext::addRoute (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 4)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		JSObject* ofromNode;
-		JSObject* otoNode;
-		JSString* fromEventOut;
-		JSString* toEventIn;
-
-		jsval* argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
-			return JS_FALSE;
-
-		if (JS_GetClass (context, ofromNode) not_eq jsSFNode::getClass ())
+		if (script -> directOutput ())
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, ofromNode) -> name);
-			return JS_FALSE;
-		}
+			JSObject* ofromNode;
+			JSObject* otoNode;
+			JSString* fromEventOut;
+			JSString* toEventIn;
 
-		auto & fromNode = *static_cast <SFNode*> (JS_GetPrivate (context, ofromNode));
+			jsval* argv = JS_ARGV (context, vp);
 
-		if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 3 is invalid - should be SFNode, is %s", JS_GetClass (context, otoNode) -> name);
-			return JS_FALSE;
-		}
+			if (not JS_ConvertArguments (context, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
+				return JS_FALSE;
 
-		auto & toNode = *static_cast <SFNode*> (JS_GetPrivate (context, otoNode));
+			if (JS_GetClass (context, ofromNode) not_eq jsSFNode::getClass ())
+			{
+				JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, ofromNode) -> name);
+				return JS_FALSE;
+			}
 
-		try
-		{
-			X3DSFNode <Route> route = script -> getExecutionContext () -> addRoute (fromNode, JS_GetString (context, fromEventOut),
-			                                                                        toNode,   JS_GetString (context, toEventIn));
+			auto & fromNode = *static_cast <SFNode*> (JS_GetPrivate (context, ofromNode));
 
-			return jsX3DRoute::create (context, route, &JS_RVAL (context, vp));
-		}
-		catch (const X3DError & error)
-		{
-			JS_ReportError (context, error .what ());
-			return JS_FALSE;
+			if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
+			{
+				JS_ReportError (context, "Type of argument 3 is invalid - should be SFNode, is %s", JS_GetClass (context, otoNode) -> name);
+				return JS_FALSE;
+			}
+
+			auto & toNode = *static_cast <SFNode*> (JS_GetPrivate (context, otoNode));
+
+			try
+			{
+				X3DSFNode <Route> route = script -> getExecutionContext () -> addRoute (fromNode, JS_GetString (context, fromEventOut),
+				                                                                        toNode,   JS_GetString (context, toEventIn));
+
+				return jsX3DRoute::create (context, route, &JS_RVAL (context, vp));
+			}
+			catch (const X3DError & error)
+			{
+				JS_ReportError (context, error .what ());
+				return JS_FALSE;
+			}
 		}
 	}
 
@@ -681,35 +684,38 @@ jsX3DExecutionContext::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		JSObject* oRoute;
-
-		jsval* argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "o", &oRoute))
-			return JS_FALSE;
-
-		if (JS_GetClass (context, oRoute) not_eq jsX3DRoute::getClass ())
+		if (script -> directOutput ())
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be X3DRoute, is %s", JS_GetClass (context, oRoute) -> name);
-			return JS_FALSE;
-		}
+			JSObject* oRoute;
 
-		auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, oRoute));
+			jsval* argv = JS_ARGV (context, vp);
 
-		try
-		{
-			script -> getExecutionContext () -> deleteRoute (route);
+			if (not JS_ConvertArguments (context, argc, argv, "o", &oRoute))
+				return JS_FALSE;
 
-			JS_SET_RVAL (context, vp, JSVAL_VOID);
+			if (JS_GetClass (context, oRoute) not_eq jsX3DRoute::getClass ())
+			{
+				JS_ReportError (context, "Type of argument 1 is invalid - should be X3DRoute, is %s", JS_GetClass (context, oRoute) -> name);
+				return JS_FALSE;
+			}
 
-			return JS_TRUE;
-		}
-		catch (const X3DError & error)
-		{
-			JS_ReportError (context, error .what ());
-			return JS_FALSE;
+			auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, oRoute));
+
+			try
+			{
+				script -> getExecutionContext () -> deleteRoute (route);
+
+				JS_SET_RVAL (context, vp, JSVAL_VOID);
+
+				return JS_TRUE;
+			}
+			catch (const X3DError & error)
+			{
+				JS_ReportError (context, error .what ());
+				return JS_FALSE;
+			}
 		}
 	}
 

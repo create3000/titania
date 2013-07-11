@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,7 +51,7 @@
 #include "jsX3DConstants.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Scripting/X3DScriptNode.h"
+#include "../../Components/Scripting/Script.h"
 #include "../../InputOutput/Generator.h"
 #include "Fields/jsMFNode.h"
 #include "Fields/jsMFString.h"
@@ -193,7 +193,7 @@ JSPropertySpec jsX3DConstants::properties [ ] = {
 	{ "X3DPropertyNode",              X3D_PROPERTY_NODE,              JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPropertyNode,              NULL },
 	{ "X3DPrototypeInstance",         X3D_PROTOTYPE_INSTANCE,         JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPrototypeInstance,         NULL },
 	{ "X3DRigidJointNode",            X3D_RIGIDJOINT_NODE,            JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DRigidJointNode,            NULL },
-	{ "X3DScriptNode",                X3D_SCRIPT_NODE,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DScriptNode,                NULL },
+	{ "Script",                X3D_SCRIPT_NODE,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Script,                NULL },
 	{ "X3DSensorNode",                X3D_SENSOR_NODE,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DSensorNode,                NULL },
 	{ "X3DSequencerNode",             X3D_SEQUENCER_NODE,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DSequencerNode,             NULL },
 	{ "X3DShaderNode",                X3D_SHADER_NODE,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DShaderNode,                NULL },
@@ -852,7 +852,7 @@ jsX3DConstants::X3DRigidJointNode (JSContext* context, JSObject* obj, jsid id, j
 }
 
 JSBool
-jsX3DConstants::X3DScriptNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Script (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (context, X3DConstants::X3DScriptNode, vp);
 }

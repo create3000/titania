@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_CONTEXT_H__
 
 #include "../../Components/Networking/X3DUrlObject.h"
-#include "../../Components/Scripting/X3DScriptNode.h"
+#include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"
 #include <map>
 #include <map>
@@ -70,13 +70,13 @@ public:
 	using X3DJavaScriptContext::addField;
 	using X3DJavaScriptContext::removeField;
 
-	jsContext (X3DScriptNode*, const std::string &, const basic::uri &, size_t);
+	jsContext (Script*, const std::string &, const basic::uri &, size_t);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
 
-	X3DScriptNode*
+	Script*
 	getNode () const
 	{ return script; }
 
@@ -181,7 +181,7 @@ private:
 	JSRuntime*              runtime;
 	JSContext*              context;
 	JSObject*               global;
-	X3DScriptNode*          script;
+	Script*                 script;
 	std::deque <basic::uri> worldURL;
 	size_t                  index;
 

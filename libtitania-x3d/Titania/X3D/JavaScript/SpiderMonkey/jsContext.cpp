@@ -69,7 +69,7 @@ JSClass jsContext::global_class = {
 
 };
 
-jsContext::jsContext (X3DScriptNode* script, const std::string & ecmascript, const basic::uri & uri, size_t index) :
+jsContext::jsContext (Script* script, const std::string & ecmascript, const basic::uri & uri, size_t index) :
 	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
 	X3DJavaScriptContext (),
 	        X3DUrlObject (),
@@ -327,7 +327,7 @@ jsContext::getBuildInProperty (JSContext* context, JSObject* obj, jsid id, jsval
 	if (JS_IdToValue (context, id, &name))
 	{
 		jsContext*          javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-		X3DScriptNode*      script     = javaScript -> getNode ();
+		Script*      script     = javaScript -> getNode ();
 		X3DFieldDefinition* field      = script -> getField (JS_GetString (context, name));
 
 		return JS_NewFieldValue (context, field, vp);
@@ -359,7 +359,7 @@ jsContext::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool stric
 
 	if (JS_IdToValue (context, id, &name))
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		X3DFieldDefinition* field = script -> getField (JS_GetString (context, name));
 
@@ -561,7 +561,7 @@ void
 jsContext::error (JSContext* context, const char* message, JSErrorReport* report)
 {
 	jsContext*     javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-	X3DScriptNode* script     = javaScript -> getNode ();
+	Script* script     = javaScript -> getNode ();
 	X3DBrowser*    browser    = script -> getBrowser ();
 
 	// Get script

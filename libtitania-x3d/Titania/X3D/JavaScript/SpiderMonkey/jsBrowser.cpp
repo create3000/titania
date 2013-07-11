@@ -51,7 +51,7 @@
 #include "jsBrowser.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Scripting/X3DScriptNode.h"
+#include "../../Components/Scripting/Script.h"
 #include "../../InputOutput/Generator.h"
 #include "Fields/jsMFNode.h"
 #include "Fields/jsMFString.h"
@@ -132,7 +132,7 @@ jsBrowser::defineObject (JSContext* context, JSObject* global)
 JSBool
 jsBrowser::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+	Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 	return JS_NewStringValue (context, script -> getBrowser () -> getName (), vp);
 }
@@ -140,7 +140,7 @@ jsBrowser::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsBrowser::version (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+	Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 	return JS_NewStringValue (context, script -> getBrowser () -> getVersion (), vp);
 }
@@ -148,7 +148,7 @@ jsBrowser::version (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsBrowser::currentSpeed (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+	Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 	return JS_NewNumberValue (context, script -> getBrowser () -> getCurrentSpeed (), vp);
 }
@@ -156,7 +156,7 @@ jsBrowser::currentSpeed (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsBrowser::currentFrameRate (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+	Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 	return JS_NewNumberValue (context, script -> getBrowser () -> getCurrentFrameRate (), vp);
 }
@@ -164,7 +164,7 @@ jsBrowser::currentFrameRate (JSContext* context, JSObject* obj, jsid id, jsval* 
 JSBool
 jsBrowser::description (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+	Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 	return JS_NewStringValue (context, script -> getBrowser () -> getDescription (), vp);
 }
@@ -172,7 +172,7 @@ jsBrowser::description (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsBrowser::description (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+	Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 	script -> getBrowser () -> setDescription (JS_GetString (context, *vp));
 	return JS_TRUE;
@@ -181,7 +181,7 @@ jsBrowser::description (JSContext* context, JSObject* obj, jsid id, JSBool stric
 JSBool
 jsBrowser::supportedComponents (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+	Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 	return jsComponentInfoArray::create (context, &script -> getBrowser () -> getSupportedComponents (), vp);
 }
@@ -189,7 +189,7 @@ jsBrowser::supportedComponents (JSContext* context, JSObject* obj, jsid id, jsva
 JSBool
 jsBrowser::supportedProfiles (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+	Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 	return jsProfileInfoArray::create (context, &script -> getBrowser () -> getSupportedProfiles (), vp);
 }
@@ -197,7 +197,7 @@ jsBrowser::supportedProfiles (JSContext* context, JSObject* obj, jsid id, jsval*
 JSBool
 jsBrowser::currentScene (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+	Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 	auto scene = dynamic_cast <X3DScene*> (script -> getExecutionContext ());
 
@@ -216,7 +216,7 @@ jsBrowser::replaceWorld (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		JSObject* scene;
 
@@ -254,7 +254,7 @@ jsBrowser::createX3DFromString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		JSString* x3dSyntax;
 
@@ -420,7 +420,7 @@ jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 2)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		JSObject* ourl;
 		JSObject* oparameter;
@@ -471,7 +471,7 @@ jsBrowser::getRenderingProperty (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		JSString* name;
 
@@ -502,7 +502,7 @@ jsBrowser::getBrowserProperty (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		JSString* name;
 
@@ -533,7 +533,7 @@ jsBrowser::getBrowserOption (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		JSString* name;
 
@@ -564,7 +564,7 @@ jsBrowser::setBrowserOption (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 2)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		JSString* name;
 
@@ -602,7 +602,7 @@ jsBrowser::print (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		JSString* object;
 
@@ -626,7 +626,7 @@ jsBrowser::println (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		JSString* object;
 
@@ -652,7 +652,7 @@ jsBrowser::getName (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		return JS_NewStringValue (context, script -> getBrowser () -> getName (), &JS_RVAL (context, vp));
 	}
@@ -667,7 +667,7 @@ jsBrowser::getVersion (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		return JS_NewStringValue (context, script -> getBrowser () -> getVersion (), &JS_RVAL (context, vp));
 	}
@@ -682,7 +682,7 @@ jsBrowser::getCurrentSpeed (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		return JS_NewNumberValue (context, script -> getBrowser () -> getCurrentSpeed (), &JS_RVAL (context, vp));
 	}
@@ -697,7 +697,7 @@ jsBrowser::getCurrentFrameRate (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		return JS_NewNumberValue (context, script -> getBrowser () -> getCurrentFrameRate (), &JS_RVAL (context, vp));
 	}
@@ -712,7 +712,7 @@ jsBrowser::getWorldURL (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		return JS_NewStringValue (context, script -> getBrowser () -> getWorldURL (), &JS_RVAL (context, vp));
 	}
@@ -727,7 +727,7 @@ jsBrowser::createVrmlFromString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		JSString* vrmlSyntax;
 
@@ -761,7 +761,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 3)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		JSObject* ourl;
 		JSObject* onode;
@@ -859,47 +859,50 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 4)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
-
-		JSObject* ofromNode;
-		JSObject* otoNode;
-		JSString* fromEventOut;
-		JSString* toEventIn;
-
-		jsval* argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
-			return JS_FALSE;
-
-		if (JS_GetClass (context, ofromNode) not_eq jsSFNode::getClass ())
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		
+		if (script -> directOutput ())
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, ofromNode) -> name);
-			return JS_FALSE;
-		}
+			JSObject* ofromNode;
+			JSObject* otoNode;
+			JSString* fromEventOut;
+			JSString* toEventIn;
 
-		auto & fromNode = *static_cast <SFNode*> (JS_GetPrivate (context, ofromNode));
+			jsval* argv = JS_ARGV (context, vp);
 
-		if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 3 is invalid - should be SFNode, is %s", JS_GetClass (context, otoNode) -> name);
-			return JS_FALSE;
-		}
+			if (not JS_ConvertArguments (context, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
+				return JS_FALSE;
 
-		auto & toNode = *static_cast <SFNode*> (JS_GetPrivate (context, otoNode));
+			if (JS_GetClass (context, ofromNode) not_eq jsSFNode::getClass ())
+			{
+				JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, ofromNode) -> name);
+				return JS_FALSE;
+			}
 
-		try
-		{
-			script -> getExecutionContext () -> deleteRoute (fromNode, JS_GetString (context, fromEventOut),
-			                                                 toNode,   JS_GetString (context, toEventIn));
+			auto & fromNode = *static_cast <SFNode*> (JS_GetPrivate (context, ofromNode));
 
-			JS_SET_RVAL (context, vp, JSVAL_VOID);
+			if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
+			{
+				JS_ReportError (context, "Type of argument 3 is invalid - should be SFNode, is %s", JS_GetClass (context, otoNode) -> name);
+				return JS_FALSE;
+			}
 
-			return JS_TRUE;
-		}
-		catch (const X3DError & error)
-		{
-			JS_ReportError (context, error .what ());
-			return JS_FALSE;
+			auto & toNode = *static_cast <SFNode*> (JS_GetPrivate (context, otoNode));
+
+			try
+			{
+				script -> getExecutionContext () -> deleteRoute (fromNode, JS_GetString (context, fromEventOut),
+				                                                 toNode,   JS_GetString (context, toEventIn));
+
+				JS_SET_RVAL (context, vp, JSVAL_VOID);
+
+				return JS_TRUE;
+			}
+			catch (const X3DError & error)
+			{
+				JS_ReportError (context, error .what ());
+				return JS_FALSE;
+			}
 		}
 	}
 
@@ -913,7 +916,7 @@ jsBrowser::setDescription (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		X3DScriptNode* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		JSString* description;
 
