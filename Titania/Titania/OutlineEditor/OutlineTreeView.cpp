@@ -425,6 +425,7 @@ OutlineTreeView::collapse_field (const Gtk::TreeModel::Path & path)
 	get_model () -> collapse_row (path);
 	unwatch_tree (iter);
 
+	get_model () -> collapse_row (path);
 	get_model () -> row_deleted (path);
 	get_model () -> row_inserted (path, iter);
 	get_model () -> row_has_child_toggled (path, iter);
@@ -574,14 +575,8 @@ OutlineTreeView::auto_expand_fields (const Gtk::TreeModel::iterator & parent)
 void
 OutlineTreeView::select (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
 {
-	if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
-	{
-		//get_model () -> collapse_row (path);
-		selection .select (*static_cast <X3D::SFNode*> (get_object (iter)));
-
-		if (path .size () > 1)
-			set_animated (iter -> parent (), true);
-	}
+	//get_model () -> collapse_row (path);
+	selection .select (iter, path);
 }
 
 OutlineTreeView::~OutlineTreeView ()

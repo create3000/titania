@@ -65,7 +65,7 @@ namespace titania {
 namespace puck {
 
 class OutlineTreeModel :
-	public Glib::Object, public Gtk::TreeModel, public X3DBaseInterface
+	public Glib::Object, public Gtk::TreeModel//, public X3DBaseInterface
 {
 public:
 
@@ -121,6 +121,10 @@ private:
 	static
 	size_t
 	get_index (const iterator &);
+
+	static
+	X3D::FieldDefinitionArray
+	get_fields (X3D::X3DChildObject*);
 
 	void
 	set_rootNodes ();
@@ -213,10 +217,6 @@ private:
 	virtual
 	void
 	on_rows_reordered (const Path &, const iterator &, int*);
-
-	static
-	X3D::FieldDefinitionArray
-	get_fields (X3D::X3DChildObject*);
 
 	typedef Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>> icon_column_type;
 	typedef Gtk::TreeModelColumn <OutlineIterData*>            data_column_type;

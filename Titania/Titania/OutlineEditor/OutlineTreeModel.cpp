@@ -59,13 +59,13 @@ OutlineTreeModel::OutlineTreeModel (const X3D::X3DSFNode <X3D::Browser> & browse
 	Glib::ObjectBase (typeid (OutlineTreeModel)),
 	    Glib::Object (),
 	  Gtk::TreeModel (),
-	X3DBaseInterface (),
+	//X3DBaseInterface (),
 	executionContext (browser -> getExecutionContext ()),
-	           stamp ((long int)                          this),
+	           stamp ((long int) this),
 	            tree ()
 {
 	//__LOG__ << std::endl;
-	setBrowser (browser);
+	//setBrowser (browser);
 
 	noneImage     = Gdk::Pixbuf::create_from_file (get_icon ("none.png"));
 	baseNodeImage = Gdk::Pixbuf::create_from_file (get_icon ("Node.png"));
@@ -81,6 +81,36 @@ OutlineTreeModel::create (const X3D::X3DSFNode <X3D::Browser> & browser)
 {
 	//__LOG__ << std::endl;
 	return Glib::RefPtr <OutlineTreeModel> (new OutlineTreeModel (browser));
+}
+
+void
+OutlineTreeModel::collapse_row (const Path & path)
+{
+	tree .removeChildren (path);
+}
+
+OutlineUserData*
+OutlineTreeModel::get_user_data (const iterator & iter)
+{
+	auto data   = get_data (iter);
+	auto object = data -> object;
+
+	if (data -> type == OutlineIterType::X3DBaseNode)
+		object = static_cast <X3D::SFNode*> (object) -> getValue ();
+
+	if (object)
+		return get_user_data (object);
+
+	return NULL;
+}
+
+OutlineUserData*
+OutlineTreeModel::get_user_data (X3D::X3DChildObject* object)
+{
+	if (not object -> getUserData ())
+		object -> setUserData (new OutlineUserData ());
+
+	return static_cast <OutlineUserData*> (object -> getUserData ());
 }
 
 OutlineIterType
@@ -126,6 +156,39 @@ OutlineIterData*
 OutlineTreeModel::get_data (const iterator & iter)
 {
 	return static_cast <OutlineIterData*> (iter .gobj () -> user_data);
+}
+
+X3D::FieldDefinitionArray
+OutlineTreeModel::get_fields (X3D::X3DChildObject* object)
+{
+	auto sfnode = static_cast <X3D::SFNode*> (object);
+	auto node   = sfnode -> getValue ();
+
+	if (node)
+	{
+		auto fields            = node -> getPreDefinedFields ();
+		auto userDefinedFields = node -> getUserDefinedFields ();
+
+		if (fields .size ())
+			fields .insert (fields .begin () + 1, userDefinedFields .begin (), userDefinedFields .end ());
+
+		else
+			fields = std::move (userDefinedFields);
+
+		//
+
+		X3D::FieldDefinitionArray visibleFields;
+
+		for (const auto & field : fields)
+		{
+			if (get_user_data (field) -> visible)
+				visibleFields .push_back (field);
+		}
+
+		return visibleFields;
+	}
+	
+	return X3D::FieldDefinitionArray ();
 }
 
 void
@@ -204,8 +267,6 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 {
 	//__LOG__ << std::endl;
 
-	auto data = get_data (iter);
-
 	switch (column)
 	{
 		case 0:
@@ -213,7 +274,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 			icon_column_type::ValueType val;
 			val .init (icon_column_type::ValueType::value_type ());
 
-			switch (data -> type)
+			switch (get_data_type (iter))
 			{
 				case OutlineIterType::X3DFieldValue:
 				{
@@ -222,7 +283,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 				}
 				case OutlineIterType::X3DField:
 				{
-					auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object);
+					auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
 					auto iter  = fieldTypeImages .find (field -> getType ());
 
 					if (iter not_eq fieldTypeImages .end ())
@@ -246,7 +307,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 		{
 			data_column_type::ValueType val;
 			val .init (data_column_type::ValueType::value_type ());
-			val .set (data);
+			val .set (get_data (iter));
 
 			value .init (data_column_type::ValueType::value_type ());
 			value = val;
@@ -259,7 +320,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 			val .init (selected_color_column_type::ValueType::value_type ());
 
 			auto userData       = get_user_data (iter);
-			auto parentUserData = get_user_data (data -> object);
+			auto parentUserData = get_user_data (get_object (iter));
 
 			val .set ((userData and userData -> selected) or parentUserData -> selected);
 
@@ -273,11 +334,11 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 			debug_column_type::ValueType val;
 			val .init (debug_column_type::ValueType::value_type ());
 
-			switch (data -> type)
+			switch (get_data_type (iter))
 			{
 				case OutlineIterType::X3DFieldValue:
 				{
-					auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object);
+					auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
 
 					val .set (Glib::Markup::escape_text (field -> toString ()));
 
@@ -285,7 +346,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 				}
 				case OutlineIterType::X3DField:
 				{
-					auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object);
+					auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
 
 					val .set (Glib::Markup::escape_text (field -> getName ()));
 
@@ -293,7 +354,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 				}
 				case OutlineIterType::X3DBaseNode:
 				{
-					auto sfnode = static_cast <X3D::SFNode*> (data -> object);
+					auto sfnode = static_cast <X3D::SFNode*> (get_object (iter));
 
 					if (*sfnode)
 						val .set ("<b>" + Glib::Markup::escape_text (sfnode -> getNodeTypeName ()) + "</b> " + Glib::Markup::escape_text (sfnode -> getNodeName ()));
@@ -323,9 +384,7 @@ OutlineTreeModel::get_path_vfunc (const iterator & iter) const
 {
 	//__LOG__ << std::endl;
 
-	auto data = get_data (iter);
-
-	return get_path (data -> parents, data -> index);
+	return get_path (get_parents (iter), get_index (iter));
 }
 
 Gtk::TreeModel::Path
@@ -397,9 +456,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 {
 	//__LOG__ << std::endl;
 
-	auto data = get_data (iter);
-
-	switch (data -> type)
+	switch (get_data_type (iter))
 	{
 		case OutlineIterType::X3DFieldValue:
 			return 0;
@@ -409,11 +466,11 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 
 		case OutlineIterType::X3DBaseNode:
 		{
-			auto sfnode = static_cast <X3D::SFNode*> (data -> object);
+			auto sfnode = static_cast <X3D::SFNode*> (get_object (iter));
 
 			// Prevent self referencing traversal
 
-			for (const auto parent : data -> parents)
+			for (const auto parent : get_parents (iter))
 			{
 				if (parent .type == OutlineIterType::X3DBaseNode)
 				{
@@ -441,16 +498,14 @@ OutlineTreeModel::iter_n_children_vfunc (const iterator & iter) const
 {
 	//__LOG__ << std::endl;
 
-	auto data = get_data (iter);
-
-	switch (data -> type)
+	switch (get_data_type (iter))
 	{
 		case OutlineIterType::X3DFieldValue:
 			return 0;
 
 		case OutlineIterType::X3DField:
 		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object);
+			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
 
 			switch (field -> getType ())
 			{
@@ -488,7 +543,7 @@ OutlineTreeModel::iter_n_children_vfunc (const iterator & iter) const
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			auto sfnode = static_cast <X3D::SFNode*> (data -> object);
+			auto sfnode = static_cast <X3D::SFNode*> (get_object (iter));
 
 			if (*sfnode)
 				return get_fields (sfnode) .size ();
@@ -515,19 +570,17 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int index, iter
 
 	iter .set_stamp (stamp);
 
-	auto data = get_data (parent);
+	auto parents = get_parents (parent);
+	parents .emplace_back (get_data_type (parent), get_object (parent), get_index (parent));
 
-	auto parents = data -> parents;
-	parents .emplace_back (data -> type, data -> object, data -> index);
-
-	switch (data -> type)
+	switch (get_data_type (parent))
 	{
 		case OutlineIterType::X3DFieldValue:
 			return false;
 
 		case OutlineIterType::X3DField:
 		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object);
+			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (parent));
 
 			switch (field -> getType ())
 			{
@@ -593,7 +646,7 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int index, iter
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			auto fields = std::move (get_fields (data -> object));
+			auto fields = std::move (get_fields (get_object (parent)));
 
 			if ((size_t) index < fields .size ())
 			{
@@ -615,21 +668,20 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 
 	iter_next .set_stamp (stamp);
 
-	auto   data  = get_data (iter);
-	size_t index = data -> index + 1;
+	size_t index = get_index (iter) + 1;
 
-	switch (data -> type)
+	switch (get_data_type (iter))
 	{
 		case OutlineIterType::X3DFieldValue:
 			return false;
 
 		case OutlineIterType::X3DField:
 		{
-			auto fields = std::move (get_fields (data -> parents .back () .object));
+			auto fields = std::move (get_fields (get_parents (iter) .back () .object));
 
 			if (index < fields .size ())
 			{
-				set_data (iter_next, OutlineIterType::X3DField, fields [index], index, data -> parents);
+				set_data (iter_next, OutlineIterType::X3DField, fields [index], index, get_parents (iter));
 				return true;
 			}
 
@@ -637,7 +689,7 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (data -> parents .back () .object);
+			auto field = static_cast <X3D::X3DFieldDefinition*> (get_parents (iter) .back () .object);
 
 			switch (field -> getType ())
 			{
@@ -647,7 +699,7 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 
 					if (index < mfnode -> size ())
 					{
-						set_data (iter_next, OutlineIterType::X3DBaseNode, &mfnode -> at (index), index, data -> parents);
+						set_data (iter_next, OutlineIterType::X3DBaseNode, &mfnode -> at (index), index, get_parents (iter));
 						return true;
 					}
 
@@ -669,8 +721,7 @@ OutlineTreeModel::iter_parent_vfunc (const iterator & child, iterator & iter) co
 
 	iter .set_stamp (stamp);
 
-	auto data    = get_data (child);
-	auto parents = data -> parents;
+	auto parents = get_parents (child);
 
 	if (parents .size () == 1)
 		return false;
@@ -727,72 +778,11 @@ OutlineTreeModel::on_rows_reordered (const Path & path, const iterator & iter, i
 	//__LOG__ << std::endl;
 }
 
-void
-OutlineTreeModel::collapse_row (const Path & path)
-{
-	tree .removeChildren (path);
-}
-
-X3D::FieldDefinitionArray
-OutlineTreeModel::get_fields (X3D::X3DChildObject* object)
-{
-	auto sfnode = static_cast <X3D::SFNode*> (object);
-	auto node   = sfnode -> getValue ();
-
-	if (node)
-	{
-		auto fields            = node -> getPreDefinedFields ();
-		auto userDefinedFields = node -> getUserDefinedFields ();
-
-		if (fields .size ())
-			fields .insert (fields .begin () + 1, userDefinedFields .begin (), userDefinedFields .end ());
-
-		else
-			fields = std::move (userDefinedFields);
-
-		//
-
-		X3D::FieldDefinitionArray visibleFields;
-
-		for (const auto & field : fields)
-		{
-			if (get_user_data (field) -> visible)
-				visibleFields .push_back (field);
-		}
-
-		return visibleFields;
-	}
-	
-	return X3D::FieldDefinitionArray ();
-}
-
-OutlineUserData*
-OutlineTreeModel::get_user_data (const iterator & iter)
-{
-	auto data   = get_data (iter);
-	auto object = data -> object;
-
-	if (data -> type == OutlineIterType::X3DBaseNode)
-		object = static_cast <X3D::SFNode*> (object) -> getValue ();
-
-	if (object)
-		return get_user_data (object);
-
-	return NULL;
-}
-
-OutlineUserData*
-OutlineTreeModel::get_user_data (X3D::X3DChildObject* object)
-{
-	if (not object -> getUserData ())
-		object -> setUserData (new OutlineUserData ());
-
-	return static_cast <OutlineUserData*> (object -> getUserData ());
-}
-
 OutlineTreeModel::~OutlineTreeModel ()
 {
 	//__LOG__ << std::endl;
+
+	executionContext -> getRootNodes () .removeInterest (this, &OutlineTreeModel::set_rootNodes);
 }
 
 } // puck
