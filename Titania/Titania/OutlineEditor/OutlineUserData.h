@@ -66,7 +66,7 @@ public:
 	OutlineUserData () :
 		path (),
 		expanded (false),
-		showAllFields (false),
+		expandAll (false),
 		selected (false),
 		visible (false),
 		animated (false)
@@ -75,7 +75,7 @@ public:
 	Gtk::TreeModel::Path path;
 
 	bool expanded;
-	bool showAllFields;
+	bool expandAll;
 	bool selected;
 	bool visible;
 	bool animated;

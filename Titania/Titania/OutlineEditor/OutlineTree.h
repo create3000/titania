@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,57 +48,79 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_H__
+#define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_H__
 
-#include "../Base/X3DBaseInterface.h"
-
-#include <gtkmm.h>
-
-#include <Titania/X3D.h>
+#include "../OutlineEditor/OutlineIterData.h"
+#include <deque>
 
 namespace titania {
 namespace puck {
 
-class OutlineTreeView;
-
-class OutlineSelection :
-	public X3DBaseInterface
+class OutlineNode
 {
 public:
 
-	OutlineSelection (OutlineTreeView* const, const X3D::X3DSFNode <X3D::Browser> &);
+	OutlineNode () :
+		data (NULL),
+		children ()
+	{ }
+
+	const std::deque <OutlineNode> &
+	getChildren ()
+	{ return children; }
 
 	void
-	setSelectMultiple (bool);
+	clear ()
+	{ children .clear (); }
+
+	~OutlineNode ()
+	{
+		if (data)
+			delete data;
+	}
+
+	OutlineIterData*         data;
+	std::deque <OutlineNode> children;
+
+};
+
+class OutlineTree :
+	public OutlineNode
+{
+public:
+
+	OutlineTree () :
+		OutlineNode ()
+	{ }
+
+	OutlineNode &
+	getNode (const Gtk::TreePath & path)
+	{
+		OutlineNode* node = this;
+
+		for (const auto & index : path)
+			node = &getChild (node, index);
+
+		return *node;
+	}
 
 	void
-	select (const X3D::SFNode &);
-
-	void
-	clear ();
-
+	removeChildren (const Gtk::TreePath & path)
+	{
+		getNode (path) .children .clear ();
+	}
 
 private:
 
-	void
-	set_selection ();
+	OutlineNode &
+	getChild (OutlineNode* parent, size_t index)
+	{
+		if (index + 1 > parent -> children .size ())
+			parent -> children .resize (index + 1);
 
-	void
-	remove (const X3D::SFNode &);
-
-	void
-	select (X3D::X3DBaseNode*, bool);
-
-	void
-	select (X3D::X3DBaseNode*, bool, X3D::ChildObjectSet &);
-
-	void
-	select (X3D::X3DFieldDefinition*, bool, X3D::ChildObjectSet &);
-
-	OutlineTreeView* const treeView;
-	bool                   selectMultiple;
-	bool                   forceSelection;
+		return parent -> children [index];
+	}
 
 };
 

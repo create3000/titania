@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,57 +48,57 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_ITER_DATA_H__
+#define __TITANIA_OUTLINE_EDITOR_OUTLINE_ITER_DATA_H__
 
-#include "../Base/X3DBaseInterface.h"
-
-#include <gtkmm.h>
-
+#include "../OutlineEditor/OutlineIterData.h"
+#include "../OutlineEditor/OutlineUserData.h"
 #include <Titania/X3D.h>
+
+#include <deque>
+#include <gtkmm.h>
+#include <iostream>
 
 namespace titania {
 namespace puck {
 
-class OutlineTreeView;
+enum class OutlineIterType
+{
+	X3DFieldValue,
+	X3DField,
+	X3DBaseNode
 
-class OutlineSelection :
-	public X3DBaseInterface
+};
+
+class OutlineIterParent
 {
 public:
 
-	OutlineSelection (OutlineTreeView* const, const X3D::X3DSFNode <X3D::Browser> &);
+	OutlineIterParent (OutlineIterType type, X3D::X3DChildObject* object, size_t index) :
+		object (object),
+		type (type),
+		index (index)
+	{ }
 
-	void
-	setSelectMultiple (bool);
+	X3D::X3DChildObject* const object;
+	const OutlineIterType      type;
+	const size_t               index;
 
-	void
-	select (const X3D::SFNode &);
+};
 
-	void
-	clear ();
+class OutlineIterData :
+	public OutlineIterParent
+{
+public:
 
+	typedef std::deque <OutlineIterParent> parents_type;
 
-private:
+	OutlineIterData (OutlineIterType type, X3D::X3DChildObject* object, int index, const parents_type & parents) :
+		OutlineIterParent (type, object, index),
+		parents (parents)
+	{ }
 
-	void
-	set_selection ();
-
-	void
-	remove (const X3D::SFNode &);
-
-	void
-	select (X3D::X3DBaseNode*, bool);
-
-	void
-	select (X3D::X3DBaseNode*, bool, X3D::ChildObjectSet &);
-
-	void
-	select (X3D::X3DFieldDefinition*, bool, X3D::ChildObjectSet &);
-
-	OutlineTreeView* const treeView;
-	bool                   selectMultiple;
-	bool                   forceSelection;
+	const parents_type parents;
 
 };
 

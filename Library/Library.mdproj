@@ -2276,6 +2276,8 @@
     <None Include="Examples\Astronomy\index.wrl" />
     <None Include="Tests\Handles\TransformHandle.wrl" />
     <None Include="Tests\Handles\Grid.wrl" />
+    <None Include="Tests\Scripting\X3DScene.rootNodes.2.wrl" />
+    <None Include="Tests\Basic\Clone.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

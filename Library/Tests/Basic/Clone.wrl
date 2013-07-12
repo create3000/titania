@@ -1,0 +1,14 @@
+#VRML V2.0 utf8
+
+META "title" "Clone"
+
+DEF Cube Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box { }
+  }
+}
+
+USE Cube

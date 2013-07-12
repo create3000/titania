@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "OutlineTreeView.h"
+#include "OutlineSelection.h"
 
 #include "../OutlineEditor/OutlineTreeModel.h"
 #include "../OutlineEditor/OutlineTreeView.h"
@@ -56,9 +56,9 @@
 namespace titania {
 namespace puck {
 
-OutlineSelection::OutlineSelection (OutlineTreeView* const treeview, const X3D::X3DSFNode <X3D::Browser> & browser) :
+OutlineSelection::OutlineSelection (OutlineTreeView* const treeView, const X3D::X3DSFNode <X3D::Browser> & browser) :
 	X3DBaseInterface (),
-	        treeview (treeview),
+	        treeView (treeView),
 	  selectMultiple (false),
 	  forceSelection (false)
 {
@@ -73,7 +73,7 @@ OutlineSelection::set_selection ()
 	for (const auto & sfnode : getBrowser () -> getSelection () -> children ())
 		select (sfnode .getValue (), true);
 
-	treeview -> queue_draw ();
+	treeView -> queue_draw ();
 }
 
 void
@@ -143,12 +143,12 @@ OutlineSelection::select (X3D::X3DBaseNode* node, bool value, X3D::ChildObjectSe
 		if (not seen .insert (node) .second)
 			return;
 
-		if (OutlineTreeModel::getUserData (node) -> selected == value)
+		if (treeView -> get_user_data (node) -> selected == value)
 			return;
 
 		// Select node
 
-		OutlineTreeModel::getUserData (node) -> selected = value;
+		treeView -> get_user_data (node) -> selected = value;
 
 		// Select children
 
@@ -160,12 +160,12 @@ OutlineSelection::select (X3D::X3DBaseNode* node, bool value, X3D::ChildObjectSe
 void
 OutlineSelection::select (X3D::X3DFieldDefinition* field, bool value, X3D::ChildObjectSet & seen)
 {
-	if (OutlineTreeModel::getUserData (field) -> selected == value)
+	if (treeView -> get_user_data (field) -> selected == value)
 		return;
 
 	// Select field
 
-	OutlineTreeModel::getUserData (field) -> selected = value;
+	treeView -> get_user_data (field) -> selected = value;
 
 	// Select children
 

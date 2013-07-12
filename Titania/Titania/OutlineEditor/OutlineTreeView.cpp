@@ -58,6 +58,7 @@ namespace puck {
 OutlineTreeView::OutlineTreeView (const X3D::X3DSFNode <X3D::Browser> & browser) :
 	   Gtk::TreeView (),
 	X3DBaseInterface (),
+	           model (),
 	       selection (this, browser),
 	            keys ()
 {
@@ -113,6 +114,58 @@ OutlineTreeView::OutlineTreeView (const X3D::X3DSFNode <X3D::Browser> & browser)
 }
 
 void
+OutlineTreeView::set_model (const Glib::RefPtr <OutlineTreeModel> & value)
+{
+	model = value;
+	Gtk::TreeView::set_model (value);
+}
+
+OutlineUserData*
+OutlineTreeView::get_user_data (const Gtk::TreeModel::iterator & iter) const
+{
+	return get_model () -> get_user_data (iter);
+}
+
+OutlineUserData*
+OutlineTreeView::get_user_data (X3D::X3DChildObject* object) const
+{
+	return get_model () -> get_user_data (object);
+}
+
+OutlineIterData*
+OutlineTreeView::get_data (const Gtk::TreeModel::iterator & iter) const
+{
+	return get_model () -> get_data (iter);
+}
+
+void
+OutlineTreeView::set_path (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & value)
+{
+	auto userData = get_model () -> get_user_data (iter);
+
+	if (userData)
+		userData -> path = value;
+}
+
+void
+OutlineTreeView::set_expanded (const Gtk::TreeModel::iterator & iter, bool value)
+{
+	auto userData = get_model () -> get_user_data (iter);
+
+	if (userData)
+		userData -> expanded = value;
+}
+
+void
+OutlineTreeView::set_animated (const Gtk::TreeModel::iterator & iter, bool value)
+{
+	auto userData = get_model () -> get_user_data (iter);
+
+	if (userData)
+		userData -> animated = value;
+}
+
+void
 OutlineTreeView::set_world ()
 {
 	selection .clear ();
@@ -163,6 +216,12 @@ OutlineTreeView::set_world ()
 //}
 //
 //void
+//OutlineTreeView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
+//{
+//	select (get_model () -> get_iter (path), path);
+//}
+//
+//void
 //OutlineTreeView::on_row_inserted (const Gtk::TreeModel::Path & path, const Gtk::TreeModel::iterator & iter)
 //{ }
 //
@@ -179,350 +238,307 @@ OutlineTreeView::set_world ()
 //			expand_row (path, false);
 //	}
 //}
-//
-//bool
-//OutlineTreeView::on_test_expand_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
-//{
-//	__LOG__ << std::endl;
-//
-//	collapseClone (iter);
-//	selectFields (iter, path);
-//
-//	// Return false to allow expansion, true to reject.
-//	return false;
-//}
-//
-//void
-//OutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
-//{
-//	__LOG__ << std::endl;
-//
-//	// Set expanded first to prevent loop with clones.
-//	setExpanded (iter, true);
-//
-//	setPath (iter, path);
-//	watch (iter, path);
-//	autoExpandFields (iter);
-//}
-//
-//bool
-//OutlineTreeView::on_test_collapse_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
-//{
-//	__LOG__ << std::endl;
-//
-//	// Return false to allow collapse, true to reject.
-//	return false;
-//}
-//
-//void
-//OutlineTreeView::on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
-//{
-//	__LOG__ << std::endl;
-//
-//	unwatchTree (iter);
-//	setExpanded (iter, false);
-//	toggleExpand (iter, path);
-//
-//	__LOG__ << std::endl;
-//}
-//
-//void
-//OutlineTreeView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
-//{
-//	select (get_model () -> get_iter (path), path);
-//}
-//
-//void
-//OutlineTreeView::setPath (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & value)
-//{
-//	auto userData = OutlineTreeModel::getUserData (iter);
-//
-//	if (userData)
-//		userData -> path = value;
-//}
-//
-//void
-//OutlineTreeView::setExpanded (const Gtk::TreeModel::iterator & iter, bool value)
-//{
-//	auto userData = OutlineTreeModel::getUserData (iter);
-//
-//	if (userData)
-//		userData -> expanded = value;
-//}
-//
-//void
-//OutlineTreeView::setAnimated (const Gtk::TreeModel::iterator & iter, bool value)
-//{
-//	auto userData = OutlineTreeModel::getUserData (iter);
-//
-//	if (userData)
-//		userData -> animated = value;
-//}
-//
-//void
-//OutlineTreeView::watch (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
-//{
-//	auto data = OutlineTreeModel::getData (iter);
-//
-//	if (data -> type == OutlineIterType::X3DField)
-//	{
-//		auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object);
-// 
-//      if (field -> getAccessType () not_eq X3D::inputOnly)
-//      {
-//			switch (field -> getType ())
-//			{
-//				case X3D::X3DConstants::SFNode:
-//				case X3D::X3DConstants::MFNode:
-//				{
-//					field -> addInterest (this, &OutlineTreeView::collapseField, path);
-//					break;
-//				}
-//				default:
-//					break;
-//			}
-//
-//			field -> addInterest ((Gtk::Widget*) this, &OutlineTreeView::queue_draw);
-//		}
-//	}
-//}
-//
-//void
-//OutlineTreeView::unwatchTree (const Gtk::TreeModel::iterator & iter)
-//{
-//	std::set <X3D::X3DChildObject*> seen;
-//
-//	unwatchTree (iter, seen);
-//}
-//
-//void
-//OutlineTreeView::unwatchTree (const Gtk::TreeModel::iterator & iter, std::set <X3D::X3DChildObject*> & seen)
-//{
-//	__LOG__ << OutlineTreeModel::getData (iter) << std::endl;
-//
-//	if (not seen .insert (OutlineTreeModel::getData (iter) -> object) .second)
-//		return;
-//
-//	unwatch (iter);
-//
-//	for (const auto & child : iter -> children ())
-//		unwatchTree (child, seen);
-//}
-//
-//void
-//OutlineTreeView::unwatch (const Gtk::TreeModel::iterator & iter)
-//{
-//	auto data = OutlineTreeModel::getData (iter);
-//
-//	if (data -> type == OutlineIterType::X3DField)
-//	{
-//		auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object);
-//
-//      if (field -> getAccessType () not_eq X3D::inputOnly)
-//      {
-//			switch (field -> getType ())
-//			{
-//				case X3D::X3DConstants::SFNode:
-//				case X3D::X3DConstants::MFNode:
-//				{
-//					field -> removeInterest (this, &OutlineTreeView::collapseField);
-//					break;
-//				}
-//				default:
-//					break;
-//			}
-//
-//			field -> removeInterest ((Gtk::Widget*) this, &OutlineTreeView::queue_draw);
-//		}
-//	}
-//}
-//
-//void
-//OutlineTreeView::collapseField (const Gtk::TreeModel::Path & path)
-//{
-//	Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
-//
-//	setAnimated (iter, true);
-//	
-//	OutlineTreeModel::getUserData (iter) -> expanded = false;
-//
-//	get_model () -> row_deleted (path);
-//	get_model () -> row_inserted (path, iter);
-//	get_model () -> row_has_child_toggled (path, iter);
-//	collapse_row (path);
-//
-//	Glib::RefPtr <OutlineTreeModel>::cast_dynamic (get_model ()) -> collapse_row (path);
-//
-//	Gtk::TreeModel::Path parent = path;
-//	parent .up ();
-//
-//	expand_row (parent, false);
-//}
-//
-//void
-//OutlineTreeView::selectFields (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path &)
-//{
-//	auto data = OutlineTreeModel::getData (iter);
-//
-//	if (data -> type == OutlineIterType::X3DBaseNode)
-//	{
-//		auto data         = OutlineTreeModel::getData (iter);
-//		auto nodeUserData = OutlineTreeModel::getUserData (iter);
-//
-//		if (nodeUserData)
-//		{
-//			auto sfnode       = static_cast <X3D::SFNode*> (data -> object);
-//			auto node         = sfnode -> getValue ();
-//			
-//			bool visible = false;
-//
-//			for (const auto & field : node -> getFieldDefinitions ())
-//			{
-//				auto userData = OutlineTreeModel::getUserData (field);
-//
-//				if (nodeUserData -> showAllFields)
-//					userData -> visible = true;
-//				
-//				else
-//				{
-//					if (not field -> isInitializeable ())
-//					{
-//						userData -> visible = false;
-//						continue;
-//					}
-//
-//					if (node -> isDefaultValue (field))
-//					{
-//						userData -> visible = false;
-//						continue;
-//					}
-//
-//					userData -> visible = true;
-//					visible = true;
-//				}
-//			}
-//			
-//			if (not visible)
-//			{
-//				for (const auto & field : node -> getFieldDefinitions ())
-//					OutlineTreeModel::getUserData (field)-> visible = true;
-//				
-//				nodeUserData -> showAllFields = true;
-//			}
-//		}
-//	}
-//}
-//
-//void
-//OutlineTreeView::autoExpandFields (const Gtk::TreeModel::iterator & iter)
-//{
-//	auto data = OutlineTreeModel::getData (iter);
-//	
-//	setAnimated (iter, false);
-//
-//	switch (data -> type)
-//	{
-//		case OutlineIterType::X3DFieldValue:
-//			break;
-//
-//		case OutlineIterType::X3DField:
-//		{
-//			for (const auto & child : iter -> children ())
-//			{
-//				auto userData = OutlineTreeModel::getUserData (child);
-//
-//				if (userData)
-//				{
-//					if (userData -> expanded)
-//						expand_row (Gtk::TreePath (child), false);
-//				}
-//			}
-//
-//			break;
-//		}
-//		case OutlineIterType::X3DBaseNode:
-//		{
-//			for (const auto & child : iter -> children ())
-//			{
-//				auto data     = OutlineTreeModel::getData (child);
-//				auto userData = OutlineTreeModel::getUserData (child);
-//				auto field    = static_cast <X3D::X3DFieldDefinition*> (data -> object);
-//				
-//				if (userData -> animated)
-//					continue;
-//
-//				switch (field -> getType ())
-//				{
-//					case X3D::X3DConstants::SFNode:
-//					{
-//						auto sfnode = static_cast <X3D::SFNode*> (field);
-//
-//						if (*sfnode or userData -> expanded)
-//							expand_row (Gtk::TreePath (child), false);
-//
-//						break;
-//					}
-//					case X3D::X3DConstants::MFNode:
-//					{
-//						expand_row (Gtk::TreePath (child), false);
-//						break;
-//					}
-//					default:
-//					{
-//						if (userData -> expanded)
-//							expand_row (Gtk::TreePath (child), false);
-//
-//						break;
-//					}
-//				}
-//			}
-//		}
-//	}
-//}
-//
-//void
-//OutlineTreeView::toggleExpand (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
-//{
-//	auto data = OutlineTreeModel::getData (iter);
-//
-//	if (data -> type == OutlineIterType::X3DBaseNode)
-//	{
-//		auto userData = OutlineTreeModel::getUserData (iter);
-//
-//		if (userData)
-//		{
-//			Glib::RefPtr <OutlineTreeModel>::cast_dynamic (get_model ()) -> collapse_row (path);
-//
-//			userData -> showAllFields = not userData -> showAllFields;
-//
-//			if (userData -> showAllFields)
-//				expand_row (Gtk::TreePath (iter), false);
-//		}
-//	}
-//}
-//
-//void
-//OutlineTreeView::collapseClone (const Gtk::TreeModel::iterator & iter)
-//{
-//	auto data = OutlineTreeModel::getData (iter);
-//
-//	if (data -> type == OutlineIterType::X3DBaseNode)
-//	{
-//		auto userData = OutlineTreeModel::getUserData (iter);
-//
-//		if (userData)
-//		{
-//			if (userData -> expanded)
-//			{
-//				collapse_row (userData -> path);
-//
-//				if (userData -> showAllFields)
-//					collapse_row (userData -> path);
-//			}
-//		}
-//	}
-//}
-//
+
+bool
+OutlineTreeView::on_test_expand_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
+{
+	//__LOG__ << std::endl;
+
+	collapse_clone (iter);
+
+	select_fields (iter, path);
+
+	// Return false to allow expansion, true to reject.
+	return false;
+}
+
+void
+OutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
+{
+	//__LOG__ << std::endl;
+
+	// Set expanded first to prevent loop with clones.
+	set_expanded (iter, true);
+	set_path (iter, path);
+
+	watch (iter, path);
+
+	auto_expand_fields (iter);
+}
+
+bool
+OutlineTreeView::on_test_collapse_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
+{
+	// Return false to allow collapse, true to reject.
+	return false;
+}
+
+void
+OutlineTreeView::on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
+{
+	//__LOG__ << std::endl;
+
+	unwatch_tree (iter);
+
+	set_expanded (iter, false);
+
+	toggle_expand (iter, path);
+}
+
+void
+OutlineTreeView::watch (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
+{
+	auto data = get_data (iter);
+
+	if (data -> type == OutlineIterType::X3DField)
+	{
+		auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object);
+ 
+      if (field -> getAccessType () not_eq X3D::inputOnly)
+      {
+			switch (field -> getType ())
+			{
+				case X3D::X3DConstants::SFNode:
+				case X3D::X3DConstants::MFNode:
+				{
+					field -> addInterest (this, &OutlineTreeView::collapse_field, path);
+					break;
+				}
+				default:
+					break;
+			}
+
+			field -> addInterest ((Gtk::Widget*) this, &OutlineTreeView::queue_draw);
+		}
+	}
+}
+
+void
+OutlineTreeView::unwatch_tree (const Gtk::TreeModel::iterator & iter)
+{
+	std::set <X3D::X3DChildObject*> seen;
+
+	unwatch_tree (iter, seen);
+}
+
+void
+OutlineTreeView::unwatch_tree (const Gtk::TreeModel::iterator & iter, std::set <X3D::X3DChildObject*> & seen)
+{
+	if (not seen .insert (get_data (iter) -> object) .second)
+		return;
+
+	unwatch (iter);
+
+	for (const auto & child : iter -> children ())
+		unwatch_tree (child, seen);
+}
+
+void
+OutlineTreeView::unwatch (const Gtk::TreeModel::iterator & iter)
+{
+	auto data = get_data (iter);
+
+	if (data -> type == OutlineIterType::X3DField)
+	{
+		auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object);
+
+      if (field -> getAccessType () not_eq X3D::inputOnly)
+      {
+			switch (field -> getType ())
+			{
+				case X3D::X3DConstants::SFNode:
+				case X3D::X3DConstants::MFNode:
+				{
+					field -> removeInterest (this, &OutlineTreeView::collapse_field);
+					break;
+				}
+				default:
+					break;
+			}
+
+			field -> removeInterest ((Gtk::Widget*) this, &OutlineTreeView::queue_draw);
+		}
+	}
+}
+
+void
+OutlineTreeView::collapse_field (const Gtk::TreeModel::Path & path)
+{
+	__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
+
+	Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
+
+	set_animated (iter, true);	
+	set_expanded (iter, false);
+
+	get_model () -> collapse_row (path);
+	unwatch_tree (iter);
+
+	get_model () -> row_deleted (path);
+	get_model () -> row_inserted (path, iter);
+	get_model () -> row_has_child_toggled (path, iter);
+
+	Gtk::TreeModel::Path parent = path;
+	parent .up ();
+	expand_row (parent, false);
+}
+
+void
+OutlineTreeView::collapse_clone (const Gtk::TreeModel::iterator & iter)
+{
+	if (get_data (iter) -> type == OutlineIterType::X3DBaseNode)
+	{
+		auto userData = get_user_data (iter);
+
+		if (userData)
+		{
+			if (userData -> expanded)
+			{
+				userData -> expandAll = false;
+			
+				collapse_row (userData -> path);
+			}
+		}
+	}
+}
+
+void
+OutlineTreeView::select_fields (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
+{
+	if (get_data (iter) -> type == OutlineIterType::X3DBaseNode)
+	{
+		auto nodeUserData = get_user_data (iter);
+
+		if (nodeUserData)
+		{	
+			auto data   = get_data (iter);
+			auto sfnode = static_cast <X3D::SFNode*> (data -> object);
+			auto node   = sfnode -> getValue ();
+
+			get_model () -> collapse_row (path);
+
+			// Select visible fields
+
+			if (nodeUserData -> expandAll)
+			{
+				for (const auto & field : node -> getFieldDefinitions ())
+					get_user_data (field)-> visible = true;
+
+				nodeUserData -> expandAll = false;
+			}
+			else
+			{
+				bool visible = false;
+
+				for (const auto & field : node -> getFieldDefinitions ())
+				{
+					auto userData = get_model () -> get_user_data (field);
+
+					if (not field -> isInitializeable () or node -> isDefaultValue (field))
+					{
+						userData -> visible = false;
+						continue;
+					}
+
+					userData -> visible = true;
+					visible = true;
+				}
+				
+				if (visible)
+					nodeUserData -> expandAll = true;
+
+				else
+				{
+					for (const auto & field : node -> getFieldDefinitions ())
+						get_user_data (field)-> visible = true;
+
+					nodeUserData -> expandAll = false;
+				}
+			}
+		}
+	}
+}
+
+void
+OutlineTreeView::toggle_expand (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
+{
+	if (get_data (iter) -> type == OutlineIterType::X3DBaseNode)
+	{
+		auto userData = get_user_data (iter);
+
+		if (userData)
+		{
+			if (userData -> expandAll)
+				expand_row (path, false);
+		}
+	}
+}
+
+void
+OutlineTreeView::auto_expand_fields (const Gtk::TreeModel::iterator & iter)
+{
+	set_animated (iter, false);
+
+	switch (get_data (iter) -> type)
+	{
+		case OutlineIterType::X3DFieldValue:
+			break;
+
+		case OutlineIterType::X3DField:
+		{
+			for (const auto & child : iter -> children ())
+			{
+				auto userData = get_user_data (child);
+
+				if (userData)
+				{
+					if (userData -> expanded)
+						expand_row (Gtk::TreePath (child), false);
+				}
+			}
+
+			break;
+		}
+		case OutlineIterType::X3DBaseNode:
+		{
+			for (const auto & child : iter -> children ())
+			{
+				auto data     = get_data (child);
+				auto userData = get_user_data (child);
+				auto field    = static_cast <X3D::X3DFieldDefinition*> (data -> object);
+
+				if (userData -> animated)
+					continue;
+
+				switch (field -> getType ())
+				{
+					case X3D::X3DConstants::SFNode:
+					{
+						auto sfnode = static_cast <X3D::SFNode*> (field);
+
+						if (*sfnode or userData -> expanded)
+							expand_row (Gtk::TreePath (child), false);
+
+						break;
+					}
+					case X3D::X3DConstants::MFNode:
+					{
+						expand_row (Gtk::TreePath (child), false);
+						break;
+					}
+					default:
+					{
+						if (userData -> expanded)
+							expand_row (Gtk::TreePath (child), false);
+
+						break;
+					}
+				}
+			}
+		}
+	}
+}
+
 //void
 //OutlineTreeView::select (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
 //{

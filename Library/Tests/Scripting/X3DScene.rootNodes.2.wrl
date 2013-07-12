@@ -1,0 +1,92 @@
+#VRML V2.0 utf8
+
+META "title" "Scene.rootNodes.2"
+
+DEF Buttons Group {
+  children [
+    DEF InsertButton Transform {
+      translation -0.3 -3 0
+      scale 0.1 0.1 0.1
+      children [
+        DEF InsertTouch TouchSensor { }
+        DEF Inline Inline {
+          url "../Basic/EXPORT.wrl"
+        }
+        DEF InsertScript Script {
+          eventIn SFTime  set_time
+          field   SFVec3f minTranslation -1 -1 -1
+          field   SFVec3f maxTranslation 1 1 1
+          field   SFVec3f scale 0.1 0.1 0.1
+
+          url "vrmlscript:
+
+function set_time ()
+{
+	var scene = Browser .currentScene;
+	scene .rootNodes [scene .rootNodes .length] = createNode ();
+}
+
+function createNode ()
+{
+	var scene = Browser .currentScene;
+
+	var transform = scene .createNode ('Transform');
+	var shape = scene .createNode ('Shape');
+	
+	transform .translation = random3f (minTranslation, maxTranslation);
+	transform .scale       = scale;
+	transform .children    = new MFNode (shape);
+
+	var material = scene .createNode ('Material');
+	material .diffuseColor = new SFColor (Math .random (), Math .random (), Math .random ());
+
+	shape .appearance = scene .createNode ('Appearance');
+	shape .appearance .material = material;
+	shape .geometry = scene .createNode ('Sphere');
+
+	return transform;
+}
+
+function random3f (min, max)
+{
+	var size = max .subtract (min);
+
+	var value = new SFVec3f (Math .random () * size .x,
+	                         Math .random () * size .y,
+	                         Math .random () * size .z);
+
+	return min .add (value);
+	
+}
+"
+          directOutput TRUE
+        }
+      ]
+    }
+    DEF ClearButton Transform {
+      translation 0.3 -3 0
+      scale 0.1 0.1 0.1
+      children [
+        DEF ClearTouch TouchSensor { }
+        DEF Inline Inline {
+          url "../Basic/EXPORT.wrl"
+        }
+        DEF ClearScript Script {
+          eventIn SFTime set_time
+
+          url "vrmlscript:
+
+function set_time ()
+{
+	Browser .currentScene .rootNodes .length = 1;
+}
+"
+          directOutput TRUE
+        }
+      ]
+    }
+  ]
+}
+
+ROUTE InsertTouch.touchTime TO InsertScript.set_time
+ROUTE ClearTouch.touchTime TO ClearScript.set_time

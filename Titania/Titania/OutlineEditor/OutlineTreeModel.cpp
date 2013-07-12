@@ -157,7 +157,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 {
 	//__LOG__ << std::endl;
 
-	auto data = getData (iter);
+	auto data = get_data (iter);
 
 	switch (column)
 	{
@@ -211,8 +211,8 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 			selected_color_column_type::ValueType val;
 			val .init (selected_color_column_type::ValueType::value_type ());
 
-			auto userData       = getUserData (iter);
-			auto parentUserData = getUserData (data -> object);
+			auto userData       = get_user_data (iter);
+			auto parentUserData = get_user_data (data -> object);
 
 			val .set ((userData and userData -> selected) or parentUserData -> selected);
 
@@ -276,7 +276,7 @@ OutlineTreeModel::get_path_vfunc (const iterator & iter) const
 {
 	//__LOG__ << std::endl;
 
-	auto data = getData (iter);
+	auto data = get_data (iter);
 
 	return get_path (data -> parents, data -> index);
 }
@@ -338,7 +338,7 @@ OutlineTreeModel::iter_nth_root_child_vfunc (int index, iterator & iter) const
 		OutlineIterData::parents_type parents;
 		parents .emplace_front (OutlineIterType::X3DField, rootNodes, 0);
 
-		setData (iter, OutlineIterType::X3DBaseNode, &rootNodes -> at (index), index, parents);
+		set_data (iter, OutlineIterType::X3DBaseNode, &rootNodes -> at (index), index, parents);
 		return true;
 	}
 
@@ -350,7 +350,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 {
 	//__LOG__ << std::endl;
 
-	auto data = getData (iter);
+	auto data = get_data (iter);
 
 	switch (data -> type)
 	{
@@ -394,7 +394,7 @@ OutlineTreeModel::iter_n_children_vfunc (const iterator & iter) const
 {
 	//__LOG__ << std::endl;
 
-	auto data = getData (iter);
+	auto data = get_data (iter);
 
 	switch (data -> type)
 	{
@@ -444,7 +444,7 @@ OutlineTreeModel::iter_n_children_vfunc (const iterator & iter) const
 			auto sfnode = static_cast <X3D::SFNode*> (data -> object);
 
 			if (*sfnode)
-				return getFields (sfnode) .size ();
+				return get_fields (sfnode) .size ();
 
 			return 0;
 		}
@@ -468,7 +468,7 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int index, iter
 
 	iter .set_stamp (stamp);
 
-	auto data = getData (parent);
+	auto data = get_data (parent);
 
 	auto parents = data -> parents;
 	parents .emplace_back (data -> type, data -> object, data -> index);
@@ -490,7 +490,7 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int index, iter
 
 					if (index < 1)
 					{
-						setData (iter, OutlineIterType::X3DBaseNode, sfnode, index, parents);
+						set_data (iter, OutlineIterType::X3DBaseNode, sfnode, index, parents);
 						return true;
 					}
 
@@ -502,7 +502,7 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int index, iter
 
 					if ((size_t) index < mfnode -> size ())
 					{
-						setData (iter, OutlineIterType::X3DBaseNode, &mfnode -> at (index), index, parents);
+						set_data (iter, OutlineIterType::X3DBaseNode, &mfnode -> at (index), index, parents);
 						return true;
 					}
 
@@ -531,7 +531,7 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int index, iter
 				{
 					if (index == 0)
 					{
-						setData (iter, OutlineIterType::X3DFieldValue, field, index, parents);
+						set_data (iter, OutlineIterType::X3DFieldValue, field, index, parents);
 						return true;
 					}
 
@@ -546,11 +546,11 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int index, iter
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			auto fields = std::move (getFields (data -> object));
+			auto fields = std::move (get_fields (data -> object));
 
 			if ((size_t) index < fields .size ())
 			{
-				setData (iter, OutlineIterType::X3DField, fields [index], index, parents);
+				set_data (iter, OutlineIterType::X3DField, fields [index], index, parents);
 				return true;
 			}
 
@@ -568,7 +568,7 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 
 	iter_next .set_stamp (stamp);
 
-	auto   data  = getData (iter);
+	auto   data  = get_data (iter);
 	size_t index = data -> index + 1;
 
 	switch (data -> type)
@@ -578,11 +578,11 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 
 		case OutlineIterType::X3DField:
 		{
-			auto fields = std::move (getFields (data -> parents .back () .object));
+			auto fields = std::move (get_fields (data -> parents .back () .object));
 
 			if (index < fields .size ())
 			{
-				setData (iter_next, OutlineIterType::X3DField, fields [index], index, data -> parents);
+				set_data (iter_next, OutlineIterType::X3DField, fields [index], index, data -> parents);
 				return true;
 			}
 
@@ -600,7 +600,7 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 
 					if (index < mfnode -> size ())
 					{
-						setData (iter_next, OutlineIterType::X3DBaseNode, &mfnode -> at (index), index, data -> parents);
+						set_data (iter_next, OutlineIterType::X3DBaseNode, &mfnode -> at (index), index, data -> parents);
 						return true;
 					}
 
@@ -622,7 +622,7 @@ OutlineTreeModel::iter_parent_vfunc (const iterator & child, iterator & iter) co
 
 	iter .set_stamp (stamp);
 
-	auto data    = getData (child);
+	auto data    = get_data (child);
 	auto parents = data -> parents;
 
 	if (parents .size () == 1)
@@ -634,7 +634,7 @@ OutlineTreeModel::iter_parent_vfunc (const iterator & child, iterator & iter) co
 
 	parents .pop_back ();
 
-	setData (iter, type, object, index, parents);
+	set_data (iter, type, object, index, parents);
 	return true;
 }
 
@@ -687,53 +687,55 @@ OutlineTreeModel::collapse_row (const Path & path)
 }
 
 X3D::FieldDefinitionArray
-OutlineTreeModel::getFields (X3D::X3DChildObject* object)
+OutlineTreeModel::get_fields (X3D::X3DChildObject* object)
 {
 	auto sfnode = static_cast <X3D::SFNode*> (object);
 	auto node   = sfnode -> getValue ();
 
-	auto fields            = node -> getPreDefinedFields ();
-	auto userDefinedFields = node -> getUserDefinedFields ();
-
-	if (fields .size ())
-		fields .insert (fields .begin () + 1, userDefinedFields .begin (), userDefinedFields .end ());
-
-	else
-		fields = std::move (userDefinedFields);
-
-	//
-
-	X3D::FieldDefinitionArray visibleFields;
-
-	for (const auto & field : fields)
+	if (node)
 	{
-		if (getUserData (field) -> visible)
-			visibleFields .push_back (field);
-	}
+		auto fields            = node -> getPreDefinedFields ();
+		auto userDefinedFields = node -> getUserDefinedFields ();
 
-	if (visibleFields .size ())
+		if (fields .size ())
+			fields .insert (fields .begin () + 1, userDefinedFields .begin (), userDefinedFields .end ());
+
+		else
+			fields = std::move (userDefinedFields);
+
+		//
+
+		X3D::FieldDefinitionArray visibleFields;
+
+		for (const auto & field : fields)
+		{
+			if (get_user_data (field) -> visible)
+				visibleFields .push_back (field);
+		}
+
 		return visibleFields;
-
-	return fields;
+	}
+	
+	return X3D::FieldDefinitionArray ();
 }
 
 OutlineUserData*
-OutlineTreeModel::getUserData (const iterator & iter)
+OutlineTreeModel::get_user_data (const iterator & iter)
 {
-	auto data   = getData (iter);
+	auto data   = get_data (iter);
 	auto object = data -> object;
 
 	if (data -> type == OutlineIterType::X3DBaseNode)
 		object = static_cast <X3D::SFNode*> (object) -> getValue ();
 
 	if (object)
-		return getUserData (object);
+		return get_user_data (object);
 
 	return NULL;
 }
 
 OutlineUserData*
-OutlineTreeModel::getUserData (X3D::X3DChildObject* object)
+OutlineTreeModel::get_user_data (X3D::X3DChildObject* object)
 {
 	if (not object -> getUserData ())
 		object -> setUserData (new OutlineUserData ());
@@ -742,7 +744,7 @@ OutlineTreeModel::getUserData (X3D::X3DChildObject* object)
 }
 
 void
-OutlineTreeModel::setData (iterator & iter,
+OutlineTreeModel::set_data (iterator & iter,
                            OutlineIterType type,
                            X3D::X3DChildObject* object,
                            size_t index,
@@ -757,7 +759,7 @@ OutlineTreeModel::setData (iterator & iter,
 }
 
 OutlineIterData*
-OutlineTreeModel::getData (const iterator & iter)
+OutlineTreeModel::get_data (const iterator & iter)
 {
 	return static_cast <OutlineIterData*> (iter .gobj () -> user_data);
 }

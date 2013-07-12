@@ -1,3 +1,10 @@
+2013-07-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
+	* Clone.wrl:
+	* X3DScene.rootNodes.wrl:
+	* X3DScene.rootNodes.2.wrl: 
+
 2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Add&RemoveChildren.wrl: 

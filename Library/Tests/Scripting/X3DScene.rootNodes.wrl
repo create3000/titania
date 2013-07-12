@@ -38,6 +38,7 @@ function set_time ()
 	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 }
 "
+  directOutput TRUE
 }
 
 ROUTE Touch.touchTime TO Debug.set_time

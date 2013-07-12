@@ -52,6 +52,8 @@
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_MODEL_H__
 
 #include "../OutlineEditor/OutlineUserData.h"
+#include "../OutlineEditor/OutlineIterData.h"
+#include "../OutlineEditor/OutlineTree.h"
 #include <Titania/X3D.h>
 
 #include <deque>
@@ -60,113 +62,6 @@
 
 namespace titania {
 namespace puck {
-
-enum class OutlineIterType
-{
-	X3DFieldValue,
-	X3DField,
-	X3DBaseNode
-
-};
-
-class OutlineIterParent
-{
-public:
-
-	OutlineIterParent (OutlineIterType type, X3D::X3DChildObject* object, size_t index) :
-		object (object),
-		type (type),
-		index (index)
-	{ }
-
-	X3D::X3DChildObject* const object;
-	const OutlineIterType      type;
-	const size_t               index;
-
-};
-
-class OutlineIterData :
-	public OutlineIterParent
-{
-public:
-
-	typedef std::deque <OutlineIterParent> parents_type;
-
-	OutlineIterData (OutlineIterType type, X3D::X3DChildObject* object, int index, const parents_type & parents) :
-		OutlineIterParent (type, object, index),
-		parents (parents)
-	{ }
-
-	const parents_type parents;
-
-};
-
-class OutlineNode
-{
-public:
-
-	OutlineNode () :
-		data (NULL),
-		children ()
-	{ }
-
-	const std::deque <OutlineNode> &
-	getChildren ()
-	{ return children; }
-
-	void
-	clear ()
-	{ children .clear (); }
-
-	~OutlineNode ()
-	{
-		if (data)
-			delete data;
-	}
-
-	OutlineIterData*         data;
-	std::deque <OutlineNode> children;
-
-};
-
-class OutlineTree :
-	public OutlineNode
-{
-public:
-
-	OutlineTree () :
-		OutlineNode ()
-	{ }
-
-	OutlineNode &
-	getNode (const Gtk::TreePath & path)
-	{
-		OutlineNode* node = this;
-
-		for (const auto & index : path)
-			node = &getChild (node, index);
-
-		return *node;
-	}
-
-	void
-	removeChildren (const Gtk::TreePath & path)
-	{
-		getNode (path) .children .clear ();
-	}
-
-private:
-
-	OutlineNode &
-	getChild (OutlineNode* parent, size_t index)
-	{
-		if (index + 1 > parent -> children .size ())
-			parent -> children .resize (index + 1);
-
-		return parent -> children [index];
-	}
-
-};
 
 class OutlineTreeModel :
 	public Glib::Object, public Gtk::TreeModel
@@ -188,15 +83,18 @@ public:
 
 	static
 	OutlineUserData*
-	getUserData (const iterator &);
+	get_user_data (const iterator &);
 
 	static
 	OutlineUserData*
-	getUserData (X3D::X3DChildObject*);
+	get_user_data (X3D::X3DChildObject*);
 
 	static
 	OutlineIterData*
-	getData (const iterator &);
+	get_data (const iterator &);
+
+	void
+	select_fields (const iterator & iter);
 
 	virtual
 	~OutlineTreeModel ();
@@ -298,10 +196,10 @@ private:
 
 	static
 	X3D::FieldDefinitionArray
-	getFields (X3D::X3DChildObject*);
+	get_fields (X3D::X3DChildObject*);
 
 	void
-	setData (iterator &, OutlineIterType type, X3D::X3DChildObject* object, size_t index, const OutlineIterData::parents_type & parents) const;
+	set_data (iterator &, OutlineIterType type, X3D::X3DChildObject* object, size_t index, const OutlineIterData::parents_type & parents) const;
 
 	typedef Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>> icon_column_type;
 	typedef Gtk::TreeModelColumn <OutlineIterData*>            data_column_type;
