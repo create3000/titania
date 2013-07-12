@@ -51,6 +51,7 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_MODEL_H__
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_MODEL_H__
 
+#include "../Base/X3DBaseInterface.h"
 #include "../OutlineEditor/OutlineUserData.h"
 #include "../OutlineEditor/OutlineIterData.h"
 #include "../OutlineEditor/OutlineTree.h"
@@ -64,7 +65,7 @@ namespace titania {
 namespace puck {
 
 class OutlineTreeModel :
-	public Glib::Object, public Gtk::TreeModel
+	public Glib::Object, public Gtk::TreeModel, public X3DBaseInterface
 {
 public:
 
@@ -90,8 +91,12 @@ public:
 	get_user_data (X3D::X3DChildObject*);
 
 	static
-	OutlineIterData*
-	get_data (const iterator &);
+	OutlineIterType
+	get_data_type (const iterator &);
+
+	static
+	X3D::X3DChildObject*
+	get_object (const iterator &);
 
 	void
 	select_fields (const iterator & iter);
@@ -101,6 +106,21 @@ public:
 
 
 private:
+
+	void
+	set_data (iterator &, OutlineIterType type, X3D::X3DChildObject* object, size_t index, const OutlineIterData::parents_type & parents) const;
+
+	static
+	OutlineIterData*
+	get_data (const iterator &);
+
+	static
+	const OutlineIterData::parents_type &
+	get_parents (const iterator &);
+
+	static
+	size_t
+	get_index (const iterator &);
 
 	void
 	set_rootNodes ();
@@ -197,9 +217,6 @@ private:
 	static
 	X3D::FieldDefinitionArray
 	get_fields (X3D::X3DChildObject*);
-
-	void
-	set_data (iterator &, OutlineIterType type, X3D::X3DChildObject* object, size_t index, const OutlineIterData::parents_type & parents) const;
 
 	typedef Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>> icon_column_type;
 	typedef Gtk::TreeModelColumn <OutlineIterData*>            data_column_type;

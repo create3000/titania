@@ -1,6 +1,13 @@
 2013-07-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineTreeView.h:
+	* OutlineTreeModel.h:
+	* OutlineTreeView.cpp:
+	* OutlineTreeModel.cpp: 
+
+2013-07-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* OutlineTreeView.h:
 	* OutlineUserData.h:
 	* OutlineSelection.h:
 	* OutlineTreeView.cpp:

@@ -82,8 +82,11 @@ public:
 	OutlineUserData*
 	get_user_data (X3D::X3DChildObject*) const;
 
-	OutlineIterData*
-	get_data (const Gtk::TreeModel::iterator &) const;
+	OutlineIterType
+	get_data_type (const Gtk::TreeModel::iterator &) const;
+
+	X3D::X3DChildObject*
+	get_object (const Gtk::TreeModel::iterator &) const;
 
 	virtual
 	~OutlineTreeView ();

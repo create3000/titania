@@ -59,11 +59,13 @@ OutlineTreeModel::OutlineTreeModel (const X3D::X3DSFNode <X3D::Browser> & browse
 	Glib::ObjectBase (typeid (OutlineTreeModel)),
 	    Glib::Object (),
 	  Gtk::TreeModel (),
+	X3DBaseInterface (),
 	executionContext (browser -> getExecutionContext ()),
 	           stamp ((long int)                          this),
 	            tree ()
 {
 	//__LOG__ << std::endl;
+	setBrowser (browser);
 
 	noneImage     = Gdk::Pixbuf::create_from_file (get_icon ("none.png"));
 	baseNodeImage = Gdk::Pixbuf::create_from_file (get_icon ("Node.png"));
@@ -79,6 +81,51 @@ OutlineTreeModel::create (const X3D::X3DSFNode <X3D::Browser> & browser)
 {
 	//__LOG__ << std::endl;
 	return Glib::RefPtr <OutlineTreeModel> (new OutlineTreeModel (browser));
+}
+
+OutlineIterType
+OutlineTreeModel::get_data_type (const iterator & iter)
+{
+	return get_data (iter) -> type;
+}
+
+X3D::X3DChildObject*
+OutlineTreeModel::get_object (const iterator & iter)
+{
+	return get_data (iter) -> object;
+}
+
+const OutlineIterData::parents_type &
+OutlineTreeModel::get_parents (const iterator & iter)
+{
+	return get_data (iter) -> parents;
+}
+
+size_t
+OutlineTreeModel::get_index (const iterator & iter)
+{
+	return get_data (iter) -> index;
+}
+
+void
+OutlineTreeModel::set_data (iterator & iter,
+                           OutlineIterType type,
+                           X3D::X3DChildObject* object,
+                           size_t index,
+                           const OutlineIterData::parents_type & parents) const
+{
+	auto & node = tree .getNode (get_path (parents, index));
+
+	if (not node .data)
+		node .data = new OutlineIterData (type, object, index, parents);
+
+	iter .gobj () -> user_data = node .data;
+}
+
+OutlineIterData*
+OutlineTreeModel::get_data (const iterator & iter)
+{
+	return static_cast <OutlineIterData*> (iter .gobj () -> user_data);
 }
 
 void
@@ -741,27 +788,6 @@ OutlineTreeModel::get_user_data (X3D::X3DChildObject* object)
 		object -> setUserData (new OutlineUserData ());
 
 	return static_cast <OutlineUserData*> (object -> getUserData ());
-}
-
-void
-OutlineTreeModel::set_data (iterator & iter,
-                           OutlineIterType type,
-                           X3D::X3DChildObject* object,
-                           size_t index,
-                           const OutlineIterData::parents_type & parents) const
-{
-	auto & node = tree .getNode (get_path (parents, index));
-
-	if (not node .data)
-		node .data = new OutlineIterData (type, object, index, parents);
-
-	iter .gobj () -> user_data = node .data;
-}
-
-OutlineIterData*
-OutlineTreeModel::get_data (const iterator & iter)
-{
-	return static_cast <OutlineIterData*> (iter .gobj () -> user_data);
 }
 
 OutlineTreeModel::~OutlineTreeModel ()
