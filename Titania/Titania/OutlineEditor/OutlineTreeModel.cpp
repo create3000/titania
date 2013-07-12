@@ -86,19 +86,9 @@ OutlineTreeModel::set_rootNodes ()
 {
 	//__LOG__ << std::endl;
 
-	size_t size = tree .getChildren () .size ();
+	clear ();	
 
-	tree .clear ();
-
-	for (int i = size; i >= 0; -- i)
-	{
-		Path path;
-		path .push_back (i);
-
-		row_deleted (path);
-	}
-
-	size = executionContext -> getRootNodes () .size ();
+	size_t size = executionContext -> getRootNodes () .size ();
 
 	for (size_t i = 0; i < size; ++ i)
 	{
@@ -110,6 +100,22 @@ OutlineTreeModel::set_rootNodes ()
 		row_inserted (path, iter);
 		row_has_child_toggled (path, iter);
 	}
+}
+
+void
+OutlineTreeModel::clear ()
+{
+	//__LOG__ << std::endl;
+
+	size_t size = tree .getChildren () .size ();
+
+	tree .clear ();
+
+	Path path;
+	path .push_back (0);
+
+	for (size_t i = 0; i < size; ++ i)
+		row_deleted (path);
 }
 
 Gtk::TreeModelFlags

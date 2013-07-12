@@ -78,75 +78,78 @@ private:
 	void
 	set_world ();
 
-	virtual
-	bool
-	on_key_press_event (GdkEventKey*);
-
-	virtual
-	bool
-	on_key_release_event (GdkEventKey*);
-
-	void
-	on_row_inserted (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &);
-
-	void
-	on_row_has_child_toggled (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &);
-
-	virtual
-	bool
-	on_test_expand_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	virtual
-	void
-	on_row_expanded (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	virtual
-	bool
-	on_test_collapse_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	virtual
-	void
-	on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path);
-
-	virtual
-	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
-
-	void
-	setPath (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	void
-	setExpanded (const Gtk::TreeModel::iterator &, bool);
-
-	void
-	setAnimated (const Gtk::TreeModel::iterator &, bool);
-
-	void
-	watch (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	void
-	unwatchTree (const Gtk::TreeModel::iterator &);
-
-	void
-	unwatch (const Gtk::TreeModel::iterator &);
-
-	void
-	collapseField (const Gtk::TreeModel::Path &);
-
-	void
-	selectFields (const Gtk::TreeModel::iterator &);
-
-	void
-	autoExpandFields (const Gtk::TreeModel::iterator &);
-
-	void
-	toggleExpand (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path & path);
-
-	void
-	collapseClone (const Gtk::TreeModel::iterator &);
-
-	void
-	select (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+//	virtual
+//	bool
+//	on_key_press_event (GdkEventKey*);
+//
+//	virtual
+//	bool
+//	on_key_release_event (GdkEventKey*);
+//
+//	void
+//	on_row_inserted (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &);
+//
+//	void
+//	on_row_has_child_toggled (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &);
+//
+//	virtual
+//	bool
+//	on_test_expand_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+//
+//	virtual
+//	void
+//	on_row_expanded (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+//
+//	virtual
+//	bool
+//	on_test_collapse_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+//
+//	virtual
+//	void
+//	on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path);
+//
+//	virtual
+//	void
+//	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
+//
+//	void
+//	setPath (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+//
+//	void
+//	setExpanded (const Gtk::TreeModel::iterator &, bool);
+//
+//	void
+//	setAnimated (const Gtk::TreeModel::iterator &, bool);
+//
+//	void
+//	watch (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+//
+//	void
+//	unwatchTree (const Gtk::TreeModel::iterator &);
+//
+//	void
+//	unwatchTree (const Gtk::TreeModel::iterator &, std::set <X3D::X3DChildObject*> &);
+//
+//	void
+//	unwatch (const Gtk::TreeModel::iterator &);
+//
+//	void
+//	collapseField (const Gtk::TreeModel::Path &);
+//
+//	void
+//	selectFields (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+//
+//	void
+//	autoExpandFields (const Gtk::TreeModel::iterator &);
+//
+//	void
+//	toggleExpand (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path & path);
+//
+//	void
+//	collapseClone (const Gtk::TreeModel::iterator &);
+//
+//	void
+//	select (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
 	class Keys
 	{

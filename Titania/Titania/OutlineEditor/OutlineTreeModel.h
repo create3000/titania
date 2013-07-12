@@ -207,6 +207,9 @@ private:
 	void
 	set_rootNodes ();
 
+	void
+	clear ();
+
 	virtual
 	Gtk::TreeModelFlags
 	get_flags_vfunc () const;
