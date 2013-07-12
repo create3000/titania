@@ -77,7 +77,7 @@ OutlineSelection::set_selection ()
 }
 
 void
-OutlineSelection::setSelectMultiple (bool value)
+OutlineSelection::set_select_multiple (bool value)
 {
 	selectMultiple = value;
 

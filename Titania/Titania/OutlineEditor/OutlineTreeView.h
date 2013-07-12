@@ -97,32 +97,47 @@ private:
 	void
 	set_path (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
+	Gtk::TreeModel::Path
+	get_path (const Gtk::TreeModel::iterator &) const;
+
 	void
 	set_expanded (const Gtk::TreeModel::iterator &, bool);
+	
+	bool
+	get_expanded (const Gtk::TreeModel::iterator &) const;
+
+	void
+	set_expand_all (const Gtk::TreeModel::iterator &, bool);
+	
+	bool
+	get_expand_all (const Gtk::TreeModel::iterator &) const;
 
 	void
 	set_animated (const Gtk::TreeModel::iterator &, bool);
 
+	bool
+	get_animated (const Gtk::TreeModel::iterator &) const;
+
 	void
 	set_world ();
 
-//	virtual
-//	bool
-//	on_key_press_event (GdkEventKey*);
-//
-//	virtual
-//	bool
-//	on_key_release_event (GdkEventKey*);
-//
-//	virtual
-//	void
-//	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
-//
-//	void
-//	on_row_inserted (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &);
-//
-//	void
-//	on_row_has_child_toggled (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &);
+	virtual
+	bool
+	on_key_press_event (GdkEventKey*);
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey*);
+
+	virtual
+	void
+	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
+
+	void
+	on_row_inserted (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &);
+
+	void
+	on_row_has_child_toggled (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &);
 
 	virtual
 	bool
@@ -167,8 +182,8 @@ private:
 	void
 	auto_expand_fields (const Gtk::TreeModel::iterator &);
 
-//	void
-//	select (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+	void
+	select (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
 	class Keys
 	{

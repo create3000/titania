@@ -70,7 +70,7 @@ public:
 	OutlineSelection (OutlineTreeView* const, const X3D::X3DSFNode <X3D::Browser> &);
 
 	void
-	setSelectMultiple (bool);
+	set_select_multiple (bool);
 
 	void
 	select (const X3D::SFNode &);
