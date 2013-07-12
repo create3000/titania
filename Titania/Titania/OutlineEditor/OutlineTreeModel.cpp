@@ -51,6 +51,7 @@
 #include "OutlineTreeModel.h"
 
 #include "../Configuration/config.h"
+#include <Titania/X3D/Parser/RegEx.h>
 
 namespace titania {
 namespace puck {
@@ -357,7 +358,22 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 					auto sfnode = static_cast <X3D::SFNode*> (get_object (iter));
 
 					if (*sfnode)
-						val .set ("<b>" + Glib::Markup::escape_text (sfnode -> getNodeTypeName ()) + "</b> " + Glib::Markup::escape_text (sfnode -> getNodeName ()));
+					{
+						X3D::X3DBaseNode* node = sfnode -> getValue ();
+						
+						std::string typeName  = Glib::Markup::escape_text (node -> getTypeName ());
+						std::string name      = Glib::Markup::escape_text (node -> getName ());
+						size_t      numClones = node -> getNumClones ();
+						
+						X3D::RegEx::_Num .Replace ("", &name);
+
+						std::string string ="<b>" + typeName + "</b> " + name;
+
+						if (numClones > 1)
+							string += " [" + std::to_string (numClones) + "]";
+
+						val .set (string);
+					}
 
 					else
 						val .set ("<b>NULL</b>");
