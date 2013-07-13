@@ -69,7 +69,7 @@ ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
 	      X3DChildNode (),
 	X3DViewpointObject (),
 	            fields (),
-	  visibilitySensor (new VisibilitySensor (executionContext)),
+	  proximitySensor (new ProximitySensor (executionContext)),
 	  viewpointObjects ()
 {
 	setComponent ("Navigation");
@@ -84,7 +84,7 @@ ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "children",          children ());
 
 	addChildren (isActive (),
-	             visibilitySensor);
+	             proximitySensor);
 }
 
 X3DBaseNode*
@@ -99,11 +99,14 @@ ViewpointGroup::initialize ()
 	X3DChildNode::initialize ();
 	X3DViewpointObject::initialize ();
 
-	visibilitySensor -> setup ();
-	visibilitySensor -> isActive () .addInterest (isActive ());
+	proximitySensor -> setup ();
+	proximitySensor -> isActive () .addInterest (isActive ());
 
-	size ()   .addInterest (visibilitySensor -> size ());
-	center () .addInterest (visibilitySensor -> center ());
+	size ()   .addInterest (proximitySensor -> size ());
+	center () .addInterest (proximitySensor -> center ());
+	
+	proximitySensor -> size ()   = size ();
+	proximitySensor -> center () = center ();
 
 	displayed () .addInterest (this, &ViewpointGroup::set_displayed);
 	size ()      .addInterest (this, &ViewpointGroup::set_size);
@@ -131,13 +134,13 @@ ViewpointGroup::set_size ()
 {
 	if (size () == Vector3f ())
 	{
-		if (not visibilitySensor -> isActive ())
+		if (not proximitySensor -> isActive ())
 			isActive () = true;
 
-		visibilitySensor -> enabled () = false;
+		proximitySensor -> enabled () = false;
 	}
 	else
-		visibilitySensor -> enabled () = true;
+		proximitySensor -> enabled () = true;
 }
 
 void
@@ -165,16 +168,19 @@ ViewpointGroup::set_isActive ()
 void
 ViewpointGroup::traverse (TraverseType type)
 {
-	visibilitySensor -> traverse (type);
+	proximitySensor -> traverse (type);
 
-	for (const auto & viewpointObject : viewpointObjects)
-		viewpointObject -> traverse (type);
+	if (proximitySensor -> isActive () or size () == Vector3f ())
+	{
+		for (const auto & viewpointObject : viewpointObjects)
+			viewpointObject -> traverse (type);
+	}
 }
 
 void
 ViewpointGroup::dispose ()
 {
-	visibilitySensor .dispose ();
+	proximitySensor .dispose ();
 
 	X3DChildNode::dispose ();
 	X3DViewpointObject::dispose ();

@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_NAVIGATION_VIEWPOINT_GROUP_H__
 
 #include "../Core/X3DChildNode.h"
-#include "../EnvironmentalSensor/VisibilitySensor.h"
+#include "../EnvironmentalSensor/ProximitySensor.h"
 #include "../Navigation/X3DViewpointObject.h"
 
 namespace titania {
@@ -168,7 +168,7 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <VisibilitySensor>     visibilitySensor;
+	X3DSFNode <ProximitySensor>     proximitySensor;
 	std::deque <X3DViewpointObject*> viewpointObjects;
 
 };

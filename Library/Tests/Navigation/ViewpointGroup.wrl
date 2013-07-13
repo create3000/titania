@@ -9,6 +9,7 @@ Viewpoint {
 
 ViewpointGroup {
   description "Group"
+  size 20 20 20
   children [
     Viewpoint {
       description "First"
@@ -30,6 +31,18 @@ ViewpointGroup {
   ]
 }
 
-Inline {
-  url "../Networking/Cube.wrl"
-}
+ Transform {
+    scale 20 20 20
+    children [
+      Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.5 0 1
+            transparency 0.5
+          }
+        }
+        geometry Box { }
+      }
+    ]
+  }
+

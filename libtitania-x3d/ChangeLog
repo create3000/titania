@@ -1,5 +1,10 @@
 2013-07-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ViewpointGroup.h:
+	* ViewpointGroup.cpp: 
+
+2013-07-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFVec4.h:
 	* SFVec3.h:
 	* SFVec2.h:
