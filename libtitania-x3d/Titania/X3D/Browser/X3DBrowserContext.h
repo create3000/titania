@@ -210,7 +210,7 @@ public:
 	///  @name Event handling
 
 	void
-	addEvent ();
+	addEvent ();;
 
 	///  @name Rendering
 

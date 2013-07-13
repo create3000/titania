@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -229,7 +229,7 @@ public:
 
 private:
 
-	using X3DField <ValueType>::notifyParents;
+	using X3DField <ValueType>::addEvent;
 	using X3DField <ValueType>::get;
 
 };
@@ -248,7 +248,7 @@ void
 SFMatrix4 <ValueType>::set1Value (const size_type & index, const scalar_type & value)
 {
 	get () .data () [index] = value;
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -306,7 +306,7 @@ void
 SFMatrix4 <ValueType>::setTransform ()
 {
 	get () .set ();
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -314,7 +314,7 @@ void
 SFMatrix4 <ValueType>::setTransform (const vector3_type & translation)
 {
 	get () .set (translation);
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -323,7 +323,7 @@ SFMatrix4 <ValueType>::setTransform (const vector3_type & translation,
                                      const rotation4f_type & rotation)
 {
 	get () .set (translation, rotation .getValue ());
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -333,7 +333,7 @@ SFMatrix4 <ValueType>::setTransform (const vector3_type & translation,
                                      const vector3_type & scale)
 {
 	get () .set (translation, rotation .getValue (), scale);
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -344,7 +344,7 @@ SFMatrix4 <ValueType>::setTransform (const vector3_type & translation,
                                      const rotation4f_type & scaleOrientation)
 {
 	get () .set (translation, rotation .getValue (), scale, scaleOrientation .getValue ());
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -356,7 +356,7 @@ SFMatrix4 <ValueType>::setTransform (const vector3_type & translation,
                                      const vector3_type & center)
 {
 	get () .set (translation, rotation .getValue (), scale, scaleOrientation .getValue (), center);
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>

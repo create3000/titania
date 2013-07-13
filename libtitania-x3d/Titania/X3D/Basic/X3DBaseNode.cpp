@@ -223,10 +223,9 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 
 	setName (node -> getName ());
 
-	// Steal UserData
+	// Copy UserData
 
 	setUserData (node -> getUserData ());
-	node -> setUserData (NULL);
 
 	//	// Copy fields
 	//
@@ -289,7 +288,10 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 		auto field = dynamic_cast <SFNode*> (parent);
 
 		if (field)
-			field -> setValue (this);
+		{
+			field -> set (this);
+			field -> notify ();
+		}
 
 		//else
 		//	__LOG__ << parent -> getTypeName () << std::endl;
@@ -559,7 +561,7 @@ X3DBaseNode::setup ()
 }
 
 void
-X3DBaseNode::addEvent (X3DChildObject* object)
+X3DBaseNode::addEvent (X3DChildObject* const object)
 {
 	if (object -> isTainted ())
 		return;
@@ -570,7 +572,7 @@ X3DBaseNode::addEvent (X3DChildObject* object)
 }
 
 void
-X3DBaseNode::addEvent (X3DChildObject* object, const Event & event)
+X3DBaseNode::addEvent (X3DChildObject* const object, const Event & event)
 {
 	// __LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -393,7 +393,7 @@ protected:
 
 private:
 
-	using X3DField <value_type>::notifyParents;
+	using X3DField <value_type>::addEvent;
 
 	void
 	addChildren (typename iterator::iterator_type,
@@ -467,7 +467,7 @@ X3DArrayField <ValueType>::assign (InputIterator first, InputIterator last)
 {
 	set (first, last);
 
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -511,7 +511,7 @@ X3DArrayField <ValueType>::clear ()
 {
 	reset ();
 
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -522,7 +522,7 @@ X3DArrayField <ValueType>::erase (iterator location)
 
 	auto iter = get () .erase (location .base ());
 
-	notifyParents ();
+	addEvent ();
 	return iterator (iter);
 }
 
@@ -534,7 +534,7 @@ X3DArrayField <ValueType>::erase (iterator first, iterator last)
 
 	auto iter = get () .erase (first .base (), last .base ());
 
-	notifyParents ();
+	addEvent ();
 	return iterator (iter);
 }
 
@@ -546,7 +546,7 @@ X3DArrayField <ValueType>::insert (iterator location, const ValueType & value)
 
 	addChild (*iter);
 
-	notifyParents ();
+	addEvent ();
 	return iterator (iter);
 }
 
@@ -567,7 +567,7 @@ X3DArrayField <ValueType>::insert (iterator location, size_type count, const Val
 		addChild (field);
 	}
 
-	notifyParents ();
+	addEvent ();
 	return iterator (iter);
 }
 
@@ -592,7 +592,7 @@ X3DArrayField <ValueType>::insert (iterator location, InputIterator first, Input
 		++ first;
 	}
 
-	notifyParents ();
+	addEvent ();
 	return iterator (iter);
 }
 
@@ -604,7 +604,7 @@ X3DArrayField <ValueType>::pop_front ()
 
 	get () .pop_front ();
 
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -615,7 +615,7 @@ X3DArrayField <ValueType>::pop_back ()
 
 	get () .pop_back ();
 
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -629,7 +629,7 @@ X3DArrayField <ValueType>::emplace_front (Args && ... args)
 
 	addChild (field);
 
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -643,7 +643,7 @@ X3DArrayField <ValueType>::emplace_back (Args && ... args)
 
 	addChild (field);
 
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -670,7 +670,7 @@ X3DArrayField <ValueType>::resize (size_type count, const ValueType & value)
 			addChild (field);
 		}
 
-		notifyParents ();
+		addEvent ();
 	}
 	else if (count < currentSize)
 	{
@@ -678,7 +678,7 @@ X3DArrayField <ValueType>::resize (size_type count, const ValueType & value)
 
 		get () .resize (count);
 
-		notifyParents ();
+		addEvent ();
 	}
 }
 

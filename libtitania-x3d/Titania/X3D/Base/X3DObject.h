@@ -57,11 +57,14 @@
 #include "../Bits/Error.h"
 #include <Titania/LOG.h>
 #include <deque>
+#include <memory>
 #include <istream>
 #include <ostream>
 
 namespace titania {
 namespace X3D {
+
+typedef std::shared_ptr <X3DBase> UserData;
 
 class X3DObject :
 	public X3DInput, public X3DOutput
@@ -95,10 +98,10 @@ public:
 	///  @name User data handling
 
 	void
-	setUserData (X3DBase* value)
+	setUserData (const UserData & value)
 	{ userData = value; }
 
-	X3DBase*
+	const UserData &
 	getUserData () const
 	{ return userData; }
 
@@ -149,7 +152,7 @@ private:
 
 	std::string              name;
 	std::deque <std::string> comments;
-	X3DBase*                 userData;
+	UserData              userData;
 
 };
 

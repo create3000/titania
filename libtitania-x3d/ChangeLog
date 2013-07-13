@@ -1,3 +1,38 @@
+2013-07-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFVec4.h:
+	* SFVec3.h:
+	* SFVec2.h:
+	* X3DField.h:
+	* Router.h:
+	* X3DObject.h:
+	* SFImage.cpp:
+	* SFMatrix4.h:
+	* SFColor.cpp:
+	* X3DObject.cpp:
+	* SFMatrix3.h:
+	* X3DBaseNode.h:
+	* SFRotation4.h:
+	* X3DArrayField.h:
+	* X3DBaseNode.cpp:
+	* X3DChildObject.h:
+	* SFColorRGBA.cpp:
+	* X3DChildObject.cpp:
+	* TransformHandle.h:
+	* X3DBrowserContext.h:
+	* X3DFieldDefinition.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DFlyViewer.cpp:
+	* X3DPropertyNode.cpp:
+	* jsContext.h:
+	* X3DGroupingNode.h:
+	* jsBrowser.cpp:
+	* X3DGeometryNode.h:
+	* X3DGroupingNode.cpp:
+	* ViewpointGroup.cpp:
+	* X3DGeometryNode.cpp:
+	* X3DViewpointObject.cpp: 
+
 2013-07-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MFNode.h:

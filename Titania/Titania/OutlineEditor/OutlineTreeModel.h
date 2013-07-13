@@ -83,11 +83,11 @@ public:
 	collapse_row (const Path &);
 
 	static
-	OutlineUserData*
+	OutlineUserDataPtr
 	get_user_data (const iterator &);
 
 	static
-	OutlineUserData*
+	OutlineUserDataPtr
 	get_user_data (X3D::X3DChildObject*);
 
 	static

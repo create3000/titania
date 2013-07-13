@@ -111,9 +111,6 @@ OutlineSelection::select (const Gtk::TreeModel::iterator & iter, const Gtk::Tree
 				forceSelection = false;
 				getBrowser () -> getSelection () -> addChild (sfnode);
 			}
-
-			if (path .size () > 1)
-				treeView -> set_animated (iter -> parent (), true);
 		}
 	}
 }

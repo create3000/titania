@@ -97,6 +97,10 @@ public:
 
 	virtual
 	void
+	notify () final;
+
+	virtual
+	void
 	traverse (TraverseType) override;
 
 	virtual

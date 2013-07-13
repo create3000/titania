@@ -95,6 +95,12 @@ X3DGroupingNode::getBBox ()
 }
 
 void
+X3DGroupingNode::notify ()
+{
+	set_children ();
+}
+
+void
 X3DGroupingNode::set_addChildren ()
 {
 	if (addChildren () .size ())

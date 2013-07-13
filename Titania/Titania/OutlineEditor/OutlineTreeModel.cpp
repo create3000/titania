@@ -90,13 +90,12 @@ OutlineTreeModel::collapse_row (const Path & path)
 	tree .removeChildren (path);
 }
 
-OutlineUserData*
+OutlineUserDataPtr
 OutlineTreeModel::get_user_data (const iterator & iter)
 {
-	auto data   = get_data (iter);
-	auto object = data -> object;
+	auto object = get_object (iter);
 
-	if (data -> type == OutlineIterType::X3DBaseNode)
+	if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
 		object = static_cast <X3D::SFNode*> (object) -> getValue ();
 
 	if (object)
@@ -105,13 +104,13 @@ OutlineTreeModel::get_user_data (const iterator & iter)
 	return NULL;
 }
 
-OutlineUserData*
+OutlineUserDataPtr
 OutlineTreeModel::get_user_data (X3D::X3DChildObject* object)
 {
 	if (not object -> getUserData ())
-		object -> setUserData (new OutlineUserData ());
+		object -> setUserData (X3D::UserData (new OutlineUserData ()));
 
-	return static_cast <OutlineUserData*> (object -> getUserData ());
+	return std::static_pointer_cast <OutlineUserData> (object -> getUserData ());
 }
 
 OutlineIterType

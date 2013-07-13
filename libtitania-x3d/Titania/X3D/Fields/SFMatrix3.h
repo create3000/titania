@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -221,7 +221,7 @@ public:
 
 private:
 
-	using X3DField <ValueType>::notifyParents;
+	using X3DField <ValueType>::addEvent;
 	using X3DField <ValueType>::get;
 
 };
@@ -239,7 +239,7 @@ void
 SFMatrix3 <ValueType>::set1Value (const size_type & index, const scalar_type & value)
 {
 	get () .data () [index] = value;
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -287,7 +287,7 @@ void
 SFMatrix3 <ValueType>::setTransform ()
 {
 	get () .set ();
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -295,7 +295,7 @@ void
 SFMatrix3 <ValueType>::setTransform (const vector2_type & translation)
 {
 	get () .set (translation);
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -304,7 +304,7 @@ SFMatrix3 <ValueType>::setTransform (const vector2_type & translation,
                                      const scalar_type & rotation)
 {
 	get () .set (translation, rotation);
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -314,7 +314,7 @@ SFMatrix3 <ValueType>::setTransform (const vector2_type & translation,
                                      const vector2_type & scale)
 {
 	get () .set (translation, rotation, scale);
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -325,7 +325,7 @@ SFMatrix3 <ValueType>::setTransform (const vector2_type & translation,
                                      const scalar_type & scaleOrientation)
 {
 	get () .set (translation, rotation, scale, scaleOrientation);
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -337,7 +337,7 @@ SFMatrix3 <ValueType>::setTransform (const vector2_type & translation,
                                      const vector2_type & center)
 {
 	get () .set (translation, rotation, scale, scaleOrientation, center);
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>

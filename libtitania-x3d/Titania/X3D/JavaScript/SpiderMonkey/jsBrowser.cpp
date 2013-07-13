@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -329,13 +329,13 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 									if (scene)
 									{
 										field -> write (scene -> getRootNodes ());
-										field -> notifyParents ();
+										field -> addEvent ();
 									}
 								}
 								catch (const X3DError & error)
 								{
 									field -> write (MFNode ());
-									field -> notifyParents ();
+									field -> addEvent ();
 
 									script -> getBrowser () -> print (error .what ());
 								}
@@ -805,13 +805,13 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 							if (scene)
 							{
 								field -> write (scene -> getRootNodes ());
-								field -> notifyParents ();
+								field -> addEvent ();
 							}
 						}
 						catch (const X3DError & error)
 						{
 							field -> write (MFNode ());
-							field -> notifyParents ();
+							field -> addEvent ();
 
 							JS_ReportError (context, error .what ());
 						}

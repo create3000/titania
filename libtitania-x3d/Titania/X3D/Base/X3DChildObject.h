@@ -101,8 +101,12 @@ public:
 	write (const X3DChildObject &)
 	{ }
 
+	virtual
 	void
-	notifyParents ();
+	notify ();
+
+	void
+	addEvent ();
 
 	// Only used in X3DFieldDefinition.
 	virtual
@@ -149,11 +153,11 @@ protected:
 	virtual
 	void
 	addEvent (X3DChildObject* const)
-	{ notifyParents (); }
+	{ addEvent (); }
 
 	virtual
 	void
-	addEvent (X3DChildObject*, const Event &);
+	addEvent (X3DChildObject* const, const Event &);
 
 
 private:

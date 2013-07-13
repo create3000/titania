@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -98,7 +98,7 @@ void
 SFImage::setWidth (const size_type value)
 {
 	get () .width (value);
-	notifyParents ();
+	addEvent ();
 }
 
 SFImage::size_type
@@ -111,7 +111,7 @@ void
 SFImage::setHeight (const size_type value)
 {
 	get () .height (value);
-	notifyParents ();
+	addEvent ();
 }
 
 SFImage::size_type
@@ -124,7 +124,7 @@ void
 SFImage::setComponents (const size_type value)
 {
 	get () .components (value);
-	notifyParents ();
+	addEvent ();
 }
 
 SFImage::size_type

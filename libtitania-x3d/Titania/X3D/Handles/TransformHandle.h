@@ -97,12 +97,12 @@ private:
 
 	virtual
 	void
-	addEvent (X3DChildObject*) final
+	addEvent (X3DChildObject* const) final
 	{ }
 
 	virtual
 	void
-	addEvent (X3DChildObject*, const Event &) final
+	addEvent (X3DChildObject* const, const Event &) final
 	{ }
 
 	void

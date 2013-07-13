@@ -86,6 +86,10 @@ public:
 
 	virtual
 	void
+	notify () final;
+
+	virtual
+	void
 	draw ();
 
 	void

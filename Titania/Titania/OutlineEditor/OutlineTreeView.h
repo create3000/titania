@@ -82,17 +82,11 @@ public:
 	X3D::X3DChildObject*
 	get_object (const Gtk::TreeModel::iterator &) const;
 
-	OutlineUserData*
+	OutlineUserDataPtr
 	get_user_data (const Gtk::TreeModel::iterator &) const;
 
-	OutlineUserData*
+	OutlineUserDataPtr
 	get_user_data (X3D::X3DChildObject*) const;
-
-	void
-	set_animated (const Gtk::TreeModel::iterator &, bool);
-
-	bool
-	get_animated (const Gtk::TreeModel::iterator &) const;
 
 	virtual
 	~OutlineTreeView ();
@@ -120,6 +114,12 @@ private:
 	
 	bool
 	get_expand_all (const Gtk::TreeModel::iterator &) const;
+
+	void
+	set_animated (const Gtk::TreeModel::iterator &, bool);
+
+	bool
+	get_animated (const Gtk::TreeModel::iterator &) const;
 
 	void
 	set_world ();

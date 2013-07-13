@@ -59,7 +59,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	                   X3DNode (),
 	                      bbox (),
 	                 texCoords (),
-	textureCoordinateGenerator (NULL),
+	textureCoordinateGenerator (nullptr),
 	                    colors (),
 	                colorsRGBA (),
 	                   normals (),
@@ -467,6 +467,12 @@ X3DGeometryNode::addMirrorVertices (GLenum vertexMode, const bool convex)
 }
 
 void
+X3DGeometryNode::notify ()
+{
+	update ();
+}
+
+void
 X3DGeometryNode::update ()
 {
 	clear ();
@@ -480,7 +486,7 @@ X3DGeometryNode::clear ()
 	bbox = Box3f ();
 
 	texCoords .clear ();
-	textureCoordinateGenerator = NULL;
+	textureCoordinateGenerator = nullptr;
 	colors     .clear ();
 	colorsRGBA .clear ();
 	normals    .clear ();

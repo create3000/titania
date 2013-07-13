@@ -66,7 +66,7 @@ public:
 	Router ();
 
 	void
-	addEvent (X3DChildObject* object, const Event & event)
+	addEvent (X3DChildObject* const object, const Event & event)
 	{ events .emplace_back (object, event); }
 
 	NodeId

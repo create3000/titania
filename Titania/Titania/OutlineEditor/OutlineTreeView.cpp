@@ -120,13 +120,13 @@ OutlineTreeView::set_model (const Glib::RefPtr <OutlineTreeModel> & value)
 	Gtk::TreeView::set_model (value);
 }
 
-OutlineUserData*
+OutlineUserDataPtr
 OutlineTreeView::get_user_data (const Gtk::TreeModel::iterator & iter) const
 {
 	return get_model () -> get_user_data (iter);
 }
 
-OutlineUserData*
+OutlineUserDataPtr
 OutlineTreeView::get_user_data (X3D::X3DChildObject* object) const
 {
 	return get_model () -> get_user_data (object);
@@ -416,10 +416,10 @@ void
 OutlineTreeView::collapse_field (const Gtk::TreeModel::Path & path)
 {
 	__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
-
+	
 	Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
 
-	set_animated (iter, not get_animated (iter));	
+	set_animated (iter, true);	
 	set_expanded (iter, false);
 
 	get_model () -> collapse_row (path);

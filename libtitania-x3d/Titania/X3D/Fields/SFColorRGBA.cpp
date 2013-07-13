@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -87,7 +87,7 @@ void
 SFColorRGBA::setR (const scalar_type & r)
 {
 	get () .r (r);
-	notifyParents ();
+	addEvent ();
 }
 
 typename SFColorRGBA::scalar_type
@@ -100,7 +100,7 @@ void
 SFColorRGBA::setG (const scalar_type & g)
 {
 	get () .g (g);
-	notifyParents ();
+	addEvent ();
 }
 
 typename SFColorRGBA::scalar_type
@@ -113,7 +113,7 @@ void
 SFColorRGBA::setB (const scalar_type & b)
 {
 	get () .b (b);
-	notifyParents ();
+	addEvent ();
 }
 
 typename SFColorRGBA::scalar_type
@@ -126,7 +126,7 @@ void
 SFColorRGBA::setA (const scalar_type & a)
 {
 	get () .a (a);
-	notifyParents ();
+	addEvent ();
 }
 
 typename SFColorRGBA::scalar_type
@@ -139,7 +139,7 @@ void
 SFColorRGBA::set1Value (const size_type & index, const scalar_type & value)
 {
 	get () [index] = math::clamp <scalar_type> (value, 0, 1);
-	notifyParents ();
+	addEvent ();
 }
 
 typename SFColorRGBA::scalar_type
@@ -164,7 +164,7 @@ void
 SFColorRGBA::setHSV (const scalar_type  & h, const scalar_type  & s, const scalar_type  & v)
 {
 	get () .setHSV (h, s, v);
-	notifyParents ();
+	addEvent ();
 }
 
 void

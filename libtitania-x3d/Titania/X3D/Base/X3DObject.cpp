@@ -62,7 +62,7 @@ X3DObject::X3DObject () :
 	X3DOutput (),
 	     name (),
 	 comments (),
-	 userData (NULL)
+	 userData ()
 { }
 
 // String
@@ -87,10 +87,7 @@ X3DObject::dispose ()
 }
 
 X3DObject::~X3DObject ()
-{
-	if (userData)
-		delete userData;
-}
+{ }
 
 template std::istream & operator >> (std::istream &, X3DObject &);
 template std::ostream & operator << (std::ostream &, const X3DObject &);

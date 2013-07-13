@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -184,7 +184,7 @@ public:
 
 private:
 
-	using X3DField <ValueType>::notifyParents;
+	using X3DField <ValueType>::addEvent;
 	using X3DField <ValueType>::get;
 
 };
@@ -232,7 +232,7 @@ void
 SFRotation4 <ValueType>::setX (const scalar_type & x)
 {
 	get () .x (x);
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -248,7 +248,7 @@ void
 SFRotation4 <ValueType>::setY (const scalar_type & y)
 {
 	get () .y (y);
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -264,7 +264,7 @@ void
 SFRotation4 <ValueType>::setZ (const scalar_type & z)
 {
 	get () .z (z);
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -280,7 +280,7 @@ void
 SFRotation4 <ValueType>::setAxis (const vector3_type & axis)
 {
 	get () .axis (axis .getValue ());
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -296,7 +296,7 @@ void
 SFRotation4 <ValueType>::setAngle (const scalar_type & angle)
 {
 	get () .angle (angle);
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -312,7 +312,7 @@ void
 SFRotation4 <ValueType>::set1Value (const size_type & index, const scalar_type & value)
 {
 	get () [index] = value;
-	notifyParents ();
+	addEvent ();
 }
 
 template <class ValueType>
@@ -344,7 +344,7 @@ SFRotation4 <ValueType> &
 SFRotation4 <ValueType>::operator *= (const SFRotation4 & rotation)
 {
 	get () *= rotation .getValue ();
-	notifyParents ();
+	addEvent ();
 	return *this;
 }
 
@@ -353,7 +353,7 @@ SFRotation4 <ValueType> &
 SFRotation4 <ValueType>::operator *= (const ValueType & rotation)
 {
 	get () *= rotation;
-	notifyParents ();
+	addEvent ();
 	return *this;
 }
 

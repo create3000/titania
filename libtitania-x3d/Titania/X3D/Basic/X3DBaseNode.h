@@ -176,11 +176,16 @@ public:
 
 	virtual
 	void
-	addEvent (X3DChildObject*) override;
+	notify () override
+	{ }
 
 	virtual
 	void
-	addEvent (X3DChildObject*, const Event &) override;
+	addEvent (X3DChildObject* const) override;
+
+	virtual
+	void
+	addEvent (X3DChildObject* const, const Event &) override;
 
 	void
 	processEvents ();
