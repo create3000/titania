@@ -72,7 +72,7 @@ X3DViewpointNode::X3DViewpointNode () :
 	            X3DBindableNode (),
 	         X3DViewpointObject (),
 	                     fields (),
-	            modelViewMatrix (),
+	               parentMatrix (),
 	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),
 	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
 	           differenceMatrix (),
@@ -171,7 +171,7 @@ X3DViewpointNode::lookAt (Box3f bbox)
 	{
 		std::clog << "Look at using viewpoint: " << description () << "." << std::endl;
 
-		bbox *= ~getModelViewMatrix ();
+		bbox *= ~getParentMatrix ();
 
 		timeSensor -> startTime ()          = getCurrentTime ();
 		positionInterpolator -> keyValue () = { positionOffset (), lookAtPositionOffset (bbox) };

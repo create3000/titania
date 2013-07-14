@@ -139,8 +139,8 @@ public:
 	{ return inverseTransformationMatrix; }
 
 	const Matrix4f &
-	getModelViewMatrix () const
-	{ return modelViewMatrix; }
+	getParentMatrix () const
+	{ return parentMatrix; }
 
 	void
 	resetUserOffsets ();
@@ -174,7 +174,7 @@ protected:
 
 	void
 	setModelViewMatrix (const Matrix4f & value)
-	{ modelViewMatrix = value; }
+	{ parentMatrix = value; }
 
 
 private:
@@ -221,7 +221,7 @@ private:
 
 	Fields fields;
 
-	Matrix4f modelViewMatrix;
+	Matrix4f parentMatrix;
 	Matrix4f transformationMatrix;
 	Matrix4f inverseTransformationMatrix;
 	Matrix4f differenceMatrix;

@@ -347,21 +347,19 @@ OutlineTreeView::watch (const Gtk::TreeModel::iterator & iter, const Gtk::TreeMo
 	{
 		auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
  
-      if (field -> getAccessType () not_eq X3D::inputOnly)
-      {
-			switch (field -> getType ())
+		switch (field -> getType ())
+		{
+			case X3D::X3DConstants::SFNode:
+			case X3D::X3DConstants::MFNode:
 			{
-				case X3D::X3DConstants::SFNode:
-				case X3D::X3DConstants::MFNode:
-				{
-					field -> addInterest (this, &OutlineTreeView::collapse_field, path);
-					break;
-				}
-				default:
-					break;
+				field -> addInterest (this, &OutlineTreeView::collapse_field, path);
+				break;
 			}
-
-			field -> addInterest ((Gtk::Widget*) this, &OutlineTreeView::queue_draw);
+			default:
+			{
+				field -> addInterest (this, &OutlineTreeView::set_field, path);
+				break;
+			}
 		}
 	}
 }
@@ -393,23 +391,32 @@ OutlineTreeView::unwatch (const Gtk::TreeModel::iterator & iter)
 	{
 		auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
 
-      if (field -> getAccessType () not_eq X3D::inputOnly)
-      {
-			switch (field -> getType ())
+		switch (field -> getType ())
+		{
+			case X3D::X3DConstants::SFNode:
+			case X3D::X3DConstants::MFNode:
 			{
-				case X3D::X3DConstants::SFNode:
-				case X3D::X3DConstants::MFNode:
-				{
-					field -> removeInterest (this, &OutlineTreeView::collapse_field);
-					break;
-				}
-				default:
-					break;
+				field -> removeInterest (this, &OutlineTreeView::collapse_field);
+				break;
 			}
-
-			field -> removeInterest ((Gtk::Widget*) this, &OutlineTreeView::queue_draw);
+			default:
+			{
+				field -> removeInterest (this, &OutlineTreeView::set_field);
+				break;
+			}
 		}
 	}
+}
+
+void
+OutlineTreeView::set_field (const Gtk::TreeModel::Path & path)
+{
+	Gtk::TreeModel::Path child = path;
+	child .push_back (0);
+	
+	Gtk::TreeModel::iterator iter = get_model () -> get_iter (child);
+	
+	get_model () -> row_changed (child, iter);
 }
 
 void

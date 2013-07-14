@@ -171,6 +171,9 @@ private:
 	unwatch (const Gtk::TreeModel::iterator &);
 
 	void
+	set_field (const Gtk::TreeModel::Path &);
+
+	void
 	collapse_field (const Gtk::TreeModel::Path &);
 
 	void

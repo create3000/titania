@@ -113,7 +113,7 @@ TransformHandle::reshape ()
 
 		try
 		{
-			const Matrix4f & cameraSpaceMatrix = getCurrentViewpoint () -> getTransformationMatrix ();
+			const Matrix4f & cameraSpaceMatrix = getCameraSpaceMatrix ();
 
 			SFMatrix4f & field = *static_cast <SFMatrix4f*> (handle -> getField ("cameraSpaceMatrix"));
 

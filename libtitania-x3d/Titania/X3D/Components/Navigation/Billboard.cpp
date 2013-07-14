@@ -139,7 +139,7 @@ Billboard::rotate (TraverseType type)
 		Matrix4f modelViewMatrix = ModelViewMatrix4f ();
 
 		if (type == TraverseType::CAMERA)
-			modelViewMatrix *= getCurrentViewpoint () -> getInverseTransformationMatrix ();
+			modelViewMatrix *= getInverseCameraSpaceMatrix ();
 
 		Matrix4f inverseModelViewMatrix = ~modelViewMatrix;
 

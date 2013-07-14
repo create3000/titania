@@ -142,8 +142,8 @@ OrthoViewpoint::reshape (const float zNear, const float zFar)
 	float maximum_x = getMaximumX ();
 	float maximum_y = getMaximumY ();
 
-	float size_x = abs (getModelViewMatrix () .multDirMatrix (Vector3f (maximum_x - minimum_x, 0, 0))) / 2;
-	float size_y = abs (getModelViewMatrix () .multDirMatrix (Vector3f (0, maximum_y - minimum_y, 0))) / 2;
+	float size_x = (maximum_x - minimum_x) * 0.5;
+	float size_y = (maximum_y - minimum_y) * 0.5;
 
 	if (width > height)
 	{

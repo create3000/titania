@@ -120,7 +120,7 @@ LOD::getLevel (TraverseType type)
 	Matrix4f matrix = ModelViewMatrix4f ();
 
 	if (type == TraverseType::CAMERA)
-		matrix *= getCurrentViewpoint () -> getInverseTransformationMatrix ();
+		matrix *= getInverseCameraSpaceMatrix ();
 
 	matrix .translate (center ());
 

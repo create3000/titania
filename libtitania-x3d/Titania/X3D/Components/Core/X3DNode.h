@@ -107,6 +107,12 @@ protected:
 	X3DViewpointNode*
 	getCurrentViewpoint () const;
 
+	const Matrix4f &
+	getCameraSpaceMatrix () const;
+
+	const Matrix4f &
+	getInverseCameraSpaceMatrix () const;
+
 	friend class X3DExecutionContext;
 
 

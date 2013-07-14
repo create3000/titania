@@ -1,14 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/OutlineEditor/OutlineTreeView.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Handles/TransformHandle.wrl">
     <Files>
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeModel.h" Line="95" Column="1" />
       <File FileName="experimental/main.cpp" Line="146" Column="3" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeModel.cpp" Line="719" Column="38" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeView.h" Line="102" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeView.cpp" Line="547" Column="6" />
-      <File FileName="Library/Tests/Scripting/X3DScene.rootNodes.2.wrl" Line="42" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineUserData.h" Line="78" Column="15" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeModel.h" Line="66" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeModel.cpp" Line="113" Column="27" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeView.h" Line="90" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeView.cpp" Line="426" Column="7" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineSelection.cpp" Line="130" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineSelection.h" Line="76" Column="47" />
+      <File FileName="Library/Tests/Handles/TransformHandle.wrl" Line="40" Column="21" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -36,7 +37,9 @@
               <Node name="Basic" expanded="True" />
               <Node name="EnvironmentalSensors" expanded="True" />
               <Node name="Grouping" expanded="True" />
-              <Node name="Handles" expanded="True" />
+              <Node name="Handles" expanded="True">
+                <Node name="TransformHandle.wrl" selected="True" />
+              </Node>
               <Node name="Navigation" expanded="True" />
               <Node name="PointingDeviceSensor" expanded="True" />
               <Node name="PROTO" expanded="True">
@@ -45,23 +48,9 @@
               <Node name="Scripting" expanded="True" />
             </Node>
           </Node>
-          <Node name="libtitania-mozilla" expanded="True" />
-          <Node name="libtitania-sqlite" expanded="True">
+          <Node name="libtitania-opengl-surface" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="SQL" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Math" expanded="True">
-                <Node name="Geometry" expanded="True" />
-                <Node name="Numbers" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-          <Node name="libtitania-stream" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Stream" expanded="True" />
+              <Node name="OpenGL" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -81,6 +70,7 @@
                 <Node name="Components" expanded="True">
                   <Node name="CADGeometry" expanded="True" />
                   <Node name="Core" expanded="True" />
+                  <Node name="CubeMapTexturing" expanded="True" />
                   <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="EnvironmentalSensor" expanded="True" />
                   <Node name="Geometry2D" expanded="True" />
@@ -104,6 +94,7 @@
                 </Node>
                 <Node name="Parser" expanded="True" />
                 <Node name="Rendering" expanded="True" />
+                <Node name="Routing" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -124,9 +115,7 @@
               <Node name="Browser" expanded="True" />
               <Node name="HistoryEditor" expanded="True" />
               <Node name="MotionBlurEditor" expanded="True" />
-              <Node name="OutlineEditor" expanded="True">
-                <Node name="OutlineTreeView.cpp" selected="True" />
-              </Node>
+              <Node name="OutlineEditor" expanded="True" />
               <Node name="UserInterfaces" expanded="True" />
               <Node name="ViewpointEditor" expanded="True" />
             </Node>

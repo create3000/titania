@@ -338,7 +338,7 @@ X3DRenderer::navigation ()
 //
 //	auto viewpoint = getCurrentViewpoint ();
 //
-//	Matrix4f cameraSpaceMatrix = viewpoint -> getModelViewMatrix ();
+//	Matrix4f cameraSpaceMatrix = viewpoint -> getParentMatrix ();
 //
 //	cameraSpaceMatrix .translate (viewpoint -> getUserPosition ());
 //	cameraSpaceMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -getBrowser () -> velocity));
@@ -439,7 +439,7 @@ X3DRenderer::navigation ()
 //				{
 //					collisionNormal [0] = cameraSpaceMatrix .multDirMatrix (collisionNormal [0]);
 //
-//					auto translation = inverse (getCurrentViewpoint () -> getModelViewMatrix ()) .multDirMatrix (collisionNormal [0]);
+//					auto translation = inverse (getCurrentViewpoint () -> getParentMatrix ()) .multDirMatrix (collisionNormal [0]);
 //
 //					getCurrentViewpoint () -> positionOffset += translation;
 //				}
@@ -577,7 +577,7 @@ X3DRenderer::gravite ()
 				if (getBrowser () -> getBrowserOptions () -> animateStairWalks ())
 				{
 					float step = getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate ();
-					step = abs (getCurrentViewpoint () -> getInverseTransformationMatrix () .multMatrixDir (Vector3f (0, step, 0)));
+					step = abs (getInverseCameraSpaceMatrix () .multMatrixDir (Vector3f (0, step, 0)));
 
 					Vector3f offset (0, step, 0);
 

@@ -169,7 +169,7 @@ OutlineTreeModel::get_fields (X3D::X3DChildObject* object)
 		auto fields            = node -> getPreDefinedFields ();
 		auto userDefinedFields = node -> getUserDefinedFields ();
 
-		if (fields .size ())
+		if (dynamic_cast <X3D::X3DNode*> (node))
 			fields .insert (fields .begin () + 1, userDefinedFields .begin (), userDefinedFields .end ());
 
 		else
@@ -524,34 +524,11 @@ OutlineTreeModel::iter_n_children_vfunc (const iterator & iter) const
 
 			switch (field -> getType ())
 			{
-				case X3D::X3DConstants::SFNode:
-				case X3D::X3DConstants::MFBool:
-				case X3D::X3DConstants::MFColor:
-				case X3D::X3DConstants::MFColorRGBA:
-				case X3D::X3DConstants::MFDouble:
-				case X3D::X3DConstants::MFFloat:
-				case X3D::X3DConstants::MFImage:
-				case X3D::X3DConstants::MFInt32:
-				case X3D::X3DConstants::MFMatrix3d:
-				case X3D::X3DConstants::MFMatrix3f:
-				case X3D::X3DConstants::MFMatrix4d:
-				case X3D::X3DConstants::MFMatrix4f:
-				case X3D::X3DConstants::MFRotation:
-				case X3D::X3DConstants::MFString:
-				case X3D::X3DConstants::MFTime:
-				case X3D::X3DConstants::MFVec2d:
-				case X3D::X3DConstants::MFVec2f:
-				case X3D::X3DConstants::MFVec3d:
-				case X3D::X3DConstants::MFVec3f:
-				case X3D::X3DConstants::MFVec4d:
-				case X3D::X3DConstants::MFVec4f:
-					return 1;
-
 				case X3D::X3DConstants::MFNode:
 					return static_cast <X3D::MFNode*> (field) -> size ();
 
 				default:
-					return 0;
+					return 1;
 			}
 
 			return 0;
@@ -603,7 +580,7 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int index, iter
 				{
 					auto sfnode = static_cast <X3D::SFNode*> (field);
 
-					if (index < 1)
+					if (index == 0)
 					{
 						set_data (iter, OutlineIterType::X3DBaseNode, sfnode, index, parents);
 						return true;
@@ -623,26 +600,7 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int index, iter
 
 					return false;
 				}
-				case X3D::X3DConstants::MFBool:
-				case X3D::X3DConstants::MFColor:
-				case X3D::X3DConstants::MFColorRGBA:
-				case X3D::X3DConstants::MFDouble:
-				case X3D::X3DConstants::MFFloat:
-				case X3D::X3DConstants::MFImage:
-				case X3D::X3DConstants::MFInt32:
-				case X3D::X3DConstants::MFMatrix3d:
-				case X3D::X3DConstants::MFMatrix3f:
-				case X3D::X3DConstants::MFMatrix4d:
-				case X3D::X3DConstants::MFMatrix4f:
-				case X3D::X3DConstants::MFRotation:
-				case X3D::X3DConstants::MFString:
-				case X3D::X3DConstants::MFTime:
-				case X3D::X3DConstants::MFVec2d:
-				case X3D::X3DConstants::MFVec2f:
-				case X3D::X3DConstants::MFVec3d:
-				case X3D::X3DConstants::MFVec3f:
-				case X3D::X3DConstants::MFVec4d:
-				case X3D::X3DConstants::MFVec4f:
+				default:
 				{
 					if (index == 0)
 					{
@@ -652,9 +610,6 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int index, iter
 
 					return false;
 				}
-
-				default:
-					return false;
 			}
 
 			return false;

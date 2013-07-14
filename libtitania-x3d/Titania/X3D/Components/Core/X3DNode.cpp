@@ -101,5 +101,17 @@ X3DNode::getCurrentViewpoint () const
 	return getCurrentLayer () -> getViewpoint ();
 }
 
+const Matrix4f &
+X3DNode::getCameraSpaceMatrix () const
+{
+	return getCurrentViewpoint () -> getTransformationMatrix ();
+}
+
+const Matrix4f &
+X3DNode::getInverseCameraSpaceMatrix () const
+{
+	return getCurrentViewpoint () -> getInverseTransformationMatrix ();
+}
+
 } // X3D
 } // titania

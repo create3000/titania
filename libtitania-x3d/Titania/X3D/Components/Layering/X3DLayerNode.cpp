@@ -209,12 +209,12 @@ X3DLayerNode::getDistance (const Vector3f & positionOffset, float width, float h
 
 	// Translate camera
 
-	Matrix4f cameraSpaceMatrix = getViewpoint () -> getModelViewMatrix ();
+	Matrix4f parentMatrix = getViewpoint () -> getParentMatrix ();
 
-	cameraSpaceMatrix .translate (getViewpoint () -> getUserPosition () + positionOffset);
-	cameraSpaceMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction));
+	parentMatrix .translate (getViewpoint () -> getUserPosition () + positionOffset);
+	parentMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction));
 
-	glLoadMatrixf (inverse (cameraSpaceMatrix) .data ());
+	glLoadMatrixf (inverse (parentMatrix) .data ());
 
 	// Traverse and get distance
 
@@ -404,12 +404,12 @@ X3DLayerNode::collision ()
 
 	auto viewpoint = getViewpoint ();
 
-	Matrix4f cameraSpaceMatrix = viewpoint -> getModelViewMatrix ();
+	Matrix4f parentMatrix = viewpoint -> getParentMatrix ();
 
-	cameraSpaceMatrix .translate (viewpoint -> getUserPosition ());
-	cameraSpaceMatrix .rotate (viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
+	parentMatrix .translate (viewpoint -> getUserPosition ());
+	parentMatrix .rotate (viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
 
-	glLoadMatrixf (inverse (cameraSpaceMatrix) .data ());
+	glLoadMatrixf (inverse (parentMatrix) .data ());
 
 	// Render
 
