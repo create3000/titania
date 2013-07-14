@@ -51,13 +51,8 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_ITER_DATA_H__
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_ITER_DATA_H__
 
-#include "../OutlineEditor/OutlineIterData.h"
-#include "../OutlineEditor/OutlineUserData.h"
 #include <Titania/X3D.h>
-
 #include <deque>
-#include <gtkmm.h>
-#include <iostream>
 
 namespace titania {
 namespace puck {
@@ -70,19 +65,65 @@ enum class OutlineIterType
 
 };
 
-class OutlineIterParent
+class X3DOutlineIterParent
+{
+public:
+
+	X3D::X3DChildObject*
+	object () const
+	{ return m_object; }
+
+	OutlineIterType
+	type () const
+	{ return m_type; }
+
+	size_t
+	index () const
+	{ return m_index; }
+
+	~X3DOutlineIterParent ()
+	{
+		if (m_type == OutlineIterType::X3DBaseNode)
+			delete m_object;
+	}
+
+protected:
+
+	X3DOutlineIterParent (OutlineIterType type, X3D::X3DChildObject* object, size_t index) :
+		m_object (object),
+		m_type (type),
+		m_index (index)
+	{
+		if (m_type == OutlineIterType::X3DBaseNode)
+			m_object = new X3D::SFNode (static_cast <X3D::SFNode*> (m_object) -> getValue ());
+	}
+
+	X3DOutlineIterParent (const X3DOutlineIterParent & value) :
+		X3DOutlineIterParent (value .type (), value .object (), value .index ())
+	{ }
+
+	X3DOutlineIterParent (X3DOutlineIterParent &&) = delete;
+
+	X3DOutlineIterParent &
+	operator = (const X3DOutlineIterParent &) = delete;
+
+
+private:
+
+	X3D::X3DChildObject*  m_object;
+	const OutlineIterType m_type;
+	const size_t          m_index;
+
+};
+
+class OutlineIterParent :
+	public X3DOutlineIterParent
 {
 public:
 
 	OutlineIterParent (OutlineIterType type, X3D::X3DChildObject* object, size_t index) :
-		object (object),
-		type (type),
-		index (index)
+		X3DOutlineIterParent (type, object, index)
 	{ }
-
-	X3D::X3DChildObject* const object;
-	const OutlineIterType      type;
-	const size_t               index;
 
 };
 
@@ -95,10 +136,17 @@ public:
 
 	OutlineIterData (OutlineIterType type, X3D::X3DChildObject* object, int index, const parents_type & parents) :
 		OutlineIterParent (type, object, index),
-		parents (parents)
+		m_parents (parents)
 	{ }
 
-	const parents_type parents;
+	const parents_type &
+	parents () const
+	{ return m_parents; }
+
+
+private:
+
+	const parents_type m_parents;
 
 };
 

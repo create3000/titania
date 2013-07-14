@@ -51,9 +51,8 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_USER_DATA_H__
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_USER_DATA_H__
 
-#include <gtkmm.h>
-
 #include <Titania/X3D.h>
+#include <gtkmm.h>
 
 namespace titania {
 namespace puck {

@@ -412,9 +412,9 @@ OutlineTreeView::unwatch_tree (bool root, const OutlineNode & treeNode)
 void
 OutlineTreeView::unwatch (bool root, const OutlineIterData* data)
 {
-	if (data -> type == OutlineIterType::X3DField)
+	if (data -> type () == OutlineIterType::X3DField)
 	{
-		auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object);
+		auto field = static_cast <X3D::X3DFieldDefinition*> (data -> object ());
 
 		switch (field -> getType ())
 		{

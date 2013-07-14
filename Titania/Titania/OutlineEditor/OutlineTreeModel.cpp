@@ -116,25 +116,25 @@ OutlineTreeModel::get_user_data (X3D::X3DChildObject* object)
 OutlineIterType
 OutlineTreeModel::get_data_type (const iterator & iter)
 {
-	return get_data (iter) -> type;
+	return get_data (iter) -> type ();
 }
 
 X3D::X3DChildObject*
 OutlineTreeModel::get_object (const iterator & iter)
 {
-	return get_data (iter) -> object;
+	return get_data (iter) -> object ();
 }
 
 const OutlineIterData::parents_type &
 OutlineTreeModel::get_parents (const iterator & iter)
 {
-	return get_data (iter) -> parents;
+	return get_data (iter) -> parents ();
 }
 
 size_t
 OutlineTreeModel::get_index (const iterator & iter)
 {
-	return get_data (iter) -> index;
+	return get_data (iter) -> index ();
 }
 
 void
@@ -445,7 +445,7 @@ OutlineTreeModel::get_path (const OutlineIterData::parents_type & parents, size_
 
 	for (const auto & parent : basic::adapter (parents. begin () + 1, parents .end ()))
 	{
-		path .push_back (parent .index);
+		path .push_back (parent .index ());
 	}
 
 	path .push_back (index);
@@ -523,9 +523,9 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 
 			for (const auto parent : get_parents (iter))
 			{
-				if (parent .type == OutlineIterType::X3DBaseNode)
+				if (parent .type () == OutlineIterType::X3DBaseNode)
 				{
-					auto parent_sfnode = static_cast <X3D::SFNode*> (parent .object);
+					auto parent_sfnode = static_cast <X3D::SFNode*> (parent .object ());
 
 					if (*sfnode == *parent_sfnode)
 						return 0;
@@ -683,7 +683,7 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 
 		case OutlineIterType::X3DField:
 		{
-			auto fields = std::move (get_fields (get_parents (iter) .back () .object));
+			auto fields = std::move (get_fields (get_parents (iter) .back () .object ()));
 
 			if (index < fields .size ())
 			{
@@ -695,7 +695,7 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (get_parents (iter) .back () .object);
+			auto field = static_cast <X3D::X3DFieldDefinition*> (get_parents (iter) .back () .object ());
 
 			switch (field -> getType ())
 			{
@@ -732,9 +732,9 @@ OutlineTreeModel::iter_parent_vfunc (const iterator & child, iterator & iter) co
 	if (parents .size () == 1)
 		return false;
 
-	auto type   = parents .back () .type;
-	auto index  = parents .back () .index;
-	auto object = parents .back () .object;
+	auto type   = parents .back () .type ();
+	auto index  = parents .back () .index ();
+	auto object = parents .back () .object ();
 
 	parents .pop_back ();
 
