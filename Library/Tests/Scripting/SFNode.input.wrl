@@ -1,0 +1,60 @@
+#VRML V2.0 utf8
+
+META "title" "SFNode.input"
+
+EXTERNPROTO SFNode [
+  exposedField SFNode keyValue
+  exposedField SFTime triggerTime
+  eventOut     SFNode value_changed
+]
+"SFNode.wrl"
+
+Transform {
+  translation -2 0 0
+  children [
+    DEF Touch0 TouchSensor { }
+    DEF SFNode0 SFNode { }
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box { }
+    }
+  ]
+}
+Transform {
+  translation 2 0 0
+  children [
+    DEF Touch1 TouchSensor { }
+    DEF SFNode1 SFNode { keyValue MetadataBool { } }
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box { }
+    }
+  ]
+}
+
+DEF Metadata Transform { }
+
+DEF Debug Script {
+	eventIn SFTime set_time
+	url "vrmlscript:
+function set_value (value)
+{
+	print (value);
+}
+"
+}
+
+# 0
+
+ROUTE Touch0.touchTime TO SFNode0.set_triggerTime
+ROUTE SFNode0.value_changed TO Metadata.metadata
+
+# 1
+
+ROUTE Touch1.touchTime TO SFNode1.set_triggerTime
+ROUTE SFNode1.value_changed TO Metadata.metadata
+

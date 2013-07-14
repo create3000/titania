@@ -58,6 +58,7 @@
 #include "../OutlineEditor/OutlineSelection.h"
 #include "../OutlineEditor/OutlineIterData.h"
 #include "../OutlineEditor/OutlineUserData.h"
+#include "../OutlineEditor/OutlineTree.h"
 #include <Titania/X3D.h>
 
 namespace titania {
@@ -162,19 +163,22 @@ private:
 	watch (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
 	void
-	unwatch_tree (const Gtk::TreeModel::iterator &);
+	unwatch_tree (const Gtk::TreeModel::Path &);
 
 	void
-	unwatch_tree (const Gtk::TreeModel::iterator &, std::set <X3D::X3DChildObject*> &);
+	unwatch_tree (bool, const OutlineNode &);
 
 	void
-	unwatch (const Gtk::TreeModel::iterator &);
+	unwatch (bool, const OutlineIterData*);
 
 	void
 	set_field (const Gtk::TreeModel::Path &);
 
 	void
-	collapse_field (const Gtk::TreeModel::Path &);
+	collapse_field (X3D::X3DFieldDefinition* const field, const Gtk::TreeModel::Path &, size_t);
+
+	void
+	set_children (const Gtk::TreeModel::Path &);
 
 	void
 	collapse_clone (const Gtk::TreeModel::iterator &);

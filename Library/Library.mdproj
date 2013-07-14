@@ -2278,6 +2278,8 @@
     <None Include="Tests\Handles\Grid.wrl" />
     <None Include="Tests\Scripting\X3DScene.rootNodes.2.wrl" />
     <None Include="Tests\Basic\Clone.wrl" />
+    <None Include="Tests\Scripting\SFNode.wrl" />
+    <None Include="Tests\Scripting\SFNode.input.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

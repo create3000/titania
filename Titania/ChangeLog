@@ -1,5 +1,16 @@
 2013-07-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Proto.png:
+	* PROTO.png:
+	* OutlineTree.h:
+	* OutlineTreeView.h:
+	* HistoryEditor.cpp:
+	* OutlineTreeModel.h:
+	* OutlineTreeView.cpp:
+	* OutlineTreeModel.cpp: 
+
+2013-07-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* eventIn.0.png:
 	* eventOut.0.png:
 	* AccessTypes.xcf:

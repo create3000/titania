@@ -128,8 +128,8 @@ HistoryEditor::set_world ()
 
 	auto row = getListStore () -> prepend ();
 	row -> set_value (ICON_COLUMN,      worldURL .str ());
-	row -> set_value (TITLE_COLUMN,     Glib::Markup::escape_text (title));
-	row -> set_value (WORLD_URL_COLUMN, Glib::Markup::escape_text (worldURL .str ()));
+	row -> set_value (TITLE_COLUMN,     title);
+	row -> set_value (WORLD_URL_COLUMN, worldURL .str ());
 
 	history .setItem (title, worldURL);
 

@@ -123,6 +123,24 @@ LayerSet {
         children [
           OrthoViewpoint { }
           Transform {
+            translation 0.8 -0.9 0
+            scale 0.1 0.1 0.1
+            children [
+              DEF Touch0 TouchSensor { }
+              Shape {
+                appearance Appearance {
+                  material Material { diffuseColor 0 0 0 }
+                }
+                geometry Rectangle2D {
+                  size 1 1
+                }
+              }
+              DEF ParticleContainer0 MFNode {
+                keyValue [ ]
+              }
+            ]
+          }
+          Transform {
             translation 1 -0.9 0
             scale 0.1 0.1 0.1
             children [
@@ -178,6 +196,11 @@ LayerSet {
 
 ROUTE Particle1.translation_changed TO LineTrail1.set_point
 ROUTE Particle2.translation_changed TO LineTrail2.set_point
+
+# 0 Particles
+
+ROUTE Touch0.touchTime TO ParticleContainer0.set_triggerTime
+ROUTE ParticleContainer0.value_changed TO ParticleGroup.set_children
 
 # 2 Particles
 

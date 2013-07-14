@@ -144,7 +144,7 @@ OutlineTreeModel::set_data (iterator & iter,
                            size_t index,
                            const OutlineIterData::parents_type & parents) const
 {
-	auto & node = tree .getNode (get_path (parents, index));
+	auto & node = tree .createNode (get_path (parents, index));
 
 	if (not node .data)
 		node .data = new OutlineIterData (type, object, index, parents);

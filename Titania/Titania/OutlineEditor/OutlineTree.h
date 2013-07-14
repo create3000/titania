@@ -95,9 +95,20 @@ public:
 	{ }
 
 	OutlineNode &
-	getNode (const Gtk::TreePath & path)
+	createNode (const Gtk::TreePath & path)
 	{
 		OutlineNode* node = this;
+
+		for (const auto & index : path)
+			node = &createChild (node, index);
+
+		return *node;
+	}
+
+	const OutlineNode &
+	getNode (const Gtk::TreePath & path) const
+	{
+		const OutlineNode* node = this;
 
 		for (const auto & index : path)
 			node = &getChild (node, index);
@@ -108,16 +119,25 @@ public:
 	void
 	removeChildren (const Gtk::TreePath & path)
 	{
-		getNode (path) .children .clear ();
+		createNode (path) .children .clear ();
 	}
 
 private:
 
 	OutlineNode &
-	getChild (OutlineNode* parent, size_t index)
+	createChild (OutlineNode* parent, size_t index)
 	{
 		if (index + 1 > parent -> children .size ())
 			parent -> children .resize (index + 1);
+
+		return parent -> children [index];
+	}
+
+	const OutlineNode &
+	getChild (const OutlineNode* parent, size_t index) const
+	{
+		if (index + 1 > parent -> children .size ())
+			std::out_of_range ("OutlineTree: path does not exists.");
 
 		return parent -> children [index];
 	}

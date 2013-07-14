@@ -69,6 +69,8 @@ class OutlineTreeModel :
 {
 public:
 
+	using Gtk::TreeModel::get_path;
+
 	OutlineTreeModel (const X3D::X3DSFNode <X3D::Browser> &);
 
 	static
@@ -78,9 +80,10 @@ public:
 	const X3D::X3DSFNode <X3D::X3DExecutionContext> &
 	getExecutionContext ()
 	{ return executionContext; }
-
-	void
-	collapse_row (const Path &);
+	
+	const OutlineTree &
+	get_tree () const
+	{ return tree; }
 
 	static
 	OutlineUserDataPtr
@@ -100,6 +103,9 @@ public:
 
 	void
 	select_fields (const iterator & iter);
+
+	void
+	collapse_row (const Path &);
 
 	virtual
 	~OutlineTreeModel ();
