@@ -36,6 +36,7 @@
     <Folder Include="Quaternion\" />
     <Folder Include="Intersection\" />
     <Folder Include="xxx\" />
+    <Folder Include="CosmoWorlds\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="xxx\ImageTexture.cpp" />

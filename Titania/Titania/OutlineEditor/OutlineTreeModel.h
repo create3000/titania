@@ -218,19 +218,21 @@ private:
 	void
 	on_rows_reordered (const Path &, const iterator &, int*);
 
-	typedef Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>> icon_column_type;
-	typedef Gtk::TreeModelColumn <OutlineIterData*>            data_column_type;
-	typedef Gtk::TreeModelColumn <bool>                        selected_color_column_type;
-	typedef Gtk::TreeModelColumn <Glib::ustring>               debug_column_type;
+	typedef Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>> IconColumn;
+	typedef Gtk::TreeModelColumn <OutlineIterData*>            DataColumn;
+	typedef Gtk::TreeModelColumn <bool>                        SelectedColorColumn;
+	typedef Gtk::TreeModelColumn <Glib::ustring>               NameColumn;
+	typedef Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  AccessTypeImageColumn;
 
 	typedef std::map <const X3D::X3DConstants::FieldType, Glib::RefPtr <Gdk::Pixbuf>> FieldTypeImageIndex;
 
 	X3D::X3DSFNode <X3D::X3DExecutionContext> executionContext;
 
-	icon_column_type           icon_column;
-	data_column_type           data_column;
-	selected_color_column_type selected_color_column;
-	debug_column_type          debug_column;
+	IconColumn            icon_column;
+	DataColumn            data_column;
+	SelectedColorColumn   selected_color_column;
+	NameColumn            name_column;
+	AccessTypeImageColumn access_type_image_column;
 
 	Glib::RefPtr <Gdk::Pixbuf> noneImage;
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;

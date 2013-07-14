@@ -256,7 +256,9 @@ OutlineTreeModel::get_column_type_vfunc (int index) const
 		case 2:
 			return selected_color_column .type ();
 		case 3:
-			return debug_column .type ();
+			return name_column .type ();
+		case 4:
+			return access_type_image_column .type ();
 		default:
 			return 0;
 	}
@@ -269,10 +271,10 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 
 	switch (column)
 	{
-		case 0:
+		case 0: // Row type image
 		{
-			icon_column_type::ValueType val;
-			val .init (icon_column_type::ValueType::value_type ());
+			IconColumn::ValueType val;
+			val .init (IconColumn::ValueType::value_type ());
 
 			switch (get_data_type (iter))
 			{
@@ -298,41 +300,41 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 				}
 			}
 
-			value .init (icon_column_type::ValueType::value_type ());
+			value .init (IconColumn::ValueType::value_type ());
 			value = val;
 
 			break;
 		}
-		case 1:
+		case 1: // OutlineIterData
 		{
-			data_column_type::ValueType val;
-			val .init (data_column_type::ValueType::value_type ());
+			DataColumn::ValueType val;
+			val .init (DataColumn::ValueType::value_type ());
 			val .set (get_data (iter));
 
-			value .init (data_column_type::ValueType::value_type ());
+			value .init (DataColumn::ValueType::value_type ());
 			value = val;
 
 			break;
 		}
-		case 2:
+		case 2: // Selected
 		{
-			selected_color_column_type::ValueType val;
-			val .init (selected_color_column_type::ValueType::value_type ());
+			SelectedColorColumn::ValueType val;
+			val .init (SelectedColorColumn::ValueType::value_type ());
 
 			auto userData       = get_user_data (iter);
 			auto parentUserData = get_user_data (get_object (iter));
 
 			val .set ((userData and userData -> selected) or parentUserData -> selected);
 
-			value .init (selected_color_column_type::ValueType::value_type ());
+			value .init (SelectedColorColumn::ValueType::value_type ());
 			value = val;
 
 			break;
 		}
-		case 3:
+		case 3: // Value, name or name and typeName
 		{
-			debug_column_type::ValueType val;
-			val .init (debug_column_type::ValueType::value_type ());
+			NameColumn::ValueType val;
+			val .init (NameColumn::ValueType::value_type ());
 
 			switch (get_data_type (iter))
 			{
@@ -381,7 +383,41 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 				}
 			}
 
-			value .init (debug_column_type::ValueType::value_type ());
+			value .init (NameColumn::ValueType::value_type ());
+			value = val;
+
+			break;
+		}
+		case 4: // AccesType image
+		{
+			AccessTypeImageColumn::ValueType val;
+			val .init (AccessTypeImageColumn::ValueType::value_type ());
+
+			switch (get_data_type (iter))
+			{
+				case OutlineIterType::X3DFieldValue:
+				{
+					val .set (noneImage);
+					break;
+				}
+				case OutlineIterType::X3DField:
+				{
+					auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
+					auto iter  = fieldTypeImages .find (field -> getType ());
+
+					if (iter not_eq fieldTypeImages .end ())
+						val .set (iter -> second);
+
+					break;
+				}
+				case OutlineIterType::X3DBaseNode:
+				{
+					val .set (baseNodeImage);
+					break;
+				}
+			}
+
+			value .init (AccessTypeImageColumn::ValueType::value_type ());
 			value = val;
 
 			break;

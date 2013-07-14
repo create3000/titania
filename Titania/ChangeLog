@@ -1,5 +1,15 @@
 2013-07-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* eventIn.0.png:
+	* eventOut.0.png:
+	* AccessTypes.xcf:
+	* OutlineTreeModel.h:
+	* exposedField.0.0.png:
+	* OutlineTreeView.cpp:
+	* OutlineTreeModel.cpp: 
+
+2013-07-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineTreeView.h:
 	* OutlineTreeView.cpp:
 	* OutlineTreeModel.cpp: 

@@ -94,21 +94,15 @@ OutlineTreeView::OutlineTreeView (const X3D::X3DSFNode <X3D::Browser> & browser)
 	cellrenderer_name -> property_foreground_rgba () = selectedForegroundColor;
 	cellrenderer_name -> property_background_rgba () = selectedBackgroundColor;
 
-	//	Gtk::CellRendererText* cellrenderer_test = Gtk::manage (new Gtk::CellRendererText ());
-	//	treeviewcolumn_name -> pack_start (*cellrenderer_test, false);
-	//	treeviewcolumn_name -> add_attribute (*cellrenderer_test, "markup", 3);
-	//	treeviewcolumn_name -> add_attribute (*cellrenderer_test, "cell-background-rgba", 2);
+//	// AccessType Image
+//
+//	Gtk::CellRendererPixbuf* cellrenderer_access_type = Gtk::manage (new Gtk::CellRendererPixbuf ());
+//	treeviewcolumn_name -> pack_start (*cellrenderer_access_type, false);
+//	treeviewcolumn_name -> add_attribute (*cellrenderer_access_type, "pixbuf", 4);
+//	treeviewcolumn_name -> add_attribute (*cellrenderer_access_type, "cell-background-set", 2);
+//	cellrenderer_access_type -> property_cell_background_rgba () = selectedBackgroundColor;
 
 	append_column (*treeviewcolumn_name);
-
-	//	Gtk::TreeViewColumn* treeviewcolumn_debug = Gtk::manage (new Gtk::TreeViewColumn ("Debug"));
-	//
-	//	Gtk::CellRendererText* cellrenderer_debug = Gtk::manage (new Gtk::CellRendererText ());
-	//	treeviewcolumn_debug -> pack_start (*cellrenderer_debug, false);
-	//	treeviewcolumn_debug -> add_attribute (*cellrenderer_debug, "text", 3);
-	//	treeviewcolumn_debug -> add_attribute (*cellrenderer_debug, "cell-background-rgba", 2);
-	//
-	//	append_column (*treeviewcolumn_debug);
 
 	getBrowser () -> initialized .addInterest (this, &OutlineTreeView::set_world);
 }
