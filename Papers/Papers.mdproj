@@ -31,6 +31,10 @@
     <None Include="xxx\ImageTexture.h" />
     <None Include="xxx\X3DUrlObject.h" />
     <None Include="xxx\Type.h" />
+    <None Include="CosmoWorlds\Cosmo.rgb" />
+    <None Include="CosmoWorlds\OutlineEditor1.rgb" />
+    <None Include="CosmoWorlds\OutlineEditor2.rgb" />
+    <None Include="CosmoWorlds\OutlineEditor3.rgb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

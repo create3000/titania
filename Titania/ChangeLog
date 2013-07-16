@@ -1,5 +1,22 @@
 2013-07-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* eventIn.0.png:
+	* eventOut.0.png:
+	* AccessTypes.xcf:
+	* inputOnly.0.png:
+	* outputOnly.0.png:
+	* initializeOnly.png:
+	* OutlineTreeData.h:
+	* inputOutput.0.0.png:
+	* exposedField.0.0.png:
+	* OutlineTreeModel.h:
+	* OutlineTreeView.cpp:
+	* OutlineTreeModel.cpp:
+	* OutlineCellRenderer.h:
+	* OutlineCellRenderer.cpp: 
+
+2013-07-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* OutlineTree.h:
 	* OutlineTreeView.h:

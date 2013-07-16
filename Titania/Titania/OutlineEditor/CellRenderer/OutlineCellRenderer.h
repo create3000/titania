@@ -53,9 +53,8 @@
 
 #include "../OutlineTreeData.h"
 
-#include <gdkmm.h>
-#include <gtkmm/cellrenderer.h>
-#include <glibmm/property.h>
+#include <Titania/X3D.h>
+#include <gtkmm.h>
 
 namespace titania {
 namespace puck {
@@ -65,7 +64,7 @@ class OutlineCellRenderer :
 {
 public:
 
-	OutlineCellRenderer ();
+	OutlineCellRenderer (const X3D::X3DSFNode <X3D::Browser> &);
 
 	// Properties
 	Glib::Property <OutlineTreeData*> &
@@ -75,6 +74,22 @@ public:
 	const Glib::Property <OutlineTreeData*> &
 	property_data () const
 	{ return data_property; }
+	
+	Glib::Property <Gdk::RGBA> &
+	property_foreground_rgba ()
+	{ return foreground_rgba_property; }
+
+	const Glib::Property <Gdk::RGBA> &
+	property_foreground_rgba () const
+	{ return foreground_rgba_property; }
+
+	Glib::Property <bool> &
+	property_foreground_set ()
+	{ return foreground_set_property; }
+
+	const Glib::Property <bool> &
+	property_foreground_set () const
+	{ return foreground_set_property; }
 
 	// Edited signal
 	typedef sigc::signal <void, const Glib::ustring &, const Glib::ustring &> signal_edited_t;
@@ -90,12 +105,36 @@ public:
 
 private:
 
-	Glib::Property <OutlineTreeData*> data_property;
-	signal_edited_t                   edited_signal;
+	OutlineIterType
+	get_data_type () const;
+
+	X3D::X3DChildObject*
+	get_object () const;
+
+	const Glib::RefPtr <Gdk::Pixbuf> &
+	get_icon () const;
+
+	const Glib::RefPtr <Gdk::Pixbuf> &
+	get_access_type_icon () const;
+
+	std::string
+	get_node_name () const;
 
 	virtual
 	void
-	get_size_vfunc (Gtk::Widget &, const Gdk::Rectangle*, int*, int*, int*, int*) const final;
+	get_preferred_width_vfunc (Gtk::Widget & widget, int & minimum_width, int & natural_width) const final;
+
+	virtual
+	void
+	get_preferred_height_for_width_vfunc (Gtk::Widget & widget, int width, int & minimum_height, int & natural_height) const final;
+
+	virtual
+	void
+	get_preferred_height_vfunc (Gtk::Widget & widget, int & minimum_height, int & natural_height) const final;
+
+	virtual
+	void
+	get_preferred_width_for_height_vfunc (Gtk::Widget & widget, int height, int & minimum_width, int & natural_width) const final;
 
 	virtual
 	void
@@ -116,6 +155,23 @@ private:
 	//	// Raise the edited event
 	//	void
 	//	edited (const Glib::ustring & path, const Glib::ustring & new_text);
+
+	typedef std::map <const X3D::X3DConstants::FieldType,  Glib::RefPtr <Gdk::Pixbuf>>               FieldTypeImageIndex;
+	typedef std::map <const X3D::X3DConstants::AccessType, std::deque <Glib::RefPtr <Gdk::Pixbuf>>> AccessTypeImageIndex;
+
+	Glib::Property <OutlineTreeData*> data_property;
+	Glib::Property <Gdk::RGBA>        foreground_rgba_property;
+	Glib::Property <bool>             foreground_set_property;
+
+	signal_edited_t                   edited_signal;
+
+	mutable Gtk::CellRendererPixbuf cellrenderer_icon;
+	mutable Gtk::CellRendererText   cellrenderer_name;
+
+	Glib::RefPtr <Gdk::Pixbuf> noneImage;
+	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
+	FieldTypeImageIndex        fieldTypeImages;
+	AccessTypeImageIndex       accessTypeImages;
 
 };
 

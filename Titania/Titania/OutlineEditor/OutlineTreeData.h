@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_ITER_DATA_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_ITER_DATA_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_DATA_H__
+#define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_DATA_H__
 
 #include <Titania/X3D.h>
 #include <deque>
@@ -71,37 +71,37 @@ class X3DOutlineTreeDataParent :
 public:
 
 	X3D::X3DChildObject*
-	object () const
-	{ return m_object; }
+	get_object () const
+	{ return object; }
 
 	OutlineIterType
-	type () const
-	{ return m_type; }
+	get_type () const
+	{ return type; }
 
 	size_t
-	index () const
-	{ return m_index; }
+	get_index () const
+	{ return index; }
 
 	~X3DOutlineTreeDataParent ()
 	{
-		if (m_type == OutlineIterType::X3DBaseNode)
-			delete m_object;
+		if (type == OutlineIterType::X3DBaseNode)
+			delete object;
 	}
 
 protected:
 
 	X3DOutlineTreeDataParent (OutlineIterType type, X3D::X3DChildObject* object, size_t index) :
 		Glib::Object (),
-		m_object (object),
-		m_type (type),
-		m_index (index)
+		object (object),
+		type (type),
+		index (index)
 	{
-		if (m_type == OutlineIterType::X3DBaseNode)
-			m_object = new X3D::SFNode (static_cast <X3D::SFNode*> (m_object) -> getValue ());
+		if (type == OutlineIterType::X3DBaseNode)
+			this -> object = new X3D::SFNode (static_cast <X3D::SFNode*> (object) -> getValue ());
 	}
 
 	X3DOutlineTreeDataParent (const X3DOutlineTreeDataParent & value) :
-		X3DOutlineTreeDataParent (value .type (), value .object (), value .index ())
+		X3DOutlineTreeDataParent (value .type, value .object, value .index)
 	{ }
 
 	X3DOutlineTreeDataParent (X3DOutlineTreeDataParent &&) = delete;
@@ -112,9 +112,9 @@ protected:
 
 private:
 
-	X3D::X3DChildObject*  m_object;
-	const OutlineIterType m_type;
-	const size_t          m_index;
+	X3D::X3DChildObject*  object;
+	const OutlineIterType type;
+	const size_t          index;
 
 };
 
@@ -142,17 +142,17 @@ public:
 
 	OutlineTreeData (OutlineIterType type, X3D::X3DChildObject* object, int index, const parents_type & parents) :
 		OutlineTreeDataParent (type, object, index),
-		m_parents (parents)
+		parents (parents)
 	{ }
 
 	const parents_type &
-	parents () const
-	{ return m_parents; }
+	get_parents () const
+	{ return parents; }
 
 
 private:
 
-	const parents_type m_parents;
+	const parents_type parents;
 
 };
 

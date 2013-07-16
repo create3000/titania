@@ -72,11 +72,8 @@ public:
 
 	enum
 	{
-		ICON_COLUMN,
 		DATA_COLUMN,
 		SELECTED_COLUMN,
-		NAME_COLUMN,
-		ACCESS_TYPE_ICON_COLUMN
 	};
 
 	OutlineTreeModel (const X3D::X3DSFNode <X3D::Browser> &);
@@ -225,25 +222,13 @@ private:
 	void
 	on_rows_reordered (const Path &, const iterator &, int*);
 
-	typedef Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>> IconColumn;
 	typedef Gtk::TreeModelColumn <OutlineTreeData*>            DataColumn;
 	typedef Gtk::TreeModelColumn <bool>                        SelectedColumn;
-	typedef Gtk::TreeModelColumn <Glib::ustring>               NameColumn;
-	typedef Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>> AccessTypeIconColumn;
-
-	typedef std::map <const X3D::X3DConstants::FieldType, Glib::RefPtr <Gdk::Pixbuf>> FieldTypeImageIndex;
 
 	X3D::X3DSFNode <X3D::X3DExecutionContext> executionContext;
 
-	IconColumn           icon_column;
-	DataColumn           data_column;
-	SelectedColumn       selected_column;
-	NameColumn           name_column;
-	AccessTypeIconColumn access_type_icon_column;
-
-	Glib::RefPtr <Gdk::Pixbuf> noneImage;
-	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
-	FieldTypeImageIndex        fieldTypeImages;
+	DataColumn     data_column;
+	SelectedColumn selected_column;
 
 	mutable OutlineTree tree;
 	int                 stamp;

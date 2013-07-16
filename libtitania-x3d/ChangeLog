@@ -1,5 +1,11 @@
 2013-07-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3D.h:
+	* RegEx.h:
+	* RegEx.cpp: 
+
+2013-07-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DOutput.cpp: 
 
 2013-07-14  Holger Seelig  <holger.seelig@yahoo.de>
