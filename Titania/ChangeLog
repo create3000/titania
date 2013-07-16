@@ -1,5 +1,10 @@
 2013-07-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* OutlineTreeView.cpp:
+	* OutlineCellRenderer.cpp: 
+
+2013-07-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* inputOnly.2.png:
 	* inputOnly.1.png:
 	* outputOnly.1.png:

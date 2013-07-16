@@ -518,8 +518,11 @@ OutlineTreeView::select_fields (const Gtk::TreeModel::iterator & iter, const Gtk
 					{
 						if (not field -> isInitializeable () or node -> isDefaultValue (field))
 						{
-							get_user_data (field)-> visible = false;
-							continue;
+							if (field -> getInputRoutes () .empty () and field -> getOutputRoutes () .empty ())
+							{
+								get_user_data (field)-> visible = false;
+								continue;
+							}
 						}
 
 						get_user_data (field)-> visible = true;
