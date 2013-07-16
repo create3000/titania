@@ -57,8 +57,8 @@
 #include "../Bits/Error.h"
 #include <Titania/LOG.h>
 #include <deque>
-#include <memory>
 #include <istream>
+#include <memory>
 #include <ostream>
 
 namespace titania {
@@ -113,7 +113,6 @@ public:
 
 	///  @name String Creation
 
-	virtual
 	std::string
 	toString () const;
 
@@ -152,7 +151,7 @@ private:
 
 	std::string              name;
 	std::deque <std::string> comments;
-	UserData              userData;
+	UserData                 userData;
 
 };
 

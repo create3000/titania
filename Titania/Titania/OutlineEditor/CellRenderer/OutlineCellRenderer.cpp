@@ -71,8 +71,6 @@ OutlineCellRenderer::OutlineCellRenderer (const X3D::X3DSFNode <X3D::Browser> & 
 	for (const auto & field : browser -> getSupportedFields ())
 		fieldTypeImages [field -> getType ()] = Gdk::Pixbuf::create_from_file (puck::get_icon (field -> getTypeName () + ".png"));
 
-	cellrenderer_icon .set_alignment (0, 0.5);
-
 	accessTypeImages [X3D::initializeOnly] .emplace_back (Gdk::Pixbuf::create_from_file (puck::get_icon ("initializeOnly.png")));
 	accessTypeImages [X3D::inputOnly]      .emplace_back (Gdk::Pixbuf::create_from_file (puck::get_icon ("inputOnly.0.png")));
 	accessTypeImages [X3D::inputOnly]      .emplace_back (Gdk::Pixbuf::create_from_file (puck::get_icon ("inputOnly.1.png")));
@@ -91,6 +89,37 @@ OutlineCellRenderer::OutlineCellRenderer (const X3D::X3DSFNode <X3D::Browser> & 
 	accessTypeImages [X3D::inputOutput]    .emplace_back (Gdk::Pixbuf::create_from_file (puck::get_icon ("inputOutput.2.0.png")));
 	accessTypeImages [X3D::inputOutput]    .emplace_back (Gdk::Pixbuf::create_from_file (puck::get_icon ("inputOutput.2.1.png")));
 	accessTypeImages [X3D::inputOutput]    .emplace_back (Gdk::Pixbuf::create_from_file (puck::get_icon ("inputOutput.2.2.png")));
+
+	cellrenderer_icon .set_alignment (0, 0.5);
+	cellrenderer_access_type_icon .set_alignment (0, 0.5);
+
+	data_property .get_proxy () .signal_changed () .connect (sigc::mem_fun (this, &OutlineCellRenderer::set_data));
+}
+
+void
+OutlineCellRenderer::set_data ()
+{
+	cellrenderer_icon .property_pixbuf () = get_icon ();
+
+	switch (get_data_type ())
+	{
+		case OutlineIterType::X3DFieldValue:
+		{
+			cellrenderer_name .property_text () = get_field_value ();
+			break;
+		}
+		case OutlineIterType::X3DField:
+		{
+			cellrenderer_name .property_text ()               = get_object () -> getName ();
+			cellrenderer_access_type_icon .property_pixbuf () = get_access_type_icon ();
+			break;
+		}
+		case OutlineIterType::X3DBaseNode:
+		{
+			cellrenderer_name .property_markup () = get_node_name ();
+			break;
+		}
+	}
 }
 
 OutlineIterType
@@ -164,7 +193,7 @@ OutlineCellRenderer::get_access_type_icon () const
 std::string
 OutlineCellRenderer::get_node_name () const
 {
-	X3D::SFNode* sfnode = static_cast <X3D::SFNode*> (get_object ());
+	auto sfnode = static_cast <X3D::SFNode*> (get_object ());
 
 	if (*sfnode)
 	{
@@ -187,6 +216,107 @@ OutlineCellRenderer::get_node_name () const
 	return "<b>NULL</b>";
 }
 
+template <class Type>
+std::string
+array_to_string (const Type & array)
+{
+	std::ostringstream stream;
+
+	if (array .empty ())
+		return stream .str ();
+
+	for (const auto & value : basic::adapter (array .begin (), array .end () - 1))
+	{
+		value .toStream (stream);
+		stream << std::endl;
+	}
+
+	array .back () .toStream (stream);
+
+	return stream .str ();
+}
+
+std::string
+OutlineCellRenderer::get_field_value () const
+{
+	auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+
+	switch (field -> getType ())
+	{
+		case X3D::X3DConstants::SFNode:
+			return "";
+
+		case X3D::X3DConstants::SFString:
+			return *static_cast <X3D::SFString*> (field);
+
+		case X3D::X3DConstants::MFBool:
+			return array_to_string (*static_cast <X3D::MFBool*> (field));
+
+		case X3D::X3DConstants::MFColor:
+			return array_to_string (*static_cast <X3D::MFColor*> (field));
+
+		case X3D::X3DConstants::MFColorRGBA:
+			return array_to_string (*static_cast <X3D::MFColorRGBA*> (field));
+
+		case X3D::X3DConstants::MFDouble:
+			return array_to_string (*static_cast <X3D::MFDouble*> (field));
+
+		case X3D::X3DConstants::MFFloat:
+			return array_to_string (*static_cast <X3D::MFFloat*> (field));
+
+		case X3D::X3DConstants::MFImage:
+			return array_to_string (*static_cast <X3D::MFImage*> (field));
+
+		case X3D::X3DConstants::MFInt32:
+			return array_to_string (*static_cast <X3D::MFInt32*> (field));
+
+		case X3D::X3DConstants::MFMatrix3d:
+			return array_to_string (*static_cast <X3D::MFMatrix3d*> (field));
+
+		case X3D::X3DConstants::MFMatrix3f:
+			return array_to_string (*static_cast <X3D::MFMatrix3f*> (field));
+
+		case X3D::X3DConstants::MFMatrix4d:
+			return array_to_string (*static_cast <X3D::MFMatrix4d*> (field));
+
+		case X3D::X3DConstants::MFMatrix4f:
+			return array_to_string (*static_cast <X3D::MFMatrix4f*> (field));
+
+		case X3D::X3DConstants::MFNode:
+			return "";
+
+		case X3D::X3DConstants::MFRotation:
+			return array_to_string (*static_cast <X3D::MFRotation*> (field));
+
+		case X3D::X3DConstants::MFString:
+			return array_to_string (*static_cast <X3D::MFString*> (field));
+
+		case X3D::X3DConstants::MFTime:
+			return array_to_string (*static_cast <X3D::MFTime*> (field));
+
+		case X3D::X3DConstants::MFVec2d:
+			return array_to_string (*static_cast <X3D::MFVec2d*> (field));
+
+		case X3D::X3DConstants::MFVec2f:
+			return array_to_string (*static_cast <X3D::MFVec2f*> (field));
+
+		case X3D::X3DConstants::MFVec3d:
+			return array_to_string (*static_cast <X3D::MFVec3d*> (field));
+
+		case X3D::X3DConstants::MFVec3f:
+			return array_to_string (*static_cast <X3D::MFVec3f*> (field));
+
+		case X3D::X3DConstants::MFVec4d:
+			return array_to_string (*static_cast <X3D::MFVec4d*> (field));
+
+		case X3D::X3DConstants::MFVec4f:
+			return array_to_string (*static_cast <X3D::MFVec4f*> (field));
+
+		default:
+			return field -> toString ();
+	}
+}
+
 void
 OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & minimum_width, int & natural_width) const
 {
@@ -197,44 +327,20 @@ OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & mini
 	int natural = 0;
 
 	{
-		cellrenderer_icon .property_pixbuf () = get_icon ();
 		cellrenderer_icon .get_preferred_width (widget, minimum, natural);
-
 		minimum_width += minimum;
 		natural_width += natural;
 	}
 
 	{
-		switch (get_data_type ())
-		{
-			case OutlineIterType::X3DFieldValue:
-			{
-				cellrenderer_name .property_markup () = Glib::Markup::escape_text (get_object () -> toString ());
-				break;
-			}
-			case OutlineIterType::X3DField:
-			{
-				cellrenderer_name .property_markup () = Glib::Markup::escape_text (get_object () -> getName ());
-				break;
-			}
-			case OutlineIterType::X3DBaseNode:
-			{
-				cellrenderer_name .property_markup () = get_node_name ();
-				break;
-			}
-		}
-
 		cellrenderer_name .get_preferred_width (widget, minimum, natural);
-
 		minimum_width += minimum;
 		natural_width += natural;
 	}
 
 	if (get_data_type () == OutlineIterType::X3DField)
 	{
-		cellrenderer_icon .property_pixbuf () = get_access_type_icon ();
-		cellrenderer_icon .get_preferred_width (widget, minimum, natural);
-
+		cellrenderer_access_type_icon .get_preferred_width (widget, minimum, natural);
 		minimum_width += minimum;
 		natural_width += natural;
 	}
@@ -256,44 +362,20 @@ OutlineCellRenderer::get_preferred_height_for_width_vfunc (Gtk::Widget & widget,
 	int natural = 0;
 
 	{
-		cellrenderer_icon .property_pixbuf () = get_icon ();
-		cellrenderer_icon .get_preferred_height_for_width (widget, width, minimum, natural);
-
+		cellrenderer_access_type_icon .get_preferred_height_for_width (widget, width, minimum, natural);
 		minimum_height = std::max (minimum, minimum_height);
 		natural_height = std::max (natural, natural_height);
 	}
 
 	{
-		switch (get_data_type ())
-		{
-			case OutlineIterType::X3DFieldValue:
-			{
-				cellrenderer_name .property_markup () = Glib::Markup::escape_text (get_object () -> toString ());
-				break;
-			}
-			case OutlineIterType::X3DField:
-			{
-				cellrenderer_name .property_markup () = Glib::Markup::escape_text (get_object () -> getName ());
-				break;
-			}
-			case OutlineIterType::X3DBaseNode:
-			{
-				cellrenderer_name .property_markup () = get_node_name ();
-				break;
-			}
-		}
-
 		cellrenderer_name .get_preferred_height_for_width (widget, width, minimum, natural);
-
 		minimum_height = std::max (minimum, minimum_height);
 		natural_height = std::max (natural, natural_height);
 	}
 
 	if (get_data_type () == OutlineIterType::X3DField)
 	{
-		cellrenderer_icon .property_pixbuf () = get_access_type_icon ();
-		cellrenderer_icon .get_preferred_height_for_width (widget, width, minimum, natural);
-
+		cellrenderer_access_type_icon .get_preferred_height_for_width (widget, width, minimum, natural);
 		minimum_height = std::max (minimum, minimum_height);
 		natural_height = std::max (natural, natural_height);
 	}
@@ -309,44 +391,20 @@ OutlineCellRenderer::get_preferred_height_vfunc (Gtk::Widget & widget, int & min
 	int natural = 0;
 
 	{
-		cellrenderer_icon .property_pixbuf () = get_icon ();
 		cellrenderer_icon .get_preferred_height (widget, minimum, natural);
-
 		minimum_height = std::max (minimum, minimum_height);
 		natural_height = std::max (natural, natural_height);
 	}
 
 	{
-		switch (get_data_type ())
-		{
-			case OutlineIterType::X3DFieldValue:
-			{
-				cellrenderer_name .property_markup () = Glib::Markup::escape_text (get_object () -> toString ());
-				break;
-			}
-			case OutlineIterType::X3DField:
-			{
-				cellrenderer_name .property_markup () = Glib::Markup::escape_text (get_object () -> getName ());
-				break;
-			}
-			case OutlineIterType::X3DBaseNode:
-			{
-				cellrenderer_name .property_markup () = get_node_name ();
-				break;
-			}
-		}
-
 		cellrenderer_name .get_preferred_height (widget, minimum, natural);
-
 		minimum_height = std::max (minimum, minimum_height);
 		natural_height = std::max (natural, natural_height);
 	}
 
 	if (get_data_type () == OutlineIterType::X3DField)
 	{
-		cellrenderer_icon .property_pixbuf () = get_access_type_icon ();
-		cellrenderer_icon .get_preferred_height (widget, minimum, natural);
-
+		cellrenderer_access_type_icon .get_preferred_height (widget, minimum, natural);
 		minimum_height = std::max (minimum, minimum_height);
 		natural_height = std::max (natural, natural_height);
 	}
@@ -362,44 +420,20 @@ OutlineCellRenderer::get_preferred_width_for_height_vfunc (Gtk::Widget & widget,
 	int natural = 0;
 
 	{
-		cellrenderer_icon .property_pixbuf () = get_icon ();
 		cellrenderer_icon .get_preferred_width_for_height (widget, height, minimum, natural);
-
 		minimum_width += minimum;
 		natural_width += natural;
 	}
 
 	{
-		switch (get_data_type ())
-		{
-			case OutlineIterType::X3DFieldValue:
-			{
-				cellrenderer_name .property_markup () = Glib::Markup::escape_text (get_object () -> toString ());
-				break;
-			}
-			case OutlineIterType::X3DField:
-			{
-				cellrenderer_name .property_markup () = Glib::Markup::escape_text (get_object () -> getName ());
-				break;
-			}
-			case OutlineIterType::X3DBaseNode:
-			{
-				cellrenderer_name .property_markup () = get_node_name ();
-				break;
-			}
-		}
-
 		cellrenderer_name .get_preferred_width_for_height (widget, height, minimum, natural);
-
 		minimum_width += minimum;
 		natural_width += natural;
 	}
 
 	if (get_data_type () == OutlineIterType::X3DField)
 	{
-		cellrenderer_icon .property_pixbuf () = get_access_type_icon ();
-		cellrenderer_icon .get_preferred_width_for_height (widget, height, minimum, natural);
-
+		cellrenderer_access_type_icon .get_preferred_width_for_height (widget, height, minimum, natural);
 		minimum_width += minimum;
 		natural_width += natural;
 	}
@@ -426,10 +460,9 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 	int natural_width = 0;
 
 	{
-		cellrenderer_icon .property_pixbuf () = get_icon ();
 		cellrenderer_icon .render (context, widget, background_area, cell_area, flags);
-
 		cellrenderer_icon .get_preferred_width (widget, minimum_width, natural_width);
+
 		x     += minimum_width;
 		width -= minimum_width;
 	}
@@ -441,30 +474,11 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 		Gdk::Rectangle background_area (x, y, width, height);
 		Gdk::Rectangle cell_area (x, y, width, height);
 
-		switch (get_data_type ())
-		{
-			case OutlineIterType::X3DFieldValue:
-			{
-				cellrenderer_name .property_markup () = Glib::Markup::escape_text (get_object () -> toString ());
-				break;
-			}
-			case OutlineIterType::X3DField:
-			{
-				cellrenderer_name .property_markup () = Glib::Markup::escape_text (get_object () -> getName ());
-				break;
-			}
-			case OutlineIterType::X3DBaseNode:
-			{
-				cellrenderer_name .property_markup () = get_node_name ();
-				break;
-			}
-		}
-
 		cellrenderer_name .property_foreground_rgba () = property_foreground_rgba ();
 		cellrenderer_name .property_foreground_set ()  = property_foreground_set ();
 		cellrenderer_name .render (context, widget, background_area, cell_area, flags);
-
 		cellrenderer_name .get_preferred_width (widget, minimum_width, natural_width);
+
 		x     += minimum_width;
 		width -= minimum_width;
 	}
@@ -477,8 +491,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 		Gdk::Rectangle background_area (x, y, width, height);
 		Gdk::Rectangle cell_area (x, y, width, height);
 
-		cellrenderer_icon .property_pixbuf () = get_access_type_icon ();
-		cellrenderer_icon .render (context, widget, background_area, cell_area, flags);
+		cellrenderer_access_type_icon .render (context, widget, background_area, cell_area, flags);
 	}
 }
 

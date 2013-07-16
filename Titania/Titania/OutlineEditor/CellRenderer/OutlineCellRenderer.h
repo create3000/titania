@@ -105,6 +105,9 @@ public:
 
 private:
 
+	void
+	set_data ();
+
 	OutlineIterType
 	get_data_type () const;
 
@@ -119,6 +122,9 @@ private:
 
 	std::string
 	get_node_name () const;
+
+	std::string
+	get_field_value () const;
 
 	virtual
 	void
@@ -167,6 +173,7 @@ private:
 
 	mutable Gtk::CellRendererPixbuf cellrenderer_icon;
 	mutable Gtk::CellRendererText   cellrenderer_name;
+	mutable Gtk::CellRendererPixbuf cellrenderer_access_type_icon;
 
 	Glib::RefPtr <Gdk::Pixbuf> noneImage;
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;

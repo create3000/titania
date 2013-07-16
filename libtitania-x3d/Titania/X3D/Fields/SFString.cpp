@@ -109,12 +109,6 @@ SFString::length () const
 	return getValue () .length ();
 }
 
-std::string
-SFString::toString () const
-{
-	return getValue ();
-}
-
 void
 SFString::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,

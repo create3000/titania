@@ -110,10 +110,6 @@ public:
 	size_type
 	length () const;
 
-	virtual
-	std::string
-	toString () const final;
-
 	///  @name Input operator.
 	virtual
 	void
